@@ -1,5 +1,4 @@
 # Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
 
 PORTNAME=	sdl_pango
 PORTVERSION=	0.1.2
@@ -17,7 +16,7 @@ COMMENT=	SDL API to the Pango text rendering engine of GNOME 2.x
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool pathfix pkgconfig
+USES=		gnome libtool pathfix pkgconfig sdl
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl
 USE_GNOME=	pango

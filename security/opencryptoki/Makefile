@@ -1,8 +1,8 @@
 # Created by: Ralf Meister
-# $FreeBSD$
 
 PORTNAME=	opencryptoki
 PORTVERSION=	3.11.0
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 

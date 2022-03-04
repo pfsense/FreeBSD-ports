@@ -1,7 +1,15 @@
-bin/glmark2
-bin/glmark2-es2
-man/man1/glmark2.1.gz
-man/man1/glmark2-es2.1.gz
+%%DRM%%bin/glmark2-drm
+%%DRM%%bin/glmark2-es2-drm
+%%WAYLAND%%bin/glmark2-wayland
+%%WAYLAND%%bin/glmark2-es2-wayland
+%%X11%%bin/glmark2
+%%X11%%bin/glmark2-es2
+%%DRM%%share/man/man1/glmark2-drm.1.gz
+%%DRM%%share/man/man1/glmark2-es2-drm.1.gz
+%%WAYLAND%%share/man/man1/glmark2-wayland.1.gz
+%%WAYLAND%%share/man/man1/glmark2-es2-wayland.1.gz
+%%X11%%share/man/man1/glmark2.1.gz
+%%X11%%share/man/man1/glmark2-es2.1.gz
 %%DATADIR%%/models/asteroid-high.3ds
 %%DATADIR%%/models/asteroid-low.3ds
 %%DATADIR%%/models/bunny.obj
@@ -9,6 +17,7 @@ man/man1/glmark2-es2.1.gz
 %%DATADIR%%/models/cube.3ds
 %%DATADIR%%/models/horse.3ds
 %%DATADIR%%/models/jellyfish.jobj
+%%DATADIR%%/shaders/README.shaders
 %%DATADIR%%/shaders/buffer-wireframe.frag
 %%DATADIR%%/shaders/buffer-wireframe.vert
 %%DATADIR%%/shaders/bump-height.frag
@@ -75,7 +84,6 @@ man/man1/glmark2-es2.1.gz
 %%DATADIR%%/shaders/loop.vert
 %%DATADIR%%/shaders/pulsar-light.vert
 %%DATADIR%%/shaders/pulsar.vert
-%%DATADIR%%/shaders/README.shaders
 %%DATADIR%%/shaders/shadow.frag
 %%DATADIR%%/shaders/shadow.vert
 %%DATADIR%%/shaders/terrain-blur.frag

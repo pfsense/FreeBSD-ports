@@ -1,9 +1,8 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mod_webauth
 PORTVERSION=	4.7.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://webauth.stanford.edu/dist/
 DISTNAME=	webauth-${PORTVERSION}

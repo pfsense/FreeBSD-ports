@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	gnupg
 PORTVERSION=	1.4.23
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 PKGNAMESUFFIX=	1
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	The GNU Privacy Guard (minimalist "classic" version)
 
 LICENSE=	GPLv3+
@@ -19,6 +17,7 @@ USES=		charsetfix compiler cpe gmake readline tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-camellia \
 		--enable-noexecstack
+CFLAGS+=	-fcommon
 
 INFO=		gnupg1
 DOCSDIR=	${PREFIX}/share/doc/gnupg1
@@ -55,10 +54,12 @@ NLS_CONFIGURE_ENABLE=	nls
 
 .if ${ARCH} == "i386" && ${COMPILER_TYPE} == "clang"
 CFLAGS+=	-fheinous-gnu-extensions
+.elif ${ARCH} == powerpc
+USE_GCC=	yes
 .endif
 
 post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in doc/DETAILS doc/FAQ doc/HACKING doc/OpenPGP \
 	ABOUT-NLS AUTHORS BUGS COPYING INSTALL NEWS PROJECTS \
 	README THANKS TODO VERSION

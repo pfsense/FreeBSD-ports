@@ -1,18 +1,17 @@
 # Created by: Murata Shuuichirou <mrt@mickey.ai.kyutech.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	skkinput
 PORTVERSION=	2.06.4
 PORTREVISION=	2
 CATEGORIES=	japanese x11
-MASTER_SITES=	OSDN/skkinput2/6273
+MASTER_SITES=	OSDN/skkinput2
 
 MAINTAINER=	koma2@lovepeers.org
 COMMENT=	SKK-like Japanese input method for X11
 
 LICENSE=	GPLv2
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xext xt xmu
 
 PLIST_FILES=	bin/skkinput lib/X11/app-defaults/Skkinput \

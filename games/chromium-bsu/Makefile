@@ -1,9 +1,8 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	chromium-bsu
 PORTVERSION=	0.9.16.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Chromium%20B.S.U.%20source%20code/
 
@@ -16,7 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libGLC.so:graphics/quesoglc
 
 GNU_CONFIGURE=	yes
-USES=		gmake gettext-tools localbase pkgconfig
+USES=		compiler:c++11-lang gettext-tools gl gmake gnome localbase \
+		pkgconfig sdl
 USE_SDL=	sdl2 image2
 USE_GL=		gl glu
 CONFIGURE_ARGS=	--disable-sdl \
@@ -25,10 +25,8 @@ CONFIGURE_ARGS=	--disable-sdl \
 		--disable-ftgl \
 		--disable-glut \
 		--disable-glpng
-LLD_UNSAFE=	yes
 MAKE_ARGS=	LDFLAGS="${LDFLAGS}"
-
-INSTALLS_ICONS=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 PORTDOCS=	*
 PORTDATA=	*

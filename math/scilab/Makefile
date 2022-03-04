@@ -1,9 +1,7 @@
 # Created by: js@jeannot.org
-# $FreeBSD$
 
 PORTNAME=	scilab
-PORTVERSION=	5.5.2
-PORTREVISION=	16
+PORTVERSION=	6.1.1
 CATEGORIES=	math cad java
 MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
@@ -16,8 +14,6 @@ LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING-BSD
 
-# A partial dependencies list can be found at:
-# http://wiki.scilab.org/Dependencies_of_Scilab_5.X
 LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
@@ -25,27 +21,25 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libarpack.so:math/arpack-ng \
 		libfftw3.so:math/fftw3 \
 		libmatio.so:math/matio \
-		libamd.so:math/suitesparse
+		libamd.so:math/suitesparse-amd \
+		libumfpack.so:math/suitesparse-umfpack
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		cpe desktop-file-utils fortran gettext gmake gnome iconv \
-		libtool ncurses pathfix pkgconfig shared-mime-info
-USE_CXXSTD=	gnu++98
+USES=		compiler:c++17-lang cpe desktop-file-utils eigen:3,build \
+		fortran gettext gmake gnome iconv:wchar_t libtool \
+		localbase ncurses pathfix pkgconfig shared-mime-info
 USE_LOCALE=	en_US.UTF-8
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--with-gfortran \
 		--without-emf \
-		-disable-static-system-lib
+		--with-eigen-include=${LOCALBASE}/include/eigen3 \
+		${ICONV_CONFIGURE_ARG}
+LDFLAGS+=	${ICONV_LIB}
+
 CONFIGURE_ENV=	BLAS_LIBS="${BLASLIB}" LAPACK_LIBS="${LAPACKLIB}"
 INSTALL_TARGET=	install-strip
-TEST_TARGET=	check  # XXX: tests fail
-
-MAKE_JOBS_UNSAFE=	yes
 
 PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
@@ -53,6 +47,8 @@ OPTIONS_DEFINE=	GUI OCAML TK
 OPTIONS_RADIO=	BLAS
 OPTIONS_RADIO_BLAS=	ATLAS NETLIB OPENBLAS
 OPTIONS_DEFAULT=	GUI NETLIB OCAML TK
+OPTIONS_EXCLUDE_powerpc64=	GUI
+OPTIONS_EXCLUDE_powerpc64le=	GUI
 OPTIONS_SUB=	yes
 
 ATLAS_USES=	blaslapack:atlas
@@ -68,19 +64,20 @@ _GUI_DEPENDS+=	${JAVALIBDIR}/flexdock.jar:devel/flexdock \
 		foprep:math/jeuclid \
 		${JAVALIBDIR}/jhall.jar:java/javahelp \
 		${JAVALIBDIR}/jrosetta-api.jar:java/jrosetta \
-		${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging \
+		${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging \
 		${JAVALIBDIR}/jgraphx.jar:java/jgraphx \
 		${JAVALIBDIR}/jlatexmath.jar:math/jlatexmath \
-		${LOCALBASE}/share/java/ecj-4.5.jar:lang/gcc-ecj45
+		${LOCALBASE}/share/java/ecj-4.5.jar:lang/gcc-ecj45 \
+		${JAVALIBDIR}/lucene-core-5.5.5.jar:textproc/lucene5
 # Documentation, graphic export:
 _GUI_DEPENDS+=	${LOCALBASE}/share/java/fop/build/fop.jar:textproc/fop \
 		${JAVALIBDIR}/jlatexmath-fop.jar:math/jlatexmath \
 		${LOCALBASE}/share/java/batik/lib/batik-all.jar:graphics/batik \
 		${JAVALIBDIR}/avalon-framework.jar:devel/avalon-framework \
-		${JAVALIBDIR}/commons-io.jar:devel/jakarta-commons-io \
+		${JAVALIBDIR}/commons-io.jar:devel/apache-commons-io \
 		${JAVALIBDIR}/xmlgraphics-commons.jar:graphics/xmlgraphics-commons
 # Code quality:
-_GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/jakarta-commons-beanutils \
+_GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/apache-commons-beanutils \
 		${JAVALIBDIR}/antlr.jar:devel/antlr \
 		${JAVALIBDIR}/junit4.jar:java/junit \
 		${LOCALBASE}/bin/splint:devel/splint
@@ -90,7 +87,7 @@ _GUI_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/javahelp/javahelp.xsl:textproc/doc
 		${JAVALIBDIR}/xml-apis-ext.jar:textproc/xml-commons \
 		xsltproc:textproc/libxslt
 # Other gui deps:
-_GUI_DEPENDS+=	${JAVALIBDIR}/looks.jar:devel/looks \
+_GUI_DEPENDS+=	${JAVALIBDIR}/looks.jar:devel/jgoodies-looks \
 		${JAVALIBDIR}/skinlf.jar:x11-toolkits/skinlf
 
 # Can't use USE_ANT because it overrides do-build target
@@ -120,7 +117,7 @@ TK_CONFIGURE_ON=	--with-tk-library=${LOCALBASE}/lib \
 			--with-tk-include=${TK_INCLUDEDIR} \
 			--with-tcl-library=${LOCALBASE}/lib \
 			--with-tcl-include=${TCL_INCLUDEDIR}
-TK_USES=	tk
+TK_USES=	tk xorg
 TK_USE=		XORG=x11
 TK_RUN_DEPENDS=	${LOCALBASE}/lib/bwidget/init.tcl:x11-toolkits/bwidget
 
@@ -128,45 +125,46 @@ TK_RUN_DEPENDS=	${LOCALBASE}/lib/bwidget/init.tcl:x11-toolkits/bwidget
 CONFIGURE_ARGS+=	--without-openmp
 .endif
 
+.if defined(WITH_DEBUG)
+CONFIGURE_ARGS+=	--enable-debug
+.endif
+
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MGUI} && ${JAVA_PORT_VERSION:M1.8.*}
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-Makefile.in
+.if ${GCC_DEFAULT} >= 10
+# workaround for Rank mismatch between actual argument at (1) and actual argument at (2) (rank-1 and scalar)
+FFLAGS+=	-fallow-argument-mismatch
 .endif
 
 post-patch:
-	@# Configure fixes
-	@${REINPLACE_CMD} -e 's|-ldl | |' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|-lumfpack|-lumfpack -lsuitesparseconfig -lamd -lcholmod -lcolamd $$LAPACK_LIBS $$BLAS_LIBS|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|TCLTK_LIBS=" -ldl"|TCLTK_LIBS=" "|' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|"x=" ==|"x" =|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|"x" ==|"x" =|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|sparc64-\*-netbsd\*|amd64-\*-freebsd\*|' ${WRKSRC}/configure
-	@# Build fixes
-	@${REINPLACE_CMD} -e 's|$$(CFLAGS:-O%=)|-I${LOCALBASE}/include -L${LOCALBASE}/lib|' ${WRKSRC}/modules/elementary_functions/Makefile.in
-	@${REINPLACE_CMD} -e 's|freebsd|__FreeBSD__|g' ${WRKSRC}/modules/sparse/includes/spConfig.h
-	@# malloc.h -> stdlib.h conversions
-	@${GREP} -lr "<malloc.h>" ${WRKSRC} \
-		| ${XARGS} ${REINPLACE_CMD} -e \
-		's/[<"]malloc.h[>"]/<stdlib.h>/'
-	@# Run fixes
-	@${REINPLACE_CMD} -e 's|%%JAVALIBDIR%%|${JAVALIBDIR}|' ${WRKSRC}/etc/librarypath.xml
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/etc/librarypath.xml
+	@${REINPLACE_CMD} 's,/usr/local,${LOCALBASE},' ${WRKSRC}/etc/librarypath.xml
 	@${REINPLACE_CMD} -e 's, gfortran, ${FC},' ${WRKSRC}/modules/dynamic_link/src/scripts/configure
 
 post-patch-GUI-on:
+# scilab segfaults on FreeBSD with C locale
+	@${REINPLACE_CMD} 's,LC_ALL=C,,' ${WRKSRC}/Makefile.in
 	@# Configure fixes
+	@${REINPLACE_CMD} '/ac_java_jvm_jni_lib_flags/s,\(ljvm\),\1 -pthread,' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/usr/lib/java|${JAVALIBDIR}|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/usr/lib64/jni|${LOCALBASE}/lib/|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|$$jardir/batik-all.jar|${LOCALBASE}/share/java/batik/lib/batik-all.jar|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|$$jardir/fop.jar|${LOCALBASE}/share/java/fop/build/fop.jar|' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|$$jardir/jeuclid-core*.jar|${LOCALBASE}/share/java/jeuclid/repo/jeuclid-core*.jar|' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|jrosetta-API.jar|jrosetta-api.jar|' ${WRKSRC}/configure
+	@${REINPLACE_CMD} 's,\(DEFAULT_JAR_DIR="\),\1 \
+		${LOCALBASE}/share/java/classes \
+		${LOCALBASE}/share/java/fop/build \
+		${LOCALBASE}/share/java/batik/lib \
+		${LOCALBASE}/share/java/jeuclid/repo ,' ${WRKSRC}/configure
+# Prefer non-versioned files to avoid excessive rebuilds. This also fixes detection of fop.
+	@${REINPLACE_CMD} 's|batik-all\*\.jar|batik-all.jar|g; \
+			s|commons-io\*\.jar|commons-io.jar|g; \
+			s|commons-logging\*\.jar|commons-logging.jar|g; \
+			s|fop\*\.jar|fop.jar|g; \
+			s|jlatexmath\*\.jar|jlatexmath.jar|g; \
+			s|xmlgraphics-commons\*\.jar|xmlgraphics-commons.jar|g' \
+			${WRKSRC}/configure
+# Part of the jogamp-jogl-2.3 patch:
+	@${REINPLACE_CMD} -e 's|javax.media.opengl.glu.GLUnurbs|com.jogamp.opengl.glu.GLUnurbs|' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|jogamp.common.os.MachineDescriptionRuntime|jogamp.common.os.MachineDataInfoRuntime|' ${WRKSRC}/configure
 	@# Run fixes
 	@${REINPLACE_CMD} -e 's|%%JAVA_HOME%%|${JAVA_HOME}|' ${WRKSRC}/bin/scilab
-	@${REINPLACE_CMD} -e 's|/usr/share/scilab|${DATADIR}|' ${WRKSRC}/desktop/scilab.desktop
-	@${REINPLACE_CMD} -e 's|/usr/share/scilab-cli|${DATADIR}|' \
-		${WRKSRC}/desktop/scilab-adv-cli.desktop ${WRKSRC}/desktop/scilab-cli.desktop
 
 pre-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/.atoms

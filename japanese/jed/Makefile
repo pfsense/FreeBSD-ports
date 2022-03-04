@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	jed
 PORTVERSION=	${VERSION}.j${JP_VERSION}
@@ -40,6 +39,7 @@ CANNA_CONFIGURE_ON=	--with-canna=yes
 CANNA_CONFIGURE_OFF=	--with-canna=no
 CANNA_LIB_DEPENDS=	libcanna.so:japanese/canna-lib
 
+X11_USES=	xorg
 X11_USE=	XORG=x11,xext,xt
 
 .include <bsd.port.options.mk>

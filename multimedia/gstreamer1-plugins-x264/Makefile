@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	3
 CATEGORIES=	multimedia
 

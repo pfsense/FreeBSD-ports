@@ -1,9 +1,8 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	robocode
-PORTVERSION=	1.9.3.5
-CATEGORIES=	games java
+PORTVERSION=	1.9.4.3
+CATEGORIES=	games education java
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${DISTVERSION}-setup.jar
 EXTRACT_SUFX=	# empty
@@ -15,10 +14,10 @@ COMMENT=	Game for learning Java[tm] programming language
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/license/epl-v10.html
 
-USES=		dos2unix zip:infozip
+USES=		cpe dos2unix zip:infozip
+CPE_VENDOR=	${PORTNAME}_project
 DOS2UNIX_GLOB=	*.css *.team *.properties package-list MANIFEST.MF
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_EXTRACT=	yes
 JAVA_RUN=	yes
 NO_WRKSUBDIR=	yes

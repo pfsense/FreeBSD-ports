@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gmtk
 PORTVERSION=	1.0.9
 PORTREVISION=	1
@@ -13,7 +11,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	p5-XML-Parser>0:textproc/p5-XML-Parser
 
-USES=		gettext gmake libtool pathfix perl5 pkgconfig
+USES=		gettext gmake gnome libtool pathfix perl5 pkgconfig xorg
 USE_XORG=	x11
 USE_GNOME=	glib20 intltool
 USE_PERL5=	build
@@ -29,7 +27,6 @@ OPTIONS_DEFINE=		ALSA DOCS GIO GTK3 PULSEAUDIO
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CONFIGURE_WITH=	alsa
-GIO_DESC=		Use GIO for file I/O
 GIO_CONFIGURE_WITH=	gio
 GTK3_USE=		gnome=gtk30
 GTK3_CONFIGURE_ENABLE=	gtk3

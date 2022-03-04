@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	transmission
-DISTVERSION=	2.94
-PORTREVISION?=	3
+DISTVERSION=	3.00
+PORTREVISION?=	5
 CATEGORIES+=	net-p2p
 SLAVEPORT?=	cli
 PKGNAMESUFFIX?=	-cli
@@ -11,6 +9,11 @@ MAINTAINER=	rigoletto@FreeBSD.org
 COMMENT=	Meta-port for Transmission BitTorrent client
 
 LICENSE+=	MIT
+
+USES+=		cpe
+
+CPE_VENDOR=	transmissionbt
+CPE_PRODUCT=	transmission
 
 .if ${SLAVEPORT:Ncli}
 LICENSE+=	GPLv2+
@@ -27,46 +30,35 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libutp.so:net/libutp \
 		libminiupnpc.so:net/miniupnpc
 
-USES+=		cmake cpe iconv libtool localbase pkgconfig
+USES+=		cmake iconv libtool localbase pkgconfig ssl
+
+# Workaround: PR 248326
+# https://github.com/transmission/transmission/issues/1359
+CFLAGS+=	-DNDEBUG
 
 .  if ${SLAVEPORT:Mcli}
-USES+=		ssl
 NLS_USES=	gettext-runtime:run
 .  endif
-
-CPE_VENDOR=	transmissionbt
 .endif
 
 USE_GITHUB=	yes
 
-.if ${SLAVEPORT} != web
-SLAVES=		cli daemon gtk qt
+.if ${SLAVEPORT:Nutils}
+CMAKE_OFF+=	ENABLE_UTILS
+.endif
+
+.if ${SLAVEPORT:Nweb}
+SLAVES=		cli daemon gtk qt utils
 CMAKE_ON+=	ENABLE_${SLAVEPORT:tu}
 CMAKE_OFF+=	${SLAVES:N${SLAVEPORT}:tu:S/^/ENABLE_/}
-
-.  if ${SLAVEPORT:Nweb:Ncli}
-CMAKE_OFF+=	ENABLE_UTILS
-.  endif
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${SLAVEPORT}
 CMAKE_ARGS+=	-DCMAKE_INSTALL_DOCDIR=${DOCSDIR}
 
 OPTIONS_DEFINE+=	DOCS LITE NLS
 OPTIONS_SUB=		yes
-OPTIONS_DEFAULT=	OPENSSL
 
 NLS_CMAKE_BOOL=		ENABLE_NLS
-
-OPTIONS_SINGLE=		SSL
-OPTIONS_SINGLE_SSL=	OPENSSL WOLFSSL
-
-OPENSSL_USES=		ssl
-OPENSSL_CMAKE_ARGS=	-DWITH_CRYPTO="openssl"
-
-WOLFSSL_LIB_DEPENDS=	libwolfssl.so:security/wolfssl
-WOLFSSL_CMAKE_ARGS=	-DWITH_CRYPTO="cyassl"
-
-LITE_CONFIGURE_ENABLE=	lightweight
 LITE_CMAKE_BOOL=	ENABLE_LIGHTWEIGHT
 .endif
 
@@ -84,6 +76,15 @@ do-install:
 .if ${SLAVEPORT:Mdaemon}
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}/home
+.endif
+
+.if ${SLAVEPORT:Mqt}
+post-install:
+	${REINPLACE_CMD} -e "s/Icon=.*/&-qt/" \
+		${STAGEDIR}${DESKTOPDIR}/transmission-qt.desktop
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
+	${INSTALL_DATA} ${WRKSRC}/qt/icons/transmission.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/transmission-qt.png
 .endif
 
 .include <bsd.port.mk>

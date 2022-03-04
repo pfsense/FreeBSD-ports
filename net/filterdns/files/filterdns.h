@@ -2,7 +2,7 @@
  * filterdns.h
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,8 @@
 #define	THR_RUNNING	2
 #define	THR_DYING	4
 
+#define	ACT_FORCE	1
+
 struct _addr_entry {
 	TAILQ_ENTRY(_addr_entry) entry;
 	struct sockaddr	*addr;
@@ -69,6 +71,7 @@ struct action {
 	struct thread_host *host;
 	struct addr_list tbl_rnh;
 	struct addr_list rnh;
+	int flags;
 	int type;
 	char *tablename;
 	int pipe;

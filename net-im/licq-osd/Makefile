@@ -1,14 +1,13 @@
 # Created by: nm@web.am
-# $FreeBSD$
 
 PORTNAME=	osd
 PORTVERSION=	1.9.0
-PORTREVISION=	1
+PORTREVISION=	4
 PORTEPOCH=	2
 CATEGORIES=	net-im
 PKGNAMEPREFIX=	licq-
 
-MAINTAINER=	dinoex@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OnScreenDisplay messages in licq
 
 BUILD_DEPENDS=	licq:${LICQ_PORT}
@@ -22,7 +21,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	licq-im
 GH_PROJECT=	licq
 GH_TAGNAME=	f271d55
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}/${PORTNAME}
+WRKSRC_SUBDIR=	${PORTNAME}
 
 LOCALES=	be de cs es fr pt pt_BR ro ru sv sk tr
 PLIST_FILES=	lib/licq/licq_osd.so \

@@ -1,0 +1,11 @@
+TIMESTAMP = 1630105614
+SHA256 (chatterino-chatterino2-v2.3.4_GH0.tar.gz) = 27d42138d48d807340fe4194b4cdada6183b0ff2127f24d39032b3ad1f66594c
+SIZE (chatterino-chatterino2-v2.3.4_GH0.tar.gz) = 1680775
+SHA256 (Chatterino-libcommuni-c613600e_GH0.tar.gz) = f99749e3ba09dd8c54ac96a968813d741c4157d92663786cbb1496bfa89aafe4
+SIZE (Chatterino-libcommuni-c613600e_GH0.tar.gz) = 475895
+SHA256 (pajlada-serialize-7d37cbf_GH0.tar.gz) = 2699d20509117209fd2995f4c3091f614f8f8f8996f8bc40f5620461b4e0f097
+SIZE (pajlada-serialize-7d37cbf_GH0.tar.gz) = 9039
+SHA256 (pajlada-settings-7cf8431d_GH0.tar.gz) = 18f01f1fd0f9c7707b311695703765aeb27ee480bd613fdd12f2a73801e69f17
+SIZE (pajlada-settings-7cf8431d_GH0.tar.gz) = 110989
+SHA256 (pajlada-signals-baf5bb0_GH0.tar.gz) = ca8385e823fb0fddd7edfd66d456d47d79f997793beaa1269b37195eccafc5df
+SIZE (pajlada-signals-baf5bb0_GH0.tar.gz) = 9555

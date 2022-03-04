@@ -1,5 +1,4 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	netscape-java40
 PORTVERSION=	1999.11.15
@@ -17,7 +16,6 @@ LICENSE_FILE=	${WRKSRC}/License
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror auto-accept
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

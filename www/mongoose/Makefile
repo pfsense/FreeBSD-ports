@@ -1,5 +1,4 @@
 # Created by: Boris Lytochkin (lytboris@gmail.com)
-# $FreeBSD$
 
 PORTNAME=	mongoose
 PORTVERSION=	5.6
@@ -14,7 +13,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	cesanta
 GH_TAGNAME=	632b3a3
 
-USES=		gmake dos2unix
+USES=		cpe gmake dos2unix
+CPE_VENDOR=	cesanta
 
 ALL_TARGET=	web_server
 MAKE_ENV=	LIBS=-lpthread
@@ -31,7 +31,6 @@ OPTIONS_NS=SSL IPV6 DEBUG
 OPTIONS_DEFINE=${OPTIONS_MONGOOSE} ${OPTIONS_NS} DEBUG_HEXDUMP THREADS
 OPTIONS_DEFAULT=${OPTIONS_DEFINE:NDEBUG*}
 
-POPEN_DESC=		Enable process execute in SSI
 CGI_DESC=		Enable CGI
 AUTH_DESC=		Enable authentication
 DAV_DESC=		Enable DAV (requires DIRECTORY_LISTING)

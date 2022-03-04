@@ -3,7 +3,7 @@
  * haproxy_listeners_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * Copyright (c) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
@@ -46,7 +46,7 @@ $a_pools = getarraybyref($config,'installedpackages','haproxy','ha_pools','item'
 uasort($a_pools, 'haproxy_compareByName');
 
 global $simplefields;
-$simplefields = array('name','desc','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
+$simplefields = array('name','descr','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
 	'max_connections','client_timeout','port','advanced_bind',
 	'ssloffloadcert','sslsnifilter','ssl_crtlist_advanced','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
 	'sslclientcert-none','sslclientcert-invalid','sslocsp',
@@ -359,7 +359,7 @@ if ($_POST) {
 			}
 		}
 
-		if ($_POST['client_timeout'] !== "" && !is_numeric($_POST['client_timeout'])) {
+		if (!empty($_POST['client_timeout']) && !is_numeric($_POST['client_timeout'])) {
 			$input_errors[] = sprintf(gettext("The value '%s' in field 'Client timeout' is not a number."), htmlspecialchars($_POST['client_timeout']));
 		}
 	}
@@ -625,7 +625,7 @@ if ($pconfig['status'] == 'disable') {
 }
 
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']));
-$section->addInput(new Form_Input('desc', 'Description', 'text', $pconfig['desc']));
+$section->addInput(new Form_Input('descr', 'Description', 'text', $pconfig['descr']));
 
 $section->addInput(new Form_Select(
 	'status',
@@ -662,7 +662,7 @@ $section->addInput(new Form_StaticText(
 	<b>NOTE:</b> You must add a firewall rules permitting access to the listen ports above.<br/>
 
 	If you want this rule to apply to another IP address than the IP address of the interface chosen above,
-	select it here (you need to define <a href="firewall_virtual_ip.php">Virtual IP</a> addresses on the first).
+	select it here (you need to define <a href="/firewall_virtual_ip.php">Virtual IP</a> addresses on the first).
 	Also note that if you are trying to redirect connections on the LAN select the "any" option.
 	In the port to listen to, if you want to specify multiple ports, separate them with a comma (,). EXAMPLE: 80,8000
 	Or to listen on both 80 and 443 create 2 rows in the table where for the 443 you would likely want to check the SSL-offloading checkbox.
@@ -717,7 +717,7 @@ $section->addInput(new Form_StaticText(
 	</table>
 	<br/>
 	acl's with the same name will be 'combined' using OR criteria.<br/>
-	For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
+	For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
 	<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
 	-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
 	-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.
@@ -995,7 +995,13 @@ var port_array  = <?= json_encode(get_alias_list(array("port", "url_ports", "url
 var address_array = <?= json_encode(get_alias_list(array("host", "network", "openvpn", "urltable"))) ?>;
 
 events.push(function() {
-
+	$('form').submit(function(event){
+		// disable all elements that dont have a value to avoid posting them as it could be sending
+		// more than 5000 variables which is the php default max for less than 100 san's which acme does support
+		// p.s. the jquery .find(['value'='']) would not find newly added empty items) so we use .filter(...)
+		$(this).find(':input').filter(function() { return !this.value }).attr("disabled", "disabled")
+		return true;
+	});
 
 <?php
 	// On gui descriptions when a closetype has been selected..

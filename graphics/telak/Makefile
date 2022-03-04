@@ -1,9 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	telak
 PORTVERSION=	0.6
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	http://julien.danjou.info/telak/ \
 		LOCAL/ehaupt
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgcrypt.so:security/libgcrypt \
 		libImlib2.so:graphics/imlib2
 
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	x11
 
 ALL_TARGET=	${PORTNAME}

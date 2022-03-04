@@ -1,5 +1,4 @@
 # Created by: mstowe@chicago.us.mensa.org
-# $FreeBSD$
 
 PORTNAME=	heyu2
 PORTVERSION=	2.10
@@ -11,7 +10,10 @@ DISTNAME=	heyu-${PORTVERSION}
 MAINTAINER=	mstowe@chicago.us.mensa.org
 COMMENT=	Control a CM11A interface from the command line
 
-CONFLICTS=	heyu-[0-9]*
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: newsb
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: newsb
+
+CONFLICTS=	heyu
 
 ALL_TARGET=	all
 

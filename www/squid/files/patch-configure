@@ -1,24 +1,6 @@
---- configure.orig	2019-02-19 03:04:42 UTC
-+++ configure
-@@ -26173,7 +26173,7 @@ else
-   ;;
-   *)
-   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
--for as_dir in $PATH
-+for as_dir in $krb5confpatth
- do
-   IFS=$as_save_IFS
-   test -z "$as_dir" && as_dir=.
-@@ -26321,7 +26321,7 @@ else
-   ;;
-   *)
-   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
--for as_dir in $PATH
-+for as_dir in $krb5confpatth
- do
-   IFS=$as_save_IFS
-   test -z "$as_dir" && as_dir=.
-@@ -34701,7 +34701,7 @@ done
+--- configure.orig	2021-05-10 03:35:34.000000000 -0700
++++ configure	2021-11-29 12:11:20.139764000 -0800
+@@ -35087,7 +35087,7 @@
  ##
  
  BUILD_HELPER="NIS"
@@ -27,7 +9,7 @@
  do :
    as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
  ac_fn_cxx_check_header_compile "$LINENO" "$ac_header" "$as_ac_Header" "
-@@ -34716,8 +34716,10 @@ if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
+@@ -35102,8 +35102,10 @@
  #define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
  _ACEOF
  
@@ -40,7 +22,7 @@
  fi
  
  done
-@@ -35190,7 +35192,7 @@ done
+@@ -35576,7 +35578,7 @@
  
    # unconditionally requires crypt(3), for now
    if test "x$ac_cv_func_crypt" != "x"; then
@@ -49,7 +31,7 @@
  do :
    as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
  ac_fn_cxx_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
-@@ -37582,7 +37584,7 @@ for ac_header in \
+@@ -37982,7 +37984,7 @@
    arpa/nameser.h \
    assert.h \
    bstring.h \
@@ -58,7 +40,7 @@
    ctype.h \
    direct.h \
    errno.h \
-@@ -37790,6 +37792,7 @@ ac_fn_cxx_check_header_compile "$LINENO" "$ac_header" 
+@@ -38190,6 +38192,7 @@
  #include <netinet/ip.h>
  #endif
  #if HAVE_NETINET_IP_COMPAT_H
@@ -66,7 +48,15 @@
  #include <netinet/ip_compat.h>
  #endif
  #if HAVE_NETINET_IP_FIL_H
-@@ -41819,6 +41822,7 @@ if test "x$enable_ipf_transparent" != "xno" ; then
+@@ -39490,6 +39493,7 @@
+ 
+ ac_fn_cxx_check_type "$LINENO" "cpu_set_t" "ac_cv_type_cpu_set_t" "
+ #if HAVE_SCHED_H
++#define _WITH_CPU_SET_T
+ #include <sched.h>
+ #endif
+ 
+@@ -42237,6 +42241,7 @@
  #     include <sys/ioccom.h>
  #     include <netinet/in.h>
  
@@ -74,7 +64,7 @@
  #     include <netinet/ip_compat.h>
  #     include <netinet/ip_fil.h>
  #     include <netinet/ip_nat.h>
-@@ -41849,6 +41853,7 @@ else
+@@ -42267,6 +42272,7 @@
  #       include <sys/ioccom.h>
  #       include <netinet/in.h>
  #undef minor_t
@@ -82,7 +72,7 @@
  #       include <netinet/ip_compat.h>
  #       include <netinet/ip_fil.h>
  #       include <netinet/ip_nat.h>
-@@ -41893,6 +41898,7 @@ _ACEOF
+@@ -42311,6 +42317,7 @@
  	ip_fil_compat.h \
  	ip_fil.h \
  	ip_nat.h \
@@ -90,7 +80,7 @@
  	netinet/ip_compat.h \
  	netinet/ip_fil_compat.h \
  	netinet/ip_fil.h \
-@@ -41922,6 +41928,7 @@ ac_fn_cxx_check_header_compile "$LINENO" "$ac_header" 
+@@ -42340,6 +42347,7 @@
  #if HAVE_IP_COMPAT_H
  #include <ip_compat.h>
  #elif HAVE_NETINET_IP_COMPAT_H
@@ -98,13 +88,3 @@
  #include <netinet/ip_compat.h>
  #endif
  #if HAVE_IP_FIL_H
-@@ -41985,8 +41992,7 @@ _ACEOF
- 
- 
- fi
--ac_fn_cxx_check_member "$LINENO" "struct natlookup" "nl_realipaddr.in6"
--   "ac_cv_member_struct_natlookup_nl_realipaddr_in6___" "
-+ac_fn_cxx_check_member "$LINENO" "struct natlookup" "nl_realipaddr.in6" "ac_cv_member_struct_natlookup_nl_realipaddr_in6___" "
- #if USE_SOLARIS_IPFILTER_MINOR_T_HACK
- #define minor_t fubar
- #endif

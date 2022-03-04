@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Params-Check
 PORTVERSION=	0.38
@@ -16,6 +15,8 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 PORTDOCS=	CHANGES
 

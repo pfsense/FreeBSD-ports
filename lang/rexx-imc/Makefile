@@ -1,5 +1,4 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rexx-imc
 PORTVERSION=	1.76
@@ -11,10 +10,10 @@ MASTER_SITES=	http://www.cs.ox.ac.uk/people/ian.collier/distribution/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Procedural programming language designed by IBM's UK Laboratories
 
-CONFLICTS=	rexx-regina-* oorexx-[0-9]*
-
 BROKEN_armv6=		fails to link: /nxb-bin/usr/bin/ld: hidden symbol __aeabi_uidivmod in libgcc.a is referenced by DSO
 BROKEN_armv7=		fails to link: /nxb-bin/usr/bin/ld: hidden symbol __aeabi_uidivmod in libgcc.a is referenced by DSO
+
+CONFLICTS=	rexx-regina-* oorexx
 
 HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	Make

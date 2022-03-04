@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	luatex
 PORTVERSION=	0.80.0
-PORTREVISION=	10
+PORTREVISION=	24
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
 PKGNAMEPREFIX=	tex-
@@ -12,14 +10,14 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	Extended version of pdfTeX using Lua
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libmpfr.so:math/mpfr \
 		libzzip.so:devel/zziplib
 
-USES=		pkgconfig tar:xz libtool
+USES=		gnome libtool pkgconfig tar:xz xorg
 USE_TEX=	kpathsea web2c texmf formats texlua texluajit fmtutil
 USE_XORG=	pixman
 USE_GNOME=	cairo
@@ -74,6 +72,8 @@ CONFIGURE_ARGS+=--with-system-$L \
 		--with-$L-include=${LOCALBASE}/include \
 		--with-$L-libdir=${LOCALBASE}/lib
 .endfor
+CONFIGURE_ARGS+=CC="${CC}" \
+		CXX="${CXX}"
 CPPFLAGS+=	-I${LOCALBASE}/include
 MAKE_JOBS_UNSAFE=	yes
 TEX_FORMATS=	luatex

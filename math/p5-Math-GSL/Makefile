@@ -1,13 +1,13 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Math-GSL
-PORTVERSION=	0.40
+PORTVERSION=	0.42
+PORTREVISION=	1
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	bokutin@bokut.in
 COMMENT=	Perl interface to GNU Scientific Library
 
 LICENSE=	ART10 GPLv1+

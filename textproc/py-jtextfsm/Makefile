@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jtextfsm
 DISTVERSION=	0.3.1
 CATEGORIES=	textproc python
@@ -11,7 +9,7 @@ COMMENT=	Smaller fork of py-textfsm, a parser for semi-structured text
 
 LICENSE=	APACHE20
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

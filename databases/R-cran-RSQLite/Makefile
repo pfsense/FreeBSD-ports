@@ -1,9 +1,8 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	RSQLite
 PORTVERSION=	1.0.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	databases
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

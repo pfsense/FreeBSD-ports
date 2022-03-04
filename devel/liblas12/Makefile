@@ -1,15 +1,16 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	liblas12
 PORTVERSION=	1.2.1
 PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	rhurlin@gwdg.de
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Library For Reading And Writing LAS-Format Data
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD3CLAUSE BSL MIT
+LICENSE_COMB=	multi
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		autoreconf dos2unix gmake libtool
 GNU_CONFIGURE=	yes

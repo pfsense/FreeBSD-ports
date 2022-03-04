@@ -1,10 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	cyrus-sasl
 PORTVERSION=	2.1.27
-CATEGORIES=	security ipv6
-MASTER_SITES=	https://www.cyrusimap.org/releases/ \
-		ftp://ftp.cyrusimap.org/cyrus-sasl/
+CATEGORIES=	security
+MASTER_SITES=	https://github.com/cyrusimap/cyrus-sasl/releases/download/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	ume@FreeBSD.org
 
@@ -24,7 +21,8 @@ CONFIGURE_ARGS+=--sysconfdir=${PREFIX}/etc \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--includedir=${PREFIX}/include \
 		--enable-static \
-		--with-rc4=openssl
+		--with-rc4=openssl \
+		--with-sphinx-build=no
 CONFIGURE_ARGS+=--disable-anon \
 		--disable-cram \
 		--disable-digest \
@@ -38,6 +36,7 @@ CONFIGURE_ARGS+=--disable-anon \
 		--disable-srp \
 		--with-dblib=none
 CONFIGURE_ARGS+=${CYRUS_CONFIGURE_ARGS}
+CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 MAKE_ENV+=	INSTALL_STRIP_FLAG=${STRIP}
 
 DOCSDIR=	${PREFIX}/share/doc/cyrus-sasl2
@@ -84,8 +83,6 @@ CONFIGURE_ARGS+=--with-openssl=${OPENSSLBASE}
 CPPFLAGS+=	-fPIC
 .endif
 
-PORTDOCS=	*
-
 .if ${CYRUS_BUILD_TARGET} == "cyrus-sasl"
 
 .if ${PORT_OPTIONS:MBDB1}
@@ -105,6 +102,7 @@ SUB_LIST=	CYRUS_USER=${CYRUS_USER} CYRUS_GROUP=${CYRUS_GROUP} \
 
 PLIST_SUB+=	PREFIX=${PREFIX} \
 		SASLDB=${SASLDB}
+PORTDOCS=	*
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -136,6 +134,7 @@ RUNPATH=	"@comment "
 
 PLIST_SUB+=	PREFIX=${PREFIX} \
 		RUNPATH=${RUNPATH}
+PORTDOCS=	*
 
 SUB_LIST+=	SASLAUTHD_RUNPATH=${SASLAUTHD_RUNPATH}
 

@@ -1,3 +1,3 @@
-TIMESTAMP = 1551810936
-SHA256 (KDE/applications/18.12.3/kdenetwork-filesharing-18.12.3.tar.xz) = 296c71526de0e51b4385962c76c2870cfe344b9dafdd2f5f2fba81801350d503
-SIZE (KDE/applications/18.12.3/kdenetwork-filesharing-18.12.3.tar.xz) = 312892
+TIMESTAMP = 1636032663
+SHA256 (KDE/release-service/21.08.3/kdenetwork-filesharing-21.08.3.tar.xz) = a959d611e5538b63f867d9b781e6e4279d0d2d3868eae3a8d263f51481af83a5
+SIZE (KDE/release-service/21.08.3/kdenetwork-filesharing-21.08.3.tar.xz) = 378680

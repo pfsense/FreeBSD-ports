@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kernlab
-DISTVERSION=	0.9-27
+DISTVERSION=	0.9-29
 PORTREVISION=	1
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}

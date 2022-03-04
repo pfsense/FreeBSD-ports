@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	symcxx
-DISTVERSION=	0.1.9
-PORTREVISION=	2
+DISTVERSION=	0.1.10
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,13 +12,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		fortran python # fortran because otherwise "import numpy" fails with wrong libgcc_s.so message
+USES=		compiler:c++11-lang fortran python:3.6+ # fortran because otherwise "import numpy" fails with wrong libgcc_s.so message
 USE_PYTHON=	distutils autoplist
 
 post-patch:
 	@truncate -s 0 ${WRKSRC}/README.rst # workaround for https://github.com/bjodah/symcxx/issues/19
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/symcxx/_symcxx.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/symcxx/_symcxx*.so
 
 .include <bsd.port.mk>

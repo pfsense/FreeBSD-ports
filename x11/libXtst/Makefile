@@ -1,5 +1,4 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libXtst
 PORTVERSION=	1.2.3
@@ -11,9 +10,8 @@ COMMENT=	X Test extension
 
 LICENSE=	MIT
 
-XORG_CAT=	lib
+USES=		cpe xorg xorg-cat:lib
 USE_XORG=	x11 xext xi xorgproto
-USES+=	cpe
 CPE_PRODUCT=	libxtst
 CPE_VENDOR=	x
 

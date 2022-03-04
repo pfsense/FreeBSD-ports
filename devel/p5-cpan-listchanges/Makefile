@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cpan-listchanges
 PORTVERSION=	0.06
 PORTREVISION=	3
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MIYAGAWA
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to list changes for CPAN modules
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

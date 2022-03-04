@@ -1,5 +1,4 @@
 # Created by: Mosconi <mosconi.rmg@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Crypt-OpenSSL-CA
 PORTVERSION=	0.24
@@ -27,7 +26,7 @@ RUN_DEPENDS=	p5-Convert-ASN1>=0.02:converters/p5-Convert-ASN1 \
 TEST_DEPENDS=	p5-Test-Group>=0:devel/p5-Test-Group \
 		p5-Test-Taint>=0:devel/p5-Test-Taint
 
-BROKEN_SSL=	openssl111
+BROKEN_SSL=	openssl
 
 USES=		perl5 ssl
 USE_PERL5=	modbuild
@@ -35,8 +34,8 @@ CONFIGURE_ARGS=	--openssl-cflags=-L${OPENSSLINC} --openssl-ldflags="-I${OPENSSLL
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
-BROKEN=        Does not support OpenSSL 1.1
+.if ${OPSYS} == FreeBSD && (${SSL_DEFAULT} == base || ${SSL_DEFAULT} == openssl)
+BROKEN=		Does not support OpenSSL 1.1
 .endif
 
 post-install:

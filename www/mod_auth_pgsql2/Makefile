@@ -1,9 +1,8 @@
 # Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
 
 PORTNAME=	mod_auth_pgsql
 PORTVERSION=	2.0.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://www.giuseppetanzilli.it/mod_auth_pgsql2/dist/
 PKGNAMESUFFIX=	2

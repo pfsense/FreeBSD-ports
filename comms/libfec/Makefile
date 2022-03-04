@@ -1,9 +1,8 @@
 # Created by: db
-# $FreeBSD$
 
 PORTNAME=	libfec
 PORTVERSION=	3.0.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	comms astro hamradio math
 MASTER_SITES=	http://www.ka9q.net/code/fec/ \
 		LOCAL/db
@@ -13,6 +12,8 @@ MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Several forward error correction (FEC) decoders
 
 LICENSE=	LGPL21
+
+BUILD_DEPENDS=	as:devel/binutils
 
 MAKEFILE=	makefile
 

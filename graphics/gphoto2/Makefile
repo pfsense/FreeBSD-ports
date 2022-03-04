@@ -1,12 +1,11 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	gphoto2
-PORTVERSION=	2.5.15
+PORTVERSION=	2.5.26
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gphoto/gphoto/${PORTVERSION}
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Command-line frontend to libgphoto2
 
 LICENSE=	GPLv2+
@@ -17,6 +16,7 @@ LIB_DEPENDS=	libexif.so:graphics/libexif \
 		libpopt.so:devel/popt
 
 USES=		gmake jpeg pkgconfig tar:bzip2
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	POPT_CFLAGS="$$(pkg-config --cflags popt)" \
 		POPT_LIBS="$$(pkg-config --libs popt)"

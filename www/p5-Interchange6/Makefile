@@ -1,5 +1,4 @@
 # Created by: <hvo.pm@xs4all.nl>
-# $FreeBSD$
 
 PORTNAME=	Interchange6
 PORTVERSION=	0.120
@@ -23,7 +22,6 @@ RUN_DEPENDS=	p5-Interchange6-Schema>=0:databases/p5-Interchange6-Schema \
 		p5-MooX-HandlesVia>=0:devel/p5-MooX-HandlesVia \
 		p5-MooseX-CoverableModifiers>=0:devel/p5-MooseX-CoverableModifiers \
 		p5-aliased>=0:devel/p5-aliased
-
 
 NO_ARCH=	yes
 USES=		perl5

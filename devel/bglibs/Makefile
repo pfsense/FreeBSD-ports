@@ -1,15 +1,14 @@
 # Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
 
 PORTNAME=	bglibs
-PORTVERSION=	2.03
-PORTEPOCH=	1
+PORTVERSION=	2.04
 PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://untroubled.org/${PORTNAME}/archive/ \
 		http://untroubled.org/${PORTNAME}/
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	One stop library package by Bruce Guenter
 
 LICENSE=	LGPL21+

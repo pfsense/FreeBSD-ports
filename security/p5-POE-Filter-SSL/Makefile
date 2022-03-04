@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	POE-Filter-SSL
 PORTVERSION=	0.41
 CATEGORIES=	security perl5

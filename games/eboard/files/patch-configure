@@ -1,7 +1,16 @@
---- configure.orig	2008-02-22 16:51:22.000000000 +0100
-+++ configure	2008-12-29 11:25:54.000000000 +0100
-@@ -354,7 +354,7 @@
- 	
+--- configure.orig	2021-05-06 14:10:24 UTC
++++ configure
+@@ -106,7 +106,7 @@ sub run_cmd {
+ }
+ 
+ sub cplusplus_lang {
+-    my @compilers = ( $cxx, 'g++', 'c++' );
++    my @compilers = ( $cxx, 'g++10', 'c++' );
+     my $x;
+     my $program = <<EOF;
+ #include <list>
+@@ -357,7 +357,7 @@ sub header_check {
+ 
  	log_file("test.cc");
  
 -	if (run_cmd($cxx,@cxxflags,"-c","test.cc","-o","xxtest.o") != 0) {
@@ -9,9 +18,9 @@
  	    print ": no\n";
  	    $y = header_def($x);
  	    print CONFIGH "#undef $y\n";
-@@ -512,17 +512,9 @@
+@@ -511,17 +511,9 @@ if (!header_check("stdio.h","stdlib.h","string.h","uni
  #optional headers
- header_check("strings.h","sys/soundcard.h","sys/audioio.h","linux/joystick.h");
+ header_check("strings.h");
  
 -$t1=macro_check("netinet/in.h","IPPROTO_TCP","HAVE_IPPROTO_TCP_ON_IN_H");
 -$t2=macro_check("netinet/in.h","TCP_NODELAY","HAVE_TCP_NODELAY_ON_IN_H");
@@ -28,7 +37,7 @@
      cppdef("USE_SOCK_OPTS");
      if ($t1!=0 && $t3!=0) {
  	cppundef("NEED_TCP_H");
-@@ -536,10 +528,10 @@
+@@ -535,10 +527,10 @@ if ($t2 != 0) {
  	print "netinet/tcp.h not required, SOL_TCP present.\n";
      }
  } else {

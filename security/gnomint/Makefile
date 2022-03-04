@@ -1,9 +1,8 @@
 # Created by: Kevin Zheng <kevinz5000@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gnomint
 PORTVERSION=	1.2.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	security
 MASTER_SITES=	SF
 
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libsqlite3.so:databases/sqlite3
 
 GNU_CONFIGURE=	yes
-USES=		gettext-tools gmake perl5 pkgconfig readline
+USES=		gettext-tools gmake gnome perl5 pkgconfig readline
 USE_GNOME=	gconf2 gdkpixbuf2 glib20 gtk20 intltool
 
 CPPFLAGS+=	-I${LOCALBASE}/include

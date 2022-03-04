@@ -1,11 +1,10 @@
 # Created by: The 244th namelessness at 2ch.net
-# $FreeBSD$
 
 PORTNAME=	mplus
 PORTVERSION=	2.2.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	japanese x11-fonts
-MASTER_SITES=	OSDN/${PORTNAME}-fonts/5030/
+MASTER_SITES=	OSDN/${PORTNAME}-fonts
 PKGNAMEPREFIX=	ja-font-
 PKGNAMESUFFIX=	-bitmap
 DISTNAME=	${PORTNAME}_bitmap_fonts-2.2.4
@@ -13,12 +12,14 @@ DISTNAME=	${PORTNAME}_bitmap_fonts-2.2.4
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	M+ Bitmap fonts
 
+LICENSE=	PD
+
 BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf
 
 USES=		fonts
+FONTPATHSPEC=	${PORTNAME}${PKGNAMESUFFIX}:unscaled:pri=60
 NO_BUILD=	yes
 NO_ARCH=	yes
-SUB_FILES=	pkg-message
 FONTSDIR=	${PREFIX}/share/fonts/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 PORTDOCS=	INSTALL_E LICENSE_E README_E \

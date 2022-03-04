@@ -1,5 +1,4 @@
 # Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
 
 PORTNAME=	libpbl
 PORTVERSION=	1.04.04
@@ -14,10 +13,6 @@ LICENSE=	LGPL21+
 
 MAKEFILE=	makefile
 TEST_TARGET=	test
-
-BROKEN_armv6=	Fails to build: cannot compile pblPerform.c
-BROKEN_armv7=	Fails to build: cannot compile pblPerform.c
-BROKEN_mips=	Fails to build: cannot compile pblPerform.c
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/src
 

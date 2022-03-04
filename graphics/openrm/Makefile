@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
 
 PORTNAME=	openrm
 PORTVERSION=	1.6.0.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-devel/${PORTVERSION:R} \
 		SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION:R}:demo
@@ -16,7 +15,7 @@ COMMENT=	Development environment used to build 2D/3D/stereo graphics
 LICENSE=	LGPL20+  # from sources, though LICENSE file is LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.html
 
-USES=		jpeg perl5 shebangfix
+USES=		gl jpeg perl5 shebangfix xorg
 SHEBANG_FILES=	doc/*.pl
 USE_GL=		glu
 USE_XORG=	xmu

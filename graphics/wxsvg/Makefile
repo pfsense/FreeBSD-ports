@@ -1,8 +1,7 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wxsvg
-PORTVERSION=	1.5.16
+PORTVERSION=	1.5.22
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 

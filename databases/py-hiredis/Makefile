@@ -1,5 +1,4 @@
 # Created by: Denis Generalov <gd@rambler-co.ru>
-# $FreeBSD$
 
 PORTNAME=	hiredis
 PORTVERSION=	0.2.0
@@ -14,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libhiredis.so:databases/hiredis
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 post-patch:

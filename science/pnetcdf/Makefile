@@ -1,9 +1,8 @@
 # Created by: Chao Shin <quakelee@cn.FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pnetcdf
 PORTVERSION=	1.8.1
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	science parallel
 MASTER_SITES=	http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/ \
 		LOCAL/sunpoet
@@ -12,33 +11,32 @@ DISTNAME=	parallel-netcdf-${PORTVERSION}
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library providing high-performance I/O
 
-OPTIONS_DEFINE=	DOCS
-OPTIONS_SINGLE=	MPI
-OPTIONS_SINGLE_MPI=	OPENMPI OPENMPI2 OPENMPI3 MPICH
-OPTIONS_DEFAULT=OPENMPI3
-OPENMPI_DESC=	Parallel processing support via Open MPI 1.x
-OPENMPI2_DESC=	Parallel processing support via Open MPI 2.x
-OPENMPI3_DESC=	Parallel processing support via Open MPI 3.x
-
-CONFLICTS_INSTALL=	hdf-4.*
+USES=		fortran gmake pathfix perl5 tar:bzip2
+USE_PERL5=	build
 
 CFLAGS+=	-fPIC
-CONFIGURE_ARGS=	ac_cv_fc_compiler_nag=no
+CONFIGURE_ARGS=	--with-mpi=${MPI_HOME} ac_cv_fc_compiler_nag=no
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
-USE_PERL5=	build
-USES=		fortran gmake pathfix perl5 tar:bzip2
 
 PORTDOCS=	COPYRIGHT INSTALL README
 
-MPICH_CONFIGURE_ON=	--with-mpi=${LOCALBASE}
-MPICH_LIB_DEPENDS=	libmpich.so:net/mpich
-OPENMPI_CONFIGURE_ON=	--with-mpi=${LOCALBASE}/mpi/openmpi
-OPENMPI_LIB_DEPENDS=	libmpi.so:net/openmpi
-OPENMPI2_CONFIGURE_ON=	--with-mpi=${LOCALBASE}/mpi/openmpi2
-OPENMPI2_LIB_DEPENDS=	libmpi.so:net/openmpi2
-OPENMPI3_CONFIGURE_ON=	--with-mpi=${LOCALBASE}/mpi/openmpi3
-OPENMPI3_LIB_DEPENDS=	libmpi.so:net/openmpi3
+CONFLICTS_INSTALL=	hdf-4.*
+
+OPTIONS_DEFINE=	DOCS
+OPTIONS_SINGLE=	MPI
+OPTIONS_SINGLE_MPI=	OPENMPI MPICH
+OPTIONS_DEFAULT=OPENMPI
+
+MPICH_USES=	mpi:mpich
+OPENMPI_USES=	mpi:openmpi
+
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Type mismatch between actual argument at (1) and actual argument at (2) (INTEGER(8)/CHARACTER(*)).
+FCFLAGS+=	-fallow-argument-mismatch
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/$$(INSTALL.*$$(PREFIX)/ s|$$(PREFIX)|$$(DESTDIR)&|' ${WRKSRC}/Makefile.in
@@ -50,4 +48,4 @@ post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

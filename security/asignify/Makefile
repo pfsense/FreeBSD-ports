@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	asignify
 PORTVERSION=	1.0
 CATEGORIES=	security

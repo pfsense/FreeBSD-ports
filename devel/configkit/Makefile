@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	configkit
 PORTVERSION=	0.4.20080902
 CATEGORIES=	devel

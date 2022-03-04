@@ -1,5 +1,4 @@
 # Created by: Pete Fritchman <petef@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	synaesthesia
 PORTVERSION=	2.4
@@ -13,7 +12,7 @@ COMMENT=	Real-time graphical music representation program
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		alias gmake
+USES=		alias cpe gmake sdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-sdl-prefix=${LOCALBASE}
 USE_SDL=	sdl

@@ -1,6 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	xephyr
+PORTREVISION=	0
 
 COMMENT=	X server from X.Org based on kdrive
 
@@ -16,8 +15,6 @@ MASTERDIR=	${.CURDIR}/../xorg-server
 DESCR=		${.CURDIR}/pkg-descr
 
 SLAVE_PORT=	yes
-OPTIONS_EXCLUDE=DEVD HAL SUID
-
 USE_XORG=	x11 xcb
 
 CONFIGURE_ARGS+=--enable-xephyr --disable-dmx --disable-xnest --disable-xvfb \

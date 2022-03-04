@@ -1,5 +1,4 @@
 # Created by: asami
-# $FreeBSD$
 
 PORTNAME=	xdu
 PORTVERSION=	3.0
@@ -11,9 +10,8 @@ COMMENT=	Graphically display output of du
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	vlasovskikh
-GH_PROJECT=	xdu
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 PLIST_FILES=	bin/xdu lib/X11/app-defaults/XDu man/man1/xdu.1.gz
 

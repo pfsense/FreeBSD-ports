@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	octopus
-DISTVERSION=	8.3
+DISTVERSION=	10.5
 PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=	http://www.tddft.org/programs/${PORTNAME}/download/${DISTVERSION}/
+MASTER_SITES=	https://octopus-code.org/download/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Scientific program aimed at the ab initio virtual experimentation
@@ -21,28 +19,36 @@ LIB_DEPENDS=	libarpack.so:math/arpack-ng \
 		libgsl.so:math/gsl \
 		liblapack.so:math/lapack \
 		libnlopt.so:math/nlopt \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libsymspg.so:science/spglib \
 		libtiff.so:graphics/tiff \
+		libvdwxcfort.so:science/libvdwxc \
 		libwebp.so:graphics/webp \
-		libxc.so:science/libxc
+		libxc.so:science/libxc \
+		libyaml.so:textproc/libyaml
 
-USES=		compiler:c++11-lang fortran gmake jpeg localbase:ldflags
+USES=		compiler:c++11-lang fortran gmake jpeg localbase:ldflags perl5 python shebangfix
+SHEBANG_FILES=	src/fdep/fortran_dependencies.pl testsuite/performance/create_combinations.py
 GNU_CONFIGURE=	yes
 CONFIGURE_SHELL=	${PREFIX}/bin/bash
 USE_CXXSTD=	c++11
 
+LDFLAGS+=	-lsymspg
 FCFLAGS+=	-I${LOCALBASE}/include -ffree-line-length-none
 
 OPTIONS_DEFINE=			OPENMP
 OPTIONS_DEFAULT=		OPENMP
 OPENMP_CONFIGURE_ENABLE=	openmp
 
-post-extract: # unbundle spglib, see https://gitlab.com/octopus-code/octopus/issues/124
-	@${RM} -r ${WRKSRC}/external_libs/spglib-*
-	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} 's|$$(top_builddir)/external_libs/spglib-1\.9\.9/src/libsymspg\.a|${LOCALBASE}/lib/libsymspg.so|'
+.include <bsd.port.pre.mk>
+
+# workaround for:
+# Error: BOZ literal constant at (1) is neither a data-stmt-constant nor an actual argument to INT, REAL, DBLE, or CMPLX intrinsic function [see '-fno-allow-invalid-boz']
+.if ${GCC_DEFAULT} >= 10
+FCFLAGS+=	-fallow-argument-mismatch -fallow-invalid-boz
+.endif
 
 post-stage: # https://gitlab.com/octopus-code/octopus/issues/108
 	@${RM} ${STAGEDIR}${PREFIX}/include/yaml.h
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

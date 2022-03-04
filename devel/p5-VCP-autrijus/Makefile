@@ -1,5 +1,4 @@
 # Created by: autrijus@autrijus.org
-# $FreeBSD$
 
 PORTNAME=	VCP
 PORTVERSION=	0.9.20050110
@@ -26,6 +25,8 @@ RUN_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 post-patch:
 	${FIND} ${WRKSRC} -name "*.orig" -a -exec ${RM} {} \;

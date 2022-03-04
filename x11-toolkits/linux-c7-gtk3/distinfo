@@ -1,0 +1,11 @@
+TIMESTAMP = 1614798127
+SHA256 (centos/gtk3-3.22.30-6.el7.i686.rpm) = 73c486ff61695559ce4daae66d613f19b44873db66b308ac0f3d693c35e6bc5c
+SIZE (centos/gtk3-3.22.30-6.el7.i686.rpm) = 4557960
+SHA256 (centos/gtk3-3.22.30-6.el7.x86_64.rpm) = 677cbb3bd9f4a461b86460be4a5a9ef23ab126d06907725c3ffe789009559936
+SIZE (centos/gtk3-3.22.30-6.el7.x86_64.rpm) = 4563952
+SHA256 (centos/gtk3-immodules-3.22.30-6.el7.i686.rpm) = bbee01b6f77f73dd8fa120902effab8fc8cc41b5df940a9c471d8fc625912281
+SIZE (centos/gtk3-immodules-3.22.30-6.el7.i686.rpm) = 30928
+SHA256 (centos/gtk3-immodules-3.22.30-6.el7.x86_64.rpm) = a20718245cbc3ce096de1da99acc9aadce7082881bcdc0b1576352b2959e8db8
+SIZE (centos/gtk3-immodules-3.22.30-6.el7.x86_64.rpm) = 30188
+SHA256 (centos/gtk3-3.22.30-6.el7.src.rpm) = bb8a08186802a1bdfb0d53f4f20002252e1a79b26d60e730db0ca49a41ed5c6d
+SIZE (centos/gtk3-3.22.30-6.el7.src.rpm) = 19013474

@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	debhelper
-PORTVERSION=	12.1.1
+PORTVERSION=	13.5.2
 CATEGORIES=	sysutils
 MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -13,14 +12,14 @@ COMMENT=	Helper programs for debian/rules
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL
 
-PORTSCOUT=	limit:^[0-9\.]*$$
-
 USES=		gmake perl5 shebangfix tar:xz
 
-MAKE_ARGS=	PREFIX=${PREFIX} SITE_PERL=${PREFIX}/${SITE_PERL_REL}
+MAKE_ARGS=	PREFIX=${PREFIX} SITE_PERL=${PREFIX}/${SITE_PERL_REL} VERSION=${PORTVERSION}
 NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 SHEBANG_FILES=	dh*
 

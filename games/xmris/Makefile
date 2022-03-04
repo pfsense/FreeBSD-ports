@@ -1,5 +1,4 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	xmris
 PORTVERSION=	4.04
@@ -11,7 +10,7 @@ DISTNAME=	${PORTNAME}.${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Version of the Mr Do video arcade game for X11
 
-USES=		imake tar:tgz
+USES=		imake tar:tgz xorg
 USE_XORG=	x11 xext xaw xmu xt sm ice
 ALL_TARGET=	xmris xmred Xmris.ad
 

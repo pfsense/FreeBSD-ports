@@ -3,10 +3,10 @@
  * snort_interfaces_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,13 +35,13 @@ if ($_POST['save'])
 	$pconfig = $_POST;
 else {
 	$pconfig['snortdownload'] = $config['installedpackages']['snortglobal']['snortdownload'] == "on" ? 'on' : 'off';
-	$pconfig['oinkmastercode'] = $config['installedpackages']['snortglobal']['oinkmastercode'];
-	$pconfig['etpro_code'] = $config['installedpackages']['snortglobal']['etpro_code'];
+	$pconfig['oinkmastercode'] = htmlentities($config['installedpackages']['snortglobal']['oinkmastercode']);
+	$pconfig['etpro_code'] = htmlentities($config['installedpackages']['snortglobal']['etpro_code']);
 	$pconfig['emergingthreats'] = $config['installedpackages']['snortglobal']['emergingthreats'] == "on" ? 'on' : 'off';
 	$pconfig['emergingthreats_pro'] = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == "on" ? 'on' : 'off';
 	$pconfig['rm_blocked'] = $config['installedpackages']['snortglobal']['rm_blocked'];
 	$pconfig['autorulesupdate7'] = $config['installedpackages']['snortglobal']['autorulesupdate7'];
-	$pconfig['rule_update_starttime'] = $config['installedpackages']['snortglobal']['rule_update_starttime'];
+	$pconfig['rule_update_starttime'] = htmlentities($config['installedpackages']['snortglobal']['rule_update_starttime']);
 	$pconfig['forcekeepsettings'] = $config['installedpackages']['snortglobal']['forcekeepsettings'] == "on" ? 'on' : 'off';
 	$pconfig['snortcommunityrules'] = $config['installedpackages']['snortglobal']['snortcommunityrules'] == "on" ? 'on' : 'off';
 	$pconfig['clearblocks'] = $config['installedpackages']['snortglobal']['clearblocks'] == "on" ? 'on' : 'off';
@@ -50,11 +50,12 @@ else {
 	$pconfig['openappid_rules_detectors'] = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == "on" ? 'on' : 'off';
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 	$pconfig['curl_no_verify_ssl_peer'] = $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? 'on' : 'off';
+	$pconfig['enable_feodo_botnet_c2_rules'] = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == "on" ? 'on' : 'off';
 }
 
 /* Set sensible values for any empty default params */
 if (!isset($pconfig['rule_update_starttime']))
-	$pconfig['rule_update_starttime'] = '00:05';
+	$pconfig['rule_update_starttime'] = '00:' . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 if (!isset($config['installedpackages']['snortglobal']['forcekeepsettings']))
 	$pconfig['forcekeepsettings'] = 'on';
 if (!isset($config['installedpackages']['snortglobal']['clearblocks']))
@@ -91,6 +92,7 @@ if (!$input_errors) {
 		$config['installedpackages']['snortglobal']['snortcommunityrules'] = $_POST['snortcommunityrules'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['emergingthreats'] = $_POST['emergingthreats'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['emergingthreats_pro'] = $_POST['emergingthreats_pro'] ? 'on' : 'off';
+		$config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] = $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['clearblocks'] = $_POST['clearblocks'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['verbose_logging'] = $_POST['verbose_logging'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['openappid_detectors'] = $_POST['openappid_detectors'] ? 'on' : 'off';
@@ -115,6 +117,8 @@ if (!$input_errors) {
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
 		if ($config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'off')
 			$disabled_rules[] = OPENAPPID_FILE_PREFIX;
+		if ($config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == 'off')
+			$disabled_rules[] = "feodotracker";
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
@@ -141,8 +145,8 @@ if (!$input_errors) {
 			snort_remove_dead_rules();
 		}
 
-		$config['installedpackages']['snortglobal']['oinkmastercode'] = $_POST['oinkmastercode'];
-		$config['installedpackages']['snortglobal']['etpro_code'] = $_POST['etpro_code'];
+		$config['installedpackages']['snortglobal']['oinkmastercode'] = trim(html_entity_decode($_POST['oinkmastercode']));
+		$config['installedpackages']['snortglobal']['etpro_code'] = trim(html_entity_decode($_POST['etpro_code']));
 
 		$config['installedpackages']['snortglobal']['rm_blocked'] = $_POST['rm_blocked'];
 		$config['installedpackages']['snortglobal']['autorulesupdate7'] = $_POST['autorulesupdate7'];
@@ -154,7 +158,7 @@ if (!$input_errors) {
 				$tmp = str_pad($_POST['rule_update_starttime'], 4, "0", STR_PAD_LEFT);
 				$_POST['rule_update_starttime'] = substr($tmp, 0, 2) . ":" . substr($tmp, -2);
 			}
-			$config['installedpackages']['snortglobal']['rule_update_starttime'] = str_pad($_POST['rule_update_starttime'], 4, "0", STR_PAD_LEFT);
+			$config['installedpackages']['snortglobal']['rule_update_starttime'] = str_pad(html_entity_decode($_POST['rule_update_starttime']), 4, "0", STR_PAD_LEFT);
 		}
 
 		$config['installedpackages']['snortglobal']['forcekeepsettings'] = $_POST['forcekeepsettings'] ? 'on' : 'off';
@@ -177,7 +181,8 @@ if (!$input_errors) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Global Settings"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Global Settings");
 include("head.inc");
 
 if ($input_errors)
@@ -292,6 +297,21 @@ SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '</a>.');
 $section->add($group);
 $form->add($section);
 
+$section = new Form_Section('FEODO Tracker Botnet C2 IP Rules');
+$section->addInput(new Form_Checkbox(
+	'enable_feodo_botnet_c2_rules',
+	'Enable FEODO Tracker Botnet C2 IP Rules',
+	'Click to enable download of FEODO Tracker Botnet C2 IP rules',
+	$pconfig['enable_feodo_botnet_c2_rules'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_StaticText(
+	null,
+	'Feodo Tracker tracks certain families that are related to, or that evolved from, Feodo. Originally, Feodo was an ebanking Trojan used by cybercriminals to commit ebanking fraud. Since 2010, various malware families evolved from Feodo, such as Cridex, Dridex, Geodo, Heodo and Emotet.'
+));
+
+$form->add($section);
+
 $section = new Form_Section('Rules Update Settings');
 $section->addInput(new Form_Select(
 	'autorulesupdate7',
@@ -305,10 +325,11 @@ $section->addInput(new Form_Input(
 	'Update Start Time',
 	'text',
 	$pconfig['rule_update_starttime']
-))->setHelp('Enter the rule update start time in 24-hour format (HH:MM).  Default is 00:05.  ' . 
+))->setHelp('Enter the rule update start time in 24-hour format (HH:MM).  Default is 00 hours with a randomly chosen minutes value.  ' . 
 			'Rules will update at the interval chosen above starting at the time specified here. ' . 
-			'For example, using the default start time of 00:05 and choosing 12 Hours for the interval, ' . 
-			'the rules will update at 00:05 and 12:05 each day.');
+			'For example, using a start time of 00:08 and choosing 12 Hours for the interval, ' . 
+			'the rules will update at 00:08 and 12:08 each day. The randomized minutes value should ' . 
+			'be retained to minimize the impact to the rules update site from large numbers of simultaneous requests.');
 $section->addInput(new Form_Checkbox(
 	'hide_deprecated_rules',
 	'Hide Deprecated Rules Categories',

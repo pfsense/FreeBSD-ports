@@ -1,9 +1,8 @@
 # Created by: Michael Joyner <mjoyner@hq.dyns.cx>
-# $FreeBSD$
 
 PORTNAME=	yptransitd
 PORTVERSION=	0.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	SF
 
@@ -28,7 +27,7 @@ post-patch:
 		${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e 's,=gcc,=@CC@,' \
 		${WRKSRC}/lib/Makefile.in
-	@${REINPLACE_CMD} -e 's,-O2 -g,@CFLAGS@, ; \
+	@${REINPLACE_CMD} -e 's,-O2 -g,@CFLAGS@ -fcommon, ; \
 		 s, $${BINDIR}, $${DESTDIR}$${BINDIR},' \
 		${WRKSRC}/src/Makefile.in
 	@${REINPLACE_CMD} -E 's,^([[:blank:]]+)\([^\)]+\) ,\1,' \

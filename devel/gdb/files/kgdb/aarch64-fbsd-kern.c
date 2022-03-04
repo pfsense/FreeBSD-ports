@@ -22,8 +22,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * $FreeBSD$
  */
 
 /* Target-dependent code for FreeBSD/aarch64 kernels.  */
@@ -32,6 +30,7 @@
 
 #include "aarch64-tdep.h"
 #include "frame-unwind.h"
+#include "gdbarch.h"
 #include "gdbcore.h"
 #include "osabi.h"
 #include "regcache.h"
@@ -73,7 +72,7 @@ aarch64_fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
   struct gdbarch *gdbarch = get_frame_arch (this_frame);
   enum bfd_endian byte_order = gdbarch_byte_order (gdbarch);
   struct trad_frame_cache *cache;
-  CORE_ADDR addr, func, pc, sp;
+  CORE_ADDR func, pc, sp;
   const char *name;
   int i;
 
@@ -156,6 +155,7 @@ aarch64_fbsd_trapframe_sniffer (const struct frame_unwind *self,
 }
 
 static const struct frame_unwind aarch64_fbsd_trapframe_unwind = {
+  "aarch64 FreeBSD kernel trap",
   SIGTRAMP_FRAME,
   default_frame_unwind_stop_reason,
   aarch64_fbsd_trapframe_this_id,
@@ -187,11 +187,9 @@ aarch64_fbsd_kernel_init_abi (struct gdbarch_info info, struct gdbarch *gdbarch)
   set_gdbarch_significant_addr_bit (gdbarch, 64);
 }
 
-/* Provide a prototype to silence -Wmissing-prototypes.  */
-extern initialize_file_ftype _initialize_aarch64_kgdb_tdep;
-
+void _initialize_aarch64_kgdb_tdep ();
 void
-_initialize_aarch64_kgdb_tdep (void)
+_initialize_aarch64_kgdb_tdep ()
 {
   gdbarch_register_osabi_sniffer(bfd_arch_aarch64,
 				 bfd_target_elf_flavour,

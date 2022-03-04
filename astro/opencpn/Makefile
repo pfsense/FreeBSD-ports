@@ -1,49 +1,69 @@
-# $FreeBSD$
-
 PORTNAME=	opencpn
-PORTVERSION=	4.4.0
+PORTVERSION=	5.2.4
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	7
 CATEGORIES=	astro geography
 
 MAINTAINER=	ml@netfence.it
 COMMENT=	Concise ChartPlotter/Navigator
 
 LICENSE=	GPLv2+
-
-BROKEN_aarch64=		Fails to compile: use of undeclared identifier rand
+LICENSE_FILE=	${WRKSRC}/COPYING.gplv2
 
 LIB_DEPENDS=	libportaudio.so:audio/portaudio \
 		libcurl.so:ftp/curl \
+		libexif.so:graphics/libexif \
 		libexpat.so:textproc/expat2 \
-		libtinyxml.so:textproc/tinyxml
+		libsndfile.so:audio/libsndfile \
+		libtinyxml.so:textproc/tinyxml \
+		liblz4.so:archivers/liblz4
 
+USES=		cmake compiler:c++11-lang gettext-tools gl gnome libarchive \
+		localbase pkgconfig sqlite xorg
+USE_CXXSTD=	c++11
 USE_GITHUB=	yes
 GH_ACCOUNT=	${GH_PROJECT}
 GH_PROJECT=	OpenCPN
-
-USES=		cmake compiler:c++11-lib gettext-tools gl gnome localbase
-USE_CXXSTD=	c++11
-USE_GL=		gl
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GL=		gl glu
+USE_GNOME=	cairo gdkpixbuf2 gtk30 pango
+USE_LDCONFIG=	${PREFIX}/lib/opencpn
 USE_WX=		3.0+
-USE_XORG=	x11
-INSTALLS_ICONS=	yes
+WX_CONF_ARGS=	absolute
+WX_PREMK=	yes
+USE_XORG=	ice sm x11 xext
 
-CMAKE_ARGS=	-DBUNDLE_DOCS=ON -DBUNDLE_GSHHS=CRUDE -DBUNDLE_TCDATA=ON
-LDFLAGS+=	-Wl,-E # plugins
-LDFLAGS+=	-Wl,--as-needed # ICE, SM, Xext
+CMAKE_ARGS=	-DOCPN_BUNDLE_GSHHS=CRUDE
+CMAKE_ON=	OCPN_BUNDLE_TCDATA OCPN_FORCE_GTK3 # OCPN_USE_CRASHREPORT
+CMAKE_OFF=	OCPN_USE_NEWSERIAL
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=		DOCS
+OPTIONS_SUB=		yes
+
+DOCS_CMAKE_ON=	-DOCPN_BUNDLE_DOCS:STRING="ON"
+DOCS_CMAKE_OFF=	-DOCPN_BUNDLE_DOCS:STRING="OFF"
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_ARGS+=	-DHAVE_MSSE=OFF -DHAVE_MSSE2=OFF -DHAVE_MSSE3=OFF -DHAVE_MAVX2=OFF
+.endif
+.if ${ARCH:Marmv*} || ${ARCH:Mpowerpc*}
+CMAKE_ARGS+=	-DHAVE_MFPU_NEON=OFF
+.endif
+
+.include <bsd.port.pre.mk>
 
 post-patch:
-	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' \
-		${WRKSRC}/src/mygdal/cpl_csv.cpp \
-		${WRKSRC}/src/mygdal/cpl_findfile.cpp \
-		${WRKSRC}/data/doc/help_en_US.html
-.if exists(/usr/lib/libstdc++.so)
+	@${REINPLACE_CMD} \
+		-e 's,wx-config,${WX_CONFIG},' \
+		-e 's,$${PREFIX_PKGDATA}/doc,${DOCSDIR},g' \
+		${WRKSRC}/CMakeLists.txt
+.if ${ARCH} != amd64 && ${ARCH} != i386
 	@${REINPLACE_CMD} -e '/-msse/d' -e '/-mssse3/d' \
 		-e '/-mavx2/d' ${WRKSRC}/CMakeLists.txt
 .endif
 
-.include <bsd.port.mk>
+post-install-DOCS-on:
+	${CP} -R ${WRKSRC}/Docs/OSENC ${STAGEDIR}${DOCSDIR}/OSENC.docx
+
+.include <bsd.port.post.mk>

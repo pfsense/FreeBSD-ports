@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	xpilot-ng
 PORTVERSION=	4.7.3
@@ -51,7 +50,7 @@ SOUND_USES=	openal:al,alut
 
 SDL_CONFIGURE_ENABLE=	sdl-client
 SDL_USE=	SDL=image,sdl,ttf GL=gl
-SDL_USES=	gl
+SDL_USES=	gl sdl
 .endif
 
 .include <bsd.port.options.mk>

@@ -1,21 +1,25 @@
---- configure.orig	2016-04-28 17:55:03 UTC
+--- configure.orig	2021-08-28 18:59:28 UTC
 +++ configure
-@@ -2380,7 +2380,7 @@ case $_host_os in
- 		append_var LDFLAGS "-L$DEVKITPRO/libnds/lib"
- 		append_var LIBS "-lnds9"
+@@ -2937,9 +2937,9 @@ EOF
+ 			_optimization_level=-O2
+ 		fi
+ 	;;
+-	freebsd* | openbsd*)
+-		append_var LDFLAGS "-L/usr/local/lib"
+-		append_var CXXFLAGS "-I/usr/local/include"
++	dragonfly* | freebsd* | openbsd*)
++		append_var LDFLAGS "-L%%LOCALBASE%%/lib"
++		append_var CXXFLAGS "-I%%LOCALBASE%%/include"
  		;;
--	freebsd*)
-+	dragonfly*|freebsd*)
- 		append_var LDFLAGS "-L/usr/local/lib"
- 		append_var CXXFLAGS "-I/usr/local/include"
+ 	gamecube)
+ 		_optimization_level=-Os
+@@ -3975,6 +3975,9 @@ case $_host_os in
+ 		_posix=no
  		;;
-@@ -3259,6 +3259,9 @@ case $_host_os in
- 	android | beos* | bsd* | darwin* | freebsd* | gnu* | gph-linux | haiku* | hpux* | iphone | ios7 | irix*| k*bsd*-gnu* | linux* | maemo | mint* | netbsd* | openbsd* | solaris* | sunos* | uclinux* | webos)
- 		_posix=yes
- 		;;
-+	dragonfly*)
+ 	3ds | android | androidsdl | beos* | bsd* | darwin* | freebsd* | gnu* | gph-linux | haiku* | hpux* | iphone | ios7 | irix*| k*bsd*-gnu* | linux* | maemo | mint* | netbsd* | openbsd* | solaris* | sunos* | switch | uclinux*)
 +		_posix=yes
 +		;;
- 	os2-emx*)
- 		_posix=yes	# FIXME: Really???
++	dragonfly*)
+ 		_posix=yes
  		;;
+ 	os2-emx*)

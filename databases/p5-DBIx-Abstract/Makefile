@@ -1,5 +1,4 @@
 # Created by: Jon Nistor <nistor@snickers.org>
-# $FreeBSD$
 
 PORTNAME=	DBIx-Abstract
 PORTVERSION=	1.040
@@ -9,12 +8,12 @@ PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/0$//}
 
 MAINTAINER=	nistor@snickers.org
-COMMENT=	DBIx::Abstract - DBI SQL abstraction
+COMMENT=	Perl module for DBI SQL abstraction
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE_ART10=	${WRKSRC}/LICENSE
-LICENSE_FILE_GPLv1=	${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	p5-Check-ISA>=0:devel/p5-Check-ISA \
 		p5-DBI>=0:databases/p5-DBI

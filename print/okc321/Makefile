@@ -1,18 +1,15 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	okc321
 PORTVERSION=	1.1
 CATEGORIES=	print
-MASTER_SITES=	http://www.oki.com/de/printing/download/
+MASTER_SITES=	https://www.oki.com/printing/download/
 DISTNAME=	C531_C331_C321_Linux_110_31034
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PPDs for the Oki C321dn, C331dn, and C531dn printers
 
 LICENSE=	GPLv2
 
-USES=	zip
+USES=		zip
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/C531_C331_C321_Linux_110

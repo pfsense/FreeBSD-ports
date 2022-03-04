@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	abbayedesmorts
 PORTVERSION=	2.0.1
 DISTVERSIONPREFIX=	v
@@ -12,6 +9,7 @@ COMMENT=	Cross-platform port of l'Abbaye des Morts by Locomalito
 LICENSE=	GPLv3 CC-BY-3.0
 LICENSE_COMB=	multi
 
+USES=		sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	nevat
 GH_PROJECT=	${PORTNAME}-gpl

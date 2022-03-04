@@ -1,5 +1,4 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pycosat
 PORTVERSION=	0.6.3
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpicosat.so:math/picosat
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	autoplist distutils
 
 PYDISTUTILS_BUILDARGS=	build_ext \
@@ -24,7 +23,7 @@ PYDISTUTILS_BUILDARGS=	build_ext \
 			-lpicosat
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pycosat.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pycosat*.so
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test

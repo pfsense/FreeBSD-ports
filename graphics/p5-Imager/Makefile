@@ -1,8 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	Imager
-PORTVERSION=	1.011
+PORTVERSION=	1.012
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

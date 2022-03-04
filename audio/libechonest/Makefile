@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libechonest
 PORTVERSION=	2.3.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -26,7 +25,7 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	TEST
 
-TEST_USE=	QT5=testlib_build
+TEST_USE=	QT=testlib_build
 TEST_CMAKE_BOOL=ECHONEST_BUILD_TESTS
 
 .include <bsd.port.mk>

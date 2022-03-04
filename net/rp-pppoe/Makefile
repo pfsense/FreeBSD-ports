@@ -1,8 +1,8 @@
 # Created by: Mario Sergio Fujikawa Ferreira <liouxFreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rp-pppoe
-PORTVERSION=	3.13
+PORTVERSION=	3.15
+PORTREVISION=	0
 CATEGORIES=	net
 MASTER_SITES=	https://dianne.skoll.ca/projects/rp-pppoe/download/
 
@@ -22,8 +22,7 @@ man8=	pppoe-connect.8 pppoe-setup.8 pppoe-start.8 pppoe-status.8 \
 
 CONFIG_FILES=	firewall-masq firewall-standalone pap-secrets \
 		pppoe-server-options pppoe.conf
-DOC_FILES=	CHANGES HOW-TO-CONNECT KERNEL-MODE-PPPOE LICENSE \
-		PROBLEMS
+DOC_FILES=	CHANGES HOW-TO-CONNECT LICENSE PROBLEMS
 SCRIPT_FILES=	pppoe-connect pppoe-init pppoe-setup pppoe-start \
 		pppoe-status pppoe-stop
 
@@ -39,16 +38,17 @@ PORTDOCS=	*
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e "s!/etc/ppp!${PREFIX}/etc/ppp!g" ${WRKSRC}/man/*
+	@${SED} -i '' -e "s!/etc/ppp!${PREFIX}/etc/ppp!g" \
+		${WRKSRC}/man/* \
+		${WRKSRC}/configs/* \
+		${WRKSRC}/doc/HOW-TO-CONNECT
 	@${REINPLACE_CMD} -e 's!/etc/ppp!$$(prefix)/etc/ppp!g' \
 		${WRKSRC}/src/Makefile.in
-.for file in pppoe-connect pppoe-init pppoe-setup pppoe-start
-	@${REINPLACE_CMD} -e 's!/etc/+ppp!$${prefix}/etc/ppp!g' \
+.for file in pppoe-connect pppoe-setup pppoe-start
+	@${REINPLACE_CMD} -e 's!/etc/ppp!$${prefix}/etc/ppp!g' \
 		${WRKSRC}/scripts/${file}.in
 .endfor
 	@${REINPLACE_CMD} -e 's!pty!tty!g' ${WRKSRC}/scripts/pppoe-connect.in
-	@${REINPLACE_CMD} -e 's!/var/lock/subsys/adsl!/var/tmp/rp_pppoe_adsl!g' \
-		${WRKSRC}/scripts/pppoe-init.in
 .for f in pppoe-status pppoe-stop.in
 	@${REINPLACE_CMD} -e "s!/etc/ppp!${PREFIX}/etc/ppp!g" \
 		${WRKSRC}/scripts/${f}
@@ -86,7 +86,9 @@ do-install:
 .endfor
 
 # Documentation
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
+	${RM} ${STAGEDIR}${DOCSDIR}/KERNEL-MODE-PPPOE
 
 .include <bsd.port.mk>

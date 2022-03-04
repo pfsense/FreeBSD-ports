@@ -1,8 +1,7 @@
 # Created by: Muhammad Moinur Rahman <5u623l20@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ntopng
-PORTVERSION=	3.8.d20190327
+PORTVERSION=	5.0.d20210923
 PORTEPOCH=	1
 CATEGORIES=	net
 
@@ -18,11 +17,16 @@ LIB_DEPENDS=	librrd.so:databases/rrdtool \
 		libndpi.so:net/ndpi \
 		libjson-c.so:devel/json-c \
 		libsodium.so:security/libsodium \
-		libmaxminddb.so:net/libmaxminddb
-BUILD_DEPENDS=  bash:shells/bash
+		libmaxminddb.so:net/libmaxminddb \
+		libexpat.so:textproc/expat2 \
+		libzstd.so:archivers/zstd \
+		libgcrypt.so:security/libgcrypt \
+		libgpg-error.so:security/libgpg-error
+BUILD_DEPENDS=	bash:shells/bash
 
 USES=		autoreconf compiler:c++11-lang cpe gmake libtool localbase \
-		mysql pathfix pkgconfig shebangfix sqlite ssl
+		lua:53 mysql pathfix pkgconfig shebangfix sqlite ssl
+USE_OPENLDAP=	yes
 
 SUB_FILES=	ntopng-geoip2update.sh pkg-deinstall
 SHEBANG_FILES=	httpdocs/misc/ntopng-add-user.sh \
@@ -36,7 +40,7 @@ PLIST_SUB=	NTOPNGUSER="${USERS}" NTOPNGROUP="${GROUPS}"
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ntop
-GH_TAGNAME=	c5da74a
+GH_TAGNAME=	e8c2ba4
 
 CPE_VENDOR=	ntop
 
@@ -49,13 +53,15 @@ NLS_USES=	gettext
 USE_RC_SUBR=	ntopng
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
-		${WRKSRC}/configure.seed
+	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${WRKSRC}/Makefile.in
 	cd ${WRKSRC} && ${SH} autogen.sh
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ntopng
 	${MKDIR} ${STAGEDIR}/var/db/ntopng
 	${INSTALL_SCRIPT} ${WRKDIR}/ntopng-geoip2update.sh ${STAGEDIR}${PREFIX}/bin
+	${RM} ${STAGEDIR}${DATADIR}/httpdocs/misc/ntopng-utils-manage-updates \
+		${STAGEDIR}${DATADIR}/httpdocs/misc/ntopng-utils-manage-updates.in
 
 .include <bsd.port.mk>

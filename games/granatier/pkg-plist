@@ -1,5 +1,5 @@
 bin/granatier
-etc/xdg/granatier.categories
+share/qlogging-categories5/granatier.categories
 share/applications/org.kde.granatier.desktop
 share/config.kcfg/granatier.kcfg
 %%DATADIR%%/arenas/clanbomber_Arena.desktop
@@ -114,7 +114,6 @@ share/icons/hicolor/22x22/apps/granatier.png
 share/icons/hicolor/32x32/apps/granatier.png
 share/icons/hicolor/48x48/apps/granatier.png
 share/icons/hicolor/64x64/apps/granatier.png
-share/kxmlgui5/granatier/granatierui.rc
 share/locale/ar/LC_MESSAGES/granatier.mo
 share/locale/bg/LC_MESSAGES/granatier.mo
 share/locale/bs/LC_MESSAGES/granatier.mo
@@ -135,6 +134,7 @@ share/locale/ga/LC_MESSAGES/granatier.mo
 share/locale/gl/LC_MESSAGES/granatier.mo
 share/locale/hr/LC_MESSAGES/granatier.mo
 share/locale/hu/LC_MESSAGES/granatier.mo
+share/locale/id/LC_MESSAGES/granatier.mo
 share/locale/is/LC_MESSAGES/granatier.mo
 share/locale/it/LC_MESSAGES/granatier.mo
 share/locale/ja/LC_MESSAGES/granatier.mo
@@ -143,6 +143,7 @@ share/locale/km/LC_MESSAGES/granatier.mo
 share/locale/ko/LC_MESSAGES/granatier.mo
 share/locale/lt/LC_MESSAGES/granatier.mo
 share/locale/lv/LC_MESSAGES/granatier.mo
+share/locale/ml/LC_MESSAGES/granatier.mo
 share/locale/mr/LC_MESSAGES/granatier.mo
 share/locale/nb/LC_MESSAGES/granatier.mo
 share/locale/nds/LC_MESSAGES/granatier.mo

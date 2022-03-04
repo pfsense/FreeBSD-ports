@@ -110,7 +110,6 @@ lib/pinball/libemilia_pin.a
 %%DATADIR%%/tux/floor3.png
 %%DATADIR%%/tux/game.ogg
 %%DATADIR%%/tux/gameover.wav
-%%DATADIR%%/tux/intro.mid
 %%DATADIR%%/tux/intro.ogg
 %%DATADIR%%/tux/lock.wav
 %%DATADIR%%/tux/loop.wav
@@ -122,8 +121,8 @@ lib/pinball/libemilia_pin.a
 %%DATADIR%%/tux/tiles.png
 %%DATADIR%%/tux/tiles.png.pcx
 %%DATADIR%%/tux/up.wav
-@sample(,games,664) /var/games/pinball/professor/highscores.sample
-@sample(,games,664) /var/games/pinball/tux/highscores.sample
-@dir(,games,775) /var/games/pinball/tux
-@dir(,games,775) /var/games/pinball/professor
-@dir /var/games/pinball
+@sample(,games,664) %%SCOREDIR%%/pinball/professor/highscores.sample
+@sample(,games,664) %%SCOREDIR%%/pinball/tux/highscores.sample
+@dir %%SCOREDIR%%/pinball/professor
+@dir %%SCOREDIR%%/pinball/tux
+@dir %%SCOREDIR%%/pinball

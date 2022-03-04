@@ -1,23 +1,26 @@
 # Created by: Joseph Benden <joe@thrallingpenguin.com>
-# $FreeBSD$
 
 PORTNAME=	mosquitto
-PORTVERSION=	1.5.8
+PORTVERSION=	2.0.13
 CATEGORIES=	net
-MASTER_SITES=	http://mosquitto.org/files/source/
+MASTER_SITES=	https://mosquitto.org/files/source/
 
 MAINTAINER=	joe@thrallingpenguin.com
 COMMENT=	Open source MQTT broker
 
 LICENSE=	EPL
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+BUILD_DEPENDS=	xsltproc:textproc/libxslt \
+		docbook-xsl>0:textproc/docbook-xsl
+LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+		libcjson.so:devel/libcjson
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
-USES=		cmake ssl
+USES=		cmake cpe ssl
 USE_RC_SUBR=	mosquitto
 USE_LDCONFIG=	yes
 CMAKE_ARGS=	-DCMAKE_LIBDATADIR:PATH="${PREFIX}/libdata"
+CPE_VENDOR=	eclipse
 
 USERS=		nobody
 

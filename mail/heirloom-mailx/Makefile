@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	mailx
 PORTVERSION=	12.4
 PORTREVISION=	8
-CATEGORIES=	mail ipv6
+CATEGORIES=	mail
 MASTER_SITES=	SF/heirloom/heirloom-${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	heirloom-
 
@@ -14,10 +12,11 @@ LICENSE=	BSD4CLAUSE
 
 OPTIONS_DEFINE=	IPV6 DOCS
 
-CONFLICTS=	mailx-[0-9]*
+CONFLICTS=	mailx
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		iconv localbase ssl tar:bzip2
+USES=		cpe iconv localbase ssl tar:bzip2
+CPE_VENDOR=	heirloom
 CPPFLAGS+=	-DOPENSSL_NO_SSL2
 MAKE_ARGS=	PREFIX="${PREFIX}" \
 		SYSCONFDIR="${PREFIX}/etc" \

@@ -1,5 +1,4 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	uthash
 PORTVERSION=	2.1.0
@@ -7,7 +6,7 @@ DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	zi@FreeBSD.org
-COMMENT=	hash table for C structures
+COMMENT=	Hash table for C structures
 
 LICENSE=	BSD1CLAUSE
 LICENSE_NAME=	BSD 1-Clause License
@@ -16,6 +15,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	DOCS
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	troydhanson

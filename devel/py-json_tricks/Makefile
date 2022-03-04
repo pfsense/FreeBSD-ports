@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	json_tricks
-DISTVERSION=	3.13.1
+DISTVERSION=	3.15.5
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,9 +8,8 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Extra features for Python's JSON: comments, order, datetimes, etc
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

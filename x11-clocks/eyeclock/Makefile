@@ -1,5 +1,4 @@
 # Created by: KIRIYAMA Kazuhiko <kiri@pis.toba-cmt.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	eyeclock
 PORTVERSION=	2.0
@@ -13,8 +12,8 @@ COMMENT=	Clock with eyes following the mouse pointer
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_ENV=	X11BASE=${LOCALBASE}
+USES=		tar:tgz xorg
 USE_XORG=	x11 xau xdmcp xpm xt ice
-USES=		tar:tgz
 
 DESKTOP_ENTRIES="EyeClock" "" "" "eyeclock" "" ""
 

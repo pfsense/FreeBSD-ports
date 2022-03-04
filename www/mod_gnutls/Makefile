@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	mod_gnutls
 PORTVERSION=	0.8.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www security
 MASTER_SITES=	https://mod.gnutls.org/downloads/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
@@ -16,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libgnutls.so:security/gnutls
 
 GNU_CONFIGURE=	yes
-USES=		apache:2.4 compiler:c++11-lang libtool pkgconfig tar:bzip2
+USES=		apache:2.4 compiler:c++11-lang cpe libtool pkgconfig tar:bzip2
+CPE_VENDOR=	${PORTNAME}_project
 
 DBDIR=		${PREFIX}/var/db/${PORTNAME}
 PLIST_SUB=	SED="${SED}" WWWGRP=${WWWGRP} WWWOWN=${WWWOWN}

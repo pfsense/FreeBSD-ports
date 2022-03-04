@@ -1,8 +1,7 @@
 # Created by: Henrik Brix Andersen <brix@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xapian-omega
-PORTVERSION=	1.4.11
+PORTVERSION=	1.4.18
 CATEGORIES=	www
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -17,24 +16,25 @@ BUILD_DEPENDS=	xapian-core>=${PORTVERSION}:databases/xapian-core
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libxapian.so:databases/xapian-core
 
-CONFLICTS_INSTALL=	xapian-omega12
-
-OPTIONS_DEFINE=	DOCS EXAMPLES ICONV
-OPTIONS_DEFAULT=ICONV
-ICONV_DESC=	Enable iconv character set conversion support
-
-PORTSCOUT=	limitw:1,even
-
 USES=		compiler:c++11-lang libtool localbase perl5 shebangfix tar:xz
 
-CONFIGURE_ARGS=	--datarootdir=${DATADIR} --docdir=${DOCSDIR}
+CONFIGURE_ARGS=	--datarootdir=${DATADIR} --docdir=${DOCSDIR} \
+		ac_cv_func_snprintf=snprintf
 CONFIGURE_ENV=	PCRE_CONFIG=${LOCALBASE}/bin/pcre-config \
 		XAPIAN_CONFIG=${LOCALBASE}/bin/xapian-config
 GNU_CONFIGURE=	yes
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
+CONFLICTS_INSTALL=	xapian-omega12
+
+PORTSCOUT=	limitw:1,even
+
 SHEBANG_FILES=	dbi2omega htdig2omega mbox2omega
+
+OPTIONS_DEFINE=	DOCS EXAMPLES ICONV
+OPTIONS_DEFAULT=ICONV
+ICONV_DESC=	Enable iconv character set conversion support
 
 ICONV_CONFIGURE_ON=	ac_cv_search_iconv=${ICONV_LIB}
 ICONV_CONFIGURE_WITH=	iconv

@@ -1,5 +1,4 @@
 # Created by: Clement Laforet <clement@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mod_rpaf
 PORTVERSION=	0.8.4
@@ -13,7 +12,9 @@ COMMENT=	Make proxied requests appear with client IP
 
 LICENSE=	APACHE20
 
-USES=		apache:2.4+
+USES=		apache:2.4+ cpe
+
+CPE_VENDOR=	thomas_eibner
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gnif

@@ -1,9 +1,8 @@
 # Created by: Yonatan <Yonatan@Xpert.com>
-# $FreeBSD$
 
 PORTNAME=	libtomcrypt
 PORTVERSION=	1.18.2
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/libtom/${PORTNAME}/releases/download/v${PORTVERSION}/
 DISTNAME=	crypt-${PORTVERSION}
@@ -14,7 +13,8 @@ COMMENT=	Comprehensive, modular, and portable cryptographic toolkit
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake libtool:build tar:xz
+USES=		cpe gmake libtool:build tar:xz
+CPE_VENDOR=	libtom
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
@@ -34,7 +34,7 @@ OPTIONS_DEFAULT=	LIBTOMMATH
 LIBTOMMATH_DESC=	Use LibTomMath
 TOMSFASTMATH_DESC=	Use TomsFastMath
 
-LIBTOMMATH_BUILD_DEPENDS=	${LOCALBASE}/include/tommath.h:math/libtommath
+LIBTOMMATH_LIB_DEPENDS=		libtommath.so:math/libtommath
 LIBTOMMATH_CFLAGS=		-DLTM_DESC
 LIBTOMMATH_VARS=		EXTRALIBS+=-ltommath
 

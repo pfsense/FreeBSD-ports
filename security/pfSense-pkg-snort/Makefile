@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-snort
-PORTVERSION=	4.0
-PORTREVISION=	3
+PORTVERSION=	4.1.5
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,8 +13,7 @@ COMMENT=	pfSense package snort
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	snort>=2.9.13_1:security/snort \
-		barnyard2>=0:security/barnyard2
+RUN_DEPENDS=	snort>=2.9.19:security/snort
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -54,8 +53,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/deprecated_rules \
 		${STAGEDIR}${PREFIX}/pkg/snort
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/snort/snort_alerts.php \
-		${STAGEDIR}${PREFIX}/www/snort
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/snort/snort_barnyard.php \
 		${STAGEDIR}${PREFIX}/www/snort
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/snort/snort_blocked.php \
 		${STAGEDIR}${PREFIX}/www/snort

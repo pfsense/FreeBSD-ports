@@ -1,9 +1,8 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nautilus-actions
 PORTVERSION=	3.2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 MASTER_SITES=	GNOME
 
@@ -15,9 +14,8 @@ LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libgtop-2.0.so:devel/libgtop \
 		libunique-3.0.so:x11-toolkits/libunique3
 
-USES=		gettext gmake libtool pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pkgconfig tar:xz
 USE_GNOME=	gtk30 intltool nautilus3
-INSTALLS_ICONS=	yes
 INSTALLS_OMF=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

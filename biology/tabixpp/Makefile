@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	tabixpp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-10
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g6bbe690
 CATEGORIES=	biology
 
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libhts.so:biology/htslib
 
-USES=		localbase:ldflags
+USES=		compiler:c11 localbase:ldflags
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ekg

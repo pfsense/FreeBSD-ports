@@ -1,5 +1,5 @@
-TIMESTAMP = 1539858959
-SHA256 (rslsync-2.6.1/resilio-sync_freebsd_x64.tar.gz) = 98b0b5cdf4920b41cbcd8ae6d3b5f4f8bb78346372668951107319655ead1ac7
-SIZE (rslsync-2.6.1/resilio-sync_freebsd_x64.tar.gz) = 12356355
-SHA256 (rslsync-2.6.1/resilio-sync_freebsd_i386.tar.gz) = db4de0db7083de56f169dac540623c6dbbbe2f279a93f054a2121fc6f1a806e0
-SIZE (rslsync-2.6.1/resilio-sync_freebsd_i386.tar.gz) = 12187695
+TIMESTAMP = 1618127280
+SHA256 (rslsync-2.7.2/resilio-sync_freebsd_i386.tar.gz) = ab8c2132d79f8c4b3fff1b40e92bcd454ed4f87b3c904d8ed81a9776919e9a17
+SIZE (rslsync-2.7.2/resilio-sync_freebsd_i386.tar.gz) = 13280331
+SHA256 (rslsync-2.7.2/resilio-sync_freebsd_x64.tar.gz) = 23178977cd466f1b9b320d9a8549761352f9052107295f2bc38594d07880b212
+SIZE (rslsync-2.7.2/resilio-sync_freebsd_x64.tar.gz) = 13306663

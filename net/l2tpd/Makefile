@@ -1,9 +1,8 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	l2tpd
 PORTVERSION=	0.69
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/L2TPd/${PORTVERSION}
 
@@ -13,7 +12,8 @@ COMMENT=	Implementation of the layer two tunneling protocol
 BROKEN_armv6=	fails to link: undefined reference to check_control
 BROKEN_armv7=	fails to link: undefined reference to check_control
 
-USES=		compiler:nestedfct
+USES=		compiler:nestedfct cpe
+CFLAGS+=	-fcommon
 
 PORTDOCS=	README
 ETCDIR=		${PREFIX}/etc/l2tp

@@ -1,6 +1,6 @@
---- extensions/common/stack_frame.cc.orig	2019-03-11 22:00:58 UTC
+--- extensions/common/stack_frame.cc.orig	2021-05-12 22:05:54 UTC
 +++ extensions/common/stack_frame.cc
-@@ -7,7 +7,11 @@
+@@ -8,7 +8,11 @@
  #include <string>
  
  #include "base/strings/utf_string_conversions.h"

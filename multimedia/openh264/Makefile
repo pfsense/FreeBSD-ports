@@ -1,10 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	openh264
-PORTVERSION=	1.8.0
 DISTVERSIONPREFIX=v
+DISTVERSION=	2.1.1
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	multimedia
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	6cc269bebccc.patch:-p1 # https://github.com/cisco/openh264/pull/3319
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Cisco implementation of H.264 codec
@@ -43,7 +45,8 @@ PLUGINS_USES=	webplugin:gecko
 WEBPLUGIN_NAME=	gmp-gmp${PORTNAME}
 WEBPLUGIN_FILES=gmp${PORTNAME}.info libgmp${PORTNAME}.so
 SUB_FILES+=	gmp${PORTNAME}.js
-SUB_LIST+=	PORTVERSION=${PORTVERSION} TIMESTAMP="`date +%s`"
+SUB_LIST+=	PORTVERSION=${PORTVERSION} \
+		TIMESTAMP="`${AWK} '/TIMESTAMP/ { print $$$$$$$$$3 }' ${DISTINFO_FILE}`"
 
 TEST_BUILD_DEPENDS=googletest>=1.6.0:devel/googletest
 TEST_CFLAGS=	-I${LOCALBASE}/include

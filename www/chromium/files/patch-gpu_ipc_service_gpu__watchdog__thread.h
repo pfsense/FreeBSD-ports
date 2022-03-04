@@ -1,13 +1,20 @@
---- gpu/ipc/service/gpu_watchdog_thread.h.orig	2019-03-11 22:00:59 UTC
+--- gpu/ipc/service/gpu_watchdog_thread.h.orig	2021-05-12 22:05:54 UTC
 +++ gpu/ipc/service/gpu_watchdog_thread.h
-@@ -191,8 +191,10 @@ class GPU_IPC_SERVICE_EXPORT GpuWatchdogThread : publi
-   XDisplay* display_;
-   gfx::AcceleratedWidget window_;
-   XAtom atom_;
-+#if !defined(OS_BSD)
-   FILE* tty_file_;
-   int host_tty_;
-+#endif
+@@ -199,7 +199,7 @@ class GPU_IPC_SERVICE_EXPORT GpuWatchdogThread
+   bool WithinOneMinFromPowerResumed();
+   bool WithinOneMinFromForegrounded();
+ 
+-#if defined(USE_X11)
++#if defined(USE_X11) && !defined(OS_BSD)
+   void UpdateActiveTTY();
+ #endif
+   // The watchdog continues when it's not on the TTY of our host X11 server.
+@@ -271,7 +271,7 @@ class GPU_IPC_SERVICE_EXPORT GpuWatchdogThread
+   bool less_than_full_thread_time_after_capped_ = false;
  #endif
  
-   base::RepeatingClosure alternative_terminate_for_testing_;
+-#if defined(USE_X11)
++#if defined(USE_X11) && !defined(OS_BSD)
+   FILE* tty_file_ = nullptr;
+   int host_tty_ = -1;
+   int active_tty_ = -1;

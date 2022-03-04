@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pyshp
-PORTVERSION=	1.2.12
+PORTVERSION=	2.1.3
 CATEGORIES=	devel python geography
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +10,9 @@ COMMENT=	Pure Python read/write support for ESRI Shapefile format
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

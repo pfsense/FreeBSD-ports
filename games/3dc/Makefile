@@ -1,9 +1,8 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	3dc
 PORTVERSION=	0.8.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SUNSITE/games/strategy
 DISTNAME=	3Dc-${PORTVERSION}
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/../GPL
 
 LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
 
-USES=		perl5
+USES=		perl5 xorg
 USE_PERL5=	build
 USE_XORG=	x11 xaw xext xmu xpm xt
 WRKSRC=		${WRKDIR}/3Dc/src

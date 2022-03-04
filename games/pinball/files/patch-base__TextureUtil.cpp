@@ -1,6 +1,6 @@
---- ./base/TextureUtil.cpp.orig	Thu Nov 20 17:46:16 2003
-+++ ./base/TextureUtil.cpp	Fri Dec 12 21:14:17 2003
-@@ -54,6 +54,7 @@
+--- base/TextureUtil.cpp.orig	2020-12-18 16:34:55 UTC
++++ base/TextureUtil.cpp
+@@ -55,6 +55,7 @@ extern "C" {
  
  #if EM_USE_ALLEGRO
  #include <allegro.h>
@@ -8,7 +8,7 @@
  BITMAP * backbuffer = NULL;
  ZBUFFER * zbuffer = NULL;
  #endif // EM_USE_ALLEGRO
-@@ -333,9 +334,10 @@
+@@ -339,9 +340,10 @@ int TextureUtil::genTexture( char const * const filena
                               EmTexture * const texture)
  {
    //cout<<"+ Texture::genTexture : "<<filename<<endl;

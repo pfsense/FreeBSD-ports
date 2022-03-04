@@ -1,9 +1,8 @@
 # Created by: Stas Timokhin <devel@stasyan.com>
-# $FreeBSD$
 
 PORTNAME=	parmgridgen
 PORTVERSION=	1.0
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	math science
 MASTER_SITES=	http://www.mgnet.org/mgnet/Codes/parmgridgen/ \
 		http://www-users.cs.umn.edu/~moulitsa/download/ \

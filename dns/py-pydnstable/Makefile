@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pydnstable
-PORTVERSION=	0.6.1
+PORTVERSION=	0.7.2
 CATEGORIES=	dns python
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,10 +13,10 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LIB_DEPENDS=	libmtbl.so:devel/mtbl \
 		libdnstable.so:dns/dnstable
 
-USES=		pkgconfig python:2.7
+USES=		pkgconfig python:3.6+
 USE_PYTHON=	autoplist cython distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/dnstable.so
+	${STRIP_CMD} ${STAGEDIR}/${PYTHON_SITELIBDIR}/dnstable*.so
 
 .include <bsd.port.mk>

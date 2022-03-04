@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	xkbcomp
-PORTVERSION=	1.4.2
+DISTVERSION=	1.4.5
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -10,8 +8,7 @@ COMMENT=	Compile XKB keyboard description
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pathfix
-XORG_CAT=	app
+USES=		pathfix xorg xorg-cat:app
 USE_XORG=	x11 xkbfile
 
 PLIST_FILES=	bin/xkbcomp \

@@ -1,10 +1,9 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	python-digitalocean
-PORTVERSION=	1.14.0
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.16.0
 CATEGORIES=	www python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	skreuzer@FreeBSD.org
@@ -15,11 +14,8 @@ LICENSE=	GPLv3
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.0.0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonpickle>0:devel/py-jsonpickle@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	koalalorenzo
 
 USE_LOCALE=	en_US.UTF-8
 NO_ARCH=	yes

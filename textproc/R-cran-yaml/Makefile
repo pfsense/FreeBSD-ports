@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yaml
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.1
 PORTREVISION=	1
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${PORTVERSION}

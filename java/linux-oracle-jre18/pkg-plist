@@ -31,6 +31,7 @@
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-57.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-ffmpeg-56.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-ffmpeg-57.so
+%%T%%/lib/%%JAVA_ARCHLIBDIR%%/libavplugin-ffmpeg-58.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libawt.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libawt_headless.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libawt_xawt.so
@@ -57,7 +58,6 @@
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjavafx_font.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjavafx_font_freetype.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjavafx_font_pango.so
-%%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjavafx_font_t2k.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjavafx_iio.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjawt.so
 %%T%%/lib/%%JAVA_ARCHLIBDIR%%/libjdwp.so

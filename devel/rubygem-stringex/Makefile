@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stringex
 PORTVERSION=	2.8.5
 PORTEPOCH=	1
@@ -12,8 +10,9 @@ COMMENT=	Some useful extensions to the Ruby String class
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	CSS-Sass
-PORTVERSION=	3.4.10
+PORTVERSION=	3.6.4
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,7 +12,9 @@ COMMENT=	Compile .scss and .sass files using LibSass
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-ExtUtils-CppGuess>=0.09:devel/p5-ExtUtils-CppGuess \
+BROKEN_FreeBSD_12_powerpc64=	fails to build: /usr/local/bin/ld: cannot find -lc++
+
+BUILD_DEPENDS=	p5-ExtUtils-CppGuess>=0.14:devel/p5-ExtUtils-CppGuess \
 		${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Encode-Locale>=0.01:converters/p5-Encode-Locale \
 		p5-Filesys-Notify-KQueue>=0.01:devel/p5-Filesys-Notify-KQueue \
@@ -25,18 +26,14 @@ TEST_DEPENDS=	p5-File-chdir>=0.01:devel/p5-File-chdir \
 USES=		compiler:c++11-lang gmake perl5
 USE_PERL5=	configure
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502600
-BUILD_DEPENDS+=	p5-Scalar-List-Utils>=1.45:lang/p5-Scalar-List-Utils
-RUN_DEPENDS+=	p5-Scalar-List-Utils>=1.45:lang/p5-Scalar-List-Utils
-.endif
+MAKE_JOBS_UNSAFE=	yes
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/CSS/Sass/Sass.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/CSS/Sass/libsass.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/CSS/Sass/plugins/digest/digest.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/CSS/Sass/plugins/glob/glob.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/CSS/Sass/plugins/img-size/img-size.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/CSS/Sass/plugins/math/math.so
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/libsass.so
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

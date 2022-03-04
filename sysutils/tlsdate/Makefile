@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	tlsdate
 PORTVERSION=	0.0.13
-DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	3
+DISTVERSIONPREFIX=	tlsdate-
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -13,8 +11,6 @@ LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-OPTIONS_DEFINE=	DOCS
-
 USES=		autoreconf libtool pkgconfig ssl
 
 CFLAGS+=	-I${OPENSSLINC}
@@ -22,10 +18,9 @@ LDFLAGS+=	-L${OPENSSLLIB}
 GNU_CONFIGURE=	yes
 TEST_TARGET=	test
 
-PLIST_SUB=	PKGNAME=${PKGNAME}
-PORTDOCS=	*
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	ioerror
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

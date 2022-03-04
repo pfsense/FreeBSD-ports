@@ -1,5 +1,4 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	openjazz
 PORTVERSION=	20190106
@@ -10,15 +9,15 @@ COMMENT=	Free re-implementation of the Jazz Jackrabbit(tm) game engine
 
 LICENSE=	GPLv2
 
-USES=	dos2unix gmake
+USES=	dos2unix gmake sdl xorg
+USE_XORG=	x11 xext xrandr xrender xau xdmcp
+USE_SDL=	sdl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	AlisterT
 
 DOS2UNIX_REGEX=	.*\.(h|cpp)
 ALL_TARGET=	OpenJazz
-USE_XORG=	x11 xext xrandr xrender xau xdmcp
-USE_SDL=	sdl
 
 CXXFLAGS+=	-I${LOCALBASE}/include `${SDL_CONFIG} --cflags` \
 		-DDATAPATH=\\\"${DATADIR}/\\\" -DHOMEDIR

@@ -1,5 +1,4 @@
 # Created by: Dima Sivachenko
-# $FreeBSD$
 
 PORTNAME=	clusterit
 PORTVERSION=	2.5
@@ -16,6 +15,7 @@ GNU_CONFIGURE=	yes
 OPTIONS_DEFINE=	X11
 OPTIONS_SUB=	yes
 
+X11_USES=	xorg
 X11_USE=	XORG=x11
 
 .include <bsd.port.options.mk>

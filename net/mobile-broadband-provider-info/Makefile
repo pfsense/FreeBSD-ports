@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	mobile-broadband-provider-info
-PORTVERSION=	20190116
+PORTVERSION=	20210805
 CATEGORIES=	net gnome
 MASTER_SITES=	GNOME
 
@@ -9,11 +7,16 @@ MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Service mobile broadband provider database
 
 LICENSE=	PD
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf pathfix tar:xz
+USES=		autoreconf gmake gnome pathfix tar:xz
+
+USE_GNOME=	libxslt
 GNU_CONFIGURE=	yes
+NO_ARCH=	yes
 
-PLIST_FILES=	${DATADIR}/serviceproviders.2.dtd \
+PLIST_FILES=	${DATADIR}/apns-conf.xml \
+		${DATADIR}/serviceproviders.2.dtd \
 		${DATADIR}/serviceproviders.xml \
 		libdata/pkgconfig/${PORTNAME}.pc
 

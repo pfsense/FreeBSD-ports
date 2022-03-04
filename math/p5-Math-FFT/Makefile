@@ -1,8 +1,7 @@
 # Created by: Mario S F Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Math-FFT
-PORTVERSION=	1.34
+PORTVERSION=	1.36
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

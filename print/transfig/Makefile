@@ -1,5 +1,4 @@
 # Created by: chuckr@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	transfig
 PORTVERSION=	3.2.5e
@@ -14,7 +13,7 @@ COMMENT=	Tools to convert Xfig .fig files
 RUN_DEPENDS=	ppmtogif:graphics/netpbm
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		alias ghostscript:run imake
+USES=		alias ghostscript:run imake xorg
 CFLAGS+=	-Wno-return-type
 USE_XORG=	xpm
 

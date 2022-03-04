@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	matomo
-DISTVERSION=	3.8.1
+DISTVERSION=	4.2.1
 CATEGORIES=	www
 MASTER_SITES=	http://builds.matomo.org/
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
@@ -12,14 +10,15 @@ COMMENT=	Open Source Web Analytics Software Program
 
 LICENSE=	GPLv3
 
-IGNORE_WITH_PHP=71
+USES=		cpe shebangfix php:flavors
+
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
-USES=		cpe shebangfix php:flavors
-USE_PHP=	bcmath bz2 ctype curl dom fileinfo filter gd hash iconv intl json \
+USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json \
 		mbstring mcrypt memcache mysqli openssl pcre pdo posix readline session \
-		simplexml soap sockets sqlite3 tidy tokenizer xml opcache zip zlib
+		simplexml soap sockets sqlite3 tidy tokenizer xml opcache zlib
+NO_ARCH=yes
 
 WRKSRC=		${WRKDIR}/piwik
 

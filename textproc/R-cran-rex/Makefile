@@ -1,21 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	rex
-DISTVERSION=	1.1.2
-PORTREVISION=	1
+DISTVERSION=	1.2.1
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	Friendly Regular Expressions
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	R-cran-knitr>0:print/R-cran-knitr
-RUN_DEPENDS=	R-cran-magrittr>0:devel/R-cran-magrittr \
-		R-cran-lazyeval>0:math/R-cran-lazyeval
+RUN_DEPENDS=	R-cran-lazyeval>0:math/R-cran-lazyeval
 TEST_DEPENDS=	R-cran-Hmisc>0:devel/R-cran-Hmisc \
+		R-cran-covr>0:devel/R-cran-covr \
+		R-cran-magrittr>0:devel/R-cran-magrittr \
+		R-cran-roxygen2>0:devel/R-cran-roxygen2 \
 		R-cran-testthat>0:devel/R-cran-testthat \
 		R-cran-ggplot2>0:graphics/R-cran-ggplot2 \
 		R-cran-dplyr>0:math/R-cran-dplyr \

@@ -1,5 +1,4 @@
 # Created by: chinsan
-# $FreeBSD$
 
 PORTNAME=	MooseX-Clone
 PORTVERSION=	0.06
@@ -21,5 +20,7 @@ RUN_DEPENDS=	p5-Data-Visitor>=0.24:devel/p5-Data-Visitor \
 
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

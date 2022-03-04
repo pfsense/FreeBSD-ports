@@ -1,32 +1,36 @@
 # Created by: Scott Mace <smace@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xlockmore
-PORTVERSION=	5.55
-CATEGORIES?=	x11
+PORTVERSION=	5.67
+CATEGORIES=	x11
 MASTER_SITES=	http://www.sillycycle.com/xlock/ \
-		LOCAL/jgh/x11/${PORTNAME}/
+		SF/bsdsrc/${.CURDIR:T}
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Like XLock session locker/screen saver, but just more
 
 LICENSE=	BSD2CLAUSE
 
-USES=		tar:xz
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--without-motif --without-ttf --without-editres \
+LIB_DEPENDS=	libfreetype.so:print/freetype2
+
+USES=		cpe tar:xz xorg
+USE_XORG=	ice sm x11 xaw xext xpm xorgproto
+
+CPE_VENDOR=	sillycycle
+
+CONFIGURE_ARGS=	--without-motif --without-editres \
 		--without-dtsaver --without-rplay --without-nas \
-		--without-gtk --without-esound --disable-setuid
-
-USE_GNOME=	#
-USE_XORG=	x11 xaw ice sm xpm xext xinerama
-
-LIB_DEPENDS+=	libfreetype.so:print/freetype2
+		--without-gtk --without-esound --disable-setuid \
+		--disable-kerberos4
+GNU_CONFIGURE=	yes
+PORTDOCS=	README ${PORTNAME}.README
 
 OPTIONS_DEFINE=	MESAGL MB SYSLOG DISABLE_ALLOW_ROOT NICE_ONLY BLANK_ONLY \
-		KERBEROS4 BAD_PAM GTK2 TIME_BOMB CUSTOMIZATION MAGICK JP \
-		XINERAMA
-OPTIONS_DEFAULT=	XINERAMA
+		KERBEROS5 BAD_PAM GTK2 TIME_BOMB CUSTOMIZATION MAGICK JP \
+		XINERAMA DOCS FREETYPE
+OPTIONS_RADIO=	ONE
+OPTIONS_RADIO_ONE=	PAM XLOCK_GROUP
+OPTIONS_DEFAULT=	MB XINERAMA
 OPTIONS_SUB=	yes
 
 MESAGL_DESC=	Mesa 3D (for GL modes)
@@ -42,111 +46,54 @@ TIME_BOMB_DESC=	Allow autologout
 CUSTOMIZATION_DESC=	Allow tune through resource file
 JP_DESC=	Japanese Language Support
 
-OPTIONS_RADIO=	ONE
-OPTIONS_RADIO_ONE=	PAM XLOCK_GROUP
-
-NO_OPTIONS_SORT=yes
+NO_OPTIONS_SORT=	yes
 
 MAKE_ARGS+=	bindir=${PREFIX}/bin \
 		mandir=${PREFIX}/man/man1 \
 		datarootdir=${PREFIX}/share \
 		xapploaddir=${PREFIX}/lib/X11/app-defaults
 
+KERBEROS5_CFLAGS=	${GSSAPICPPFLAGS}
+KERBEROS5_CONFIGURE_ENV=	XLOCKLIBS="${GSSAPILDFLAGS} ${GSSAPILIBS} -lcom_err"
+KERBEROS5_CONFIGURE_ENABLE=	kerberos5
+KERBEROS5_USES=		gssapi:mit
+MESAGL_CFLAGS=	-I${LOCALBASE}/include/FTGL -I${LOCALBASE}/include/freetype2
+MESAGL_CONFIGURE_ENV=	XLOCKLIBS+="-lpthread"
+MESAGL_CONFIGURE_WITH=	mesa opengl ftgl
+MESAGL_LIB_DEPENDS=	libftgl.so:graphics/ftgl
+MESAGL_USES=	gl
+MESAGL_USE=	gl=gl,glu
+BAD_PAM_CONFIGURE_ENABLE=	bad-pam
+PAM_CONFIGURE_ENABLE=	pam
+NICE_ONLY_CONFIGURE_ENABLE=	nice-only
+BLANK_ONLY_CONFIGURE_ENABLE=	blank-only
+MB_CONFIGURE_ENABLE=	mb
+SYSLOG_CONFIGURE_ENABLE=	syslog
+XINERAMA_CONFIGURE_WITH=	xinerama
+XINERAMA_USE=	xorg=xinerama
+DISABLE_ALLOW_ROOT_CONFIGURE_ON=	--disable-allow-root
+XLOCK_GROUP_CONFIGURE_ENABLE=	xlock-group
+TIME_BOMB_CONFIGURE_ENABLE=		bomb
+CUSTOMIZATION_CONFIGURE_ENABLE=	customization
+JP_IMPLIES=	MB
+JP_CATEGORIES=	japanese
+JP_VARS=	XLOCKMORE_LANG=ja
+MAGICK_CONFIGURE_WITH=	magick
+MAGICK_LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick6 \
+			libpng.so:graphics/png
+GTK2_CONFIGURE_WITH=	gtk2
+GTK2_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+			libpng.so:graphics/png
+GTK2_USE=	gnome=cairo,gdkpixbuf2,gtk20
+GTK2_USES=	gnome pkgconfig
+FREETYPE_CONFIGURE_WITH=	ttf
+FREETYPE_LIB_DEPENDS=	libgltt.so:graphics/gltt
+FREETYPE_CFLAGS=	-I${LOCALBASE}/include/gltt
+
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MKERBEROS4}
-CONFIGURE_ARGS+=--enable-kerberos4
-KRB4LIB=	-lcom_err -lcrypto
-.endif
-.if defined(KRB5_HOME) && exists(${KRB5_HOME})
-CONFIGURE_ARGS+=--enable-kerberos5
-CFLAGS+=	-I${KRB5_HOME}/include
-KRB5LIB=	-L${KRB5_HOME}/lib
-.endif
-
-.if ${PORT_OPTIONS:MMESAGL}
-CONFIGURE_ARGS+=	--with-mesa
-MESALIB=	-lpthread
-USE_GL=		yes
-LIB_DEPENDS+=	libftgl.so:graphics/ftgl
-CFLAGS+=	-I${LOCALBASE}/include/FTGL -I${LOCALBASE}/include/freetype2
-.else
-CONFIGURE_ARGS+=	--without-mesa --without-opengl --without-ftgl
-.endif
-
-.if ${PORT_OPTIONS:MNICE_ONLY}
-CONFIGURE_ARGS+=	--enable-nice-only
-.endif
-
-.if ${PORT_OPTIONS:MBAD_PAM}
-CONFIGURE_ARGS+=	--enable-bad-pam
-.endif
-
-.if ${PORT_OPTIONS:MPAM}
-CONFIGURE_ARGS+=	--enable-pam
-.endif
-
-.if ${PORT_OPTIONS:MNICE_ONLY}
-CONFIGURE_ARGS+=	--enable-nice-only
-.endif
-
-.if ${PORT_OPTIONS:MBLANK_ONLY}
-CONFIGURE_ARGS+=	--enable-blank-only
-.endif
-
-.if ${PORT_OPTIONS:MMB}
-CONFIGURE_ARGS+=	--enable-use-mb
-.endif
-
-.if ${PORT_OPTIONS:MJP}
-XLOCKMORE_LANG=	ja
-CATEGORIES+=	japanese
-PORT_OPTIONS+=	MB
-.endif
 
 .if defined(XLOCKMORE_LANG)
 CONFIGURE_ARGS+=	--with-lang=${XLOCKMORE_LANG}
-.endif
-
-.if ${PORT_OPTIONS:MSYSLOG}
-CONFIGURE_ARGS+=	--enable-syslog
-.endif
-
-.if ${PORT_OPTIONS:MGTK2}
-CONFIGURE_ARGS+=	--with-gtk2
-USE_GNOME+=	gtk20
-.else
-CONFIGURE_ARGS+=	--without-gtk2
-.endif
-
-.if ${PORT_OPTIONS:MXLOCK_GROUP}
-CONFIGURE_ARGS+=	--enable-xlock-group
-.endif
-
-.if ${PORT_OPTIONS:MTIME_BOMB}
-CONFIGURE_ARGS+=	--enable-bomb
-.else
-CONFIGURE_ARGS+=	--disable-bomb
-.endif
-
-.if ${PORT_OPTIONS:MCUSTOMIZATION}
-CONFIGURE_ARGS+=	--enable-customization
-.endif
-
-.if ${PORT_OPTIONS:MMAGICK}
-LIB_DEPENDS+=	libMagickCore-6.so:graphics/ImageMagick6
-.else
-CONFIGURE_ARGS+=	--without-magick
-.endif
-
-CONFIGURE_ENV+=		XLOCKLIBS="${KRB5LIB} ${KRB4LIB} ${MESALIB}"
-
-.if ${PORT_OPTIONS:MDISABLE_ALLOW_ROOT}
-CONFIGURE_ARGS+=	--disable-allow-root
-.endif
-
-.if ${PORT_OPTIONS:MXINERAMA}
-CONFIGURE_ARGS+=	--with-xinerama
 .endif
 
 .if ${PORT_OPTIONS:MPAM} && empty(PORT_OPTIONS:MBAD_PAM)
@@ -158,15 +105,9 @@ pre-extract:
 	@${ECHO}
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} -e '/xglockrc/ s|PROGRAM|DATA|' ${WRKSRC}/xglock/Makefile.in
-	@${REINPLACE_CMD} -e 's|$$(SOUNDPATH)|$$(DESTDIR)$$(SOUNDPATH)|g' ${WRKSRC}/modes/Makefile.in
-	@${REINPLACE_CMD} -e '/$$(ETCDIR)play.sh/ s|$$(INSTALL_PROGRAM)|$$(INSTALL_PROGRAM:N-s)|' ${WRKSRC}/modes/Makefile.in
-.if exists(/usr/bin/fortune)
-	@${REINPLACE_CMD} -e 's|/usr/games/fortune|/usr/bin/fortune|' ${WRKSRC}/modes/Makefile.in
-.endif
-
-post-configure:
-	@${REINPLACE_CMD} -e 's/-lXdpms//g' ${WRKSRC}/modes/Makefile
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/Revisions ${STAGEDIR}${DOCSDIR}/${PORTNAME}.README
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

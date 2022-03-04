@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
 
 PORTNAME=	Data-Compare
 PORTVERSION=	1.2200
@@ -11,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/0*$//}
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Data::Compare - compare perl data structures
+COMMENT=	Compare Perl data structures
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

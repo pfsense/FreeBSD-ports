@@ -1,9 +1,7 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnu-efi
-PORTVERSION=	3.0.9
-PORTREVISION=	2
+PORTVERSION=	3.0.14
 CATEGORIES=	devel
 MASTER_SITES=	SF/gnu-efi
 

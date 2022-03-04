@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	iso-639
-DISTVERSION=	0.2.8
+PORTVERSION=	0.3.5
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

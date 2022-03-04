@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tkdnd
 PORTVERSION=	2.8
@@ -10,7 +9,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}-src
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Native drag and drop capabilities for Tk
 
-USES+=		tk:85+,tea
+USES+=		tk:tea xorg
 USE_XORG=	x11 xext
 
 TCL_PKG=	${PORTNAME}${PORTVERSION}

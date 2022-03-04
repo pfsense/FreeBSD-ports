@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Module-Implementation
 PORTVERSION=	0.09
@@ -21,7 +20,9 @@ TEST_DEPENDS=	p5-Test-Fatal>=0.006:devel/p5-Test-Fatal \
 		p5-Test-Requires>=0:devel/p5-Test-Requires \
 		p5-Test-Taint>=0:devel/p5-Test-Taint
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

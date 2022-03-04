@@ -1,9 +1,8 @@
 # Created by: Donald Burr <dburr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yodl
 PORTVERSION=	3.10.00
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -17,7 +16,8 @@ BUILD_DEPENDS=	icmake:devel/icmake \
 		bash:shells/bash \
 		gsed:textproc/gsed
 
-USES=		perl5 shebangfix compiler:c++14-lang
+USES=		cpe perl5 shebangfix compiler:c++14-lang
+CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	build
 USE_GITLAB=	yes
 GL_ACCOUNT=	fbb-git

@@ -1,23 +1,43 @@
-@sample %%ETCDIR%%/bastille.conf.sample %%ETCDIR%%/bastille.conf
+@sample %%ETCDIR%%/bastille.conf.sample
 bin/bastille
 %%DATADIR%%/bootstrap.sh
+%%DATADIR%%/clone.sh
 %%DATADIR%%/cmd.sh
 %%DATADIR%%/colors.pre.sh
+%%DATADIR%%/common.sh
+%%DATADIR%%/config.sh
 %%DATADIR%%/console.sh
+%%DATADIR%%/convert.sh
 %%DATADIR%%/cp.sh
 %%DATADIR%%/create.sh
 %%DATADIR%%/destroy.sh
-%%DATADIR%%/freebsd_dist_fetch.sh
+%%DATADIR%%/edit.sh
+%%DATADIR%%/export.sh
 %%DATADIR%%/htop.sh
+%%DATADIR%%/import.sh
+%%DATADIR%%/limits.sh
 %%DATADIR%%/list.sh
+%%DATADIR%%/mount.sh
 %%DATADIR%%/pkg.sh
+%%DATADIR%%/rdr.sh
+%%DATADIR%%/rename.sh
 %%DATADIR%%/restart.sh
 %%DATADIR%%/service.sh
 %%DATADIR%%/start.sh
 %%DATADIR%%/stop.sh
 %%DATADIR%%/sysrc.sh
 %%DATADIR%%/template.sh
+%%DATADIR%%/templates/default/base/Bastillefile
+%%DATADIR%%/templates/default/empty/Bastillefile
+%%DATADIR%%/templates/default/linux/Bastillefile
+%%DATADIR%%/templates/default/thick/Bastillefile
+%%DATADIR%%/templates/default/thin/Bastillefile
+%%DATADIR%%/templates/default/vnet/Bastillefile
 %%DATADIR%%/top.sh
+%%DATADIR%%/umount.sh
 %%DATADIR%%/update.sh
 %%DATADIR%%/upgrade.sh
 %%DATADIR%%/verify.sh
+%%DATADIR%%/zfs.sh
+man/man8/bastille.8.gz
+@dir %%ETCDIR%%

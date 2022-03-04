@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ref
 PORTVERSION=	2.0.0
 CATEGORIES=	devel rubygems

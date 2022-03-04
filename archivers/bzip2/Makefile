@@ -1,14 +1,17 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bzip2
-PORTVERSION=	1.0.6
-PORTREVISION=	1
+PORTVERSION=	1.0.8
 CATEGORIES=	archivers
-MASTER_SITES=	http://www.bzip.org/${PORTVERSION}/
+MASTER_SITES=	https://sourceware.org/pub/bzip2/
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Block-sorting file compressor
+
+LICENSE=	BZIP2
+LICENSE_NAME=	BZIP2 license
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		cpe
 CPE_VENDOR=	bzip

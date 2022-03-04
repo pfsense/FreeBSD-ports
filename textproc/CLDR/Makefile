@@ -1,10 +1,10 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	CLDR
-PORTVERSION=	34.0
+PORTVERSION=	40.0
+PORTREVISION=	1
 CATEGORIES=	textproc
-MASTER_SITES=	http://unicode.org/Public/cldr/${PORTVERSION:R}/:src	\
+MASTER_SITES=	https://unicode.org/Public/cldr/${PORTVERSION:R}/:src	\
 		http://www.unicode.org/:lic
 DISTFILES=	${SRCFILE}:src	\
 		copyright.html:lic

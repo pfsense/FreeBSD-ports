@@ -1,17 +1,16 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	q2p
 PORTVERSION=	0.2.20061231
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	games
-MASTER_SITES=	http://bfeared.com/library/quake/archive/quakedev/qudos/quake2/engines/Q2P/
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 DISTNAME=	Q2P-0.2-2006-12-31
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Enhanced OpenGL-only Quake II engine
 
-USES=		gmake tar:bzip2
+USES=		gmake tar:bzip2 xorg
 USE_XORG=	xxf86dga xext xxf86vm x11
 ALL_TARGET=	release
 
@@ -37,11 +36,12 @@ SDLGL_DESC=	Build SDL OpenGL renderer
 
 .if ${PORT_OPTIONS:MGLX} || ${PORT_OPTIONS:MSDLGL}
 LIB_DEPENDS+=	libpng.so:graphics/png
-USES+=		jpeg
+USES+=		gl jpeg
 USE_GL=		glu
 .endif
 
 .if ${PORT_OPTIONS:MSDL} || ${PORT_OPTIONS:MSDLGL}
+USES+=		sdl
 USE_SDL=	sdl
 .endif
 

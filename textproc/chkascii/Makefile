@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	chkascii
-DISTVERSION=	1.4
+DISTVERSION=	2.4
 CATEGORIES=	textproc
 
 MAINTAINER=	bourne.identity@hotmail.com
 COMMENT=	Check an ASCII text file for invalid characters
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes

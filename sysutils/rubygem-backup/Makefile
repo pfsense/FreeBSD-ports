@@ -1,8 +1,8 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	backup
 PORTVERSION=	4.4.1
+PORTREVISION=	2
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -22,7 +22,7 @@ RUN_DEPENDS=	rubygem-CFPropertyList>=2.3.1:devel/rubygem-CFPropertyList \
 		rubygem-dropbox-sdk>=1.6.5:net/rubygem-dropbox-sdk \
 		rubygem-equalizer>=0.0.9:devel/rubygem-equalizer \
 		rubygem-excon>=0.44.4:devel/rubygem-excon \
-		rubygem-faraday>=0.8.8:www/rubygem-faraday \
+		rubygem-faraday0>=0.8.8:www/rubygem-faraday0 \
 		rubygem-fission>=0.5.0:emulators/rubygem-fission \
 		rubygem-flowdock>=0.4.0:www/rubygem-flowdock \
 		rubygem-fog>=1.28.0:devel/rubygem-fog \
@@ -51,7 +51,7 @@ RUN_DEPENDS=	rubygem-CFPropertyList>=2.3.1:devel/rubygem-CFPropertyList \
 		rubygem-inflecto>=0.0.2:devel/rubygem-inflecto \
 		rubygem-ipaddress>=0.8.0:net/rubygem-ipaddress \
 		rubygem-json>=1.8.2:devel/rubygem-json \
-		rubygem-mail>=2.6.3:mail/rubygem-mail \
+		rubygem-mail>=2.6.3,2:mail/rubygem-mail \
 		rubygem-memoizable>=0.4.0:devel/rubygem-memoizable \
 		rubygem-mime-types>=2.4.3:misc/rubygem-mime-types \
 		rubygem-multi_json>=1.10.1:devel/rubygem-multi_json \
@@ -59,7 +59,7 @@ RUN_DEPENDS=	rubygem-CFPropertyList>=2.3.1:devel/rubygem-CFPropertyList \
 		rubygem-multipart-post>=1.2.0:www/rubygem-multipart-post \
 		rubygem-net-scp>=1.2.1:security/rubygem-net-scp \
 		rubygem-net-sftp>=2.1.2:security/rubygem-net-sftp \
-		rubygem-net-ssh>=3.2.0:security/rubygem-net-ssh \
+		rubygem-net-ssh>=3.2.0,2:security/rubygem-net-ssh \
 		rubygem-netrc>=0.11.0:net/rubygem-netrc \
 		rubygem-nokogiri>=1.8.2:textproc/rubygem-nokogiri \
 		rubygem-open4>=1.3.0:devel/rubygem-open4 \
@@ -69,15 +69,16 @@ RUN_DEPENDS=	rubygem-CFPropertyList>=2.3.1:devel/rubygem-CFPropertyList \
 		rubygem-ruby-hmac>=0.4.0:security/rubygem-ruby-hmac \
 		rubygem-simple_oauth>=0.2.0:net/rubygem-simple_oauth \
 		rubygem-thor>=0.18.1:devel/rubygem-thor \
-		rubygem-thread_safe1>=0.1.3:devel/rubygem-thread_safe1 \
+		rubygem-thread_safe>=0.1.3:devel/rubygem-thread_safe \
 		rubygem-twitter>=5.5.0:net/rubygem-twitter \
 		rubygem-unf>=0.1.3:textproc/rubygem-unf \
 		rubygem-unf_ext>=0.0.6:textproc/rubygem-unf_ext \
 		rubygem-xml-simple>=1.1.4:textproc/rubygem-xml-simple
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/backup
 

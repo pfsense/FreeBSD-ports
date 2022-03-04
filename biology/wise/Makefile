@@ -1,5 +1,4 @@
 # Created by: Tony Maher <tonym@biolateral.com.au>
-# $FreeBSD$
 
 PORTNAME=	wise
 PORTVERSION=	2.4.1
@@ -13,7 +12,7 @@ COMMENT=	Intelligent algorithms for DNA searches
 
 BUILD_WRKSRC=	${WRKSRC}/src
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	glib20
 MAKEFILE=	makefile
 

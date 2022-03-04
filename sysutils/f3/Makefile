@@ -1,8 +1,7 @@
 # Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
 
 PORTNAME=	f3
-PORTVERSION=	7.1
+PORTVERSION=	8.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 

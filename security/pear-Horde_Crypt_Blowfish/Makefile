@@ -1,8 +1,7 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Horde_Crypt_Blowfish
-PORTVERSION=	1.1.2
+PORTVERSION=	1.1.3
 CATEGORIES=	security www pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
@@ -16,8 +15,10 @@ OPTIONS_DEFINE=	MHASH OPENSSL
 MHASH_DESC=	Depend on mhash PHP extension
 OPENSSL_DESC=	Depend on OpenSSL PHP extension
 
-USES=	horde
+USES=	horde cpe
+MHASH_USES=	php
 MHASH_USE=	PHP=hash
+OPENSSL_USES=	php
 OPENSSL_USE=	PHP=openssl
 
 .include <bsd.port.mk>

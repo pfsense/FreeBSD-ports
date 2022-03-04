@@ -1,9 +1,8 @@
 # Created by: Brad Huntting <huntting@glarp.com>
-# $FreeBSD$
 
 PORTNAME=	qcl
 PORTVERSION=	0.6.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science math
 MASTER_SITES=	http://tph.tuwien.ac.at/~oemer/tgz/
 

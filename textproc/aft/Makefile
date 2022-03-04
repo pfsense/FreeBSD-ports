@@ -1,5 +1,4 @@
 # Created by: Alan Eldridge <alane@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aft
 PORTVERSION=	5.098
@@ -8,7 +7,7 @@ PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.maplefish.com/todd/
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Document preparation system using an Almost Free Text input format
 
 LICENSE=	CART

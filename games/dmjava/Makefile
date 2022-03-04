@@ -1,5 +1,4 @@
 # Created by: Oliver Lehmann <lehmann@ans-netz.de>
-# $FreeBSD$
 
 PORTNAME=	dmjava
 PORTVERSION=	1.05
@@ -16,7 +15,6 @@ EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 do-install:

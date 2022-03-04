@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	python
-PORTVERSION=	${PYTHON_PORTVERSION}
-CATEGORIES=	lang python ipv6
-MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
+DISTVERSION=	${PYTHON_DISTVERSION}
+PORTREVISION=	1
+CATEGORIES=	lang python
+MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION}
 PKGNAMESUFFIX=	27
-DISTNAME=	Python-${PORTVERSION}
+DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
 
 MAINTAINER=	python@FreeBSD.org
@@ -13,11 +12,14 @@ COMMENT=	Interpreted object-oriented programming language
 
 LICENSE=	PSFL
 
-USES=		cpe ncurses pathfix pkgconfig readline:port shebangfix ssl tar:xz
+DEPRECATED=	EOLed upstream
+EXPIRATION_DATE=	2020-12-31
+
+USES=		cpe ncurses pathfix pkgconfig readline shebangfix ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-python_CMD=	${PREFIX}/bin/python${PYTHON_PORTVERSION:R}
+python_CMD=	${PREFIX}/bin/python${PYTHON_DISTVERSION:R}
 SHEBANG_FILES=	Lib/lib2to3/pgen2/*.py Lib/lib2to3/tests/*.py Lib/lib2to3/tests/data/*.py \
 		Lib/idlelib/*.py Lib/encodings/*.py Lib/test/*.py Lib/UserString.py \
 		Lib/base64.py Lib/cProfile.py Lib/keyword.py Lib/mimify.py Lib/pdb.py \
@@ -36,7 +38,7 @@ TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
-			PORTVERSION=${PORTVERSION} \
+			DISTVERSION=${DISTVERSION} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
 OPTIONS_DEFINE=		DEBUG IPV6 LIBFFI NLS PYMALLOC THREADS
@@ -87,7 +89,7 @@ PLIST_SUB+=	X86_ONLY=""
 PLIST_SUB+=	X86_ONLY="@comment "
 .endif
 
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == mips64 || ${ARCH} == powerpc64 || ${ARCH} == sparc64
+.if ${ARCH:M*64*}
 PLIST_SUB+=	32BIT_ONLY="@comment "
 .else
 PLIST_SUB+=	32BIT_ONLY=""

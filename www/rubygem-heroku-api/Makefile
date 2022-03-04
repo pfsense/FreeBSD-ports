@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	heroku-api
 PORTVERSION=	0.4.3
 CATEGORIES=	www rubygems
@@ -10,11 +8,12 @@ COMMENT=	Heroku API
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-excon>=0.45:devel/rubygem-excon \
-		rubygem-multi_json>=1.8:devel/rubygem-multi_json
+RUN_DEPENDS=	rubygem-excon>=0.45<1:devel/rubygem-excon \
+		rubygem-multi_json>=1.8<2:devel/rubygem-multi_json
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

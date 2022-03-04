@@ -1,9 +1,8 @@
 # Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
 
 PORTNAME=	tcpshow
 PORTVERSION=	1.74
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net security
 MASTER_SITES=	LOCAL/obrien
 DISTFILES=	tcpshow.c tcpshow.1

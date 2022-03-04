@@ -1,8 +1,7 @@
 # Created by: Eugene Grosbein <eugen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pidgin-icyque
-DISTVERSION=	g20190328
+DISTVERSION=	g20200619
 CATEGORIES=	net-im
 
 MAINTAINER=	eugen@FreeBSD.org
@@ -23,7 +22,7 @@ PLIST_FILES=	lib/purple-2/libicyque.so
 USE_GITHUB=	yes
 GH_ACCOUNT=	EionRobb
 GH_PROJECT=	icyque
-GH_TAGNAME=	3e058cc
+GH_TAGNAME=	4fc08a0
 
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes

@@ -1,9 +1,8 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	tdfsb
 PORTVERSION=	0.0.10
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://www.determinate.net/webdata/data/
 
@@ -15,9 +14,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg
 
+USES=		gl pkgconfig sdl
 USE_GL=		glut
 USE_SDL=	image sdl
-USES=		pkgconfig
 
 PORTDOCS=	README
 PLIST_FILES=	bin/${PORTNAME}

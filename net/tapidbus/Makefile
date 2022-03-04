@@ -1,5 +1,4 @@
 # Created by: Babak Farrokhi
-# $FreeBSD$
 
 PORTNAME=	tapidbus
 PORTVERSION=	0.2.1
@@ -12,7 +11,7 @@ COMMENT=	Abstraction layer for interprocess communication
 
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
 
-USES=		pathfix pkgconfig gmake libtool
+USES=		gmake gnome libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 INSTALL_TARGET=	install-strip

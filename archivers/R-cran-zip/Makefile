@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	zip
-DISTVERSION=	2.0.1
+DISTVERSION=	2.2.0
 CATEGORIES=	archivers
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Cross-Platform 'zip' Compression
 
 LICENSE=	CC0-1.0

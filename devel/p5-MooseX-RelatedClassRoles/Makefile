@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-RelatedClassRoles
 PORTVERSION=	0.004
 PORTREVISION=	2
@@ -16,5 +14,7 @@ RUN_DEPENDS=	p5-Moose>=2:devel/p5-Moose \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

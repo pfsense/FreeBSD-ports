@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	aom
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0-1552
-DISTVERSIONSUFFIX=	-g8ea87322e
+DISTVERSION=	3.2.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -23,6 +21,14 @@ USE_LDCONFIG=	yes
 GH_ACCOUNT=	jbeich # mirror
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	ENABLE_DOCS ENABLE_TESTS
+
+OPTIONS_DEFINE=	VMAF
+OPTIONS_DEFAULT=VMAF
+
+VMAF_DESC=		Encoding tuning for VMAF
+VMAF_LIB_DEPENDS=	libvmaf.so:multimedia/vmaf
+VMAF_USES=		pkgconfig
+VMAF_CMAKE_ON=		-DCONFIG_TUNE_VMAF:STRING=1
 
 post-patch:
 # Extract (snapshot) version from the port instead of CHANGELOG

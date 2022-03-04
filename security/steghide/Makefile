@@ -1,5 +1,4 @@
 # Created by: RaRa Rasputin <rasputin@submonkey.net>
-# $FreeBSD$
 
 PORTNAME=	steghide
 PORTVERSION=	0.5.1
@@ -16,11 +15,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libmcrypt.so:security/libmcrypt \
 		libmhash.so:security/mhash
 
-USES=		gmake jpeg libtool:build perl5
+USES=		compiler cpe gmake jpeg libtool:build localbase perl5
+CPE_VENDOR=	${PORTNAME}_project
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include -fpermissive
-LIBS+=		-L${LOCALBASE}/lib -lmcrypt
-CXXFLAGS+=	-Wno-static-float-init
+CPPFLAGS+=	-fpermissive
+LIBS+=		-lmcrypt
+CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
+CXXFLAGS_clang=	-Wno-static-float-init
 MAKE_ARGS=	LIBTOOL="${LOCALBASE}/bin/libtool"
 
 OPTIONS_DEFINE=	DOCS NLS

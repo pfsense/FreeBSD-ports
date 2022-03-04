@@ -1,5 +1,4 @@
 # Created by: "Mahdi Mokhtari <mokhi64@gmail.com>"
-# $FreeBSD$
 
 PORTNAME=	mysql
 PORTREVISION=	0
@@ -15,13 +14,16 @@ PKGMESSAGE=	${.CURDIR}/pkg-message
 PATCHDIR=	${.CURDIR}/files
 PLIST=		${.CURDIR}/pkg-plist
 
-CONFLICTS_INSTALL=	mysql5[0-68-9]-client-* \
-			mysql[0-46-9][0-9]-client-* \
-			mariadb[0-9][0-9]-client-* \
-			percona[0-9][0-9]-client-*
+CONFLICTS_INSTALL=	mysql5[0-68-9]-client \
+			mysql[0-46-9][0-9]-client \
+			mariadb[0-9][0-9]-client \
+			percona[0-9][0-9]-client
 
 CMAKE_ARGS+=	-DWITHOUT_SERVER=1 \
 		-DWITH_NDBCLUSTER=1
+
+CFLAGS+=	-DNDEBUG
+CXXFLAGS+=	-DNDEBUG
 
 USE_LDCONFIG+=	${PREFIX}/lib/mysql
 
@@ -37,7 +39,7 @@ OPTIONS_GROUP_PLUGINS=	SASLCLIENT
 SASLCLIENT_DESC=	SASL client plugin module
 SASLCLIENT_CMAKE_BOOL=	WITH_AUTHENTICATION_LDAP
 SASLCLIENT_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
-SASLCLIENT_BUILD_DEPENDS=	${LOCALBASE}/include/sasl/sasl.h:net/openldap24-sasl-client
+SASLCLIENT_USE=		OPENLDAP=yes
 OPTIONS_DEFAULT+=	SASLCLIENT
 
 # issue 166367: adding symlinks for back-compatibility with ${lib}_r

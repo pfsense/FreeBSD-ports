@@ -1,18 +1,22 @@
-# $FreeBSD$
-#
-
     COMMENT = Peer-to-peer network applications
 
     SUBDIR += amule
     SUBDIR += amule-devel
+    SUBDIR += autoscan
     SUBDIR += awgg
+    SUBDIR += bazarr
+    SUBDIR += bazarr-devel
     SUBDIR += bitcoin
     SUBDIR += bitcoin-daemon
     SUBDIR += bitcoin-utils
     SUBDIR += bitflu
-    SUBDIR += bnbt
+    SUBDIR += bitmark
+    SUBDIR += bitmark-cli
+    SUBDIR += bitmark-daemon
+    SUBDIR += bitmark-recorder
+    SUBDIR += btcheck
     SUBDIR += btpd
-    SUBDIR += couchpotato
+    SUBDIR += c-lightning
     SUBDIR += cpuminer
     SUBDIR += createtorrent
     SUBDIR += ctcs
@@ -28,21 +32,20 @@
     SUBDIR += eiskaltdcpp-gtk
     SUBDIR += eiskaltdcpp-lib
     SUBDIR += frost
-    SUBDIR += gkremldk
     SUBDIR += go-ethereum
+    SUBDIR += go-prysm
     SUBDIR += gtk-gnutella
     SUBDIR += gtorrentviewer
-    SUBDIR += hs-torrent
     SUBDIR += jackett
     SUBDIR += jigdo
     SUBDIR += ktorrent
     SUBDIR += libbt
     SUBDIR += liberator
     SUBDIR += libktorrent
-    SUBDIR += libpdtp
     SUBDIR += libswift
     SUBDIR += libtorrent
     SUBDIR += libtorrent-rasterbar
+    SUBDIR += lidarr
     SUBDIR += linuxdcpp
     SUBDIR += litecoin
     SUBDIR += litecoin-daemon
@@ -59,6 +62,7 @@
     SUBDIR += namecoin-utils
     SUBDIR += ncdc
     SUBDIR += opendchub
+    SUBDIR += openethereum
     SUBDIR += p5-Net-BitTorrent
     SUBDIR += p5-Net-BitTorrent-File
     SUBDIR += p5-Net-BitTorrent-PeerPacket
@@ -66,8 +70,8 @@
     SUBDIR += p5-WWW-BitTorrent
     SUBDIR += phex
     SUBDIR += py-libtorrent-rasterbar
-    SUBDIR += py-py2play
-    SUBDIR += py-transmissionrpc
+    SUBDIR += py-nicotine-plus
+    SUBDIR += py-transmission-rpc
     SUBDIR += py-tremc
     SUBDIR += py-vertex
     SUBDIR += qbittorrent
@@ -78,7 +82,6 @@
     SUBDIR += rtorrent
     SUBDIR += shx
     SUBDIR += sonarr
-    SUBDIR += squall
     SUBDIR += torrent-file-editor
     SUBDIR += torrentcheck
     SUBDIR += torrentsniff
@@ -88,11 +91,13 @@
     SUBDIR += transmission-gtk
     SUBDIR += transmission-qt
     SUBDIR += transmission-remote-gui
-    SUBDIR += tribler
+    SUBDIR += transmission-utils
+    SUBDIR += udpt
     SUBDIR += uhub
     SUBDIR += vuze
     SUBDIR += xmrig
     SUBDIR += zetacoin
-    SUBDIR += zetacoin-nox11
+    SUBDIR += zetacoin-daemon
+    SUBDIR += zetacoin-utils
 
 .include <bsd.port.subdir.mk>

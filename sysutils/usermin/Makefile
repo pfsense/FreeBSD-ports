@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	usermin
-PORTVERSION=	1.750
+PORTVERSION=	1.830
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.webmin.com/uupdates/:up \
-		SF/webadmin/${PORTNAME}/${PORTVERSION}:sf \
-		LOCAL/olgeni/:up
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:sf ${USERMIN_MODULES:S/gz$/gz:up/}
+		SF/webadmin/${PORTNAME}/${PORTVERSION}:sf
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:sf \
+		${USERMIN_MODULES:S/gz$/gz:up/}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	olgeni@FreeBSD.org
@@ -14,9 +12,9 @@ COMMENT=	Web-based interface for performing some user tasks
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	p5-Net-SSLeay>=0:security/p5-Net-SSLeay \
+RUN_DEPENDS=	p5-Authen-PAM>=0:security/p5-Authen-PAM \
 		p5-IO-Tty>=0:devel/p5-IO-Tty \
-		p5-Authen-PAM>=0:security/p5-Authen-PAM
+		p5-Net-SSLeay>=0:security/p5-Net-SSLeay
 
 NO_ARCH=	yes
 NO_BUILD=	yes

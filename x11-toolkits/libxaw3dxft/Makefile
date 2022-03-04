@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libxaw3dxft
-DISTVERSION=	1.6.2e
+DISTVERSION=	1.6.2h
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/sf-xpaint/${PORTNAME}
 DISTNAME=	libXaw3dXft-${DISTVERSION}
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-USES=		libtool pathfix pkgconfig tar:bzip2
+USES=		libtool pathfix pkgconfig tar:bzip2 xorg
 GNU_CONFIGURE=	yes
 USE_XORG=	x11 xext xft xmu xpm xt
 USE_LDCONFIG=	yes

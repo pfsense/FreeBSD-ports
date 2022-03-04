@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	sniproxy
 DISTVERSION=	0.6.0
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	krion@FreeBSD.org
@@ -11,7 +10,7 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libev.so:devel/libev \
-  		libpcre.so:devel/pcre \
+		libpcre.so:devel/pcre \
 		libudns.so:dns/udns
 
 USES=		autoreconf:build gettext pkgconfig

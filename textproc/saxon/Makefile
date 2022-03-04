@@ -1,8 +1,8 @@
 # Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
 
 PORTNAME=	saxon
 PORTVERSION=	6.5.5
+PORTREVISION=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/saxon6/${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION:S/./-/g}
@@ -14,7 +14,6 @@ LICENSE=	MPL10
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes

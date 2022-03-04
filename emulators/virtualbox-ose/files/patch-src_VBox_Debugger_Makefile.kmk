@@ -1,6 +1,6 @@
---- src/VBox/Debugger/Makefile.kmk.orig	2017-10-18 07:09:03 UTC
+--- src/VBox/Debugger/Makefile.kmk.orig	2021-01-07 15:37:12 UTC
 +++ src/VBox/Debugger/Makefile.kmk
-@@ -109,6 +109,7 @@ VBoxDbg_SOURCES = \
+@@ -110,6 +110,7 @@ VBoxDbg_SOURCES = \
  	VBoxDbgBase.cpp \
  	VBoxDbgConsole.cpp \
  	VBoxDbgStatsQt.cpp

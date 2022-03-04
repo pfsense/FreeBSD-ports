@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	japanese
 
 MAINTAINER=	dinoex@FreeBSD.org

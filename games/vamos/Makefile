@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	vamos
 PORTVERSION=	0.7.1
-PORTREVISION=	18
+PORTREVISION=	23
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -19,7 +18,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libpng.so:graphics/png
 
-USES=		compiler:c++11-lang libtool openal:al,alut pkgconfig
+USES=		compiler:c++11-lang gl gnome libtool openal:al,alut pkgconfig \
+		sdl xorg
 USE_CXXSTD=	c++98
 USE_XORG=	sm ice x11 xi xext xmu
 USE_GL=		glut
@@ -28,17 +28,16 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	ac_cv_lib_freeglut_glutGetModifiers=no \
 		--disable-unit-tests
 USE_LDCONFIG=	yes
-LLD_UNSAFE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
+LDFLAGS_i386=	-Wl,-znotext
 
 INFO=		vamos
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
 
 DESKTOP_ENTRIES="Vamos" "" ${PORTNAME} \

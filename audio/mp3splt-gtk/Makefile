@@ -1,8 +1,8 @@
 # Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
 
 PORTNAME=	mp3splt-gtk
 PORTVERSION=	0.9.2
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF/mp3splt/${PORTNAME}/${PORTVERSION}
 
@@ -11,6 +11,9 @@ COMMENT=	Utility to split mp3 and ogg files (via GTK Interface)
 
 LICENSE=	GPLv2
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: tree_columns
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: tree_columns
+
 LIB_DEPENDS=	libmp3splt.so:audio/libmp3splt \
 		libmad.so:audio/libmad \
 		libogg.so:audio/libogg \
@@ -18,11 +21,11 @@ LIB_DEPENDS=	libmp3splt.so:audio/libmp3splt \
 		libid3tag.so:audio/libid3tag \
 		libltdl.so:devel/libltdl
 
+USES=		desktop-file-utils gmake gnome pkgconfig
 INSTALLS_OMF=	yes
 USE_GSTREAMER1=	yes
-USE_GNOME=	gnomedocutils gtk30
+USE_GNOME=	gtk30
 GNU_CONFIGURE=	yes
-USES=		desktop-file-utils gmake pkgconfig
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

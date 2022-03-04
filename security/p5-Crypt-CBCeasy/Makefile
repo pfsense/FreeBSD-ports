@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Crypt-CBCeasy
 PORTVERSION=	0.24
 PORTREVISION=	2

@@ -1,10 +1,9 @@
 # Created by: Jev Björsell <ports@ecadlabs.com>
-# $FreeBSD$
 
 PORTNAME=	prometheus
 PORTVERSION=	1.8.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 PKGNAMESUFFIX=	1
 
@@ -14,8 +13,9 @@ COMMENT=	Systems monitoring and alerting toolkit
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go gmake
+USES=		cpe go
 USE_GITHUB=	yes
+GH_TUPLE=	golang:sys:fead79001313:golang_sys/vendor/golang.org/x/sys_fead79001313
 
 GO_PKGNAME=	github.com/${PORTNAME}/${PORTNAME}
 
@@ -26,24 +26,21 @@ GROUPS=		prometheus
 
 BUILD_USER?=	${USER}
 LD_FLAG_X_PREFIX=	-X ${GO_PKGNAME}/vendor/github.com/prometheus/common/version
-LD_FLAG_STRING=	-s \
-				${LD_FLAG_X_PREFIX}.Version=${PORTVERSION} \
-				${LD_FLAG_X_PREFIX}.Revision=${PORTREVISION} \
-				${LD_FLAG_X_PREFIX}.Branch=release-${PORTVERSION:R} \
-				${LD_FLAG_X_PREFIX}.BuildUser=${BUILD_USER}
+GO_BUILDFLAGS=	-ldflags "\
+		-s \
+		${LD_FLAG_X_PREFIX}.Version=${PORTVERSION} \
+		${LD_FLAG_X_PREFIX}.Revision=${PORTREVISION} \
+		${LD_FLAG_X_PREFIX}.Branch=release-${PORTVERSION:R} \
+		${LD_FLAG_X_PREFIX}.BuildUser=${BUILD_USER}"
+GO_TARGET=	./cmd/prometheus \
+		./cmd/promtool
 
-do-build:
-	( cd ${GO_WRKSRC}/cmd/prometheus ; \
-		${SETENV} ${MAKE_ENV} ${GO_ENV} go install -ldflags "${LD_FLAG_STRING}" )
+post-patch:
+	${RM} -r ${WRKSRC}/vendor/golang.org/x/sys
+	${MV} ${WRKSRC}/vendor/golang.org/x/sys_fead79001313 ${WRKSRC}/vendor/golang.org/x/sys
 
-	( cd ${GO_WRKSRC}/cmd/promtool ; \
-		${SETENV} ${MAKE_ENV} ${GO_ENV} go install -ldflags "${LD_FLAG_STRING}" )
-
-do-install:
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/prometheus ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/promtool ${STAGEDIR}${PREFIX}/bin
+post-install:
 	${INSTALL_DATA} ${WRKSRC}/documentation/examples/prometheus.yml ${STAGEDIR}${LOCALBASE}/etc/prometheus.yml.sample
-
 	${MKDIR} ${STAGEDIR}${DESTDIR}/var/db/prometheus
 
 .include <bsd.port.mk>

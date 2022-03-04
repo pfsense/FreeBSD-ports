@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libmediainfo
-PORTVERSION=	18.12
+PORTVERSION=	21.09
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -24,6 +23,7 @@ TINYXML2_DESC=	Use textproc/tinyxml2 instead of bundled one
 
 USES=		alias compiler:c++11-lang libtool localbase pathfix pkgconfig tar:xz
 
+CFLAGS+=	-D_POSIX_PRIORITY_SCHEDULING
 CONFIGURE_ARGS=	--enable-shared --enable-static
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -38,14 +38,6 @@ MMS_CONFIGURE_ON=	--with-libmms=${LOCALBASE}
 MMS_LIB_DEPENDS=	libmms.so:net/libmms
 TINYXML2_CONFIGURE_ON=	--with-libtinyxml2=yes
 TINYXML2_LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2
-
-post-patch:
-	@${REINPLACE_CMD} \
-		-e 's|lib/pkgconfig/|libdata/pkgconfig/|g' \
-		-e 's|-DMEDIAINFO_LIBMMS_FROMSOURCE||g' \
-		-e 's|with_libmms/pkgconfig/|with_libmms/libdata/pkgconfig/|' \
-		-e 's|src/.libs|lib|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e '1 s|bin/bash|bin/sh|' ${WRKSRC}/libmediainfo-config.in
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/libmediainfo.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/libmediainfo.pc

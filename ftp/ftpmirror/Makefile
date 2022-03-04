@@ -1,10 +1,9 @@
 # Created by: Yasuhiro Fukuma <yasuf@big.or.jp>
-# $FreeBSD$
 
 PORTNAME=	ftpmirror
 PORTVERSION=	1.96
 PORTREVISION=	5
-CATEGORIES=	ftp ipv6
+CATEGORIES=	ftp
 MASTER_SITES=	ftp://ftp.sai.msu.su/pub/unix/FTP/mirror/
 
 MAINTAINER=	garga@FreeBSD.org

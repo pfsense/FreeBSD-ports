@@ -1,9 +1,8 @@
 # Created by: Adrian Steinmann <ast@marabu.ch>
-# $FreeBSD$
 
 PORTNAME=	nostromo
 PORTVERSION=	1.9.6
-CATEGORIES=	www ipv6
+CATEGORIES=	www
 MASTER_SITES=	http://www.nazgul.ch/dev/
 
 MAINTAINER=	loox@e-shell.net
@@ -20,6 +19,9 @@ USES=		uidfix ssl
 
 MAKE_ENV?=	MAKEOBJDIR=. NOSTROMO_DIR=${NOSTROMO_DIR} MANDIR=${PREFIX}/man/man
 PLIST_SUB+=	NOSTROMODIR="${NOSTROMO_DIR}" NOSTROMOLOGDIR="${NOSTROMO_LOGDIR}"
+
+# XXX PIE with static libraries is currently unsupported.
+MAKE_ENV+=	WITHOUT_PIE=true
 
 post-extract:
 	@${REINPLACE_CMD} -e "s@/var/nostromo@${NOSTROMO_DIR}@g" \

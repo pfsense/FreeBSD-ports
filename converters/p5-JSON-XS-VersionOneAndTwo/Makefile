@@ -1,5 +1,4 @@
 # Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
 
 PORTNAME=	JSON-XS-VersionOneAndTwo
 PORTVERSION=	0.31
@@ -8,7 +7,7 @@ CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Support versions 1 and 2 of JSON::XS
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

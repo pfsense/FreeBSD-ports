@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xclipboard
 PORTVERSION=	1.1.3
 PORTEPOCH=	1
@@ -10,7 +8,7 @@ COMMENT=	X clipboard client
 
 LICENSE=	MIT
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	xt xaw
 
 .include <bsd.port.mk>

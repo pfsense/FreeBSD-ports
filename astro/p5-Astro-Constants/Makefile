@@ -1,8 +1,7 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Astro-Constants
-PORTVERSION=	0.1200
+PORTVERSION=	0.1400
 CATEGORIES=	astro perl5 science
 MASTER_SITES=	CPAN/Astro
 DISTNAME=	${PORTNAME}-${PORTVERSION:C|00$||}

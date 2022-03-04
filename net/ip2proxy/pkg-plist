@@ -1,0 +1,5 @@
+include/IP2Proxy.h
+lib/libIP2Proxy.a
+lib/libIP2Proxy.so
+lib/libIP2Proxy.so.2
+lib/libIP2Proxy.so.2.0.0

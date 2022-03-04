@@ -132,12 +132,14 @@ include/isc/bind9.h
 include/isc/boolean.h
 include/isc/buffer.h
 include/isc/bufferlist.h
+include/isc/cmocka.h
 include/isc/commandline.h
 include/isc/condition.h
 include/isc/counter.h
 include/isc/crc64.h
 include/isc/deprecated.h
 include/isc/dir.h
+include/isc/endian.h
 include/isc/entropy.h
 include/isc/errno.h
 include/isc/error.h
@@ -202,10 +204,12 @@ include/isc/safe.h
 include/isc/serial.h
 include/isc/sha1.h
 include/isc/sha2.h
+include/isc/siphash.h
 include/isc/sockaddr.h
 include/isc/socket.h
 include/isc/stat.h
 include/isc/stats.h
+include/isc/stdatomic.h
 include/isc/stdio.h
 include/isc/stdlib.h
 include/isc/stdtime.h
@@ -220,6 +224,7 @@ include/isc/time.h
 include/isc/timer.h
 include/isc/tm.h
 include/isc/types.h
+include/isc/utf8.h
 include/isc/util.h
 include/isc/version.h
 include/isc/xml.h
@@ -266,8 +271,6 @@ include/pk11/site.h
 include/pkcs11/cryptoki.h
 include/pkcs11/eddsa.h
 include/pkcs11/pkcs11.h
-include/pkcs11/pkcs11f.h
-include/pkcs11/pkcs11t.h
 lib/libbind9.a
 lib/libdns.a
 lib/libirs.a

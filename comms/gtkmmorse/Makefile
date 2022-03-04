@@ -1,10 +1,9 @@
 # Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gtkmmorse
 PORTVERSION=	0.9.27
-PORTREVISION=	5
-CATEGORIES=	comms hamradio
+PORTREVISION=	6
+CATEGORIES=	comms education hamradio
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	hamradio@FreeBSD.org

@@ -1,9 +1,8 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ftpcopy
 PORTVERSION=	0.6.7
-CATEGORIES=	ftp ipv6
+CATEGORIES=	ftp
 MASTER_SITES=	http://www.ohse.de/uwe/ftpcopy/
 
 MAINTAINER=	mandree@FreeBSD.org
@@ -11,16 +10,18 @@ COMMENT=	Command line FTP tools for listing and mirroring
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		fails to build: regparm is not valid on this platform
-BROKEN_armv6=		fails to build: regparm is not valid on this platform
-BROKEN_armv7=		fails to build: regparm is not valid on this platform
-
 USES=		perl5
 USE_PERL5=	build
 
 WRKSRC=		${WRKDIR}/web/${DISTNAME}
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+USES+=		compiler:gcc-c++11-lib
+.endif
 
 pre-build:
 	${ECHO} "${CC}" >${WRKSRC}/src/conf-cc

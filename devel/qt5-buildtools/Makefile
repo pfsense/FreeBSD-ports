@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	buildtools
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -11,7 +10,7 @@ COMMENT=	Qt build tools
 USES=		compiler:c++11-lang libtool perl5 qmake:no_env qt-dist:5,base
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-gui -no-xcb
-USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
+QT_BINARIES=	yes
 
 BUILD_WRKSRC=	${WRKSRC}/src/tools/bootstrap
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
@@ -40,5 +39,6 @@ post-install:
 .endfor
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/syncqt.pl \
 		${STAGEDIR}${PREFIX}/${QT_BINDIR_REL}/syncqt.pl
-
+	${RLN} ${STAGEDIR}${QT_BINDIR}/moc ${STAGEDIR}${PREFIX}/bin/moc-qt5
+	${RLN} ${STAGEDIR}${QT_BINDIR}/rcc ${STAGEDIR}${PREFIX}/bin/rcc-qt5
 .include <bsd.port.mk>

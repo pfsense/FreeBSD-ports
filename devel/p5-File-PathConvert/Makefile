@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	File-PathConvert
 PORTVERSION=	0.9
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	File::PathConvert - Various path conversion routines
+COMMENT=	Various path conversion routines for Perl
 
 PORTSCOUT=	skipv:0.85
 

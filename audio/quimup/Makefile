@@ -1,8 +1,8 @@
 # Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
 
 PORTNAME=	quimup
 PORTVERSION=	1.4.4
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}
 DISTNAME=	Quimup_${PORTVERSION}_source

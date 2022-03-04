@@ -1,5 +1,4 @@
 # Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	right_aws
 PORTVERSION=	3.1.0
@@ -14,10 +13,10 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-right_http_connection>=1.2.5:net/rubygem-right_http_connection
 
-NO_ARCH=	yes
-
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	LIBXML
 LIBXML_DESC=	Use libxml instead of REXML

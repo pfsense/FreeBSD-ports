@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	grabc
 PORTVERSION=	1.1
@@ -8,12 +7,13 @@ CATEGORIES=	x11
 MASTER_SITES=	http://muquit.com/muquit/software/grabc/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Grab a color from screen
 
 LICENSE=	GPLv2 # specified on the website
 
 PLIST_FILES=	bin/grabc
+USES=		xorg
 USE_XORG=	x11
 CFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib -lX11

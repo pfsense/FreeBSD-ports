@@ -1,21 +1,26 @@
 # Created by: Nobuhiro Yasutomi
-# $FreeBSD$
 
 PORTNAME=	emiclock
 PORTVERSION=	2.0.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-clocks
 MASTER_SITES=	LOCAL/nyan
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Hyper-animated face analog clock for X11
 
-USES=		imake
+LICENSE=	UNKNOWN
+LICENSE_NAME=	Emi Clock for X11
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT.en
+LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
+
+USES=		iconv:build imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 
 LANGRES=	resources/R6/EUC/EmiClock.ad
 LANGDIR=	${PREFIX}/lib/X11/ja_JP.eucJP/app-defaults
 LANGDIR2=	${PREFIX}/lib/X11/ja_JP.EUC/app-defaults
+LANGDIR_UTF8=	${PREFIX}/lib/X11/ja_JP.UTF-8/app-defaults
 
 OPTIONS_DEFINE=	DOCS
 
@@ -36,6 +41,9 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${LANGDIR2}
 	${LN} -sf ../../ja_JP.eucJP/app-defaults/EmiClock \
 		${STAGEDIR}${LANGDIR2}/EmiClock
+	@${MKDIR} ${STAGEDIR}${LANGDIR_UTF8}
+	${ICONV_CMD} -f euc-jp -t utf-8 ${WRKSRC}/${LANGRES} > \
+		${STAGEDIR}${LANGDIR_UTF8}/EmiClock
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

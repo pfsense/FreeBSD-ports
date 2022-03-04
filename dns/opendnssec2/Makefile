@@ -1,8 +1,7 @@
 # Created by: Jaap Akkerhuis <jaap@NLnetLabs.nl>
-# $FreeBSD$
 
 PORTNAME=	opendnssec
-PORTVERSION=	2.1.3
+DISTVERSION=	2.1.10
 CATEGORIES=	dns
 MASTER_SITES=	http://dist.opendnssec.org/source/
 PKGNAMESUFFIX=	2
@@ -14,54 +13,50 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	ldns>=1.6.16:dns/ldns
-LIB_DEPENDS=	libldns.so:dns/ldns
+LIB_DEPENDS=	libldns.so:dns/ldns \
+		libxml2.so:textproc/libxml2
 
-USES=		ssl
+USES=		autoreconf cpe libtool ssl
 USE_RC_SUBR=	opendnssec
-USE_GNOME=	libxml2
-USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir="${PREFIX}/var" \
 		--with-ssl=${OPENSSLBASE}
 
-SUB_FILES=	pkg-message
+INSTALL_TARGET=	install-strip
 
 CONFLICTS=	opendnssec-1.[0-4]*
+
+SUB_FILES=	pkg-message
 
 USERS=		opendnssec
 GROUPS=		opendnssec
 
 PORTDOCS=	MIGRATION NEWS README.md
-MIGRATE=	README.md find_problematic_zones.sql \
-		convert_mysql mysql_convert.sql \
-		convert_sqlite sqlite_convert.sql
+MIGRATE=	README.md find_problematic_zones.sql convert_mysql \
+		mysql_convert.sql convert_sqlite sqlite_convert.sql
 CONVERT=	convert_mysql_to_sqlite convert_sqlite_to_mysql
 SCHEMAS=	schema.mysql schema.sqlite
 
-OPTIONS_DEFINE=		SOFTHSM DOCS
+OPTIONS_DEFINE=		DOCS SOFTHSM
 OPTIONS_DEFAULT=	SQLITE
+OPTIONS_SINGLE=		DB
+OPTIONS_SINGLE_DB=	MYSQL SQLITE
 OPTIONS_SUB=		yes
 
-OPTIONS_SINGLE=		DB
-OPTIONS_SINGLE_DB=	SQLITE MYSQL
+MYSQL_DESC=	Use MYSQL backend
+SOFTHSM_DESC=	SoftHSM cryptographic store for PKCS \#11 interface
+SQLITE_DESC=	Use SQLite backend
 
-SOFTHSM_DESC=		SoftHSM cryptographic store for PKCS \#11 interface
-
-MYSQL_DESC=		Use MYSQL backend
-SQLITE_DESC=		Use SQLite backend
-
-MYSQL_CONFIGURE_ON=	--with-enforcer-database=mysql
 MYSQL_USES=		mysql
-
+MYSQL_CONFIGURE_ON=	--with-enforcer-database=mysql
+SOFTHSM_RUN_DEPENDS=	softhsm2>=2.5.0:security/softhsm2
+SOFTHSM_CONFIGURE_ON=	--with-pkcs11-softhsm=${LOCALBASE}/lib/softhsm/libsofthsm2.so
+SQLITE_BUILD_DEPENDS=	sqlite3>=3.3.9:databases/sqlite3
 SQLITE_USES=		sqlite
 SQLITE_CONFIGURE_ON=	--with-enforcer-database=sqlite3
-SQLITE_BUILD_DEPENDS=	sqlite3>=3.3.9:databases/sqlite3
 
-SOFTHSM_CONFIGURE_ON=	--with-pkcs11-softhsm=${LOCALBASE}/lib/softhsm/libsofthsm.so
-SOFTHSM_RUN_DEPENDS=	softhsm>=1.2.0:security/softhsm
-
-post-patch:
+pre-build:
 	${REINPLACE_CMD} -e "s|\(-lcrypto\)|-L${OPENSSLLIB} \1|g" \
 		${WRKSRC}/configure
 

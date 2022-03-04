@@ -1,9 +1,8 @@
 # Created by: Naram Qashat <cyberbotx@cyberbotx.com>
-# $FreeBSD$
 
 PORTNAME=	pHash
 PORTVERSION=	0.9.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia devel
 MASTER_SITES=	http://phash.org/releases/ \
 		http://www.cyberbotx.com/pHash/
@@ -17,7 +16,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpHash.so:multimedia/pHash
 
-USES=		php:ext
+USES=		compiler:c++11-lang php:ext
+# Does not build for PHP 8.0
+IGNORE_WITH_PHP=	80
 
 WRKSRC_SUBDIR=	bindings/php
 

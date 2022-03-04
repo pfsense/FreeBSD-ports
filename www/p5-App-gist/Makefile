@@ -1,5 +1,4 @@
 # Created by: Denny Lin <dennylin93@hs.ntnu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	App-gist
 PORTVERSION=	0.16
@@ -22,7 +21,7 @@ RUN_DEPENDS=	p5-App-Cmd>=0:devel/p5-App-Cmd \
 		p5-Pithub>=0:devel/p5-Pithub \
 		p5-Term-ReadKey>=0:devel/p5-Term-ReadKey
 
-CONFLICTS=	gist-[0-9]*
+CONFLICTS=	gist
 
 USES=		perl5
 USE_PERL5=	configure

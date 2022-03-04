@@ -1,5 +1,4 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	talkfilters
 PORTVERSION=	2.3.8
@@ -13,7 +12,7 @@ COMMENT=	Set of filters to convert English text to various stereotyped dialects
 
 LICENSE=	GPLv2
 
-CONFLICTS=	jive* chef* filters-*
+CONFLICTS=	chef filters
 
 USES=		libtool pathfix
 GNU_CONFIGURE=	yes

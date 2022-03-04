@@ -1,5 +1,4 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bugsquish
 PORTVERSION=	0.0.6
@@ -18,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 LIB_DEPENDS=	libogg.so:audio/libogg
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	image mixer sdl
 
 PORTDOCS=	AUTHORS.txt CHANGES.txt README.txt

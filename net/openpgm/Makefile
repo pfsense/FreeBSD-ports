@@ -1,10 +1,9 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	openpgm
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	5-2-122
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net devel
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/

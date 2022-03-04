@@ -1,17 +1,21 @@
 # Created by: Nathan Ahlstrom <nra@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	stuffit
 PORTVERSION=	5.2.0.611
 PORTREVISION=	1
 CATEGORIES=	archivers linux
-MASTER_SITES=	http://my.smithmicro.com/downloads/files/
+MASTER_SITES=	https://webdiis.unizar.es/pub/unix/archive/ \
+		http://mirror.sobukus.de/files/grimoire/z-archive/
 DISTNAME=	stuffit520.611linux-i386
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stuffit Archive Creator and Expander
 
-RESTRICTED=	Only unmodified original package can be distributed
+# Converted from RESTRICTED
+LICENSE=	STUFFIT
+LICENSE_NAME=	STUFFIT
+LICENSE_TEXT=	Only unmodified original package can be distributed
+LICENSE_PERMS=	auto-accept
 
 ONLY_FOR_ARCHS=	i386 amd64
 

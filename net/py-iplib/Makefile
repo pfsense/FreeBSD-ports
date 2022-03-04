@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	iplib
 PORTVERSION=	1.2.1
@@ -12,7 +11,7 @@ COMMENT=	Convert amongst many different IPv4 notations
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils flavors
 
 .include <bsd.port.mk>

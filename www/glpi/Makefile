@@ -1,8 +1,7 @@
 # Created by: Mathias Monnerville <mathias@monnerville.com>
-# $FreeBSD$
 
 PORTNAME=	glpi
-PORTVERSION=	9.3.1
+PORTVERSION=	9.5.5
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/glpi-project/glpi/releases/download/${PORTVERSION}/
@@ -14,8 +13,8 @@ LICENSE=	GPLv2
 
 USES=		cpe gettext php tar:tgz
 CPE_VENDOR=	glpi-project
-USE_PHP=	ctype curl dom fileinfo filter gd json mbstring mysqli \
-		pcre session simplexml wddx xml xmlrpc zlib
+USE_PHP=	bz2 ctype curl exif fileinfo gd iconv intl json mbstring \
+		mysqli opcache openssl session simplexml sodium xml xmlrpc zip zlib
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_ARCH=	yes
@@ -33,10 +32,10 @@ LDAP_USE=	PHP=ldap
 IMAP_USE=	PHP=imap
 
 post-extract:
-	@${FIND} ${WRKSRC} -name '*~' -delete
+	${FIND} ${WRKSRC} \( -name '*~' -o -name '*.orig' -o -name '*.rej' \) -delete
 
 do-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR}
+	@${MKDIR} ${STAGEDIR}${WWWDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
 
 .include <bsd.port.mk>

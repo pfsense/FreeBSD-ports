@@ -1,11 +1,10 @@
 # Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
 
 PORTNAME=	mol2ps
 PORTVERSION=	0.4b
-PORTREVISION=	2
+PORTREVISION=	9
 CATEGORIES=	science
-MASTER_SITES=	http://merian.pch.univie.ac.at/pch/download/chemistry/${PORTNAME}/
+MASTER_SITES=	https://homepage.univie.ac.at/norbert.haider/download/chemistry/mol2ps/
 DISTNAME=	${PORTNAME}
 EXTRACT_SUFX=	.pas
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
@@ -25,8 +24,6 @@ USES=		fpc
 USE_FPC=	rtl-objpas
 
 PLIST_FILES=	bin/mol2eps bin/mol2ps bin/mol2svg %%DATADIR%%/color.conf
-
-LLD_UNSAFE=	yes
 
 do-build:
 	(cd ${WRKSRC} && ${LOCALBASE}/bin/fpc mol2ps -S2 -O3)

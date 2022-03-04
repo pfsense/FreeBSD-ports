@@ -1,11 +1,8 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	cmark
-PORTVERSION=	0.28.3
+DISTVERSION=	0.30.2
 CATEGORIES=	textproc
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	CommonMark parsing and rendering library and program in C
 
 LICENSE=	BSD2CLAUSE

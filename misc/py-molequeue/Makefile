@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	molequeue
 DISTVERSION=	0.9.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	https://github.com/openchemistry/molequeue/releases/download/${DISTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyzmq>0:net/py-pyzmq@${PY_FLAVOR}
 
-USES=		cmake compiler:c++11-lang python
+USES=		cmake compiler:c++11-lang python:3.6+
 USE_PYTHON=	flavors
 
 WRKSRC_SUBDIR=	python

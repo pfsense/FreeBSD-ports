@@ -1,10 +1,9 @@
 # Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
 
 PORTNAME=	icecast
 DISTVERSIONPREFIX=	icecast-
-DISTVERSION=	2.4.0-kh10
-CATEGORIES=	audio net ipv6
+DISTVERSION=	2.4.0-kh15
+CATEGORIES=	audio net
 PKGNAMESUFFIX=	-kh
 
 MAINTAINER=	ports@FreeBSD.org

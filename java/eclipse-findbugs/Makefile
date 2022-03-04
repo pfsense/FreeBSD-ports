@@ -1,5 +1,4 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	findbugs
 DISTVERSION=	3.0.1.20150306-5afe4d1
@@ -17,7 +16,6 @@ RUN_DEPENDS=	eclipse:java/eclipse
 USES=		zip
 NO_BUILD=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_OS=	native
 
 PLIST_SUB=	\

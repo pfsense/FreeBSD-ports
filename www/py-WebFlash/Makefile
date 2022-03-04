@@ -1,5 +1,4 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	WebFlash
 PORTVERSION=	0.1a9
@@ -13,7 +12,7 @@ COMMENT=	Library to display flash messages in python web applications
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

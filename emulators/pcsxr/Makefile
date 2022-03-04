@@ -1,9 +1,8 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	pcsxr
 PORTVERSION=	1.9.95.20180604
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -17,10 +16,8 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libcdio.so:sysutils/libcdio \
 		libavformat.so:multimedia/ffmpeg
 
-WRKSRC_SUBDIR=	${PORTNAME}
-
 USES=		cmake desktop-file-utils dos2unix gettext gl gnome iconv \
-		libarchive libtool pkgconfig tar:bzip2
+		libarchive libtool pkgconfig sdl tar:bzip2 xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	martymac
@@ -32,7 +29,10 @@ USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool glib20
 USE_XORG=	ice sm x11 xv xext xxf86vm xtst
 USE_SDL=	sdl2
 USE_GL=	gl
-INSTALLS_ICONS=	yes
+
+WRKSRC_SUBDIR=	${PORTNAME}
+
+CFLAGS+=	-I${LOCALBASE}/include/harfbuzz
 
 CMAKE_ARGS+=	-DDL_LIB:STRING="" \
 		-DMANPREFIX:STRING="${MANPREFIX}" \

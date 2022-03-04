@@ -1,10 +1,9 @@
 # Created by: Adam David <adam@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nntp
 PORTVERSION=	1.5.12.2
 PORTREVISION=	10
-CATEGORIES=	news ipv6
+CATEGORIES=	news
 MASTER_SITES=	ftp://ftp.dinoex.org/pub/c-news/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
 

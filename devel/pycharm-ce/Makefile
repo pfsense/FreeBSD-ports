@@ -1,8 +1,7 @@
 # Created by: Boris Samorodov <bsam@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pycharm-ce
-PORTVERSION=	2018.3.5
+PORTVERSION=	2021.2.2
 CATEGORIES=	devel java python
 MASTER_SITES=	https://download.jetbrains.com/python/ \
 		http://download.jetbrains.com/python/
@@ -18,8 +17,9 @@ RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 
 USES=		python:run shebangfix
 SHEBANG_FILES=	bin/printenv.py bin/restart.py
+
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
+JAVA_VERSION=	11+
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -33,12 +33,12 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	@${TAR} -czf - -C ${WRKSRC} . | ${TAR} xzf - -C ${STAGEDIR}${DATADIR}
 # Linux/Windows/OS X only so remove them
-	@${RM} ${STAGEDIR}${DATADIR}/bin/*fsnotifier*
+	@${RM} ${STAGEDIR}${DATADIR}/bin/*fsnotifier* ${STAGEDIR}${DATADIR}/bin/*.so
 # Remove the bundled native Pty4J support libraries, they are replaced
 # by java/intellij-pty4j
 	@${RM} -r ${STAGEDIR}${DATADIR}/lib/pty4j-native
 # Remove bundled linux-only JRE
-	@${RM} -r ${STAGEDIR}${DATADIR}/jre64
+	@${RM} -r ${STAGEDIR}${DATADIR}/jbr
 	@${RM} -r ${STAGEDIR}${DATADIR}/helpers/pydev/pydevd_attach_to_process
 	@${RM} ${STAGEDIR}${DATADIR}/lib/pty4j-0.5.jar
 	${INSTALL_SCRIPT} ${WRKDIR}/pycharm ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

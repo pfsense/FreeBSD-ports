@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	csoap
 PORTVERSION=	1.1.0
@@ -12,7 +11,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client/server SOAP library written in pure C
 
 GNU_CONFIGURE=	yes
-USES=		pathfix libtool
+USES=		gnome libtool pathfix
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip

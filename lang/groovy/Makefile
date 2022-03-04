@@ -1,8 +1,7 @@
 # Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	groovy
-DISTVERSION=	2.4.16
+DISTVERSION=	2.4.21
 CATEGORIES=	lang java
 MASTER_SITES=	http://dl.bintray.com/groovy/maven/
 DISTFILES=	apache-groovy-binary-${PORTVERSION}${EXTRACT_SUFX}
@@ -12,10 +11,9 @@ COMMENT=	Agile dynamic language for the JVM
 
 LICENSE=	APACHE20
 
-USES=		zip
+USES=		cpe zip
+CPE_VENDOR=	apache
 USE_JAVA=	yes
-
-JAVA_VERSION=	1.7+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

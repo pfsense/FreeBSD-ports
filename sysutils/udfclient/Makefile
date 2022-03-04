@@ -1,20 +1,18 @@
-# Created by: Andriy Gapon <avg@icyb.net.ua>
-# $FreeBSD$
-
 PORTNAME=	udfclient
-PORTVERSION=	0.8.8
+PORTVERSION=	0.8.11
 CATEGORIES=	sysutils
-MASTER_SITES=	OPENBSD/distfiles \
-		LOCAL/miwi
+MASTER_SITES=	http://www.13thmonkey.org/udfclient/releases/
 DISTFILES=	UDFclient.${PORTVERSION}.tgz
 
-MAINTAINER=	avg@icyb.net.ua
+MAINTAINER=	avg@FreeBSD.org
 COMMENT=	Tools for UDF filesystem
 
 LICENSE=	ClArtistic
 
 WRKSRC=		${WRKDIR}/UDFclient.${PORTVERSION}
 
+USES=		cpe
+CPE_VENDOR=	13thmonkey
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	FUSE DEBUG
@@ -34,13 +32,13 @@ UDFCLIENTFS_NAME=	udfclientfs
 UDFCLIENTFS_VERSION=	0.6
 UDFCLIENTFS_DIR=	${WRKDIR}/udfclientfs
 
-MASTER_SITES+=	http://www.icyb.net.ua/~avg/distfiles/:fuse \
-		LOCAL/avg:fuse
+MASTER_SITES+=	LOCAL/avg:fuse
 DISTFILES+=	${UDFCLIENTFS_NAME}-${UDFCLIENTFS_VERSION}.tgz:fuse
 EXTRA_PATCHES+=	${UDFCLIENTFS_DIR}/${UDFCLIENTFS_NAME}.patch
 PATCH_ARGS+=	--ignore-whitespace
 
-USES+=		fuse
+USES+=		cpe fuse
+CPE_VENDOR=	13thmonkey
 
 PLIST_FILES+=	bin/${UDFCLIENTFS_NAME}
 .endif

@@ -1,18 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	jellyfish
-PORTVERSION=	0.6.1
-CATEGORIES=	devel
+PORTVERSION=	0.8.9
+CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library for doing approximate and phonetic matching of strings
 
 LICENSE=	BSD2CLAUSE
-LICENSE_FILES=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
+
+post-install:
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

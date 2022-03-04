@@ -1,53 +1,40 @@
-# $FreeBSD$
-
 PORTNAME=	svt-av1
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.8.7
+PORTREVISION=	1
 CATEGORIES=	multimedia
+
+PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
+PATCHFILES+=	284ef885f85f.patch:-p1 # https://gitlab.com/AOMediaCodec/SVT-AV1/-/merge_requests/1704
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Scalable AV1 encoder
 
-LICENSE=	BSD2CLAUSE+PATENT
-LICENSE_GROUPS=	FSF OSI COPYFREE
-LICENSE_NAME=	BSD-2-Clause Plus Patent License
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE=	BSD2CLAUSE BSD3CLAUSE MIT
+LICENSE_COMB=	multi
+LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/LICENSE.md
+LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/third_party/fastfeat/LICENSE
+LICENSE_FILE_MIT=		${WRKSRC}/third_party/safestringlib/LICENSE
 
-ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	uses x86-64 assembly
+BROKEN_i386=	https://gitlab.com/AOMediaCodec/SVT-AV1/-/issues/1231
 
 BUILD_DEPENDS=	nasm:devel/nasm
 
 USES=		cmake compiler:c11
-USE_GITHUB=	yes
+USE_GITLAB=	yes
 USE_LDCONFIG=	yes
-GH_ACCOUNT=	OpenVisualCloud
-GH_PROJECT=	SVT-AV1
-CMAKE_OFF=	BUILD_TESTING # no useful tests yet
+GL_ACCOUNT=	AOMediaCodec
+GL_PROJECT=	SVT-AV1
+GL_COMMIT=	3971c982311d49f9355dc8dccdcf8d21b70fa624
+CMAKE_ON=	ENABLE_NASM
+CMAKE_OFF=	NATIVE
 
-post-patch:
-# Default CFLAGS are already set by USES=cmake
-	@${REINPLACE_CMD} -i .flags -E -e 's/ -mavx//' \
-		-e 's/CMAKE_C_FLAGS "/&$${CMAKE_C_FLAGS} /' \
-		-e '/C_FLAGS_(RELEASE|DEBUG)/d' \
-		-e '/NASM_FLAGS_DEBUG/d' \
-		${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -i .flags -e 's/-march=core-avx2/-mavx2/' \
-		${WRKSRC}/Source/Lib/Common/ASM_AVX2/CMakeLists.txt \
-# Avoid lang/gcc* dependency
-	@${REINPLACE_CMD} -i .gcc -e 's/gcc-//' \
-		-e '/CMAKE_C/{ s/STREQUAL/MATCHES/; s/"GNU/&|Clang/; }' \
-		${WRKSRC}/CMakeLists.txt \
-		${WRKSRC}/Source/Lib/Common/*/CMakeLists.txt
-# Avoid platform whitelists for generic non-Windows code
-	@${REINPLACE_CMD} -i .opsys 's/Linux/${OPSYS}/' \
-		${WRKSRC}/CMakeLists.txt \
-		${WRKSRC}/Source/Lib/*/*/CMakeLists.txt
-	@${GREP} --exclude='*/third_party/*' -Flr '__linux' ${WRKSRC} | ${XARGS} \
-		${REINPLACE_CMD} -i .opsys -E 's/__linux(__)?/__${OPSYS}__/'
-# Avoid -msse4.1 for (unused) function not under Source/Lib/ASM_SSE4_1/
-	@${REINPLACE_CMD} -e '/_sse4_1/,/}/d; /smmintrin\.h/d' \
-		${WRKSRC}/Source/Lib/Common/Codec/EbInterPrediction.c
+OPTIONS_DEFINE=	LTO
+OPTIONS_DEFAULT=LTO
+OPTIONS_EXCLUDE_powerpc64=	${"${/usr/bin/ld:L:tA}"==/usr/bin/ld.lld:?LTO:} # LLVM bug 47353
+OPTIONS_EXCLUDE_riscv64=	LTO
+
+LTO_CMAKE_BOOL=		CMAKE_INTERPROCEDURAL_OPTIMIZATION
+LTO_CMAKE_ON=		-DCMAKE_POLICY_DEFAULT_CMP0069:STRING=NEW
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	googleapis-common-protos
-PORTVERSION=	1.3.8
+PORTVERSION=	1.3.12
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,9 +10,9 @@ COMMENT=	Common gRPC and protocol buffer classes used in Google APIs
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-google-protobuf>=3.0:devel/rubygem-google-protobuf \
-		rubygem-googleapis-common-protos-types>=1.0:devel/rubygem-googleapis-common-protos-types \
-		rubygem-grpc>=1.0:net/rubygem-grpc
+RUN_DEPENDS=	rubygem-google-protobuf>=3.14<4:devel/rubygem-google-protobuf \
+		rubygem-googleapis-common-protos-types>=1.2<2:devel/rubygem-googleapis-common-protos-types \
+		rubygem-grpc>=1.27<2:net/rubygem-grpc
 
 USES=		gem
 USE_RUBY=	yes

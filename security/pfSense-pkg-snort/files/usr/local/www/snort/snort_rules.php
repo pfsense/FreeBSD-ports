@@ -3,9 +3,9 @@
  * snort_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ require_once("/usr/local/pkg/snort/snort.inc");
 global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
-$snortbindir = SNORT_PBI_BINDIR;
+$snortbindir = SNORT_BINDIR;
 $rules_map = array();
 $categories = array();
 $pconfig = array();
@@ -54,8 +54,9 @@ if (is_null($id)) {
 		$_POST['openruleset'] = $response[1];
 	}
 	else {
-	header("Location: /snort/snort_interfaces.php");
-	exit;
+		unset($a_rule);
+		header("Location: /snort/snort_interfaces.php");
+		exit;
 	}
 }
 
@@ -930,14 +931,16 @@ elseif ($_POST['apply']) {
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
 
-	if (snort_is_running($if_real))
+	if (snort_is_running($a_rule[$id]['uuid']))
 		$savemsg = gettext("Snort is 'live-reloading' the new rule set.");
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
-}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Rules"), gettext("{$if_friendly}"));
+}
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Rules");
 include("head.inc");
 
 // Display error messages if we have any
@@ -993,7 +996,6 @@ $menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
 	$tab_array[] = array($menu_iface . gettext("Rules"), true, "/snort/snort_rules.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
 display_top_tabs($tab_array, true, 'nav nav-tabs');
@@ -1175,7 +1177,7 @@ print($section);
 
 			<?php if ($currentruleset != 'decoder.rules' && $currentruleset != 'preprocessor.rules'): ?>
 
-					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
+					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 						<colgroup>
 							<col width="5%">
 							<col width="5%">
@@ -1190,16 +1192,16 @@ print($section);
 						</colgroup>
 						<thead>
 						   <tr class="sortableHeaderRowIdentifier">
-							<th class="sorttable_nosort"><?=gettext("State");?></th>
-							<th><?=gettext("Action");?></th>
-							<th><?=gettext("GID"); ?></th>
-							<th><?=gettext("SID"); ?></th>
-							<th><?=gettext("Proto"); ?></th>
-							<th><?=gettext("Source"); ?></th>
-							<th><?=gettext("SPort"); ?></th>
-							<th><?=gettext("Destination"); ?></th>
-							<th><?=gettext("DPort"); ?></th>
-							<th><?=gettext("Message"); ?></th>
+							<th data-sortable="false"><?=gettext("State");?></th>
+							<th data-sortable="false"><?=gettext("Action");?></th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("GID"); ?></th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("SID"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Proto"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Source"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("SPort"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Destination"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("DPort"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Message"); ?></th>
 						   </tr>
 						</thead>
 						<tbody>
@@ -1214,11 +1216,15 @@ print($section);
 
 								// Apply rule state filters if filtering is enabled
 								if ($filterrules) {
-									if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
-										continue;
+									if (isset($filterfieldsarray['show_disabled'])) {
+										if (($v['disabled'] == 0 || isset($enablesid[$gid][$sid])) && !isset($disablesid[$gid][$sid])) {
+											continue;
+										}
 									}
-									elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
-										continue;
+									if (isset($filterfieldsarray['show_enabled'])) {
+										if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
+											continue;
+										}
 									}
 								}
 
@@ -1379,7 +1385,7 @@ print($section);
 
 			<?php else: ?>
 
-					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
+					<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 						<colgroup>
 							<col width="5%">
 							<col width="5%">
@@ -1391,13 +1397,13 @@ print($section);
 						</colgroup>
 						<thead>
 						   <tr class="sortableHeaderRowIdentifier">
-							<th sorttable_nosort><?=gettext("State"); ?></th>
-							<th><?=gettext("Action");?></th>
-							<th><?=gettext("GID"); ?></th>
-							<th><?=gettext("SID"); ?></th>
-							<th><?=gettext("Classification"); ?></th>
-							<th><?=gettext("IPS Policy"); ?></th>
-							<th><?=gettext("Message"); ?></th>
+							<th data-sortable="false"><?=gettext("State"); ?></th>
+							<th data-sortable="false"><?=gettext("Action");?></th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("GID"); ?></th>
+							<th data-sortable="true" data-sortable-type="numeric"><?=gettext("SID"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Classification"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("IPS Policy"); ?></th>
+							<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Message"); ?></th>
 						   </tr>
 						</thead>
 						<tbody>
@@ -1406,17 +1412,21 @@ print($section);
 								foreach ($rules_map as $k1 => $rulem) {
 									foreach ($rulem as $k2 => $v) {
 										$ruleset = $currentruleset;
-										$sid = snort_get_sid($v['rule']);
-										$gid = snort_get_gid($v['rule']);
+										$sid = $k2;
+										$gid = $k1;
 										$style = "";
 
 										// Apply rule state filters if filtering is enabled
 										if ($filterrules) {
-											if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
-												continue;
+											if (isset($filterfieldsarray['show_disabled'])) {
+												if (($v['disabled'] == 0 || isset($enablesid[$gid][$sid])) && !isset($disablesid[$gid][$sid])) {
+													continue;
+												}
 											}
-											elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
-												continue;
+											if (isset($filterfieldsarray['show_enabled'])) {
+												if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
+													continue;
+												}
 											}
 										}
 
@@ -1678,6 +1688,7 @@ $modal->addInput(new Form_Textarea (
 ))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'soft');
 $form->add($modal);
 print($form);
+unset($a_rule);
 ?>
 
 <script type="text/javascript">

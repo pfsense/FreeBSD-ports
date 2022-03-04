@@ -1,8 +1,7 @@
 # Created by: johans
-# $FreeBSD$
 
 PORTNAME=	webp
-PORTVERSION=	1.0.2
+PORTVERSION=	1.2.1
 CATEGORIES=	graphics
 MASTER_SITES=	http://downloads.webmproject.org/releases/webp/ \
 		https://storage.googleapis.com/downloads.webmproject.org/releases/webp/
@@ -18,11 +17,6 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-OPTIONS_DEFINE=	X11
-OPTIONS_SUB=	yes
-
-PORTSCOUT=	limit:^[0-9\.]*$$
-
 USES=		compiler:c11 jpeg libtool localbase
 
 CONFIGURE_ARGS=	--enable-libwebpdecoder \
@@ -33,9 +27,15 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
+PORTSCOUT=	limit:^[0-9\.]*$$
+
+OPTIONS_DEFINE=	X11
+OPTIONS_SUB=	yes
+
 X11_CONFIGURE_OFF=	build_vwebp=no
 X11_CONFIGURE_ON=	build_vwebp=yes
 X11_USE=		GL=glut
+X11_USES=		gl
 
 post-patch:
 	@${REINPLACE_CMD} '/build_vwebp=yes/d' ${WRKSRC}/configure

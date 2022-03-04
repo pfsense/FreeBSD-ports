@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-Forward
 PORTVERSION=	0.100006
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for class dispatcher that handles namespaces like paths
 
 LICENSE=	ART10 GPLv1+

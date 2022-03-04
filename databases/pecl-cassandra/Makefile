@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cassandra
 PORTVERSION=	1.3.2
 CATEGORIES=	databases
@@ -15,5 +13,6 @@ LIB_DEPENDS=	libuv.so:devel/libuv \
 		libgmp.so:math/gmp
 
 USES=		php:pecl localbase
+IGNORE_WITH_PHP=	74 80
 
 .include <bsd.port.mk>

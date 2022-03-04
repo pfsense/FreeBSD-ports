@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bitmap
 PORTVERSION=	1.0.9
 CATEGORIES=	x11
@@ -10,7 +8,7 @@ COMMENT=	Bitmap editor and converter utilities for X
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xaw xbitmaps xmu xorgproto xt
 
 .include <bsd.port.mk>

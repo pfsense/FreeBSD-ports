@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.contenttype
 PORTVERSION=	3.5.5
 PORTREVISION=	1
@@ -13,7 +11,7 @@ COMMENT=	Zope contenttype
 
 LICENSE=	ZPL21
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

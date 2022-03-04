@@ -1,11 +1,11 @@
---- remoting/host/host_details.cc.orig	2019-03-11 22:01:01 UTC
+--- remoting/host/host_details.cc.orig	2021-04-14 18:41:08 UTC
 +++ remoting/host/host_details.cc
-@@ -24,7 +24,7 @@ std::string GetHostOperatingSystemName() {
-   return "Mac";
- #elif defined(OS_CHROMEOS)
+@@ -25,6 +25,8 @@ std::string GetHostOperatingSystemName() {
    return "ChromeOS";
--#elif defined(OS_LINUX)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
+ #elif defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
    return "Linux";
++#elif defined(OS_FREEBSD)
++  return "FreeBSD";
  #elif defined(OS_ANDROID)
    return "Android";
+ #else

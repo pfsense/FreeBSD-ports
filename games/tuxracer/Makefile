@@ -1,9 +1,8 @@
 # Created by: Eric Anholt
-# $FreeBSD$
 
 PORTNAME=	tuxracer
 PORTVERSION=	0.61
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/${PORTNAME}-data/${PORTVERSION}:data
@@ -16,10 +15,10 @@ COMMENT=	3D penguin racing game using OpenGL
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		gl gmake sdl tk xorg
 USE_SDL=	mixer sdl
 USE_GL=		gl
 USE_XORG=	x11 xt xmu xi
-USES=		gmake tk
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-tcl-inc="${TCL_INCLUDEDIR}" \
 		--with-tcl-libs="${LOCALBASE}/lib" \

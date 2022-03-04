@@ -1,12 +1,11 @@
 # Created by: Kimura Fuyuki <fuyuki@nigredo.org>
-# $FreeBSD$
 
 PORTNAME=	trang
 PORTVERSION=	20181222
 CATEGORIES=	textproc java
 MASTER_SITES=	https://github.com/relaxng/jing-trang/releases/download/V${PORTVERSION}/
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Multi-format schema converter based on RELAX NG
 
 LICENSE=	BSD3CLAUSE
@@ -18,7 +17,6 @@ BROKEN_armv7=		fails to build: modbuild.xml: Java returned: 1
 USES=		zip
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_RUN=	yes
 
 OPTIONS_DEFINE=	DOCS

@@ -1,5 +1,4 @@
 # Created by: erich@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	mpeg_stat
 PORTVERSION=	2.2b
@@ -7,7 +6,7 @@ CATEGORIES=	multimedia
 MASTER_SITES=	http://www.bsd-geek.de/FreeBSD/distfiles/
 DISTNAME=	${PKGNAME}-src
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MPEG-I statistics gatherer
 
 USES=		shebangfix

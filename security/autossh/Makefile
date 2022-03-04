@@ -1,5 +1,4 @@
 # Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	autossh
 PORTVERSION=	1.4g
@@ -16,6 +15,9 @@ USES=		tar:tgz
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	CHANGES README
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	DOCS SSH_PORTABLE
 

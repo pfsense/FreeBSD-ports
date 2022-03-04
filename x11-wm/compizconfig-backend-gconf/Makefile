@@ -1,13 +1,12 @@
 # Created by: Robert Noland <rnoland@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	compizconfig-backend-gconf
 PORTVERSION=	0.8.8
 PORTREVISION=	2
 CATEGORIES=	x11-wm
-MASTER_SITES=	http://releases.compiz.org/${PORTVERSION}/
+MASTER_SITES=	https://BSDforge.com/projects/source/x11-wm/compizconfig-backend-gconf/
 
-MAINTAINER=	freebsd-ports@dan.me.uk
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	GConf backend for CompizConfig
 
 LICENSE=	GPLv2+
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libcompizconfig.so:x11-wm/libcompizconfig \
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		gmake gnome libtool:keepla pathfix pkgconfig tar:bzip2 xorg
 USE_GNOME=	gconf2 glib20 libxslt
 USE_LDCONFIG=	yes
 USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xinerama xrandr

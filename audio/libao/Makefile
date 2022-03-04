@@ -1,18 +1,19 @@
 # Created by: t.vanklaveren@student.utwente.nl
-# $FreeBSD$
 
 PORTNAME=	libao
 PORTVERSION=	1.2.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
-MASTER_SITES=	http://downloads.xiph.org/releases/ao/
+MASTER_SITES=	https://downloads.xiph.org/releases/ao/ \
+		https://ftp.osuosl.org/pub/xiph/releases/ao/
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Portable audio output library
 
 LICENSE=	GPLv2
 
-USES=		libtool pathfix pkgconfig
+USES=		cpe libtool pathfix pkgconfig
+CPE_VENDOR=	xiph
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-static \

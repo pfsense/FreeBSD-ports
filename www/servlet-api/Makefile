@@ -1,5 +1,4 @@
 # Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	servlet-api
 PORTVERSION=	2.5
@@ -14,7 +13,6 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Servlet API
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar

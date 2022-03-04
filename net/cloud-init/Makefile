@@ -1,51 +1,46 @@
-# $FreeBSD$
-
 PORTNAME=	cloud-init
-PORTVERSION=	18.3
-PORTREVISION=	2
+DISTVERSION=	21.2
 CATEGORIES=	net python
-MASTER_SITES=	http://launchpad.net/${PORTNAME}/trunk/${PORTVERSION}/+download/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	zi@FreeBSD.org
+MAINTAINER=	andrey@bsdnir.info
 COMMENT=	Init scripts for use on cloud images
 
-LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	APACHE20 GPLv3
+LICENSE_COMB=	dual
+LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-Apache2.0
+LICENSE_FILE_GPLv3=	${WRKSRC}/LICENSE-GPLv3
 
-RUN_DEPENDS=	dmidecode>0:sysutils/dmidecode \
-		sudo>0:security/sudo \
+RUN_DEPENDS=	sudo>0:security/sudo \
 		${PYTHON_PKGNAMEPREFIX}boto>0:devel/py-boto@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}configobj>0:devel/py-configobj@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-serial@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyserial>0:comms/py-pyserial@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}oauthlib>0:security/py-oauthlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonpatch>0:devel/py-jsonpatch@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cheetah>0:devel/py-cheetah@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonpointer>0:devel/py-jsonpointer@${PY_FLAVOR}
 
-ETCDIR=		${PREFIX}/etc/cloud
+USES=		python:3.6+ shebangfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	canonical
 
-USES=		python:2.7 shebangfix
 SHEBANG_FILES=	tools/validate-yaml.py tools/read-dependencies \
 		tools/read-version
 USE_PYTHON=	autoplist distutils
+ETCDIR=		${PREFIX}/etc/cloud
 
 PYDISTUTILS_INSTALLARGS+=	"--init-system=sysvinit_freebsd"
 
-ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	currently depends on dmidecode which is x86-only
+NO_ARCH=	yes
 
 post-patch:
-	${REINPLACE_CMD} -e 's|"etc"|"${STAGEDIR}${PREFIX}/etc"|g' ${WRKSRC}/setup.py
-	${REINPLACE_CMD} -e 's|/etc/|${PREFIX}/etc/|g' ${WRKSRC}/cloudinit/settings.py
-	@${RM} ${WRKSRC}/sysvinit/freebsd/*.orig
+	${REINPLACE_CMD} -e 's|%%PREFIX%%|${STAGEDIR}${PREFIX}|g' ${WRKSRC}/setup.py
+	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/cloudinit/settings.py
 
 post-build:
-	(cd ${WRKSRC} && ${MV} sysvinit/freebsd/cloudconfig config/cloud.cfg)
+	@cd ${WRKSRC} && ${MV} config/cloud.cfg.d/05_logging.cfg config/cloud.cfg.d/05_logging.cfg.sample
 
 .include <bsd.port.mk>

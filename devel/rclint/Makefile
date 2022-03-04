@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	rclint
-PORTVERSION=	0.2.1
-PORTREVISION=	1
+PORTVERSION=	1.1.0
 CATEGORIES=	devel textproc python
 MASTER_SITES=	http://www.bayofrum.net/dist/rclint/	\
 		LOCAL/crees/
@@ -12,12 +9,13 @@ COMMENT=	Checks rc scripts for style and common errors
 
 LICENSE=	BSD2CLAUSE
 
-NO_BUILD=	yes
-
 USES=		python:run shebangfix
+SHEBANG_FILES=	*.py
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 SUB_FILES=	${PORTNAME}
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
-SHEBANG_FILES=	*.py
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	${PORTNAME}.py errors.en

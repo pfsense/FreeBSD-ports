@@ -1,9 +1,6 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PKGNAMESUFFIX=	-lite
-
-COMMENT=	MATE multi-format document viewer
 
 OPTIONS_EXCLUDE=	CAJA DBUS
 

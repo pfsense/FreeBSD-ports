@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-Declare-Parser
 PORTVERSION=	0.020
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for higher level interface to Devel-Declare
 
 LICENSE=	ART10 GPLv1+

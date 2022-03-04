@@ -16,6 +16,7 @@ lib/libKF5Pty.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KPty.pri
 share/locale/af/LC_MESSAGES/kpty5.mo
 share/locale/ar/LC_MESSAGES/kpty5.mo
+share/locale/az/LC_MESSAGES/kpty5.mo
 share/locale/as/LC_MESSAGES/kpty5.mo
 share/locale/be/LC_MESSAGES/kpty5.mo
 share/locale/be@latin/LC_MESSAGES/kpty5.mo
@@ -113,3 +114,4 @@ share/locale/xh/LC_MESSAGES/kpty5.mo
 share/locale/zh_CN/LC_MESSAGES/kpty5.mo
 share/locale/zh_HK/LC_MESSAGES/kpty5.mo
 share/locale/zh_TW/LC_MESSAGES/kpty5.mo
+share/qlogging-categories5/kpty.categories

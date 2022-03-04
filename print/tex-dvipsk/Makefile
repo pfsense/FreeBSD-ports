@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dvipsk
 PORTVERSION=	5.995
 PORTREVISION=	2
@@ -12,7 +10,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	Convert a TeX DVI file to PostScript
 
 LICENSE=	GPLv2
@@ -46,7 +44,7 @@ EXCLUDE_FILES= \
 	texmf-dist/dvips/xdvi
 WRKSRC=	${WRKDIR}/${DISTNAME}/texk/dvipsk
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --with-paper \
+CONFIGURE_ARGS=	--with-paper \
 		--with-system-kpathsea \
 		--with-kpathsea-includes=${LOCALBASE}/include \
 		--with-kpathsea-libdir=${LOCALBASE}/lib \

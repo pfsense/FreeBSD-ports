@@ -1,14 +1,14 @@
 # Created by: rflynn@acsalaska.net
-# $FreeBSD$
 # Observium version can be found by looking at ${WRKSRC}/includes/definitions/version.inc.php
 
 PORTNAME=	observium
-PORTVERSION=	0.17.9.8859
-PORTREVISION=	1
+PORTVERSION=	0.19.8
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.observium.org/
 DISTNAME=	${PORTNAME}-community-latest
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Autodiscovering PHP/MySQL/SNMP based network monitoring
@@ -20,9 +20,8 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		php:cli python${PY_MYSQL} shebangfix
+USES=		cpe php:cli,flavors python:3.5+ shebangfix
 SHEBANG_FILES=	\
-		mibs/process.pl \
 		poller-wrapper.py \
 		poller.php \
 		scripts/
@@ -41,8 +40,8 @@ RUN_DEPENDS+=	rrdtool:databases/rrdtool \
 		sudo:security/sudo
 LIB_DEPENDS+=	libpng.so:graphics/png
 
-OPTIONS_DEFINE=	APACHEMOD DOCS EXAMPLES FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS NMAP PYPOLLER SVN WMIC
-OPTIONS_DEFAULT=	APACHEMOD FPING IPMITOOL LIBVIRT NAGPLUGINS NMAP PYPOLLER SVN WMIC
+OPTIONS_DEFINE=	APACHEMOD DOCS EXAMPLES FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS NMAP PYPOLLER SUBVERSION WMIC
+OPTIONS_DEFAULT=	APACHEMOD FPING IPMITOOL LIBVIRT NAGPLUGINS NMAP PYPOLLER SUBVERSION WMIC
 APACHEMOD_DESC=	Use PHP with Apache 2.2+ module
 FPING_DESC=	Enable fping support ping monitoring
 IPMITOOL_DESC=	Enable support for monitoring hardware IPMI
@@ -55,21 +54,21 @@ IPMITOOL_RUN_DEPENDS=	ipmitool:sysutils/ipmitool
 LIBVIRT_RUN_DEPENDS=	virsh:devel/libvirt
 NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
 NMAP_RUN_DEPENDS=	nmap:security/nmap
-PYPOLLER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>0:databases/py-MySQLdb@${PY_FLAVOR}
-PYPOLLER_VARS=	PY_MYSQL=:2.7
-SVN_RUN_DEPENDS=	svn:devel/subversion
+PYPOLLER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mysqlclient>=1.3.13:databases/py-mysqlclient@${PY_FLAVOR}
+SUBVERSION_RUN_DEPENDS=	svn:devel/subversion
 WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
 
 .include <bsd.port.options.mk>
 
 SUB_FILES+=	pkg-message observium.conf.sample
-SUB_LIST+=	PHP="${PHPBASE}/bin/php" PYTHON=${PHPBASE}/bin/python
+SUB_LIST+=	PHP="${PREFIX}/bin/php" PYTHON="${PYTHON_CMD}"
 
-ROOT_FILES=	add_device.php adduser.php alerter.php alerts.php \
+ROOT_FILES=	add_device.php adduser.php alerter.php \
 		check-errors.php check-services.php config_to_json.php \
 		config.php.default delete_device.php discovery.php housekeeping.php \
 		irc.php poller-wrapper.py poller.php rename_device.php \
-		snmptrap.php snmptrap.php syslog.php test_alert.php
+		snmp.conf.example snmpd.conf.example \
+		snmptrap.php snmptrap.php syslog.php test_alert.php test_code.php VERSION
 ROOT_DIRS=	html includes libs logs mibs rrd scripts templates tests update
 
 PORTDOCS=	INSTALL README VERSION

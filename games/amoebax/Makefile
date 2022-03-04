@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	amoebax
 PORTVERSION=	0.2.1
 PORTREVISION=	8
@@ -17,7 +14,7 @@ LICENSE_NAME_FAL=	Free Art License, version 1.2
 LICENSE_FILE_FAL=	${WRKSRC}/COPYING.LAL
 LICENSE_PERMS_FAL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		tar:bzip2 gmake
+USES=		gmake sdl tar:bzip2
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer image
 

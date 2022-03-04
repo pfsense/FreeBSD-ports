@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-TabularDisplay
 PORTVERSION=	1.38
 CATEGORIES=	textproc perl5

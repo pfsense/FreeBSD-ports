@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	mu4e
-PORTVERSION=	1.0
-DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTVERSION=	1.6.4
+PORTREVISION=	2
 CATEGORIES=	mail
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -34,6 +31,10 @@ MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_SUB=		yes
+
+post-extract:
+	${INSTALL_DATA} ${WRKSRC}/mu4e/obsolete/org-mu4e.el \
+	    ${WRKSRC}/mu4e/org-mu4e.el
 
 pre-build:
 	${REINPLACE_CMD} -e '/.el.elc/,/^$$/d' ${BUILD_WRKSRC}/Makefile && \

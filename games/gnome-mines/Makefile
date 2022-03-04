@@ -1,10 +1,9 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-mines
-PORTVERSION=	3.28.0
+PORTVERSION=	40.0
 CATEGORIES=	games gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -22,9 +21,8 @@ PORTSCOUT=	limitw:1,even
 
 USES=		gettext gnome localbase meson pkgconfig python:3.6+,build tar:xz
 USE_GNOME=	gtk30 librsvg2
-INSTALLS_ICONS=	yes
 
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
-GLIB_SCHEMAS=	org.gnome.mines.gschema.xml
+GLIB_SCHEMAS=	org.gnome.Mines.gschema.xml
 
 .include <bsd.port.mk>

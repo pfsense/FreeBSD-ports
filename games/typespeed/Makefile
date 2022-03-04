@@ -1,5 +1,4 @@
 # Created by: refugee
-# $FreeBSD$
 
 PORTNAME=	typespeed
 PORTVERSION=	0.6.5
@@ -20,7 +19,7 @@ CONFIGURE_ARGS=	--with-highscoredir="${SCOREDIR}"
 SCOREDIR=	/var/games/typespeed
 SCOREFILE=	typespeed.score
 
-OPTIONS_DEFINE=	NLS DOCS
+OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 
 NLS_USES=		gettext

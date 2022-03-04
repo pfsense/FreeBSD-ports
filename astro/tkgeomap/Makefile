@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tkgeomap
 PORTVERSION=	2.11.6
@@ -11,10 +10,10 @@ COMMENT=	Read, manipulate, and display geo data
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libtclgeomap.so:astro/tclgeomap
+BROKEN_armv6=	fails to configure: shared build specified but could not find shared tclgeomap library
+BROKEN_armv7=	fails to configure: shared build specified but could not find shared tclgeomap library
 
-BROKEN_armv6=		fails to configure: shared build specified but could not find shared tclgeomap library
-BROKEN_armv7=		fails to configure: shared build specified but could not find shared tclgeomap library
+LIB_DEPENDS=	libtclgeomap.so:astro/tclgeomap
 
 USES+=		tk:tea
 CONFIGURE_ARGS=	--with-tclgeomap-include=${LOCALBASE}/include/tclgeomap --with-x \

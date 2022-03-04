@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ "$2" = "POST-INSTALL" ]; then
+	echo "Creating ssm-user for SSM Agent Sessions"
+	pw -R ${PKG_ROOTDIR} useradd ssm-user -G wheel -m
+fi

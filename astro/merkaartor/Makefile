@@ -1,9 +1,8 @@
 # Created by: Slaven Rezic <slaven@rezic.de>
-# $FreeBSD$
 
 PORTNAME=	merkaartor
-PORTVERSION=	0.18.2
-PORTREVISION=	16
+PORTVERSION=	0.19.0
+PORTREVISION=	0
 CATEGORIES=	astro
 
 MAINTAINER=	dev2@heesakkers.info
@@ -14,12 +13,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libproj.so:graphics/proj \
-		libquazip5.so:archivers/quazip
+		libquazip1-qt5.so:archivers/quazip
 
-USES=		compiler:c++11-lang pkgconfig qmake qt:5 sqlite:3
+USES=		compiler:c++11-lang gnome pkgconfig qmake qt:5 sqlite:3
 USE_GITHUB=	yes
 GH_ACCOUNT=	openstreetmap
 USE_LDCONFIG=	yes
+
+CFLAGS+=	"-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H=1"
 
 QMAKE_ARGS=	SYSTEM_QUAZIP=1
 USE_QT=		buildtools_build \
@@ -47,8 +48,6 @@ DEBUG_QMAKE_OFF=	NODEBUG=1 RELEASE=1
 
 NLS_USES=	qt:5
 NLS_USE=	QT=linguisttools_build
-
-INSTALLS_ICONS= yes
 
 OPTIONS_SUB=	yes
 

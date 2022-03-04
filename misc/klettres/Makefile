@@ -1,19 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	klettres
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
-CATEGORIES=	misc kde kde-applications
+CATEGORIES=	misc education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Alphabet learning tool for KDE
 
 USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
 USE_KDE=	attica auth codecs completion config configwidgets coreaddons \
-		crash doctools ecm emoticons i18n init itemmodels \
-		kdelibs4support newstuff service widgetsaddons xmlgui
+		crash emoticons i18n init itemmodels \
+		kdelibs4support newstuff service widgetsaddons xmlgui \
+		doctools_build ecm_build
 USE_QT=		core dbus gui network phonon4 svg widgets xml \
-		buildtools_build qmake_build
+		buildtools_build qmake_build testlib_build
 
 OPTIONS_DEFINE=	DOCS
 

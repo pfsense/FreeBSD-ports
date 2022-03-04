@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pink-pony
 PORTVERSION=	1.4.1
-PORTREVISION=	14
+PORTREVISION=	34
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -13,15 +10,15 @@ LICENSE=	GPLv3+
 
 LIB_DEPENDS=	libIL.so:graphics/devil \
 		libprotobuf.so:devel/protobuf \
-		libglfw.so:graphics/glfw2 \
-		libHalf.so:graphics/ilmbase \
+		libglfw.so.0:graphics/glfw2 \
 		libftgl.so:graphics/ftgl \
-		libsigc-2.0.so:devel/libsigc++20
+		libsigc-2.0.so:devel/libsigc++20 \
+		libImath.so:math/Imath
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ginkgo
 
-USES=		pkgconfig scons compiler:c++11-lang
+USES=		pkgconfig scons compiler:c++11-lang gl sdl
 USE_CXXSTD=	c++11
 USE_GL=		gl glu
 USE_SDL=	mixer

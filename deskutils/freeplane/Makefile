@@ -1,13 +1,12 @@
-# Created by: Loïc Bartoletti <lbartoletti@tuxfamily.org>
-# $FreeBSD$
+# Created by: Loïc Bartoletti <lbartoletti@FreeBSD.org>
 
 PORTNAME=	freeplane
-DISTVERSION=	1.7.7
+DISTVERSION=	1.8.11
 CATEGORIES=	deskutils editors java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20stable/archive/${PORTVERSION}
 DISTNAME=	${PORTNAME}_bin-${PORTVERSION}
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Free mind mapping and knowledge management software
 
 LICENSE=	GPLv2+
@@ -16,7 +15,6 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 USES=		cpe zip
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_ARCH=	yes
 NO_BUILD=	yes
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"

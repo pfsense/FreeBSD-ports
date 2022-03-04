@@ -1,5 +1,4 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	wikipedia
 PORTVERSION=	1.4.0
@@ -15,7 +14,7 @@ LICENSE=	MIT
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.3.2:www/py-beautifulsoup@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}requests>=2.7:www/py-requests@${PY_FLAVOR}
 
-USES=	python
+USES=	python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

@@ -1,10 +1,9 @@
 # Created by: Chris D. Faulhaber <jedgar@fxp.org>
-# $FreeBSD$
 
 PORTNAME=	kdbg
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	3.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel kde
 
 MAINTAINER=	thomas.sander@gmx.de

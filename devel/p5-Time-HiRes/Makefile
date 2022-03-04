@@ -1,8 +1,7 @@
 # Created by: Stephen J. Roznowski <sjr@home.net>
-# $FreeBSD$
 
 PORTNAME=	Time-HiRes
-PORTVERSION=	1.9760
+PORTVERSION=	1.9764
 PORTEPOCH=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN

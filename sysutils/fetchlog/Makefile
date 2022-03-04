@@ -1,5 +1,4 @@
 # Created by: Alexander Haderer <alexander.haderer@loescap.de>
-# $FreeBSD$
 
 PORTNAME=	fetchlog
 PORTVERSION=	1.4
@@ -8,6 +7,8 @@ MASTER_SITES=	SF
 
 MAINTAINER=	alexander.haderer@loescap.de
 COMMENT=	Fetch and convert new messages of a logfile
+
+LICENSE=	GPLv2
 
 PORTDOCS=	CHANGES README README.Nagios README.SNMP
 PORTEXAMPLES=	fetchlog.cfg fetchlog_service.cfg notify.cfg.example

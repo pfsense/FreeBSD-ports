@@ -1,9 +1,8 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	GDD
 DISTVERSION=	0.1-13.1
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

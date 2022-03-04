@@ -1,5 +1,4 @@
 # Created by: Joe Horn <joehorn@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	tuning-primer
 PORTVERSION=	1.6.r1
@@ -15,9 +14,9 @@ COMMENT=	MySQL performance tuning primer script
 
 LICENSE=	GPLv2
 
+USES=		mysql
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_MYSQL=	yes
 
 PLIST_FILES=	bin/${PORTNAME}
 

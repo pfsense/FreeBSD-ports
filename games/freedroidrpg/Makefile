@@ -1,9 +1,8 @@
 # Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
 
 PORTNAME=	freedroidrpg
 PORTVERSION=	0.16.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.osuosl.org/pub/freedroid/freedroidRPG-${PORTVERSION:R}/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -15,12 +14,14 @@ COMMENT=	Modification of the classical Freedroid engine into an RPG
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: tux_rendering
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: tux_rendering
+
 LIB_DEPENDS=	libpng.so:graphics/png
 
-BROKEN_sparc64=	does not configure
-
 GNU_CONFIGURE=	yes
-USES=		jpeg gmake localbase lua:52+ python
+USES=		cpe jpeg gmake localbase lua:52+ python sdl xorg
+CPE_VENDOR=	freedroid
 USE_XORG=	x11
 USE_SDL=	sdl image gfx
 CONFIGURE_ENV=	LUA_CFLAGS="-I${LUA_INCDIR}" LUA_LIBS="-L${LUA_LIBDIR} -llua-${LUA_VER}"
@@ -38,6 +39,7 @@ BACKTRACE_DESC=	Use backtrace() to generate nice bug reports
 BACKTRACE_CONFIGURE_ENABLE=	backtrace
 BACKTRACE_VARS=			STRIP= # empty
 
+OPENGL_USES=			gl
 OPENGL_USE=			GL=gl
 OPENGL_CONFIGURE_ENABLE=	opengl
 

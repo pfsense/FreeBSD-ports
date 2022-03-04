@@ -1,9 +1,8 @@
 # Created by: fenner
-# $FreeBSD$
 
 PORTNAME=	dnstop
 PORTVERSION=	20140915
-CATEGORIES=	dns ipv6
+CATEGORIES=	dns
 MASTER_SITES=	http://dns.measurement-factory.com/tools/dnstop/src/
 
 MAINTAINER=	mark@foster.cc

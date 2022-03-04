@@ -1,5 +1,4 @@
 # Created by: Douglas Thrift <douglas@douglasthrift.net>
-# $FreeBSD$
 
 PORTNAME=	keyrings.alt
 PORTVERSION=	3.1.1
@@ -21,20 +20,19 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=2.8:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycrypto>0:security/py-pycrypto@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fs>=0.5:devel/py-fs@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=		ENCRYPTED_FILE GNOME_KEYRING KEYCZAR PYFS
+OPTIONS_DEFINE=		ENCRYPTED_FILE GNOME_KEYRING PYFS
 ENCRYPTED_FILE_DESC=	Install pycrypto to support the Encrypted File backend
 GNOME_KEYRING_DESC=	Install GNOME Keyring to support the Gnome backend
-KEYCZAR_DESC=		Install keyczar to support keyring encryption
 PYFS_DESC=		Install pyfilesystem to support the pyfs backend
 
 ENCRYPTED_FILE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=2.5:security/py-pycrypto@${PY_FLAVOR}
+GNOME_KEYRING_USES=		gnome
 GNOME_KEYRING_USE=		GNOME=pygobject3
-KEYCZAR_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}keyczar>=0.71c:security/py-keyczar@${PY_FLAVOR}
 PYFS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}fs>=0.5:devel/py-fs@${PY_FLAVOR}
 
 do-test:

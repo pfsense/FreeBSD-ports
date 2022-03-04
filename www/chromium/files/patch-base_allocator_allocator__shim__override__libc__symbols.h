@@ -1,11 +1,13 @@
---- base/allocator/allocator_shim_override_libc_symbols.h.orig	2019-03-11 22:00:51 UTC
+--- base/allocator/allocator_shim_override_libc_symbols.h.orig	2021-04-14 18:40:48 UTC
 +++ base/allocator/allocator_shim_override_libc_symbols.h
-@@ -10,7 +10,7 @@
+@@ -16,6 +16,10 @@
+ #include <malloc.h>
  #endif
- #define BASE_ALLOCATOR_ALLOCATOR_SHIM_OVERRIDE_LIBC_SYMBOLS_H_
  
--#include <malloc.h>
++#if defined(OS_BSD)
 +#include <stdlib.h>
- 
++#endif
++
  #include "base/allocator/allocator_shim_internals.h"
  
+ extern "C" {

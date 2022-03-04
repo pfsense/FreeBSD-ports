@@ -1,9 +1,8 @@
 # Created by: Max N. Boyarov <m.boyarov@bsd.by>
-# $FreeBSD$
 
 PORTNAME=	jabber.el
 PORTVERSION=	0.8.92
-PORTREVISION=	7
+PORTREVISION=	12
 CATEGORIES=	net-im elisp
 MASTER_SITES=	SF/emacs-jabber/emacs-jabber%20beta%20versions/${PORTVERSION}
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -12,9 +11,8 @@ DISTNAME=		emacs-jabber-${PORTVERSION}
 MAINTAINER=	max.n.boyarov@gmail.com
 COMMENT=	Minimal jabber client for [X]Emacs
 
-.if ${FLAVOR:U} != devel && ${FLAVOR:U} != devel_nox
-# http://pkg.awarnach.mathstat.dal.ca/data/11i386-default/2018-05-30_07h36m11s/logs/errors/jabber.el-emacs26-0.8.92_7.log
-BROKEN=		fails to build
+.if ${FLAVOR:U} == devel_full || ${FLAVOR:U} == devel_nox
+BROKEN=		Debugger entered--Lisp error: (wrong-type-argument stringp nil)
 .endif
 
 RUN_DEPENDS=	${LOCALBASE}/bin/gnutls-cli:security/gnutls

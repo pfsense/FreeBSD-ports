@@ -1,6 +1,6 @@
---- ./src/core/RSettings.cpp.orig	2013-08-06 17:32:09.000000000 +0200
-+++ ./src/core/RSettings.cpp	2013-08-09 15:25:25.000000000 +0200
-@@ -92,9 +92,13 @@
+--- src/core/RSettings.cpp.orig	2019-12-23 11:24:24 UTC
++++ src/core/RSettings.cpp
+@@ -363,9 +363,13 @@ QString RSettings::getApplicationPath() {
      }
  #endif
  

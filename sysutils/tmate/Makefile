@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tmate
-PORTVERSION=	2.2.1
-PORTREVISION=	3
+PORTVERSION=	2.4.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	swills@FreeBSD.org
@@ -12,12 +10,11 @@ LIB_DEPENDS=	libevent.so:devel/libevent \
 		libmsgpackc.so:devel/msgpack \
 		libssh.so:security/libssh
 
-USES=		autoreconf ncurses pkgconfig
+USES=		autoreconf compiler:c11 ncurses pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	tmate-io
 
 GNU_CONFIGURE=	yes
-INSTALL_ARGET=	install-strip
 USE_LDCONFIG=	yes
 LDFLAGS+=	-lexecinfo
 

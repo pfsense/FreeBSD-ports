@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fog-vsphere
-PORTVERSION=	3.0.0
+PORTVERSION=	3.5.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -13,7 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	rubygem-fog-core>=0:devel/rubygem-fog-core \
-		rubygem-rbvmomi>=1.9:net/rubygem-rbvmomi
+		rubygem-rbvmomi>=1.9<4:net/rubygem-rbvmomi
 
 USES=		gem
 USE_RUBY=	yes

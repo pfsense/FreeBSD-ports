@@ -1,8 +1,7 @@
 # Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	anjuta
-PORTVERSION=	3.28.0
+PORTVERSION=	3.34.0
 PORTREVISION=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
@@ -10,6 +9,9 @@ DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Integrated Development Environment for C and C++
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	autogen:devel/autogen \
 		itstool:textproc/itstool
@@ -39,7 +41,6 @@ SHEBANG_LANG+=	gjs
 gjs_OLD_CMD=	/usr/bin/gjs
 gjs_CMD=	${LOCALBASE}/bin/gjs
 
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 USE_GNOME=	cairo gtksourceview3 intlhack libgda5 libwnck3
 GNU_CONFIGURE=	yes
@@ -48,6 +49,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--with-symbol-db-shm=/tmp \
 		--disable-packagekit \
 		--disable-neon \
+		--disable-vala \
 		--enable-compile-warnings=minimum \
 		--enable-introspection=yes
 DOCSDIR=	share/doc/libanjuta
@@ -77,11 +79,9 @@ GLIB_SCHEMAS=	org.gnome.anjuta.cvs.gschema.xml \
 		org.gnome.anjuta.tools.gschema.xml
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	SVN DEVHELP VALA GLADE TERMINAL
-OPTIONS_DEFAULT=SVN DEVHELP VALA GLADE TERMINAL
-SVN_DESC=	Subversion plugin
+OPTIONS_DEFINE=	DEVHELP GLADE SUBVERSION TERMINAL
+OPTIONS_DEFAULT=DEVHELP GLADE SUBVERSION TERMINAL
 DEVHELP_DESC=	Devhelp plugin
-VALA_DESC=	Vala support
 GLADE_DESC=	Build glade plugin
 TERMINAL_DESC=	Build build-in terminal
 
@@ -94,36 +94,21 @@ TERMINAL_LIB_DEPENDS=	libgnutls.so:security/gnutls \
 			libpcre2-8.so:devel/pcre2
 TERMINAL_VARS=		GLIB_SCHEMAS+=org.gnome.anjuta.terminal.gschema.xml
 
-SVN_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
+SUBVERSION_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 			libserf-1.so:www/serf \
 			libsvn_client-1.so:devel/subversion
-SVN_CONFIGURE_ENABLE=	plugin-subversion
+SUBVERSION_CONFIGURE_ENABLE=	plugin-subversion
 
 DEVHELP_LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 			libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 			libdevhelp-3.so:devel/devhelp
-DEVHELP_CONFIGURE_ENBABLE=	plugin-devhelp
-
-VALA_VER=		0.40
-VALA_BUILD_DEPENDS=	vala>=${VALA_VER},1<${VALA_VER}.99,1:lang/vala
-VALA_RUN_DEPENDS=	vala>=${VALA_VER},1<${VALA_VER}.99,1:lang/vala
-VALA_CONFIGURE_ENABLE=	vala
+DEVHELP_CONFIGURE_ENABLE=	plugin-devhelp
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|"make|"gmake|g' \
 		${WRKSRC}/plugins/build-basic-autotools/plugin.c
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${PREFIX}|g' \
 		${WRKSRC}/libanjuta/anjuta-utils.c
-	@${REINPLACE_CMD} -e 's|ac_ct_CXX" = "x"|CXX" = "x"|g' \
-		-e 's|libvala-0.28|libvala-${VALA_VER}|g' \
-		-e 's|valaver="-0.28"|valaver="-${VALA_VER}"|g' \
-		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|values.h|limits.h|g' \
-		${WRKSRC}/plugins/project-wizard/property.h \
-		${WRKSRC}/plugins/project-wizard/install.h
-	@${REINPLACE_CMD} -e 's|-fprofile-arcs||g' \
-		${WRKSRC}/libanjuta/tests/Makefile.in \
-		${WRKSRC}/libanjuta/tests/Makefile.am
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${PREFIX}|g' \
 		${WRKSRC}/plugins/gdb/debugger.c
 

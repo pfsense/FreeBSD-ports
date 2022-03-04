@@ -1,9 +1,7 @@
 # Created by: Mohammad S. Babaei <info@babaei.net>
-# $FreeBSD$
 
 PORTNAME=	omnibackup
-PORTVERSION=	0.2.0
-PORTREVISION=	1
+PORTVERSION=	0.2.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	info@babaei.net

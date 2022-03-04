@@ -8,4 +8,4 @@ NMap is a utility for network exploration or security auditing.<br/>
 			and port specification, decoy/stealth scanning, SunRPC
 			scanning, and more.
 
-WWW: https://doc.pfsense.org/index.php/Nmap_package
+WWW: https://docs.netgate.com/pfsense/en/latest/packages/nmap.html

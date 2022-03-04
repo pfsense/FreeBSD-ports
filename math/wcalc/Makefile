@@ -1,9 +1,8 @@
 # Created by: Amarendra Godbole <amarendra.godbole@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	wcalc
 PORTVERSION=	2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	SF/w-calc/Wcalc/${PORTVERSION}
 

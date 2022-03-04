@@ -1,8 +1,7 @@
 # Created by: Allan Jude <allanjude@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	gdnsd
-PORTVERSION=	2.4.2
+PORTVERSION=	2.4.3
 CATEGORIES=	dns
 MASTER_SITES=	https://github.com/gdnsd/gdnsd/releases/download/v${PORTVERSION}/ \
 		ZI \
@@ -22,7 +21,7 @@ FETCH_ARGS=	-Fpr
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var
 USE_LDCONFIG=	yes
-USES=		pkgconfig libtool tar:xz perl5 gmake
+USES=		cpe pkgconfig libtool tar:xz perl5 gmake
 USE_PERL5=	build
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

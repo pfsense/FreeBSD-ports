@@ -1,5 +1,4 @@
 # Created by: Simon Dick <simond@irrelevant.org>
-# $FreeBSD$
 
 PORTNAME=	uae
 PORTVERSION=	0.8.29
@@ -12,10 +11,9 @@ COMMENT=	Commodore Amiga emulator
 
 LICENSE=	GPLv2
 
-CONFLICTS=	e-uae-[0-9]*
-MAKE_JOBS_UNSAFE=yes
+CONFLICTS=	e-uae
 
-USES=		gmake pkgconfig tar:bzip2
+USES=		gmake gnome pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20
 
@@ -24,6 +22,8 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	@${REINPLACE_CMD} -e 's|build68kc|build68k|' \
 		${WRKSRC}/src/Makefile.in
+	@${REINPLACE_CMD} -e 's|struct socketbase {|extern &|' \
+		${WRKSRC}/src/include/bsdsocket.h
 	@${LN} -sf ../md-ppc/support.c ${WRKSRC}/src/md-ppc-gcc/support.c
 
 do-install:

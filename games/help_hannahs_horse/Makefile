@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	help_hannahs_horse
 PORTVERSION=	1.0
@@ -21,7 +20,7 @@ LICENSE_FILE_GPLv2=	${WRKSRC}/gpl.txt
 
 WRKSRC=		${WRKDIR}/hhh-2008-03-29
 
-USES=		gmake
+USES=		gmake gnome sdl
 USE_SDL=	sdl image mixer ttf
 ALL_TARGET=	# empty
 MAKE_ENV=	DATA_INSTALL_DIR="${DATADIR}" \
@@ -29,7 +28,6 @@ MAKE_ENV=	DATA_INSTALL_DIR="${DATADIR}" \
 
 PORTDOCS=	CHANGELOG README
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 DESKTOP_ENTRIES="Help Hannah's Horse" "" "${PORTNAME}" \

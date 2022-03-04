@@ -1,5 +1,4 @@
 # Created by: asami
-# $FreeBSD$
 
 PORTNAME=	xlife
 PORTVERSION=	6.7.6
@@ -16,7 +15,7 @@ RUN_DEPENDS=	gawk:lang/gawk
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 
-USES=		imake:notall tar:bzip2
+USES=		imake:notall tar:bzip2 xorg
 USE_XORG=	x11
 
 PORTDOCS=	*

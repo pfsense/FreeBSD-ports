@@ -1,4 +1,7 @@
-SHA256 (v4l-utils-1.6.3.tar.bz2) = 164abf5c1befcd27e8e6ef824a82d4015bdfb5d99ae82daa00e77d895ff9864c
-SIZE (v4l-utils-1.6.3.tar.bz2) = 1151081
-SHA256 (linux-3.16.7-dvb-headers.tar.xz) = 0ee217b243d52b8104e6b61bbf009bf84155573317720f41930af0a9ef50cdaa
-SIZE (linux-3.16.7-dvb-headers.tar.xz) = 11712
+TIMESTAMP = 1621686769
+SHA256 (hselasky-v4l-utils-v4l-utils-1.20.0_GH0.tar.gz) = 1a2bcc1fa5182f718c982c6ee58d0756dca602639ab6b9a9caff021272b33646
+SIZE (hselasky-v4l-utils-v4l-utils-1.20.0_GH0.tar.gz) = 1620489
+SHA256 (hselasky-webcamd-v5.13.2.2_GH0.tar.gz) = a9164a5731be35c5f79aecf8ccbd0e11d3ea7e1a29f81b356def5b08954bacb1
+SIZE (hselasky-webcamd-v5.13.2.2_GH0.tar.gz) = 272186
+SHA256 (torvalds-linux-v5.13-rc2_GH0.tar.gz) = 34673cea88f7e5399b704bcacc088b3f14f5800dadf04af6a90b19c35ad3777f
+SIZE (torvalds-linux-v5.13-rc2_GH0.tar.gz) = 192612873

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsysinfo
 PORTVERSION=	0.0.3
 DISTVERSIONPREFIX=	v

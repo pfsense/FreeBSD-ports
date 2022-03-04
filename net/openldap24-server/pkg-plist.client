@@ -17,6 +17,7 @@ include/ldap_features.h
 include/ldap_schema.h
 include/ldap_utf8.h
 include/ldif.h
+include/openldap.h
 include/slapi-plugin.h
 lib/liblber-%%OPENLDAP_MAJOR%%.so.%%SHLIB_MAJOR%%
 lib/liblber-%%OPENLDAP_MAJOR%%.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
@@ -175,6 +176,7 @@ man/man3/ldap_objectclass2str.3.gz
 man/man3/ldap_objectclass_free.3.gz
 man/man3/ldap_open.3.gz
 man/man3/ldap_parse_extended_result.3.gz
+man/man3/ldap_parse_intermediate.3.gz
 man/man3/ldap_parse_reference.3.gz
 man/man3/ldap_parse_result.3.gz
 man/man3/ldap_parse_sasl_bind_result.3.gz

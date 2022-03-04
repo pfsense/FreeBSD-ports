@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	List-UtilsBy-XS
 PORTVERSION=	0.05
@@ -16,8 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	p5-Module-Build-XSUtil>=0.02:devel/p5-Module-Build-XSUtil
 
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/List/UtilsBy/XS/XS.so

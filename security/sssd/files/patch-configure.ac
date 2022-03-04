@@ -1,21 +1,22 @@
---- configure.ac.orig	2013-11-06 18:35:03 UTC
+--- configure.ac.orig	2020-03-17 13:31:28 UTC
 +++ configure.ac
-@@ -5,15 +5,15 @@ AC_INIT([sssd],
-         VERSION_NUMBER,
-         [sssd-devel@lists.fedorahosted.org])
+@@ -44,8 +44,6 @@ AM_CONDITIONAL([HAVE_GCC], [test "$ac_cv_prog_gcc" = y
+ AC_CHECK_HEADERS(stdint.h dlfcn.h)
+ AC_CONFIG_HEADER(config.h)
  
-+AC_CONFIG_SRCDIR([BUILD.txt])
-+AC_CONFIG_AUX_DIR([build])
-+
- m4_ifdef([AC_USE_SYSTEM_EXTENSIONS],
-     [AC_USE_SYSTEM_EXTENSIONS],
-     [AC_GNU_SOURCE])
- 
- CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE"
- 
--AC_CONFIG_SRCDIR([BUILD.txt])
--AC_CONFIG_AUX_DIR([build])
+-AC_CHECK_TYPES([errno_t], [], [], [[#include <errno.h>]])
 -
- AM_INIT_AUTOMAKE([-Wall foreign subdir-objects tar-pax])
- AM_PROG_CC_C_O
- m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
+ m4_include([src/build_macros.m4])
+ BUILD_WITH_SHARED_BUILD_DIR
+ 
+@@ -356,8 +354,8 @@ them please use argument --without-python3-bindings wh
+     AM_CHECK_PYTHON_HEADERS([],
+                             AC_MSG_ERROR([Could not find python3 headers]))
+ 
+-    AC_SUBST([py3execdir], [$pyexecdir])
+-    AC_SUBST([python3dir], [$pythondir])
++    AC_SUBST([py3execdir], [$(eval echo $pyexecdir)])
++    AC_SUBST([python3dir], [$(eval echo $pythondir)])
+     AC_SUBST([PYTHON3_CFLAGS], [$PYTHON_CFLAGS])
+     AC_SUBST([PYTHON3_LIBS], [$PYTHON_LIBS])
+     AC_SUBST([PYTHON3_INCLUDES], [$PYTHON_INCLUDES])

@@ -1,4 +1,4 @@
-3D Scientific Data Visualization and Plotting 
+3D Scientific Data Visualization and Plotting.
 
 The Mayavi project includes two related packages for 3-dimensional
 visualization:
@@ -14,4 +14,4 @@ Mayavi user interface or program to its scripting interface; you
 probably don't need to interact with TVTK unless you want to create
 a new Mayavi module.
 
-WWW: http://code.enthought.com/projects/mayavi/
+WWW: http://code.enthought.com/pages/mayavi-project.html

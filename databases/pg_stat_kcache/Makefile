@@ -1,10 +1,8 @@
 # Created by: Palle Girgensohn <girgen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pg_stat_kcache
 DISTVERSIONPREFIX=	REL
-DISTVERSION=	2_1_1
-PORTREVISION=	1
+DISTVERSION=	2_2_0
 CATEGORIES=	databases
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -12,7 +10,7 @@ COMMENT=	Gather statistics about PostgreSQL I/O and CPU usage
 
 LICENSE=	PostgreSQL
 
-USES=		gmake pgsql:9.4+
+USES=		gmake pgsql:9.6+
 LLD_UNSAFE=	yes
 WANT_PGSQL=	server contrib
 

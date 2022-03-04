@@ -1,5 +1,4 @@
 # Created by: kline
-# $FreeBSD$
 
 PORTNAME=	enscript
 PORTVERSION=	1.6.6
@@ -9,7 +8,7 @@ MASTER_SITES=	GNU
 PKGNAMESUFFIX=	-${PAPERSIZE}
 DISTNAME=	enscript-${PORTVERSION}
 
-MAINTAINER?=	johans@FreeBSD.org
+MAINTAINER?=	mbeis@xs4all.nl
 COMMENT=	ASCII to PostScript filter
 
 USES=		cpe shebangfix perl5
@@ -23,7 +22,7 @@ OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 
-CONFLICTS?=	enscript-a4-[0-9]* enscript-letterdj-[0-9]*
+CONFLICTS?=	enscript-a4 enscript-letterdj
 
 INFO=		enscript
 CPE_VENDOR=	gnu

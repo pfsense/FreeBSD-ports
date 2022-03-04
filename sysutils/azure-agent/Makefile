@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	azure-agent
-PORTVERSION=	2.2.14
+PORTVERSION=	2.2.45
 DISTVERSIONPREFIX=	v
 PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	honzhan@microsoft.com
+PATCH_SITES=	https://github.com/Azure/WALinuxAgent/commit/
+
+MAINTAINER=	weh@microsoft.com
 COMMENT=	Microsoft Azure Linux Agent
 
 LICENSE=	APACHE20
@@ -19,14 +19,14 @@ RUN_DEPENDS=	sudo:security/sudo \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 NO_BUILD=	yes
-USES=		python:2.7 shebangfix
+USES=		python:3.5+ shebangfix
 
 SHEBANG_FILES=	bin/waagent bin/waagent2.0
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Azure
 GH_PROJECT=	WALinuxAgent
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils noflavors
 
 post-patch:
 	${REINPLACE_CMD} -e "s,/etc/waagent,${PREFIX}/etc/waagent,g" \

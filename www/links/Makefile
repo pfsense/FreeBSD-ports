@@ -1,11 +1,10 @@
 # Created by: Michael Vasilenko <acid@stu.cn.ua>
-# $FreeBSD$
 
 PORTNAME=	links
-DISTVERSION=	2.16
+DISTVERSION=	2.20.2
 PORTREVISION=	1
 PORTEPOCH=	1
-CATEGORIES=	www ipv6
+CATEGORIES=	www
 MASTER_SITES=	http://links.twibright.com/download/
 
 MAINTAINER=	portmaster@BSDforge.com
@@ -14,7 +13,7 @@ COMMENT=	Lynx-like text WWW browser
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	links-0* links-hacked-[0-9]* links1-[0-9]*
+CONFLICTS=	links-0* links-hacked links1
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ssl --without-pmshell --without-atheos \
@@ -46,6 +45,7 @@ NLS_USES=		gettext-runtime
 NLS_CONFIGURE_ENABLE=	gettext-runtime
 
 SVG_CONFIGURE_WITH=	librsvg
+SVG_USES=		gnome
 SVG_USE=		gnome=librsvg2,glib20,gdkpixbuf2,cairo
 
 SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
@@ -58,9 +58,12 @@ TRANS_EXTRA_PATCHES=	${FILESDIR}/extra-terminal.c.diff
 
 UTF8_CONFIGURE_ENABLE=	utf8
 
+X11_USES=		xorg
 X11_USE=		xorg=x11,xorgproto
 X11_LIB_DEPENDS=	libevent.so:devel/libevent \
-			libfontconfig.so:x11-fonts/fontconfig
+			libfontconfig.so:x11-fonts/fontconfig \
+			libfreetype.so:print/freetype2
+
 X11_CONFIGURE_WITH=	x
 X11_PLIST_FILES=	share/pixmaps/links.xpm
 

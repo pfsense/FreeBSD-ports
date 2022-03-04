@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	alglib
-DISTVERSION=	3.15.0
+DISTVERSION=	3.18.0
 CATEGORIES=	math science
-MASTER_SITES=	http://www.alglib.net/translator/re/
+MASTER_SITES=	https://www.alglib.net/translator/re/
 EXTRACT_SUFX=	.cpp.gpl.zip
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +11,7 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/gpl3.txt
 
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/cpp
+WRKSRC=		${WRKDIR}/${PORTNAME}-cpp
 
 do-build:
 	cd ${WRKSRC}/src && \
@@ -24,5 +22,11 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/src/*.h ${STAGEDIR}${PREFIX}/include/lib${PORTNAME}
 	${INSTALL_LIB} ${WRKSRC}/src/lib${PORTNAME}.so.3 ${STAGEDIR}${PREFIX}/lib
 	@${LN} -s lib${PORTNAME}.so.3 ${STAGEDIR}${PREFIX}/lib/lib${PORTNAME}.so
+
+do-test:
+	@cd ${WRKSRC} && \
+		cd tests && \
+		${CXX} ${CXXFLAGS} test_c.cpp -I ${STAGEDIR}${LOCALBASE}/include/libalglib ${STAGEDIR}${LOCALBASE}/lib/lib${PORTNAME}.so && \
+		LD_PRELOAD=${STAGEDIR}${LOCALBASE}/lib/lib${PORTNAME}.so ./a.out
 
 .include <bsd.port.mk>

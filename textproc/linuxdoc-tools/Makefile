@@ -1,11 +1,10 @@
 # Created by: Felix Palmen <felix@palmen-it.de>
-# $FreeBSD$
 
 PORTNAME=	linuxdoc-tools
-PORTVERSION=	0.9.71
+PORTVERSION=	0.9.82
 CATEGORIES=	textproc
-MASTER_SITES=	DEBIAN
-DISTNAME=	${PORTNAME}_${DISTVERSION}.orig
+# USE_GITLAB requires a commit hash, so construct MASTER_SITES manually
+MASTER_SITES=	https://gitlab.com/agmartin/${PORTNAME}/-/archive/${PORTVERSION}/
 
 MAINTAINER=	felix@palmen-it.de
 COMMENT=	Fork of SGML-tools specially tailored for linuxdoc SGMLs
@@ -24,7 +23,7 @@ RUN_DEPENDS=	gawk:lang/gawk \
 		sgmlsasp:textproc/sgmls
 
 GNU_CONFIGURE=	yes
-USES=		gmake groff:both perl5
+USES=		gmake groff:both perl5 tar:bzip2
 CONFIGURE_ARGS=	--with-installed-sgmlsasp
 
 PORTDOCS=	*

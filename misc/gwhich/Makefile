@@ -1,5 +1,4 @@
 # Created by: Jeremy Shaffner <jeremy@external.org>
-# $FreeBSD$
 
 PORTNAME=	gwhich
 PORTVERSION=	2.21
@@ -8,7 +7,7 @@ CATEGORIES=	misc
 MASTER_SITES=	GNU/which
 DISTNAME=	which-${PORTVERSION}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	GNU Which - Everything you never wanted in a which
 
 GNU_CONFIGURE=	yes

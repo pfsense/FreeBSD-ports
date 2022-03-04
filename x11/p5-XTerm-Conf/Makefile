@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	XTerm-Conf
 PORTVERSION=	0.10
 CATEGORIES=	x11 perl5

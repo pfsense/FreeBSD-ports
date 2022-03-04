@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gmic
 PORTVERSION=	1.6.9
-PORTREVISION=	19
+PORTREVISION=	34
 CATEGORIES=	graphics
 MASTER_SITES=	http://gmic.eu/files/source/
 PKGNAMEPREFIX=	gimp-
@@ -12,8 +10,10 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	rm@FreeBSD.org
 COMMENT=	GREYC's Magic Image Converter
 
+BROKEN=		OpenCV4 no longer ships OpencCV-1.0 headers
+
 LIB_DEPENDS=	libGraphicsMagick++.so:graphics/GraphicsMagick \
-		libIlmImf.so:graphics/openexr \
+		libOpenEXR.so:graphics/openexr \
 		libopencv_video.so:graphics/opencv \
 		libMagick++-6.so:graphics/ImageMagick6 \
 		libavcodec.so:multimedia/ffmpeg \
@@ -27,7 +27,7 @@ BASH_RUN_DEPENDS=	bash:shells/bash
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 
-USES=		dos2unix gmake localbase pkgconfig
+USES=		dos2unix gmake gnome localbase pkgconfig xorg
 USE_GCC=	yes
 USE_GNOME=	gtk20
 USE_XORG=	x11 xext xrandr

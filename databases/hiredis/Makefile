@@ -1,5 +1,4 @@
 # Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hiredis
 PORTVERSION=	0.13.3
@@ -14,8 +13,10 @@ LICENSE=	BSD3CLAUSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	redis
 
-USES=		gmake
+USES=		cpe gmake
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	redislabs
 
 post-patch:
 	@${REINPLACE_CMD} \

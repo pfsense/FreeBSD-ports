@@ -1,9 +1,8 @@
 # Created by: Julian Stacey <jhs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=		estic
 PORTVERSION=		1.61
-PORTREVISION=		9
+PORTREVISION=		10
 CATEGORIES=		misc comms
 MASTER_SITES=		LOCAL/dinoex
 PKGNAMESUFFIX?=		${NOX11_SUFFIX}${PKGNAMESUFFIX2}
@@ -14,13 +13,9 @@ COMMENT=		Controller for ISDN TK-Anlage (PBX) made by Istec
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_armv6=		fails to compile: str.h: friend declaration specifying a default argument must be the only declaration
-BROKEN_armv7=		fails to compile: str.h: friend declaration specifying a default argument must be the only declaration
-
 USES=		ncurses zip
 USE_CSTD=	gnu89
 USE_CXXSTD=	gnu++98
-USE_GCC=	any
 NO_WRKSUBDIR=	yes
 
 # Personal Preferences, Where to install.
@@ -37,6 +32,7 @@ OPTIONS_DEFINE=	X11 DTR_OFF DOCS
 OPTIONS_DEFAULT=X11
 NO_OPTIONS_SORT=yes
 DTR_OFF_DESC=	use dtr-off patch
+X11_USES=	xorg
 X11_USE=	xorg=x11
 
 FIXME=	areacode estic spunk

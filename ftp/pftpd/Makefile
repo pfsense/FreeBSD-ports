@@ -1,8 +1,8 @@
 # Created by: Gea-Suan Lin <gslin@ccca.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	pftpd
 PORTVERSION=	1.0.3
+PORTREVISION=	2
 CATEGORIES=	ftp
 MASTER_SITES=	ftp://ftp.ifm.liu.se/pub/unix/pftpd/
 

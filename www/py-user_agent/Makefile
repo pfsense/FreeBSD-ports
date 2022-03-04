@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	user_agent
 PORTVERSION=	0.1.9
 CATEGORIES=	www python
@@ -14,7 +12,7 @@ LICENSE=	MIT
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

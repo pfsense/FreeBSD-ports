@@ -1,17 +1,17 @@
 # Created by: b.f. <bf@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	frama-c
-DISTVERSIONPREFIX=	Silicon-
-DISTVERSION=	20161101
+DISTVERSIONPREFIX=	Phosphorus-
+DISTVERSION=	20170501
 CATEGORIES=	devel lang
 MASTER_SITES=	http://frama-c.com/download/
-DIST_SUBDIR=	framac-01
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extensible platform for source-code analysis of C
 
 LICENSE=	LGPL21
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/ocaml/ocamlgraph/graph.a:math/ocaml-ocamlgraph \
 	    ${LOCALBASE}/lib/ocaml/site-lib/zarith/zarith.a:math/ocaml-zarith
@@ -27,7 +27,7 @@ USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 gtksourceview2 \
 	    libartlgpl2 libgnomecanvas pango
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--with-cpp="${FRAMAC_DEFAULT_CPP}"
+CONFIGURE_ARGS=	--with-cpp="${FRAMAC_DEFAULT_CPP}" --disable-e_acsl
 MAKE_ENV+=	FRAMAC_LIBDIR="${FRAMAC_LIBDIR}" \
 	    FRAMAC_DATADIR="${FRAMAC_DATADIR}" \
 	    STAGEDIR="${STAGEDIR}"

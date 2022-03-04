@@ -1,5 +1,4 @@
 # Created by: Yevgen Drachenko <geka@sippysoft.com>
-# $FreeBSD$
 
 PORTNAME=	wsgi_xmlrpc
 PORTVERSION=	0.2.8
@@ -14,7 +13,7 @@ COMMENT=	WSGI application for a simple XMLRPC method dispatching
 
 LICENSE=	APACHE20
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	stomp
-PORTVERSION=	1.4.6
+PORTVERSION=	1.4.10
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

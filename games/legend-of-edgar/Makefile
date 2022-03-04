@@ -1,14 +1,13 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	edgar
-DISTVERSION=	1.31
+DISTVERSION=	1.34
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/riksweeney/edgar/releases/download/${DISTVERSION}/
 PKGNAMEPREFIX=	legend-of-
 DISTFILES=	edgar-${DISTVERSION}-1${EXTRACT_SUFX}
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	2D platform game with a persistent world
 
 LICENSE=	GPLv2
@@ -27,13 +26,11 @@ MAKE_ARGS=	BIN_DIR=${PREFIX}/bin/ \
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 
-PORTDOCS=	*
-
-NLS_MAKE_ARGS_OFF=	LOCALE_MO=""
 NLS_USES=		gettext-tools
+NLS_MAKE_ARGS_OFF=	LOCALE_MO=""
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|Categories=Game|Categories=Game;ArcadeGame;|' \
+	${REINPLACE_CMD} -e 's|Categories=Game;|Categories=Game;ArcadeGame;|' \
 		${WRKSRC}/icons/${PORTNAME}.desktop
 
 post-install:

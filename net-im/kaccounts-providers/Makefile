@@ -1,11 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	kaccounts-providers
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-im kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	System to administer web accounts for the KDE desktop
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libaccounts-glib.so:net-im/libaccounts-glib \
 		libkaccounts.so:net-im/kaccounts-integration \
@@ -16,7 +17,7 @@ USES=		cmake compiler:c++11-lang gettext gnome kde:5 \
 		pkgconfig qt:5 tar:xz
 USE_GNOME=	intltool
 USE_KDE=	config coreaddons i18n kdeclarative kio package service
-USE_QT=		core declarative gui network xml \
+USE_QT=		concurrent core dbus declarative gui network xml webengine \
 		buildtools_build qmake_build
 
 OPTIONS_DEFINE=	DOCS

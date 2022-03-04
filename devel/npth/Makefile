@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	npth
 PORTVERSION=	1.6
 CATEGORIES=	devel

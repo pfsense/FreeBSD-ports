@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gnuplot
-PORTVERSION=	5.2.6
+PORTVERSION=	5.4.1
+PORTREVISION=	1
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
 
@@ -13,9 +12,10 @@ LICENSE_NAME=	Gnuplot license
 LICENSE_FILE=	${WRKSRC}/Copyright
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-CONFLICTS_INSTALL?=	gnuplot-lite-[0-9]*
+CONFLICTS_INSTALL?=	gnuplot-lite
 
-USES+=		compiler:c++11-lang groff iconv pkgconfig readline
+USES+=		compiler:c++11-lang cpe groff iconv pkgconfig readline
+CPE_VENDOR=	gnuplot_project
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 CONFIGURE_ARGS+=--with-readline=gnu \
@@ -42,15 +42,17 @@ CONFIGURE_ARGS+=--disable-x11-mbfonts \
 		--without-kpsexpand
 PLIST_SUB+=	X11="@comment "
 .else
-USES+=		jpeg lua:53
+USES+=		gnome jpeg lua:53 ncurses xorg
 USE_TEX=	kpathsea
-USE_GNOME+=	atk cairo gtk20 gdkpixbuf2
-USE_WX=		2.8
+USE_GNOME+=	atk cairo gtk30 gdkpixbuf2
+USE_WX=		3.0+
 USE_XORG+=	x11
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
 		libgd.so:graphics/gd \
 		libpng.so:graphics/png \
+		libwebp.so:graphics/webp \
 		libtiff.so:graphics/tiff
 CONFIGURE_ARGS+=--with-gd=${LOCALBASE} \
 		--with-gpic \
@@ -85,9 +87,9 @@ post-build-DOCS-on:
 	@cd ${WRKSRC}/docs && ${MAKE} groff
 
 pre-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}/5.2 ; \
+	${MKDIR} ${STAGEDIR}${DATADIR}/5.4 ; \
 		${INSTALL_DATA} ${WRKSRC}/share/gnuplotrc \
-		${STAGEDIR}${DATADIR}/5.2/gnuplotrc.sample
+		${STAGEDIR}${DATADIR}/5.4/gnuplotrc.sample
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -101,7 +103,7 @@ post-install-DOCS-on:
 
 .if defined(LITE)
 post-stage:
-	@cd ${STAGEDIR}${PREFIX} && ${RMDIR} libexec/gnuplot/5.2 libexec/gnuplot
+	@cd ${STAGEDIR}${PREFIX} && ${RMDIR} libexec/gnuplot/5.4 libexec/gnuplot
 .endif
 
 .include <bsd.port.mk>

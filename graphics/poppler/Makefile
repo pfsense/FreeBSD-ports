@@ -1,12 +1,11 @@
 # Created by: marcus@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	poppler
-DISTVERSION=	0.75.0
+DISTVERSION=	21.11.0
 CATEGORIES=	graphics print
-MASTER_SITES=	http://poppler.freedesktop.org/
+MASTER_SITES=	https://poppler.freedesktop.org/
 
-MAINTAINER?=	gnome@FreeBSD.org
+MAINTAINER?=	desktop@FreeBSD.org
 COMMENT?=	PDF rendering library
 
 LICENSE=	GPLv2
@@ -19,9 +18,10 @@ LIB_DEPENDS=	libnspr4.so:devel/nspr \
 		libfreetype.so:print/freetype2 \
 		libnss3.so:security/nss \
 		libfontconfig.so:x11-fonts/fontconfig
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/container/small_vector.hpp:devel/boost-libs
 RUN_DEPENDS=	poppler-data>0:graphics/poppler-data
 
-USES=		compiler:c++11-lang cpe cmake:insource gnome jpeg libtool \
+USES=		cmake:insource compiler:c++11-lang cpe gnome jpeg libtool \
 		localbase pathfix pkgconfig tar:xz
 CPE_VENDOR=	freedesktop
 USE_GNOME=	cairo libxml2
@@ -33,7 +33,7 @@ CMAKE_ON=	ENABLE_LIBJPEG  \
 		ENABLE_ZLIB \
 		ENABLE_NSS \
 		ENABLE_SPLASH
-
+CMAKE_OFF=	BUILD_GTK_TESTS
 
 # Slave ports.
 _POPPLER_SLAVES=	library glib qt5 utils
@@ -47,6 +47,7 @@ CMAKE_OFF+=	${_POPPLER_SLAVES:N${_SLAVE_PORT}:tu:S/^/ENABLE_/}
 PORTSCOUT=	limitw:1,even
 USES+=		iconv
 CMAKE_ON+=	ENABLE_CPP
+PLIST_SUB+=	SHLIB_VER=115
 
 OPTIONS_DEFINE=		CURL OPENJPEG
 OPTIONS_DEFAULT=	OPENJPEG

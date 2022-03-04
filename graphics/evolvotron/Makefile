@@ -1,9 +1,8 @@
 # Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	evolvotron
 DISTVERSION=	0.7.1
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	SF \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -18,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-USES=		compiler:c++11-lib python qmake qt:5
+USES=		compiler:c++11-lib gl gnome python qmake qt:5
 USE_QT=		core gui widgets xml buildtools_build
 USE_GL=		gl
 QMAKE_ARGS=	VERSION_NUMBER="${PORTVERSION}"
@@ -27,7 +26,6 @@ USE_CXXSTD=	c++11
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
 
 DESKTOP_ENTRIES="Evolvotron" "Interactive image generator" "${PORTNAME}" \

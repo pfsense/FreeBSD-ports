@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	sdlsand
 PORTVERSION=	20061017
 PORTREVISION=	6
@@ -10,7 +7,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simulation of falling sand and other materials
 
-USES=		dos2unix zip
+USES=		dos2unix sdl zip
 DOS2UNIX_FILES=	CmdLine.cpp
 USE_SDL=	sdl
 

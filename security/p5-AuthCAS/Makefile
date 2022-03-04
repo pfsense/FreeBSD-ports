@@ -1,5 +1,4 @@
 # Created by: Frank Wall <fw@moov.de>
-# $FreeBSD$
 
 PORTNAME=	AuthCAS
 PORTVERSION=	1.6
@@ -18,7 +17,6 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
 		p5-IO-Socket-SSL>=0:security/p5-IO-Socket-SSL
-
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	sampleCasClient.pl

@@ -1,23 +1,36 @@
-# $FreeBSD$
-
 PORTNAME=	zrythm
-DISTVERSION=	g20190216
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.0-alpha.26.0.13
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Modern music production system, also known as DAW
 
-LICENSE=	GPLv3
+LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	kf5-breeze-icons>0:x11-themes/kf5-breeze-icons
-LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+BUILD_DEPENDS=	bash:shells/bash \
+		help2man:misc/help2man \
+		${LOCALBASE}/lib/libbacktrace.a:devel/libbacktrace \
+		kf5-breeze-icons>0:x11-themes/kf5-breeze-icons
+LIB_DEPENDS=	libaudec.so:audio/libaudec \
+		libavcodec.so:multimedia/ffmpeg \
 		libcyaml.so:textproc/libcyaml \
-		libdazzle-1.0.so:x11-toolkits/libdazzle \
+		libgtop-2.0.so:devel/libgtop \
+		libcgraph.so:graphics/graphviz \
+		libcurl.so:ftp/curl \
+		libfftw3_threads.so:math/fftw3 \
+		libfftw3f_threads.so:math/fftw3-float \
+		libguile-2.2.so:lang/guile2 \
 		libjack.so:audio/jack \
+		libjson-glib-1.0.so:devel/json-glib \
 		liblilv-0.so:audio/lilv \
+		libpcre.so:devel/pcre \
+		libpcre2-8.so:devel/pcre2 \
 		libportaudio.so:audio/portaudio \
+		libpulse.so:audio/pulseaudio \
+		libreproc.so:devel/reproc \
+		librubberband.so:audio/rubberband \
 		libsamplerate.so:audio/libsamplerate \
 		libserd-0.so:devel/serd \
 		libsmf.so:audio/libsmf \
@@ -26,27 +39,34 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libasound.so:audio/alsa-lib \
 		libsratom-0.so:audio/sratom \
 		libsuil-0.so:audio/suil \
-		libyaml.so:textproc/libyaml
+		libvamp-hostsdk.so:audio/vamp-plugin-sdk \
+		libxxhash.so:devel/xxhash \
+		libyaml.so:textproc/libyaml \
+		libzstd.so:archivers/zstd
 RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 		kf5-breeze-icons>0:x11-themes/kf5-breeze-icons
 
-USES=		autoreconf gettext-runtime gmake python:3.5+,build gettext-runtime gnome pkgconfig
-USE_GITLAB=	yes
-GL_SITE=	https://git.zrythm.org
-GL_COMMIT=	fd92153c1c2552b54ac9ea2b5981bbb880da04f8
-GNU_CONFIGURE=	yes
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 libxml2 pango
-GLIB_SCHEMAS=	org.zrythm.gschema.xml
-ALL_TARGET=	${PORTNAME}
-INSTALLS_ICONS=	yes
+USES=		compiler:c11 desktop-file-utils gettext-tools gettext-runtime gnome libtool localbase:ldflags \
+		meson pkgconfig python:3.5+,build shared-mime-info shebangfix xorg
+USE_GITHUB=	yes
+USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 gtksourceview3 libxml2 pango
+USE_XORG=	x11
 
-BINARY_ALIAS=	python3=${PYTHON_CMD}
+SHEBANG_FILES=	scripts/collect_translatables.sh
 
-MAKE_ARGS=	RELEASE=1
+GLIB_SCHEMAS=	org.zrythm.Zrythm.gschema.xml
 
-PLIST_FILES=	bin/zrythm \
-		share/applications/zrythm.desktop \
-		share/fonts/zrythm/Segment7Standard/OFL.txt \
-		share/icons/hicolor/scalable/apps/z.svg
+LDFLAGS+=	${LOCALBASE}/lib/libfftw3_threads.so ${LOCALBASE}/lib/libfftw3f_threads.so # these libs are required but aren't returned by pkg-config for fftw3
+
+BINARY_ALIAS=	git=false python3=${PYTHON_CMD}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+MESON_ARGS=	-Db_lto=false
+.endif
+
+post-patch: # https://git.zrythm.org/zrythm/zrythm/issues/299
+	@${REINPLACE_CMD} 's|<malloc.h>|<stdlib.h>|' ${WRKSRC}/ext/midilib/src/*.c
 
 .include <bsd.port.mk>

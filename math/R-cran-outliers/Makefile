@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	outliers
 PORTVERSION=	0.14
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

@@ -1,9 +1,8 @@
 # Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
 
 PORTNAME=	atr3d
 PORTVERSION=	0.6
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	http://rodrigo.osorio.free.fr/freebsd/distfiles/
 DISTNAME=	${PORTNAME}_source_${PORTVERSION}
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		autoreconf gmake perl5 tar:tgz
+USES=		autoreconf gl gmake perl5 tar:tgz xorg
 USE_GL=		glut glu
 USE_XORG=	xmu xi x11
 USE_PERL5=	build
@@ -24,12 +23,12 @@ GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 OPTIONS_DEFINE=	OPENAL
 OPTIONS_DEFAULT=OPENAL
 
-OPENAL_USES=	openal:alut
+OPENAL_USES=	compiler:c++11-lang openal:alut
 OPENAL_CONFIGURE_ENABLE=	sound
 
 pre-patch:

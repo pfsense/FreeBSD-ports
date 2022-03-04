@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	zimg
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	2.8
-PORTREVISION=	1
+DISTVERSION=	3.0.3
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${GH_ACCOUNT}-
 
@@ -16,15 +13,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	sekrit-twc
 
-CONFLICTS_INSTALL=	zimg-[0-9]* # include/zimg.h
+CONFLICTS_INSTALL=	zimg # include/zimg.h
 
 USES=		autoreconf compiler:c++11-lib gmake libtool pathfix
-EXTRACT_AFTER_ARGS=	--exclude test/extra
+EXCLUDE=	googletest sha1
+EXTRACT_AFTER_ARGS=	${EXCLUDE:S,^,--exclude test/extra/,}
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
-		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
-CPPFLAGS+=	${CPPFLAGS_${CHOSEN_COMPILER_TYPE}_${COMPILER_VERSION}}
-CPPFLAGS_clang_34=	-include x86intrin.h # revert 575bd93
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 PORTEXAMPLES=	*

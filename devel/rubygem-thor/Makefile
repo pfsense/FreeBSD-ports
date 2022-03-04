@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	thor
-PORTVERSION=	0.20.3
+PORTVERSION=	1.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

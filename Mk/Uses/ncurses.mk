@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # handle dependency on the ncurses port
 #
 # Feature:	ncurses
@@ -27,7 +25,7 @@
 _INCLUDE_USES_NCURSES_MK=	yes
 
 .if empty(ncurses_ARGS)
-.  if !exists(${DESTDIR}/${LOCALBASE}/lib/libncurses.so) && exists(${DESTDIR}/usr/lib/libncurses.so)
+.  if !exists(${DESTDIR}/${LOCALBASE}/lib/libncurses.so) && exists(${DESTDIR}/usr/lib/libncursesw.so)
 ncurses_ARGS=	base
 .  else
 ncurses_ARGS=	port
@@ -64,7 +62,7 @@ NCURSES_INSTALLED?=
 
 .if ${NCURSES_INSTALLED} != ""
 NCURSES_PORT=	${NCURSES_INSTALLED}
-NCURSES_SHLIBFILE!=	${PKG_INFO} -ql ${NCURSES_INSTALLED} | grep -m 1 "^`pkg query "%p" ${NCURSES_INSTALLED}`/lib/libncurses.so."
+NCURSES_SHLIBFILE!=	${PKG_INFO} -ql ${NCURSES_INSTALLED} | grep -m 1 "^`${PKG_QUERY} "%p" ${NCURSES_INSTALLED}`/lib/libncurses.so."
 NCURSES_SHLIBVER?=	${NCURSES_SHLIBFILE:E}
 .endif
 
@@ -74,6 +72,8 @@ NCURSES_SHLIBVER?=	6
 BUILD_DEPENDS+=		${LOCALBASE}/lib/libncurses.so.${NCURSES_SHLIBVER}:${NCURSES_PORT}
 RUN_DEPENDS+=		${LOCALBASE}/lib/libncurses.so.${NCURSES_SHLIBVER}:${NCURSES_PORT}
 NCURSESRPATH=		${NCURSESBASE}/lib
+TINFO_LIB=		-ltinfo
+NCURSES_LIB=		-lncurses
 
 .if defined(NCURSES_RPATH)
 CFLAGS+=	-Wl,-rpath,${NCURSESRPATH}
@@ -85,5 +85,9 @@ LDFLAGS+=	-Wl,-rpath=${NCURSESRPATH}
 .endif
 
 NCURSESLIB=	${NCURSESBASE}/lib
+NCURSES_IMPL?=	ncursesw
+TINFO_LIB?=	-ltinfow
+NCURSES_LIB?=	-lncursesw
+NCURSESLIBS=		${NCURSES_LIB} ${TINFO_LIB}
 
 .endif

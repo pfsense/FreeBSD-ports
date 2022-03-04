@@ -18,25 +18,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from __future__ import print_function
 """
 CLI for lte cards in pfsense systems.
 
-2016 - 2017 by Voleatech GmbH (tech@voleatech.de)
+2016 - 2020 by Voleatech GmbH (tech@voleatech.de)
 """
 
 import sys
 import os
 import time
-
 import argparse
-import ConfigParser
 import serial
+import configparser
+
 
 __version__ = "1.1.6"
 
 huawei = (lambda a: a.startswith("Huawei"))
+simcom = (lambda a: a.startswith("SIMCOM"))
 
 class CellularInterface:
     """
@@ -46,7 +45,8 @@ class CellularInterface:
     DEBUG = False
 
     def __init__(self):
-        """initialize the interface.
+        """
+        initialize the interface.
 
         search for config files "/usr/local/etc/defaults/cellular.defaults.conf" or "/usr/local/etc/cellular.conf"
         """
@@ -57,7 +57,7 @@ class CellularInterface:
         self.conf = self.confdir + "/cellular.conf"
         self.defconf = self.confdir + "/cellular.defaults.conf"
 
-        self.config = ConfigParser.ConfigParser()
+        self.config = configparser.ConfigParser()
 
         # init default Config if not present
         self.init_config(self.defconf)
@@ -99,7 +99,7 @@ class CellularInterface:
         """
         write config to .cellular.conf
         """
-        tmp = ConfigParser.ConfigParser()
+        tmp = configparser.ConfigParser()
 
         if (os.path.isfile(self.conf)):
             tmp.readfp(open(self.conf))
@@ -123,8 +123,7 @@ class CellularInterface:
 
         sets self.module and self.manufacturer
         """
-
-        tmp = ConfigParser.ConfigParser()
+        tmp = configparser.ConfigParser()
 
         if (os.path.isfile(self.conf)):
             tmp.readfp(open(self.conf))
@@ -163,21 +162,20 @@ class CellularInterface:
         self.manufacturer = manufacturer
         tmp.set("Hardware", "manufacturer", manufacturer)
 
-        with open(self.conf, "wb") as f:
+        with open(self.conf, "w") as f:
             tmp.write(f)
 
     def init_config(self, config_file):
         """
         initialize config file if not present or from old version.
         """
-        
         #make sure confdir exists
         if (not os.path.isdir(self.confdir)):
             os.makedirs(self.confdir)
 
         # check if config file is from an old version.
         if (os.path.isfile(config_file)):
-            tmp = ConfigParser.ConfigParser()
+            tmp = configparser.ConfigParser()
             tmp.readfp(open(config_file))
 
             config_version = tmp.get("Software", "version")
@@ -205,13 +203,14 @@ class CellularInterface:
             # self.config.set("Interface", "stopbits", "serial.STOPBITS_ONE")
             self.config.set("Interface", "timeout", "0.5")
 
-            with open(config_file, "wb") as f:
+            with open(config_file, "w") as f:
                 f.write(pre_text)
                 f.write("\n")
                 self.config.write(f)
 
     def at_cmd(self, cmd, args, short = False):
-        """send AT command to serial port and
+        """
+        send AT command to serial port and
 
         Arguments:
         cmd - AT command without <AT> at the beginning
@@ -235,8 +234,8 @@ class CellularInterface:
         # We will try 3 times since the modem is sometimes busy
         for x in range(0, 2):
 
-            ret = self.ser.write("AT{}\r".format(cmd))
-            answ = self.ser.read(1024)
+            ret = self.ser.write("AT{}\r".format(cmd).encode())
+            answ = self.ser.read(1024).decode()
 
             # better save than sorry
             if "OK" in answ:
@@ -279,7 +278,6 @@ class CellularInterface:
 
         returns ERROR on Error
         """
-
         args.silent = True
         widget = self.widget(args)
 
@@ -301,7 +299,10 @@ class CellularInterface:
         rssi = int(strength.split(",")[0])
 
         # convert rssi to number (1(marginal) - 4(excellent))
-        ret = map(lambda a: rssi <= a, steps).index(True)
+        ret = 0
+        for index, step in enumerate(steps):
+            if rssi <= step:
+                ret = index
 
         if (ret == 0):
             return "ERROR"
@@ -312,12 +313,12 @@ class CellularInterface:
         """
         receive module information
         """
-
         return self.at_cmd("I", args)
 
     def _at_infoex(self, args):
-        """receive system information"""
-
+        """
+        receive system information
+        """
         return self.at_cmd("^SYSINFOEX", args, short = True)
 
     def infoex(self, args):
@@ -341,6 +342,9 @@ class CellularInterface:
         if (infoex == "ERROR"):
             return "ERROR"
         else:
+            if simcom(self.module):
+                return infoex.split(",")[0].strip('"')
+
             return infoex.split(",")[6].strip('"')
 
     def get_model(self, args, silent=False):
@@ -348,7 +352,6 @@ class CellularInterface:
         get model of module.
         """
         import re
-        # TODO: +GMM
         info = self._at_information(args)
         m = re.search("Model:(?:\W)*(.*)", info[1])
 
@@ -359,6 +362,7 @@ class CellularInterface:
         else:
             if not silent:
                 print("ERROR", file=sys.stdout)
+
             return ("-1", "ERROR")
 
         return info
@@ -416,16 +420,26 @@ class CellularInterface:
         """
         import re
 
-        cmds = (("+CSQ", self._parse_signal_strength),
+        cmds = (
+            ("+CSQ", self._parse_signal_strength),
             ("+COPS?", self._parse_carrier),
-            ("^SYSINFOEX", self._get_submode_name))
+        )
 
-        ret = self.at_cmd("; ".join([cmd[0] for cmd in cmds]), args)
+        if huawei(self.manufacturer):
+            cmds += (("^SYSINFOEX", self._get_submode_name),)
+
+        num, ret = self.at_cmd("; ".join([cmd[0] for cmd in cmds]), args)
+        
+        if simcom(self.manufacturer):
+            cmds += (("+CPSI", self._get_submode_name),)
+            num, ret2 = self.at_cmd("+CPSI=1", args)
+            ret += ret2
+            self.at_cmd("+CPSI=0", args)
 
         out = []
 
         for cmd, f in cmds:
-            m = re.search("{}: (\S+)".format(re.escape(cmd.split("=")[0].split("?")[0])), ret[1])
+            m = re.search("{}: (\S+)".format(re.escape(cmd.split("=")[0].split("?")[0])), ret)
             if m:
                 out.append(f(m.group(1)))
             else:
@@ -524,7 +538,7 @@ if __name__ == "__main__":
 
     my_subparsers = {}
     ## construct subparsers per command in "actions"
-    for action, ac_args in actions.iteritems():
+    for action, ac_args in actions.items():
         tmp_subparser = subparsers.add_parser(action, help=ac_args["help"])
 
         tmp_subparser.add_argument("-v", "--verbose",
@@ -558,3 +572,4 @@ if __name__ == "__main__":
 
     ## now call the function
     actions[args.action]["action"](args, **actions[args.action]["kwargs"])
+

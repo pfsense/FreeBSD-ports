@@ -1,9 +1,8 @@
 # Created by: Eugene Grosbein <eugen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cpupdate
 DISTVERSION=	g20180513
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	eugen@FreeBSD.org
@@ -25,7 +24,10 @@ ONLY_FOR_ARCHS=		amd64 i386
 ONLY_FOR_ARCHS_REASON=	specific to x86 processors
 
 SUB_FILES=	pkg-message
-SUB_LIST=	CPM_DIR=${CPM_DIR} INTEL_DIR=${INTEL_DIR}
+SUB_LIST=	CPM_DIR="${CPM_DIR}" INTEL_DIR="${INTEL_DIR}" \
+		CPM_DATADIR="${CPM_DATADIR}" INTEL_DATADIR="${INTEL_DATADIR}" \
+		FETCH_CMD="${FETCH_CMD}" MASTER_SITES="${MASTER_SITES}" \
+		DISTFILES="${DISTFILES}"
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kernschmelze
@@ -34,10 +36,10 @@ GH_TAGNAME=	48e42d5
 
 PLIST_FILES=	sbin/${PORTNAME} man/man8/${PORTNAME}.8.gz
 
-# MCE DB r101
+# MCE DB r181
 CPM_ACCOUNT=	platomav
 CPM_PROJECT=	CPUMicrocodes
-CPM_TAGNAME=	664172f
+CPM_TAGNAME=	044f53b
 
 OPTIONS_DEFINE=		CPM INTEL
 CPM_DESC=		Download platomav/CPUMicrocodes collection
@@ -47,11 +49,12 @@ CPM_GH_TAGNAME=		${CPM_TAGNAME}:cpm
 CPM_DIR=		${WRKDIR}/${CPM_PROJECT}-${CPM_TAGNAME}
 CPM_DATADIR=		${DATADIR}/CPUMicrocodes/secondary/Intel
 
-INTEL_PACK=		microcode-20180807.tgz
+INTEL_PACK=		microcode-20210216
 INTEL_DESC=		Download Intel microcode pack ${INTEL_PACK}
-INTEL_MASTER_SITES=	https://downloadmirror.intel.com/28039/eng/:intel
+INTEL_PROJECT=		Intel-Linux-Processor-Microcode-Data-Files
+INTEL_MASTER_SITES=	https://codeload.github.com/intel/${INTEL_PROJECT}/tar.gz/:intel
 INTEL_DISTFILES=	${INTEL_PACK}:intel
-INTEL_DIR=		${WRKDIR}/intel-ucode
+INTEL_DIR=		${WRKDIR}/${INTEL_PROJECT}-${INTEL_PACK}/intel-ucode
 INTEL_DATADIR=		${DATADIR}/CPUMicrocodes/primary/Intel
 
 post-patch:
@@ -73,7 +76,7 @@ install-microcodes:
 .if ${PORT_OPTIONS:MCPM}
 	${RM} -rf ${CPM_DATADIR}
 	${MKDIR} ${CPM_DATADIR}
-	cpupdate -IC -S ${CPM_DIR}/Intel -T ${CPM_DATADIR}
+	cpupdate -q -IC -S ${CPM_DIR}/Intel -T ${CPM_DATADIR} >/dev/null
 .endif
 .for _o in INTEL CPM
 .if ${PORT_OPTIONS:M${_o}}

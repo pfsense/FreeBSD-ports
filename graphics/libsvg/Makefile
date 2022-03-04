@@ -1,5 +1,4 @@
 # Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
 #   $MCom: ports/graphics/libsvg/Makefile,v 1.3 2005/07/04 00:11:29 marcus Exp $
 
 PORTNAME=	libsvg
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	libxml2
-USES=		iconv jpeg libtool pathfix pkgconfig
+USES=		gnome iconv jpeg libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 CFLAGS+=	-I${LOCALBASE}/include
 

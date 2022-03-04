@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Syntax-Keyword-Junction
 PORTVERSION=	0.003008
 CATEGORIES=	devel perl5
@@ -18,5 +16,7 @@ RUN_DEPENDS=	p5-syntax>=0:devel/p5-syntax \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

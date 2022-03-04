@@ -3,11 +3,11 @@
  * suricata_define_vars.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -115,7 +115,7 @@ if ($_POST) {
 
 		$a_nat[$id] = $natent;
 
-		write_config();
+		write_config("Suricata pkg: saved changes for PORT or IP variables.");
 
 		/* Update the suricata.yaml file for this interface. */
 		$rebuild_rules = false;
@@ -139,7 +139,8 @@ if ($_POST) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Interface Variables - {$if_friendly}"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - Server and Port Variables");
 include_once("head.inc");
 
 /* Display Alert message */
@@ -154,6 +155,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php?instance={$id}");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -171,7 +173,6 @@ $tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_
 $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Variables"), true, "/suricata/suricata_define_vars.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
 

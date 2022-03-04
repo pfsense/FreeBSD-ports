@@ -1,7 +1,6 @@
 # Created by: Yarema <yds@CoolRat.org>
-# $FreeBSD$
 
-PORTREVISION=	0
+PORTREVISION=	1
 PKGNAMESUFFIX=	-ldap
 
 COMMENT=	LDAP support for the Courier authentication library

@@ -1,20 +1,20 @@
 # Created by: Denis Shaposhnikov <dsh@vlink.ru>
-# $FreeBSD$
 
 PORTNAME=	decorator
-PORTVERSION=	4.3.0
+PORTVERSION=	5.1.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ygy@FreeBSD.org
-COMMENT=	Better living through Python with decorators
+COMMENT=	Decorators for Humans
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		cpe python
+CPE_VENDOR=	python
+USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 

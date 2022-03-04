@@ -1,7 +1,6 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	databases gnome
 PKGNAMESUFFIX=	5-postgresql
 

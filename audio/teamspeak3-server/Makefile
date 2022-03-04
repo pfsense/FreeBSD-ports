@@ -1,12 +1,10 @@
 # Created by: Daniel O'Connor
-# $FreeBSD$
 
 PORTNAME=	teamspeak3-server
-PORTVERSION=	3.7.1
+PORTVERSION=	3.13.6
 PORTEPOCH=	1
 CATEGORIES=	audio net
-MASTER_SITES=	http://dl.4players.de/ts/releases/${PORTVERSION}/ \
-		http://teamspeak.gameserver.gamed.de/ts3/releases/${PORTVERSION}/
+MASTER_SITES=	https://files.teamspeak-services.com/releases/server/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}-${PORTVERSION}
 
 MAINTAINER=	ultima@FreeBSD.org
@@ -17,7 +15,7 @@ LICENSE_NAME=	TeamSpeak 3.x End User License Agreement
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
-ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS=	amd64
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
@@ -31,7 +29,7 @@ SUB_FILES=	pkg-message
 USERS=	teamspeak
 GROUPS=	teamspeak
 
-CONFLICTS=	teamspeak_server-[0-9]*
+CONFLICTS=	teamspeak_server
 
 PLIST_SUB=	DBDIR=${DBDIR} \
 		ETCDIR=${ETCDIR} \
@@ -42,11 +40,13 @@ SUB_LIST=	DBDIR=${DBDIR} \
 		ETCDIR=${ETCDIR} \
 		LOGDIR=${LOGDIR}
 
-PORTDOCS=	permissiondoc.txt \
+PORTDOCS=	accounting.txt \
+		permissiondoc.txt \
 		privilegekey_guide.txt \
-		server_quickstart.txt \
+		server_quickstart.md \
 		server_upgrade.txt \
-		update_mysql_to_mariadb.txt
+		update_mysql_to_mariadb.txt \
+		webquery.md
 
 OPTIONS_DEFINE=	DOCS MYSQL
 
@@ -92,5 +92,9 @@ do-install:
 	${INSTALL} -d ${STAGEDIR}${DBDIR}
 	${INSTALL} -d ${STAGEDIR}${LOGDIR}
 	${INSTALL} -d ${STAGEDIR}${ETCDIR}
+
+# Add link to serverquerydocs, this needs to be in the
+# same directory as chdir or help commands will fail.
+	${RLN} ${STAGEDIR}${SHAREDIR}/serverquerydocs ${STAGEDIR}${DBDIR}
 
 .include <bsd.port.mk>

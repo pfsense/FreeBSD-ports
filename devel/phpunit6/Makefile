@@ -1,5 +1,4 @@
 # Created by: Jochen Neumeister (<joneum@bsdproject.de>)
-# $FreeBSD$
 
 PORTNAME=	phpunit
 DISTVERSION=	6.5.14
@@ -13,7 +12,7 @@ COMMENT=	Testing framework for unit tests
 
 LICENSE=	BSD3CLAUSE
 
-CONFLICTS_INSTALL=	phpunit7
+CONFLICTS_INSTALL=	phpunit7 phpunit8
 
 USES=		cpe php:flavors
 CPE_VENDOR=	phpunit_project

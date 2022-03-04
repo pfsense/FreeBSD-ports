@@ -1,5 +1,4 @@
 # Created by: Tom McLaughlin <tmclaugh@sdf.lonestar.org>
-# $FreeBSD$
 
 # Port logic gratuitously stolen from x11-themes/kde-icons-noia by
 # lioux@.  If it's not defined here and you think it should be, check
@@ -15,7 +14,11 @@ DISTNAME=	ICON-Slick
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Slick Icons for Gnome
 
-RESTRICTED=	${REASON}
+# Converted from RESTRICTED
+LICENSE=	icons
+LICENSE_NAME=	icons
+LICENSE_TEXT=	${REASON}
+LICENSE_PERMS=	auto-accept
 
 USES=	tar:bzip2
 NO_WRKSUBDIR=	yes

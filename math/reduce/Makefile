@@ -1,32 +1,30 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	reduce
-PORTVERSION=	20190120
+PORTVERSION=	20210413
 CATEGORIES=	math lang
 MASTER_SITES=	SF/${PORTNAME}-algebra/${SFSUBDIR}/
-DISTNAME=	Reduce-svn4868-src
+DISTNAME=	Reduce-svn5758-src
 
 MAINTAINER=	pfg@FreeBSD.org
-COMMENT=	REDUCE Codemist Standard Lisp general-purpose computer system
+COMMENT=	Codemist Standard Lisp REDUCE general-purpose computer system
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_aarch64=		fails to install: Reduce-svn4372-src/cslbuild/aarch64-unknown-freebsd11.1/csl/reduce.img: No such file or directory
 BROKEN_armv6=		fails to compile: redfront.h:118:12: conflicting types for '__wcwidth'
+BROKEN_i386=		fails to compile: sysv.S:832:1: changed section flags for .eh_frame, expected: 0x2
 BROKEN_powerpc64=	fails to compile: arith01.cpp: 'statuc' does not name a type
 
 BUILD_DEPENDS=	gnuplot:math/gnuplot
-
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		autoreconf:build libtool gmake ncurses jpeg
+USES=		autoreconf:build libtool gmake ncurses jpeg xorg
 USE_XORG=	x11 xcursor xext xorgproto xft xrandr xrender
 
-SFSUBDIR=	snapshot_2019-01-20
+SFSUBDIR=	snapshot_2021-04-13
 
 TARGET_SDIR=	${ARCH:S/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
 CPPFLAGS+=	-I${NCURSESINC}

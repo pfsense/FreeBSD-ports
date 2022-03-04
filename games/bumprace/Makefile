@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	bumprace
 PORTVERSION=	1.5.8
 CATEGORIES=	games
@@ -18,7 +15,7 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/karlb-bumprace-e73baa9e7465
 
-USES=		autoreconf gmake jpeg localbase tar:bz2
+USES=		autoreconf gmake jpeg localbase sdl tar:bz2
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer image
 

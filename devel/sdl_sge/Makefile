@@ -1,5 +1,4 @@
 # Created by: Jona Joachim <walkingshadow@grummel.net>
-# $FreeBSD$
 
 PORTNAME=	sdl_sge
 PORTVERSION=	0.030809
@@ -13,17 +12,21 @@ COMMENT=	Graphic library for the Simple DirectMedia Layer (SDL)
 
 LICENSE=	LGPL20+ # LICENSE is LGPL21
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
+DEPRECATED=	Upstream no longer maintained
+EXPIRATION_DATE=	2021-10-31
+
 OPTIONS_DEFINE=	SDL FREETYPE DOCS EXAMPLES
 OPTIONS_DEFAULT=SDL FREETYPE
 
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
+FREETYPE_USES=		pkgconfig
 FREETYPE_MAKE_ARGS=	USE_FT=y
 FREETYPE_MAKE_ARGS_OFF=	USE_FT=n
 

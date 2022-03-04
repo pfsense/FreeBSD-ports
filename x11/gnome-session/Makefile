@@ -1,12 +1,10 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-session
-PORTVERSION=	3.28.1
-PORTREVISION=	2
+PORTVERSION=	40.1.1
 CATEGORIES=	x11 gnome
-MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Session component for the GNOME 3 desktop
@@ -23,13 +21,13 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/console-kit-daemon:sysutils/consolekit2 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 gettext gnome localbase:ldflags meson pkgconfig \
-		python:3.6+,build tar:xz
+USES=		compiler:c11 gettext gl gnome localbase:ldflags meson \
+		pkgconfig python:3.6+,build tar:xz xorg
 USE_GNOME=	gnomedesktop3 gtk30
 USE_XORG=	ice sm x11 xcomposite xtrans
 USE_GL=		egl gl glesv2
-INSTALLS_ICONS=	yes
 MESON_ARGS=	-Dsystemd=false \
+		-Dsystemd_session=disable \
 		-Dsystemd_journal=false \
 		-Dconsolekit=true
 BINARY_ALIAS=	python3=${PYTHON_VERSION}

@@ -8,6 +8,7 @@ share/X11/xkb/compat/complete
 share/X11/xkb/compat/iso9995
 share/X11/xkb/compat/japan
 share/X11/xkb/compat/ledcaps
+share/X11/xkb/compat/ledcompose
 share/X11/xkb/compat/lednum
 share/X11/xkb/compat/ledscroll
 share/X11/xkb/compat/level5
@@ -120,6 +121,7 @@ share/X11/xkb/symbols/digital_vndr/vt
 share/X11/xkb/symbols/dk
 share/X11/xkb/symbols/dz
 share/X11/xkb/symbols/ee
+share/X11/xkb/symbols/eg
 share/X11/xkb/symbols/empty
 share/X11/xkb/symbols/epo
 share/X11/xkb/symbols/es
@@ -151,6 +153,7 @@ share/X11/xkb/symbols/is
 share/X11/xkb/symbols/it
 share/X11/xkb/symbols/jolla_vndr/sbj
 share/X11/xkb/symbols/jp
+share/X11/xkb/symbols/jv
 share/X11/xkb/symbols/ke
 share/X11/xkb/symbols/keypad
 share/X11/xkb/symbols/kg
@@ -161,6 +164,7 @@ share/X11/xkb/symbols/kz
 share/X11/xkb/symbols/la
 share/X11/xkb/symbols/latam
 share/X11/xkb/symbols/latin
+share/X11/xkb/symbols/level2
 share/X11/xkb/symbols/level3
 share/X11/xkb/symbols/level5
 share/X11/xkb/symbols/lk
@@ -317,6 +321,7 @@ share/X11/xkb/types/pc
 %%NLS%%share/locale/nb/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/xkeyboard-config.mo
+%%NLS%%share/locale/pt/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/ro/LC_MESSAGES/xkeyboard-config.mo
 %%NLS%%share/locale/ru/LC_MESSAGES/xkeyboard-config.mo

@@ -1,8 +1,7 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	FusionInventory-Agent
-PORTVERSION=	2.4
+PORTVERSION=	2.5.2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:GBOUGARD
@@ -38,12 +37,19 @@ TEST_DEPENDS=	p5-File-Copy-Recursive>=0:devel/p5-File-Copy-Recursive \
 		p5-Test-MockObject>=0:devel/p5-Test-MockObject \
 		p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings
 
-CONFLICTS=	p5-FusionInventory-Agent-Task-NetDiscovery-* \
-		p5-FusionInventory-Agent-Task-SNMPQuery-*
+CONFLICTS=	p5-FusionInventory-Agent-Task-NetDiscovery \
+		p5-FusionInventory-Agent-Task-SNMPQuery
 
 OPTIONS_DEFINE=		CUPS DAEMON DMIDECODE DEPLOY NETDISC NETINV PCIUTILS \
 			SSL VMWARE WOL ZLIB
-OPTIONS_DEFAULT=	DMIDECODE PCIUTILS ZLIB
+OPTIONS_DEFAULT=	DAEMON PCIUTILS ZLIB
+OPTIONS_DEFAULT_aarch64=	DMIDECODE
+OPTIONS_DEFAULT_amd64=	DMIDECODE
+OPTIONS_DEFAULT_armv6=	DMIDECODE
+OPTIONS_DEFAULT_armv7=	DMIDECODE
+OPTIONS_DEFAULT_i386=	DMIDECODE
+OPTIONS_DEFAULT_riscv64=	DMIDECODE
+OPTIONS_DEFAULT_riscv64sf=	DMIDECODE
 OPTIONS_SUB=	yes
 
 DAEMON_DESC=	Daemon mode, with opt. web interface

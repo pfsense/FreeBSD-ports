@@ -1,9 +1,7 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rsibreak
-PORTVERSION=	0.12.9
-PORTREVISION=	1
+DISTVERSION=	0.12.14
 CATEGORIES=	x11 kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION:R}/
 

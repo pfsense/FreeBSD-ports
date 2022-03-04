@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xkbutils
 PORTVERSION=	1.0.4
 PORTREVISION=	2
@@ -10,7 +8,7 @@ COMMENT=	XKB utility demos
 
 LICENSE=	MIT
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	xkbfile x11 xaw xorgproto
 
 .include <bsd.port.mk>

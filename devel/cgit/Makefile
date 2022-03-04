@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	cgit
-PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTVERSION=	1.2.3
 CATEGORIES=	devel www
 MASTER_SITES=	http://git.zx2c4.com/cgit/snapshot/:cgit \
-		https://www.kernel.org/pub/software/scm/git/:git
+		${MASTER_SITES_KERNEL_ORG}:git
+MASTER_SITE_SUBDIR=	software/scm/git:git
 DISTFILES=	cgit-${PORTVERSION}${EXTRACT_SUFX}:cgit \
 		git-${GIT_VERSION}${EXTRACT_SUFX}:git
 
@@ -17,8 +15,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 TEST_DEPENDS=	msgfmt:devel/gettext-tools
 
-GIT_VERSION=	2.18.0
-USES=		cpe gmake iconv perl5 python:3.2+,env shebangfix ssl tar:xz
+GIT_VERSION=	2.25.1
+USES=		compiler:c++11-lang cpe gmake iconv perl5 python:3.2+,env \
+		shebangfix ssl tar:xz
 CPE_VENDOR=	lars_hjemli
 USE_PERL5=	test
 SHEBANG_FILES=	filters/email-gravatar.py \

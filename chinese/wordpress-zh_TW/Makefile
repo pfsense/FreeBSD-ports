@@ -1,8 +1,7 @@
 # Created by: Joe Horn <joehorn@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	wordpress
-PORTVERSION=	5.1.1
+PORTVERSION=	5.8
 DISTVERSIONSUFFIX=	-zh_TW
 CATEGORIES=	chinese www
 MASTER_SITES=	http://tw.wordpress.org/
@@ -14,10 +13,13 @@ COMMENT=	State-of-the-art semantic personal publishing platform
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
 
+BROKEN=		fails to fetch (checksum mismatch)
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		php:web
-USE_PHP=	curl gd mysqli pcre tokenizer xml zip ftp
+USE_PHP=	curl exif fileinfo ftp gd hash json mysqli pcre tokenizer xml zip zlib
+RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:graphics/pecl-imagick@${PHP_FLAVOR}
 NO_ARCH=	yes
 NO_BUILD=	yes
 

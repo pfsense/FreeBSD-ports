@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	Ri-li
 PORTVERSION=	2.0.1
 PORTREVISION=	7
@@ -14,7 +11,7 @@ LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING
 
-USES=		tar:bzip2 gmake
+USES=		gmake sdl tar:bzip2
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer
 

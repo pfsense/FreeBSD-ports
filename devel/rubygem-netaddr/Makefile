@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	netaddr
 PORTVERSION=	2.0.1
 CATEGORIES=	devel rubygems
@@ -13,7 +11,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USES=		gem shebangfix
+USES=		cpe gem shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 
 SHEBANG_FILES=	test/*
 

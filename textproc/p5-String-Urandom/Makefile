@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	String-Urandom
 PORTVERSION=	0.16
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to convert /dev/urandom to 8-bit chars
 
 LICENSE=	ART10 GPLv1+

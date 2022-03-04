@@ -1,18 +1,38 @@
---- base/linux_util.cc.orig	2019-03-11 22:00:51 UTC
+--- base/linux_util.cc.orig	2021-09-14 01:51:47 UTC
 +++ base/linux_util.cc
-@@ -90,12 +90,14 @@ char g_linux_distro[kDistroSize] =
-     "CrOS";
- #elif defined(OS_ANDROID)
-     "Android";
-+#elif defined(OS_BSD)
-+    "BSD";
- #else  // if defined(OS_LINUX)
-     "Unknown";
- #endif
+@@ -15,6 +15,7 @@
  
- std::string GetLinuxDistro() {
--#if defined(OS_CHROMEOS) || defined(OS_ANDROID)
-+#if defined(OS_CHROMEOS) || defined(OS_ANDROID) || defined(OS_BSD)
-   return g_linux_distro;
- #elif defined(OS_LINUX)
-   LinuxDistroHelper* distro_state_singleton = LinuxDistroHelper::GetInstance();
+ #include <iomanip>
+ #include <memory>
++#include <sstream>
+ 
+ #include "base/files/dir_reader_posix.h"
+ #include "base/files/file_util.h"
+@@ -78,6 +79,9 @@ class DistroNameGetter {
+  public:
+   DistroNameGetter() {
+     static const char* const kFilesToCheck[] = {"/etc/os-release",
++#if defined(OS_BSD)
++	                                        "/usr/local/etc/os-release",
++#endif
+                                                 "/usr/lib/os-release"};
+     for (const char* file : kFilesToCheck) {
+       if (ReadDistroFromOSReleaseFile(file))
+@@ -134,6 +138,9 @@ void SetLinuxDistro(const std::string& distro) {
+ }
+ 
+ bool GetThreadsForProcess(pid_t pid, std::vector<pid_t>* tids) {
++#if defined(OS_BSD)
++  return false;
++#else
+   // 25 > strlen("/proc//task") + strlen(std::to_string(INT_MAX)) + 1 = 22
+   char buf[25];
+   strings::SafeSPrintf(buf, "/proc/%d/task", pid);
+@@ -153,6 +160,7 @@ bool GetThreadsForProcess(pid_t pid, std::vector<pid_t
+   }
+ 
+   return true;
++#endif
+ }
+ 
+ pid_t FindThreadIDWithSyscall(pid_t pid, const std::string& expected_data,

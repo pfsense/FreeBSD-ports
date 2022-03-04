@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	scramble
 PORTVERSION=	0.9.5
 PORTREVISION=	12
@@ -12,7 +9,7 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	From 6 letters you are to create as many words as you can
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl mixer image ttf
 
 CPPFLAGS+=	`${SDL_CONFIG} --cflags`

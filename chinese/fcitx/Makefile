@@ -1,9 +1,7 @@
 # Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	fcitx
-PORTVERSION=	4.2.9.6
-PORTREVISION=	2
+PORTVERSION=	4.2.9.7
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -26,6 +24,8 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 		${LOCALBASE}/libdata/pkgconfig/xkeyboard-config.pc:x11/xkeyboard-config
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libdbus-1.so:devel/dbus \
+		libenchant-2.so:textproc/enchant2 \
+		libjson-c.so:devel/json-c \
 		libXfixes.so:x11/libXfixes \
 		libXinerama.so:x11/libXinerama \
 		libXrender.so:x11/libXrender \
@@ -37,7 +37,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 SUB_FILES=	pkg-message
 SUB_LIST+=	PORTSDIR=${PORTSDIR}
 
-CONFLICTS=	zh-scim-fcitx-3.*
+CONFLICTS=	zh-scim-fcitx-3.* fcitx5
 
 USE_GNOME=	pango intltool libxml2 introspection
 USE_KDE=	ecm
@@ -45,8 +45,7 @@ USE_XORG=	x11 xext xkbfile sm ice
 USE_LDCONFIG=	yes
 USES=		compiler:c++11-lang gnome tar:xz cmake:noninja desktop-file-utils \
 		gettext-tools:build,run gettext-runtime iconv:wchar_t \
-		kde:5 pkgconfig shared-mime-info compiler:c++14-lang
-INSTALLS_ICONS=	yes
+		kde:5 pkgconfig shared-mime-info compiler:c++14-lang xorg
 
 OPTIONS_DEFINE=	GTK2 GTK3 OPENCC TPUNC DOCS
 OPTIONS_DEFAULT=GTK2 GTK3

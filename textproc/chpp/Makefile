@@ -1,9 +1,8 @@
 # Created by: Andrey Zakhvatov <andy@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	chpp
 PORTVERSION=	0.3.5
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.complang.tuwien.ac.at/schani/chpp/files/ \
 		http://freebsd.nsu.ru/distfiles/
@@ -14,7 +13,8 @@ COMMENT=	Non-intrusive full-featured text preprocessor
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgc.so:devel/boehm-gc
+LIB_DEPENDS=	libgc.so:devel/boehm-gc \
+		libgnuregex.so.6:devel/libgnuregex
 
 USES=		autoreconf gmake makeinfo
 GNU_CONFIGURE=	yes
@@ -28,10 +28,6 @@ INFO=		chpp
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.pre.mk>
-
-.if ${ARCH} != "i386" && ${ARCH} != "amd64" && ${ARCH} != "powerpc64"
-BROKEN=		Does not compile
-.endif
 
 post-extract:
 .for i in getopt.h regex.h gc/gc.h
@@ -51,8 +47,8 @@ post-patch:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for file in AUTHORS NEWS README
-	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
+.for filename in AUTHORS NEWS README
+	${INSTALL_DATA} ${WRKSRC}/${filename} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 post-install-EXAMPLES-on:

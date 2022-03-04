@@ -1,21 +1,21 @@
 # Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	couchbase
-DISTVERSION=	2.4.2
+DISTVERSION=	2.6.2
 CATEGORIES=	databases
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Couchbase Server PHP extension
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	libcouchbase>=2.8.0:databases/libcouchbase
+BUILD_DEPENDS=	libcouchbase>=2.10.7:databases/libcouchbase
 LIB_DEPENDS=	libcouchbase.so:databases/libcouchbase
 
 USES=		php:pecl
 USE_PHP=	json:build
-IGNORE_WITH_PHP=	73
+
+IGNORE_WITH_PHP=80
 
 .include <bsd.port.mk>

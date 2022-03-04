@@ -1,9 +1,9 @@
 #!/bin/sh
-# $FreeBSD$
 #
 # MAINTAINER: portmgr@FreeBSD.org
 
 set -e
+set -o pipefail
 
 . ${dp_SCRIPTSDIR}/functions.sh
 
@@ -11,7 +11,7 @@ validate_env dp_RAWDEPENDS dp_DEPTYPE dp_DEPENDS_TARGET dp_DEPENDS_PRECLEAN \
 	dp_DEPENDS_CLEAN dp_DEPENDS_ARGS dp_USE_PACKAGE_DEPENDS \
 	dp_USE_PACKAGE_DEPENDS_ONLY dp_PKG_ADD dp_PKG_INFO dp_WRKDIR \
 	dp_PKGNAME dp_STRICT_DEPENDS dp_LOCALBASE dp_LIB_DIRS dp_SH \
-	dp_SCRIPTSDIR PORTSDIR dp_MAKE dp_MAKEFLAGS
+	dp_SCRIPTSDIR PORTSDIR dp_MAKE dp_MAKEFLAGS dp_OVERLAYS
 
 [ -n "${DEBUG_MK_SCRIPTS}" -o -n "${DEBUG_MK_SCRIPTS_DO_DEPENDS}" ] && set -x
 
@@ -124,10 +124,6 @@ for _line in ${dp_RAWDEPENDS} ; do
 	fi
 
 	case "${origin}" in
-	/*) ;;
-	*) origin="${PORTSDIR}/${origin}" ;;
-	esac
-	case "${origin}" in
 	*@*/*) ;; # Ignore @ in the path which would not be a flavor
 	*@*)
 		export FLAVOR="${origin##*@}"
@@ -135,10 +131,29 @@ for _line in ${dp_RAWDEPENDS} ; do
 		;;
 	esac
 
+	case "${origin}" in
+	/*) ;;
+	*)
+		for overlay in ${dp_OVERLAYS} ${PORTSDIR}; do
+			orig="${overlay}/${origin}"
+			if [ -f "${orig}/Makefile" ]; then
+				break
+			fi
+		done
+		origin="${orig}"
+		;;
+	esac
+
 	depends_args="${dp_DEPENDS_ARGS}"
 	target=${dp_DEPENDS_TARGET}
 	if [ -n "${last}" ]; then
-		target=${last}
+		# In case we depend on the fetch stage, actually run checksum,
+		# this prevent a MITM attack.
+		if [ "${last}" = "fetch" ]; then
+			target=checksum
+		else
+			target=${last}
+		fi
 		if [ -n "${dp_DEPENDS_PRECLEAN}" ]; then
 			target="clean ${target}"
 			depends_args="${depends_args:+${depends_args} }NOCLEANDEPENDS=yes"
@@ -191,7 +206,7 @@ if [ $err -eq 1 ]; then
 fi
 
 if [ -n "${dp_STRICT_DEPENDS}" -a ${anynotfound} -eq 1 ]; then \
-	echo "===>   dp_STRICT_DEPENDS set - Not installing missing dependencies."
+	echo "===>   STRICT_DEPENDS set - Not installing missing dependencies."
 	echo "       This means a dependency is wrong since it was not satisfied in the ${dp_DEPTYPE} phase."
 	exit 1
 fi

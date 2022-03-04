@@ -1,11 +1,10 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	font2svg
 PORTVERSION=	1.0
 PORTREVISION=	6
 CATEGORIES=	print
-MASTER_SITES=	http://BSDforge.com/projects/source/print/font2svg/
+MASTER_SITES=	https://BSDforge.com/projects/source/print/font2svg/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	All fonts to svg-font converter

@@ -1,5 +1,4 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	geojson
 PORTVERSION=	2.3.0
@@ -18,7 +17,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>1.9:devel/py-simplejson@${PY_FLAV
 
 PORTDOCS=	LICENSE.rst CHANGELOG.rst README.rst
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 OPTIONS_DEFINE=	DOCS

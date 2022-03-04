@@ -1,12 +1,11 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gpac
-PORTVERSION=	0.5.0
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.0.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	SF/${PORTNAME}/GPAC/GPAC%20${PORTVERSION}
 PKGNAMESUFFIX=	-libgpac
 
 MAINTAINER=	multimedia@FreeBSD.org
@@ -14,10 +13,14 @@ COMMENT=	Gpac MPEG-4 Systems library and headers
 
 LICENSE=	LGPL21
 
-WRKSRC=		${WRKDIR}/gpac
+BUILD_DEPENDS=	bash:shells/bash
+
 ALL_TARGET=	lib
 INSTALL_TARGET=	install-lib
-USES=		gmake dos2unix
+USES=		cpe gmake dos2unix shebangfix
+SHEBANG_FILES=	check_revision.sh
+bash_OLD_CMD+=	/bin/sh
+USE_GITHUB=	yes
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 DOS2UNIX_FILES=	src/utils/os_config_init.c
@@ -30,6 +33,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}" --X11-path="${LOCALBASE}" \
 		--extra-cflags="${CFLAGS}" --extra-ldflags="${LDFLAGS}" \
+		--static-modules \
 		--enable-pic \
 		--disable-wx \
 		--use-js=no --use-a52=no --use-faad=no --use-ffmpeg=no \
@@ -38,6 +42,7 @@ CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}" --X11-path="${LOCALBASE}" \
 
 SSL_USES=		ssl
 SSL_CONFIGURE_ENABLE=	ssl
+OPENGL_USES=	gl
 OPENGL_USE=	GL=gl GL=glu
 OPENGL_CONFIGURE_ENABLE=3d
 XVIDEO_LIB_DEPENDS=	libXv.so:x11/libXv

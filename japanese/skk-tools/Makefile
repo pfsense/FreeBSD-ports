@@ -1,5 +1,4 @@
 # Created by: Shigeyuki FUKUSHIMA <shige@kuis.kyoto-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	skk-tools
 PORTVERSION=	1.3.3
@@ -25,7 +24,7 @@ OPTIONS_DEFINE=		DOCS EXPR2
 OPTIONS_DEFAULT=	EXPR2
 
 EXPR2_DESC=		Build skkdic-expr2 (needs glib-2.x)
-EXPR2_USES=		pkgconfig
+EXPR2_USES=		gnome pkgconfig
 EXPR2_USE=		GNOME=glib20
 EXPR2_PLIST_FILES=	bin/skkdic-expr2
 EXPR2_CONFIGURE_WITH=	skkdic-expr2

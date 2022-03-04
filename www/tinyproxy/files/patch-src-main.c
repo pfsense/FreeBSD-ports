@@ -1,6 +1,6 @@
---- src/main.c.orig	2018-09-01 02:06:59 UTC
+--- src/main.c.orig	2021-04-16 12:31:11 UTC
 +++ src/main.c
-@@ -395,6 +395,11 @@ main (int argc, char **argv)
+@@ -377,17 +377,17 @@ main (int argc, char **argv)
                  }
          }
  
@@ -12,15 +12,14 @@
          /* Switch to a different user if we're running as root */
          if (geteuid () == 0)
                  change_user (argv[0]);
-@@ -402,11 +407,6 @@ main (int argc, char **argv)
-                 log_message (LOG_WARNING,
+         else
+                 log_message (LOG_INFO,
                               "Not running as root, so not changing UID/GID.");
- 
+-
 -        /* Create log file after we drop privileges */
 -        if (setup_logging ()) {
 -                exit (EX_SOFTWARE);
 -        }
--
-         if (child_pool_create () < 0) {
-                 fprintf (stderr,
-                          "%s: Could not create the pool of children.\n",
+ 
+         /* These signals are only for the parent process. */
+         log_message (LOG_INFO, "Setting the various signals.");

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	vegeta
-DISTVERSIONPREFIX=	cli/v
-DISTVERSION=	12.2.1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	12.8.4
 CATEGORIES=	benchmarks www
 
 MAINTAINER=	egypcio@FreeBSD.org
@@ -11,37 +9,30 @@ COMMENT=	HTTP load testing tool and library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		go:modules
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	tsenart
-GH_TUPLE=	alecthomas:jsonschema:f2c9385:jsonschema/github.com/alecthomas/jsonschema \
-		c2h5oh:datasize:4eba002:datasize/github.com/c2h5oh/datasize \
-		bmizerany:perks:d9a9656:perks/github.com/bmizerany/perks \
-		dgryski:go-gk:201884a:gogk/github.com/dgryski/go-gk \
-		dgryski:go-lttb:318fcdf:golttb/github.com/dgryski/go-lttb \
-		google:go-cmp:v0.2.0:gocmp/github.com/google/go-cmp \
-		influxdata:tdigest:a7d76c6:tdigest/github.com/influxdata/tdigest \
-		mailru:easyjson:60711f1:easyjson/github.com/mailru/easyjson \
-		shurcooL:httpfs:809bece:httpfs/github.com/shurcooL/httpfs \
-		shurcooL:vfsgen:62bca83:vfsgen/github.com/shurcooL/vfsgen \
-		streadway:quantile:b0c5887:quantile/github.com/streadway/quantile \
-		tsenart:go-tsz:cdeb9e1:gotsz/github.com/tsenart/go-tsz \
-		golang:net:c394268:net/golang.org/x/net \
-		golang:text:v0.3.0:text/golang.org/x/text
+GH_TUPLE=	alecthomas:jsonschema:71f4389:alecthomas_jsonschema/vendor/github.com/alecthomas/jsonschema \
+		bmizerany:perks:d9a9656a3a4b:bmizerany_perks/vendor/github.com/bmizerany/perks \
+		c2h5oh:datasize:4eba002a5eae:c2h5oh_datasize/vendor/github.com/c2h5oh/datasize \
+		dgryski:go-gk:201884a44051:dgryski_go_gk/vendor/github.com/dgryski/go-gk \
+		dgryski:go-lttb:318fcdf10a77:dgryski_go_lttb/vendor/github.com/dgryski/go-lttb \
+		flyingmutant:rapid:v0.3.3:flyingmutant_rapid/vendor/pgregory.net/rapid \
+		golang:crypto:9e8e0b3:golang_crypto/vendor/golang.org/x/crypto \
+		golang:net:7b1cca2:golang_net/vendor/golang.org/x/net \
+		golang:text:v0.3.3:golang_text/vendor/golang.org/x/text \
+		golang:sys:b09fb70:golang_sys/vendor/golang.org/x/sys \
+		google:go-cmp:v0.5.2:google_go_cmp/vendor/github.com/google/go-cmp \
+		influxdata:tdigest:a7d76c6f093a:influxdata_tdigest/vendor/github.com/influxdata/tdigest \
+		mailru:easyjson:v0.7.0:mailru_easyjson/vendor/github.com/mailru/easyjson \
+		miekg:dns:v1.1.33:miekg_dns/vendor/github.com/miekg/dns \
+		streadway:quantile:b0c588724d25:streadway_quantile/vendor/github.com/streadway/quantile \
+		tsenart:go-tsz:cdeb9e1e981e:tsenart_go_tsz/vendor/github.com/tsenart/go-tsz
+
+GO_BUILDFLAGS=	-tags=netgo \
+		-ldflags '-s -w -extldflags "-static" -X main.Version=${DISTVERSION}'
 
 PLIST_FILES=	bin/${PORTNAME}
-
-do-build:
-	@${MKDIR} ${WRKSRC}/github.com/${GH_ACCOUNT}
-	@${RLN} ${WRKSRC} ${WRKSRC}/github.com/${GH_ACCOUNT}/${PORTNAME}
-	@${RLN} ${WRKSRC} ${WRKSRC}/src
-	@cd ${WRKSRC} && \
-	  ${SETENV} ${MAKE_ENV} ${GO_ENV} CGO_ENABLED=0 GOPATH=${WRKSRC} \
-	  ${GO_CMD} build -v -a -tags=netgo -ldflags \
-	  '-s -w -extldflags "-static" -X main.Version=${DISTVERSION}' -o bin/${PORTNAME}
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}/${LOCALBASE}/bin
 
 .include <bsd.port.mk>

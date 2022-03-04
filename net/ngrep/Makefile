@@ -1,9 +1,8 @@
 # Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
 
 PORTNAME=	ngrep
 PORTVERSION=	1.45
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net security
 MASTER_SITES=	SF
 

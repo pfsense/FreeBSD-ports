@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	palettable
-DISTVERSION=	3.1.1
+DISTVERSION=	3.3.0
 CATEGORIES=	misc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +10,7 @@ COMMENT=	Library of color palettes for Python
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

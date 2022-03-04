@@ -1,5 +1,4 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
 
 PORTNAME=		snpservices
 DISTVERSION=		0.2.2-8
@@ -16,6 +15,7 @@ COMMENT=		Graphics server for the guifi.net meshnet
 RUN_DEPENDS=		mrtg:net-mgmt/mrtg \
 			rrdtool:databases/rrdtool
 
+USES=			php
 USE_PHP=		gd simplexml dom
 
 SNPSERVICES_TMPDIR?=	/var/tmp/${PORTNAME}

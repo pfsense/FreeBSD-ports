@@ -1,12 +1,11 @@
 # Created by: t.vanklaveren@student.utwente.nl
-# $FreeBSD$
 
 PORTNAME=	vorbis-tools
-PORTVERSION=	1.4.0
-PORTREVISION=	10
+PORTVERSION=	1.4.2
 PORTEPOCH=	3
 CATEGORIES=	audio
-MASTER_SITES=	http://downloads.xiph.org/releases/vorbis/
+MASTER_SITES=	https://downloads.xiph.org/releases/vorbis/ \
+		https://ftp.osuosl.org/pub/xiph/releases/vorbis/
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Play, encode, and manage Ogg Vorbis files
@@ -18,6 +17,8 @@ LIB_DEPENDS=	libao.so:audio/libao \
 		libcurl.so:ftp/curl \
 		libFLAC.so:audio/flac \
 		libkate.so:multimedia/libkate \
+		libogg.so:audio/libogg \
+		libopusfile.so:audio/opusfile \
 		libspeex.so:audio/speex \
 		libvorbis.so:audio/libvorbis
 

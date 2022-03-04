@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <mat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	CGI-Framework
 PORTVERSION=	0.23
 PORTREVISION=	2

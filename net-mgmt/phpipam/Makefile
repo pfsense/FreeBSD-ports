@@ -1,10 +1,8 @@
 # Created by: Jake Smith <jake@xz.cx>
-# $FreeBSD$
 
 PORTNAME=	phpipam
-PORTVERSION=	1.3.2
+PORTVERSION=	1.4.4
 CATEGORIES=	net-mgmt
-MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	jake@xz.cx
 COMMENT=	PHP IP Address Management IPv4/IPv6
@@ -13,9 +11,16 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	${LOCALBASE}/share/pear/System.php:devel/pear@${PHP_FLAVOR}
 
-NO_BUILD=	yes
+USES=		cpe gettext php:web tar:
+
+USE_GITHUB=	yes
+GH_TAGNAME=	a14bc06
+
+USE_PHP=	ctype curl dom filter gd gettext gmp iconv json mbstring mcrypt \
+		openssl pcntl pdo pdo_mysql posix session simplexml sockets
+
 NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}
+NO_BUILD=	yes
 
 CFGFILE=	config.php
 
@@ -24,9 +29,6 @@ SUB_LIST=	DISTNAME=${DISTNAME}
 
 OPTIONS_DEFINE=	LDAP
 
-USES=		gettext php:web tar:
-USE_PHP=	filter gettext gmp json mbstring openssl \
-		pcntl pdo pdo_mysql session simplexml sockets
 LDAP_USE=	PHP=ldap
 
 pre-install:

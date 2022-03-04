@@ -1,12 +1,11 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	y2l
 PORTVERSION=	1.2
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Yacc-to-Latex pretty printer/converter
 
 NO_BUILD=	yes

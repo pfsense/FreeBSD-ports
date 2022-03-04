@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	mlvpn
 PORTVERSION=	2.3.1
 PORTREVISION=	2
-CATEGORIES=	net
+CATEGORIES=	net net-vpn
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Multi-link VPN
@@ -14,16 +12,19 @@ LICENSE_FILE=	${WRKSRC}/LICENCE
 LIB_DEPENDS=	libev.so:devel/libev \
 		libsodium.so:security/libsodium
 
+USES=	autoreconf libtool pkgconfig localbase
+
 USE_GITHUB=	yes
 GH_PROJECT=	MLVPN
 GH_ACCOUNT=	zehome
 
-USES=	autoreconf libtool pkgconfig localbase
 GNU_CONFIGURE=	yes
 
 USERS=		mlvpn
 GROUPS=		mlvpn
 USE_RC_SUBR=	mlvpn
+
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	CONTROL
 CONTROL_DESC=	Enable UNIX socket/HTTP json remote control API

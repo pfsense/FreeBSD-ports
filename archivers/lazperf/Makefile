@@ -1,12 +1,13 @@
-# Created by: lbartoletti <lbartoletti@tuxfamily.org>
-# $FreeBSD$
+# Created by: lbartoletti <lbartoletti@FreeBSD.org>
 
 PORTNAME=	lazperf
-DISTVERSION=	1.3.0
-PORTREVISION=	1
+DISTVERSION=	2.0.0
 CATEGORIES=	archivers databases geography
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+PATCH_SITES=	https://github.com/hobu/laz-perf/commit/
+PATCHFILES=	a003d1ead4afb9a0c61cde8b00340c489f2ce370.patch:-p1
+
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Alternative LAZ implementation for C++ and JavaScript
 
 LICENSE=	LGPL21
@@ -18,9 +19,5 @@ GH_ACCOUNT=	hobu
 GH_PROJECT=	laz-perf
 
 CMAKE_OFF=	WITH_TESTS
-NO_ARCH=	yes
-
-post-patch:
-	@${RM} ${WRKSRC}/laz-perf/portable_endian.hpp.orig
 
 .include <bsd.port.mk>

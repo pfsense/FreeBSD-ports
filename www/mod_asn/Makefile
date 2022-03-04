@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mod_asn
 PORTVERSION=	1.7
 PORTREVISION=	2
@@ -7,7 +5,7 @@ CATEGORIES=	www
 MASTER_SITES=	LOCAL/kuriyama \
 		http://mirrorbrain.org/files/releases/
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Look up the AS and network prefix of IP address
 
 LICENSE=	APACHE20

@@ -1,5 +1,4 @@
 # Created by: Raaf <freebsd@luna.afraid.org>
-# $FreeBSD$
 
 PORTNAME=	pwcbsd
 PORTVERSION=	1.4.1
@@ -9,12 +8,12 @@ MASTER_SITES=	http://raaf.atspace.org/ \
 		http://www.bsd-geek.de/FreeBSD/distfiles/ \
 		LOCAL/miwi
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Linux pwc webcam driver ported to FreeBSD
 
 LICENSE=	GPLv2
 
-CONFLICTS=	pwcview-[0-9]*
+CONFLICTS=	pwcview
 
 SSP_UNSAFE=	kernel module does not support ssp
 
@@ -47,7 +46,7 @@ ALL_TARGET=	all
 .if ${PORT_OPTIONS:MPROGRAMS}
 ALL_TARGET+=	pwcview
 PROGRAMS=	pwcview
-USES+=		jpeg
+USES+=		jpeg sdl
 USE_SDL=	sdl
 PLIST_SUB+=	PROGRAMS=""
 .else

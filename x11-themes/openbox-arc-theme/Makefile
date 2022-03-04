@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openbox-arc-theme
 PORTVERSION=	20170104
 CATEGORIES=	x11-themes

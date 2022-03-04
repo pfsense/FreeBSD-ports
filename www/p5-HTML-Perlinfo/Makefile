@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-Perlinfo
 PORTVERSION=	1.69
 CATEGORIES=	www perl5

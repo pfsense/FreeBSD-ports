@@ -1,10 +1,12 @@
-etc/xdg/grantleetheme.categories
-etc/xdg/grantleetheme.renamecategories
+share/qlogging-categories5/grantleetheme.categories
+share/qlogging-categories5/grantleetheme.renamecategories
+include/KF5/GrantleeTheme/GenericFormatter
 include/KF5/GrantleeTheme/GrantleeKi18nLocalizer
 include/KF5/GrantleeTheme/GrantleeTheme
 include/KF5/GrantleeTheme/GrantleeThemeEngine
 include/KF5/GrantleeTheme/GrantleeThemeManager
 include/KF5/GrantleeTheme/QtResourceTemplateLoader
+include/KF5/grantleetheme/GenericFormatter
 include/KF5/grantleetheme/GrantleeKi18nLocalizer
 include/KF5/grantleetheme/GrantleeTheme
 include/KF5/grantleetheme/GrantleeThemeEngine
@@ -12,6 +14,7 @@ include/KF5/grantleetheme/GrantleeThemeManager
 include/KF5/grantleetheme/QtResourceTemplateLoader
 include/KF5/grantleetheme/grantleeki18nlocalizer.h
 include/KF5/grantleetheme/grantleetheme.h
+include/KF5/grantleetheme/genericformatter.h
 include/KF5/grantleetheme/grantleetheme_export.h
 include/KF5/grantleetheme/grantleethemeengine.h
 include/KF5/grantleetheme/grantleethememanager.h
@@ -38,9 +41,11 @@ share/locale/el/LC_MESSAGES/libgrantleetheme.mo
 share/locale/en_GB/LC_MESSAGES/libgrantleetheme.mo
 share/locale/es/LC_MESSAGES/libgrantleetheme.mo
 share/locale/et/LC_MESSAGES/libgrantleetheme.mo
+share/locale/eu/LC_MESSAGES/libgrantleetheme.mo
 share/locale/fi/LC_MESSAGES/libgrantleetheme.mo
 share/locale/fr/LC_MESSAGES/libgrantleetheme.mo
 share/locale/gl/LC_MESSAGES/libgrantleetheme.mo
+share/locale/hi/LC_MESSAGES/libgrantleetheme.mo
 share/locale/hu/LC_MESSAGES/libgrantleetheme.mo
 share/locale/ia/LC_MESSAGES/libgrantleetheme.mo
 share/locale/it/LC_MESSAGES/libgrantleetheme.mo
@@ -51,6 +56,7 @@ share/locale/lt/LC_MESSAGES/libgrantleetheme.mo
 share/locale/nb/LC_MESSAGES/libgrantleetheme.mo
 share/locale/nds/LC_MESSAGES/libgrantleetheme.mo
 share/locale/nl/LC_MESSAGES/libgrantleetheme.mo
+share/locale/nn/LC_MESSAGES/libgrantleetheme.mo
 share/locale/pl/LC_MESSAGES/libgrantleetheme.mo
 share/locale/pt/LC_MESSAGES/libgrantleetheme.mo
 share/locale/pt_BR/LC_MESSAGES/libgrantleetheme.mo

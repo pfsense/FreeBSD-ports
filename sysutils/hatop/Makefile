@@ -1,30 +1,27 @@
 # Created by: Jim Riggs <ports@christianserving.org>
-# $FreeBSD$
 
 PORTNAME=	hatop
-PORTVERSION=	0.7.7
-PORTREVISION=	2
+PORTVERSION=	0.8.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mikeg@bsd-box.net
 COMMENT=	Interactive real-time monitoring tool for the HAProxy unix socket
 
 LICENSE=	GPLv3+
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/haproxy:net/haproxy
 
-USES=		python:2.7 shebangfix
-SHEBANG_FILES=	bin/hatop
-NO_BUILD=	yes
-NO_ARCH=	yes
-
+USES=		python shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	feurix
-GH_PROJECT=	hatop
+GH_ACCOUNT=	jhunt
+
+SHEBANG_FILES=	bin/hatop
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 PLIST_FILES=	bin/hatop man/man1/hatop.1.gz
-PORTDOCS=	HACKING KEYBINDS README
+PORTDOCS=	HACKING KEYBINDS README.rst
 
 OPTIONS_DEFINE=	DOCS
 

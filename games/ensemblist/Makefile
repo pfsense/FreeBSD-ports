@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
 
 PORTNAME=	ensemblist
 PORTVERSION=	040126
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 
@@ -13,7 +12,7 @@ COMMENT=	Assemble given shapes from primitives
 LIB_DEPENDS=	libmikmod.so:audio/libmikmod \
 		libpng.so:graphics/png
 
-USES=		gmake
+USES=		gl gmake xorg
 USE_XORG=	xmu
 USE_GL=		glut
 MAKE_ARGS=	CC="${CC}" DATADIR="${DATADIR}"

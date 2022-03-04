@@ -1,38 +1,39 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	calc
-PORTVERSION=	2.12.6.5
+PORTVERSION=	2.14.0.10
+DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 
-MAINTAINER=	johans@FreeBSD.org
-COMMENT=	Arbitrary precision calculator
+MAINTAINER=	adamw@FreeBSD.org
+COMMENT=	Interactive CLI arbitrary-precision calculator
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING-LGPL
 
 USES=		gmake tar:bzip2 readline
-USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	lcn2
 
 MAKE_JOBS_UNSAFE=	yes
-
-CALCPAGER?=	more
-MAKEFILE=	Makefile.ship
-MAKE_ENV+=	CALCPAGER="${CALCPAGER}" CAT="${CAT}" CHMOD="${CHMOD}" \
-		CP="${CP}" GMAKE="${MAKE_CMD}" LN="${LN}" MKDIR="${MKDIR}" \
-		MV="${MV}" RM="${RM}" SED="${SED}" TOUCH="${TOUCH}" \
-		TRUE="${TRUE}"
-TEST_TARGET=	check
-.if !exists(/usr/lib/libreadline.so)
-MAKE_ARGS=	READLINE_INCLUDE="-I${LOCALBASE}/include" \
-		READLINE_LIB="-L${LOCALBASE}/lib -lreadline"
-.endif
-
 PLIST_SUB+=	VERSION=${PORTVERSION}
 
+MAKEFILE=	Makefile.ship
+MAKE_ARGS=	DATADIR="${DATADIR}"
+TEST_TARGET=	check
+
+OPTIONS_DEFINE=	FULL HELP
+OPTIONS_DEFAULT=FULL HELP
+OPTIONS_SUB=	yes
+FULL_DESC=	Install all funcs/scripts/headers (OFF: just basic calculator)
+HELP_DESC=	Install calc help files
+
+# We use Makefile.freebsd because Makefile.local is in .gitignore
+post-extract:
+	${SED} -e 's|%%CC%%|${CC}|; s|%%CFLAGS%%|${CFLAGS}|' \
+		${FILESDIR}/Makefile.freebsd > ${WRKSRC}/Makefile.local
+
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/calc \
-		${STAGEDIR}${PREFIX}/lib/lib*.so
+	cd ${STAGEDIR}${PREFIX} && ${STRIP_CMD} bin/calc lib/lib*.so
 
 .include <bsd.port.mk>

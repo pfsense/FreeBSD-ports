@@ -1,54 +1,60 @@
-# $FreeBSD$
-
 PORTNAME=	zookeeper
-PORTVERSION=	3.4.12
+PORTVERSION=	3.7.0
 CATEGORIES=	devel java
-MASTER_SITES=	APACHE/${PORTNAME}/current
+MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
+		APACHE/logging/log4j/${ZOOKEEPER_LOG4J2_VERSION}/:log4j2
+DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-bin
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	skreuzer@FreeBSD.org
+MAINTAINER=	dmitry.wagin@ya.ru
 COMMENT=	Coordination Service for Distributed Applications
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	slf4j>=1.7.5:devel/slf4j \
-		netty>=3.5.5:java/netty \
-		jline>=0.9.94:devel/jline \
-		log4j>=1.2.16:devel/log4j \
-		libzookeeper>=${PORTVERSION}:devel/libzookeeper
+RUN_DEPENDS=	libzookeeper>=${PORTVERSION}:devel/libzookeeper
 
-USERS=	zookeeper
-GROUPS=	zookeeper
+ZOOKEEPER_CONFS=		configuration.xsl zoo.cfg
+ZOOKEEPER_USER?=		zookeeper
+ZOOKEEPER_GROUP?=		zookeeper
+ZOOKEEPER_DBDIR?=		/var/db/zookeeper
+ZOOKEEPER_LOGDIR?=		/var/log/zookeeper
+ZOOKEEPER_LOG4J2_VERSION?=	2.14.1
 
-ZOOKEEPER_CONFS=	configuration.xsl log4j.properties zoo.cfg
-
-ZOOKEEPER_JAR=	${WRKSRC}/${PORTNAME}-${PORTVERSION}.jar
-
-ZOOKEEPER_DBDIR?=	/var/db/zookeeper
-ZOOKEEPER_LOGDIR?=	/var/log/zookeeper
-
-SUB_FILES=	zookeeper zkCli.sh zkServer.sh
-SUB_LIST=	JAVA=${JAVA} \
-		JAVALIBDIR=${JAVALIBDIR} \
-		ETCDIR=${ETCDIR} \
-		ZOOKEEPER_USER=${USERS} \
-		ZOOKEEPER_GROUP=${GROUPS} \
-		ZOOKEEPER_LOGDIR=${ZOOKEEPER_LOGDIR}
-
-PLIST_SUB+=	PORTVERSION=${PORTVERSION} \
-		ZOOKEEPER_DBDIR=${ZOOKEEPER_DBDIR} \
-		ZOOKEEPER_LOGDIR=${ZOOKEEPER_LOGDIR} \
-		JAVALIBDIR=${JAVALIBDIR}
-
-NO_BUILD=	yes
-NO_ARCH=	yes
+USES=		cpe
+CPE_VENDOR=	apache
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
+JAVA_VERSION=	8+
 JAVA_RUN=	yes
 USE_RC_SUBR=	zookeeper
 
+DATADIR=	${JAVASHAREDIR}/${PORTNAME}
+NO_ARCH=	yes
+NO_BUILD=	yes
+SUB_FILES=	zkCli.sh
+SUB_LIST=	JAVA=${JAVA} \
+		ZOOKEEPER_GROUP=${ZOOKEEPER_GROUP} \
+		ZOOKEEPER_LOGDIR=${ZOOKEEPER_LOGDIR} \
+		ZOOKEEPER_USER=${ZOOKEEPER_USER}
+
+USERS=		${ZOOKEEPER_USER}
+GROUPS=		${ZOOKEEPER_GROUP}
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+		ZOOKEEPER_DBDIR=${ZOOKEEPER_DBDIR} \
+		ZOOKEEPER_GROUP=${ZOOKEEPER_GROUP} \
+		ZOOKEEPER_LOGDIR=${ZOOKEEPER_LOGDIR} \
+		ZOOKEEPER_USER=${ZOOKEEPER_USER}
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS LOG4J2
+OPTIONS_SUB=	yes
+
+LOG4J2_DESC=		Use log4j-2 instead log4j-1.2
+LOG4J2_DISTFILES=	apache-log4j-${ZOOKEEPER_LOG4J2_VERSION}-bin${EXTRACT_SUFX}:log4j2
+LOG4J2_PLIST_SUB=	ZOOKEEPER_LOG4J2_VERSION=${ZOOKEEPER_LOG4J2_VERSION}
+LOG4J2_JARS=		log4j-api-${ZOOKEEPER_LOG4J2_VERSION}.jar \
+			log4j-core-${ZOOKEEPER_LOG4J2_VERSION}.jar \
+			log4j-slf4j-impl-${ZOOKEEPER_LOG4J2_VERSION}.jar
 
 post-extract:
 	@${REINPLACE_CMD} "/dataDir/s|=.*|=${ZOOKEEPER_DBDIR}|" ${WRKDIR}/${DISTNAME}/conf/zoo_sample.cfg
@@ -59,13 +65,9 @@ do-install:
 .for f in ${ZOOKEEPER_CONFS}
 	${INSTALL_DATA} ${WRKDIR}/${DISTNAME}/conf/${f} ${STAGEDIR}${ETCDIR}/${f}.sample
 .endfor
-	${INSTALL_DATA} ${ZOOKEEPER_JAR} ${STAGEDIR}${JAVALIBDIR}
-	(cd ${STAGEDIR}/${JAVAJARDIR} && ${LN} -nfs \
-		${PORTNAME}-${PORTVERSION}.jar ${PORTNAME}.jar)
-
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR} "-name *\.jar")
 	${INSTALL_SCRIPT} ${WRKDIR}/zkCli.sh ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_SCRIPT} ${WRKDIR}/zkServer.sh ${STAGEDIR}${PREFIX}/bin/
-
 	${MKDIR} ${STAGEDIR}${ZOOKEEPER_LOGDIR}
 	${MKDIR} ${STAGEDIR}${ZOOKEEPER_DBDIR}
 
@@ -73,5 +75,15 @@ do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@(cd ${WRKDIR}/${DISTNAME}/docs && \
 	${TAR} -cf - . | ${TAR} -xf - -C ${STAGEDIR}${DOCSDIR})
+
+do-install-LOG4J2-on:
+	${RM} ${STAGEDIR}${DATADIR}/log4j-1.2* ${STAGEDIR}${DATADIR}/slf4j-log4j12*
+.for f in ${LOG4J2_JARS}
+	${INSTALL_DATA} ${WRKDIR}/apache-log4j-${ZOOKEEPER_LOG4J2_VERSION}-bin/${f} ${STAGEDIR}${DATADIR}/
+.endfor
+	${INSTALL_DATA} ${FILESDIR}/log4j2.properties ${STAGEDIR}${ETCDIR}/log4j2.properties.sample
+
+do-install-LOG4J2-off:
+	${INSTALL_DATA} ${WRKDIR}/${DISTNAME}/conf/log4j.properties ${STAGEDIR}${ETCDIR}/log4j.properties.sample
 
 .include <bsd.port.mk>

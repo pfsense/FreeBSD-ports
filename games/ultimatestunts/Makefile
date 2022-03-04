@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ultimatestunts
 PORTVERSION=	0.7.7.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/sourcecode \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -19,24 +18,23 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
 
-USES=		compiler gettext openal:al,alut pkgconfig
+USES=		compiler gettext gl gnome openal:al,alut pkgconfig sdl
 USE_GL=		gl glu
 USE_SDL=	sdl image
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openal
 MAKE_JOBS_UNSAFE=	yes
-LLD_UNSAFE=	yes
 
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_clang=	-Wno-c++11-narrowing
 CPPFLAGS+=	$$(pkgconf --cflags-only-I sdl)
 LDFLAGS+=	$$(pkgconf --libs-only-L sdl)
+LDFLAGS_i386=	-Wl,-z,notext
 
 PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
 
 DESKTOP_ENTRIES="Ultimate Stunts" "" "${PORTNAME}" \

@@ -1,9 +1,8 @@
 # Created by: Lars Erik Gullerud <lerik@nolink.net>
-# $FreeBSD$
 
 PORTNAME=	ripe-whois
 PORTVERSION=	3.2.2
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	SF/whois/whois/${PORTVERSION}
 DISTNAME=	whois3-${PORTVERSION}
 

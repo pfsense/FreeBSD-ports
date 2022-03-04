@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	wrapalixresetbutton
-PORTVERSION=	0.0.7
+PORTVERSION=	0.0.8
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	garga@pfsense.org
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	Utility to detect platform reset button state for use in scripting
 
 PLIST_FILES=	sbin/wrapresetbtn \
@@ -23,11 +23,11 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-build:
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/wrapresetbtn ${FILESDIR}/wrapresetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/alixresetbtn ${FILESDIR}/alixresetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/FW7541resetbtn ${FILESDIR}/FW7541resetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/APUresetbtn ${FILESDIR}/APUresetbtn.c
-	${CC} ${CFLAGS} -lpthread -o ${WRKSRC}/RCC-VEresetbtn ${FILESDIR}/RCC-VE.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/wrapresetbtn ${FILESDIR}/wrapresetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/alixresetbtn ${FILESDIR}/alixresetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/FW7541resetbtn ${FILESDIR}/FW7541resetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/APUresetbtn ${FILESDIR}/APUresetbtn.c
+	${CC} -Wall ${CFLAGS} -o ${WRKSRC}/RCC-VEresetbtn ${FILESDIR}/RCC-VE.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/wrapresetbtn ${STAGEDIR}${PREFIX}/sbin

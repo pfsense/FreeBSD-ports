@@ -1,8 +1,7 @@
 # Created by: Dima Dorfman <dima@unixfreak.org>
-# $FreeBSD$
 
 PORTNAME=	foomatic-db
-PORTVERSION=	20190302
+PORTVERSION=	20210822
 CATEGORIES=	print
 MASTER_SITES=	LOCAL/danilo
 DISTNAME=	${PORTNAME}-${FOOMATICVER}-${PORTVERSION}
@@ -10,7 +9,11 @@ DISTNAME=	${PORTNAME}-${FOOMATICVER}-${PORTVERSION}
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Database for integrating printer drivers with common spoolers
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 USES=		gmake tar:xz
+
 GNU_CONFIGURE=	yes
 
 FOOMATICVER=	4.0

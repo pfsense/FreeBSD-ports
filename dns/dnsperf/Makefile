@@ -1,26 +1,28 @@
 # Created by: Edwin Groothuis (edwin@mavetju.org)
-# $FreeBSD$
 
 PORTNAME=	dnsperf
-PORTVERSION=	2.2.1
+PORTVERSION=	2.7.0
 DISTVERSIONPREFIX=v
 CATEGORIES=	dns benchmarks net
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Performance measurement of Domain Name System (DNS) servers
 
-LICENSE=	ISCL
+LICENSE=	APACHE20
 
-BUILD_DEPENDS=	isc-config.sh:dns/bind912
-LIB_DEPENDS=	liblmdb.so:databases/lmdb \
-		libjson-c.so:devel/json-c \
-		libxml2.so:textproc/libxml2
+LIB_DEPENDS=	libnghttp2.so:www/libnghttp2 \
+		libck.so:devel/concurrencykit \
+		libldns.so:dns/ldns
 
-USES=		autoreconf gnome iconv libtool ssl
+USES=		autoreconf compiler:c11 libtool pkgconfig ssl
 USE_GITHUB=	yes
-
 GH_ACCOUNT=	DNS-OARC
+
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	libssl_LIBS="-lssl -L${OPENSSLLIB}" \
+		libssl_CFLAGS="-I${OPENSSLINC}" \
+		libcrypto_LIBS="-lcrypto -L${OPENSSLLIB}" \
+		libcrypto_CFLAGS="-I${OPENSSLINC}"
 MAKE_ENV=	INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
 		INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
 		INSTALL_DATA="${INSTALL_DATA}" \

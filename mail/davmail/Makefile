@@ -1,13 +1,12 @@
 # Created by: John Prather
-# $FreeBSD$
 
 PORTNAME=	davmail
-PORTVERSION=	4.9.0
+PORTVERSION=	5.5.1
 CATEGORIES=	mail java
 MASTER_SITES=	SF/davmail/davmail/${PORTVERSION}
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}-${REVISION}
 
-MAINTAINER=	john.c.prather@gmail.com
+MAINTAINER=	jjuanino@gmail.com
 COMMENT=	POP/IMAP/SMTP/Caldav/Carddav/LDAP Exchange Gateway
 
 LICENSE=	GPLv2
@@ -18,9 +17,9 @@ DOS2UNIX_FILES=	build.xml
 NO_ARCH=	yes
 USE_ANT=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 ALL_TARGET=	release
-REVISION=	2652  # 4.9.0
+# 5.4.0
+REVISION=	3299
 # port build number, same as on DISTNAME
 MAKE_ARGS=	-Drevision=${REVISION}
 MAKE_ENV+=	"ANT_OPTS=-Dfile.encoding=UTF-8"
@@ -58,6 +57,6 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/davmail.sh ${STAGEDIR}${PREFIX}/bin/davmail
 	${INSTALL_DATA} ${WRKSRC}/src/etc/davmail.properties \
 		${STAGEDIR}${PREFIX}/etc/davmail.properties.sample
-	${INSTALL_DATA} ${WRKSRC}/dist/davmail.desktop ${STAGEDIR}${PREFIX}/share/applications/
+	${INSTALL_DATA} ${WRKSRC}/src/desktop/davmail.desktop ${STAGEDIR}${PREFIX}/share/applications/
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Miroslav Lachman
-# $FreeBSD$
 
 PORTNAME=	base-audit
-PORTVERSION=	0.3
+PORTVERSION=	0.5
 CATEGORIES=	security
 MASTER_SITES=	# none
 DISTFILES=	# none
@@ -12,7 +11,7 @@ COMMENT=	Daily periodic check of vulnerabilities in base system
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	pkg:ports-mgmt/pkg
+RUN_DEPENDS=	${LOCALBASE}/sbin/pkg:${PKG_ORIGIN}
 
 NO_ARCH=	yes
 NO_BUILD=	yes

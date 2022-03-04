@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libgepub
 PORTVERSION=	0.6.0
+PORTREVISION=	1
 CATEGORIES=	textproc gnome
 MASTER_SITES=	GNOME
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	twitter-text
 DISTVERSION=	1.14.7
 CATEGORIES=	textproc rubygems
@@ -18,6 +16,7 @@ USES=		gem
 USE_RUBY=	yes
 
 NO_ARCH=	yes
+
 PORTSCOUT=	limit:^1\.
 
 .include <bsd.port.mk>

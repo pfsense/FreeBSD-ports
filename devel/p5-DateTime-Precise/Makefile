@@ -1,5 +1,4 @@
 # Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
 
 PORTNAME=	DateTime-Precise
 PORTVERSION=	1.05
@@ -16,5 +15,7 @@ RUN_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

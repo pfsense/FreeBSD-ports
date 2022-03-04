@@ -1,5 +1,4 @@
 # Created by: michael johnson <ahze@ahze.net>
-# $FreeBSD$
 
 PORTNAME=	gtkterm2
 PORTVERSION=	0.2.3
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GNOME=	vte
-USES=		gmake libtool localbase pkgconfig
+USES=		gmake gnome libtool localbase pkgconfig
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	README

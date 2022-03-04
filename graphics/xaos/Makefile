@@ -1,67 +1,63 @@
 # Created by: Joseph Koshy <koshy@india.hp.com>
-# $FreeBSD$
 
 PORTNAME=	xaos
-PORTVERSION=	3.6
-PORTREVISION=	6
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	4.2.1
+PORTREVISION=	1
 CATEGORIES=	graphics math
-MASTER_SITES=	SF/${PORTNAME}/XaoS/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Real-time fractal browser
+MAINTAINER=	joerg.preiss@slesa.de
+COMMENT=	Real-time interactive fractal browser
 
-LIB_DEPENDS=	libpng.so:graphics/png \
-		libgsl.so:math/gsl
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
-GNU_CONFIGURE=	yes
+USES=		compiler:c++11-lang gl qmake qt:5
 
-OPTIONS_DEFINE=	THREADS NLS
-OPTIONS_MULTI=	DRIVER
-OPTIONS_MULTI_DRIVER=	AALIB GTK2 X11
-DRIVER_DESC=	User Interface
-OPTIONS_DEFAULT=	X11
-OPTIONS_SUB=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	xaos-project
+GH_PROJECT=	XaoS
 
-AALIB_LIB_DEPENDS=	libaa.so:graphics/aalib
-AALIB_CONFIGURE_WITH=	aa-driver
-AALIB_CONFIGURE_ON=	ac_cv_aalib_ver_ok=yes
+USE_GL=		gl
+USE_QT=		core gui opengl widgets buildtools_build linguisttools_build
 
-GTK2_DESC=	GTK+ User Interface (experimental)
-GTK2_USE=	GNOME=gtk20
-GTK2_USES=	pkgconfig
-GTK2_CONFIGURE_WITH=	gtk-driver
+QMAKE_ARGS+=	INCLUDEPATH+=${LOCALBASE}/include \
+		LIBS+=-L${LOCALBASE}/lib
 
-X11_USE=	XORG=x11,xext
-X11_CONFIGURE_WITH=	x11-driver x
+DESKTOP_ENTRIES=	"XaoS" \
+			"" \
+			"${PREFIX}/share/pixmaps/xaos.png" \
+			"xaos" \
+			"" \
+			false
 
-NLS_USES=	gettext iconv
-NLS_CONFIGURE_ENABLE=	nls
+OPTIONS_DEFINE=		EXAMPLES NLS TUTORIAL
+OPTIONS_DEFAULT=	TUTORIAL
+OPTIONS_SUB=		yes
 
-THREADS_DESC=	Enable SMP support (experimental)
-THREADS_CONFIGURE_WITH=	pthread
-THREADS_LIBS=	-lpthread
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
-
-INFO=		xaos
-
-PLIST_SUB+=	XAOSDIR="share/XaoS"
-
-MAKE_JOBS_UNSAFE=	yes
-DESKTOP_ENTRIES=	"XaoS" "" "${PREFIX}/share/pixmaps/xaos.png" \
-			"xaos" "" false
-
-pre-configure:
-	${REINPLACE_CMD} -e 's,/usr\(/share/locale\),${PREFIX}\1,g' \
-		${WRKSRC}/configure \
-		${WRKSRC}/src/ui/ui.c
-	${REINPLACE_CMD} 's,malloc.h,stdlib.h,' \
-		${WRKSRC}/src/ui/ui-drv/aa/ui_aa.c
+TUTORIAL_DESC=	Tutorial fractal sequences
 
 post-install:
-	${INSTALL_DATA}	${WRKSRC}/src/ui/ui-drv/qt/images/xaosbig.png \
+	# HACK: original "install" target missing
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/xaos ${STAGEDIR}${PREFIX}/bin/xaos
+	${INSTALL_DATA} ${WRKSRC}/src/ui/images/xaosbig.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/xaos.png
+	${INSTALL_MAN} ${WRKSRC}/doc/xaos.6 \
+		${STAGEDIR}${MANPREFIX}/share/man/man6/xaos.6
+
+post-install-EXAMPLES-on:
+	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
+
+post-install-NLS-on:
+	# catalogs
+	(cd ${WRKSRC}/catalogs && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/XaoS/catalogs)
+	# translation files
+	(cd ${WRKSRC}/i18n && ${COPYTREE_SHARE} \
+		"*.qm" ${STAGEDIR}${PREFIX}/share/XaoS/i18n)
+
+post-install-TUTORIAL-on:
+	(cd ${WRKSRC}/tutorial && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/XaoS/tutorial)
 
 .include <bsd.port.mk>

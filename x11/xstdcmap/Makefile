@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xstdcmap
 PORTVERSION=	1.0.4
 CATEGORIES=	x11
@@ -9,7 +7,7 @@ COMMENT=	X standard colormap utility
 
 LICENSE=	MIT
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xmu xt
 
 PLIST_FILES=	bin/xstdcmap man/man1/xstdcmap.1.gz

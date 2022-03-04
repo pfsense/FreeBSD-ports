@@ -1,5 +1,4 @@
 # Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	email_reply_parser
 PORTVERSION=	0.5.9
@@ -12,7 +11,7 @@ COMMENT=	GitHubs Email Reply Parser library for python
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

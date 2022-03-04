@@ -1,5 +1,4 @@
 # Created by: Raymond Pasco <ray@cultofray.net>
-# $FreeBSD$
 
 PORTNAME=	kevedit
 PORTVERSION=	0.5.1
@@ -16,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	cdrecord:sysutils/cdrtools
 RUN_DEPENDS=	cdrecord:sysutils/cdrtools
 
+USES=		sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 

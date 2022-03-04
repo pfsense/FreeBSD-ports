@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-LazyRequire
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5
@@ -20,5 +18,7 @@ TEST_DEPENDS=	p5-Test-Fatal>=0:devel/p5-Test-Fatal
 
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

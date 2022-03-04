@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnuspeechsa
 PORTVERSION=	0.1.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	GNU/gnuspeech
 

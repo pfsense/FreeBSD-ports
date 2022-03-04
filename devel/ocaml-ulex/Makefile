@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	ulex
 PORTVERSION=	1.1
@@ -10,6 +9,8 @@ PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lexer generator for Unicode and OCaml
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 USES=		gmake
 USE_OCAML=	true
@@ -27,6 +28,10 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 DOCS_ALL_TARGET=	doc
+
+post-patch:
+	@${REINPLACE_CMD} -e '/^let latin1_sub_lexeme/,+3 \
+		s,^  s,  Bytes.to_string s,' ${WRKSRC}/ulexing.ml
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

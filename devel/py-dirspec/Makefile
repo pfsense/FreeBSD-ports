@@ -1,5 +1,4 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dirspec
 PORTVERSION=	13.10
@@ -14,7 +13,7 @@ COMMENT=	XDG Base and User directories implementation
 
 LICENSE=	GPLv3
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

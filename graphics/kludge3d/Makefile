@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	kludge3d
 PORTVERSION=	20040822
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/source/2004-08-22
 
@@ -13,7 +12,7 @@ COMMENT=	Simple 3D editor
 LIB_DEPENDS=	lib3ds.so:graphics/lib3ds \
 		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
 
-USES=		gmake pkgconfig python
+USES=		compiler:c++11-lang gl gmake gnome pkgconfig python
 USE_GL=		gl
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes

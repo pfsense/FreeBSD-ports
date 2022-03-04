@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	quesoglc
 PORTVERSION=	0.7.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -17,7 +14,7 @@ LIB_DEPENDS=	libfribidi.so:converters/fribidi \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gmake libtool localbase pathfix pkgconfig tar:bzip2
+USES=		gl gmake libtool localbase pathfix pkgconfig tar:bzip2 xorg
 GNU_CONFIGURE=	yes
 USE_GL=		gl glu
 USE_XORG=	x11

@@ -1,5 +1,4 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	msyslog
 PORTVERSION=	1.08g
@@ -17,7 +16,7 @@ LICENSE_COMB=	dual
 
 OPTIONS_DEFINE=	MYSQL PGSQL EXAMPLES
 OPTIONS_SUB=	yes
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_OFF=	--without-mysql
 PGSQL_USES=	pgsql
 PGSQL_CONFIGURE_OFF=	--without-pgsql

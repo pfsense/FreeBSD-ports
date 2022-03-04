@@ -1,8 +1,7 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Authen-Radius
-PORTVERSION=	0.29
+PORTVERSION=	0.32
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,9 +1,8 @@
 # Created by: Kurt Kanzenbach <kurt@kmk-computers.de>
-# $FreeBSD$
 
 PORTNAME=	libflatarray
 PORTVERSION=	0.3.0
-PORTREVISION=	13
+PORTREVISION=	17
 CATEGORIES=	devel science
 MASTER_SITES=	http://www.libgeodecomp.org/archive/
 

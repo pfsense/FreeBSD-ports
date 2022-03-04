@@ -1,14 +1,13 @@
 # Created by: Bernard Spil <brnrd@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	twofactor_totp
-PORTVERSION=	2.1.2
+PORTVERSION=	6.2.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security
-MASTER_SITES=	https://github.com/${PKGNAMEPREFIX:S/-//}/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
+MASTER_SITES=	https://github.com/${PKGNAMEPREFIX}releases/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
 PKGNAMEPREFIX=	nextcloud-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	${PORTNAME}
-DISTVERSIONPREFIX=	v
 DIST_SUBDIR=	${PKGNAMEPREFIX:S/-//}/${DISTNAME}-${DISTVERSIONPREFIX}${PORTVERSION}
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -17,7 +16,7 @@ COMMENT=	TOTP multi-factor auth app for Nextcloud
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=15:www/nextcloud@${PHP_FLAVOR}
+RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=21:www/nextcloud@${PHP_FLAVOR}
 
 USES=		php:flavors
 NO_BUILD=	yes
@@ -34,6 +33,7 @@ WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/${PORTNAME}
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
-	${RM} ${STAGEDIR}${WWWDIR}/COPYING
+	(cd ${WRKSRC}; ${FIND} . -not -type d) | ${SORT} | \
+		${SED} -e 's,^\.,${WWWDIR_REL},' >> ${TMPPLIST}
 
 .include <bsd.port.mk>

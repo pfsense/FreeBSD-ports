@@ -1,10 +1,10 @@
 # Created by: Dennis Herrmann <dhn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	i3
-DISTVERSION=	4.16.1
+DISTVERSION=	4.20.1
 CATEGORIES=	x11-wm
-MASTER_SITES=	http://i3wm.org/downloads/
+MASTER_SITES=	https://i3wm.org/downloads/ \
+		http://i3wm.org/downloads/
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Improved dynamic tiling window manager
@@ -12,6 +12,7 @@ COMMENT=	Improved dynamic tiling window manager
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libev.so:devel/libev \
 		libpangocairo-1.0.so:x11-toolkits/pango \
@@ -28,17 +29,16 @@ RUN_DEPENDS=	p5-AnyEvent-I3>=0:devel/p5-AnyEvent-I3 \
 		p5-IPC-Run>=0:devel/p5-IPC-Run \
 		p5-Try-Tiny>=0:lang/p5-Try-Tiny
 
-USES=		compiler:c11 gmake iconv localbase perl5 pkgconfig tar:bzip2
+USES=		compiler:c11 gnome iconv localbase:ldflags meson perl5 \
+		pkgconfig tar:xz xorg
+USE_GNOME=	glib20
 USE_XORG=	xcb
-GNU_CONFIGURE=	yes
-CONFIGURE_OUTSOURCE=	yes
-CONFIGURE_ENV=	ac_cv_path_PATH_ASCIIDOC=""
+MESON_ARGS=	-Ddocs=false \
+		-Dmans=false
 LDFLAGS+=	${ICONV_LIB}
 INSTALL_TARGET=	install-strip
+MAKE_JOBS_UNSAFE=	yes
 
 CONFLICTS_INSTALL=	i3-gaps
-
-post-install:
-	${INSTALL_DATA} ${WRKSRC}/man/*.1 ${STAGEDIR}${MANPREFIX}/man/man1/
 
 .include <bsd.port.mk>

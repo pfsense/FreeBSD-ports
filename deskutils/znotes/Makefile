@@ -1,9 +1,8 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	znotes
-PORTVERSION=	0.4.5.20150825
-PORTREVISION=	3
+DISTVERSION=	0.4.6
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	rigoletto@FreeBSD.org
@@ -14,12 +13,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		compiler:c++11-lang gl qmake qt:5
 USE_GL=		gl
-USE_QT=		buildtools_build linguisttools_build core gui network printsupport widgets xml
+USE_QT=		buildtools_build linguisttools_build core gui network \
+		printsupport widgets xml
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	proton
 GH_PROJECT=	zNotes
-GH_TAGNAME=	6423c5e
 
 CONFLICTS_INSTALL=	znotes-qt[45]
 
@@ -34,6 +33,6 @@ post-patch:
 
 pre-configure:
 #Work around badly written .pro
-	${LRELEASE} ${WRKSRC}/${PORTNAME}.pro
+	cd ${WRKSRC} && ${LRELEASE} ${WRKSRC}/${PORTNAME}.pro
 
 .include <bsd.port.mk>

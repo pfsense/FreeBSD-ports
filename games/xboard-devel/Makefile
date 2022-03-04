@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	xboard-devel
 PORTVERSION=	4.8.0.20151020.3
-PORTREVISION=
-PORTEPOCH=
+PORTREVISION=	0
+PORTEPOCH=	0
 MASTER_SITES=	http://freeheimdall.spdns.org/files/
 # http://hgm.nubati.net/cgi-bin/gitweb.cgi?p=xboard.git;a=snapshot;h=${COMMIT_HASH};sf=tgz
 # http://hgm.nubati.net/cgi-bin/gitweb.cgi/xboard.git/snapshot/${COMMIT_HASH}
@@ -16,7 +14,7 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS?=	libpangocairo-1.0.so:x11-toolkits/pango
 
-CONFLICTS=	xboard-[0-9]*
+CONFLICTS=	xboard
 
 MASTERDIR=	${.CURDIR}/../xboard
 DISTINFO_FILE=	${.CURDIR}/distinfo

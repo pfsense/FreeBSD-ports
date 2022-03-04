@@ -1,5 +1,4 @@
 # Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Parse-PhoneNumber
 PORTVERSION=	1.9
@@ -8,7 +7,7 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse phone numbers
 
 LICENSE=	ART10 GPLv1+

@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mod_sql_sqlite
 PORTREVISION=	3
@@ -15,7 +14,7 @@ DESCR=		${.CURDIR}/pkg-descr
 
 MASTERDIR=	${.CURDIR}/../../ftp/proftpd
 
-USES=		sqlite
+USES=		cpe sqlite
 
 INCLUDEDIRS=	${LOCALBASE}/include
 LIBDIRS=	${LOCALBASE}/lib

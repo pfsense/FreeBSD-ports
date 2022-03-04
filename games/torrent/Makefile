@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	torrent
 PORTVERSION=	0.8.2
 PORTREVISION=	12
@@ -12,7 +9,7 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Score points without letting the tiles touch the top of the board
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl mixer image ttf
 
 CPPFLAGS+=	`${SDL_CONFIG} --cflags`

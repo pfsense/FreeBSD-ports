@@ -1,5 +1,4 @@
 # Created by: Warren Toomey <wkt@cs.adfa.edu.au>
-# $FreeBSD$
 
 PORTNAME=	pktsuckers
 PORTVERSION=	1.2
@@ -9,6 +8,9 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/./_/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Log contents of unwanted UDP packets and TCP connections
+
+DEPRECATED=	Abandonware, last release from somewhere around 1999
+EXPIRATION_DATE=2022-03-31
 
 PLIST_FILES=	libexec/tcpsuck libexec/udpsuck
 

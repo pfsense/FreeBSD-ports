@@ -1,12 +1,11 @@
 # Created by: Robert Gogolok <gogo@cs.uni-sb.de>
-# $FreeBSD$
 
 PORTNAME=	ruby-prof
-PORTVERSION=	0.17.0
+PORTVERSION=	1.3.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Fast profiler for Ruby
 
 LICENSE=	BSD2CLAUSE

@@ -1,5 +1,4 @@
 # Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
 
 PORTNAME=	doscan
 PORTVERSION=	0.3.3
@@ -12,6 +11,9 @@ COMMENT=	Tool to quickly scan your network for machines listening on a TCP port
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Abandonware, last release in 2014. Please consider using security/masscan or sysutils/pnscan
+EXPIRATION_DATE=2022-03-31
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 

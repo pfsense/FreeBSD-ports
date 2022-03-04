@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	xxhash
-PORTVERSION=	0.7.0
+PORTVERSION=	0.8.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -14,9 +12,18 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		gmake
 
 USE_LDCONFIG=	yes
+TEST_TARGET=	check
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cyan4973
 GH_PROJECT=	xxHash
+
+PORTSCOUT=	limit:^v[0-9\.]*
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/xxhsum
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libxxhash.so
 
 .include <bsd.port.mk>

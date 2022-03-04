@@ -1,5 +1,4 @@
 # Created by: tm@onepost.net
-# $FreeBSD$
 
 PORTNAME=	xisp
 PORTVERSION=	2.7p4
@@ -17,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libforms.so:x11-toolkits/xforms
 
-USES=		alias ssl
+USES=		alias ssl xorg
 USE_XORG=	x11 xpm
 
 CFLAGS+=	-DUSE_OPENSSL -I${OPENSSLINC}

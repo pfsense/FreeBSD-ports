@@ -5,4 +5,3 @@
 /%%KMODDIR%%/linuxkpi_gplv2.ko
 /%%KMODDIR%%/radeonkms.ko
 /%%KMODDIR%%/ttm.ko
-%%VMWGFX%%/%%KMODDIR%%/vmwgfx.ko

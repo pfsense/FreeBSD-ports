@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	iterators
-PORTVERSION=	1.0.10
-PORTREVISION=	1
+PORTVERSION=	1.0.13
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

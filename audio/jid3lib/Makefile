@@ -1,5 +1,4 @@
 # Created by: Alexander Botero-Lowry <alex@foxybanana.com>
-# $FreeBSD$
 
 PORTNAME=	jid3lib
 PORTVERSION=	0.5.4
@@ -11,7 +10,6 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java ID3 Tag Library
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 
 PLIST_FILES=	%%JAVAJARDIR%%/jid3lib.jar

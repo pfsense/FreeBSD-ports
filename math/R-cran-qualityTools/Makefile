@@ -1,9 +1,8 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	qualityTools
 DISTVERSION=	1.55
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

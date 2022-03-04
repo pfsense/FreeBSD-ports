@@ -1,5 +1,4 @@
 # Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
 
 PORTNAME=	explosions
 PORTVERSION=	0.2005.07.31
@@ -18,7 +17,7 @@ COMMENT=	3D objects flying around resembling explosions with various effects
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		gmake perl5
+USES=		gmake perl5 sdl
 USE_PERL5=	build
 USE_SDL=	sdl image
 

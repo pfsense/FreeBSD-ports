@@ -1,5 +1,4 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	sync
 PORTVERSION=	1.1.0
@@ -12,5 +11,6 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		php:pecl
+IGNORE_WITH_PHP=	80
 
 .include <bsd.port.mk>

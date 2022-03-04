@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	multimc
-DISTVERSION=	0.6.5
+DISTVERSION=	0.6.11
 CATEGORIES=	games java
 
 MAINTAINER=	me@tsundoku.ne.jp
@@ -27,7 +25,7 @@ CMAKE_ARGS=	-DMultiMC_LAYOUT="lin-system"
 CMAKE_OFF=	MultiMC_UPDATER
 CXXFLAGS+=	-Wno-inconsistent-missing-override \
 		-Wno-delete-non-virtual-dtor \
-		-DLWJGL_DIR='\"${LOCALBASE}/lib/lwjgl2.9.3\"'
+		-DLWJGL_DIR='\"${LOCALBASE}/lib/lwjgl\"'
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libMultiMC_*.so

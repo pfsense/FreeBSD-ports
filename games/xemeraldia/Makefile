@@ -1,5 +1,4 @@
 # Created by: Steven Wallace <swallace@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xemeraldia
 PORTVERSION=	0.4.3
@@ -15,7 +14,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Falling blocks game
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	cairo gtk20
 GNU_CONFIGURE=	yes
 

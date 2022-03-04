@@ -1,5 +1,4 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	xjewel
 PORTVERSION=	1.6
@@ -14,7 +13,7 @@ COMMENT=	X11 dropping jewels game
 BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
 		mkfontscale>=0:x11-fonts/mkfontscale
 
-USES=		fonts imake
+USES=		fonts imake xorg
 USE_XORG=	x11 xext
 
 DESKTOP_ENTRIES="XJewel" "" "" "${PORTNAME}" "" ""

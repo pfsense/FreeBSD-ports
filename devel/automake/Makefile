@@ -1,9 +1,7 @@
 # Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	automake
-PORTVERSION=	1.16.1
-PORTREVISION=	1
+PORTVERSION=	1.16.4
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -25,6 +23,8 @@ GNU_CONFIGURE=	yes
 MAKE_ENV+=	MAKEINFOFLAGS=--no-split
 INFO=		automake automake-history
 CPE_VENDOR=	gnu
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 

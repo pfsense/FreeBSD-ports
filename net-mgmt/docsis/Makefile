@@ -1,5 +1,4 @@
 # Created by: James Flemer <jflemer@acm.jhu.edu>
-# $FreeBSD$
 
 PORTNAME=	docsis
 PORTVERSION=	0.9.8
@@ -11,15 +10,15 @@ COMMENT=	Binary configuration file encoder/decoder
 
 LICENSE=	GPLv2+
 
-BUILD_DEPENDS=	gm4:devel/m4 \
-		flex:textproc/flex
+BUILD_DEPENDS=	flex:textproc/flex
 LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp \
-		libpkg.so:ports-mgmt/pkg
+		libpkg.so:${PKG_ORIGIN}
 
 USES=		autoreconf bison libtool ssl
 USE_GITHUB=	yes
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
+BINARY_WRAPPERS=	gm4
 
 PLIST_SUB=	MIBS=share/snmp/mibs
 

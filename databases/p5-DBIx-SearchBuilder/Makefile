@@ -1,9 +1,7 @@
 # Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
 
 PORTNAME=	DBIx-SearchBuilder
-PORTVERSION=	1.66
-PORTREVISION=	2
+PORTVERSION=	1.68
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

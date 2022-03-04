@@ -1,10 +1,9 @@
 # Created by: Charlie & <root@ws.ipfw.ru>
-# $FreeBSD$
 #    $MCom: ports/trunk/net-im/ekiga/Makefile 19954 2014-10-15 10:03:57Z kwm $
 
 PORTNAME=	ekiga
 PORTVERSION=	4.0.1
-PORTREVISION=	25
+PORTREVISION=	31
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -15,6 +14,9 @@ COMMENT=	VoIP and video conferencing application
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Last release in 2013, not actively maintained
+EXPIRATION_DATE=	2021-12-31
+
 BUILD_DEPENDS=	boost-libs>=1.53:devel/boost-libs \
 		v4l_compat>=0:multimedia/v4l_compat \
 		gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
@@ -23,25 +25,23 @@ LIB_DEPENDS=	libopal.so:net/opal \
 RUN_DEPENDS=	gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lang cpe gettext gmake libtool localbase \
-		pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lang cpe gettext gmake gnome libtool localbase \
+		pathfix pkgconfig tar:xz xorg
 USE_XORG=	xv
 USE_GNOME=	gtk20 intlhack libxml2
-INSTALLS_ICONS=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-I${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	LDAP NOTIFY EVOLUTION GCONF DBUS AVAHI GNOMEHELP
-OPTIONS_DEFAULT=NOTIFY DBUS GCONF AVAHI
+OPTIONS_DEFINE=	LDAP NOTIFY EVOLUTION DBUS AVAHI GNOMEHELP
+OPTIONS_DEFAULT=NOTIFY DBUS AVAHI
 
 EVOLUTION_DESC=	Evolution data server support
 GNOMEHELP_DESC=	Build Ekiga help files
 
 #OPTIONS_GROUP=	EXP
-#OPTIONS_GROUP_EXP=	GSTREAMER XCAP LOUDMOUTH
+#OPTIONS_GROUP_EXP=	XCAP LOUDMOUTH
 EXP_DESC=	Experimental features
-GSTREAMER_DESC=	Gstreamer support
 XCAP_DESC=	Remote contact storage via HTTP in xml format
 LOUDMOUTH_DESC=	XMPP (jabber) support
 
@@ -51,14 +51,8 @@ LOUDMOUTH_DESC=	XMPP (jabber) support
 
 PLIST_SUB+=	VERSION=${PORTVERSION}
 
-CONFIGURE_ARGS+=--disable-kde --disable-kab
-
-.if ${PORT_OPTIONS:MGSTREAMER}
-CONFIGURE_ARGS+=--enable-gstreamer
-USE_GSTREAMER=	yes
-.else
-CONFIGURE_ARGS+=--disable-gstreamer
-.endif
+CONFIGURE_ARGS+=--disable-kde --disable-kab --disable-gstreamer \
+		--disable-gconf
 
 .if ${PORT_OPTIONS:MXCAP}
 CONFIGURE_ARGS+=--enable-xcap
@@ -110,19 +104,9 @@ CONFIGURE_ARGS+=--disable-dbus --disable-dbus-service
 PLIST_SUB+=	DBUS="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MGCONF}
-USE_GNOME+=	gconf2
-CONFIGURE_ARGS+=--enable-gconf
-GCONF_SCHEMAS=	ekiga.schemas
-PLIST_SUB+=	GCONF="@comment "
-.else
-CONFIGURE_ARGS+=--disable-gconf
-PLIST_SUB+=	GCONF=""
-.endif
-
 .if ${PORT_OPTIONS:MEVOLUTION}
 USE_GNOME+=	evolutiondataserver3
-LIB_DEPENDS+=	libgcr-3.so:security/gcr
+LIB_DEPENDS+=	libgcr-base-3.so:security/gcr
 CONFIGURE_ARGS+=--enable-eds
 PLIST_SUB+=	EVOLUTION=""
 WITH_PLUGINS=	1

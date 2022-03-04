@@ -1,8 +1,7 @@
 # Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
 
 PORTNAME=	libsigrok
-PORTVERSION=	0.5.1
+PORTVERSION=	0.5.2
 CATEGORIES=	devel
 MASTER_SITES=	http://sigrok.org/download/source/libsigrok/
 
@@ -25,7 +24,6 @@ INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 USE_GNOME=	glibmm
-INSTALLS_ICONS=	yes
 
 post-patch:
 # libusb can be disabled via src.conf(5), so detect via pkg-config

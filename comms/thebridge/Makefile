@@ -1,9 +1,8 @@
 # Created by: db
-# $FreeBSD$
 
 PORTNAME=	thebridge
 PORTVERSION=	1.09
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/cqinet/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -25,7 +24,11 @@ SHEBANG_FILES=	addons/usermgmt.cgi
 
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=			DOCS READLINE
+OPTIONS_DEFAULT=		READLINE
+
+READLINE_CONFIGURE_WITH=	readline
+READLINE_USES=			readline
 
 post-patch:
 	@${REINPLACE_CMD} 's!tbdcmd=\/usr\/local!tbdcmd=${PREFIX}!'\

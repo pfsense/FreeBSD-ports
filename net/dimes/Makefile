@@ -1,5 +1,4 @@
 # Created by: stast
-# $FreeBSD$
 
 PORTNAME=	dimes
 PORTVERSION=	0.5.2
@@ -17,7 +16,6 @@ WRKSRC=		${WRKDIR}/DIMES
 BUILD_WRKSRC=	${WRKSRC}/scripts_linux
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 #java-linux required
 JAVA_OS=	linux
 DATADIR=	${JAVASHAREDIR}/dimes

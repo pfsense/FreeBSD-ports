@@ -1,9 +1,8 @@
 # Created by: asami
-# $FreeBSD$
 
 PORTNAME=	xgraph
 PORTVERSION=	11.3.2.20000910
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math print
 MASTER_SITES=	ftp://ftp.cs.utoronto.ca/pub/radford/
 DISTNAME=	xgraph-11
@@ -16,7 +15,7 @@ LICENSE_NAME=	xgraph license
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		imake tar:Z
+USES=		imake tar:Z xorg
 USE_XORG=	x11 xext
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	tightvnc
 PORTVERSION=	1.3.10
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net java
 MASTER_SITES=	SF/vnc-tight/TightVNC-unix/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}_unixsrc
@@ -14,32 +13,38 @@ COMMENT=	Enhanced version of VNC
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENCE.TXT
 
-BROKEN_aarch64=	Fails to build: invokes x86 asm
-USES=		cpe imake jpeg shebangfix perl5 tar:bzip2
-USE_XORG=	ice sm x11 xaw xext xmu xt xpm
-
 RUN_DEPENDS=	showrgb:x11/rgb \
 		xauth:x11/xauth \
 		xorg-fonts>=7.2:x11-fonts/xorg-fonts
 
+USES=		cpe imake jpeg shebangfix perl5 tar:bzip2 xorg
+USE_XORG=	ice sm x11 xaw xext xmu xt xpm
+
+CFLAGS+=	-fcommon # for build with clang-11, see https://sourceforge.net/p/vnc-tight/bugs/1523/
+
 MAKE_JOBS_UNSAFE=	yes
-CONFLICTS=	tigervnc-*
+CONFLICTS=	tigervnc
 WRKSRC=		${WRKDIR}/vnc_unixsrc
 SHEBANG_FILES=	vncserver
 CFLAGS+=	-Wno-return-type
 ALL_TARGET=	World
+MAKE_ARGS=	CC=${CC}
 
 OPTIONS_DEFINE=	JVNC_VIEWER
 OPTIONS_SUB=	yes
 JVNC_VIEWER_DESC=	Install Java-based vnc viewer
-JVNC_VIEWER_USE_JAVA=	yes
-JVNC_VIEWER_JAVA_RUN=	yes
+JVNC_VIEWER_USE=	JAVA=yes
+JVNC_VIEWER_VARS=	JAVA_RUN=yes
 
 .ifdef(TIGHTVNC_BASE)
 PREFIX=${TIGHTVNC_BASE}
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${ARCH} == aarch64 || ${ARCH:Mpowerpc*} || ${ARCH} == riscv64
+USE_GCC=	yes
+.endif
 
 .if exists(${PREFIX}/share/vnc/classes/index.vnc)
 IGNORE=		vnc has already been installed, please uninstall it first

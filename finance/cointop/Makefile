@@ -1,32 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	cointop
-PORTVERSION=	1.1.2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.6.10
 CATEGORIES=	finance
 
-MAINTAINER=	ndowens@yahoo.com
-COMMENT=	Light cryptocurrency coin stats
+MAINTAINER=	lcook@FreeBSD.org
+COMMENT=	Cryptocurrency coin stats
 
 LICENSE=	APACHE20
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		go:modules
+GO_MODULE=	github.com/${PORTNAME}-sh/${PORTNAME}
+GO_BUILDFLAGS=	-ldflags "\
+		-s -w \
+		-X ${GO_MODULE}/cointop.version=${DISTVERSION}"
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	miguelmota
-GH_PROJECT=	cointop
-
-PLIST_FILES=	bin/cointop
-
-do-build:
-	 	@${MKDIR} ${WRKSRC}/github.com/${GH_ACCOUNT}
-		@${RLN} ${WRKSRC} ${WRKSRC}/github.com/${GH_ACCOUNT}/${PORTNAME}
-		@${RLN} ${WRKSRC} ${WRKSRC}/src
-		cd ${WRKSRC} && \
-			${SETENV} ${MAKE_ENV} ${GO_ENV} CGO_ENABLED=0 GOPATH=${WRKSRC} \
-			${GO_CMD} build -ldflags "-X main.Version=${DISTVERSION}" -o bin/${PORTNAME}
-
-do-install:
-		${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
+PLIST_FILES=	bin/${PORTNAME}
 
 .include <bsd.port.mk>

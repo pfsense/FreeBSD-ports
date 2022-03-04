@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	colorcode
 PORTVERSION=	0.8.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://colorcode.laebisch.com/download/
 DISTNAME=	ColorCode-${PORTVERSION}

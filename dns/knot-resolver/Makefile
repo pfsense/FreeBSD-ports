@@ -1,108 +1,162 @@
 # Created by: Leo Vandewoestijne <freebsd@dns.company>
-# $FreeBSD$
 
 PORTNAME=	knot-resolver
-DISTVERSION=	3.2.1
-PORTREVISION=	1
-CATEGORIES=	dns ipv6
+DISTVERSION=	5.4.1
+CATEGORIES=	dns
 MASTER_SITES=	https://secure.nic.cz/files/knot-resolver/ \
 		https://dns.company/downloads/knot-resolver/
 
 MAINTAINER=	freebsd@dns.company
 COMMENT=	Caching full resolver implementation
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
-		git:devel/git
-LIB_DEPENDS=	libgnutls.so:security/gnutls \
-		libknot.so:dns/knot2-lib \
+		cmake:devel/cmake \
+		flake8:devel/py-flake8@${PY_FLAVOR} \
+		lua51-cqueues>=20200726_1:devel/lua-cqueues@lua51 \
+		luacheck:devel/lua-luacheck
+
+LIB_DEPENDS=	libdnssec.so:dns/knot3-lib \
+		libgnutls.so:security/gnutls \
+		libknot.so:dns/knot3-lib \
 		liblmdb.so:databases/lmdb \
-		libluajit-5.1.so:lang/luajit \
-		libuv.so:devel/libuv
-TEST_DEPENDS=	cmocka>=1.1.1:sysutils/cmocka
+		libluajit-5.1.so:lang/luajit-openresty \
+		libnghttp2.so:www/libnghttp2 \
+		libuv.so:devel/libuv \
+		libzscanner.so:dns/knot3-lib
 
-USES=		gmake libedit libtool ncurses pkgconfig shebangfix tar:xz
+RUN_DEPENDS=	lua51-cqueues>=20200726_1:devel/lua-cqueues@lua51
 
-SHEBANG_FILES=	scripts/coverage_env.sh
-USE_LDCONFIG=	yes
+USES=		compiler:c11 libedit libtool meson ncurses ninja pkgconfig \
+		python:3.5+,build shebangfix tar:xz
+
+USE_CXXSTD=	c++11
+
+USE_RC_SUBR=	krescachegc kresd
+
+SHEBANG_FILES=	scripts/bench.sh \
+		scripts/build-in-obs.sh \
+		scripts/coverage_c_combine.sh \
+		scripts/coverage_env.sh \
+		scripts/gen-cdefs.sh \
+		scripts/gen-pgp-keyblock.sh \
+		scripts/get-date.sh \
+		scripts/luacov_gen_empty.sh \
+		scripts/make-archive.sh \
+		scripts/make-doc.sh \
+		scripts/make-obs.sh \
+		scripts/run-pylint.sh \
+		scripts/run-scanbuild-with-args.sh \
+		scripts/test-config.sh \
+		scripts/test-integration-prepare.sh \
+		scripts/update-authors.sh \
+		scripts/update-root-hints.sh
+
+MESON_ARGS=	--buildtype=release \
+		--default-library=static \
+		--libdir=${PREFIX}/lib \
+		--pkg-config-path=${PREFIX}/libdata/pkgconfig \
+		--prefix=${LOCALBASE} \
+		-Dclient=enabled \
+		-Dgroup=${GROUPS} \
+		-Dinstall_kresd_conf=enabled \
+		-Dkeyfile_default=${ETCDIR}/root.keys \
+		-Droot_hints=${ETCDIR}/root.hints \
+		-Duser=${USERS} \
+		-Dutils=enabled
+
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 CONFLICTS=	knot-1.* knot1-[0-6].*
 
-MAKE_ARGS+=	PREFIX=${LOCALBASE}
-MAKE_ARGS+=	LIBDIR=${PREFIX}/lib
-MAKE_ARGS+=	MANDIR=${PREFIX}/man
-MAKE_ARGS+=	PKGCONFIGDIR=${PREFIX}/libdata/pkgconfig
-MAKE_ARGS+=	lmdb_CFLAGS=-I${PREFIX}/include lmdb_LIBS=-llmdb
+SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	DOCS DNSTAP DOXYGEN GO TRUSTANCHOR
+KRESD_USER=	kresd
+KRESD_GROUP=	kresd
+KRESD_RUNDIR=	/var/run/kresd
 
-# COOKIES will come return/reworked to reflect IETF dnsop group development
-#COOKIES_DESC=			cookies
-#COOKIES_LIB_DEPENDS=		libnettle.so:security/nettle
-#COOKIES_MAKE_ARGS_ON=		HAS_nettle=yes
-#COOKIES_MAKE_ARGS_OFF=		HAS_nettle=no
-#COOKIES_PLIST_FILES=		lib/kdns_modules/cookies.so      \
-#				include/libkres/alg_containers.h \
-#				include/libkres/alg_sha.h        \
-#				include/libkres/control.h        \
-#				include/libkres/helper.h         \
-#				include/libkres/lru_cache.h      \
-#				include/libkres/nonce.h
+SUB_LIST=	GROUPS=${GROUPS} \
+		RUNDIR=${RUNDIR} \
+		USERS=${USERS}
 
-DNSTAP_DESC=			dnstap support
-DNSTAP_LIB_DEPENDS=		libprotobuf.so:devel/protobuf \
-				libprotobuf-c.so:devel/protobuf-c \
-				libfstrm.so:devel/fstrm
-DNSTAP_MAKE_ARGS_ON=		HAS_libprotobuf-c=yes HAS_libfstrm=yes
-DNSTAP_MAKE_ARGS_OFF=		HAS_libprotobuf-c=no  HAS_libfstrm=no
-DNSTAP_PLIST_FILES=		lib/kdns_modules/dnstap.so
+USERS=		${KRESD_USER}
+GROUPS=		${KRESD_GROUP}
+RUNDIR=		${KRESD_RUNDIR}
 
-DOXYGEN_IMPLIES=		DOCS
-DOXYGEN_BUILD_DEPENDS=		doxygen:devel/doxygen
-DOXYGEN_MAKE_ARGS_ON=		HAS_doxygen=yes
-DOXYGEN_MAKE_ARGS_OFF=		HAS_doxygen=no
+PLIST_SUB=	GROUPS=${GROUPS} \
+		RUNDIR=${RUNDIR} \
+		USERS=${USERS}
 
-GO_DESC=			go
-GO_BUILD_DEPENDS=		go>=1.5:lang/go
-GO_MAKE_ARGS_ON=		HAS_go=yes
-GO_MAKE_ARGS_OFF=		HAS_go=no
+PORTDOCS=	AUTHORS COPYING CodingStyle NEWS README.md
+PORTEXAMPLES=	config.cluster config.docker config.internal config.isp \
+		config.personal config.privacy config.splitview
 
-TRUSTANCHOR_DESC=		Trust anchor bootstrapping and stats
-TRUSTANCHOR_USES=		lua
-TRUSTANCHOR_MAKE_ARGS_ON=	HAS_ltn12=yes HAS_ssl.https=yes
-TRUSTANCHOR_MAKE_ARGS_OFF=	HAS_ltn12=no  HAS_ssl.https=no
-TRUSTANCHOR_BUILD_DEPENDS=	${LUA_PKGNAMEPREFIX}luasocket>=0:net/luasocket \
-				${LUA_PKGNAMEPREFIX}luasec>=0:security/luasec
+OPTIONS_DEFINE=		DOCS EXAMPLES DNSTAP ROOTKEYS TRUSTANCHOR TEST TESTUNIT TESTCONF TESTEXTRA
+OPTIONS_DEFAULT=	DOCS EXAMPLES        ROOTKEYS TRUSTANCHOR TEST TESTUNIT
 
-.include <bsd.port.options.mk>
+DNSTAP_DESC=		dnstap support
+ROOTKEYS_DESC=		install root.keys
+TESTCONF_DESC=		Do config tests
+TESTEXTRA_DESC=		Do extra tests
+TESTUNIT_DESC=		Do unit tests
+TEST_DESC=		Do tests
+TRUSTANCHOR_DESC=	Trust anchor bootstrapping, management and stats
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1120000
-NOT_FOR_ARCHS=	i386
-NOT_FOR_ARCHS_REASON_i386=	libknot (installed by knot2) is broken on 11.2 at i386
-.endif
+DNSTAP_LIB_DEPENDS=	libfstrm.so:devel/fstrm \
+			libprotobuf-c.so:devel/protobuf-c \
+			libprotobuf.so:devel/protobuf
+DNSTAP_MESON_ON=	-Ddnstap=enabled
+DNSTAP_MESON_OFF=	-Ddnstap=disabled
+DNSTAP_PLIST_FILES=	lib/knot-resolver/kres_modules/dnstap.so
 
-USERS=		kresd
-GROUPS=		kresd
+ROOTKEYS_MESON_ON=	-Dinstall_root_keys=enabled
+ROOTKEYS_MESON_OFF=	-Dinstall_root_keys=disabled
+ROOTKEYS_PLIST_FILES=	${ETCDIR}/root.keys
 
-PORTDOCS=	AUTHORS COPYING CodingStyle README.md
+TESTCONF_BROKEN=	missing luajit basexx package
+TESTCONF_MESON_ON=	-Dconfig_tests=enabled
+TESTCONF_MESON_OFF=	-Dconfig_tests=disabled
 
-STRIP_TARGETS=	sbin/kresd			\
-		sbin/kresc			\
-		lib/libkres.so.7		\
-		lib/kdns_modules/ahocorasick.so	\
-		lib/kdns_modules/bogus_log.so	\
-		lib/kdns_modules/cookies.so	\
-		lib/kdns_modules/dnstap.so	\
-		lib/kdns_modules/hints.so	\
-		lib/kdns_modules/stats.so
+TESTEXTRA_BROKEN=		CMake Error: The source directory misses CMakeLists.txt
+TESTEXTRA_BUILD_DEPENDS=	git:devel/git
+TESTEXTRA_USES=			cmake python:3
+TESTEXTRA_MESON_ON=		-Dextra_tests=enabled \
+				-Dsendmmsg=disabled
+TESTEXTRA_MESON_OFF=		-Dextra_tests=disabled
+
+TESTUNIT_BUILD_DEPENDS=	cmocka>=1.1.1:sysutils/cmocka
+TESTUNIT_MESON_ON=	-Dunit_tests=enabled
+TESTUNIT_MESON_OFF=	-Dunit_tests=disabled
+
+TRUSTANCHOR_MESON_ON=	-Dmanaged_ta=enabled
+TRUSTANCHOR_MESON_OFF=	-Dmanaged_ta=disabled
+
+STRIP_TARGETS=	sbin/kres-cache-gc \
+		sbin/kresc \
+		sbin/kresd \
+		lib/knot-resolver/ahocorasick.so \
+		lib/knot-resolver/kres_modules/bogus_log.so \
+		lib/knot-resolver/kres_modules/dnstap.so \
+		lib/knot-resolver/kres_modules/edns_keepalive.so \
+		lib/knot-resolver/kres_modules/hints.so \
+		lib/knot-resolver/kres_modules/lib/knot-resolver/kres_modules/nsid.so \
+		lib/knot-resolver/kres_modules/refuse_nord.so \
+		lib/knot-resolver/kres_modules/stats.so
+
+pre-install:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${RUNDIR}
+
+pre-install-TEST-on: do-test
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MV} ${STAGEDIR}${ETCDIR}/kresd.conf ${STAGEDIR}${ETCDIR}/kresd.conf.sample
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
 .for STRIP_TGT in ${STRIP_TARGETS}
 	if [ -f ${STAGEDIR}${PREFIX}/${STRIP_TGT} ]; then \
-	    ${STRIP_CMD} ${STAGEDIR}${PREFIX}/${STRIP_TGT}; \
+	  ${STRIP_CMD} ${STAGEDIR}${PREFIX}/${STRIP_TGT}; \
 	fi
 .endfor
 

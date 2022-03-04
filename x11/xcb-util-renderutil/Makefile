@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcb-util-renderutil
 PORTVERSION=	0.3.9
 PORTREVISION=	1
@@ -14,8 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libxcb-util.so:x11/xcb-util
 
-XORG_CAT=	lib
-USES=		gmake
+USES=		gmake xorg xorg-cat:lib
 USE_XORG=	xcb
 INSTALL_TARGET=	install-strip
 

@@ -1,16 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	librs232
-PORTVERSION=	20171122
+PORTVERSION=	20190531
 CATEGORIES=	comms
 DISTNAME=	RS-232
 MASTER_SITES=	http://www.teuniz.net/RS-232/
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple serial library
 
 LICENSE=	GPLv3
-LICENSE_FILE=   ${WRKSRC}/gpl.txt
+LICENSE_FILE=	${WRKSRC}/gpl.txt
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	xtl
-DISTVERSION=	0.6.0
+DISTVERSION=	0.7.4
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-quant-stack
 
@@ -18,14 +16,14 @@ TEST_DEPENDS=	nlohmann-json>0:devel/nlohmann-json \
 
 USES=		cmake
 USE_GITHUB=	yes
-GH_ACCOUNT=	QuantStack
+GH_ACCOUNT=	xtensor-stack
 
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-do-test: # tests fail to build: https://github.com/QuantStack/xtl/issues/106
-	@cd ${WRKSRC}/test && \
-		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -Dxtl_DIR:STRING=${STAGEDIR}${PREFIX}/lib/cmake/xtl && \
+do-test: # tests fail to compile: https://github.com/xtensor-stack/xtl/issues/255
+	@cd ${WRKSRC} && \
+		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -Dxtl_DIR:STRING=${STAGEDIR}${PREFIX}/lib/cmake/xtl -DBUILD_TESTS=ON -DDOWNLOAD_GTEST=OFF && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} xtest
 

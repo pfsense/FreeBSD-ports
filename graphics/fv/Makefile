@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
 
 PORTNAME=	fv
 PORTVERSION=	1.03
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.eaflux.com/fv/sources/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -15,7 +14,7 @@ LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake pkgconfig zip
+USES=		gl gmake pkgconfig zip
 USE_GL=		glut
 ALL_TARGET=	${PORTNAME}
 

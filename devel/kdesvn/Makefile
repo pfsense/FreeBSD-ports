@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	kdesvn
-DISTVERSION=	2.0.0
-PORTREVISION=	3
+DISTVERSION=	2.1.0
+PORTREVISION=	2
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}/
 
@@ -17,16 +15,18 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libgdbm.so:databases/gdbm \
 		libsvn_client-1.so:devel/subversion
 
-CONFLICTS_INSTALL=	kdesvn-kde4 \
-			qsvn-[0-9]*
+CONFLICTS_INSTALL=	qsvn
 
 USES=		bdb cmake compiler:c++11-lang kde:5 qt:5 tar:xz
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
 		coreaddons dbusaddons ecm i18n iconthemes itemviews jobwidgets \
 		kio notifications parts service sonnet texteditor textwidgets \
-		wallet widgetsaddons xmlgui
+		wallet widgetsaddons xmlgui \
+		doctools_build
 USE_QT=		concurrent core dbus gui network sql widgets xml \
 		buildtools_build qmake_build
+
+PORTSCOUT=	ignore:1
 
 post-patch:
 	${REINPLACE_CMD} -e 's#%%EXECINFO%%#${EXECINFO_LDFLAGS} -lexecinfo#' \

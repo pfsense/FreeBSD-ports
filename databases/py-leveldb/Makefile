@@ -1,9 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	leveldb
-PORTVERSION=	0.20
-PORTREVISION=	1
+PORTVERSION=	0.201
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,19 +10,18 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Thread-safe Python binding for LevelDB
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libleveldb.so:databases/leveldb
 
-PORTSCOUT=	skipv:0.194
-
+USES=		compiler:c11 localbase python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
-USES=		localbase python
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/setup.py
 	@${RM} -r ${WRKSRC}/leveldb/ ${WRKSRC}/snappy/
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/leveldb.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

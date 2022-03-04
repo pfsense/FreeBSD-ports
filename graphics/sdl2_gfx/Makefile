@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	sdl2_gfx
 PORTVERSION=	1.0.4
@@ -12,7 +11,7 @@ COMMENT=	SDL graphics drawing primitives and other support functions
 
 LICENSE=	ZLIB
 
-USES=		gmake libtool pathfix
+USES=		gmake libtool pathfix sdl
 USE_SDL=	sdl2
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

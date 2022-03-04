@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	dash.el
-PORTVERSION=	2.15.0
+DISTVERSION=	2.19.1
+PORTREVISION=	2
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Modern list library for Emacs
 
 LICENSE=	GPLv3
@@ -15,12 +14,18 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	magnars
 
 NO_ARCH=	yes
-NO_BUILD=	yes
-PLIST_FILES=	${EMACS_SITE_LISPDIR}/dash.el \
-		${EMACS_SITE_LISPDIR}/dash-functional.el
+PLIST_FILES=	${EMACS_VERSION_SITE_LISPDIR}/dash-functional.el \
+		${EMACS_VERSION_SITE_LISPDIR}/dash-functional.elc \
+		${EMACS_VERSION_SITE_LISPDIR}/dash.el \
+		${EMACS_VERSION_SITE_LISPDIR}/dash.elc
+
+do-build:
+	(cd ${WRKSRC} \
+	&& ${EMACS_CMD} -Q -batch -L . -f batch-byte-compile *.el)
 
 do-install:
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${PLIST_FILES:M*.el:T} \
-	    ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR})
+	${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} *.el* \
+	    ${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR})
 
 .include <bsd.port.mk>

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	contrib
-DISTVERSION=	git.2019-02-16
+DISTVERSION=	git.2021-04-27
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	munin-
 
@@ -12,29 +10,31 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	munin-node>=0:sysutils/munin-node
 
-USES=	shebangfix uniquefiles:dirs python:env
-SHEBANG_REGEX=	./(${EXAMPLES_DIRS:ts|})/.*
-SHEBANG_LANG=	python3 expect gawk zsh
-ruby_OLD_CMD=	/opt/csw/bin/ruby
-zsh_CMD=	${LOCALBASE}/bin/zsh
-python3_CMD=	${LOCALBASE}/bin/python${PYTHON3_DEFAULT}
+USES=		python:env shebangfix uniquefiles:dirs
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	munin-monitoring
-GH_TAGNAME=	5c3ee237
-GH_TUPLE=	shuque:bind9stats:a920ded:bind9stats
+GH_TAGNAME=	c31cb28
+GH_TUPLE=	shuque:bind9stats:687c94a:bind9stats
 
-NO_BUILD=	yes
-NO_ARCH=	yes
+SHEBANG_REGEX=	./(${EXAMPLES_DIRS:ts|})/.*
+SHEBANG_LANG=	expect gawk python3 zsh
+python3_CMD=	${LOCALBASE}/bin/python${PYTHON3_DEFAULT}
+zsh_CMD=	${LOCALBASE}/bin/zsh
+ruby_OLD_CMD=	/opt/csw/bin/ruby
 
 # Most of the installed files are scripts, so give them a "correct" mode.
 BINMODE=	755
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
 
 EXAMPLES_DIRS=	plugins samples templates tools
 
 post-extract:
-	@${MV} ${WRKSRC_bind9stats}/bind9stats.py ${WRKSRC}/plugins/bind9stats
+	@${MV} ${WRKSRC_bind9stats}/bind9stats-munin.py ${WRKSRC}/plugins/bind9stats
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${EXAMPLESDIR}

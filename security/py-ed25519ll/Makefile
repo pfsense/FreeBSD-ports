@@ -1,5 +1,4 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ed25519ll
 PORTVERSION=	0.6
@@ -16,14 +15,14 @@ COMMENT=	Low-level ctypes wrapper for Ed25519 digital signatures
 
 LICENSE=	MIT
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils flavors
 
 WRKSRC=		${WRKDIR}/dholth-${PORTNAME}-${DISTNAME}
 
 do-test:
-	cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} test
+	cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} ${PYSETUP} test
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	festvox-ked8
 PORTVERSION=	1.4.0
@@ -18,7 +17,7 @@ ${LOCALBASE}/share/festival/lib/dicts/cmu/cmulex.scm:audio/festlex-cmu
 
 WRKSRC=		${WRKDIR}/festival
 
-CONFLICTS=	festvox-ked16-*
+CONFLICTS=	festvox-ked16
 
 NO_BUILD=	yes
 

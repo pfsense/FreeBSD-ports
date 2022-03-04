@@ -1,17 +1,15 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	iortcw
 PORTVERSION=	1.51c
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	games
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Game engine for Return to Castle Wolfenstein
 
 LICENSE=	GPLv3
 
-NOT_FOR_ARCHS=		aarch64 armv6 armv7 powerpc64
+NOT_FOR_ARCHS=		aarch64 armv6 armv7 riscv64
 NOT_FOR_ARCHS_REASON=	fails to configure: Architecture not supported
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
@@ -20,7 +18,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libopus.so:audio/opus \
 		libopusfile.so:audio/opusfile
 
-USES=		gl gmake jpeg openal pkgconfig sdl
+USES=		compiler:c++11-lang gl gmake jpeg openal pkgconfig sdl xorg
 USE_GITHUB=	yes
 USE_GL=		gl
 USE_SDL=	sdl2
@@ -29,8 +27,7 @@ WOLFDIR=	"libexec/${PORTNAME}"
 MAKE_ARGS=	BINDIR="${STAGEDIR}${PREFIX}/bin" \
 		COPYDIR="${STAGEDIR}${PREFIX}/${WOLFDIR}"
 
-# cf. PR 226980
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 PLIST_SUB=	ARCH="${ARCH}" \
 		WOLFDIR="${WOLFDIR}"

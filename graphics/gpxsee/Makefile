@@ -1,8 +1,8 @@
 # Created by: Nikolay Korotkiy <sikmir@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gpxsee
-DISTVERSION=	7.4
+DISTVERSION=	7.32
+PORTREVISION=	1
 CATEGORIES=	graphics geography
 
 MAINTAINER=	sikmir@gmail.com
@@ -33,13 +33,14 @@ TIFF_DESC=	Support for GeoTIFF images
 TIFF_USE=	QT=imageformats_run
 
 pre-build-NLS-on:
-	${LRELEASE} ${WRKSRC}/${PORTNAME}.pro
+	( cd ${BUILD_WRKSRC} && ${LRELEASE} ${WRKSRC}/${PORTNAME}.pro )
 
 do-install:
 	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/gpxsee ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/csv
 	${INSTALL_DATA} ${WRKSRC}/pkg/csv/* ${STAGEDIR}${DATADIR}/csv
-	${INSTALL_DATA} ${WRKSRC}/icons/${PORTNAME}.png ${STAGEDIR}${PREFIX}/share/pixmaps
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps
+	${INSTALL_DATA} ${WRKSRC}/icons/app/hicolor/64x64/${PORTNAME}.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps
 	${INSTALL_DATA} ${WRKSRC}/pkg/${PORTNAME}.desktop ${STAGEDIR}${PREFIX}/share/applications
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/mime/packages
 	${INSTALL_DATA} ${WRKSRC}/pkg/${PORTNAME}.xml ${STAGEDIR}${PREFIX}/share/mime/packages

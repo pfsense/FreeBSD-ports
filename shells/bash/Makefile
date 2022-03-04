@@ -1,9 +1,8 @@
 # Created by: Oliver Eikemeier
-# $FreeBSD$
 
 PORTNAME=		bash
-PATCHLEVEL=		3
-PORTVERSION=		5.0.${PATCHLEVEL:S/^0//g}
+PATCHLEVEL=		12
+PORTVERSION=		5.1.${PATCHLEVEL:S/^0//g}
 PORTREVISION?=		0
 CATEGORIES=		shells
 MASTER_SITES=		GNU
@@ -22,12 +21,14 @@ COMMENT=		GNU Project's Bourne Again SHell
 LICENSE=		GPLv3+
 LICENSE_FILE=		${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=		FDESCFS HELP NLS STATIC SYSBASHRC SYSLOG DOCS
+OPTIONS_DEFINE=		FDESCFS PORTS_READLINE HELP NLS STATIC SYSBASHRC \
+			SYSLOG DOCS
 FDESCFS_DESC=		Enable use of /dev/fd
 HELP_DESC=		Enable builtin help
+PORTS_READLINE_DESC=	libreadline from ports instead of bundled one
 SYSBASHRC_DESC=		Enable system-wide rc files
 
-OPTIONS_DEFAULT=	HELP
+OPTIONS_DEFAULT=	HELP PORTS_READLINE
 
 USES=			bison cpe iconv makeinfo pathfix localbase
 GNU_CONFIGURE=		yes
@@ -41,6 +42,9 @@ HELP_CONFIGURE_ENABLE=	help-builtin
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
+PORTS_READLINE_CONFIGURE_WITH=	installed-readline
+PORTS_READLINE_USES=	readline
+
 INFO=			bash
 
 PORTDOCS=		FAQ INTRO CHANGES COMPAT NEWS POSIX RBASH README \
@@ -51,11 +55,14 @@ CONFIGURE_ARGS+=	--without-bash-malloc \
 			--enable-disabled-builtins \
 			--with-libiconv-prefix=${ICONV_PREFIX}
 
+MAKE_ARGS+=	TERMCAP_LIB=-ltinfow
+
 .if empty(PKGNAMESUFFIX)
-CONFLICTS+=		bash-static-[0-9]*
+CONFLICTS+=	bash-static
 .else
-CONFLICTS+=		bash-[0-9]*
+CONFLICTS+=	bash
 .endif
+CONFLICTS+=	bashc
 
 .include <bsd.port.options.mk>
 
@@ -76,13 +83,19 @@ post-patch:
 # Ensure y.tab.c is regenerated
 	${TOUCH} ${WRKSRC}/parse.y
 	${RM} ${WRKSRC}/y.tab.c
-	@${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|g" ${WRKSRC}/doc/bash.1
+	@${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|g" -e "s|%%LOCALBASE%%|${LOCALBASE}|g" \
+		${WRKSRC}/doc/bash.1
 .if ${PORT_OPTIONS:MSYSLOG}
 	@${REINPLACE_CMD} \
 	    -e "s|/\*.*#define SYSLOG_HISTORY .*\*/|#define SYSLOG_HISTORY|g" \
 	    -e "s|/\*.*#define SYSLOG_SHOPT .*\*/|#define SYSLOG_SHOPT 1|g" \
 	    ${WRKSRC}/config-top.h
 .endif
+	@${REINPLACE_CMD} -e "s|\(/etc/profile\)|${LOCALBASE}\1|" \
+		${WRKSRC}/pathnames.h.in
+	@${REINPLACE_CMD} -e "s|/etc/[iI]nputrc|${LOCALBASE}/etc/inputrc|g" \
+		${WRKSRC}/doc/*.info ${WRKSRC}/doc/*.html ${WRKSRC}/doc/*.1 \
+		${WRKSRC}/lib/readline/rlconf.h
 
 post-patch-SYSBASHRC-on:
 	@${REINPLACE_CMD} \
@@ -117,6 +130,6 @@ cklatest:
 	@${MAKE} -V PATCHLEVEL
 	-ncftpls \
 		${PATCH_SITES:Mftp*:Ox:[1]} \
-		| fgrep -v .sig | ${TAIL}
+		| fgrep -v .sig | ${SORT} | ${TAIL}
 
 .include <bsd.port.mk>

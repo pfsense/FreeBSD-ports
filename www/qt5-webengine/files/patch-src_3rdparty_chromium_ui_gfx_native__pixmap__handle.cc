@@ -1,28 +1,38 @@
---- src/3rdparty/chromium/ui/gfx/native_pixmap_handle.cc.orig	2018-11-13 18:25:11 UTC
+--- src/3rdparty/chromium/ui/gfx/native_pixmap_handle.cc.orig	2020-03-16 14:04:24 UTC
 +++ src/3rdparty/chromium/ui/gfx/native_pixmap_handle.cc
-@@ -4,14 +4,14 @@
- 
- #include "ui/gfx/native_pixmap_handle.h"
- 
--#if defined(OS_LINUX) && !defined(TOOLKIT_QT)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(TOOLKIT_QT)
- #include <drm_fourcc.h>
- #include "base/posix/eintr_wrapper.h"
- #endif
- 
- namespace gfx {
- 
--#if defined(OS_LINUX) && !defined(TOOLKIT_QT)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(TOOLKIT_QT)
- static_assert(NativePixmapPlane::kNoModifier == DRM_FORMAT_MOD_INVALID,
-               "gfx::NativePixmapPlane::kNoModifier should be an alias for"
-               "DRM_FORMAT_MOD_INVALID");
-@@ -36,7 +36,7 @@ NativePixmapHandle::NativePixmapHandle(const NativePix
- 
- NativePixmapHandle::~NativePixmapHandle() {}
- 
--#if defined(OS_LINUX) && !defined(TOOLKIT_QT)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(TOOLKIT_QT)
+@@ -33,7 +33,7 @@ NativePixmapPlane::NativePixmapPlane() : stride(0), of
+ NativePixmapPlane::NativePixmapPlane(int stride,
+                                      int offset,
+                                      uint64_t size
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+                                      ,
+                                      base::ScopedFD fd
+ #elif defined(OS_FUCHSIA)
+@@ -44,7 +44,7 @@ NativePixmapPlane::NativePixmapPlane(int stride,
+     : stride(stride),
+       offset(offset),
+       size(size)
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+       ,
+       fd(std::move(fd))
+ #elif defined(OS_FUCHSIA)
+@@ -72,7 +72,7 @@ NativePixmapHandle& NativePixmapHandle::operator=(Nati
  NativePixmapHandle CloneHandleForIPC(const NativePixmapHandle& handle) {
    NativePixmapHandle clone;
-   std::vector<base::ScopedFD> scoped_fds;
+   for (auto& plane : handle.planes) {
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+     DCHECK(plane.fd.is_valid());
+     base::ScopedFD fd_dup(HANDLE_EINTR(dup(plane.fd.get())));
+     if (!fd_dup.is_valid()) {
+@@ -98,7 +98,7 @@ NativePixmapHandle CloneHandleForIPC(const NativePixma
+ #endif
+   }
+ 
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+   clone.modifier = handle.modifier;
+ #endif
+ 

@@ -1,13 +1,11 @@
 # Created by: amistry@am-productions.biz
-# $FreeBSD$
 
 PORTNAME=	hplip
-PORTVERSION=	3.17.11
-PORTREVISION=	3
+PORTVERSION=	3.20.6
 CATEGORIES=	print
 MASTER_SITES=	SF
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Drivers and utilities for HP printers and All-in-One devices
 
 LICENSE=	GPLv2+ MIT BSD3CLAUSE
@@ -17,15 +15,16 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libcupsimage.so:print/cups \
 		libdbus-1.so:devel/dbus
 RUN_DEPENDS=	cups-filters>=0:print/cups-filters \
-		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${PY_FLAVOR}
 
-CONFLICTS_INSTALL=	hpijs-[0-9]*
+CONFLICTS_INSTALL=	hpijs
 
 INSTALL_TARGET=	install-strip
-USES=		jpeg libtool pkgconfig python shebangfix
-USE_GNOME=	pygobject
+USES=		dos2unix jpeg libtool pkgconfig python:3.6+ shebangfix
 USE_LDCONFIG=	yes
 SHEBANG_GLOB=	*.py hpps pstotiff
+DOS2UNIX_FILES=	scan/sane/orblite.c
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-cupsbackenddir=${PREFIX}/libexec/cups/backend \
@@ -37,11 +36,12 @@ CONFIGURE_ARGS=	--with-cupsbackenddir=${PREFIX}/libexec/cups/backend \
 		--with-htmldir=${DOCSDIR} \
 		--with-drvdir=${PREFIX}/share/cups/drv \
 		--disable-qt4
-CPPFLAGS+=	-I${LOCALBASE}/include
+CONFIGURE_ENV+=	PYTHONINCLUDEDIR=${PYTHON_INCLUDEDIR}
+CPPFLAGS+=	-I${LOCALBASE}/include -I${PYTHON_INCLUDEDIR}
 LIBS+=		-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=		DOCS FAX SCAN SNMP X11 XSANE QT5
-OPTIONS_DEFAULT=	QT5 SCAN SNMP X11
+OPTIONS_DEFINE=		DOCS FAX SCAN SNMP X11 XSANE
+OPTIONS_DEFAULT=	SCAN SNMP X11
 OPTIONS_SUB=		yes
 
 DOCS_CONFIGURE_ENABLE=	doc-build
@@ -51,8 +51,8 @@ FAX_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}reportlab>=0:print/py-reportlab@${PY_FLA
 FAX_CONFIGURE_ENABLE=	fax-build
 
 SCAN_DESC=		Scanning support
+SCAN_RUN_DEPENDS=	${PY_PILLOW}
 SCAN_LIB_DEPENDS=	libsane.so:graphics/sane-backends
-SCAN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
 SCAN_CONFIGURE_ENABLE=	scan-build
 
 SNMP_DESC=		Network/JetDirect support
@@ -61,25 +61,13 @@ SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_ENABLE=	network-build
 
 X11_DESC=		Graphical User Interface (Qt)
-X11_CONFIGURE_ENABLE=	gui-build
+X11_CONFIGURE_ENABLE=	gui-build qt5
+X11_USES=		pyqt:5
+X11_USE=		PYQT=core_run,dbussupport_run,gui_run,widgets_run
 
 XSANE_DESC=		Install XSane for scanning (implies SCAN)
 XSANE_IMPLIES=		SCAN
 XSANE_RUN_DEPENDS=	xsane:graphics/xsane
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MQT5} && ${PORT_OPTIONS:MX11}
-USES+=			pyqt:5
-USE_PYQT=		core_run dbussupport_run gui_run sip widgets_run
-CONFIGURE_ARGS+=	--enable-qt5
-.else
-CONFIGURE_ARGS+=	--disable-qt5
-.endif
-
-.if ${PORT_OPTIONS:MX11} && ! ${PORT_OPTIONS:MQT5}
-BROKEN=			The X11 option requires one of the QT4 or QT5 options
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-ldld||g;' \

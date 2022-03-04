@@ -1,9 +1,8 @@
 # Created by: Chadwick Sorrell chad@wickdev.com
-# $FreeBSD$
 
 PORTNAME=	awffull
 PORTVERSION=	3.10.2
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES?=	www
 MASTER_SITES=	https://launchpadlibrarian.net/20395993/
 
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libgd.so:graphics/gd \
 		libpcre.so:devel/pcre
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-CONFLICTS?=	ja-awffull-[0-9]*
+CONFLICTS?=	ja-awffull
 
 FONTDEFAULT?=	${LOCALBASE}/share/fonts/bitstream-vera/VeraBd.ttf
 FONTLABEL?=	${LOCALBASE}/share/fonts/bitstream-vera/Vera.ttf

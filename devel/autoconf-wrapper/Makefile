@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME?=	autoconf-wrapper
 PORTVERSION=	20131203
 CATEGORIES=	devel
@@ -12,6 +10,7 @@ COMMENT?=	Wrapper script for GNU autoconf
 LICENSE=	BSD2CLAUSE
 
 WRKSRC=		${WRKDIR}
+NO_ARCH=	yes
 NO_BUILD=	YES
 
 TOOL?=		AUTOCONF

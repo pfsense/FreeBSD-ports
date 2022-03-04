@@ -1,9 +1,8 @@
 # Created by: Michael Reifenberger <mr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_SRC_DATE}
-PORTREVISION=	8
+PORTREVISION=	0
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-devel
 DIST_SUBDIR=		${PORTNAME}
@@ -13,8 +12,9 @@ COMMENT=		Schematic and PCB editing software
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm \
-		${LOCALBASE}/bin/swig3.0:devel/swig30
+BUILD_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
+		${LOCALBASE}/include/glm/glm.hpp:math/glm \
+		${LOCALBASE}/bin/swig:devel/swig
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libngspice.so:cad/ngspice_rework@shlib \
 		libTKernel.so:cad/opencascade \
@@ -24,15 +24,15 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 
 CONFLICTS=	kicad-4.*
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     KiCad
-GH_PROJECT=     kicad-source-mirror
-GH_TAGNAME=	${GIT_SRC_HASH}
+USE_GITLAB=	yes
+GL_ACCOUNT=	kicad/code
+GL_PROJECT=	kicad
+GL_COMMIT=	${GIT_SRC_HASH}
 
-CXXFLAGS+=	--std=c++11 -I${WRKSRC} -I${WRKSRC}/include -I${LOCALBASE}/include -msse
+CXXFLAGS+=	--std=c++14 -I${WRKSRC} -I${WRKSRC}/include -I${LOCALBASE}/include
 USE_GL=		gl glew glu glut
 USE_WX=		3.0
-WX_COMPS=	wx wx:build wx:run python:build python:run
+WX_COMPS=	wx python:lib
 USE_GNOME=	atk cairo	# Required by libwx_gtk2_aui-2.8.so
 USE_XORG+=	ice pixman x11 xext
 
@@ -46,21 +46,22 @@ PLIST_SUB=	OPSYS=${OPSYS}	\
 BINS=		cvpcb eeschema gerbview kicad pcbnew
 EXTRAS2RM=	linux-non_unicode linux wings3d LINUX.README	\
 		contrib_makefiles.txt running_kicad_under_W98.txt
-USES=		desktop-file-utils shared-mime-info compiler:c++11-lib tar:bzip2 cmake:insource,noninja \
-		gettext python:2.7 shebangfix ssl
+USES=		desktop-file-utils shared-mime-info compiler:c++14-lang tar:bzip2 cmake:insource,noninja \
+		gettext pkgconfig python:3.5+ shebangfix ssl gl xorg gnome
 SHEBANG_FILES=	pcbnew/python/plugins/touch_slider_wizard.py
 
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Debug" \
 		-DKICAD_TESTING_VERSION=ON \
-		-DKICAD_BUILD_VERSION=${DISTVERSION} \
-		-DCMAKE_INCLUDE_PATH="${LOCALBASE}/include" \
+		-DKICAD_VERSION=${DISTVERSION} \
+		-DCMAKE_INCLUDE_PATH="${WRKSRC}/include ${LOCALBASE}/include" \
 		-DwxWidgets_CONFIG_EXECUTABLE="${WX_CONFIG}" \
 		-DwxWidgets_USE_DEBUG=ON \
 		-DwxWidgets_USE_USE_UNICODE=ON \
 		-DwxWidgets_wxrc_EXECUTABLE=${WXRC_CMD} \
 		-DKICAD_SCRIPTING=ON \
 		-DKICAD_SCRIPTING_MODULES=ON \
+		-DKICAD_SCRIPTING_PYTHON3=ON \
 		-DKICAD_SCRIPTING_WXPYTHON=ON \
 		-DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON \
 		-DKICAD_SKIP_BOOST=YES \
@@ -68,6 +69,7 @@ CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DKICAD_USE_OCE=OFF \
 		-DKICAD_USE_OCC=ON \
 		-DOCC_INCLUDE_DIR=${LOCALBASE}/include/OpenCASCADE
+USE_LDCONFIG=	yes
 
 .include "Makefile.git_rev"
 
@@ -96,6 +98,13 @@ tmp:
 post-extract:
 	${RM} ${WRKSRC}/CMakeModules/CheckCXXSymbolExists.cmake
 
+pre-configure:
+	${REINPLACE_CMD} -e 's|/usr/share/kicad|${DATADIR}|'            \
+		-e 's|/usr/local|${PREFIX}|'                            \
+		${WRKSRC}/common/gestfich.cpp
+	${REINPLACE_CMD} -e 's|/usr/bin/xdg-open|${LOCALBASE}/bin/xdg-open|' \
+		${WRKSRC}/common/pgm_base.cpp
+
 post-configure:
 	${REINPLACE_CMD} -e 's|#define HAVE_ISO646_H|//#define HAVE_ISO646_H|'     \
 		${WRKSRC}/config.h
@@ -105,8 +114,8 @@ post-configure:
 		-e 's|LD = gcc|LD = ${CC}|'					\
 		-e 's|LD = g++|LD = ${CXX}|'					\
 		-e 's|wx-config|${WX_CONFIG}|'					\
-		-e 's|CXX_FLAGS =|CXX_FLAGS = -I${LOCALBASE}/include|'		\
-		-e 's|C_FLAGS =|C_FLAGS = -I${LOCALBASE}/include|'		\
+		-e 's|CXX_FLAGS =|CXX_FLAGS = ${WRKSRC}/include -I${LOCALBASE}/include|'		\
+		-e 's|C_FLAGS =|C_FLAGS = ${WRKSRC}/include -I${LOCALBASE}/include|'		\
 		-e 's|LDFLAGS =|LDFLAGS += -L${LOCALBASE}/lib|'			\
 		-e 's|gcc -D|${CC} -D|'						\
 		-e 's/-pthread;-D_THREAD_SAFE/-pthread -D_THREAD_SAFE/g'	\
@@ -152,10 +161,4 @@ PLIST_DIR_LIST=		lib/kicad
 PLIST_SHAREDDIR_LIST=	share/mimelnk/application \
 			share/mimelnk
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${CHOSEN_COMPILER_TYPE} == gcc
-IGNORE=		builds only with clang
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

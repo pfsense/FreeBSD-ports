@@ -1,15 +1,16 @@
 # Created by: Andrew J. Caines <A.J.Caines@halplant.com>
-# $FreeBSD$
 
 PORTNAME=	postfinger
 PORTVERSION=	1.30
 CATEGORIES=	mail
-MASTER_SITES=	ftp://ftp.wl0.org/ftp.wl0.org/postfinger/
+MASTER_SITES=	http://postfix.nunix.eu/postfinger/
 DISTFILES=	${DISTNAME} README
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	A.J.Caines@halplant.com
 COMMENT=	Postfix Configuration Summary Reporter
+
+LICENSE=	GPLv2+
 
 EXTRACT_CMD=		${CP}
 EXTRACT_BEFORE_ARGS=

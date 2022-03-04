@@ -1,5 +1,4 @@
 # Created by: Choe, Cheng-Dae
-# $FreeBSD$
 
 PORTNAME=	formencode
 PORTVERSION=	1.3.0
@@ -15,7 +14,7 @@ LICENSE=	PSFL
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		gettext-runtime:run python zip
+USES=		gettext-runtime:run python:3.6+ zip
 USE_PYTHON=	distutils autoplist
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}

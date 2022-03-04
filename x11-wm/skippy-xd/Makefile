@@ -1,5 +1,4 @@
 # Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
 
 PORTNAME=	skippy-xd
 PORTVERSION=	0.5.0
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng.so:graphics/png
 
-USES=		gmake jpeg pkgconfig
+USES=		gmake jpeg pkgconfig xorg
 USE_XORG=	x11 xcomposite xdamage xext xfixes xft xinerama xrender
 
 USE_GITHUB=	yes

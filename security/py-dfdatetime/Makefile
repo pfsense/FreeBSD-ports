@@ -1,8 +1,7 @@
 # Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dfdatetime
-PORTVERSION=	20190116
+PORTVERSION=	20210509
 CATEGORIES=	security devel python
 MASTER_SITES=	CHEESESHOP \
 		https://github.com/log2timeline/dfdatetime/releases/download/${PORTVERSION}/
@@ -14,11 +13,13 @@ COMMENT=	Digital Forensics Date and Time
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pbr>=4.2.0:devel/py-pbr@${PY_FLAVOR}
+
+USES=		python:3.5+
+USE_PYTHON=	distutils autoplist concurrent
 
 NO_ARCH=	yes
-USES=		python
-USE_PYTHON=	distutils autoplist concurrent
 
 post-patch:
 	${REINPLACE_CMD} "s,share/doc/dfdatetime,${DOCSDIR_REL}," ${WRKSRC}/setup.py

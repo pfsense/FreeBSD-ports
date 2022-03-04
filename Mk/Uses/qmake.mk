@@ -1,9 +1,7 @@
-# $FreeBSD$
-#
 # There are three Qt related USES files with different access to Qt.
 #   - qmake: The port requires Qt's qmake to build -- creates the configure target
 #            - auto includes qt.mk
-#   - qt-dist: The port is a port for an part of Qt4 or Qt5
+#   - qt-dist: The port is a port for a part of Qt5
 #            - auto inclues qt.mk
 #   - qt.mk  - Dependency handling. USE_QT=foo bar
 #
@@ -79,7 +77,7 @@ QMAKE_ARGS+=		-spec ${QMAKESPEC} \
 
 .  if defined(WITH_DEBUG)
 PLIST_SUB+=		DEBUG=""
-QMAKE_ARGS+=		CONFIG+="debug" \
+QMAKE_ARGS+=		CONFIG+="debug separate_debug_info" \
 			CONFIG-="release"
 .  else
 PLIST_SUB+=		DEBUG="@comment "

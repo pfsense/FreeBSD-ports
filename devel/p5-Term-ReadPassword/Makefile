@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Term-ReadPassword
 PORTVERSION=	0.11
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for asking the user for a password
 
 USES=		perl5

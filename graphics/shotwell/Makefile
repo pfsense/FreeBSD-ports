@@ -1,9 +1,7 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org> et al.
-# $FreeBSD$
 
 PORTNAME=	shotwell
-PORTVERSION=	0.30.2
-PORTREVISION=	3
+PORTVERSION=	0.30.14
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 
@@ -32,9 +30,11 @@ LIB_DEPENDS=	libgio-2.0.so:devel/glib20 \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 		libxml2.so:textproc/libxml2
 
-USES=		gettext desktop-file-utils gnome meson ninja pkgconfig \
-		python:3.4+,build shebangfix sqlite tar:xz
-USE_GNOME=	cairo dconf gtk30 gnomedocutils
+# USES compiler: also see option OPENMP below
+USES=		compiler:c++11-lib cpe desktop-file-utils gettext gnome meson \
+		ninja pkgconfig python:3.4+,build shebangfix sqlite tar:xz xorg
+CPE_VENDOR=	gnome
+USE_GNOME=	cairo dconf gtk30
 USE_GSTREAMER1=	yes
 USE_LDCONFIG=	yes
 USE_XORG=	x11
@@ -45,22 +45,24 @@ python_CMD=	${SETENV} ${PYTHON_VERSION}
 
 MESON_ARGS=	-Dudev=false -Dextra-plugins=true -Dinstall-apport-hook=false \
 		-Dpublishers=facebook,flickr,gallery3,picasa,piwigo,rajce,tumblr,yandex,youtube
-INSTALLS_ICONS=	yes
 PORTSCOUT=	limitw:1,even
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=	FACED OPENMP
+# facedetection fails to link against opencv4 when building with GCC
+# disable openmp until llvm becomes the default openmp provider, then
+# try again
+OPTIONS_DEFINE=	FACED # OPENMP
 OPTIONS_SUB=	yes
 
 FACED_DESC=	Face Detection
-OPENMP_DESC=	libraw uses OpenMP (implies GCC)
+# OPENMP_DESC=	libraw uses OpenMP (implies GCC)
 
 FACED_CONFIGURE_ON=	-Dface-detection=true
 FACED_CONFIGURE_OFF=	-Dface-detection=false
-FACED_LIB_DEPENDS=	libopencv_core.so:graphics/opencv-core \
+FACED_LIB_DEPENDS=	libopencv_core.so:graphics/opencv \
 			libopencv_photo.so:graphics/opencv
-OPENMP_USES=		compiler:openmp
-OPENMP_USES_OFF=	compiler:c++11-lib
+# OPENMP_USES=		compiler:openmp
+# OPENMP_USES_OFF=	compiler:c++11-lib
 
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 

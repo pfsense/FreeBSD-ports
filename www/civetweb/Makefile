@@ -1,0 +1,25 @@
+# Created by: maintainer.freebsd@xpoundit.com
+
+PORTNAME=	civetweb
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.15
+CATEGORIES=	www
+
+MAINTAINER=	maintainer.freebsd@xpoundit.com
+COMMENT=	Embedded C/C++ web server
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+USES=		cmake cpe
+CPE_VENDOR=	${PORTNAME}_project
+USE_GITHUB=	yes
+USE_LDCONFIG=	yes
+
+CMAKE_ON=	BUILD_SHARED_LIBS CIVETWEB_ENABLE_IPV6 CIVETWEB_ENABLE_SSL \
+		CIVETWEB_ENABLE_ZLIB
+CMAKE_OFF=	CIVETWEB_BUILD_TESTING
+
+PLIST_SUB+=	DISTVERSION=${DISTVERSION}
+
+.include <bsd.port.mk>

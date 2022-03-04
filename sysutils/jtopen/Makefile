@@ -1,5 +1,4 @@
 # Created by: Marcin Cieslak <saper@SYSTEM.PL>
-# $FreeBSD$
 
 PORTNAME=	jtopen
 PORTVERSION=	6.2
@@ -8,7 +7,7 @@ MASTER_SITES=	SF/jt400/JTOpen-full/${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/./_/}
 
 MAINTAINER=	saper@saper.info
-COMMENT=	JTOpen is a Java library to access OS/400 or i5/OS system
+COMMENT=	Java library to access OS/400 or i5/OS systems
 
 LICENSE=	IBMPL10
 LICENSE_NAME=	IBM Public License 1.0

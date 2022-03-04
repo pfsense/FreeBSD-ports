@@ -1,5 +1,4 @@
 # Created by: dominik karczmarski <dominik@karczmarski.com>
-# $FreeBSD$
 
 PORTNAME=	fswatch
 DISTVERSION=	0.02beta5
@@ -17,6 +16,9 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--enable-regex \
 		--enable-stflags
 GNU_CONFIGURE=	yes
+CFLAGS+=	-fcommon
+
+PORTSCOUT=	ignore:1
 
 post-patch:
 	@${REINPLACE_CMD} '/INSTALL/ s|prefix)|DESTDIR)$$(&|' \

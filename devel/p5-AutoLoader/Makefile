@@ -1,5 +1,4 @@
 # Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	AutoLoader
 PORTVERSION=	5.74
@@ -12,9 +11,12 @@ COMMENT=	Load subroutines only on demand
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE_ART10=	${WRKSRC}/Artistic
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
+
+USES=		perl5
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5
 
 .include <bsd.port.mk>

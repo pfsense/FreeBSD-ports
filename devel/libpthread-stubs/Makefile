@@ -1,5 +1,4 @@
 # Created by: wahjava
-# $FreeBSD$
 
 PORTNAME=	libpthread-stubs
 PORTVERSION=	0.4
@@ -7,7 +6,7 @@ CATEGORIES=	devel
 MASTER_SITES=	https://xcb.freedesktop.org/dist/
 
 MAINTAINER=	ashish@FreeBSD.org
-COMMENT=	This library provides weak aliases for pthread functions
+COMMENT=	Weak aliases for pthread functions
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

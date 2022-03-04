@@ -1,6 +1,6 @@
---- CMakeLists.txt.orig	2017-03-24 00:18:21 UTC
+--- CMakeLists.txt.orig	2019-10-26 04:47:57 UTC
 +++ CMakeLists.txt
-@@ -111,7 +111,7 @@ IF ("${CMAKE_SYSTEM_NAME}" MATCHES "Darw
+@@ -112,7 +112,7 @@ IF ("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
  ENDIF()
  
  SET(LINUX FALSE)
@@ -9,13 +9,3 @@
      SET(LINUX TRUE)
  ENDIF()
  
-@@ -140,9 +140,6 @@ IF ("${CMAKE_BUILD_TYPE}" MATCHES "Debug
-     ENDIF()
- ELSEIF ("${CMAKE_BUILD_TYPE}" MATCHES "Release")
-     ADD_DEFINITIONS(-DNDEBUG=1 -UDEBUG)
--    IF (NOT WINDOWS)
--        ADD_DEFINITIONS(-O3)
--    ENDIF()
- ENDIF()
- 
- IF (NOT ${WINDOWS})

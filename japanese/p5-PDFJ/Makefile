@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	PDFJ
 PORTVERSION=	0.90
 PORTREVISION=	3
 CATEGORIES=	japanese perl5
 MASTER_SITES=	http://hp1.jonex.ne.jp/%7Enakajima.yasushi/archives/
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PDFJ module provides methods to generate Japanese PDF file
 
 USES=		perl5 shebangfix zip:infozip

@@ -1,8 +1,7 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	retcl
-PORTVERSION=	0.3.2
+PORTVERSION=	0.4.0
 CATEGORIES=	databases
 
 MAINTAINER=	gahr@FreeBSD.org

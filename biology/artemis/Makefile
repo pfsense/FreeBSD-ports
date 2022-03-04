@@ -1,5 +1,4 @@
 # Created by: camson@bilateral.com.au
-# $FreeBSD$
 
 PORTNAME=	artemis
 DISTVERSIONPREFIX=	v
@@ -20,7 +19,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	sanger-pathogens
 SHEBANG_FILES=	act art bamview dnaplotter test/*.sh etc/go_associations.pl
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 ALL_TARGET=	jar
 NO_ARCH=	yes
 

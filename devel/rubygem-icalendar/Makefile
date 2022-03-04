@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	icalendar
-PORTVERSION=	2.5.2
+PORTVERSION=	2.7.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +9,7 @@ COMMENT=	Library for working with iCalendar files
 LICENSE=	BSD2CLAUSE GPLv2 RUBY
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	rubygem-ice_cube>=0.16:devel/rubygem-ice_cube
+RUN_DEPENDS=	rubygem-ice_cube>=0.16<1:devel/rubygem-ice_cube
 
 USES=		gem
 USE_RUBY=	yes

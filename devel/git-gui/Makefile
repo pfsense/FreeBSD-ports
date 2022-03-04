@@ -1,17 +1,9 @@
-# $FreeBSD$
+COMMENT=	Git GUI (Graphical User Interface) components
 
-PKGNAMESUFFIX=	-gui
-
-COMMENT=	Distributed source code management tool (GUI enabled)
+SUBPORT=	gui
 
 MASTERDIR=	${.CURDIR}/../git
-
 DESCR=		${.CURDIR}/pkg-descr
-
-OPTIONS_SLAVE=	GUI
-
-CONFLICTS_INSTALL=	git-[0-9]* git-lite-[0-9]* git-subversion-[0-9]*
-
-DISTINFO_FILE=	${MASTERDIR}/distinfo
+PLIST=		${.CURDIR}/pkg-plist
 
 .include "${MASTERDIR}/Makefile"

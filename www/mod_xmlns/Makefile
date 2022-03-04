@@ -1,5 +1,4 @@
 # Created by: Dominic Marks <dom@goodforbusiness.co.uk>
-# $FreeBSD$
 
 PORTNAME=	mod_xmlns
 PORTVERSION=	0.97
@@ -14,8 +13,11 @@ COMMENT=	Apache module for XML namespaces
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Abandoned upstream, last release in 2004
+EXPIRATION_DATE=2022-03-31
+
 USE_GNOME=	libxml2
-USES=		apache:2.2+
+USES=		apache:2.2+ gnome
 
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes

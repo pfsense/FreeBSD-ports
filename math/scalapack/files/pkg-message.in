@@ -1,4 +1,6 @@
-***********************************************************************
+[
+{ type: install
+  message: <<EOM
  Please test your scalapack installation
  Example programs are located at %%EXAMPLESDIR%%
 
@@ -6,14 +8,12 @@
 
  Example:
   % cd %%DATADIR%%/TESTING
-  % %%LOCALBASE%%/bin/mpd &
   % %%LOCALBASE%%/bin/mpirun -np 4 ./xcbrd
   % %%LOCALBASE%%/bin/mpirun -np 4 ./xcdblu
    etc., etc. ...
 
   to perform all the tests,
   % cd %%DATADIR%%/TESTING
-  % %%LOCALBASE%%/bin/mpd &
   % csh
   % foreach i (x*)
   ? %%LOCALBASE%%/bin/mpirun -np 4 ./$i >& ~/$i.log
@@ -30,4 +30,6 @@
 
 You can change -np 4 to any number to meet your environment.
 See files at %%DOCSDIR%% for detail.
-**********************************************************************
+EOM
+}
+]

@@ -1,5 +1,4 @@
 # Created by: Ayumi M <ayu@commun.jp>
-# $FreeBSD$
 
 PORTNAME=	packddir
 PORTVERSION=	0.0.6
@@ -8,7 +7,10 @@ MASTER_SITES=	SAVANNAH
 DISTNAME=	upackddir_${PORTVERSION}-1
 
 MAINTAINER=	ayu@commun.jp
-COMMENT=	These trivial utilities can unpack and create PackdDir archives
+COMMENT=	Utilities to unpack and create PackdDir archives
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/src
 

@@ -1,5 +1,4 @@
 # Created by: Anton Yuzhaninov <citrin@citrin.ru>
-# $FreeBSD$
 
 PORTNAME=	libmp3splt
 PORTVERSION=	0.9.2
@@ -16,14 +15,15 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-cutter --disable-doxygen_doc
-USES=		libtool pathfix pkgconfig
+USES=		cpe libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-I${LOCALBASE}/include
+CPE_VENDOR=	libmp3splt_project
 
-OPTIONS_MULTI=	plugin
-OPTIONS_MULTI_plugin=	MAD FLAC VORBIS
+OPTIONS_MULTI=	PLUGIN
+OPTIONS_MULTI_PLUGIN=	MAD FLAC VORBIS
 OPTIONS_DEFINE=	ID3 PCRE NLS
 OPTIONS_SUB=	yes
 

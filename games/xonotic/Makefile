@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xonotic
 PORTVERSION=	0.8.2
@@ -42,6 +41,7 @@ CLIENT_LIB_DEPENDS=	libtheora.so:multimedia/libtheora \
 			libvorbisenc.so:audio/libvorbis \
 			libvorbisfile.so:audio/libvorbis \
 			libogg.so:audio/libogg
+CLIENT_USES=		sdl xorg
 CLIENT_USE=		SDL=sdl2 XORG=x11
 CLIENT_ALL_TARGET=	sdl-release
 CLIENT_PLIST_FILES=	bin/${PORTNAME} share/pixmaps/${PORTNAME}.ico

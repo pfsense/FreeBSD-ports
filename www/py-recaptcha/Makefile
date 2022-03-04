@@ -1,5 +1,4 @@
 # Created by: Philip Paeps <philip@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	recaptcha
 PORTVERSION=	1.0.6
@@ -12,7 +11,7 @@ DISTNAME=	${PORTNAME}-client-${PORTVERSION}
 MAINTAINER=	philip@FreeBSD.org
 COMMENT=	Plugin for reCAPTCHA and reCAPTCHA Mailhide
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

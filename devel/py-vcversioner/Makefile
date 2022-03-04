@@ -1,5 +1,4 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vcversioner
 PORTVERSION=	2.16.0.0
@@ -13,7 +12,7 @@ COMMENT=	Use version control tags to discover version numbers
 
 LICENSE=	ISCL
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

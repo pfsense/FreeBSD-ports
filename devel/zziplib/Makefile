@@ -1,13 +1,12 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	zziplib
+PORTVERSION=	0.13.72
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.69
 PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library to provide transparent read access to zipped files
 
 LICENSE=	LGPL21 MPL11
@@ -15,25 +14,34 @@ LICENSE_COMB=	dual
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
 LICENSE_FILE_MPL11=	${WRKSRC}/docs/COPYING.MPL
 
-BUILD_DEPENDS=	zip:archivers/zip
+BUILD_DEPENDS=	bash:shells/bash
 
-USES=		libtool pathfix pkgconfig python:2.7,build shebangfix
+USES=		cmake compiler:c11 cpe
+
+CMAKE_OFF=	BUILD_STATIC_LIBS
+CMAKE_ON=	BUILD_SHARED_LIBS ZZIP_LIBTOOL ZZIP_PKGCONFIG ZZIPBINS ZZIPFSEEKO ZZIPMMAPPED ZZIPWRAP
+TEST_TARGET=	check
+USE_LDCONFIG=	yes
+
+CPE_VENDOR=	zziplib_project
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	gdraheim
-GH_PROJECT=	zziplib
-USE_LDCONFIG=	yes
-SHEBANG_FILES=	docs/*.py
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--srcdir=${WRKSRC}
-CONFIGURE_ENV=	ac_cv_path_XMLTO=":"
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
 PORTSCOUT=	limit:^0\.
 
-OPTIONS_DEFINE=	SDL
+OPTIONS_DEFINE=	MANPAGES SDL TEST
+OPTIONS_DEFAULT=MANPAGES
 OPTIONS_SUB=	yes
-SDL_USE=		SDL=sdl
-SDL_CONFIGURE_ENABLE=	sdl
+
+MANPAGES_CMAKE_BOOL=	ZZIPDOCS
+MANPAGES_USES=		python:3.6+,build shebangfix
+MANPAGES_VARS=		SHEBANG_GLOB=*.py
+SDL_CMAKE_BOOL=		ZZIPSDL
+SDL_USE=		SDL=sdl2
+SDL_USES=		localbase:ldflags pkgconfig sdl
+TEST_BUILD_DEPENDS=	zip:archivers/zip
+TEST_CMAKE_BOOL=	BUILD_TESTS ZZIPTEST
+TEST_CMAKE_BOOL_OFF=	ZZIP_TESTCVE
 
 .include <bsd.port.mk>

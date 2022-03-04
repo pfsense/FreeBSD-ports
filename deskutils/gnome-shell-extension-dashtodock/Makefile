@@ -1,8 +1,8 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gnome-shell-extension-dashtodock
 PORTVERSION=	65
+PORTREVISION=	1
 DISTVERSIONPREFIX=	extensions.gnome.org-v
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome

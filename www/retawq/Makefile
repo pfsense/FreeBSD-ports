@@ -1,10 +1,9 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	retawq
 DISTVERSION=	0.2.6c
 PORTREVISION=	11
-CATEGORIES=	www ipv6
+CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-0.2.6c
 
 MAINTAINER=	ports@FreeBSD.org

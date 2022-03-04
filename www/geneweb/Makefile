@@ -1,5 +1,4 @@
 # Created by: Hubert Tournier <hubert@frbsd.org>
-# $FreeBSD$
 
 PORTNAME=	geneweb
 DISTVERSIONPREFIX=	distrib-
@@ -26,6 +25,10 @@ MAKE_JOBS_UNSAFE=	yes
 MAKE_ENV+=	STAGEDIR=${STAGEDIR}
 SUB_FILES+=	pkg-message
 USE_RC_SUBR=	gwd
+
+post-patch:
+	@${REINPLACE_CMD} -e 's,52,& -unsafe-string,' \
+		${WRKSRC}/tools/Makefile.inc.unix
 
 post-install:
 	(cd ${INSTALL_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} distrib)

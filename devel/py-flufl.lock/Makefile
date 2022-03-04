@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flufl.lock
 PORTVERSION=	3.2
 CATEGORIES=	devel python

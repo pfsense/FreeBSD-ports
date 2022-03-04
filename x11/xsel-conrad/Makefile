@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xsel
 PORTVERSION=	1.2.0
@@ -17,9 +16,9 @@ LICENSE_NAME=	xsel-conrad license
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS_INSTALL=	xsel-[0-9]*
+CONFLICTS_INSTALL=	xsel
 
-USES=		autoreconf localbase
+USES=		autoreconf localbase xorg
 USE_XORG=	x11 xt
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz

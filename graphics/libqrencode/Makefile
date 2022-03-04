@@ -1,8 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	libqrencode
-DISTVERSION=	4.0.0
+PORTVERSION=	4.1.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -14,10 +13,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
+USES=		cmake iconv pathfix pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	fukuchi
-
-USES=		cmake iconv pathfix pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
@@ -26,7 +24,7 @@ PLIST_FILES=	bin/qrencode \
 		include/qrencode.h \
 		lib/libqrencode.so \
 		lib/libqrencode.so.4 \
-		lib/libqrencode.so.4.0.0 \
+		lib/libqrencode.so.${PORTVERSION} \
 		libdata/pkgconfig/libqrencode.pc \
 		man/man1/qrencode.1.gz
 

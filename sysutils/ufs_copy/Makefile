@@ -1,5 +1,4 @@
 # Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ufs_copy
 PORTVERSION=	20060921
@@ -20,6 +19,8 @@ MAKE_ARGS=	BINDIR=${PREFIX}/sbin
 PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
+
+PLIST_FILES=	sbin/ufs_copy
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

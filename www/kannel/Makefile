@@ -1,9 +1,8 @@
 # Created by: Domas Mituzas <midom@dammit.lt>
-# $FreeBSD$
 
 PORTNAME=	kannel
 PORTVERSION=	1.4.4
-PORTREVISION=	8
+PORTREVISION=	9
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.kannel.org/download/${PORTVERSION}/
@@ -24,13 +23,14 @@ PORTSCOUT=	skipv:1.5.0
 USERS=		kannel
 GROUPS=		kannel
 
-USES=		gmake iconv ssl tar:bzip2
+USES=		cpe gmake gnome iconv ssl tar:bzip2
 USE_GCC=	yes
 USE_GNOME=	libxml2
 USE_RC_SUBR=	${PORTNAME}_bearerbox ${PORTNAME}_smsbox ${PORTNAME}_wapbox
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-pcre=yes --enable-docs=no --with-malloc=native \
 		--enable-start-stop-daemon=no
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	MYSQL PGSQL SQLITE3
 OPTIONS_DEFAULT=	MYSQL

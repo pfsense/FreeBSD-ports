@@ -1,8 +1,7 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	neovim
-PORTVERSION=	0.7.1
+PORTVERSION=	0.9.0
 CATEGORIES=	editors rubygems
 MASTER_SITES=	RG
 
@@ -13,14 +12,15 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	nvim:editors/neovim \
-		rubygem-msgpack1>=1.1:devel/rubygem-msgpack1 \
-		rubygem-multi_json>=1.0:devel/rubygem-multi_json
+		rubygem-msgpack>=1.1<2:devel/rubygem-msgpack \
+		rubygem-multi_json>=1.0<2:devel/rubygem-multi_json
 TEST_DEPENDS=	rubygem-bundler>=0:sysutils/rubygem-bundler \
 		rubygem-rake>=0:devel/rubygem-rake \
 		rubygem-rspec>=0:devel/rubygem-rspec
 
 USES=		gem
 USE_RUBY=	yes
+
 NO_ARCH=	yes
 
 PLIST_FILES=	bin/neovim-ruby-host

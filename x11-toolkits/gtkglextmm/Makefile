@@ -1,9 +1,8 @@
 # Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
 
 PORTNAME=	gtkglextmm
 PORTVERSION=	1.2.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/gtkglext/${PORTNAME}/${PORTVERSION}
 
@@ -13,8 +12,8 @@ COMMENT=	C++ wrapper for GtkGLExt
 LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 		libgtkmm-2.4.so:x11-toolkits/gtkmm24
 
-USES=		compiler:c++11-lang pathfix pkgconfig gettext gmake tar:bzip2 \
-		libtool
+USES=		compiler:c++11-lang gettext gmake gnome libtool pathfix \
+		pkgconfig tar:bzip2
 USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes
 USE_GNOME=	gnomeprefix gtk20

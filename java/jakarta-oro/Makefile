@@ -1,5 +1,4 @@
 # Created by: Dave Glowacki <dglo@ssec.wisc.edu>
-# $FreeBSD$
 
 PORTNAME=	jakarta-oro
 PORTVERSION=	2.0.8
@@ -10,9 +9,10 @@ MASTER_SITES=	http://archive.apache.org/dist/jakarta/oro/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl/awk/sh regular expressions for Java
 
+LICENSE=	APACHE20
+
 USE_JAVA=	yes
 USE_ANT=	yes
-JAVA_VERSION=	1.6+
 ALL_TARGET=	jar javadocs
 
 JAVALIBNAME=	${PORTNAME}-${PORTVERSION}

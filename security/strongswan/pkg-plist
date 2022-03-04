@@ -17,6 +17,7 @@
 @sample %%ETCDIR%%.d/charon/curve25519.conf.sample
 @sample %%ETCDIR%%.d/charon/des.conf.sample
 @sample %%ETCDIR%%.d/charon/dnskey.conf.sample
+@sample %%ETCDIR%%.d/charon/drbg.conf.sample
 %%EAPAKA3GPP2%%@sample %%ETCDIR%%.d/charon/eap-aka-3gpp2.conf.sample
 %%EAPAKA3GPP2%%@sample %%ETCDIR%%.d/charon/eap-aka.conf.sample
 %%EAPDYNAMIC%%@sample %%ETCDIR%%.d/charon/eap-dynamic.conf.sample
@@ -29,6 +30,7 @@
 %%EAPSIMFILE%%@sample %%ETCDIR%%.d/charon/eap-sim.conf.sample
 @sample %%ETCDIR%%.d/charon/eap-tls.conf.sample
 @sample %%ETCDIR%%.d/charon/eap-ttls.conf.sample
+%%FARP%%@sample %%ETCDIR%%.d/charon/farp.conf.sample
 @sample %%ETCDIR%%.d/charon/fips-prf.conf.sample
 %%GCM%%@sample %%ETCDIR%%.d/charon/gcm.conf.sample
 %%EAPAKA3GPP2%%@sample %%ETCDIR%%.d/charon/gmp.conf.sample
@@ -48,6 +50,7 @@
 @sample %%ETCDIR%%.d/charon/pem.conf.sample
 @sample %%ETCDIR%%.d/charon/pgp.conf.sample
 @sample %%ETCDIR%%.d/charon/pkcs1.conf.sample
+%%PKCS11%%@sample %%ETCDIR%%.d/charon/pkcs11.conf.sample
 @sample %%ETCDIR%%.d/charon/pkcs12.conf.sample
 @sample %%ETCDIR%%.d/charon/pkcs7.conf.sample
 @sample %%ETCDIR%%.d/charon/pkcs8.conf.sample
@@ -139,6 +142,8 @@ lib/ipsec/plugins/libstrongswan-des.la
 lib/ipsec/plugins/libstrongswan-des.so
 lib/ipsec/plugins/libstrongswan-dnskey.la
 lib/ipsec/plugins/libstrongswan-dnskey.so
+lib/ipsec/plugins/libstrongswan-drbg.la
+lib/ipsec/plugins/libstrongswan-drbg.so
 %%EAPAKA3GPP2%%lib/ipsec/plugins/libstrongswan-eap-aka-3gpp2.la
 %%EAPAKA3GPP2%%lib/ipsec/plugins/libstrongswan-eap-aka-3gpp2.so
 %%EAPAKA3GPP2%%lib/ipsec/plugins/libstrongswan-eap-aka.la
@@ -163,6 +168,8 @@ lib/ipsec/plugins/libstrongswan-eap-tls.la
 lib/ipsec/plugins/libstrongswan-eap-tls.so
 lib/ipsec/plugins/libstrongswan-eap-ttls.la
 lib/ipsec/plugins/libstrongswan-eap-ttls.so
+%%FARP%%lib/ipsec/plugins/libstrongswan-farp.la
+%%FARP%%lib/ipsec/plugins/libstrongswan-farp.so
 lib/ipsec/plugins/libstrongswan-fips-prf.la
 lib/ipsec/plugins/libstrongswan-fips-prf.so
 %%GCM%%lib/ipsec/plugins/libstrongswan-gcm.la
@@ -201,6 +208,8 @@ lib/ipsec/plugins/libstrongswan-pgp.la
 lib/ipsec/plugins/libstrongswan-pgp.so
 lib/ipsec/plugins/libstrongswan-pkcs1.la
 lib/ipsec/plugins/libstrongswan-pkcs1.so
+%%PKCS11%%lib/ipsec/plugins/libstrongswan-pkcs11.la
+%%PKCS11%%lib/ipsec/plugins/libstrongswan-pkcs11.so
 lib/ipsec/plugins/libstrongswan-pkcs12.la
 lib/ipsec/plugins/libstrongswan-pkcs12.so
 lib/ipsec/plugins/libstrongswan-pkcs7.la
@@ -302,6 +311,7 @@ sbin/ipsec
 %%DATADIR%%/templates/config/plugins/curve25519.conf
 %%DATADIR%%/templates/config/plugins/des.conf
 %%DATADIR%%/templates/config/plugins/dnskey.conf
+%%DATADIR%%/templates/config/plugins/drbg.conf
 %%EAPAKA3GPP2%%%%DATADIR%%/templates/config/plugins/eap-aka-3gpp2.conf
 %%EAPAKA3GPP2%%%%DATADIR%%/templates/config/plugins/eap-aka.conf
 %%EAPDYNAMIC%%%%DATADIR%%/templates/config/plugins/eap-dynamic.conf
@@ -314,6 +324,7 @@ sbin/ipsec
 %%EAPSIMFILE%%%%DATADIR%%/templates/config/plugins/eap-sim.conf
 %%DATADIR%%/templates/config/plugins/eap-tls.conf
 %%DATADIR%%/templates/config/plugins/eap-ttls.conf
+%%FARP%%%%DATADIR%%/templates/config/plugins/farp.conf
 %%DATADIR%%/templates/config/plugins/fips-prf.conf
 %%GCM%%%%DATADIR%%/templates/config/plugins/gcm.conf
 %%EAPAKA3GPP2%%%%DATADIR%%/templates/config/plugins/gmp.conf
@@ -333,6 +344,7 @@ sbin/ipsec
 %%DATADIR%%/templates/config/plugins/pem.conf
 %%DATADIR%%/templates/config/plugins/pgp.conf
 %%DATADIR%%/templates/config/plugins/pkcs1.conf
+%%PKCS11%%%%DATADIR%%/templates/config/plugins/pkcs11.conf
 %%DATADIR%%/templates/config/plugins/pkcs12.conf
 %%DATADIR%%/templates/config/plugins/pkcs7.conf
 %%DATADIR%%/templates/config/plugins/pkcs8.conf
@@ -393,3 +405,7 @@ sbin/ipsec
 %%SWANCTL%%@dir etc/swanctl/x509ca
 %%SWANCTL%%@dir etc/swanctl/x509crl
 %%SWANCTL%%@dir etc/swanctl/x509ocsp
+%%VIA%%%%DATADIR%%/templates/config/plugins/padlock.conf
+%%VIA%%lib/ipsec/plugins/libstrongswan-padlock.la
+%%VIA%%lib/ipsec/plugins/libstrongswan-padlock.so
+%%VIA%%@sample %%ETCDIR%%.d/charon/padlock.conf.sample

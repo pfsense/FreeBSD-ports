@@ -1,5 +1,4 @@
 # Created by: Denis Generalov <gd.workbox@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libmongo-client
 PORTVERSION=	0.1.6.3
@@ -16,7 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	algernon
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf libtool pkgconfig gmake pathfix
+USES=		autoreconf gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

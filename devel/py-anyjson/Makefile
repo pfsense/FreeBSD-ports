@@ -1,5 +1,4 @@
 # Created by: Mirko Zinn <mail@derzinn.de>
-# $FreeBSD$
 
 PORTNAME=	anyjson
 PORTVERSION=	0.3.3
@@ -14,7 +13,7 @@ COMMENT=	JSON library wrapper for Python
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

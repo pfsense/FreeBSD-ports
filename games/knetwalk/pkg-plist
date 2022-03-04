@@ -23,6 +23,7 @@ share/icons/hicolor/64x64/apps/knetwalk.png
 %%DATADIR%%/themes/electronic.svgz
 %%DATADIR%%/themes/electronic_preview.png
 share/locale/ar/LC_MESSAGES/knetwalk.mo
+share/locale/be/LC_MESSAGES/knetwalk.mo
 share/locale/bg/LC_MESSAGES/knetwalk.mo
 share/locale/bs/LC_MESSAGES/knetwalk.mo
 share/locale/ca/LC_MESSAGES/knetwalk.mo
@@ -45,6 +46,7 @@ share/locale/he/LC_MESSAGES/knetwalk.mo
 share/locale/hi/LC_MESSAGES/knetwalk.mo
 share/locale/hr/LC_MESSAGES/knetwalk.mo
 share/locale/hu/LC_MESSAGES/knetwalk.mo
+share/locale/id/LC_MESSAGES/knetwalk.mo
 share/locale/is/LC_MESSAGES/knetwalk.mo
 share/locale/it/LC_MESSAGES/knetwalk.mo
 share/locale/ja/LC_MESSAGES/knetwalk.mo
@@ -53,6 +55,7 @@ share/locale/km/LC_MESSAGES/knetwalk.mo
 share/locale/ko/LC_MESSAGES/knetwalk.mo
 share/locale/lt/LC_MESSAGES/knetwalk.mo
 share/locale/lv/LC_MESSAGES/knetwalk.mo
+share/locale/ml/LC_MESSAGES/knetwalk.mo
 share/locale/mr/LC_MESSAGES/knetwalk.mo
 share/locale/nb/LC_MESSAGES/knetwalk.mo
 share/locale/nds/LC_MESSAGES/knetwalk.mo
@@ -64,8 +67,10 @@ share/locale/pt/LC_MESSAGES/knetwalk.mo
 share/locale/pt_BR/LC_MESSAGES/knetwalk.mo
 share/locale/ro/LC_MESSAGES/knetwalk.mo
 share/locale/ru/LC_MESSAGES/knetwalk.mo
+share/locale/se/LC_MESSAGES/knetwalk.mo
 share/locale/sk/LC_MESSAGES/knetwalk.mo
 share/locale/sl/LC_MESSAGES/knetwalk.mo
+share/locale/sq/LC_MESSAGES/knetwalk.mo
 share/locale/sr/LC_MESSAGES/knetwalk.mo
 share/locale/sv/LC_MESSAGES/knetwalk.mo
 share/locale/tr/LC_MESSAGES/knetwalk.mo
@@ -73,3 +78,4 @@ share/locale/ug/LC_MESSAGES/knetwalk.mo
 share/locale/uk/LC_MESSAGES/knetwalk.mo
 share/locale/zh_CN/LC_MESSAGES/knetwalk.mo
 share/locale/zh_TW/LC_MESSAGES/knetwalk.mo
+share/metainfo/org.kde.knetwalk.appdata.xml

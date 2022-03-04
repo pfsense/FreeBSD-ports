@@ -1,10 +1,8 @@
-# $FreeBSD$
-#
 # Allows to determine the compiler being used
 #
 # Feature:	compiler
 # Usage:	USES=compiler or USES=compiler:ARGS
-# Valid ARGS:	env (default, implicit) c++0x c++11-lib c++11-lang c11 openmp nestedfct features
+# Valid ARGS:	env (default, implicit) c++0x c++11-lib c++11-lang c11 nestedfct features
 #
 # c++0x:	The port needs a compiler understanding C++0X
 # c++11-lang:	The port needs a compiler understanding C++11
@@ -13,7 +11,6 @@
 # gcc-c++11-lib:The port needs g++ compiler with a C++11 library
 # c++11-lib:	The port needs a compiler understanding C++11 and with a C++11 ready standard library
 # c11:		The port needs a compiler understanding C11
-# openmp:	The port needs a compiler understanding openmp
 # nestedfct:	The port needs a compiler understanding nested functions
 # features:	The port will determine the features supported by the default compiler
 #
@@ -36,7 +33,7 @@ _INCLUDE_USES_COMPILER_MK=	yes
 compiler_ARGS=	env
 .endif
 
-VALID_ARGS=	c++11-lib c++11-lang c++14-lang c++17-lang c11 features openmp env nestedfct c++0x gcc-c++11-lib
+VALID_ARGS=	c++11-lib c++11-lang c++14-lang c++17-lang c11 features env nestedfct c++0x gcc-c++11-lib
 
 _CC_hash:=	${CC:hash}
 _CXX_hash:=	${CXX:hash}
@@ -59,8 +56,6 @@ _COMPILER_ARGS+=	features c11
 _COMPILER_ARGS+=	features
 .elif ${compiler_ARGS} == env
 _COMPILER_ARGS+=	env
-.elif ${compiler_ARGS} == openmp
-_COMPILER_ARGS+=	env openmp
 .elif ${compiler_ARGS} == nestedfct
 _COMPILER_ARGS+=	env nestedfct
 .else
@@ -79,7 +74,7 @@ _CCVERSION!=	${CC} --version
 _CCVERSION_${_CC_hash}=	${_CCVERSION}
 PORTS_ENV_VARS+=	_CCVERSION_${_CC_hash}
 .endif
-COMPILER_VERSION=	${_CCVERSION:M[0-9].[0-9]*:tW:C/([0-9]).([0-9]).*/\1\2/g}
+COMPILER_VERSION=	${_CCVERSION:M[0-9]*.[0-9]*:[1]:C/([0-9]+)\.([0-9]+)\..*/\1\2/}
 .if ${_CCVERSION:Mclang}
 COMPILER_TYPE=	clang
 .else
@@ -103,7 +98,7 @@ _ALTCCVERSION_${_CC_hash}=	${_ALTCCVERSION}
 PORTS_ENV_VARS+=		_ALTCCVERSION_${_CC_hash}
 .endif
 
-ALT_COMPILER_VERSION=	${_ALTCCVERSION:M[0-9].[0-9]*:tW:C/([0-9]).([0-9]).*/\1\2/g}
+ALT_COMPILER_VERSION=	${_ALTCCVERSION:M[0-9]*.[0-9]*:[1]:C/([0-9]+)\.([0-9]+)\..*/\1\2/}
 .if ${_ALTCCVERSION:Mclang}
 ALT_COMPILER_TYPE=	clang
 .elif ${_ALTCCVERSION} != none
@@ -112,16 +107,9 @@ ALT_COMPILER_TYPE=	gcc
 
 CHOSEN_COMPILER_TYPE=	${COMPILER_TYPE}
 
-.if ${_COMPILER_ARGS:Mopenmp}
-.if ${COMPILER_TYPE} == clang
-USE_GCC=	yes
-CHOSEN_COMPILER_TYPE=	gcc
-.endif
-.endif
-
 .if ${_COMPILER_ARGS:Mnestedfct}
 .if ${COMPILER_TYPE} == clang
-USE_GCC=	any
+USE_GCC=	yes
 CHOSEN_COMPILER_TYPE=	gcc
 .endif
 .endif
@@ -171,8 +159,11 @@ CHOSEN_COMPILER_TYPE=	gcc
 .endif
 .endif
 
-.if ${_COMPILER_ARGS:Mc++17-lang}
-.if !${COMPILER_FEATURES:Mc++17}
+.if (${_COMPILER_ARGS:Mc++17-lang} && !${COMPILER_FEATURES:Mc++17}) || \
+(${_COMPILER_ARGS:Mc++14-lang} && !${COMPILER_FEATURES:Mc++14}) || \
+(${_COMPILER_ARGS:Mc++11-lang} && !${COMPILER_FEATURES:Mc++11}) || \
+(${_COMPILER_ARGS:Mc++0x} && !${COMPILER_FEATURES:Mc++0x}) || \
+(${_COMPILER_ARGS:Mc11} && !${COMPILER_FEATURES:Mc11})
 .if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
 USE_GCC=	yes
 CHOSEN_COMPILER_TYPE=	gcc
@@ -183,100 +174,11 @@ CC=	clang
 CXX=	clang++
 CHOSEN_COMPILER_TYPE=	clang
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang60:devel/llvm60
-CPP=	${LOCALBASE}/bin/clang-cpp60
-CC=	${LOCALBASE}/bin/clang60
-CXX=	${LOCALBASE}/bin/clang++60
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang10:devel/llvm10
+CPP=	${LOCALBASE}/bin/clang-cpp10
+CC=	${LOCALBASE}/bin/clang10
+CXX=	${LOCALBASE}/bin/clang++10
 CHOSEN_COMPILER_TYPE=	clang
-.endif
-.endif
-.endif
-.endif
-
-.if ${_COMPILER_ARGS:Mc++14-lang}
-.if !${COMPILER_FEATURES:Mc++14}
-.if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
-USE_GCC=	yes
-CHOSEN_COMPILER_TYPE=	gcc
-.elif ${COMPILER_TYPE} == gcc
-.if ${ALT_COMPILER_TYPE} == clang
-CPP=	clang-cpp
-CC=	clang
-CXX=	clang++
-CHOSEN_COMPILER_TYPE=	clang
-.else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang60:devel/llvm60
-CPP=	${LOCALBASE}/bin/clang-cpp60
-CC=	${LOCALBASE}/bin/clang60
-CXX=	${LOCALBASE}/bin/clang++60
-CHOSEN_COMPILER_TYPE=	clang
-.endif
-.endif
-.endif
-.endif
-
-.if ${_COMPILER_ARGS:Mc++11-lang}
-.if !${COMPILER_FEATURES:Mc++11}
-.if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
-USE_GCC=	yes
-CHOSEN_COMPILER_TYPE=	gcc
-.elif ${COMPILER_TYPE} == gcc
-.if ${ALT_COMPILER_TYPE} == clang
-CPP=	clang-cpp
-CC=	clang
-CXX=	clang++
-CHOSEN_COMPILER_TYPE=	clang
-.else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang60:devel/llvm60
-CPP=	${LOCALBASE}/bin/clang-cpp60
-CC=	${LOCALBASE}/bin/clang60
-CXX=	${LOCALBASE}/bin/clang++60
-CHOSEN_COMPILER_TYPE=	clang
-.endif
-.endif
-.endif
-.endif
-
-.if ${_COMPILER_ARGS:Mc++0x}
-.if !${COMPILER_FEATURES:Mc++0x}
-.if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
-USE_GCC=	yes
-CHOSEN_COMPILER_TYPE=	gcc
-.elif ${COMPILER_TYPE} == gcc
-.if ${ALT_COMPILER_TYPE} == clang
-CPP=	clang-cpp
-CC=	clang
-CXX=	clang++
-CHOSEN_COMPILER_TYPE=	clang
-.else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang60:devel/llvm60
-CHOSEN_COMPILER_TYPE=	clang
-CPP=	${LOCALBASE}/bin/clang-cpp60
-CC=	${LOCALBASE}/bin/clang60
-CXX=	${LOCALBASE}/bin/clang++60
-.endif
-.endif
-.endif
-.endif
-
-.if ${_COMPILER_ARGS:Mc11}
-.if !${COMPILER_FEATURES:Mc11}
-.if (defined(FAVORITE_COMPILER) && ${FAVORITE_COMPILER} == gcc) || (${ARCH} != amd64 && ${ARCH} != i386) # clang not always supported on Tier-2
-USE_GCC=	yes
-CHOSEN_COMPILER_TYPE=	gcc
-.elif ${COMPILER_TYPE} == gcc
-.if ${ALT_COMPILER_TYPE} == clang
-CPP=	clang-cpp
-CC=	clang
-CXX=	clang++
-CHOSEN_COMPILER_TYPE=	clang
-.else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang60:devel/llvm60
-CHOSEN_COMPILER_TYPE=	clang
-CPP=	${LOCALBASE}/bin/clang-cpp60
-CC=	${LOCALBASE}/bin/clang60
-CXX=	${LOCALBASE}/bin/clang++60
-.endif
 .endif
 .endif
 .endif

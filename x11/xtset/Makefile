@@ -1,15 +1,14 @@
 # Created by: grog
-# $FreeBSD$
 
 PORTNAME=	xtset
 PORTVERSION=	1.1
 CATEGORIES=	x11
-MASTER_SITES=	ftp://ftp.lemis.com/pub/
+MASTER_SITES=	http://www.lemis.com/pub/
 
-MAINTAINER=	grog@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to set title on an xterm
 
-LICENSE=	NONE
+# LICENSE=	NONE
 
 NO_WRKSUBDIR=	yes
 

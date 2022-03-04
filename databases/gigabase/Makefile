@@ -1,9 +1,8 @@
 # Created by: Sergey A. Osokin <osa@FreeBSD.org.ru>
-# $FreeBSD$
 
 PORTNAME=	gigabase
 PORTVERSION=	3.91
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTVERSION} \
 		http://www.garret.ru/
@@ -18,7 +17,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 GNU_CONFIGURE=	yes
 USES=		autoreconf dos2unix gmake libtool
 DOS2UNIX_FILES=	Makefile.in configure.in *.cpp *.h
-USE_GCC=	any
+USE_GCC=	yes
 USE_CXXSTD=	gnu++98
 USE_LDCONFIG=	yes
 

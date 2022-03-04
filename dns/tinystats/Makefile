@@ -1,9 +1,8 @@
 # Created by: Filippo Natali <filippo.natali@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	tinystats
 PORTVERSION=	1.1
-CATEGORIES=	dns ipv6
+CATEGORIES=	dns
 MASTER_SITES=	http://www.morettoni.net/bsd/ \
 		LOCAL/ehaupt
 

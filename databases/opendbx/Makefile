@@ -1,9 +1,8 @@
 # Created by: tremere@cainites.net
-# $FreeBSD$
 
 PORTNAME=	opendbx
 PORTVERSION=	1.4.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	databases
 MASTER_SITES=	http://www.linuxnetworks.de/opendbx/download/
 
@@ -30,7 +29,7 @@ SYBASE_DESC=	Sybase database support
 DRIVER_DESC=	Database drivers
 
 OPTIONS_SUB=	YES
-MYSQL_USE=	MYSQL=YES
+MYSQL_USES=	mysql
 MYSQL_CPPFLAGS=	-I${LOCALBASE}/include/mysql
 MYSQL_LDFLAGS=	-L${LOCALBASE}/lib/mysql
 

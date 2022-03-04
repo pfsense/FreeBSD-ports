@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	som
 DISTVERSION=	0.3-5.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	File-Flock
 PORTVERSION=	2014.01
@@ -23,5 +22,7 @@ TEST_DEPENDS=	p5-File-Slurp>=0:devel/p5-File-Slurp \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

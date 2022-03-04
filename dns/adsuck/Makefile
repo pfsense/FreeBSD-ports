@@ -1,9 +1,8 @@
 # Created by: Philippe Pepiot <phil@philpep.org>
-# $FreeBSD$
 
 PORTNAME=	adsuck
 PORTVERSION=	2.3
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	dns
 MASTER_SITES=	http://opensource.conformal.com/snapshots/adsuck/ \
 		http://philpep.org/pub/

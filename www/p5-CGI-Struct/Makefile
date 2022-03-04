@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CGI-Struct
 PORTVERSION=	1.21
 PORTREVISION=	1
@@ -17,5 +15,7 @@ TEST_DEPENDS=	p5-Test-Deep>=0:devel/p5-Test-Deep
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

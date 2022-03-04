@@ -1,8 +1,7 @@
 # Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
 
 PORTNAME=	bsh
-DISTVERSION=	2.0b6
+DISTVERSION=	2.1.0
 CATEGORIES=	lang java
 
 MAINTAINER=	pfg@FreeBSD.org
@@ -14,16 +13,14 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	beanshell
 GH_PROJECT=	beanshell
 
-USE_JAVA=	yes
-JAVA_VERSION=	1.6+
-
+USE_JAVA=	8
 USE_ANT=	yes
 ALL_TARGET=	jarall
 
 SUB_FILES=	${PORTNAME}.sh
 SUB_LIST=	JARNAME=${PORTNAME}.jar
 
-PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar \
+PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}.jar \
 		bin/${PORTNAME}
 
 do-install:

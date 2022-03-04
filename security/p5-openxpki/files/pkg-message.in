@@ -1,4 +1,6 @@
-=================================================================
+[
+{ type: install
+  message: <<EOM
 - Universal server building block (OpenXPKI) for arbitrary PKI: installed.
 - SCEP prerequisite binary and i18n tools for UI: installed.
 - Enable utf8 locale (e.g. en_US.utf8) for the translation staff to operate
@@ -8,9 +10,7 @@
 - Install perl interface for your favorite database,
   e.g. databases/p5-DBD-mysql
 - Install your favorite web server.
-  Choose from two versions of the handler: based on CGI or FastCGI
-  perl core modules.
-  Copy CGI or FastCGI scripts from %%EXAMPLESDIR%%/cgi-bin to the location
+  Copy FastCGI scripts from %%EXAMPLESDIR%%/cgi-bin to the location
   where your web server can use them. Set executable permissions for them.
   Copy htdocs files from %%EXAMPLESDIR%%/htdocs to the location
   where your web server can use them.
@@ -48,8 +48,17 @@ install -m 660 -o www -g www /dev/null /var/log/openxpki/soap.log
     /var/openxpki/session: session files.
     /var/log/openxpki: server log files.
     /var/tmp: temporary directory.
-==================================================================
+- OpenXPKI has not been fully tested with LibreSSL,
+  report your LibreSSL story to the list
+  https://sourceforge.net/p/openxpki/mailman/
+  or use OpenSSL instead.
+EOM
+}
+{ type: upgrade
+  message: <<EOM
 If you update existing installation, please check if extra handwork 
 is needed in your case:
 http://openxpki.readthedocs.io/en/latest/upgrading.html
-==================================================================
+EOM
+}
+]

@@ -1,9 +1,8 @@
 # Created by: Bruce Simpson
-# $FreeBSD$
 
 PORTNAME=	kBuild
 DISTVERSION=	${KBUILD_VERSION}
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/jkim
 DISTNAME=	${PORTNAME}-${DISTVERSION}r3127-src
@@ -14,18 +13,14 @@ COMMENT=	Makefile framework
 LICENSE=	BSD3CLAUSE GPLv3+
 LICENSE_COMB=	multi
 
-BROKEN_powerpc64=	does not build: fatal error: xmmintrin.h: No such file or directory
-NOT_FOR_ARCHS=		aarch64 armv6 armv7 mips mips64
-NOT_FOR_ARCHS_REASON=	./kBuild/env.sh: unknown cpu/arch
-
 USES=		autoreconf:build gmake makeinfo tar:xz
 
-CONFLICTS_INSTALL=	kBuild-devel-[0-9]*
+CONFLICTS_INSTALL=	kBuild-devel
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 KBUILD_VERSION=	0.1.9998
-KBUILD_ARCH=	${MACHINE_ARCH:S/i386/x86/:S/x86_64/amd64/:S/powerpc/ppc32/:C/armv.*/arm/}
+KBUILD_ARCH=	${MACHINE_ARCH:S/aarch64/arm64/:S/i386/x86/:S/x86_64/amd64/:C/powerpc64.*/ppc64/:C/powerpc.*/ppc32/:C/armv.*/arm32/}
 KBUILD_ENV=	AUTORECONF=${AUTORECONF} \
 		AUTOPOINT=true \
 		CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
@@ -46,7 +41,7 @@ ENV=
 OPTIONS_DEFINE=	DOCS GCC
 OPTIONS_DEFAULT=GCC
 GCC_DESC=	Build with GCC (should almost always be enabled)
-GCC_USE=	GCC=any
+GCC_USE=	GCC=yes
 
 post-patch:
 	@${REINPLACE_CMD} 's|gcc|${CC}|g' ${WRKSRC}/kBuild/tools/*.kmk

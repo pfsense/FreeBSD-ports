@@ -1,5 +1,4 @@
 # Created by: Thomas Spreng <spreng@socket.ch>
-# $FreeBSD$
 
 PORTNAME=	kismet
 DISTVERSION=	2016-07-R1
@@ -66,7 +65,7 @@ PLIST_SUB+=	PLUGINS="@comment "
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000
+.if ${OPSYS} == FreeBSD
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-restricted-plugin-ptw_aircrack-crypto.cc
 .endif
 

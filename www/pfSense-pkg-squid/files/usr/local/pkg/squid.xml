@@ -8,7 +8,7 @@
  * squid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -41,6 +41,11 @@
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0</url>
 	</menu>
+	<menu>
+		<name>Squid Proxy Server</name>
+		<section>Status</section>
+		<url>/status_squid.php</url>
+	</menu>
 	<service>
 		<name>squid</name>
 		<rcfile>squid.sh</rcfile>
@@ -57,8 +62,16 @@
 		<name>c-icap</name>
 		<rcfile>c-icap.sh</rcfile>
 		<executable>c-icap</executable>
-		<description>ICAP Inteface for Squid and ClamAV integration</description>
+		<description>ICAP Interface for Squid and ClamAV integration</description>
 	</service>
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+		<item>
+			<type>plugin_certificates</type>
+		</item>
+	</plugins>
 	<tabs>
 		<tab>
 			<text>General</text>
@@ -98,6 +111,10 @@
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
+		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>
 		</tab>
@@ -132,6 +149,38 @@
 			<default_value>on</default_value>
 		</field>
 		<field>
+			<fielddescr>Listen IP Version</fielddescr>
+			<fieldname>listenproto</fieldname>
+			<description>Select the IP version Squid will use to select addresses for accepting client connections.</description>
+			<type>select</type>
+			<options>
+				<option><name>IPv4</name><value>inet</value></option>
+				<option><name>IPv6</name><value>inet6</value></option>
+				<option><name>IPv4+IPv6</name><value>any</value></option>
+			</options>
+			<size>1</size>
+			<default_value>inet</default_value>
+		</field>
+		<field>
+			<fielddescr>CARP Status VIP</fielddescr>
+			<fieldname>carpstatusvid</fieldname>
+			<description>
+				<![CDATA[
+				Used to determine the HA MASTER/BACKUP status. Squid will be stopped when the
+				chosen VIP is in BACKUP status, and started in MASTER status.<br />
+				<strong><span class="text-danger">Important:</span> Don't forget to generate
+				Local Cache on the secondary node and configure
+				<a href="/pkg_edit.php?xml=squid_sync.xml">XMLRPC Sync</a> for the settings
+				syncronization.</strong>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_carp_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
 			<fielddescr>Proxy Interface(s)</fielddescr>
 			<fieldname>active_interface</fieldname>
 			<description>
@@ -140,9 +189,26 @@
 				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<default_value>lan</default_value>
 			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Outgoing Network Interface</fielddescr>
+			<fieldname>outgoing_interface</fieldname>
+			<description>
+				<![CDATA[
+				The interface the proxy server will use for outgoing connections.
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list(false, false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<default_value>auto</default_value>
 		</field>
 		<field>
 			<fielddescr>Proxy Port</fielddescr>
@@ -169,7 +235,6 @@
 			<type>input</type>
 			<size>5</size>
 		</field>
-
 		<field>
 			<fielddescr>Allow Users on Interface</fielddescr>
 			<fieldname>allow_interface</fieldname>
@@ -204,7 +269,6 @@
 				This option is very useful if you have problems accessing HTTPS sites.
 				]]>
 			</sethelp>
-
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -228,6 +292,23 @@
 			</description>
 			<type>input</type>
 			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Extra Trusted CA</fielddescr>
+			<fieldname>extraca</fieldname>
+			<description>
+				<![CDATA[
+				Select extra Trusted CA certificate in addition to the default root certificate bundle.<br/>
+				<strong><span class="text-danger">Warning:</span></strong> This option may only be required if the upstream proxy is using SSL/MITM mode and could be a security issue in other cases.
+				<div class="infoblock">You can also add CA certificate to the Operating System Trust Store in <a href="system_camanager.php" target="_blank">System &gt; Certificate Manager &gt; CAs</a>.</div>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_ca_or_certs('ca', 'HTTPS', true, true)]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
 		</field>
 		<field>
 			<name>Transparent Proxy Settings</name>
@@ -258,18 +339,20 @@
 				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list(false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<default_value>lan</default_value>
-			<hideinterfaceregex>loopback</hideinterfaceregex>
 			<multiple/>
 		</field>
 		<field>
 			<fielddescr>Bypass Proxy for Private Address Destination</fielddescr>
 			<fieldname>private_subnet_proxy_off</fieldname>
-			<description>Do not forward traffic to Private Address Space (RFC 1918) destinations.</description>
+			<description>Do not forward traffic to Private Address Space (RFC 1918 and IPv6 ULA) destinations.</description>
 			<sethelp>
 				<![CDATA[
-				Destinations in Private Address Space (<a href="https://tools.ietf.org/html/rfc1918" target="_blank">RFC 1918</a>) are passed directly through the firewall, not through the proxy server.
+				Destinations in Private Address Space (<a href="https://tools.ietf.org/html/rfc1918" target="_blank">RFC 1918</a> and <a href="https://tools.ietf.org/html/rfc4193" target="_blank">IPv6 ULA</a>) are passed directly through the firewall, not through the proxy server.
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -327,7 +410,7 @@
 				</span><br/><br/>
 				<strong><span class="text-info">Splice All: </span></strong><br/>
 				<span>
-				This configuration is suitable if you want to use the <a href="https://doc.pfsense.org/index.php/SquidGuard_package" target="_blank">SquidGuard package</a> for web filtering.</br>
+				This configuration is suitable if you want to use the <a href="https://docs.netgate.com/pfsense/en/latest/packages/cache-proxy/squidguard.html" target="_blank">SquidGuard package</a> for web filtering.</br>
 				All destinations will be spliced. SquidGuard can do its job of denying or allowing destinations according its rules, as it does with HTTP.<br/>
 				You do <em>not</em> need to install the CA certificate configured below on clients.<br/>
 				Content filtering (such as Antivirus) <em>will not</em> be available for SSL sites.
@@ -358,9 +441,11 @@
 				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list(false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<default_value>lan</default_value>
-			<hideinterfaceregex>loopback</hideinterfaceregex>
 			<multiple/>
 		</field>
 		<field>
@@ -429,7 +514,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[squid_list_ssl_ca();]]></source>
+			<source><![CDATA[squid_get_ca_or_certs('ca')]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 			<show_disable_value>none</show_disable_value>

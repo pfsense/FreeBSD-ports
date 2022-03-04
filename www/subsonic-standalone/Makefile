@@ -1,6 +1,5 @@
 # Created by: Jeremie Le Hen <jlh@FreeBSD.org>
 # Based on www/subsonic from Nicole Reid <root@cooltrainer.org>
-# $FreeBSD$
 
 PORTNAME=	subsonic-standalone
 PORTVERSION=	6.0
@@ -48,7 +47,6 @@ NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 USE_JAVA=	yes
 USE_RC_SUBR=	subsonic
-JAVA_VERSION=	1.6+
 JAVA_RUN=	yes
 USERS=		subsonic
 GROUPS=		subsonic
@@ -66,9 +64,12 @@ SUB_LIST=	SUBSONIC_HOME="${SUBSONIC_HOME}" \
 CONFLICTS_INSTALL=	subsonic-jetty subsonic-resin3 subsonic-tomcat[678]
 
 do-install:
-	@${CAT} ${PKGDIR}/pkg-message-spacer >> ${PKGMESSAGE}
+	@${ECHO_CMD} "[" >> ${PKGMESSAGE}
+	@${ECHO_CMD} "{ type: install, message: <<EOM" >> ${PKGMESSAGE}
 	@${CAT} ${WRKDIR}/message-transcoding >> ${PKGMESSAGE}
-	@${CAT} ${PKGDIR}/pkg-message-spacer >> ${PKGMESSAGE}
+	@${ECHO_CMD} "EOM" >> ${PKGMESSAGE}
+	@${ECHO_CMD} "}" >> ${PKGMESSAGE}
+	@${ECHO_CMD} "]" >> ${PKGMESSAGE}
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/README.TXT ${STAGEDIR}${DATADIR}/
 	${INSTALL_DATA} ${WRKSRC}/subsonic.war ${STAGEDIR}${DATADIR}/

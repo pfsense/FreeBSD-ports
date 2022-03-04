@@ -1,5 +1,4 @@
 # Created by: Radim Kolar
-# $FreeBSD$
 
 PORTNAME=	fltk
 PORTVERSION=	1.3.4.1
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
 CFLAGS+=	-DFL_LIBRARY
 MAKE_ENV=	FLTK_HOME=${LOCALBASE}/bin
-USES=		python
+USES=		python:3.6+ xorg
 USE_PYTHON=	autoplist distutils
 USE_XORG=	x11
 
@@ -39,7 +38,7 @@ post-build:
 	${REINPLACE_CMD} -e "s|\.\./docs|${DOCSDIR}/html|g" ${WRKSRC}/fltk/test/help.py
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/fltk/_fltk.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/fltk/_fltk*.so
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/html/

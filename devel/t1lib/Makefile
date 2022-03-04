@@ -1,5 +1,4 @@
 # Created by: Ying-Chieh Liao <ijliao@csie.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	t1lib
 PORTVERSION=	5.1.2
@@ -21,6 +20,7 @@ OPTIONS_DEFINE=	X11 DOCS
 OPTIONS_DEFAULT=	X11
 
 OPTIONS_SUB=	yes
+X11_USES=	xorg
 X11_USE=	XORG=ice,sm,x11,xaw,xext,xmu,xpm,xt
 X11_CONFIGURE_WITH=	x
 

@@ -1,9 +1,7 @@
-# $FreeBSD$
-
-PORTREVISION=	2
+PORTREVISION=	3
 PKGNAMESUFFIX=	-icinga2
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Icinga2 performance data collector and grapher
 
 MASTERDIR=	${.CURDIR}/../pnp

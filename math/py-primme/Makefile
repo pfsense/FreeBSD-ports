@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	primme
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2
-PORTREVISION=	1
+DISTVERSION=	3.2
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,10 +15,10 @@ LIB_DEPENDS=	libprimme.so:math/primme
 RUN_DEPENDS=	${PYNUMPY}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
-USES=		fortran gmake localbase:ldflags python shebangfix
+USES=		fortran gmake localbase:ldflags python:3.6+ shebangfix
 SHEBANG_FILES=	examples.py tests.py
 USE_GITHUB=	yes
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	distutils cython autoplist
 TEST_TARGET=	test
 
 WRKSRC_SUBDIR=	Python

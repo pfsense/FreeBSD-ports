@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xdigger
 PORTVERSION=	1.0.10
@@ -13,7 +12,7 @@ COMMENT=	Boulderdash-like KC85 Digger for X Window System
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		imake tar:tgz
+USES=		imake tar:tgz xorg
 USE_XORG=	x11 xext
 
 DESKTOP_ENTRIES="XDigger" "" "" "${PORTNAME}" "" ""

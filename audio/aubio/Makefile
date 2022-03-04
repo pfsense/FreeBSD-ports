@@ -1,11 +1,10 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aubio
-PORTVERSION=	0.4.7
+PORTVERSION=	0.4.9
 PORTREVISION?=	1
 CATEGORIES?=	audio
-MASTER_SITES=	http://aubio.org/pub/
+MASTER_SITES=	https://aubio.org/pub/
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Library for audio labelling
@@ -13,22 +12,24 @@ COMMENT?=	Library for audio labelling
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES+=		pkgconfig tar:bzip2
+USES+=		cpe pkgconfig tar:bzip2
+
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 .if !defined(SLAVEPORT)
-USES+=		python:build waf
+USES+=		python:build,3.6+ waf
 USE_LDCONFIG=	yes
 
 OPTIONS_GROUP=		DOCS
 OPTIONS_GROUP_DOCS=	DOCS DOXYGEN MANPAGES
 OPTIONS_DEFINE=		COMPLEX FFMPEG FFTW JACK SAMPLERATE SNDFILE TEST
-OPTIONS_DEFAULT=	FFTW JACK MANPAGES SAMPLERATE SNDFILE
+OPTIONS_DEFAULT=	FFMPEG FFTW JACK MANPAGES SAMPLERATE SNDFILE
 OPTIONS_SUB=		yes
 
 COMPLEX_DESC=			Compile with C99 complex.h
 COMPLEX_CONFIGURE_ENABLE=	complex
 
-DOCS_BUILD_DEPENDS=		${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_BUILD_DEPENDS=		${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_CONFIGURE_ENABLE=		sphinx
 DOCS_BINARY_ALIAS=		sphinx-build=sphinx-build-${PYTHON_VER}
 
@@ -58,6 +59,8 @@ SNDFILE_CONFIGURE_ENABLE=	sndfile
 
 TEST_MAKE_ARGS=			--enable-tests
 TEST_MAKE_ARGS_OFF=		--disable-tests
+
+PORTDOCS=	*
 
 post-patch:
 	@${REINPLACE_CMD} -e \

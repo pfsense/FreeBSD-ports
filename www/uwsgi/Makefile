@@ -1,9 +1,8 @@
 # Created by: Daniel Gerzo <danger@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	uwsgi
-PORTVERSION=	2.0.16
-PORTREVISION=	2
+PORTVERSION=	2.0.19.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	http://projects.unbit.it/downloads/
 
@@ -13,9 +12,10 @@ COMMENT=	Developer-friendly WSGI server which uses uwsgi protocol
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		pkgconfig python
+USES=		cpe pkgconfig python:3.6-3.9
 USE_PYTHON=	distutils concurrent optsuffix
 USE_RC_SUBR=	uwsgi
+CPE_VENDOR=	unbit
 
 MAKE_ENV+=	CPUCOUNT=${MAKE_JOBS_NUMBER} UWSGI_EMBED_PLUGINS=cgi
 
@@ -35,10 +35,15 @@ OPTIONS_DEFINE=		DEBUG JSON PCRE XML SSL
 OPTIONS_DEFAULT=	SSL
 
 OPTIONS_GROUP=		PLG
-OPTIONS_GROUP_PLG=	PSGI
+OPTIONS_GROUP_PLG=	COROAE LOGPIPE PSGI
 
 PLG_DESC=		Enable plugins
+COROAE_DESC=		Coro::AnyEvent support
+LOGPIPE_DESC=		Pipe logger support
 PSGI_DESC=		PSGI embedded plugin
+
+COROAE_BUILD_DEPENDS=	p5-Coro>=0:devel/p5-Coro
+COROAE_IMPLIES=		PSGI
 
 DEBUG_VARS=		PYDISTUTILS_BUILDARGS+=--debug
 
@@ -63,8 +68,11 @@ post-patch:
 	@${REINPLACE_CMD} -e '/^${var:tl} =/ s|= .*|= ${BUILDCONF_${var}:Ufalse}|' ${WRKSRC}/buildconf/base.ini
 .endfor
 
-post-patch-PSGI-on:
-	@${REINPLACE_CMD} -e 's/%(main_plugin)s,/%(main_plugin)s, psgi,/' ${WRKSRC}/buildconf/base.ini
+.for plugin in COROAE LOGPIPE PSGI
+post-patch-${plugin}-on:
+	@${REINPLACE_CMD} -e 's/%(main_plugin)s,/& ${plugin:tl},/' \
+		${WRKSRC}/buildconf/base.ini
+.endfor
 
 do-configure:
 	@${DO_NADA}

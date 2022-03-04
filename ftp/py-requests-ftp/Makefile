@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	requests-ftp
 DISTVERSION=	0.3.1
 CATEGORIES=	ftp python
@@ -12,7 +10,7 @@ COMMENT=	FTP transport adapter for requests
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

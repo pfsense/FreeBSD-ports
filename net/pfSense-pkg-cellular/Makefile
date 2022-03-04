@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-cellular
-PORTVERSION=	1.2.1
+PORTVERSION=	1.2.3
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
@@ -13,7 +13,9 @@ COMMENT=	Voleatech Cellular Module Interface
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-serial@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyserial>0:comms/py-pyserial@${PY_FLAVOR}
+
+USES=		python shebangfix
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -21,7 +23,6 @@ NO_MTREE=	yes
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 
-USES=		python shebangfix
 SHEBANG_FILES=	${WRKSRC}${PREFIX}/sbin/cellular.py \
 		${WRKSRC}${PREFIX}/bin/cellular_dev.py
 

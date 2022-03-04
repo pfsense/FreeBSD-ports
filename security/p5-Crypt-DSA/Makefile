@@ -1,5 +1,4 @@
 # Created by: Michael Haro <mharo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Crypt-DSA
 PORTVERSION=	1.17
@@ -19,5 +18,7 @@ RUN_DEPENDS=	p5-Digest-SHA1>=0:security/p5-Digest-SHA1 \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gigalomania
 PORTVERSION=	0.28
@@ -10,7 +9,7 @@ DISTNAME=	${PORTNAME}src
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source 2D real time strategy god game
 
-USES=		zip
+USES=		sdl zip
 USE_SDL=	image2 mixer2 sdl2
 
 PORTDOCS=	readme.html

@@ -1,0 +1,11 @@
+--- got/Makefile.orig	2021-10-04 10:07:14 UTC
++++ got/Makefile
+@@ -29,8 +29,4 @@ DPADD = ${LIBZ} ${LIBUTIL}
+ NOMAN = Yes
+ .endif
+ 
+-realinstall:
+-	${INSTALL} ${INSTALL_COPY} -o ${BINOWN} -g ${BINGRP} \
+-	-m ${BINMODE} ${PROG} ${BINDIR}/${PROG}
+-
+ .include <bsd.prog.mk>

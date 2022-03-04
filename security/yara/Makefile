@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	yara
-PORTVERSION=	3.9.0
+DISTVERSION=	4.1.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -20,7 +18,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-cuckoo --enable-dex --enable-dotnet --enable-macho --enable-magic
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-USES=		alias autoreconf libtool localbase pathfix ssl
+USES=		alias autoreconf cpe libtool localbase pathfix pkgconfig ssl
+CPE_VENDOR=	virustotal
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-isystem ${OPENSSLINC}
 LIBS+=		-L${OPENSSLLIB}

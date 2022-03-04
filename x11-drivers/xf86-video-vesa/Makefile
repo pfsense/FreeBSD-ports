@@ -1,13 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-vesa
-PORTVERSION=	2.4.0
-PORTREVISION=	2
+PORTVERSION=	2.5.0
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org vesa display driver
 
-XORG_CAT=	driver
+USES=		xorg-cat:driver
 
 .include <bsd.port.mk>

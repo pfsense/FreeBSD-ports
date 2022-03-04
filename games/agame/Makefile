@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	agame
 PORTVERSION=	1577
 PORTREVISION=	13
@@ -14,7 +11,7 @@ COMMENT=	Simple Tetris-like game
 
 LICENSE=	GPLv2+
 
-USES=		gmake tar:tgz
+USES=		gmake sdl tar:tgz
 USE_SDL=	sdl image mixer
 
 WRKSRC=		${WRKDIR}/game

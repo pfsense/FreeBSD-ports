@@ -1,5 +1,4 @@
 # Created by: Lars Koeller <Lars.Koeller@Uni-Bielefeld.de>
-# $FreeBSD$
 
 PORTNAME=	Xbae
 PORTVERSION=	4.60.4
@@ -15,6 +14,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_aarch64=	Fails to link: missing sbrk
+BROKEN_riscv64=	Fails to link: missing sbrk
 
 USES=		libtool motif
 USE_LDCONFIG=	yes

@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	pyside2-tools
-DISTVERSION=	5.12.1
+DISTVERSION=	5.15.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/QtForPython/shiboken2/PySide2-${DISTVERSION}-src
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	pyside-setup-everywhere-src-${DISTVERSION}
+DISTNAME=	pyside-setup-opensource-src-${DISTVERSION}
 
-MAINTAINER=	cmt@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Pyside2 development tools
 
 LICENSE=	BSD3CLAUSE GPLv2
@@ -15,32 +14,30 @@ LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
 		git>0:devel/git
-LIB_DEPENDS=	# more later
+LIB_DEPENDS=	libshiboken2.cpython-${PYTHON_SUFFIX}${PYTHON_ABIVER}.so:devel/shiboken2@${PY_FLAVOR} \
+		libpyside2.cpython-${PYTHON_SUFFIX}${PYTHON_ABIVER}.so:devel/pyside2@${PY_FLAVOR}
 
-USES=		cmake gl python qt:5 shebangfix tar:xz
+USES=		cmake gl python:3.5+ qt:5 shebangfix tar:xz xorg
 USE_GL=		gl
 USE_PYTHON=	flavors
-USE_QT=		3d buildtools_build charts core datavis3d declarative \
+USE_QT=		3d buildtools charts core datavis3d declarative \
 		designer gui help location multimedia network opengl \
 		printsupport qmake_build script scripttools scxml sensors \
-		speech sql svg testlib uitools webchannel webengine \
+		speech sql svg testlib uitools webchannel \
 		websockets widgets x11extras xml xmlpatterns
 
-SHEBANG_FILES=	pyside_tool.py pyside2-uic
-python_OLD_COMMAND=	"/usr/bin/env python"
+SHEBANG_FILES=	pyside_tool.py
 
 CMAKE_ARGS+=	"-DUSE_PYTHON_VERSION=${PYTHON_VER}"
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_MAJOR_VER} >= 3
-LIB_DEPENDS+=	libshiboken2.cpython-${PYTHON_SUFFIX}${PYTHON_ABIVER}.so:devel/shiboken2@${PY_FLAVOR} \
-		libpyside2.cpython-${PYTHON_SUFFIX}${PYTHON_ABIVER}.so:devel/pyside2@${PY_FLAVOR}
-.else
-LIB_DEPENDS+=	libshiboken2-${PYTHON_VERSION}.so:devel/shiboken2@${PY_FLAVOR} \
-		libpyside2-${PYTHON_VERSION}.so:devel/pyside2@${PY_FLAVOR}
-.endif
+WRKSRC=		${WRKDIR}/pyside-setup-opensource-src-${DISTVERSION:C/^([0-9].[0-9]+.[0-9])(.[0-9])?/\1/}/sources/pyside2-tools
 
-WRKSRC=		${WRKDIR}/pyside-setup-everywhere-src-${DISTVERSION}/sources/pyside2-tools
+.if ${ARCH} == amd64 || ${ARCH} == i386
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+USE_QT+=	webengine
+.endif
 
 .include <bsd.port.post.mk>

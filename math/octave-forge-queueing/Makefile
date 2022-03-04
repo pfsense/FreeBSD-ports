@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@FreeBSD.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-queueing
-PORTVERSION=	1.2.6
-PORTREVISION=	3
+PORTVERSION=	1.2.7
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

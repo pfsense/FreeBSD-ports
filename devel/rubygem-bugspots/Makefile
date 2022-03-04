@@ -1,13 +1,13 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bugspots
 PORTVERSION=	0.2.2
+PORTREVISION=	2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	Bugspots - Bug Prediction Heuristic
+COMMENT=	Simple bug prediction heuristic
 
 LICENSE=	MIT
 

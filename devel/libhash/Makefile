@@ -1,5 +1,4 @@
 # Created by: Andrew <andrew@ugh.net.au>
-# $FreeBSD$
 
 PORTNAME=	libhash
 PORTVERSION=	1.0.3
@@ -8,6 +7,9 @@ MASTER_SITES=	GENTOO
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Library for manipulating hash tables
+
+DEPRECATED=	Abandoned upstream
+EXPIRATION_DATE=	2021-12-31
 
 WRKSRC=		${WRKDIR}/libhash
 

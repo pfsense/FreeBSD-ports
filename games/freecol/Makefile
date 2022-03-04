@@ -1,5 +1,4 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freecol
 PORTVERSION=	0.11.6
@@ -13,11 +12,10 @@ LICENSE=	GPLv2
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		zip
+USES=		cpe zip
 NO_BUILD=	yes
 SUB_FILES=	freecol
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 PLIST_FILES=	bin/freecol \
 		${DESKTOPDIR:S,^${PREFIX}/,,}/freecol.desktop

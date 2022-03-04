@@ -1,5 +1,4 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libepc
 PORTVERSION=	0.4.6
@@ -19,16 +18,19 @@ LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libavahi-common.so:net/avahi-app \
 		libavahi-ui-gtk3.so:net/avahi-gtk3
 
-USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
+USES=		compiler gettext gmake gnome libtool pathfix pkgconfig \
+		tar:xz
 USE_GNOME=	gnomeprefix cairo gdkpixbuf2 gtk30 intltool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 post-patch:
-.if exists(/usr/lib/libstdc++.so)
 	${REINPLACE_CMD} -e '/#pragma GCC diagnostic/d' \
 		${WRKSRC}/examples/simple-publisher.c
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

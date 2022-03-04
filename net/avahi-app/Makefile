@@ -1,14 +1,12 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avahi
-PORTVERSION=	0.7
-PORTREVISION?=	2
+PORTVERSION=	0.8
 CATEGORIES?=	net dns
 MASTER_SITES=	http://www.avahi.org/download/
 PKGNAMESUFFIX?=	-app
 
-MAINTAINER?=	gnome@FreeBSD.org
+MAINTAINER?=	desktop@FreeBSD.org
 COMMENT?=	Service discovery on a local network
 
 LICENSE=	LGPL21+
@@ -21,18 +19,21 @@ LIB_DEPENDS?=	libexpat.so:textproc/expat2 \
 		libdaemon.so:devel/libdaemon \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libdbus-1.so:devel/dbus \
-		libgdbm.so:databases/gdbm
+		libgdbm.so:databases/gdbm \
+		libevent.so:devel/libevent
 
 USERS?=		${PORTNAME}
 GROUPS?=	${USERS}
 
-USES+=		alias gettext gmake gnome libtool pathfix pkgconfig
-USE_GNOME+=	glib20 intltool introspection
+USES+=		alias cpe gettext gmake gnome libtool pathfix pkgconfig
+USE_GNOME+=	glib20 intltool introspection:build
 USE_GNOME_SUBR=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=--with-distro=freebsd \
 		--with-dbus-system-socket=unix:path=/var/run/dbus/system_bus_socket \
+		--enable-introspection=yes \
+		--disable-static \
 		--disable-monodoc \
 		--disable-doxygen-doc \
 		--disable-doxygen-dot \
@@ -45,7 +46,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 INSTALL_TARGET=	install-strip
 
 .if ${AVAHI_SLAVE} == no
-CONFLICTS=	howl-[0-9]*
+CONFLICTS=	howl
 
 DAEMON_CONFIG_FILES=	hosts avahi-daemon.conf
 .endif
@@ -60,7 +61,9 @@ CONFIGURE_ARGS+=--enable-autoipd
 CONFIGURE_ARGS+=--disable-autoipd
 .endif
 .if ${AVAHI_SLAVE} == gtk
-CONFIGURE_ARGS+=--enable-gtk
+# We disable man pages, because bssh.1 is not generated (no xmltoman port)
+CONFIGURE_ARGS+=--enable-gtk \
+		--disable-manpages
 .else
 CONFIGURE_ARGS+=--disable-gtk
 .endif
@@ -98,8 +101,6 @@ post-patch: avahi-post-patch
 avahi-post-patch:
 	@${REINPLACE_CMD} -e 's|avahi_runtime_dir="/run"|avahi_runtime_dir="/var/run"|' \
 		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|/etc|${PREFIX}/etc|' \
-		${WRKSRC}/man/*.*
 	@${RM} ${WRKSRC}/man/*.bak
 	@${REINPLACE_CMD} -e 's|-ldl||g ; s|netdev|network|g' \
 		${WRKSRC}/configure \
@@ -107,20 +108,9 @@ avahi-post-patch:
 		${WRKSRC}/avahi-daemon/Makefile.in
 	@${REINPLACE_CMD} -e 's|have_inotify=yes|have_inotify=no|' \
 		${WRKSRC}/configure
-	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} \
-		${REINPLACE_CMD} -e 's|(LIBINTL)|(INTLLIBS)|g ; \
-		s|(LIBICONV)|(LTLIBICONV)|g'
-	@${REINPLACE_CMD} -e 's|%%RC_SUBR%%|/etc/rc.subr| ; \
-		s|%%GNOME_SUBR%%|${GNOME_SUBR}|' \
+	@${REINPLACE_CMD} -e 's|%%GNOME_SUBR%%|${GNOME_SUBR}|' \
 		${WRKSRC}/initscript/freebsd/avahi-dnsconfd.sh.in \
 		${WRKSRC}/initscript/freebsd/avahi-daemon.sh.in
-	@${REINPLACE_CMD} -e 's|dbus_connection_disconnect|dbus_connection_close|g' \
-		${WRKSRC}/avahi-client/client.c \
-		${WRKSRC}/avahi-daemon/dbus-protocol.c
-	@${REINPLACE_CMD} -e 's|^_||g' \
-		${WRKSRC}/avahi-ui/*.desktop.in.in
-	@${REINPLACE_CMD} -e 's|am: install-avahiincludeHEADERS|am:|g' \
-			${WRKSRC}/avahi-ui/Makefile.in
 
 post-build: avahi-post-build
 
@@ -141,7 +131,7 @@ avahi-pre-su-install:
 post-install: avahi-post-install
 
 avahi-post-install:
-.if defined(MANPAGES)
+.if defined(MANPAGES) && ${AVAHI_SLAVE} != gtk
 .for f in ${MANPAGES}
 	${INSTALL_DATA} ${WRKSRC}/man/${f} ${STAGEDIR}${PREFIX}/man/man${f:E}/${f}
 .endfor
@@ -156,7 +146,7 @@ avahi-post-install:
 .endfor
 .if ${AVAHI_SLAVE}==no
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/dbus-1/system-services
-	${INSTALL_DATA} ${FILESDIR}/org.freedesktop.Avahi.service \
+	${INSTALL_DATA} ${WRKSRC}/avahi-daemon/org.freedesktop.Avahi.service \
 		${STAGEDIR}${PREFIX}/share/dbus-1/system-services
 .endif
 .endif # ! avahi-header

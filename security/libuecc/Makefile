@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libuecc
 PORTVERSION=	7
 PORTREVISION=	2
@@ -15,8 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
-USE_LDCONFIG=	yes
-
 USES=		cmake pkgconfig tar
+USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

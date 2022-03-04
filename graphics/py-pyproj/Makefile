@@ -1,41 +1,37 @@
 # Created by: TAOKA Fumiyoshi
-# $FreeBSD$
 
 PORTNAME=	pyproj
-PORTVERSION=	1.9.6
-CATEGORIES=	graphics python geography
+PORTVERSION=	3.2.1
+CATEGORIES=	graphics geography python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	fmysh@iijmio-mail.jp
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cython wrapper to provide python interfaces to PROJ.4 functions
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	proj>=7.2.0,1:graphics/proj
 LIB_DEPENDS=	libproj.so:graphics/proj
 
-USES=		python
-USE_PYTHON=	distutils autoplist concurrent
+USES=		python:3.7+
+USE_PYTHON=	autoplist concurrent cython distutils
 
 MAKE_ENV=	PROJ_DIR=${LOCALBASE}
-
-PORTDOCS=	*
-PORTDOCS1=	Changelog README.md docs/*
-PORTEXAMPLES=	datum_shift.py geodtest.py sample.out \
-		test.py test2.py test_datum.py test_transform.py
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/_proj.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS1:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/docs/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${PORTEXAMPLES:S,^,${WRKSRC}/test/,} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/test/sample.out ${WRKSRC}/test/test_*.py ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

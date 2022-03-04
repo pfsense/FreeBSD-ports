@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcursor-themes
 PORTVERSION=	1.0.6
 CATEGORIES=	x11-themes
@@ -14,6 +12,6 @@ BUILD_DEPENDS=	xcursorgen:x11/xcursorgen
 
 NO_ARCH=	yes
 
-XORG_CAT=	data
+USES=		xorg-cat:data
 
 .include <bsd.port.mk>

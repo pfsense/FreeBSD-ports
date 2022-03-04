@@ -1,9 +1,7 @@
 # Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Cache-Memcached-Managed
-PORTVERSION=	0.24
-PORTREVISION=	1
+PORTVERSION=	0.26
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,7 +19,6 @@ TEST_DEPENDS=	memcached:databases/memcached
 USES=		perl5
 USE_PERL5=	configure extract
 
-post-extract:
-	@${PERL} -i.bak -ne 'print unless m,^BEGIN, .. m,^},' ${WRKSRC}/Makefile.PL
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

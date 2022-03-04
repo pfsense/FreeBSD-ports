@@ -1,5 +1,4 @@
 # Created by: Landon Fuller <landonf@opendarwin.org>
-# $FreeBSD$
 
 PORTNAME=	zconfig
 PORTVERSION=	3.0.4
@@ -16,7 +15,7 @@ LICENSE=	ZPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

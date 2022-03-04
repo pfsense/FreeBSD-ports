@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libdeflate
-PORTVERSION=	1.2
+PORTVERSION=	1.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers
 
@@ -10,6 +9,7 @@ MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Fast, whole-buffer DEFLATE-based compression library
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake
 USE_GITHUB=	yes
@@ -17,11 +17,12 @@ GH_ACCOUNT=	ebiggers
 USE_LDCONFIG=	yes
 
 MAKE_ARGS=	V=1
+TEST_TARGET=	check
 
 PLIST_FILES=	bin/libdeflate-gunzip bin/libdeflate-gzip \
 		include/libdeflate.h \
 		lib/libdeflate.a lib/libdeflate.so lib/libdeflate.so.0
-PORTDOCS=	NEWS README.md
+PORTDOCS=	NEWS.md README.md
 
 OPTIONS_DEFINE=	DOCS
 

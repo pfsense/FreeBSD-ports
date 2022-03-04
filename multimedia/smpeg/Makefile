@@ -1,5 +1,4 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	smpeg
 PORTVERSION=	0.4.4
@@ -14,7 +13,7 @@ COMMENT=	Free MPEG1 video player library with sound support
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler gmake libtool:build
+USES=		compiler gmake libtool:build sdl
 USE_SDL=	sdl
 USE_LDCONFIG=	yes
 
@@ -28,7 +27,7 @@ CONFIGURE_ARGS=	--disable-opengl-player \
 		--disable-gtk-player \
 		--enable-mmx
 CFLAGS+=	${CFLAGS_${CHOSEN_COMPILER_TYPE}}
-CFLAGS_clang=	-Wno-error-narrowing
+CFLAGS_clang=	-Wno-c++11-narrowing
 LDFLAGS_i386=	-Wl,-znotext
 MAKE_ARGS=	LIBTOOL=${LOCALBASE}/bin/libtool
 INSTALL_TARGET=	install-strip

@@ -1,14 +1,13 @@
 # Created by: joseph@randomnetworks.com
-# $FreeBSD$
 
 PORTNAME=	sendip
 PORTVERSION=	2.5
 PORTREVISION=	4
-CATEGORIES=	net-mgmt ipv6
+CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.earth.li/projectpurple/files/
 
 MAINTAINER=	coco@executive-computing.de
-COMMENT=	SendIP is a commandline tool to allow sending arbitrary IP packets
+COMMENT=	Command-line tool for sending arbitrary IP packets
 
 LICENSE=	GPLv2
 

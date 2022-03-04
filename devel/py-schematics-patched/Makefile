@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	schematics-patched
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.2-patch
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.7.3:devel/py-six@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 USE_GITHUB=	yes
 GH_ACCOUNT=	pombredanne

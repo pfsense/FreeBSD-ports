@@ -1,5 +1,4 @@
 # Created by: Adam Weinberger <adam@vectors.cx>
-# $FreeBSD$
 
 PORTNAME=	wmtunlo
 PORTVERSION=	0.1.3
@@ -12,6 +11,7 @@ COMMENT=	Falling-down-a-tunnel dockapp
 
 LICENSE=	GPLv2
 
+USES=		xorg
 USE_XORG=	x11 xpm xorgproto
 ALL_TARGET=	wmtunlo
 

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Russian support
 
     SUBDIR += artwiz-ru
@@ -10,10 +7,8 @@
     SUBDIR += emkatic
     SUBDIR += eric6
     SUBDIR += gd
-    SUBDIR += gimp-help
     SUBDIR += hunspell
     SUBDIR += hyphen
-    SUBDIR += ircd-hybrid
     SUBDIR += koi2koi
     SUBDIR += koi8r-ps
     SUBDIR += libreoffice
@@ -24,7 +19,6 @@
     SUBDIR += p5-Lingua-RU-Charset
     SUBDIR += p5-Text-Hyphen-RU
     SUBDIR += p5-XML-Parser-encodings
-    SUBDIR += p5-cyrillic
     SUBDIR += py-pytils
     SUBDIR += rubygem-russian
     SUBDIR += rux
@@ -35,7 +29,6 @@
     SUBDIR += stardict-mueller7
     SUBDIR += stardict-mueller7accent
     SUBDIR += stardict-pc
-    SUBDIR += tidyup-mail
     SUBDIR += wordpress
     SUBDIR += xcode
     SUBDIR += xruskb

@@ -1,22 +1,25 @@
 # Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	yar
-DISTVERSION=	2.0.5
+PORTVERSION=	2.2.0
 CATEGORIES=	www
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Yar (Yet another RPC framework) is a light, concurrent RPC framework
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		localbase php:pecl
-USE_PHP=	json:build curl:build
+LIB_DEPENDS=	libcurl.so:ftp/curl
+
+USES=		localbase:ldflags php:pecl
+USE_PHP=	curl json:build
 
 OPTIONS_DEFINE=	MSGPACK
+OPTIONS_DEFAULT=MSGPACK
 MSGPACK_DESC=	Enable MSGPACK module
-MSGPACK_BUILD_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/msgpack.so:devel/pecl-msgpack@${PHP_FLAVOR}
-MSGPACK_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/msgpack.so:devel/pecl-msgpack@${PHP_FLAVOR}
+
+MSGPACK_BUILD_DEPENDS=	${PECL_PKGNAMEPREFIX}msgpack>=0:devel/pecl-msgpack@${PHP_FLAVOR}
+MSGPACK_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}msgpack>=0:devel/pecl-msgpack@${PHP_FLAVOR}
 
 .include <bsd.port.mk>

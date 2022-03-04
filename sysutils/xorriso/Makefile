@@ -1,14 +1,13 @@
 # Created by: J.R. Oldroyd <fbsd@opal.com>
-# $FreeBSD$
 
 PORTNAME=	xorriso
 PORTVERSION=	1.5.0
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	http://files.libburnia-project.org/releases/
 DISTNAME=	libisoburn-${PORTVERSION}
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ISO image manipulation tool based on Libburnia
 
 LICENSE=	GPLv2+
@@ -35,6 +34,7 @@ LIBACL_DESC=	ACL Support
 LIBJTE_DESC=	Jigdo Support
 XATTR_DESC=	Extended file attribute Support
 
+CDIO_LIB_DEPENDS=		libcdio.so:sysutils/libcdio
 CDIO_CONFIGURE_ENABLE=		libcdio
 DEBUG_CONFIGURE_ENABLE=		debug
 LIBACL_CONFIGURE_ENABLE=	libacl

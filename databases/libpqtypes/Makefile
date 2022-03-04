@@ -1,9 +1,8 @@
 # Created by: Dave Green <dg@fastmail.co.uk>
-# $FreeBSD$
 
 PORTNAME=	libpqtypes
 PORTVERSION=	1.5.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	http://pgfoundry.org/frs/download.php/3484/
 

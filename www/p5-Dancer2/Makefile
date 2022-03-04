@@ -1,8 +1,7 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Dancer2
-PORTVERSION=	0.207000
+PORTVERSION=	0.301004
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,9 +13,9 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${RUN_DEPENDS} \
-		p5-File-ShareDir-Install>=0.06:devel/p5-File-ShareDir-Install
-RUN_DEPENDS=	p5-App-Cmd>=0:devel/p5-App-Cmd \
+BUILD_DEPENDS=	p5-File-ShareDir-Install>=0.06:devel/p5-File-ShareDir-Install \
+		${RUN_DEPENDS}
+RUN_DEPENDS=	p5-CLI-Osprey>=0:devel/p5-CLI-Osprey \
 		p5-Capture-Tiny>=0.12:devel/p5-Capture-Tiny \
 		p5-Clone>=0:devel/p5-Clone \
 		p5-Crypt-URandom>=0:security/p5-Crypt-URandom \
@@ -25,12 +24,13 @@ RUN_DEPENDS=	p5-App-Cmd>=0:devel/p5-App-Cmd \
 		p5-Hash-Merge-Simple>=0:devel/p5-Hash-Merge-Simple \
 		p5-HTTP-Date>=0:www/p5-HTTP-Date \
 		p5-HTTP-Headers-Fast>=0.21:www/p5-HTTP-Headers-Fast \
-		p5-HTTP-XSCookies>=0.000007:www/p5-HTTP-XSCookies \
+		p5-HTTP-XSCookies>=0.000015:www/p5-HTTP-XSCookies \
 		p5-Import-Into>=0:devel/p5-Import-Into \
 		p5-JSON>=0:converters/p5-JSON \
 		p5-JSON-MaybeXS>=0:converters/p5-JSON-MaybeXS \
 		p5-Module-Runtime>=0:devel/p5-Module-Runtime \
 		p5-Moo>=2.000000:devel/p5-Moo \
+		p5-Path-Tiny>=0:devel/p5-Path-Tiny \
 		p5-Plack>=1.0040:www/p5-Plack \
 		p5-Plack-Middleware-FixMissingBodyInRedirect>=0:www/p5-Plack-Middleware-FixMissingBodyInRedirect \
 		p5-Plack-Middleware-RemoveRedundantBody>=0:www/p5-Plack-Middleware-RemoveRedundantBody \
@@ -57,8 +57,13 @@ TEST_DEPENDS=	p5-AnyEvent>=0:devel/p5-AnyEvent \
 		p5-Test-MockTime>=0:devel/p5-Test-MockTime \
 		p5-YAML>=0.86:textproc/p5-YAML
 
-OPTIONS_DEFINE=		XS
-OPTIONS_DEFAULT=	XS
+USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=	XS
+OPTIONS_DEFAULT=XS
 
 XS_RUN_DEPENDS=	p5-CGI-Deurl-XS>=0:www/p5-CGI-Deurl-XS \
 		p5-Class-Load-XS>=0:devel/p5-Class-Load-XS \
@@ -67,14 +72,4 @@ XS_RUN_DEPENDS=	p5-CGI-Deurl-XS>=0:www/p5-CGI-Deurl-XS \
 		p5-URL-Encode-XS>=0:www/p5-URL-Encode-XS \
 		p5-YAML-LibYAML>=0:textproc/p5-YAML-LibYAML
 
-NO_ARCH=	yes
-USES=		perl5
-USE_PERL5=	configure
-
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502502
-RUN_DEPENDS+=	p5-ExtUtils-MakeMaker>=7.12:devel/p5-ExtUtils-MakeMaker
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

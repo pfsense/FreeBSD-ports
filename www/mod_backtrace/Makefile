@@ -1,5 +1,4 @@
 # Created by: Frank Wall <fw@moov.de>
-# $FreeBSD$
 
 PORTNAME=	mod_backtrace
 PORTVERSION=	1.0
@@ -15,6 +14,9 @@ MAINTAINER=	fw@moov.de
 COMMENT=	Collects backtraces when a child process crashes
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Abandoned upstream in 2012 (version 2.0)
+EXPIRATION_DATE=2022-03-31
 
 MANUAL_PACKAGE_BUILD=	requires apache WITH_EXCEPTION_HOOK=yes
 

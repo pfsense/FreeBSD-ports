@@ -1,24 +1,24 @@
 # Created by: Domas Mituzas <midom@dammit.lt>
-# $FreeBSD$
 
 PORTNAME=	freetds
-PORTVERSION=	1.1.20
+PORTVERSION=	1.3.7
 PORTEPOCH=	1
 CATEGORIES=	databases
-MASTER_SITES=	ftp://ftp.freetds.org/pub/freetds/current/
+MASTER_SITES=	https://www.freetds.org/files/current/ \
+		ftp://ftp.freetds.org/pub/freetds/current/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	${PORTNAME}-dev.${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	Sybase/Microsoft TDS protocol library
+COMMENT=	Sybase/Microsoft TDS protocol library - nightly snapshot
 
 LICENSE=	LGPL20
 
-USES=		autoreconf gettext-tools gmake iconv libtool:keepla pkgconfig tar:bzip2
+USES=		autoreconf compiler:c11 cpe gettext-tools gmake iconv \
+		libtool:keepla pkgconfig tar:bzip2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-dev.${PORTVERSION}
 TDS_VER?=	7.4
-GNU_GONFIGURE=	yes
 CPPFLAGS+=	"-I${LOCALBASE}/include"
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
@@ -36,20 +36,22 @@ OPTIONS_DEFAULT=	OPENSSL
 OPTIONS_RADIO=		ODBC
 OPTIONS_RADIO_ODBC=	IODBC UNIXODBC
 ODBCWIDE_DESC=		Enable Wide ODBC Support
-OPENSSL_USES=		ssl
-OPENSSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_ON=	--with-gnutls
 IODBC_LIB_DEPENDS=	libiodbc.so:databases/libiodbc
 IODBC_CONFIGURE_ON=	--with-iodbc=${LOCALBASE}
 IODBC_CPPFLAGS=		-I${LOCALBASE}/include/libiodbc
-UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
-UNIXODBC_CONFIGURE_ON=	--with-unixodbc=${LOCALBASE}
 ODBCWIDE_CONFIGURE_ON=	--enable-odbc-wide
+OPENSSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
+OPENSSL_USES=		ssl
+UNIXODBC_CONFIGURE_ON=	--with-unixodbc=${LOCALBASE}
+UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 
 PORTDOCS=	*
 
-CONFLICTS=	freetds-0.64.[0-9]
+CONFLICTS=	freetds-1.*
+
+PORTSCOUT=	limit:^\d+\.\d+\.\d{3}$
 
 .include <bsd.port.options.mk>
 .if ${PORT_OPTIONS:MIODBC} || ${PORT_OPTIONS:MUNIXODBC}
@@ -78,7 +80,8 @@ post-patch:
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/interfaces ${STAGEDIR}${ETCDIR}/interfaces.sample
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/userguide
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/reference
 	@${FIND} ${WRKSRC}/doc/userguide \( -type f -o -type l \) \
@@ -87,7 +90,5 @@ post-install:
 		-exec ${INSTALL_DATA} {} ${STAGEDIR}${DOCSDIR}/reference ';'
 	@cd ${WRKSRC}/doc && \
 		${COPYTREE_SHARE} images ${STAGEDIR}${DOCSDIR}
-
-.endif
 
 .include <bsd.port.mk>

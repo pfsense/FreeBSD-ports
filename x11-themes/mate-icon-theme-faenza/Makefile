@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mate-icon-theme-faenza
 PORTVERSION=	1.20.0
@@ -15,9 +14,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 PORTSCOUT=	limitw:1,even
 
-USES=		tar:xz
+USES=		gnome tar:xz
 NO_BUILD=	yes
-INSTALLS_ICONS=	yes
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons

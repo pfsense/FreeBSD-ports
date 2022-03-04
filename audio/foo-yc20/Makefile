@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	foo-yc20
 DISTVERSION=	1.3.0
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org

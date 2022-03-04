@@ -1,14 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	gdk3
-PORTVERSION=	3.3.6
+PORTVERSION=	3.4.9
 CATEGORIES=	x11-toolkits rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Ruby/GDK3 is a Ruby binding of GDK-3.x
+COMMENT=	Ruby binding of GDK 3.x
 
 LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	rubygem-rake>=0:devel/rubygem-rake
 RUN_DEPENDS=	rubygem-cairo-gobject>=${PORTVERSION}:devel/rubygem-cairo-gobject \

@@ -1,38 +1,31 @@
 # Created by: cartola@openit.com.br
-# $FreeBSD$
 
 PORTNAME=	enblend
-PORTVERSION=	4.1.4
-PORTREVISION=	23
+PORTVERSION=	4.2
+PORTREVISION=	18
 CATEGORIES=	graphics
-MASTER_SITES=	SF/enblend/enblend-enfuse/enblend-enfuse-${PORTVERSION:R}
+MASTER_SITES=	SF/enblend/enblend-enfuse/enblend-enfuse-${PORTVERSION}
 DISTNAME=	enblend-enfuse-${PORTVERSION}
 
-MAINTAINER=	grog@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for image blending with multiresolution splines
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	help2man:misc/help2man \
-		openexr>=1.0:graphics/openexr
+		${LOCALBASE}/include/boost/version.hpp:devel/boost-libs
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libtiff.so:graphics/tiff \
-		libboost_filesystem.so:devel/boost-libs \
 		libvigraimpex.so:graphics/vigra \
 		libgsl.so:math/gsl \
+		libOpenEXR.so:graphics/openexr \
 		libpng.so:graphics/png
-RUN_DEPENDS=	openexr>=1.0:graphics/openexr
 
-BROKEN_powerpc64=	fails to configure: libvigraimpex is required to compile Enblend
+USES=		compiler:features gmake jpeg localbase pkgconfig
 
-USES=		compiler:features gmake jpeg localbase makeinfo
-CONFIGURE_ARGS=	--with-boost-filesystem
-
-USE_GL=		glew glut
 GNU_CONFIGURE=	yes
 
-INFO=		enfuse enblend
 PLIST_FILES=	bin/enblend bin/enfuse man/man1/enblend.1.gz man/man1/enfuse.1.gz
 PORTDOCS=	AUTHORS NEWS README
 
@@ -49,8 +42,8 @@ USE_GCC=	yes
 CXXFLAGS+=	-Wno-c++11-extensions
 .endif
 
-post-install:
-	${INSTALL_DATA} ${WRKSRC}/doc/*.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
+post-patch:
+	@${REINPLACE_CMD} -e '/a LaTeX/d' ${WRKSRC}/configure
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

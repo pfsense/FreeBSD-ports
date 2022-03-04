@@ -1,12 +1,11 @@
 # Created by: Gary Palmer <gpalmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cdb
 PORTVERSION=	0.75
 CATEGORIES=	databases
 MASTER_SITES=	http://cr.yp.to/cdb/
 
-MAINTAINER=	jlaffaye@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast lookup database library & utilities
 
 ALL_TARGET=	it

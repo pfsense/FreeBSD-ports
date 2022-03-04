@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-pfBlockerNG-devel
-PORTVERSION=	2.2.5
-PORTREVISION=	23
+PORTVERSION=	3.1.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -18,15 +18,16 @@ RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
 		${LOCALBASE}/bin/iprange:net-mgmt/iprange \
 		${LOCALBASE}/bin/mwhois:net/whois \
 		${LOCALBASE}/bin/jq:textproc/jq \
+		${LOCALBASE}/bin/rsync:net/rsync \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}maxminddb>0:net/py-maxminddb@${PY_FLAVOR}
 
+USES=		php python
+
 CONFLICTS=	pfSense-pkg-pfBlockerNG
 
-USES=		php:flavors python
 USE_PHP=	intl
-IGNORE_WITH_PHP=	56 70 71
 NO_BUILD=	yes
 NO_MTREE=	yes
 
@@ -44,6 +45,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/javascript
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/wizards
+	${MKDIR} ${STAGEDIR}/var/unbound
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/pfblockerng.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -83,6 +85,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_sync.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_safesearch.php \
+		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_threats.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng_log.php \
@@ -103,12 +107,26 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/ut1_global_usage \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_dnsbl.doh.conf \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_dnsbl.safesearch.conf \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_dnsbl.youtube_restrict.conf \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_dnsbl.youtube_restrictmoderate.conf \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng.sh \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/pfblockerng/www/index.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/pfblockerng/www/dnsbl_default.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
+	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_unbound.py \
+		${STAGEDIR}/var/unbound
+	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_unbound_include.inc \
+		${STAGEDIR}/var/unbound
+	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_py_hsts.txt \
+		${STAGEDIR}/var/unbound
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \

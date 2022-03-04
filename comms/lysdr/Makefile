@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	lysdr
 PORTVERSION=	0.0.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -17,7 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	gordonjcp
 GH_TAGNAME=	stable-0
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 PLIST_FILES=	bin/lysdr
 

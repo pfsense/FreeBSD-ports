@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cucumber-formatter-dots
-PORTVERSION=	1.1.2
+PORTVERSION=	1.2.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +11,8 @@ COMMENT=	Dots formatter for Cucumber
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-c21e>=1.1.8:devel/rubygem-c21e \
-		rubygem-cucumber-messages>=2.1.0:devel/rubygem-cucumber-messages
+RUN_DEPENDS=	rubygem-c21e>=2.0.0<3:devel/rubygem-c21e \
+		rubygem-cucumber-messages4>=4.0.0<5:devel/rubygem-cucumber-messages4
 
 USES=		gem
 USE_RUBY=	yes

@@ -1,13 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	amavisd-new
-PORTVERSION=	2.11.1
+PORTVERSION=	2.12.0
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
-MASTER_SITES=	http://www.ijs.si/software/amavisd/ \
-		http://mirrors.catpipe.net/amavisd-new/ \
-		http://mirror.mainloop.se/amavisd/
+MASTER_SITES=	https://gitlab.com/amavis/amavis/-/archive/v${PORTVERSION}/
+DISTNAME=	amavis-v${PORTVERSION}
 
 MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Mail scanner interface between mailer and content checkers
@@ -25,6 +22,7 @@ RUN_DEPENDS=	p5-Unix-Syslog>=0:sysutils/p5-Unix-Syslog \
 
 USES=		perl5 shebangfix tar:bz2
 USE_PERL5=	run
+
 SHEBANG_FILES=	amavisd-agent amavisd-nanny amavisd-release p0f-analyzer.pl \
 		amavisd-snmp-subagent amavisd
 
@@ -42,7 +40,7 @@ AMAVISDIR?=	/var/amavis
 AMAVISQUARANTINE?=	/var/virusmails
 DAEMON?=	/usr/sbin/daemon -p
 
-OPTIONS_DEFINE=	IPV6 BDB SNMP SQLITE MYSQL PGSQL LDAP SASL SPAMASSASSIN P0F ALTERMIME \
+OPTIONS_DEFINE=	IPV6 BDB SNMP SQLITE MYSQL PGSQL LDAP SASL SPAMASSASSIN P0F \
 		FILE RAR UNRAR ARJ UNARJ LHA ARC NOMARCH CAB RPM ZOO UNZOO LZOP \
 		P7ZIP MSWORD TNEF DOCS
 OPTIONS_DEFAULT=	BDB SPAMASSASSIN FILE UNRAR ARJ LHA ARC CAB RPM ZOO LZOP \
@@ -56,7 +54,6 @@ LDAP_DESC=		Use LDAP for lookups
 SASL_DESC=		Use SASL authentication
 SPAMASSASSIN_DESC=	Use mail/spamassassin
 P0F_DESC=		Passive operating system fingerprinting
-ALTERMIME_DESC=		Use AlterMime for defanging/disclaimers
 FILE_DESC=		Use newer file(1) utility from ports
 RAR_DESC=		RAR support with archivers/rar
 UNRAR_DESC=		RAR support with archivers/unrar
@@ -137,10 +134,6 @@ USE_RC_SUBR+=	amavis-p0fanalyzer
 AMAVIS_NOP0F=	"@comment "
 .endif
 
-.if ${PORT_OPTIONS:MALTERMIME}
-RUN_DEPENDS+=	${LOCALBASE}/bin/altermime:mail/altermime
-.endif
-
 .if ${PORT_OPTIONS:MFILE}
 # security fix, file >= 4.21 needed
 RUN_DEPENDS+=	file>=4.21:sysutils/file
@@ -217,8 +210,8 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/tnef:converters/tnef
 .include <bsd.port.pre.mk>
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|$daemon_user  = \'vscan\';|$daemon_user  = \'${AMAVISUSER}\';|" \
-			-e "s|$daemon_group = \'vscan\';|$daemon_group = \'${AMAVISGROUP}\';|" \
+	@${REINPLACE_CMD} -e "s|$$daemon_user  = 'vscan';|$$daemon_user  = '${AMAVISUSER}';|" \
+			-e "s|$$daemon_group = 'vscan';|$$daemon_group = '${AMAVISGROUP}';|" \
 			-e "s|/var/amavis|${AMAVISDIR}|" \
 			-e "s|/var/lib/amavis|${AMAVISDIR}|" \
 			-e "s|/var/virusmails|${AMAVISQUARANTINE}|" \

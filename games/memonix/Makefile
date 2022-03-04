@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	memonix
 PORTVERSION=	1.6.070713
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	http://www.viewizard.com/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -23,7 +20,7 @@ LICENSE_PERMS_unknown=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_DISTFILES_unknown=	memx16.tar.gz
 LICENSE_DISTFILES_GPLv2=	${DISTNAME}${EXTRACT_SUFX}
 
-USES=		cmake:insource zip
+USES=		cmake:insource gl sdl zip
 USE_SDL=	sdl mixer image
 USE_GL=		yes
 

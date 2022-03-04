@@ -1,5 +1,4 @@
 # Created by: Bruce A. Mah <bmah@ca.sandia.gov>
-# $FreeBSD$
 
 PORTNAME=	dxpc
 PORTVERSION=	3.9.2
@@ -13,8 +12,8 @@ LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 
 LICENSE=	BSD2CLAUSE
 
+USES=		gmake tar:tgz xorg
 USE_XORG=	x11
-USES=		gmake tar:tgz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-lzo-lib=${LOCALBASE}
 MAKE_ARGS=	INSTALL="${INSTALL_PROGRAM}" \

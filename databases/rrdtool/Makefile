@@ -1,9 +1,8 @@
 # Created by: Dmitry Sivachenko <dima@Chg.RU>
-# $FreeBSD$
 
 PORTNAME=	rrdtool
-PORTVERSION=	1.7.0
-PORTREVISION=	2
+PORTVERSION=	1.7.2
+PORTREVISION=	4
 CATEGORIES=	databases graphics
 MASTER_SITES=	http://oss.oetiker.ch/rrdtool/pub/
 
@@ -13,16 +12,17 @@ COMMENT=	Round Robin Database Tools
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS=	rrdtool12-*
+CONFLICTS=	rrdtool12
 
 CONFIGURE_ARGS=	--disable-tcl
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/freetype2
 USE_RC_SUBR=	rrdcached
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USES=		gmake libtool pathfix pkgconfig shebangfix
+USES=		cpe gmake gnome libtool pathfix pkgconfig shebangfix
 USE_GNOME=	glib20 libxml2
 INSTALL_TARGET=	install-strip
+CPE_VENDOR=	rrdtool_project
 
 PORTEXAMPLES=	cgi-demo.cgi
 
@@ -46,13 +46,13 @@ GRAPH_CONFIGURE_OFF=	--disable-rrdcgi --disable-rrd_graph
 GRAPH_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 			libpng.so:graphics/png
 GRAPH_USE=		GNOME=cairo,pango
-GRAPH_USES=		gnome
 MMAP_CONFIGURE_ENABLE=	mmap
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USE=		GNOME=intltool
-NLS_USES=		gettext
+NLS_USES=		gettext localbase
 PERL_CONFIGURE_OFF=	--disable-perl
 PERL_CONFIGURE_ON=	--enable-perl --enable-perl-site-install
+PERL_MAKE_ARGS=		PERL_MAKE_OPTIONS='PREFIX="${PREFIX}" INSTALLPRIVLIB="${PREFIX}/lib" INSTALLARCHLIB="${PREFIX}/lib"'
 PERL_USES=		perl5
 PYTHON_CONFIGURE_ENABLE=python
 PYTHON_USES=		python
@@ -100,7 +100,7 @@ post-install-PERL-off:
 	${RM} -r ${STAGEDIR}${EXAMPLESDIR}/rrdcached
 
 post-install-PYTHON-on:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/rrdtool.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/rrdtool*.so
 
 post-install-PYTHON-off:
 	${RM} ${STAGEDIR}${EXAMPLESDIR}/stripes.py

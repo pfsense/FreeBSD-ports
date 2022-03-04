@@ -1,5 +1,4 @@
 # Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Search-Xapian
 PORTVERSION=	1.2.25.2
@@ -21,13 +20,14 @@ TEST_DEPENDS=	p5-Devel-Leak>=0:devel/p5-Devel-Leak \
 		p5-Test-Pod>=1.14:devel/p5-Test-Pod \
 		p5-Test-Pod-Coverage>=1.04:devel/p5-Test-Pod-Coverage
 
-PORTSCOUT=	limit:^1\.2\.
-
 USES=		perl5
 USE_PERL5=	configure
 
 CC=		${CXX}
 CONFIGURE_ARGS=	XAPIAN_CONFIG=${LOCALBASE}/bin/xapian-config
+
+# later version does not support xapian-core 1.2.x
+PORTSCOUT=	ignore:1
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^if (defined $$builddir) {|if (0) {|' ${WRKSRC}/Makefile.PL

@@ -1,5 +1,4 @@
 # Created by: Hsin-Han You <hhyou@cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	rubyzip2
 PORTVERSION=	2.0.2
@@ -12,6 +11,9 @@ COMMENT=	Ruby compatible Zip library
 NO_ARCH=	yes
 
 USE_RUBY=	yes
-USES=		gem
+USES=		cpe gem
+
+CPE_VENDOR=	rubyzip_project
+CPE_PRODUCT=	rubyzip
 
 .include <bsd.port.mk>

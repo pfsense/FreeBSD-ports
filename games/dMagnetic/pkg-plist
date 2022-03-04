@@ -1,0 +1,5 @@
+bin/dMagnetic
+man/man6/dMagnetic.6.gz
+man/man5/dMagneticini.5.gz
+%%DATADIR%%/dMagnetic.ini
+%%DOCSDIR%%/README.txt

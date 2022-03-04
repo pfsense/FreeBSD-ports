@@ -1,4 +1,3 @@
-SHA256 (dataplot/dpsrc.tar.gz) = 419f2a672e2fcc076d95bb67f5c2a9c05a66dc1f697c729b52cddb860e83ae12
-SIZE (dataplot/dpsrc.tar.gz) = 6761551
-SHA256 (dataplot/dpsnapsh.pdf) = 4854cdab00ce10df87686eb025a80f57575fea1b362a22b49f202e10348f0e4b
-SIZE (dataplot/dpsnapsh.pdf) = 62085
+TIMESTAMP = 1593845821
+SHA256 (usnistgov-dataplot-20200619-2c1b27601a3b7523449de612613eadeead9a8f70_GH0.tar.gz) = 3a20625951407a51f3c36cf3c39f9bf86d0f5dd98bf3c5b6ef6f79a728bc559c
+SIZE (usnistgov-dataplot-20200619-2c1b27601a3b7523449de612613eadeead9a8f70_GH0.tar.gz) = 21733952

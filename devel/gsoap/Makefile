@@ -1,10 +1,10 @@
 # Created by: Sergey Matveychuk <sem@ciam.ru>
-# $FreeBSD$
 
 PORTNAME=	gsoap
-PORTVERSION=	2.8.82
+PORTVERSION=	2.8.117
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME}2/gsoap-2.8
+MASTER_SITES=	SF/${PORTNAME}2
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -12,23 +12,29 @@ COMMENT=	Generator Tools for Coding SOAP/XML Web Services in C and C++
 
 LICENSE=	GPLv2
 
-USES=		autoreconf pathfix ssl zip
+USES=		autoreconf cpe pathfix ssl zip
+CPE_VENDOR=	genivia
 
 CONFIGURE_ENV=	LEX=flex YACC=yacc
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 
+OPTIONS_DEFINE=	IPV6
 OPTIONS_RADIO=	SSL
 OPTIONS_RADIO_SSL=	GNUTLS OPENSSL
-OPTIONS_DEFAULT=	OPENSSL
+OPTIONS_DEFAULT=	OPENSSL IPV6
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls \
 			libgcrypt.so:security/libgcrypt \
 			libgpg-error.so:security/libgpg-error
 GNUTLS_CONFIGURE_ON=	--enable-gnutls
 GNUTLS_LDFLAGS=		-L${LOCALBASE}/lib
 OPENSSL_CONFIGURE_ENABLE=	ssl
-CFLAGS+=	-fPIC
+IPV6_CONFIGURE_ENABLE=	ipv6
+CFLAGS+=	-fPIC -I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
+
+PORTSCOUT=	limit:^2\.8\.[0-9][0-9][0-9]$
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|sys/timeb.h | |' \

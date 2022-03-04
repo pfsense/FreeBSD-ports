@@ -8,7 +8,7 @@
  * tftpd.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Stefan Seidel
  * All rights reserved.
  *
@@ -93,6 +93,18 @@
 				]]>
 			</description>
 			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Write Access</fielddescr>
+			<fieldname>tftpd_create</fieldname>
+			<description>Check to allow clients to upload files on the TFTP server.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Logging</fielddescr>
+			<fieldname>tftpd_logging</fieldname>
+			<description>Check to log read/write (RRQ/WRQ) requests.</description>
+			<type>checkbox</type>
 		</field>
 	</fields>
 	<custom_php_install_command>

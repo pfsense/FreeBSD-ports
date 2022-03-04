@@ -1,22 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	libilbc
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.2
+DISTVERSION=	3.0.4
 CATEGORIES=	net
+MASTER_SITES=	https://github.com/TimothyGu/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Internet Low Bit Rate codec (RFC3951)
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+LIB_DEPENDS=	libabsl_base.so:devel/abseil
+
+USES=		cmake localbase pathfix
+USE_LDCONFIG=	yes
+
 CONFLICTS=	ilbc-r[0-9]*
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	TimothyGu
-
-USES=		cmake pathfix
-USE_LDCONFIG=	yes
+post-patch:
+	${RM} -rf ${WRKSRC}/abseil-cpp
+	${LN} -s ${PREFIX}/include/absl ${WRKSRC}/abseil-cpp
 
 .include <bsd.port.mk>

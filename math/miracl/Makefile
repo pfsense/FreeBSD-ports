@@ -1,15 +1,14 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	miracl
 PORTVERSION=	5.6
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	http://mirror.shatow.net/freebsd/${PORTNAME}/ \
 		LOCAL/jase
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiprecision Integer and Rational Arithmetic C/C++ Library
 
 LICENSE=	AGPLv3 COMMERCIAL

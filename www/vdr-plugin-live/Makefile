@@ -1,9 +1,8 @@
 # Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vdr-plugin-live
 PORTVERSION=	0.3.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www multimedia
 MASTER_SITES=	http://live.vdr-developer.org/downloads/:release \
 		LOCAL/nox/:snapshot

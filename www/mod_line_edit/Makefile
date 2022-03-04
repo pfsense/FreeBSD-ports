@@ -1,5 +1,4 @@
 # Created by: Dominic Marks <dom@goodforbusiness.co.uk>
-# $FreeBSD$
 
 PORTNAME=	mod_line_edit
 PORTVERSION=	1.0.0
@@ -12,6 +11,9 @@ EXTRACT_SUFX=
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Apache module for simple text rewriting
+
+DEPRECATED=	Abandoned upstream, last release in 2006, Apache includes mod_sed
+EXPIRATION_DATE=2022-03-31
 
 LICENSE=	GPLv2
 

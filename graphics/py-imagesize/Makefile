@@ -1,19 +1,20 @@
 # Created by: Kris Moore <kmoore@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	imagesize
-PORTVERSION=	0.7.1
+PORTVERSION=	1.3.0
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	kmoore@FreeBSD.org
-COMMENT=	Python image size library
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Get image size from png/jpeg/jpeg2000/gif file
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.rst
+
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USES=		python
-USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

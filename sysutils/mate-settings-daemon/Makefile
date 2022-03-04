@@ -1,14 +1,16 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mate-settings-daemon
-PORTVERSION=	1.20.3
+PORTVERSION=	1.26.0
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	MATE settings daemon
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
@@ -26,17 +28,17 @@ RUN_DEPENDS=	xrdb:x11/xrdb
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake libtool localbase pathfix \
-		pkgconfig tar:xz
+USES=		gettext gmake gnome libtool localbase mate pathfix \
+		pkgconfig tar:xz xorg
 USE_MATE=	desktop libmatekbd mixer
-USE_XORG=	ice sm x11 xext xi xxf86misc
+USE_XORG=	ice sm x11 xext xi
 USE_GNOME=	cairo dconf gtk30 intlhack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-dbus-services=${PREFIX}/share/dbus-1/services \
-		--with-gtk=3.0 \
-		--disable-static
-INSTALLS_ICONS=	yes
+		--disable-static \
+		--disable-rfkill
+
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.SettingsDaemon.plugins.a11y-keyboard.gschema.xml \
@@ -51,6 +53,7 @@ GLIB_SCHEMAS=	org.mate.SettingsDaemon.plugins.a11y-keyboard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.media-keys.gschema.xml \
 		org.mate.SettingsDaemon.plugins.mouse.gschema.xml \
 		org.mate.SettingsDaemon.plugins.mpris.gschema.xml \
+		org.mate.SettingsDaemon.plugins.rfkill.gschema.xml \
 		org.mate.SettingsDaemon.plugins.smartcard.gschema.xml \
 		org.mate.SettingsDaemon.plugins.sound.gschema.xml \
 		org.mate.SettingsDaemon.plugins.typing-break.gschema.xml \
@@ -60,7 +63,9 @@ GLIB_SCHEMAS=	org.mate.SettingsDaemon.plugins.a11y-keyboard.gschema.xml \
 		org.mate.applications-at.gschema.xml \
 		org.mate.font-rendering.gschema.xml \
 		org.mate.peripherals-smartcard.gschema.xml \
-		org.mate.peripherals-touchpad.gschema.xml
+		org.mate.peripherals-touchpad.gschema.xml \
+		org.mate.peripherals-keyboard.gschema.xml \
+		org.mate.peripherals-mouse.gschema.xml
 
 OPTIONS_DEFINE=	PULSEAUDIO
 OPTIONS_SUB=	yes

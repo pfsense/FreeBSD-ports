@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bugzilla
 PORTVERSION=	4.4.4
 CATEGORIES=	russian
@@ -10,6 +8,9 @@ MAINTAINER=	bz-ports@FreeBSD.org
 COMMENT=	Russian localization for Bugzilla
 
 RUN_DEPENDS=	bugzilla44>=${PORTVERSION}:devel/bugzilla44
+
+USES=		cpe
+CPE_VENDOR=	mozilla
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}.ru
 

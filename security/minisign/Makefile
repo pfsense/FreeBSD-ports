@@ -1,8 +1,7 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	minisign
-PORTVERSION=	0.8
+PORTVERSION=	0.9
 CATEGORIES=	security
 
 MAINTAINER=	feld@FreeBSD.org
@@ -12,7 +11,7 @@ LICENSE=	ISCL
 
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
-USES=	cmake localbase
+USES=	cmake localbase pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jedisct1

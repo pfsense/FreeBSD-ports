@@ -1,5 +1,4 @@
 # Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	smbftpd
 PORTVERSION=	2.4
@@ -18,10 +17,10 @@ HAS_CONFIGURE=	yes
 MAKE_ENV+=	OSTYPE=FreeBSD
 CONFIGURE_ARGS+=	"--prefix=${PREFIX}"
 
-USES=		perl5
+USES=		cpe perl5
 USE_RC_SUBR=	${PORTNAME}
 
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_WITH=	mysql
 PGSQL_USES=	pgsql
 PGSQL_CONFIGURE_WITH=	pgsql

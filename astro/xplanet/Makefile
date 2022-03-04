@@ -1,9 +1,7 @@
 # Created by: darius@dons.net.au
-# $FreeBSD$
 
 PORTNAME=	xplanet
-PORTVERSION=	1.3.0
-PORTREVISION=	11
+PORTVERSION=	1.3.1
 CATEGORIES=	astro geography
 MASTER_SITES=	SF
 
@@ -11,8 +9,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Draw pictures of the earth textured by an image
 
 GNU_CONFIGURE=	yes
-USES=		iconv localbase
-USE_XORG=	xt xscrnsaver
+USES=		iconv:wchar_t localbase xorg
+USE_XORG=	x11 xext xt xscrnsaver
 CONFIGURE_ARGS=	--with-map-extension=jpg
 CPPFLAGS+=	-I${LOCALBASE}/include/netpbm
 LIBS+=		-lm
@@ -23,6 +21,7 @@ OPTIONS_DEFAULT=	FREETYPE PANGO GIF JPEG PNG PNM TIFF
 FREETYPE_CONFIGURE_WITH=	--with-freetype
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 PANGO_CONFIGURE_WITH=	pango
+PANGO_USES=		gnome
 PANGO_USE=	GNOME=pango
 GIF_CONFIGURE_WITH=	gif
 GIF_LIB_DEPENDS=	libgif.so:graphics/giflib

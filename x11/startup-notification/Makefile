@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	startup-notification
 PORTVERSION=	0.12
@@ -16,8 +15,8 @@ LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libxcb-util.so:x11/xcb-util
 
+USES=		gmake libtool pathfix pkgconfig xorg
 USE_XORG=	x11
-USES=		gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

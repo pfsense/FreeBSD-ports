@@ -1,5 +1,4 @@
 # Created by: Seiichirou Hiraoka
-# $FreeBSD$
 
 PORTNAME=	xhime
 PORTVERSION=	1.51
@@ -11,11 +10,15 @@ DISTFILES=	xhime151.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Resident Himechan for X Window System
 
-WRKSRC=		${WRKDIR}/xhime1.51
-USES=		imake
-USE_XORG=	x11 xext
+# Converted from NO_CDROM
+LICENSE=	xhime
+LICENSE_NAME=	xhime
+LICENSE_TEXT=	Contains commercial character data
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-NO_CDROM=	Contains commercial character data
+WRKSRC=		${WRKDIR}/xhime1.51
+USES=		imake xorg
+USE_XORG=	x11 xext
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

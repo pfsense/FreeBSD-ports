@@ -1,8 +1,7 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	librelp
-PORTVERSION=	1.4.0
+PORTVERSION=	1.10.0
 CATEGORIES=	devel
 MASTER_SITES=	http://download.rsyslog.com/librelp/
 
@@ -23,7 +22,8 @@ OPENSSL_CONFIGURE_ENABLE=	tls-openssl
 OPENSSL_CONFIGURE_ENV=		OPENSSL_LIBS="-L${OPENSSLLIB} -lssl -lcrypto" \
 				OPENSSL_CFLAGS="-I ${OPENSSLINC}"
 
-USES=		libtool pathfix pkgconfig
+USES=		cpe libtool pathfix pkgconfig
+CPE_VENDOR=	rsyslog
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -31,7 +31,7 @@ INSTALL_TARGET=	install-strip
 PLIST_FILES=	include/${PORTNAME}.h \
 		lib/${PORTNAME}.a \
 		lib/${PORTNAME}.so lib/${PORTNAME}.so.0 \
-		lib/${PORTNAME}.so.0.5.0 \
+		lib/${PORTNAME}.so.0.5.1 \
 		libdata/pkgconfig/relp.pc
 
 PORT_VERBS=	relp

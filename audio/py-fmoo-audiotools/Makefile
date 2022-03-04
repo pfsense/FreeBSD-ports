@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	fmoo-audiotools
 PORTVERSION=	3.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio python
 MASTER_SITES=	SF/audiotools/audiotools
 DISTNAME=	audiotools-${PORTVERSION}
@@ -14,7 +12,7 @@ COMMENT=	Collection of command line audio handling utilities
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig python
+USES=		pkgconfig python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 OPTIONS_DEFINE=	CDIO LAME MPG123 OPUS TWOLAME VORBIS

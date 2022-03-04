@@ -1,9 +1,8 @@
 # Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vdr-plugin-vnsiserver
 PORTVERSION=	14.0.20150330
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org

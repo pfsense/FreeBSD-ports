@@ -1,118 +1,106 @@
-# $FreeBSD$
-
 PORTNAME=	telegram-desktop
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.11
+DISTVERSION=	3.2.5
+PORTREVISION=	1
 CATEGORIES=	net-im
+MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
+DISTNAME=	tdesktop-${DISTVERSION}-full
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	henry.hu.sh@gmail.com
+MAINTAINER=	glebius@FreeBSD.org
 COMMENT=	Telegram Desktop messaging app
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	does not build, webrtc related
 NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe
-NOT_FOR_ARCHS_REASON=	Please add support for your architecture in base/build_config.h
+NOT_FOR_ARCHS_REASON=	Only little endian is supported
 
-BUILD_DEPENDS=	dee>0:devel/dee \
-		gyp:devel/py-gyp@${PY_FLAVOR} \
-		range-v3>0:devel/range-v3 \
+BUILD_DEPENDS=	alsa-lib>0:audio/alsa-lib \
+		microsoft-gsl>0:devel/microsoft-gsl \
 		pulseaudio>0:audio/pulseaudio \
-		alsa-lib>0:audio/alsa-lib
+		range-v3>0:devel/range-v3 \
+		tl-expected>0:devel/tl-expected \
+		v4l_compat>0:multimedia/v4l_compat \
+		yasm:devel/yasm \
+		${LOCALBASE}/lib/libtg_owt.a:net-im/tg_owt
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libdbus-1.so:devel/dbus \
+		libdbusmenu-qt5.so:devel/libdbusmenu-qt \
+		libenchant-2.so:textproc/enchant2 \
+		libevent.so:devel/libevent \
+		libhunspell-1.7.so:textproc/hunspell \
+		libjpeg.so:graphics/jpeg-turbo \
+		liblz4.so:archivers/liblz4 \
 		libminizip.so:archivers/minizip \
+		librnnoise.so:audio/rnnoise \
 		libopenal.so:audio/openal-soft \
-		libopus.so:audio/opus
+		libopenh264.so:multimedia/openh264 \
+		libopus.so:audio/opus \
+		libpipewire-0.3.so:multimedia/pipewire \
+		libqrcodegencpp.so:graphics/qr-code-generator \
+		libusrsctp.so:net/libusrsctp \
+		libxcb-keysyms.so:x11/xcb-util-keysyms \
+		libxkbcommon.so:x11/libxkbcommon \
+		libxxhash.so:devel/xxhash \
+		libvpx.so:multimedia/libvpx
 
-USES=		compiler:c++17-lang cmake:noninja desktop-file-utils gmake pkgconfig python:2.7,build qt:5 ssl
+USES=		cmake compiler:c++17-lang desktop-file-utils gl \
+		gnome pkgconfig python:3.7+,build qt:5 ssl xorg
 
-USE_GITHUB=	yes
+USE_GITHUB=	nodefault
 GH_ACCOUNT=	telegramdesktop
 GH_PROJECT=	tdesktop
-GH_TUPLE=	catchorg:Catch2:5ca44b68:catch/Telegram/ThirdParty/Catch \
-		mapbox:variant:550ac2f:variant/Telegram/ThirdParty/variant \
-		Microsoft:GSL:d846fe5:gsl/Telegram/ThirdParty/GSL \
-		telegramdesktop:libtgvoip:59a975b:libtgvoip/Telegram/ThirdParty/libtgvoip \
-		telegramdesktop:crl:9b7c6b5:crl/Telegram/ThirdParty/crl \
-		Cyan4973:xxHash:7cc9639:xxhash/Telegram/ThirdParty/xxHash
-USE_GNOME=	glib20
-USE_QT=		core gui imageformats network widgets buildtools_build qmake_build dbus
-USE_XORG=	x11 xcb
+USE_GL=		gl
+USE_GNOME=	glib20 glibmm
+USE_QT=		core dbus gui imageformats network widgets buildtools_build \
+		qmake_build wayland svg
+USE_XORG=	x11 xcb xcomposite xdamage xext xfixes xrender xrandr xtst
 
-CMAKE_SOURCE_PATH=	${WRKSRC}/out/Release
+CMAKE_ARGS=	-DDESKTOP_APP_SPECIAL_TARGET="" -DTDESKTOP_LAUNCHER_BASENAME="telegramdesktop" \
+		-DTDESKTOP_API_ID=${TELEGRAM_API_ID} -DTDESKTOP_API_HASH=${TELEGRAM_API_HASH} \
+		-Ddisable_autoupdate=1
+CMAKE_ON=	DESKTOP_APP_USE_PACKAGED DESKTOP_APP_DISABLE_CRASH_REPORTS \
+		DESKTOP_APP_DISABLE_WAYLAND_INTEGRATION
+CMAKE_OFF=	DESKTOP_APP_USE_PACKAGED_FONTS \
+		DESKTOP_APP_QT6
 
-# Telegram asks each custom build to have its own API ID and hash.
-# Use the default ones for now. We may need to switch to the official ones,
-# or create our own.
-TELEGRAM_API_ID=	17349
-TELEGRAM_API_HASH=	344583e45741c457fe1862106095a5eb
-GYP_DEFINES=	TDESKTOP_DISABLE_CRASH_REPORTS,TDESKTOP_DISABLE_AUTOUPDATE,TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME
+# Disable DCHECKs, otherwise video calls will crash.
+CXXFLAGS+=	-DNDEBUG
+
+# see Bugzilla #245452 for details
+NO_CCACHE=	yes
+
+INSTALLS_ICONS=	yes
 
 # Telegram uses OpenAL for its audio, but libtgvoip (for voice calls) can use PulseAudio or ALSA.
 # It dynamically loads PulseAudio, and if this fails, it loads ALSA.
 # If both of them are not installed, then voice calls do not work, but other functionalities still work.
-OPTIONS_MULTI=	AUDIO
-OPTIONS_MULTI_AUDIO=	ALSA PULSEAUDIO
-OPTIONS_DEFINE=	GTK
+OPTIONS_DEFINE=		WEBKIT
 OPTIONS_DEFAULT=	ALSA
+OPTIONS_MULTI=		AUDIO
+OPTIONS_MULTI_AUDIO=	ALSA PULSEAUDIO
 
 AUDIO_DESC=	Audio backend for voice calls
-GTK_DESC=	Gtk integration (Use Gtk dialogs, etc.)
+WEBKIT_DESC=	WebKit-gtk integration for payments
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+WEBKIT_CMAKE_BOOL_OFF=	DESKTOP_APP_DISABLE_WEBKITGTK
+WEBKIT_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3
+WEBKIT_USE=	GNOME=cairo,gtk30
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MGTK}
-USE_GNOME+=	gtk30
-.else
-GYP_DEFINES:=	${GYP_DEFINES},TDESKTOP_DISABLE_GTK_INTEGRATION
-.endif
+# Telegram asks each custom build to have its own API ID and hash.
+TELEGRAM_API_HASH=	20a3432aab43f24bb4460fceac5ba38d
+TELEGRAM_API_ID=	601761
 
 .include <bsd.port.pre.mk>
 
-post-patch:
-	@cd ${WRKSRC} && \
-		(${SED} -e " \
-			s|%%QT_VERSION%%|${QT5_VERSION}| ; \
-			s|%%LOCALBASE%%|${LOCALBASE}| ; \
-			s|%%CFLAGS%%|${CFLAGS:C/(.*)/'\1',/}| ; \
-			s|%%CXXFLAGS%%|${CXXFLAGS:C/(.*)/'\1',/}| ; \
-			s|%%LDFLAGS%%|${LDFLAGS:C/(.*)/'\1',/}| ; \
-			s|%%QT_BINDIR%%|${QT_BINDIR}| ; \
-			s|%%QT_INCDIR%%|${QT_INCDIR}| ; \
-			s|%%QT_LIBDIR%%|${QT_LIBDIR}| ; \
-			s|%%QMAKESPEC%%|${QMAKESPEC}| ; \
-			s|%%PYTHON_CMD%%|${PYTHON_CMD}|" \
-		${FILESDIR}/gyp-patches | \
-		${PATCH} -z .bak -s)
-	@${ECHO} "#define FREEBSD_QT_PLUGINDIR \"${QT_PLUGINDIR}\"" > ${WRKSRC}/Telegram/SourceFiles/FREEBSD_QT_PLUGINDIR.h
-	@${REINPLACE_CMD} "/Icon=/s|telegram|${PORTNAME}|" ${WRKSRC}/lib/xdg/telegramdesktop.desktop
-
-pre-configure:
-	@cd ${WRKSRC} && gyp \
-	    -Dapi_id=${TELEGRAM_API_ID} \
-	    -Dapi_hash=${TELEGRAM_API_HASH} \
-	    -Dbuild_defines=${GYP_DEFINES} \
-	    -Gconfig=Release \
-	    --depth=Telegram/gyp --generator-output=../.. -Goutput_dir=out Telegram/gyp/Telegram.gyp --format=cmake
-	@TOT=`wc -l < ${WRKSRC}/out/Release/CMakeLists.txt` && NUM=`expr $$TOT - 2` && \
-	    ${REINPLACE_CMD} "$$NUM r ${FILESDIR}/CMakeLists.inj" ${WRKSRC}/out/Release/CMakeLists.txt
-
-do-install:
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/Telegram ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-	${INSTALL_DATA} ${WRKSRC}/lib/xdg/telegramdesktop.desktop ${STAGEDIR}${PREFIX}/share/applications/${PORTNAME}.desktop
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/kservices5
-	${INSTALL_DATA} ${WRKSRC}/lib/xdg/tg.protocol ${STAGEDIR}${PREFIX}/share/kservices5
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata
-	${INSTALL_DATA} ${WRKSRC}/lib/xdg/telegramdesktop.appdata.xml ${STAGEDIR}${PREFIX}/share/appdata/${PORTNAME}.appdata.xml
-.for icon_size in 16 32 48 64 128 256 512
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${icon_size}x${icon_size}/apps
-	${INSTALL_DATA} \
-		${WRKSRC}/Telegram/Resources/art/icon${icon_size}.png \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/${icon_size}x${icon_size}/apps/${PORTNAME}.png
-.endfor
+.if ${COMPILER_VERSION} < 120
+LLVM_VER=	12
+BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
+CC=		${LOCALBASE}/bin/clang${LLVM_VER}
+CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
+.endif
 
 .include <bsd.port.post.mk>

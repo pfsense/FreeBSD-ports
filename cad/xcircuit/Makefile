@@ -1,8 +1,7 @@
 # Created by: Pedro F. Giffuni <giffunip@asme.org>
-# $FreeBSD$
 
 PORTNAME=	xcircuit
-PORTVERSION=	3.10.12
+PORTVERSION=	3.10.30
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://opencircuitdesign.com/xcircuit/archive/ \
@@ -16,7 +15,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		ghostscript:x11,run gmake gnome pkgconfig tar:tgz tk:tea
+USES=		ghostscript:x11,run gmake gnome pkgconfig tar:tgz tk:tea xorg
 
 OPTIONS_DEFINE=	EXAMPLES
 
@@ -39,6 +38,7 @@ post-patch:
 		 s|-fpic|-fPIC|g' ${WRKSRC}/configure
 
 post-install:
+	cd ${STAGEDIR}${PREFIX}/share/xcircuit && ${STRIP_CMD} xcircuit.so xcircexec xcircdnull
 	@${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/.xcircuitrc ${STAGEDIR}/${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/*.lgf ${STAGEDIR}/${EXAMPLESDIR}

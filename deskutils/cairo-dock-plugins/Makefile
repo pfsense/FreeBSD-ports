@@ -1,16 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	cairo-dock-plugins
 PORTVERSION=	3.4.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	deskutils
+
+PATCH_SITES=	https://github.com/Cairo-Dock/cairo-dock-plug-ins/commit/
+PATCHFILES=	d08541a0afb4377ce2f35feb280fbe443870b587.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cairo-Dock-Plugins for Cairo-Dock
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
 
 RUN_DEPENDS=	wget:ftp/wget
 LIB_DEPENDS=	libgldi.so:deskutils/cairo-dock
@@ -26,7 +26,7 @@ GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 gtk30 librsvg2 libxml2
 USE_LDCONFIG=	yes
 USE_XORG=	xrender
-USES=		cmake gettext pkgconfig python
+USES=		cmake gettext gnome pkgconfig python xorg
 LDFLAGS+=	-L${LOCALBASE}/lib
 PLIST_SUB=	PYVER="${PYTHON_VERSION:S/thon//}"
 CMAKE_ARGS=	-DROOT_PREFIX:PATH=${STAGEDIR} \
@@ -56,9 +56,8 @@ MAIL_DESC=		Mail applet
 #RUBY_DESC=		Ruby interface
 SOUND_EFFECTS_DESC=	Sound Effects applet
 UPOWER_DESC=		D-Bus daemon for power management tasks
-TERMINAL_DESC=		Terminal applet
+#TERMINAL_DESC=		Terminal applet
 #VALA_DESC=		Vala interface
-WEBLETS_DESC=		Weblets applet
 XGAMMA_DESC=		Xgamma applet
 XFCE_INTEGRATION_DESC=	XFCE integration support
 ZEITGEIST_DESC=		User logs activities
@@ -91,6 +90,8 @@ KEYBOARD_INDICATOR_LIB_DEPENDS=	libexif.so:graphics/libexif \
 				libxklavier.so:x11/libxklavier
 KEYBOARD_INDICATOR_CMAKE_BOOL=	enable-keyboard-indicator
 
+# libetpan 1.9.4 replaces libetpan-config with libetpan.pc
+MAIL_BUILD_DEPENDS=	libetpan>=1.9.4:mail/libetpan
 MAIL_LIB_DEPENDS=	libetpan.so:mail/libetpan
 MAIL_CMAKE_BOOL=	enable-mail
 

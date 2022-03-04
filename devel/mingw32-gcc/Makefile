@@ -1,23 +1,23 @@
 # Created by: Lev Serebryakov <lev@serebryakov.spb.ru>
-# $FreeBSD$
 
 PORTNAME=	gcc
 PORTVERSION=	${GCCVERSION}
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	GCC
 PKGNAMEPREFIX=	mingw32-
 
-MAINTAINER=	cyberbotx@cyberbotx.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FSF gcc-4 for Windows cross-development
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${PKGNAMEPREFIX}as:devel/${PKGNAMEPREFIX}binutils \
-		mingwm10.dll:devel/${PKGNAMEPREFIX}bin-msvcrt
-RUN_DEPENDS=	${PKGNAMEPREFIX}as:devel/${PKGNAMEPREFIX}binutils
+BUILD_DEPENDS=	${PKGNAMEPREFIX}as:devel/binutils@${PKGNAMEPREFIX:C/-$//} \
+		mingwm10.dll:devel/${PKGNAMEPREFIX}bin-msvcrt \
+		objdump:devel/binutils
+RUN_DEPENDS=	${PKGNAMEPREFIX}as:devel/binutils@${PKGNAMEPREFIX:C/-$//}
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
 		libmpc.so:math/mpc
@@ -30,7 +30,8 @@ SSP_UNSAFE=	yes
 
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 sparc64
 USE_LDCONFIG=	yes
-USES=		bison iconv gmake libtool makeinfo perl5 tar:bzip2
+USES=		bison cpe iconv gmake libtool makeinfo perl5 tar:bzip2
+CPE_VENDOR=	gnu
 USE_PERL5=	build
 
 GCC_TARG=	${PKGNAMEPREFIX:S/-$//}

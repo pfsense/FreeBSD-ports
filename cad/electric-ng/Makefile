@@ -1,8 +1,8 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	electric
 PORTVERSION=	9.07
+PORTREVISION=	1
 CATEGORIES=	cad java
 MASTER_SITES=	GNU \
 		http://www.staticfreesoft.com/:1 \
@@ -12,7 +12,7 @@ EXTRACT_SUFX=
 DISTFILES+=	${PORTNAME}Binary-${PORTVERSION}.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sophisticated VLSI design system
 
 LICENSE=	GPLv3
@@ -20,7 +20,6 @@ LICENSE=	GPLv3
 EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 SUB_LIST+=	LIBFILES="${LIBFILES}" \
 		JARFILE="${JARFILE}"

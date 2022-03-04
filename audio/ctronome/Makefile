@@ -1,5 +1,4 @@
 # Created by: Charles Mercadal <mercadal@diablonet.net>
-# $FreeBSD$
 
 PORTNAME=	ctronome
 PORTVERSION=	0.5.6
@@ -11,6 +10,9 @@ COMMENT=	Programmable console-based metronome
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 PLIST_FILES=	bin/ctronome \
 		%%DATADIR%%/metronome1.wav \

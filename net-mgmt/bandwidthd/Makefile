@@ -1,5 +1,4 @@
 # Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
 
 PORTNAME=	bandwidthd
 PORTVERSION=	2.0.1
@@ -21,6 +20,9 @@ CONFIGURE_ARGS=	ac_cv_lib_iconv_libiconv_open=no \
 		ac_cv_lib_png_png_read_info=no \
 		ac_cv_lib_pq_PQconnectdb=no
 USE_CSTD=	gnu89
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 SUB_FILES=	bandwidthd
 

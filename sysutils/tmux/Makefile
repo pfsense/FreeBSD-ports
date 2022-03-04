@@ -1,8 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	tmux
-PORTVERSION=	2.8
+PORTVERSION=	3.2a
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/tmux/tmux/releases/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -10,36 +9,44 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Terminal Multiplexer
 
-LICENSE=	ISCL
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	ISCL GPLv2
+LICENSE_COMB=	multi
+LICENSE_FILE_ISCL=	${WRKSRC}/COPYING
+LICENSE_FILE_GPLv2=	${WRKSRC_bash}/COPYING
+LICENSE_DISTFILES_ISCL=	${DISTNAME}${EXTRACT_SUFX}
+LICENSE_DISTFILES_GPLv2=	${DISTFILE_bash}
+
+USES=		cpe ncurses pkgconfig
+
+CPE_VENDOR=	tmux_project
+
+USE_GITHUB=	nodefault
+GH_TUPLE=	imomaliev:tmux-bash-completion:f5d5323:bash
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-utempter \
+		--sysconfdir=${PREFIX}/etc
 
 CONFLICTS_INSTALL=	tmux23
 
-USES=		pkgconfig ncurses
-
-USE_GITHUB=	nodefault
-GH_TUPLE=	imomaliev:tmux-bash-completion:ef56d3e:bash
-
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc --enable-utempter
-
 PLIST_FILES=	bin/tmux \
-		man/man1/tmux.1.gz \
-		etc/bash_completion.d/tmux
+		etc/bash_completion.d/tmux \
+		man/man1/tmux.1.gz
 
-PORTDOCS=	CHANGES README TODO
+PORTDOCS=	CHANGES README
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=	DOCS EXAMPLES LIBEVENT_STATIC BACKSPACE
+OPTIONS_DEFINE=	DOCS EXAMPLES LIBEVENT_STATIC UTF8PROC
 
 LIBEVENT_STATIC_DESC=	Build with static libevent
-BACKSPACE_DESC=	Build with tty/keys patch
+UTF8PROC_DESC=		Build with utf8proc support
 
-BACKSPACE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-tty-keys.c
-
+LIBEVENT_STATIC_BUILD_DEPENDS=		${LOCALBASE}/lib/libevent.a:devel/libevent
 LIBEVENT_STATIC_LIB_DEPENDS_OFF=	libevent.so:devel/libevent
-LIBEVENT_STATIC_BUILD_DEPENDS=	${LOCALBASE}/lib/libevent.a:devel/libevent
-LIBEVENT_STATIC_VARS=	LESTATIC=${LOCALBASE}/lib/libevent.a
+LIBEVENT_STATIC_VARS=			LESTATIC=${LOCALBASE}/lib/libevent.a
+
+UTF8PROC_LIB_DEPENDS=		libutf8proc.so:textproc/utf8proc
+UTF8PROC_CONFIGURE_ENABLE=	utf8proc
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/tmux.conf|${PREFIX}/etc/tmux.conf|g' ${WRKSRC}/CHANGES \

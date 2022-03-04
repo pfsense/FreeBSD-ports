@@ -1,11 +1,8 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gpsprune
-PORTVERSION=	19.2
+PORTVERSION=	21
 CATEGORIES=	astro java
-MASTER_SITES=	http://activityworkshop.net/software/${PORTNAME}/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://activityworkshop.net/software/${PORTNAME}/ \
+		https://mirror.amdmi3.ru/distfiles/
 DISTNAME=	${PORTNAME}_${PORTVERSION}.jar
 EXTRACT_SUFX=	# empty
 EXTRACT_ONLY=	# empty
@@ -20,10 +17,10 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	11+
 
 SUB_FILES=	gpsprune.sh
-SUB_LIST=	JARNAME=${DISTNAME}
+SUB_LIST=	JAVA="${JAVA}" JARNAME="${DISTNAME}"
 
 PLIST_FILES=	bin/gpsprune ${JAVAJARDIR:C,${PREFIX}/?,,}/${DISTNAME}
 
@@ -31,6 +28,7 @@ OPTIONS_DEFINE=	JAVA3D
 JAVA3D_DESC=	Support for 3D view of track
 
 JAVA3D_RUN_DEPENDS=	java3d>=1.5.2:java/java3d
+JAVA3D_BROKEN=	java3d does not support java 11+
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${JAVAJARDIR}/

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yaws
 PORTVERSION=	2.0.6
 CATEGORIES=	www devel
@@ -16,7 +14,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 OPTIONS_SUB=	yes
 PLIST_SUB=	VERSION="${PORTVERSION}"
 
-USES=		autoreconf gmake libtool pathfix shebangfix
+USES=		autoreconf cpe gmake libtool pathfix shebangfix
 SHEBANG_FILES=	www/cgi-bin/foo.py
 
 OPTIONS_DEFINE=	WWW

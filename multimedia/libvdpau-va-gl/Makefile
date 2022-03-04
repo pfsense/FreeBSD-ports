@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	libvdpau-va-gl
 PORTVERSION=	0.4.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -22,7 +20,7 @@ LIB_DEPENDS=	libva-x11.so:multimedia/libva
 USE_GITHUB=	yes
 GH_ACCOUNT=	i-rinat
 
-USES=		cmake compiler:c++11-lang pkgconfig
+USES=		cmake compiler:c++11-lang gl pkgconfig xorg
 USE_XORG=	x11
 USE_GL=		gl
 LDFLAGS+=	-Wl,--as-needed # Xext, ICE, SM

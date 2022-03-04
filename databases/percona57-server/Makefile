@@ -1,10 +1,9 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.7.21-20
-PORTREVISION?=	3
-CATEGORIES=	databases ipv6
+DISTVERSION=	5.7.35-38
+PORTREVISION?=	0
+CATEGORIES=	databases
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-${DISTVERSION}/source/tarball/:percona \
 		SF/boost/boost/1.59.0:boost
 PKGNAMESUFFIX?=	57-server
@@ -12,18 +11,23 @@ DISTNAME=	percona-server-${DISTVERSION}
 DISTFILES=	percona-server-${DISTVERSION}${EXTRACT_SUFX}:percona \
 		boost_1_59_0${EXTRACT_SUFX}:boost
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
 LICENSE?=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+CPE_VENDOR=	percona
+CPE_PRODUCT=	percona_server
 
 LIB_DEPENDS=	libevent.so:devel/libevent \
-		liblz4.so:archivers/liblz4
+		liblz4.so:archivers/liblz4 \
+		libzstd.so:archivers/zstd
 
 SLAVEDIRS=	databases/percona57-client \
 		databases/percona57-pam-for-mysql
 USES=		bison:build cmake:insource,noninja compiler:c11 \
-		cpe libedit localbase perl5 shebangfix
+		cpe libedit localbase perl5 shebangfix ssl
 
 MY_DBDIR=	/var/db/mysql
 MY_SECDIR=	/var/db/mysql_secure
@@ -44,7 +48,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_MYSQLDATADIR="/var/db/mysql" \
 		-DINSTALL_SECURE_FILE_PRIVDIR="${MY_SECDIR}" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
-		-DINSTALL_MYSQLTESTDIR="share/mysql/tests" \
+		-DINSTALL_MYSQLTESTDIR=0 \
 		-DINSTALL_PLUGINDIR="lib/mysql/plugin" \
 		-DINSTALL_SBINDIR="libexec" \
 		-DINSTALL_SCRIPTDIR="bin" \
@@ -53,10 +57,12 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_SUPPORTFILESDIR="share/mysql" \
 		-DWITH_UNIT_TESTS=0 \
 		-DWITH_EDITLINE=system \
+		-DWITH_LIBEVENT=system \
 		-DWITH_LIBWRAP=0 \
 		-DWITH_LZ4=system \
 		-DWITH_ZLIB=system \
-		-DINSTALL_MYSQLTESTDIR=0 \
+		-DWITH_ZSTD=system \
+		-DWITH_ROCKSDB=0 \
 		-DWITH_BOOST="${WRKDIR}/boost_1_59_0"
 
 SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
@@ -92,7 +98,7 @@ FASTMTX_DESC=	Replace mutexes with spinlocks
 FASTMTX_CMAKE_ON=	-DWITH_FAST_MUTEXES=1
 INNODBMEMCACHED_DESC=	InnoDB Memcached plugin
 INNODBMEMCACHED_CMAKE_ON=	-DWITH_INNODB_MEMCACHED=1
-OPENSSL_CMAKE_ON=	-DWITH_SSL=system
+OPENSSL_CMAKE_ON=	-DWITH_SSL="${MY_SSL}"
 OPENSSL_USES=	ssl
 TOKUDB_DESC=	TokuDB Engine (experimental)
 TOKUDB_CMAKE_ON=	-DUSE_CTAGS=0
@@ -100,10 +106,10 @@ TOKUDB_EXTRA_PATCHES=${PATCHDIR}/extrapatch-tokudb
 
 USES+=mysql:57p
 
-CONFLICTS_INSTALL=	mysql*-server-* \
-			mysqlwsrep* \
-			mariadb*-server-* \
-			percona5[0-68-9]-server-*
+CONFLICTS_INSTALL=	mysql*-server \
+			mysqlwsrep*-server \
+			mariadb*-server \
+			percona5[0-68-9]-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -128,11 +134,11 @@ CMAKE_ARGS+=	-DWITH_AUTHENTICATION_LDAP=0
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
+#.if !${SSL_DEFAULT:Mlibressl*}
+#MY_TESTDIR=	"share/mysql/tests"
+#.else
+#MY_TESTDIR=	""
+#.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}/var/db/mysql
@@ -149,12 +155,21 @@ post-patch:
 
 .include <bsd.port.pre.mk>
 
+# Workaround to clang11/gcc10 with -fno-common by default
+CFLAGS+=	-fcommon
+
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-fpermissive
 .endif
 
 .if ${ARCH} == "arm"
 BROKEN=		Does not compile on arm
+.endif
+
+.if ${SSL_DEFAULT} == base
+MY_SSL=		system
+.else
+MY_SSL=		${OPENSSLBASE}
 .endif
 
 .if ${PORT_OPTIONS:MTOKUDB}

@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libcelero
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.0
-PORTREVISION=	1
+DISTVERSION=	2.8.2
 CATEGORIES=	benchmarks
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,11 +10,32 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/license.txt
 
 BUILD_DEPENDS=	${LOCALBASE}/include/sys/sysinfo.h:devel/libsysinfo
+LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
+TEST_DEPENDS=	googletest>0:devel/googletest
 
-USES=		cmake compiler:c++11-lang localbase:ldflags
+USES=		cmake compiler:c++14-lang localbase:ldflags
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	DigitalInBlue
 GH_PROJECT=	Celero
-USE_LDCONFIG=	yes
 
-.include <bsd.port.mk>
+LDFLAGS+=	-lsysinfo
+
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+USE_GCC=	yes
+.else
+.  if ${ARCH:Mpowerpc64*}
+CFLAGS+=	-mabi=elfv2
+.  endif
+.endif
+
+do-test: # Tests terminate with Signal 11, see https://github.com/DigitalInBlue/Celero/issues/157
+	@cd ${BUILD_WRKSRC} && \
+		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DCELERO_ENABLE_TESTS:BOOL=ON ${CMAKE_SOURCE_PATH} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
+		${BUILD_WRKSRC}/celero-test
+
+.include <bsd.port.post.mk>

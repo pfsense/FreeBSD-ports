@@ -1,9 +1,8 @@
 # Created by: gena
-# $FreeBSD$
 
 PORTNAME=	xforms
 DISTVERSION=	1.2.4
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	x11-toolkits graphics
 MASTER_SITES=	SAVANNAH
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff
 
-USES=		jpeg libtool
+USES=		gl jpeg libtool xorg
 USE_XORG=	xpm
 USE_GL=		gl
 USE_LDCONFIG=	yes

@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	libshhcards
 PORTVERSION=	1.0.6
@@ -12,6 +11,7 @@ COMMENT=	Library for displaying game cards on X Window System
 
 LICENSE=	ART10
 
+USES=		xorg
 USE_XORG=	xpm
 MAKEFILE=	${FILESDIR}/Makefile.lib
 USE_LDCONFIG=	yes

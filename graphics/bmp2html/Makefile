@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	bmp2html
 PORTVERSION=	0.1
@@ -13,6 +12,7 @@ COMMENT=	BMP to HTML converter
 
 LICENSE=	PD
 
+USES=		sdl
 USE_SDL=	sdl
 
 PLIST_FILES=	bin/bmp2html

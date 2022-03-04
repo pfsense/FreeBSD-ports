@@ -1,15 +1,17 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	htree
 PORTVERSION=	0.8
+PORTREVISION=	1
 CATEGORIES=	textproc www ruby
 MASTER_SITES=	http://www.a-k-r.org/htree/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DIST_SUBDIR=	ruby
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby library to manipulate HTML/XML tree data structure
+
+BUILD_DEPENDS=	rubygem-rdoc>=0.a:devel/rubygem-rdoc
 
 OPTIONS_DEFINE=	DOCS
 
@@ -26,7 +28,7 @@ PORTDOCS=	*
 
 do-build:
 .if ${PORT_OPTIONS:MDOCS}
-	cd ${BUILD_WRKSRC}; ${LOCALBASE}/bin/rdoc${RUBY_SUFFIX} ${LIB_FILES}
+	cd ${BUILD_WRKSRC}; ${LOCALBASE}/bin/rdoc ${LIB_FILES}
 .endif
 
 do-install:

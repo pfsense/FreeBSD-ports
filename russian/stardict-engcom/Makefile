@@ -1,13 +1,12 @@
 # Created by: Gvozdikov Veniamin <g.veniamin@googlemail.com>
-# $FreeBSD$
 
 PORTNAME=	stardict-engcom
 PORTVERSION=	2.4.2
 CATEGORIES=	russian
-MASTER_SITES=	http://abloz.com/huzheng/stardict-dic/ru/
+MASTER_SITES=	http://download.huzheng.org/ru/
 DISTNAME=	${PORTNAME}-ru-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	English-Russian Dictionary of Computer Terms
 
 USES=	tar:bzip2

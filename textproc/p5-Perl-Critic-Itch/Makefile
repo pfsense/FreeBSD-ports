@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Perl-Critic-Itch
 PORTVERSION=	0.07
 CATEGORIES=	textproc devel perl5

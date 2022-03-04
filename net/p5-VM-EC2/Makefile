@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	VM-EC2
 PORTVERSION=	1.28
@@ -25,8 +24,9 @@ RUN_DEPENDS=	p5-AnyEvent-CacheDNS>=0.08:dns/p5-AnyEvent-CacheDNS \
 		p5-XML-Simple>=2.18:textproc/p5-XML-Simple \
 		p5-libwww>=5.835:www/p5-libwww
 
-NO_ARCH=	yes
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

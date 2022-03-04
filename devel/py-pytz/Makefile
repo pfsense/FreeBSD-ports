@@ -1,8 +1,7 @@
 # Created by: Khairil Yusof <kaeru@inigo-tech.com>
-# $FreeBSD$
 
 PORTNAME=	pytz
-PORTVERSION=	2018.9
+PORTVERSION=	2021.3
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
@@ -18,8 +17,5 @@ USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|=True|=False|' ${WRKSRC}/${PYSETUP}
 
 .include <bsd.port.mk>

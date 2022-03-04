@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-UPnP
 PORTVERSION=	1.4.6
 CATEGORIES=	multimedia devel

@@ -1,5 +1,3 @@
-etc/dbus-1/system.d/org.kde.ktexteditor.katetextbuffer.conf
-etc/xdg/ktexteditor.categories
 include/KF5/KTextEditor/KTextEditor/AbstractAnnotationItemDelegate
 include/KF5/KTextEditor/KTextEditor/AnnotationInterface
 include/KF5/KTextEditor/KTextEditor/Application
@@ -17,6 +15,7 @@ include/KF5/KTextEditor/KTextEditor/Editor
 include/KF5/KTextEditor/KTextEditor/InlineNote
 include/KF5/KTextEditor/KTextEditor/InlineNoteInterface
 include/KF5/KTextEditor/KTextEditor/InlineNoteProvider
+include/KF5/KTextEditor/KTextEditor/LineRange
 include/KF5/KTextEditor/KTextEditor/MainWindow
 include/KF5/KTextEditor/KTextEditor/MarkInterface
 include/KF5/KTextEditor/KTextEditor/Message
@@ -47,6 +46,7 @@ include/KF5/KTextEditor/ktexteditor/editor.h
 include/KF5/KTextEditor/ktexteditor/inlinenote.h
 include/KF5/KTextEditor/ktexteditor/inlinenoteinterface.h
 include/KF5/KTextEditor/ktexteditor/inlinenoteprovider.h
+include/KF5/KTextEditor/ktexteditor/linerange.h
 include/KF5/KTextEditor/ktexteditor/mainwindow.h
 include/KF5/KTextEditor/ktexteditor/markinterface.h
 include/KF5/KTextEditor/ktexteditor/message.h
@@ -73,13 +73,16 @@ lib/libexec/kauth/kauth_ktexteditor_helper
 %%QT_PLUGINDIR%%/kf5/parts/katepart.so
 %%QT_MKSPECDIR%%/modules/qt_KTextEditor.pri
 share/dbus-1/system-services/org.kde.ktexteditor.katetextbuffer.service
+share/dbus-1/system.d/org.kde.ktexteditor.katetextbuffer.conf
 share/katepart5/script/README.md
 share/kdevappwizard/templates/ktexteditor-plugin.tar.bz2
 share/kservices5/katepart.desktop
 share/kservicetypes5/ktexteditor.desktop
 share/kservicetypes5/ktexteditorplugin.desktop
 share/locale/af/LC_MESSAGES/ktexteditor5.mo
+share/locale/ast/LC_MESSAGES/ktexteditor5.mo
 share/locale/ar/LC_MESSAGES/ktexteditor5.mo
+share/locale/az/LC_MESSAGES/ktexteditor5.mo
 share/locale/be/LC_MESSAGES/ktexteditor5.mo
 share/locale/bg/LC_MESSAGES/ktexteditor5.mo
 share/locale/bn/LC_MESSAGES/ktexteditor5.mo
@@ -163,3 +166,5 @@ share/locale/xh/LC_MESSAGES/ktexteditor5.mo
 share/locale/zh_CN/LC_MESSAGES/ktexteditor5.mo
 share/locale/zh_TW/LC_MESSAGES/ktexteditor5.mo
 share/polkit-1/actions/org.kde.ktexteditor.katetextbuffer.policy
+share/qlogging-categories5/ktexteditor.categories
+share/qlogging-categories5/ktexteditor.renamecategories

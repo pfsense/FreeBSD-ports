@@ -1,8 +1,7 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rbtrace
-PORTVERSION=	0.4.11
+PORTVERSION=	0.4.14
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

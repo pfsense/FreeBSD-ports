@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 clocks
 
     SUBDIR += abclock
@@ -14,6 +11,7 @@
     SUBDIR += bclock
     SUBDIR += buici-clock
     SUBDIR += cairo-clock
+    SUBDIR += catclock
     SUBDIR += dclock
     SUBDIR += emiclock
     SUBDIR += eyeclock
@@ -27,27 +25,24 @@
     SUBDIR += oclock
     SUBDIR += osdclock
     SUBDIR += p5-Tk-Clock
-    SUBDIR += pclock
     SUBDIR += rclock
-    SUBDIR += stopwatch
     SUBDIR += t3d
     SUBDIR += tclock
-    SUBDIR += tktz
+    SUBDIR += wlclock
     SUBDIR += wmbday
     SUBDIR += wmbinclock
     SUBDIR += wmblueclock
     SUBDIR += wmcalclock
     SUBDIR += wmclock
     SUBDIR += wmfishtime
-    SUBDIR += wmfuzzy
     SUBDIR += wmtime
     SUBDIR += wmtimer
     SUBDIR += xalarm
     SUBDIR += xclock
     SUBDIR += xdaliclock
     SUBDIR += xfce4-datetime-plugin
-    SUBDIR += xfce4-timer-out-plugin
+    SUBDIR += xfce4-stopwatch-plugin
+    SUBDIR += xfce4-time-out-plugin
     SUBDIR += xfce4-timer-plugin
-    SUBDIR += xtimer
 
 .include <bsd.port.subdir.mk>

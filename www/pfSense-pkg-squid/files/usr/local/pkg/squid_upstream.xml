@@ -8,7 +8,7 @@
  * squid_upstream.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -64,9 +64,13 @@
 			<url>/pkg.php?xml=squid_users.xml</url>
 		</tab>
 		<tab>
-			<text>Real time</text>
+			<text>Real Time</text>
 			<url>/squid_monitor.php</url>
 		</tab>
+		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
 		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>

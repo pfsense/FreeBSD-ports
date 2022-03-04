@@ -1,5 +1,4 @@
 # Created by: GreenDog <fiziologus@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	lua
 PORTVERSION=	5.2.4
@@ -12,8 +11,7 @@ COMMENT=	Small, compilable scripting language providing easy access to C code
 
 LICENSE=	MIT
 
-USES=		libedit
-LUA_VER=	5.2
+USES=		cpe libedit lua:core,52
 USE_LDCONFIG=	yes
 
 # Overriding __MAKE_CONF makes sure that we don't re-parse
@@ -23,6 +21,7 @@ USE_LDCONFIG=	yes
 # have its settings when we get here.
 # See http://wiki.freebsd.org/MatthiasAndree/LuaLessonsLearnt
 MAKE_ARGS=	__MAKE_CONF=${NONEXISTENT}
+
 # liblua.so requires libm, so make sure it has an explicit dependency
 # so that applications need not second-guess lua's dependencies.
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -42,14 +41,6 @@ MAKE_ARGS+=	MYCFLAGS="${CFLAGS} ${CPPFLAGS} -DLUA_USE_LINUX" \
 		INSTALL_TOP=${STAGEDIR}${PREFIX} \
 		INSTALL_INC=${STAGEDIR}${PREFIX}/include/lua52 \
 		INSTALL_EXEC="${INSTALL_PROGRAM}"
-
-# Cope with the lack of support for Lua 5.2 in bsd.lua.mk.  These
-# overrides, which are required below, should be removed once bsd.lua.mk
-# understands this lua version.
-LUA_PREFIX?=	${PREFIX}
-LUA_SUBDIR?=	lua${PKGNAMESUFFIX}
-LUA_INCDIR?=	${LUA_PREFIX}/include/${LUA_SUBDIR}
-LUA_LIBDIR?=	${LUA_PREFIX}/lib
 
 SUB_FILES=	lua-${LUA_VER}.pc
 SUB_LIST=	version=${PORTVERSION} \

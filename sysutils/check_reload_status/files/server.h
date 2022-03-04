@@ -2,7 +2,7 @@
  * server.h
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2010 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2010-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@ enum actions {
 	ALIASES,
         FILTER,
         INTERFACE,
+	IPSEC,
 	IPSECDNS,
 	ROUTEDNS,
 	OPENVPN,
@@ -146,8 +147,10 @@ static struct command c_service2[] = {
                 { "/etc/rc.reload_all", NULL, "Reloading all", AGGREGATE | FCGICMD } },
         { DNSSERVER, NON, "dns", NULL,
                 { "/etc/rc.resolv_conf_generate", NULL, "Rewriting resolv.conf", AGGREGATE | FCGICMD } },
+        { IPSEC, STRING, "ipsec", NULL,
+                { "/etc/rc.ipsec", "interface=%s", "Restarting IPsec tunnels", AGGREGATE | FCGICMD } },
         { IPSECDNS, NON, "ipsecdns", NULL,
-                { "/etc/rc.newipsecdns", NULL, "Restarting ipsec tunnels", AGGREGATE | FCGICMD } },
+                { "/etc/rc.newipsecdns", NULL, "Restarting IPsec tunnels", AGGREGATE | FCGICMD } },
         { ROUTEDNS, NON, "routedns", NULL,
                 { "/etc/rc.newroutedns", NULL, "Updating static routes based on hostnames", AGGREGATE | FCGICMD } },
         { OPENVPN, STRING, "openvpn", NULL,

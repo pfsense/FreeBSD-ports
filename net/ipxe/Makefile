@@ -1,11 +1,11 @@
 # Created by: Guerkan Karaman <gk.freebsd@googlemail.com>
-# $FreeBSD$
 
 PORTNAME=	ipxe
-PORTVERSION=	20190307
+DISTVERSION=	g20210910
+PORTEPOCH=	1
 CATEGORIES=	net
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Open source network boot firmware
 
 LICENSE=	GPLv2
@@ -15,41 +15,35 @@ ONLY_FOR_ARCHS_REASON=	not yet ported to anything other than amd64/i386
 
 USES=		gmake perl5 shebangfix
 USE_BINUTILS=	yes
-USE_GCC=	yes
+USE_GCC=	yes:build
 USE_GITHUB=	yes
-# iPXE hasn't had a release since 2010.
-# See iPXE's FAQ at http://ipxe.org/faq
-#
-#   Q: Which version of iPXE should I use?
-#
-#   A: iPXE uses a rolling release model, in which every commit is intended
-#      to be production-ready.  You should always use the latest code.
-#
-GH_TAGNAME=	b28ccfc725c9a52401aaa09de0734a44bd44a02d
+GH_TAGNAME=	2265a65
 USE_PERL5=	build
-
-ALL_TARGET=	bin/ipxe.dsk bin/ipxe.lkrn bin/ipxe.pxe bin/ipxe.usb bin/undionly.kpxe
-# VMware ROMs
-ALL_TARGET+=	bin/8086100f.mrom bin/808610d3.mrom bin/10222000.rom bin/15ad07b0.rom
-MAKE_ARGS=	HOST_CC=${CC} \
-		PERL=${PERL} \
-		CC=${CC} \
-		AS=${AS} \
-		LD=${LD} \
-		SIZE=${SIZE} \
-		AR=${AR} \
-		RANLIB=${RANLIB} \
-		OBJCOPY=${OBJCOPY} \
-		NM=${NM} \
-		OBJDUMP=${OBJDUMP} \
+MAKE_ARGS=	AR=${AR} \
 		ARCH=${ARCH:S/amd64/i386/} \
+		AS=${AS} \
+		CC=${CC} \
+		HOST_CC=${CC} \
+		LD=${LD} \
+		NM=${NM} \
 		NO_WERROR=1 \
-		V=1 \
-		${IPXE_MAKE_ARGS}
-PLIST_FILES=	${ALL_TARGET:S@^bin/@${DATADIR}/@}
-SHEBANG_FILES=	util/geniso util/gensdsk
+		OBJCOPY=${OBJCOPY} \
+		OBJDUMP=${OBJDUMP} \
+		PERL=${PERL} \
+		RANLIB=${RANLIB} \
+		SIZE=${SIZE} \
+		V=1
+
+# Append user-settable build args from make.conf
+MAKE_ARGS+=	${IPXE_MAKE_ARGS}
+ALL_TARGET=	bin/ipxe.dsk bin/ipxe.lkrn bin/ipxe.pxe bin/ipxe.usb \
+		bin/undionly.kpxe
+# VMware ROMs
+ALL_TARGET+=	bin/8086100f.mrom bin/808610d3.mrom bin/10222000.rom \
+		bin/15ad07b0.rom
 SUB_FILES=	pkg-message
 WRKSRC_SUBDIR=	src
+PLIST_FILES=	${ALL_TARGET:S@^bin/@${DATADIR}/@}
 
 # Possible options are listed in ${WRKSRC}/config/*.h and
 # http://ipxe.org/buildcfg.  Add a ! prefix to an option to undef it
@@ -65,23 +59,29 @@ _IPXE_BUILDCFG=	branding:PRODUCT_NAME="${PKGNAME} (${OPSYS} ${OSREL}/${ARCH})" \
 		general:PING_CMD \
 		general:POWEROFF_CMD
 
-OPTIONS_DEFAULT=	ISO EFI
-OPTIONS_DEFINE=		ISO EFI
+OPTIONS_DEFINE=		EFI ISO
+OPTIONS_DEFAULT=	EFI ISO
 
-EFI_DESC=	Create EFI image
+EFI_DESC=	Create EFI images
 ISO_DESC=	Create bootable CD image
 
-EFI_ARCHS=	i386 ${ARCH:Mamd64:S/amd64/x86_64/}
-.for _arch in ${EFI_ARCHS}
-EFI_PLIST_FILES+=	${DATADIR}/ipxe.efi-${_arch}
+BUILD_DEPENDS=		bash:shells/bash \
+			syslinux:sysutils/syslinux
+
+EFI_BUILD_DEPENDS=	mformat:emulators/mtools
+_EFI_ARCHS=		${ARCH:Mamd64:S/amd64/x86_64/} i386
+_EFI_TARGETS=		ipxe snp snponly
+.for _arch in ${_EFI_ARCHS}
+. for _target in ${_EFI_TARGETS}
+EFI_PLIST_FILES+=	${DATADIR}/${_target}.efi-${_arch}
+. endfor
+EFI_PLIST_FILES+=	${DATADIR}/ipxe.efi-${_arch}.usb
 .endfor
 
-ISO_ALL_TARGET=	bin/ipxe.iso
-ISO_BUILD_DEPENDS=	bash:shells/bash \
-		${LOCALBASE}/share/syslinux/bios/core/isolinux.bin:sysutils/syslinux \
-		mkisofs:sysutils/cdrtools
-ISO_MAKE_ARGS=	ISOLINUX_BIN="${WRKSRC}/isolinux.bin" \
-		LDLINUX_C32="${LOCALBASE}/share/syslinux/bios/com32/elflink/ldlinux/ldlinux.c32"
+ISO_BUILD_DEPENDS=	mkisofs:sysutils/cdrtools
+ISO_MAKE_ARGS=		ISOLINUX_BIN="${WRKSRC}/isolinux.bin" \
+			LDLINUX_C32="${LOCALBASE}/share/syslinux/bios/com32/elflink/ldlinux/ldlinux.c32"
+ISO_ALL_TARGET=		bin/ipxe.iso
 
 .include <bsd.port.pre.mk>
 
@@ -110,8 +110,9 @@ pre-build-ISO-on:
 	${INSTALL} -m 644 ${LOCALBASE}/share/syslinux/bios/core/isolinux.bin ${WRKSRC}/isolinux.bin
 
 do-build-EFI-on:
-.for _arch in ${EFI_ARCHS}
-	${DO_MAKE_BUILD} ARCH=${_arch} -C ${WRKSRC} bin-${_arch}-efi/ipxe.efi
+.for _arch in ${_EFI_ARCHS}
+	${DO_MAKE_BUILD} ARCH=${_arch} -C ${WRKSRC} ${_EFI_TARGETS:@.target.@bin-${_arch}-efi/${.target.}.efi@} \
+		bin-${_arch}-efi/ipxe.usb
 .endfor
 
 do-install:
@@ -119,10 +120,13 @@ do-install:
 	cd ${WRKSRC} && ${INSTALL_DATA} ${ALL_TARGET} ${STAGEDIR}${DATADIR}
 
 do-install-EFI-on:
-.for _arch in ${EFI_ARCHS}
-	${INSTALL_DATA} ${WRKSRC}/bin-${_arch}-efi/ipxe.efi ${STAGEDIR}${DATADIR}/ipxe.efi-${_arch}
+.for _arch in ${_EFI_ARCHS}
+. for _target in ${_EFI_TARGETS}
+	${INSTALL_DATA} ${WRKSRC}/bin-${_arch}-efi/${_target}.efi \
+		${STAGEDIR}${DATADIR}/${_target}.efi-${_arch}
+. endfor
+	${INSTALL_DATA} ${WRKSRC}/bin-${_arch}-efi/ipxe.usb \
+		${STAGEDIR}${DATADIR}/ipxe.efi-${_arch}.usb
 .endfor
 
 .include <bsd.port.post.mk>
-
-RUN_DEPENDS:=	${RUN_DEPENDS:Ngcc*}

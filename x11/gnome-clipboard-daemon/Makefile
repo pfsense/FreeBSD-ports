@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gnome-clipboard-daemon
 PORTVERSION=	1.0
 PORTREVISION=	12
@@ -12,7 +10,7 @@ COMMENT=	Program that keeps the content of your X clipboard in memory
 
 LICENSE=	GPLv2
 
-USES=		pkgconfig tar:bzip2
+USES=		gnome pkgconfig tar:bzip2 xorg
 USE_GNOME=	gtk20
 USE_XORG=	x11
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} ${CPPFLAGS}"

@@ -1,8 +1,7 @@
 # Created by: Peter Lai <cowbert@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mod_rivet
-PORTVERSION=	3.0.2
+PORTVERSION=	3.2.0
 CATEGORIES=	www tcl
 MASTER_SITES=	APACHE/tcl/rivet
 DISTNAME=	rivet-${PORTVERSION}
@@ -15,8 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libitcl.so:lang/itcl
 
-USES+=		apache:2.2-2.4 gmake \
-		libtool tcl:85+,tea
+USES+=		apache:2.2-2.4 compiler:c11 gmake \
+		libtool tcl:86+,tea
 USE_LDCONFIG=	${PREFIX}/lib/rivet
 
 INSTALL_TARGET=	install-strip

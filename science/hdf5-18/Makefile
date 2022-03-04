@@ -1,9 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	hdf5
 PORTVERSION=	1.8.21 # When PORTVERSION changes, please update french/med/files/patch-configure
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science archivers graphics
 MASTER_SITES=	https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/${PORTNAME}-${PORTVERSION}/src/	\
 		http://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/${PORTNAME}-${PORTVERSION}/src/	\
@@ -18,7 +17,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	DEBUG EXAMPLES FORTRAN SZIP
 
-USES=		libtool:keepla localbase tar:bzip2
+USES=		cpe libtool:keepla localbase tar:bzip2
+CPE_VENDOR=	hdfgroup
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 PORTSUFF=	${PORTNAME}${PKGNAMESUFFIX}

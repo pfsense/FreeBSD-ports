@@ -1,17 +1,16 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Python bindings for libplist
 
-LIB_DEPENDS=	libplist.so:${MASTER_PORT}
+LIB_DEPENDS=	libplist-2.0.so:${MASTER_PORT}
 
 PORTSCOUT=	ignore:1
 
-USES=		python:2.7
+USES=		cpe python:3.6+
+CPE_VENDOR=	libimobiledevice
 USE_PYTHON=	flavors cython
 BINARY_ALIAS=	cython=cython-${PYTHON_VER}
 CONFIGURE_ENV=	PYTHON_LDFLAGS="`pkg-config --libs python-${PYTHON_VER}`"
@@ -31,9 +30,8 @@ PLIST_FILES=	include/plist/cython/plist.pxd \
 		${PYTHONPREFIX_SITELIBDIR:S,^${PREFIX}/,,}/plist.so
 
 pre-configure:
-	@${REINPLACE_CMD} -e 's,../src/libplist.la,-lplist,' \
-		-e 's,$$(plist_la_DEPENDENCIES),,' \
-		${BUILD_WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|$$(top_builddir)/src/libplist-2.0.la|-lplist-2.0|' \
+		${BUILD_WRKSRC}/Makefile.am
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/plist/cython

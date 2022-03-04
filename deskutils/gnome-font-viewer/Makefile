@@ -1,10 +1,9 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-font-viewer
-PORTVERSION=	3.28.0
+PORTVERSION=	41.0
 CATEGORIES=	deskutils gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -13,16 +12,17 @@ COMMENT=	GNOME 3 font viewer utility
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig \
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libhandy-1.so:x11-toolkits/libhandy \
 		libharfbuzz.so:print/harfbuzz
 
 CONFLICTS=	gnome-utils-2.[0-9]*
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 desktop-file-utils gettext localbase meson pkgconfig tar:xz
+USES=		compiler:c11 desktop-file-utils gettext gnome localbase meson \
+		pkgconfig tar:xz
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
-USE_GNOME=	cairo gtk30 gnomedesktop3
+USE_GNOME=	cairo gnomedesktop3 gtk30
 
 .include <bsd.port.mk>

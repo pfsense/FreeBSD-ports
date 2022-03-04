@@ -1,9 +1,7 @@
 # Created by: Toby Allsopp <toby@mi6.gen.nz>
-# $FreeBSD$
 
 PORTNAME=	Text-Tabs+Wrap
-PORTVERSION=	2013.0523
-PORTREVISION=	1
+PORTVERSION=	2021.0814
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,5 +11,7 @@ COMMENT=	Line wrapping to form simple paragraphs
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

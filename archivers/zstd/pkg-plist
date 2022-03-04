@@ -1,10 +1,10 @@
 bin/unzstd
 bin/zstd
+bin/zstd-frugal
 bin/zstdcat
 bin/zstdgrep
 bin/zstdless
 bin/zstdmt
-include/zbuff.h
 include/zdict.h
 include/zstd.h
 include/zstd_errors.h
@@ -18,3 +18,4 @@ man/man1/zstd.1.gz
 man/man1/zstdcat.1.gz
 man/man1/zstdgrep.1.gz
 man/man1/zstdless.1.gz
+man/man1/zstdmt.1.gz

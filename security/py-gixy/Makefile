@@ -1,5 +1,4 @@
 # Created by: Dan Langille
-# $FreeBSD$
 
 PORTNAME=	gixy
 PORTVERSION=	0.1.20
@@ -20,7 +19,7 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}configargparse>=0.11.0:devel/py-configargpa
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}argparse>=1.4.0:devel/py-argparse@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

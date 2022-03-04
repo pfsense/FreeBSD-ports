@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bugzilla
 PORTVERSION=	4.4.9
 CATEGORIES=	japanese
@@ -16,7 +14,8 @@ NO_WRKSUBDIR=	yes
 
 .include "${.CURDIR}/../../devel/bugzilla44/Makefile.common"
 
-USES=		tar:bzip2
+USES=		cpe tar:bzip2
+CPE_VENDOR=	mozilla
 
 LANGDIR=	${WWWDIR}/template/ja
 

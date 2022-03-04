@@ -1,5 +1,4 @@
 # Created by: Franz Bettag <franz@bett.ag>
-# $FreeBSD$
 
 PORTNAME=	pixiewps
 DISTVERSIONPREFIX=	v
@@ -11,8 +10,6 @@ COMMENT=	Offline WPS bruteforce utility
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/../LICENSE.md
-
-BROKEN_powerpc64=	fails to compile: /usr/include/sys/sysctl.h:1033:25: unknown type name 'u_int'
 
 USES=		gmake
 WRKSRC_SUBDIR=	src

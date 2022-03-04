@@ -1,13 +1,12 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnustep-gui
 DISTVERSIONPREFIX=	gui-
-DISTVERSION=	0_27_0
-PORTREVISION=	1
+DISTVERSION=	0_28_0
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits gnustep
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep GUI library
 
 LICENSE=	GPLv3 LGPL3
@@ -21,7 +20,7 @@ LIB_DEPENDS+=	libsndfile.so:audio/libsndfile
 LIB_DEPENDS+=	libao.so:audio/libao
 LIB_DEPENDS+=	libflite.so:audio/flite
 
-USES=		gnustep jpeg pkgconfig
+USES=		gnustep jpeg pkgconfig xorg
 USE_GNUSTEP=	base build
 USE_XORG=	x11 xt
 

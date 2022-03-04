@@ -1,5 +1,4 @@
 # Created by: Po-Chien Lin <linpc@cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	syntax
 PORTVERSION=	0.004
@@ -19,7 +18,9 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Data-OptList>=0.104:devel/p5-Data-OptList \
 		p5-namespace-clean>=0:devel/p5-namespace-clean
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -10,6 +10,7 @@ include/X11/Xregion.h
 include/X11/Xresource.h
 include/X11/Xutil.h
 include/X11/cursorfont.h
+include/X11/extensions/XKBgeom.h
 lib/X11/XErrorDB
 lib/X11/Xcms.txt
 lib/X11/locale/C/Compose
@@ -150,9 +151,9 @@ lib/X11/locale/pt_PT.UTF-8/XLC_LOCALE
 lib/X11/locale/ru_RU.UTF-8/Compose
 lib/X11/locale/ru_RU.UTF-8/XI18N_OBJS
 lib/X11/locale/ru_RU.UTF-8/XLC_LOCALE
-lib/X11/locale/sr_CS.UTF-8/Compose
-lib/X11/locale/sr_CS.UTF-8/XI18N_OBJS
-lib/X11/locale/sr_CS.UTF-8/XLC_LOCALE
+lib/X11/locale/sr_RS.UTF-8/Compose
+lib/X11/locale/sr_RS.UTF-8/XI18N_OBJS
+lib/X11/locale/sr_RS.UTF-8/XLC_LOCALE
 lib/X11/locale/tatar-cyr/Compose
 lib/X11/locale/tatar-cyr/XI18N_OBJS
 lib/X11/locale/tatar-cyr/XLC_LOCALE
@@ -208,7 +209,7 @@ lib/libX11-xcb.so.1.0.0
 lib/libX11.a
 lib/libX11.so
 lib/libX11.so.6
-lib/libX11.so.6.3.0
+lib/libX11.so.6.4.0
 libdata/pkgconfig/x11-xcb.pc
 libdata/pkgconfig/x11.pc
 man/man3/AllPlanes.3.gz
@@ -789,7 +790,7 @@ man/man3/XkbAllocGeomDoodads.3.gz
 man/man3/XkbAllocGeomKeyAliases.3.gz
 man/man3/XkbAllocGeomKeys.3.gz
 man/man3/XkbAllocGeomOutlines.3.gz
-man/man3/XkbAllocGeomOverlayKey.3.gz
+man/man3/XkbAllocGeomOverlayKeys.3.gz
 man/man3/XkbAllocGeomOverlayRows.3.gz
 man/man3/XkbAllocGeomOverlays.3.gz
 man/man3/XkbAllocGeomPoints.3.gz

@@ -1,3 +1,0 @@
-lib/cmake/Qt5Gui/Qt5Gui_QGtkIntegrationPlugin.cmake
-%%QT_PLUGINDIR%%/platforms/libqgtk.so
-%%DEBUG%%%%QT_PLUGINDIR%%/platforms/libqgtk.so.debug

@@ -1,11 +1,10 @@
 # Created by: Chris Hutchinson <portmaster@bsdforge.com>
-# $FreeBSD$
 
 PORTNAME=	smi
 PORTVERSION=	1.4
 PORTREVISION=	2
 CATEGORIES=	textproc www
-MASTER_SITES=	http://bsdforge.com/projects/source/textproc/${PORTNAME}/
+MASTER_SITES=	https://BSDforge.com/projects/source/textproc/${PORTNAME}/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Simple Markdown Interpreter / filter for simplified markup dialect

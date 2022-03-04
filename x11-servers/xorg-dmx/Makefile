@@ -1,7 +1,7 @@
 # Created by: lesi@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	xorg-dmx
+PORTREVISION=	0
 
 COMMENT=	Distributed Multihead X from X.Org
 
@@ -11,8 +11,6 @@ MASTERDIR=	${.CURDIR}/../xorg-server
 DESCR=		${.CURDIR}/pkg-descr
 
 SLAVE_PORT=	yes
-OPTIONS_EXCLUDE=DEVD HAL SUID
-
 USE_XORG=	dmx xorgproto x11 xaw7 xext xfixes xi xmu xpm xrender xres xt xtst
 
 CONFIGURE_ARGS+=--enable-dmx --disable-xephyr --disable-xnest --disable-xvfb \

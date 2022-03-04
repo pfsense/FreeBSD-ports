@@ -1,5 +1,4 @@
 # Created by: Li-Wen Hsu <lwhsu@lwhsu.org>
-# $FreeBSD$
 
 PORTNAME=	pythontidy
 PORTVERSION=	1.23
@@ -25,7 +24,7 @@ do-extract:
 	@${MKDIR} ${WRKDIR}
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/${DISTFILES} ${WRKDIR}
 
-do-patch:
+post-patch:
 	${REINPLACE_CMD} -e 's,/usr/bin/python,${PYTHON_CMD},' \
 		${WRKDIR}/${DISTFILES}
 

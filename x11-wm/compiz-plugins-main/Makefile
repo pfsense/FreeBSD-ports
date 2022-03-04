@@ -1,13 +1,12 @@
 # Created by: Robert Noland <rnoland@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	compiz-plugins-main
 PORTVERSION=	0.8.8
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11-wm
-MASTER_SITES=	http://releases.compiz.org/${PORTVERSION}/
+MASTER_SITES=	https://BSDforge.com/projects/source/x11-wm/compiz-plugins-main/
 
-MAINTAINER=	freebsd-ports@dan.me.uk
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Plugins for Compiz Composite Window Manager
 
 LICENSE=	GPLv2+
@@ -22,12 +21,16 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		gmake jpeg libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		gettext-tools gl gmake gnome jpeg libtool:keepla localbase:ldflags pathfix \
+		pkgconfig tar:bzip2 xorg
 USE_CSTD=	gnu89
-USE_GL=		yes
+USE_GL=		glu
 USE_GNOME=	gconf2 intltool libxslt
 USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xinerama xorgproto xrandr xrender
 USE_LDCONFIG=	yes
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 GCONF_SCHEMAS=	compiz-animation.schemas \
 		compiz-colorfilter.schemas \
@@ -55,14 +58,11 @@ GCONF_SCHEMAS=	compiz-animation.schemas \
 		compiz-vpswitch.schemas \
 		compiz-shift.schemas
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--enable-schemas
 
 OPTIONS_DEFINE=		NLS
-OPTIONS_DEFAULT=	NLS
 
 NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=		gettext-runtime gettext-tools
+NLS_USES=		gettext-runtime
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Catalyst-Plugin-Session
 PORTVERSION=	0.41
@@ -28,6 +27,8 @@ TEST_DEPENDS=	p5-Test-Deep>=0:devel/p5-Test-Deep \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^is_upgrading_needed/d' ${WRKSRC}/Makefile.PL

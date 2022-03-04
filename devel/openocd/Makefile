@@ -1,16 +1,17 @@
 # Created by: Tomasz "CeDeROM" CEDRO (http://www.tomek.cedro.info)
-# $FreeBSD$
 
 PORTNAME=	openocd
-PORTVERSION=	0.10.0
-PORTREVISION=	2
+PORTVERSION=	0.11.0
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Open On-Chip Debugger
 
+BROKEN_aarch64=	fails to build: src/target/nds32_tlb.h:25:2: error: expected identifier PAGE_SIZE_4K = 0
+
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV+=	libusb_CFLAGS=" " libusb_LIBS="-lusb"
 CONFIGURE_ARGS+=	--disable-werror
 
 OPTIONS_DEFINE=	DOXYGEN JIMTCL VERBOSE JTAG_IO USB_IO PARPORT DUMMY FT2232 FTDI \
@@ -42,7 +43,6 @@ ULINK_DESC=	Support Keil ULINK-JTAG Programmer
 ARMJTAGEW_DESC=	Support Olimex ARM-JTAG-EW Programmer
 BUSPIRATE_DESC=	Support BusPirate Programmer
 STLINK_DESC=	Support STLink Programmer
-TI_ICDI_DESC=	Support TI ICDI JTAG Programmer
 OSBDM_DESC=	Support OSBDM Programmer (JTAG only)
 OPENDOUS_DESC=	Support EStick/OpenDous Programmer
 SYSFSGPIO_DESC=	Support Programming via sysfs GPIOs

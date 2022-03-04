@@ -1,5 +1,4 @@
 # Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	WWW-Google-Calculator
 PORTVERSION=	0.07
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	snowfly@yuntech.edu.tw
-COMMENT=	This module provide simple interface for Google calculator
+COMMENT=	Simple interface for Google calculator
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

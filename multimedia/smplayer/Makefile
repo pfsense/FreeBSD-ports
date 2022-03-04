@@ -1,23 +1,22 @@
 # Created by: Diego Depaoli <trebestie@gmail.com> and Yinghong Liu <relaxbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	smplayer
-DISTVERSION=	18.10.0
-PORTREVISION=	1
+DISTVERSION=	21.10.0
 CATEGORIES=	multimedia audio kde
 MASTER_SITES=	SF/${PORTNAME}/SMPlayer/${PORTVERSION}
 
-MAINTAINER=	kikadf.01@gmail.com
+MAINTAINER=	vvd@unislabs.com
 COMMENT=	Complete front-end based on Qt for mplayer
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/Copying.txt
 
-USES=		cpe compiler:c++11-lang desktop-file-utils dos2unix gmake \
-		qmake qt:5 tar:bzip2
+USES=		cpe compiler:c++11-lang desktop-file-utils dos2unix gl \
+		gmake qmake qt:5 tar:bzip2 xorg
+USE_GL=		gl
 USE_QT=		buildtools_build linguisttools_build \
 		core dbus gui network script widgets xml
-USE_XORG=	x11
+USE_XORG=	x11 xext
 
 CPE_VENDOR=	ricardo_villalba
 DOS2UNIX_REGEX=	.*.[^p][^n][^g]$
@@ -27,15 +26,16 @@ CONFIGURE_WRKSRC=	${WRKSRC}/src
 MAKE_ARGS=	PREFIX=${PREFIX} DESTDIR=${STAGEDIR}
 QMAKE_ARGS=	"DEFINES_DISABLED+=MPLAYER2_SUPPORT"
 
-PORTDOCS=	Changelog Not_so_obvious_things.txt \
-		Readme.txt Release_notes.txt Watching_TV.txt
+PORTDOCS=	${DOCS:T}
+DOCS=		old-docs/Changelog old-docs/dvdmenus.txt old-docs/Finding_subtitles.txt \
+		old-docs/Not_so_obvious_things.txt old-docs/Release_notes.txt \
+		old-docs/Watching_TV.txt README.md Readme.txt Release_notes.md
 
 OPTIONS_MULTI=		ENGINE
 OPTIONS_MULTI_ENGINE=	MPLAYER MPV
 OPTIONS_DEFINE=		DOCS DEBUG SKINS THEMES
 OPTIONS_DEFAULT=	MPV SKINS THEMES
 
-TOOLKIT_DESC=	Qt toolkit version
 ENGINE_DESC=	Multimedia engine
 MPLAYER_DESC=	Allow to use MPlayer as multimedia engine
 MPV_DESC=	Allow to use mpv as multimedia engine
@@ -59,11 +59,12 @@ SUB_FILES=	pkg-message
 post-patch:
 	@${REINPLACE_CMD} -e 's|&& $$(QMAKE) $$(QMAKE_OPTS)||; \
 		s|lrelease|${LRELEASE}|; \
-		s|/share/man|/man|g; \
 		s| make| ${MAKE_CMD}|g' \
 		${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e 's|-O2 -W -Wall -Werror|${CFLAGS}|' \
 		${WRKSRC}/webserver/Makefile
+	@${REINPLACE_CMD} -e 's|^sed|#sed|' \
+		${WRKSRC}/install_appdata.sh
 
 post-patch-DEBUG-on:
 	@${REINPLACE_CMD} -e '/CONFIG += debug/s|#||' \
@@ -79,6 +80,6 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -1,14 +1,15 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	granulate
 PORTVERSION=	0.2
 CATEGORIES=	misc
-MASTER_SITES=	http://exe2bin.com/granulate/ \
-		http://keyserver.kjsl.com/~jharris/distfiles/
+MASTER_SITES=	https://github.com/jharris3299/distfiles/raw/master/
 
 MAINTAINER=	jharris@widomaker.com
-COMMENT=	Granulate is a program for splitting files in place
+COMMENT=	Program for splitting files in place
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 PLIST_FILES=	bin/granulate
 

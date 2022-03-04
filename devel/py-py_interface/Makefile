@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	py_interface
 PORTVERSION=	2.3
@@ -12,7 +11,7 @@ COMMENT=	Python implementation of an Erlang node
 
 LICENSE=	LGPL20
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

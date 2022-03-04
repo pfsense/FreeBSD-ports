@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	uh
-PORTVERSION=	2.1.0
+PORTVERSION=	2.1.1
 CATEGORIES=	x11-toolkits rubygems
 MASTER_SITES=	RG
 
@@ -10,8 +8,8 @@ COMMENT=	Xlib ruby toolkit
 
 LICENSE=	BSD3CLAUSE
 
+USES=		gem xorg
 USE_RUBY=	yes
-USES=		gem
 USE_XORG=	x11 xinerama
 
 .include <bsd.port.mk>

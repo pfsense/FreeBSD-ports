@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	apache24
-PORTVERSION=	2.4.39
-CATEGORIES=	www ipv6
+PORTVERSION=	2.4.51
+CATEGORIES=	www
 MASTER_SITES=	APACHE_HTTPD
 DISTNAME=	httpd-${PORTVERSION}
 DIST_SUBDIR=	apache24
@@ -17,7 +15,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libapr-1.so:devel/apr1 \
 		libpcre.so:devel/pcre
 
-USES=		apache:server,2.4 autoreconf cpe iconv libtool perl5 tar:bzip2
+USES=		apache:server,2.4 autoreconf compiler:c11 cpe iconv libtool perl5 tar:bzip2
 USE_PERL5=	run
 USE_RC_SUBR=	apache24 htcacheclean
 GNU_CONFIGURE=	yes
@@ -90,6 +88,7 @@ SOCACHE_DC_LIB_DEPENDS=		libdistcache.so:security/distcache
 #  apu-1-config --(includes|ldflags) and apr_rules.mk
 SSL_CONFIGURE_ON=		--with-ssl=${OPENSSLBASE}
 SSL_USES=			ssl
+SUEXEC_SYSLOG_CONFIGURE_ON=	--without-suexec-logfile --with-suexec-syslog
 XML2ENC_USE=			GNOME=libxml2
 XML2ENC_USES=			gnome
 
@@ -171,6 +170,7 @@ CFLAGS=		${DEBUG_FLAGS}
 CONFIGURE_ARGS+=	--enable-maintainer-mode
 WITH_EXCEPTION_HOOK=	yes
 .else
+CONFIGURE_ENV+=	INSTALL_PROG_FLAGS="-s"
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-server_buildmark.c
 .endif
 .if defined(WITH_EXCEPTION_HOOK)
@@ -218,12 +218,10 @@ post-configure:
 post-install:
 	@${MKDIR} ${ETC_SUBDIRS:S|^|${STAGEDIR}${ETCDIR}/|}
 	${INSTALL_DATA} ${FILESDIR}/no-accf.conf ${STAGEDIR}${ETCDIR}/Includes/
-# place for 3rd party module configuration
 	${INSTALL_DATA} ${FILESDIR}/README_modules.d ${STAGEDIR}${ETCDIR}/modules.d/
-# strip returns an error for non binary files, but we have a big mix
-	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/* 2>/dev/null
-	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/apache24/mod_*.so
+	# Remove files left behind by strip
+	${RM} ${STAGEDIR}${DATADIR}/build/ecp.???????? 2>/dev/null
 
 post-install-LOG_FORENSIC-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/support/check_forensic ${STAGEDIR}${PREFIX}/sbin

@@ -1,28 +1,26 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	sndio
-PORTVERSION=	1.5.0
+PORTVERSION=	1.8.1
 CATEGORIES=	audio
-MASTER_SITES=	http://www.sndio.org/
+MASTER_SITES=	https://sndio.org/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Small audio and MIDI framework from the OpenBSD project
 
 LICENSE=	ISCL
 
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--prefix=${PREFIX} --mandir=${PREFIX}/man
-
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	sndiod
 
-USERS=		_sndio
-GROUPS=		_sndio
+HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--default-dev="rsnd/default" \
+		--prefix=${PREFIX}
 
 # Parallel build leads to problems, but sndio is very quick to compile
 # as is so not worth fixing
 MAKE_JOBS_UNSAFE=	yes
+
+USERS=		_sndio
+GROUPS=		_sndio
 
 post-patch:
 # Make sure sndiod can be started inside jails as root
@@ -30,10 +28,8 @@ post-patch:
 		${WRKSRC}/sndiod/sndiod.c
 
 post-install:
-	@${STRIP_CMD} \
-		${STAGEDIR}${PREFIX}/lib/libsndio.so.6.1 \
-		${STAGEDIR}${PREFIX}/bin/sndiod \
-		${STAGEDIR}${PREFIX}/bin/aucat \
-		${STAGEDIR}${PREFIX}/bin/midicat
+	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} \
+		aucat midicat sndioctl sndiod
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsndio.so.7.1
 
 .include <bsd.port.mk>

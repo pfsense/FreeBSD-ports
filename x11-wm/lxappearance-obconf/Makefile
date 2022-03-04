@@ -1,8 +1,8 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	lxappearance-obconf
 PORTVERSION=	0.2.3
+PORTREVISION=	1
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF/lxde/LXAppearance%20Obconf/
 
@@ -19,7 +19,7 @@ BUILD_DEPENDS=	openbox:x11-wm/openbox \
 	lxappearance:x11-themes/lxappearance
 RUN_DEPENDS=	${BUILD_DEPENDS}
 
-USES=	gettext-tools gmake libtool pkgconfig tar:xz
+USES=	gettext-tools gmake gnome libtool pkgconfig tar:xz xorg
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 gtk20 intltool intlhack atk cairo pango gdkpixbuf2 \
 	librsvg2 libxml2

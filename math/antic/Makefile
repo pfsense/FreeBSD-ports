@@ -1,7 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	antic
-DISTVERSION=	g20190211
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.2.4
+PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,17 +18,17 @@ LIB_DEPENDS=	libflint.so:math/flint2 \
 USES=		gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	wbhart
-GH_TAGNAME=	6f99431
-USE_LDCONFIG=	yes
 
 PLIST_FILES=	include/antic/nf.h \
 		include/antic/nf_elem.h \
 		include/antic/qfb.h \
 		lib/libantic.so \
 		lib/libantic.so.0 \
-		lib/libantic.so.0.0.1
+		lib/libantic.so.0.2.4
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libantic.so

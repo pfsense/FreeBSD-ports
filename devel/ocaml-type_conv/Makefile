@@ -1,5 +1,4 @@
 # Created by: Stanislav Sedov <stas@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	type_conv
 PORTVERSION=	113.00.02
@@ -12,6 +11,8 @@ COMMENT=	Type conversion routines for OCaml
 
 LICENSE=	APACHE20 BSD3CLAUSE
 LICENSE_COMB=	multi
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 OPTIONS_DEFINE=	DOCS
 

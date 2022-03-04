@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+		/* $Id$ */
+		/* ====================================================================================== */
+		/*
+		* zeek_cluster.xml
+		* part of pfSense (https://www.pfSense.org/)
+		* Copyright (c) 2018-2020 Prosper Doko
+		* Copyright (c) 2020 Mark Overholser
+		* All rights reserved.
+		*
+		* Licensed under the Apache License, Version 2.0 (the "License");
+		* you may not use this file except in compliance with the License.
+		* You may obtain a copy of the License at
+		*
+		* http://www.apache.org/licenses/LICENSE-2.0
+		*
+		* Unless required by applicable law or agreed to in writing, software
+		* distributed under the License is distributed on an "AS IS" BASIS,
+		* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		* See the License for the specific language governing permissions and
+		* limitations under the License.
+		*/
+		/* ====================================================================================== */
+		]]>
+	</copyright>
+	<name>zeekcluster</name>
+	<title>Zeek NSM: Zeek Clustering</title>
+	<include_file>/usr/local/pkg/zeek.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ZeekControl Config</text>
+			<url>/pkg_edit.php?xml=zeek_zeekctl.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Zeek Cluster</text>
+			<url>/pkg_edit.php?xml=zeek_cluster.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Zeek Scripts</text>
+			<url>/pkg.php?xml=zeek_script.xml</url>
+		</tab>
+		<tab>
+			<text>Log Mgmt</text>
+			<url>/pkg_edit.php?xml=zeek_log.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Real Time Inspection</text>
+			<url>/zeek_alerts.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=zeek_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Basic Cluster Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Zeek Cluster</fielddescr>
+			<fieldname>enable_cluster</fieldname>
+			<description>Check to enable cluster mode.</description>
+			<sethelp>
+				<![CDATA[
+				<strong><span class="errmsg">Note:</span> If enabled, Zeek stand-alone mode will be disabled.</strong>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Manager Host</fielddescr>
+			<fieldname>manager_host</fieldname>
+			<description>Enter the hostname or IP address of the manager host.</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Proxy Host</fielddescr>
+			<fieldname>proxy_host</fieldname>
+			<description>Enter the hostname or IP address of the proxy host.</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Worker 1 Host</fielddescr>
+			<fieldname>worker1_host</fieldname>
+			<description>Enter the hostname or IP address of the first worker host.</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Worker 1 Interface</fielddescr>
+			<fieldname>worker1_interface</fieldname>
+			<description>Interface used to communicate with the first worker host.</description>
+			<type>interfaces_selection</type>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Worker 2 Host</fielddescr>
+			<fieldname>worker2_host</fieldname>
+			<description>Enter the hostname or IP address of the second worker host.</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Worker 2 Interface</fielddescr>
+			<fieldname>worker2_interface</fieldname>
+			<description>Interface used to communicate with the second worker host.</description>
+			<type>interfaces_selection</type>
+			<multiple/>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		<![CDATA[
+		if (!empty($_POST) && zeek_enabled()) {
+		log_error("Zeek standalone mode is enabled. Disable Zeek standalone mode under Services > Zeek NSM > General Settings.");
+		}
+		zeek_validate_cluster($_POST, $input_errors);
+		]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		zeek_cluster_resync();
+	</custom_php_resync_config_command>
+</packagegui>

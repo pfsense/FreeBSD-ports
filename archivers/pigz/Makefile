@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	pigz
-PORTVERSION=	2.4
+PORTVERSION=	2.6
 CATEGORIES=	archivers
 MASTER_SITES=	http://www.zlib.net/pigz/ \
 		http://freebsd.unixfreunde.de/sources/
@@ -21,7 +20,7 @@ MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
 LDFLAGS+=	-lz -lzopfli
 
 PLIST_FILES=	bin/pigz bin/pigzn bin/pigzt bin/unpigz
-PLIST_FILES+=	man/man1/pigz.1.gz
+PLIST_FILES+=	share/man/man1/pigz.1.gz
 
 post-patch:
 	${REINPLACE_CMD} -e 's/$${ZOPFLI}.*//' \
@@ -33,6 +32,6 @@ do-install:
 .for FILE in pigz pigzn pigzt unpigz
 	${INSTALL_PROGRAM} ${WRKSRC}/${FILE} ${STAGEDIR}${PREFIX}/bin
 .endfor
-	${INSTALL_MAN} ${WRKSRC}/pigz.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/pigz.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 .include <bsd.port.mk>

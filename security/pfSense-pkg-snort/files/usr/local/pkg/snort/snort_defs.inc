@@ -3,9 +3,9 @@
  * snort_defs.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ if (!defined("SNORT_BIN_VERSION")) {
 		define("SNORT_BIN_VERSION", $matches[0]);
 	}
 	else {
-		define("SNORT_BIN_VERSION", "2.9.13");
+		define("SNORT_BIN_VERSION", "2.9.19");
 	}
 }
 
@@ -89,7 +89,7 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
 if (!defined("SNORT_OPENAPPID_RULES_URL"))
-	define("SNORT_OPENAPPID_RULES_URL", "https://files.pfsense.org/openappid/");
+	define("SNORT_OPENAPPID_RULES_URL", "https://files.netgate.com/openappid/");
 if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
 	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))
@@ -104,5 +104,9 @@ if (!defined("ET_PRO_FILE_PREFIX"))
 	define("ET_PRO_FILE_PREFIX", "etpro-");
 if (!defined("OPENAPPID_FILE_PREFIX"))
 	define("OPENAPPID_FILE_PREFIX", "openappid-");
+if (!defined("FEODO_TRACKER_DNLD_FILENAME"))
+	define("FEODO_TRACKER_DNLD_FILENAME", "feodotracker.tar.gz");
+if (!defined("FEODO_TRACKER_DNLD_URL"))
+	define("FEODO_TRACKER_DNLD_URL", "https://feodotracker.abuse.ch/downloads/");
 
 ?>

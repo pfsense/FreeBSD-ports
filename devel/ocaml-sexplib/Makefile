@@ -1,5 +1,4 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	sexplib
 PORTVERSION=	113.00.00
@@ -16,6 +15,7 @@ LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.txt
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE-Tywith.txt
 
 BUILD_DEPENDS=	ocaml-type_conv>=0:devel/ocaml-type_conv
+BUILD_DEPENDS+=	ocamlbuild:devel/ocaml-ocamlbuild
 RUN_DEPENDS=	ocaml-type_conv>=0:devel/ocaml-type_conv
 
 OPTIONS_DEFINE=	DOCS

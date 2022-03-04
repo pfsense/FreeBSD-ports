@@ -1,9 +1,8 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vpnc-scripts
-PORTVERSION=	20190117
-CATEGORIES=	sysutils
+PORTVERSION=	20200226
+CATEGORIES=	sysutils net-vpn
 MASTER_SITES=	ftp://ftp.infradead.org/pub/${PORTNAME}/ \
 		ZI
 
@@ -13,6 +12,7 @@ COMMENT=	Collection of scripts to setup routes and other changes for a VPN
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	sbin/vpnc-script sbin/vpnc-script-sshd sbin/vpnc-script-ptrtd

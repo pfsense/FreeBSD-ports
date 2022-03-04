@@ -1,34 +1,29 @@
 # Created by: Honza Betik
-# $FreeBSD$
 
 PORTNAME=	radsecproxy
-PORTVERSION=	1.6.8
+DISTVERSION=	1.8.2
 CATEGORIES=	net
-MASTER_SITES=	https://software.nordu.net/radsecproxy/
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
-MAINTAINER=	m.tsatsenko@gmail.com
-COMMENT=	Radsecproxy is a generic RADIUS proxy
+MAINTAINER=	nc@FreeBSD.org
+COMMENT=	Generic RADIUS proxy
 
-LICENSE=	GPLv2 BSD3CLAUSE
-LICENSE_COMB=	dual
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe tar:xz ssl
-CPE_VENDOR=	nordunet
+LIB_DEPENDS=	libnettle.so:security/nettle
+
+USES=		compiler:c11 cpe localbase:ldflags ssl
+USE_RC_SUBR=	${PORTNAME}
+CPE_VENDOR=	uninett
 
 GNU_CONFIGURE=	yes
-USE_RC_SUBR=	${PORTNAME}
+
 CONFIGURE_ARGS=	--with-ssl=${OPENSSLBASE}
-
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_12=	incomplete definition of type 'struct ssl_st'
-BROKEN_FreeBSD_13=	incomplete definition of type 'struct ssl_st'
-.endif
 
 post-install:
 	${MAKE} install-man -C ${WRKSRC} ${MAKE_ARGS}
 	${INSTALL_DATA} ${WRKSRC}/radsecproxy.conf-example \
 		${STAGEDIR}${PREFIX}/etc
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

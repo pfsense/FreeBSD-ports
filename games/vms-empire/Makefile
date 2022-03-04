@@ -1,8 +1,7 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	vms-empire
-PORTVERSION=	1.14
+PORTVERSION=	1.16
 CATEGORIES=	games
 MASTER_SITES=	http://www.catb.org/~esr/vms-empire/
 

@@ -1,9 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	libboard
 DISTVERSION=	0.9.4
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	graphics
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -11,7 +10,7 @@ COMMENT=	Vector graphics C++ library
 
 LICENSE=	LGPL3
 
-LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick6
+LIB_DEPENDS=	libMagick++-${IMAGEMAGICK_DEFAULT}.so:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
 
 USES=		cmake compiler:c++11-lang localbase
 
@@ -19,7 +18,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	c-koi
 GH_TAGNAME=	5b38274
 
-CXXFLAGS+=	-D_GLIBCXX_USE_C99 -fPIC # XXX ports/193528
 USE_CXXSTD=	c++11
 CMAKE_ARGS=	-DMYPROJ_RAN_ONCE:BOOL=YES	\
 		-DEXECUTABLE_OUTPUT_PATH:PATH="${STAGEDIR}${EXAMPLESDIR}"

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	geomorph
 PORTVERSION=	0.60.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.60/
 
@@ -13,13 +10,14 @@ COMMENT=	Height field generator and editor
 LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 		libpng.so:graphics/png
 
-USES=		compiler:c++11-lang desktop-file-utils gmake pkgconfig \
+USES=		compiler:c++11-lang desktop-file-utils gl gmake pkgconfig \
 		shebangfix
 SHEBANG_FILES=	update-rc
-USE_GL=		yes
+USE_GL=		gl glu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libintl-prefix="${LOCALBASE}"
-USE_GCC=	any # lots of severely broken code
+USE_GCC=	yes # lots of severely broken code
+CFLAGS+=	-fcommon
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 PORTDATA=	*

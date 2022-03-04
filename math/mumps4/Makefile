@@ -1,8 +1,8 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	mumps4
 PORTVERSION=	4.10.0	# Please do not upgrade to 5+: use math/mumps
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://mumps.enseeiht.fr/		\
 		http://graal.ens-lyon.fr/MUMPS/		\
@@ -16,59 +16,54 @@ COMMENT=	MUltifrontal Massively Parallel sparse direct Solver
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-#-----------------------------------------------------------------------
-
-# WARNING: Non-serviceable parts inside, can break other ports
-# You may define these options/knobs:
-#
-# FFLAGS: Fortran compiler flags for gfortran
-# WITH_OPTIMIZED_FLAGS:Try to use agressive (non-CPU) FFLAGS
-# BLAS_LIBS: specify other version of BLAS
-# WITH_ATLAS: Use ATLAS instead of the regular BLAS
-# WITH_METIS: Add METIS ordering
-#-----------------------------------------------------------------------
-
 USES=		fortran
 
 MAKE_JOBS_UNSAFE=yes
 
+FFLAGS+=	-ffast-math
 FORTRANLIBS=	-lgfortran
 GCCLIBDIR=	${LDFLAGS}
 USE_LDCONFIG=	yes
 VEM=		${PORTVERSION:R:R}
 LIBS=		cmumps dmumps mumps_common pord smumps zmumps
 
-.if defined(WITH_OPTIMIZED_FLAGS)
-FFLAGS+=	-O3 -ffast-math
-.endif
-
-.ifdef WITH_METIS
-BUILD_DEPENDS+=	${LOCALBASE}/bin/oemetis:math/metis4
-MAKE_ENV+=	ORDERINGSF=-Dmetis
-.endif
-
-PLIST_SUB+=	MUMPSVERSION=${PORTVERSION} MUMPSV=${VEM}
+CONFLICTS+=	mumps-mpich-4*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
+LIBS+=		mpiseq
+
+PLIST_SUB+=	MUMPSVERSION=${PORTVERSION} MUMPSV=${VEM}
+
+#-----------------------------------------------------------------------
+# WARNING: Non-serviceable parts inside, can break other ports
+# You may define these options/knobs:
+#
+# FFLAGS: Fortran compiler flags for gfortran
+# BLASLIB: specify other version of BLAS
+# WITH_ATLAS: Use ATLAS instead of the regular BLAS
+#-----------------------------------------------------------------------
+
 .include <bsd.port.pre.mk>
 
+# This is like blaslapack, except we don't use lapack at all
 .if exists(${LOCALBASE}/lib/libatlas.so) && !defined(WITH_BLAS)
 WITH_ATLAS=	yes
 .endif
 .if defined(WITH_ATLAS)
 LIB_DEPENDS+=	libatlas.so:math/atlas
-BLAS_LIBS=	-lf77blas
-LAPACK_LIBS=	-lalapack -lcblas
+BLASLIB=	-lf77blas
+#LAPACKLIB=	-lalapack -lcblas
 .else
 LIB_DEPENDS+=	libblas.so:math/blas
-BLAS_LIBS=	-lblas
-LAPACK_LIBS=	-llapack
+BLASLIB=	-lblas
+#LAPACKLIB=	-llapack
 .endif
 
-CONFLICTS+=	mumps-mpich-4*
-
-LIBS+=		mpiseq
+.if ${GCC_DEFAULT} >= 10
+# workaround for Type mismatch in argument 's' at (1); passed INTEGER(4) to LOGICAL(4)
+FCFLAGS+=	-fallow-argument-mismatch
+.endif
 
 pre-configure:
 	${INSTALL_DATA} ${WRKSRC}/Make.inc/Makefile.inc.generic.SEQ \
@@ -84,13 +79,10 @@ pre-build:
 	s+@SOVER@+${VEM}+g; \
 	s+@GCCLIBDIR@+${GCCLIBDIR}+g; \
 	s+@FORTRANLIBS@+${FORTRANLIBS}+g; \
-	s+@BLAS_LIBS@+${BLAS_LIBS}+ ; \
+	s+@BLAS_LIBS@+${BLASLIB}+ ; \
 	s+@LOCALBASE@+${LOCALBASE}+g;' \
 		${WRKSRC}/${MF}
 .endfor
-.ifdef WITH_METIS
-	${REINPLACE_CMD} -e 's+#LMETIS+LMETIS+' ${WRKSRC}/Makefile.inc
-.endif
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}

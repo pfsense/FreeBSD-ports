@@ -1,5 +1,4 @@
 # Created by: Edwin Groothuis
-# $FreeBSD$
 
 PORTNAME=	bomberclone
 PORTVERSION=	0.11.9
@@ -13,7 +12,7 @@ COMMENT=	Reimplementation of Atomic Bomber Man
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake localbase
+USES=		cpe gmake localbase sdl
 USE_SDL=	image mixer sdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-werror

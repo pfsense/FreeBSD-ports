@@ -1,32 +1,36 @@
 # Created by: dwcjr@inethouston.net
-# $FreeBSD$
 
 PORTNAME=	openssh
-DISTVERSION=	7.9p1
+DISTVERSION=	8.8p1
 PORTREVISION=	1
 PORTEPOCH=	1
-CATEGORIES=	security ipv6
+CATEGORIES=	security
 MASTER_SITES=	OPENBSD/OpenSSH/portable
 PKGNAMESUFFIX?=	-portable
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	The portable version of OpenBSD's OpenSSH
 
-#LICENSE=      BSD2,BSD3,MIT,public domain,BSD-Style,BEER-WARE,"any purpose with notice intact",ISC-Style
-#LICENSE_FILE= ${WRKSRC}/LICENCE
+LICENSE=	OPENSSH
+LICENSE_NAME=	OpenSSH Licenses
+LICENSE_FILE=	${WRKSRC}/LICENCE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS?=		openssh-3.* ssh-1.* ssh2-3.* openssh-portable-devel-*
+CONFLICTS?=		openssh-3.* ssh-1.* ssh2-3.* openssh-portable-devel
 
-USES=			alias autoreconf ncurses ssl
+USES=			alias autoreconf compiler:c11 cpe localbase ncurses \
+			pkgconfig ssl
 GNU_CONFIGURE=		yes
-CONFIGURE_ENV=		ac_cv_func_strnvis=no
-CONFIGURE_ARGS=		--prefix=${PREFIX} --with-md5-passwords \
-			--without-zlib-version-check --with-ssl-engine \
-			--with-mantype=man
+CONFIGURE_ARGS=		--prefix=${PREFIX} \
+			--with-ssl-engine \
+			--with-mantype=man \
+			--with-Werror
 
 ETCOLD=			${PREFIX}/etc
 
-FLAVORS=			default hpn gssapi x509
+CPE_VENDOR=		openbsd
+
+FLAVORS=			default hpn gssapi
 default_CONFLICTS_INSTALL=	openssh-portable-hpn openssh-portable-gssapi \
 				openssh-portable-x509
 hpn_CONFLICTS_INSTALL=		openssh-portable openssh-portable-gssapi \
@@ -35,22 +39,16 @@ hpn_PKGNAMESUFFIX=		-portable-hpn
 gssapi_CONFLICTS_INSTALL=	openssh-portable openssh-portable-hpn \
 				openssh-portable-x509
 gssapi_PKGNAMESUFFIX=		-portable-gssapi
-x509_CONFLICTS_INSTALL=		openssh-portable openssh-portable-hpn \
-				openssh-portable-gssapi
-x509_PKGNAMESUFFIX=		-portable-x509
 
 OPTIONS_DEFINE=		DOCS PAM TCP_WRAPPERS LIBEDIT BSM \
-			HPN X509 KERB_GSSAPI \
-			LDNS NONECIPHER XMSS
-OPTIONS_DEFAULT=	LIBEDIT PAM TCP_WRAPPERS LDNS
+			HPN KERB_GSSAPI \
+			LDNS NONECIPHER XMSS FIDO_U2F BLACKLISTD
+OPTIONS_DEFAULT=	LIBEDIT PAM TCP_WRAPPERS LDNS FIDO_U2F
 .if ${FLAVOR:U} == hpn
 OPTIONS_DEFAULT+=	HPN NONECIPHER
 .endif
 .if ${FLAVOR:U} == gssapi
 OPTIONS_DEFAULT+=	KERB_GSSAPI MIT
-.endif
-.if ${FLAVOR:U} == x509
-OPTIONS_DEFAULT+=	X509
 .endif
 OPTIONS_RADIO=		KERBEROS
 OPTIONS_RADIO_KERBEROS=	MIT HEIMDAL HEIMDAL_BASE
@@ -59,12 +57,13 @@ BSM_DESC=		OpenBSM Auditing
 KERB_GSSAPI_DESC=	Kerberos/GSSAPI patch (req: GSSAPI)
 HPN_DESC=		HPN-SSH patch
 LDNS_DESC=		SSHFP/LDNS support
-X509_DESC=		x509 certificate patch
 HEIMDAL_DESC=		Heimdal Kerberos (security/heimdal)
 HEIMDAL_BASE_DESC=	Heimdal Kerberos (base)
 MIT_DESC=		MIT Kerberos (security/krb5)
 NONECIPHER_DESC=	NONE Cipher support
 XMSS_DESC=		XMSS key support (experimental)
+FIDO_U2F_DESC=		FIDO/U2F support (security/libfido2)
+BLACKLISTD_DESC=	FreeBSD blacklistd(8) support
 
 OPTIONS_SUB=		yes
 
@@ -73,17 +72,9 @@ TCP_WRAPPERS_EXTRA_PATCHES=${FILESDIR}/extra-patch-tcpwrappers
 LDNS_CONFIGURE_WITH=	ldns=${LOCALBASE}
 LDNS_LIB_DEPENDS=	libldns.so:dns/ldns
 LDNS_EXTRA_PATCHES=	${FILESDIR}/extra-patch-ldns
-LDNS_CFLAGS=		-I${LOCALBASE}/include
-LDNS_CONFIGURE_ON=	--with-ldflags='-L${LOCALBASE}/lib'
 
 HPN_CONFIGURE_WITH=		hpn
 NONECIPHER_CONFIGURE_WITH=	nonecipher
-
-# See http://www.roumenpetrov.info/openssh/
-X509_VERSION=		11.5
-X509_PATCH_SITES=	http://www.roumenpetrov.info/openssh/x509-${X509_VERSION}/:x509
-X509_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-x509-glue
-X509_PATCHFILES=	${PORTNAME}-7.9p1+x509-${X509_VERSION}.diff.gz:-p1:x509
 
 MIT_LIB_DEPENDS=		libkrb5.so.3:security/krb5
 HEIMDAL_LIB_DEPENDS=		libkrb5.so.26:security/heimdal
@@ -95,34 +86,41 @@ LIBEDIT_CONFIGURE_WITH=	libedit
 LIBEDIT_USES=		libedit
 BSM_CONFIGURE_ON=	--with-audit=bsm
 
+FIDO_U2F_LIB_DEPENDS=	libfido2.so:security/libfido2
+FIDO_U2F_CONFIGURE_ON=	--with-security-key-builtin
+FIDO_U2F_CONFIGURE_OFF=	--disable-security-key
+
+BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
+
 ETCDIR?=		${PREFIX}/etc/ssh
 
 .include <bsd.port.pre.mk>
 
-PATCH_SITES+=		http://mirror.shatow.net/freebsd/${PORTNAME}/:DEFAULT,x509,hpn,gsskex
-
-# Upstream OpenSSL fix but does not apply for x509 patch.
-EXTRA_PATCHES+=		${FILESDIR}/extra-patch-c0a35265907533be10ca151ac797f34ae0d68969
-
-# X509 patch includes TCP Wrapper support already
-.if ${PORT_OPTIONS:MX509}
-EXTRA_PATCHES:=		${EXTRA_PATCHES:N${TCP_WRAPPERS_EXTRA_PATCHES}}
-EXTRA_PATCHES:=		${EXTRA_PATCHES:N${FILESDIR}/extra-patch-c0a35265907533be10ca151ac797f34ae0d68969}
-.endif
+PATCH_SITES+=	http://mirror.shatow.net/freebsd/${PORTNAME}/:DEFAULT,hpn,gsskex
 
 # Must add this patch before HPN due to conflicts
-.if ${PORT_OPTIONS:MKERB_GSSAPI}
-#BROKEN=	KERB_GSSAPI No patch for ${DISTVERSION} yet.
-# Patch from:
-# https://sources.debian.org/data/main/o/openssh/1:7.7p1-2/debian/patches/gssapi.patch
-# which was originally based on 5.7 patch from
-# http://www.sxw.org.uk/computing/patches/
-# It is mirrored simply to apply gzip -9.
+.if ${PORT_OPTIONS:MKERB_GSSAPI} || ${FLAVOR:U} == gssapi
+BROKEN=	KERB_GSSAPI No patch for ${DISTVERSION} yet.
 .  if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
 # Needed glue for applying HPN patch without conflict
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-hpn-gss-glue
 .  endif
-PATCHFILES+=	openssh-7.9p1-gsskex-all-20141021-debian-rh-20181020.patch.gz:-p1:gsskex
+# - See https://sources.debian.org/data/main/o/openssh/ for which subdir to
+# pull from.
+GSSAPI_DEBIAN_SUBDIR=	${DISTVERSION}-2
+# - Debian does not use a versioned filename so we trick fetch to make one for
+# us with the ?<anything>=/ trick.
+PATCH_SITES+=	https://sources.debian.org/data/main/o/openssh/1:${GSSAPI_DEBIAN_SUBDIR}/debian/patches/gssapi.patch?dummy=/:gsskex
+# Bump this when updating the patch location
+GSSAPI_UPDATE_DATE=	20200607
+PATCHFILES+=	openssh-${DISTVERSION}-gsskex-all-20141021-debian-rh-${GSSAPI_UPDATE_DATE}.patch:-p1:gsskex
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gssapi-sshconnect2.c
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gssapi-kexgssc.c
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gssapi-kexgsss.c
+.endif
+
+.if ${PORT_OPTIONS:MBLACKLISTD}
+CONFIGURE_LIBS+=	-lblacklist
 .endif
 
 # https://www.psc.edu/hpn-ssh https://github.com/rapier1/openssh-portable/tree/hpn-openssl1.1-7_7_P1
@@ -139,23 +137,10 @@ EXTRA_PATCHES+=		${FILESDIR}/extra-patch-hpn:-p2
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-hpn-compat
 .endif
 
-CONFIGURE_LIBS+=	-lutil
-
 CONFIGURE_ARGS+=	--disable-utmp --disable-wtmp --disable-wtmpx --without-lastlog
 
 # Keep this last
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-version-addendum
-
-.if ${PORT_OPTIONS:MX509}
-.  if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
-BROKEN=		X509 patch and HPN patch do not apply cleanly together
-.  endif
-
-.  if ${PORT_OPTIONS:MKERB_GSSAPI}
-BROKEN=		X509 patch incompatible with KERB_GSSAPI patch
-.  endif
-
-.endif
 
 .if ${PORT_OPTIONS:MHEIMDAL_BASE} && ${PORT_OPTIONS:MKERB_GSSAPI}
 BROKEN=		KERB_GSSAPI Requires either MIT or HEMIDAL, does not build with base Heimdal currently
@@ -201,13 +186,18 @@ CONFIGURE_ARGS+=	--with-xauth=${LOCALBASE}/bin/xauth
 RC_SCRIPT_NAME=		openssh
 VERSION_ADDENDUM_DEFAULT?=	${OPSYS}-${PKGNAME}
 
+CFLAGS+=	${CFLAGS_${CHOSEN_COMPILER_TYPE}}
+CFLAGS_gcc=	-Wno-stringop-truncation -Wno-stringop-overflow
+
+SSH_ASKPASS_PATH?=	${LOCALBASE}/bin/ssh-askpass
+
 post-patch:
-	@${REINPLACE_CMD} -e 's|-ldes|-lcrypto|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} \
 	    -e 's|install: \(.*\) host-key check-config|install: \1|g' \
 	    ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${LOCALBASE}|' \
-		-e 's|%%RC_SCRIPT_NAME%%|${RC_SCRIPT_NAME}|' ${WRKSRC}/sshd.8
+	@${REINPLACE_CMD} \
+	    -e 's|$$[{(]libexecdir[})]/ssh-askpass|${SSH_ASKPASS_PATH}|' \
+	    ${WRKSRC}/Makefile.in ${WRKSRC}/configure.ac
 	@${REINPLACE_CMD} \
 	    -e 's|\(VersionAddendum\) none|\1 ${VERSION_ADDENDUM_DEFAULT}|' \
 	    ${WRKSRC}/sshd_config
@@ -220,9 +210,14 @@ post-patch:
 post-configure-XMSS-on:
 	@${ECHO_CMD} "#define WITH_XMSS 1" >> ${WRKSRC}/config.h
 
+post-configure-BLACKLISTD-on:
+	@${ECHO_CMD} "#define USE_BLACKLIST 1" >> ${WRKSRC}/config.h
+
 post-install:
+	${MV} ${STAGEDIR}${ETCDIR}/moduli \
+	    ${STAGEDIR}${ETCDIR}/moduli.sample
 	${MV} ${STAGEDIR}${ETCDIR}/ssh_config \
-	    ${STAGEDIR}${ETCDIR}//ssh_config.sample
+	    ${STAGEDIR}${ETCDIR}/ssh_config.sample
 	${MV} ${STAGEDIR}${ETCDIR}/sshd_config \
 	    ${STAGEDIR}${ETCDIR}/sshd_config.sample
 .if ${PORT_OPTIONS:MHPN} || ${PORT_OPTIONS:MNONECIPHER}
@@ -232,10 +227,11 @@ post-install:
 
 test: build
 	cd ${WRKSRC} && ${SETENV} -i \
-		OBJ=${WRKDIR} ${MAKE_ENV} \
+		OBJ=${WRKDIR} ${MAKE_ENV:NHOME=*} \
 		TEST_SHELL=${SH} \
 		SUDO="${SUDO}" \
 		LOGNAME="${LOGNAME}" \
+		HOME="${HOME}" \
 		TEST_SSH_TRACE=yes \
 		PATH=${WRKSRC}:${PREFIX}/bin:${PREFIX}/sbin:${PATH} \
 		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} tests

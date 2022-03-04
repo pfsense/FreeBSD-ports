@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	picpas
-PORTVERSION=	0.8.8
+PORTVERSION=	0.9.0
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -12,11 +10,10 @@ COMMENT=	Multi-platform Pascal for Microchip PIC16F microcontrollers
 
 LICENSE=	GPLv2
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt4 ${PORTNAME}-qt5
-qt4_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt4
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
 
-USES=		dos2unix fpc lazarus:flavors
+USES=		dos2unix fpc gnome lazarus:flavors xorg
 USE_FPC=	chm fcl-base fcl-image fcl-json fcl-registry fcl-xml pasjpeg regexpr \
 		rtl-objpas x11
 USE_XORG=	x11
@@ -24,13 +21,13 @@ DOS2UNIX_REGEX=	.*\.([txt]|pas|lpi|txt|lfm)
 USE_GITHUB=	yes
 GH_ACCOUNT=	t-edson
 GH_PROJECT=	PicPas
-GH_TAGNAME=	cc5d415
+GH_TAGNAME=	7940bc3
 GH_TUPLE=	t-edson:MiConfig:a4a988a:miconfig/miconfig \
 		t-edson:MisUtils:742eff3:misutils/misutils  \
 		t-edson:PicUtils:5f89bdf:picutils/picutils \
-		t-edson:SynFacilUtils:2909899:syncfacilutils/syncfacilutils \
+		t-edson:SynFacilUtils:8725237:syncfacilutils/syncfacilutils \
 		t-edson:UtilsGrilla:07744b9:utilsgrilla/utilsgrilla \
-		t-edson:ogEditGraf:328a207:ogeditgraf/ogeeditgraf \
+		t-edson:ogEditGraf:a19b68a:ogeditgraf/ogeeditgraf \
 		t-edson:t-Xpres:6665922:txpres/txpres
 
 USE_FPC_gtk2=	cairo
@@ -40,10 +37,10 @@ USE_GNOME+=	${USE_GNOME_${FLAVOR}}
 
 LAZARUS_PROJECT_FILES=	Source/PicPas.lpi
 LAZBUILD_ARGS=		-d
-LLD_UNSAFE=	yes
 
 post-patch:
 	${REINPLACE_CMD} 's|%%DATADIR%%|${DATADIR}|g' ${WRKSRC}/Source/Globales.pas
+	${REINPLACE_CMD} 's|0.8.7|${PORTVERSION}|g' ${WRKSRC}/version.txt
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/PicPas-freebsd ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

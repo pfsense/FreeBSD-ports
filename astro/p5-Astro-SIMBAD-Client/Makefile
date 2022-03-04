@@ -1,8 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Astro-SIMBAD-Client
-PORTVERSION=	0.038
+PORTVERSION=	0.046
 CATEGORIES=	astro perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -23,6 +22,7 @@ TEST_DEPENDS=	p5-YAML>=0:textproc/p5-YAML
 
 USES=		perl5
 USE_PERL5=	configure
+
 CONFIGURE_ARGS=	-y
 NO_ARCH=	yes
 

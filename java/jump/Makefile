@@ -1,5 +1,4 @@
 # Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jump
 PORTVERSION=	0.5
@@ -11,7 +10,6 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java library for arbitrary precision computations
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 ALL_TARGET=	jar
 

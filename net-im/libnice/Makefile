@@ -1,47 +1,37 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libnice
-PORTVERSION=	0.1.13
+PORTVERSION=	0.1.18
 CATEGORIES=	net-im devel
 MASTER_SITES=	http://nice.freedesktop.org/releases/
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Library and transmitter that implements ICE-19
+COMMENT?=	Library and transmitter that implements ICE-19
 
-USES=		gettext gmake libtool pathfix pkgconfig
+LICENSE=	LGPL21 MPL11
+LICENSE_COMB=	dual
+
+LIB_DEPENDS?=	libgnutls.so:security/gnutls
+BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
+
+USES=		gettext gmake gnome libtool localbase:ldflags pathfix pkgconfig meson python
 USE_LDCONFIG=	yes
 USE_GNOME=	glib20 introspection:build
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include -DHAVE_GETIFADDRS
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-DHAVE_GETIFADDRS
 INSTALL_TARGET=	install-strip
 
-.if !defined(LIBNICE_SLAVE)
 OPTIONS_DEFINE=	GUPNP
+GUPNP_MESON_ENABLED=	gupnp
 GUPNP_DESC=	UPnP IGD port mapping support
 GUPNP_LIB_DEPENDS+=	libgupnp-igd-1.0.so:net/gupnp-igd
-GUPNP_CONFIGURE_ENABLE=	gupnp
-.endif
 
-#.include <bsd.port.options.mk>
+MESON_ARGS+=-Dtests=disabled
 
 .if defined(LIBNICE_SLAVE)
-. if ${LIBNICE_SLAVE}==gstreamer010
-USE_GSTREAMER=	yes
-CONFIGURE_ARGS+=--without-gstreamer --with-gstreamer-0.10
-. endif
-. if ${LIBNICE_SLAVE}==gstreamer1
 USE_GSTREAMER1=	yes
-CONFIGURE_ARGS+=--with-gstreamer --without-gstreamer-0.10
-. endif
+MESON_ARGS+=-Dgstreamer=enabled
 .else
-CONFIGURE_ARGS=	--without-gstreamer --without-gstreamer-0.10
+MESON_ARGS+=-Dgstreamer=disabled -Dgtk_doc=enabled
 .endif
-
-post-patch:
-	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} -e \
-		's|-Wno-missing-field-initializers|#|g'
-	@${REINPLACE_CMD} -e 's|-Werror||g' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

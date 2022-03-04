@@ -1,5 +1,4 @@
 # Created by: Florent Thoumie <flz@FreeBSD.org>
-# $FreeBSD$
 #   $MCom: ports/trunk/net-im/telepathy-salut/Makefile 19802 2014-08-13 12:13:08Z gusi $
 
 PORTNAME=	telepathy-salut
@@ -11,12 +10,15 @@ MASTER_SITES=	http://telepathy.freedesktop.org/releases/${PORTNAME}/
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Link-local Connection Manager for Telepathy Framework
 
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 LIB_DEPENDS=	libavahi-glib.so:net/avahi-app \
 		libtelepathy-glib.so:net-im/telepathy-glib \
 		libsoup-2.4.so:devel/libsoup
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool pathfix pkgconfig python:2.7,build sqlite ssl
+USES=		gmake gnome libtool pathfix pkgconfig python:build sqlite ssl
 USE_GNOME=	glib20 libxslt:build
 CONFIGURE_ARGS=	--disable-Werror --enable-avahi-tests=no
 LDFLAGS+=	-lpthread

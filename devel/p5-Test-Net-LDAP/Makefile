@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Net-LDAP
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of Net::LDAP subclass for testing
 
 LICENSE=	ART10 GPLv1+

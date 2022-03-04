@@ -1,9 +1,8 @@
 # Created by: Kengo Ichiki <kichiki@users.sourceforge.net>
-# $FreeBSD$
 
 PORTNAME=	waon
 PORTVERSION=	0.10
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -17,18 +16,19 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsndfile.so:audio/libsndfile \
 		libsamplerate.so:audio/libsamplerate
 
-CONFLICTS=	pv-[0-9]*
+CONFLICTS=	pv
 
-USES=		ncurses pkgconfig
+USES=		gnome ncurses pkgconfig
 USE_GNOME=	gtk20
 
 PLIST_FILES=	bin/waon bin/pv bin/gwaon \
-		man/man1/gwaon.1.gz man/man1/pv.1.gz man/man1/waon.1.gz
+		share/man/man1/gwaon.1.gz share/man/man1/pv.1.gz \
+		share/man/man1/waon.1.gz
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/waon \
 		${WRKSRC}/pv \
 		${WRKSRC}/gwaon ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/*.1  ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/*.1  ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

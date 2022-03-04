@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Object-Array
 PORTVERSION=	0.060
@@ -19,7 +18,9 @@ RUN_DEPENDS=	p5-List-MoreUtils>=0:lang/p5-List-MoreUtils \
 		p5-Sub-Exporter>=0:devel/p5-Sub-Exporter \
 		p5-Sub-Install>=0:devel/p5-Sub-Install
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

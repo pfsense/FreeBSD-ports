@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	riscv-isa-sim
 DISTVERSION=	git
-PORTREVISION=	20181006
+PORTREVISION=	20211015
 CATEGORIES=	emulators
 
 MAINTAINER=	lwhsu@FreeBSD.org
@@ -10,35 +8,31 @@ COMMENT=	Spike, a RISC-V ISA Simulator
 
 LICENSE=	BSD3CLAUSE
 
-ONLY_FOR_ARCHS=	amd64
-
-LIB_DEPENDS=	libfesvr.so:emulators/riscv-fesvr
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	Does not build
 
 USES=	compiler:c++11-lang gmake shebangfix
 
-GH_ACCOUNT=	freebsd-riscv
-GH_TAGNAME=	aae60e0
+GH_ACCOUNT=	riscv
+GH_TAGNAME=	4f12984
 
 HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--without-boost
 SHEBANG_FILES=	scripts/vcs-version.sh
+
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
-LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	-I${LOCALBASE}/include \
-		-DRISCV_ENABLE_DIRTY=1
+CFLAGS+=	-DRISCV_ENABLE_DIRTY=1
 
-STRIP_FILES=	bin/spike \
+STRIP_FILES=	bin/elf2hex \
+		bin/spike \
 		bin/spike-dasm \
+		bin/spike-log-parser \
 		bin/termios-xspike \
 		bin/xspike \
-		lib/libdummy_rocc.so \
-		lib/libriscv.so \
-		lib/libsoftfloat.so \
-		lib/libspike_main.so
-
-post-extract:
-	@${MV} ${WRKSRC}/riscv/insn_template.h ${WRKSRC}/riscv/insn_template.hpp
+		lib/libcustomext.so \
+		lib/libsoftfloat.so
 
 post-patch:
 	${REINPLACE_CMD} -e \

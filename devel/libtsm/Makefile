@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libtsm
 DISTVERSION=	3
 CATEGORIES=	devel

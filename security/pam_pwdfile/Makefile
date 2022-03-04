@@ -1,5 +1,4 @@
 # Created by: Michael Schout <mschout@gkg.net>
-# $FreeBSD$
 
 PORTNAME=	pam_pwdfile
 PORTVERSION=	1.0
@@ -10,8 +9,8 @@ MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Pam module for authenticating with flat passwd files
 
 USES=		uidfix
-USE_GITHUB=     yes
-GH_ACCOUNT=     tiwe-de
+USE_GITHUB=	yes
+GH_ACCOUNT=	tiwe-de
 GH_PROJECT=	libpam-pwdfile
 
 MAKEFILE=	${FILESDIR}/Makefile.bsd

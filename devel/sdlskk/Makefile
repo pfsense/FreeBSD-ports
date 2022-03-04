@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sdlskk
 PORTVERSION=	0.5
@@ -14,9 +13,9 @@ COMMENT=	SKK like library for input Japanese, based on SDL
 LICENSE=	LGPL21
 
 GNU_CONFIGURE=	yes
-USES=		iconv libtool
+USES=		iconv libtool sdl
 USE_SDL=	image ttf sdl
-USE_LDCONFIG=   yes
+USE_LDCONFIG=	yes
 
 PLIST_FILES=	include/SDL/sdlskk.h \
 		lib/libSDLSKK.a \
@@ -26,7 +25,7 @@ PLIST_FILES=	include/SDL/sdlskk.h \
 
 PORTDOCS=	AUTHORS NEWS README README.ja
 
-OPTIONS_DEFINE= DOCS
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libSDLSKK.so

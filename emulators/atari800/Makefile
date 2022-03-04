@@ -1,5 +1,4 @@
 # Created by: Joel Sutton <jsutton@webnet.com.au>
-# $FreeBSD$
 
 PORTNAME=	atari800
 PORTVERSION=	3.1.0
@@ -15,16 +14,18 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	freebsd-ports@dan.me.uk
 COMMENT=	Atari 8-bit computer emulator
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 ROM
+LICENSE_COMB=	multi
+LICENSE_NAME_ROM=	Copyrighted ROMs
+LICENSE_TEXT_ROM=	xf25 contains copyright ROMs and cannot be distributed.
+LICENSE_PERMS_ROM=	auto-accept
 
 BUILD_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 LIB_DEPENDS=	libpng.so:graphics/png
 
-RESTRICTED=	xf25 contains copyright ROMs and cannot be distributed.
-
 WRKSRC=		${WRKDIR}/${DISTNAME}/src
 
-USES=		gmake
+USES=		cpe gmake
 GNU_CONFIGURE=	yes
 NO_OPTIONS_SORT=yes
 
@@ -55,9 +56,11 @@ VERYSLOW_CONFIGURE_ON=	--enable-veryslow
 
 .if ${PORT_OPTIONS:MSDL}
 PKGNAMESUFFIX=	-sdl
+USES+=		sdl
 USE_SDL=	sdl
 CONFIGURE_ARGS+=	--target=sdl
 .else
+USES+=		xorg
 USE_XORG=	x11 xext
 .if ${PORT_OPTIONS:MSHM}
 CONFIGURE_ARGS+=	--target=x11-shm

@@ -1,32 +1,30 @@
 # Created by: Gennady Sorokopud <gena@NetVision.net.il>
-# $FreeBSD$
 
 PORTNAME=	xmcd
 PORTVERSION=	3.3.2
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	audio
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Motif CD player
 
+BROKEN_armv6=		Fails to install: strip: xmcd/bin-FreeBSD_12-armv6/cda failed: No such file or directory
+BROKEN_armv7=		Fails to install: strip: xmcd/bin-FreeBSD_12-armv7/cda failed: No such file or directory
+BROKEN_mips64=		Fails to compile: many undefined symbols in xorg.cf
+
 LIB_DEPENDS+=	libvorbis.so:audio/libvorbis \
 		libFLAC.so:audio/flac
 RUN_DEPENDS+=	lame:audio/lame
 
-USES=		imake motif ncurses
-USE_XORG=	x11 xext xaw xmu xp xpm xt sm ice
-PLIST_SUB+=	RELEASE=${OSREL:R:R} ARCH=${ARCH:S/powerpc64/powerpc/} OPSYS=${OPSYS}
+USES=		imake motif ncurses xorg
+USE_XORG=	x11 xext xaw xmu xpm xt sm ice
+PLIST_SUB+=	RELEASE=${OSREL:R:R} ARCH=${ARCH:S/aarch64/arm64/:C/powerpc64.*/powerpc/} OPSYS=${OPSYS}
 SUB_FILES=	pkg-message
 
 CFLAGS+=	-D_WANT_SEMUN
 
-LIBBINDIR=	${STAGEDIR}${PREFIX}/lib/X11/xmcd/bin-${OPSYS}_${OSREL:R:R}-${ARCH:S/powerpc64/powerpc/}
-
-BROKEN_aarch64=		Fails to compile: many undefined symbols in xorg.cf
-BROKEN_armv6=		Fails to install: strip: xmcd/bin-FreeBSD_12-armv6/cda failed: No such file or directory
-BROKEN_armv7=		Fails to install: strip: xmcd/bin-FreeBSD_12-armv7/cda failed: No such file or directory
-BROKEN_mips64=		Fails to compile: many undefined symbols in xorg.cf
+LIBBINDIR=	${STAGEDIR}${PREFIX}/lib/X11/xmcd/bin-${OPSYS}_${OSREL:R:R}-${ARCH:S/aarch64/arm64/:C/powerpc64.*/powerpc/}
 
 pre-patch:
 	@${CP} ${WRKSRC}/xmcd_d/XMcd.ad ${WRKSRC}/xmcd_d/XMcd.ad.in
@@ -68,7 +66,7 @@ post-install:
 		-e 's:${STAGEDIR}::' \
 		${STAGEDIR}${PREFIX}/lib/X11/xmcd/discog/discog.html \
 		${STAGEDIR}${PREFIX}/lib/X11/xmcd/config/config.sh \
-		${STAGEDIR}${PREFIX}/lib/X11/xmcd/bin-${OPSYS}_${OSREL:R:R}-${ARCH:S/powerpc64/powerpc/}/README
+		${STAGEDIR}${PREFIX}/lib/X11/xmcd/bin-${OPSYS}_${OSREL:R:R}-${ARCH:S/aarch64/arm64/:C/powerpc64.*/powerpc/}/README
 	${FIND} ${STAGEDIR}${PREFIX} -name \*.bak -delete
 	${FIND} ${STAGEDIR}${PREFIX} -type d -empty -delete
 

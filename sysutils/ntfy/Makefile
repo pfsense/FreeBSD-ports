@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	ntfy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.4
+DISTVERSION=	2.7.0-14
+DISTVERSIONSUFFIX=	-g0e922fa
 CATEGORIES=	sysutils deskutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +14,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}appdirs>0:devel/py-appdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ruamel.yaml>0:devel/py-ruamel.yaml@${PY_FLAVOR}
 
-USES=		python:3.5+ # with python:2.7 devel/py-ruamel fails with missing ruamel.ordereddict which is marked as extra-dependency there for python-2.X only
+USES=		python:3.5+
 USE_GITHUB=	yes
 GH_ACCOUNT=	dschep
 USE_PYTHON=	distutils noflavors autoplist

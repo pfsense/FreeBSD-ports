@@ -1,10 +1,9 @@
 # Created by: David O'Brien (obrien@cs.ucdavis.edu)
-# $FreeBSD$
 
 PORTNAME=	netcat
 PORTVERSION=	1.10
 PORTREVISION=	3
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	SF/${DISTNAME}/unix%20netcat%20${PORTVERSION}%20by%20_Hobbit_/%5BUnnamed%20release%5D
 DISTNAME=	nc${PORTVERSION:S/.//}
 

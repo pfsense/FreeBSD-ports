@@ -1,9 +1,8 @@
 # Created by: Hardy Schumacher <hardy.schumacher@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	kcemu
 PORTVERSION=	0.5.1
-PORTREVISION=	17
+PORTREVISION=	20
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/KCemu/KCemu-${PORTVERSION}
 DISTNAME=	KCemu-${PORTVERSION}
@@ -22,7 +21,7 @@ LIB_DEPENDS=	libaudiofile.so:audio/libaudiofile \
 		libxvidcore.so:multimedia/xvid \
 		libz80ex.so:devel/z80ex
 
-USES=		compiler:c++11-lang gettext ncurses pkgconfig
+USES=		compiler:c++11-lang gettext gnome ncurses pkgconfig xorg
 USE_CXXSTD=	gnu++98
 USE_GNOME=	gtk20
 USE_XORG=	xmu

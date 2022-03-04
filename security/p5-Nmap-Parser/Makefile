@@ -1,13 +1,12 @@
 # Created by: Joshua D. Abraham <jabra@ccs.neu.edu>
-# $FreeBSD$
 
 PORTNAME=	Nmap-Parser
-PORTVERSION=	1.36
+PORTVERSION=	1.37
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	jadawin@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Parse nmap scan data with perl
 
 LICENSE=	MIT

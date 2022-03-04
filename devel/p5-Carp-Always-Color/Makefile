@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Carp-Always-Color
 PORTVERSION=	0.08
@@ -18,8 +17,9 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Carp-Always>=0.10:devel/p5-Carp-Always
 TEST_DEPENDS=	p5-IO-Pty-Easy>=0:devel/p5-IO-Pty-Easy
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

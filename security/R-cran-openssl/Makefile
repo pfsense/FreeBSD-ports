@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	openssl
-PORTVERSION=	1.1
-PORTREVISION=	1
+PORTVERSION=	1.4.5
 CATEGORIES=	security
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -12,7 +10,10 @@ COMMENT=	Toolkit for Encryption, Signatures and Certificates Based on OpenSSL
 
 LICENSE=	MIT
 
-TEST_DEPENDS=	bash:shells/bash
+CRAN_DEPENDS=	R-cran-askpass>0:security/R-cran-askpass
+BUILD_DEPENDS=	bash:shells/bash \
+		${CRAN_DEPENDS}
+RUN_DEPENDS=	${CRAN_DEPENDS}
 
 USES=		cran:auto-plist,compiles shebangfix ssl
 

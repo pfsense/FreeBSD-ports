@@ -1,8 +1,7 @@
 # Created by: George V. Neville-Neil <gnn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	uftp
-PORTVERSION=	4.9.9
+PORTVERSION=	5.0
 PORTEPOCH=	1
 CATEGORIES=	ftp
 MASTER_SITES=	SF/uftp-multicast/source-tar

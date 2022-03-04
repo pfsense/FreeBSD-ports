@@ -1,28 +1,28 @@
-# $FreeBSD$
-#
 # There are three Qt related USES files with different access to Qt.
 #   - qmake: The port requires Qt's qmake to build -- creates the configure target
 #            - auto includes qt.mk
-#   - qt-dist: The port is a port for an part of Qt4 or Qt5
+#   - qt-dist: The port is a port for a part of Qt5
 #            - auto includes qt.mk and qmake.mk
 #   - qt.mk  - Dependency handling. USE_QT=foo bar
 #
 # Usage:
 #   USES=qt:<version>[,no_env]
 #
-#   Versions:		4 5
+#   Versions:		5
 #
 # Port variables:
 # USE_QT		- List of Qt modules to depend on, with optional '_build'
 #			  and '_run' suffixes. Define it empty to include this file
 #			  without depending on Qt ports.
+#
+# MAINTAINER:	kde@FreeBSD.org
 
 .if !defined(_QT_MK_INCLUDED)
 _QT_MK_INCLUDED=	qt.mk
 
 # Qt versions currently supported by the framework.
 _QT_SUPPORTED?=		5
-QT5_VERSION?=		5.12.1
+QT5_VERSION?=		5.15.2
 
 # We accept the Qt version to be passed by either or all of the three mk files.
 .  if empty(qt_ARGS) && empty(qmake_ARGS) && empty(qt-dist_ARGS)
@@ -70,18 +70,21 @@ QT_ETCDIR_REL?=		etc/xdg
 QT_EXAMPLEDIR_REL?=	share/examples/${_QT_RELNAME}
 QT_TESTDIR_REL?=	${QT_DATADIR_REL}/tests
 QT_CMAKEDIR_REL?=	lib/cmake
-QT_QTCHOOSERDIR_REL?=	${QT_ETCDIR_REL}/qtchooser
 
 # Not customizable.
 QT_MKSPECDIR_REL=	${QT_ARCHDIR_REL}/mkspecs
 _QT_LIBVER=		${_QT_VERSION:R:R}
 
+LCONVERT?=		${QT_BINDIR}/lconvert
 LRELEASE?=		${QT_BINDIR}/lrelease
 LUPDATE?=		${QT_BINDIR}/lupdate
 MOC?=			${QT_BINDIR}/moc
 RCC?=			${QT_BINDIR}/rcc
 UIC?=			${QT_BINDIR}/uic
 QMAKE?=			${QT_BINDIR}/qmake
+QCOLLECTIONGENERATOR?=	${QT_BINDIR}/qcollectiongenerator
+QHELPGENERATOR?=	${QT_BINDIR}/qhelpgenerator
+
 # Needed to redefine the qmake target for internal Qt configuration.
 _QMAKE?=		${QMAKE}
 QMAKESPECNAME?=		freebsd-${QMAKE_COMPILER}
@@ -95,7 +98,7 @@ QMAKE_COMPILER=	$$(ccver="$$(${CXX} --version)"; case "$$ccver" in *clang*) echo
 
 .  for dir in BIN INC LIB ARCH PLUGIN LIBEXEC IMPORT \
 	QML DATA DOC L10N ETC EXAMPLE TEST MKSPEC \
-	CMAKE QTCHOOSER
+	CMAKE
 QT_${dir}DIR=	${PREFIX}/${QT_${dir}DIR_REL}
 # Export all directories to the plist substituion for QT_DIST ports.
 # For the others, exclude QT_CMAKEDIR and QT_ETCDIR.
@@ -124,7 +127,7 @@ _USES_POST+=		qt
 _QT_MK_POST_INCLUDED=	qt.mk
 
 # The Qt components supported by qt.mk: list of shared, and version specific ones
-_USE_QT_ALL=		assistant dbus declarative designer doc gui help \
+_USE_QT_ALL=		assistant dbus declarative declarative-test designer doc gui help \
 			imageformats l10n linguist linguisttools multimedia \
 			network opengl pixeltool qdbusviewer qmake script \
 			scripttools sql sql-mysql sql-odbc sql-pgsql \
@@ -134,12 +137,12 @@ _USE_QT_ALL=		assistant dbus declarative designer doc gui help \
 _USE_QT_ALL+=	sql-ibase
 .endif
 
-_USE_QT5_ONLY=		3d buildtools canvas3d charts concurrent connectivity \
+_USE_QT5_ONLY=		3d buildtools charts concurrent connectivity \
 			core datavis3d diag examples gamepad \
 			graphicaleffects location networkauth paths phonon4 plugininfo printsupport \
-			qdbus qdoc qdoc-data qev quickcontrols \
-			quickcontrols2 remoteobjects scxml sensors serialbus serialport speech \
-			sql-tds uiplugin uitools virtualkeyboard wayland webchannel \
+			qdbus qdoc qdoc-data qev quick3d quickcontrols quickcontrols2 \
+			quicktimeline remoteobjects scxml sensors serialbus serialport speech \
+			sql-tds uiplugin uitools virtualkeyboard wayland webchannel webglplugin \
 			webengine websockets websockets-qml webview widgets x11extras
 
 # Dependency tuples: _LIB should be preferred if possible.
@@ -149,11 +152,9 @@ qt-3d_LIB=		libQt${_QT_LIBVER}3DCore.so
 qt-assistant_PORT=	devel/${_QT_RELNAME}-assistant
 qt-assistant_PATH=	${LOCALBASE}/${QT_BINDIR_REL}/assistant
 
+# Always build with *this* version's buildtools
 qt-buildtools_PORT=	devel/${_QT_RELNAME}-buildtools
-qt-buildtools_PATH=	${LOCALBASE}/${QT_BINDIR_REL}/moc
-
-qt-canvas3d_PORT=	x11-toolkits/${_QT_RELNAME}-canvas3d
-qt-canvas3d_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtCanvas3D/qmldir
+qt-buildtools_PATH=	${_QT_RELNAME}-buildtools>=${_QT_VERSION}
 
 qt-charts_PORT=		x11-toolkits/${_QT_RELNAME}-charts
 qt-charts_LIB=		libQt${_QT_LIBVER}Charts.so
@@ -175,6 +176,9 @@ qt-dbus_LIB=		libQt${_QT_LIBVER}DBus.so
 
 qt-declarative_PORT=	x11-toolkits/${_QT_RELNAME}-declarative
 qt-declarative_LIB=	libQt${_QT_LIBVER}Qml.so
+
+qt-declarative-test_PORT=	x11-toolkits/${_QT_RELNAME}-declarative-test
+qt-declarative-test_LIB=	libQt${_QT_LIBVER}QuickTest.so
 
 qt-designer_PORT=	devel/${_QT_RELNAME}-designer
 qt-designer_PATH=	${LOCALBASE}/${QT_BINDIR_REL}/designer
@@ -257,14 +261,21 @@ qt-qdoc-data_PATH=	${LOCALBASE}/${QT_DOCDIR_REL}/global/config.qdocconf
 qt-qev_PORT=		x11/${_QT_RELNAME}-qev
 qt-qev_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/qev
 
+# Always build with *this* version's qmake
 qt-qmake_PORT=		devel/${_QT_RELNAME}-qmake
-qt-qmake_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/qmake
+qt-qmake_PATH=		${_QT_RELNAME}-qmake>=${_QT_VERSION}
+
+qt-quick3d_PORT=	x11-toolkits/${_QT_RELNAME}-quick3d
+qt-quick3d_LIB=		libQt${_QT_LIBVER}Quick3D.so
 
 qt-quickcontrols_PORT=	x11-toolkits/${_QT_RELNAME}-quickcontrols
 qt-quickcontrols_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtQuick/Controls/qmldir
 
 qt-quickcontrols2_PORT=	x11-toolkits/${_QT_RELNAME}-quickcontrols2
 qt-quickcontrols2_LIB=	libQt${_QT_LIBVER}QuickControls2.so
+
+qt-quicktimeline_PORT=	x11-toolkits/${_QT_RELNAME}-quicktimeline
+qt-quicktimeline_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtQuick/Timeline/libqtquicktimelineplugin.so
 
 qt-remoteobjects_PORT=	devel/${_QT_RELNAME}-remoteobjects
 qt-remoteobjects_LIB=	libQt${_QT_LIBVER}RemoteObjects.so
@@ -325,6 +336,9 @@ qt-webchannel_LIB=	libQt${_QT_LIBVER}WebChannel.so
 
 qt-webengine_PORT=	www/${_QT_RELNAME}-webengine
 qt-webengine_LIB=	libQt${_QT_LIBVER}WebEngine.so
+
+qt-webglplugin_PORT=     www/${_QT_RELNAME}-webglplugin
+qt-webglplugin_PATH=     ${LOCALBASE}/${QT_PLUGINDIR_REL}/platforms/libqwebgl.so
 
 qt-websockets_PORT=	www/${_QT_RELNAME}-websockets
 qt-websockets_LIB=	libQt${_QT_LIBVER}WebSockets.so

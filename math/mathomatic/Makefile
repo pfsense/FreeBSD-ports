@@ -1,9 +1,8 @@
 # Created by: Roman Neuhauser <neuhauser@sigpipe.cz>
-# $FreeBSD$
 
 PORTNAME=	mathomatic
 PORTVERSION=	16.0.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	ehaupt@FreeBSD.org

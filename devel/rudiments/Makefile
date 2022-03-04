@@ -1,8 +1,7 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	rudiments
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.2
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -34,6 +33,6 @@ SSL_CONFIGURE_ON=	--with-ssl-includes=-I${OPENSSLINC} \
 			--with-ssl-libs=-L${OPENSSLLIB}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librudiments.so.5.0.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librudiments.so.6.0.1
 
 .include <bsd.port.mk>

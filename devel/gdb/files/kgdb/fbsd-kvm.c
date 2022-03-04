@@ -24,9 +24,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 #include "defs.h"
 #include "command.h"
 #include "elf-bfd.h"
@@ -37,10 +34,12 @@ __FBSDID("$FreeBSD$");
 #include "inferior.h"
 #include "objfiles.h"
 #include "osabi.h"
+#include "process-stratum-target.h"
 #include "solib.h"
 #include "target.h"
 #include "value.h"
 #include "readline/tilde.h"
+#include "gdbsupport/pathstuff.h"
 
 #include <sys/user.h>
 #include <fcntl.h>
@@ -137,14 +136,16 @@ kgdb_dmesg(void)
 	 */
 	if (kgdb_quiet)
 		return;
-	TRY {
+	try {
 		bufp = parse_and_eval_address("msgbufp->msg_ptr");
 		size = parse_and_eval_long("msgbufp->msg_size");
 		rseq = parse_and_eval_long("msgbufp->msg_rseq");
 		wseq = parse_and_eval_long("msgbufp->msg_wseq");
-	} CATCH(e, RETURN_MASK_ERROR) {
+	} catch (const gdb_exception_error &e) {
 		return;
-	} END_CATCH
+	}
+	if (size == 0)
+		return;
 	rseq = MSGBUF_SEQ_TO_POS(size, rseq);
 	wseq = MSGBUF_SEQ_TO_POS(size, wseq);
 	if (rseq == wseq)
@@ -179,19 +180,21 @@ fbsd_kernel_osabi_sniffer(bfd *abfd)
 	case ELFOSABI_NONE: {
 		enum gdb_osabi osabi = GDB_OSABI_UNKNOWN;
 
-		bfd_map_over_sections (abfd,
-		    generic_elf_osabi_sniff_abi_tag_sections,
-		    &osabi);
+		for (asection *sect : gdb_bfd_sections (abfd))
+		  generic_elf_osabi_sniff_abi_tag_sections (abfd, sect, &osabi);
 
 		/*
-		 * aarch64 kernels don't have the right note tag for
-		 * kernels so just look for /red/herring anyway.
+		 * aarch64 and RISC-V kernels don't have the right
+		 * note tag for kernels so just look for /red/herring
+		 * anyway.
 		 */
 		if (osabi == GDB_OSABI_UNKNOWN &&
-		    elf_elfheader(abfd)->e_machine == EM_AARCH64)
+		    ((elf_elfheader(abfd)->e_machine == EM_AARCH64) ||
+		    (elf_elfheader(abfd)->e_machine == EM_RISCV)))
 			break;
 		if (osabi != GDB_OSABI_FREEBSD)
 			return (GDB_OSABI_UNKNOWN);
+		break;
 	}
 	default:
 		return (GDB_OSABI_UNKNOWN);
@@ -200,7 +203,7 @@ fbsd_kernel_osabi_sniffer(bfd *abfd)
 	/* FreeBSD ELF kernels have an interpreter path of "/red/herring". */
 	bufp = buf;
 	s = bfd_get_section_by_name(abfd, ".interp");
-	if (s != NULL && bfd_section_size(abfd, s) == sizeof(buf) &&
+	if (s != NULL && bfd_section_size(s) == sizeof(buf) &&
 	    bfd_get_full_section_contents(abfd, s, &bufp) &&
 	    memcmp(buf, KERNEL_INTERP, sizeof(buf)) == 0)
 		return (GDB_OSABI_FREEBSD_KERNEL);
@@ -218,11 +221,10 @@ If no filename is specified, /dev/mem is used to examine the running kernel.\n\
 target vmcore [-w] [filename]")
 };
 
-class fbsd_kvm_target final : public target_ops
+class fbsd_kvm_target final : public process_stratum_target
 {
 public:
-  fbsd_kvm_target ()
-  { this->to_stratum = process_stratum; }
+  fbsd_kvm_target () = default;
 
   const target_info &info () const override
   { return fbsd_kvm_target_info; }
@@ -240,12 +242,14 @@ public:
   void files_info () override;
   bool thread_alive (ptid_t ptid) override;
   void update_thread_list () override;
-  const char *pid_to_str (ptid_t) override;
+  std::string pid_to_str (ptid_t) override;
   const char *extra_thread_info (thread_info *) override;
 
-  bool has_memory () override { return true; }
-  bool has_stack () override { return true; }
-  bool has_registers () override { return true; }
+  bool has_all_memory () override { return false; }
+  bool has_memory () override;
+  bool has_stack () override;
+  bool has_registers () override;
+  bool has_execution (inferior *inf) override { return false; }
 };
 
 /* Target ops for libkvm interface.  */
@@ -273,18 +277,17 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 	char kvm_err[_POSIX2_LINE_MAX];
 	struct inferior *inf;
 	struct cleanup *old_chain;
-	struct thread_info *ti;
 	struct kthr *kt;
 	kvm_t *nkvm;
-	char *temp, *kernel, *filename;
+	const char *kernel;
+	char *temp, *filename;
 	bool writeable;
-	int ontop;
 
 	if (ops == NULL || ops->supply_pcb == NULL || ops->cpu_pcb_addr == NULL)
 		error ("ABI doesn't support a vmcore target");
 
 	target_preopen (from_tty);
-	kernel = get_exec_file (1);
+	kernel = get_exec_file (0);
 	if (kernel == NULL)
 		error ("Can't open a vmcore without a kernel");
 
@@ -304,17 +307,15 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 					error (_("Invalid argument"));
 
 				filename = tilde_expand (*argv);
-				if (!IS_ABSOLUTE_PATH (filename)) {
-					temp = concat (current_directory, "/",
-					    filename, NULL);
-					xfree(filename);
-					filename = temp;
+				if (filename[0] != '/') {
+					gdb::unique_xmalloc_ptr<char> temp (gdb_abspath (filename));
+
+					xfree (filename);
+					filename = temp.release ();
 				}
 			}
 		}
 	}
-
-	old_chain = make_cleanup (xfree, filename);
 
 #ifdef HAVE_KVM_OPEN2
 	nkvm = kvm_open2(kernel, filename,
@@ -323,12 +324,29 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 	nkvm = kvm_openfiles(kernel, filename, NULL,
 	    writeable ? O_RDWR : O_RDONLY, kvm_err);
 #endif
-	if (nkvm == NULL)
+	if (nkvm == NULL) {
+		xfree (filename);
 		error ("Failed to open vmcore: %s", kvm_err);
+	}
 
 	/* Don't free the filename now and close any previous vmcore. */
-	discard_cleanups(old_chain);
-	unpush_target(&fbsd_kvm_ops);
+	current_inferior ()->unpush_target (&fbsd_kvm_ops);
+
+#ifdef HAVE_KVM_DISP
+	/* Relocate kernel objfile if needed. */
+	struct objfile *symfile_objfile =
+	  current_program_space->symfile_object_file;
+	if (symfile_objfile != nullptr &&
+	    (bfd_get_file_flags(symfile_objfile->obfd) &
+	      (EXEC_P | DYNAMIC)) != 0) {
+		CORE_ADDR displacement = kvm_kerndisp(nkvm);
+		if (displacement != 0) {
+			section_offsets new_offsets (symfile_objfile->section_offsets.size (),
+			    displacement);
+			objfile_relocate(symfile_objfile, new_offsets);
+		}
+	}
+#endif
 
 	/*
 	 * Determine the first address in KVA.  Newer kernels export
@@ -337,27 +355,27 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 	 * symbol that is valid on all platforms, but kernbase is close
 	 * for most platforms.
 	 */
-	TRY {
+	try {
 		kernstart = parse_and_eval_address("vm_maxuser_address") + 1;
-	} CATCH(e, RETURN_MASK_ERROR) {
+	} catch (const gdb_exception_error &e) {
 		kernstart = kgdb_lookup("kernbase");
-	} END_CATCH
+	}
 
 	/*
 	 * Lookup symbols needed for stoppcbs[] handling, but don't
 	 * fail if they aren't present.
 	 */
 	stoppcbs = kgdb_lookup("stoppcbs");
-	TRY {
+	try {
 		pcb_size = parse_and_eval_long("pcb_size");
-	} CATCH(e, RETURN_MASK_ERROR) {
+	} catch (const gdb_exception_error &e) {
 		pcb_size = 0;
-	} END_CATCH
+	}
 
 	if (pcb_size == 0) {
-		TRY {
+		try {
 			pcb_size = parse_and_eval_long("sizeof(struct pcb)");
-		} CATCH(e, RETURN_MASK_ERROR) {
+		} catch (const gdb_exception_error &e) {
 #ifdef HAVE_KVM_OPEN2
 			if (kvm_native(nkvm))
 				pcb_size = sizeof(struct pcb);
@@ -366,12 +384,12 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 #else
 			pcb_size = sizeof(struct pcb);
 #endif
-		} END_CATCH
+		}
 	}
 
 	kvm = nkvm;
 	vmcore = filename;
-	push_target (&fbsd_kvm_ops);
+	current_inferior()->push_target (&fbsd_kvm_ops);
 
 	kgdb_dmesg();
 
@@ -381,14 +399,16 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 		inf->fake_pid_p = 1;
 	}
 	solib_create_inferior_hook(0);
-	init_thread_list();
 	kt = kgdb_thr_init(ops->cpu_pcb_addr);
+	thread_info *curthr = nullptr;
 	while (kt != NULL) {
-		ti = add_thread_silent(fbsd_vmcore_ptid(kt->tid));
+		thread_info *thr = add_thread_silent(&fbsd_kvm_ops,
+		    fbsd_vmcore_ptid(kt->tid));
+		if (kt == curkthr)
+			curthr = thr;
 		kt = kgdb_thr_next(kt);
 	}
-	if (curkthr != 0)
-		inferior_ptid = fbsd_vmcore_ptid(curkthr->tid);
+	switch_to_thread (curthr);
 
 	target_fetch_registers (get_current_regcache (), -1);
 
@@ -401,6 +421,9 @@ fbsd_kvm_target::close()
 {
 
 	if (kvm != NULL) {
+		switch_to_no_thread ();
+		exit_inferior_silent (current_inferior ());
+
 		clear_solib();
 		if (kvm_close(kvm) != 0)
 			warning("cannot close \"%s\": %s", vmcore,
@@ -410,7 +433,6 @@ fbsd_kvm_target::close()
 		vmcore = NULL;
 	}
 
-	inferior_ptid = null_ptid;
 }
 
 #if 0
@@ -432,6 +454,24 @@ fbsd_kvm_target::extra_thread_info(thread_info *ti)
 {
 
 	return (kgdb_thr_extra_thread_info(ti->ptid.tid()));
+}
+
+bool
+fbsd_kvm_target::has_memory ()
+{
+  return (kvm != NULL);
+}
+
+bool
+fbsd_kvm_target::has_stack ()
+{
+  return (kvm != NULL);
+}
+
+bool
+fbsd_kvm_target::has_registers ()
+{
+  return (kvm != NULL);
 }
 
 void
@@ -467,13 +507,10 @@ fbsd_kvm_target::update_thread_list()
 #endif
 }
 
-const char *
+std::string
 fbsd_kvm_target::pid_to_str(ptid_t ptid)
 {
-	static char buf[33];
-
-	snprintf(buf, sizeof(buf), "Thread %ld", ptid.tid());
-	return (buf);
+  return string_printf (_("Thread %ld"), ptid.tid ());
 }
 
 bool
@@ -491,7 +528,7 @@ fbsd_kvm_target::fetch_registers(struct regcache *regcache, int regnum)
 
 	if (ops->supply_pcb == NULL)
 		return;
-	kt = kgdb_thr_lookup_tid(inferior_ptid.tid());
+	kt = kgdb_thr_lookup_tid(regcache->ptid().tid());
 	if (kt == NULL)
 		return;
 	ops->supply_pcb(regcache, kt->pcb);
@@ -551,7 +588,7 @@ kgdb_switch_to_thread(const char *arg, int tid)
 {
   struct thread_info *tp;
 
-  tp = find_thread_ptid (fbsd_vmcore_ptid (tid));
+  tp = find_thread_ptid (&fbsd_kvm_ops, fbsd_vmcore_ptid (tid));
   if (tp == NULL)
     error ("invalid tid");
   thread_select (arg, tp);
@@ -603,11 +640,13 @@ kgdb_set_tid_cmd (const char *arg, int from_tty)
 	kgdb_switch_to_thread(arg, addr);
 }
 
+void _initialize_kgdb_target ();
 void
-_initialize_kgdb_target(void)
+_initialize_kgdb_target ()
 {
 
-	add_target(fbsd_kvm_target_info, fbsd_kvm_target_open);
+	add_target(fbsd_kvm_target_info, fbsd_kvm_target_open,
+	    filename_completer);
 
 	fbsd_vmcore_data = gdbarch_data_register_pre_init(fbsd_vmcore_init);
 

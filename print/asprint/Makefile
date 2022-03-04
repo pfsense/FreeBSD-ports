@@ -1,5 +1,4 @@
 # Created by: brett@peloton.physics.montana.edu
-# $FreeBSD$
 
 PORTNAME=	asprint
 PORTVERSION=	1.0
@@ -12,6 +11,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple browser to allow a user to print
 
 PLIST_FILES=	bin/asprint
+USES=		xorg
 USE_XORG=	xmu xpm xt xaw x11
 ALL_TARGET=	asprint
 MAKEFILE=	makefile

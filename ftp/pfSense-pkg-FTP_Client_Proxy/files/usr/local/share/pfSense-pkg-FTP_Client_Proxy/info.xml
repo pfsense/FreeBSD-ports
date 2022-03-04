@@ -4,7 +4,7 @@
 		<name>FTP Client Proxy</name>
 		<internal_name>FTP_Client_Proxy</internal_name>
 		<descr><![CDATA[Basic FTP Client Proxy using ftp-proxy from FreeBSD.]]></descr>
-		<pkginfolink>https://forum.pfsense.org/index.php?topic=89841.0</pkginfolink>
+		<pkginfolink>https://forum.netgate.com/topic/80717/ftp-client-proxy-package</pkginfolink>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>ftpproxy.xml</configurationfile>
 	</package>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xditview
 PORTVERSION=	1.0.5
 CATEGORIES=	x11
@@ -10,7 +8,7 @@ COMMENT=	Display ditroff output
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xaw xmu xt
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libp11
-PORTVERSION=	0.4.9
+PORTVERSION=	0.4.11
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	security devel
 
@@ -13,13 +12,16 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
+USES=		autoreconf cpe libtool pkgconfig ssl
+CPE_VENDOR=	opensc_project
+CPE_PRODUCT=	opensc
+
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenSC
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf libtool pkgconfig ssl
 USE_LDCONFIG=	yes
 
 MAKE_JOBS_UNSAFE=	yes
@@ -35,16 +37,10 @@ INSTALL_TARGET=	install-strip
 
 PORTDOCS=	*
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mlibressl*}
-IGNORE=	detected LibreSSL (numerous OPENSSL_VERSION_NUMBER preprocessor conditions)
-.endif
-
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA}	${WRKSRC}/examples/README ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA}	${WRKSRC}/examples/Makefile ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA}	${WRKSRC}/examples/*.c ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

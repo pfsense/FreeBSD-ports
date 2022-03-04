@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MailerContrib
 SVNREV=		17641
 

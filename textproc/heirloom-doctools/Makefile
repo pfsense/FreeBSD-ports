@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	heirloom-doctools
 PORTVERSION=	160308
 PORTREVISION=	1
@@ -27,6 +25,7 @@ MAKE_ARGS+=	INSTALL="${INSTALL}" \
 		REFDIR=${REFDIR} \
 		ROOT=${STAGEDIR}
 MAKEFILE=	makefile
+CFLAGS+=	-fcommon
 PLIST_SUB=	LIBEXECDIR=libexec/${PORTNAME}
 
 MACDIR?=	${DATADIR}/tmac

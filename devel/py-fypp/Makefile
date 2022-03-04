@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	fypp
-PORTVERSION=	2.1.1
+DISTVERSION=	3.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +10,7 @@ COMMENT=	Python powered preprocessor
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist
 
 .include <bsd.port.mk>

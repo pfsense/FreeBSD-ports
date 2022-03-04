@@ -1,5 +1,4 @@
 # Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	archiveopteryx
 PORTVERSION=	3.2.99.20181030
@@ -19,7 +18,7 @@ GH_ACCOUNT=	aox
 GH_PROJECT=	aox
 GH_TAGNAME=	96ab17e
 
-USES=		perl5 ssl
+USES=		compiler perl5 ssl
 USE_PERL5=	build
 WITH_PGSQL=	client
 
@@ -29,7 +28,7 @@ SUB_FILES=	pkg-message
 
 USE_RC_SUBR=	${PORTNAME}
 
-CONFLICTS=	archiveopteryx-[0-9]*
+CONFLICTS=	archiveopteryx
 
 USERS=		aox
 GROUPS=		aox
@@ -44,7 +43,7 @@ OPTIONS_DEFINE=	DOCS
 
 # force Clang when on FreeBSD with clang in base
 .if ${OPSYS} == FreeBSD
-.if ! ${ARCH:Mmips*} && ! ${ARCH:Mpowerpc*} && ! ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == clang
 JAMARG+=	"-sCLANG=1"
 .endif
 .endif

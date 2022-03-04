@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Parse-Snort
 PORTVERSION=	0.9
 CATEGORIES=	security perl5

@@ -1,27 +1,27 @@
 # Created by: Jeremy <karlj000@unbc.ca>
-# $FreeBSD$
 
 PORTNAME=	bluej
-PORTVERSION=	4.1.1
+PORTVERSION=	4.2.2
 CATEGORIES=	java editors
 MASTER_SITES=	http://www.bluej.org/download/files/
 DISTNAME=	BlueJ-generic-${PORTVERSION:S/.//g}
 EXTRACT_SUFX=	.jar
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Integrated Java environment designed for introductory teaching
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${JAVA_HOME}/bin/javafxpackager:java/openjfx8-devel
+RUN_DEPENDS=	openjfx14>0:java/openjfx14
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	11+
 SUB_FILES=	bluej
+SUB_LIST=	JAVA_HOME=${JAVA_HOME}
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 DESKTOP_ENTRIES="BlueJ" \

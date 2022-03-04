@@ -3,9 +3,9 @@
  * snort_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014-2018 Bill Meeks
+ * Copyright (c) 2014-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -120,8 +120,6 @@ if ($_POST['download'])
 			unlink_if_exists("{$g['tmp_path']}/{$file_name}");
 			rmdir_recursive("{$g['tmp_path']}/snort_blocked");
 
-//			header("Location: /snort/snort_blocked.php");
-//			exit;
 		} else
 			$savemsg = gettext("An error occurred while creating archive");
 	} else
@@ -143,7 +141,8 @@ if ($_POST['save'])
 
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Blocked Hosts"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Blocked Hosts");
 include("head.inc");
 
 /* refresh every 60 secs */
@@ -249,7 +248,7 @@ print($form);
 ?>
 
 <div class="panel panel-default">
-	<div class="panel-heading"><h2 class="panel-title"><?=sprintf(gettext("Last %s Hosts Blocked by Snort"), $bnentries)?></h2></div>
+	<div class="panel-heading"><h2 class="panel-title"><?=sprintf(gettext("Last %s Hosts Blocked by Snort (only applicable to Legacy Blocking Mode interfaces)"), $bnentries)?></h2></div>
 	<div class="panel-body table-responsive">
 
 		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
@@ -348,12 +347,12 @@ print($form);
 					<td colspan="4" style="text-align:center;" class="alert-info">
 						<?php	if (!empty($blocked_ips_array)) {
 							if ($counter > 1)
-								print($counter . gettext(" host IP addresses are currently being blocked by Snort."));
+								print($counter . gettext(" host IP addresses are currently being blocked by Snort on Legacy Mode Blocking interfaces."));
 							else
-								print($counter . gettext(" host IP address is currently being blocked Snort."));
+								print($counter . gettext(" host IP address is currently being blocked Snort on Legacy Blocking Mode interfaces."));
 						}
 						else {
-							print(gettext("There are currently no hosts being blocked by Snort."));
+							print(gettext("There are currently no hosts being blocked by Snort on Legacy Mode Blocking interfaces."));
 						}
 						?>
 					</td>

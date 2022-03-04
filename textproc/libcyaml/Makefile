@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libcyaml
-DISTVERSION=	0.1.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.3.0
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,17 +11,21 @@ LICENSE=	ISCL
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 
 USES=		compiler:c11 gmake localbase:ldflags
-USE_GITLAB=	yes
-GL_SITE=	https://git.zrythm.org
-GL_ACCOUNT=	zrythm
-GL_COMMIT=	3b568c9df39b5a95f1d652db43414fada3b1cc61
 USE_LDCONFIG=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	tlsa
+
+TEST_TARGET=	test
 
 PLIST_FILES=	include/cyaml/cyaml.h \
 		lib/libcyaml.a \
 		lib/libcyaml.so \
-		lib/libcyaml.so.0 \
-		lib/libcyaml.so.0.1.0 \
+		lib/libcyaml.so.1 \
+		lib/libcyaml.so.1.3.0 \
 		libdata/pkgconfig/libcyaml.pc
+
+post-stage:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcyaml.so.*
 
 .include <bsd.port.mk>

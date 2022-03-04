@@ -1,5 +1,4 @@
 # Created by: Dryice Dong Liu <dryice@dryice.name>
-# $FreeBSD$
 
 PORTNAME=	sqlalchemy
 PORTVERSION=	1.0.14
@@ -17,7 +16,7 @@ LICENSE=	MIT
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
 
-USES=		python
+USES=		cpe python:3.6+
 USE_PYTHON=	distutils autoplist
 
 PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}
@@ -28,36 +27,22 @@ CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlalchemy0[6789]* ${PYTHON_PKGNAMEPRE
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_MULTI=		BACKEND
-OPTIONS_MULTI_BACKEND=	MSSQL MYSQL PGSQL SQLITE SYBASE
+OPTIONS_MULTI_BACKEND=	MSSQL PGSQL SQLITE
 OPTIONS_DEFAULT=	SQLITE
 
 MSSQL_DESC=	MS SQL Server backend
-SYBASE_DESC=	Sybase backend
 
 MSSQL_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pymssql.py:databases/py-pymssql@${PY_FLAVOR}
 PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=2.0.8:databases/py-psycopg2@${PY_FLAVOR}
 SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
-SYBASE_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/Sybase.py:databases/py-sybase@${PY_FLAVOR}
 
 PORTDOCS=		*
 PORTEXAMPLES=		*
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb@${PY_FLAVOR}
-#.else
-# At the moment databases/py-pymysql does not build with Python3
-# See https://github.com/petehunt/PyMySQL#python-3-0-support
-#MYSQL_RUN_DEPENDS+=	pymysql>=0.5:databases/py-pymysql@${PY_FLAVOR}
-.endif
-
 pre-build:
-.if ${PYTHON_REL} >= 3000
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/lib
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/doc
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/examples
-.endif
 
 # C extensions are not supported with all versions of Python, so ignore
 # errors here if there are no .so files to strip.
@@ -73,9 +58,7 @@ post-install-EXAMPLES-on:
 	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 do-test:
-.if ${PYTHON_REL} >= 3000
 	${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/test
-.endif
 	@(cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

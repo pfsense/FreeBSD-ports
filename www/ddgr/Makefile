@@ -1,9 +1,7 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ddgr
-PORTVERSION=	1.6
+PORTVERSION=	1.9
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,12 +10,10 @@ COMMENT=	DuckDuckGo from the terminal
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR}
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	jarun
 
-USES=		python:3.4+ shebangfix
+USES=		python:3.5+ shebangfix
 SHEBANG_FILES=	${PORTNAME}
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -57,6 +53,6 @@ do-install-FISH-on:
 		${STAGEDIR}${PREFIX}/share/fish/completions/
 
 do-test:
-	cd ${WRKSRC} && ./ddgr --help
+	cd ${WRKSRC} && ./ddgr --help >/dev/null 2>&1
 
 .include <bsd.port.mk>

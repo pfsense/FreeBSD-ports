@@ -1,9 +1,8 @@
 # Created by: will
-# $FreeBSD$
 
 PORTNAME=	hsftp
 PORTVERSION=	1.15
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	ftp
 MASTER_SITES=	http://la-samhna.de/hsftp/ \
 		http://www.alaskaparadise.com/freebsd/

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	select2-rails
-PORTVERSION=	4.0.3
+PORTVERSION=	4.0.13
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -10,10 +8,9 @@ COMMENT=	Implement select2 jQuery library into Rails
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-thor>=0.14:devel/rubygem-thor
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

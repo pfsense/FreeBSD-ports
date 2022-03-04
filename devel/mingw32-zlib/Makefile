@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	zlib
 PORTVERSION=	1.2.8
@@ -9,13 +8,13 @@ MASTER_SITES=	http://zlib.net/ \
 		SF/libpng/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	mingw32-
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The zlib library cross-compiled for MinGW32
 
 BUILD_DEPENDS=	${PKGNAMEPREFIX}gcc:devel/${PKGNAMEPREFIX}gcc \
 		${LOCALBASE}/mingw32/include/sys/types.h:devel/${PKGNAMEPREFIX}bin-msvcrt
 
-USES=		tar:xz gmake
+USES=		tar:xz cpe gmake
 MAKEFILE=	win32/Makefile.gcc
 MAKE_ARGS=	PREFIX=${PKGNAMEPREFIX} \
 		BINARY_PATH=${CROSS_BASE}/bin \

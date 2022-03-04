@@ -1,8 +1,7 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	DBI
-PORTVERSION=	1.642
+PORTVERSION=	1.643
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -17,8 +16,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 OPTIONS_DEFINE=	PROXY
 PROXY_DESC=	Build DBI::Proxy
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
 USE_PERL5=	configure
+
+CPE_VENDOR=	perl
 
 SHEBANG_FILES=	dbixs_rev.pl
 

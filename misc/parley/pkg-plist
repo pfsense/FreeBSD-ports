@@ -1,6 +1,4 @@
 bin/parley
-etc/xdg/parley-themes.knsrc
-etc/xdg/parley.knsrc
 share/applications/org.kde.parley.desktop
 share/config.kcfg/documentsettings.kcfg
 share/config.kcfg/languagesettings.kcfg
@@ -81,6 +79,8 @@ share/icons/oxygen/scalable/actions/practice-start.svgz
 share/icons/oxygen/scalable/actions/remove-duplicates.svgz
 share/icons/oxygen/scalable/actions/set-language.svgz
 share/icons/oxygen/scalable/actions/specific-setup.svgz
+share/knsrcfiles/parley-themes.knsrc
+share/knsrcfiles/parley.knsrc
 share/kxmlgui5/parley/dashboardui.rc
 share/kxmlgui5/parley/editorui.rc
 share/kxmlgui5/parley/parleyui.rc
@@ -94,6 +94,7 @@ share/kxmlgui5/parley/themes/theme_reference.desktop
 share/kxmlgui5/parley/themes/theme_reference.svgz
 share/kxmlgui5/parley/themes/theme_reference_preview.jpg
 share/locale/ar/LC_MESSAGES/parley.mo
+share/locale/be/LC_MESSAGES/parley.mo
 share/locale/bg/LC_MESSAGES/parley.mo
 share/locale/bs/LC_MESSAGES/parley.mo
 share/locale/ca/LC_MESSAGES/parley.mo
@@ -116,6 +117,7 @@ share/locale/he/LC_MESSAGES/parley.mo
 share/locale/hi/LC_MESSAGES/parley.mo
 share/locale/hr/LC_MESSAGES/parley.mo
 share/locale/hu/LC_MESSAGES/parley.mo
+share/locale/ia/LC_MESSAGES/parley.mo
 share/locale/is/LC_MESSAGES/parley.mo
 share/locale/it/LC_MESSAGES/parley.mo
 share/locale/ja/LC_MESSAGES/parley.mo
@@ -123,6 +125,7 @@ share/locale/kk/LC_MESSAGES/parley.mo
 share/locale/km/LC_MESSAGES/parley.mo
 share/locale/lt/LC_MESSAGES/parley.mo
 share/locale/lv/LC_MESSAGES/parley.mo
+share/locale/ml/LC_MESSAGES/parley.mo
 share/locale/mr/LC_MESSAGES/parley.mo
 share/locale/nb/LC_MESSAGES/parley.mo
 share/locale/nds/LC_MESSAGES/parley.mo
@@ -134,9 +137,13 @@ share/locale/pt/LC_MESSAGES/parley.mo
 share/locale/pt_BR/LC_MESSAGES/parley.mo
 share/locale/ro/LC_MESSAGES/parley.mo
 share/locale/ru/LC_MESSAGES/parley.mo
+share/locale/se/LC_MESSAGES/parley.mo
 share/locale/sk/LC_MESSAGES/parley.mo
 share/locale/sl/LC_MESSAGES/parley.mo
+share/locale/sq/LC_MESSAGES/parley.mo
 share/locale/sv/LC_MESSAGES/parley.mo
+share/locale/ta/LC_MESSAGES/parley.mo
+share/locale/tg/LC_MESSAGES/parley.mo
 share/locale/tr/LC_MESSAGES/parley.mo
 share/locale/ug/LC_MESSAGES/parley.mo
 share/locale/uk/LC_MESSAGES/parley.mo

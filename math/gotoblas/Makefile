@@ -1,9 +1,8 @@
 # Created by: Sato Hiroki <hrs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gotoblas
 PORTVERSION=	2.${GOTOBLAS2VER}.${LAPACKVER}
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	math
 MASTER_SITES=	LOCAL/maho/gotoblas \
 		NL/lapack:lapack NL/lapack/timing:lapack_tmg
@@ -76,6 +75,10 @@ GOTOFLAGS+=	INTERFACE64=1
 
 .if ${PORT_OPTIONS:MOPENMP}
 GOTOFLAGS+=	USE_OPENMP=1
+.endif
+
+.if ${GCC_DEFAULT} >= 10
+BROKEN=		fails to build with GCC 10: Type mismatch between actual argument at (1) and actual argument at (2) (REAL(8)/INTEGER(4)).
 .endif
 
 #.if ${PORT_OPTIONS:MQUAD_PRECISION}

@@ -1,5 +1,4 @@
 # Created by: Yonatan <onatan@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	bsdtris
 PORTVERSION=	1.1
@@ -10,6 +9,8 @@ DISTNAME=	${PORTNAME}-01092003
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BSD version of text-based Tetris game
+
+LICENSE=	BSD3CLAUSE
 
 USES=		ncurses
 MAKE_ARGS=	TMPLDFLAGS="-lncurses"

@@ -1,5 +1,4 @@
 # Created by: Andrew Thompson <thompsa@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pwcview
 PORTVERSION=	1.4.1
@@ -15,9 +14,9 @@ COMMENT=	The Video4Linux PWC webcam viewer
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev.h:multimedia/v4l_compat
 LIB_DEPENDS=	libv4l1.so:multimedia/libv4l
 
-CONFLICTS=	pwcbsd-[0-9]*
+CONFLICTS=	pwcbsd
 
-USES=		jpeg
+USES=		jpeg sdl
 USE_SDL=	sdl
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

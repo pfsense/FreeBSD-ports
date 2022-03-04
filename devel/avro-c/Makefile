@@ -1,12 +1,11 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avro
-PORTVERSION=	1.8.2
-DISTVERSIONPREFIX=	release-
-PORTREVISION=	1
+PORTVERSION=	1.11.0
 CATEGORIES=	devel
+MASTER_SITES=	APACHE/avro/stable/c
 PKGNAMESUFFIX=	-c
+DISTNAME=	avro-c-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C library for Apache Avro
@@ -19,13 +18,11 @@ BROKEN_sparc64=	fails to build
 LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libsnappy.so:archivers/snappy
 
-USES=		cmake compiler:c++11-lang pathfix pkgconfig
+USES=		cmake compiler:c++11-lang cpe pathfix pkgconfig
 
 USE_LDCONFIG=	yes
-WRKSRC_SUBDIR=	lang/c
 
-GH_ACCOUNT=	apache
-USE_GITHUB=	yes
+CPE_VENDOR=	apache
 
 post-patch:
 	@${REINPLACE_CMD} '/SNAPPY_PKG/ s|libsnappy|snappy|; /add_subdirectory(docs)/d' ${WRKSRC}/CMakeLists.txt

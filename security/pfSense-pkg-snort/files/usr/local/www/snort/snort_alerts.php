@@ -3,10 +3,10 @@
  * snort_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
  * All rights reserved.
  *
@@ -108,6 +108,9 @@ function snort_add_supplist_entry($suppress) {
 		}
 	}
 
+	// Release config array reference
+	unset($a_suppress);
+
 	/* If we created a new list or updated an existing one, save the change, */
 	/* tell Snort to load it, and return true; otherwise return false.       */
 	if ($found_list) {
@@ -126,10 +129,22 @@ function snort_escape_filter_regex($filtertext) {
 	return str_replace('/', '\/', str_replace('\/', '/', $filtertext));
 }
 
-function snort_match_filter_field($flent, $fields) {
+function snort_match_filter_field($flent, $fields, $exact_match = FALSE) {
 	foreach ($fields as $key => $field) {
 		if ($field == null)
 			continue;
+
+		// Only match whole field string when
+		// performing an exact match.
+		if ($exact_match) {
+			if ($flent[$key] == $field) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
 		if ((strpos($field, '!') === 0)) {
 			$field = substr($field, 1);
 			$field_regex = snort_escape_filter_regex($field);
@@ -207,9 +222,32 @@ if (isset($_POST['resolve'])) {
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
 
+# Check for persisted filtering of alerts log entries and populate
+# the required $filterfieldsarray when persisting filtered entries.
+if ($_POST['persist_filter'] == "yes" && !empty($_POST['persist_filter_content'])) {
+	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "yes";
+	$filterlogentries_exact_match = $_POST['persist_filter_exact_match'];
+	$filterfieldsarray = json_decode($_POST['persist_filter_content'], TRUE);
+}
+else {
+	$filterlogentries = FALSE;
+	$persist_filter_log_entries = "";
+	$filterfieldsarray = array();
+}
+
 if ($_POST['filterlogentries_submit']) {
 	// Set flag for filtering alert entries
 	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "yes";
+
+	// Set 'exact match only' flag if enabled
+	if ($_POST['filterlogentries_exact_match'] == 'on') {
+		$filterlogentries_exact_match = TRUE;
+	}
+	else {
+		$filterlogentries_exact_match = FALSE;
+	}
 
 	// -- IMPORTANT --
 	// Note the order of these fields must match the order decoded from the alerts log
@@ -235,6 +273,7 @@ if ($_POST['filterlogentries_submit']) {
 
 if ($_POST['filterlogentries_clear']) {
 	$filterlogentries = TRUE;
+	$persist_filter_log_entries = "";
 	$filterfieldsarray = array();
 }
 
@@ -245,7 +284,7 @@ if ($_POST['save']) {
 	$config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
 
 	write_config("Snort pkg: updated ALERTS tab settings.");
-
+	unset($a_instance);
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;
 }
@@ -511,8 +550,9 @@ if ($_POST['clear']) {
 	file_put_contents("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert", "");
 	/* XXX: This is needed if snort is run as snort user */
 	mwexec("/bin/chmod 660 {$snortlogdir}/*", true);
-	if (file_exists("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid"))
-		mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a");
+	if (file_exists("{$g['varrun_path']}/snort_{$snort_uuid}.pid"))
+		mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$snort_uuid}.pid -a");
+	unset($a_instance);
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;
 }
@@ -550,10 +590,11 @@ $supplist = snort_load_suppress_sigs($a_instance[$instanceid], true);
 // Load up an array with the configured Snort interfaces
 $interfaces = array();
 foreach ($a_instance as $id => $instance) {
-	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']);
+	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']) . " (" . get_real_interface($instance['interface']) . ")";
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Alerts"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Alerts");
 include("head.inc");
 
 /* refresh every 60 secs */
@@ -710,6 +751,13 @@ $group->add(new Form_Select(
 	$filterfieldsarray[13],
 	array( 0 => "", "alert" => "Alert", "drop" => "Drop", "log" => "Log", "pass" => "Pass", "reject" => "Reject", "sdrop" => "SDrop" )
 ))->setHelp('Action');
+$group->add(new Form_Checkbox(
+	'filterlogentries_exact_match',
+	'Exact Match Only',
+	null,
+	$filterlogentries_exact_match == "on" ? true:false,
+	'on'
+))->setHelp('Exact Match');
 $group->add(new Form_Button(
 	'filterlogentries_submit',
 	' ' . 'Filter',
@@ -728,6 +776,7 @@ $section->add($group);
 $form->add($section);
 // ========== END Log filter Panel =============================================================
 
+// ========== Hidden form controls ==============
 if (isset($instanceid)) {
 	$form->addGlobal(new Form_Input(
 		'id',
@@ -766,6 +815,29 @@ $form->addGlobal(new Form_Input(
 	'hidden',
 	''
 ));
+if ($persist_filter_log_entries == "yes") {
+	$form->addGlobal(new Form_Input(
+		'persist_filter',
+		'persist_filter',
+		'hidden',
+		$persist_filter_log_entries
+	));
+
+	$form->addGlobal(new Form_Input(
+		'persist_filter_exact_match',
+		'persist_filter_exact_match',
+		'hidden',
+		$filterlogentries_exact_match
+	));
+
+	// Pass the $filterfieldsarray variable as serialized data
+	$form->addGlobal(new Form_Input(
+		'persist_filter_content',
+		'persist_filter_content',
+		'hidden',
+		json_encode($filterfieldsarray)
+	));
+}
 
 $tab_array = array();
 	$tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
@@ -830,7 +902,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			if(count($fields) < 14 || count($fields) > 15)
 				continue;
 
-			if ($filterlogentries && !snort_match_filter_field($fields, $filterfieldsarray)) {
+			if ($filterlogentries && !snort_match_filter_field($fields, $filterfieldsarray, $filterlogentries_exact_match)) {
 				continue;
 			}
 
@@ -849,64 +921,59 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* Protocol */
 			$alert_proto = $fields[5];
 			/* Action */
-			if (isset($fields[13])) {
-
-				// If not using Inline IPS Mode or not blocking offenders, then ALERT is
-				// the only valid action so force the current event's action to ALERT.
-				if ($a_instance[$instanceid]['ips_mode'] != 'ips_mode_inline' || $a_instance[$instanceid]['blockoffenders7'] != 'on') {
-					$fields[13] = "alert";
-				}
+			if (isset($fields[13]) && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders7'] == 'on') {
 
 				switch ($fields[13]) {
 
 					case "alert":
-						$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="';
+						$alert_action = '<i class="fa fa-exclamation-triangle icon-pointer text-warning text-center" title="';
 						if (isset($alertsid[$fields[1]][$fields[2]])) {
-							$alert_action .= gettext("Rule action is User-Forced to ALERT") . '"</i>';
+							$alert_action .= gettext("Rule action is User-Forced to ALERT. Click to force a different action for this rule.");
 						}
 						else {
-							$alert_action .= gettext("Rule action is ALERT") . '"</i>';
+							$alert_action .= gettext("Rule action is ALERT. Click to force a different action for this rule.");
 						}
 						break;
 
 					case "drop":
-						$alert_action = '<i class="fa fa-thumbs-down text-danger text-center" title="';
+						$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
 						if (isset($dropsid[$fields[1]][$fields[2]])) {
-							$alert_action .= gettext("Rule action is User-Forced to DROP") . '"</i>';
+							$alert_action .= gettext("Rule action is User-Forced to DROP. Click to force a different action for this rule.");
 						}
 						else {
-							$alert_action .=  gettext("Rule action is DROP") . '"</i>';
+							$alert_action .=  gettext("Rule action is DROP. Click to force a different action for this rule.");
 						}
 						break;
 
 					case "reject":
-						$alert_action = '<i class="fa fa-hand-stop-o text-warning text-center" title="';
+						$alert_action = '<i class="fa fa-hand-stop-o icon-pointer text-warning text-center" title="';
 						if (isset($rejectsid[$fields[1]][$fields[2]])) {
-							$alert_action .= gettext("Rule action is User-Forced to REJECT") . '"</i>';
+							$alert_action .= gettext("Rule action is User-Forced to REJECT. Click to force a different action for this rule.");
 						}
 						else {
-							$alert_action .= gettext("Rule action is REJECT") . '"</i>';
+							$alert_action .= gettext("Rule action is REJECT. Click to force a different action for this rule.");
 						}
 						break;
 
 					case "sdrop":
-						$alert_action = '<i class="fa fa-thumbs-o-down text-danger text-center" title="' . gettext("Rule action is SDROP") . '"</i>';
+						$alert_action = '<i class="fa fa-thumbs-o-down icon-pointer text-danger text-center" title="' . gettext("Rule action is SDROP. Click to force a different action for this rule.");
 						break;
 
 					case "log":
-						$alert_action = '<i class="fa fa-tasks text-center" title="' . gettext("Rule action is LOG") . '"</i>';
+						$alert_action = '<i class="fa fa-tasks icon-pointer text-center" title="' . gettext("Rule action is LOG. Click to force a different action for this rule.") . '"</i>';
 						break;
 
-					case "log":
-						$alert_action = '<i class="fa fa-thumbs-up text-success text-center" title="' . gettext("Rule action is PASS") . '"</i>';
+					case "pass":
+						$alert_action = '<i class="fa fa-thumbs-up icon-pointer text-success text-center" title="' . gettext("Rule action is PASS. Click to force a different action for this rule.");
 						break;
 
 					default:
-						$alert_action = '<i class="fa fa-question-circle text-danger text-center" title="' . gettext("Rule action is unrecognized!") . '"</i>';
+						$alert_action = '<i class="fa fa-question-circle icon-pointer text-danger text-center" title="' . gettext("Rule action is unrecognized!. Click to force a different action for this rule.");
 				}
+				$alert_action .= '" onClick="toggleAction(\'' . $fields[1] . '\', \'' . $fields[2] . '\');"</i>';
 			}
 			else {
-				$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT") . '"</i>';
+				$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT.") . '"</i>';
 			}
 			/* Disposition (not currently used, so just set to "Allow") */
 			$alert_disposition = isset($fields[14])?$fields[14]:gettext("Allow");
@@ -1005,6 +1072,9 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* DESCRIPTION */
 			$alert_class = $fields[11];
 
+			/* Snort database GID:SID link, see https://redmine.pfsense.org/issues/12221 */
+			$link_sid_str = "https://www.snort.org/rule_docs/{$fields[1]}-{$fields[2]}";
+
 			/* Write out a table row */
 ?>
 			<tr class="text-nowrap">
@@ -1017,7 +1087,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 				<td><?=$alert_src_p; ?></td>
 				<td style="word-wrap:break-word; white-space:normal"><?=$alert_ip_dst;?></td>
 				<td><?=$alert_dst_p; ?></td>
-				<td><?=$alert_sid_str; ?><br/><?=$sidsupplink; ?>&nbsp;&nbsp;<?=$sid_dsbl_link; ?>&nbsp;&nbsp;<?=$sid_action_link; ?></td>
+				<td><a target="_blank" href="<?=$link_sid_str; ?>"><?=$alert_sid_str; ?></a><br/><?=$sidsupplink; ?>&nbsp;&nbsp;<?=$sid_dsbl_link; ?>&nbsp;&nbsp;<?=$sid_action_link; ?></td>
 				<td style="word-wrap:break-word; white-space:normal"><?=$alert_descr; ?></td>
 			</tr>
 <?php
@@ -1078,6 +1148,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 		</div>
 	</div>
 <?php endif; ?>
+<?php unset($a_instance); ?>
 
 <script type="text/javascript">
 //<![CDATA[

@@ -1,11 +1,11 @@
---- configure.orig	2017-10-15 16:42:11 UTC
+--- configure.orig	2020-07-13 14:02:44 UTC
 +++ configure
-@@ -11527,75 +11527,10 @@ test -n "$PKG_CONFIG" || PKG_CONFIG="no"
- 
-     if test $? -eq 0 -a -n "0.9.0"; then
+@@ -9035,71 +9035,10 @@ test -n "$PKG_CONFIG" || PKG_CONFIG="no"
+     if test $? -eq 0; then
+         if test -n "0.9.0" -o -n ""; then
  
 -    r="`eval echo '$'"PKG_CONFIG"`"
--    { $as_echo "$as_me:$LINENO: checking $r version" >&5
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking $r version" >&5
 -$as_echo_n "checking $r version... " >&6; }
 -    exe=`
 -    ## which doesn't work in ash, if /usr/bin/which isn't installed
@@ -15,10 +15,7 @@
 -    ## this test should work in ash, bash, pdksh (ksh), zsh
 -    type -p $r 2>/dev/null | tail -n 1 | awk '{print $NF}'
 -`
--    if test -n ""; then
--        ver=""
--    else
--        ver=`
+-    ver=`
 -    ## "$exe" --version 2>&1 | grep -v '^$' | head -n 1 | awk '{print $NF}'
 -    ##
 -    ## ARG.
@@ -26,33 +23,33 @@
 -    ##     gcc (GCC) 3.1.1 20020606 (Debian prerelease)
 -    ##
 -    ## -V: Workaround for python
--
++    $PKG_CONFIG --atleast-pkgconfig-version 0.9.0
+ 
 -    #dnl
 -
 -    ## Assume and hunt for dotted version multiplet.
 -    ## use eval trickery, because we cannot use multi-level $() instead of ``
 -    ## for compatibility reasons.
 -
--    ## grab the first version number in  --version output.
+-    ## grab the first version number in --version output.
 -    eval _ver=\"\`("$exe" --version || "$exe" -V) 2>&1 |
--		grep -E '(^| )[0-9][0-9]*\.[0-9]' |
--		head -n 1 |
--		tr ' ' '\n' |
--		sed 's/\([0-9][0-9]*\.[0-9][0-9.]*\).*/\1/g' |
--		grep -E '(^| )[0-9][0-9]*\.[0-9]' |
--		head -n 1\`\"
+-        grep -E '(^| )[0-9][0-9]*\.[0-9]' |
+-        head -n 1 |
+-        tr ' ' '\n' |
+-        sed 's/\([0-9][0-9]*\.[0-9][0-9.]*\).*/\1/g' |
+-        grep -E '(^| )[0-9][0-9]*\.[0-9]' |
+-        head -n 1\`\"
 -
 -    if test -z "$_ver"; then
 -        ## If empty, try date [fontforge]
 -        eval _ver=\"\`("$exe" --version || "$exe" -V) 2>&1 \
--	    | grep '\(^\|[^0-9a-f]\)[0-9]\{6,8\}\([^0-9a-f]\|$\)' \
--	    | head -n 1 \
--	    | sed -e 's/^[^.0-9]*//' -e 's/[^.0-9]*$//'\`\"
+-        | grep '\(^\|[^0-9a-f]\)[0-9]\{6,8\}\([^0-9a-f]\|$\)' \
+-        | head -n 1 \
+-        | sed -e 's/^[^.0-9]*//' -e 's/[^.0-9]*$//'\`\"
 -    fi
 -    echo "$_ver"
 -    #dnl
 -`
--    fi
 -    num=`
 -    echo "$ver" | awk -F. '
 -    {
@@ -61,7 +58,7 @@
 -    }
 -    {printf "%.0f\n", $1*1000000 + $2*1000 + three}'
 -`
--    req=`
+-    min=`
 -    echo "0.9.0" | awk -F. '
 -    {
 -      if ($3) {three = $3}
@@ -69,12 +66,10 @@
 -    }
 -    {printf "%.0f\n", $1*1000000 + $2*1000 + three}'
 -`
--    { $as_echo "$as_me:$LINENO: result: $ver" >&5
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ver" >&5
 -$as_echo "$ver" >&6; }
--    if test "$num" -lt "$req"; then
+-    if test "$num" -lt "$min"; then
 -
-+    $PKG_CONFIG --atleast-pkgconfig-version 0.9.0
-+    
 +    if test ! $?; then
 +    ver=`$PKG_CONFIG --version`
      eval "REQUIRED"=\"`eval echo \"'$'REQUIRED\" \""$r >= 0.9.0 (installed: $ver)"\"`\"

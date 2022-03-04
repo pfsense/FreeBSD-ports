@@ -1,24 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.6-7909 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-ga254a203b
+DISTVERSION=	0.0.19-13086 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-ga4ad0a946
 CATEGORIES=	emulators
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	1e28a22860c0.patch:-p1 # Clang 7
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	PS3 emulator/debugger
 
-LICENSE=	BSD3CLAUSE BSL GPLv2 MIT ZLIB
+LICENSE=	APACHE20 ISCL GPLv2 MIT ZLIB
 LICENSE_COMB=	multi
-LICENSE_FILE_BSD3CLAUSE=${WRKSRC_cereal}/LICENSE
-LICENSE_FILE_MIT=	${WRKSRC_GSL}/LICENSE
+LICENSE_FILE_ISCL=	${WRKSRC_cubeb}/LICENSE
+LICENSE_FILE_MIT=	${WRKSRC_pugixml}/LICENSE.md
 LICENSE_FILE_ZLIB=	${WRKSRC_asmjit}/LICENSE.md
 
-LIB_DEPENDS=	libpng.so:graphics/png \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libpng.so:graphics/png \
 		libavcodec.so:multimedia/ffmpeg
 
 ONLY_FOR_ARCHS=	amd64
@@ -26,32 +22,33 @@ ONLY_FOR_ARCHS_REASON=	requires int128 and SSE2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	RPCS3
-GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-27-g9220f5e:hidapi/3rdparty/hidapi \
-		RPCS3:llvm:5c906fd1694e:llvm/llvm \
-		Cyan4973:xxHash:v0.6.5:xxHash/3rdparty/xxHash \
-		jbeder:yaml-cpp:yaml-cpp-0.6.2-23-geca9cfd:yamlcpp/3rdparty/yaml-cpp \
-		kobalicek:asmjit:1e550aa:asmjit/asmjit \
-		KhronosGroup:glslang:5.1-184-gc99304c5:glslang/Vulkan/glslang \
-		Microsoft:GSL:v2.0.0:GSL/3rdparty/GSL \
-		USCiLab:cereal:v1.2.0:cereal/3rdparty/cereal \
-		zeux:pugixml:v1.9-51-g8bf806c:pugixml/3rdparty/pugixml
+GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-125-g01f601a:hidapi/3rdparty/hidapi/hidapi \
+		RPCS3:llvm-mirror:318b8fe37466:llvm/llvm \
+		Cyan4973:xxHash:v0.8.1:xxHash/3rdparty/xxHash \
+		asmjit:asmjit:723f585:asmjit/3rdparty/asmjit/asmjit \
+		google:flatbuffers:v2.0.0:flatbuffers/3rdparty/flatbuffers \
+		jbeder:yaml-cpp:yaml-cpp-0.7.0-1-g0b67821:yamlcpp/3rdparty/yaml-cpp/yaml-cpp \
+		KhronosGroup:SPIRV-Headers:1.5.3.reservations1:spirv_headers/3rdparty/SPIRV/SPIRV-Headers \
+		KhronosGroup:SPIRV-Tools:v2020.4:spirv_tools/3rdparty/SPIRV/SPIRV-Tools \
+		KhronosGroup:glslang:11.7.1:glslang/3rdparty/glslang/glslang \
+		kinetiknz:cubeb:cubeb-0.2-1341-gdcc5cb5:cubeb/3rdparty/cubeb/cubeb \
+		wolfSSL:wolfssl:v4.8.1-stable:wolfssl/3rdparty/wolfssl/wolfssl \
+		zeux:pugixml:v1.11.4:pugixml/3rdparty/pugixml
 
-USES=		cmake compiler:c++17-lang iconv:wchar_t localbase:ldflags \
-		openal:soft pkgconfig qt:5
+USES=		cmake compiler:c++17-lang gl iconv:wchar_t localbase:ldflags \
+		openal:soft pkgconfig python:3.4+,build qt:5 xorg
 USE_GL=		gl glew
-USE_QT=		qmake_build buildtools_build core dbus declarative gui network widgets
+USE_QT=		qmake_build buildtools_build core concurrent dbus gui multimedia svg widgets
 USE_XORG=	x11
-LLD_UNSAFE=	yes # XXX ports/219089
-CMAKE_ON=	CMAKE_SKIP_RPATH USE_SYSTEM_FFMPEG USE_SYSTEM_LIBPNG
-CMAKE_OFF=	USE_NATIVE_INSTRUCTIONS
-CXXFLAGS+=	-Wno-macro-redefined # __STDC_*_MACROS sys/cdefs.h vs. llvm-config
+CMAKE_ON=	CMAKE_SKIP_RPATH USE_SYSTEM_CURL USE_SYSTEM_FFMPEG USE_SYSTEM_LIBPNG
+CMAKE_ON+=	BUNDLE_SPEEX # only used by cubeb tests
+CMAKE_OFF=	USE_NATIVE_INSTRUCTIONS USE_PRECOMPILED_HEADERS
 LDFLAGS+=	-Wl,--as-needed # GLU
 
-OPTIONS_DEFINE=	ALSA EVDEV GDB LLVM PULSEAUDIO VULKAN
-OPTIONS_DEFAULT=ALSA LLVM VULKAN
+OPTIONS_DEFINE=	ALSA EVDEV FAUDIO PULSEAUDIO JACK SNDIO VULKAN
+OPTIONS_DEFAULT=EVDEV FAUDIO PULSEAUDIO JACK SNDIO VULKAN
 
-ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
-ALSA_RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins
+ALSA_BUILD_DEPENDS=	alsa-lib>0:audio/alsa-lib
 ALSA_CMAKE_BOOL=	USE_ALSA
 
 EVDEV_DESC=		libevdev-based joystick support
@@ -59,25 +56,62 @@ EVDEV_CMAKE_BOOL=	USE_LIBEVDEV
 EVDEV_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 EVDEV_LIB_DEPENDS=	libevdev.so:devel/libevdev
 
-GDB_DESC=		GDB remote stub (powerpc64 target)
-GDB_CMAKE_BOOL=		WITH_GDB
-GDB_BROKEN=		https://github.com/RPCS3/rpcs3/issues/5946
+FAUDIO_DESC=		FAudio audio support
+FAUDIO_LIB_DEPENDS=	libFAudio.so:audio/faudio
+FAUDIO_CMAKE_BOOL=	USE_FAUDIO USE_SYSTEM_FAUDIO
 
-LLVM_DESC=		LLVM-based PPU recompiler
-LLVM_CMAKE_BOOL_OFF=	WITHOUT_LLVM
+JACK_BUILD_DEPENDS=	jackit>0:audio/jack
+JACK_CMAKE_BOOL=	USE_JACK
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
+PULSEAUDIO_BUILD_DEPENDS=pulseaudio>0:audio/pulseaudio
 PULSEAUDIO_CMAKE_BOOL=	USE_PULSE
 
+SNDIO_BUILD_DEPENDS=	sndio>0:audio/sndio
+SNDIO_CMAKE_BOOL=	USE_SNDIO
+
 VULKAN_DESC=		Vulkan renderer
-VULKAN_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
+VULKAN_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CMAKE_BOOL=	USE_VULKAN
 
 post-patch:
-	@${REINPLACE_CMD} -e '/GIT_BRANCH/s/unknown/master/' \
-		-e '/GIT_TAG/s/unknown/${GH_TAGNAME:C/-.*//}/' \
-		-e '/GIT_VERSION/s/unknown/${GH_TAGNAME:C/[^-]*-//}/' \
+	@${REINPLACE_CMD} -e '/GIT_BRANCH/s/local_build/master/' \
+		 -e '/GIT_FULL_BRANCH/s/local_build/${GH_ACCOUNT}\/${GH_PROJECT}\/master/' \
+		-e '/GIT_VERSION/s/local_build/${GH_TAGNAME:C/[^-]*-//}/' \
 		${WRKSRC}/${PORTNAME}/git-version.cmake
 
-.include <bsd.port.mk>
+post-install:
+.if exists(/usr/bin/elfctl)
+. if 0
+	elfctl -e +noaslr ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+. else
+# FreeBSD 12.2 lacks https://cgit.freebsd.org/src/commit/?id=f56d7f838f5b
+	elfctl -e +aslr ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+. endif
+.endif
+
+.include <bsd.port.pre.mk>
+
+# Ignore Mk/bsd.default-versions.mk but respect make.conf(5)
+.if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mllvm*}
+LLVM_DEFAULT=	13 # bump if not latest release
+.endif
+BUILD_DEPENDS+=	clang++${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+USES:=		${USES:Ncompiler*}
+CC=		clang${LLVM_DEFAULT}
+CXX=		clang++${LLVM_DEFAULT}
+CPP=		clang-cpp${LLVM_DEFAULT}
+
+# XXX Drop after FreeBSD 12.3 EOL
+GH_TUPLE+=	llvm:llvm-project:llvmorg-13.0.1-rc1:libcxx
+CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx_prefix/include/c++/v1
+LDFLAGS+=	-nostdlib++ -L${WRKDIR}/libcxx_prefix/lib -l:libc++.a -lcxxrt
+
+pre-configure:	bundled-libcxx
+bundled-libcxx:
+	@${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS:M*Ninja*} \
+		-DCMAKE_INSTALL_PREFIX:PATH=${WRKDIR}/libcxx_prefix \
+		-B ${WRKDIR}/libcxx_build -S ${WRKSRC_libcxx}/libcxx
+	@${DO_MAKE_BUILD:NDESTDIR*} install -C ${WRKDIR}/libcxx_build
+
+.include <bsd.port.post.mk>

@@ -1,10 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	artyfx
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	1.3-14
-DISTVERSIONSUFFIX=	-gb247969
-PORTREVISION=	1
+DISTVERSION=	1.3-24
+DISTVERSIONSUFFIX=	-g6010d1a
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -17,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	lv2>0:audio/lv2
 LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 
-USES=		cmake localbase:ldflags pkgconfig
+USES=		cmake compiler:c++11-lang gnome localbase:ldflags pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	openAVproductions
 GH_PROJECT=	openAV-ArtyFX
@@ -30,6 +27,9 @@ OPTIONS_DEFAULT_amd64=	SSE
 OPTIONS_DEFAULT_i386=	SSE
 
 SSE_CMAKE_ON=	-DPORT_SIMD_FLAGS:STRING="-msse -msse2 -mfpmath=sse"
+
+CXXFLAGS_powerpc64=	-maltivec
+CXXFLAGS_powerpc=	-maltivec
 
 post-patch:
 	@${REINPLACE_CMD} -e 's| -g | |; s| -O1 | |; s/-msse2 -mfpmath=sse/$${PORT_SIMD_FLAGS}/g' \

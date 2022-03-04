@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	infamous-plugins
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.04
+DISTVERSION=	0.3.0-7
+DISTVERSIONSUFFIX=	-g778e591
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -12,22 +11,16 @@ COMMENT=	LV2 plugins for various sound effects
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to compile: cc1: invalid option argument '-Og'
-
 BUILD_DEPENDS=	lv2>0:audio/lv2 \
 		${LOCALBASE}/lib/libfftw3.so:math/fftw3
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libntk.so:x11-toolkits/ntk \
 		libzita-resampler.so:audio/zita-resampler
 
-USES=		cmake localbase pkgconfig
+USES=		cmake compiler:c11 gnome localbase pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	ssj71
 GH_PROJECT=	infamousPlugins
 USE_GNOME=	cairo
-
-post-patch:
-		@${REINPLACE_CMD} -e 's| -g"|"|' \
-			${WRKSRC}/src/*/CMakeLists.txt
 
 .include <bsd.port.mk>

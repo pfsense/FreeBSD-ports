@@ -1,9 +1,8 @@
 # Created by: Joerg Wunsch <joerg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avr-libc
 PORTVERSION=	2.0.0
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	SAVANNAH
@@ -14,11 +13,11 @@ COMMENT=	C and math library for the Atmel AVR controller family
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	avr-as:devel/avr-binutils \
-		avr-ld:devel/avr-binutils \
+BUILD_DEPENDS=	avr-as:devel/binutils@avr \
+		avr-ld:devel/binutils@avr \
 		avr-gcc:devel/avr-gcc
-RUN_DEPENDS=	avr-as:devel/avr-binutils \
-		avr-ld:devel/avr-binutils \
+RUN_DEPENDS=	avr-as:devel/binutils@avr \
+		avr-ld:devel/binutils@avr \
 		avr-gcc:devel/avr-gcc
 
 OPTIONS_DEFINE=	DOXYGEN
@@ -32,7 +31,7 @@ OPTIONS_DEFINE=	DOXYGEN
 .if ${PORT_OPTIONS:MDOXYGEN}
 USE_TEX=	latex:build
 BUILD_DEPENDS+=	doxygen:devel/doxygen \
-		fig2dev:print/transfig \
+		fig2dev:print/fig2dev \
 		jpegtopnm:graphics/netpbm \
 		dvips:print/tex-dvipsk
 .endif

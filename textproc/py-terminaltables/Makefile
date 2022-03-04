@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	terminaltables
 PORTVERSION=	3.1.0
 CATEGORIES=	textproc python
@@ -12,7 +10,7 @@ COMMENT=	Generate simple tables in terminals from a nested list of strings
 LICENSE=	MIT
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
  * apcupsd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Danilo G. Baio <dbaio@bsd.com.br>
  * All rights reserved.
  *
@@ -53,11 +53,11 @@ function validate_input_apcupsd($post, &$input_errors) {
 			$input_errors[] = gettext('OnBattery Delay is not numeric.');
 		}
 
-		if ($post['batterylevel'] != '' && !is_numericint($post['batterylevel'])) {
+		if ($post['batterylevel'] != '' && !(is_numericint($post['batterylevel']) || $post['batterylevel'] == '-1')) {
 			$input_errors[] = gettext('Battery Level is not numeric.');
 		}
 
-		if ($post['minutes'] != '' && !is_numericint($post['minutes'])) {
+		if ($post['minutes'] != '' && !(is_numericint($post['minutes']) || $post['minutes'] == '-1')) {
 			$input_errors[] = gettext('Minutes is not numeric.');
 		}
 

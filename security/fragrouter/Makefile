@@ -1,5 +1,4 @@
 # Created by: kris@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	fragrouter
 PORTVERSION=	1.6
@@ -7,7 +6,7 @@ CATEGORIES=	security
 MASTER_SITES=	http://monkey.org/~dugsong/ \
 		LOCAL/ohauer
 
-MAINTAINER=	ohauer@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for testing network IDS implementations
 
 GNU_CONFIGURE=	yes

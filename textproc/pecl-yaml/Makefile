@@ -1,8 +1,7 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yaml
-PORTVERSION=	2.0.4
+PORTVERSION=	2.2.2
 CATEGORIES=	textproc pear
 
 MAINTAINER=	dbaio@FreeBSD.org

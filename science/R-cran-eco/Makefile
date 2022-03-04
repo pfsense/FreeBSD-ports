@@ -1,9 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	eco
 PORTVERSION=	3.1.6
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${PORTVERSION:C/\./-/g:C/-/./1}
 

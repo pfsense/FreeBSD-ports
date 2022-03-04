@@ -1,9 +1,8 @@
 # Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
 
 PORTNAME=	wmanager
 PORTVERSION=	0.2.1
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	x11-wm
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		gmake
+USES=		gl gmake xorg
 USE_XORG=	x11 xext
 USE_GL=		gl
 

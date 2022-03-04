@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xscrabble
 PORTVERSION=	2.12
@@ -14,7 +13,7 @@ COMMENT=	X version of the popular board game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		tar:bzip2 imake
+USES=		tar:bzip2 imake xorg
 USE_XORG=	xaw
 
 XSCRABBLEDIR=	${PREFIX}/lib/X11/xscrabble

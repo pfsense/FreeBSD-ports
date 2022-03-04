@@ -1,5 +1,4 @@
 # Created by: Sutra Zhou <zhoushuqun@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ShellEd
 PORTVERSION=	1.0.2a
@@ -11,7 +10,7 @@ DISTNAME=	shelled_${PORTVERSION}
 DIST_SUBDIR=	eclipse
 
 MAINTAINER=	zhoushuqun@gmail.com
-COMMENT=	ShellEd is a superb shell script editor for Eclipse
+COMMENT=	Shell script editor for Eclipse
 
 RUN_DEPENDS=	eclipse:java/eclipse
 
@@ -19,7 +18,6 @@ USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_OS=	native
 
 do-install:

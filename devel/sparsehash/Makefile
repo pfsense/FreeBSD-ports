@@ -1,8 +1,7 @@
 # Created by: Vasil Dimov <vd@datamax.bg>
-# $FreeBSD$
 
 PORTNAME=	sparsehash
-PORTVERSION=	2.0.3
+PORTVERSION=	2.0.4
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	devel
 

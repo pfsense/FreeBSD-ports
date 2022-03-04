@@ -3,7 +3,7 @@
  * softflowd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ function sync_package_softflowd() {
 				continue;
 			}
 			
-			$start .= "\n\t/usr/local/sbin/softflowd ";
+			$start .= "\n\t/usr/local/bin/softflowd ";
 			$start .= " -i " . escapeshellarg($if_index++ . ":" . $interface);
 			$start .= " -n " . escapeshellarg("{$cf['host']}:{$cf['port']}");
 			if (is_numericint($cf['maxflows'])) {
@@ -56,11 +56,20 @@ function sync_package_softflowd() {
 			if (is_numericint($cf['hoplimit'])) {
 				$start .= " -L " . escapeshellarg($cf['hoplimit']);
 			}
+			if (is_numericint($cf['sample']) && ($cf['sample'] > 0)) {
+				$start .= " -s " . escapeshellarg($cf['sample']);
+			}
+			if ($cf['biflows']) {
+				$start .= " -b ";
+			}
 			if ($cf['version'] != "") {
 				$start .= " -v " . escapeshellarg($cf['version']);
 			}
 			if ($cf['flowtracking'] != "") {
 				$start .= " -T " . escapeshellarg($cf['flowtracking']);
+			}
+			if ($cf['flowtimestamp'] != "" && $cf['flowtimestamp'] != "omit") {
+				$start .= " -A " . escapeshellarg($cf['flowtimestamp']);
 			}
 			if (is_numericint($cf['timeout-general'])) {
 				$start .= " -t " . escapeshellarg("general={$cf['timeout-general']}");
@@ -113,11 +122,17 @@ function validate_form_softflowd($post, &$input_errors) {
 	if (!is_port($post['port'])) {
 		$input_errors[] = "You must specify a valid port number in the 'Port' field";
 	}
-	if (!in_array($post['version'], array(1, 5, 9, 10))) {
+	if (!in_array($post['version'], array(1, 5, 9, 10, 'psamp'))) {
 		$input_errors[] = 'You must specify a netflow version';
 	}
-	if (!in_array($post['flowtracking'], array("vlan", "full", "proto", "ip"))) {
+	if ($post['biflows'] and $post['version'] != 10) {
+		$input_errors[] = 'You must specify IPFIX(10) netflow version for using bidirectional flows';
+	}
+	if (!in_array($post['flowtracking'], array("ether", "vlan", "full", "proto", "ip"))) {
 		$input_errors[] = 'You must specify a valid flow tracking selection';
+	}
+	if (!in_array($post['flowtimestamp'], array("sec", "milli", "micro", "nano", "omit"))) {
+		$input_errors[] = 'You must specify a valid flow timestamp precision';
 	}
 	if (!empty($post['hoplimit']) && (!is_numericint($post['hoplimit']) || ($post['hoplimit'] < 1) || ($post['hoplimit'] > 255))) {
 		$input_errors[] = 'You must specify a valid hop limit';

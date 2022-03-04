@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Astro-Flux
 PORTVERSION=	0.01
@@ -20,8 +19,9 @@ RUN_DEPENDS=	p5-Astro-WaveBand>=0:astro/p5-Astro-WaveBand \
 		p5-Misc-Quality>=0:astro/p5-Misc-Quality \
 		p5-Number-Uncertainty>=0:math/p5-Number-Uncertainty
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

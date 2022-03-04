@@ -1,5 +1,4 @@
 # Created by: thinker <thinker@branda.to>
-# $FreeBSD$
 
 PORTNAME=	clearsilver
 PORTVERSION=	0.10.5
@@ -13,17 +12,7 @@ COMMENT=	Fast, powerful, and language-neutral template system
 USES=		gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-apache --disable-perl --disable-ruby \
-		--disable-java --disable-csharp
-
-.if defined(WITH_PYTHON)
-CONFIGURE_ARGS+=	--with-python=${PYTHON_CMD}
-USES+=		python:2.7
-PLIST_SUB+=	PYTHON=""
-PKGNAMESUFFIX=	-python
-.else
-CONFIGURE_ARGS+=	--disable-python
-PLIST_SUB+=	PYTHON="@comment "
-.endif
+		--disable-java --disable-csharp --disable-python
 
 post-patch:
 	@# Remove CFLAGS when building the python module, pydistfile is used

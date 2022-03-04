@@ -1,23 +1,23 @@
 # Created by: Johan Strom <johan@stromnet.se>
-# $FreeBSD$
 
 PORTNAME=	owfs
-PORTVERSION=	3.2p3
-DISTVERSIONPREFIX=	v
+PORTVERSION=	3.2p4
+PORTREVISION=	1
 CATEGORIES=	comms
+MASTER_SITES=	https://github.com/owfs/owfs/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	johan@stromnet.se
-COMMENT=	OWFS -- 1-Wire file system
+COMMENT=	1-wire file system implementation
 
 LICENSE=	GPLv2
 
-USES=		autoreconf gmake libtool pkgconfig
+BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash
+
+USES=		gmake libtool pkgconfig
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-
-USE_GITHUB=	yes
 
 .include "Makefile.options"
 
@@ -32,7 +32,7 @@ CONFIGURE_ARGS+=	--disable-parport
 AVAHI_CONFIGURE_ENABLE=		avahi
 AVAHI_LIB_DEPENDS=		libavahi-client.so:net/avahi-app
 
-FDTDI_CONFIGURE_EANBLE=		ftdi
+FTDI_CONFIGURE_ENABLE=		ftdi
 FTDI_LIB_DEPENDS=		libftdi.so:devel/libftdi
 
 OWDEBUG_CONFIGURE_ENABLE=	debug
@@ -49,7 +49,6 @@ OWTAP_CONFIGURE_ENABLE=		owtap
 OWTAP_USES=			tk:wrapper
 
 OWMALLOC_CONFIGURE_ENABLE=	owmalloc
-OWTRAFFIC_CONFIGURE_ENABLE=	owtraffic
 
 OWMON_CONFIGURE_ENABLE=		owmon
 OWMON_USES=			tk:wrapper
@@ -63,9 +62,6 @@ OWPERL_USE=			perl5=build,run
 
 # Broken/untested
 OWPHP_CONFIGURE_ENABLE=		owphp
-
-OWPYTHON_CONFIGURE_ENABLE=	owpython
-OWPYTHON_USES=			python:2.7
 
 # Additional CONFIGURE_ARGS is done below
 OWTCL_CONFIGURE_ENABLE=		owtcl
@@ -99,17 +95,10 @@ PLIST_SUB+=			OWNETPERL=""
 PLIST_SUB+=			OWNETPERL="@comment "
 .endif
 
-# If OW Network and Python is requested, we get ownet python files
-.if ${PORT_OPTIONS:MOWPYTHON} && ${PORT_OPTIONS:MOWNET}
-PLIST_SUB+=			OWNETPYTHON=""
-.else
-PLIST_SUB+=			OWNETPYTHON="@comment "
-.endif
-
-# If Perl, Python or PHP is requested, enable SWIG
-.if ${PORT_OPTIONS:MOWPERL} || ${PORT_OPTIONS:MOWPYTHON} || ${PORT_OPTIONS:MOWPHP}
-BUILD_DEPENDS+=			swig3.0:devel/swig30
-CONFIGURE_ARGS+=		--enable-swig SWIG=${LOCALBASE}/bin/swig3.0
+# If Perl or PHP is requested, enable SWIG
+.if ${PORT_OPTIONS:MOWPERL} || ${PORT_OPTIONS:MOWPHP}
+BUILD_DEPENDS+=			swig:devel/swig
+CONFIGURE_ARGS+=		--enable-swig SWIG=${LOCALBASE}/bin/swig
 .else
 CONFIGURE_ARGS+=		--disable-swig
 .endif
@@ -131,15 +120,6 @@ pre-configure:
 	@echo "Preparing build using autotools..."
 
 # Workarounds for different problems
-post-install-OWPYTHON-on:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/python2.7/site-packages/ow/_OW.so
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.*
-	(cd ${STAGEDIR}${PREFIX} \
-		&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
-		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;})
-	(cd ${STAGEDIR}${PREFIX} \
-		&& ${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
-		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;})
 
 post-install-OWPERL-on:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/OW/OW.so

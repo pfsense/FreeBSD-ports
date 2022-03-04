@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Any-Moose-Convert
 PORTVERSION=	0.004
@@ -19,8 +18,9 @@ RUN_DEPENDS=	p5-PerlIO-Util>=0:devel/p5-PerlIO-Util
 TEST_DEPENDS=	p5-Moose>=0.90:devel/p5-Moose \
 		p5-Mouse>=0.40:devel/p5-Mouse
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

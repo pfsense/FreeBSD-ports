@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xwd
 PORTVERSION=	1.0.7
 CATEGORIES=	x11
@@ -9,7 +7,7 @@ COMMENT=	Dump an image of an X window
 
 LICENSE=	MIT
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xkbfile
 
 PLIST_FILES=	bin/xwd man/man1/xwd.1.gz

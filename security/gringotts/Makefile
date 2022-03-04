@@ -1,9 +1,8 @@
 # Created by: Anders Nordby <anders@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gringotts
 PORTVERSION=	1.2.10
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	BERLIOS
 
@@ -13,11 +12,16 @@ COMMENT=	GTK application to securely store sensitive data
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpopt.so:devel/popt \
-		libgringotts.so:security/libgringotts
+DEPRECATED=	Abandonware, upstream dead and last release in 2009
+EXPIRATION_DATE=2022-03-31
 
-USES=		gettext localbase pkgconfig
-USE_GNOME=	gtk20
+LIB_DEPENDS=	libpopt.so:devel/popt \
+		libgringotts.so:security/libgringotts \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
+USES=		cpe gettext gnome localbase pkgconfig
+USE_GNOME=	cairo gdkpixbuf2 gtk20
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS

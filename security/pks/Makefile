@@ -1,9 +1,8 @@
 # Created by: kris@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	pks
 PORTVERSION=	0.9.6.20040312
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	security www
 MASTER_SITES=	http://pks.sourceforge.net/ LOCAL/mandree
 DISTFILES=	pks-current.tgz
@@ -14,11 +13,11 @@ COMMENT=	PGP Public Key Server
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_SSL=	openssl111
-BROKEN_SSL_REASON_openssl111=	member access into incomplete type 'EVP_PKEY' (aka 'evp_pkey_st')
+BROKEN_SSL=	openssl
+BROKEN_SSL_REASON_openssl=	member access into incomplete type 'EVP_PKEY' (aka 'evp_pkey_st')
 
 USES=		bdb ssl
-USE_GCC=	any
+USE_GCC=	yes
 USE_RC_SUBR=	pksd
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -54,7 +53,7 @@ post-install-DOCS-on:
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
+.if ${OPSYS} == FreeBSD && ${SSL_DEFAULT} == base
 BROKEN=	Does not build with OpenSSL 1.1
 .endif
 

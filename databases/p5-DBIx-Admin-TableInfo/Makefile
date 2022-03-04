@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	DBIx-Admin-TableInfo
-PORTVERSION=	3.03
+PORTVERSION=	3.04
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,7 +11,7 @@ COMMENT=	Wrapper for all of table_info(), column_info(), *_key_info()
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE_ART10=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
@@ -23,8 +22,9 @@ RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
 		p5-Moo>=2.002004:devel/p5-Moo \
 		p5-Text-Table-Manifold>=1:textproc/p5-Text-Table-Manifold
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5 tar:tgz
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

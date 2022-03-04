@@ -1,8 +1,8 @@
 # Created by: Byung-Hee HWANG <bh@izb.knu.ac.kr>
-# $FreeBSD$
 
 PORTNAME=	mutagen
 PORTVERSION=	1.42.0
+PORTREVISION=	2
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,11 +14,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_ARCH=	yes
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_PYTHON=	autoplist concurrent distutils
 SHEBANG_FILES=	tools/*
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|share/man/man1|man/man1|g' ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

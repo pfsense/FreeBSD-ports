@@ -1,5 +1,4 @@
 # Created by: Rong-En Fan <rafan@infor.org>
-# $FreeBSD$
 
 PORTNAME=	PerlIO-via-symlink
 PORTVERSION=	0.05
@@ -18,6 +17,8 @@ BUILD_DEPENDS=	p5-Module-Install>0:devel/p5-Module-Install
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 post-patch:
 	# Really old M::I code

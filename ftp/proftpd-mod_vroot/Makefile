@@ -1,9 +1,8 @@
 # Created by: Joseph Benden <joe@thrallingpenguin.com>
-# $FreeBSD$
 
 PORTNAME=	mod_vroot
 DISTVERSION=	0.9.5
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	ftp
 PKGNAMEPREFIX=	proftpd-
 

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	osgg
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -16,6 +13,7 @@ GH_ACCOUNT=	DusteDdk
 GH_PROJECT=	Osgg
 GH_TAGNAME=	32d9e02 # 1.0 + extra FreeBSD-related fixes
 
+USES=		gl sdl xorg
 USE_SDL=	sdl image ttf mixer
 USE_GL=		gl
 MAKE_ENV=	DATADIR="${DATADIR}/"

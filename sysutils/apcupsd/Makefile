@@ -1,9 +1,8 @@
 # Created by: Lars Köller <Lars.Koeller@Uni-Bielefeld.DE>
-# $FreeBSD$
 
 PORTNAME=	apcupsd
 PORTVERSION=	3.14.14
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20-%20Stable/${PORTVERSION}
 
@@ -13,7 +12,7 @@ COMMENT=	Set of programs for controlling APC UPS
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		cpe gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sbindir=${PREFIX}/sbin \
 		--with-nologin=/var/run \
@@ -27,9 +26,11 @@ CONFIGURE_ENV+=	LD="${CXX}" \
 USE_RC_SUBR=	apcupsd
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	APCDUMB_DRV APCSMART_DRV CGI CLIENT_ONLY DOCS GAPCMON MODBUS \
+CONFLICTS_INSTALL=	apcctrl
+
+OPTIONS_DEFINE=	APCDUMB_DRV APCSMART_DRV CGI CLIENT_ONLY GAPCMON MODBUS \
 		MODBUS_USB PCNET_DRV SHUTDOWN_POWEROFF SNMP_DRV SNMP_DRV_OLD \
-		TCP_WRAPPERS TEST_DRV USB_DRV
+		TCP_WRAPPERS TEST_DRV USB_DRV USB_REPORTING
 OPTIONS_DEFAULT=	APCDUMB_DRV APCSMART_DRV MODBUS MODBUS_USB PCNET_DRV \
 		SNMP_DRV TCP_WRAPPERS USB_DRV
 OPTIONS_SUB=	yes
@@ -48,6 +49,7 @@ SNMP_DRV_OLD_DESC=	Old SNMP driver support
 TCP_WRAPPERS_DESC=	${LIBWRAP_DESC}
 TEST_DRV_DESC=		Test driver support
 USB_DRV_DESC=		USB driver support
+USB_REPORTING_DESC=	Experimental patch for faulty USB reporting
 
 APCDUMB_DRV_CONFIGURE_ENABLE=	dumb
 APCSMART_DRV_CONFIGURE_ENABLE=	apcsmart
@@ -58,9 +60,11 @@ CLIENT_ONLY_CONFIGURE_ON=	--enable-net \
 				--disable-apcsmart --disable-dumb --disable-usb \
 				--disable-snmp --disable-test --disable-pcnet
 GAPCMON_CONFIGURE_ENABLE=	gapcmon
-GAPCMON_USES=			pkgconfig
-GAPCMON_USE=			GNOME=gconf2
-GAPCMON_CONFLICTS=		gapcmon-[0-9]*
+GAPCMON_USES=			gnome pkgconfig xorg
+GAPCMON_USE=			GNOME=cairo,gconf2,gdkpixbuf2 XORG=x11,xext
+GAPCMON_LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
+				libfreetype.so:print/freetype2
+GAPCMON_CONFLICTS=		gapcmon
 MODBUS_CONFIGURE_ENABLE=	modbus
 MODBUS_USB_CONFIGURE_ENABLE=	modbus-usb
 PCNET_DRV_CONFIGURE_ENABLE=	pcnet
@@ -70,6 +74,8 @@ SNMP_DRV_OLD_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 TCP_WRAPPERS_CONFIGURE_WITH=	libwrap=yes
 TEST_DRV_CONFIGURE_ENABLE=	test
 USB_DRV_CONFIGURE_ENABLE=	usb
+
+USB_REPORTING_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-usb-reporting
 
 .include <bsd.port.options.mk>
 

@@ -1,13 +1,12 @@
 # Created by: Max Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libiqxmlrpc
 PORTVERSION=	0.13.5
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	devel net
 MASTER_SITES=	SF
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free, object-oriented XML-RPC implementation written in C++
 
 LICENSE=	BSD2CLAUSE
@@ -21,7 +20,7 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CMAKE_OFF=	-Dbuild_docs=off
 
 USE_GNOME=	libxml2
-USES=		cmake tar:bzip2 ssl
+USES=		cmake gnome ssl tar:bzip2
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 

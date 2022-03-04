@@ -19,7 +19,7 @@
  */
 
 define('ARPWATCH_LOCAL_DIR', '/usr/local/arpwatch');
-define('ARPWATCH_ETHERCODES_URL', 'http://linuxnet.ca/ieee/oui/ethercodes.dat');
+define('ARPWATCH_ETHERCODES_URL', 'http://standards-oui.ieee.org/oui/oui.csv');
 define('ARPWATCH_SENDMAIL_PATH', '/usr/sbin/sendmail');
 define('ARPWATCH_SENDMAIL_PROXY', '/usr/local/arpwatch/sendmail_proxy.php');
 
@@ -32,18 +32,14 @@ function arpwatch_install_command() {
 	$arpwatch_config = $config['installedpackages']['arpwatch']['config'][0];
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 	$notifications_recipient = $arpwatch_config['notifications_recipient'];
+	$enable_zeropad = ($arpwatch_config['zeropad'] == 'on') ? '-Z' : '-C';
 	$disable_carp = ($arpwatch_config['disable_carp'] == 'on') ? '-v' : '';
 	$disable_bogons = ($arpwatch_config['disable_bogons'] == 'on') ? '-N' : '';
 	$disable_zero = ($arpwatch_config['disable_zero'] == 'on') ? '-z' : '';
 	$update_vendors = ($arpwatch_config['update_vendors'] == 'on');
-	$clear_database = ($arpwatch_config['clear_database'] == 'on');
 
 	if ($update_vendors) {
-		arpwatch_update_vendors();
-	}
-
-	if ($clear_database) {
-		arpwatch_clear_database();
+		arpwatch_update_vendors($enable_zeropad);
 	}
 
 	$rc = array();
@@ -61,25 +57,42 @@ function arpwatch_install_command() {
 
 			touch($arp_file);
 
-			$rc['start'] .= "/usr/local/sbin/arpwatch $disable_carp $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
+			$rc['start'] .= '/usr/local/sbin/arpwatch'
+			    .' '.$disable_carp
+			    .' '.$disable_bogons
+			    .' '.$disable_zero
+			    .' '.$enable_zeropad
+			    .' -f '.escapeshellarg($arp_file)
+			    .' -i '.escapeshellarg($ifname);
+			if (!empty($notifications_recipient)) {
+			    $rc['start'] .= ' -w '.escapeshellarg($notifications_recipient);
+			}
+			$rc['start'] .= "\n";
 		}
 	}
 
 	$rc['stop'] = '/usr/bin/killall -q arpwatch';
 
-	write_rcfile($rc);
-
 	if ($arpwatch_config['enable']) {
+		write_rcfile($rc);
 		if (!platform_booting()) {
 			restart_service("arpwatch");
 		}
 	} else {
-		stop_service("arpwatch");
+		unlink_if_exists("/usr/local/etc/rc.d/arpwatch.sh");
+		if (is_process_running("arpwatch")) {
+			killbyname("arpwatch");
+		}
 	}
 }
 
 function arpwatch_deinstall_command() {
-	arpwatch_clear_database();
+	global $config;
+
+	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0));
+	if ($config['installedpackages']['arpwatch']['config'][0]['clear_database'] == 'on') {
+		arpwatch_clear_database();
+	}
 	arpwatch_uninstall_sendmail_proxy();
 }
 
@@ -99,8 +112,15 @@ function arpwatch_validate_input($post, &$input_errors) {
 		}
 	}
 
-	if (filter_var($post['notifications_recipient'], FILTER_VALIDATE_EMAIL) === false) {
+	if (!empty($post['notifications_recipient']) &&
+	    (filter_var($post['notifications_recipient'], FILTER_VALIDATE_EMAIL) === false)) {
 		$input_errors[] = gettext("{$post['notifications_recipient']} is not a valid email address.");
+	}
+
+	for ($i = 0; $i < 30; $i++) {
+		if (!empty($post["mac{$i}"]) && !is_macaddr($post["mac{$i}"])) {
+			$input_errors[] = "{$post["mac{$i}"]} is not valid MAC address.";
+		}
 	}
 }
 
@@ -109,11 +129,13 @@ function arpwatch_resync_config_command() {
 }
 
 function arpwatch_get_arp_file($ifname) {
-	return ARPWATCH_LOCAL_DIR."/arp_$ifname.dat";
+	return ARPWATCH_LOCAL_DIR."/arp_{$ifname}.dat";
 }
 
-function arpwatch_update_vendors() {
-	download_file(ARPWATCH_ETHERCODES_URL, ARPWATCH_LOCAL_DIR."/ethercodes.dat");
+function arpwatch_update_vendors($args) {
+	exec('/usr/bin/fetch -qo - '.ARPWATCH_ETHERCODES_URL.'|'
+	    .ARPWATCH_LOCAL_DIR.'/massagevendor '.$args.' >'
+	    .ARPWATCH_LOCAL_DIR.'/ethercodes.dat');
 }
 
 function arpwatch_clear_database() {
@@ -147,10 +169,11 @@ function arpwatch_parse_database() {
 				$mac = preg_replace('/(^|:)([a-f0-9])(:|$)/', '${1}0${2}${3}', $mac);
 			}
 
-			$oui = strtoupper(substr($mac, 0, 8));
+			$oui = strtolower(substr($mac, 0, 8));
 			$matches = array();
 
-			if (preg_match("/^$oui\s+(.*)$/m", file_get_contents(ARPWATCH_LOCAL_DIR.'/ethercodes.dat'), $matches)) {
+			if (file_exists(ARPWATCH_LOCAL_DIR.'/ethercodes.dat') && 
+			    preg_match("/^$oui\s+(.*)$/m", file_get_contents(ARPWATCH_LOCAL_DIR.'/ethercodes.dat'), $matches)) {
 				$vendor = $matches[1];
 			} else {
 				$vendor = 'unknown';
@@ -204,21 +227,37 @@ function arpwatch_install_sendmail_proxy() {
 #!/usr/bin/env php
 <?php
 
+global $config;
 require_once("notices.inc");
 
 $fd = fopen('php://stdin','r');
 $message = stream_get_contents($fd);
 fclose($fd);
 
-if (false !== $message) {
+if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
+    ($config['installedpackages']['arpwatch']['config'][0]['disable_cron'] != 'on'))) {
 	$subject = array();
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
+	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0, 'row'));
+	foreach ($config['installedpackages']['arpwatch']['config'][0]['row'] as $sup) {
+		if (!empty($sup['mac']) && strpos($message, strtolower($sup['mac'])) &&
+		    (($sup['notification_type'] == 'all') || ($sup['notification_type'] == $subject[1]))) {
+			return;
+		}
+	}
 	$message = preg_replace('/^From: .*$/m', '', $message);
 	$message = preg_replace('/^To: .*$/m', '', $message);
 	$message = preg_replace('/^Subject: .*$/m', '', $message);
 	$message = preg_replace("/^(\n){4}/", '', $message);
+	$send_subject = "{$config['system']['hostname']}.{$config['system']['domain']} - Arpwatch Notification : {$subject[1]}";
 
-	send_smtp_message($message, "{$config['system']['hostname']}.{$config['system']['domain']} - Arpwatch Notification : {$subject[1]}");
+	send_smtp_message($message, $send_subject);
+	if (function_exists('notify_via_telegram')) {
+		notify_via_telegram($send_subject . " - " . $message);
+	}
+	if (function_exists('notify_via_pushover')) {
+		notify_via_pushover($send_subject . " - " . $message);
+	}
 }
 
 ?>

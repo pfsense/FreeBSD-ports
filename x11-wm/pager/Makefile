@@ -1,5 +1,4 @@
 # Created by: Michael Ebert <ebert@informatik.unibw-muenchen.de>
-# $FreeBSD$
 
 PORTNAME=	pager
 PORTVERSION=	0.90.3
@@ -15,7 +14,7 @@ BUILD_DEPENDS=	sawfish:x11-wm/sawfish
 RUN_DEPENDS=	sawfish:x11-wm/sawfish
 
 USE_GNOME=	gtk20
-USES=		gmake pkgconfig tar:xz
+USES=		gmake gnome pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	lib/sawfish/sawfishpager \

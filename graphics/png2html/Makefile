@@ -1,9 +1,8 @@
 # Created by: Chris D. Faulhaber <jedgar@fxp.org>
-# $FreeBSD$
 
 PORTNAME=	png2html
 PORTVERSION=	1.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.engr.mun.ca/~holden/
 

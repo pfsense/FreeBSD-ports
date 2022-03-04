@@ -1,41 +1,36 @@
 # Created by: fabian.freyer@physik.tu-berlin.de
-# $FreeBSD$
 
 PORTNAME=	caddy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11.1
-PORTREVISION=	1
+DISTVERSION=	2.4.6
 CATEGORIES=	www
+DIST_SUBDIR=	caddy
 
-MAINTAINER=	fabian.freyer@physik.tu-berlin.de
+MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Fast, cross-platform HTTP/2 web server with automatic HTTPS
 
 LICENSE=	APACHE20
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
-USES=		go
-USE_GITHUB=	yes
-GH_ACCOUNT=	mholt
+USES=		cpe go:modules
+CPE_VENDOR=	caddyserver
 
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
+USE_RC_SUBR=	caddy
+SUB_FILES=	Caddyfile.sample caddy pkg-message
 
-SUB_FILES=	pkg-message
-PLIST_FILES=	bin/caddy etc/rc.d/caddy
+PLIST_FILES=	bin/${PORTNAME} \
+		"@sample ${ETCDIR_REL}/Caddyfile.sample"
 
-OPTIONS_DEFINE=	TELEMETRY
+# If go.mod is sufficient:
+GO_MODULE=	github.com/caddyserver/caddy/v2
+GO_TARGET=	./cmd/caddy
+# If modules must be specified manually:
+#.include "${.CURDIR}/modules.mk"
 
-TELEMETRY_DESC=	Enable telemetry support
-TELEMETRY_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-disable-telemetry
-
-do-build:
-	@cd ${GO_WRKSRC}/${PORTNAME} && ${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} build
-
-do-install:
-	${INSTALL_PROGRAM} ${GO_WRKSRC}/${PORTNAME}/${PORTNAME} \
-		${STAGEDIR}/${PREFIX}/bin/${PORTNAME}
-	${INSTALL_SCRIPT} ${GO_WRKSRC}/dist/init/freebsd/${PORTNAME} \
-		${STAGEDIR}/${PREFIX}/etc/rc.d/${PORTNAME}
+post-install:
+	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKDIR}/Caddyfile.sample ${STAGEDIR}${ETCDIR}
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mess
 MTARGET=	mame
 MSUBTARGET=	mess

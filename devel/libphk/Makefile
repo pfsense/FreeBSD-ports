@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	libphk
 PORTVERSION=	0.3.20080902
 PORTREVISION=	1
@@ -14,6 +11,9 @@ COMMENT=	PHK's utilities functions
 USES=		uidfix tar:tgz
 
 WRKSRC=		${WRKDIR}/Libphk
+
+# XXX static PIE libraries not yet supported by the base system
+MAKE_FLAGS+=	WITHOUT_PIE=true
 
 MAKE_JOBS_UNSAFE=	yes
 

@@ -86,14 +86,17 @@ otrs/Kernel/Language/hu.pm
 otrs/Kernel/Language/id.pm
 otrs/Kernel/Language/it.pm
 otrs/Kernel/Language/ja.pm
+otrs/Kernel/Language/ko.pm
 otrs/Kernel/Language/lt.pm
 otrs/Kernel/Language/lv.pm
+otrs/Kernel/Language/mk.pm
 otrs/Kernel/Language/ms.pm
 otrs/Kernel/Language/nb_NO.pm
 otrs/Kernel/Language/nl.pm
 otrs/Kernel/Language/pl.pm
 otrs/Kernel/Language/pt.pm
 otrs/Kernel/Language/pt_BR.pm
+otrs/Kernel/Language/ro.pm
 otrs/Kernel/Language/ru.pm
 otrs/Kernel/Language/sk_SK.pm
 otrs/Kernel/Language/sl.pm
@@ -355,6 +358,7 @@ otrs/Kernel/Output/HTML/Notification/CustomerUserTimeZoneCheck.pm
 otrs/Kernel/Output/HTML/Notification/DaemonCheck.pm
 otrs/Kernel/Output/HTML/Notification/Generic.pm
 otrs/Kernel/Output/HTML/Notification/OutofOfficeCheck.pm
+otrs/Kernel/Output/HTML/Notification/PackageManagerCheckNotVerifiedPackages.pm
 otrs/Kernel/Output/HTML/Notification/SystemConfigurationInvalidCheck.pm
 otrs/Kernel/Output/HTML/Notification/SystemConfigurationIsDirtyCheck.pm
 otrs/Kernel/Output/HTML/Notification/SystemConfigurationOutOfSyncCheck.pm
@@ -787,6 +791,8 @@ otrs/Kernel/System/Console/BaseCommand.pm
 otrs/Kernel/System/Console/Command/Admin/Article/StorageSwitch.pm
 otrs/Kernel/System/Console/Command/Admin/CommunicationChannel/Drop.pm
 otrs/Kernel/System/Console/Command/Admin/CommunicationChannel/Sync.pm
+otrs/Kernel/System/Console/Command/Admin/Config/FixInvalid.pm
+otrs/Kernel/System/Console/Command/Admin/Config/ListInvalid.pm
 otrs/Kernel/System/Console/Command/Admin/Config/Read.pm
 otrs/Kernel/System/Console/Command/Admin/Config/UnlockAll.pm
 otrs/Kernel/System/Console/Command/Admin/Config/Update.pm
@@ -823,6 +829,8 @@ otrs/Kernel/System/Console/Command/Admin/WebService/Delete.pm
 otrs/Kernel/System/Console/Command/Admin/WebService/Dump.pm
 otrs/Kernel/System/Console/Command/Admin/WebService/List.pm
 otrs/Kernel/System/Console/Command/Admin/WebService/Update.pm
+otrs/Kernel/System/Console/Command/Dev/Code/CPANAudit.pm
+otrs/Kernel/System/Console/Command/Dev/Code/CPANUpdate.pm
 otrs/Kernel/System/Console/Command/Dev/Code/ContributorsListUpdate.pm
 otrs/Kernel/System/Console/Command/Dev/Code/Generate/ConsoleCommand.pm
 otrs/Kernel/System/Console/Command/Dev/Code/Generate/ConsoleCommand/ConsoleCommand.pm.skel
@@ -1034,6 +1042,7 @@ otrs/Kernel/System/PostMaster/FollowUp.pm
 otrs/Kernel/System/PostMaster/FollowUpCheck/Attachments.pm
 otrs/Kernel/System/PostMaster/FollowUpCheck/Body.pm
 otrs/Kernel/System/PostMaster/FollowUpCheck/BounceEmail.pm
+otrs/Kernel/System/PostMaster/FollowUpCheck/ExternalTicketNumberRecognition.pm
 otrs/Kernel/System/PostMaster/FollowUpCheck/RawEmail.pm
 otrs/Kernel/System/PostMaster/FollowUpCheck/References.pm
 otrs/Kernel/System/PostMaster/FollowUpCheck/Subject.pm
@@ -1123,6 +1132,7 @@ otrs/Kernel/System/SupportDataCollector/Plugin/OS/Distribution.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OS/KernelVersion.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OS/Load.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OS/PerlModules.pm
+otrs/Kernel/System/SupportDataCollector/Plugin/OS/PerlModulesAudit.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OS/PerlVersion.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OS/Swap.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/ArticleSearchIndexStatus.pm
@@ -1135,7 +1145,6 @@ otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/DatabaseRecords.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/DefaultSOAPUser.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/DefaultUser.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/EmailQueue.pm
-otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/ErrorLog.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/FQDN.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/FileSystemWritable.pm
 otrs/Kernel/System/SupportDataCollector/Plugin/OTRS/LegacyConfigBackups.pm
@@ -1191,6 +1200,7 @@ otrs/Kernel/System/SysConfig/ValueType/TimeZone.pm
 otrs/Kernel/System/SysConfig/ValueType/VacationDays.pm
 otrs/Kernel/System/SysConfig/ValueType/VacationDaysOneTime.pm
 otrs/Kernel/System/SysConfig/ValueType/WorkingHours.pm
+otrs/Kernel/System/SysConfig/ValueType/YAML.pm
 otrs/Kernel/System/SysConfig/XML.pm
 otrs/Kernel/System/SystemAddress.pm
 otrs/Kernel/System/SystemData.pm
@@ -1217,7 +1227,6 @@ otrs/Kernel/System/Ticket/CustomerPermission/CustomerIDCheck.pm
 otrs/Kernel/System/Ticket/CustomerPermission/CustomerUserIDCheck.pm
 otrs/Kernel/System/Ticket/CustomerPermission/GroupCheck.pm
 otrs/Kernel/System/Ticket/Event/ArchiveRestore.pm
-otrs/Kernel/System/Ticket/Event/ArticleSearchIndex.pm
 otrs/Kernel/System/Ticket/Event/DynamicFieldFromCustomerUser.pm
 otrs/Kernel/System/Ticket/Event/ForceOwnerReset.pm
 otrs/Kernel/System/Ticket/Event/ForceState.pm
@@ -1279,6 +1288,7 @@ otrs/Kernel/System/XML/Simple.pm
 otrs/Kernel/System/YAML.pm
 otrs/README.md
 otrs/RELEASE
+otrs/SECURITY.md
 otrs/UPDATING.md
 otrs/bin/Cron.sh
 otrs/bin/cgi-bin/app.psgi
@@ -1301,8 +1311,10 @@ otrs/bin/otrs.PostMaster.pl
 otrs/bin/otrs.SetPermissions.pl
 otrs/scripts/DBUpdate-to-6.pl
 otrs/scripts/DBUpdateTo6.pm
+otrs/scripts/DBUpdateTo6/ACLDeploy.pm
 otrs/scripts/DBUpdateTo6/AddAppointmentCalendarNotification.pm
 otrs/scripts/DBUpdateTo6/Base.pm
+otrs/scripts/DBUpdateTo6/CPANAuditCheck.pm
 otrs/scripts/DBUpdateTo6/CacheCleanup.pm
 otrs/scripts/DBUpdateTo6/CleanGroupUserPermissionValue.pm
 otrs/scripts/DBUpdateTo6/CreateAppointmentCalendarTables.pm
@@ -1314,11 +1326,13 @@ otrs/scripts/DBUpdateTo6/DatabaseVersionCheck.pm
 otrs/scripts/DBUpdateTo6/DropObjectLockState.pm
 otrs/scripts/DBUpdateTo6/FrameworkVersionCheck.pm
 otrs/scripts/DBUpdateTo6/InitializeDefaultCronjobs.pm
-otrs/scripts/DBUpdateTo6/MigrateChatData.pm
+otrs/scripts/DBUpdateTo6/InvalidSettingsCheck.pm
 otrs/scripts/DBUpdateTo6/MigrateArticleData.pm
 otrs/scripts/DBUpdateTo6/MigrateArticleSearchIndex.pm
+otrs/scripts/DBUpdateTo6/MigrateChatData.pm
 otrs/scripts/DBUpdateTo6/MigrateConfigEffectiveValues.pm
 otrs/scripts/DBUpdateTo6/MigrateGenericAgentJobs.pm
+otrs/scripts/DBUpdateTo6/MigrateModifiedSettings.pm
 otrs/scripts/DBUpdateTo6/MigratePackageRepositoryConfiguration.pm
 otrs/scripts/DBUpdateTo6/MigratePossibleNextActions.pm
 otrs/scripts/DBUpdateTo6/MigratePostMasterData.pm
@@ -1327,7 +1341,7 @@ otrs/scripts/DBUpdateTo6/MigrateTicketAppointments.pm
 otrs/scripts/DBUpdateTo6/MigrateTicketFrontendCustomerInfoZoom.pm
 otrs/scripts/DBUpdateTo6/MigrateTicketMergedHistory.pm
 otrs/scripts/DBUpdateTo6/MigrateTicketNotifications.pm
-otrs/scripts/DBUpdateTo6/TaskConfig/MigrateArticleData.yml.dist
+otrs/scripts/DBUpdateTo6/MigrateTicketSearchProfiles.pm
 otrs/scripts/DBUpdateTo6/MigrateTicketStats.pm
 otrs/scripts/DBUpdateTo6/MigrateTicketStorageModule.pm
 otrs/scripts/DBUpdateTo6/MigrateTimeZoneConfiguration.pm
@@ -1336,8 +1350,10 @@ otrs/scripts/DBUpdateTo6/MigrateZoomExpandConfig.pm
 otrs/scripts/DBUpdateTo6/PerlModulesCheck.pm
 otrs/scripts/DBUpdateTo6/PerlVersionCheck.pm
 otrs/scripts/DBUpdateTo6/PostArticleTableStructureChanges.pm
+otrs/scripts/DBUpdateTo6/ProcessDeploy.pm
 otrs/scripts/DBUpdateTo6/RebuildConfig.pm
-otrs/scripts/DBUpdateTo6/SysConfigCheck.pm
+otrs/scripts/DBUpdateTo6/RebuildConfigCleanup.pm
+otrs/scripts/DBUpdateTo6/TaskConfig/MigrateArticleData.yml.dist
 otrs/scripts/DBUpdateTo6/UninstallMergedFeatureAddOns.pm
 otrs/scripts/DBUpdateTo6/UpdateAppointmentCalendarFutureTasks.pm
 otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure.pm
@@ -1346,6 +1362,8 @@ otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/ArticleTableChangesPreRename.p
 otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/ArticleTableChangesRename.pm
 otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/CommunicationLogs.pm
 otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/DynamicFieldChanges.pm
+otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/FixUserPreferenceKeys.pm
+otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/IndexArticleDataMimeTable.pm
 otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/NewArticleSearchIndexTable.pm
 otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/NewChatDataTable.pm
 otrs/scripts/DBUpdateTo6/UpgradeDatabaseStructure/NewCommunicationChannelTable.pm
@@ -1374,6 +1392,7 @@ otrs/scripts/database/otrs-schema.postgresql.sql
 otrs/scripts/database/otrs-schema.xml
 otrs/scripts/restore.pl
 otrs/scripts/rpc-example.pl
+otrs/scripts/test/Archive.t
 otrs/scripts/test/AsynchronousExecutor.t
 otrs/scripts/test/Auth.t
 otrs/scripts/test/AuthSession.t
@@ -1424,8 +1443,10 @@ otrs/scripts/test/PostMaster.t
 otrs/scripts/test/Priority.t
 otrs/scripts/test/Queue.t
 otrs/scripts/test/ReferenceData.t
+otrs/scripts/test/RemoveSessionByUser.t
 otrs/scripts/test/SLA.t
 otrs/scripts/test/SMIME.t
+otrs/scripts/test/SMIMEAutoResponse.t
 otrs/scripts/test/Salutation.t
 otrs/scripts/test/SearchProfile.t
 otrs/scripts/test/Service.t
@@ -1505,6 +1526,7 @@ otrs/var/httpd/htdocs/js/Core.Agent.Admin.Group.js
 otrs/var/httpd/htdocs/js/Core.Agent.Admin.Log.js
 otrs/var/httpd/htdocs/js/Core.Agent.Admin.MailAccount.js
 otrs/var/httpd/htdocs/js/Core.Agent.Admin.NotificationEvent.js
+otrs/var/httpd/htdocs/js/Core.Agent.Admin.PGP.js
 otrs/var/httpd/htdocs/js/Core.Agent.Admin.PackageManager.js
 otrs/var/httpd/htdocs/js/Core.Agent.Admin.PostMasterFilter.js
 otrs/var/httpd/htdocs/js/Core.Agent.Admin.Priority.js
@@ -1553,6 +1575,7 @@ otrs/var/httpd/htdocs/js/Core.Agent.Overview.js
 otrs/var/httpd/htdocs/js/Core.Agent.Preferences.js
 otrs/var/httpd/htdocs/js/Core.Agent.Responsive.js
 otrs/var/httpd/htdocs/js/Core.Agent.Search.js
+otrs/var/httpd/htdocs/js/Core.Agent.SharedSecretGenerator.js
 otrs/var/httpd/htdocs/js/Core.Agent.SortedTree.js
 otrs/var/httpd/htdocs/js/Core.Agent.Statistics.ParamsWidget.js
 otrs/var/httpd/htdocs/js/Core.Agent.Statistics.js
@@ -1630,6 +1653,8 @@ otrs/var/httpd/htdocs/js/jsdoc-readme.md
 otrs/var/httpd/htdocs/js/jsdoc.conf
 otrs/var/httpd/htdocs/js/test/Core.AJAX.UnitTest.html
 otrs/var/httpd/htdocs/js/test/Core.AJAX.UnitTest.js
+otrs/var/httpd/htdocs/js/test/Core.Agent.AppointmentCalendar.UnitTest.html
+otrs/var/httpd/htdocs/js/test/Core.Agent.AppointmentCalendar.UnitTest.js
 otrs/var/httpd/htdocs/js/test/Core.App.Responsive.UnitTest.js
 otrs/var/httpd/htdocs/js/test/Core.App.UnitTest.html
 otrs/var/httpd/htdocs/js/test/Core.App.UnitTest.js
@@ -2104,6 +2129,7 @@ otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/codesnippe
 otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/codesnippetgeshi/plugin.js
 otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/colordialog/dialogs/colordialog.css
 otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/colordialog/dialogs/colordialog.js
+otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/contextmenu_linkopen/plugin.js
 otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/copyformatting/cursors/cursor-disabled.svg
 otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/copyformatting/cursors/cursor.svg
 otrs/var/httpd/htdocs/js/thirdparty/ckeditor-%%VER_CKEDITOR%%/plugins/copyformatting/styles/copyformatting.css
@@ -2965,9 +2991,9 @@ otrs/var/httpd/htdocs/js/thirdparty/d3-3.5.6/d3.min.js
 otrs/var/httpd/htdocs/js/thirdparty/farahey-0.5/farahey.js
 otrs/var/httpd/htdocs/js/thirdparty/fullcalendar-3.4.0/fullcalendar.min.js
 otrs/var/httpd/htdocs/js/thirdparty/fullcalendar-scheduler-1.6.2/scheduler.min.js
-otrs/var/httpd/htdocs/js/thirdparty/jquery-3.2.1/jquery.js
+otrs/var/httpd/htdocs/js/thirdparty/jquery-3.4.1/jquery.js
 otrs/var/httpd/htdocs/js/thirdparty/jquery-browser-detection/jquery-browser-detection.js
-otrs/var/httpd/htdocs/js/thirdparty/jquery-jstree-3.3.4/jquery.jstree.js
+otrs/var/httpd/htdocs/js/thirdparty/jquery-jstree-3.3.7/jquery.jstree.js
 otrs/var/httpd/htdocs/js/thirdparty/jquery-migrate-3.0.0/jquery-migrate.js
 otrs/var/httpd/htdocs/js/thirdparty/jquery-pubsub/pubsub.js
 otrs/var/httpd/htdocs/js/thirdparty/jquery-tablesorter-2.28.14/jquery.tablesorter.js
@@ -2985,6 +3011,7 @@ otrs/var/httpd/htdocs/js/thirdparty/nvd3-1.7.1/nvd3.min.js
 otrs/var/httpd/htdocs/js/thirdparty/qunit-2.3.3/qunit.css
 otrs/var/httpd/htdocs/js/thirdparty/qunit-2.3.3/qunit.js
 otrs/var/httpd/htdocs/js/thirdparty/spectrum-1.8.0/spectrum.js
+otrs/var/httpd/htdocs/robots.txt
 otrs/var/httpd/htdocs/skins/Agent/default/css/Core.Agent.Admin.ACL.css
 otrs/var/httpd/htdocs/skins/Agent/default/css/Core.Agent.Admin.CloudServices.css
 otrs/var/httpd/htdocs/skins/Agent/default/css/Core.Agent.Admin.CommunicationLog.css
@@ -3191,6 +3218,7 @@ otrs/var/webservices/examples/Base.pm
 @group
 @owner root
 @group wheel
+@dir otrs/doc
 @dir otrs/scripts/DBUpdateTo6
 @dir otrs/scripts
 @dir otrs/var/article

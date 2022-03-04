@@ -1,10 +1,9 @@
 # Created by: vanilla
-# $FreeBSD$
 
 PORTNAME=	qrencode
-PORTVERSION=	0.6
+PORTVERSION=	0.7
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	graphics pear
 
 MAINTAINER=	vanilla@FreeBSD.org

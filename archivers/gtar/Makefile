@@ -1,8 +1,7 @@
 # Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
 
 PORTNAME=	tar
-PORTVERSION=	1.32
+PORTVERSION=	1.34
 CATEGORIES=	archivers sysutils
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	g

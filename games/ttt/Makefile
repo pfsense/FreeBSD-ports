@@ -1,5 +1,4 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	ttt
 PORTVERSION=	2011.04
@@ -9,7 +8,7 @@ MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/ttt/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
-EXTRACT_ONLY=   ${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple one or two player Tic Tac Toe game
@@ -17,7 +16,7 @@ COMMENT=	Simple one or two player Tic Tac Toe game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf
+USES=		autoreconf sdl
 USE_SDL=	mixer sdl
 GNU_CONFIGURE=	yes
 ALL_TARGET=	${PORTNAME}

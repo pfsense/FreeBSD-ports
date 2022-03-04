@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	tttcmds
-PORTVERSION=	1.0.20181214
+PORTVERSION=	1.0.20190920
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
@@ -11,7 +9,7 @@ COMMENT=	Unix-style data processing commands and library
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 CONFLICTS_INSTALL=	open-usp-tukubai
 

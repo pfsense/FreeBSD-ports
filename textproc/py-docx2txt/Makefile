@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	docx2txt
-DISTVERSION=	0.7
+DISTVERSION=	0.8
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +10,7 @@ COMMENT=	Pure python-based utility to extract text and images from docx files
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist
 NO_ARCH=	yes
 

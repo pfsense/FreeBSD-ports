@@ -1,5 +1,4 @@
 #! /bin/sh
-# $FreeBSD$
 #
 # MAINTAINER: portmgr@FreeBSD.org
 #
@@ -23,13 +22,16 @@
 # The PLIST_SUB feature can be disabled by setting PLIST_SUB_SED=
 # in environment.
 
+set -o pipefail
+
 [ -n "${DEBUG_MK_SCRIPTS}" -o -n "${DEBUG_MK_SCRIPTS_CHECK_LEFTOVERS}" ] && set -x
 
 origin="$1"
 [ $# -eq 1 ] || { echo "Must supply ORIGIN as parameter" >&2; exit 1; }
 [ -n "${PORTSDIR}" ] || { echo "PORTSDIR must be set" >&2; exit 1; }
 
-portdir="${PORTSDIR}/${origin}"
+# May be passed in from environment if using an overlay.
+: ${portdir:="${PORTSDIR}/${origin}"}
 
 # PREFIX/LOCALBASE may be set in env or want default from port.
 if [ -n "${PREFIX}" ]; then

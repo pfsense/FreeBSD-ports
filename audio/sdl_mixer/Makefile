@@ -1,11 +1,10 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sdl_mixer
 PORTVERSION=	1.2.12
 PORTREVISION=	12
 CATEGORIES=	audio
-MASTER_SITES=	http://www.libsdl.org/projects/SDL_mixer/release/
+MASTER_SITES=	https://www.libsdl.org/projects/SDL_mixer/release/
 DISTNAME=	SDL_mixer-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -13,7 +12,7 @@ COMMENT=	Sample multi-channel audio mixer library
 
 LICENSE=	ZLIB
 
-USES=		gmake libtool pathfix pkgconfig
+USES=		gmake libtool pathfix pkgconfig sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib

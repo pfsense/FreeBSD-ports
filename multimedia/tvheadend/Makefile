@@ -1,9 +1,9 @@
 # Created by: Bernhard Froehlich <decke@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tvheadend
 PORTVERSION=	4.2.8
 DISTVERSIONPREFIX=	v
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
 MAINTAINER=	decke@FreeBSD.org
@@ -73,6 +73,7 @@ TRANSCODING_DESC=	Transcoding for mobile and web clients
 TRANSCODING_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 TRANSCODING_CONFIGURE_ENABLE=	libav
 
+XMLTV_DESC=		XMLTV grabber for television listings
 XMLTV_RUN_DEPENDS=	p5-xmltv>=0:textproc/p5-xmltv
 
 .include <bsd.port.pre.mk>

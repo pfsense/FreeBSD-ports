@@ -1,5 +1,4 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gmpc-lyrics
 PORTVERSION=	11.8.16
@@ -19,7 +18,7 @@ RUN_DEPENDS=	gmpc:audio/gmpc
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	intltool glib20 gtk20 libxml2
-USES=		gettext gmake libtool pathfix pkgconfig
+USES=		gettext gmake gnome libtool pathfix pkgconfig
 INSTALL_TARGET=	install-strip
 
 PLIST_FILES=	lib/gmpc/plugins/lyricsplugin.so

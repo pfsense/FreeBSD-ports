@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hyperrogue
-PORTVERSION=	10.5e
+PORTVERSION=	12.0f
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -17,16 +14,17 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USE_GITHUB=	yes
 GH_ACCOUNT=	zenorogue
 
-USES=		autoreconf compiler:c++11-lang gl localbase sdl
-GNU_CONFIGURE=	yes
+USES=		compiler:c++11-lang gl gmake localbase:ldflags sdl xorg
 USE_SDL=	sdl mixer gfx ttf
 USE_GL=		gl glew
+ALL_TARGET=	hyperrogue
 
 # remove -O2, otherwise clang takes gigabytes of memory
-CFLAGS:=	${CFLAGS:C/-O[0-9]//} -DFHS
-CXXFLAGS:=	${CXXFLAGS:C/-O[0-9]//} -DFHS
+CXXFLAGS:=	${CXXFLAGS:C/-O[0-9]//} -DFHS -DHYPERPATH="\\\"${DATADIR}/\\\""
 
 PORTDOCS=	README.md
+PORTDATA=	*
+PLIST_FILES=	bin/hyperrogue share/pixmaps/hyperrogue.ico
 
 DESKTOP_ENTRIES="HyperRogue" \
 		"" \
@@ -37,11 +35,14 @@ DESKTOP_ENTRIES="HyperRogue" \
 
 OPTIONS_DEFINE=	DOCS
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|isnumber|is_number|' ${WRKSRC}/archimedean.cpp
-
-post-install:
+do-install:
+	${INSTALL_PROGRAM} ${WRKSRC}/hyperrogue ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKSRC}/hr-icon.ico ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.ico
+	@${MKDIR} ${STAGEDIR}${DATADIR}/sounds
+	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/hyperrogue-music.txt ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/sounds/* ${STAGEDIR}${DATADIR}/sounds
+	${INSTALL_DATA} ${WRKSRC}/music/* ${STAGEDIR}${DATADIR}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

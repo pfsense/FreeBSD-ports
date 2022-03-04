@@ -1,5 +1,4 @@
 # Created by: Brian Handy <handy@physics.montana.edu>
-# $FreeBSD$
 
 PORTNAME=	blackbox
 PORTVERSION=	0.70.1
@@ -13,7 +12,7 @@ COMMENT=	Small and fast window manager for X11R6
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		pathfix pkgconfig iconv
+USES=		pathfix pkgconfig iconv xorg
 USE_XORG=	x11 xft
 
 GNU_CONFIGURE=	yes
@@ -34,7 +33,7 @@ TOOLS_ONLY_VARS_OFF=		PORTDOCS+="AUTHORS COMPLIANCE ChangeLog README RELNOTES TO
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == armv6 || ${ARCH} == armv7
+.if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == powerpc
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_Toolbar.cc
 .endif
 

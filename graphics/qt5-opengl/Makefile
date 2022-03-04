@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	opengl
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	2
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	qt5-
 
@@ -12,7 +11,6 @@ USES=		compiler:c++11-lang gl qmake:no_env qt-dist:5,base
 USE_GL=		gl
 USE_QT=		core gui widgets qmake_build buildtools_build
 HAS_CONFIGURE=	yes
-USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}

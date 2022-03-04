@@ -1,9 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	epix
-DISTVERSION=	1.2.18
-PORTREVISION=	1
+DISTVERSION=	1.2.19
 CATEGORIES=	graphics
 MASTER_SITES=	http://mathcs.holycross.edu/~ahwang/epix/
 

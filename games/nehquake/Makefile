@@ -1,9 +1,8 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME=	nehquake
 PORTVERSION=	1.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/alepulver
 DISTNAME=	NehQuake-bjp-bin-src.linux
@@ -11,14 +10,22 @@ DISTNAME=	NehQuake-bjp-bin-src.linux
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake engine designed for playing Nehahra
 
-USES=		gmake dos2unix tar:bzip2
-USE_GL=		gl
-USE_XORG=	xxf86dga
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: sb_lines
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: sb_lines
 
-OPTIONS_DEFINE=	OPTIMIZED_CFLAGS SDL X86_ASM
-OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS SDL X86_ASM
+USES=		gl gmake dos2unix tar:bzip2 xorg
+USE_GL=		gl
+USE_XORG=	xxf86dga xxf86vm
+
+OPTIONS_DEFINE=		OPTIMIZED_CFLAGS SDL
+OPTIONS_DEFINE_amd64=	X86_ASM
+OPTIONS_DEFINE_i386=	X86_ASM
+OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS SDL
+OPTIONS_DEFAULT_amd64=	X86_ASM
+OPTIONS_DEFAULT_i386=	X86_ASM
 OPTIONS_SUB=	yes
 
+SDL_USES=	sdl
 SDL_USE=	SDL=sdl
 SDL_MAKE_ENV=	BUILD_SDL=YES
 

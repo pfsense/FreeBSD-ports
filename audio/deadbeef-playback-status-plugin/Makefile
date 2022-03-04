@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	deadbeef-playback-status-plugin
 DISTVERSION=	0.0.2015.09.12
@@ -16,7 +15,7 @@ GH_ACCOUNT=	cboxdoerfer
 GH_PROJECT=	ddb_playback_status
 GH_TAGNAME=	fce1de0
 
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 
 MAKE_JOBS_UNSAFE=	yes
 

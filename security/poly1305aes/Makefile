@@ -1,5 +1,4 @@
 # Created by: roam@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	poly1305aes
 PORTVERSION=	20050218
@@ -11,19 +10,22 @@ COMMENT=	Poly1305 message authentication reference implementation using AES
 
 LICENSE=	PD
 
+BROKEN_aarch64=		fails to build: poly1305aes.impl.do: fatal: all tests failed
+BROKEN_armv6=		fails to build: poly1305aes.impl.do: fatal: all tests failed
+BROKEN_armv7=		fails to build: poly1305aes.impl.do: fatal: all tests failed
+BROKEN_riscv64=		fails to build: poly1305aes.impl.do: fatal: all tests failed
+NOT_FOR_ARCHS=	amd64
+
 ALL_TARGET=	default
 
 CC+=		${CPPFLAGS} ${CFLAGS} ${LDFLAGS}
 
-BROKEN_armv6=		fails to build: poly1305aes.impl.do: fatal: all tests failed
-BROKEN_armv7=		fails to build: poly1305aes.impl.do: fatal: all tests failed
-BROKEN_aarch64=		fails to build: poly1305aes.impl.do: fatal: all tests failed
-NOT_FOR_ARCHS=	amd64
-
 .include <bsd.port.pre.mk>
 
+.if ${ARCH:Mpowerpc*}
+USE_GCC=	yes
+.elif ${ARCH} == "i386"
 pre-build:
-.if ${ARCH} == "i386"
 	@${ECHO_CMD} "ppro" > ${WRKSRC}/poly1305aes.impl
 .endif
 

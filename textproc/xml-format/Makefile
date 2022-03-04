@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	xml-format
 PORTVERSION=	0.2
 CATEGORIES=	textproc
 MASTER_SITES=	http://acadix.biz/Ports/distfiles/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XML beautifier
 
 MAKE_ENV+=	DATADIR=${DATADIR}

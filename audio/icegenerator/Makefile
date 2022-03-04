@@ -1,5 +1,4 @@
 # Created by: Nadelyaev Stanislav <funkblaster@n11.bmstu.ru>
-# $FreeBSD$
 
 PORTNAME=		icegenerator
 DISTVERSION=		0.5.5-pre2
@@ -18,7 +17,7 @@ CONFIGURE_ARGS=		--exec-prefix=${PREFIX}
 
 OPTIONS_DEFINE=		DOCS MYSQL PGSQL
 
-MYSQL_USE=	MYSQL=YES
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_ON=	--with-mysql
 PGSQL_USES=	pgsql
 PGSQL_CONFIGURE_ON=	--with-pgsql

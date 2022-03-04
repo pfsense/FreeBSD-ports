@@ -1,18 +1,18 @@
 # Created by: Babak Farrokhi <babak@farrokhi.net>
-# $FreeBSD$
 
 PORTNAME=	jwm
 PORTVERSION=	2.3.7
+PORTREVISION=	1
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://joewing.net/projects/jwm/releases/
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Joe's Window Manager
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		iconv localbase pkgconfig tar:xz
+USES=		iconv localbase pkgconfig tar:xz xorg
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 
@@ -21,6 +21,7 @@ OPTIONS_DEFINE=		CAIRO DEBUG FRIBIDI JPEG NLS PNG SVG XEXT XFT \
 OPTIONS_DEFAULT=	FRIBIDI JPEG PNG XEXT XFT XINERAMA XMU XPM XRENDER
 OPTIONS_SUB=		yes
 
+CAIRO_USES=		gnome
 CAIRO_USE=		GNOME=cairo
 CAIRO_CONFIGURE_ENABLE=	cairo
 DEBUG_CONFIGURE_ENABLE=	debug

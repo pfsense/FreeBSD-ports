@@ -1,9 +1,8 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	jalv
-PORTVERSION=	1.6.0
-PORTREVISION=	4
+DISTVERSION=	1.6.6
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://download.drobilla.net/
 
@@ -23,19 +22,15 @@ LIB_DEPENDS=	liblilv-0.so:audio/lilv \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		compiler:c++11-lang qmake:no_configure,no_env qt:5 waf tar:bz2 pkgconfig
+USES=		compiler:c++11-lang gnome pkgconfig python:build qmake:no_configure,no_env \
+		qt:5 tar:bz2 waf
 CONFIGURE_ARGS=	--no-qt4
 USE_CXXSTD=	c++11
 USE_QT=		core gui widgets buildtools_build
 USE_GNOME=	atk atkmm cairo cairomm pango pangomm libsigc++20 \
 		gdkpixbuf2 glib20 glibmm  gtk20 gtk30 gtkmm24
 
-post-patch:
-		@${REINPLACE_CMD} 's|$${MANDIR}|${MAN1PREFIX}/man|' \
-			${WRKSRC}/wscript
-
 post-install:
-		@${GZIP_CMD} ${STAGEDIR}${MAN1PREFIX}/man/man1/*
-		@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/jalv*
+		@cd ${STAGEDIR}${PREFIX} && ${STRIP_CMD} bin/jalv* lib/jack/jalv.so
 
 .include <bsd.port.mk>

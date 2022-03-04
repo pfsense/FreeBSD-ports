@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xspacewarp
 PORTVERSION=	1.2
@@ -10,7 +9,7 @@ MASTER_SITES=	XCONTRIB/games
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Time Trek - like game for X Window System
 
-USES=		imake:noman
+USES=		imake:noman xorg
 USE_XORG=	x11 xaw xext xmu xt xpm sm ice
 
 PLIST_FILES=	bin/xspacewarp \

@@ -1,5 +1,4 @@
 # Created by: Sam Lawrance <boris@brooknet.com.au>
-# $FreeBSD$
 
 PORTNAME=	postgis-jdbc
 PORTVERSION=	2.1.7
@@ -7,7 +6,7 @@ CATEGORIES=	databases java geography
 MASTER_SITES=	http://postgis.net/stuff/
 EXTRACT_SUFX=	.jar
 
-MAINTAINER=	rhurlin@gwdg.de
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	PostGIS spatial data structures for JDBC
 
 LICENSE=	GPLv2 LGPL21
@@ -17,7 +16,6 @@ RUN_DEPENDS=	${JAVALIBDIR}/postgresql.jar:databases/postgresql-jdbc
 
 USES=		zip:infozip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

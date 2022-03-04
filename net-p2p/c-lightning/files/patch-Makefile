@@ -1,0 +1,23 @@
+--- Makefile.orig	2020-02-17 08:37:09 UTC
++++ Makefile
+@@ -457,7 +458,7 @@ pkglibexecdir = $(libexecdir)/$(PKGNAME)
+ plugindir = $(pkglibexecdir)/plugins
+ datadir = $(PREFIX)/share
+ docdir = $(datadir)/doc/$(PKGNAME)
+-mandir = $(datadir)/man
++mandir = $(PREFIX)/man
+ man1dir = $(mandir)/man1
+ man5dir = $(mandir)/man5
+ man7dir = $(mandir)/man7
+@@ -466,7 +467,11 @@ man8dir = $(mandir)/man8
+ # Commands
+ MKDIR_P = mkdir -p
+ INSTALL = install
++ifeq ($(DEVELOPER),1)
+ INSTALL_PROGRAM = $(INSTALL)
++else
++INSTALL_PROGRAM = $(INSTALL) -s
++endif
+ INSTALL_DATA = $(INSTALL) -m 644
+ 
+ # Tags needed by some package systems.

@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-bioinfo
 PORTVERSION=	0.1.2
-PORTREVISION=	23
+PORTREVISION=	26
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

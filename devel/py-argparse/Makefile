@@ -1,5 +1,4 @@
 # Created by: Li-Wen Hsu <lwhsu@lwhsu.org>
-# $FreeBSD$
 
 PORTNAME=	argparse
 PORTVERSION=	1.4.0
@@ -12,7 +11,9 @@ COMMENT=	Optparse-inspired command-line parsing library
 
 LICENSE=	PSFL
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pam-modules
 PORTVERSION=	2.2
@@ -28,7 +27,7 @@ GROUPMEMBER_DESC=	Build pam_groupmember
 
 MYSQL_CONFIGURE_ENABLE=	mysql
 MYSQL_DESC=	Build pam_mysql
-MYSQL_USE=	MYSQL
+MYSQL_USES=	mysql
 
 PGSQL_CONFIGURE_ENABLE=	pgsql
 PGSQL_DESC=	Build pam_pgsql

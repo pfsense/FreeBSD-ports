@@ -1,15 +1,15 @@
 # Created by: Torsten Zühlsdorff <ports@toco-domains.de>
-# $FreeBSD$
 
 PORTNAME=	dddbl
 PORTVERSION=	2.0.1
 CATEGORIES=	www
 MASTER_SITES=	http://www.dddbl.de/dddbl-versions/
+PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	tz@FreeBSD.org
 COMMENT=	Definition Driven Database Layer for PHP
 
-USES=		php tar:bzip2
+USES=		php:flavors tar:bzip2
 
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,5 +1,4 @@
 # Created by: Conrad Sabatier <conrads@home.com>
-# $FreeBSD$
 
 PORTNAME=	xless
 PORTVERSION=	1.7
@@ -11,7 +10,7 @@ MASTER_SITES=	XCONTRIB/applications \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11-based viewer for text files
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 MAKE_ARGS=	MAKE="${MAKE_CMD}"
 

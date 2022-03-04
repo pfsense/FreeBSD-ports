@@ -1,4 +1,4 @@
---- third_party/angle/src/gpu_info_util/SystemInfo_libpci.cpp.orig	2019-03-11 22:07:59 UTC
+--- third_party/angle/src/gpu_info_util/SystemInfo_libpci.cpp.orig	2021-04-14 18:42:58 UTC
 +++ third_party/angle/src/gpu_info_util/SystemInfo_libpci.cpp
 @@ -12,6 +12,11 @@
  #include <pci/pci.h>
@@ -12,7 +12,7 @@
  #include "common/angleutils.h"
  #include "common/debug.h"
  
-@@ -82,6 +87,75 @@ struct LibPCI : private angle::NonCopyable
+@@ -85,6 +90,75 @@ struct LibPCI : private angle::NonCopyable
  };
  
  }  // anonymous namespace

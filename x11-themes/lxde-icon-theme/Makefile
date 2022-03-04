@@ -1,5 +1,4 @@
 # Created by: Kris Moore <kmoore@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lxde-icon-theme
 PORTVERSION=	0.5.1
@@ -12,12 +11,11 @@ COMMENT=	LXDE Icon Theme
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:xz
+USES=		gnome tar:xz
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes
 
 DATADIR=	${PREFIX}/share/lxde
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS
 

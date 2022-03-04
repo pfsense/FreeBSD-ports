@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	MooseX-Has-Options
 PORTVERSION=	0.003
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	MooseX::Has::Options - Succinct options for Moose
+COMMENT=	Succinct options for Moose
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \

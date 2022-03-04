@@ -1,9 +1,8 @@
 # Created by: bf@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	kktdirect
 PORTVERSION=	0.5
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	math
 MASTER_SITES=	http://www.cs.ubc.ca/~rbridson/download/ LOCAL/bf
 DISTNAME=	KKTDirect${PORTVERSION}

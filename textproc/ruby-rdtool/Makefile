@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	rdtool
 PORTVERSION=	0.6.38
@@ -8,7 +7,7 @@ CATEGORIES=	textproc ruby
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DIST_SUBDIR=	ruby
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	RD to HTML/man/etc. converter (RD is to Ruby as POD is to Perl)
 
 BUILD_DEPENDS=	racc:devel/rubygem-racc

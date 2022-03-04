@@ -1,15 +1,14 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	File-Slurp
-PORTVERSION=	9999.25
+PORTVERSION=	9999.27
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:URI
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Perl5 module for single call read & write file routines
+COMMENT=	Perl module for single call read and write file routines
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

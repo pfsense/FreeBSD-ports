@@ -1,12 +1,11 @@
 # Created by: Simon Olofsson <simon@olofsson.de>
-# $FreeBSD$
 
 PORTNAME=	weka
-DISTVERSION=	3-8-3
+DISTVERSION=	3-8-5
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-3-8/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Data Mining Software in Java
 
 LICENSE=	GPLv2
@@ -15,7 +14,6 @@ PORTSCOUT=	limitw:1,even	# Second component is even for stable versions.
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

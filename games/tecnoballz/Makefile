@@ -1,8 +1,8 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	tecnoballz
 PORTVERSION=	0.93.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://linux.tlk.fr/games/TecnoballZ/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libmikmod.so:audio/libmikmod \
 		libsmpeg.so:multimedia/smpeg \
 		libtinyxml.so:textproc/tinyxml
 
-USES=		autoreconf gmake tar:tgz
+USES=		autoreconf compiler:c++11-lang gmake sdl tar:tgz
 USE_SDL=	sdl mixer image
 GNU_CONFIGURE=	yes
 

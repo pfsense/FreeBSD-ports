@@ -1,19 +1,19 @@
 # Created by: Andrey Slusar <anray@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	imagick
-PORTVERSION=	3.4.3
-PORTREVISION=	5
+PORTVERSION=	3.5.1
 CATEGORIES=	graphics
 
-MAINTAINER=	mm@FreeBSD.org
+MAINTAINER=	000.fbsd@quip.cz
 COMMENT?=	PHP wrapper to the ImageMagick/GraphicsMagick library version 6
 
 LICENSE=	PHP301
 
-USES=		php:pecl pkgconfig localbase
+USES=		cpe php:pecl localbase
 
-CONFLICTS_INSTALL?=	${PKGNAMEPREFIX}${PORTNAME}-im7-[0-9]*
+CPE_VENDOR=	php
+
+CONFLICTS_INSTALL?=	${PKGNAMEPREFIX}${PORTNAME}-im7
 
 OPTIONS_DEFINE=	X11
 

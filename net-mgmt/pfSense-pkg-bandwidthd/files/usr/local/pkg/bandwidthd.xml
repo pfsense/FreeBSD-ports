@@ -8,7 +8,7 @@
  * bandwidthd.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2012-2013 Phil Davis
  * Copyright (C) 2009 Bill Marquette
  * Copyright (C) 2006 Scott Ullrich
@@ -222,51 +222,6 @@
 				]]>
 			</description>
 			<type>info</type>
-		</field>
-		<field>
-			<name>PostgreSQL Options</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>Output to PostgreSQL</fielddescr>
-			<fieldname>outputpostgresql</fieldname>
-			<description>
-				<![CDATA[
-				Log data to a PostgreSQL database
-				]]>
-			</description>
-			<sethelp>
-				<![CDATA[
-				Get the PostgreSQL schema and PHP files to display the results from <a href="https://github.com/individual-it/bandwidthd-pSQL-frontend">https://github.com/individual-it/bandwidthd-pSQL-frontend</a>
-				]]>
-			</sethelp>
-			<enablefields>postgresqlhost,postgresqldatabase,postgresqlusername,postgresqlpasswordenc</enablefields>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Database Host</fielddescr>
-			<fieldname>postgresqlhost</fieldname>
-			<description>Hostname of the PostgreSQL database server.</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Database Name</fielddescr>
-			<fieldname>postgresqldatabase</fieldname>
-			<description>Database on the PostgreSQL database server.</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Database Username</fielddescr>
-			<fieldname>postgresqlusername</fieldname>
-			<description>Username of the PostgreSQL database server.</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Database Password</fielddescr>
-			<fieldname>postgresqlpasswordenc</fieldname>
-			<description>Password of the PostgreSQL database server.</description>
-			<type>password</type>
-			<encoding>base64</encoding>
 		</field>
 		<field>
 			<fielddescr>Advanced Filter</fielddescr>

@@ -1,5 +1,4 @@
 # Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	phpserialize
 PORTVERSION=	1.3
@@ -13,7 +12,7 @@ MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw
 COMMENT=	Port of the serialize and unserialize functions of PHP to Python
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

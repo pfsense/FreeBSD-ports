@@ -1,5 +1,4 @@
 # Created by: Henrik Brix Andersen <henrik@brixandersen.dk>
-# $FreeBSD$
 
 PORTNAME=	spectools
 PORTVERSION=	201108.r1
@@ -26,6 +25,7 @@ OPTIONS_DEFAULT=	GTK2 NCURSES
 OPTIONS_SUB=	yes
 
 GTK2_ALL_TARGET=	spectool_gtk
+GTK2_USES=		gnome
 GTK2_USE=		GNOME=gtk20
 NCURSES_ALL_TARGET=	spectool_curses
 

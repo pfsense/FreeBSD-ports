@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	google-protobuf
-PORTVERSION=	3.7.1
+PORTVERSION=	3.19.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +10,9 @@ COMMENT=	Ruby extension to Google Protocol Buffers
 
 LICENSE=	BSD3CLAUSE
 
-USES=		gem
+USES=		gem shebangfix
 USE_RUBY=	yes
+
+SHEBANG_GLOB=	*.rb
 
 .include <bsd.port.mk>

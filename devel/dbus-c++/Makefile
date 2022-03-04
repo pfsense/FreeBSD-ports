@@ -1,11 +1,10 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	dbus-c++
 PORTVERSION=	0.9.1
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	pw
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel gnome
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -20,7 +19,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libdbus-1.so:devel/dbus
 
-USES=		autoreconf compiler:c++11-lib gettext gmake libtool localbase pathfix pkgconfig
+USES=		autoreconf compiler:c++11-lib gettext gmake gnome libtool \
+		localbase pathfix pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	andreas-volz
 GH_PROJECT=	dbus-cplusplus

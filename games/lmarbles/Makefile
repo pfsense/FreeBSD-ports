@@ -1,5 +1,4 @@
 # Created by: verm@drunkmonk.net
-# $FreeBSD$
 
 PORTNAME=	lmarbles
 PORTVERSION=	1.0.8
@@ -16,7 +15,7 @@ COMMENT=	Atomix-like game of moving marbles in puzzles
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl mixer
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var/games/${PORTNAME}

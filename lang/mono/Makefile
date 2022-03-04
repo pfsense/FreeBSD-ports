@@ -1,9 +1,8 @@
 # Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mono
 PORTVERSION=	5.10.1.57
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	https://download.mono-project.com/sources/mono/
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
@@ -14,13 +13,13 @@ COMMENT=	Open source implementation of .NET Development Framework
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser \
 		bash:shells/bash \
 		cmake>0:devel/cmake
 LIB_DEPENDS=	libinotify.so:devel/libinotify
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
+RUN_DEPENDS=	${PY_PILLOW} \
 		ca_root_nss>=0:security/ca_root_nss
 
 CONFLICTS_INSTALL=	czmq-3*
@@ -40,14 +39,14 @@ NLS_USES=	gettext
 X11_USES=	display:test
 
 USES=	autoreconf bison compiler:c11 cpe gmake iconv libtool \
-	pathfix perl5 python:2.7 shebangfix tar:bzip2
+	pathfix perl5 python:3.6+ shebangfix tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	scripts/mono-heapviz mono/mini/genmdesc.py mono/tests/test_lldb.py
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
-CONFIGURE_ARGS=	--disable-dtrace --enable-btls
+CONFIGURE_ARGS=	--disable-dtrace
 CONFIGURE_ENV=	ac_cv_header_sys_inotify_h=no
 
 MAKE_ENV=	MONO_SHARED_DIR="${WRKDIR}" \
@@ -62,6 +61,18 @@ PORTSCOUT=	limit:^\d+\.\d+\.[1-9]\d*
 LOCALBASE?=	/usr/local
 .if !exists(${LOCALBASE}/bin/mcs)
 OPTIONS_SLAVE=	MONOLITE
+.endif
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == aarch64
+PLIST=	${.CURDIR}/pkg-plist.aarch64
+.endif
+
+.if ${ARCH:Mpowerpc*}
+PLIST+=	${.CURDIR}/pkg-plist.powerpc
+.else
+CONFIGURE_ARGS+=	--enable-btls
 .endif
 
 post-extract-MONOLITE-on:

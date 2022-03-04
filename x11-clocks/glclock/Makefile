@@ -1,15 +1,15 @@
 # Created by: Randall Hopper <aa8vb@ipass.net>
-# $FreeBSD$
 
 PORTNAME=	glclock
 DISTVERSION=	6.0b6.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11-clocks
 MASTER_SITES=	http://www.daionet.gr.jp/~masa/archives/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL spinning pocket watch demo and benchmark utility
 
+USES=		gl xorg
 USE_XORG=	xi xmu xext x11
 USE_GL=		gl glu glut
 MAKEFILE=	makefile

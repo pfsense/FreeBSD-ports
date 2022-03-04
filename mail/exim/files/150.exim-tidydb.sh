@@ -1,7 +1,5 @@
 #!/bin/sh
 #
-# $FreeBSD$
-#
 # Exim hints database maintenance
 # 
 #   contributed by: Oliver Eikemeier <eikemeier@fillmore-labs.com>
@@ -38,7 +36,12 @@ case "$exim_tidydb_enable" in
 	echo ""
 	echo "Tidying Exim hints databases:"
 	eval tidy "$exim_tidydb_filter"
-	rc=1;;
+	if [ $? = 0 ]; then
+		rc=0
+	else
+		rc=1
+	fi
+	;;
 
     *)  rc=0;;
 esac

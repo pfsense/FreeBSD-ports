@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	potr
 PORTVERSION=	1.0.1
 CATEGORIES=	security python
@@ -15,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>0:security/py-pycrypto@${PY_FLAVOR}
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

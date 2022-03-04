@@ -1,10 +1,9 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME?=	mysql
 PORTVERSION=	5.5.62
-PORTREVISION?=	1
-CATEGORIES=	databases ipv6
+PORTREVISION?=	3
+CATEGORIES=	databases
 MASTER_SITES=	MYSQL/MySQL-5.5
 PKGNAMESUFFIX?=	55-server
 
@@ -14,9 +13,11 @@ COMMENT?=	Multithreaded SQL database (server)
 LICENSE=	GPLv2
 
 SLAVEDIRS=	databases/mysql55-client
-USES=		cmake:insource,noninja readline shebangfix
+USES=		cmake:insource,noninja cpe readline shebangfix
 CXXFLAGS+=	${CPPFLAGS}
 NO_OPTIONS_SORT=yes
+
+CPE_VENDOR=	oracle
 
 OPTIONS_DEFINE=	SSL FASTMTX
 OPTIONS_DEFAULT=SSL
@@ -50,10 +51,12 @@ SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+USES+=		compiler:gcc-c++11-lib
+USE_CXXSTD=	gnu++11
 .else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+USES+=		compiler:c++11-lang
+USE_CXXSTD=	gnu++98
 .endif
 
 .if ${PORT_OPTIONS:MSSL}
@@ -65,13 +68,12 @@ CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
 
 # MySQL-Server part
 .if !defined(CLIENT_ONLY)
-USE_MYSQL=	yes
-WANT_MYSQL_VER=	55
+USES+=		mysql:55
 
-CONFLICTS_INSTALL=	mysql5[0-46-9]-server-* \
-			mysqlwsrep* \
-			mariadb*-server-* \
-			percona*-server-*
+CONFLICTS_INSTALL=	mysql5[0-46-9]-server \
+			mysqlwsrep*-server \
+			mariadb*-server \
+			percona*-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -91,6 +93,10 @@ CMAKE_ARGS+=	-DWITH_EMBEDDED_SERVER="ON"
 post-patch:
 	@${REINPLACE_CMD} 's/*.1/${MMAN1}/' ${WRKSRC}/man/CMakeLists.txt
 
+post-install:
+	# Empty directory, but check-plist complains
+	@${RMDIR} ${STAGEDIR}${PREFIX}/info || ${TRUE}
+	
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == armv6 || ${ARCH} == armv7

@@ -1,9 +1,8 @@
 # Created by: bf@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	spblas
 DISTVERSION=	1_02
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	math
 MASTER_SITES=	http://math.nist.gov/spblas/:1 LOCAL/bf/:1 NL/blas/blast-forum/:2
 DISTFILES=	nist_spblas_${DISTVERSION}.zip:1
@@ -43,7 +42,7 @@ base system profiling libraries
 .endif
 PLIST_FILES+=	lib/libspblas_p.a
 .else
-MAKE_ENV+=	NO_PROFILE=yes
+MAKE_ENV+=	WITHOUT_PROFILE=yes
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}

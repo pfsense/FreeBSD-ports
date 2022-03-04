@@ -1,8 +1,8 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	rails
 PORTVERSION=	5.0.7.2
+PORTREVISION=	2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	50
@@ -20,7 +20,7 @@ RUN_DEPENDS=	rubygem-actioncable50>=${PORTVERSION}:www/rubygem-actioncable50 \
 		rubygem-activemodel50>=${PORTVERSION}:databases/rubygem-activemodel50 \
 		rubygem-activerecord50>=${PORTVERSION}:databases/rubygem-activerecord50 \
 		rubygem-activesupport50>=${PORTVERSION}:devel/rubygem-activesupport50 \
-		rubygem-bundler<2.0:sysutils/rubygem-bundler \
+		rubygem-bundler>=1.3.0:sysutils/rubygem-bundler \
 		rubygem-railties50>=${PORTVERSION}:www/rubygem-railties50 \
 		rubygem-sprockets-rails-rails50>=2.0.0:devel/rubygem-sprockets-rails-rails50 \
 		rubygem-bindex>=0.5.0:devel/rubygem-bindex \
@@ -39,22 +39,22 @@ RUN_DEPENDS=	rubygem-actioncable50>=${PORTVERSION}:www/rubygem-actioncable50 \
 		rubygem-sass-listen>=4.0.0:textproc/rubygem-sass-listen \
 		rubygem-sass-rails-rails50>=5.0.3:textproc/rubygem-sass-rails-rails50 \
 		rubygem-sass>=3.4.23:textproc/rubygem-sass \
-		rubygem-spring-rails50>=2.0.1:devel/rubygem-spring-rails50 \
+		rubygem-spring>=2.0.1:devel/rubygem-spring \
 		rubygem-sqlite3>=1.3.13:databases/rubygem-sqlite3 \
 		rubygem-tilt>=2.0.7:devel/rubygem-tilt \
+		rubygem-turbolinks>=5:www/rubygem-turbolinks \
 		rubygem-turbolinks-source>=5.0.0:www/rubygem-turbolinks-source \
-		rubygem-turbolinks-rails50>=5.0.1:www/rubygem-turbolinks-rails50 \
 		rubygem-uglifier>=3.2.0:www/rubygem-uglifier \
-		rubygem-web-console-rails50>=3.5.0:devel/rubygem-web-console-rails50
+		rubygem-web-console3-rails50>=3.5.0:devel/rubygem-web-console3-rails50
 
-PORTSCOUT=	limit:^5\.0\.
-
-USES=		gem
+USES=		cpe gem
 USE_RUBY=	yes
 
 NO_ARCH=	yes
 
 CPE_VENDOR=	rubyonrails
 CPE_PRODUCT=	ruby_on_rails
+
+PORTSCOUT=	limit:^5\.0\.
 
 .include <bsd.port.mk>

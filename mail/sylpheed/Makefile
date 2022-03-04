@@ -1,11 +1,10 @@
 # Created by: shigeri <shigeri@m10.alpha-net.ne.jp>
-# $FreeBSD$
 
 PORTNAME=	sylpheed
 PORTVERSION=	3.7.0
-PORTREVISION=	3
-CATEGORIES=	mail ipv6
-MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/  \
+PORTREVISION=	5
+CATEGORIES=	mail
+MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -16,12 +15,14 @@ LICENSE_COMB=	dual
 
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz
 
-USES=		gettext iconv gmake pkgconfig tar:bzip2 desktop-file-utils \
-		libtool
+USES=		cpe desktop-file-utils gettext gmake gnome iconv libtool pkgconfig \
+		tar:bzip2
 USE_GNOME=	gtk20 cairo gdkpixbuf2
 USE_LDCONFIG=	yes
+CPE_VENDOR=	sylpheed_project
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -32,9 +33,9 @@ CONFIGURE_ARGS=	--enable-ipv6 \
 		--prefix=${PREFIX} \
 		--program-transform-name=''
 
-CONFLICTS=	sylpheed-1.[0-8]* sylpheed-2.[0-9]* sylpheed-gtk2-[0-9]*
+CONFLICTS=	sylpheed-1.[0-8]* sylpheed-2.[0-9]* sylpheed-gtk2
 
-OPTIONS_DEFINE=	CA_BUNDLE COMPFACE CURL DOCS GPGME GTKSPELL JPILOT LDAP \
+OPTIONS_DEFINE=	CA_BUNDLE COMPFACE CURL DOCS GPGME GTKSPELL LDAP \
 		ONIGURUMA SSL HIDE_OSSIG
 
 CA_BUNDLE_DESC=	Include CA bundle for certificate verification
@@ -43,7 +44,6 @@ CURL_DESC=	libcurl dependency (remote update check)
 GPGME_DESC=	GnuPG support using GPGME
 GTKSPELL_DESC=	Spell checking support
 HIDE_OSSIG_DESC=Hide OS and GTK signature in mail header
-JPILOT_DESC=	JPilot support
 ONIGURUMA_DESC=	Oniguruma support
 
 OPTIONS_DEFAULT=CA_BUNDLE CURL GTKSPELL GPGME SSL
@@ -68,10 +68,6 @@ GTKSPELL_LIB_DEPENDS=		libgtkspell.so:textproc/gtkspell \
 GTKSPELL_CONFIGURE_ENABLE=	gtkspell
 
 HIDE_OSSIG_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_main.c
-
-JPILOT_LIB_DEPENDS=		libpisock.so:palm/pilot-link
-JPILOT_RUN_DEPENDS=		jpilot:palm/jpilot
-JPILOT_CONFIGURE_ENABLE=	jpilot
 
 LDAP_CONFIGURE_ENABLE=		ldap
 LDAP_USE=			openldap=yes
@@ -100,16 +96,16 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|^\(DEFS.*\.\.\)$$|\1 -I../libsylph|' \
 		${WRKSRC}/src/Makefile.in
 
-.if empty(PORT_OPTIONS:MDOCS)
+post-patch-DOCS-off:
 	@${REINPLACE_CMD} -e '/^SUBDIRS = /s/manual faq//' \
 		${WRKSRC}/Makefile.in
-.else
+
+post-patch-DOCS-on:
 .for i in ${MAKEFILES}
 	@${REINPLACE_CMD} -e 's|^faqdir = @faqdir@$$|faqdir = ${DOCSDIR}/faq|g; \
 		s|^manualdir = @manualdir@$$|manualdir = ${DOCSDIR}/manual|g' \
 		${WRKSRC}/${i}
 .endfor
-.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

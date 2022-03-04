@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	rinse
 PORTVERSION=	3.2
 CATEGORIES=	sysutils
 MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Install RPM-based system into a directory
 
 LICENSE=	ART10
@@ -33,7 +31,6 @@ post-extract:
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/usr,,g' \
-		-e 's,/share/man,/man,g' \
 		-e '/cache/s/PREFIX/DESTDIR/' \
 		-e '/^include VERSION/d' \
 		-e '/scripts\.common/s/*/&.sh/' \

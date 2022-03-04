@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	deadbeef-vu-meter-plugin
 DISTVERSION=	0.0.2014.09.14
@@ -16,7 +15,7 @@ GH_ACCOUNT=	cboxdoerfer
 GH_PROJECT=	ddb_vu_meter
 GH_TAGNAME=	940d8d7
 
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 
 MAKE_JOBS_UNSAFE=	yes
 

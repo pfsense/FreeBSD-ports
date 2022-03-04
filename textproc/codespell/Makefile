@@ -1,50 +1,20 @@
-# $FreeBSD$
-
 PORTNAME=	codespell
-PORTVERSION=	1.14
+PORTVERSION=	2.1.0
 CATEGORIES=	textproc
+MASTER_SITES=	CHEESESHOP
 
-MAINTAINER=	gjb@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Source code spelling checker
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.4+
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	lucasdemarchi
-GH_TAGNAME=	4cb7fe3
-
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
-PLIST_FILES=	bin/codespell
-PORTDOCS=	NEWS TODO
-PORTEXAMPLES=	*
+USES=		python:3.5+
+USE_PYTHON=	autoplist concurrent distutils noflavors
 
 NO_ARCH=	yes
 
-SUB_FILES+=	pkg-message
-
-do-build:
-	@${REINPLACE_CMD} 's|#!/usr/bin/env python3|#!${PYTHON_CMD}|' \
-		${WRKSRC}/codespell.py
-	@${REINPLACE_CMD} "s|^default_dictionary = .*|default_dictionary = '${EXAMPLESDIR}/data/dictionary.txt'|" \
-		${WRKSRC}/codespell.py
-
-do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/codespell.py ${STAGEDIR}${PREFIX}/bin/codespell
-
-do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-. for i in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
-. endfor
-
-do-install-EXAMPLES-on:
-.for i in data example
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/${i}
-	${INSTALL_DATA} ${WRKSRC}/${i}/* ${STAGEDIR}${EXAMPLESDIR}/${i}
-.endfor
+SUB_FILES=	pkg-message
+SUB_LIST=	PYTHON_SITELIBDIR=${PYTHON_SITELIBDIR}
 
 .include <bsd.port.mk>

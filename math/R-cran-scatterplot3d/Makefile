@@ -1,8 +1,8 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	scatterplot3d
 DISTVERSION=	0.3-41
+PORTREVISION=	2
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

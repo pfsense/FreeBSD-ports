@@ -1,5 +1,4 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	omnijson
 PORTVERSION=	0.1.2
@@ -20,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	kennethreitz
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 do-test:

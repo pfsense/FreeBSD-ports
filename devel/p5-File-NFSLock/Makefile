@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	File-NFSLock
 PORTVERSION=	1.29
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	File::NFSLock - perl module to do NFS (or not) locking
+COMMENT=	Perl module to do NFS (or not) locking
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

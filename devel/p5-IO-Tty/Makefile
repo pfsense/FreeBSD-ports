@@ -1,9 +1,7 @@
 # Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
 
 PORTNAME=	IO-Tty
-PORTVERSION=	1.12
-PORTREVISION=	2
+PORTVERSION=	1.16
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,20 +1,21 @@
 # Created by: rene
-# $FreeBSD$
 
 PORTNAME=	biosfont
-PORTVERSION=	1.2.1
+PORTVERSION=	1.3
 CATEGORIES=	sysutils
-MASTER_SITES=	LOCAL/rene
 
-MAINTAINER=	rene@FreeBSD.org
+MAINTAINER=	rene0@freedom.nl
 COMMENT=	Kernel module to retrieve bitmap fonts from BIOS memory
 
 LICENSE=	BSD2CLAUSE
 
 # only platforms guaranteed to be ok, feedback/patches are welcome
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		uidfix kmod
+USE_GITHUB=	yes
+GH_ACCOUNT=	rene0
+WRKSRC_SUBDIR=	biosfont
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/biosfont.h ${STAGEDIR}${PREFIX}/include

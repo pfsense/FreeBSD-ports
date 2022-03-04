@@ -1,12 +1,11 @@
 # Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
 
 PORTNAME=	gawk
-PORTVERSION=	4.2.1
+PORTVERSION=	5.1.1
 CATEGORIES=	lang
 MASTER_SITES=	GNU
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	GNU version of AWK scripting language
 
 LICENSE=	GPLv3+
@@ -19,13 +18,13 @@ OPTIONS_SUB=		yes
 NLS_USES=		gettext
 NLS_CONFIGURE_OFF=	--disable-nls
 MPFR_DESC?=		Support multiple-precision floating-point computation
-MPFR_LIB_DEPENDS=	libmpfr.so:math/mpfr
+MPFR_LIB_DEPENDS=	libgmp.so:math/gmp libmpfr.so:math/mpfr
 MPFR_CONFIGURE_OFF=	--without-gmp --without-mpfr
 
 INFO=		gawk gawkinet gawkworkflow
 
 GNU_CONFIGURE=	yes
-USES=		iconv libtool makeinfo readline tar:xz
+USES=		iconv libtool makeinfo readline tar:lz
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} \
 		--with-libintl-prefix=${LOCALBASE} \
 		AWK=${AWK}
@@ -36,7 +35,5 @@ PLIST_SUB+=	VERSION=${PORTVERSION}
 
 post-patch:
 	@${RM} ${WRKSRC}/doc/*.info
-	@${REINPLACE_CMD} -e 's/ -export-dynamic/ -Wl,--export-dynamic/' \
-		${WRKSRC}/configure
 
 .include <bsd.port.mk>

@@ -1,9 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	qtcurve
-DISTVERSION=	1.9.0-rc1
-PORTREVISION?=	5
+PORTVERSION=	1.9.0
+PORTREVISION?=	0
 CATEGORIES=	x11-themes
+MASTER_SITES=	KDE/stable/${PORTNAME}
+DISTNAME=	${PORTNAME}-${PORTVERSION:R}
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT?=	Widget styles for Qt and GTK+ toolkits
@@ -24,14 +24,13 @@ KF5_RUN_DEPENDS=	kf5-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-kf5
 QT5_RUN_DEPENDS=	qt5-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-qt5
 
 .else # !defined(QTCURVE_SLAVE)
+PATCH_SITES=	https://invent.kde.org/system/${PORTNAME}/commit/
+PATCHFILES=	ee2228ea2f18ac5da9b434ee6089381df815aa94.patch:-p1
+
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	KDE
-GH_TAGNAME=	a1ec5f8
-
-USES=		compiler:c++11-lib cmake:insource pkgconfig
+USES=		compiler:c++11-lib cmake:insource pkgconfig tar:xz xorg
 USE_XORG=	x11 xcb
 
 .for i in gtk2 kf5 qt5
@@ -53,6 +52,8 @@ PLIST=		${PKGDIR}/pkg-plist.${QTCURVE_SLAVE}
 
 .if ${QTCURVE_SLAVE} == "utils"
 PKGNAMESUFFIX=	-utils
+USES+=		gettext-runtime kde:5
+USE_KDE+=	i18n_build
 USE_LDCONFIG=	yes
 BUILD_WRKSRC=	${WRKSRC}
 .else
@@ -62,6 +63,8 @@ LIB_DEPENDS+=	libqtcurve-utils.so:x11-themes/qtcurve-utils
 .if ${QTCURVE_SLAVE} == "gtk2"
 PKGNAMEPREFIX=	gtk2-
 PKGNAMESUFFIX=	-theme
+USES+=		gettext-runtime gnome kde:5
+USE_KDE=	i18n_build
 USE_GNOME=	cairo gdkpixbuf2 gtk20 pango
 USE_LDCONFIG=	yes
 
@@ -76,8 +79,9 @@ WITH_qt5=	On # required for KF5
 PKGNAMEPREFIX=	kf5-style-
 USES+=		kde:5 qt:5
 USE_KDE=	archive completion config configwidgets coreaddons \
-		ecm_build frameworkintegration guiaddons i18n iconthemes \
-		kdelibs4support kio widgetsaddons windowsystem xmlgui
+		frameworkintegration guiaddons i18n iconthemes \
+		init kdelibs4support kio widgetsaddons windowsystem xmlgui \
+		doctools_build ecm_build
 USE_QT=		core dbus gui printsupport svg widgets x11extras \
 		buildtools_build qmake_build
 BUILD_WRKSRC=	${WRKSRC}/qt5
@@ -86,7 +90,8 @@ BUILD_WRKSRC=	${WRKSRC}/qt5
 .if ${QTCURVE_SLAVE} == "qt5"
 CONFLICTS_INSTALL=	kf5-style-qtcurve
 PKGNAMEPREFIX=	qt5-style-
-USES+=		qt:5
+USES+=		kde:5 qt:5
+USE_KDE=	i18n_build
 USE_QT=		core dbus gui svg widgets x11extras \
 		buildtools_build qmake_build
 PLIST_FILES=	${QT_PLUGINDIR_REL}/styles/qtcurve.so

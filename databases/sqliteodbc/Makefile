@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	sqliteodbc
-PORTVERSION=	0.9996
+PORTVERSION=	0.9998
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	http://www.ch-werner.de/sqliteodbc/
@@ -19,7 +17,9 @@ LIB_DEPENDS=	libodbc.so:databases/unixODBC
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-sqlite4
 USE_LDCONFIG=	yes
-USES=		libtool
+USES=		cpe libtool
+
+CPE_VENDOR=	sqliteodbc_project
 
 PLIST_SUB+=	VER="${PORTVERSION}"
 

@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Module-Build-Pluggable-ReadmeMarkdownFromPod
 PORTVERSION=	0.04
@@ -18,7 +17,9 @@ RUN_DEPENDS=	p5-Class-Accessor-Lite>=0:devel/p5-Class-Accessor-Lite \
 		p5-Module-Build-Pluggable>=0.09:devel/p5-Module-Build-Pluggable \
 		p5-Pod-Markdown>=0:textproc/p5-Pod-Markdown
 
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

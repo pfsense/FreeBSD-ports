@@ -1,22 +1,21 @@
-#	$FreeBSD: head/ports-mgmt/pkg_jail/files/pkg_update 411390 2016-03-19 11:00:57Z dinoex 2
 # Created by: Brian Feldman & Matt Heckaman
-# $FreeBSD$
 
 PORTNAME=	base
 PORTVERSION=	1.9.0
-PORTREVISION=	0
+PORTREVISION=	4
 CATEGORIES=	net-im
 PKGNAMEPREFIX=	licq-
 PKGNAMESUFFIX=	${SOCKS_SUFFIX}${PKGNAMESUFFIX2}
 
-MAINTAINER=	dinoex@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Popular ICQ-compatible plugin-based program
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs
 
-BROKEN_sparc64=		Does not build: fails to link
+BROKEN_FreeBSD_12_powerpc64=	fails to pass tests
+BROKEN_sparc64=		fails to link
 
 USES=		cmake:noninja iconv ssl
 USE_CXXSTD=	c++98
@@ -24,7 +23,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	licq-im
 GH_PROJECT=	licq
 GH_TAGNAME=	f271d55
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}/licq
+WRKSRC_SUBDIR=	licq
 CFLAGS+=	-I${LOCALBASE}/include
 CXXFLAGS+=	-DGTEST_USE_OWN_TR1_TUPLE
 

@@ -1,5 +1,4 @@
 bin/minitube
-share/appdata/minitube.appdata.xml
 share/applications/minitube.desktop
 share/icons/hicolor/128x128/apps/minitube.png
 share/icons/hicolor/16x16/apps/minitube.png
@@ -10,6 +9,7 @@ share/icons/hicolor/48x48/apps/minitube.png
 share/icons/hicolor/512x512/apps/minitube.png
 share/icons/hicolor/64x64/apps/minitube.png
 share/icons/hicolor/scalable/apps/minitube.svg
+share/metainfo/org.tordini.flavio.minitube.metainfo.xml
 %%NLS%%%%DATADIR%%/locale/ar.qm
 %%NLS%%%%DATADIR%%/locale/ast.qm
 %%NLS%%%%DATADIR%%/locale/be.qm
@@ -21,6 +21,7 @@ share/icons/hicolor/scalable/apps/minitube.svg
 %%NLS%%%%DATADIR%%/locale/de_DE.qm
 %%NLS%%%%DATADIR%%/locale/el.qm
 %%NLS%%%%DATADIR%%/locale/en.qm
+%%NLS%%%%DATADIR%%/locale/en_GB.qm
 %%NLS%%%%DATADIR%%/locale/es.qm
 %%NLS%%%%DATADIR%%/locale/es_AR.qm
 %%NLS%%%%DATADIR%%/locale/es_ES.qm
@@ -45,6 +46,7 @@ share/icons/hicolor/scalable/apps/minitube.svg
 %%NLS%%%%DATADIR%%/locale/pl_PL.qm
 %%NLS%%%%DATADIR%%/locale/pt.qm
 %%NLS%%%%DATADIR%%/locale/pt_BR.qm
+%%NLS%%%%DATADIR%%/locale/pt_PT.qm
 %%NLS%%%%DATADIR%%/locale/ro.qm
 %%NLS%%%%DATADIR%%/locale/ru.qm
 %%NLS%%%%DATADIR%%/locale/sk.qm
@@ -59,3 +61,4 @@ share/icons/hicolor/scalable/apps/minitube.svg
 %%NLS%%%%DATADIR%%/locale/vi.qm
 %%NLS%%%%DATADIR%%/locale/zh_CN.qm
 %%NLS%%%%DATADIR%%/locale/zh_TW.qm
+%%DATADIR%%/sounds/snapshot.wav

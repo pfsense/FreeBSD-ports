@@ -1,7 +1,11 @@
-TIMESTAMP = 1553832531
-SHA256 (openoffice/apache-openoffice-r1856382-src.tar.xz) = 2f71b56bdc7a687a75259822926f8a46ac7365886ad8f7519bfea9e96caa0017
-SIZE (openoffice/apache-openoffice-r1856382-src.tar.xz) = 235780892
+TIMESTAMP = 1633761637
+SHA256 (openoffice/apache-openoffice-1633255994-febe0adc7c-src.tar.xz) = b25041608e14ea9fbfebd0f34e29093ceb355ad4fec3ddc6b012d7ca2d6777a3
+SIZE (openoffice/apache-openoffice-1633255994-febe0adc7c-src.tar.xz) = 239737244
 SHA256 (openoffice/ApacheOpenOffice.ext_sources.4.x.x.20150707.tar.gz) = 966a8333c83a18ddd84401389006d6e0b52b8175924b808b54b88211669985fa
 SIZE (openoffice/ApacheOpenOffice.ext_sources.4.x.x.20150707.tar.gz) = 28957004
 SHA256 (openoffice/unowinreg.dll) = f563e522922133db9340b0306711c2d8767cc3481dd9e7d9b0d059906d12653c
 SIZE (openoffice/unowinreg.dll) = 6144
+SHA256 (openoffice/d6eef4b4cacb2183f2bf265a5a03a354-boost_1_55_0.tar.bz2) = fff00023dd79486d444c8e29922f4072e1d451fc5a4d2b6075852ead7f2b7b52
+SIZE (openoffice/d6eef4b4cacb2183f2bf265a5a03a354-boost_1_55_0.tar.bz2) = 58146647
+SHA256 (openoffice/d62650a6f908e85643e557a236ea989c-vigra1.6.0.tar.gz) = 1f188ac03a8aa4663223eca8c82f91a55293d066d67127082e29a7dba1a98c9f
+SIZE (openoffice/d62650a6f908e85643e557a236ea989c-vigra1.6.0.tar.gz) = 16525605

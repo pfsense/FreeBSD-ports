@@ -1,8 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	SVG
-PORTVERSION=	2.84
+PORTVERSION=	2.86
 CATEGORIES=	textproc graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,14 +13,16 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	EXAMPLES
-
 USES=		dos2unix perl5 shebangfix
-SHEBANG_FILES=	examples/*.pl examples/*.cgi examples/*.psgi
 USE_PERL5=	configure
+
 NO_ARCH=	yes
 
 PORTEXAMPLES=	*
+
+SHEBANG_FILES=	examples/*.pl examples/*.cgi examples/*.psgi
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/

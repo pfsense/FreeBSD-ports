@@ -1,8 +1,7 @@
 # Created by: Rong-En Fan <rafan@infor.org>
-# $FreeBSD$
 
 PORTNAME=	IO-Pager
-PORTVERSION=	0.40
+PORTVERSION=	2.10
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,12 +13,12 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-File-Which>=0:sysutils/p5-File-Which
+RUN_DEPENDS=	p5-File-Which>=0:sysutils/p5-File-Which \
+		p5-Term-ReadKey>=0:devel/p5-Term-ReadKey
 
 USES=		perl5 tar:tgz
 USE_PERL5=	configure
 
 NO_ARCH=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C|0$||}
 
 .include <bsd.port.mk>

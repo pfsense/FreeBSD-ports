@@ -1,9 +1,8 @@
 # Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
 
 PORTNAME=	nighthawk
 PORTVERSION=	3.0.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SUNSITE/games/arcade
 
@@ -12,7 +11,7 @@ COMMENT=	X11 shoot-'em up which requires some lateral thinking
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gmake localbase:ldflags tar:bzip2
+USES=		gl gmake localbase:ldflags tar:bzip2
 USE_GL=		glut
 MAKE_ARGS=	CC="${CC}" CPP="${CXX}" CC_FLAGS="${CXXFLAGS}" \
 		LIB_FLAGS="${LDFLAGS}" GCC="${CC}" CFLAGS="${CFLAGS}"

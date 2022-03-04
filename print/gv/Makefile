@@ -1,5 +1,4 @@
 # Created by: tg@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	gv
 PORTVERSION=	3.7.4
@@ -7,12 +6,12 @@ PORTREVISION=	5
 CATEGORIES=	print
 MASTER_SITES=	GNU
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	PostScript and PDF previewer
 
 LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
 
-USES=		cpe ghostscript:x11 iconv gmake perl5 shebangfix
+USES=		cpe ghostscript:x11 iconv gmake perl5 shebangfix xorg
 USE_PERL5=	build
 USE_XORG=	xpm ice sm xext xmu x11
 GNU_CONFIGURE=	yes

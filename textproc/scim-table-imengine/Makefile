@@ -1,9 +1,8 @@
 # Created by: Jie Gao <gaoj@cpsc.ucalgary.ca>
-# $FreeBSD$
 
 PORTNAME=	scim-table-imengine
 PORTVERSION=	0.5.10
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	textproc
 MASTER_SITES=	SF/scim/scim-tables/${PORTVERSION}
 DISTNAME=	scim-tables-${PORTVERSION}

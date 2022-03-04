@@ -1,9 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-base
-PORTVERSION=	1.4
-PORTREVISION=	5
+PORTVERSION=	1.5
 CATEGORIES=	math
 MASTER_SITES=	#none
 DISTFILES=	#none

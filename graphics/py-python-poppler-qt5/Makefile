@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	python-poppler-qt5
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.24.2
-PORTREVISION=	1
+DISTVERSION=	0.75.0
+PORTREVISION=	22
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,15 +11,34 @@ COMMENT=	Python bindings for the Poppler-Qt PDF rendering library
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual
 
+BUILD_DEPENDS=	qmake-qt5:devel/qt5-qmake
 LIB_DEPENDS=	libpoppler-qt5.so:graphics/poppler-qt5
 
-USES=		compiler:c++11-lang pkgconfig pyqt:5 python:3.4+ qmake qt:5
-USE_PYQT=	gui xml sip_build
-USE_PYTHON=	distutils autoplist
+USES=		compiler:c++11-lang gl pkgconfig pyqt:5 python:3.7-3.9 qt:5
 USE_GITHUB=	yes
-GH_ACCOUNT=	wbsoft
+GH_ACCOUNT=	frescobaldi
+USE_GL=		gl
+USE_PYQT=	gui qtbuilder xml sip_build
+USE_QT=		core gui xml
 
-PYDISTUTILS_BUILD_TARGET=	build_ext
-PYDISTUTILS_BUILDARGS+=		--pyqt-sip-dir=${PYQT_SIPDIR}
+PLIST_SUB=	_PY_SONAME=${_PY_SONAME}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 30800
+_PY_SONAME=	.cpython-${PYTHON_SUFFIX}m
+.else
+_PY_SONAME=	${PYTHON_EXT_SUFFIX}
+.endif
+
+do-build:
+	(cd ${WRKSRC} ; sip-build-${PYTHON_VER} --qmake ${QMAKE} --verbose --no-make --build-dir build ; ${MAKE} -C ./build )
+
+do-install:
+	(cd ${WRKSRC} ; ${MAKE} -C ./build install INSTALL_ROOT=${STAGEDIR} )
+
+post-install:
+	${RLN} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/popplerqt5${_PY_SONAME}.so ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/popplerqt5.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/popplerqt5${_PY_SONAME}.so
+
+.include <bsd.port.post.mk>

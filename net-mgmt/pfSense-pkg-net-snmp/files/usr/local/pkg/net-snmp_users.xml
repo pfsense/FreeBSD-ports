@@ -8,7 +8,7 @@
  * net-snmp_users.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+			<url>/pkg_edit.php?xml=netsnmp.xml</url>
 		</tab>
 		<tab>
 			<text>Host Information</text>

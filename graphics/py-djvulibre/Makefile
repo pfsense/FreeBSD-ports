@@ -1,8 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	python-djvulibre
-DISTVERSION=	0.8.4
+DISTVERSION=	0.8.7
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,10 +13,10 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre
 
-USES=		python pkgconfig
-USE_PYTHON=	autoplist distutils cython
+USES=		python:3.6+ pkgconfig
+USE_PYTHON=	distutils cython autoplist
 
-post-patch:
-	@${REINPLACE_CMD} -e "s|'python'|'${PYTHON_CMD}'|g" ${WRKSRC}/setup.py
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/djvu/*.so
 
 .include <bsd.port.mk>

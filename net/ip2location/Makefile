@@ -1,18 +1,20 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ip2location
-PORTVERSION=	7.0.2
+PORTVERSION=	8.0.9
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	http://www.ip2location.com/downloads/
-DISTNAME=	${PORTNAME}-c-${PORTVERSION}
 
-MAINTAINER=	gasol.wu@gmail.com
+MAINTAINER=	zi@FreeBSD.org
 COMMENT=	C library to find user\'s location
 
 LICENSE=	LGPL3
 
 USES=		autoreconf libtool perl5
+USE_GITHUB=	yes
+GH_ACCOUNT=	chrislim2888
+GH_PROJECT=	IP2Location-C-Library
+
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip

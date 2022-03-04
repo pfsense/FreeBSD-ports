@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	firago
 PORTREVISION=	1
 PORTVERSION=	1.001
@@ -10,7 +8,7 @@ COMMENT=	Expanded version of Fira Sans with support for additional languages
 
 LICENSE=	OFL11
 
-USES=		fonts
+USES=		fonts xorg
 
 USE_XORG=	x11
 USE_GITHUB=	yes

@@ -1,11 +1,9 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	psycopg2
-PORTVERSION=	2.7.7
+PORTVERSION=	2.9.2
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP \
-		http://initd.org/psycopg/tarballs/PSYCOPG-${PORTVERSION:R:R:S|.|-|}/
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -14,23 +12,10 @@ COMMENT=	High performance Python adapter for PostgreSQL
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/doc/COPYING.LESSER
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
-USES=		pgsql python
+USES=		pgsql python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
-PORTDOCS=	AUTHORS INSTALL NEWS PKG-INFO README.rst
-PORTEXAMPLES=	*
-
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/psycopg2/_psycopg.so
-
-post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
-
-post-install-EXAMPLES-on:
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
-	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

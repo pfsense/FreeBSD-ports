@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xshisen
 PORTVERSION=	1.51
@@ -13,6 +12,7 @@ COMMENT=	Shisen-sho puzzle game for X11
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		cpe xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sharedstatedir="${DATADIR}"

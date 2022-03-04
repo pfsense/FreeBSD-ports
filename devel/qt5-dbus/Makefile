@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	dbus
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -14,13 +13,13 @@ USES=		compiler:c++11-lang qmake:no_env qt-dist:5,base
 USE_QT=		core qmake_build buildtools_build
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-gui -no-xcb
-USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
 
 TOOLS=		qdbuscpp2xml qdbusxml2cpp
 
+QT_BINARIES=	yes
 QT_DEFINES=	DBUS
 QT_CONFIG=	dbus
 

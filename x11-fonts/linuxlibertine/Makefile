@@ -1,5 +1,4 @@
 # Created by: Björn König <bkoenig@alpha-tierchen.de>
-# $FreeBSD$
 
 PORTNAME=	linuxlibertine
 PORTVERSION=	4.7.5
@@ -23,9 +22,7 @@ LICENSE_NAME_LINUXLIBERTINE=	LinuxLibertine License
 LICENSE_FILE_LINUXLIBERTINE=	${WRKSRC}/LICENCE.txt
 LICENSE_PERMS_LINUXLIBERTINE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LICENSE_NAME_OFL=	Open Fonts License
-LICENSE_FILE_OFL=	${WRKSRC}/OFL.txt
-LICENSE_PERMS_OFL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE_OFL10=	${WRKSRC}/OFL.txt
 
 WRKSRC=		${WRKDIR}/LinLibertine
 NO_BUILD=	yes

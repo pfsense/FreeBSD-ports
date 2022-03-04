@@ -1,9 +1,8 @@
 # Created by: gpalmer
-# $FreeBSD$
 
 PORTNAME=	amanda
 PORTVERSION=	3.3.9
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	misc
 MASTER_SITES=	SF/amanda/amanda%20-%20stable/${PORTVERSION}
@@ -16,11 +15,10 @@ RUN_DEPENDS=	perl-amanda:misc/amanda-perl-wrapper
 BUILD_DEPENDS=	perl-amanda:misc/amanda-perl-wrapper
 
 WRKSRC=		${WRKDIR}/amanda-${PORTVERSION}
-SLAVEDIRS=	misc/amanda-client
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		charsetfix gmake libtool perl5 pkgconfig ssl
+USES=		charsetfix cpe gmake gnome libtool perl5 pkgconfig ssl
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--libexecdir=${PREFIX}/libexec/amanda \
@@ -34,10 +32,11 @@ CONFIGURE_ARGS=	--libexecdir=${PREFIX}/libexec/amanda \
 		--with-ssh-security \
 		--disable-installperms --with-security-file=${ETCDIR}/amanda-security.conf
 CONFIGURE_ENV=	PERL=${LOCALBASE}/bin/perl-amanda
-PKG_MESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message
 SUB_LIST=	PORTSDIR=${PORTSDIR}
 
+# Fix build with clang11
+CFLAGS+=	-fcommon
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	GNUTAR
@@ -102,7 +101,7 @@ pre-fetch:
 	@${ECHO} "    AMANDA_DATES=path to client amandates file"
 	@${ECHO} ""
 
-CONFLICTS=	amanda-server-2.* amanda-server-3.2.* amanda2[56]-server-*
+CONFLICTS=	amanda-server-2.* amanda-server-3.2.* amanda2[56]-server
 
 BUILD_DEPENDS+=	${LOCALBASE}/lib/amanda/libamandad-${PORTVERSION}.so:misc/amanda-client
 RUN_DEPENDS+=	${LOCALBASE}/lib/amanda/libamandad-${PORTVERSION}.so:misc/amanda-client \

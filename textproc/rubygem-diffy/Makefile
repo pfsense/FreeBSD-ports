@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	diffy
-PORTVERSION=	3.2.1
+PORTVERSION=	3.4.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +11,9 @@ COMMENT=	Convenient diffing in ruby
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

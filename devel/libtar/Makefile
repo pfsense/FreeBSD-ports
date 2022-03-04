@@ -1,5 +1,4 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	libtar
 PORTVERSION=	1.2.11
@@ -8,7 +7,7 @@ CATEGORIES=	devel
 MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/libtar/libtar-1.2.11.tar.gz/604238e8734ce6e25347a58c4f1a1d7e/
 
 MAINTAINER=	manuelj.munoz@gmail.com
-COMMENT=	library for manipulating POSIX and GNU tar files
+COMMENT=	Library for manipulating POSIX and GNU tar files
 
 USES=		cpe gmake
 GNU_CONFIGURE=	yes

@@ -1,9 +1,8 @@
 # Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
 
 PORTNAME=	minidlna
-PORTVERSION=	1.2.1
-PORTREVISION=	4
+PORTVERSION=	1.3.0
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net multimedia www
 
@@ -23,11 +22,13 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3	\
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-db-path=/var/db/minidlna \
 		--with-os-url="http://www.FreeBSD.org"
-USES=		autoreconf gettext-tools iconv jpeg localbase
+USES=		autoreconf cpe gettext-tools iconv jpeg localbase
+
+CPE_VENDOR=	minidlna_project
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	glebius
-GH_TAGNAME=	4357325
+GH_TAGNAME=	4f6a473
 
 PKGMESSAGE=	${WRKSRC}/pkg-message
 SUB_FILES+=	pkg-message

@@ -1,9 +1,8 @@
 # Created by: argv[0] (Iouri V. Ivliev)
-# $FreeBSD$
 
 PORTNAME=	panomatic
 PORTVERSION=	0.9.4
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src

@@ -1,13 +1,12 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	guile-lib
 PORTVERSION=	0.2.6.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel scheme
 MASTER_SITES=	SAVANNAH
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Repository of useful code written in Guile Scheme
 
 LICENSE=	LGPL3 GPLv3

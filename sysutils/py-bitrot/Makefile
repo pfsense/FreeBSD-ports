@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	bitrot
-PORTVERSION=	0.9.2
+PORTVERSION=	1.0.0
 CATEGORIES=	sysutils
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +12,7 @@ LICENSE=	MIT
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.5+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

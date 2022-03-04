@@ -1,5 +1,4 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	dircproxy
 DISTVERSION=	1.2.0-RC1
@@ -18,7 +17,7 @@ GH_TAGNAME=	dc563b3
 
 GNU_CONFIGURE=	yes
 SUB_FILES+=	pkg-message
-USES=		autoreconf
+USES=		autoreconf cpe
 
 post-install:
 	@cd ${WRKSRC}/doc && ${MAKE_CMD} install-man DESTDIR=${STAGEDIR}

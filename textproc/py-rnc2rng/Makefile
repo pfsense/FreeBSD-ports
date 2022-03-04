@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	rnc2rng
-DISTVERSION=	2.6.1
+DISTVERSION=	2.6.6
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,11 +7,11 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	RELAX NG Compact to regular syntax conversion library
 
-LICENSE=	PD
+LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}rply>0:devel/py-rply@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist
 NO_ARCH=	yes
 

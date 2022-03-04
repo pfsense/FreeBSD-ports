@@ -1,8 +1,7 @@
 # Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	hastmon
-PORTVERSION=	0.3.2
+PORTVERSION=	0.3.4
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	trociny@FreeBSD.org

@@ -1,9 +1,7 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libXres
-PORTVERSION=	1.2.0
-PORTREVISION=	2
+PORTVERSION=	1.2.1
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -11,10 +9,9 @@ COMMENT=	X Resource usage library
 
 LICENSE=	MIT
 
-XORG_CAT=	lib
+USES=		cpe xorg xorg-cat:lib
 USE_XORG=	x11 xext xorgproto
 INSTALL_TARGET=	install-strip
-USES+=	cpe
 CPE_PRODUCT=	libxres
 CPE_VENDOR=	x
 

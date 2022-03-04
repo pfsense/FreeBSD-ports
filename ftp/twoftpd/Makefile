@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin (gslin@ccca.nctu.edu.tw)
-# $FreeBSD$
 
 PORTNAME=	twoftpd
 PORTVERSION=	1.43
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	ftp
 MASTER_SITES=	http://untroubled.org/${PORTNAME}/archive/
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, secure, efficient FTP server
 
 LICENSE=	GPLv2+

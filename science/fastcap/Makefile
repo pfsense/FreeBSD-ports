@@ -1,5 +1,4 @@
 # Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
 
 PORTNAME=	fastcap
 DISTVERSION=	2.0wr-011109
@@ -15,10 +14,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	auto-accept
 
 BROKEN_aarch64=	Fails to link: missing sbrk
+BROKEN_riscv64=	Fails to link: missing sbrk
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config
 WRKSRC=		${WRKDIR}/fastcap-2.0wr
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 BINFILES=	busgen capgen cubegen fastcap pipedgen pyragen
 

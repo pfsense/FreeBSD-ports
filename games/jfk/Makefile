@@ -1,5 +1,4 @@
 # Created by: Stefan Farfeleder <e0026813@stud3.tuwien.ac.at>
-# $FreeBSD$
 
 PORTNAME=	jfk
 PORTVERSION=	0.1.1
@@ -13,6 +12,7 @@ COMMENT=	Multiplayer 2D shoot'em up game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		sdl
 USE_SDL=	image sdl
 GNU_CONFIGURE=	yes
 

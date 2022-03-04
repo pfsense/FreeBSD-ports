@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	fswiki
 PORTVERSION=	3.6.2
 PORTREVISION=	2
 CATEGORIES=	www
-MASTER_SITES=	OSDN/fswiki/20797
+MASTER_SITES=	OSDN/fswiki
 DISTNAME=	wiki${PORTVERSION:S|.|_|g}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeStyle Wiki (perl based wiki clone)
 
 RUN_DEPENDS=	ja-p5-Jcode>=0:japanese/p5-Jcode \

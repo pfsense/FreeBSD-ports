@@ -1,31 +1,26 @@
 # Created by: jhanna@home.com
-# $FreeBSD$
 
 PORTNAME=	spin
-PORTVERSION=	6.4.8
-PORTREVISION=	1
+PORTVERSION=	6.5.0
+DISTVERSIONPREFIX=	version-
 CATEGORIES=	devel
-MASTER_SITES=	http://spinroot.com/spin/Src/
-DISTNAME=	spin${PORTVERSION:S/.//g}
-DIST_SUBDIR=	spin
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	greg@unrelenting.technology
 COMMENT=	On-the-fly verification system for asynchronous concurrent systems
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/Src/LICENSE
 
-BROKEN=		depends on the gcc meta port
-
-RUN_DEPENDS=	gcc:lang/gcc
-
-WRKSRC=		${WRKDIR}/Spin/Src${PORTVERSION}
 MAKEFILE=	makefile
-ALL_TARGET=	spin
+ALL_TARGET=	all
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -DNXT"
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	nimble-code
+GH_PROJECT=	Spin
 
 OPTIONS_DEFINE=	DOCS EXAMPLES ISPIN
 OPTIONS_DEFAULT=	ISPIN
@@ -33,26 +28,26 @@ OPTIONS_SUB=	yes
 ISPIN_DESC=	Install ispin and TCL/Tk dependency
 ISPIN_USES=	shebangfix tk
 
-SHEBANG_FILES=	../iSpin/ispin.tcl
+SHEBANG_FILES=	optional_gui/ispin.tcl
 tk_OLD_CMD=	/bin/sh
 tk_CMD=		${WISH} -f
 
 post-patch-ISPIN-on:
-	${REINPLACE_CMD} -e "s|exec wish|#exec wish|" ${WRKDIR}/Spin/iSpin/ispin.tcl
+	${REINPLACE_CMD} -e "s|exec wish|#exec wish|" ${WRKSRC}/optional_gui/ispin.tcl
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/spin ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKDIR}/Spin/Man/spin.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_PROGRAM} ${WRKSRC}/Src/spin ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/Man/spin.1 ${STAGEDIR}${PREFIX}/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKDIR}/Spin/Doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/Doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKDIR}/Spin/Examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/Examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
 do-install-ISPIN-on:
-	${INSTALL_SCRIPT} ${WRKDIR}/Spin/iSpin/ispin.tcl ${STAGEDIR}${PREFIX}/bin/ispin
+	${INSTALL_SCRIPT} ${WRKSRC}/optional_gui/ispin.tcl ${STAGEDIR}${PREFIX}/bin/ispin
 
 .include <bsd.port.mk>

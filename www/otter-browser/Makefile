@@ -1,9 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	otter-browser
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.01
-PORTREVISION=	2
+# Occasionally otter-browser is updated to intermediate commits;
+# releases are rather infrequent. To update to an intermediate:
+# - Make up a PORTVERSION that resembles the DISTVERSION, add a
+#   .tweak number to it, comment-out DISTVERSION
+# - Set a GH_TAG to the intermediate commit (below)
+# - Add a comment here to indicate that the intermediate is
+#   intentional
+#
+# PORTVERSION=	1.0.01.1
+DISTVERSION=	1.0.02
 CATEGORIES=	www
 
 MAINTAINER=	kde@FreeBSD.org
@@ -21,10 +27,13 @@ USE_QT=		concurrent core dbus declarative gui multimedia network printsupport \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OtterBrowser
+# GH_TAGNAME=	22de58d  # For intermediate versions only
 
 OPTIONS_MULTI=		BACKEND
 OPTIONS_MULTI_BACKEND=	QTWEBENGINE QTWEBKIT
-OPTIONS_DEFAULT=	QTWEBENGINE QTWEBKIT
+OPTIONS_DEFAULT=	QTWEBKIT
+OPTIONS_DEFAULT_amd64=	QTWEBENGINE
+OPTIONS_DEFAULT_i386=	QTWEBENGINE
 
 QTWEBENGINE_DESC=	Build QtWebEngine backend
 QTWEBKIT_DESC=		Build QtWebKit backend
@@ -34,5 +43,12 @@ QTWEBENGINE_CMAKE_BOOL=	ENABLE_QTWEBENGINE
 
 QTWEBKIT_USE=		qt=webkit
 QTWEBKIT_CMAKE_BOOL=	ENABLE_QTWEBKIT
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQTWEBENGINE}
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+.endif
 
 .include <bsd.port.mk>

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	awgg
-PORTVERSION=	0.5.1
-PORTREVISION=	2
+PORTVERSION=	0.6.0
+PORTREVISION=	5
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -14,21 +12,20 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	aria2c:www/aria2 \
 		wget:ftp/wget \
 		curl:ftp/curl \
-		youtube-dl:www/youtube_dl \
+		yt-dlp:www/yt-dlp \
 		axel:ftp/axel
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt4 ${PORTNAME}-qt5
-qt4_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt4
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
 
-USES=		fpc lazarus:flavors
-USE_FPC=	chm fcl-base fcl-db fcl-image fcl-json fcl-registry fcl-xml \
-		pasjpeg regexpr rtl-extra rtl-objpas x11
+USES=		fpc gnome lazarus:flavors xorg
+USE_FPC=	chm fcl-base fcl-db fcl-image fcl-json fcl-net fcl-registry \
+		fcl-web fcl-xml openssl pasjpeg regexpr rtl-extra rtl-objpas x11
 USE_XORG=	x11
 USE_GITHUB=	yes
 GH_ACCOUNT=	Nenirey
 GH_PROJECT=	AWGG
-GH_TAGNAME=	28d009f
+GH_TAGNAME=	5dc1329
 
 DESKTOP_ENTRIES="AWGG" \
 		"Advanced wget GUI" \
@@ -44,7 +41,6 @@ USE_GNOME+=	${USE_GNOME_${FLAVOR}}
 
 LAZBUILD_ARGS=	-d
 LAZARUS_PROJECT_FILES=	src/awgg.lpi
-LLD_UNSAFE=	yes
 
 post-patch:
 	${REINPLACE_CMD} 's|/usr/bin/shutdown|/sbin/shutdown|g' ${WRKSRC}/src/fmain.pas

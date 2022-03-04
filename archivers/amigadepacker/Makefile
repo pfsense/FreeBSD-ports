@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	amigadepacker
 PORTVERSION=	0.04
@@ -20,9 +19,6 @@ CONFIGURE_ARGS+=	--prefix=${PREFIX}
 ALL_TARGET=	${PORTNAME}
 
 PLIST_FILES=	bin/amigadepacker man/man1/amigadepacker.1.gz
-
-post-patch:
-	@${REINPLACE_CMD} -E '/^(CC|CFLAGS)/d' ${WRKSRC}/Makefile.in
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}/${PREFIX}/bin

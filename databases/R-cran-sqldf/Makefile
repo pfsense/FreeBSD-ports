@@ -1,9 +1,8 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sqldf
 DISTVERSION=	0.4-7.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	databases
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

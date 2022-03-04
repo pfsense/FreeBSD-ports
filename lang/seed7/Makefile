@@ -1,8 +1,7 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	seed7
-DISTVERSION=	05_20190303
+DISTVERSION=	05_20211114
 PORTREVISION=	0
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}/
@@ -17,15 +16,15 @@ COMMENT=	High-level, extensible programming language
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	amd64 i386 sparc64
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le sparc64
 
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 
-USES=		mysql:client ncurses pgsql sqlite tar:tgz
+USES=		mysql:client ncurses pgsql sqlite tar:tgz xorg
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USE_XORG=	x11
+USE_XORG=	x11 xrender
 WANT_PGSQL=	client
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/src
@@ -44,12 +43,18 @@ PORTDOCS=	*
 MAKEFILE=	mk_freebsd.mk
 
 post-patch:
-	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g;' \
-		-e 's|^CFLAGS = |CFLAGS = -I${NCURSESINC} |' \
-		${WRKSRC}/${MAKEFILE}
+	${REINPLACE_CMD} \
+	    -e 's|%%LOCALBASE%%|${LOCALBASE}|g;' \
+	    -e 's|^CFLAGS = |CFLAGS = -I${NCURSESINC} |' \
+	    ${WRKSRC}/${MAKEFILE}
+	${REINPLACE_CMD} \
+	    -e 's|/opt/X11/include|${LOCALBASE}/include|' \
+	    ${WRKSRC}/chkccomp.c
+
+do-configure:
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} -f ${MAKEFILE} depend
 
 do-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} -f ${MAKEFILE} depend
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} -f ${MAKEFILE} s7 s7c
 
 do-install:

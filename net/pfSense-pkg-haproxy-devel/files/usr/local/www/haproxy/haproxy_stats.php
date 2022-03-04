@@ -3,7 +3,7 @@
  * haproxy_stats.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * All rights reserved.
  *
@@ -127,7 +127,7 @@ if (isset($_GET['showstatresolvers'])){
 	$showstatresolversname = $_GET['showstatresolvers'];
 	echo "<td colspan='2'>";
 	echo "Resolver statistics: $sticktablename<br/>";
-	$res = haproxy_socket_command("show stat resolvers $showstatresolversname");
+	$res = haproxy_socket_command("show resolvers $showstatresolversname");
 	foreach($res as $line){
 		echo "<br/>".print_r($line,true);
 	}

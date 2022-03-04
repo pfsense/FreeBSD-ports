@@ -1,5 +1,4 @@
 # Created by: Gerrit Beine <tux@pinguru.net>
-# $FreeBSD$
 
 PORTNAME=	thales
 PORTVERSION=	1.0
@@ -25,18 +24,15 @@ CONFIGURE_ARGS=	--with-ircd=${_IRCD} \
 
 OPTIONS_DEFINE=	MODES DOCS EXAMPLES
 OPTIONS_RADIO=	IRCD
-OPTIONS_RADIO_IRCD=	HYBRID IRCDRU UNREAL
+OPTIONS_RADIO_IRCD=	HYBRID UNREAL
 OPTIONS_DEFAULT=MODES UNREAL
 MODES_DESC=		Support modes in the database
 HYBRID_DESC=	Build for ircd-hybrid
-IRCDRU_DESC=	Build for ircd-ru
 UNREAL_DESC=	Build for unreal ircd
 
 MODES_CONFIGURE_OFF=	--enable-no-modes
 HYBRID_RUN_DEPENDS=	${LOCALBASE}/bin/ircd:irc/ircd-hybrid
 HYBRID_VARS=		_IRCD=hybrid IS_INTERACTIVE=yes
-IRCDRU_RUN_DEPENDS=	${LOCALBASE}/sbin/ircd:irc/ircd-ru
-IRCDRU_VARS=		_IRCD=ircdru IS_INTERACTIVE=yes
 UNREAL_RUN_DEPENDS=	${LOCALBASE}/libexec/ircd:irc/unreal
 UNREAL_VARS=		_IRCD=unreal
 
@@ -44,6 +40,9 @@ post-patch: .SILENT
 	${FIND} -d ${WRKSRC} -type d -name CVS -exec ${RM} -r {} \;
 	${REINPLACE_CMD} -e 's,thales.conf,${PREFIX}/etc/&,' \
 		${WRKSRC}/src/conf.h
+# Fix the build with -fno-common (for Clang 11 and GCC 10)
+	${REINPLACE_CMD} -e '/total_read, total_written/s,^,extern ,' \
+		${WRKSRC}/src/sockutil.h
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

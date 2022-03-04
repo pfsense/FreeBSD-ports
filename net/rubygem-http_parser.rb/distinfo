@@ -1,2 +1,3 @@
-SHA256 (rubygem/http_parser.rb-0.6.0.gem) = f11d0aec50ef26a7d1f991e627ac88acdb5979282aeba7a5c3be6ce0636ed196
-SIZE (rubygem/http_parser.rb-0.6.0.gem) = 177664
+TIMESTAMP = 1632664562
+SHA256 (rubygem/http_parser.rb-0.8.0.gem) = 5a0932f1fa82ce08a8516a2685d5a86031c000560f89946913c555a0697544be
+SIZE (rubygem/http_parser.rb-0.8.0.gem) = 195072

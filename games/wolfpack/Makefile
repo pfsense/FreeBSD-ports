@@ -1,13 +1,12 @@
 # Created by: Daniel O'Connor <darius@dons.net.au>
-# $FreeBSD$
 
 PORTNAME=	wolfpack
-PORTVERSION=	4.4.0
+PORTVERSION=	4.4.1
 CATEGORIES=	games
 MASTER_SITES=	SF/empserver/${DISTNAME}
 DISTNAME=	empire-${PORTVERSION}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Long term multiplayer strategy game
 
 LICENSE=	GPLv3+
@@ -19,7 +18,7 @@ GNU_CONFIGURE=	yes
 BINDIR=		lib/${PORTNAME}
 CONFIGURE_ARGS=	--bindir=${PREFIX}/${BINDIR} --sbindir=${PREFIX}/${BINDIR}
 
-CONFLICTS_INSTALL=	empire-[0-9]*
+CONFLICTS_INSTALL=	empire
 
 USERS=		wolfpack
 GROUPS=		wolfpack

@@ -1,5 +1,4 @@
 # Created by: Andrey Slusar <anray@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	s-news
 PORTVERSION=	0.1.11
@@ -12,7 +11,7 @@ COMMENT=	Simple news server for hosts with one or two users
 
 LIB_DEPENDS=	libgdbm.so:databases/gdbm
 
-CONFLICTS=	leafnode-[1-9]* nntp-[0-9]*
+CONFLICTS=	leafnode-[1-9]* nntp
 
 CONFIGURE_ARGS+= \
 		--with-confdir=${PREFIX}/etc/s-news \

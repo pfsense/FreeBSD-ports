@@ -1,9 +1,8 @@
 # Created by: n_hibma@qubesoft.com
-# $FreeBSD$
 
 PORTNAME=	mailman
-DISTVERSION=	2.1.29
-PORTREVISION=	5
+DISTVERSION=	2.1.38
+PORTREVISION=	0
 CATEGORIES=	mail
 MASTER_SITES=	GNU \
 		SF/${PORTNAME}/Mailman%202.1%20%28stable%29/${PORTVERSION} \
@@ -19,15 +18,13 @@ COMMENT=	Mailing list manager with user-friendly web front-end
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/gnu-COPYING-GPL
 
-CONFLICTS=	ja-mailman-2.1.*
-
 USES=		autoreconf cpe fakeroot python:2.7 shebangfix tar:tgz
+CPE_VENDOR=	gnu
+
 USE_RC_SUBR=	mailman
 SHEBANG_FILES=	bin/msgfmt.py \
 		tests/fblast.py \
 		tests/onebounce.py
-
-CPE_VENDOR=	gnu
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${MAILMANDIR}
@@ -38,6 +35,8 @@ CONFIGURE_ARGS+=--with-python=${PYTHON_CMD} \
 		--with-permcheck=no \
 		--with-mailhost=localhost \
 		--with-urlhost=localhost
+
+CONFLICTS=	ja-mailman-2.1.* mailman*exim* mailman*postfix*
 
 # The Mailman port supports a number of variables that may be tweaked at
 # build time.  Getting the values of some of them right is crucial!
@@ -69,21 +68,25 @@ PORTDOCS=	ACKNOWLEDGMENTS BUGS FAQ INSTALL NEWS README README-I18N.en \
 		mailman-member.txt \
 		FreeBSD-post-install-notes
 
-OPTIONS_SINGLE=	MTA
+OPTIONS_SINGLE=		MTA
 OPTIONS_SINGLE_MTA=	COURIER EXIM4 OPENSMTPD POSTFIX SENDMAIL
-OPTIONS_DEFINE=	HTDIG NAMAZU2 NOMAILPWD NLS DOCS
+OPTIONS_DEFINE=		HTDIG NAMAZU2 NOMAILPWD NLS DOCS
 OPTIONS_DEFAULT=	SENDMAIL NOMAILPWD
-COURIER_DESC=	for use with courier
-EXIM4_DESC=	for use with exim4
-OPENSMTPD_DESC=	for use with opensmtpd - EXPERIMENTAL -
-POSTFIX_DESC=	for use with postfix
-SENDMAIL_DESC=	for use with sendmail
-HTDIG_DESC=	- EXPERIMENTAL - htdig integration patches
-NAMAZU2_DESC=	Make private archives searchable with namazu2
-NOMAILPWD_DESC=	Elide plaintext passwords from monthly reminders
-MTA_DESC=	Integrate with which MTA?
+COURIER_DESC=		for use with courier
+EXIM4_DESC=		for use with exim4
+EXIM4_RUN_DEPENDS=	exim>=0:mail/exim
+OPENSMTPD_DESC=		for use with opensmtpd - EXPERIMENTAL -
+POSTFIX_DESC=		for use with postfix
+POSTFIX_RUN_DEPENDS=	postfix:mail/postfix
+SENDMAIL_DESC=		for use with sendmail
+HTDIG_DESC=		- EXPERIMENTAL - htdig integration patches
+NAMAZU2_DESC=		Make private archives searchable with namazu2
+NOMAILPWD_DESC=		Elide plaintext passwords from monthly reminders
+MTA_DESC=		Integrate with which MTA?
 
 .include <bsd.port.options.mk>
+
+SUB_LIST+=	NLS="${PORT_OPTIONS:MNLS}"
 
 # enforce EXAMPLES option, necessary so that @sample
 # can install the newsyslog file
@@ -108,8 +111,6 @@ MAIL_GID?=	mail
 .endif
 
 .if ${PORT_OPTIONS:MPOSTFIX}
-BUILD_DEPENDS+=	postfix:mail/postfix
-RUN_DEPENDS+=	postfix:mail/postfix
 MAIL_GID?=	mailman
 EXTRA_PATCHES+=	${FILESDIR}/postfix-verp.diff
 .endif
@@ -123,14 +124,15 @@ MAIL_GID?=	_smtpd
 .endif
 
 .if ${PORT_OPTIONS:MHTDIG}
-PKGNAMESUFFIX+=	-with-htdig
+# no whitespace here!
+PKGNAMESUFFIX:=	${PKGNAMESUFFIX}-with-htdig
 # how to create PATCHFILES:
 #X identify what is the version of msapiro's patches corresponding to the release.
-#X fetch http://bazaar.launchpad.net/~msapiro/mailman/htdig/tarball/1781
+#X fetch http://bazaar.launchpad.net/~msapiro/mailman/htdig/tarball/1822
 #X unpack this tarball, and the original distfile
-#X diff -NEur original-unpack bazaar-unpack | xz --best -c >msapiro-htdig-1781.patch.xz
+#X diff -NEur original-unpack bazaar-unpack | xz --best -c >msapiro-htdig-1822.patch.xz
 #X upload the latter with mode 0644 or similar to freefall's public_distfiles/ directory
-_HTDIGREV=	1781
+_HTDIGREV=	1822
 PATCHFILES+=	msapiro-htdig-${_HTDIGREV}.patch.xz
 RUN_DEPENDS+=	htdig:textproc/htdig
 PLIST_SUB+=	SUB_HTDIG=""
@@ -177,6 +179,19 @@ post-patch:
 .endif
 	${MV} ${WRKSRC}/configure.in ${WRKSRC}/configure.ac # suppress warning
 
+# post-patch-HTDIG-on is to fix https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=238508
+post-patch-HTDIG-on:
+	# these should match those in ht://Dig's ${LOCALBASE}/bin/rundig
+	${REINPLACE_CMD} -E \
+		-e 's#^(DBDIR)=/opt/www/var/htdig#\1=${LOCALBASE}/share/htdig/database#' \
+		-e 's#^(COMMONDIR)=/opt/www/share/htdig#\1=${LOCALBASE}/share/htdig/common#' \
+		-e 's#^(BINDIR)=/opt/www/bin#\1=${LOCALBASE}/bin#' \
+		-e 's#^(conffile)=/opt/www/conf/#\1=${LOCALBASE}/etc/htdig/#' \
+		${WRKSRC}/cron/rundig
+	${REINPLACE_CMD} -E \
+		-e 's#/opt/www/htdig/bin#${LOCALBASE}/bin#' \
+		${WRKSRC}/Mailman/Cgi/remote?mmsearch
+
 .if ${PORT_OPTIONS:MPOSTFIX}
 pre-configure:
 	${ECHO} "MTA = 'Postfix'" >> ${WRKSRC}/Mailman/mm_cfg.py.dist.in
@@ -222,5 +237,7 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 	${ECHO} "This marker file ensures that Python's upgrade-site-packages handles ${PKGNAME}." >${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mailman-info.txt
 	${INSTALL_SCRIPT} ${PKGINSTALL} ${STAGEDIR}${MAILMANDIR}/bin/FreeBSD-post-install
+	${MKDIR} ${STAGEDIR}${MAILMANDIR}/templates/site/en
+	${INSTALL_DATA} ${FILESDIR}/templates_site_README.txt ${STAGEDIR}${MAILMANDIR}/templates/site/README.txt
 
 .include <bsd.port.mk>

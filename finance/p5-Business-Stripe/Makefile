@@ -1,8 +1,7 @@
 # Created by: Vick Khera <vivek@khera.org>
-# $FreeBSD$
 
 PORTNAME=	Business-Stripe
-PORTVERSION=	0.06
+PORTVERSION=	0.07
 CATEGORIES=	finance perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

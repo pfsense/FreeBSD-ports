@@ -1,27 +1,30 @@
 # Created by: db
-# $FreeBSD$
 
 PORTNAME=	tlf
-PORTVERSION=	1.3.0
-PORTREVISION=	1
+PORTVERSION=	1.4.1
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	comms hamradio
-MASTER_SITES=	http://www.hs-mittweida.de/tb/ \
-		LOCAL/shurd
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	851321c0979c.patch:-p1 # https://github.com/Tlf/tlf/pull/268
+PATCHFILES+=	3c48ad1c95c8.patch:-p1 # https://github.com/Tlf/tlf/pull/268
+PATCHFILES+=	4302ec05ed9f.patch:-p1 # https://github.com/Tlf/tlf/pull/268
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio curses based logging program
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libargp.so:devel/argp-standalone
 RUN_DEPENDS=	rec:audio/sox \
 		wget:ftp/wget
 
-USES=		ncurses pkgconfig
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	PANEL_LIB=-lpanel
+USES=		autoreconf gnome ncurses pkgconfig
+USE_GITHUB=	yes
 USE_GNOME=	glib20
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
+GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	LDFLAGS="-L${LOCALBASE}/lib -largp" \
+		CPPFLAGS=-I${LOCALBASE}/include
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	HAMLIB FLDIGI DOCS

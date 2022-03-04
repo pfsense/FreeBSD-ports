@@ -1,8 +1,7 @@
 # Created by: Ju Pengfei <jupengfei@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	pynn
-PORTVERSION=	0.9.4
+PORTVERSION=	0.9.6
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +20,7 @@ RUN_DEPENDS=	${PYNUMPY}
 
 NO_ARCH=	yes
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 PYDISTUTILS_PKGNAME=	PyNN
 

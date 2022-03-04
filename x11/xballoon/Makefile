@@ -1,5 +1,4 @@
 # Created by: Sakai Hiroaki <sakai@miya.ee.kagu.sut.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xballoon
 PORTVERSION=	1.0
@@ -10,6 +9,7 @@ MASTER_SITES=	http://kozos.jp/myfreesoft/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Balloons move on root window
 
+USES=		xorg
 USE_XORG=	xpm xmu xaw
 ALL_TARGET=	xballoon
 

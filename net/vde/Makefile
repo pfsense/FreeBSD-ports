@@ -1,5 +1,4 @@
 # Created by: Craig Boston <craig@yekse.gank.org>
-# $FreeBSD$
 
 PORTNAME=	vde
 PORTVERSION=	1.5.7
@@ -12,12 +11,13 @@ COMMENT=	User-mode virtual ethernet infrastructure
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	vde2-[0-9]*
+CONFLICTS=	vde2
 
 MAKE_ARGS=	CC="${CC}"
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
-USES=		gmake tar:tgz
+USES=		cpe gmake tar:tgz
+CPE_VENDOR=	${PORTNAME}_project
 
 CFLAGS+=	-fPIC
 

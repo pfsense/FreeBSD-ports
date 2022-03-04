@@ -1,5 +1,4 @@
 # Created by: Alex Povolotsky <tarkhil@over.ru>
-# $FreeBSD$
 
 PORTNAME=	cadaver
 PORTVERSION=	0.23.3
@@ -8,7 +7,7 @@ CATEGORIES=	www
 MASTER_SITES=	http://www.webdav.org/cadaver/ \
 		http://www.tcbug.org/
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Commandline client for DAV
 
 LIB_DEPENDS=	libneon.so:www/neon
@@ -34,8 +33,10 @@ EXTRACT_AFTER_ARGS=	\
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+USES+=		cpe
+CPE_VENDOR=	webdav
 .if !defined(WITHOUT_OPENSSL)
-USES+=	ssl
+USES+=		ssl
 CONFIGURE_ARGS+=	--with-ssl --with-force-ssl
 post-install:
 	#
@@ -50,7 +51,7 @@ OPTIONS_DEFINE=	NLS
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}
-USES=		gettext iconv
+USES+=		gettext iconv
 CONFIGURE_ARGS+=${ICONV_CONFIGURE_ARG} \
 		--with-libintl-prefix=${LOCALBASE}
 LANGS=en@quot es it
@@ -63,7 +64,9 @@ CONFIGURE_ARGS+=--disable-nls \
 		--without-libintl-prefix
 .endif
 
+NEON_VERSION=	31 32
+
 post-patch:
-	@${REINPLACE_CMD} 's,27 28 29,& 30,' ${WRKSRC}/configure
+	@${REINPLACE_CMD} 's,27 28 29,& ${NEON_VERSION},' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

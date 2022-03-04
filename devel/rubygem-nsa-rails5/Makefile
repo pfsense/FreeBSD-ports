@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	nsa
-PORTVERSION=	0.2.4
-PORTREVISION=	2
+PORTVERSION=	0.2.8
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails5
@@ -10,10 +7,10 @@ PKGNAMESUFFIX=	-rails5
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Deliver Rails ActiveSupport::Notifications to a Statsd backend
 
-RUN_DEPENDS=	rubygem-activesupport5>=4.2:devel/rubygem-activesupport5 \
-		rubygem-concurrent-ruby>=1.0.0:devel/rubygem-concurrent-ruby \
-		rubygem-sidekiq>=3.5.0:devel/rubygem-sidekiq \
-		rubygem-statsd-ruby>=1.2:devel/rubygem-statsd-ruby
+RUN_DEPENDS=	rubygem-activesupport5>=4.2<7:devel/rubygem-activesupport5 \
+		rubygem-concurrent-ruby>=1.0.2<2:devel/rubygem-concurrent-ruby \
+		rubygem-sidekiq>=3.5:devel/rubygem-sidekiq \
+		rubygem-statsd-ruby>=1.4.0<2:devel/rubygem-statsd-ruby
 
 USES=		gem shebangfix
 USE_RUBY=	yes

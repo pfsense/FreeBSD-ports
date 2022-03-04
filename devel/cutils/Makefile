@@ -1,5 +1,4 @@
 # Created by: Sandro Sigala
-# $FreeBSD$
 
 PORTNAME=	cutils
 PORTVERSION=	1.6
@@ -16,6 +15,6 @@ MAKE_ENV=	MAKEINFO="${MAKEINFO}"
 INFO=		cutils
 MAKE_JOBS_UNSAFE=	yes
 
-CONFLICTS=	cdecl-[0-9]*
+CONFLICTS=	cdecl
 
 .include <bsd.port.mk>

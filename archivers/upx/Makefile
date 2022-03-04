@@ -1,12 +1,11 @@
 # Created by: Max Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	upx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.95
 CATEGORIES=	archivers
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ultimate Packer for eXecutables
 
 LICENSE=	GPLv2+
@@ -14,9 +13,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libucl.so:archivers/ucl
 
-USES=		gmake perl5
+USES=		cpe gmake perl5
 USE_GITHUB=	yes
 USE_PERL5=	build # provides pod2man/pod2html/pod2text required for docs
+
+CPE_VENDOR=	upx_project
 
 GH_TUPLE=	upx:upx-lzma-sdk:${DISTVERSIONPREFIX}${DISTVERSION}:lzma/src/lzma-sdk
 

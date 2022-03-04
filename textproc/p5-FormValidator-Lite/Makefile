@@ -1,8 +1,7 @@
 # Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
 
 PORTNAME=	FormValidator-Lite
-PORTVERSION=	0.40
+PORTVERSION=	0.41
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -24,8 +23,9 @@ TEST_DEPENDS=	p5-CGI>=3.31:www/p5-CGI \
 		p5-Text-TestBase>=0:textproc/p5-Text-TestBase \
 		p5-YAML>=0:textproc/p5-YAML
 
-NO_ARCH=	yes
-USE_PERL5=	modbuildtiny
 USES=		perl5
+USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

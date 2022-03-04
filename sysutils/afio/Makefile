@@ -1,11 +1,9 @@
 # Created by: Juergen Lock <nox@jelal.hb.north.de>
-# $FreeBSD$
 
 PORTNAME=	afio
-PORTVERSION=	2.5
-PORTREVISION=	1
+PORTVERSION=	2.5.2
 CATEGORIES=	sysutils
-MASTER_SITES=	SUNSITE/system/backup
+MASTER_SITES=	http://members.chello.nl/~k.holtman/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Archiver and backup program with builtin compression
@@ -13,8 +11,7 @@ COMMENT=	Archiver and backup program with builtin compression
 LICENSE=	ART20 BSD2CLAUSE
 LICENSE_COMB=	multi
 
-USES=		tar:tgz shebangfix
-SHEBANG_FILES=	script1/backup script2/backup
+USES=		tar:tgz
 
 ALL_TARGET=	${PORTNAME}
 

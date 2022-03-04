@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	formats
 PORTVERSION=	20150521
 PORTREVISION=	2
@@ -9,9 +7,10 @@ PKGNAMEPREFIX=	tex-
 DISTFILES=	#empty
 EXTRACT_ONLY=	#empty
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	Formats for basic TeX engines and the 'latex' command
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 NO_INSTALL=	yes
 

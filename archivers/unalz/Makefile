@@ -1,5 +1,4 @@
 # Created by: Hye-Shik Chang
-# $FreeBSD$
 
 PORTNAME=	unalz
 DISTVERSION=	0.66
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/readme.txt
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		iconv tar:xz
+USES=		cpe iconv tar:xz
 MAKE_ARGS+=	CPP="${CXX}" CC="${CC}" OBJ="${UNALZ_OBJS}" \
 		LDFLAGS="${LDFLAGS}" CFLAGS="${CFLAGS}"
 ALL_TARGET=	posix-utf8

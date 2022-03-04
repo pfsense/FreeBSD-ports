@@ -1,5 +1,4 @@
 # Created by: David Siebörger <drs@rucus.ru.ac.za>
-# $FreeBSD$
 
 PORTNAME=	mess822
 PORTVERSION=	0.58
@@ -25,6 +24,5 @@ post-patch:
 	@${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/conf-cc
 	@${ECHO_CMD} "${CC} ${STRIP} ${LDFLAGS}" > ${WRKSRC}/conf-ld
 	@${ECHO_CMD} ${STAGEDIR}${PREFIX} > ${WRKSRC}/conf-home
-
 
 .include <bsd.port.mk>

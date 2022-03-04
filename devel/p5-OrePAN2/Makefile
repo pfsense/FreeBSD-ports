@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	OrePAN2
 PORTVERSION=	0.40
 CATEGORIES=	devel perl5
@@ -7,7 +5,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:OALDERS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for yet another DarkPAN manager
 
 LICENSE=	ART10 GPLv1+

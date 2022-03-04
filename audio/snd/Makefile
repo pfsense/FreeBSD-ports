@@ -1,11 +1,10 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	snd
-PORTVERSION=	15.7
-PORTREVISION=	3
+PORTVERSION=	21.2
+PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	ftp://ccrma-ftp.stanford.edu/pub/Lisp/ \
+MASTER_SITES=	https://ccrma.stanford.edu/software/snd/ \
 		SF
 
 MAINTAINER=	portmaster@bsdforge.com
@@ -15,6 +14,8 @@ LICENSE=	snd
 LICENSE_NAME=	snd license
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+USES=		localbase:ldflags
 
 OPTIONS_DEFINE=	FFTW3 GSL S7 LADSPA MOTIF GTK2 X11 DOCS EXAMPLES
 OPTIONS_DEFAULT=	FFTW3 GSL LADSPA GTK2 X11
@@ -28,10 +29,6 @@ MAKEFILE=	makefile
 ALL_TARGET=	snd snd-info sndplay
 MAKE_JOBS_UNSAFE=	yes
 
-CFLAGS+=	-I${LOCALBASE}/include
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
 FFTW3_LIB_DEPENDS=	libfftw3.so:math/fftw3
 FFTW3_CONFIGURE_WITH=	fftw
 
@@ -44,7 +41,8 @@ LADSPA_BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
 LADSPA_RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
 LADSPA_CONFIGURE_WITH=	ladspa
 
-GTK2_USE=	GNOME=gtk20
+GTK2_USES=		gnome
+GTK2_USE=		GNOME=gtk20
 GTK2_CONFIGURE_WITH=	gtk
 
 MOTIF_USES=	motif

@@ -1,5 +1,4 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	logbook
 PORTVERSION=	1.1.0
@@ -13,7 +12,7 @@ COMMENT=	Logging replacement for Python
 
 LICENSE=	BSD3CLAUSE
 
-USES?=	python
+USES?=	python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

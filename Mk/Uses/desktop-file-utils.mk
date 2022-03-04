@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # handle dependency depends on desktop-file-utils and package regen
 #
 # Feature:	desktop-file-utils
@@ -17,6 +15,5 @@ IGNORE=	USES=desktop-file-utils does not require args
 
 BUILD_DEPENDS+=	update-desktop-database:devel/desktop-file-utils
 RUN_DEPENDS+=	update-desktop-database:devel/desktop-file-utils
-PLIST_FILES+=	"@desktop-file-utils"
 
 .endif

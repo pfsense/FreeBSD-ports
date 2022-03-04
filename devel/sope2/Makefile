@@ -1,9 +1,8 @@
 # Created by: Euan Thoms <euan@potensol.com>
-# $FreeBSD$
 
 PORTNAME=		sope2
-PORTVERSION=		2.3.23
-PORTREVISION=	4
+PORTVERSION=		2.4.1
+PORTREVISION=	1
 CATEGORIES=		devel gnustep
 MASTER_SITES=		http://www.sogo.nu/files/downloads/SOGo/Sources/
 DISTNAME=		SOPE-${PORTVERSION}
@@ -13,6 +12,7 @@ COMMENT=		Extensive set of GNUstep web application frameworks
 
 LICENSE=		LGPL20
 
+BROKEN_aarch64=		fails to build: bundle.make:301: STXSaxDriver.sax/Resources/Info-gnustep.plist] Abort trap (core dumped)
 BROKEN_powerpc64=	fails to build: bundle.make:301: STXSaxDriver.sax/Resources/Info-gnustep.plist] Illegal instruction (core dumped)
 
 LIB_DEPENDS=		libxml2.so:textproc/libxml2 \
@@ -29,7 +29,7 @@ MYSQL_DESC=		Build with MySQL support
 PGSQL_DESC=		Build with PostgreSQL support
 MEMCACHED_DESC=		Install memcached
 
-USES=			gmake iconv gnustep
+USES=			gmake iconv gnustep ssl
 USE_GNUSTEP=		base build
 USE_LDCONFIG=		${GNUSTEP_LOCAL_LIBRARIES}
 LLD_UNSAFE=		yes # PR 230608
@@ -41,11 +41,12 @@ CONFIGURE_ARGS=		--with-gnustep --disable-debug --enable-strip
 
 LDAP_USE=		OPENLDAP=client
 PGSQL_USES=		pgsql
-MYSQL_USE=		MYSQL=client
+MYSQL_USES=		mysql
 MEMCACHED_RUN_DEPENDS=	${LOCALBASE}/bin/memcached:databases/memcached
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|gcc|${CC}|g' ${WRKSRC}/sope-core/NGStreams/configure
 
 post-patch-LDAP-off:
 	@${REINPLACE_CMD} -e '/checkLinking "ldap"/d' ${WRKSRC}/configure

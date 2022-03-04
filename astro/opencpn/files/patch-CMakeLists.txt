@@ -1,11 +1,11 @@
---- CMakeLists.txt.orig	2016-06-25 12:26:20 UTC
+--- CMakeLists.txt.orig	2020-10-22 23:20:06 UTC
 +++ CMakeLists.txt
-@@ -1769,7 +1769,7 @@ ENDIF(UNIX)
- #   Certain older Cmake FindGTK2 modules ( e.g. cmake-2.8.0-2) do not yield all of the required link libraries
- #   So, add them manually.  These declarations may be redundant in some architectures, but do no harm.
- IF(UNIX)
--TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} dl )
-+TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} execinfo  )
- ENDIF(UNIX)
+@@ -2230,7 +2230,7 @@ if (NOT APPLE)
+       DESTINATION ${PREFIX_DATA}/metainfo
+       RENAME opencpn.appdata.xml
+     )
+-    install(FILES opencpn.1 DESTINATION ${PREFIX_DATA}/man/man1)
++    install(FILES opencpn.1 DESTINATION ${PREFIX_DATA}/../man/man1)
+   endif (UNIX)
  
- IF(QT_LINUX)
+   IF(PACKAGE_FORMAT MATCHES "DEB")

@@ -1,12 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	hyperscan
-PORTVERSION=	4.7.0
-PORTREVISION=	2
+PORTVERSION=	5.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel textproc
-MASTER_SITES=	SF/boost/boost/1.65.1:boost
-DISTFILES=	boost_1_65_1.tar.gz:boost
+MASTER_SITES=	SF/boost/boost/${BOOST_VERSION}:boost
+DISTFILES=	boost_${BOOST_VERSION_UNDER}.tar.gz:boost
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	High-performance multiple regex matching library
@@ -26,7 +23,7 @@ SHARED_DESC=		Build shared library
 NATIVE_DESC=		Build with native CPU tunes
 OPTIONS_DEFAULT=	SHARED
 
-CMAKE_ARGS+=	-DBOOST_ROOT=${WRKDIR}/boost_1_65_1
+CMAKE_ARGS+=	-DBOOST_ROOT=${WRKDIR}/boost_${BOOST_VERSION_UNDER}
 
 NATIVE_CXXFLAGS=	-march=native -mtune=native
 NATIVE_CFLAGS=		-march=native -mtune=native
@@ -35,6 +32,8 @@ NATIVE_CXXFLAGS_OFF=	-march=core2
 NATIVE_CFLAGS_OFF=	-march=core2
 
 CFLAGS+=	-fPIC
+BOOST_VERSION=	1.75.0
+BOOST_VERSION_UNDER=	${BOOST_VERSION:C/\./_/g}
 
 .include <bsd.port.options.mk>
 

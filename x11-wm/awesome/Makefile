@@ -1,8 +1,8 @@
 # Created by: Nikos Ntarmos <ntarmos@ceid.upatras.gr>
-# $FreeBSD$
 
 PORTNAME=	awesome
 PORTVERSION=	4.3
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
@@ -14,8 +14,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	convert:graphics/ImageMagick6 \
-		${LUA_MODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi
-RUN_DEPENDS=	${LUA_MODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi \
+		${LUA_REFMODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi@${LUA_FLAVOR}
+RUN_DEPENDS=	${LUA_REFMODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:devel/lua-lgi@${LUA_FLAVOR} \
 		bash:shells/bash
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libstartup-notification-1.so:x11/startup-notification \
@@ -27,15 +27,17 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libxcb-xrm.so:x11/xcb-util-xrm \
 		libxkbcommon.so:x11/libxkbcommon
 
-CONFLICTS_INSTALL=	awesome3-[0-9]*
+CONFLICTS_INSTALL=	awesome3
 
-USES=		cmake compiler:c11 gettext iconv pkgconfig lua shebangfix
+USES=		cmake compiler:c11 gettext gnome iconv pkgconfig lua \
+		shebangfix xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	awesomewm
 SHEBANG_FILES=	utils/awesome-client
 CMAKE_ARGS=	-DSYSCONFDIR=${PREFIX}/etc \
 		-DAWESOME_MAN_PATH=${MANPREFIX}/man \
-		-DGENERATE_DOC=OFF
+		-DGENERATE_DOC=OFF \
+		-DLUA_INCLUDE_DIR=${LUA_INCDIR}
 USE_GNOME=	glib20 pango gdkpixbuf2
 USE_XORG=	pixman x11 xau xcb xdmcp xext xft xinerama xrandr xrender \
 		xorgproto

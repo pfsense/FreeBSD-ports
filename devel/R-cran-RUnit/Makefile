@@ -1,9 +1,8 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	RUnit
 PORTVERSION=	0.4.28
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	semver2
 PORTVERSION=	3.4.2
 CATEGORIES=	devel rubygems
@@ -10,6 +8,8 @@ COMMENT=	Maintain semantic versions
 
 USES=		gem
 USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/semver
 

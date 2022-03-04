@@ -1,9 +1,8 @@
 # Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
 
 PORTNAME=	WordNet
 PORTVERSION=	3.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	http://wordnetcode.princeton.edu/${PORTVERSION}/:code \
 		http://wordnetcode.princeton.edu/:dict
@@ -22,6 +21,9 @@ REINPLACE_ARGS=	-i ""
 USE_LDCONFIG=	yes
 SUB_FILES=	pkg-message
 SUB_LIST+=	TCL_VER=${TCL_VER}
+
+# Fix build on recent current
+CFLAGS+=	-fcommon
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},g' \

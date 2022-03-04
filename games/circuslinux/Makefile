@@ -1,5 +1,4 @@
 # Created by: Edwin Groothuis
-# $FreeBSD$
 
 PORTNAME=	circuslinux
 PORTVERSION=	1.0.3
@@ -13,6 +12,7 @@ COMMENT=	"Circus Linux!" is a clone of the Atari 2600 game "Circus Atari"
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
+USES=		sdl
 USE_SDL=	image mixer sdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--target=""

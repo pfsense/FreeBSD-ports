@@ -1,5 +1,4 @@
 # Created by: Jake Smith <jake@xz.cx>
-# $FreeBSD$
 
 PORTNAME=	mysac
 PORTVERSION=	1.1.2
@@ -12,8 +11,11 @@ COMMENT=	MySQL Simple Asynchronous Client
 
 LICENSE=	LGPL3
 
+USES=		mysql
+
+IGNORE_WITH_MYSQL=	57 80 101m 102m 103m 57p 57w
+
 USE_LDCONFIG=	yes
-USE_MYSQL=	yes
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-I${LOCALBASE}/lib

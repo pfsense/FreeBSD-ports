@@ -1,5 +1,4 @@
 # Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
 
 PORTNAME=	pengpong
 PORTVERSION=	0.3
@@ -10,7 +9,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}-linux
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform pong game written in SDL
 
-USES=		perl5
+USES=		perl5 sdl
 USE_SDL=	image sdl
 NO_WRKSUBDIR=	yes
 USE_PERL5=	build

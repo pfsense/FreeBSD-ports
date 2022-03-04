@@ -1,11 +1,7 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
 
 # PROVIDE: hitch
-# REQUIRE: NETWORKING SERVERS
-# BEFORE: DAEMON
+# REQUIRE: LOGIN varnishd
 # KEYWORD: shutdown
 
 #

@@ -1,6 +1,5 @@
 bin/knights
-etc/xdg/knights.categories
-etc/xdg/knights.knsrc
+share/qlogging-categories5/knights.categories
 share/applications/org.kde.knights.desktop
 share/config.kcfg/knights.kcfg
 share/dbus-1/interfaces/org.kde.Knights.xml
@@ -41,16 +40,20 @@ share/locale/en_GB/LC_MESSAGES/knights.mo
 share/locale/eo/LC_MESSAGES/knights.mo
 share/locale/es/LC_MESSAGES/knights.mo
 share/locale/et/LC_MESSAGES/knights.mo
+share/locale/eu/LC_MESSAGES/knights.mo
 share/locale/fa/LC_MESSAGES/knights.mo
 share/locale/fi/LC_MESSAGES/knights.mo
 share/locale/fr/LC_MESSAGES/knights.mo
 share/locale/ga/LC_MESSAGES/knights.mo
 share/locale/gl/LC_MESSAGES/knights.mo
 share/locale/hu/LC_MESSAGES/knights.mo
+share/locale/id/LC_MESSAGES/knights.mo
 share/locale/it/LC_MESSAGES/knights.mo
 share/locale/ja/LC_MESSAGES/knights.mo
 share/locale/km/LC_MESSAGES/knights.mo
+share/locale/ko/LC_MESSAGES/knights.mo
 share/locale/lt/LC_MESSAGES/knights.mo
+share/locale/ml/LC_MESSAGES/knights.mo
 share/locale/mr/LC_MESSAGES/knights.mo
 share/locale/nb/LC_MESSAGES/knights.mo
 share/locale/nds/LC_MESSAGES/knights.mo
@@ -71,3 +74,4 @@ share/locale/uk/LC_MESSAGES/knights.mo
 share/locale/zh_CN/LC_MESSAGES/knights.mo
 share/locale/zh_TW/LC_MESSAGES/knights.mo
 share/metainfo/org.kde.knights.appdata.xml
+share/knsrcfiles/knights.knsrc

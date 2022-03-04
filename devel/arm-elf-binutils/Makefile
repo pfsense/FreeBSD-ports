@@ -1,19 +1,22 @@
 # Created by: Espen Skoglund <esk@ira.uka.de>
-# $FreeBSD$
 
 PORTNAME=	binutils
-PORTVERSION=	2.32
+PORTVERSION=	2.37
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
 PKGNAMEPREFIX=	arm-elf-
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU binutils for vanilla ARM cross-development
 
-USES=		gettext gmake tar:bzip2
+LICENSE=	GPLv3 LGPL3
+LICENSE_COMB=	multi
+
+USES=		cpe gettext gmake localbase makeinfo tar:xz
+CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--target=${PKGNAMEPREFIX:S/-$//} --disable-werror \
-		--disable-nls CFLAGS="-I/usr/local/include"
+		--disable-nls
 INFO_PATH=	${PKGNAMEPREFIX:S/-$//}/info
 
 post-install:

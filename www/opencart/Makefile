@@ -1,8 +1,7 @@
 # Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	opencart
-PORTVERSION=	3.0.3.1
+PORTVERSION=	3.0.3.8
 CATEGORIES=	www misc
 
 MAINTAINER=	wen@FreeBSD.org
@@ -13,7 +12,7 @@ LICENSE=	GPLv3
 USE_GITHUB=	yes
 GH_ACCOUNT=	opencart
 
-USES=		php
+USES=		cpe php
 USE_PHP=	filter mysqli curl mbstring gd zlib mcrypt session zip hash openssl
 WRKSRC_SUBDIR=	upload
 

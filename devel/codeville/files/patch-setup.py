@@ -1,10 +1,11 @@
---- setup.py.orig	2016-06-13 06:31:53.378976000 -0700
-+++ setup.py	2016-06-13 06:32:11.276473000 -0700
-@@ -46,6 +46,5 @@
-     packages = ["Codeville", "Codeville/old"],
-     ext_modules = plat_ext,
+--- setup.py.orig	2020-12-15 07:58:37 UTC
++++ setup.py
+@@ -9,7 +9,7 @@ import Codeville
+ from distutils.core import setup
+ import shutil
+ import sys
+-assert sys.version >= '2', "Install Python 2.0 or greater"
++assert sys.version >= '3', "Install Python 3.0 or greater"
  
--    scripts = scripts,
--    data_files = data_files
-+    scripts = scripts
-     )
+ scripts = ["cdv", "cdvserver", "cdvpasswd", "cdv-agent", "cdvupgrade"]
+ plat_ext = []

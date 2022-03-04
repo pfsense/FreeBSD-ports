@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	ipcalc
 PORTVERSION=	0.41
@@ -8,12 +7,12 @@ CATEGORIES=	net-mgmt
 MASTER_SITES=	http://jodies.de/ipcalc-archive/
 DIST_SUBDIR=	ipcalc
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IP Calculator
 
 LICENSE=	GPLv2
 
-CONFLICTS_INSTALL=	gnu-ipcalc-[0-9]*
+CONFLICTS_INSTALL=	gnu-ipcalc
 
 PLIST_FILES=	bin/ipcalc
 NO_BUILD=	yes

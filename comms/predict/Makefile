@@ -1,25 +1,24 @@
-# Created by: db
-# $FreeBSD$
-
 PORTNAME=	predict
-PORTVERSION=	2.2.3
+PORTVERSION=	2.2.7
 CATEGORIES=	comms astro hamradio
-MASTER_SITES=	ftp://ftp.amsat.org/amsat/software/Linux/ \
+MASTER_SITES=	https://www.qsl.net/kd2bd/ \
 		LOCAL/db
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Satellite tracking program for amateur radio satellites
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS=	libasound.so:audio/alsa-lib
 
 USES=		ncurses
 INSTALL_TARGET=	install install.man
-MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" PREFIX="${PREFIX}" STAGEDIR="${STAGEDIR}"
 
 post-patch:
 	@${SED} -e 's|%%PREFIX%%|${PREFIX}|g' ${FILESDIR}/predict.h > ${WRKSRC}/predict.h
 	@${SED} -e 's|%%PREFIX%%|${PREFIX}|g' ${FILESDIR}/vocalizer.h > ${WRKSRC}/vocalizer/vocalizer.h
-	@${SED} -e 's|%%PREFIX%%|${PREFIX}|g' -e 's|%%STAGEDIR%%|${STAGEDIR}|g' \
-	    ${FILESDIR}/Makefile  > ${WRKSRC}/Makefile
+	@${CP} ${FILESDIR}/Makefile ${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

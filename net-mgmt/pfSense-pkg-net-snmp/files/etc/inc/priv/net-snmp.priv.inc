@@ -3,7 +3,7 @@
  * net-snmp.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ $priv_list['page-services-net-snmp']['name'] = "WebCfg - Services: NET-SNMP pack
 $priv_list['page-services-net-snmp']['descr'] = "Allow access to NET-SNMP package GUI";
 
 $priv_list['page-services-net-snmp']['match'] = array();
-$priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp.xml*";
+$priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=netsnmp.xml*";
 $priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp_communities.xml*";
 $priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp_hostinfo.xml*";
 $priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp_trapgen.xml*";

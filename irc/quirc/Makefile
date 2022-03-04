@@ -1,11 +1,10 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	quirc
 PORTVERSION=	0.9.84
 PORTREVISION=	6
 CATEGORIES=	irc tk
-MASTER_SITES=	http://BSDforge.com/projects/source/irc/quirc/
+MASTER_SITES=	https://BSDforge.com/projects/source/irc/quirc/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Tcl/Tk IRC client for the X Window System
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		tk
+USES=		tk xorg
 USE_XORG=	xt
 
 GNU_CONFIGURE=	yes

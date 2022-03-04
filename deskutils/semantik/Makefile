@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	semantik
-DISTVERSION=	1.2.1
-PORTREVISION=	1
+DISTVERSION=	1.2.7
 CATEGORIES=	deskutils kde
 MASTER_SITES=	https://waf.io/
 
@@ -10,38 +7,56 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Mind mapping tool
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		kde:5 pkgconfig python:3.6 qt:5 shebangfix tar:bzip2 waf \
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+
+USES=		kde:5 pkgconfig python:3.6+ qt:5 shebangfix tar:bzip2 waf \
 		desktop-file-utils gettext shared-mime-info
 USE_KDE=	auth config configwidgets coreaddons i18n iconthemes \
 		kdelibs4support kio sonnet widgetsaddons xmlgui
+USE_LDCONFIG=	yes
 USE_QT=		core dbus declarative gui location network printsupport \
 		svg webchannel webengine widgets xml \
 		buildtools_build qmake_build
 
+SHEBANG_FILES=	src/templates/beamer/wscript \
+		src/templates/pdflatex/wscript \
+		src/filters/fvym.py \
+		src/filters/kdissert.py \
+		src/filters/main.py \
+		src/filters/others.py \
+		src/filters/semantik.py \
+		src/sembind.py \
+		waf \
+		wscript
+
 CONFIGURE_ENV=	PATH="${KDE_PREFIX}/bin:$$PATH" \
 		WAF_HOME="${WRKSRC}"
-CPPFLAGS+=	-I${LOCALBASE}/include
-CFLAGS+=	-I${LOCALBASE}/include
 MAKE_ENV=	DESTDIR="${STAGEDIR}"
-USE_LDCONFIG=	yes
-
-SHEBANG_FILES=	${WRKSRC}/src/templates/beamer/wscript \
-		${WRKSRC}/src/templates/pdflatex/wscript \
-		waf
+CFLAGS+=	-I${LOCALBASE}/include
+CPPFLAGS+=	-I${LOCALBASE}/include
 
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
-
 post-patch:
-.if ! ${PORT_OPTIONS:MNLS}
+	@${REINPLACE_CMD} -e 's+@@LOCALBASE@@+${LOCALBASE}+' \
+		${WRKSRC}/wscript
+
+post-patch-NLS-off:
 	@${REINPLACE_CMD} -e '/langs/ d' \
 		${WRKSRC}/wscript
-.endif
+
+post-configure:
+	# Waf injects some bizzarre 3- and 4-level ../ stacks into the include
+	# paths, which don't match how KDE includes are organized, and in a
+	# poudriere build don't necessarily reach /usr/local/include either.
+	@${REINPLACE_CMD} -e "s+..PWD............/include+${LOCALBASE}/include+g" \
+		${WRKSRC}/build/c4che/_cache.py
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME} \

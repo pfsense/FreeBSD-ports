@@ -1,14 +1,13 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	zip
-PORTVERSION=	1.05
+PORTVERSION=	1.06
 CATEGORIES=	archivers
-MASTER_SITES=	http://forge.ocamlcore.org/frs/download.php/1037/
+MASTER_SITES=	https://download.ocamlcore.org/camlzip/camlzip/${PORTVERSION}/
 PKGNAMEPREFIX=	ocaml-
 DISTNAME=	caml${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	OCaml library to manipulate ZIP/GZIP/JAR archives
 
 LICENSE=	LGPL21

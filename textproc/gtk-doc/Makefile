@@ -1,33 +1,31 @@
 # Created by: fenner
-# $FreeBSD$
 
 PORTNAME=	gtk-doc
-PORTVERSION=	1.29
+DISTVERSION=	1.33.2
 CATEGORIES=	textproc
 MASTER_SITES=	GNOME
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Code documentation system, originally for GTK+
 
-BUILD_DEPENDS=	jade:textproc/jade \
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR} \
+		docbook-xml>0:textproc/docbook-xml \
+		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl \
 		itstool:textproc/itstool \
-		highlight:textproc/highlight \
+		yelp-tools>=0:textproc/yelp-tools
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR} \
 		docbook-xml>0:textproc/docbook-xml \
-		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl \
-		rarian-sk-config:textproc/rarian
-RUN_DEPENDS=	jade:textproc/jade \
-		docbook-xml>0:textproc/docbook-xml \
-		highlight:textproc/highlight \
-		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl \
-		rarian-sk-config:textproc/rarian
+		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl
 
-DOCBOOK_VERSION=	4.1.2
+USES=		gettext-tools gnome meson python:3.6+ pkgconfig tar:xz
+USE_GNOME=	libxml2 libxslt
 
-USES=		gettext-tools gmake gnome pathfix perl5 pkgconfig \
-		python:3.4+ tar:xz
-USE_GNOME=	gnomeprefix libxslt
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-xml-catalog=${LOCALBASE}/share/xml/catalog.ports
+MESON_ARGS=	-Dtests=false
+
+NO_ARCH=	yes
 
 post-install:
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \

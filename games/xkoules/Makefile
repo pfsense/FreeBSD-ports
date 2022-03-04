@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xkoules
 PORTVERSION=	1.4
@@ -20,7 +19,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/x//}${PORTVERSION}
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 MAKE_JOBS_UNSAFE=	yes
 

@@ -1,72 +1,57 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	singularity
-PORTVERSION=	0.30c
-DISTVERSIONPREFIX=	v
-PORTREVISION=	7
+PORTVERSION=	1.00
 CATEGORIES=	games
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	endgame-
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	Simulates the life of a true AI
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/GPL.txt
+LICENSE=	GPLv2+ MIT CC-BY-SA-3.0 NASA AEFONTS BITSTREAM AREV \
+		MEMESBRUH03 CC0-1.0
+LICENSE_COMB=	multi
+LICENSE_NAME_NASA=	NASA Terms of Use
+LICENSE_NAME_AEFONTS=	Brian Kent - Aenigma Games & Fonts
+LICENSE_NAME_BITSTREAM=	Bitstream Vera Fonts Copyright
+LICENSE_NAME_AREV=	Arev Fonts Copyright
+LICENSE_NAME_MEMESBRUH03=	memesbruh03 Copyright
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/LICENSE.gpl.txt
+LICENSE_FILE_CC-BY-SA-3.0=	${WRKSRC}/LICENSE.CC-BY-SA-3.txt
+LICENSE_FILE_CC0-1.0=	${WRKSRC}/LICENSE.cc0.txt
+LICENSE_PERMS_NASA=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_AEFONTS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_BITSTREAM=dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_AREV=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_MEMESBRUH03=	dist-mirror dist-sell pkg-mirror pkg-sell \
+				auto-accept
 
 RUN_DEPENDS=	${PYGAME} \
-		${PYNUMPY}
+		${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}polib>=0:devel/py-polib@${PY_FLAVOR}
 
-USE_GITHUB=	yes
-
-USES=		python:2.7
+USES=		python:3.5+ sdl shebangfix
 USE_PYTHON=	autoplist distutils
 USE_SDL=	image mixer
-PORTDOCS=	AUTHORS Changelog README.txt TODO
+PORTDOCS=	AUTHORS.txt Changelog.txt README.txt TODO
 NO_ARCH=	yes
+SHEBANG_FILES=	singularity/i18n/utils/languages.py
 
 OPTIONS_DEFINE=	MUSIC DOCS
 OPTIONS_DEFAULT=	MUSIC
+
 MUSIC_DESC=	Install original music pack
 MUSIC_RUN_DEPENDS=	endgame-singularity-music>=006:games/endgame-singularity-music
 
 post-extract:
-	@${FIND} ${WRKSRC} -name '*.pyc' -delete
-	@cd ${WRKSRC}/&&${MV} code ${PORTNAME}
-	@${MKDIR} ${WRKSRC}/data/music/
-	@${TOUCH} ${WRKSRC}/data/music/.keep_me
-
-post-patch:
-	@${REINPLACE_CMD} -e '5,16d;25,31d;\
-		/app=/s|app=.*|packages=["singularity","singularity/graphics","singularity/screens"],|;\
-		/name=/s|".*"|"singularity"|' \
-		${WRKSRC}/setup.py
-	@${REINPLACE_CMD} -e '/import cPickle/s|cPickle|pickle as cPickle|' \
-		${WRKSRC}/${PORTNAME}/g.py
-	@${REINPLACE_CMD} -e '/data_loc = /s|=.*|= "${DATADIR}/"|;\
-		/data_loc.*music/s|, ".."||' ${WRKSRC}/${PORTNAME}/g.py
-	@${REINPLACE_CMD} -e '/ code\.[a-z]/s|code|singularity|' \
-		${WRKSRC}/${PORTNAME}/graphics/button.py \
-		${WRKSRC}/${PORTNAME}/graphics/dialog.py \
-		${WRKSRC}/${PORTNAME}/graphics/g.py \
-		${WRKSRC}/${PORTNAME}/screens/base.py \
-		${WRKSRC}/${PORTNAME}/screens/finance.py \
-		${WRKSRC}/${PORTNAME}/screens/main_menu.py \
-		${WRKSRC}/${PORTNAME}/screens/options.py
-	@${REINPLACE_CMD} -e '/ code/s|code|singularity|' \
-		${WRKSRC}/${PORTNAME}/screens/knowledge.py \
-		${WRKSRC}/${PORTNAME}/screens/location.py \
-		${WRKSRC}/${PORTNAME}/screens/research.py
-	@${REINPLACE_CMD} -e '/ code[ \.]/s|code|singularity|' \
-		${WRKSRC}/${PORTNAME}/screens/map.py
-
-post-build:
-	@${ECHO_CMD} '#!${PYTHON_CMD}' > ${WRKSRC}/${PORTNAME}.py
-	@${ECHO_CMD} 'import ${PORTNAME}.${PORTNAME}' >> ${WRKSRC}/${PORTNAME}.py
+	@${MV} ${WRKSRC}/singularity/data ${WRKSRC}/
 
 post-install:
-	(cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
-	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}.py ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	@${MKDIR} ${STAGEDIR}${DATADIR}/data
+	(cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/data)
+	${INSTALL_DATA} ${WRKSRC}/singularity.desktop ${STAGEDIR}${PREFIX}/share/applications
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 

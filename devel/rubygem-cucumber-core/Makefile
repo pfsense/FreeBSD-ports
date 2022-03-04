@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cucumber-core
-PORTVERSION=	3.2.1
+PORTVERSION=	10.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +11,9 @@ COMMENT=	Core library for the Cucumber BDD app
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-cucumber-tag_expressions>=1.1.0:devel/rubygem-cucumber-tag_expressions \
-		rubygem-gherkin>=5.0:textproc/rubygem-gherkin
+RUN_DEPENDS=	rubygem-cucumber-gherkin>=22.0.0<23:textproc/rubygem-cucumber-gherkin \
+		rubygem-cucumber-messages>=17.1.1<18:devel/rubygem-cucumber-messages \
+		rubygem-cucumber-tag-expressions>=4.0.2<5:devel/rubygem-cucumber-tag-expressions
 
 USES=		gem
 USE_RUBY=	yes

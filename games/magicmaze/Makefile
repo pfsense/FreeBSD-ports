@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	magicmaze
 DISTVERSION=	1_4_3_6
@@ -14,9 +13,12 @@ LICENSE=	GPLv2+ RUBY
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING_GPL.txt
 
+DEPRECATED=	Depends on expired devel/sdl_sge
+EXPIRATION_DATE=2021-12-31
+
 RUN_DEPENDS=	ruby${RUBY_SUFFIX}-sdl>=0:devel/ruby-sdl
 
-USES=		shebangfix
+USES=		sdl shebangfix
 SHEBANG_FILES=	mm.rb testmm.rb
 USE_SDL=	sdl image mixer
 USE_RUBY=	yes

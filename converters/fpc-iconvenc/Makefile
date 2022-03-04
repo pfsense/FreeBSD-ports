@@ -1,6 +1,3 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	converters lang
 PKGNAMESUFFIX=	-iconvenc
 

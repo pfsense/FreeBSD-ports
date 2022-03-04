@@ -1,8 +1,7 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	WWW-Search
-PORTVERSION=	2.518
+PORTVERSION=	2.519
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

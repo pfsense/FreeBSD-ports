@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gobby
 PORTVERSION=	0.4.13
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	editors
 MASTER_SITES=	http://releases.0x539.de/gobby/
 
@@ -20,10 +18,10 @@ OPTIONS_DEFINE=	GTKSPELL NLS
 GTKSPELL_DESC=	Enable GtkSpell support
 
 USE_GNOME=	gtksourceview2 intltool
-USES=		compiler:c++11-lang gmake pkgconfig pathfix
+USES=		compiler:c++11-lang cpe gmake gnome pathfix pkgconfig
+CPE_VENDOR=	${PORTNAME}_project
 USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.options.mk>
 
@@ -38,7 +36,8 @@ CONFIGURE_ARGS+=--without-gtkspell
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 CONFIGURE_ARGS+=	--enable-nls
-USES+=		gettext
+USES+=		cpe gettext
+CPE_VENDOR=	${PORTNAME}_project
 PLIST_SUB+=	NLS=""
 .else
 CONFIGURE_ARGS+=	--disable-nls

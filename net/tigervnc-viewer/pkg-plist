@@ -16,9 +16,11 @@ share/icons/hicolor/scalable/apps/tigervnc.svg
 %%NLS%%share/locale/fi/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/fur/LC_MESSAGES/tigervnc.mo
+%%NLS%%share/locale/he/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/hu/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/id/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/it/LC_MESSAGES/tigervnc.mo
+%%NLS%%share/locale/ko/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/tigervnc.mo
@@ -30,5 +32,6 @@ share/icons/hicolor/scalable/apps/tigervnc.svg
 %%NLS%%share/locale/uk/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/vi/LC_MESSAGES/tigervnc.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/tigervnc.mo
+%%NLS%%share/locale/zh_TW/LC_MESSAGES/tigervnc.mo
 %%PORTDOCS%%%%DOCSDIR%%/%%TIGERVNC_COMPONENT%%LICENCE.TXT
 %%PORTDOCS%%%%DOCSDIR%%/%%TIGERVNC_COMPONENT%%README.rst

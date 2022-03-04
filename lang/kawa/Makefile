@@ -1,13 +1,11 @@
 # Created by: Zach Garner <zach@neurosoft.org>
-# $FreeBSD$
 
 PORTNAME=	kawa
-PORTVERSION=	3.0
-PORTREVISION=	1
+PORTVERSION=	3.1.1
 CATEGORIES=	lang scheme java
 MASTER_SITES=	GNU
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Java-based Scheme implementation
 
 LICENSE=	MIT

@@ -3,8 +3,8 @@
  * snort_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -140,7 +140,7 @@ if ($_POST['apply']) {
 	snort_generate_conf($a_nat[$id]);
 
 	// If Snort is already running, must restart to change IP REP preprocessor configuration.
-	if (snort_is_running($if_real)) {
+	if (snort_is_running($a_nat[$id]['uuid'])) {
 		syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
 		snort_stop($a_nat[$id], $if_real);
 		snort_start($a_nat[$id], $if_real, TRUE);
@@ -183,7 +183,7 @@ if ($_POST['save']) {
 		snort_generate_conf($a_nat[$id]);
 
 		// If Snort is already running, must restart to change IP REP preprocessor configuration.
-		if (snort_is_running($if_real)) {
+		if (snort_is_running($a_nat[$id]['uuid'])) {
 			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
 			snort_stop($a_nat[$id], $if_real);
 			snort_start($a_nat[$id], $if_real, TRUE);
@@ -209,7 +209,9 @@ if ($_POST['save']) {
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
-}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("IP Reputation Preprocessor"), gettext("{$if_friendly}"));
+}
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - IP Reputation");
 include("head.inc");
 
 /* Display Alert message */
@@ -217,6 +219,9 @@ if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+// Finished with config array reference, so release it
+unset($a_nat);
 
 $tab_array = array();
 $tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
@@ -238,7 +243,6 @@ $tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_r
 $tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("IP Rep"), true, "/snort/snort_ip_reputation.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
 display_top_tabs($tab_array, true);
@@ -273,68 +277,62 @@ if (!is_array($pconfig['wlist_files']['item'])) {
 	$pconfig['wlist_files']['item'] = array();
 }
 
-if ($g['platform'] == "nanobsd") {
-	// Print info box to alert user IP Rep is not supported on NanoBSD installs
-	print_info_box(gettext("The IP REPUTATION feature is not supported on NanoBSD instllations!"), "danger");
-}
-else {
-	$section = new Form_Section('IP Reputation Preprocessor Configuration');
-	$section->addInput(new Form_Checkbox(
-		'reputation_preproc',
-		'Enable IP Reputation',
-		'Use IP Reputation Lists on this interface.  Default is Not Checked.',
-		$pconfig['reputation_preproc'] == 'on' ? true:false,
-		'on'
-	));
-	$section->addInput(new Form_Input(
-		'iprep_memcap',
-		'Memory Cap',
-		'text',
-		$pconfig['iprep_memcap']
-	))->setHelp('Maximum memory in megabytes (MB) supported for IP Reputation Lists. Default is 500.  The minimum value is 1 MB and the maximum is 4095 MB.  Enter an integer value between 1 and 4095.');
-	$group = new Form_Group('Scan Local');
-	$group->add(new Form_Checkbox(
-		'iprep_scan_local',
-		'',
-		'Scan RFC 1918 addresses on this interface.  Default is Not Checked.',
-		$pconfig['iprep_scan_local'] == 'on' ? true:false,
-		'on'
-	))->setHelp('When checked, Snort will inspect addresses in the 10/8, 172.16/12 and 192.168/16 ranges defined in RFC 1918.  If these address ranges are used in your internal network, and this instance is on an internal interface, this option should usually be enabled (checked).');
-	$section->add($group);
-	$section->addInput(new Form_Select(
-		'iprep_nested_ip',
-		'Nested IP',
-		$pconfig['iprep_nested_ip'],
-		array( 'inner' => 'Inner', 'outer' => 'Outer', 'both' => 'Both')
-	))->setHelp('Specify which IP address to use for whitelist/blacklist matching when there is IP encapsulation. Default is Inner.');
-	$section->addInput(new Form_Select(
-		'iprep_priority',
-		'Priority',
-		$pconfig['iprep_priority'],
-		array( 'blacklist' => 'Blacklist', 'whitelist' => 'Whitelist')
-	))->setHelp('Specify which list has priority when source/destination is on blacklist while destination/source is on whitelist. Default is Whitelist.');
-	$section->addInput(new Form_Select(
-		'iprep_white',
-		'Whitelist Meaning',
-		$pconfig['iprep_white'],
-		array( 'unblack' => 'Unblack', 'trust' => 'Trust')
-	))->setHelp('Specify the meaning of whitelist. "Unblack" unblacks blacklisted IP addresses and routes them for further inspection.  "Trust" means the packet bypasses all further Snort detection.  Default is "Unblack".');
+$section = new Form_Section('IP Reputation Preprocessor Configuration');
+$section->addInput(new Form_Checkbox(
+	'reputation_preproc',
+	'Enable IP Reputation',
+	'Use IP Reputation Lists on this interface.  Default is Not Checked.',
+	$pconfig['reputation_preproc'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'iprep_memcap',
+	'Memory Cap',
+	'text',
+	$pconfig['iprep_memcap']
+))->setHelp('Maximum memory in megabytes (MB) supported for IP Reputation Lists. Default is 500.  The minimum value is 1 MB and the maximum is 4095 MB.  Enter an integer value between 1 and 4095.');
+$group = new Form_Group('Scan Local');
+$group->add(new Form_Checkbox(
+	'iprep_scan_local',
+	'',
+	'Scan RFC 1918 addresses on this interface.  Default is Not Checked.',
+	$pconfig['iprep_scan_local'] == 'on' ? true:false,
+	'on'
+))->setHelp('When checked, Snort will inspect addresses in the 10/8, 172.16/12 and 192.168/16 ranges defined in RFC 1918.  If these address ranges are used in your internal network, and this instance is on an internal interface, this option should usually be enabled (checked).');
+$section->add($group);
+$section->addInput(new Form_Select(
+	'iprep_nested_ip',
+	'Nested IP',
+	$pconfig['iprep_nested_ip'],
+	array( 'inner' => 'Inner', 'outer' => 'Outer', 'both' => 'Both')
+))->setHelp('Specify which IP address to use for whitelist/blacklist matching when there is IP encapsulation. Default is Inner.');
+$section->addInput(new Form_Select(
+	'iprep_priority',
+	'Priority',
+	$pconfig['iprep_priority'],
+	array( 'blacklist' => 'Blacklist', 'whitelist' => 'Whitelist')
+))->setHelp('Specify which list has priority when source/destination is on blacklist while destination/source is on whitelist. Default is Whitelist.');
+$section->addInput(new Form_Select(
+	'iprep_white',
+	'Whitelist Meaning',
+	$pconfig['iprep_white'],
+	array( 'unblack' => 'Unblack', 'trust' => 'Trust')
+))->setHelp('Specify the meaning of whitelist. "Unblack" unblacks blacklisted IP addresses and routes them for further inspection.  "Trust" means the packet bypasses all further Snort detection.  Default is "Unblack".');
 
-	$btnsave = new Form_Button(
-		'save',
-		'Save',
-		null,
-		'fa-save'
-	);
-	$btnsave->addClass('btn-primary')->addClass('btn-default');
-	$btnsave->setAttribute('title', gettext('Save configuration and live-reload the running Snort configuration'));
-	$section->addInput(new Form_StaticText(
-		null,
-		$btnsave
-	));
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default');
+$btnsave->setAttribute('title', gettext('Save configuration and live-reload the running Snort configuration'));
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave
+));
 
-	print($section);
-} 
+print($section);
 
 ?>
 
@@ -445,7 +443,6 @@ else {
 </div>
 </form>
 
-<?php if ($g['platform'] != "nanobsd") : ?>
 <script type="text/javascript">
 //<![CDATA[
 events.push(function(){
@@ -544,7 +541,6 @@ events.push(function(){
 
 //]]>
 </script>
-<?php endif; ?>
 
 <?php include("foot.inc"); ?>
 

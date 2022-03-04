@@ -1,11 +1,10 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qudos
 PORTVERSION=	0.40.1
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	games
-MASTER_SITES=	http://www.bfeared.com/library/quake/archive/quakedev/qudos/quake2/engines/QuDos/
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 DISTNAME=	QuDos-${PORTVERSION}-src
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		QuDos-${PORTVERSION}.pk3
@@ -63,12 +62,14 @@ PLIST_SUB+=	${mod}="@comment "
 .endfor
 
 .if ${PORT_OPTIONS:MGLX} || ${PORT_OPTIONS:MSDLGL}
-USES+=		jpeg
+USES+=		gl jpeg xorg
 USE_GL=		glu
+USE_XORG=	xxf86vm
 LIB_DEPENDS+=	libpng.so:graphics/png
 .endif
 
 .if ${PORT_OPTIONS:MSDL} || ${PORT_OPTIONS:MSDLGL}
+USES+=		sdl
 USE_SDL=	sdl
 .endif
 
@@ -174,9 +175,6 @@ post-patch:
 # Resolve name collision with jpeg-8
 	@${REINPLACE_CMD} -e 's|jpeg_mem_src|local_jpeg_mem_src|' \
 		${WRKSRC}/src/ref_gl/gl_image.c
-# Remove controversial options unsupported by modern compilers (e.g. Clang)
-	@${REINPLACE_CMD} -e 's|-falign-loops=2 -falign-jumps=2 ||' \
-		${WRKSRC}/src/ref_gl/Makefile ${WRKSRC}/Makefile
 
 post-build:
 .for bin in ${Q2BIN}

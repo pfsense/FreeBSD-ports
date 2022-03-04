@@ -1,12 +1,11 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	PHPCPD
 DISTVERSION=	2.0.0
 CATEGORIES=	devel pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}SebastianBergmann_
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Copy/Paste Detector (CPD) for PHP code
 
 LICENSE=	BSD3CLAUSE
@@ -20,7 +19,6 @@ RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}ezc_ConsoleTools>=1.6.1:devel/pear-ezc_Console
 		${PEAR_PKGNAMEPREFIX}PHP_Timer>=1.0.9:devel/pear-PHP_Timer@${PHP_FLAVOR}
 
 USES=	php pear:env
-PEAR_CHANNEL=	phpunit
 USE_GITHUB=	yes
 GH_ACCOUNT=	sebastianbergmann
 GH_PROJECT=	${PORTNAME:tl}

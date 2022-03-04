@@ -1,8 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	findlib
-PORTVERSION=	1.7.1
+PORTVERSION=	1.7.3
 CATEGORIES=	devel
 MASTER_SITES=	http://download.camlcity.org/download/
 PKGNAMEPREFIX=	ocaml-
@@ -28,13 +27,23 @@ MAKE_JOBS_UNSAFE=	yes
 DOCSDIR=	${PREFIX}/share/doc/ocaml/${PORTNAME}
 PORTDOCS=	*
 
+# Num library is not part of OCaml core since v4.06
+.if exists(${LOCALBASE}/lib/ocaml/num.cmi)
+PLIST_SUB+=	NUM=""
+.else
+PLIST_SUB+=	NUM="@comment "
+.endif
+
 OPTIONS_DEFINE=	TOOLBOX DOCS
 OPTIONS_DEFAULT=TOOLBOX
 OPTIONS_SUB=	yes
+
 TOOLBOX_DESC=	Include toolbox interface (requires OCaml with TK)
 TOOLBOX_CONFIGURE_ON=	-with-toolbox
 TOOLBOX_RUN_DEPENDS=	labltk:x11-toolkits/ocaml-labltk
 TOOLBOX_BUILD_DEPENDS=	${TOOLBOX_RUN_DEPENDS}
+
+.include <bsd.port.pre.mk>
 
 post-install:
 	cd ${STAGEDIR}${PREFIX} && \
@@ -42,6 +51,10 @@ post-install:
 	    ${OCAML_SITELIBDIR}/findlib/findlib.cmxs \
 	    ${OCAML_SITELIBDIR}/findlib/findlib_dynload.cmxs \
 	    ${OCAML_SITELIBDIR}/findlib/findlib_top.cmxs
+# Spacetime profiling is only available for native code on 64-bit targets
+.if ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpcspe
+	@${REINPLACE_CMD} -e '/raw_spacetime/d' ${TMPPLIST}
+.endif
 
 post-install-TOOLBOX-on:
 	${CHMOD} 755 ${STAGEDIR}${PREFIX}/bin/ocamlfind \
@@ -52,4 +65,4 @@ post-install-DOCS-on:
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR} \
 	    "! -regex .*ref-man.*"
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

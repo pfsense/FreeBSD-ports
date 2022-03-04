@@ -1,9 +1,9 @@
 #!/bin/sh
-# $FreeBSD$
 #
 # MAINTAINER: portmgr@FreeBSD.org
 
 set -e
+set -o pipefail
 
 . "${dp_SCRIPTSDIR}/functions.sh"
 
@@ -32,6 +32,7 @@ for native_category in ${dp_CATEGORIES}; do
 		dns)		c="Network"				;;
 		elisp)		c="Development"				;;
 		editors)	c="Utility"				;;
+		education)	c="Education"				;;
 		emulators)	c="System Emulator"			;;
 		finance)	c="Office Finance"			;;
 		ftp)		c="Network FileTransfer"		;;
@@ -55,8 +56,8 @@ for native_category in ${dp_CATEGORIES}; do
 		net-im)		c="Network InstantMessaging"		;;
 		net-mgmt)	c="Network"				;;
 		net-p2p)	c="Network P2P"				;;
+		net-vpn)	c="Network VPN"				;;
 		news)		c="Network News"			;;
-		palm)		c="Office PDA"				;;
 		parallel)	c="ParallelComputing"			;;
 		pear)		c="Development WebDevelopment"		;;
 		perl5)		c="Development"				;;

@@ -218,8 +218,8 @@ include/ptex/PtexWriter.h
 %%PORTDOCS%%%%DOCSDIR%%/doc.png
 %%PORTDOCS%%%%DOCSDIR%%/doc_2CMakeLists_8txt.html
 %%PORTDOCS%%%%DOCSDIR%%/doxygen.css
-%%PORTDOCS%%%%DOCSDIR%%/doxygen.png
 %%PORTDOCS%%%%DOCSDIR%%/doxygen__log_8txt.html
+%%PORTDOCS%%%%DOCSDIR%%/doxygen.svg
 %%PORTDOCS%%%%DOCSDIR%%/dynsections.js
 %%PORTDOCS%%%%DOCSDIR%%/files.html
 %%PORTDOCS%%%%DOCSDIR%%/filterfootprint.html

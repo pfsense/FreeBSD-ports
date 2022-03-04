@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rjson
 PORTVERSION=	0.2.20
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	converters
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

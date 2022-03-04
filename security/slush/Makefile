@@ -1,5 +1,4 @@
 # Created by: shipley@dis.org
-# $FreeBSD$
 
 PORTNAME=	slush
 PORTVERSION=	0.1.1
@@ -12,6 +11,9 @@ COMMENT=	Telnet-like application which uses a secure SSL channel
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT.GPL
+
+DEPRECATED=	Obsolete, listed as alpha quality, last release around 2000 and dead upstream
+EXPIRATION_DATE=2022-03-31
 
 GNU_CONFIGURE=	yes
 USES=		ssl

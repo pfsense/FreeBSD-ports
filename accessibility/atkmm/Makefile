@@ -1,9 +1,7 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	atkmm
-PORTVERSION=	2.24.2
-PORTREVISION=	3
+PORTVERSION=	2.28.0
 CATEGORIES=	accessibility gnome
 MASTER_SITES=	GNOME
 
@@ -15,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c++11-lang gmake localbase libtool pathfix \
+USES=		compiler:c++11-lang gmake gnome localbase libtool pathfix \
 		pkgconfig tar:xz
 USE_GNOME=	atk glibmm
 USE_LDCONFIG=	yes

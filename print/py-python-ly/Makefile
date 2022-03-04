@@ -1,8 +1,7 @@
 # Created by: martin.dieringer@gmx.de
-# $FreeBSD$
 
 PORTNAME=	python-ly
-PORTVERSION=	0.9.5
+PORTVERSION=	0.9.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	print python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +11,11 @@ COMMENT=	Python package to manipulate LilyPond files
 
 LICENSE=	GPLv3
 
+USES=		python:3.6+
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	wbsoft
 
-USES=		python
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

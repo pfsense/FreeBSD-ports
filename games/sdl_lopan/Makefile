@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sdl_lopan
 PORTVERSION=	10
@@ -17,7 +16,7 @@ COMMENT=	Mahjong game remake
 
 WRKSRC=		${WRKDIR}/sdllopan-${PORTVERSION}
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl image mixer
 ALL_TARGET=	# empty
 

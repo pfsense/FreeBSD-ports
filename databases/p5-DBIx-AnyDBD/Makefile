@@ -1,9 +1,7 @@
 # Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
 
 PORTNAME=	DBIx-AnyDBD
-PORTVERSION=	2.01
-PORTREVISION=	1
+PORTVERSION=	2.03
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

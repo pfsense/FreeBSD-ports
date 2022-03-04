@@ -1,17 +1,18 @@
 # Created by: Herve Quiroz <herve.quiroz@esil.univ-mrs.fr>
-# $FreeBSD$
 
 PORTNAME=	avalon-framework
 PORTVERSION=	4.2.0
 PORTREVISION=	2
 CATEGORIES=	devel java
-MASTER_SITES=	APACHE/avalon/${PORTNAME}/binaries
+MASTER_SITES=	https://archive.apache.org/dist/avalon/${PORTNAME}/binaries/
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Apache Avalon core framework for component programming
 
+DEPRECATED=	Abandoned by upstream in 2010
+EXPIRATION_DATE=2022-03-31
+
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

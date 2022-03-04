@@ -1,16 +1,16 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	PHP_Archive
-PORTVERSION=	0.12.0
+PORTVERSION=	0.14.0
 CATEGORIES=	archivers pear
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Create and Use PHP Archive files
 
 LICENSE=	PHP301
 
-NO_ARCH=	yes
 USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-image
-PORTVERSION=	2.10.0
+PORTVERSION=	2.12.0
 PORTREVISION=	2
 CATEGORIES=	math
 

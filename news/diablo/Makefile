@@ -1,5 +1,4 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	diablo
 PORTVERSION=	5.1
@@ -8,7 +7,7 @@ CATEGORIES=	news
 MASTER_SITES=	http://www.openusenet.org/diablo/download/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-REL
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Comprehensive newsfeeding and newsreading software package
 
 LICENSE=	BSD3CLAUSE
@@ -21,6 +20,9 @@ OPTIONS_DEFINE=	DES DOCS
 DES_DESC=	DES encryption support
 
 USES=		tar:tgz
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 post-patch:
 	@${CP} ${FILESDIR}/diablo.in ${WRKDIR}/diablo

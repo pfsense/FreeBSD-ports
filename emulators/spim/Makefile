@@ -1,5 +1,4 @@
 # Created by: David O'Brien (obrien@cs.ucdavis.edu)
-# $FreeBSD$
 
 PORTNAME=	spim
 PORTVERSION=	8.0
@@ -24,7 +23,7 @@ OPTIONS_DEFINE=	GUI DOCS
 OPTIONS_DEFAULT=GUI
 
 GUI_USE=	XORG=x11,xaw
-GUI_USES=	imake:env
+GUI_USES=	imake:env xorg
 GUI_PLIST_FILES=bin/xspim man/man1/xspim.1.gz
 
 post-build-GUI-on:

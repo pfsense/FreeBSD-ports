@@ -1,9 +1,8 @@
 # Created by: Oleg Alexeenkov
-# $FreeBSD$
 
 PORTNAME=	astromenace
-PORTVERSION=	1.4.0
-PORTREVISION=	1
+PORTVERSION=	1.4.1
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -16,6 +15,8 @@ LICENSE_FILE_GPLv3+ =	${WRKSRC}/licenses/GPL-3.0.txt
 LICENSE_FILE_CC-BY-SA-4.0=${WRKSRC}/licenses/CC-BY-SA-4.0.txt
 LICENSE_FILE_OFL11=	${WRKSRC}/licenses/OFL-1.1.txt
 
+BROKEN_powerpc64=	fails to build: gamedata/models/models.pack: vw_CreateVFS(): VFS compilation process aborted!
+
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis \
 		libvorbisfile.so:audio/libvorbis \
@@ -24,12 +25,12 @@ LIB_DEPENDS=	libogg.so:audio/libogg \
 USE_GITHUB=	yes
 GH_ACCOUNT=	viewizard
 
-USES=		cmake:insource compiler:c++11-lib dos2unix gl openal:al,alut
+USES=		cmake compiler:c++11-lib dos2unix gl openal:al,alut sdl
 DOS2UNIX_FILES=	CMakeLists.txt src/config/config.cpp
 USE_GL=		gl glu
 USE_SDL=	sdl2
 CMAKE_ARGS=	-DDATADIR="${DATADIR}"
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 PORTDATA=	*
 PORTDOCS=	*
@@ -37,9 +38,9 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/gamedata.vfs ${STAGEDIR}${DATADIR}/
+	${INSTALL_DATA} ${BUILD_WRKSRC}/gamedata.vfs ${STAGEDIR}${DATADIR}/
 .for s in 64 128
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/
 	${INSTALL_DATA} ${WRKSRC}/share/${PORTNAME}_${s}.png \

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	ghostscript
 PORTVERSION=	9.06
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	print
 MASTER_SITES=	http://downloads.ghostscript.com/public/:gs_srcs \
 		SF/ghostscript/GPL%20Ghostscript/${PORTVERSION}:gs_srcs \
@@ -28,14 +26,15 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 RUN_DEPENDS=	${LOCALBASE}/share/${PORTNAME}/fonts/a010013l.pfb:print/gsfonts
 
 CONFLICTS_INSTALL= \
-		gambc-[0-9]* \
-		ghostscript[789]-[0-9]* \
-		ghostscript[789]-nox11-[0-9]* \
-		ghostscript9-agpl-[0-9]* \
-		ghostscript9-agpl-nox11-[0-9]*
+		gambc \
+		ghostscript[789] \
+		ghostscript[789]-nox11 \
+		ghostscript9-agpl \
+		ghostscript9-agpl-nox11
 
-USES=		autoreconf gmake jpeg pkgconfig:build tar:bzip2
+USES=		autoreconf cpe gmake jpeg pkgconfig:build tar:bzip2
 USE_LDCONFIG=	yes
+CPE_VENDOR=	artifex
 EXTRACT_AFTER_ARGS=	${EXCLUDE_DIRS:S/^/--exclude /}
 DATADIR=	${PREFIX}/share/${PORTNAME}/${PORTVERSION}
 GNU_CONFIGURE=	yes

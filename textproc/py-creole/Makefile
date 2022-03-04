@@ -1,8 +1,7 @@
 # Created by: Stanislav Svirid <count@211.ru>
-# $FreeBSD$
 
 PORTNAME=	creole
-PORTVERSION=	1.3.1
+PORTVERSION=	1.4.9
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/docutils/__init__.py:textproc/py-docutils@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.pre.mk>

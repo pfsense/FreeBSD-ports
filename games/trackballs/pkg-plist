@@ -19,6 +19,13 @@ share/icons/hicolor/scalable/apps/trackballs.svg
 %%DATADIR%%/icons/trackballs-128x128.png
 %%DATADIR%%/images/acid.png
 %%DATADIR%%/images/blank.png
+%%DATADIR%%/images/cell_acid.png
+%%DATADIR%%/images/cell_ice.png
+%%DATADIR%%/images/cell_kill.png
+%%DATADIR%%/images/cell_multi.png
+%%DATADIR%%/images/cell_sand.png
+%%DATADIR%%/images/cell_track.png
+%%DATADIR%%/images/cell_trampoline.png
 %%DATADIR%%/images/displayHighscoreBackground.jpg
 %%DATADIR%%/images/dizzy.png
 %%DATADIR%%/images/glitter.png
@@ -47,6 +54,7 @@ share/icons/hicolor/scalable/apps/trackballs.svg
 %%DATADIR%%/images/texture4.png
 %%DATADIR%%/images/track.png
 %%DATADIR%%/images/trackballs-32x32.png
+%%DATADIR%%/images/transparent.png
 %%DATADIR%%/images/water.png
 %%DATADIR%%/images/wings.png
 %%DATADIR%%/levels/Shop1.map
@@ -240,7 +248,6 @@ share/icons/hicolor/scalable/apps/trackballs.svg
 %%DATADIR%%/music/c64revival.ogg
 %%DATADIR%%/music/crazy.ogg
 %%DATADIR%%/music/eurovision.ogg
-%%DATADIR%%/music/fml.html
 %%DATADIR%%/music/tb_design.ogg
 %%DATADIR%%/music/tb_genesis.ogg
 %%DATADIR%%/music/tb_hrluebke.ogg

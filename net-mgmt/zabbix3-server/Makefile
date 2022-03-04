@@ -1,11 +1,10 @@
 # Created by: Pakhom Golynga <pg@pakhom.spb.ru>
-# $FreeBSD$
 
 PORTNAME=	zabbix3
-PORTVERSION=	3.0.26
+PORTVERSION=	3.0.32
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
-MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
+MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${PORTVERSION:R}/
 PKGNAMESUFFIX?=	-server
 DISTNAME=	zabbix-${PORTVERSION}
 
@@ -15,12 +14,13 @@ COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-24-9]${PKGNAMESUFFIX}
+CONFLICTS_INSTALL=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-24-9]${PKGNAMESUFFIX}
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
 .if ${ZABBIX_BUILD} != "frontend" # frontend only needs the version/distribution settings
 .if ${ZABBIX_BUILD} != "agent"
+CONFIGURE_ARGS+=	--cache-file=${WRKSRC}/config.cache
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}
 .else
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}d
@@ -82,7 +82,7 @@ OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 OPTIONS_SINGLE_SSL=	OPENSSL GNUTLS
 
 MYSQL_CONFIGURE_WITH=	mysql
-MYSQL_USES+=		mysql
+MYSQL_USES+=		compiler:c11 mysql
 
 PGSQL_CONFIGURE_WITH=	postgresql
 PGSQL_USES+=		pgsql
@@ -125,7 +125,7 @@ IPV6_CONFIGURE_ENABLE=	ipv6
 NMAP_RUN_DEPENDS=	nmap:security/nmap \
 			sudo:security/sudo
 
-LIBXML2_CONFIGURE_WITH=	libxml2
+LIBXML2_CONFIGURE_WITH=	libxml2=${LOCALBASE}
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
 OPENSSL_CONFIGURE_WITH=	openssl
@@ -186,6 +186,9 @@ post-patch:
 		${WRKSRC}/src/zabbix_${ZABBIX_BUILD}/Makefile.in
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.orig' \) \
 		-exec ${RM} {} +
+
+pre-configure:
+	@echo "ac_cv_env_PKG_CONFIG_set=${LOCALBASE}/bin/pkgconf" > ${WRKSRC}/config.cache
 
 post-install:
 

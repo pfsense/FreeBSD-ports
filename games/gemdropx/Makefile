@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	gemdropx
 PORTVERSION=	0.9
@@ -17,7 +16,7 @@ COMMENT=	Interesting one-player puzzle game for X (SDL)
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	image mixer sdl
 ALL_TARGET=	${PORTNAME}
 

@@ -1,8 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	mp3guessenc
-PORTVERSION=	0.27.4
+PORTVERSION=	0.27.5
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:C/\.[0-9]*$//}
 

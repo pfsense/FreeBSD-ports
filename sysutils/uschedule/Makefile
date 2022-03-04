@@ -1,5 +1,4 @@
 # Created by: Thomas Seck <tmseck@netcologne.de>
-# $FreeBSD$
 
 PORTNAME=	uschedule
 PORTVERSION=	0.7.1
@@ -16,6 +15,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/multilog:sysutils/daemontools
 BROKEN_aarch64=		fails to build: regparm is not valid on this platform
 BROKEN_armv6=		fails to build: regparm is not valid on this platform
 BROKEN_armv7=		fails to build: regparm is not valid on this platform
+BROKEN_riscv64=		fails to build: regparm is not valid on this platform
 
 WRKSRC=		${WRKDIR}/admin/${DISTNAME}
 
@@ -30,6 +30,12 @@ PLIST_FILES=	${bin:S,^,bin/,} ${bin:S,^,man/man1/,:S,$,.1.gz,} \
 		sbin/uscheduled
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+USES+=		compiler:gcc-c++11-lib
+.endif
 
 pre-build:
 	${ECHO_CMD} "${CC}" > ${WRKSRC}/src/conf-cc

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	apt-cacher-ng
 PORTVERSION=	3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	DEBIAN_POOL/apt-cacher-ng
 DISTFILES=	${PORTNAME}_${PORTVERSION}.orig${EXTRACT_SUFX}
@@ -15,7 +13,9 @@ LICENSE_NAME=	Eduard Bloch license
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:c++11-lang cmake tar:xz
+USES=		compiler:c++11-lang cmake cpe tar:xz
+CPE_VENDOR=	${PORTNAME}_project
+
 USE_RC_SUBR=	apt_cacher_ng
 
 CMAKE_ARGS=	-DLIBDIR:PATH=${DATADIR} \

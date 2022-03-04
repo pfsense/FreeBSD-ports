@@ -1,6 +1,5 @@
 bin/ksnakeduel
-etc/xdg/ksnakeduel.categories
-etc/xdg/ksnakeduel.knsrc
+share/qlogging-categories5/ksnakeduel.categories
 share/applications/org.kde.ksnakeduel.desktop
 share/config.kcfg/ksnakeduel.kcfg
 share/icons/hicolor/128x128/apps/ksnakeduel.png
@@ -16,6 +15,7 @@ share/icons/hicolor/64x64/apps/ksnakeduel.png
 %%DATADIR%%/themes/neon.desktop
 %%DATADIR%%/themes/neon.png
 %%DATADIR%%/themes/neon.svg
+share/knsrcfiles/ksnakeduel.knsrc
 share/locale/bs/LC_MESSAGES/ksnakeduel.mo
 share/locale/ca/LC_MESSAGES/ksnakeduel.mo
 share/locale/ca@valencia/LC_MESSAGES/ksnakeduel.mo
@@ -42,6 +42,7 @@ share/locale/km/LC_MESSAGES/ksnakeduel.mo
 share/locale/ko/LC_MESSAGES/ksnakeduel.mo
 share/locale/lt/LC_MESSAGES/ksnakeduel.mo
 share/locale/lv/LC_MESSAGES/ksnakeduel.mo
+share/locale/ml/LC_MESSAGES/ksnakeduel.mo
 share/locale/mr/LC_MESSAGES/ksnakeduel.mo
 share/locale/nb/LC_MESSAGES/ksnakeduel.mo
 share/locale/nds/LC_MESSAGES/ksnakeduel.mo
@@ -54,6 +55,7 @@ share/locale/ro/LC_MESSAGES/ksnakeduel.mo
 share/locale/ru/LC_MESSAGES/ksnakeduel.mo
 share/locale/sk/LC_MESSAGES/ksnakeduel.mo
 share/locale/sl/LC_MESSAGES/ksnakeduel.mo
+share/locale/sq/LC_MESSAGES/ksnakeduel.mo
 share/locale/sr/LC_MESSAGES/ksnakeduel.mo
 share/locale/sv/LC_MESSAGES/ksnakeduel.mo
 share/locale/tr/LC_MESSAGES/ksnakeduel.mo

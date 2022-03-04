@@ -1,23 +1,23 @@
 # Created by: David Naylor <dbn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	typed-ast
-PORTVERSION=	1.3.1
+PORTVERSION=	1.5.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	typed_ast-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Fast version of Python's ast module with support for PEP484 typed comments #'
+COMMENT=	Fork of Python ast modules with type comment support
 
 LICENSE=	APACHE20 PSFL
 LICENSE_COMB=	multi
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE
 
-USES=		python:3.3+
-USE_PYTHON=	autoplist distutils
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/typed_ast/*.so
+	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

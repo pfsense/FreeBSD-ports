@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	psycopg2cffi
-DISTVERSION=	2.8.1
-PORTREVISION=	1
+DISTVERSION=	2.9.0
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>0:devel/py-cffi@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>0:devel/py-cffi@${PY_FLAVOR}
 
-USES=		pgsql python
+USES=		pgsql python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 post-install:

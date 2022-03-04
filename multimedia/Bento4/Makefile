@@ -1,26 +1,25 @@
-# $FreeBSD$
-
 PORTNAME=	Bento4
-PORTVERSION=	1.5.1
-PORTREVISION=	1
+PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=v
-DISTVERSIONSUFFIX=-628
+DISTVERSIONSUFFIX=-639
 CATEGORIES=	multimedia devel
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Full-featured MP4 format and MPEG DASH library and tools
 
 LICENSE=	GPLv2
 
 BROKEN_aarch64=		fails to compile: Ap4AesBlockCipher.cpp:93:4: AP4_PLATFORM_BYTE_ORDER is not set
+BROKEN_riscv64=		fails to compile: Ap4AesBlockCipher.cpp:93:4: AP4_PLATFORM_BYTE_ORDER is not set
 
 RUN_DEPENDS=	bash:shells/bash
-USES=		cmake:noninja python shebangfix
-SHEBANG_GLOB=	*.sh *.py
-SHEBANG_FILES=	Source/Python/*/*
 
+USES=		cmake:noninja cpe python shebangfix
+CPE_VENDOR=	axiosys
 USE_GITHUB=	yes
 GH_ACCOUNT=	axiomatic-systems
+SHEBANG_FILES=	Source/Python/*/*
+SHEBANG_GLOB=	*.sh *.py
 
 CMAKE_BUILD_TYPE=	Release
 INSTALL_TARGET=		do-install

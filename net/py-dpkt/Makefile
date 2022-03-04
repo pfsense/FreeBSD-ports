@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	dpkt
-PORTVERSION=	1.9.1
+PORTVERSION=	1.9.6
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +10,8 @@ COMMENT=	Python fast, simple packet creation / parsing module
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
-USE_PYTHON=	distutils autoplist pythonprefix
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils pythonprefix
 
 OPTIONS_DEFINE=	DOCS
 

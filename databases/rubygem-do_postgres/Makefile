@@ -1,9 +1,8 @@
 # Created by: Espen Volden aka voldern <voldern@hoeggen.net>
-# $FreeBSD$
 
 PORTNAME=	do_postgres
 PORTVERSION=	0.10.17
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 

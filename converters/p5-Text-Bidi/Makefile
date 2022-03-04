@@ -1,8 +1,7 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Text-Bidi
-PORTVERSION=	2.12
+PORTVERSION=	2.15
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,7 +14,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	p5-ExtUtils-PkgConfig>=0:devel/p5-ExtUtils-PkgConfig \
-		swig3.0:devel/swig30
+		swig:devel/swig
 LIB_DEPENDS=	libfribidi.so:converters/fribidi
 
 USES=		perl5

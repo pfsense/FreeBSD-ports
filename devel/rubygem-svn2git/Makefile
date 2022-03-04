@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	svn2git
 PORTVERSION=	2.4.0
 CATEGORIES=	devel rubygems
@@ -10,9 +8,9 @@ COMMENT=	Ruby utilities for exporting SVN repo to git
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	git-subversion>0:devel/git-subversion
+RUN_DEPENDS=	git>0:devel/git
 
-CONFLICTS_INSTALL=	svn2git-[0-9]*
+CONFLICTS_INSTALL=	svn2git
 
 NO_ARCH=	yes
 USE_RUBY=	yes

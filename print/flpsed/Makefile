@@ -1,5 +1,4 @@
 # Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
 
 PORTNAME=	flpsed
 DISTVERSION=	0.7.3
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS+=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		desktop-file-utils ghostscript:x11 gmake
+USES=		desktop-file-utils ghostscript:x11 gmake xorg
 GNU_CONFIGURE=	yes
 USE_XORG=	x11 xcursor xext xfixes xft xinerama xrender
 

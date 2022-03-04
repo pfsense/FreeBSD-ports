@@ -1,10 +1,9 @@
 # Created by: petef
-# $FreeBSD$
 
 PORTNAME=	Net-Traceroute6
 PORTVERSION=	0.03
 PORTREVISION=	2
-CATEGORIES=	net perl5 ipv6
+CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 

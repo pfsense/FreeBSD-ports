@@ -1,15 +1,14 @@
 # Created by: Matthias Andree <mandree@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bogofilter
-PORTREVISION=	4
+PORTREVISION=	2
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-sqlite
 
 MAINTAINER=	mandree@FreeBSD.org
 
 USES=		sqlite
-CONFLICTS_INSTALL=	bogofilter-[0-9]* bogofilter-qdbm-[0-9]* bogofilter-tc-[0-9]* [a-z][a-z]-bogofilter-[0-9]*
+CONFLICTS_INSTALL=	bogofilter bogofilter-lmdb bogofilter-kc bogofilter-tc
 
 CONFIGURE_ARGS=	--with-database=sqlite
 BF_CPPFLAGS=	-I${LOCALBASE}/include

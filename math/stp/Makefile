@@ -1,8 +1,8 @@
 # Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	stp
-DISTVERSION=	2.3.2
+DISTVERSION=	2.3.3
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	math
 
@@ -12,7 +12,8 @@ COMMENT=	Decision Procedure for Bitvectors and Arrays
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		fails to compile: undefined reference to sbrk
+BROKEN_aarch64=		fails to link: missing sbrk
+BROKEN_riscv64=		fails to link: missing sbrk
 
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
 		libminisat.so:math/minisat \
@@ -22,8 +23,5 @@ USES=		bison:build compiler:c++11-lang cmake perl5 python
 USE_GITHUB=	yes
 USE_PERL5=	build
 USE_LDCONFIG=	yes
-
-post-install:
-	@${MV} ${STAGEDIR}${PREFIX}/bin/stp-${PORTVERSION} ${STAGEDIR}${PREFIX}/bin/stp
 
 .include <bsd.port.mk>

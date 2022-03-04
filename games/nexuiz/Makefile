@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nexuiz
 PORTVERSION=	2.5.2
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/NexuizRelease/Nexuiz%20${PORTVERSION} \
 		SF/${PORTNAME}/mappack/nexmappack_r2:mappack
@@ -52,6 +51,7 @@ MAPPACK_DISTFILES=	nexmappack_r2${EXTRACT_SUFX}:mappack
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLIENT}
+USES+=		gl xorg
 USE_GL=		glut
 USE_XORG=	x11 xpm xxf86vm xxf86dga xext
 ALL_TARGET+=	cl-release
@@ -66,6 +66,7 @@ DESKTOP_ENTRIES="Nexuiz" \
 .endif
 
 .if ${PORT_OPTIONS:MSDL_CLIENT}
+USES+=		sdl
 USE_SDL=	sdl
 ALL_TARGET+=	sdl-release
 PLIST_FILES+=	bin/${PORTNAME}-sdl

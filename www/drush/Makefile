@@ -1,9 +1,8 @@
 # Created by: Thomas Sandford <freebsduser@paradisegreen.co.uk>
-# $FreeBSD$
 
 PORTNAME=	drush
-DISTVERSION=	8.1.16
-PORTREVISION=	1
+DISTVERSION=	8.3.3
+PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/drush-ops/drush/releases/download/${DISTVERSION}/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}

@@ -1,5 +1,4 @@
 # Created by: Geoffrey Mainland <mainland@apeiron.net>
-# $FreeBSD$
 
 PORTNAME=	latex
 PORTVERSION=	1.0
@@ -18,7 +17,7 @@ RUN_DEPENDS=	pidgin:net-im/pidgin \
 
 WRKSRC=		${WRKDIR}/${PKGNAMEPREFIX}${PORTNAME}
 
-USES=		gmake pkgconfig tar:bzip2
+USES=		gmake gnome pkgconfig tar:bzip2
 USE_TEX=	latex
 USE_GNOME=	gtk20
 MAKE_ARGS=	CC="${CC}"

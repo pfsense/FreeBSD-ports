@@ -1,9 +1,8 @@
 # Created by: Enrico M. Crisostomo <enrico.m.crisostomo@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fswatch
 DISTVERSION=	1.13.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/emcrisostomo/${PORTNAME}/releases/download/${DISTVERSION}/
 PKGNAMESUFFIX=	-mon
@@ -17,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		compiler:c++11-lang libtool makeinfo
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	fswatch-[0-9]*
+CONFLICTS_INSTALL=	fswatch
 GNU_CONFIGURE=	yes
 INFO=	fswatch
 INSTALL_TARGET=	install-strip

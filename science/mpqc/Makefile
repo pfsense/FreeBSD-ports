@@ -1,9 +1,8 @@
 # Created by: batman <batman@udel.edu>
-# $FreeBSD$
 
 PORTNAME=	mpqc
 PORTVERSION=	2.3.1
-PORTREVISION=	42
+PORTREVISION=	46
 CATEGORIES=	science parallel
 MASTER_SITES=	SF
 
@@ -13,16 +12,15 @@ COMMENT=	Massively Parallel Quantum Chemistry Program
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=		fails to compile: lapack.h:2:10: 'chemistry/qc/mbptr12/f77sym.h' file not found
-
 BUILD_DEPENDS=	dot:graphics/graphviz
 LIB_DEPENDS=	libint.so:science/libint
 RUN_DEPENDS=	wish:x11-toolkits/tk-wrapper \
 		dot:graphics/graphviz
 
+USES=		fortran gmake libtool localbase perl5 shebangfix tar:bzip2
+
 CONFLICTS_BUILD=	ga # devel/ga: it links to libarmci.so, has HAVE_ARMCI defined, and hits some bug
 
-USES=		fortran gmake libtool localbase perl5 shebangfix tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-production \
 		--enable-shared \

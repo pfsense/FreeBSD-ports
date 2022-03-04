@@ -1,9 +1,9 @@
-# $FreeBSD$
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
 PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
-CATEGORIES=	dns net ipv6
+PORTREVISION=	0
+CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${ISCVERSION}
 PKGNAMESUFFIX=	911
 DISTNAME=	${PORTNAME}-${ISCVERSION}
@@ -14,13 +14,16 @@ COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
+DEPRECATED=	End of life, please migrate to a newer version of BIND9
+EXPIRATION_DATE=	2021-12-31
+
 LIB_DEPENDS=	libxml2.so:textproc/libxml2
 RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 
-USES=	cpe libedit
+USES=	cpe libedit pkgconfig
 
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.11.8
+ISCVERSION=	9.11.36
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -39,7 +42,7 @@ CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
 		--sysconfdir=${ETCDIR}
 ETCDIR=		${PREFIX}/etc/namedb
 
-CONFLICTS=	bind912 bind913 bind914 bind9-devel
+CONFLICTS=	bind912 bind913 bind914 bind916 bind9-devel
 
 SUB_FILES=	pkg-message named.conf
 USE_RC_SUBR=	named
@@ -50,8 +53,8 @@ PORTDOCS=	*
 
 OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE JSON \
 			DLZ_FILESYSTEM LMDB RPZ_NSDNAME RPZ_NSIP TCP_FASTOPEN \
-			FILTER_AAAA
-OPTIONS_DEFINE=		IDN LARGE_FILE JSON \
+			FILTER_AAAA DNSTAP
+OPTIONS_DEFINE=		ACCFDNS IDN LARGE_FILE JSON GEOIP \
 			FIXED_RRSET SIGCHASE IPV6 THREADS FILTER_AAAA \
 			RPZ_NSIP RPZ_NSDNAME DOCS \
 			MINCACHE PORTREVISION QUERYTRACE LMDB DNSTAP \
@@ -68,6 +71,7 @@ OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 
 OPTIONS_SUB=	yes
 
+ACCFDNS_DESC=		Prefer DNS accept filter over generic one
 CRYPTO_DESC=		Choose which crypto engine to use
 DLZ_BDB_DESC=		DLZ BDB driver
 DLZ_DESC=		Dynamically Loadable Zones
@@ -97,6 +101,8 @@ START_LATE_DESC=	Start BIND late in the boot process (see help)
 TCP_FASTOPEN_DESC=	RFC 7413 support
 TUNING_LARGE_DESC=	Tune named for large systems (**READ HELP**)
 
+ACCFDNS_EXTRA_PATCHES=	${PATCHDIR}/extrapatch-interfacemgr.c
+	
 DLZ_BDB_CONFIGURE_ON=	--with-dlz-bdb=yes
 DLZ_BDB_USES=		bdb
 
@@ -122,6 +128,10 @@ DNSTAP_LIB_DEPENDS=	libfstrm.so:devel/fstrm \
 FILTER_AAAA_CONFIGURE_ENABLE=	filter-aaaa
 
 FIXED_RRSET_CONFIGURE_ENABLE=	fixed-rrset
+
+GEOIP_CONFIGURE_WITH=	geoip2
+GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
+GEOIP_IMPLIES=		THREADS
 
 GSSAPI_BASE_CONFIGURE_ON=\
 	--with-gssapi=${GSSAPIBASEDIR} KRB5CONFIG="${KRB5CONFIG}"
@@ -185,7 +195,7 @@ TUNING_LARGE_CONFIGURE_OFF=	--with-tuning=default
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symtable \
 			--enable-developer
-USES+=	perl5 pkgconfig
+USES+=	perl5
 USE_PERL5=	build
 BUILD_DEPENDS+=	cmocka>0:sysutils/cmocka
 # Developer mode needs ssl, always

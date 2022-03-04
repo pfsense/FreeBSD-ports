@@ -1,9 +1,8 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME=	joequake
 PORTVERSION=	0.15b1329
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://joequake.runecentral.com/
 DISTNAME=	${PORTNAME}-v${PORTVERSION}-source
@@ -15,6 +14,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Improved NQ engine with ZQuake and FuhQuake graphical effects
 
 LICENSE=	GPLv2+
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: com_searchpaths
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: com_searchpaths
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
@@ -39,8 +41,9 @@ X86_ASM_DESC= Enable x86 assembly code
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MOPENGL}
-USE_GL=		yes
-USES+=		jpeg
+USES+=		gl jpeg xorg
+USE_GL+=	gl
+USE_XORG+=	x11 xext xxf86dga xxf86vm
 ALL_TARGET+=	glx
 PLIST_SUB+=	GLX=""
 .else
@@ -76,7 +79,8 @@ MAKE_ENV+=	USE_${f}=NO
 .endfor
 
 .if ${PORT_OPTIONS:MX11}
-USE_XORG=	xxf86dga
+USES+=		xorg
+USE_XORG+=	x11 xext
 ALL_TARGET+=	x11
 PLIST_SUB+=	X11=""
 .else

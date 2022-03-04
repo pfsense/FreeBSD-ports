@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	apitran
 PORTVERSION=	g20180926
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	comms astro hamradio python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,15 +12,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYNUMPY} \
+		${PY_PILLOW} \
 		sox:audio/sox \
 		display:graphics/ImageMagick6
 
-USES=		python:run shebangfix
+USES=		python:3.6+,run shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	rsj56
-GH_PROJECT=	apitran
 GH_TAGNAME=	d209347
 
 NO_BUILD=	yes

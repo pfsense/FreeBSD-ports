@@ -1,33 +1,24 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	raul
-PORTVERSION=	0.8.0
-PORTREVISION=	12
+PORTVERSION=	0.8.0.20191209
 CATEGORIES=	audio
-MASTER_SITES=	http://download.drobilla.net/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	C++ utility library primarily aimed at audio/musical applications
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Realtime modular synthesizer and/or effects processor
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs
+BUILD_DEPENDS=	lv2>0:audio/lv2 \
+		${LOCALBASE}/include/fftw3.h:math/fftw3
 
-USES=		pkgconfig tar:bzip2 waf
-USE_GNOME=	glib20
-USE_LDCONFIG=	yes
+USES=		compiler:c++11-lang waf
+USE_GITHUB=	yes
+GH_ACCOUNT=	drobilla
+GH_TAGNAME=	e87bb398f025912fb989a09f1450b838b251aea1
+GH_TUPLE=	drobilla:autowaf:c87cc53:waflib/waflib
 
-CFLAGS+=	-I${LOCALBASE}/include
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libraul.so
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		"s|$$[{]LIBDIRNAME[}]/pkgconfig|libdata/pkgconfig| ; \
-		 s|-fshow-column'|-fshow-column ${CXXFLAGS}'|" \
-			${WRKSRC}/autowaf/autowaf.py
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

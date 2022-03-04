@@ -1,8 +1,8 @@
 # Created by: will
-# $FreeBSD$
 
 PORTNAME=	clhep
 PORTVERSION=	2.4.1.0
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/
 

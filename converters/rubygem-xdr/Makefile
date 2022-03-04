@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	xdr
-PORTVERSION=	2.0.0
+PORTVERSION=	3.0.2
+PORTREVISION=	1
 CATEGORIES=	converters rubygems
 MASTER_SITES=	RG
 
@@ -11,11 +10,12 @@ COMMENT=	XDR Helper Library
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-activemodel4>=4.2.7:databases/rubygem-activemodel4 \
-		rubygem-activesupport4>=4.2.7:devel/rubygem-activesupport4
+RUN_DEPENDS=	rubygem-activemodel60>=6.0:databases/rubygem-activemodel60 \
+		rubygem-activesupport60>=6.0:devel/rubygem-activesupport60
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

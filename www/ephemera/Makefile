@@ -1,8 +1,7 @@
 # Created by: James Bailie <jimmy@mammothcheese.ca>
-# $FreeBSD$
 
 PORTNAME=	ephemera
-PORTVERSION=	5.9
+PORTVERSION=	6.34
 CATEGORIES=	www
 MASTER_SITES=	http://www.mammothcheese.ca/
 

@@ -1,9 +1,8 @@
 # Created by: Ozkan KIRIK <ozkan@enderunix.org>
-# $FreeBSD$
 
 PORTNAME=	qsheff-II
 DISTVERSION=	2.1-r3
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	mail
 MASTER_SITES=	http://www.enderunix.org/qsheff/ \
 		SF/qsheff/qsheff/II-${DISTVERSION}
@@ -13,6 +12,9 @@ COMMENT=	Qmail-queue replacement to filter mail traffic
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: CUSTOM_PROG
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: CUSTOM_PROG
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/ripmime:mail/ripmime
 RUN_DEPENDS:=	${BUILD_DEPENDS}

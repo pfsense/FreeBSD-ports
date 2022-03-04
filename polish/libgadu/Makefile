@@ -1,8 +1,8 @@
 # Created by: Aleksander Fafula <alex@BSDGuru.org>
-# $FreeBSD$
 
 PORTNAME=	libgadu
 PORTVERSION=	1.12.2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	polish net-im
 

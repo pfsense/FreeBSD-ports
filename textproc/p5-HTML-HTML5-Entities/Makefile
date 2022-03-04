@@ -1,5 +1,4 @@
 # Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	HTML-HTML5-Entities
 PORTVERSION=	0.004
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TOBYINK
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pure Perl drop-in replacement for HTML::Entities
 
 LICENSE=	ART10 GPLv1+

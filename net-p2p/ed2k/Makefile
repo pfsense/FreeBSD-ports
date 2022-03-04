@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ed2k
 PORTVERSION=	1.4
 CATEGORIES=	net-p2p
@@ -15,7 +13,7 @@ COMMENT=	Calculates 'eMule' hashes or producing ed2k:// file links
 LICENSE=	PD BSD3CLAUSE
 LICENSE_COMB=	multi
 
-CONFLICTS=	amule-*
+CONFLICTS=	amule
 
 NO_WRKSUBDIR=	yes
 MAKEFILE=	/dev/null

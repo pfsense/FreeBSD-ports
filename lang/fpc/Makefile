@@ -1,8 +1,7 @@
 # Created by: John Merryweather Cooper et al
-# $FreeBSD$
 
 PORTNAME=	fpc
-PORTVERSION=	3.0.4
+PORTVERSION=	3.2.2
 PORTREVISION?=	0
 CATEGORIES?=	lang
 MASTER_SITES=	ftp://ftp.freepascal.org/pub/fpc/dist/${PORTVERSION}/source/:source \
@@ -21,12 +20,16 @@ DIST_SUBDIR=	freepascal
 MAINTAINER?=	acm@FreeBSD.org
 COMMENT?=	Free Pascal compiler with Turbo and Delphi
 
+RUN_DEPENDS?=	${LOCALBASE}/bin/as:devel/binutils
+
 ONLY_FOR_ARCHS=	amd64 i386
 
 USES+=		gmake iconv
-LLD_UNSAFE=	yes	# Links object with invalid section header alignment
+USE_BINUTILS=	yes
 BOOTVER=	3.0.4
-MANVER=		3.0.4
+MANVER=		${PORTVERSION}
+
+FPC_LDPATH?=	"${LOCALBASE}/bin/ld.bfd"
 
 #USE_GITHUB=	yes
 #GH_ACCOUNT=	fpc-svn
@@ -70,7 +73,8 @@ MAKE_ARGS+=	FPCMAKE=${NEWFPCMAKE} \
 		INSTALL="${INSTALL_DATA}" \
 		INSTALLEXE="${INSTALL_PROGRAM}" \
 		INSTALLSCR="${INSTALL_SCRIPT}" \
-		INSTALL_PREFIX=${STAGEDIR}${PREFIX}
+		INSTALL_PREFIX=${STAGEDIR}${PREFIX} \
+		FPC_LDPATH=${FPC_LDPATH}
 NEWPPC=		PP=${WRKSRC}/compiler/${PPNAME}
 NEWFPC=		FPC=${WRKSRC}/compiler/${PPNAME}
 BOOTDIR=	${PPNAME}-${BOOTVER}-${OPSYS:tl}
@@ -98,6 +102,7 @@ do-extract:
 		${FPCSRCDIR}/packages/libtar \
 		${FPCSRCDIR}/packages/paszlib \
 		${FPCSRCDIR}/packages/rtl-objpas \
+		${FPCSRCDIR}/packages/tplylib \
 		${FPCSRCDIR}/utils/fpcm)
 
 post-patch:
@@ -110,7 +115,8 @@ post-patch:
 .endif
 .if empty(ICONV_LIB)
 	@${REINPLACE_CMD} -e "s|s<>'c'|(s<>'c') and (s<>'iconv')|" \
-		${WRKDIR}/${FPCSRCDIR}/compiler/systems/t_bsd.pas
+			-e "s|%%FPC_LDPATH%%|${FPC_LDPATH}|g" \
+				${WRKDIR}/${FPCSRCDIR}/compiler/systems/t_bsd.pas
 	@${REINPLACE_CMD} -e 's|defined(bsd) and not ||' \
 		${WRKDIR}/${FPCSRCDIR}/rtl/unix/cwstring.pp
 .endif
@@ -123,7 +129,7 @@ do-build:
 # build fpc compiler
 	@${ECHO_MSG} "##### STARTING COMPILER #####"
 	(cd ${WRKDIR}/${FPCSRCDIR}/compiler && ${SETENV} ${MAKE_ENV} \
-		LDVER=ld.bfd ${MAKE_CMD} cycle ${MAKE_ARGS} ${BOOTPPC})
+		${MAKE_CMD} cycle ${MAKE_ARGS} ${BOOTPPC})
 	@${ECHO_MSG} "##### COMPLETE COMPILER #####"
 
 # build fpcmkcfg
@@ -131,7 +137,7 @@ do-build:
 	(cd ${WRKDIR}/${FPCSRCDIR}/packages/fpmkunit && ${SETENV} \
 		${MAKE_ENV} ${MAKE_CMD} bootstrap ${MAKE_ARGS} ${NEWPPC})
 	@${ECHO_MSG} "##### COMPLETE BOOTSTRAP FPMKUNIT #####"
-.for component in fcl-res rtl-objpas fcl-base
+.for component in rtl-objpas fcl-base tplylib fcl-res
 	@${ECHO_MSG} "##### STARTING ${component:tu} #####"
 	(cd ${WRKDIR}/${FPCSRCDIR}/packages/${component} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${NEWPPC})
@@ -179,7 +185,7 @@ do-install:
 		"${STAGEDIR}${PREFIX}/lib/fpc/${PORTVERSION}" \
 		"${STAGEDIR}${PREFIX}/etc"
 	@${REINPLACE_CMD} -i "" -e 's|${STAGEDIR}||' \
-		-e 's|^-Fl/usr/local/lib|-Fl${LOCALBASE}/lib;${LOCALBASE}/lib/qt4;${LOCALBASE}/lib/qt5|g' \
+		-e 's|^#-Fl/lib;/usr/lib|-Fl${LOCALBASE}/lib;${LOCALBASE}/lib/qt5|g' \
 		${STAGEDIR}${PREFIX}/etc/fpc.cfg.sample
 
 .else

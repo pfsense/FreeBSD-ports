@@ -1,5 +1,4 @@
 # Created by: Michael L. Hostbaek (mich@freebsdcluster.org)
-# $FreeBSD$
 
 PORTNAME=	vcp
 PORTVERSION=	2.2
@@ -9,8 +8,11 @@ MASTER_SITES=	http://freebsdcluster.org/~mich/software/
 MAINTAINER=	mich@FreeBSD.org
 COMMENT=	Copy files in curses interface
 
-CONFLICTS=	p5-VCP-[0-9]* \
-		p5-VCP-autrijus-[0-9]*
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: logw
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: logw
+
+CONFLICTS=	p5-VCP \
+		p5-VCP-autrijus
 
 USES=		ncurses
 LDFLAGS+=	-lncurses

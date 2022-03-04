@@ -1,5 +1,4 @@
 # Created by: jpbeconne
-# $FreeBSD$
 
 PORTNAME=	servingxml
 PORTVERSION=	1.1.2
@@ -13,7 +12,6 @@ BUILD_DEPENDS=	${ANT_CMD}:devel/apache-ant
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 ANT_CMD?=	${LOCALBASE}/bin/ant
 ANT=	${SETENV} JAVA_HOME=${JAVA_HOME} ${ANT_CMD}
 ANT_TARGETS=	dist

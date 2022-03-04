@@ -10,9 +10,9 @@
  #elif defined(OGDF_SYSTEM_UNIX) || defined(__MINGW32__)
  #include <malloc.h>
 @@ -176,7 +176,7 @@ public:
- 	static void *alignedMemoryAlloc16(size_t size) {
- #ifdef OGDF_SYSTEM_WINDOWS
+ # else
  		return _aligned_malloc(size, 16);
+ # endif
 -#elif defined(OGDF_SYSTEM_OSX)
 +#elif defined(OGDF_SYSTEM_OSX) || defined(OGDF_SYSTEM_FREEBSD)
  		// malloc returns 16 byte aligned memory on OS X.

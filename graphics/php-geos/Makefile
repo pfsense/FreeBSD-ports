@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	geos
 PORTVERSION=	1.0.0
@@ -18,7 +17,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE_LGPL21=	${WRKSRC}/LGPL-2
 LICENSE_FILE_MIT=	${WRKSRC}/MIT-LICENSE
 
-BUILD_DEPENDS=	swig3.0:devel/swig30
+BUILD_DEPENDS=	swig:devel/swig
 LIB_DEPENDS=	libgeos_c.so:graphics/geos
 
 USES=		localbase:ldflags php:ext

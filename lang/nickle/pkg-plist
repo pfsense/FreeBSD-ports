@@ -1,7 +1,7 @@
 bin/nickle
 include/nickle/builtin-namespaces.h
 include/nickle/builtin.h
-include/nickle/config.h
+include/nickle/nickle-config.h
 include/nickle/gram.h
 include/nickle/mem.h
 include/nickle/memp.h
@@ -54,3 +54,4 @@ man/man1/nickle.1.gz
 %%DATADIR%%/test/round.5c
 %%DATADIR%%/test/scanf.5c
 %%DATADIR%%/test/signal.5c
+%%DATADIR%%/test/string-file.5c

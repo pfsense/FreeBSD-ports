@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Provide support for Berkeley DB
 # Feature:	bdb
 # Usage:	USES=	bdb[:version]
@@ -59,21 +57,22 @@ BDB_UNIQUENAME?=	${PKGNAMEPREFIX}${PORTNAME}
 
 _BDB_DEFAULT_save:=${BDB_DEFAULT}
 
-_DB_PORTS=		48 5 6
-_DB_DEFAULTS=	48 5	# does not include 6 due to different licensing
-#	but user can re-add it through WITH_BDB6_PERMITTED
+_DB_PORTS=		5 18
+_DB_DEFAULTS=	5
+#
+#   Since 2020-12-02, this name is not fitting too much but
+#   retained for now for compatibility. The name of this variable
+#   is subject to change especially once db6 were removed.
 . if defined(WITH_BDB6_PERMITTED)
-_DB_DEFAULTS+=	6
+_DB_DEFAULTS+=	18
 . endif
 
 # Dependency lines for different db versions
-db48_DEPENDS=	libdb-4.8.so:databases/db48
 db5_DEPENDS=	libdb-5.3.so:databases/db5
-db6_DEPENDS=	libdb-6.2.so:databases/db6
+db18_DEPENDS=	libdb-18.1.so:databases/db18
 # Detect db versions by finding some files
-db48_FIND=	${LOCALBASE}/include/db48/db.h
 db5_FIND=	${LOCALBASE}/include/db5/db.h
-db6_FIND=	${LOCALBASE}/include/db6/db.h
+db18_FIND=	${LOCALBASE}/include/db18/db.h
 
 # Override the global BDB_DEFAULT with the
 # port specific <BDB_UNIQUENAME>_WITH_BDB_VER
@@ -87,16 +86,16 @@ BDB_DEFAULT=	${${BDB_UNIQUENAME:tu:S,-,_,}_WITH_BDB_VER}
 .  if ${BDB_DEFAULT} != 1
 _bdb_ARGS=	${BDB_DEFAULT}
 .  else
-_bdb_ARGS:=	48+
+_bdb_ARGS:=	5+
 .  endif
 . endif
 
 # Compatiblity hack:
-# upgrade older plussed versions to 48+
-_BDB_OLDPLUSVERS=4+ 40+ 41+ 42+ 43+ 44+ 45+ 46+ 47+
+# upgrade older plussed versions to 5+
+_BDB_OLDPLUSVERS=4+ 40+ 41+ 42+ 43+ 44+ 45+ 46+ 47+ 48+
 .for i in ${_bdb_ARGS}
 . if ${_BDB_OLDPLUSVERS:M${i}}
-_bdb_ARGS:=	48+
+_bdb_ARGS:=	5+
 . endif
 .endfor
 
@@ -111,9 +110,9 @@ _INST_BDB_VER+=${bdb}
 # 2. parse supported versions:
 # 2a. build list from _bdb_ARGS
 _SUPP_BDB_VER=
-__bdb_ARGS:=${_bdb_ARGS:C,\+$,,:C/(.)(.)$/\1.\2/}
+__bdb_ARGS:=${_bdb_ARGS:C,\+$,,}
 .if !empty(_bdb_ARGS:M*+)
-. for bdb in ${_DB_PORTS:C/(.)(.)$/\1.\2/}
+. for bdb in ${_DB_PORTS}
 .  if ${__bdb_ARGS} <= ${bdb}
 _SUPP_BDB_VER+=${bdb:C/\.//}
 .  endif
@@ -123,9 +122,9 @@ _SUPP_BDB_VER=${_bdb_ARGS}
 .endif
 # 2b. expand INVALID_BDB_VER if given with "+":
 .if !empty(INVALID_BDB_VER:M*+)
-_INV_BDB:=${INVALID_BDB_VER:C,\+$,,:C/(.)(.)$/\1.\2/}
+_INV_BDB:=${INVALID_BDB_VER:C,\+$,,}
 _INV_BDB_VER:=
-. for bdb in ${_DB_PORTS:C/(.)(.)$/\1.\2/}
+. for bdb in ${_DB_PORTS}
 .  if ${_INV_BDB} <= ${bdb}
 _INV_BDB_VER+=${bdb:C/\.//}
 .  endif
@@ -177,18 +176,14 @@ BUILD_DEPENDS+=	${db${_BDB_VER}_FIND}:${db${_BDB_VER}_DEPENDS:C/^libdb.*://}
 . else
 LIB_DEPENDS+=	${db${_BDB_VER}_DEPENDS}
 . endif
-. if ${_BDB_VER} == 48
-BDB_LIB_NAME=		db-4.8
-BDB_LIB_CXX_NAME=	db_cxx-4.8
-BDB_LIB_DIR=		${LOCALBASE}/lib/db48
-. elif ${_BDB_VER} == 5
+. if ${_BDB_VER} == 5
 BDB_LIB_NAME=		db-5.3
 BDB_LIB_CXX_NAME=	db_cxx-5.3
 BDB_LIB_DIR=		${LOCALBASE}/lib/db5
-. elif ${_BDB_VER} == 6
-BDB_LIB_NAME=		db-6.2
-BDB_LIB_CXX_NAME=	db_cxx-6.2
-BDB_LIB_DIR=		${LOCALBASE}/lib/db6
+. elif ${_BDB_VER} == 18
+BDB_LIB_NAME=		db-18.1
+BDB_LIB_CXX_NAME=	db_cxx-18.1
+BDB_LIB_DIR=		${LOCALBASE}/lib/db18
 . endif
 BDB_LIB_NAME?=		db${_BDB_VER}
 BDB_LIB_CXX_NAME?=	db${_BDB_VER}_cxx
@@ -218,8 +213,8 @@ debug-bdb:
 	@${ECHO_CMD} "BDB_LIB_NAME=${BDB_LIB_NAME}"
 	@${ECHO_CMD} "BDB_LIB_CXX_NAME=${BDB_LIB_CXX_NAME}"
 	@${ECHO_CMD} "BDB_LIB_DIR=${BDB_LIB_DIR}"
-	@${ECHO_CMD} "BUILD_DEPENDS=${BUILD_DEPENDS:M*/databases/db*}"
-	@${ECHO_CMD} "LIB_DEPENDS=${LIB_DEPENDS:M*/databases/db*}"
+	@${ECHO_CMD} "BUILD_DEPENDS=${BUILD_DEPENDS:M*\:databases/db*}"
+	@${ECHO_CMD} "LIB_DEPENDS=${LIB_DEPENDS:M*\:databases/db*}"
 	@${ECHO_CMD} "------------------------------------------------------------"
 
 # Obsolete variables - ports can define these to want users about

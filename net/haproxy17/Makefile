@@ -1,8 +1,7 @@
 # Created by: Clement Laforet
-# $FreeBSD$
 
 PORTNAME=	haproxy
-PORTVERSION=	1.7.11
+PORTVERSION=	1.7.14
 CATEGORIES=	net www
 MASTER_SITES=	http://www.haproxy.org/download/1.7/src/
 PKGNAMESUFFIX=	17
@@ -16,14 +15,14 @@ LICENSE_COMB=	multi
 BROKEN_mips=		fails to build: undefined reference to '__sync_sub_and_fetch_4'
 BROKEN_mips64=		fails to build: undefined reference to '__sync_sub_and_fetch_4'
 
-CONFLICTS_INSTALL=	haproxy-[0-9]* haproxy-devel-[0-9]* haproxy18-[0-9]*
+CONFLICTS_INSTALL=	haproxy haproxy-devel haproxy18 haproxy19 haproxy20 haproxy21
 
 USES=		cpe gmake
 USE_RC_SUBR=	haproxy
 
 MAKE_ARGS=	TARGET=freebsd DEFINE=-DFREEBSD_PORTS USE_GETADDRINFO=1 \
 		USE_ZLIB=1 USE_CPU_AFFINITY=1 USE_ACCEPT4=1 \
-		CC="${CC}" DEBUG_CFLAGS="" CPU_CFLAGS="${CFLAGS}"
+		CC="${CC}" DEBUG_CFLAGS="" CPU_CFLAGS="${CFLAGS} -fcommon"
 
 OPTIONS_DEFINE=		DOCS EXAMPLES LUA OPENSSL DEVICEATLAS
 OPTIONS_RADIO=		PCRE

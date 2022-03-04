@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libqxp
 PORTVERSION=	0.0.0
-PORTREVISION=	9
+PORTREVISION=	19
 CATEGORIES=	textproc
 MASTER_SITES=	https://dev-www.libreoffice.org/src/${PORTNAME}/
 

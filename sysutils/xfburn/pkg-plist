@@ -1,7 +1,6 @@
 bin/xfburn
 man/man1/xfburn.1.gz
 share/Thunar/sendto/thunar-sendto-xfburn.desktop
-share/appdata/xfburn.appdata.xml
 share/applications/xfburn.desktop
 share/icons/hicolor/16x16/stock/media/stock_xfburn-audio-cd.png
 share/icons/hicolor/16x16/stock/media/stock_xfburn-blank-cdrw.png
@@ -49,6 +48,7 @@ share/icons/hicolor/scalable/stock/media/stock_xfburn-new-data-composition.svg
 share/icons/hicolor/scalable/stock/media/stock_xfburn.svg
 %%NLS%%share/locale/ar/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/ast/LC_MESSAGES/xfburn.mo
+%%NLS%%share/locale/be/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/bg/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/ca/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/cs/LC_MESSAGES/xfburn.mo
@@ -67,7 +67,9 @@ share/icons/hicolor/scalable/stock/media/stock_xfburn.svg
 %%NLS%%share/locale/he/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/hr/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/hu/LC_MESSAGES/xfburn.mo
+%%NLS%%share/locale/hy_AM/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/id/LC_MESSAGES/xfburn.mo
+%%NLS%%share/locale/ie/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/is/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/it/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/ja/LC_MESSAGES/xfburn.mo
@@ -87,6 +89,7 @@ share/icons/hicolor/scalable/stock/media/stock_xfburn.svg
 %%NLS%%share/locale/ru/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/si/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/xfburn.mo
+%%NLS%%share/locale/sl/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/sq/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/sr/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/xfburn.mo
@@ -100,5 +103,7 @@ share/icons/hicolor/scalable/stock/media/stock_xfburn.svg
 %%NLS%%share/locale/vi/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/xfburn.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/xfburn.mo
+share/metainfo/org.xfce.xfburn.appdata.xml
+%%DATADIR%%/xfburn-popup-menus.ui
 %%DATADIR%%/xfburn-toolbars.ui
 %%DATADIR%%/xfburn.ui

@@ -1,5 +1,4 @@
 # Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
 
 PORTNAME=	Catalyst-Authentication-Credential-HTTP
 PORTVERSION=	1.018
@@ -7,7 +6,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	HTTP plain and digest authentication plugin for Catalyst
 
 LICENSE=	ART10 GPLv1+

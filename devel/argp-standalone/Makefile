@@ -1,9 +1,8 @@
 # Created by: Sergey Matveychuk <sem@ciam.ru>
-# $FreeBSD$
 
 PORTNAME=	argp-standalone
 PORTVERSION=	1.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://www.lysator.liu.se/~nisse/misc/ \
 		LOCAL/sem

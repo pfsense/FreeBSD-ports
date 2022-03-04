@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sbxkb
 PORTVERSION=	0.7.6
@@ -14,7 +13,7 @@ LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
 LIBS+=		-L${LOCALBASE}/lib -lX11
-USES=		pkgconfig
+USES=		gnome pkgconfig xorg
 USE_GNOME=	gtk20
 USE_XORG=	x11
 

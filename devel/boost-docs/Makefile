@@ -1,8 +1,9 @@
 # Created by: Alexander Churanov <churanov.port.maintainer@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	boost-docs
 COMMENT=	Documentation for libraries from boost.org
+
+USES=	python:env shebangfix
 
 DOCSDIR=	${PREFIX}/share/doc/boost
 UNIQ=		/usr/bin/uniq
@@ -10,6 +11,8 @@ UNIQ=		/usr/bin/uniq
 NO_BUILD=	yes
 
 OPTIONS_DEFINE=	DOCS
+
+SHEBANG_GLOB=	*.py
 
 .include "${.CURDIR}/..//boost-all/common.mk"
 

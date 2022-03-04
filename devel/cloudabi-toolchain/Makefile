@@ -1,10 +1,8 @@
 # Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cloudabi-toolchain
 PORTVERSION=	1.11
-PORTREVISION=	1
-PORTREVISON=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	# None
 DISTFILES=	# None
@@ -18,7 +16,7 @@ RUN_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		lld${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		pkgconf:devel/pkgconf
 
-CONFLICTS=	cloudabi-binutils-*
+CONFLICTS=	cloudabi-binutils
 
 CLOUDABI_ARCHS=	aarch64-unknown-cloudabi armv6-unknown-cloudabi-eabihf \
 		armv7-unknown-cloudabi-eabihf i686-unknown-cloudabi \

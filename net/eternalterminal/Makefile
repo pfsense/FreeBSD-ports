@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	eternalterminal
 DISTVERSIONPREFIX=	et-v
 DISTVERSION=	5.1.9
-PORTREVISION=	1
+PORTREVISION=	10
 CATEGORIES=	net
 
-MAINTAINER=	trevis@silencedpoet.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Remote shell that reconnects without interrupting session
 
 LICENSE=	APACHE20

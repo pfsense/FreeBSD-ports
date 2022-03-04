@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	asylum
 PORTVERSION=	0.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/sdl-${PORTNAME}/Asylum/${PORTVERSION}/
 
@@ -13,7 +10,7 @@ COMMENT=	Surreal platform shooting game
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		gl gmake sdl
 USE_SDL=	sdl mixer
 ALL_TARGET=	build
 USE_GL=		gl glu

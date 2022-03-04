@@ -1,7 +1,9 @@
---- UI/window-basic-preview.cpp.orig	2017-10-25 18:45:20 UTC
+Why is this patch needed?
+
+--- UI/window-basic-preview.cpp.orig	2021-06-11 14:20:50 UTC
 +++ UI/window-basic-preview.cpp
-@@ -471,8 +471,8 @@ void OBSBasicPreview::mousePressEvent(QM
- 	GetStretchHandleData(startPos);
+@@ -577,8 +577,8 @@ void OBSBasicPreview::mousePressEvent(QMouseEvent *eve
+ 	GetStretchHandleData(startPos, false);
  
  	vec2_divf(&startPos, &startPos, main->previewScale / pixelRatio);
 -	startPos.x = std::round(startPos.x);
@@ -11,7 +13,7 @@
  
  	mouseOverItems = SelectedAtPos(startPos);
  	vec2_zero(&lastMoveOffset);
-@@ -789,8 +789,8 @@ void OBSBasicPreview::ClampAspect(vec3 &
+@@ -1228,8 +1228,8 @@ void OBSBasicPreview::ClampAspect(vec3 &tl, vec3 &br, 
  			size.y = size.x / baseAspect * -1.0f;
  	}
  
@@ -22,32 +24,7 @@
  
  	if (stretchFlags & ITEM_LEFT)
  		tl.x = br.x - size.x;
-@@ -936,18 +936,18 @@ void OBSBasicPreview::CropItem(const vec
- 	crop = startCrop;
- 
- 	if (stretchFlags & ITEM_LEFT)
--		crop.left += int(std::round(tl.x / scale.x));
-+		crop.left += int(::round(tl.x / scale.x));
- 	else if (stretchFlags & ITEM_RIGHT)
--		crop.right += int(std::round((stretchItemSize.x - br.x) / scale.x));
-+		crop.right += int(::round((stretchItemSize.x - br.x) / scale.x));
- 
- 	if (stretchFlags & ITEM_TOP)
--		crop.top += int(std::round(tl.y / scale.y));
-+		crop.top += int(::round(tl.y / scale.y));
- 	else if (stretchFlags & ITEM_BOTTOM)
--		crop.bottom += int(std::round((stretchItemSize.y - br.y) / scale.y));
-+		crop.bottom += int(::round((stretchItemSize.y - br.y) / scale.y));
- 
- 	vec3_transform(&newPos, &newPos, &itemToScreen);
--	newPos.x = std::round(newPos.x);
--	newPos.y = std::round(newPos.y);
-+	newPos.x = ::round(newPos.x);
-+	newPos.y = ::round(newPos.y);
- 
- #if 0
- 	vec3 curPos;
-@@ -1032,7 +1032,7 @@ void OBSBasicPreview::StretchItem(const 
+@@ -1470,7 +1470,7 @@ void OBSBasicPreview::StretchItem(const vec2 &pos)
  	vec3_transform(&pos3, &pos3, &itemToScreen);
  
  	vec2 newPos;
@@ -56,7 +33,7 @@
  	obs_sceneitem_set_pos(stretchItem, &newPos);
  }
  
-@@ -1059,8 +1059,8 @@ void OBSBasicPreview::mouseMoveEvent(QMo
+@@ -1501,8 +1501,8 @@ void OBSBasicPreview::mouseMoveEvent(QMouseEvent *even
  			mouseOverItems = SelectedAtPos(startPos);
  		}
  
@@ -66,4 +43,4 @@
 +		pos.y = ::round(pos.y);
  
  		if (stretchHandle != ItemHandle::None) {
- 			if (cropping)
+ 			selectionBox = false;

@@ -1,5 +1,4 @@
 # Created by: Philip M. Gollucci
-# $FreeBSD$
 
 PORTNAME=	Const-Fast
 PORTVERSION=	0.014
@@ -22,5 +21,7 @@ TEST_DEPENDS=	p5-Test-Exception>=0.29:devel/p5-Test-Exception
 
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xfd
 PORTVERSION=	1.1.3
 CATEGORIES=	x11
@@ -14,9 +12,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2
 BUILD_DEPENDS=	fc-cache:x11-fonts/fontconfig
 RUN_DEPENDS=	fc-cache:x11-fonts/fontconfig
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xft xkbfile xmu xrender xt xaw
-
-BROKEN_aarch64=		Fails to build: exec(xgettext) failed (No such file or directory)
 
 .include <bsd.port.mk>

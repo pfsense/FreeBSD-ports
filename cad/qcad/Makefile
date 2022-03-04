@@ -1,12 +1,15 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qcad
-PORTVERSION=	3.21.3.15
+PORTVERSION=	3.26.1.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	1
 CATEGORIES=	cad
 DIST_SUBDIR=	${PORTNAME}
+
+#PATCH_SITES=	https://github.com/qcad/qcad/commit/
+#PATCHFILES=	bbcd195f199e75190e758f46475b4f723643a820.patch:-p1
+#GH_TAGNAME=	98f92a5a275102dfab915b920e2ebf52f43bf091
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Professional CAD system
@@ -15,11 +18,8 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	bash:shells/bash	\
 		${LOCALBASE}/lib/libopenNURBS.a:graphics/opennurbs
-LIB_DEPENDS=	libquazip5.so:archivers/quazip
 
-MAKE_JOBS_UNSAFE=yes
-
-USES=		compiler:c++11-lang gmake qmake qt:5
+USES=		compiler:c++11-lang gl gmake qmake qt:5
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 USE_QT=		buildtools qmake_build \
@@ -41,7 +41,7 @@ RESDIR=		${WRKSRC}/release
 .endif
 
 SHRLIBS=	qcadcore qcadecmaapi qcadentity qcadgrid qcadgui qcadoperations	\
-		qcadsnap qcadspatialindex qcadstemmer spatialindexnavel qcadzip
+		qcadsnap qcadspatialindex qcadstemmer spatialindexnavel
 STALIBS=	dxflib stemmer
 SHRDIR=		fonts libraries linetypes patterns plugins scripts themes ts
 #QSCRIPTS should not be installed to avoid conflicts with texlive-base
@@ -49,10 +49,26 @@ QSCRIPTS=	bbox dwg2bmp dwg2pdf dwg2svg
 
 OPTIONS_DEFINE=	EXAMPLES
 
-CFLAGS_i386= -fPIC
-CXXFLAGS_i386= -fPIC
+CFLAGS_i386=	-fPIC
+CXXFLAGS_i386=	-fPIC
+LDFLAGS_i386=	-Wl,-z,notext
+
+.include <bsd.port.options.mk>
+
+.if defined(WITH_DEBUG)
+ALL_TARGET=	debug
+PLIST_SUB+=	DEBUG_LIB_SUFFIX="_debug"
+RESDIR=		${WRKSRC}/debug
+.else
+ALL_TARGET=	release
+PLIST_SUB+=	DEBUG_LIB_SUFFIX=""
+RESDIR=		${WRKSRC}/release
+.endif
 
 pre-configure:
+	${MKDIR} ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}
+	${CP} ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-5.13.2/qt-labs-qtscriptgenerator-5.13.2.pro \
+           ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}/qt-labs-qtscriptgenerator-${_QT_VERSION}.pro
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
 		${WRKSRC}/src/core/RS.cpp
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\

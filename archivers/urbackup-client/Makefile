@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	urbackup-client
-DISTVERSION=	2.3.4
+DISTVERSION=	2.4.11.0
+PORTREVISION=	2
 CATEGORIES=	archivers
-MASTER_SITES=	https://hndl.urbackup.org/Client/${DISTVERSION}/
+MASTER_SITES=	https://hndl.urbackup.org/Client/${DISTVERSION:R}/
 
-MAINTAINER=	freebsd@coombscloud.com
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Client component of the UrBackup backup system
 
 LICENSE=	AGPLv3+
@@ -13,20 +12,21 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcryptopp.so:security/cryptopp
 
-USES=		autoreconf compiler:c++11-lang dos2unix gettext localbase libtool \
-			pkgconfig sqlite:3
+USES=		autoreconf compiler:c++11-lang dos2unix gettext libtool \
+		localbase pkgconfig sqlite:3
 USE_RC_SUBR=	urbackup_client
 
 USERS=		urbackup
 GROUPS=		urbackup
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-clientupdate --without-embedded-sqlite3
+CONFIGURE_ARGS=	--disable-clientupdate \
+		--without-embedded-sqlite3
 CXXFLAGS+=	`pkgconf --cflags-only-other libcryptopp`
 
 SUB_FILES=	pkg-message urbackupclient.conf.sample-daemon
 
-WRKSRC=		${WRKDIR}/${DISTNAME}.0
+WRKSRC=		${WRKDIR}/${DISTNAME}
 
 OPTIONS_DEFINE=	GUI
 OPTIONS_SUB=	yes
@@ -36,23 +36,12 @@ GUI_USE=		WX=3.0+
 GUI_CONFIGURE_ON=	--with-wx-config=${WX_CONFIG}
 GUI_CONFIGURE_OFF=	--enable-headless
 
-CONFFILES=	mariadbdump.conf \
-		mariadbxtrabackup.conf \
-		postgresbase.conf \
+CONFFILES=	mariadbdump.conf mariadbxtrabackup.conf postgresbase.conf \
 		postgresqldump.conf
 
 post-patch:
-	@(cd ${WRKSRC} && ${REINPLACE_CMD} -E -e 's|[[:<:]]byte[[:>:]]|CryptoPP::byte|g' \
-		cryptoplugin/AESDecryption.cpp \
-		cryptoplugin/AESEncryption.cpp \
-		cryptoplugin/AESGCMDecryption.cpp \
-		cryptoplugin/AESGCMEncryption.cpp \
-		cryptoplugin/CryptoFactory.cpp \
-		cryptoplugin/ECDHKeyExchange.cpp \
-		cryptoplugin/ZlibCompression.cpp \
-		cryptoplugin/ZlibDecompression.cpp \
-		md5.h \
-	)
+	@${SED} -i "" -e "s:%%PREFIX%%:${PREFIX}:g" \
+		${WRKSRC}/urbackupclient/backup_scripts/postgresqldump
 
 post-stage:
 	${INSTALL_DATA} ${WRKDIR}/urbackupclient.conf.sample-daemon \

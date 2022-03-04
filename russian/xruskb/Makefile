@@ -1,5 +1,4 @@
 # Created by: Igor Vinokurov <igor@zynaps.ru>
-# $FreeBSD$
 
 PORTNAME=	xruskb
 PORTVERSION=	1.15.4
@@ -14,7 +13,7 @@ COMMENT=	Keyboard layout switcher and indicator
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bzip2
+USES=		tar:bzip2 xorg
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share
 USE_XORG=	x11 ice xt xmu xext sm

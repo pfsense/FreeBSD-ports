@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	1
 PKGNAMESUFFIX=	-qt5
 
@@ -9,11 +7,13 @@ LICENSE=	BSD3CLAUSE GPLv2+ GPLv3+ LGPL21+ PD
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	cmake:devel/cmake
 LIB_DEPENDS=	libuim.so:textproc/uim
 
-USES=		compiler:c++11-lang gl iconv libtool qt:5
+USES=		compiler:c++11-lang gl iconv kde:5 libtool qt:5
 USE_GL=		gl
-USE_QT=		buildtools_build core gui qmake_build widgets x11extras
+USE_KDE=	plasma-framework
+USE_QT=		buildtools_build core declarative gui network qmake_build widgets x11extras
 
 MASTERDIR=	${.CURDIR}/../../textproc/uim
 PKGDIR=		${.CURDIR}

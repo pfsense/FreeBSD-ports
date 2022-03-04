@@ -1,11 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	husky-smapi
 PORTEPOCH=	1
 
 COMMENT=	Husky FTN MSGAPI library
 
-LIB_DEPENDS=    libhusky.so:news/husky-huskylib
+LICENSE=	LGPL21
+
+LIB_DEPENDS=	libhusky.so:news/husky-huskylib
 
 USE_LDCONFIG=	yes
 

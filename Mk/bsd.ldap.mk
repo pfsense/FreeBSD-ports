@@ -1,8 +1,5 @@
 # -*- tab-width: 4; -*-
 # ex: ts=4
-#
-# $FreeBSD$
-#
 
 .if defined(_POSTMKINCLUDED) && !defined(Ldap_Post_Include)
 
@@ -23,9 +20,6 @@ Database_Include_MAINTAINER=		ports@FreeBSD.org
 #				  Default: 24.
 # WANT_OPENLDAP_VER
 #				- Maintainer can set an arbitrary version of OpenLDAP by using it.
-# WANT_OPENLDAP_SASL
-#				- User-defined variable to depend upon SASL-enabled OpenLDAP
-#				  client. Must NOT be set in a port Makefile.
 # IGNORE_OPENLDAP_OPENLDAP
 #				- This variable can be defined if the ports doesn't support
 #				  one or more version of OpenLDAP.
@@ -38,9 +32,11 @@ Database_Include_MAINTAINER=		ports@FreeBSD.org
 DEFAULT_OPENLDAP_VER?=	24
 # OpenLDAP client versions currently supported
 OPENLDAP24_LIB=		libldap-2.4.so.2
+OPENLDAP25_LIB=		libldap-2.5.so.0
+OPENLDAP26_LIB=		libldap.so.2
 
 .if exists(${LOCALBASE}/bin/ldapwhoami)
-_OPENLDAP_VER!=	${LOCALBASE}/bin/ldapwhoami -VV 2>&1 | ${GREP} ldapwhoami | ${SED} -E 's/.*OpenLDAP: ldapwhoami (2)\.(3|4).*/\1\2/'
+_OPENLDAP_VER!=	${LOCALBASE}/bin/ldapwhoami -VV 2>&1 | ${GREP} ldapwhoami | ${SED} -E 's/.*OpenLDAP: ldapwhoami (2)\.([0-9]).*/\1\2/'
 .endif
 
 .if defined(WANT_OPENLDAP_VER)
@@ -67,14 +63,6 @@ IGNORE=	cannot install: OpenLDAP versions mismatch: openldap${_OPENLDAP_VER}-cli
 CFLAGS+=	-DLDAP_DEPRECATED
 
 _OPENLDAP_CLIENT_PKG!=	${PKG_INFO} -Ex openldap.\*-client 2>/dev/null; ${ECHO_CMD}
-_OPENLDAP_FLAVOUR=	${_OPENLDAP_CLIENT_PKG:C/openldap//:C/-client-.*//}
-
-.if defined(WANT_OPENLDAP_SASL)
-.if !empty(_OPENLDAP_CLIENT_PKG) && empty(_OPENLDAP_FLAVOUR)
-IGNORE= cannot install: SASL support requested and ${_OPENLDAP_CLIENT_PKG} is installed
-.endif
-_OPENLDAP_FLAVOUR=	-sasl
-.endif
 
 # And now we are checking if we can use it
 .if defined(OPENLDAP${OPENLDAP_VER}_LIB)
@@ -89,7 +77,7 @@ IGNORE=		cannot install: doesn't work with OpenLDAP version: ${OPENLDAP_VER} (Do
 .		endif
 .	endfor
 .endif # IGNORE_WITH_OPENLDAP
-LIB_DEPENDS+=	${OPENLDAP${OPENLDAP_VER}_LIB}:net/openldap${OPENLDAP_VER}${_OPENLDAP_FLAVOUR}-client
+LIB_DEPENDS+=	${OPENLDAP${OPENLDAP_VER}_LIB}:net/openldap${OPENLDAP_VER}-client
 .else
 IGNORE=		cannot install: unknown OpenLDAP version: ${OPENLDAP_VER}
 .endif # Check for correct libs

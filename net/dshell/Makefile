@@ -1,74 +1,41 @@
-# Created by: Nobutaka Mantani <nobutaka@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	dshell
-PORTVERSION=	3.0.20180914
+PORTVERSION=	3.2.1.b.${SNAPDATE}
 CATEGORIES=	net
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Extensible network forensic analysis framework
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash \
-		${PYTHON_PKGNAMEPREFIX}pygeoip>0:net/py-pygeoip@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pycrypto>0:security/py-pycrypto@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dpkt>0:net/py-dpkt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ipy>0:net-mgmt/py-ipy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pypcap>0:net/py-pypcap@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}tabulate>0:devel/py-tabulate@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}GeoIP2>0:net/py-GeoIP2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pcapy>0:net/py-pcapy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pypacker>0:net/py-pypacker@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}elasticsearch>0:textproc/py-elasticsearch@${PY_FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		python:-2.7 shebangfix
+USES=		python
 USE_GITHUB=	yes
+USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
-SHEBANG_FILES=	bin/*.py
 
 GH_ACCOUNT=	USArmyResearchLab
 GH_PROJECT=	Dshell
-GH_TAGNAME=	709d087
+GH_TAGNAME=	502a546
+SNAPDATE=	20210610
 
-OPTIONS_DEFINE=	DOCS
-
-MAKE_ENV+=	PYTHON_CMD=${PYTHON_CMD}
+SUB_FILES=	pkg-message
+SUB_LIST=	PYTHON_SITELIBDIR=${PYTHON_SITELIBDIR}
 
 post-patch:
-.for f in bin/generate-dshellrc.py doc/generate-doc.sh
-	${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}/bin/bash|' ${WRKSRC}/${f}
-	${REINPLACE_CMD} -e 's|pydoc|${LOCALBASE}/bin/pydoc${PYTHON_VER}|' ${WRKSRC}/${f}
-.endfor
-
-post-build:
-	${RM} -r ${WRKSRC}/lib/${PYTHON_VERSION}
-	${REINPLACE_CMD} -e 's|${WRKSRC}|${ETCDIR}|' ${WRKSRC}/dshell ${WRKSRC}/dshell-decode
-	${REINPLACE_CMD} -e 's|BINPATH=${WRKSRC}/bin|BINPATH=${PREFIX}/libexec/dshell|' \
-		-e 's|DSHELL=${WRKSRC}|DSHELL=${PYTHON_SITELIBDIR}|' \
-		-e 's|DATAPATH=${WRKSRC}/share|DATAPATH=${DATADIR}|' \
-		-e 's|DECODERPATH=${WRKSRC}/decoders|DECODERPATH=${PYTHON_SITELIBDIR}/dshell/decoders|' \
-		-e 's|LIBPATH=${WRKSRC}/lib|LIBPATH=${PYTHON_SITELIBDIR}/dshell|' \
-		${WRKSRC}/.dshellrc
-	(cd ${WRKSRC}/doc; ${REINPLACE_CMD} -e 's|${WRKSRC}|${PYTHON_SITELIBDIR}/dshell|g' *.html)
-
-do-install:
-.for f in dshell dshell-decode
-	${INSTALL_SCRIPT} ${WRKSRC}/${f} ${STAGEDIR}/${PREFIX}/bin
-.endfor
-	${MKDIR} ${STAGEDIR}/${PREFIX}/libexec/dshell
-.for f in decode.py pcapanon.py
-	${INSTALL_SCRIPT} ${WRKSRC}/bin/${f} ${STAGEDIR}/${PREFIX}/libexec/dshell
-.endfor
-	(cd ${STAGEDIR}/${PREFIX}/libexec/dshell; \
-		${LN} -sf decode.py decode)
-	${MKDIR} ${STAGEDIR}/${PREFIX}/etc/dshell
-	${INSTALL_DATA} ${WRKSRC}/.dshellrc ${STAGEDIR}/${PREFIX}/etc/dshell
-	(cd ${WRKSRC}/lib; ${COPYTREE_SHARE} . ${STAGEDIR}/${PYTHON_SITELIBDIR}/dshell)
-	(cd ${WRKSRC}/decoders; ${COPYTREE_SHARE} . ${STAGEDIR}/${PYTHON_SITELIBDIR}/dshell/decoders)
-	${MKDIR} ${STAGEDIR}/${DATADIR}/GeoIP
-
-do-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}/${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}/${DOCSDIR}
-	(cd ${WRKSRC}/doc; ${COPYTREE_SHARE} . ${STAGEDIR}/${DOCSDIR} "-name *\.html")
+	${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}/bin/bash|' \
+			 -e 's|python3|${PYTHON_CMD}|' ${WRKSRC}/scripts/dshell
+	${REINPLACE_CMD} -e 's|python3|${PYTHON_CMD}|' ${WRKSRC}/dshell/data/dshellrc
 
 .include <bsd.port.mk>

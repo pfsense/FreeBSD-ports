@@ -1,13 +1,12 @@
 # Created by: arved
-# $FreeBSD$
 
 PORTNAME=	x2goclient
-PORTVERSION=	4.1.0.0
-PORTREVISION=	1
+PORTVERSION=	4.1.2.2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	http://code.x2go.org/releases/source/x2goclient/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Qt client for the X2Go system
 
 LICENSE=	GPLv2
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libcups.so:print/cups \
 RUN_DEPENDS=	nxproxy:net/nxproxy \
 		x2goclient-cli:net/x2goclient-cli
 
-USES=		gl qmake qt:5
+USES=		compiler:c++11-lang gl pkgconfig qmake qt:5 xorg
 USE_GL=		gl
 USE_XORG=	x11 xpm
 USE_QT=		core gui network svg widgets x11extras  \

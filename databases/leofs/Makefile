@@ -1,8 +1,8 @@
 # Created by: Mikolaj Golub <trociny@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	leofs
-PORTVERSION=	1.4.3
+DISTVERSION=	1.4.3
+PORTREVISION=	1
 CATEGORIES=	databases
 DIST_SUBDIR=	${PORTNAME}
 
@@ -11,16 +11,16 @@ COMMENT=	Highly scalable, fault-tolerant distributed file system
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/erlang20/bin/erlc:lang/erlang-runtime20 \
+BROKEN_aarch64=		Does not compile: fatal error: lzo/lzo1x.h file not found
+NOT_FOR_ARCHS=		riscv64 sparc64
+NOT_FOR_ARCHS_REASON=	does not build: error Please implement AtomicPointer for this platform
+
+BUILD_DEPENDS=	${LOCALBASE}/lib/erlang21/bin/erlc:lang/erlang-runtime21 \
 		${LOCALBASE}/bin/cmake:devel/cmake \
 		${LOCALBASE}/lib/libcheck.a:devel/check
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	leo-project
-
-BROKEN_aarch64=		Does not compile: fatal error: lzo/lzo1x.h file not found
-NOT_FOR_ARCHS=		powerpc64 sparc64
-NOT_FOR_ARCHS_REASON=	does not build: error Please implement AtomicPointer for this platform
 
 LEOFS_USER=	leofs
 LEOFS_GROUP=	leofs
@@ -63,7 +63,7 @@ DOS2UNIX_FILES=	apps/leo_*/snmp/snmpa_*/leo_*_snmp.config
 
 ALL_TARGET=	release
 MAKE_JOBS_UNSAFE=yes
-MAKE_ENV=	PATH=${LOCALBASE}/lib/erlang20/bin:${PATH}
+MAKE_ENV=	PATH=${LOCALBASE}/lib/erlang21/bin:${PATH}
 
 LEOFS_DEPS=	\
 	DeadZen/goldrush=0.1.9:goldrush \
@@ -106,6 +106,11 @@ LEOFS_DEPS=	\
 	systemd/erlang-sd_notify=v1.0:sd_notify \
 
 GH_TUPLE=	${LEOFS_DEPS:C,(.*)/(.*)=(.*):(.*),\1:\2:\3:\4/deps/\4,}
+
+CFLAGS_powerpc=	-DLEVELDB_CSTDATOMIC_PRESENT
+CFLAGS_powerpc64=	-DLEVELDB_CSTDATOMIC_PRESENT
+CFLAGS_powerpc64le=	-DLEVELDB_CSTDATOMIC_PRESENT
+CFLAGS_powerpcspe=	-DLEVELDB_CSTDATOMIC_PRESENT
 
 post-extract:
 .for dep in ${LEOFS_DEPS}

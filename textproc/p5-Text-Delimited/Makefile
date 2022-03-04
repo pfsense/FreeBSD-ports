@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Text-Delimited
 PORTVERSION=	2.11
@@ -12,8 +11,11 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Module for parsing delimited text files
 
 LICENSE=	ART20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,11 +1,9 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mvtnorm
-PORTVERSION=	0.9.96
-PORTREVISION=	18
+DISTVERSION=	1.1-3
 CATEGORIES=	math
-DISTNAME=	${PORTNAME}_${PORTVERSION:C/\./-/g:C/-/./1}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Multivariate Normal and t Distributions

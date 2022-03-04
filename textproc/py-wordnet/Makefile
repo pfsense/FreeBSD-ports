@@ -1,5 +1,4 @@
 # Created by: Hye-Shik Chang <perky@fallin.lv>
-# $FreeBSD$
 
 PORTNAME=	wordnet
 PORTVERSION=	2.0.1
@@ -15,7 +14,7 @@ DISTFILES=	pywordnet-${PORTVERSION}.tar.gz:pywn \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python Interface to WordNet
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 WRKSRC=		${WRKDIR}/py${PORTNAME}-${PORTVERSION}

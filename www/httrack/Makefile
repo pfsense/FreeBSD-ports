@@ -1,5 +1,4 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	httrack
 PORTVERSION=	3.49.2
@@ -26,11 +25,11 @@ CONFIGURE_ARGS=	--docdir=${DOCSDIR} --with-zlib=/usr
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	${PREFIX}/lib/httrack
-USES=		alias gmake iconv libtool shebangfix ssl
+USES=		alias cpe gmake iconv libtool shebangfix ssl
 
 SHEBANG_FILES=	src/webhttrack
 
-ICONS_VARS=	INSTALLS_ICONS=yes
+ICONS_USES=	gnome
 
 .include <bsd.port.options.mk>
 

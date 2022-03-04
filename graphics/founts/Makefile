@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	founts
 PORTVERSION=	13
@@ -8,11 +7,12 @@ CATEGORIES=	graphics games
 MASTER_SITES=	http://www.linuxmotors.com/founts/downloads/
 DISTFILES=	${PORTNAME}-${DISTVERSION}.tgz
 
-MAINTAINER=	koalative@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Demo/program inspired by Erics cascade
 
 LICENSE=	GPLv2
 
+USES=		sdl
 USE_SDL=	sdl
 
 PLIST_FILES=	bin/${PORTNAME} \

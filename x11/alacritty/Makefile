@@ -1,346 +1,264 @@
-# $FreeBSD$
-
 PORTNAME=	alacritty
-PORTVERSION=	0.2.9
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+DISTVERSION=	0.9.0
+PORTREVISION=	4
 CATEGORIES=	x11
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	GPU-accelerated terminal emulator
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-APACHE
 
-LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libxkbcommon.so:x11/libxkbcommon
+TEST_DEPENDS=	dejavu>0:x11-fonts/dejavu
 
-USES=		cargo
-
+USES=		cargo localbase:ldflags python:3.6+,build ssl:build
 USE_GITHUB=	yes
-GH_ACCOUNT=	jwilm
+
+CARGO_CRATES=	ab_glyph_rasterizer-0.1.4 \
+		adler32-1.2.0 \
+		andrew-0.3.1 \
+		android_glue-0.2.3 \
+		ansi_term-0.11.0 \
+		atty-0.2.14 \
+		autocfg-1.0.1 \
+		base64-0.13.0 \
+		bitflags-1.2.1 \
+		block-0.1.6 \
+		calloop-0.6.5 \
+		cc-1.0.69 \
+		cfg-if-0.1.10 \
+		cfg-if-1.0.0 \
+		cgl-0.3.2 \
+		clap-2.33.3 \
+		clipboard-win-3.1.1 \
+		cmake-0.1.45 \
+		cocoa-0.23.0 \
+		cocoa-0.24.0 \
+		cocoa-foundation-0.1.0 \
+		copypasta-0.7.1 \
+		core-foundation-0.7.0 \
+		core-foundation-0.9.1 \
+		core-foundation-sys-0.7.0 \
+		core-foundation-sys-0.8.2 \
+		core-graphics-0.19.2 \
+		core-graphics-0.22.2 \
+		core-graphics-types-0.1.1 \
+		core-text-19.2.0 \
+		core-video-sys-0.1.4 \
+		crc32fast-1.2.1 \
+		crossfont-0.3.1 \
+		darling-0.10.2 \
+		darling_core-0.10.2 \
+		darling_macro-0.10.2 \
+		derivative-2.2.0 \
+		dirs-3.0.2 \
+		dirs-sys-0.3.6 \
+		dispatch-0.2.0 \
+		dlib-0.4.2 \
+		dlib-0.5.0 \
+		downcast-rs-1.2.0 \
+		dtoa-0.4.8 \
+		dwrote-0.11.0 \
+		embed-resource-1.6.3 \
+		expat-sys-2.1.6 \
+		filetime-0.2.14 \
+		fnv-1.0.7 \
+		foreign-types-0.3.2 \
+		foreign-types-0.5.0 \
+		foreign-types-macros-0.2.1 \
+		foreign-types-shared-0.1.1 \
+		foreign-types-shared-0.3.0 \
+		freetype-rs-0.26.0 \
+		freetype-sys-0.13.1 \
+		fsevent-0.4.0 \
+		fsevent-sys-2.0.1 \
+		fuchsia-zircon-0.3.3 \
+		fuchsia-zircon-sys-0.3.3 \
+		getrandom-0.2.3 \
+		gl_generator-0.14.0 \
+		glutin-0.26.0 \
+		glutin_egl_sys-0.1.5 \
+		glutin_emscripten_sys-0.1.1 \
+		glutin_gles2_sys-0.1.5 \
+		glutin_glx_sys-0.1.7 \
+		glutin_wgl_sys-0.1.5 \
+		hermit-abi-0.1.19 \
+		ident_case-1.0.1 \
+		inotify-0.7.1 \
+		inotify-sys-0.1.5 \
+		instant-0.1.10 \
+		iovec-0.1.4 \
+		itoa-0.4.7 \
+		jni-sys-0.3.0 \
+		kernel32-sys-0.2.2 \
+		khronos_api-3.1.0 \
+		lazy-bytes-cast-5.0.1 \
+		lazy_static-1.4.0 \
+		lazycell-1.3.0 \
+		libc-0.2.98 \
+		libloading-0.6.7 \
+		libloading-0.7.0 \
+		linked-hash-map-0.5.4 \
+		lock_api-0.4.4 \
+		log-0.4.14 \
+		malloc_buf-0.0.6 \
+		maybe-uninit-2.0.0 \
+		memchr-2.3.4 \
+		memmap2-0.1.0 \
+		memmap2-0.2.3 \
+		memoffset-0.6.4 \
+		miniz_oxide-0.3.7 \
+		mio-0.6.23 \
+		mio-anonymous-pipes-0.2.0 \
+		mio-extras-2.0.6 \
+		miow-0.2.2 \
+		miow-0.3.7 \
+		ndk-0.2.1 \
+		ndk-glue-0.2.1 \
+		ndk-macro-0.2.0 \
+		ndk-sys-0.2.1 \
+		net2-0.2.37 \
+		nix-0.18.0 \
+		nix-0.20.0 \
+		nix-0.22.0 \
+		nom-6.2.1 \
+		notify-4.0.17 \
+		num_enum-0.4.3 \
+		num_enum_derive-0.4.3 \
+		objc-0.2.7 \
+		objc-foundation-0.1.1 \
+		objc_id-0.1.1 \
+		once_cell-1.8.0 \
+		osmesa-sys-0.1.2 \
+		owned_ttf_parser-0.6.0 \
+		parking_lot-0.11.1 \
+		parking_lot_core-0.8.3 \
+		percent-encoding-2.1.0 \
+		pkg-config-0.3.19 \
+		png-0.16.8 \
+		proc-macro-crate-0.1.5 \
+		proc-macro2-1.0.28 \
+		quote-1.0.9 \
+		raw-window-handle-0.3.3 \
+		redox_syscall-0.2.9 \
+		redox_users-0.4.0 \
+		regex-automata-0.1.10 \
+		regex-syntax-0.6.25 \
+		rusttype-0.9.2 \
+		ryu-1.0.5 \
+		same-file-1.0.6 \
+		scoped-tls-1.0.0 \
+		scopeguard-1.1.0 \
+		serde-1.0.127 \
+		serde_derive-1.0.127 \
+		serde_json-1.0.66 \
+		serde_yaml-0.8.17 \
+		servo-fontconfig-0.5.1 \
+		servo-fontconfig-sys-5.1.0 \
+		shared_library-0.1.9 \
+		signal-hook-0.1.17 \
+		signal-hook-registry-1.4.0 \
+		slab-0.4.3 \
+		smallvec-1.6.1 \
+		smithay-client-toolkit-0.12.3 \
+		smithay-client-toolkit-0.14.0 \
+		smithay-clipboard-0.6.4 \
+		spsc-buffer-0.1.1 \
+		strsim-0.8.0 \
+		strsim-0.9.3 \
+		syn-1.0.74 \
+		textwrap-0.11.0 \
+		thiserror-1.0.26 \
+		thiserror-impl-1.0.26 \
+		time-0.1.43 \
+		toml-0.5.8 \
+		ttf-parser-0.6.2 \
+		unicode-width-0.1.8 \
+		unicode-xid-0.2.2 \
+		utf8parse-0.2.0 \
+		vec_map-0.8.2 \
+		version_check-0.9.3 \
+		vswhom-0.1.0 \
+		vswhom-sys-0.1.0 \
+		vte-0.10.1 \
+		vte_generate_state_changes-0.1.1 \
+		walkdir-2.3.2 \
+		wasi-0.10.2+wasi-snapshot-preview1 \
+		wayland-client-0.28.6 \
+		wayland-commons-0.28.6 \
+		wayland-cursor-0.28.6 \
+		wayland-egl-0.28.6 \
+		wayland-protocols-0.28.6 \
+		wayland-scanner-0.28.6 \
+		wayland-sys-0.28.6 \
+		winapi-0.2.8 \
+		winapi-0.3.9 \
+		winapi-build-0.1.1 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.5 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		winit-0.24.0 \
+		winreg-0.9.0 \
+		wio-0.2.2 \
+		ws2_32-sys-0.2.1 \
+		x11-clipboard-0.5.2 \
+		x11-dl-2.18.5 \
+		xcb-0.9.0 \
+		xcursor-0.3.3 \
+		xdg-2.2.0 \
+		xml-rs-0.8.4 \
+		yaml-rust-0.4.5
+CARGO_INSTALL_PATH=	alacritty
+
+CARGO_FEATURES+=	--no-default-features
+CARGO_CARGOTOML=	${WRKSRC}/${PORTNAME}/Cargo.toml
+
+# For xcb crate
+BINARY_ALIAS=	python3=${PYTHON_CMD}
+
+PLIST_FILES=	bin/alacritty \
+		etc/bash_completion.d/alacritty.bash \
+		share/fish/completions/alacritty.fish \
+		share/man/man1/alacritty.1.gz \
+		share/pixmaps/Alacritty.svg \
+		share/zsh/site-functions/_alacritty \
+		${DESKTOPDIR}/Alacritty.desktop
+PORTEXAMPLES=	alacritty.yml
 
 OPTIONS_DEFINE=	EXAMPLES
 
-PLIST_FILES=	bin/alacritty \
-		man/man1/alacritty.1.gz \
-		etc/bash_completion.d/alacritty-completions.bash \
-		share/fish/completions/alacritty-completions.fish \
-		share/zsh/site-functions/_alacritty \
-		${DESKTOPDIR:S,^${PREFIX}/,,}/alacritty.desktop
+BACKEND_DESC=	Display backend
 
-PORTEXAMPLES=	alacritty.yml
+OPTIONS_MULTI=		BACKEND
+OPTIONS_MULTI_BACKEND=	WAYLAND X11
+OPTIONS_DEFAULT=	WAYLAND X11
 
-CARGO_CRATES=	MacTypes-sys-2.1.0 \
-		adler32-1.0.3 \
-		advapi32-sys-0.2.0 \
-		aho-corasick-0.6.9 \
-		andrew-0.1.6 \
-		android_glue-0.2.3 \
-		ansi_term-0.11.0 \
-		approx-0.3.1 \
-		argon2rs-0.2.5 \
-		arraydeque-0.4.3 \
-		arrayvec-0.4.10 \
-		atty-0.2.11 \
-		autocfg-0.1.2 \
-		backtrace-0.3.13 \
-		backtrace-sys-0.1.28 \
-		base64-0.10.1 \
-		bindgen-0.33.2 \
-		bitflags-0.7.0 \
-		bitflags-1.0.4 \
-		blake2-rfc-0.2.18 \
-		block-0.1.6 \
-		byteorder-1.3.1 \
-		bytes-0.4.11 \
-		bzip2-0.3.3 \
-		bzip2-sys-0.1.7 \
-		cc-1.0.29 \
-		cexpr-0.2.3 \
-		cfg-if-0.1.6 \
-		cgl-0.2.3 \
-		clang-sys-0.22.0 \
-		clap-2.32.0 \
-		clipboard-0.4.6 \
-		clipboard-win-2.1.2 \
-		cloudabi-0.0.3 \
-		cmake-0.1.35 \
-		cocoa-0.18.4 \
-		color_quant-1.0.1 \
-		constant_time_eq-0.1.3 \
-		core-foundation-0.5.1 \
-		core-foundation-0.6.3 \
-		core-foundation-sys-0.5.1 \
-		core-foundation-sys-0.6.2 \
-		core-graphics-0.13.0 \
-		core-graphics-0.17.3 \
-		core-text-13.1.1 \
-		core-text-9.2.0 \
-		crc32fast-1.1.2 \
-		crossbeam-0.6.0 \
-		crossbeam-channel-0.3.8 \
-		crossbeam-deque-0.2.0 \
-		crossbeam-deque-0.6.3 \
-		crossbeam-epoch-0.3.1 \
-		crossbeam-epoch-0.7.1 \
-		crossbeam-utils-0.2.2 \
-		crossbeam-utils-0.6.5 \
-		deflate-0.7.19 \
-		dirs-1.0.4 \
-		dlib-0.4.1 \
-		downcast-rs-1.0.3 \
-		dtoa-0.4.3 \
-		dunce-0.1.1 \
-		either-1.5.0 \
-		embed-resource-1.1.4 \
-		encoding_rs-0.8.16 \
-		env_logger-0.5.13 \
-		env_logger-0.6.0 \
-		errno-0.2.4 \
-		errno-dragonfly-0.1.1 \
-		error-chain-0.11.0 \
-		euclid-0.19.5 \
-		euclid_macros-0.1.0 \
-		expat-sys-2.1.6 \
-		failure-0.1.5 \
-		failure_derive-0.1.5 \
-		filetime-0.2.4 \
-		fnv-1.0.6 \
-		font-loader-0.6.0 \
-		foreign-types-0.3.2 \
-		foreign-types-shared-0.1.1 \
-		freetype-rs-0.19.1 \
-		freetype-sys-0.7.1 \
-		fsevent-0.2.17 \
-		fsevent-sys-0.1.6 \
-		fuchsia-cprng-0.1.1 \
-		fuchsia-zircon-0.3.3 \
-		fuchsia-zircon-sys-0.3.3 \
-		futures-0.1.25 \
-		futures-cpupool-0.1.8 \
-		gcc-0.3.55 \
-		gdi32-sys-0.2.0 \
-		gif-0.10.1 \
-		gl_generator-0.10.0 \
-		gleam-0.6.8 \
-		glob-0.2.11 \
-		glutin-0.19.0 \
-		h2-0.1.16 \
-		http-0.1.15 \
-		httparse-1.3.3 \
-		humantime-1.2.0 \
-		hyper-0.12.24 \
-		hyper-tls-0.3.1 \
-		idna-0.1.5 \
-		image-0.20.1 \
-		indexmap-1.0.2 \
-		inflate-0.4.4 \
-		inotify-0.6.1 \
-		inotify-sys-0.1.3 \
-		iovec-0.1.2 \
-		itoa-0.4.3 \
-		jpeg-decoder-0.1.15 \
-		kernel32-sys-0.2.2 \
-		khronos_api-3.0.0 \
-		lazy_static-1.2.0 \
-		lazycell-1.2.1 \
-		libc-0.2.49 \
-		libflate-0.1.19 \
-		libloading-0.5.0 \
-		libz-sys-1.0.25 \
-		line_drawing-0.7.0 \
-		linked-hash-map-0.5.1 \
-		lock_api-0.1.5 \
-		log-0.4.6 \
-		lzw-0.10.0 \
-		malloc_buf-0.0.6 \
-		matches-0.1.8 \
-		memchr-1.0.2 \
-		memchr-2.1.3 \
-		memmap-0.7.0 \
-		memoffset-0.2.1 \
-		mime-0.3.13 \
-		mime_guess-2.0.0-alpha.6 \
-		mio-0.6.16 \
-		mio-anonymous-pipes-0.1.0 \
-		mio-extras-2.0.5 \
-		mio-named-pipes-0.1.6 \
-		miow-0.2.1 \
-		miow-0.3.3 \
-		named_pipe-0.3.0 \
-		native-tls-0.2.2 \
-		net2-0.2.33 \
-		nix-0.12.0 \
-		nodrop-0.1.13 \
-		nom-3.2.1 \
-		nom-4.2.0 \
-		notify-4.0.9 \
-		num-derive-0.2.4 \
-		num-integer-0.1.39 \
-		num-iter-0.1.37 \
-		num-rational-0.2.1 \
-		num-traits-0.1.43 \
-		num-traits-0.2.6 \
-		num_cpus-1.10.0 \
-		objc-0.2.5 \
-		objc-foundation-0.1.1 \
-		objc_id-0.1.1 \
-		openssl-0.10.16 \
-		openssl-probe-0.1.2 \
-		openssl-sys-0.9.40 \
-		ordered-float-0.5.2 \
-		ordered-float-1.0.1 \
-		osmesa-sys-0.1.2 \
-		owning_ref-0.4.0 \
-		parking_lot-0.7.1 \
-		parking_lot_core-0.4.0 \
-		peeking_take_while-0.1.2 \
-		percent-encoding-1.0.1 \
-		phf-0.7.24 \
-		phf_codegen-0.7.24 \
-		phf_generator-0.7.24 \
-		phf_shared-0.7.24 \
-		pkg-config-0.3.14 \
-		png-0.12.0 \
-		podio-0.1.6 \
-		proc-macro2-0.4.27 \
-		quick-error-1.2.2 \
-		quote-0.3.15 \
-		quote-0.6.11 \
-		rand-0.4.6 \
-		rand-0.6.5 \
-		rand_chacha-0.1.1 \
-		rand_core-0.3.1 \
-		rand_core-0.4.0 \
-		rand_hc-0.1.0 \
-		rand_isaac-0.1.1 \
-		rand_jitter-0.1.3 \
-		rand_os-0.1.2 \
-		rand_pcg-0.1.1 \
-		rand_xorshift-0.1.1 \
-		rayon-1.0.3 \
-		rayon-core-1.4.1 \
-		rdrand-0.4.0 \
-		redox_syscall-0.1.51 \
-		redox_termios-0.1.1 \
-		redox_users-0.2.0 \
-		regex-0.2.11 \
-		regex-1.1.0 \
-		regex-syntax-0.5.6 \
-		regex-syntax-0.6.5 \
-		remove_dir_all-0.5.1 \
-		reqwest-0.9.9 \
-		rustc-demangle-0.1.13 \
-		rustc_version-0.2.3 \
-		rusttype-0.4.3 \
-		rusttype-0.7.5 \
-		ryu-0.2.7 \
-		same-file-1.0.4 \
-		schannel-0.1.14 \
-		scoped_threadpool-0.1.9 \
-		scopeguard-0.3.3 \
-		security-framework-0.2.2 \
-		security-framework-sys-0.2.3 \
-		semver-0.9.0 \
-		semver-parser-0.7.0 \
-		serde-1.0.87 \
-		serde_derive-1.0.87 \
-		serde_json-1.0.38 \
-		serde_urlencoded-0.5.4 \
-		serde_yaml-0.8.8 \
-		servo-fontconfig-0.4.0 \
-		servo-fontconfig-sys-4.0.7 \
-		shared_library-0.1.9 \
-		siphasher-0.2.3 \
-		slab-0.4.2 \
-		smallvec-0.6.8 \
-		smithay-client-toolkit-0.4.4 \
-		socket2-0.3.8 \
-		spsc-buffer-0.1.1 \
-		stable_deref_trait-1.1.1 \
-		static_assertions-0.3.1 \
-		stb_truetype-0.2.6 \
-		string-0.1.3 \
-		strsim-0.7.0 \
-		syn-0.15.26 \
-		synstructure-0.10.1 \
-		tempfile-3.0.6 \
-		termcolor-1.0.4 \
-		terminfo-0.6.1 \
-		termion-1.5.1 \
-		textwrap-0.10.0 \
-		thread_local-0.3.6 \
-		tiff-0.2.2 \
-		time-0.1.42 \
-		tokio-0.1.15 \
-		tokio-current-thread-0.1.4 \
-		tokio-executor-0.1.6 \
-		tokio-io-0.1.11 \
-		tokio-reactor-0.1.8 \
-		tokio-tcp-0.1.3 \
-		tokio-threadpool-0.1.11 \
-		tokio-timer-0.2.10 \
-		try-lock-0.2.2 \
-		ucd-util-0.1.3 \
-		unicase-1.4.2 \
-		unicase-2.2.0 \
-		unicode-bidi-0.3.4 \
-		unicode-normalization-0.1.8 \
-		unicode-width-0.1.5 \
-		unicode-xid-0.1.0 \
-		unreachable-1.0.0 \
-		url-1.7.2 \
-		user32-sys-0.2.0 \
-		utf8-ranges-1.0.2 \
-		utf8parse-0.1.1 \
-		uuid-0.7.2 \
-		vcpkg-0.2.6 \
-		vec_map-0.8.1 \
-		version_check-0.1.5 \
-		void-1.0.2 \
-		vte-0.3.3 \
-		walkdir-2.2.7 \
-		want-0.0.6 \
-		wayland-client-0.21.11 \
-		wayland-commons-0.21.11 \
-		wayland-protocols-0.21.11 \
-		wayland-scanner-0.21.11 \
-		wayland-sys-0.21.11 \
-		which-1.0.5 \
-		widestring-0.2.2 \
-		widestring-0.4.0 \
-		winapi-0.2.8 \
-		winapi-0.3.6 \
-		winapi-build-0.1.1 \
-		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.2 \
-		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		wincolor-1.0.1 \
-		winit-0.18.1 \
-		winpty-sys-0.4.3 \
-		winreg-0.4.0 \
-		ws2_32-sys-0.2.1 \
-		x11-clipboard-0.2.2 \
-		x11-dl-2.18.3 \
-		xcb-0.8.2 \
-		xdg-2.2.0 \
-		xml-rs-0.8.0 \
-		yaml-rust-0.4.2 \
-		zip-0.5.0
+WAYLAND_VARS=	CARGO_FEATURES+=wayland
+X11_USES=	xorg
+X11_USE=	XORG=xcb
+X11_VARS=	CARGO_FEATURES+=x11
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/alacritty
-	${INSTALL_DATA} ${WRKSRC}/alacritty.desktop ${STAGEDIR}${DESKTOPDIR}
-	${INSTALL_MAN} ${WRKSRC}/alacritty.man ${STAGEDIR}${MANPREFIX}/man/man1/alacritty.1
+	${INSTALL_DATA} ${WRKSRC}/extra/linux/Alacritty.desktop \
+		${STAGEDIR}${DESKTOPDIR}
+	${INSTALL_DATA} ${WRKSRC}/extra/logo/alacritty-term.svg \
+		${STAGEDIR}${PREFIX}/share/pixmaps/Alacritty.svg
+	${INSTALL_MAN} ${WRKSRC}/extra/alacritty.man \
+		${STAGEDIR}${PREFIX}/share/man/man1/alacritty.1
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
-	${INSTALL_DATA} ${WRKSRC}/alacritty-completions.bash \
+	${INSTALL_DATA} ${WRKSRC}/extra/completions/alacritty.bash \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/fish/completions
-	${INSTALL_DATA} ${WRKSRC}/alacritty-completions.fish \
+	${INSTALL_DATA} ${WRKSRC}/extra/completions/alacritty.fish \
 		${STAGEDIR}${PREFIX}/share/fish/completions
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions
-	${INSTALL_DATA} ${WRKSRC}/alacritty-completions.zsh \
-		${STAGEDIR}${PREFIX}/share/zsh/site-functions/_alacritty
+	${INSTALL_DATA} ${WRKSRC}/extra/completions/_alacritty \
+		${STAGEDIR}${PREFIX}/share/zsh/site-functions
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

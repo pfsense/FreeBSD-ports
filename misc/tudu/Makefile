@@ -1,8 +1,7 @@
 # Created by: mp39590@gmail.com
-# $FreeBSD$
 
 PORTNAME=	tudu
-PORTVERSION=	0.10.2
+PORTVERSION=	0.10.3
 CATEGORIES=	misc
 MASTER_SITES=	http://code.meskio.net/tudu/
 

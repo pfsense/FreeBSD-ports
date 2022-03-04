@@ -1,24 +1,27 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cleanup-maildir
-PORTVERSION=	0.1.1
+PORTVERSION=	0.3.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail python
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Script for cleaning up mails in Maildir folders based on arival date
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}graph-core>=${PORTVERSION}:graphics/py-graph-core@${PY_FLAVOR}
+LICENSE=	AS-IS
+LICENSE_NAME=	AS-IS
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		python shebangfix
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygraph>=0.2.1:graphics/py-pygraph@${PY_FLAVOR}
+
+USES=		python:3.6+ shebangfix
 USE_GITHUB=	yes
-NO_BUILD=	yes
-NO_ARCH=	yes
-
 GH_ACCOUNT=	ehaupt
-
 SHEBANG_FILES=	cleanup-maildir.py
+NO_ARCH=	yes
+NO_BUILD=	yes
+
 PLIST_FILES=	bin/cleanup-maildir
 
 do-install:

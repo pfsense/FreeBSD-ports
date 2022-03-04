@@ -1,5 +1,4 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mixer.app
 PORTVERSION=	1.8.0
@@ -17,6 +16,7 @@ CXXFLAGS+=	-fno-rtti -fno-exceptions -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lXpm -lXext -lX11
 MAKE_ARGS=	CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
 
+USES=		xorg
 USE_XORG=	xpm xext x11
 
 do-install:

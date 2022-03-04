@@ -1,5 +1,4 @@
 # Created by: Espen Tagestad <espen@tagestad.no>
-# $FreeBSD$
 
 PORTNAME=	CGI-Application-Plugin-ValidateRM
 PORTVERSION=	2.5
@@ -8,7 +7,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Help validate forms with the CGI::Application framework
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

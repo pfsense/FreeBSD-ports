@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	uroot
-DISTVERSION=	2.0-9
-PORTREVISION=	1
+DISTVERSION=	2.1-2
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -12,6 +10,6 @@ COMMENT=	Unit Root Tests for Seasonal Time Series
 
 LICENSE=	GPLv2
 
-USES=		cran:auto-plist,compiles
+USES=		cran:auto-plist
 
 .include <bsd.port.mk>

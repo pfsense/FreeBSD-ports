@@ -1,5 +1,4 @@
 # Created by: Dave Grochowski
-# $FreeBSD$
 
 PORTNAME=	xorg-cf-files
 PORTVERSION=	1.0.6
@@ -10,7 +9,9 @@ COMMENT=	X.org cf files for use with imake builds
 
 LICENSE=	MIT
 
-XORG_CAT=	util
+USES=		xorg-cat:util
+
+NO_ARCH=	yes
 
 post-patch:
 		@${REINPLACE_CMD} 's|\(define ExtraXaw[^ ]*\) [$$].*|\1 /**/|' \

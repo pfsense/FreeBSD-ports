@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	endless-sky-high-dpi
-PORTVERSION=	0.9.8
+PORTVERSION=	0.9.14
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 

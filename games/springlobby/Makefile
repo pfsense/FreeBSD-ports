@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	springlobby
 PORTVERSION=	0.180
-PORTREVISION=	17
+PORTREVISION=	23
 CATEGORIES=	games net
 MASTER_SITES=	http://www.springlobby.info/tarballs/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -22,7 +19,6 @@ USES=		cmake compiler:c++11-lib pkgconfig tar:bzip2
 CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE="${WX_CONFIG}" \
 		-DENABLE_DEBUG_REPORT=FALSE
 USE_WX=		2.8+
-LLD_UNSAFE=	yes
 
 PORTDOCS=	*
 

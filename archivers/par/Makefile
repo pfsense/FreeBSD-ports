@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	par
 PORTVERSION=	0.03.01
@@ -12,13 +11,13 @@ COMMENT=	Archiver for Quake I and II packed data files
 
 LICENSE=	GPLv2
 
-CONFLICTS=	par-[0-9]*
+CONFLICTS=	par
 
 MAKEFILE=	Makefile.Linux
 MAKE_ARGS=	CC="${CC}"
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz
+		share/man/man1/${PORTNAME}.1.gz
 PORTDOCS=	ChangeLog README
 
 OPTIONS_DEFINE=	DOCS
@@ -32,7 +31,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

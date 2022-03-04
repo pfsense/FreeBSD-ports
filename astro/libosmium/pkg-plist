@@ -87,7 +87,9 @@ include/osmium/io/bzip2_compression.hpp
 include/osmium/io/compression.hpp
 include/osmium/io/debug_output.hpp
 include/osmium/io/detail/debug_output_format.hpp
+include/osmium/io/detail/ids_output_format.hpp
 include/osmium/io/detail/input_format.hpp
+include/osmium/io/detail/lz4.hpp
 include/osmium/io/detail/o5m_input_format.hpp
 include/osmium/io/detail/opl_input_format.hpp
 include/osmium/io/detail/opl_output_format.hpp
@@ -113,12 +115,14 @@ include/osmium/io/file_compression.hpp
 include/osmium/io/file_format.hpp
 include/osmium/io/gzip_compression.hpp
 include/osmium/io/header.hpp
+include/osmium/io/ids_output.hpp
 include/osmium/io/input_iterator.hpp
 include/osmium/io/o5m_input.hpp
 include/osmium/io/opl_input.hpp
 include/osmium/io/opl_output.hpp
 include/osmium/io/output_iterator.hpp
 include/osmium/io/overwrite.hpp
+include/osmium/io/pbf.hpp
 include/osmium/io/pbf_input.hpp
 include/osmium/io/pbf_output.hpp
 include/osmium/io/reader.hpp

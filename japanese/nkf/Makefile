@@ -1,11 +1,10 @@
 # Created by: asami
-# $FreeBSD$
 
 PORTNAME=	nkf
 PORTVERSION=	2.1.4
 PORTEPOCH=	1
 CATEGORIES?=	japanese
-MASTER_SITES=	OSDN/${PORTNAME}/64158
+MASTER_SITES=	OSDN/${PORTNAME}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Network Kanji code conversion Filter

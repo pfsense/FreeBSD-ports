@@ -1,9 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	emc2
 DISTVERSIONPREFIX=v
-DISTVERSION=	2.16d
+DISTVERSION=	2.17
 CATEGORIES=	math science
 MASTER_SITES=	https://www.ljll.math.upmc.fr/~hecht/ftp/emc2/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -15,12 +14,12 @@ COMMENT=	Graphical editor of two-dimensional mesh geometries
 LICENSE=	INRIA
 LICENSE_NAME=	INRIA license, perhaps specific to emc2
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+# No resale, contact author for commercial usage
 LICENSE_PERMS=	auto-accept no-dist-sell no-pkg-sell
 
-RESTRICTED=	No resale, contact author for commercial usage
+USES=		gmake xorg
+USE_XORG=	x11 xau xcb xdmcp
 
-USE_XORG=	x11
-USES=		gmake
 ALL_TARGET=	${PORTNAME}
 
 .if defined(LANG) && ${LANG:Mfr*} != ""

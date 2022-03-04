@@ -1,5 +1,4 @@
 # Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	oauth2
 DISTVERSION=	1.9.0.post1
@@ -22,7 +21,7 @@ TESTS_DESC=		Install test suite requirements
 TESTS_BUILD_DEPENDS=	${TEST_DEPENDS}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 do-test:

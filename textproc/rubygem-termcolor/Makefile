@@ -1,5 +1,4 @@
 # Created by: Dennis Herrmann <dhn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	termcolor
 PORTVERSION=	1.2.2
@@ -13,8 +12,9 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-highline>=1.5.0:devel/rubygem-highline
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

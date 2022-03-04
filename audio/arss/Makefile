@@ -1,5 +1,4 @@
 # Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
 
 PORTNAME=	arss
 PORTVERSION=	0.2.3
@@ -13,12 +12,13 @@ COMMENT=	Additive Image Synthesizer (convert audio to images, images to audio)
 
 LIB_DEPENDS=	libfftw3.so:math/fftw3
 
-WRKSRC=	${WRKDIR}/${DISTNAME}/src
-
-USES=		cmake:insource
+USES=		cmake:insource localbase:ldflags
 USE_LDCONFIG=	${PREFIX}/lib
-CFLAGS+=	-L${LOCALBASE}/lib -I${LOCALBASE}/include
-CMAKE_C_FLAGS=	${CFLAGS}
+
+# Fix with clang11. Seems dead upstream. Don't expect a proper fix.
+CFLAGS+=	-fcommon
+
+WRKSRC_SUBDIR=	src
 
 PLIST_FILES=	bin/arss
 

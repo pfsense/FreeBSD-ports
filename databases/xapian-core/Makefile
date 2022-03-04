@@ -1,8 +1,7 @@
 # Created by: J.F. Dockes
-# $FreeBSD$
 
 PORTNAME=	xapian-core
-PORTVERSION=	1.4.11
+PORTVERSION=	1.4.18
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -14,19 +13,20 @@ COMMENT=	Probabilistic text search database engine
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL=	xapian-core10 xapian-core12
-
-OPTIONS_DEFINE=	DOCS SSE2
-SSE2_DESC=	Use SSE2 for floating point
-
-PORTSCOUT=	limitw:1,even
-
 USES=		compiler:c++11-lang libtool pathfix tar:xz
 
+CONFIGURE_ARGS=	ac_cv_func_snprintf=snprintf
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
+
+CONFLICTS_INSTALL=	xapian-core10 xapian-core12
+
+PORTSCOUT=	limitw:1,even
+
+OPTIONS_DEFINE=	DOCS SSE2
+SSE2_DESC=	Use SSE2 for floating point
 
 SSE2_CONFIGURE_ENABLE=	sse
 

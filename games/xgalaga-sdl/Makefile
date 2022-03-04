@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xgalaga-sdl
 PORTVERSION=	2.1.1.0
@@ -19,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}-sdl
 
-USES=		localbase:ldflags tar:bzip2
+USES=		localbase:ldflags sdl tar:bzip2
 USE_SDL=	sdl gfx image mixer ttf
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--datadir=${DATADIR}

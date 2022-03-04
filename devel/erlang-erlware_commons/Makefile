@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	erlware_commons
 PORTVERSION=	1.1.0
 CATEGORIES=	devel
@@ -10,12 +8,14 @@ COMMENT=	Erlang project focused on all aspects of reusable components
 
 LICENSE=	MIT
 
+BROKEN=		ambiguous call of overridden auto-imported BIF error/3
+
 USES=		erlang:rebar
 USE_GITHUB=	yes
 GH_ACCOUNT=	erlware
 
-ERL_BUILD_DEPS= devel/erlang-cf
-ERL_RUN_DEPS:=  ${ERL_BUILD_DEPS}
+ERL_BUILD_DEPS=	devel/erlang-cf
+ERL_RUN_DEPS:=	${ERL_BUILD_DEPS}
 
 OPTIONS_DEFINE=	DOCS
 

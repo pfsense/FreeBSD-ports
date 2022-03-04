@@ -1,11 +1,10 @@
 # Created by: Hyper NIKKI System Project <hnsmaster@h14m.org>
-# $FreeBSD$
 
 PORTNAME=	hns
 PORTVERSION=	2.19.9
 PORTREVISION=	1
 CATEGORIES=	japanese www perl5
-MASTER_SITES=	OSDN/h14m/22597
+MASTER_SITES=	OSDN/h14m
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Hyper NIKKI System, a CGI system for Electric Diary Interchange

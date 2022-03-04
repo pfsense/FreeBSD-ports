@@ -1,34 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	wireguard
-PORTVERSION=	0.0.20190227
-PORTREVISION=	3
-CATEGORIES=	net
-MASTER_SITES=	https://git.zx2c4.com/WireGuard/snapshot/
-DISTNAME=	WireGuard-${PORTVERSION}
+PORTVERSION=	2
+PORTEPOCH=	1
+CATEGORIES=	net net-vpn
 
 MAINTAINER=	decke@FreeBSD.org
-COMMENT=	Fast, modern and secure VPN Tunnel
+COMMENT=	Meta-port for Wireguard
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKDIR}/${DISTNAME}/COPYING
+RUN_DEPENDS=	wg-quick:net/wireguard-tools
 
-RUN_DEPENDS=	bash:shells/bash \
-		wireguard-go:net/wireguard-go
+USES=	metaport
 
-USES=		gmake tar:xz
-USE_RC_SUBR=	${PORTNAME}
-
-WRKSRC=		${WRKDIR}/${DISTNAME}/src/tools
-
-ALL_TARGET=
-MAKE_ARGS=	WITH_WGQUICK=yes WITH_BASHCOMPLETION=yes
-MAKE_ENV+=	MANDIR="${MANPREFIX}/man" \
-		SYSCONFDIR="${PREFIX}/etc"
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
-		${WRKSRC}/completion/wg-quick.bash-completion \
-		${WRKSRC}/wg-quick/freebsd.bash
+RUN_DEPENDS+=	${KMODDIR}/if_wg.ko:net/wireguard-kmod
 
 .include <bsd.port.mk>

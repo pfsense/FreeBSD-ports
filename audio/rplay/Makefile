@@ -1,17 +1,19 @@
 # Created by: rmallory@csusb.edu
-# $FreeBSD$
 
 PORTNAME=	rplay
 PORTVERSION=	3.3.2
 PORTREVISION=	3
 CATEGORIES=	audio
-MASTER_SITES=	http://rplay.doit.org/dist/
+MASTER_SITES=	http://ponce.cc/slackware/sources/repo/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network audio player
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Abandoned upstream, no new releases since 1999
+EXPIRATION_DATE=2021-12-31
 
 LIB_DEPENDS=	libgsm.so:audio/gsm
 

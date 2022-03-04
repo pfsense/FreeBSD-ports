@@ -1,8 +1,7 @@
 # Created by: Dmitry Kazarov <d.y.kazarov@mail.ru>
-# $FreeBSD$
 
 PORTNAME=	qpdf
-DISTVERSION=	8.4.0
+DISTVERSION=	10.3.2
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -14,10 +13,11 @@ LICENSE_COMB=	dual
 LICENSE_FILE_ART20=	${WRKSRC}/Artistic-2.0
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.txt
 
-USES=		compiler:c++11-lang gmake jpeg libtool localbase
+USES=		compiler:c++11-lang cpe gmake jpeg libtool localbase
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
 USE_LDCONFIG=	yes
+CPE_VENDOR=	qpdf_project
 
 OPTIONS_DEFINE=	DOCS
 

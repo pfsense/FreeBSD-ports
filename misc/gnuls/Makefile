@@ -1,5 +1,4 @@
 # Created by: bmc@WillsCreek.COM
-# $FreeBSD$
 
 PORTNAME=	gnuls
 PORTVERSION=	8.30
@@ -16,12 +15,10 @@ NLS_USES=		gettext
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1
-.ifdef QEMU_EMULATING
-# XXX bug 224740: configure hangs
-CONFIGURE_ENV+=	gl_cv_func_printf_enomem=no
-.endif
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
+
+CONFLICTS_INSTALL=	opendircolors # bin/dircolors
 
 USES=		gmake perl5 tar:xz
 USE_LDCONFIG=	yes

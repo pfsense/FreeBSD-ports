@@ -1,10 +1,9 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	ricochet
 PORTVERSION=	1.1.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	18
+PORTREVISION=	26
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +16,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libprotobuf.so:devel/protobuf
 
-USES=		compiler:c++11-lib gmake pkgconfig qmake qt:5 ssl
+USES=		compiler:c++11-lib gl gmake pkgconfig qmake qt:5 ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	ricochet-im
 USE_QT=		core declarative gui multimedia network quickcontrols widgets \

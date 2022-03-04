@@ -1,5 +1,4 @@
 # Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freealut
 PORTVERSION=	1.1.0
@@ -16,7 +15,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 USES=		gmake libtool openal:al pathfix pkgconfig
 USE_LDCONFIG=	yes
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 INSTALL_TARGET=	install-strip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

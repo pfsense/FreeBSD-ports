@@ -1,5 +1,4 @@
 # Created by: Francis Bacque <idroxid01@yahoo.fr>
-# $FreeBSD$
 
 PORTNAME=	bbdock
 PORTVERSION=	0.2.9
@@ -16,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
+USES=		xorg
 USE_XORG=	x11
 PORTDOCS=	README
 

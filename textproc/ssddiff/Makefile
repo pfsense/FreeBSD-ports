@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ssddiff
 PORTVERSION=	0.2
@@ -18,7 +17,7 @@ COMMENT=	Diff application for semistructured data such as XML files
 LICENSE=	GPLv2+
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf pkgconfig tar:bzip2
+USES=		autoreconf gnome pkgconfig tar:bzip2
 USE_GNOME=	libxml2
 
 PLIST_FILES=	bin/xmldiff

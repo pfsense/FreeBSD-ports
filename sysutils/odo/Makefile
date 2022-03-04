@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	odo
 PORTVERSION=	0.2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Atomic odometer for the command line
 
 LICENSE=	ISCL

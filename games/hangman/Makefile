@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	hangman
 PORTVERSION=	0.9.2
 PORTREVISION=	12
@@ -11,10 +8,10 @@ MASTER_SITES=	http://www.shiftygames.com/hangman/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Challenge your spelling skills in the old western style
 
-CONFLICTS=	bsdgames-*
+CONFLICTS=	bsdgames
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake sdl
 USE_CSTD=	gnu89
 USE_SDL=	sdl mixer image ttf
 

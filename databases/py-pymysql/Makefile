@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pymysql
-PORTVERSION=	0.9.3
+PORTVERSION=	1.0.2
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +11,8 @@ COMMENT=	Pure Python MySQL Driver
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
 USES=		python
 USE_PYTHON=	autoplist distutils
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

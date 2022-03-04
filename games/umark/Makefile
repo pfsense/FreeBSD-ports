@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	umark
 DISTVERSION=	2.0.0-Beta3
@@ -14,7 +13,7 @@ COMMENT=	Unreal Tournament 200x series benchmark utility
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig shebangfix
+USES=		gnome pkgconfig shebangfix
 SHEBANG_FILES=	install_umark_data.sh utxinfo.pl
 USE_GNOME=	gtk20
 WRKSRC=		${WRKDIR}/UMark

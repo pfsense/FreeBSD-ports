@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	quantmod
-DISTVERSION=	0.4-13
-PORTREVISION=	1
+DISTVERSION=	0.4.18
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -19,6 +17,6 @@ CRAN_DEPENDS=	R-cran-xts>=0.9.0:math/R-cran-xts \
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 
-USES=	cran:auto-plist,compiles
+USES=	cran:auto-plist
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hunspell
 PORTVERSION=	2.10
@@ -20,13 +19,13 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/nl_NL.aff \
-		%%DATADIR%%/nl_NL.dic
+PLIST_FILES=	${DATADIR}/nl_NL.aff \
+		${DATADIR}/nl_NL.dic
 
 NLALIASES=	nl_AW nl_BE
 .for ALIAS in ${NLALIASES}
-PLIST_FILES+=	%%DATADIR%%/${ALIAS}.aff \
-		%%DATADIR%%/${ALIAS}.dic
+PLIST_FILES+=	${DATADIR}/${ALIAS}.aff \
+		${DATADIR}/${ALIAS}.dic
 .endfor
 
 do-install:

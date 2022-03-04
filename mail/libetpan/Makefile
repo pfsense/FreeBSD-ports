@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	libetpan
-PORTVERSION=	1.9.3
-CATEGORIES=	mail ipv6
+PORTVERSION=	1.9.4
+CATEGORIES=	mail
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Mail framework for C language
@@ -15,13 +14,15 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
 		libsasl2.so:security/cyrus-sasl2
 
-USES=		autoreconf compiler:c++11-lang gmake iconv libtool localbase
+USES=		autoreconf compiler:c++11-lang cpe gmake iconv libtool localbase pkgconfig
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 PORTDOCS=	AUTHORS ChangeLog NEWS
+
+CPE_VENDOR=	libetpan_project
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dinhviethoa

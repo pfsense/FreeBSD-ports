@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	liblqr-1
 PORTVERSION=	0.4.2
 CATEGORIES=	graphics
@@ -13,7 +10,7 @@ COMMENT=	Easy to use C/C++ seam carving library
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-USES=		tar:bzip2 gettext gmake pkgconfig libtool
+USES=		gettext gmake gnome libtool pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 INSTALL_TARGET=	install-strip

@@ -1,14 +1,12 @@
 # Created by: Pietro Cerutti <gahr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ogdf
-PORTVERSION=	2015.05
-PORTREVISION=	1
+PORTVERSION=	2020.02
 CATEGORIES=	math
-MASTER_SITES=	http://www.ogdf.net/lib/exe/fetch.php/tech:
+MASTER_SITES=	https://ogdf.uos.de/wp-content/uploads/2020/02/
 DISTNAME=	${PORTNAME}.v${PORTVERSION}
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ class library for the automatic layout of diagrams
 
 LICENSE=		GPLv2 GPLv3
@@ -16,46 +14,18 @@ LICENSE_COMB=		dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/LICENSE_GPL_v2.txt
 LICENSE_FILE_GPLv3=	${WRKSRC}/LICENSE_GPL_v3.txt
 
-USES=			compiler:features gmake python:2.7,build zip
-USE_LDCONFIG=		yes
-LDFLAGS+=		-L${LOCALBASE}/lib
+CONFLICTS_INSTALL=	CoinMP
 
-FETCH_BEFORE_ARGS=	-o ${PORTNAME}.v${PORTVERSION}.zip
-WRKSRC=			${WRKDIR}/${PORTNAME:tu}
+USES=		cmake compiler:c++11-lang zip
+USE_LDCONFIG=	yes
+CMAKE_ARGS=	-DBUILD_SHARED_LIBS:BOOL=ON \
+		-DEXAMPLES_INSTALL_DIR:PATH=${EXAMPLESDIR_REL}
 
-OPTIONS_DEFINE=		COIN
-OPTIONS_DEFAULT=	COIN
-OPTIONS_SUB=		yes
+WRKSRC=		${WRKDIR}/${PORTNAME:tu}
 
-COIN_DESC=		Build with COIN solvers
-COIN_USE=		coin=true
-COIN_CONFLICTS_INSTALL=	CoinMP
-
-.include <bsd.port.pre.mk>
-
-.if ${COMPILER_FEATURES:Mc++11}
-STDCPP11=		-std=c++11
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e '\
-	    s|%%CXX%%|${CXX}|g; \
-	    s|%%CXXFLAGS%%|${CXXFLAGS}|g; \
-	    s|%%LOCALBASE%%|${LOCALBASE}|g; \
-	    s|%%USE_COIN%%|${USE_COIN}|g' \
-		${WRKSRC}/makeMakefile.config
-
-	@${REINPLACE_CMD} -e '\
-	    s|%%STDCPP11%%|${STDCPP11}|g' \
-		${WRKSRC}/makeMakefile.py
-
-do-configure:
-	cd ${WRKSRC} && ${PYTHON_CMD} makeMakefile.py
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libOGDF.so
-.if ${PORT_OPTIONS:MCOIN}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libCOIN.so
-.endif
+	@${RMDIR} ${STAGEDIR}${PREFIX}/include/ogdf/lib/minisat/doc
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

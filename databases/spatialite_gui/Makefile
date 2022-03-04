@@ -1,13 +1,12 @@
-# Created by: lbartoletti <coder@tuxfamily.org>
-# $FreeBSD$
+# Created by: lbartoletti <lbartoletti@FreeBSD.org>
 
 PORTNAME=	spatialite_gui
 PORTVERSION=	1.7.1
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	databases geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Graphical User Interface (GUI) tool supporting SpatiaLite
 
 LICENSE=	GPLv3
@@ -23,7 +22,7 @@ USE_WX=		2.8
 GNU_CONFIGURE=	yes
 USE_GNOME=	libxml2
 
-CPPFLAGS+=	`${WX_CONFIG} --cppflags`
+CPPFLAGS+=	`${WX_CONFIG} --cppflags` "-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H=1"
 LDFLAGS+=	${ICONV_LIB} `${WX_CONFIG} --libs` -lsqlite3
 CONFIGURE_ARGS=	CFLAGS="${CFLAGS} ${CPPFLAGS}" LDFLAGS="${LDFLAGS}"
 USE_LDCONFIG=	yes

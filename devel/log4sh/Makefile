@@ -1,5 +1,4 @@
 # Created by: David Thiel <lx@redundancy.redundancy.org>
-# $FreeBSD$
 
 PORTNAME=	log4sh
 PORTVERSION=	1.4.2
@@ -9,6 +8,8 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	lx@FreeBSD.org
 COMMENT=	Common logging library for Bourne shell scripts
+
+USES=		cpe
 
 OPTIONS_DEFINE=	DOCS
 

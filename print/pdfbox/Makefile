@@ -1,10 +1,10 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	pdfbox
 PORTVERSION=	2.0.14
+PORTREVISION=	1
 CATEGORIES=	print textproc java
-MASTER_SITES=	APACHE/pdfbox/${PORTVERSION}
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/${PORTVERSION}/
 DISTFILES=	${JAR_NAMES:S/$/-${PORTVERSION}.jar/}
 EXTRACT_ONLY=	# none
 
@@ -14,11 +14,13 @@ COMMENT=	Java tool for working with PDF documents
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${JAVALIBDIR}/bcmail.jar:java/bouncycastle15 \
-		${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging \
-		${JAVALIBDIR}/commons-io.jar:devel/jakarta-commons-io
+		${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging \
+		${JAVALIBDIR}/commons-io.jar:devel/apache-commons-io
 
 JAR_NAMES=	pdfbox fontbox preflight xmpbox pdfbox-tools pdfbox-debugger
 
+USES=		cpe
+CPE_VENDOR=	apache
 USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=		yes

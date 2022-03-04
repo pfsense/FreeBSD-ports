@@ -1,14 +1,18 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rubywarden
-DISTVERSION=	0.0.0.20190207
-CATEGORIES=	     security www
+DISTVERSION=	0.0.0.20200226
+PORTREVISION=	0
+CATEGORIES=	security www
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Ruby implementation of the BitWarden API
 
 LICENSE=	ISCL
+
+# Port is not maintained anymore:
+# https://github.com/jcs/rubywarden
+BROKEN_RUBY27=	yes
 
 RUN_DEPENDS=	rubygem-bundler>=1.16:sysutils/rubygem-bundler
 
@@ -18,7 +22,7 @@ RUBY_NO_BUILD_DEPENDS=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jcs
-GH_TAGNAME=	5ba9f9821971942d082e327edcf7f02e8ad4c4a7
+GH_TAGNAME=	549f66466ca753ee2f3c007b6e242d59dae05fdd
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -32,4 +36,3 @@ do-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}/${WWWDIR})
 
 .include <bsd.port.mk>
-

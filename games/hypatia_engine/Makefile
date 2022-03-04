@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	hypatia_engine
 PORTVERSION=	0.3.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,10 +12,9 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	${PYGAME} \
 		${PYTHON_PKGNAMEPREFIX}pyganim>0:graphics/py-pyganim@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
-		${PY_ENUM34}
+		${PY_PILLOW}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.mk>

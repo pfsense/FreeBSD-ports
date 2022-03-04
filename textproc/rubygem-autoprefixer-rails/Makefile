@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	autoprefixer-rails
-PORTVERSION=	9.4.10
+PORTVERSION=	10.3.3.0
 CATEGORIES=	textproc ruby
 MASTER_SITES=	RG
 
@@ -12,7 +11,7 @@ COMMENT=	Parse CSS and add vendor prefixes to CSS rules
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-execjs>=0:devel/rubygem-execjs
+RUN_DEPENDS=	rubygem-execjs>=2<3:devel/rubygem-execjs
 
 USES=		gem
 USE_RUBY=	yes

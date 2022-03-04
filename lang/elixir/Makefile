@@ -1,9 +1,8 @@
 # Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	elixir
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.4
+DISTVERSION=	1.12.3
 CATEGORIES=	lang
 MASTER_SITES+=	https://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
 DISTFILES=	Docs.zip:doc
@@ -14,8 +13,8 @@ COMMENT=	Functional, meta-programming aware language built on top of Erlang VM
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	erlang>=19:lang/erlang
-RUN_DEPENDS=	erlang>=19:lang/erlang
+BUILD_DEPENDS=	erlang>=24.0:lang/erlang
+RUN_DEPENDS=	erlang>=24.0:lang/erlang
 
 USES=		gmake
 
@@ -24,12 +23,15 @@ GH_ACCOUNT=	elixir-lang
 
 USE_LOCALE=	en_US.UTF-8
 ALL_TARGET=	# empty
+
 REINPLACE_ARGS=	-i ""
 NO_ARCH=	yes
-OPTIONS_SUB=	yes
+MAKE_ENV=	MAN_PREFIX=${PREFIX}/man
 
-OPTIONS_DEFINE=	SRC DOCS
-OPTIONS_DEFAULT=SRC
+OPTIONS_DEFINE=		DOCS SRC
+OPTIONS_DEFAULT=	DOCS SRC
+OPTIONS_DEFAULT=	DOCS
+OPTIONS_SUB=		yes
 
 SRC_DESC=	Install source code
 

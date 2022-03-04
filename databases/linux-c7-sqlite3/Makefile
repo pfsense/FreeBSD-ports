@@ -1,9 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	sqlite
 PORTVERSION=	3.7.17
-PORTREVISION=	1
+DISTVERSIONSUFFIX=	-8.el7_7.1
+PORTREVISION=	2
 CATEGORIES=	databases linux
 
 MAINTAINER=	emulation@FreeBSD.org
@@ -11,13 +11,12 @@ COMMENT=	Library that implements an embeddable SQL database engine (Linux CentOS
 
 LICENSE=	PD
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
-
-DESCR=		${.CURDIR}/../${PORTNAME}3/pkg-descr
-RPMVERSION=	8.el7
-USES=		linux:c7
+USES=		cpe linux:c7
 USE_LDCONFIG=	yes
 USE_LINUX_RPM=	yes
+
+CONFLICTS=	linux-c6-${PORTNAME}
+DESCR=		${.CURDIR}/../${PORTNAME}3/pkg-descr
 
 OPTIONS_DEFINE=	DOCS
 

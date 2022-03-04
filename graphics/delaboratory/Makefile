@@ -1,13 +1,12 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	delaboratory
 PORTVERSION=	0.8
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	graphics
-MASTER_SITES=	http://BSDforge.com/projects/source/graphics/delaboratory/
+MASTER_SITES=	https://BSDforge.com/projects/source/graphics/delaboratory/
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unique image postprocessing application
 
 LICENSE=	GPLv3+
@@ -15,17 +14,21 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff
 
-USES=		compiler:c++11-lib gmake
-MAKE_ARGS=	CXX="${CXX}" WXCONFIG="${WX_CONFIG}"
-USE_WX=		3.0
+USES=		compiler:c++11-lib gmake gnome
 USE_CXXSTD=	c++11
 USE_GNOME=	libxml2
+USE_WX=		3.0
+
+MAKE_ARGS=	CXX="${CXX}" \
+		WXCONFIG="${WX_CONFIG}"
 
 PLIST_FILES=	bin/${PORTNAME}
 
 post-patch:
+	@${MV} ${WRKSRC}/gui_wx/semaphore.h ${WRKSRC}/gui_wx/desemaphore.h
 	@${REINPLACE_CMD} -e 's|-Ofast.*}|${CXXFLAGS}| ; \
-		s|CXXFLAGS_WX +=|& ${CXXFLAGS} -I${LOCALBASE}/include|' \
+		s|CXXFLAGS_WX +=|& ${CXXFLAGS} -I${LOCALBASE}/include| ;\
+		s|LDFLAGS=|LDFLAGS+=|' \
 			${WRKSRC}/${MAKEFILE}
 
 do-install:

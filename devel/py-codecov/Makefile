@@ -1,13 +1,12 @@
 # Created by: Carlos J. Puga Medina <cpm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	codecov
-PORTVERSION=	2.0.15
+PORTVERSION=	2.1.12
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	Hosted coverage reports for Github, Bitbucket and Gitlab
 
 LICENSE=	APACHE20

@@ -1,23 +1,20 @@
-# Created by: lbartoletti <coder@tuxfamily.org>
-# $FreeBSD$
+# Created by: lbartoletti <lbartoletti@FreeBSD.org>
 
 PORTNAME=	pgrouting
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.2
+DISTVERSION=	3.2.0
 CATEGORIES=	databases geography
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Extension to PostGIS to provide geospatial routing functionality
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs\
-		libCGAL.so:math/cgal \
-		libgmp.so:math/gmp \
-		liblwgeom.so:databases/postgis25
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs
+RUN_DEPENDS=	${LOCALBASE}/share/postgresql/extension/postgis.control:databases/postgis30
 
-USES=		compiler:c++11-lib cmake localbase perl5 pgsql:9.1+ pkgconfig
+USES=		compiler:c++14-lang cmake localbase perl5 pgsql:9.1+ pkgconfig
 WANT_PGSQL=	lib server
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes

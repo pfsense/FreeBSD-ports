@@ -1,5 +1,4 @@
 # Created by: J Han <hjh@best.com>
-# $FreeBSD$
 
 PORTNAME=	t3d
 PORTVERSION=	1.1
@@ -19,7 +18,7 @@ EXTRACT_BEFORE_ARGS=	-dc
 EXTRACT_AFTER_ARGS=	| ${SH}
 
 NO_WRKSUBDIR=	yes
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 
 PLIST_FILES=	bin/t3d man/man1/${PORTNAME}.1.gz

@@ -1,32 +1,24 @@
-# $FreeBSD$
-
-PORTNAME=	ossec-hids
-PORTVERSION=	3.1.0
-PORTREVISION=	1
-CATEGORIES=	security
-PKGNAMESUFFIX=	-${OSSEC_TYPE}-config
-
-MAINTAINER=	dominik.lisiak@bemsoft.pl
-COMMENT=	Configuration manager for ossec-hids
-
-LICENSE=	GPLv2
-
+PKGNAMESUFFIX?=	-${OSSEC_TYPE}-config
+COMMENT?=	Configuration manager for ossec-hids-${OSSEC_TYPE}
 OSSEC_TYPE?=	local
 
+.include "${.CURDIR}/../ossec-hids/version.mk"
+
 MASTERDIR?=	${.CURDIR}
+DISTINFO_FILE?=	${MASTERDIR}/../ossec-hids-local/distinfo
 
 .if ${OSSEC_TYPE} == local
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == agent
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-local-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-local \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == server
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-local-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-local
 .endif
 
 .if !defined(MAINTAINER_MODE)
@@ -47,14 +39,15 @@ NO_ARCH=	yes
 OPTIONS_SUB=			yes
 
 OPTIONS_SINGLE=			FIREWALL
-OPTIONS_SINGLE_FIREWALL=	IPF IPFW PF
+OPTIONS_SINGLE_FIREWALL=	NOFW IPF IPFW PF
 
-OPTIONS_DEFAULT+=		IPF
+OPTIONS_DEFAULT+=		NOFW
 
 FIREWALL_DESC=		Active Response Firewall
 PF_DESC=		Packet Filter
 IPFW_DESC=		ipfirewall
 IPF_DESC=		ipfilter
+NOFW_DESC=		Custom or no firewall
 
 TEMPL_ENABLED_HEADER=		template-header-enabled.xml
 TEMPL_DISABLED_HEADER=		template-header-disabled.xml
@@ -68,6 +61,7 @@ TEMPL_SAMPLE_DB=	template-sample-database.xml
 PF_VARS=		FW_DROP=pf.sh PKGMSG_FILES+=message-pf
 IPFW_VARS=		FW_DROP=ipfw.sh
 IPF_VARS=		FW_DROP=ipfilter.sh
+NOFW_VARS=		FW_DROP=
 
 .if defined(MAINTAINER_MODE)
 OSSEC_HOME=		${PREFIX}/${PORTNAME}

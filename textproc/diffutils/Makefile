@@ -1,14 +1,13 @@
 # Created by: Garrett Rooney <rooneg@electricjellyfish.net>
-# $FreeBSD$
 
 PORTNAME=	diffutils
-PORTVERSION=	3.7
+PORTVERSION=	3.8
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
 LICENSE=	GPLv3+
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	schaiba@gmail.com
 COMMENT=	GNU differential compare utilities
 
 LIB_DEPENDS=	libsigsegv.so:devel/libsigsegv
@@ -16,6 +15,7 @@ LIB_DEPENDS=	libsigsegv.so:devel/libsigsegv
 USES=		charsetfix tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

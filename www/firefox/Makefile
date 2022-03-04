@@ -1,10 +1,10 @@
 # Created by: Alan Eldridge <alane@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	67.0.4
-PORTEPOCH=	1
-CATEGORIES=	www ipv6
+DISTVERSION=	95.0
+PORTREVISION=	1
+PORTEPOCH=	2
+CATEGORIES=	www
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
 		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source
 DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
@@ -12,25 +12,28 @@ DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
-BUILD_DEPENDS=	nspr>=4.21:devel/nspr \
-		nss>=3.43:security/nss \
-		icu>=63.1,1:devel/icu \
+BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
+		nss>=3.72:security/nss \
+		icu>=69.1,1:devel/icu \
 		libevent>=2.1.8:devel/libevent \
-		harfbuzz>=2.3.1:print/harfbuzz \
-		graphite2>=1.3.13:graphics/graphite2 \
-		png>=1.6.35:graphics/png \
-		libvpx>=1.5.0:multimedia/libvpx \
-		sqlite3>=3.27.2:databases/sqlite3 \
+		harfbuzz>=2.9.1:print/harfbuzz \
+		graphite2>=1.3.14:graphics/graphite2 \
+		png>=1.6.37:graphics/png \
+		libvpx>=1.8.2:multimedia/libvpx \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
 		nasm:devel/nasm \
+		yasm:devel/yasm \
 		zip:archivers/zip
 
 USE_GECKO=	gecko
 CONFLICTS_INSTALL=	firefox-esr
-MOZ_PKGCONFIG_FILES=	# empty
-USE_MOZILLA=	-hunspell -vpx
+USE_MOZILLA=	-sqlite
+CFLAGS_powerpc64le=	-DSQLITE_BYTEORDER=1234
+# work around bindgen not finding ICU, e.g.
+# dist/include/mozilla/intl/ICU4CGlue.h:8:10: fatal error: 'unicode/uenum.h' file not found, err: true
+CONFIGURE_ENV+=	BINDGEN_CFLAGS="-I${LOCALBASE}/include"
 
 USES=		tar:xz
 
@@ -40,9 +43,18 @@ FIREFOX_DESKTOP=	${MOZSRC}/taskcluster/docker/${MOZILLA}-snap/${MOZILLA}.desktop
 MOZ_OPTIONS=	--enable-application=browser \
 		--enable-official-branding
 
-OPTIONS_EXCLUDE=	WAYLAND
-
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+MOZ_OPTIONS+=	--without-wasm-sandboxed-libraries
+.else
+BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx \
+		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \
+		${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/clang/${LLVM_VERSION}/lib/wasi/libclang_rt.builtins-wasm32.a:devel/wasi-compiler-rt${LLVM_DEFAULT}
+MOZ_OPTIONS+=	--with-wasi-sysroot=${LOCALBASE}/share/wasi-sysroot
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/%u/%U/' -e '/X-MultipleArgs/d' \

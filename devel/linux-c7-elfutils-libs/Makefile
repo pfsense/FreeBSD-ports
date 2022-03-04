@@ -1,0 +1,19 @@
+PORTNAME=	elfutils
+PORTVERSION=	0.176
+DISTVERSIONSUFFIX=	-5.el7
+PORTREVISION=	2
+CATEGORIES=	devel linux
+PKGNAMESUFFIX=	-libs
+
+MAINTAINER=	emulation@FreeBSD.org
+COMMENT=	ELF file handling libraries (CentOS ${LINUX_DIST_VER})
+
+USES=		cpe linux:c7
+CPE_VENDOR=	${PORTNAME}_project
+USE_LDCONFIG=	yes
+USE_LINUX=	elfutils-libelf
+USE_LINUX_RPM=	yes
+
+LIB_DISTNAMES=	${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSIONFULL}
+
+.include <bsd.port.mk>

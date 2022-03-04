@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qof
 PORTVERSION=	0.8.8
 PORTREVISION=	1
@@ -20,7 +18,7 @@ CONFIGURE_ARGS=	--disable-doxygen --disable-gdasql --disable-sqlite
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool pathfix pkgconfig
+USES=		gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20 libxml2
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

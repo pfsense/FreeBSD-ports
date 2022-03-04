@@ -1,34 +1,25 @@
---- Makefile.orig	2017-09-28 11:12:01 UTC
+--- Makefile.orig	2021-03-17 09:14:26 UTC
 +++ Makefile
-@@ -40,23 +40,22 @@ AOBJS=      bam_index.o bam_plcmd.o sam_
-             bam_tview.o bam_tview_curses.o bam_tview_html.o bam_lpileup.o \
-             bam_quickcheck.o bam_addrprg.o bam_markdup.o
- 
--prefix      = /usr/local
-+prefix      = ${PREFIX}
- exec_prefix = $(prefix)
- bindir      = $(exec_prefix)/bin
- datarootdir = $(prefix)/share
--mandir      = $(datarootdir)/man
-+mandir      = $(prefix)/man
- man1dir     = $(mandir)/man1
- 
+@@ -59,14 +59,14 @@ man1dir     = $(mandir)/man1
  # Installation location for $(MISC_PROGRAMS) and $(MISC_SCRIPTS)
--misc_bindir = $(bindir)
-+misc_bindir = $(bindir)/samtools_misc
+ misc_bindir = $(bindir)
  
- MKDIR_P = mkdir -p
+-MKDIR_P = mkdir -p
 -INSTALL = install -p
 -INSTALL_DATA    = $(INSTALL) -m 644
 -INSTALL_DIR     = $(MKDIR_P) -m 755
 -INSTALL_MAN     = $(INSTALL_DATA)
 -INSTALL_PROGRAM = $(INSTALL)
 -INSTALL_SCRIPT  = $(INSTALL_PROGRAM)
+-
++# Use BSD_INSTALL_PROGRAM to strip when WITH_DEBUG not set
++MKDIR_P         = mkdir -p
++INSTALL         = install -p
 +INSTALL_DATA    = ${BSD_INSTALL_DATA}
 +INSTALL_DIR     = $(MKDIR_P)
 +INSTALL_MAN     = ${BSD_INSTALL_MAN}
 +INSTALL_PROGRAM = ${BSD_INSTALL_PROGRAM}
 +INSTALL_SCRIPT  = ${BSD_INSTALL_SCRIPT}
  
- 
  PROGRAMS = samtools
+ 

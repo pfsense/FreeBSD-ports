@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	lzlib
 PORTVERSION=	0.4.3
+PORTREVISION=	1
 CATEGORIES=	archivers
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
@@ -10,7 +9,7 @@ COMMENT=	Lua bindings to the ZLib compression library
 
 LICENSE=	MIT
 
-USES=		cmake lua
+USES=		cmake lua:51-52,module
 USE_GITHUB=	yes
 GH_ACCOUNT=	LuaDist
 CMAKE_ARGS=	-DINSTALL_LMOD="${LUA_MODSHAREDIR}" \

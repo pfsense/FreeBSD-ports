@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	unicode-display_width
-PORTVERSION=	1.5.0
+PORTVERSION=	2.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

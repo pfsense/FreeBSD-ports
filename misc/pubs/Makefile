@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pubs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.2
+DISTVERSION=	0.8.3
 CATEGORIES=	misc python
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	distutils autoplist noflavors
 NO_ARCH=	yes

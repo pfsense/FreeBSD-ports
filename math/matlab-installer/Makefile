@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	matlab-installer
 PORTVERSION=	0.2
 PORTREVISION=	4
@@ -18,7 +16,6 @@ RUN_DEPENDS=	mount_cd9660_image:sysutils/diskimage-tools \
 USES=		linux tar:xz
 USE_LINUX=	dri devtools
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_OS=	linux
 JAVA_RUN=	yes
 

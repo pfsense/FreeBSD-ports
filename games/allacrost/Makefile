@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	allacrost
 PORTVERSION=	1.0.2
-PORTREVISION=	26
+PORTREVISION=	30
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION}
 DISTNAME=	${PORTNAME}_demo_source_${PORTVERSION}
@@ -20,16 +17,16 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libboost_thread.so:devel/boost-libs
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lang gettext gmake iconv jpeg lua:51 openal:al
+USES=		gettext gl gmake iconv jpeg localbase lua:51 openal:al sdl xorg
 USE_SDL=	sdl ttf net
 USE_GL=		gl glu
 USE_XORG=	x11
+USE_CXXSTD=	c++98
 
 CONFIGURE_ARGS=	--datadir=${DATADIR} --enable-editor=no
-CPPFLAGS+=	-I${LOCALBASE}/include -I${LUA_INCDIR}
-LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
-CXXFLAGS+=	-Wno-c++11-narrowing
-LLD_UNSAFE=	yes
+CPPFLAGS+=	-isystem${LUA_INCDIR}
+LDFLAGS+=	-L${LUA_LIBDIR}
+LDFLAGS_i386=	-Wl,-znotext
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

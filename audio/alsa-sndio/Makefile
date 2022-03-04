@@ -1,10 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	alsa-sndio
 DISTVERSION=	0.2
+PORTREVISION=	1
 CATEGORIES=	audio
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ALSA PCM sndio plugin
 
 LICENSE=	ISCL

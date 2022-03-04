@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	parpd
-DISTVERSION=	1.2
+DISTVERSION=	1.3
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.iks-jena.de/pub/mitarb/lutz/parpd/
 
@@ -19,7 +17,7 @@ PLIST_FILES=	sbin/parpd man/man8/parpd.8.gz
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 pre-configure:
 	${REINPLACE_CMD} -e 's|-Wpedantic||' ${WRKSRC}/Makefile
 .endif

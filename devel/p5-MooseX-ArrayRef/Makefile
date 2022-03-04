@@ -1,5 +1,4 @@
 # Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	MooseX-ArrayRef
 PORTVERSION=	0.005
@@ -18,5 +17,7 @@ RUN_DEPENDS=	p5-Moose>=2.00:devel/p5-Moose
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

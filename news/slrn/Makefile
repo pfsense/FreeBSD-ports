@@ -1,20 +1,19 @@
 # Created by: Carey Jones <mcj@acquiesce.org>
-# $FreeBSD$
 
 PORTNAME=	slrn
 PORTVERSION=	1.0.3a
 PORTREVISION=	1
-CATEGORIES=	news ipv6
+CATEGORIES=	news
 MASTER_SITES=	http://www.jedsoft.org/releases/slrn/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SLang-based newsreader
 
 LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libslang.so:devel/libslang2
 
-CONFLICTS_INSTALL=	ja-slrn-[0-9]*
+CONFLICTS_INSTALL=	ja-slrn
 
 USES=		gmake iconv tar:bz2
 

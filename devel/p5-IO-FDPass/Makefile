@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	IO-FDPass
 PORTVERSION=	1.2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to pass a file descriptor over a socket
 
 BUILD_DEPENDS=	p5-Canary-Stability>0:devel/p5-Canary-Stability

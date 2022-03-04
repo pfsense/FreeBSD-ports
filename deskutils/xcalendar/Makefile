@@ -1,5 +1,4 @@
 # Created by: MITA Yoshio <mita@iis.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xcalendar
 PORTVERSION=	4.0.2008
@@ -13,7 +12,7 @@ COMMENT=	Calendar with a notebook for X11 (internationalized version)
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		imake gmake
+USES=		imake gmake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xt
 MAKE_ENV=	FILESDIR=${FILESDIR}
 ALL_TARGET=	all XCal-uj.ad xcalendar-uj.hlp xcalendar-uj.man

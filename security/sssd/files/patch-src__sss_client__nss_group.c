@@ -1,8 +1,8 @@
 diff --git src/sss_client/nss_group.c src/sss_client/nss_group.c
-index e6ea54b..b27b671 100644
+index 5ab2bdf78..69ba75dcb 100644
 --- src/sss_client/nss_group.c
 +++ src/sss_client/nss_group.c
-@@ -343,6 +343,76 @@ out:
+@@ -390,6 +390,76 @@ out:
  }
  
  

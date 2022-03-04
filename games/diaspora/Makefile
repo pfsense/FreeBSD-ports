@@ -1,9 +1,8 @@
 # Created by: lightside <lightside@gmx.com>
-# $FreeBSD$
 
 PORTNAME=	diaspora
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://diaspora.fs2downloads.com/ \
 		http://sectorgame.com/fsfiles/uploads/Projects%20-%20Campaigns%20-%20TCs/Total%20Conversions/Diaspora/:sectorgame \
@@ -14,7 +13,7 @@ DISTFILES=	Diaspora_R1_Linux.tar.lzma:sectorgame1,DEFAULT \
 		Diaspora_R1_Patch_1.1.tar.lzma:sectorgame,intfiles,twfiles,DEFAULT \
 		Diaspora_R1_Patch_1.1.1.tar.lzma
 
-MAINTAINER=	lightside@gmx.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Single and multiplayer space fighter combat game
 
 LICENSE=	CC-BY-NC-SA-3.0 VOLITION GPLv2
@@ -25,18 +24,22 @@ LICENSE_FILE_VOLITION=	${WRKSRC}/COPYING
 LICENSE_FILE_GPLv2=	${WRKDIR_DIASPORA}/wxlauncher/GPLv2.txt
 LICENSE_PERMS_VOLITION=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
+BROKEN_aarch64=		Fails to compile: cast from pointer to smaller type loses information
+
 LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libpng.so:graphics/png \
 		libogg.so:audio/libogg \
 		libvorbisfile.so:audio/libvorbis \
 		libtheora.so:multimedia/libtheora
 
-USES=		autoreconf jpeg lua:51 openal pkgconfig tar:lzma
+USES=		autoreconf compiler:c++11-lang gl jpeg lua:51 openal pkgconfig \
+		sdl tar:lzma
 USE_CXXSTD=	gnu++98
 USE_GL=		gl glu
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
-LLD_UNSAFE=	yes
+
+LDFLAGS_i386=	-Wl,-znotext
 
 WRKDIR_DIASPORA=${WRKDIR}/Diaspora_R1_Linux/Diaspora
 WRKSRC=		${WRKDIR_DIASPORA}/fs2_open
@@ -70,7 +73,11 @@ WXLAUNCHER_VARS=	PORTDATA+="resources *.ini *.png *.bmp"
 
 POST_PLIST+=	build-plist-empty
 
-BROKEN_aarch64=		Fails to compile: cast from pointer to smaller type loses information
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+CXXFLAGS+=	-fpermissive
+.endif
 
 post-extract: .SILENT
 .for v in 1.1 1.1.1
@@ -127,4 +134,4 @@ build-plist-empty: .SILENT
 	${FIND} ${STAGEDIR}${DATADIR}/data -type d -empty | \
 		${SED} -e 's|^${STAGEDIR}|@dir |' >> ${TMPPLIST}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

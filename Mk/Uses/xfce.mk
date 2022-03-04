@@ -1,11 +1,7 @@
-#
-# $FreeBSD$
-#
 # Provide support for Xfce related ports.
 #
 # Feature:	xfce
-# Usage:	USES=xfce or USES=xfce:ARGS
-# Valid ARGS:	gtk3
+# Usage:	USES=xfce or USES=xfce
 #
 # Variables, which can be set by the port:
 #
@@ -17,46 +13,29 @@
 _INCLUDE_USES_XFCE_Mk=	yes
 _USES_POST+=	xfce
 
-_USE_XFCE_ALL=	garcon libexo libgui libmenu libutil panel thunar xfconf
-
-XFCE_MASTER_SITE_VER=	4.12
+_USE_XFCE_ALL=	garcon libexo libmenu libutil panel thunar xfconf
 
 xfce_ARGS?=	# empty
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=	-L${LOCALBASE}/lib
 
-.if ${xfce_ARGS:Mgtk3}
 libmenu_LIB_DEPENDS=	libxfce4ui-2.so:x11/libxfce4menu
-libmenu_USE_XFCE_REQ=	xfconf
+libmenu_USE_XFCE_REQ=	libutil
 
 garcon_LIB_DEPENDS=	libgarcon-gtk3-1.so:sysutils/garcon
 garcon_USE_XFCE_REQ=	libmenu
 
+libexo_LIB_DEPENDS=	libexo-2.so:x11/libexo
+libexo_USE_XFCE_REQ=	libmenu
+
 panel_LIB_DEPENDS=	libxfce4panel-2.0.so:x11-wm/xfce4-panel
 panel_RUN_DEPENDS=	xfce4-panel:x11-wm/xfce4-panel
 panel_USE_XFCE_REQ=	garcon libexo xfconf
-.else
-libmenu_LIB_DEPENDS=	libxfce4ui-1.so:x11/libxfce4menu
-libmenu_USE_XFCE_REQ=	xfconf
-
-garcon_LIB_DEPENDS=	libgarcon-gtk2-1.so:sysutils/garcon
-garcon_USE_XFCE_REQ=	libmenu
-
-panel_LIB_DEPENDS=	libxfce4panel-1.0.so:x11-wm/xfce4-panel
-panel_RUN_DEPENDS=	xfce4-panel:x11-wm/xfce4-panel
-panel_USE_XFCE_REQ=	garcon libexo xfconf
-.endif
-
-libexo_LIB_DEPENDS=	libexo-1.so:x11/libexo
-libexo_USE_XFCE_REQ=	libmenu
-
-libgui_LIB_DEPENDS=	libxfcegui4.so:x11-toolkits/libxfce4gui
-libgui_USE_XFCE_REQ=	libutil
 
 libutil_LIB_DEPENDS=	libxfce4util.so:x11/libxfce4util
 
-thunar_LIB_DEPENDS=	libthunarx-2.so:x11-fm/thunar
+thunar_LIB_DEPENDS=	libthunarx-3.so:x11-fm/thunar
 thunar_RUN_DEPENDS=	Thunar:x11-fm/thunar
 thunar_USE_XFCE_REQ=	xfconf libmenu
 
@@ -95,10 +74,6 @@ LIB_DEPENDS+=	${${comp}_LIB_DEPENDS}
 RUN_DEPENDS+=	${${comp}_RUN_DEPENDS}
 . endif
 .endfor
-
-. if ${USE_XFCE:M*gui} == libgui
-DEPRECATED?=	Depends on unmaintained x11-toolkits/libxfce4gui
-. endif
 
 .endif # end of defined(USE_XFCE)
 

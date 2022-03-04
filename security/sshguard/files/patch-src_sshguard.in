@@ -1,0 +1,26 @@
+--- src/sshguard.in.orig	2020-12-31 17:06:03 UTC
++++ src/sshguard.in
+@@ -98,14 +98,8 @@ elif [ -z "$tailcmd" ]; then
+     exit 1
+ fi
+ 
+-if [ -n "$PID_FILE" ]; then
+-    if [ ! -e "$PID_FILE" ]; then
+-        echo "$$" > $PID_FILE
+-    else
+-        err "$PID_FILE already exists; is SSHGuard already running?"
+-        exit 1
+-    fi
+-fi
++# Already checked by rc(8)
++echo "$$" > $PID_FILE
+ 
+ # Select PARSER from configuration file or use default. Add POST_PARSER from
+ # configuration file if it exists.
+@@ -119,5 +113,4 @@ trap "clean_and_exit" INT TERM
+ trap "kill 0" EXIT
+ 
+ eval $tailcmd | eval "$RUN_PARSER" | \
+-    $libexec/sshg-blocker $flags | $BACKEND &
+-wait
++    $libexec/sshg-blocker $flags | ($BACKEND ; pkill -PIPE -P $$)

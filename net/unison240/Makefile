@@ -1,9 +1,8 @@
 # Created by: Dan Pelleg <dpelleg+unison@cs.cmu.edu>
-# $FreeBSD$
 
 PORTNAME=	unison
 PORTVERSION=	2.40.128
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	http://www.cis.upenn.edu/~bcpierce/unison/download/releases/${DISTNAME}/
 DISTFILES=	${EXTRACT_ONLY} ${EXTRA_DOCS}
@@ -13,10 +12,11 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	User-level file synchronization tool
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 FLAVORS=	x11 nox11
-FLAVOR?=	${FLAVORS[1]}
+FLAVOR?=	${FLAVORS:[1]}
 
 VERSIONSUFFIX=	240
 
@@ -36,8 +36,8 @@ USES=		gmake
 USE_OCAML=	yes
 NO_OCAML_RUNDEPENDS=yes
 MAKE_ARGS=	CFLAGS=""
-MAKE_JOBS_UNSAFE=	yes
 ALL_TARGET=	unison all
+TEST_TARGET=	selftest
 
 DOCS=		BUGS.txt NEWS README
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
@@ -54,16 +54,18 @@ PLIST_SUB+=		X11="@comment "
 MAKE_ARGS+=		UISTYLE=gtk2
 SUB_FILES=		${PORTNAME}.desktop
 USE_GNOME+=		atk cairo gdkpixbuf2 glib20 gtk20 pango
-USES+=			gettext-runtime
+USES+=			gettext-runtime gnome
 PLIST_SUB+=		X11=""
 .endif
 
-.if ${FLAVOR} == x11
-post-patch:
-	@${REINPLACE_CMD} -Ee 's@(\+|/)(lablgtk2)@\1site-lib/\2@' \
-		${WRKSRC}/Makefile.OCaml
+pre-patch:
+# BCP 5/16: Eta-expand for backward compatibility with OCaml >4.02
+	@${REINPLACE_CMD} -e 's,= Unix\.symlink,s1 s2 & s1 s2,' \
+		${WRKSRC}/system/system_generic.ml
 
 post-build:
+	(cd ${WRKSRC} && HOME=${WRKSRC} ./unison -selftest -ui text -batch)
+.if ${FLAVOR} == x11
 	@${ECHO} Building text-only version
 	@${ECHO} ${WRKSRC}
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC} CFLAGS="" UISTYLE=text NAME=unison-text

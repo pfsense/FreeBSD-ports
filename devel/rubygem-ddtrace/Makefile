@@ -1,23 +1,24 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ddtrace
-PORTVERSION=	0.21.1
+PORTVERSION=	0.54.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tracking client of Datadog for Ruby
 
-LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	APACHE20 BSD3CLAUSE
+LICENSE_COMB=	dual
+LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.Apache
+LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE.BSD3
 
-RUN_DEPENDS=	rubygem-msgpack1>=0:devel/rubygem-msgpack1 \
-		rubygem-opentracing>=0.4.1:devel/rubygem-opentracing
+RUN_DEPENDS=	rubygem-debase-ruby_core_source>=0.10.12:devel/rubygem-debase-ruby_core_source \
+		rubygem-msgpack>=0:devel/rubygem-msgpack
 
 USES=		gem
 USE_RUBY=	yes
 
-NO_ARCH=	yes
+PLIST_FILES=	bin/ddtracerb
 
 .include <bsd.port.mk>

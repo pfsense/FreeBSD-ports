@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Devel-ebug
-PORTVERSION=	0.59
+PORTVERSION=	0.64
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -24,8 +23,9 @@ RUN_DEPENDS=	p5-Class-Accessor-Chained>=0:devel/p5-Class-Accessor-Chained \
 		p5-YAML>=0:textproc/p5-YAML
 TEST_DEPENDS=	p5-Test-Expect>=0:devel/p5-Test-Expect
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

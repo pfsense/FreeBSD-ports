@@ -1,19 +1,19 @@
 # Created by: Andrej Zverev <az@inec.ru>
-# $FreeBSD$
 
 PORTNAME=	ne
-PORTVERSION=	3.1.2
-PORTREVISION=	2
+PORTVERSION=	3.3.1
 CATEGORIES=	editors
 MASTER_SITES=	http://ne.di.unimi.it/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Nice and powerful editor
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake makeinfo perl5
+LIB_DEPENDS=	libgnuregex.so:devel/libgnuregex
+
+USES=		gmake localbase makeinfo perl5
 USE_PERL5=	build
 USE_CSTD=	c99
 
@@ -24,7 +24,7 @@ MAKE_ARGS=	CC="${CC}" \
 		NE_GLOBAL_DIR="${DATADIR}"
 ALL_TARGET=	ne
 
-LDFLAGS+=	-lgnuregex
+LDFLAGS+=	-lgnuregex -L${LOCALBASE}/lib
 
 BUILD_WRKSRC=	${WRKSRC}/src
 INFO=		ne
@@ -36,8 +36,6 @@ OPTIONS_DEFINE=		DEBUG DOCS
 DEBUG_MAKE_ARGS=	NE_DEBUG=1
 
 post-patch:
-	@${FIND} ${BUILD_WRKSRC} -name "*.c" | ${XARGS} ${REINPLACE_CMD} -e \
-		's|"regex\.h"|<gnu/regex.h>|g'
 	@${REINPLACE_CMD} -e \
 		's|-O3|| ; \
 		/[[:space:]]regex.o/d ; \

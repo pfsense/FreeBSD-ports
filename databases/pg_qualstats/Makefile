@@ -1,9 +1,7 @@
 # Created by: Palle Girgensohn <girgen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pg_qualstats
-PORTVERSION=	1.0.7
-PORTREVISION=	1
+PORTVERSION=	2.0.3
 CATEGORIES=	databases
 
 MAINTAINER=	girgen@FreeBSD.org

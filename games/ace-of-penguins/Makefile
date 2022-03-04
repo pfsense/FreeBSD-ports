@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	ace-of-penguins
 PORTVERSION=	1.4
 CATEGORIES=	games
@@ -17,7 +14,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=ace-
-USES=		gmake libtool localbase:ldflags
+USES=		gmake libtool localbase:ldflags xorg
 USE_XORG=	x11 xpm
 INSTALL_TARGET=	install-strip
 

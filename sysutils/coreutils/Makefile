@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	coreutils
-PORTVERSION=	8.31
+PORTVERSION=	8.32
 CATEGORIES=	sysutils textproc
 MASTER_SITES=	GNU
 
@@ -10,8 +8,6 @@ COMMENT=	Free Software Foundation core utilities
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-CONFLICTS=	idutils-[0-9]*
 
 USES=		cpe gmake iconv perl5 charsetfix tar:xz
 CPE_VENDOR=	gnu
@@ -25,10 +21,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g	\
 		--program-transform-name=s/stat/nustat/
 CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1
-.ifdef QEMU_EMULATING
-# XXX bug 224740: configure hangs
-CONFIGURE_ENV+=	gl_cv_func_printf_enomem=no
-.endif
 
 INFO=		coreutils
 

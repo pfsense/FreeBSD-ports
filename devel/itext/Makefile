@@ -1,5 +1,4 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	itext
 PORTVERSION=	4.2.0
@@ -23,10 +22,10 @@ RUN_DEPENDS=	${JAVALIBDIR}/bcmail.jar:java/bouncycastle \
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		dos2unix tar:bzip2
+USES=		cpe dos2unix tar:bzip2
+CPE_VENDOR=	${PORTNAME}pdf
 DOS2UNIX_GLOB=	*.java
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 ALL_TARGET=	jar jar.rtf jar.rups
 MAKE_ENV=	ANT_INCLUDE_SHARED_JARS=YES

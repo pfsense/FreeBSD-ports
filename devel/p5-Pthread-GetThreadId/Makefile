@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Pthread-GetThreadId
 PORTVERSION=	0.01
 CATEGORIES=	devel perl5

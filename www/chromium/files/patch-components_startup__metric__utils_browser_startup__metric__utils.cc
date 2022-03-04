@@ -1,20 +1,20 @@
---- components/startup_metric_utils/browser/startup_metric_utils.cc.orig	2019-03-17 18:33:50 UTC
+--- components/startup_metric_utils/browser/startup_metric_utils.cc.orig	2021-09-24 04:26:04 UTC
 +++ components/startup_metric_utils/browser/startup_metric_utils.cc
-@@ -456,7 +456,7 @@ void AddStartupEventsForTelemetry()
- // RecordBrowserMainMessageLoopStart, the time since last startup is also logged
- // to a histogram suffixed with the startup temperature.
- void RecordTimeSinceLastStartup(PrefService* pref_service) {
--#if defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_LINUX)
-+#if defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
-   DCHECK(pref_service);
+@@ -344,7 +344,7 @@ base::TimeTicks StartupTimeToTimeTicks(base::Time time
  
-   // Get the timestamp of the current startup.
-@@ -485,7 +485,7 @@ void RecordTimeSinceLastStartup(PrefService* pref_serv
-   // Write the timestamp of the current startup in |pref_service|.
-   pref_service->SetInt64(prefs::kLastStartupTimestamp,
-                          process_start_time.ToInternalValue());
--#endif  // defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_LINUX)
-+#endif  // defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
- }
+ // Enabling this logic on OS X causes a significant performance regression.
+ // https://crbug.com/601270
+-#if !defined(OS_APPLE)
++#if !defined(OS_APPLE) && !defined(OS_BSD)
+   static bool statics_initialized = false;
  
- // Logs the Startup.SameVersionStartupCount histogram. Relies on |pref_service|
+   base::ThreadPriority previous_priority = base::ThreadPriority::NORMAL;
+@@ -358,7 +358,7 @@ base::TimeTicks StartupTimeToTimeTicks(base::Time time
+   static const base::Time time_base = base::Time::Now();
+   static const base::TimeTicks trace_ticks_base = base::TimeTicks::Now();
+ 
+-#if !defined(OS_APPLE)
++#if !defined(OS_APPLE) && !defined(OS_BSD)
+   if (!statics_initialized) {
+     base::PlatformThread::SetCurrentThreadPriority(previous_priority);
+   }

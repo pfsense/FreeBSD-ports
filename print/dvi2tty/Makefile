@@ -1,5 +1,4 @@
 # Created by: Joel Sutton <jsutton@bbcon.com.au>
-# $FreeBSD$
 
 PORTNAME=	dvi2tty
 PORTVERSION=	5.3.4
@@ -8,9 +7,9 @@ MASTER_SITES=	http://www.mesa.nl/pub/dvi2tty/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	dvi-file previewer for text only devices
+COMMENT=	DVI file previewer for text only devices
 
-CONFLICTS=	ja-dvi2tty-[0-9]*
+CONFLICTS=	ja-dvi2tty
 
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" LDFLAGS="${STRIP}"
 

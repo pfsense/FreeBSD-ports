@@ -1,5 +1,5 @@
 bin/lokalize
-etc/xdg/lokalize.categories
+share/qlogging-categories5/lokalize.categories
 share/applications/org.kde.lokalize.desktop
 share/config.kcfg/lokalize.kcfg
 share/icons/hicolor/128x128/apps/lokalize.png
@@ -14,6 +14,9 @@ share/kxmlgui5/lokalize/projectmanagerui.rc
 share/kxmlgui5/lokalize/scriptsui.rc
 share/kxmlgui5/lokalize/translationmemoryrui.rc
 share/locale/ar/LC_MESSAGES/lokalize.mo
+share/locale/ast/LC_MESSAGES/lokalize.mo
+share/locale/az/LC_MESSAGES/lokalize.mo
+share/locale/be/LC_MESSAGES/lokalize.mo
 share/locale/bg/LC_MESSAGES/lokalize.mo
 share/locale/bs/LC_MESSAGES/lokalize.mo
 share/locale/ca/LC_MESSAGES/lokalize.mo
@@ -57,11 +60,13 @@ share/locale/ro/LC_MESSAGES/lokalize.mo
 share/locale/ru/LC_MESSAGES/lokalize.mo
 share/locale/sk/LC_MESSAGES/lokalize.mo
 share/locale/sl/LC_MESSAGES/lokalize.mo
+share/locale/sq/LC_MESSAGES/lokalize.mo
 share/locale/sr/LC_MESSAGES/lokalize.mo
 share/locale/sv/LC_MESSAGES/lokalize.mo
 share/locale/tr/LC_MESSAGES/lokalize.mo
 share/locale/ug/LC_MESSAGES/lokalize.mo
 share/locale/uk/LC_MESSAGES/lokalize.mo
+share/locale/vi/LC_MESSAGES/lokalize.mo
 share/locale/wa/LC_MESSAGES/lokalize.mo
 share/locale/zh_CN/LC_MESSAGES/lokalize.mo
 share/locale/zh_TW/LC_MESSAGES/lokalize.mo
@@ -69,9 +74,6 @@ share/locale/zh_TW/LC_MESSAGES/lokalize.mo
 %%DATADIR%%/icons/hicolor/16x16/actions/insert_arg.png
 %%DATADIR%%/icons/hicolor/16x16/actions/insert_tag.png
 %%DATADIR%%/icons/hicolor/16x16/actions/l10n/sr/approved.png
-%%DATADIR%%/icons/hicolor/16x16/actions/l10n/sr@ijekavian/approved.png
-%%DATADIR%%/icons/hicolor/16x16/actions/l10n/sr@ijekavianlatin/approved.png
-%%DATADIR%%/icons/hicolor/16x16/actions/l10n/sr@latin/approved.png
 %%DATADIR%%/icons/hicolor/16x16/actions/msgid2msgstr.png
 %%DATADIR%%/icons/hicolor/16x16/actions/nexterror.png
 %%DATADIR%%/icons/hicolor/16x16/actions/nextfuzzy.png
@@ -92,9 +94,6 @@ share/locale/zh_TW/LC_MESSAGES/lokalize.mo
 %%DATADIR%%/icons/hicolor/22x22/actions/insert_arg.png
 %%DATADIR%%/icons/hicolor/22x22/actions/insert_tag.png
 %%DATADIR%%/icons/hicolor/22x22/actions/l10n/sr/approved.png
-%%DATADIR%%/icons/hicolor/22x22/actions/l10n/sr@ijekavian/approved.png
-%%DATADIR%%/icons/hicolor/22x22/actions/l10n/sr@ijekavianlatin/approved.png
-%%DATADIR%%/icons/hicolor/22x22/actions/l10n/sr@latin/approved.png
 %%DATADIR%%/icons/hicolor/22x22/actions/msgid2msgstr.png
 %%DATADIR%%/icons/hicolor/22x22/actions/nexterror.png
 %%DATADIR%%/icons/hicolor/22x22/actions/nextfuzzy.png
@@ -116,9 +115,6 @@ share/locale/zh_TW/LC_MESSAGES/lokalize.mo
 %%DATADIR%%/icons/hicolor/32x32/actions/insert_arg.png
 %%DATADIR%%/icons/hicolor/32x32/actions/insert_tag.png
 %%DATADIR%%/icons/hicolor/32x32/actions/l10n/sr/approved.png
-%%DATADIR%%/icons/hicolor/32x32/actions/l10n/sr@ijekavian/approved.png
-%%DATADIR%%/icons/hicolor/32x32/actions/l10n/sr@ijekavianlatin/approved.png
-%%DATADIR%%/icons/hicolor/32x32/actions/l10n/sr@latin/approved.png
 %%DATADIR%%/icons/hicolor/32x32/actions/msgid2msgstr.png
 %%DATADIR%%/icons/hicolor/32x32/actions/nexterror.png
 %%DATADIR%%/icons/hicolor/32x32/actions/nextfuzzy.png
@@ -136,14 +132,8 @@ share/locale/zh_TW/LC_MESSAGES/lokalize.mo
 %%DATADIR%%/icons/hicolor/32x32/actions/transsearch.png
 %%DATADIR%%/icons/hicolor/48x48/actions/approved.png
 %%DATADIR%%/icons/hicolor/48x48/actions/l10n/sr/approved.png
-%%DATADIR%%/icons/hicolor/48x48/actions/l10n/sr@ijekavian/approved.png
-%%DATADIR%%/icons/hicolor/48x48/actions/l10n/sr@ijekavianlatin/approved.png
-%%DATADIR%%/icons/hicolor/48x48/actions/l10n/sr@latin/approved.png
 %%DATADIR%%/icons/hicolor/scalable/actions/approved.svgz
 %%DATADIR%%/icons/hicolor/scalable/actions/l10n/sr/approved.svgz
-%%DATADIR%%/icons/hicolor/scalable/actions/l10n/sr@ijekavian/approved.svgz
-%%DATADIR%%/icons/hicolor/scalable/actions/l10n/sr@ijekavianlatin/approved.svgz
-%%DATADIR%%/icons/hicolor/scalable/actions/l10n/sr@latin/approved.svgz
 %%DATADIR%%/icons/locolor/16x16/actions/catalogmanager.png
 %%DATADIR%%/icons/locolor/16x16/actions/diff.png
 %%DATADIR%%/icons/locolor/16x16/actions/insert_arg.png

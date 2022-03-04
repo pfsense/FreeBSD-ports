@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hare
 DISTVERSION=	1.0
 CATEGORIES=	sysutils

@@ -1,5 +1,4 @@
 # Created by: Brian Candler <B.Candler@pobox.com>
-# $FreeBSD$
 
 PORTNAME=	docbook-utils
 PORTVERSION=	0.6.14
@@ -18,13 +17,14 @@ RUN_DEPENDS+=	dsssl-docbook-modular>0:textproc/dsssl-docbook-modular \
 		sgmlspl:textproc/p5-SGMLSpm \
 		lynx:www/lynx
 
-CONFLICTS=	docbook2X-*
+CONFLICTS=	docbook2X
 
 USES=		perl5 gmake shebangfix
 USE_PERL5=	run
 USE_TEX=	jadetex
 GNU_CONFIGURE=	yes
 MAKE_ARGS+=	docdir="${DOCSDIR}" htmldir="${DOCSDIR}/html"
+NO_ARCH=	yes
 SHEBANG_FILES=	bin/sgmldiff.in
 perl_OLD_CMD=	@perl_bindir@/perl
 

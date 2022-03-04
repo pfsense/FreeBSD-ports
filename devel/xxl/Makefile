@@ -1,12 +1,10 @@
 # Created by: Robert Schlotterbeck <robert@rs.tarrant.tx.us>
-# $FreeBSD$
 
 PORTNAME=	xxl
 PORTVERSION=	1.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
-MASTER_SITES=	http://launchpadlibrarian.net/39195019/ \
-		http://www.zork.org/software/
+MASTER_SITES=	http://launchpadlibrarian.net/39195019/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C/C++ library for exception handling and asset management

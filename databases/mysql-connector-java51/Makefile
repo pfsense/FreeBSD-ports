@@ -1,13 +1,12 @@
 # Created by: Matthew Seaman
-# $FreeBSD$
 
 PORTNAME=	mysql-connector-java
-PORTVERSION=	5.1.47
+PORTVERSION=	5.1.49
 CATEGORIES=	databases java
 MASTER_SITES=	MYSQL/Connector-J
 PKGNAMESUFFIX=	51
 
-MAINTAINER=	matthew@FreeBSD.org
+MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	MySQL Connector/J: JDBC interface for MySQL
 
 LICENSE=	GPLv2
@@ -25,7 +24,7 @@ CONFLICTS_INSTALL=	mysql-connector-java-8*
 
 NO_ARCH=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6 1.7 1.8
+JAVA_VERSION=	1.7 1.8
 BUILDDIR=	${WRKDIR}/${DISTNAME}
 APIDOCSDIR=	${STAGEDIR}${DOCSDIR}/javadoc
 SRCDIR=		${WRKDIR}/${DISTNAME}/src
@@ -47,7 +46,7 @@ do-build:
 	@${DO_NADA}
 
 do-build-DOCS-on:
-.if ${JAVA_PORT_VERSION:M1.8.*}
+.if ${JAVA_PORT_VERSION:M*8*}
 	@${ECHO_MSG} "NOTE>>> Generating javadoc is broken with JDK 1.8+"
 .else
 	@${MKDIR} ${JAVADOCDIR} && (cd ${SRCDIR};               \
@@ -67,7 +66,7 @@ do-install-DOCS-on:
 	@for extradoc in ${EXTRADOCS} ; do                          \
 	  ${INSTALL_DATA} ${INSTALL_WRKSRC}/$$extradoc ${STAGEDIR}${DOCSDIR} ; \
 	done
-.if ${JAVA_PORT_VERSION:N1.8.*}
+.if ${JAVA_PORT_VERSION:N*8*}
 	@${MKDIR} ${STAGEDIR}${APIDOCSDIR}
 	@cd ${JAVADOCDIR} && ${COPYTREE_SHARE} . ${APIDOCSDIR}
 .endif

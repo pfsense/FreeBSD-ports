@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wxguitar
 PORTVERSION=	1.01
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 

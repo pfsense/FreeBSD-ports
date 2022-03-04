@@ -1,44 +1,27 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libclc
-DISTVERSION=	0.3.0.20180518
-PORTREVISION=	2
+DISTVERSION=	12.0.1
 CATEGORIES=	devel
+MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/
+DISTNAME=	libclc-${DISTVERSION}.src
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Required library functions for OpenCL C programming language
 
-LICENSE=	BSD3CLAUSE MIT
-LICENSE_COMB=	dual
+LICENSE=	LLVM
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
+LICENSE_NAME=	Apache License 2.0 with LLVM Exceptions
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	llvm${LLVMVER}>=4.0:devel/llvm${LLVMVER} \
+BUILD_DEPENDS=	llvm12>=12.0:devel/llvm12 \
+		spirv-llvm-translator-llvm12>0:devel/spirv-llvm-translator@llvm12 \
 		libedit>=0:devel/libedit
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	llvm-mirror
-GH_TAGNAME=	a2118d5
-
-# ninja based build is broken since commit 598792bc (16 sep 2016)
-USES=		gmake python:2.7,build gmake
+USES=		cmake compiler:c++11-lib python:3.6+,build tar:xz
 USE_LDCONFIG=	yes
-MAKE_ENV=	MAKE=${GMAKE} DESTDIR=${STAGEDIR}
 
-LLVMVER=	${MESA_LLVM_VER:U60}
-
-ALL_TARGET=
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/bin/python|${PYTHON_CMD}|g' \
-		-e 's|"python |"${PYTHON_VERSION} |g' \
-		${WRKSRC}/build/ninja_syntax.py \
-		${WRKSRC}/configure.py
-
-do-configure:
-	@cd ${WRKSRC} && ${PYTHON_CMD} configure.py ${CONFIGURE_ARGS} -g make \
-		--with-llvm-config=${LOCALBASE}/bin/llvm-config${LLVMVER} \
-		--pkgconfigdir=${PREFIX}/libdata/pkgconfig \
-		--prefix=${PREFIX}
+BINARY_ALIAS=	python=${PYTHON_CMD}
+CMAKE_ARGS+=	-DLLVM_CONFIG=${LOCALBASE}/bin/llvm-config12
 
 .include <bsd.port.mk>

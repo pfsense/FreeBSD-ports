@@ -1,8 +1,8 @@
 # Created by: stb
-# $FreeBSD$
 
 PORTNAME=	netatalk
 PORTVERSION=	3.1.12
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF
@@ -16,11 +16,12 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libevent.so:devel/libevent
 
-USES=		bdb:5+ gettext gmake iconv libtool perl5 pkgconfig shebangfix ssl tar:bzip2
+USES=		bdb:5+ cpe gettext gmake iconv libtool perl5 pkgconfig shebangfix ssl tar:bzip2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	netatalk
 INSTALL_TARGET=install-strip
+CPE_VENDOR=	netatalk_project
 
 CONFIGURE_ARGS+=	--with-pkgconfdir=${PREFIX}/etc \
 			--with-libgcrypt-dir=${LOCALBASE} \
@@ -61,12 +62,12 @@ LDAP_CFLAGS=		-I${LOCALBASE}/include -L${LOCALBASE}/lib
 LDAP_USE=	OPENLDAP=yes
 LDAP_CONFIGURE_OFF=	--without-ldap
 SENDFILE_CONFIGURE_ENABLE=sendfile
-DBUS_USES=	python:2.7
+DBUS_USES=	gnome python
 DBUS_USE=	GNOME=glib20
 DBUS_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 			libdbus-1.so:devel/dbus
 DBUS_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/dbus/_dbus.py:devel/py-dbus@${PY_FLAVOR}
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_OFF=--with-mysql-config=/nonexistent
 ACL_LIB_DEPENDS=	libsunacl.so:sysutils/libsunacl
 ACL_CONFIGURE_WITH=acls
@@ -74,7 +75,7 @@ LIBWRAP_CONFIGURE_ENABLE=tcp-wrappers
 
 SHEBANG_GLOB=	afpstats
 
-CONFLICTS=	bigloo-2.* cap-6.0.* tct-1.* netatalk-[12]* yudit-[0-9]*
+CONFLICTS=	bigloo-2.* cap-6.0.* tct-1.* netatalk-[12]* yudit
 
 .include <bsd.port.pre.mk>
 

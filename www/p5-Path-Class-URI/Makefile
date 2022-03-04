@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Path-Class-URI
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MIYAGAWA
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for serialize Path::Class objects as file:// URI
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

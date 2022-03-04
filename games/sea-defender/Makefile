@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sea-defender
 PORTVERSION=	0.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/:icon \
 		SF/nemysisfreebsdp/:icon
@@ -23,7 +20,7 @@ GH_ACCOUNT=	snoutmate
 GH_PROJECT=	Sea-Defender
 GH_TAGNAME=	d628051
 
-USES=		gmake
+USES=		gl gmake sdl xorg
 USE_SDL=	sdl mixer image ttf
 USE_GL=		gl glu
 USE_XORG=	x11 xrandr

@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	RcppEigen
-PORTVERSION=	0.3.3.5.0
-PORTREVISION=	1
+PORTVERSION=	0.3.3.9.1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

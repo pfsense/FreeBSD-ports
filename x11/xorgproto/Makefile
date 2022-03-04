@@ -1,18 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	xorgproto
-PORTVERSION=	2018.4
+DISTVERSION=	2021.5
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	xorg protocol headers
+COMMENT=	X Window System unified protocol definitions
 
-XORG_CAT=	proto
+LICENSE=	MIT
 
-CONFIGURE_ARGS= --without-fop \
+USES=		xorg-cat:proto
+
+NO_ARCH=	yes
+
+CONFIGURE_ARGS=	--without-fop \
 		--without-xmlto \
 		--without-xsltproc \
-		--enable-legacy
+		--disable-specs
+
+OPTIONS_DEFINE=	DOCS
 
 pre-patch:
 	@${MKDIR} ${WRKSRC}/man

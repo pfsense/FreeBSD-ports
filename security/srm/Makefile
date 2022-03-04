@@ -1,5 +1,4 @@
 # Created by: Keith J. Jones <kjones@antihackertoolkit.com>
-# $FreeBSD$
 
 PORTNAME=	srm
 PORTVERSION=	1.2.15
@@ -14,7 +13,7 @@ COMMENT=	Secure rm, a utility which destroys file contents before unlinking
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	secure_delete-[0-9]*
+CONFLICTS=	secure_delete
 
 GNU_CONFIGURE=	yes
 TEST_TARGET=	test

@@ -1,8 +1,8 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pan
 PORTVERSION=	0.145
+PORTREVISION=	1
 CATEGORIES=	news gnome
 MASTER_SITES=	http://pan.rebelbase.com/download/releases/${PORTVERSION}/source/
 DIST_SUBDIR=	gnome2
@@ -24,8 +24,7 @@ USES=		compiler:c++11-lang desktop-file-utils gettext-tools:build \
 		gmake gnome iconv localbase pathfix pkgconfig tar:bzip2
 USE_GNOME=	cairo gdkpixbuf2 intlhack
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-lgnuregex ${ICONV_LIB}
-INSTALLS_ICONS=	yes
+LDFLAGS+=	${ICONV_LIB}
 OPTIONS_DEFINE=		GTKSPELL GNUTLS NLS
 OPTIONS_DEFAULT=	GTKSPELL GNUTLS GTK2
 OPTIONS_RADIO=		GTK

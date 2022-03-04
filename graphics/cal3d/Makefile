@@ -1,5 +1,4 @@
 # Created by: Stefan Walter <sw@gegenunendlich.de>
-# $FreeBSD$
 
 PORTNAME=	cal3d
 PORTVERSION=	0.11.1	# see note below
@@ -19,7 +18,8 @@ COMMENT=	Skeletal based 3D character animation library written in C++
 # the version scheme completely.
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf libtool pathfix pkgconfig tar:bzip2
+USES=		autoreconf compiler:c++11-lang libtool pathfix pkgconfig \
+		tar:bzip2
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

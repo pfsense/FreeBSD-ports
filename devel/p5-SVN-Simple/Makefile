@@ -1,5 +1,4 @@
 # Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
 
 PORTNAME=	SVN-Simple
 PORTVERSION=	0.28
@@ -19,5 +18,7 @@ RUN_DEPENDS=	p5-subversion>=0:devel/p5-subversion
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

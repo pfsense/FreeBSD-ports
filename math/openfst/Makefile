@@ -1,22 +1,33 @@
 # Created by: Dmitry Sivachenko <mitya@yandex-team.ru>
-# $FreeBSD$
 
 PORTNAME=	openfst
-PORTVERSION=	1.6.3
-PORTREVISION=	3
+PORTVERSION=	1.8.1
 CATEGORIES=	math
 MASTER_SITES=	http://www.openfst.org/twiki/pub/FST/FstDownload/
 
-MAINTAINER=	demon@FreeBSD.org
-COMMENT=	Library for working with weighted finite-state transducers (FSTs)
+MAINTAINER=	kevlo@FreeBSD.org
+COMMENT=	Library for working with weighted finite-state transducers
 
 LICENSE=	APACHE20
 
-USES=		compiler:c++11-lib libtool python:2.7
-USE_LDCONFIG=	${LOCALBASE}/lib/fst
+USES=		compiler:c++17-lang libtool python:3.6+
+USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--enable-bin --enable-compact-fsts --enable-compress --enable-const-fsts --enable-far --enable-linear-fsts --enable-lookahead-fsts --enable-mpdt --enable-ngram-fsts --enable-pdt --enable-python --enable-special
-LDFLAGS+=	"-L${LOCALBASE}/lib"
-MAKE_ENV+=	PYTHON=${PYTHON_CMD}
+INSTALL_TARGET=	install-strip
+CONFIGURE_ARGS=	--enable-bin \
+		--enable-compact-fsts \
+		--enable-compress \
+		--enable-const-fsts \
+		--enable-far \
+		--enable-fsts \
+		--enable-linear-fsts \
+		--enable-lookahead-fsts \
+		--enable-mpdt \
+		--enable-ngram-fsts \
+		--enable-pdt \
+		--enable-python \
+		--enable-special
+
+CXXFLAGS_i386=	-msse -msse2 -mfpmath=sse
 
 .include <bsd.port.mk>

@@ -1,9 +1,8 @@
 # Created by: Jason Harris <jharris@widomaker.com>
-# $FreeBSD$
 
 PORTNAME=	units
 PORTVERSION=	2.16
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
@@ -17,6 +16,10 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g
 
 INFO=		units
+
+OPTIONS_DEFINE=		READLINE
+OPTIONS_DEFAULT=	READLINE
+READLINE_USES=	readline
 
 post-patch:
 	@${REINPLACE_CMD} -e \

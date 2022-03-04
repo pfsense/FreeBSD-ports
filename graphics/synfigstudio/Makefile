@@ -1,37 +1,43 @@
 # Created by: Yinghong.Liu <relaxbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	synfigstudio
-PORTVERSION=	1.2.1
-PORTREVISION=	8
+PORTVERSION=	1.2.2
+DISTVERSIONPREFIX=v
+PORTREVISION=	17
 CATEGORIES=	graphics multimedia
-MASTER_SITES=	SF/synfig/releases/${PORTVERSION}/source
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Vector-based 2D animation software package
 
 LICENSE=	GPLv2+
 
-BUILD_DEPENDS=	etl>=0.04.19_1:devel/etl
-LIB_DEPENDS=	libHalf.so:graphics/ilmbase \
-		libIlmImf.so:graphics/openexr \
+BUILD_DEPENDS=	etl>=1.2.2:devel/etl \
+		gsed:textproc/gsed
+LIB_DEPENDS=	libImath.so:math/Imath \
+		libOpenEXR.so:graphics/openexr \
 		libMagick++-6.so:graphics/ImageMagick6 \
 		libfftw3.so:math/fftw3 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libmlt.so:multimedia/mlt \
-		libsynfig.so:devel/synfig
+		libsynfig.so:graphics/synfig
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		compiler:c++11-lang desktop-file-utils gmake libtool localbase \
-		pathfix pkgconfig shared-mime-info
+PORTSCOUT=	limitw:1,even
+
+USES=		autoreconf compiler:c++11-lang desktop-file-utils \
+		gmake gnome libtool localbase mlt:6 pathfix pkgconfig \
+		shared-mime-info
+USE_GITHUB=	yes
+GH_ACCOUNT=	synfig
+GH_PROJECT=	synfig
+WRKSRC_SUBDIR=	synfig-studio
 USE_CXXSTD=	c++11
 USE_GNOME=	gtkmm30 intltool
 GNU_CONFIGURE=	yes
+BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 CONFIGURE_ARGS=	--disable-update-mimedb
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DOCS JACK NLS
 OPTIONS_SUB=	yes
@@ -42,15 +48,9 @@ JACK_CONFIGURE_ENABLE=	jack
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 
-post-patch:
-	@${REINPLACE_CMD} -e \
-		'/optimization_flags/s|CXXFLAGS=|#CXXFLAGS=| ; \
-		 /optimization_flags/s|CFLAGS=|#CFLAGS=|' \
-		${WRKSRC}/configure
-
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for doc in AUTHORS ChangeLog INSTALL NEWS README TODO
+.for doc in AUTHORS NEWS README TODO
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${doc} ${STAGEDIR}${DOCSDIR})
 .endfor
 

@@ -1,33 +1,31 @@
 # Created by: Kevin Lo <kevlo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libjwt
-PORTVERSION=	1.9.0
+PORTVERSION=	1.13.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	JSON Web Token implementation in C
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING.LIB
+LICENSE=	MPL20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libcheck.so:devel/check \
-		libjansson.so:devel/jansson
+BUILD_DEPENDS=	jansson>=2.0:devel/jansson
+LIB_DEPENDS=	libjansson.so:devel/jansson
+TEST_DEPENDS=	check>=0.9.4:devel/check
+
+USES=		autoreconf gmake libtool pathfix pkgconfig ssl
+
+CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
+		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+TEST_ARGS=	CFLAGS+=-I${LOCALBASE}/include LIBS+="-L${LOCALBASE}/lib -lcheck"
+TEST_TARGET=	check
+USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	benmcollins
-
-USES=		autoreconf gmake libtool pkgconfig ssl
-USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	OPENSSL_CFLAGS="-I/usr/include" \
-		OPENSSL_LIBS="-lcrypto -lssl"
-
-INSTALL_TARGET=	install-strip
-
-post-patch:
-	${REINPLACE_CMD} -e 's|^pkgconfiglibdir.*|pkgconfiglibdir = ${PREFIX}/libdata/pkgconfig|g' \
-		${WRKSRC}/libjwt/Makefile.am
 
 .include <bsd.port.mk>

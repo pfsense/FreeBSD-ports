@@ -1,9 +1,8 @@
 # Created by: Bill Fumerola <billf@chc-chimes.com>
-# $FreeBSD$
 
 PORTNAME=	muh
 PORTVERSION=	2.2a
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	oliver@FreeBSD.org

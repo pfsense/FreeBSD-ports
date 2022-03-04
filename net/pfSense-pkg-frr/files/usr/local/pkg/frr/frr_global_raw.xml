@@ -8,7 +8,7 @@
  * frr_global_raw.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,6 +52,10 @@
 			<active/>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -62,6 +66,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -113,6 +121,20 @@
 			</rowhelper>
 		</field>
 		<field>
+			<name>RAW Configuration Management</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				<p><b>Clicking "Update Running" will fill RUNNING fields with current configuration.</p>
+				<p><button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update Running'><i class="fa fa-refresh icon-embed-btn"></i>Update Running</button></p>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
 			<name>RAW Configuration Files</name>
 			<type>listtopic</type>
 		</field>
@@ -120,8 +142,8 @@
 			<fielddescr></fielddescr>
 			<description>
 				<![CDATA[
-				The boxes on this page will override the GUI configuration with a completely custom configuration passed through
-				directly to FRR. Using this feature, experienced users can utilize more complicated configurations than are possible
+				The boxes on this page will override the GUI configuration with a custom configuration passed through directly to FRR.<br />
+				Using this feature, experienced users can utilize more complicated configurations than are possible
 				using the GUI while allowing the firewall to manage the processes and retaining the configuration in a way that survives
 				between reboots and upgrades.
 				]]>
@@ -129,8 +151,8 @@
 			<type>info</type>
 		</field>
 		<field>
-			<fielddescr>zebra.conf</fielddescr>
-			<fieldname>zebra</fieldname>
+			<fielddescr>SAVED frr.conf</fielddescr>
+			<fieldname>frr</fieldname>
 			<description>
 				<![CDATA[
 				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
@@ -143,56 +165,39 @@
 			<cols>65</cols>
 		</field>
 		<field>
-			<fielddescr>staticd.conf</fielddescr>
-			<fieldname>staticd</fieldname>
+			<fielddescr>RUNNING frr.conf</fielddescr>
+			<fieldname>frrrunning</fieldname>
 			<description>
 				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
+				<script>
+				var frr = document.getElementById('frr');
+				var frrrunning = document.getElementById('frrrunning');
+				function onCopyClick(elem1, elem2) {
+					elem1.value = elem2.value;
+					configCheck(elem1, elem2);
+				}
+				function configCheck(elem1,elem2) {
+					if (elem1.value == elem2.value ) {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = '#FAFAFA';
+					}
+					else {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = 'white';
+					}
+				}
+				window.onload = configCheck(frr, frrrunning);
+				zebra.addEventListener('keyup', function() { configCheck(frr, frrrunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(frr, frrrunning) });
+				</script>
+				]]>
+				<![CDATA[
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/frr.conf".<br />
+				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
+				When finished copying, click "Save" at the bottom of the form.<br />
+				</b>
+				<button onclick='onCopyClick(frr, frrrunning); return false'>Copy frr.conf Running to Saved</button>
+				</p>
 				]]>
 			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>bgpd.conf</fielddescr>
-			<fieldname>bgpd</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>ospfd.conf</fielddescr>
-			<fieldname>ospfd</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>ospf6d.conf</fielddescr>
-			<fieldname>ospf6d</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>		
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<rows>30</rows>
@@ -200,7 +205,12 @@
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
+		<![CDATA[
+		if ($_POST['update_running']) {
+			read_frr_running_config();
+		}
 		frr_generate_config();
+		]]>
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
 		frr_global_raw_validate_input();

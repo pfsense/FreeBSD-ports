@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	gsimplecal
-PORTVERSION=	2.1
+PORTVERSION=	2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight calendar applet written in C++ using GTK
 
 LICENSE=	GPLv3
@@ -15,7 +13,7 @@ GH_ACCOUNT=	dmedvinsky
 
 GNU_CONFIGURE=	yes
 
-USES=		autoreconf compiler:c++11-lang gmake pkgconfig
+USES=		autoreconf compiler:c++11-lang gmake gnome pkgconfig
 USE_GNOME=	glib20 gtk30
 
 PLIST_FILES=	bin/gsimplecal \

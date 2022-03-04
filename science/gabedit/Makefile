@@ -1,12 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	gabedit
-DISTVERSION=	2.5.1
+DISTVERSION=	2.5.1-300720 # the last number is "snapshot"
+PORTREVISION=	1
 CATEGORIES=	science
-#MASTER_SITES=	http://prdownloads.sourceforge.net/${PORTNAME}/ # old SF-based source
-#DISTNAME=	GabeditSrc${DISTVERSION:S/.//g}
-MASTER_SITES=	https://sites.google.com/site/allouchear/Home/gabedit/download/ # development version now on sites.google.com, browse to the same URL for details
-DISTNAME=	GabeditSrc${DISTVERSION:S/.//g}_061218
+MASTER_SITES=	https://sites.google.com/site/allouchear/Home/gabedit/download/
+DISTNAME=	GabeditSrc${DISTVERSION:C/([0-9])\.([0-9])\.([0-9])-([0-9])/\1\2\3_\4/}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Graphical user interface for several chemistry software packages
@@ -20,11 +17,13 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
 
-USES=		gettext-runtime gl gmake gnome pkgconfig
+USES=		compiler:c++11-lang gettext-runtime gl gmake gnome pkgconfig \
+		xorg
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 pango pangox-compat
 USE_GL=		gl glu
 USE_XORG=	ice sm x11 xmu xt
-INSTALLS_ICONS=	yes
+
+CFLAGS+=	-fcommon # change the default because GlobalOrb.h has many common definitions
 
 BINARY_ALIAS=	make=gmake
 
@@ -38,8 +37,7 @@ PLIST_FILES+=	share/icons/hicolor/${SZ}x${SZ}/apps/${PORTNAME}.png
 
 OPTIONS_DEFINE=		OPENMP
 OPTIONS_DEFAULT=	OPENMP
-
-OPENMP_LIB_DEPENDS=	libomp.so:devel/openmp
+OPTIONS_EXCLUDE_powerpc=	OPENMP
 
 post-patch:
 	@${REINPLACE_CMD} 's|/usr/|${PREFIX}/|; s| -O2| ${CFLAGS}|; s|gcc|${CC}|' ${WRKSRC}/CONFIG

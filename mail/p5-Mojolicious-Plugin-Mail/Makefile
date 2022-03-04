@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <mat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Mojolicious-Plugin-Mail
 PORTVERSION=	1.5
 CATEGORIES=	mail perl5

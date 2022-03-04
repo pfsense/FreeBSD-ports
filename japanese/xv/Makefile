@@ -1,5 +1,4 @@
 # Created by: Shigeyuki FUKUSHIMA <shige@FreeBSD.org>
-# $FreeBSD$
 
 CATEGORIES=	japanese
 
@@ -16,6 +15,8 @@ RUN_DEPENDS=	xv:graphics/xv
 PLIST_FILES=	bin/ja-xv
 
 OPTIONS_EXCLUDE=	DOCS
+
+PORTREVISION=	1
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/xv ${STAGEDIR}${PREFIX}/bin/ja-xv

@@ -1,18 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	icingaweb2-module-map
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net-mgmt www
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Display hosts on OpenStreetMap
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	icingaweb2>=2.4.1:net-mgmt/icingaweb2
+RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.4.1:net-mgmt/icingaweb2@${PHP_FLAVOR}
+
+USES=		php:web,flavors
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nbuchwitz

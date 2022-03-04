@@ -1,10 +1,9 @@
 # Created by: Kris Moore <kmoore@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	teamwords
 PORTVERSION=	0.2.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	net-im
 
 MAINTAINER=	ports@FreeBSD.org

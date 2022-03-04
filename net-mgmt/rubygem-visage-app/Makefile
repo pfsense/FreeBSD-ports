@@ -1,5 +1,4 @@
 # Created by: Brad Davis <brd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	visage-app
 PORTVERSION=	2.1.0
@@ -7,7 +6,7 @@ PORTREVISION=	4
 CATEGORIES=	net-mgmt rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	brd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graph tool for Collectd
 
 LICENSE=	MIT

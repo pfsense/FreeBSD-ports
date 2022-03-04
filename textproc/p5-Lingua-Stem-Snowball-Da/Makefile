@@ -1,5 +1,4 @@
 # Created by: Thorsten Greiner <thorsten.greiner@web.de>
-# $FreeBSD$
 
 PORTNAME=	Lingua-Stem-Snowball-Da
 PORTVERSION=	1.01
@@ -15,5 +14,7 @@ LICENSE=	GPLv2
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

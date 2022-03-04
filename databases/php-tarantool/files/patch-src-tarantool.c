@@ -1,14 +1,15 @@
---- src/tarantool.c.orig	2018-04-18 13:33:56 UTC
+--- src/tarantool.c.orig	2020-06-29 22:41:13 UTC
 +++ src/tarantool.c
-@@ -1151,7 +1151,11 @@ PHP_METHOD(Tarantool, __construct) {
- 		memset(&le, 0, sizeof(zend_resource));
- 		le.type = php_tarantool_list_entry();
- 		le.ptr  = obj;
-+#if PHP_VERSION_ID >= 70300
-+		GC_SET_REFCOUNT(&le, 1);
-+#else
- 		GC_REFCOUNT(&le) = 1;
-+#endif
+@@ -14,6 +14,12 @@
  
- 		assert(plist_id != NULL);
- 		if (zend_hash_update_mem(&EG(persistent_list), plist_id,
+ #include "utils.h"
+ 
++#if PHP_MAJOR_VERSION >= 8
++#define TSRMLS_CC
++#define TSRMLS_DC
++#define TSRMLS_FETCH()
++#endif
++
+ static int __tarantool_authenticate(tarantool_connection *obj);
+ static void tarantool_stream_close(tarantool_connection *obj);
+ 

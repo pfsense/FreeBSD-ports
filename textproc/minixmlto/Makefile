@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	minixmlto
-PORTVERSION=	0.0.2
-PORTREVISION=	1
+PORTVERSION=	0.0.3
 CATEGORIES=	textproc
 
 MAINTAINER=	bapt@FreeBSD.org
@@ -18,5 +15,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	bapt
 PLIST_FILES=	bin/minixmlto
 MAKE_ARGS=	DOCBOOK_XSL="${LOCALBASE}/share/xsl/docbook" PREFIX="${PREFIX}"
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

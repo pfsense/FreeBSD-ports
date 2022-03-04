@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PPI-XS
 PORTVERSION=	0.910
 CATEGORIES=	textproc perl5

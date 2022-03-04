@@ -8,7 +8,7 @@
  * suricata_sync.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Marcello Coutinho
  * Copyright (c) 2014-2017 Bill Meeks
  * All rights reserved.
@@ -50,6 +50,10 @@
 		<tab>
 			<text>Blocks</text>
 			<url>/suricata/suricata_blocked.php</url>
+		</tab>
+		<tab>
+			<text>Files</text>
+			<url>/suricata/suricata_files.php</url>
 		</tab>
 		<tab>
 			<text>Pass Lists</text>

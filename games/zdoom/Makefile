@@ -1,9 +1,8 @@
 # Created by: Kyle Evans <kevans@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	zdoom
 PORTVERSION=	2.8.1
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	games
 
 MAINTAINER=	kevans@FreeBSD.org
@@ -19,8 +18,6 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libsndfile.so:audio/libsndfile
 
-BROKEN_powerpc64=	fails to compile: invokes x86 assembly
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	rheit
 
@@ -28,7 +25,8 @@ PORTSCOUT=	limit:^.+\.[1-9]{1,3}[1-8]?$$
 
 DATADIR=	${DMDIR}/${PORTNAME}
 
-USES=		cmake	gettext jpeg openal pkgconfig
+USES=		cmake dos2unix gettext gnome jpeg openal pkgconfig sdl
+DOS2UNIX_FILES=	src/p_spec.cpp
 USE_GNOME=	atk cairo gdkpixbuf2 gtk20 pango
 USE_SDL=	sdl2
 CMAKE_ARGS=	-DNO_FMOD:BOOL=ON
@@ -48,6 +46,11 @@ FLUIDSYNTH_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 FLUIDSYNTH_CMAKE_BOOL=	WITH_FLUIDSYNTH
 
 .include "${.CURDIR}/../doom-data/Makefile.include"
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_ARGS+=	-DNO_ASM:BOOL=ON
+.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flightgear-mb339-pan
 PORTVERSION=	2.1
@@ -11,11 +10,13 @@ DISTNAME=	mb339pan_${PORTVERSION}
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Simulation of the MB-339 PAN aerobatic jet
 
-BROKEN_powerpc64=	fails to build: runaway process
+# Converted from RESTRICTED
+LICENSE=	mb339
+LICENSE_NAME=	mb339
+LICENSE_TEXT=	Redistribution prohibited
+LICENSE_PERMS=	auto-accept
 
 RUN_DEPENDS=	${LOCALBASE}/share/flightgear/version:games/flightgear-data
-
-RESTRICTED=	Redistribution prohibited
 
 NO_BUILD=	yes
 USES=		zip
@@ -33,7 +34,7 @@ pre-install:
 	@${RM} ${PLIST}
 	@cd ${WRKSRC} && \
 	${FIND} * -type d -empty | ${SORT} \
-		| ${SED} -e 's|^|@exec ${MKDIR} %D/share/flightgear/Aircraft/|' >> ${PLIST} && \
+		| ${SED} -e 's|^|@preexec ${MKDIR} %D/share/flightgear/Aircraft/|' >> ${PLIST} && \
 	${FIND} * -type f | ${SORT} \
 		| ${SED} -e 's|^|%%DATADIR%%/|' >> ${PLIST} && \
 	${FIND} * -type d -empty | ${SORT} -r \

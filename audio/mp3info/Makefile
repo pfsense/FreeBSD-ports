@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	mp3info
 PORTVERSION=	0.8.5a
@@ -12,16 +11,17 @@ COMMENT=	MP3 technical info viewer and ID3 1.x tag editor
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	GTK2 DOCS
-GTK2_DESC=	Enable to have the gmp3info
+USES=		cpe ncurses tar:tgz
+
+ALL_TARGET=	mp3info
+
+PLIST_FILES=	bin/mp3info share/man/man1/mp3info.1.gz
+PORTDOCS=	ChangeLog README mp3info.txt
 
 PORTSCOUT=	skipv:0.8.5
 
-ALL_TARGET=	mp3info
-USES=		ncurses tar:tgz
-
-PLIST_FILES=	bin/mp3info man/man1/mp3info.1.gz
-PORTDOCS=	ChangeLog README mp3info.txt
+OPTIONS_DEFINE=	GTK2 DOCS
+GTK2_DESC=	Enable to have the gmp3info
 
 GTK2_ALL_TARGET=	gmp3info
 GTK2_PLIST_FILES=	bin/gmp3info
@@ -30,7 +30,7 @@ GTK2_USES=		gnome pkgconfig
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mp3info ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/mp3info.1 ${STAGEDIR}${PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/mp3info.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 do-install-GTK2-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/gmp3info ${STAGEDIR}${PREFIX}/bin/

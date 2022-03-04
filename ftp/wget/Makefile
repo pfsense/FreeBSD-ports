@@ -1,11 +1,9 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wget
-DISTVERSION=	1.20.3
-CATEGORIES=	ftp www ipv6
+DISTVERSION=	1.21.2
+CATEGORIES=	ftp www
 MASTER_SITES=	GNU
-EXTRACT_SUFX=	.tar.lz
 
 MAINTAINER=	vd@FreeBSD.org
 COMMENT=	Retrieve files from the Net via HTTP(S) and FTP
@@ -16,15 +14,17 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 TEST_DEPENDS=	p5-HTTP-Daemon>=0:www/p5-HTTP-Daemon \
 		p5-IO-Socket-SSL>=0:security/p5-IO-Socket-SSL
 
-USES=		charsetfix cpe iconv tar:xz
+USES=		charsetfix cpe iconv localbase pkgconfig tar:lz
+USE_CSTD=	c99
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 OPTIONS_SUB=	yes
 
-OPTIONS_RADIO=	SSL
+OPTIONS_RADIO=	SSL PCRE
 OPTIONS_RADIO_SSL=GNUTLS OPENSSL
-OPTIONS_DEFINE=	DOCS IDN IPV6 MANPAGES METALINK NLS PCRE PSL
-OPTIONS_DEFAULT=IDN MANPAGES OPENSSL
+OPTIONS_RADIO_PCRE=PCRE1 PCRE2
+OPTIONS_DEFINE=	DOCS IDN IPV6 MANPAGES METALINK NLS PSL NTLM
+OPTIONS_DEFAULT=IDN MANPAGES OPENSSL NLS
 
 DOCS_DESC=	Install info page
 DOCS_CONFIGURE_ENV=	MAKEINFO="${MAKEINFO}"
@@ -33,8 +33,6 @@ DOCS_USES=	makeinfo
 
 IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2 \
 			libunistring.so:devel/libunistring
-IDN_CPPFLAGS=		-I${LOCALBASE}/include
-IDN_LDFLAGS=		-L${LOCALBASE}/lib
 IDN_CONFIGURE_ENABLE=	iri
 IDN_CONFIGURE_ON=	--with-libidn=${LOCALBASE} \
 			--with-libunistring-prefix=${LOCALBASE}
@@ -51,17 +49,22 @@ METALINK_LIB_DEPENDS=	libmetalink.so:misc/libmetalink
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
-NLS_CPPFLAGS=		-I${LOCALBASE}/include
-NLS_LDFLAGS=		-L${LOCALBASE}/lib
 
 PCRE_DESC=		Support Perl regular expressions in addition to POSIX
-PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
-PCRE_CPPFLAGS=		-I${LOCALBASE}/include
-PCRE_LDFLAGS=		-L${LOCALBASE}/lib
-PCRE_CONFIGURE_ENABLE=	pcre
+
+PCRE1_DESC=		Support PCRE style regular expressions
+PCRE1_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE1_CONFIGURE_ENABLE=	pcre
+
+PCRE2_DESC=		Support PCRE2 style regular expressions
+PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
+PCRE2_CONFIGURE_ENABLE=	pcre2
 
 PSL_CONFIGURE_WITH=	libpsl
 PSL_LIB_DEPENDS=	libpsl.so:dns/libpsl
+
+NTLM_DESC=		Support NTLM authorization
+NTLM_CONFIGURE_ENABLE=	ntlm
 
 .include <bsd.port.options.mk>
 
@@ -71,11 +74,11 @@ CONFIGURE_ARGS+=--with-ssl=openssl --with-libssl-prefix=${OPENSSLBASE}
 CPPFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 .elif ${PORT_OPTIONS:MGNUTLS}
-USES+=		pkgconfig
 LIB_DEPENDS+=	libgnutls.so:security/gnutls
 CONFIGURE_ARGS+=--with-ssl=gnutls
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+. if ${PORT_OPTIONS:MNTLM}
+LIB_DEPENDS+=	libnettle.so:security/nettle
+. endif
 .else
 CONFIGURE_ARGS+=--without-ssl
 .endif

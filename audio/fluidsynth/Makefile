@@ -1,14 +1,9 @@
 # Created by: Juha Nygard <juha.nygard1@netikka.fi>
-# $FreeBSD$
 
 PORTNAME=	fluidsynth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.3
+DISTVERSION=	2.2.4
 CATEGORIES=	audio
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/commit/
-PATCHFILES=	6ac6e5983f4169c7a418866319e5bde424d4434c.patch:-p1 \
-		a92ba4528f0a848e355556010dcc9456b54cd705.patch:-p1
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Real-time software synthesizer based on the SoundFont 2 specifications
@@ -16,17 +11,18 @@ COMMENT=	Real-time software synthesizer based on the SoundFont 2 specifications
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake gnome pkgconfig
+USES=		cmake cpe gnome pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	FluidSynth
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 
-CMAKE_OFF=	enable-midishare
+# would require unreleased libinstpatch >= 1.1.0
+CMAKE_OFF=	enable-libinstpatch enable-midishare
 LDFLAGS+=	-lpthread
 
-OPTIONS_DEFINE=	JACK ALSA DBUS LADSPA LASH PORTAUDIO PULSEAUDIO READLINE \
-		SNDFILE SNDIO
+OPTIONS_DEFINE=		ALSA DBUS JACK LADSPA LASH PORTAUDIO PULSEAUDIO \
+			READLINE SDL SNDFILE SNDIO
 OPTIONS_DEFAULT=	JACK READLINE
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
@@ -40,6 +36,7 @@ DBUS_CMAKE_BOOL=	enable-dbus
 
 LADSPA_BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
 LADSPA_RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
+LADSPA_USES=		localbase
 LADSPA_CMAKE_BOOL=	enable-ladspa
 
 LASH_LIB_DEPENDS=	liblash.so:audio/lash
@@ -53,6 +50,10 @@ PULSEAUDIO_CMAKE_BOOL=	enable-pulseaudio
 
 READLINE_USES=		readline
 READLINE_CMAKE_BOOL=	enable-readline
+
+SDL_USES=	sdl
+SDL_USE=	SDL=sdl2
+SDL_CMAKE_BOOL=	enable-sdl2
 
 SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 SNDFILE_CMAKE_BOOL=	enable-libsndfile

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	flyhard
 PORTVERSION=	0.42
-PORTREVISION=	17
+PORTREVISION=	20
 CATEGORIES=	games
 MASTER_SITES=	http://www.markboyd.me.uk/games/flyhard/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -20,7 +17,7 @@ BROKEN_armv7=	dumps core: Assertion failed: (!NodePtr->isKnownSentinel()), funct
 LIB_DEPENDS=	libpng.so:graphics/png
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 
-USES=		gmake localbase
+USES=		gmake localbase sdl
 GNU_CONFIGURE=	yes
 USE_CXXSTD=	c++98
 USE_SDL=	sdl mixer

@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	sparqlwrapper
-PORTVERSION=	1.8.2
+PORTVERSION=	1.8.5
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,11 +15,10 @@ LICENSE_NAME=	W3C Software Notice and License
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
-post-patch:
-	@${REINPLACE_CMD} '/keepalive/d' ${WRKSRC}/requirements.txt
+NO_ARCH=	yes
+USE_LOCALE=	en_US.UTF-8
 
 .include <bsd.port.mk>

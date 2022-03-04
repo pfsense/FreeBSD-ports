@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Email-Sender-Transport-SMTPS
 PORTVERSION=	0.03
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Email::Sender::Transport::SMTPS
 
 LICENSE=	ART10 GPLv1+

@@ -1,33 +1,30 @@
-===============================================================================
+[
+{ type: install
+  message: <<EOM
 Tiny Tiny RSS is now installed, but it requires some additional setup.
 
-You now need to create the DB used by Tiny Tiny RSS as its back-end:
-create a database and a user, and source the script
-%%WWWDIR%%/schema/ttrss_schema_%%DB%%.sql .
+You now need to create a database, a database user, configure the
+web server, and configure tt-rss.  Sample apache24 configs located
+at %%DATADIR%%/httpd-tt-rss.conf.
 
-Then, you need to edit the configuration file
-%%WWWDIR%%/config.php
+Configure tt-rss (https://tt-rss.org/wiki/GlobalConfig) :
+    %%WWWDIR%%/config.php
 
-You also need to add appropriate configuration directives to your apache
-configuration file (%%PREFIX%%/etc/apache(2)/httpd.conf).
+If your database is on another server:
+    # sysrc ttrssd_local_db=NO
 
-E.g., you could copy %%DATADIR%%/httpd-tt-rss.conf
-to %%LOCALBASE%%/etc/apache22/Includes/ if using apache22.
+Enable the ttrssd daemon:
+    # sysrc ttrssd_enable=YES
+    # service ttrssd start
 
-Then, you should be able to check <http://localhost/tt-rss/> and
-<http://localhost/tt-rss/mobile/> with a browser.
-(the first time, the user is "admin", with the password "password")
+Goto config.php's TTRSS_SELF_URL_PATH in a web browser.
+Default user is "admin", with the password "password".
 
-And to update your feeds, you have to enable the daemon ttrssd in
-/etc/rc.conf and start %%PREFIX%%/etc/rc.d/ttrssd . You may also add an entry
-for /var/log/ttrssd.log in your /etc/newsyslog.conf .
-Note: set `ttrssd_local_db="NO"' if your database is on another server.
-
-Important note: after an upgrade, you have to set SINGLE_USER_MODE to true
-in your config.php; remember to modify after that if needed. And your
-DB_USER must be granted to ALTER any tables of your DB_NAME. And don't
-forget to empty the cache of your browser!
-
-Please read <https://git.tt-rss.org/fox/tt-rss/wiki/InstallationNotes> and
-<https://git.tt-rss.org/fox/tt-rss/wiki/UpdatingFeeds> for important points.
-===============================================================================
+After an upgrade, you might need to update your database schema.
+Perform one of the following:
+- Login as an admin user via the web ui, tt-rss will ask you to update.
+- Restart the ttrssd service and view /var/log/ttrssd.log for shema updates.
+- Temporally enable SINGLE_USER_MODE in config.php and open web ui.
+EOM
+}
+]

@@ -1,6 +1,6 @@
---- configure.orig	2019-02-02 15:40:56 UTC
+--- configure.orig	2020-09-06 00:50:03 UTC
 +++ configure
-@@ -566,6 +566,7 @@ if command -v ${BASHCMD} > /dev/null; then
+@@ -734,6 +734,7 @@ if command -v ${BASHCMD} > /dev/null; then
      printf "Yes (%s).\n" "$bash_absolute"
  else
      have_bash=0
@@ -8,7 +8,7 @@
      printf "No. (%s not found)\n" "${BASHCMD}"
  fi
  
-@@ -576,6 +577,7 @@ if command -v ${PERL} > /dev/null; then
+@@ -744,6 +745,7 @@ if command -v ${PERL} > /dev/null; then
      printf "Yes (%s).\n" "$perl_absolute"
  else
      have_perl=0

@@ -1,9 +1,8 @@
 # Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	epdfview
 PORTVERSION=	0.1.8
-PORTREVISION=	16
+PORTREVISION=	48
 CATEGORIES=	graphics print gnome
 MASTER_SITES=	FRUGALWARE/xapps-extra/${PORTNAME} \
 		ftp://ftp.slackware.com/.1/blfs/conglomeration/${PORTNAME}/ \
@@ -18,14 +17,15 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	cppunit-config:devel/cppunit
 LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 
-USES=		compiler:c++11-lang desktop-file-utils iconv gmake pkgconfig tar:bzip2
+USES=		compiler:c++11-lang desktop-file-utils gmake gnome iconv \
+		pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 USE_GNOME=	gtk20 intlhack
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	CUPS NLS
+OPTIONS_DEFAULT=CUPS NLS
 OPTIONS_SUB=	yes
 
 CUPS_CONFIGURE_WITH=	cups

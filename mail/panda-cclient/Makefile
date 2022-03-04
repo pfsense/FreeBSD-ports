@@ -1,10 +1,9 @@
 # Created by: Kelly Yancey <kbyanc@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cclient
 PORTVERSION=	20130621
 PORTREVISION=	1
-CATEGORIES=	mail devel ipv6
+CATEGORIES=	mail devel
 PKGNAMEPREFIX=	panda-
 
 MAINTAINER=	thierry@FreeBSD.org

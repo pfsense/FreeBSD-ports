@@ -10,6 +10,235 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20211122:
+AUTHOR: bapt@FreeBSD.org
+
+  The default compression for INDEX file as fetch via make fetchindex has
+  switched from .bz2 to .xz (.zst is also available).
+
+  The .bz2 format is still available but is considered deprecated and may
+  be removed in the future.
+
+20211010:
+AUTHOR: bapt@FreeBSD.org
+
+  INSTALLS_ICONS has been replace by a trigger on gtk-update-icon-cache.
+  the macro does nothing anymore.
+
+20211010:
+AUTHOR: bapt@FreeBSD.org
+
+  A new USES has been added, to simplify the integration of triggers in
+  the ports tree.
+
+20210801:
+AUTHOR: delphij@FreeBSD.org
+
+  WANT_OPENLDAP_SASL is removed now that OpenLDAP is always built with
+  SASL support.
+
+20210730:
+AUTHOR: tcberner@FreeBSD.org
+
+  A new USES has been added to depend on the mlt multimedia framework.
+
+  Ports that depend on mlt should now use USES=mlt:<version> to specify
+  their dependency.
+
+  At the moment the supported version is 6, but will be extended to also 
+  allow for selection of mlt 7 shortly.
+
+20210604:
+AUTHOR: mat@FreeBSD.org
+
+  The prepare-commit-msg hook was enhanced to auto-fill the first line of the
+  commit with the category/port in case only one port was committed to.
+
+20210525:
+AUTHOR: amdmi3@FreeBSD.org
+
+  PYTHON_REL has been switched from a 4 digits number to a 5 digits number to
+  handle python 3.10.0.  Ports checking for python 3.7.10 should compare
+  PYTHON_REL against 30710 and ports checking for python 3.10.0 should compare
+  PYTHON_REL against 31000.
+
+20210420:
+AUTHOR: mat@FreeBSD.org
+
+  A prepare-commit-msg hook was added to the repository.  This hooks prepares
+  the commit message template for specific ports tree usage.
+
+  To make use of it, the easiest way is to run:
+
+    git config --add core.hooksPath .hooks
+
+20201120:
+AUTHOR: gnome@FreeBSD.org
+
+  New default version for librsvg2.
+
+  Current versions of graphics/librsvg2 are using parts written in rust.
+  For architectures that do not have support for rust, and for people
+  who prefer not to have, or are not able to compile rust software due
+  to hardware limitations, the version can be chosen via this new flag.
+
+  The default on almost all architectures is rust.
+
+  If you prefer no to use rust, add the following to your make.conf:
+
+  	DEFAULT_VERSIONS+=librsvg2=legacy
+
+20210327:
+AUTHOR: bapt@FreeBSD.org
+
+  New @touch keyword
+  Its purpose is to ensure that a file is being created at install time
+  while not necessary tracked by the package.
+
+20201120:
+AUTHOR: pauamma@gundo.com
+
+  New virtual category: education.
+
+  This category comprises ports that are mainly educational in nature or
+  purpose, such as:
+  * course-writing or course-delivery applications,
+  * classroom or school management applications (eg, scheduling classes),
+  * applications, utilities, or games primarily or substantially designed 
+    to help the user learn a specific topic or study in general, like typing 
+    tutors, flashcard applications, or educational games.
+
+20201110:
+AUTHOR: bapt@FreeBSD.org
+
+  Patents are a complicated topic, and their regulation varies depending on
+  jurisdiction. Patents are not necessarily related to the license and so
+  should not be connected to the license framework.
+
+  Patent limitations within the ports tree have been removed and left to the
+  user or consumer to deal with their local legislation to determine if they
+  can use the software without legal restrictions.
+
+20201022:
+AUTHOR: bapt@FreeBSD.org
+
+  New @rmempty keyword
+  Its purpose is to delete empty files at deinstallation time. It is meant
+  to be used for generated files/untracked by the package manager files.
+
+  It respects rootdir
+
+20201022:
+AUTHOR: bapt@FreeBSD.org
+
+  @shell has been rewritten in lua
+  It provides the exact same feature set as the previous version but it is now
+  sandboxed and rootdir compliant (see the pkg -r option).
+
+20201001:
+AUTHOR: manu@FreeBSD.org
+
+  The @sample keyword was rewritten in lua.
+  It behaves exactly like the previous one but it is sandboxed and
+  is rootdir compliant (see pkg -r option).
+
+20201001:
+AUTHOR: bapt@FreeBSD.org
+
+  packages scripts and keywords can both be written in lua (version 5.3), see
+  pkg-lua-script(5) for the API.
+
+  Note that all scripts written in lua will:
+
+  - run inside a capsicum sandbox,
+  - be rootdir compatible (see pkg -r option)
+  - be cross installation compatible example: installing packages in an arm64
+    rootdir on and amd64 host.
+
+20200531:
+AUTHOR: kde@FreeBSD.org
+
+  pyqt.mk gained support for test-only dependencies. If a component, say
+  py-qt5-gui is only required for testing, you can add
+
+    USE_PYQT=<other_deps> gui_test
+
+20200514:
+AUTHOR: mat@FreeBSD.org
+
+  Add PATCH_CONTINUE_ON_FAIL to allow patching to go through all the patches
+  even if one fail.
+
+  This helps when upgrading ports with a large number of patches, like
+  www/chromium where having to fix one patch, re-do the patching, fix the
+  fallout, 800 times, is really painful.
+
+20200414:
+AUTHOR: bapt@FreeBSD.org
+
+  package scripts can now be done in lua, the following are supported:
+
+  - pkg-pre-install.lua
+  - pkg-post-install.lua
+  - pkg-pre-deinstall.lua
+  - pkg-post-deinstall.lua
+
+  see pkg-lua-script(5) for more details.
+
+20200414:
+AUTHOR: mat@FreeBSD.org
+
+  USES=lua gained flavors.
+
+  Ports using USES=lua:module or lua:flavors will be flavored.  A range of
+  supported lua versions can be set using XX-YY (or XX-, or -YY, or simply ZZ)
+  for ports not supporting all lua versions.
+
+  USES=lua sets LUA_FLAVOR that needs to be used on all dependencies of
+  flavored lua ports, in a similar way as PHP or Python flavors.
+  
+20200115:
+AUTHOR: bapt@FreeBSD.org
+
+  ${PREFIX}/share/man is now a valid location for manpages ${PREFIX}/man being
+  considered as deprecated.
+
+20191009:
+AUTHOR: bapt@FreeBSD.org
+
+  The ipv6 virtual category is gone, it does not make sense anymore in 2019
+  where the norm in applications is to have support both ipv4 and ipv6.
+  
+20191001:
+AUTHOR: bapt@FreeBSD.org
+
+  BINARY_WRAPPERS allow to push in front of the PATH wrappers for binaries.
+  This is useful when 2 tools do provide the same feature, but the configure
+  scripts do test for some variables which are not in one of the tool.
+
+20190919:
+AUTHOR: madpilot@FreeBSD.org
+
+  USES=xfce now defaults to gtk3, so for ported applications requiring
+  GTK2 XFCE support USES=xfce:gtk2 should be used.
+
+20190903:
+AUTHOR: bapt@FreeBSD.org
+
+  The ports tree now supports overlays
+
+  overlays are a way to help users to integrate their own ports tree
+  with the official ports tree without having to maintain clone of the
+  official tree and remerge on regular basis.
+
+  The ports tree will lookup in the overlays (in the order the are listed in
+  OVERLAY variable) for the dependencies and the USES. It will use the first
+  found.
+
+  in order to use it the user have to declare his overlays that way in their
+  make.conf:
+  OVERLAYS= overlay1 overlay2 overlay3
+
 20181225:
 AUTHOR: kde@FreeBSD.org
 
@@ -671,7 +900,7 @@ AUTHOR: bapt@FreeBSD.org
   @preunexec <command>: execute the <command> during pre-deinstall scripts
   @postunexec <command>: execute the <command> during post-deinstall scripts
 
-  @exec does not specify when if should be executed and is now considered as
+  @exec does not specify when it should be executed and is now considered as
   deprecated.
 
 20150914:
@@ -3588,7 +3817,7 @@ listed here, and it only starts on January 29, 2004.
 
 Copyright information:
 
-Copyright 2004-2019 FreeBSD Foundation All Rights Reserved.
+Copyright 2004-2020 FreeBSD Foundation All Rights Reserved.
 
 Redistribution, publication, translation and use, with or without
 modification, in full or in part, in any form or format of this
@@ -3608,5 +3837,3 @@ POSSIBILITY OF SUCH DAMAGE.
 
 Contact portmgr@FreeBSD.org if you have any questions about your use of
 this document.
-
-$FreeBSD$

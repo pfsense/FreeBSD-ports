@@ -1,5 +1,4 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	jcmdline
 PORTVERSION=	2.0.0
@@ -13,7 +12,6 @@ LICENSE=	MPL11
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

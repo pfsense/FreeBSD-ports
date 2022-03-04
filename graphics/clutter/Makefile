@@ -1,8 +1,7 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	clutter
-PORTVERSION=	1.26.2
+DISTVERSION=	1.26.4
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 
@@ -15,11 +14,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libcogl.so:graphics/cogl
+		libcogl.so:graphics/cogl \
+		libharfbuzz.so:print/harfbuzz
 
 PORTSCOUT=	limit:1,even
 
-USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
+USES=		cpe gettext gl gmake gnome libtool localbase pathfix pkgconfig \
+		tar:xz xorg
 USE_GNOME=	atk cairo gdkpixbuf2 pango introspection:build
 USE_GL=		egl
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
@@ -32,5 +33,6 @@ CONFIGURE_ARGS=	--with-x --enable-conformance=no \
 		--enable-gdk-backend=no \
 		--enable-wayland-compositor=no
 INSTALL_TARGET=	install-strip
+CPE_VENDOR=	clutter_project
 
 .include <bsd.port.mk>

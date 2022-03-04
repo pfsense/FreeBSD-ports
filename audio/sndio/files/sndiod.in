@@ -1,7 +1,5 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
+
 # PROVIDE: sndiod
 # REQUIRE: NETWORKING sysctl
 # BEFORE:  DAEMON
@@ -15,7 +13,6 @@ rcvar=sndiod_enable
 load_rc_config $name
 
 : ${sndiod_enable="NO"}
-: ${sndiod_flags="-c 0:7 -j off -s default -m mon -s monitor"}
 
 command="%%PREFIX%%/bin/sndiod"
 

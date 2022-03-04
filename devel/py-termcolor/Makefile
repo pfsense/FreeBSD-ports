@@ -1,5 +1,4 @@
 # Created by: Volodymyr Kostyrko <c.kworr@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	termcolor
 PORTVERSION=	1.1.0
@@ -13,7 +12,9 @@ COMMENT=	ANSII Color formatting for output in terminal
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

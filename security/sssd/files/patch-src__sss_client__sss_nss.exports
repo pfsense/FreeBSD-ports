@@ -1,5 +1,5 @@
 diff --git src/sss_client/sss_nss.exports src/sss_client/sss_nss.exports
-index 1eefea8..8e85a05 100644
+index 1eefea8d5..8e85a0541 100644
 --- src/sss_client/sss_nss.exports
 +++ src/sss_client/sss_nss.exports
 @@ -3,6 +3,7 @@ EXPORTED {

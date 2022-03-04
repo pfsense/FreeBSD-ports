@@ -1,10 +1,9 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	qmidiarp
 DISTVERSIONPREFIX=	qmidiarp-
 DISTVERSION=	0.6.5
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,7 +20,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 PORTSCOUT=	limit:^qmidiarp
 
 USES=		autoreconf compiler:c++11-lib desktop-file-utils \
-		gmake localbase libtool pkgconfig qt:5
+		gmake gnome localbase libtool pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	emuse
 USE_QT=		core gui network widgets buildtools_build \
@@ -29,7 +28,6 @@ USE_QT=		core gui network widgets buildtools_build \
 USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-qt5 --enable-translations=yes
-INSTALLS_ICONS=	yes
 
 CXXFLAGS+=	-Duint=uint32_t # workaround for https://sourceforge.net/p/qmidiarp/bugs/27/
 

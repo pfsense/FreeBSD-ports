@@ -1,12 +1,12 @@
 # Created by: KIMURA Yasuhiro <yasu@utahime.org>
-# $FreeBSD$
 
 PORTNAME=	c-sig
 PORTVERSION=	3.8.0.1
+PORTREVISION=	7
 CATEGORIES=	mail elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Signature insertion tool for Emacs
 
 LICENSE=	GPLv2+

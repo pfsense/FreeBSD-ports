@@ -1,9 +1,8 @@
 # Created by: Gea-Suan Lin (gslin@ccca.nctu.edu.tw)
-# $FreeBSD$
 
 PORTNAME=	zssh
 PORTVERSION=	1.5c
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.5
 

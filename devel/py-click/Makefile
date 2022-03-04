@@ -1,12 +1,10 @@
 # Created by: Bartek Rutkowski <ports@robakdesign.com>
-# $FreeBSD$
 
 PORTNAME=	click
-PORTVERSION=	7.0
+PORTVERSION=	8.0.3
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	Click-${PORTVERSION}
 
 MAINTAINER=	robak@FreeBSD.org
 COMMENT=	Python package for creating command line interfaces
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

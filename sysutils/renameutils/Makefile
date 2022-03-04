@@ -1,9 +1,8 @@
 # Created by: Matteo Cypriani <mcy@lm7.fr>
-# $FreeBSD$
 
 PORTNAME=	renameutils
 PORTVERSION=	0.12.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils converters
 MASTER_SITES=	SAVANNAH
 

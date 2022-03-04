@@ -1,34 +1,42 @@
-# $FreeBSD$
-
 PORTNAME=	bc
-PORTVERSION=	1.1.1
-CATEGORIES=	math
+PORTVERSION=	5.2.1
+CATEGORIES=	math lang
 PKGNAMEPREFIX=	gh-
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	GNU compatible bc/dc calculator
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD2CLAUSE MIT
+LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+USES=		compiler:c11
 USE_GITHUB=	yes
 GH_ACCOUNT=	gavinhoward
 
-HAS_CONFIGURE=	yes
+HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	configure.sh
-CONFIGURE_ARGS=	-G
+CONFIGURE_ARGS=		-G
+CFLAGS+=		-Dstatic_assert=_Static_assert
 
-CONFLICTS_INSTALL=	gnubc-[0-9]*
+.include <bsd.port.pre.mk>
 
-PLIST_FILES=	bin/bc bin/dc man/man1/bc.1.gz man/man1/dc.1.gz
+CONFLICTS_INSTALL=	gnubc
+
+pre-build:
+		${INSTALL_SCRIPT} ${WRKSRC}/gen/strgen.sh ${WRKSRC}/gen/strgen
 
 do-install:
 		${INSTALL_PROGRAM} ${WRKSRC}/bin/bc ${STAGEDIR}${PREFIX}/bin/
 		${LN} ${STAGEDIR}${PREFIX}/bin/bc ${STAGEDIR}${PREFIX}/bin/dc
-		${INSTALL_MAN} ${WRKSRC}/manuals/bc.1 ${STAGEDIR}${MANPREFIX}/man/man1
-		${INSTALL_MAN} ${WRKSRC}/manuals/dc.1 ${STAGEDIR}${MANPREFIX}/man/man1
+		${INSTALL_MAN} ${WRKSRC}/manuals/bc.1 ${STAGEDIR}${MANPREFIX}/share/man/man1
+		${INSTALL_MAN} ${WRKSRC}/manuals/dc.1 ${STAGEDIR}${MANPREFIX}/share/man/man1
+		${MKDIR} ${STAGEDIR}${PREFIX}/share/nls/C
+		${WRKSRC}/scripts/locale_install.sh ${STAGEDIR}${PREFIX}/share/nls/%L/%N.cat ${PORTNAME}
+		${MV} ${STAGEDIR}${PREFIX}/share/nls/en_US/bc.cat ${STAGEDIR}${PREFIX}/share/nls/C/
+		${RMDIR} ${STAGEDIR}${PREFIX}/share/nls/en_US
 
 do-test:
 		${MAKE} -C ${WRKSRC} test
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

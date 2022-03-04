@@ -1,9 +1,7 @@
 # Created by: Jordi Haarman
-# $FreeBSD$
 
 PORTNAME=	wsgiutils
-PORTVERSION=	0.7.1
-PORTREVISION=	1
+PORTVERSION=	0.7.2
 CATEGORIES=	devel textproc www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,12 +13,9 @@ COMMENT=	Utility libraries for development of simple WSGI programs
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:2.7
-USE_PYTHON=	distutils autoplist
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e '/data_files/d' ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

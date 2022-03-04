@@ -1,14 +1,16 @@
 # Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
 
 PORTNAME=	gmsh
-DISTVERSION=	4.2.2
+DISTVERSION=	4.6.0
+PORTREVISION=	2
 CATEGORIES=	cad
-MASTER_SITES=	http://gmsh.info/src/
+MASTER_SITES=	LOCAL/wen \
+		LOCAL/zeising \
+		http://gmsh.info/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 DIST_SUBDIR=	gmsh
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Automatic 3D finite element mesh generator
 
 LICENSE=	AGPLv3+ APACHE20 GPLv3+ GPLv2+ LGPL21
@@ -19,10 +21,12 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libgmp.so:math/gmp \
 		libhdf5.so:science/hdf5 \
 		libpng.so:graphics/png \
-		libsz.so:science/szip
+		libsz.so:science/szip \
+		libfreetype.so:print/freetype2
 RUN_DEPENDS=	getdp:science/getdp
 
-USES=		blaslapack compiler:c++11-lang cmake fortran gl jpeg tar:tgz
+USES=		blaslapack compiler:c++11-lang cmake fortran gl jpeg tar:tgz \
+		xorg
 USE_GL=		gl glu
 USE_XORG=	x11 xcursor xext xinerama xfixes xft xrender
 
@@ -58,10 +62,6 @@ OCC_USE=		gnome=cairo
 SHARED_CMAKE_BOOL=	ENABLE_BUILD_SHARED
 SHARED_USE=		LDCONFIG=yes
 STATIC_CMAKE_BOOL=	ENABLE_BUILD_LIB
-
-post-patch:
-	@${REINPLACE_CMD} -e "s|share/doc/gmsh|${DOCSDIR_REL}|" \
-		-e 's|share/man/man1|man/man1|' ${WRKSRC}/CMakeLists.txt
 
 post-install-SHARED-on:
 	${RM} -r ${STAGEDIR}/wrkdirs

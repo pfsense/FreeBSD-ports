@@ -1,5 +1,4 @@
 # Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	scim-tomoe
 PORTVERSION=	0.6.0
@@ -15,7 +14,7 @@ LIB_DEPENDS=	libtomoe.so:japanese/tomoe \
 		libtomoe-gtk.so:japanese/libtomoe-gtk
 
 USE_GNOME=	intlhack
-USES=		gettext gmake iconv libtool:keepla pkgconfig
+USES=		gettext gmake gnome iconv libtool:keepla pkgconfig
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include -D__STDC_ISO_10646__

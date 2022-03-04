@@ -1,5 +1,4 @@
 # Created by: Alexey V. Degtyarev
-# $FreeBSD$
 
 PORTNAME=	File-ChangeNotify
 PORTVERSION=	0.31
@@ -23,5 +22,7 @@ TEST_DEPENDS=	p5-Test-Exception>0:devel/p5-Test-Exception \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

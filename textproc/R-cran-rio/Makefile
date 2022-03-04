@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	rio
 DISTVERSION=	0.5.16
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
-COMMENT=	A Swiss-Army Knife for Data I/O
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Swiss-Army knife for data I/O
 
 LICENSE=	GPLv2
 

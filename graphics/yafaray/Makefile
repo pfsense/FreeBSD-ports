@@ -1,10 +1,9 @@
 # Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	yafaray
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.0-15
-DISTVERSIONSUFFIX=	-g67f6586
+DISTVERSION=	3.5.1
+PORTREVISION=	10
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,19 +19,21 @@ ONLY_FOR_ARCHS_REASON=	assembly is only for amd64 and i386, but it breaks on i38
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
-		libHalf.so:graphics/ilmbase \
-		libIlmImf.so:graphics/openexr \
+		libImath.so:math/Imath \
+		libOpenEXR.so:graphics/openexr \
 		libopencv_photo.so:graphics/opencv \
-		libopencv_core.so:graphics/opencv-core \
-		libpng16.so:graphics/png \
+		libopencv_core.so:graphics/opencv \
+		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
 USES=		cmake gnome jpeg
 USE_GITHUB=	yes
 GH_ACCOUNT=	YafaRay
-GH_PROJECT=	Core
+GH_PROJECT=	libYafaRay
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
+
+LDFLAGS+=	-pthread # because build on 13 (head) was failing: ld: error: src/yafraycore/libyafaray_v3_core.so: undefined reference to pthread_create
 
 CMAKE_OFF=	WITH_YAF_PY_BINDINGS
 

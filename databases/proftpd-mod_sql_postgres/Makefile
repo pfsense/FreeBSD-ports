@@ -1,8 +1,7 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mod_sql_postgres
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases ftp
 PKGNAMEPREFIX=	proftpd-
 
@@ -15,7 +14,7 @@ DESCR=		${.CURDIR}/pkg-descr
 
 MASTERDIR=	${.CURDIR}/../../ftp/proftpd
 
-USES=	pgsql
+USES=		cpe pgsql
 
 INCLUDEDIRS=	${LOCALBASE}/include
 LIBDIRS=	${LOCALBASE}/lib

@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	retryable
-PORTVERSION=	3.0.4
+PORTVERSION=	3.0.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

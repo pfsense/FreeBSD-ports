@@ -1,5 +1,4 @@
 # Created by: Niels Heinen
-# $FreeBSD$
 
 PORTNAME=	webscarab
 PORTVERSION=	20090427
@@ -13,9 +12,11 @@ COMMENT=	Framework for analysing HTTP and HTTPS web application traffic
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Deprecated by upstream in 2014
+EXPIRATION_DATE=2022-03-31
+
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME}-1304

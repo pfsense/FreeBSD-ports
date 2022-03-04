@@ -1,12 +1,10 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
-#
 
 PORTNAME=	granite
-DISTVERSION=	5.2.3
+DISTVERSION=	6.1.2
 CATEGORIES=	x11-toolkits
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Extensions of GTK+3 toolkit
 
 LICENSE=	LGPL3
@@ -15,16 +13,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libgee-0.8.so:devel/libgee
 RUN_DEPENDS=	contractor:sysutils/contractor \
-		gsettings-desktop-schemas>=3.28.1:devel/gsettings-desktop-schemas
+		gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
-USES=		gettext gnome meson pkgconfig python:3.5+,build tar:xz
+USES=		gettext gnome meson pkgconfig python:3.6+,build tar:xz
 USE_GITHUB=	yes
 GH_ACCOUNT=	elementary
-USE_GNOME=	cairo glib20 gtk30 introspection:build
-INSTALLS_ICONS=	yes
+USE_GNOME=	cairo glib20 gtk30 gdkpixbuf2 introspection:build
 USE_LDCONFIG=	yes
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
-CFLAGS+=	-Wno-return-type
+PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Cy Schubert <Cy.Schubert@uumail.gov.bc.ca>
-# $FreeBSD$
 
 PORTNAME=	tripwire
 PORTVERSION=	1.3.1
@@ -12,11 +11,22 @@ PKGNAMESUFFIX=	-131
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	File system security and verification program
 
-NO_CDROM=	Cannot be redistributed for more than the cost of duplication
+# Converted from NO_CDROM
+LICENSE=	Tripwire
+LICENSE_NAME=	tripwire
+LICENSE_TEXT=	Cannot be redistributed for more than the cost of duplication
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
+DEPRECATED=	Deprecated, please consider using security/tripwire instead
+EXPIRATION_DATE=2022-03-31
+
+USES=		cpe
+
 NO_PACKAGE=	requires local database to be built
 # XXX should also work on other 32-bit architectures.
 ONLY_FOR_ARCHS=	i386
-ONLY_FOR_ARCHS_REASON=	Unknown BYTEORDER
+ONLY_FOR_ARCHS_REASON=	cannot determine byte order
+
 WRKSRC=		${WRKDIR}/tw_ASR_1.3.1_src
 MAKE_JOBS_UNSAFE=	yes
 

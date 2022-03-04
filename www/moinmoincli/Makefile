@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	moinmoincli
-DISTVERSION=	4.5.2
+DISTVERSION=	4.6.0
 CATEGORIES=	www docs
 
 MAINTAINER=	0mp@FreeBSD.org

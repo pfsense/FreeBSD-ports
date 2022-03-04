@@ -1,8 +1,7 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	apache-rat
-PORTVERSION=	0.12
+PORTVERSION=	0.13
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/creadur/${PORTNAME}-${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-bin

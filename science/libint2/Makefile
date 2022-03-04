@@ -1,11 +1,8 @@
 # Created by: NAKATA, Maho <maho@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.0-beta.2-20
-DISTVERSIONSUFFIX=	-gc2e0a72
-PORTREVISION=	3
+DISTVERSION=	2.7.1
 CATEGORIES=	science
 PKGNAMESUFFIX=	2
 
@@ -32,6 +29,8 @@ CONFIGURE_ARGS=	--enable-shared \
 OPTIONS_DEFINE=			STATIC # osa@ requested to keep static libs on 2018/08/28
 OPTIONS_SUB=			yes
 STATIC_CONFIGURE_ENABLE=	static
+
+PLIST_SUB=	VER=${DISTVERSION}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's| -rpath|${LDFLAGS} -rpath|g' \

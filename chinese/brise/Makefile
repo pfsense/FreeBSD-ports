@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	brise
 PORTVERSION=	0.35
 DISTVERSIONPREFIX=	${PORTNAME}-
@@ -9,6 +7,8 @@ MAINTAINER=	hiroto.kagotani@gmail.com
 COMMENT=	Rime Schema Repository
 
 LICENSE=	GPLv3
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	rime_deployer:chinese/librime
 

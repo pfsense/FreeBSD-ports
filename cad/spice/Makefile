@@ -1,20 +1,17 @@
 # Created by: Julian Jenkins <kaveman@magna.com.au>
-# $FreeBSD$
 
 PORTNAME=	spice
 PORTVERSION=	3f5.2
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	cad
-MASTER_SITES=	http://embedded.eecs.berkeley.edu/pubs/downloads/spice/:srcs \
-		http://www-device.eecs.berkeley.edu/~bsim/Files/BSIM3/ftpv330/src/:bsim3 \
-		http://www-device.eecs.berkeley.edu/~bsim/Files/BSIM4/BSIM480/:bsim4 \
+MASTER_SITES=	https://ptolemy.berkeley.edu/projects/embedded/pubs/downloads/spice/:srcs \
 		http://home.hiroshima-u.ac.jp/usdl/HiSIM2/:hisim2 \
-		LOCAL/hrs/${PORTNAME}:docs
+		LOCAL/hrs/${PORTNAME}
 DISTFILES=	spice3f5${EXTRACT_SUFX}:srcs \
-		BSIM3v330.tar.Z:bsim3 \
-		BSIM480_Code.zip:bsim4 \
+		BSIM3v330.tar.Z \
+		BSIM480_Code.zip \
 		HiSIM_2.8.0_Release_20140605.zip:hisim2 \
-		cp.ps:docs toc.ps:docs doc.ps:docs
+		cp.ps toc.ps doc.ps
 DIST_SUBDIR=	spice
 EXTRACT_ONLY=	spice3f5${EXTRACT_SUFX}
 
@@ -24,15 +21,18 @@ COMMENT=	General-purpose circuit simulation program
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-EXTRACT_DEPENDS=	${LOCALBASE}/bin/unzip:archivers/unzip
-
 BROKEN_aarch64=	Fails to link: missing sbrk
+BROKEN_riscv64=	Fails to link: missing sbrk
+
+EXTRACT_DEPENDS=	${LOCALBASE}/bin/unzip:archivers/unzip
 
 WRKSRC=		${WRKDIR}/${PORTNAME}3f5
 MAKEFILE=	${FILESDIR}/Makefile
 CONFIGURE_ENV=	CONFIGFILE="${CONFIGFILE}" \
 		LOCALBASE="${LOCALBASE}"
 MAKE_JOBS_UNSAFE=yes
+
+CFLAGS+=	-fcommon
 
 PORTDOCS=	spice3f3.ps.gz
 PORTEXAMPLES=	bjtnoise.cir bsim1tst.cir bsim2tst.cir diffpair.cir \
@@ -44,7 +44,8 @@ PORTEXAMPLES=	bjtnoise.cir bsim1tst.cir bsim2tst.cir diffpair.cir \
 OPTIONS_DEFINE=	DOCS EXAMPLES X11 DEV_BSIM3 DEV_BSIM4 DEV_HISIM2
 OPTIONS_DEFAULT=X11
 
-X11_USE=		XORG=x11,xaw,xext,xmu,xt
+X11_USES=		xorg
+X11_USE=		XORG=x11,xaw,xext,xmu,xorgproto,xt
 X11_CONFIGURE_ENV=	WITH_X11=yes
 DEV_BSIM3_DESC=		BSIM3v3 MOS Transistor Model Support
 DEV_BSIM3_LICENSE=	BSIML

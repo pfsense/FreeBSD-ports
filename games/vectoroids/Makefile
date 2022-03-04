@@ -1,5 +1,4 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vectoroids
 PORTVERSION=	1.1.0
@@ -13,7 +12,7 @@ COMMENT=	Vector-based rock-shooting game similar to Asteroids
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	image mixer sdl
 
 PORTDOCS=	CHANGES.txt README.txt

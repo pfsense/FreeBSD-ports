@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	X11-GUITest
 PORTVERSION=	0.28
@@ -15,8 +14,8 @@ COMMENT=	Provides GUI testing/interaction facilities
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
+USES=		perl5 xorg
 USE_XORG=	x11 xt xext xtst
-USES=		perl5
 USE_PERL5=	configure
 
 post-patch:

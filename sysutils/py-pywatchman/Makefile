@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pywatchman
 PORTVERSION=	4.9.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +13,7 @@ LICENSE_COMB=	multi
 
 RUN_DEPENDS=	watchman>=4:sysutils/watchman
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 USE_GITHUB=	yes
@@ -25,12 +24,6 @@ BROKEN_mips=	Depends on watchman, which needs c++11-libs
 BROKEN_mips64=	Depends on watchman, which needs c++11-libs
 
 WRKSRC_SUBDIR=	python
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == "armv6" || ${ARCH} == "aarch64"
-USES=	python:2.7
-.endif
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name "*.so" \

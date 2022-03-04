@@ -1,9 +1,8 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	libgroove
 PORTVERSION=	4.3.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 USE_GITHUB=	yes
 GH_ACCOUNT=	andrewrk
 
-USES=		cmake
+USES=		cmake sdl
 USE_SDL=	sdl2
 USE_LDCONFIG=	yes
 CFLAGS+=	-Wno-error=deprecated-declarations # ffmpeg 3.1

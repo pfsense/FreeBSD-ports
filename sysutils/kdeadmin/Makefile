@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdeadmin
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}$
 CATEGORIES=	sysutils kde

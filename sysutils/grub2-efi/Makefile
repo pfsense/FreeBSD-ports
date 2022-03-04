@@ -1,15 +1,13 @@
 # Created by: kmoore@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	grub2-efi
 PORTVERSION=	2.02
 PORTREVISION=	20
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.pcbsd.org/~kris/software/ \
-		ftp://ftp.pcbsd.org/pub/software/
+MASTER_SITES=	LOCAL/kevlo
 DISTNAME=	grub-${PORTVERSION}_7
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	kevlo@FreeBSD.org
 COMMENT=	Multiboot EFI boot loader
 
 LICENSE=	GPLv3
@@ -20,12 +18,13 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		${LOCALBASE}/bin/bash:shells/bash \
 		help2man:misc/help2man
 
+ONLY_FOR_ARCHS=	amd64
+USES=		autoreconf:build bison cpe gettext gmake python tar:xz
+
 WRKSRC=		${WRKDIR}/grub-${PORTVERSION}
 SSP_UNSAFE=	yes
 USE_GCC=	yes
 GNU_CONFIGURE=	yes
-USES=		autoreconf:build bison cpe gettext gmake python tar:xz
-ONLY_FOR_ARCHS=	amd64
 MAKE_JOBS_UNSAFE=	yes
 
 CPE_PRODUCT=	grub

@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kaminari-activerecord
-PORTVERSION=	1.1.1
+PORTVERSION=	1.2.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -15,8 +14,9 @@ LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 RUN_DEPENDS=	rubygem-activerecord4>=0:databases/rubygem-activerecord4 \
 		rubygem-kaminari-core>=${PORTVERSION}:www/rubygem-kaminari-core
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

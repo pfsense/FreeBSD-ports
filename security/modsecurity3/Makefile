@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	modsecurity
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.3
-PORTREVISION=	2
+DISTVERSION=	3.0.5
 CATEGORIES=	security www
 MASTER_SITES=	https://github.com/SpiderLabs/ModSecurity/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	3
@@ -19,11 +16,12 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libyajl.so:devel/yajl \
 		libmaxminddb.so:net/libmaxminddb
 
-USES=		compiler:c++11-lang gmake gnome libtool pkgconfig:build
+USES=		cpe gmake gnome libtool pkgconfig:build
 USE_GNOME=	libxml2
 # GCC because of https://github.com/SpiderLabs/ModSecurity/issues/1411
-USE_GCC=	yes
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	trustwave
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-lmdb --without-ssdeep --without-lua
@@ -40,5 +38,7 @@ post-install:
 	@${MKDIR}	${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA}	${WRKSRC}/modsecurity.conf-recommended \
 		${STAGEDIR}${ETCDIR}/modsecurity.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/unicode.mapping \
+		${STAGEDIR}${ETCDIR}/unicode.mapping
 
 .include <bsd.port.mk>

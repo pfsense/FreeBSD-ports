@@ -1,8 +1,7 @@
 # Created by: Joseph Koshy <jkoshy@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	racket
-PORTVERSION=	7.2
+PORTVERSION=	8.3
 CATEGORIES=	lang scheme
 MASTER_SITES=	http://mirror.racket-lang.org/installers/${PORTVERSION}/ \
 		http://www.cs.utah.edu/plt/installers/${PORTVERSION}/ \
@@ -17,47 +16,77 @@ DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}/${PORTVERSION}
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Interactive, integrated, graphical Scheme programming environment
 
-LICENSE=	LGPL3
+LICENSE=	APACHE20 MIT
+LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_armv6=		fails to compile: ./lightning/lightning.h:81:2: error: GNU lightning does not support the current target
-BROKEN_armv7=		fails to compile: ./lightning/lightning.h:81:2: error: GNU lightning does not support the current target
-BROKEN_i386=		fails to build: Seg fault (internal error) at 0x606060a
-BROKEN_powerpc64=	fails to build: jit.c: 'JIT_LOCAL4' undeclared (first use in this function)
-NOT_FOR_ARCHS=		aarch64 aarch64 mips mips64 sparc64
-NOT_FOR_ARCHS_REASON=	not yet ported to this arch
+NOT_FOR_ARCHS=		riscv64
+NOT_FOR_ARCHS_REASON=	unsupported platform
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
-MAKE_JOBS_UNSAFE=yes
-
-CONFLICTS=	racket-[0-9]*
-
+USES=		cpe gmake iconv libtool localbase tar:tgz
+CPE_VENDOR=	${PORTNAME}-lang
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	-enable-libffi --enable-pthread --enable-places --enable-shared --mandir=${MANDIRS}
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+CONFIGURE_ARGS=	--enable-libffi \
+		--enable-places \
+		--enable-pthread \
+		--mandir=${MANPREFIX}/man
 WRKSRC=		${WRKDIR}/racket-${PORTVERSION}/src
 PATCH_WRKSRC=	${WRKDIR}/racket-${PORTVERSION}
-USES=		iconv libtool tar:tgz
 USE_LDCONFIG=	yes
 REINPLACE_ARGS=	-i ""
+CONFLICTS=	racket
 
-OPTIONS_DEFINE=	FUTURES
-OPTIONS_DEFAULT=FUTURES
+OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFAULT=	CS
+OPTIONS_SUB=	yes
 
-OPTIONS_DEFINE_amd64=	JIT
-OPTIONS_DEFINE_i386=	JIT
-OPTIONS_DEFAULT_amd64=	JIT
-OPTIONS_DEFAULT_i386=	JIT
+OPTIONS_DEFAULT_powerpc=	BC
+OPTIONS_DEFAULT_powerpc64=	BC
+OPTIONS_DEFINE_amd64=	FUTURES JIT
+OPTIONS_DEFINE_i386=	FUTURES JIT
+OPTIONS_EXCLUDE_powerpc=	CS
+OPTIONS_EXCLUDE_powerpc64=	CS
 
-FUTURES_DESC=	Enable futures
-JIT_DESC=	Enable JIT compiler
-JIT_CFLAGS=	-msse -msse2 -mfpmath=sse
+OPTIONS_SINGLE=	BACKEND
+OPTIONS_SINGLE_BACKEND=	BC CS
 
+BACKEND_DESC=	Racket Backend
+BC_DESC=	Build ByteCode backend (legacy)
+CS_DESC=	Build ChezScheme backend
+FUTURES_DESC=	Enable futures (only for BC backend)
+JIT_DESC=	Enable JIT compiler (only for BC backend)
+
+BC_CONFIGURE_ON=	--enable-bconly --enable-libffi --enable-places
+CS_CONFIGURE_ON=	--enable-csonly --enable-mach=${CHEZ_MACHTYPE}
 FUTURES_CONFIGURE_ENABLE=	futures
-JIT_CONFIGURE_ENABLE=	jit
+FUTURES_IMPLIES=		JIT
+FUTURES_PREVENTS=	CS
+FUTURES_PREVENTS_MSG=	CS enables futures by default
+JIT_CONFIGURE_ENABLE=		jit
+JIT_PREVENTS=	CS
+JIT_PREVENTS_MSG=	CS enables jit by default
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == "amd64"
+CHEZ_MACHTYPE=	ta6fb
+.elif ${ARCH} == "arm"
+CHEZ_MACHTYPE=	tarm32fb
+.elif ${ARCH} == "arm64"
+CHEZ_MACHTYPE=	tarm64fb
+.elif ${ARCH} == "i386"
+CHEZ_MACHTYPE=	ti3fb
+.elif ${ARCH} == "powerpc"
+CHEZ_MACHTYPE=	tppc32fb
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's/-liconv/${ICONV_LIB}/' ${WRKSRC}/ChezScheme/configure ${WRKSRC}/bc/configure ${WRKSRC}/cs/c/configure
 
 post-install:
 	${FIND} ${STAGEDIR}${PREFIX} -type d -empty -delete
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/racket/gracket
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	XlsxWriter
-PORTVERSION=	1.1.5
+PORTVERSION=	1.4.3
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +12,9 @@ COMMENT=	Python module for creating Excel XLSX files
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	concurrent distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

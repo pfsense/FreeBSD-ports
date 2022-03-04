@@ -1,9 +1,8 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	asteroids3d
 PORTVERSION=	0.5.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/a3d/${PORTVERSION}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -17,7 +16,7 @@ COMMENT=	First-person shooter blowing up asteroids in 3D space
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-USES=		autoreconf tar:bzip2
+USES=		autoreconf gl gnome tar:bzip2 xorg
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	with_gamesdir="${PREFIX}/bin" with_gamedatadir="${DATADIR}"
 USE_GL=		glut
@@ -27,7 +26,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDOCS=	*
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
 
 DESKTOP_ENTRIES="Asteroids3D" "" "${PORTNAME}" \

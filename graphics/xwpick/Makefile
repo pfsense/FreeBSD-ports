@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xwpick
 PORTVERSION=	2.20
@@ -15,7 +14,7 @@ LICENSE_NAME=	xwpick license  # non-commercial
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 
 OPTIONS_DEFINE=	DOCS

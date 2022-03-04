@@ -1,20 +1,20 @@
---- components/feature_engagement/public/event_constants.h.orig	2019-03-11 22:00:56 UTC
+--- components/feature_engagement/public/event_constants.h.orig	2021-09-24 04:26:03 UTC
 +++ components/feature_engagement/public/event_constants.h
-@@ -49,7 +49,7 @@ extern const char kReopenTabConditionsMet[];
- extern const char kTabReopened[];
- #endif  // BUILDFLAG(ENABLE_DESKTOP_IN_PRODUCT_HELP)
+@@ -12,7 +12,7 @@ namespace feature_engagement {
+ namespace events {
  
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_IOS)
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_IOS) || defined(OS_BSD)
- // This event is included in the deferred onboarding events for the New Tab
- // described above, but it is also used on iOS, so it must be compiled
- // separately.
-@@ -57,7 +57,7 @@ extern const char kTabReopened[];
+ // Desktop
+-#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
++#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
+     defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
  // The user has explicitly opened a new tab via an entry point from inside of
  // Chrome.
- extern const char kNewTabOpened[];
--#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_IOS)
-+#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_IOS) || defined(OS_BSD)
+@@ -65,7 +65,7 @@ extern const char kDesktopPwaInstalled[];
+ // Omnibox displayed the updated connection security indicator.
+ extern const char kUpdatedConnectionSecurityIndicatorDisplayed[];
+ 
+-#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) ||
++#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) ||
+         // defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
  
  #if defined(OS_IOS)
- // The user has opened Chrome (cold start or from background).

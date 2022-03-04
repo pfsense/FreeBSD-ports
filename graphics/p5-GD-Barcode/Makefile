@@ -1,5 +1,4 @@
 # Created by: vanilla
-# $FreeBSD$
 
 PORTNAME=	GD-Barcode
 PORTVERSION=	1.15
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	GD::Barcode - Create barcode image with GD
+COMMENT=	Create barcode image with GD in Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

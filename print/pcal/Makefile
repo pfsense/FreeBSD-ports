@@ -1,5 +1,4 @@
 # Created by: mwest@uct.ac.za
-# $FreeBSD$
 
 PORTNAME=	pcal
 PORTVERSION=	4.11.0
@@ -9,7 +8,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostScript calendar program
 
-USES=		shebangfix gmake tar:tgz
+USES=		cpe shebangfix gmake tar:tgz
 
 MAKE_ENV=	HOST_CC="${CC}"
 ALL_TARGET=

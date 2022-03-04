@@ -1,5 +1,4 @@
 # Created by: Matthieu BOUTHORS <matthieu@labs.fr>
-# $FreeBSD$
 
 PORTNAME=	sslscan
 DISTVERSION=	1.11.12
@@ -8,7 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	gavin@FreeBSD.org
-COMMENT=	SSLScan is a fast SSL port scanner
+COMMENT=	Fast SSL port scanner
 
 LICENSE=	GPLv3
 
@@ -31,8 +30,8 @@ UNSAFESSL_ALL_TARGET=	sslscan
 
 .include <bsd.port.pre.mk>
 
-.if empty(PORT_OPTIONS:MUNSAFESSL) && ${SSL_DEFAULT:Mopenssl111}
-BROKEN=		Does not build with openssl111
+.if empty(PORT_OPTIONS:MUNSAFESSL) && ${SSL_DEFAULT:Mopenssl}
+BROKEN=		Does not build with openssl
 .endif
 
 .include <bsd.port.post.mk>

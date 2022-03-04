@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	ffi-yajl
-PORTVERSION=	2.3.1
+PORTVERSION=	2.3.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

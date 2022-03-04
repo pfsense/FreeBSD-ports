@@ -1,5 +1,4 @@
 # Created by: The Anarcat <anarcat@anarcat.ath.cx>
-# $FreeBSD$
 
 PORTNAME=	mls
 PORTVERSION=	1.3
@@ -11,6 +10,9 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program for generating various statistics on emails
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: r_base64
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: r_base64
 
 PLIST_FILES=	bin/mls man/man1/mls.1.gz
 

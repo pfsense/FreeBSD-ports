@@ -1,31 +1,29 @@
 # Created by: Yoichi Asai <yatt@luna2.org>
-# $FreeBSD$
 
 PORTNAME=	timidity++
-PORTVERSION=	2.14.0
-PORTREVISION?=	4
+PORTVERSION=	2.15.0
 CATEGORIES+=	audio
 MASTER_SITES=	SF/timidity/TiMidity%2B%2B/TiMidity%2B%2B-${PORTVERSION}
 DISTNAME=	TiMidity++-${PORTVERSION}
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER?=	fuz@fuz.su
 COMMENT?=	Software MIDI player
 
 LICENSE=	GPLv2+
 
+LIB_DEPENDS=	libarc.so:archivers/libarc
 .if !defined(PKGNAMESUFFIX)
-LIB_DEPENDS=	libarc.so:archivers/libarc \
-		libvorbis.so:audio/libvorbis \
+LIB_DEPENDS+=	libvorbis.so:audio/libvorbis \
 		libogg.so:audio/libogg
 RUN_DEPENDS=	eawpats>0:audio/eawpats
 .endif
 
-USES=		gmake tar:bzip2
+USES=		gmake localbase tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	SHLD="${CC} -shared"
 
-CPPFLAGS+=	-I${LOCALBASE}/include/libarc -I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -Wl,--export-dynamic
+CPPFLAGS+=	-I${LOCALBASE}/include/libarc
+LDFLAGS+=	-Wl,--export-dynamic
 
 PLIST_SUB+=	TIMID_LIBDIR="${TIMID_LIBDIR}" EUCJP_LOCALE="${EUCJP_LOCALE}"
 
@@ -36,6 +34,7 @@ CONFIGURE_ARGS+=	--enable-audio=oss,vorbis
 EAWPLUS_DESC=		Collection of Gravis Ultrasound MIDI patches
 EAWPLUS_RUN_DEPENDS=	eawplus>0:audio/eawplus
 X11_LIB_DEPENDS=	libpng.so:graphics/png
+X11_USES=		xorg
 X11_USE=		xorg=x11,xext
 X11_CONFIGURE_ON=	--with-x --enable-spectrogram --enable-wrd \
 			--enable-dynamic
@@ -56,7 +55,7 @@ USES+=		ncurses
 CONFIGURE_ARGS+=--enable-interface=ncurses,vt100,server \
 		--enable-network
 
-CONFLICTS_INSTALL=	timidity-[0-9]*
+CONFLICTS_INSTALL=	timidity
 
 DOCFILES=	README.alsaseq README.dl README.m2m README.mts README.sf
 

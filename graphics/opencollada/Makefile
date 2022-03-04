@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	opencollada
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.68
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics devel
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -25,8 +23,5 @@ GH_PROJECT=	OpenCOLLADA
 CFLAGS+=	-Wno-narrowing
 CMAKE_ON=	USE_LIBXML USE_SHARED USE_STATIC
 USE_LDCONFIG=	${PREFIX}/lib/opencollada
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|$${OPENCOLLADA_INST_LIBRARY}/cmake|${PREFIX}/share/cmake/Modules|' ${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gohufont
 PORTVERSION=	2.1
 PORTREVISION=	1
@@ -14,9 +12,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING-LICENSE
 
 USES=		fonts
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 do-install:
-	${MKDIR} ${STAGEDIR}${FONTSDIR}
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.pcf.gz ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

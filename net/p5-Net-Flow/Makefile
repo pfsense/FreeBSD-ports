@@ -1,5 +1,4 @@
 # Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	Net-Flow
 PORTVERSION=	1.003
@@ -13,7 +12,7 @@ COMMENT=	Decode and encode NetFlow/IPFIX datagrams
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE_ART10=	${WRKSRC}/LICENSE
-LICENSE_FILE_GPLv1=	${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	snmptt
-PORTVERSION=	1.4
+PORTVERSION=	1.4.2
 PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}_${PORTVERSION}
@@ -18,7 +16,7 @@ RUN_DEPENDS=	net-snmp>=0:net-mgmt/net-snmp \
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		perl5 shebangfix tar:tgz
+USES=		cpe perl5 shebangfix tar:tgz
 USE_RC_SUBR=	snmptt
 SUB_LIST=	PERL=${PERL}
 

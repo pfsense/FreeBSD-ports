@@ -1,6 +1,4 @@
-# $FreeBSD$
-
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 PKGNAMESUFFIX=	1-plugins-v4l2
 

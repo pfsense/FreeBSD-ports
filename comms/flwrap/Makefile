@@ -1,20 +1,19 @@
 # Created by: Diane Bruce <db@db.net>
-# $FreeBSD$
 
 PORTNAME=	flwrap
-PORTVERSION=	1.3.4
-PORTREVISION=	2
+PORTVERSION=	1.3.5
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/fldigi/${PORTNAME}
 
 MAINTAINER=	hamradio@FreeBSD.org
-COMMENT=	Flwrap is a companion utility for fldigi
+COMMENT=	Companion utility for fldigi
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
-USES=		gmake dos2unix
+USES=		autoreconf gmake dos2unix
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	FLTK_CONFIG="${LOCALBASE}/bin/fltk-config"
 

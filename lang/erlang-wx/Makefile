@@ -1,73 +1,79 @@
-# $FreeBSD$
-
 PORTNAME=	erlang
-PORTVERSION=	19.3.6.12
+DISTVERSIONPREFIX=	OTP-
+DISTVERSION=	24.1.7
+PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	lang parallel
-MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
-		http://erlang.stacken.kth.se/download/:erlangorg	\
-		http://www.csd.uu.se/ftp/mirror/erlang/download/:erlangorg
 PKGNAMESUFFIX=	-wx
-DISTNAME=	otp_src_${ERL_RELEASE}
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:erlangorg
 DIST_SUBDIR=	erlang
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
-		LOCAL/olgeni
-PATCHFILES=	patch-otp-19.3.1 patch-otp-19.3.2 patch-otp-19.3.3 \
-		patch-otp-19.3.4 patch-otp-19.3.5 patch-otp-19.3.6 \
-		patch-otp-19.3.6.1 patch-otp-19.3.6.2 patch-otp-19.3.6.3 \
-		patch-otp-19.3.6.4 patch-otp-19.3.6.5 patch-otp-19.3.6.6 \
-		patch-otp-19.3.6.7 patch-otp-19.3.6.8 patch-otp-19.3.6.9 \
-		patch-otp-19.3.6.10 patch-otp-19.3.6.11 patch-otp-19.3.6.12
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Erlang bindings for wxWindows
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/erl:lang/erlang
+BUILD_DEPENDS=	erlang>=24.0:lang/erlang
+RUN_DEPENDS=	erlang>=24.0:lang/erlang
 
-WRKSRC=		${WRKDIR}/otp_src_${ERL_RELEASE}
-
-PLIST_SUB=	APP_VERSION=${APP_VERSION} \
-		CONFIGURE_TARGET=${CONFIGURE_TARGET}
-
-MAKE_JOBS_UNSAFE=yes
-
-OPTIONS_DEFINE=	DOCS
-
-ERL_RELEASE=	19.3
-
-USES=		gmake perl5
-USE_PERL5=	build
+USES=		autoreconf:build gl gmake perl5 xorg
+USE_GITHUB=	yes
+GH_PROJECT=	otp
 USE_GL=		gl glu
-GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib
+USE_PERL5=	build
+USE_WX=		3.1+
 
-APP_VERSION=	1.8
-APP_DIR=	${PREFIX}/lib/erlang/lib/wx-${APP_VERSION}
+WX_COMPS=	wx
 
-.include <bsd.port.options.mk>
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--enable-threads \
+			--with-wx-config=${WX_CONFIG} \
+			--without-javac \
+			--without-odbc
+MAKE_JOBS_UNSAFE=	yes
 
-CONFIGURE_ARGS+=--enable-threads --without-odbc --without-javac --with-wx-config=${WX_CONFIG}
+PLIST_SUB=	DEBUGGER_VERSION=${DEBUGGER_VERSION} \
+		ET_VERSION=${ET_VERSION} \
+		OBSERVER_VERSION=${OBSERVER_VERSION} \
+		WX_VERSION=${WX_VERSION}
 
-USE_WX=		2.8+
-WX_COMPS=	wx contrib
+DEBUGGER_VERSION=	5.2
+ET_VERSION=		1.6.5
+OBSERVER_VERSION=	2.10
+WX_VERSION=		2.1
+WX_APPS=		wx debugger et observer
+
+pre-configure:
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/debugger/vsn.mk | ${GREP} -E "DEBUGGER_VSN *=" | ${CUT} -w -f3) = ${DEBUGGER_VERSION} ]; then \
+		${ECHO_MSG} "===>  DEBUGGER_VERSION (${DEBUGGER_VERSION}) in Makefile does not match value in lib/debugger/vsn.mk"; exit 1; \
+	fi
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/et/vsn.mk | ${GREP} -E "ET_VSN *=" | ${CUT} -w -f3) = ${ET_VERSION} ]; then \
+		${ECHO_MSG} "===>  ET_VERSION (${ET_VERSION}) in Makefile does not match value in lib/et/vsn.mk"; exit 1; \
+	fi
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/observer/vsn.mk | ${GREP} -E "OBSERVER_VSN *=" | ${CUT} -w -f3) = ${OBSERVER_VERSION} ]; then \
+		${ECHO_MSG} "===>  OBSERVER_VERSION (${OBSERVER_VERSION}) in Makefile does not match value in lib/observer/vsn.mk"; exit 1; \
+	fi
+	@if [ ! $$(${CAT} ${WRKSRC}/lib/wx/vsn.mk | ${GREP} -E "WX_VSN *=" | ${CUT} -w -f3) = ${WX_VERSION} ]; then \
+		${ECHO_MSG} "===>  WX_VERSION (${WX_VERSION}) in Makefile does not match value in lib/wx/vsn.mk"; exit 1; \
+	fi
 
 do-build:
-	cd ${WRKSRC}/lib/wx && ${GMAKE} ERL_TOP=${WRKSRC} TARGET=${CONFIGURE_TARGET}
+.for app in wx debugger et observer
+	cd ${WRKSRC}/lib/${app} && ${SETENV} ERL_LIBS=${WRKSRC}/lib ${GMAKE} ERL_TOP=${WRKSRC} TARGET=${CONFIGURE_TARGET}
+.endfor
 	${STRIP_CMD} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}/erl_gl.so
 	${STRIP_CMD} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}/wxe_driver.so
 	${MV} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}/*.so ${WRKSRC}/lib/wx/priv
 	${RMDIR} ${WRKSRC}/lib/wx/priv/${CONFIGURE_TARGET}
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} ebin ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} include ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} priv ${STAGEDIR}${APP_DIR}
-	cd ${WRKSRC}/lib/wx && ${COPYTREE_SHARE} src ${STAGEDIR}${APP_DIR}
+.for app in ${WX_APPS}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${app}-$$(${CUT} -w -f3 ${WRKSRC}/lib/${app}/vsn.mk)
+	${FIND} ${WRKSRC}/lib/${app} -type d -empty -delete
+.for dir in src include priv ebin
+	cd ${WRKSRC}/lib/${app} && if [ -d ${dir} ]; then \
+		${COPYTREE_SHARE} ${dir} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${app}-$$(${CUT} -w -f3 vsn.mk); \
+	fi
+.endfor
+.endfor
 
 .include <bsd.port.mk>

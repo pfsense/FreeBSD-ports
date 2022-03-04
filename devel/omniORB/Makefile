@@ -1,8 +1,7 @@
 # Created by: ejc@bazzle.com
-# $FreeBSD$
 
 PORTNAME=	omniORB
-DISTVERSION=	4.2.3
+DISTVERSION=	4.2.4
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTNAME}-${DISTVERSION:S/-2//}
 
@@ -11,13 +10,14 @@ COMMENT=	Robust high performance CORBA ORB for C++ and Python
 
 LICENSE=	GPLv2
 
-BROKEN_SSL=	openssl111
-BROKEN_SSL_REASON_openssl111=	member access into incomplete type 'DH' (aka 'dh_st')
+BROKEN_SSL=	openssl
+BROKEN_SSL_REASON_openssl=	member access into incomplete type 'DH' (aka 'dh_st')
 
-USES=		gmake pkgconfig python tar:bzip2 shebangfix ssl
+USES=		compiler:c++11-lang gmake pkgconfig python tar:bzip2 \
+		shebangfix ssl
 
 CONFLICTS=	omniORB41-4.1.*
-SONUM=		3
+SONUM=		4
 PLIST_SUB+=	SONUM=${SONUM}
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -37,7 +37,7 @@ SHEBANG_FILES=	src/tool/omniidl/python/scripts/omniidlrun.py \
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#-O2#${CFLAGS}#g' ${WRKSRC}/mk/beforeauto.mk.in
-	@${REINPLACE_CMD} -e 's#%%STAGEDIR%%%%PREFIX%%#${STAGEDIR}${PREFIX}#g' \
+	@${REINPLACE_CMD} -e 's#$$(INSTALLLIBDIR)/pkgconfig#${STAGEDIR}${PREFIX}/libdata/pkgconfig#g' \
 		${WRKSRC}/contrib/pkgconfig/GNUmakefile.in
 
 post-install:

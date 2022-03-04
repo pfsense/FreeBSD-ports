@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # There are three Qt related USES files with different access to Qt.
 #   - qmake: The port requires Qt's qmake to build -- creates the configure target
 #            - auto includes qt.mk
@@ -10,6 +8,8 @@
 #
 # Usage
 #    qt-dist:<version>[,yes|modulename]
+#
+# MAINTAINER:	kde@FreeBSD.org
 
 .if !defined(_QT_DIST_MK_INCLUDED)
 _QT_DIST_MK_INCLUDED=	qt-dist.mk
@@ -21,13 +21,13 @@ qmake_ARGS?=	# empty
 .include "${USESDIR}/qmake.mk"
 
 # Supported distribution arguments
-_QT5_DISTS=		3d activeqt androidextras base canvas3d charts connectivity \
-			datavis3d declarative doc gamepad graphicaleffects imageformats \
-			location macextras multimedia networkauth purchasing \
-			quickcontrols2 quickcontrols remoteobjects script scxml sensors \
-			serialbus serialport speech svg tools translations \
-			virtualkeyboard wayland webchannel webengine websockets webview \
-			winextras x11extras xmlpatterns
+_QT5_DISTS=		3d activeqt androidextras base charts connectivity datavis3d \
+			declarative doc gamepad graphicaleffects imageformats location \
+			lottie macextras multimedia networkauth purchasing quick3d quickcontrols \
+			quickcontrols2 quicktimeline remoteobjects script scxml sensors serialbus \
+			serialport speech svg tools translations virtualkeyboard wayland \
+			webchannel webengine webglplugin websockets webview winextras \
+			x11extras xmlpatterns
 _QT_DISTS=		${_QT${_QT_VER}_DISTS}
 
 # We only accept one item as an argument. The fetch target further below works
@@ -110,7 +110,8 @@ EXTRACT_SUFX?=		.tar.xz
 # Other ports from other Qt modules will automatically build examples and
 # tests if the directories exist because of mkspecs/features/qt_parts.prf.
 EXTRACT_AFTER_ARGS?=	${DISTNAME:S,$,/examples,:S,^,--exclude ,} \
-			${DISTNAME:S,$,/tests,:S,^,--exclude ,}
+			${DISTNAME:S,$,/tests,:S,^,--exclude ,} \
+			--no-same-owner --no-same-permissions
 .  endif # ! ${_QT_VER:M5}
 
 CONFIGURE_ENV+=		MAKE="${MAKE:T}"
@@ -169,12 +170,17 @@ CONFIGURE_ARGS+=	-verbose
 .  if ${_QT_DIST} == "base"
 _EXTRA_PATCHES_QT5=	${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-mkspecs_features_create__cmake.prf \
 			${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-mkspecs_features_qt__module.prf \
-			${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-mkspecs_common_bsd_bsd.conf
-.        if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+			${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-mkspecs_common_bsd_bsd.conf \
+			${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-mkspecs_freebsd-clang_qmake.conf
+.    if ${ARCH:Mmips*} || (${ARCH:Mpowerpc*} && !exists(/usr/bin/clang)) || ${ARCH} == sparc64
 _EXTRA_PATCHES_QT5+=	${PORTSDIR}/devel/${_QT_RELNAME}/files/extra-patch-mkspecs_common_g++-base.conf \
 			${PORTSDIR}/devel/${_QT_RELNAME}/files/extra-patch-mkspecs_common_gcc-base.conf \
 			${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-mkspecs_freebsd-g++_qmake.conf
 USE_GCC=		yes
+.    elif ${ARCH} == armv7 || ${ARCH} == powerpc
+_EXTRA_PATCHES_QT5+=	${PORTSDIR}/devel/${_QT_RELNAME}/files/extra-patch-mkspecs_common_g++-base.conf \
+			${PORTSDIR}/devel/${_QT_RELNAME}/files/extra-patch-mkspecs_common_gcc-base.conf \
+			${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-mkspecs_freebsd-g++_qmake.conf
 .    endif
 EXTRA_PATCHES?=		${PORTSDIR}/devel/${_QT_RELNAME}/files/extrapatch-configure \
 			${_EXTRA_PATCHES_QT5}
@@ -192,26 +198,15 @@ QT_DEFINES?=		# For qconfig.h flags (without "QT_" prefix).
 QT_CONFIG?=		# For *.pri files QT_CONFIG flags.
 .  if ${QT_DEFINES}
 QMAKE_ARGS+=		DEFINES+="${QT_DEFINES:O:u:C/^([^-])/QT_\1/:C/^-/QT_NO_/:O}"
-.    if ${QT_DEFINES:N-*}
-# Use a script to cleanup qconfig-modules.h (see qt-post-install).
-PKGDEINSTALL=		${WRKDIR}/pkg-deinstall
-.    endif
 .  endif #  ${QT_DEFINES}
+PKGDEINSTALL=		${WRKDIR}/pkg-deinstall
+PKGINSTALL=		${WRKDIR}/pkg-install
 .  if ${QT_CONFIG:N-*}
 QMAKE_ARGS+=		QT_CONFIG+="${QT_CONFIG:N-*:O:u}"
 .  endif
 .  if ${QT_CONFIG:M-*}
 QMAKE_ARGS+=		QT_CONFIG-="${QT_CONFIG:M-*:O:u:C/^-//}"
 .  endif
-
-# Add a RUN_DEPENDS on misc/qtchooser to select the binaries.
-# The binaries of both supported Qt versions are installed to
-# ${LOCALBASE}/lib/qt${_QT_VER}/bin. The port misc/qtchooser installs
-# wrapper binaries into ${LOCALBASE}/bin, and chooses the correct
-# one depending on the value of QT_SELECT (which we pass to both
-# CONFIGURE_ENV and MAKE_ENV). Therefore make all QT_DIST ports
-# RUN_DEPEND on it.
-RUN_DEPENDS+=		qtchooser:misc/qtchooser
 
 PLIST_SUB+=		SHORTVER=${DISTVERSION:R} \
 			FULLVER=${DISTVERSION:C/-.*//}
@@ -246,8 +241,9 @@ _QT_TOOLS+=		${UIC}
 # The list of QtBase components that need to be linked into WRKSRC/lib for
 # other QtBase ports. See below.
 _QT5_BASE=		core dbus gui network sql widgets
+_QT5_ADDITIONAL_LINK?=	# Ensure definition
 
-.if ${_QT_VER:M5}
+.      if ${_QT_VER:M5}
 post-patch: gcc-post-patch
 gcc-post-patch:
 	${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' \
@@ -258,7 +254,7 @@ gcc-post-patch:
 		${WRKSRC}/mkspecs/common/g++-base.conf \
 		${WRKSRC}/mkspecs/common/bsd/bsd.conf \
 		${WRKSRC}/mkspecs/freebsd-g++/qmake.conf
-.endif
+.      endif
 
 pre-configure: qtbase-pre-configure
 qtbase-pre-configure:
@@ -298,7 +294,8 @@ qtbase-pre-configure:
 post-patch: qtbase-post-patch
 qtbase-post-patch:
 	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-		${WRKSRC}//mkspecs/common/bsd/bsd.conf
+		${WRKSRC}/mkspecs/common/bsd/bsd.conf \
+		${WRKSRC}/mkspecs/freebsd-clang/qmake.conf
 
 .      if ${PORTNAME} != "qmake"
 _QMAKE=			${CONFIGURE_WRKSRC}/bin/qmake
@@ -330,17 +327,64 @@ qt5-pre-configure:
 	${ECHO_CMD} 'QMAKE_DEFAULT_LIBDIRS += ${LOCALBASE}/lib /usr/lib /lib' >> ${CONFIGURE_WRKSRC}/.qmake.cache
 	${ECHO_CMD} 'QMAKE_DEFAULT_INCDIRS += ${LOCALBASE}/include /usr/include' >> ${CONFIGURE_WRKSRC}/.qmake.cache
 
+# Allow linking of further libraries to the configure directory.
+.    if !empty(_QT5_ADDITIONAL_LINK)
+.      for dep in ${_QT5_ADDITIONAL_LINK}
+	${MKDIR} ${CONFIGURE_WRKSRC}/lib
+.        if ! empty(USE_QT:M${dep})
+	${LN} -sf ${QT_LIBDIR}/${qt-${dep}_LIB} ${CONFIGURE_WRKSRC}/lib
+.        endif
+.      endfor
+.    endif
+
+.    if ${QT_DEFINES:N-*}
+# There **are** defines, so we need to **add** this port to the
+# qconfig-modules.h header; make @need_add empty and comment out
+# the @need_remove lines in the script (see below in qt-post-install).
+# If there are no defines, do it the other way around.
+_sub_need_add=
+_sub_need_remove=	\#\#
+.    else
+_sub_need_add=		\#\#
+_sub_need_remove=	
+.    endif
+# If a port installs Qt version-specific binaries (e.g. "designer" which 
+# existed as a Qt4 application and exists as a Qt5 application and will 
+# probably be a Qt6 application) the port should set `QT_BINARIES=yes`.
+.    if defined(QT_BINARIES)
+_sub_need_bin=
+.    else
+_sub_need_bin=		\#\#
+.    endif
+.    if ${QT_MODNAME} == core
+# QtCore (e.g. devel/qt5-core) is the one that starts the header,
+# and is also the one that can clean it up when deinstalled.
+_sub_need_clean=	
+.    else
+_sub_need_clean=	\#\#
+.    endif
 post-install: qt-post-install
 qt-post-install:
-.    if ${QT_DEFINES:N-*}
-# We can't use SUB_FILES with a shared pkg-deinstall.in.
-# We need it to be a script instead of a group of @unexecs, otherwise
-# qconfig-modules.h cleanup will be run in pre-deinstall stage, which is
-# useless. This will probably be replaced by a Keywords/ script in the future.
+# We can't use SUB_FILES with the shared pkg-change.in.
+# We need it to be a script instead of a group of @unexecs.
+# Do two steps of processing -- introducing the Qt variables,
+# and replacing the @tags with comment (or nothing) characters
+# according to the port's settings -- in one sed and write
+# to pkg-change.tmp. Then split it up and minify for the
+# install and deinstall step.
 	@${SED} -e 's,%%QT_MODNAME%%,${QT_MODNAME},g' \
 		-e 's,%%QT_INCDIR%%,${QT_INCDIR},g' \
-		${PORTSDIR}/devel/${_QT_RELNAME}/${FILESDIR:T}/${PKGDEINSTALL:T}.in > \
-		${PKGDEINSTALL}
+		-e 's,@need_add,${_sub_need_add},' \
+		-e 's,@need_remove,${_sub_need_remove},' \
+		-e 's,@need_clean,${_sub_need_clean},' \
+		-e 's,@need_bin,${_sub_need_bin},' \
+		${PORTSDIR}/devel/${_QT_RELNAME}/${FILESDIR:T}/pkg-change.in > \
+		${WRKDIR}/pkg-change.tmp
+	@${SED} -e 's,@install,,' -e 's,@deinstall,##,' ${WRKDIR}/pkg-change.tmp | ${SED} -e '/##/d' > ${PKGINSTALL}
+	@${SED} -e 's,@install,##,' -e 's,@deinstall,,' ${WRKDIR}/pkg-change.tmp | ${SED} -e '/##/d' > ${PKGDEINSTALL}
+	# Drop all leading spaces in the script, to minify
+	@${REINPLACE_CMD} 's/^  *//' ${PKGINSTALL} ${PKGDEINSTALL}
+.    if ${QT_DEFINES:N-*}
 	@${MKDIR} ${STAGEDIR}${QT_INCDIR}/QtCore/modules
 	@${ECHO_CMD} -n \
 		> ${STAGEDIR}${QT_INCDIR}/QtCore/modules/qconfig-${QT_MODNAME}.h
@@ -356,8 +400,6 @@ qt-post-install:
 .      endfor
 	@${ECHO_CMD} "${PREFIX}/${QT_INCDIR_REL}/QtCore/modules/qconfig-${QT_MODNAME}.h" \
 		>> ${TMPPLIST}
-	@${ECHO_CMD} "@exec echo '#include <QtCore/modules/qconfig-${QT_MODNAME}.h>' >> ${PREFIX}/${QT_INCDIR_REL}/QtCore/qconfig-modules.h" \
-		>> ${TMPPLIST}
 .    endif # ${QT_DEFINES:N-*}
 .    if ${QT_CONFIG:N-*}
 	@${MKDIR} ${STAGEDIR}${QT_MKSPECDIR}/modules
@@ -367,5 +409,4 @@ qt-post-install:
 		>> ${TMPPLIST}
 .    endif # ${QT_CONFIG:N-*}
 .  endif # M5
-
 .endif # defined(_QT_DIST_MK_INCLUDED)

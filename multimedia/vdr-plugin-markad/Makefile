@@ -1,9 +1,8 @@
 # Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vdr-plugin-markad
 PORTVERSION=	0.1.4
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	multimedia
 MASTER_SITES=	http://projects.vdr-developer.org/attachments/download/1041/
 DISTNAME=	${PORTNAME:S/-plugin-/-/}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
@@ -11,14 +10,16 @@ DISTNAME=	${PORTNAME:S/-plugin-/-/}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERS
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video Disk Recorder - MarkAd plugin
 
-LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv2+ LOGOS
+LICENSE_COMB=	multi
+LICENSE_NAME_LOGOS=	Station logos
+LICENSE_TEXT_LOGOS=	Installs station logos
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
+LICENSE_PERMS_LOGOS=	auto-accept
 
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 
-RESTRICTED=	Installs station logos
-
-USES=		pkgconfig tar:tgz
+USES=		compiler:c++11-lang pkgconfig tar:tgz
 WRKSRC=		${WRKDIR}/${PLUGIN}-${DISTVERSION}
 VDR_PLUGIN_MAKEFILES=	${WRKSRC}/command/Makefile ${WRKSRC}/plugin/Makefile
 DEFINES=	-DDATADIR=\\\"${DATADIR}\\\" -DPREFIX=\\\"${PREFIX}\\\"

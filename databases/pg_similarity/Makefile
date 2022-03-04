@@ -1,9 +1,8 @@
 # Created by: Jov <amutu@amutu.com>
-# $FreeBSD$
 
 PORTNAME=	pg_similarity
 PORTVERSION=	20160917
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 

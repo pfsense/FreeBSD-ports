@@ -1,0 +1,14 @@
+--- CMakeLists.txt.orig	2021-04-08 06:20:26 UTC
++++ CMakeLists.txt
+@@ -873,6 +873,11 @@ if(CPACK)
+     set(CPACK_GENERATOR "DragNDrop")
+   endif()
+ 
++install(TARGETS devilutionx 				DESTINATION ${CMAKE_INSTALL_BINDIR})
++install(FILES   Packaging/fedora/devilutionx.desktop 	DESTINATION ${CMAKE_INSTALL_SHAREDIR}/applications)
++install(FILES   Packaging/resources/icon.png 		DESTINATION ${CMAKE_INSTALL_SHAREDIR}/icons/hicolor/512x512/apps RENAME devilutionx.png)
++install(FILES   Packaging/resources/icon_solid.png 	DESTINATION ${CMAKE_INSTALL_SHAREDIR}/icons/hicolor/512x512/apps RENAME devilutionx_solid.png)
++
+   set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+   set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+   set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})

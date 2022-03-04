@@ -1,12 +1,10 @@
 # Created by: Jan-Peter Koopmann <j.koopmann@seceidos.de>
-# $FreeBSD$
 
 PORTNAME=	MailScanner
-PORTVERSION=	5.1.2
-PORTREVISION=	1
+DISTVERSION=	5.3.4-3
+DISTVERSIONSUFFIX=	.nix
 CATEGORIES=	mail
-MASTER_SITES=	https://s3.amazonaws.com/msv5/release/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-${PATCHLEVEL}.nix
+MASTER_SITES=	https://github.com/MailScanner/v5/releases/download/${DISTVERSION}/
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Powerful virus/spam scanning framework for mail gateways
@@ -14,7 +12,7 @@ COMMENT=	Powerful virus/spam scanning framework for mail gateways
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	\
-	p5-IO-stringy>=0:devel/p5-IO-stringy \
+	p5-IO-Stringy>=0:devel/p5-IO-Stringy \
 	p5-DBI>=0:databases/p5-DBI \
 	p5-Mail-Tools>=0:mail/p5-Mail-Tools \
 	p5-HTML-Tagset>=0:www/p5-HTML-Tagset \
@@ -56,15 +54,13 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		tnef:converters/tnef \
 		wget:ftp/wget
 
-CONFLICTS=	MailScanner-devel-[0-9]*
+CONFLICTS=	MailScanner-devel
 
-PATCHLEVEL=	1
-
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
 SHEBANG_GLOB=	* usr/lib/MailScanner/init/* usr/lib/MailScanner/wrapper/* \
 		usr/sbin/* usr/share/MailScanner/perl/MailScanner/*
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C,-[0-9]+,,}
 SUB_FILES=	MailScanner.8 pkg-message pkg-install
 SUB_LIST=	DATADIR=${DATADIR} \
 		PERL=${PERL} \
@@ -73,10 +69,9 @@ SUB_LIST=	DATADIR=${DATADIR} \
 		ETC_FILES="${ETC_FILES}" \
 		MCP_FILES="${MCP_FILES}"
 
-OPTIONS_DEFINE=		SPAMASSASSIN CLAMAV CLAMAVMODULE DOCS
+OPTIONS_DEFINE=		SPAMASSASSIN CLAMAV DOCS
 SPAMASSASSIN_DESC=	Install SpamAssassin
 CLAMAV_DESC=		Install ClamAV
-CLAMAVMODULE_DESC=	Install ClamAV Module
 
 OPTIONS_DEFAULT=	SPAMASSASSIN CLAMAV
 
@@ -93,11 +88,7 @@ PLIST_SUB+=	SPAMASSASSIN="@comment "
 RUN_DEPENDS+=	clamscan:security/clamav
 .endif
 
-.if ${PORT_OPTIONS:MCLAMAVMODULE}
-RUN_DEPENDS+=	p5-Mail-ClamAV>=0:mail/p5-Mail-ClamAV
-.endif
-
-.if ${PORT_OPTIONS:MCLAMAV} || ${PORT_OPTIONS:MCLAMAVMODULE}
+.if ${PORT_OPTIONS:MCLAMAV}
 RUN_DEPENDS+=	unrar:archivers/unrar \
 		zoo:archivers/zoo \
 		unarj:archivers/unarj \
@@ -133,7 +124,8 @@ USE_RC_SUBR=	mailscanner mta
 
 post-patch:
 	${REINPLACE_CMD} -e 's,\$$(mktemp),$$(mktemp -t tmp),' \
-		${WRKSRC}/usr/lib/MailScanner/wrapper/*-wrapper
+	    ${WRKSRC}/usr/lib/MailScanner/wrapper/bitdefender-wrapper \
+	    ${WRKSRC}/usr/lib/MailScanner/wrapper/clamav-wrapper
 
 do-build:
 	@${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} \
@@ -167,7 +159,7 @@ do-build:
 
 do-install:
 	(cd ${WRKSRC}/usr/sbin && ${COPYTREE_BIN} . ${STAGEDIR}/${PREFIX}/sbin)
-	${LN} -sf ${PREFIX}/sbin/MailScanner ${STAGEDIR}${PREFIX}/sbin/mailscanner
+	${RLN} ${STAGEDIR}${PREFIX}/sbin/MailScanner ${STAGEDIR}${PREFIX}/sbin/mailscanner
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/MailScanner \
 		${STAGEDIR}${PREFIX}/etc/MailScanner/conf.d \
 		${STAGEDIR}${PREFIX}/etc/MailScanner/rules

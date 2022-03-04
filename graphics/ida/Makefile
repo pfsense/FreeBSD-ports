@@ -1,8 +1,8 @@
 # Created by: Andrey Slusar <anray@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ida
 PORTVERSION=	2.14
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.kraxel.org/releases/fbida/
 DISTNAME=	fbida-${PORTVERSION}
@@ -14,7 +14,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libexif.so:graphics/libexif
 
-USES=		desktop-file-utils gmake iconv jpeg motif perl5 pkgconfig
+USES=		desktop-file-utils gmake iconv jpeg motif perl5 pkgconfig xorg
 USE_PERL5=	build
 USE_XORG=	pixman x11 xext xt
 MAKEFILE=	GNUmakefile

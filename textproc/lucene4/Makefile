@@ -1,10 +1,9 @@
 # Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lucene
 PORTVERSION=	4.10.4
 CATEGORIES=	textproc java devel
-MASTER_SITES=	APACHE/${PORTNAME}/java/${PORTVERSION}
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/java/${PORTVERSION}/
 PKGNAMESUFFIX=	4
 
 MAINTAINER=	ports@FreeBSD.org
@@ -13,13 +12,17 @@ COMMENT=	Full-text search engine for Java, 4.x branch
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+DEPRECATED=	Unsupported by upstream, released in 2015
+EXPIRATION_DATE=2022-03-31
+
 CONFLICTS=	lucene-[0-9].*
 
-USES=		tar:tgz
+USES=		cpe tar:tgz
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 NO_BUILD=	yes
 NO_ARCH=	yes
+
+CPE_VENDOR=	apache
 
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}-core-${PORTVERSION}.jar
 PORTDOCS=	*

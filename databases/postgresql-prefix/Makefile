@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	prefix
-PORTVERSION=	1.2.8
+PORTVERSION=	1.2.9
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Prefix Range module for PostgreSQL
 
 LICENSE=	PostgreSQL

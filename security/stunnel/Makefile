@@ -1,24 +1,12 @@
 # Created by: Martti Kuparinen <martti.kuparinen@ericsson.com>
-# $FreeBSD$
 
 PORTNAME=	stunnel
-PORTVERSION=	5.50
+DISTVERSION=	5.60
 PORTEPOCH=	1
 CATEGORIES=	security
-MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
-		https://www.stunnel.org/downloads/beta/ \
-		http://mirrors.zerg.biz/stunnel/%SUBDIR%/ \
-		http://mirrors.go-part.com/stunnel/%SUBDIR%/ \
-		http://ftp.nluug.nl/pub/networking/stunnel/%SUBDIR%/ \
-		ftp://ftp.nluug.nl/pub/networking/stunnel/%SUBDIR%/ \
-		http://ftp.nluug.nl/pub/networking/stunnel/%SUBDIR%/ \
-		ftp://ftp.surfnet.nl/pub/networking/stunnel/%SUBDIR%/ \
-		http://ftp.surfnet.nl/pub/networking/stunnel/%SUBDIR%/ \
-		ftp://stunnel.mirt.net/stunnel/%SUBDIR%/ \
-		http://www.namesdir.com/mirrors/stunnel/%SUBDIR%/ \
-		http://stunnel.cybermirror.org/%SUBDIR%/ \
-		http://mirrors.zerg.biz/stunnel/%SUBDIR%/ \
-		ZI
+MASTER_SITES=	https://ftp.nluug.nl/pub/networking/stunnel/archive/5.x/ \
+		https://www.stunnel.org/downloads/archive/5.x/ \
+		http://ftp.nluug.nl/pub/networking/stunnel/archive/5.x/
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	SSL encryption wrapper for standard network daemons
@@ -26,6 +14,9 @@ COMMENT=	SSL encryption wrapper for standard network daemons
 # FIXME: IMHO, there really ought to be a GPL-2+ option or some such.
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
+
+BROKEN_SSL=	libressl libressl-devel
+BROKEN_SSL_REASON=	Missing upstream support
 
 USES=		cpe libtool perl5 shebangfix ssl
 USE_PERL5=	build

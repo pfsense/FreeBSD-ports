@@ -1,21 +1,20 @@
 # Created by: xaa@stack.nl
-# $FreeBSD$
 
 PORTNAME?=	xboard
 PORTVERSION?=	4.9.1
-PORTREVISION?=	1
-PORTEPOCH?=
+PORTREVISION?=	2
+PORTEPOCH?=	0
 CATEGORIES?=	games
 MASTER_SITES?=	GNU
 
-MAINTAINER?=	johans@FreeBSD.org
+MAINTAINER?=	mbeis@xs4all.nl
 COMMENT?=	X frontend for Crafty, GNUChess, Chess Servers, or e-mail chess
 
 LICENSE?=	GPLv3
 
 LIB_DEPENDS?=	libcairo.so:graphics/cairo
 
-CONFLICTS?=	xboard-devel-[0-9]*
+CONFLICTS?=	xboard-devel
 
 OPTIONS_DEFINE?=	NLS DOCS ZIPPY
 OPTIONS_SINGLE?=	FRONTEND
@@ -58,9 +57,9 @@ GTK2_CONFIGURE_WITH=	gtk
 
 .include <bsd.port.options.mk>
 
-USES+=		desktop-file-utils makeinfo perl5 pkgconfig shared-mime-info \
-		shebangfix
-USE_XORG+=	xt xpm
+USES+=		desktop-file-utils gnome makeinfo perl5 pkgconfig \
+		shared-mime-info shebangfix xorg
+USE_XORG+=	ice sm x11 xmu xt xpm
 USE_GNOME+=	librsvg2
 .if ${PORT_OPTIONS:MXAW}
 USE_XORG+=	xaw
@@ -72,11 +71,10 @@ SHEBANG_FILES=	texi2man
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=MKDIR_P="${MKDIR}" PERLPATH=${PERL}
-CFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-I${LOCALBASE}/include -fcommon
 LDFLAGS+=	-L${LOCALBASE}/lib
 INFO=		xboard
 USE_PERL5=	build
-INSTALLS_ICONS=	yes
 DATADIR?=	${PREFIX}/share/games/${PORTNAME}
 XBOARDCONF?=	${WRKSRC}/xboard.conf
 

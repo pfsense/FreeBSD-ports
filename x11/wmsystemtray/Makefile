@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wmsystemtray
 PORTVERSION=	1.4
 CATEGORIES=	x11 windowmaker afterstep
@@ -11,7 +9,7 @@ COMMENT=	System tray dockapp that uses freedesktop.org system tray protocol
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig
+USES=		pkgconfig xorg
 USE_XORG=	ice sm x11 xext xfixes xmu xpm
 
 GNU_CONFIGURE=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Collect
 PORTVERSION=	0.06
 PORTREVISION=	2
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to collect module files from some directories
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

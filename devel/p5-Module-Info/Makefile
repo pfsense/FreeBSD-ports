@@ -1,5 +1,4 @@
 # Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Module-Info
 PORTVERSION=	0.35
@@ -16,5 +15,7 @@ RUN_DEPENDS=	p5-PathTools>=0:devel/p5-PathTools
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

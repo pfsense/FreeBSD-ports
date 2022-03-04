@@ -1,5 +1,4 @@
 # Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
 
 PORTNAME=	jgnash
 PORTVERSION=	2.21.0
@@ -20,7 +19,6 @@ PLIST_SUB+=	DESKTOPDIR=${DESKTOPDIR:S|^${PREFIX}/||}
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_VENDOR=	openjdk
 
 NO_BUILD=	yes

@@ -1,5 +1,4 @@
 # Created by: Roman Shterenzon <roman@xpert.com>
-# $FreeBSD$
 
 PORTNAME=	chexedit
 PORTVERSION=	0.9.7
@@ -20,6 +19,9 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_header_ncurses_h=yes
 PLIST_FILES=	bin/chexedit \
 		man/man1/chexedit.1.gz
+
+# Fix build on recent current
+CFLAGS+=	-fcommon
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/hexedit ${STAGEDIR}${PREFIX}/bin/chexedit

@@ -1,5 +1,4 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libXdmcp
 PORTVERSION=	1.1.3
@@ -10,8 +9,10 @@ COMMENT=	X Display Manager Control Protocol library
 
 LICENSE=	MIT
 
-XORG_CAT=	lib
+USES=		cpe xorg xorg-cat:lib
 USE_XORG=	xorgproto:both
+
+CPE_VENDOR=	x.org
 
 CONFIGURE_ARGS+=--disable-docs --without-xmlto
 

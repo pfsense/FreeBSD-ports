@@ -1,5 +1,4 @@
 # Created by: Elvis Chiang <elvis@sslab.cs.ccu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	Spiffy
 PORTVERSION=	0.46
@@ -17,5 +16,7 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

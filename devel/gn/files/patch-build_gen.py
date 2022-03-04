@@ -1,6 +1,8 @@
---- build/gen.py.orig	2019-02-12 17:36:05 UTC
+- .git/ is missing in archive, so use version from environment
+
+--- build/gen.py.orig	2021-04-24 13:35:05 UTC
 +++ build/gen.py
-@@ -115,24 +115,15 @@ def main(argv):
+@@ -151,25 +151,16 @@ def main(argv):
  
  
  def GenerateLastCommitPosition(host, header):
@@ -8,7 +10,7 @@
 -  describe_output = subprocess.check_output(
 -      ['git', 'describe', 'HEAD', '--match', ROOT_TAG], shell=host.is_windows(),
 -      cwd=REPO_ROOT)
--  mo = re.match(ROOT_TAG + '-(\d+)-g([0-9a-f]+)', describe_output)
+-  mo = re.match(ROOT_TAG + '-(\d+)-g([0-9a-f]+)', describe_output.decode())
 -  if not mo:
 -    raise ValueError(
 -        'Unexpected output from git describe when generating version header')
@@ -18,12 +20,13 @@
  #ifndef OUT_LAST_COMMIT_POSITION_H_
  #define OUT_LAST_COMMIT_POSITION_H_
  
+ #define LAST_COMMIT_POSITION_NUM %s
 -#define LAST_COMMIT_POSITION "%s (%s)"
 +#define LAST_COMMIT_POSITION "%s"
  
  #endif  // OUT_LAST_COMMIT_POSITION_H_
--''' % (mo.group(1), mo.group(2))
-+''' % (os.environ['GN_VERSION'])
+-''' % (mo.group(1), mo.group(1), mo.group(2))
++''' % (os.environ['GN_VERSION'], os.environ['GN_VERSION'])
  
    # Only write/touch this file if the commit position has changed.
    old_contents = ''

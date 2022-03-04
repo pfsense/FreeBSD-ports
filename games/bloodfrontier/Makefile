@@ -1,9 +1,8 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	bloodfrontier
 DISTVERSION=	B2
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Blood%20Frontier%20Beta%202
 DISTNAME=	${PORTNAME}-${DISTVERSION}-linux
@@ -37,6 +36,7 @@ OPTIONS_MULTI_COMPONENTS=CLIENT DEDICATED
 OPTIONS_DEFAULT=	CLIENT DEDICATED OPTIMIZED_CFLAGS
 
 CLIENT_DESC=		Build client
+CLIENT_USES=		gl sdl xorg
 CLIENT_USE=		GL=gl SDL=image,mixer,sdl XORG=x11
 CLIENT_ALL_TARGET=	client
 CLIENT_PLIST_FILES=	bin/bfclient libexec/bfclient \

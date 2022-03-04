@@ -1,9 +1,8 @@
 # Created by: Jaap Akkerhuis <jaap@NLnetLabs.nl>
-# $FreeBSD$
 
 PORTNAME=	softhsm
-PORTVERSION=	2.5.0
-PORTREVISION=	1
+PORTVERSION=	2.6.1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://dist.opendnssec.org/source/ \
 		http://dist.opendnssec.org/source/testing/
@@ -17,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool ssl pkgconfig
+USES=		compiler:c++11-lang libtool ssl pkgconfig
 
 SUB_FILES=	pkg-message
 
@@ -26,6 +25,9 @@ CONFLICTS=	softhsm-1.*
 USE_LDCONFIG=	yes
 
 LIB_DEPENDS+=		libcppunit.so:devel/cppunit
+MY_DEPENDS+=		p11-kit:security/p11-kit
+BUILD_DEPENDS+=		${MY_DEPENDS}
+RUN_DEPENDS+=		${MY_DEPENDS}
 
 OPTIONS_DEFINE=		SQLITE MIGRATE
 MIGRATE_IMPLIES=	SQLITE
@@ -46,20 +48,18 @@ SQLITE_USES=		sqlite
 MIGRATE_CONFIGURE_WITH=	migrate
 
 CRYP_BOTAN_CONFIGURE_ON=	--with-crypto-backend=botan
-CRYP_BOTAN_LIB_DEPENDS=	libbotan-1.10.so:security/botan110
+CRYP_BOTAN_LIB_DEPENDS=	libbotan-2.so:security/botan2
 
-CRYP_OPEN_CONFIGURE_ON=	--with-crypto-backend=openssl
+CRYP_OPEN_CONFIGURE_ON=	--with-crypto-backend=openssl --with-openssl=${OPENSSLBASE}
 
 .include <bsd.port.options.mk>
 
-.if ${SSL_DEFAULT:Mlibressl*} || ${SSL_DEFAULT:Mopenssl111}
+.if ${SSL_DEFAULT:Mlibressl*} || ${SSL_DEFAULT:Mopenssl}
 CONFIGURE_ARGS+=	--disable-gost
 .endif
 
-# openssl-1.1.1 (default after 1200080) doesn't  support GHOST (yet), punt for now. 
-.if ${OSVERSION}>=1200080
+# openssl-1.1.1 (default after 1200080) doesn't  support GHOST (yet), punt for now.
 CONFIGURE_ARGS+=	--disable-gost
-.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/p11-kit/modules

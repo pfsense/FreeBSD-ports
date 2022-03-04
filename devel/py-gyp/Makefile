@@ -1,12 +1,9 @@
 # Created by: Daichi GOTO <daichi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gyp
-PORTVERSION=	20160504
+PORTVERSION=	20200512
 CATEGORIES=	devel python
-MASTER_SITES=	LOCAL/hrs
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	${PORTNAME}-e679e688ba6db12336b79650c27fcf8a5ed21e60
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Build System That Generates Other Build Systems
@@ -14,7 +11,9 @@ COMMENT=	Build System That Generates Other Build Systems
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:2.7
+USES=		python:3.5+
+USE_GITHUB=	yes
+GH_ACCOUNT=	hrs-allbsd
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

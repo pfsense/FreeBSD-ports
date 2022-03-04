@@ -1,5 +1,3 @@
 #!/bin/sh
-#
-# $FreeBSD$
 
-JAVA_VERSION="%%JAVA_VERSION%%" %%LOCALBASE%%/bin/java -Ddevisorgrid.home="%%DATADIR%%" -cp "%%DATADIR%%" devisorgrid "$@"
+%%LOCALBASE%%/bin/java -Ddevisorgrid.home="%%DATADIR%%" -cp "%%DATADIR%%" devisorgrid "$@"

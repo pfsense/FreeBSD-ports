@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
 
 PORTNAME=	glaxium
 PORTVERSION=	0.5
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	http://xhosxe.free.fr/glaxium/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -13,7 +12,7 @@ COMMENT=	OpenGL based space-ship "shoot-em-up" game
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		dos2unix gmake
+USES=		dos2unix gl gmake sdl
 USE_SDL=	sdl mixer
 USE_GL=		glut
 GNU_CONFIGURE=	yes

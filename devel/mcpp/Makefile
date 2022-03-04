@@ -1,5 +1,4 @@
 # Created by: Kiyoshi Matsui <kmatsui@t3.rim.or.jp>
-# $FreeBSD$
 
 PORTNAME=	mcpp
 PORTVERSION=	2.7.2
@@ -13,10 +12,11 @@ COMMENT=	Alternative C/C++ preprocessor
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		libtool
+USES=		cpe libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-mcpplib
 USE_LDCONFIG=	yes
+CPE_VENDOR=	mcpp_project
 
 OPTIONS_DEFINE=	DOCS
 

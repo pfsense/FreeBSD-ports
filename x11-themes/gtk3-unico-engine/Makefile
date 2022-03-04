@@ -1,13 +1,10 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	unico
-PORTVERSION=	1.0.2
-PORTREVISION=	2
+PORTVERSION=	1.0.2.1
 CATEGORIES=	x11-themes
-MASTER_SITES=	https://launchpadlibrarian.net/98881788/ \
-	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/ \
-	LOCAL/olivierd
+MASTER_SITES=	https://distfiles.sigtrap.nl/ \
+		LOCAL/nc/mirror
 PKGNAMEPREFIX=	gtk3-
 PKGNAMESUFFIX=	-engine
 
@@ -18,7 +15,7 @@ LICENSE=	LGPL3
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
-USES=		gmake libtool pkgconfig
+USES=		gmake gnome libtool pkgconfig
 USE_GNOME=	cairo glib20 gtk30
 USE_LDCONFIG=	yes
 

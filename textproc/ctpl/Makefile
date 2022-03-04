@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ctpl
 PORTVERSION=	0.3.4
 CATEGORIES=	textproc devel
@@ -13,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
-USES=		pathfix pkgconfig libtool
+USES=		gnome libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

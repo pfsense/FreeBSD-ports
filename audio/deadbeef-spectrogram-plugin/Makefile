@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	deadbeef-spectrogram-plugin
 DISTVERSION=	0.0.2015.01.10
@@ -19,7 +18,7 @@ GH_ACCOUNT=	cboxdoerfer
 GH_PROJECT=	ddb_spectrogram
 GH_TAGNAME=	8d1b371
 
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 
 MAKE_JOBS_UNSAFE=	yes
 

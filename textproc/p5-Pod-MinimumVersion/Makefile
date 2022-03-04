@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Pod-MinimumVersion
 PORTVERSION=	50
 CATEGORIES=	textproc devel perl5
@@ -7,7 +5,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	report minimum Perl version for given POD
+COMMENT=	Report minimum Perl version for given POD
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

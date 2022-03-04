@@ -1,13 +1,12 @@
-# Created by: lbartoletti <coder@tuxfamily.org>
-# $FreeBSD$
+# Created by: lbartoletti <lbartoletti@FreeBSD.org>
 
 PORTNAME=	libgaiagraphics
 PORTVERSION=	0.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Library supporting common-utility raster handling methods
 
 LIB_DEPENDS=	libpng.so:graphics/png \
@@ -21,6 +20,6 @@ USE_LDCONFIG=	yes
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+CONFIGURE_ARGS=	CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
 
 .include <bsd.port.mk>

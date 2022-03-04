@@ -1,5 +1,4 @@
 # Created by: Stephen Roome <steve@pepcross.com>
-# $FreeBSD$
 
 PORTNAME=	xglurbules
 PORTVERSION=	3.3
@@ -10,6 +9,7 @@ MASTER_SITES=	http://stephenroome.com/xglurbules/
 MAINTAINER=	steve@pepcross.com
 COMMENT=	Burning particle system eye candy program thingy for X11
 
+USES=		xorg
 USE_XORG=	xt x11 sm ice xpm
 
 PLIST_FILES=	bin/xglurbules \

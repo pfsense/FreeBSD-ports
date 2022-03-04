@@ -1,5 +1,4 @@
 # Created by: Heinz Tschabitscher
-# $FreeBSD$
 
 PORTNAME=	sc
 PORTVERSION=	7.16
@@ -7,7 +6,7 @@ PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	SUNSITE/apps/financial/spreadsheet
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Curses-based spreadsheet program
 
 USES=		ncurses

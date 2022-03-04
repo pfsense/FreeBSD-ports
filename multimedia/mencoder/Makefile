@@ -1,8 +1,8 @@
 # Created by: Thomas E. Zander
-# $FreeBSD$
 
 PORTNAME=	mencoder
 PORTVERSION=	${MPLAYER_PORT_VERSION}.${MPLAYER_SNAPSHOT_DATE:S/-//g}
+PORTREVISION=	1
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	Convenient video file and movie encoder
 
 OPTIONS_DEFINE=	AMR_NB AMR_WB ASS BLURAY CDIO DEBUG DV DVDNAV FAAC FONTCONFIG \
 		FRIBIDI GIF GNUTLS GSM IPV6 JACK LADSPA LIBMNG LZO \
-		MAD NAS OPENAL OPENJPEG OPUS PULSEAUDIO \
+		MAD NAS NLS OPENAL OPENJPEG OPUS PULSEAUDIO \
 		RTMP SMB SPEEX THEORA TWOLAME V4L VPX \
 		X264 XVID
 
@@ -31,8 +31,6 @@ BLURAY_DESC?=	BluRay support
 DVDNAV_DESC?=	DVD navigation features support
 LZO_DESC?=	Enable external liblzo library
 RTCPU_DESC?=	Use runtime CPU detection
-
-RESTRICTED=	Port has restricted dependencies
 
 PATCHDIR=	${.CURDIR}/../mplayer/files
 FILESDIR=	${PATCHDIR}
@@ -74,7 +72,8 @@ CONFIGURE_ARGS+=	--disable-mplayer \
 			--disable-directfb \
 			--disable-mpg123 \
 			--disable-enca \
-			--disable-musepack
+			--disable-musepack \
+			--disable-sndio
 
 LIB_DEPENDS+=	libmp3lame.so:audio/lame
 

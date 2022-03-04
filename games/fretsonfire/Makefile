@@ -1,9 +1,8 @@
 # Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fretsonfire
 PORTVERSION=	1.3.110
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	games python
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME_UCASE}-${PORTVERSION}
@@ -17,11 +16,11 @@ LICENSE_FILE=	${WRKSRC}/copying.txt
 
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYGAME} \
+		${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}PyOpenGL>=0:graphics/py-PyOpenGL@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
 		${LOCALBASE}/share/${PORTNAME}/default.ttf:games/fretsonfire-data
 
-USES=		dos2unix python
+USES=		dos2unix python:3.6+
 DOS2UNIX_FILES=	*.txt
 NO_BUILD=	yes
 NO_ARCH=	yes

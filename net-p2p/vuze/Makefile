@@ -1,8 +1,8 @@
 # Created by: Jeremy Faulkner <gldisater@gldis.ca>
-# $FreeBSD$
 
 PORTNAME=	vuze
 PORTVERSION=	5.7.4.0
+PORTREVISION=	2
 CATEGORIES=	net-p2p java
 MASTER_SITES=	SF/azureus/vuze/Vuze_${PORTVERSION:S/.//g}
 DISTNAME=	Vuze_${PORTVERSION:S/.//g}_source
@@ -14,18 +14,17 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL.txt
 
 BUILD_DEPENDS=	${JAVALIBDIR}/log4j.jar:devel/log4j \
-		${JAVALIBDIR}/commons-cli.jar:java/jakarta-commons-cli \
+		${JAVALIBDIR}/commons-cli.jar:java/apache-commons-cli \
 		${JAVALIBDIR}/junit.jar:java/junit \
-		${JAVALIBDIR}/swt-devel.jar:x11-toolkits/swt-devel
-RUN_DEPENDS=	${JAVALIBDIR}/swt-devel.jar:x11-toolkits/swt-devel
+		${JAVALIBDIR}/swt.jar:x11-toolkits/swt
+RUN_DEPENDS=	${JAVALIBDIR}/swt.jar:x11-toolkits/swt
 
-USES=		zip
+USES=		cpe gnome zip
 USE_JAVA=	yes
 JAVA_OS=	native
 USE_ANT=	yes
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 JARFILE=	${PORTNAME}.jar
 
@@ -40,7 +39,7 @@ PLIST_FILES=	%%JAVAJARDIR%%/${JARFILE} \
 
 SUB_FILES=	${PORTNAME}
 SUB_LIST=	LIBDIR="${LOCALBASE}/lib" JARFILE="${JARFILE}" \
-		SWTJAR="${JAVALIBDIR}/swt-devel.jar" JAVA="${LOCALBASE}/bin/java"
+		SWTJAR="${JAVALIBDIR}/swt.jar" JAVA="${LOCALBASE}/bin/java"
 
 DESKTOP_ENTRIES=	"Vuze" \
 			"BitTorrent client" \

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	picard-plugins
-PORTVERSION=	2.0.20190312
+PORTVERSION=	2.0.20210413
 CATEGORIES=	audio python
 
 MAINTAINER=	jhale@FreeBSD.org
@@ -10,31 +8,29 @@ COMMENT=	Plugins for Picard tagger
 LICENSE=	GPLv2+ GPLv3+ MIT WTFPL
 LICENSE_COMB=	multi
 
-USES=		python:3.5+
-USE_PYTHON=	noflavors
+USES=		python:3.6+
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	metabrainz
-GH_TAGNAME=	8cb6013
+GH_TAGNAME=	d859757
 
 PORTSCOUT=	limit:^2\.
 
 NO_ARCH=	yes
-SUB_FILES=	pkg-message
-SUB_LIST=	GCC_VER=${GCC_DEFAULT:S/.//}
 
 BUILD_WRKSRC=	${WRKSRC}/build
 PLUGINSDIR=	${PYTHON_SITELIBDIR}/picard/plugins
 
-OPTIONS_DEFINE=		ALBUM_COLUMN BPM MOODBAR
+OPTIONS_DEFINE=		BPM MOODBAR
 OPTIONS_GROUP=		REPLAYGAIN
 OPTIONS_GROUP_REPLAYGAIN=	FLAC MP3 VORBIS WAVPACK
 OPTIONS_SUB=		yes
 
-ALBUM_COLUMN_DESC=	Adds album column to main window (can't be disabled)
-
 BPM_DESC=		Beats per minute
 BPM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aubio>=0.4.5:audio/py-aubio@${PY_FLAVOR}
+BPM_SUB_FILES=		pkg-message.bmp
+BPM_SUB_LIST=		GCC_VER=${GCC_DEFAULT:S/.//}
+BPM_VARS=		PKGMESSAGE+=${.CURDIR}/pkg-message.bmp
 
 MOODBAR_DESC=		Generate moodbar files
 MOODBAR_RUN_DEPENDS=	moodbar:audio/moodbar
@@ -66,11 +62,5 @@ do-build:
 do-install:
 	@${MKDIR} ${STAGEDIR}${PLUGINSDIR}
 	(cd ${BUILD_WRKSRC}; ${COPYTREE_SHARE} . ${STAGEDIR}${PLUGINSDIR})
-
-post-install-ALBUM_COLUMN-off:
-	@${RM} -r ${STAGEDIR}${PLUGINSDIR}/add_album_column
-
-post-install-BPM-off:
-	@${RM} -r ${STAGEDIR}${PLUGINSDIR}/bpm
 
 .include <bsd.port.mk>

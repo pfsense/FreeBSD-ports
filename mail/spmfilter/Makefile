@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	spmfilter
 PORTVERSION=	0.6.7
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	http://www.${PORTNAME}.org/files/
 
 MAINTAINER=	ast@treibsand.com
-COMMENT=	Spmfilter is a high-performance mail filtering framework, written in C
+COMMENT=	High-performance mail filtering framework written in C
 
 LICENSE=	LGPL3
 

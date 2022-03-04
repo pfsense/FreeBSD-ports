@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	gofont-ttf
 DISTVERSION=	g20180511
 PORTREVISION=	1
 CATEGORIES=	x11-fonts
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Go font family
 
 LICENSE=	BSD3CLAUSE

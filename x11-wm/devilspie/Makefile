@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	devilspie
 PORTVERSION=	0.23
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libwnck-3.so:x11-toolkits/libwnck3
 
-USES=		gettext gmake pkgconfig tar:xz
+USES=		gettext gmake gnome pkgconfig tar:xz
 USE_GNOME=	libwnck intltool
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

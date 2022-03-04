@@ -1,9 +1,8 @@
 # Created by: KIMURA Yasuhiro <yasu@utahime.org>
-# $FreeBSD$
 
 PORTNAME=	riece
 PORTVERSION=	9.0.0
-PORTREVISION=	9
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	irc elisp
 MASTER_SITES=	SAVANNAH

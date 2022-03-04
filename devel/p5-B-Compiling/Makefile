@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	B-Compiling
 PORTVERSION=	0.06
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to expose PL_compiling to perl
 
 LICENSE=	ART10 GPLv1+

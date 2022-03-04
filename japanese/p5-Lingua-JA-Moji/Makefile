@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	Lingua-JA-Moji
 PORTVERSION=	0.36
 CATEGORIES=	japanese perl5
 MASTER_SITES=	CPAN
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to handle many kinds of Japanese characters
 
 LICENSE=	ART10 GPLv1+

@@ -1,8 +1,8 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	five-or-more
-PORTVERSION=	3.28.0
+PORTVERSION=	3.32.2
+PORTREVISION=	1
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -13,19 +13,16 @@ COMMENT=	Form a line of 5 or more colored balls
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	itstool:textproc/itstool
+BUILD_DEPENDS=	itstool:textproc/itstool \
+		valac:lang/vala
+LIB_DEPENDS=	libgnome-games-support-1.so:games/libgnome-games-support \
+		libgee-0.8.so:devel/libgee
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome localbase pathfix pkgconfig tar:xz
-USE_GNOME=	cairo gtk30 intlhack librsvg2
-GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
-CONFIGURE_ARGS=	--localstatedir=${PREFIX}/share
+USES=		gettext gnome meson pkgconfig tar:xz
+USE_GNOME=	cairo gtk30 librsvg2
 
 GLIB_SCHEMAS=	org.gnome.five-or-more.gschema.xml
-
-post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/games
 
 .include <bsd.port.mk>

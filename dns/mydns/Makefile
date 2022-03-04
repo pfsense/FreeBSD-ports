@@ -1,5 +1,4 @@
 # Created by: Simon Dick <simond@irrelevant.org>
-# $FreeBSD$
 
 PORTNAME=	mydns
 PORTVERSION=	1.1.0
@@ -46,11 +45,11 @@ CONFIGURE_ARGS+=--without-mysql \
 		--with-pgsql-lib=${LOCALBASE}/lib
 PKGNAMESUFFIX=	-pg
 .else
+USES+=		mysql
 CONFIGURE_ARGS+=--without-pgsql \
 		--with-mysql-include=${LOCALBASE}/include/mysql \
 		--with-mysql-lib=${LOCALBASE}/lib/mysql
 PKGNAMESUFFIX=	-mysql
-USE_MYSQL=	yes
 .endif
 
 .if ${PORT_OPTIONS:MNLS}

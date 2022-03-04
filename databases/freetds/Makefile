@@ -1,11 +1,11 @@
 # Created by: Domas Mituzas <midom@dammit.lt>
-# $FreeBSD$
 
 PORTNAME=	freetds
-PORTVERSION=	1.1.4
+PORTVERSION=	1.3.3
 PORTEPOCH=	1
 CATEGORIES=	databases
-MASTER_SITES=	ftp://ftp.freetds.org/pub/freetds/stable/
+MASTER_SITES=	https://www.freetds.org/files/stable/ \
+		ftp://ftp.freetds.org/pub/freetds/stable/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Sybase/Microsoft TDS protocol library
@@ -14,7 +14,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-USES=		autoreconf gettext gmake iconv libtool:keepla pkgconfig readline tar:bzip2
+USES=		autoreconf cpe gettext gmake iconv libtool:keepla pkgconfig readline tar:bzip2
 
 TDS_VER?=	7.4
 
@@ -60,12 +60,12 @@ post-extract:
 	@cd ${WRKSRC}/src/pool && ${LN} -s pool.conf pool.conf.sample
 
 post-patch:
-	@${FIND} ${WRKSRC} -name "Makefile.am" | ${XARGS} ${REINPLACE_CMD} -e \
-		's|<malloc.h>|<stdlib.h>| ; \
-		 s|/freetds.conf|/freetds.conf.sample|g ; \
+	@${REINPLACE_CMD} -e 's|/freetds.conf|/freetds.conf.sample|g ; \
 		 s|/locales.conf|/locales.conf.sample|g ; \
-		 s|/pool.conf|/pool.conf.sample|g ; \
-		 s| common.h||g'
+		 s| common.h||g' \
+		 ${WRKSRC}/Makefile.am
+	@${REINPLACE_CMD} -e 's|/pool.conf|/pool.conf.sample|g' \
+		 ${WRKSRC}/src/pool/Makefile.am
 	@${REINPLACE_CMD} -e 's|\($$with_iodbc/include\)|\1/libiodbc|g' \
 		${WRKSRC}/configure.ac
 

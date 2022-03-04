@@ -1,5 +1,4 @@
 # Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
 
 PORTNAME=	vavoom
 PORTVERSION=	1.33
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		cmake:noninja dos2unix jpeg tar:bzip2
+USES=		cmake:noninja cpe dos2unix jpeg tar:bzip2
 DOS2UNIX_REGEX=	((.*\.(c|cpp|h|s|asm|inc|vc|ls|acs|cfg|txt|vs|mak|mgw"))$$|\/(makefile\..*|makefile|Makefile)$$)
 
 OPTIONS_DEFINE=	FLAC LAUNCHER MAD MIKMOD OPENAL OPTIMIZED_CFLAGS VORBIS SDL DOCS
@@ -57,7 +56,8 @@ VORBIS_LIB_DEPENDS=			libvorbis.so:audio/libvorbis
 VORBIS_CMAKE_ON=			-DWITH_VORBIS:BOOL=ON
 VORBIS_CMAKE_OFF=			-DWITH_VORBIS:BOOL=OFF
 
-SDL_USE=					SDL=mixer,sdl GL=yes
+SDL_USES=				gl sdl
+SDL_USE=				GL=glu SDL=mixer,sdl
 SDL_CMAKE_ON=				-DWITH_SDL:BOOL=ON -DWITH_OPENGL:BOOL=ON
 SDL_CMAKE_OFF=				-DWITH_SDL:BOOL=OFF -DWITH_OPENGL:BOOL=OFF
 

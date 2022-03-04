@@ -1,6 +1,4 @@
-# $FreeBSD$
-
 # Versions of Blender and its python dependency for use by depending ports, like add-ons
 
-BLENDER_BL_VERSION=	2.79
-BLENDER_PY_VERSION=	3.5
+BLENDER_BL_VERSION=	2.91.0
+BLENDER_PY_VERSION=	3.8

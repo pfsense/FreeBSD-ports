@@ -1,9 +1,7 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	tea
-PORTVERSION=	47.0.1
-PORTREVISION=	2
+PORTVERSION=	60.5.1
 CATEGORIES=	editors
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -11,12 +9,13 @@ COMMENT=	Simple and powerful Qt-based text editor
 
 LICENSE=	GPLv3
 
-USES=		compiler:c++11-lang gl gmake pkgconfig:build qmake qt:5
+USES=		compiler:c++11-lang gl gmake pkgconfig:build qmake qt:5 xorg
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_GROUP=		SPELL
 OPTIONS_GROUP_SPELL=	ASPELL HUNSPELL
 OPTIONS_DEFAULT=	ASPELL HUNSPELL
+SPELL_DESC=		Spell checker backend
 
 USE_QT=		buildtools_build core declarative gui network widgets printsupport
 USE_GL=		gl

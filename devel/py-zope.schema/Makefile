@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.schema
 PORTVERSION=	4.2.2
 PORTREVISION=	1
@@ -16,7 +14,9 @@ LICENSE=	ZPL21
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zope.interface>=3.6.0:devel/py-zope.interface@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.event>=0:devel/py-zope.event@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

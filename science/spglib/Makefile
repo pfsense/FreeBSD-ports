@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	spglib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.12.2
+DISTVERSION=	1.16.2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,11 +9,8 @@ COMMENT=	C library for finding and handling crystal symmetries
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf libtool
+USES=		cmake
 USE_GITHUB=	yes
-GH_ACCOUNT=	atztogo
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-static
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

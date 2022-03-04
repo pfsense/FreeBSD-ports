@@ -1,6 +1,6 @@
---- utils.c.orig	2008-06-16 14:23:53.000000000 +0300
-+++ utils.c	2013-08-24 04:23:19.000000000 +0300
-@@ -23,10 +23,10 @@
+--- utils.c.orig	2021-02-20 17:47:40 UTC
++++ utils.c
+@@ -23,13 +23,12 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include <unistd.h>
@@ -12,4 +12,7 @@
 +#include <sys/wait.h>
  #include <time.h>
  #include <limits.h>
+-#include <linux/stat.h>
+ #include <sys/stat.h>
  
+ #include "utils.h"

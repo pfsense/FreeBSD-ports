@@ -1,30 +1,31 @@
 # Created by: Tilman Linneweh <arved@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	swhplugins
-PORTVERSION=	0.4.15
-PORTREVISION=	6
+PORTVERSION=	0.4.17
+DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
-MASTER_SITES=	http://plugin.org.uk/releases/${PORTVERSION}/
-DISTNAME=	swh-plugins-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Steve Harris' huge Collection of LADSPA Plugins
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa \
-		${LOCALBASE}/include/fftw3.h:math/fftw3
+		${LOCALBASE}/include/fftw3.h:math/fftw3 \
+		p5-XML-Parser>=0:textproc/p5-XML-Parser
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float
 
-# includes assembler code
-ONLY_FOR_ARCHS=	i386 amd64
+USES=		autoreconf gmake libtool localbase:ldflags pkgconfig shebangfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	swh
+GH_PROJECT=	ladspa
+SHEBANG_FILES=	makestub.pl
 
-USES=		gmake libtool pkgconfig
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 
-CFLAGS+=	-fPIC -DPIC
+CFLAGS+=	-fPIC -DPIC -fgnu89-inline
 
 OPTIONS_DEFINE=	NLS 3DNOW SSE
 OPTIONS_SUB=	yes
@@ -34,15 +35,10 @@ SSE_DESC=	use SSE instructions
 NLS_USES=	gettext
 NLS_LDFLAGS=	-lintl
 NLS_CONFIGURE_ENABLE=	nls
+NLS_USES_OFF=	gettext-tools
 
 3DNOW_CONFIGURE_ENABLE=	3dnow
 
 SSE_CONFIGURE_ENABLE=	sse
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|="$$CFLAGS -Wall .*"|="$$CFLAGS"|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e \
-		's|<stdint\.h>|<inttypes.h>|g' ${WRKSRC}/ladspa-util.h
 
 .include <bsd.port.mk>

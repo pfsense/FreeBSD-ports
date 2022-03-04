@@ -1,26 +1,50 @@
-# $FreeBSD$
-
+# PORTNAME and CATEGORIES duplicated here, otherwise <bsd.port.options.mk> fails
+PORTNAME=	gcc
+CATEGORIES=	devel
+PORTVERSION=	8.4.0
 PKGNAMEPREFIX=	arm-none-eabi-
-COMMENT=	GNU Compiler Collection for bare metal arm cross-development
 GCC_TARGET=	arm-none-eabi
 PLIST=	${.CURDIR}/pkg-plist
+DISTINFO_FILE=	${.CURDIR}/distinfo
+COMMENT=	GNU Compiler Collection for bare metal arm cross-development
 
-# U-Boot requires libgcc, crossbuild and install it along with the compiler.
-ALL_TARGET=	all-gcc all-target-libgcc
-INSTALL_TARGET=	install-gcc install-target-libgcc
+OPTIONS_SINGLE=	ML
+OPTIONS_SINGLE_ML=	ML_NONE ML_DEFAULT ML_CORTEXA ML_CORTEXRM
+OPTIONS_DEFAULT=	ML_NONE
 
-# libstdcxx won't build, but we don't need it or multiple float-abi libs.
+ML_DESC=		Multilib options
+ML_NONE_DESC=		Disable multilib
+ML_DEFAULT_DESC=	Default multilib configuration
+ML_CORTEXA_DESC=	Multilib configuration optimized for Cortex-A
+ML_CORTEXRM_DESC=	Multilib configuration optimized for Cortex-M/R
+
+# building libstdcxx would require a two-stage process
 CONFIGURE_ARGS=	--disable-libstdcxx \
-		--disable-multilib
+	--without-headers
 
-BROKEN_mips=		configure: error: cannot compute suffix of object files: cannot compile
-BROKEN_mips64=		configure: error: cannot compute suffix of object files: cannot compile
+.include <bsd.port.options.mk>
 
-MASTERDIR=	${.CURDIR}/../powerpc64-gcc
+.if ${PORT_OPTIONS:MML_NONE}
+CONFIGURE_ARGS+=	--disable-multilib
+PLIST_SUB+=		ML_DEFAULT="@comment " ML_CORTEX="@comment " ML_CORTEXA="@comment " ML_CORTEXRM="@comment "
+SUB_LIST+=		ML_DEFAULT="@comment " ML_CORTEX="@comment " ML_CORTEXA="@comment " ML_CORTEXRM="@comment "
+.endif
+.if ${PORT_OPTIONS:MML_DEFAULT}
+CONFIGURE_ARGS+=	--enable-multilib
+PLIST_SUB+=		ML_DEFAULT="" ML_CORTEX="@comment " ML_CORTEXA="@comment " ML_CORTEXRM="@comment "
+SUB_LIST+=		ML_DEFAULT="" ML_CORTEX="@comment " ML_CORTEXA="@comment " ML_CORTEXRM="@comment "
+.endif
+.if ${PORT_OPTIONS:MML_CORTEXA}
+CONFIGURE_ARGS+=	--enable-multilib --with-multilib-list=aprofile
+PLIST_SUB+=		ML_DEFAULT="@comment " ML_CORTEX="" ML_CORTEXA="" ML_CORTEXRM="@comment "
+SUB_LIST+=		ML_DEFAULT="@comment " ML_CORTEX="" ML_CORTEXA="" ML_CORTEXRM="@comment "
+.endif
+.if ${PORT_OPTIONS:MML_CORTEXRM}
+CONFIGURE_ARGS+=	--enable-multilib --with-multilib-list=rmprofile
+PLIST_SUB+=		ML_DEFAULT="@comment " ML_CORTEX="" ML_CORTEXA="@comment " ML_CORTEXRM=""
+SUB_LIST+=		ML_DEFAULT="@comment " ML_CORTEX="" ML_CORTEXA="@comment " ML_CORTEXRM=""
+.endif
+
+MASTERDIR=	${.CURDIR}/../aarch64-none-elf-gcc
 
 .include "${MASTERDIR}/Makefile"
-
-# The following is required for clang to bootstrap gcc.
-.if ${COMPILER_TYPE} == clang
-MAKE_ARGS+=	CXXFLAGS=-fbracket-depth=512
-.endif

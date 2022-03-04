@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rox-filer
 PORTVERSION=	2.11
 PORTREVISION=	9
@@ -17,7 +15,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 PLIST_SUB+=	LOCALBASE=${LOCALBASE}
 
-USES=		gettext-runtime:build gmake pkgconfig shared-mime-info tar:bzip2
+USES=		gettext-runtime:build gmake gnome pkgconfig shared-mime-info \
+		tar:bzip2 xorg
 USE_XORG=	ice sm x11 xaw xorgproto
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 libxml2 pango
 

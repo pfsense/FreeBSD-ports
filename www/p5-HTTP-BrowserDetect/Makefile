@@ -1,8 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	HTTP-BrowserDetect
-PORTVERSION=	3.22
+PORTVERSION=	3.35
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -16,9 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	p5-Hash-Merge>=0:textproc/p5-Hash-Merge \
 		p5-Path-Tiny>=0:devel/p5-Path-Tiny \
-		p5-Test-FailWarnings>=0:devel/p5-Test-FailWarnings \
-		p5-Test-Most>=0:devel/p5-Test-Most \
-		p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings
+		p5-Test-Differences>=0:devel/p5-Test-Differences \
+		p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings \
+		p5-Test-Warnings>=0:devel/p5-Test-Warnings
 
 USES=		perl5
 USE_PERL5=	configure
@@ -27,8 +26,8 @@ NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${PERL_LEVEL} < 502705
-TEST_DEPENDS+=	p5-Scalar-List-Utils>=1.49:lang/p5-Scalar-List-Utils
+.if ${PERL_LEVEL} < 503102
+TEST_DEPENDS+=	p5-JSON-PP>=4.04:converters/p5-JSON-PP
 .endif
 
 .include <bsd.port.post.mk>

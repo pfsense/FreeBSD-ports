@@ -1,14 +1,13 @@
 # Created by: Nobuhiro Yasutomi <nobu@psrc.isac.co.jp>
-# $FreeBSD$
 
 PORTNAME=	fd
-PORTVERSION=	3.01h
+PORTVERSION=	3.01j
 CATEGORIES=	shells net
 MASTER_SITES=	http://hp.vector.co.jp/authors/VA012337/soft/fd/ \
 		ftp://ftp.unixusers.net/src/fdclone/
 DISTNAME=	FD-${PORTVERSION}
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CUI-based file and directory management tool
 
 USE_LOCALE=	ja

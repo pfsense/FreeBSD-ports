@@ -1,5 +1,4 @@
 # Created by: Pavel I Volkov
-# $FreeBSD$
 
 PORTNAME=	ssgless
 PORTVERSION=	1.3
@@ -13,7 +12,6 @@ LICENSE=	BSD2CLAUSE
 
 LESS=	`whereis -bq less`
 
-NOFETCHFILES=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 

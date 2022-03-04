@@ -1,5 +1,4 @@
 # Created by: Lapo Luchini <lapo@lapo.it>
-# $FreeBSD$
 
 PORTNAME=	sqlitejdbc
 PORTVERSION=	056
@@ -16,7 +15,6 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USES=		gmake tar:tgz
 MAKE_ENV=	JAVA_HOME="${JAVA_HOME}"
 ALL_TARGET=	native

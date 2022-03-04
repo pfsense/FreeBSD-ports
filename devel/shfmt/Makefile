@@ -1,30 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	shfmt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.4
+DISTVERSION=	3.4.1
 CATEGORIES=	devel
 
-MAINTAINER=	tobik@FreeBSD.org
-COMMENT=	Format shell scripts
+MAINTAINER=	adamw@FreeBSD.org
+COMMENT=	Shell script formatter
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.10,1:lang/go
+BUILD_DEPENDS=	scdoc:textproc/scdoc
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	mvdan
-GH_PROJECT=	sh
-GH_SUBDIR=	src/mvdan.cc/sh
+USES=		go:modules
+GO_MODULE=	mvdan.cc/sh/v3
+GO_TARGET=	./cmd/shfmt
+GO_BUILDFLAGS=	-ldflags="-s -w -X main.version=${DISTVERSIONFULL}"
 
-MAKE_ENV=	GOPATH=${WRKSRC}
-PLIST_FILES=	bin/shfmt
+PLIST_FILES=	bin/shfmt \
+		man/man1/shfmt.1.gz
 
-do-build:
-	@cd ${WRKSRC}/cmd/shfmt && ${SETENV} ${MAKE_ENV} go build
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/cmd/shfmt/shfmt ${STAGEDIR}${PREFIX}/bin
+post-install:
+	scdoc < ${WRKSRC}/cmd/shfmt/shfmt.1.scd \
+		> ${STAGEDIR}${MAN1PREFIX}/man/man1/shfmt.1
 
 .include <bsd.port.mk>

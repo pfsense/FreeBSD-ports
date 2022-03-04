@@ -1,5 +1,4 @@
 # Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	imgkit
 PORTVERSION=	1.0.1
@@ -12,7 +11,7 @@ COMMENT=	Python wrapper to convert html to image
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 RUN_DEPENDS+=	wkhtmltopdf>0:converters/wkhtmltopdf

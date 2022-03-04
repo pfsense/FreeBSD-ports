@@ -103,7 +103,6 @@
 %%DATADIR%%/America/Fort_Nelson
 %%DATADIR%%/America/Fortaleza
 %%DATADIR%%/America/Glace_Bay
-%%DATADIR%%/America/Godthab
 %%DATADIR%%/America/Goose_Bay
 %%DATADIR%%/America/Grand_Turk
 %%DATADIR%%/America/Grenada
@@ -157,6 +156,7 @@
 %%DATADIR%%/America/North_Dakota/Beulah
 %%DATADIR%%/America/North_Dakota/Center
 %%DATADIR%%/America/North_Dakota/New_Salem
+%%DATADIR%%/America/Nuuk
 %%DATADIR%%/America/Ojinaga
 %%DATADIR%%/America/Panama
 %%DATADIR%%/America/Pangnirtung
@@ -270,7 +270,6 @@
 %%DATADIR%%/Asia/Qatar
 %%DATADIR%%/Asia/Qostanay
 %%DATADIR%%/Asia/Qyzylorda
-%%DATADIR%%/Asia/Yangon
 %%DATADIR%%/Asia/Riyadh
 %%DATADIR%%/Asia/Sakhalin
 %%DATADIR%%/Asia/Samarkand
@@ -291,6 +290,7 @@
 %%DATADIR%%/Asia/Vientiane
 %%DATADIR%%/Asia/Vladivostok
 %%DATADIR%%/Asia/Yakutsk
+%%DATADIR%%/Asia/Yangon
 %%DATADIR%%/Asia/Yekaterinburg
 %%DATADIR%%/Asia/Yerevan
 %%DATADIR%%/Atlantic/Azores
@@ -306,7 +306,6 @@
 %%DATADIR%%/Australia/Adelaide
 %%DATADIR%%/Australia/Brisbane
 %%DATADIR%%/Australia/Broken_Hill
-%%DATADIR%%/Australia/Currie
 %%DATADIR%%/Australia/Darwin
 %%DATADIR%%/Australia/Eucla
 %%DATADIR%%/Australia/Hobart
@@ -351,7 +350,6 @@
 %%DATADIR%%/Etc/GMT-9
 %%DATADIR%%/Etc/GMT0
 %%DATADIR%%/Etc/Greenwich
-%%DATADIR%%/Etc/UCT
 %%DATADIR%%/Etc/UTC
 %%DATADIR%%/Etc/Universal
 %%DATADIR%%/Etc/Zulu
@@ -441,7 +439,6 @@
 %%DATADIR%%/Pacific/Chuuk
 %%DATADIR%%/Pacific/Easter
 %%DATADIR%%/Pacific/Efate
-%%DATADIR%%/Pacific/Enderbury
 %%DATADIR%%/Pacific/Fakaofo
 %%DATADIR%%/Pacific/Fiji
 %%DATADIR%%/Pacific/Funafuti
@@ -450,6 +447,7 @@
 %%DATADIR%%/Pacific/Guadalcanal
 %%DATADIR%%/Pacific/Guam
 %%DATADIR%%/Pacific/Honolulu
+%%DATADIR%%/Pacific/Kanton
 %%DATADIR%%/Pacific/Kiritimati
 %%DATADIR%%/Pacific/Kosrae
 %%DATADIR%%/Pacific/Kwajalein
@@ -472,9 +470,11 @@
 %%DATADIR%%/Pacific/Tongatapu
 %%DATADIR%%/Pacific/Wake
 %%DATADIR%%/Pacific/Wallis
+%%DATADIR%%/UTC
 %%DATADIR%%/WET
 %%DATADIR%%/posixrules
 %%DATADIR%%/zone.tab
+%%DATADIR%%/zone1970.tab
 %%BACKWARD%%%%DATADIR%%/Africa/Asmera
 %%BACKWARD%%%%DATADIR%%/Africa/Timbuktu
 %%BACKWARD%%%%DATADIR%%/America/Argentina/ComodRivadavia
@@ -485,6 +485,7 @@
 %%BACKWARD%%%%DATADIR%%/America/Cordoba
 %%BACKWARD%%%%DATADIR%%/America/Ensenada
 %%BACKWARD%%%%DATADIR%%/America/Fort_Wayne
+%%BACKWARD%%%%DATADIR%%/America/Godthab
 %%BACKWARD%%%%DATADIR%%/America/Indianapolis
 %%BACKWARD%%%%DATADIR%%/America/Jujuy
 %%BACKWARD%%%%DATADIR%%/America/Knox_IN
@@ -516,6 +517,7 @@
 %%BACKWARD%%%%DATADIR%%/Atlantic/Jan_Mayen
 %%BACKWARD%%%%DATADIR%%/Australia/ACT
 %%BACKWARD%%%%DATADIR%%/Australia/Canberra
+%%BACKWARD%%%%DATADIR%%/Australia/Currie
 %%BACKWARD%%%%DATADIR%%/Australia/LHI
 %%BACKWARD%%%%DATADIR%%/Australia/NSW
 %%BACKWARD%%%%DATADIR%%/Australia/North
@@ -542,6 +544,7 @@
 %%BACKWARD%%%%DATADIR%%/Cuba
 %%BACKWARD%%%%DATADIR%%/Egypt
 %%BACKWARD%%%%DATADIR%%/Eire
+%%BACKWARD%%%%DATADIR%%/Etc/UCT
 %%BACKWARD%%%%DATADIR%%/Europe/Belfast
 %%BACKWARD%%%%DATADIR%%/Europe/Tiraspol
 %%BACKWARD%%%%DATADIR%%/GB
@@ -565,6 +568,7 @@
 %%BACKWARD%%%%DATADIR%%/NZ-CHAT
 %%BACKWARD%%%%DATADIR%%/Navajo
 %%BACKWARD%%%%DATADIR%%/PRC
+%%BACKWARD%%%%DATADIR%%/Pacific/Enderbury
 %%BACKWARD%%%%DATADIR%%/Pacific/Johnston
 %%BACKWARD%%%%DATADIR%%/Pacific/Ponape
 %%BACKWARD%%%%DATADIR%%/Pacific/Samoa
@@ -589,7 +593,6 @@
 %%BACKWARD%%%%DATADIR%%/US/Mountain
 %%BACKWARD%%%%DATADIR%%/US/Pacific
 %%BACKWARD%%%%DATADIR%%/US/Samoa
-%%BACKWARD%%%%DATADIR%%/UTC
 %%BACKWARD%%%%DATADIR%%/Universal
 %%BACKWARD%%%%DATADIR%%/W-SU
 %%BACKWARD%%%%DATADIR%%/Zulu

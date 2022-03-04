@@ -1,9 +1,5 @@
-# $FreeBSD$
-#
-
     COMMENT = Ports for managing, installing, and developing FreeBSD ports and packages
 
-    SUBDIR += bsdadminscripts
     SUBDIR += bsdadminscripts2
     SUBDIR += caronade
     SUBDIR += chucky
@@ -11,23 +7,24 @@
     SUBDIR += dialog4ports
     SUBDIR += dialog4ports-static
     SUBDIR += distilator
-    SUBDIR += fastest_sites
+    SUBDIR += fastest_pkg
     SUBDIR += freebsd-bugzilla-cli
     SUBDIR += genpatch
     SUBDIR += genplist
+    SUBDIR += hs-panopticum
     SUBDIR += jailaudit
     SUBDIR += lsknobs
-    SUBDIR += managepkg
     SUBDIR += mkreadmes
+    SUBDIR += modules2tuple
     SUBDIR += octopkg
     SUBDIR += p5-FreeBSD-Portindex
     SUBDIR += p5-FreeBSD-Ports
     SUBDIR += p5-FreeBSD-Ports-INDEXhash
     SUBDIR += packagekit
+    SUBDIR += parfetch-overlay
     SUBDIR += pchecker
     SUBDIR += pkg
     SUBDIR += pkg-devel
-    SUBDIR += pkg-plist
     SUBDIR += pkg-provides
     SUBDIR += pkg-rmleaf
     SUBDIR += pkg_cleanup
@@ -44,12 +41,13 @@
     SUBDIR += port-maintenance-tools
     SUBDIR += portal
     SUBDIR += portconf
+    SUBDIR += portconfig
     SUBDIR += portdowngrade
-    SUBDIR += portell
     SUBDIR += portest
     SUBDIR += portfind
     SUBDIR += portfmt
     SUBDIR += portgraph
+    SUBDIR += portgrep
     SUBDIR += portless
     SUBDIR += portlint
     SUBDIR += portmaster
@@ -68,9 +66,10 @@
     SUBDIR += poudriere
     SUBDIR += poudriere-devel
     SUBDIR += psearch
+    SUBDIR += py-FreeBSD-ports
     SUBDIR += py-pytoport
     SUBDIR += py-skog
-    SUBDIR += symports
+    SUBDIR += sccache-overlay
     SUBDIR += synth
     SUBDIR += wanted-ports
 

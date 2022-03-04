@@ -1,8 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	astk
-DISTVERSION=	2018.0-1
+DISTVERSION=	2020.0-1
+PORTREVISION=	1
 CATEGORIES=	cad
 .if !defined(CLIENT_SEUL)
 PKGNAMESUFFIX=	-serveur
@@ -14,6 +14,9 @@ MAINTAINER=	thierry@FreeBSD.org
 COMMENT?=	Graphical interface for Code_Aster (server side)
 
 LICENSE=	GPLv2
+
+NOT_FOR_ARCHS=		armv6 armv7 i386 mips powerpc powerpcspe
+NOT_FOR_ARCHS_REASON=	ARG_MAX is too small for Code_Aster on 32 bits systems
 
 #-----------------------------------------------------------------------
 # You may define these options:
@@ -30,8 +33,9 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS+=	${SHELL_INSTALL_ASTER}:shells/${SHIADEP}
 
+USES=		gettext
 .if !defined(CLIENT_SEUL)
-USES+=		gettext python:2.7 shebangfix tk:build
+USES+=		python:3.6+ shebangfix tk:build
 SHEBANG_FILES=	unittest/run_test.py
 .else
 USES+=		tk
@@ -47,16 +51,20 @@ SUB_LIST=	inst_dir=${inst_dir} tools_dir=${tools_dir}
 LINSTDIR=	aster/ASTK
 inst_dir=	${PREFIX}/${LINSTDIR}
 aster_dir=	${LOCALBASE}/aster/${vaster}
-S_SCRIPTS=	bin/as_run bin/parallel_cp asrun/installation.py	\
-		share/codeaster/asrun/data/mpirun_template
-S_PYLIBS=	share/codeaster/asrun/examples/alamain.py		\
-		unittest/datafiles/config_serveurs unittest/010_misc.py	\
-		unittest/015_package.py unittest/run_test.py
+S_SCRIPTS=	bin/as_run bin/parallel_cp
+S_PYLIBS=	share/codeaster/asrun/examples/alamain.py	\
+		unittest/010_misc.py unittest/015_package.py	\
+		unittest/run_test.py
 C_SCRIPTS=	bin/astk bin/bsf
 tools_dir=	${LOCALBASE}/aster/outils
 conf_dir=	${WRKSRC}/etc/astkrc
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300068
+# ASTK is not useful without french/aster
+IGNORE=	a larger value of ARG_MAX is needed for Code_Aster, please upgrade your system
+.endif
 
 WRKCONF=	${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/configuration
 .if !defined(CLIENT_SEUL)
@@ -74,7 +82,7 @@ WITH_PBS=	yes
 WITH_MPI=	yes
 . endif
 . if defined(WITH_MPI)
-RUN_DEPENDS+=	${HOME_MPI}/bin/mpirun:net/mpich2
+RUN_DEPENDS+=	${HOME_MPI}/bin/mpirun:net/mpich
 HOME_MPI=	${LOCALBASE}
 PLIST_SUB+=	MPI=""
 . else
@@ -171,12 +179,14 @@ ASTK_LANG=	ENG
 
 pre-configure:
 	${RM} ${PATCH2RM:C|^|${WRKSRC}/|:C|$|.orig|}
+	${RM} ${WRKSRC}/configuration/*.pyc
 
 do-configure:
 .if !defined(CLIENT_SEUL)
 . for scripts in ${S_SCRIPTS}
 	${REINPLACE_CMD} -e "s|?SHELL_EXECUTION?|${SHELL_INSTALL_ASTER}|"	\
-		-e "s|?ASTER_ROOT?|${PREFIX}/aster|" ${WRKSRC}/${scripts}
+		-e "s|?ASTER_ROOT?|${PREFIX}/aster|;s|python3|${PYTHON_CMD}|"	\
+		${WRKSRC}/${scripts}
 . endfor
 	${REINPLACE_CMD} -e "s|?ASTER_VERSION?|${vaster}|"			\
 		 -e 's|#?vers : VVV?|vers : ${vaster}|'				\
@@ -207,7 +217,7 @@ do-configure:
 		${WRKSRC}/etc/profile.sh
 . for libs in ${S_PYLIBS}
 	${REINPLACE_CMD} -e "s|/opt/aster/NEW9|${aster_dir}|"			\
-		 -e "s|/opt/aster/NEW10|${aster_dir}|"				\
+		 -e "s|/opt/aster/NEW11|${aster_dir}|"				\
 		-e "s|/opt/aster/ASTK|${inst_dir}|"				\
 		-e "s|/opt/aster|${LOCALBASE}/aster|g"				\
 		-e "s|/usr/bin/editor|${WITH_ED}|"				\
@@ -217,10 +227,11 @@ do-configure:
 		-e "s|/opt/aster|${aster_dir}|" ${WRKSRC}/${libs}
 . endfor
 . if defined(WITH_PBS)
-.   for cf in etc/asrun unittest/datafiles/config_serveurs
 	${REINPLACE_CMD} -e "s|batch : non|batch : oui|"			\
-		${WRKSRC}/${cf}
-.   endfor
+		${WRKSRC}/etc/asrun
+. else
+	${REINPLACE_CMD} -e "s|batch : oui|batch : non|"			\
+		${WRKSRC}/unittest/datafiles/config_serveurs
 . endif
 . if defined(MAKE_JOBS_NUMBER) && ! defined(PACKAGE_BUILDING)
 	${REINPLACE_CMD}	\
@@ -264,6 +275,7 @@ do-configure:
 .for sh in ${BASH2RC3}
 	${REINPLACE_CMD} -e 's|/bin/bash|${SHELL_INSTALL_ASTER}|' ${WRKCONF}/${sh}
 .endfor
+	${FIND} ${WRKSRC} -name "*.bak" -delete
 
 do-install:
 	${MKDIR} ${STAGEDIR}${inst_dir}

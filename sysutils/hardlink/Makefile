@@ -1,5 +1,4 @@
 # Created by: Douglas Thrift
-# $FreeBSD$
 
 PORTNAME=	hardlink
 PORTVERSION=	0.3.0
@@ -13,7 +12,8 @@ COMMENT=	Replace file copies using hardlinks
 
 LICENSE=	MIT
 
-USES=		pkgconfig tar:xz
+USES=		cpe pkgconfig tar:xz
+CPE_VENDOR=	${PORTNAME}_project
 
 PLIST_FILES=	bin/hardlink \
 		man/man1/hardlink.1.gz

@@ -1,9 +1,7 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	lr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.1
+DISTVERSION=	1.5.1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -13,7 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	chneukirchen
+GH_ACCOUNT=	leahneukirchen
 
 MAKE_ARGS=	CFLAGS="${CFLAGS}" \
 		PREFIX="${PREFIX}" \

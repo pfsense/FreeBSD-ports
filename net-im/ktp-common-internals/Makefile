@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	ktp-common-internals
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	net-im kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -18,14 +15,18 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 RUN_DEPENDS=	${LOCALBASE}/lib/mission-control-plugins.0/mcp-account-manager-accounts-sso.so:net-im/telepathy-accounts-signon \
 		${LOCALBASE}/libexec/mission-control-5:net-im/telepathy-mission-control
 
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 USES=		cmake compiler:c++11-lang gettext pkgconfig kde:5 \
 		qt:5 tar:xz
 USE_KDE=	auth bookmarks codecs completion config configwidgets \
-		coreaddons ecm i18n iconthemes itemviews jobwidgets kcmutils \
+		coreaddons i18n iconthemes itemviews jobwidgets kcmutils \
 		kio notifications notifyconfig parts people service solid \
-		sonnet texteditor textwidgets wallet widgetsaddons windowsystem \
-		xmlgui
-USE_QT=		core dbus declarative gui network sql widgets xml \
+		sonnet syntaxhighlighting texteditor textwidgets wallet widgetsaddons \
+		windowsystem xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus declarative gui network sql widgets xml \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
 

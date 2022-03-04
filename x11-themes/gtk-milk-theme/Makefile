@@ -1,12 +1,10 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
-#   $MCom: ports/x11-themes/gtk-milk-theme/Makefile,v 1.4 2007/08/07 04:37:40 mezz Exp $
 
 PORTNAME=	milk
 PORTVERSION=	2.1
 PORTREVISION=	8
 CATEGORIES=	x11-themes gnome
-MASTER_SITES=	http://www.users.monornet.hu/linux/gtk2/oldies/
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 PKGNAMEPREFIX?=	${TYPE}-
 PKGNAMESUFFIX=	-theme
 DISTNAME=	Milk-${PORTVERSION}
@@ -23,6 +21,7 @@ THEME_NAME=	Milk
 .if ${TYPE} == gtk
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}
 PLIST_SUB+=	GTK20="" METACITY="@comment "
+USES+=		gnome
 USE_GNOME=	gtk20
 .else	# metacity
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}

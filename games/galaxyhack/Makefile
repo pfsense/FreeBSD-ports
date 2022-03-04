@@ -1,9 +1,8 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	galaxyhack
 PORTVERSION=	1.74
-PORTREVISION=	31
+PORTREVISION=	35
 CATEGORIES=	games
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/Fleet%20packages/020906:fleets
@@ -27,7 +26,7 @@ FLEETS_DESC=	Additional fleets
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/src
 
-USES=		compiler:c++11-lang dos2unix gmake tar:bzip2
+USES=		compiler:c++11-lang dos2unix gmake sdl tar:bzip2
 USE_SDL=	gfx image mixer sdl
 ALL_TARGET=	${PORTNAME}
 

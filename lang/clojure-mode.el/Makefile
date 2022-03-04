@@ -1,14 +1,13 @@
 # Created by: Peter Schuller <peter.schuller@infidyne.com>
-# $FreeBSD$
 
 PORTNAME=	clojure-mode.el
-PORTVERSION=	5.7.0
-PORTREVISION=   1
+PORTVERSION=	5.11.0
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	lang elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	harrigan-s@outlook.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emacs lisp module for the Clojure language
 
 LICENSE=	GPLv3+

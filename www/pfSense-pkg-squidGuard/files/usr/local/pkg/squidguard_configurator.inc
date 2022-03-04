@@ -3,7 +3,7 @@
  * squidguard_configurator.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -94,7 +94,6 @@ define('REDIRECTOR_OPTIONS_REM',   '# squidGuard options');
 define('REDIRECT_CHILDREN_OPT',    'url_rewrite_children');
 define('REDIRECTOR_PROGRAM_OPT',   'url_rewrite_program');
 define('REDIRECT_BYPASS_OPT',      'url_rewrite_bypass');
-define('REDIRECTOR_PROCESS_COUNT', '16 startup=8 idle=4 concurrency=0');
 
 # ------------------------------------------------------------------------------
 # squidguard config options
@@ -246,11 +245,14 @@ define('F_WORKDIR',             'workdir');
 define('F_LDAPENABLE',          'ldap_enable');
 define('F_LDAPBINDDN',          'ldapbinddn');
 define('F_LDAPBINDPASS',        'ldapbindpass');
+define('F_LDAPCACHETIME',       'ldapcachetime');
 define('F_LDAPVERSION',         'ldapversion');
 define('F_STRIPNTDOMAIN',       'stripntdomain');
 define('F_STRIPREALM',          'striprealm');
+define('F_REWRITE_CH',		'rewrite_children');
+define('F_REWRITE_CH_STARTUP',	'rewrite_children_startup');
+define('F_REWRITE_CH_IDLE',	'rewrite_children_idle');
 define('F_BINPATH',             'binpath');
-define('F_PROCCESSCOUNT',       'process_count');
 define('F_SQUIDCONFIGFILE',     'squid_configfile');
 define('F_ENABLED',             'enabled');
 define('F_SGCONF_XML',          'sgxml_file');
@@ -335,7 +337,6 @@ function sg_init($init = '')
         $squidguard_config[F_WORKDIR]         = SQUIDGUARD_WORKDIR;
         $squidguard_config[F_BINPATH]         = SQUIDGUARD_BINPATH;
         $squidguard_config[F_SQUIDCONFIGFILE] = SQUID_CONFIGFILE;
-        $squidguard_config[F_PROCCESSCOUNT]   = REDIRECTOR_PROCESS_COUNT;
 
     } else {
         # copy config from $init
@@ -428,21 +429,26 @@ function squid_reconfigure($remove_only = '')
                 (strpos($t_opt, REDIRECT_BYPASS_OPT)    === 0) or
                 (strpos($t_opt, REDIRECT_CHILDREN_OPT)  === 0))
                  unset($conf[$key]);
+                 $sg_squidconf = true;
         }
         sg_addlog("squid_reconfigure", "Remove old redirector options from Squid config.", SQUIDGUARD_INFO);
     }
 
     # add new options - if squidGuard enabled
     if (empty($remove_only) && ($squidguard_config[F_ENABLED] === 'on')) {
-        $redirector_path = $squidguard_config[F_BINPATH] . '/squidGuard';
-        $redirector_conf = $squidguard_config[F_WORKDIR] . SQUIDGUARD_CONFIGFILE;
+	$redirector_path = $squidguard_config[F_BINPATH] . '/squidGuard';
+	$redirector_conf = $squidguard_config[F_WORKDIR] . SQUIDGUARD_CONFIGFILE;
+	$rewrite_children = (is_numeric($squidguard_config[F_REWRITE_CH])) ? $squidguard_config[F_REWRITE_CH] : '16'; 
+	$rewrite_children_startup = (is_numeric($squidguard_config[F_REWRITE_CH_STARTUP])) ? $squidguard_config[F_REWRITE_CH_STARTUP] : '8'; 
+	$rewrite_children_idle = (is_numeric($squidguard_config[F_REWRITE_CH_IDLE])) ? $squidguard_config[F_REWRITE_CH_IDLE] : '4'; 
 
-        $conf = array();
-        $conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
-        $conf[] = REDIRECT_BYPASS_OPT    . " off";
-        $conf[] = REDIRECT_CHILDREN_OPT  . " " . REDIRECTOR_PROCESS_COUNT;
+	$conf = array();
+	$conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
+	$conf[] = REDIRECT_BYPASS_OPT    . " off";
+	$conf[] = REDIRECT_CHILDREN_OPT  . " " . $rewrite_children . " startup=" . $rewrite_children_startup . " idle=" . $rewrite_children_idle . " concurrency=0";
+	$sg_squidconf = true;
 
-        sg_addlog("squid_reconfigure", "Add new redirector options to Squid config.", SQUIDGUARD_INFO);
+	sg_addlog("squid_reconfigure", "Add new redirector options to Squid config.", SQUIDGUARD_INFO);
     }
 
     # update config
@@ -455,7 +461,7 @@ function squid_reconfigure($remove_only = '')
 	}
 
     # resync squid package, if installed
-    if (function_exists('squid_resync')) {
+    if ($sg_squidconf && function_exists('squid_resync')) {
         squid_resync();
     }
 }
@@ -513,83 +519,107 @@ function sg_check_system()
 # ==============================================================================
 # sg_reconfigure_user_db - reconfigure(update) db user entries
 # ------------------------------------------------------------------------------
-function sg_reconfigure_user_db()
-{
-    global $squidguard_config;
-    $dbhome = $squidguard_config[F_DBHOME];
+function sg_reconfigure_user_db() {
+	global $squidguard_config, $config;
+	$dbhome = $squidguard_config[F_DBHOME];
 
-    sg_addlog("sg_reconfigure_user_db", "Begin with '$dbhome'", SQUIDGUARD_INFO);
+	sg_addlog("sg_reconfigure_user_db", "Begin with '$dbhome'", SQUIDGUARD_INFO);
 
-    # create user DB catalog, if not extsts
-    if (!file_exists($dbhome)) {
-        if (!mkdir($dbhome, 0755)) {
-            sg_addlog("sg_reconfigure_user_db", "Can't create user DB directory '$dbhome'.", SQUIDGUARD_ERROR);
-            return;
-        }
-        set_file_access($dbhome, OWNER_NAME, 0755);
-        sg_addlog("sg_reconfigure_user_db", "Create user DB directory '$dbhome'.", SQUIDGUARD_INFO);
-    }
+	# create user DB catalog, if not extsts
+	if (!file_exists($dbhome)) {
+		if (!mkdir($dbhome, 0755)) {
+			sg_addlog("sg_reconfigure_user_db", "Can't create user DB directory '$dbhome'.", SQUIDGUARD_ERROR);
+			return;
+		}
+		set_file_access($dbhome, OWNER_NAME, 0755);
+		sg_addlog("sg_reconfigure_user_db", "Create user DB directory '$dbhome'.", SQUIDGUARD_INFO);
+	}
 
-    # update destinations to db
-    $dests = $squidguard_config[F_DESTINATIONS];
-    if(!empty($dests)){
-        $dst_names = Array();
-        $dst_list  = Array();
+	/* bypass local IPs for squid_status.php, see https://redmine.pfsense.org/issues/11711 */
+	if ($squidguard_config[F_DEFAULT][F_NOTALLOWINGIP]) {
+		init_config_arr(array('installedpackages', 'squidcache','config'));
+		$proxy_ifaces = explode(",", $config['installedpackages']['squid']['config'][0]['active_interface']);
+		$sgips = '';
+		foreach ($proxy_ifaces as $iface) {
+			if (get_interface_ip($iface)) {
+				$sgips .= get_interface_ip($iface) . ' ';
+			} else {
+				$sgips .= get_interface_ipv6($iface) . ' ';
+			}
+		}
+		if (!empty($sgips)) {
+			$squidguard_config[F_DESTINATIONS][F_ITEM][] = array(F_NAME => 'squidstatus',
+			    F_DOMAINS => $sgips, F_RMOD => RMOD_NONE);
+		}
+	}
 
-        sg_addlog("sg_reconfigure_user_db", "Add user entries", SQUIDGUARD_INFO);
-        foreach($dests[F_ITEM] as $dst) {
-            $path = "$dbhome/" . $dst[F_NAME];
-            $dst_names[] = $path;
-            $dst_list["usr_{$dst[F_NAME]}"] = $dst[F_NAME];
+	# update destinations to db
+	$dests = $squidguard_config[F_DESTINATIONS];
+	if (!empty($dests)) {
+		$dst_names = Array();
+		$dst_list  = Array();
 
-            # 1. check destination catalog and create them, if need
-            if (!file_exists($path)) {
-                if (!mkdir ($path, 0755)) {
-                    sg_addlog("sg_reconfigure_user_db", "Can't create dir '$path'.", SQUIDGUARD_ERROR);
-                    return;
-                }
-                sg_addlog("sg_reconfigure_user_db", "Create dir '$path'.", SQUIDGUARD_INFO);
-            }
+		sg_addlog("sg_reconfigure_user_db", "Add user entries", SQUIDGUARD_INFO);
+		foreach ($dests[F_ITEM] as $dst) {
+			$path = "$dbhome/" . $dst[F_NAME];
+			$dst_names[] = $path;
+			$dst_list["usr_{$dst[F_NAME]}"] = $dst[F_NAME];
 
-            # 2. build domains file
-            $domains = $dst[F_DOMAINS];
-            if (!empty($domains)) {
-                $content = trim(str_replace(" ", "\n", $domains));
-                file_put_contents($path . '/domains', $content);
-                sg_addlog("sg_reconfigure_user_db", "Add {$dst[F_NAME]} domains '$domains';", SQUIDGUARD_INFO);
-            }
-            unset($domains);
+			# 1. check destination catalog and create them, if need
+			if (!file_exists($path)) {
+				if (!mkdir ($path, 0755)) {
+					sg_addlog("sg_reconfigure_user_db", "Can't create dir '$path'.", SQUIDGUARD_ERROR);
+					return;
+				}
+				sg_addlog("sg_reconfigure_user_db", "Create dir '$path'.", SQUIDGUARD_INFO);
+			}
 
-            # 3. build urls file
-            $urls = $dst[F_URLS];
-            if (!empty($urls)) {
-                $content = trim(str_replace(" ", "\n", $urls));
-                file_put_contents($path . '/urls', $content);
-                    sg_addlog("sg_reconfigure_user_db", "Add {$dst[F_NAME]} urls '$content';", SQUIDGUARD_INFO);
-            }
-            unset($urls);
+			# 2. build domains file
+			$domains = $dst[F_DOMAINS];
+			if (!empty($domains)) {
+				$content = trim(str_replace(" ", "\n", $domains));
+				file_put_contents($path . '/domains', $content);
+				sg_addlog("sg_reconfigure_user_db", "Add {$dst[F_NAME]} domains '$domains';", SQUIDGUARD_INFO);
+			} else {
+				unlink_if_exists($path . '/domains*');
+			}
+			unset($domains);
 
-            # 4. build expression file
-            $expr = $dst[F_EXPRESSIONS];
-            if (!empty($expr)) {
-                $content = trim(str_replace("|", " ", $expr)); # delete first and last unnecessary '|' symbol
-                $content = str_replace(" ", "|", $content);
-                file_put_contents($path . '/expressions', $content);
-                sg_addlog("sg_reconfigure_user_db", "Add {$dst[F_NAME]} expressions '$content';", SQUIDGUARD_INFO);
-            }
-            unset($expr);
-        }
+			# 3. build urls file
+			$urls = $dst[F_URLS];
+			if (!empty($urls)) {
+				$content = trim(str_replace(" ", "\n", $urls));
+				file_put_contents($path . '/urls', $content);
+				sg_addlog("sg_reconfigure_user_db", "Add {$dst[F_NAME]} urls '$content';", SQUIDGUARD_INFO);
+			} else {
+				unlink_if_exists($path . '/urls*');
+			}
+			unset($urls);
 
-        # 5. recursive set files access
-        set_file_access($dbhome, OWNER_NAME, 0755);
+			# 4. build expression file
+			$expr = $dst[F_EXPRESSIONS];
+			if (!empty($expr)) {
+				$content = trim(str_replace("|", " ", $expr)); # delete first and last unnecessary '|' symbol
+				$content = str_replace(" ", "|", $content);
+				file_put_contents($path . '/expressions', $content);
+				sg_addlog("sg_reconfigure_user_db", "Add {$dst[F_NAME]} expressions '$content';", SQUIDGUARD_INFO);
+			} else {
+				unlink_if_exists($path . '/expressions');
+			}
+			unset($expr);
+		}
 
-        # 6. rebuild user db (SQUIDGUARD_DBHOME)
-        squidguard_rebuild_db("_usrdb", $dbhome, $dst_list);
-    } else
-        sg_addlog("sg_reconfigure_user_db", "User destinations list empty.", SQUIDGUARD_WARNING);
+		# 5. recursive set files access
+		set_file_access($dbhome, OWNER_NAME, 0755);
 
-    # 7. remove unused db entries
-    sg_remove_unused_db_entries();
+		# 6. rebuild user db (SQUIDGUARD_DBHOME)
+		squidguard_rebuild_db("_usrdb", $dbhome, $dst_list);
+	} else {
+		sg_addlog("sg_reconfigure_user_db", "User destinations list empty.", SQUIDGUARD_WARNING);
+
+		# 7. remove unused db entries
+		sg_remove_unused_db_entries();
+	}
 }
 
 # ------------------------------------------------------------------------------
@@ -819,338 +849,380 @@ function sg_getlog($last_entries_count)
 # sg_create_config
 # ------------------------------------------------------------------------------
 
-function sg_create_config()
-{
-    global $squidguard_config;
-    $sgconf = array();
-    $sg_tag = new TSgTag;
-    $error_res = '';
-    $temp_str = '';
+function sg_create_config() {
+	global $squidguard_config;
+	$sgconf = array();
+	$sg_tag = new TSgTag;
+	$error_res = '';
+	$temp_str = '';
+	$squidstatus = "";
 
-    if(!is_array($squidguard_config) || empty($squidguard_config)) {
-        sg_addlog("sg_create_config", "Bad squidGuard config data.", SQUIDGUARD_ERROR);
-        return sg_create_simple_config('', '', "Error! Check squidGuard configuration data." . " (sg_create_config: [1]).");
-    }
+	if(!is_array($squidguard_config) || empty($squidguard_config)) {
+		sg_addlog("sg_create_config", "Bad squidGuard config data.", SQUIDGUARD_ERROR);
+		return sg_create_simple_config('', '', "Error! Check squidGuard configuration data." . " (sg_create_config: [1]).");
+	}
 
-    # check configuration data
-    if (!sg_check_config_data($error_res)) {
-        sg_addlog("sg_create_config", "Bad config data. It's all error_res: $error_res", SQUIDGUARD_ERROR);
-        sg_addlog("sg_create_config", "Terminated.", SQUIDGUARD_ERROR);
-        return sg_create_simple_config('', '', "Error! Check squidGuard configuration data." . " (sg_create_config: [2]).");
-    }
+	# check configuration data
+	if (!sg_check_config_data($error_res)) {
+		sg_addlog("sg_create_config", "Bad config data. It's all error_res: $error_res", SQUIDGUARD_ERROR);
+		sg_addlog("sg_create_config", "Terminated.", SQUIDGUARD_ERROR);
+		return sg_create_simple_config('', '', "Error! Check squidGuard configuration data." . " (sg_create_config: [2]).");
+	}
 
-    # --- Header ---
-    $sgconf[] = CONFIG_SG_HEADER;
-    $sgconf[] = "logdir {$squidguard_config[F_LOGDIR]}";
-    $sgconf[] = "dbhome {$squidguard_config[F_DBHOME]}";
-    if ( $squidguard_config[F_LDAPENABLE] == 'on' ) {
-        $sgconf[] = "ldapbinddn {$squidguard_config[F_LDAPBINDDN]}";
-        $sgconf[] = "ldapbindpass {$squidguard_config[F_LDAPBINDPASS]}";
-        $sgconf[] = "ldapprotover {$squidguard_config[F_LDAPVERSION]}";
-        if ( $squidguard_config[F_STRIPNTDOMAIN] )
-            $sgconf[] = "stripntdomain true";
-        if ( $squidguard_config[F_STRIPREALM] )
-            $sgconf[] = "striprealm true";
-    }
+	# --- Header ---
+	$sgconf[] = CONFIG_SG_HEADER;
+	$sgconf[] = "logdir {$squidguard_config[F_LOGDIR]}";
+	$sgconf[] = "dbhome {$squidguard_config[F_DBHOME]}";
+	if ($squidguard_config[F_LDAPENABLE] == 'on') {
+		$sgconf[] = "ldapbinddn {$squidguard_config[F_LDAPBINDDN]}";
+		$sgconf[] = "ldapbindpass {$squidguard_config[F_LDAPBINDPASS]}";
+		$sgconf[] = "ldapcachetime {$squidguard_config[F_LDAPCACHETIME]}";
+		$sgconf[] = "ldapprotover {$squidguard_config[F_LDAPVERSION]}";
+		if ($squidguard_config[F_STRIPNTDOMAIN]) {
+			$sgconf[] = "stripntdomain true";
+		}
+		if ($squidguard_config[F_STRIPREALM]) {
+			$sgconf[] = "striprealm true";
+		}
+	}
 
-    # --- Times ---
-    if ($squidguard_config[F_TIMES]) {
-        $temp_str = '';
-        foreach($squidguard_config[F_TIMES][F_ITEM] as $tm) {
-            $sg_tag->clear();
-            $sg_tag->set("time", $tm[F_NAME], "", $tm[F_DESCRIPTION]);
+	# --- Times ---
+	if ($squidguard_config[F_TIMES]) {
+		$temp_str = '';
+		foreach($squidguard_config[F_TIMES][F_ITEM] as $tm) {
+			$sg_tag->clear();
+			$sg_tag->set("time", $tm[F_NAME], "", $tm[F_DESCRIPTION]);
 
-            foreach($tm[F_ITEM] as $itm) {
-                $dts = ($itm[F_TIMETYPE] === "weekly") ? $itm[F_TIMEDAYS] : $itm[F_DATERANGE];
-                $sg_tag->items[] = "{$itm[F_TIMETYPE]} $dts {$itm[F_TIMERANGE]}";
-            }
-            $sgconf[] = "";
-            $sgconf[] = $sg_tag->tag_text();
+			foreach($tm[F_ITEM] as $itm) {
+				$dts = ($itm[F_TIMETYPE] === "weekly") ? $itm[F_TIMEDAYS] : $itm[F_DATERANGE];
+				$sg_tag->items[] = "{$itm[F_TIMETYPE]} $dts {$itm[F_TIMERANGE]}";
+			}
+			$sgconf[] = "";
+			$sgconf[] = $sg_tag->tag_text();
 
-            # log
-            $temp_str .= " {$tm[F_NAME]}";
-        }
-        # log
-        $temp_str = !empty($temp_str) ? $temp_str : "Nothing.";
-        sg_addlog("sg_create_config", "Add times: $temp_str", SQUIDGUARD_INFO);
-    }
+			# log
+			$temp_str .= " {$tm[F_NAME]}";
+		}
+		# log
+		$temp_str = !empty($temp_str) ? $temp_str : "Nothing.";
+		sg_addlog("sg_create_config", "Add times: $temp_str", SQUIDGUARD_INFO);
+	}
 
-    # --- Sources ---
-    if ($squidguard_config[F_SOURCES]) {
-        $temp_str = '';
-        foreach($squidguard_config[F_SOURCES][F_ITEM] as $src) {
-            $sg_tag->clear();
-            $sg_tag->set("src", $src[F_NAME], "", $src[F_DESCRIPTION]);
+	# --- Sources ---
+	if ($squidguard_config[F_SOURCES]) {
+		$temp_str = '';
+		foreach($squidguard_config[F_SOURCES][F_ITEM] as $src) {
+			foreach($squidguard_config[F_ACLS][F_ITEM] as $acl) {
+				if (($acl[F_NAME] == $src[F_NAME]) && $acl[F_DISABLED]) {
+					continue 2;
+				}
+			}
 
-            # separate IP, domains, usernames
-            if (strpos(trim($src[F_SOURCE]), 'ldapusersearch') === false) {
-                $tsrc = explode(" ", trim($src[F_SOURCE]));
-                foreach($tsrc as $sr) {
-                        $sr = trim($sr);
-                        if     (empty($sr))           continue;
-                        if     (is_ipaddr_valid($sr)) $sg_tag->items[] = "ip     $sr";
-                        elseif (is_domain_valid($sr)) $sg_tag->items[] = "domain $sr";
-                        elseif (is_username($sr))     $sg_tag->items[] = "user   " . str_replace("'", "", $sr);
-                }
-            } else {
-                $sg_tag->items[] = trim($src[F_SOURCE]);
-            }
+			$sg_tag->clear();
+			$sg_tag->set("src", $src[F_NAME], "", $src[F_DESCRIPTION]);
 
-            if ($squidguard_config[F_ENABLELOG] == 'on' ) {
-                if ($src[F_LOG]) $sg_tag->items[] = "log " . SQUIDGUARD_LOGFILE;
-            }
+			# separate IP, domains, usernames
+			if (strpos(trim($src[F_SOURCE]), 'ldapusersearch') === false) {
+				$tsrc = explode(" ", trim($src[F_SOURCE]));
+				foreach($tsrc as $sr) {
+					$sr = trim($sr);
+					if (empty($sr)) {
+						continue;
+					}
 
-            $sgconf[] = "";
-            $sgconf[] = $sg_tag->tag_text();
+					if (is_ipaddr_valid($sr)) {
+						$sg_tag->items[] = "ip     $sr";
+					} elseif (is_domain_valid($sr)) {
+						$sg_tag->items[] = "domain $sr";
+					} elseif (is_username($sr)) { 
+						$sg_tag->items[] = "user   " . str_replace("'", "", $sr);
+					}
+				}
+			} else {
+				$sg_tag->items[] = trim($src[F_SOURCE]);
+			}
 
-            # log
-            $temp_str .= " " . $src[F_NAME];
-        }
-        # log
-        $temp_str = !empty($temp_str) ? $temp_str : "Nothing.";
-        sg_addlog("sg_create_config", "Add sources: $temp_str", SQUIDGUARD_INFO);
-    }
+			if (($squidguard_config[F_ENABLELOG] == 'on') && $src[F_LOG]) {
+				$sg_tag->items[] = "log " . SQUIDGUARD_LOGFILE;
+			}
 
-    # --- Blacklist ---
-    # Note! Blacklist must be added to config permanently. It's need for rebuild DB now
+			$sgconf[] = "";
+			$sgconf[] = $sg_tag->tag_text();
 
-    $db_entries = sg_entries_blacklist();
-    if (($squidguard_config[F_BLACKLISTENABLED] === 'on') and $db_entries) {
-        $log_entr_added = '';
-        $log_entr_ignored = '';
-        sg_addlog("sg_create_config", "Add blacklist entries", SQUIDGUARD_INFO);
-        foreach($db_entries as $key => $ent) {
-            $ent_state = array();
-            $file_dms  = "{$squidguard_config[F_DBHOME]}/$ent/domains";
-            $file_urls = "{$squidguard_config[F_DBHOME]}/$ent/urls";
-            $file_expr = "{$squidguard_config[F_DBHOME]}/$ent/expressions";
+			# log
+			$temp_str .= " " . $src[F_NAME];
+		}
+		# log
+		$temp_str = !empty($temp_str) ? $temp_str : "Nothing.";
+		sg_addlog("sg_create_config", "Add sources: $temp_str", SQUIDGUARD_INFO);
+	}
 
-            # check blacklist acl state
-            if (file_exists($file_dms)) {
-                $ent_state['exists'] = 'on';
-                $ent_state[F_DOMAINS] = 'on';
-            }
-            if (file_exists($file_urls)) {
-                $ent_state['exists'] = 'on';
-                $ent_state[F_URLS] = 'on';
-            }
-            if (file_exists($file_expr)) {
-                $ent_state['exists'] = 'on';
-                $ent_state[F_EXPRESSIONS] = 'on';
-            }
+	# --- Blacklist ---
+	# Note! Blacklist must be added to config permanently. It's need for rebuild DB now
 
-            # create config if blacklist item exists
-            if ($ent_state['exists']) {
-                $sg_tag->clear();
-                $sg_tag->set("dest", $ent, "", "");
+	$db_entries = sg_entries_blacklist();
+	if (($squidguard_config[F_BLACKLISTENABLED] === 'on') and $db_entries) {
+		$log_entr_added = '';
+		$log_entr_ignored = '';
+		sg_addlog("sg_create_config", "Add blacklist entries", SQUIDGUARD_INFO);
+		foreach($db_entries as $key => $ent) {
+			$ent_state = array();
+			$file_dms  = "{$squidguard_config[F_DBHOME]}/$ent/domains";
+			$file_urls = "{$squidguard_config[F_DBHOME]}/$ent/urls";
+			$file_expr = "{$squidguard_config[F_DBHOME]}/$ent/expressions";
 
-                if ($ent_state[F_DOMAINS])     $sg_tag->items[] = "domainlist $ent/domains";
-                if ($ent_state[F_EXPRESSIONS]) $sg_tag->items[] = "expressionlist $ent/expressions";
-                if ($ent_state[F_URLS])        $sg_tag->items[] = "urllist $ent/urls";
+			# check blacklist acl state
+			if (file_exists($file_dms)) {
+				$ent_state['exists'] = 'on';
+				$ent_state[F_DOMAINS] = 'on';
+			}
+			if (file_exists($file_urls)) {
+				$ent_state['exists'] = 'on';
+				$ent_state[F_URLS] = 'on';
+			}
+			if (file_exists($file_expr)) {
+				$ent_state['exists'] = 'on';
+				$ent_state[F_EXPRESSIONS] = 'on';
+			}
 
-		# Check if $ent contains adv or ads, and F_ADV_BLANKIMG is on then add a custom redirect
-		  $adv_pos = strpos($ent,'_adv');
-		  $ads_pos = strpos($ent, '_ads');
-		  if ( ($ads_pos > 0 || $adv_pos > 0) && $squidguard_config[F_ADV_BLANKIMG] == 'on')
-			     $sg_tag->items[] = "redirect " . sg_redirector_base_url($dst[F_REDIRECT], RMOD_INT_BLANKIMG);
+			# create config if blacklist item exists
+			if ($ent_state['exists']) {
+				$sg_tag->clear();
+				$sg_tag->set("dest", $ent, "", "");
 
-                if ($squidguard_config[F_ENABLELOG] == 'on' ) {
-                    $sg_tag->items[] = "log ". SQUIDGUARD_LOGFILE;
-                }
+				if ($ent_state[F_DOMAINS]) {
+					$sg_tag->items[] = "domainlist $ent/domains";
+				}
+				if ($ent_state[F_EXPRESSIONS]) {
+					$sg_tag->items[] = "expressionlist $ent/expressions";
+				}
+				if ($ent_state[F_URLS]) {
+					$sg_tag->items[] = "urllist $ent/urls";
+				}
 
-                $sgconf[] = "";
-                $sgconf[] = $sg_tag->tag_text();
+				# Check if $ent contains adv or ads, and F_ADV_BLANKIMG is on then add a custom redirect
+				$adv_pos = strpos($ent,'_adv');
+				$ads_pos = strpos($ent, '_ads');
+				if (($ads_pos > 0 || $adv_pos > 0) && $squidguard_config[F_ADV_BLANKIMG] == 'on') {
+					$sg_tag->items[] = "redirect " . sg_redirector_base_url($dst[F_REDIRECT], RMOD_INT_BLANKIMG);
+				}
 
-                # log
-                $log_entr_added .= " $ent;";
-            } else {
-                $sgconf[] = "\t# Config ERROR: Destination '$ent' not found in DB";
-                $log_entr_ignored .= " $ent;";
-            }
-        }
+				if ($squidguard_config[F_ENABLELOG] == 'on' ) {
+					$sg_tag->items[] = "log ". SQUIDGUARD_LOGFILE;
+				}
 
-        # log 'added' and 'ignored'
-        if (!empty($log_entr_added))   sg_addlog("sg_create_config", "Added: $log_entr_added .", SQUIDGUARD_INFO);
-        if (!empty($log_entr_ignored)) sg_addlog("sg_create_config", "Ignored: $log_entr_ignored .", SQUIDGUARD_WARNING);
-    }
+				$sgconf[] = "";
+				$sgconf[] = $sg_tag->tag_text();
 
-    # --- Destinations ---
-    if ($squidguard_config[F_DESTINATIONS]) {
-        $temp_str = '';
-        foreach($squidguard_config[F_DESTINATIONS][F_ITEM] as $dst) {
-            $dstname = $dst[F_NAME];
-            $sg_tag->clear();
-            $sg_tag->set("dest", $dst[F_NAME], "", $dst[F_DESCRIPTION]);
+				# log
+				$log_entr_added .= " $ent;";
+			} else {
+				$sgconf[] = "\t# Config ERROR: Destination '$ent' not found in DB";
+				$log_entr_ignored .= " $ent;";
+			}
+		}
 
-            if ($dst[F_DOMAINS])
-                $sg_tag->items[] = "domainlist $dstname/domains";
-            if ($dst[F_EXPRESSIONS])
-                $sg_tag->items[] = "expressionlist $dstname/expressions";
-            if ($dst[F_URLS])
-                $sg_tag->items[] = "urllist $dstname/urls";
-            if ($dst[F_RMOD] != RMOD_NONE)
-                $sg_tag->items[] = "redirect " . sg_redirector_base_url($dst[F_REDIRECT], $dst[F_RMOD]);
-            if ($squidguard_config[F_ENABLELOG] == 'on' ) {
-                if ($dst[F_LOG])
-                    $sg_tag->items[] = "log " . SQUIDGUARD_LOGFILE;
-            }
+		# log 'added' and 'ignored'
+		if (!empty($log_entr_added)) {
+			sg_addlog("sg_create_config", "Added: $log_entr_added .", SQUIDGUARD_INFO);
+		}
+		if (!empty($log_entr_ignored)) {
+			sg_addlog("sg_create_config", "Ignored: $log_entr_ignored .", SQUIDGUARD_WARNING);
+		}
+	}
 
-            $sgconf[] = "";
-            $sgconf[] = $sg_tag->tag_text();
+	# --- Destinations ---
+	if ($squidguard_config[F_DESTINATIONS]) {
+		$temp_str = '';
+		foreach($squidguard_config[F_DESTINATIONS][F_ITEM] as $dst) {
+			$dstname = $dst[F_NAME];
+			$sg_tag->clear();
+			$sg_tag->set("dest", $dst[F_NAME], "", $dst[F_DESCRIPTION]);
 
-            # log
-            $temp_str .= " $dstname;";
-        }
-        # log
-        $temp_str = !empty($temp_str) ? $temp_str : "Nothing.";
-        sg_addlog("sg_create_config", "Add destinations: $temp_str", SQUIDGUARD_INFO);
-    }
+			if ($dst[F_DOMAINS]) {
+				$sg_tag->items[] = "domainlist $dstname/domains";
+			}
+			if ($dst[F_EXPRESSIONS]) {
+				$sg_tag->items[] = "expressionlist $dstname/expressions";
+			}
+			if ($dst[F_URLS]) {
+				$sg_tag->items[] = "urllist $dstname/urls";
+			}
+			if ($dst[F_RMOD] != RMOD_NONE) {
+				$sg_tag->items[] = "redirect " . sg_redirector_base_url($dst[F_REDIRECT], $dst[F_RMOD]);
+			}
+			if (($squidguard_config[F_ENABLELOG] == 'on') && $dst[F_LOG]) {
+				$sg_tag->items[] = "log " . SQUIDGUARD_LOGFILE;
+			}
+			if ($dst[F_NAME] == 'squidstatus') {
+				$squidstatus = "^squidstatus ";
+			}
 
-    # --- Rewrites ---
-    if ($squidguard_config[F_REWRITES]) {
-        $temp_str = '';
-        $log_entr_added = '';
-        $log_entr_err = '';
-        foreach($squidguard_config[F_REWRITES][F_ITEM] as $rew) {
-            $sg_tag->clear();
-            $sg_tag->set("rew", $rew[F_NAME], "", "");
+			$sgconf[] = "";
+			$sgconf[] = $sg_tag->tag_text();
 
-            if (is_array($rew[F_ITEM])) {
-                foreach ($rew[F_ITEM] as $rw)
-                    $sg_tag->items[] = "s@{$rw[F_TARGETURL]}@{$rw[F_REPLACETO]}@{$rw[F_MODE]}";
+			# log
+			$temp_str .= " $dstname;";
+		}
+		# log
+		$temp_str = !empty($temp_str) ? $temp_str : "Nothing.";
+		sg_addlog("sg_create_config", "Add destinations: $temp_str", SQUIDGUARD_INFO);
+	}
 
-                if ($squidguard_config[F_ENABLELOG] == 'on' ) {
-                    if ($rew[F_LOG])
-                        $sg_tag->items[] = "log " . SQUIDGUARD_LOGFILE;
-                }
+	# --- Rewrites ---
+	if ($squidguard_config[F_REWRITES]) {
+		$temp_str = '';
+		$log_entr_added = '';
+		$log_entr_err = '';
+		foreach($squidguard_config[F_REWRITES][F_ITEM] as $rew) {
+			$sg_tag->clear();
+			$sg_tag->set("rew", $rew[F_NAME], "", "");
 
-                $sgconf[] = "";
-                $sgconf[] = $sg_tag->tag_text();
-                # log
-                $log_entr_added .= " {$rew[F_NAME]};";
-            }
-            else {
-                $sgconf[] = "";
-                $sgconf[] = "# Rewrite {$rew[F_NAME]} error.";
-                # log
-                $log_entr_err .= " {$rew[F_NAME]};";
-            }
-        }
+			if (is_array($rew[F_ITEM])) {
+				foreach ($rew[F_ITEM] as $rw) {
+					$sg_tag->items[] = "s@{$rw[F_TARGETURL]}@{$rw[F_REPLACETO]}@{$rw[F_MODE]}";
+				}
 
-        # log
-        if (!empty($log_entr_added)) sg_addlog("sg_create_config", "Add rewrites: $log_entr_added", SQUIDGUARD_INFO);
-        if (!empty($log_entr_err))   sg_addlog("sg_create_config", "Add rewrites error $log_entr_err", SQUIDGUARD_ERROR);
-    }
+				if (($squidguard_config[F_ENABLELOG] == 'on') && $rew[F_LOG]) {
+					$sg_tag->items[] = "log " . SQUIDGUARD_LOGFILE;
+				}
 
-    # ----------------------------------------
-    $entry_blacklist = sg_entries_blacklist();
+				$sgconf[] = "";
+				$sgconf[] = $sg_tag->tag_text();
+				# log
+				$log_entr_added .= " {$rew[F_NAME]};";
+			} else {
+				$sgconf[] = "";
+				$sgconf[] = "# Rewrite {$rew[F_NAME]} error.";
+				# log
+				$log_entr_err .= " {$rew[F_NAME]};";
+			}
+		}
 
-    # --- ACL ---
-    $sg_tag->clear();
-    $sg_tag->set("acl", "", "", "");
-    if ($squidguard_config[F_ACLS]) {
-        $temp_str = '';
-        $log_entr_added = '';
-        foreach($squidguard_config[F_ACLS][F_ITEM] as $acl) {
-            if (!$acl[F_DISABLED]) {
-                $sg_acltag = new TSgTag;
-                $sg_acltag->set($acl[F_NAME], "", $acl[F_TIMENAME], $acl[F_DESCRIPTION]);
+		# log
+		if (!empty($log_entr_added)) {
+			sg_addlog("sg_create_config", "Add rewrites: $log_entr_added", SQUIDGUARD_INFO);
+		}
+		if (!empty($log_entr_err)) {
+			sg_addlog("sg_create_config", "Add rewrites error $log_entr_err", SQUIDGUARD_ERROR);
+		}
+	}
 
-                # delete blacklist entries from 'pass' if blacklist disabled
-                if ($squidguard_config[F_BLACKLISTENABLED] !== 'on') {
-                    acl_remove_blacklist_items($acl[F_DESTINATIONNAME]);
-                    acl_remove_blacklist_items($acl[F_OVERDESTINATIONNAME]);
-                }
+	# ----------------------------------------
+	$entry_blacklist = sg_entries_blacklist();
 
-                # not allowing IP in URL
-                if ($acl[F_NOTALLOWINGIP]) {
-                    $acl[F_DESTINATIONNAME]     = "!in-addr {$acl[F_DESTINATIONNAME]}";
-                    $acl[F_OVERDESTINATIONNAME] = "!in-addr {$acl[F_OVERDESTINATIONNAME]}";
-                }
+	# --- ACL ---
+	$sg_tag->clear();
+	$sg_tag->set("acl", "", "", "");
+	if ($squidguard_config[F_ACLS]) {
+		$temp_str = '';
+		$log_entr_added = '';
+		foreach($squidguard_config[F_ACLS][F_ITEM] as $acl) {
+			if (!$acl[F_DISABLED]) {
+				$sg_acltag = new TSgTag;
+				$sg_acltag->set($acl[F_NAME], "", $acl[F_TIMENAME], $acl[F_DESCRIPTION]);
 
-                # re-order acl pass (<white><!in-addr><deny><allow><all|none>)
-                $acl[F_DESTINATIONNAME]     = sg_aclpass_reorder($acl[F_DESTINATIONNAME]);
-                $acl[F_OVERDESTINATIONNAME] = sg_aclpass_reorder($acl[F_OVERDESTINATIONNAME]);
+				# delete blacklist entries from 'pass' if blacklist disabled
+				if ($squidguard_config[F_BLACKLISTENABLED] !== 'on') {
+					acl_remove_blacklist_items($acl[F_DESTINATIONNAME]);
+					acl_remove_blacklist_items($acl[F_OVERDESTINATIONNAME]);
+				}
 
-                # ontime
-                $sg_acltag->items[] = "pass {$acl[F_DESTINATIONNAME]}";
-                if ($acl[F_RMOD] != RMOD_NONE)
-                $sg_acltag->items[] = "redirect " . sg_redirector_base_url($acl[F_REDIRECT], $acl[F_RMOD]);
-                if ($acl[F_REWRITENAME])
-                    $sg_acltag->items[] = "rewrite {$acl[F_REWRITENAME]}";
-                if ($squidguard_config[F_ENABLELOG] == 'on' ) {
-                    if ($acl[F_LOG])
-                        $sg_acltag->items[] = "log " . SQUIDGUARD_LOGFILE;
-                }
+				# not allowing IP in URL
+				if ($acl[F_NOTALLOWINGIP]) {
+					$acl[F_DESTINATIONNAME]     = $squidstatus . "!in-addr {$acl[F_DESTINATIONNAME]}";
+					$acl[F_OVERDESTINATIONNAME] = $squidstatus . "!in-addr {$acl[F_OVERDESTINATIONNAME]}";
+				}
 
-                # overtime
-                if ($acl[F_TIMENAME]) {
-                    $sg_acltag->items[] = "} else {";
-                    $sg_acltag->items[] = "pass {$acl[F_OVERDESTINATIONNAME]}";
-                    if ($acl[F_REDIRECMODE] !== RMOD_NONE)
-                        $sg_acltag->items[] = "redirect " . sg_redirector_base_url($acl[F_OVERREDIRECT], $acl[F_RMOD]);
-                    if ($acl[F_OVERREWRITENAME])
-                        $sg_acltag->items[] = "rewrite {$acl[F_OVERREWRITENAME]}";
-                    if ($squidguard_config[F_ENABLELOG] == 'on' ) {
-                        if ($acl[F_LOG])
-                            $sg_acltag->items[] = "log " . SQUIDGUARD_LOGFILE;
-                    }
-                }
-                $sg_tag->items[] = $sg_acltag;
-            }
-            $log_entr_added .= " {$acl[F_NAME]};";
-        }
-        # log
-        $log_entr_added = !empty($log_entr_added) ? $log_entr_added : "Nothing.";
-        sg_addlog("sg_create_config", "Add ACL's: $log_entr_added", SQUIDGUARD_INFO);
-    }
+				# re-order acl pass (<white><!in-addr><deny><allow><all|none>)
+				$acl[F_DESTINATIONNAME]     = sg_aclpass_reorder($acl[F_DESTINATIONNAME]);
+				$acl[F_OVERDESTINATIONNAME] = sg_aclpass_reorder($acl[F_OVERDESTINATIONNAME]);
 
-    # --- Default ---
-    $sg_tag_def = new TSgTag;
-    $sg_tag_def->set("default", "", "", "");
-    $def = $squidguard_config[F_DEFAULT];
-    sg_addlog("sg_create_config", "Add Default", SQUIDGUARD_INFO);
-    if ($def) {
-        $temp_str = '';
+				# ontime
+				$sg_acltag->items[] = "pass {$acl[F_DESTINATIONNAME]}";
+				if ($acl[F_RMOD] != RMOD_NONE) {
+					$sg_acltag->items[] = "redirect " . sg_redirector_base_url($acl[F_REDIRECT], $acl[F_RMOD]);
+				}
+				if ($acl[F_REWRITENAME]) {
+					$sg_acltag->items[] = "rewrite {$acl[F_REWRITENAME]}";
+				}
+				if (($squidguard_config[F_ENABLELOG] == 'on') && $acl[F_LOG]) {
+					$sg_acltag->items[] = "log " . SQUIDGUARD_LOGFILE;
+				}
 
-        # delete blacklist entries from 'pass' if blacklist disabled
-        if ($squidguard_config[F_BLACKLISTENABLED] !== 'on')
-            acl_remove_blacklist_items($def[F_DESTINATIONNAME]);
+				# overtime
+				if ($acl[F_TIMENAME]) {
+					$sg_acltag->items[] = "} else {";
+					$sg_acltag->items[] = "pass {$acl[F_OVERDESTINATIONNAME]}";
+					if ($acl[F_REDIRECMODE] !== RMOD_NONE) {
+						$sg_acltag->items[] = "redirect " . sg_redirector_base_url($acl[F_OVERREDIRECT], $acl[F_RMOD]);
+					}
+					if ($acl[F_OVERREWRITENAME]) {
+						$sg_acltag->items[] = "rewrite {$acl[F_OVERREWRITENAME]}";
+					}
+					if (($squidguard_config[F_ENABLELOG] == 'on') && $acl[F_LOG]) {
+						$sg_acltag->items[] = "log " . SQUIDGUARD_LOGFILE;
+					}
+				}
+				$sg_tag->items[] = $sg_acltag;
+			}
+			$log_entr_added .= " {$acl[F_NAME]};";
+		}
+		# log
+		$log_entr_added = !empty($log_entr_added) ? $log_entr_added : "Nothing.";
+		sg_addlog("sg_create_config", "Add ACL's: $log_entr_added", SQUIDGUARD_INFO);
+	}
 
-        # not allowing IP in URL
-        if ($def[F_NOTALLOWINGIP])
-            $def[F_DESTINATIONNAME] = "!in-addr " . $def[F_DESTINATIONNAME];
+	# --- Default ---
+	$sg_tag_def = new TSgTag;
+	$sg_tag_def->set("default", "", "", "");
+	$def = $squidguard_config[F_DEFAULT];
+	sg_addlog("sg_create_config", "Add Default", SQUIDGUARD_INFO);
+	if ($def) {
+		$temp_str = '';
 
-        # re-order acl pass (<allow><deny<all|none>)
-        $def[F_DESTINATIONNAME] = sg_aclpass_reorder($def[F_DESTINATIONNAME]);
+		# delete blacklist entries from 'pass' if blacklist disabled
+		if ($squidguard_config[F_BLACKLISTENABLED] !== 'on') {
+			acl_remove_blacklist_items($def[F_DESTINATIONNAME]);
+		}
 
-        # ! 'Default' must use without times !
-        $sg_tag_def->items[] = "pass {$def[F_DESTINATIONNAME]}";
-        if ($def[F_RMOD] !== RMOD_NONE)
-            $sg_tag_def->items[] = "redirect " .  sg_redirector_base_url($def[F_REDIRECT], $def[F_RMOD]);
-        if ($def[F_REWRITENAME])
-            $sg_tag_def->items[] = "rewrite {$def[F_REWRITENAME]}";
-        if ($squidguard_config[F_ENABLELOG] == 'on' ) {
-            if ($def[F_LOG])
-                $sg_tag_def->items[] = "log " . SQUIDGUARD_LOGFILE;
-        }
-    } # <- if def
-    else {
-        $msg =  "ACL 'default' is empty, will use default 'block all'";
-        $sg_tag_def->items[] = "# $msg";
-        $sg_tag_def->items[] = "pass none";
-        $sg_tag_def->items[] = "redirect " . sg_redirector_base_url('', RMOD_INT_ERRORPAGE);
-        sg_addlog("sg_create_config", "$msg.", SQUIDGUARD_ERROR);
-    }
+		# not allowing IP in URL
+		if ($def[F_NOTALLOWINGIP]) {
+			$def[F_DESTINATIONNAME] = $squidstatus . "!in-addr " . $def[F_DESTINATIONNAME];
+		}
 
-    # --- ACL end ---
-    $sg_tag->items[] = $sg_tag_def; # add 'default' ACL object
-    $sgconf[] = "";
-    $sgconf[] = $sg_tag->tag_text();
+		# re-order acl pass (<allow><deny<all|none>)
+		$def[F_DESTINATIONNAME] = sg_aclpass_reorder($def[F_DESTINATIONNAME]);
 
-    # delete "\n" chars before each string - SG bug (first string of config must be not empty)
-    foreach ($sgconf as $key => $val) $sgconf[$key] = ltrim($sgconf[$key], "\n");
-    return implode("\n", $sgconf);
+		# ! 'Default' must use without times !
+		$sg_tag_def->items[] = "pass {$def[F_DESTINATIONNAME]}";
+		if ($def[F_RMOD] !== RMOD_NONE) {
+			$sg_tag_def->items[] = "redirect " .  sg_redirector_base_url($def[F_REDIRECT], $def[F_RMOD]);
+		}
+		if ($def[F_REWRITENAME]) {
+			$sg_tag_def->items[] = "rewrite {$def[F_REWRITENAME]}";
+		}
+		if (($squidguard_config[F_ENABLELOG] == 'on') && $def[F_LOG]) {
+			$sg_tag_def->items[] = "log " . SQUIDGUARD_LOGFILE;
+		}
+	} else {
+		$msg =  "ACL 'default' is empty, will use default 'block all'";
+		$sg_tag_def->items[] = "# $msg";
+		$sg_tag_def->items[] = "pass none";
+		$sg_tag_def->items[] = "redirect " . sg_redirector_base_url('', RMOD_INT_ERRORPAGE);
+		sg_addlog("sg_create_config", "$msg.", SQUIDGUARD_ERROR);
+	}
+
+	# --- ACL end ---
+	$sg_tag->items[] = $sg_tag_def; # add 'default' ACL object
+	$sgconf[] = "";
+	$sgconf[] = $sg_tag->tag_text();
+
+	# delete "\n" chars before each string - SG bug (first string of config must be not empty)
+	foreach ($sgconf as $key => $val) {
+		$sgconf[$key] = ltrim($sgconf[$key], "\n");
+	}
+	return implode("\n", $sgconf);
 }
 
 # ------------------------------------------------------------------------------
@@ -1231,36 +1303,57 @@ function sg_create_simple_config($blk_dbhome, $blk_destlist, $redirect_to = "404
 # -------------------------------------------------------------------------------------------------
 function sg_redirector_base_url($rdr_info, $redirect_mode)
 {
-    global $squidguard_config;
-    $rdr_path = '';
+	global $squidguard_config;
+	$rdr_path = '';
 
-    # gui port, ip & proto
-    $guiip = (!empty($squidguard_config[F_CURRENT_LAN_IP])) ? $squidguard_config[F_CURRENT_LAN_IP] : '127.0.0.1';
-    $guiport = (!empty($squidguard_config[F_CURRENT_GUI_PORT])) ? $squidguard_config[F_CURRENT_GUI_PORT] : '80';
-    $rdr_path = "http://$guiip:$guiport" . REDIRECT_BASE_URL;
+	# gui port, ip & proto
+	$guiip = (!empty($squidguard_config[F_CURRENT_LAN_IP])) ? $squidguard_config[F_CURRENT_LAN_IP] : '127.0.0.1';
+	$guiproto = (!empty($squidguard_config[F_CURRENT_GUI_PROTO])) ? $squidguard_config[F_CURRENT_GUI_PROTO] : 'http';
+	if (empty($squidguard_config[F_CURRENT_GUI_PORT])) {
+		$guiport = ($guiproto == 'http') ? '80' : '443';
+	} else {
+		$guiport = $squidguard_config[F_CURRENT_GUI_PORT];
+	}
+	$rdr_path = "$guiproto://$guiip:$guiport" . REDIRECT_BASE_URL;
 
-    # check redirect
-    $errmsg = '';
-    if (!sg_check_redirect($redirect_mode, $rdr_info, $errmsg)) {
-        $redirect_mode = RMOD_INT_ERRORPAGE;
-        $rdr_info = "Bad redirect settings. $errmsg Check you configuration.";
-        sg_addlog("sg_redirector_base_url", "$errmsg", SQUIDGUARD_ERROR);
-    }
+	# check redirect
+	$errmsg = '';
+	if (!sg_check_redirect($redirect_mode, $rdr_info, $errmsg)) {
+		$redirect_mode = RMOD_INT_ERRORPAGE;
+		$rdr_info = "Bad redirect settings. $errmsg Check you configuration.";
+		sg_addlog("sg_redirector_base_url", "$errmsg", SQUIDGUARD_ERROR);
+	}
 
-    switch($redirect_mode) {
-        case RMOD_EXT_ERR:         $rdr_path = "$rdr_info" . REDIRECT_URL_ARGS; break;
-        case RMOD_EXT_RDR:         $rdr_path = "$rdr_info"; break;
-        case RMOD_EXT_MOVED:       $rdr_path = "301:$rdr_info"; break;
-        case RMOD_EXT_FOUND:       $rdr_path = "302:$rdr_info"; break;
-        case RMOD_INT_BLANKPAGE:   $rdr_path .= "?url=blank&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS; break;
-        case RMOD_INT_BLANKIMG:    $rdr_path .= "?url=blank_img&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS; break;
-        case RMOD_INT_SIZELIMIT:   $rdr_path .= "?url=maxlen_$rdr_info" . REDIRECT_URL_ARGS; break;
-        case RMOD_INT_ERRORPAGE:
-        default:                   $rdr_path .= "?url=" . rawurlencode("403 $rdr_info") . REDIRECT_URL_ARGS; break;
-    }
+	switch($redirect_mode) {
+		case RMOD_EXT_ERR:
+			$rdr_path = "$rdr_info" . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_EXT_RDR:
+			$rdr_path = "$rdr_info";
+			break;
+		case RMOD_EXT_MOVED:
+			$rdr_path = "301:$rdr_info";
+			break;
+		case RMOD_EXT_FOUND:
+			$rdr_path = "302:$rdr_info";
+			break;
+		case RMOD_INT_BLANKPAGE:
+			$rdr_path .= "?url=blank&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_INT_BLANKIMG:
+			$rdr_path .= "?url=blank_img&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_INT_SIZELIMIT:
+			$rdr_path .= "?url=maxlen_$rdr_info" . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_INT_ERRORPAGE:
+		default:                   
+			$rdr_path .= "?url=" . rawurlencode("403 $rdr_info") . REDIRECT_URL_ARGS;
+			break;
+	}
 
-    sg_addlog("sg_redirector_base_url", "Select redirector base url ($rdr_path)", SQUIDGUARD_INFO);
-    return $rdr_path;
+	sg_addlog("sg_redirector_base_url", "Select redirector base url ($rdr_path)", SQUIDGUARD_INFO);
+	return $rdr_path;
 }
 
 # -------------------------------------------------------------------------------------------------
@@ -1601,7 +1694,7 @@ function is_dest_url($url)
     $fmt  = "[a-zA-Z0-9_-]";
 
     if (empty($url)) return false;
-    if (preg_match("/^(($fmt){1,}\.){1,}($fmt){2,}(\/(.[^\*][^ ])*)/i", $url)) return true;
+    if (preg_match("/^(($fmt){1,}\.){1,}($fmt){1,}(\/(.[^\*][^ ])*)/i", $url)) return true;
     return false;
 }
 # ------------------------------------------------------------------------------
@@ -1645,7 +1738,7 @@ function is_ipaddr_valid($val)
 # ------------------------------------------------------------------------------
 function is_domain_valid($domain)
 {
-    $dm_fmt = "([a-z0-9\-]{1,})";
+    $dm_fmt = "([a-z_0-9\-]{1,})";
     $dm_fmt = "/^(($dm_fmt{1,}\.){1,}$dm_fmt{2,})+$/i"; # example: (my.)(super.)(domain.)com
     return is_string($domain) && preg_match($dm_fmt, trim($domain));
 }
@@ -2101,106 +2194,119 @@ function sg_reconfigure_blacklist($source_filename, $opt = '')
 #     - background rebuild temp DB via sh script (longer proccess) and copy to work DB
 # ------------------------------------------------------------------------------
 
-function sg_update_blacklist($from_file)
-{
-    global $squidguard_config;
-    $dbhome  = SQUIDGUARD_DBHOME;
-    $workdir = SQUIDGUARD_WORKDIR;
-    $tmp_unpack_dir = SQUIDGUARD_TMP . SQUIDGUARD_BL_UNPACK;
-    $arc_db_dir     = SQUIDGUARD_TMP . SG_BLK_ARC;
-    $conf_path      = SQUIDGUARD_VAR . DB_REBUILD_BLK_CONF;
-    $blklist_file   = SQUIDGUARD_BLK_FILELISTPATH;
+function sg_update_blacklist($from_file) {
+	global $squidguard_config;
+	$dbhome  = SQUIDGUARD_DBHOME;
+	$workdir = SQUIDGUARD_WORKDIR;
+	$tmp_unpack_dir = SQUIDGUARD_TMP . SQUIDGUARD_BL_UNPACK;
+	$arc_db_dir     = SQUIDGUARD_TMP . SG_BLK_ARC;
+	$conf_path      = SQUIDGUARD_VAR . DB_REBUILD_BLK_CONF;
+	$blklist_file   = SQUIDGUARD_BLK_FILELISTPATH;
 
-    sg_addlog("sg_update_blacklist", "Begin with '{$from_file}'.", SQUIDGUARD_INFO);
+	sg_addlog("sg_update_blacklist", "Begin with '{$from_file}'.", SQUIDGUARD_INFO);
 
-    if (file_exists($from_file)) {
-        # check work and DB dir's
-        if (file_exists($squidguard_config[F_DBHOME]))  $dbhome  = $squidguard_config[F_DBHOME];
-        if (file_exists($squidguard_config[F_WORKDIR])) $workdir = $squidguard_config[F_WORKDIR];
+	if (file_exists($from_file)) {
+		# check work and DB dir's
+		if (file_exists($squidguard_config[F_DBHOME])) {
+			$dbhome  = $squidguard_config[F_DBHOME];
+		}
+		if (file_exists($squidguard_config[F_WORKDIR])) { 
+			$workdir = $squidguard_config[F_WORKDIR];
+		}
 
-        # delete old tmp dir's
-        if (file_exists($tmp_unpack_dir)) mwexec("/bin/rm -R {$tmp_unpack_dir}");
-        if (file_exists($arc_db_dir))     mwexec("/bin/rm -R {$arc_db_dir}");
-        squidguard_ramdisk(false);
+		# delete old tmp dir's
+		if (file_exists($tmp_unpack_dir)) {
+			mwexec("/bin/rm -R {$tmp_unpack_dir}");
+		}
+		if (file_exists($arc_db_dir)) {
+			mwexec("/bin/rm -R {$arc_db_dir}");
+		}
+		squidguard_ramdisk(false);
 
-        # create new tmp/arc dir's, use ramdisk for quick operations
-        squidguard_ramdisk(true);
-        mwexec("/bin/mkdir -p -m 0755 {$tmp_unpack_dir}");
-        mwexec("/bin/mkdir -p -m 0755 {$arc_db_dir}");
+		# create new tmp/arc dir's, use ramdisk for quick operations
+		squidguard_ramdisk(true);
+		mwexec("/bin/mkdir -p -m 0755 {$tmp_unpack_dir}");
+		mwexec("/bin/mkdir -p -m 0755 {$arc_db_dir}");
 
-        # 1. unpack archive
-        squidguard_update_log("Unpack archive");
-        mwexec("/usr/bin/tar zxvf $from_file -C {$tmp_unpack_dir}");
-        set_file_access($tmp_unpack_dir, OWNER_NAME, 0755);
-        sg_addlog("sg_update_blacklist", "Unpack uploaded file '{$from_file}' -> '{$tmp_unpack_dir}'.", SQUIDGUARD_INFO);
+		# 1. unpack archive
+		squidguard_update_log("Unpack archive");
+		mwexec("/usr/bin/tar zxvf $from_file -C {$tmp_unpack_dir}");
+		set_file_access($tmp_unpack_dir, OWNER_NAME, 0755);
+		sg_addlog("sg_update_blacklist", "Unpack uploaded file '{$from_file}' -> '{$tmp_unpack_dir}'.", SQUIDGUARD_INFO);
 
-        # 2. copy blacklist to TempDB base & create entries list
-        squidguard_update_log("Scan blacklist categories.");
-        if (file_exists($tmp_unpack_dir)) {
-            $blk_items = array();
-            $blk_list  = array();
+		# 2. copy blacklist to TempDB base & create entries list
+		squidguard_update_log("Scan blacklist categories.");
+		if (file_exists($tmp_unpack_dir)) {
+			$blk_items = array();
+			$blk_list  = array();
 
-            # scan blacklist items
-            scan_blacklist_cat($tmp_unpack_dir, "blk", $blk_items);
+			# scan blacklist items
+			scan_blacklist_cat($tmp_unpack_dir, "blk", $blk_items);
 
-            # move blacklist catalog structure to 'one level' (from tmp_DB to arch_DB)
-            foreach ($blk_items as $key => $val) {
-                $current_dbpath = "{$arc_db_dir}/{$key}";
-                if (count($val)) {
-                    # make blk_list for config file
-                    $blk_list[$key] = $key;
+			# move blacklist catalog structure to 'one level' (from tmp_DB to arch_DB)
+			foreach ($blk_items as $key => $val) {
+				$current_dbpath = "{$arc_db_dir}/{$key}";
+				if (count($val)) {
+					if (!file_exists($val['path'])) {
+						unset($blk_items[$key]);
+						continue;
+					}
+					# make blk_list for config file
+					$blk_list[$key] = $key;
 
-                    # delete '$current_dbpath' for correct moving
-                    # need moving $val['path'] to $current_dbpath
-                    # if $current_dbpath exists, then $val['path'] will created as subdir - !it's worng!
-                    if (file_exists($current_dbpath))
-                        mwexec("/bin/rm -R {$current_dbpath}");
-                    mwexec("/bin/mv -f {$val['path']}/ {$current_dbpath}");
-                    sg_addlog("sg_update_blacklist", "Move {$val['path']}/ -> {$current_dbpath}.", SQUIDGUARD_INFO);
-                }
-            }
-            set_file_access($arc_db_dir, OWNER_NAME, 0755);
+					# delete '$current_dbpath' for correct moving
+					# need moving $val['path'] to $current_dbpath
+					# if $current_dbpath exists, then $val['path'] will created as subdir - !it's worng!
+					if (file_exists($current_dbpath)) {
+						mwexec("/bin/rm -R {$current_dbpath}");
+					}
+					mwexec("/bin/mv -f {$val['path']}/ {$current_dbpath}");
+					sg_addlog("sg_update_blacklist", "Move {$val['path']}/ -> 
+						{$current_dbpath}.", SQUIDGUARD_INFO);
+				}
+			}
+			set_file_access($arc_db_dir, OWNER_NAME, 0755);
 
-            # create entries list
-            if (count($blk_items)) {
-                # save to temp DB
-                $cont = implode("\n", array_keys($blk_items));
+			# create entries list
+			if (count($blk_items)) {
+				# save to temp DB
+				$cont = implode("\n", array_keys($blk_items));
 
-                # temp blacklist files
-                $blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
-                file_put_contents($blklist_file, $cont);
-                set_file_access  ($blklist_file, OWNER_NAME, 0755);
+				# temp blacklist files
+				$blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
+				file_put_contents($blklist_file, $cont);
+				set_file_access  ($blklist_file, OWNER_NAME, 0755);
 
-                # system blacklist files
-                $blklist_file = SQUIDGUARD_BLK_FILELISTPATH;
-                file_put_contents($blklist_file, $cont);
-                set_file_access  ($blklist_file, OWNER_NAME, 0755);
+				# system blacklist files
+				$blklist_file = SQUIDGUARD_BLK_FILELISTPATH;
+				file_put_contents($blklist_file, $cont);
+				set_file_access  ($blklist_file, OWNER_NAME, 0755);
 
-                sg_addlog("sg_update_blacklist", "Create DB entries list '{$blklist_file}'.", SQUIDGUARD_INFO);
-                squidguard_update_log("Found " . count($blk_items) . " items.");
-            }
+				sg_addlog("sg_update_blacklist", "Create DB entries list '{$blklist_file}'.", SQUIDGUARD_INFO);
+				squidguard_update_log("Found " . count($blk_items) . " items.");
+			}
 
-            # rebuild db & save to work dir
-            squidguard_update_log("Start rebuild DB.");
-            squidguard_rebuild_db("blk_", $arc_db_dir, $blk_list);
+			# rebuild db & save to work dir
+			squidguard_update_log("Start rebuild DB.");
+			squidguard_rebuild_db("blk_", $arc_db_dir, $blk_list);
 
-            squidguard_update_log("Copy DB to workdir.");
-            $blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
-            mwexec("/bin/cp -R -p {$arc_db_dir}/ {$dbhome}");
-            mwexec("/bin/cp -f -p {$blklist_file} " . SQUIDGUARD_WORKDIR);
-            set_file_access($dbhome, OWNER_NAME, 0755);
+			squidguard_update_log("Copy DB to workdir.");
+			$blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
+			mwexec("/bin/cp -R -p {$arc_db_dir}/ {$dbhome}");
+			mwexec("/bin/cp -f -p {$blklist_file} " . SQUIDGUARD_WORKDIR);
+			set_file_access($dbhome, OWNER_NAME, 0755);
 
-            squidguard_update_log("Reconfigure Squid proxy.");
-            mwexec(SQUID_BASE . "/sbin/squid -k reconfigure");
+			squidguard_update_log("Reconfigure Squid proxy.");
+			mwexec(SQUID_BASE . "/sbin/squid -k reconfigure");
 
-            squidguard_update_log("Blacklist update complete.");
+			squidguard_update_log("Blacklist update complete.");
+		}
 
-        }
-
-        # free ramdisk
-        squidguard_ramdisk(false);
-    }
-    else sg_addlog("sg_update_blacklist", "File {$from_file} not found.", SQUIDGUARD_ERROR);
+		# free ramdisk
+		squidguard_ramdisk(false);
+	} else {
+		sg_addlog("sg_update_blacklist", "File {$from_file} not found.", SQUIDGUARD_ERROR);
+	}
 }
 
 # -----------------------------------------------------------------------------

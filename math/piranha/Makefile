@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	piranha
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -27,8 +25,6 @@ NO_ARCH=	yes
 HEADER_DEPENDS=	${LOCALBASE}/include/boost/numeric/conversion/cast.hpp:devel/boost-libs \
 		${LOCALBASE}/include/gmp.h:math/gmp \
 		${LOCALBASE}/include/mpfr.h:math/mpfr
-
-TEST_USES=	compiler:c++14-lang
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \

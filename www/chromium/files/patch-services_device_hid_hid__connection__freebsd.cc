@@ -1,6 +1,6 @@
---- services/device/hid/hid_connection_freebsd.cc.orig	2019-03-30 17:42:59.718158000 -0700
-+++ services/device/hid/hid_connection_freebsd.cc	2019-03-30 21:54:38.653951000 -0700
-@@ -0,0 +1,240 @@
+--- services/device/hid/hid_connection_freebsd.cc.orig	2021-09-29 12:19:04 UTC
++++ services/device/hid/hid_connection_freebsd.cc
+@@ -0,0 +1,242 @@
 +// Copyright (c) 2014 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -26,9 +26,9 @@
 +
 +namespace device {
 +
-+class HidConnectionFreeBSD::BlockingTaskHelper {
++class HidConnectionFreeBSD::BlockingTaskRunnerHelper {
 + public:
-+  BlockingTaskHelper(base::ScopedFD fd,
++  BlockingTaskRunnerHelper(base::ScopedFD fd,
 +                     scoped_refptr<HidDeviceInfo> device_info,
 +                     base::WeakPtr<HidConnectionFreeBSD> connection)
 +      : fd_(std::move(fd)),
@@ -40,7 +40,7 @@
 +    has_report_id_ = device_info->has_report_id();
 +  }
 +
-+  ~BlockingTaskHelper() { DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_); }
++  ~BlockingTaskRunnerHelper() { DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_); }
 +
 +  // Starts the FileDescriptorWatcher that reads input events from the device.
 +  // Must be called on a thread that has a base::MessageLoopForIO.
@@ -49,15 +49,15 @@
 +    base::internal::AssertBlockingAllowed();
 +
 +    file_watcher_ = base::FileDescriptorWatcher::WatchReadable(
-+        fd_.get(), base::Bind(&BlockingTaskHelper::OnFileCanReadWithoutBlocking,
-+                              base::Unretained(this)));
++        fd_.get(), base::BindRepeating(&BlockingTaskRunnerHelper::OnFileCanReadWithoutBlocking,
++                                       base::Unretained(this)));
 +  }
 +
 +  void Write(scoped_refptr<base::RefCountedBytes> buffer,
 +             WriteCallback callback) {
 +    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 +    base::ScopedBlockingCall scoped_blocking_call(
-+        base::BlockingType::MAY_BLOCK);
++        FROM_HERE, base::BlockingType::MAY_BLOCK);
 +
 +    auto data = buffer->front();
 +    size_t size = buffer->size();
@@ -83,7 +83,7 @@
 +                        ReadCallback callback) {
 +    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 +    base::ScopedBlockingCall scoped_blocking_call(
-+        base::BlockingType::MAY_BLOCK);
++        FROM_HERE, base::BlockingType::MAY_BLOCK);
 +    struct usb_gen_descriptor ugd;
 +    ugd.ugd_report_type = UHID_FEATURE_REPORT;
 +    ugd.ugd_data = buffer->front();
@@ -176,20 +176,22 @@
 +  const scoped_refptr<base::SequencedTaskRunner> origin_task_runner_;
 +  std::unique_ptr<base::FileDescriptorWatcher::Controller> file_watcher_;
 +
-+  DISALLOW_COPY_AND_ASSIGN(BlockingTaskHelper);
++  DISALLOW_COPY_AND_ASSIGN(BlockingTaskRunnerHelper);
 +};
 +
 +HidConnectionFreeBSD::HidConnectionFreeBSD(
 +    scoped_refptr<HidDeviceInfo> device_info,
 +    base::ScopedFD fd,
-+    scoped_refptr<base::SequencedTaskRunner> blocking_task_runner)
-+    : HidConnection(device_info),
-+      blocking_task_runner_(std::move(blocking_task_runner)),
-+      weak_factory_(this) {
-+  helper_ = std::make_unique<BlockingTaskHelper>(std::move(fd), device_info,
-+                                                 weak_factory_.GetWeakPtr());
++    scoped_refptr<base::SequencedTaskRunner> blocking_task_runner,
++    bool allow_protected_reports,
++    bool allow_fido_reports)
++    : HidConnection(device_info, allow_protected_reports, allow_fido_reports),
++      helper_(nullptr, base::OnTaskRunnerDeleter(blocking_task_runner)),
++      blocking_task_runner_(std::move(blocking_task_runner)) {
++  helper_.reset(new BlockingTaskRunnerHelper(std::move(fd), device_info,
++                                                 weak_factory_.GetWeakPtr()));
 +  blocking_task_runner_->PostTask(
-+      FROM_HERE, base::BindOnce(&BlockingTaskHelper::Start,
++      FROM_HERE, base::BindOnce(&BlockingTaskRunnerHelper::Start,
 +                                base::Unretained(helper_.get())));
 +}
 +
@@ -208,7 +210,7 @@
 +
 +  blocking_task_runner_->PostTask(
 +      FROM_HERE,
-+      base::BindOnce(&BlockingTaskHelper::Write, base::Unretained(helper_.get()),
++      base::BindOnce(&BlockingTaskRunnerHelper::Write, base::Unretained(helper_.get()),
 +                 buffer, std::move(callback)));
 +}
 +
@@ -224,7 +226,7 @@
 +
 +  blocking_task_runner_->PostTask(
 +      FROM_HERE,
-+      base::BindOnce(&BlockingTaskHelper::GetFeatureReport,
++      base::BindOnce(&BlockingTaskRunnerHelper::GetFeatureReport,
 +                 base::Unretained(helper_.get()), report_id,
 +                 buffer, std::move(callback)));
 +}
@@ -233,10 +235,10 @@
 +    scoped_refptr<base::RefCountedBytes> buffer,
 +    WriteCallback callback) {
 +  base::ScopedBlockingCall scoped_blocking_call(
-+      base::BlockingType::MAY_BLOCK);
++      FROM_HERE, base::BlockingType::MAY_BLOCK);
 +  blocking_task_runner_->PostTask(
 +      FROM_HERE,
-+      base::BindOnce(&BlockingTaskHelper::SendFeatureReport,
++      base::BindOnce(&BlockingTaskRunnerHelper::SendFeatureReport,
 +                 base::Unretained(helper_.get()), buffer, std::move(callback)));
 +}
 +

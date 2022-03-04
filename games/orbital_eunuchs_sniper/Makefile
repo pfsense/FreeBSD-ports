@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	orbital_eunuchs_sniper
 PORTVERSION=	1.30
@@ -13,6 +12,7 @@ COMMENT=	Overhead shooting game
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		sdl
 USE_SDL=	sdl image mixer
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-games-dir=${PREFIX}/share

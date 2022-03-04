@@ -1,9 +1,8 @@
 # Created by: Pierre David <pdagog@gmail.com>, Jean Benoit <jean@unistra.fr>
-# $FreeBSD$
 
 PORTNAME?=	netmagis
 PORTVERSION?=	2.3.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES?=	net-mgmt
 MASTER_SITES=	http://netmagis.org/files/
 PKGNAMESUFFIX?=	-common
@@ -19,7 +18,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 RUN_DEPENDS+=	dtplite:devel/tcllib
 
 NO_ARCH?=	yes
-USES+=		pgsql:9.1+ tcl:85+
+USES+=		pgsql:9.1+ tcl
 WANT_PGSQL+=	pgtcl
 
 SLAVEDIRS=	net-mgmt/netmagis-common \

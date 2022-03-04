@@ -1,5 +1,4 @@
-# Created by: Søren Straarup <xride@x12.dk>
-# $FreeBSD$
+# Created by: SÃ¸ren Straarup <xride@x12.dk>
 
 PORTNAME=	xnecview
 PORTVERSION=	1.36
@@ -8,11 +7,11 @@ CATEGORIES=	comms hamradio
 MASTER_SITES=	http://wwwhome.cs.utwente.nl/%7Eptdeboer/ham/xnecview/
 
 MAINTAINER=	xride@FreeBSD.org
-COMMENT=	A X viewer of nec2c data
+COMMENT=	X11 viewer of NEC2 input and output data
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake pkgconfig tar:tgz
+USES=		gmake gnome pkgconfig tar:tgz
 USE_GNOME=	gtk20
 
 PLIST_FILES=	bin/xnecview man/man1/xnecview.1.gz

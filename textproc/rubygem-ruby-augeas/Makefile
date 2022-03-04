@@ -1,5 +1,4 @@
 # Created by: Russell Jackson <raj@csub.edu>
-# $FreeBSD$
 
 PORTNAME=	ruby-augeas
 PORTVERSION=	0.5.0
@@ -17,6 +16,6 @@ LIB_DEPENDS=	libaugeas.so:textproc/augeas
 CONFIGURE_ARGS=	--with-opt-include="${LOCALBASE}/include/libxml2"
 USE_GNOME=	libxml2
 USE_RUBY=	yes
-USES=		gem pkgconfig
+USES=		gem gnome pkgconfig
 
 .include <bsd.port.mk>

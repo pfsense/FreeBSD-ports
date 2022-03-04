@@ -1,5 +1,4 @@
 # Created by: Volker Stolz <stolz@i2.informatik.rwth-aachen.de>
-# $FreeBSD$
 
 PORTNAME=	apwal
 PORTVERSION=	0.4.5
@@ -11,7 +10,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple and powerful application launcher
 
 USE_GNOME=	gtk20 libxml2
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/src
 

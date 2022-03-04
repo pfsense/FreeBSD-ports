@@ -1,9 +1,6 @@
-Quod Libet is a GTK+-based audio player written in Python, using the
-Mutagen tagging library. It's designed around the idea that you know
-how to organize your music better than we do. It lets you make playlists
-based on regular expressions (don't worry, regular searches work too).
-It lets you display and edit any tags you want in the file. And it
-lets you do this for all the file formats it supports -- Ogg Vorbis,
-FLAC, MP3, Musepack, and MOD.
+Quod Libet is a music management program.  It provides several different
+ways to view your audio library, as well as support for Internet radio
+and audio feeds.  It has extremely flexible metadata tag editing and
+searching capabilities.
 
 WWW: https://quodlibet.readthedocs.org/

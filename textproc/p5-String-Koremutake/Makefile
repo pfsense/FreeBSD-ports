@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	String-Koremutake
 PORTVERSION=	0.30
@@ -20,5 +19,7 @@ RUN_DEPENDS=	p5-Error>=0:lang/p5-Error \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-net-snmp
 PORTVERSION=	0.1.5
-PORTREVISION=	2
+PORTREVISION=	10
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -31,7 +31,7 @@ do-install:
 
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/net-snmp.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/net-snmp.xml \
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/netsnmp.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/net-snmp_communities.xml \
 		${STAGEDIR}${PREFIX}/pkg

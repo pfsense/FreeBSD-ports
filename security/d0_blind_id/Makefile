@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	d0_blind_id
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0

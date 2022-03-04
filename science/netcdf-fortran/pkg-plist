@@ -12,8 +12,10 @@ include/netcdf_nf_data.mod
 include/netcdf_nf_interfaces.mod
 include/typesizes.mod
 lib/libnetcdff.a
+lib/libnetcdff.settings
 lib/libnetcdff.so
-lib/libnetcdff.so.6
-lib/libnetcdff.so.6.1.1
+lib/libnetcdff.so.7
+lib/libnetcdff.so.7.0.0
 libdata/pkgconfig/netcdf-fortran.pc
+man/man3/netcdf_f77.3.gz
 man/man3/netcdf_fortran.3.gz

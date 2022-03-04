@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyaes
 PORTVERSION=	1.6.1
 CATEGORIES=	security python
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 NO_ARCH=	yes
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

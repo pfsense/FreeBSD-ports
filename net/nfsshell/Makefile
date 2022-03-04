@@ -1,9 +1,8 @@
 # Created by: johans@stack.nl
-# $FreeBSD$
 
 PORTNAME=	nfsshell
 PORTVERSION=	20130510
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net
 #MASTER_SITES=	http://www.cs.vu.nl/pub/leendert/
 

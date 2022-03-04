@@ -1,5 +1,4 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gtimer
 PORTVERSION=	2.0.0
@@ -14,9 +13,9 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
+USES=		gettext perl5 gmake gnome pkgconfig xorg
 USE_XORG=	x11 xscrnsaver
 USE_GNOME=	gtk20
-USES=		gettext perl5 gmake pkgconfig
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include -Wno-return-type

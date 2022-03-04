@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	trio
 PORTVERSION=	1.16
@@ -31,7 +30,5 @@ do-test:
 	${CC} -o ${WRKSRC}/regression ${WRKSRC}/regression.c \
 		-L${WRKSRC} -ltrio -Wl,-rpath=${WRKSRC}
 	${WRKSRC}/regression
-
-
 
 .include <bsd.port.mk>

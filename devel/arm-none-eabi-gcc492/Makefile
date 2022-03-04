@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gcc
 PORTVERSION=	4.9.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
 PKGNAMEPREFIX?=	arm-none-eabi-
@@ -14,13 +12,18 @@ COMMENT=	GNU Compiler Collection for bare metal arm cross-development
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
+BROKEN_mips=		configure: error: cannot compute suffix of object files: cannot compile
+BROKEN_mips64=		configure: error: cannot compute suffix of object files: cannot compile
+
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
 		libmpc.so:math/mpc
-BUILD_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
-RUN_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
+BUILD_DEPENDS=	${BU_PREFIX}-as:devel/binutils@${PKGNAMEPREFIX:C/-$//:C/-/_/g} \
+		objdump:devel/binutils
+RUN_DEPENDS=	${BU_PREFIX}-as:devel/binutils@${PKGNAMEPREFIX:C/-$//:C/-/_/g}
 
-USES=	compiler gmake iconv libtool makeinfo tar:bzip2
+USES=		compiler cpe gmake iconv libtool makeinfo tar:bzip2
+CPE_VENDOR=	gnu
 PLIST_SUB=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
 		OPSYS=${OPSYS:tl} \
 		GCC_TARGET=${GCC_TARGET}
@@ -31,7 +34,7 @@ BU_PREFIX?=	${GCC_TARGET}
 GNU_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
 # libstdcxx won't build, but we don't need it or multiple float-abi libs.
-CONFIGURE_ARGS= --target=${GCC_TARGET} --disable-nls --enable-languages=c,c++ \
+CONFIGURE_ARGS=	--target=${GCC_TARGET} --disable-nls --enable-languages=c,c++ \
 		--without-headers \
 		--with-gmp=${LOCALBASE} \
 		--with-pkgversion="FreeBSD Ports Collection for ${PKGNAMEPREFIX:C/-//g}" \
@@ -67,9 +70,5 @@ post-install:
 .if ${COMPILER_TYPE} == clang
 MAKE_ARGS+=	CXXFLAGS=-fbracket-depth=512
 .endif
-
-BROKEN_aarch64=		fails to package
-BROKEN_mips=		configure: error: cannot compute suffix of object files: cannot compile
-BROKEN_mips64=		configure: error: cannot compute suffix of object files: cannot compile
 
 .include <bsd.port.post.mk>

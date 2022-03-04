@@ -1,5 +1,4 @@
 bin/kpackagetool5
-etc/xdg/kpackage.categories
 include/KF5/KPackage/KPackage/Package
 include/KF5/KPackage/KPackage/PackageLoader
 include/KF5/KPackage/KPackage/PackageStructure
@@ -14,6 +13,8 @@ lib/cmake/KF5Package/KF5PackageConfigVersion.cmake
 lib/cmake/KF5Package/KF5PackageMacros.cmake
 lib/cmake/KF5Package/KF5PackageTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF5Package/KF5PackageTargets.cmake
+lib/cmake/KF5Package/KF5PackageToolsTargets-%%CMAKE_BUILD_TYPE%%.cmake
+lib/cmake/KF5Package/KF5PackageToolsTargets.cmake
 lib/cmake/KF5Package/qrc.cmake
 lib/libKF5Package.so
 lib/libKF5Package.so.5
@@ -21,6 +22,7 @@ lib/libKF5Package.so.%%KDE_FRAMEWORKS_VERSION%%
 man/ca/man1/kpackagetool5.1.gz
 man/de/man1/kpackagetool5.1.gz
 man/es/man1/kpackagetool5.1.gz
+man/fr/man1/kpackagetool5.1.gz
 man/it/man1/kpackagetool5.1.gz
 man/man1/kpackagetool5.1.gz
 man/nl/man1/kpackagetool5.1.gz
@@ -32,6 +34,7 @@ share/kservicetypes5/kpackage-generic.desktop
 share/kservicetypes5/kpackage-genericqml.desktop
 share/kservicetypes5/kpackage-packagestructure.desktop
 share/locale/ar/LC_MESSAGES/libkpackage5.mo
+share/locale/az/LC_MESSAGES/libkpackage5.mo
 share/locale/bs/LC_MESSAGES/libkpackage5.mo
 share/locale/ca/LC_MESSAGES/libkpackage5.mo
 share/locale/ca@valencia/LC_MESSAGES/libkpackage5.mo
@@ -55,6 +58,7 @@ share/locale/it/LC_MESSAGES/libkpackage5.mo
 share/locale/ja/LC_MESSAGES/libkpackage5.mo
 share/locale/ko/LC_MESSAGES/libkpackage5.mo
 share/locale/lt/LC_MESSAGES/libkpackage5.mo
+share/locale/ml/LC_MESSAGES/libkpackage5.mo
 share/locale/mr/LC_MESSAGES/libkpackage5.mo
 share/locale/nb/LC_MESSAGES/libkpackage5.mo
 share/locale/nds/LC_MESSAGES/libkpackage5.mo
@@ -73,8 +77,11 @@ share/locale/sr@ijekavian/LC_MESSAGES/libkpackage5.mo
 share/locale/sr@ijekavianlatin/LC_MESSAGES/libkpackage5.mo
 share/locale/sr@latin/LC_MESSAGES/libkpackage5.mo
 share/locale/sv/LC_MESSAGES/libkpackage5.mo
+share/locale/tg/LC_MESSAGES/libkpackage5.mo
 share/locale/tr/LC_MESSAGES/libkpackage5.mo
 share/locale/ug/LC_MESSAGES/libkpackage5.mo
 share/locale/uk/LC_MESSAGES/libkpackage5.mo
 share/locale/zh_CN/LC_MESSAGES/libkpackage5.mo
 share/locale/zh_TW/LC_MESSAGES/libkpackage5.mo
+share/qlogging-categories5/kpackage.categories
+share/qlogging-categories5/kpackage.renamecategories

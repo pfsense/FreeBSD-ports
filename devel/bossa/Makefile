@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	bossa
-PORTVERSION=	1.7.0
-PORTREVISION=	7
+PORTVERSION=	1.9.1
 CATEGORIES=	devel
 
 MAINTAINER=	kevans@FreeBSD.org
@@ -28,7 +25,7 @@ OPTIONS_SUB=		yes
 
 BOSSA_DESC=		Include BOSSA GUI application using wxWidgets
 BOSSA_ALL_TARGET=	bin/bossa
-BOSSA_USE=		wx=3.0 wx_comps=wx
+BOSSA_USE=		wx=3.0
 
 BOSSASH_DESC=		Include BOSSA Shell
 BOSSASH_USES=		readline

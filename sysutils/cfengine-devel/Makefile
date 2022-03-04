@@ -1,13 +1,12 @@
 # Created by: jrhett@netconsonance.com
-# $FreeBSD$
 
 PORTNAME=	cfengine
 PORTVERSION=	3.${CFENGINE_COMMIT_DATE}
 CATEGORIES=	sysutils
-MASTER_SITES=	https://s3.amazonaws.com/cfengine-package-repos/tarballs/
 PKGNAMESUFFIX=	-devel
-HASH=		3fb84b7
-CFENGINE_COMMIT_DATE=	2019.03.25
+CFENGINE_HASH=		73261fc17
+LIBNTECH_HASH=		66274a1
+CFENGINE_COMMIT_DATE=	2021.12.03
 
 MAINTAINER=	cy@FreeBSD.org
 #		gjb@FreeBSD.org is also committer for this port
@@ -17,15 +16,13 @@ COMMENT=	Systems administration tool for networks
 LICENSE=	GPLv3
 
 USE_GITHUB=	yes
-GH_PROJECT=	core
-GH_TAGNAME=	${HASH}
+# GH_PROJECT=	core libntech:libntech
+# GH_TAGNAME=	${CFENGINE_HASH} ${LIBNTECH_HASH}
+GH_TUPLE=	cfengine:core:${CFENGINE_HASH} \
+		cfengine:libntech:${LIBNTECH_HASH}:libntech/libntech
 CPE_VENDOR=	gnu
 
-USE_GCC=	any
-
 CONFLICTS=	cfengine-2* cfengine3[0-9]-* cfengine31[02-9]-* cfengine-3.*
-
-FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
 CONFLICTS=	cfengine-[12-9]*
 
@@ -34,11 +31,11 @@ USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USES=		autoreconf:build \
-		cpe gmake localbase libtool shebangfix ssl
+USES=		autoreconf:build cpe gmake gnome libtool localbase shebangfix \
+		ssl
 USE_GNOME=	libxml2
 SHEBANG_FILES=	examples/remake_outputs.pl
-CFLAGS+=	-Wno-return-type
+CFLAGS+=	-Wno-return-type -fcommon
 # EXAMPLESDIR=	${PREFIX}/share/examples/cfengine3
 DOCSDIR=	${PREFIX}/share/doc/cfengine
 MAKE_ENV=	EXPLICIT_VERSION=${PORTVERSION}-${HASH}
@@ -64,15 +61,15 @@ LIB_DEPENDS+=	libpcre.so:devel/pcre \
 OPTIONS_DEFINE=	PGSQL MYSQL LIBVIRT
 
 PGSQL_USES=		pgsql
-PGSQL_CONFIGURE_WITH=	--with-postgresql=${LOCALBASE}
+PGSQL_CONFIGURE_WITH=	postgresql=${LOCALBASE}
 
 MYSQL_USES=		mysql
 MYSQL_BROKEN=		configure: error: MySQL client library exports symbols (EVP_CIPHER_CTX_init) clashing with OpenSSL.
-MYSQL_CONFIGURE_WITH=	--with-mysql=${LOCALBASE}
+MYSQL_CONFIGURE_WITH=	mysql=${LOCALBASE}
 MYSQL_LIB_DEPENDS=	libmysqlclient.so:${_MYSQL_CLIENT}
 MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql
 
-LIBVIRT_CONFIGURE_WITH=	--with-libvirt=${LOCALBASE}
+LIBVIRT_CONFIGURE_WITH=	libvirt=${LOCALBASE}
 LIBVIRT_LIB_DEPENDS+=	libvirt.so:devel/libvirt
 
 .include <bsd.port.mk>

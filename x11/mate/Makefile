@@ -1,18 +1,16 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mate
-PORTVERSION=	1.20.3
+PORTVERSION=	1.26.0
 CATEGORIES=	x11 mate
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	"meta-port" for the MATE integrated X11 desktop
 
-USES=		metaport
+USES=		mate metaport
 
-RUN_DEPENDS=	mate-base>=1.8.0:x11/mate-base \
-		mate-themes>=1.8.0:x11-themes/mate-themes \
-		mate-icon-theme-faenza>=1.8.0:x11-themes/mate-icon-theme-faenza \
+RUN_DEPENDS=	mate-base>=1.22.0:x11/mate-base \
+		mate-themes>=0:x11-themes/mate-themes \
 		mate-terminal:x11/mate-terminal \
 		mate-screensaver:x11/mate-screensaver \
 		mate-calc:math/mate-calc \
@@ -25,7 +23,7 @@ RUN_DEPENDS=	mate-base>=1.8.0:x11/mate-base \
 		mate-power-manager:sysutils/mate-power-manager \
 		caja-sendto:deskutils/caja-extensions \
 		mozo:deskutils/mozo \
-		mate-applets>=1.8.0:x11/mate-applets
+		mate-applets>=1.22.0:x11/mate-applets
 
 USE_MATE=	pluma:run
 

@@ -1,9 +1,8 @@
 # Created by: b.f. <bf@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	trlan
 PORTVERSION=	201009
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	math
 MASTER_SITES=	https://codeforge.lbl.gov/frs/download.php/210/:1 \
 		http://crd.lbl.gov/~kewu/ps/:2 \

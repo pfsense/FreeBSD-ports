@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Handling of variables using helpers
 # Include before bsd.port.(pre|options).mk
 
@@ -58,7 +56,6 @@ GUI_USES=		gnome
 GUI_DESKTOP_ENTRIES=	"MPlayer" "High performance media player" "mplayer" "gmplayer" "" false
 GUI_IMPLIES=		ASS X11
 
-IPV6_CATEGORIES=	ipv6
 IPV6_CONFIGURE_OFF=	--disable-inet6
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
@@ -79,6 +76,9 @@ LZO_CONFIGURE_OFF=	--disable-liblzo
 NAS_LIB_DEPENDS=	libaudio.so:audio/nas
 NAS_CONFIGURE_OFF=	--disable-nas
 
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
+
 OPENAL_USES=		openal:soft
 OPENAL_CONFIGURE_OFF=	--disable-openal
 
@@ -95,10 +95,6 @@ OPUS_CONFIGURE_OFF=	--disable-libopus
 
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
-
-RTC_BUILD_DEPENDS=	${LOCALBASE}/modules/rtc.ko:emulators/rtc
-RTC_RUN_DEPENDS=	${LOCALBASE}/modules/rtc.ko:emulators/rtc
-RTC_CONFIGURE_ENABLE=	rtc
 
 RTCPU_CONFIGURE_ON=	--enable-runtime-cpudetection
 
@@ -143,13 +139,16 @@ VDPAU_CONFIGURE_OFF=	--disable-vdpau
 VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 VPX_CONFIGURE_OFF=	--disable-libvpx-lavc
 
+X11_USES=		xorg
 X11_USE=		XORG=x11,xext,xorgproto,xscrnsaver
 X11_CONFIGURE_OFF=	--disable-x11
 
+X11DGA_USES=		xorg
 X11DGA_USE=		XORG=xxf86dga
 X11DGA_CONFIGURE_OFF=	--disable-dga1 --disable-dga2
 X11DGA_IMPLIES=		X11
 
+X11VM_USES=		xorg
 X11VM_USE=		XORG=xxf86vm
 X11VM_CONFIGURE_OFF=	--disable-vm
 X11VM_IMPLIES=		X11
@@ -157,6 +156,7 @@ X11VM_IMPLIES=		X11
 X264_LIB_DEPENDS=	libx264.so:multimedia/libx264
 X264_CONFIGURE_OFF=	--disable-x264
 
+XINERAMA_USES=		xorg
 XINERAMA_USE=		XORG=xinerama,xorgproto
 XINERAMA_CONFIGURE_OFF=	--disable-xinerama
 XINERAMA_IMPLIES=	X11

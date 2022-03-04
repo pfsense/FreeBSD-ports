@@ -1,10 +1,9 @@
 # Created by: Balwinder S Dheeman <bdheeman@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	cvs
 PORTVERSION=	1.12.13
 PORTREVISION=	13
-CATEGORIES=	devel ipv6
+CATEGORIES=	devel
 MASTER_SITES=	GNU/non-gnu/${PORTNAME}/source/feature/${PORTVERSION}
 PKGNAMESUFFIX=	-devel
 
@@ -13,7 +12,8 @@ COMMENT=	IPv6 enabled cvs.  You can use IPv6 connection when using pserver
 
 CONFLICTS=	cvsnt-[12]* cvs+ipv6-[12]*
 
-USES=		makeinfo perl5 tar:bzip2
+USES=		cpe makeinfo perl5 tar:bzip2
+CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-ipv6 --without-gssapi \
 		--with-editor="vi" \

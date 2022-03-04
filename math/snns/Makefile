@@ -1,5 +1,4 @@
 # Created by: reg@shale.csir.co.za
-# $FreeBSD$
 
 PORTNAME=	snns
 PORTVERSION=	4.3
@@ -13,6 +12,7 @@ COMMENT=	Fully featured neural network simulator
 
 LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
 
+USES=		xorg
 USE_XORG=	x11 xext xt
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}/lib/snns --enable-global \

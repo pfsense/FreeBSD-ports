@@ -1,17 +1,15 @@
 # Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	yaconf
-DISTVERSION=	1.0.7
+PORTVERSION=	1.1.0
 CATEGORIES=	devel
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP Persistent Configurations Container
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-IGNORE_WITH_PHP= 73
 USES=		php:pecl
 
 .include <bsd.port.mk>

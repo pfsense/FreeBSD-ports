@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Handles common items for kernel module ports.
 #
 # Feature:	kmod
@@ -21,8 +19,8 @@ _DEBUG_KMOD=	yes
 IGNORE=	USES=kmod takes either no arguments or 'debug'
 .endif
 
-.if !exists(${SRC_BASE}/sys/Makefile)
-IGNORE=	requires kernel source files in ${SRC_BASE}
+.if !exists(${SRC_BASE}/sys/Makefile) && target(build)
+IGNORE=	requires kernel source files in SRC_BASE=${SRC_BASE}
 .endif
 
 CATEGORIES+=	kld

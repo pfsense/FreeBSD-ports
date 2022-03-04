@@ -1,5 +1,4 @@
 # Created by: Trevor Caira <trevor@bitba.se>
-# $FreeBSD$
 
 PORTNAME=	resolver
 PORTVERSION=	0.2.1
@@ -14,7 +13,7 @@ COMMENT=	Resolve specially formatted statements to Python objects
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

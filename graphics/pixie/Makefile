@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
 
 PORTNAME=	pixie
 PORTVERSION=	2.2.6
-PORTREVISION=	20
+PORTREVISION=	35
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Pixie%20${PORTVERSION}
 DISTNAME=	Pixie-src-${PORTVERSION}
@@ -14,17 +13,19 @@ COMMENT=	Photorealistic renderer with Pixar's RenderMan-like interface
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
+BROKEN_aarch64=		fails to compile: ri/atomic.h:149:9: use of undeclared identifier CRenderer
+BROKEN_armv6=		fails to compile: ri/atomic.h:149:9: use of undeclared identifier CRenderer
+BROKEN_armv7=		fails to compile: ri/atomic.h:149:9: use of undeclared identifier CRenderer
+BROKEN_riscv64=		fails to compile: ri/atomic.h:149:9: use of undeclared identifier CRenderer
+BROKEN_FreeBSD_12_powerpc64=	fails to compile on powerpc64 elfv1: ../common/mathSpec.h:548:37: error: 'max' was not declared in this scope
+
+LIB_DEPENDS=	libOpenEXR.so:graphics/openexr \
+		libImath.so:math/Imath \
 		libtiff.so:graphics/tiff \
 		libfltk_gl.so:x11-toolkits/fltk
 
-BROKEN_aarch64=		fails to compile: use of undeclared identifier CRenderer
-BROKEN_armv6=		fails to compile: use of undeclared identifier CRenderer
-BROKEN_armv7=		fails to compile: use of undeclared identifier CRenderer
-BROKEN_sparc64=		fails to compile
-
+USES=		autoreconf bison compiler:c++0x gl libtool pathfix tar:tgz
 USE_GL=		glu
-USES=		bison compiler:c++0x libtool pathfix tar:tgz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/pixie \
 		--libdir=${PREFIX}/lib/pixie \
@@ -43,7 +44,7 @@ USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 PORTDOCS=	*
 
 CFLAGS+=	-fPIC
-CPPFLAGS+=	-I${LOCALBASE}/include
+CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/Imath
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	DOCS
@@ -51,12 +52,9 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	@${REINPLACE_CMD} -e '/test/s|==|=|g ; \
 		 s|-lpthread|-pthread|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e '/^SUBDIRS/s|doc||g ; \
-		 /^install-data-am:/s|install-nobase_docDATA||g' \
-		 ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e '/^includedir/s|=.*$$|= @includedir@|g' \
-		${WRKSRC}/src/ri/Makefile.in \
-		${WRKSRC}/src/sdr/Makefile.in
+		${WRKSRC}/src/ri/Makefile.am \
+		${WRKSRC}/src/sdr/Makefile.am
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

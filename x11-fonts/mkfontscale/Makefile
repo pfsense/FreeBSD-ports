@@ -1,5 +1,4 @@
 # Created by: Pawel Worach
-# $FreeBSD$
 
 PORTNAME=	mkfontscale
 PORTVERSION=	1.2.1
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	xorgproto fontenc
 
 PLIST_FILES=	bin/mkfontdir \

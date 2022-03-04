@@ -1,38 +1,56 @@
---- base/allocator/partition_allocator/page_allocator_internals_posix.h.orig	2019-03-11 22:00:51 UTC
+--- base/allocator/partition_allocator/page_allocator_internals_posix.h.orig	2021-07-19 18:45:05 UTC
 +++ base/allocator/partition_allocator/page_allocator_internals_posix.h
-@@ -14,7 +14,7 @@
- #if defined(OS_MACOSX)
- #include <mach/mach.h>
+@@ -28,10 +28,14 @@
+ #if defined(OS_ANDROID)
+ #include <sys/prctl.h>
  #endif
--#if defined(OS_LINUX)
-+#if defined(OS_BSD) || defined(OS_LINUX)
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  #include <sys/resource.h>
+ #endif
  
- #include <algorithm>
-@@ -48,7 +48,7 @@ int GetAccessFlags(PageAccessibilityConfiguration acce
++#if defined(OS_BSD)
++#include <fcntl.h>
++#endif
++
+ #include "base/allocator/partition_allocator/page_allocator.h"
+ 
+ #ifndef MAP_ANONYMOUS
+@@ -151,12 +155,19 @@ void* SystemAllocPagesInternal(void* hint,
+   PA_DCHECK(PageTag::kFirst <= page_tag);
+   PA_DCHECK(PageTag::kLast >= page_tag);
+   int fd = VM_MAKE_TAG(static_cast<int>(page_tag));
++#elif defined(OS_FREEBSD)
++  int fd = HANDLE_EINTR(open("/dev/zero", O_RDWR | O_CLOEXEC));
++  PA_PCHECK(fd != -1);
+ #else
+   int fd = -1;
+ #endif
+ 
+   int access_flag = GetAccessFlags(accessibility);
++#if defined(OS_FREEBSD)
++  int map_flags = MAP_PRIVATE;
++#else
+   int map_flags = MAP_ANONYMOUS | MAP_PRIVATE;
++#endif
+ 
+ #if defined(OS_APPLE)
+   // On macOS 10.14 and higher, executables that are code signed with the
+@@ -183,6 +194,8 @@ void* SystemAllocPagesInternal(void* hint,
+     prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ret, length,
+           PageTagToName(page_tag));
    }
- }
++#elif defined(OS_FREEBSD)
++  HANDLE_EINTR(close(fd));
+ #endif
  
--#if defined(OS_LINUX) && defined(ARCH_CPU_64_BITS)
-+#if (defined(OS_BSD) || defined(OS_LINUX)) && defined(ARCH_CPU_64_BITS)
- 
- // Multiple guarded memory regions may exceed the process address space limit.
- // This function will raise or lower the limit by |amount|.
-@@ -68,7 +68,7 @@ bool AdjustAddressSpaceLimit(int64_t amount) {
- // schemes that reduce that to 4 GiB.
- constexpr size_t kMinimumGuardedMemorySize = 1ULL << 32;  // 4 GiB
- 
--#endif  // defined(OS_LINUX) && defined(ARCH_CPU_64_BITS)
-+#endif  // (defined(OS_BSD) || defined(OS_LINUX)) && defined(ARCH_CPU_64_BITS)
- 
- void* SystemAllocPagesInternal(void* hint,
-                                size_t length,
-@@ -134,7 +134,7 @@ void SetSystemPagesAccessInternal(
- void FreePagesInternal(void* address, size_t length) {
-   CHECK(!munmap(address, length));
- 
--#if defined(OS_LINUX) && defined(ARCH_CPU_64_BITS)
-+#if (defined(OS_BSD) || defined(OS_LINUX)) && defined(ARCH_CPU_64_BITS)
-   // Restore the address space limit.
-   if (length >= kMinimumGuardedMemorySize) {
-     CHECK(AdjustAddressSpaceLimit(-base::checked_cast<int64_t>(length)));
+   return ret;
+@@ -334,6 +347,8 @@ void DiscardSystemPagesInternal(void* address, size_t 
+     ret = madvise(address, length, MADV_DONTNEED);
+   }
+   PA_PCHECK(ret == 0);
++#elif defined(OS_FREEBSD)
++  PA_PCHECK(0 == madvise(address, length, MADV_FREE));
+ #else
+   // We have experimented with other flags, but with suboptimal results.
+   //

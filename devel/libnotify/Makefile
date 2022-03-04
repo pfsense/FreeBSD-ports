@@ -1,25 +1,28 @@
 # Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
-#   $MCom: ports/trunk/devel/libnotify/Makefile 19813 2014-08-15 19:44:33Z gusi $
 
 PORTNAME=	libnotify
-PORTVERSION=	0.7.7
+PORTVERSION=	0.7.9
 PORTREVISION=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Library for desktop notifications
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake libtool pkgconfig tar:xz
+BUILD_DEPENDS=	xsltproc:textproc/libxslt \
+		docbook-xsl-ns>=0:textproc/docbook-xsl-ns
+
+USES=		gmake gnome libtool meson pkgconfig tar:xz
 USE_GNOME=	glib20 gdkpixbuf2 introspection:build
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
 
-CONFIGURE_ARGS=	--disable-tests
+MESON_ARGS=	-Dtests=false -Ddocbook_docs=disabled -Dgtk_doc=false
+
+post-patch:
+	${REINPLACE_CMD} -e "s#http:.*docbook.xsl#${LOCALBASE}/share/xsl/docbook-ns/manpages/docbook.xsl#g" \
+		${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

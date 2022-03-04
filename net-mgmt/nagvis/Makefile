@@ -1,8 +1,7 @@
 # Created by: Andrew 'derfi' Sidorov <derfi@vei.ru>
-# $FreeBSD$
 
 PORTNAME=	nagvis
-PORTVERSION=	1.9.11
+PORTVERSION=	1.9.27
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.nagvis.org/share/
 
@@ -12,7 +11,7 @@ COMMENT=	Visualization addon for Nagios
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext php:web
+USES=		cpe gettext php:web
 USE_PHP=	gd gettext mbstring session json pdo pdo_sqlite
 
 NO_BUILD=	yes
@@ -38,8 +37,8 @@ NDO2DB_DESC=		Depend on ndo2db broker
 
 GRAPHVIZ_RUN_DEPENDS=		dot:graphics/graphviz
 MKLIVESTATUS_RUN_DEPENDS=	mk-livestatus>=0:net-mgmt/mk-livestatus
-NDO2DB_USE=			PHP=mysql
-NDO2DB_RUN_DEPENDS=		ndo2db-3x:net-mgmt/ndoutils
+NDO2DB_USE=			PHP=mysqli
+NDO2DB_RUN_DEPENDS=		ndo2db:net-mgmt/ndoutils
 
 post-extract:
 	@${RM} ${WRKSRC}/.gitignore ${WRKSRC}/install.sh ${WRKSRC}/INSTALL

@@ -1,7 +1,0 @@
-***************************************************************
-
-If you use PHP support you should load mod_php BEFORE mod_vhs
-otherwise your Apache will not start.
-
-
-***************************************************************

@@ -1,18 +1,17 @@
 # Created by: Thomas Quinot <thomas@cuivre.fr.eu.org>
-# $FreeBSD$
 
 PORTNAME=	calife
 PORTVERSION=	3.0.6
 PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	http://assets.keltia.net/calife/
+MASTER_SITES=	https://assets.keltia.net/calife/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	roberto@FreeBSD.org
 COMMENT=	Lightweight alternative to sudo
 
 LICENSE=	GPLv2
 
-USES=		tar:xz
+USES=		cpe tar:xz
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-etcdir=${PREFIX}/etc

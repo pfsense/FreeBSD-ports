@@ -1,13 +1,12 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	at-spi2-atk
-PORTVERSION=	2.26.2
+PORTVERSION=	2.34.2
 CATEGORIES=	accessibility x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Assisted Technology Provider module for GTK+
 
 LICENSE=	LGPL21

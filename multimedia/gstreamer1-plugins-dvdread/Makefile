@@ -1,6 +1,4 @@
-# $FreeBSD$
-
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 COMMENT=	GStreamer DVD access plugin with libdvdread

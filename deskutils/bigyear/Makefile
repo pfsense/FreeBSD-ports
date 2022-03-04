@@ -1,11 +1,10 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	bigyear
 PORTVERSION=	20010226
 PORTEPOCH=	1
 CATEGORIES=	deskutils
-MASTER_SITES=	http://BSDforge.com/projects/source/deskutils/bigyear/
+MASTER_SITES=	https://BSDforge.com/projects/source/deskutils/bigyear/
 DISTNAME=	${PORTNAME}
 
 MAINTAINER=	portmaster@BSDforge.com

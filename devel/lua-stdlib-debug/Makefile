@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	stdlib-debug
 PORTVERSION=	1.0.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
-MAINTAINER=	sasaki@fcc.ad.jp
+MAINTAINER=	sasaki12@gmail.com
 COMMENT=	Debug hints management library for lua
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 NO_ARCH=	yes
-USES=		lua
+USES=		lua:module
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	lua-stdlib
@@ -21,7 +20,7 @@ GH_PROJECT=	_debug
 
 OPTIONS_DEFINE=	DOCS
 
-DOCSDIR=	${PREFIX}/share/doc/lua${LUA_VER_STR}/${PORTNAME}
+DOCSDIR=	${LUA_DOCSDIR}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${LUA_MODSHAREDIR}/std/_debug

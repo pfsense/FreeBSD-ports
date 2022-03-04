@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	docx2txt
 PORTVERSION=	1.4
 CATEGORIES=	textproc perl5
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/v${PORTVERSION}
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	pkubaj@anongoth.pl
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Utility to convert Docx documents to equivalent Text documents
 
 LICENSE=	GPLv3

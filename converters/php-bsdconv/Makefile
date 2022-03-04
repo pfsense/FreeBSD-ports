@@ -1,8 +1,7 @@
 # Created by: buganini@gmail.com
-# $FreeBSD$
 
 PORTNAME=	bsdconv
-PORTVERSION=	11.5.0
+PORTVERSION=	11.6.0
 CATEGORIES=	converters
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 

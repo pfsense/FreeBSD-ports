@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xgalaga++
 PORTVERSION=	0.9
@@ -15,7 +14,7 @@ COMMENT=	Classic single screen vertical shoot em up
 
 LICENSE=	GPLv2
 
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	x11 xpm
 
 ALL_TARGET=	${PORTNAME}

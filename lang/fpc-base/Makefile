@@ -1,9 +1,7 @@
 # Created by: John Merryweather Cooper <coop9211@uidaho.edu>
-# $FreeBSD$
 
 PORTNAME=	base
-PORTVERSION=	3.0.4
-PORTREVISION=	1
+PORTVERSION=	3.2.2
 CATEGORIES=	lang
 PKGNAMEPREFIX=	fpc-
 

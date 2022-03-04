@@ -3,8 +3,8 @@
  * pfblockerng_install.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,6 @@
 
 require_once('pfsense-utils.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
-require_once('/usr/local/www/pfblockerng/pfblockerng.php');
 
 global $config, $g, $pfb;
 pfb_global();
@@ -30,121 +29,19 @@ pfb_global();
 // Set 'Install flag' to skip sync process during installations.
 $g['pfblockerng_install'] = TRUE;
 
-// Only download MaxMind Database if files do not exist
-$maxmind_verify = FALSE;
+// MaxMind Database is no longer pre-installed during package installation
+update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
 
-if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv4.csv") ||
-    !file_exists("{$pfb['dbdir']}/geoip.txt") ||
-    !file_exists("{$pfb['ccdir']}/Top_Spammers_v4.info")) {
-
-	update_status("\nDownloading MaxMind GeoIP databases. This may take a minute...\n");
-
-	// Remove Alexa and Blacklist category feeds from download process
-	$pfb['extras'] = array_slice($pfb['extras'], 0, 2) ?: array();
-
-	foreach ($pfb['extras'] as $feed) {
-
-		$file_dwn = "{$pfb['geoipshare']}/{$feed['file_dwn']}";
-		if (($fhandle = @fopen("{$file_dwn}", 'w')) !== FALSE) {
-			if (empty($feed['file'])) {
-				$feed['file'] = 'GeoLite2-Country-CSV.zip';
-			}
-			update_status(" {$feed['file']}...");
-			if (!($ch = curl_init("{$feed['url']}"))) {
-				update_status(" Failed to create cURL resource.\n");
-				break;
-			}
-
-			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 Chrome/43.0.2357.65 Safari/537.36');
-			curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.3, TLSv1.2');
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
-			curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-			curl_setopt($ch, CURLOPT_FILE, $fhandle);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 600);
-
-			// Attempt 3 Downloads before failing.
-			for ($retries = 1; $retries <= 3; $retries++) {
-				if (curl_exec($ch)) {
-					break;	// Break on success
-				}
-
-				$curl_error = curl_errno($ch);
-				update_status(" cURL Error: {$curl_error}. ", 1);
-			}
-
-			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if ($http_status == '200 OK') {
-				if (strpos($file_dwn, '.gz') !== FALSE) {
-					exec("/usr/bin/tar -xzf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
-				} elseif (strpos($file_dwn, '.zip') !== FALSE) {
-					exec("/usr/bin/tar -xf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
-				}
-				unlink_if_exists("{$file_dwn}");
-				update_status(" done.\n");
-
-				if ($feed['file'] == 'GeoLite2-Country-CSV.zip') {
-					$maxmind_verify = TRUE;
-				}
-			}
-			else {
-				update_status(" Failed!\n");
-			}
-		}
-		curl_close($ch);
-		@fclose($fhandle);
-	}
-
-	if (!$maxmind_verify) {
-		update_status("MaxMind download Failed! Fetching MaxMind archive from pfSense package repo...\n");
-		// Fetch archived MaxMind database
-		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
-		$retval = '';
-		exec("/usr/bin/fetch -o /tmp/countrycodes.tar.bz2 {$url}", $output, $retval);
-		if ($retval == 0) {
-			// Uncompress archived GeoIP code file
-			$retval = '';
-			exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2", $output, $retval);
-			if ($retval == 0) {
-				$maxmind_verify = TRUE;
-				update_status("Fetch done.\n");
-			} else {
-				update_status("Fetch Failed!\n");
-			}
-		}
-		else {
-			update_status(" Failed!\n");
-		}
-	}
-	else {
-		update_status("Downloading MaxMind GeoIP databases... done.\n");
-	}
-
-	// Proceed with conversion of MaxMind files on download success
-	if ($maxmind_verify) {
-		update_status("Converting MaxMind GeoIP databases for pfBlockerNG.\n This may take a few minutes...\n");
-		pfblockerng_uc_countries();
-		update_status("Creating pfBlockerNG Continent PHP files...\n");
-		pfblockerng_get_countries();
-	}
-	else {
-		update_status("\n\nMaxMind update has Failed! Please fix connectivity and re-install package again!\n\n");
-	}
-}
-else {
-	update_status("\nMaxMind GeoIP databases previously downloaded.\n");
-	update_status("Re-creating pfBlockerNG Continent PHP files... ");
-	pfblockerng_get_countries();
-	update_status("done.\n");
-}
-
-
+$pfb['widgets'] = $config['widgets']['sequence'];
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("\nRestoring previous pfBlockerNG Widget settings...");
-	// Restore previous widget setting if 'keep' is enabled.
+
+	// Fix incorrect Dashboard widget sequence
+	if (strpos($pfb['widgets'], ':show') !== FALSE) {
+		$pfb['widgets'] = str_replace(':show', ':open:0', $pfb['widgets']);
+		update_status("Fix incorrect Dashboard widget sequence...");
+	}
+
 	$config['widgets']['sequence'] = $pfb['widgets'];
 	write_config('pfBlockerNG: Save widget');
 } else {
@@ -152,9 +49,9 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 	$widgets = $config['widgets']['sequence'];
 	if (strpos($widgets, 'pfblockerng') === FALSE) {
 		if (empty($widgets)) {
-			$config['widgets']['sequence'] = 'pfblockerng:col2:show';
+			$config['widgets']['sequence'] = 'pfblockerng:col2:open:0';
 		} else {
-			$config['widgets']['sequence'] .= ',pfblockerng:col2:show';
+			$config['widgets']['sequence'] .= ',pfblockerng:col2:open:0';
 		}
 		write_config('pfBlockerNG: Save widget');
 	}
@@ -167,8 +64,15 @@ stop_service('pfb_filter');
 update_status(" done.\nRenew Firewall filter executables...");
 unlink_if_exists('/usr/local/bin/php_pfb');
 link('/usr/local/bin/php', '/usr/local/bin/php_pfb');
+
+// clog is not required for pfSense 2.5 and above
 unlink_if_exists('/usr/local/sbin/clog_pfb');
-link('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
+unlink_if_exists('/usr/bin/tail_pfb');
+if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' && file_exists('/usr/local/sbin/clog')) {
+	link('/usr/local/sbin/clog', '/usr/local/sbin/clog_pfb');
+} else {
+	link('/usr/bin/tail', '/usr/bin/tail_pfb');
+}
 
 update_status(" done.\nStarting Firewall filter Service...");
 start_service('pfb_filter');
@@ -189,11 +93,10 @@ if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
 	pfb_create_lighttpd();
 	update_status(" done.\n");
 
-	if (!file_exists("{$pfb['dnsbl_cert']}")) {
-		update_status("Creating DNSBL Certificate...");
-		pfb_create_dnsbl_cert();
-		update_status(" done.\n");
-	}
+	unlink_if_exists($pfb['dnsbl_cert']);
+	update_status("Creating DNSBL Certificate...");
+	pfb_create_dnsbl_cert();
+	update_status(" done.\n");
 }
 
 update_status("Starting DNSBL Service...");
@@ -213,8 +116,8 @@ if (!file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php') ||
 update_status("Upgrading previous settings:\n");
 
 // Remove discontinued pfBlockerNG CRON job
-$pfb_cron = &$config['cron']['item'];
-if (isset($pfb_cron)) {
+if (is_array($config['cron']['item'])) {
+	$pfb_cron = &$config['cron']['item'];
 	foreach ($pfb_cron as $key => $item) {
 		if (strpos($item['command'], 'pfblockerng.php dc >>') !== FALSE) {
 			unset($pfb_cron[$key]);
@@ -337,7 +240,7 @@ if (is_array($config['installedpackages']['pfblockerng']['config'][0])) {
 
 		// pfBlockerNG IPSec interface selection upgrade
 		if (isset($pfb['config']['ipsec_action']) &&
-	    	    $pfb_interfaces['ipsec_action'] == 'on' &&
+		    $pfb_interfaces['ipsec_action'] == 'on' &&
 		    isset($config['ipsec']) &&
 		    !empty($config['ipsec']) &&
 		    strpos($pfb_interfaces['outbound_interface'], 'enc0') === FALSE) {
@@ -497,11 +400,13 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 							. " VALUES ( :group0, :group1, :group2, :group3 );\n";
 
 					$stmt = $db_handle->prepare($db_update);
-					$stmt->bindValue(':group0', $group[0], SQLITE3_TEXT);
-					$stmt->bindValue(':group1', $group[1], SQLITE3_TEXT);
-					$stmt->bindValue(':group2', $group[2], SQLITE3_TEXT);
-					$stmt->bindValue(':group3', $group[3], SQLITE3_INTEGER);
-					$stmt->execute();
+					if ($stmt) {
+						$stmt->bindValue(':group0', $group[0], SQLITE3_TEXT);
+						$stmt->bindValue(':group1', $group[1], SQLITE3_TEXT);
+						$stmt->bindValue(':group2', $group[2], SQLITE3_TEXT);
+						$stmt->bindValue(':group3', $group[3], SQLITE3_INTEGER);
+						$stmt->execute();
+					}
 				}
 			}
 		}
@@ -509,6 +414,29 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 	pfb_close_sqlite($db_handle);
 }
 unlink_if_exists('/var/db/pfblockerng/dnsbl_info');
+
+// Move dnsbl_levent.sqlite -> /var/unbound folder
+$u_found = FALSE;
+if (file_exists('/var/db/pfblockerng/dnsbl_levent.sqlite') && !file_exists($pfb['dnsbl_resolver'])) {
+	$ufound = TRUE;
+	@copy('/var/db/pfblockerng/dnsbl_levent.sqlite', $pfb['dnsbl_resolver']);
+	@chown($pfb['dnsbl_resolver'], 'unbound');
+	@chgrp($pfb['dnsbl_resolver'], 'unbound');
+}
+unlink_if_exists('/var/db/pfblockerng/dnsbl_levent.sqlite');
+
+// Move dnsbl.sqlite -> /var/unbound folder
+if (file_exists('/var/db/pfblockerng/dnsbl.sqlite') && !file_exists($pfb['dnsbl_info'])) {
+	$ufound = TRUE;
+	@copy('/var/db/pfblockerng/dnsbl.sqlite', $pfb['dnsbl_info']);
+	@chown($pfb['dnsbl_info'], 'unbound');
+	@chgrp($pfb['dnsbl_info'], 'unbound');
+}
+unlink_if_exists('/var/db/pfblockerng/dnsbl.sqlite');
+
+if ($ufound) {
+	$final = pfb_stop_start_unbound('');
+}
 
 // Upgrade EasyList to new Format
 update_status(" Upgrading previous EasyLists to new format...");
@@ -567,6 +495,54 @@ if (is_array($config['installedpackages']['pfblockerngdnsbleasylist']) &&
 
 	// Remove Previous EasyList configuration
 	unset($config['installedpackages']['pfblockerngdnsbleasylist']);
+}
+
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
+}
+
+// Firefox Doh settings to new DoH settings
+update_status(" Upgrading previous Firefox DoH to new format...");
+$ufound = FALSE;
+
+if (is_array($config['installedpackages']['pfblockerngsafesearch']) &&
+    !empty($config['installedpackages']['pfblockerngsafesearch'])) {
+
+	$doh_config = &$config['installedpackages']['pfblockerngsafesearch'];
+	if (isset($doh_config['safesearch_firefoxdoh'])) {
+		$ufound = TRUE;
+
+		$doh_config['safesearch_doh'] = $doh_config['safesearch_firefoxdoh'];
+		if ($doh_config['safesearch_firefoxdoh'] == 'Enable') {
+			$doh_config['safesearch_doh_list'] = 'use-application-dns.net';
+		}
+		unset($doh_config['safesearch_firefoxdoh']);
+	}
+}
+
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
+}
+
+// Move MaxMind Key to new configuration location
+update_status(" MaxMind License Key configuration setting...");
+$ufound = FALSE;
+
+if (is_array($config['installedpackages']['pfblockerng']['config'][0]) &&
+    !isset($config['installedpackages']['pfblockerngipsettings']['config'][0]['maxmind_key'])) {
+
+	$maxmind_config = &$config['installedpackages']['pfblockerng']['config'][0];
+	foreach (array('maxmind_key', 'maxmind_locale', 'database_cc') as $m_setting) {
+		if (isset($maxmind_config[$m_setting])) {
+			$ufound = TRUE;
+			$config['installedpackages']['pfblockerngipsettings']['config'][0][$m_setting] = $maxmind_config[$m_setting];
+			unset($maxmind_config[$m_setting]);
+		}
+	}
 }
 
 if ($ufound) {

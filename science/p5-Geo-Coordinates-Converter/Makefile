@@ -1,5 +1,4 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Geo-Coordinates-Converter
 PORTVERSION=	0.13
@@ -22,5 +21,7 @@ TEST_DEPENDS=	p5-Test-Base>0:devel/p5-Test-Base
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

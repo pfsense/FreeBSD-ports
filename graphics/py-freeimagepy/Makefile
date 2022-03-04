@@ -1,5 +1,4 @@
 # Created by: Choe, Cheng-Dae
-# $FreeBSD$
 
 PORTNAME=	freeimagepy
 PORTVERSION=	2.0.1
@@ -15,7 +14,7 @@ COMMENT=	FreeImage library python wrapper
 LIB_DEPENDS=	libfreeimage.so:graphics/freeimage
 
 WRKSRC=		${WRKDIR}/FreeImagePy-${PORTVERSION}
-USES=		python shebangfix tar:bzip2
+USES=		python:3.6+ shebangfix tar:bzip2
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 SHEBANG_FILES=	FreeImagePy/*.py

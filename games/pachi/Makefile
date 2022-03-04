@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	pachi
 PORTVERSION=	1.0
 PORTREVISION=	8
@@ -12,7 +9,7 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Platform game similar to Manic Miner
 
 USE_SDL=	mixer sdl
-USES=		gmake tar:tgz
+USES=		gmake sdl tar:tgz
 GNU_CONFIGURE=	yes
 
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -23,8 +20,8 @@ WRKSRC=		${WRKDIR}/Pachi
 SCOREDIR=	/var/games/${PORTNAME}
 SCOREFILE=	${SCOREDIR}/scores.dat
 
-SUB_FILES=      pkg-deinstall pkg-install
-SUB_LIST=       SCOREDIR="${SCOREDIR}" SCOREFILE="${SCOREFILE}"
+SUB_FILES=	pkg-deinstall pkg-install
+SUB_LIST=	SCOREDIR="${SCOREDIR}" SCOREFILE="${SCOREFILE}"
 
 PORTDATA=	*
 

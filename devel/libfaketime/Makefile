@@ -1,10 +1,8 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libfaketime
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.6-20160627
-PORTREVISION=	1
+DISTVERSION=	0.9.7
 CATEGORIES=	devel
 
 MAINTAINER=	koobs@FreeBSD.org

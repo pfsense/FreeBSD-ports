@@ -1,5 +1,4 @@
 # Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fcitx-chewing
 PORTVERSION=	0.2.3
@@ -17,7 +16,6 @@ BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libfcitx-config.so:chinese/fcitx \
 		libchewing.so:chinese/libchewing
 
-USES=		tar:xz cmake gettext pkgconfig
-INSTALLS_ICONS=	yes
+USES=		cmake gettext gnome pkgconfig tar:xz
 
 .include <bsd.port.mk>

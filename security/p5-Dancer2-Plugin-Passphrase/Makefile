@@ -1,8 +1,7 @@
 # Created by: Henk van Oers <hvo.pm@xs4all.nl>
-# $FreeBSD$
 
 PORTNAME=	Dancer2-Plugin-Passphrase
-PORTVERSION=	3.3.3
+PORTVERSION=	3.3.4
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,8 +1,7 @@
 # Created by: Nobutaka Mantani <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	file2pcap
-PORTVERSION=	1.25
+PORTVERSION=	1.29
 CATEGORIES=	net
 
 MAINTAINER=	nobutaka@FreeBSD.org
@@ -11,10 +10,8 @@ COMMENT=	Tool to make packet captures containing the content of specified file
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-GH_ACCOUNT=	Cisco-Talos
-GH_PROJECT=	file2pcap
-
 USE_GITHUB=	yes
+GH_ACCOUNT=	Cisco-Talos
 
 ALL_TARGET=	file2pcap
 

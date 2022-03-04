@@ -1,5 +1,4 @@
 # Created by: maho@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	megapov
 PORTVERSION=	1.2.1
@@ -10,15 +9,13 @@ MASTER_SITES=	http://megapov.inetart.net/packages/unix/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unofficial extensions of POV-Ray
 
-BROKEN_powerpc64=	Does not build: nputoutput.cpp:1: error: 64 bit CPU requiredd
-
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 #RUN_DEPENDS=	povray:graphics/povray-meta
 
 INSTALL_WRKSRC=	${WRKSRC}/unix
 
-USES=		gmake jpeg localbase tar:bzip2
+USES=		compiler:c11 gmake jpeg localbase tar:bzip2
 USE_CXXSTD=	c++98
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	COMPILED_BY="ports@FreeBSD.org"
@@ -37,6 +34,7 @@ OPTIMIZED_CFLAGS_CFLAGS=\
 			-fexpensive-optimizations
 SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
 SVGALIB_CONFIGURE_WITH=	svga
+X11_USES=		xorg
 X11_USE=		xorg=x11,xpm
 X11_CONFIGURE_WITH=	x
 

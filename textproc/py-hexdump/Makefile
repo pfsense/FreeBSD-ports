@@ -1,5 +1,4 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	hexdump
 PORTVERSION=	3.3
@@ -12,7 +11,7 @@ COMMENT=	Print binary in hex format
 
 LICENSE=	PD
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

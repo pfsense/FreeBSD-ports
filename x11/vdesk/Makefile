@@ -1,5 +1,4 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	vdesk
 PORTVERSION=	1.2
@@ -13,7 +12,7 @@ COMMENT=	Command-line utility for setting up and using virtual desktops
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf
+USES=		autoreconf xorg
 GNU_CONFIGURE=	yes
 USE_XORG=	x11
 

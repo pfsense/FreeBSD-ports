@@ -1,10 +1,15 @@
-************************************************************************
+[
+{ type: install
+  message: <<EOM
+Jenkins defaults listens on http://*:8080 , to change this, add --httpPort and
+--prefix settings to jenkins_args in /etc/rc.conf
 
-Please login to the Jenkins web interface and secure with a password,
+Please login to the Jenkins web interface and secure it with a password
 when installing for the first time.
 
 More information:
 https://wiki.jenkins-ci.org/display/JENKINS/Quick+and+Simple+Security
 https://wiki.jenkins-ci.org/display/JENKINS/Standard+Security+Setup
-
-************************************************************************
+EOM
+}
+]

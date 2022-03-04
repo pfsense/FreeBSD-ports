@@ -1,5 +1,4 @@
 # Created by: Pete Fritchman <petef@databits.net>
-# $FreeBSD$
 
 PORTNAME=	URI-Find
 PORTVERSION=	20160806
@@ -19,5 +18,7 @@ RUN_DEPENDS=	p5-URI>=1:net/p5-URI
 
 USES=		perl5
 USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

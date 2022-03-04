@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xskat
 PORTVERSION=	4.0
@@ -15,6 +14,7 @@ LICENSE_NAME=	xskat license clause
 LICENSE_FILE=	${WRKSRC}/README
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+USES=		xorg
 USE_XORG=	x11
 PLIST_FILES=	bin/xskat \
 		man/man1/xskat.1.gz \

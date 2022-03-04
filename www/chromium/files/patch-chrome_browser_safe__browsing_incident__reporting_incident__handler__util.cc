@@ -1,10 +1,9 @@
---- chrome/browser/safe_browsing/incident_reporting/incident_handler_util.cc.orig	2019-03-11 22:00:54 UTC
+--- chrome/browser/safe_browsing/incident_reporting/incident_handler_util.cc.orig	2021-04-14 18:40:54 UTC
 +++ chrome/browser/safe_browsing/incident_reporting/incident_handler_util.cc
-@@ -8,7 +8,12 @@
+@@ -8,7 +8,11 @@
  
- #include "base/hash.h"
- #include "base/logging.h"
-+//XXX(rene) needs shim headers?
+ #include "base/hash/hash.h"
+ #include "base/notreached.h"
 +#if defined(USE_SYSTEM_PROTOBUF)
 +#include <google/protobuf/message_lite.h>
 +#else

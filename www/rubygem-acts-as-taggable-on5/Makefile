@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	acts-as-taggable-on
 PORTVERSION=	5.0.0
 CATEGORIES=	www rubygems
@@ -14,8 +12,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	rubygem-activerecord4>=4.2.8:databases/rubygem-activerecord4
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

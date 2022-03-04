@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CGI-Pager
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to generate HTML pagination linkage easily
 
 LICENSE=	ART10 GPLv1+

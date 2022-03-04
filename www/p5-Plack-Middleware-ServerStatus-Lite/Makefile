@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-ServerStatus-Lite
 PORTVERSION=	0.34
 PORTREVISION=	2
@@ -7,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Plack middleware to show server status like Apache mod_status
 
 LICENSE=	ART10 GPLv1+

@@ -1,5 +1,4 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	pyVTK
 PORTVERSION=	0.5.18
@@ -13,7 +12,7 @@ COMMENT=	Tools for manipulating VTK files in Python
 
 LICENSE=	GPLv2
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

@@ -1,9 +1,8 @@
 # Created by: mikael.urankar@gmail.com
-# $FreeBSD$
 
 PORTNAME=	omxplayer
 PORTVERSION=	20161004
-PORTREVISION=	11
+PORTREVISION=	15
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/

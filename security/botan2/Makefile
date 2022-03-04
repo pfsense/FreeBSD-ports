@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	botan
-DISTVERSION=	2.9.0
+DISTVERSION=	2.18.2
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://botan.randombit.net/releases/
 PKGNAMESUFFIX=	2
@@ -13,29 +12,49 @@ COMMENT=	Portable, easy to use and efficient C++ crypto library
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BROKEN_armv6=		include/arm_neon.h:28:2: error: "NEON support not enabled"
-BROKEN_armv7=		fails to package: pkg-static: Unable to access file stage/usr/local/include/botan-2/botan/rdrand_rng.h:No such file or directory
+BROKEN_armv6=	include/arm_neon.h:28:2: error: "NEON support not enabled"
 
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
 
-USES=		compiler:c++11-lang gmake python:build shebangfix tar:tgz
-SHEBANG_FILES=	configure.py src/scripts/install.py
-HAS_CONFIGURE=	yes
+USES=		compiler:c++11-lang cpe gmake shebangfix tar:xz
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 
-CONFIGURE_SCRIPT=	configure.py
-CONFIGURE_ARGS=	--with-external-includedir=${PREFIX}/include \
-		--with-external-libdir=${PREFIX}/lib \
-		--with-boost --with-bzip2 --with-lzma --with-zlib \
-		--cc=${COMPILER_TYPE}
-LDFLAGS+=	-pthread
+SHEBANG_FILES=	configure.py src/python/botan2.py src/scripts/install.py
 
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
+HAS_CONFIGURE=		yes
+CONFIGURE_SCRIPT=	configure.py
+CONFIGURE_ARGS=		--cc=${COMPILER_TYPE} \
+			--prefix=${PREFIX:Q} \
+			--with-boost \
+			--with-bzip2 \
+			--with-external-includedir=${LOCALBASE}/include \
+			--with-external-libdir=${LOCALBASE}/lib \
+			--with-lzma \
+			--with-zlib
+LDFLAGS+=		-pthread
+
+DOCSDIR=	${LOCALBASE}/share/doc/${PORTNAME}-${PORTVERSION}
+
+_SOABIVER=	18
+_SHLIBVER=	${DISTVERSION:S/./ /g:[2]}
+_SHLIBVERPATCH=	${DISTVERSION:S/./ /g:[3]}
+PLIST_SUB=	SHLIBVER=${_SHLIBVER} \
+		SHLIBVERPATCH=${_SHLIBVERPATCH} \
+		SOABIVER=${_SOABIVER}
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		DOCS SQLITE3 SSL
-OPTIONS_DEFAULT=	SSL
+OPTIONS_DEFINE=		DOCS MANPAGES PYTHON SQLITE3 SSL
+OPTIONS_DEFAULT=	MANPAGES SSL
 OPTIONS_SUB=		yes
+
+MANPAGES_BUILD_DEPENDS=		${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR}
+MANPAGES_CONFIGURE_WITH=	sphinx
+
+PYTHON_USES=		python:3.6+
+PYTHON_USES_OFF=	python:3.6+,build
+PYTHON_CONFIGURE_ON=	--with-python-versions=${PYTHON_VER}
+PYTHON_CONFIGURE_OFF=	--no-install-python-module
 
 SQLITE3_USES=		sqlite
 SQLITE3_CONFIGURE_WITH=	sqlite3
@@ -47,6 +66,8 @@ SSL_CONFIGURE_WITH=	openssl
 
 .if ${ARCH} == aarch64
 CONFIGURE_ARGS+=	--cc-abi="-march=armv8-a+crypto"
+.elif ${ARCH:Mpowerpc64*}
+CONFIGURE_ARGS+=	--cpu="ppc64"
 .endif
 
 .if ${ARCH} == i386 || ${ARCH} == amd64
@@ -55,11 +76,17 @@ PLIST_SUB+=	HAS_RDRAND_RNG=""
 PLIST_SUB+=	HAS_RDRAND_RNG="@comment "
 .endif
 
+.if ${ARCH} == i386 || ${ARCH} == amd64 || ${ARCH:Mpowerpc64*}
+PLIST_SUB+=	HAS_PROCESSOR_RNG=""
+.else
+PLIST_SUB+=	HAS_PROCESSOR_RNG="@comment "
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|^optimization_flags .*|optimization_flags "${CXXFLAGS}"|' \
 		${WRKSRC}/src/build-data/cc/clang.txt
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/botan ${STAGEDIR}${PREFIX}/lib/libbotan-2.so.9.9.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/botan ${STAGEDIR}${PREFIX}/lib/libbotan-2.so.${_SOABIVER}.${_SHLIBVER}.${_SHLIBVERPATCH}
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Geo-Coder-Ovi
 PORTVERSION=	0.03
@@ -20,8 +19,9 @@ RUN_DEPENDS=	p5-JSON>=2:converters/p5-JSON \
 		p5-URI>=1.36:net/p5-URI \
 		p5-libwww>=0:www/p5-libwww
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,11 +1,11 @@
---- configure.orig 2018-11-17 08:14:41 UTC
+--- configure.orig	2021-03-27 02:46:15 UTC
 +++ configure
-@@ -12454,7 +12454,7 @@ bash_major=`$SH_PROG -c 'echo ${BASH_VERSINFO[0]}'`
+@@ -2790,7 +2790,7 @@ bash_major=`$SH_PROG -c 'echo ${BASH_VERSINFO[0]}'`
  bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`
- bash_4_or_greater=no
+ bash_5_or_greater=no
  case "${bash_major}.${bash_minor}" in
--  '4.4' | '4.1' | '4.2' | '4.3')
-+  '4.4' | '4.1' | '4.2' | '4.3' | '5.0' )
-     bash_4_or_greater=yes
+-  '5.0' | '5.0')
++  '5.0' | '5.0' | '5.1' | '5.2')
+     bash_5_or_greater=yes
      ;;
    *)

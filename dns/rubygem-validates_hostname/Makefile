@@ -1,9 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	validates_hostname
-PORTVERSION=	1.0.8
-PORTREVISION=	1
+PORTVERSION=	1.0.11
 CATEGORIES=	dns rubygems
 MASTER_SITES=	RG
 
@@ -13,8 +11,8 @@ COMMENT=	Extension to ActiveRecord::Base for validating hostnames
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-activerecord50>=3.0:databases/rubygem-activerecord50 \
-		rubygem-activesupport50>=3.0:devel/rubygem-activesupport50
+RUN_DEPENDS=	rubygem-activerecord60>=3.0:databases/rubygem-activerecord60 \
+		rubygem-activesupport60>=3.0:devel/rubygem-activesupport60
 
 USES=		gem
 USE_RUBY=	yes

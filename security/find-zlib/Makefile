@@ -1,5 +1,4 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	find_zlib
 PORTVERSION=	1.9
@@ -11,6 +10,9 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scans files for statically linked zlib (libz) code
+
+DEPRECATED=	Deprecated, no longer relevant
+EXPIRATION_DATE=2022-03-31
 
 LICENSE=	GPLv2
 

@@ -1,8 +1,7 @@
 # Created by: Franz Klammer <klammer@webonaut.com>
-# $FreeBSD$
 
 PORTNAME=	zenity
-PORTVERSION=	3.28.1
+PORTVERSION=	3.32.0
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -17,7 +16,8 @@ BUILD_DEPENDS=	itstool:textproc/itstool
 CONFLICTS=	gtkada-1.2.* zenity-2.*
 
 USES=		gettext gmake gnome localbase pathfix pkgconfig \
-		perl5 tar:xz
+		perl5 tar:xz xorg
+USE_CSTD=	c99
 USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 intlhack
 USE_XORG=	x11
 GNU_CONFIGURE=	yes

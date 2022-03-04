@@ -1,9 +1,8 @@
 # Created by: "Waitman Gobble" <uzimac@da3m0n8t3r.com>
-# $FreeBSD$
 
 PORTNAME=	dcraw-m
 PORTVERSION=	9.22
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 
 MAINTAINER=	waitman@waitman.net

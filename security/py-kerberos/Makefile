@@ -1,8 +1,7 @@
 # Created by: Roland van Laar <roland@micite.net>
-# $FreeBSD$
 
 PORTNAME=	kerberos
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.1
 PORTREVISION=	0
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
@@ -21,7 +20,7 @@ GSSAPI_BASE_USES=		gssapi
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal
 GSSAPI_MIT_USES=		gssapi:mit
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 GSSAPI_BASE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_kerberosbasic.h \
@@ -35,6 +34,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|getoutput("krb5-config|getoutput("${GSSAPIBASEDIR}/bin/krb5-config|g' ${WRKSRC}/setup.py
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/kerberos.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/kerberos*.so
 
 .include <bsd.port.mk>

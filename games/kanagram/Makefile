@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	kanagram
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-CATEGORIES=	games kde kde-applications
+CATEGORIES=	games education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Letter order game for KDE
 
 USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
 USE_KDE=	attica auth codecs config configwidgets coreaddons crash \
-		doctools ecm i18n kdeclarative kio libkeduvocdocument newstuff \
-		package service sonnet widgetsaddons xmlgui
+		doctools i18n kdeclarative kio libkeduvocdocument newstuff \
+		package service sonnet widgetsaddons xmlgui \
+		ecm_build
 USE_QT=		core dbus declarative gui network opengl speech svg widgets xml \
 		buildtools_build qmake_build
 

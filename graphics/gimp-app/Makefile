@@ -1,13 +1,13 @@
 # Created by: erich@FreeBSD.org
-# $FreeBSD$
 
-PORTNAME?=	gimp-app
-PORTVERSION=	2.10.8
+PORTNAME?=	gimp
+PORTVERSION=	2.10.28
 PORTREVISION=	2
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
-DISTNAME=	gimp-${PORTVERSION}
+PKGNAMESUFFIX=	-app
+#DISTNAME=	gimp-${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNU Image Manipulation Program
@@ -35,19 +35,29 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 		glib-networking>=0:net/glib-networking \
 		mypaint-brushes>0:graphics/mypaint-brushes
 
+LIB_DEPENDS+=	libjson-glib-1.0.so:devel/json-glib \
+		${LIB_DEPENDS_${ARCH}}
+
+LIB_DEPENDS_aarch64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_amd64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_armv7=	libunwind.so:devel/libunwind
+LIB_DEPENDS_i386=	libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64=		libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64le=	libunwind.so:devel/libunwind
+
 GNU_CONFIGURE=	yes
 USES+=		compiler:c++14-lang cpe gettext gmake gnome jpeg libtool \
-		localbase pkgconfig shebangfix tar:bzip2
+		localbase pkgconfig shebangfix tar:bzip2 xorg
 USE_XORG=	ice sm x11 xcursor xext xfixes xmu xpm xt
 USE_GNOME+=	cairo gtk20 intltool librsvg2
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 .if !defined(XAUTHORITY)
 TEST_ENV=	XAUTHORITY=${HOME}/.Xauthority
 .endif
 CONFIGURE_ARGS?=--with-html-dir=${PREFIX}/share/doc/gimp \
+		--with-bug-report-url="https://bugs.freebsd.org/" \
 		--disable-gtk-doc \
 		--without-linux-input \
 		--with-print \
@@ -62,9 +72,9 @@ CONFIGURE_ARGS?=--with-html-dir=${PREFIX}/share/doc/gimp \
 		--without-webkit \
 		--enable-default-binary
 CONFIGURE_ENV=	GIMP_THREAD_LIBS=-lpthread
-LIBS+=		-lexecinfo
+LIBS+=		-lexecinfo -lm
+CPE_VENDOR=	gimp
 CPE_PRODUCT=	gimp
-CPE_VENDOR=	gnu
 
 SHEBANG_FILES=	plug-ins/pygimp/plug-ins/*.py
 
@@ -74,9 +84,9 @@ PLIST_SUB+=	LIBVER=0.1000.${PORTVERSION:E}
 
 USES+=		desktop-file-utils
 
-OPTIONS_DEFINE?=	AA GHOSTSCRIPT \
+OPTIONS_DEFINE?=	AALIB GHOSTSCRIPT \
 			LIBHEIF LIBMNG OPENEXR OPENJPEG SIMD WEBP WMF
-OPTIONS_DEFAULT=	AA LIBMNG OPENEXR OPENJPEG SIMD WEBP WMF
+OPTIONS_DEFAULT=	AALIB LIBMNG OPENEXR OPENJPEG SIMD WEBP WMF
 OPTIONS_SUB=		yes
 
 .endif
@@ -93,9 +103,9 @@ LIB_DEPENDS+=	libgimp-2.0.so:graphics/gimp-app
 
 DEBUG_CONFIGURE_ON=	--enable-debug
 
-AA_DESC=		Ascii-art Plug-in
-AA_LIB_DEPENDS=		libaa.so:graphics/aalib
-AA_CONFIGURE_WITH=	aa
+AALIB_DESC=		Ascii-art Plug-in
+AALIB_LIB_DEPENDS=	libaa.so:graphics/aalib
+AALIB_CONFIGURE_WITH=	aa
 
 LIBHEIF_DESC=		ISO/IEC 23008-12:2017 HEIF file format support
 LIBHEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
@@ -108,8 +118,8 @@ LIBMNG_LIB_DEPENDS=	libmng.so:graphics/libmng
 LIBMNG_CONFIGURE_WITH=	libmng
 
 OPENEXR_CONFIGURE_WITH=	openexr
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
-			libIex-2_3.so:graphics/ilmbase
+OPENEXR_LIB_DEPENDS=	libImath.so:math/Imath \
+			libOpenEXR.so:graphics/openexr
 
 OPENJPEG_DESC=		Enhanced JPEG (jpeg2000) graphics support
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
@@ -122,7 +132,8 @@ SIMD_CONFIGURE_OFF=	--disable-mmx \
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 
-WMF_LIB_DEPENDS=	libwmf.so:graphics/libwmf
+WMF_LIB_DEPENDS=	libwmf.so:graphics/libwmf \
+			libexpat.so:textproc/expat2
 WMF_CONFIGURE_WITH=	wmf
 
 .endif

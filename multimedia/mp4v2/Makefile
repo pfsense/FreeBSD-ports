@@ -1,19 +1,19 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mp4v2
-PORTVERSION=	1.9.1
-PORTREVISION=	3
+PORTVERSION=	2.0.0
 CATEGORIES=	multimedia
-MASTER_SITES=	LOCAL/riggs/mp4v2
+MASTER_SITES=	GENTOO
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Library and tools to read, create, and modify mp4 files
 
 LICENSE=	MPL11
 
-CONFLICTS=	mpeg4ip-libmp4v2-[0-9.]*
-USES=		compiler:features gmake libtool tar:bzip2
+USES=		compiler:features cpe gmake libtool tar:bzip2
+
+CPE_VENDOR=	mp4v2_project
+
 MAKEFILE=	GNUmakefile
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

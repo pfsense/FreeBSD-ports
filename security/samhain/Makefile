@@ -1,49 +1,24 @@
 # Created by: Nikola Kolev <koue@chaosophia.net>
-# $FreeBSD$
 
 PORTNAME=	samhain
-PORTVERSION=	4.3.2
+PORTVERSION=	4.4.3
 CATEGORIES=	security
 MASTER_SITES=	http://la-samhna.de/archive/
 DISTNAME=	samhain_signed-${PORTVERSION}
 
-MAINTAINER=	koue@chaosophia.net
+MAINTAINER=	freebsd@gregv.net
 COMMENT=	Samhain Intrusion Detection System
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		fails to build: undefined reference to sbrk
+BROKEN_aarch64=		fails to link: missing sbrk
 BROKEN_mips=		fails to configure: error: Could not find the libwrap library
 BROKEN_mips64=		fails to configure: error: Could not find the libwrap library
+BROKEN_riscv64=		fails to link: missing sbrk
 
-OPTIONS_DEFINE=	ASM DB_RELOAD DEBUG DNMALLOC DOCS ENCRYPT GNUPG IPV6 KCHECK \
-		LIBWRAP LOGFILE_MONITOR LOGIN_WATCH MAIL MOUNTS_CHECK MYSQL \
-		ODBC PGSQL PORT_CHECK PROCESS_CHECK POSIX_ACL PRELUDE PTRACE \
-		SRP STATIC SUIDCHECK UDP USERFILES XML_LOGS
-OPTIONS_DEFAULT=ASM DNMALLOC ENCRYPT LIBWRAP MAIL SRP
-
-DB_RELOAD_DESC=	Enable database reload on SIGHUP
-DNMALLOC_DESC=	Enable dnmalloc
-ENCRYPT_DESC=	Enable client/server encryption
-KCHECK_DESC=	Enable rogue KLD detection
-LOGFILE_MONITOR_DESC=	Enable monitor logfiles
-LOGIN_WATCH_DESC=	Enable watch for login/logout
-MAIL_DESC=	Enable internal SMTP mailer
-MOUNTS_CHECK_DESC=	Enable check mount options on filesystems
-PORT_CHECK_DESC=	Enable check ports
-PROCESS_CHECK_DESC=	Enable check processes
-POSIX_ACL_DESC=	Enable check posix acls
-PRELUDE_DESC=	Enable Prelude Framework support
-PTRACE_DESC=	Enable use anti-debugger options
-SRP_DESC=	Enable SRP for authentication
-SUIDCHECK_DESC=	Enable check for suid/sgid files
-UDP_DESC=	Enable UDP server
-USERFILES_DESC=	Enable check for users config files
-XML_LOGS_DESC=	Enable XML-formatted logs
-
-OPTIONS_SUB=	yes
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+USES=			shebangfix
+SHEBANG_FILES=		scripts/samhainadmin-gpg.pl.in \
+			scripts/samhainadmin-sig.pl.in
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var \
@@ -52,8 +27,35 @@ CONFIGURE_ARGS=	--localstatedir=/var \
 		--with-timeserver=true \
 		--with-alttimeserver=true
 
-USES=			shebangfix
-SHEBANG_FILES=		scripts/samhainadmin.pl.in
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+OPTIONS_DEFINE=		ASM DB_RELOAD DEBUG DNMALLOC DOCS ENCRYPT GNUPG IPV6 \
+			LIBWRAP LOGFILE_MONITOR LOGIN_WATCH MAIL \
+			MOUNTS_CHECK PORT_CHECK POSIX_ACL PRELUDE PROCESS_CHECK \
+			PTRACE SRP STATIC SUIDCHECK UDP USERFILES XML_LOGS
+OPTIONS_DEFAULT=	ASM DNMALLOC ENCRYPT LIBWRAP MAIL SRP
+OPTIONS_RADIO=		DB
+OPTIONS_RADIO_DB=	MYSQL ODBC PGSQL
+OPTIONS_SUB=		yes
+
+DB_DESC=	Database support
+DB_RELOAD_DESC=	Enable database reload on SIGHUP
+DNMALLOC_DESC=	Enable dnmalloc
+ENCRYPT_DESC=	Enable client/server encryption
+LOGFILE_MONITOR_DESC=	Enable monitor logfiles
+LOGIN_WATCH_DESC=	Enable watch for login/logout
+MAIL_DESC=	Enable internal SMTP mailer
+MOUNTS_CHECK_DESC=	Enable check mount options on filesystems
+PORT_CHECK_DESC=	Enable check ports
+POSIX_ACL_DESC=	Enable check posix acls
+PRELUDE_DESC=	Enable Prelude Framework support
+PROCESS_CHECK_DESC=	Enable check processes
+PTRACE_DESC=	Enable use anti-debugger options
+SRP_DESC=	Enable SRP for authentication
+SUIDCHECK_DESC=	Enable check for suid/sgid files
+UDP_DESC=	Enable UDP server
+USERFILES_DESC=	Enable check for users config files
+XML_LOGS_DESC=	Enable XML-formatted logs
 
 ASM_CONFIGURE_ENABLE=		asm
 
@@ -65,12 +67,10 @@ DNMALLOC_CONFIGURE_ENABLE=	dnmalloc
 
 ENCRYPT_CONFIGURE_ENABLE=	encrypt
 
-GNUPG_CONFIGURE_WITH=		gpg=${PREFIX}/bin/gpg
 GNUPG_BUILD_DEPENDS=		gpg:security/gnupg
+GNUPG_CONFIGURE_WITH=		gpg=${PREFIX}/bin/gpg
 
 IPV6_CONFIGURE_ENABLE=		ipv6
-
-KCHECK_CONFIGURE_WITH=		kcheck
 
 LIBWRAP_CONFIGURE_WITH=		libwrap
 
@@ -82,23 +82,26 @@ MAIL_CONFIGURE_ENABLE=		mail
 
 MOUNTS_CHECK_CONFIGURE_ENABLE=	mounts-check
 
+MYSQL_IMPLIES=			XML_LOGS
 MYSQL_USES=			mysql
-MYSQL_CONFIGURE_ARGS=		--with-database=mysql
+MYSQL_CONFIGURE_ON=		--with-database=mysql
 
-ODBC_CONFIGURE_ARGS=		--with-database=odbc
+ODBC_IMPLIES=			XML_LOGS
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
+ODBC_CONFIGURE_ON=		--with-database=odbc
 
+PGSQL_IMPLIES=			XML_LOGS
 PGSQL_USES=			pgsql
-PGSQL_CONFIGURE_ARGS=		--with-database=postgresql
+PGSQL_CONFIGURE_ON=		--with-database=postgresql
 
 PORT_CHECK_CONFIGURE_ENABLE=	port-check
 
-PROCESS_CHECK_CONFIGURE_ENABLE=	process-check
-
 POSIX_ACL_CONFIGURE_ENABLE=	posix-acl
 
-PRELUDE_LIB_DEPENDS=		prelude:security/libprelude
+PRELUDE_LIB_DEPENDS=		libprelude.so:security/libprelude
 PRELUDE_CONFIGURE_WITH=		prelude
+
+PROCESS_CHECK_CONFIGURE_ENABLE=	process-check
 
 PTRACE_CONFIGURE_ENABLE=	ptrace
 
@@ -160,34 +163,18 @@ pre-everything::
 IGNORE=		can't build client and server at once
 .endif
 
-.if ${PORT_OPTIONS:MKCHECK}
-	@${ECHO_MSG}
-	@${ECHO_MSG} "Building with kernel checking requires reading /dev/kmem"
-	@${ECHO_MSG} "and /dev/mem. If you're not building as root, please hit"
-	@${ECHO_MSG} "Control-C and restart the build as root."
-	@${ECHO_MSG}
-.endif
-
-.if ${PORT_OPTIONS:MMYSQL} && ! ${PORT_OPTIONS:MXML_LOGS}
-IGNORE=		xml logging is required to log to MySQL
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL} && ! ${PORT_OPTIONS:MXML_LOGS}
-IGNORE=		xml logging is required to log to Postgres
-.endif
-
 post-extract:
 	@${TAR} -C ${WRKDIR} -xzf ${WRKSRC}.tar.gz
 	@${RM} ${WRKSRC}.tar.gz ${WRKSRC}.tar.gz.asc
 
 post-install:
 .if !defined(WITH_SERVER)
-	@${CP} ${WRKSRC}/init/samhain.startFreeBSD ${STAGEDIR}${PREFIX}/etc/rc.d/samhain.sh
+	${INSTALL_SCRIPT} ${WRKSRC}/init/samhain.startFreeBSD ${STAGEDIR}${PREFIX}/etc/rc.d/samhain
 	@${CP} ${WRKSRC}/samhainrc ${STAGEDIR}${PREFIX}/etc/samhainrc.sample
 	@${CHGRP} wheel ${STAGEDIR}${PREFIX}/etc/samhainrc.sample
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/samhain
 .else
-	@${CP} ${WRKSRC}/init/samhain.startFreeBSD ${STAGEDIR}${PREFIX}/etc/rc.d/yule.sh
+	${INSTALL_SCRIPT} ${WRKSRC}/init/samhain.startFreeBSD ${STAGEDIR}${PREFIX}/etc/rc.d/yule
 	@${CP} ${WRKSRC}/yulerc ${STAGEDIR}${PREFIX}/etc/yulerc.sample
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/yule
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/yulectl

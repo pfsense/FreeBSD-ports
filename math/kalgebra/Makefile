@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	kalgebra
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-CATEGORIES=	math kde kde-applications
+CATEGORIES=	math education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE graph calculator
@@ -11,14 +9,16 @@ LIB_DEPENDS=	libAnalitza.so:math/analitza
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
 		docbook-xml>0:textproc/docbook-xml
 
-CMAKE_ARGS=	-DBUILD_mobile:BOOL=FALSE
-USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext gl kde:5 \
+		readline qt:5 tar:xz
 USE_GL=		glu
-USE_KDE=	auth codecs config configwidgets coreaddons doctools ecm i18n \
-		kio service widgetsaddons xmlgui
-USE_QT=		core dbus declarative gui location network opengl printsupport \
+USE_KDE=	auth codecs config configwidgets coreaddons doctools i18n \
+		kio service widgetsaddons xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus declarative gui location network opengl printsupport \
 		svg testlib webchannel widgets xml \
 		buildtools_build qmake_build
+CMAKE_ARGS=	-DBUILD_mobile:BOOL=FALSE
 
 OPTIONS_DEFINE=	DOCS WEBENGINE
 OPTIONS_DEFAULT_amd64=	WEBENGINE
@@ -28,5 +28,13 @@ OPTIONS_SUB=	yes
 WEBENGINE_DESC=	Add dependency on qt5-webengine
 WEBENGINE_USE=	QT=webengine
 WEBENGINE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngineWidgets
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MWEBENGINE}
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+
+.endif
 
 .include <bsd.port.mk>

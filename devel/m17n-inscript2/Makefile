@@ -1,8 +1,7 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	inscript2
-PORTVERSION=	20160423
+PORTVERSION=	20210820
 CATEGORIES=	devel textproc
 MASTER_SITES=	https://releases.pagure.org/${PORTNAME}/
 
@@ -10,7 +9,6 @@ MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Enhanced Inscript keyboard layouts for Indic languages
 
 LICENSE=	LGPL21
-LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	m17n-db:devel/m17n-db
 RUN_DEPENDS=	m17n-db:devel/m17n-db

@@ -3,7 +3,7 @@
  * filer.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Marcello Coutinho
  * Copyright (c) 2012 Brian Scholer
  * All rights reserved.
@@ -31,10 +31,9 @@ function filer_text_area_decode($text) {
 	return preg_replace('/\r\n/', "\n", base64_decode($text));
 }
 
-function sync_package_filer() {
+function sync_package_filer($post = array()) {
 	global $config, $g;
 	$update_conf = 0;
-
 
 	/* Loop on configured files. */
 	if ($config['installedpackages']['filer']['config'] != "") {
@@ -46,6 +45,9 @@ function sync_package_filer() {
 				$update_conf++;
 			}
 			$count++;
+			if (!empty($post) && ($post['id'] != ($count - 1))) {
+				continue;
+			}
 			if (preg_match("/0?[0-7]{3}/", $file['mod'])) {
 				$mod = octdec($file['mod']);
 			} else {
@@ -53,11 +55,13 @@ function sync_package_filer() {
 			}
 
 			/* Write file. */
+
+			safe_mkdir(dirname($file['fullfile']));
 			file_put_contents($file['fullfile'], filer_text_area_decode($file['filedata']), LOCK_EX);
 			chmod($file['fullfile'], $mod);
 
 			/* Check if there is a script to run after file save. */
-			if ($file['cmd'] != "") {
+			if (!empty($file['cmd'])) {
 				switch ($file['background']) {
 					case "background":
 						mwexec_bg($file['cmd']);
@@ -65,16 +69,17 @@ function sync_package_filer() {
 					case "foreground":
 						mwexec($file['cmd']);
 						break;
+					default:
+						break;
 				}
 			}
 		}
 
 		/* Write config if any file from filesystem was loaded. */
 		if ($update_conf > 0) {
-			write_config();
+			write_config("Filer: Settings saved");
 		}
 	}
-
 	
 	filer_sync_on_changes();
 }

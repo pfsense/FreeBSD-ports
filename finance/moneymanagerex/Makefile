@@ -1,10 +1,9 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mmex
 PORTVERSION=	1.2.7
 DISTVERSIONPREFIX=	v
-PORTREVISION=	14
+PORTREVISION=	18
 CATEGORIES=	finance
 MASTER_SITES=	https://github.com/vslavik/bakefile/releases/download/v0.2.9/:bakefile
 DISTFILES=	bakefile-0.2.9${EXTRACT_SUFX}:bakefile
@@ -29,11 +28,10 @@ GH_TUPLE=	Regaddi:Chart.js:f13f99b:chart_js/3rd/Chart.js \
 		moneymanagerex:ctpp:20158e0:ctpp/3rd/ctpp \
 		moneymanagerex:mongoose:97583a6:mongoose/3rd/mongoose
 
-USES=		autoreconf compiler:c++11-lib gettext gmake lua pkgconfig
+USES=		autoreconf compiler:c++11-lib gettext gmake gnome lua:52 pkgconfig
 GNU_CONFIGURE=	yes
 USE_WX=		3.0
 WX_CONF_ARGS=	absolute
-INSTALLS_ICONS=	yes
 USE_CXXSTD=	c++11
 
 CPPFLAGS+=	-I${LOCALBASE}/include \
@@ -46,13 +44,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib $$(pkg-config --libs lua-${LUA_VER})
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == "gcc"
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
-BUILD_DEPENDS+=	${LOCALBASE}/include/boost/lexical_cast.hpp:devel/boost-libs
-.endif
 
 post-extract:
 	@${MV} ${WRKDIR}/bakefile-0.2.9/autoconf/*.m4 ${WRKSRC}/m4
@@ -71,4 +62,4 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's| -g0 -O2||' ${WRKSRC}/m4/wxpresets.m4
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

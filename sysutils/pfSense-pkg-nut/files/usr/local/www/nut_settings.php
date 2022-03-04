@@ -3,7 +3,7 @@
  * nut_settings.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
@@ -373,9 +373,9 @@ $group->addClass('basic');
 $group->add(new Form_Checkbox(
 	'email',
 	'E-Mail',
-	'Enable E-Mail notifications',
+	'Enable notifications',
 	$pconfig['email']
-))->sethelp('E-Mail delivery settings are configured under System -> Advanced, on the Notifications tab.');
+))->sethelp('E-Mail/Telegram/Pushover delivery settings are configured under System -> Advanced, on the Notifications tab.');
 $section->add($group);
 
 $form->add($section);

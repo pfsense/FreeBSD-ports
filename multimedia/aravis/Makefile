@@ -1,5 +1,4 @@
 # Created by: Rozhuk Ivan rozhuk.im@gmail.com
-# $FreeBSD$
 
 PORTNAME=		aravis
 DISTVERSIONPREFIX=	ARAVIS_
@@ -17,16 +16,14 @@ CONFLICTS_INSTALL=	${PORTNAME}*
 LIB_DEPENDS+=		libaravis-0.6.so:devel/libaravis \
 			libnotify.so:devel/libnotify
 
-USES=			autoreconf gettext gmake libtool pkgconfig
+USES=			autoreconf gettext gmake gnome libtool pkgconfig
 USE_GNOME=		cairo glib20 intltool gtk30
 USE_GSTREAMER1=		yes
 GNU_CONFIGURE=		yes
 # USE_LDCONFIG=		yes
-INSTALLS_ICONS=		yes
 
 USE_GITHUB=		yes
 GH_ACCOUNT=		AravisProject
-GH_PROJECT=		aravis
 
 CONFIGURE_ARGS=		--enable-packet-socket=no --enable-viewer=yes	\
 			--enable-gst-plugin=no --enable-gst-0.10-plugin=no \

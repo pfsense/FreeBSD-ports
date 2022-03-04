@@ -1,9 +1,8 @@
 # Created by: erich@rrnet.com
-# $FreeBSD$
 
 PORTNAME=	es
 PORTVERSION=	0.9.b1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	shells
 MASTER_SITES=	ftp://ftp.sys.toronto.edu/pub/es/
 DISTNAME=	es-0.9-beta1
@@ -15,7 +14,7 @@ USES=		desthack readline
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	es_cv_abused_getenv=no
-CONFIGURE_ARGS= --with-readline
+CONFIGURE_ARGS=	--with-readline
 CFLAGS:=	${CFLAGS:N-O*}
 ALL_TARGET=	es
 

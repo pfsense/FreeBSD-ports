@@ -1,8 +1,7 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	redeclipse
-PORTVERSION=	1.6.0
+PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	games
@@ -13,15 +12,16 @@ COMMENT=	Single-player and multi-player first-person ego-shooter
 LICENSE=	MIT ZLIB
 LICENSE_COMB=	multi
 
+CONFLICTS_INSTALL=redeclipse16
+
 BROKEN_sparc64=	does not build on sparc64
 
 RUN_DEPENDS=	redeclipse-data>=${PORTVERSION}:games/redeclipse-data
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	red-eclipse
 GH_PROJECT=	base
 
-USES=		gmake
+USES=		gmake pkgconfig
 BUILD_WRKSRC=	${WRKSRC}/src
 
 SUB_FILES=	${PLIST_FILES:Mbin/*:T}
@@ -35,7 +35,7 @@ OPTIONS_MULTI_COMPONENTS=CLIENT DEDICATED
 OPTIONS_DEFAULT=	CLIENT DEDICATED OPTIMIZED_CFLAGS
 
 CLIENT_DESC=		Build client
-CLIENT_USES=		gl sdl
+CLIENT_USES=		gl sdl xorg
 CLIENT_USE=		GL=gl SDL=image2,mixer2,sdl2 XORG=x11
 CLIENT_ALL_TARGET=	client
 CLIENT_PLIST_FILES=	bin/${PORTNAME} libexec/${PORTNAME} \

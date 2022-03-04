@@ -1,14 +1,13 @@
 # Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	lucene
 PORTVERSION=	3.6.2
 # Be sure to chase devel/openoffice-devel and textproc/py-lucene
 # when updating this
 CATEGORIES=	textproc java devel
-MASTER_SITES=	APACHE/${PORTNAME}/java/${PORTVERSION}
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/java/${PORTVERSION}/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search engine for Java
 
 LICENSE=	APACHE20
@@ -17,11 +16,12 @@ CONFLICTS=	lucene4-[0-9].*
 
 PORTSCOUT=	limit:^3\.
 
-USES=		tar:tgz
+USES=		cpe tar:tgz
 USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
-JAVA_VERSION=	1.6+
+
+CPE_VENDOR=	apache
 
 OPTIONS_DEFINE=	CONTRIB DOCS EXAMPLES
 CONTRIB_DESC=	Install contributed jars

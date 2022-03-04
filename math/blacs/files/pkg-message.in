@@ -1,13 +1,13 @@
-*********************************************************************
+[
+{ type: install
+  message: <<EOM
  Please test your blacs installation
  Test programs are located at %%PREFIX%%/share/BLACS/TESTING
 
  Example:
   % cd %%PREFIX%%/share/BLACS/TESTING
-  % %%LOCALBASE%%/bin/mpd &
   % %%LOCALBASE%%/bin/mpirun -np 4 ./xCbtest_MPI-FreeBSD
   % %%LOCALBASE%%/bin/mpirun -np 4 ./xFbtest_MPI-FreeBSD
-  % %%LOCALBASE%%/bin/mpdallexit
 
  Or, if you're using OpenMPI:
   % cd %%PREFIX%%/share/BLACS/TESTING
@@ -18,4 +18,6 @@
 
 You can change -np 4 to any number to meet your local environment.
 See files at %%DOCSDIR%% for detail.
-*********************************************************************
+EOM
+}
+]

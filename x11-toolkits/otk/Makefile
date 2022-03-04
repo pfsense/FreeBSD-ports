@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
 
 PORTNAME=	otk
 PORTVERSION=	0.96
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/v${PORTVERSION}
 DISTNAME=	${PORTNAME}_lib_${PORTVERSION}
@@ -15,7 +14,7 @@ LICENSE=	LGPL20+
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_lib
 
-USES=		tar:tgz
+USES=		gl tar:tgz xorg
 USE_XORG=	xmu xext x11
 USE_GL=		glut glu gl
 USE_LDCONFIG=	yes

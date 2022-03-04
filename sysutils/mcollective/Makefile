@@ -1,8 +1,7 @@
 # Created by: Russell Jackson <raj@csub.edu>
-# $FreeBSD$
 
 PORTNAME=	mcollective
-PORTVERSION=	2.12.4
+PORTVERSION=	2.12.5
 CATEGORIES=	sysutils
 MASTER_SITES=	https://downloads.puppetlabs.com/${PORTNAME}/
 
@@ -14,7 +13,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	rubygem-stomp>=0:devel/rubygem-stomp
 
-USES=		shebangfix
+USES=		cpe shebangfix
+CPE_VENDOR=	puppet
 NO_BUILD=	yes
 USE_RUBY=	yes
 USE_RC_SUBR=	mcollectived
@@ -32,7 +32,7 @@ SUB_LIST+=	RUBY=${RUBY}
 
 OPTIONS_DEFINE=	DOCS
 
-do-patch:
+post-patch:
 	@${REINPLACE_CMD} -e "s|/etc/mcollective|${ETCDIR}|" \
 	    ${WRKSRC}/bin/mcollectived \
 		${WRKSRC}/etc/server.cfg.dist \

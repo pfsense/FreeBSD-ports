@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ndoutils
 PORTVERSION=	2.1.3
 CATEGORIES=	net-mgmt
@@ -9,6 +7,7 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Keep Nagios perfdata in MySQL database
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 GNU_CONFIGURE=	yes
 CFLAGS+=	-I${LOCALBASE}/include -fPIC
@@ -29,7 +28,7 @@ NAGIOS3X_RUN_DEPENDS=	${LOCALBASE}/bin/nagios:net-mgmt/nagios
 NAGIOS4X_RUN_DEPENDS=	${LOCALBASE}/bin/nagios:net-mgmt/nagios4
 NANOSLEEP_CONFIGURE_ENABLE=	nanosleep
 
-USES=		mysql perl5 ssl
+USES=		compiler:c11 mysql perl5 ssl
 USE_RC_SUBR=	ndo2db
 SUB_FILES=	pkg-message
 

@@ -1,8 +1,7 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jedit
-PORTVERSION=	5.5.0
+PORTVERSION=	5.6.0
 PORTEPOCH=	1
 CATEGORIES=	editors java
 MASTER_SITES=	SF
@@ -20,10 +19,10 @@ MACROS_DESC=	Install default set of macros (highly recommended)
 OPTIONS_DEFAULT=	MACROS
 OPTIONS_SUB=	yes
 
-USES=		cpe
+USES=		cpe xorg
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	11+
 
 USE_XORG=	x11
 NO_BUILD=	yes

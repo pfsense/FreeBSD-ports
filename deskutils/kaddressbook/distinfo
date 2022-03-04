@@ -1,3 +1,3 @@
-TIMESTAMP = 1551811011
-SHA256 (KDE/applications/18.12.3/kaddressbook-18.12.3.tar.xz) = 81d3ba7d5e8ed14b0cc32825f1efbdccbf9f79ffe4e1f8c888179c3d04b5bd28
-SIZE (KDE/applications/18.12.3/kaddressbook-18.12.3.tar.xz) = 472348
+TIMESTAMP = 1636032609
+SHA256 (KDE/release-service/21.08.3/kaddressbook-21.08.3.tar.xz) = 8f630d77ab59ccf16c548da2475c2827627b92719b2a39572780972617bb26b0
+SIZE (KDE/release-service/21.08.3/kaddressbook-21.08.3.tar.xz) = 3347684

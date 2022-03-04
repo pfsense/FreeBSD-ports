@@ -1,5 +1,4 @@
 # Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
 
 PORTNAME=	ipsvd
 PORTVERSION=	1.0.0
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/package/COPYING
 BROKEN_armv6=		fails to install: Checking udpsvd... drop: unable to read from socket: bad address
 BROKEN_armv7=		fails to install: Checking udpsvd... drop: unable to read from socket: bad address
 BROKEN_mips64=		fails to install: tcpsvd failed
+BROKEN_riscv64=		fails to install: Checking udpsvd... drop: unable to read from socket: bad address
 
 WRKSRC=		${WRKDIR}/net/${DISTNAME}
 ALL_TARGET=	default

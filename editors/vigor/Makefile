@@ -1,5 +1,4 @@
 # Created by: Bill Fumerola <billf@chc-chimes.com>
-# $FreeBSD$
 
 PORTNAME=	vigor
 PORTVERSION=	0.016
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/build
 
-USES=		ncurses tk
+USES=		ncurses tk xorg
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--exec-prefix=${STAGEDIR}${PREFIX}

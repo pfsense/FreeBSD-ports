@@ -1,5 +1,4 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dia2code
 PORTVERSION=	0.8.8
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 PORTSCOUT=	limit:^0\.
 
-USES=		iconv
+USES=		gnome iconv
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 

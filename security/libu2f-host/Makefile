@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	libu2f-host
-PORTVERSION=	1.1.9
+PORTVERSION=	1.1.10
 DISTVERSIONPREFIX=	${PORTNAME}-
+PORTREVISION=	1
 CATEGORIES=	security devel
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Yubico Universal 2nd Factor (U2F) Host C Library
 
 LICENSE=	LGPL21+ GPLv3+

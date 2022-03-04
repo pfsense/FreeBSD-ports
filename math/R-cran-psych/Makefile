@@ -1,9 +1,8 @@
 # Created by: Dan Rue <drue@therub.org>
-# $FreeBSD$
 
 PORTNAME=	psych
 PORTVERSION=	1.2.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	math science
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

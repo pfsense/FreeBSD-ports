@@ -1,8 +1,7 @@
 # Created by: teramoto@comm.eng.osaka-u.ac.jp
-# $FreeBSD$
 
 PORTNAME=	gpgme
-PORTVERSION=	1.13.0
+PORTVERSION=	1.15.1
 PORTREVISION?=	0
 CATEGORIES?=	security
 MASTER_SITES=	GNUPG/gpgme
@@ -16,7 +15,7 @@ LICENSE_FILE?=	${WRKSRC}/COPYING.LESSER
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpg-error.so:security/libgpg-error
 
-USES=		cpe gmake libtool localbase:ldflags tar:bzip2
+USES=		compiler:c11 cpe gmake libtool localbase:ldflags tar:bzip2
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -80,15 +79,15 @@ TEST_USE=		QT=testlib_build
 .  endif
 
 .  if ${SLAVEPORT} == "python"
-BUILD_DEPENDS+=	swig3.0:devel/swig30 \
+BUILD_DEPENDS+=	swig:devel/swig \
 		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
-USES+=		python
+USES+=		python:3.6+
 USE_PYTHON=	py3kplist flavors
 CONFIGURE_ARGS+=--enable-languages="python"
 CONFIGURE_ENV+=	BSD_PYTHON="${PYTHON_CMD}" \
 		BSD_PYTHON_VERSION="${PYTHON_VER}" \
-		SWIG="${LOCALBASE}/bin/swig3.0"
+		SWIG="${LOCALBASE}/bin/swig"
 PLIST_SUB+=	VERSION=${PORTVERSION}
 .  endif
 .endif

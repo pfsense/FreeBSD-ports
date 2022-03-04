@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	love
 PORTVERSION=	0.10.2
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel games
 MASTER_SITES=	https://bitbucket.org/rude/love/downloads/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -27,7 +24,7 @@ LIB_DEPENDS=	libmodplug.so:audio/libmodplug \
 PORTSCOUT=	limit:^0\.10\.
 
 USES=		autoreconf compiler:c++11-lib desktop-file-utils gl gmake \
-		libtool localbase openal pkgconfig shared-mime-info
+		libtool localbase openal pkgconfig sdl shared-mime-info
 USE_SDL=	sdl2
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
@@ -35,6 +32,7 @@ CONFIGURE_ARGS=	--program-suffix=${PKGNAMESUFFIX}
 WRKSRC=		${WRKDIR}/love-${PORTVERSION}
 INSTALL_TARGET=	install-strip
 
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS LUAJIT

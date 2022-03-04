@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sas2ircu
 PORTVERSION=	20.00.00.00
 PORTREVISION=	1
@@ -12,19 +10,16 @@ COMMENT=	Tool for basic management of mps(4) based LSI/Avago/Broadcom RAID contr
 
 LICENSE=	sas2ircu
 LICENSE_NAME=	BROADCOM
-LICENSE_TEXT=	${RESTRICTED}
-LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell auto-accept
-
-RESTRICTED=	Source recipient must acknowledge license.\
+LICENSE_TEXT=	Source recipient must acknowledge license.\
 		Reproduction or redistribution prohibited.\
 		See https://www.broadcom.com/cs/Satellite?pagename=AVG2/Utilities/EulaMsg
+LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell auto-accept
 
 USES=		zip
 NO_BUILD=	yes
-NO_WRKSRC=	yes
 
 ONLY_FOR_ARCHS=	i386 amd64
-ONLY_FOR_ARCHS_REASON=	Binaries only available for i386 and amd64 from Broadcom
+ONLY_FOR_ARCHS_REASON=	binaries only available for i386 and amd64 from Broadcom
 
 OPTIONS_DEFINE=	DOCS
 

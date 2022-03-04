@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	algol68g
 PORTVERSION=	2.8.4
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	lang
 MASTER_SITES=	http://jmvdveer.home.xs4all.nl/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Algol 68 Genie compiler
 
 LICENSE=	GPLv3+

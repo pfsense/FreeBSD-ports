@@ -1,13 +1,12 @@
 # Created by: Max Laier <max@love2party.net>
-# $FreeBSD$
 
 PORTNAME=	pfstat
 PORTVERSION=	2.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils net
 MASTER_SITES=	https://www.benzedrine.ch/
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to render graphical statistics for pf
 
 LICENSE=	BSD2CLAUSE

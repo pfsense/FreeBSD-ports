@@ -1,5 +1,4 @@
 # Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
 
 PORTNAME=	gkrellflynn
 PORTVERSION=	0.8
@@ -14,7 +13,7 @@ COMMENT=	Tiny system load meter for gkrellm
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -c -fPIC"
 ALL_TARGET=	${PORTNAME}.so

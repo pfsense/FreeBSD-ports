@@ -1,62 +1,36 @@
 # Created by: Mark Murray <markm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bsdgames
-PORTVERSION=	5.5.0
-PORTEPOCH=	1
+PORTVERSION=	0.75
+DISTVERSIONPREFIX=	v
+PORTEPOCH=	2
 CATEGORIES=	games
-MASTER_SITES=	https://github.com/DragonFlyBSD/DragonFlyBSD/archive/ \
-		https://deb.debian.org/debian/pool/main/b/bsdgames/
-DISTFILES=	v${PORTVERSION}.zip \
-		${PORTNAME}_2.17.orig.tar.gz
 
 MAINTAINER=	jockl@pianojockl.org
-COMMENT=	Traditional BSD games taken from DragonFly BSD
+COMMENT=	Traditional BSD games taken mostly from DragonFly BSD
 
 LICENSE=	BSD3CLAUSE
 
 USES=		ncurses tar:xz uidfix
 
-CONFLICTS=	hangman-[0-9]*
+USE_GITHUB=	yes
+GH_ACCOUNT=	pianojockl
 
-MAKE_ENV=	NO_WERROR=1
 MAKE_ARGS=	BINGRP=${BINGRP}
+MAKE_ENV=	WITHOUT_WERROR=yes
 
-# contain /usr/share/games
-SHAREPATH_FILES=atc/atc.6 \
-		atc/pathnames.h \
-		boggle/boggle/bog.h \
-		boggle/boggle/boggle.6 \
-		cribbage/cribbage.6 \
-		cribbage/pathnames.h \
-		fish/pathnames.h \
-		larn/pathnames.h \
-		quiz/datfiles/index \
-		quiz/pathnames.h \
-		quiz/quiz.6 \
-		wump/pathnames.h
+CFLAGS+=	-fcommon
 
-# contain /usr/games/*
-GAMESPATH_FILES=backgammon/backgammon/backgammon.6 \
-		backgammon/common_source/init.c \
-		canfield/canfield/canfield.6 \
-		cribbage/cribbage.6 \
-		hunt/hunt/hunt.6 \
-		hunt/huntd/huntd.6 \
-		phantasia/pathnames.h \
-		wargames/wargames.sh
+CONFLICTS=	hangman
+
+INFO=		wump
+INFO_PATH=	share/games
 
 .include <bsd.port.pre.mk>
 
-post-patch:
-	@for f in ${SHAREPATH_FILES}; do \
-		${REINPLACE_CMD} -e 's|/usr/share/games|${PREFIX}/share/games|g' \
-			${WRKSRC}/$${f}; \
-	done
-	@for f in ${GAMESPATH_FILES}; do \
-		${REINPLACE_CMD} -e 's|/usr/games|${PREFIX}/bin|g' \
-			${WRKSRC}/$${f}; \
-	done
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300134
+MAKE_ARGS+=	NO_WERROR=yes
+.endif
 
 pre-install:
 .for d in atc larn quiz.db boggle
@@ -75,13 +49,5 @@ post-install:
 
 	@${TOUCH} ${STAGEDIR}/var/games/atc_score
 	@${FIND} ${STAGEDIR}/var/games -type f -exec ${MV} {} {}.sample \;
-
-do-extract:
-	${MKDIR} ${WRKDIR}
-	${TAR} -xzf ${DISTDIR}/v${PORTVERSION}.zip -C ${WRKDIR}
-	${TAR} -xzf ${DISTDIR}/${PORTNAME}_2.17.orig.tar.gz -C ${WRKDIR}
-	${MV} ${WRKDIR}/DragonFlyBSD-${PORTVERSION}/games  ${WRKSRC}
-	${MV} ${WRKDIR}/bsd-games-2.17/sail/*.[ch] ${WRKSRC}/sail/
-	${MV} ${WRKDIR}/bsd-games-2.17/sail/pathnames.h.in ${WRKSRC}/sail/pathnames.h
 
 .include <bsd.port.post.mk>

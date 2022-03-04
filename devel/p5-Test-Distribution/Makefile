@@ -1,5 +1,4 @@
 # Created by: Felippe de Meirelles Motta <lippemail@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Test-Distribution
 PORTVERSION=	2.00
@@ -8,8 +7,8 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
-COMMENT=	Test::Distribution - Perform tests on all modules of a distribution
+MAINTAINER=	perl@FreeBSD.org
+COMMENT=	Perform tests on all modules of a distribution
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-File-Find-Rule>=0:devel/p5-File-Find-Rule \

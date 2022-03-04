@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libosmium
-PORTVERSION=	2.15.1
+PORTVERSION=	2.17.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	astro geography devel
 

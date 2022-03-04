@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pygeodesy
-PORTVERSION=	18.11.12
+PORTVERSION=	21.9.16
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,9 +12,9 @@ COMMENT=	Pure Python geodesy tools
 
 LICENSE=	MIT
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	autoplist concurrent distutils
 
-USE_LOCALE=	en_US.UTF-8
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

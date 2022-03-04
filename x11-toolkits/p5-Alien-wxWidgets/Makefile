@@ -1,9 +1,8 @@
 # Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
 
 PORTNAME=	Alien-wxWidgets
 PORTVERSION=	0.69
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -26,7 +25,7 @@ CONFIGURE_ARGS=	--wxWidgets-build=0 --wxWidgets-unicode=1
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/wx-config/${WX_CONFIG:T}/' ${WRKSRC}/Build.PL
-	@${REINPLACE_CMD} -e "s/\'wx-config/\'${WX_CONFIG:T}/" -e "s/lc_r/lpthread/" \
+	@${REINPLACE_CMD} -e "s/'wx-config/'${WX_CONFIG:T}/" -e "s/lc_r/lpthread/" \
 		${WRKSRC}/inc/My/Build/Any_wx_config.pm
 
 post-install:

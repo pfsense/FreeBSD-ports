@@ -1,5 +1,4 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	xworld
 PORTVERSION=	2.0
@@ -10,6 +9,7 @@ MASTER_SITES=	LOCAL/naddy
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Earth as seen from the direction of the sun
 
+USES=		xorg
 USE_XORG=	x11
 
 HAS_CONFIGURE=	yes

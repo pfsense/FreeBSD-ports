@@ -1,5 +1,4 @@
 # Created by: nivit@users.sourceforge.net
-# $FreeBSD$
 
 PORTNAME=		tkshape
 PORTVERSION=		0.4
@@ -12,7 +11,7 @@ DISTNAME=		shape${PORTVERSION:S/.//g}
 MAINTAINER=		nivit@FreeBSD.org
 COMMENT=		Tk library to access to X Shaped Window Extension
 
-USES=			gmake tk:85+
+USES=			gmake tk xorg
 
 USE_XORG=		x11 xext
 

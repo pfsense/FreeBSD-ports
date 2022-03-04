@@ -1,9 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	epicalc
 PORTVERSION=	2.15.1.0
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

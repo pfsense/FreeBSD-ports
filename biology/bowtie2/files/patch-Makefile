@@ -1,24 +1,25 @@
---- Makefile.orig	2019-03-16 04:14:43 UTC
+--- Makefile.orig	2021-05-15 20:10:26 UTC
 +++ Makefile
-@@ -21,8 +21,9 @@
- # Makefile for bowtie, bowtie2-build, bowtie2-inspect
- #
+@@ -32,7 +32,7 @@ BOWTIE_SHARED_MEM :=
  
--prefix := /usr/local
--bindir := $(prefix)/bin
-+# Use PREFIX (upper case) provided by many package managers
-+PREXIX ?= /usr/local
-+bindir := $(PREFIX)/bin
+ CXXFLAGS += -std=c++11
  
- LDLIBS := -lz
- GCC_PREFIX := $(shell dirname `which gcc`)
-@@ -30,7 +31,8 @@ GCC_SUFFIX :=
- CC ?= $(GCC_PREFIX)/gcc$(GCC_SUFFIX)
- CPP ?= $(GCC_PREFIX)/g++$(GCC_SUFFIX)
- CXX ?= $(CPP)
--CXXFLAGS += -std=c++98
-+# long long is unsupported in c++98
-+# CXXFLAGS += -std=c++98
- ifeq (aarch64,$(shell uname -m))
- 	CXXFLAGS += -fopenmp-simd -DWITH_AARCH64
- 	CPPFLAGS += -Ithird_party/simde
+-ARCH = $(shell uname -m)
++ARCH = $(shell uname -p)
+ NGS_VER ?= 2.9.2
+ VDB_VER ?= 2.9.2-1
+ 
+@@ -59,11 +59,11 @@ ifneq (,$(findstring Darwin,$(shell uname)))
+ endif
+ 
+ BITS := 32
+-ifneq (,$(findstring $(shell uname -m), x86_64 amd64))
++ifneq (,$(findstring $(shell uname -p), x86_64 amd64))
+   BITS := 64
+   SSE_FLAG := -msse2
+   POPCNT_CAPABILITY ?= 1
+-else ifneq (,$(findstring $(shell uname -m), aarch64 arm64 s390x ppc64 ppc64le))
++else ifneq (,$(findstring $(shell uname -p), aarch64 arm64 s390x powerpc64 powerpc64le))
+   BITS := 64
+   SSE_FLAG :=
+   CXXFLAGS += -fopenmp-simd

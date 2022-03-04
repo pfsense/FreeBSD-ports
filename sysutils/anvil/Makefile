@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	anvil
-PORTVERSION=	0.0.12
+PORTVERSION=	0.0.19
 CATEGORIES=	sysutils
 
 MAINTAINER=	dvl@FreeBSD.org
@@ -20,7 +18,7 @@ SUB_FILES+=	cert-shifter.conf.sample cert-puller.conf.sample pkg-install pkg-mes
 NO_BUILD=	yes
 
 OPTIONS_SINGLE=	SG1
-OPTIONS_SINGLE_SG1=	 FETCH CURL WGET
+OPTIONS_SINGLE_SG1=	FETCH CURL WGET
 OPTIONS_DEFAULT=	FETCH
 FETCH_DESC=	Use fetch
 CURL_DESC=	Use curl, not fetch

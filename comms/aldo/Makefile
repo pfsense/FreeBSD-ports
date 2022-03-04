@@ -1,9 +1,8 @@
 # Created by: lambert@lambertfam.org
-# $FreeBSD$
 
 PORTNAME=	aldo
 DISTVERSION=	0.7.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SAVANNAH
 

@@ -1,5 +1,4 @@
 # Created by: <benlutz@datacomm.ch>
-# $FreeBSD$
 
 PORTNAME=	freedroid
 PORTVERSION=	1.0.2
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		iconv jpeg
+USES=		iconv jpeg sdl
 USE_SDL=	mixer image sdl
 
 GNU_CONFIGURE=	yes

@@ -5,6 +5,11 @@
 		<internal_name>net-snmp</internal_name>
 		<descr><![CDATA[NET-SNMP daemon and tools]]></descr>
 		<version>%%PKGVERSION%%</version>
-		<configurationfile>net-snmp.xml</configurationfile>
+		<configurationfile>netsnmp.xml</configurationfile>
+		<plugins>
+			<item>
+				<type>plugin_certificates</type>
+			</item>
+		</plugins>
 	</package>
 </pfsensepkgs>

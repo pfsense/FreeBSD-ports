@@ -1,8 +1,7 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	grilo
-PORTVERSION=	0.3.7
+PORTVERSION=	0.3.14
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -17,11 +16,14 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 		liboauth.so:net/liboauth \
 		libtotem-plparser.so:multimedia/totem-pl-parser
 
-USES=		gettext gnome localbase meson pathfix pkgconfig \
+USES=		cpe gettext gnome localbase meson pathfix pkgconfig \
 		python:3.4+,build tar:xz
+CPE_VENDOR=	gnome
 USE_LDCONFIG=	yes
-USE_GNOME=	glib20 intlhack introspection:build libxml2
+USE_GNOME=	glib20 introspection:build libxml2
 BINARY_ALIAS=	python=${PYTHON_VERSION}
+
+MESON_ARGS=	-Denable-gtk-doc=false
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	UI

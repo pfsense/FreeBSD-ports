@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	azure-storage-blob
-PORTVERSION=	1.5.0
+PORTVERSION=	2.1.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +10,9 @@ COMMENT=	Microsoft Azure Storage Blob Client Library for Python
 LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}azure-common>=1.1.5:www/py-azure-common@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}azure-storage-common>=1.4:devel/py-azure-storage-common@${PY_FLAVOR} \
-		${PY_FUTURES}
+		${PYTHON_PKGNAMEPREFIX}azure-storage-common>=2.1:devel/py-azure-storage-common@${PY_FLAVOR}
 
-USES=		azurepy python
+USES=		azurepy python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

@@ -1,3 +1,5 @@
-TIMESTAMP = 1550926232
-SHA256 (cloudfoundry-cli-v6.43.0_GH0.tar.gz) = ebeb93c573944fb857f1967b23be5b66daa3fd8ed86ebc5cb94c676e0b2a587a
-SIZE (cloudfoundry-cli-v6.43.0_GH0.tar.gz) = 9356141
+TIMESTAMP = 1581177489
+SHA256 (cloudfoundry-cli-v6.49.0_GH0.tar.gz) = 7717d3b684c1553b98e13888704d88197447984057b8a4ba0cdf2ec862613761
+SIZE (cloudfoundry-cli-v6.49.0_GH0.tar.gz) = 22715242
+SHA256 (golang-sys-fead79001313_GH0.tar.gz) = c8e102db152c51438f426a92b338f924827b960e75bd9d871ae9438135366073
+SIZE (golang-sys-fead79001313_GH0.tar.gz) = 1258330

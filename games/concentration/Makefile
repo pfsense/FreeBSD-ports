@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	concentration
 PORTVERSION=	1.2
 PORTREVISION=	12
@@ -14,7 +11,7 @@ COMMENT=	Find all matching pairs of icons as fast as possible
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake localbase
+USES=		gmake localbase sdl
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer image ttf
 

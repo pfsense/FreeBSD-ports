@@ -1,3 +1,5 @@
-TIMESTAMP = 1546669297
-SHA256 (mholt-caddy-v0.11.1_GH0.tar.gz) = e24ddb1690a265fb3c40efa5bc720964b85b9d2cad8d994ee4ed6271761984bf
-SIZE (mholt-caddy-v0.11.1_GH0.tar.gz) = 2916775
+TIMESTAMP = 1636467585
+SHA256 (go/www_caddy/caddy-v2.4.6/v2.4.6.mod) = 7e943a27159a58582b46634a659f6fe973c363fa70f38345b317aab2bdc3bea0
+SIZE (go/www_caddy/caddy-v2.4.6/v2.4.6.mod) = 1625
+SHA256 (go/www_caddy/caddy-v2.4.6/v2.4.6.zip) = 734145634f6617901f1049817a9006a6c0022893cf8ef8a0dbfb1104f37a6734
+SIZE (go/www_caddy/caddy-v2.4.6/v2.4.6.zip) = 674783

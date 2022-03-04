@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fishlim
 PORTVERSION=	0.0.19
 CATEGORIES=	irc security
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	hexchat:irc/hexchat
 RUN_DEPENDS=	hexchat:irc/hexchat
 
-USES=		tar:bz2 pkgconfig ssl
+USES=		tar:bz2 pkgconfig ssl gnome
 USE_GNOME=	glib20
 
 CFLAGS+=	-I${LOCALBASE}/include/glib-2.0
@@ -32,7 +30,7 @@ post-patch:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/hexchat/plugins
-	${INSTALL_PROGRAM} ${WRKSRC}/fishlim.so \
+	${INSTALL_LIB} ${WRKSRC}/fishlim.so \
 		${STAGEDIR}${PREFIX}/lib/hexchat/plugins/
 
 .include <bsd.port.mk>

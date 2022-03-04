@@ -1,16 +1,18 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	editorconfig-core-c
-PORTVERSION=	0.12.2
+PORTVERSION=	0.12.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	EditorConfig core library and executable written in C
 
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
 BUILD_DEPENDS=	doxygen:devel/doxygen
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 USES=		cmake
 

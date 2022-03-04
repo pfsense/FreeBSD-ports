@@ -1,8 +1,7 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jsch
-PORTVERSION=	0.1.54
+PORTVERSION=	0.1.55
 CATEGORIES=	net java security
 MASTER_SITES=	SF
 
@@ -11,9 +10,9 @@ COMMENT=	Pure Java implementation of SSH2
 
 LICENSE=	BSD3CLAUSE
 
-USES=		zip
+USES=		cpe zip
+CPE_VENDOR=	jcraft
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 
 PLIST_FILES+=	%%JAVAJARDIR%%/${PORTNAME}.jar

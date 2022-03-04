@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	dsblogoutmgr
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://freeshell.de/~mk/download/
 

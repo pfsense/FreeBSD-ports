@@ -1,21 +1,20 @@
 # Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
 
 PORTNAME=	mad_fcl
 PORTVERSION=	1.7
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	http://mad.cs.tut.fi/download/
 DISTNAME=	${PORTNAME}_v${PORTVERSION}_src
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	FLUTE - File Delivery over Unidirectional Transport implementation
+COMMENT=	File Delivery over Unidirectional Transport implementation
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
 
 USES=		dos2unix gmake ssl
 MAKE_ENV=	LFLAGS="${LDFLAGS}"
-MAKE_JOBS_UNSAFE= yes
+MAKE_JOBS_UNSAFE=	yes
 
 CFLAGS+=	-DHAVE_SYS_TYPES_H -DHAVE_SYS_SELECT_H -DHAVE_UNISTD_H \
 		-I${LOCALBASE}/include

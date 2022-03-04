@@ -1,5 +1,4 @@
 # Created by: Lars Engels <lars.engels@0x20.net>
-# $FreeBSD$
 
 PORTNAME=	freesynd
 PORTVERSION=	0.7.5
@@ -11,7 +10,7 @@ COMMENT=	Reimplementation of the classic Bullfrog game Syndicate
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		cmake:insource
+USES=		cmake:insource sdl
 USE_SDL=	sdl image mixer
 
 SUB_FILES=	pkg-message

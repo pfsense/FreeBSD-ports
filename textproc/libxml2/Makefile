@@ -1,17 +1,14 @@
 # Created by: Yukihiro Nakai <Nakai@technologist.com>
-# $FreeBSD$
 
 PORTNAME=	libxml2
-PORTVERSION=	2.9.8
+DISTVERSION=	2.9.12
 PORTREVISION?=	0
 CATEGORIES?=	textproc gnome
 MASTER_SITES=	http://xmlsoft.org/sources/
 DIST_SUBDIR=	gnome2
 
-MAINTAINER?=	gnome@FreeBSD.org
+MAINTAINER?=	desktop@FreeBSD.org
 COMMENT?=	XML parser library for GNOME
-
-.if !defined(REFERENCE_PORT)
 
 LICENSE=	MIT TRIO
 LICENSE_COMB=	multi
@@ -20,39 +17,51 @@ LICENSE_FILE_MIT=	${WRKSRC}/COPYING
 LICENSE_FILE_TRIO=	${FILESDIR}/LICENSE.TRIO
 LICENSE_PERMS_TRIO=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+USES+=		compiler cpe iconv libtool pathfix pkgconfig shebangfix
 GNU_CONFIGURE=	yes
-USES+=		cpe gmake iconv libtool pathfix pkgconfig shebangfix
 CPE_VENDOR=	xmlsoft
+SHEBANG_FILES=	*.py */*.py */*/*.py
 USE_LDCONFIG=	yes
+
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
 CONFIGURE_ARGS?=--with-iconv=${ICONV_PREFIX} \
 		--with-html-dir=${PREFIX}/share/doc \
 		--with-html-subdir=${PORTNAME} \
 		--without-icu \
 		--with-lzma=/usr \
 		--without-python
-INSTALL_TARGET=	install-strip
-SHEBANG_FILES=	*.py */*.py */*/*.py
 
-PLIST_SUB+=	LIBVERSION=${PORTVERSION}
+PLIST_SUB+=	LIBVERSION=${DISTVERSION}
 
 .if !defined(MASTERDIR)
 
-OPTIONS_DEFINE=	SCHEMA VALID THREADS MEM_DEBUG XMLLINT_HIST THREAD_ALLOC
-OPTIONS_DEFAULT=SCHEMA VALID THREADS
-SCHEMA_DESC=	XML schema support
-SCHEMA_CONFIGURE_WITH=	schemas
-VALID_DESC=	Validation support
-VALID_CONFIGURE_OFF=	--without-valid
-THREADS_DESC=	Threads support
-THREADS_CONFIGURE_WITH=	threads
-MEM_DEBUG_DESC=	Memory debugging (DEVELOPERS ONLY!)
-MEM_DEBUG_CONFIGURE_WITH=	mem-debug
-XMLLINT_HIST_DESC=	History for xmllint
-XMLLINT_HIST_CONFIGURE_WITH=	history
+OPTIONS_DEFINE=		MEM_DEBUG SCHEMA THREAD_ALLOC THREADS VALIDATION \
+			XMLLINT_HIST
+OPTIONS_DEFAULT=	SCHEMA VALIDATION THREADS
+
+MEM_DEBUG_DESC=		Memory debugging (DEVELOPERS ONLY!)
+SCHEMA_DESC=		XML schema support
 THREAD_ALLOC_DESC=	Per-thread memory (DEVELOPERS ONLY!)
+VALIDATION_DESC=	Validation support
+XMLLINT_HIST_DESC=	History for xmllint
+
+MEM_DEBUG_CONFIGURE_WITH=	mem-debug
+SCHEMA_CONFIGURE_WITH=		schemas
 THREAD_ALLOC_CONFIGURE_WITH=	thread-alloc
+THREADS_CONFIGURE_WITH=		threads
+VALIDATION_CONFIGURE_OFF=	--without-valid
+XMLLINT_HIST_CONFIGURE_WITH=	history
 
 .endif # !defined(MASTERDIR)
+
+.if !defined(MASTERDIR)
+post-install:
+	@${RM} -r ${STAGEDIR}${PREFIX}/share/gtk-doc
+.endif
+
+.include <bsd.port.pre.mk>
 
 post-patch:
 .for d in . doc doc/devhelp doc/examples
@@ -65,15 +74,8 @@ post-patch:
 		 s|/etc/sgml/catalog|${LOCALBASE}/share/sgml/catalog|g' \
 		${WRKSRC}/${f}
 .endfor
-.if exists(/usr/lib/libstdc++.so)
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 	@${REINPLACE_CMD} -e 's/ -Wno-array-bounds//' ${WRKSRC}/configure
 .endif
 
-.if !defined(MASTERDIR)
-post-install:
-	@${RM} -r ${STAGEDIR}${PREFIX}/share/gtk-doc
-.endif
-
-.include <bsd.port.mk>
-
-.endif
+.include <bsd.port.post.mk>

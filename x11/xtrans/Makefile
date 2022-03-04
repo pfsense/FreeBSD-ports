@@ -1,5 +1,4 @@
 # Created by: Dejan Lesjak <lesi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xtrans
 PORTVERSION=	1.4.0
@@ -10,7 +9,7 @@ COMMENT=	Abstract network code for X
 
 LICENSE=	MIT
 
-XORG_CAT=	lib
+USES=		xorg-cat:lib
 
 CONFIGURE_ARGS+=--disable-docs --without-xmlto
 

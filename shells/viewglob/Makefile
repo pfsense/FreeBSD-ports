@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	viewglob
 PORTVERSION=	2.0.4
@@ -13,7 +12,7 @@ COMMENT=	GTK+ add-on to bash and zsh
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		pkgconfig
+USES=		gnome pkgconfig xorg
 USE_XORG=	x11
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes

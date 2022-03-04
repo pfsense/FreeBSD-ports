@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	net-http-persistent
 PORTVERSION=	2.9.4
@@ -12,10 +11,11 @@ COMMENT=	Manages persistent connections using Net::HTTP
 
 LICENSE=	MIT
 
-PORTSCOUT=	limit:^2\.
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
+
+PORTSCOUT=	limit:^2\.
 
 .include <bsd.port.mk>

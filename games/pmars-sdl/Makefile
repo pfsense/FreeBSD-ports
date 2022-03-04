@@ -1,5 +1,4 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	pmars
 PORTVERSION=	0.9.2
@@ -13,6 +12,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Port of pMARS using the Simple Directmedia Library
 
 LICENSE=	GPLv2+
+
+USES=		sdl
 
 OPTIONS_DEFINE=	ICWS94 OPTIMIZED_CFLAGS PERMUTATE SMALLMEM
 OPTIONS_DEFAULT=	ICWS94 OPTIMIZED_CFLAGS PERMUTATE

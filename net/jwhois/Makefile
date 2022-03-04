@@ -1,9 +1,8 @@
 # Created by: matusita@jp.FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	jwhois
 PORTVERSION=	4.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	GNU
 

@@ -1,20 +1,21 @@
 # Created by: Dan Langille <dan@langille.org>
-# $FreeBSD$
 
 PORTNAME=	bacula
-PORTVERSION=	9.2.2
+PORTVERSION=	9.6.7
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	9-docs
 DISTNAME=	${PORTNAME}-docs-${PORTVERSION}
 
-CONFLICTS=	bacula-* bacula5-*
+CONFLICTS=	bacula bacula11
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Bacula document set
 
 USES=		tar:bz2
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 PORTDOCS=	*.pdf
 

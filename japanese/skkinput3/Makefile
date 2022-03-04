@@ -1,18 +1,17 @@
 # Created by: KOMATSU Shinichiro <koma2@jiro.c.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	skkinput3
 PORTVERSION=	3.0.6
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	japanese x11
-MASTER_SITES=	OSDN/${PORTNAME}/2222
+MASTER_SITES=	OSDN/${PORTNAME}
 DISTNAME=	skkinput-${PORTVERSION}
 
 MAINTAINER=	koma2@lovepeers.org
 COMMENT=	SKK-like Japanese input method for X11
 
-USES=		imake
-USE_GCC=	any
+USES=		imake xorg
+USE_GCC=	yes
 USE_CSTD=	gnu89
 USE_XORG=	ice sm x11 xext xmu xt
 MAKE_JOBS_UNSAFE=	yes

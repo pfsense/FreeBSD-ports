@@ -1,5 +1,4 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	botan
 DISTVERSION=	1.10.17
@@ -15,12 +14,13 @@ COMMENT=	Portable, easy to use, and efficient C++ crypto library
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
 
-BROKEN_aarch64=		Fails to configure: unknown or unidentifiable processor arm64
+BROKEN_riscv64=		fails to build: Unknown or unidentifiable processor "riscv"
 
 OPTIONS_DEFINE=		SSL GMP DOCS
 OPTIONS_DEFAULT=	SSL GMP
 
-USES=		compiler gmake python:build shebangfix tar:tgz
+USES=		compiler cpe gmake python:build shebangfix tar:tgz
+CPE_VENDOR=	${PORTNAME}_project
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	configure.py
 CONFIGURE_ARGS=	--prefix=${PREFIX} --cc ${CHOSEN_COMPILER_TYPE} \
@@ -44,7 +44,7 @@ GMP_CONFIGURE_WITH=	gnump
 
 .include <bsd.port.pre.mk>
 
-.if (${OPSYS} == FreeBSD && ${OSVERSION} > 1200084) || ${SSL_DEFAULT:Mopenssl111} || ${SSL_DEFAULT:M*-devel}
+.if (${OPSYS} == FreeBSD && ${OSVERSION} > 1200084) || ${SSL_DEFAULT:Mopenssl} || ${SSL_DEFAULT:M*-devel}
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-openssl11
 .endif
 

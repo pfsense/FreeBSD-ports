@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	zatacka
 PORTVERSION=	0.1.8
 PORTREVISION=	11
@@ -12,7 +9,7 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Nibbles-like multiplayer game
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl ttf image
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 CPPFLAGS+=	-I${LOCALBASE}/include

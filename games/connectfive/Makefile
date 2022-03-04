@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	connectfive
 PORTVERSION=	1.0.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-linux/${PORTNAME}-${PORTVERSION}
 DISTNAME=	connectFive
@@ -11,7 +8,7 @@ DISTNAME=	connectFive
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Place five pieces in a row on a 3D board
 
-USES=		gmake dos2unix
+USES=		dos2unix gl gmake sdl xorg
 USE_SDL=	sdl
 USE_GL=		gl
 USE_XORG=	xmu xext x11

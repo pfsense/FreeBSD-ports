@@ -1,9 +1,8 @@
 # Created by: Mario S F Ferreira <lioux@linf.unb.br>
-# $FreeBSD$
 
 PORTNAME=	${QMAIL_PORTNAME}
 PORTVERSION?=	${QMAIL_VERSION}
-PORTREVISION?=	4
+PORTREVISION?=	6
 CATEGORIES=	mail
 MASTER_SITES+=	QMAIL
 DISTNAME=	${PORTNAME}-${QMAIL_VERSION}
@@ -15,8 +14,8 @@ COMMENT?=	Secure, reliable, efficient, simple, and fast MTA
 
 DIST_SUBDIR=	qmail
 
-CONFLICTS?=	qmail-ldap-[0-9]* *qmail-mysql-[0-9]* qmail-spamcontrol-[0-9]* *qmail-tls-[0-9]*
-CONFLICTS+=	qmail-vida-[0-9]*
+CONFLICTS?=	qmail-ldap *qmail-mysql qmail-spamcontrol *qmail-tls
+CONFLICTS+=	qmail-vida
 
 USES+=		qmail:vars fakeroot
 PREFIX?=	${QMAIL_PREFIX}
@@ -86,6 +85,8 @@ QMAIL_PORTNAME=			netqmail
 QMAIL_VERSION=			1.06
 BARRIER_SENDMAIL_F_PATCH=	yes
 BARRIER_QMAILQUEUE_PATCH=	yes
+USES+=				cpe
+CPE_VENDOR=			netqmail
 .else
 # This is only used for slave ports.
 QMAIL_PORTNAME=			qmail
@@ -383,10 +384,6 @@ NO_MTREE=	yes
 NO_PREFIX_RMDIR=yes
 
 .include <bsd.port.options.mk>
-
-.if defined(SLAVE_TLS) && ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000
-EXTRA_PATCHES+=	${FILESDIR}/netqmail-1.06-tls-20160918-freebsd-12.patch
-.endif
 
 .if ${ARCH} == "amd64" && !defined(SLAVE_LDAP) \
     && !defined(SLAVE_SPAMCONTROL)

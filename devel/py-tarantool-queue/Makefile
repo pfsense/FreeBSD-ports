@@ -1,5 +1,4 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tarantool-queue
 PORTVERSION=	0.1.4
@@ -16,12 +15,9 @@ LICENSE=	MIT
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>=0:devel/py-msgpack@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tarantool>=0:databases/py-tarantool@${PY_FLAVOR}
 
-NO_ARCH=	yes
-REINPLACE_ARGS=	-i ''
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|msgpack-python|msgpack|; s|tarantool<0.4|tarantool|' ${WRKSRC}/setup.py ${WRKSRC}/tarantool_queue.egg-info/requires.txt
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

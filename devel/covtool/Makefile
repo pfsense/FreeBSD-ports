@@ -1,9 +1,8 @@
 # Created by: novator24 <novator24@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	covtool
 PORTVERSION=	2.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/rel_2.0
 

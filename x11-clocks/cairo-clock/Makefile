@@ -1,27 +1,26 @@
-# Created by: chinsan
-# $FreeBSD$
-
 PORTNAME=	cairo-clock
-PORTVERSION=	0.3.4
-PORTREVISION=	4
-CATEGORIES=	x11-clocks net gnome
-MASTER_SITES=	http://macslow.thepimp.net/projects/cairo-clock/
+DISTVERSION=	0.3.4
+PORTREVISION=	1
+CATEGORIES=	x11-clocks
+MASTER_SITES=	http://ftp.de.debian.org/debian/pool/main/c/cairo-clock/
+DISTNAME=	${PORTNAME}_${DISTVERSION}.orig
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	MacSlow's Cairo-Clock
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Analog clock displaying the system-time
 
-USE_GNOME=	gtk20 intlhack libglade2 librsvg2
-USES=		pathfix iconv gmake localbase:ldflags pkgconfig gettext
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	p5-XML-Parser>0:textproc/p5-XML-Parser
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+
+USES=		gettext gmake gnome iconv perl5 pkgconfig
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
+USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 libglade2 pango librsvg2 libxml2
 
-post-patch:
-	@${GZIP_CMD} -d ${WRKSRC}/man/cairo-clock.1.gz
-	@${REINPLACE_CMD} -e 's,.gz,,; s,datadir)\/man,prefix)\/man,' \
-		${WRKSRC}/man/Makefile.in
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-post-configure:
-	@${REINPLACE_CMD} -e 's,--export-dynamic,-export-dynamic,' \
-		${WRKSRC}/src/Makefile
+MAKE_ARGS=	GMSGFMT=msgfmt DATADIRNAME=share
 
 .include <bsd.port.mk>

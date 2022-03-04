@@ -1,5 +1,4 @@
 # Created by: Marie Loise Nolden <loise@kde.org>
-# $FreeBSD$
 
 PORTNAME=	examples
 DISTVERSION=	${QT5_VERSION}
@@ -27,11 +26,14 @@ EXAMPLESDIR=	${PREFIX}/share/examples/qt5
 # qtscript and qtserialbus where the examples are looked up in $EXAMPLESDIR/.
 # This way, the examples show up in qtcreator on the examples front page.
 
-EXAMPLES=	qt3d qtbase qtcanvas3d qtcharts qtconnectivity qtdeclarative \
-		qtgamepad qtlocation qtmultimedia qtpurchasing qtquickcontrols \
-		qtquickcontrols2 qtscript qtscxml qtsensors qtserialbus \
-		qtserialport qtsvg qttools qtvirtualkeyboard qtwebchannel \
-		qtwebsockets qtxmlpatterns
+_QT_DISTS=		3d activeqt androidextras base charts connectivity datavis3d \
+			declarative doc gamepad location \
+			macextras multimedia networkauth purchasing quickcontrols \
+			quickcontrols2 remoteobjects script scxml sensors serialbus \
+			serialport speech svg tools virtualkeyboard wayland \
+			webchannel webengine websockets webview winextras \
+			xmlpatterns
+EXAMPLES=		${_QT_DISTS:C/^/qt/}
 
 .for example in ${EXAMPLES}
 EXTRACT_AFTER_ARGS+=	${DISTNAME}/${example}/examples

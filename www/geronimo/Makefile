@@ -1,19 +1,20 @@
 # Created by: Nemo Liu <nemoliu@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	geronimo
 DISTVERSION=	3.0-beta-1
 PORTREVISION=	1
 CATEGORIES=	www devel java
-MASTER_SITES=	APACHE/geronimo/${DISTVERSION}
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${WEBSERVER}-javaee6-${DISTVERSION}-bin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open-source Java EE 5 application server
 
+DEPRECATED=	Port outdated, unsupported upstream and depends on deprecated software
+EXPIRATION_DATE=2022-03-31
+
 USES=		cpe
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 CPE_VENDOR=	apache
@@ -46,7 +47,6 @@ GERONIMO_USER?=	www
 GERONIMO_GROUP?=www
 GERONIMO_OUT=	${LOG_DIR}/geronimo.out
 PID_FILE=	/var/run/${APP_SHORTNAME}.pid
-WRKDIR?=	${WRKDIRPREFIX}${.CURDIR}/${_WRKDIR}
 WRKSRC=		${WRKDIR}/${DISTNAME:S/-bin//}
 JAR_FILE=	bin/server.jar
 PLIST_FILES=	"@(${GERONIMO_USER},${GERONIMO_GROUP},) ${GERONIMO_OUT:S,^${PREFIX}/,,}"
@@ -62,8 +62,7 @@ SUB_LIST=	GERONIMO_HOME=${APP_HOME} \
 		USER=${GERONIMO_USER} \
 		GERONIMO_VERSION=${MAJOR_VER} \
 		GERONIMO_OUT=${GERONIMO_OUT} \
-		JAVA_HOME=${JAVA_HOME} \
-		JAVA_VERSION=${JAVA_VERSION}
+		JAVA_HOME=${JAVA_HOME}
 
 pre-patch:
 	@${ECHO_MSG} "Installation settings:"

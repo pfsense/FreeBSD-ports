@@ -1,395 +1,227 @@
-# Created by: Marc Abramowitz (http://marc.abramowitz.info)
-# $FreeBSD$
-
 PORTNAME=	opencv
-PORTVERSION=	3.4.1
-PORTREVISION=	17
+DISTVERSION=	4.5.3
+PORTREVISION=	5
 CATEGORIES=	graphics
 
-MAINTAINER=	ports@FreeBSD.org
+PATCH_SITES=	https://github.com/opencv/opencv/commit/
+PATCHFILES=	998406d20e93aa36b26fd56506f3ea8a82b43c24.patch:-p1
+
+MAINTAINER=	tcberner@FreeBSD.org
 COMMENT=	Open Source Computer Vision library
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NOT_FOR_ARCHS=	sparc64
-NOT_FOR_ARCHS_REASON_sparc64=	does not compile on sparc64
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libgflags.so:devel/gflags \
+		libglog.so:devel/glog \
+		libharfbuzz.so:print/harfbuzz \
+		libhdf5.so:science/hdf5
 
-.if defined(OCV_CORE)
-BUILD_DEPENDS=	protoc:devel/protobuf
-.else
-LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
-		libtesseract.so:graphics/tesseract
-.endif
-
-USES=		cmake compiler:c++14-lang localbase:ldflags pkgconfig
-
+USES=		cmake compiler:c++14-lang cpe localbase:ldflags pkgconfig
 USE_GITHUB=	yes
-USE_LDCONFIG=	yes
-USE_CXXSTD=	c++11
+GH_ACCOUNT=	WeChatCV:wechat
+GH_PROJECT=	opencv_contrib:contrib \
+		ade:ade \
+		opencv_3rdparty:extra_mod_3rdparty_boost_descr \
+		opencv_3rdparty:extra_mod_3rdparty_vgg \
+		opencv_3rdparty:wechat \
+		opencv_3rdparty:face \
+		opencv_3rdparty:ippicv
+GH_TAGNAME=	v0.1.1f:ade \
+		34e4206aef44d50e6bbcd0ab06354b52e7466d26:extra_mod_3rdparty_boost_descr \
+		fccf7cd6a4b12079f73bbfb21745f9babcd4eb1d:extra_mod_3rdparty_vgg \
+		a8b69ccc738421293254aec5ddb38bd523503252:wechat \
+		8afa57abc8229d611c4937165d20e2a2d9fc5a12:face \
+		a56b6ac6f030c312b2dce17430eef13aed9af274:ippicv
 
-DATADIR=	${PREFIX}/share/OpenCV
-PLIST_SUB+=	SOVERSION=${DISTVERSION:R} VERSION=${DISTVERSION}
+CMAKE_ON=	OPENCV_GENERATE_PKGCONFIG
+CMAKE_OFF=	OPENCV_GENERATE_SETUPVARS \
+		BUILD_opencv_python2 \
+		BUILD_TESTS \
+		WITH_TESSERACT
+CMAKE_ARGS=	-DOPENCV_EXTRA_MODULES_PATH="${WRKSRC}/contrib/modules"
 
-# 3rd party libs
-CMAKE_ON=	ENABLE_CXX11
-CMAKE_OFF=	BUILD_ZLIB BUILD_TIFF BUILD_JASPER BUILD_JPEG BUILD_PNG BUILD_OPENEXR BUILD_TBB BUILD_IPP_IW BUILD_ITT BUILD_PROTOBUF
-# Optional 3rd party components
-CMAKE_ARGS+=	-DWITH_1394:BOOL=OFF \
-		-DWITH_CAROTENE:BOOL=OFF \
-		-DWITH_CPUFEATURES:BOOL=OFF \
-		-DWITH_VTK:BOOL=OFF \
-		-DWITH_CUDA:BOOL=OFF \
-		-DWITH_CUFFT:BOOL=OFF \
-		-DWITH_CUBLAS:BOOL=OFF \
-		-DWITH_NVCUVID:BOOL=OFF \
-		-DWITH_EIGEN:BOOL=OFF \
-		-DWITH_VFW:BOOL=OFF \
-		-DWITH_FFMPEG:BOOL=OFF \
-		-DWITH_GSTREAMER:BOOL=OFF \
-		-DWITH_GSTREAMER_0_10:BOOL=OFF \
-		-DWITH_GTK:BOOL=OFF \
-		-DWITH_GTK_2_X:BOOL=ON \
-		-DWITH_IPP:BOOL=OFF \
-		-DWITH_IPP_A:BOOL=OFF \
-		-DWITH_HALIDE:BOOL=OFF \
-		-DWITH_JASPER:BOOL=OFF \
-		-DWITH_JPEG:BOOL=OFF \
-		-DWITH_WEBP:BOOL=OFF \
-		-DWITH_OPENEXR:BOOL=OFF \
-		-DWITH_OPENGL:BOOL=OFF \
-		-DWITH_OPENVX:BOOL=OFF \
-		-DWITH_OPENNI:BOOL=OFF \
-		-DWITH_OPENNI2:BOOL=OFF \
-		-DWITH_PNG:BOOL=OFF \
-		-DWITH_GDCM:BOOL=OFF \
-		-DWITH_PVAPI:BOOL=OFF \
-		-DWITH_GIGEAPI:BOOL=OFF \
-		-DWITH_ARAVIS:BOOL=OFF \
-		-DWITH_QT:BOOL=OFF \
-		-DWITH_WIN32UI:BOOL=OFF \
-		-DWITH_TBB:BOOL=OFF \
-		-DWITH_OPENMP:BOOL=OFF \
-		-DWITH_CSTRIPES:BOOL=ON \
-		-DWITH_PTHREADS_PF:BOOL=OFF \
-		-DWITH_TIFF:BOOL=OFF \
-		-DWITH_UNICAP:BOOL=OFF \
-		-DWITH_V4L:BOOL=OFF \
-		-DWITH_LIBV4L:BOOL=OFF \
-		-DWITH_DSHOW:BOOL=OFF \
-		-DWITH_MSMF:BOOL=OFF \
-		-DWITH_XIMEA:BOOL=OFF \
-		-DWITH_XINE:BOOL=OFF \
-		-DWITH_CLP:BOOL=OFF \
-		-DWITH_OPENCL:BOOL=OFF \
-		-DWITH_OPENCL_SVM:BOOL=OFF \
-		-DWITH_OPENCLAMDFFT:BOOL=OFF \
-		-DWITH_OPENCLAMDBLAS:BOOL=OFF \
-		-DWITH_DIRECTX:BOOL=OFF \
-		-DWITH_INTELPERC:BOOL=OFF \
-		-DWITH_MATLAB:BOOL=OFF \
-		-DWITH_VA:BOOL=OFF \
-		-DWITH_VA_INTEL:BOOL=OFF \
-		-DWITH_MFX:BOOL=OFF \
-		-DWITH_GDAL:BOOL=OFF \
-		-DWITH_GPHOTO2:BOOL=OFF \
-		-DWITH_LAPACK:BOOL=OFF \
-		-DWITH_ITT:BOOL=OFF
-# OpenCV build components
-CMAKE_ARGS+=	-DBUILD_SHARED_LIBS:BOOL=ON \
-		-DBUILD_opencv_apps:BOOL=ON \
-		-DBUILD_opencv_js:BOOL=OFF \
-		-DBUILD_ANDROID_EXAMPLES:BOOL=OFF \
-		-DBUILD_DOCS:BOOL=OFF \
-		-DBUILD_EXAMPLES:BOOL=OFF \
-		-DBUILD_PACKAGE:BOOL=OFF \
-		-DBUILD_PERF_TESTS:BOOL=OFF \
-		-DBUILD_TESTS:BOOL=OFF \
-		-DBUILD_WITH_DEBUG_INFO:BOOL=OFF \
-		-DBUILD_WITH_DYNAMIC_IPP:BOOL=OFF \
-		-DBUILD_FAT_JAVA_LIB:BOOL=OFF \
-		-DBUILD_CUDA_STUBS:BOOL=OFF \
-		-DBUILD_ANDROID_SERVICE:BOOL=OFF \
-		-DBUILD_opencv_ts:BOOL=OFF \
-		-DBUILD_opencv_cnn_3dobj_INIT:BOOL=OFF \
-		-DBUILD_opencv_world:BOOL=OFF
-# OpenCV installation options
-CMAKE_ARGS+=	-DINSTALL_CREATE_DISTRIB:BOOL=OFF \
-		-DINSTALL_C_EXAMPLES:BOOL=OFF \
-		-DINSTALL_PYTHON_EXAMPLES:BOOL=OFF \
-		-DINSTALL_TO_MANGLED_PATHS:BOOL=OFF \
-		-DINSTALL_TESTS:BOOL=OFF
-# OpenCV build options
-CMAKE_ARGS+=	-DENABLE_CCACHE:BOOL=OFF \
-		-DENABLE_PRECOMPILED_HEADERS:BOOL=OFF \
-		-DENABLE_SOLUTION_FOLDERS:BOOL=OFF \
-		-DENABLE_PROFILING:BOOL=OFF \
-		-DENABLE_COVERAGE:BOOL=OFF \
-		-DENABLE_OMIT_FRAME_POINTER:BOOL=ON \
-		-DENABLE_POWERPC:BOOL=OFF \
-		-DENABLE_VSX:BOOL=OFF \
-		-DENABLE_FAST_MATH:BOOL=OFF \
-		-DENABLE_NEON:BOOL=OFF \
-		-DENABLE_VFPV3:BOOL=OFF \
-		-DENABLE_NOISY_WARNINGS:BOOL=OFF \
-		-DOPENCV_WARNINGS_ARE_ERRORS:BOOL=OFF \
-		-DENABLE_IMPL_COLLECTION:BOOL=OFF \
-		-DENABLE_INSTRUMENTATION:BOOL=OFF \
-		-DENABLE_GNU_STL_DEBUG:BOOL=OFF \
-		-DENABLE_BUILD_HARDENING:BOOL=OFF \
-		-DENABLE_LTO:BOOL=OFF \
-		-DGENERATE_ABI_DESCRIPTOR:BOOL=OFF \
-		-DCV_ENABLE_INTRINSICS:BOOL=ON \
-		-DCV_DISABLE_OPTIMIZATION:BOOL=OFF \
-		-DCV_TRACE:BOOL=OFF \
-		-DENABLE_PYLINT:BOOL=OFF
+DATADIR=	${PREFIX}/share/${PORTNAME}4
 
-SUB_FILES=	FindOpenCVCore.cmake
-SUB_LIST=	OCV_VERSION=${DISTVERSION}
+PLIST_SUB=	SHLIB_VER=${DISTVERSION}
 
-OCV_CORE_MODS=		core imgproc
-OCV_MODS=		apps calib3d contrib dnn features2d flann highgui \
-			imgcodecs ml objdetect photo shape stitching \
-			superres ts video videoio videostab
-OCV_JAVA_MODS=		java
-OCV_PYTHON_MODS=	python${PYTHON_MAJOR_VER}
+OPTIONS_DEFINE=		EIGEN GDAL GDCM HARDENING JAVA LTO OPENCL PATENTED PROTOBUF PYTHON TBB VTK
 
-OPTIONS_DEFINE=		EXAMPLES EXTRA_MODULES OPENGL GTK2
-OPTIONS_GROUP=		PERFORMANCE IMAGE VIDEO
-OPTIONS_GROUP_PERFORMANCE=	EIGEN3 OPENCL TBB
-OPTIONS_GROUP_IMAGE=	GDAL GDCM JASPER JPEG OPENEXR PNG TIFF WEBP
-OPTIONS_GROUP_VIDEO=	ARAVIS DC1394 FFMPEG GPHOTO2 GSTREAMER V4L XINE
-# EXTRA_MODULES required for libopencv_dnn which is required by py-opencv
-OPTIONS_DEFAULT=	EIGEN3 EXTRA_MODULES FFMPEG JASPER JPEG PNG TIFF WEBP V4L \
-			${MACHINE_CPU:tu}
+OPTIONS_GROUP=		IMAGE VIDEO
+OPTIONS_GROUP_IMAGE=	GPHOTO2 JPEG OPENEXR PNG TIFF
+OPTIONS_GROUP_VIDEO=	DC1394 FFMPEG GSTREAMER V4L VULKAN WEBP XINE
+
+OPTIONS_SINGLE=		BLAS
+OPTIONS_SINGLE_BLAS=	ATLAS OPENBLAS NOBLAS
+
+OPTIONS_RADIO=		JPEG2K
+OPTIONS_RADIO_JPEG2K=	JASPER OPENJPEG
+
+OPTIONS_DEFAULT=	EIGEN GDAL GDCM OPENCL PROTOBUF PYTHON \
+			DC1394 GSTREAMER V4L VULKAN WEBP \
+			GPHOTO2 JPEG OPENEXR PNG TIFF \
+			OPENBLAS \
+			OPENJPEG
 OPTIONS_SUB=		yes
-.if defined(OCV_CORE)
-OPTIONS_EXCLUDE=	ARAVIS DC1394 EXAMPLES EXTRA_MODULES FFMPEG \
-			GDAL GDCM GPHOTO2 GSTREAMER GTK2 JASPER JPEG \
-			OPENEXR OPENGL PNG TIFF WEBP V4L XINE
-.elif defined(OCV_SLAVE)
-OPTIONS_EXCLUDE=	EXAMPLES
-.endif
 
-DC1394_DESC=		IEEE 1394 camera support
-DC1394_LIB_DEPENDS=	libdc1394.so:multimedia/libdc1394
-DC1394_CMAKE_BOOL=	WITH_1394
+# Normal options (EIGEN GDAL GDCM HARDENING JAVA LTO OPENCL PATENTED PROTOBUF PYTHON TBB VTK)
+EIGEN_DESC=		Add Eigen v3 Support, builds sfm modules
+EIGEN_CMAKE_BOOL=	WITH_EIGEN
+EIGEN_USES=		eigen:3
 
-EXAMPLES_CMAKE_BOOL=	INSTALL_C_EXAMPLES
+GDAL_DESC=		Add Geospatial Data Abstraction Library Support
+GDAL_CMAKE_BOOL=	WITH_GDAL
+GDAL_LIB_DEPENDS=	libgdal.so:graphics/gdal
 
-PERFORMANCE_DESC=	Performance enhancing libraries
+GDCM_DESC=		Add Open source DICOM library Support
+GDCM_CMAKE_BOOL=	WITH_GDCM
+GDCM_LIB_DEPENDS=	libgdcmMSFF.so:devel/gdcm
 
-EIGEN3_DESC=		Eigen 3 support
-EIGEN3_BUILD_DEPENDS=	${LOCALBASE}/include/eigen3/Eigen/Eigen:math/eigen3
-EIGEN3_CMAKE_BOOL=	WITH_EIGEN
+HARDENING_DESC=		Enables Build Hardening
+HARDENING_CMAKE_BOOL=	ENABLE_BUILD_HARDENING
 
-OPENCL_DESC=		OpenCL support
+JAVA_DESC=		Enable Java Support
+JAVA_BUILD_DEPENDS=	ant:devel/apache-ant
+JAVA_CMAKE_BOOL=	BUILD_opencv_java BUILD_opencv_java_bindings_generator BUILD_JAVA
+JAVA_MAKE_ENV=		JAVACMD=${JAVA}
+JAVA_USE=		JAVA=yes
+
+LTO_DESC=		Enables Link Time Optimizations
+LTO_CMAKE_BOOL=		ENABLE_THIN_LTO
+
+OPENCL_DESC=		Add OpenCL Support
+OPENCL_CMAKE_BOOL=	WITH_OPENCL
 OPENCL_BUILD_DEPENDS=	opencl>=0:devel/opencl
 OPENCL_RUN_DEPENDS=	opencl>=0:devel/opencl
-OPENCL_CMAKE_BOOL=	WITH_OPENCL
 
-TBB_DESC=		TBB support
-TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
+PATENTED_DESC=		Enable patented 2d feature detection USE AT OWN RISK
+PATENTED_CMAKE_BOOL=	OPENCV_ENABLE_NONFREE
+
+PROTOBUF_DESC=		Enable protobuf support, builds dnn modules
+PROTOBUF_CMAKE_BOOL=	WITH_PROTOBUF
+PROTOBUF_LIB_DEPENDS=	libprotobuf.so:devel/protobuf
+
+PYTHON_DESC=		Enable Python Support 3.6 or greater
+PYTHON_BUILD_DEPENDS=	${PYNUMPY}
+PYTHON_RUN_DEPENDS=	${PYNUMPY}
+PYTHON_USES=		python:3.6+
+PYTHON_CMAKE_BOOL=	BUILD_opencv_python3
+PYTHON_CMAKE_ON=	-DOPENCV_PYTHON3_INSTALL_PATH=${PYTHON_SITELIBDIR}
+
+TBB_DESC=		Add Intel Threading Building Blocks Support
 TBB_CMAKE_BOOL=		WITH_TBB
+TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
 
-IMAGE_DESC=		Image format support
+VTK_DESC=		Include VTK library support (build opencv_viz module)
+VTK_CMAKE_BOOL=		WITH_VTK
+VTK_LIB_DEPENDS=	libvtkCommonCore-9.1.so:math/vtk9
+###
 
-JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
-JASPER_CMAKE_BOOL=	WITH_JASPER
-
-JPEG_USES=		jpeg
-JPEG_CMAKE_BOOL=	WITH_JPEG
-
-GDAL_DESC=		Geospatial Data Abstraction Library
-GDAL_LIB_DEPENDS=	libgdal.so:graphics/gdal
-GDAL_CMAKE_BOOL=	WITH_GDAL
-
-GDCM_DESC=		Open source DICOM library
-GDCM_LIB_DEPENDS=	libgdcmMSFF.so:devel/gdcm
-GDCM_CMAKE_BOOL=	WITH_GDCM
-
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
-OPENEXR_CMAKE_BOOL=	WITH_OPENEXR
-
-PNG_LIB_DEPENDS=	libpng.so:graphics/png
-PNG_CMAKE_BOOL=		WITH_PNG
-
-TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
-TIFF_CMAKE_BOOL=	WITH_TIFF
-
-WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-WEBP_CMAKE_BOOL=	WITH_WEBP
-
-VIDEO_DESC=		Video support
-
-ARAVIS_DESC=		Aravis SDK
-ARAVIS_LIB_DEPENDS=	libaravis-0.6.so:devel/libaravis
-ARAVIS_CMAKE_BOOL=	WITH_ARAVIS
-
-FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
-FFMPEG_CMAKE_BOOL=	WITH_FFMPEG
-
-GPHOTO2_DESC=		Gphoto2 camera support
-GPHOTO2_LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2
+# IMAGE group options (GPHOTO2 JPEG OPENEXR PNG TIFF)
+GPHOTO2_DESC=		Add Gphoto2 Support
 GPHOTO2_CMAKE_BOOL=	WITH_GPHOTO2
+GPHOTO2_LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2
 
-GSTREAMER_USE=		GSTREAMER1=yes
+JPEG_DESC=		Add LibJpeg Support
+JPEG_CMAKE_BOOL=	WITH_JPEG
+JPEG_USES=		jpeg
+
+OPENEXR_DESC=		Add OpenEXR Support
+OPENEXR_CMAKE_BOOL=	WITH_OPENEXR
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr
+
+PNG_DESC=		Add LibPNG Support
+PNG_CMAKE_BOOL=		WITH_PNG
+PNG_LIB_DEPENDS=	libpng16.so:graphics/png
+
+TIFF_DESC=		Add LibTIFF Support
+TIFF_CMAKE_BOOL=	WITH_TIFF
+TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
+###
+
+# VIDEO group options (DC1394 FFMPEG GSTREAMER V4L VULKAN WEBP XINE)
+DC1394_DESC=		IEEE 1394 camera support
+DC1394_CMAKE_BOOL=	WITH_1394
+DC1394_LIB_DEPENDS=	libdc1394.so:multimedia/libdc1394
+
+FFMPEG_DESC=		Link with ffmpeg
+FFMPEG_CMAKE_BOOL=	WITH_FFMPEG
+FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+
+GSTREAMER_DESC=		Add GSTREAMER Support
 GSTREAMER_CMAKE_BOOL=	WITH_GSTREAMER
+GSTREAMER_USE=		GSTREAMER1=yes
 
+V4L_DESC=		Enable support for Video for Linux
+V4L_CMAKE_BOOL=		WITH_V4L WITH_LIBV4L
 V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
-V4L_CMAKE_BOOL=		WITH_V4L WITH_LIBV4L
-V4L_CMAKE_ON=		CMAKE_REQUIRED_INCLUDES:STRING="${LOCALBASE}/include"
 
-XINE_LIB_DEPENDS=	libxine.so:multimedia/libxine
+VULKAN_DESC=		Add Vulkan Support
+VULKAN_CMAKE_BOOL=	WITH_VULKAN
+VULKAN_CMAKE_ON=	-DVULKAN_INCLUDE_DIRS=${LOCALBASE}/include
+VULKAN_BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
+
+WEBP_DESC=		Add Webp Support
+WEBP_CMAKE_BOOL=	WITH_WEBP
+WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
+
+XINE_DESC=		Add Xine Support
 XINE_CMAKE_BOOL=	WITH_XINE
+XINE_LIB_DEPENDS=	libxine.so:multimedia/libxine
+###
 
-EXTRA_MODULES_DESC=		Extra modules
-EXTRA_MODULES_GH_ACCOUNT=	opencv:DEFAULT \
-				tiny-dnn:extra_mod_3rdparty_tiny_dnn
-EXTRA_MODULES_GH_PROJECT=	opencv_contrib:extra_mod \
-				tiny-dnn:extra_mod_3rdparty_tiny_dnn \
-				opencv_3rdparty:extra_mod_3rdparty_face_landmark_model \
-				opencv_3rdparty:extra_mod_3rdparty_boost_descr \
-				opencv_3rdparty:extra_mod_3rdparty_vgg_descr
-EXTRA_MODULES_GH_TAGNAME=	${PORTVERSION}:extra_mod \
-				2a2b50caa437a5964a61e45ffc83e70558e2bc68:extra_mod_3rdparty_tiny_dnn \
-				8afa57abc8229d611c4937165d20e2a2d9fc5a12:extra_mod_3rdparty_face_landmark_model \
-				34e4206aef44d50e6bbcd0ab06354b52e7466d26:extra_mod_3rdparty_boost_descr \
-				fccf7cd6a4b12079f73bbfb21745f9babcd4eb1d:extra_mod_3rdparty_vgg_descr
-EXTRA_MODULES_LIB_DEPENDS=	libgflags.so:devel/gflags \
-				libglog.so:devel/glog \
-				libhdf5.so:science/hdf5
-EXTRA_MODULES_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-modules_dnn__modern_CMakeLists.txt \
-				${FILESDIR}/extra-patch-modules_sfm_src__libmv__light_libmv_numeric_numeric.h \
-				${FILESDIR}/extra-patch-modules_stereo_src_descriptor.cpp
+# BLAS group options (ATLAS OPENBLAS NOBLAS)
+ATLAS_DESC=		ATLAS blas implementation with lapacke
+ATLAS_USES=		blaslapack:atlas
+ATLAS_LIB_DEPENDS=	liblapacke.so:math/lapacke
 
-OPENGL_DESC=		OpenGL (requires GTK2)
-OPENGL_CMAKE_BOOL=	WITH_OPENGL
-OPENGL_LIB_DEPENDS=	${PORT_OPTIONS:MGTK2:C,.+,libgtkglext-x11-1.0.so:x11-toolkits/gtkglext,}
+OPENBLAS_DESC=		OpenBLAS blas implementation with lapacke
+OPENBLAS_USES=		blaslapack:openblas
+OPENBLAS_LIB_DEPENDS=	liblapacke.so:math/lapacke
 
-# GUI
+NOBLAS_DESC=		Disable support for lapack/blas
+NOBLAS_CMAKE_BOOL_OFF=	WITH_LAPACK
+###
 
-GTK2_USE=		GNOME=cairo,gdkpixbuf2,gtk20
-GTK2_CMAKE_BOOL=	WITH_GTK
-GTK2_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-			libharfbuzz.so:print/harfbuzz \
-			libsz.so:science/szip \
-			libfontconfig.so:x11-fonts/fontconfig \
-			liblept.so:graphics/leptonica
+# JPEG2K group options (JASPER OPENJPEG)
+JASPER_DESC=		Add Jasper Support for JPEG2000
+JASPER_CMAKE_BOOL=	WITH_JASPER
+JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
 
-.if defined(OCV_CORE)
-. for module in ${OCV_MODS} ${OCV_JAVA_MODS} ${OCV_PYTHON_MODS}
-CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=OFF
-. endfor
-.elif defined(OCV_PYTHON)
-LIB_DEPENDS+=	libopencv_core.so:graphics/opencv-core \
-		libopencv_imgproc.so:graphics/opencv-core \
-		libopencv_ml.so:graphics/opencv
-BUILD_DEPENDS+=	${PYNUMPY}
-RUN_DEPENDS+=	${PYNUMPY}
-USES+=		python:2.7
-USE_PYTHON=	flavors
-CMAKE_ARGS+=	-DBUILD_opencv_python${PYTHON_MAJOR_VER}:BOOL=ON
-. for module in apps java stitching superres videostab
-CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=OFF
-. endfor
-INSTALL_WRKSRC=	${WRKDIR}/.build/modules/python${PYTHON_MAJOR_VER}
-.elif defined(OCV_JAVA)
-BUILD_DEPENDS+=	ant:devel/apache-ant
-LIB_DEPENDS+=	libopencv_ml.so:graphics/opencv
-USES+=		python:build
-USE_JAVA=	yes
-CMAKE_ARGS+=	-DBUILD_opencv_java:BOOL=ON
-. for module in apps python stitching superres videostab
-CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=OFF
-. endfor
-CONFIGURE_ENV+=	JAVA_HOME="${JAVA_HOME}"
-INSTALL_WRKSRC=	${WRKDIR}/.build/modules/java
-.else
-LIB_DEPENDS+=	libopencv_core.so:graphics/opencv-core
-. for module in ${OCV_JAVA_MODS} ${OCV_PYTHON_MODS}
-CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=OFF
-. endfor
+OPENJPEG_DESC=		Add OpenJPEG Support for JPEG2000, OpenCV preferred
+OPENJPEG_CMAKE_BOOL=	WITH_OPENJPEG
+OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
+###
+
+_IPPICV_i386=		ippicv/ippicv_2020_lnx_ia32_20191018_general.tgz
+_IPPICV_amd64=		ippicv/ippicv_2020_lnx_intel64_20191018_general.tgz
+
+post-extract:
+	# Handle contrib
+	${MV} ${WRKSRC_contrib} ${WRKSRC}/contrib
+	# Handle prefetched ade modul
+	${MKDIR} ${BUILD_WRKSRC}/3rdparty/ade
+	${MV} ${WRKSRC_ade} ${BUILD_WRKSRC}/3rdparty/ade
+	# Handle prefetched xfeatures2d
+	${MKDIR} ${BUILD_WRKSRC}/downloads/xfeatures2d
+	${CP} ${WRKSRC_extra_mod_3rdparty_boost_descr}/* ${BUILD_WRKSRC}/downloads/xfeatures2d
+	${CP} ${WRKSRC_extra_mod_3rdparty_vgg}/* ${BUILD_WRKSRC}/downloads/xfeatures2d
+	# Handle prefetched wechat
+	${MKDIR} ${BUILD_WRKSRC}/downloads/wechat_qrcode
+	${CP} ${WRKSRC_wechat}/* ${BUILD_WRKSRC}/downloads/wechat_qrcode/
+	# Handle Face
+	${MKDIR} ${BUILD_WRKSRC}/share/opencv4/testdata/cv/face
+	${CP} ${WRKSRC_face}/* ${BUILD_WRKSRC}/share/opencv4/testdata/cv/face
+	# Handle ippicv
+.if defined(_IPPICV_${ARCH})
+	${MKDIR} ${BUILD_WRKSRC}/3rdparty/ippicv
+	(cd ${BUILD_WRKSRC}/3rdparty/ippicv && ${EXTRACT_CMD} -xf ${WRKSRC_ippicv}/${_IPPICV_${ARCH}})
 .endif
-
-.if !defined(OCV_JAVA)
-CMAKE_ARGS+=	-DBUILD_JAVA:BOOL=OFF
-.endif
-
-post-extract-EXTRA_MODULES-on:
-	@${MV} ${WRKSRC_extra_mod}/doc/tutorials/* ${WRKSRC}/doc/tutorials/
-	@${MV} ${WRKSRC_extra_mod}/modules/* ${WRKSRC}/modules/
-	@${CP} -RpP ${WRKSRC_extra_mod}/samples/* ${WRKSRC}/samples/
-	@${MKDIR} ${CONFIGURE_WRKSRC}/3rdparty/tinydnn/tiny-dnn-1.0.0a3/
-	@${MV} ${WRKSRC_extra_mod_3rdparty_tiny_dnn}/* ${CONFIGURE_WRKSRC}/3rdparty/tinydnn/tiny-dnn-1.0.0a3/
-	@${MKDIR} ${CONFIGURE_WRKSRC}/share/OpenCV/testdata/cv/face/
-	@${MV} ${WRKSRC_extra_mod_3rdparty_face_landmark_model}/* ${CONFIGURE_WRKSRC}/share/OpenCV/testdata/cv/face/
-	@${MKDIR} ${CONFIGURE_WRKSRC}/downloads/xfeatures2d/
-	@${MV} ${WRKSRC_extra_mod_3rdparty_boost_descr}/* ${CONFIGURE_WRKSRC}/downloads/xfeatures2d/
-	@${MV} ${WRKSRC_extra_mod_3rdparty_vgg_descr}/* ${CONFIGURE_WRKSRC}/downloads/xfeatures2d/
 
 post-patch:
-	@${REINPLACE_CMD} -e '/pkgconfig/s|$${OPENCV_LIB_INSTALL_PATH}|libdata|' \
-		 ${WRKSRC}/cmake/OpenCVGenPkgconfig.cmake
-	@${REINPLACE_CMD} -e 's|$${OpenCV_SOURCE_DIR}/3rdparty/include/opencl/1.2|${LOCALBASE}/include/CL|g' \
-		 ${WRKSRC}/cmake/OpenCVDetectOpenCL.cmake
-	@${REINPLACE_CMD} -e 's|share/OpenCV/doc|${DOCSDIR_REL}|g' \
-		-e 's|share/OpenCV/samples|${EXAMPLESDIR_REL}|g' \
-		${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|g' \
-		${WRKSRC}/modules/dnn/src/torch/THGeneral.cpp
-.if defined(OCV_CORE)
-	@${REINPLACE_CMD} -e 's|opencv.pc|opencv-core.pc|g' \
-		${WRKSRC}/cmake/OpenCVGenPkgconfig.cmake
-	@${REINPLACE_CMD} -e 's|Name:.*|Name: OpenCV-core|' \
-		${WRKSRC}/cmake/templates/opencv-XXX.pc.in
-.endif
-.if defined(OCV_SLAVE)
-	@${REINPLACE_CMD} -e 's|add_subdirectory(data)||g' \
-		${WRKSRC}/CMakeLists.txt
-.endif
-	@${FIND} ${WRKSRC} -name '*.bak' -exec ${RM} {} \;
+	${REINPLACE_CMD} -e 's|/usr/lib/atlas-base|${LOCALBASE}/lib|g' ${WRKSRC}/cmake/OpenCVFindAtlas.cmake
+	${REINPLACE_CMD} -e 's|/usr/include/atlas|${LOCALBASE}/include|g' ${WRKSRC}/cmake/OpenCVFindAtlas.cmake
 
-pre-build:
-	protoc --proto_path=${WRKSRC}/modules/dnn/src/caffe/ --cpp_out=${WRKSRC}/modules/dnn/misc/caffe/ ${WRKSRC}/modules/dnn/src/caffe/*.proto
-	protoc --proto_path=${WRKSRC}/modules/dnn/src/tensorflow/ --cpp_out=${WRKSRC}/modules/dnn/misc/tensorflow/ ${WRKSRC}/modules/dnn/src/tensorflow/*.proto
-
-post-install:
-.if !defined(OCV_SLAVE)
-	(cd ${STAGEDIR}${PREFIX} && \
-		${RM} -r include/opencv2/core include/opencv2/core.hpp include/opencv2/imgproc \
-			include/opencv2/imgproc.hpp \
-			include/opencv2/cvconfig.h lib/libopencv_core* lib/libopencv_imgproc*)
-.endif
-.if defined(OCV_CORE)
-	${RM} -r ${STAGEDIR}${PREFIX}/include/opencv
-	${RM} -r ${STAGEDIR}${DATADIR}
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/cmake/Modules
-	${INSTALL_DATA} ${WRKDIR}/FindOpenCVCore.cmake ${STAGEDIR}${PREFIX}/share/cmake/Modules
-.endif
-.if defined(OCV_PYTHON)
-	(cd ${STAGEDIR}${PREFIX} && \
-	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
-		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S|${PREFIX}/||} && \
-	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
-		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S|${PREFIX}/||})
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/samples/python && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/python
-.endif
-.if defined(OCV_JAVA)
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/samples/java && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/java
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if !defined(OCV_CORE)
-.if (${OPSYS} == FreeBSD && ${OSVERSION} < 1200000)
-EXTRA_PATCHES+=			${FILESDIR}/extra-patch-modules_sfm_src_libmv__light_libmv_numeric_numeric.cc
-.endif
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

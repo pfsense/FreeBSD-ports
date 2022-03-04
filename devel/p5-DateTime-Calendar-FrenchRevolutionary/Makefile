@@ -1,8 +1,5 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	DateTime-Calendar-FrenchRevolutionary
-PORTVERSION=	0.14
+PORTVERSION=	0.17
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

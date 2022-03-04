@@ -1,9 +1,8 @@
 # Created by: Harold Gutch <logix@foobar.franken.de>
-# $FreeBSD$
 
 PORTNAME=	vcdimager
 PORTVERSION=	2.0.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	GNU
 

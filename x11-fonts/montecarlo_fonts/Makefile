@@ -1,5 +1,4 @@
 # Created by: Dennis Herrmann <adox@mcx2.org>
-# $FreeBSD$
 
 PORTNAME=	montecarlo_fonts
 PORTVERSION=	1.0
@@ -13,7 +12,7 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Monospace font
 
-USES=		fonts
+USES=		fonts xorg
 USE_XORG=	x11
 NO_BUILD=	yes
 

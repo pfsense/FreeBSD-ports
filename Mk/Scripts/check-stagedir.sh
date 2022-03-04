@@ -1,6 +1,5 @@
 #!/bin/sh
 # ports/Mk/Scripts/check-stagedir.sh - called from ports/Mk/bsd.stage.mk
-# $FreeBSD$
 #
 # MAINTAINER: portmgr@FreeBSD.org
 #
@@ -12,6 +11,7 @@
 #  c. Files in plist which are owned by dependencies/MTREEs
 
 set -e
+set -o pipefail
 
 . ${SCRIPTSDIR}/functions.sh
 
@@ -98,13 +98,15 @@ setup_plist_seds() {
 	    \#${LOCALBASE}/lib/debug#d;"
 	sed_dirs_gen="s,^,@dir ,; \
 	    ${sed_portdocsexamples} \
-	    /^@dir share\/licenses/d;"
+	    /^@dir share\/licenses/d; \
+	    \#@dir ${LOCALBASE}/lib/debug#d;"
 
 	# These prevent ignoring DOCS/EXAMPLES dirs with sed_portdocsexamples
 	sed_files="/^share\/licenses/d; \
 	    \#${LOCALBASE}/lib/debug#d;"
 	sed_dirs="s,^,@dir ,; \
-	    /^@dir share\/licenses/d;"
+	    /^@dir share\/licenses/d; \
+	    \#@dir ${LOCALBASE}/lib/debug#d;"
 
 }
 

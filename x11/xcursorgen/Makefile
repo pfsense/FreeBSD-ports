@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcursorgen
 PORTVERSION=	1.0.7
 CATEGORIES=	x11
@@ -11,7 +9,7 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xcursor xorgproto
 INSTALL_TARGET=	install-strip
 

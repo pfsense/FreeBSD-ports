@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	aalib
 DISTVERSION=	1.4rc5
@@ -25,6 +24,7 @@ OPTIONS_DEFAULT=	NCURSES
 
 DRIVERS_DESC=		Drives selection
 
+X11_USES=		xorg
 X11_USE=		XORG=x11
 X11_CONFIGURE_WITH=	x11-driver=yes
 NCURSES_USES=		ncurses

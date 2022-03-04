@@ -1,5 +1,4 @@
 # Created by: Dan Caescu <daniel at freebsd.ro>
-# $FreeBSD$
 
 PORTNAME=	traff
 PORTVERSION=	0.7
@@ -10,10 +9,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 MAINTAINER=	daniel@freebsd.ro
 COMMENT=	Libpcab based fast traffic accounting program
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: conf_file
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: conf_file
+
 BUILD_DEPENDS=	${LOCALBASE}/include/argp.h:devel/argp-standalone
 
-USE_RC_SUBR=	traff
 USES=		gmake
+USE_RC_SUBR=	traff
 GNU_CONFIGURE=	yes
 
 LIBS+=		-L${LOCALBASE}/lib -largp
@@ -24,7 +26,7 @@ OPTIONS_DEFAULT=	MYSQL
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 CPPFLAGS+=	-DwithMYSQL -I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib/mysql -lmysqlclient_r
 CONFIGURE_ARGS+=--enable-mysql

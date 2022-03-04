@@ -1,5 +1,4 @@
 # Created by: Simon 'corecode' Schubert <corecode@corecode.ath.cx>
-# $FreeBSD$
 
 PORTNAME=	mp3gain
 PORTVERSION=	1.6.2
@@ -14,9 +13,11 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libmpg123.so:audio/mpg123
 
-USES=		zip gmake uidfix
+USES=		zip cpe gmake uidfix
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+CPE_VENDOR=	mp3gain_project
 
 NO_WRKSUBDIR=	yes
 PLIST_FILES=	bin/mp3gain

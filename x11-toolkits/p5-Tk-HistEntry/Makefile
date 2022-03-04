@@ -1,5 +1,4 @@
 # Created by: vanilla
-# $FreeBSD$
 
 PORTNAME=	Tk-HistEntry
 PORTVERSION=	0.45
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Tk::HistEntry - Entry widget with history capability
+COMMENT=	Entry widget with history support in Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

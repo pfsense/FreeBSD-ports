@@ -1,9 +1,8 @@
 # Created by: Hye-Shik Chang
-# $FreeBSD$
 
 PORTNAME=	rhtvision
 PORTVERSION=	2.2.1.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	SF/tvision/UNIX/${PORTVERSION:R}%20CVS20100714%20Source%20and%20Debian%205.0
 DISTNAME=	${PORTNAME}_${PORTVERSION:R}-${PORTVERSION:E}
@@ -29,13 +28,14 @@ CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 # The port does not build with C++11 or later (bug 219275).
-USE_CXXSTD=     gnu++98
+USE_CXXSTD=	gnu++98
 
 PLIST_SUB=	VERSION="${PORTVERSION:R}"
 
 NLS_USES=		gettext
 NLS_CONFIGURE_OFF=	--no-intl
 
+X11_USES=		xorg
 X11_USE=		XORG=x11,xmu
 X11_CONFIGURE_ON=	--x-include=${LOCALBASE}/include \
 			--x-lib=${LOCALBASE}/lib

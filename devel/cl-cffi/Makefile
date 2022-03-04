@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cffi
 PORTVERSION=	0.16.1
 CATEGORIES=	devel lisp
@@ -29,7 +27,6 @@ BUILD_DEPENDS=	cl-alexandria>=0:devel/cl-alexandria \
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_BUILD=	yes
-NO_ARCH=	yes
 
 USE_ASDF=	yes
 

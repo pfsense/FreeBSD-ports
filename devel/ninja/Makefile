@@ -1,15 +1,13 @@
 # Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ninja
-PORTVERSION=	1.8.2
+PORTVERSION=	1.10.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	devel
 
-MAINTAINER=	gblach@FreeBSD.org
-COMMENT=	Ninja is a small build system closest in spirit to Make
+MAINTAINER=	kde@FreeBSD.org
+COMMENT=	Small build system closest in spirit to Make
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,11 +15,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	ninja-build
 
-CONFLICTS=	irc/ninja-[0-9]*
+CONFLICTS=	irc/ninja
 USES=		python
 
+PORTSCOUT=	limit:^1\.
+
 PLIST_FILES=	bin/ninja
-PORTDOCS=	HACKING.md README manual.asciidoc
+PORTDOCS=	README.md manual.asciidoc
 
 OPTIONS_DEFINE=		DOCS BASH ZSH
 OPTIONS_DEFAULT=	BASH ZSH
@@ -40,7 +40,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ninja ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && \
-	    ${INSTALL_DATA} HACKING.md README doc/manual.asciidoc \
+	    ${INSTALL_DATA} README.md doc/manual.asciidoc \
 	    ${STAGEDIR}${DOCSDIR})
 
 do-install-BASH-on:

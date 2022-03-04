@@ -1,5 +1,4 @@
 # Created by: Pietro Cerutti <gahr@gahr.ch>
-# $FreeBSD$
 
 PORTNAME=	scew
 PORTVERSION=	1.2.0
@@ -14,23 +13,28 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-OPTIONS_DEFINE=	TEST
-.if defined(MAINTAINER_MODE)
-OPTIONS_DEFAULT=TEST
-.endif
-
 USES=		gmake libtool localbase pathfix pkgconfig
+
 CONFIGURE_ARGS=	enable_tests=yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+TEST_WRKSRC=	${WRKSRC}/tests
+
+OPTIONS_DEFINE=	TEST
 
 TEST_LIB_DEPENDS=	libcheck.so:devel/check
-TEST_VARS=		TEST_TARGET=check TEST_WRKSRC=${WRKSRC}/tests
+TEST_TEST_TARGET=	check
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/scew_print/scew_print ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/scew_stream/scew_stream ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/scew_write/scew_write ${STAGEDIR}${PREFIX}/bin/
+
+# maintainer section:
+
+.if defined(MAINTAINER_MODE)
+OPTIONS_DEFAULT=TEST
+.endif
 
 .include <bsd.port.mk>

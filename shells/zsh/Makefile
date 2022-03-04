@@ -1,8 +1,7 @@
 # Created by: torstenb
-# $FreeBSD$
 
 PORTNAME=	zsh
-DISTVERSION=	5.7.1
+DISTVERSION=	5.8
 CATEGORIES=	shells
 MASTER_SITES=	https://www.zsh.org/pub/ \
 		SF \
@@ -20,7 +19,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 MAKE_JOBS_UNSAFE=	yes
 
-USES=		autoreconf iconv ncurses shebangfix tar:xz
+USES=		autoreconf cpe iconv localbase:ldflags ncurses shebangfix tar:xz
 
 SHEBANG_LANG=	zsh
 zsh_OLD_CMD=	zsh	# shebang appears as /bin/zsh and just zsh
@@ -33,12 +32,17 @@ CONFIGURE_ARGS=	--with-tcsetpgrp \
 		--enable-multibyte \
 		--enable-zsh-secure-free \
 		--sysconfdir=${PREFIX}/etc
+
+# fix PREFIX != LOCALBASE
+CONFIGURE_ARGS+=--disable-site-fndir \
+		--enable-additional-fpath=${DATADIR}/site-functions
+
 CONFIGURE_ENV+=	zsh_cv_sys_path_dev_fd=no \
 		ac_cv_header_sys_capability_h=no
 
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include -DBOOL_DEFINED
-LDFLAGS+=	-L${LOCALBASE}/lib -Wl,--as-needed
+CPPFLAGS+=	-DBOOL_DEFINED
+LDFLAGS+=	-Wl,--as-needed
 TEST_TARGET=	test
 
 OPTIONS_DEFINE=	DEBUG ETCDIR GDBM MEM PCRE STATIC \
@@ -83,6 +87,10 @@ SUB_FILES=	pkg-message
 CONFIGURE_ENV+=	ac_cv_lib_iconv_libiconv=no
 .endif
 
+.if ${ncurses_ARGS} == port
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-Src_Modules_curses__keys.awk
+.endif
+
 post-patch:
 # FreeBSD's clock_gettime(2) is in libc, not librt; see PR 167857
 	@${REINPLACE_CMD} -e '/LIBS/s|-lrt||' ${WRKSRC}/configure
@@ -103,6 +111,7 @@ post-build:
 		${WRKSRC}/Doc/zshall.1)
 
 post-install:
+	${MKDIR} ${STAGEDIR}${DATADIR}/site-functions
 	${LN} -f ${STAGEDIR}${PREFIX}/bin/zsh ${STAGEDIR}${PREFIX}/bin/rzsh
 # Precompile completions and functions
 	(${STAGEDIR}${PREFIX}/bin/zsh -fc ' \

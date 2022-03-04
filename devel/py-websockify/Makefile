@@ -1,20 +1,21 @@
 # Created by: Alexander Nusov <alexander.nusov@nfvexpress.com>
-# $FreeBSD$
 
 PORTNAME=	websockify
-PORTVERSION=	0.8.0
+PORTVERSION=	0.10.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	alexander.nusov@nfvexpress.com
-COMMENT=	WebSocket to TCP proxy/bridge
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	WebSockets support for any application/server
 
 LICENSE=	LGPL3
 
-NO_ARCH=	yes
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	autoplist distutils
+USES=		python:3.7+
+USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

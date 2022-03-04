@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	treepy.el
-DISTVERSION=	0.1.1
+DISTVERSION=	0.1.2
+PORTREVISION=	3
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Generic tree traversing tools for Emacs Lisp
 
 LICENSE=	GPLv3+

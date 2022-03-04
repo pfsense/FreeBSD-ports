@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	whichwayisup
 PORTVERSION=	0.7.9
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	games python
 MASTER_SITES=	http://www.oletus.fi/static/whichwayisup/ \
 		SF/nemysisfreebsdp/games/${PORTNAME}/:icons
@@ -21,10 +20,8 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		dos2unix python zip
-USE_PYTHON=	py3kplist
+USES=		dos2unix gnome python zip
 DOS2UNIX_REGEX=	.*.[^pt][^nt][^gf]
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	README.txt changelog.txt
 OPTIONS_DEFINE=	DOCS

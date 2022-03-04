@@ -1,5 +1,4 @@
 # Created by: Phillip Neumann <pneumann@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	icons-tango
 PORTVERSION=	0.8.90
@@ -12,11 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Basic set of icons for the most common usage
 
 BUILD_DEPENDS=	${LOCALBASE}/libexec/icon-name-mapping:x11-themes/icon-naming-utils \
-		Magick-config:graphics/ImageMagick6
+		convert:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	intlhack
-USES+=		gettext-tools gmake pathfix pkgconfig
-INSTALLS_ICONS=	yes
+USES+=		gettext-tools gmake gnome pathfix pkgconfig
 
 .include <bsd.port.mk>

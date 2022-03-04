@@ -1,8 +1,7 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Babel
-PORTVERSION=	2.6.0
+PORTVERSION=	2.9.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,10 +14,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>0:devel/py-pytz@${PY_FLAVOR}
 
-USES=		python
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent distutils
-NO_ARCH=	yes
 
+CPE_VENDOR=	pocoo
+
+NO_ARCH=	yes
 PORTDOCS=	docs/*
 
 OPTIONS_DEFINE=	DOCS

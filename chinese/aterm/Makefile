@@ -1,5 +1,4 @@
 # Created by: gugod@gugod.org
-# $FreeBSD$
 
 PORTNAME=	aterm
 PORTVERSION=	1.0.1
@@ -9,6 +8,7 @@ MASTER_SITES=	SF
 MAINTAINER=	gugod@gugod.org
 COMMENT=	Color vt102 terminal emulator with transparency support
 
+USES=		cpe xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-xim --enable-big5

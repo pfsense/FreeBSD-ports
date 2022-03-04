@@ -1,8 +1,7 @@
 # Created by: will
-# $FreeBSD$
 
 PORTNAME=	Quota
-PORTVERSION=	1.7.2
+PORTVERSION=	1.8.2
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,5 +14,8 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Quota/Quota.so
 
 .include <bsd.port.mk>

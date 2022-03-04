@@ -98,6 +98,8 @@ output alert_csv: alert timestamp,sig_generator,sig_id,sig_rev,msg,proto,src,src
 {$alertsystemlog_type}
 {$snortunifiedlog_type}
 {$spoink_type}
+{$tcpdump_type}
+{$appid_type}
 						
 # Misc Includes #
 {$snort_misc_include_rules}

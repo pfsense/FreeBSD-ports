@@ -1,10 +1,8 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	toxcore
-PORTVERSION=	0.2.9
+PORTVERSION=	0.2.13
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-im net-p2p
 
@@ -22,7 +20,7 @@ LIB_DEPENDS=	libvpx.so:multimedia/libvpx		\
 		libsodium.so:security/libsodium		\
 		libopus.so:audio/opus			\
 		libconfig.so:devel/libconfig
-TEST_DEPENDS=	libopencv_core.so:graphics/opencv-core
+#TEST_DEPENDS=	libopencv_core.so:graphics/opencv
 
 CONFLICTS=	toxcore-legacy-0.1.*
 

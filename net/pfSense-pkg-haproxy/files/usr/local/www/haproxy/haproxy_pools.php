@@ -3,7 +3,7 @@
  * haproxy_pools.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -67,7 +67,7 @@ if ($_POST['apply']) {
 		}
 
 		$a_pools = $a_filter_new;
-		if (write_config()) {
+		if (write_config("haproxy: Changed rules order")) {
 			mark_subsystem_dirty('filter');
 		}
 
@@ -77,7 +77,7 @@ if ($_POST['apply']) {
 } elseif ($_GET['act'] == "del") {
 	if (isset($a_pools[$_GET['id']])) {
 		unset($a_pools[$_GET['id']]);
-		write_config();
+		write_config("haproxy: Pool deleted");
 		touch($d_haproxyconfdirty_path);
 	}
 	header("Location: haproxy_pools.php");

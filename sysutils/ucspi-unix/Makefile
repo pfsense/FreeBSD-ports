@@ -1,12 +1,11 @@
 # Created by: Patrick Rinke <patrick@rinke-bochum.de>
-# $FreeBSD$
 
 PORTNAME=	ucspi-unix
 PORTVERSION=	1.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://untroubled.org/${PORTNAME}/archive/
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix-domain socket client-server command-line tools
 
 LICENSE=	GPLv2

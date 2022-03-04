@@ -1,10 +1,9 @@
 # Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	argdata
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	ed@FreeBSD.org

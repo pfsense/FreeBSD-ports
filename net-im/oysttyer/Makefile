@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oysttyer
 PORTVERSION=	2.10.0
 CATEGORIES=	net-im
@@ -17,7 +15,6 @@ RUN_DEPENDS=	curl:ftp/curl \
 
 USES=		perl5 shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	oysttyer
 SHEBANG_FILES=	oysttyer.pl
 PLIST_FILES=	bin/oysttyer
 

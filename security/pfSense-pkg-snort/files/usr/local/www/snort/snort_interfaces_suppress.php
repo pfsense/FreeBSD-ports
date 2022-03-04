@@ -3,9 +3,9 @@
  * snort_interfaces_suppress.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -67,8 +67,8 @@ if (isset($_POST['del_btn'])) {
 	if (is_array($_POST['del']) && count($_POST['del'])) {
 		foreach ($_POST['del'] as $itemi) {
 			/* make sure list is not being referenced by any interface */
-			if (snort_suppresslist_used($a_suppress[$_POST['list_id']]['name'])) {
-				$input_errors[] = gettext("Suppression List '{$a_suppress[$itemi]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
+			if (snort_suppresslist_used($a_suppress[$itemi]['name'])) {
+				$input_errors[] = gettext("Suppression List '{$a_suppress[$itemi]['name']}' is currently assigned to one or more Snort interfaces and cannot be deleted. Unassign it from all Snort interfaces first.");
 			} else {
 				unset($a_suppress[$itemi]);
 				$need_save = true;
@@ -77,6 +77,7 @@ if (isset($_POST['del_btn'])) {
 		if ($need_save) {
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
+			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -92,20 +93,22 @@ else {
 		}
 	}
 	if (is_numeric($delbtn_list) && $a_suppress[$delbtn_list]) {
-		if (snort_suppresslist_used($a_suppress[$_POST['list_id']]['name'])) {
-			$input_errors[] = gettext("This Suppression List '{$$a_suppress[$delbtn_list]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
+		if (snort_suppresslist_used($a_suppress[$delbtn_list]['name'])) {
+			$input_errors[] = gettext("This Suppression List '{$$a_suppress[$delbtn_list]['name']}' is currently assigned to one or more Snort interfaces and cannot be deleted. Unassign it from all Snort interfaces first.");
 		}
 		else {
 			unset($a_suppress[$delbtn_list]);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
+			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Suppression Lists"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Suppression Lists");
 include_once("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -184,6 +187,8 @@ display_top_tabs($tab_array, true);
 		</div>
 	</div>
 </div>
+
+<?php unset($a_suppress); ?>
 
 <script type="text/javascript">
 //<![CDATA[

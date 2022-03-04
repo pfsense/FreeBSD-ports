@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wimlib
 PORTVERSION=	1.13.0
 CATEGORIES=	sysutils

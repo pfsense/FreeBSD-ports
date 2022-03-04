@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>haproxy</name>
-		<pkginfolink>https://doc.pfsense.org/index.php/haproxy_package</pkginfolink>
+		<pkginfolink>https://docs.netgate.com/pfsense/en/latest/packages/haproxy.html</pkginfolink>
 		<descr><![CDATA[The Reliable, High Performance TCP/HTTP(S) Load Balancer.&lt;br /&gt;
 			This package implements the TCP, HTTP and HTTPS balancing features from haproxy.&lt;br /&gt;
 			Supports ACLs for smart backend switching.]]></descr>

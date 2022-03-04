@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	prodlim
 PORTVERSION=	1.6.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

@@ -1,19 +1,18 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	comms python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Python bindings for libimobiledevice
 
-LIB_DEPENDS=	libimobiledevice.so:${MASTER_PORT}
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libplist>0:devel/py-libplist@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libplist>0:devel/py-libplist@${PY_FLAVOR}
+LIB_DEPENDS=	libimobiledevice-1.0.so:${MASTER_PORT} \
+		libplist-2.0.so:devel/libplist
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libplist>=2.2.0:devel/py-libplist@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libplist>=2.2.0:devel/py-libplist@${PY_FLAVOR}
 
 PORTSCOUT=	ignore:1
 
-USES=		python:2.7
+USES=		python:3.6+
 USE_PYTHON=	flavors cython
 BINARY_ALIAS=	cython=cython-${PYTHON_VER}
 CONFIGURE_ENV=	PYTHON_LDFLAGS="`pkg-config --libs python-${PYTHON_VER}`"
@@ -30,7 +29,7 @@ PLIST_FILES=	include/imobiledevice/cython/imobiledevice.pxd \
 
 post-patch:
 	@${REINPLACE_CMD} \
-		-e 's,../src/libimobiledevice.la,-limobiledevice,' \
+		-e 's,$$(top_builddir)/src/libimobiledevice-1.0.la,-limobiledevice-1.0,' \
 		-e 's/$$(imobiledevice_la_DEPENDENCIES)//' \
 		${BUILD_WRKSRC}/Makefile.in
 

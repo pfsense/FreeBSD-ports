@@ -1,46 +1,40 @@
-# Created by: Daniel Solsona <daniel@ish.com.au>, Guido Falsi <madpilot@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	logstash
-PORTVERSION=	6.4.2
-PORTREVISION=	0
+PORTVERSION=	6.8.16
 CATEGORIES=	sysutils java
 MASTER_SITES=	http://artifacts.elastic.co/downloads/logstash/
 PKGNAMESUFFIX=	6
 
 MAINTAINER=	elastic@FreeBSD.org
-COMMENT=	Server-side data ingest and transfomation tool
+COMMENT=	Server-side data ingestion and transformation tool
 
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-CONFLICTS=	logstash-[0-9]* logstash5-[0-9]*
-
 USES=		cpe shebangfix
-SHEBANG_FILES=	bin/*
-CPE_VENDOR=	elasticsearch
+
+CPE_VENDOR=	elastic
 USE_JAVA=	yes
 JAVA_VERSION=	1.8+
 JAVA_RUN=	yes
-NO_BUILD=	yes
-
-USERS=	logstash
-GROUPS=	logstash
-
-LOGSTASH_DIR=	${PREFIX}/${PORTNAME}
-
 USE_RC_SUBR=	logstash
+SHEBANG_FILES=	bin/*
+CONFLICTS=	logstash logstash5* logstash7*
 
-LOGSTASH_HOME?=	${PREFIX}/${PORTNAME}
-
+NO_BUILD=	yes
 SUB_LIST=	JAVA_HOME=${JAVA_HOME} \
 		LOGSTASH_HOME=${LOGSTASH_HOME}
 
-LOGSTASH_CONF_FILES=	jvm.options log4j2.properties logstash.yml pipelines.yml
-LOGSTASH_JRUBY_SUBDIR=	vendor/jruby/bin
-LOGSTASH_JRUBY_BIN_FILES=	ast irb jirb jruby jruby.sh rdoc testrb gem \
-				jgem jirb_swing jruby.bash jrubyc rake ri
+USERS=		logstash
+GROUPS=		logstash
+
+LOGSTASH_CONF_FILES=		jvm.options log4j2.properties logstash.yml \
+				pipelines.yml startup.options
+LOGSTASH_DIR=	${PREFIX}/${PORTNAME}
+LOGSTASH_HOME?=	${PREFIX}/${PORTNAME}
+LOGSTASH_JRUBY_BIN_FILES=	ast gem irb jgem jirb jirb_swing jruby \
+				jruby.bash jruby.sh jrubyc rake rdoc ri testrb
+LOGSTASH_JRUBY_SUBDIR=		vendor/jruby/bin
 
 post-patch:
 	${REINPLACE_CMD} 's|%%ETCDIR%%|${ETCDIR}|g' ${WRKSRC}/config/logstash.yml
@@ -66,14 +60,15 @@ post-install:
 .for x in ${LOGSTASH_CONF_FILES}
 	${ECHO} "@sample ${ETCDIR}/${x}.sample" >> ${TMPPLIST}
 .endfor
+	${RM} -rf ${STAGEDIR}${PREFIX}/logstash/vendor/bundle/jruby/2.5.0/build_info
+	${RM} -rf ${STAGEDIR}${PREFIX}/logstash/vendor/bundle/jruby/2.5.0/cache
+	${RM} -rf ${STAGEDIR}${PREFIX}/logstash/vendor/bundle/jruby/2.5.0/doc
+	${RM} -rf ${STAGEDIR}${PREFIX}/logstash/vendor/bundle/jruby/2.5.0/extensions
+	${RM} -rf ${STAGEDIR}${PREFIX}/logstash/vendor/bundle/jruby/2.5.0/gems/manticore-0.6.4-java/spec/ssl
+	${RM} -rf ${STAGEDIR}${PREFIX}/logstash/vendor/bundle/jruby/2.5.0/gems/redis-3.3.5/test/db
+	${RM} -rf ${STAGEDIR}${PREFIX}/logstash/vendor/jruby/lib/ruby/gems/shared/cache
 	${FIND} -s ${STAGEDIR}${PREFIX}/logstash -not -type d | ${SORT} | \
 		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 	${ECHO} "@dir(logstash,logstash,) logstash/data" >> ${TMPPLIST}
-	${ECHO} "@dir logstash/vendor/bundle/jruby/2.3.0/build_info" >> ${TMPPLIST}
-	${ECHO} "@dir logstash/vendor/bundle/jruby/2.3.0/cache" >> ${TMPPLIST}
-	${ECHO} "@dir logstash/vendor/bundle/jruby/2.3.0/doc" >> ${TMPPLIST}
-	${ECHO} "@dir logstash/vendor/bundle/jruby/2.3.0/extensions" >> ${TMPPLIST}
-	${ECHO} "@dir logstash/vendor/bundle/jruby/2.3.0/gems/manticore-0.6.4-java/spec/ssl" >> ${TMPPLIST}
-	${ECHO} "@dir logstash/vendor/bundle/jruby/2.3.0/gems/redis-3.3.5/test/db" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

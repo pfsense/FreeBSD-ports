@@ -1,9 +1,8 @@
 # Created by: Dan Pelleg <dpelleg+unison@cs.cmu.edu>
-# $FreeBSD$
 
 PORTNAME=	unison
 PORTVERSION=	2.48.15
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	v4
 CATEGORIES=	net
@@ -11,10 +10,11 @@ CATEGORIES=	net
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	User-level file synchronization tool
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 FLAVORS=	x11 nox11
-FLAVOR?=	${FLAVORS[1]}
+FLAVOR?=	${FLAVORS:[1]}
 
 VERSIONSUFFIX=	248
 
@@ -34,13 +34,12 @@ USES=		gmake localbase
 USE_OCAML=	yes
 WRKSRC_SUBDIR=	src
 NO_OCAML_RUNDEPENDS=yes
-CONFLICTS=	unison-devel-[0-9]*
+CONFLICTS=	unison-devel
 MAKE_ENV=	CLIBS="${LIBS:S/^-/-ccopt -/}" COFLAGS="${CFLAGS:C/ *(-[^ ]*) */ -ccopt \"\1 \"/gW}"
-MAKE_JOBS_UNSAFE=	yes
 ALL_TARGET=	unison all
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     bcpierce00
+USE_GITHUB=	yes
+GH_ACCOUNT=	bcpierce00
 
 DOCS=		BUGS.txt NEWS README
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
@@ -63,7 +62,7 @@ MAKE_ARGS=		UISTYLE=gtk2
 SUB_FILES=		${PORTNAME}.desktop
 SUB_LIST=		PORTVERSION=${PORTVERSION} VERSIONSUFFIX=${VERSIONSUFFIX}
 USE_GNOME+=		atk cairo gdkpixbuf2 glib20 gtk20 pango
-USES+=			gettext-runtime
+USES+=			gettext-runtime gnome
 PLIST_SUB+=		X11=""
 .endif
 
@@ -77,6 +76,8 @@ post-patch-FSMONITOR-on:
 		${WRKSRC}/fswatch.ml
 
 post-patch:
+# remove unconditional raise, which causes self tests to always fail
+	${REINPLACE_CMD} -e '/remove me/d' ${WRKSRC}/test.ml
 .if ${FLAVOR} == nox11
 	@${REINPLACE_CMD} -e 's/CFLAGS/COFLAGS/g' \
 		${WRKSRC}/Makefile.OCaml ${WRKSRC}/fsmonitor/linux/Makefile
@@ -86,8 +87,9 @@ post-patch:
 		${WRKSRC}/Makefile.OCaml ${WRKSRC}/fsmonitor/linux/Makefile
 .endif
 
-.if ${FLAVOR} == x11
 post-build:
+	(cd ${WRKSRC} && HOME=${WRKSRC} ./unison -selftest -ui text -batch)
+.if ${FLAVOR} == x11
 	@${ECHO} Building text-only version
 	@${ECHO} ${WRKSRC}
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC} UISTYLE=text NAME=unison-text
@@ -96,13 +98,15 @@ post-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}${VERSIONSUFFIX}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
 .if ${FLAVOR} == x11
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME}-text ${STAGEDIR}${PREFIX}/bin/${PORTNAME}${VERSIONSUFFIX}-text
 	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}/${PORTNAME}${VERSIONSUFFIX}.desktop
 	${INSTALL_DATA} ${WRKSRC}/win32rc/U_4_48x48x32.png ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}${VERSIONSUFFIX}.png
 .endif
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
 
 do-install-FSMONITOR-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME}-fsmonitor ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-fsmonitor${VERSIONSUFFIX}

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	qpOASES
 DISTVERSION=	3.2.1
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	https://www.coin-or.org/download/source/${PORTNAME}/
 PKGNAMEPREFIX=	coin-or-

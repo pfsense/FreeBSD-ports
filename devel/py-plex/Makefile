@@ -1,5 +1,4 @@
 # Created by: Hye-Shik Chang
-# $FreeBSD$
 
 PORTNAME=	plex
 PORTVERSION=	1.1.5
@@ -11,7 +10,7 @@ DISTNAME=	Plex-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lexical Analysis Module for Python
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

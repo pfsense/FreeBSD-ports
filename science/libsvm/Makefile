@@ -1,5 +1,4 @@
 # Created by: Chia-Hsing Yu <me@davidyu.org>
-# $FreeBSD$
 
 PORTNAME=	libsvm
 PORTVERSION=	3.23
@@ -7,7 +6,7 @@ CATEGORIES=	science math
 MASTER_SITES=	http://www.csie.ntu.edu.tw/~cjlin/libsvm/ \
 		http://www.csie.ntu.edu.tw/~cjlin/libsvm/oldfiles/
 
-MAINTAINER=	iblis@hs.ntnu.edu.tw
+MAINTAINER?=	iblis@hs.ntnu.edu.tw
 COMMENT=	Library for Support Vector Machines
 
 LICENSE=	BSD3CLAUSE

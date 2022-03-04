@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	2.4.1
+PORTVERSION=	3.3.3
 CATEGORIES=	graphics python
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -16,22 +15,22 @@ LICENSE_FILE=	${WRKSRC}/../../LICENSE.TXT
 
 LIB_DEPENDS=	libgdal.so:graphics/gdal
 
-OPTIONS_DEFINE=	NUMPY
-NUMPY_DESC=	Enable array support via NumPy
-
-USES=		compiler:c++11-lang python shebangfix tar:xz
+USES=		compiler:c++14-lang cpe python:3.7+ tar:xz
 USE_PYTHON=	autoplist concurrent distutils
 
-USE_CXXSTD=	c++11
+USE_CXXSTD=	c++14
 WRKSRC_SUBDIR=	swig/python
 
-SHEBANG_FILES=	scripts/*.py
+CPE_VENDOR=	osgeo
+
+OPTIONS_DEFINE=	NUMPY
+NUMPY_DESC=	Enable array support via NumPy
 
 NUMPY_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.0.0,1:math/py-numpy@${PY_FLAVOR}
 NUMPY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.0.0,1:math/py-numpy@${PY_FLAVOR}
 NUMPY_USES=		fortran
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/osgeo/*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

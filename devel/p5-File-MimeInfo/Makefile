@@ -1,8 +1,7 @@
 # Created by: Rong-En Fan <rafan@infor.org>
-# $FreeBSD$
 
 PORTNAME=	File-MimeInfo
-PORTVERSION=	0.29
+PORTVERSION=	0.30
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,11 +13,13 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-File-BaseDir>=0.03:devel/p5-File-BaseDir \
+RUN_DEPENDS=	p5-Encode-Locale>=0:converters/p5-Encode-Locale \
+		p5-File-BaseDir>=0.03:devel/p5-File-BaseDir \
 		p5-File-DesktopEntry>=0.04:devel/p5-File-DesktopEntry
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5 shared-mime-info
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hackpad-cli
 PORTVERSION=	0.1.4
 CATEGORIES=	www rubygems

@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	PkgConfig
-PORTVERSION=	0.23026
+PORTVERSION=	0.25026
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PLICEASE
@@ -15,11 +14,11 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PORTSCOUT=	limit:^[0-9\.]*$$
-
 USES=		perl5 pkgconfig
 USE_PERL5=	configure
 
 NO_ARCH=	yes
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Hye-Shik Chang <perky@python.or.kr>
-# $FreeBSD$
 
 PORTNAME=	bsddb3
-PORTVERSION=	6.2.6
+PORTVERSION=	6.2.9
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +10,9 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python extension module for BerkeleyDB 4.7, 4.8, 5.1, 5.3, 6.1 and 6.2
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		bdb python
+USES=		bdb python:3.6+
 USE_PYTHON=	distutils autoplist
 
 PYDISTUTILS_CONFIGUREARGS=--libs="-l${BDB_LIB_NAME}" --berkeley-db=${LOCALBASE}
@@ -33,6 +33,6 @@ post-patch:
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@(cd ${WRKSRC}/docs && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR})
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/bsddb3/_pybsddb.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/bsddb3/_pybsddb*.so
 
 .include <bsd.port.mk>

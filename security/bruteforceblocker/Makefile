@@ -1,5 +1,4 @@
 # Created by: Daniel Gerzo <danger@rulez.sk>
-# $FreeBSD$
 
 PORTNAME=	bruteforceblocker
 PORTVERSION=	1.2.6
@@ -10,6 +9,9 @@ MAINTAINER=	danger@FreeBSD.org
 COMMENT=	Checks for SSH bruteforce and blocks given IPs
 
 LICENSE=	NONE
+
+DEPRECATED=	Abandonware, please consider using security/sshguard
+EXPIRATION_DATE=2022-03-31
 
 RUN_DEPENDS=	p5-Unix-Syslog>=0:sysutils/p5-Unix-Syslog \
 		p5-Sys-Hostname-Long>=0:sysutils/p5-Sys-Hostname-Long \

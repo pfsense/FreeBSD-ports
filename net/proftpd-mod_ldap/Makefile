@@ -1,8 +1,7 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mod_ldap
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net ftp
 PKGNAMEPREFIX=	proftpd-
 
@@ -16,7 +15,7 @@ DESCR=		${.CURDIR}/pkg-descr
 MASTERDIR=	${.CURDIR}/../../ftp/proftpd
 
 USE_OPENLDAP=	yes
-USES=		ssl
+USES=		cpe ssl
 
 INCLUDEDIRS=	${LOCALBASE}/include
 LIBDIRS=	${LOCALBASE}/lib

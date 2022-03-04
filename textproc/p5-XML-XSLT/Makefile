@@ -1,5 +1,4 @@
 # Created by: vanilla
-# $FreeBSD$
 
 PORTNAME=	XML-XSLT
 PORTVERSION=	0.48
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	XML::XSLT - A perl module for processing XSLT
+COMMENT=	Perl module for processing XSLT
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

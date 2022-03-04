@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	fillets-ng
 PORTVERSION=	1.0.1
 PORTREVISION=	8
@@ -17,7 +14,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_SDL=	sdl mixer image ttf
-USES=		gmake lua:51 pkgconfig
+USES=		gmake lua:51 pkgconfig sdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--datadir="${DATADIR}"
 CONFIGURE_ENV=	LUA_LIBS="-L${LUA_LIBDIR} -llua-${LUA_VER}" \
@@ -30,7 +27,7 @@ PORTDATA=	*
 
 DATAVERSION=	1.0.1
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
 DESKTOP_ENTRIES="Fish Fillets - Next Generation" \
 		"" \
@@ -46,6 +43,7 @@ FRIBIDI_LIB_DEPENDS=	libfribidi.so:converters/fribidi
 SMPEG_DESC=		Video playback support
 SMPEG_LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg
 X11_DESC=		X11 window manager support
+X11_USES=		xorg
 X11_USE=		xorg=x11
 X11_CONFIGURE_ON=	--with-X=yes
 X11_CONFIGURE_OFF=	--with-X=no

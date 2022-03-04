@@ -1,5 +1,5 @@
 diff --git src/external/inotify.m4 src/external/inotify.m4
-index 9572f6d..2a5a8cf 100644
+index 3ae5ae314..e88bd3ffc 100644
 --- src/external/inotify.m4
 +++ src/external/inotify.m4
 @@ -20,10 +20,10 @@ int main () {

@@ -1,24 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	myrepos
-PORTVERSION=	1.20160123
-PORTREVISION=	1
+PORTVERSION=	1.20180726
 CATEGORIES=	devel
+MASTER_SITES=	https://git.joeyh.name/index.cgi/mr.git/snapshot/ \
+		https://git.kitenet.net/index.cgi/mr.git/snapshot/
+DISTNAME=	mr-${PORTVERSION}
 
-MAINTAINER=	jonathan@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Tool to manage all your version control repos
 
 LICENSE=	GPLv2+
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	joeyh
-
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	run
 SHEBANG_FILES=	mr
 
-PLIST_FILES=	bin/mr
-PORTDOCS=	*
+DOCLIST=	README mrconfig mrconfig.complex
 
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -30,7 +27,9 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 
 do-install-DOCS-on:
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCLIST} ${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC}/doc/ && ${CAT} index.mdwn > ${STAGEDIR}${DOCSDIR}/HOWTO)
+	(mkdir ${STAGEDIR}${DOCSDIR}/EXAMPLES && cd ${WRKSRC}/lib && \
+	${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/EXAMPLES)
 
 .include <bsd.port.mk>

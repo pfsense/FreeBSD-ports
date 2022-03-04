@@ -1,9 +1,8 @@
 # Created by: Gleb Smirnoff <glebius@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xf86-input-egalax
 PORTVERSION=	0.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	glebius@FreeBSD.org
@@ -15,7 +14,6 @@ GH_TAGNAME=	7f1e4ac
 
 LICENSE=	BSD2CLAUSE
 
-USES=		autoreconf
-XORG_CAT=	driver
+USES=		autoreconf xorg-cat:driver
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Zane C, Bowers <vvelox@vvelox.net>
-# $FreeBSD$
 
 PORTNAME=	Net-LDAP-Makepath
 PORTVERSION=	1.0.1
@@ -12,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Provides a method for creating paths in LDAP simply
 
-RUN_DEPENDS=	 p5-perl-ldap>=0:net/p5-perl-ldap
+RUN_DEPENDS=	p5-perl-ldap>=0:net/p5-perl-ldap
 
 USES=		perl5
 USE_PERL5=	configure

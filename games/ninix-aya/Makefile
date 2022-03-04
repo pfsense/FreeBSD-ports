@@ -1,10 +1,9 @@
 # Created by: UMENO Takashi
-# $FreeBSD$
 
 PORTNAME=	ninix-aya
-PORTVERSION=	5.0.6
+PORTVERSION=	5.0.9
 CATEGORIES=	games
-MASTER_SITES=	OSDN/${PORTNAME}/69796
+MASTER_SITES=	OSDN/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Desktop mascot program compatible with "Ukagaka"

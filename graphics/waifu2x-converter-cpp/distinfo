@@ -1,4 +1,3 @@
-SHA256 (waifu2x.1.gz) = bfad3e87e43f20573ab068c386e150f93fb4cc37400b8f4aaf4734c9afbd1489
-SIZE (waifu2x.1.gz) = 1242
-SHA256 (tanakamura-waifu2x-converter-cpp-1.0.0-410-g5e5ac35_GH0.tar.gz) = c2ebb418609f2f361ba499c12ebbd7e155f1b6ee05164df721405fae46fd5132
-SIZE (tanakamura-waifu2x-converter-cpp-1.0.0-410-g5e5ac35_GH0.tar.gz) = 14875981
+TIMESTAMP = 1608489566
+SHA256 (DeadSix27-waifu2x-converter-cpp-v5.3.4_GH0.tar.gz) = 93e1dca78657c48f9c497a71b9e9d11e88ffadcc20fac27f9c48cdba7f132b51
+SIZE (DeadSix27-waifu2x-converter-cpp-v5.3.4_GH0.tar.gz) = 12532169

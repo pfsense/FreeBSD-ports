@@ -4,7 +4,7 @@
  * check_ip.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Marcello Coutinho
  * All rights reserved.
  *
@@ -24,7 +24,7 @@
 require_once("config.inc");
 require_once("globals.inc");
 error_reporting(0);
-global $g;
+global $config, $g;
 // stdin loop
 if (!defined(STDIN)) {
 	define("STDIN", fopen("php://stdin", "r"));
@@ -33,19 +33,35 @@ if (!defined(STDOUT)) {
 	define("STDOUT", fopen('php://stdout', 'w'));
 }
 while (!feof(STDIN)) {
-	$check_ip = trim(fgets(STDIN));
-	$dbs = glob("{$g['vardb_path']}/captiveportal*.db");
+	$check_ip = preg_replace('/[^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}]/', '', fgets(STDIN));
+	$status = '';
 
-	foreach ($dbs as $db) {
-		if(!strpos($db, "_radius")) {
-			$status = squid_check_ip($db, $check_ip);
-			break;
+	if (is_array($config['captiveportal'])) {
+		foreach ($config['captiveportal'] as $cpzone => $cp) {
+			if (isset($cp['enable'])) {
+				$db = "{$g['vardb_path']}/captiveportal{$cpzone}.db";
+				$status = squid_check_ip($db, $check_ip);
+				if ($status) {
+					break;
+				} elseif (is_array($cp['allowedip'])) {
+					foreach ($cp['allowedip'] as $ipent) {
+						if (ip_in_subnet($check_ip, "{$ipent['ip']}/{$ipent['sn']}") &&
+						    (($ipent['dir'] == 'from') || ($ipent['dir'] == 'both'))) {
+							$status = $check_ip;
+							break 2;
+						}
+					}
+				}
+			}
 		}
 	}
-	if (isset($status)) {
-		fwrite(STDOUT, "OK user={$status}\n");
-	} else {
-		fwrite(STDOUT, "ERR\n");
+
+	if ($check_ip) {
+		if ($status) {
+			fwrite(STDOUT, "OK user={$status}\n");
+		} else {
+			fwrite(STDOUT, "ERR\n");
+		}
 	}
 }
 

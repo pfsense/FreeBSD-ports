@@ -1,7 +1,5 @@
 # Created by: John Merryweather Cooper
-# $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-ibase
 
@@ -15,7 +13,6 @@ EXTRACTUNITDIR=	${WRKUNITDIR}
 
 OPTIONS_DEFINE=	IBASE
 IBASE_DESC=	Install Interbase/Firebird client
-OPTIONS_DEFAULT=	IBASE
 
 IBASE_USES=	firebird
 

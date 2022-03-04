@@ -1,13 +1,11 @@
 # Created by: Marcel Prisi <marcel.prisi@virtua.ch>
-# $FreeBSD$
 
 PORTNAME=	distcache
 DISTVERSION=	1.5.1
 CATEGORIES=	security www
-MASTER_SITES=	SF/${PORTNAME}/2.%20${PORTNAME}-stable/${PORTVERSION} \
-		http://osdn.dl.sourceforge.net/sourceforge/${PORTNAME}/
+MASTER_SITES=	SF/distcache/1.%20distcache-devel/1.5.1
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Distributed OpenSSL session caching tools
 
 LICENSE=	LGPL21
@@ -25,19 +23,20 @@ PORTDOCS=	ANNOUNCE BUGS CHANGES FAQ README
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_12=	SSL/TLS libraries were missing or unusable
-BROKEN_FreeBSD_13=	SSL/TLS libraries were missing or unusable
-.endif
+pre-configure:	# yes, post-patch won't work in this case
+	@${GREP} -q 'define SSLeay_version' ${OPENSSLINC}/openssl/crypto.h \
+	    && ${REINPLACE_CMD} -e 's,SSLeay_version,OpenSSL_version,' \
+		${WRKSRC}/ssl/configure || :
 
 post-install:
-	# INSTALL_TARGET=install-strip isn't working!  Brute force it
+# Only executables are stripped with `install-strip', not the libraries
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.post.mk>
+do-test:
+	@cd ${TEST_WRKSRC} && ${SH} devel/test.sh
+
+.include <bsd.port.mk>

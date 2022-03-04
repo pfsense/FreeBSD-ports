@@ -1,5 +1,4 @@
 # Created by: Frederic Culot <frederic@culot.org>
-# $FreeBSD$
 
 PORTNAME=	Physics-Unit
 PORTVERSION=	0.54
@@ -7,7 +6,7 @@ CATEGORIES=	science perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Manipulate Physics units and dimensions
 
 LICENSE=	ART10 GPLv1+

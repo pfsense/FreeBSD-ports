@@ -1,5 +1,4 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	oftpd
 PORTVERSION=	0.3.7
@@ -12,6 +11,8 @@ COMMENT=	Threaded, anonymous only FTP server designed for security
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		cpe
 
 GNU_CONFIGURE=	yes
 

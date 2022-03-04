@@ -1,11 +1,11 @@
---- ui/views/corewm/tooltip_aura.cc.orig	2019-03-11 22:01:19 UTC
+--- ui/views/corewm/tooltip_aura.cc.orig	2021-05-12 22:06:47 UTC
 +++ ui/views/corewm/tooltip_aura.cc
-@@ -34,7 +34,7 @@ const int kCursorOffsetY = 15;
- 
- // TODO(varkha): Update if native widget can be transparent on Linux.
+@@ -47,7 +47,7 @@ constexpr int kVerticalPaddingBottom = 5;
  bool CanUseTranslucentTooltipWidget() {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_WIN)
++#if (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_WIN) || defined(OS_BSD)
    return false;
  #else
    return true;

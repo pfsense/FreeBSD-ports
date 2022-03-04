@@ -1,16 +1,15 @@
 # Created by: Devin Teske <dteske@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	shx
 PORTVERSION=	0.2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://synhxd.sourceforge.net/releases/
 
 PATCH_SITES=	${MASTER_SITES}
 PATCHFILES=	${DISTNAME}.diff.gz
 
-MAINTAINER=	dteske@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text based Hotline Communications client for Unix
 
 LICENSE=	GPLv1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ghostscript
 PORTVERSION=	9.06
 PORTREVISION=	12
@@ -15,15 +13,16 @@ COMMENT=	Ghostscript 9.x PostScript interpreter, X11 support
 LICENSE=	GPLv3
 
 CONFLICTS_INSTALL= \
-		gambc-[0-9]* \
-		ghostscript[789]-[0-9]* \
-		ghostscript[789]-nox11-[0-9]* \
-		ghostscript9-agpl-[0-9]* \
-		ghostscript9-agpl-nox11-[0-9]*
+		gambc \
+		ghostscript[789] \
+		ghostscript[789]-nox11 \
+		ghostscript9-agpl \
+		ghostscript9-agpl-nox11
 
-USES=		autoreconf ghostscript:9 gmake tar:bzip2
+USES=		autoreconf cpe ghostscript:9 gmake tar:bzip2 xorg
 USE_LDCONFIG=	yes
 USE_XORG=	ice sm x11 xext xt
+CPE_VENDOR=	artifex
 EXTRACT_AFTER_ARGS=	${EXCLUDE_DIRS:S/^/--exclude /}
 GNU_CONFIGURE=	yes
 MAKE_ENV=	CFLAGS_STANDARD="${CFLAGS}" \

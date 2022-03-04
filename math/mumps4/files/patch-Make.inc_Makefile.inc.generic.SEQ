@@ -9,15 +9,6 @@
  #ISCOTCH    = -I$(SCOTCHDIR)/include 
  # You have to choose one among the following two lines depending on
  # the type of analysis you want to perform. If you want to perform only
-@@ -57,7 +57,7 @@ LPORDDIR = $(topdir)/PORD/lib/
- IPORD    = -I$(topdir)/PORD/include/
- LPORD    = -L$(LPORDDIR) -lpord
- 
--#LMETISDIR = /local/metis/
-+#LMETISDIR = @LOCALBASE@/lib
- #IMETIS    = # Should be provided if you use parmetis
- 
- # You have to choose one among the following two lines depending on
 @@ -72,7 +72,7 @@ LPORD    = -L$(LPORDDIR) -lpord
  # The following variables will be used in the compilation process.
  # Please note that -Dptscotch and -Dparmetis imply -Dscotch and -Dmetis respectively.

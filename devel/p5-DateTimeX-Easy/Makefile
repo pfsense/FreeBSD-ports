@@ -1,5 +1,4 @@
 # Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
 
 PORTNAME=	DateTimeX-Easy
 PORTVERSION=	0.089
@@ -23,8 +22,9 @@ RUN_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \
 		p5-TimeDate>=0:devel/p5-TimeDate
 TEST_DEPENDS=	p5-Test-Most>=0:devel/p5-Test-Most
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

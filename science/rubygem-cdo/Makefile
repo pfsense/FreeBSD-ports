@@ -1,16 +1,14 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cdo
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.1
 CATEGORIES=	science rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby binding to CDO (Climate Data Operators)
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	cdo:science/cdo
 

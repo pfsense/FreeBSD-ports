@@ -1,20 +1,18 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	cvsps
 PORTVERSION=	2.1
 PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	http://www.cobite.com/cvsps/ \
-		SF/${PORTNAME}/
+MASTER_SITES=	SF/${PORTNAME}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Create patchset information from CVS
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	cvsps-devel-[0-9]*
+CONFLICTS=	cvsps-devel
 
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man1/${PORTNAME}.1.gz

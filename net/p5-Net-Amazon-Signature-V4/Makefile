@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Amazon-Signature-V4
 PORTVERSION=	0.18
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for AWS signature V4, AWS4-HMAC-SHA256
 
 LICENSE=	ART10 GPLv1+

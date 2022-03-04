@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	sslproxy
-PORTVERSION=	0.5.9
+PORTVERSION=	0.9.2
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	security
@@ -14,7 +12,7 @@ LICENSE=	BSD2CLAUSE
 LIB_DEPENDS=	libevent.so:devel/libevent \
 		libnet.so:net/libnet
 
-USES=		gmake pkgconfig uidfix ssl
+USES=		gmake pkgconfig uidfix sqlite ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	sonertari
 GH_PROJECT=	SSLproxy
@@ -23,5 +21,10 @@ MAKEFILE=	GNUmakefile
 MAKE_ENV=	DESTDIR=${STAGEDIR} MANDIR=man INSTALLUID=${UID} INSTALLGID=${GID}
 PLIST_FILES=	bin/sslproxy man/man1/sslproxy.1.gz man/man5/sslproxy.conf.5.gz \
 		"@sample etc/sslproxy.conf.sample"
+
+post-patch:
+	@${REINPLACE_CMD} -e \
+		's|^EXAMPLESDIR.*|EXAMPLESDIR?=	etc|g' \
+			${WRKSRC}/Mk/main.mk
 
 .include <bsd.port.mk>

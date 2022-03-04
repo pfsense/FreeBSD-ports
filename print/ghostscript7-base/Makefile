@@ -1,5 +1,4 @@
 # Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
 
 PORTNAME=	ghostscript
 PORTVERSION=	7.07
@@ -21,14 +20,15 @@ LIB_DEPENDS=	libpng.so:graphics/png
 RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/a010013l.pfb:print/gsfonts
 
 CONFLICTS_INSTALL= \
-		gambc-[0-9]* \
-		ghostscript[789]-[0-9]* \
-		ghostscript[789]-nox11-[0-9]* \
-		ghostscript9-agpl-[0-9]* \
-		ghostscript9-agpl-nox11-[0-9]*
+		gambc \
+		ghostscript[789] \
+		ghostscript[789]-nox11 \
+		ghostscript9-agpl \
+		ghostscript9-agpl-nox11
 
-USES=		autoreconf gmake jpeg shebangfix tar:bzip2
+USES=		autoreconf cpe gmake jpeg shebangfix tar:bzip2
 USE_LDCONFIG=	yes
+CPE_VENDOR=	artifex
 SHEBANG_FILES=	lib/fixmswrd.pl
 # normazile WRKSRC so things like cups-pstoraster may work
 WRKSRC=		${WRKDIR}/${PORTNAME}

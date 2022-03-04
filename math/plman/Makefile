@@ -1,5 +1,4 @@
 # Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	plman
 PORTVERSION=	2.5.1
@@ -17,7 +16,6 @@ NO_BUILD=	yes
 USES=		zip
 USE_JAVA=	yes
 
-JAVA_VERSION=	1.6+
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 REPLACE_FILES=	${WRKSRC}/bin/${PORTNAME}
 WRKSRC=	${WRKDIR}/${PORTNAME}

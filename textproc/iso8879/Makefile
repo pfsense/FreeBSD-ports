@@ -1,5 +1,4 @@
 # Created by: jfieber
-# $FreeBSD$
 
 PORTNAME=	iso8879
 PORTVERSION=	1986
@@ -8,7 +7,7 @@ CATEGORIES=	textproc
 MASTER_SITES=	LOCAL/kuriyama
 DISTNAME=	isoENTS
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Character entity sets from ISO 8879:1986 (SGML)
 
 LICENSE=	IOS

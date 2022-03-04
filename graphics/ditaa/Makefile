@@ -1,5 +1,4 @@
 # Created by: Aldis Berjoza <aldis@bsdroot.lv>
-# $FreeBSD$
 
 PORTNAME=	ditaa
 DISTVERSION=	0_9
@@ -15,7 +14,6 @@ LICENSE_FILE=	${WRKDIR}/COPYING
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,9 +1,8 @@
 # Created by: Gerrit Beine (<tux@pinguru.net>)
-# $FreeBSD$
 
 PORTNAME=	Unreal
 PORTVERSION=	3.2.10.7
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 MASTER_SITES=	http://www.unrealircd.com/downloads/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
@@ -13,15 +12,17 @@ COMMENT=	Unreal - the next generation ircd
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libcares.so:dns/c-ares
-
 BROKEN_aarch64=	Fails to link: missing sbrk
+BROKEN_riscv64=	Fails to link: missing sbrk
+
+LIB_DEPENDS=	libcares.so:dns/c-ares
 
 MODULESDIR=	${PREFIX}/lib/${PORTNAME}
 CONFIGDIR=	${PREFIX}/etc/${PORTNAME}
 RUNDIR=		/var/run/ircd
 LOGDIR=		/var/log/ircd
 
+USES=		pkgconfig cpe
 HAS_CONFIGURE=	yes
 USE_RC_SUBR=	unrealircd
 
@@ -29,8 +30,6 @@ USERS=		ircd
 GROUPS=		ircd
 CPE_VENDOR=	unrealircd
 CPE_PRODUCT=	unrealircd
-
-USES=		pkgconfig cpe
 
 SUB_LIST+=	RUNDIR=${RUNDIR}
 SUB_LIST+=	USERS=${USERS}
@@ -78,8 +77,11 @@ PREFIXAQ_CONFIGURE_ENABLE=	prefixaq
 
 SQLMOD=		${PORTNAME}/SQLMod.tar.gz
 
+# Upstream dead, don't expect a proper fix.
+CFLAGS+=	-fcommon
+
 .if exists(${DISTDIR}/${SQLMOD})
-USE_MYSQL=	yes
+USES+=		mysql
 WITH_SQLMOD=	yes
 MAKE_ARGS=	all custommodule MODULEFILE=m_sqlmod
 PLIST_SUB+=	SQLMOD=""

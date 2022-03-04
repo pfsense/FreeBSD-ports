@@ -1,8 +1,7 @@
 # Created by: John Hixson<jhixson@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ifaddr
-PORTVERSION=	0.1.6
+PORTVERSION=	0.1.7
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,9 +11,7 @@ COMMENT=	Python Library to enumerate all network interfaces
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PY_IPADDRESS}
-
-USES=		python
+USES=		python:3.6+
 
 USE_PYTHON=	autoplist distutils
 

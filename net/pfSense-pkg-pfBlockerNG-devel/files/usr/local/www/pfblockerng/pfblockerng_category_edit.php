@@ -3,8 +3,8 @@
  * pfblockerng_category_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,7 +111,6 @@ if (!empty($gtype)) {
 
 if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_POST['save'])) {
 
-	$rowid		= 0;
 	$pfb_found	= FALSE;
 	$disable_move	= TRUE;
 	init_config_arr(array('installedpackages', $conf_type, 'config'));
@@ -154,12 +153,14 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 					if ($action == 'add' && $atype == $feed['header']) {
 
 						// Find rowid
-						foreach ($rowdata as $rowid => $row) {
-							if ($row['aliasname'] == $aliasname) {
-								$pfb_found	= TRUE;
-								$a_url		= $feed['url'];
-								$a_header	= $feed['header'];
-								break 4;
+						if (!empty($rowdata)) {
+							foreach ($rowdata as $rowid => $row) {
+								if ($row['aliasname'] == $aliasname) {
+									$pfb_found	= TRUE;
+									$a_url		= $feed['url'];
+									$a_header	= $feed['header'];
+									break 4;
+								}
 							}
 						}
 
@@ -190,7 +191,10 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 
 		// If not found, create new Alias/Group
 		if (!$pfb_found) {
-			$rowid++;			// Create new row
+
+			if (isset($rowdata[0]) && !empty($rowdata[0])) {
+				$rowid++;		// Create new row
+			}
 			$rowdata[$rowid]['aliasname']	= $a_aliasname;
 			$rowdata[$rowid]['description']	= $a_description;
 			$rowdata[$rowid]['cron']	= $a_cron;
@@ -257,7 +261,7 @@ if ($_POST && isset($_POST['save'])) {
 	if (isset($savemsg)) {
 		unset($savemsg);
 	}
-	
+
 	if (isset($_REQUEST['savemsg'])) {
 		unset($_REQUEST['savemsg']);
 	}
@@ -303,6 +307,12 @@ if ($_POST && isset($_POST['save'])) {
 							. "API key not defined! Add your subscripton API Key to the Source field URL or disable/remove feed.";
 			}
 			$line++;
+		}
+
+		// Validate MaxMind License Key
+		if ($value == 'geoip' && strpos($key, 'format-') !== FALSE && empty($pfb['maxmind_key'])) {
+			$input_errors[] = "{$type} Source Definitions, Line {$line}: "
+				. 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.';
 		}
 	}
 
@@ -466,7 +476,15 @@ if ($_POST && isset($_POST['save'])) {
 		print_input_errors($input_errors);
 
 		// Restore $_POST data on input errors
-		$pconfig = $_POST;
+		foreach ($_POST as $key => $value) {
+			if (strpos($key, '-') !== FALSE) {
+				$k_field = explode('-', $key);
+				$rowdata[$rowid]['row'][$k_field[1]][$k_field[0]] = $value;
+			}
+			else {
+				$pconfig[$key] = $value;
+			}
+		}
 	}
 }
 else {
@@ -589,8 +607,9 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 	$tab_array[]	= array(gettext('Reputation'),	false,			'/pfblockerng/pfblockerng_reputation.php');
 }
 else {
-	$tab_array[]	= array(gettext('DNSBL Feeds'),		$active['feeds'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
+	$tab_array[]	= array(gettext('DNSBL Groups'),	$active['feeds'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
+	$tab_array[]	= array(gettext('DNSBL SafeSearch'),	false,			'/pfblockerng/pfblockerng_safesearch.php');
 }
 display_top_tabs($tab_array, true);
 
@@ -652,6 +671,7 @@ $section->addInput(new Form_StaticText(
 	. '<div class="infoblock alert-info clearfix">'
 	. 'Do not prefix the Alias Name with <strong>pfB_</strong> or <strong>pfb_</strong><br />'
 	. 'Do not add a <strong>_v4</strong> or <strong>_v6</strong> suffix to the Alias Name.<br />'
+	. '<strong>Names must be unique.</strong><br />'
 	. '<strong>International, special or space characters are not allowed.</strong>'
 	. '</div>'));
 
@@ -708,8 +728,8 @@ foreach ($rowdata[$rowid] as $tags) {
 
 		if ($rowdata[$rowid]['sort'] == 'no-sort') {
 
-			$move_anchor = "<input type=\"checkbox\" name=\"Lmove[{$r_id}]\" value=\"{$r_id}\" />
-						<button type=\"submit\" class=\"fa fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\"
+			$move_anchor = "<input type=\"checkbox\" name=\"Lmove[{$r_id}]\" value=\"{$r_id}\" id=\"{$r_id}\" />
+						<button type=\"submit\" class=\"fa fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\" id=\"{$r_id}\"
 						title=\"Move checked entries before this anchor\"></button>";
 
 			$group->add(new Form_StaticText(
@@ -777,7 +797,7 @@ foreach ($rowdata[$rowid] as $tags) {
 		$failed_bg = '';
 		if ($folder && file_exists("{$folder}/{$row['header']}{$suffix}.fail")) {
 			$failed_bg = 'background-color: #FFFF00;';
-			$failed = "<span style=\"background-color: #FFFF00; border-style: groove;\">&emsp;Failed download(s) highlighted in yellow.&emsp;</span>";
+			$failed = "<span style=\"color: black; background-color: #FFFF00; border-style: groove;\">&emsp;Failed download(s) highlighted in yellow.&emsp;</span>";
 		}
 
 		$group->add(new Form_Input(
@@ -989,9 +1009,9 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 						<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
 
 				<span class=\"text-danger\">Note: </span><ul>
-					When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
-					start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
-					description will be auto-removed by package when 'Auto' rules are defined.</ul>
+					When manually creating 'Alias' type firewall rules; Prefix the Firewall rule Description with <strong>pfb_</strong>
+					This will ensure that that Dashboard widget reports those statistics correctly. <strong>Do not</strong> 
+					prefix with (pfB_) as those Rules will be auto-removed by package when 'Auto' rules are defined.</ul>
 			</div>";
 }
 else {
@@ -1204,15 +1224,35 @@ else {
 			. 'When set as \'Primary\', this DNSBL Group will be processed before all other DNSBL Groups/Category(s)')
 	  ->setAttribute('style', 'width: auto');
 
+	if ($pfb['dnsbl_py_blacklist']) {
+		$log_text = 'Default: <strong>DNSBL WebServer/VIP</strong><br />'
+				. '&#8226 <strong>DNSBL WebServer/VIP</strong>, Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+				. '&#8226 <strong>Null Blocking (no logging)</strong>, Utilize \'0.0.0.0\' with no logging.<br />'
+				. '&#8226 <strong>Null Blocking (logging)</strong>, Utilize \'0.0.0.0\' with logging.<br /><br />'
+				. 'Blocked domains will be reported to the Alert/Python Block Table.<br />'
+				. 'Enabling the "Global Logging/Blocking mode" in the DNSBL Tab will override this setting!<br />'
+				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
+				'disabled'	=> 'Null Blocking (no logging)',
+				'disabled_log'	=> 'Null Blocking (logging)'];
+	} else {
+		$log_text = 'Default: <strong>Enabled</strong><br />'
+				. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+				. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
+				. 'Enabling the "Global Logging/Blocking mode" in the DNSBL Tab will override this setting!<br />'
+				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
+				'disabled'	=> 'Null Blocking (no logging)'];
+	}
+
 	$section->addInput(new Form_Select(
 		'logging',
-		'Logging',
+		'Logging / Blocking Mode',
 		$pconfig['logging'],
-		['enabled' => 'Enabled', 'disabled' => 'Disabled']
-	))->setHelp('Default: <strong>Enabled</strong><br />'
-			. 'When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL Web Server.<br />'
-			. 'When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
-			. 'A \'Force Reload - DNSBL\' is required for changes to take effect')
+		$log_options
+	))->setHelp($log_text)
 	  ->setAttribute('style', 'width: auto');
 
 	$section->addInput(new Form_Checkbox(

@@ -1,5 +1,4 @@
 # Created by: bremner@unb.ca
-# $FreeBSD$
 
 PORTNAME=	hashcash
 PORTVERSION=	1.22
@@ -26,6 +25,12 @@ ALL_TARGET=	generic
 MAKE_ENV+=	STAGEDIR=${STAGEDIR}
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH:Mpowerpc*}
+USE_GCC=	yes
+.endif
 
 post-patch-DOCS-off:
 	${REINPLACE_CMD} -e '/DOC_INSTALL_PATH/d' ${WRKSRC}/Makefile

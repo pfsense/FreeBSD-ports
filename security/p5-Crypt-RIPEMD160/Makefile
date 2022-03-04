@@ -1,8 +1,7 @@
 # Created by: Michael Haro <mharo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Crypt-RIPEMD160
-PORTVERSION=	0.06
+PORTVERSION=	0.08
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

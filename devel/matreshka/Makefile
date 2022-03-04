@@ -1,9 +1,8 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	matreshka
 PORTVERSION=	0.7.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://forge.ada-ru.org/matreshka/downloads/
 
@@ -30,7 +29,7 @@ MYSQL_CONFIGURE_ENABLE=		mysql
 ORACLE_CONFIGURE_ENABLE=	oracle
 AMF_CONFIGURE_ENABLE=		amf
 
-MYSQL_USE=			MYSQL=yes
+MYSQL_USES=			mysql
 PGSQL_USES=			pgsql
 SQLITE3_USES=			sqlite
 FIREBIRD_USES=			firebird

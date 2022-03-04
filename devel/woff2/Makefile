@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	woff2
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library and converter tools for the WOFF 2.0 web font format
 
 LICENSE=	MIT

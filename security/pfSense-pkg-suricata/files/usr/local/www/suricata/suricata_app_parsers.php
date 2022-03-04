@@ -3,11 +3,11 @@
  * suricata_app_parsers.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -65,7 +65,7 @@ if (isset($id) && $a_nat[$id]) {
 		$default = array( "name" => "default", "bind_to" => "all", "personality" => "IDS",
 				  "request-body-limit" => 4096, "response-body-limit" => 4096,
 				  "double-decode-path" => "no", "double-decode-query" => "no",
-				  "uri-include-all" => "no" );
+				  "uri-include-all" => "no", "meta-field-limit" => 18432 );
 		$pconfig['libhtp_policy']['item'] = array();
 		$pconfig['libhtp_policy']['item'][] = $default;
 		if (!is_array($a_nat[$id]['libhtp_policy']['item']))
@@ -99,6 +99,7 @@ elseif ($_POST['select_alias']) {
 	$eng_personality = $_POST['personality'];
 	$eng_req_body_limit = $_POST['req_body_limit'];
 	$eng_resp_body_limit = $_POST['resp_body_limit'];
+	$eng_meta_field_limit = $_POST['meta_field_limit'];
 	$eng_enable_double_decode_path = $_POST['enable_double_decode_path'];
 	$eng_enable_double_decode_query = $_POST['enable_double_decode_query'];
 	$eng_enable_uri_include_all = $_POST['enable_uri_include_all'];
@@ -140,6 +141,11 @@ if ($_POST['save_libhtp_policy']) {
 			$engine['response-body-limit'] = $_POST['resp_body_limit'];
 		else
 			$input_errors[] = gettext("The value for 'Response Body Limit' must be all numbers and greater than or equal to zero.");
+
+		if (is_numeric($_POST['meta_field_limit']) && $_POST['meta_field_limit'] >= 0)
+			$engine['meta-field-limit'] = $_POST['meta_field_limit'];
+		else
+			$input_errors[] = gettext("The value for 'Meta-Field Limit' must be all numbers and greater than or equal to zero.");
 
 		if ($_POST['enable_double_decode_path']) { $engine['double-decode-path'] = 'yes'; }else{ $engine['double-decode-path'] = 'no'; }
 		if ($_POST['enable_double_decode_query']) { $engine['double-decode-query'] = 'yes'; }else{ $engine['double-decode-query'] = 'no'; }
@@ -198,7 +204,7 @@ if ($_POST['save_libhtp_policy']) {
 elseif ($_POST['add_libhtp_policy']) {
 	$add_edit_libhtp_policy = true;
 	$pengcfg = array( "name" => "engine_{$libhtp_engine_next_id}", "bind_to" => "", "personality" => "IDS",
-			  "request-body-limit" => "4096", "response-body-limit" => "4096",
+			  "request-body-limit" => "4096", "response-body-limit" => "4096", "meta-field-limit" => 18432, 
 			  "double-decode-path" => "no", "double-decode-query" => "no", "uri-include-all" => "no" );
 	$eng_id = $libhtp_engine_next_id;
 }
@@ -249,7 +255,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['tls_parser'] = "yes";
 	$pconfig['tls_detect_ports'] = "443";
 	$pconfig['tls_encrypt_handling'] = "default";
-	$pconfig['tls_ja3_fingerprint'] = "off";
+	$pconfig['tls_ja3_fingerprint'] = "auto";
 	$pconfig['smtp_parser'] = "yes";
 	$pconfig['smtp_parser_decode_mime'] = "off";
 	$pconfig['smtp_parser_decode_base64'] = "on";
@@ -259,6 +265,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['imap_parser'] = "detection-only";
 	$pconfig['ssh_parser'] = "yes";
 	$pconfig['ftp_parser'] = "yes";
+	$pconfig['ftp_data_parser'] = "on";
 	$pconfig['dcerpc_parser'] = "yes";
 	$pconfig['smb_parser'] = "yes";
 	$pconfig['msn_parser'] = "detection-only";
@@ -268,6 +275,11 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['tftp_parser'] = "yes";
 	$pconfig['ntp_parser'] = "yes";
 	$pconfig['dhcp_parser'] = "yes";
+	$pconfig['rdp_parser'] = "yes";
+	$pconfig['sip_parser'] = "yes";
+	$pconfig['snmp_parser'] = "yes";
+	$pconfig['http2_parser'] = "yes";
+	$pconfig['rfb_parser'] = "yes";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -284,6 +296,7 @@ elseif ($_POST['save_import_alias']) {
 		$pengcfg['personality'] = $_POST['eng_personality'];
 		$pengcfg['request-body-limit'] = $_POST['eng_req_body_limit'];
 		$pengcfg['response-body-limit'] = $_POST['eng_resp_body_limit'];
+		$pengcfg['meta-field-limit'] = $_POST['eng_meta_field_limit'];
 		$pengcfg['double-decode-path'] = $_POST['eng_enable_double_decode_path'];
 		$pengcfg['double-decode-query'] = $_POST['eng_enable_double_decode_query'];
 		$pengcfg['uri-include-all'] = $_POST['eng_enable_uri_include_all'];
@@ -305,6 +318,7 @@ elseif ($_POST['save_import_alias']) {
 			$eng_personality = $_POST['eng_personality'];
 			$eng_req_body_limit = $_POST['eng_req_body_limit'];
 			$eng_resp_body_limit = $_POST['eng_resp_body_limit'];
+			$eng_meta_field_limit = $_POST['eng_meta_field_limit'];
 			$eng_enable_double_decode_path = $_POST['eng_enable_double_decode_path'];
 			$eng_enable_double_decode_query = $_POST['eng_enable_double_decode_query'];
 			$eng_enable_uri_include_all = $_POST['eng_enable_uri_include_all'];
@@ -312,7 +326,7 @@ elseif ($_POST['save_import_alias']) {
 	}
 	else {
 		$engine = array( "name" => "", "bind_to" => "", "personality" => "IDS",
-				 "request-body-limit" => "4096", "response-body-limit" => "4096",
+				 "request-body-limit" => "4096", "response-body-limit" => "4096", "meta-field-limit" => 18432, 
 				 "double-decode-path" => "no", "double-decode-query" => "no", "uri-include-all" => "no" );
 
 		// See if anything was checked to import
@@ -380,6 +394,7 @@ elseif ($_POST['cancel_import_alias']) {
 		$pengcfg['personality'] = $_POST['eng_personality'];
 		$pengcfg['request-body-limit'] = $_POST['eng_req_body_limit'];
 		$pengcfg['response-body-limit'] = $_POST['eng_resp_body_limit'];
+		$pengcfg['meta-field-limit'] = $_POST['eng_meta_field_limit'];
 		$pengcfg['double-decode-path'] = $_POST['eng_enable_double_decode_path'];
 		$pengcfg['double-decode-query'] = $_POST['eng_enable_double_decode_query'];
 		$pengcfg['uri-include-all'] = $_POST['eng_enable_uri_include_all'];
@@ -444,6 +459,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['imap_parser'] = $_POST['imap_parser'];
 		$natent['ssh_parser'] = $_POST['ssh_parser'];
 		$natent['ftp_parser'] = $_POST['ftp_parser'];
+		$natent['ftp_data_parser'] = $_POST['ftp_data_parser'];
 		$natent['dcerpc_parser'] = $_POST['dcerpc_parser'];
 		$natent['smb_parser'] = $_POST['smb_parser'];
 		$natent['msn_parser'] = $_POST['msn_parser'];
@@ -453,6 +469,11 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['tftp_parser'] = $_POST['tftp_parser'];
 		$natent['ntp_parser'] = $_POST['ntp_parser'];
 		$natent['dhcp_parser'] = $_POST['dhcp_parser'];
+		$natent['rdp_parser'] = $_POST['rdp_parser'];
+		$natent['sip_parser'] = $_POST['sip_parser'];
+		$natent['snmp_parser'] = $_POST['snmp_parser'];
+		$natent['http2_parser'] = $_POST['http2_parser'];
+		$natent['rfb_parser'] = $_POST['rfb_parser'];
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
@@ -480,7 +501,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Application Layer Parsers - {$if_friendly}"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - App Layer Parsers");
 include_once("head.inc");
 
 /* Display error message */
@@ -499,6 +521,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php?instance={$id}");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -516,7 +539,6 @@ $tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_
 $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("App Parsers"), true, "/suricata/suricata_app_parsers.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
 ?>
@@ -535,6 +557,7 @@ if ($importalias) {
 		print('<input type="hidden" name="eng_personality" value="' . $eng_personality . '"/>');
 		print('<input type="hidden" name="eng_req_body_limit" value="' . $eng_req_body_limit . '"/>');
 		print('<input type="hidden" name="eng_resp_body_limit" value="' . $eng_resp_body_limit . '"/>');
+		print('<input type="hidden" name="eng_meta_field_limit" value="' . $eng_meta_field_limit . '"/>');
 		print('<input type="hidden" name="eng_enable_double_decode_path" value="' . $eng_enable_double_decode_path . '"/>');
 		print('<input type="hidden" name="eng_enable_double_decode_query" value="' . $eng_enable_double_decode_query . '"/>');
 		print('<input type="hidden" name="eng_enable_uri_include_all" value="' . $eng_enable_uri_include_all . '"/>');
@@ -673,9 +696,25 @@ if ($importalias) {
 		    'processing this flow as much as possible; and "Full" keeps tracking and inspection as normal including unmodified content keyword signatures.  For best performance, select "Bypass".');
 	$section->addInput(new Form_Checkbox(
 		'tls_ja3_fingerprint',
-		'JA3 Fingerprint',
-		'Suricata will generate JA3 fingerprint from client hello. Default is Not Checked.',
+		'JA3/JA3S Fingerprint',
+		'Suricata will generate JA3/JA3S fingerprint from client hello. Default is Not Checked, which disables fingerprinting unless required by the rules.',
 		$pconfig['tls_ja3_fingerprint'] == 'on' ? true:false,
+		'on'
+	));
+	print($section);
+
+	$section = new Form_Section('FTP App-Layer Parser Settings');
+	$section->addInput(new Form_Select(
+		'ftp_parser',
+		'FTP Parser',
+		$pconfig['ftp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Checkbox(
+		'ftp_data_parser',
+		'FTP DATA parser',
+		'Suricata will process FTP DATA port transfers. This feature is needed to save FTP uploads/download when File Store feature is enabled.',
+		$pconfig['ftp_data_parser'] == 'on' ? true:false,
 		'on'
 	));
 	print($section);
@@ -694,11 +733,11 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for DHCP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
-		'ftp_parser',
-		'FTP Parser',
-		$pconfig['ftp_parser'],
+		'http2_parser',
+		'HTTP2 Parser',
+		$pconfig['http2_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	))->setHelp('Choose the parser/detection setting for HTTP2. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'ikev2_parser',
 		'IKEv2 Parser',
@@ -736,6 +775,18 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for NTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'rdp_parser',
+		'RDP Parser',
+		$pconfig['rdp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for RDP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'rfb_parser',
+		'RFB Parser',
+		$pconfig['rfb_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for RFB. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'smb_parser',
 		'SMB Parser',
 		$pconfig['smb_parser'],
@@ -753,6 +804,19 @@ if ($importalias) {
 		$pconfig['tftp_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for TFTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'sip_parser',
+		'SIP Parser',
+		$pconfig['sip_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SIP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'snmp_parser',
+		'SNMP Parser',
+		$pconfig['snmp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SNMP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+
 	print($section);
 
 ?>

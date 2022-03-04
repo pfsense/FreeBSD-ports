@@ -1,5 +1,4 @@
 # Created by: Masahiro Teramoto <markun@onohara.to>
-# $FreeBSD$
 
 PORTNAME=	WebService-Simple
 PORTVERSION=	0.24
@@ -30,5 +29,7 @@ TEST_DEPENDS=	p5-XML-Feed>=0:textproc/p5-XML-Feed \
 
 USE_PERL5=	modbuildtiny
 USES=		perl5
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

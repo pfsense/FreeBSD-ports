@@ -3,8 +3,8 @@
  * pfblockerng_log.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for the
@@ -78,7 +78,8 @@ function getlogs($logdir, $log_extentions = array('log')) {
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
 						'logs'		=> array('pfblockerng.log', 'error.log', 'ip_block.log', 'ip_permit.log', 'ip_match.log',
-									'dnsbl.log', 'extras.log', 'dnsbl_parsed_error.log', 'maxmind_ver', 'wizard.log'),
+									'dnsbl.log', 'unified.log', 'extras.log', 'dnsbl_parsed_error.log', 'dns_reply.log',
+									'py_error.log', 'maxmind_ver', 'wizard.log'),
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
@@ -94,7 +95,7 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
-			'origdnslogs'	=> array('name'		=> 'Original DNS Files',
+			'origdnslogs'	=> array('name'		=> 'Original DNSBL Files',
 						'ext'		=> array('orig', 'raw'),
 						'logdir'	=> "{$pfb['dnsorigdir']}/",
 						'download'	=> TRUE,
@@ -140,7 +141,7 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'etiprep'	=> array('name'		=> 'ET IPRep Files',
+			'etiprep'	=> array('name'		=> 'Proofpoint/ET IPRep Files',
 						'ext'		=> '.*',
 						'logdir'	=> "{$pfb['etdir']}/",
 						'download'	=> TRUE,
@@ -152,14 +153,26 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'unbound'	=> array('name'		=> 'Unbound Resolver DNSBL',
+			'unbound'	=> array('name'		=> 'DNSBL Unbound mode',
 						'ext'		=> array('pfb_dnsbl.conf'),
+						'logdir'	=> "{$pfb['dnsbldir']}/",
+						'download'	=> TRUE,
+						'clear'		=> FALSE
+						),
+			'python'	=> array('name'		=> 'DNSBL Python mode',
+						'ext'		=> array('pfb_py*.txt'),
 						'logdir'	=> "{$pfb['dnsbldir']}/",
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
 			'dnsbl_tld'	=> array('name'		=> 'DNSBL TLD List',
 						'ext'		=> array('dnsbl_tld'),
+						'logdir'	=> '/usr/local/pkg/pfblockerng/',
+						'download'	=> TRUE,
+						'clear'		=> FALSE
+						),
+			'dnsbl_safe'	=> array('name'		=> 'DNSBL Safe Search',
+						'ext'		=> array('pfb_dnsbl*.conf'),
 						'logdir'	=> '/usr/local/pkg/pfblockerng/',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
@@ -171,6 +184,12 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'clear'		=> TRUE
 						)
 		);
+
+if ($pfb['dnsbl_py_blacklist']) {
+	unset($pfb_logtypes['unbound']);
+} else {
+	unset($pfb_logtypes['python']);
+}
 
 // Dynamically add any configured DNSBL Categeory Feeds
 if ($pfb['blconfig'] &&
@@ -187,34 +206,82 @@ if ($pfb['blconfig'] &&
 	}
 }
 
-// Function to escape Log viewer output
-function pfb_htmlspecialchars($line) {
-	return htmlspecialchars($line, ENT_NOQUOTES);
-}
+// Function to validate file/path
+function pfb_validate_filepath($validate, $pfb_logtypes) {
 
+	$allowed_path = array();
+	foreach ($pfb_logtypes as $type) {
+		$allowed_path[$type['logdir']] = '';
+	}
+
+	$path = pathinfo($validate, PATHINFO_DIRNAME) . '/';
+	$file = basename($validate);
+
+	if ($path == '/var/unbound/' && substr($file, 0, 4) != 'pfb_' && !file_exists("{$file}")) {
+		return FALSE;
+	}
+
+	return isset($allowed_path[$path]);
+}
 
 $pconfig = array();
 if ($_POST) {
 	$pconfig = $_POST;
-}
+}	
 
 // Send logfile to screen
 if ($_REQUEST['ajax']) {
+
 	clearstatcache();
 	$pfb_logfilename = htmlspecialchars($_REQUEST['file']);
+	if (!pfb_validate_filepath($pfb_logfilename, $pfb_logtypes)) {
+		print ("|3|" . gettext('Invalid filename/path') . "|IA==|");
+		exit;
+	}
 
 	// Load log
 	if ($_REQUEST['action'] == 'load') {
 		if (!file_exists($pfb_logfilename)) {
-			print ("|3|" . gettext('Log file is empty or does not exist') . ".|");
-		} else {
-			$data = implode(array_map('pfb_htmlspecialchars', @file($pfb_logfilename)));
-			if ($data === false) {
-				print ("|1|" . gettext('Failed to read log file') . ".|");
-			} else {
-				$data = base64_encode($data);
-				print ("|0|" . $pfb_logfilename . "|" . $data . "|");
+			print ("|0|" . gettext('Log file does not exist') . "|IA==|");
+		}
+		elseif (($fhandle = @fopen("{$pfb_logfilename}", 'r')) !== FALSE) {
+
+			$linecnt = exec("{$pfb['grep']} -c ^ {$pfb_logfilename} 2>&1");
+			$maxcnt = 10000; // Max line limit
+
+			$validate = FALSE;
+			$line_limit = '';
+			if ($linecnt > $maxcnt) {
+				$validate = TRUE;
+				$skipcnt = ($linecnt - $maxcnt);
+				$line_limit = " [ Displaying last {$maxcnt} lines only ]";
 			}
+
+			$data = '';
+			$linecnt = 0;
+			while (($line = @fgets($fhandle)) !== FALSE) {
+				if ($validate && $skipcnt >= $linecnt) {
+					$linecnt++;
+					continue;
+				}
+
+				$data .= htmlspecialchars($line, ENT_NOQUOTES);
+				$linecnt++;
+			}
+
+			if (!empty($data)) {
+				$data = base64_encode($data);
+				print ("|0|File successfully loaded: Total Lines: {$linecnt}{$line_limit}|{$data}|");
+				if (isset($data)) {
+					unset($data);
+				}
+			}
+			else {
+				print ("|0|File successfully loaded: Total Lines: 0|IA==|");
+			}
+		}
+		else {
+			print ("|0|" . gettext('Failed to read log file') . "|IA==|");
 		}
 		exit;
 	}
@@ -222,15 +289,37 @@ if ($_REQUEST['ajax']) {
 
 // Download/Clear logfile
 if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
-	$s_logfile = $pconfig['logFile'];
+	
+	$s_logfile = htmlspecialchars($pconfig['logFile']);
+	if (!pfb_validate_filepath($s_logfile, $pfb_logtypes)) {
+		print ("|0|" . gettext('Invalid filename/path') . ".|");
+		exit;
+	}
 
 	// Clear selected file
 	if ($pconfig['clear']) {
-		unlink_if_exists($s_logfile);
+
+		// Python log file must be truncated to not lose python file pointer
+		if (strpos($s_logfile, 'py_error.log') !== FALSE) {
+			$fp = @fopen("{$s_logfile}", 'r+');
+			@ftruncate($fp, 0);
+			@fclose($fp);
+		} else {
+			unlink_if_exists($s_logfile);
+
+			if (strpos($s_logfile, 'dnsbl.log') !== FALSE ||
+			    strpos($s_logfile, 'unified.log') !== FALSE ||
+			    strpos($s_logfile, 'dns_reply.log') !== FALSE) {
+
+				touch($s_logfile);
+				@chown($s_logfile, 'unbound');
+				@chgrp($s_logfile, 'unbound');
+			}
+		}
 	}
 
 	// Download log
-	if ($pconfig['download']) {
+	elseif($pconfig['download']) {
 		if (file_exists($s_logfile)) {
 			session_cache_limiter('public');
 			$fd = @fopen($s_logfile, "rb");
@@ -277,13 +366,6 @@ $form = new Form(false);
 
 // Build 'Shortcut Links' section
 $section = new Form_Section('Log/File Browser selections');
-$section->addInput(new Form_StaticText(
-	'Links',
-	'<small>'
-	. '<a href="/firewall_aliases.php" target="_blank">Firewall Aliases</a>&emsp;'
-	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
-	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
-));
 
 // Collect main logtypes
 $options = array();
@@ -334,14 +416,13 @@ $section->addInput(new Form_Select(
 ))->setHelp('Choose which log/file you want to view.');
 $form->add($section);
 
-
 // Add appropriate buttons for logfile
 $logbtns = '&emsp;&nbsp;<i class="fa fa-refresh icon-pointer icon-primary" onclick="loadFile()" title="Refresh current logfile."></i>';
 if ($downloadable) {
 	$logbtns .= '&emsp;<i class="fa fa-download icon-pointer icon-primary" name="download[]" id="downloadicon" title="Download current logfile."></i>';
 }
 if ($clearable) {
-	$logbtns .= '&emsp;<i class="fa fa-trash icon-pointer icon-primary" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
+	$logbtns .= '&emsp;<i class="fa fa-trash icon-pointer icon-primary no-confirm" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
 }
 
 $section = new Form_Section('Log/File Details');
@@ -363,6 +444,12 @@ $section->addInput(new Form_Textarea(
 	''
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
   ->setAttribute('style', 'background:#fafafa; width: 100%');
+
+// Scroll to end of page when loading logs
+$section->addInput(new Form_StaticText(
+	NULL,
+	'<div id="endofpage"></div>'));
+
 $form->add($section);
 
 $form->addGlobal(new Form_Input('download', 'download', 'hidden', ''));
@@ -384,10 +471,8 @@ print($form);
 <script type="text/javascript">	
 //<![CDATA[
 
-var toggle = false;
-
 function loadFile() {
-	$("#fileStatus").html("<?=gettext("Loading file"); ?> ...");
+	$("#fileStatus").html("<?=gettext("Loading file, please wait"); ?> ...");
 	$("#fileStatusBox").show(250);
 	$("#filePathBox").show(250);
 	$("#fbTarget").html("");
@@ -408,26 +493,35 @@ function loadComplete(req) {
 	$("#fileContent").show(250);
 	var values = req.responseText.split("|");
 	values.shift(); values.pop();
+	fileText = values[1];
 
-	if(values.shift() == "0") {
-		var file = values.shift();
-		var fileContent = window.atob(values.join("|"));
-		$("#fileStatus").html("<?=gettext("File successfully loaded"); ?>.");
-		$("#fbTarget").html(file);
+	if (values.shift() == "0") {
+		var fileinfo = values.shift();
+		var fileContent = window.atob(values[0]);
+		$("#fileStatus").html(fileinfo);
+		$("#fbTarget").html($("#logFile").val());
 		$("#fileRefreshBtn").show();
 		$("#fileContent").prop("disabled", false);
 		$("#fileContent").val(fileContent);
 		$("#fileContent").css("overflow", "scroll");
+
+		var endofpage = document.getElementById("endofpage")
+		endofpage.scrollIntoView();
 	} else {
-		$("#fileStatus").html(values[0]);
+		$("#fileStatus").html(fileText);
 		$("#fbTarget").html("");
 		$("#fileRefreshBtn").hide();
 		$("#fileContent").val("");
 		$("#fileContent").prop("disabled", true);
 	}
+	values = null;
 }
 
 events.push(function() {
+
+	// Expand textarea to full width
+	$('label[class="col-sm-2 control-label"]:eq(3)').remove();
+	$('div[class="col-sm-10"]:eq(3)').removeClass('col-sm-10').addClass('col-sm-12');
 
 	// Select log type and clear download variable
 	$('#logtype').on('click', function() {
@@ -437,28 +531,32 @@ events.push(function() {
 		$('form').submit();
 	});
 
+	$('#logFile').prepend("<option value='dummy' selected='selected'>Click to select log file</option>");
 	$('#logFile').on('click', function() {
-		// Toggle used to prevent opening the logfile on first click of dropdown menu
-		if (toggle) {
-			loadFile();
-			// Scroll to the bottom of the page
-			$("html, body").animate({ scrollTop: $(document).height() }, 1000);
-		}
-		toggle = ! toggle
+		$('#logFile').on('change', function(e) {
+			e.stopImmediatePropagation();
+			if ($("#logFile").val() != 'dummy' && $("#logFile").val() != '') {
+				loadFile()
+			}
+		});
 	});
 
 	// Download selected logfile 
 	$('[id^=downloadicon]').click(function(event) {
-		$('#download').val('download');
-		$('#fileContent').val('');
-		$('form').submit();
+		if (confirm(event.target.title)) {
+			$('#download').val('download');
+			$('#fileContent').val('');
+			$('form').submit();
+		}
 	});
 
 	// Clear selected logfile
 	$('[id^=clearicon]').click(function(event) {
-		$('#clear').val('clear');
-		$('#fileContent').val('');
-		$('form').submit();
+		if (confirm(event.target.title)) {
+			$('#clear').val('clear');
+			$('#fileContent').val('');
+			$('form').submit();
+		}
 	});
 });
 //]]>

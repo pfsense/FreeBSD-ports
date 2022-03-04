@@ -1,5 +1,4 @@
 # Created by: shurd@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	xnec2c
 PORTVERSION=	3.4
@@ -15,7 +14,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libccm.so:math/ccmath
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake pkgconfig tar:bzip2
+USES=		gettext gmake gnome pkgconfig tar:bzip2
 USE_GNOME=	gtk20 intltool
 
 OPTIONS_DEFINE=	DOCS

@@ -1,13 +1,12 @@
 # Created by: Charlie Kester <corky1951@comcast.net>
-# $FreeBSD$
 
 PORTNAME=	ised
 PORTVERSION=	2.7.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for generating number sequences and arithmetic evaluation
 
 LICENSE=	GPLv3+

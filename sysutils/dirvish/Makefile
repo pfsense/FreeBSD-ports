@@ -1,5 +1,4 @@
 # Created by: Loren M. Lang
-# $FreeBSD$
 
 PORTNAME=	dirvish
 PORTVERSION=	1.2.1
@@ -21,11 +20,10 @@ USES=		perl5 tar:tgz
 USE_PERL5=	run
 
 NO_BUILD=	yes
-NO_WRKSUBDIR=	yes
 
 EXECUTABLES=	dirvish   dirvish-expire   dirvish-locate   dirvish-runall
 
-do-patch:
+post-patch:
 	@${SED} -e 's:%%CONFDIR%%:${PREFIX}/etc/dirvish:' -e 's:%%PERL%%:${PERL}:' \
 		${FILESDIR}/header.pl > ${WRKDIR}/header.pl
 .for _E in ${EXECUTABLES}

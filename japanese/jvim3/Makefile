@@ -1,5 +1,4 @@
 # Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jvim
 PORTVERSION=	3.0.j2.1b
@@ -48,6 +47,7 @@ PORTDOCS=	cygwin.txt differen.doc fepctrl.doc readme.doc \
 CPPFLAGS+=	-DBSD_UNIX -DUSE_LOCALE
 LIBS+=		-ltermlib -L${LOCALBASE}/lib
 
+X11_USES=	xorg
 X11_USE=	XORG=x11
 X11_CPPFLAGS=	-DUSE_X11 -I${LOCALBASE}/include
 X11_LIBS=	-lX11 -L${LOCALBASE}/lib

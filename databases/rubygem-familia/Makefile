@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	familia
 PORTVERSION=	0.7.1
@@ -18,8 +17,9 @@ RUN_DEPENDS=	rubygem-gibbler>=0.8.6:devel/rubygem-gibbler \
 		rubygem-storable>=0.8.6:devel/rubygem-storable \
 		rubygem-uri-redis>=0.4.2:net/rubygem-uri-redis
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

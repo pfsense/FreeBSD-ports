@@ -1,9 +1,9 @@
 # Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
 
 PORTNAME=	tuxtype
 PORTVERSION=	1.8.3
-CATEGORIES=	games
+PORTREVISION=	1
+CATEGORIES=	games education
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
@@ -17,7 +17,8 @@ BUILD_DEPENDS=	gsed:textproc/gsed
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		autoreconf gettext gmake iconv localbase perl5 pkgconfig
+USES=		autoreconf gettext gmake gnome iconv localbase perl5 pkgconfig \
+		sdl
 USE_GNOME=	libxml2
 USE_SDL=	image mixer net pango sdl
 GNU_CONFIGURE=	yes

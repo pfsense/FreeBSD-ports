@@ -1,5 +1,4 @@
 # Created by: mike
-# $FreeBSD$
 
 PORTNAME=	xp
 PORTVERSION=	0.5
@@ -12,9 +11,7 @@ MAINTAINER=	mike@vee.net
 COMMENT=	XML parser written in Java
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
-NO_WORKSUBDIR=	yes
 NO_BUILD=	yes
 USES=		zip
 

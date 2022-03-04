@@ -1,23 +1,5 @@
 --- Make.inc/Makefile.inc.generic.orig	2011-05-10 12:56:32 UTC
 +++ Make.inc/Makefile.inc.generic
-@@ -39,7 +39,7 @@
- #          Metis/ParMetis and SCOTCH/PT-SCOTCH (ver 5.1 and later) orderings are now available for MUMPS.
- #
- 
--#SCOTCHDIR  = ${HOME}/scotch_5.1_esmumps
-+#SCOTCHDIR  = @LOCALBASE@
- #ISCOTCH    = -I$(SCOTCHDIR)/include 
- # You have to choose one among the following two lines depending on
- # the type of analysis you want to perform. If you want to perform only
-@@ -55,7 +55,7 @@ LPORDDIR = $(topdir)/PORD/lib/
- IPORD    = -I$(topdir)/PORD/include/
- LPORD    = -L$(LPORDDIR) -lpord
- 
--#LMETISDIR = /local/metis/
-+#LMETISDIR = @LOCALBASE@/lib
- #IMETIS    = # Should be provided if you use parmetis
- 
- # You have to choose one among the following two lines depending on
 @@ -70,7 +70,7 @@ LPORD    = -L$(LPORDDIR) -lpord
  # The following variables will be used in the compilation process.
  # Please note that -Dptscotch and -Dparmetis imply -Dscotch and -Dmetis respectively.

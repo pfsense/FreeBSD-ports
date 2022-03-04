@@ -1,5 +1,4 @@
 # Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	faenza
 PORTVERSION=	1.3.1
@@ -13,10 +12,11 @@ COMMENT=	Faenza GNOME 2 icon themes
 
 LICENSE=	GPLv3
 
+USES=		gnome
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-icon-theme-${PORTVERSION:R}
 NO_BUILD=	yes
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 THEMES=		Faenza Faenza-Dark Faenza-Darkest Faenza-Darker \
 		Faenza-Ambiance Faenza-Radiance

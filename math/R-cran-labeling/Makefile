@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	labeling
-PORTVERSION=	0.3
-PORTREVISION=	3
+PORTVERSION=	0.4.2
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

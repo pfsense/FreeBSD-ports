@@ -1,11 +1,13 @@
 # Created by: sumikawa
-# $FreeBSD$
 
 PORTNAME=	xbattbar
 PORTVERSION=	1.4.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	sysutils
-MASTER_SITES=	http://iplab.aist-nara.ac.jp/member/suguru/
+MASTER_SITES=	http://ftp.corbina.net/gentoo-distfiles/d6/	\
+		https://ftp.fau.de/gentoo/distfiles/		\
+		https://mirrors.mit.edu/gentoo-distfiles/distfiles/d6/
+
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,7 +16,7 @@ COMMENT=	Simple battery meter
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 WRKSRC=		${WRKDIR}/xbattbar-${PORTVERSION}
 PLIST_FILES=	bin/xbattbar \

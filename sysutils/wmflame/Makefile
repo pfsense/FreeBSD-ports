@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	wmflame
 PORTVERSION=	0.60
@@ -13,7 +12,10 @@ COMMENT=	Dockapp that shows the load average as a flame
 
 LICENSE=	GPLv2
 
-USES=		gmake
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: Root
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: Root
+
+USES=		gmake xorg
 USE_XORG=	x11 xpm
 
 PLIST_FILES=	bin/wmflame

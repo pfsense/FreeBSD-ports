@@ -1,5 +1,4 @@
 # Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
 
 PORTNAME=	phpicalendar
 PORTVERSION=	2.4
@@ -19,7 +18,7 @@ COMMENT=	Webbased calendar with iCal support
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bz2
+USES=		cpe php tar:bz2
 NO_BUILD=	yes
 NO_ARCH=	yes
 USE_PHP=	session pcre

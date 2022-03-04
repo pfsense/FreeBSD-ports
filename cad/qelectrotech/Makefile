@@ -1,30 +1,33 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qelectrotech
-PORTVERSION=	0.5
-PORTREVISION=	6
+DISTVERSION=	0.7.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	cad
-MASTER_SITES=	http://download.tuxfamily.org/qet/tags/20151127/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-src
+MASTER_SITES=	https://git.tuxfamily.org/qet/qet.git/snapshot/
+DISTNAME=	qet-${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	QElectroTech is application to design electric diagrams
+MAINTAINER=	arrowd@FreeBSD.org
+COMMENT=	Application to design electric diagrams
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c++11-lib desktop-file-utils qmake qt:5 shared-mime-info
-USE_QT=		buildtools_build gui network printsupport \
-		sql-sqlite3 svg xml
+USES=		compiler:c++11-lib desktop-file-utils gl kde:5 qmake qt:5 \
+		shared-mime-info
+USE_GL=		gl
+USE_QT=		concurrent core gui network printsupport sql sql-sqlite3 \
+		svg widgets xml \
+		buildtools_build
+USE_KDE=	coreaddons widgetsaddons
 
-OPTIONS_DEFINE=       DEBUG DOCS
+OPTIONS_DEFINE=	DEBUG DOCS
 
-DEBUG_VARS=           BUILD_TYPE=debug
-DEBUG_VARS_OFF=       BUILD_TYPE=release
+DEBUG_VARS=	BUILD_TYPE=debug
+DEBUG_VARS_OFF=	BUILD_TYPE=release
 
-ALL_TARGET=           ${BUILD_TYPE}-all
+ALL_TARGET=	${BUILD_TYPE}-all
 
 pre-configure:
 	${MV} ${WRKSRC}/man/files/pt ${WRKSRC}/man/files/pt_PT
@@ -34,5 +37,9 @@ pre-configure:
 		${WRKSRC}/${PORTNAME}.pro
 	${REINPLACE_CMD} -e 's,../share,share,g' \
 		${WRKSRC}/${PORTNAME}.pro
+
+post-stage:
+	# Sources come with accidental Dolphin state
+	${RM} ${STAGEDIR}${DATADIR}/elements/10_electric/20_manufacturers_articles/bosch_rexroth/.directory
 
 .include <bsd.port.mk>

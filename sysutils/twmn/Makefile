@@ -1,11 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	twmn
-PORTVERSION=	g20171216
-PORTREVISION=	5
+PORTVERSION=	g20190917
 CATEGORIES=	sysutils
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Notification system for tiling window managers
 
 LICENSE=	LGPL3
@@ -16,9 +13,12 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 USES=		compiler:c++11-lang qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	sboli
-GH_TAGNAME=	5b92ac5
+GH_TAGNAME=	861a323
 USE_QT=		core dbus gui network widgets x11extras buildtools_build
 LDFLAGS+=	-Wl,--as-needed  # see bug#224488
+
+# Fix build with Qt 5.13
+QMAKE_ARGS+=	DEFINES+=QT_NO_DEPRECATED_WARNINGS=Y
 
 PORTDOCS=	README.md
 PORTEXAMPLES=	*

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	qwt
-PORTVERSION=	6.1.4
+PORTVERSION=	6.1.6
 PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	6-qt5
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Qt Widgets for Technical Applications
 
 USES=		compiler:c++11-lang gl gmake qmake qt:5 tar:bzip2

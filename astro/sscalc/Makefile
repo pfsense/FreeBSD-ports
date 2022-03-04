@@ -1,12 +1,11 @@
 # Created by: Keith Walker <kew@icehouse.net>
-# $FreeBSD$
 
 PORTNAME=	sscalc
 PORTVERSION=	1.0
 CATEGORIES=	astro
-MASTER_SITES=	http://www.icehouse.net/kew/
+MASTER_SITES=	https://opsec.eu/src/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Sunrise and sunset time calculator
 
 OPTIONS_DEFINE=	DOCS
@@ -20,7 +19,7 @@ pre-fetch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKDIR}/${DISTNAME}/sscalc ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKDIR}/${DISTNAME}/sscalc.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKDIR}/${DISTNAME}/sscalc.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,9 +1,7 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jaeger-client
-PORTVERSION=	0.10.0
-PORTREVISION=	1
+PORTVERSION=	1.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

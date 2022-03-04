@@ -1,9 +1,8 @@
 # Created by: lance@evitel.net
-# $FreeBSD$
 
 PORTNAME=	gnu-radius
 PORTVERSION=	1.6.1
-PORTREVISION=	9
+PORTREVISION=	13
 CATEGORIES=	net
 MASTER_SITES=	GNU/radius
 DISTNAME=	radius-${PORTVERSION}
@@ -46,9 +45,9 @@ EMACS_DESC=	Install Emacs dotfiles
 
 SNMP_CONFIGURE_ENABLE=		snmp
 CLIENT_CONFIGURE_ENABLE=	client
-CLIENT_LIB_DEPENDS=		libguile.so:lang/guile
+CLIENT_LIB_DEPENDS=		libguile.so:lang/guile1
 CLIENT_CONFIGURE_OFF=		--without-guile
-MYSQL_USE=			mysql=yes
+MYSQL_USES=			mysql
 MYSQL_CONFIGURE_WITH=		mysql
 PGSQL_USES=			pgsql
 PGSQL_CONFIGURE_WITH=		postgres

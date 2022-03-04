@@ -1,5 +1,4 @@
 # Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
 
 PORTNAME=	wmcliphist
 PORTVERSION=	1.0
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 SUB_FILES=	pkg-message
 WRKSRC=		${WRKDIR}/${PORTNAME}
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig xorg
 USE_GNOME=	gtk20
 USE_XORG=	x11
 

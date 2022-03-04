@@ -1,5 +1,4 @@
 # Created by: Dennis Herrmann <adox@mcx2.org>
-# $FreeBSD$
 
 PORTNAME=	lockfile
 PORTVERSION=	2.1.3
@@ -11,9 +10,10 @@ COMMENT=	Ruby library for creating NFS safe lockfiles
 
 LICENSE=	RUBY
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/rlock
 

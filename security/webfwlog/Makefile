@@ -1,5 +1,4 @@
 # Created by: Bob Hockney <zeus@ix.netcom.com>
-# $FreeBSD$
 
 PORTNAME=	webfwlog
 PORTVERSION=	1.1.1
@@ -12,7 +11,7 @@ COMMENT=	Web-based firewall log analyzer
 
 LICENSE=	GPLv2
 
-USES=			php:web
+USES=		cpe php:web
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-syslog \

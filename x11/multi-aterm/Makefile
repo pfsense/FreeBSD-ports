@@ -1,5 +1,4 @@
 # Created by: Sebastian Yepes <esn@x123.info>
-# $FreeBSD$
 
 PORTNAME=	multi-aterm
 PORTVERSION=	0.2.1
@@ -13,6 +12,7 @@ COMMENT=	Multi terminal based on aterm
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		cpe xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=--with-xpm=${LOCALBASE}

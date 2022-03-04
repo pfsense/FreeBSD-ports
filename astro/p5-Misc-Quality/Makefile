@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Misc-Quality
 PORTVERSION=	0.1
@@ -12,8 +11,12 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Class for handling quality flags for astronomical objects
 
-NO_ARCH=	yes
-USE_PERL5=	configure
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/GPL
+
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

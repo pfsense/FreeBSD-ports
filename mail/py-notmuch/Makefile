@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	mail python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -9,7 +7,7 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libnotmuch.so:mail/notmuch
 
-USES=		python uniquefiles:dirs
+USES=		python:3.6+ uniquefiles:dirs
 USE_PYTHON=	autoplist distutils
 
 MASTERDIR=	${.CURDIR}/../notmuch
@@ -20,6 +18,8 @@ WRKSRC_SUBDIR=	bindings/python
 OPTIONS_DEFINE=	DOCS
 
 DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 do-build-DOCS-on:
 	@${MAKE_CMD} -C ${WRKSRC}/docs html

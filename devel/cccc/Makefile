@@ -1,8 +1,7 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	cccc
-DISTVERSION=	3.1.5
+DISTVERSION=	3.1.6
 CATEGORIES=	devel textproc www
 
 MAINTAINER=	pizzamig@FreeBSD.org

@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	ktp-accounts-kcm
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	net-im kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -10,6 +7,9 @@ COMMENT=	KDE instant messaging account management module
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libaccounts-qt5.so:net-im/libaccounts-qt5 \
 		libkaccounts.so:net-im/kaccounts-integration \
@@ -19,23 +19,22 @@ LIB_DEPENDS=	libaccounts-qt5.so:net-im/libaccounts-qt5 \
 		libKF5AkonadiPrivate.so:databases/akonadi \
 		libsignon-qt5.so:sysutils/signon-qt5
 RUN_DEPENDS=	${KDE_PREFIX}/bin/ktp-contactlist:net-im/ktp-contact-list  \
-		${QT_PLUGINDIR}/kaccounts/ui/owncloud_plugin_kaccounts.so:net-im/kaccounts-providers
+		${QT_PLUGINDIR}/kaccounts/ui/owncloud_plugin_kaccounts.so:net-im/kaccounts-providers \
+		accounts-qml-module>=0:sysutils/accounts-qml-module
 
 USES=		compiler:c++11-lang cmake gettext gnome kde:5 \
 		pkgconfig qt:5 tar:xz
 USE_GNOME=	intltool
-USE_KDE=	auth codecs config configwidgets coreaddons ecm i18n \
+USE_KDE=	auth codecs config configwidgets coreaddons i18n \
 		iconthemes itemviews kcmutils kio notifications notifyconfig \
-		service texteditor wallet widgetsaddons windowsystem
+		service texteditor wallet widgetsaddons windowsystem \
+		ecm_build
 USE_QT=		core dbus declarative gui network sql widgets xml \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	HAZE IRC JABBER SALUT DOCS
+OPTIONS_DEFINE=	IRC JABBER SALUT DOCS
 OPTIONS_DEFAULT=JABBER
-
-HAZE_DESC=	libpurple protocols support
-HAZE_RUN_DEPENDS=	${LOCALBASE}/libexec/telepathy-haze:net-im/telepathy-haze
 
 IRC_DESC=	Internet Relay Chat support
 IRC_RUN_DEPENDS=	${LOCALBASE}/libexec/telepathy-idle:net-im/telepathy-idle

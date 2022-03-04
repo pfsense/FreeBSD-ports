@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sockjs-tornado
 PORTVERSION=	1.0.3
 CATEGORIES=	www python
@@ -15,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tornado>0:www/py-tornado@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

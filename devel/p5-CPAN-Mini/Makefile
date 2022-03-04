@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	CPAN-Mini
 PORTVERSION=	1.111016
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	CPAN::Mini - create a minimal mirror of CPAN
+COMMENT=	Create a minimal mirror of CPAN
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,23 +1,21 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lzbench
-PORTVERSION=	1.7.3
-PORTREVISION=	2
+PORTVERSION=	1.8.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	benchmarks
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	In-memory benchmark of open-source LZ77/LZSS/LZMA compressors
 
+BROKEN_riscv64=		fails to compile: invalid arch name 'native', string must begin with rv32{i,e,g} or rv64{i,g}
+
 USES=		compiler:c11 gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	inikep
 
-MAKE_ENV=	CODE_FLAGS=-Wno-c++11-narrowing		# XXX: for clang 6
-
 PLIST_FILES=	bin/lzbench
-PORTDOCS=	NEWS
+PORTDOCS=	NEWS README.md
 
 OPTIONS_DEFINE=	DOCS
 

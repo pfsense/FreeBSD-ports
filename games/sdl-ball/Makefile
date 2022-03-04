@@ -1,12 +1,9 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sdl-ball
-PORTVERSION=	1.03
+PORTVERSION=	1.04
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF
-DISTNAME=	SDL-Ball_${PORTVERSION}_build-6_src
+DISTNAME=	SDL-Ball_${PORTVERSION}_src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Arkanoid/Breakout clone with pretty graphics
@@ -14,13 +11,12 @@ COMMENT=	Arkanoid/Breakout clone with pretty graphics
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-WRKSRC=		${WRKDIR}/SDL-Ball_source_build_0006_src
-
-USES=		dos2unix gmake tar:xz
+USES=		gl gmake sdl tar:xz
 USE_SDL=	sdl mixer image ttf
 USE_GL=		gl glu
 MAKE_ENV=	DATADIR=${DATADIR}/
-DOS2UNIX_FILES=	main.cpp menu.cpp
+
+WRKSRC=		${WRKDIR}/SDL-Ball_src
 
 PLIST_FILES=	bin/${PORTNAME} \
 		share/applications/${PORTNAME}.desktop \

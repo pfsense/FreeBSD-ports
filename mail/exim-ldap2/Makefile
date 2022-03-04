@@ -1,6 +1,6 @@
 # Created by: Sheldon Hearn <sheldonh@FreeBSD.org>
-# $FreeBSD$
 
+PORTREVISION=	1
 PKGNAMESUFFIX=	-ldap2
 MASTERDIR=	${.CURDIR}/../exim
 

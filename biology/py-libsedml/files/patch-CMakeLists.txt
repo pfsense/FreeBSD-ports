@@ -1,0 +1,31 @@
+--- CMakeLists.txt.orig	2021-09-07 06:43:55 UTC
++++ CMakeLists.txt
+@@ -49,6 +49,7 @@ ADD_CUSTOM_COMMAND(  
+     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/libsedml_wrap.cpp
+     COMMAND "${SWIG_EXECUTABLE}"
+     ARGS  -I${CMAKE_CURRENT_SOURCE_DIR}/../swig/
++      -I${CMAKE_INSTALL_PREFIX}/include
+       -I${CMAKE_CURRENT_SOURCE_DIR}/../../
+       -I${CMAKE_CURRENT_BINARY_DIR}/../../
+       -I${CMAKE_CURRENT_SOURCE_DIR}/../../sedml
+@@ -125,9 +126,9 @@ if (PYTHON_USE_DYNAMIC_LOOKUP)
+   if (APPLE)
+     set_target_properties (binding_python_lib PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+   endif()
+-  target_link_libraries(binding_python_lib ${LIBSEDML_LIBRARY}-static)
++  target_link_libraries(binding_python_lib ${LIBSEDML_LIBRARY})
+ else()
+-  target_link_libraries(binding_python_lib ${LIBSEDML_LIBRARY}-static ${PYTHON_LIBRARIES})
++  target_link_libraries(binding_python_lib ${LIBSEDML_LIBRARY} ${PYTHON_LIBRARIES})
+ endif()
+ 
+ # 
+@@ -135,7 +136,7 @@ endif()
+ #
+ set(PYTHON_PACKAGE_INSTALL_DIR)
+ if (UNIX OR CYGWIN) 
+-  execute_process(COMMAND "${PYTHON_EXECUTABLE}" -c "import sys;import platform; sys.stdout.write(platform.python_version()[:3])"
++  execute_process(COMMAND "${PYTHON_EXECUTABLE}" -c "import sys;import platform; sys.stdout.write(platform.python_version().rsplit('.', 1)[0])"
+     OUTPUT_VARIABLE PYTHON_VERSION)
+   set(PYTHON_PACKAGE_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION}/site-packages)
+ else()

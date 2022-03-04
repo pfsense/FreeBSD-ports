@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Math-BigInt-Lite
-PORTVERSION=	0.18
+PORTVERSION=	0.24
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,10 +14,12 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Math-BigInt>=1.999812:math/p5-Math-BigInt
+RUN_DEPENDS=	p5-Math-BigInt>=1.999821:math/p5-Math-BigInt
+TEST_DEPENDS=	p5-Math-BigRat>=0.2616:math/p5-Math-BigRat
+
+USES=		perl5
+USE_PERL5=	configure
 
 NO_ARCH=	yes
-USE_PERL5=	configure
-USES=		perl5
 
 .include <bsd.port.mk>

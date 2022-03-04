@@ -1,9 +1,8 @@
 # Created by: Patrick MARIE <mycroft@virgaria.org>
-# $FreeBSD$
 
 PORTNAME=	proxychains
 PORTVERSION=	3.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/version%20${PORTVERSION}
 

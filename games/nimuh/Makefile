@@ -1,11 +1,8 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	nimuh
 PORTVERSION=	1.02
-PORTREVISION=	11
-CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20${PORTVERSION}/Nimuh%20SRC%20%28Source%20Code%29
+PORTREVISION=	12
+CATEGORIES=	games education
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${PORTNAME}-data-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,7 +12,7 @@ LICENSE=	CC-BY-NC-SA-2.0
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		gl gmake localbase
+USES=		gl gmake localbase sdl
 GNU_CONFIGURE=	yes
 USE_CXXSTD=	c++98
 USE_SDL=	sdl image mixer

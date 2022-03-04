@@ -1,15 +1,15 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	colordiff
-PORTVERSION=	1.0.18
+PORTVERSION=	1.0.19
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.colordiff.org/ LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Tool to colorize diff output
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		shebangfix perl5
 NO_BUILD=	yes
@@ -25,8 +25,5 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}.pl ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 	${INSTALL_DATA} ${WRKSRC}/colordiffrc ${STAGEDIR}${PREFIX}/etc/colordiffrc.sample
-.if !exists(${STAGEDIR}${PREFIX}/etc/colordiffrc)
-	${INSTALL_DATA} ${WRKSRC}/colordiffrc ${STAGEDIR}${PREFIX}/etc
-.endif
 
 .include <bsd.port.mk>

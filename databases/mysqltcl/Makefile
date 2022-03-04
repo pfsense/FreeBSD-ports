@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <martin@matuska.org>
-# $FreeBSD$
 
 PORTNAME=	mysqltcl
 PORTVERSION=	3.052
@@ -9,9 +8,8 @@ MASTER_SITES=	http://www.xdobry.de/mysqltcl/
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	TCL module for accessing MySQL databases based on msqltcl
 
-USES=		tcl
+USES=		mysql tcl
 USE_LDCONFIG=	yes
-USE_MYSQL=	yes
 
 PLIST_FILES=	lib/${PORTNAME}-${PORTVERSION}/libmysqltcl${PORTVERSION}.so \
 		lib/${PORTNAME}-${PORTVERSION}/pkgIndex.tcl \

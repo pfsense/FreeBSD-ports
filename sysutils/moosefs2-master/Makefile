@@ -1,5 +1,4 @@
 # Created by: Jakub Kruszona-Zawadzki <acid@moosefs.com> ; Based on port created by: Chifeng Qu <chifeng@gmail.com>
-# $FreeBSD$
 
 PORTNAME=		moosefs2
 PORTVERSION=		2.0.91
@@ -72,7 +71,7 @@ CONFIGURE_ARGS+=	--disable-mfscli
 .endif
 
 .if ${MFS_COMPONENT} == client
-USES=			fuse pkgconfig
+USES=			compiler:c11 fuse pkgconfig
 CONFIGURE_ARGS+=	--enable-mfsmount
 .else
 CONFIGURE_ARGS+=	--disable-mfsmount

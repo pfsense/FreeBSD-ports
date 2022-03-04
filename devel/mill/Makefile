@@ -1,24 +1,24 @@
-# $FreeBSD$
+# Created by: Jens Grassel <freebsd-ports@jan0sch.de>
 
 PORTNAME=	mill
-DISTVERSION=	0.3.6
+DISTVERSION=	0.9.8
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/lihaoyi/mill/releases/download/${PORTVERSION}/
-DISTNAME=	${PORTVERSION}
+DISTNAME=	${PORTVERSION}-assembly
 EXTRACT_SUFX=
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=
 
 MAINTAINER=	freebsd-ports@jan0sch.de
-COMMENT=	Mill is a Java/Scala build tool
+COMMENT=	Java/Scala build tool
 
 LICENSE=	MIT
 
 USE_JAVA=	yes
-
 JAVA_VERSION=	1.8+
-NO_BUILD=	yes
+
 NO_ARCH=	yes
+NO_BUILD=	yes
 
 PLIST_FILES=	bin/mill
 

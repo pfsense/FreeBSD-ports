@@ -1,9 +1,8 @@
 # Created by: Hirohisa Yamaguchi <umq@ueo.co.jp>
-# $FreeBSD$
 
 PORTNAME=	opendkim
 PORTVERSION=	2.10.3
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	mail security
 MASTER_SITES=	SF/${PORTNAME} \
 		SF/${PORTNAME}/Previous%20Releases \
@@ -22,7 +21,7 @@ LICENSE_PERMS_SENDMAIL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 GNU_CONFIGURE=	yes
 NO_OPTIONS_SORT=yes
-USES=		autoreconf libtool perl5 pkgconfig shebangfix ssl
+USES=		autoreconf cpe libtool perl5 pkgconfig shebangfix ssl
 USE_PERL5=	run
 SHEBANG_FILES=	opendkim/opendkim-genkey* reputation/opendkim-* stats/opendkim-* \
 		reprrd/opendkim-reprrdimport*
@@ -104,8 +103,8 @@ MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MSASL} && ${PORT_OPTIONS:MOPENLDAP}
-WANT_OPENLDAP_SASL=	yes
+.if ${PORT_OPTIONS:MDEBUG}
+WITH_DEBUG=	yes
 .endif
 
 .if ${PORT_OPTIONS:MFILTER}

@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rstudioapi
-PORTVERSION=	0.8
-PORTREVISION=	1
+PORTVERSION=	0.13
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

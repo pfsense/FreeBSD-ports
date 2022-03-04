@@ -1,5 +1,4 @@
 # Created by: Dennis Herrmann <adox@mcx2.org>
-# $FreeBSD$
 
 PORTNAME=	cowpatty
 PORTVERSION=	4.8
@@ -9,6 +8,7 @@ MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Brute-force dictionary attack against WPA-PSK
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		ssl
 
@@ -27,7 +27,7 @@ post-patch:
 		-e "s|\(-DOPENSSL\)|\1 -I${OPENSSLINC} -L${OPENSSLLIB} |g" \
 		${WRKSRC}/Makefile
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 

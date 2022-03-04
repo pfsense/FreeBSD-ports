@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	formido
 PORTVERSION=	1.0.1
 PORTREVISION=	2
@@ -15,7 +12,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL_license.txt
 
 USE_SDL=	sdl mixer image
-USES=		gmake
+USES=		gmake sdl
 MAKE_ARGS=	CC="${CXX}" DATDIR="${DATADIR}" DEFCONFIGDIR="${DATADIR}"
 
 PLIST_FILES=	bin/${PORTNAME}

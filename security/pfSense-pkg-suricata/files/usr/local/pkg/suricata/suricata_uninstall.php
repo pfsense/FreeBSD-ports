@@ -3,11 +3,11 @@
  * suricata_uninstall.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,6 +50,8 @@ unlink_if_exists("{$g['varrun_path']}/suricata*.lck");
 
 /* Make sure all active Barnyard2 processes are terminated */
 /* Log a message only if a running process is detected     */
+/* Even though Barnyard2 is deprecated, this code remains  */
+/* to ensure no active Barnyard2 process remains.          */
 if (is_service_running("barnyard2"))
 	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Barnyard2 on all configured interfaces..."));
 killbyname("barnyard2");
@@ -80,11 +82,13 @@ unlink_if_exists("{$suricatadir}*.gz.md5");
 unlink_if_exists("{$suricatadir}gen-msg.map");
 unlink_if_exists("{$suricatadir}classification.config");
 unlink_if_exists("{$suricatadir}reference.config");
+unlink_if_exists("{$suricatadir}rulesupd_status");
 unlink_if_exists(SURICATA_RULES_DIR . "*.txt");
 unlink_if_exists(SURICATA_RULES_DIR . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . ET_OPEN_FILE_PREFIX . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . ET_PRO_FILE_PREFIX . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . EXTRARULE_FILE_PREFIX . "*.rules");
 unlink_if_exists("/usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb");
 rmdir_recursive("/usr/local/share/suricata/GeoLite2");
 

@@ -1,5 +1,4 @@
 # Created by: Ryan Steinmetz
-# $FreeBSD$
 
 PORTNAME=	jnettop
 PORTVERSION=	0.13.0
@@ -12,7 +11,7 @@ MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Traffic visualizer, similar to nettop
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig gmake
+USES=		gmake gnome pkgconfig
 USE_GNOME=	glib20
 
 LICENSE=	GPLv2

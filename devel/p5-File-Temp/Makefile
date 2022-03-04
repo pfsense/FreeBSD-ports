@@ -1,8 +1,7 @@
 # Created by: Johann Visagie <johann@egenetics.com>
-# $FreeBSD$
 
 PORTNAME=	File-Temp
-PORTVERSION=	0.2309
+PORTVERSION=	0.2311
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

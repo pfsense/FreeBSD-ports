@@ -1,5 +1,4 @@
 # Created by: dm
-# $FreeBSD$
 
 PORTNAME=	avenger
 PORTVERSION=	0.8.5
@@ -26,6 +25,8 @@ CONFIGURE_ENV=	WFLAGS='-Wall'
 CONFIGURE_ARGS=	--enable-ssl=${OPENSSLBASE} \
 		--with-db=${LOCALBASE} \
 		--with-etcdir=${ETCDIR}
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	DOCS SASL
 

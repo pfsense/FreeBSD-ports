@@ -1,5 +1,4 @@
 # Created by: olevole@olevole.ru
-# $FreeBSD$
 
 PORTNAME=	tile38
 DISTVERSION=	1.12.0
@@ -11,10 +10,11 @@ COMMENT=	In-memory geolocation data store, spatial index, and realtime geofence
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.7:lang/go \
-		bash:shells/bash
+BROKEN_aarch64=	fails to build: vendor/golang.org/x/sys/unix/cap_freebsd.go:18:23: undefined: CAP_RIGHTS_VERSION_00
 
-USES=		shebangfix
+BUILD_DEPENDS=	bash:shells/bash
+
+USES=		go shebangfix
 SHEBANG_FILES=	build.sh
 USE_GITHUB=	yes
 GH_ACCOUNT=	tidwall
@@ -38,7 +38,7 @@ PLIST_SUB=	TILE38_USER=${USERS} \
 		TILE38_RUNDIR=${TILE38_RUNDIR}
 
 do-build:
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ./build.sh
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${GO_ENV} ./build.sh
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${TILE38_DBDIR} ${STAGEDIR}${TILE38_RUNDIR}
@@ -46,6 +46,6 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/tile38-server ${STAGEDIR}${PREFIX}/bin/
 
 do-test:
-	@cd ${WRKSRC} && ./build.sh test
+	@cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./build.sh test
 
 .include <bsd.port.mk>

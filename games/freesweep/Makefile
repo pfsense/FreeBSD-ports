@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	freesweep
 PORTVERSION=	1.0.1
@@ -11,6 +10,9 @@ COMMENT=	Minesweeper-style game for text-mode terminals
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: CharSet
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: CharSet
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rwestlund

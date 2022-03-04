@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	sysfsutils
 PORTVERSION=	2.1.0
@@ -11,7 +10,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	System Utilities Based on Sysfs
 
 GNU_CONFIGURE=	yes
-USES=		libtool
+USES=		cpe libtool
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

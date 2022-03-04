@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	etcd
 PORTVERSION=	3.1.20
 DISTVERSIONPREFIX=	v
+PORTREVISION=	4
 CATEGORIES=	devel
 PKGNAMEPREFIX=	coreos-
 PKGNAMESUFFIX=	31
@@ -13,14 +12,15 @@ COMMENT=	Highly-available key value store and service discovery
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS_INSTALL=coreos-etcdctl-0.* coreos-etcd-* coreos-etcd32-* coreos-etcd33-*
-
-USES=		go
-GO_PKGNAME=	github.com/coreos/etcd
-GO_TARGET=	github.com/coreos/etcd \
-		github.com/coreos/etcdctl
+USES=		cpe go
 USE_GITHUB=	yes
 GH_ACCOUNT=	coreos
+
+GO_PKGNAME=	github.com/coreos/etcd
+GO_TARGET=	./cmd/etcd ./cmd/etcdctl
+
+CONFLICTS_INSTALL=	coreos-etcd-* coreos-etcd32-* coreos-etcd33-* \
+			coreos-etcd34-* coreos-etcdctl-0.*
 
 PLIST_FILES=	bin/etcd \
 		bin/etcdctl
@@ -29,18 +29,8 @@ PORTDOCS=	README.md
 OPTIONS_DEFINE=	DOCS
 DOCS_DESC=	Install etcd README file
 
-post-extract:
-	@${MV} ${WRKSRC}/cmd/vendor ${WRKDIR}/src
-	@${RM} ${GO_WRKDIR_SRC}/github.com/${GH_ACCOUNT}/${PORTNAME}
-	@${LN} -s ${WRKSRC} ${GO_WRKDIR_SRC}/github.com/${GH_ACCOUNT}/etcd
-	@${LN} -s ${WRKSRC}/etcdctl ${GO_WRKDIR_SRC}/github.com/${GH_ACCOUNT}/etcdctl
-
 post-patch:
-	${REINPLACE_CMD} -i '' "s@#cgo LDFLAGS: -ldl@@g;" ${GO_WRKDIR_SRC}/github.com/coreos/pkg/dlopen/dlopen.go
-
-do-install:
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/etcd ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/etcdctl ${STAGEDIR}${PREFIX}/bin/
+	${REINPLACE_CMD} -i '' "s@#cgo LDFLAGS: -ldl@@g;" ${WRKSRC}/cmd/vendor/github.com/coreos/pkg/dlopen/dlopen.go
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

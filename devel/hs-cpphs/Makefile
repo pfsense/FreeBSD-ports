@@ -1,9 +1,8 @@
 # Created by: obraun@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	cpphs
-PORTVERSION=	1.20.8
-PORTREVISION=	4
+PORTVERSION=	1.20.9.1
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -11,8 +10,8 @@ COMMENT=	Liberalised re-implementation of cpp, the C pre-processor
 
 LICENSE=	LGPL21
 
-USE_CABAL=	old-locale old-time polyparse>=1.9
-EXECUTABLE=	cpphs
+USES=		cabal
 
-.include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
+USE_CABAL=	polyparse-1.13_1
+
 .include <bsd.port.mk>

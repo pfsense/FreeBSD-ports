@@ -1,15 +1,5 @@
-Bash Commander is a traditional GNU bash shell extended with visual two-panel
-file browser.
+Bash Commander is a fork of GNU Bourne Again Shell. Its main feature is a
+visual two-panel mode, much like Midnight Commander and other text-mode
+visual shells.
 
-Features:
-
-* Full bash compatibility.
-* Embedded visual file browser.
-* Two file panels, turned on and off by pressing ^O.
-* Actions and colors configured via .bashrc script.
-* Run current file on pressing Enter, configurable via commander_start_file()
-  shell function.
-* Perform an action on pressing F1-F20 keys, configurable via commander_fN()
-  shell functions.
-
-WWW: https://groups.google.com/forum/?fromgroups#!forum/bashc
+WWW: https://github.com/sergev/bash-commander

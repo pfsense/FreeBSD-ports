@@ -1,5 +1,4 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dotconf
 PORTVERSION=	1.3
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GENTOO
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Simple, powerful configuration-file parser
 
 LICENSE=	LGPL21

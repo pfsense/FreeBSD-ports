@@ -1,10 +1,8 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	clementine
-DISTVERSION=	1.3.1-661
-DISTVERSIONSUFFIX=	-g4ff370ce1
-PORTREVISION=	4
+DISTVERSION=	1.4.0
+PORTREVISION=	8
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
@@ -18,7 +16,6 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libchromaprint.so:audio/chromaprint \
 		libprotobuf.so:devel/protobuf \
-		libqca-qt5.so:devel/qca \
 		libqjson-qt5.so:devel/qjson \
 		libfftw3.so:math/fftw3 \
 		libechonest5.so:audio/libechonest \
@@ -26,18 +23,25 @@ LIB_DEPENDS=	libtag.so:audio/taglib \
 
 USES=		cmake \
 		compiler:c++11-lib \
+		cpe \
 		desktop-file-utils \
 		gettext-tools \
 		pkgconfig \
+		qca \
 		qt:5 \
 		sqlite \
-		gl
+		gl \
+		gnome \
+		xorg
 
 USE_CXXSTD=	c++11
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	clementine-player
 GH_PROJECT=	Clementine
+GH_TAGNAME=	1.4.0rc1
+
+CPE_VENDOR=	clementine-player
 
 USE_GL=		gl glew glu
 USE_XORG=	x11
@@ -72,8 +76,6 @@ USE_GSTREAMER1=	cdparanoia \
 		taglib \
 		twolame \
 		vorbis
-
-INSTALLS_ICONS=	yes
 
 CFLAGS+=	-Wno-inconsistent-missing-override \
 		-Wno-unused-variable \
@@ -164,9 +166,9 @@ GOOGLE_DRIVE_CMAKE_ON=	-DENABLE_GOOGLE_DRIVE=ON
 GOOGLE_DRIVE_CMAKE_OFF=	-DENABLE_GOOGLE_DRIVE=OFF
 
 GPOD_LIB_DEPENDS=	libgpod.so:audio/libgpod \
-			libplist.so:devel/libplist \
-			libusbmuxd.so:comms/libusbmuxd \
-			libimobiledevice.so:comms/libimobiledevice
+			libplist-2.0.so:devel/libplist \
+			libusbmuxd-2.0.so:comms/libusbmuxd \
+			libimobiledevice-1.0.so:comms/libimobiledevice
 GPOD_CMAKE_ON=		-DENABLE_LIBGPOD=ON
 GPOD_CMAKE_OFF=		-DENABLE_LIBGPOD=OFF
 

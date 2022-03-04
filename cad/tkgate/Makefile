@@ -1,33 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	tkgate
-PORTVERSION=	2.0.0
-PORTREVISION=	1
+PORTVERSION=	2.1
 CATEGORIES=	cad
-MASTER_SITES=	http://highsecure.ru/distfiles/ \
-		http://cdn.bitbucket.org/starling13/tkgate/downloads/
+MASTER_SITES=	http://cdn.bitbucket.org/starling13/tkgate/downloads/
 
-MAINTAINER=	vsevolod@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Event driven digital circuit simulator
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-GNU_CONFIGURE=	yes
-USES+=		iconv:translit tk:build,run
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 
+USES=		autoreconf gnome iconv:translit libtool pkgconfig tk xorg
+
+USE_XORG=	x11 xft
+USE_GNOME=	pango
 OPTIONS_DEFINE=	DOCS
+GNU_CONFIGURE=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/bin/wish|${WISH}|g' ${WRKSRC}/scripts/tree.tcl
 	@${REINPLACE_CMD} -e \
 		's|%%TCL_VER%%|${TCL_VER}|g; \
 		s|%%TCL_INCLUDEDIR%%|${TCL_INCLUDEDIR}|g; \
 		s|%%LOCALBASE%%|${LOCALBASE}|g' \
-		${WRKSRC}/configure
-
-# Remove backup files somehow installed to the stagedir
-post-install:
-	${FIND} ${STAGEDIR}/${DATADIR} -name '*~' -delete -or -name '*~?' -delete
+		${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

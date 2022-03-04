@@ -1,8 +1,7 @@
 # Created by: Pieter Danhieux <opr@bsdaemon.be>
-# $FreeBSD$
 
 PORTNAME=	sleuthkit
-PORTVERSION=	4.6.5
+PORTVERSION=	4.7.0
 CATEGORIES=	sysutils security
 MASTER_SITES=	https://github.com/sleuthkit/sleuthkit/releases/download/sleuthkit-${PORTVERSION}/
 
@@ -21,9 +20,8 @@ LICENSE_PERMS_IBM=dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 RUN_DEPENDS=	p5-DateTime-TimeZone>=0:devel/p5-DateTime-TimeZone \
 		exif:graphics/exif
 
-CONFLICTS=	ja-ls-[0-9]* icat-[0-9]*
+CONFLICTS=	ja-ls icat
 
-CPPFLAGS+=	-D_WITH_GETLINE
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_header_libpq_fe_h=no
 USES=		compiler:c++11-lang libtool perl5 sqlite

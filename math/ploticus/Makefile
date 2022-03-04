@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	ploticus
 PORTVERSION=	2.40
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	math
 MASTER_SITES=	SF
 DISTNAME=	pl${PORTVERSION:S/.//}src
@@ -36,6 +35,7 @@ ALL_TARGET=	plgd18
 MAKE_ARGS+=	NOX11=-DNOX11 XLIBS= XOBJ=
 PKGNAMESUFFIX=	-nox11
 .else
+USES+=		xorg
 USE_XORG=	xpm
 .endif
 

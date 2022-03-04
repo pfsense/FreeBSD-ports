@@ -1,5 +1,4 @@
 # Created by: Lars Engels <lars.engels@0x20.net>
-# $FreeBSD$
 
 PORTNAME=	mrxvt-devel
 PORTVERSION=	0.5.4
@@ -8,17 +7,19 @@ CATEGORIES=	x11
 MASTER_SITES=	SF/materm/mrxvt%20source/${PORTVERSION}
 DISTNAME=	mrxvt-${PORTVERSION}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Development version of mrxvt
 
 LICENSE=	GPLv2
 
 CONFLICTS=	mrxvt-0.4.*
-USE_XORG=	x11
+USES=		shebangfix xorg
+USE_XORG=	ice x11 sm xpm xrender
 GNU_CONFIGURE=	yes
 
-USES=		shebangfix
-SHEBANG_FILES=  ${WRKSRC}/share/scripts/mrxvtset.pl
+LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig
+
+SHEBANG_FILES=	${WRKSRC}/share/scripts/mrxvtset.pl
 
 SUB_FILES+=	pkg-message
 
@@ -44,6 +45,7 @@ FRILLS_DESC=		Internal borders and smart resizing
 
 CONFIGURE_ARGS+=	--enable-utempter
 CONFIGURE_ARGS+=	--disable-lastlog
+CFLAGS+=		-fcommon
 
 .if ${PORT_OPTIONS:MJAPANESE}
 CONFIGURE_ARGS+=	--enable-xim --enable-cjk --with-encoding=eucj

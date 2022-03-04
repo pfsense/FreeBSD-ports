@@ -1,11 +1,10 @@
 # Created by: Jeffrey H. Johnson <CPE1704TKS@bellsouth.net>
-# $FreeBSD$
 
 PORTNAME=	vils
 PORTVERSION=	20020228
 PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.secnetix.de/~olli/scripts/Generic-utilities/
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 DISTFILES=	vils
 
 MAINTAINER=	amdmi3@FreeBSD.org

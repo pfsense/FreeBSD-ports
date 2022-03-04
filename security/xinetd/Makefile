@@ -1,10 +1,9 @@
 # Created by: markm
-# $FreeBSD$
 
 PORTNAME=	xinetd
 PORTVERSION=	2.3.15
 PORTREVISION=	2
-CATEGORIES=	security ipv6
+CATEGORIES=	security
 MASTER_SITES=	GENTOO
 
 MAINTAINER=	garga@FreeBSD.org

@@ -1,5 +1,4 @@
 # Created by: David Naylor <dbn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME?=	dotnet-sdk
 DISTVERSION?=	2.1.201
@@ -24,7 +23,7 @@ USES=		linux:c7 python:build
 
 DATADIR=	${PREFIX}/share/dotnet
 DESCR=		${.CURDIR}/../linux-dotnet-runtime/pkg-descr
-EXTRACT_AFTER_ARGS=     --no-same-owner --no-same-permissions \
+EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions \
 			--include LICENSE.txt --include sdk ${EXTRACT_EXTRA_ARGS}
 EXTRACT_EXTRA_ARGS?=	--include additionalDeps --include store
 NO_WRKSUBDIR=	yes

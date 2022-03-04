@@ -1,9 +1,8 @@
 # Created by: Axel Steiner <ast@treibsand.com>
-# $FreeBSD$
 
 PORTNAME=	libcmime
 PORTVERSION=	0.2.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	http://www.libcmime.org/files/
 
@@ -25,13 +24,13 @@ OPTIONS_SUB=	yes
 DOCS_ALL_TARGET=	doc
 DEBUG_CMAKE_BOOL=	ENABLE_DEBUG
 DOXYGEN_IMPLIES=	DOCS
-DOXYGEN_BUILD_DEPENDS=	doxygen>=1.8:devel/doxygen \
+DOXYGEN_BUILD_DEPENDS=	doxygen>=1.9:devel/doxygen \
 			dot:graphics/graphviz
 DOXYGEN_CMAKE_BOOL=	ENABLE_DOC
 
 post-patch:
 	@${REINPLACE_CMD} -E -e 's|\$$\{CMAKE_INSTALL_LIBDIR}(/pkgconfig)|$${CMAKE_INSTALL_PREFIX}/libdata\1|' \
-		${WRKSRC}/CMakeLists.txt
+		-e 's|.8|.9|g' ${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD}  -e 's|libcmime-\$${CMIME_MAJOR_VERSION}.\$${CMIME_MINOR_VERSION}.\$${CMIME_MICRO_VERSION}|libcmime|' \
 		${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} -E -e 's|STRIP_FROM_PATH        = ../src|STRIP_FROM_PATH        = ../|' \

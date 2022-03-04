@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	aliased
 PORTVERSION=	0.34
@@ -16,5 +15,7 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Kay Abendroth <kay.abendroth@raxion.net>
-# $FreeBSD$
 
 PORTNAME=	Email-Reply
 PORTVERSION=	1.204
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	Email::Reply - Reply to a Message
+COMMENT=	Perl module for replying to email
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

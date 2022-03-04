@@ -1,10 +1,76 @@
---- man/CMakeLists.txt.orig	2018-12-20 20:14:03 UTC
-+++ man/CMakeLists.txt
-@@ -22,7 +22,6 @@
- 
+--- man/CMakeLists.txt.orig	2020-10-20 11:47:42.675974000 +0200
++++ man/CMakeLists.txt	2020-10-20 13:53:03.993879000 +0200
+@@ -23,26 +23,14 @@
  # Copy man pages
- FILE(GLOB MAN1 *.1)
--FILE(GLOB MAN1_NDB ndb*.1)
- FILE(GLOB MAN8 *.8)
- FILE(GLOB MAN8_NDB ndb*.8)
- IF(MAN1_NDB AND NOT WITH_NDBCLUSTER)
+ SET(MAN1
+   comp_err.1
+-  ibd2sdi.1
+-  innochecksum.1
+   lz4_decompress.1
+-  my_print_defaults.1
+-  myisam_ftdump.1
+-  myisamchk.1
+-  myisamlog.1
+-  myisampack.1
+   mysql.1
+   mysql_config.1
+   mysql_config_editor.1
+-  mysql_secure_installation.1
+-  mysql_ssl_rsa_setup.1
+-  mysql_tzinfo_to_sql.1
+-  mysql_upgrade.1
+   mysqladmin.1
+   mysqlbinlog.1
+   mysqlcheck.1
+   mysqldump.1
+-  mysqldumpslow.1
+   mysqlimport.1
+   mysqlman.1
+   mysqlpump.1
+@@ -52,13 +41,23 @@ SET(MAN1
+   zlib_decompress.1
+   )
+ 
+-IF(NOT WITH_SYSTEMD)
+-  LIST(APPEND MAN1
+-    mysql.server.1
+-    mysqld_multi.1
+-    mysqld_safe.1
++SET(MAN1_TOOLS
++  ibd2sdi.1
++  innochecksum.1
++  my_print_defaults.1
++  myisam_ftdump.1
++  myisamchk.1
++  myisamlog.1
++  myisampack.1
++  mysql.server.1
++  mysql_secure_installation.1
++  mysql_ssl_rsa_setup.1
++  mysql_tzinfo_to_sql.1
++  mysql_upgrade.1
++  mysqldumpslow.1
++  mysqld_multi.1
++  mysqld_safe.1
+   )
+-ENDIF()
+ 
+ SET(MAN1_NDB
+   ndb-common-options.1
+@@ -105,8 +104,14 @@ SET(MAN8_NDB
+   ndbmtd.8
+ )
+ 
+-INSTALL(FILES ${MAN1} DESTINATION ${INSTALL_MANDIR}/man1 COMPONENT ManPages)
+-INSTALL(FILES ${MAN8} DESTINATION ${INSTALL_MANDIR}/man8 COMPONENT ManPages)
++IF(NOT WITHOUT_CLIENTLIBS)
++    INSTALL(FILES ${MAN1} DESTINATION ${INSTALL_MANDIR}/man1 COMPONENT ManPages)
++ENDIF()
++
++IF(NOT WITHOUT_SERVER)
++    INSTALL(FILES ${MAN1_TOOLS} DESTINATION ${INSTALL_MANDIR}/man1 COMPONENT ManPages)
++    INSTALL(FILES ${MAN8} DESTINATION ${INSTALL_MANDIR}/man8 COMPONENT ManPages)
++ENDIF()
+ 
+ IF(WITH_ROUTER)
+   INSTALL(FILES ${MAN1_ROUTER}

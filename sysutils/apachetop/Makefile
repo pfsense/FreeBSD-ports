@@ -1,8 +1,8 @@
 # Created by: Sebastian Yepes F. <esn@x123.info>
-# $FreeBSD$
 
 PORTNAME=	apachetop
 PORTVERSION=	0.18.4
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	lukasz@wasikowski.net
@@ -11,7 +11,7 @@ COMMENT=	Apache realtime log stats
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf ncurses readline
+USES=		autoreconf cpe ncurses readline
 USE_GITHUB=	yes
 GH_ACCOUNT=	tessus
 

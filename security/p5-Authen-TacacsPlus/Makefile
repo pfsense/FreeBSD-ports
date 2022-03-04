@@ -1,8 +1,7 @@
 # Created by: will
-# $FreeBSD$
 
 PORTNAME=	Authen-TacacsPlus
-PORTVERSION=	0.26
+PORTVERSION=	0.28
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

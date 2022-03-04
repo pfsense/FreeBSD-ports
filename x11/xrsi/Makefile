@@ -1,5 +1,4 @@
 # Created by: Martin Tournoij <carpetsmoker@xs4all.nl>
-# $FreeBSD$
 
 PORTNAME=	xrsi
 PORTVERSION=	0.9
@@ -13,6 +12,7 @@ COMMENT=	Minimalist break enforcer for Linux/Unix for the prevention of RSI
 LICENSE=	ART10
 LICENSE_FILE=	${WRKSRC}/Licence
 
+USES=		xorg
 USE_XORG=	x11
 PLIST_FILES=	bin/xrsi
 PORTDOCS=	Readme

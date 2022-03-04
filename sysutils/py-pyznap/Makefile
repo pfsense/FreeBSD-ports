@@ -1,33 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=		pyznap
-DISTVERSIONPREFIX=	v
-DISTVERSION=		1.1.2
+DISTVERSION=		1.6.0
 CATEGORIES=		sysutils python
+MASTER_SITES=		CHEESESHOP
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	ZFS snapshot tool written in Python
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}configparser>3.5.0:devel/py-configparser@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}paramiko>=2.4.2:security/py-paramiko@${PY_FLAVOR} \
+RUN_DEPENDS=	lzop:archivers/lzop \
 		mbuffer:misc/mbuffer \
+		pigz:archivers/pigz \
 		pv:sysutils/pv
 
-#TEST_DEPENDS=	${YPTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
+#TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paramiko>=2.4.2:security/py-paramiko@${PY_FLAVOR} \
+#		${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 #		${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${PY_FLAVOR} \
 #		faketime:devel/faketime
 
 USES=		python:3.5+
 USE_PYTHON=	autoplist concurrent distutils
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	yboetz
-
 NO_ARCH=	yes
+
 SUB_FILES=	pkg-message
 SUB_LIST=	BINDIR=${PREFIX}/bin ETCDIR=${PREFIX}/etc
 

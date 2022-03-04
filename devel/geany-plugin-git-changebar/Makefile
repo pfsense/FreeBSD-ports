@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-git-changebar
 PORTVERSION=	${GEANY_VER}
 PORTREVISION=	1

@@ -1,5 +1,4 @@
 # Created by: Brendan Molloy <brendan+freebsd@bbqsrc.net>
-# $FreeBSD$
 
 PORTNAME=	blist
 PORTVERSION=	1.3.6
@@ -14,7 +13,7 @@ COMMENT=	Drop-in list replacement with better performance for large lists
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6-3.9
 USE_PYTHON=	autoplist distutils
 
 do-test:

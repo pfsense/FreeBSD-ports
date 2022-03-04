@@ -8,7 +8,7 @@
  * iperf.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,9 +45,9 @@
 	</menu>
 	<service>
 		<name>iperf</name>
-		<executable>iperf</executable>
+		<executable>iperf3</executable>
 		<description>iperf Network Performance Testing Daemon/Client</description>
-		<stopcmd>mwexec("/usr/bin/killall iperf");</stopcmd>
+		<stopcmd>mwexec("/usr/bin/killall iperf3");</stopcmd>
 	</service>
 	<tabs>
 		<tab>
@@ -70,7 +70,7 @@
 		<field>
 			<fielddescr>Port</fielddescr>
 			<fieldname>port</fieldname>
-			<description>Enter the port that iperf will connect to. (Default is 5001.)</description>
+			<description>Enter the port that iperf will connect to. (Default is 5201.)</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -129,16 +129,22 @@
 			<description>Enter the UDP bandwidth to send at in bits/sec. (Default is 1Mbit/sec.)</description>
 			<type>input</type>
 		</field>
+		<field>
+			<fielddescr>Verbose output</fielddescr>
+			<fieldname>verbose</fieldname>
+			<description>Show more detailed output.</description>
+			<type>checkbox</type>
+		</field>
 	</fields>
 	<custom_add_php_command>
 	<![CDATA[
-		mwexec("/usr/bin/killall iperf");
+		mwexec("/usr/bin/killall iperf3");
 		$iperf_options = "";
 		if ($_POST['protocol'] == "udp") {
 			$iperf_options .= " -u";
 		}
 		if ($_POST['format'] == "bytes") {
-			$iperf_options .= " -f A";
+			$iperf_options .= " -f M";
 		}
 		if ($_POST['interval'] != "") {
 			$iperf_options .= " -i " . escapeshellarg($_POST['interval']);
@@ -155,8 +161,11 @@
 		if ($_POST['port'] != "") {
 			$iperf_options .= " -p " . escapeshellarg($_POST['port']);
 		}
+		if ($_POST['verbose'] != "") {
+			$iperf_options .= " -V ";
+		}
 		$iperf_options .= " -c " . escapeshellarg($_POST['hostname']);
-		system("/usr/local/bin/iperf" . $iperf_options);
+		system("/usr/local/bin/iperf3" . $iperf_options);
 		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to iperf client") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to iperf client") . '</button>';
 	]]>
 	</custom_add_php_command>

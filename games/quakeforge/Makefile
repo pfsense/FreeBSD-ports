@@ -1,9 +1,8 @@
 # Created by: Daniel J. O'Connor <darius@dons.net.au>
-# $FreeBSD$
 
 PORTNAME=	quakeforge
 PORTVERSION=	0.7.2
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/quake/quake/${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -47,10 +46,9 @@ CLIENTS_DESC=		Clients
 CLIENTS_BUILD_DEPENDS=	icotool:graphics/icoutils
 CLIENTS_LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 			libcurl.so:ftp/curl
-CLIENTS_USES=		pkgconfig
+CLIENTS_USES=		gl pkgconfig xorg
 CLIENTS_USE=		gl=glu xorg=xext
 CLIENTS_CONFIGURE_OFF=	--with-clients=""
-CLIENTS_VERS=		INSTALLS_ICONS=yes
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
 FLAC_CONFIGURE_ON=	--with-libFLAC=${LOCALBASE}
 FLAC_CONFIGURE_OFF=	--disable-flac
@@ -61,6 +59,7 @@ JACK_IMPLIES=		CLIENTS
 OPTIMIZED_CFLAGS_CFLAGS=\
 			-O3 -funroll-loops -fomit-frame-pointer -fno-common \
 			-fexpensive-optimizations -fstrict-aliasing -ffast-math
+SDL_USES=		sdl
 SDL_USE=		sdl=sdl
 SDL_CONFIGURE_ON=	--with-sdl-prefix=${LOCALBASE}
 SDL_CONFIGURE_OFF=	--disable-sdl
@@ -76,10 +75,12 @@ VORBIS_CONFIGURE_ON=	--with-ogg=${LOCALBASE} --with-vorbis=${LOCALBASE}
 VORBIS_CONFIGURE_OFF=	--disable-vorbis
 VORBIS_IMPLIES=		CLIENTS
 XXF86DGA_DESC=		XFree86 DGA Extension support
+XXF86DGA_USES=		xorg
 XXF86DGA_USE=		xorg=xxf86dga
 XXF86DGA_CONFIGURE_OFF=	--disable-dga
 XXF86DGA_IMPLIES=	CLIENTS
 XXF86VM_DESC=		XFree86 Vidmode Extension support
+XXF86VM_USES=		xorg
 XXF86VM_USE=		xorg=xxf86vm
 XXF86VM_CONFIGURE_OFF=	--disable-vidmode
 XXF86VM_IMPLIES=	CLIENTS

@@ -1,5 +1,4 @@
 # Created by: michael johnson <ahze@ahze.net>
-# $FreeBSD$
 
 PORTNAME=	flac123
 PORTVERSION=	0.0.12
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 OPTIONS_DEFINE=	DOCS
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf gmake
+USES=		autoreconf cpe gmake
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PORTDOCS=	README.remote

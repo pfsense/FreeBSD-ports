@@ -1,5 +1,4 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	pgpdump
 PORTVERSION=	1.5
@@ -13,7 +12,7 @@ COMMENT=	Python library for parsing PGP packets
 LICENSE=	BSD2CLAUSE
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

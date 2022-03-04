@@ -1,8 +1,7 @@
 # Created by: Joe Horn <joehorn@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	yourls
-PORTVERSION=	1.7.3
+PORTVERSION=	1.8.2
 CATEGORIES=	www
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -19,8 +18,8 @@ NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
 
-GH_ACCOUNT=	${PORTNAME:tu}
-GH_PROJECT=	${PORTNAME:tu}
+GH_ACCOUNT=	YOURLS
+GH_PROJECT=	YOURLS
 USE_GITHUB=	yes
 
 do-install:
@@ -33,7 +32,7 @@ MS_PLIST=	${WRKDIR}/.ms-pkg-plist
 genplist: do-clean extract
 	@${ECHO} "@owner www" > ${MS_PLIST}
 	@${ECHO} "@group www" >> ${MS_PLIST}
-	@cd ${WRKSRC}/ && ${FIND} -s * -type f | ${SED} 's|^|%%WWWDIR%%/|' >> ${MS_PLIST}
+	@cd ${WRKSRC}/ && ${FIND} -s . -type f | ${SED} 's|^\.|%%WWWDIR%%|' >> ${MS_PLIST}
 	@${ECHO} "@owner" >> ${MS_PLIST}
 	@${ECHO} "@group" >> ${MS_PLIST}
 	@${INSTALL} -m 600 ${MS_PLIST} ${PLIST}

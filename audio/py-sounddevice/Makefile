@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	sounddevice
-DISTVERSION=	0.3.13
+DISTVERSION=	0.4.3
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +15,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.0.0:devel/py-cffi@${PY_FLAVOR} \
 		${PYNUMPY} \
 		portaudio>0:audio/portaudio
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

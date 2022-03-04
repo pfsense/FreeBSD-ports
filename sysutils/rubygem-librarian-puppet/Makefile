@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	librarian-puppet
-PORTVERSION=	3.0.0
+PORTVERSION=	3.0.1
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 

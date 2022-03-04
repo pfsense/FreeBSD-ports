@@ -1,9 +1,8 @@
 # Created by: Robert Jenssen
-# $FreeBSD$
 
 PORTNAME=	qrupdate
 PORTVERSION=	1.1.2
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	math
 MASTER_SITES=	SOURCEFORGE/qrupdate/qrupdate/1.2
 

@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-symband
 PORTVERSION=	1.0.10
-PORTREVISION=	23
+PORTREVISION=	26
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

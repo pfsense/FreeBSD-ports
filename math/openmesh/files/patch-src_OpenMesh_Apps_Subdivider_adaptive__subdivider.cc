@@ -1,6 +1,6 @@
---- src/OpenMesh/Apps/Subdivider/adaptive_subdivider.cc.orig	2018-10-21 23:38:04 UTC
+--- src/OpenMesh/Apps/Subdivider/adaptive_subdivider.cc.orig	2020-03-12 13:55:53 UTC
 +++ src/OpenMesh/Apps/Subdivider/adaptive_subdivider.cc
-@@ -67,6 +67,9 @@
+@@ -62,6 +62,9 @@
  #  include <cmath>
     using std::pow;
  #endif

@@ -1,5 +1,4 @@
 # Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	keynote
 PORTVERSION=	2.3
@@ -31,6 +30,7 @@ OPTIONS_DEFINE=	DOCS
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	incomplete definition of type 'struct evp_pkey_st'
 BROKEN_FreeBSD_13=	incomplete definition of type 'struct evp_pkey_st'
+BROKEN_FreeBSD_14=	incomplete definition of type 'struct evp_pkey_st'
 .endif
 
 do-install:

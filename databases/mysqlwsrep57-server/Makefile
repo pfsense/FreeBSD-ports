@@ -1,11 +1,10 @@
 # Created by: Vasil Dimov <vd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mysqlwsrep
-PORTVERSION?=	5.7.24
+PORTVERSION?=	5.7.35
 DISTVERSIONPREFIX?=	wsrep_
-DISTVERSIONSUFFIX?=	-25.16
-CATEGORIES=	databases ipv6
+DISTVERSIONSUFFIX?=	-25.27
+CATEGORIES=	databases
 MASTER_SITES+=	SF/boost/boost/1.59.0:boost
 PKGNAMESUFFIX=	57-server
 DISTFILES+=	boost_1_59_0${EXTRACT_SUFX}:boost
@@ -16,8 +15,6 @@ COMMENT=	MySQL database enhanced with Galera replication (server package)
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	bash:shells/bash \
-		lsof:sysutils/lsof \
-		netcat:net/netcat \
 		rsync:net/rsync \
 		socat:net/socat
 LIB_DEPENDS=	libevent.so:devel/libevent liblz4.so:archivers/liblz4
@@ -45,21 +42,18 @@ GH_TUPLE?=	codership:mysql-wsrep:${DISTVERSIONPREFIX}${PORTVERSION}${DISTVERSION
 DATADIR=	${PREFIX}/share/mysql
 ETCDIR=		${PREFIX}/etc/mysql
 
-NOT_FOR_ARCHS=	aarch64 armv6 armv7 powerpc64
-NOT_FOR_ARCHS_REASON=	Not supported platform
-
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_PKGCONFIGDIR="${LOCALBASE}/libdata/pkgconfig" \
 		-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
 		-DINSTALL_INFODIR="info" \
+		-DINSTALL_LDCONFIGDIR="${LOCALBASE}/libdata/ldconfig" \
 		-DINSTALL_LIBDIR="lib/mysql" \
 		-DINSTALL_MANDIR="man" \
 		-DINSTALL_MYSQLDATADIR="${MY_DBDIR}" \
 		-DINSTALL_MYSQLKEYRINGDIR="etc/mysql/keyring" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
-		-DINSTALL_MYSQLTESTDIR="share/mysql/tests" \
 		-DINSTALL_PLUGINDIR="lib/mysql/plugin" \
 		-DINSTALL_SBINDIR="libexec" \
 		-DINSTALL_SCRIPTDIR="bin" \
@@ -90,11 +84,11 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 		MY_SECDIR=${MY_SECDIR} \
 		MY_TMPDIR=${MY_TMPDIR}
 
-CONFLICTS_INSTALL=	mariadb*-server-* \
-			mysql[0-9]*-server-* \
-			mysqlwsrep56*-server-* \
-			mysqlwsrep[1-489]*-server-* \
-			percona*-server-*
+CONFLICTS_INSTALL=	mariadb*-server \
+			mysql[0-9]*-server \
+			mysqlwsrep56*-server \
+			mysqlwsrep[1-489]*-server \
+			percona*-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -103,6 +97,7 @@ SUB_FILES=	my.cnf.sample
 USERS=		mysql
 GROUPS=		mysql
 
+USE_CXXSTD=	c++11
 USE_LDCONFIG+=	${PREFIX}/lib/mysql/plugin
 
 MMAN1=		my_print_defaults.1 \
@@ -156,18 +151,15 @@ OPTIONS_GROUP_FEATURES=	PERFSCHM
 FEATURES_DESC=		Default features knobs
 PERFSCHM_DESC=		Enable "Performance Schema" by default (High RAM usage)
 OPTIONS_DEFAULT+=	PERFSCHM
-
-PERFSCHM_SUB_LIST+=	PERFSCHEMRC=""
-PERFSCHM_SUB_LIST_OFF+=	PERFSCHEMRC="--skip-performance-schema"
 FEDERATED_SUB_LIST+=	FEDER="--federated"
 FEDERATED_SUB_LIST_OFF+=FEDER=""
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
+.if ${PORT_OPTIONS:MPERFSCHM}
+SUB_LIST+=	PERFSCHEMRC=""
 .else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+SUB_LIST+=	PERFSCHEMRC="--skip-performance-schema"
 .endif
 
 .include <bsd.port.pre.mk>
@@ -180,10 +172,23 @@ CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
 
 # ${LOCALBASE}/include/lz4.h does not compile with Clang 6.
 # Also MySQL code itself needs -Wno-c++11-narrowing when Clang 6 is used.
-.if ${OSVERSION} >= 1200056
 CFLAGS+=	-DLZ4_DISABLE_DEPRECATE_WARNINGS
-CXXFLAGS+=	-DLZ4_DISABLE_DEPRECATE_WARNINGS -Wno-c++11-narrowing
+CXXFLAGS+=	-DLZ4_DISABLE_DEPRECATE_WARNINGS
 LDFLAGS+=	-L${LOCALBASE}/lib
+.if ${CHOSEN_COMPILER_TYPE} == clang
+CXXFLAGS+=	-Wno-c++11-narrowing
+.endif
+
+# Ensure that assertions are not turned on in non-debug builds.
+.if !defined(WITH_DEBUG)
+CFLAGS+=	-DNDEBUG
+CXXFLAGS+=	-DNDEBUG
+.endif
+
+# Plugin innodb_memcached requires -fcommon to avoid duplicate symbol linker
+# error with llmv11.
+.if (${OPSYS} == FreeBSD && ${OSVERSION} >= 1300109) || ${CHOSEN_COMPILER_TYPE} == gcc
+CFLAGS+=	-fcommon
 .endif
 
 post-extract:
@@ -198,9 +203,5 @@ post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}/keyring
 	${MKDIR} ${STAGEDIR}${MY_SECDIR}
 	${MKDIR} ${STAGEDIR}${MY_TMPDIR}
-
-.if ${ARCH} == armv6 || ${ARCH} == armv7
-EXTRA_PATCHES+=		${FILESDIR}/extra-patch-config.h.cmake
-.endif
 
 .include <bsd.port.post.mk>

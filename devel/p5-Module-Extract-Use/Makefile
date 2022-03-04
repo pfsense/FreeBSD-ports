@@ -1,9 +1,7 @@
 # Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Module-Extract-Use
-PORTVERSION=	1.043
-PORTREVISION=	1
+PORTVERSION=	1.047
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

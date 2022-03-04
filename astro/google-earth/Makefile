@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	google-earth
 PORTVERSION=	7.1.7.2606
 PORTREVISION=	1
@@ -13,7 +11,14 @@ DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Virtual globe, map and geographical information program
 
-RESTRICTED=	Not really sure about the redistribution terms
+# Converted from RESTRICTED
+LICENSE=	GEARTH
+LICENSE_NAME=	Google Earth
+LICENSE_TEXT=	Not really sure about the redistribution terms
+LICENSE_PERMS=	auto-accept
+
+DEPRECATED=	Needs newer version to connect to server
+EXPIRATION_DATE=2022-01-01
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

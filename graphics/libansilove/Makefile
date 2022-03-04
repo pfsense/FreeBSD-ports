@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libansilove
-PORTVERSION=	1.1.1
+PORTVERSION=	1.2.8
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -16,9 +13,14 @@ LIB_DEPENDS=	libgd.so:graphics/gd
 USE_GITHUB=	yes
 GH_ACCOUNT=	ansilove
 
-USES=		cmake
+USES=		cpe cmake
+USE_LDCONFIG=	yes
 
-PORTDOCS=	AUTHORS ChangeLog README.md THANKS TODO
+CPE_VENDOR=	ansilove
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+PORTDOCS=	AUTHORS ChangeLog README.md THANKS
 
 OPTIONS_DEFINE=	DOCS
 

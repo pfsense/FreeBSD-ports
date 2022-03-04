@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Record
 PORTVERSION=	0.02
 PORTREVISION=	2
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	espen@tagestad.no
-COMMENT=	Data::Record - "split" on steroids
+COMMENT=	Perl module implementing "split" on steroids
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

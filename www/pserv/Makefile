@@ -1,5 +1,4 @@
 # Created by: Alex Dupre <sysadmin@alexdupre.com>
-# $FreeBSD$
 
 PORTNAME=	pserv
 PORTVERSION=	3.4
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 
-CONFLICTS=	popular-[0-9]*
+CONFLICTS=	popular
 
 OPTIONS_DEFINE=	LOG PHP
 OPTIONS_DEFAULT=	LOG PHP

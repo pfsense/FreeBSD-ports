@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libidn2
-PORTVERSION=	2.1.1
+PORTVERSION=	2.3.2
 CATEGORIES=	dns
 MASTER_SITES=	GNU/libidn
 
@@ -12,9 +11,10 @@ COMMENT=	Implementation of IDNA2008 internationalized domain names
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	help2man:misc/help2man
 LIB_DEPENDS=	libunistring.so:devel/libunistring
 
-USES=		charsetfix gmake iconv libtool localbase pathfix
+USES=		charsetfix iconv libtool localbase makeinfo pathfix
 
 CONFIGURE_ARGS=	--disable-nls \
 		--with-libunistring-prefix=${LOCALBASE} \
@@ -24,8 +24,5 @@ INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 INFO=		libidn2
-
-post-patch:
-	@${REINPLACE_CMD} -e '/^TMPDIR = /d' ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

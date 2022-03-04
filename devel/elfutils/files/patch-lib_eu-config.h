@@ -1,7 +1,7 @@
---- lib/eu-config.h.orig	2015-06-11 11:38:55 UTC
+--- lib/eu-config.h.orig	2020-03-30 12:17:45 UTC
 +++ lib/eu-config.h
-@@ -187,4 +187,171 @@ asm (".section predict_data, \"aw\"; .pr
- #endif
+@@ -176,6 +176,186 @@ asm (".section predict_data, \"aw\"; .previous\n"
+ #define ELFUTILS_HEADER(name) <lib##name.h>
  
  
 +/* FreeBSD ports of glibcisms */
@@ -10,6 +10,7 @@
 +#include <limits.h>
 +#include <stdarg.h>
 +#include <stdint.h>
++#include <stdio.h>
 +#include <stdlib.h>
 +#include <string.h>
 +#include <wchar.h>
@@ -22,6 +23,9 @@
 +
 +#pragma GCC diagnostic push
 +#pragma GCC diagnostic ignored "-Wshadow"
++#ifndef FREEBSD_HAS_MEMPCPY // fix for the build failure, see bug#258092: mempcpy and wmempcpy were added in commits:
++// on 14: ee37f64cf875255338f917a9da76c643cf59786c on 2021-07-15
++// on 13: dba677d13b26ad5422133b2ab76486b74d63ade4 on 2021-07-22
 +static inline void *
 +mempcpy(void * restrict dst, const void * restrict src, size_t len)
 +{
@@ -35,6 +39,7 @@
 +
 +	return (wmemcpy(dst, src, len) + len);
 +}
++#endif
 +#pragma GCC diagnostic pop
 +
 +static inline void *
@@ -130,7 +135,15 @@
 +#define	bswap_32	bswap32
 +#define	bswap_64	bswap64
 +
++/*
++ * Future versions of FreeBSD will provide proper versions of these _unlocked
++ * variants.  These can and should be used instead, but won't be available
++ * until FreeBSD 11.4 and 12.2, at which point we should limit the scope of
++ * these to DragonFlyBSD.
++ */
++#ifndef fputc_unlocked
 +#define	fputc_unlocked	putc_unlocked
++#endif
 +#define	fputs_unlocked	fputs
 +#define	fwrite_unlocked	fwrite
 +#define	fread_unlocked	fread
@@ -171,4 +184,6 @@
 +#define	ngettext(s, p, n)	(((n) == 1) ? (s) : (p))
 +#endif
 +
- #endif	/* eu-config.h */
+ #ifdef SYMBOL_VERSIONING
+ # define OLD_VERSION(name, version) \
+   asm (".globl _compat." #version "." #name "\n" \

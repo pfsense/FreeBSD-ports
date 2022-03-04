@@ -1,5 +1,4 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	base64
 PORTVERSION=	2.0.0
@@ -9,6 +8,8 @@ PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Base64 encoding and decoding in OCaml
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mirage

@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	wmbluecpu
 PORTVERSION=	0.4
@@ -10,7 +9,7 @@ MASTER_SITES=	SUNSITE/X11/xutils
 MAINTAINER=	benjsc@FreeBSD.org
 COMMENT=	CPU monitoring dockapp
 
-USES=		tar:bzip2
+USES=		tar:bzip2 xorg
 USE_XORG=	xpm
 
 post-patch:

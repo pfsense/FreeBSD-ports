@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	musicpd
-PORTVERSION=	0.21.10
-CATEGORIES=	audio ipv6
+PORTVERSION=	0.23.5
+CATEGORIES=	audio
 MASTER_SITES=	https://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
 
@@ -13,11 +11,11 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
+		libfmt.so:devel/libfmt \
 		libicudata.so:devel/icu
 
-USES=		compiler:c++14-lang gnome meson pkgconfig tar:xz
-
-USE_GNOME=	glib20
+USES=		compiler:c++17-lang localbase:ldflags meson pkgconfig \
+		python:build tar:xz
 
 USE_RC_SUBR=	${PORTNAME}
 MESON_ARGS=	-Dauto_features=disabled \
@@ -26,17 +24,17 @@ MESON_ARGS=	-Dauto_features=disabled \
 		-Dicu=enabled \
 		-Doss=enabled \
 		-Dpipe=true \
+		-Dsyslog=enabled \
 		-Dzlib=enabled
-CFLAGS+=	-I${PREFIX}/include
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDOCS=	AUTHORS README.md NEWS
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	DOCS ID3TAG IPV6 ISO9660 SQLITE3 \
-		PROXYDB LAME VORBISENC ZZIP
+OPTIONS_SUB=	yes
+
+OPTIONS_DEFINE=	DOCS ID3TAG IPV6 ISO9660 MANPAGES SQLITE3 \
+		PROXYDB VORBISENC ZZIP
 
 OPTIONS_RADIO=	RESAMPLER ZEROCONF
 
@@ -44,19 +42,19 @@ OPTIONS_RADIO_ZEROCONF=	AVAHI MDNSRESPONDER
 
 OPTIONS_RADIO_RESAMPLER=	SAMPLERATE SOXR
 
-OPTIONS_MULTI=	FILE_FORMAT
+OPTIONS_MULTI=	DOCUMENTATION FILE_FORMAT
 OPTIONS_MULTI_FILE_FORMAT=	\
 			ADPLUG AUDIOFILE FAAD FFMPEG FLAC FLUIDSYNTH \
 			GME MAD MIKMOD MODPLUG MPG123 MUSEPACK \
-			OPUS SIDPLAY2 SNDFILE TWOLAME \
+			OPUS SIDPLAY SNDFILE TWOLAME \
 			VORBIS WAVPACK WILDMIDI
 
 OPTIONS_GROUP=	ACCESS PLAYBACK
 
-OPTIONS_GROUP_ACCESS=	CDPARANOIA CURL MMS NFS PLAYLISTS QOBUZ \
-			SMB SOUNDCLOUD TIDAL YAJL
+OPTIONS_GROUP_ACCESS=	CDPARANOIA CURL LAME MMS NFS PLAYLISTS QOBUZ \
+			SMB SOUNDCLOUD UPNP YAJL
 
-OPTIONS_GROUP_PLAYBACK=	AO JACK OPENAL PULSEAUDIO \
+OPTIONS_GROUP_PLAYBACK=	AO JACK OPENAL OPENMPT PIPEWIRE PULSEAUDIO \
 			SHOUTCAST SNDIO
 
 ADPLUG_DESC=	AdPlug support
@@ -65,19 +63,24 @@ GME_DESC=	GME support (video game music files)
 ISO9660_DESC=	Direct support for ISO 9660 images
 PROXYDB_DESC=	Proxy database support via libmpdclient
 LAME_DESC=	Support for MP3 Icecast Streams
+OPENMPT_DESC=	Support for OpenMPT playback
+PIPEWIRE_DESC=	PipeWire support
 PLAYLISTS_DESC=	Enable extra playlist support (wma, RSS)
 QOBUZ_DESC=	Streaming service support: Qobuz
-SIDPLAY2_DESC=	Sidplay support (C64 mono and stereo files)
+SIDPLAY_DESC=	Sidplay support (C64 mono and stereo files)
+SMB_DESC=	SMB network support (currently strongly discouraged)
 SOUNDCLOUD_DESC=Streaming service support: SoundCloud
-TIDAL_DESC=	Streaming service support: TIDAL
 TWOLAME_DESC=	TwoLAME support (mp2)
 VORBISENC_DESC=	Ogg Vorbis encoder
 WILDMIDI_DESC=	WildMIDI support (MIDI files)
 YAJL_DESC=	JSON support via libyajl
 ZZIP_DESC=	Support for zzip archives
 
-OPTIONS_DEFAULT=AUDIOFILE CURL FFMPEG FLAC ID3TAG MAD \
-		PLAYLISTS SNDFILE VORBIS VORBISENC
+OPTIONS_DEFAULT=CURL FFMPEG FLAC ID3TAG LAME MANPAGES OPUS \
+		PLAYLISTS PROXYDB SNDFILE VORBIS VORBISENC
+
+MANPAGES_MESON_ENABLED=	documentation
+MANPAGES_BUILD_DEPENDS=	${LOCALBASE}/bin/sphinx-build:textproc/py-sphinx@${PY_FLAVOR}
 
 # Decoder plugins
 ADPLUG_MESON_ENABLED=	adplug
@@ -108,14 +111,16 @@ MUSEPACK_MESON_ENABLED=	mpcdec
 MUSEPACK_LIB_DEPENDS=	libmpcdec.so:audio/musepack
 NFS_MESON_ENABLED=	nfs
 NFS_LIB_DEPENDS=	libnfs.so:net/libnfs
+OPENMPT_MESON_ENABLED=	openmpt
+OPENMPT_LIB_DEPENDS=	libopenmpt.so:audio/libopenmpt
 OPUS_MESON_ENABLED=	opus
 OPUS_LIB_DEPENDS=	libopus.so:audio/opus \
 			libogg.so:audio/libogg
 PLAYLISTS_MESON_ENABLED=expat
 PLAYLISTS_LIB_DEPENDS=	libexpat.so:textproc/expat2
-SIDPLAY2_MESON_ENABLED=	sidplay
-SIDPLAY2_LIB_DEPENDS=	libsidplay2.so:audio/libsidplay2
-SIDPLAY2_LDFLAGS=	-L${LOCALBASE}/lib/sidplay/builders
+SIDPLAY_MESON_ENABLED=	sidplay
+SIDPLAY_LIB_DEPENDS=	libsidplayfp.so:audio/libsidplayfp
+SIDPLAY_CXXFLAGS=	-D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR
 SNDFILE_MESON_ENABLED=	sndfile
 SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 VORBIS_MESON_ENABLED=	vorbis
@@ -145,8 +150,11 @@ AO_MESON_ENABLED=	ao
 AO_LIB_DEPENDS=		libao.so:audio/libao
 JACK_MESON_ENABLED=	jack
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
+JACK_CXXFLAGS=		-Wno-register
 OPENAL_MESON_ENABLED=	openal
 OPENAL_USES=		openal
+PIPEWIRE_MESON_ENABLED=	pipewire
+PIPEWIRE_LIB_DEPENDS=	libpipewire-0.3.so:multimedia/pipewire
 PULSEAUDIO_MESON_ENABLED=	pulse
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 SHOUTCAST_MESON_ENABLED=shout
@@ -157,7 +165,7 @@ SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 
 # Input plugins
 CDPARANOIA_MESON_ENABLED=	cdio_paranoia
-CDPARANOIA_LIB_DEPENDS=	libcdda_paranoia.so:audio/cdparanoia
+CDPARANOIA_LIB_DEPENDS=	libcdio_paranoia.so:sysutils/libcdio-paranoia
 CURL_MESON_ENABLED=	curl
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 MMS_MESON_ENABLED=	mms
@@ -169,7 +177,7 @@ SMB_USES=		samba:lib
 ZZIP_MESON_ENABLED=	zzip
 ZZIP_LIB_DEPENDS=	libzzip.so:devel/zziplib
 ISO9660_MESON_ENABLED=	iso9660
-ISO9660_LIB_DEPENDS=	libcdio_paranoia.so:sysutils/libcdio-paranoia
+ISO9660_LIB_DEPENDS=	libiso9660.so:sysutils/libcdio
 
 # Database plugins
 SQLITE3_MESON_ENABLED=	sqlite
@@ -190,14 +198,14 @@ QOBUZ_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 QOBUZ_IMPLIES=		CURL YAJL
 SOUNDCLOUD_MESON_ENABLED=	soundcloud
 SOUNDCLOUD_IMPLIES=	CURL YAJL
-TIDAL_MESON_ENABLED=	tidal
-TIDAL_IMPLIES=		CURL YAJL
 
-# Misc library suppore
+# Misc library support
 AVAHI_MESON_ON=		-Dzeroconf=avahi
 AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 MDNSRESPONDER_MESON_ON=		-Dzeroconf=bonjour
 MDNSRESPONDER_LIB_DEPENDS=	libdns_sd.so:net/mDNSResponder
+UPNP_MESON_ON=		-Dupnp=npupnp
+UPNP_LIB_DEPENDS=	libnpupnp.so:net/libnpupnp
 YAJL_MESON_ENABLED=	yajl
 YAJL_LIB_DEPENDS=	libyajl.so:devel/yajl
 
@@ -207,54 +215,35 @@ MPDGROUP?=	mpd
 USERS=	${MPDUSER}
 GROUPS=	${MPDGROUP}
 
-.include <bsd.port.pre.mk>
-
-# Note that since the build system switch to meson, mpd fails to link with
-# GNU ld 2.17 in base. Also, meson does not allow to set the linker via
-# environment variables yet.
-# For gcc-based platforms, gcc and ld from ports are used due to the c++14
-# requirement. For clang, we set the linker explicitly in meson.build.
-.if ${ARCH} == armv6
-#lld may use movt/movw, doesn't work on armv6
-BUILD_DEPENDS+=	${LOCALBASE}/bin/ld:devel/binutils
-MPD_CLANG_LD=	${LOCALBASE}/bin/ld
-.else
-MPD_CLANG_LD=	lld
-.endif
-
 post-patch:
-# Insert selected linker for clang
-	@${REINPLACE_CMD} -e 's|%%MPD_CLANG_LD%%|${MPD_CLANG_LD}|' \
-		${WRKSRC}/meson.build
-# Replace ~/ with /var/mpd/ and make musicpd run as mpd by default
-	@${REINPLACE_CMD} -e 's,^#\([^"]*"\)~/,\1/var/mpd/,g' \
-		-e 's,^#\(user[^"]*"\)nobody,\1${MPDUSER},g' \
-		${WRKSRC}/doc/mpdconf.example
-# Uncomment OSS audio output part from mpd.conf; dragons!
-	start=$$(expr $$(${SED} -n '/^#	type	*"oss"/=' \
-		${WRKSRC}/doc/mpdconf.example) - 1); \
-	 finish=$$(for n in $$(${JOT} 10 $$start); do \
-		     [ "$$(${SED} -n $${n}p ${WRKSRC}/doc/mpdconf.example)" = \
-				"#}" ] && ${ECHO_CMD} $$n || true; done); \
-	 ${REINPLACE_CMD} -e "$${start},$${finish}s,^#,," \
+# Make musicpd run as ${MPDUSER} by default
+	@${REINPLACE_CMD} -e 's|%%MPDUSER%%|${MPDUSER}|' \
 		${WRKSRC}/doc/mpdconf.example
 # Fix man pages for executable names
-	@${REINPLACE_CMD} -e 's/^\(\.B m\)pd/\1usicpd/' \
-		-e 's#^\(\.BI \)/etc/mpd.conf#\1${PREFIX}/etc/${PORTNAME}.conf#' \
-		-e 's#^mpd.conf#${PORTNAME}.conf#' \
-		-e 's#^mpd(1)#musicpd(1)#' \
-		${WRKSRC}/doc/mpd.1 ${WRKSRC}/doc/mpd.conf.5
+	@${REINPLACE_CMD} \
+		-e 's#^``mpd#``${PORTNAME}#' \
+		-e 's#:: mpd#:: ${PORTNAME}#' \
+		-e 's#mpd(1)#${PORTNAME}(1)#' \
+		-e 's#mpd.conf(5)#${PORTNAME}.conf(5)#' \
+		${WRKSRC}/doc/mpd.1.rst ${WRKSRC}/doc/mpd.conf.5.rst
+	@${REINPLACE_CMD} \
+		-e "s#'mpd'#'${PORTNAME}'#" \
+		-e "s#'mpd.conf'#'${PORTNAME}.conf'#" \
+		-e "s#'mpd.conf doc#'${PORTNAME}.conf doc#" \
+		${WRKSRC}/doc/conf.py
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/_build/mpd \
-		${STAGEDIR}/${PREFIX}/bin/${PORTNAME}
-	${INSTALL_MAN} ${WRKSRC}/doc/mpd.1 \
-		${STAGEDIR}/${PREFIX}/man/man1/${PORTNAME}.1
-	${INSTALL_MAN} ${WRKSRC}/doc/mpd.conf.5 \
-		${STAGEDIR}/${PREFIX}/man/man5/${PORTNAME}.conf.5
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
 	${INSTALL_DATA} ${WRKSRC}/doc/mpdconf.example \
-		${STAGEDIR}/${PREFIX}/etc/${PORTNAME}.conf.sample
+		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
 
-.include <bsd.port.post.mk>
+do-install-MANPAGES-on:
+	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.1 \
+		${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.conf.5 \
+		${STAGEDIR}${PREFIX}/man/man5
+
+.include <bsd.port.mk>

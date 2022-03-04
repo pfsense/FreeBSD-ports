@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-DISTVERSION=	2.5.0
+DISTVERSION=	2.7.0
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -18,7 +18,6 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		ca_root_nss>=0:security/ca_root_nss \
 		check_reload_status>=0:sysutils/check_reload_status \
 		choparp>=0:net-mgmt/choparp \
-		clog>=0:sysutils/clog \
 		cpdup>=0:sysutils/cpdup \
 		cpustats>=0:sysutils/cpustats \
 		dhcp6>=0:net/dhcp6 \
@@ -50,12 +49,12 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
-		${PHP_PKGNAMEPREFIX}pecl-zmq>=0:net/pecl-zmq@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}phpseclib>=0:security/phpseclib@${PHP_FLAVOR} \
 		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
+		pfSense-upgrade>=0:sysutils/pfSense-upgrade \
 		pftop>=0:sysutils/pftop \
 		qstats>=0:sysutils/qstats \
 		radvd>=0:net/radvd \
@@ -70,15 +69,21 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd \
-		openvpn-auth-script>=0:security/openvpn-auth-script
+		openvpn-auth-script>=0:security/openvpn-auth-script \
+		opensc>0:security/opensc \
+		ccid>0:devel/libccid \
+		iftop>0:net-mgmt/iftop \
+		nss_ldap>0:net/nss_ldap \
+		pam_ldap>0:security/pam_ldap \
+		pam_mkhomedir>0:security/pam_mkhomedir
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		kmod php:flavors
 
-IGNORE_WITH_PHP=	56 70 71
-USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
-		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
+IGNORE_WITH_PHP=	72 73
+USE_PHP=	bz2 bcmath ctype curl dom filter gettext intl json mbstring \
+		mcrypt opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
 		sysvshm sqlite3 tokenizer xml ldap zlib xmlreader xmlwriter
 
@@ -93,10 +98,10 @@ PLIST_DIRS=	/etc
 .include <bsd.port.pre.mk>
 
 .if (${ARCH} == "amd64" || ${ARCH} == "i386")
-RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
-		${LOCALBASE}/sbin/smartctl:sysutils/smartmontools \
-		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
-		${LOCALBASE}/bin/beep:audio/beep \
+RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
+		smartmontools>=0:sysutils/smartmontools \
+		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \
+		beep>=0:audio/beep \
 		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
 		devcpu-data>=0:sysutils/devcpu-data
 .endif

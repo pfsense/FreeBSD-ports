@@ -1,9 +1,9 @@
 # Created by: Martin Dieringer <martin.dieringer@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	mupdf
-DISTVERSION=	1.15.0
+DISTVERSION=	1.18.0
 DISTVERSIONSUFFIX=	-source
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.mupdf.com/downloads/ \
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libjbig2dec.so:graphics/jbig2dec \
 		libopenjp2.so:graphics/openjpeg
 
-USES=		cpe compiler:c++11-lang gl gmake jpeg pkgconfig
+USES=		cpe compiler:c++11-lang gl gmake jpeg pkgconfig xorg
 USE_XORG=	x11 xcursor xext xinerama xrandr
 USE_GL=		gl glut
 USE_LDCONFIG=	yes
@@ -51,10 +51,7 @@ SCROLL_EXTRA_PATCHES=	${FILESDIR}/scroll_hack-platform__x11__pdfapp.c
 PLIST_SUB=	SOVERSION=${PORTVERSION}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's/-pipe -O2 //' \
-		${WRKSRC}/Makerules
-	@${REINPLACE_CMD} -e 's/-ldl //' ${WRKSRC}/Makerules \
-		${WRKSRC}/Makethird
+	@${REINPLACE_CMD} -e 's/-pipe -O2//' -e 's/-ldl//' ${WRKSRC}/Makerules
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/bin/mupdf-x11 \

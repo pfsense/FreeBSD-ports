@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Plucene-Analysis-CJKAnalyzer
 PORTVERSION=	0.02
@@ -19,7 +18,9 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Plucene>=0:textproc/p5-Plucene
 TEST_DEPENDS=	p5-YAML>=0:textproc/p5-YAML
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

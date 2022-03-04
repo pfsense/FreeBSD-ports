@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spamass-rules
 PORTVERSION=	20190101
 CATEGORIES=	mail

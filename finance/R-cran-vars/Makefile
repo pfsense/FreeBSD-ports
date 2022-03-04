@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vars
-DISTVERSION=	1.5-3
-PORTREVISION=	1
+DISTVERSION=	1.5-6
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

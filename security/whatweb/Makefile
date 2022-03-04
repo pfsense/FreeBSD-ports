@@ -1,5 +1,4 @@
 # Created by: Niels Heinen
-# $FreeBSD$
 
 PORTNAME=	whatweb
 DISTVERSION=	0.4.8-${GH_TAGNAME}
@@ -15,6 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 GH_TUPLE=	urbanadventurer:WhatWeb:f467aa2
 
+USES=			cpe
+CPE_VENDOR=		morningstarsecurity
 USE_RUBY=		yes
 RUBY_NO_BUILD_DEPENDS=	yes
 NO_BUILD=		yes

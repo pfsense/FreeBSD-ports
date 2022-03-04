@@ -1,6 +1,0 @@
-Orage provides a calendar which integrates nicely into the Xfce desktop
-environment. It is highly configurable and supports alerts based on dates.
-It warns you with popup or audio alarm. As it is an application kind-of
-every day use it launches itself in the background as a daemon.
-
-WWW: https://git.xfce.org/apps/orage/about/

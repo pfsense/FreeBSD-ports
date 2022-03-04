@@ -1,5 +1,4 @@
 # Created by: nectar@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	vxquery
 PORTVERSION=	0.2.1
@@ -8,6 +7,8 @@ MASTER_SITES=	http://www.vuxml.org/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	VuXML Query Tool
+
+LICENSE=	BSD2CLAUSE
 
 USES=	tar:bzip2
 GNU_CONFIGURE=	yes

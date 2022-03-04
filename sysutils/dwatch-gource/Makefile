@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	dwatch-gource
 DISTVERSION=	0.9
 CATEGORIES=	sysutils
 
-MAINTAINER=	dteske@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD dwatch profiles for creating gource logs
 
 LICENSE=	BSD2CLAUSE
@@ -18,12 +16,6 @@ NO_ARCH=	yes
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} >= 1200000 && ${OSVERSION} < 1200065
-IGNORE=         requires dwatch available in recent FreeBSD 11 or 12
-.endif
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/gwatch ${STAGEDIR}${PREFIX}/sbin

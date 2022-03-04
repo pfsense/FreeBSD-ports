@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_ospf6_areas.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_ospfd6_areas</name>
+	<title>Services/FRR/OSPF6</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_ospf6_areas.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>OSPF6</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf6_areas.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>pkg.php?xml=frr/frr_ospf6_interfaces.xml</url>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php?protocol=ospf6</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Area</fielddescr>
+			<fieldname>area</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Type</fielddescr>
+			<fieldname>type</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Area Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Area</fielddescr>
+			<fieldname>area</fieldname>
+			<description>The ID for this area.</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Area Type</fielddescr>
+			<fieldname>type</fieldname>
+			<description>Defines how this area behaves</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Normal (default)</name><value>none</value></option>
+				<option><name>Stub Area (stub)</name><value>stub</value></option>
+				<option><name>Totally Stub (stub no-summary)</name><value>nosum</value></option>
+				<!-- FRR does not currently support NSSA for OSPFv3 -->
+				<!-- This has been left in and commented to add support easily at a later date -->
+				<!-- <option><name>Not so Stub Area (nssa)</name><value>nssa</value></option> -->
+				<!-- <option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option> -->
+			</options>
+		</field>
+		<field>
+			<name>Range Overrides</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Only <strong>one</strong> of the options for each range may be activated.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Ranges</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Prefix</fielddescr>
+					<fieldname>rangeprefix</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Do Not Advertise</fielddescr>
+					<fieldname>rangenotadvertise</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Cost (0-16777215)</fielddescr>
+					<fieldname>rangecost</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<name>ABR Summary Route Filtering</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Export List</fielddescr>
+			<fieldname>exportlist</fieldname>
+			<description>Uses this access list to filter summary route information transmitted to OSPF peers when acting as an ABR</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Import List</fielddescr>
+			<fieldname>importlist</fieldname>
+			<description>Uses this access list to filter summary route information received from OSPF peers when acting as an ABR</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Filter List (Out)</fielddescr>
+			<fieldname>filterlist_out</fieldname>
+			<description>Uses a prefix list to filter summary route information transmitted to OSPF peers when acting as an ABR</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Filter List (In)</fielddescr>
+			<fieldname>filterlist_in</fieldname>
+			<description>Uses a prefix list to filter summary route information received from OSPF peers when acting as an ABR</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_ospf6_areas_validate_input();
+	</custom_php_validation_command>
+</packagegui>

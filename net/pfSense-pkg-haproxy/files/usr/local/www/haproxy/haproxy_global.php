@@ -3,7 +3,7 @@
  * haproxy_global.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (C) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * All rights reserved.
@@ -139,7 +139,7 @@ if ($_POST) {
 			}
 			
 			touch($d_haproxyconfdirty_path);
-			write_config();
+			write_config("haproxy: Global settings saved");
 		}
 	}
 }
@@ -289,7 +289,7 @@ EOD
 );
 
 if (haproxy_version() >= "1.8") {
-	$section->addInput(new Form_Input('nbthread', 'Number of theads to start per process', 'text', $pconfig['nbthread']
+	$section->addInput(new Form_Input('nbthread', 'Number of threads to start per process', 'text', $pconfig['nbthread']
 	))->setPlaceholder("1")->setHelp(<<<EOD
 		Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
 		FOR NOW, THREADS SUPPORT IN HAPROXY 1.8 IS HIGHLY EXPERIMENTAL AND IT MUST BE ENABLED WITH CAUTION AND AT YOUR OWN RISK.

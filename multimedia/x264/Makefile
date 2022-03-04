@@ -1,5 +1,4 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 #
 # NOTES FOR UPDATING PORT:
 #
@@ -7,24 +6,20 @@
 #
 # X264_BUILD is the "core" number, and can be found in x264.h.
 #
-# X264_COMMIT is the commit number, and can be found here:
-# https://code.videolan.org/videolan/x264/commits/stable
-#
 # X264_REV requires a checkout the git revision for the version the port
 # is being updated to. Then run version.sh against it.
 #
 # Bumping PORTREVISION for dependent ports? This is useful:
-# cd $PORTSDIR; for x in $(find . -name "Makefile*" -print);
-# do str=$(grep -i x264.so $x); if [[ -n $str ]] { echo "$x" }; done
+#   fgrep -lr --include='*/Makefile*' :multimedia/libx264 $PORTSDIR |
+#   sed 's,/Makefile.*,,' | xargs $PORTSDIR/Tools/scripts/bump-revision.sh
+# or
+#   rg -l :multimedia/libx264 $PORTSDIR | xargs -n1 portedit bump-revision -i
 
 PORTNAME=	x264
 PORTVERSION=	0.${X264_BUILD}.${X264_REV}
-PORTREVISION?=	0	# 0 in libx264
+PORTREVISION?=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	https://downloads.videolan.org/pub/videolan/x264/snapshots/ \
-		https://samples.mplayerhq.hu/yuv4mpeg2/:pgo
-DISTNAME=	${PORTNAME}-snapshot-${X264_SNAPSHOT}-2245-stable
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	https://samples.mplayerhq.hu/yuv4mpeg2/:pgo
 DIST_SUBDIR=	x264
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -37,25 +32,29 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS?=	libx264.so:multimedia/libx264
 
-X264_BUILD=	157
-X264_REV=	2945
-X264_COMMIT=	72db437770fd1ce3961f624dd57a8e75ff65ae0b
-X264_GITVER=	${X264_COMMIT:C/^(.......).*$/\1/g}
-X264_SNAPSHOT=	20190311
+X264_BUILD=	163
+X264_REV=	3060
+X264_GITVER=	${GL_COMMIT:C/^(.{7}).*/\1/}
 
 USES?=		pkgconfig
-USES+=		gmake localbase shebangfix tar:bzip2
+USES+=		compiler:c11 gmake localbase shebangfix
+USE_GITLAB=	yes
 USE_LDCONFIG=	yes
+GL_SITE=	https://code.videolan.org
+GL_ACCOUNT=	videolan
+GL_COMMIT=	5db6aa6cab1b146e07b60cc1736a01f21da01154
 HAS_CONFIGURE=	yes
 SHEBANG_FILES=	configure
 PLIST_FILES?=	bin/x264
 
-OPTIONS_DEFINE+=	DEBUG FFMS GCC LAVF PGO SWSCALE
+OPTIONS_DEFINE+=	BASH DEBUG FFMS LAVF PGO SWSCALE
 OPTIONS_RADIO+=		MP4
 OPTIONS_RADIO_MP4+=	GPAC LSMASH
-OPTIONS_DEFAULT+=	FFMS LAVF LSMASH SWSCALE
-OPTIONS_DEFAULT_powerpc=	GCC
-OPTIONS_DEFAULT_powerpc64=	GCC
+OPTIONS_DEFAULT+=	BASH FFMS LAVF LSMASH SWSCALE
+
+.if make(makesum) # for optional distfiles
+.MAKEFLAGS:	WITH="${OPTIONS_DEFINE}"
+.endif
 
 FFMS_DESC=		FFmpeg Source input support
 GPAC_DESC=		GPAC library support
@@ -64,14 +63,17 @@ LSMASH_DESC=		L-SMASH library support
 MP4_DESC=		MPEG-4 output
 SWSCALE_DESC=		Resize video filter
 
+BASH_BUILD_DEPENDS=	bash-completion>0:shells/bash-completion
+BASH_RUN_DEPENDS=	bash-completion>0:shells/bash-completion
+BASH_CONFIGURE_ENABLE=	bashcompletion
+BASH_PLIST_FILES=	share/bash-completion/completions/x264
+
 DEBUG_CONFIGURE_ENABLE=	debug
 DEBUG_CONFIGURE_OFF=	--enable-strip
 
 FFMS_LIB_DEPENDS=	libffms2.so:multimedia/ffms2
 FFMS_CONFIGURE_ENABLE=	ffms
 FFMS_IMPLIES=		SWSCALE
-
-GCC_VARS=		USE_GCC=yes
 
 GPAC_LIB_DEPENDS=	libgpac.so:multimedia/gpac-libgpac
 GPAC_CONFIGURE_ENABLE=	gpac
@@ -91,9 +93,13 @@ PGO_ALL_TARGET=		fprofiled
 # y4m sample video
 Y4M_VIDEO=		example.y4m
 Y4M_VIDEO_DISTFILE=	example.y4m.bz2
-PGO_VARS=		USE_GCC=any \
-			RESTRICTED="${Y4M_VIDEO_DISTFILE} file may not be mirrored" \
-			RESTRICTED_FILES="${Y4M_VIDEO_DISTFILE}"
+PGO_VARS=		USE_GCC=yes \
+			LICENSE+=PGO LICENSE_COMB=multi
+
+# ${Y4M_VIDEO_DISTFILE} file may not be mirrored
+LICENSE_NAME_PGO=	PGO
+LICENSE_DISTFILES_PGO=	${Y4M_VIDEO_DISTFILE}
+LICENSE_PERMS_PGO=	auto-accept
 
 SWSCALE_LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg \
 			libswscale.so:multimedia/ffmpeg

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jaro_winkler
-PORTVERSION=	1.5.2
+PORTVERSION=	1.5.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

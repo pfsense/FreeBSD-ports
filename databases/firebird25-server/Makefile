@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	firebird
-PORTVERSION=	2.5.8
-PORTREVISION=	3
+PORTVERSION=	2.5.9
+PORTREVISION=	1
 CATEGORIES?=	databases
-MASTER_SITES=	https://github.com/FirebirdSQL/${PORTNAME}/releases/download/R2_5_8/
+MASTER_SITES=	https://github.com/FirebirdSQL/${PORTNAME}/releases/download/R2_5_9/
 PKGNAMESUFFIX?=	${PORTVERSION:R:S/.//}-server
-DISTNAME=	${PORTNAME:S/f/F/}-${PORTVERSION}.27089-0
+DISTNAME=	${PORTNAME:S/f/F/}-${PORTVERSION}.27139-0
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	acm@FreeBSD.org
@@ -27,6 +25,7 @@ USES=		cpe gmake pkgconfig tar:bzip2
 USE_CXXSTD=	gnu++98
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
+CPE_VENDOR=	firebirdsql
 
 CONFIGURE_ARGS=	--with-system-icu \
 		--prefix=${LOCALSTATEDIR} \

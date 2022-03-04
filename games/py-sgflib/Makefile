@@ -1,5 +1,4 @@
 # Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
 
 PORTNAME=	sgflib
 PORTVERSION=	1.0
@@ -16,13 +15,13 @@ COMMENT=	Smart Game Format parser library for Python
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/lgpl.txt
 
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_PYTHON=	flavors
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}
 
-do-patch:
+post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local/bin/python|${python_CMD}|' \
 		${WRKSRC}/*.py
 	@${FIND} ${WRKSRC} -name "*.bak" -delete

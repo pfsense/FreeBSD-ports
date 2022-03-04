@@ -1,17 +1,17 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	oidentd
-PORTVERSION=	2.0.8
-PORTREVISION=	2
+DISTVERSION=	2.5.1
 CATEGORIES=	security
-MASTER_SITES=	SF/ojnk/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	https://files.janikrabe.com/pub/oidentd/releases/${DISTVERSION}/
 
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Ident server that supports user-defined ident strings
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		bison tar:xz
 USE_RC_SUBR=	oidentd
 GNU_CONFIGURE=	yes
 
@@ -21,23 +21,8 @@ MANPAGES=	oidentd.conf.5 oidentd_masq.conf.5 oidentd.8
 .for man in ${MANPAGES}
 PLIST_FILES+=	man/man${man:E}/${man}.gz
 .endfor
-USE_CSTD=	gnu89
 
-OPTIONS_DEFINE=	IPV6
-
-CONFIGURE_ARGS=--disable-masq
-
-.include <bsd.port.options.mk>
-
-.if ! ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=--disable-ipv6
-.else
-CATEGORIES+=	ipv6
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's,/etc/,${PREFIX}&,g' ${WRKSRC}/src/oidentd.h
-	@${REINPLACE_CMD} -e 's|\[5-9\]||g;s|\[4-9\]||g' ${WRKSRC}/configure
+CONFIGURE_ARGS=	--disable-masq
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/oidentd ${STAGEDIR}${PREFIX}/sbin

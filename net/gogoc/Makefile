@@ -1,10 +1,9 @@
 # Created by: Tomaž Muraus <kami@k5-storitve.net>
-# $FreeBSD$
 
 PORTNAME=	gogoc
 PORTVERSION=	1.2
 PORTREVISION=	2
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	http://gogo6.com/downloads/
 DISTNAME=	gogoc-1_2-RELEASE
 
@@ -28,6 +27,7 @@ SUB_LIST=	LOCALBASE=${LOCALBASE}
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	incomplete definition of type 'struct dsa_st'
 BROKEN_FreeBSD_13=	incomplete definition of type 'struct dsa_st'
+BROKEN_FreeBSD_14=	incomplete definition of type 'struct dsa_st'
 .endif
 
 do-install:

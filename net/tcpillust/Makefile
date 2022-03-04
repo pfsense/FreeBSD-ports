@@ -1,17 +1,17 @@
 # Created by: nishida@sfc.wide.ad.jp
-# $FreeBSD$
 
 PORTNAME=	tcpillust
 PORTVERSION=	2.01
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net tcl tk
-MASTER_SITES=	http://www.jp.nishida.org/tcpillust/
+MASTER_SITES=	https://cschubert.com/distfiles/ \
+		LOCAL/cy
 
 MAINTAINER=	nishida@sfc.wide.ad.jp
 COMMENT=	Graphical TCP connection analysis tool
 
-USES=		motif tk
+USES=		motif tk xorg
 USE_XORG=	xt
 
 PORTDOCS=	tcpclient.log tcpserver.log

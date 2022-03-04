@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libring
 DISTVERSION=	1.3.2
 CATEGORIES=	devel

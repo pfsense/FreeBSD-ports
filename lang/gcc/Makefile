@@ -1,9 +1,8 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gcc
 PORTVERSION=	${GCC_DEFAULT}
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	# not applicable
 DISTFILES=	# not applicable
@@ -11,9 +10,13 @@ DISTFILES=	# not applicable
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	Meta-port for the default version of the GNU Compiler Collection
 
-# Once GCC 4.9 and 4.8 aren't options any longer, we can simply use
-# GCC_DEFAULT again below (the expression rewrites 4.9 to 49).
+# Once GCC 4.8 isn't an option any longer, we can simply use GCC_DEFAULT
+# below. (The expression rewrites 4.8 to 48.)
 RUN_DEPENDS=	gcc${GCC_DEFAULT:S/.//}:lang/gcc${GCC_DEFAULT:S/.//}
+
+USES=		cpe
+CPE_VENDOR=	gnu
+CPE_VERSION=	${GCC_DEFAULT}
 
 NO_ARCH=	yes
 NO_BUILD=	yes

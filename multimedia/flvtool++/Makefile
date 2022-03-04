@@ -1,9 +1,8 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	flvtool++
 PORTVERSION=	1.2.1
-PORTREVISION=	11
+PORTREVISION=	14
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org

@@ -1,5 +1,4 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	slf4j
 PORTVERSION=	1.7.21
@@ -11,6 +10,8 @@ COMMENT=	Simple facade or abstraction for various logging frameworks
 
 LICENSE=	MIT
 
+USES=		cpe
+CPE_VENDOR=	qos
 USE_JAVA=	YES
 NO_BUILD=	YES
 

@@ -1,9 +1,8 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	3ddesktop
 PORTVERSION=	0.2.9
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	x11
 MASTER_SITES=	SF/desk3d/${PORTNAME}/${PORTVERSION}
 
@@ -12,7 +11,7 @@ COMMENT=	3D Virtual Desktop Switcher
 
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
-USES=		localbase
+USES=		gl localbase xorg
 USE_XORG=	xmu
 USE_GL=		glut
 GNU_CONFIGURE=	yes

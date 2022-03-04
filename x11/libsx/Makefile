@@ -1,5 +1,4 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	libsx
 PORTVERSION=	1.1
@@ -13,7 +12,7 @@ COMMENT=	Simple X11 library
 
 LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
 
-USES=		tar:Z
+USES=		tar:Z xorg
 USE_XORG=	x11 xaw xext xmu xt
 ALL_TARGET=	src freq
 MAKE_JOBS_UNSAFE=	yes

@@ -1,9 +1,7 @@
 # Created by: Gerald Pfeifer <gerald@pfeifer.com>
-# $FreeBSD$
 
 PORTNAME=	bibtex2html
-PORTVERSION=	1.98
-PORTREVISION=	2
+PORTVERSION=	1.99
 CATEGORIES=	textproc print
 MASTER_SITES=	http://www.lri.fr/~filliatr/ftp/bibtex2html/
 
@@ -14,7 +12,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	ocaml:lang/ocaml
 
-USES=		perl5
+USES=		gmake perl5
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	PDFDOCS

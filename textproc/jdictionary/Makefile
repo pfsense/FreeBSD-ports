@@ -1,5 +1,4 @@
 # Created by: janos.mohacsi@bsd.hu
-# $FreeBSD$
 
 PORTNAME=	jdictionary
 DISTVERSION=	1_8
@@ -11,7 +10,6 @@ MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Platform independent, plugin based dictionary
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 USES=		zip
 WRKSRC=		${WRKDIR}/${PORTNAME}

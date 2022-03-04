@@ -1,9 +1,8 @@
 # Created by: Vick Khera <vivek@khera.org>
-# $FreeBSD$
 
 PORTNAME=	mod_authnz_crowd
 PORTVERSION=	2.2.2
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	www
 MASTER_SITES=	http://downloads.atlassian.com/software/crowd/downloads/cwdapache/
 DIST_SUBDIR=	apache2
@@ -15,7 +14,10 @@ LICENSE=	APACHE20
 
 BROKEN_mips=		fails to build: error: curl/curl.h: No such file or directory
 BROKEN_mips64=		fails to build: error: curl/curl.h: No such file or directory
-BROKEN_powerpc64=	fails to build: error: curl/curl.h: No such file or directory
+BROKEN_FreeBSD_12_powerpc64=	fails to build on powerpc64 elfv1: curl/curl.h: No such file or directory
+
+DEPRECATED=	Abandoned upstream in 2014, doesn't work with Apache 2.4+
+EXPIRATION_DATE=2022-03-31
 
 LIB_DEPENDS=	libsvn_client-1.so:devel/subversion \
 		libcurl.so:ftp/curl
@@ -23,9 +25,9 @@ RUN_DEPENDS=	${LOCALBASE}/${APACHEMODDIR}/mod_dav_svn.so:www/mod_dav_svn
 
 GNU_CONFIGURE=	yes
 LIBS+=		-L${LOCALBASE}/lib
-USES=		apache:2.2+ autoreconf libtool
+USES=		apache:2.2+ autoreconf gnome libtool
 USE_GNOME=	libxml2
-USE_GCC=	any
+USE_GCC=	yes
 
 SUB_FILES=	pkg-message zzz_authnz_crowd.conf
 SUB_LIST+=	APACHEETCDIR=${APACHEETCDIR} \

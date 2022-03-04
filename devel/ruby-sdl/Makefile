@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	sdl
 PORTVERSION=	2.2.0
@@ -14,11 +13,15 @@ COMMENT=	Ruby extension library to use SDL library
 
 LICENSE=	LGPL21
 
+DEPRECATED=	Depends on expired devel/sdl_sge
+EXPIRATION_DATE=2021-12-31
+
 LIB_DEPENDS=	libSGE.so:devel/sdl_sge \
 		libSDLSKK.so:devel/sdlskk \
 		libsmpeg.so:multimedia/smpeg
 RUN_DEPENDS=	rubygem-opengl>=0:graphics/rubygem-opengl
 
+USES=		sdl
 USE_SDL=	mixer image ttf sdl
 USE_RUBY=	yes
 USE_RUBY_EXTCONF=	yes

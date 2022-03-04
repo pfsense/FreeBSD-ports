@@ -1,8 +1,7 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gitlab-sidekiq-fetcher
-PORTVERSION=	0.4.0
+PORTVERSION=	0.8.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +10,7 @@ COMMENT=	Redis reliable queue pattern implemented in Sidekiq
 
 LICENSE=	RUBY
 
-RUN_DEPENDS=	rubygem-sidekiq>=5:devel/rubygem-sidekiq
+RUN_DEPENDS=	rubygem-sidekiq>=6.1<7:devel/rubygem-sidekiq
 
 USES=		gem
 USE_RUBY=	yes

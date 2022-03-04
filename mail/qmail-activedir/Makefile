@@ -1,9 +1,8 @@
 # Created by: Jean Milanez Melo <jmelo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qmail-activedir
 PORTVERSION=	0.17
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	http://fo2k.com/qmail-activedir/
 

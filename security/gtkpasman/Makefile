@@ -1,5 +1,4 @@
 # Created by: Philippe Rocques <phil@teaser.fr>
-# $FreeBSD$
 
 PORTNAME=	gtkpasman
 PORTVERSION=	0.12.1
@@ -7,12 +6,12 @@ PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	rm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+ passwords manager for system and network administrators
 
 RUN_DEPENDS+=	gpgv2:security/gnupg
 
-USES=		desktop-file-utils gettext gmake pkgconfig tar:xz
+USES=		desktop-file-utils gettext gmake gnome pkgconfig tar:xz
 USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-gtk2

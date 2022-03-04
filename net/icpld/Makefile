@@ -1,10 +1,9 @@
 # Created by: krion@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	icpld
 PORTVERSION=	1.1.5
 PORTREVISION=	2
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	http://www.ibiblio.org/icpld/download/ \
 		http://freebsd.unixfreunde.de/sources/
 

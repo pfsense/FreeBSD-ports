@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mod_sql_mysql
 CATEGORIES=	databases ftp
@@ -14,7 +13,7 @@ DESCR=		${.CURDIR}/pkg-descr
 
 MASTERDIR=	${.CURDIR}/../../ftp/proftpd
 
-USE_MYSQL=	yes
+USES=		cpe mysql
 
 INCLUDEDIRS=	${LOCALBASE}/include:${LOCALBASE}/include/mysql
 LIBDIRS=	${LOCALBASE}/lib

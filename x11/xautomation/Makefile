@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	xautomation
 PORTVERSION=	1.09
@@ -14,6 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
+USES=		xorg
 USE_XORG=	xtst
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

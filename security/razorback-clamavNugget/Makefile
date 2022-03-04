@@ -1,9 +1,8 @@
 # Created by: Tom Judge <tom@tomjudge.com>
-# $FreeBSD$
 
 PORTNAME=	clamavNugget
 PORTVERSION=	0.5.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security
 MASTER_SITES=	SF/razorbacktm/Nuggets
 PKGNAMEPREFIX=	razorback-
@@ -11,6 +10,9 @@ DIST_SUBDIR=	razorback
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for an intelligence driven security - ClamAV Detection
+
+DEPRECATED=	Abandonware, last release in 2012 and listed as alpha quality by upstream
+EXPIRATION_DATE=2022-03-31
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

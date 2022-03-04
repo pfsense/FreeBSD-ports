@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	UUID-URandom
 PORTVERSION=	0.001
 CATEGORIES=	devel perl5
@@ -17,5 +15,7 @@ RUN_DEPENDS=	p5-Crypt-URandom>=0.36:security/p5-Crypt-URandom
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

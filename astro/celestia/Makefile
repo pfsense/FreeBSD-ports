@@ -1,9 +1,8 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	celestia
 PORTVERSION=	1.6.1
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/Celestia-source/${PORTVERSION}
 PKGNAMESUFFIX=	-${CELESTIA_UI}
@@ -15,7 +14,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		compiler:c++11-lang gettext gl gmake jpeg libtool lua pkgconfig
+USES=		compiler:c++11-lang gettext gl gmake jpeg libtool lua:52 pkgconfig
 USE_GL=		gl
 GNU_CONFIGURE=	yes
 EXTRA_PATCHES=	${FILESDIR}/celestia-1.6.1-lua-5.2.patch:-p1 \
@@ -29,7 +28,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib -pthread
 
 UI_LIST=	glut gtk gnome
 CELESTIA_UI?=	glut
-CONFLICTS=	${UI_LIST:S|${CELESTIA_UI}||:S|^|celestia-|:S|$|-[0-9]*|}
+CONFLICTS=	${UI_LIST:S|${CELESTIA_UI}||:S|^|celestia-|}
 
 # Celestia provides different UI frontends; you should pick one that suits
 # you best by setting CELESTIA_UI variable.  Possible values are:
@@ -38,9 +37,6 @@ CONFLICTS=	${UI_LIST:S|${CELESTIA_UI}||:S|^|celestia-|:S|$|-[0-9]*|}
 #	the default one);
 # gtk	Full interface with minimal dependencies: adds menu, configuration
 #	dialog, some other utilities;
-# gnome	Full GTK interface plus a few GNOME integration goodies, such as
-#	preference saving in GConf (this looks and works very much like
-#	the Windows interface).
 #
 .if ${CELESTIA_UI} == "glut"
 CONFIGURE_ARGS+=	--with-glut
@@ -51,17 +47,11 @@ CONFIGURE_ARGS+=	--with-gtk
 USES+=		gnome
 USE_GNOME+=	gtk20
 PLIST_FILES=	share/applications/celestia.desktop
-.elif ${CELESTIA_UI} == "gnome"
-CATEGORIES+=	gnome
-CONFIGURE_ARGS+=	--with-gnome
-USE_GNOME+=	libgnomeui
-GCONF_SCHEMAS=	celestia.schemas
-PLIST_FILES=	share/applications/celestia.desktop
 .else
 IGNORE=		requires one of the <${UI_LIST}> values for CELESTIA_UI
 .endif
 
-.if ${CELESTIA_UI} == "gtk" || ${CELESTIA_UI} == "gnome"
+.if ${CELESTIA_UI} == "gtk"
 USES+=		pathfix
 LIB_DEPENDS+=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 		libtheora.so:multimedia/libtheora
@@ -79,6 +69,8 @@ post-patch:
 	@${REINPLACE_CMD} -E '/fav(->|\.)fov/s|NULL|0.0|' \
 		${WRKSRC}/src/celestia/celestiacore.cpp \
 		${WRKSRC}/src/celestia/favorites.cpp
+	@${REINPLACE_CMD} -e '280s,NULL,false,' \
+		${WRKSRC}/src/celengine/parseobject.cpp
 # Fix Lua discovery pkg-config(1) calls
 	@${REINPLACE_CMD} -E 's|lua5\.?|lua-5.|' ${WRKSRC}/configure
 # Remove controversial compiler options (respect our C[XX]FLAGS)

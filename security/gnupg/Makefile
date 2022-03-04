@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	gnupg
-PORTVERSION=	2.2.15
+PORTVERSION=	2.3.3
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Complete and free PGP implementation
 
 LICENSE=	GPLv3 LGPL3
@@ -18,31 +17,30 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpg-error.so:security/libgpg-error \
 		libksba.so:security/libksba \
 		libnpth.so:devel/npth
-BUILD_DEPENDS=	libassuan>=2.5.1:security/libassuan \
-		libgpg-error>=1.16:security/libgpg-error
 RUN_DEPENDS=	pinentry:security/pinentry
 
-USES=		compiler:c11 cpe gmake iconv pkgconfig readline sqlite tar:bzip2
+USES=		compiler:c11 cpe gmake iconv makeinfo pkgconfig readline sqlite tar:bzip2
 
-CONFLICTS=	gnupg-2.0.* dirmngr-[0-9]*
+CONFLICTS=	gnupg-2.0.* dirmngr
 CPE_VENDOR=	gnupg
 
-CONFIGURE_ARGS=	--disable-ntbtls --disable-wks-tools \
-		--enable-gpg-is-gpg2 --enable-symcryptrun
+CONFIGURE_ARGS=	--disable-ntbtls --enable-gpg-is-gpg2 --enable-symcryptrun
 GNU_CONFIGURE=	yes
 INFO=		gnupg
 TEST_TARGET=	check
+TEST_ARGS=	TESTARGS=--parallel
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	DOCS GNUTLS LARGE_RSA LDAP NLS SCDAEMON SUID_GPG
-OPTIONS_DEFAULT=GNUTLS SCDAEMON
+OPTIONS_DEFINE=	DOCS GNUTLS LARGE_RSA LDAP NLS SCDAEMON SUID_GPG WKS_SERVER
+OPTIONS_DEFAULT=GNUTLS SCDAEMON WKS_SERVER
 OPTIONS_SUB=	yes
 
 LARGE_RSA_DESC=	Enable support for 8192-bit RSA keys
 LDAP_DESC=	LDAP keyserver interface
 SCDAEMON_DESC=	Enable Smartcard daemon (with libusb)
-SUID_GPG_DESC=	Install GPG with suid
+SUID_GPG_DESC=	Install GPG as SUID root
+WKS_SERVER_DESC=Install the Web Key Service server
 
 GNUTLS_CONFIGURE_ENABLE=gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -58,7 +56,27 @@ NLS_USES=		gettext
 
 SCDAEMON_CONFIGURE_ENABLE=	scdaemon
 
+WKS_SERVER_CONFIGURE_ENABLE=	wks-tools
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MGNUTLS} && ${PORT_OPTIONS:MLDAP}
+PLIST_SUB+=	DIRMNGRLDAP=""
+.else
+PLIST_SUB+=	DIRMNGRLDAP="@comment "
+.endif
+
+# Touch the texinfo files to force makeinfo to run.  This fixes Linuxisms in
+# the paths in the man pages.
+pre-build:
+	${TOUCH} ${WRKSRC}/doc/*.texi
+
 post-install:
-	@${MV} ${STAGEDIR}${DATADIR}/help*.txt ${STAGEDIR}${DOCSDIR}
+	${MV} ${STAGEDIR}${PREFIX}/bin/gpgsplit ${STAGEDIR}${PREFIX}/bin/gpgsplit2
+	${MV} ${STAGEDIR}${DATADIR}/help*.txt ${STAGEDIR}${DOCSDIR}
+
+# Necessary because of --enable-gpg-is-gpg2
+pre-test:
+	${LN} -s gpg ${WRKSRC}/bin/gpg2
 
 .include <bsd.port.mk>

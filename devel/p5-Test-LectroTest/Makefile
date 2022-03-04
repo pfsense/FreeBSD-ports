@@ -1,5 +1,4 @@
 # Created by: Alex Kapranoff <alex@kapranoff.ru>
-# $FreeBSD$
 
 PORTNAME=	Test-LectroTest
 PORTVERSION=	0.5001
@@ -8,7 +7,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Easy, automatic, specification-based tests
 
 USES=		perl5

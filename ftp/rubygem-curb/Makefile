@@ -1,8 +1,7 @@
 # Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
 
 PORTNAME=	curb
-PORTVERSION=	0.9.7
+PORTVERSION=	0.9.11
 CATEGORIES=	ftp rubygems
 MASTER_SITES=	RG
 

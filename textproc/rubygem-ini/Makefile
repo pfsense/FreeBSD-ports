@@ -1,5 +1,4 @@
 # Created by: Yarema <yds@CoolRat.org>
-# $FreeBSD$
 
 PORTNAME=	ini
 PORTVERSION=	0.1.1
@@ -11,9 +10,9 @@ COMMENT=	Ruby INI File Parser and Writer
 
 LICENSE=	MIT
 
-NO_ARCH=	yes
-
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

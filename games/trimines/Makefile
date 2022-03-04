@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	trimines
 PORTVERSION=	1.3.0
 PORTREVISION=	7
@@ -11,6 +8,7 @@ MASTER_SITES=	http://www.freewebs.com/trimines/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Mine sweeper game that uses triangles instead of squares
 
+USES=		sdl
 USE_SDL=	sdl
 
 PLIST_FILES=	bin/${PORTNAME}

@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	colmap
-DISTVERSION=	3.5
-PORTREVISION=	5
+DISTVERSION=	3.6
+PORTREVISION=	6
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Structure from motion and multi-view stereo
 
 LICENSE=	BSD2CLAUSE BSD3CLAUSE CC-BY-3.0 GPLv3+ MIT SIFTGPU
@@ -24,33 +22,34 @@ LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		libfreeimage.so:graphics/freeimage \
 		libceres.so:math/ceres-solver
 
-USES=		cmake compiler:${OPENMP}c++11-lib eigen:3 fortran localbase qt:5 sqlite
+USES=		cmake compiler:${OPENMP}c++11-lib eigen:3 gl localbase qt:5 \
+		sqlite
 USE_GITHUB=	yes
 USE_GL=		gl glew
 USE_QT=		qmake_build buildtools_build core gui opengl_build widgets
 EXCLUDE=	SQLite
 EXTRACT_AFTER_ARGS=	${EXCLUDE:S,^,--exclude lib/,}
 CMAKE_OFF=	BOOST_STATIC CUDA_ENABLED
-CXXFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
-		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
 LDFLAGS+=	-Wl,--as-needed # gflags, glu, xi, xmu
-TEST_TARGET=	test ARGS="-V"
+TEST_TARGET=	test
 
 OPTIONS_DEFINE=		CGAL DOCS OPENMP SIMD TEST
 OPTIONS_DEFAULT=	CGAL OPENMP SIMD
 
 CGAL_DESC=		Graph-cut on Delaunay triangulation based meshing algorithm
-CGAL_LIB_DEPENDS=	libCGAL.so:math/cgal
+CGAL_BUILD_DEPENDS=	cgal>0:math/cgal
 CGAL_CMAKE_BOOL=	CGAL_ENABLED
 
-DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
-DOCS_USES=		gmake
+DOCS_BUILD_DEPENDS=	gmake:devel/gmake \
+			sphinx-build:textproc/py-sphinx \
+			${NONEXISTENT}:textproc/py-sphinx_rtd_theme
 DOCS_PORTDOCS=		*
 
-OPENMP_USES=		compiler:openmp
 OPENMP_CMAKE_BOOL=	OPENMP_ENABLED
-# XXX ports/199603 + ports/210337
+.if !exists(/usr/include/omp.h)
+# XXX ports/199603: LLVM openmp in base doesn't support armv6, armv7 yet
 OPENMP_VARS=		OPENMP=gcc-
+.endif
 
 SIMD_CMAKE_BOOL=	SIMD_ENABLED
 
@@ -74,7 +73,7 @@ post-patch:
 .endif
 
 post-build-DOCS-on:
-	@${DO_MAKE_BUILD} html -C${WRKSRC}/doc
+	@${SETENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} html -C${WRKSRC}/doc
 
 pre-install-TEST-on: do-test
 

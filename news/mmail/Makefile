@@ -1,8 +1,7 @@
 # Created by: Frederic Cambus
-# $FreeBSD$
 
 PORTNAME=	mmail
-DISTVERSION=	0.51
+DISTVERSION=	0.52
 CATEGORIES=	news
 MASTER_SITES=	SF/multimail/MultiMail/${PORTVERSION}
 

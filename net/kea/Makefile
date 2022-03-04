@@ -1,25 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	kea
 PORTVERSION=	${ISCVERSION:S/-P/P/:S/-beta/b/:S/a/.a/:S/rc/.rc/}
-PORTREVISION=	0
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	ISC/kea/${ISCVERSION}
 DISTNAME=	${PORTNAME}-${ISCVERSION}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	apevnev@me.com
 COMMENT=	Alternative DHCP implementation by ISC
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to configure: checking for log4cplus library... no
-
 LIB_DEPENDS=	liblog4cplus.so:devel/log4cplus \
 		libboost_system.so:devel/boost-libs
 
+USES=		autoreconf compiler:c++11-lang iconv libtool pathfix ssl cpe
+
 # ISC releases things like 1.4.0-P1, which our versioning doesn't like
-ISCVERSION=	1.5.0
+ISCVERSION=	2.0.0
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -27,7 +24,6 @@ CPE_VERSION=	${ISCVERSION:C/-.*//}
 CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
 .endif
 
-USES=		autoreconf compiler:c++11-lang iconv libtool pathfix ssl cpe
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
@@ -40,26 +36,24 @@ INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 PORTDOCS=	AUTHORS COPYING ChangeLog README \
-		kea-guide.css kea-guide.html kea-guide.txt \
-		kea-messages.html kea-logo-100x70.png \
-		examples
+		CONTRIBUTING.md examples code_of_conduct.md \
+		platforms.rst
 
-OPTIONS_DEFINE=	DOCS MYSQL PGSQL
+OPTIONS_DEFINE=	DOCS MYSQL PGSQL SHELL
 OPTIONS_SUB=	yes
-DOCS_MAKE_ARGS_OFF=	\
-		INSTALL_STRIP_PROGRAM="${WRKSRC}/install-sh -c -s" \
-		INSTALL_STRIP_FLAG="-s" \
-		INSTALL_PROGRAM_ENV="STRIPPROG=${STRIP}"
-DOCS_INSTALL_TARGET_OFF=	\
-		install-exec-am \
-		install-pkgconfigDATA \
-		install-pkgincludeHEADERS
-MYSQL_USE=	MYSQL=client
-MYSQL_CONFIGURE_ON=	--with-dhcp-mysql=${LOCALBASE}/bin/mysql_config
-MYSQL_CONFIGURE_OFF=	--without-dhcp-mysql
+MYSQL_USES=	mysql
+MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
+MYSQL_CONFIGURE_OFF=	--without-mysql
+MYSQL_SUB_LIST=		REQ_MYSQL=mysql
+MYSQL_SUB_LIST_OFF=	REQ_MYSQL=""
 PGSQL_USES=	pgsql
 WANT_PGSQL=	client
-PGSQL_CONFIGURE_ON=	--with-dhcp-pgsql=${LOCALBASE}/bin/pg_config
-PGSQL_CONFIGURE_OFF=	--without-dhcp-pgsql
+PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}/bin/pg_config
+PGSQL_CONFIGURE_OFF=	--without-pgsql
+PGSQL_SUB_LIST=		REQ_PGSQL=postgresql
+PGSQL_SUB_LIST_OFF=	REQ_PGSQL=""
+SHELL_DESC=	Install kea-shell(8) (Python)
+SHELL_USES=	python:3.5+
+SHELL_CONFIGURE_ON=	--enable-shell
 
 .include <bsd.port.mk>

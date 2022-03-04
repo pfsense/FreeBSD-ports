@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bcrypt-ruby
 PORTVERSION=	3.1.5
 PORTREVISION=	1

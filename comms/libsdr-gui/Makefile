@@ -1,9 +1,8 @@
 # Created by: Jeffrey Baitis <jeff@baitis.net>
-# $FreeBSD$
 
 PORTNAME=	libsdr-gui
 PORTVERSION=	0.1.0
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	comms hamradio
 

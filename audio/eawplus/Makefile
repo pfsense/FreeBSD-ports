@@ -1,5 +1,4 @@
 # Created by: nork@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	eawplus
 PORTVERSION=	12.1
@@ -10,11 +9,15 @@ MASTER_SITES=	LOCAL/nork
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	E.A.W.+Izumo+Tamuki collection of Gravis Ultrasound MIDI patches
 
+# Converted from NO_CDROM
+LICENSE=	EAWPLUS
+LICENSE_NAME=	eawplus
+LICENSE_TEXT=	Some of the patches are marked no-commercial-use
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
 # Not useful without timidity.
 RUN_DEPENDS=	${LOCALBASE}/share/eawpats/acbass.pat:audio/eawpats \
 		${LOCALBASE}/share/guspat/inst/GUS/acbass.pat:audio/guspat
-
-NO_CDROM=	Some of the patches are marked no-commercial-use
 
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes

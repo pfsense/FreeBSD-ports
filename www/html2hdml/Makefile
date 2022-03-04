@@ -1,10 +1,9 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	html2hdml
 PORTVERSION=	1.0.5
 CATEGORIES=	www textproc
-MASTER_SITES=	OSDN/html2hdml/6351
+MASTER_SITES=	OSDN/html2hdml
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	I-mode HTML to EZweb HDML converter

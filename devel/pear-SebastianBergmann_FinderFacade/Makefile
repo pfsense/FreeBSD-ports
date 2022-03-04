@@ -1,12 +1,11 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	FinderFacade
-PORTVERSION=	1.2.2
+PORTVERSION=	1.2.3
 CATEGORIES=	devel pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}SebastianBergmann_
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Convenience wrapper for Symfony Finder component
 
 LICENSE=	BSD3CLAUSE
@@ -21,7 +20,6 @@ RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}TheSeer_fDOMDocument>=1.6.6:devel/pear-TheSeer
 NO_ARCH=	yes
 
 USES=		pear:env
-PEAR_CHANNEL=	phpunit
 USE_GITHUB=	yes
 GH_ACCOUNT=	sebastianbergmann
 GH_PROJECT=	finder-facade

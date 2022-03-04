@@ -1,5 +1,4 @@
 # Created by: Kawaguti Ginga <ginga-freebsd@ginganet.org>
-# $FreeBSD$
 
 PORTNAME=	ng
 DISTVERSION=	1.5beta1
@@ -10,7 +9,7 @@ PKGNAMESUFFIX=	-devel
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Light Emacs-clone with Japanese support
 
-CONFLICTS=	ng-[0-9]*
+CONFLICTS=	ng
 
 USES=		ncurses
 GNU_CONFIGURE=	yes

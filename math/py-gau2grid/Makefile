@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gau2grid
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.1
+DISTVERSION=	2.0.7
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -17,7 +15,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 RUN_DEPENDS=	${PYNUMPY}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		cmake compiler:c11 python
+USES=		cmake compiler:c11 python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	dgasmith
 USE_PYTHON=	flavors
@@ -27,6 +25,7 @@ CMAKE_ARGS=	-DPYMOD_INSTALL_LIBDIR:STRING=${PYTHON_SITELIBDIR} -DFREEBSD_PYTHON_
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PYTHON_SITELIBDIR}/gau2grid/__pycache__
+	@${RM} -r ${STAGEDIR}${LOCALBASE}//lib/usr # LICENSE is installed under there
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest

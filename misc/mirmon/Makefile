@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	mirmon
 PORTVERSION=	2.11
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	http://www.staff.science.uu.nl/~penni101/mirmon/
 
-MAINTAINER=	jadawin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Monitor the status of mirrors
 
 NO_BUILD=	yes

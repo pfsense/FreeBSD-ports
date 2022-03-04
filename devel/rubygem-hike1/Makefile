@@ -1,5 +1,4 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hike
 PORTVERSION=	1.2.3
@@ -14,7 +13,7 @@ COMMENT=	Ruby library for finding files in a set of paths
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PORTSCOUT=      limit:^1.*
+PORTSCOUT=	limit:^1.*
 
 NO_ARCH=	yes
 USE_RUBY=	yes

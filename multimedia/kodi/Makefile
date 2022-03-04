@@ -1,236 +1,291 @@
-# $FreeBSD$
-
 PORTNAME=	kodi
-DISTVERSION=	17.6
-PORTREVISION=	9
+DISTVERSION=	19.3
+DISTVERSIONSUFFIX=	-${KODI_CODENAME}
 CATEGORIES=	multimedia java
 
-MAINTAINER=	mickael.maillot@gmail.com
+MAINTAINER=	yzrh@noema.org
 COMMENT=	Award winning media center application
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 
-ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
-BUILD_DEPENDS=	enca:converters/enca \
-		gawk:lang/gawk \
-		gperf:devel/gperf \
-		cmake:devel/cmake \
-		zip:archivers/zip \
-		nasm:devel/nasm \
-		swig3.0:devel/swig30
+BUILD_DEPENDS=	flatbuffers>0:devel/flatbuffers \
+		rapidjson>0:devel/rapidjson \
+		swig>0:devel/swig
 LIB_DEPENDS=	libass.so:multimedia/libass \
-		libFLAC.so:audio/flac \
+		libavcodec.so:multimedia/ffmpeg \
+		libavfilter.so:multimedia/ffmpeg \
+		libavformat.so:multimedia/ffmpeg \
+		libavutil.so:multimedia/ffmpeg \
 		libcdio.so:sysutils/libcdio \
 		libcrossguid.so:devel/libcrossguid \
 		libcurl.so:ftp/curl \
-		libdbus-1.so:devel/dbus \
-		libdcadec.so:multimedia/libdcadec \
-		libenca.so:converters/enca \
-		libexpat.so:textproc/expat2\
-		libfontconfig.so:x11-fonts/fontconfig \
+		libdav1d.so:multimedia/dav1d \
+		libdvdnav.so:multimedia/libdvdnav \
+		libdvdread.so:multimedia/libdvdread \
+		libexpat.so:textproc/expat2 \
+		libfmt.so:devel/libfmt \
 		libfreetype.so:print/freetype2 \
 		libfribidi.so:converters/fribidi \
-		libgcrypt.so:security/libgcrypt \
-		libgmp.so:math/gmp \
-		libgpg-error.so:security/libgpg-error \
-		libgnutls.so:security/gnutls \
-		libidn.so:dns/libidn \
-		libinotify.so:devel/libinotify \
-		libjasper.so:graphics/jasper \
-		libltdl.so:devel/libltdl \
+		libfstrcmp.so:devel/fstrcmp \
+		libgif.so:graphics/giflib \
 		liblzo2.so:archivers/lzo2 \
-		libmodplug.so:audio/libmodplug \
-		libmpeg2.so:multimedia/libmpeg2 \
-		libnettle.so:security/nettle \
-		libogg.so:audio/libogg \
-		libp11-kit.so:security/p11-kit \
 		libpcre.so:devel/pcre \
 		libpng.so:graphics/png \
-		libsamplerate.so:audio/libsamplerate \
-		libsqlite3.so:databases/sqlite3 \
+		libpostproc.so:multimedia/ffmpeg \
+		libspdlog.so:devel/spdlog \
+		libswresample.so:multimedia/ffmpeg \
+		libswscale.so:multimedia/ffmpeg \
 		libtag.so:audio/taglib \
-		libtasn1.so:security/libtasn1 \
-		libtiff.so:graphics/tiff \
 		libtinyxml.so:textproc/tinyxml \
-		libtspi.so:security/trousers \
-		libunistring.so:devel/libunistring \
-		libuuid.so:misc/e2fsprogs-libuuid \
-		libvorbis.so:audio/libvorbis \
-		libxslt.so:textproc/libxslt \
-		libyajl.so:devel/yajl
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
+		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		autoreconf:build compiler:c++11-lib gettext gmake iconv jpeg \
-		libtool pkgconfig python:-2.7 ssl
+USES=		cpe cmake compiler:c++14-lang gettext \
+		gnome iconv jpeg pkgconfig python:3.5+ sqlite ssl
 
-KODI_ARCH_i386=	x86
-KODI_ARCH_amd64=x86_64
-KODI_ARCH_armv6=armv6
-KODI_ARCH_armv7=armv7
-
-GNU_CONFIGURE=	yes
-USE_JAVA=	yes
-USE_GNOME=	libxml2
-USE_LDCONFIG=	yes
-JAVA_BUILD=	jre
-NOPRECIOUSMAKEVARS=	yes
-CONFIGURE_ENV=	OPENSSL_LIBS="-L${OPENSSLLIB}" \
-		OPENSSL_CFLAGS="-I${OPENSSLINC}"
-
-KODI_CODENAME=		Krypton
-FFMPEG_VERS=		3.1.11
-LIBDVDCSS_TAGNAME=	2f12236
-LIBDVDNAV_TAGNAME=	981488f
-LIBDVDREAD_TAGNAME=	17d99db
+KODI_CODENAME=	Matrix
 
 USE_GITHUB=	yes
-GH_TUPLE=	xbmc:xbmc:${PORTVERSION}-${KODI_CODENAME} \
-		xbmc:FFmpeg:${FFMPEG_VERS}-${KODI_CODENAME}-17.5:ffmpeg/tools/depends/target/ffmpeg \
-		xbmc:libdvdcss:${LIBDVDCSS_TAGNAME}:libdvdcss/tools/depends/target/libdvdcss/native \
-		xbmc:libdvdnav:${LIBDVDNAV_TAGNAME}:libdvdnav/tools/depends/target/libdvdnav/native \
-		xbmc:libdvdread:${LIBDVDREAD_TAGNAME}:libdvdread/tools/depends/target/libdvdread/native
+GH_ACCOUNT=	xbmc
+GH_PROJECT=	xbmc
+
+KODI_ARCH_aarch64=	aarch64
+KODI_ARCH_amd64=	x86_64
+KODI_ARCH_i386=		x86
+KODI_ARCH_armv7=	armv7
+KODI_ARCH_armv6=	armv6
+KODI_ARCH_powerpc64=	powerpc64
+KODI_ARCH_powerpc64le=	powerpc64le
 
 PLIST_SUB=	ARCH=${KODI_ARCH_${ARCH}}
 
-OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	AIRPLAY AIRTUNES AVAHI CEC DOCS \
-		LCMS2 LIBBLURAY LIRC MYSQL NFS NONFREE PULSEAUDIO RTMP \
-		SFTP SNDIO SMB VAAPI VDPAU WEBSERVER
-OPTIONS_SINGLE=		RPI
-OPTIONS_SINGLE_RPI=	RPI1 RPI2
+USE_LDCONFIG=	yes
+USE_JAVA=	yes
+JAVA_BUILD=	jre
+USE_GNOME=	libxml2
+CMAKE_ARGS=	-DGIT_VERSION="${GH_TAGNAME}" \
+		-DDVDNAV_LIBRARY="${LOCALBASE}/lib/libdvdnav.so" \
+		-DDVDREAD_LIBRARY="${LOCALBASE}/lib/libdvdread.so" \
+		-DLIBDVD_INCLUDE_DIRS="${LOCALBASE}/include"
+CMAKE_OFF=	ENABLE_INTERNAL_CROSSGUID
+CONFIGURE_ENV=	_CPU_FEATURE="${CPU_FEATURE}"
 
-OPTIONS_EXCLUDE_armv6=	LIRC VAAPI VDPAU
-OPTIONS_EXCLUDE_armv7=	LIRC VAAPI VDPAU
-OPTIONS_EXCLUDE_amd64=	RPI1 RPI2
-OPTIONS_EXCLUDE_i386=	RPI1 RPI2
+OPTIONS_SUB=		yes
+# Broken: BLUETOOTH
+OPTIONS_DEFINE=		AIRPLAY AVAHI LIBBLURAY CEC DBUS DVDCSS LCMS2 \
+			LIRC WEBSERVER NFS DVD SMB TEST UDEV UPNP \
+			VAAPI VDPAU XSLT DOCS
+OPTIONS_DEFAULT=	LIBBLURAY CEC DVDCSS LCMS2 WEBSERVER \
+			DVD UPNP VAAPI VDPAU XSLT WAYLAND X11 GL
+OPTIONS_DEFAULT_amd64=	SSE SSE2 SSE3 SSSE3 SSE4_1 SSE4_2
+OPTIONS_DEFAULT_i386=	SSE SSE2 SSE3
+OPTIONS_SINGLE=		RENDER
+OPTIONS_SINGLE_RENDER=	GL GLES
+OPTIONS_RADIO=		DATABASE
+OPTIONS_RADIO_DATABASE=	MARIADB MYSQL
+OPTIONS_GROUP=		SOUND FEATURE PLATFORM
+# Broken: ALSA
+OPTIONS_GROUP_SOUND=	PULSEAUDIO SNDIO
+OPTIONS_GROUP_FEATURE=	SSE SSE2 SSE3 SSSE3 SSE4_1 SSE4_2 AVX AVX2
+OPTIONS_GROUP_PLATFORM=GBM WAYLAND X11
+OPTIONS_EXCLUDE_aarch64=FEATURE
+OPTIONS_EXCLUDE_armv7=	FEATURE
+OPTIONS_EXCLUDE_armv6=	FEATURE
 
-AIRPLAY_DESC=	AirPlay support via libplist
-AIRTUNES_DESC=	AirTunes support via libshairplay
+PLATFORM_DESC=	Kodi platform
+DATABASE_DESC=	Database
+FEATURE_DESC=	X86 CPU feature
+
+AIRPLAY_DESC=	AirPlay support
+BLUETOOTH_DESC=	Bluetooth support
 CEC_DESC=	CEC adapter support
-NONFREE_DESC=	Enable non-free components (rar, ccx, ffmpeg)
-SFTP_DESC=	SSH SFTP support via libssh
-RPI1_DESC=	build for RPI1-B (cpu=arm1176jzf-s)
-RPI2_DESC=	build for RPI2 (cpu=cortex-a7, neon enabled)
+DVD_DESC=	DVD support
+UDEV_DESC=	Use libudev-devd
+XSLT_DESC=	Use libxslt
 
-OPTIONS_DEFAULT=	AIRPLAY AIRTUNES AVAHI CEC LIRC \
-		MYSQL NFS RTMP SFTP SMB VAAPI VDPAU WEBSERVER
-OPTIONS_DEFAULT_armv6=	RPI1
-OPTIONS_DEFAULT_armv7=	RPI1
+RENDER_DESC=	Render system
+GL_DESC=	OpenGL
+GLES_DESC=	OpenGL ES
 
-AIRPLAY_LIB_DEPENDS=	libplist.so:devel/libplist
-AIRPLAY_CONFIGURE_ENABLE=	airplay
+GBM_DESC=	GBM support
+MARIADB_DESC=	MariaDB database support
 
-AIRTUNES_LIB_DEPENDS=	libshairplay.so:audio/shairplay
-AIRTUNES_CONFIGURE_ENABLE=	airtunes
+SSE2_DESC=	Use SSE2 optimized routines
+SSE3_DESC=	Use SSE3 optimized routines
+SSSE3_DESC=	Use SSSE3 optimized routines
+SSE4_1_DESC=	Use SSE4.1 optimized routines
+SSE4_2_DESC=	Use SSE4.2 optimized routines
+AVX_DESC=	Use AVX optimized routines
+AVX2_DESC=	Use AVX2 optimized routines
+
+AIRPLAY_LIB_DEPENDS=	libplist-2.0.so:devel/libplist \
+			libshairplay.so:audio/shairplay
+AIRPLAY_CMAKE_BOOL=	ENABLE_PLIST \
+			ENABLE_AIRTUNES
 
 AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
-AVAHI_CONFIGURE_ENABLE=	avahi
+AVAHI_CMAKE_BOOL=	ENABLE_AVAHI
 
-CEC_BUILD_DEPENDS=	libcec>=3.1.0:multimedia/libcec
-CEC_LIB_DEPENDS=	libcec.so:multimedia/libcec
-CEC_CONFIGURE_ENABLE=	libcec
-
-LCMS2_LIB_DEPENDS=	liblcms2.so.2:graphics/lcms2
-LCMS2_CONFIGURE_ENABLE=	lcms2
+BLUETOOTH_CMAKE_BOOL=	ENABLE_BLUETOOTH
+BLUETOOTH_CMAKE_ON=	-DBLUETOOTH_INCLUDE_DIR="${LOCALBASE}/include"
 
 LIBBLURAY_LIB_DEPENDS=	libbluray.so:multimedia/libbluray
-LIBBLURAY_CONFIGURE_ENABLE=	libbluray
+LIBBLURAY_CMAKE_BOOL=	ENABLE_BLURAY
 
-LIRC_RUN_DEPENDS=	lircd:comms/lirc
+CEC_LIB_DEPENDS=	libcec.so:multimedia/libcec
+CEC_CMAKE_BOOL=		ENABLE_CEC
 
-MYSQL_USES=	mysql
-MYSQL_CONFIGURE_ENABLE=	mysql
+DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+DBUS_CMAKE_BOOL=	ENABLE_DBUS
 
-NFS_LIB_DEPENDS=	libnfs.so:net/libnfs
-NFS_CONFIGURE_ENABLE=	nfs
+DVDCSS_LIB_DEPENDS=	libdvdcss.so:multimedia/libdvdcss
+DVDCSS_CMAKE_BOOL=	ENABLE_DVDCSS
+DVDCSS_CMAKE_ON=	-DDVDCSS_LIBRARY="${LOCALBASE}/lib/libdvdcss.so"
 
-NONFREE_CONFIGURE_ENABLE=	non-free
-NONFREE_VARS=		NO_CDROM="Restricted binary distribution" \
-			NO_PACKAGE="Restricted binary distribution"
+LCMS2_LIB_DEPENDS=	liblcms2.so.2:graphics/lcms2
+LCMS2_CMAKE_BOOL=	ENABLE_LCMS2
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-PULSEAUDIO_CONFIGURE_ENABLE=	pulse
-
-RPI1_CONFIGURE_ON=	--with-platform=raspberry-pi
-RPI2_CONFIGURE_ON=	--with-platform=raspberry-pi2
-
-RTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
-RTMP_CONFIGURE_ENABLE=	rtmp
-
-SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
-SNDIO_CONFIGURE_ENABLE=	sndio
-SNDIO_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-sndio
-
-SMB_USES=		samba:lib
-SMB_CONFIGURE_ENABLE=	samba
-
-VAAPI_LIB_DEPENDS=	libva.so:multimedia/libva
-VAAPI_CONFIGURE_ENABLE=	vaapi
-
-VDPAU_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
-VDPAU_CONFIGURE_ENABLE=	vdpau
+LIRC_LIB_DEPENDS=	liblirc_client.so:comms/lirc
+LIRC_CMAKE_BOOL=	ENABLE_LIRCCLIENT
 
 WEBSERVER_LIB_DEPENDS=	libmicrohttpd.so:www/libmicrohttpd
-WEBSERVER_CONFIGURE_ENABLE=	webserver
+WEBSERVER_CMAKE_BOOL=	ENABLE_MICROHTTPD
 
-SFTP_BUILD_DEPENDS=	${LOCALBASE}/lib/libssh.so:security/libssh
-SFTP_RUN_DEPENDS=	${LOCALBASE}/lib/libssh.so:security/libssh
-SFTP_CONFIGURE_ENABLE=	ssh
+NFS_LIB_DEPENDS=	libnfs.so:net/libnfs
+NFS_CMAKE_BOOL=		ENABLE_NFS
 
-CONFIGURE_ARGS+=	--disable-debug --enable-gl --disable-gles \
-			--disable-openmax --disable-tegra \
-			--disable-profiling --enable-x11 --disable-alsa \
-			--enable-dbus --enable-upnp --disable-mid \
-			--disable-mdnsembedded --enable-libxslt \
-			--disable-texturepacker --disable-libusb \
-			--disable-libbluetooth --disable-libcap \
-			--disable-gtest --disable-libav-compat
+DVD_CMAKE_BOOL=		ENABLE_OPTICAL
+
+SMB_USES=		samba:lib
+SMB_CMAKE_BOOL=		ENABLE_SMBCLIENT
+
+TEST_LIB_DEPENDS=	libgtest.so:devel/googletest
+TEST_CMAKE_BOOL=	ENABLE_TESTING
+
+UDEV_LIB_DEPENDS=	libudev.so:devel/libudev-devd
+UDEV_CMAKE_BOOL=	ENABLE_UDEV
+
+UPNP_CMAKE_BOOL=	ENABLE_UPNP
+
+VAAPI_LIB_DEPENDS=	libva.so:multimedia/libva
+VAAPI_CMAKE_BOOL=	ENABLE_VAAPI
+
+VDPAU_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
+VDPAU_CMAKE_BOOL=	ENABLE_VDPAU
+
+XSLT_LIB_DEPENDS=	libxslt.so:textproc/libxslt
+XSLT_CMAKE_BOOL=	ENABLE_XSLT
+
+GL_CMAKE_ON=		-DAPP_RENDER_SYSTEM:STRING="gl"
+
+GLES_CMAKE_ON=		-DAPP_RENDER_SYSTEM:STRING="gles"
+
+MARIADB_USES=		mysql:105m
+MARIADB_CMAKE_BOOL=	ENABLE_MARIADBCLIENT
+MARIADB_CMAKE_ON=	-DMARIADBCLIENT_INCLUDE_DIR="${LOCALBASE}/include"
+
+MYSQL_USES=		mysql
+MYSQL_CMAKE_BOOL=	ENABLE_MYSQLCLIENT
+
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_CMAKE_BOOL=	ENABLE_ALSA
+
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+PULSEAUDIO_CMAKE_BOOL=	ENABLE_PULSEAUDIO
+
+SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
+SNDIO_CMAKE_BOOL=	ENABLE_SNDIO
+
+SSE_VARS=		CPU_FEATURE+=SSE
+SSE2_VARS=		CPU_FEATURE+=SSE2
+SSE3_VARS=		CPU_FEATURE+=SSE3
+SSSE3_VARS=		CPU_FEATURE+=SSSE3
+SSE4_1_VARS=		CPU_FEATURE+=SSE4.1
+SSE4_2_VARS=		CPU_FEATURE+=SSE4.2
+AVX_VARS=		CPU_FEATURE+=AVX
+AVX2_VARS=		CPU_FEATURE+=AVX2
+
+GBM_IMPLIES=		UDEV
+GBM_USES=		gl
+GBM_USE=		GL=egl,gbm,glu
+GBM_CFLAGS=		-I${LOCALBASE}/include/libepoll-shim
+GBM_LDFLAGS=		-L${LOCALBASE}/lib -lepoll-shim
+GBM_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
+GBM_LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
+			libdrm.so:graphics/libdrm \
+			libxkbcommon.so:x11/libxkbcommon \
+			libinput.so:x11/libinput
+
+WAYLAND_USES=		gl
+WAYLAND_USE=		GL=egl,glu
+WAYLAND_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
+			wayland-protocols>0:graphics/wayland-protocols
+WAYLAND_LIB_DEPENDS=	libdrm.so:graphics/libdrm \
+			libxkbcommon.so:x11/libxkbcommon \
+			libinput.so:x11/libinput \
+			libwayland-client++.so:graphics/waylandpp
+
+X11_USES=		xorg gl
+X11_USE=		XORG=x11,xext,xrandr GL=egl,gbm,gl,glu
+X11_LIB_DEPENDS=	libdrm.so:graphics/libdrm
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != armv6 && ${ARCH} != armv7
-BUILD_DEPENDS+=	gtk-update-icon-cache:x11-toolkits/gtk20
-LIB_DEPENDS+=	libdrm.so:graphics/libdrm
-RUN_DEPENDS+=	glxinfo:graphics/mesa-demos \
-		xdpyinfo:x11/xdpyinfo
-USE_XORG=	x11 xcb xext xmu xrandr xt xtst
-USE_GL=		egl gl glu glew
-USE_SDL=	image sdl2
-INSTALLS_ICONS=	yes
-PLIST_SUB+=	ARM="@comment "
-PLIST_SUB+=	X86=""
+.if !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
+CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm wayland x11"
+.elif empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
+CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="wayland x11"
+.elif !empty(PORT_OPTIONS:MGBM) && empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
+CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm x11"
+.elif !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && empty(PORT_OPTIONS:MX11)
+CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm wayland"
+.elif empty(PORT_OPTIONS:MGBM) && empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
+CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="x11"
+.elif empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) && empty(PORT_OPTIONS:MX11)
+CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="wayland"
+.elif !empty(PORT_OPTIONS:MGBM) && empty(PORT_OPTIONS:MWAYLAND) && empty(PORT_OPTIONS:MX11)
+CMAKE_ARGS+=	-DCORE_PLATFORM_NAME:STRING="gbm"
+.endif
+
+.if !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MWAYLAND) || !empty(PORT_OPTIONS:MGBM) && !empty(PORT_OPTIONS:MX11) || !empty(PORT_OPTIONS:MWAYLAND) && !empty(PORT_OPTIONS:MX11)
+PLIST_SUB+=	KODICOMBINED="" \
+		KODIGBM="@comment " \
+		KODIWAYLAND="@comment " \
+		KODIX11="@comment "
 .else
-# armv6 || armv7 (rpi1 and rpi2 only)
-EXTRA_PATCHES+=	${FILESDIR}/extra-armv6_hal
-CONFIGURE_ARGS+=	--enable-player=omxplayer
-LIB_DEPENDS+=	libEGL.so:misc/raspberrypi-userland \
-		libhal.so:sysutils/hal \
-		libtiff.so:graphics/tiff
-PLIST_SUB+=	ARM=""
-PLIST_SUB+=	X86="@comment "
-SUB_FILES=	pkg-message
+PLIST_SUB+=	KODICOMBINED="@comment "
+
+.if !empty(PORT_OPTIONS:MGBM)
+PLIST_SUB+=	KODIGBM=""
+.else
+PLIST_SUB+=	KODIGBM="@comment "
+.endif
+
+.if !empty(PORT_OPTIONS:MWAYLAND)
+PLIST_SUB+=	KODIWAYLAND=""
+.else
+PLIST_SUB+=	KODIWAYLAND="@comment "
+.endif
+
+.if !empty(PORT_OPTIONS:MX11)
+PLIST_SUB+=	KODIX11=""
+.else
+PLIST_SUB+=	KODIX11="@comment "
+.endif
 .endif
 
 post-patch:
-	${REINPLACE_CMD} 's;make;gmake;' \
-		${WRKSRC}/bootstrap \
-		${WRKSRC}/codegenerator.mk \
-		${WRKSRC}/xbmc/Makefile.in
-	${REINPLACE_CMD} 's;which swig;&3.0;' ${WRKSRC}/codegenerator.mk
-	${RM} ${WRKSRC}/system/settings/rbp2.xml.orig
-
-pre-configure:
-	cd ${WRKSRC} && ${SH} ./bootstrap
+	${REINPLACE_CMD} 's|KODI_DEPENDSBUILD|true|' \
+		${WRKSRC}/cmake/modules/FindLibDvd.cmake
+	${REINPLACE_CMD} 's|/usr/share|${LOCALBASE}/share|' \
+		${WRKSRC}/xbmc/platform/linux/input/LibInputSettings.cpp
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/docs/manpages/kodi.bin.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	(cd ${STAGEDIR}${MAN1PREFIX}/man/man1 && ${LN} -sf kodi.bin.1.gz kodi.1.gz)
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/kodi/kodi.bin
-	${FIND} ${STAGEDIR}${PREFIX}/lib/kodi -name '*.so' -or -name '*.xbs' -or -name '*.vis' \
-		| ${XARGS} ${STRIP_CMD}
-.if ${ARCH} != armv6 && ${ARCH} != armv7
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/kodi/kodi-xrandr
-.endif
+	cd ${STAGEDIR}${MAN1PREFIX}/man/man1 && ${LN} -s kodi.bin.1.gz kodi.1.gz
+	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} TexturePacker JsonSchemaBuilder
+	${FIND} ${STAGEDIR}${PREFIX}/lib/kodi -type f -name '*.so' -print0 | ${XARGS} -0 ${STRIP_CMD}
+	${RM} -rf ${STAGEDIR}${PREFIX}/lib/firewalld
 
 .include <bsd.port.mk>

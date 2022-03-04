@@ -1,23 +1,22 @@
 # Created by: Carlos Eduardo G. Carvalho <cartola@openit.com.br>
-# $FreeBSD$
 
 PORTNAME=	hugin
-PORTVERSION=	2018.0.0
-PORTREVISION=	9
+PORTVERSION=	2020.0.0
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
-MAINTAINER=	grog@FreeBSD.org
+MAINTAINER=	fuz@fuz.su
 COMMENT=	GUI for Panorama Tools, to stitch panoramic images
 
-LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
-		libImath.so:graphics/ilmbase \
+LICENSE=	GPLv2
+
+LIB_DEPENDS=	libOpenEXR.so:graphics/openexr \
+		libImath.so:math/Imath \
 		libboost_thread.so:devel/boost-libs \
 		liblcms2.so:graphics/lcms2 \
 		libexiv2.so:graphics/exiv2 \
 		libfftw3.so:math/fftw3 \
 		libpano13.so:graphics/libpano13 \
-		libsqlite3.so:databases/sqlite3 \
 		libvigraimpex.so:graphics/vigra \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
@@ -26,16 +25,18 @@ RUN_DEPENDS=	enblend>=4.1.4:graphics/enblend \
 		exiftool:graphics/p5-Image-ExifTool \
 		gmake:devel/gmake
 
-USES=		cmake compiler:c++11-lib desktop-file-utils \
-		gettext jpeg pkgconfig shared-mime-info shebangfix tar:bzip2
-CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE=${WX_CONFIG}
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext gl gnome \
+		jpeg pkgconfig shared-mime-info shebangfix sqlite tar:bzip2 xorg
+USE_GL=		gl glew glu glut
 USE_WX=		3.0+
-USE_GL=		glew glut
-INSTALLS_ICONS=	yes
+USE_XORG=	x11
 
 SHEBANG_FILES=	src/hugin_script_interface/hpi.py \
 		src/hugin_script_interface/plugins/*.py \
 		src/hugin_script_interface/plugins-dev/*.py
+
+CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE=${WX_CONFIG}
+CFLAGS+=	-I${LOCALBASE}/include/Imath
 
 OPTIONS_DEFINE=		PANOMATIC AUTOPANOSIFTC PYTHON
 OPTIONS_DEFAULT=	PANOMATIC PYTHON
@@ -48,9 +49,8 @@ AUTOPANOSIFTC_DESC=	Install graphics/autopano-sift-c
 AUTOPANOSIFTC_RUN_DEPENDS=	autopano:graphics/autopano-sift-c
 
 PYTHON_DESC=		Python Scripting Interface
-PYTHON_USES=		python:2.7
-PYTHON_BUILD_DEPENDS=	swig3.0:devel/swig30
-PYTHON_BINARY_ALIAS=	swig=swig3.0
+PYTHON_BUILD_DEPENDS=	swig:devel/swig
+PYTHON_USES=		python
 PYTHON_CMAKE_ON=	-DBUILD_HSI=ON
 PYTHON_CMAKE_OFF=	-DBUILD_HSI=OFF
 

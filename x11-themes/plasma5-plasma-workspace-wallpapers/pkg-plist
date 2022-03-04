@@ -1,3 +1,7 @@
+share/wallpapers/Altai/contents/images/1080x1920.png
+share/wallpapers/Altai/contents/images/5120x2880.png
+share/wallpapers/Altai/contents/screenshot.png
+share/wallpapers/Altai/metadata.desktop
 share/wallpapers/Autumn/contents/images/1280x1024.jpg
 share/wallpapers/Autumn/contents/images/1280x800.jpg
 share/wallpapers/Autumn/contents/images/1440x900.jpg
@@ -32,6 +36,9 @@ share/wallpapers/Canopee/metadata.desktop
 share/wallpapers/Cascade/contents/images/3840x2160.png
 share/wallpapers/Cascade/contents/screenshot.png
 share/wallpapers/Cascade/metadata.desktop
+share/wallpapers/Cluster/contents/images/3840x2160.png
+share/wallpapers/Cluster/contents/screenshot.png
+share/wallpapers/Cluster/metadata.desktop
 share/wallpapers/ColdRipple/contents/images/1280x1024.jpg
 share/wallpapers/ColdRipple/contents/images/1280x800.jpg
 share/wallpapers/ColdRipple/contents/images/1440x900.jpg
@@ -63,6 +70,9 @@ share/wallpapers/DarkestHour/contents/images/640x480.jpg
 share/wallpapers/DarkestHour/contents/images/800x600.jpg
 share/wallpapers/DarkestHour/contents/screenshot.jpg
 share/wallpapers/DarkestHour/metadata.desktop
+share/wallpapers/Elarun/contents/images/2560x1600.png
+share/wallpapers/Elarun/contents/screenshot.jpg
+share/wallpapers/Elarun/metadata.desktop
 share/wallpapers/EveningGlow/contents/images/1280x1024.jpg
 share/wallpapers/EveningGlow/contents/images/1280x800.jpg
 share/wallpapers/EveningGlow/contents/images/1440x900.jpg
@@ -91,6 +101,10 @@ share/wallpapers/FallenLeaf/contents/images/640x480.jpg
 share/wallpapers/FallenLeaf/contents/images/800x600.jpg
 share/wallpapers/FallenLeaf/contents/screenshot.jpg
 share/wallpapers/FallenLeaf/metadata.desktop
+share/wallpapers/Flow/contents/images/5120x2880.jpg
+share/wallpapers/Flow/contents/images/720x1440.jpg
+share/wallpapers/Flow/contents/screenshot.png
+share/wallpapers/Flow/metadata.desktop
 share/wallpapers/FlyingKonqui/contents/images/1280x1024.png
 share/wallpapers/FlyingKonqui/contents/images/1280x800.png
 share/wallpapers/FlyingKonqui/contents/images/1440x900.png
@@ -119,6 +133,9 @@ share/wallpapers/Grey/contents/images/640x480.jpg
 share/wallpapers/Grey/contents/images/800x600.jpg
 share/wallpapers/Grey/contents/screenshot.jpg
 share/wallpapers/Grey/metadata.desktop
+share/wallpapers/IceCold/contents/images/5120x2880.png
+share/wallpapers/IceCold/contents/screenshot.png
+share/wallpapers/IceCold/metadata.desktop
 share/wallpapers/Kite/contents/images/1280x1024.jpg
 share/wallpapers/Kite/contents/images/1280x800.jpg
 share/wallpapers/Kite/contents/images/1440x900.jpg
@@ -136,6 +153,10 @@ share/wallpapers/Kite/metadata.desktop
 share/wallpapers/Kokkini/contents/images/3840x2160.png
 share/wallpapers/Kokkini/contents/screenshot.png
 share/wallpapers/Kokkini/metadata.desktop
+share/wallpapers/MilkyWay/contents/images/1080x1920.png
+share/wallpapers/MilkyWay/contents/images/5120x2880.png
+share/wallpapers/MilkyWay/contents/screenshot.png
+share/wallpapers/MilkyWay/metadata.desktop
 share/wallpapers/OneStandsOut/contents/images/1280x1024.jpg
 share/wallpapers/OneStandsOut/contents/images/1280x800.jpg
 share/wallpapers/OneStandsOut/contents/images/1440x900.jpg
@@ -181,6 +202,16 @@ share/wallpapers/Path/contents/images/640x480.jpg
 share/wallpapers/Path/contents/images/800x600.jpg
 share/wallpapers/Path/contents/screenshot.jpg
 share/wallpapers/Path/metadata.desktop
+share/wallpapers/SafeLanding/contents/images/5120x2880.jpg
+share/wallpapers/SafeLanding/contents/screenshot.jpg
+share/wallpapers/SafeLanding/metadata.desktop
+share/wallpapers/Shell/contents/images/5120x2880.jpg
+share/wallpapers/Shell/contents/images/720x1440.jpg
+share/wallpapers/Shell/contents/screenshot.png
+share/wallpapers/Shell/metadata.desktop
+share/wallpapers/Volna/contents/images/5120x2880.jpg
+share/wallpapers/Volna/contents/screenshot.png
+share/wallpapers/Volna/metadata.desktop
 share/wallpapers/summer_1am/contents/images/1280x1024.jpg
 share/wallpapers/summer_1am/contents/images/1280x800.jpg
 share/wallpapers/summer_1am/contents/images/1440x900.jpg

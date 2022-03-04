@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	acalc
-PORTVERSION=	0.22
-DISTVERSIONPREFIX=	v
+PORTVERSION=	0.3
 CATEGORIES=	math
 
 MAINTAINER=	andrey.nik.ponomarenko@gmail.com
@@ -10,7 +7,9 @@ COMMENT=	Simple and pretty Qt5-based expression calculator
 
 LICENSE=	BSD4CLAUSE
 
-USES=		qmake compiler:c++14-lang qt:5 tar:xz
+BROKEN_FreeBSD_12_powerpc64=	fails to compile: settings.cpp:8:136: error: no matching function for call to 'Setting::Setting(<brace-enclosed initializer list>)'
+
+USES=		compiler:c++14-lang qmake qt:5 tar:xz
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	anpp

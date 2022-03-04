@@ -1,24 +1,28 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yelp-tools
-PORTVERSION=	3.28.0
+PORTVERSION=	40.0
 CATEGORIES=	textproc gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Utilities to help manage documentation for Yelp and the web
 
-BUILD_DEPENDS=	yelp-xsl>=0:textproc/yelp-xsl \
-		itstool:textproc/itstool
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING.GPL
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		itstool:textproc/itstool \
+		yelp-xsl>=0:textproc/yelp-xsl
+
+USES=		gettext gnome localbase meson pathfix pkgconfig python:3.7+ \
+		shebangfix tar:xz
+USE_GNOME=	libxml2 libxslt
+SHEBANG_FILES=	tools/yelp-build.in tools/yelp-check.in tools/yelp-new.in
+
+BINARY_ALIAS=	python3=${PYTHON_CMD}
+NO_ARCH=	yes
 PORTSCOUT=	limitw:1,even
-
-USES=		gettext gmake gnome pathfix pkgconfig tar:xz
-USE_GNOME=	intlhack libxml2 libxslt
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 
 .include <bsd.port.mk>

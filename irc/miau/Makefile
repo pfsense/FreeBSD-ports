@@ -1,10 +1,9 @@
 # Created by: Oliver Eikemeier
-# $FreeBSD$
 
 PORTNAME=	miau
 PORTVERSION=	0.6.6
 PORTREVISION=	3
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 MASTER_SITES=	SF
 
 MAINTAINER=	freebsd-ports@dan.me.uk

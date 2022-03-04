@@ -1,9 +1,8 @@
 # Created by: Pietro Cerutti (gahr@gahr.ch)
-# $FreeBSD$
 
 PORTNAME=	tuxguitar
 PORTVERSION=	1.2
-PORTREVISION=	13
+PORTREVISION=	18
 CATEGORIES=	audio java
 MASTER_SITES=	SF/${PORTNAME}/TuxGuitar/TuxGuitar-${PORTVERSION}:src \
 		LOCAL/gahr/:fluid \
@@ -20,7 +19,7 @@ COMMENT=	Multitrack tablature editor and player
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${JAVALIBDIR}/swt-devel.jar:x11-toolkits/swt-devel \
+BUILD_DEPENDS=	${JAVALIBDIR}/swt.jar:x11-toolkits/swt \
 		${JAVALIBDIR}/itext.jar:devel/itext \
 		${JAVALIBDIR}/gervill.jar:audio/gervill
 RUN_DEPENDS:=	${BUILD_DEPENDS}
@@ -35,8 +34,7 @@ CPE_VENDOR=	herac
 USE_JAVA=	yes
 USE_ANT=	yes
 USE_LDCONFIG=	yes
-JAVA_VERSION=	1.6+
-NOCCACHE=	yes
+NO_CCACHE=	yes
 
 BUILD_WRKSRC=	${WRKSRC}/TuxGuitar
 SF2_DIR=	${LOCALBASE}/share/sounds/sf2
@@ -57,7 +55,7 @@ post-extract:
 
 post-patch:
 	@${FIND} ${WRKSRC} -name build.properties | ${XARGS} ${REINPLACE_CMD} -e '\
-	    s|path\.swt=.*|path.swt=${JAVAJARDIR}/swt-devel.jar|; \
+	    s|path\.swt=.*|path.swt=${JAVAJARDIR}/swt.jar|; \
 	    s|path\.itext=.*|path.itext=${JAVAJARDIR}/itext.jar|; \
 	    s|path\.gervill=.*|path.gervill=${JAVAJARDIR}/gervill.jar|'
 	@${FIND} ${WRKSRC} -name GNUmakefile | ${XARGS} ${REINPLACE_CMD} -e '\

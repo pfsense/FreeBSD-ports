@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	luv
 DISTVERSION=	0.4.9.12
 PORTREVISION=	2
 CATEGORIES=	x11-themes gnome
 PKGNAMEPREFIX=	gnome-icons-
 
-MAINTAINER=	mike.d.ft402@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flat but complex icon theme for freedesktop environments
 
 LICENSE=	CC-BY-SA-4.0
@@ -18,7 +16,6 @@ GH_ACCOUNT=	NitruxSA
 GH_PROJECT=	luv-icon-theme
 
 DATADIR=	${PREFIX}/share/icons/Luv
-INSTALLS_ICONS=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes
 

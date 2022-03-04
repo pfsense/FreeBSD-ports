@@ -1,10 +1,9 @@
 # Created by: Martin Waschbuesch <martin@waschbuesch.de>
-# $FreeBSD$
 
 PORTNAME=	libzbxpgsql
 PORTVERSION=	1.1.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	databases
 PKGNAMEPREFIX=	zabbix3-
 

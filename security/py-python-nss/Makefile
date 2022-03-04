@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	python-nss
 PORTVERSION=	1.0.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,15 +17,12 @@ LICENSE_FILE_MPL20=	${WRKSRC}/LICENSE.mpl
 LIB_DEPENDS=	libnspr4.so:devel/nspr \
 		libnss3.so:security/nss
 
-USES=		compiler:c11 python tar:bzip2
+USES=		compiler:c11 python:3.6+ tar:bzip2
 USE_PYTHON=	autoplist distutils
 
-PYDISTUTILS_CONFIGUREARGS=	--include-root="${LOCALBASE}/include" \
-				--include-root="${LOCALBASE}/include/nss"
+PYDISTUTILS_CONFIGUREARGS=	--include-root="${LOCALBASE}/include"
 PYDISTUTILS_BUILDARGS=		${PYDISTUTILS_CONFIGUREARGS}
 PYDISTUTILS_INSTALLARGS=	-c -O1 --prefix=${PREFIX} ${PYDISTUTILS_CONFIGUREARGS}
-
-LDFLAGS+=	-L${LOCALBASE}/lib/nss
 
 TEST_TARGET=	# empty
 TEST_WRKSRC=	${WRKSRC}/test

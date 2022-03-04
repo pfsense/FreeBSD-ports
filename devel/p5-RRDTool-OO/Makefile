@@ -1,5 +1,4 @@
 # Created by: Stefan Pauly <stefan@fh-mainz.de>
-# $FreeBSD$
 
 PORTNAME=	RRDTool-OO
 PORTVERSION=	0.36
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	RRDTool::OO - Object-oriented interface to RRDTool
+COMMENT=	Object-oriented interface to RRDTool
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

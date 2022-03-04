@@ -1,3 +1,4 @@
+bin/munin-get
 bin/munindoc
 @sample %%ETCDIR%%/munin-node.conf.sample
 @dir %%ETCDIR%%/plugin-conf.d
@@ -25,6 +26,7 @@ bin/munindoc
 %%SITE_PERL%%/Munin/Plugin.pm
 %%SITE_PERL%%/Munin/Plugin/Pgsql.pm
 %%SITE_PERL%%/Munin/Plugin/SNMP.pm
+man/man1/munin-get.1.gz
 man/man1/munin-node-configure.1.gz
 man/man1/munin-node.1.gz
 man/man1/munin-run.1.gz
@@ -61,14 +63,6 @@ sbin/munin-run
 %%DATADIR%%/plugins/apache_volume
 %%DATADIR%%/plugins/apc_envunit_
 %%DATADIR%%/plugins/apc_nis
-%%DATADIR%%/plugins/asterisk_channels
-%%DATADIR%%/plugins/asterisk_channelstypes
-%%DATADIR%%/plugins/asterisk_codecs
-%%DATADIR%%/plugins/asterisk_meetme
-%%DATADIR%%/plugins/asterisk_meetmeusers
-%%DATADIR%%/plugins/asterisk_sipchannels
-%%DATADIR%%/plugins/asterisk_sippeers
-%%DATADIR%%/plugins/asterisk_voicemail
 %%DATADIR%%/plugins/bind9
 %%DATADIR%%/plugins/bind9_rndc
 %%DATADIR%%/plugins/cmc_tc_sensor_

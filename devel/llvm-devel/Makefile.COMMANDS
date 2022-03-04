@@ -1,13 +1,13 @@
-# $FreeBSD$
-
 LLVM_COMMANDS=	\
 		bugpoint \
 		dsymutil \
 		llc \
 		lli \
+		llvm-addr2line \
 		llvm-ar \
 		llvm-as \
 		llvm-bcanalyzer \
+		llvm-bitcode-strip \
 		llvm-cat \
 		llvm-cfi-verify \
 		llvm-config \
@@ -19,38 +19,51 @@ LLVM_COMMANDS=	\
 		llvm-dlltool \
 		llvm-dwarfdump \
 		llvm-dwp \
-		llvm-elfabi \
 		llvm-exegesis \
 		llvm-extract \
+		llvm-gsymutil \
+		llvm-ifs \
+		llvm-install-name-tool \
+		llvm-jitlink \
+		llvm-libtool-darwin \
 		llvm-link \
+		llvm-lipo \
 		llvm-mc \
+		llvm-ml \
 		llvm-modextract \
 		llvm-mt \
 		llvm-nm \
 		llvm-objcopy \
 		llvm-objdump \
 		llvm-opt-report \
+		llvm-otool \
 		llvm-pdbutil \
 		llvm-profdata \
+		llvm-profgen \
 		llvm-ranlib \
 		llvm-rc \
 		llvm-readelf \
 		llvm-readobj \
+		llvm-reduce \
 		llvm-rtdyld \
+		llvm-sim \
 		llvm-size \
 		llvm-split \
 		llvm-stress \
 		llvm-strings \
 		llvm-strip \
 		llvm-symbolizer \
+		llvm-tapi-diff \
 		llvm-tblgen \
 		llvm-undname \
+		llvm-windres \
 		llvm-xray \
-		macho-dump \
 		opt \
-		sancov
+		sancov \
+		split-file
 
 CLANG_COMMANDS=	\
+		analyze-build \
 		c-index-test \
 		clang \
 		clang++ \
@@ -58,25 +71,39 @@ CLANG_COMMANDS=	\
 		clang-cpp \
 		clang-extdef-mapping \
 		clang-format \
-		clang-import-test \
+		clang-nvlink-wrapper \
 		clang-offload-bundler \
-		clangd \
+		clang-offload-wrapper \
+		clang-repl \
+		clang-scan-deps \
 		diagtool \
 		hmaptool \
+		intercept-build \
 		scan-build \
+		scan-build-py \
 		scan-view
 
 EXTRAS_COMMANDS= \
+		clangd \
 		clang-apply-replacements \
 		clang-change-namespace \
+		clang-doc \
 		clang-include-fixer \
-		clang-modernize \
+		clang-move \
 		clang-query \
 		clang-rename \
 		clang-reorder-fields \
 		clang-tidy \
 		find-all-symbols \
-		modularize
+		modularize \
+		pp-trace
+
+FLANG_COMMANDS=	\
+		f18-parse-demo \
+		fir-opt \
+		flang \
+		flang-new \
+		tco
 
 LIT_COMMANDS=	\
 		FileCheck \
@@ -86,6 +113,8 @@ LIT_COMMANDS=	\
 LLD_COMMANDS=	\
 		ld.lld \
 		ld64.lld \
+		ld64.lld.darwinnew \
+		ld64.lld.darwinold \
 		lld \
 		lld-link \
 		wasm-ld
@@ -94,7 +123,16 @@ LLDB_COMMANDS=	\
 		lldb \
 		lldb-argdumper \
 		lldb-instr \
-		lldb-mi \
 		lldb-server \
-		lldb-test \
 		lldb-vscode
+
+MLIR_COMMANDS=	\
+		mlir-cpu-runner \
+		mlir-lsp-server \
+		mlir-opt \
+		mlir-reduce \
+		mlir-tblgen \
+		mlir-translate
+
+OPENMP_COMMANDS=	\
+		llvm-omp-device-info

@@ -1,9 +1,8 @@
 # Created by: John Reynolds <johnjen@reynoldsnet.org>
-# $FreeBSD$
 
 PORTNAME=	s10sh
 PORTVERSION=	0.2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.reynoldsnet.org/s10sh/ \
 		http://www.edwinh.org/s10sh/
@@ -17,6 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_aarch64=	Fails to build: error: cannot find the byte order for this architecture, fix bytesex.h
 BROKEN_armv6=	Fails to build: error: cannot find the byte order for this architecture, fix bytesex.h
 BROKEN_armv7=	Fails to build: error: cannot find the byte order for this architecture, fix bytesex.h
+BROKEN_riscv64=	Fails to build: error: cannot find the byte order for this architecture, fix bytesex.h
 
 USES=		ncurses readline
 

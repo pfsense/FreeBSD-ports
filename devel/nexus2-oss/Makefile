@@ -1,19 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	nexus2
-PORTVERSION=	2.14.12
+PORTVERSION=	2.14.20
 DISTVERSIONSUFFIX=	02
 CATEGORIES=	devel www java
-MASTER_SITES=	http://download.sonatype.com/nexus/oss/
+MASTER_SITES=	https://download.sonatype.com/nexus/oss/
 PKGNAMESUFFIX=	-oss
 DISTNAME=	nexus-${PORTVERSION}-${DISTVERSIONSUFFIX}-bundle
 
 MAINTAINER=	michael.osipov@siemens.com
-COMMENT=	Maven (and others) artifacts repostory manager
+COMMENT=	Maven (and others) artifacts repository manager
 
 LICENSE=	EPL
-
-ONLY_FOR_ARCHS=	amd64 i386
 
 PATCH_DEPENDS=	zip:archivers/zip
 RUN_DEPENDS=	javaservicewrapper:sysutils/javaservicewrapper
@@ -21,13 +17,14 @@ RUN_DEPENDS=	javaservicewrapper:sysutils/javaservicewrapper
 USES=		cpe
 
 CPE_VENDOR=	sonatype
+CPE_PRODUCT=	nexus
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_TEST=	yes
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 
 USE_RC_SUBR=	${PORTNAME}
 

@@ -1,14 +1,13 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Data-ICal
-PORTVERSION=	0.22
+PORTVERSION=	0.24
 CATEGORIES=	deskutils perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Data::ICal - Generates iCalendar (RFC 2445) calendar files
+COMMENT=	Generate iCalendar (RFC 2445) calendar files
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -25,6 +24,8 @@ TEST_DEPENDS=	p5-Test-LongString>=0:devel/p5-Test-LongString \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^auto_install/d' ${WRKSRC}/Makefile.PL

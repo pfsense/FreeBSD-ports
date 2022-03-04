@@ -1,9 +1,8 @@
 # Created by: Jaap Akkerhuis <jaap@NLnetLabs.nl>
-# $FreeBSD$
 
 PORTNAME=	opendmarc
 PORTVERSION=	1.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail security
 MASTER_SITES=	SF/${PORTNAME} \
 		SF/${PORTNAME}/Previous%20Releases
@@ -24,7 +23,8 @@ LICENSE_GROUPS_SENDMAIL=	FSF OSI
 LICENSE_NAME_SENDMAIL=	Sendmail Open Source License
 LICENSE_PERMS_SENDMAIL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		libtool perl5 shebangfix
+USES=		cpe libtool perl5 shebangfix
+CPE_VENDOR=	trusteddomain
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	opendmarc
 

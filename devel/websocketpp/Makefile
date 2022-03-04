@@ -1,18 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	websocketpp
-PORTVERSION=	0.8.1
-PORTREVISION=	1
+PORTVERSION=	0.8.2
 CATEGORIES=	devel
 
-MAINTAINER=	arved@FreeBSD.org
-COMMENT=	Header only implementation of the WebSocket protocol
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Header-only implementation of the WebSocket protocol
 
 LICENSE=	MIT BSD3CLAUSE ZLIB
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake:insource
+USES=		cmake:insource cpe
+CPE_VENDOR=	zaphoyd
 USE_GITHUB=	yes
 GH_ACCOUNT=	zaphoyd
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-KYTProf
 PORTVERSION=	0.05
 PORTREVISION=	2
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for simple profiler
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

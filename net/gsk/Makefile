@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	gsk
 PORTVERSION=	1.0.63
@@ -13,7 +12,7 @@ COMMENT=	C library for writing servers
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool pathfix perl5 pkgconfig ssl
+USES=		gnome libtool pathfix perl5 pkgconfig ssl
 USE_PERL5=	build
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
@@ -25,13 +24,6 @@ CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_12=	incomplete definition of type 'struct bio_st'
-BROKEN_FreeBSD_13=	incomplete definition of type 'struct bio_st'
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -47,4 +39,4 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/doc/html/*.html ${STAGEDIR}${DOCSDIR}/html
 	${INSTALL_DATA} ${WRKSRC}/doc/html/*.png ${STAGEDIR}${DOCSDIR}/html
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

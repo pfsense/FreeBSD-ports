@@ -1,10 +1,10 @@
 # Created by: Johannes Dieterich <jmd@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	oclgrind
-PORTVERSION=	20190218
+PORTVERSION=	21.10
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	0
+PORTEPOCH=	1
 CATEGORIES=	devel
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -13,18 +13,23 @@ COMMENT=	SPIR interpreter and virtual OpenCL device simulator
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+LLVM_VER=	12
 BUILD_DEPENDS=	opencl>=0:devel/opencl \
-		llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+		llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
-RUN_DEPENDS=	opencl>=0:devel/opencl
+RUN_DEPENDS=	opencl>=0:devel/opencl \
+		llvm${LLVM_VER}>=0:devel/llvm${LLVM_VER}
 
-USES=		cmake compiler:c++11-lang
+USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	jrprice
 GH_PROJECT=	Oclgrind
-GH_TAGNAME=	689daab
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS+=	-DLLVM_DIR=${LOCALBASE}/llvm${LLVM_DEFAULT}/share/llvm/cmake
+CC=		clang${LLVM_VER}
+CXX=		clang++${LLVM_VER}
+CPP=		clang-cpp${LLVM_VER}
+
+CMAKE_ARGS+=	-DLLVM_DIR=${LOCALBASE}/llvm${LLVM_VER}/lib/cmake/llvm/
 
 .include <bsd.port.mk>

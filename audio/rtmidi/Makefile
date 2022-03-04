@@ -1,9 +1,8 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	rtmidi
-DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.0
+DISTVERSION=	4.0.0
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org

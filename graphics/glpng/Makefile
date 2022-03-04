@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	glpng
 PORTVERSION=	1.46
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://repo.or.cz/glpng.git/snapshot/ \
 		https://mirror.amdmi3.ru/distfiles/${DIST_SUBDIR}/
@@ -19,7 +16,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 
 WRKSRC=		${WRKDIR}/glpng-1079563
 
-USES=		cmake zip
+USES=		cmake cpe gl zip
 USE_GL=		gl
 
 OPTIONS_DEFINE=	DOCS

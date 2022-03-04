@@ -1,5 +1,4 @@
 # Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
 
 PORTNAME=	Lingua-Stem-Fr
 PORTVERSION=	0.02
@@ -14,7 +13,9 @@ COMMENT=	Perl French Stemming
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

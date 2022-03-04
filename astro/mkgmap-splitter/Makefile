@@ -1,22 +1,20 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	splitter
-PORTVERSION=	r592
+PORTVERSION=	r645
 CATEGORIES=	astro converters java
-MASTER_SITES=	http://www.mkgmap.org.uk/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://www.mkgmap.org.uk/download/ \
+		https://mirror.amdmi3.ru/distfiles/
 PKGNAMEPREFIX=	mkgmap-
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tile splitter for mkgmap
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	1.8+
 NO_BUILD=	yes
 NO_ARCH=	yes
 
 SUB_FILES=	${PORTNAME}.sh
+SUB_LIST=	JAVA="${JAVA}"
 
 PLIST_FILES=	bin/${PKGNAMEPREFIX}${PORTNAME}
 PORTDOCS=	*
@@ -35,5 +33,8 @@ do-install:
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/intro.txt ${STAGEDIR}${DOCSDIR}/
+
+do-test:
+	${JAVA} -jar ${WRKSRC}/${PORTNAME}.jar --help >/dev/null 2>&1
 
 .include <bsd.port.mk>

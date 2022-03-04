@@ -1,7 +1,5 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
+
 # PROVIDE: nsd
 # REQUIRE: DAEMON
 # REQUIRE: LOGIN
@@ -43,8 +41,6 @@ required_files=${nsd_config}
 command="%%PREFIX%%/sbin/${name}"
 command_args="-c ${nsd_config} -P ${pidfile}"
 extra_commands="reload"
-
-load_rc_config "${name}"
 
 if [ -n "$2" ]; then
 	profile="$2"

@@ -1,20 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	ponyc
-DISTVERSION=	0.28.0
+DISTVERSION=	0.33.2
 CATEGORIES=	lang
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pony language compiler
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=		aarch64 amd64
-ONLY_FOR_ARCHS_REASON=	Undefined reference to __atomic_compare_exchange_8
+ONLY_FOR_ARCHS_REASON=	undefined reference to __atomic_compare_exchange_8
 
 BUILD_DEPENDS=	llvm-link${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-RUN_DEPENDS=	llvm-link${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+
+FLAVORS=	llvm_dynamic llvm_static
+FLAVOR?=	${FLAVORS:[1]}
+
+llvm_dynamic_RUN_DEPENDS=	llvm-link${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+llvm_dynamic_CONFLICTS_INSTALL=	ponyc-static
+llvm_static_PKGNAMESUFFIX=	-static
+llvm_static_CONFLICTS_INSTALL=	ponyc
+.if ${FLAVOR} == llvm_static
+COMMENT+=			(statically linked with LLVM)
+.endif
 
 USES=		gmake ncurses compiler:c++11-lang
 
@@ -31,8 +39,13 @@ PORTDOCS=	*.md
 MAKE_ENV=	config=release verbose=true default_pic=true \
 		prefix=${PREFIX} arch=${PONYARCH} \
 		LLVM_CONFIG=llvm-config${LLVM_VERSION}
+.if ${FLAVOR} == llvm_dynamic
+MAKE_ENV+=	link=llvm-dynamic
+.else
+MAKE_ENV+=	link=llvm-static
+.endif
 
-OPTIONS_DEFINE=			DOCS EXAMPLES DTRACE
+OPTIONS_DEFINE=			DOCS DTRACE EXAMPLES
 OPTIONS_EXCLUDE_aarch64=	DTRACE
 # Not enabling DTrace by default yet because it breaks --runtimebc ("super LTO"):
 # https://github.com/ponylang/ponyc/issues/2915
@@ -56,12 +69,8 @@ PONYARCH?=	core2
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085
-MAKE_ENV+=	default_ssl=openssl_1.1.0
-.endif
-
 .if ${CHOSEN_COMPILER_TYPE} == clang
-# Building the bitcode with clang70 and linking with llvm50 fails,
+# Building the bitcode with clangX and linking with llvmY often fails,
 # so let's use the clang from the LLVM version that will be used by ponyc
 CC=		${LOCALBASE}/bin/clang${LLVM_VERSION}
 CXX=		${LOCALBASE}/bin/clang++${LLVM_VERSION}

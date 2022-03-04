@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	magnum
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2019.01
-PORTREVISION=	2
+DISTVERSION=	2019.10
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,10 +10,12 @@ COMMENT=	Lightweight, modular graphics middleware for games, data visualization
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		Player.hpp:193:32: error: too few arguments provided to function-like macro invocation
+
 LIB_DEPENDS=	libCorradeUtility.so:devel/corrade \
 		libglfw.so:graphics/glfw
 
-USES=		cmake compiler:c++14-lang gl openal
+USES=		cmake compiler:c++14-lang gl openal sdl xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	mosra
 GH_TUPLE=	mosra:toolchains:a3e0aff:t/toolchains

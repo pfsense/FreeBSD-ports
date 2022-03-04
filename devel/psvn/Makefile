@@ -1,16 +1,15 @@
 # Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
 
 PORTNAME=	psvn
-PORTVERSION=	20120326.212349
-PORTREVISION=	8
+PORTVERSION=	20150720.214200
+PORTREVISION=	5
 CATEGORIES=	devel elisp
 MASTER_SITES=	http://www.xsteve.at/prg/emacs/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 DISTNAME=	psvn.el
 EXTRACT_SUFX=	# empty
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subversion interface for Emacs
 
 LICENSE=	GPLv2+

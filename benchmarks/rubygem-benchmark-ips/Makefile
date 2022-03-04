@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	benchmark-ips
-PORTVERSION=	2.7.2
+PORTVERSION=	2.9.2
 CATEGORIES=	benchmarks rubygems
 MASTER_SITES=	RG
 
@@ -11,8 +10,9 @@ COMMENT=	Iterations per second enhancement to Benchmark
 
 LICENSE=	MIT
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

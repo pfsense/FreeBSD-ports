@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sdl_jewels
 PORTVERSION=	1.1.1
@@ -17,7 +16,7 @@ COMMENT=	Tile-matching 8x8 puzzle game
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/sdl/SDL/}-${PORTVERSION}
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl image mixer
 ALL_TARGET=	# empty
 

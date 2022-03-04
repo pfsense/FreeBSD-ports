@@ -1,9 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	phabricator
-PORTVERSION=	20181231
+PORTVERSION=	20201119
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
+
+PATCH_SITES=	https://github.com/grembo/phabricator/commit/
+PATCHFILES=	0851b89eb6633dd792cd4eb10c26f86c2f0da56a.patch:-p1
 
 MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	Open source, software engineering platform
@@ -11,22 +13,19 @@ COMMENT=	Open source, software engineering platform
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PHP_PKGNAMEPREFIX}libphutil>0:devel/libphutil@${PHP_FLAVOR} \
-		arcanist${PHP_PKGNAMESUFFIX}>0:devel/arcanist@${PHP_FLAVOR} \
+RUN_DEPENDS=	arcanist-lib${PHP_PKGNAMESUFFIX}>=20210113_1:devel/arcanist-lib@${PHP_FLAVOR} \
 		git:devel/git
 
-OPTIONS_DEFINE=	GD OPCACHE
-OPTIONS_DEFAULT=GD OPCACHE
-OPCACHE_DESC?=	Use OPcache to improve performance
+USES=		cpe php:cli,flavors shebangfix
+CPE_VENDOR=	phacility
 
-USES=		php:flavors shebangfix
-REINPLACE_ARGS=	-i ""
-SHEBANG_FILES=	externals/httpful/build \
-		externals/restful/build-phar \
+SHEBANG_FILES=	resources/timezones/*.php \
+		scripts/*.php \
 		scripts/almanac/*.php \
 		scripts/cache/*.php \
 		scripts/celerity/*.php \
 		scripts/daemon/*.php \
+		scripts/daemon/exec/exec_daemon.php \
 		scripts/diviner/*.php \
 		scripts/drydock/*.php \
 		scripts/fact/*.php \
@@ -35,19 +34,22 @@ SHEBANG_FILES=	externals/httpful/build \
 		scripts/install/install_ubuntu.sh \
 		scripts/lipsum/*.php \
 		scripts/mail/*.php \
-		scripts/people/*.php \
 		scripts/repository/*.php \
 		scripts/search/*.php \
 		scripts/setup/*.php \
-		scripts/sms/*.php \
+		scripts/ssh/*.php \
 		scripts/sql/*.php \
 		scripts/ssh/*.php \
 		scripts/symbols/*.php \
-		scripts/user/*.php \
 		scripts/util/*.php \
 		support/aphlict/server/*.php
+
 USE_PHP=	ctype curl fileinfo filter hash iconv mbstring mysqli openssl \
-		pcntl posix
+		pcntl posix zip
+
+OPTIONS_DEFINE=	GD OPCACHE
+OPTIONS_DEFAULT=GD OPCACHE
+OPCACHE_DESC?=	Use OPcache to improve performance
 
 GD_USE=		PHP=gd
 
@@ -56,10 +58,12 @@ OPCACHE_USE=		PHP=opcache
 
 USE_GITHUB=	yes
 NO_BUILD=	yes
+NO_ARCH=	yes
 USE_RC_SUBR=	phd
 SUB_FILES=	pkg-message
+PORTSCOUT=	ignore:1
 GH_ACCOUNT=	phacility
-GH_TAGNAME=	106e90d
+GH_TAGNAME=	b2ab18f
 
 PHP_DESTDIR=	lib/php/phabricator
 
@@ -76,6 +80,10 @@ post-patch:
 		 s|PrintLastLog no||g; \
 		 s|PidFile /var/run/sshd-phabricator.pid||g' \
 		${WRKSRC}/resources/sshd/sshd_config.phabricator.example
+	@${REINPLACE_CMD} \
+		's|%%PHP_CMD%%|${PREFIX}/bin/php|g' \
+		${WRKSRC}/scripts/celerity/install_merge.sh \
+		${WRKSRC}/src/infrastructure/testing/fixture/PhabricatorStorageFixtureScopeGuard.php
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/conf/local

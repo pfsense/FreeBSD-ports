@@ -1,5 +1,4 @@
 # Created by: Sergei Kolobov <sergei@kolobov.com>
-# $FreeBSD$
 
 PORTNAME=	gromit
 PORTVERSION=	20041213
@@ -13,7 +12,7 @@ COMMENT=	GRaphics Over Miscellaneous Objects (Gromit)
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig
+USES=		gnome pkgconfig xorg
 USE_GNOME=	gtk20
 USE_XORG=	x11
 

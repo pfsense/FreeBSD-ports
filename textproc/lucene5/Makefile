@@ -1,10 +1,9 @@
 # Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lucene
 PORTVERSION=	5.5.5
 CATEGORIES=	textproc java devel
-MASTER_SITES=	APACHE/${PORTNAME}/java/${PORTVERSION}
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/java/${PORTVERSION}
 PKGNAMESUFFIX=	5
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,11 +14,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 CONFLICTS=	lucene-[0-9].*
 
-USES=		tar:tgz
+USES=		cpe tar:tgz
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 NO_BUILD=	yes
 NO_ARCH=	yes
+
+CPE_VENDOR=	apache
 
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}-core-${PORTVERSION}.jar
 PORTDOCS=	*

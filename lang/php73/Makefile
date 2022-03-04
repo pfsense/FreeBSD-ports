@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	php73
-DISTVERSION=	7.3.6
+DISTVERSION=	7.3.33
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
-MASTER_SITES=   PHP/distributions
+MASTER_SITES=	PHP
 DISTNAME=	php-${DISTVERSION}
+DIST_SUBDIR=	php
 
 MAINTAINER=	tz@FreeBSD.org
 COMMENT=	PHP Scripting Language
@@ -29,6 +28,7 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 		--with-pcre-regex=${LOCALBASE} \
 		--with-password-argon2=${LOCALBASE} \
 		--program-prefix=""
+CONFIGURE_ENV=	CPPFLAGS="-I${LOCALBASE}/include"
 USES+=		autoreconf:build
 USE_GNOME=	libxml2
 
@@ -40,13 +40,14 @@ OPTIONS_DEFAULT=CLI CGI FPM EMBED MYSQLND LINKTHR DTRACE
 OPTIONS_EXCLUDE_DragonFly=	DTRACE
 # ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
 OPTIONS_EXCLUDE_aarch64=	DTRACE
-OPTIONS_EXCLUDE_powerpc=	DTRACE
 # dt_modtext:opensolaris/ib/libdtrace/common/dt_link.c: arm not impemented
 OPTIONS_EXCLUDE_armv6=		DTRACE
 OPTIONS_EXCLUDE_armv7=		DTRACE
 # Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
 OPTIONS_EXCLUDE_mips=		DTRACE FPM
 OPTIONS_EXCLUDE_mips64=		DTRACE FPM
+# dt_modtext:opensolaris/ib/libdtrace/common/dt_link.c: RISC-V implementation required
+OPTIONS_EXCLUDE_riscv64=	DTRACE
 OPTIONS_EXCLUDE_sparc64=	DTRACE
 OPTIONS_SUB=	yes
 
@@ -59,7 +60,7 @@ MYSQLND_DESC=	Build with MySQL Native Driver
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
-CONFLICTS=	php56-* php70-* php71-* php72-*
+CONFLICTS=	php74 php80
 
 DESTDIRNAME=	INSTALL_ROOT
 

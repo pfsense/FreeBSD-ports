@@ -1,8 +1,7 @@
 # Created by: Thomas Abthorpe <thomas@goodking.ca>
-# $FreeBSD$
 
 PORTNAME=	Compress-Raw-Zlib
-PORTVERSION=	2.084
+PORTVERSION=	2.101
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -17,9 +16,6 @@ TEST_DEPENDS=	p5-Test-Pod>=1:devel/p5-Test-Pod
 
 USES=		perl5
 USE_PERL5=	configure
-
-post-patch:
-	@${REINPLACE_CMD} -e '/^BUILD_ZLIB/ s|True|False|; /^INCLUDE/ s|= .*$$|= ${INCLUDEDIR}|; /^LIB/ s|= .*$$|= ${LIBDIR}|' ${WRKSRC}/config.in
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Compress/Raw/Zlib/Zlib.so

@@ -1,15 +1,14 @@
 # Created by: Mahdi Mokhtari <mokhi64@gmail.com>
-# $FreeBSD$
 
 PORTNAME?=		mysql
-PORTVERSION=		8.0.16
+PORTVERSION=		8.0.27
 PORTREVISION?=		0
-CATEGORIES=		databases ipv6
+CATEGORIES=		databases
 MASTER_SITES=		MYSQL/MySQL-8.0
 PKGNAMESUFFIX?=		80-server
 DISTNAME=		${PORTNAME}-boost-${PORTVERSION}${DISTVERSIONSUFFIX}
 
-MAINTAINER=		mmokhi@FreeBSD.org
+MAINTAINER=		joneum@FreeBSD.org
 COMMENT?=		Multithreaded SQL database (server)
 
 LICENSE=		GPLv2
@@ -17,23 +16,43 @@ LICENSE=		GPLv2
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 SLAVEDIRS=	databases/mysql80-client
-USES=		bison:build cmake:noninja compiler:c++14-lang cpe \
-		libedit localbase perl5 shebangfix ssl
+USES=		bison:build cmake:noninja compiler:c++17-lang cpe \
+		groff:run libedit localbase ncurses perl5 pkgconfig shebangfix ssl
 
+CPE_VENDOR=	oracle
+
+USE_CXXSTD=	c++17
 USE_PERL5=	run
 
 MY_DBDIR=	/var/db/mysql
 MY_SECDIR=	/var/db/mysql_secure
 MY_TMPDIR=	/var/db/mysql_tmpdir
 
-LIB_DEPENDS+=	libevent.so:devel/libevent \
+LIB_DEPENDS+=	libcurl.so:ftp/curl \
+		libevent.so:devel/libevent \
 		libicutu.so:devel/icu \
 		liblz4.so:archivers/liblz4 \
-		libre2.so:devel/re2 \
-		libprotobuf.so:devel/protobuf
+		libzstd.so:archivers/zstd \
+		libprotobuf.so:devel/protobuf \
+		${LIB_DEPENDS_${ARCH}}
+LIB_DEPENDS_aarch64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_amd64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_armv7=	libunwind.so:devel/libunwind
+LIB_DEPENDS_i386=	libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64=		libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64le=	libunwind.so:devel/libunwind
+
+BUILD_DEPENDS=	liblz4>0:archivers/liblz4 \
+		${BUILD_DEPENDS_${ARCH}}
+BUILD_DEPENDS_aarch64=	libunwind>0:devel/libunwind
+BUILD_DEPENDS_amd64=	libunwind>0:devel/libunwind
+BUILD_DEPENDS_armv7=	libunwind>0:devel/libunwind
+BUILD_DEPENDS_i386=	libunwind>0:devel/libunwind
+BUILD_DEPENDS_powerpc64=	libunwind>0:devel/libunwind
+BUILD_DEPENDS_powerpc64le=	libunwind>0:devel/libunwind
 
 CMAKE_BUILD_TYPE=	Release
-CFLAGS+=		-fPIC
+CFLAGS+=		-fPIC -DNDEBUG -malign-double
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_LDCONFIGDIR="${LOCALBASE}/libdata/ldconfig" \
@@ -47,7 +66,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_MYSQLDATADIR="${MY_DBDIR}" \
 		-DINSTALL_MYSQLKEYRINGDIR="etc/mysql/keyring" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
-		-DINSTALL_MYSQLTESTDIR="share/mysql/tests" \
+		-DINSTALL_MYSQLTESTDIR="" \
 		-DINSTALL_PLUGINDIR="lib/mysql/plugin" \
 		-DINSTALL_SBINDIR="libexec" \
 		-DINSTALL_SCRIPTDIR="bin" \
@@ -56,20 +75,31 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_SUPPORTFILESDIR="share/mysql" \
 		-DMYSQL_KEYRINGDIR="${ETCDIR}/keyring" \
 		-DWITH_BOOST="${WRKSRC}/boost" \
+		-DWITH_SYSTEM_LIBS=1 \
 		-DWITH_EDITLINE=system \
 		-DWITH_LIBEVENT=system \
 		-DWITH_LZ4=system \
-		-DWITH_ZLIB=system \
 		-DWITH_ICU=system \
-		-DWITH_RE2=system \
+		-DWITH_CURL=system \
+		-DWITH_ZLIB=system \
+		-DWITH_ZSTD=system \
 		-DWITH_PROTOBUF=system \
+		-DWITH_SSL=system \
 		-DBUILD_BUNDLED_ZLIB=0 \
-		-DINSTALL_MYSQLTESTDIR=0
+		-DBUILD_BUNDLED_LZ4=0
+
+# The Mroonga, RocksDB, and TokuDB storage engines are disabled.
+# Mroonga is only buildable on little endian archs.
+# RocksDB is only buildable on little endian archs and requires POSIX timers.
+# TokuDB is only buildable on 64-bit little endian archs.
+CMAKE_ARGS+=	-DWITHOUT_MROONGA_STORAGE_ENGINE=1 \
+		-DWITHOUT_ROCKSDB_STORAGE_ENGINE=1 \
+		-DWITHOUT_TOKUDB_STORAGE_ENGINE=1
 
 SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 
 .ifdef USE_MYSQL
-.error You have `USE_MYSQL' variable defined either in environment or in make(1) arguments. Please undefine and try again.
+IGNORE=		You have `USE_MYSQL' variable defined either in environment or in make(1) arguments. Please undefine and try again.
 .endif
 
 SUB_LIST=	MY_DBDIR=${MY_DBDIR} \
@@ -85,29 +115,29 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 .if !defined(CLIENT_ONLY)
 USES+=		mysql:80
 
-CONFLICTS_INSTALL=	mysql8[1-9]-server-* \
-			mysql[0-79][0-9]-server-* \
-			mysqlwsrep* \
-			mariadb[0-9][0-9]-server-* \
-			percona[0-9][0-9]-server-*
+CONFLICTS_INSTALL=	mysql8[1-9]-server \
+			mysql[0-79][0-9]-server \
+			mysqlwsrep*-server \
+			mariadb[0-9][0-9]-server \
+			percona[0-9][0-9]-server
 
 USE_RC_SUBR=	mysql-server
 
-SUB_FILES=	my.cnf.sample
+SUB_FILES=	my.cnf.sample pkg-message
 
 USERS=		mysql
 GROUPS=		mysql
 
 USE_LDCONFIG+=	${PREFIX}/lib/mysql/plugin
 
-MMAN1=		my_print_defaults.1 myisam_ftdump.1 myisamchk.1 myisamlog.1 myisampack.1 \
-		mysql.server.1 mysql_convert_table_format.1 mysql_fix_extensions.1 \
-		mysql_install_db.1 mysql_plugin.1 mysql_secure_installation.1 mysql_setpermission.1 \
-		mysql_tzinfo_to_sql.1 mysql_upgrade.1 mysql_zap.1 mysqlbug.1 \
-		mysqld_multi.1 mysqld_safe.1 mysqldumpslow.1 mysqlhotcopy.1 mysqlman.1 \
-		mysqltest.1 perror.1 replace.1 resolve_stack_dump.1 resolveip.1
+MMAN1=		ibd2sdi.1 innochecksum.1 my_print_defaults.1 myisam_ftdump.1 myisamchk.1 \
+		myisamlog.1 myisampack.1 mysql_secure_installation.1 mysql_ssl_rsa_setup.1 \
+		mysql_tzinfo_to_sql.1 mysql_upgrade.1 mysql.server.1 mysqldumpslow.1 mysqld_multi.1 \
+		mysqld_safe.1 mysqlrouter_passwd.1 mysqlrouter_plugin_info.1 mysqlrouter.1
+MMAN8=		mysqld.8
 
 CMAKE_ARGS+=	-DWITH_EMBEDDED_SERVER="ON"
+CMAKE_ARGS+=	-DWITHOUT_CLIENTLIBS="ON"
 
 OPTIONS_GROUP=		STORAGE
 OPTIONS_GROUP_STORAGE=	ARCHIVE BLACKHOLE EXAMPLE FEDERATED INNOBASE PARTITION PERFSCHEMA
@@ -143,25 +173,15 @@ FEDERATED_SUB_LIST_OFF+=	FEDER=""
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-CMAKE_ARGS+=		-DWITH_SSL=system
-.else
-CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
+# Since 8.0.20 release innodb engine uses new memory alligned allocator
+# which is broken on i386 due to different size of types and caused a
+# 'static_assert(alignof(T) <= alignof(std::max_align_t))' error
+.if ${ARCH} == i386
+CMAKE_ARGS+=	-DDISABLE_PSI_MEMORY=1
 .endif
 
 post-extract:
 	@${RM} -rv ${WRKSRC}/sql/sql_hints.yy.cc ${WRKSRC}/sql/sql_hints.yy.h
-
-post-patch:
-	@${REINPLACE_CMD} 's/*.1/${MMAN1}/' ${WRKSRC}/man/CMakeLists.txt
 
 .if !defined(CLIENT_ONLY)
 post-install:
@@ -172,4 +192,4 @@ post-install:
 	${MKDIR} ${STAGEDIR}${MY_TMPDIR}
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

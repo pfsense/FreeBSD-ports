@@ -1,6 +1,15 @@
---- dsp/v4f_IIR2.h.orig
+--- dsp/v4f_IIR2.h.orig	2020-05-30 02:36:39 UTC
 +++ dsp/v4f_IIR2.h
-@@ -45,8 +45,8 @@
+@@ -34,7 +34,7 @@ namespace DSP {
+ 
+ #if defined(__APPLE__) || defined(__FreeBSD__)
+ 
+-inline float exp10f(float f) {return __exp10f(f);}
++inline float exp10f(float f) {return powf(10., f);}
+ 
+ #endif
+ 
+@@ -47,8 +47,8 @@ class RBJv4
  			{
  				v4f_t w = v4f_2pi * f;
  
@@ -11,7 +20,7 @@
  
  				alpha = sin / (v4f_2 * Q);
  			}
-@@ -549,9 +549,9 @@
+@@ -551,9 +551,9 @@ class Resonator4fBank
  			{
  				v4f_t * a = state + i*Item;
  				f *= v4f_2pi;

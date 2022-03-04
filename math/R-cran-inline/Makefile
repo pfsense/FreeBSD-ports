@@ -1,9 +1,7 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	inline
-PORTVERSION=	0.3.15
-PORTREVISION=	1
+PORTVERSION=	0.3.19
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

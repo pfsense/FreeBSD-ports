@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libquvi-scripts
 PORTVERSION=	0.4.21
@@ -11,7 +10,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Embedded lua scripts for libquvi and utility scripts
 
 LICENSE=	LGPL21+
-LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 PORTSCOUT=	limit:^0\.4\.
 

@@ -1,8 +1,7 @@
 # Created by: Stanislav Sedov <stas@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libatomic_ops
-PORTVERSION=	7.6.10
+PORTVERSION=	7.6.12
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -15,10 +14,12 @@ LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
-USES=		autoreconf libtool pathfix
+USES=		autoreconf cpe libtool pathfix
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	ivmai
+
+CPE_VENDOR=	libatomic_ops_project
 
 OPTIONS_DEFINE=	DOCS
 

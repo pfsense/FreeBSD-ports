@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	XML-Canonical
 PORTVERSION=	0.10
@@ -18,8 +17,8 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-XML-GDOME>=0:textproc/p5-XML-GDOME
 LIB_DEPENDS=	libgdome.so:textproc/gdome2
 
-USE_PERL5=	configure
 USES=		perl5 pkgconfig
+USE_PERL5=	configure
 
 post-patch:
 	@${REINPLACE_CMD} -e '/die "VERSION" unless /d' ${WRKSRC}/Makefile.PL

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	siril
-DISTVERSION=	0.9.10
-PORTREVISION=	1
+DISTVERSION=	0.99.10.1
+PORTREVISION=	3
 CATEGORIES=	astro graphics
 MASTER_SITES=	https://free-astro.org/download/
 
@@ -12,40 +10,41 @@ COMMENT=	Astronomical image processing software
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange'
+BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange' #`
 
+BUILD_DEPENDS=	cmake:devel/cmake
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libcfitsio.so:astro/cfitsio \
 		libconfig.so:devel/libconfig \
-		libcurl.so:ftp/curl \
+		libexiv2.so:graphics/exiv2 \
 		libffms2.so:multimedia/ffms2 \
 		libfftw3.so:math/fftw3 \
+		libfftw3f.so:math/fftw3-float \
 		libgsl.so:math/gsl \
+		libharfbuzz.so:print/harfbuzz \
+		libheif.so:graphics/libheif \
+		libjson-glib-1.0.so:devel/json-glib \
 		liblcms2.so:graphics/lcms2 \
-		libopencv_core.so:graphics/opencv-core \
+		libopencv_core.so:graphics/opencv \
 		libpng.so:graphics/png \
 		libraw.so:graphics/libraw \
 		libtiff.so:graphics/tiff
 LIB_DEPENDS+=	libopencv_photo.so:graphics/opencv # for some reason, configure fails without opencv, but executable only links to opencv-core
 
-USES=		autoreconf desktop-file-utils gettext gmake gnome localbase pkgconfig jpeg shared-mime-info tar:bz2
-GNU_CONFIGURE=	yes
+USES=		compiler:c++11-lang desktop-file-utils gettext \
+		gnome meson pkgconfig jpeg shared-mime-info tar:bz2
 USE_GNOME=	atk cairo gdkpixbuf2 gtk30 intltool pango
-INSTALLS_ICONS=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-OPTIONS_DEFINE=			OPENMP
-OPTIONS_DEFAULT=		OPENMP
+BINARY_ALIAS=	git=false
 
-OPENMP_CONFIGURE_ENABLE=	openmp
-OPENMP_LIB_DEPENDS=		libomp.so:devel/openmp
+OPTIONS_DEFINE=		CURL OPENMP
+OPTIONS_DEFAULT=	CURL OPENMP
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata ${STAGEDIR}${PREFIX}/share/mime/packages
-	${INSTALL_DATA} ${WRKSRC}/platform-specific/linux/org.free-astro.siril.desktop ${STAGEDIR}${PREFIX}/share/applications/${PORTNAME}.desktop
-	${INSTALL_DATA} ${WRKSRC}/platform-specific/linux/org.free-astro.siril.appdata.xml ${STAGEDIR}${PREFIX}/share/appdata/${PORTNAME}.appdata.xml
-	${INSTALL_DATA} ${WRKSRC}/platform-specific/linux/siril.xml ${STAGEDIR}${PREFIX}/share/mime/packages/
-	cd ${WRKSRC}/pixmaps && ${COPYTREE_SHARE} icons ${STAGEDIR}${PREFIX}/share/
+OPENMP_MESON_OFF=	-Dopenmp=false
+
+CURL_MESON_YES=		enable-libcurl
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	XML-XPathEngine
 PORTVERSION=	0.14
@@ -16,6 +15,8 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 REINPLACE_ARGS=	-i ''
 
 # For errors like

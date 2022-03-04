@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jekyll-sass-converter
-PORTVERSION=	1.5.2
+PORTVERSION=	2.1.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -11,10 +10,11 @@ COMMENT=	Basic Sass converter for Jekyll
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-sass>=3.4:textproc/rubygem-sass
+RUN_DEPENDS=	rubygem-sassc>=2.1.0<3.0:textproc/rubygem-sassc
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Whom:					Tom McLaughlin <tmclaugh@sdf.lonestar.org>
-# $FreeBSD$
 
 PKGNAMEPREFIX=	gnome-icons-
 
@@ -9,7 +8,7 @@ NO_ARCH=	yes
 REASON=		Themes may contain artwork not done by the author. \
 		Keep FreeBSD safe if theme author violated copyrights.
 
-INSTALLS_ICONS=	yes
+USES+=		gnome
 
 do-install: icon-do-install
 

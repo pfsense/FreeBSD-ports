@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pkgconf
-PORTVERSION=	1.6.0
+PORTVERSION=	1.8.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://distfiles.dereferenced.org/pkgconf/ \
@@ -17,7 +15,7 @@ LICENSE=	ISCL
 
 TEST_DEPENDS=	kyua:devel/kyua
 
-USES=		tar:xz libtool pathfix
+USES=		cpe tar:xz libtool pathfix
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes

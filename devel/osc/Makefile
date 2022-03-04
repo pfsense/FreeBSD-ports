@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	osc
-PORTVERSION=	0.164.2
+PORTVERSION=	0.174.0
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -16,8 +13,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}m2crypto>0:security/py-m2crypto@${PY_FLAVOR}
 USE_GITHUB=	yes
 GH_ACCOUNT=	openSUSE
 
-USES=		cpe python:2.7
-USE_PYTHON=	autoplist distutils
+USES=		cpe python
+USE_PYTHON=	autoplist distutils noflavors
 PLIST_FILES=	bin/osc
 NO_ARCH=	yes
 

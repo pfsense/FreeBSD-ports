@@ -1,9 +1,8 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pesign
 PORTVERSION=	0.110
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	sysutils
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/

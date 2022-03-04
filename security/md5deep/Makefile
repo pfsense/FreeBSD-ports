@@ -1,9 +1,8 @@
 # Created by: Frank Laszlo <laszlof@vonostingroup.com>
-# $FreeBSD$
 
 PORTNAME=	md5deep
 PORTVERSION=	4.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	nobutaka@FreeBSD.org

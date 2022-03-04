@@ -1,5 +1,4 @@
 # Created by: Dejan Lesjak <lesi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xbitmaps
 PORTVERSION=	1.1.2
@@ -11,8 +10,8 @@ COMMENT=	X.Org bitmaps data
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pathfix
+USES=		pathfix xorg-cat:data
 
-XORG_CAT=	data
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

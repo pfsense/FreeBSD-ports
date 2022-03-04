@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcweject
 PORTVERSION=	1.1
 CATEGORIES=	sysutils
@@ -12,7 +10,7 @@ LICENSE=	BSD3CLAUSE
 
 SUB_FILES=	pkg-message
 
-CONFLICTS=	eject-[0-9]*
+CONFLICTS=	eject
 
 USES=		tar:xz
 

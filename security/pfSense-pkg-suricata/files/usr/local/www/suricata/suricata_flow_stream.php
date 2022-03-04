@@ -3,11 +3,11 @@
  * suricata_flow_stream.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,7 @@ if (isset($id) && $a_nat[$id]) {
 		if (!is_array($a_nat[$id]['host_os_policy']['item']))
 			$a_nat[$id]['host_os_policy']['item'] = array();
 		$a_nat[$id]['host_os_policy']['item'][] = $default;
-		write_config();
+		write_config("Suricata pkg: saved new default Host_OS_Policy engine.");
 		$host_os_policy_engine_next_id++;
 	}
 	else
@@ -173,7 +173,7 @@ if ($_POST['save_os_policy']) {
 			}
 
 			// Now write the new engine array to conf
-			write_config();
+			write_config("Suricata pkg: saved new Host_OS_Policy engine.");
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -206,7 +206,7 @@ elseif ($_POST['del_os_policy']) {
 	}
 	if (isset($id) && $a_nat[$id]) {
 		$a_nat[$id] = $natent;
-		write_config();
+		write_config("Suricata pkg: deleted a Host_OS_Policy engine.");
 	}
 	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -253,16 +253,18 @@ elseif ($_POST['ResetAll']) {
 
 	// The default 'stream_memcap' value must be calculated as follows:
 	// 216 * prealloc_sessions * number of threads = memory use in bytes
-	// 64 MB is a decent all-around default, but some setups need more.
+	// 128 MB is a decent all-around default, but some setups need more.
 	$pconfig['stream_prealloc_sessions'] = '32768';
-	$pconfig['stream_memcap'] = '67108864';
-	$pconfig['reassembly_memcap'] = '67108864';
+	$pconfig['stream_memcap'] = '131217728';
+	$pconfig['reassembly_memcap'] = '131217728';
 	$pconfig['reassembly_depth'] = '1048576';
 	$pconfig['reassembly_to_server_chunk'] = '2560';
 	$pconfig['reassembly_to_client_chunk'] = '2560';
 	$pconfig['enable_midstream_sessions'] = 'off';
 	$pconfig['enable_async_sessions'] = 'off';
 	$pconfig['max_synack_queued'] = '5';
+	$pconfig['stream_bypass'] = "no";
+	$pconfig['stream_drop_invalid'] = "no";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings have been reset to their defaults.  Click APPLY to save the changes.");
@@ -303,11 +305,13 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		if ($_POST['flow_icmp_emerg_new_timeout'] != "") { $natent['flow_icmp_emerg_new_timeout'] = $_POST['flow_icmp_emerg_new_timeout']; }else{ $natent['flow_icmp_emerg_new_timeout'] = "10"; }
 		if ($_POST['flow_icmp_emerg_established_timeout'] != "") { $natent['flow_icmp_emerg_established_timeout'] = $_POST['flow_icmp_emerg_established_timeout']; }else{ $natent['flow_icmp_emerg_established_timeout'] = "100"; }
 
-		if ($_POST['stream_memcap'] != "") { $natent['stream_memcap'] = $_POST['stream_memcap']; }else{ $natent['stream_memcap'] = "67108864"; }
+		if ($_POST['stream_memcap'] != "") { $natent['stream_memcap'] = $_POST['stream_memcap']; }else{ $natent['stream_memcap'] = "131217728"; }
 		if ($_POST['stream_prealloc_sessions'] != "") { $natent['stream_prealloc_sessions'] = $_POST['stream_prealloc_sessions']; }else{ $natent['stream_prealloc_sessions'] = "32768"; }
 		if ($_POST['enable_midstream_sessions'] == "on") { $natent['enable_midstream_sessions'] = 'on'; }else{ $natent['enable_midstream_sessions'] = 'off'; }
 		if ($_POST['enable_async_sessions'] == "on") { $natent['enable_async_sessions'] = 'on'; }else{ $natent['enable_async_sessions'] = 'off'; }
-		if ($_POST['reassembly_memcap'] != "") { $natent['reassembly_memcap'] = $_POST['reassembly_memcap']; }else{ $natent['reassembly_memcap'] = "67108864"; }
+		if ($_POST['stream_bypass'] == "yes") { $natent['stream_bypass'] = 'yes'; }else{ $natent['stream_bypass'] = 'no'; }
+		if ($_POST['stream_drop_invalid'] == "yes") { $natent['stream_drop_invalid'] = 'yes'; }else{ $natent['stream_drop_invalid'] = 'no'; }
+		if ($_POST['reassembly_memcap'] != "") { $natent['reassembly_memcap'] = $_POST['reassembly_memcap']; }else{ $natent['reassembly_memcap'] = "131217728"; }
 		if ($_POST['reassembly_depth'] != "") { $natent['reassembly_depth'] = $_POST['reassembly_depth']; }else{ $natent['reassembly_depth'] = "1048576"; }
 		if ($_POST['reassembly_to_server_chunk'] != "") { $natent['reassembly_to_server_chunk'] = $_POST['reassembly_to_server_chunk']; }else{ $natent['reassembly_to_server_chunk'] = "2560"; }
 		if ($_POST['reassembly_to_client_chunk'] != "") { $natent['reassembly_to_client_chunk'] = $_POST['reassembly_to_client_chunk']; }else{ $natent['reassembly_to_client_chunk'] = "2560"; }
@@ -320,7 +324,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		/**************************************************/
 		if (isset($id) && $a_nat[$id]) {
 			$a_nat[$id] = $natent;
-			write_config();
+			write_config("Suricata pkg: saved flow or stream configuration changes.");
 			$rebuild_rules = false;
 			suricata_generate_yaml($natent);
 
@@ -408,7 +412,7 @@ elseif ($_POST['save_import_alias']) {
 			}
 
 			// Write the new engine array to config file
-			write_config();
+			write_config("Suricata pkg: saved Host_OS_Policy engine created from a defined firewall alias.");
 			$importalias = false;
 			$selectalias = false;
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -439,7 +443,9 @@ elseif ($_POST['cancel_import_alias']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Interface Flow and Stream - {$if_friendly}"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - Flow and Stream Engine");
+
 include_once("head.inc");
 
 /* Display error message */
@@ -458,6 +464,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php?instance={$id}");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -475,7 +482,6 @@ $tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_
 $tab_array[] = array($menu_iface . gettext("Flow/Stream"), true, "/suricata/suricata_flow_stream.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
 ?>
@@ -484,8 +490,8 @@ display_top_tabs($tab_array, true);
 	if ($importalias) {
 
 		print('<form action="suricata_flow_stream.php" method="post" name="iform" id="iform" class="form-horizontal">');
-		print('<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>');
-		print('<input type="hidden" name="id" id="id" value="<?=$id?>"/>');
+		print('<input type="hidden" name="eng_id" id="eng_id" value="' . $eng_id . '"/>');
+		print('<input type="hidden" name="id" id="id" value="' . $id . '"/>');
 
 		if ($selectalias) {
 			print('<input type="hidden" name="eng_name" value="' . $eng_name . '"/>');
@@ -753,7 +759,7 @@ $section->addInput(new Form_Input(
 	'Stream Memory Cap',
 	'text',
 	$pconfig['stream_memcap']
-))->setHelp('Max memory to be used by stream engine. Default is 67,108,864 bytes (64MB). Sets the maximum amount of memory, in bytes, to be used by the stream engine. This number will likely need to be increased beyond the default value in systems with more than 4 processor cores. If Suricata fails to start and logs a memory allocation error, increase this value in 4 MB chunks until Suricata starts successfully.');
+))->setHelp('Max memory to be used by stream engine. Default is 131,217,728 bytes (128MB). Sets the maximum amount of memory, in bytes, to be used by the stream engine. This number will likely need to be increased beyond the default value in systems with more than 4 processor cores. If Suricata fails to start and logs a memory allocation error, increase this value in 4 MB chunks until Suricata starts successfully.');
 $section->addInput(new Form_Input(
 	'stream_prealloc_sessions',
 	'Preallocated Sessions',
@@ -774,12 +780,26 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_async_sessions'] == 'on' ? true:false,
 	'on'
 ));
+$section->addInput(new Form_Checkbox(
+	'stream_bypass',
+	'Bypass Packets',
+	'Suricata will bypass packets when stream reassembly depth (configured below) is reached. Default is Not Checked.',
+	$pconfig['stream_bypass'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'stream_drop_invalid',
+	'Drop Invalid Packets',
+	'When using Inline mode, Suricata will drop packets that are invalid with regards to streaming engine. Default is Not Checked.',
+	$pconfig['stream_drop_invalid'] == 'yes' ? true:false,
+	'yes'
+));
 $section->addInput(new Form_Input(
 	'reassembly_memcap',
 	'Reassembly Memory Cap',
 	'text',
 	$pconfig['reassembly_memcap']
-))->setHelp('Max memory to be used for stream reassembly. Default is 67,108,864 bytes (64MB). Sets the maximum amount of memory, in bytes, to be used for stream reassembly.');
+))->setHelp('Max memory to be used for stream reassembly. Default is 131,217,728 bytes (128MB). Sets the maximum amount of memory, in bytes, to be used for stream reassembly.');
 $section->addInput(new Form_Input(
 	'reassembly_depth',
 	'Reassembly Depth',

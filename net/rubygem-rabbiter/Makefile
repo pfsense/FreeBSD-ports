@@ -1,5 +1,4 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rabbiter
 PORTVERSION=	2.0.4
@@ -7,7 +6,7 @@ CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	tota@FreeBSD.org
-COMMENT=	Rabbiter is a twitter client for Rabbit
+COMMENT=	Twitter client for Rabbit
 
 LICENSE=	GPLv2+
 

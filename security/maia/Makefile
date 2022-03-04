@@ -1,11 +1,9 @@
 # Created by: Janky Jay <ek@purplehat.org>
-# $FreeBSD$
 
 PORTNAME=	maia
 DISTVERSION=	1.0.4
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	security
-DISTNAME=	maia_mailguard
 
 MAINTAINER=	ek@purplehat.org
 COMMENT=	Web-based management system based on amavisd-new and SpamAssassin
@@ -20,7 +18,7 @@ RUN_DEPENDS=	p5-Unix-Syslog>=0.94:sysutils/p5-Unix-Syslog \
 		p5-Net-CIDR-Lite>=0.18:net/p5-Net-CIDR-Lite \
 		p5-forks>=0.34:devel/p5-forks \
 		p5-Archive-Zip>=0.10:archivers/p5-Archive-Zip \
-		p5-IO-stringy>=1.203:devel/p5-IO-stringy \
+		p5-IO-Stringy>=1.203:devel/p5-IO-Stringy \
 		p5-IO-Socket-INET6>=1.27:net/p5-IO-Socket-INET6 \
 		p5-Text-CSV>=1.02:textproc/p5-Text-CSV \
 		p5-Data-UUID>=1.148:devel/p5-Data-UUID \
@@ -32,10 +30,9 @@ USES=		perl5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	technion
 GH_PROJECT=	maia_mailguard
-GH_TAGNAME=	09eb7e5
+GH_TAGNAME=	7f20bd4
 USE_PERL5=	run
 NO_BUILD=	yes
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}
 DOCS=	LICENSE.txt README.md maiad.conf.dist maia-mysql.sql maia-pgsql.sql maia.conf.dist
 USERS=	vscan
 GROUPS=	vscan
@@ -44,8 +41,8 @@ MAIAQUARANTINE?=	/var/maiad/virusmails
 PEAR_DIR?=	${LOCALBASE}/share/pear
 PLIST_SUB+=	USERS="${USERS}" GROUPS="${GROUPS}" WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
-OPTIONS_DEFINE=	APACHE LIGHTTPD WEBHOST MYSQL MYSQLSERVER PGSQL PGSQLSERVER DOVECOT2 \
-		POSTFIX PFA CLAMAV SPAMASSASSIN BDB ALTERMIME CRYPT \
+OPTIONS_DEFINE=	APACHE LIGHTTPD NGINX WEBHOST MYSQL MYSQLSERVER PGSQL PGSQLSERVER \
+		DOVECOT2 POSTFIX PFA CLAMAV SPAMASSASSIN BDB CRYPT \
 		IPCOUNTRY DOMAINKEYS SPF DKIM FILE RAR UNRAR ARJ UNARJ LHA ARC NOMARCH CAB \
 		RPM ZOO UNZOO LZOP P7ZIP TNEF DOCS
 
@@ -55,6 +52,7 @@ OPTIONS_DEFAULT=	MYSQL CLAMAV SPAMASSASSIN BDB IPCOUNTRY \
 
 APACHE_DESC=		Use Apache web server
 LIGHTTPD_DESC=		Use LighTTPD web server
+NGINX_DESC=			Use Nginx web server
 WEBHOST_DESC=		PHP, PEAR, etc... for Maia web interface
 MYSQL_DESC=		Use MySQL datebase
 MYSQLSERVER_DESC=	Install MySQL Server
@@ -66,7 +64,6 @@ PFA_DESC=		Use Postfixadmin
 CLAMAV_DESC=		Use ClamAV anti-virus
 SPAMASSASSIN_DESC=	Use SpamAssassin
 BDB_DESC=		Use BerkeleyDB
-ALTERMIME_DESC=		Use AlterMime
 CRYPT_DESC=		Encryption support
 IPCOUNTRY_DESC=		SpamAssassin IP Country plugin
 DOMAINKEYS_DESC=	SpamAssassin DomainKey plugin
@@ -104,13 +101,14 @@ USE_RC_SUBR+=	maiad
 # setting USE_ variables. C'est la vie.
 
 .if ${PORT_OPTIONS:MAPACHE}
-USES+=		apache:run,2.2+
+USES+=		apache:run,2.4+
 .endif
 
 .if ${PORT_OPTIONS:MWEBHOST}
+USES+=		php
 USE_PHP=	bcmath ctype dom gettext hash iconv imap json mbstring \
 		mcrypt pdo pdo_sqlite posix session simplexml sockets \
-		sqlite3 tokenizer xml wddx xmlreader xmlwriter xmlrpc
+		sqlite3 tokenizer xml xmlreader xmlwriter xmlrpc
 
 RUN_DEPENDS+=	${PEAR_DIR}/Mail/mime.php:mail/pear-Mail_Mime@${PHP_FLAVOR} \
 		${PEAR_DIR}/Mail/mimeDecode.php:mail/pear-Mail_mimeDecode@${PHP_FLAVOR} \
@@ -138,8 +136,10 @@ PLIST_SUB+=	WEBHOST="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql:client
+RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
 .endif
+
 .if ${PORT_OPTIONS:MMYSQL} && ${PORT_OPTIONS:MWEBHOST}
 USE_PHP+=	mysqli
 .endif
@@ -155,12 +155,12 @@ USE_PHP+=	pgsql
 RUN_DEPENDS+=	lighttpd:www/lighttpd
 .endif
 
-.if ${PORT_OPTIONS:MMYSQL}
-RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
+.if ${PORT_OPTIONS:MNGINX}
+RUN_DEPENDS+=	nginx:www/nginx
 .endif
-
+ 
 .if ${PORT_OPTIONS:MMYSQLSERVER}
-USE_MYSQL=	server
+USES+=		mysql:server
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
@@ -194,10 +194,6 @@ RUN_DEPENDS+=	spamassassin>=0:mail/spamassassin
 
 .if ${PORT_OPTIONS:MBDB}
 RUN_DEPENDS+=	p5-BerkeleyDB>=0:databases/p5-BerkeleyDB
-.endif
-
-.if ${PORT_OPTIONS:MALTERMIME}
-RUN_DEPENDS+=	altermime:mail/altermime
 .endif
 
 .if ${PORT_OPTIONS:MCRYPT}
@@ -296,7 +292,8 @@ post-patch:
 	scripts/process-quarantine.pl scripts/resend.pl scripts/send-quarantine-digests.pl \
 	scripts/send-quarantine-reminders.pl scripts/stats-snapshot.pl
 		@${REINPLACE_CMD} -e "s|/etc/maia/maia.conf|${ETCDIR}/maia.conf|" \
-			${WRKSRC}/${m}
+		-e "s|/usr/bin/perl.*|/usr/bin/env perl|" \
+		${WRKSRC}/${m}
 .endfor
 
 .for i in digest.tpl newuser.tpl reminder.tpl

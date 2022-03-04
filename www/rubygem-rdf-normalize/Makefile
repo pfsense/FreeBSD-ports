@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	rdf-normalize
-DISTVERSION=	0.3.3
+PORTVERSION=	0.4.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -10,10 +8,11 @@ COMMENT=	RDF Graph normalizer for Ruby
 
 LICENSE=	UNLICENSE
 
-RUN_DEPENDS=	rubygem-rdf>=2.2:www/rubygem-rdf
+RUN_DEPENDS=	rubygem-rdf>=3.1<4:www/rubygem-rdf
 
 USES=		gem
 USE_RUBY=	yes
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

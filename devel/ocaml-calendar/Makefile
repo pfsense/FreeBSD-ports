@@ -1,5 +1,4 @@
 # Created by: Jaap Boender <jaapb@kerguelen.org>
-# $FreeBSD$
 
 PORTNAME=	calendar
 PORTVERSION=	2.03.2
@@ -9,6 +8,8 @@ PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Date and time library for OCaml
+
+LICENSE=	LGPL21
 
 GNU_CONFIGURE=	yes
 USES=		gmake

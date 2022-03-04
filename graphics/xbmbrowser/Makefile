@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xbmbrowser
 PORTVERSION=	5.1
@@ -11,7 +10,7 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	View complete directories of X bitmaps and X pixmaps
 
-USES=		gmake imake
+USES=		gmake imake xorg
 USE_XORG=	xaw xmu
 
 .include <bsd.port.mk>

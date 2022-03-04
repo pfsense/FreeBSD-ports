@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PROG=		SuicaValue
 DPADD=		${LOCALBASE}/lib/libpasori.a
 LDADD=		-L${LOCALBASE}/lib -lpasori
 
-BINDIR=		${LOCALBASE}/bin
-NO_MAN=
+BINDIR=		${PREFIX}/bin
+MAN=
 
 CFLAGS+=	-I${LOCALBASE}/include
 CFLAGS+=	-Wall -W

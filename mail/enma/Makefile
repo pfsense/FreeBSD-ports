@@ -1,9 +1,8 @@
 # Created by: Hirohisa Yamaguchi <umq@ueo.co.jp>
-# $FreeBSD$
 
 PORTNAME=	enma
 PORTVERSION=	1.2.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/ENMA/${PORTVERSION}
 
@@ -12,7 +11,6 @@ COMMENT=	Sender authentication milter supporting SPF and Sender ID
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ssl-incdir=${OPENSSLINC} \

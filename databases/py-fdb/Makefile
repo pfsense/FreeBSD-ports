@@ -1,8 +1,8 @@
 # Created by: Jose Jachuf <jjachuf@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fdb
-PORTVERSION=	2.0.0
+PORTVERSION=	2.0.1
+PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,14 +11,12 @@ MAINTAINER=	jjachuf@gmail.com
 COMMENT=	Firebird RDBMS bindings for Python
 
 LICENSE=	ISCL
+LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-py27_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}
-
-NO_ARCH=	yes
-USES=		firebird python
+USES=		firebird python:3.6+
 USE_PYTHON=	autoplist distutils
 
-.include <bsd.port.pre.mk>
+NO_ARCH=	yes
 
 post-patch:
 	@${ECHO_MSG}
@@ -27,4 +25,4 @@ post-patch:
 	@${ECHO_MSG} "The build of py-fdb will fail otherwise."
 	@${ECHO_MSG}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

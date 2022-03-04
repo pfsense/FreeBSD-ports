@@ -1,5 +1,4 @@
 # Created by: Johann Visagie <johann@egenetics.com>
-# $FreeBSD$
 
 PORTNAME=	libxml
 PORTVERSION=	0.08
@@ -20,6 +19,7 @@ RUN_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
 USES=		perl5
 USE_PERL5=	configure
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

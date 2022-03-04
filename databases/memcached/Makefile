@@ -1,8 +1,7 @@
 # Created by: Sean Chittenden <seanc@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	memcached
-PORTVERSION=	1.5.12
+PORTVERSION=	1.6.12
 CATEGORIES=	databases
 MASTER_SITES=	http://www.memcached.org/files/ \
 		GENTOO
@@ -13,14 +12,9 @@ COMMENT=	High-performance distributed memory object cache system
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_mips=		fails to link: failed to merge target specific data of file /usr/lib/dtrace/drti.o
-BROKEN_mips64=		fails to link: failed to merge target specific data of file /usr/lib/dtrace/drti.o
-
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-CONFLICTS=	memcached-1.2*
-
-USES=		cpe shebangfix autoreconf
+USES=		autoreconf cpe shebangfix
 SHEBANG_FILES=	scripts/memcached-tool
 
 USE_RC_SUBR=	memcached
@@ -28,23 +22,26 @@ SUB_LIST+=	RC_SUBR_SUFFIX=${RC_SUBR_SUFFIX}
 
 USE_CSTD=	c99
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-libevent=${LOCALBASE} \
+CONFIGURE_ARGS=	--disable-coverage \
 		--program-prefix= \
-		--disable-coverage
+		--with-libevent=${LOCALBASE}
 
 # Dtrace option disabled until it is fixed upstream
-OPTIONS_DEFINE=		SASL DOCS DTRACE
-OPTIONS_DEFAULT=	SASL DTRACE
+OPTIONS_DEFINE=		DOCS SASL
+OPTIONS_DEFAULT=	SASL
+OPTIONS_DEFINE_amd64=	DTRACE
+OPTIONS_DEFAULT_amd64=	DTRACE
+OPTIONS_DEFINE_powerpc64=	DTRACE
+OPTIONS_DEFAULT_powerpc64=	DTRACE
+OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
+OPTIONS_EXCLUDE_powerpc64_11=	DTRACE
+OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
+OPTIONS_DEFINE_powerpc64le=	DTRACE
+OPTIONS_DEFAULT_powerpc64le=	DTRACE
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
-
-OPTIONS_EXCLUDE_i386=		DTRACE
-# ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
-OPTIONS_EXCLUDE_aarch64=	DTRACE
-OPTIONS_EXCLUDE_armv6=		DTRACE
-OPTIONS_EXCLUDE_armv7=		DTRACE
 
 DTRACE_DESC=	Enable dtrace probes
 SASL_DESC=	Enable SASL Authentication
@@ -64,13 +61,13 @@ MAKE_JOBS_UNSAFE=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == amd64
-CONFIGURE_ARGS+=	--enable-64bit
+.if ${OPSYS} == FreeBSD
+CONFIGURE_ARGS+=	--enable-tls
+USES+=			ssl
 .endif
 
-# avoid triggering a bug in libdtrace, see illumos issue 6653
-.if ${PORT_OPTIONS:MDTRACE}
-CFLAGS+=		-no-integrated-as
+.if ${ARCH} == amd64 || ${ARCH:Mpowerpc64*}
+CONFIGURE_ARGS+=	--enable-64bit
 .endif
 
 post-install:

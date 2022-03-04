@@ -1,249 +1,292 @@
 # Created by: Carlo Strub
-# $FreeBSD$
 
 PORTNAME=	pijul
-PORTVERSION=	0.11.0
-PORTREVISION=	3
+PORTVERSION=	1.0.0.a55
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://pijul.org/releases/
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Distributed version control system
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		fails to compile: aesv8-armx-linux64.S:53:2: instruction requires: crypto aese v6.16b,v0.16b
+LIB_DEPENDS=	libzstd.so:archivers/zstd \
+		libxxhash.so:devel/xxhash
 
-USES=		cargo
-CARGO_CRATES=	adler32-1.0.3 \
-		advapi32-sys-0.2.0 \
-		aho-corasick-0.6.8 \
-		ansi_term-0.11.0 \
-		argon2rs-0.2.5 \
-		arrayvec-0.4.7 \
-		atty-0.2.11 \
-		backtrace-0.3.9 \
-		backtrace-sys-0.1.24 \
-		base64-0.9.3 \
-		bincode-1.0.1 \
-		bit-vec-0.4.4 \
-		bitflags-1.0.4 \
-		blake2-rfc-0.2.18 \
-		bs58-0.2.2 \
-		build_const-0.2.1 \
-		byteorder-1.2.6 \
-		bytes-0.4.10 \
-		cc-1.0.25 \
-		cfg-if-0.1.6 \
-		chrono-0.4.6 \
-		clap-2.32.0 \
-		cloudabi-0.0.3 \
-		constant_time_eq-0.1.3 \
-		core-foundation-0.5.1 \
-		core-foundation-sys-0.5.1 \
-		crc-1.8.1 \
-		crossbeam-channel-0.2.6 \
-		crossbeam-deque-0.6.1 \
-		crossbeam-epoch-0.5.2 \
-		crossbeam-epoch-0.6.0 \
-		crossbeam-utils-0.5.0 \
-		cryptovec-0.4.5 \
-		dirs-1.0.4 \
-		dtoa-0.4.3 \
-		encoding_rs-0.8.10 \
-		env_logger-0.5.13 \
-		errno-0.2.4 \
-		errno-dragonfly-0.1.1 \
-		error-chain-0.12.0 \
-		failure-0.1.3 \
-		failure_derive-0.1.3 \
-		filetime-0.2.1 \
-		flate2-1.0.4 \
-		fnv-1.0.6 \
+USES=		cargo ssl
+CARGO_INSTALL=	no
+CARGO_CRATES=	${PORTNAME}-1.0.0-alpha.55 \
+		addr2line-0.16.0 \
+		adler-1.0.2 \
+		adler32-1.2.0 \
+		aes-0.7.5 \
+		aho-corasick-0.7.18 \
+		anyhow-1.0.44 \
+		arrayref-0.3.6 \
+		arrayvec-0.7.1 \
+		atty-0.2.14 \
+		autocfg-1.0.1 \
+		backtrace-0.3.61 \
+		base64-0.13.0 \
+		base64ct-1.1.1 \
+		bcrypt-pbkdf-0.6.2 \
+		bincode-1.3.3 \
+		bit-vec-0.6.3 \
+		bitflags-1.3.2 \
+		blake3-1.0.0 \
+		block-buffer-0.9.0 \
+		block-modes-0.8.1 \
+		block-padding-0.2.1 \
+		blowfish-0.8.0 \
+		bs58-0.4.0 \
+		bstr-0.2.17 \
+		bumpalo-3.8.0 \
+		byteorder-1.4.3 \
+		bytes-1.1.0 \
+		canonical-path-2.0.2 \
+		cc-1.0.71 \
+		cfg-if-1.0.0 \
+		chrono-0.4.19 \
+		cipher-0.3.0 \
+		clap-3.0.0-beta.5 \
+		clap_derive-3.0.0-beta.5 \
+		constant_time_eq-0.1.5 \
+		core-foundation-0.9.2 \
+		core-foundation-sys-0.8.3 \
+		cpufeatures-0.2.1 \
+		crc32fast-1.2.1 \
+		crossbeam-deque-0.8.1 \
+		crossbeam-epoch-0.9.5 \
+		crossbeam-utils-0.8.5 \
+		crypto-mac-0.11.1 \
+		cryptovec-0.6.1 \
+		ctr-0.8.0 \
+		ctrlc-3.2.1 \
+		curve25519-dalek-3.2.0 \
+		data-encoding-2.3.2 \
+		diffs-0.4.1 \
+		digest-0.9.0 \
+		dirs-3.0.2 \
+		dirs-next-2.0.0 \
+		dirs-sys-0.3.6 \
+		dirs-sys-next-0.1.2 \
+		ed25519-1.2.0 \
+		ed25519-dalek-1.0.1 \
+		edit-0.1.3 \
+		either-1.6.1 \
+		encoding_rs-0.8.29 \
+		env_logger-0.8.4 \
+		errno-0.2.7 \
+		errno-dragonfly-0.1.2 \
+		filetime-0.2.15 \
+		flate2-1.0.22 \
+		fnv-1.0.7 \
 		foreign-types-0.3.2 \
 		foreign-types-shared-0.1.1 \
+		form_urlencoded-1.0.1 \
 		fs2-0.4.3 \
-		fuchsia-zircon-0.3.3 \
-		fuchsia-zircon-sys-0.3.3 \
-		futures-0.1.25 \
-		futures-cpupool-0.1.8 \
-		gcc-0.3.55 \
-		getch-0.2.0 \
-		globset-0.4.2 \
-		h2-0.1.13 \
-		hex-0.3.2 \
-		http-0.1.13 \
-		httparse-1.3.3 \
-		humantime-1.1.1 \
-		hyper-0.12.12 \
-		hyper-tls-0.3.1 \
-		idna-0.1.5 \
-		ignore-0.4.4 \
-		indexmap-1.0.2 \
-		iovec-0.1.2 \
-		isatty-0.1.9 \
-		itoa-0.4.3 \
-		kernel32-sys-0.2.2 \
-		lazy_static-1.1.0 \
-		lazycell-1.2.0 \
-		libc-0.2.49 \
-		libflate-0.1.18 \
-		libpijul-0.11.0 \
-		line-0.1.9 \
-		lock_api-0.1.4 \
-		log-0.4.5 \
-		matches-0.1.8 \
-		memchr-2.1.0 \
-		memmap-0.6.2 \
-		memoffset-0.2.1 \
-		mime-0.3.12 \
-		mime_guess-2.0.0-alpha.6 \
-		miniz-sys-0.1.11 \
-		miniz_oxide-0.2.0 \
-		miniz_oxide_c_api-0.2.0 \
-		mio-0.6.16 \
-		mio-uds-0.6.7 \
-		miow-0.2.1 \
-		native-tls-0.2.2 \
-		net2-0.2.33 \
-		nodrop-0.1.12 \
-		num-0.1.42 \
-		num-bigint-0.1.44 \
-		num-complex-0.1.43 \
-		num-integer-0.1.39 \
-		num-iter-0.1.37 \
-		num-rational-0.1.42 \
-		num-traits-0.2.6 \
-		num_cpus-1.8.0 \
-		openssl-0.10.15 \
-		openssl-probe-0.1.2 \
-		openssl-sys-0.9.39 \
-		owning_ref-0.3.3 \
-		pager-0.14.0 \
-		parking_lot-0.6.4 \
-		parking_lot_core-0.3.1 \
-		percent-encoding-1.0.1 \
-		phf-0.7.23 \
-		phf_codegen-0.7.23 \
-		phf_generator-0.7.23 \
-		phf_shared-0.7.23 \
-		pkg-config-0.3.14 \
-		proc-macro2-0.4.20 \
-		progrs-0.1.1 \
-		quick-error-1.2.2 \
-		quote-0.6.8 \
-		rand-0.4.3 \
-		rand-0.5.5 \
-		rand_core-0.2.2 \
-		rand_core-0.3.0 \
-		redox_syscall-0.1.40 \
-		redox_termios-0.1.1 \
-		redox_users-0.2.0 \
-		regex-1.0.5 \
-		regex-syntax-0.6.2 \
-		remove_dir_all-0.5.1 \
-		reqwest-0.9.3 \
-		rpassword-2.0.0 \
-		rustc-demangle-0.1.9 \
-		rustc-serialize-0.3.24 \
-		rustc_version-0.2.3 \
-		ryu-0.2.6 \
-		safemem-0.3.0 \
-		same-file-1.0.3 \
-		sanakirja-0.8.19 \
-		schannel-0.1.14 \
-		scoped_threadpool-0.1.9 \
-		scopeguard-0.3.3 \
-		security-framework-0.2.1 \
-		security-framework-sys-0.2.1 \
-		semver-0.9.0 \
-		semver-parser-0.7.0 \
-		serde-1.0.80 \
-		serde_derive-1.0.80 \
-		serde_json-1.0.32 \
-		serde_urlencoded-0.5.3 \
-		shell-escape-0.1.4 \
-		siphasher-0.2.3 \
-		slab-0.4.1 \
-		smallvec-0.6.5 \
-		stable_deref_trait-1.1.1 \
-		string-0.1.1 \
-		strsim-0.7.0 \
-		syn-0.15.13 \
-		synstructure-0.10.0 \
-		tar-0.4.17 \
-		tempdir-0.3.7 \
-		tempfile-3.0.4 \
-		term-0.5.1 \
-		termcolor-1.0.4 \
-		termion-1.5.1 \
-		termios-0.2.2 \
-		textwrap-0.10.0 \
-		thread_local-0.3.6 \
-		thrussh-0.20.5 \
-		thrussh-config-0.1.0 \
-		thrussh-keys-0.11.3 \
-		thrussh-libsodium-0.1.3 \
-		time-0.1.40 \
-		tokio-0.1.11 \
-		tokio-codec-0.1.1 \
-		tokio-current-thread-0.1.3 \
-		tokio-executor-0.1.5 \
-		tokio-fs-0.1.3 \
-		tokio-io-0.1.9 \
-		tokio-reactor-0.1.6 \
-		tokio-tcp-0.1.2 \
-		tokio-threadpool-0.1.7 \
-		tokio-timer-0.2.7 \
-		tokio-udp-0.1.2 \
-		tokio-uds-0.2.2 \
-		toml-0.4.8 \
-		try-lock-0.2.2 \
-		ucd-util-0.1.1 \
-		unicase-1.4.2 \
-		unicase-2.2.0 \
-		unicode-bidi-0.3.4 \
-		unicode-normalization-0.1.7 \
-		unicode-width-0.1.5 \
-		unicode-xid-0.1.0 \
-		unreachable-1.0.0 \
-		url-1.7.1 \
-		username-0.2.0 \
-		utf8-ranges-1.0.1 \
-		utf8parse-0.1.1 \
-		uuid-0.7.1 \
-		vcpkg-0.2.6 \
-		vec_map-0.8.1 \
-		version_check-0.1.5 \
-		void-1.0.2 \
-		walkdir-2.2.5 \
-		want-0.0.6 \
-		winapi-0.2.8 \
-		winapi-0.3.6 \
-		winapi-build-0.1.1 \
+		futures-0.3.17 \
+		futures-channel-0.3.17 \
+		futures-core-0.3.17 \
+		futures-executor-0.3.17 \
+		futures-io-0.3.17 \
+		futures-macro-0.3.17 \
+		futures-sink-0.3.17 \
+		futures-task-0.3.17 \
+		futures-util-0.3.17 \
+		generic-array-0.14.4 \
+		getrandom-0.1.16 \
+		getrandom-0.2.3 \
+		gimli-0.25.0 \
+		git2-0.13.23 \
+		globset-0.4.8 \
+		h2-0.3.6 \
+		hashbrown-0.11.2 \
+		heck-0.3.3 \
+		hermit-abi-0.1.19 \
+		hmac-0.11.0 \
+		http-0.2.5 \
+		http-body-0.4.3 \
+		httparse-1.5.1 \
+		httpdate-1.0.1 \
+		human-panic-1.0.3 \
+		humantime-2.1.0 \
+		hyper-0.14.13 \
+		hyper-tls-0.5.0 \
+		idna-0.2.3 \
+		ignore-0.4.18 \
+		indexmap-1.7.0 \
+		instant-0.1.12 \
+		ipnet-2.3.1 \
+		itoa-0.4.8 \
+		jobserver-0.1.24 \
+		js-sys-0.3.55 \
+		lazy_static-1.4.0 \
+		libc-0.2.104 \
+		libgit2-sys-0.12.24+1.3.0 \
+		libpijul-1.0.0-alpha.49 \
+		libsodium-sys-0.2.7 \
+		libssh2-sys-0.2.23 \
+		libz-sys-1.1.3 \
+		linked-hash-map-0.5.4 \
+		lock_api-0.4.5 \
+		log-0.4.14 \
+		lru-cache-0.1.2 \
+		matches-0.1.9 \
+		md5-0.7.0 \
+		memchr-2.4.1 \
+		memmap-0.7.0 \
+		memoffset-0.6.4 \
+		mime-0.3.16 \
+		miniz_oxide-0.4.4 \
+		mio-0.7.14 \
+		miow-0.3.7 \
+		native-tls-0.2.8 \
+		nix-0.23.0 \
+		ntapi-0.3.6 \
+		num-bigint-0.4.2 \
+		num-integer-0.1.44 \
+		num-traits-0.2.14 \
+		num_cpus-1.13.0 \
+		object-0.26.2 \
+		once_cell-1.8.0 \
+		opaque-debug-0.3.0 \
+		openssl-0.10.36 \
+		openssl-probe-0.1.4 \
+		openssl-sys-0.9.67 \
+		os_str_bytes-4.2.0 \
+		os_type-2.3.0 \
+		pager-0.16.0 \
+		parking_lot-0.11.2 \
+		parking_lot_core-0.8.5 \
+		password-hash-0.2.3 \
+		path-slash-0.1.4 \
+		pbkdf2-0.8.0 \
+		percent-encoding-2.1.0 \
+		pijul-macros-0.4.0 \
+		pin-project-lite-0.2.7 \
+		pin-utils-0.1.0 \
+		pkg-config-0.3.20 \
+		ppv-lite86-0.2.14 \
+		proc-macro-error-1.0.4 \
+		proc-macro-error-attr-1.0.4 \
+		proc-macro-hack-0.5.19 \
+		proc-macro-nested-0.1.7 \
+		proc-macro2-1.0.30 \
+		quote-1.0.10 \
+		rand-0.7.3 \
+		rand-0.8.4 \
+		rand_chacha-0.2.2 \
+		rand_chacha-0.3.1 \
+		rand_core-0.5.1 \
+		rand_core-0.6.3 \
+		rand_hc-0.2.0 \
+		rand_hc-0.3.1 \
+		redox_syscall-0.2.10 \
+		redox_users-0.4.0 \
+		regex-1.5.4 \
+		regex-syntax-0.6.25 \
+		remove_dir_all-0.5.3 \
+		reqwest-0.11.6 \
+		rlimit-0.6.2 \
+		rpassword-5.0.1 \
+		rustc-demangle-0.1.21 \
+		ryu-1.0.5 \
+		same-file-1.0.6 \
+		sanakirja-1.2.11 \
+		sanakirja-core-1.2.13 \
+		schannel-0.1.19 \
+		scopeguard-1.1.0 \
+		security-framework-2.4.2 \
+		security-framework-sys-2.4.2 \
+		serde-1.0.130 \
+		serde_bytes-0.11.5 \
+		serde_derive-1.0.130 \
+		serde_json-1.0.68 \
+		serde_urlencoded-0.7.0 \
+		sha2-0.9.8 \
+		signal-hook-registry-1.4.0 \
+		signature-1.3.1 \
+		slab-0.4.5 \
+		smallvec-1.7.0 \
+		socket2-0.4.2 \
+		static_assertions-1.1.0 \
+		strsim-0.10.0 \
+		subtle-2.4.1 \
+		syn-1.0.80 \
+		synstructure-0.12.6 \
+		tar-0.4.37 \
+		tempfile-3.2.0 \
+		termcolor-1.1.2 \
+		terminal_size-0.1.17 \
+		textwrap-0.14.2 \
+		thiserror-1.0.30 \
+		thiserror-impl-1.0.30 \
+		thread_local-1.1.3 \
+		threadpool-1.8.1 \
+		thrussh-0.33.5 \
+		thrussh-config-0.5.0 \
+		thrussh-keys-0.21.0 \
+		thrussh-libsodium-0.2.1 \
+		time-0.1.43 \
+		tinyvec-1.5.0 \
+		tinyvec_macros-0.1.0 \
+		tokio-1.12.0 \
+		tokio-macros-1.5.0 \
+		tokio-native-tls-0.3.0 \
+		tokio-stream-0.1.7 \
+		tokio-util-0.6.8 \
+		toml-0.5.8 \
+		tower-service-0.3.1 \
+		tracing-0.1.29 \
+		tracing-core-0.1.21 \
+		try-lock-0.2.3 \
+		twox-hash-1.6.1 \
+		typenum-1.14.0 \
+		unicase-2.6.0 \
+		unicode-bidi-0.3.7 \
+		unicode-normalization-0.1.19 \
+		unicode-segmentation-1.8.0 \
+		unicode-width-0.1.9 \
+		unicode-xid-0.2.2 \
+		url-2.2.2 \
+		uuid-0.8.2 \
+		vcpkg-0.2.15 \
+		version_check-0.9.3 \
+		walkdir-2.3.2 \
+		want-0.3.0 \
+		wasi-0.9.0+wasi-snapshot-preview1 \
+		wasi-0.10.2+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.78 \
+		wasm-bindgen-backend-0.2.78 \
+		wasm-bindgen-futures-0.4.28 \
+		wasm-bindgen-macro-0.2.78 \
+		wasm-bindgen-macro-support-0.2.78 \
+		wasm-bindgen-shared-0.2.78 \
+		web-sys-0.3.55 \
+		which-4.2.2 \
+		whoami-0.9.0 \
+		whoami-1.1.5 \
+		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.1 \
+		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		wincolor-1.0.1 \
-		ws2_32-sys-0.2.1 \
+		winreg-0.7.0 \
 		xattr-0.2.2 \
-		yasna-0.1.3
-CARGO_CARGOLOCK=	${WRKSRC:H}/Cargo.lock
+		yasna-0.4.0 \
+		zeroize-1.3.0 \
+		zeroize_derive-1.2.0 \
+		zstd-seekable-0.1.7
 
 PLIST_FILES=	bin/pijul
-WRKSRC_SUBDIR=	pijul
 
-# We are using pijul/Cargo.toml for all phases and profiles are ignored
-# if specified in non root packages.  cargo.mk has no way to override
-# the Cargo.toml used for each phase, so append the release profile
-# to the root Cargo.toml.
-post-configure:
-	@${ECHO_CMD} "[profile.release]" >> ${WRKSRC:H}/Cargo.toml
-	@${ECHO_CMD} "opt-level = 2" >> ${WRKSRC:H}/Cargo.toml
-	@${ECHO_CMD} "debug = false" >> ${WRKSRC:H}/Cargo.toml
+post-patch:
+	${MV} ${WRKSRC}/cargo-crates/pijul-1.0.0-alpha.55/* ${WRKSRC}/
+
+do-install:
+	${INSTALL_SCRIPT} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/pijul ${STAGEDIR}${PREFIX}/bin/pijul
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pijul
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pijul
 
 .include <bsd.port.mk>

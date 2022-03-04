@@ -1,20 +1,21 @@
 # Created by: Martin Blapp
-# $FreeBSD$
 
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION}
-PORTREVISION=	4
+PORTREVISION=	0
 CATEGORIES=	editors java
-MASTER_SITES=	APACHE/openoffice/${PORTVERSION}/source \
+MASTER_SITES=	https://dlcdn.apache.org/openoffice/${PORTVERSION}/source/ \
+		https://archive.apache.org/dist/openoffice/${PORTVERSION}/source/ \
 		http://tools.openoffice.org/unowinreg_prebuild/680/:unoreg \
-		LOCAL/truckman/openoffice:extsrc
+		LOCAL/truckman/openoffice:extsrc \
+		SF/oooextras.mirror/:sf
 .if defined(LANG_PKGNAME)
 PKGNAMEPREFIX=		${LANG_PKGNAME}-
 .endif
 .if defined(LANG_SUFFIX)
 PKGNAMESUFFIX=		-${LANG_SUFFIX}
 .endif
-DISTFILES=	${AOOSRC} ${EXTSRC}:extsrc
+DISTFILES=	${AOOSRC} ${EXTSRC}:extsrc ${PYTHON_DISTFILE}:sf
 DIST_SUBDIR=	openoffice
 EXTRACT_ONLY=	${AOOSRC}
 
@@ -54,15 +55,13 @@ BUILD_DEPENDS=								\
 		${LOCALBASE}/bin/unzip:archivers/unzip			\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
-		${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
 		dmake:devel/dmake					\
 		epm:devel/epm						\
 		${LOCALBASE}/bin/gperf:devel/gperf			\
 		imake:devel/imake					\
 		gpatch:devel/patch					\
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends	\
-		${LOCALBASE}/bin/vigra-config:graphics/vigra		\
-		${JAVALIBDIR}/commons-lang.jar:java/jakarta-commons-lang \
+		${JAVALIBDIR}/commons-lang.jar:java/apache-commons-lang \
 		${JAVALIBDIR}/junit.jar:java/junit			\
 		${JAVALIBDIR}/bsh.jar:lang/bsh				\
 		bash:shells/bash					\
@@ -77,8 +76,19 @@ LIB_DEPENDS=								\
 		libcairo.so:graphics/cairo				\
 		libpng.so:graphics/png					\
 		libgraphite.so:graphics/silgraphite			\
+		libblas.so:math/blas					\
+		libCbcSolver.so:math/cbc				\
+		libCgl.so:math/cgl					\
+		libcoinasl.so:math/asl					\
+		libClpSolver.so:math/clp				\
 		libCoinMP.so:math/coinmp				\
+		libCoinUtils.so:math/coinutils				\
+		libcoinmumps.so:math/ipopt				\
+		libnauty.so:math/nauty					\
+		libopenblas.so:math/openblas				\
+		libOsi.so:math/osi					\
 		libfreetype.so:print/freetype2				\
+		libharfbuzz.so:print/harfbuzz				\
 		libnss3.so:security/nss					\
 		libexpat.so:textproc/expat2				\
 		libhunspell-1.7.so:textproc/hunspell			\
@@ -90,40 +100,42 @@ LIB_DEPENDS=								\
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=								\
 		${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-theme \
-		${JAVALIBDIR}/commons-lang.jar:java/jakarta-commons-lang \
+		${JAVALIBDIR}/commons-lang.jar:java/apache-commons-lang \
 		${JAVALIBDIR}/bsh.jar:lang/bsh				\
 		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
 		${LOCALBASE}/share/fonts/ChromeOS/Arimo-Bold.ttf:x11-fonts/croscorefonts-fonts-ttf
+# For libgfortran.so and libquadmath.so
+BUILD_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
+RUN_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 
 USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
 		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
-		python:2.7 shared-mime-info ssl tar:bzip2
+		shared-mime-info ssl tar:bzip2 xorg
 USE_GL=		gl glu
 USE_GNOME=	gtk20 libxslt libidl glib20
 USE_JAVA=	yes
 JAVA_BUILD=	jdk
 JAVA_RUN=	jdk
 JAVA_VENDOR=	openjdk
-JAVA_VERSION=	1.6+
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xau xaw xcomposite xcursor xdamage xext xfixes xi \
 		xinerama xrandr xrender xt
 
-CONFLICTS_INSTALL=	apache-openoffice-devel-*
+CONFLICTS_INSTALL=	apache-openoffice-devel
 
 AOOVERSION1=	4
 AOOVERSION2=	1
-AOOVERSION3=	6
+AOOVERSION3=	11
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
-AOOTAG=		AOO416m1\(Build:9790\)
-SVNREVISION=	1844436
+AOOTAG=		AOO4111m1\(Build:9808\)
+GITREVISION=	bdb20b2a64
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
 AOOVERSION=	${AOOVERSION1}.${AOOVERSION2}.${AOOVERSION3}
 AOOXXX=		${AOOVERSION1}${AOOVERSION2}${AOOVERSION3}
 AOOSUFFIX=	${PORTVERSION}
-AOOSRC=		apache-openoffice-${AOOVERSION}-r${SVNREVISION}-src${EXTRACT_SUFX}
+AOOSRC=		apache-openoffice-${AOOVERSION}-${GITREVISION}-src${EXTRACT_SUFX}
 
 AOOUDIR=		.openoffice.org\/${AOOVERSION1}
 INSTALLATION_BASEDIR?=	openoffice-${AOOSUFFIX}
@@ -133,25 +145,21 @@ XDGDIR=			${OOPATH}/share/xdg
 XDGREL=			../../${INSTALLATION_BASEDIR}/openoffice${AOOVERSION1}/share/xdg
 EXECBASE?=		openoffice-${AOOSUFFIX}
 
-INSTALLS_ICONS=	yes
 WITHOUT_CPU_CFLAGS=	true
 CPE_PRODUCT=	${PORTNAME:S|apache-||}
 CPE_VENDOR=	apache
 
-OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME GNOMEVFS MMEDIA \
+OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME \
 			SDK WIKI_PUBLISHER
-OPTIONS_DEFAULT=	CUPS GNOME GNOMEVFS MMEDIA WIKI_PUBLISHER
-CRASHDUMP_DESC=		Enable crashdumps, sets WITH_DEBUG
+OPTIONS_DEFAULT=	CUPS GNOME WIKI_PUBLISHER
+CRASHDUMP_DESC=		Enable crashdumps, you also need to set WITH_DEBUG_PORTS+=${PKGORIGIN}
 DBGUTIL_DESC=		Enable assertions, object counting. (non-production)
-DEBUG_DESC=		Compile with -O0, sets WITH_DEBUG
-GNOME_DESC=		GConf + screensaver presentation control via DBUS
-GNOMEVFS_DESC=		GNOME Virtual File System
-MMEDIA_DESC=		Multimedia backend for impress
+DEBUG_DESC=		Compile with -O0, you also need to set WITH_DEBUG_PORTS+=${PKGORIGIN}
+GNOME_DESC=		Screensaver presentation control via DBUS
 SDK_DESC=		Build and install software development kit
 WIKI_PUBLISHER_DESC=	Build and install Wiki Publisher extension
 
 CRASHDUMP_CONFIGURE_ENABLE=	crashdump
-CRASHDUMP_VARS=			WITH_DEBUG=yes
 
 CUPS_CONFIGURE_ENABLE=		cups
 CUPS_LIB_DEPENDS=		libcups.so:print/cups
@@ -160,19 +168,9 @@ DBGUTIL_CONFIGURE_ENABLE=	dbgutil
 
 DEBUG_CONFIGURE_ENABLE=		debug
 
-GNOME_CONFIGURE_ENABLE=		dbus gconf lockdown
+GNOME_CONFIGURE_ENABLE=		dbus lockdown
 GNOME_LIB_DEPENDS=		libdbus-1.so:devel/dbus \
 				libdbus-glib-1.so:devel/dbus-glib
-GNOME_USE=			GNOME=gconf2
-
-GNOMEVFS_CONFIGURE_ENABLE=	gnome-vfs
-GNOMEVFS_CONFIGURE_OFF=		--enable-gio
-GNOMEVFS_CONFIGURE_ON=		--disable-gio
-GNOMEVFS_USE=			GNOME=gnomevfs2
-
-MMEDIA_CONFIGURE_ENABLE=	gstreamer
-MMEDIA_LIB_DEPENDS=		libgstreamer-0.10.so:multimedia/gstreamer
-MMEDIA_USE=			GSTREAMER=yes
 
 SDK_CONFIGURE_ENABLE=		odk
 SDK_DISTFILES=			unowinreg.dll:unoreg
@@ -183,9 +181,9 @@ WIKI_PUBLISHER_CONFIGURE_WITH=						\
 	commons-httpclient-jar=${JAVALIBDIR}/commons-httpclient.jar	\
 	commons-logging-jar=${JAVALIBDIR}/commons-logging.jar
 WIKI_PUBLISHER_JAR_DEPENDS=						\
-	${JAVALIBDIR}/commons-codec.jar:java/jakarta-commons-codec	\
-	${JAVALIBDIR}/commons-httpclient.jar:java/jakarta-commons-httpclient \
-	${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging
+	${JAVALIBDIR}/commons-codec.jar:java/apache-commons-codec	\
+	${JAVALIBDIR}/commons-httpclient.jar:java/apache-commons-httpclient \
+	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging
 WIKI_PUBLISHER_BUILD_DEPENDS=	${WIKI_PUBLISHER_JAR_DEPENDS}
 WIKI_PUBLISHER_RUN_DEPENDS=	${WIKI_PUBLISHER_JAR_DEPENDS}
 WIKI_PUBLISHER_VARS=	BUNDLED_EXTENSIONS+=swext/wiki-publisher.oxt
@@ -207,11 +205,29 @@ CONFIGURE_ARGS+=	--enable-symbols
 
 .include <${FILESDIR}/Makefile.localized>
 
+PYTHON_DISTFILE=	38c84292658ed4456157195f1c9bcbe1-Python-2.7.18.tgz
+GCC_EXTRA_DISTFILES=	d6eef4b4cacb2183f2bf265a5a03a354-boost_1_55_0.tar.bz2 \
+			d62650a6f908e85643e557a236ea989c-vigra1.6.0.tar.gz
+
 .if ${CHOSEN_COMPILER_TYPE} == clang
 CPPFLAGS+=		-I${LOCALBASE}/include
+CONFIGURE_ARGS+=	--with-system-boost
+BUILD_DEPENDS+=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
+. if ${COMPILER_VERSION} < 130
+CONFIGURE_ARGS+=	--with-system-vigra
+BUILD_DEPENDS+=	${LOCALBASE}/bin/vigra-config:graphics/vigra
+. endif
 . if ${ARCH} == amd64
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-align16
 . endif
+.endif
+
+# These extra distfiles are needed to use the bundled versions of
+# boost and vigra for compatiblity with gcc.  Also include them
+# for the makesum target so they are included in distinfo
+.if ${CHOSEN_COMPILER_TYPE} == gcc || ${COMPILER_VERSION} >= 130 || \
+	make(makesum) || make(distclean)
+DISTFILES+=		${GCC_EXTRA_DISTFILES:C/.*/&:sf/g}
 .endif
 
 .if ${ARCH} == amd64
@@ -228,7 +244,7 @@ PACKAGE_PREFIX=		Apache_OpenOffice
 
 LOCALIZED_LANG?=	en-US
 
-AOO_MAKE_ENV=	${MAKE_ENV:NCPPFLAGS=*:NCFLAGS=*:NCXXFLAGS=*}
+AOO_MAKE_ENV=	${MAKE_ENV:NCPPFLAGS=*:NCFLAGS=*:NCXXFLAGS=*:NLDFLAGS=*}
 
 GNU_CONFIGURE=	yes
 WRKSUBDIR=	${WRKDIR}/aoo-${AOOVERSION}
@@ -238,6 +254,9 @@ SUB_LIST=	EXECBASE=${EXECBASE} AOOTAG=${AOOTAG} AOOUDIR=${AOOUDIR} \
 		PRINSTALLATION_BASEDIR=${PRINSTALLATION_BASEDIR}
 
 CONFIGURE_ARGS+=							\
+			--disable-gconf					\
+			--enable-gio					\
+			--disable-gnome-vfs				\
 			--with-unix-wrapper=${EXECBASE}			\
 			--with-alloc=system				\
 			--with-ant-home=${LOCALBASE}/share/java/apache-ant \
@@ -247,7 +266,6 @@ CONFIGURE_ARGS+=							\
 			--with-system-apr-util				\
 			--with-system-beanshell				\
 			--with-beanshell-jar=${JAVALIBDIR}/bsh.jar	\
-			--with-system-boost				\
 			--enable-category-b				\
 			--with-system-cairo --enable-cairo		\
 			--with-system-coinmp				\
@@ -282,7 +300,7 @@ CONFIGURE_ARGS+=							\
 			--enable-opengl					\
 			--with-system-openssl				\
 			--with-package-format="archive"			\
-			--with-system-python				\
+			--without-system-python				\
 			--with-system-redland				\
 			--with-system-sane				\
 			--with-system-serf				\
@@ -290,7 +308,6 @@ CONFIGURE_ARGS+=							\
 			--with-vendor="FreeBSD ports system"		\
 			--with-build-version="PKGNAME: ${PKGNAME:S/,/@/g}" \
 			--enable-verbose				\
-			--with-system-vigra				\
 			--with-system-xrender				\
 			--with-system-zlib
 
@@ -325,6 +342,12 @@ do-extract-SDK-on:
 
 post-extract:
 	${TAR} -C ${WRKSUBDIR} -xzf ${DISTDIR}/${DIST_SUBDIR}/${EXTSRC}
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${PYTHON_DISTFILE} ${WRKSUBDIR}/ext_sources/${PYTHON_DISTFILE}
+.if ${CHOSEN_COMPILER_TYPE} == gcc || ${COMPILER_VERSION} >= 130 
+.  for f in ${GCC_EXTRA_DISTFILES}
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${f} ${WRKSUBDIR}/ext_sources/${f}
+.  endfor
+.endif
 	${CP} ${FILESDIR}/freebsd-aoo-intro.png \
 		${WRKSRC}/default_images/introabout/intro.png
 	${CP} ${FILESDIR}/freebsd-aoo-about.png \
@@ -353,10 +376,14 @@ post-extract:
 		-e d  ${WRKSRC}/LICENSE_category_b >> ${LICENSE_FILE_MIT}
 	${SED}  -e '\|^For Saxon|,/^__/p'				\
 		-e d ${WRKSRC}/LICENSE_category_b > ${LICENSE_FILE_MPL10}
-	${SED}  -e '\|^For Saxon|,$$d'					\
-		      ${WRKSRC}/LICENSE_category_b > ${LICENSE_FILE_MPL11}
+	${SED}  -e '\|^The following Licenses have some restrictions|,/^- For Network/p' \
+		-e d ${WRKSRC}/LICENSE_category_b |			\
+		${SED} -e :a -e '$d;N;2,3ba' -e 'P;D' > ${LICENSE_FILE_MPL11}
 	${SED}  -e '\|^For main/filter/source/config/tools/merge/pyAltFCFGMerge|,/^__/p'	\
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_PSFL}
+	${ECHO} '' >> ${LICENSE_FILE_PSFL}
+	${SED}  -e '\|^For Python|,/^__/p'	\
+		-e d  ${WRKSRC}/LICENSE >> ${LICENSE_FILE_PSFL}
 	${SED}  -e '\|^For main/twain|,/^__/p'				\
 		-e d  ${WRKSRC}/LICENSE > ${LICENSE_FILE_TWAIN}
 	${SED}  -e '\|^For main/MathMLDTD|,/^__/p'			\
@@ -432,6 +459,8 @@ do-build:
 	. ../${FREEBSD_ENV_SET} ;					  \
 	build.pl --all -P$${numproc} -- -P$${dmproc}
 
+PYDL=	${STAGEDIR}${OOPATH}/program/python-core-2.7.18/lib/lib-dynload
+
 do-install:
 	@${MKDIR} ${STAGEDIR}${PRINSTALLATION_BASEDIR} \
 		${STAGEDIR}${PREFIX}/share/mime/packages
@@ -443,6 +472,7 @@ do-install:
 			${TAR} -s '|./[^/]*/||' -xz -f $$i \
 				-C ${STAGEDIR}${PRINSTALLATION_BASEDIR} ; \
 		done
+	${RM} ${PYDL}/_sqlite3.so ${PYDL}/gdbm.so ${PYDL}/readline.so
 	${FIND} ${STAGEDIR}${PRINSTALLATION_BASEDIR} -type d -exec ${CHMOD} 755 {} \;
 	${REINPLACE_CMD} \
 		-e '/^UserInstallation/s/=.*/=$$SYSUSERCONFIG\/${AOOUDIR}/' \

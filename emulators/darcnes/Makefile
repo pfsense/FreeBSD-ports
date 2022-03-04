@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	darcnes
 PORTVERSION=	9b0401
@@ -12,7 +11,11 @@ DISTNAME=	dn${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-system emulator
 
-NO_CDROM=	Commercial use is restricted
+# Converted from NO_CDROM
+LICENSE=	darcnes-license
+LICENSE_NAME=	darcnes
+LICENSE_TEXT=	Commercial use is restricted
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -32,6 +35,7 @@ BACKEND_DESC=	GUI backend
 SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
 SVGALIB_VARS=		MAKE_ARGS+=TARGET=Linux_svgalib
 
+X11_USES=	xorg
 X11_USE=	XORG=x11,xaw,xext,xmu,xt
 
 .include <bsd.port.pre.mk>

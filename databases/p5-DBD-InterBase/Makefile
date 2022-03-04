@@ -1,9 +1,8 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	DBD-InterBase
 PORTVERSION=	0.48
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

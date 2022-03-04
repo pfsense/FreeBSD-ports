@@ -1,8 +1,7 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libX11
-PORTVERSION=	1.6.7
+DISTVERSION=	1.7.2
 PORTEPOCH=	1
 CATEGORIES=	x11
 
@@ -11,14 +10,13 @@ COMMENT=	X11 library
 
 LICENSE=	MIT
 
-USES=		cpe perl5
-XORG_CAT=	lib
-USE_XORG=	xau xdmcp xtrans xorgproto xcb
-USE_PERL5=	build
+USES=		cpe xorg xorg-cat:lib
+USE_XORG=	xcb xtrans xorgproto
 CPE_VENDOR=	x
 
 CONFIGURE_ARGS+=	--datadir=${PREFIX}/lib \
 			--without-xmlto \
+			--with-perl=no \
 			--disable-specs
 CONFIGURE_ENV+=	ac_cv_path_PS2PDF=""
 INSTALL_TARGET=	install-strip
@@ -26,7 +24,5 @@ INSTALL_TARGET=	install-strip
 post-patch:
 	@${REINPLACE_CMD} 's/test.*-traditional.*;/true;/' \
 		${WRKSRC}/configure
-	@${REINPLACE_CMD} '/^install-data-am:/,/^$$/ \
-		s/install-specDATA//' ${WRKSRC}/nls/Makefile.in
 
 .include <bsd.port.mk>

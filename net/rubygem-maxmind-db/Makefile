@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	maxmind-db
-PORTVERSION=	1.0.0
+PORTVERSION=	1.1.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

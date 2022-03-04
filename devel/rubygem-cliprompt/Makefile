@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cliprompt
 PORTVERSION=	0.1.2
 CATEGORIES=	devel rubygems

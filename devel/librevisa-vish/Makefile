@@ -1,9 +1,8 @@
 # Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
 
 PORTNAME=	librevisa-vish
 PORTVERSION=	0.0.20130714
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.librevisa.org/download/
 DISTNAME=	vish-${PORTVERSION}

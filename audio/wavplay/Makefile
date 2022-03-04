@@ -1,5 +1,4 @@
 # Created by: greg
-# $FreeBSD$
 
 PORTNAME=	wavplay
 PORTVERSION=	1.4
@@ -13,9 +12,9 @@ COMMENT=	Wav player and recorder
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CFLAGS+=	-D_WANT_SEMUN
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
-ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
+CFLAGS+=	-D_WANT_SEMUN
 
 INSTALL_TARGET=	install PREFIX="${STAGEDIR}${PREFIX}"
 

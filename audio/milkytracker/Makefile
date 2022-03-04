@@ -1,24 +1,27 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	milkytracker
-PORTVERSION=	1.02.00
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.03.00
 PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Music creation tool inspired by Fast Tracker 2
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+ BSD3CLAUSE
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
 
-LIB_DEPENDS+=	liblhasa.so:archivers/lhasa \
+LIB_DEPENDS=	liblhasa.so:archivers/lhasa \
 		libzzip.so:devel/zziplib \
 		libjack.so:audio/jack
 
-USES=		cmake
+USES=		cmake compiler:c11 cpe sdl
 USE_GITHUB=	yes
 USE_SDL=	sdl2
+
+CPE_VENDOR=	milkytracker_project
 
 GH_PROJECT=	MilkyTracker
 
@@ -26,8 +29,8 @@ ICONS=		carton.ico carton.png
 
 OPTIONS_DEFINE=	DOCS
 
-BROKEN_powerpc=		Does not build on powerpc
-BROKEN_powerpc64=	Does not build on powerpc64
+# ci pipeline creates transient tags
+PORTSCOUT=	ignore:1
 
 post-install:
 .for f in ${ICONS}
@@ -35,9 +38,5 @@ post-install:
 		${STAGEDIR}${PREFIX}/share/pixmaps/${f:C/carton/milkytracker/}
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/resources/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for f in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/docs/${f} ${STAGEDIR}${DOCSDIR}
-.endfor
 
 .include <bsd.port.mk>

@@ -1,16 +1,19 @@
 # Created by: Nick Hilliard <nick@foobar.org>
-# $FreeBSD$
 
 PORTNAME=	Structures_DataGrid_Renderer_Pager
 PORTVERSION=	0.1.3
 CATEGORIES=	www pear
 
-MAINTAINER=	joneum@FreeBSD.org
-COMMENT=	Pager Renderer for pear-Structures_DataGrid
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Renderer driver using PEAR::Pager
 
-RUN_DEPENDS=	${PEARDIR}/Structures/DataGrid.php:devel/pear-Structures_DataGrid@${PHP_FLAVOR} \
-		${PEARDIR}/Pager/Pager.php:devel/pear-Pager@${PHP_FLAVOR}
+LICENSE=	BSD3CLAUSE
+
+RUN_DEPENDS=	${PEAR_PKGNAMEPREFIX}Pager>=2.4.4:devel/pear-Pager@${PHP_FLAVOR} \
+		${PEAR_PKGNAMEPREFIX}Structures_DataGrid>=0.7.0:devel/pear-Structures_DataGrid@${PHP_FLAVOR}
 
 USES=		pear
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

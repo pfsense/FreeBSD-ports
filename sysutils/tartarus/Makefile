@@ -1,14 +1,13 @@
 # Created by: Juraj Lutter <otis@sk.FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tartarus
 PORTVERSION=	0.9.8
 PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	http://wertarbyte.de/tartarus/ \
-		http://ftp.wilbury.sk/pub/FreeBSD/local/distfiles/
+		https://ftp.sk.FreeBSD.org/pub/FreeBSD/local/distfiles/
 
-MAINTAINER=	otis@sk.FreeBSD.org
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Wrappers around common Unix tools for simplified backup solution
 
 LICENSE=	GPLv3

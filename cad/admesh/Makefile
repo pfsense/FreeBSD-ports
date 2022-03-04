@@ -1,9 +1,8 @@
 # Created by: Pedro F. Giffuni <giffunip@asme.org>
-# $FreeBSD$
 
 PORTNAME=	admesh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.98.3
+DISTVERSION=	0.98.4
 CATEGORIES=	cad
 
 MAINTAINER=	ports@FreeBSD.org

@@ -1,11 +1,10 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTREVISION=	0
 CATEGORIES=	net
 PKGNAMESUFFIX=	-libdns
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	mDNSResponder compatibility from Avahi
 
 LIB_DEPENDS=	libavahi-common.so:net/avahi-app
@@ -19,6 +18,6 @@ PLIST=		${.CURDIR}/pkg-plist
 AVAHI_SLAVE=	libdns
 AVAHI_PKGCONFIG=avahi-compat-libdns_sd.pc
 
-CONFLICTS=	mDNSResponder-[0-9]*
+CONFLICTS=	mDNSResponder
 
 .include "${MASTERDIR}/Makefile"

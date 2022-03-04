@@ -1,9 +1,8 @@
 # Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
 
 PORTNAME=	opennx
 PORTVERSION=	0.16.0.729
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/CI-source
 
@@ -17,18 +16,17 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/zip:archivers/zip
 LIB_DEPENDS=	libcups.so:print/cups \
 		libcurl.so:ftp/curl
 
+USES=		gmake gnome samba:lib xorg
+USE_XORG=	ice sm x11 xau xmu
+USE_WX=		2.8+
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-0.16
 
 GNU_CONFIGURE=	yes
-USES=		gmake samba:lib
-USE_XORG=	xmu
-USE_WX=		2.8+
 
 LDFLAGS+=	-L${LOCALBASE}/lib -L${SAMBALIBS}
 CONFIGURE_ARGS=	--with-wx-config=${WX_CONFIG}
 CPPFLAGS+=	-I${LOCALBASE}/include -I${SAMBAINCLUDES}
-
-INSTALLS_ICONS=	yes
 
 NO_PACKAGE=	must generate a fresh private key at install time
 LEGAL_PACKAGE=	yes

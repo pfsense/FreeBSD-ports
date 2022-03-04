@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooX-Options
 PORTVERSION=	4.103
 CATEGORIES=	devel perl5

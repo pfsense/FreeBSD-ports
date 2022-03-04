@@ -1,5 +1,4 @@
 # Created by: Tim Bishop <tdb@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dynamicplaylist
 PORTVERSION=	2.9.3853
@@ -9,7 +8,7 @@ PKGNAMEPREFIX=	logitechmediaserver-
 DISTNAME=	DynamicPlayList-${PORTVERSION:S/b/beta/}
 DIST_SUBDIR=	logitechmediaserver
 
-MAINTAINER=	mark@tranquillussoftware.co.uk
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Logitech Media Server plugin to create dynamic playlists
 
 LICENSE=	GPLv2+

@@ -1,8 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mate-icon-theme
-PORTVERSION=	1.20.2
+PORTVERSION=	1.26.0
 CATEGORIES=	x11-themes mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -20,13 +19,8 @@ RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-them
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext-tools gmake pkgconfig tar:xz
+USES=		gettext-tools gmake gnome pkgconfig tar:xz
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
-
-pre-install:
-	@${REINPLACE_CMD} -e 's|install: install-data|install:|g' \
-		${WRKSRC}/po/Makefile
 
 .include <bsd.port.mk>

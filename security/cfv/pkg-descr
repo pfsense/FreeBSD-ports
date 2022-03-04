@@ -12,4 +12,4 @@ Features:
    - configurable renaming of bad files (with testing against previous bad
      files, to save only unique differing copies)
 
-WWW: http://cfv.sourceforge.net/
+WWW: https://github.com/cfv-project/cfv

@@ -1,9 +1,8 @@
 # Created by: Ronald Kuehn <rk@ronald.org>
-# $FreeBSD$
 
 PORTNAME=	lablgl
 PORTVERSION=	1.05
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://wwwfun.kurims.kyoto-u.ac.jp/soft/lsl/dist/ \
@@ -15,9 +14,9 @@ COMMENT=	OpenGL interface for Objective Caml
 
 LICENSE=	BSD3CLAUSE
 
-CONFLICTS=	ocaml-nox11-[0-9]*
+CONFLICTS=	ocaml-nox11
 
-USES=		gmake tk:85+
+USES=		gl gmake tk xorg
 USE_XORG=	x11 xext xmu
 USE_GL=		glut
 USE_OCAML=	yes

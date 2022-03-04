@@ -8,7 +8,7 @@
  * squid_cache.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -68,6 +68,10 @@
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
+		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>
 		</tab>
@@ -76,6 +80,17 @@
 		<field>
 			<name>Squid Cache General Settings</name>
 			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Disable Caching</fielddescr>
+			<fieldname>nocache</fieldname>
+			<description>Disable caching completely.</description>
+			<sethelp>
+				<![CDATA[
+				This may be required if Squid is only used as a proxy to audit website access.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Cache Replacement Policy</fielddescr>

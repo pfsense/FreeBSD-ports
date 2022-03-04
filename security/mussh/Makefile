@@ -1,5 +1,4 @@
 # Created by: Yen-Ming Lee <leeym@leeym.com>
-# $FreeBSD$
 
 PORTNAME=	mussh
 PORTVERSION=	1.0
@@ -11,6 +10,9 @@ MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Tool for easily running the same commands on multiple hosts
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Abandonware, last release in 2011 please consider using security/teleport
+EXPIRATION_DATE=2022-03-31
 
 RUN_DEPENDS=	bash:shells/bash
 

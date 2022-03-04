@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	atf
 PORTVERSION?=	${ATF_VERSION}
 CATEGORIES=	sysutils
@@ -21,12 +19,16 @@ GH_TAGNAME=	${ATF_VERSION}
 
 SSP_UNSAFE=	yes
 MAKE_ENV+=	CROSS_COMPILE="aarch64-none-elf-"
-ALL_TARGET=	ARCH="aarch64" PLAT=${PLAT} V=1 bl31
+ATF_TARGET?=	bl31
+ALL_TARGET=	ARCH="aarch64" PLAT=${PLAT} V=1 CFLAGS= HOSTCC=${CC} ${ATF_TARGET}
 
 # Default to the latest release
-ATF_VERSION?=	v2.0
+ATF_VERSION?=	v2.5
 
 PLIST_FILES?=	${PREFIX}/share/${PORTNAME}-${PLAT}/${BL31:T}
+.if defined(FIP)
+PLIST_FILES+=	${PREFIX}/share/${PORTNAME}-${PLAT}/${FIP:T}
+.endif
 
 DESCR?=		${.CURDIR}/pkg-descr
 
@@ -40,6 +42,8 @@ IGNORE=		is a metaport; there is nothing to build
 do-install:
 	${MKDIR} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/
 	${INSTALL_DATA} ${WRKSRC}/build/${PLAT}/release/${BL31} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/
-	${INSTALL_DATA} ${DESCR} ${STAGEDIR}/${INST}/README
+.if defined(FIP)
+	${INSTALL_DATA} ${WRKSRC}/build/${PLAT}/release/${FIP} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/
+.endif
 
 .include <bsd.port.mk>

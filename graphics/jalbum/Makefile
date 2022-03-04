@@ -1,5 +1,4 @@
 # Created by: Tim Bishop <tim@bishnet.net>
-# $FreeBSD$
 
 PORTNAME=	jalbum
 PORTVERSION=	10.10.7
@@ -16,7 +15,6 @@ USES=		zip
 NO_BUILD=	yes
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 SUB_FILES=	jalbum.sh

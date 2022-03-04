@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	wop
 PORTVERSION=	0.4.3
 PORTREVISION=	15
@@ -18,12 +15,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	makedepend:devel/makedepend
 
-USES=		tar:bzip2 gmake
+USES=		gmake sdl tar:bzip2
 USE_SDL=	sdl net mixer ttf image
+USE_CXXSTD=	c++98
 
 MAKE_JOBS_UNSAFE=	yes
-
-CXXFLAGS+=	-Wno-c++11-narrowing -Wno-reserved-user-defined-literal
 
 DATAVERSION=	2005-12-21
 DESKTOP_ENTRIES="Worms of Prey" \

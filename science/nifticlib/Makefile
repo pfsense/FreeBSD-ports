@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nifticlib
 PORTVERSION=	2.0.0
 PORTREVISION=	1
@@ -15,9 +13,10 @@ USES=		gmake
 
 # AFNI currently has nifti embedded in the distfile and installs the
 # nifti bins by itself.
-CONFLICTS=	afni-[0-9]* dbh-[0-9]*
+CONFLICTS=	afni dbh
 
 CFLAGS+=	-fPIC
+MAKE_JOBS_UNSAFE=	yes
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/* ${STAGEDIR}${PREFIX}/bin

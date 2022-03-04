@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jekyll-sanity
-PORTVERSION=	1.2.0
+PORTVERSION=	1.6.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -11,10 +10,12 @@ COMMENT=	Patches to make Jekyll less insane and easier
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-jekyll>=3.1:www/rubygem-jekyll
+RUN_DEPENDS=	rubygem-jekyll3>=3.1<5:www/rubygem-jekyll3 \
+		rubygem-pathutil>=0.16<1:devel/rubygem-pathutil
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

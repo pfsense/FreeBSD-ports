@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	griffith
 PORTVERSION=	0.15
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlalchemy12>=1.1:databases/py-sqlalchemy12@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=4.3:graphics/py-pillow@${PY_FLAVOR} \
+		${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}reportlab>=3.4:print/py-reportlab@${PY_FLAVOR}
 
 USES=		gettext-runtime gmake gnome python:3.4+ shebangfix

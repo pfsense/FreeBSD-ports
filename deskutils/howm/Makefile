@@ -1,21 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	howm
-PORTVERSION=	1.4.3
-PORTREVISION=	2
+PORTVERSION=	1.4.7
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	http://howm.sourceforge.jp/a/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Write fragmentarily and read collectively
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-.if ${FLAVOR:U} != devel && ${FLAVOR:U} != devel_nox
-# http://pkg.awarnach.mathstat.dal.ca/data/11i386-default/2018-05-30_07h36m11s/logs/errors/howm-emacs26-1.4.3_3.log
-BROKEN=		fails to build
+.if ${FLAVOR:U} == devel_full || ${FLAVOR:U} == devel_nox
+BROKEN=		Debugger entered--Lisp error: (wrong-type-argument stringp nil)
 .endif
 
 USES=		emacs

@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	guake
 PORTVERSION=	3.4.0
+PORTREVISION=	2
 CATEGORIES=	x11 python
 MASTER_SITES=	CHEESESHOP
 DISTNAME=	Guake-${PORTVERSION}
@@ -26,11 +25,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR} \
 
 USES=		gmake gnome libtool localbase pathfix python:3.5+ \
 		shebangfix
-USE_GNOME=	gconf2 glib20 gtk30 intltool vte3
+USE_GNOME=	glib20 gtk30 intltool vte3
 USE_PYTHON=	distutils noflavors
 GLIB_SCHEMAS=	org.guake.gschema.xml
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 

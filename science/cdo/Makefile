@@ -1,11 +1,9 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@sunpoet.net>
-# $FreeBSD$
 
 PORTNAME=	cdo
-PORTVERSION=	1.9.6
-PORTREVISION=	1
+PORTVERSION=	2.0.0
 CATEGORIES=	science
-MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/19299/ \
+MASTER_SITES=	https://code.mpimet.mpg.de/attachments/download/26370/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -25,7 +23,7 @@ UUID_DESC=	UUID support
 
 PORTSCOUT=	site:https://code.mpimet.mpg.de/projects/cdo/files
 
-USES=		compiler:c++11-lang gmake libtool localbase pathfix
+USES=		compiler:c++14-lang gmake libtool localbase pathfix
 
 CONFIGURE_ARGS=	--disable-data \
 		--disable-extra \
@@ -40,7 +38,7 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 TEST_TARGET=	check
-USE_CXXSTD=	c++11
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 CGRIBEX_CONFIGURE_WITH=	cgribex
@@ -65,7 +63,7 @@ UUID_LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} != "sparc64"
-CFLAGS+=	-DPTHREAD_MUTEXATTR_CONDATTR
+CFLAGS+=	-DPTHREAD_MUTEXATTR
 .endif
 
 post-patch:

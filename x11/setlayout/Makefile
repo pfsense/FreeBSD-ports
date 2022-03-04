@@ -1,5 +1,4 @@
 # Created by: oleg@bsdpower.com
-# $FreeBSD$
 
 PORTNAME=	setlayout
 DISTVERSION=	20080210
@@ -11,7 +10,7 @@ EXTRACT_ONLY=	#none
 MAINTAINER=	oleg@bsdpower.com
 COMMENT=	Arrange desktops in an MxN grid layout
 
-USES=		pkgconfig
+USES=		pkgconfig xorg
 USE_XORG=	x11
 NO_WRKSUBDIR=	yes
 PLIST_FILES=	bin/${PORTNAME}

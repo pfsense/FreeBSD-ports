@@ -1,5 +1,4 @@
 # Created by: Mike Makonnen <mtm@identd.net>
-# $FreeBSD$
 
 PORTNAME=	asmixer
 PORTVERSION=	0.5
@@ -12,6 +11,7 @@ COMMENT=	Mixer control for AfterStep window manager
 
 LICENSE=	GPLv2
 
+USES=		xorg
 USE_XORG=	xpm x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-xpm \

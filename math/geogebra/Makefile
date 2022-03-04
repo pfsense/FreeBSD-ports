@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	geogebra
-PORTVERSION=	5.0.530.0
-CATEGORIES=	math java
+PORTVERSION=	5.0.625.0
+CATEGORIES=	math education java
 MASTER_SITES=	http://download.geogebra.org/installers/5.0/ \
 		https://static.geogebra.org/images/ \
 		http://freebsd.uzsolt.hu/src/
@@ -21,17 +20,17 @@ LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-CONFLICTS=	math/geogebra-i18n-[0-9]*
+USES=		tar:bzip2 desktop-file-utils gnome shebangfix
+USE_JAVA=	yes
+
+CONFLICTS=	math/geogebra-i18n
+
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		tar:bzip2 desktop-file-utils shebangfix
-USE_JAVA=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
 SUB_FILES=	geogebra.desktop geogebra.sh
 SUB_LIST=	JAVA=${JAVA}
-
-INSTALLS_ICONS=	yes
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/${PORTNAME}

@@ -1,5 +1,4 @@
 # Created by: Oliver Eikemeier <eikemeier@fillmore-labs.com>
-# $FreeBSD$
 
 PORTNAME=	websieve
 PORTVERSION=	0.63.a
@@ -16,7 +15,8 @@ LICENSE_FILE=	${WRKSRC}/GPL
 
 SIEVEVERSION=	${PORTVERSION:S/.//g}
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	run
 SHEBANG_FILES=	websieve.pl
 

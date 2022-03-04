@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	jcalendar
 PORTVERSION=	1.3.3
@@ -11,7 +10,7 @@ COMMENT=	Java Date Chooser
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	8
 USE_ANT=	yes
 WRKSRC=		${WRKDIR}/src
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar \

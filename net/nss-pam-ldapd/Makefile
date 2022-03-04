@@ -1,8 +1,7 @@
 # Created by: melifaro@ipfw.ru
-# $FreeBSD$
 
 PORTNAME=		nss-pam-ldapd
-PORTVERSION=		0.9.10
+PORTVERSION=		0.9.11
 PORTREVISION=		1
 CATEGORIES=		net
 MASTER_SITES=		http://arthurdejong.org/nss-pam-ldapd/ \
@@ -45,7 +44,7 @@ OPTIONS_MULTI_MG1=	PAM NSS
 PAM_DESC=		Build pam_ldap
 NSS_DESC=		Build nss support
 OPTIONS_DEFAULT+=	PAM NSS
-CONFLICTS+=		nss-pam-ldapd-sasl-[0-9]*
+CONFLICTS+=		nss-pam-ldapd-sasl
 .endif
 
 USERS=			nslcd
@@ -76,7 +75,6 @@ CONFIGURE_ARGS+=	--disable-kerberos
 .endif
 
 .if ${PORT_OPTIONS:MSASL}
-WANT_OPENLDAP_SASL=	yes
 CONFIGURE_ARGS+=	--enable-sasl
 .else
 CONFIGURE_ARGS+=	--disable-sasl

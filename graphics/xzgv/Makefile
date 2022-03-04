@@ -1,5 +1,4 @@
 # Created by: Norio Suzuki <nosuzuki@e-mail.ne.jp>
-# $FreeBSD$
 
 PORTNAME=	xzgv
 PORTVERSION=	0.9.2
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libexif.so:graphics/libexif \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gmake gnome pkgconfig
+USES=		cpe gmake gnome pkgconfig xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk20
 USE_XORG=	x11
 

@@ -8,7 +8,7 @@
  * frr_ospf6.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,17 +31,25 @@
 	<aftersaveredirect>pkg_edit.php?xml=frr/frr_ospf6.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF6 Settings</text>
+			<text>OSPF6</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>OSPF6 Interfaces</text>
+			<text>Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf6_areas.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf6_interfaces.xml</url>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[BGP]</text>
@@ -50,6 +58,10 @@
 		<tab>
 			<text>[OSPF]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -74,23 +86,11 @@
 			<fieldname>routerid</fieldname>
 			<description>
 				<![CDATA[
-				Specify the Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				Override the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
 				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
 				]]>
 			</description>
 			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Area</fielddescr>
-			<fieldname>area</fieldname>
-			<description>
-				<![CDATA[
-				OSPF6d area for this instance of OSPF.<br />
-				For more information on Areas see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First#Area_types'>wikipedia</a>.
-				]]>
-			</description>
-			<type>input</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>Disable FIB updates (Routing table)</fielddescr>
@@ -103,25 +103,6 @@
 				<option><name>Stub Area (stub)</name><value>stub</value></option>
 			</options>
 		</field>
-		<field>
-			<fielddescr>Redistribute connected subnets</fielddescr>
-			<fieldname>redistributeconnectedsubnets</fieldname>
-			<description>Enables the redistribution of connected networks (Default no)</description>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Redistribute static</fielddescr>
-			<fieldname>redistributestatic</fieldname>
-			<description>Enables the redistribution of static routes (only works if you are using frr static routes)</description>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Redistribute Kernel</fielddescr>
-			<fieldname>redistributekernel</fieldname>
-			<description>Enables the redistribution of kernel routing table (this is required if using pfsense static routes)</description>
-			<type>checkbox</type>
-		</field>
-			
 		<field>
 			<fielddescr>SPF Hold Time</fielddescr>
 			<fieldname>spfholdtime</fieldname>
@@ -145,7 +126,63 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>These rules take precedence over any redistribute options specified above.</fielddescr>
+			<name>Modules</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR OSPF6 data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Default Area</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Settings for the default area, if not overriden.
+				Use the <a href="/pkg.php?xml=frr/frr_ospf6_areas.xml">Areas</a> tab instead for more control.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Default Area</fielddescr>
+			<fieldname>defaultarea</fieldname>
+			<description>
+				<![CDATA[
+				Default OSPF6 area for this instance of OSPF6.
+				Used when an area is required but not defined elsewhere.<br />
+				For more information on Areas see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First#Area_types'>wikipedia</a>.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Default Area Type</fielddescr>
+			<fieldname>defaultareatype</fieldname>
+			<description>Defines how the default area behaves</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Normal (default)</name><value>none</value></option>
+				<option><name>Stub Area (stub)</name><value>stub</value></option>
+				<option><name>Totally Stub (stub no-summary)</name><value>nosum</value></option>
+				<!-- FRR does not currently support NSSA for OSPFv3 -->
+				<!-- This has been left in and commented to add support easily at a later date -->
+				<!-- <option><name>Not so Stub Area (nssa)</name><value>nssa</value></option> -->
+				<!-- <option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option> -->
+			</options>
+		</field>
+		<field>
+			<name>Route Distribution</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Distribute Ranges</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
@@ -162,12 +199,214 @@
 					<size>10</size>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>cost</fielddescr>
+					<fielddescr>Cost</fielddescr>
 					<fieldname>routecost</fieldname>
 					<type>input</type>
 					<size>10</size>
 				</rowhelperfield>
 			</rowhelper>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				These rules take precedence over any redistribute options specified in the Route Redistribution section.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<name>Route Redistribution</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The options in this section control how routes are redistributed into OSPF6 from other sources.
+				<br />
+				The route map controls can filter the routes so that specific networks will be prevented from distribution.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Connected Networks</fielddescr>
+			<fieldname>redistributeconnectedsubnets</fieldname>
+			<description>Redistribute Connected Networks</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<fieldname>redistributeconnectedsubnets_routemap</fieldname>
+			<description>Route Map</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Connected Networks includes networks directly attached to local interfaces which are up and active.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>pfSense Kernel Routes</fielddescr>
+			<fieldname>redistributekernel</fieldname>
+			<description>Redistribute pfSense Kernel</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<fieldname>redistributekernel_routemap</fieldname>
+			<description>Route Map</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Kernel routes are routes in the pfSense kernel routing table, which includes static routes and other non-local routes not obtained from routing protocols.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>BGP Routes</fielddescr>
+			<fieldname>redistributebgp</fieldname>
+			<description>Redistribute BGP</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<fieldname>redistributebgp_routemap</fieldname>
+			<description>Route Map</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				BGP routes are routes obtained from BGP neighbors.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>FRR Static Routes</fielddescr>
+			<fieldname>redistributestatic</fieldname>
+			<description>Redistribute FRR Static</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<fieldname>redistributestatic_routemap</fieldname>
+			<description>Route Map</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				FRR static routes are routes defined in <a href="/pkg_edit.php?xml=frr.xml">FRR Global Settings</a>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<name>Route Filtering</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Export List</fielddescr>
+			<fieldname>exportlist</fieldname>
+			<description>Uses this access list to filter route information transmitted to OSPF peers</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Import List</fielddescr>
+			<fieldname>importlist</fieldname>
+			<description>Uses this access list to filter route information received from OSPF peers</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Filter List (Out)</fielddescr>
+			<fieldname>filterlist_out</fieldname>
+			<description>Uses a prefix list to filter route information transmitted to OSPF peers</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Filter List (In)</fielddescr>
+			<fieldname>filterlist_in</fieldname>
+			<description>Uses a prefix list to filter route information received from OSPF peers</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_prefixlist_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>Advanced</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Reference Bandwidth</fielddescr>
+			<fieldname>referencebandwidth</fieldname>
+			<description>Base value, in Mbit/s, used to calculate automatic interface costs. Must be set the same on all OSPF routers (1-4294967, default 100).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Distance</fielddescr>
+			<fieldname>distance</fieldname>
+			<description>Administrative distance (1-255).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>External Distance</fielddescr>
+			<fieldname>distance_external</fieldname>
+			<description>External route distance (1-255).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Inter-area Distance</fielddescr>
+			<fieldname>distance_interarea</fieldname>
+			<description>Inter-area route distance (1-255).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Intra-area Distance</fielddescr>
+			<fieldname>distance_intraarea</fieldname>
+			<description>Intra-area route distance (1-255).</description>
+			<type>input</type>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>

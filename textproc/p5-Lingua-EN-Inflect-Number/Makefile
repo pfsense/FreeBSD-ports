@@ -1,5 +1,4 @@
 # Created by: Lars Thegler <lars@thegler.dk>
-# $FreeBSD$
 
 PORTNAME=	Lingua-EN-Inflect-Number
 PORTVERSION=	1.12
@@ -18,5 +17,7 @@ RUN_DEPENDS=	p5-Lingua-EN-Inflect>=0:textproc/p5-Lingua-EN-Inflect
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

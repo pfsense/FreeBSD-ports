@@ -1,9 +1,8 @@
 # Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
 
 PORTNAME=	ripperx
 PORTVERSION=	2.7.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF
 DISTNAME=	ripperX-${PORTVERSION}
@@ -18,7 +17,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	ac_cv_lib_id3_ID3Tag_Link=yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-USES=		compiler:c++11-lang gmake pathfix pkgconfig
+USES=		compiler:c++11-lang gmake gnome pathfix pkgconfig
 USE_GNOME=	gtk20
 
 OPTIONS_DEFINE=	NLS

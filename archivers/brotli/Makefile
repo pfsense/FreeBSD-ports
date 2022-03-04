@@ -1,9 +1,7 @@
 # Created by: Sergey A. Osokin <osa@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	brotli
-PORTVERSION=	1.0.7
-PORTREVISION=	1
+PORTVERSION=	1.0.9
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	archivers devel
@@ -17,9 +15,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
 
-USES=		autoreconf:build compiler:c++0x gmake libtool pkgconfig
+USES=		autoreconf:build compiler:c++0x cpe gmake libtool pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+CPE_VENDOR=	google
 
 INSTALL_TARGET=	install-strip
 PLIST_SUB=	SHLIBVER=${PORTVERSION}

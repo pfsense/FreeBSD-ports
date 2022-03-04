@@ -1,5 +1,4 @@
 # Created by: Sakai Hiroaki <sakai@seki.ee.kagu.sut.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xkeywrap
 PORTVERSION=	1.1
@@ -11,6 +10,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Record, repeat, and play key sequence from keyboard
 
 MAKE_ENV=	X11BASE="${LOCALBASE}"
+USES=		xorg
 USE_XORG=	x11 xt
 
 PORTDOCS=	README

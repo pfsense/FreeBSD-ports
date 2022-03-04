@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	paros
 PORTVERSION=	3.2.13
 PORTREVISION=	2
@@ -14,10 +12,9 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USE_JAVA=	yes
 JAVA_RUN=	yes
-JAVA_VERSION=	1.6+
 
 NO_BUILD=	yes
-USES=		dos2unix zip
+USES=		cpe dos2unix zip
 DOS2UNIX_FILES=	release.txt
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

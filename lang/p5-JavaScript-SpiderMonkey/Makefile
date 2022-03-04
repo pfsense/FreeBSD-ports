@@ -1,5 +1,4 @@
 # Created by: kappa@FreeBSD.org.ua
-# $FreeBSD$
 
 PORTNAME=	JavaScript-SpiderMonkey
 PORTVERSION=	0.25
@@ -16,8 +15,9 @@ LICENSE_COMB=	dual
 LIB_DEPENDS=	libjs.so:lang/spidermonkey17
 TEST_DEPENDS=	p5-Log-Log4perl>=0:devel/p5-Log-Log4perl
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
 CFLAGS+=	-I${LOCALBASE}/include/js-1.7/
 
 post-patch:

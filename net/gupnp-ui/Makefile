@@ -1,9 +1,8 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gupnp-ui
 PORTVERSION=	0.1.1
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -13,10 +12,9 @@ COMMENT=	Framework for UPnP devices
 LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${RUN_DEPENDS}
+BUILD_DEPENDS=	gupnp>=0.3:net/gupnp
 LIB_DEPENDS=	libgupnp-1.2.so:net/gupnp \
 		libsoup-2.4.so:devel/libsoup
-RUN_DEPENDS=	gupnp>=0.3:net/gupnp
 
 USES=		compiler:c++11-lang gnome libtool pathfix pkgconfig python
 USE_GNOME=	gtk20

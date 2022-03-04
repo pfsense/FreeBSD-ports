@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Array-Heap
 PORTVERSION=	3.22
 CATEGORIES=	devel perl5

@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	urxvt-font-size
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3
 CATEGORIES=	x11
 
-MAINTAINER=	dch@skunkwerks.at
+MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Perl extension for rxvt-unicode terminal emulator to change font size
 
 LICENSE=	MIT

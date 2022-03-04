@@ -1,5 +1,4 @@
 # Created by: swallace
-# $FreeBSD$
 
 PORTNAME=	xcdplayer
 PORTVERSION=	2.2
@@ -10,7 +9,7 @@ MASTER_SITES=	XCONTRIB/../R5contrib
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CD player for X
 
-USES=		imake tar:Z
+USES=		imake tar:Z xorg
 USE_XORG=	xbitmaps xaw
 
 PLIST_FILES=	bin/xcdplayer lib/X11/app-defaults/XCdplayer \

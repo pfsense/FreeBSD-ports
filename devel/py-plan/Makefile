@@ -1,5 +1,4 @@
 # Created by: Bartek Rutkowski <ports@robakdesign.com>
-# $FreeBSD$
 
 PORTNAME=	plan
 PORTVERSION=	0.5
@@ -14,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=2.1:devel/py-click@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

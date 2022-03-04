@@ -1,36 +1,30 @@
 # Created by: anholt@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	asciidoc
-PORTVERSION=	8.6.10
-PORTREVISION=	1
+PORTVERSION=	9.1.1
 CATEGORIES=	textproc
+MASTER_SITES=	https://github.com/asciidoc/asciidoc-py3/releases/download/${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Text document format for writing short documents and man pages
 
 LICENSE=	GPLv2 MIT
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl
 
-USES=		autoreconf gmake gnome python:2.7 shebangfix
+USES=		gmake gnome python:3.5+ shebangfix
 USE_GNOME=	libxml2 libxslt
 
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes
 
-USE_GITHUB=	yes
-
 SHEBANG_GLOB=	*.py
-SHEBANG_LANG=	python2
-python2_CMD=	${PYTHON_CMD}
 
 post-patch:
-	@${REINPLACE_CMD} -e '/^INSTALL_PROG/ s|INSTALL_PROGRAM|INSTALL_SCRIPT|; s|\.conf|&.sample|; s|python\( a2x.py\)|${PYTHON_CMD}\1|' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/a2x.py
+	@${REINPLACE_CMD} -e 's|python3 |${PYTHON_CMD} |' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/a2x.py
 	@${FIND} ${WRKSRC} -name '*.conf' | ${XARGS} -I % ${LN} % %.sample
 
 post-install:

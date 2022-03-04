@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	jigzo
 PORTVERSION=	0.6.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	http://www.iua.upf.es/~mdeboer/resorama/jigzo/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -16,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/GPL.txt
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake jpeg tar:tgz
+USES=		gl gmake jpeg sdl tar:tgz
 USE_SDL=	sdl mixer
 USE_GL=		gl
 MAKE_ARGS=	CXX=${CXX}

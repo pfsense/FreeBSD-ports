@@ -1,5 +1,4 @@
 # Created by: Matthew Hunt <mph@pobox.com>
-# $FreeBSD$
 
 PORTNAME=	xprompt
 PORTVERSION=	1.4
@@ -10,7 +9,7 @@ MASTER_SITES=	LOCAL/mph
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Displays a dialog box and prompts user for text
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xt
 
 PLIST_FILES=	bin/xprompt \

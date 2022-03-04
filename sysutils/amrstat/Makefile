@@ -1,8 +1,8 @@
 # Created by: Bjoern A. Zeeb <bzeeb+freebsd+ports@zabbadoz.net>
-# $FreeBSD$
 
 PORTNAME=	amrstat
 PORTVERSION=	20070216
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	LOCAL/jkim
 

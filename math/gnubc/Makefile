@@ -1,9 +1,8 @@
 # Created by: Gabor Kovesdan <gabor@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bc
 DISTVERSION=	1.07.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu
@@ -16,7 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_powerpc64=	fails to build: tests fail with error code 2
 
-USES=		libedit makeinfo
+USES=		cpe libedit makeinfo
+CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-libedit
 INFO=		bc \
@@ -32,7 +32,7 @@ PORTEXAMPLES=	ckbook.b \
 
 OPTIONS_DEFINE=	EXAMPLES
 
-CONFLICTS_INSTALL=	gh-bc-[0-9]*
+CONFLICTS_INSTALL=	gh-bc
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	fuzzylite
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	pkubaj@anongoth.pl
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Fuzzy logic control library in C++
 
 LICENSE=	GPLv3

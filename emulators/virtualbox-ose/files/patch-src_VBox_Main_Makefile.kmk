@@ -1,6 +1,6 @@
---- src/VBox/Main/Makefile.kmk.orig	2017-03-08 17:20:11 UTC
+--- src/VBox/Main/Makefile.kmk.orig	2021-01-07 15:41:36 UTC
 +++ src/VBox/Main/Makefile.kmk
-@@ -445,6 +445,7 @@ VBoxSVC_SOURCES.os2 = \
+@@ -646,6 +646,7 @@ VBoxSVC_SOURCES.os2 = \
  
  VBoxSVC_SOURCES.freebsd = \
  	src-server/freebsd/HostHardwareFreeBSD.cpp \

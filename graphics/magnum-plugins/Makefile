@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	magnum-plugins
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2019.01
+DISTVERSION=	2019.10
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,9 +16,9 @@ LIB_DEPENDS=	libassimp.so:multimedia/assimp \
 		libfreetype.so:print/freetype2 \
 		libIL.so:graphics/devil \
 		libMagnum.so:graphics/magnum \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
-USES=		cmake compiler:c++14-lang gl jpeg openal
+USES=		cmake compiler:c++14-lang gl jpeg openal xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	mosra
 GH_TUPLE=	mosra:toolchains:fc22ff5:t/toolchains

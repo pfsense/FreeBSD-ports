@@ -1,12 +1,13 @@
 # Created by: peter
-# $FreeBSD$
 
 PORTNAME=	fvwm
-PORTVERSION=	2.6.8
+PORTVERSION=	2.6.9
 PORTREVISION=	2
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/fvwmorg/fvwm/releases/download/${PORTVERSION}/ \
-		http://www.fvwm.org/generated/icon_download/
+		http://fvwm.sourceforge.net/generated/icon_download/ \
+		http://cschubert.com/distfiles/ \
+		LOCAL/cy
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -19,12 +20,12 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
 # Other ports this port cannot coexist with
-CONFLICTS?=	fvwm1-1.* fvwm-2.[457].*
+CONFLICTS_INSTALL=	fvwm3
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-mandoc --without-gnome --disable-gtk \
 		ac_cv_path_PYTHON=${PYTHON_CMD}
-USES=		gmake perl5 pkgconfig python:3.4+ gettext readline
+USES=		cpe gmake gnome perl5 pkgconfig python:3.4+ gettext readline xorg
 USE_XORG=	xcursor xft xinerama xpm xrender x11 ice xext
 USE_GNOME=	cairo
 
@@ -123,6 +124,12 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/system.fvwm2rc \
 		${STAGEDIR}${PREFIX}/etc/system.fvwm2rc.dist
+	${INSTALL_MAN} ${WRKSRC}/doc/fvwm/fvwm.1 \
+		${STAGEDIR}${PREFIX}/man/man1/fvwm.1
+	${INSTALL_MAN} ${WRKSRC}/doc/fvwm/fvwm.1 \
+		${STAGEDIR}${PREFIX}/man/man1/fvwm2.1
+	${GZIP_CMD} ${STAGEDIR}${PREFIX}/man/man1/fvwm.1 \
+		${STAGEDIR}${PREFIX}/man/man1/fvwm2.1
 .if ${PORT_OPTIONS:MICONS}
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/fvwm/pixmaps
 	${INSTALL_DATA} ${WRKDIR}/icons/${FVWM_ICONS}/*.xpm \

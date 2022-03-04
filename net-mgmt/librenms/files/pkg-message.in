@@ -1,58 +1,123 @@
-=== UPGRADE details ===
-
-Depending on the version, you may have to run the upgrade script.
-
-cd %%WWWDIR%%
-./build-base.php
-
-re: https://docs.librenms.org/#General/Updating/
-
-=== Configuration details ===
-
-NOTE: setting sql-mode="" is no longer required. You can remove
-it from /usr/local/etc/mysql/my.cnf
+[
+{ type: install
+  message: <<EOM
 
 You can mostly follow the guide at:
 http://docs.librenms.org/
 
 with the following notes:
 - Installation directory is %%WWWDIR%%
-- The following lines should be added to /etc/crontab:
 
-PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
-33	*/6	*	*	*	www	cd %%WWWDIR%% && %%PHP%% discovery.php -h all >> /dev/null 2>&1
-*/5	*	*	*	*	www	cd %%WWWDIR%% && %%PHP%% discovery.php -h new >> /dev/null 2>&1
-*/5	*	*	*	*	www	cd %%WWWDIR%% && %%PYTHON%% poller-wrapper.py 16 >> /dev/null 2>&1
-15	0	*	*	*	www	%%LOCALBASE%%/bin/bash %%WWWDIR%%/daily.sh >> /dev/null 2>&1
-*	*	*	*	*	www	%%PHP%% %%WWWDIR%%/alerts.php >> /dev/null 2>&1
-*/5 	*	*	*	*	www	%%PHP%% %%WWWDIR%%/poll-billing.php >> /dev/null 2>&1
-01	*	*	*	*	www	%%PHP%% %%WWWDIR%%/billing-calculate.php >> /dev/null 2>&1
-*/5	*	*	*	*	www	%%PHP%% %%WWWDIR%%/check-services.php >> /dev/null 2>&1
+NOTE: setting sql-mode="" is no longer required. You can remove
+it from %%LOCALBASE%%/etc/mysql/my.cnf
 
-For a fresh install, you need to create an APP_KEY:
+However, 'lower_case_table_names=0' is required.
+
+HEADS UP
+
+Polling via cron job has been removed.. Please use the Dispatcher.
+
+LibreNMS will be dropped support for PHP 7.1 and Python 2
+see https://community.librenms.org/t/dropping-support-for-php-7-1-and-python-2/11851
+
+Your existing crontab entries are no longer useful and should be deleted.
+
+Enable the poller service with this command:
+
+sysrc librenms_enable="YES"
+
+The service will log to /var/log/librems/librenms-service.log
+
+see also https://docs.librenms.org/Extensions/Dispatcher-Service/
+
+For log file rotation
+
+* sample file installed to %%WWWDIR%%/contrib/newsyslog.conf.sample
+* actual file installed, never overwriting, to %%PREFIX%%/etc/newsyslog.conf.d/librenms.conf
+
+When converting from PYPOLLER to the Dispatcher Service (PYSERVICE),
+these steps will help you get started:
+
+* compile with PYSERVICE enabled and PYPOLLER disabled
+* comment out the crontab entries listed above under PYPOLLER
+* populate %%WWWDIR%%/.env with:
+  * APP_KEY - see farther below for how to create
+  * NODE_ID - see just below for how to create
+  * DB_HOST
+  * DB_DATABASE
+  * DB_USERNAME
+  * DB_PASSWORD
+* you can create a NODE_ID with: php -r 'echo uniqid() . "\n";'
+
+When setting up a new install, you need a %%WWWDIR%%/.env file.
+
+To create:
 
 cd %%WWWDIR%%
 cp -i .env.example .env
 
-It is also a good idea to:
-cd %%WWWDIR%%
-./validate
+That file will eventually contain secrets.  Make sure it is not world-readable.
 
-You might need to set your database details in that file
+Database connection details are required in that file.
+
 Then run:
 
-php artisan key:generate
+sudo php artisan key:generate
+
+It should write directly to your .env file
 
 The output should look something like this:
 
-**************************************
-*     Application In Production!     *
-**************************************
+$ sudo php artisan key:generate
+Application key set successfully.
 
- Do you really wish to run this command? (yes/no) [no]:
- > y
+When migrating to PYSERVICE (also known as the Dispatcher Service):
 
-Application key [base64:P62La9V........qw=] set successfully.
+It is also a good idea to:
+cd %%WWWDIR%%
+sudo ./validate.php
+
+You need an APP_KEY.
+
 
 After that, follow the LibreNMS documentation for configuration.
 
+You probably want to install lang/python3 to get validate.php clean.
+
+EOM
+}
+{ type: upgrade
+  message: <<EOM
+Depending on the version, you may have to run the upgrade script.
+
+cd %%WWWDIR%%
+./build-base.php
+
+Or the database upgrade script:
+
+./lnms migrate
+
+re: https://docs.librenms.org/#General/Updating/
+
+HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP
+HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP HEADS UP
+
+Polling via cron job is now gone. Please use the Dispatcher.
+
+LibreNMS will be droppped support for PHP 7.1 and Python 2.
+see https://community.librenms.org/t/dropping-support-for-php-7-1-and-python-2/11851
+
+Your existing crontab entries can be deleted.
+
+For more information, see pkg info --pkg-message librenms
+
+You probably want to install lang/python3 to get validate.php clean.
+
+Logs have been relocated to /var/log/librenms - see UPDATING 20200726
+Logs which were going to /var/log/messages and /var/log/librenms/ now only go
+to /var/log/librenms/
+
+
+EOM
+}
+]

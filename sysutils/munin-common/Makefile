@@ -1,5 +1,4 @@
 # Created by: Sean Rees <sean@rees.us>
-# $FreeBSD$
 
 PORTNAME=	munin
 PORTVERSION=	${MUNIN_VERSION}
@@ -14,7 +13,7 @@ BUILD_DEPENDS=	p5-Module-Build>=0:devel/p5-Module-Build \
 		p5-Net-SSLeay>=0:security/p5-Net-SSLeay
 RUN_DEPENDS=	p5-Net-SSLeay>=0:security/p5-Net-SSLeay
 
-USES=		gmake perl5 cpe
+USES=		cpe gmake perl5
 
 .include "${.CURDIR}/../munin-common/munin.mk"
 

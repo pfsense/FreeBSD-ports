@@ -1,5 +1,4 @@
 # Created by: Diane Bruce <db@db.net>
-# $FreeBSD$
 
 PORTNAME=	chu
 PORTVERSION=	0.1.29
@@ -9,7 +8,8 @@ MASTER_SITES=	SUNSITE/system/admin/time
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Synchronise computer clock to CHU radio station
 
-LICENSE=	GPLv1
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_WRKSUBDIR=	yes
 
@@ -25,11 +25,13 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/chu ${STAGEDIR}${PREFIX}/sbin
-	${MKDIR} ${STAGEDIR}${DATADIR}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/testsignal ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKSRC}/chu.8 ${STAGEDIR}${PREFIX}/man/man8
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for d in COPYING TESTING chu.html chuman.html ntp.html
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for d in TESTING chu.html chuman.html ntp.html
 	${INSTALL_DATA} ${WRKSRC}/${d} ${STAGEDIR}${DOCSDIR}
 .endfor
 

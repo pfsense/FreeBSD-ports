@@ -1,8 +1,7 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	hitori
-PORTVERSION=	3.22.4
+PORTVERSION=	3.38.3
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -18,11 +17,9 @@ BUILD_DEPENDS=	itstool:textproc/itstool \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake localbase pathfix pkgconfig \
-		tar:xz
+USES=		compiler:c11 gettext gmake gnome localbase meson pathfix \
+		pkgconfig tar:xz
 USE_GNOME=	cairo gtk30 librsvg2 libxml2:build
-INSTALLS_ICONS=	yes
-GNU_CONFIGURE=	yes
 
 GLIB_SCHEMAS=	org.gnome.hitori.gschema.xml
 

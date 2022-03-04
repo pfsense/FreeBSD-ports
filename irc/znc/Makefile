@@ -1,11 +1,15 @@
 # Created by: elvstone@gmail.com
-# $FreeBSD$
 
 PORTNAME=	znc
-PORTVERSION=	1.7.3
-CATEGORIES=	irc ipv6
+PORTVERSION=	1.8.2
+PORTREVISION=	3
+CATEGORIES=	irc
 MASTER_SITES=	https://znc.in/releases/ \
 		https://znc.in/releases/archive/
+
+# Fix build with libressl
+PATCH_SITES=	https://github.com/znc/znc/commit/
+PATCHFILES=	dcb5f3df82fcfec48aab356252067dc897fb98cf.patch:-p1
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Advanced IRC bouncer
@@ -47,13 +51,13 @@ NLS_USES=		gettext
 OPENSSL_CMAKE_BOOL=	WANT_OPENSSL
 OPENSSL_CMAKE_ON=	-DOPENSSL_ROOT_DIR=${OPENSSLBASE}
 OPENSSL_USES=	ssl
-PERL_BUILD_DEPENDS=	swig30>=3.0.0:devel/swig30
+PERL_BUILD_DEPENDS=	swig>=3.0.0:devel/swig
 PERL_CMAKE_BOOL=	WANT_PERL WANT_SWIG
 PERL_USE=	perl5=build,run
 PERL_USES=	perl5
 PYTHON_CMAKE_BOOL=	WANT_PYTHON WANT_SWIG
 PYTHON_CMAKE_ON=	-DWANT_PYTHON_VERSION:STRING=python-${PYTHON_VER}
-PYTHON_BUILD_DEPENDS=	swig30>=3.0.0:devel/swig30
+PYTHON_BUILD_DEPENDS=	swig>=3.0.0:devel/swig
 PYTHON_IMPLIES=	CHARSET
 PYTHON_USE=	perl5=build
 PYTHON_USES=	perl5

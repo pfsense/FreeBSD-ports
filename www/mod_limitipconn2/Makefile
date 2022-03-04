@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@ccca.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	mod_limitipconn
 PORTVERSION=	0.24
@@ -14,17 +13,18 @@ MAINTAINER=	ychsiao@ychsiao.org
 COMMENT=	Allows you to limit the number of simultaneous connexions
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		apache:2.2+ tar:bzip2
 
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 
-PORTDOCS=	ChangeLog INSTALL README
+PORTDOCS=	ChangeLog README
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}/
 

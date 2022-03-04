@@ -1,8 +1,7 @@
 # Created by: Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gstreamer1-transcoder
-PORTVERSION=	1.14.1
+PORTVERSION=	1.16.0
 CATEGORIES=	multimedia
 
 MAINTAINER=	kwm@FreeBSD.org
@@ -11,9 +10,7 @@ COMMENT=	GStreamer Transcoding API
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	gtkdoc-check:textproc/gtk-doc
-
-USES=		gnome meson pkgconfig python:3.3+ #shebangfix
+USES=		compiler gnome meson pkgconfig python:3.3+ #shebangfix
 USE_GNOME=	introspection
 USE_GSTREAMER1=	core
 USE_LDCONFIG=	yes
@@ -25,10 +22,18 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pitivi
 GH_PROJECT=	gst-transcoder
 
+OPTIONS_DEFINE=	DOCS
+
+DOCS_BUILD_DEPENDS=	gtkdoc-check:textproc/gtk-doc
+DOCS_MESON_FALSE=	disable_doc
+DOCSDIR=		${PREFIX}/share/gtk-doc/html/gstreamer-transcoder/
+
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 post-patch:
-.if exists(/usr/lib/libstdc++.so)
 	${REINPLACE_CMD} -e '/-Wno-pedantic/d' \
 		${WRKSRC}/meson.build
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,9 +1,8 @@
 # Created by: Brett Taylor <brett@peloton.physics.montana.edu>
-# $FreeBSD$
 
 PORTNAME=	afterstep
 PORTVERSION=	2.2.12
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-wm afterstep
 MASTER_SITES=	AFTERSTEP/stable
 DISTNAME=	AfterStep-${PORTVERSION}
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS=	xli:graphics/xli
 
-USES=		gmake jpeg pkgconfig shebangfix tar:bzip2
+USES=		gmake gnome jpeg pkgconfig shebangfix tar:bzip2 xorg
 USE_CSTD=	gnu89
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 librsvg2 pango
 USE_XORG+=	ice sm x11 xcomposite xcursor xdamage xext xfixes xi xinerama \

@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Time-Mock
 PORTVERSION=	0.0.2
@@ -15,7 +14,9 @@ COMMENT=	Shift and scale time
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

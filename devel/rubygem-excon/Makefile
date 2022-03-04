@@ -1,19 +1,21 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	excon
-PORTVERSION=	0.62.0
+PORTVERSION=	0.88.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Extended http(s) Connections Library
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-NO_ARCH=	yes
+USES=		cpe gem
 USE_RUBY=	yes
-USES=		gem
+
+NO_ARCH=	yes
+
+CPE_VENDOR=	excon_project
 
 .include <bsd.port.mk>

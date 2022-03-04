@@ -1,5 +1,4 @@
 # Created by: smace
-# $FreeBSD$
 
 PORTNAME=	trn
 PORTVERSION=	4.0.b77
@@ -8,10 +7,10 @@ CATEGORIES=	news
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}4
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/.b/-test/}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Version 4.0 of the threaded readnews newsreader
 
-CONFLICTS_INSTALL=trn-3.[0-9]* cnews-* s-news-[0-9]*
+CONFLICTS_INSTALL=trn-3.[0-9]* cnews s-news
 
 USES=		ncurses
 

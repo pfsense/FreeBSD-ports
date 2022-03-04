@@ -1,16 +1,17 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	gearmand
 PORTVERSION=	1.0.6
-PORTREVISION=	17
+PORTREVISION=	22
 CATEGORIES=	devel
 MASTER_SITES=	http://launchpad.net/gearmand/1.0/${PORTVERSION}/+download/
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gearman C Server and Library
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR}
+BROKEN_FreeBSD_13=	error: use of undeclared identifier 'abi'
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
 		libevent.so:devel/libevent \
 		libuuid.so:misc/e2fsprogs-libuuid
@@ -20,7 +21,7 @@ CONFLICTS=	p5-Gearman-Server-1.* gearmand-1.1.*
 USERS=		gearmand
 GROUPS=		gearmand
 
-USES=		compiler:c++11-lang pathfix gmake perl5 python:build libtool
+USES=		compiler:c++11-lang pathfix gmake perl5 python:build,3.6+ libtool
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -74,7 +75,7 @@ CONFIGURE_ARGS+=	--disable-libmemcached
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=		yes
+USES+=			mysql
 CONFIGURE_ARGS+=	--with-mysql=yes
 .else
 CONFIGURE_ARGS+=	--with-mysql=no

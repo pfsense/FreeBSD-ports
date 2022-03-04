@@ -1,12 +1,11 @@
 # Created by: roam@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	stalepid
 PORTVERSION=	1.0.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://devel.ringlet.net/files/sys/stalepid/
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Check for stale pid files and remove them
 
 LICENSE=	BSD2CLAUSE

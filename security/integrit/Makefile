@@ -1,5 +1,4 @@
 # Created by: Ying-Chieh Liao <ijliao@csie.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	integrit
 PORTVERSION=	4.1
@@ -9,6 +8,9 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File integrity verification program
+
+DEPRECATED=	Abandonware, last release in 2003
+EXPIRATION_DATE=2022-03-31
 
 USES=		makeinfo
 GNU_CONFIGURE=	yes

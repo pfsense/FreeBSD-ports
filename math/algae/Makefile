@@ -1,9 +1,8 @@
 # Created by: Michael Neumann <mneumann@ntecs.de>
-# $FreeBSD$
 
 PORTNAME=	algae
 PORTVERSION=	4.3.6
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -23,6 +22,7 @@ USES=		fortran
 
 CONFIGURE_ARGS=	--disable-dlmalloc --without-fftw --without-blas \
 		--without-lapack --without-bcslib --without-npsol
+FFLAGS+=	-std=legacy
 PLIST_SUB=	ALGAE_VERSION=${PORTVERSION}
 
 INFO=		${PORTNAME}

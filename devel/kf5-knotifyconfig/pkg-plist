@@ -13,6 +13,8 @@ lib/libKF5NotifyConfig.so.%%KDE_FRAMEWORKS_VERSION%%
 share/locale/af/LC_MESSAGES/knotifyconfig5.mo
 share/locale/ar/LC_MESSAGES/knotifyconfig5.mo
 share/locale/as/LC_MESSAGES/knotifyconfig5.mo
+share/locale/ast/LC_MESSAGES/knotifyconfig5.mo
+share/locale/az/LC_MESSAGES/knotifyconfig5.mo
 share/locale/be/LC_MESSAGES/knotifyconfig5.mo
 share/locale/be@latin/LC_MESSAGES/knotifyconfig5.mo
 share/locale/bg/LC_MESSAGES/knotifyconfig5.mo
@@ -109,3 +111,4 @@ share/locale/xh/LC_MESSAGES/knotifyconfig5.mo
 share/locale/zh_CN/LC_MESSAGES/knotifyconfig5.mo
 share/locale/zh_HK/LC_MESSAGES/knotifyconfig5.mo
 share/locale/zh_TW/LC_MESSAGES/knotifyconfig5.mo
+share/qlogging-categories5/knotifyconfig.categories

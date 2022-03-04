@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ebview
 PORTVERSION=	0.3.6
 PORTREVISION=	19
@@ -14,9 +12,9 @@ LICENSE=	GPLv2+
 
 LIB_DEPENDS=	libeb.so:japanese/eb
 
-CONFLICTS=	ja-ebview-[0-9]*
+CONFLICTS=	ja-ebview
 
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake gnome pkgconfig
 USE_GNOME=	gtk20 pangox-compat
 USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes

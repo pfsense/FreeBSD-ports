@@ -1,9 +1,8 @@
 # Created by: Mathieu Arnold
-# $FreeBSD$
 
 PORTNAME=	nextcloudclient
-PORTVERSION=	0.0.0.20190207
-PORTREVISION=	2
+PORTVERSION=	3.3.6
+DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
 MAINTAINER=	mr@FreeBSD.org
@@ -11,32 +10,43 @@ COMMENT=	NextCloud Desktop Syncing Client
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+
+BUILD_DEPENDS=	inkscape:graphics/inkscape
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libqt5keychain.so:security/qtkeychain
 
-USES=		cmake:noninja compiler:c++11-lib gmake iconv \
-		localbase:ldflags pkgconfig qt:5 sqlite ssl
-USE_QT=		buildtools_build concurrent core dbus declarative gui linguist_build location network \
-		printsupport qmake_build sql webchannel webengine webkit widgets xml
-CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=OFF \
+USES=		cmake:noninja compiler:c++14-lang desktop-file-utils gmake \
+		gnome iconv localbase:ldflags pkgconfig qt:5 shared-mime-info \
+		sqlite ssl
+USE_QT=		buildtools_build concurrent core dbus declarative graphicaleffects \
+		gui linguist_build location network printsupport qmake_build \
+		quickcontrols2 sql svg testlib webchannel websockets \
+		widgets xml
+CMAKE_ARGS=	-DBUILD_UPDATER:BOOL=OFF \
 		-DCMAKE_INSTALL_MANDIR:STRING=man \
 		-DWITH_STACK_PROTECTOR:BOOL=OFF
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 
-DEBUG=		yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	nextcloud
 GH_PROJECT=	desktop
-GH_TAGNAME=	ca624def40d5e431bc84a157ffba1bc187d5ecee
 
 #OPTIONS_DEFINE=		DEBUG DOCS
-OPTIONS_DEFINE=		DEBUG # DOCS doesn't build currently
+OPTIONS_DEFINE=		DEBUG WEBENGINE # DOCS doesn't build currently
+OPTIONS_DEFAULT_amd64=		WEBENGINE
+OPTIONS_DEFAULT_i386=		WEBENGINE
+OPTIONS_DEFAULT_aarch64=	WEBENGINE
+
+WEBENGINE_DESC=		QT5 Webengine support
 
 #DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx \
 #			doxygen:devel/doxygen
 #DOCS_USE=		tex=dvipsk:build,latex:build
 #DOCS_CMAKE_ON=		-DWITH_DOC:BOOL=ON
+
+WEBENGINE_VARS=		USE_QT+=webengine
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 
@@ -46,15 +56,19 @@ PLIST_SUB=	VERSION=${PORTVERSION}
 CMAKE_ARGS+=	-DCMAKE_BUILD_TYPE:STRING=Debug
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && !${SSL_DEFAULT:Mopenssl111}
-BROKEN=	nextcloudclient requires OpenSSL 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl111 to /etc/make.conf
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|.lst |.lst.sample |' ${WRKSRC}/CMakeLists.txt
 
+post-patch-WEBENGINE-off:
+	@${REINPLACE_CMD} -e '/^find_package.*COMPONENTS WebEngineWidgets WebEngine/d' \
+		${WRKSRC}/src/CMakeLists.txt
+
 pre-configure:
 	@(cd ${WRKSRC} && ${CP} -f sync-exclude.lst sync-exclude.lst.sample)
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/sync-exclude.lst ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.post.mk>

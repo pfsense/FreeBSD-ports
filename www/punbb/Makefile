@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	punbb
-PORTVERSION=	1.4.4
+PORTVERSION=	1.4.6
 CATEGORIES=	www
 MASTER_SITES=	http://punbb.informer.com/download/ \
 		http://punbb.informer.com/download/plugins/:plugins \
@@ -12,7 +11,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PLUGINS:S/$/:plugins/}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Fast and lightweight PHP-powered discussion board
 
 LICENSE=	GPLv2
@@ -23,7 +22,8 @@ BUILD_DEPENDS+=	${UNZIP_CMD}:archivers/unzip
 SUB_FILES=	pkg-message
 
 NO_BUILD=	yes
-USES=		php tar:bzip2
+USES=		cpe php tar:bzip2
+CPE_VENDOR=	gnu
 
 OPTIONS_DEFINE=		LANGUAGE_PACK EXTRAS
 OPTIONS_DEFAULT=	LANGUAGE_PACK EXTRAS
@@ -64,6 +64,7 @@ LANGFILES+=	Arabic.zip \
 		Kurdish.zip \
 		Latvian.zip \
 		Lithuanian.zip \
+		Macedonian.zip \
 		Norwegian.zip \
 		Polish.zip \
 		Polish_UTF8.zip \
@@ -77,15 +78,16 @@ LANGFILES+=	Arabic.zip \
 		Slovenian.zip \
 		Spanish.zip \
 		Swedish.zip \
+		Thai_UTF8.zip \
 		Traditional_Chinese.zip \
 		Turkish.zip \
 		Ukrainian.zip \
 		Ukrainian_UTF8.zip \
 		Urdu.zip \
 		Vietnamese.zip
-PLIST_SUB+=	LANGUAGE_PACK=""
+PLIST_SUB+=	LANG=""
 .else
-PLIST_SUB+=	LANGUAGE_PACK="@comment "
+PLIST_SUB+=	LANG="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MEXTRAS}
@@ -97,6 +99,7 @@ PLUGINS+=	AP_User_Merge.zip \
 		AP_Clear_Cache.zip \
 		AP_Merge_Forums.zip \
 		AMP_Global_topic.zip \
+		AMP_Remove_Users.zip \
 		AP_Languages_and_styles.zip \
 		AP_Broadcast_Email.zip \
 		AP_DB_management.zip \

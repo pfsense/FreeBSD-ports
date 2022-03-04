@@ -1,29 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	moab
-DISTVERSION=	5.0.0
-PORTREVISION=	4
+DISTVERSION=	5.2.1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Component for representing and evaluating mesh data
 
-LICENSE=	BSD2CLAUSE
-xLICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE=	LGPL3+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libnetcdf.so:science/netcdf \
 		libopenblas.so:math/openblas
 
-USES=		cmake:noninja eigen:3 fortran
+USES=		cmake:noninja compiler:c++11-lang eigen:3 fortran
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DBLAS_LIBRARIES:STRING=${LOCALBASE}/lib/libopenblas.so -DLAPACK_LIBRARIES:STRING=${LOCALBASE}/lib/libopenblas.so
+CMAKE_ARGS=	-DBLAS_LIBRARIES:STRING=${LOCALBASE}/lib/libopenblas.so \
+		-DLAPACK_LIBRARIES:STRING=${LOCALBASE}/lib/libopenblas.so
 
 BB_ACCOUNT=	fathomteam
 BB_PROJECT=	${PORTNAME}
-BB_COMMIT=	c4eed56fd6d2
+BB_COMMIT=	7bde9dfb84a8
 
 WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
 

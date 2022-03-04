@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	meritous
 PORTVERSION=	1.2
 PORTREVISION=	11
@@ -14,7 +11,7 @@ COMMENT=	Action-adventure dungeon crawl game
 
 LICENSE=	GPLv3
 
-USES=		tar:bzip2 dos2unix gmake
+USES=		dos2unix gmake sdl tar:bzip2
 USE_SDL=	sdl mixer image
 ALL_TARGET=	default
 DOS2UNIX_FILES=	dat/d/helpfile.txt src/boss.c src/levelblit.c

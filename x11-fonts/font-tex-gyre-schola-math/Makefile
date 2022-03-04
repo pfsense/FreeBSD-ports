@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	font-tex-gyre-schola-math
 DISTVERSION=	1.533
 PORTREVISION=	1

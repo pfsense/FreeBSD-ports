@@ -3,7 +3,7 @@
  * backup.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -41,7 +41,7 @@ if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
 		if ($a_backup[$_GET['id']]) {
 			unset($a_backup[$_GET['id']]);
-			write_config();
+			write_config("Backup: Item deleted");
 			header("Location: backup.php");
 			exit;
 		}
@@ -54,7 +54,7 @@ if ($_GET['a'] == "download") {
 		$i = 0;
 		if (count($a_backup) > 0) {
 			/* Do NOT remove the trailing space after / from $backup_cmd below!!! */
-			$backup_cmd = "/usr/bin/tar --create --verbose --gzip --file {$backup_path} --directory / ";
+			$backup_cmd = "/usr/bin/tar --exclude {$backup_path} --create --verbose --gzip --file {$backup_path} --directory / ";
 			foreach ($a_backup as $ent) {
 				if ($ent['enabled'] == "true") {
 					$backup_cmd .= escapeshellarg($ent['path']) . ' ';
@@ -210,7 +210,7 @@ if (count($a_backup) > 0):
 							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
 						</td>
 					</tr>
-<?	$i++;
+<?php	$i++;
 	endforeach;
 endif; ?>
 					<tr>

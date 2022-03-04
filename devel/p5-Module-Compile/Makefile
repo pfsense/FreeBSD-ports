@@ -1,5 +1,4 @@
 # Created by: Tsung-Han Yeh <snowfly@yuntech.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	Module-Compile
 PORTVERSION=	0.23
@@ -16,5 +15,7 @@ RUN_DEPENDS=	p5-Digest-SHA1>=0:security/p5-Digest-SHA1
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

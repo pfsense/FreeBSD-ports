@@ -1,6 +1,6 @@
---- services/device/hid/hid_connection_freebsd.h.orig	2019-03-30 17:42:59.719257000 -0700
-+++ services/device/hid/hid_connection_freebsd.h	2019-03-30 21:53:54.126040000 -0700
-@@ -0,0 +1,68 @@
+--- services/device/hid/hid_connection_freebsd.h.orig	2021-09-29 12:19:04 UTC
++++ services/device/hid/hid_connection_freebsd.h
+@@ -0,0 +1,67 @@
 +// Copyright (c) 2014 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -13,10 +13,9 @@
 +
 +#include "base/files/scoped_file.h"
 +#include "base/macros.h"
-+#include "base/memory/ptr_util.h"
-+#include "base/memory/ref_counted_memory.h"
 +#include "base/memory/weak_ptr.h"
-+#include "base/sequence_checker.h"
++#include "base/memory/ref_counted_memory.h"
++#include "base/sequenced_task_runner.h"
 +#include "services/device/hid/hid_connection.h"
 +
 +namespace base {
@@ -34,11 +33,13 @@
 +  HidConnectionFreeBSD(
 +      scoped_refptr<HidDeviceInfo> device_info,
 +      base::ScopedFD fd,
-+      scoped_refptr<base::SequencedTaskRunner> blocking_task_runner);
++      scoped_refptr<base::SequencedTaskRunner> blocking_task_runner,
++      bool allow_protected_reports,
++      bool allow_fido_reports);
 +
 + private:
 +  friend class base::RefCountedThreadSafe<HidConnectionFreeBSD>;
-+  class BlockingTaskHelper;
++  class BlockingTaskRunnerHelper;
 +
 +  ~HidConnectionFreeBSD() override;
 +
@@ -54,14 +55,12 @@
 +  // |helper_| lives on the sequence to which |blocking_task_runner_| posts
 +  // tasks so all calls must be posted there including this object's
 +  // destruction.
-+  std::unique_ptr<BlockingTaskHelper> helper_;
++  std::unique_ptr<BlockingTaskRunnerHelper, base::OnTaskRunnerDeleter> helper_;
 +
 +  const scoped_refptr<base::SequencedTaskRunner> blocking_task_runner_;
 +  const scoped_refptr<base::SequencedTaskRunner> task_runner_;
 +
-+  SEQUENCE_CHECKER(sequence_checker_);
-+
-+  base::WeakPtrFactory<HidConnectionFreeBSD> weak_factory_;
++  base::WeakPtrFactory<HidConnectionFreeBSD> weak_factory_{this};
 +
 +  DISALLOW_COPY_AND_ASSIGN(HidConnectionFreeBSD);
 +};

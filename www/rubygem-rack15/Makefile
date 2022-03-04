@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # XXX: If updating this port, please check compatibality with at least the following ports,
 # XXX: preferably, the full rubygem-* tree.  rack version requirements are specified with ~>
 # XXX: which requires *EXACTLY* that version.
@@ -21,7 +19,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USES=		gem shebangfix
+USES=		cpe gem shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 
 SHEBANG_FILES=	test/cgi/test.ru
 SHEBANG_LANG=	rackup

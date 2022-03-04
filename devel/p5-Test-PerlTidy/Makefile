@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-PerlTidy
 PORTVERSION=	20130104
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to check that all your files are tidy
 
 RUN_DEPENDS=	\

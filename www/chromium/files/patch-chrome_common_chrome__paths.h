@@ -1,42 +1,29 @@
---- chrome/common/chrome_paths.h.orig	2019-03-21 01:36:35.000000000 +0100
-+++ chrome/common/chrome_paths.h	2019-03-24 18:44:50.266637000 +0100
-@@ -51,7 +51,7 @@
-                                 // to set policies for chrome. This directory
-                                 // contains subdirectories.
- #endif
--#if defined(OS_CHROMEOS) || (defined(OS_LINUX) && defined(CHROMIUM_BUILD)) || \
-+#if defined(OS_CHROMEOS) || ((defined(OS_LINUX) || defined(OS_BSD)) && defined(CHROMIUM_BUILD)) || \
-     defined(OS_MACOSX)
+--- chrome/common/chrome_paths.h.orig	2021-07-19 18:45:10 UTC
++++ chrome/common/chrome_paths.h
+@@ -57,7 +57,7 @@ enum {
+ #if BUILDFLAG(IS_CHROMEOS_ASH) ||                            \
+     ((defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) && \
+      BUILDFLAG(CHROMIUM_BRANDING)) ||                        \
+-    defined(OS_MAC)
++    defined(OS_MAC) || defined(OS_BSD)
    DIR_USER_EXTERNAL_EXTENSIONS,  // Directory for per-user external extensions
                                   // on Chrome Mac and Chromium Linux.
-@@ -60,7 +60,7 @@
+                                  // On Chrome OS, this path is used for OEM
+@@ -65,7 +65,7 @@ enum {
                                   // create it.
  #endif
  
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
    DIR_STANDALONE_EXTERNAL_EXTENSIONS,  // Directory for 'per-extension'
                                         // definition manifest files that
                                         // describe extensions which are to be
-@@ -107,7 +107,7 @@
-   DIR_SUPERVISED_USER_INSTALLED_WHITELISTS,  // Directory where sanitized
-                                              // supervised user whitelists are
-                                              // installed.
--#if defined(OS_LINUX) || defined(OS_MACOSX)
-+#if defined(OS_LINUX) || defined(OS_BSD) || defined(OS_MACOSX)
-   DIR_NATIVE_MESSAGING,         // System directory where native messaging host
-                                 // manifest files are stored.
-   DIR_USER_NATIVE_MESSAGING,    // Directory with Native Messaging Hosts
-@@ -122,10 +122,10 @@
-   DIR_GEN_TEST_DATA,            // Directory where generated test data resides.
-   DIR_TEST_DATA,                // Directory where unit test data resides.
-   DIR_TEST_TOOLS,               // Directory where unit test tools reside.
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
-   FILE_COMPONENT_FLASH_HINT,    // A file in a known location that points to
-                                 // the component updated flash plugin.
--#endif  // defined(OS_LINUX)
-+#endif  // defined(OS_LINUX) || defined(OS_BSD)
- #if defined(OS_CHROMEOS)
-   FILE_CHROME_OS_COMPONENT_FLASH,  // The location of component updated Flash on
-                                    // Chrome OS.
+@@ -109,7 +109,7 @@ enum {
+   DIR_CHROMEOS_CUSTOM_WALLPAPERS,     // Directory where custom wallpapers
+                                       // reside.
+ #endif
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
+   DIR_NATIVE_MESSAGING,       // System directory where native messaging host
+                               // manifest files are stored.
+   DIR_USER_NATIVE_MESSAGING,  // Directory with Native Messaging Hosts

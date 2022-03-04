@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=		maxcso
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.10.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=		archivers
 
 MAINTAINER=	greg@unrelenting.technology

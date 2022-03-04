@@ -1,9 +1,8 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	dilay
 DISTVERSION=	1.9.0
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm
 
-USES=		compiler:c++14-lang gmake qmake qt:5
+USES=		compiler:c++14-lang gl gmake qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	abau
 USE_CXXSTD=	c++14

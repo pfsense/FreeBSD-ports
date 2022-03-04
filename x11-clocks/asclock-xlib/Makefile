@@ -1,19 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	asclock-xlib
 PORTVERSION=	2.0.11
 PORTREVISION=	4
 CATEGORIES=	x11-clocks afterstep windowmaker
 MASTER_SITES=	LOCAL/kuriyama
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	New flavor of asclock
 
 MAKE_JOBS_UNSAFE=	yes
 
 WRKSRC=		${WRKDIR}/asclock-xlib
+USES=		imake xorg
 USE_XORG=	xpm x11
-USES=		imake
 
 .include <bsd.port.pre.mk>
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CommentPlugin
 SVNREV=		17567
 

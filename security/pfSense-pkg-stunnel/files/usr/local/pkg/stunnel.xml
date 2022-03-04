@@ -8,7 +8,7 @@
  * stunnel.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,12 +28,12 @@
 	<name>stunnel</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: Secure Tunnel</title>
+	<include_file>/usr/local/pkg/stunnel.inc</include_file>
 	<menu>
 		<name>STunnel</name>
 		<section>Services</section>
 		<configfile>stunnel.xml</configfile>
 	</menu>
-	<include_file>/usr/local/pkg/stunnel.inc</include_file>	
 	<tabs>
 		<tab>
 			<text>Tunnels</text>
@@ -61,7 +61,7 @@
 		</columnitem>
 		<columnitem>
 			<fielddescr>Certificate</fielddescr>
-			<fieldname>certificatelink</fieldname>
+			<fieldname>certname</fieldname>
 		</columnitem>
 		<columnitem>
 			<fielddescr>Redirects to IP</fielddescr>
@@ -100,7 +100,11 @@
 			<field>
 			<fielddescr>Protocol</fielddescr>
 			<fieldname>protocol</fieldname>
-			<description>Select a specific application protocol (https://www.stunnel.org/static/stunnel.html#protocol-PROTO)</description>
+			<description>
+				<![CDATA[
+				Select a specific application protocol (<a href="https://www.stunnel.org/static/stunnel.html#protocol-PROTO" target="_blank">https://www.stunnel.org/static/stunnel.html#protocol-PROTO</a>)
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -108,7 +112,7 @@
 			<fieldname>certificate</fieldname>
 			<description>Select server certificate to use for this tunnel.</description>
 			<type>select_source</type>
-			<source><![CDATA[$config['cert']]]></source>
+			<source><![CDATA[cert_build_list('cert', 'IPsec', true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 			<show_disable_value>default</show_disable_value>
@@ -160,19 +164,25 @@
 			<fielddescr>Custom Options</fielddescr>
 			<fieldname>custom_options</fieldname>
 			<type>textarea</type>
-			<description>Custom service level options (https://www.stunnel.org/static/stunnel.html#SERVICE-LEVEL-OPTIONS)</description>
+			<description>
+				<![CDATA[
+				Custom service level options (<a href="https://www.stunnel.org/static/stunnel.html#SERVICE-LEVEL-OPTIONS" target="_blank">https://www.stunnel.org/static/stunnel.html#SERVICE-LEVEL-OPTIONS</a>)
+				]]>
+			</description>
 			<encoding>base64</encoding>
 		</field>
 	</fields>
+	<plugins>
+                <item>
+                        <type>plugin_certificates</type>
+                </item>
+        </plugins>
 	<custom_add_php_command_late>
 		stunnel_save();
 	</custom_add_php_command_late>
 	<custom_delete_php_command>
 		stunnel_save();
 	</custom_delete_php_command>
-	<custom_php_install_command>
-		stunnel_install();
-	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		stunnel_deinstall();
 	</custom_php_deinstall_command>

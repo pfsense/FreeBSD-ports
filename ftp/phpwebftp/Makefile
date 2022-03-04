@@ -1,5 +1,4 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	phpwebftp
 PORTVERSION=	3.3b
@@ -12,7 +11,7 @@ COMMENT=	Set of PHP-scripts to manage FTP over the web
 
 LICENSE=	GPLv2
 
-USES=		zip
+USES=		cpe php zip
 NO_BUILD=	yes
 NO_ARCH=	yes
 USE_PHP=	ftp

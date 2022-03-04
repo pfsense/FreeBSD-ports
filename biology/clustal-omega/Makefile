@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	clustal-omega
 DISTVERSION=	1.2.4
 CATEGORIES=	biology

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	jetty
-PORTVERSION=	9.3.9
+PORTVERSION=	9.4.29
 CATEGORIES=	www java
-MASTER_SITES=	ECLIPSE/jetty/${PORTVERSION}.${JDVDATE}/dist
+MASTER_SITES=	https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${PORTVERSION}.${JDVDATE}/
 PKGNAMESUFFIX=	9
 DISTNAME=	jetty-distribution-${PORTVERSION}.${JDVDATE}
 
-MAINTAINER=	dharrigan@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-featured web server implemented entirely in Java
 
 LICENSE=	APACHE20 EPL
@@ -18,15 +16,15 @@ RUN_DEPENDS=	bash:shells/bash
 
 CONFLICTS=	jetty-8.*
 
-JDVDATE=	v20160517
+JDVDATE=	v20200521
 USE_JAVA=	yes
 NO_ARCH=	yes
-USES=		shebangfix
+USES=		cpe shebangfix
+CPE_VENDOR=	eclipse
 SHEBANG_FILES=	bin/jetty.sh
 NO_BUILD=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	8+
 JAVA_VENDOR=	openjdk
-ONLY_FOR_ARCHS=	i386 amd64
 USE_RC_SUBR=	${PORTNAME}
 
 APP_NAME=	${PORTNAME}

@@ -3,9 +3,9 @@
  * snort_post_install.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -135,8 +135,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	if (count($config['installedpackages']['snortglobal']['rule']) > 0) {
 		$uuids = array();
 		$fixed_duplicate = FALSE;
-		$snortconf = &$config['installedpackages']['snortglobal']['rule'];
-		foreach ($snortconf as &$snortcfg) {
+		foreach ($config['installedpackages']['snortglobal']['rule'] as &$snortcfg) {
 			// Check for and fix a duplicate UUID
 			$if_real = get_real_interface($snortcfg['interface']);
 			if (!isset($uuids[$snortcfg['uuid']])) {
@@ -156,25 +155,32 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 				$fixed_duplicate = TRUE;
 			}
 		}
-		unset($uuids);
+		// Release config array reference and $uuids array
+		unset($snortcfg, $uuids);
 	}
 	/****************************************************************/
 	/* End of duplicate UUID bug fix.                               */
 	/****************************************************************/
 
-	/* Do one-time settings migration for new multi-engine configurations */
+	/* Do any required settings migration for new configurations */
 	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/snort/snort_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
 	syslog(LOG_NOTICE, gettext("[Snort] Downloading and updating configured rule sets."));
+	update_status(gettext("Downloading configured rule sets. This may take some time...") . "\n");
 	include('/usr/local/pkg/snort/snort_check_for_rule_updates.php');
+	update_status(gettext("Finished downloading and installing configured rules.") . "\n");
 	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
 
 	/* Create the snort.conf files for each enabled interface */
-	$snortconf = $config['installedpackages']['snortglobal']['rule'];
-	foreach ($snortconf as $snortcfg) {
+	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
 		$if_real = get_real_interface($snortcfg['interface']);
+
+		/* Skip instance if its real interface is missing in pfSense */
+		if ($if_real == "") {
+			continue;
+		}
 		$snort_uuid = $snortcfg['uuid'];
 		$snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}";
 		update_status(gettext("Generating configuration for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
@@ -205,11 +211,6 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		// Clean up variables we no longer need and free memory
 		unset($snort_conf_text, $selected_rules_sections, $suppress_file_name, $snort_misc_include_rules, $spoink_type, $snortunifiedlog_type, $alertsystemlog_type);
 		unset($home_net, $external_net, $ipvardef, $portvardef);
-
-		// Create barnyard2.conf file for interface
-		if ($snortcfg['barnyard_enable'] == 'on')
-			snort_generate_barnyard2_conf($snortcfg, $if_real);
-
 		update_status(gettext(" done.") . "\n");
 	}
 

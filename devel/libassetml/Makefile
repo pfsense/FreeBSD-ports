@@ -1,5 +1,4 @@
 # Created by: Alexander Nedotsukov <bland@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libassetml
 PORTVERSION=	1.2.1
@@ -13,7 +12,7 @@ COMMENT=	Library to share image and audio files between projects
 BUILD_DEPENDS=	texi2html:textproc/texi2html
 LIB_DEPENDS=	libpopt.so:devel/popt
 
-USES=		gettext gmake libtool:keepla makeinfo pathfix pkgconfig
+USES=		gettext gmake gnome libtool:keepla makeinfo pathfix pkgconfig
 USE_GNOME=	gnomeprefix glib20 libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

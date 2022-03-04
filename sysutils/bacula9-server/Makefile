@@ -1,9 +1,8 @@
 # Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bacula
-PORTVERSION=	9.4.2
-PORTREVISION=	0
+PORTVERSION=	9.6.7
+PORTREVISION=	1
 CATEGORIES?=	sysutils
 MASTER_SITES=	SF/bacula/bacula/${PORTVERSION}
 PKGNAMEPREFIX?=	#
@@ -12,11 +11,13 @@ PKGNAMESUFFIX?=	9-server
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT?=	Network backup solution (server)
 
-USES+=		libtool readline shebangfix ssl
-SHEBANG_FILES=	src/cats/make_catalog_backup.pl.in
-python_OLD_CMD=	@PYTHON@
+LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS?=	bacula5-server-* bacula-server-*
+USES+=		cpe libtool readline shebangfix ssl
+SHEBANG_FILES=	src/cats/make_catalog_backup.pl.in
+
+CONFLICTS?=	bacula11-server bacula-server
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2
 
@@ -28,10 +29,10 @@ PLIST_SUB+=	LIB_VERSION=${PORTVERSION}
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-CPPFLAGS+=	-I/usr/include/readline -I${LOCALBASE}/include
+CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE?=	MTX PYTHON NLS IPV6
+OPTIONS_DEFINE?=	MTX NLS IPV6
 MTX_DESC=		Install mtx for control of autochanger devices
 
 .if ${PKGNAMESUFFIX} == "9-server"
@@ -43,10 +44,6 @@ OPTIONS_DEFAULT+=	PGSQL
 OPTIONS_SUB=		yes
 
 .if ${PKGNAMESUFFIX} == "9-client" || ${PKGNAMESUFFIX} == "9-server"  #Till end of the file
-
-PYTHON_USES=		python
-PYTHON_CONFIGURE_ON=	--with-python=yes
-PYTHON_BROKEN=	Does not package
 
 .if !defined(WITH_CLIENT_ONLY)
 LIB_DEPENDS+=	libbac-${PORTVERSION}.so:sysutils/bacula9-client
@@ -130,18 +127,12 @@ MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
 
 .include <bsd.port.pre.mk>
 
-.if ${readline_ARGS} == "port"
-readline_CONFIGURE=	${LOCALBASE}
-.else
-readline_CONFIGURE=	yes
-.endif
-
 # if IPv6 is not in the kernel, it generates many errors
 .if ! ${PORT_OPTIONS:MIPV6}
 CONFIGURE_ARGS+=	--disable-ipv6
 .endif
 
-CONFIGURE_ARGS+=	--with-readline=${readline_CONFIGURE}
+CONFIGURE_ARGS+=	--with-readline=${LOCALBASE}
 
 .if defined(WITH_CLIENT_ONLY)
 MP8+=	bacula.8 bacula-fd.8 bconsole.8
@@ -181,9 +172,6 @@ post-patch:
 
 .if !target(post-install)
 post-install:
-.if ! ${PORT_OPTIONS:MPYTHON}
-	${RM} ${STAGEDIR}${DATADIR}/dvd-handler
-.endif
 .if defined(WITH_CLIENT_ONLY)
 	${MV} ${STAGEDIR}${ETCDIR}/bconsole.conf ${STAGEDIR}${ETCDIR}/bconsole.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/examples/sample-query.sql ${STAGEDIR}${LOCALBASE}/share/bacula/query.sql.sample

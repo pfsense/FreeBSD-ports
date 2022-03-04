@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Non-helper handling of option variables and build environment.
 # Include after bsd.port.pre.mk
 #
@@ -48,16 +46,17 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang-version
 CFLAGS_i386+=	-mstack-alignment=16 -mstackrealign
 .endif # ${CHOSEN_COMPILER_TYPE} == clang
 
-CFLAGS_armv6+=	-no-integrated-as
-CFLAGS_armv7+=	-no-integrated-as
+.if ${ARCH:Marmv?}
+BUILD_DEPENDS+=	as:devel/binutils@native
+CFLAGS+=	-no-integrated-as
+.endif
 
 LDFLAGS_i386+=	-Wl,-z,notext
 
 # Extra build options for debugging
 # =================================
 
-.if ${PORT_OPTIONS:MDEBUG}
-WITH_DEBUG=	yes
+.if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-debug=3
 .endif
 

@@ -1,64 +1,94 @@
 # Created by: Mahdi Mokhtari <mokhi64@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	netdata
-PORTVERSION=	1.13.0
-DISTVERSIONPREFIX=v
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.32.0
 CATEGORIES=	net-mgmt
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/ \
+		https://github.com/forkbomb9/netdata/commit/:dashboard
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} b531c8c60c24ff5e4cf6a85289d77159d0e39b68.patch:dashboard
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scalable distributed realtime performance and health monitoring
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/include/uuid/uuid.h:misc/e2fsprogs-libuuid
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+# Used to patch the custom dashboard
+PATCH_DEPENDS=	gpatch:devel/patch
+LIB_DEPENDS=	libjson-c.so:devel/json-c \
+		libuuid.so:misc/e2fsprogs-libuuid \
+		libuv.so:devel/libuv
 RUN_DEPENDS=	bash:shells/bash \
-		curl:ftp/curl
+		curl:ftp/curl \
+		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR}
 
-USES=		autoreconf pathfix pkgconfig:both python shebangfix
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	firehol
-
+USES=		autoreconf cpe gmake pathfix pkgconfig:both python shebangfix \
+		ssl
 SHEBANG_GLOB=	*
 
-NETDATA_CACHE=	/var/cache/${PORTNAME}
-NETDATA_LOG=	/var/log/${PORTNAME}
-NETDATA_PERST=	/var/db/${PORTNAME}
+USE_RC_SUBR=	${PORTNAME}
 
-USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-D_WANT_VMMETER -I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
+CPPFLAGS+=	-D_WANT_VMMETER
 
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-unit-tests
+
+SUB_FILES=	${PORTNAME}.conf.sample
 SUB_LIST=	NETDATA_CACHE=${NETDATA_CACHE} \
 		NETDATA_LOG=${NETDATA_LOG} \
 		NETDATA_PERST=${NETDATA_PERST}
+
+USERS=		netdata
+GROUPS=		netdata
 
 PLIST_SUB=	NETDATA_CACHE=${NETDATA_CACHE} \
 		NETDATA_LOG=${NETDATA_LOG} \
 		NETDATA_PERST=${NETDATA_PERST}
 
-USE_RC_SUBR=	${PORTNAME}
-SUB_FILES=	${PORTNAME}.conf.sample
+OPTIONS_DEFINE=		CLOUD CUPS DBENGINE FREEIPMI GOPLUGIN LTO
+OPTIONS_DEFAULT=	DBENGINE LTO
+OPTIONS_EXCLUDE_powerpc64=	LTO
+OPTIONS_EXCLUDE_riscv64=	LTO
+OPTIONS_SUB=		YES
 
-USERS=		netdata
-GROUPS=		netdata
+CLOUD_DESC=		Enable cloud functionality
+CUPS_DESC=		Enable support for cups
+DBENGINE_DESC=		Enable support for database engine
+FREEIPMI_DESC=		Enable support for freeipmi
+GOPLUGIN_DESC=		Enable the go collector plugin
 
-OPTIONS_DEFINE=	CUPS FREEIPMI
-OPTIONS_SUB=	YES
-
-CUPS_DESC=	Enable support for cups
-CUPS_CONFIGURE_ENABLE=	plugin-cups
-CUPS_LIB_DEPENDS=	libcups.so:print/cups
-
-FREEIPMI_DESC=	Enable support for freeipmi
+CLOUD_CONFIGURE_ON=		--with-aclk-ng
+CLOUD_CONFIGURE_OFF=		--disable-cloud
+CUPS_LIB_DEPENDS=		libcups.so:print/cups
+CUPS_CONFIGURE_ENABLE=		plugin-cups
+DBENGINE_LIB_DEPENDS=		libJudy.so:devel/judy \
+				liblz4.so:archivers/liblz4
+DBENGINE_CONFIGURE_ENABLE=	dbengine
+FREEIPMI_LIB_DEPENDS=		libfreeipmi.so:sysutils/freeipmi
 FREEIPMI_CONFIGURE_ENABLE=	plugin-freeipmi
-FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:sysutils/freeipmi
+GOPLUGIN_RUN_DEPENDS=		${LOCALBASE}/libexec/netdata/plugins.d/god.plugin:net-mgmt/netdata-go
+LTO_USES=			compiler:c11
+LTO_CONFIGURE_ENABLE=		lto
 
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MLTO} && ${ARCH} == powerpc64
+USE_GCC=	yes
+.endif
+
+NETDATA_CACHE=	/var/cache/${PORTNAME}
+NETDATA_LOG=	/var/log/${PORTNAME}
+NETDATA_PERST=	/var/db/${PORTNAME}
+
+.if ! ${PORT_OPTIONS:MCLOUD}
 post-patch:
+	cd ${WRKSRC} && gpatch -p1 < ${_DISTDIR}/b531c8c60c24ff5e4cf6a85289d77159d0e39b68.patch
+	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|g' \
+	    ${PATCH_WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|%%NETDATA_CACHE%%|${NETDATA_CACHE}|g' \
 	    ${PATCH_WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|%%NETDATA_LOG%%|${NETDATA_LOG}|g' \
@@ -67,16 +97,35 @@ post-patch:
 	    ${PATCH_WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|%%ETCDIR%%|${ETCDIR}|g' \
 	    ${PATCH_WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%PYTHON%%|${PYTHON_CMD}|g' \
+	    ${PATCH_WRKSRC}/collectors/python.d.plugin/python.d.plugin.in
+.else
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|g' \
+	    ${PATCH_WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%NETDATA_CACHE%%|${NETDATA_CACHE}|g' \
+	    ${PATCH_WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%NETDATA_LOG%%|${NETDATA_LOG}|g' \
+	    ${PATCH_WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%NETDATA_PERST%%|${NETDATA_PERST}|g' \
+	    ${PATCH_WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%ETCDIR%%|${ETCDIR}|g' \
+	    ${PATCH_WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%PYTHON%%|${PYTHON_CMD}|g' \
+	    ${PATCH_WRKSRC}/collectors/python.d.plugin/python.d.plugin.in
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKDIR}/netdata.conf.sample ${STAGEDIR}${ETCDIR}/netdata.conf.sample
+	${TOUCH} ${STAGEDIR}${ETCDIR}/.opt-out-from-anonymous-statistics
 	${MKDIR} ${STAGEDIR}${NETDATA_CACHE}
 	${MKDIR} ${STAGEDIR}${NETDATA_LOG}
 	${MKDIR} ${STAGEDIR}${NETDATA_PERST}
-	(for file in ${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.conf \
-			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.conf; do \
-		${MV} $$file $$file".sample"; \
+	(for fi in 	${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.conf \
+			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.conf \
+			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.txt ; do \
+		${MV} $$fi $$fi".sample"; \
 	done)
 
 .include <bsd.port.mk>

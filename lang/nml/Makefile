@@ -1,5 +1,4 @@
 # Created by: Jaeho Shin <netj@sparcs.kaist.ac.kr>
-# $FreeBSD$
 
 PORTNAME=	nml
 PORTVERSION=	0.92b
@@ -11,10 +10,17 @@ MASTER_SITES=	http://ropas.snu.ac.kr/n/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dialect/harmony of Standard ML of New Jersey and Objective Caml
 
+BROKEN=		Doesn't compile - PR 234720
+DEPRECATED=	Abandoned upstream, last release 2004-04-19
+EXPIRATION_DATE=2021-12-31
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-0.92
 
 ONLY_FOR_ARCHS=	i386
 MAKE_JOBS_UNSAFE=	yes
+.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
+BROKEN=		ld: error: relocation R_386_PC32 cannot be used against symbol BnnAdd
+.endif
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=--prefix ${PREFIX}

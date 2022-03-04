@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	MetaCPAN-Client
-PORTVERSION=	2.026000
+PORTVERSION=	2.029000
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MICKEY
@@ -33,11 +32,4 @@ USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502600
-BUILD_DEPENDS+=	p5-ExtUtils-MakeMaker>=7.11.01:devel/p5-ExtUtils-MakeMaker
-RUN_DEPENDS+=	p5-ExtUtils-MakeMaker>=7.11.01:devel/p5-ExtUtils-MakeMaker
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

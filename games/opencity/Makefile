@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	opencity
 PORTVERSION=	0.0.6.5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Stable/${PORTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+)\..*$/\1/}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}stable
@@ -17,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c11 gmake pkgconfig tar:bzip2
+USES=		compiler:c11 gl gmake pkgconfig sdl tar:bzip2
 USE_SDL=	sdl mixer image net
 USE_GL=		gl glu
 INSTALL_TARGET=	install-strip

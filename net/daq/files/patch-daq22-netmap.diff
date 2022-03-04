@@ -1,24 +1,26 @@
 diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-modules/daq_netmap.c
 --- ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c	2017-02-08 17:04:18.000000000 -0500
-+++ ./os-daq-modules/daq_netmap.c	2019-05-27 12:55:22.000000000 -0400
++++ ./os-daq-modules/daq_netmap.c	2020-09-15 09:35:07.000000000 -0400
 @@ -1,6 +1,7 @@
  /*
- ** Copyright (C) 2014 Cisco and/or its affiliates. All rights reserved.
+-** Copyright (C) 2014 Cisco and/or its affiliates. All rights reserved.
++** Copyright (C) 2021 Cisco and/or its affiliates. All rights reserved.
  ** Author: Michael R. Altizer <mialtize@cisco.com>
 +** Author: Bill Meeks <billmeeks8@gmail.com>
  **
  ** This program is free software; you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License Version 2 as
-@@ -37,41 +38,25 @@
+@@ -37,6 +38,9 @@
  #include <sfbpf_dlt.h>
  
  #include <net/netmap.h>
++#if NETMAP_API < 14
 +#define NETMAP_WITH_LIBS
++#endif 
  #include <net/netmap_user.h>
  
--#define DAQ_NETMAP_VERSION      3
-+#define DAQ_NETMAP_VERSION      4
- 
+ #define DAQ_NETMAP_VERSION      3
+@@ -44,12 +48,6 @@
  /* Hi! I'm completely arbitrary! */
  #define NETMAP_MAX_INTERFACES       32
  
@@ -31,89 +33,69 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
  typedef struct _netmap_instance
  {
      struct _netmap_instance *next;
-     struct _netmap_instance *peer;
--    int fd;
- #define NMINST_FWD_BLOCKED     0x1
+@@ -59,6 +57,10 @@
  #define NMINST_TX_BLOCKED      0x2
      uint32_t flags;
      int index;
--    struct netmap_if *nifp;
--    /* TX ring info */
--    uint16_t first_tx_ring;
--    uint16_t last_tx_ring;
--    uint16_t cur_tx_ring;
--    /* RX ring info */
--    uint16_t first_rx_ring;
--    uint16_t last_rx_ring;
--    uint16_t cur_rx_ring;
--    /* MMAP'd memory */
--    void *mem;
--    uint32_t memsize;
--    struct nmreq req;
 +    int done_mmap;
-+    char nm_port_name[NETMAP_REQ_IFNAMSIZ];
++    unsigned long long fwd_tx_blocked;
++    /* Netmap port name with suffix */
++    char nm_port_name[IFNAMSIZ + 1];
+     struct netmap_if *nifp;
+     /* TX ring info */
+     uint16_t first_tx_ring;
+@@ -71,8 +73,15 @@
+     /* MMAP'd memory */
+     void *mem;
+     uint32_t memsize;
+-    struct nmreq req;
+-    unsigned long long fwd_tx_blocked;
++    /* Use netmap API version-specific structures */
++#if NETMAP_API >= 14
++    /* Newer netmap Header and Request structures */
++    struct nmreq_header hdr;
++    struct nmreq_register reg;
++#else
++    /* Netmap descriptor structure */
 +    struct nm_desc *ndesc;
-     unsigned long long fwd_tx_blocked;
++#endif
  } NetmapInstance;
  
-@@ -93,37 +78,39 @@
- 
- static inline void nminst_inc_rx_ring(NetmapInstance *instance)
- {
--    instance->cur_rx_ring++;
--    if (instance->cur_rx_ring > instance->last_rx_ring)
--        instance->cur_rx_ring = instance->first_rx_ring;
-+    instance->ndesc->cur_rx_ring++;
-+    if (instance->ndesc->cur_rx_ring > instance->ndesc->last_rx_ring)
-+        instance->ndesc->cur_rx_ring = instance->ndesc->first_rx_ring;
- }
- 
- static inline void nminst_inc_tx_ring(NetmapInstance *instance)
- {
--    instance->cur_tx_ring++;
--    if (instance->cur_tx_ring > instance->last_tx_ring)
--        instance->cur_tx_ring = instance->first_tx_ring;
-+    instance->ndesc->cur_tx_ring++;
-+    if (instance->ndesc->cur_tx_ring > instance->ndesc->last_tx_ring)
-+        instance->ndesc->cur_tx_ring = instance->ndesc->first_tx_ring;
- }
- 
- static void destroy_instance(NetmapInstance *instance)
+ typedef struct _netmap_context
+@@ -109,6 +118,7 @@
  {
      if (instance)
      {
--        /* Unmap the packet memory region.  If we had a peer, notify them that
--            the shared mapping has been freed and that we no longer exist. */
--        if (instance->mem)
++#if NETMAP_API >= 14
+         /* Unmap the packet memory region.  If we had a peer, notify them that
+             the shared mapping has been freed and that we no longer exist. */
+         if (instance->mem)
+@@ -124,6 +134,24 @@
+             instance->peer->peer = NULL;
+         if (instance->fd != -1)
+             close(instance->fd);
++#else
 +        /* Check for an active peer. */
 +        if (instance->peer)
-         {
--            munmap(instance->mem, instance->memsize);
--            if (instance->peer)
++        {
 +            /* Close our peer's netmap connection first. */
 +            if (instance->peer->ndesc != NULL)
-             {
--                instance->peer->mem = MAP_FAILED;
--                instance->peer->memsize = 0;
++            {
 +                nm_close(instance->peer->ndesc);
 +                instance->peer->ndesc = NULL;
 +                instance->peer->peer = NULL;
 +                instance->peer->done_mmap = 0;
-             }
-         }
--        if (instance->peer)
--            instance->peer->peer = NULL;
--        if (instance->fd != -1)
--            close(instance->fd);
++            }
++        }
 +
 +        /* Now close our netmap connection if open. */
 +	if (instance->ndesc != NULL)
 +            nm_close(instance->ndesc);
-+
++#endif
          free(instance);
      }
  }
-@@ -142,7 +129,7 @@
+@@ -142,7 +170,7 @@
          if (nmc->debug)
          {
              printf("Netmap instance %s (%d) blocked %llu times on TX while forwarding.\n",
@@ -122,11 +104,16 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
          }
          destroy_instance(instance);
      }
-@@ -157,44 +144,26 @@
+@@ -157,14 +185,18 @@
  static NetmapInstance *create_instance(const char *device, NetmapInstance *parent, char *errbuf, size_t errlen)
  {
      NetmapInstance *instance;
 -    struct nmreq *req;
++#if NETMAP_API >= 14
++    char *suffix = NULL;
++    char intf[IFNAMSIZ + 1];
++    uint32_t nr_mode = NR_REG_ALL_NIC;
++#endif
      static int index = 0;
  
      instance = calloc(1, sizeof(NetmapInstance));
@@ -138,20 +125,24 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
      }
  
      /* Initialize the instance, including an arbitrary and unique device index. */
--    instance->mem = MAP_FAILED;
+@@ -172,29 +204,45 @@
      instance->index = index;
      index++;
  
--    /* Open /dev/netmap for communications to the driver. */
--    instance->fd = open("/dev/netmap", O_RDWR);
--    if (instance->fd < 0)
--    {
--        snprintf(errbuf, errlen, "%s: Could not open /dev/netmap: %s (%d)",
--                    __func__, strerror(errno), errno);
++    /* Initialize the netmap port name. */
++    strncpy(instance->nm_port_name, device, sizeof(instance->nm_port_name));
++
++#if NETMAP_API >= 14
+     /* Open /dev/netmap for communications to the driver. */
+     instance->fd = open("/dev/netmap", O_RDWR);
+     if (instance->fd < 0)
+     {
+         snprintf(errbuf, errlen, "%s: Could not open /dev/netmap: %s (%d)",
+                     __func__, strerror(errno), errno);
 -        goto err;
--    }
-+    instance->ndesc = NULL;
-+    instance->done_mmap = 0;
++        destroy_instance(instance);
++        return NULL;
+     }
  
 -    /* Initialize the netmap request object. */
 -    req = &instance->req;
@@ -160,9 +151,29 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
 -    req->nr_ringid = 0;
 -#if NETMAP_API >= 11
 -    req->nr_flags = NR_REG_ALL_NIC;
--#endif
-+    /* Initialize the netmap port name. */
-+    strncpy(instance->nm_port_name, device, sizeof(instance->nm_port_name));
++    /* Check for suffix to see if this is a Host Stack interface spec. */
++    suffix = strchr(device, '^');
++    if (suffix != NULL)
++    {
++        /* Omit the trailing '^' suffix from the interface name we send netmap. */
++        snprintf(intf, strcspn(device, "^") + 1, "%s", device);
++        nr_mode = NR_REG_SW;
++    }
++    else
++    {
++        strncpy(intf, device, sizeof(intf));
++        nr_mode = NR_REG_ALL_NIC;
++    }
++
++    /* Initialize the netmap header object for the instance. */
++    instance->hdr.nr_version = NETMAP_API;
++    instance->hdr.nr_reqtype = NETMAP_REQ_REGISTER;
++    strncpy(instance->hdr.nr_name, intf, sizeof(instance->hdr.nr_name));
++    instance->hdr.nr_body = (uintptr_t)&instance->reg;
++
++    /* Initialize the netmap register object for the instance. */
++    instance->reg.nr_mode = nr_mode;
+ #endif
  
      return instance;
 -
@@ -172,7 +183,7 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
  }
  
  static int create_bridge(Netmap_Context_t *nmc, const char *device_name1, const char *device_name2)
-@@ -204,9 +173,9 @@
+@@ -204,9 +252,9 @@
      peer1 = peer2 = NULL;
      for (instance = nmc->instances; instance; instance = instance->next)
      {
@@ -184,53 +195,106 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
              peer2 = instance;
      }
  
-@@ -221,67 +190,56 @@
+@@ -221,10 +269,13 @@
  
  static int start_instance(Netmap_Context_t *nmc, NetmapInstance *instance)
  {
 -    if (ioctl(instance->fd, NIOCREGIF, &instance->req))
--    {
--        DPE(nmc->errbuf, "%s: Netmap registration for %s failed: %s (%d)",
--                __func__, instance->req.nr_name, strerror(errno), errno);
--        return DAQ_ERROR;
--    }
--
-     /* Only mmap the packet memory region for the first interface in a pair. */
--    if (instance->peer && instance->peer->mem != MAP_FAILED)
-+    if (instance->peer && instance->peer->done_mmap)
++#if NETMAP_API >= 14
++    u_int i, num_tx, num_rx;
++
++    if (ioctl(instance->fd, NIOCCTRL, &instance->hdr))
      {
--        instance->memsize = instance->peer->memsize;
--        instance->mem = instance->peer->mem;
-+        if ((instance->ndesc = nm_open(instance->nm_port_name, NULL, NM_OPEN_NO_MMAP, instance->peer->ndesc)) == NULL) 
+         DPE(nmc->errbuf, "%s: Netmap registration for %s failed: %s (%d)",
+-                __func__, instance->req.nr_name, strerror(errno), errno);
++                __func__, instance->nm_port_name, strerror(errno), errno);
+         return DAQ_ERROR;
+     }
+ 
+@@ -236,32 +287,96 @@
+     }
+     else
+     {
+-        instance->memsize = instance->req.nr_memsize;
++        instance->memsize = instance->reg.nr_memsize;
+         instance->mem = mmap(0, instance->memsize, PROT_WRITE | PROT_READ, MAP_SHARED, instance->fd, 0);
+         if (instance->mem == MAP_FAILED)
+         {
+             DPE(nmc->errbuf, "%s: Could not MMAP the buffer memory region for %s: %s (%d)",
+-                    __func__, instance->req.nr_name, strerror(errno), errno);
++                    __func__, instance->nm_port_name, strerror(errno), errno);
+             return DAQ_ERROR;
+         }
+     }
+ 
+-    instance->nifp = NETMAP_IF(instance->mem, instance->req.nr_offset);
++    /* Calculate and set first and last TX and RX rings for this instance. */
++    instance->nifp = NETMAP_IF(instance->mem, instance->reg.nr_offset);
++    
++    num_tx = instance->nifp->ni_tx_rings + instance->nifp->ni_host_tx_rings;
++    for (i = 0; i < num_tx && !instance->nifp->ring_ofs[i]; i++)
++    	;
++    instance->first_tx_ring = i;
++    instance->cur_tx_ring = i;
+ 
+-    instance->first_tx_ring = 0;
+-    instance->first_rx_ring = 0;
+-    instance->last_tx_ring = instance->req.nr_tx_rings - 1;
+-    instance->last_rx_ring = instance->req.nr_rx_rings - 1;
++    for ( ; i < num_tx && instance->nifp->ring_ofs[i]; i++)
++    	;
++    instance->last_tx_ring = i - 1;
+ 
++    num_rx = instance->nifp->ni_rx_rings + instance->nifp->ni_host_rx_rings;
++    for (i = 0; i < num_rx && !instance->nifp->ring_ofs[i + num_tx]; i++)
++    	;
++    instance->first_rx_ring = i;
++    instance->cur_rx_ring = i;
++
++    for ( ; i < num_rx && instance->nifp->ring_ofs[i + num_tx]; i++)
++    	;
++    instance->last_rx_ring = i - 1;
++
++#else
++    char nm_port[IFNAMSIZ + 9];
++
++    /* Create the proper netmap port name spec. */
++    snprintf(nm_port, sizeof(nm_port), "netmap:%s", instance->nm_port_name);
++
++    /* Only mmap the packet memory region for the first interface in a pair. */
++    if (instance->peer && instance->peer->done_mmap)
++    {
++        if ((instance->ndesc = nm_open(nm_port, NULL, NM_OPEN_NO_MMAP, instance->peer->ndesc)) == NULL) 
 +        {
 +            DPE(nmc->errbuf, "%s: Netmap registration for port %s failed: %s (%d)",
 +                    __func__, instance->nm_port_name, strerror(errno), errno);
 +            return DAQ_ERROR;
 +        }
-     }
-     else
-     {
--        instance->memsize = instance->req.nr_memsize;
--        instance->mem = mmap(0, instance->memsize, PROT_WRITE | PROT_READ, MAP_SHARED, instance->fd, 0);
--        if (instance->mem == MAP_FAILED)
-+        if ((instance->ndesc = nm_open(instance->nm_port_name, NULL, 0, NULL)) == NULL) 
-         {
--            DPE(nmc->errbuf, "%s: Could not MMAP the buffer memory region for %s: %s (%d)",
--                    __func__, instance->req.nr_name, strerror(errno), errno);
++    }
++    else
++    {
++        if ((instance->ndesc = nm_open(nm_port, NULL, 0, NULL)) == NULL)
++        {
 +            DPE(nmc->errbuf, "%s: Netmap registration for port %s failed: %s (%d)",
 +                    __func__, instance->nm_port_name, strerror(errno), errno);
-             return DAQ_ERROR;
-         }
++            return DAQ_ERROR;
++        }
 +        instance->done_mmap = instance->ndesc->done_mmap;
-     }
- 
--    instance->nifp = NETMAP_IF(instance->mem, instance->req.nr_offset);
--
--    instance->first_tx_ring = 0;
--    instance->first_rx_ring = 0;
--    instance->last_tx_ring = instance->req.nr_tx_rings - 1;
--    instance->last_rx_ring = instance->req.nr_rx_rings - 1;
--
++    }
++
++    /* Copy important netmap parameters to our local instance variables. */
++    instance->fd = instance->ndesc->fd;
++    instance->nifp = instance->ndesc->nifp;
++    instance->mem = instance->ndesc->mem;
++    instance->memsize = instance->ndesc->memsize;
++    instance->first_tx_ring = instance->ndesc->first_tx_ring;
++    instance->last_tx_ring = instance->ndesc->last_tx_ring;
++    instance->cur_tx_ring = instance->ndesc->cur_tx_ring;
++    instance->first_rx_ring = instance->ndesc->first_rx_ring;
++    instance->last_rx_ring = instance->ndesc->last_rx_ring;
++    instance->cur_rx_ring = instance->ndesc->cur_rx_ring;
++#endif
++
      if (nmc->debug)
      {
          struct netmap_ring *ring;
@@ -240,49 +304,64 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
 -        printf("  nr_tx_slots: %u\n", instance->req.nr_tx_slots);
 -        printf("  nr_rx_slots: %u\n", instance->req.nr_rx_slots);
 -        printf("  nr_tx_rings: %hu\n", instance->req.nr_tx_rings);
--        for (i = instance->first_tx_ring; i <= instance->last_tx_ring; i++)
-+        printf("[%s]\n", instance->ndesc->req.nr_name);
++        printf("[%s]\n", instance->nm_port_name);
++#if NETMAP_API >= 14
++        printf("  nr_tx_slots: %u\n", instance->reg.nr_tx_slots);
++        printf("  nr_rx_slots: %u\n", instance->reg.nr_rx_slots);
++        printf("  nr_tx_rings: %hu\n", instance->reg.nr_tx_rings);
++        printf("  nr_host_tx_rings: %hu\n", instance->reg.nr_host_tx_rings);
++#else
 +        printf("  nr_tx_slots: %u\n", instance->ndesc->req.nr_tx_slots);
 +        printf("  nr_rx_slots: %u\n", instance->ndesc->req.nr_rx_slots);
 +        printf("  nr_tx_rings: %hu\n", instance->ndesc->req.nr_tx_rings);
-+        for (i = instance->ndesc->first_tx_ring; i <= instance->ndesc->last_tx_ring; i++)
++#endif
++
+         for (i = instance->first_tx_ring; i <= instance->last_tx_ring; i++)
          {
--            ring = NETMAP_TXRING(instance->nifp, i);
-+            ring = NETMAP_TXRING(instance->ndesc->nifp, i);
-             printf("  [TX Ring %d]\n", i);
-             printf("    buf_ofs = %zu\n", ring->buf_ofs);
-             printf("    num_slots = %u\n", ring->num_slots);
+             ring = NETMAP_TXRING(instance->nifp, i);
+@@ -271,7 +386,13 @@
              printf("    nr_buf_size = %u\n", ring->nr_buf_size);
              printf("    flags = 0x%x\n", ring->flags);
          }
 -        printf("  nr_rx_rings: %hu\n", instance->req.nr_rx_rings);
--        for (i = instance->first_rx_ring; i <= instance->last_rx_ring; i++)
++
++#if NETMAP_API >= 14
++        printf("  nr_rx_rings: %hu\n", instance->reg.nr_rx_rings);
++        printf("  nr_host_rx_rings: %hu\n", instance->reg.nr_host_rx_rings);
++#else
 +        printf("  nr_rx_rings: %hu\n", instance->ndesc->req.nr_rx_rings);
-+        for (i = instance->ndesc->first_rx_ring; i <= instance->ndesc->last_rx_ring; i++)
++#endif
+         for (i = instance->first_rx_ring; i <= instance->last_rx_ring; i++)
          {
--            ring = NETMAP_RXRING(instance->nifp, i);
-+            ring = NETMAP_RXRING(instance->ndesc->nifp, i);
-             printf("  [RX Ring %d]\n", i);
-             printf("    buf_ofs = %zu\n", ring->buf_ofs);
-             printf("    num_slots = %u\n", ring->num_slots);
-             printf("    nr_buf_size = %u\n", ring->nr_buf_size);
-             printf("    flags = 0x%x\n", ring->flags);
-         }
--        printf("  memsize:     %u\n", instance->memsize);
-+        printf("  memsize:     %u\n", instance->ndesc->memsize);
-         printf("  index:       %d\n", instance->index);
-     }
+             ring = NETMAP_RXRING(instance->nifp, i);
+@@ -293,11 +414,17 @@
+     Netmap_Context_t *nmc;
+     NetmapInstance *instance;
+     DAQ_Dict *entry;
+-    char intf[IFNAMSIZ];
++    char intf[IFNAMSIZ + 1];
+     uint32_t num_intfs = 0;
+     size_t len;
+     char *name1, *name2, *dev;
+     int rval = DAQ_ERROR;
++#if NETMAP_API >= 14
++    int fd;
++    NetmapInstance *host_peer;
++    struct nmreq_header hdr;
++    struct nmreq_port_info_get nm_info;
++#endif
  
-@@ -343,7 +301,7 @@
+     nmc = calloc(1, sizeof(Netmap_Context_t));
+     if (!nmc)
+@@ -343,6 +470,7 @@
                              __func__, NETMAP_MAX_INTERFACES);
                  goto err;
              }
--            snprintf(intf, len + 1, "%s", dev);
-+            snprintf(intf, len + 8, "netmap:%s", dev);
++
+             snprintf(intf, len + 1, "%s", dev);
              instance = create_instance(intf, nmc->instances, errbuf, errlen);
              if (!instance)
-                 goto err;
-@@ -355,8 +313,8 @@
+@@ -355,8 +483,8 @@
              {
                  if (num_intfs == 2)
                  {
@@ -293,41 +372,78 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
  
                      if (create_bridge(nmc, name1, name2) != DAQ_SUCCESS)
                      {
-@@ -487,7 +445,7 @@
- 
-         for (instance = nmc->instances; instance; instance = instance->next)
-         {
--            start_rx_ring = instance->cur_rx_ring;
-+            start_rx_ring = instance->ndesc->cur_rx_ring;
-             do
-             {
-                 /* Has breakloop() been called? */
-@@ -497,7 +455,7 @@
-                     return 0;
+@@ -364,6 +492,51 @@
+                                     __func__, name1, name2);
+                         goto err;
+                     }
++
++#if NETMAP_API >= 14
++                    /* Prepare netmap header object to query interface for number of HW rings. */
++                    memset(&hdr, 0, sizeof(hdr));
++                    memset(&nm_info, 0, sizeof(nm_info));
++                    host_peer = NULL;
++                    hdr.nr_version = NETMAP_API;
++                    hdr.nr_reqtype = NETMAP_REQ_PORT_INFO_GET;
++                    hdr.nr_body = (uintptr_t)&nm_info;
++
++                    /* Find the NIC side of the bridge pair and query it for number of HW rings.
++                       Then set the requested number of Host Rings on the SW Host Stack peer
++                       (if present) to match the available HW rings. */
++                    if (nmc->instances->reg.nr_mode == NR_REG_ALL_NIC && nmc->instances->next->reg.nr_mode == NR_REG_SW)
++                    {
++                        fd = nmc->instances->fd;
++                        strncpy(hdr.nr_name, nmc->instances->hdr.nr_name, sizeof(hdr.nr_name));
++                        host_peer = nmc->instances->next;
++                    }
++
++                    if (nmc->instances->next->reg.nr_mode == NR_REG_ALL_NIC && nmc->instances->reg.nr_mode == NR_REG_SW)
++                    {
++                        fd = nmc->instances->next->fd;
++                        strncpy(hdr.nr_name, nmc->instances->next->hdr.nr_name, sizeof(hdr.nr_name));
++                        host_peer = nmc->instances;
++                    }
++
++                    /* Did we find a HW NIC and SW Host Stack peer pair?
++                       If not, skip requesting the SW Host Stack rings. */
++                    if(host_peer)
++                    {
++                        /* Query the HW NIC netmap device for the number of TX and RX rings. */
++                        if (ioctl(fd, NIOCCTRL, &hdr))
++                        {
++                            DPE(nmc->errbuf, "%s: Netmap NETMAP_REQ_PORT_INFO_GET for %s failed: %s (%d). Will run with default single pair of Host Rings.",
++                            __func__, hdr.nr_name, strerror(errno), errno);
++                        }
++                        else
++                        {
++                            /* Set the Host Stack peer to request a matching number of Host Tx,Rx rings. */
++                            host_peer->reg.nr_host_tx_rings = nm_info.nr_tx_rings;
++                            host_peer->reg.nr_host_rx_rings = nm_info.nr_rx_rings;
++                        }
++                    }
++#endif
+                     num_intfs = 0;
                  }
- 
--                rx_ring = NETMAP_RXRING(instance->nifp, instance->cur_rx_ring);
-+                rx_ring = NETMAP_RXRING(instance->ndesc->nifp, instance->ndesc->cur_rx_ring);
-                 if (nm_ring_empty(rx_ring))
-                 {
-                     nminst_inc_rx_ring(instance);
-@@ -561,11 +519,11 @@
-                     int sent = 0;
- 
-                     peer = instance->peer;
--                    start_tx_ring = peer->cur_tx_ring;
-+                    start_tx_ring = peer->ndesc->cur_tx_ring;
- 
-                     do
-                     {
--                        tx_ring = NETMAP_TXRING(peer->nifp, peer->cur_tx_ring);
-+                        tx_ring = NETMAP_TXRING(peer->ndesc->nifp, peer->ndesc->cur_tx_ring);
+                 else if (num_intfs > 2)
+@@ -569,6 +742,7 @@
                          nminst_inc_tx_ring(peer);
                          if (nm_ring_empty(tx_ring))
                              continue;
-@@ -582,13 +540,9 @@
++
+                         /* Swap the RX buffer we want to forward with the next
+                            unused buffer in the peer's TX ring. */
+                         tx_cur = tx_ring->cur;
+@@ -577,16 +751,16 @@
+                         tx_slot->len = len;
+                         tx_slot->buf_idx = rx_slot->buf_idx;
+                         rx_slot->buf_idx = tx_buf_idx;
++
+                         /* Report the buffer change. */
+                         tx_slot->flags |= NS_BUF_CHANGED;
                          rx_slot->flags |= NS_BUF_CHANGED;
  
++                        /* copy the NS_MOREFRAG */
++                        tx_slot->flags = (tx_slot->flags & ~NS_MOREFRAG) | (rx_slot->flags & NS_MOREFRAG);
++
                          tx_ring->cur = nm_ring_next(tx_ring, tx_cur);
 -#if NETMAP_API >= 10
                          tx_ring->head = tx_ring->cur;
@@ -335,12 +451,9 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
 -                        tx_ring->avail--;
 -#endif
                          sent = 1;
--                    } while (peer->cur_tx_ring != start_tx_ring && !sent);
-+                    } while (peer->ndesc->cur_tx_ring != start_tx_ring && !sent);
+                     } while (peer->cur_tx_ring != start_tx_ring && !sent);
  
-                     /* If we couldn't find a TX slot to use, hold on to this packet and
-                         wait for TX slots to become available. */
-@@ -604,16 +558,12 @@
+@@ -604,11 +778,7 @@
                  }
  
                  rx_ring->cur = nm_ring_next(rx_ring, rx_cur);
@@ -352,35 +465,16 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
  
                  /* Increment the current RX ring pointer on successfully completed processing. */
                  nminst_inc_rx_ring(instance);
- 
--            } while (instance->cur_rx_ring != start_rx_ring);
-+            } while (instance->ndesc->cur_rx_ring != start_rx_ring);
-         }
- 
-         if (!got_one && !ignored_one)
-@@ -621,7 +571,7 @@
- poll:
-             for (i = 0, instance = nmc->instances; instance; i++, instance = instance->next)
+@@ -644,7 +814,7 @@
+             /* If the poll times out, return control to the caller. */
+             if (ret == 0)
+                 break;
+-            /* If some number of of sockets have events returned, check them all for badness. */
++            /* If some number of sockets have events returned, check them all for badness. */
+             if (ret > 0)
              {
--                pfd[i].fd = instance->fd;
-+                pfd[i].fd = instance->ndesc->fd;
-                 pfd[i].events = 0;
-                 pfd[i].revents = 0;
- 
-@@ -700,10 +650,10 @@
-     }
- 
-     /* Find a TX ring with space to send on. */
--    start_tx_ring = instance->cur_tx_ring;
-+    start_tx_ring = instance->ndesc->cur_tx_ring;
-     do
-     {
--        tx_ring = NETMAP_TXRING(instance->nifp, instance->cur_tx_ring);
-+        tx_ring = NETMAP_TXRING(instance->ndesc->nifp, instance->ndesc->cur_tx_ring);
-         nminst_inc_tx_ring(instance);
-         if (nm_ring_empty(tx_ring))
-             continue;
-@@ -715,15 +665,11 @@
+                 for (i = 0; i < nmc->intf_count; i++)
+@@ -715,18 +885,14 @@
          memcpy(NETMAP_BUF(tx_ring, tx_buf_idx), packet_data, len);
  
          tx_ring->cur = nm_ring_next(tx_ring, tx_cur);
@@ -392,12 +486,15 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
          nmc->stats.packets_injected++;
  
          return DAQ_SUCCESS;
--    } while (instance->cur_tx_ring != start_tx_ring);
-+    } while (instance->ndesc->cur_tx_ring != start_tx_ring);
+     } while (instance->cur_tx_ring != start_tx_ring);
  
      /* If we got here, it means we couldn't find an available TX slot, so tell the user to try again. */
-     DPE(nmc->errbuf, "%s: Could not find an available TX slot.  Try again.", __func__);
-@@ -826,7 +772,7 @@
+-    DPE(nmc->errbuf, "%s: Could not find an available TX slot.  Try again.", __func__);
++    DPE(nmc->errbuf, "%s: Could not find an available TX slot for interface %s.  Try again.", __func__, instance->nm_port_name);
+     return DAQ_ERROR_AGAIN;
+ }
+ 
+@@ -826,7 +992,7 @@
  
      for (instance = nmc->instances; instance; instance = instance->next)
      {

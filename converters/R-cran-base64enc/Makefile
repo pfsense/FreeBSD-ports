@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	base64enc
 DISTVERSION=	0.1-3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	converters
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

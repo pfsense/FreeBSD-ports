@@ -1,5 +1,4 @@
 # Created by: Timur Bakeyev <bat@cpan.org>
-# $FreeBSD$
 
 PORTNAME=	Unicode-Stringprep
 PORTVERSION=	1.105
@@ -22,5 +21,7 @@ TEST_DEPENDS=	p5-Test-NoWarnings>=0:devel/p5-Test-NoWarnings \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

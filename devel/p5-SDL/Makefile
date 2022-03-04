@@ -1,9 +1,8 @@
 # Created by: Klaus Goger <klaus.goger@reflex.at>
-# $FreeBSD$
 
 PORTNAME=	SDL
 PORTVERSION=	2.548
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -23,7 +22,7 @@ RUN_DEPENDS=	p5-Alien-SDL>=1.446:devel/p5-Alien-SDL \
 TEST_DEPENDS=	p5-Capture-Tiny>=0:devel/p5-Capture-Tiny \
 		p5-Test-Most>=0.21:devel/p5-Test-Most
 
-USES=		jpeg perl5
+USES=		gl jpeg perl5 sdl
 USE_GL=		glu
 USE_PERL5=	modbuild
 USE_SDL=	gfx image mixer pango sdl ttf

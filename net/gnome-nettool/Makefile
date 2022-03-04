@@ -1,5 +1,4 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-nettool
 PORTVERSION=	3.8.1
@@ -17,8 +16,8 @@ LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop
 RUN_DEPENDS=	${LOCALBASE}/bin/dig:dns/bind-tools
 
 USE_GNOME=	gtk30 intlhack libxml2:build
-USES=		gettext gmake libtool localbase:ldflags pathfix pkgconfig tar:xz
-INSTALLS_ICONS=	yes
+USES=		gettext gmake gnome libtool localbase:ldflags pathfix pkgconfig \
+		tar:xz
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 

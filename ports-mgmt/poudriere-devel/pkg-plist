@@ -2,9 +2,9 @@ bin/poudriere
 @sample etc/poudriere.conf.sample
 %%ETCDIR%%/hooks/bulk.sh.sample
 %%ETCDIR%%/hooks/pkgbuild.sh.sample
-@sample etc/poudriered.conf.sample
+@sample(0,0,0) etc/poudriered.conf.sample
 etc/rc.d/poudriered
-libexec/poudriere/cachec
+@comment libexec/poudriere/cachec
 libexec/poudriere/cached
 libexec/poudriere/clock
 libexec/poudriere/cpdup
@@ -87,6 +87,15 @@ man/man8/poudriere-version.8.gz
 %%DATADIR%%/html/jail.html
 %%DATADIR%%/html/robots.txt
 %%DATADIR%%/image.sh
+%%DATADIR%%/image_dump.sh
+%%DATADIR%%/image_firmware.sh
+%%DATADIR%%/image_iso.sh
+%%DATADIR%%/image_mfs.sh
+%%DATADIR%%/image_rawdisk.sh
+%%DATADIR%%/image_tar.sh
+%%DATADIR%%/image_usb.sh
+%%DATADIR%%/image_zfs.sh
+%%DATADIR%%/image_zsnapshot.sh
 %%DATADIR%%/include/cache.sh
 %%DATADIR%%/include/colors.pre.sh
 %%DATADIR%%/include/colors.sh
@@ -97,6 +106,8 @@ man/man8/poudriere-version.8.gz
 %%DATADIR%%/include/hash.sh
 %%DATADIR%%/include/html.sh
 %%DATADIR%%/include/parallel.sh
+%%DATADIR%%/include/pkg.sh
+%%DATADIR%%/include/pkgqueue.sh
 %%DATADIR%%/include/shared_hash.sh
 %%DATADIR%%/include/util.sh
 %%DATADIR%%/jail.sh

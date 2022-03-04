@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	evdev
-PORTVERSION=	0.8.1
+PORTVERSION=	1.4.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Bindings to the Linux input handling subsystem
 
 LICENSE=	BSD3CLAUSE
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 CPPFLAGS+=	-I${LOCALBASE}/include # v4l_compat
 

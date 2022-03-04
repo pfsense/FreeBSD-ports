@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-FromCGI
 PORTVERSION=	1.00
 PORTREVISION=	2

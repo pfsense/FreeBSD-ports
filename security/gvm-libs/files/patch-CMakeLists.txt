@@ -1,0 +1,29 @@
+--- CMakeLists.txt.orig	2021-10-11 09:38:23.000000000 -0500
++++ CMakeLists.txt	2021-11-04 10:31:40.191911000 -0500
+@@ -134,7 +134,7 @@
+ endif (SYSCONF_INSTALL_DIR)
+ 
+ if (NOT SYSCONFDIR)
+-  set (SYSCONFDIR "/etc")
++  set (SYSCONFDIR "${CMAKE_INSTALL_PREFIX}/etc")
+ endif (NOT SYSCONFDIR)
+ 
+ if (NOT EXEC_PREFIX)
+@@ -174,7 +174,7 @@
+ endif (NOT DATADIR)
+ 
+ if (NOT GVM_RUN_DIR)
+-  set (GVM_RUN_DIR  "/run/gvm")
++  set (GVM_RUN_DIR  "${LOCALSTATEDIR}/run/gvm")
+ endif (NOT GVM_RUN_DIR)
+ 
+ if (NOT GVM_PID_DIR)
+@@ -187,7 +187,7 @@
+ 
+ 
+ if (NOT REDIS_SOCKET_PATH)
+-  set (REDIS_SOCKET_PATH "/run/redis/redis.sock")
++  set (REDIS_SOCKET_PATH "${LOCALSTATEDIR}/run/redis/redis.sock")
+ endif ()
+ 
+ add_definitions (-DREDIS_SOCKET_PATH="${REDIS_SOCKET_PATH}")

@@ -34,7 +34,6 @@ www/suricata/suricata_list_view.php
 www/suricata/suricata_app_parsers.php
 www/suricata/suricata_libhtp_policy_engine.php
 www/suricata/suricata_define_vars.php
-www/suricata/suricata_barnyard.php
 www/suricata/suricata_ip_list_mgmt.php
 www/suricata/suricata_ip_reputation.php
 www/suricata/suricata_iprep_list_browser.php
@@ -42,6 +41,8 @@ www/widgets/javascript/suricata_alerts.js
 www/widgets/widgets/suricata_alerts.widget.php
 www/widgets/include/widget-suricata.inc
 www/suricata/suricata_blocked.php
+www/suricata/suricata_files.php
+www/suricata/suricata_filecheck.php
 www/suricata/suricata_passlist.php
 www/suricata/suricata_passlist_edit.php
 www/suricata/suricata_select_alias.php

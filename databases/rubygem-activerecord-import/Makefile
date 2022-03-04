@@ -1,15 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	activerecord-import
-PORTVERSION=	0.27.0
+PORTVERSION=	1.2.0
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Bulk import many records into an ActiveRecord DB
 
-LICENSE=	BSD2CLAUSE RUBY
-LICENSE_COMB=	dual
+LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-activerecord4>=3.2:databases/rubygem-activerecord4

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	g72x
 PORTVERSION=	1.4.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	http://asterisk.hosting.lv/src/
 DISTNAME=	asterisk-${PORTNAME}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
@@ -12,30 +10,28 @@ COMMENT=	G.729 codec for Asterisk PBX
 
 LIB_DEPENDS=	libbcg729.so:audio/bcg729
 
-FLAVORS=			asterisk13 asterisk15 asterisk16
-FLAVOR?=			${FLAVORS[1]}
-
-asterisk13_PKGNAMEPREFIX=	asterisk13-
-asterisk13_CONFLICTS_INSTALL=	asterisk15-g72x asterisk16-g72x
-asterisk13_BUILD_DEPENDS=	asterisk:net/asterisk13
-asterisk13_RUN_DEPENDS=		asterisk:net/asterisk13
-asterisk15_CONFIGURE_ARGS=	--with-asterisk130
-
-asterisk15_PKGNAMEPREFIX=	asterisk15-
-asterisk15_CONFLICTS_INSTALL=	asterisk13-g72x asterisk16-g72x
-asterisk15_BUILD_DEPENDS=	asterisk:net/asterisk15
-asterisk15_RUN_DEPENDS=		asterisk:net/asterisk15
-asterisk15_CONFIGURE_ARGS=	--with-asterisk150
+FLAVORS=			asterisk18 asterisk16
+FLAVOR?=			${FLAVORS:[1]}
 
 asterisk16_PKGNAMEPREFIX=	asterisk16-
-asterisk16_CONFLICTS_INSTALL=	asterisk13-g72x asterisk15-g72x
+asterisk16_CONFLICTS_INSTALL=	asterisk13-g72x asterisk18-g72x
 asterisk16_BUILD_DEPENDS=	asterisk:net/asterisk16
 asterisk16_RUN_DEPENDS=		asterisk:net/asterisk16
-asterisk16_CONFIGURE_ARGS=	--with-asterisk160
+.if ${FLAVOR} == asterisk16
+CONFIGURE_ARGS+=		--with-asterisk160
+.endif
+
+asterisk18_PKGNAMEPREFIX=	asterisk18-
+asterisk18_CONFLICTS_INSTALL=	asterisk13-g72x asterisk16-g72x
+asterisk18_BUILD_DEPENDS=	asterisk:net/asterisk18
+asterisk18_RUN_DEPENDS=		asterisk:net/asterisk18
+.if ${FLAVOR} == asterisk18
+CONFIGURE_ARGS+=		--with-asterisk160
+.endif
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-bcg729
-USES=		autoreconf compiler libtool localbase tar:bzip2
+CONFIGURE_ARGS+=	--with-bcg729
+USES=		autoreconf compiler:c11 libtool localbase tar:bzip2
 
 PLIST_FILES=	lib/asterisk/modules/codec_g729.so
 

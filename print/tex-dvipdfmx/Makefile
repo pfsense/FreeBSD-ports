@@ -1,5 +1,4 @@
 # Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	dvipdfmx
 PORTVERSION=	20150315
@@ -13,7 +12,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	DVI Previewer(kpathsearch) for X
 
 LICENSE=	GPLv2
@@ -51,7 +50,7 @@ EXTRACT_FILES_TEXMF= \
 	texmf-dist/fonts/map/dvipdfm/
 WRKSRC=	${WRKDIR}/${DISTNAME}/texk/dvipdfm-x
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --with-system-kpathsea \
+CONFIGURE_ARGS=	--with-system-kpathsea \
 		--with-kpathsea-includes=${LOCALBASE}/include \
 		--with-kpathsea-libdir=${LOCALBASE}/lib \
 		--with-system-libpaper \

@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xdemineur
 PORTVERSION=	2.1.1
@@ -11,7 +10,7 @@ MASTER_SITES=	XCONTRIB/games \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Another minesweeper game for the X Window System
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	xpm
 PLIST_FILES=	bin/xdemineur \
 		man/man1/xdemineur.1.gz

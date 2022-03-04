@@ -8,7 +8,7 @@
  * freeradiusmodulesldap.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -496,7 +496,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_ca_certs()]]></source>
+			<source><![CDATA[cert_build_list('ca', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -513,7 +513,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_server_certs()]]></source>
+			<source><![CDATA[cert_build_list('cert', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -988,7 +988,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_ca_certs()]]></source>
+			<source><![CDATA[cert_build_list('ca', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -1005,7 +1005,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_server_certs()]]></source>
+			<source><![CDATA[cert_build_list('cert', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>

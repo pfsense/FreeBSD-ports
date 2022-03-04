@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rovclock
 PORTVERSION=	0.6e
@@ -11,12 +10,8 @@ COMMENT=	Overclocking utility for ATI Radeon video cards
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		fails to install: undefined reference to outl
-BROKEN_armv6=		fails to install: undefined reference to outl
-BROKEN_armv7=		fails to install: undefined reference to outl
-BROKEN_mips=		fails to install: undefined reference to outl
-BROKEN_mips64=		fails to install: undefined reference to outl
-BROKEN_powerpc64=	fails to install: undefined reference to outl
+BROKEN_aarch64=		fails to compile: rovclock.c:30:10: 'machine/pio.h' file not found
+BROKEN_riscv64=		fails to compile: rovclock.c:30:10: 'machine/pio.h' file not found
 
 USES=		tar:bzip2
 

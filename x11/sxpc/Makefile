@@ -1,5 +1,4 @@
 # Created by: jkh@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	sxpc
 PORTVERSION=	1.4
@@ -11,7 +10,7 @@ EXTRACT_SUFX=	.shar.Z
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple X Protocol Compressor
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	xorgproto
 NO_WRKSUBDIR=	yes
 EXTRACT_CMD=		${GZIP_CMD}

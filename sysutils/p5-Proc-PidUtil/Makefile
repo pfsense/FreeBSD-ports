@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Proc-PidUtil
 PORTVERSION=	0.09
@@ -14,8 +13,9 @@ COMMENT=	PID file management utilities
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

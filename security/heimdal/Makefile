@@ -1,10 +1,9 @@
 # Created by: nectar@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	heimdal
-PORTVERSION=	7.5.0
-PORTREVISION=	3
-CATEGORIES=	security ipv6
+PORTVERSION=	7.7.0
+PORTREVISION=	1
+CATEGORIES=	security
 MASTER_SITES=	https://github.com/heimdal/heimdal/releases/download/${DISTNAME}/
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -13,19 +12,21 @@ COMMENT=	Popular BSD-licensed implementation of Kerberos 5
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS=	krb4-[0-9]* krb5-[0-9]* krb5-maint-[0-9]* srp-[0-9]* \
-		wu-ftpd-[0-9]* wu-ftpd+ipv6-[0-9]*
+CONFLICTS=	krb4 krb5 krb5-maint srp \
+		wu-ftpd wu-ftpd+ipv6
 
-USES=		gettext-runtime gssapi:bootstrap,heimdal libtool pathfix \
+USES=		cpe gettext-runtime gssapi:bootstrap,heimdal libtool pathfix \
 		pkgconfig readline makeinfo ssl
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	${GSSAPILIBDIR}
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_header_fnmatch_h=yes \
 		ac_cv_header_db_h=no \
 		ac_cv_header_db3_db_h=no \
 		ac_cv_header_db4_db_h=no \
 		ac_cv_header_db5_db_h=no \
-		ac_cv_header_db5_h=no \
+		ac_cv_header_db6_db_h=no \
 		ac_cv_prog_COMPILE_ET=${WRKSRC}/lib/com_err/compile_et
 CONFIGURE_ARGS=	--with-berkeley-db \
 		--with-libintl \
@@ -53,7 +54,7 @@ INFO=		heimdal hx509
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	IPV6 BDB LMDB SQLITE LDAP PKINIT DIGEST KX509 CRACKLIB
-OPTIONS_DEFAULT=     BDB             PKINIT DIGEST KX509
+OPTIONS_DEFAULT=IPV6 BDB                  PKINIT DIGEST KX509
 OPTIONS_SUB=	yes
 
 IPV6_CONFIGURE_WITH=	ipv6
@@ -98,10 +99,6 @@ CRACKLIB_DESC=		Use CrackLib for password quality checking
 CRACKLIB_LIB_DEPENDS=	libcrack.so:security/cracklib
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MLDAP}
-WANT_OPENLDAP_SASL?=	yes
-.endif
 
 post-extract:
 	@${MKDIR} ${WRKSRC}/kpasswdd-cracklib

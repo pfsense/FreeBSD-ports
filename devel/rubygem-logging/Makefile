@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz (<rpsfa@rit.edu>)
-# $FreeBSD$
 
 PORTNAME=	logging
-PORTVERSION=	2.2.2
+PORTVERSION=	2.3.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,11 +11,12 @@ COMMENT=	Logging library based on Java's log4j #'
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-little-plugger>=1.1:devel/rubygem-little-plugger \
-		rubygem-multi_json>=1.10:devel/rubygem-multi_json
+RUN_DEPENDS=	rubygem-little-plugger>=1.1<2:devel/rubygem-little-plugger \
+		rubygem-multi_json>=1.14<2:devel/rubygem-multi_json
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

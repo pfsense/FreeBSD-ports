@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Prefs
 DISTVERSION=	2.9.0
 CATEGORIES=	devel www pear
@@ -7,7 +5,7 @@ CATEGORIES=	devel www pear
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Preferences API
 
-USES=		horde
+USES=		horde php cpe
 USE_HORDE_RUN=	Horde_Exception \
 		Horde_Mail \
 		Horde_Mime \

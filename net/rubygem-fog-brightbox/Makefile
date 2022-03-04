@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fog-brightbox
-PORTVERSION=	1.0.0
+PORTVERSION=	1.4.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -13,7 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-dry-inflector>=0:devel/rubygem-dry-inflector \
-		rubygem-fog-core>=1.45:devel/rubygem-fog-core \
+		rubygem-fog-core>=1.45<3.0:devel/rubygem-fog-core \
 		rubygem-fog-json>=0:devel/rubygem-fog-json
 
 USES=		gem

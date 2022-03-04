@@ -1,5 +1,4 @@
 # Created by: gmarco@giovannelli.it
-# $FreeBSD$
 
 PORTNAME=	pmars
 PORTVERSION=	0.9.2
@@ -50,6 +49,7 @@ SERVER_ARGS+=	CFLAGS+="-DSERVER"
 .endif
 
 .if ${PORT_OPTIONS:MX11}
+USES+=		xorg
 USE_XORG=	x11
 TARGETS+=	x11
 X11_ARGS+=	CFLAGS+="-DXWINGRAPHX" \

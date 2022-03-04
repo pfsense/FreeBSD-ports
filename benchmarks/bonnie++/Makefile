@@ -1,8 +1,7 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bonnie++
-PORTVERSION=	1.97.3
+PORTVERSION=	1.98
 CATEGORIES=	benchmarks
 MASTER_SITES=	https://www.coker.com.au/bonnie++/
 
@@ -11,9 +10,9 @@ COMMENT=	Performance Test of Filesystem I/O
 
 LICENSE=	GPLv2
 
-GNU_CONFIGURE=	yes
-
 USES=	shebangfix tar:tgz
+
+GNU_CONFIGURE=	yes
 SHEBANG_FILES=	bon_csv2txt.in
 
 PORTDOCS=	readme.html

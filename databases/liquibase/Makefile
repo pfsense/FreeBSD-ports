@@ -1,11 +1,9 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	liquibase
-PORTVERSION=	3.6.2
-DISTVERSIONSUFFIX=	-bin
+PORTVERSION=	4.3.5
 CATEGORIES=	databases java
-MASTER_SITES=	https://github.com/liquibase/liquibase/releases/download/liquibase-parent-${PORTVERSION}/
+MASTER_SITES=	https://github.com/liquibase/liquibase/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Database Change Management
@@ -18,13 +16,10 @@ NO_WRKSUBDIR=	yes
 
 USE_JAVA=	yes
 
-PLIST_FILES=	bin/liquibase %%DATADIR%%/liquibase.jar
-
 do-install:
-	(cd ${WRKSRC} && ${INSTALL_SCRIPT} liquibase \
-		${STAGEDIR}${PREFIX}/bin)
+	${INSTALL_SCRIPT} ${WRKSRC}/liquibase ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} liquibase.jar \
-		${STAGEDIR}${DATADIR})
+	${INSTALL_DATA} ${WRKSRC}/lib/*.jar ${WRKSRC}/liquibase.jar \
+		${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

@@ -1,11 +1,12 @@
 # Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_SYM_DATE}
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	cad
+MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-symbols/-/archive/${GL_COMMIT}/
 PKGNAMESUFFIX=	-library-symbols-devel
+DISTNAME=	${PORTNAME}-symbols-${GL_COMMIT}
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Official KiCad schematic symbol libraries for the future Kicad 5 release
@@ -16,14 +17,14 @@ RUN_DEPENDS=	kicad:cad/kicad-devel
 
 CONFLICTS=	kicad-4.*
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	KiCad
-GH_PROJECT=	kicad-symbols
-GH_TAGNAME=	${GIT_SYM_HASH}
+USE_GITLAB=	nodefault
+GL_ACCOUNT=	kicad
+GL_PROJECT=	kicad/symbols
+GL_COMMIT=	${GIT_SYM_HASH}
 
 USES=		cmake
 
-CMAKE_ARGS=     -DLOCALBASE="${LOCALBASE}" \
+CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Release" \
 		-DKICAD_TESTING_VERSION=ON \
 		-DKICAD_BUILD_VERSION=${DISTVERSION}

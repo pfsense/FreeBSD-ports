@@ -1,22 +1,22 @@
 # Created by: fjoe@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	wx
 PORTVERSION=	2.8.12
-PORTREVISION?=	7
+PORTREVISION?=	10
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/wxwindows/${PORTVERSION}
 PKGNAMESUFFIX=	28-${WXGTK_FLAVOR}
 DISTNAME=	wxGTK-${PORTVERSION}
 
-MAINTAINER?=	fjoe@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	The wxWidgets GUI toolkit with GTK+ bindings
 
 LIB_DEPENDS+=	libpng.so:graphics/png\
 		libtiff.so:graphics/tiff\
 		libexpat.so:textproc/expat2
 
-USES=		compiler gmake iconv jpeg pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gl gmake gnome iconv jpeg localbase \
+		pkgconfig tar:bzip2 xorg
 USE_CXXSTD=	gnu++98
 USE_XORG=	x11 sm xxf86vm xinerama
 USE_GL=		glu
@@ -30,31 +30,19 @@ CONFIGURE_ARGS=	--with-libpng=sys\
 		--with-opengl\
 		--with-mspack\
 		--with-gtk\
-		--enable-mediactrl\
+		--disable-mediactrl \
 		--disable-backtrace\
 		--enable-graphics_ctx
 CONFIGURE_ENV=	X11BASE="${LOCALBASE}"
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 PLIST=		${.CURDIR}/pkg-plist
 
 WXGTK_FLAVOR?=	gtk2
 
-OPTIONS_DEFINE=	GSTREAMER MSPACK
-OPTIONS_DEFAULT=	GSTREAMER MSPACK
+OPTIONS_DEFINE=	MSPACK
+OPTIONS_DEFAULT=	MSPACK
 MSPACK_DESC=	MS archives support
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MGSTREAMER}
-CONFIGURE_ARGS+=--enable-mediactrl
-USE_GNOME+=	gconf2
-USE_GSTREAMER=	yes
-PLIST_SUB+=     GSTREAMER=""
-.else
-CONFIGURE_ARGS+=--disable-mediactrl
-PLIST_SUB+=     GSTREAMER="@comment "
-.endif
 
 .if ${PORT_OPTIONS:MMSPACK}
 CONFIGURE_ARGS+=--with-libmspack

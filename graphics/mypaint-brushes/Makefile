@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	mypaint-brushes
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.1
 DISTVERSIONPREFIX=v
 CATEGORIES=	graphics
 
@@ -16,6 +14,6 @@ GNU_CONFIGURE=	yes
 
 USE_GITHUB=yes
 
-GH_ACCOUNT=	jehan
+GH_ACCOUNT=	mypaint
 
 .include <bsd.port.mk>

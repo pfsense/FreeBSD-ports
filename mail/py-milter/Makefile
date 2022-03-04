@@ -1,9 +1,7 @@
 # Created by: Vsevolod Lobko <seva@sevasoft.kiev.ua>
-# $FreeBSD$
 
 PORTNAME=	milter
-PORTVERSION=	1.0.2
-PORTREVISION=	1
+PORTVERSION=	1.0.4
 DISTVERSIONPREFIX=	${GH_PROJECT}-
 CATEGORIES=	mail python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,7 +17,7 @@ LIB_DEPENDS=	libmilter.so:mail/libmilter
 CFLAGS+=	-I${LOCALBASE}/include
 .endif
 
-USES=	python
+USES=	python:3.6+
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sdgathman
@@ -27,12 +25,6 @@ GH_PROJECT=	py${PORTNAME}
 USE_PYTHON=	distutils autoplist flavors
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/milter.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/milter*.so
 
-.include <bsd.port.pre.mk>
-
-.if ${FLAVOR:Upy27:Mpy3*}
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-miltermodule.c
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

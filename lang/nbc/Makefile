@@ -1,17 +1,19 @@
 # Created by: Ivan "Rambius" Ivanov <rambiusparkisanius@gmail.com>
-# $FreeBSD$
 
 PORTNAME=		nbc
 PORTVERSION=		1.2.1.r4
-PORTREVISION=		12
+PORTREVISION=		19
 CATEGORIES=		lang
 MASTER_SITES=		SF/bricxcc/NBC_NXC/NBC%20release%20${PORTVERSION:S/.r/%20r/}
 DISTNAME=		${PORTNAME}-${PORTVERSION}.src
 
-MAINTAINER=		rene@FreeBSD.org
+MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Programming language for the LEGO MINDSTORMS NXT
 
 LICENSE=		MPL11
+
+DEPRECATED=		No releases since 2011, for previous generation LEGO Mindstorms
+EXPIRATION_DATE=	2022-02-28
 
 MAKE_JOBS_UNSAFE=	yes
 MAKEFILE=		nbcunix.mak
@@ -32,8 +34,6 @@ PLIST_FILES=		bin/nbc \
 
 PORTDOCS=		Changelog \
 			Readme
-
-LLD_UNSAFE=		yes # PR 228613, needs FPC changes?
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/${MAKEFILE}

@@ -1,10 +1,9 @@
 # Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
 
 PORTNAME=	stratagus
-PORTVERSION=	2.4.1
+PORTVERSION=	2.4.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -19,16 +18,14 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Wargus
 
-USES=		cmake compiler:c++11-lang gl lua:51 pkgconfig sqlite
+USES=		cmake compiler:c++11-lang gl lua:51 pkgconfig sdl sqlite python:run
 USE_GL=		gl glu
 USE_SDL=	sdl
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DTOLUA++_APP:STRING="tolua++-${LUA_VER}" \
 		-DTOLUA++_INCLUDE_DIR:STRING="${LUA_INCDIR}" \
-		-DTOLUA++_LIBRARY:STRING="${LUA_LIBDIR}/libtolua++.so" \
-		-DENABLE_DEV:BOOL=ON
-
-CXXFLAGS+=	-Wno-c++11-narrowing
+		-DTOLUA++_LIBRARY:STRING="${LUA_LIBDIR}/libtolua++.so"
+CMAKE_ON=	ENABLE_DEV
 
 PORTDOCS=	*
 
@@ -50,11 +47,16 @@ VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 VORBIS_CMAKE_BOOL=	WITH_OGGVORBIS
 
 X11_DESC=		X11 clipboard pasting support
+X11_USES=		xorg
 X11_USE=		XORG=x11
 X11_CMAKE_BOOL=		WITH_X11
 
 FLUIDSYNTH_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 FLUIDSYNTH_CMAKE_BOOL=	WITH_FLUIDSYNTH
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|"python"|"${PYTHON_CMD}"|' \
+		${WRKSRC}/gameheaders/stratagus-tinyfiledialogs.h
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/stratagus.6 ${STAGEDIR}${MAN6PREFIX}/man/man6
@@ -63,4 +65,12 @@ post-install-DOCS-on:
 	@cd ${WRKSRC}/doc && ${COPYTREE_SHARE} "[a-z]*.html *.txt graphics scripts" \
 		${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == clang
+CXXFLAGS+=	-Wno-c++11-narrowing
+.else
+CXXFLAGS+=	-Wno-error
+.endif
+
+.include <bsd.port.post.mk>

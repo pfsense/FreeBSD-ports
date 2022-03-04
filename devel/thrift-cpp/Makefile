@@ -1,9 +1,8 @@
 # Created by: Valery Komarov <komarov@valerka.net>
-# $FreeBSD$
 
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with thrift
-PORTREVISION=	6
+PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/thrift/${PORTVERSION}
@@ -20,39 +19,24 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 
 DISTINFO_FILE=		${.CURDIR}/../thrift/distinfo
 
-BROKEN_powerpc64=	fails to compile: undefined reference to std::__throw_out_of_range_fmt
-BROKEN_SSL=	openssl111
-BROKEN_SSL_REASON_openssl111=	'configure: error: "Error: libcrypto required."'
-
-USES=			autoreconf pkgconfig gmake compiler:c++11-lang \
+USES=			bison cmake pkgconfig compiler:c++11-lang cpe \
 			libtool pathfix ssl
-GNU_CONFIGURE=		yes
+CPE_VENDOR=		apache
 USE_LDCONFIG=		yes
 MAKE_JOBS_UNSAFE=	yes
 PLIST_SUB=		PORTVERSION="${THRIFT_PORTVERSION}"
-
-CONFIGURE_ARGS+=	\
-		--without-c_glib \
-		--with-cpp \
-		--with-boost-libdir="${LOCALBASE}/lib" \
-		--without-csharp \
-		--without-erlang \
-		--without-haskell \
-		--without-java \
-		--without-perl \
-		--without-php \
-		--without-php_extension \
-		--without-python \
-		--without-ruby \
-		--without-go
-
-LDFLAGS+=	-L${OPENSSLLIB}
-CFLAGS+=	-I${OPENSSLINC}
+CMAKE_ON=	BUILD_CPP BUILD_SHARED_LIBS
+CMAKE_OFF=	BUILD_C_GLIB BUILD_JAVA BUILD_JAVASCRIPT BUILD_NODEJS BUILD_PYTHON BUILD_HASKELL
 
 .include <bsd.port.pre.mk>
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
 USE_CXXSTD=	c++11
+.endif
+
+.if ${SSL_DEFAULT} != base
+LDFLAGS+=	-L${OPENSSLLIB}
+CFLAGS+=	-I${OPENSSLINC}
 .endif
 
 post-install:

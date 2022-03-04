@@ -1,10 +1,9 @@
 # Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	csharp-mode.el
-PORTVERSION=	0.9.0
+PORTVERSION=	0.9.2
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
 CATEGORIES=	lang elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 

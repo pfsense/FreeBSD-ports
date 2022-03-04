@@ -1,27 +1,27 @@
 # Created by: Martin Kropfinger
-# $FreeBSD$
 
 PORTNAME=	minecraft-client
 PORTVERSION=	1.7.9
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	games java
-MASTER_SITES=	http://s3.amazonaws.com/Minecraft.Download/launcher/:minecraft \
-		http://media-mcw.cursecdn.com/c/c5/:icon
-DISTFILES=	Minecraft.jar:minecraft \
-		Grass.png:icon
+MASTER_SITES=	https://homura.magzu.net/games/ \
+		LOCAL/tagattie/${PORTNAME}/${PORTVERSION}
+DISTFILES=	Minecraft.jar \
+		Grass.png
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client for the block building game
 
-RUN_DEPENDS=	${JAVALIBDIR}/lwjgl/lwjgl.jar:games/lwjgl
+RUN_DEPENDS=	${JAVALIBDIR}/lwjgl/lwjgl.jar:games/lwjgl \
+		xrandr:x11/xrandr
 
 USES=		openal
 USE_JAVA=	yes
+JAVA_VERSION=	1.8+
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk
-JAVA_VERSION=	1.8+
 
 DESKTOP_ENTRIES="Minecraft" \
 		"Block building game" \

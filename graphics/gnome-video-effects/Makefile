@@ -1,17 +1,17 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-video-effects
-PORTVERSION=	0.4.3
+PORTVERSION=	0.5.0
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Collection of Gstreamer effects
 
-USE_GNOME=	intltool
-USES=		gettext gmake gnome pathfix tar:xz
-GNU_CONFIGURE=	yes
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		gettext meson tar:xz
 USE_GSTREAMER1=	good bad
 NO_ARCH=	yes
 

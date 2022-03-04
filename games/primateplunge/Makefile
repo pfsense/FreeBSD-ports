@@ -1,5 +1,4 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	primateplunge
 PORTVERSION=	1.1
@@ -16,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	# empty
 
 RUN_DEPENDS=	timidity:audio/timidity
+
+USES=		sdl
 
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer

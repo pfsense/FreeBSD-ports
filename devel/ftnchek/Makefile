@@ -1,5 +1,4 @@
 # Created by: kargl@apl.washington.edu
-# $FreeBSD$
 
 PORTNAME=	ftnchek
 PORTVERSION=	3.3.1
@@ -11,6 +10,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fortran 77 semantic checking utility
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 PORTSCOUT=	skipv:3.3.a,3.3.b,3.3.c
 

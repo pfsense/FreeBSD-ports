@@ -3,9 +3,9 @@
  * snort_passlist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -80,6 +80,7 @@ if (isset($_POST['del_btn'])) {
 			}
 		}
 		if ($need_save) {
+			unset($a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");
@@ -102,6 +103,7 @@ else {
 		}
 		else {
 			unset($a_passlist[$delbtn_list]);
+			unset($a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");
@@ -110,7 +112,8 @@ else {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Pass Lists"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Pass Lists");
 include_once("head.inc");
 
 /* Display Alert message */
@@ -148,7 +151,7 @@ display_top_tabs($tab_array, true);
 			<tr>
 				<th>&nbsp;</th>
 				<th>List Name</th>
-				<th>Assigned Alias</th>
+				<th>Assigned</th>
 				<th>Description</th>
 				<th>Actions</th>
 			</tr>
@@ -158,17 +161,11 @@ display_top_tabs($tab_array, true);
 			<tr>
 				<td><input type="checkbox" id="frc<?=$i?>" name="del[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['name']);?></td>
-		<?php if (strlen($list['address']) > 0) : ?>
-				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';" title="<?=filter_expand_alias($list['address']);?>">
-					<?=gettext($list['address']);?></td>
-		<?php else : ?>
-				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';">
-				</td>
-		<?php endif; ?>
+				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=snort_is_passlist_used($list['name']) ? gettext("Yes"):gettext("No");?></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['descr']);?>&nbsp;</td>
-				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit Pass List');?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Pass List'); ?>"></a>
-				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete Pass List'); ?>">Delete Pass List</button></td>
+				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit this Pass List');?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
+				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>">Delete Pass List</button></td>
 			</tr>
 		<?php endforeach; ?>
 			</tbody>
@@ -176,12 +173,12 @@ display_top_tabs($tab_array, true);
 	</div>
 
 	<nav class="action-buttons">
-		<a href="snort_passlist_edit.php?id=<?php echo $id_gen;?>" role="button" class="btn btn-sm btn-success" title="<?=gettext('add a new pass list');?>">
+		<a href="snort_passlist_edit.php?id=<?php echo $id_gen;?>" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add a new pass list');?>">
 			<i class="fa fa-plus icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<?php if (count($a_passlist) > 0): ?>
-			<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Items');?>">
+			<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete selected items');?>">
 				<i class="fa fa-trash icon-embed-btn"></i>
 				<?=gettext('Delete');?>
 			</button>
@@ -217,5 +214,6 @@ events.push(function() {
 
 //]]>
 </script>
+<?php unset($a_passlist); ?>
 <?php include("foot.inc"); ?>
 

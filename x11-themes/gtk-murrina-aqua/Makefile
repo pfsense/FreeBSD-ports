@@ -1,5 +1,4 @@
 # Created by: Phillip Neumann <pneumann@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gtk-murrina-aqua
 PORTVERSION=	0.1
@@ -14,6 +13,8 @@ COMMENT=	Murrina Aqua GTK+ 2.x cairo based theme
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/gtk-2.0/${GTK2_VERSION}/engines/libmurrine.so:x11-themes/gtk-murrine-engine
 RUN_DEPENDS=	${LOCALBASE}/lib/gtk-2.0/${GTK2_VERSION}/engines/libmurrine.so:x11-themes/gtk-murrine-engine
+
+USES=		gnome
 
 GTKRC_DIR=	${DISTNAME}/gtk-2.0
 USE_GNOME=	gtk20

@@ -1,46 +1,50 @@
 # Created by: Dmitri Goutnik <dg@syrec.org>
-# $FreeBSD$
 
 PORTNAME=	encryptpad
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.0.4
-PORTREVISION=	4
+DISTVERSION=	0.5.0.1
 CATEGORIES=	editors security
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Minimalist secure text editor and binary encryptor
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libbotan-2.so:security/botan2
 
-USES=		compiler:c++11-lang desktop-file-utils gl gmake pkgconfig qt:5 \
-		shared-mime-info shebangfix
-USE_GL=		gl
-USE_QT=		core gui widgets buildtools_build qmake_build
-SHEBANG_FILES=	deps/libencryptmsg/configure
+USES=		compiler:c++11-lang desktop-file-utils gl gmake pkgconfig \
+		python:build qt:5 shared-mime-info shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	evpo
 GH_PROJECT=	EncryptPad
 
-OPTIONS_DEFINE=	DOCS
+USE_GL=		gl
+USE_QT=		core gui widgets buildtools_build qmake_build
+BINARY_ALIAS=	python=${PYTHON_CMD} \
+		qmake=${QMAKE}
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+CONFIGURE_ARGS=	--cpu="${ARCH}"
+.endif
 
 .include <bsd.port.pre.mk>
 
 post-patch:
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 	${REINPLACE_CMD} -e 's/freebsd-clang/freebsd-g++/' \
 		${WRKSRC}/build/Makefile.qt_ui
 .endif
 
-do-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} MAKE=${MAKE_CMD} \
-		./configure.sh --all --use-system-libs
+do-configure:
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ./configure.py ${CONFIGURE_ARGS}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/release/* ${STAGEDIR}${PREFIX}/bin

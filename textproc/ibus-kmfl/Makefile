@@ -1,5 +1,4 @@
 # Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
 
 PORTNAME=	ibus-kmfl
 PORTVERSION=	1.0.3
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libibus-1.0.so:textproc/ibus \
 		libkmflcomp.so:textproc/kmflcomp
 RUN_DEPENDS=	kmflcomp:textproc/kmflcomp
 
-USES=		pkgconfig gmake
+USES=		gmake gnome pkgconfig
 USE_GNOME=	glib20
 
 GNU_CONFIGURE=	yes

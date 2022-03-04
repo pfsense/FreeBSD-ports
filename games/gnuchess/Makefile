@@ -1,16 +1,14 @@
 # Created by: markm
-# $FreeBSD$
 
 PORTNAME=	gnuchess
-PORTVERSION=	6.2.5
-PORTREVISION=	1
+PORTVERSION=	6.2.9
 CATEGORIES=	games
 MASTER_SITES=	GNU/chess
 # The DISTFILES here is explicitly needed because it can be extended later.
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	johans@FreeBSD.org
-COMMENT=	"Classic" Gnu Chess
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Classic Gnu Chess
 
 LICENSE=	GPLv3+
 
@@ -47,5 +45,6 @@ post-install:
 	cd ${STAGEDIR}${PREFIX}/bin && ${LN} -f gnuchess gnuchessx
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/NEWS ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
+	${RM} ${STAGEDIR}${DOCSDIR}/gnuchess.info
 
 .include <bsd.port.mk>

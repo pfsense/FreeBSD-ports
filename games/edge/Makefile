@@ -1,9 +1,8 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	edge
 PORTVERSION=	1.35
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/EDGE%20Source%20Code/${PORTVERSION} \
 		SF/${PORTNAME}/EDGE%20Binaries/${PORTVERSION}:wad
@@ -20,7 +19,7 @@ LICENSE_COMB=	dual
 LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libpng.so:graphics/png
 
-USES=		alias gmake jpeg tar:bzip2
+USES=		alias gl gmake jpeg sdl tar:bzip2
 USE_GL=		glew
 USE_SDL=	sdl
 MAKEFILE=	Makefile.linux

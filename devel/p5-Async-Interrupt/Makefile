@@ -1,8 +1,7 @@
 # Created by: Mikhail T. <michael@fun-box.ru>
-# $FreeBSD$
 
 PORTNAME=	Async-Interrupt
-PORTVERSION=	1.24
+PORTVERSION=	1.26
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,7 +13,7 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Canary-Stability>=0:devel/p5-Canary-Stability \
-		p5-common-sense>=0:devel/p5-common-sense
+		${RUN_DEPENDS}
 RUN_DEPENDS=	p5-common-sense>=0:devel/p5-common-sense
 
 USES=		perl5

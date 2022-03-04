@@ -1,8 +1,7 @@
 # Created by: wolman@cs.washington.edu
-# $FreeBSD$
 
 PORTNAME=	SQL-Statement
-PORTVERSION=	1.412
+PORTVERSION=	1.414
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,8 +1,7 @@
 # Created by: Joe Horn <joehorn@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	wordpress
-DISTVERSION=	5.0.3
+DISTVERSION=	5.8
 DISTVERSIONSUFFIX=	-zh_CN
 CATEGORIES=	chinese www
 MASTER_SITES=	http://cn.wordpress.org/
@@ -17,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		php:web
-USE_PHP=	curl gd mysqli pcre tokenizer xml zip
+USE_PHP=	curl exif fileinfo ftp gd hash json mysqli pcre tokenizer xml zip zlib
+RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:graphics/pecl-imagick@${PHP_FLAVOR}
 NO_ARCH=	yes
 NO_BUILD=	yes
 

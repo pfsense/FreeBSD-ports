@@ -1,9 +1,8 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Pg
 PORTVERSION=	2.1.1
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	databases perl5
 MASTER_SITES=	PGSQL/projects/gborg/pgperl/stable

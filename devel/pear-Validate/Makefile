@@ -1,9 +1,7 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@php.net>)
-# $FreeBSD$
 
 PORTNAME=	Validate
-PORTVERSION=	0.8.5
-PORTREVISION=	1
+PORTVERSION=	0.8.6
 CATEGORIES=	devel www pear
 
 MAINTAINER=	dbaio@FreeBSD.org

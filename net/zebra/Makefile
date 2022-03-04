@@ -1,13 +1,10 @@
 # Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
 
 PORTNAME=	zebra
 PORTVERSION=	0.95a
-PORTREVISION=	7
-CATEGORIES=	net ipv6
-MASTER_SITES=	ftp://ftp.pop-pr.rnp.br/pub/GNU/ftp.zebra.org/zebra/ \
-		ftp://ftp.ripe.net/mirrors/sites/ftp.zebra.org/pub/zebra/ \
-		http://ftp.sunet.se/pub/network/zebra/
+PORTREVISION=	10
+CATEGORIES=	net
+MASTER_SITES=	ftp://ftp.ripe.net/mirrors/sites/ftp.zebra.org/pub/zebra/
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Free RIPv1, RIPv2, OSPFv2, BGP4 route software (server/reflector)
@@ -15,7 +12,10 @@ COMMENT=	Free RIPv1, RIPv2, OSPFv2, BGP4 route software (server/reflector)
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-CONFLICTS=	openbgpd-[0-9]* quagga-[0-9]* quagga-re-[0-9]* openospfd-[0-9]*
+DEPRECATED=	Abandoned upstream, last release in 2005. Consider migrating to net/frr7 or net/bird2
+EXPIRATION_DATE=2021-12-31
+
+CONFLICTS=	openbgpd quagga quagga-re openospfd
 
 SUB_FILES=	pkg-message zebractl
 SUB_LIST=	BGPDARGS=${BGPDARGS} \
@@ -28,7 +28,7 @@ USE_SUBMAKE=	yes
 GNU_CONFIGURE=	yes
 USES=		cpe readline
 CONFIGURE_ARGS+=	--sysconfdir=${PREFIX}/etc/zebra
-CPU_VENDOR=	gnu
+CPE_VENDOR=	gnu
 
 PORTSCOUT=	ignore:1
 

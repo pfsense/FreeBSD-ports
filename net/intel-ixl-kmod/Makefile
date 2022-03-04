@@ -1,10 +1,10 @@
 # Created by: Sergey Kozlov <sergey.kozlov@intel.com>
-# $FreeBSD$
 
 PORTNAME?=	ixl
-PORTVERSION?=	1.10.4
+PORTVERSION?=	1.12.2
+PORTREVISION?=	0
 CATEGORIES=	net
-MASTER_SITES=	https://downloadmirror.intel.com/${MASTER_SITE_SUBDIR}/ \
+MASTER_SITES?=	https://downloadmirror.intel.com/${MASTER_SITE_SUBDIR}/ \
 		http://downloadmirror.intel.com/${MASTER_SITE_SUBDIR}/
 MASTER_SITE_SUBDIR?=	25160/eng
 PKGNAMEPREFIX=	intel-
@@ -17,13 +17,11 @@ LICENSE=	BSD2CLAUSE
 
 USES=		kmod
 
-# Present version of net/intel-em-kmod has issues building with netmap(4)
-# support on 11+. Narrowing netmap(4) support to this port only
 OPTIONS_SINGLE=		NETMAP
 OPTIONS_SINGLE_NETMAP=	NETMAP_AUTO NETMAP_ON NETMAP_OFF
 OPTIONS_DEFAULT=	NETMAP_AUTO
 
-NETMAP_AUTO_DESC=	Enable netmap(4) support on FreeBSD 11.0+
+NETMAP_AUTO_DESC=	Enable netmap(4) support on supported OS versions
 NETMAP_ON_DESC=		Enable netmap(4) support unconditionally
 NETMAP_OFF_DESC=	Disable netmap(4) support unconditionally
 
@@ -44,14 +42,16 @@ MAKE_ENV+=	WERROR=""
 PLIST_FILES+=	man/man4/${link}.4.gz
 .endfor
 
-MAX_NETMAP_OSVERSION?=	9900000  # Maximum OSVERSION for which NETMAP support works
+MAX_NETMAP_OSVERSION?=	1200500  # Maximum OSVERSION for which NETMAP support works
 
 .include <bsd.port.pre.mk>
 
 # Fixup for slave ports that use this as a master port. sbruno
 .if ${PORTNAME} == ixl
-ONLY_FOR_ARCHS=		amd64
-ONLY_FOR_ARCHS_REASON=	Not supported on other architectures, amd64 only.
+PATCH_SITES=	https://svnweb.freebsd.org/base/head/sys/dev/ixl/
+PATCHFILES=	ixl_pf_main.c?view=patch&r1=358698&r2=358697&pathrev=358698:-p4
+ONLY_FOR_ARCHS=		amd64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	only supported on amd64 and powerpc64
 .endif
 
 .if ${PORT_OPTIONS:MNETMAP_AUTO} && ${OSVERSION} <= ${MAX_NETMAP_OSVERSION}

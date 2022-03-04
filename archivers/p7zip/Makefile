@@ -1,14 +1,13 @@
 # Created by: Juergen Lock <nox@jelal.kn-bremen.de>
-# $FreeBSD$
 
 PORTNAME=	p7zip
 PORTVERSION=	16.02
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES=	archivers
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${DISTVERSION}_src_all
 
-MAINTAINER=	rakuco@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	File archiver with high compression ratio
 
 LICENSE?=	LGPL21
@@ -26,12 +25,11 @@ CFLAGS_armv7=	-fPIC
 CFLAGS_aarch64=	-fPIC
 CFLAGS_amd64=	-fPIC
 CFLAGS_i386=	-fPIC
-CFLAGS_powerpc=	-fPIC
+CFLAGS_powerpc=		-fPIC
+CFLAGS_powerpc64=	-fPIC
+CFLAGS_powerpc64le=	-fPIC
+CFLAGS_powerpcspe=	-fPIC
 CFLAGS_sparc64=	-fPIC
-
-# Fix the build for i386 when WITH_LLD_IS_LD is set
-# https://bugs.freebsd.org/230210
-LDFLAGS_i386=	-Wl,-z,notext
 
 OPTIONS_DEFINE=	DOCS
 
@@ -61,7 +59,7 @@ do-install:
 	${LN} -sf 7z ${STAGEDIR}${PREFIX}/bin/7zr
 
 	(cd ${WRKSRC}/man1 && \
-		${INSTALL_MAN} 7z*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1)
+		${INSTALL_MAN} 7z*.1 ${STAGEDIR}${PREFIX}/share/man/man1)
 
 do-install-DOCS-on:
 	(cd ${WRKSRC}/DOC && \

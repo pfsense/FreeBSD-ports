@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rocksndiamonds
 PORTVERSION=	3.3.1.2
@@ -26,10 +25,13 @@ COMMENT=	Colorful Boulderdash'n'Emerald Mine'n'Sokoban'n'Stuff
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: setup
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: setup
+
 LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg
 EXTRACT_DEPENDS=${UNZIP_CMD}:archivers/unzip
 
-USES=		gmake iconv
+USES=		gmake gnome iconv sdl
 USE_SDL=	image mixer net sdl
 MAKE_ARGS=	CC="${CC}" MAKE="${MAKE_CMD}" OPTIONS="${CFLAGS}" \
 		RO_GAME_DIR="${DATADIR}" \
@@ -55,7 +57,6 @@ DOCSRCDIR2=	${WRKSRC}/docs/elements
 DOCSDIR2=	${DOCSDIR}/docs/elements
 DOC_FILES2=	*.txt
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 DESKTOP_ENTRIES="Rocks'n'Diamonds" "" "${PORTNAME}" \

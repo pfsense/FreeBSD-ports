@@ -1,9 +1,8 @@
 # Created by: Ryo MIYAMOTO <rmiya@cc.hirosaki-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	mopac
 PORTVERSION=	7.${MOPAC_SUBVERSION}
-PORTREVISION=	6
+PORTREVISION=	8
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	http://bioinformatics.org/ghemical/download/%SUBDIR%/

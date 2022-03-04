@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	mDNSResponder
-PORTVERSION=	878.70.2
+PORTVERSION=	1310.40.42
 CATEGORIES=	dns net
 MASTER_SITES=	http://opensource.apple.com/tarballs/mDNSResponder/
 PKGNAMESUFFIX=	_nss
@@ -14,7 +12,11 @@ LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libdns_sd.so:net/mDNSResponder
 
-CONFLICTS_INSTALL=	nss_mdns-[0-9]*
+USES=		cpe
+
+CPE_VENDOR=	apple
+
+CONFLICTS_INSTALL=	nss_mdns
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/_nss//}-${PORTVERSION}
 

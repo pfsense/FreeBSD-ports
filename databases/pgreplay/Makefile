@@ -1,10 +1,9 @@
 # Created by: Matthew Seaman
-# $FreeBSD$
 
 PORTNAME=	pgreplay
 DISTVERSIONPREFIX=	${PORTNAME:tu}_
 DISTVERSION=	1_3_0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 
 MAINTAINER=	matthew@FreeBSD.org

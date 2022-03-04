@@ -1,9 +1,8 @@
 # Created by: Joachim Strombergson <watchman@ludd.ltu.se>
-# $FreeBSD$
 
 PORTNAME=	dinotrace
 PORTVERSION=	9.4c
-PORTREVISION=	8
+PORTREVISION=	13
 CATEGORIES=	cad
 MASTER_SITES=	http://www.veripool.org/ftp/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -14,7 +13,7 @@ COMMENT=	Graphical signal trace waveform viewer
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake motif perl5 tar:tgz
+USES=		gmake motif perl5 tar:tgz xorg
 USE_XORG=	x11 sm ice xmu xt
 USE_PERL5=	build
 

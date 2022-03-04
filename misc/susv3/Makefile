@@ -1,5 +1,4 @@
 # Created by: Simon 'corecode' Schubert <corecode@corecode.ath.cx>
-# $FreeBSD$
 
 PORTNAME=	susv3
 PORTVERSION=	1.2.20050121
@@ -10,11 +9,10 @@ DISTNAME=	susv3
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Single UNIX Specification Version 3
 
+# Redistribution of the documents is not permitted
 LICENSE=	NONE
 
 USES=		tar:bzip2
-
-RESTRICTED=	Redistribution of the documents is not permitted
 
 NO_BUILD=	yes
 PORTDOCS=	*

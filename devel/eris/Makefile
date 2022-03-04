@@ -1,9 +1,8 @@
 # Created by: Janni
-# $FreeBSD$
 
 PORTNAME=	eris
 PORTVERSION=	1.3.23
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	SF/worldforge/Eris%201.4%20%28client%20lib%29/${PORTVERSION}/
 

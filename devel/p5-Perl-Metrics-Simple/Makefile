@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Perl-Metrics-Simple
 PORTVERSION=	0.18
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to count packages, subs, lines, etc. of many files
 
 LICENSE=	ART10 GPLv1+

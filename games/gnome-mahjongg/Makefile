@@ -1,8 +1,7 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-mahjongg
-PORTVERSION=	3.22.0
+DISTVERSION=	3.38.3
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -16,13 +15,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	vala:lang/vala \
 		itstool:textproc/itstool
 
-PORTSCOUT=	limitw:1,even
-
-USES=		gettext gmake gnome localbase pathfix pkgconfig tar:xz
-INSTALLS_ICONS=	yes
+USES=		gettext gmake gnome localbase meson pathfix pkgconfig tar:xz
 USE_GNOME=	cairo gtk30 intlhack librsvg2 libxml2:build
-GNU_CONFIGURE=	yes
+GLIB_SCHEMAS=	org.gnome.Mahjongg.gschema.xml
 
-GLIB_SCHEMAS=	org.gnome.mahjongg.gschema.xml
+MESON_ARGS=	-Dcompile-schemas=disabled -Dupdate-icon-cache=disabled
+
+PORTSCOUT=	limitw:1,even
 
 .include <bsd.port.mk>

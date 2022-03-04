@@ -1,13 +1,12 @@
 # Created by: nik
-# $FreeBSD$
 
 PORTNAME=	scr2png
 PORTVERSION=	1.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	LOCAL/nik
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Converts the output of "vidcontrol -p" to PNG
 
 LICENSE=	BSD2CLAUSE

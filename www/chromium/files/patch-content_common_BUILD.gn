@@ -1,15 +1,33 @@
---- content/common/BUILD.gn.orig	2019-03-11 22:00:58 UTC
+--- content/common/BUILD.gn.orig	2021-09-24 04:26:05 UTC
 +++ content/common/BUILD.gn
-@@ -382,6 +382,12 @@ source_set("common") {
-     libs += [ "android" ]
+@@ -333,7 +333,7 @@ source_set("common") {
+     sources -= [ "cursors/webcursor_aura.cc" ]
+   }
+ 
+-  if (is_linux || is_chromeos) {
++  if ((is_linux || is_chromeos) && !is_bsd) {
+     sources += [
+       "sandbox_init_linux.cc",
+       "zygote/sandbox_support_linux.cc",
+@@ -348,6 +348,12 @@ source_set("common") {
+     ]
    }
  
 +  if (is_bsd) {
-+    sources -= [
-+      "sandbox_init_linux.cc",
++    deps += [
++      "//third_party/fontconfig",
 +    ]
 +  }
 +
-   if (is_debug && !is_component_build && enable_plugins) {
-     # Content depends on the PPAPI message logging stuff; if this isn't here,
-     # some unit test binaries won't compile. This only worked in release mode
+   if (use_zygote_handle) {
+     sources += [
+       "zygote/zygote_handle_impl_linux.h",
+@@ -397,7 +403,7 @@ source_set("common") {
+   }
+ }
+ 
+-if (is_linux || is_chromeos) {
++if ((is_linux || is_chromeos) && !is_bsd) {
+   source_set("set_process_title_linux") {
+     public = [ "set_process_title_linux.h" ]
+     sources = [ "set_process_title_linux.cc" ]

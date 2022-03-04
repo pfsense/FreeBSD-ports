@@ -1,17 +1,20 @@
-etc/xdg/drkonqi.categories
 lib/libexec/drkonqi
 share/applications/org.kde.drkonqi.desktop
+%%DATADIR%%/debuggers/external.mac/lldbrc
+%%DATADIR%%/debuggers/external/cdbrc
 %%DATADIR%%/debuggers/external/gdbrc
 %%DATADIR%%/debuggers/external/kdbgrc
+%%DATADIR%%/debuggers/external/lldbrc
+%%DATADIR%%/debuggers/internal/cdbrc
 %%DATADIR%%/debuggers/internal/dbxrc
 %%DATADIR%%/debuggers/internal/gdbrc
 %%DATADIR%%/debuggers/internal/kdbgwinrc
-%%DATADIR%%/debuggers/external.mac/lldbrc
-%%DATADIR%%/debuggers/external/lldbrc
 %%DATADIR%%/debuggers/internal/lldbrc
+%%DATADIR%%/gdb/preamble.py
 %%DATADIR%%/mappings
 share/locale/af/LC_MESSAGES/drkonqi5.mo
 share/locale/ar/LC_MESSAGES/drkonqi5.mo
+share/locale/az/LC_MESSAGES/drkonqi5.mo
 share/locale/be/LC_MESSAGES/drkonqi5.mo
 share/locale/bg/LC_MESSAGES/drkonqi5.mo
 share/locale/bn/LC_MESSAGES/drkonqi5.mo
@@ -67,7 +70,6 @@ share/locale/ne/LC_MESSAGES/drkonqi5.mo
 share/locale/nl/LC_MESSAGES/drkonqi5.mo
 share/locale/nn/LC_MESSAGES/drkonqi5.mo
 share/locale/oc/LC_MESSAGES/drkonqi5.mo
-share/locale/or/LC_MESSAGES/drkonqi5.mo
 share/locale/pa/LC_MESSAGES/drkonqi5.mo
 share/locale/pl/LC_MESSAGES/drkonqi5.mo
 share/locale/pt/LC_MESSAGES/drkonqi5.mo
@@ -98,3 +100,4 @@ share/locale/wa/LC_MESSAGES/drkonqi5.mo
 share/locale/xh/LC_MESSAGES/drkonqi5.mo
 share/locale/zh_CN/LC_MESSAGES/drkonqi5.mo
 share/locale/zh_TW/LC_MESSAGES/drkonqi5.mo
+share/qlogging-categories5/drkonqi.categories

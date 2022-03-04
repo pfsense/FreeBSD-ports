@@ -1,14 +1,14 @@
 # Created by: Carlos J. Puga Medina <cpm@fbsd.es>
-# $FreeBSD$
 
 PORTNAME=	LaTeXML
-PORTVERSION=	0.8.3
+PORTVERSION=	0.8.6
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN \
 		http://dlmf.nist.gov/LaTeXML/releases/
+MASTER_SITE_SUBDIR=	CPAN:BRMILLER
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	LaTeX to XML/HTML/MathML converter in Perl
 
 LICENSE=	PD CC0-1.0
@@ -26,6 +26,7 @@ RUN_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-File-Which>=0:sysutils/p5-File-Which \
 		p5-XML-LibXML>=1.62:textproc/p5-XML-LibXML \
 		p5-XML-LibXSLT>=1.58:textproc/p5-XML-LibXSLT \
+		${P5_POD_PARSER} \
 		p5-libwww>=0:www/p5-libwww
 
 USES=		perl5

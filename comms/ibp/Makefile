@@ -1,5 +1,4 @@
 # Created by: Diane Bruce <db@db.net>
-# $FreeBSD$
 
 PORTNAME=	ibp
 PORTVERSION=	0.21
@@ -11,7 +10,7 @@ MASTER_SITES=	http://wwwhome.cs.utwente.nl/~ptdeboer/ham/ \
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Little program for monitoring amateur radio beacons
 
-USES=		imake ncurses tar:tgz
+USES=		imake ncurses tar:tgz xorg
 USE_XORG=	x11
 
 post-patch:

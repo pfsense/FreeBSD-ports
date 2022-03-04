@@ -8,7 +8,7 @@
  * squid_traffic.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -68,6 +68,10 @@
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
+		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>
 		</tab>
@@ -83,7 +87,9 @@
 			<description>
 				<![CDATA[
 				Limit the maximum total download size to the size specified here (in kilobytes).
-				<span class="text-info">Set to 0 to disable.</span>
+				<span class="text-info">Set to 0 to disable.<br />
+				<strong>Traffic control settings mainly work with universal HTTP, so it may not work without HTTPS interception, if HTTPS is used, it can also be a problem with dynamic content (javascript).</strong>
+				</span>
 				]]>
 			</description>
 			<type>input</type>

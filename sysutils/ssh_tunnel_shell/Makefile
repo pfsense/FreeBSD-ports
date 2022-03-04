@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	ssh_tunnel_shell
-PORTVERSION=	0.1
-PORTREVISION=	2
+PORTVERSION=	0.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	garga@pfsense.org
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	SSH tunnel shell
 
 WHERE=		sbin

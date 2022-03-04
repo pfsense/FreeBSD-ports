@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	nusoap
 PORTVERSION=	0.9.5
@@ -11,7 +10,8 @@ COMMENT=	SOAP Toolkit for PHP
 
 LICENSE=	LGPL21+
 
-USES=		php zip
+USES=		cpe php zip
+CPE_VENDOR=	${PORTNAME}_project
 USE_PHP=	curl zlib xml
 NO_BUILD=	yes
 NO_ARCH=	yes

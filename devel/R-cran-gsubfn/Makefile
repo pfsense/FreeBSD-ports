@@ -1,9 +1,8 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gsubfn
 DISTVERSION=	0.6-5
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

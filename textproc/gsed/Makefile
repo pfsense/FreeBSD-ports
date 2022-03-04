@@ -1,24 +1,24 @@
 # Created by: Cyrille Lefevre <clefevre@citeweb.net>
-# $FreeBSD$
 
 PORTNAME=	sed
-PORTVERSION=	4.7
+PORTVERSION=	4.8
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	g
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	GNU stream editor
 
 LICENSE=	GPLv3+ GFDL
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
 
-USES=		charsetfix makeinfo tar:xz
+USES=		charsetfix cpe makeinfo tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g
 CONFIGURE_ENV+=	MAKEINFO="${MAKEINFO} --no-split"
 TEST_TARGET=	check
+CPE_VENDOR=	gnu
 
 DATADIR=	${PREFIX}/share/${PKGBASE}
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}

@@ -1,9 +1,8 @@
 # Created by: Martin Jackson <mhjacks@swbell.net>
-# $FreeBSD$
 
 PORTNAME=	pysnmp
 PORTVERSION=	4.4.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	CHEESESHOP \
 		SF/pysnmp/pysnmp/${PORTVERSION}
@@ -18,7 +17,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyasn1>=0.2.3:devel/py-pyasn1@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycryptodomex>=0:security/py-pycryptodomex@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pysmi>=0:net-mgmt/py-pysmi@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

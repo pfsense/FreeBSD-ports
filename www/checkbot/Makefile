@@ -1,5 +1,4 @@
 # Created by: wosch@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	checkbot
 PORTVERSION=	1.80
@@ -7,7 +6,7 @@ PORTREVISION=	2
 CATEGORIES=	www perl5
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Checkbot%20${PORTVERSION}
 
-MAINTAINER=	jadawin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	WWW link verifier, similar to momspider
 
 BUILD_DEPENDS=	p5-libwww>=0:www/p5-libwww \

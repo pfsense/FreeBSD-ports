@@ -1,5 +1,4 @@
 # Created by: Jonathan Hanna
-# $FreeBSD$
 
 PORTNAME=	edict
 PORTVERSION=	19990714
@@ -46,6 +45,9 @@ DATADIR=	${PREFIX}/share/dict/edict
 DOCSDIR=	${PREFIX}/share/doc/xjdic
 
 NO_WRKSUBDIR=	yes
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	DOCS
 

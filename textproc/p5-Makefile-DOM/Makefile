@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Makefile-DOM
 PORTVERSION=	0.008
@@ -20,7 +19,9 @@ RUN_DEPENDS=	p5-Clone>=0.18:devel/p5-Clone \
 		p5-List-MoreUtils>=0.21:lang/p5-List-MoreUtils \
 		p5-Params-Util>=0.22:devel/p5-Params-Util
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

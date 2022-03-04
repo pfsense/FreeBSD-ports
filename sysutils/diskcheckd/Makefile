@@ -1,5 +1,4 @@
 # Created by: David W. Chapman Jr. (dwcjr@FreeBSD.org)
-# $FreeBSD$
 
 PORTNAME=	diskcheckd
 PORTVERSION=	20150220
@@ -24,7 +23,7 @@ do-extract:
 	@(cd ${WRKSRC} ; ${CP} ${FILESDIR}/${f} .)
 .endfor
 
-do-patch:
+post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local/etc/diskcheckd.conf|${PREFIX}/etc/diskcheckd.conf|g' ${WRKSRC}/diskcheckd.8
 
 do-install:

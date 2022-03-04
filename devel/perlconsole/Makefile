@@ -1,5 +1,4 @@
 # Created by: Philippe Audeoud <jadawin@tuxaco.net>
-# $FreeBSD$
 
 PORTNAME=	perlconsole
 PORTVERSION=	0.4
@@ -8,7 +7,7 @@ CATEGORIES=	devel
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SUKRIA
 
-MAINTAINER=	jadawin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Light program that lets you evaluate Perl code interactively
 
 RUN_DEPENDS=	p5-Term-ReadLine-Gnu>=0:devel/p5-Term-ReadLine-Gnu \

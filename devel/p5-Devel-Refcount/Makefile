@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-Refcount
 PORTVERSION=	0.10
 PORTREVISION=	1

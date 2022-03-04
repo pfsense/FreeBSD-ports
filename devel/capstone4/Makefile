@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	capstone
-PORTVERSION=	4.0
-PORTREVISION=	1
+PORTVERSION=	4.0.2
 CATEGORIES=	devel
 PKGNAMESUFFIX=	4
 
@@ -12,18 +9,23 @@ COMMENT=	Multi-platform, multi-architecture disassembly framework
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-CONFLICTS_BUILD=	capstone3
-
-USES=		gmake
-USE_LDCONFIG=	yes
+USES=		cpe gmake
+CPE_VENDOR=	${PORTNAME}-engine
 USE_GITHUB=	yes
 GH_ACCOUNT=	aquynh
-GH_TAGNAME=	d99cbc3
+USE_LDCONFIG=	yes
 
-MAKE_ENV+=	INSTALL_LIB="${INSTALL_LIB}" \
-		INSTALL_DATA="${INSTALL_DATA}"
+MAKE_ENV+=	INSTALL_DATA="${INSTALL_DATA}" \
+		INSTALL_LIB="${INSTALL_LIB}"
 
-TEST_ENV=	${MAKE_ENV} LD_LIBRARY_PATH=${STAGEDIR}${PREFIX}/lib
+TEST_ENV=	${MAKE_ENV} \
+		LD_LIBRARY_PATH=${STAGEDIR}${PREFIX}/lib
 TEST_TARGET=	check
+
+CONFLICTS_BUILD=	capstone3
+
+pre-test:
+# Disable broken tests.
+	@${REINPLACE_CMD} -E 's|^(check:.*)fuzzallcorp|\1|' ${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Muhammad Moinur Rahman <5u623l20@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	newtonsoft-json
 PORTVERSION=	9.0.1
@@ -26,6 +25,12 @@ PLIST_FILES=	lib/mono/Newtonsoft.Json/Newtonsoft.Json.dll \
 		lib/mono/gac/Newtonsoft.Json/7.0.0.0__b9a188c8922137c6/Newtonsoft.Json.pdb \
 		libdata/pkgconfig/Newtonsoft.Json.pc
 
+.include <bsd.port.pre.mk>
+
+.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
+BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: Failure adding assembly dbus-sharp.dll to the cache: Strong name cannot be verified for delay-signed assembly
+.endif
+
 do-build:
 	(cd ${WRKSRC}/Src/Newtonsoft.Json && ${SETENV} ${MAKE_ENV} xbuild Newtonsoft.Json.csproj \
 		/property:SignAssembly=true \
@@ -41,4 +46,4 @@ do-install:
 	(cd ${WRKDIR} && ${INSTALL_DATA} Newtonsoft.Json.pc \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

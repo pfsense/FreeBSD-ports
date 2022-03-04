@@ -1,11 +1,10 @@
 # Created by: Munechika SUMIKAWA <sumikawa@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dhcp6
 PORTVERSION=	20080615.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2	
-CATEGORIES=	net ipv6
+PORTREVISION=	4
+CATEGORIES=	net
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	KAME DHCP6 client, server, and relay

@@ -1,21 +1,19 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=		aseprite
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.2.9
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=		graphics
 
 MAINTAINER=		yuri@FreeBSD.org
-COMMENT=		Animated sprite editor & pixel art tool
+COMMENT=		Animated sprite editor and pixel art tool
 
 LICENSE=		EULA
 LICENSE_NAME=		END-USER LICENSE AGREEMENT FOR ASEPRITE
 LICENSE_FILE=		${WRKSRC}/EULA.txt
-LICENSE_PERMS=		dist-mirror pkg-mirror auto-accept
+LICENSE_PERMS=		dist-mirror auto-accept
 
-BROKEN_aarch64=		fails to compile: undefined reference to __va_copy
 BROKEN_armv6=		fails to compile: undefined reference to __va_copy
 BROKEN_armv7=		fails to compile: undefined reference to __va_copy
 BROKEN_sparc64=		fails to compile: vsnprintf is not a member of std
@@ -35,7 +33,8 @@ LIB_DEPENDS=		liballeg.so:devel/allegro \
 			libtinyxml.so:textproc/tinyxml \
 			libzstd.so:archivers/zstd
 
-USES=			cmake compiler:c++11-lib iconv:wchar_t jpeg localbase:ldflags pkgconfig ssl
+USES=			cmake compiler:c++11-lib gnome iconv:wchar_t jpeg \
+			localbase:ldflags pkgconfig ssl xorg
 USE_GITHUB=		yes
 GH_TUPLE=		aseprite:libarchive:c51dbfc:libarchive/third_party/libarchive
 GH_TUPLE+=		aseprite:clip:964a64a:clip/src/clip
@@ -65,8 +64,6 @@ CMAKE_ON=		USE_SHARED_ALLEGRO4 \
 			USE_SHARED_TINYXML \
 			USE_SHARED_ZLIB
 CMAKE_ARGS=		-DFREEBSD_LIB_PATH=${LOCALBASE}/lib
-
-CXXFLAGS+=		-D_GLIBCXX_USE_C99 # XXX ports/193528
 
 OPTIONS_DEFINE=		STEAM WEBP
 OPTIONS_DEFAULT=	WEBP

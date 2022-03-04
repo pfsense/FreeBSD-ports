@@ -1,9 +1,8 @@
 # Created by: Kelly Hays <kelly.hays@jkhfamily.org>
-# $FreeBSD$
 
 PORTNAME=	luafilesystem
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1_7_0
+DISTVERSION=	1_8_0
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
@@ -12,7 +11,7 @@ COMMENT=	Library to access directory structure and file attributes
 
 LICENSE=	MIT
 
-USES?=		lua
+USES=		lua:module
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	keplerproject
@@ -25,6 +24,8 @@ PORTDOCS=	*
 MAKE_ARGS+=	INCS="-I${LUA_INCDIR}"
 
 OPTIONS_DEFINE=	DOCS
+
+DOCSDIR=	${LUA_DOCSDIR}
 
 post-patch:
 	${REINPLACE_CMD} -e \

@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 PKGNAMESUFFIX=	-${SLAVEPORT}
 
-MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Gpgme Qt5 bindings
 
 LICENSE=	GPLv2+

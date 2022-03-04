@@ -1,9 +1,8 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	io
 PORTVERSION=	20180807
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-devel
 
@@ -13,7 +12,7 @@ COMMENT=	Small prototype-based programming language (devel version)
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS=	io-[0-9]*
+CONFLICTS=	io
 
 USES=		cmake:noninja compiler:c11
 
@@ -31,9 +30,13 @@ CMAKE_ARGS=	-DWITHOUT_EERIE:BOOL=ON
 
 .include <bsd.port.pre.mk>
 
-# disable sse on non-x86 archs
+# disable SSE on non-x86 archs
 .if ${ARCH} != amd64 && ${ARCH} != i386
 EXTRA_PATCHES+= ${PATCHDIR}/extra-patch-CMakeLists.txt
 .endif
+
+do-test:
+	cd ${BUILD_WRKSRC} && \
+	    ./_build/binaries/io ${WRKSRC}/libs/iovm/tests/correctness/run.io
 
 .include <bsd.port.post.mk>

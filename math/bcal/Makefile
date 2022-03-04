@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	bcal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1-12
-DISTVERSIONSUFFIX=	-g6867abd
+DISTVERSION=	2.2
 CATEGORIES=	math
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -12,22 +9,21 @@ COMMENT=	Storage expression, unit conversion & address offset CLI calculator
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=	gmake python:test,3.5+ readline
+USES=		gmake python:test,3.5+ readline
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jarun
 
-MAKE_ARGS=	MANDIR=${STAGEDIR}${MAN1PREFIX}/man/man1
+MAKE_ARGS=	CFLAGS_OPTIMIZATION=
 
 PLIST_FILES=	bin/bcal \
-		man/man1/bcal.1.gz
+		share/man/man1/bcal.1.gz
 
-PORTDOCS=	CHANGELOG \
-		README.md
+PORTDOCS=	CHANGELOG README.md
 
 OPTIONS_DEFINE=	DOCS
 

@@ -8,7 +8,7 @@
  * frr_bgp_advanced.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,8 +52,16 @@
 			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
 		</tab>
 		<tab>
+			<text>RPKI Cache Servers</text>
+			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF]</text>
@@ -62,6 +70,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -88,7 +100,6 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>Advanced Timers</name>
 			<type>listtopic</type>
@@ -131,7 +142,6 @@
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>
-
 		<field>
 			<name>Advanced Routing Behavior</name>
 			<type>listtopic</type>
@@ -148,7 +158,12 @@
 			<description>Check if the BGP network route exists in IGP</description>
 			<type>checkbox</type>
 		</field>
-
+		<field>
+			<fielddescr>Reject AS_SET/AS_CONFED_SET Routes</fielddescr>
+			<fieldname>rejcectassetasconfedset</fieldname>
+			<description>Reject incoming and outgoing routes with AS_SET or AS_CONFED_SET type</description>
+			<type>checkbox</type>
+		</field>
 		<field>
 			<name>Route Reflecting</name>
 			<type>listtopic</type>
@@ -360,22 +375,27 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<name>EBGP</name>
+			<name>eBGP</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>EBGP Nexthop Connected</fielddescr>
+			<fielddescr>eBGP Nexthop Connected</fielddescr>
 			<fieldname>disableebgpconnectedroutecheck</fieldname>
-			<description>Disable checking if nexthop is connected on ebgp sessions</description>
+			<description>Disable checking if nexthop is connected on eBGP sessions</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enforce First AS</fielddescr>
 			<fieldname>enforcefirstas</fieldname>
-			<description>Enforce the first AS for EBGP routes</description>
+			<description>Enforce the first AS for eBGP routes</description>
 			<type>checkbox</type>
 		</field>
-
+		<field>
+			<fielddescr>Disable eBGP Require Policy</fielddescr>
+			<fieldname>disableebgprequirepolicy</fieldname>
+			<description>Disable the requirement to apply incoming and outgoing filter to eBGP sessions</description>
+			<type>checkbox</type>
+		</field>
 		<field>
 			<name>Networking Behavior</name>
 			<type>listtopic</type>

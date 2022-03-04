@@ -1,13 +1,12 @@
 # Created by: anarcat@anarcat.ath.cx
-# $FreeBSD$
 
 PORTNAME=	ledgersmb
 PORTVERSION=	1.2.26
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	finance perl5
-MASTER_SITES=	http://download.ledgersmb.org/f/Releases/archive-1.2/${PORTVERSION}/
+MASTER_SITES=	http://download.ledgersmb.org/f/Releases/archives/${PORTVERSION:R}/${PORTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ty@eye-of-odin.com
 COMMENT=	Double entry accounting system
 
 BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg \
@@ -18,7 +17,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
 SHEBANG_FILES=	utils/devel/chart-load-test.sh \
 		utils/devel/find-use \
 		utils/pos/pos-hardware-client-startup-script

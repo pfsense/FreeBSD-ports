@@ -1,4 +1,4 @@
 sudo allows delegation of privileges to users in the shell so commands can be
 run as other users, such as root.
 
-WWW: https://doc.pfsense.org/index.php/Sudo_Package
+WWW: https://docs.netgate.com/pfsense/en/latest/packages/sudo.html

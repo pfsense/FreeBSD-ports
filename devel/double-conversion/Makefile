@@ -1,20 +1,17 @@
 # Created by: Waitman Gobble <waitman@waitman.net>
-# $FreeBSD$
 
 PORTNAME=	double-conversion
-PORTVERSION=	3.0.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.1.6
 CATEGORIES=	devel
 
-MAINTAINER=	waitman@waitman.net
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Binary-decimal and decimal-binary routines for IEEE doubles
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-#BROKEN_aarch64=	Fails to build: Target architecture was not detected as supported by Double-Conversion
-
-USES=		cmake
+USES=		cmake:testing
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
 USE_LDCONFIG=	yes

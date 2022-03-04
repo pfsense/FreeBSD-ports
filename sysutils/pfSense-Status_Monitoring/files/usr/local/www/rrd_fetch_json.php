@@ -3,7 +3,7 @@
  * rrd_fetch_json.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)
@@ -55,6 +55,7 @@ $graph_unit_lookup = array(
 	"states"     => "cps",
 	"quality"    => "ms",
 	"processor"  => "%",
+	"sensors"    => "°C",
 	"memory"     => "%",
 	"wireless"   => "dBi",
 	"mbuf"       => "",
@@ -81,6 +82,7 @@ $unit_desc_lookup = array(
 	"%"   => "Percent",
 	"Mb"  => "Megabit",
 	"dBi" => "Decibels Relative to Isotropic",
+	"°C"  => "Degrees Celsius",
 	""    => ""
 );
 
@@ -228,7 +230,6 @@ foreach ($side as $settings) {
 				break;
 			case "inpass":
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "max":
@@ -236,19 +237,16 @@ foreach ($side as $settings) {
 				break;
 			case "inpass6":
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "outpass":
 				$invert = $invert_graph;
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "outpass6":
 				$invert = $invert_graph;
 				$ninetyfifth = true;
-				$multiplier = 8;
 				$format = "s";
 				break;
 			case "rate":
@@ -273,6 +271,10 @@ foreach ($side as $settings) {
 			case "freq":
 				$unit_acronym = "";
 				break;
+		}
+
+		if ($settings['category'] === "traffic") {
+			$multiplier = 8;
 		}
 
 		if (!$ignore) {

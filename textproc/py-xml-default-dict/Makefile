@@ -1,5 +1,4 @@
 # Created by: Silvio Ap Silva aka kanazuchi <alvolivre@live.com>
-# $FreeBSD$
 
 PORTNAME=	xml-default-dict
 PORTVERSION=	0.3
@@ -12,7 +11,7 @@ COMMENT=	Python scripts to convert xml data into a defaultdict
 
 LICENSE=	BSD2CLAUSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

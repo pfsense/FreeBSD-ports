@@ -8,7 +8,7 @@
  * frr_bgp_communities.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,8 +52,16 @@
 			<active/>
 		</tab>
 		<tab>
+			<text>RPKI Cache Servers</text>
+			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF]</text>
@@ -62,6 +70,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -85,7 +97,7 @@
 			<description>
 				<![CDATA[
 				The name of this BGP Community.
-				<br/><br/>
+				<br />
 				Use 1-99 for a standard community list (AS:VAL pairs),
 				100-500 for an expanded community list (Regular Expression Matching),
 				or enter a text name combined with the selected type.
@@ -118,10 +130,10 @@
 			<description>
 				<![CDATA[
 				BGP Communities determine AS membership and priority values in BGP-specific contexts such as route-maps.
-				<br/><br/>
+				<br />
 				This is a space-separated list of communities in AS:VAL format, or a well-known community:
 				internet, no-export, no-advertise, or local-as.
-				<br/><br/>
+				<br />
 				Expanded Community List entries specify an ordered list using a regular expression.
 				]]>
 			</description>
@@ -159,6 +171,9 @@
 			</rowhelper>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

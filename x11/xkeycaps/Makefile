@@ -1,5 +1,4 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	xkeycaps
 PORTVERSION=	2.46
@@ -12,7 +11,7 @@ COMMENT=	Graphically display and edit the keyboard mapping
 
 LICENSE=	MIT
 
-USES=		imake tar:Z
+USES=		imake tar:Z xorg
 USE_XORG=	ice sm x11 xaw xbitmaps xext xmu xt
 
 PLIST_FILES=	bin/xkeycaps \

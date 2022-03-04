@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	PySCIPOpt
-DISTVERSION=	2.1.3
+DISTVERSION=	3.0.2
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,10 +11,10 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libscip.so:math/SCIP
 
-USES=		localbase python
+USES=		localbase python:3.6+
 USE_PYTHON=	distutils cython autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyscipopt/scip.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyscipopt/scip*.so
 
 .include <bsd.port.mk>

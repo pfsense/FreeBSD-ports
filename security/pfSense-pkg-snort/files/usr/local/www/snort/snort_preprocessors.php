@@ -3,10 +3,10 @@
  * snort_preprocessors.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -367,6 +367,8 @@ if ($_POST['arp_spoof_save']) {
 			$a_nat[$id]['arp_spoof_engine']['item'][] = $engine;
 		}
 
+		unset($a_nat);
+
 		// Save the updates to the Snort configuration
 		write_config("Snort pkg: Updated ARP Spoofing engine address pairs for {$a_nat[$id]['interface']}.");
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
@@ -384,6 +386,7 @@ if ($_POST['del_http_inspect']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['http_inspect_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted http_inspect engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#httpinspect_row");
 		exit;
 	}
@@ -392,6 +395,7 @@ elseif ($_POST['del_frag3']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['frag3_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted frag3 engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#frag3_row");
 		exit;
 	}
@@ -400,6 +404,7 @@ elseif ($_POST['del_stream5_tcp']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['stream5_tcp_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted stream5 engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#stream5_row");
 		exit;
 	}
@@ -408,6 +413,7 @@ elseif ($_POST['del_ftp_client']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_client_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted ftp_client engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -416,6 +422,7 @@ elseif ($_POST['del_ftp_server']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_server_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted ftp_server engine for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -424,6 +431,7 @@ elseif ($_POST['del_arp_spoof_engine']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['arp_spoof_engine']['item'][$_POST['eng_id']]);
 		write_config("Snort pkg: deleted ARP spoof host address pair for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
 		exit;
 	}
@@ -726,12 +734,14 @@ if ($_POST['save']) {
 		/* in order to pick up any preprocessor setting */
 		/* changes.                                     */
 		$if_real = get_real_interface($a_nat[$id]['interface']);
-		if (snort_is_running($if_real)) {
+		if (snort_is_running($a_nat[$id]['uuid'])) {
 			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to Preprocessor configuration change."));
 			snort_stop($a_nat[$id], $if_real);
 			snort_start($a_nat[$id], $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because Preprocessor changes require a restart.");
 		}
+
+		unset($a_nat);
 
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
@@ -765,6 +775,7 @@ if ($_POST['btn_import']) {
 				$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
 				write_config("Snort pkg: imported Host Attribute Table data for {$a_nat[$id]['interface']}.");
 			}
+			unset($a_nat);
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -786,6 +797,7 @@ if ($_POST['btn_edit_hat']) {
 		$a_nat[$id]['max_attribute_hosts'] = $pconfig['max_attribute_hosts'];
 		$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
 		write_config("Snort pkg: modified Host Attribute Table data for {$a_nat[$id]['interface']}.");
+		unset($a_nat);
 		header("Location: snort_edit_hat_data.php?id=$id");
 		exit;
 	}
@@ -799,7 +811,8 @@ if ($pconfig['host_attribute_table'] == 'on' && empty($pconfig['host_attribute_d
 if (empty($if_friendly)) {
 	$if_friendly = "None";
 }
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Preprocessors and Flow"), gettext("{$if_friendly}"));
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Preprocessors and Flow");
 include("head.inc");
 
 /* Display Alert message */
@@ -830,7 +843,6 @@ $tab_array = array();
 	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Preprocs"), true, "/snort/snort_preprocessors.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
 display_top_tabs($tab_array, true);
@@ -1448,7 +1460,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'number',
 		$pconfig['sf_appid_stats_period']
 	))->setAttribute('min', '60')->setAttribute('max', '3600')->setHelp('Bucket size in seconds for AppID stats.  Minimum is 60 (1 min) and maximum is 3600 (1 hr).  Default is 300 (5 mins).');
-	$group->setHelp('The bucket size in seconds used to collecxt AppID statistics.');
+	$group->setHelp('The bucket size in seconds used to collect AppID statistics.');
 	$section->add($group);
 	print($section);
 	//----- END AppID settings -----
@@ -2015,7 +2027,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		$pconfig['smtp_log_mail_from'] == 'on' ? true:false,
 		'on'
 	));
-	$group->setHelp('<b>Note: </b>this is logged only when unified2 (Barnyard2) logging output is enabled.');
+	$group->setHelp('<b>Note: </b>this is logged only when unified2 logging output is enabled.');
 	$section->add($group);
 	$group = new Form_Group('Log Receipt To');
 	$group->add(new Form_Checkbox(
@@ -2025,7 +2037,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		$pconfig['smtp_log_rcpt_to'] == 'on' ? true:false,
 		'on'
 	));
-	$group->setHelp('<b>Note: </b>this is logged only when unified2 (Barnyard2) logging output is enabled.');
+	$group->setHelp('<b>Note: </b>this is logged only when unified2 logging output is enabled.');
 	$section->add($group);
 	$group = new Form_Group('Log Filename');
 	$group->add(new Form_Checkbox(
@@ -2035,7 +2047,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		$pconfig['smtp_log_filename'] == 'on' ? true:false,
 		'on'
 	));
-	$group->setHelp('<b>Note: </b>this is logged only when unified2 (Barnyard2) logging output is enabled.');
+	$group->setHelp('<b>Note: </b>this is logged only when unified2 logging output is enabled.');
 	$section->add($group);
 	$group = new Form_Group('Log E-Mail Headers');
 	$group->add(new Form_Checkbox(
@@ -2045,7 +2057,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		$pconfig['smtp_log_email_hdrs'] == 'on' ? true:false,
 		'on'
 	));
-	$group->setHelp('<b>Note: </b>this is logged only when unified2 (Barnyard2) logging output is enabled.');
+	$group->setHelp('<b>Note: </b>this is logged only when unified2 logging output is enabled.');
 	$section->add($group);
 	$group = new Form_Group('E-Mail Headers Log Depth');
 	$group->add(new Form_Input(
@@ -2226,6 +2238,7 @@ print($modal);
 print_callout('<p>' . gettext("Remember to save your changes before you exit this page.  Preprocessor changes will rebuild the rules file.  This ") . 
 		gettext("may take several seconds to complete.  Snort must also be restarted on the interface to activate any changes made on this screen.") . '</p>', 
 		'info', 'NOTE:');
+unset($a_nat);
 ?>
 
 <script type="text/javascript">

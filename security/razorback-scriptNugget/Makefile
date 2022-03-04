@@ -1,9 +1,8 @@
 # Created by: Tom Judge <tom@tomjudge.com>
-# $FreeBSD$
 
 PORTNAME=	scriptNugget
 PORTVERSION=	0.5.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security
 MASTER_SITES=	SF/razorbacktm/Nuggets
 PKGNAMEPREFIX=	razorback-
@@ -15,6 +14,9 @@ COMMENT=	Framework for an intelligence driven security - Scripting Interface
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Abandonware, last release in 2012 and listed as alpha quality by upstream
+EXPIRATION_DATE=2022-03-31
+
 LIB_DEPENDS=	librazorback_api.so:security/razorback-api \
 		libjson-c.so:devel/json-c
 BUILD_DEPENDS=	razorback-masterNugget>=0.5.0:security/razorback-masterNugget
@@ -22,7 +24,7 @@ RUN_DEPENDS=	razorback-masterNugget>=0.5.0:security/razorback-masterNugget \
 		rubygem-razorback-scriptNugget>=0.5.0:security/rubygem-razorback-scriptNugget
 
 RB_LIBDIR?=	${PREFIX}/lib/razorback
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf gnome libtool pkgconfig
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-ruby

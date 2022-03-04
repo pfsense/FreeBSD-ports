@@ -1,5 +1,4 @@
 # Created by: Abel Chow <abel_chow@yahoo.com>
-# $FreeBSD$
 
 PORTNAME=	cproto
 PORTVERSION=	4.7k
@@ -9,8 +8,10 @@ MASTER_SITES=	ftp://invisible-island.net/cproto/
 MAINTAINER=	thomas@bsdunix.ch
 COMMENT=	Generate C function prototypes and convert function definitions
 
-GNU_CONFIGURE=	yes
+LICENSE=	PD
+
 USES=		tar:tgz
+GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/cproto man/man1/cproto.1.gz
 

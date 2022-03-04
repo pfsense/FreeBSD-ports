@@ -1,9 +1,8 @@
 # Created by: Tim Niemueller <tim@niemueller.de>
-# $FreeBSD$
 
 PORTNAME=	yaml-cpp
 PORTVERSION=	0.3.0
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	devel
 PKGNAMESUFFIX=	03

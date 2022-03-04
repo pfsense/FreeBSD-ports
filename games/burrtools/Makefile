@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	burrtools
 PORTVERSION=	0.6.3
-PORTREVISION=	15
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -12,12 +11,11 @@ COMMENT=	Puzzle solver
 
 LICENSE=	GPLv2+ # COPYING is GPLv3
 
-BUILD_DEPENDS=	netpbm>0:graphics/netpbm
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libpng.so:graphics/png \
 		libfltk.so:x11-toolkits/fltk
 
-USES=		gmake localbase lua:51
+USES=		gl gmake localbase lua:51
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_lib_ICE_IceConnectionNumber="no" \
@@ -37,14 +35,13 @@ DESKTOP_ENTRIES="BurrGui" "" "burricons" "burrGui" "Game;LogicGame;" ""
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
-	@${REINPLACE_CMD} -e '/GL_X_LIBS/d' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e \
+	${REINPLACE_CMD} -e '/GL_X_LIBS/d' ${WRKSRC}/configure
+	${REINPLACE_CMD} -e \
 		's|g++ |$$(CXX) | ; \
 		 s|-O2 |$$(CXXFLAGS) $$(LDFLAGS) |' ${WRKSRC}/src/Makefile.in
 
 post-build:
-	(cd ${WRKSRC} && ${CAT} burricons.ico | winicontoppm -bestqual | \
-		pnmtopng -transparent=black > burricons.png)
+	(cd ${WRKSRC} && uudecode ${FILESDIR}/burricons.png.uu)
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/burrTxt ${WRKSRC}/src/burrTxt2 \

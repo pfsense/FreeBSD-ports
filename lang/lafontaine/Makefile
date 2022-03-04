@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	lafontaine
 PORTVERSION=	0.4.1
@@ -11,9 +10,12 @@ DISTNAME=	${PORTNAME}_0.4-1
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical logo interpreter
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: my_turtle
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: my_turtle
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-0.4
 
-USES=		pathfix gmake pkgconfig
+USES=		gmake gnome pathfix pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 USE_CSTD=	gnu89

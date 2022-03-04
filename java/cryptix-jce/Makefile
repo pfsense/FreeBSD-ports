@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cryptix-jce
 PORTVERSION=	20050328
 PORTREVISION=	2
@@ -12,7 +10,6 @@ COMMENT=	JCE (Java Cryptography Extension) by Cryptix
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 OPTIONS_DEFINE=	DOCS

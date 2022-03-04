@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	erubi
-PORTVERSION=	1.8.0
+PORTVERSION=	1.10.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

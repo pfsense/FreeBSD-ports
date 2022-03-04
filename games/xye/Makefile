@@ -1,5 +1,4 @@
 # Created by: Robert Gogolok <gogo@cs.uni-sb.de>
-# $FreeBSD$
 
 PORTNAME=	xye
 PORTVERSION=	0.12.2
@@ -27,7 +26,7 @@ LICENSE=	ZLIB
 
 EXTRACT_DEPENDS=${UNZIP_CMD}:archivers/unzip
 
-USES=		compiler gmake
+USES=		compiler gmake sdl
 USE_SDL=	sdl image ttf
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-docdir=${PREFIX}/share/doc

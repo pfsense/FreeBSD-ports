@@ -1,5 +1,4 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	maradns
 PORTVERSION=	2.0.15
@@ -12,20 +11,17 @@ COMMENT=	DNS server with focus on security and simplicity
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bz2
+USES=		cpe tar:bz2
 USE_RC_SUBR=	${PORTNAME} zoneserver Deadwood
 USERS=		bind
 GROUPS=		bind
 INSTALL_TARGET=	install PREFIX=${STAGEDIR}${PREFIX}
-SHEBANG_FILES=	tools/bind2csv2.py
 HAS_CONFIGURE=	yes
 
-OPTIONS_DEFINE=	IPV6 DOCS EXAMPLES CONV
+OPTIONS_DEFINE=	IPV6 DOCS EXAMPLES
 OPTIONS_SUB=	yes
-CONV_DESC=	Install bind2csv2 tool (needs python)
 
 IPV6_CONFIGURE_ON=	--ipv6
-CONV_USES=	python:2.7,run shebangfix
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -56,9 +52,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/en/examples/example_full_mararc ${STAGEDIR}${ETCDIR}/mararc.sample
 	${INSTALL_DATA} ${WRKSRC}/doc/en/examples/example_csv2 ${STAGEDIR}${ETCDIR}/csv2.sample
 	${INSTALL_DATA} ${WRKSRC}/deadwood-${DEADWOOD_VER}/doc/dwood3rc ${STAGEDIR}${ETCDIR}/dwood3rc.sample
-
-do-install-CONV-on:
-	${INSTALL_SCRIPT} ${WRKSRC}/tools/bind2csv2.py ${STAGEDIR}${PREFIX}/bin/bind2csv2
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

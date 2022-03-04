@@ -1,5 +1,4 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	httpasyncclient
 DISTVERSION=	4.1.4
@@ -19,7 +18,6 @@ USES=		cpe
 CPE_VENDOR=	apache
 OPTIONS_DEFINE=	DOCS
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/httpcomponents-asyncclient-${DISTVERSION}

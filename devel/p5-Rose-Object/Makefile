@@ -1,5 +1,4 @@
 # Created by: Zach Thompson <hideo@lastamericanempire.com>
-# $FreeBSD$
 
 PORTNAME=	Rose-Object
 PORTVERSION=	0.860
@@ -18,5 +17,7 @@ TEST_DEPENDS=	p5-Class-XSAccessor>=0:devel/p5-Class-XSAccessor
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

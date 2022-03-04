@@ -1,11 +1,11 @@
---- src/3rdparty/chromium/chrome/common/chrome_switches.h.orig	2018-11-13 18:25:11 UTC
+--- src/3rdparty/chromium/chrome/common/chrome_switches.h.orig	2019-11-27 21:12:25 UTC
 +++ src/3rdparty/chromium/chrome/common/chrome_switches.h
-@@ -302,7 +302,7 @@ extern const char kAllowNaClFileHandleAPI[];
+@@ -263,7 +263,7 @@ extern const char kAllowNaClFileHandleAPI[];
  extern const char kAllowNaClSocketAPI[];
  #endif
  
--#if defined(OS_WIN) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
- extern const char kDisableInputImeAPI[];
- extern const char kEnableInputImeAPI[];
+-#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN)
++#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_BSD)
+ extern const char kEnableNewAppMenuIcon[];
+ extern const char kGuest[];
  #endif

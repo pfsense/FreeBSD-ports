@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	taxii2-client
-PORTVERSION=	0.5.0
+PORTVERSION=	2.2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,7 +22,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	oasis-open
 GH_PROJECT=	cti-taxii-client
 
-USES=		python
+USES=		python:3.5+
 USE_PYTHON=	distutils autoplist
 
 DO_MAKE_TEST=	${SETENV} ${TEST_ENV} pytest-${PYTHON_VER} --cov=taxii2client taxii2client/test/ --cov-report term-missing

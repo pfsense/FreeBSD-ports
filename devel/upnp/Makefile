@@ -1,45 +1,73 @@
 # Created by: Yen-Ming Lee <leeym@leeym.com>
-# $FreeBSD$
 
 PORTNAME=	upnp
-PORTVERSION=	1.6.25
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	1.14.12
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	SF/p${PORTNAME}/p${PORTNAME}/libUPnP%20${PORTVERSION}
-DISTNAME=	lib${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Universal Plug and Play Software Development Kit
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe libtool pathfix tar:bzip2
-USE_LDCONFIG=	yes
-
-PORTSCOUT=	skipv:1.8.3	# released on 2017-11-14; older than 1.6.25
-
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
+USES=		autoreconf cpe libtool pathfix pkgconfig
 CPE_VENDOR=	libupnp_project
 CPE_PRODUCT=	libupnp
+USE_GITHUB=	yes
+GH_ACCOUNT=	pupnp
+GH_PROJECT=	pupnp
+USE_LDCONFIG=	yes
 
-PORTDOCS=	ixml/*.html upnp/*.html
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-device \
+		--enable-gena \
+		--enable-soap \
+		--enable-ssdp \
+		--enable-webserver
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
-OPTIONS_DEFINE=	DEBUG DOCS IPV6
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		CLIENT DEBUG DOCS EXAMPLES IPV6 LARGEFILE OPENSSL \
+			OPTSSDP POSTWRITE REUSEADDR SCRIPTSUPPORT TCP_BLOCK \
+			TEST TOOLS UNSPECIFIED_SERVER
+OPTIONS_DEFAULT=	CLIENT LARGEFILE OPTSSDP REUSEADDR SCRIPTSUPPORT \
+			TCP_BLOCK TOOLS
+OPTIONS_SUB=		yes
 
-DEBUG_CONFIGURE_ENABLE=	debug
-DOCS_CONFIGURE_WITH=	documentation=${DOCSDIR}
-IPV6_CONFIGURE_ENABLE=	ipv6
+CLIENT_DESC=			Enable control point code
+LARGEFILE_DESC=			Large files support
+OPTSSDP_DESC=			Enable optional SSDP headers support
+POSTWRITE_DESC=			Write to filesystem on unhandled POST requests
+REUSEADDR_DESC=			Bind miniserver socket with reuseaddr
+SCRIPTSUPPORT_DESC=		Enable script support for IXML document tree
+TCP_BLOCK_DESC=			Enable blocking TCP connections
+TEST_DESC=			Perfom a few tests (implies TOOLS)
+TOOLS_DESC=			Enable helpers API in upnptools.h
+UNSPECIFIED_SERVER_DESC=	Enable unspecified SERVER header
 
-pre-configure:
-	${REINPLACE_CMD} -e '386s,docs/dist,,' ${WRKSRC}/Makefile.in
+CLIENT_CONFIGURE_ENABLE=		client
+DEBUG_CONFIGURE_ENABLE=			debug
+EXAMPLES_CONFIGURE_ENABLE=		samples
+IPV6_CONFIGURE_ENABLE=			ipv6
+LARGEFILE_CONFIGURE_ENABLE=		largefile
+OPENSSL_USES=				ssl
+OPENSSL_CONFIGURE_ENABLE=		open_ssl
+OPENSSL_CONFIGURE_ENV=			OPENSSL_CFLAGS="-I${OPENSSLINC}" \
+					OPENSSL_LIBS="-L${OPENSSLLIB} -lssl -lcrypto"
+OPTSSDP_CONFIGURE_ENABLE=		optssdp
+POSTWRITE_CONFIGURE_ENABLE=		postwrite
+REUSEADDR_CONFIGURE_ENABLE=		reuseaddr
+SCRIPTSUPPORT_CONFIGURE_ENABLE=		scriptsupport
+TCP_BLOCK_CONFIGURE_ENABLE=		blocking_tcp_connections
+TEST_IMPLIES=				TOOLS
+TOOLS_CONFIGURE_ENABLE=			tools
+UNSPECIFIED_SERVER_CONFIGURE_ENABLE=	unspecified_server
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/docs/dist/html && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
-	${RM} -r ${STAGEDIR}${DOCSDIR}/examples
+	${INSTALL_MAN} ${WRKSRC}/docs/UPnP_Programming_Guide.pdf \
+		${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

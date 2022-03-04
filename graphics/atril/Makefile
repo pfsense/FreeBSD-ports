@@ -1,10 +1,10 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 #
 # Please update update atril-lite also
 
 PORTNAME=	atril
-PORTVERSION=	1.20.2
+PORTVERSION=	1.26.0
+PORTREVISION=	2
 CATEGORIES=	graphics print mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -12,7 +12,7 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	MATE multi-format document viewer
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool
@@ -27,18 +27,17 @@ PORTSCOUT=	limitw:1,even
 SLAVEPORT?=	no
 
 USES=		compiler:c11 desktop-file-utils gettext gmake gnome libarchive \
-		libtool mate pathfix pkgconfig tar:xz
+		libtool mate pathfix pkgconfig tar:xz xorg
 USE_MATE=	icontheme
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo gtk30 intlhack libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
-		--with-gtk=3.0
-INSTALLS_ICONS=	yes
+		--disable-synctex
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-INSTALL_TARGET=	install-strip
+# INSTALL_TARGET=	install-strip
 
 .if ${SLAVEPORT} == lite
 CONFIGURE_ARGS+=--disable-thumbnailer \

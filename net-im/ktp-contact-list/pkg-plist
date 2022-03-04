@@ -12,6 +12,7 @@ share/locale/el/LC_MESSAGES/ktp-contactlist.mo
 share/locale/en_GB/LC_MESSAGES/ktp-contactlist.mo
 share/locale/es/LC_MESSAGES/ktp-contactlist.mo
 share/locale/et/LC_MESSAGES/ktp-contactlist.mo
+share/locale/eu/LC_MESSAGES/ktp-contactlist.mo
 share/locale/fi/LC_MESSAGES/ktp-contactlist.mo
 share/locale/fr/LC_MESSAGES/ktp-contactlist.mo
 share/locale/ga/LC_MESSAGES/ktp-contactlist.mo
@@ -42,5 +43,6 @@ share/locale/sv/LC_MESSAGES/ktp-contactlist.mo
 share/locale/tr/LC_MESSAGES/ktp-contactlist.mo
 share/locale/ug/LC_MESSAGES/ktp-contactlist.mo
 share/locale/uk/LC_MESSAGES/ktp-contactlist.mo
+share/locale/vi/LC_MESSAGES/ktp-contactlist.mo
 share/locale/zh_CN/LC_MESSAGES/ktp-contactlist.mo
 share/locale/zh_TW/LC_MESSAGES/ktp-contactlist.mo

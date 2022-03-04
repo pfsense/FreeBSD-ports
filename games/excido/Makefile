@@ -1,9 +1,8 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	excido
 PORTVERSION=	0.1.5c
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	https://icculus.org/${PORTNAME}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -18,11 +17,11 @@ LIB_DEPENDS=	libphysfs.so:devel/physfs
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		gmake openal:al,alut tar:bzip2
+USES=		compiler:c++11-lang gl gmake openal:al,alut sdl tar:bzip2
 USE_GL=		gl glu
 USE_SDL=	image sdl ttf
 
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 OPTIONS_DEFINE=	DOCS
 

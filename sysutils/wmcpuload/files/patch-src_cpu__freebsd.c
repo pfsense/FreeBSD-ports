@@ -1,6 +1,6 @@
---- src/cpu_freebsd.c.orig	2008-05-03 07:05:31.000000000 +0200
-+++ src/cpu_freebsd.c	2008-05-03 07:12:09.000000000 +0200
-@@ -18,7 +18,8 @@
+--- src/cpu_freebsd.c.orig	2016-10-20 13:55:48 UTC
++++ src/cpu_freebsd.c
+@@ -16,7 +16,8 @@
  #include <string.h>
  #include "cpu.h"
  
@@ -10,7 +10,7 @@
  #include <fcntl.h>
  
  #include <sys/param.h>
-@@ -29,24 +30,18 @@
+@@ -27,27 +28,21 @@
  #   include <sys/resource.h>
  #endif /* __FreeBSD_version < 500101 */
  
@@ -29,34 +29,29 @@
  
 -    if (kd == NULL) {
 -	fprintf(stderr, "can't open kernel virtual memory");
--	exit(1);
--    }
--
--    kvm_nlist(kd, nlst);
--
--    if (nlst[0].n_type == 0) {
--	fprintf(stderr, "error extracting symbols");
 +    if (sysctl_mib[0] == -1) {
 +	fprintf(stderr, "unknown sysctl kern.cp_time");
  	exit(1);
      }
  
-@@ -68,14 +63,14 @@
+-    kvm_nlist(kd, nlst);
+-
+-    if (nlst[0].n_type == 0) {
+-	fprintf(stderr, "error extracting symbols");
+-	exit(1);
+-    }
+-
+     /* drop setgid & setuid (the latter should not be there really) */
+     seteuid(getuid());
+     setegid(getgid());
+@@ -66,8 +61,8 @@ cpu_get_usage(cpu_options *opts)
      int used, total, result;
      unsigned long int cpu_time[CPUSTATES];
  
 -    if (kvm_read(kd, nlst[0].n_value, &cpu_time, sizeof(cpu_time)) !=
 -	sizeof(cpu_time))
--	return 0;
 +    sysctl_len = sizeof(cpu_time);
 +    if (sysctl(sysctl_mib, 2, &cpu_time, &sysctl_len, NULL, 0) == -1)
-+	 return 0;
+ 	return 0;
  
-     used = cpu_time[CP_USER] + cpu_time[CP_SYS];
-     if (!opts->ignore_nice)
- 	used += cpu_time[CP_NICE];
--    total = used + cpu_time[CP_IDLE];
-+    total = used + cpu_time[CP_IDLE] + cpu_time[CP_NICE];
- 
-     if (pre_total == 0) {
- 	result = 0;
+     /* calculate usage */

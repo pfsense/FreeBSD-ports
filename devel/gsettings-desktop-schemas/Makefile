@@ -1,13 +1,12 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gsettings-desktop-schemas
-PORTVERSION=	3.28.1
+DISTVERSION=	41.0
 CATEGORIES=	devel gnome
-MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${DISTVERSION:R:R}
+DIST_SUBDIR=	gnome
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Collection of globally shared GSetting schemas
 
 LICENSE=	LGPL21
@@ -15,10 +14,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome localbase pathfix perl5 pkgconfig tar:xz
-USE_PERL5=	build
-USE_GNOME=	intltool glib20 introspection:build
-GNU_CONFIGURE=	yes
+USES=		gettext gnome localbase meson pkgconfig python:3.5+,build tar:xz
+USE_GNOME=	glib20 introspection:build
+
+NO_ARCH=	yes
 
 GLIB_SCHEMAS=	org.gnome.desktop.a11y.applications.gschema.xml \
 		org.gnome.desktop.a11y.gschema.xml \
@@ -49,5 +48,7 @@ GLIB_SCHEMAS=	org.gnome.desktop.a11y.applications.gschema.xml \
 		org.gnome.system.locale.gschema.xml \
 		org.gnome.system.location.gschema.xml \
 		org.gnome.system.proxy.gschema.xml
+
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 .include <bsd.port.mk>

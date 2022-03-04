@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	belr
 PORTVERSION=	0.1.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	https://www.linphone.org/releases/sources/belr/
 
@@ -18,6 +16,6 @@ USES=		cmake compiler:c++11-lib
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DENABLE_STATIC=NO -DENABLE_STRICT=NO
-WRKSRC= 	${WRKDIR}/${DISTNAME}-0
+WRKSRC=		${WRKDIR}/${DISTNAME}-0
 
 .include <bsd.port.mk>

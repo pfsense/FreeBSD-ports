@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tong
 PORTVERSION=	1.3
@@ -13,7 +12,7 @@ COMMENT=	Tetris and Pong in the same place at the same time
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	image mixer sdl
 
 PORTDOCS=	CHANGELOG CREDITS README making-of.txt notes.txt

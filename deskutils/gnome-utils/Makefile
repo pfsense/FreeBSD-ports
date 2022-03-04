@@ -1,8 +1,8 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-utils
 PORTVERSION=	3.26
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	deskutils gnome
 
@@ -24,8 +24,9 @@ RUN_DEPENDS=	baobab>=3.0:deskutils/baobab \
 		gnome-photos>=3.0:deskutils/gnome-photos \
 		gnome-clocks>=3.0:deskutils/gnome-clocks \
 		gnome-maps>=3.0:deskutils/gnome-maps \
-		gnome-weather>=3.0:deskutils/gnome-weather \
-		gnome-todo>=3.0:deskutils/gnome-todo
+		gnome-weather>=3.0:deskutils/gnome-weather
+		# Temporarily disabled due to build errors, see PR 257667
+		#gnome-todo>=3.0:deskutils/gnome-todo
 
 OPTIONS_DEFINE=	DOCS
 DOCS_DESC=	Build Gnome Documents (pulls in tracker)

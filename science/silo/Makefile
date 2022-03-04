@@ -1,10 +1,9 @@
 # Created by: Pedro F. Giffuni <giffunip@tutopia.com>
-# $FreeBSD$
 
 PORTNAME=	silo
 PORTVERSION=	4.10.2
 DISTVERSIONSUFFIX=	-bsd
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	science
 MASTER_SITES=	http://wci.llnl.gov/content/assets/docs/simulation/computer-codes/${PORTNAME}/silo-${PORTVERSION}/
 
@@ -34,7 +33,7 @@ HDF5_PLIST_SUB=			SUFX_HDF5="h5"
 HDF5_PLIST_SUB_OFF=		SUFX_HDF5=""
 
 PYTHON_CONFIGURE_ENABLE=	pythonmodule
-PYTHON_USES=			python:2.7
+PYTHON_USES=			python
 
 post-patch:
 	@${REINPLACE_CMD} -e \

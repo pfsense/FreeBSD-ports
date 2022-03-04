@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	mate-applets
-PORTVERSION=	1.20.2
-PORTREVISION=	2
+PORTVERSION=	1.26.0
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -25,21 +22,22 @@ LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 gettext gmake libtool localbase pkgconfig \
-		python:2.7 tar:xz
+USES=		compiler:c11 gettext gmake gnome libtool localbase mate \
+		pkgconfig tar:xz xorg
 USE_CSTD=	c11
 
 USE_MATE=	libmateweather panel
 USE_XORG=	ice sm x11
-USE_GNOME=	cairo gtk30 gtksourceview3 intltool libwnck3 libxml2 \
-		pygobject3
+USE_GNOME=	cairo gtk30 gtksourceview3 intltool libwnck3 libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 CONFIGURE_ENV=	OS_SYS="/usr/include"
+CONFIGURE_ARGS=	--without-nl
+
 INSTALL_TARGET=	install-strip
 
-GLIB_SCHEMAS=	org.mate.panel.applet.charpick.gschema.xml \
+GLIB_SCHEMAS=	org.mate.drivemount.gschema.xml \
+		org.mate.panel.applet.charpick.gschema.xml \
 		org.mate.panel.applet.command.gschema.xml \
 		org.mate.panel.applet.geyes.gschema.xml \
 		org.mate.panel.applet.multiload.gschema.xml \
@@ -60,13 +58,13 @@ PLIST_SUB+=	BATTERY=""
 .endif
 
 # requires linux libcpufreq library
-#.if ${ARCH} != "i386" && ${ARCH} != "amd64"
+# .if ${ARCH} != "i386" && ${ARCH} != "amd64"
 CONFIGURE_ARGS+=--disable-cpufreq
 PLIST_SUB+=	CPUFREQ="@comment "
-#.else
-#CONFIGURE_ARGS+=--enable-cpufreq
-#PLIST_SUB+=	CPUFREQ=""
-#GLIB_SCHEMAS+=	org.mate.panel.applet.cpufreq.gschema.xml
-#.endif
+# .else
+# CONFIGURE_ARGS+=--enable-cpufreq
+# PLIST_SUB+=	CPUFREQ=""
+# GLIB_SCHEMAS+=	org.mate.panel.applet.cpufreq.gschema.xml
+# .endif
 
 .include <bsd.port.post.mk>

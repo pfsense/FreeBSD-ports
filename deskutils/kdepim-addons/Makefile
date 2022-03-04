@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdepim-addons
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	deskutils kde kde-applications
@@ -8,6 +6,9 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE PIM addons
 
 LICENSE=	LGPL21
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 BUILD_DEPENDS=	markdown:textproc/discount
 RUN_DEPENDS=	markdown:textproc/discount
@@ -20,18 +21,19 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 USES=		cmake compiler:c++11-lib gettext grantlee:5 kde:5 \
 		pkgconfig qt:5 tar:xz
 USE_KDE=	archive auth codecs completion config configwidgets coreaddons \
-		dbusaddons ecm i18n iconthemes itemmodels itemviews jobwidgets \
-		kdeclarative khtml kio prison service sonnet syntaxhighlighting \
-		textwidgets wallet widgetsaddons xmlgui
+		dbusaddons guiaddons i18n iconthemes itemmodels itemviews jobwidgets \
+		kdeclarative khtml kio parts prison service solid sonnet syntaxhighlighting \
+		textwidgets wallet widgetsaddons windowsystem xmlgui \
+		ecm_build
 # pim components
 USE_KDE+=	akonadi akonadicalendar akonadicontacts akonadiimportwizard \
 		akonadimime akonadinotes calendarcore calendarsupport \
 		calendarutils contacts eventviews gapi grantleetheme \
 		gravatar identitymanagement imap incidenceeditor \
-		kdepim-apps-libs kitinerary kpkpass libkdepim libkleo libksieve mailcommon \
-		mailimporter mailtransport messagelib mime pimcommon \
-		pimtextedit tnef
-USE_QT=		core dbus declarative gui location network printsupport testlib \
+		kitinerary kontactinterface kpkpass libkdepim \
+		libkleo libksieve mailcommon mailimporter mailtransport \
+		messagelib mime pimcommon pimtextedit tnef
+USE_QT=		concurrent core dbus declarative gui location network printsupport testlib \
 		webchannel webengine widgets xml \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes

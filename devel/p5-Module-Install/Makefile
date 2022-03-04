@@ -1,5 +1,4 @@
 # Created by: clsung
-# $FreeBSD$
 
 PORTNAME=	Module-Install
 PORTVERSION=	1.19
@@ -23,5 +22,7 @@ RUN_DEPENDS=	p5-File-Remove>=1.42:devel/p5-File-Remove \
 USES=		perl5
 USE_PERL5=	configure
 CONFIGURE_ARGS=	--skip
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

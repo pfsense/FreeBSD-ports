@@ -1,15 +1,14 @@
 # Created by: Pedro Giffuni <pfg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	phpstorm
-PORTVERSION=	2018.3.5
+PORTVERSION=	2021.2.3
 CATEGORIES=	devel java
-MASTER_SITES=	https://download.jetbrains.com/webide/ \
-		http://download.jetbrains.com/webide/
+MASTER_SITES=	https://download-cf.jetbrains.com/webide/
 PKGNAMEPREFIX=	jetbrains-
 DISTNAME=	PhpStorm-${PORTVERSION}
+DIST_SUBDIR=	jetbrains
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	dmitry.wagin@ya.ru
 COMMENT=	JetBrains PhpStorm IDE
 
 LICENSE=	IntelliJ-PhpStorm
@@ -18,43 +17,40 @@ LICENSE_TEXT=	See: https://www.jetbrains.com/store/license.html
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
-		intellij-pty4j>0:java/intellij-pty4j
+		lsof:sysutils/lsof
 
 USES=		python:run shebangfix
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.8+
+JAVA_VERSION=	11+
 
 SHEBANG_FILES=	bin/printenv.py bin/restart.py
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+SUB_FILES=	${PORTNAME} ${PORTNAME}.desktop pkg-message
 
-WRKSRC=		${WRKDIR}/PhpStorm-183.5912.26
-
-SUB_FILES=	phpstorm phpstorm.desktop pkg-message
-SUB_LIST=	DATADIR=${DATADIR}
+WRKSRC=		${WRKDIR}/PhpStorm-212.5457.49
 
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	@${TAR} -czf - -C ${WRKSRC} . | ${TAR} xzf - -C ${STAGEDIR}${DATADIR}
 # Linux/Windows/OS X only so remove them
-	@${RM}  ${STAGEDIR}${DATADIR}/bin/fsnotifier \
-		${STAGEDIR}${DATADIR}/bin/fsnotifier-arm \
-		${STAGEDIR}${DATADIR}/bin/fsnotifier64 \
-		${STAGEDIR}${DATADIR}/bin/lib*.so
-	@${RM} ${STAGEDIR}${DATADIR}/plugins/performanceTesting/lib/lib*.so
-# Remove the bundled native Pty4J support libraries, they are replaced
-# by java/intellij-pty4j
-	@${RM} -r ${STAGEDIR}${DATADIR}/lib/pty4j-native
-# Remove bundled linux OpenJDK and DroidSerif fonts
-	@${RM} -r ${STAGEDIR}${DATADIR}/jre64
-	${INSTALL_SCRIPT} ${WRKDIR}/phpstorm ${STAGEDIR}${PREFIX}/bin/phpstorm
-	${INSTALL_MAN} ${FILESDIR}/phpstorm.1 ${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL_DATA} ${WRKDIR}/phpstorm.desktop ${STAGEDIR}${PREFIX}/share/applications/
-	cd ${WRKSRC}/lib && ${JAVA_HOME}/bin/jar xf icons.jar
-	${INSTALL_DATA} ${WRKSRC}/lib/icon.png ${STAGEDIR}${DATADIR}/phpstorm.png
+	@${RM} -r \
+		${WRKSRC}/bin/fsnotifier \
+		${WRKSRC}/bin/fsnotifier-arm \
+		${WRKSRC}/bin/fsnotifier64 \
+		${WRKSRC}/jbr \
+		${WRKSRC}/jre64 \
+		${WRKSRC}/lib/pty4j-native \
+		${WRKSRC}/plugins/cwm-plugin/quiche-native \
+		${WRKSRC}/plugins/performanceTesting/bin
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR} \
+		"! -name *\.bak ! -name *\.so ! -name *\.dll ! -name *\.dylib ! -name *\.pdb ! -name *\.sh")
+	@(cd ${WRKSRC} && ${COPYTREE_BIN} . ${STAGEDIR}${DATADIR} "-name *\.sh")
+	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}.desktop ${STAGEDIR}${PREFIX}/share/applications/
 # Use fsnotifier replacement provided by java/intellij-fsnotifier
-	${ECHO} "idea.filewatcher.executable.path=${DATADIR}/bin/fsnotifier" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
+	${ECHO} "idea.filewatcher.executable.path=${PREFIX}/intellij/bin/fsnotifier" >> ${STAGEDIR}${DATADIR}/bin/idea.properties
 
 .include <bsd.port.mk>

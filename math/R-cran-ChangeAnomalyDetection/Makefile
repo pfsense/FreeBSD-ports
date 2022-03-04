@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ChangeAnomalyDetection
 PORTVERSION=	0.1.0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

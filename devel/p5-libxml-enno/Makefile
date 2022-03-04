@@ -1,5 +1,4 @@
 # Created by: Steve Wills <steve@mouf.net>
-# $FreeBSD$
 
 PORTNAME=	libxml-enno
 PORTVERSION=	1.02
@@ -23,9 +22,9 @@ RUN_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser \
 		p5-libxml>=0:textproc/p5-libxml \
 		p5-Parse-Yapp>=0:devel/p5-Parse-Yapp
 
-CONFLICTS=	p5-XML-DOM-[0-9]* p5-XML-Filter-DetectWS-[0-9]* \
-		p5-XML-Filter-Reindent-[0-9]* p5-XML-Filter-SAXT-[0-9]* \
-		p5-XML-RegExp-[0-9]* p5-XML-XQL-[0-9]*
+CONFLICTS=	p5-XML-DOM p5-XML-Filter-DetectWS \
+		p5-XML-Filter-Reindent p5-XML-Filter-SAXT \
+		p5-XML-RegExp p5-XML-XQL
 
 USES=		perl5
 USE_PERL5=	configure

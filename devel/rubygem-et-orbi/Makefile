@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	et-orbi
-PORTVERSION=	1.1.7
+PORTVERSION=	1.2.6
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

@@ -1,13 +1,34 @@
---- chrome/common/BUILD.gn.orig	2019-03-11 22:00:54 UTC
+--- chrome/common/BUILD.gn.orig	2021-09-24 04:26:00 UTC
 +++ chrome/common/BUILD.gn
-@@ -300,6 +300,10 @@ static_library("common") {
-     public_deps += [ "//ppapi/shared_impl" ]
+@@ -333,7 +333,7 @@ static_library("common") {
+     ]
    }
  
-+  if (is_bsd) {
-+    sources -= [ "component_flash_hint_file_linux.cc" ]
+-  if (!is_fuchsia) {
++  if (!is_fuchsia && !is_bsd) {
+     deps += [ "//components/crash/core/app" ]
+   }
+ 
+@@ -493,13 +493,21 @@ static_library("common") {
+     public_deps += [ "//chrome/common/safe_browsing" ]
+   }
+ 
+-  if (is_linux || is_chromeos) {
++  if ((is_linux || is_chromeos) && !is_bsd) {
+     sources += [
+       "auto_start_linux.cc",
+       "auto_start_linux.h",
+       "multi_process_lock_linux.cc",
+     ]
+     deps += [ "//sandbox/linux:sandbox_services" ]
 +  }
 +
-   if (enable_extensions) {
-     sources += [
-       "cast_messages.cc",
++  if (is_bsd) {
++    sources += [
++      "auto_start_linux.cc",
++      "auto_start_linux.h",
++      "multi_process_lock_linux.cc",
++    ]
+   }
+ 
+   if (enable_cdm_host_verification) {

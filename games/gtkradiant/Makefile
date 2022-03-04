@@ -1,9 +1,8 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gtkradiant
 PORTVERSION=	1.5.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	games cad
 MASTER_SITES=	IDSOFTWARE/source/:id \
 		http://www.bsd-geek.de/FreeBSD/distfiles/:fb
@@ -16,13 +15,11 @@ COMMENT=	Map editor for FPS games, by id Software and Loki Software
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		Fails to link: error: ldd command returned with exit code 256
-
 LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
 		libmhash.so:security/mhash \
 		libpng.so:graphics/png
 
-USES=		compiler:c++11-lang gnome pkgconfig python:2.7,build scons zip
+USES=		compiler:c++11-lang gnome pkgconfig python:build scons zip
 USE_GNOME=	gtk20 libxml2
 MAKE_ARGS=	${MAKE_ENV} BUILD=release
 SSP_UNSAFE=	yes
@@ -58,6 +55,24 @@ post-patch:
 # page size is deprecated" (very annoying)
 	@${GREP} -Rl --null gtk_adjustment_new ${WRKSRC} | ${XARGS} -0 \
 		${REINPLACE_CMD} -E 's|(gtk_adjustment_new[^)]*,)[^)]*|\1 0|'
+# Do not #include <sys/dir.h> header which is deprecated
+	@${REINPLACE_CMD} -e '/#include/s,<sys/dir,&ent,' \
+		${WRKSRC}/tools/quake2/qdata/qdata.c
+# Cope with -fno-common being the default in some new compilers
+	@${REINPLACE_CMD} -e '/\*CalcTextureReflectivity/s,^void,extern &,' \
+		${WRKSRC}/tools/quake2/q2map/qrad.h
+	@${REINPLACE_CMD} -E 's,^char[[:blank:]]+outbase,extern &,' \
+		${WRKSRC}/tools/quake2/q2map/qvis.c
+	@${REINPLACE_CMD} -e '/materialtypes/s,^materialtype_t,extern &,' \
+		${WRKSRC}/tools/quake2/qdata_heretic2/common/qfiles.h
+	@${REINPLACE_CMD} -e '/\*byteimage, \*lbmpalette/,+5d' \
+		${WRKSRC}/tools/quake2/qdata_heretic2/book.c
+	@${REINPLACE_CMD} -e '/g_frames/s,^frame_t,extern &,' \
+		${WRKSRC}/tools/quake2/qdata_heretic2/models.c
+	@${REINPLACE_CMD} -e '/verbose;/d' \
+		${WRKSRC}/tools/quake3/q3map2/q3map2.h
+	@${REINPLACE_CMD} -e '/c_portalskip, c_leafskip/,+1d' \
+		${WRKSRC}/tools/quake3/q3map2/visflow.c
 
 pre-install:
 	cd ${WRKSRC} && ${PYTHON_CMD} install.py

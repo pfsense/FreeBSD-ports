@@ -1,5 +1,4 @@
 # Created by: Marcin Cieslak <saper@system.pl>
-# $FreeBSD$
 
 PORTNAME=	libsmi
 PORTVERSION=	0.4.8
@@ -11,9 +10,10 @@ MASTER_SITES=	ftp://ftp.ibr.cs.tu-bs.de/pub/local/libsmi/ \
 MAINTAINER=	saper@saper.info
 COMMENT=	Library to access SMI MIB information
 
+USES=		cpe gmake libtool pathfix pkgconfig
+CPE_VENDOR=	tu-braunschweig
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool pathfix pkgconfig
 PIBDIR=		${PREFIX}/share/smi/pibs
 MIBDIR=		${PREFIX}/share/smi/mibs
 GNU_CONFIGURE=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-SSH-Mechanize
 PORTVERSION=	0.1.3
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for asynchronous ssh command invocation
 
 RUN_DEPENDS=	\

@@ -1,8 +1,7 @@
 # Created by: markm
-# $FreeBSD$
 
 PORTNAME=	dejagnu
-PORTVERSION=	1.6.2
+PORTVERSION=	1.6.3
 CATEGORIES=	misc tcl
 MASTER_SITES=	GNU
 

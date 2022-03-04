@@ -1,5 +1,4 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 #   $MCom: ports/trunk/security/libgnome-keyring/Makefile 20031 2014-11-02 21:47:55Z kwm $
 
 PORTNAME=	libgnome-keyring
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 
 USE_GNOME=	glib20 gnomeprefix intlhack \
 		introspection:build
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

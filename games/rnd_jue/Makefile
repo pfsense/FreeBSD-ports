@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rnd_jue
 PORTVERSION=	3.3.0.0
@@ -22,10 +21,13 @@ COMMENT=	Colorful Boulderdash'n'Emerald Mine'n'Sokoban'n'Stuff jue
 
 LICENSE=	GPLv2
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: setup
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: setup
+
 LIB_DEPENDS+=	libsmpeg.so:multimedia/smpeg
 EXTRACT_DEPENDS+=${UNZIP_CMD}:archivers/unzip
 
-USES=		gmake
+USES=		gmake gnome sdl
 USE_SDL=	image mixer net sdl
 MAKE_ARGS=	CC="${CC}" MAKE="${MAKE_CMD}" OPTIONS="${CFLAGS}" \
 		RO_GAME_DIR="${DATADIR}" \
@@ -39,7 +41,6 @@ LEVELS_BD_FANS=	JuergenBonhagen rnd_the_h_world Walpurgis_Collection
 PORTDOCS=	*
 PORTDATA=	*
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 DESKTOP_ENTRIES="R'n'D jue" "" "${PORTNAME}" \

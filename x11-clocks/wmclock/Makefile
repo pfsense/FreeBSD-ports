@@ -1,5 +1,4 @@
 # Created by: Per Otterstr=F6m <pelle@fukt.bth.se>
-# $FreeBSD$
 
 PORTNAME=	wmclock
 PORTVERSION=	1.0.16
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/dockapps-daaf3aa
 
-USES=		autoreconf gmake pkgconfig
+USES=		autoreconf gmake pkgconfig xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 

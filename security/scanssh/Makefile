@@ -1,14 +1,16 @@
 # Created by: kris@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	scanssh
 PORTVERSION=	2.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	security net
 MASTER_SITES=	http://www.monkey.org/~provos/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scans networks for open proxies, SSH, web, and SMTP servers
+
+DEPRECATED=	Abandonware, last release in 2005. Please consider using security/nmap or security/rustscan
+EXPIRATION_DATE=2022-03-31
 
 LIB_DEPENDS=	libdnet.so:net/libdnet \
 		libevent.so:devel/libevent

@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	walker
 PORTVERSION=	3.8
@@ -7,8 +6,11 @@ PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	http://josefsson.org/walker/releases/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Recover zone file information from servers that use DNSSEC
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	p5-Net-DNS>=0:dns/p5-Net-DNS \
 		p5-Net-DNS-SEC>=0:dns/p5-Net-DNS-SEC

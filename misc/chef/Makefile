@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	chef
 PORTVERSION=	19930426
 CATEGORIES=	misc
@@ -10,7 +8,7 @@ DISTNAME=	bork
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	Feelter thet cunferts Ingleesh text tu Muck Cheenese-a
 
-CONFLICTS=	filters-* talkfilters-*
+CONFLICTS=	filters talkfilters
 PLIST_FILES=	bin/chef
 USES=		tar:Z
 

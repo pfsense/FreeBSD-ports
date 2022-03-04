@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	cronolog
 PORTVERSION=	1.7.1
 PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://BSDforge.com/projects/source/sysutils/cronolog-devel/
+MASTER_SITES=	https://BSDforge.com/projects/source/sysutils/cronolog-devel/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	${PORTNAME}-${PORTVERSION}-beta
 
@@ -22,7 +20,7 @@ PLIST_FILES=	sbin/cronolog \
 		man/man1/cronolog.1m.gz \
 		man/man1/cronosplit.1m.gz
 
-CONFLICTS=	cronolog-[0-9]*
+CONFLICTS=	cronolog
 
 WRKSRC=		${WRKDIR}/cronolog-${PORTVERSION}
 INFO=		cronolog

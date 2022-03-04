@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Cli
 DISTVERSION=	2.3.0
 CATEGORIES=	devel www pear

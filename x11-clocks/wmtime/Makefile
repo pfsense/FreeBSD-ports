@@ -1,9 +1,8 @@
 # Created by: Rich Neswold <rneswold@mcs.net>
-# $FreeBSD$
 
 PORTNAME=	wmtime
 PORTVERSION=	1.0b2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-clocks windowmaker
 MASTER_SITES=	http://web.cs.mun.ca/~gstarkes/wmaker/dockapps/files/ \
 		http://freebsd.unixfreunde.de/sources/ \
@@ -13,7 +12,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Time/Date applet for WindowMaker
 
 WRKSRC=		${WRKDIR}/wmtime.app/wmtime
-USES=		imake
+USES=		imake xorg
 USE_XORG=	xpm
 USE_CSTD=	gnu89
 

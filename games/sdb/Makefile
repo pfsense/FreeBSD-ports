@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	sdb
 PORTVERSION=	1.0.2
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	http://stage.gamecreation.org/shotgund/ \
 		https://mirror.amdmi3.ru/distfiles/
@@ -16,7 +13,7 @@ COMMENT=	Futuristic overhead shooter
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake
+USES=		gl gmake sdl
 USE_SDL=	mixer image sdl
 USE_GL=		gl glu
 

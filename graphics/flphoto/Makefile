@@ -1,9 +1,8 @@
 # Created by: johan
-# $FreeBSD$
 
 PORTNAME=	flphoto
 PORTVERSION=	1.3.1
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	graphics
 MASTER_SITES=	SF/fltk/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2 \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		tar:bzip2
+USES=		tar:bzip2 xorg
 USE_XORG=	xinerama
 GNU_CONFIGURE=	yes
 

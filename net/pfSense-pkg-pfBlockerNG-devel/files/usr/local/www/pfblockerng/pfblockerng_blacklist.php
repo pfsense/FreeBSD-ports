@@ -3,8 +3,8 @@
  * pfblockerng_blacklist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -225,8 +225,9 @@ $tab_array[]	= array(gettext('Sync'),		false,	'/pfblockerng/pfblockerng_sync.php
 display_top_tabs($tab_array, true);
 
 $tab_array	= array();
-$tab_array[]	= array(gettext('DNSBL Feeds'),		false,	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
+$tab_array[]	= array(gettext('DNSBL Groups'),	false,	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 $tab_array[]	= array(gettext('DNSBL Category'),	true,	'/pfblockerng/pfblockerng_blacklist.php');
+$tab_array[]	= array(gettext('DNSBL SafeSearch'),	false,	'/pfblockerng/pfblockerng_safesearch.php');
 display_top_tabs($tab_array, true);
 
 if (isset($_REQUEST['savemsg'])) {
@@ -382,10 +383,10 @@ foreach ($blacklist_types as $type => $setting) {
 		$category_lang = $info[$pconfig['blacklist_lang']][1] ?: $info['EN'][1];
 
 		$selected = FALSE;
-		if ($_POST['enableall'][$blacklist]) {
+		if ($_POST['enableall'][$type]) {
 			$selected = TRUE; 
 		}
-		elseif ($_POST['disableall'][$blacklist]) {
+		elseif ($_POST['disableall'][$type]) {
 			$selected = FALSE;
 		}
 		elseif (in_array($category, $pconfig['blacklist_' . $type])) {
@@ -418,8 +419,8 @@ foreach ($blacklist_types as $type => $setting) {
 
 	$group = new Form_Group(NULL);
 	$btnenableall = new Form_Button(
-        	'enableall[' . $type . ']',
-        	gettext('Enable All'),
+		'enableall[' . $type . ']',
+		gettext('Enable All'),
 		NULL,
 		'fa-toggle-on'
 	);

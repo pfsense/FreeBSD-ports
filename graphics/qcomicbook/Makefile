@@ -1,9 +1,8 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	QComicBook
 PORTVERSION=	0.9.1
-PORTREVISION=	2
+PORTREVISION=	33
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org

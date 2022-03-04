@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	BDB
 PORTVERSION=	1.92
@@ -17,12 +16,13 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-common-sense>=0:devel/p5-common-sense
 
-PORTSCOUT=	skipv:1.801
+USES=		bdb perl5
+USE_PERL5=	configure
 
 CFLAGS+=	-I${BDB_INCLUDE_DIR}
 LDFLAGS+=	-lpthread
-USE_PERL5=	configure
-USES=		bdb perl5
+
+PORTSCOUT=	skipv:1.801
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-ldb|-l${BDB_LIB_NAME}|' ${WRKSRC}/Makefile.PL

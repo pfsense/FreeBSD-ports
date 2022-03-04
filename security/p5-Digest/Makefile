@@ -1,9 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	Digest
-PORTVERSION=	1.17
-PORTREVISION=	1
+PORTVERSION=	1.20
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,15 +1,14 @@
 # Created by: Hiroyuki Hanai <hanai@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tokyotyrant
 PORTVERSION=	1.16
 PORTREVISION=	3
 CATEGORIES=	databases perl5
-MASTER_SITES=	https://fallabs.com/${PORTNAME}/perlpkg/
+MASTER_SITES=	https://dbmx.net/${PORTNAME}/perlpkg/
 PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-perl-${PORTVERSION}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to the TokyoTyrant
 
 BUILD_DEPENDS=	tokyotyrant>=1.1.40:databases/tokyotyrant

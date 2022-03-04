@@ -1,5 +1,4 @@
 # Created by: Vaida Bogdan <vaida.bogdan@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	secure_delete
 PORTVERSION=	3.1
@@ -13,7 +12,7 @@ COMMENT=	Secure data deletion toolkit
 
 LICENSE=	GPLv2 # mentioned in manpages
 
-CONFLICTS=	srm-[0-9]*
+CONFLICTS=	srm
 
 MAKE_JOBS_UNSAFE=	yes
 

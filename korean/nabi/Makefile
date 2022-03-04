@@ -1,5 +1,4 @@
 # Created by: Hye-Shik Chang <perky@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nabi
 PORTVERSION=	1.0.0
@@ -21,9 +20,9 @@ GH_TAGNAME=	f08d7d3
 USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
+USES=		autoreconf gmake gnome pkgconfig xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk20
 USE_XORG=	ice sm x11
-USES=		autoreconf gmake pkgconfig
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_RADIO=	LAYOUT

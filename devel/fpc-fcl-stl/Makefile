@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-fcl-stl
-PORTREVISION=	1
 
 COMMENT=	Free Pascal generic container library (FCL)
 

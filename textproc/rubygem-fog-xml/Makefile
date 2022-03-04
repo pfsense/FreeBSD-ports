@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fog-xml
-PORTVERSION=	0.1.3
+PORTVERSION=	0.1.4
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -13,10 +12,11 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	rubygem-fog-core>=0:devel/rubygem-fog-core \
-		rubygem-nokogiri>=1.5.11:textproc/rubygem-nokogiri
+		rubygem-nokogiri>=1.5.11<2.0.0:textproc/rubygem-nokogiri
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

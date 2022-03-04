@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	sary
 PORTVERSION=	1.2.0
@@ -11,7 +10,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Suffix array library and tools, which provide fast full-text search
 
 GNU_CONFIGURE=	yes
-USES=		libtool pathfix pkgconfig
+USES=		gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

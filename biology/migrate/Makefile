@@ -1,5 +1,4 @@
 # Created by: Johann Visagie <wjv@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	migrate
 PORTVERSION=	3.6.11
@@ -13,6 +12,7 @@ COMMENT=	Program to estimate population sizes and migration rates
 BROKEN_armv6=		fails to build: make[2]: cannot open makefile
 BROKEN_armv7=		fails to build: make[2]: cannot open makefile
 BROKEN_mips=		fails to build: make[2]: cannot open makefile
+BROKEN_riscv64=		fails to build: make[2]: cannot open makefile
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 EXTRACT_AFTER_ARGS=--exclude zlib

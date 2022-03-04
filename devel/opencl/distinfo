@@ -1,5 +1,5 @@
-TIMESTAMP = 1508331981
-SHA256 (KhronosGroup-OpenCL-Headers-2.2-f039db6_GH0.tar.gz) = 2f74418100ebc1f6a1c8dfa8bf0dbb82956f6aa54b41cb414b61fce1a5785f46
-SIZE (KhronosGroup-OpenCL-Headers-2.2-f039db6_GH0.tar.gz) = 160909
-SHA256 (KhronosGroup-OpenCL-CLHPP-8b6a312_GH0.tar.gz) = 482d6ae6bbae5255e448bb2556a9fcbbe79370cf01405f868e0e56e57a54f9bb
-SIZE (KhronosGroup-OpenCL-CLHPP-8b6a312_GH0.tar.gz) = 131038
+TIMESTAMP = 1635006419
+SHA256 (KhronosGroup-OpenCL-Headers-3.0.8-v2021.06.30_GH0.tar.gz) = 6640d590c30d90f89351f5e3043ae6363feeb19ac5e64bc35f8cfa1a6cd5498e
+SIZE (KhronosGroup-OpenCL-Headers-3.0.8-v2021.06.30_GH0.tar.gz) = 59866
+SHA256 (KhronosGroup-OpenCL-CLHPP-v2.0.15_GH0.tar.gz) = 0175806508abc699586fc9a9387e01eb37bf812ca534e3b493ff3091ec2a9246
+SIZE (KhronosGroup-OpenCL-CLHPP-v2.0.15_GH0.tar.gz) = 99826

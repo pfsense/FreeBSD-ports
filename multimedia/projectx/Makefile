@@ -1,9 +1,9 @@
 # Created by: Juergen Lock <nox@jelal.kn-bremen.de>
-# $FreeBSD$
 
 PORTNAME=	projectx
 PORTVERSION=	0.91.0
-CATEGORIES=	multimedia java
+PORTREVISION=	1
+CATEGORIES=	multimedia education java
 MASTER_SITES=	SF/project-x/project-x/ProjectX_${PORTVERSION}.00
 DISTNAME=	ProjectX_${PORTVERSION}
 
@@ -15,7 +15,6 @@ LICENSE_FILE=	${WRKSRC}/Copying
 
 USES=		zip:infozip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 SUB_FILES=	project-x.sh
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

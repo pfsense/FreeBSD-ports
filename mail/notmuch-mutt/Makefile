@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-mutt
 
@@ -22,6 +20,8 @@ WRKSRC_SUBDIR=	contrib/notmuch-mutt
 OPTIONS_DEFINE=	EXAMPLES MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=	yes
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

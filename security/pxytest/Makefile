@@ -1,5 +1,4 @@
 # Created by: Paul Chvostek <paul@it.ca>
-# $FreeBSD$
 
 PORTNAME=	pxytest
 PORTVERSION=	1.36
@@ -9,6 +8,10 @@ EXTRACT_SUFX=	.gz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Test remote system for unsecured mail proxies
+
+BROKEN=		Unfetchable
+DEPRECATED=	Abandonware, last release around 2003, dead upsteam and unfetchable
+EXPIRATION_DATE=2022-03-31
 
 EXTRACT_CMD=	${GZIP_CMD}
 EXTRACT_BEFORE_ARGS=	-dc

@@ -1,9 +1,8 @@
 # Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
 
 PORTNAME=	edenmath
 PORTVERSION=	1.1.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	math gnustep
 MASTER_SITES=	http://www.eskimo.com/~pburns/EdenMath/files/
 DISTNAME=	EdenMath_GNUstep-${PORTVERSION}

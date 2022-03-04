@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sqlalchemy
 PORTVERSION=	1.1.18
 CATEGORIES=	databases python
@@ -18,27 +16,23 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=2.5.2:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=0:devel/py-pytest-xdist@${PY_FLAVOR}
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlalchemy1[023]
+USES=		cpe python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlalchemy1[0234]
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONS_MULTI=	BACKEND
-OPTIONS_MULTI_BACKEND=	MSSQL MYSQL PGSQL SQLITE SYBASE
+OPTIONS_MULTI_BACKEND=	MSSQL MYSQL PGSQL SQLITE
 OPTIONS_DEFAULT=SQLITE
-
-USE_PYTHON=	autoplist concurrent distutils
-USES=		python
-
-PORTDOCS=	*
-PORTEXAMPLES=	*
 
 MSSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pymssql>=0:databases/py-pymssql@${PY_FLAVOR}
 MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pymysql>=0:databases/py-pymysql@${PY_FLAVOR}
 PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=2.5.0:databases/py-psycopg2@${PY_FLAVOR}
 SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
-SYBASE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sybase>=0:databases/py-sybase@${PY_FLAVOR}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/sqlalchemy/*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/

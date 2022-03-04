@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nloptr
-PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTVERSION=	1.2.2.3
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

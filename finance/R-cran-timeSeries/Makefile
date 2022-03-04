@@ -1,14 +1,12 @@
 # Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	timeSeries
-DISTVERSION=	3042.102
-PORTREVISION=	2
+DISTVERSION=	3062.100
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
-COMMENT=	Rmetrics - Financial Time Series Objects
+MAINTAINER=	ygy@FreeBSD.org
+COMMENT=	Financial Time Series Objects (Rmetrics)
 
 LICENSE=	GPLv2+
 

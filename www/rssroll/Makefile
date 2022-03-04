@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rssroll
 PORTVERSION=	0.6.2
 CATEGORIES=	www
@@ -11,7 +9,7 @@ LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		sqlite:3
+USES=		gnome sqlite:3
 USE_GNOME=	libxml2
 
 CEZ_VERSION=	1.05
@@ -29,6 +27,9 @@ CFLAGS+=	-I${WRKSRC_libcez}/src/config \
 LDFLAGS+=	-L${WRKSRC_libcez}/src/config \
 		-L${WRKSRC_libcez}/src/fossil \
 		-L${WRKSRC_libcez}/src/misc
+
+# XXX Static libraries with PIE are currently unsupported.
+MAKE_ENV+=	WITHOUT_PIE=true
 
 pre-configure:
 	@(cd ${WRKSRC_libcez} && ${SETENV} ${MAKE_ENV} ${MAKE})

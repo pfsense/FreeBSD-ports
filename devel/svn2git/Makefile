@@ -1,12 +1,10 @@
 # Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	svn2git
-PORTVERSION=	1.0.12
-PORTREVISION=	1
+PORTVERSION=	1.0.18
 CATEGORIES=	devel kde
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Imports svn repositories into git
 
 LICENSE=	GPLv3

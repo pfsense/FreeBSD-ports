@@ -1,5 +1,4 @@
 # Created by: Sakai Hiroaki <sakai@miya.ee.kagu.sut.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xblood
 PORTVERSION=	2.0
@@ -14,6 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 MAKE_ENV=	X11BASE=${LOCALBASE}
+USES=		xorg
 USE_XORG=	x11
 PLIST_FILES=	bin/xblood man/man1/xblood.1.gz
 

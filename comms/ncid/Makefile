@@ -1,8 +1,7 @@
 # Created by: David
-# $FreeBSD$
 
 PORTNAME=	ncid
-PORTVERSION=	1.10.1
+PORTVERSION=	1.11
 CATEGORIES=	comms
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -17,17 +16,23 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 LIB_DEPENDS=	libpcre.so:devel/pcre
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		gmake perl5 tk shebangfix
+USES=		compiler:c11 gmake perl5 tk shebangfix
+USE_GCC=	yes
 
-SHEBANG_FILES=	extensions/*.sh \
+SHEBANG_FILES=	client/ncid.sh \
+		desktop/xml \
+		doc/mk* \
+		extensions/*.sh \
 		gateway/*.pl gateway/*.sh \
 		logrotate/*.sh \
+		man/mk-pdf \
 		modules/*.sh \
 		setup/*.sh \
 		tools/*.pl tools/*.sh
 
 ALL_TARGET=	local
-MAKE_ARGS=	WISH=${WISH} TCLSH=${TCLSH}
+MAKE_ARGS=	WISH=${WISH} TCLSH=${TCLSH} \
+		CC=${CC} HOSTCC=${CC} AR=${AR}
 INSTALL_TARGET=	freebsd-install
 
 SUB_FILES=	pkg-message
@@ -45,6 +50,8 @@ post-extract:
 	@cd ${WRKSRC}/FreeBSD;for i in *.rc; do \
 		x=`echo $$i | cut -f 1 -d .`; ${CP} $$i $$x; done
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${GREP} -lr 'etc/ncid' ${WRKSRC}/ | ${XARGS} ${REINPLACE_CMD} -Ee \
 		's,(/usr/local/etc/ncid | /etc/ncid),${ETCDIR},g'
@@ -59,7 +66,7 @@ post-patch:
 		-e 's|$$(prefix)/share|$${PREFIX}/share|g' \
 		-e 's|$$(SHARE)/man|$${MANPREFIX}/man/|g' \
 		-e 's|$$(SHARE)/ncid|$${DATADIR}|g' ${WRKSRC}/Makefile
-.if exists(/usr/lib/libstdc++.so)
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 	@${REINPLACE_CMD} -e 's|-Wno-stringop-truncation||g' \
 		${WRKSRC}/Makefile ${WRKSRC}/server/Makefile
 .endif
@@ -115,10 +122,13 @@ ncid2ncid ncidd obi2ncid rn2ncid sip2ncid wc2ncid xdmf2ncid yac2ncid
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/recordings
 	${INSTALL_DATA} ${WRKSRC}/doc/*.md ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/FreeBSD/README.FreeBSD ${STAGEDIR}${DOCSDIR}
-.for l in README.recordings CallingDeposit.pvf CannotBeCompleted.pvf DisconnectedNotInService.pvf NotInService.pvf
+	${INSTALL_DATA} ${WRKSRC}/FreeBSD/README-FreeBSD ${STAGEDIR}${DOCSDIR}
+.for l in README-recordings CallingDeposit.pvf CannotBeCompleted.pvf DisconnectedNotInService.pvf NotInService.pvf
 	${INSTALL_DATA} ${WRKSRC}/recordings/${l} ${STAGEDIR}${DOCSDIR}/recordings
 .endfor
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/bin/cidupdate
 
 post-install-LOGROTATE-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/ncid/sys
@@ -130,4 +140,4 @@ post-install-LOGROTATE-on:
 	${INSTALL_MAN} ${WRKSRC}/logrotate/*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 	${INSTALL_MAN} ${WRKSRC}/logrotate/*.5 ${STAGEDIR}${MAN5PREFIX}/man/man5
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

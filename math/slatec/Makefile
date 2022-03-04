@@ -1,9 +1,8 @@
 # Created by: Anton Shterenlikht
-# $FreeBSD$
 
 PORTNAME=	slatec
 PORTVERSION=	4.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	math
 MASTER_SITES=	NL/slatec/:slatec NL/blas/:blas
 # Get d1mach.f, i1mach.f, r1mach.f from BLAS, rather than from Slatec:
@@ -29,6 +28,7 @@ LDADD ?=	-lgfortran -lm
 SRCCONF=	/dev/null
 MAKE_ENV+=	LDADD="${LDADD}" SHLIB_MAJOR="${SHLIB_MAJOR}" \
 		SRCCONF="${SRCCONF}"
+FFLAGS+=	-std=legacy
 
 OPTIONS_DEFINE=	DOCS PROFILE
 
@@ -44,7 +44,7 @@ base system profiling libraries
 .endif
 PLIST_FILES+=	lib/libslatec_p.a
 .else
-MAKE_ENV+=	NO_PROFILE=
+MAKE_ENV+=	WITHOUT_PROFILE=yes
 .endif
 
 post-extract:

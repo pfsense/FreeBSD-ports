@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libgfx
 DISTVERSION=	1.1.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	http://mgarland.org/files/dist/
 
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 
 BUILD_WRKSRC=	${WRKSRC}/src
 
-USES=		gmake jpeg
+USES=		gl gmake jpeg xorg
 USE_GL=		glu
 USE_XORG=	x11 xext xft xinerama
 GNU_CONFIGURE=	yes

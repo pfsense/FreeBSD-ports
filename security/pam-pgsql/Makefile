@@ -1,9 +1,8 @@
 # Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
 
 PORTNAME=	pam-pgsql
 PORTVERSION=	0.7.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.7/
 

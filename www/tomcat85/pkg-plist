@@ -8,6 +8,7 @@
 %%T%%/bin/bootstrap.jar
 %%T%%/bin/catalina-tasks.xml
 %%T%%/bin/catalina.sh
+%%T%%/bin/ciphers.sh
 %%T%%/bin/configtest.sh
 %%T%%/bin/daemon.sh
 %%T%%/bin/digest.sh
@@ -33,10 +34,13 @@
 %%T%%/lib/tomcat-api.jar
 %%T%%/lib/tomcat-coyote.jar
 %%T%%/lib/tomcat-dbcp.jar
-%%T%%/lib/tomcat-i18n-es.jar
-%%T%%/lib/tomcat-i18n-fr.jar
-%%T%%/lib/tomcat-i18n-ja.jar
-%%T%%/lib/tomcat-i18n-ru.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-de.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-es.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-fr.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-ja.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-ko.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-ru.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-zh-CN.jar
 %%T%%/lib/tomcat-jdbc.jar
 %%T%%/lib/tomcat-jni.jar
 %%T%%/lib/tomcat-util-scan.jar
@@ -56,11 +60,11 @@
 @sample %%T%%/conf/catalina.properties.sample
 @sample %%T%%/conf/context.xml.sample
 @sample %%T%%/conf/jaspic-providers.xml.sample
-@sample %%T%%/conf/jaspic-providers.xsd.sample
+%%T%%/conf/jaspic-providers.xsd
 @sample %%T%%/conf/logging.properties.sample
 @sample %%T%%/conf/server.xml.sample
 @sample %%T%%/conf/tomcat-users.xml.sample
-@sample %%T%%/conf/tomcat-users.xsd.sample
+%%T%%/conf/tomcat-users.xsd
 @sample %%T%%/conf/web.xml.sample
 %%T%%/temp/safeToDelete.tmp
 %%DOCS%%%%T%%/webapps/docs/BUILDING.txt
@@ -68,6 +72,7 @@
 %%DOCS%%%%T%%/webapps/docs/RUNNING.txt
 %%DOCS%%%%T%%/webapps/docs/WEB-INF/web.xml
 %%DOCS%%%%T%%/webapps/docs/aio.html
+%%DOCS%%%%T%%/webapps/docs/annotationapi/index.html
 %%DOCS%%%%T%%/webapps/docs/api/index.html
 %%DOCS%%%%T%%/webapps/docs/appdev/build.xml.txt
 %%DOCS%%%%T%%/webapps/docs/appdev/deployment.html
@@ -144,15 +149,6 @@
 %%DOCS%%%%T%%/webapps/docs/developers.html
 %%DOCS%%%%T%%/webapps/docs/elapi/index.html
 %%DOCS%%%%T%%/webapps/docs/extras.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/fs-admin-apps.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/fs-admin-objects.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/fs-admin-opers.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/fs-default.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/fs-jdbc-realm.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/fs-jndi-realm.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/fs-memory-realm.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/index.html
-%%DOCS%%%%T%%/webapps/docs/funcspecs/mbean-names.html
 %%DOCS%%%%T%%/webapps/docs/host-manager-howto.html
 %%DOCS%%%%T%%/webapps/docs/html-host-manager-howto.html
 %%DOCS%%%%T%%/webapps/docs/html-manager-howto.html
@@ -171,15 +167,14 @@
 %%DOCS%%%%T%%/webapps/docs/images/fonts/OpenSans700.woff
 %%DOCS%%%%T%%/webapps/docs/images/fonts/OpenSans700italic.woff
 %%DOCS%%%%T%%/webapps/docs/images/fonts/fonts.css
-%%DOCS%%%%T%%/webapps/docs/images/printer.gif
 %%DOCS%%%%T%%/webapps/docs/images/tomcat.gif
 %%DOCS%%%%T%%/webapps/docs/images/tomcat.png
-%%DOCS%%%%T%%/webapps/docs/images/tomcat.svg
 %%DOCS%%%%T%%/webapps/docs/images/update.gif
 %%DOCS%%%%T%%/webapps/docs/images/void.gif
 %%DOCS%%%%T%%/webapps/docs/index.html
 %%DOCS%%%%T%%/webapps/docs/introduction.html
 %%DOCS%%%%T%%/webapps/docs/jasper-howto.html
+%%DOCS%%%%T%%/webapps/docs/jaspicapi/index.html
 %%DOCS%%%%T%%/webapps/docs/jdbc-pool.html
 %%DOCS%%%%T%%/webapps/docs/jndi-datasource-examples-howto.html
 %%DOCS%%%%T%%/webapps/docs/jndi-resources-howto.html
@@ -212,15 +207,20 @@
 %%DOCS%%%%T%%/webapps/docs/websocketapi/index.html
 %%DOCS%%%%T%%/webapps/docs/windows-auth-howto.html
 %%DOCS%%%%T%%/webapps/docs/windows-service-howto.html
+%%EXAMPLES%%%%T%%/webapps/examples/META-INF/context.xml
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/CookieExample.class
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/CookieExample.java
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/HelloWorldExample.class
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/HelloWorldExample.java
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings.properties
-%%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_en.properties
+%%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_de.properties
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_es.properties
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_fr.properties
+%%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_ja.properties
+%%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_ko.properties
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_pt.properties
+%%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_ru.properties
+%%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/LocalStrings_zh_CN.properties
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/RequestHeaderExample.class
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/RequestHeaderExample.java
 %%EXAMPLES%%%%T%%/webapps/examples/WEB-INF/classes/RequestInfoExample.class
@@ -441,7 +441,6 @@
 %%EXAMPLES%%%%T%%/webapps/examples/jsp/forward/two.html
 %%EXAMPLES%%%%T%%/webapps/examples/jsp/images/code.gif
 %%EXAMPLES%%%%T%%/webapps/examples/jsp/images/execute.gif
-%%EXAMPLES%%%%T%%/webapps/examples/jsp/images/read.gif
 %%EXAMPLES%%%%T%%/webapps/examples/jsp/images/return.gif
 %%EXAMPLES%%%%T%%/webapps/examples/jsp/include/foo.html
 %%EXAMPLES%%%%T%%/webapps/examples/jsp/include/foo.jsp
@@ -588,18 +587,12 @@
 %%HOST_MANAGER%%%%T%%/webapps/host-manager/WEB-INF/jsp/401.jsp
 %%HOST_MANAGER%%%%T%%/webapps/host-manager/WEB-INF/jsp/403.jsp
 %%HOST_MANAGER%%%%T%%/webapps/host-manager/WEB-INF/jsp/404.jsp
+%%HOST_MANAGER%%@sample %%T%%/webapps/host-manager/WEB-INF/manager.xml.sample
 %%HOST_MANAGER%%@sample %%T%%/webapps/host-manager/WEB-INF/web.xml.sample
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/add.gif
+%%HOST_MANAGER%%%%T%%/webapps/host-manager/css/manager.css
 %%HOST_MANAGER%%%%T%%/webapps/host-manager/images/asf-logo.svg
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/code.gif
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/design.gif
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/docs.gif
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/fix.gif
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/tomcat.gif
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/update.gif
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/void.gif
+%%HOST_MANAGER%%%%T%%/webapps/host-manager/images/tomcat.svg
 %%HOST_MANAGER%%%%T%%/webapps/host-manager/index.jsp
-%%HOST_MANAGER%%%%T%%/webapps/host-manager/manager.xml
 %%MANAGER%%@sample %%T%%/webapps/manager/META-INF/context.xml.sample
 %%MANAGER%%%%T%%/webapps/manager/WEB-INF/jsp/401.jsp
 %%MANAGER%%%%T%%/webapps/manager/WEB-INF/jsp/403.jsp
@@ -610,15 +603,9 @@
 %%MANAGER%%%%T%%/webapps/manager/WEB-INF/jsp/sessionDetail.jsp
 %%MANAGER%%%%T%%/webapps/manager/WEB-INF/jsp/sessionsList.jsp
 %%MANAGER%%@sample %%T%%/webapps/manager/WEB-INF/web.xml.sample
-%%MANAGER%%%%T%%/webapps/manager/images/add.gif
+%%MANAGER%%%%T%%/webapps/manager/css/manager.css
 %%MANAGER%%%%T%%/webapps/manager/images/asf-logo.svg
-%%MANAGER%%%%T%%/webapps/manager/images/code.gif
-%%MANAGER%%%%T%%/webapps/manager/images/design.gif
-%%MANAGER%%%%T%%/webapps/manager/images/docs.gif
-%%MANAGER%%%%T%%/webapps/manager/images/fix.gif
-%%MANAGER%%%%T%%/webapps/manager/images/tomcat.gif
-%%MANAGER%%%%T%%/webapps/manager/images/update.gif
-%%MANAGER%%%%T%%/webapps/manager/images/void.gif
+%%MANAGER%%%%T%%/webapps/manager/images/tomcat.svg
 %%MANAGER%%%%T%%/webapps/manager/index.jsp
 %%MANAGER%%%%T%%/webapps/manager/status.xsd
 %%MANAGER%%%%T%%/webapps/manager/xform.xsl
@@ -627,13 +614,9 @@
 %%ROOT%%%%T%%/webapps/ROOT/asf-logo-wide.svg
 %%ROOT%%%%T%%/webapps/ROOT/bg-button.png
 %%ROOT%%%%T%%/webapps/ROOT/bg-middle.png
-%%ROOT%%%%T%%/webapps/ROOT/bg-nav-item.png
 %%ROOT%%%%T%%/webapps/ROOT/bg-nav.png
 %%ROOT%%%%T%%/webapps/ROOT/bg-upper.png
 %%ROOT%%%%T%%/webapps/ROOT/favicon.ico
 %%ROOT%%%%T%%/webapps/ROOT/index.jsp
-%%ROOT%%%%T%%/webapps/ROOT/tomcat-power.gif
 %%ROOT%%%%T%%/webapps/ROOT/tomcat.css
-%%ROOT%%%%T%%/webapps/ROOT/tomcat.gif
-%%ROOT%%%%T%%/webapps/ROOT/tomcat.png
 %%ROOT%%%%T%%/webapps/ROOT/tomcat.svg

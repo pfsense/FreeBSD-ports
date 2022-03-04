@@ -1,5 +1,4 @@
 # Created by: Kentaro Inagaki <JBD01226@niftyserve.ne.jp>
-# $FreeBSD$
 
 PORTNAME=	xdvik
 PORTVERSION=	22.87
@@ -9,14 +8,14 @@ MASTER_SITES=	SF/xdvi/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	tex-
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	DVI Previewer(kpathsearch) for X
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpaper.so:print/libpaper
 RUN_DEPENDS=	tex-dvipsk>=5.995:print/tex-dvipsk
 
-USES=		iconv motif
+USES=		iconv motif pkgconfig xorg
 USE_TEX=	web2c kpathsea texmf texhash
 TEXHASHDIRS=	${TEXMFDISTDIR}
 USE_XORG=	ice sm x11 xmu xpm xt xi
@@ -43,14 +42,15 @@ CONFIGURE_ENV=	INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
 		INSTALL_PROGRAM="${INSTALL_PROGRAM}"
 CFLAGS+=	-I${LOCALBASE}/include -DHAVE_LIBPAPER -g -O0
 PLIST_SUB=	TEXMFDISTDIR=${TEXMFDISTDIR}
-CONFLICTS_INSTALL=	xdvi-[0-9]* xdvi-*-[0-9]* *-xdvi-[0-9]* \
-			xdvik-[0-9]* ja-xdvik-*-[0-9]*
+CONFLICTS_INSTALL=	xdvi xdvi-* *-xdvi xdvik ja-xdvik
 
 PORTDOCS=	BUGS CHANGES INSTALL README README.CVS README.coding \
 		README.config README.cross README.distro README.hacking \
 		README.layout README.xdvik README_maintainer TODO
 
 OPTIONS_DEFINE=	DOCS
+
+BINARY_ALIAS=	freetype-config=true
 
 .include <bsd.port.options.mk>
 

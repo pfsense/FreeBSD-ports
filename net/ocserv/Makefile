@@ -1,12 +1,9 @@
-# Created by: Carlos J Puga Medina <cpm@fbsd.es>
-# $FreeBSD$
-
 PORTNAME=	ocserv
-PORTVERSION=	0.12.3
-CATEGORIES=	net security
+DISTVERSION=	1.1.3
+CATEGORIES=	net net-vpn security
 MASTER_SITES=	ftp://ftp.infradead.org/pub/ocserv/
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Server implementing the AnyConnect SSL VPN protocol
 
 LICENSE=	GPLv2+
@@ -14,63 +11,75 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	bash:shells/bash \
 		gsed:textproc/gsed
-LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
-		libiconv.so:converters/libiconv \
-		libev.so:devel/libev \
-		libtalloc.so:devel/talloc \
-		libprotobuf-c.so:devel/protobuf-c \
+LIB_DEPENDS=	libev.so:devel/libev \
 		libgnutls.so:security/gnutls \
-		libtasn1.so:security/libtasn1 \
+		libiconv.so:converters/libiconv \
+		liblz4.so:archivers/liblz4 \
 		libnettle.so:security/nettle \
 		liboath.so:security/oath-toolkit \
-		libpcl.so:devel/libpcl
+		libpcl.so:devel/pcl \
+		libprotobuf-c.so:devel/protobuf-c \
+		libtalloc.so:devel/talloc \
+		libtasn1.so:security/libtasn1
 
-USES=		autoreconf cpe gperf libtool localbase ncurses \
-		pathfix pkgconfig readline tar:xz
+USES=		autoreconf cpe gperf libtool localbase ncurses pathfix \
+		pkgconfig readline tar:xz
 
 CPE_VENDOR=	infradead
+USE_RC_SUBR=	ocserv
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--without-geoip \
+CONFIGURE_ARGS=	--disable-namespaces \
+		--without-geoip \
 		--without-http-parser
 
 USERS=		_ocserv
 GROUPS=		_ocserv
 
-USE_RC_SUBR=	ocserv
-
-PLIST_SUB=	USERS="${USERS}" GROUPS="${GROUPS}"
-
-OPTIONS_DEFINE=		DOCS EXAMPLES GSSAPI RADIUS
-
+PLIST_SUB=	GROUPS="${GROUPS}" \
+		USERS="${USERS}"
 PORTDOCS=	AUTHORS ChangeLog NEWS README TODO
 PORTEXAMPLES=	profile.xml sample.config sample.passwd
 
-GSSAPI_USES=		gssapi:mit
-GSSAPI_LIB_DEPENDS=	libkrb5support.so:security/krb5
-GSSAPI_CONFIGURE_OFF=	--without-gssapi
+OPTIONS_DEFINE=	DOCS EXAMPLES GSSAPI MAXMIND RADIUS
 
+MAXMIND_DESC=	Use Maxmind GeoIP library
+
+GSSAPI_LIB_DEPENDS=	libkrb5support.so:security/krb5
+GSSAPI_USES=		gssapi:mit
+GSSAPI_CONFIGURE_OFF=	--without-gssapi
+MAXMIND_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
+MAXMIND_CONFIGURE_OFF=	--without-maxmind
 RADIUS_LIB_DEPENDS=	libradcli.so:net/radcli
 RADIUS_CONFIGURE_OFF=	--without-radius
 
+.include <bsd.port.pre.mk>
+
 post-patch:
-	@${REINPLACE_CMD} 's|/usr/bin/ocserv-fw|${LOCALBASE}/bin/ocserv-fw|g' \
-		${WRKSRC}/src/main-user.c \
-		${WRKSRC}/doc/sample.config
-	@${REINPLACE_CMD} 's|/usr/bin/ocserv\\-fw|${LOCALBASE}/bin/ocserv\\-fw|g' \
+	${REINPLACE_CMD} 's|/usr/bin/ocserv-fw|${PREFIX}/bin/ocserv-fw|g' \
+		${WRKSRC}/src/main-user.c
+	${REINPLACE_CMD} 's|/usr/bin/ocserv\\-fw|${PREFIX}/bin/ocserv\\-fw|g' \
 		${WRKSRC}/doc/ocserv.8
+	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
+		-e 's|%%ETCDIR%%|${ETCDIR}|g' \
+		-e 's|%%USERS%%|${USERS}|g' \
+		-e 's|%%GROUPS%%|${GROUPS}|g' \
+		${WRKSRC}/doc/sample.config
+.if "${PREFIX}" != "" && "${PREFIX}" != "/" && "${PREFIX}" != "/usr"
+	${REINPLACE_CMD} -E 's|^(#define DEFAULT_CFG_FILE ")(/etc/ocserv/ocserv.conf")|\1${PREFIX}\2|' ${WRKSRC}/src/config.c
+	${REINPLACE_CMD} -E 's|^(#define DEFAULT_OCPASSWD ")(/etc/ocserv/ocpasswd")|\1${PREFIX}\2|' ${WRKSRC}/src/ocpasswd/ocpasswd.c
+.endif
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/ocserv
-	@${MKDIR} ${STAGEDIR}/var/run/ocserv
-	${INSTALL_DATA} ${FILESDIR}/ocserv.conf ${STAGEDIR}${PREFIX}/etc/ocserv/conf.sample
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/ocserv ${STAGEDIR}/var/run/ocserv
+	${INSTALL_DATA} ${WRKSRC}/doc/sample.config ${STAGEDIR}${PREFIX}/etc/ocserv/ocserv.conf.sample
 	${INSTALL_MAN} ${WRKSRC}/doc/*.8 ${STAGEDIR}${MANPREFIX}/man/man8
 
 post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

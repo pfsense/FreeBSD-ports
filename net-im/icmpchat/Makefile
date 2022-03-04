@@ -1,8 +1,8 @@
 # Created by: Matthew West <mwest@uct.ac.za>
-# $FreeBSD$
 
 PORTNAME=	icmpchat
 PORTVERSION=	0.6
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	SF
 

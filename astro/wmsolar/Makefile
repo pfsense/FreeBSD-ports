@@ -1,5 +1,4 @@
 # Created by: Patrick Li <pat@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wmsolar
 PORTVERSION=	1.1
@@ -14,8 +13,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	engerim42
 
 PLIST_FILES=	bin/wmSolar
+USES=		dos2unix gmake xorg
 USE_XORG=	x11 xext xpm
-USES=		dos2unix gmake
 USE_CXXSTD=	gnu++98
 
 pre-patch:

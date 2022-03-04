@@ -1,5 +1,4 @@
 # Created by: rkw
-# $FreeBSD$
 
 PORTNAME=	mgetty
 PORTVERSION=	1.1.37
@@ -13,11 +12,16 @@ COMMENT=	Handle external logins, send and receive faxes
 
 LICENSE=	GPLv2
 
+BROKEN_aarch64=		fails to compile: error: initializer element is not a compile-time constant
+BROKEN_mips64=		fails to compile: error: initializer element is not a compile-time constant
+BROKEN_riscv64=		fails to compile: error: initializer element is not a compile-time constant
+
+USES=		cpe makeinfo perl5 shebangfix
 USE_CSTD=	gnu89
-USES=		makeinfo perl5 shebangfix
 SHEBANG_FILES=	samples/fax samples/new_fax.all/new_fax samples/new_fax.mime1 \
 		samples/new_fax.th samples/coverpg-pl.ps samples/faxview.th
 
+CPE_VENDOR=	mgetty_project
 SUB_FILES=	pkg-message mgettycfg
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_ARGS=	INFODIR=${PREFIX}/${INFO_PATH}
@@ -28,9 +32,6 @@ INFO=		mgetty
 CFLAGS+=	-DAUTO_PPP
 
 MAKE_JOBS_UNSAFE=	yes
-
-BROKEN_aarch64=		Fails to compile: error: initializer element is not a compile-time constant
-BROKEN_mips64=		Fails to compile: error: initializer element is not a compile-time constant
 
 OPTIONS_DEFINE=	FIDO
 FIDO_DESC=	Enable FIDO EMSI support

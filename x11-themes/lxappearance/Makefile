@@ -1,5 +1,4 @@
 # Created by: chinsan
-# $FreeBSD$
 
 PORTNAME=	lxappearance
 PORTVERSION=	0.6.3
@@ -16,7 +15,8 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gettext-tools gmake localbase pathfix pkgconfig tar:xz
+USES=		gettext-tools gmake gnome localbase pathfix pkgconfig tar:xz \
+		xorg
 GNU_CONFIGURE=	yes
 USE_XORG=	x11
 USE_GNOME=	cairo gdkpixbuf2 gtk20 intltool

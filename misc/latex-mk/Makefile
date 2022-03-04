@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	latex-mk
 PORTVERSION=	2.1
@@ -20,5 +19,7 @@ USES=		gmake
 GNU_CONFIGURE=	yes
 
 INFO=		latex-mk
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

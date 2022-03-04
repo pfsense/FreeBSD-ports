@@ -1,11 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	geogram
-DISTVERSION=	1.6.9
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.7.7
 CATEGORIES=	math
-MASTER_SITES=	https://gforge.inria.fr/frs/download.php/file/37779/
-DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Programming library of geometric algorithms
@@ -15,16 +11,18 @@ LICENSE_FILE=	${WRKSRC}/doc/devkit/license.dox
 
 LIB_DEPENDS=	libglfw.so:graphics/glfw
 
-USES=		cmake gl localbase:ldflags
+USES=		cmake gl localbase:ldflags xorg
 USE_XORG=	x11 xcursor xi xinerama xrandr xxf86vm
 USE_GL=		gl glu
 USE_LDCONFIG=	yes
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	alicevision
+
 CMAKE_ON=	GEOGRAM_USE_SYSTEM_GLFW3 VORPALINE_BUILD_DYNAMIC
 CMAKE_ARGS=	-DVORPALINE_PLATFORM:STRING=FreeBSD
+CFLAGS+=	-fcommon # https://github.com/alicevision/geogram/issues/16
+CXXFLAGS+=	-fcommon # https://github.com/alicevision/geogram/issues/16
 LDFLAGS+=	-pthread
-
-post-stage:
-	@${RMDIR} ${STAGEDIR}${PREFIX}/include/geogram1/geogram_gfx/glup_viewer/colormaps
 
 .include <bsd.port.mk>

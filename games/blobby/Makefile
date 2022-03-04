@@ -1,9 +1,8 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	blobby
 PORTVERSION=	1.0
-PORTREVISION=	10
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Blobby%20Volley%202%20%28Linux%29/${PORTVERSION}
@@ -23,12 +22,13 @@ BUILD_DEPENDS=	zip:archivers/zip \
 		${LOCALBASE}/include/boost/crc.hpp:devel/boost-libs
 
 USES=		cmake compiler:c++11-lang dos2unix gl localbase:ldflags \
-		pkgconfig
+		pkgconfig sdl
+USE_SDL=	sdl2
+USE_GL=		gl
+
 DOS2UNIX_REGEX=	.*\.(c|h|cpp)
 CMAKE_ARGS=	-DDATADIR:PATH="${DATADIR}"
 WRKSRC=		${WRKDIR}/blobby-${PORTVERSION}
-USE_SDL=	sdl2
-USE_GL=		gl
 
 PORTDOCS=	AUTHORS ChangeLog README TODO
 

@@ -1,8 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	swayidle
-DISTVERSION=	1.2
+DISTVERSION=	1.7
 CATEGORIES=	x11
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	4cc31289ee81.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
+PATCHFILES+=	efb226483782.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
+PATCHFILES+=	88bc257f72f6.patch:-p1 # https://github.com/swaywm/swayidle/pull/89
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Idle management daemon for Wayland
@@ -18,14 +21,24 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	swaywm
 PLIST_FILES=	bin/${PORTNAME} \
 		share/bash-completion/completions/${PORTNAME} \
-		share/fish/completions/${PORTNAME}.fish \
+		share/fish/vendor_completions.d/${PORTNAME}.fish \
 		share/zsh/site-functions/_${PORTNAME}
 
-OPTIONS_DEFINE=	MANPAGES
-OPTIONS_DEFAULT=MANPAGES
+OPTIONS_DEFINE=	BASU MANPAGES
+OPTIONS_DEFAULT=BASU MANPAGES
+
+BASU_DESC=		Login manager support via basu
+BASU_LIB_DEPENDS=	libbasu.so:devel/basu
+BASU_MESON_ENABLED=	logind
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
+
+post-patch:
+# Temporarily use ConsoleKit2 like sysutils/gnome-settings-daemon
+	@${REINPLACE_CMD} -e 's,/login1,/ConsoleKit/Manager,' \
+		-e 's,login1,ConsoleKit,' \
+		${WRKSRC}/main.c
 
 .include <bsd.port.mk>

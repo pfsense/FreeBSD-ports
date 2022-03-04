@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vertx
 PORTVERSION=	2.1.1
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	http://dl.bintray.com/vertx/downloads/
 DISTNAME=	vert.x-${PORTVERSION}
@@ -19,12 +18,10 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 JAVA_OS=	native
 JAVA_RUN=	yes
-JAVA_VERSION=	1.7+
 
 PLIST_SUB=	VERTXVER=${PORTVERSION}
 
-REINPLACE_ARGS=	-E -e '/APP_BASE_NAME=/a \${SED_APPEND_ARGS}' \
-		-e 's,(pattern=)%t,\1%h,1' -i ''
+REINPLACE_ARGS=	-i ''
 
 SED_APPEND_ARGS=	${nl}JAVA_HOME=${JAVA_HOME}
 SHEBANG_FILES=	bin/vertx
@@ -66,7 +63,6 @@ VERTX_MODULES+=	groovy
 
 .if ${PORT_OPTIONS:MJYTHON}
 SED_APPEND_ARGS+=	\${nl}JYTHON_HOME=${LOCALBASE}/lib/jython
-REINPLACE_ARGS+=	-e 's,-Djruby.home=,-Dpython.cachedir=$${HOME}/.jython-cachedir &,1'
 VERTX_MODULES+=	jython
 .endif
 
@@ -110,7 +106,10 @@ do-build:
 
 post-patch:
 	@${FIND} ${WRKSRC} -type f \( -name "*.bat" -o -name "*.orig" \) -delete
-	@${REINPLACE_CMD} ${WRKSRC}/bin/${PORTNAME} ${WRKSRC}/conf/logging.properties
+	@${REINPLACE_CMD} -E -e '/APP_BASE_NAME=/a \${SED_APPEND_ARGS}' \
+		-e 's,(pattern=)%t,\1%h,1' \
+		-e 's,-Djruby.home=,-Dpython.cachedir=$${HOME}/.jython-cachedir &,1' \
+		${WRKSRC}/bin/${PORTNAME} ${WRKSRC}/conf/logging.properties
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

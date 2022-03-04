@@ -1,5 +1,4 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
 
 PORTNAME=		gdb
 PORTVERSION=		7.3.1
@@ -13,7 +12,8 @@ COMMENT=		PlayStation Portable development toolchain ${PORTNAME}
 
 BUILD_DEPENDS=		${LOCALBASE}/psp/sdk/lib/libpspsdk.a:devel/psptoolchain-pspsdk-stage2
 
-USES=			gmake tar:bzip2
+USES=			cpe gmake tar:bzip2
+CPE_VENDOR=		gnu
 USE_CSTD=		gnu89
 
 HAS_CONFIGURE=		yes

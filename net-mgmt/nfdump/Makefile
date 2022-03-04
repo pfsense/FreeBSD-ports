@@ -1,10 +1,9 @@
 # Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
 
 PORTNAME=	nfdump
-PORTVERSION=	1.6.17
-DISTVERSIONPREFIX=v
+PORTVERSION=	1.6.20
 PORTREVISION=	1
+DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	pi@FreeBSD.org
@@ -13,18 +12,19 @@ COMMENT=	Command-line tools to collect and process NetFlow data
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/BSD-license.txt
 
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf compiler:c11 cpe libtool pkgconfig
 USE_CSTD=	gnu89
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	phaag
+CPE_VENDOR=	nfdump_project
 
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 
 #flow-tools support
 OPTIONS_DEFINE=		DOCS FT2NFDUMP NFPROFILE FIXTIMEBUG READPCAP NFTRACK \
-			SFLOW NFDUMP15 NSEL INFLUXDB
+			SFLOW NFPCAPD NFDUMP15 NSEL INFLUXDB
 OPTIONS_DEFAULT=	NFPROFILE
 
 FT2NFDUMP_DESC=		With Flow-tools to nfdump converter
@@ -33,13 +33,13 @@ FIXTIMEBUG_DESC=	With fixing swap time bug of some v5
 READPCAP_DESC=		With pcap support
 NFTRACK_DESC=		With PortTracker support
 SFLOW_DESC=		Build sflow collector daemon also
+NFPCAPD_DESC=		Build nfpcapd collector daemon also
 NFDUMP15_DESC=		Enable compatibility with version 1.5
 NSEL_DESC=		Read and process ASA/NSEL/NEL event data
 INFLUXDB_DESC=		Enable stats to InfluxDB
 
 post-patch:
 	${REINPLACE_CMD} 's|-ggdb||' ${WRKSRC}/bin/Makefile.am
-	${REINPLACE_CMD} "s|1.6.15|${PORTVERSION}|" ${WRKSRC}/bin/Makefile.am
 
 .include <bsd.port.options.mk>
 
@@ -92,6 +92,7 @@ RUN_DEPENDS+=	rrdtool:databases/rrdtool
 #flow-tools support
 .if ${PORT_OPTIONS:MFT2NFDUMP}
 BUILD_DEPENDS+=		flow-cat:net-mgmt/flow-tools
+LIB_DEPENDS+=		libft.so:net-mgmt/flow-tools
 CONFIGURE_ARGS+=	--enable-ftconv --with-ftpath=${LOCALBASE}
 PLIST_FILES+=	bin/ft2nfdump man/man1/ft2nfdump.1.gz
 .endif
@@ -109,6 +110,14 @@ CONFIGURE_ARGS+=	--enable-sflow
 PLIST_FILES+=	bin/sfcapd man/man1/sfcapd.1.gz
 .else
 CONFIGURE_ARGS+=	--disable-sflow
+.endif
+
+#nfpcapd capture support
+.if ${PORT_OPTIONS:MNFPCAPD}
+CONFIGURE_ARGS+=	--enable-nfpcapd
+PLIST_FILES+=	bin/nfpcapd man/man1/nfpcapd.1.gz
+.else
+CONFIGURE_ARGS+=	--disable-nfpcapd
 .endif
 
 #influxdb support
@@ -142,6 +151,11 @@ do-install:
 .if ${PORT_OPTIONS:MSFLOW}
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/.libs/sfcapd ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN}	${WRKSRC}/man/sfcapd.1	${STAGEDIR}${PREFIX}/man/man1
+.endif
+
+.if ${PORT_OPTIONS:MNFPCAPD}
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/.libs/nfpcapd ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN}	${WRKSRC}/man/nfpcapd.1	${STAGEDIR}${PREFIX}/man/man1
 .endif
 
 .for filename in nfanon nfdump nfcapd nfexpire nfreplay

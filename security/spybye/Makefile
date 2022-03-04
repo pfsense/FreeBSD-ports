@@ -1,9 +1,8 @@
 # Created by: pauls
-# $FreeBSD$
 
 PORTNAME=	spybye
 PORTVERSION=	0.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	security www
 MASTER_SITES=	http://www.monkey.org/~provos/
 
@@ -11,6 +10,9 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Web proxy to detect malware
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Abandonware, last release in 2008 and no upstream development
+EXPIRATION_DATE=2022-03-31
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 

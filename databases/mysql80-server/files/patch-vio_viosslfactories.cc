@@ -1,56 +1,62 @@
---- vio/viosslfactories.cc.orig	2018-04-08 06:44:49 UTC
-+++ vio/viosslfactories.cc
-@@ -37,6 +37,7 @@
+--- vio/viosslfactories.cc.orig	2021-11-04 18:02:40.921064000 +0100
++++ vio/viosslfactories.cc	2021-11-04 18:15:24.992676000 +0100
+@@ -40,6 +40,7 @@
+ #include "vio/vio_priv.h"
  
- #ifdef HAVE_OPENSSL
  #include <openssl/dh.h>
 +#include <openssl/crypto.h>
  
- #define TLS_VERSION_OPTION_SIZE 256
- #define SSL_CIPHER_LIST_SIZE 4096
-@@ -135,7 +136,7 @@ static DH *get_dh2048(void) {
-     BIGNUM *p = BN_bin2bn(dh2048_p, sizeof(dh2048_p), NULL);
-     BIGNUM *g = BN_bin2bn(dh2048_g, sizeof(dh2048_g), NULL);
-     if (!p || !g
--#if OPENSSL_VERSION_NUMBER >= 0x10100000L
-+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
-         || !DH_set0_pqg(dh, p, NULL, g)
- #endif /* OPENSSL_VERSION_NUMBER >= 0x10100000L */
-     ) {
-@@ -143,7 +144,7 @@ static DH *get_dh2048(void) {
-       DH_free(dh);
-       return NULL;
-     }
--#if OPENSSL_VERSION_NUMBER < 0x10100000L
-+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
-     dh->p = p;
-     dh->g = g;
- #endif /* OPENSSL_VERSION_NUMBER < 0x10100000L */
-@@ -426,7 +427,7 @@ void ssl_start() {
+ #if OPENSSL_VERSION_NUMBER < 0x10002000L
+ #include <openssl/ec.h>
+@@ -472,6 +473,7 @@ void ssl_start() {
    }
  }
  
--#ifndef HAVE_WOLFSSL
-+#if !defined(HAVE_WOLFSSL) && !defined(LIBRESSL_VERSION_NUMBER)
++#ifndef LIBRESSL_VERSION_NUMBER
  /**
    Set fips mode in openssl library,
    When we set fips mode ON/STRICT, it will perform following operations:
-@@ -449,6 +450,10 @@ int set_fips_mode(const uint fips_mode, 
-   int rc = -1;
-   unsigned int fips_mode_old = -1;
-   unsigned long err_library = 0;
-+#if defined(LIBRESSL_VERSION_NUMBER)
-+  err_string="LibreSSL deosn't have FIPS_mode functionas";
-+  goto EXIT;
-+#else
-   if (fips_mode > 2) {
-     goto EXIT;
-   }
-@@ -462,6 +467,7 @@ int set_fips_mode(const uint fips_mode, 
-     ERR_error_string_n(err_library, err_string, OPENSSL_ERROR_LENGTH - 1);
-     err_string[OPENSSL_ERROR_LENGTH - 1] = '\0';
-   }
+@@ -525,6 +527,7 @@ EXIT:
+   @returns openssl current fips mode
+ */
+ uint get_fips_mode() { return FIPS_mode(); }
 +#endif
- EXIT:
-   return rc;
- }
+ 
+ /**
+   Toggle FIPS mode, to see whether it is available with the current SSL library.
+@@ -545,7 +548,7 @@ long process_tls_version(const char *tls_version) {
+   const char *separator = ",";
+   char *token, *lasts = nullptr;
+ 
+-#ifdef HAVE_TLSv13
++#if defined(HAVE_TLSv13) && !defined(LIBRESSL_VERSION_NUMBER)
+   const char *tls_version_name_list[] = {"TLSv1", "TLSv1.1", "TLSv1.2",
+                                          "TLSv1.3"};
+   const char ctx_flag_default[] = "TLSv1,TLSv1.1,TLSv1.2,TLSv1.3";
+@@ -624,7 +627,7 @@ static struct st_VioSSLFd *new_VioSSLFd(
+   ssl_ctx_options = (ssl_ctx_options | ssl_ctx_flags) &
+                     (SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TLSv1 |
+                      SSL_OP_NO_TLSv1_1 | SSL_OP_NO_TLSv1_2
+-#ifdef HAVE_TLSv13
++#if defined(HAVE_TLSv13) && !defined(LIBRESSL_VERSION_NUMBER)
+                      | SSL_OP_NO_TLSv1_3
+ #endif /* HAVE_TLSv13 */
+                      | SSL_OP_NO_TICKET);
+@@ -633,7 +636,7 @@ static struct st_VioSSLFd *new_VioSSLFd(
+     return nullptr;
+ 
+   if (!(ssl_fd->ssl_context = SSL_CTX_new(is_client ?
+-#ifdef HAVE_TLSv13
++#if defined(HAVE_TLSv13) && !defined(LIBRESSL_VERSION_NUMBER)
+                                                     TLS_client_method()
+                                                     : TLS_server_method()
+ #else  /* HAVE_TLSv13 */
+@@ -648,7 +651,7 @@ static struct st_VioSSLFd *new_VioSSLFd(
+     return nullptr;
+   }
+ 
+-#ifdef HAVE_TLSv13
++#if defined(HAVE_TLSv13) && !defined(LIBRESSL_VERSION_NUMBER)
+   /*
+     Set OpenSSL TLS v1.3 ciphersuites.
+     Note that an empty list is permissible.

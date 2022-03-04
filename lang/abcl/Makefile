@@ -1,8 +1,7 @@
 # Created by: Frank Fischer
-# $FreeBSD$
 
 PORTNAME=	abcl
-PORTVERSION=	1.5.0
+PORTVERSION=	1.8.0
 CATEGORIES=	lang lisp java
 MASTER_SITES=	http://abcl.org/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -21,7 +20,6 @@ SUB_LIST+=	JAVAJARDIR="${JAVAJARDIR}"
 SUB_FILES=	abcl
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 
 do-install:

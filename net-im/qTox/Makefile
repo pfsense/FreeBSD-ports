@@ -1,10 +1,9 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	qTox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.16.3-363
-DISTVERSIONSUFFIX=	-gbef9d4b7
+DISTVERSION=	1.17.3
+PORTREVISION=	2
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -25,28 +24,43 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libtoxcore.so:net-im/tox \
 		libvpx.so:multimedia/libvpx
 
-USES=		cmake compiler:c++11-lib desktop-file-utils gettext gnome openal:soft pkgconfig qt:5
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext openal:soft pkgconfig qt:5
 USE_GITHUB=	yes
-USE_GNOME=	gtk20 gdkpixbuf2 cairo
 USE_QT=		core gui network xml opengl sql sql-sqlite3_run widgets svg \
 		concurrent_build buildtools_build linguisttools_build qmake_build testlib_build
-CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${FULLVERSION}
+
+CMAKE_ARGS=	-DGIT_DESCRIBE:STRING=${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
 CMAKE_OFF=	USE_CCACHE
 
-OPTIONS_DEFINE=			FILTERAUDIO PLATFORM_EXTENSIONS SPELL_CHECK
-OPTIONS_DEFAULT=		FILTERAUDIO PLATFORM_EXTENSIONS SPELL_CHECK
-PLATFORM_EXTENSIONS_DESC=	Enable platform specific extensions
-FILTERAUDIO_DESC=		Enable the echo canceling backend
+OPTIONS_DEFINE=			FILTERAUDIO PLATFORM_EXTENSIONS SPELL_CHECK APPINDICATOR GTK_SYSTRAY STATUSNOTIFIER
+OPTIONS_DEFAULT=		FILTERAUDIO PLATFORM_EXTENSIONS SPELL_CHECK GTK_SYSTRAY STATUSNOTIFIER # removing GTK_SYSTRAY, STATUSNOTIFIER doesn't reduce dependencies
 
+FILTERAUDIO_DESC=		Enable the echo canceling backend
 FILTERAUDIO_CMAKE_BOOL=		USE_FILTERAUDIO
 FILTERAUDIO_LIB_DEPENDS=	libfilteraudio.so:audio/libfilteraudio
+
+PLATFORM_EXTENSIONS_DESC=	Enable platform specific extensions
 PLATFORM_EXTENSIONS_CMAKE_BOOL=	PLATFORM_EXTENSIONS
+PLATFORM_EXTENSIONS_USES=	xorg
 PLATFORM_EXTENSIONS_USE=	XORG=x11,xscrnsaver
 
-SPELL_CHECK_DESC=	Spell cheching support
+SPELL_CHECK_DESC=	Spell checking support
 SPELL_CHECK_USES=	kde:5
 SPELL_CHECK_USE=	KDE=sonnet
 SPELL_CHECK_CMAKE_BOOL=	SPELL_CHECK
+
+APPINDICATOR_CMAKE_BOOL=	ENABLE_APPINDICATOR
+APPINDICATOR_BROKEN=	can not find appindicator-0.1
+
+GTK_SYSTRAY_DESC=	Enable GTK systray
+GTK_SYSTRAY_CMAKE_BOOL=	ENABLE_GTK_SYSTRAY
+GTK_SYSTRAY_USES=	gnome
+GTK_SYSTRAY_USE=	GNOME=atk,cairo,gdkpixbuf2,gtk20
+
+STATUSNOTIFIER_DESC=	Enable status notifier
+STATUSNOTIFIER_CMAKE_BOOL=	ENABLE_STATUSNOTIFIER
+STATUSNOTIFIER_USES=	gnome
+STATUSNOTIFIER_USE=	GNOME=atk,cairo,gdkpixbuf2,gtk20
 
 PLIST_FILES=	bin/qtox \
 		share/applications/io.github.qtox.qTox.desktop \

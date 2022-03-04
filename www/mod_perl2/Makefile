@@ -1,8 +1,7 @@
 # Created by: Lars Eggert <larse@isi.edu>
-# $FreeBSD$
 
 PORTNAME=	mod_perl
-PORTVERSION=	2.0.10
+PORTVERSION=	2.0.11
 PORTEPOCH=	3
 CATEGORIES=	www perl5
 MASTER_SITES=	APACHE/perl

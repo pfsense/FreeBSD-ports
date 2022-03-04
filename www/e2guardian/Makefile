@@ -1,10 +1,9 @@
 # Created by: Marcello Coutinho
-# $FreeBSD$
 
 PORTNAME=	e2guardian
-PORTVERSION=	5.3.1
-PORTREVISION=	1
+PORTVERSION=	5.3.4
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	marcellocoutinho@gmail.com
@@ -15,14 +14,14 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-USES=		autoreconf compiler:c++11-lang libtool pkgconfig python
+USES=		autoreconf compiler:c++11-lang libtool localbase pkgconfig \
+		python
 USE_GITHUB=	yes
 
 USE_CXXSTD=	c++11
 USE_RC_SUBR=	e2guardian
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--localstatedir=/var \
-		--with-logdir=/var/log \
+CONFIGURE_ARGS=	--with-logdir=/var/log \
 		--with-piddir=/var/run
 
 OPTIONS_RADIO=	AV
@@ -43,9 +42,6 @@ DEBUG_DESC=	Enable debug build mode
 SSL_MITM_DESC=	Enable support for the SSL MITM plugin
 
 CONFDIR=	${PREFIX}/etc/e2guardian
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-CFLAGS+=	-I${LOCALBASE}/include
 
 CLISCAN_CONFIGURE_ENABLE=	commandline
 CLAMD_CONFIGURE_ENABLE=		clamd
@@ -74,10 +70,7 @@ PLIST_SUB+=	SCANNERS=""
 PLIST_SUB+=	SCANNERS="@comment "
 .endif
 
-SUB_FILES=	pkg-message pkg-install
-
-pre-configure:
-	@cd ${WRKSRC} && ${SH} ${WRKSRC}/autogen.sh
+SUB_FILES=	pkg-message
 
 post-install:
 	@${FIND} ${STAGEDIR}${ETCDIR} -type f \
@@ -89,11 +82,16 @@ post-install:
 		${STAGEDIR}${ETCDIR}/lists/authplugins/portgroups.sample
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/bannedrooms/default \
 		${STAGEDIR}${ETCDIR}/lists/bannedrooms/default.sample
-	@${MV} ${STAGEDIR}${ETCDIR}/lists/bannedsitelistwithbypass \
-		${STAGEDIR}${ETCDIR}/lists/bannedsitelistwithbypass.sample
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/domainsnobypass \
+		${STAGEDIR}${ETCDIR}/lists/domainsnobypass.sample
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/ipnobypass \
+		${STAGEDIR}${ETCDIR}/lists/ipnobypass.sample
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/urlnobypass \
+		${STAGEDIR}${ETCDIR}/lists/urlnobypass.sample
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/lists/contentscanners
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/exceptionvirusextensionlist.sample \
 		${STAGEDIR}${ETCDIR}/lists/contentscanners/
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/exceptionvirussiteiplist.sample \
 		${STAGEDIR}${ETCDIR}/lists/contentscanners/
+
 .include <bsd.port.mk>

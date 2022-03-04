@@ -3,7 +3,12 @@ include/botan-2/botan/adler32.h
 include/botan-2/botan/aead.h
 include/botan-2/botan/aes.h
 include/botan-2/botan/alg_id.h
+include/botan-2/botan/argon2.h
 include/botan-2/botan/aria.h
+include/botan-2/botan/asio_async_ops.h
+include/botan-2/botan/asio_context.h
+include/botan-2/botan/asio_error.h
+include/botan-2/botan/asio_stream.h
 include/botan-2/botan/asn1_alt_name.h
 include/botan-2/botan/asn1_attribute.h
 include/botan-2/botan/asn1_obj.h
@@ -12,7 +17,6 @@ include/botan-2/botan/asn1_print.h
 include/botan-2/botan/asn1_str.h
 include/botan-2/botan/asn1_time.h
 include/botan-2/botan/assert.h
-include/botan-2/botan/atomic.h
 include/botan-2/botan/auto_rng.h
 include/botan-2/botan/b64_filt.h
 include/botan-2/botan/base32.h
@@ -20,6 +24,7 @@ include/botan-2/botan/base58.h
 include/botan-2/botan/base64.h
 include/botan-2/botan/basefilt.h
 include/botan-2/botan/bcrypt.h
+include/botan-2/botan/bcrypt_pbkdf.h
 include/botan-2/botan/ber_dec.h
 include/botan-2/botan/bigint.h
 include/botan-2/botan/blake2b.h
@@ -43,6 +48,8 @@ include/botan-2/botan/ccm.h
 include/botan-2/botan/cecpq1.h
 include/botan-2/botan/cert_status.h
 include/botan-2/botan/certstor.h
+include/botan-2/botan/certstor_flatfile.h
+include/botan-2/botan/certstor_system.h
 include/botan-2/botan/certstor_sql.h
 %%SQLITE3%%include/botan-2/botan/certstor_sqlite.h
 include/botan-2/botan/cfb.h
@@ -164,6 +171,7 @@ include/botan-2/botan/ocsp.h
 include/botan-2/botan/ocsp_types.h
 include/botan-2/botan/ofb.h
 include/botan-2/botan/oids.h
+include/botan-2/botan/otp.h
 include/botan-2/botan/p11.h
 include/botan-2/botan/p11_ecc_key.h
 include/botan-2/botan/p11_ecdh.h
@@ -174,6 +182,7 @@ include/botan-2/botan/p11_randomgenerator.h
 include/botan-2/botan/p11_rsa.h
 include/botan-2/botan/p11_session.h
 include/botan-2/botan/p11_slot.h
+include/botan-2/botan/p11_types.h
 include/botan-2/botan/p11_x509.h
 include/botan-2/botan/package.h
 include/botan-2/botan/par_hash.h
@@ -195,12 +204,15 @@ include/botan-2/botan/pkcs11.h
 include/botan-2/botan/pkcs11f.h
 include/botan-2/botan/pkcs11t.h
 include/botan-2/botan/pkcs8.h
+include/botan-2/botan/pkix_enums.h
+include/botan-2/botan/pkix_types.h
 include/botan-2/botan/point_gfp.h
 include/botan-2/botan/poly1305.h
 include/botan-2/botan/polyn_gf2m.h
 include/botan-2/botan/pow_mod.h
 include/botan-2/botan/prf_tls.h
 include/botan-2/botan/prf_x942.h
+%%HAS_PROCESSOR_RNG%%include/botan-2/botan/processor_rng.h
 include/botan-2/botan/psk_db.h
 include/botan-2/botan/psk_db_sql.h
 include/botan-2/botan/pssr.h
@@ -214,6 +226,7 @@ include/botan-2/botan/rfc6979.h
 include/botan-2/botan/rmd160.h
 include/botan-2/botan/rng.h
 include/botan-2/botan/rotate.h
+include/botan-2/botan/roughtime.h
 include/botan-2/botan/rsa.h
 include/botan-2/botan/salsa20.h
 include/botan-2/botan/scan_name.h
@@ -236,6 +249,7 @@ include/botan-2/botan/sm2.h
 include/botan-2/botan/sm2_enc.h
 include/botan-2/botan/sm3.h
 include/botan-2/botan/sm4.h
+include/botan-2/botan/sodium.h
 include/botan-2/botan/sp800_108.h
 include/botan-2/botan/sp800_56a.h
 include/botan-2/botan/sp800_56c.h
@@ -291,15 +305,12 @@ include/botan-2/botan/x509path.h
 include/botan-2/botan/x509self.h
 include/botan-2/botan/x919_mac.h
 include/botan-2/botan/xmss.h
-include/botan-2/botan/xmss_address.h
-include/botan-2/botan/xmss_common_ops.h
 include/botan-2/botan/xmss_hash.h
-include/botan-2/botan/xmss_index_registry.h
 include/botan-2/botan/xmss_key_pair.h
 include/botan-2/botan/xmss_parameters.h
 include/botan-2/botan/xmss_privatekey.h
 include/botan-2/botan/xmss_publickey.h
-include/botan-2/botan/xmss_tools.h
+include/botan-2/botan/xmss_wots.h
 include/botan-2/botan/xmss_wots_parameters.h
 include/botan-2/botan/xmss_wots_privatekey.h
 include/botan-2/botan/xmss_wots_publickey.h
@@ -308,7 +319,8 @@ include/botan-2/botan/xts.h
 include/botan-2/botan/zlib.h
 lib/libbotan-2.a
 lib/libbotan-2.so
-lib/libbotan-2.so.9
-lib/libbotan-2.so.9.9.0
-%%PYTHON_SITELIBDIR%%/botan2.py
+lib/libbotan-2.so.%%SOABIVER%%
+lib/libbotan-2.so.%%SOABIVER%%.%%SHLIBVER%%.%%SHLIBVERPATCH%%
+%%PYTHON%%%%PYTHON_SITELIBDIR%%/botan2.py
 libdata/pkgconfig/botan-2.pc
+%%MANPAGES%%share/man/man1/botan.1.gz

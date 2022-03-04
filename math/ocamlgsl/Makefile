@@ -1,10 +1,9 @@
 # Created by: Klaus T. Aehlig <aehlig@linta.de>
-# $FreeBSD$
 
 PORTNAME=	ocaml-gsl
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.19.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math
 
 MAINTAINER=	michipili@gmail.com
@@ -14,6 +13,7 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libgsl.so:math/gsl
 BUILD_DEPENDS=	gawk:lang/gawk \
+		ocamlbuild:devel/ocaml-ocamlbuild \
 		${OCAMLC_DEPEND}
 RUN_DEPENDS=	ocamlfind:devel/ocaml-findlib
 

@@ -1,5 +1,4 @@
 # Created by: joris
-# $FreeBSD$
 
 PORTNAME=	pylibacl
 PORTVERSION=	0.5.2
@@ -13,7 +12,7 @@ COMMENT=	Manipulate ACL with Python
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 PORTDOCS=	NEWS README

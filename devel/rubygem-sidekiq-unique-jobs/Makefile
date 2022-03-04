@@ -1,25 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	sidekiq-unique-jobs
-PORTVERSION=	5.0.11
+PORTVERSION=	7.1.8
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ensure only a single copy of a job is in Redis
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-concurrent-ruby>=1.0.2:devel/rubygem-concurrent-ruby \
-		rubygem-sidekiq>=4.0:devel/rubygem-sidekiq \
-		rubygem-thor>=0:devel/rubygem-thor
+RUN_DEPENDS=	rubygem-brpoplpush-redis_script>=0.1.1<2.0.0:databases/rubygem-brpoplpush-redis_script \
+		rubygem-concurrent-ruby>=1.0.5<2:devel/rubygem-concurrent-ruby \
+		rubygem-sidekiq>=5.0<8.0:devel/rubygem-sidekiq \
+		rubygem-thor>=0.20<3.0:devel/rubygem-thor
 
 USES=		gem
 USE_RUBY=	yes
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/jobs
+PLIST_FILES=	bin/uniquejobs
 
 .include <bsd.port.mk>

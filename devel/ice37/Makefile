@@ -1,10 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=		Ice
 PORTVERSION=		3.7.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=		devel
 PKGNAMESUFFIX?=		37
+
+# Fix ${WRKSRC}/python/config/Make.rules to allow build with Python 3.8
+PATCH_SITES=	https://github.com/zeroc-ice/ice/commit/
+PATCHFILES=	067fd319b37f0ebdb995b3771e7c0b8b6e2b55f1.patch:-p1
 
 MAINTAINER=		grembo@FreeBSD.org
 COMMENT=		Modern alternative to object middleware such as CORBA/COM/DCOM/COM+
@@ -30,7 +33,6 @@ OPTIONS_DEFINE?=	DEBUG STATIC TEST
 OPTIONS_SUB=		yes
 
 USES+=			compiler:c++14-lang iconv gmake
-CONFIGS=		shared
 DEBUG_MAKE_ENV=		OPTIMIZE=no
 TEST_ALL_TARGET_OFF=	srcs
 MAKE_ARGS+=		V=1
@@ -55,7 +57,8 @@ USE_GITHUB=		yes
 GH_ACCOUNT=		zeroc-ice
 GH_PROJECT=		ice
 
-.if ((${ARCH} != i386) && (${ARCH} != powerpc))
+# determine if we are on a 64-bit arch
+.if ${ARCH:M*64*}
 MAKE_ENV+=		LP64=yes
 .endif
 

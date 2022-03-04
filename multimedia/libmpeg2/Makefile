@@ -1,5 +1,4 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libmpeg2
 PORTVERSION=	0.5.1
@@ -15,6 +14,7 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS=	--enable-shared
+CFLAGS_powerpc=	-mno-altivec
 LDFLAGS_armv6=	-Wl,-z,notext
 LDFLAGS_armv7=	-Wl,-z,notext
 
@@ -22,8 +22,10 @@ PORTDOCS=	libmpeg2.txt README
 
 OPTIONS_DEFINE=	DOCS SDL X11
 
+SDL_USES=	sdl
 SDL_USE=	SDL=sdl
 SDL_CONFIGURE_ENABLE=	sdl
+X11_USES=	xorg
 X11_USE=	XORG=x11,xext,sm,ice,xv
 X11_CONFIGURE_WITH=	x
 

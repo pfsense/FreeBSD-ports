@@ -1,8 +1,7 @@
 # Created by: Yuichiro NAITO <naito.yuichiro@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	specinfra
-PORTVERSION=	2.76.2
+PORTVERSION=	2.82.16
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 

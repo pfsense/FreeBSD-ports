@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	luabind
 PORTVERSION=	0.9.1
-PORTREVISION=	12
+PORTREVISION=	16
 CATEGORIES=	devel
 MASTER_SITES=	SF
 

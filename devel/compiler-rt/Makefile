@@ -1,5 +1,4 @@
 # Created by: Brooks Davis
-# $FreeBSD$
 
 PORTNAME=	compiler-rt
 DISTVERSION=	0.r${SVN_REV}
@@ -13,9 +12,10 @@ LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-BUILD_DEPENDS=	cmake:devel/cmake
-
+BROKEN_powerpc=		does not compile
 BROKEN_powerpc64=	does not build: undefined reference to fmax
+
+BUILD_DEPENDS=	cmake:devel/cmake
 
 CONFIGURE_WRKSRC=	${WRKDIR}/build
 BUILD_WRKSRC=		${WRKDIR}/build
@@ -46,8 +46,6 @@ PLIST_FILES=	include/Block.h \
 
 .if ${ARCH} == "i386"
 CFLAGS+=	-march=i486
-.elif ${ARCH} == "powerpc"
-BROKEN=		Does not compile on powerpc
 .endif
 
 .if defined(BOOTSTRAP)

@@ -1,16 +1,14 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	ytree
-DISTVERSION=	1.99pl1
-PORTREVISION=	1
+DISTVERSION=	2.03
 CATEGORIES=	misc
 MASTER_SITES=	http://www.han.de/~werner/
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	DOS-XTREE(tm) look-a-like file manager
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		ncurses readline

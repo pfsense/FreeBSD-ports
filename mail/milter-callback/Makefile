@@ -1,9 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	milter-callback
 PORTVERSION=	1.6.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	mail
 MASTER_SITES=	LOCAL/ehaupt
 
@@ -14,9 +13,9 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libspf2.so:mail/libspf2
 
-USES=		tar:xz
+USES=		compiler tar:xz
 USE_RC_SUBR=	milter-callback
-USE_GCC=	any
+USE_GCC=	yes
 
 SUB_FILES=	pkg-message
 
@@ -26,13 +25,13 @@ SRC_FILES=	cache.c commonprocs.c cpit.c dealwithmxes.c detectlamespf.c \
 
 CFLAGS+=	-DFREEBSD -DHAVE_NS_TYPE -DWITH_SPF -I${LOCALBASE}/include \
 		-I${WRKSRC} -std=gnu99
-CFLAGS_mips=	-fnested-functions
-CFLAGS_mips64=	-fnested-functions
-CFLAGS_powerpc=	-fnested-functions
-CFLAGS_powerpcspe=	-fnested-functions
-CFLAGS_powerpc64=	-fnested-functions
-CFLAGS_sparc64=	-fnested-functions
 LDFLAGS+=	-lmilter -lthr -L${LOCALBASE}/lib -lspf2
+
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
+CFLAGS+=	-fnested-functions
+.endif
 
 do-build:
 .for f in ${SRC_FILES}
@@ -57,4 +56,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.conf \
 		${STAGEDIR}${PREFIX}/etc/mail/${PORTNAME}.conf.sample
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

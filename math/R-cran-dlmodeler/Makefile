@@ -1,9 +1,8 @@
 # Created by: Cyrille Szymanski <cnszym@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	dlmodeler
 DISTVERSION=	1.4-2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

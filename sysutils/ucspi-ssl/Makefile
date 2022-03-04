@@ -1,5 +1,4 @@
 # Created by: David Thiel <lx@redundancy.redundancy.org>
-# $FreeBSD$
 
 PORTNAME=	ucspi-ssl
 PORTVERSION=	0.99b
@@ -8,6 +7,9 @@ MASTER_SITES=	http://www.fehcom.de/ipnet/ucspi-ssl/
 
 MAINTAINER=	lx@FreeBSD.org
 COMMENT=	UCSPI tools for building SSL client-server applications
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: strnum
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: strnum
 
 RUN_DEPENDS=	tcpserver:sysutils/ucspi-tcp \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss

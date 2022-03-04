@@ -1,11 +1,10 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
+# Created by: Piotr Kubaj <pkubaj@FreeBSD.org>
 
 PORTNAME=	dq
-PORTVERSION=	20180112
+PORTVERSION=	20181021
 CATEGORIES=	dns
 
-MAINTAINER=	pkubaj@anongoth.pl
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Recursive DNS/DNSCurve server
 
 LICENSE=	PD

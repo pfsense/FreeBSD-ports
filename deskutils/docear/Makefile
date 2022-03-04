@@ -1,10 +1,9 @@
 # Created by: Matthias Andree <mandree@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	docear
 PORTVERSION=	1.2.0
 _suffix=	_stable
-CATEGORIES=	deskutils java
+CATEGORIES=	deskutils education java
 MASTER_SITES=	http://docear.org/downloads/${PORTVERSION}${_suffix}/ \
 		SF/docear/1.x/${PORTVERSION}${_suffix} \
 		LOCAL/mandree/${DIST_SUBDIR}/
@@ -20,7 +19,6 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 USES=		desktop-file-utils shared-mime-info
 USE_JAVA=	yes
 JAVA_VENDOR=	openjdk
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 JDATADIR=	${JAVASHAREDIR}/${PORTNAME}
 icon=		${DATADIR}/${PORTNAME}-icon48x48.png

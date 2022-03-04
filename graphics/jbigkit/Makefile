@@ -1,5 +1,4 @@
 # Created by: mi
-# $FreeBSD$
 
 PORTNAME=	jbigkit
 PORTVERSION=	2.1
@@ -19,6 +18,9 @@ BINS=		jbgtopbm pbmtojbg jbgtopbm85 pbmtojbg85
 LIBA=		libjbig.a libjbig85.a
 LIBS=		libjbig.so.2 libjbig85.so.1
 DOCSDIR?=	${PREFIX}/share/doc/jbig
+
+TEST_ENV=	${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/libjbig
+TEST_TARGET=	test
 
 OPTIONS_DEFINE=	DOCS
 
@@ -40,8 +42,5 @@ do-install:
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/libjbig/jbig.txt ${STAGEDIR}${DOCSDIR}
-
-regression-test test:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/libjbig ${MAKE} test
 
 .include <bsd.port.mk>

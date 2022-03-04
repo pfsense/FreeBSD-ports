@@ -1,10 +1,9 @@
 # Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	apache-ant
-DISTVERSION=	1.10.5
+DISTVERSION=	1.10.8
 CATEGORIES=	devel java
-MASTER_SITES=	APACHE/ant/binaries/:bin \
+MASTER_SITES=	https://archive.apache.org/dist/ant/binaries/:bin \
 		LOCAL/hq:man
 DISTFILES=	${ANT_DISTFILE}:bin \
 		${MANPAGE_DISTFILE}:man
@@ -15,13 +14,16 @@ COMMENT=	Java- and XML-based build tool, conceptually similar to make
 
 LICENSE=	APACHE20
 
+USES=		cpe tar:bzip2
+CPE_VENDOR=	apache
+CPE_PRODUCT=	ant
+USE_JAVA=	yes
+
 OPTIONS_DEFINE=	DOCS
 
 ANT_DISTFILE=	${PORTNAME}-${DISTVERSION}-bin.tar.bz2
 MANPAGE_DISTFILE=	${PORTNAME}-manpage-${MANPAGE_VERSION}.tgz
 MANPAGE_VERSION=	20030908
-USES=		tar:bzip2
-USE_JAVA=	yes
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -33,7 +35,7 @@ READMES=	LICENSE README WHATSNEW
 
 .if ${PORT_OPTIONS:MDOCS}
 DISTFILES+=	${PORTNAME}-${DISTVERSION}-manual.tar.bz2:doc
-MASTER_SITES+=	APACHE/ant/manual/:doc
+MASTER_SITES+=	https://archive.apache.org/dist/ant/manual/:doc
 PORTDOCS=	*
 .endif
 

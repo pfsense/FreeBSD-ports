@@ -1,8 +1,7 @@
 # Created by: antoine@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	pyelftools
-PORTVERSION=	0.25
+PORTVERSION=	0.27
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
 STRIP=
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist concurrent
 
 PORTEXAMPLES=	*

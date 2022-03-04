@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	turnserver
-PORTVERSION=	4.5.1.1
+PORTVERSION=	4.5.2
 CATEGORIES=	net
 MASTER_SITES=	http://turnserver.open-sys.org/downloads/extradocs/:xdocs \
 		http://coturn.net/turnserver/extradocs/:xdocs
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-USES=		gettext-runtime perl5 shebangfix ssl
+USES=		gettext-runtime perl5 pkgconfig shebangfix ssl
 SHEBANG_FILES=	examples/scripts/restapi/shared_secret_maintainer.pl
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV+=	PTHREAD_LIBS=-pthread TURN_DISABLE_RPATH=1
@@ -80,11 +78,9 @@ OPTIONS_DEFINE=	DOCS EXAMPLES MYSQL PGSQL REDIS SQLITE
 OPTIONS_DEFAULT=	MYSQL PGSQL REDIS SQLITE
 OPTIONS_SUB=	yes
 
-MYSQL_DESC=	MySQL database support
 MYSQL_USES=	mysql
 MYSQL_CONFIGURE_ENV_OFF=	TURN_NO_MYSQL=1
 
-PGSQL_DESC=	PostgreSQL database support
 PGSQL_USES=	pgsql
 PGSQL_CONFIGURE_ENV_OFF=	TURN_NO_PQ=1
 
@@ -92,7 +88,6 @@ REDIS_DESC=	Redis support for user database and for status and statistics report
 REDIS_LIB_DEPENDS=	libhiredis.so:databases/hiredis
 REDIS_CONFIGURE_ENV_OFF=	TURN_NO_HIREDIS=1
 
-SQLITE_DESC=	SQLite database support
 SQLITE_USES=	sqlite
 SQLITE_CONFIGURE_ENV_OFF=	TURN_NO_SQLITE=1
 

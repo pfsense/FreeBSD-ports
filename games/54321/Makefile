@@ -1,5 +1,4 @@
 # Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
 
 PORTNAME=	54321
 PORTVERSION=	1.0.2001.11.16
@@ -14,7 +13,7 @@ COMMENT=	Five games in four-, three-, or two-dimensions for one player
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake tar:tgz
+USES=		gmake sdl tar:tgz
 USE_SDL=	image sdl
 MAKEFILE=	GNUmakefile
 

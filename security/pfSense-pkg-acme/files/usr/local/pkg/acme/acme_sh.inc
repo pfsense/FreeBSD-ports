@@ -25,10 +25,12 @@ class acme_sh_domain {
 	public $domainname;
 	public $method;
 	public $challengealias;
+	public $challengedomain;
 	public $NSUPDATE_SERVER;
 	public $NSUPDATE_KEYNAME;
 	public $NSUPDATE_KEYALGO;
 	public $NSUPDATE_KEY;
+	public $NSUPDATE_ZONE;
 	function __construct($domainname, $method) {
 		$this->domainname = $domainname;
 		$this->method = $method;
@@ -36,11 +38,15 @@ class acme_sh_domain {
 	function setchallengealias($challengealias) {
 		$this->challengealias = $challengealias;
 	}
-	function setnsupdateparameters($server, $keyname, $keyalgo, $key) {
+	function setchallengedomain($challengedomain) {
+		$this->challengedomain = $challengedomain;
+	}
+	function setnsupdateparameters($server, $keyname, $keyalgo, $key, $zone = "") {
 		$this->NSUPDATE_SERVER = $server;
 		$this->NSUPDATE_KEYNAME = $keyname;
 		$this->NSUPDATE_KEYALGO = $keyalgo;
 		$this->NSUPDATE_KEY = $key;
+		$this->NSUPDATE_ZONE = $zone;
 	}
 }
 	
@@ -49,19 +55,39 @@ class acme_sh {
 	private $accountconfig;
 	private $path_account;
 	private $name;
-	private $debug = true;
+	public $debug;
 	public $dnssleep;
 	public $ocspstaple;
 	
 	private function execacmesh($command, $envvariables = null) {
+		global $config;
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
+		if (isset($this->debug) && ($this->debug != 'yes')) {
+			$this->debug = false;
+		} else {
+			$this->debug = true;
+		}
 		if ($this->debug) {
-			echo "<br/>\n".$command."<br/>\n";
+			echo "\n{$command}\n";
 		}
 		// add to cron environment path: /usr/local/bin/
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
 		$env['PATH'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+
+		/* Setup Proxy Variables */
+		if (!empty($config['system']['proxyurl'])) {
+			$proxy_url = $config['system']['proxyurl'];
+			if (!empty($config['system']['proxyport'])) {
+				$proxy_url .= ":{$config['system']['proxyport']}";
+			}
+			if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
+				$proxy_url = "{$config['system']['proxyuser']}:{$config['system']['proxypass']}@{$proxy_url}";
+			}
+			$env['http_proxy'] = $proxy_url;
+			$env['https_proxy'] = $proxy_url;
+		}
+
 		if (is_array($envvariables)) {
 			$env = array_merge($env, $envvariables);
 		}
@@ -75,6 +101,7 @@ class acme_sh {
 		);
 		$process = proc_open($command, $descriptorspec, $pipes, null, $env);
 		if (is_resource($process)) {
+			/* This must only output on debug or else it breaks account key creation output. */
 			if ($this->debug) {
 				echo stream_get_contents($pipes[1]);
 				echo stream_get_contents($pipes[2]);
@@ -93,11 +120,11 @@ class acme_sh {
 	}
 	
 	function init($ca, $name, $email) {
-		$conf = "ACME_DIRECTORY='{$ca}/directory'\nACCOUNT_EMAIL='{$email}'\n";
-		$cahost = parse_url($ca, PHP_URL_HOST);
+		$conf = "ACME_DIRECTORY='{$ca}'\nACCOUNT_EMAIL='{$email}'\n";
+		$cadir = parse_url($ca, PHP_URL_HOST) . parse_url($ca, PHP_URL_PATH);
 		$acmeconf = "/tmp/acme/{$name}/";
 		$this->acmeconf = $acmeconf;
-		$this->path_account = "$acmeconf/ca/$cahost";
+		$this->path_account = "{$acmeconf}/ca/{$cadir}";
 		safe_mkdir($this->path_account);
 		$this->accountconfig = "{$this->acmeconf}accountconf.conf";
 		file_put_contents("{$this->accountconfig}", $conf);
@@ -108,7 +135,7 @@ class acme_sh {
 		$this->debug = false;
 		$this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
-				. " --createAccountKey"
+				. " --create-account-key"
 				. " --accountkeylength 4096"
 				. " --accountconf " . escapeshellarg($this->accountconfig)
 				);
@@ -118,6 +145,7 @@ class acme_sh {
 	
 	function registeraccount($key) {
 		file_put_contents("{$this->path_account}/account.key", $key);
+		$this->debug = false;
 		$result = $this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
 				. " --registeraccount"
@@ -140,7 +168,7 @@ class acme_sh {
 		$this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
 				. " --accountconf " . escapeshellarg($this->accountconfig)
-				. " --createDomainKey -d " . escapeshellarg($domain)
+				. " --create-domain-key --domain " . escapeshellarg($domain)
 				. " --keylength " . escapeshellarg($keylength)
 				. " --log-level 3"
 				. " --log " . escapeshellarg($this->acmeconf."acme_createdomainkey.log")
@@ -200,7 +228,7 @@ EOF;
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
 			$api = $domain->method; 
-			$domainstr .= " -d " . escapeshellarg($domain->domainname);
+			$domainstr .= " --domain " . escapeshellarg($domain->domainname);
 			if (!empty($domain->method)) {
 				$domainparameters = "";
 				if ($api && substr($api, 0, 4 ) === "dns_") {
@@ -232,11 +260,16 @@ EOF;
 				$nsupdatefileprefix = "{$certpath}nsupdate";
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
+				$envvariables['NSUPDATE_ZONE'] = $domain->NSUPDATE_ZONE;
+				if (strpos($domain->NSUPDATE_SERVER, ":") !== false) {
+					$parts = explode(":" ,$domain->NSUPDATE_SERVER);
+					$domain->NSUPDATE_SERVER = $parts[0];
+					$envvariables['NSUPDATE_SERVER_PORT'] = $parts[1];
+				}
 				$nsupdatedomain = $domain->domainname;
 				if (!empty($domain->challengealias)) {
 					$nsupdatedomain = $domain->challengealias;
 				}
-
 
 				$acmechalengedom = (substr($nsupdatedomain, 0, 2) === "*.") ? substr($nsupdatedomain, 2) : $nsupdatedomain;
 				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.server", $domain->NSUPDATE_SERVER);

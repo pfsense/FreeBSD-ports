@@ -1,5 +1,4 @@
 # Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
 
 PORTNAME=	xrot
 PORTVERSION=	1.3.2
@@ -18,8 +17,8 @@ COMMENT=	Falling ball puzzle game for X
 
 WRKSRC=		${WRKDIR}/xrot
 
-USES=		imake
-USE_XORG=	xpm
+USES=		imake xorg
+USE_XORG=	x11 xext xpm
 ALL_TARGET=	xrot
 CFLAGS+=	-Wno-return-type
 

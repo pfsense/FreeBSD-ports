@@ -1,21 +1,27 @@
 # Created by: Frederic Han <han@math.jussieu.fr>
-# $FreeBSD$
 
 PORTNAME=	giacxcas
-DISTVERSION=	1.5.0-49
+DISTVERSION=	1.6.0-7
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://www-fourier.ujf-grenoble.fr/~parisse/debian/dists/stable/main/source/:giac \
+		http://cocoa.dima.unige.it/cocoalib/tgz/:cocoa \
 		http://www-fourier.ujf-grenoble.fr/~parisse/giac/freebsd/
 DISTFILES=	giac_${DISTVERSION}${EXTRACT_SUFX}:giac \
-		CoCoALib-0.9950.tgz \
+		CoCoALib-${COCOA_LIB_VERSION}.tgz:cocoa \
 		fltk-giac.tar.gz
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Computer algebra system
 
-LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv3 DOC
+LICENSE_COMB=	multi
+LICENSE_NAME_DOC=	French documentation
+LICENSE_TEXT_DOC=	French documentation is for non-commercial use only
+LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING
+LICENSE_PERMS_DOC=	dist-mirror pkg-mirror auto-accept
+LICENSE_DISTFILES_DOC=	giac_${DISTVERSION}${EXTRACT_SUFX}
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libao.so:audio/libao \
@@ -24,23 +30,25 @@ LIB_DEPENDS=	libao.so:audio/libao \
 		libgsl.so:math/gsl \
 		libglpk.so:math/glpk \
 		libgmp.so:math/gmp \
+		libecm.so:math/gmp-ecm \
 		libmpfr.so:math/mpfr \
+		libmpfi.so:math/mpfi \
 		libpari.so:math/pari \
 		libpng.so:graphics/png \
 		libsamplerate.so:audio/libsamplerate
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-NO_CDROM=	French documentation is for non-commercial use only
-
-USES=		blaslapack desktop-file-utils fortran gettext gl gmake gnome jpeg \
-		libtool ncurses readline shebangfix
+USES=		blaslapack compiler:c++14-lang desktop-file-utils fortran \
+		gettext gl gmake gnome jpeg libtool localbase ncurses perl5 \
+		readline shebangfix xorg
 GNU_CONFIGURE=	yes
 USE_GL=		gl
 USE_XORG=	x11 xcursor xext xft xi xinerama
 USE_TEX=	latex:build dvipsk:build
+USE_PERL5=	run
 USE_LDCONFIG=	yes
 # Warning:  don't remove the USE_GCC without a runtime test *after* make install
-USE_GCC=	yes
+#USE_GCC=	yes
 CONFIGURE_ENV=	ac_cv_lib_X11_main=yes \
 		ac_cv_lib_cocoa_main=yes \
 		ac_cv_lib_fltk_gl_main=yes \
@@ -49,19 +57,19 @@ CONFIGURE_ENV=	ac_cv_lib_X11_main=yes \
 		ac_cv_lib_jpeg_main=yes
 SHEBANG_FILES=	src/pgiac
 INSTALL_TARGET=	install-strip
-INSTALLS_ICONS=	yes
 
-CXXFLAGS+=	-I${LOCALBASE}/include
+COCOA_LIB_VERSION=	0.99700
+
 CPPFLAGS+=	-I${COCOALIB-GIAC}/include \
 		-I${FLTKDEV-GIAC} \
-		-I${LOCALBASE}/include
+		-Wno-narrowing
 LDFLAGS+=	-L${COCOALIB-GIAC}/lib \
-		-L${FLTKDEV-GIAC}/lib \
-		-L${LOCALBASE}/lib
+		-L${FLTKDEV-GIAC}/lib
 
 WRKSRC=		${WRKDIR}/giac-${DISTVERSION:C/-[0-9]*//}
 FLTKDEV-GIAC=	${WRKDIR}/fltk-1.3.0
-COCOALIB-GIAC=	${WRKDIR}/CoCoALib-0.9950
+COCOALIB-GIAC=	${WRKDIR}/CoCoALib-${COCOA_LIB_VERSION}
+TEST_TARGET=	check
 
 DATADIR=	${PREFIX}/share/giac
 DOCSDIR=	${PREFIX}/share/doc/giac
@@ -99,14 +107,30 @@ post-patch:
 		's|\($$(MAKE) \)-s |\1|; s|\([[:blank:]]\)@|\1|'
 	@${REINPLACE_CMD} -e '/.SILENT:/s|^|#|' \
 		${FLTKDEV-GIAC}/makeinclude.in
+	${SED} -i ".orig" -Ee 's|char \*last = style \+ strlen\(style\) - 2|char *last = pretty|' \
+		-Ee 's|\*style = 0|last = style + strnlen(style, ENDOFBUFFER) - 2; *style = 0|' \
+		${FLTKDEV-GIAC}/src/fl_set_fonts_xft.cxx
 
 pre-configure:
+	${REINPLACE_CMD} -e 's|/usr/lib  /usr/lib64  /usr/lib32  /usr/local  /opt/local/lib  /sw/lib  /usr/sfw/lib|${LOCALBASE}/lib|' \
+		-e '/libgmp.a/s|find|#find|' \
+		-e 's|-name  libgmp.so|-type f -name "libgmp.so.*"|' \
+		${COCOALIB-GIAC}/configuration/gmp-find.sh
+	${REINPLACE_CMD} -e 's|^protected:|public:|' ${FLTKDEV-GIAC}/FL/Fl_Widget.H
+.for f in icas.cc path.h
+	${REINPLACE_CMD} -e 's|/usr/local/share/giac/doc|${DOCSDIR}|' \
+		${WRKSRC}/src/${f}
+.endfor
+	${FIND} ${WRKSRC}/doc -type f | ${XARGS} ${GREP} -l 'share/giac/doc' | \
+		${XARGS} ${REINPLACE_CMD} -e 's|/usr/local/share/giac/doc|${DOCSDIR}|'
 	@(cd ${COCOALIB-GIAC} && ${SETENV} ${CONFIGURE_ENV} ./configure \
-		--with-libgmp=${LOCALBASE}/lib/libgmp.a \
 		--with-cxx="${CXX}")
 	@(cd ${FLTKDEV-GIAC} && ${SETENV} ${CONFIGURE_ENV} ./configure \
 		--prefix=${FLTKDEV-GIAC} \
 		CXX="${CXX}" CXXFLAGS="${CXXFLAGS}")
+
+post-configure:	# malloc.h on 13-CURRENT is missing mallinfo and compilation fails after it is discovered
+	@${FIND} ${WRKSRC} -name config.h | ${XARGS} ${REINPLACE_CMD} -e 's|#define HAVE_MALLOC_H 1|/* #undef HAVE_MALLOC_H */|'
 
 pre-build:
 	@cd ${COCOALIB-GIAC} && ${DO_MAKE_BUILD} \

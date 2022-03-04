@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Module-Install-XSUtil
 PORTVERSION=	0.45
@@ -18,8 +17,9 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Module-Install>=0.91:devel/p5-Module-Install
 TEST_DEPENDS=	p5-B-Hooks-OP-Annotation>=0.43:devel/p5-B-Hooks-OP-Annotation
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

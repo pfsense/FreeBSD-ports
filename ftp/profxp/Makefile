@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	profxp
 PORTVERSION=	3p2
@@ -20,9 +19,6 @@ NO_BUILD=	yes
 USES=		shebangfix perl5
 SHEBANG_FILES=	profxpv3.pl
 perl_OLD_CMD=	/home/tom/ActivePerl-5.6/bin/perl
-
-post-patch1:
-	@${REINPLACE_CMD} -i '' '1s|^\#.*|#!${PERL}|' ${WRKSRC}/profxpv3.pl
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}

@@ -1,8 +1,7 @@
 # Created by: Michael Moll <kvedulv@kvedulv.de>
-# $FreeBSD$
 
 PORTNAME=	clamp
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.2
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
@@ -12,8 +11,9 @@ COMMENT=	Command-line utility framework for Ruby
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

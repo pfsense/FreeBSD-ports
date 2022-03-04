@@ -1,8 +1,7 @@
 # Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gpu-firmware-kmod
-PORTVERSION=	g20190219
+PORTVERSION=	g20210330
 CATEGORIES=	graphics
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -20,14 +19,8 @@ LICENSE_PERMS_INTEL=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 USES=		kmod uidfix
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	FreeBSDDesktop
-GH_PROJECT=	kms-firmware
-GH_TAGNAME=	858e54d
+GH_ACCOUNT=	freebsd
+GH_PROJECT=	drm-kmod-firmware
+GH_TAGNAME=	df9e66d
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000 && ${OSVERSION} < 1200019
-IGNORE=		not supported on older CURRENT, no kernel support
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

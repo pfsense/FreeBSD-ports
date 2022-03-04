@@ -1,10 +1,9 @@
 # Created by: Mikhail T. <m.tsatsenko@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	openvpn-auth-radius
 PORTVERSION=	2.1
 PORTREVISION=	4
-CATEGORIES=	security
+CATEGORIES=	security net-vpn
 MASTER_SITES=	http://www.nongnu.org/radiusplugin/ \
 		http://svn-cache.ipcopaddons.org/
 DISTNAME=	radiusplugin_v${PORTVERSION}

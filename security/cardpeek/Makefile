@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cardpeek
 PORTVERSION=	0.8.4
@@ -15,10 +14,9 @@ LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	pcscd:devel/pcsc-lite
 
-USES=		iconv localbase lua pkgconfig
+USES=		gnome iconv localbase lua:52 pkgconfig
 USE_GNOME=	gtk30
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
 PLIST_FILES=	bin/cardpeek man/man1/cardpeek.1.gz \
 		share/appdata/cardpeek.appdata.xml \

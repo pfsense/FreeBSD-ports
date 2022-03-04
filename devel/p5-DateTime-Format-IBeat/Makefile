@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	DateTime-Format-IBeat
 PORTVERSION=	0.161
 PORTREVISION=	1

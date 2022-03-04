@@ -1,9 +1,8 @@
 # Created by: Alexander Langer <alex@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tux_aqfh
 PORTVERSION=	1.0.14
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/tuxaqfh/tuxaqfh/${PORTVERSION}-classic \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -19,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 
-USES=		gmake
+USES=		gl gmake
 USE_GL=		glut
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-plib=${LOCALBASE}

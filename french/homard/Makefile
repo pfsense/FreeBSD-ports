@@ -1,25 +1,29 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	homard
-DISTVERSION=	11.10-1
+DISTVERSION=	11.12-aster2
 PORTREVISION=	1
 CATEGORIES=	french cad linux
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Refinement and de-refinement mesh tool
 
+# Converted from RESTRICTED
+LICENSE=	homard
+LICENSE_NAME=	homard
+LICENSE_TEXT=	The free downloading of HOMARD software is only allowed for coupling\
+		with Code_Aster. For any other use, a license agreement is requested.\
+		Please contact HOMARD project: <homard@edf.fr>.
+LICENSE_PERMS=	auto-accept
+
+ONLY_FOR_ARCHS=	amd64 i386
+
 BUILD_DEPENDS=	${LOCALBASE}/aster/${VER}/bin/aster:french/aster
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash		\
 		${LOCALBASE}/aster/${VER}/bin/aster:french/aster
 
-RESTRICTED=	The free downloading of HOMARD software is only allowed for coupling\
-		with Code_Aster. For any other use, a license agreement is requested.\
-		Please contact HOMARD project: <homard@edf.fr>.
+USES=		linux python:3.6+ shebangfix
 
-ONLY_FOR_ARCHS=	amd64 i386
-
-USES=		linux python:2.7 shebangfix
 SHEBANG_FILES=	${WRKSRC}/ASTER_HOMARD/homard	\
 		${WRKSRC}/homard_base ${WRKSRC}/setup_homard.py
 REINPLACE_ARGS=	-i ""
@@ -33,7 +37,8 @@ HOMARDDIR=	${PREFIX}/${LHOMARDDIR}
 AHPY=		aster_homard_py
 HOMARDSCRIPT=	${PORTNAME}_base
 # This name is requested to run aster's make test
-HOMARDPG=	${PORTNAME:tu}_V${PORTVERSION:R}.out
+#HOMARDPG=	${PORTNAME:tu}_V${PORTVERSION:R}.out
+HOMARDPG=	${PORTNAME:tu}_V11.10.out
 
 DOCS=		A_Lire.txt Readme.txt
 

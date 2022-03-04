@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
 
 PORTNAME=	apoolGL
 PORTVERSION=	0.99.22
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	http://www.planetjahn.de/files/
 DISTNAME=	${PORTNAME}-099-pre22
@@ -13,10 +12,12 @@ COMMENT=	Another billiards simulator
 
 LICENSE=	GPLv2+
 
+USES=		dos2unix gl sdl
 USE_SDL=	sdl
 USE_GL=		gl
-USES=		dos2unix
 DOS2UNIX_FILES=	ApoolGL.txt
+# Seems dead upstream. Don't expect a proper fix.
+CFLAGS+=	-fcommon
 
 PORTDOCS=	ApoolGL.txt CHANGELOG OpenGL-Features
 

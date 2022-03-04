@@ -1,5 +1,4 @@
 # Created by: Mauricio Herrera Cuadra <mauricio@arareko.net>
-# $FreeBSD$
 
 PORTNAME=	XML-DOM-XPath
 PORTVERSION=	0.14
@@ -20,5 +19,7 @@ RUN_DEPENDS=	p5-XML-DOM>=0:textproc/p5-XML-DOM \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

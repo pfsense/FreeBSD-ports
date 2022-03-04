@@ -1,0 +1,398 @@
+# Created by: Michael Reifenberger <mr@FreeBSD.org>
+
+PORTNAME=	vaultwarden
+DISTVERSION=	1.22.2
+PORTREVISION=	5
+CATEGORIES=	security
+MASTER_SITES=	https://github.com/dani-garcia/bw_web_builds/releases/download/v${DISTVERSION_WV}/:web
+DISTFILES=	${WV_DISTFILE}:web
+
+MAINTAINER=	mr@FreeBSD.org
+COMMENT=	Bitwarden compatible backend server
+
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+LIB_DEPENDS+=	libcapnp.so:devel/capnproto
+LIB_DEPENDS+=	libgmp.so:math/gmp
+LIB_DEPENDS+=	libnettle.so:security/nettle
+
+USES=		cargo ssl pgsql mysql:client
+
+DISTVERSION_WV=	2.23.0c
+WV_DISTFILE=	bw_web_v${DISTVERSION_WV}.tar.gz
+USE_RC_SUBR=	${PORTNAME}
+SUB_FILES=	pkg-message
+SUB_LIST=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
+
+INSTALL_TARGET=install-strip
+
+# make makeplist > pkg-plist #One has to edit/review the generated plist
+# make generate-plist && make check-plist
+USE_GITHUB=	yes
+GH_ACCOUNT=	dani-garcia
+CARGO_FEATURES=	postgresql sqlite mysql #vendored_openssl
+CARGO_ENV+=	RUSTC_BOOTSTRAP=1
+
+# make cargo-crates
+CARGO_CRATES=	addr2line-0.15.2 \
+		adler-1.0.2 \
+		aho-corasick-0.7.18 \
+		alloc-no-stdlib-2.0.1 \
+		alloc-stdlib-0.2.1 \
+		async-compression-0.3.8 \
+		atty-0.2.14 \
+		autocfg-1.0.1 \
+		backtrace-0.3.60 \
+		base-x-0.2.8 \
+		base64-0.9.3 \
+		base64-0.11.0 \
+		base64-0.12.3 \
+		base64-0.13.0 \
+		binascii-0.1.4 \
+		bitflags-1.2.1 \
+		bitvec-0.19.5 \
+		block-buffer-0.7.3 \
+		block-buffer-0.9.0 \
+		block-padding-0.1.5 \
+		brotli-3.3.0 \
+		brotli-decompressor-2.3.1 \
+		buf_redux-0.8.4 \
+		bumpalo-3.7.0 \
+		byte-tools-0.1.3 \
+		byte-tools-0.3.1 \
+		byteorder-1.4.3 \
+		bytes-0.4.12 \
+		bytes-1.0.1 \
+		cc-1.0.69 \
+		cfg-if-0.1.10 \
+		cfg-if-1.0.0 \
+		chashmap-2.2.2 \
+		chrono-0.4.19 \
+		chrono-tz-0.5.3 \
+		const_fn-0.4.8 \
+		constant_time_eq-0.1.5 \
+		cookie-0.14.4 \
+		cookie-0.15.1 \
+		cookie_store-0.12.0 \
+		cookie_store-0.15.0 \
+		core-foundation-0.9.1 \
+		core-foundation-sys-0.8.2 \
+		cpufeatures-0.1.5 \
+		crc32fast-1.2.1 \
+		cron-0.9.0 \
+		crypto-mac-0.3.0 \
+		crypto-mac-0.10.1 \
+		data-encoding-2.3.2 \
+		diesel-1.4.7 \
+		diesel_derives-1.4.1 \
+		diesel_migrations-1.4.0 \
+		digest-0.5.2 \
+		digest-0.8.1 \
+		digest-0.9.0 \
+		digest-buffer-0.3.1 \
+		discard-1.0.4 \
+		dotenv-0.15.0 \
+		either-1.6.1 \
+		encoding_rs-0.8.28 \
+		error-chain-0.11.0 \
+		fake-simd-0.1.2 \
+		fastrand-1.5.0 \
+		fern-0.6.0 \
+		flate2-1.0.20 \
+		fnv-1.0.7 \
+		foreign-types-0.3.2 \
+		foreign-types-shared-0.1.1 \
+		form_urlencoded-1.0.1 \
+		fuchsia-cprng-0.1.1 \
+		fuchsia-zircon-0.3.3 \
+		fuchsia-zircon-sys-0.3.3 \
+		funty-1.1.0 \
+		futf-0.1.4 \
+		futures-0.3.16 \
+		futures-channel-0.3.16 \
+		futures-core-0.3.16 \
+		futures-executor-0.3.16 \
+		futures-io-0.3.16 \
+		futures-macro-0.3.16 \
+		futures-sink-0.3.16 \
+		futures-task-0.3.16 \
+		futures-util-0.3.16 \
+		generic-array-0.7.3 \
+		generic-array-0.12.4 \
+		generic-array-0.14.4 \
+		getrandom-0.1.16 \
+		getrandom-0.2.3 \
+		gimli-0.24.0 \
+		glob-0.3.0 \
+		h2-0.3.3 \
+		half-1.7.1 \
+		handlebars-4.1.0 \
+		hashbrown-0.11.2 \
+		hermit-abi-0.1.19 \
+		hmac-0.1.1 \
+		hmac-0.10.1 \
+		hostname-0.3.1 \
+		html5ever-0.25.1 \
+		http-0.2.4 \
+		http-body-0.4.2 \
+		httparse-1.4.1 \
+		httpdate-1.0.1 \
+		hyper-0.10.16 \
+		hyper-0.14.11 \
+		hyper-sync-rustls-0.3.0-rc.17 \
+		hyper-tls-0.5.0 \
+		idna-0.1.5 \
+		idna-0.2.3 \
+		indexmap-1.7.0 \
+		instant-0.1.10 \
+		iovec-0.1.4 \
+		ipnet-2.3.1 \
+		itoa-0.4.7 \
+		js-sys-0.3.51 \
+		jsonwebtoken-7.2.0 \
+		kernel32-sys-0.2.2 \
+		language-tags-0.2.2 \
+		lazy_static-1.4.0 \
+		lazycell-1.3.0 \
+		lettre-0.10.0-rc.3 \
+		libc-0.2.98 \
+		libsqlite3-sys-0.22.2 \
+		lock_api-0.4.4 \
+		log-0.3.9 \
+		log-0.4.14 \
+		mac-0.1.1 \
+		maplit-1.0.2 \
+		markup5ever-0.10.1 \
+		markup5ever_rcdom-0.1.0 \
+		match_cfg-0.1.0 \
+		matches-0.1.8 \
+		maybe-uninit-2.0.0 \
+		memchr-2.4.0 \
+		migrations_internals-1.4.1 \
+		migrations_macros-1.4.2 \
+		mime-0.2.6 \
+		mime-0.3.16 \
+		mime_guess-2.0.3 \
+		miniz_oxide-0.4.4 \
+		mio-0.6.23 \
+		mio-0.7.13 \
+		mio-extras-2.0.6 \
+		miow-0.2.2 \
+		miow-0.3.7 \
+		multipart-0.18.0 \
+		mysqlclient-sys-0.2.4 \
+		native-tls-0.2.7 \
+		net2-0.2.37 \
+		new_debug_unreachable-1.0.4 \
+		nodrop-0.1.14 \
+		nom-4.1.1 \
+		nom-6.1.2 \
+		ntapi-0.3.6 \
+		num-bigint-0.2.6 \
+		num-derive-0.3.3 \
+		num-integer-0.1.44 \
+		num-traits-0.2.14 \
+		num_cpus-1.13.0 \
+		oath-0.10.2 \
+		object-0.25.3 \
+		once_cell-1.8.0 \
+		opaque-debug-0.2.3 \
+		opaque-debug-0.3.0 \
+		openssl-0.10.35 \
+		openssl-probe-0.1.4 \
+		openssl-src-111.15.0+1.1.1k \
+		openssl-sys-0.9.65 \
+		owning_ref-0.3.3 \
+		parity-ws-0.11.0 \
+		parking_lot-0.4.8 \
+		parking_lot-0.11.1 \
+		parking_lot_core-0.2.14 \
+		parking_lot_core-0.8.3 \
+		parse-zoneinfo-0.3.0 \
+		paste-1.0.5 \
+		pear-0.1.4 \
+		pear_codegen-0.1.4 \
+		pem-0.8.3 \
+		percent-encoding-1.0.1 \
+		percent-encoding-2.1.0 \
+		pest-2.1.3 \
+		pest_derive-2.1.0 \
+		pest_generator-2.1.3 \
+		pest_meta-2.1.3 \
+		phf-0.8.0 \
+		phf_codegen-0.8.0 \
+		phf_generator-0.8.0 \
+		phf_shared-0.8.0 \
+		pico-args-0.4.2 \
+		pin-project-lite-0.2.7 \
+		pin-utils-0.1.0 \
+		pkg-config-0.3.19 \
+		ppv-lite86-0.2.10 \
+		pq-sys-0.4.6 \
+		precomputed-hash-0.1.1 \
+		proc-macro-hack-0.5.19 \
+		proc-macro-nested-0.1.7 \
+		proc-macro2-0.4.30 \
+		proc-macro2-1.0.28 \
+		psl-types-2.0.7 \
+		publicsuffix-1.5.6 \
+		publicsuffix-2.1.0 \
+		quick-error-1.2.3 \
+		quick-error-2.0.1 \
+		quote-0.6.13 \
+		quote-1.0.9 \
+		quoted_printable-0.4.3 \
+		r2d2-0.8.9 \
+		radium-0.5.3 \
+		rand-0.4.6 \
+		rand-0.7.3 \
+		rand-0.8.4 \
+		rand_chacha-0.2.2 \
+		rand_chacha-0.3.1 \
+		rand_core-0.3.1 \
+		rand_core-0.4.2 \
+		rand_core-0.5.1 \
+		rand_core-0.6.3 \
+		rand_hc-0.2.0 \
+		rand_hc-0.3.1 \
+		rand_pcg-0.2.1 \
+		rdrand-0.4.0 \
+		redox_syscall-0.2.9 \
+		regex-1.5.4 \
+		regex-syntax-0.6.25 \
+		remove_dir_all-0.5.3 \
+		reqwest-0.11.4 \
+		ring-0.16.20 \
+		rmp-0.8.10 \
+		rmpv-0.4.7 \
+		rustc-demangle-0.1.20 \
+		rustc-hex-1.0.0 \
+		rustc_version-0.2.3 \
+		rustls-0.17.0 \
+		ryu-1.0.5 \
+		safemem-0.3.3 \
+		same-file-1.0.6 \
+		schannel-0.1.19 \
+		scheduled-thread-pool-0.2.5 \
+		scopeguard-1.1.0 \
+		sct-0.6.1 \
+		security-framework-2.3.1 \
+		security-framework-sys-2.3.0 \
+		semver-0.9.0 \
+		semver-parser-0.7.0 \
+		serde-1.0.126 \
+		serde_bytes-0.11.5 \
+		serde_cbor-0.11.1 \
+		serde_derive-1.0.126 \
+		serde_json-1.0.64 \
+		serde_urlencoded-0.7.0 \
+		sha-1-0.3.4 \
+		sha-1-0.8.2 \
+		sha-1-0.9.7 \
+		sha1-0.6.0 \
+		sha2-0.5.3 \
+		simple_asn1-0.4.1 \
+		siphasher-0.3.5 \
+		slab-0.4.3 \
+		smallvec-0.6.14 \
+		smallvec-1.6.1 \
+		socket2-0.4.0 \
+		spin-0.5.2 \
+		stable_deref_trait-1.2.0 \
+		standback-0.2.17 \
+		state-0.4.2 \
+		stdweb-0.4.20 \
+		stdweb-derive-0.5.3 \
+		stdweb-internal-macros-0.2.9 \
+		stdweb-internal-runtime-0.1.5 \
+		string_cache-0.8.1 \
+		string_cache_codegen-0.5.1 \
+		subtle-2.4.1 \
+		syn-0.15.44 \
+		syn-1.0.74 \
+		syslog-4.0.1 \
+		tap-1.0.1 \
+		tempfile-3.2.0 \
+		tendril-0.4.2 \
+		thiserror-1.0.26 \
+		thiserror-impl-1.0.26 \
+		threadpool-1.8.1 \
+		time-0.1.44 \
+		time-0.2.27 \
+		time-macros-0.1.1 \
+		time-macros-impl-0.1.2 \
+		tinyvec-1.3.1 \
+		tinyvec_macros-0.1.0 \
+		tokio-1.9.0 \
+		tokio-native-tls-0.3.0 \
+		tokio-socks-0.5.1 \
+		tokio-util-0.6.7 \
+		toml-0.4.10 \
+		tower-service-0.3.1 \
+		tracing-0.1.26 \
+		tracing-attributes-0.1.15 \
+		tracing-core-0.1.18 \
+		traitobject-0.1.0 \
+		try-lock-0.2.3 \
+		twoway-0.1.8 \
+		typeable-0.1.2 \
+		typenum-1.13.0 \
+		u2f-0.2.0 \
+		ucd-trie-0.1.3 \
+		unicase-1.4.2 \
+		unicase-2.6.0 \
+		unicode-bidi-0.3.5 \
+		unicode-normalization-0.1.19 \
+		unicode-xid-0.1.0 \
+		unicode-xid-0.2.2 \
+		untrusted-0.7.1 \
+		url-1.7.2 \
+		url-2.2.2 \
+		utf-8-0.7.6 \
+		uuid-0.8.2 \
+		vcpkg-0.2.15 \
+		version_check-0.1.5 \
+		version_check-0.9.3 \
+		walkdir-2.3.2 \
+		want-0.3.0 \
+		wasi-0.9.0+wasi-snapshot-preview1 \
+		wasi-0.10.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.74 \
+		wasm-bindgen-backend-0.2.74 \
+		wasm-bindgen-futures-0.4.24 \
+		wasm-bindgen-macro-0.2.74 \
+		wasm-bindgen-macro-support-0.2.74 \
+		wasm-bindgen-shared-0.2.74 \
+		web-sys-0.3.51 \
+		webauthn-rs-0.3.0-alpha.9 \
+		webpki-0.21.4 \
+		webpki-roots-0.19.0 \
+		winapi-0.2.8 \
+		winapi-0.3.9 \
+		winapi-build-0.1.1 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.5 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		winreg-0.7.0 \
+		ws2_32-sys-0.2.1 \
+		wyz-0.2.0 \
+		xml5ever-0.16.1 \
+		yansi-0.5.0 \
+		yubico-0.10.0 \
+		devise,devise_codegen,devise_core@git+https://github.com/SergioBenitez/Devise.git?rev=e58b3ac9a\#e58b3ac9afc3b6ff10a8aaf02a3e768a8f530089 \
+		rocket,rocket_codegen,rocket_contrib,rocket_http@git+https://github.com/SergioBenitez/Rocket?rev=263e39b5b429de1913ce7e3036575a7b4d88b6d7\#263e39b5b429de1913ce7e3036575a7b4d88b6d7 \
+		data-url@git+https://github.com/servo/rust-url?rev=eb7330b5296c0d43816d1346211b74182bb4ae37\#eb7330b5296c0d43816d1346211b74182bb4ae37 \
+		job_scheduler@git+https://github.com/jjlin/job_scheduler?rev=ee023418dbba2bfe1e30a5fd7d937f9e33739806\#ee023418dbba2bfe1e30a5fd7d937f9e33739806
+
+post-install:
+	${MKDIR} ${STAGEDIR}/${ETCDIR}/rc.conf.d
+	${CP} ${FILESDIR}/${PORTNAME}_conf.in ${STAGEDIR}/${LOCALBASE}/etc/rc.conf.d/${PORTNAME}.sample
+	${MKDIR} ${STAGEDIR}/${WWWDIR}
+	${MKDIR} ${STAGEDIR}/${WWWDIR}/data
+	(cd ${WRKDIR} && ${COPYTREE_SHARE} web-vault ${STAGEDIR}/${WWWDIR})
+	${ECHO_CMD} \
+		'@postexec chown -R ${WWWOWN}:${WWWGRP} %D/${WWWDIR_REL}/data' \
+		>> ${TMPPLIST}
+
+.include <bsd.port.mk>

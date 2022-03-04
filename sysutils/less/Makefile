@@ -1,36 +1,41 @@
 # Created by: Andrey A. Chernov <ache@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	less
-PORTVERSION=	530
+PORTVERSION=	551
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.greenwoodsoftware.com/less/ \
-		http://bitrote.org/distfiles/
+MASTER_SITES=	http://www.greenwoodsoftware.com/less/
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Better pager utility
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+ MIT
+LICENSE_COMB=	dual
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
+LICENSE_FILE_MIT=	${WRKSRC}/LICENSE
 
 USES=		cpe ncurses
-CPE_VENDOR=	gnu
 
+CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 
-PLIST_FILES=	bin/less bin/lesskey bin/lessecho \
-		man/man1/less.1.gz man/man1/lesskey.1.gz \
-		man/man1/lessecho.1.gz
+PLIST_FILES=	bin/less \
+		bin/lessecho \
+		bin/lesskey \
+		man/man1/less.1.gz \
+		man/man1/lessecho.1.gz \
+		man/man1/lesskey.1.gz
 
-OPTIONS_DEFINE=	COLORS
-COLORS_DESC=	Enable colors support via escape sequence
+OPTIONS_DEFINE=		COLORS PCRE
+OPTIONS_DEFAULT=	COLORS PCRE
 
-.include <bsd.port.options.mk>
+PCRE_USES=		localbase
+PCRE_CONFIGURE_ON=	--with-regex=pcre
+PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE_LDFLAGS=		-L${LOCALBASE}/lib -lpcre
+PCRE_CONFIGURE_OFF=	--with-regex=posix
 
-.if ${PORT_OPTIONS:MCOLORS}
-CPPFLAGS+=	-DCOLOR_LESS
-
-pre-fetch:
-	@${ECHO_MSG} "Making a color version of less."
-.endif
+COLORS_DESC=		Enable colors support via escape sequence
+COLORS_CPPFLAGS=	-DCOLOR_LESS
 
 .include <bsd.port.mk>

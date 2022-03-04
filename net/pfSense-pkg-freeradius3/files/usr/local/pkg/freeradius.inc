@@ -3,7 +3,7 @@
  * freeradius.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -78,6 +78,7 @@ function freeradius_get_libdir() {
 }
 
 function freeradius_deinstall_command() {
+	global $config;
 	$pidFile = "/var/run/radiusd.pid";
 	$i = 0;
 
@@ -87,7 +88,22 @@ function freeradius_deinstall_command() {
 		sleep(1);
 		$i++;
 	}
-	return;
+
+	/* Remove package settings from config if 'Keep Settings' is disabled */
+	init_config_arr(array('installedpackages', 'freeradiussettings', 'config', 0));
+	if (isset($config['installedpackages']['freeradiussettings']['config'][0]['keep_settings']) &&
+	    empty($config['installedpackages']['freeradiussettings']['config'][0]['keep_settings'])) {
+		log_error("[freeRADIUS] Removing all FreeRADIUS settings since 'Keep Settings/Data' is disabled...");
+		$uninstall = array('freeradius', 'freeradiusauthorizedmacs', 'freeradiusclients', 'freeradiusinterfaces',
+		'freeradiussettings', 'freeradiuseapconf', 'freeradiussqlconf', 'freeradiusmodulesldap', 'freeradiussync');
+		foreach ($uninstall as $unin) {
+			if (is_array($config['installedpackages'][$unin])) {
+				unset($config['installedpackages'][$unin]);
+			}
+		}
+		rmdir_recursive(FREERADIUS_RADDB, false);
+		write_config("[freeRADIUS] Package uninstalled.");
+	}
 }
 
 function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
@@ -222,6 +238,9 @@ SERVICENAME="radiusd"
 	LOCKFILE="/tmp/\${SERVICENAME}_start.lock"
 	PIDFILE="/var/run/\${SERVICENAME}.pid"
 
+	# Make sure library path cache is updated
+        /etc/rc.d/ldconfig start 2>/dev/null
+
 	# prevent this part of script from running in parallel
 	if ( set -o noclobber; echo "\$\$" > "\$LOCKFILE") 2> /dev/null; then
 		# make sure lock file is removed even if script is terminated
@@ -253,7 +272,12 @@ SERVICENAME="radiusd"
 	fi
 
 EOD;
-	$rcfile['stop'] = FREERADIUS_ETC . '/rc.d/radiusd onestop';
+
+	$rcfile['stop'] = <<<EOD
+	if [ ! -f "/tmp/radiusd_start.lock" ]; then
+		{$freeradius_etc_dir}/rc.d/radiusd onestop
+	fi
+EOD;
 	write_rcfile($rcfile);
 }
 
@@ -266,7 +290,7 @@ function freeradius_settings_resync($restart_svc = true) {
 
 	$frlib = freeradius_get_libdir();
 
-	// We do some checks of some folders which will be deleted after reboot on nanobsd systems
+	// We do some checks of some folders which will be deleted after reboot on ramdisk systems
 	safe_mkdir("/var/log/radacct/datacounter/daily");
 	safe_mkdir("/var/log/radacct/datacounter/weekly");
 	safe_mkdir("/var/log/radacct/datacounter/monthly");
@@ -476,6 +500,14 @@ function freeradius_users_resync($via_rpc = false) {
 				case "MD5-Password":
 					$varuserspassword = md5($varuserspassword);
 					break;
+				case "MD5-Password-hashed":
+					$varuserspassword = $users['varuserspassword']; // use hashed password as-is
+					$varuserspasswordencryption = "MD5-Password";
+					break;
+				case "NT-Password-hashed":
+					$varuserspassword = $users['varuserspassword'];
+					$varuserspasswordencryption = "NT-Password";
+					break;
 				default:
 					$varuserspassword = $users['varuserspassword'];
 			}
@@ -490,6 +522,12 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersframedipaddress = $users['varusersframedipaddress'];
 			$varusersframedipnetmask = $users['varusersframedipnetmask'];
 			$varusersframedroute = $users['varusersframedroute'];
+			if (is_ipaddrv6($users['varusersframedip6address'])) {
+				$varusersframedip6address = $users['varusersframedip6address'];
+			} elseif (is_subnetv6($users['varusersframedip6address'])) {
+				$varusersframedip6prefix = $users['varusersframedip6address'];
+			}
+			$varusersframedip6route = $users['varusersframedip6route'];
 			$varusersexpiration = $users['varusersexpiration'];
 			$varuserssessiontimeout = $users['varuserssessiontimeout'];
 			$varuserslogintime = $users['varuserslogintime'];
@@ -634,6 +672,33 @@ EOD;
 	Framed-Route = "{$varusersframedroute}"
 EOD;
 			}
+			if ($varusersframedip6address != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= <<<EOD
+
+	Framed-IPv6-Address = {$varusersframedip6address}
+EOD;
+			}
+			if ($varusersframedip6prefix != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= <<<EOD
+
+	Framed-IPv6-Prefix = {$varusersframedip6prefix}
+EOD;
+			}
+			if ($varusersframedip6route != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= <<<EOD
+
+	Framed-IPv6-Route = "{$varusersframedip6route}"
+EOD;
+			}
 			if ($varuserssessiontimeout != '') {
 				if ($varusersreplyitem != '') {
 					$varusersreplyitem .= ",";
@@ -759,15 +824,21 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 	if (!empty($arrmacs)) {
 		foreach ($arrmacs as $macs) {
 			// Variables for authorized_macs file defined parameters
-			$varmacsaddress = $macs['varmacsaddress'];
+			$varmacsaddress = str_replace(":", "-", $macs['varmacsaddress']);
 			// We don't need a password but we need this field to make syntac correct for CHECK-ITEMS
-			$varmacspassword = $macs['varmacsaddress'];
+			$varmacspassword = str_replace(":", "-", $macs['varmacsaddress']);
 
 			$varmacssimultaneousconnect = ($macs['varmacssimultaneousconnect'] ?: '');
 			$varmacsswisprredirectionurl = $macs['varmacsswisprredirectionurl'];
 			$varmacsframedipaddress = $macs['varmacsframedipaddress'];
 			$varmacsframedipnetmask = $macs['varmacsframedipnetmask'];
 			$varmacsframedroute = $macs['varmacsframedroute'];
+			if (is_ipaddrv6($macs['varmacsframedip6address'])) {
+				$varmacsframedip6address = $macs['varmacsframedip6address'];
+			} elseif (is_subnetv6($macs['varmacsframedip6address'])) {
+				$varmacsframedip6prefix = $macs['varmacsframedip6address'];
+			}
+			$varmacsframedip6route = $macs['varmacsframedip6route'];
 			$varmacsexpiration = $macs['varmacsexpiration'];
 			$varmacssessiontimeout = $macs['varmacssessiontimeout'];
 			$varmacslogintime = $macs['varmacslogintime'];
@@ -886,6 +957,33 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-Route = "{$varmacsframedroute}"
+EOD;
+			}
+			if ($varmacsframedip6address != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= <<<EOD
+
+	Framed-IPv6-Address = {$varmacsframedip6address}
+EOD;
+			}
+			if ($varmacsframedip6prefix != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= <<<EOD
+
+	Framed-IPv6-Prefix = {$varmacsframedip6prefix}
+EOD;
+			}
+			if ($varmacsframedip6route != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= <<<EOD
+
+	Framed-IPv6-Route = "{$varmacsframedip6route}"
 EOD;
 			}
 			if ($varmacssessiontimeout != '') {
@@ -1031,11 +1129,17 @@ function freeradius_clients_resync($restart_svc = true) {
 			} else {
 				$varclientpassword = "password = {$varclientpasswordinput}";
 			}
+			if (preg_match('/^(.+)\/(\d+)$/',$varclientip, $matches)) {
+				$varclientip = $matches[1];
+				$varclientprefix = '/' . $matches[2];
+			} else {
+				$varclientprefix = '';
+			}
 
 			$conf .= <<<EOD
 
 client "{$varclientshortname}" {
-	{$varclientipversion} = {$varclientip}
+	{$varclientipversion} = {$varclientip}{$varclientprefix}
 	proto = {$varclientproto}
 	secret = {$varclientsharedsecret}
 	require_message_authenticator = {$varrequiremessageauthenticator}
@@ -1086,12 +1190,10 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	}
 	$eapconf = & $config['installedpackages']['freeradiuseapconf']['config'][0];
 
-	// Disable weak EAP types like MD5, GTC, LEAP
+	// Disable weak EAP types like MD5, and GTC
 	if ($eapconf['vareapconfdisableweakeaptypes'] == '') {
 		$vareapconfweakeaptypes = <<<EOD
 	md5 {
-	}
-	leap {
 	}
 	gtc {
 		#challenge = "Password: "
@@ -1101,7 +1203,7 @@ function freeradius_eapconf_resync($restart_svc = true) {
 EOD;
 
 	} else {
-		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC, LEAP ###';
+		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC ###';
 	}
 
 	// Variables: EAP
@@ -1159,8 +1261,7 @@ EOD;
 	}
 
 
-	// This is for the pfsense cert manager.
-	// Depends on freeradius_get_server_certs() and freeradius_get_ca_certs()
+	// For pfSense cert manager
 	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
 	if ($ca_cert == false) {
 		if (!is_array($config['ca'])) {
@@ -1224,9 +1325,11 @@ EOD;
 			if (base64_decode($svr_cert['prv'])) {
 				file_put_contents(FREERADIUS_CERTS . "/server_key.pem", base64_decode($svr_cert['prv']));
 			}
-		}
-		if (base64_decode($svr_cert['crt'])) {
-			file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", base64_decode($svr_cert['crt']));
+			if (base64_decode($svr_cert['crt'])) {
+				file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", 
+					base64_decode($svr_cert['crt']) . "\n" .
+					ca_chain($svr_cert));
+			}
 		}
 	}
 
@@ -1267,6 +1370,11 @@ EOD;
 	} else {
 		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
 	}
+	if (!empty($eapconf['vareapconftlsminversion'])) {
+		$vareapconftlsminversion = $eapconf['vareapconftlsminversion'];
+	} else {
+		$vareapconftlsminversion = '1.0';
+	}
 
 	$conf .= <<<EOD
 ### EAP
@@ -1306,6 +1414,7 @@ eap {
 		cipher_server_preference = no
 #		disable_tlsv1_2 = no
 		ecdh_curve = "prime256v1"
+		tls_min_version = "{$vareapconftlsminversion}"
 		cache {
 			enable = {$vareapconfcacheenablecache}
 			lifetime = {$vareapconfcachelifetime}
@@ -1596,23 +1705,10 @@ EOD;
 	chmod($filename, 0640);
 
 
+	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
-}
-
-// Gets started from freeradiuseapconf.xml
-function freeradius_get_ca_certs() {
-	global $config;
-	$ca_arr = array();
-	$ca_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-
-	if (is_array($config['ca'])) {
-		foreach ($config['ca'] as $ca) {
-			$ca_arr[] = array('refid' => $ca['refid'], 'descr' => $ca['descr']);
-		}
-	}
-	return $ca_arr;
 }
 
 // Gets started from freeradiuseapconf.xml
@@ -1627,20 +1723,6 @@ function freeradius_get_ca_crl() {
 		}
 	}
 	return $crl_arr;
-}
-
-// Gets started from freeradiuseapconf.xml
-function freeradius_get_server_certs() {
-	global $config;
-	$cert_arr = array();
-	$cert_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-
-	if (is_array($config['cert'])) {
-		foreach ($config['cert'] as $cert) {
-			$cert_arr[] = array('refid' => $cert['refid'], 'descr' => $cert['descr']);
-		}
-	}
-	return $cert_arr;
 }
 
 function freeradius_sqlconf_resync() {
@@ -1859,6 +1941,7 @@ EOD;
 
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
+	freeradius_sync_on_changes();
 	freeradius_settings_resync();
 }
 
@@ -1987,15 +2070,29 @@ EOD;
 		sql1
 		{$varsqlconf2authorize}
 	}
+	if (notfound || noop) {
+
+EOD;
+	$varsqlconfauthcounters = <<<EOD
+
+	-dailycounter
+	-monthlycounter
+	-noresetcounter
+	-expire_on_login
 
 EOD;
 	} else {
 		$varsqlconfauthorize = <<<EOD
 	### sql DISABLED ###
-	daily
-	weekly
-	monthly
-	forever
+	if (true) {
+
+EOD;
+	$varsqlconfauthcounters = <<<EOD
+
+	-daily
+	-weekly
+	-monthly
+	-forever
 EOD;
 	}
 
@@ -2184,9 +2281,15 @@ authorize {
 	}
 #	unix
 	files
-{$varsqlconfauthorize}
-#	smbpasswd
-{$varmodulesldapenableauthorize}
+	if ((notfound || noop) && ("%{%{Control:Auth-Type}:-No-Accept}" != "Accept")) {
+		{$varsqlconfauthorize}
+			{$varmodulesldapenableauthorize}
+			if (notfound || noop) {
+				reject
+			}
+		}
+	}
+	{$varsqlconfauthcounters}
 	# Formerly checkval
 	if (&request:Calling-Station-Id == &control:Calling-Station-Id) {
 		ok
@@ -2470,9 +2573,14 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 
 	/* XML will hold the sections to sync. */
 	$xml = array();
-	$xml['freeradius'] = $config['installedpackages']['freeradius'];
-	$xml['freeradiusauthorizedmacs'] = $config['installedpackages']['freeradiusauthorizedmacs'];
-	$xml['freeradiusclients'] = $config['installedpackages']['freeradiusclients'];
+
+	$syncsections = array('freeradius', 'freeradiusauthorizedmacs', 'freeradiusclients', 'freeradiusinterfaces',
+	'freeradiussettings', 'freeradiuseapconf', 'freeradiussqlconf', 'freeradiusmodulesldap');
+	foreach ($syncsections as $section) {
+		if (is_array($config['installedpackages'][$section])) {
+			$xml[$section] = $config['installedpackages'][$section];
+		}
+	}
 
 	$execcmd  = "require_once('/usr/local/pkg/freeradius.inc');\n";
 	$execcmd .= "freeradius_all_after_XMLRPC_resync();";
@@ -2565,6 +2673,9 @@ function freeradius_all_after_XMLRPC_resync() {
 	freeradius_users_resync(true);
 	// Do not restart service yet - $restart_svc = false, $via_rpc = true
 	freeradius_authorizedmacs_resync(false, true);
+	freeradius_sqlconf_resync();
+	freeradius_eapconf_resync(false);
+	freeradius_modulesldap_resync(false);
 	// Restart now when XMLRPC sync is completely finished
 	freeradius_clients_resync();
 
@@ -3132,6 +3243,7 @@ ldap ldap2 {
 		control:NT-Password		:= 'ntPassword'
 		control:LM-Password		:= 'sambaLmPassword'
 		control:NT-Password		:= 'sambaNtPassword'
+		control:NT-Password		:= 'ipaNTHash'
 		control:LM-Password		:= 'dBCSPwd'
 		control:Password-With-Header	+= 'userPassword'
 		control:SMB-Account-CTRL-TEXT	:= 'acctFlags'
@@ -3235,6 +3347,7 @@ EOD;
 	// freeradius_serverdefault_resync() needs to restart other dependencies so
 	// we are pointing directly to freeradius_settings_resync()
 	freeradius_serverdefault_resync();
+	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
@@ -3672,6 +3785,7 @@ ATTRIBUTE 		MOTP-PIN 			901 	string
 ATTRIBUTE 		MOTP-Offset 			902 	string
 
 \$INCLUDE /usr/share/doc/radius/dictionary.pfsense
+\$INCLUDE /usr/local/pkg/dictionary.mpd
 
 EOD;
 
@@ -3688,13 +3802,16 @@ EOD;
 function freeradius_validate_users($post, &$input_errors) {
 
 	// Username
-	if ($post['varusersmotpenable'] == 'on' && !preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
-		$input_errors[] = "The 'Username' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/) when 'Enable One-Time-Password for this user' is checked.";
+	if (($post['varusersmotpenable'] == 'on') && !preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
+		$input_errors[] = "The 'Username' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/).";
 	}
 
 	// Password
-	if ($post['varusersmotpenable'] == 'on' && $post['varuserspassword'] != '') {
+	if (($post['varusersmotpenable'] == 'on') && ($post['varuserspassword'] != '')) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
+	}
+	if (!empty($post['varuserspassword']) && strpos($post['varuserspassword'], "\"") !== false) {
+		$input_errors[] = "The '\"' character is not allowed in the Password field.";
 	}
 
 	// OTP method
@@ -3762,21 +3879,15 @@ function freeradius_validate_users($post, &$input_errors) {
 		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
 	}
 
-	// IP Address; may contain a single trailing '+' for simultaneous connections
-	if ($post['varusersframedipaddress']) {
-		$framedip = str_replace('+', '', $post['varusersframedipaddress'], $pluscnt);
-		if (!is_ipaddrv4($framedip)) {
-			$input_errors[] = "The 'IP Address' field must contain a valid IPv4 address.";
-		}
-		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IP Address' field may optionally contain only a single trailing '+'.";
-		}
+	// IPv4 Address
+	if ($post['varusersframedipaddress'] && !is_ipaddrv4($post['varusersframedipaddress'])) {
+		$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 	}
 
 	// Subnet Mask
 	if ($post['varusersframedipnetmask']) {
 		if ($post['varusersframedipaddress'] == '') {
-			$input_errors[] = "To specify a 'Subnet Mask', the 'IP Address' field must not be empty.";
+			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
 		} elseif (is_ipaddrv4($framedip)) {
 			$ip = long2ip(ip2long($framedip) & ip2long($post['varusersframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varusersframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
@@ -3792,19 +3903,46 @@ function freeradius_validate_users($post, &$input_errors) {
 		$cnt = count($framedroute);
 		// One or more metrics are allowed per RFC2865 (5.22)
 		if ($cnt < 3) {
-			$input_errors[] = "The 'Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
+			$input_errors[] = "The 'IPv4 Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
 		}
 		// The subnet CIDR is optional per RFC2865 (5.22)
 		if (!is_ipaddrv4($framedroute[0]) && !is_subnetv4($framedroute[0])) {
-			$input_errors[] = "The 'Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
+			$input_errors[] = "The 'IPv4 Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
 		}
 		if (!is_ipaddrv4($framedroute[1])) {
-			$input_errors[] = "The 'Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
+			$input_errors[] = "The 'IPv4 Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
 		}
 		// One or more metrics are allowed per RFC2865 (5.22)
 		for ($i = 2; $i < $cnt; $i++) {
 			if (!is_numericint($framedroute[$i])) {
-				$input_errors[] = "The 'Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+				$input_errors[] = "The 'IPv4 Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+			}
+		}
+	}
+
+	// IPv6 Address
+	if ($post['varusersframedip6address'] && !is_subnetv6($post['varusersframedip6address']) &&
+	    !is_ipaddrv6($post['varusersframedip6address'])) {
+		$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address or IPv6 prefix.";
+	}
+
+	// IPv6 Gateway
+	if ($post['varusersframedip6route'] != '') {
+		$framed6route = explode(" ", $post['varusersframedip6route']);
+		$cnt = count($framed6route);
+		if ($cnt < 3) {
+			$input_errors[] = "The 'IPv6 Gateway' field must match the required format: Prefix Gateway Metric(s) (e.g. 2001:db8:0:106::/64 2001:db8::106:a00:20ff:fe99:a998 1).";
+		}
+		// The prefix is optional per RFC3162 (2.5)
+		if (!is_ipaddrv6($framed6route[0]) && !is_subnetv6($framed6route[0])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's prefix part '{$framed6route[0]}' must be a valid IPv6 prefix.";
+		}
+		if (!is_ipaddrv6($framed6route[1])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's gateway part '{$framed6route[1]}' must be a valid IPv6 gateway address.";
+		}
+		for ($i = 2; $i < $cnt; $i++) {
+			if (!is_numericint($framed6route[$i])) {
+				$input_errors[] = "The 'IPv6 Gateway' field's metric part '{$framed6route[$i]}' must contain an integer value.";
 			}
 		}
 	}
@@ -3873,8 +4011,8 @@ function freeradius_validate_macs($post, &$input_errors) {
 
 	// MAC Address
 	if (!empty($post['varmacsaddress'])) {
-		if (!preg_match('/^[0-9A-F]{2}(?:[-][0-9A-F]{2}){5}$/i', $post['varmacsaddress'])) {
-			$input_errors[] = "The 'MAC Address' field must contain a valid MAC address, delimited with '-' character.";
+		if (!preg_match('/^[0-9A-F]{2}(?:[-:][0-9A-F]{2}){5}$/i', $post['varmacsaddress'])) {
+			$input_errors[] = "The 'MAC Address' field must contain a valid MAC address, delimited with '-' or ':' character.";
 		}
 	}
 
@@ -3895,21 +4033,15 @@ function freeradius_validate_macs($post, &$input_errors) {
 		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
 	}
 
-	// IP Address; may contain a single trailing '+' for simultaneous connections
-	if ($post['varmacsframedipaddress']) {
-		$framedip = str_replace('+', '', $post['varmacsframedipaddress'], $pluscnt);
-		if (!is_ipaddrv4($framedip)) {
-			$input_errors[] = "The 'IP Address' field must contain a valid IPv4 address.";
-		}
-		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IP Address' field may optionally contain only a single trailing '+'.";
-		}
+	// IPv4 Address
+	if ($post['varusersframedipaddress'] && !is_ipaddrv4($post['varusersframedipaddress'])) {
+		$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 	}
 
 	// Subnet Mask
 	if ($post['varmacsframedipnetmask']) {
 		if ($post['varmacsframedipaddress'] == '') {
-			$input_errors[] = "To specify a 'Subnet Mask', the 'IP Address' field must not be empty.";
+			$input_errors[] = "To specify a 'Subnet Mask', the 'IPv4 Address' field must not be empty.";
 		} elseif (is_ipaddrv4($framedip)) {
 			$ip = long2ip(ip2long($framedip) & ip2long($post['varmacsframedipnetmask']));
 			$mask = 32 - log((ip2long($post['varmacsframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
@@ -3925,19 +4057,46 @@ function freeradius_validate_macs($post, &$input_errors) {
 		$cnt = count($framedroute);
 		// One or more metrics are allowed per RFC2865 (5.22)
 		if ($cnt < 3) {
-			$input_errors[] = "The 'Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
+			$input_errors[] = "The 'IPv4 Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
 		}
 		// The subnet CIDR is optional per RFC2865 (5.22)
 		if (!is_ipaddrv4($framedroute[0]) && !is_subnetv4($framedroute[0])) {
-			$input_errors[] = "The 'Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
+			$input_errors[] = "The 'IPv4 Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
 		}
 		if (!is_ipaddrv4($framedroute[1])) {
-			$input_errors[] = "The 'Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
+			$input_errors[] = "The 'IPv4 Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
 		}
 		// One or more metrics are allowed per RFC2865 (5.22)
 		for ($i = 2; $i < $cnt; $i++) {
 			if (!is_numericint($framedroute[$i])) {
-				$input_errors[] = "The 'Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+				$input_errors[] = "The 'IPv4 Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+			}
+		}
+	}
+
+	// IPv6 Address
+	if ($post['varmacsframedip6address'] && !is_subnetv6($post['varmacsframedip6address']) &&
+	    !is_ipaddrv6($post['varmacsframedip6address'])) {
+		$input_errors[] = "The 'IPv6 Address' field must contain a valid IPv6 address or IPv6 prefix.";
+	}
+
+	// IPv6 Gateway
+	if ($post['varmacsframedip6route'] != '') {
+		$framed6route = explode(" ", $post['varmacsframedip6route']);
+		$cnt = count($framed6route);
+		if ($cnt < 3) {
+			$input_errors[] = "The 'IPv6 Gateway' field must match the required format: Prefix Gateway Metric(s) (e.g. 2001:db8:0:106::/64 2001:db8::106:a00:20ff:fe99:a998 1).";
+		}
+		// The prefix is optional per RFC3162 (2.5)
+		if (!is_ipaddrv6($framed6route[0]) && !is_subnetv6($framed6route[0])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's prefix part '{$framed6route[0]}' must be a valid IPv6 prefix.";
+		}
+		if (!is_ipaddrv6($framed6route[1])) {
+			$input_errors[] = "The 'IPv6 Gateway' field's gateway part '{$framed6route[1]}' must be a valid IPv6 gateway address.";
+		}
+		for ($i = 2; $i < $cnt; $i++) {
+			if (!is_numericint($framed6route[$i])) {
+				$input_errors[] = "The 'IPv6 Gateway' field's metric part '{$framed6route[$i]}' must contain an integer value.";
 			}
 		}
 	}
@@ -4015,11 +4174,22 @@ function freeradius_validate_clients($post, &$input_errors) {
 
 	// Client IP Address
 	if ($post['varclientip'] != '*') {
-		if ($post['varclientipversion'] == 'ipaddr' && !is_ipaddrv4($post['varclientip'])) {
-			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address when IPv4 is selected under 'Client IP Version'.";
-		}
-		if ($post['varclientipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varclientip'])) {
-			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address when IPv6 is selected under 'Client IP Version'.";
+		if (preg_match('/^(.+)\/(\d+)$/',$post['varclientip'], $matches)) {
+			if ($post['varclientipversion'] == 'ipaddr' && (!is_ipaddrv4($matches[1]) ||
+			    !is_numeric($matches[2]) || ($matches[2] > 32) || ($matches[2] < 1))) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address and CIDR prefix when IPv4 is selected under 'Client IP Version'.";
+			}
+			if ($post['varclientipversion'] == 'ipv6addr' && (!is_ipaddrv6($matches[1]) ||
+			    !is_numeric($matches[2]) || ($matches[2] > 128) || ($matches[2] < 1))) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address and prefix when IPv6 is selected under 'Client IP Version'.";
+			}
+		} else {
+			if ($post['varclientipversion'] == 'ipaddr' && !is_ipaddrv4($post['varclientip'])) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address when IPv4 is selected under 'Client IP Version'.";
+			}
+			if ($post['varclientipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varclientip'])) {
+				$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address when IPv6 is selected under 'Client IP Version'.";
+			}
 		}
 	}
 
@@ -4183,7 +4353,7 @@ function freeradius_validate_eap($post, &$input_errors) {
 
 	// Disable Weak EAP Types sanity check
 	if ($post['vareapconfdisableweakeaptypes'] == 'on') {
-		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc', 'leap'))) {
+		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc'))) {
 			$input_errors[] = "The 'Default EAP Type' field must not contain any of the weak types when 'Disable Weak EAP Types' is enabled.";
 		}
 	}
@@ -4472,6 +4642,44 @@ function freeradius_validate_ldap($post, &$input_errors) {
 	 * Group Membership Options - Groupname Attribute, Group Membership Filter, Group Membership Attribute
 	 */
 
+}
+
+function freeradius_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'freeradiuseapconf', 'config'));
+	$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($eapconf)) {
+		if (($pluginparams['event'] == 'used_ca') && !empty($eapconf['ssl_ca_cert'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_ca_cert'];
+			$item['usedby'] = 'TLS CA Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($eapconf['ssl_server_cert'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_server_cert'];
+			$item['usedby'] = 'TLS Server Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_crl') && !empty($eapconf['ssl_ca_crl'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_ca_crl'];
+			$item['usedby'] = 'TLS Revocation List';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
 }
 
 ?>

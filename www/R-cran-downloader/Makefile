@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	downloader
 PORTVERSION=	0.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

@@ -1,8 +1,8 @@
 # Created by: Matt Dawson <matt@mattsnetwork.co.uk>
-# $FreeBSD$
 
 PORTNAME=	gpredict
 DISTVERSION=	2.2.1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	https://github.com/csete/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgoocanvas-2.0.so:graphics/goocanvas2 \
 		libgps.so:astro/gpsd
 
-USES=		gettext gmake pkgconfig tar:bz2
+USES=		compiler:c11 gettext gmake gnome pkgconfig tar:bz2
 GNU_CONFIGURE=	yes
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 

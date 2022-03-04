@@ -3,4 +3,4 @@ with Phabricator installs to send code for review, download patches, transfer
 files, view status, make API calls, and various other things. You can find
 a complete user guide here:
 
-WWW: https://secure.phabricator.com/book/arcanist/
+WWW: https://secure.phabricator.com/book/phabricator/article/arcanist/

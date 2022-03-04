@@ -1,8 +1,7 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libsodium
-PORTVERSION=	1.0.7
+PORTVERSION=	2.0.23
 CATEGORIES=	security
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -12,8 +11,9 @@ LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
-USES=		php:pecl
+USES=		localbase php:pecl
 
-PORTSCOUT=	limit:^1\.
+#IGNORE_WITH_PHP=72 73 74
+PHP_MODNAME=	sodium
 
 .include <bsd.port.mk>

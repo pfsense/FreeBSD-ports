@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pgsql
 
 DB=		PSQL

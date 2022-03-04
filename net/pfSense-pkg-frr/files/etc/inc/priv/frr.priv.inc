@@ -3,7 +3,7 @@
  * frr.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,6 +38,7 @@ $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf6_int
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf6.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf_interfaces.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_ospf.xml*";
+$priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr/frr_bfd.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg_edit.php?xml=frr.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg.php?xml=frr/frr_bgp_aspaths.xml*";
 $priv_list['page-services-frr']['match'][] = "pkg.php?xml=frr/frr_bgp_communities.xml*";

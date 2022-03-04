@@ -1,8 +1,7 @@
 # Created by: imp
-# $FreeBSD$
 
 PORTNAME=	nvme-cli
-PORTVERSION=	1.6
+PORTVERSION=	1.8.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	imp@FreeBSD.org
@@ -13,13 +12,12 @@ LICENSE=	GPLv2
 # only tested on amd64, all other archs are no-go until we're sure amd64 works.
 # And there's plenty in amd64 that compiles, but won't run (eg using /sys/, etc)
 ONLY_FOR_ARCHS=	amd64
-BROKEN_FreeBSD_11=	Uses newer API than in 11.x
 
 USES=		gmake
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	bsdimp
-GH_PROJECT=	nvme-cli
-GH_TAGNAME=	9221b5f
+GH_TAGNAME=	c92d871
+
+PLIST_FILES=	sbin/nvme
 
 .include <bsd.port.mk>

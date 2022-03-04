@@ -1,10 +1,8 @@
 # Created by: Dennis Herrmann <dhn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	smu
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	rodrigo@FreeBSD.org

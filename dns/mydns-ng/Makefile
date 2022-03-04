@@ -1,5 +1,4 @@
 # Created by: Simon Dick <simond@irrelevant.org>
-# $FreeBSD$
 
 PORTNAME=	mydns-ng
 PORTVERSION=	1.2.8.31
@@ -9,7 +8,7 @@ MASTER_SITES=	SF/${PORTNAME}/mydns/${PORTVERSION}
 DISTNAME=	mydns-${PORTVERSION}
 
 MAINTAINER=	gaod@hychen.org
-COMMENT=	Next Generation DNS Server for sql based DNS services
+COMMENT=	Next generation DNS server for SQL-based DNS services
 
 LICENSE=	GPLv2
 
@@ -42,7 +41,7 @@ PGSQL_CONFIGURE_ON=	--with-pgsql \
 			--with-pgsql-lib=${LOCALBASE}/lib
 PGSQL_CONFIGURE_OFF=	--without-pgsql
 
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_ON=	--with-mysql \
 			--with-mysql-include=${LOCALBASE}/include/mysql \
 			--with-mysql-lib=${LOCALBASE}/lib/mysql
@@ -51,15 +50,18 @@ MYSQL_CONFIGURE_OFF=	--without-mysql
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
+post-patch:
+# Fix the build with -fno-common (for Clang 11 and GCC 10)
+	@${REINPLACE_CMD} -e '/^CONF \*Conf/d' ${WRKSRC}/src/util/util.c
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/contrib
 .for f in ${DOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-	@${INSTALL_DATA} ${WRKSRC}/contrib/*.php ${STAGEDIR}${DOCSDIR}/contrib/
-	@${INSTALL_DATA} ${WRKSRC}/contrib/*.pl ${STAGEDIR}${DOCSDIR}/contrib/
-	@${INSTALL_DATA} ${WRKSRC}/contrib/*.pm ${STAGEDIR}${DOCSDIR}/contrib/
-	@${INSTALL_DATA} ${WRKSRC}/contrib/README ${STAGEDIR}${DOCSDIR}/contrib/
-	@${STAGEDIR}${PREFIX}/sbin/mydns --dump-config > ${STAGEDIR}${PREFIX}/etc/mydns.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/contrib/*.p* ${STAGEDIR}${DOCSDIR}/contrib
+	${INSTALL_DATA} ${WRKSRC}/contrib/README ${STAGEDIR}${DOCSDIR}/contrib
+	${STAGEDIR}${PREFIX}/sbin/mydns --dump-config > \
+		${STAGEDIR}${PREFIX}/etc/mydns.conf.sample
 
 .include <bsd.port.mk>

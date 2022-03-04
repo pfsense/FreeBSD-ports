@@ -1,5 +1,4 @@
 # Created by: Shaun Amott <shaun@inerd.com>
-# $FreeBSD$
 
 PORTNAME=	nuclearchess
 PORTVERSION=	1.0.0
@@ -18,8 +17,8 @@ COMMENT=	Chess variant designed to be short and fun for all players
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		gnome sdl
 USE_SDL=	sdl image
-INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=${DATADIR}
 

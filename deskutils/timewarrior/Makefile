@@ -1,20 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	timewarrior
-PORTVERSION=	1.1.1
-PORTREVISION=	2
+PORTVERSION=	1.4.3
+DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
-MASTER_SITES=	https://taskwarrior.org/download/
-DISTNAME=	timew-${PORTVERSION}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Track time from the command line
 
 LICENSE=	MIT
 
-USES=		cmake compiler:c++11-lang
+BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor
+
+USES=		cmake:insource compiler:c++11-lang
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	GothenburgBitFactory
+GH_TUPLE=	GothenburgBitFactory:libshared:c1760be:libshared/src/libshared
 CMAKE_ARGS+=	-DTIMEW_DOCDIR=${DOCSDIR}
 
-OPTIONS_SUB=	yes
+post-install:
+	@${RM} -r ${STAGEDIR}${PREFIX}/man/man1/CMakeFiles ${STAGEDIR}${PREFIX}/man/man7/CMakeFiles
 
 .include <bsd.port.mk>

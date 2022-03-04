@@ -1,34 +1,31 @@
 # Created by: Andy Fawcett <andy@athame.co.uk>
-# $FreeBSD$
 
 PORTNAME=	uptimed
-PORTVERSION=	0.4.1
+PORTVERSION=	0.4.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
-MAINTAINER=	pkubaj@anongoth.pl
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Uptime daemon
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf gmake libtool
+#USES=		autoreconf gmake libtool
+USES=		autoreconf libtool
 USE_GITHUB=	yes
 GH_ACCOUNT=	rpodgorny
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-INSTALL_TARGET=	install-strip
-
 USE_RC_SUBR=	${PORTNAME}
+
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|/usr/lib/sendmail|/usr/sbin/sendmail| ; \
 		 s|/var/run/uptimed|/var/run/uptimed.pid|' \
 		${WRKSRC}/etc/uptimed.conf-dist
-	@${REINPLACE_CMD} -e \
-		's|/etc/uprecords-cgi/|${PREFIX}/www/cgi-bin/|' \
-		${WRKSRC}/src/uprecords.c
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/www/cgi-bin

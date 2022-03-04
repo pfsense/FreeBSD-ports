@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	gitlab-markup
-PORTVERSION=	1.6.5
+PORTVERSION=	1.7.1
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

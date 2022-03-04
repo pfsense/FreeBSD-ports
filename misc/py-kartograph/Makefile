@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	kartograph
 DISTVERSION=	0.6.8
+PORTREVISION=	1
 CATEGORIES=	misc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -21,7 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}argparse>0:devel/py-argparse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Shapely>=1.0.14:devel/py-shapely@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tinycss>0:textproc/py-tinycss@${PY_FLAVOR}
 
-USES=		python:2.7
+USES=		python:3.7+
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME}.py
 USE_PYTHON=	distutils concurrent autoplist

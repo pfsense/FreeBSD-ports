@@ -1,5 +1,4 @@
 # Created by: John Merryweather Cooper
-# $FreeBSD$
 
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-mysql
@@ -16,6 +15,6 @@ OPTIONS_DEFINE=	MYSQL
 MYSQL_DESC=	Install MySQL client
 OPTIONS_DEFAULT=	MYSQL
 
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 
 .include "${MASTERDIR}/Makefile"

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	invada-studio-plugins
 DISTVERSIONPREFIX=	lv2_
 DISTVERSION=	1.2.0
@@ -18,7 +16,7 @@ BUILD_DEPENDS=	lv2>0:audio/lv2
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gmake localbase pkgconfig tar:tgz
+USES=		gmake gnome localbase pkgconfig tar:tgz
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20
 LLD_UNSAFE=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION}

@@ -1,8 +1,8 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	opendht
-DISTVERSION=	1.8.2
+DISTVERSION=	1.10.1
+PORTREVISION=	4
 CATEGORIES=	devel net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libnettle.so:security/nettle \
 		libgnutls.so:security/gnutls
 
-USES=		cmake compiler:c++11-lib pathfix pkgconfig readline:port
+USES=		cmake compiler:c++11-lib pathfix pkgconfig readline
 USE_GITHUB=	yes
 GH_ACCOUNT=	savoirfairelinux
 USE_LDCONFIG=	yes

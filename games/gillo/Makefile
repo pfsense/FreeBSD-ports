@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <ip@doom.homeunix.org>
-# $FreeBSD$
 
 PORTNAME=	gillo
 DISTVERSION=	1.0beta1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.0beta1
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	${JAM}:devel/jam \
 		${LOCALBASE}/lib/libplibsg.a:x11-toolkits/plib
 LIB_DEPENDS=	libode.so:devel/ode
 
-USES=		gl tar:bzip2
+USES=		gl sdl tar:bzip2
 USE_CXXSTD=	c++98
 USE_GL=		gl glu
 USE_SDL=	sdl

@@ -3,7 +3,7 @@
  * frr.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +26,14 @@ require_once("service-utils.inc");
 require_once("util.inc");
 
 define('PKG_FRR_CONFIG_BASE', '/var/etc/frr');
+define('PKG_FRR_LIST_NONE_VALUE', array('name' => 'None', 'value' => 'none'));
+
 /* Since we need to embed this in strings & HERE Docs, copy to a var. Can't embed constants. */
 global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
+
+global $frr_daemons;
+$frr_daemons = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'ripd', 'bfdd');
 
 global $frr_well_known_communities;
 $frr_well_known_communities = array("internet", "no-export", "no-advertise", "local-as");
@@ -40,19 +45,22 @@ $frr_auto_config_warning = <<<EOF
 # This file was created by an automatic configuration generator.  #
 # The contents of this file will be overwritten without warning!  #
 ###################################################################
+!
 
 EOF;
 
 require_once("frr/inc/frr_validation.inc");
 require_once("frr/inc/frr_zebra.inc");
+require_once("frr/inc/frr_bfd.inc");
 require_once("frr/inc/frr_bgp.inc");
 require_once("frr/inc/frr_ospf.inc");
 require_once("frr/inc/frr_ospf6.inc");
+require_once("frr/inc/frr_rip.inc");
 
 /* Build a list of only CARP VIPs, formatted for use in a selection list */
 function frr_get_carp_list() {
 	$list = array();
-	$list[] = array("name" => "none", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 	$carplist = get_configured_vip_list("all", VIP_CARP);
 	foreach ($carplist as $vid => $vaddr) {
 		$vip = get_configured_vip($vid);
@@ -70,7 +78,7 @@ function frr_get_interfaces($includedefault = true, $includevips = true, $includ
 	 * OSPF interface selections can't use 'default'.
 	 */
 	if ($includedefault) {
-		$interfaces['default'] = "default";
+		$interfaces['default'] = "Default";
 	} else {
 		$interfaces = array();
 	}
@@ -158,6 +166,25 @@ function frr_plugin_carp($pluginparams) {
 	}
 }
 
+/*
+ * Called when IPsec reloads via rc.newipsecdns or similar. Cycles the IPsec
+ * interface in FRR status so routing will work again.
+ */
+function frr_ipsec_reload() {
+	global $config;
+	init_config_arr(array('installedpackages', 'frr', 'config', 0));
+	if (!empty($config['installedpackages']['frr']['config'][0]['ignoreipsecrestart']) ||
+		empty($config['installedpackages']['frr']['config'][0]['enable']) || !is_process_running('zebra')) {
+		return;
+	}
+
+	require_once('interfaces.inc');
+	$vti_ifs = array_keys(interface_ipsec_vti_list_all());
+	foreach ($vti_ifs as $vif) {
+		mwexec('/usr/local/bin/frrctl cycleinterface ' . escapeshellarg($vif));
+	}
+}
+
 /* Function to get a few items of interface information from a 'friendly'
  * interface name */
 function frr_get_interfaceinfo($interface, $ipv6 = false) {
@@ -181,7 +208,7 @@ function frr_get_route_destinations() {
 	global $config;
 	$list = array();
 
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 
 	/* Add non-disabled gateways to the list */
 	$gateways = return_gateways_array();
@@ -234,6 +261,13 @@ function frr_array_seq_sort(&$arr) {
 	if ($need_sort) {
 		usort($arr, "frr_array_seq_compare");
 	}
+
+	return $need_sort;
+}
+
+/* Sort an array by its 'name' and 'seq' value. */
+function frr_array_name_seq_sort(&$arr) {
+	return usort($arr, "frr_array_name_seq_compare");
 }
 
 /* Convert a CIDR prefix to wildcard bits */
@@ -243,12 +277,49 @@ function frr_cidr_to_wildcard_bits($cidr) {
 
 /* Create the rc.d service control script for FRR */
 function frr_generate_config_rcfile() {
-	global $config, $frr_config_base;
+	global $config, $frr_config_base, $frr_daemons;
 	/* If frr is not configured, then stop */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	} else {
 		return null;
+	}
+
+	/* Config area to daemon name mapping */
+	$config_key_daemons = array(
+		'frr' => array('zebra', 'staticd'),
+		'frrbfd' => array('bfdd'),
+		'frrbgp' => array('bgpd'),
+		'frrospfd' => array('ospfd'),
+		'frrospf6d' => array('ospf6d'),
+		'frrripd' => array('ripd')
+	);
+
+	/* Get FRR daemons enabled */
+	$frr_daemons_enabled = array();
+	if (!empty($config['installedpackages']['frr']['config'][0]['enable'])) {
+		foreach ($config_key_daemons as $config_key => $daemon) {
+			if (!empty($config['installedpackages'][$config_key]['config'][0]['enable'])) {
+				$frr_daemons_enabled = array_merge($frr_daemons_enabled, $daemon);
+			}
+		}
+	}
+	$frr_daemons_string = implode(" ", $frr_daemons_enabled);
+
+	/* Get FRR daemon modules to append to daemon commands */
+	$frr_daemon_modules = array();
+
+	/* SNMP */
+	foreach ($config_key_daemons as $config_key => $daemon) {
+		$frr_daemon_modules[$daemon[0]] = '';
+
+		if ($config['installedpackages'][$config_key]['config'][0]['enablesnmpagentx']) {
+			$frr_daemon_modules[$daemon[0]] .= ' -M snmp';
+		}
+	}
+	/* BGP RPKI */
+	if ($config['installedpackages']['frrbgp']['config'][0]['enablerpki']) {
+		$frr_daemon_modules['bgpd'] .= ' -M rpki';
 	}
 
 	/* Setup a CARP VIP status check, if needed, so the service won't start
@@ -260,89 +331,58 @@ function frr_generate_config_rcfile() {
 		$vhid = escapeshellarg("vhid {$vip['vhid']}");
 		$carp_ip_status_check = <<<EOF
 
-CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
-if [ \${CARP_STATUS} != "MASTER" ]; then
-	exit;
-fi
+	CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
+	if [ \${CARP_STATUS} != "MASTER" ]; then
+		exit;
+	fi
+
 EOF;
-	}
+}
 
 	/* When stopping, stop all services and remove old PID files */
 	$rc_file_stop = <<<EOF
-if [ -e /var/run/frr/zebra.pid ]; then
-	/bin/pkill -F /var/run/frr/zebra.pid
-	/bin/rm -f /var/run/frr/zebra.pid
-fi
-if [ -e /var/run/frr/staticd.pid ]; then
-	/bin/pkill -F /var/run/frr/staticd.pid
-	/bin/rm -f /var/run/frr/staticd.pid
-fi
-if [ -e /var/run/frr/ospfd.pid ]; then
-	/bin/pkill -F /var/run/frr/ospfd.pid
-	/bin/rm -f /var/run/frr/ospfd.pid
-fi
-if [ -e /var/run/frr/ospf6d.pid ]; then
-	/bin/pkill -F /var/run/frr/ospf6d.pid
-	/bin/rm -f /var/run/frr/ospf6d.pid
-fi
-if [ -e /var/run/frr/bgpd.pid ]; then
-	/bin/pkill -F /var/run/frr/bgpd.pid
-	/bin/rm -f /var/run/frr/bgpd.pid
-fi
+echo "Stopping FRR"
+	/usr/local/etc/rc.d/frr stop
+
+	if [ -s {$frr_config_base}/frr_md5pw_del.conf ]; then
+		/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
+	fi
+
+	if [ -e /var/run/frr/\watchfrr.pid ]; then
+	echo "Stopping watchfrr"
+	/bin/pkill -F /var/run/frr/watchfrr.pid
+	/bin/rm -f /var/run/frr/watchfrr.pid
+	fi
 EOF;
 	/* When starting, cleanup first, then fix permissions and make sure no
 	 * other instances are running before starting back up. */
 	$rc_file_start = <<<EOF
 /bin/mkdir -p /var/run/frr
-/bin/mkdir -p /var/log/frr
-/bin/rm -f /var/run/frr/zebra.pid
-/bin/rm -f /var/run/frr/staticd.pid
-/bin/rm -f /var/run/frr/ospfd.pid
-/bin/rm -f /var/run/frr/ospf6d.pid
-/bin/rm -f /var/run/frr/bgpd.pid
+	/bin/mkdir -p /var/log/frr
 
-if [ -s {$frr_config_base}/frr_md5pw_del.conf ]; then
-	/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
-fi
+	if [ -s {$frr_config_base}/frr_md5pw_del.conf ]; then
+		/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
+	fi
 
-/usr/sbin/chown -R frr:frr {$frr_config_base}
-/usr/sbin/chown -R frr:frr /var/run/frr
-/usr/sbin/chown -R frr:frr /var/log/frr
-# Ensure no other copies of the daemons are running or it breaks.
-sleep 1
-if /bin/pgrep -q zebra; then
-	/usr/bin/killall zebra
-	sleep 1
-	/usr/bin/killall -9 zebra 2>/dev/null
-fi
-if /bin/pgrep -q staticd; then
-	/usr/bin/killall staticd
-	sleep 1
-	/usr/bin/killall -9 staticd 2>/dev/null
-fi
-if /bin/pgrep -q ospfd; then
-	/usr/bin/killall ospfd
-	sleep 1
-	/usr/bin/killall -9 ospfd 2>/dev/null
-fi
-if /bin/pgrep -q ospf6d; then
-	/usr/bin/killall ospf6d
-	sleep 1
-	/usr/bin/killall -9 ospf6d 2>/dev/null
-fi
-if /bin/pgrep -q bgpd; then
-	/usr/bin/killall bgpd
-	sleep 1
-	/usr/bin/killall -9 bgpd 2>/dev/null
-fi
-{$carp_ip_status_check}
-[ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf
-[ -s {$frr_config_base}/staticd.conf ] && /usr/local/sbin/staticd -d -f {$frr_config_base}/staticd.conf
-[ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf
-[ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf
-[ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf
-[ -s {$frr_config_base}/frr_md5pw_add.conf ] && /sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
+	if [ -s {$frr_config_base}/frr_md5pw_add.conf ]; then
+		/sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
+	fi
 
+	/usr/sbin/chown -R frr:frr {$frr_config_base}
+	/usr/sbin/chown -R frr:frr /var/run/frr
+	/usr/sbin/chown -R frr:frr /var/log/frr
+	{$carp_ip_status_check}
+	# Perform configuration check
+	echo "Performing intergrated config test"
+	/usr/local/bin/vtysh -C
+
+	# Start Daemons
+	echo "Starting FRR"
+	/usr/local/etc/rc.d/frr start
+
+	# Start watchfrr
+	echo "Starting watchfrr"
+	/usr/local/sbin/watchfrr -d -r /usr/local/etc/rc.d/frrbBrestartbB%s -s /usr/local/etc/rc.d/frrbBstartbB%s -k /usr/local/etc/rc.d/frrbBstopbB%s -b bB -t 30 {$frr_daemons_string}
 EOF;
 
 	write_rcfile(array(
@@ -353,47 +393,142 @@ EOF;
 	);
 
 	/* Ensure files have correct ownership and permissions */
-	mwexec("/bin/chmod a+rx /usr/local/etc/rc.d/frr.sh");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospfd.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospf6d.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/zebra.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/staticd.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/bgpd.conf");
+	chmod("/usr/local/etc/rc.d/frr.sh", 0555);
+	foreach ($frr_daemons as $daemon) {
+		$daemon_config_file = "{$frr_config_base}/{$daemon}.conf";
+		if (file_exists($daemon_config_file) && (filesize($daemon_config_file) > 0)) {
+			chmod($daemon_config_file, 0600);
+		}
+	}
 
-	/* Start/Restart FRR, if a CARP VIP is set, check its status and act
-	 * appropriately. */
-	if (isset($frr_conf['carpstatusvid']) && $frr_conf['carpstatusvid'] != "none") {
-		$status = get_carp_interface_status($frr_conf['carpstatusvid']);
-		switch (strtoupper($status)) {
-			// Stop the service if the VIP is in BACKUP or INIT state.
-			case "BACKUP":
-			case "INIT":
-				mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
-				break;
-			// Start the service if the VIP is MASTER state.
-			case "MASTER":
-			// Assume it's up if the status can't be determined.
-			default:
+	/* Set rc.conf.d/frr for watchfrr service control */
+	$frr_rc_conf = "";
+	if ($frr_conf['enable']) {
+		$frr_rc_conf = "frr_enable=\"YES\"\n";
+	} else {
+		$frr_rc_conf = "frr_enable=\"NO\"\n";
+	}
+	$frr_rc_conf .= "frr_vtysh_boot=\"YES\"\n";
+
+	foreach ($frr_daemons_enabled as $daemon) {
+		if (!empty($frr_daemon_modules[$daemon])) {
+			$modules = trim($frr_daemon_modules[$daemon]);
+			$frr_rc_conf .= "{$daemon}_flags=\"{$modules}\"\n";
+		}
+	}
+
+	if (!empty($frr_daemons_string)) {
+		$frr_rc_conf .= "frr_daemons=\"{$frr_daemons_string}\"\n";
+	}
+
+	/* Check the generated rc configuration to decide whether FRR requires a restart or a configuration reload */
+	if (file_exists("/usr/local/etc/rc.conf.d/frr")) {
+		$frr_rc_conf_last = file_get_contents("/usr/local/etc/rc.conf.d/frr");
+	} else {
+		$frr_rc_conf_last = "";
+	}
+
+	if ((strcmp($frr_rc_conf, $frr_rc_conf_last) == 0) && frr_daemons_running($frr_daemons_enabled)) {
+		$frr_restart_needed = false;
+	} else {
+		$frr_restart_needed = true;
+		safe_mkdir("/usr/local/etc/rc.conf.d");
+		file_put_contents("/usr/local/etc/rc.conf.d/frr", $frr_rc_conf);
+	}
+
+	return $frr_restart_needed;
+}
+
+function frr_service_action($restart_needed) {
+	global $config;
+	/* If frr is not configured, then stop */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	} else {
+		return null;
+	}
+
+	if ($frr_conf['enable']) {
+		/* Start/Restart FRR, if a CARP VIP is set, check its status and appropriately. */
+		if (isset($frr_conf['carpstatusvid']) && $frr_conf['carpstatusvid'] != "none") {
+			$status = get_carp_interface_status($frr_conf['carpstatusvid']);
+			switch (strtoupper($status)) {
+				// Stop the service if the VIP is in BACKUP or INIT state.
+				case "BACKUP":
+				case "INIT":
+					frr_package_log("FRR: Stopping services due to CARP status.");
+					mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
+					unlink_if_exists("/tmp/frr_start_command_last.txt");
+					break;
+				// Start the service if the VIP is MASTER state.
+				case "MASTER":
+				// Assume it's up if the status can't be determined.
+				default:
+					if ($restart_needed) {
+						frr_package_log("FRR: Restarting services.");
+						mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+					} else {
+						frr_package_log("FRR: Reloading configuration.");
+						mwexec_bg("/usr/local/sbin/frr-reload");
+					}
+					break;
+			}
+		} else {
+			if ($restart_needed) {
+				frr_package_log("FRR: Restarting services.");
 				mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
-				break;
+			} else {
+				frr_package_log("FRR: Reloading configuration.");
+				mwexec_bg("/usr/local/sbin/frr-reload");
+			}
 		}
 	} else {
-		mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+		frr_package_log("FRR: Stopping services.");
+		mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
+		unlink_if_exists("/usr/local/etc/rc.conf.d/frr");
+	}
+}
+
+/* Check all supplied daemons are running */
+function frr_daemons_running($daemons) {
+	$frr_daemons_running = array();
+	foreach ($daemons as $daemon) {
+		if (is_process_running($daemon)) {
+			$frr_daemons_running[$daemon] = true;
+		} else {
+			$frr_daemons_running[$daemon] = false;
+		}
+	}
+
+	$logarr = array();
+	foreach ($frr_daemons_running as $daemon => $state) {
+		$s = $state ? "running" : "stopped";
+		array_push($logarr, "{$daemon}: {$s}");
+	}
+	$logstr = implode(" | ", $logarr);
+	frr_package_log("FRR: Daemon state: {$logstr}");
+
+	if (count(array_unique($frr_daemons_running)) === 1) {
+		return current($frr_daemons_running);
+	} else {
+		return false;
 	}
 }
 
 /* Setup necessary setkey entries for TCP MD5 authentication. */
-function frr_setkey() {
+function frr_setkey($restart_needed) {
 	global $config, $frr_config_base;
 	$peers = array();
 
-	/* Clear existing md5 authentication sessions and remove any md5
-	 * config files if they exist. */
-	if (file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
-		mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
+	if (is_array($config['installedpackages']['frr']['config']) &&
+	    empty($config['installedpackages']['frr']['config'][0]['enable'])) {
+		if (file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
+			mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
+		}
 		unlink_if_exists("{$frr_config_base}/frr_md5pw_del.conf");
+		unlink_if_exists("{$frr_config_base}/frr_md5pw_add.conf");
+		return;
 	}
-	unlink_if_exists("{$frr_config_base}/frr_md5pw_add.conf");
 
 	/* Build md5 password configuration files based on raw tab list */
 	if (is_array($config['installedpackages']['frrglobalraw']['config'][0]['row'])) {
@@ -414,8 +549,8 @@ function frr_setkey() {
 	foreach ($neighbors as $nname => $neighbor) {
 		list($pwtype_base, $pwtype_bidir) = explode('-', $neighbor['password_type'], 2);
 		if ((($pwtype_base == "setkey") ||
-		    ($pwtype_base == "both")) &&
-		    is_ipaddr($neighbor['peer'])) {
+			($pwtype_base == "both")) &&
+			is_ipaddr($neighbor['peer'])) {
 			if (array_key_exists($neighbor['peergroup'], $neighbors)) {
 				$peergroup = $neighbors[$neighbor['peergroup']];
 			} else {
@@ -427,12 +562,9 @@ function frr_setkey() {
 			$tmp['src'] = frr_get_neighbor_updatesource($neighbor['updatesource'], $neighbor['updatesource_type']);
 			/* If that fails, check if this neighbor is a member of a peer group, and if that group has one */
 			if (empty($tmp['src']) && !empty($neighbor['peergroup']) &&
-			    !empty($peergroup)) {
-				if (!empty($peergroup['updatesource'])) {
-					/* Try to determine an update source from the group */
-					$tmp['src'] = frr_get_neighbor_updatesource($peergroup['updatesource'], $peergroup['updatesource_type']);
-					break;
-				}
+			    !empty($peergroup) && !empty($peergroup['updatesource'])) {
+				/* Try to determine an update source from the group */
+				$tmp['src'] = frr_get_neighbor_updatesource($peergroup['updatesource'], $peergroup['updatesource_type']);
 			}
 			/* If it is still empty, try to find it automatically based on the destination */
 			if (empty($tmp['src'])) {
@@ -479,17 +611,62 @@ function frr_setkey() {
 			$md5pw_del .= "delete {$peer['dst']} {$peer['src']} tcp 0x1001 ;\n";
 		}
 	}
-	if (!empty($md5pw_add)) {
-		file_put_contents("{$frr_config_base}/frr_md5pw_add.conf", $md5pw_add);
+
+	/* restart setkey only if parameters have changed, see https://redmine.pfsense.org/issues/11325 */
+	if (!empty($md5pw_add) && !empty($md5pw_del)) {
+		if (is_service_running('bgpd') && file_exists("{$frr_config_base}/frr_md5pw_add.conf")) {
+			$existing_md5pw_add = file_get_contents("{$frr_config_base}/frr_md5pw_add.conf");
+			if ($md5pw_add != $existing_md5pw_add) {
+				/* setkey parameters changed, restart needed */
+				$restart_setkey = true;
+			}
+		} else {
+			$restart_setkey = true;
+		}
+		if ($restart_setkey) {
+			if (!$restart_needed && file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
+				/* do not run 'setkey' twice if $restart_needed is set */
+				mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
+			}
+			file_put_contents("{$frr_config_base}/frr_md5pw_del.conf", $md5pw_del);
+			file_put_contents("{$frr_config_base}/frr_md5pw_add.conf", $md5pw_add);
+			if (!$restart_needed) {
+				mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf");
+			}
+		}
+	} elseif (file_exists("{$frr_config_base}/frr_md5pw_add.conf") &&
+	    file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
+		mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
+		unlink_if_exists("{$frr_config_base}/frr_md5pw_del.conf");
+		unlink_if_exists("{$frr_config_base}/frr_md5pw_add.conf");
 	}
-	if (!empty($md5pw_del)) {
-		file_put_contents("{$frr_config_base}/frr_md5pw_del.conf", $md5pw_del);
+}
+
+/* Write a message to the syslog conditionally on package log level setting*/
+function frr_package_log($string, $priority = LOG_INFO) {
+	global $config;
+
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	}
+
+	/* Check if extended package logging is enabled */
+	if (is_null($frr_conf['pkgloglevel']) || ($frr_conf['pkgloglevel'] < 1)) {
+		// Extended logging is disabled
+		return;
+	}
+
+	syslog($priority, "FRR Package: {$string}");
 }
 
 /* Main function to generate all of the configuration files and make general
  * preparations */
 function frr_generate_config() {
+	/* Create integrated configuration global */
+	global $frr_integrated_config;
+	$frr_integrated_config = array();
+	$frr_integrated_config['interfaces'] = array();
 
 	/* Make sure that the FRR config directory exists and has the
 	 * correct ownership info. */
@@ -497,6 +674,9 @@ function frr_generate_config() {
 	chown(PKG_FRR_CONFIG_BASE, 'frr');
 	chgrp(PKG_FRR_CONFIG_BASE, 'frr');
 	clearstatcache();
+
+	/* vtysh configuration */
+	frr_generate_config_vtysh();
 
 	/* Zebra configuration */
 	frr_generate_config_zebra();
@@ -510,11 +690,196 @@ function frr_generate_config() {
 	/* OSPF6 Configuration */
 	frr_generate_config_ospf6();
 
-	/* Create the rc.d service control script */
-	frr_generate_config_rcfile();
+	/* RIP Configuration */
+	frr_generate_config_rip();
+
+	/* BFD Configuration */
+	frr_generate_config_bfd();
+
+	/* Integrated configuration */
+	frr_generate_config_integrated();
+
+	/* Create the rc.d service control script and trigger restart/reload */
+	$restart_needed = frr_generate_config_rcfile();
+	if (!empty($_POST['service_force_restart'])) {
+		frr_package_log("FRR: Service restart forced.");
+		/* If force_restart is set, override restart_needed to force a service restart */
+		$restart_needed = true;
+	}
 
 	/* Setup TCP MD5 authentication */
-	frr_setkey();
+	frr_setkey($restart_needed);
+
+	frr_service_action($restart_needed);
+}
+
+function frr_generate_config_vtysh() {
+	global $config, $frr_config_base, $frr_auto_config_warning;
+
+	unlink_if_exists("{$frr_config_base}/vtysh.conf");
+
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	}
+
+	/* If there is no raw configuration and no GUI configuration, stop. */
+	if (empty($frr_conf)) {
+		frr_package_log("FRR vtysh: No config data found.");
+		return;
+	}
+	if (empty($frr_conf['enable'])) {
+		frr_package_log("FRR vtysh: FRR master switch is off.");
+		return;
+	}
+
+	$vtyshconffile = $frr_auto_config_warning;
+	$vtyshconffile .= "service integrated-vtysh-config\n\n";
+	file_put_contents("{$frr_config_base}/vtysh.conf", $vtyshconffile);
+	chown("{$frr_config_base}/vtysh.conf", 'frr');
+	chgrp("{$frr_config_base}/vtysh.conf", 'frr');
+}
+
+function frr_flatten_config_interfaces() {
+	global $frr_integrated_config;
+
+	$interfaces_config = "";
+	foreach (array_keys($frr_integrated_config['interfaces']) as $interface) {
+		$interfaces_config .= "interface {$interface}\n";
+		$interface_description = "";
+
+		foreach(array('ospfd', 'ospf6d', 'ripd') as $service) {
+			if (empty($frr_integrated_config['interfaces_descr'][$interface][$service])) {
+				continue;
+			}
+			if (!empty($interface_description)) {
+				$interface_description .= " - ";
+			}
+			$interface_description .= "{$service}: {$frr_integrated_config['interfaces_descr'][$interface][$service]}";
+		}
+		unset($service);
+
+		if (!empty($interface_description)) {
+			$interfaces_config .= " description \"{$interface_description}\"\n";
+		}
+
+		$interfaces_config .= $frr_integrated_config['interfaces'][$interface];
+	}
+	unset($interface);
+
+	$frr_integrated_config['interfaces'] = $interfaces_config;
+}
+
+function frr_generate_config_integrated() {
+	global $config, $frr_config_base, $frr_auto_config_warning, $frr_integrated_config;
+
+	unlink_if_exists("{$frr_config_base}/frr.conf");
+
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	}
+
+	if (empty($frr_conf['enable'])) {
+		frr_package_log("FRR: FRR master switch is off.");
+		return;
+	}
+
+	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['frr']) &&
+		!empty($config['installedpackages']['frrglobalraw']['config'][0]['frr'])) {
+		// if there is a raw config specified in the config.xml use that instead of the assisted config
+		$integratedconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['frr']));
+	} else {
+		/* If there is no raw configuration and no GUI configuration, stop. */
+		if (empty($frr_conf)) {
+			frr_package_log("FRR: No config data found.");
+			return;
+		}
+
+		frr_package_log("FRR: Rebuild configuration.");
+
+		$integratedconffile = $frr_auto_config_warning;
+		$integratedconffile .= "frr defaults traditional\n";
+		$integratedconffile .= "hostname " . $config['system']['hostname'] . "." . $config['system']['domain'] . "\n";
+
+		/* Management Password */
+		if ($frr_conf['password']) {
+			$integratedconffile .= "password {$frr_conf['password']}\n";
+		}
+		/* Logging Options */
+		if ($frr_conf['logging']) {
+			$integratedconffile .= "log syslog\n";
+		}
+		/* SNMP AgentX Support */
+		if ($frr_conf['enablesnmpagentx']) {
+			$integratedconffile .= "agentx\n";
+		}
+		/* Nethop Tracking */
+		if (isset($frr_conf['nht'])) {
+			if (($frr_conf['nht'] == 'ipv4') || ($frr_conf['nht'] == 'both')) {
+				$integratedconffile .= "ip nht resolve-via-default\n";
+			}
+			if (($frr_conf['nht'] == 'ipv6') || ($frr_conf['nht'] == 'both')) {
+				$integratedconffile .= "ipv6 nht resolve-via-default\n";
+			}
+		}
+
+		/* FRR Services */
+		$integratedconffile .= "service integrated-vtysh-config\n";
+		if ($frr_conf['passwordencrypt']) {
+			$integratedconffile .= "service password-encryption\n";
+		}
+		$integratedconffile .= "!\n";
+
+		if (!empty($frr_conf['routerid'])) {
+			if (is_ipaddrv4($frr_conf['routerid'])) {
+				$integratedconffile .= "ip ";
+			} elseif (is_ipaddrv6($frr_conf['routerid'])) {
+				$integratedconffile .= "ipv6 ";
+			}
+			$integratedconffile .= "router-id {$frr_conf['routerid']}\n";
+			$integratedconffile .= "!\n";
+		}
+
+		frr_flatten_config_interfaces();
+		$conf_keys = array('staticd', 'interfaces', 'bgpd', 'rpki', 'ospfd', 'ospf6d', 'ripd', 'zebra', 'bfdd');
+		foreach ($conf_keys as $key) {
+			if (empty($frr_integrated_config[$key])) {
+				continue;
+			}
+			$integratedconffile .= $frr_integrated_config[$key];
+			$integratedconffile .= "!\n";
+		}
+
+		$integratedconffile .= "line vty\n";
+		$integratedconffile .= "!\n";
+		$integratedconffile .= "end\n";
+
+		/* Remove sample configuration files */
+		array_map('unlink', glob("{$frr_config_base}/*.sample*"));
+	}
+
+	file_put_contents("{$frr_config_base}/frr.conf", $integratedconffile, LOCK_EX);
+	chown("{$frr_config_base}/frr.conf", 'frr');
+	chgrp("{$frr_config_base}/frr.conf", 'frr');
+}
+
+/* Upgrade the FRR configuration to the latest format */
+function frr_config_sort_route_map() {
+	global $config;
+
+	update_status("Sorting route-map configuration items");
+
+	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
+	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
+
+	$need_write = frr_array_name_seq_sort($frr_routemap_conf);
+
+	if ($need_write) {
+		update_status("Saving sorted route-map configuration items");
+		write_config('FRR: Sorted route-map configuration items');
+		update_status("Done.\n");
+	}
 }
 
 /* Upgrade the FRR configuration to the latest format */
@@ -533,21 +898,27 @@ function frr_package_config_upgrade() {
 	/* Populate FRR OSPF Settings */
 	init_config_arr(array('installedpackages', 'frrospfd', 'config', '0'));
 	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
+	init_config_arr(array('installedpackages', 'frrospf6d', 'config', '0'));
+	$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 	init_config_arr(array('installedpackages', 'frrglobalacls', 'config'));
 	$frr_acls_conf = &$config['installedpackages']['frrglobalacls']['config'];
+	init_config_arr(array('installedpackages', 'frrglobalprefixes', 'config'));
+	$frr_prefixes_conf = &$config['installedpackages']['frrglobalprefixes']['config'];
 	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
 	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
 	$frr_ospfinterfaces_conf = &$config['installedpackages']['frrospfdinterfaces']['config'];
 	init_config_arr(array('installedpackages', 'frrospfdareas', 'config'));
 	$frr_areas_conf = &$config['installedpackages']['frrospfdareas']['config'];
+	init_config_arr(array('installedpackages', 'frrbgp', 'config', '0'));
+	$bgp_conf = &$config['installedpackages']['frrbgp']['config'][0];
 
 	/* Iterate old network list looking for items marked to not redistribute */
 	$dnrlist = array();
 	if (is_array($ospfd_conf['row'])) {
 		foreach ($ospfd_conf['row'] as $idx => &$redistr) {
 			if (empty($redistr['routevalue']) ||
-			    ($redistr['redistribute']) != 'ON') {
+				($redistr['redistribute']) != 'ON') {
 				continue;
 			}
 			$dnrlist[] = $redistr['routevalue'];
@@ -626,8 +997,8 @@ function frr_package_config_upgrade() {
 	foreach ($frr_ospfinterfaces_conf as &$conf) {
 		$realif = get_real_interface($conf['interface']);
 		if (empty($realif) ||
-		    empty($conf['password']) ||
-		    isset($conf['authtype'])) {
+			empty($conf['password']) ||
+			isset($conf['authtype'])) {
 			continue;
 		}
 		if ($conf['md5password']) {
@@ -640,11 +1011,63 @@ function frr_package_config_upgrade() {
 	}
 
 	/* updatefib -> areatype */
-	if (isset($conf['updatefib'])) {
-		$conf['areatype'] = $conf['updatefib'];
-		unset($conf['updatefib']);
+	if (isset($ospfd_conf['updatefib'])) {
+		$ospfd_conf['areatype'] = $ospfd_conf['updatefib'];
+		unset($ospfd_conf['updatefib']);
 		$need_write = true;
 	}
+
+	/* area->defaultarea */
+	if ((strlen($ospfd_conf['defaultarea']) == 0) && !empty($ospfd_conf['area'])) {
+		$ospfd_conf['defaultarea'] = $ospfd_conf['area'];
+		unset($ospfd_conf['area']);
+		$need_write = true;
+	}
+	if ((strlen($ospf6d_conf['defaultarea']) == 0) && !empty($ospf6d_conf['area'])) {
+		$ospf6d_conf['defaultarea'] = $ospf6d_conf['area'];
+		unset($ospf6d_conf['area']);
+		$need_write = true;
+	}
+	/* areatype->defaultareatype */
+	if ((strlen($ospfd_conf['defaultareatype']) == 0) && !empty($ospfd_conf['areatype'])) {
+		$ospfd_conf['defaultareatype'] = $ospfd_conf['areatype'];
+		unset($ospfd_conf['areatype']);
+		$need_write = true;
+	}
+
+	/* BGP distribution migrate */
+	if ((strlen($bgp_conf['redistributeconnected']) == 0) && !empty($bgp_conf['redistributeconnectedsubnets'])) {
+		$bgp_conf['redistributeconnected'] = $bgp_conf['redistributeconnectedsubnets'];
+		unset($bgp_conf['redistributeconnectedsubnets']);
+		$need_write = true;
+	}
+	if (($bgp_conf['redistributeospf'] == 'yes') && empty($bgp_conf['redistributeospf6'])) {
+		$bgp_conf['redistributeospf6'] = 'yes';
+		$need_write = true;
+	}
+
+	/* ACL and Prefix List add IP Type*/
+	foreach ($frr_acls_conf as & $aclconf) {
+		if (empty($aclconf['iptype']) && !empty($aclconf['row'])) {
+			if (is_subnetv4($aclconf['row'][0]['source'])) {
+				$aclconf['iptype'] = 'IPv4';
+			} else {
+				$aclconf['iptype'] = 'IPv6';
+			}
+			$need_write = true;
+		}
+	}
+	foreach ($frr_prefixes_conf as & $prefixconf) {
+		if (empty($prefixconf['iptype']) && !empty($prefixconf['row'])) {
+			if (is_subnetv4($prefixconf['row'][0]['source'])) {
+				$prefixconf['iptype'] = 'IPv4';
+			} else {
+				$prefixconf['iptype'] = 'IPv6';
+			}
+			$need_write = true;
+		}
+	}
+	update_status("Done.\n");
 
 	/* Save Changes */
 	if ($need_write) {
@@ -654,11 +1077,30 @@ function frr_package_config_upgrade() {
 	} else {
 		update_status("Nothing to do.\n");
 	}
+}
 
+function frr_set_tunables() {
+	global $config;
+
+	init_config_arr(array('sysctl', 'item'));
+	$sysctl_conf = &$config['sysctl']['item'];
+	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
+
+	if (!in_array($sysctl_maxsockbuff, $sysctl_conf)) {
+		update_status("Installing maxsockbuf tunable ... ");
+		$sysctl_conf[] = $sysctl_maxsockbuff;
+		write_config('FRR: Installed maxsockbuf tunable.');
+		system_setup_sysctl();
+		update_status("Done.\n");
+	}
 }
 
 /* Install-time functions */
 function frr_package_install() {
 	/* Upgrade the configuration */
 	frr_package_config_upgrade();
+
+	/* Set tunable kern.ipc.maxsockbuf to FRR recommended */
+	/* OSPF and OSPF6 most likely won't work without this */
+	frr_set_tunables();
 }

@@ -1,5 +1,4 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cryptokit
 PORTVERSION=	1.6
@@ -9,6 +8,8 @@ PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Variety of cryptographic primitives for Objective Caml
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 DESTDIRNAME=	destdir
 HAS_CONFIGURE=	yes
@@ -27,7 +28,8 @@ OPTIONS_DEFINE=	DOCS
 DOCS_ALL_TARGET=	doc
 
 post-patch:
-	${REINPLACE_CMD} 's,"install","install" :: "-ldconf ignore",' \
+	@${REINPLACE_CMD} 's,"install","install" :: "-ldconf ignore",' \
 		${WRKSRC}/setup.ml
+	@${REINPLACE_CMD} -e 's,uint32,&_t,' ${WRKSRC}/src/stubs-md5.c
 
 .include <bsd.port.mk>

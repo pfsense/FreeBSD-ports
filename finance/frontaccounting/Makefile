@@ -1,5 +1,4 @@
 # Created by: Janky Jay <ek@purplehat.org>
-# $FreeBSD$
 
 PORTNAME=	frontaccounting
 DISTVERSION=	2.3.25
@@ -9,7 +8,7 @@ MASTER_SITES=	SF/${PORTNAME}/FrontAccounting-2.3/${PORTVERSION}
 MAINTAINER=	ek@purplehat.org
 COMMENT=	Simple, powerful system for the entire ERP chain
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
 
 USES=		cpe
@@ -32,10 +31,14 @@ LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
 LIGHTTPD_USES=		php:web
 NGINX_RUN_DEPENDS=	nginx:www/nginx
 NGINX_USES=		php:web
-MYSQL_SERVER_USE=	MYSQL=server
+MYSQL_SERVER_USES=	mysql:server
 NLS_USES=		gettext
 
 .include <bsd.port.options.mk>
+
+.if !${PORT_OPTIONS:MAPACHE} && !${PORT_OPTIONS:MLIGHTTPD} && !{PORT_OPTIONS:MNGINX}
+USES+=		php
+.endif
 
 .if !${PORT_OPTIONS:MDOCS}
 PORTDOCSARGS=	'-not -path "./doc*"'

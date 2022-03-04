@@ -1,9 +1,8 @@
 # Created by: Gergely Nagy <8@free.bsd.hu>
-# $FreeBSD$
 
 PORTNAME=	ratpoison
 PORTVERSION=	1.4.9
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm
 MASTER_SITES=	SAVANNAH
 
@@ -13,7 +12,7 @@ COMMENT=	Simple window manager with no fat library dependencies
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig
+USES=		pkgconfig xorg
 USE_XORG=	ice x11 xext xrandr xtst
 GNU_CONFIGURE=	yes
 
@@ -28,6 +27,7 @@ OPTIONS_SUB=		yes
 GDM_SUPPORT_DESC=	Install session data files for GDM
 READLINE_USES=		readline
 READLINE_CONFIGURE_ENABLE=	history
+XFT_USES=		xorg
 XFT_USE=		xorg=xft
 XFT_CONFIGURE_WITH=	xft
 

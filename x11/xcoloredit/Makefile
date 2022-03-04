@@ -1,5 +1,4 @@
 # Created by: Satoshi TAOKA
-# $FreeBSD$
 
 PORTNAME=	xcoloredit
 PORTVERSION=	1.2
@@ -11,7 +10,7 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Find colour values by graphical colour mixing
 
-USES=		imake tar:Z
+USES=		imake tar:Z xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 
 PLIST_FILES=	bin/xcoloredit \

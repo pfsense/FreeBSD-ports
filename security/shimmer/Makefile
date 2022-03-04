@@ -1,5 +1,4 @@
 # Created by: Felippe de Meirelles Motta <lippemail@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	shimmer
 PORTVERSION=	0.1.0
@@ -10,6 +9,9 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl implementation that hides a valuable port on your server
+
+DEPRECATED=	Abandonware, last release in 2008
+EXPIRATION_DATE=2022-03-31
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

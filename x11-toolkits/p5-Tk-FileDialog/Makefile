@@ -1,5 +1,4 @@
 # Created by: minter@lunenburg.org
-# $FreeBSD$
 
 PORTNAME=	Tk-FileDialog
 PORTVERSION=	1.3
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	Tk::FileDialog - A file selector dialog for perl/Tk
+COMMENT=	File selection dialog for Perl/Tk
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

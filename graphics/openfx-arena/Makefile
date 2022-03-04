@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	openfx-arena
 PORTVERSION=	2.3.14
 DISTVERSIONPREFIX=	Natron-
-PORTREVISION=	7
+PORTREVISION=	46
 CATEGORIES=	graphics
 
 MAINTAINER=	olivier@FreeBSD.org
@@ -11,7 +9,7 @@ COMMENT=	Extra OpenFX plugins for Natron
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -35,10 +33,9 @@ LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
 		libltdl.so:devel/libltdl \
 		libpoppler.so:graphics/poppler
 
-USES=		gmake iconv
+USES=		gl gmake gnome iconv xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	NatronGitHub
-GH_PROJECT=	openfx-arena
 GH_TUPLE=	NatronGitHub:openfx-supportext:e600cae:openfx_supportext/SupportExt \
 		NatronGitHub:openfx:a85dc34:openfx/OpenFX \
 		NatronGitHub:openfx-io:Natron-2.3.12:OpenFX_IO/OpenFX-IO \

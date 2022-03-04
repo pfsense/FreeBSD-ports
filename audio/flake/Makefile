@@ -1,15 +1,17 @@
 # Created by: David Naylor <dbn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flake
 PORTVERSION=	0.11
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME:tl}-enc/${PORTNAME:tl}/${PORTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FLAC audio encoder
 
 LICENSE=	LGPL21
+
+DEPRECATED=	Abandoned upstream, no new release since 2007
+EXPIRATION_DATE=2021-12-31
 
 CONFIGURE_ARGS+=	--cc="${CC}"
 HAS_CONFIGURE=	yes

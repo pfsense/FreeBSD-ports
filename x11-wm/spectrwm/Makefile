@@ -1,9 +1,8 @@
 # Created by: Aragon Gouveia <aragon@phat.za.net>
-# $FreeBSD$
 
 PORTNAME=	spectrwm
 DISTVERSIONPREFIX=	SPECTRWM_
-DISTVERSION=	3_2_0
+DISTVERSION=	3_4_1
 CATEGORIES=	x11-wm
 
 MAINTAINER=	zeising@FreeBSD.org
@@ -19,10 +18,11 @@ RUN_DEPENDS+=	dmenu:x11/dmenu
 USE_GITHUB=	yes
 GH_ACCOUNT=	conformal
 
-OPTIONS_DEFINE= EXAMPLES
+OPTIONS_DEFINE=	EXAMPLES
 
 .include	<bsd.port.options.mk>
 
+USES=		compiler:c11 xorg
 USE_XORG=	x11 xcb xcursor xft xrandr xt
 
 USE_LDCONFIG=	yes
@@ -40,6 +40,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/|${PREFIX}/etc/|g' ${WRKSRC}/spectrwm.*
 
 do-build:
+	ln -sf ${WRKSRC}/linux/pledge.h ${WRKSRC}/pledge.h
 	${CC} ${CFLAGS} -Wall -Wextra -Wshadow -Werror -I${LOCALBASE}/include \
 		-I${LOCALBASE}/include/freetype2 -I${WRKSRC}/freebsd \
 		-lutil -L${LOCALBASE}/lib -lX11 -lX11-xcb -lxcb -lxcb-icccm \
@@ -47,8 +48,8 @@ do-build:
 		-lXcursor -lXft -DSWM_LIB=\"${PREFIX}/lib/libswmhack.so\" \
 		-o ${WRKSRC}/${PORTNAME} ${WRKSRC}/${PORTNAME}.c
 	${CC} ${CFLAGS} -Wall -Wextra -Wshadow -Werror -I${LOCALBASE}/include \
-		-shared -fpic -DPIC -o ${WRKSRC}/libswmhack.so \
-		${WRKSRC}/lib/swm_hack.c
+		-shared -fpic -DPIC -L${LOCALBASE}/lib -lX11 \
+		-o ${WRKSRC}/libswmhack.so ${WRKSRC}/lib/swm_hack.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

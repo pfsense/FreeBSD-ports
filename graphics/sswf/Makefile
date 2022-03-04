@@ -1,5 +1,4 @@
 # Created by: anhot
-# $FreeBSD$
 
 PORTNAME=	sswf
 PORTVERSION=	1.8.4
@@ -29,6 +28,8 @@ PLIST_SUB=	VERSION="${PORTVERSION}"
 OPTIONS_DEFINE=	DEBUG
 
 DEBUG_CONFIGURE_OFF=	--disable-debug --disable-yydebug
+
+BINARY_ALIAS=		freetype-config=true
 
 .include <bsd.port.pre.mk>
 

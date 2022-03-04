@@ -1,9 +1,8 @@
 # Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
 
 PORTNAME=	ghostscript
 PORTVERSION=	8.71
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	print
 MASTER_SITES=	http://downloads.ghostscript.com/public/:gs_srcs \
 		SF/ghostscript/GPL%20Ghostscript/${PORTVERSION}:gs_srcs \
@@ -28,14 +27,15 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 RUN_DEPENDS=	${LOCALBASE}/share/${PORTNAME}/fonts/a010013l.pfb:print/gsfonts
 
 CONFLICTS_INSTALL= \
-		gambc-[0-9]* \
-		ghostscript[789]-[0-9]* \
-		ghostscript[789]-nox11-[0-9]* \
-		ghostscript9-agpl-[0-9]* \
-		ghostscript9-agpl-nox11-[0-9]*
+		gambc \
+		ghostscript[789] \
+		ghostscript[789]-nox11 \
+		ghostscript9-agpl \
+		ghostscript9-agpl-nox11
 
-USES=		autoreconf gmake pkgconfig shebangfix tar:xz
+USES=		autoreconf cpe gmake pkgconfig shebangfix tar:xz
 USE_LDCONFIG=	yes
+CPE_VENDOR=	artifex
 SHEBANG_FILES=	${WRKSRC}/lib/fixmswrd.pl
 EXTRACT_AFTER_ARGS=	${EXCLUDE_DIRS:S/^/--exclude /}
 GNU_CONFIGURE=	yes

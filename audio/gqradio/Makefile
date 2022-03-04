@@ -1,5 +1,4 @@
 # Created by: Stefan Jahn <stefan.jahn@nemesis-sektor.de>
-# $FreeBSD$
 
 PORTNAME=	gqradio
 PORTVERSION=	1.9.2
@@ -12,7 +11,7 @@ COMMENT=	GTK2 based FM tuner
 
 LICENSE=	GPLv2
 
-USES=		gettext pathfix pkgconfig
+USES=		gettext gnome pathfix pkgconfig xorg
 USE_GNOME=	gtk20
 USE_XORG=	x11
 GNU_CONFIGURE=	yes

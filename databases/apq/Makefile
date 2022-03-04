@@ -1,5 +1,4 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	apq
 PORTVERSION=	${APQ_VERSION}
@@ -20,7 +19,7 @@ USES=		ada tar:bzip2
 PORTDOCS=	README HISTORY
 HAS_CONFIGURE=	yes
 WRKPATH=	${WRKDIR}/build
-CONFIGURE_ARGS= --prefix=${PREFIX} \
+CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--disable-relocatable \
 		--work-path=${WRKPATH} \
 		--processors=${MAKE_JOBS_NUMBER}

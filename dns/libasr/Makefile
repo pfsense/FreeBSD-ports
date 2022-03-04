@@ -1,12 +1,9 @@
 # Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libasr
-PORTVERSION=	1.0.2
-PORTREVISION=	2
+PORTVERSION=	1.0.4
 CATEGORIES=	dns
-MASTER_SITES=	http://www.opensmtpd.org/archives/ \
-		http://distfiles.pirateparty.in/ashish/
+MASTER_SITES=	http://www.opensmtpd.org/archives/
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Asynchronous DNS resolver library
@@ -15,14 +12,19 @@ LICENSE=	ISCL BSD4CLAUSE BSD3CLAUSE BSD2CLAUSE
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-CONFLICTS=	libasr-devel-[0-9]*
+USES=		cpe groff libtool
 
-USES=		groff libtool ssl:build
+CONFLICTS=	libasr-devel
+
+CPE_VENDOR=	openbsd
+
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--with-mantype="man"
-INSTALL_TARGET=	install-strip
 
-CFLAGS+=	-I${OPENSSLINC}
+post-patch:
+#	Obsoleted on RFC 2553bis-02
+	${REINPLACE_CMD} 's|EAI_NODATA|EAI_NONAME|g' \
+		 ${WRKSRC}/src/getaddrinfo_async.c
 
 .include <bsd.port.mk>

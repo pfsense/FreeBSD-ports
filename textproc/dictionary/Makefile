@@ -1,9 +1,8 @@
 # Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
 
 PORTNAME=	dictionary
 PORTVERSION=	1.8.7
-PORTREVISION=	21
+PORTREVISION=	28
 CATEGORIES=	textproc net elisp
 MASTER_SITES=	http://me.in-berlin.de/~myrkr/dictionary/ \
 		http://bsdchat.com/dist/dryice/

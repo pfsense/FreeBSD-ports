@@ -1,5 +1,4 @@
 # Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	synapse
 DISTVERSION=	0.2.99.4
@@ -24,11 +23,10 @@ LIB_DEPENDS=	libzeitgeist-2.0.so:sysutils/zeitgeist \
 		librest-0.7.so:devel/librest \
 		libsoup-2.4.so:devel/libsoup
 
-USES=		gettext-tools gmake pkgconfig tar:xz
+USES=		gettext-tools gmake gnome pkgconfig tar:xz xorg
 GNU_CONFIGURE=	yes
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 libxml2 pango
 USE_XORG=	x11
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

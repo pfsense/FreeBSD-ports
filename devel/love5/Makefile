@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	love
 DISTVERSION=	0.5-0
-PORTREVISION=	26
+PORTREVISION=	30
 CATEGORIES=	devel games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${DISTVERSION}
 PKGNAMESUFFIX=	5
@@ -16,7 +13,7 @@ LIB_DEPENDS=	libIL.so:graphics/devil \
 		libfreetype.so:print/freetype2
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 
-USES=		tar:bzip2 gmake dos2unix lua:51
+USES=		tar:bzip2 gmake gl dos2unix lua:51 sdl
 USE_SDL=	sdl mixer
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
@@ -29,7 +26,7 @@ DOS2UNIX_FILES=	src/system/love_system.cpp
 
 PLIST_FILES=	bin/love5
 
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}5
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
@@ -42,7 +39,7 @@ post-patch:
 		${WRKSRC}/configure
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in changes.txt readme.txt
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor

@@ -1,9 +1,8 @@
 # Created by: Lars Koeller <Lars.Koeller@Uni-Bielefeld.DE>
-# $FreeBSD$
 
 PORTNAME=	fftw3
-DISTVERSION=	3.3.8
-PORTREVISION?=	3
+DISTVERSION=	3.3.9
+PORTREVISION?=	1
 CATEGORIES=	math
 MASTER_SITES=	http://www.fftw.org/ \
 		ftp://ftp.fftw.org/pub/fftw/
@@ -49,7 +48,7 @@ OPTIONS_SUB=		yes
 G77_WRAPPERS_DESC=		Alter Fortran wrappers for use with g77
 
 OPENMP_DESC=			Build OpenMP multithreaded libraries
-OPENMP_USES=			compiler:openmp
+OPENMP_USES=			compiler:env
 OPENMP_USES_OFF=		compiler:env
 OPENMP_CONFIGURE_ENABLE=	openmp
 OPENMP_EXTRA_PATCHES=		${FILESDIR}/extrapatch-tests_fftw-bench.c
@@ -61,6 +60,11 @@ OPENMPI_CONFIGURE_ENV=		MPICC=${MPIDIR}/bin/mpicc \
 				MPIRUN=${MPIDIR}/bin/mpirun
 
 .include <bsd.port.options.mk>
+
+# Enable cycle counter via the CNTVCT_EL0 register for all variants on arm64.
+.if ${ARCH} == "aarch64"
+CONFIGURE_ARGS+=--enable-armv8-cntvct-el0
+.endif
 
 #Users must add altivec to MACHINE_CPU when desired:
 #this is not currently done in bsd.cpu.mk
@@ -90,8 +94,11 @@ CONFIGURE_ARGS+=--enable-avx2 --enable-fma
 .    if !empty(MACHINE_CPU:Msse)
 CONFIGURE_ARGS+=--enable-sse2
 .    endif
-.    if !empty(ARCH:Mpowerpc*) && !empty(MACHINE_CPU:Maltivec)
+.    if !empty(ARCH:Mpowerpc64*)
 CONFIGURE_ARGS+=--enable-altivec
+.    endif
+.    if ${ARCH} == "aarch64"
+CONFIGURE_ARGS+=--enable-neon
 .    endif
 .  endif
 .elif ${FFTW3_FLAVOR} == "long"

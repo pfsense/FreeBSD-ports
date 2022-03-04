@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	maltrail
-PORTVERSION=	0.12
+PORTVERSION=	0.37
 CATEGORIES=	security python
 
 MAINTAINER=	m.muenz@gmail.com
@@ -10,7 +8,8 @@ COMMENT=	Malicious traffic detection system, utilizing public (black)lists
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pcapy>=0:net/py-pcapy@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pcapy>=0:net/py-pcapy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		python:run
 

@@ -1,5 +1,4 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bolt
 PORTVERSION=	2.2.24
@@ -13,7 +12,8 @@ COMMENT=	Sophisticated, lightweight & simple CMS
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		php:web
+USES=		cpe php:web
+CPE_VENDOR=	${PORTNAME}cms
 
 NO_ARCH=	yes
 NO_BUILD=	yes

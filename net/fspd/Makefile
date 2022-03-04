@@ -1,17 +1,18 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	fspd
-PORTVERSION=	2.8.1.26
+PORTVERSION=	2.8.1.29
 CATEGORIES=	net
-MASTER_SITES=	SF/fsp/fsp/2.8.1b26
-DISTNAME=	fsp-2.8.1b26
+MASTER_SITES=	SF/fsp/fsp/2.8.1b29
+DISTNAME=	fsp-2.8.1b29
 
 MAINTAINER=	hsn@sendmail.cz
 COMMENT=	FSP daemon, clients, and scanner
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
+USES=		scons tar:bzip2
 
 CLIENTS=	fcatcmd fcdcmd fducmd ffindcmd fgetcmd fgrabcmd fhostcmd \
 		flscmd fmkdir fprocmd fput frmcmd frmdircmd fver fspmerge \
@@ -25,7 +26,6 @@ MAN1SERVER=	fspscan.1 fspd.1
 MAN5CLIENT=	fsp_prof.5 fspsites.5
 MAN7CLIENT=	fsp_env.7
 
-USES=		scons tar:bzip2
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
 OPTIONS_DEFINE=	CLIENTS INFINITE DOCS
@@ -53,32 +53,32 @@ post-build:
 	@${CP} ${WRKSRC}/doc/*.html ${WRKSRC}
 
 do-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for doc in ${FSPDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_PROGRAM} ${WRKSRC}/contrib/fspscan ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/server/fspd ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/fspd.conf \
+		${STAGEDIR}${PREFIX}/etc/fspd.conf.sample
+.for page in ${MAN1SERVER}
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${MANPREFIX}/man/man1
 .endfor
-.endif
-.if ${PORT_OPTIONS:MCLIENTS}
+
+do-install-CLIENTS-on:
 .for command in ${CLIENTS}
 	${INSTALL_PROGRAM} ${WRKSRC}/clients/${command} ${STAGEDIR}${PREFIX}/bin
 .endfor
 .for page in ${MAN1CLIENT}
-	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${MANPREFIX}/man/man1
 .endfor
 .for page in ${MAN5CLIENT}
-	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man5
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${MANPREFIX}/man/man5
 .endfor
 .for page in ${MAN7CLIENT}
-	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man7
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${MANPREFIX}/man/man7
 .endfor
-.endif
-	${INSTALL_PROGRAM} ${WRKSRC}/contrib/fspscan ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_PROGRAM} ${WRKSRC}/server/fspd ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/fspd.conf \
-	    ${STAGEDIR}${PREFIX}/etc/fspd.conf.sample
-.for page in ${MAN1SERVER}
-	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man1
+
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for doc in ${FSPDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.mk>

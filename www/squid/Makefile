@@ -1,22 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	squid
-PORTVERSION=	4.6
-PORTREVISION=	1
-CATEGORIES=	www ipv6
-MASTER_SITES=	http://www.squid-cache.org/Versions/v4/ \
-		http://www2.us.squid-cache.org/Versions/v4/ \
-		http://www1.at.squid-cache.org/Versions/v4/ \
-		http://www.eu.squid-cache.org/Versions/v4/ \
-		http://www1.jp.squid-cache.org/Versions/v4/
-DIST_SUBDIR=	squid${PORTVERSION:R}
+DISTVERSION=	4.15
+CATEGORIES=	www
+MASTER_SITES=	http://www2.pl.squid-cache.org/Versions/v4/ \
+		http://ca.squid-cache.org/Versions/v4/ \
+		http://www1.il.squid-cache.org/Versions/v4/ \
+		http://www1.jp.squid-cache.org/Versions/v4/ \
+		http://www2.gr.squid-cache.org/Versions/v4/ \
+		http://ca2.squid-cache.org/Versions/v4/ \
+		http://www.squid-cache.org/Versions/v4/
 
-PATCH_SITES=	http://www.squid-cache.org/%SUBDIR%/ \
-		http://www2.us.squid-cache.org/%SUBDIR%/ \
-		http://www1.at.squid-cache.org/%SUBDIR%/ \
-		http://www.eu.squid-cache.org/%SUBDIR%/ \
+PATCH_SITES=	http://www2.pl.squid-cache.org/%SUBDIR%/ \
+		http://ca.squid-cache.org/%SUBDIR%/ \
+		http://www1.il.squid-cache.org/%SUBDIR%/ \
 		http://www1.jp.squid-cache.org/%SUBDIR%/ \
-		http://master.squid-cache.org/~amosjeffries/patches/:nosid
+		http://www2.gr.squid-cache.org/%SUBDIR%/ \
+		http://ca2.squid-cache.org/%SUBDIR%/ \
+		http://www.squid-cache.org/%SUBDIR%/
 PATCH_SITE_SUBDIR=	Versions/v4/changesets
 
 MAINTAINER=	timp87@gmail.com
@@ -25,11 +24,9 @@ COMMENT=	HTTP Caching Proxy
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to link: ext_time_quota_acl.cc: undefined reference to std::ctype
-
 USES=		compiler:c++11-lib cpe perl5 shebangfix tar:xz
 
-CONFLICTS=	squid*-3.*
+CONFLICTS=	squid3 squid-devel
 CPE_VENDOR=	squid-cache
 SHEBANG_FILES=	scripts/*.pl contrib/*.pl tools/*.pl
 GNU_CONFIGURE=	yes
@@ -65,7 +62,7 @@ ARP_ACL_CONFIGURE_ENABLE=	eui
 AUTH_LDAP_CFLAGS=		-I${LOCALBASE}/include
 AUTH_LDAP_LDFLAGS=		-L${LOCALBASE}/lib
 AUTH_LDAP_USE=			OPENLDAP=yes
-AUTH_LDAP_VARS=			BASIC_AUTH+=LDAP EXTERNAL_ACL+=LDAP_group
+AUTH_LDAP_VARS=			BASIC_AUTH+=LDAP DIGEST_AUTH+="eDirectory LDAP" EXTERNAL_ACL+="LDAP_group eDirectory_userip"
 AUTH_SASL_CFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_CPPFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_LDFLAGS=		-L${LOCALBASE}/lib
@@ -121,7 +118,6 @@ SSL_CRTD_IMPLIES=		SSL
 STACKTRACES_CONFIGURE_ENABLE=	stacktraces
 STACKTRACES_EXTRA_PATCHES=	${FILESDIR}/extra-patch-gen-stacktrace
 STACKTRACES_LIB_DEPENDS=	libunwind.so:devel/libunwind
-STACKTRACES_CONFIGURE_ON=	--disable-strict-error-checking
 STACKTRACES_CFLAGS=		-g
 STACKTRACES_LDFLAGS=		-lunwind -L${LOCALBASE}/lib
 STACKTRACES_VARS=		STRIP=""
@@ -233,14 +229,16 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--disable-linux-netfilter \
 		--disable-linux-tproxy \
 		--disable-translation \
-		--disable-arch-native
+		--disable-arch-native \
+		--disable-strict-error-checking
 
 .include <bsd.port.options.mk>
 
 # Authentication methods and modules:
 
 BASIC_AUTH+=	DB SMB_LM NCSA PAM POP3 RADIUS fake getpwnam
-EXTERNAL_ACL+=	file_userip unix_group
+DIGEST_AUTH+=	file
+EXTERNAL_ACL+=	file_userip unix_group delayer
 
 # POLA: allow the old global make.conf(5) (pre src.conf(5)) defines, too:
 .if ${PORT_OPTIONS:MAUTH_NIS} && !defined(NO_NIS) && !defined(WITHOUT_NIS)
@@ -271,14 +269,14 @@ STORAGE_SCHEMES+=	ufs
 DISKIO_MODULES+=	AIO Blocking IpcIo Mmapped
 
 CONFIGURE_ARGS+=	--enable-auth-basic="${BASIC_AUTH}" \
-			--enable-auth-digest="file" \
+			--enable-auth-digest="${DIGEST_AUTH}" \
 			--enable-external-acl-helpers="${EXTERNAL_ACL}" \
 			--enable-auth-negotiate="${NEGOTIATE_AUTH}" \
 			--enable-auth-ntlm="fake SMB_LM" \
 			--enable-storeio="${STORAGE_SCHEMES}" \
 			--enable-disk-io="${DISKIO_MODULES}" \
-			--enable-log-daemon-helpers="file" \
-			--enable-url-rewrite-helpers="fake" \
+			--enable-log-daemon-helpers="file DB" \
+			--enable-url-rewrite-helpers="fake LFS" \
 			--enable-storeid-rewrite-helpers="file" \
 			--enable-security-cert-validators="fake"
 
@@ -293,8 +291,6 @@ WITH_DEBUG?=		yes
 CONFIGURE_ARGS+=	${SQUID_CONFIGURE_ARGS}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
-		${WRKSRC}/src/cf.data.pre
 	@(cd ${WRKSRC} && ${REINPLACE_CMD} \
 		-e 's|\.conf\.default|.conf.sample|' \
 		-e 's|)\.default|).sample|' \
@@ -302,12 +298,10 @@ post-patch:
 	@(cd ${WRKSRC} && ${MV} src/mime.conf.default src/mime.conf.sample)
 
 post-patch-IPV6-off:
-	@${REINPLACE_CMD} -e's| ::1||' -e's|^.*fc00::\/7.*||' \
-		-e's|^.*fe80::\/10.*||' -e's| 2001:DB8::2||' \
-		-e's| 2001:DB8::a:0\/64||' \
-		-e's|tcp_outgoing_address 2001:db8::c001 good_service_net||' \
-		-e's|tcp_outgoing_address 2001:db8::beef normal_service_net||' \
-		-e's|tcp_outgoing_address 2001:db8::1||' \
+	@${REINPLACE_CMD} -E -e's| ::1$$||' -e's| ::1?/128||g' \
+		-e'/acl localnet src f[ce][08]0::/d' \
+		-e's| 2001:DB8::[^[:space:]]+$$||' \
+		-e'/tcp_outgoing_address 2001:db8::/d' \
 		${WRKSRC}/src/cf.data.pre
 
 post-install:

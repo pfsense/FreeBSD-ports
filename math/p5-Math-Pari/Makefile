@@ -1,5 +1,4 @@
 # Created by: Michael Haro <mharo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Math-Pari
 PORTVERSION=	2.01080900
@@ -12,26 +11,31 @@ DISTFILES=	${DISTNAME}.zip \
 		pari-2.3.5.tar.gz:pari
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	PARI - numerical/scientific/number-theoretic calculations
+COMMENT=	Numerical/scientific/number-theoretic calculations
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-
-BROKEN_aarch64=		fails to link: mp.c:(function pari_kernel_init): can't create dynamic relocation R_AARCH64_ADR_PREL_PG_HI21 against symbol 'gpmalloc' defined in init.o
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		perl5
 USE_PERL5=	configure
-LLD_UNSAFE=	yes	# lld defaults to -ztext
 
 PARI_WRKSRC=	${WRKDIR}/pari-2.3.5
 
 CFLAGS+=	-I${PARI_WRKSRC}/src/headers -I${PARI_WRKSRC}/build
+CFLAGS_aarch64=		-fPIC
+CFLAGS_powerpc=		-fPIC
+CFLAGS_powerpc64=	-fPIC
+CFLAGS_powerpc64le=	-fPIC
+CFLAGS_powerpcspe=	-fPIC
+CFLAGS_riscv64=		-fPIC
 
 CONFIGURE_ARGS=	parilib="-L${PARI_WRKSRC}/build -lpari" \
 		paridir=${PARI_WRKSRC}
 MAKE_ARGS=	LDLOADLIBS="-lm -L${PARI_WRKSRC}/build -Wl,-rpath=${SITE_ARCH}/auto/Math/Pari -lpari"
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|2001007|2003000|' ${WRKSRC}/Makefile.PL
@@ -39,7 +43,9 @@ post-patch:
 		${PARI_WRKSRC}/Configure
 	@${REINPLACE_CMD} -e '/^CFLAGS=/s/\$$cflags//' \
 		${PARI_WRKSRC}/config/get_cc
-
+.if ${ARCH} == "i386"
+	${REINPLACE_CMD} -e 's|-Wl|-Wl,-znotext|' ${PARI_WRKSRC}/config/ldflags
+.endif
 pre-configure:
 	cd ${PARI_WRKSRC} && ${SETENV} CC="${CC}" CPP="${CPP}" CXX="${CXX}" \
 	    CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" CXXFLAGS="${CXXFLAGS}" \

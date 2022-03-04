@@ -1,13 +1,11 @@
-# Created by: Lorenzo Salvadore
-# $FreeBSD$
-
 PORTNAME=	gfan
 DISTVERSION=	0.6.2
+PORTREVISION=	2
 CATEGORIES=	math
-MASTER_SITES=	http://home.math.au.dk/jensen/software/gfan/
+MASTER_SITES=	https://users-math.au.dk/jensen/software/gfan/
 DISTNAME=	${PORTNAME}${DISTVERSION}
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	moritz@schmi.tt
 COMMENT=	Software for computing Groebner fans and tropical varieties
 
 LICENSE=	GPLv2+
@@ -18,14 +16,10 @@ LIB_DEPENDS=	libcddgmp.so:math/cddlib \
 
 USES=		compiler:c++11-lang gmake localbase
 
-CFLAGS+=	-DGMPRATIONAL
-
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-patch:
-	@${REINPLACE_CMD} \
-		's,ADDITIONALLINKOPTIONS = ,ADDITIONALLINKOPTIONS = -L${LOCALBASE}/lib ,' \
-		${WRKSRC}/Makefile
+CFLAGS+=	-DGMPRATIONAL
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gfan ${STAGEDIR}${PREFIX}/bin
@@ -38,7 +32,7 @@ post-install-DOCS-on:
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+	${CP} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
 
 do-test:
 	cd ${WRKSRC} && ./gfan _test

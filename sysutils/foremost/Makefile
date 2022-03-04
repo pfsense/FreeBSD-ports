@@ -1,5 +1,4 @@
 # Created by: Yonatan <Yonatan@xpert.com>
-# $FreeBSD$
 
 PORTNAME=	foremost
 PORTVERSION=	1.5.7
@@ -11,6 +10,7 @@ COMMENT=	Console program to recover files based on their headers and footers
 
 USES=		gmake
 ALL_TARGET=	freebsd
+CFLAGS+=	-fcommon
 
 PLIST_FILES=	bin/foremost etc/foremost.conf.sample man/man8/foremost.8.gz
 

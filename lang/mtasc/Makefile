@@ -1,5 +1,4 @@
 # Created by: Marcin Cieslak <saper@SYSTEM.PL>
-# $FreeBSD$
 
 PORTNAME=	mtasc
 PORTVERSION=	1.14
@@ -9,6 +8,8 @@ MASTER_SITES=	LOCAL/chinsan
 
 MAINTAINER=	saper@saper.info
 COMMENT=	Motion-Twin ActionScript 2 Compiler
+
+LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/ocaml/site-lib/extlib/IO.cmi:devel/ocaml-extlib
 
@@ -32,6 +33,13 @@ WRKSRC=		${WRKDIR}/ocaml
 PORTDATA=	std std8
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+post-patch:
+	@${REINPLACE_CMD} -E 's,n(read|write) ch,n\1_string ch,' \
+		${WRKSRC}/swflib/actionScript.ml \
+		${WRKSRC}/swflib/as3code.ml \
+		${WRKSRC}/swflib/as3parse.ml \
+		${WRKSRC}/swflib/swfParser.ml
 
 do-build:
 	(cd ${WRKSRC}/extc && \

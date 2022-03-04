@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	secure_login
 PORTVERSION=	1.4
 PORTREVISION=	3
@@ -7,7 +5,7 @@ CATEGORIES=	mail www
 DISTNAME=	${PORTNAME}-${PORTVERSION}-1.2.8
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	This plugin will automatically turn on SSL security during login
+COMMENT=	Automatically turn on SSL security during login
 
 LICENSE=	GPLv2
 

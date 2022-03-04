@@ -1,10 +1,10 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	matrix
 PORTVERSION=	1
 CATEGORIES=	games
-MASTER_SITES=	http://qudos.quakedev.com/linux/quake2/mods/
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe \
+		http://qudos.quakedev.com/linux/quake2/mods/
 PKGNAMEPREFIX=	${Q2PKGNAMEPREFIX}
 DISTNAME=	Matrix-v${PORTVERSION}.fixed.Linux
 

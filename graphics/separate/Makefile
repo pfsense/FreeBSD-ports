@@ -1,12 +1,11 @@
 # Created by: Pietro Cerutti <gahr@gahr.ch>
-# $FreeBSD$
 
 PORTNAME=	separate
 PORTVERSION=	0.5.8
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	OSDN/separate-plus/47873
+MASTER_SITES=	OSDN/separate-plus
 DISTNAME=	${PORTNAME}+-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org

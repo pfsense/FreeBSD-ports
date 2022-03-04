@@ -1,12 +1,12 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	binkd
 PORTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	ftp://happy.kiev.ua/pub/fidosoft/mailer/binkd/
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fidonet TCP/IP mailer
 
 USE_RC_SUBR=	binkd
@@ -18,7 +18,7 @@ GROUPS=		fido
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	AMIGA4D DOCS HTTPS
-AMIGA4D_CONFIGUTE_WITH=	aso
+AMIGA4D_CONFIGURE_WITH=	aso
 HTTPS_CONFIGURE_WITH=	https
 
 pre-configure:

@@ -1,9 +1,9 @@
 #!/bin/sh
-# $FreeBSD$
 
 # PROVIDE: mfsmaster
 # REQUIRE: DAEMON
 # KEYWORD: nostart shutdown
+# BEFORE: mountlate
 #
 # Add the following lines to /etc/rc.conf to enable mfsmaster:
 #

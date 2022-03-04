@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	impossible_mission_puzzle
 PORTVERSION=	1.0.1
@@ -13,12 +12,13 @@ DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	puzzle-${DISTVERSION}.tgz
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	This is a puzzle from the old C64 Impossible Mission game
+COMMENT=	Puzzle from the old C64 Impossible Mission game
 
 LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/puzzle-${PORTVERSION}
 
+USES=		sdl
 USE_SDL=	sdl
 
 PLIST_FILES=	bin/${PORTNAME} \

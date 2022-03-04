@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	billardgl
 PORTVERSION=	1.75
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/BillardGL%20${PORTVERSION}
 DISTNAME=	BillardGL-${PORTVERSION}
@@ -15,18 +12,16 @@ LICENSE=	GPLv2 # from website
 
 WRKSRC_SUBDIR=	src
 
-USES=		compiler dos2unix
+USES=		dos2unix gl xorg
 DOS2UNIX_FILES=	Makefile bmp.cpp
 USE_GL=		gl glu glut
 USE_XORG=	x11 xext xmu xi
+USE_CXXSTD=	c++98
 
 PORTDOCS=	README
 PORTDATA=	*
 PLIST_FILES=	bin/billardgl \
 		share/pixmaps/billardgl.bmp
-
-CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
-CXXFLAGS_clang=	-Wno-c++11-narrowing
 
 DESKTOP_ENTRIES="${PORTNAME}" \
 		"" \

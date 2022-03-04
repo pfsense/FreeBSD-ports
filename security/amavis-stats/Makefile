@@ -1,5 +1,4 @@
 # Created by: Mantas Kaulakys <stone@tainet.lt>
-# $FreeBSD$
 
 PORTNAME=	amavis-stats
 PORTVERSION=	0.1.12
@@ -10,9 +9,12 @@ MASTER_SITES=	LOCAL/feld
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple AMaViS statistics generator based on rrdtool
 
+DEPRECATED=	Abandoned, upstream is dead and last release was back in 2005
+EXPIRATION_DATE=2022-03-31
+
 RUN_DEPENDS=	rrdtool>=0:databases/rrdtool
 
-USES=		perl5 shebangfix
+USES=		perl5 php shebangfix
 USE_PERL5=	run
 SHEBANG_FILES=	amavis-stats
 perl_CMD=	${PERL} -w

@@ -8,7 +8,7 @@
  * bind.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2016 Voleatech GmbH
@@ -42,6 +42,7 @@
 		<rcfile>named.sh</rcfile>
 		<executable>named</executable>
 		<description>Domain Name Service</description>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<tabs>
 		<tab>
@@ -291,12 +292,30 @@
 			<enablefields>bind_forwarder_ips</enablefields>
 		</field>
 		<field>
+			<fielddescr>DNSSEC Validation</fielddescr>
+			<fieldname>bind_dnssec_validation</fieldname>
+			<description>
+				<![CDATA[
+				Enable DNSSEC validation when BIND is acting as a recursive resolver:<br />
+				<b>Auto</b>: a trust anchor for the DNS root zone will automatically be used. This trust anchor is provided as part of BIND and is kept up to date using RFC 5011 key management;<br />
+				<b>On</b>: DNSSEC validation will only occur if at least one trust anchor has been explicitly configured using a trusted-keys or managed-keys statement;<br />
+				<b>Off</b>: DNSSEC validation will not occur
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Auto</name><value>auto</value></option>
+				<option><name>On</name><value>on</value></option>
+				<option><name>Off</name><value>off</value></option>
+			</options>
+			<default>auto</default>
+		</field>
+		<field>
 			<fielddescr>Forwarder IPs</fielddescr>
 			<fieldname>bind_forwarder_ips</fieldname>
 			<description>
 				<![CDATA[
 				Enter IPs of DNS servers to use for recursion. Separate by semi-colons (;).<br />
-				Please also add a semi-colon (;) behind the last entry<br />
 				Applies only if Enable Forwarding is chosen.
 				]]>
 			</description>
@@ -328,7 +347,7 @@
 			</description>
 			<type>input</type>
 			<size>5</size>
-			<default_value>953</default_value>
+			<default_value>8953</default_value>
 			<advancedfield/>
 		</field>
 		<field>

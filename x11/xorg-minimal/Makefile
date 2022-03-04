@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	xorg
 PORTVERSION=	7.5.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11 x11-servers
 PKGNAMESUFFIX=	-minimal
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org minimal distribution metaport
 
 USES=		metaport
@@ -15,10 +13,10 @@ USES=		metaport
 VIDEO_DRIVER?=	vesa
 
 RUN_DEPENDS+=	${LOCALBASE}/bin/Xorg:x11-servers/xorg-server \
-		${LOCALBASE}/lib/xorg/modules/input/mouse_drv.so:x11-drivers/xf86-input-mouse \
-		${LOCALBASE}/lib/xorg/modules/input/kbd_drv.so:x11-drivers/xf86-input-keyboard \
 		${LOCALBASE}/bin/xinit:x11/xinit \
-		${LOCALBASE}/bin/xauth:x11/xauth
+		${LOCALBASE}/bin/xauth:x11/xauth \
+		${LOCALBASE}/lib/xorg/modules/input/libinput_drv.so:x11-drivers/xf86-input-libinput
+
 .if ${VIDEO_DRIVER} == "nvidia"
 RUN_DEPENDS+=	${LOCALBASE}/lib/xorg/modules/drivers/nvidia_drv.so:x11/nvidia-driver
 .elif ${VIDEO_DRIVER} == "intel"

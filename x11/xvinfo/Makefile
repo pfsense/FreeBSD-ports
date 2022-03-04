@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xvinfo
 PORTVERSION=	1.1.4
 CATEGORIES=	x11
@@ -10,7 +8,7 @@ COMMENT=	Print out X-Video extension adaptor information
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	xv x11
 
 PLIST_FILES=	bin/xvinfo man/man1/xvinfo.1.gz

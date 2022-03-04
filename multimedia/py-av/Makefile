@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	av
-PORTVERSION=	6.1.0
+PORTVERSION=	8.0.3
 CATEGORIES=	multimedia python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
 
-USES=		python pkgconfig
+USES=		python:3.5+ pkgconfig
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.mk>

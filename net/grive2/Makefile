@@ -1,13 +1,11 @@
 # Created by: Carlos J Puga Medina <cpm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	grive2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.1-dev
-PORTREVISION=	3
+DISTVERSION=	0.5.2-dev
 CATEGORIES=	net
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	samuel@andersentech.net
 COMMENT=	Open source client for Google Drive
 
 LICENSE=	GPLv2
@@ -20,13 +18,13 @@ LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		libgpg-error.so:security/libgpg-error \
 		libyajl.so:devel/yajl
 
-USES=		cmake compiler localbase pkgconfig
+USES=		cmake compiler:c++11-lang localbase pkgconfig
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_clang=	-Wno-c++11-narrowing
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	vitalif
-GH_TAGNAME=	ad9b66a
+GH_TAGNAME=	ffb744a
 
 PLIST_FILES=	bin/grive \
 		man/man1/grive.1.gz

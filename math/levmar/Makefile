@@ -1,9 +1,8 @@
 # Created by: Eijiro Shibusawa <ej-sib@ice.uec.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	levmar
 PORTVERSION=	2.6
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	math
 MASTER_SITES=	http://users.ics.forth.gr/~lourakis/levmar/
 
@@ -45,7 +44,7 @@ base system profiling libraries
 .endif
 PLIST_FILES+=	lib/liblevmar_p.a
 .else
-MAKE_ENV+=	NO_PROFILE=
+MAKE_ENV+=	WITHOUT_PROFILE=true
 .endif
 
 post-extract:

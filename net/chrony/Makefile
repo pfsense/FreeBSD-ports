@@ -1,58 +1,93 @@
 # Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	chrony
-PORTVERSION=	3.4
-PORTREVISION=	1
+DISTVERSION=	4.1
 CATEGORIES=	net
-MASTER_SITES=	http://download.tuxfamily.org/chrony/
+MASTER_SITES=	https://download.tuxfamily.org/chrony/ \
+		LOCAL/mandree
 
-MAINTAINER=	yonas@fizk.net
-COMMENT=	System clock synchronization client and server
+MAINTAINER?=	mandree@FreeBSD.org
+COMMENT?=	System clock synchronization client and server
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USERS=		chronyd
-GROUPS=		chronyd
+USES=		cpe gmake libedit pkgconfig
 
-USES=		cpe gmake libedit
 CPE_VENDOR=	tuxfamily
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--prefix=${PREFIX} \
-		--chronyvardir=/var/db/${PORTNAME} \
-		--sysconfdir=${PREFIX}/etc --mandir=${MANPREFIX}/man \
-		--datarootdir=${DATADIR} --docdir=${DOCSDIR} \
-		--with-readline-library=${LOCALBASE}/lib \
-		--with-user=chronyd --without-tomcrypt
+
 USE_RC_SUBR=	chronyd
+
+HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--chronyvardir=/var/db/${PORTNAME} \
+		--datarootdir=${DATADIR} \
+		--docdir=${DOCSDIR} \
+		--enable-ntp-signd \
+		--mandir=${MANPREFIX}/man \
+		--prefix=${PREFIX} \
+		--sysconfdir=${PREFIX}/etc \
+		--without-tomcrypt
 
 ALL_TARGET=	all
 INSTALL_TARGET=	install
+
+LDFLAGS+=	-L${LOCALBASE}/lib
+
+CONFLICTS_INSTALL?=	chrony-lite
+
 PORTDOCS=	FAQ NEWS README
-PORTEXAMPLES=	chrony.conf.example1 chrony.conf.example2 \
-		chrony.conf.example3 chrony.keys.example
+PORTEXAMPLES=	chrony.conf.example1 chrony.conf.example2 chrony.conf.example3 \
+		chrony.keys.example
 
 # XXX: there are also other potentially useful options worth looking into:
 #  --disable-pps        Disable PPS API support
-OPTIONS_DEFINE=		DOCS EXAMPLES IPV6 NETTLE NSS
-OPTIONS_DEFAULT=	NETTLE
+OPTIONS_DEFINE=		DOCS EXAMPLES HTMLDOCS NTS USER
+OPTIONS_DEFAULT=	NETTLE NTS USER
+OPTIONS_GROUP=		SECHASH
+OPTIONS_GROUP_SECHASH=	NETTLE NSS
+OPTIONS_SUB=		yes
+NTS_IMPLIES=		NETTLE
+NETTLE_PREVENTS=	NSS
 
-NETTLE_DESC=		Nettle crypto library support
-NSS_DESC=		Add support for more hashing algorithms
+HTMLDOCS_DESC=	Build HTML docs (IMPLIES DOCS, needs ruby, asciidoctor)
+NETTLE_DESC=	Nettle crypto library support for secure hash and NTS
+NSS_DESC=	NSS-based support for more hashing algorithms
+NTS_DESC=	Support Network Time Security (NTS, uses GnuTLS & Nettle)
+SECHASH_DESC=	Support for secure hash functions
+USER_DESC=	Run as user/group chronyd (unset: user/group ntpd)
 
-IPV6_CATEGORIES=	ipv6
-IPV6_CONFIGURE_OFF=	--disable-ipv6
-NETTLE_CONFIGURE_OFF=	--without-nettle
-NETTLE_LIB_DEPENDS=	libnettle.so:security/nettle
-NSS_BROKEN=		Crashes on startup with NSS. See https://bugs.freebsd.org/223840
-NSS_CONFIGURE_OFF=	--without-nss
-NSS_LIB_DEPENDS=	libfreebl3.so:security/nss
-NSS_USES=		pkgconfig
+HTMLDOCS_IMPLIES=	DOCS
+
+HTMLDOCS_BUILD_DEPENDS+=	asciidoctor:textproc/rubygem-asciidoctor
+HTMLDOCS_ALL_TARGET=		docs
+HTMLDOCS_INSTALL_TARGET=	docs
+NETTLE_LIB_DEPENDS=		libnettle.so:security/nettle
+NETTLE_CONFIGURE_OFF=		--without-nettle
+NSS_LIB_DEPENDS=		libfreebl3.so:security/nss
+NSS_CONFIGURE_OFF=		--without-nss
+NTS_LIB_DEPENDS=		libgnutls.so:security/gnutls
+NTS_CONFIGURE_OFF=		--without-gnutls
+USER_CONFIGURE_ON=		--with-user=chronyd
+USER_CONFIGURE_OFF=		--with-user=ntpd
+
+USER_VARS=	GROUPS=chronyd \
+		USERS=chronyd
+
+.include <bsd.port.pre.mk>
+
+.if defined(WITH_DEBUG)
+CONFIGURE_ARGS+=	--enable-debug
+.endif
+
+.if ${PORT_OPTIONS:MHTMLDOCS}
+PORTDOCS+=	doc/*.html
+.endif
 
 post-patch:
-	@cd ${WRKSRC}/examples && \
-		${REINPLACE_CMD} -e 's!%%PREFIX%%!${PREFIX}!g' ${PORTEXAMPLES}
+	cd ${WRKSRC}/examples && \
+		${REINPLACE_CMD} -e 's!%%PREFIX%%!${PREFIX}!g' \
+		                 -e 's!/var/lib!/var/db!g' \
+				 ${PORTEXAMPLES:M*.conf.example*}
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/chronyc
@@ -61,12 +96,13 @@ post-install:
 		${STAGEDIR}${PREFIX}/etc/chrony.conf.sample
 
 post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${RM} doc/installation.html
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/examples && \
 		${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

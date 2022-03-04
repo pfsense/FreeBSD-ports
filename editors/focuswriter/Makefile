@@ -1,12 +1,12 @@
 # Created by: lightside <lightside@gmx.com>
-# $FreeBSD$
 
 PORTNAME=	focuswriter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.2
+DISTVERSION=	1.7.6
+PORTREVISION=	1
 CATEGORIES=	editors
 
-MAINTAINER=	lightside@gmx.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, distraction-free writing environment
 
 LICENSE=	GPLv3+ LGPL3+

@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	hfsfuse
-DISTVERSION=	g20180118
-PORTREVISION=	1
+DISTVERSION=	0.132
 CATEGORIES=	sysutils
+MASTER_SITES=	https://github.com/0x09/hfsfuse/releases/download/${DISTVERSION}/
 PKGNAMEPREFIX=	fusefs-
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	me@cameronkatri.com
 COMMENT=	FUSE driver for HFS+ filesystems
 
 LICENSE=	MIT
@@ -19,12 +17,14 @@ USES=		fuse gmake
 USE_CSTD=	c99
 USE_GITHUB=	yes
 GH_ACCOUNT=	0x09
-GH_TAGNAME=	d021835629c3fb37bd5bf8d364d5196f1db53867
 
+MAKE_ARGS=	CONFIG_CFLAGS="${CFLAGS}" \
+		WITH_UBLIO=system \
+		WITH_UTF8PROC=system
 ALL_TARGET=	config all
-MAKE_ARGS=	CONFIG_CFLAGS="${CFLAGS}" WITH_UBLIO=system WITH_UTF8PROC=system
 
-PLIST_FILES=	bin/hfsdump bin/hfsfuse
+PLIST_FILES=	bin/hfsdump \
+		bin/hfsfuse
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS

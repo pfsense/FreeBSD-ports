@@ -1,5 +1,4 @@
 # Created by: jmacd@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	mit-scheme
 PORTVERSION=	9.2
@@ -12,6 +11,8 @@ MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	MIT Scheme: includes runtime, compiler, and edwin binaries
 
 LICENSE=	GPLv2
+
+BUILD_DEPENDS=	as:devel/binutils
 
 ONLY_FOR_ARCHS=	i386 amd64
 GNU_CONFIGURE=	yes
@@ -39,6 +40,7 @@ X11_CONFIGURE_WITH=	x
 
 OPENSSL_USES=		ssl
 PGSQL_USES=		pgsql
+X11_USES=		xorg
 X11_USE=		xorg=x11
 
 GDBM_LIB_DEPENDS+=	libgdbm.so:databases/gdbm

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Skinny-Mixin-DBHResolver
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of DBIx::DBHResolver mixin for DBIx::Skinny
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

@@ -1,3 +1,3 @@
-TIMESTAMP = 1528482564
-SHA256 (xorg/app/xkbcomp-1.4.2.tar.bz2) = 6dd8bcb9be7e85bd7294abe261b8c7b0539d2fc93e41b80fb8bd013767ce8424
-SIZE (xorg/app/xkbcomp-1.4.2.tar.bz2) = 248399
+TIMESTAMP = 1635663455
+SHA256 (xorg/app/xkbcomp-1.4.5.tar.bz2) = 6851086c4244b6fd0cc562880d8ff193fb2bbf1e141c73632e10731b31d4b05e
+SIZE (xorg/app/xkbcomp-1.4.5.tar.bz2) = 251617

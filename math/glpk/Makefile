@@ -1,12 +1,11 @@
 # Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	glpk
-DISTVERSION=	4.65
+DISTVERSION=	5.0
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	GNU Linear Programming Kit
 
 LICENSE=	GPLv3+
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-CONFLICTS=	goblin-[0-9]*
+CONFLICTS=	goblin
 
 USES=		gmake libtool localbase
 GNU_CONFIGURE=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	0.0.3
 CATEGORIES=	textproc
@@ -18,8 +16,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/dictionaries
 
-PLIST_FILES=	%%DATADIR%%/yi.aff \
-		%%DATADIR%%/yi.dic
+PLIST_FILES=	${DATADIR}/yi.aff \
+		${DATADIR}/yi.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

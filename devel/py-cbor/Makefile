@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cbor
 PORTVERSION=	1.0.0
@@ -12,17 +11,17 @@ COMMENT=	RFC 7049 - Concise Binary Object Representation
 
 LICENSE=	APACHE20
 
+USES=		compiler python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python
 
 .include <bsd.port.pre.mk>
 
+.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
 post-patch:
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
 	@${REINPLACE_CMD} -e '/pragma/d' ${WRKSRC}/c/cbormodule.c
 .endif
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cbor/_cbor.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.post.mk>

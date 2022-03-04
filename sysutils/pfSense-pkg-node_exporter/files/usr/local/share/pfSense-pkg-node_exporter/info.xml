@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>node_exporter</name>
+		<descr>Prometheus exporter for machine metrics</descr>
+		<website>http://github.com/prometheus/node_exporter</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>node_exporter.xml</configurationfile>
+	</package>
+</pfsensepkgs>

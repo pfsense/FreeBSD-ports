@@ -1,52 +1,70 @@
 # Created by: Alexander Nedotsukov <bland@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	inkscape
-PORTVERSION=	0.92.3
-PORTREVISION=	9
+DISTVERSION=	1.1
+PORTREVISION=	6
 CATEGORIES=	graphics gnome
-MASTER_SITES=	https://inkscape.org/en/gallery/item/12187/
+MASTER_SITES=	https://inkscape.org/gallery/item/26932/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Full featured open source SVG editor
 
-LICENSE=	GPLv2+ GPLv3+ LGPL21 MPL11
+LICENSE=	GPLv2 GPLv2+ GPLv3 GPLv3+ LGPL21 LGPL3 LGPL3+ MPL11
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv2=	${WRKSRC}/GPL2.txt
-LICENSE_FILE_GPLv3=	${WRKSRC}/GPL3.txt
-LICENSE_FILE_LGPL21=	${WRKSRC}/LGPL2.1.txt
+LICENSE_FILE_GPLv2  =	${WRKSRC}/LICENSES/GPL-2.0.txt
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/LICENSES/GPL-2.0-or-later.txt
+LICENSE_FILE_GPLv3  =	${WRKSRC}/LICENSES/GPL-3.0.txt
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/LICENSES/GPL-3.0-or-later.txt
+LICENSE_FILE_LGPL21 =	${WRKSRC}/LICENSES/LGPL-2.1.txt
+LICENSE_FILE_LGPL3  =	${WRKSRC}/LICENSES/LGPL-3.0.txt
+LICENSE_FILE_LGPL3+ =	${WRKSRC}/LICENSES/LGPL-3.0-or-later.txt
+LICENSE_FILE_MPL11  =	${WRKSRC}/LICENSES/MPL-1.1.txt
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/concept_check.hpp:devel/boost-libs
 LIB_DEPENDS=	libpopt.so:devel/popt \
 		libgc.so:devel/boehm-gc \
+		libgdl-3.so:x11-toolkits/gdl \
 		libgsl.so:math/gsl \
-		libgtkspell.so:textproc/gtkspell \
+		libgtkspell3-3.so:textproc/gtkspell3 \
 		liblcms2.so:graphics/lcms2 \
 		libfribidi.so:converters/fribidi \
 		libaspell.so:textproc/aspell \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
 		libpotrace.so:graphics/libpotrace \
 		libpng.so:graphics/png \
-		libMagick++-6.so:graphics/ImageMagick6
+		libsoup-2.4.so:devel/libsoup \
+		libenchant-2.so:textproc/enchant2 \
+		libyaml.so:textproc/libyaml \
+		libdouble-conversion.so:devel/double-conversion \
+		lib2geom.so:math/lib2geom
+RUN_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scour>0:textproc/py-scour@${PY_FLAVOR} \
+		ps2pdf:print/ghostscript9-agpl-base \
+		fig2dev:print/fig2dev
 
 USES=		compiler:c++11-lib cmake cpe desktop-file-utils gnome \
-		iconv:wchar_t jpeg pathfix pkgconfig python:2.7,build \
-		shebangfix tar:bzip2
-USE_GNOME=	gtkmm24 libxml2 libxslt
-USE_XORG=	x11
-INSTALLS_ICONS=	yes
-CMAKE_ARGS+=	-DWITH_GNOME_VFS:BOOL=NO
+		iconv:wchar_t jpeg pathfix pkgconfig python:3.6+ \
+		shebangfix tar:xz xorg
+USE_GNOME=	gtkmm30 libxml2 libxslt
+USE_XORG=	sm ice x11 xext
+USE_LDCONFIG=	yes
 
-SHEBANG_FILES=	cxxtest/cxxtestgen.pl share/extensions/*.p[lm] \
-		share/extensions/*.py share/extensions/genpofiles.sh \
-		fix-roff-punct
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_2021-05-24_c4e8f9ed74
 
-OPTIONS_DEFINE=	POPPLER VISIO CDR DBUS WPG
-OPTIONS_DEFAULT=POPPLER VISIO CDR WPG
-OPTIONS_SUB=	yes
+SHEBANG_FILES=	share/extensions/*.py share/extensions/genpofiles.sh \
+		share/templates/*.py man/fix-roff-punct
 
-CDR_DESC=		Support for CorelDRAW diagrams
+OPTIONS_DEFINE=		OPENMP POPPLER SCRIBUS VISIO CDR DBUS WPG GVFS NLS
+OPTIONS_DEFAULT=	POPPLER VISIO CDR WPG GM
+OPTIONS_DEFAULT_amd64=	OPENMP
+OPTIONS_RADIO=		IMAGICK
+OPTIONS_RADIO_IMAGICK=	IMAGICK6 GM
+OPTIONS_SUB=		yes
+
+CDR_DESC=		Support for CorelDRAW graphics
 CDR_CMAKE_BOOL=		WITH_LIBCDR
 CDR_LIB_DEPENDS=	librevenge-stream-0.0.so:textproc/librevenge \
 			libcdr-0.1.so:graphics/libcdr01
@@ -55,15 +73,17 @@ DBUS_CMAKE_BOOL=	WITH_DBUS
 DBUS_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 			libdbus-1.so:devel/dbus
 
-#OPENMP_USES=		compiler:openmp
-#OPENMP_USES_OFF=	compiler:c++11-lib
-#OPENMP_CMAKE_BOOL=	WITH_OPENMP
-CMAKE_ARGS+=		-DWITH_OPENMP:BOOL=NO
+GVFS_USE=		GNOME=gvfs
+
+OPENMP_CMAKE_BOOL=	WITH_OPENMP
 
 POPPLER_DESC=		PDF preview rendering
 POPPLER_CMAKE_BOOL=	ENABLE_POPPLER ENABLE_POPPLER_CAIRO
 POPPLER_LIB_DEPENDS=	libpoppler.so:graphics/poppler \
 			libpoppler-glib.so:graphics/poppler-glib
+
+SCRIBUS_DESC=		Support color-managed PDF export using Scribus (experimental)
+SCRIBUS_RUN_DEPENDS=	scribus:print/scribus-devel
 
 VISIO_DESC=		Support for Microsoft Visio diagrams
 VISIO_CMAKE_BOOL=	WITH_LIBVISIO
@@ -74,19 +94,23 @@ WPG_DESC=		Support for WordPerfect graphics
 WPG_CMAKE_BOOL=		WITH_LIBWPG
 WPG_LIB_DEPENDS=	libwpg-0.3.so:graphics/libwpg03
 
-# temporary until the build works for the !NLS case
-USES+=			gettext
-#NLS_CMAKE_BOOL=		WITH_NLS
-#NLS_USES=		gettext
+IMAGICK_DESC=		Raster image format library
+IMAGICK6_DESC=		Use ImageMagick6
+IMAGICK6_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick6
+IMAGICK6_CMAKE_BOOL=	WITH_IMAGE_MAGICK
+GM_DESC=		Use GraphicsMagick
+GM_LIB_DEPENDS=		libGraphicsMagick.so:graphics/GraphicsMagick
+GM_CMAKE_BOOL=		WITH_GRAPHICS_MAGICK
+
+NLS_CMAKE_BOOL=		WITH_NLS
+NLS_USES=		gettext
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|COMMAND python|COMMAND ${PYTHON_VERSION}|g' \
+	@${REINPLACE_CMD} -e 's|COMMAND python3|COMMAND ${PYTHON_VERSION}|g' \
 		${WRKSRC}/share/*/CMakeLists.txt
-	# Obtained from Arch Linux
-	@${REINPLACE_CMD} -e 's|gTrue|true|g' -e 's|gFalse|false|g' -e 's|GBool|bool|g' \
-		${WRKSRC}/src/extension/internal/pdfinput/pdf-parser.*
-	# Fix with poppler 0.73
-	@${REINPLACE_CMD} -E '/#include "goo\/gtypes.h"/d' \
-		${WRKSRC}/src/extension/internal/pdfinput/pdf-parser.h
+	# Third entry in the table of interpreters is basename of executable
+	@${REINPLACE_CMD} -e 's|"python3"|"${PYTHON_VERSION}"|g' \
+		${WRKSRC}/src/extension/implementation/script.cpp
+	@${TOUCH} ${WRKSRC}/share/extensions/gcodetools_check_for_updates.inx.h
 
 .include <bsd.port.mk>

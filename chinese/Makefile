@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Chinese support
 
     SUBDIR += CJKUnifonts
@@ -12,7 +9,6 @@
     SUBDIR += auto-cn-l10n
     SUBDIR += auto-tw-l10n
     SUBDIR += autoconvert
-    SUBDIR += bg5pdf
     SUBDIR += big5width
     SUBDIR += bitchx
     SUBDIR += brise
@@ -25,7 +21,6 @@
     SUBDIR += cless
     SUBDIR += cnprint
     SUBDIR += dictd-database
-    SUBDIR += docproj
     SUBDIR += enscript
     SUBDIR += eterm
     SUBDIR += fandol
@@ -35,9 +30,13 @@
     SUBDIR += fcitx-configtool
     SUBDIR += fcitx-libpinyin
     SUBDIR += fcitx-rime
-    SUBDIR += fcitx-sunpinyin
     SUBDIR += fcitx-table-extra
     SUBDIR += fcitx-ui-light
+    SUBDIR += fcitx5-chewing
+    SUBDIR += fcitx5-chinese-addons
+    SUBDIR += fcitx5-rime
+    SUBDIR += fcitx5-table-extra
+    SUBDIR += fcitx5-table-other
     SUBDIR += fireflyttf
     SUBDIR += font-std
     SUBDIR += fortunetw
@@ -46,24 +45,26 @@
     SUBDIR += gcin
     SUBDIR += gcin-gtk3
     SUBDIR += gcin-qt5
-    SUBDIR += gimp-help-zh_CN
     SUBDIR += gydict
     SUBDIR += hc
-    SUBDIR += ibus-array
     SUBDIR += ibus-cangjie
     SUBDIR += ibus-chewing
     SUBDIR += ibus-libpinyin
     SUBDIR += ibus-pinyin
+    SUBDIR += ibus-rime
     SUBDIR += ibus-table-chinese
     SUBDIR += jis2gb
     SUBDIR += kcfonts
     SUBDIR += libcangjie
     SUBDIR += libchewing
+    SUBDIR += libime
+    SUBDIR += libime-jyutping
     SUBDIR += libpinyin
     SUBDIR += libreoffice-zh_CN
     SUBDIR += libreoffice-zh_TW
     SUBDIR += librime
     SUBDIR += libtabe
+    SUBDIR += linux-wps-office-zh_CN
     SUBDIR += lunar
     SUBDIR += moettf
     SUBDIR += muni
@@ -80,6 +81,7 @@
     SUBDIR += p5-Lingua-ZH-HanDetect
     SUBDIR += p5-Lingua-ZH-Keywords
     SUBDIR += p5-Lingua-ZH-Numbers
+    SUBDIR += p5-Lingua-ZH-Romanize-Pinyin
     SUBDIR += p5-Lingua-ZH-Segment
     SUBDIR += p5-Lingua-ZH-Summarize
     SUBDIR += p5-Lingua-ZH-TaBE
@@ -94,7 +96,29 @@
     SUBDIR += pycangjie
     SUBDIR += pyzy
     SUBDIR += qe
-    SUBDIR += reciteword
+    SUBDIR += rime-array
+    SUBDIR += rime-bopomofo
+    SUBDIR += rime-cangjie
+    SUBDIR += rime-cantonese
+    SUBDIR += rime-combo-pinyin
+    SUBDIR += rime-data-full
+    SUBDIR += rime-double-pinyin
+    SUBDIR += rime-emoji
+    SUBDIR += rime-essay
+    SUBDIR += rime-ipa
+    SUBDIR += rime-jyutping
+    SUBDIR += rime-luna-pinyin
+    SUBDIR += rime-middle-chinese
+    SUBDIR += rime-pinyin-simp
+    SUBDIR += rime-prelude
+    SUBDIR += rime-quick
+    SUBDIR += rime-scj
+    SUBDIR += rime-soutzoe
+    SUBDIR += rime-stenotype
+    SUBDIR += rime-stroke
+    SUBDIR += rime-terra-pinyin
+    SUBDIR += rime-wubi
+    SUBDIR += rime-wugniu
     SUBDIR += scim-fcitx
     SUBDIR += scim-pinyin
     SUBDIR += scim-tables
@@ -102,7 +126,7 @@
     SUBDIR += sourcehansans-tc-otf
     SUBDIR += sourcehanserif-sc-otf
     SUBDIR += sourcehanserif-tc-otf
-    SUBDIR += sunpinyin
+    SUBDIR += taipeisanstc
     SUBDIR += tin
     SUBDIR += tintin++
     SUBDIR += ttf2pt1

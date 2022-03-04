@@ -1,9 +1,8 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lxmed
 PORTVERSION=	20120515
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm java
 MASTER_SITES=	SF/${PORTNAME}/
 DIST_SUBDIR=	java
@@ -18,7 +17,6 @@ RUN_DEPENDS=	gksu:sysutils/gksu
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

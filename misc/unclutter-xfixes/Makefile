@@ -1,8 +1,7 @@
 # Created by: Oleh Hushchenkov <gor@clogic.com.ua>
-# $FreeBSD$
 
 PORTNAME=	unclutter-xfixes
-PORTVERSION=	1.5
+PORTVERSION=	1.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc
 
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	a2x:textproc/asciidoc
 LIB_DEPENDS=	libev.so:devel/libev
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Airblader

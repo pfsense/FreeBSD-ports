@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mize
-PORTVERSION=	0.3.5
+PORTVERSION=	0.4.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,10 +10,11 @@ COMMENT=	Memoziation for methods and functions for Ruby
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-protocol>=0:devel/rubygem-protocol
+RUN_DEPENDS=	rubygem-protocol>=2.0<3:devel/rubygem-protocol
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

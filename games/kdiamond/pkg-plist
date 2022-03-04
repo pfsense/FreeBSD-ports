@@ -1,5 +1,4 @@
 bin/kdiamond
-etc/xdg/kdiamond.knsrc
 share/applications/org.kde.kdiamond.desktop
 share/icons/hicolor/128x128/apps/kdiamond.png
 share/icons/hicolor/16x16/apps/kdiamond.png
@@ -18,7 +17,7 @@ share/icons/hicolor/64x64/apps/kdiamond.png
 %%DATADIR%%/themes/funny_zoo.png
 %%DATADIR%%/themes/funny_zoo.svgz
 share/knotifications5/kdiamond.notifyrc
-share/kxmlgui5/kdiamond/kdiamondui.rc
+share/knsrcfiles/kdiamond.knsrc
 share/locale/ar/LC_MESSAGES/kdiamond.mo
 share/locale/bg/LC_MESSAGES/kdiamond.mo
 share/locale/bs/LC_MESSAGES/kdiamond.mo
@@ -40,6 +39,7 @@ share/locale/gl/LC_MESSAGES/kdiamond.mo
 share/locale/hi/LC_MESSAGES/kdiamond.mo
 share/locale/hr/LC_MESSAGES/kdiamond.mo
 share/locale/hu/LC_MESSAGES/kdiamond.mo
+share/locale/id/LC_MESSAGES/kdiamond.mo
 share/locale/is/LC_MESSAGES/kdiamond.mo
 share/locale/it/LC_MESSAGES/kdiamond.mo
 share/locale/ja/LC_MESSAGES/kdiamond.mo
@@ -48,6 +48,7 @@ share/locale/km/LC_MESSAGES/kdiamond.mo
 share/locale/ko/LC_MESSAGES/kdiamond.mo
 share/locale/lt/LC_MESSAGES/kdiamond.mo
 share/locale/lv/LC_MESSAGES/kdiamond.mo
+share/locale/ml/LC_MESSAGES/kdiamond.mo
 share/locale/mr/LC_MESSAGES/kdiamond.mo
 share/locale/nb/LC_MESSAGES/kdiamond.mo
 share/locale/nds/LC_MESSAGES/kdiamond.mo
@@ -60,6 +61,7 @@ share/locale/ro/LC_MESSAGES/kdiamond.mo
 share/locale/ru/LC_MESSAGES/kdiamond.mo
 share/locale/sk/LC_MESSAGES/kdiamond.mo
 share/locale/sl/LC_MESSAGES/kdiamond.mo
+share/locale/sq/LC_MESSAGES/kdiamond.mo
 share/locale/sr/LC_MESSAGES/kdiamond.mo
 share/locale/sv/LC_MESSAGES/kdiamond.mo
 share/locale/tr/LC_MESSAGES/kdiamond.mo

@@ -1,5 +1,4 @@
 # Created by: Markus Brueffer <markus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tpb
 PORTVERSION=	0.6.4
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libxosd.so:misc/xosd
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=		gmake iconv localbase pkgconfig
+USES=		gmake iconv localbase pkgconfig xorg
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG}
 USE_XORG=	x11 sm ice xext

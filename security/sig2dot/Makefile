@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	sig2dot
 PORTVERSION=	0.35
@@ -11,7 +10,7 @@ EXTRACT_SUFX=	.pl
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GPG/PGP Keyring Graph Generator
 
-CONFLICTS_INSTALL=signing-party-[0-9]*
+CONFLICTS_INSTALL=signing-party
 
 PLIST_FILES=	bin/sig2dot
 EXTRACT_CMD=	${CP}

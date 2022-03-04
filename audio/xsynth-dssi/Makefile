@@ -1,9 +1,8 @@
 # Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
 
 PORTNAME=	xsynth-dssi
 PORTVERSION=	0.9.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	SF/dssi/${PORTNAME}/${PORTVERSION}
 
@@ -21,7 +20,7 @@ LICENSE_COMB=	multi
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20
-USES=		gmake libtool pkgconfig
+USES=		gmake gnome libtool pkgconfig
 INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include

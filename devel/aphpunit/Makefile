@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	aphpunit
-DISTVERSION=	1.8
+DISTVERSION=	2.0
 CATEGORIES=	devel www
 MASTER_SITES=	http://phar.toco-domains.de/
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}

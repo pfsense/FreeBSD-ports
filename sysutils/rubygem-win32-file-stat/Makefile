@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	win32-file-stat
 PORTVERSION=	1.5.5
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	A File::Stat class tailored to MS Windows
+COMMENT=	File::Stat class tailored to MS Windows
 
 LICENSE=	ART20
 

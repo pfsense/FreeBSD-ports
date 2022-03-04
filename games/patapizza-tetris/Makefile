@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	patapizza-tetris
 PORTVERSION=	1.0
@@ -21,7 +20,7 @@ GH_ACCOUNT=	patapizza
 GH_PROJECT=	tetris
 GH_TAGNAME=	e6f1a41
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl image gfx ttf
 
 PORTDOCS=	README.md

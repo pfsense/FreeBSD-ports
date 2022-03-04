@@ -1,11 +1,7 @@
-@sample %%WWWDIR%%/settings.inc.php.sample
-@sample %%WWWDIR%%/settings_authorizations.inc.php.sample
-@sample %%WWWDIR%%/settings_screens.inc.php.sample
 %%WWWDIR%%/LICENSE.txt
 %%WWWDIR%%/favicon.ico
 %%WWWDIR%%/favicon.png
 %%WWWDIR%%/help.html
-%%WWWDIR%%/htaccess.txt
 %%WWWDIR%%/includes/authorizations.inc.php
 %%WWWDIR%%/includes/before430.inc.php
 %%WWWDIR%%/includes/browse.inc.php
@@ -26,13 +22,11 @@
 %%WWWDIR%%/index.php
 %%WWWDIR%%/index.xml.php
 %%WWWDIR%%/languages/ar-utf.inc.php
-%%WWWDIR%%/languages/ar.inc.php
-%%WWWDIR%%/languages/cs.inc.php
+%%WWWDIR%%/languages/cs-utf.inc.php
 %%WWWDIR%%/languages/da-utf.inc.php
 %%WWWDIR%%/languages/de.inc.php
 %%WWWDIR%%/languages/en-utf.inc.php
 %%WWWDIR%%/languages/en.inc.php
-%%WWWDIR%%/languages/en_raw.inc.php
 %%WWWDIR%%/languages/es.inc.php
 %%WWWDIR%%/languages/fi.inc.php
 %%WWWDIR%%/languages/fr.inc.php
@@ -50,13 +44,8 @@
 %%WWWDIR%%/languages/tc.inc.php
 %%WWWDIR%%/languages/tr.inc.php
 %%WWWDIR%%/languages/ua.inc.php
-%%WWWDIR%%/languages/vi.inc.php
-%%WWWDIR%%/languages/zh.inc.php
-%%WWWDIR%%/modules/admin/admin.inc.php
-%%WWWDIR%%/modules/admin_createtables/admin_createtables.inc.php
-%%WWWDIR%%/modules/admin_createtables/create_tables.sql
-%%WWWDIR%%/modules/admin_emptylogs/admin_emptylogs.inc.php
-%%WWWDIR%%/modules/admin_viewlogs/admin_viewlogs.inc.php
+%%WWWDIR%%/languages/vi-utf.inc.php
+%%WWWDIR%%/languages/zh-utf.inc.php
 %%WWWDIR%%/modules/advanced/advanced.inc.php
 %%WWWDIR%%/modules/advanced_ftpserver/advanced_ftpserver.inc.php
 %%WWWDIR%%/modules/advanced_parsing/advanced_parsing.inc.php
@@ -71,6 +60,7 @@
 %%WWWDIR%%/modules/chmod/chmod.inc.php
 %%WWWDIR%%/modules/chmod/chmod.js
 %%WWWDIR%%/modules/clearcookies/clearcookies.inc.php
+%%WWWDIR%%/modules/consent/consent.inc.php
 %%WWWDIR%%/modules/copymovedelete/copymovedelete.inc.php
 %%WWWDIR%%/modules/downloadfile/downloadfile.inc.php
 %%WWWDIR%%/modules/downloadzip/downloadzip.inc.php
@@ -81,6 +71,7 @@
 %%WWWDIR%%/modules/findstring/findstring.js
 %%WWWDIR%%/modules/followsymlink/followsymlink.inc.php
 %%WWWDIR%%/modules/getcookies/getcookies.inc.php
+%%WWWDIR%%/modules/gotopartner/gotopartner.inc.php
 %%WWWDIR%%/modules/help/help-user.html
 %%WWWDIR%%/modules/install/install.inc.php
 %%WWWDIR%%/modules/install/net2ftp_installer.txt
@@ -976,49 +967,20 @@
 %%WWWDIR%%/plugins/tinymce/themes/inlite/theme.min.js
 %%WWWDIR%%/plugins/tinymce/themes/modern/theme.min.js
 %%WWWDIR%%/plugins/tinymce/tinymce.min.js
+@dir %%WWWDIR%%/plugins/versioncheck
 %%WWWDIR%%/robots.txt
-%%WWWDIR%%/skins/iphone/advanced1.template.php
-%%WWWDIR%%/skins/iphone/advanced_ftpserver1.template.php
-%%WWWDIR%%/skins/iphone/advanced_ftpserver2.template.php
-%%WWWDIR%%/skins/iphone/advanced_parsing1.template.php
-%%WWWDIR%%/skins/iphone/advanced_webserver1.template.php
-%%WWWDIR%%/skins/iphone/browse_main.template.php
-%%WWWDIR%%/skins/iphone/calculatesize1.template.php
-%%WWWDIR%%/skins/iphone/chmod1.template.php
-%%WWWDIR%%/skins/iphone/chmod2.template.php
-%%WWWDIR%%/skins/iphone/copymovedelete1.template.php
-%%WWWDIR%%/skins/iphone/copymovedelete2.template.php
-%%WWWDIR%%/skins/iphone/css/main.css.php
-%%WWWDIR%%/skins/iphone/edit.template.php
-%%WWWDIR%%/skins/iphone/error.template.php
-%%WWWDIR%%/skins/iphone/findstring1.template.php
-%%WWWDIR%%/skins/iphone/findstring2.template.php
-%%WWWDIR%%/skins/iphone/footer.template.php
-%%WWWDIR%%/skins/iphone/footer_versioncheck.template.php
-%%WWWDIR%%/skins/iphone/google_ad.template.php
-%%WWWDIR%%/skins/iphone/header.template.php
-%%WWWDIR%%/skins/iphone/images/footer.png
-%%WWWDIR%%/skins/iphone/images/header.png
-%%WWWDIR%%/skins/iphone/images/license.txt
-%%WWWDIR%%/skins/iphone/install1.template.php
-%%WWWDIR%%/skins/iphone/install2.template.php
-%%WWWDIR%%/skins/iphone/login.template.php
-%%WWWDIR%%/skins/iphone/logout.template.php
-%%WWWDIR%%/skins/iphone/manage.template.php
-%%WWWDIR%%/skins/iphone/newdir1.template.php
-%%WWWDIR%%/skins/iphone/newdir2.template.php
-%%WWWDIR%%/skins/iphone/raw1.template.php
-%%WWWDIR%%/skins/iphone/rename1.template.php
-%%WWWDIR%%/skins/iphone/rename2.template.php
-%%WWWDIR%%/skins/iphone/status/license.txt
-%%WWWDIR%%/skins/iphone/status/status.inc.php
-%%WWWDIR%%/skins/iphone/status/status.js
-%%WWWDIR%%/skins/iphone/status/status.template.php
-%%WWWDIR%%/skins/iphone/unzip1.template.php
-%%WWWDIR%%/skins/iphone/unzip2.template.php
-%%WWWDIR%%/skins/iphone/view1.template.php
-%%WWWDIR%%/skins/iphone/zip1.template.php
-%%WWWDIR%%/skins/iphone/zip2.template.php
+@sample %%WWWDIR%%/settings.inc.php.sample
+@sample %%WWWDIR%%/settings_authorizations.inc.php.sample
+@sample %%WWWDIR%%/settings_screens.inc.php.sample
+%%WWWDIR%%/skins/ads/ad_browse_header.template.php
+%%WWWDIR%%/skins/ads/ad_browse_list.template.php
+%%WWWDIR%%/skins/ads/ad_login_bottom.template.php
+%%WWWDIR%%/skins/ads/ad_login_corner.template.php
+%%WWWDIR%%/skins/ads/ad_logout.template.php
+%%WWWDIR%%/skins/ads/adblocker_detect.js
+%%WWWDIR%%/skins/ads/infomaniak_300x600.template.php
+%%WWWDIR%%/skins/ads/infomaniak_336x280.template.php
+%%WWWDIR%%/skins/ads/infomaniak_728x90.template.php
 %%WWWDIR%%/skins/shinra/admin1.template.php
 %%WWWDIR%%/skins/shinra/admin_createtables1.template.php
 %%WWWDIR%%/skins/shinra/admin_createtables2.template.php
@@ -1032,17 +994,20 @@
 %%WWWDIR%%/skins/shinra/bookmark1.template.php
 %%WWWDIR%%/skins/shinra/browse_main.template.php
 %%WWWDIR%%/skins/shinra/browse_main_details.template.php
-%%WWWDIR%%/skins/shinra/browse_main_icons.template.php
 %%WWWDIR%%/skins/shinra/browse_popup.template.php
 %%WWWDIR%%/skins/shinra/calculatesize1.template.php
 %%WWWDIR%%/skins/shinra/chmod1.template.php
 %%WWWDIR%%/skins/shinra/chmod2.template.php
+%%WWWDIR%%/skins/shinra/consent.template.php
 %%WWWDIR%%/skins/shinra/copymovedelete1.template.php
 %%WWWDIR%%/skins/shinra/copymovedelete2.template.php
 %%WWWDIR%%/skins/shinra/css/ie8-hacks.css
+%%WWWDIR%%/skins/shinra/css/main_desktop.ltr.css
+%%WWWDIR%%/skins/shinra/css/main_desktop.rtl.css
+%%WWWDIR%%/skins/shinra/css/main_mobile.ltr.css
+%%WWWDIR%%/skins/shinra/css/main_mobile.rtl.css
 %%WWWDIR%%/skins/shinra/css/reset.css
 %%WWWDIR%%/skins/shinra/css/social-icons.css
-%%WWWDIR%%/skins/shinra/css/style.css.php
 %%WWWDIR%%/skins/shinra/css/styled-elements.css
 %%WWWDIR%%/skins/shinra/css/superfish.css
 %%WWWDIR%%/skins/shinra/css/tabs.css
@@ -1052,10 +1017,8 @@
 %%WWWDIR%%/skins/shinra/findstring1.template.php
 %%WWWDIR%%/skins/shinra/findstring2.template.php
 %%WWWDIR%%/skins/shinra/footer.template.php
-%%WWWDIR%%/skins/shinra/footer_versioncheck.template.php
-%%WWWDIR%%/skins/shinra/google_ad_bottom.template.php
-%%WWWDIR%%/skins/shinra/google_ad_top.template.php
 %%WWWDIR%%/skins/shinra/header.template.php
+%%WWWDIR%%/skins/shinra/homepage.template.php
 %%WWWDIR%%/skins/shinra/images/actions/back.png
 %%WWWDIR%%/skins/shinra/images/actions/bookmark.png
 %%WWWDIR%%/skins/shinra/images/actions/button_cancel.png
@@ -1381,4 +1344,3 @@
 %%WWWDIR%%/temp/chmod_this_dir_to_777.txt
 %%WWWDIR%%/temp/index.php
 %%WWWDIR%%/version.js
-@dir %%WWWDIR%%/plugins/versioncheck

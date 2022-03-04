@@ -1,3 +1,3 @@
 Proxy for handling NAT of multiple SIP devices to a single public IP.
 
-WWW: https://doc.pfsense.org/index.php/Siproxd_package
+WWW: https://docs.netgate.com/pfsense/en/latest/packages/siproxd.html

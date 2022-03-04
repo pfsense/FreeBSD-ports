@@ -1,9 +1,8 @@
 # Created by: Jacek Pelka <jacek@combit.com.pl>
-# $FreeBSD$
 
 PORTNAME=	kadu
 PORTVERSION=	4.3
-PORTREVISION=	11
+PORTREVISION=	23
 PORTEPOCH=	1
 CATEGORIES=	polish net-im
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}/:kadu \
@@ -23,7 +22,6 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
 		libsndfile.so:audio/libsndfile \
 		libinjeqt.so:devel/injeqt \
-		libqca-qt5.so:devel/qca \
 		libidn.so:dns/libidn \
 		libqxmpp.so:net-im/qxmpp-qt5 \
 		libgadu.so:polish/libgadu \
@@ -36,13 +34,14 @@ LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
 GG6_EMOTS_DISTFILE=	kompatybilne_z_GG6.tar.gz
 GG7_EMOTS_DISTFILE=	dodatkowe_emoty_GG7.tar.gz
 
-USES=		cmake:insource compiler:c++11-lib gettext-runtime \
-		libarchive pkgconfig qt:5 readline tar:bzip2
+USES=		cmake:insource compiler:c++17-lang cpe gettext-runtime gnome \
+		libarchive pkgconfig qca qt:5 readline tar:bzip2 xorg
 USE_XORG=	x11 xext xfixes xscrnsaver
 USE_GNOME=	glib20
 USE_QT=		concurrent core dbus declarative gui multimedia network \
 		script scripttools sql webkit widgets x11extras \
-		xml xmlpatterns buildtools_build linguisttools_build \
+		xml xmlpatterns \
+		buildtools_build linguisttools_build testlib_build \
 		qmake_build imageformats_run sql-sqlite3_run
 # Setting KADU_VERSION disables git invocation
 CMAKE_ARGS=	-DKADU_VERSION:STRING="${DISTVERSION}" -DWITH_ENCHANT=ON \

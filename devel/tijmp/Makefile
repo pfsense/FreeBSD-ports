@@ -1,5 +1,4 @@
 # Created by: Ronald Klop <ronald@echteman.nl>
-# $FreeBSD$
 
 PORTNAME=	tijmp
 PORTVERSION=	0.7
@@ -18,7 +17,6 @@ CONFIGURE_ENV=	JAVA_HOME="${JAVA_HOME}"
 INSTALL_TARGET=	install-strip
 USES=		gmake libtool
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_OS=	native
 JAVA_BUILD=	jdk
 USE_LDCONFIG=	yes

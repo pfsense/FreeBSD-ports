@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	skrooge
-DISTVERSION=	2.18.0
-PORTREVISION=	1
+DISTVERSION=	2.26.1
 CATEGORIES=	finance kde
 MASTER_SITES=	KDE/stable/${PORTNAME}
 DIST_SUBDIR=	KDE/${PORTNAME}
@@ -15,25 +12,31 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 LIB_DEPENDS=	libofx.so:finance/libofx \
-		libqca-qt5.so:devel/qca \
 		libsqlcipher.so:databases/sqlcipher
 
 USES=		cmake compiler:c++11-lib desktop-file-utils \
-		gettext grantlee:5 kde:5 pkgconfig python:3.4+ qt:5 shared-mime-info \
+		gettext grantlee:5 kde:5 pkgconfig python:3.4+ qca qt:5 shared-mime-info \
 		shebangfix sqlite:3 tar:xz
 USE_KDE=	activities archive attica5 auth bookmarks codecs completion \
 		config configwidgets coreaddons crash dbusaddons \
-		designerplugin doctools ecm emoticons guiaddons i18n \
+		emoticons guiaddons i18n \
 		iconthemes init itemmodels itemviews jobwidgets \
-		kdelibs4support kio newstuff notifications notifyconfig \
+		kio newstuff notifications notifyconfig \
 		package parts plasma-framework runner service solid sonnet \
 		textwidgets unitconversion wallet widgetsaddons windowsystem \
-		xmlgui
-USE_QT=		concurrent core dbus declarative designer gui network printsupport \
+		xmlgui \
+		doctools_build ecm_build
+# designerplugin is weird: it's defined as a _run dependency, but
+# skrooge checks for it at build-time.
+USE_KDE+=	designerplugin_build
+USE_QT=		concurrent core dbus declarative gui network printsupport \
 		script sql svg webkit widgets xml \
-		qmake_build buildtools_build
+		buildtools_build designer_build qmake_build testlib_build
 SHEBANG_FILES=	plugins/import/skrooge_import_backend/skrooge-sabb.py \
 		skgbankmodeler/skrooge-coinmarketcap.py \
+		skgbankmodeler/skrooge-cryptocompare.py \
+		skgbankmodeler/skrooge-exchangerates.py \
+		skgbankmodeler/skrooge-ratesapi.py \
 		skgbankmodeler/skrooge-yahoodl.py
 
 USE_LDCONFIG=	yes

@@ -1,5 +1,4 @@
 # Created by: Michael Moll <kvedulv@kvedulv.de>
-# $FreeBSD$
 
 PORTNAME=	jekyll-gist
 PORTVERSION=	1.5.0
@@ -12,11 +11,12 @@ COMMENT=	Liquid tag for displaying GitHub Gists in Jekyll sites
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-octokit>=4.2:net/rubygem-octokit
+RUN_DEPENDS=	rubygem-octokit>=4.2<5:net/rubygem-octokit
+
+USES=		gem shebangfix
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem shebangfix
 
 SHEBANG_FILES=	script/*
 

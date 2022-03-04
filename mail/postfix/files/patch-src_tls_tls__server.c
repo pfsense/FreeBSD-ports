@@ -1,6 +1,6 @@
---- src/tls/tls_server.c.orig	2018-11-17 22:33:15 UTC
+--- src/tls/tls_server.c.orig	2020-07-25 23:49:16 UTC
 +++ src/tls/tls_server.c
-@@ -517,7 +517,9 @@ TLS_APPL_STATE *tls_server_init(const TL
+@@ -502,7 +502,9 @@ TLS_APPL_STATE *tls_server_init(const TLS_SERVER_INIT_
  	 * ticket decryption callback already (since 2.11) asks OpenSSL to
  	 * avoid issuing new tickets when the presented ticket is re-usable.
  	 */

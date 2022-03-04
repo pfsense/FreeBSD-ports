@@ -1,20 +1,18 @@
 # Created by: Cyrille Lefevre <clefevre@citeweb.net>
-# $FreeBSD$
 
 PORTNAME=	gforth
 PORTVERSION=	0.7.3
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	lang
 MASTER_SITES=	http://www.complang.tuwien.ac.at/forth/gforth/ \
 		GNU
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Fast and portable Forth system
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_i386=	Assertion failed: (pi->restlength >=0), function check_prims, file ./main.c, line 1049.
 BROKEN_powerpc64=	fails to package: Unable to access file usr/local/share/gforth/0.7.3/kernl64l.fi:No such file or directory
 
 LIB_DEPENDS=	libavcall.so:devel/libffcall \
@@ -22,7 +20,7 @@ LIB_DEPENDS=	libavcall.so:devel/libffcall \
 		libltdl.so:devel/libltdl
 
 USES=		gmake libtool:build localbase makeinfo
-USE_GCC=	any
+USE_GCC=	yes
 USE_LDCONFIG=	${PREFIX}/lib/gforth/${PORTVERSION}/libcc-named
 
 GNU_CONFIGURE=	yes
@@ -46,7 +44,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == i386 || ${ARCH} == powerpc
+.if ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == armv6 || ${ARCH} == armv7
 WORDSIZE=32
 .else
 WORDSIZE=64

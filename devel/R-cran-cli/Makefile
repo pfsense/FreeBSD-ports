@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cli
-PORTVERSION=	1.0.1
-PORTREVISION=	1
+PORTVERSION=	3.1.0
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -12,11 +10,13 @@ COMMENT=	Helpers for Developing Command Line Interfaces
 
 LICENSE=	MIT
 
-CRAN_DEPENDS=	R-cran-assertthat>0:math/R-cran-assertthat \
-		R-cran-crayon>=1.3.4:devel/R-cran-crayon
+CRAN_DEPENDS=	R-cran-glue>0:devel/R-cran-glue
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 
-USES=		cran:auto-plist
+USES=		cran:auto-plist,compiles
+
+post-install:
+	@${ECHO_CMD} "@dir ${R_MOD_DIR}/help/figures" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

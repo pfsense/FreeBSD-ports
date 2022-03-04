@@ -1,9 +1,9 @@
 #!/bin/sh
-# $FreeBSD$
 #
 # MAINTAINER: portmgr@FreeBSD.org
 
 set -e
+set -o pipefail
 
 . "${dp_SCRIPTSDIR}/functions.sh"
 
@@ -24,9 +24,7 @@ if [ ! -x "${dp_PKG_BIN}" ]; then
 	exit 0
 fi
 
-vlist=$(${dp_PKG_BIN} audit "${dp_PKGNAME}" || :)
-
-if [ "${vlist}" != "0 problem(s) in the installed packages found." ]; then
+if ! vlist=$(${dp_PKG_BIN} audit "${dp_PKGNAME}"); then
 	${dp_ECHO_MSG} "===>  ${dp_PKGNAME} has known vulnerabilities:"
 	${dp_ECHO_MSG} "$vlist"
 	${dp_ECHO_MSG} "=> Please update your ports tree and try again."

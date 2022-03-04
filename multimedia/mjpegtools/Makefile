@@ -1,9 +1,8 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mjpegtools
 PORTVERSION=	2.1.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME:S/tools//}/${PORTNAME}/${PORTVERSION}
 
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
 
-CONFLICTS=	mplex-[0-9]*
+CONFLICTS=	mplex
 
 USES=		compiler:c++11-lang gmake gnome jpeg libtool localbase pathfix \
 		pkgconfig
@@ -39,14 +38,9 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_WITH=	libpng
 QUICKTIME_LIB_DEPENDS=	libquicktime.so:multimedia/libquicktime
 QUICKTIME_CONFIGURE_WITH=	libquicktime
+SDL_USES=		sdl
 SDL_USE=		SDL=gfx,sdl
 SDL_CONFIGURE_OFF=	--without-libsdl --without-sdlgfx
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == i386 || ${ARCH} == powerpc
-USES+=		compiler:c++11-lang
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} \

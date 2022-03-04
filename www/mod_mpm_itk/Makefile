@@ -1,5 +1,4 @@
 # Created by: Lukasz Wasikowski <lukasz@wasikowski.net>
-# $FreeBSD$
 
 PORTNAME=	mod_mpm_itk
 PORTVERSION=	2.4.7
@@ -11,7 +10,7 @@ PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 DISTNAME=	mpm-itk-2.4.7-04
 
 MAINTAINER=	lukasz@wasikowski.net
-COMMENT=	This MPM allows you to run each vhost under a separate uid and gid
+COMMENT=	Run each vhost under a separate uid and gid
 
 LICENSE=	APACHE20
 

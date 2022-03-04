@@ -1,8 +1,7 @@
 # Created by: Svyatoslav Lempert <svyatoslav.lempert@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ioncube
-DISTVERSION=	10.3.1
+DISTVERSION=	10.4.1
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.ioncube.com/loader_downloads/ \
 		http://downloads2.ioncube.com/loader_downloads/ \
@@ -23,6 +22,7 @@ IGNORE_DragonFly=	is unsupported on DragonFly
 ONLY_FOR_ARCHS=	amd64 i386
 NO_BUILD=	yes
 USES=		php:flavors
+IGNORE_WITH_PHP=	80
 
 SUB_FILES=	pkg-message
 WRKSRC=		${WRKDIR}/${PORTNAME}

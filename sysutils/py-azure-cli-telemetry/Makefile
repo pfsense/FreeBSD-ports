@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	azure-cli-telemetry
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.6
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,10 +9,10 @@ COMMENT=	Microsoft Azure CLI Telemetry Package
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}applicationinsights>=0.11.1:devel/py-applicationinsights@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}portalocker>=1.2.1:devel/py-portalocker@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}applicationinsights>=0.11.1<0.12:devel/py-applicationinsights@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}portalocker>=1.2:devel/py-portalocker@${PY_FLAVOR}
 
-USES=		azurepy python
+USES=		azurepy python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

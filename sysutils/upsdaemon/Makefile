@@ -1,13 +1,11 @@
 # Created by: Ederson de Moura <ederbs@ederbs.org>
-# $FreeBSD$
 
 PORTNAME=	upsdaemon
 PORTVERSION=	1.0
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.ederbs.org/pub/ \
-		ftp://ederbs.org/pub/
+MASTER_SITES=	https://BSDforge.com/projects/sysutils/upsdaemon/
 
-MAINTAINER=	freebsduser@paradisegreen.co.uk
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Simple APC UPS Daemon
 
 LICENSE=	BSD2CLAUSE

@@ -1,24 +1,25 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ffdec
-PORTVERSION=	8.0.1
+DISTVERSION=	14.4.0
 CATEGORIES=	multimedia java
-MASTER_SITES=	http://www.free-decompiler.com/flash/download/
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+MASTER_SITES=	https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version${PORTVERSION}/
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	Flash decompiler
 
 LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/license.txt
 
 USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.8
-NO_BUILD=	yes
-NO_WRKSUBDIR=	yes
 
+NO_BUILD=	yes
 SUB_FILES=	${PORTNAME}
+
+NO_WRKSUBDIR=	yes
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

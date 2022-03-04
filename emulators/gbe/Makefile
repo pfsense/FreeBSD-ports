@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gbe
 PORTVERSION=	0.0.22
@@ -13,6 +12,7 @@ COMMENT=	Nintendo GameBoy(tm) emulator with GNU source code
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
+USES=		xorg
 USE_XORG=	x11
 
 PLIST_FILES=	bin/gbe

@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	IPC-Open3-Simple
 PORTVERSION=	0.04
@@ -14,7 +13,9 @@ COMMENT=	Simple alternative to IPC::Open3
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

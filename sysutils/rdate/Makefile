@@ -1,5 +1,4 @@
 # Created by: cracauer@cons.org "Martin Cracauer"
-# $FreeBSD$
 
 PORTNAME=	rdate
 PORTVERSION=	20150501
@@ -7,7 +6,7 @@ CATEGORIES=	sysutils
 MASTER_SITES=	ftp://ftp.stack.nl/pub/users/johans/rdate/ \
 		LOCAL/johans
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sets the clock of the local host to the time of another host
 
 CFLAGS+=	-DNO_UTIL -D__dead= -D'SA_LEN(x)=(x)->sa_len'

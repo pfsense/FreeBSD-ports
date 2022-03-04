@@ -1,19 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	edbrowse
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.7.4
-PORTREVISION=	1
+DISTVERSION=	3.7.7
 CATEGORIES=	www editors
 
 MAINTAINER=	alfix86@gmail.com
-COMMENT=	Line-oriented Web browser and text editor
+COMMENT=	Line-oriented web browser and text editor
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
-		libtidy.so:www/tidy-lib \
 		libtidy5.so:www/tidy-html5 \
 		libduktape.so:lang/duktape-lib
 
@@ -40,7 +36,7 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && \
-		${FIND} . \( -name setup.ebrc -or -name "man-edbrowse*" \) -delete  && \
+		${FIND} . \( -name article.wikipedia -or -name "man-edbrowse*" \) -delete  && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

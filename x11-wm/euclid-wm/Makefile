@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	euclid-wm
 PORTVERSION=	0.4.3
 PORTREVISION=	1
@@ -18,7 +16,6 @@ GH_TAGNAME=	b6b0319
 OPTIONS_DEFINE=		XINERAMA EUCLID_MENU
 OPTIONS_SUB=		yes
 OPTIONS_DEFAULT=	XINERAMA
-XINERAMA_DESC=		X11 Xinerama extension support
 EUCLID_MENU_DESC=	Custom built menuing program (work in progress)
 
 ALL_TARGET=		noxinerama
@@ -26,7 +23,7 @@ XINERAMA_ALL_TARGET=	euclid-wm
 EUCLID_MENU_ALL_TARGET=	euclid-menu
 XINERAMA_USE=		XORG=xinerama
 
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	x11
 
 PLIST_FILES=	bin/euclid-wm \

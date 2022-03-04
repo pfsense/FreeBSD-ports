@@ -1,0 +1,54 @@
+From ad387832979b6ce4c93f64fe706301cd7d034e87 Mon Sep 17 00:00:00 2001
+From: "W.C.A. Wijngaards" <wouter@nlnetlabs.nl>
+Date: Mon, 23 Nov 2020 13:42:11 +0100
+Subject: [PATCH] - Fix for #303 CVE-2020-28935 : Fix that symlink does not
+ interfere   with chown of pidfile.
+
+---
+ daemon/unbound.c | 26 ++++++++++++++++++++------
+ doc/Changelog    |  2 ++
+ 2 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/daemon/unbound.c b/daemon/unbound.c
+index cd0fd69f2..45537d5c9 100644
+--- daemon/unbound.c
++++ daemon/unbound.c
+@@ -341,18 +341,32 @@ readpid (const char* file)
+ static void
+ writepid (const char* pidfile, pid_t pid)
+ {
+-	FILE* f;
++	int fd;
++	char pidbuf[32];
++	size_t count = 0;
++	snprintf(pidbuf, sizeof(pidbuf), "%lu\n", (unsigned long)pid);
+ 
+-	if ((f = fopen(pidfile, "w")) ==  NULL ) {
++	if((fd = open(pidfile, O_WRONLY | O_CREAT | O_TRUNC
++#ifdef O_NOFOLLOW
++		| O_NOFOLLOW
++#endif
++		, 0644)) == -1) {
+ 		log_err("cannot open pidfile %s: %s", 
+ 			pidfile, strerror(errno));
+ 		return;
+ 	}
+-	if(fprintf(f, "%lu\n", (unsigned long)pid) < 0) {
+-		log_err("cannot write to pidfile %s: %s", 
+-			pidfile, strerror(errno));
++	while(count < strlen(pidbuf)) {
++		ssize_t r = write(fd, pidbuf+count, strlen(pidbuf)-count);
++		if(r == -1) {
++			if(errno == EAGAIN || errno == EINTR)
++				continue;
++			log_err("cannot write to pidfile %s: %s",
++				pidfile, strerror(errno));
++			break;
++		}
++		count += r;
+ 	}
+-	fclose(f);
++	close(fd);
+ }
+ 
+ /**

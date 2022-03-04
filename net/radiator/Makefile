@@ -1,15 +1,17 @@
 # Created by: shan
-# $FreeBSD$
 
 PORTNAME=	Radiator
-PORTVERSION=	4.21
+PORTVERSION=	4.24
 CATEGORIES=	net
+DISTNAME=	${PORTNAME}-${PORTVERSION}-1
 MASTER_SITES=	# fetch manually
+
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	lyngbol@wheel.dk
 COMMENT=	Radiator Radius Server by Open System Consultants
 
+# Commercial software
 LICENSE=	radiator
 LICENSE_NAME=	Radiator
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,12 +20,9 @@ LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 OPTIONS_DEFINE=	MYSQL
 MYSQL_DESC=	MySQL support
 
-USES=		perl5 shebangfix tar:tgz
+USES=		perl5 tar:tgz
 USE_PERL5=	configure
 USE_RC_SUBR=	radiator
-SHEBANG_FILES=	radhostname.pl
-
-RESTRICTED=	Commercial software
 
 .include <bsd.port.pre.mk>
 

@@ -1,5 +1,4 @@
 # Created by: Steven Kreuzer <skreuzer@exit2shell.com>
-# $FreeBSD$
 
 PORTNAME=	ratproxy
 PORTVERSION=	1.58
@@ -11,7 +10,7 @@ MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Semi-automated, largely passive web application security audit tool
 
 USES=		shebangfix ssl
-CFLAGS+=	-I${OPENSSLINC}
+CFLAGS+=	-I${OPENSSLINC} -fcommon
 LDFLAGS+=	-L${OPENSSLLIB}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

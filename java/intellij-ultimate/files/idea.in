@@ -1,3 +1,4 @@
 #!/bin/sh
 
-exec "%%IDEA_HOME%%/bin/idea.sh" "$@"
+export JAVA_VERSION=11+
+exec "%%DATADIR%%/bin/idea.sh" "$@"

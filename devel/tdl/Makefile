@@ -1,9 +1,8 @@
 # Created by: petef
-# $FreeBSD$
 
 PORTNAME=	tdl
 PORTVERSION=	1.5.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.rpcurnow.force9.co.uk/tdl/
 
@@ -13,7 +12,7 @@ COMMENT=	To-do list manager
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	devtodo-[0-9]*
+CONFLICTS=	devtodo
 
 USES=		readline
 

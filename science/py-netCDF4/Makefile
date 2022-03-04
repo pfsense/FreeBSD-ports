@@ -1,11 +1,9 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	netCDF4
-PORTVERSION=	1.3.1
+PORTVERSION=	1.5.7
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	rel
-PORTREVISION=	5
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,16 +12,16 @@ COMMENT=	Python Interface to the NetCDF Library (versions 3 and 4)
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${PYNUMPY} \
-		${LOCALBASE}/bin/cython:lang/cython
+BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libnetcdf.so:science/netcdf
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+RUN_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}cftime>=0:devel/py-cftime@${PY_FLAVOR}
+
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils cython cython_run
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-
-USES=		python
-USE_PYTHON=	autoplist concurrent distutils cython
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
@@ -44,8 +42,7 @@ post-patch:
 	@${ECHO_CMD} "HDF5_incdir=${LOCALBASE}/include" >> ${WRKSRC}/setup.cfg
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/netCDF4/_netCDF4.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/netcdftime/_netcdftime.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/netCDF4/_netCDF4*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,42 +1,56 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	harfbuzz
-PORTVERSION=	2.4.0
-PORTREVISION?=	1
+DISTVERSION=	3.1.2
+PORTREVISION?=	0
 CATEGORIES=	print
-MASTER_SITES=	http://www.freedesktop.org/software/harfbuzz/release/
+MASTER_SITES=	https://github.com/harfbuzz/harfbuzz/releases/download/${DISTVERSION}/
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT?=	OpenType text shaping engine
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libgraphite2.so:graphics/graphite2
 
+USES=		compiler:c++11-lib cpe gnome meson \
+		pkgconfig python:build shebangfix tar:xz
+USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
-USES=		compiler:c++11-lib gettext-runtime gmake gnome libtool \
-		pathfix pkgconfig tar:bzip2
-USE_GNOME=	cairo glib20 introspection:build
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-graphite2 --with-gobject=yes
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
+SHEBANG_GLOB=	*.py
+CPE_VENDOR=	harfbuzz_project
 
-PLIST_SUB+=	LIBVER=0.20400.0
+MESON_ARGS=	-Dglib=enabled -Dgobject=enabled -Dgraphite=enabled \
+		-Dfreetype=enabled -Dbenchmark=disabled
+
+PLIST_SUB+=	LIBVER=0.30102.0
 
 HARFBUZZ_SLAVE?=	no
 
 .if ${HARFBUZZ_SLAVE} == no
-CONFIGURE_ARGS+=	--without-icu
-.else
-CONFIGURE_ARGS+=	--with-icu \
-		--disable-gtk-doc-html
+OPTIONS_DEFINE=	DOCS TEST
+OPTIONS_SUB=	yes
+
+DOCS_BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc
+DOCS_MESON_ENABLED=	docs
+TEST_MESON_ENABLED=	tests
+.endif
+
+.if ${HARFBUZZ_SLAVE} == no
+MESON_ARGS+=	-Dicu=disabled -Dcairo=disabled
+.elif ${HARFBUZZ_SLAVE} == icu
+MESON_ARGS+=	-Dicu=enabled -Dcairo=disabled -Ddocs=disabled \
+		-Dtests=disabled
 LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz \
 		libicudata.so:devel/icu
 
-post-patch:
-	${REINPLACE_CMD} -e 's|install-data-am: install-data-local|install-data-am:|g' \
-		${WRKSRC}/docs/Makefile.in
+.elif ${HARFBUZZ_SLAVE} == hb-view
+MESON_ARGS+=	-Dcairo=enabled -Dicu=disabled -Ddocs=disabled \
+		-Dtests=disabled
+LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz
+USE_GNOME+=	cairo
 .endif
 
 .include <bsd.port.mk>

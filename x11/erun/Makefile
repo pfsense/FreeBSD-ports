@@ -1,9 +1,8 @@
 # Created by: Kelly Yancey <kbyanc@posi.net>
-# $FreeBSD$
 
 PORTNAME=	E-Run
 PORTVERSION=	1.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	x11
 MASTER_SITES=	LOCAL/kbyanc
 
@@ -17,7 +16,8 @@ PLIST_FILES=	bin/E-Run.epplet
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_GL=	gl
+USES=		gl
+USE_GL=		gl
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib -lepplet -lImlib2 -lGL
 

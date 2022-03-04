@@ -1,10 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	scs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.2-22
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-gb03e156
+DISTVERSION=	2.1.4
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,25 +10,22 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		gmake blaslapack:openblas fortran # fortran is for openblas
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	cvxgrp
-USE_LDCONFIG=	yes
 
 MAKE_ARGS=	BLASLDFLAGS="-lopenblas"
 
-ALL_TARGET=	out/libscsdir.so out/libscsindir.so
+ALL_TARGET=	default
 
-HEADERS=	accel.h cones.h cs.h ctrlc.h glbopts.h linalg.h linsys.h normalize.h scs.h util.h
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
-PLIST_FILES=	${ALL_TARGET:S/out/lib/} ${HEADERS:S/^/include\/${PORTNAME}\//}
-
-do-install:
-.for so in ${ALL_TARGET}
-	${INSTALL_LIB} ${WRKSRC}/${so} ${STAGEDIR}${PREFIX}/lib
-.endfor
-	@${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}
-.for h in ${HEADERS}
-	${INSTALL_DATA} ${WRKSRC}/include/${h} ${STAGEDIR}${PREFIX}/include/${PORTNAME}
-.endfor
+do-test:
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} out/demo_socp_indirect && \
+		out/demo_socp_indirect 50 0.3 0.3 50 && \
+		${ECHO} "Test succeeded"
 
 .include <bsd.port.mk>

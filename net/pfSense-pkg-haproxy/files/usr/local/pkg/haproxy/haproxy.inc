@@ -3,7 +3,7 @@
  * haproxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
@@ -40,6 +40,9 @@ $a_frontendmode['tcp'] = array('name' => "tcp", 'shortname' => "tcp");
   if anyone actually used this what was it good for with recent package versions?
 $a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
 */
+
+global $openssl111;
+$openssl111 = (OPENSSL_VERSION_NUMBER >= 269488128);
 
 global $a_acltypes;
 $a_acltypes = array();
@@ -407,7 +410,7 @@ global $haproxy_version;
 function haproxy_version() {
 	global $haproxy_version;
 	if (empty($haproxy_version)) {
-		$haproxy_version = shell_exec("haproxy -v | head -n 1 | awk '{ print $3 }'");
+		$haproxy_version = shell_exec("/usr/local/sbin/haproxy -v | head -n 1 | awk '{ print $3 }'");
 	}
 	return $haproxy_version;
 }
@@ -1187,7 +1190,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 
 					$ca = $be['ssl-server-ca'];
 					$filename = "$configpath/ca_$ca.pem";
-					haproxy_write_certificate_crt($filename, $ca);
+					haproxy_write_certificate_fullchain($filename, $ca, false, false);
 					$cafile = " ca-file $filename";
 
 					$crl = $be['ssl-server-crl'];
@@ -1393,16 +1396,18 @@ function haproxy_getocspurl($filename) {
 }
 
 function haproxy_updateocsp_one($socketupdate, $filename, $name) {
+	global $openssl111;
 	if (file_exists("{$filename}.ocsp")) {
 		// If the .ocsp file exists we want to use ocsp
 		syslog(LOG_NOTICE, "HAProxy Retrieving OCSP for frontend {$name}.. ");
 		$ocsp_url = haproxy_getocspurl($filename);
 		$ocsp_host = parse_url($ocsp_url, PHP_URL_HOST);
+		$ocsp_host_dm = ($openssl111) ? "=" : " ";
 		if (empty($ocsp_url)) {
 			// If cert does not have a ocsp_uri, it cannot be updated..
 			syslog(LOG_ERR, "HAProxy OCSP ERROR Cert does not have a ocsp_uri");
 		} else {
-			$retval = exec("openssl ocsp -issuer {$filename}.issuer -verify_other {$filename}.issuer -cert {$filename} -url {$ocsp_url} -header Host {$ocsp_host} -respout {$filename}.ocsp 2>&1", $output, $err);
+			$retval = exec("openssl ocsp -issuer {$filename}.issuer -verify_other {$filename}.issuer -cert {$filename} -url {$ocsp_url} -header Host{$ocsp_host_dm}{$ocsp_host} -respout {$filename}.ocsp 2>&1", $output, $err);
 			if ($socketupdate) {
 				$ocspresponse = base64_encode(file_get_contents("{$filename}.ocsp"));
 				$r = haproxy_socket_command("set ssl ocsp-response $ocspresponse");
@@ -1568,7 +1573,8 @@ function haproxy_writeconf($configpath) {
 			$tmp = !empty($a_global['resolver_timeoutretry']) ? $a_global['resolver_timeoutretry'] : '1s';
 			fwrite ($fd, "\ttimeout retry {$tmp}\n");
 			$tmp = !empty($a_global['resolver_holdvalid']) ? $a_global['resolver_holdvalid'] : '10s';
-			fwrite ($fd, "\thold valid {$tmp}\n");
+			fwrite ($fd, "\ttimeout resolve {$tmp}\n");
+            
 			fwrite ($fd, "\n");
 		}
 	}
@@ -2072,6 +2078,11 @@ function haproxy_writeconf($configpath) {
 			}
 
 			fwrite ($fd, $config_actions);
+			// CVE-2021-40346 workaround
+			if ($backend_type == 'http') {
+				fwrite ($fd, "\thttp-request  deny if { req.hdr_cnt(content-length) gt 1 }\n");
+				fwrite ($fd, "\thttp-response deny if { res.hdr_cnt(content-length) gt 1 }\n");
+			}
 			// Write backends after advanced options so custom use_backend rules can be applied first.
 			fwrite ($fd, $config_usebackends);
 			fwrite ($fd, $config_usedefaultbackends);
@@ -2236,7 +2247,7 @@ function load_ipfw_rules() {
 	$rules = "flush\n";
 	foreach($transparent_backends as $transparent_be) {
 		if (is_ipaddrv4($transparent_be["address"])) {
-			$rules .= "add $rulenum fwd localhost tcp from {$transparent_be["address"]} {$transparent_be["port"]} to any in recv {$transparent_be["interface"]}\n";
+			$rules .= "add $rulenum fwd 127.0.0.1 tcp from {$transparent_be["address"]} {$transparent_be["port"]} to any in recv {$transparent_be["interface"]}\n";
 		} elseif (is_ipaddrv6($transparent_be["address"])) {
 			list ($addr, $scope) = explode("%", $transparent_be['address']);
 			$rules .= "add $rulenum fwd ::1 tcp from {$addr} {$transparent_be["port"]} to any in recv {$transparent_be["interface"]}\n";

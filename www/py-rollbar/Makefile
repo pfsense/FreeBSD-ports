@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	rollbar
-PORTVERSION=	0.14.7
-DISTVERSIONPREFIX=	v
+PORTVERSION=	0.16.2
 CATEGORIES=	www python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
@@ -11,13 +9,12 @@ COMMENT=	Easy and powerful exception tracking with Rollbar
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0.12.1:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	autoplist distutils
-USE_GITHUB=	yes
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
-GH_PROJECT=	pyrollbar
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

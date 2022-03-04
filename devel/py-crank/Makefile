@@ -1,5 +1,4 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	crank
 PORTVERSION=	0.8.1
@@ -12,7 +11,7 @@ COMMENT=	Generalization of dispatch mechanism for use across frameworks
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

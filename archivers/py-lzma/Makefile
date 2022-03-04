@@ -1,8 +1,7 @@
 # Created by: Hye-Shik Chang
-# $FreeBSD$
 
 PORTNAME=	lzma
-PORTVERSION=	0.4.9
+PORTVERSION=	0.5.0
 CATEGORIES=	archivers python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +13,8 @@ COMMENT=	Python binding for the LZMA compression library
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 i386
-USES=		dos2unix python
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
+USES=		dos2unix python:3.6+
 USE_PYTHON=	concurrent distutils autoplist
 
 DOCSDIR=	${PREFIX}/share/doc/${PYTHON_PKGNAMEPREFIX}${PORTNAME}
@@ -31,6 +30,6 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/doc/,} ${STAGEDIR}${DOCSDIR}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}/${PYTHONPREFIX_SITELIBDIR}/pylzma.so
+	@${STRIP_CMD} ${STAGEDIR}/${PYTHONPREFIX_SITELIBDIR}/pylzma*.so
 
 .include <bsd.port.mk>

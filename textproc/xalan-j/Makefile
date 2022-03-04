@@ -1,5 +1,4 @@
 # Created by: znerd@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	xalan-j
 PORTVERSION=	2.7.2
@@ -20,7 +19,6 @@ USES=		cpe
 CPE_PRODUCT=	xalan-java
 CPE_VENDOR=	apache
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION:S/./_/g}

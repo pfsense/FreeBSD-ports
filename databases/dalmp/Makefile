@@ -1,10 +1,7 @@
 # Created by: Nicolas de Bari Embriz <nbari@dalmp.com>
-# $FreeBSD$
 
 PORTNAME=	dalmp
-PORTVERSION=	3.0.3
-DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTVERSION=	3.1.0
 CATEGORIES=	databases
 
 MAINTAINER=	nbari@tequila.io
@@ -21,7 +18,7 @@ USES=		php
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-USE_PHP=	pcre mysqli session memcache sqlite3 curl
+USE_PHP=	pcre mysqli session memcache sqlite3 curl redis
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

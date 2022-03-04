@@ -1,10 +1,7 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	crrcsim
 PORTVERSION=	0.9.13
-PORTREVISION=	1
-CATEGORIES=	games
+PORTREVISION=	2
+CATEGORIES=	games education
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -17,7 +14,7 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 LIB_DEPENDS=	libportaudio.so:audio/portaudio
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake jpeg localbase
+USES=		gettext gl gmake jpeg localbase sdl xorg
 USE_SDL=	sdl
 USE_GL=		gl glu
 USE_XORG=	x11

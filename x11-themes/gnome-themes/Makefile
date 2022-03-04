@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 #   $MCom: ports/x11-themes/gnome-themes/Makefile,v 1.183 2010/11/15 22:11:44 kwm Exp $
 
 PORTNAME=	gnome-themes
@@ -18,8 +17,7 @@ RUN_DEPENDS=	gtk-engines2>=2.15.0:x11-themes/gtk-engines2
 
 CONFLICTS=	clearlooks-metacity-0.*
 
-USES=		gettext gmake pkgconfig tar:bzip2
-INSTALLS_ICONS=	yes
+USES=		gettext gmake gnome pkgconfig tar:bzip2
 USE_GNOME=	gnomeprefix intlhack metacity gtk20
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

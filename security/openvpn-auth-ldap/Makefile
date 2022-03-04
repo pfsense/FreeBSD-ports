@@ -1,13 +1,10 @@
 # Created by: Nick Barkas <snb@threerings.net>
-# $FreeBSD$
 
 PORTNAME=	openvpn-auth-ldap
-PORTVERSION=	2.0.4.0.s1379
-PORTREVISION=	3
-CATEGORIES=	security
-MASTER_SITES=	LOCAL/mandree # figure out proper GitHub commit and use that.
-# https://github.com/threerings/openvpn-auth-ldap/
-DISTNAME=	auth-ldap-${PORTVERSION}
+PORTVERSION=	2.0.4
+PORTREVISION=	1
+DISTVERSIONPREFIX=	auth-ldap-
+CATEGORIES=	security net-vpn
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	LDAP authentication plugin for OpenVPN
@@ -16,31 +13,34 @@ LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	re2c:devel/re2c \
 		check>=0:devel/check \
+		libobjc2>=0:lang/libobjc2 \
 		${LOCALBASE}/include/openvpn-plugin.h:security/openvpn
 
-USES=		autoreconf objc tar:xz
-
+# this port doesn't require ssl itself, but OpenLDAP needs it
+# and https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235776
+# appears to document issues on some systems when --with-openssl
+# is missing.
+USES=		autoreconf objc ssl tar:xz
+USE_GITHUB=	yes
+GH_ACCOUNT=	threerings
 GNU_CONFIGURE=	yes
 USE_OPENLDAP=	yes
 CONFIGURE_ARGS+=	--with-openldap=${LOCALBASE} \
 			--with-openvpn=${LOCALBASE}/include \
-			--with-objc-runtime=GNU
+			--with-objc-runtime=GNU \
+			--with-openssl=${OPENSSLBASE}
 
 PORTDOCS=	README
 PORTEXAMPLES=	auth-ldap.conf
 PLIST_FILES=	lib/openvpn-auth-ldap.so
 OBJCFLAGS+=	-L${LOCALBASE}/lib -I${LOCALBASE}/include -fPIC
-CFLAGS+=	-fPIC
-MAKE_JOBS_UNSAFE=yes # work around missing deps in src/Makefile[.in]
+CFLAGS+=	-fPIC -fcommon
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
 CONFIGURE_ENV+=	OBJC="${CC}"
-
-post-patch:
-	${REINPLACE_CMD} 's|-export-dynamic|-Wl,-export-dynamic|' ${WRKSRC}/configure.ac
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/openvpn-auth-ldap.so
@@ -56,20 +56,5 @@ post-install:
 .include <bsd.port.pre.mk>
 
 CC+=		${DEBUG_FLAGS}
-
-# this is a local target to build a tarball from SVN
-# and another target to upload it
-# Note that googlecode.com is gone. Apparently someone exported the code
-# to Github:  https://github.com/threerings/openvpn-auth-ldap/
-build-tarball: ${DISTFILES}
-${DISTFILES}:
-	${RM} -r ${WRKSRC}
-	svn export -r${PORTVERSION:E:C/^s//} \
-	    http://openvpn-auth-ldap.googlecode.com/svn/trunk/ ${WRKSRC}
-	tar -C ${WRKSRC}/.. -cvf - ${WRKSRC:T} | ${XZ_CMD} -vvc >${DISTFILES} || \
-	    { ${RM} ${DISTFILES} ; exit 1 ; }
-
-upload-tarball: build-tarball
-	scp ${DISTFILES} freefall.freebsd.org:public_distfiles/
 
 .include <bsd.port.post.mk>

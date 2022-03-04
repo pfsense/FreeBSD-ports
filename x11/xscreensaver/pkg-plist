@@ -55,6 +55,7 @@ bin/xscreensaver-hacks/cynosure
 bin/xscreensaver-hacks/dangerball
 bin/xscreensaver-hacks/decayscreen
 bin/xscreensaver-hacks/deco
+bin/xscreensaver-hacks/deepstars
 bin/xscreensaver-hacks/deluxe
 bin/xscreensaver-hacks/demon
 bin/xscreensaver-hacks/discoball
@@ -68,6 +69,7 @@ bin/xscreensaver-hacks/engine
 bin/xscreensaver-hacks/epicycle
 bin/xscreensaver-hacks/eruption
 bin/xscreensaver-hacks/esper
+bin/xscreensaver-hacks/etruscanvenus
 bin/xscreensaver-hacks/euler2d
 bin/xscreensaver-hacks/extrusion
 bin/xscreensaver-hacks/fadeplot
@@ -88,6 +90,7 @@ bin/xscreensaver-hacks/galaxy
 bin/xscreensaver-hacks/gears
 bin/xscreensaver-hacks/geodesic
 bin/xscreensaver-hacks/geodesicgears
+bin/xscreensaver-hacks/gibson
 bin/xscreensaver-hacks/gflux
 bin/xscreensaver-hacks/glblur
 bin/xscreensaver-hacks/glcells
@@ -103,6 +106,7 @@ bin/xscreensaver-hacks/glsnake
 bin/xscreensaver-hacks/gltext
 bin/xscreensaver-hacks/goop
 bin/xscreensaver-hacks/grav
+bin/xscreensaver-hacks/gravitywell
 bin/xscreensaver-hacks/greynetic
 bin/xscreensaver-hacks/halftone
 bin/xscreensaver-hacks/halo
@@ -186,6 +190,7 @@ bin/xscreensaver-hacks/rotzoomer
 bin/xscreensaver-hacks/rubik
 bin/xscreensaver-hacks/rubikblocks
 bin/xscreensaver-hacks/sballs
+bin/xscreensaver-hacks/scooter
 bin/xscreensaver-hacks/shadebobs
 bin/xscreensaver-hacks/sierpinski
 bin/xscreensaver-hacks/sierpinski3d
@@ -249,6 +254,7 @@ man/man1/xscreensaver-demo.1.gz
 man/man1/xscreensaver-getimage-file.1.gz
 man/man1/xscreensaver-getimage-video.1.gz
 man/man1/xscreensaver-getimage.1.gz
+man/man1/xscreensaver-systemd.1.gz
 man/man1/xscreensaver-text.1.gz
 man/man1/xscreensaver.1.gz
 man/man6/abstractile.6.gz
@@ -301,6 +307,7 @@ man/man6/cynosure.6.gz
 man/man6/dangerball.6.gz
 man/man6/decayscreen.6.gz
 man/man6/deco.6.gz
+man/man6/deepstars.6.gz
 man/man6/deluxe.6.gz
 man/man6/demon.6.gz
 man/man6/discoball.6.gz
@@ -314,6 +321,7 @@ man/man6/engine.6.gz
 man/man6/epicycle.6.gz
 man/man6/eruption.6.gz
 man/man6/esper.6.gz
+man/man6/etruscanvenus.6.gz
 man/man6/euler2d.6.gz
 man/man6/extrusion.6.gz
 man/man6/fadeplot.6.gz
@@ -335,6 +343,7 @@ man/man6/gears.6.gz
 man/man6/geodesic.6.gz
 man/man6/geodesicgears.6.gz
 man/man6/gflux.6.gz
+man/man6/gibson.6.gz
 man/man6/glblur.6.gz
 man/man6/glcells.6.gz
 man/man6/gleidescope.6.gz
@@ -349,6 +358,7 @@ man/man6/glsnake.6.gz
 man/man6/gltext.6.gz
 man/man6/goop.6.gz
 man/man6/grav.6.gz
+man/man6/gravitywell.6.gz
 man/man6/greynetic.6.gz
 man/man6/halftone.6.gz
 man/man6/halo.6.gz
@@ -430,6 +440,7 @@ man/man6/rotzoomer.6.gz
 man/man6/rubik.6.gz
 man/man6/rubikblocks.6.gz
 man/man6/sballs.6.gz
+man/man6/scooter.6.gz
 man/man6/shadebobs.6.gz
 man/man6/sierpinski.6.gz
 man/man6/sierpinski3d.6.gz
@@ -562,6 +573,7 @@ share/pixmaps/xscreensaver.xpm
 %%DATADIR%%/config/dangerball.xml
 %%DATADIR%%/config/decayscreen.xml
 %%DATADIR%%/config/deco.xml
+%%DATADIR%%/config/deepstars.xml
 %%DATADIR%%/config/deluxe.xml
 %%DATADIR%%/config/demon.xml
 %%DATADIR%%/config/discoball.xml
@@ -575,6 +587,7 @@ share/pixmaps/xscreensaver.xpm
 %%DATADIR%%/config/epicycle.xml
 %%DATADIR%%/config/eruption.xml
 %%DATADIR%%/config/esper.xml
+%%DATADIR%%/config/etruscanvenus.xml
 %%DATADIR%%/config/euler2d.xml
 %%DATADIR%%/config/extrusion.xml
 %%DATADIR%%/config/fadeplot.xml
@@ -595,6 +608,7 @@ share/pixmaps/xscreensaver.xpm
 %%DATADIR%%/config/gears.xml
 %%DATADIR%%/config/geodesic.xml
 %%DATADIR%%/config/geodesicgears.xml
+%%DATADIR%%/config/gibson.xml
 %%DATADIR%%/config/gflux.xml
 %%DATADIR%%/config/glblur.xml
 %%DATADIR%%/config/glcells.xml
@@ -610,6 +624,7 @@ share/pixmaps/xscreensaver.xpm
 %%DATADIR%%/config/gltext.xml
 %%DATADIR%%/config/goop.xml
 %%DATADIR%%/config/grav.xml
+%%DATADIR%%/config/gravitywell.xml
 %%DATADIR%%/config/greynetic.xml
 %%DATADIR%%/config/halftone.xml
 %%DATADIR%%/config/halo.xml
@@ -692,6 +707,7 @@ share/pixmaps/xscreensaver.xpm
 %%DATADIR%%/config/rubik.xml
 %%DATADIR%%/config/rubikblocks.xml
 %%DATADIR%%/config/sballs.xml
+%%DATADIR%%/config/scooter.xml
 %%DATADIR%%/config/shadebobs.xml
 %%DATADIR%%/config/sierpinski.xml
 %%DATADIR%%/config/sierpinski3d.xml

@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	DNS-ZoneParse
 PORTVERSION=	1.10
 PORTREVISION=	2

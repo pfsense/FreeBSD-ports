@@ -1,9 +1,8 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	golddig
 PORTVERSION=	3.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://www.NetBSD.org/~chuck/gz/
 DISTNAME=	${PORTNAME}C${PORTVERSION}
@@ -11,6 +10,7 @@ DISTNAME=	${PORTNAME}C${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Getting the Gold and Avoiding Death
 
+USES=		xorg
 USE_XORG=	x11
 MAKE_ENV=	X11BASE="${LOCALBASE}" \
 		_STRIPFLAG_INSTALL="${STRIP}"

@@ -1,8 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	pybind11
-DISTVERSION=	2.2.4
+DISTVERSION=	2.8.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +11,9 @@ COMMENT=	Seamless interoperability between C++11 and Python
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python
-USE_PYTHON=	autoplist distutils
+USES=		python:3.6+
+USE_PYTHON=	distutils concurrent autoplist
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

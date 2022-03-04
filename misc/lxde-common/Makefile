@@ -1,5 +1,4 @@
 # Created by: sahne
-# $FreeBSD$
 
 PORTNAME=	lxde-common
 PORTVERSION=	0.99.2
@@ -17,7 +16,7 @@ RUN_DEPENDS=	lxde-icon-theme>=0:x11-themes/lxde-icon-theme \
 		gnome-themes-extra>=3.18:x11-themes/gnome-themes-extra \
 		xscreensaver:x11/xscreensaver
 
-USES=		gettext-tools gmake localbase tar:xz
+USES=		gettext-tools gmake gnome localbase tar:xz
 USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
@@ -25,7 +24,6 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 NO_ARCH=	yes
 
 DATADIR=	${PREFIX}/share/lxde
-INSTALLS_ICONS=	yes
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/desktop.conf \

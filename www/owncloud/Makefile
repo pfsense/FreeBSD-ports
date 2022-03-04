@@ -1,10 +1,10 @@
 # Created by: Kevin Lo <kevlo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	owncloud
-PORTVERSION=	10.1.1
+PORTVERSION=	10.8.0
 CATEGORIES=	www
-MASTER_SITES=	https://download.owncloud.org/community/
+MASTER_SITES=	https://download.owncloud.org/community/ \
+		LOCAL/sunpoet
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		cpe php:flavors,web tar:bzip2
 USE_PHP=	bz2 ctype curl dom fileinfo filter gd hash iconv intl json \
 		mbstring pdo posix session simplexml xml xmlreader xmlwriter \
-		xsl wddx zip zlib
+		xsl zip zlib
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -42,6 +42,10 @@ PGSQL_USE=	PHP=pdo_pgsql
 SMB_RUN_DEPENDS=${PECL_PKGNAMEPREFIX}smbclient>=0.8.0:net/pecl-smbclient@${PHP_FLAVOR}
 SQLITE_USE=	PHP=pdo_sqlite
 SSL_USE=	PHP=openssl
+
+post-patch:
+	@${FIND} ${WRKSRC} -type d -empty -delete
+	@${FIND} ${WRKSRC} -type d -name .github | ${XARGS} ${RM} -r
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d/

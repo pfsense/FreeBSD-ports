@@ -24,9 +24,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
-__FBSDID("$FreeBSD$");
-
 #include "defs.h"
 #include "frame-unwind.h"
 #include "gdbcore.h"
@@ -211,11 +208,11 @@ i386fbsd_fetch_tss(void)
 	 * change it to be relative to cpu0prvpage instead.
 	 */ 
 	if (trunc_page(tss) == 0xffc00000) {
-		TRY {
+		try {
 			cpu0prvpage = parse_and_eval_address("cpu0prvpage");
-		} CATCH(e, RETURN_MASK_ERROR) {
+		} catch (const gdb_exception_error &e) {
 			return (0);
-		} END_CATCH
+		}
 		tss = cpu0prvpage + (tss & PAGE_MASK);
 	}
 	return (tss);
@@ -283,6 +280,7 @@ i386fbsd_dblfault_sniffer (const struct frame_unwind *self,
 }
 
 static const struct frame_unwind i386fbsd_dblfault_unwind = {
+  "i386 FreeBSD double fault",
   SIGTRAMP_FRAME,
   default_frame_unwind_stop_reason,
   i386fbsd_dblfault_this_id,
@@ -442,6 +440,7 @@ i386fbsd_trapframe_sniffer (const struct frame_unwind *self,
 }
 
 static const struct frame_unwind i386fbsd_trapframe_unwind = {
+  "i386 FreeBSD kernel trap",
   SIGTRAMP_FRAME,
   default_frame_unwind_stop_reason,
   i386fbsd_trapframe_this_id,
@@ -467,8 +466,9 @@ i386fbsd_kernel_init_abi(struct gdbarch_info info, struct gdbarch *gdbarch)
 	fbsd_vmcore_set_cpu_pcb_addr(gdbarch, kgdb_trgt_stop_pcb);
 }
 
+void _initialize_i386_kgdb_tdep ();
 void
-_initialize_i386_kgdb_tdep(void)
+_initialize_i386_kgdb_tdep ()
 {
 	/* This is used for both i386 and amd64, but amd64 always
 	   includes this target, so just include it here.  */

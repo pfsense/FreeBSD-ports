@@ -1,5 +1,4 @@
 # Created by: Andrey Chernov <ache@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	zip
 PORTVERSION=	3.0
@@ -14,6 +13,10 @@ COMMENT=	Create/update ZIP files compatible with PKZIP
 # License is BSD-based, but not identical, so install with documentation
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		cpe
+
+CPE_VENDOR=	info-zip_project
 
 OPTIONS_DEFINE=	DOCS
 

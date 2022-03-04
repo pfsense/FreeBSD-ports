@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	libzmq2
 PORTVERSION=	2.2.0
@@ -20,7 +19,7 @@ USES=		libtool pathfix
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
 
-CONFLICTS=	libzmq[^2]-[0-9]*
+CONFLICTS=	libzmq[^2]
 
 OPTIONS_DEFINE=		DEBUG
 DEBUG_CONFIGURE_ON=	--enable-debug

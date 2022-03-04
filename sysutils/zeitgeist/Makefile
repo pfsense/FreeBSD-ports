@@ -1,10 +1,8 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 # NOTE: please keep zeitgeist in sysutils/qzeitgeist in sync
 
 PORTNAME=	zeitgeist
-PORTVERSION=	0.9.16
-PORTREVISION=	2
+DISTVERSION=	1.0.3
 CATEGORIES=	sysutils
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}/${PORTVERSION}/+download/
 
@@ -21,9 +19,11 @@ BUILD_DEPENDS=	valac:lang/vala \
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/__init__.py:devel/py-xdg@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/dbus/__init__.py:devel/py-dbus@${PY_FLAVOR}
 
-USES=		gmake gettext pathfix python:2.7 pkgconfig libtool sqlite tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig python sqlite \
+		tar:xz
 USE_GNOME=	intlhack glib20 introspection:build
 USE_LDCONFIG=	yes
+USE_PYTHON=	py3kplist
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

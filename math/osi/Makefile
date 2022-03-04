@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	Osi
-DISTVERSION=	0.107.9
+DISTVERSION=	0.108.6
 PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	https://www.coin-or.org/download/source/${PORTNAME}/

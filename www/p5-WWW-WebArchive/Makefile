@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	WWW-WebArchive
 PORTVERSION=	0.50
@@ -19,11 +18,9 @@ RUN_DEPENDS=	p5-App-Options>=0:devel/p5-App-Options \
 		p5-App-Trace>=0:devel/p5-App-Trace \
 		p5-WWW-Mechanize>=0:www/p5-WWW-Mechanize
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
 
-post-patch:
-	@${REINPLACE_CMD} -e '/NAME/ s|WWW-WebArchive|WWW::WebArchive|' ${WRKSRC}/Makefile.PL
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

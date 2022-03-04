@@ -1,35 +1,35 @@
---- extensions/browser/api/messaging/message_service.cc.orig	2019-03-11 22:00:58 UTC
+--- extensions/browser/api/messaging/message_service.cc.orig	2021-09-24 04:26:06 UTC
 +++ extensions/browser/api/messaging/message_service.cc
-@@ -58,7 +58,7 @@ namespace {
+@@ -68,7 +68,7 @@ namespace {
  
  const char kReceivingEndDoesntExistError[] =
      "Could not establish connection. Receiving end does not exist.";
--#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
+-#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
++#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
+     defined(OS_CHROMEOS)
  const char kMissingPermissionError[] =
      "Access to native messaging requires nativeMessaging permission.";
- const char kProhibitedByPoliciesError[] =
-@@ -318,7 +318,7 @@ void MessageService::OpenChannelToNativeApp(
-   if (!source)
+@@ -406,7 +406,7 @@ void MessageService::OpenChannelToNativeApp(
+   if (!opener_port->IsValidPort())
      return;
  
--#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
-   content::WebContents* web_contents =
-       content::WebContents::FromRenderFrameHost(source);
-   ExtensionWebContentsObserver* extension_web_contents_observer =
-@@ -378,12 +378,12 @@ void MessageService::OpenChannelToNativeApp(
+-#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
++#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
+     defined(OS_CHROMEOS)
+   bool has_permission = extension->permissions_data()->HasAPIPermission(
+       mojom::APIPermissionID::kNativeMessaging);
+@@ -460,12 +460,12 @@ void MessageService::OpenChannelToNativeApp(
    channel->opener->IncrementLazyKeepaliveCount();
  
    AddChannel(std::move(channel), receiver_port_id);
--#else  // !(defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX))
-+#else  // !(defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD))
+-#else   // !(defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) ||
++#else   // !(defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) ||
+         // defined(OS_CHROMEOS))
    const char kNativeMessagingNotSupportedError[] =
        "Native Messaging is not supported on this platform.";
-   DispatchOnDisconnect(
-       source, receiver_port_id, kNativeMessagingNotSupportedError);
--#endif  // !(defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX))
-+#endif  // !(defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD))
+   opener_port->DispatchOnDisconnect(kNativeMessagingNotSupportedError);
+-#endif  // !(defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) ||
++#endif  // !(defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) ||
+         // defined(OS_CHROMEOS))
  }
  
- void MessageService::OpenChannelToTab(int source_process_id,

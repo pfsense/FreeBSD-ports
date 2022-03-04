@@ -1,11 +1,10 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freebsd-uucp
 PORTREVISION=	3
 DISTVERSIONPREFIX=	r
 DISTVERSION=	1_07_4
-CATEGORIES=	net comms ipv6
+CATEGORIES=	net comms
 PKGNAMESUFFIX?=	${PAM_SUFFIX}${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org
@@ -13,6 +12,8 @@ COMMENT=	FreeBSD-modified Taylor UUCP (unix-to-unix copy program)
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/uucp/COPYING
+
+PORTSCOUT=	limit:^1_
 
 USES=		fakeroot
 
@@ -27,7 +28,7 @@ FIXME=	etc/periodic/daily/340.uucp etc/periodic/daily/410.status-uucp \
 	etc/periodic/weekly/300.uucp
 
 # fix errros for -std=iso9899:1999 in FreeBSD 5.1
-MAKE_ENV+=	CSTD=gnu99
+MAKE_ENV+=	CSTD=gnu99 WITHOUT_PIE=true
 
 OPTIONS_DEFINE=PAM ENCRYPTED_PASSWORDS VAR_LOG
 OPTIONS_DEFAULT=

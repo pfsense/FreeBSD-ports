@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	lingoteach
 PORTVERSION=	0.3.9
 PORTREVISION=	16
-CATEGORIES=	misc
+CATEGORIES=	misc education
 MASTER_SITES=	SF/${PORTNAME}/OldFiles:src
 DISTFILES=	${PORTNAME}-ui-${PORTVERSION}.tar.gz:src
 
@@ -16,7 +14,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-ui-${PORTVERSION}
 
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig libtool
+USES=		gmake gnome libtool pkgconfig
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib `pkg-config --libs gmodule-2.0`

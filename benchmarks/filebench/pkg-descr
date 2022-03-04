@@ -1,14 +1,10 @@
-Filebench is quick to set up and use unlike many of the commercial
-benchmarks which it can emulate. It is also a handy tool for
-micro-benchmarking storage subsystems and studying the relationships of
-complex applications such as relational databases with their storage
-without having to incur the costs of setting up those applications,
-loading data and so forth.
+Filebench is a file system and storage benchmark that can generate a large
+variety of workloads. Unlike typical benchmarks it is extremely flexible and
+allows to specify application's I/O behavior using its extensive Workload Model
+Language (WML). Users can either describe desired workloads from scratch or use
+(with or without modifications) workload personalities shipped with Filebench
+(e.g., mail-, web-, file-, and database-server workloads). Filebench is equally
+good for micro- and macro-benchmarking, quick to setup, and relatively easy to
+use.
 
-Filebench uses loadable workload personalities in a common framework to
-allow easy emulation of complex applications upon file systems. The
-workload personalities use a Workload Definition Language to define the
-workload's model.
-
-WWW: http://www.solarisinternals.com/wiki/index.php/FileBench
-WWW: http://filebench.sourceforge.net/
+WWW: https://github.com/filebench/filebench/wiki

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libusipp
-PORTVERSION=	2.24
+PORTVERSION=	2.25
 DISTVERSIONPREFIX=	libusipp-
 DISTVERSIONSUFFIX=	s
 CATEGORIES=	net

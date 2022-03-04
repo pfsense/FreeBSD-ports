@@ -1,7 +1,5 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
+
 # PROVIDE: gitea
 # REQUIRE: NETWORKING SYSLOG
 # KEYWORD: shutdown
@@ -22,6 +20,7 @@ load_rc_config $name
 : ${gitea_facility:="daemon"}
 : ${gitea_priority:="debug"}
 : ${gitea_shared:="%%PREFIX%%/share/${name}"}
+: ${gitea_custom:="%%PREFIX%%/etc/${name}"}
 
 command="%%PREFIX%%/sbin/${name} web"
 procname="%%PREFIX%%/sbin/${name}"
@@ -32,11 +31,17 @@ pidfile="/var/run/${name}.pid"
 start_cmd="${name}_start"
 
 gitea_start() {
+	for d in /var/db/gitea /var/log/gitea; do
+		if [ ! -e "$d" ]; then
+			mkdir "$d"
+			chown ${gitea_user} "$d"
+		fi
+	done
 	/usr/sbin/daemon %%DAEMONARGS%% \
 		-u ${gitea_user} -p ${pidfile} \
 		/usr/bin/env -i \
 		"GITEA_WORK_DIR=${gitea_shared}" \
-		"GITEA_CUSTOM=%%PREFIX%%/etc/${name}" \
+		"GITEA_CUSTOM=${gitea_custom}" \
 		"HOME=${githome}" \
 		"PATH=%%PREFIX%%/bin:${PATH}" \
 		"USER=${gitea_user}" \

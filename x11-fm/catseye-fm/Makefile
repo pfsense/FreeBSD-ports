@@ -1,5 +1,4 @@
 # Created by: Geyer Klaus
-# $FreeBSD$
 
 PORTNAME=	catseye-fm
 PORTVERSION=	4.2.0.0
@@ -13,7 +12,7 @@ COMMENT=	Clear, fast, powerful file browser using gtk+2.0
 
 LICENSE=	GPLv3
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 
 do-install:

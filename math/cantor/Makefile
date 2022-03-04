@@ -1,29 +1,32 @@
-# $FreeBSD$
-
 PORTNAME=	cantor
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE 5 frontend to mathematical software
+COMMENT=	Mathematical software frontend by KDE
 
 LIB_DEPENDS=	libAnalitza.so:math/analitza \
 		libcln.so:math/cln \
 		libqalculate.so:math/libqalculate \
-		libspectre.so:print/libspectre
+		libspectre.so:print/libspectre \
+		libpoppler.so:graphics/poppler \
+		libpoppler-qt5.so:graphics/poppler-qt5
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl \
 		docbook-xml>0:textproc/docbook-xml
 
-USES=		cmake compiler:c++11-lang gettext kde:5 pkgconfig \
-		python:3.4+ qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
+		pkgconfig python:3.4+ qt:5 shared-mime-info tar:xz
 USE_KDE=	attica auth archive bookmarks codecs completion config \
-		configwidgets coreaddons crash ecm emoticons i18n iconthemes \
+		configwidgets coreaddons crash emoticons i18n iconthemes \
 		itemmodels itemviews init jobwidgets kdelibs4support kio \
-		newstuff parts pty service solid sonnet texteditor textwidgets \
-		widgetsaddons xmlgui
-USE_QT=		core dbus gui network printsupport widgets xml xmlpatterns \
-		buildtools_build qmake_build
+		newstuff parts pty service solid sonnet syntaxhighlighting \
+		texteditor textwidgets widgetsaddons windowsystem xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus declarative gui help location network \
+		printsupport sql svg webchannel webengine \
+		widgets xml xmlpatterns \
+		buildtools_build qmake_build testlib_build
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	LUAJIT MAXIMA OCTAVE R SAGE SCILAB DOCS
@@ -51,14 +54,11 @@ SAGE_RUN_DEPENDS=	sage:math/sage
 SCILAB_DESC=	Install Scilab
 SCILAB_RUN_DEPENDS=	scilab:math/scilab
 
-# Disable python2 binding (should probably be an option PYTHON2, PYTHON3)
+# Disable python2 binding
 CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_PythonLibs
 
 post-patch:
 	${REINPLACE_CMD} -e '/FIND_PROGRAM(_GFORTRAN_EXECUTABLE/s,gfortran,${FC},' \
 		${WRKSRC}/cmake/FindR.cmake
-	${REINPLACE_CMD} -e '/find_library(PYTHONLIBS3_LIBRARY/s,python3.5m,python3.5m python3.6m,' \
-			 -e '/pkg_check_modules/s,python3,python-${PYTHON_VER},' \
-		${WRKSRC}/cmake/FindPythonLibs3.cmake
 
 .include <bsd.port.mk>

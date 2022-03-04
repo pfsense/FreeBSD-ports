@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net_Growl
 DISTVERSION=	2.7.0
 CATEGORIES=	net pear

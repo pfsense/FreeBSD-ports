@@ -1,13 +1,12 @@
 # Created by: Jimmy Olgeni <olgeni@uli.it>
-# $FreeBSD$
 
 PORTNAME=	eGroupware
-PORTVERSION=	17.1.20190222
+PORTVERSION=	20.1.20210503
 CATEGORIES=	deskutils
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME:tl}/releases/download/${PORTVERSION}/
-DISTNAME=	${PORTNAME:tl}-epl-${PORTVERSION}
+DISTNAME=	${PORTNAME:tl}-docker-${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web-based GroupWare system
 
 LICENSE=	GPLv2
@@ -21,10 +20,11 @@ RUN_DEPENDS=	${LOCALBASE}/share/pear/Net/Sieve.php:net/pear-Net_Sieve@${PHP_FLAV
 		${LOCALBASE}/share/pear/Horde/Compress.php:archivers/pear-Horde_Compress@${PHP_FLAVOR} \
 		${LOCALBASE}/share/pear/Horde/Icalendar.php:devel/pear-Horde_Icalendar@${PHP_FLAVOR} \
 		${LOCALBASE}/share/pear/Horde/Mapi.php:mail/pear-Horde_Mapi@${PHP_FLAVOR} \
-		${LOCALBASE}/share/pear/Horde/Crypt.php:security/pear-Horde_Crypt@${PHP_FLAVOR}
+		${LOCALBASE}/share/pear/Horde/Crypt.php:security/pear-Horde_Crypt@${PHP_FLAVOR} \
+		${LOCALBASE}/share/APCu/apc.php:devel/pecl-APCu@${PHP_FLAVOR}
 
 USES=		cpe php tar:bzip2
-USE_PHP=	bcmath bz2 ctype json session simplexml tidy xmlreader zlib
+USE_PHP=	bcmath bz2 ctype filter json session simplexml tidy xsl xmlreader zlib
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
 SUB_FILES=	pkg-message

@@ -1,22 +1,21 @@
 # Created by: David Shane Holden <dpejesh@yahoo.com>
-# $FreeBSD$
 
 PORTNAME=		corosync
 CATEGORIES=		net
 MASTER_SITES=		http://build.clusterlabs.org/corosync/releases/
 
-MAINTAINER=		dpejesh@yahoo.com
+MAINTAINER=		egypcio@FreeBSD.org
 COMMENT=		Corosync Cluster Engine
 
 LICENSE=		BSD3CLAUSE
 
 LIB_DEPENDS=		libnspr4.so:devel/nspr \
 			libnss3.so:security/nss \
-			libqb.so.0:devel/libqb
+			libqb.so:devel/libqb
 
 TEST_DEPENDS=		augparse:textproc/augeas
 
-USES=			gmake groff libtool pathfix pkgconfig
+USES=			cpe gmake groff libtool pathfix pkgconfig
 USE_BINUTILS=		yes
 USE_LDCONFIG=		yes
 USE_RC_SUBR=		${PORTNAME} ${PORTNAME}-notifyd

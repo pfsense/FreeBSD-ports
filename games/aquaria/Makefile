@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	aquaria
 DISTVERSIONPREFIX=	OSE-v
 DISTVERSION=	1.002-22
 DISTVERSIONSUFFIX=	-g84366ad
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	games
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -22,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	AquariaOSE
 GH_PROJECT=	Aquaria
 
-USES=		cmake:insource compiler:c++11-lang lua:51 openal pkgconfig
+USES=		cmake:insource compiler:c++11-lang lua:51 openal pkgconfig sdl
 EXCLUDE=	AL FTGL GL SDL* freetype2 glm glpng/png glpng/zlib \
 		libogg-* libvorbis-* lua-* tinyxml2*
 EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude ExternalLibs/,}
@@ -37,7 +35,7 @@ CMAKE_OFF=	AQUARIA_INTERNAL_FREETYPE \
 		AQUARIA_INTERNAL_TINYXML2 \
 		AQUARIA_INTERNAL_ZLIB
 LDFLAGS+=	-Wl,--as-needed # avoid overlinking (vorbis deps)
-LLD_UNSAFE=	yes # XXX ports/219089
+LDFLAGS_i386=	-Wl,-z,notext
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/aquaria
 PORTDATA=	*
@@ -49,7 +47,7 @@ DESKTOP_ENTRIES="${GH_PROJECT}" \
 		"Game;ArcadeGame;" \
 		""
 
-OPTIONS_DEFINE=	DEBUG SDL2
+OPTIONS_DEFINE=	SDL2
 OPTIONS_DEFAULT=SDL2
 
 SDL2_DESC=	Use SDL 2.x instead of SDL 1.2.x

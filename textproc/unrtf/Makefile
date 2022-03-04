@@ -1,8 +1,7 @@
 # Created by: Oliver Braun <obraun@informatik.unibw-muenchen.de>
-# $FreeBSD$
 
 PORTNAME=	unrtf
-PORTVERSION=	0.21.9
+PORTVERSION=	0.21.10
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 

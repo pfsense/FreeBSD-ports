@@ -1,5 +1,4 @@
 # Created by: lofi@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	wv2
 PORTVERSION=	0.4.2
@@ -7,7 +6,7 @@ PORTREVISION=	8
 CATEGORIES=	textproc
 MASTER_SITES=	SF/wvware/
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library providing routines to access Microsoft Word files
 
 LICENSE=	LGPL20

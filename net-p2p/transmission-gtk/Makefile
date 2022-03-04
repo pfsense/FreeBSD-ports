@@ -1,7 +1,5 @@
-# $FreeBSD$
-
-PORTREVISION=	4
 PKGNAMESUFFIX=	-gtk
+PORTREVISION=	4
 
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 		libnotify.so:devel/libnotify

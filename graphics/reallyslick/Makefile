@@ -1,9 +1,8 @@
 # Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	reallyslick
 PORTVERSION=	0.9.1
-PORTREVISION=	21
+PORTREVISION=	23
 CATEGORIES=	graphics
 MASTER_SITES=	SF/rss-glx/rss-glx/${PORTVERSION}
 DISTNAME=	rss-glx_${PORTVERSION}
@@ -14,7 +13,7 @@ COMMENT=	OpenGL screensaver collection
 LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6 \
 		libGLC.so:graphics/quesoglc
 
-USES=		compiler gmake pathfix pkgconfig tar:bzip2 libtool
+USES=		compiler:c++11-lang gl gmake pathfix pkgconfig tar:bzip2 libtool
 USE_GL=		glut
 GNU_CONFIGURE=	yes
 
@@ -28,7 +27,8 @@ OPTIONS_DEFINE=	FREEALUT GLEW
 FREEALUT_DESC=	Enable freealut support
 FREEALUT_CONFIGURE_ENABLE=	sound
 FREEALUT_USES=	openal:alut
-FREEALUT_VARS=	LLD_UNSAFE=yes # cf. PR 226980
+FREEALUT_LDFLAGS=	${_FREEALUT_LDFLAGS_${ARCH}}
+_FREEALUT_LDFLAGS_i386=	-Wl,-znotext
 
 GLEW_DESC=	Enable GLEW support
 GLEW_USE=	GL=glew

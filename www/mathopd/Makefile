@@ -1,5 +1,4 @@
 # Created by: tobez@plab.ku.dk
-# $FreeBSD$
 
 PORTNAME=	mathopd
 PORTVERSION=	1.5p8
@@ -12,8 +11,9 @@ COMMENT=	Small, yet fast HTTP server
 
 LICENSE=	BSD3CLAUSE
 
+USES=		cpe
+
 CFLAGS+=	-DFREEBSD_SENDFILE
-MAKE_ARGS=	CFLAGS="${CFLAGS}"
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphen
 PORTVERSION=	2016.02.10
 CATEGORIES=	textproc
@@ -18,8 +16,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/hyph_it_CH.dic \
-		%%DATADIR%%/hyph_it_IT.dic
+PLIST_FILES=	${DATADIR}/hyph_it_CH.dic \
+		${DATADIR}/hyph_it_IT.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

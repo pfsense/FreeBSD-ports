@@ -1,5 +1,4 @@
 # Created by: Per Otterstr=F6m <pelle@fukt.bth.se>
-# $FreeBSD$
 
 PORTNAME=	temperature.app
 PORTVERSION=	1.5
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	wget:ftp/wget
 
+USES=		xorg
 USE_XORG=	x11 xpm
 
 PORTDOCS=	README

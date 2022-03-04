@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	antipolix
 PORTVERSION=	2.1
@@ -15,7 +14,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 NO_WRKSUBDIR=	yes
-USES=		imake:noman
+USES=		imake:noman xorg
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

@@ -1,10 +1,9 @@
 # Created by: George Sorsby <george@crackpipe.net>
-# $FreeBSD$
 
 PORTNAME=	nget
 PORTVERSION=	0.27.1
 DISTVERSIONSUFFIX=	+uulib
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	news
 MASTER_SITES=	SF
 
@@ -29,7 +28,7 @@ WRKSRC=	${WRKDIR}/nget-${PORTVERSION}
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-std=c++11
 .else
 CXXFLAGS+=	-std=c++98

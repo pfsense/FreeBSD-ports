@@ -1,8 +1,7 @@
 # Created by: ndewing@experts-exchange.com
-# $FreeBSD$
 
 PORTNAME=	mixlib-shellout
-PORTVERSION=	2.3.2
+PORTVERSION=	3.2.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +11,11 @@ COMMENT=	Shell interface that also collects stdout and stderr
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
+RUN_DEPENDS=	rubygem-chef-utils>=0:sysutils/rubygem-chef-utils
+
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

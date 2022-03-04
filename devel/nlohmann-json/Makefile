@@ -1,14 +1,12 @@
 # Created by: Viacheslav Mikerov <SlavaMikerov@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	json
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.0
-PORTREVISION=	1
+DISTVERSION=	3.10.4
 CATEGORIES=	devel
 PKGNAMEPREFIX=	nlohmann-
 
-MAINTAINER=	SlavaMikerov@gmail.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	JSON library for Modern C++
 
 LICENSE=	MIT
@@ -21,14 +19,10 @@ GH_ACCOUNT=	nlohmann
 NO_BUILD=	yes
 NO_ARCH=	yes
 
+CMAKE_ON=	JSON_MultipleHeaders
 CMAKE_OFF=	JSON_BuildTests
 
-PLIST_FILES=	lib/cmake/nlohmann_json/nlohmann_jsonConfig.cmake \
-		lib/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake \
-		lib/cmake/nlohmann_json/nlohmann_jsonTargets.cmake \
-		include/nlohmann/json.hpp
-
-do-test:
+do-test: # 2 tests are expected to fail, see https://github.com/nlohmann/json/issues/2951
 	@cd ${BUILD_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} -DJSON_BuildTests:BOOL=ON ${CMAKE_SOURCE_PATH} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \

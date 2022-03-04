@@ -1,0 +1,7 @@
+TIMESTAMP = 1614801063
+SHA256 (centos/libxslt-1.1.28-6.el7.i686.rpm) = 0da7058b9e17bc04ee41a1b18cf25a3eb8b809543298d8a421891d683da5fb30
+SIZE (centos/libxslt-1.1.28-6.el7.i686.rpm) = 242636
+SHA256 (centos/libxslt-1.1.28-6.el7.x86_64.rpm) = 968666057a939668a806a3eaeb98531d84ae17cef5c0a319cb1b5ed37a157543
+SIZE (centos/libxslt-1.1.28-6.el7.x86_64.rpm) = 247560
+SHA256 (centos/libxslt-1.1.28-6.el7.src.rpm) = 5721698bf61a66f08778dc84f6f1d3f28fe74a4e1aabbdb303003c9e182acf57
+SIZE (centos/libxslt-1.1.28-6.el7.src.rpm) = 3422803

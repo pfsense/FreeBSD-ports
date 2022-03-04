@@ -1,0 +1,5 @@
+TIMESTAMP = 1594921140
+SHA256 (apache-incubator-tvm-v0.6.1_GH0.tar.gz) = e2688526d24242bbf5f3adbc0590b1234c4fd0b7a8f61bd837af6c49e5020713
+SIZE (apache-incubator-tvm-v0.6.1_GH0.tar.gz) = 2984949
+SHA256 (dmlc-dlpack-0acb731_GH0.tar.gz) = e246632ccb182369e78a4028bfd9d3ff8a3507620ba414126fb0e860477248ba
+SIZE (dmlc-dlpack-0acb731_GH0.tar.gz) = 39435

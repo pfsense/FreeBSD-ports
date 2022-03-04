@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	jo
-PORTVERSION=	1.2
+PORTVERSION=	1.4
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/jpmens/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -13,6 +11,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 
-PLIST_FILES=	bin/jo man/man1/jo.1.gz
+PLIST_FILES=	bin/jo etc/bash_completion.d/jo.bash man/man1/jo.1.gz
 
 .include <bsd.port.mk>

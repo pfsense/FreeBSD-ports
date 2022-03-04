@@ -1,13 +1,11 @@
 # Created by: David Naylor <dbn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fastICA
-DISTVERSION=	1.2-1
-PORTREVISION=	2
+DISTVERSION=	1.2-3
 CATEGORIES=	science math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	FastICA Algorithms to Perform ICA and Projection Pursuit
 
 LICENSE=	GPLv2 GPLv3

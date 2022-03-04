@@ -1,0 +1,15 @@
+bin/xtb
+include/xtb.h
+lib/cmake/xtb/xtbConfig.cmake
+lib/cmake/xtb/xtbConfigVersion.cmake
+lib/cmake/xtb/xtbTargets-%%CMAKE_BUILD_TYPE%%.cmake
+lib/cmake/xtb/xtbTargets.cmake
+lib/libxtb.a
+lib/libxtb.so
+lib/libxtb.so.6
+lib/libxtb.so.6.4.1
+%%DATADIR%%/.param_gfnff.xtb
+%%DATADIR%%/param_gfn0-xtb.txt
+%%DATADIR%%/param_gfn1-xtb.txt
+%%DATADIR%%/param_gfn2-xtb.txt
+%%DATADIR%%/param_ipea-xtb.txt

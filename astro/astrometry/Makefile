@@ -1,52 +1,70 @@
 # Created by: Sébastien Santoro <dereckson@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	astrometry
-PORTVERSION=	0.65
-PORTREVISION=	5
+PORTVERSION=	0.85
+PORTREVISION=	2
 CATEGORIES=	astro
-MASTER_SITES=	http://www.astrometry.net/downloads/
+MASTER_SITES=	http://astrometry.net/downloads/
 DISTNAME=	${PORTNAME}.net-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Software for describing astronomical images
+MAINTAINER=	rhurlin@FreeBSD.org
+COMMENT=	Astronomic calibration service
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		fails to link: os-features-test.c:10: undefined symbol 'canonicalize_file_name'
 BROKEN_armv6=		fails to link: os-features-test.c:10: undefined symbol 'canonicalize_file_name'
 BROKEN_armv7=		fails to link: os-features-test.c:10: undefined symbol 'canonicalize_file_name'
 
 BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libcfitsio.so:astro/cfitsio \
+		libgsl.so:math/gsl \
 		libpng.so:graphics/png \
-		libnetpbm.so:graphics/netpbm
-RUN_DEPENDS=	${PYNUMPY}
+		libnetpbm.so:graphics/netpbm \
+		libwcs.so:astro/wcslib
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astropy>0:astro/py-astropy@${PY_FLAVOR} \
+		${PYNUMPY}
 
-USES=		gmake jpeg pkgconfig python:2.7 shebangfix tar:bzip2
-SHEBANG_FILES=	blind/*.py sdss/*.py util/[!c]*.py util/casjobs.py
-USE_LDCONFIG=	${PREFIX}/${PORTNAME}/lib
-ALL_TARGET=	all extra
-MAKE_ENV=	INSTALL_DIR=${STAGEDIR}${PREFIX}/${PORTNAME}
+USES=		gmake jpeg localbase pkgconfig python shebangfix
+USE_LDCONFIG=	yes
+SHEBANG_FILES=	bin/* sdss/*.py solver/*.py util/[!c]*.py
+
+MAKE_ARGS=	NETPBM_INC="-I${LOCALBASE}/include/netpbm" \
+		NETPBM_LIB="-L${LOCALBASE}/lib -lnetpbm" \
+		SYSTEM_GSL=yes
+MAKE_ENV=	INSTALL_DIR=${STAGEDIR}${PREFIX} \
+		DOC_INSTALL_DIR=${STAGEDIR}${DOCSDIR} \
+		EXAMPLE_INSTALL_DIR=${STAGEDIR}${EXAMPLESDIR} \
+		MAN1_INSTALL_DIR=${STAGEDIR}${PREFIX}/man/man1 \
+		PYTHON=${PYTHON_CMD} PYTHON_SCRIPT=${PYTHON_CMD}
 MAKE_JOBS_UNSAFE=	yes
-SUB_FILES=	pkg-message
+ALL_TARGET=	all extra
 LDFLAGS+=	-lz
 
-post-patch:
-	@${REINPLACE_CMD} -E 's,python (setup|-c),${PYTHON_CMD} \1,' \
-		${WRKSRC}/blind/Makefile ${WRKSRC}/libkd/Makefile \
-		${WRKSRC}/sdss/Makefile ${WRKSRC}/util/Makefile
-# Outwit detection logic that thinks Clang does not support -shared argument
-	@${REINPLACE_CMD} -e '/CCTEST/s,\\|warning:,,' \
-		${WRKSRC}/util/makefile.common
+# Need this to get gzipped man pages
+MANDIRS=	${MANPREFIX}/man/man1
+SUB_FILES=	pkg-message
 
+PORTDOCS=	*
+PORTEXAMPLES=	*
+
+OPTIONS_DEFINE=		DOCS EXAMPLES
+OPTIONS_DEFAULT=	EXAMPLES
+
+# Changes search path in astrometry-engine
+DATA_INSTALL_DIR=	${STAGEDIR}${DATADIR}
+
+# DATA_INSTALL_DIR does not work globally :(
 post-install:
-	@${REINPLACE_CMD} -i '' -e 's|${STAGEDIR}||' \
-		${STAGEDIR}${PREFIX}/${PORTNAME}/etc/${PORTNAME}.cfg
-	@${FIND} ${STAGEDIR}${PREFIX}/${PORTNAME}/bin \
-		-type f -not -name "*.py" -exec ${STRIP_CMD} {} \;
-	@${FIND} ${STAGEDIR}${PREFIX}/${PORTNAME}/lib \
-		-type f -name "*.so" -exec ${STRIP_CMD} {} \;
+	@${REINPLACE_CMD} -i '' \
+		-e 's|${STAGEDIR}/usr/local/data|${DATADIR}|' \
+		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.cfg
+	@${RMDIR} ${STAGEDIR}${PREFIX}/data
+	@${MKDIR} ${STAGEDIR}${DATADIR}/sdss
+	@${MKDIR} ${STAGEDIR}${DATADIR}/solver
+	@${MKDIR} ${STAGEDIR}${DATADIR}/catalogs
+	${INSTALL_DATA} ${WRKSRC}/sdss/testdata/*.fit* ${STAGEDIR}${DATADIR}/sdss
+	${INSTALL_DATA} ${WRKSRC}/solver/index-9918.fits ${STAGEDIR}${DATADIR}/solver
+	${INSTALL_DATA} ${WRKSRC}/catalogs/*.fit* ${STAGEDIR}${DATADIR}/catalogs
 
 .include <bsd.port.mk>

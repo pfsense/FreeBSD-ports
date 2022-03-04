@@ -1,8 +1,7 @@
 # Created by: Richard Gallamore <ultima@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	YouCompleteMe
-DISTVERSION=	g20190314
+DISTVERSION=	g20210518
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,79 +11,62 @@ COMMENT=	Code-completion engine for Vim
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-RUN_DEPENDS=	vim:editors/vim \
-		${LOCALBASE}/lib/libboost_thread.so:devel/boost-libs \
-		${LOCALBASE}/lib/${PY_BOOST} \
-		${PYTHON_PKGNAMEPREFIX}argparse>0:devel/py-argparse@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}bottle>0:www/py-bottle@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}frozendict>0:devel/py-frozendict@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jedi>0:devel/py-jedi@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}parso>0:textproc/py-parso@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}requests-futures>0:www/py-requests-futures@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}waitress>0:www/py-waitress@${PY_FLAVOR}
+LIB_DEPENDS=	libabsl_strings.so:devel/abseil
 
-USES=		cmake python
+RUN_DEPENDS=	vim:editors/vim \
+		${PYTHON_PKGNAMEPREFIX}bottle>0:www/py-bottle@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jedi>0:devel/py-jedi@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}regex>0:textproc/py-regex@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}parso>0:textproc/py-parso@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}watchdog>0:devel/py-watchdog@${PY_FLAVOR}
+
+USES=		cmake compiler:c++11-lang python:3.6+
 USE_PYTHON=	flavors
 USE_GITHUB=	yes
-GH_ACCOUNT=	Valloric
-GH_TAGNAME=	299f8e4
-GH_TUPLE=	Valloric:ycmd:d0eba90:ycm/third_party/ycmd \
-		micbou:regex:d2ef9c4:ycmd5/third_party/ycmd/third_party/cregex
+GH_ACCOUNT=	ycm-core
+GH_TAGNAME=	ab73ca2
+GH_TUPLE=	ycm-core:ycmd:df3d7eb:ycm/third_party/ycmd
 
-CMAKE_SOURCE_PATH+=	${WRKSRC}/third_party/ycmd/cpp
+CMAKE_SOURCE_PATH=	${WRKSRC}/third_party/ycmd/cpp
 
 PLIST_SUB=		VIMFILESDIR=share/vim/vimfiles \
-			YCMDDIR=share/vim/vimfiles/third_party/ycmd
+			YCMDDIR=share/vim/vimfiles/third_party/ycmd \
+			PYTHON_MAJOR_VER=${PYTHON_MAJOR_VER}
 
 SUB_FILES=		pkg-message pkg-install pkg-deinstall
 SUB_LIST=		VIMFILESDIR="${VIMFILESDIR}" \
 			FIND="${FIND}"
 
-OPTIONS_DEFINE=		C GO MONO RUST
-OPTIONS_DEFAULT=	C GO MONO RUST
+OPTIONS_DEFINE=		C
+OPTIONS_DEFAULT=	C
 OPTIONS_SUB=		yes
 
 C_DESC=			C-family Semantic Completion Support
-GO_DESC=		Go Semantic Completion Support
-MONO_DESC=		C\# Semantic Completion Support
-RUST_DESC=		Rust Semantic Completion Support
 
-C_CMAKE_ON=		-DPATH_TO_LLVM_ROOT=${LOCALBASE}/llvm70
-C_LIB_DEPENDS=		libclang.so:devel/llvm70
-
-GO_RUN_DEPENDS=		gocode:devel/go-gocode \
-			godef:devel/go-godef
-
-MONO_RUN_DEPENDS=	${LOCALBASE}/share/omnisharp-server/bin/Release/OmniSharp.exe:devel/omnisharp-server
-MONO_VARS=		MONOFILESDIR=${VIMFILESDIR}/third_party/ycmd/third_party/OmniSharpServer
-
-RUST_RUN_DEPENDS=	racerd:devel/racerd
+C_CMAKE_ON=		-DPATH_TO_LLVM_ROOT=${LOCALBASE}/llvm${LLVM_DEFAULT}
+C_LIB_DEPENDS=		libclang.so:devel/llvm${LLVM_DEFAULT}
 
 VIMFILESDIR=		${PREFIX}/share/vim/vimfiles
 
-CMAKE_ARGS_PY3=		-DUSE_PYTHON2:BOOL=OFF
-CMAKE_ARGS=		${CMAKE_ARGS_PY${PYTHON_MAJOR_VER}}
+CMAKE_ARGS=		${CMAKE_ARGS_PY${PYTHON_MAJOR_VER}} -DUSE_SYSTEM_ABSEIL:BOOL=ON
+
+post-patch:
+		${REINPLACE_CMD} "s/'python3'/'${PYTHON_VERSION}'/" \
+			${WRKSRC}/python/ycm/paths.py
 
 do-install:
 		${MKDIR} ${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/third_party
 		(cd ${WRKSRC} && ${COPYTREE_SHARE} "autoload doc plugin python" \
 			"${STAGEDIR}${VIMFILESDIR}")
 		(cd ${WRKSRC}/third_party/ycmd && ${COPYTREE_SHARE} \
-			"ycmd CORE_VERSION cpp clang_includes" \
-			"${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/${d}")
+			"ycmd CORE_VERSION cpp" \
+			"${STAGEDIR}${VIMFILESDIR}/third_party/ycmd")
 		(cd ${WRKSRC}/third_party/ycmd/third_party && ${COPYTREE_SHARE} \
-			"cregex tern_runtime" \
+			"clang generic_server tern_runtime tsserver" \
 			"${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/third_party")
 		${RM} -rf ${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/cpp/ycm/tests \
 			${STAGEDIR}${VIMFILESDIR}/third_party/ycmd/ycmd/tests
-		${INSTALL_LIB} ${WRKSRC}/third_party/ycmd/ycm_core.so \
+		${INSTALL_LIB} ${WRKSRC}/third_party/ycmd/ycm_core.cpython-${PYTHON_SUFFIX}.so \
 			${STAGEDIR}${VIMFILESDIR}/third_party/ycmd
-
-do-install-MONO-on:
-		${MKDIR} ${STAGEDIR}${MONOFILESDIR}/OmniSharp/bin
-		${RLN} ${PREFIX}/share/omnisharp-server/bin/Release \
-			${STAGEDIR}${MONOFILESDIR}/OmniSharp/bin/Release
 
 .include <bsd.port.mk>

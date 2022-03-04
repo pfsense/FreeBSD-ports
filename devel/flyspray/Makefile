@@ -1,19 +1,18 @@
 # Created by: Nick Hilliard <nick@foobar.org>
-# $FreeBSD$
 
 PORTNAME=	flyspray
 PORTVERSION=	0.9.9.7
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel www
 MASTER_SITES=	http://flyspray.org/packed/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, easy-to-use web based bug tracking system
 
-RUN_DEPENDS=	${LOCALBASE}/share/adodb/adodb.inc.php:databases/adodb
+RUN_DEPENDS=	${LOCALBASE}/share/adodb/adodb.inc.php:databases/adodb5
 
 USE_PHP=	pcre session zlib xml gd
-USES=		dos2unix php:web zip
+USES=		cpe dos2unix php:web zip
 
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -21,7 +20,7 @@ NO_WRKSUBDIR=	yes
 
 DOS2UNIX_REGEX=	.php
 
-OPTIONS_DEFINE=	GRAPHVIZ MYSQL MYSQLI PGSQL DOCS
+OPTIONS_DEFINE=	GRAPHVIZ MYSQLI PGSQL DOCS
 OPTIONS_DEFAULT=	MYSQLI
 
 DOCS_SUB_FILES=	pkg-message
@@ -48,7 +47,6 @@ FLYSPRAY_FILES=	cache docs/licences/gnu_lgpl.html favicon.ico \
 
 PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
-MYSQL_USE=	PHP=mysql
 MYSQLI_USE=	PHP=mysqli
 PGSQL_USE=	PHP=pgsql
 GRAPHVIZ_RUN_DEPENDS=	${LOCALBASE}/bin/dot:graphics/graphviz

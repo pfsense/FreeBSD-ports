@@ -1,9 +1,8 @@
 # Created by: Henry Hu <henry.hu.sh@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libqtelegram-ae
 PORTVERSION=	6.1
-PORTREVISION=	4
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-stable
 CATEGORIES=	net-im

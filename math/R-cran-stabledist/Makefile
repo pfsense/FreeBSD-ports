@@ -1,13 +1,12 @@
 # Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	stabledist
 DISTVERSION=	0.7-1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stable Distribution Functions
 
 LICENSE=	GPLv2 GPLv3

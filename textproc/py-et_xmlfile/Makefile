@@ -1,5 +1,4 @@
 # Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	et_xmlfile
 PORTVERSION=	1.0.1
@@ -12,7 +11,9 @@ COMMENT=	Implementation of lxml.xmlfile for the standard library
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

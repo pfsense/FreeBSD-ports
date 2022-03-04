@@ -1,6 +1,6 @@
---- src/VBox/Additions/common/pam/pam_vbox.cpp.orig	2016-07-18 11:50:44 UTC
+--- src/VBox/Additions/common/pam/pam_vbox.cpp.orig	2021-01-07 15:34:21 UTC
 +++ src/VBox/Additions/common/pam/pam_vbox.cpp
-@@ -105,7 +105,7 @@ static void pam_vbox_writesyslog(char *p
+@@ -104,7 +104,7 @@ static void pam_vbox_writesyslog(char *pszBuf)
      openlog("pam_vbox", LOG_PID, LOG_AUTHPRIV);
      syslog(LOG_ERR, "%s", pszBuf);
      closelog();
@@ -9,7 +9,7 @@
      syslog(LOG_ERR, "pam_vbox: %s\n", pszBuf);
  #endif
  }
-@@ -180,7 +180,7 @@ static int vbox_set_msg(pam_handle_t *hP
+@@ -183,7 +183,7 @@ static int vbox_set_msg(pam_handle_t *hPAM, int iStyle
  
      pam_message msg;
      msg.msg_style = iStyle;

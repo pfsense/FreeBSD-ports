@@ -1,10 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	xwayland
-PORTVERSION=	1.19.1
-# This is inherited from x11-servers/xorg-server
-# Ensure it does not go backwards when bumping
-PORTREVISION=	11
+PORTREVISION=	0
 
 COMMENT=	X Clients under Wayland
 
@@ -15,33 +10,25 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/wayland-protocols.pc:graphics/wayl
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 		libinput.so:x11/libinput
 
+CONFLICTS_INSTALL=	${PORTNAME}-devel
+
 MASTERDIR=	${.CURDIR}/../xorg-server
 DESCR=		${.CURDIR}/pkg-descr
-DISTINFO_FILE=	${.CURDIR}/distinfo
-PATCHDIR=	${.CURDIR}/files
 
 SLAVE_PORT=	yes
-OPTIONS_EXCLUDE=DEVD HAL SUID
-
-USE_XORG=	x11 xext xfont2
+USE_XORG=	x11 xext
 USE_GL+=	egl gbm
 
-CONFIGURE_ARGS+=	--disable-docs --disable-devel-docs \
-			--enable-xwayland --disable-xorg --disable-xvfb --disable-xnest \
-			--disable-xquartz --disable-xwin
+CONFIGURE_ARGS+=--disable-dmx --disable-xephyr --disable-xnest --disable-xvfb \
+		--enable-xwayland --with-default-xkb-ruleset=evdev
 
 PLIST_FILES=	bin/Xwayland
 
-EXTRA_PATCHES=	${MASTERDIR}/files/patch-CVE-2017-12176 \
-		${MASTERDIR}/files/patch-CVE-2017-12177 \
-		${MASTERDIR}/files/patch-CVE-2017-12178 \
-		${MASTERDIR}/files/patch-CVE-2017-12179 \
-		${MASTERDIR}/files/patch-CVE-2017-12183 \
-		${MASTERDIR}/files/patch-CVE-2017-1218x \
-		${MASTERDIR}/files/patch-CVE-2017-1218y \
-		${MASTERDIR}/files/patch-CVE-2017-13721 \
-		${MASTERDIR}/files/patch-CVE-2017-13723 \
-		${MASTERDIR}/files/patch-os_io.c
+OPTIONS_DEFINE=	NVIDIA
+
+NVIDIA_DESC=		EGLStream support for glamor on Xwayland
+NVIDIA_BUILD_DEPENDS=	egl-wayland>0:graphics/egl-wayland
+NVIDIA_CONFIGURE_ENABLE=xwayland-eglstream
 
 do-install:
 	cd ${WRKSRC}/hw/xwayland; DESTDIR=${STAGEDIR} ${MAKE_CMD} install

@@ -8,5 +8,5 @@ man/man8/update-smart-drivedb.8.gz
 sbin/smartctl
 sbin/smartd
 sbin/update-smart-drivedb
-%%DATADIR%%/drivedb.h
+@sample %%DATADIR%%/drivedb.h.sample
 @dir etc/smartd_warning.d

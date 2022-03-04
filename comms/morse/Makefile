@@ -1,5 +1,4 @@
 # Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	morse
 PORTVERSION=	2.5
@@ -26,6 +25,7 @@ PULSEAUDIO_DESC=	Beep using Pulse Audio
 OSS_MAKE_ARGS=	DEVICE=OSS
 
 X11_MAKE_ARGS=	DEVICE=X11
+X11_USES=	xorg
 X11_USE=	XORG=x11
 X11_CFLAGS=	-I${LOCALBASE}/include
 X11_LDFLAGS=	-L${LOCALBASE}/lib

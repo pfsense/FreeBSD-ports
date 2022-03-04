@@ -1,11 +1,10 @@
 # Created by: Gustau Perez <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	bijiben
-PORTVERSION=	3.28.3
+PORTVERSION=	40.1
 PORTREVISION=	1
 CATEGORIES=	deskutils gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -19,8 +18,8 @@ LIB_DEPENDS=	libtracker-control-2.0.so:sysutils/tracker \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 		libgoa-1.0.so:net/gnome-online-accounts \
 		libical.so:devel/libical \
-		libzeitgeist-2.0.so:sysutils/zeitgeist \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/e2fsprogs-libuuid \
+		libhandy-1.so:x11-toolkits/libhandy
 
 PORTSCOUT=	limitw:1,even
 
@@ -29,11 +28,8 @@ USES=		compiler:c++11-lib desktop-file-utils gettext gnome \
 		shared-mime-info shebangfix tar:xz
 USE_LDCONFIG=	yes
 USE_GNOME=	cairo evolutiondataserver3 intltool
-INSTALLS_ICONS=	yes
-MESON_ARGS=	-Dzeitgeist=true
 SHEBANG_FILES=	${WRKSRC}/build-aux/meson_post_install.py
 
-GLIB_SCHEMAS=	org.gnome.bijiben.gschema.xml \
-		org.gnome.bijiben.enums.xml
+GLIB_SCHEMAS=	org.gnome.Notes.gschema.xml
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Hyogeol Lee <hyogeollee@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ko.TeX-fonts-extra
 PORTVERSION=	0.1.0
@@ -12,7 +11,7 @@ MAINTAINER=	hyogeollee@gmail.com
 COMMENT=	Korean TeX extra fonts
 
 USE_TEX=	dvipsk latex
-CONFLICTS=	hlatex-[0-9]*
+CONFLICTS=	hlatex
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

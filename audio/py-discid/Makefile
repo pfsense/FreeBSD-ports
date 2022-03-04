@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	discid
 PORTVERSION=	1.2.0
 CATEGORIES=	audio python
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
 LIB_DEPENDS=	libdiscid.so:audio/libdiscid
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

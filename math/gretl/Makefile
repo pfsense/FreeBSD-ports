@@ -1,8 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	gretl
-DISTVERSION=	2019a
+PORTVERSION=	2021d
 CATEGORIES=	math finance
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSIONFULL}/
 
@@ -15,21 +14,24 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfftw3.so:math/fftw3 \
 		libgmp.so:math/gmp \
+		libharfbuzz.so:print/harfbuzz \
 		libjson-glib-1.0.so:devel/json-glib \
-		libmpi.so:net/mpich \
 		libmpfr.so:math/mpfr
 
-USES=		fortran gmake gnome localbase libtool ncurses pathfix pkgconfig \
-		readline tar:xz
+USES=		compiler:c11 fortran gmake gnome localbase libtool ncurses \
+		pathfix pkgconfig readline tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 BINARY_ALIAS=	make=${GMAKE}
 ALL_TARGET=	# empty
+SSP_CFLAGS?=	-fstack-protector # XXX -strong crashes mklang on 12.0+ i386
 CONFIGURE_ENV=	ac_cv_lib_dl_dlopen="" \
 		LAPACK_LIBS="${LAPACK} ${BLAS}"
 
-OPTIONS_DEFINE=		ADDONS ATLAS GUI NLS ODBC OPENMP R UNZIP
+PLIST_SUB=	GTK_VER=${GTK_VER}
+
+OPTIONS_DEFINE=		ADDONS ATLAS GUI MPI NLS ODBC OPENMP R UNZIP
 OPTIONS_DEFAULT=	ADDONS GUI OPENMP UNZIP
 OPTIONS_SUB=		yes
 
@@ -45,16 +47,23 @@ ATLAS_VARS=		BLAS=-lf77blas LAPACK="-lalapack -lcblas"
 ATLAS_VARS_OFF=		BLAS=-lblas LAPACK=-llapack
 
 GUI_DESC=		Graphical user interface and plugins
-GUI_CONFIGURE_ON=	--enable-gtk2=yes --enable-gui=yes
+GUI_CONFIGURE_ON=	--enable-gui=yes
 GUI_CONFIGURE_OFF=	--enable-gui=no --enable-xdg=no
-GUI_VARS=		INSTALLS_ICONS=yes
-GUI_USE=		GNOME=cairo,gtksourceview2
+GUI_USE=		GNOME=cairo,gtksourceview3,gdkpixbuf2
 GUI_USE_OFF=		GNOME=glib20,libxml2
+GUI_VARS=		GTK_VER=3
+GUI_VARS_OFF=		GTK_VER=2
 GUI_USES=		desktop-file-utils shared-mime-info
 GUI_BUILD_DEPENDS=	gnuplot:math/gnuplot
 GUI_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 			libfontconfig.so:x11-fonts/fontconfig
 GUI_RUN_DEPENDS=	gnuplot:math/gnuplot
+
+MPI_CONFIGURE_WITH=	mpi
+MPI_CONFIGURE_ENV=	MPICC=${LOCALBASE}/bin/mpicc
+MPI_CONFIGURE_ON=	--with-mpi-include=${LOCALBASE}/include/mpi.h --with-mpi-lib=${LOCALBASE}/lib/libmpi.so
+MPI_LIB_DEPENDS=	libmpi.so:net/mpich
+MPI_BROKEN=		checking mpi.h usability... no # need to investigate
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
@@ -63,7 +72,7 @@ ODBC_CONFIGURE_WITH=	odbc
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 
 OPENMP_CONFIGURE_ENABLE=	openmp
-OPENMP_LIB_DEPENDS=	libomp.so:devel/openmp
+OPENMP_USE=		GCC=yes
 
 R_DESC=			libR support
 R_CONFIGURE_WITH=	libR
@@ -84,15 +93,13 @@ post-patch:
 		{x; s/.*/#include <netinet\/in.h>/; H; x;}' \
 		${WRKSRC}/configure \
 		${WRKSRC}/plugin/mailer.c
-	@${REINPLACE_CMD} -e 's| DOMAIN| CEPHES_DOMAIN|g' \
-		${WRKSRC}/cephes/iv.c
 
 regression-test test check: build
 	@cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 		${MAKE_ARGS} check
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/gretl-gtk2/*.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/gretl-*/*.so
 	@${RMDIR} ${STAGEDIR}${DATADIR}/doc
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpgf
 PORTVERSION=	7.15.32
 CATEGORIES=	graphics
@@ -10,9 +8,10 @@ DISTNAME=	libPGF-codec-and-console-src
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Progressive Graphics Format (PGF) library
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf dos2unix libtool pathfix zip
+USES=		autoreconf cpe dos2unix libtool pathfix zip
 USE_LDCONFIG=	yes
 
 DOS2UNIX_FILES=	configure.ac

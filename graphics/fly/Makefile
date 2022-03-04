@@ -1,9 +1,8 @@
 # Created by: Juergen Unger <j.unger@choin.net>
-# $FreeBSD$
 
 PORTNAME=	fly
 PORTVERSION=	2.0.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	http://fossies.org/unix/www/ \
 		http://martin.gleeson.com/fly/dist/

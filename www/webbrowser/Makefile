@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webbrowser
 PORTVERSION=	0.3
 CATEGORIES=	www

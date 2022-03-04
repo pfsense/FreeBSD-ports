@@ -1,13 +1,12 @@
 # Created by: Dmitry Sivachenko <dima@Chg.RU>
-# $FreeBSD$
 
 PORTNAME=	yaz
-DISTVERSION=	5.27.1
+DISTVERSION=	5.31.0
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://ftp.indexdata.dk/pub/yaz/
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Z39.50/SR client and API library
 
 LICENSE=	BSD3CLAUSE
@@ -16,9 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libicuuc.so:devel/icu \
 		libgnutls.so:security/gnutls
 
-USES=		iconv libtool ncurses pathfix pkgconfig readline \
+USES=		gnome iconv libtool ncurses pathfix pkgconfig readline \
 		shebangfix tcl
-SHEBANG_FILES=	util/yaz-asncomp
+SHEBANG_FILES=	src/yaz-asncomp
 GNU_CONFIGURE=	yes
 USE_GNOME=	libxml2 libxslt
 USE_LDCONFIG=	yes
@@ -42,7 +41,7 @@ REDIS_CONFIGURE_WITH=	redis
 REDIS_LIB_DEPENDS=	libhiredis.so:databases/hiredis
 
 post-patch:
-	@${REINPLACE_CMD} 's|tclsh |tclsh8.6 |' ${WRKSRC}/configure
+	@${REINPLACE_CMD} 's|tclsh |tclsh${TCL_VER} |' ${WRKSRC}/configure
 
 post-configure:
 	@${REINPLACE_CMD} -e 's,[$$]{datarootdir}/man,${PREFIX}/man,' \

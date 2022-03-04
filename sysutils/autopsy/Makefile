@@ -1,5 +1,4 @@
 # Created by: Pieter Danhieux <opr@bsdaemon.be>
-# $FreeBSD$
 
 PORTNAME=	autopsy
 PORTVERSION=	2.24
@@ -15,7 +14,8 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	${LOCALBASE}/bin/ifind:sysutils/sleuthkit
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
+USES=		cpe perl5
+CPE_VENDOR=	sleuthkit
 WEB=		pict/*
 WEBHELP=	help/*
 PERLBITS=	lib/*.pm lib/*.pl conf.pl

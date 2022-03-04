@@ -1,9 +1,8 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	gspiceui
 PORTVERSION=	1.1.00
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/gSpiceUI/${PORTNAME}-v${PORTVERSION}
 DISTNAME=	${PORTNAME}-v${PORTVERSION}

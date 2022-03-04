@@ -1,10 +1,9 @@
 # Created by: Talal Al Dik (tad@vif.com)
-# $FreeBSD$
 
 PORTNAME=	sngrep
-PORTVERSION=	1.4.6
-DISTVERSIONPREFIX=	v
+DISTVERSION=	1.4.9
 CATEGORIES=	net
+MASTER_SITES=	https://github.com/irontec/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	tad@vif.com
 COMMENT=	SIP Packet display and capture
@@ -12,37 +11,34 @@ COMMENT=	SIP Packet display and capture
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf localbase ncurses
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	irontec
+USES=		autoreconf localbase ncurses pkgconfig
 
 GNU_CONFIGURE=	yes
 
-OPTIONS_DEFINE=	OPENSSL PCRE UNICODE IPV6 EEP
+OPTIONS_DEFINE=		EEP IPV6 PCRE UNICODE
+OPTIONS_DEFAULT=	EEP IPV6 UNICODE OPENSSL
 
-OPENSSL_DESC=	Adds OpenSSL support to parse TLS captured messages
-OPENSSL_CONFIGURE_ON=	--with-openssl
+OPTIONS_RADIO=		SSL
+OPTIONS_RADIO_SSL=	GNUTLS OPENSSL
+
+EEP_DESC=		Enable EEP packet send/receive support
+
+EEP_CONFIGURE_ENABLE=	eep
+IPV6_CONFIGURE_ENABLE=	ipv6
+
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls \
+			libgcrypt.so:security/libgcrypt \
+			libgpg-error.so:security/libgpg-error
+GNUTLS_CONFIGURE_WITH=	gnutls
+
 OPENSSL_USES=		ssl
+OPENSSL_CONFIGURE_ENV+=	SSL_CFLAGS="-I${OPENSSLINC}" \
+			SSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
+OPENSSL_CONFIGURE_WITH=	openssl
 
-PCRE_DESC=	Adds Perl Compatible regex support
-PCRE_CONFIGURE_ON=	--with-pcre
+PCRE_CONFIGURE_WITH=	pcre
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 
-UNICODE_DESC=	Adds Ncurses UTF-8/Unicode support
-UNICODE_CONFIGURE_ON=	--enable-unicode
-UNICODE_LIB_DEPENDS=	libncursesw.so:devel/ncurses
-
-IPV6_DESC=	Enable IPv6 packet capture support
-IPV6_CONFIGURE_ON=	--enable-ipv6
-
-EEP_DESC=	Enable EEP packet send/receive support
-EEP_CONFIGURE_ON=	--enable-eep
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|ncursesw/ncurses.h|ncurses.h|g' \
-		${WRKSRC}/configure.ac \
-		${WRKSRC}/src/curses/scrollbar.h \
-		${WRKSRC}/src/curses/ui_panel.h
+UNICODE_CONFIGURE_ENABLE=	unicode
 
 .include <bsd.port.mk>

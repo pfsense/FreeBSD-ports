@@ -1,5 +1,4 @@
 # Created by: Hiroto Kagotani <hiroto.kagotani@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ibus-skk
 DISTVERSIONPREFIX=	ibus-skk-
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libibus-1.0.so:textproc/ibus \
 		libskk.so:japanese/libskk
 
-USES=		autoreconf gettext gmake libtool pkgconfig python
+USES=		autoreconf gettext gmake gnome libtool pkgconfig python
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	DATADIRNAME=share
 USE_GITHUB=	yes

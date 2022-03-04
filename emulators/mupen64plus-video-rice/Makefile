@@ -1,12 +1,12 @@
 # Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	2
 PKGNAMESUFFIX=	-video-rice
 
 COMMENT=	The rice graphics plugin for Mupen64plus
 
-USE_GL=		yes
+USES=		gl
+USE_GL=		gl
 
 MASTERDIR=	${.CURDIR}/../mupen64plus-core
 

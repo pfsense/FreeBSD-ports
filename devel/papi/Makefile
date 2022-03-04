@@ -1,9 +1,8 @@
 # Created by: redcrash@gmail.com
-# $FreeBSD$
 
 PORTNAME=	papi
 PORTVERSION=	5.4.3
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	http://icl.cs.utk.edu/projects/papi/downloads/
 

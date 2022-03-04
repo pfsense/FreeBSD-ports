@@ -6,7 +6,7 @@
 # that 'make fetchindex' sees it.
 #
 # When INDEX is broken, assemble the list of committers who touched files
-# on the most recent 'svn update', and put those committers "on the hook".
+# on the most recent 'git pull', and put those committers "on the hook".
 # These committers all stay on the hook until INDEX is buildable again.
 #
 # MAINTAINER= portmgr@FreeBSD.org
@@ -15,6 +15,7 @@
 # --------------------------------------------------------
 # Change these!
 
+GIT=/usr/local/bin/git
 SVN=/usr/local/bin/svn
 
 # Address for success/failure reports
@@ -26,15 +27,15 @@ ERROR_ADDRESS=root@localhost
 # Location of ports tree and source trees
 export BASEDIR=/a/tindex
 export PORTSDIR=${BASEDIR}/ports
-export SRCDIR9=${BASEDIR}/src.9
-export SRCDIR10=${BASEDIR}/src.10
-export SRCDIR11=${BASEDIR}/src.11
 export SRCDIR12=${BASEDIR}/src.12
+export SRCDIR13=${BASEDIR}/src.13
+export SRCDIR14=${BASEDIR}/src.14
 export OUTDIR=${BASEDIR}/out
 
 # Target architecture if not set in the environment
 if [ "${ARCH}" = "" ]; then
 	export ARCH=i386
+	export MACHINE_ARCH=i386
 fi
 
 # --------------------------------------------------------
@@ -42,10 +43,7 @@ fi
 blame() {
   # Find out who is responsible for current version of file $1
 
-  # Fastest way to extract is from svn info
-  who=$(${SVN} info $1 2>/dev/null | grep '^Last Changed Author' | awk '{print $4}')
-
-  echo $who
+  ${GIT} log --no-patch --max-count=1 --format='%ce' -- $1
 }
 
 indexfail() {
@@ -76,7 +74,7 @@ indexfail() {
 
     # Find out which committers are on the hook
 
-    commits=$(grep ^U ${PORTSDIR}/svn.log | grep -v INDEX | awk '{print $2}')
+    commits=$(${GIT} diff --name-only ${OLD_HEAD})
     for i in ${commits}; do
 	blame $i >> ${PORTSDIR}/hook
     done
@@ -87,8 +85,8 @@ indexfail() {
     tr -s '\n' ' ' < ${PORTSDIR}/hook
     echo
     echo 
-    echo "Most recent SVN update was:";
-    grep -v '/work$' svn.log | grep -v '^\?'
+    echo "Most recent Git update was:";
+    (IFS=""; echo ${commits})
   ) | mail -s "INDEX build failed for ${BRANCH}" ${REPORT_ADDRESS}
   exit 1
 }
@@ -115,28 +113,28 @@ export INDEX_JOBS=3
 export INDEX_QUIET=1
 
 # First update the source trees to get current OSVERSION
-${SVN} -q up ${SRCDIR9}/sys/sys
-OSVERSION9=$(awk '/^#define[[:blank:]]__FreeBSD_version/ {print $3}' < ${SRCDIR9}/sys/sys/param.h)
-
-${SVN} -q up ${SRCDIR10}/sys/sys
-OSVERSION10=$(awk '/^#define[[:blank:]]__FreeBSD_version/ {print $3}' < ${SRCDIR10}/sys/sys/param.h)
-
-${SVN} -q up ${SRCDIR11}/sys/sys
-OSVERSION11=$(awk '/^#define[[:blank:]]__FreeBSD_version/ {print $3}' < ${SRCDIR11}/sys/sys/param.h)
-
 ${SVN} -q up ${SRCDIR12}/sys/sys
 OSVERSION12=$(awk '/^#define[[:blank:]]__FreeBSD_version/ {print $3}' < ${SRCDIR12}/sys/sys/param.h)
 
+${GIT} -C ${SRCDIR13} pull --rebase -q
+OSVERSION13=$(awk '/^#define[[:blank:]]__FreeBSD_version/ {print $3}' < ${SRCDIR13}/sys/sys/param.h)
+
+${GIT} -C ${SRCDIR14} pull --rebase -q
+OSVERSION14=$(awk '/^#define[[:blank:]]__FreeBSD_version/ {print $3}' < ${SRCDIR14}/sys/sys/param.h)
+
 cd ${PORTSDIR}
-rm -f INDEX-9 INDEX-9.bz2 INDEX-10 INDEX-10.bz2 INDEX-11 INDEX-11.bz2 INDEX-12 INDEX-12.bz2
-(${SVN} up 2>1 ) > svn.log
-if grep -q ^C svn.log ; then
-  (echo "svn update failed with conflicts:";
-    grep ^C svn.log) | mail -s "Ports svn up failed" ${ERROR_ADDRESS}
+for ver in 12 13 14; do
+	rm -f INDEX-${ver} INDEX-${ver}.bz2 INDEX-${ver}.xz INDEX-${ver}.zst
+done
+
+OLD_HEAD=$(${GIT} rev-parse HEAD)
+if ! ${GIT} pull --ff-only > git.log 2>&1 ; then
+  (echo "Git update failed with conflicts:";
+    cat git.log) | mail -s "Ports Git update failed" ${ERROR_ADDRESS}
     exit 1
 fi
 
-for branch in 9.x 10.x 11.x 12.x; do
+for branch in 12.x 13.x 14.x; do
     release=$(echo $branch | sed -e 's,.x,,')
 
     eval _osver=\$OSVERSION${release}
@@ -144,21 +142,18 @@ for branch in 9.x 10.x 11.x 12.x; do
     export OSVERSION=${_osver}
     export UNAME_r=${_uname_r}
 
-    if [ "${release}" = "9" ]; then
-        MAKE_CMD=fmake
-    else
-        MAKE_CMD=make
-    fi
     echo "Building INDEX for ${branch} with OSVERSION=${OSVERSION}"
     cd ${PORTSDIR}
-    ((${MAKE_CMD} index 2> index.err) > index.out) || indexfail ${branch}
+    ( (make index 2> index.err) > index.out) || indexfail ${branch}
     if [ -s index.err ]; then
         indexfail ${branch}
     fi
     checkfixed ${branch}
 
     bzip2 -kf ${PORTSDIR}/INDEX-${release}
-    mv ${PORTSDIR}/INDEX-${release} ${PORTSDIR}/INDEX-${release}.bz2 ${OUTDIR}
+    zstd -qf --ultra -22 -k ${PORTSDIR}/INDEX-${release}
+    xz -9e -kf ${PORTSDIR}/INDEX-${release}
+    mv ${PORTSDIR}/INDEX-${release} ${PORTSDIR}/INDEX-${release}.bz2 ${PORTSDIR}/INDEX-${release}.zst ${PORTSDIR}/INDEX-${release}.xz ${OUTDIR}
 done
 
 # All indexes built successfully, clear the hook

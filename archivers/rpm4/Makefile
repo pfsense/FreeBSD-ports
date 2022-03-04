@@ -1,10 +1,10 @@
 # Created by: Greg Lewis <glewis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rpm
-PORTVERSION=	4.14.2.1
+PORTVERSION=	4.16.1.3
+PORTREVISION=	1
 CATEGORIES=	archivers
-MASTER_SITES=	http://ftp.rpm.org/releases/rpm-4.14.x/
+MASTER_SITES=	http://ftp.rpm.org/releases/rpm-4.16.x/
 PKGNAMESUFFIX=	4
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -13,24 +13,26 @@ COMMENT=	Red Hat Package Manager
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	gsed:textproc/gsed
 LIB_DEPENDS=	libpopt.so:devel/popt \
-		libnss3.so:security/nss
-RUN_DEPENDS=	bash:shells/bash
+		libnss3.so:security/nss \
+		libzstd.so:archivers/zstd \
+		libgcrypt.so:security/libgcrypt
+RUN_DEPENDS=	bash:shells/bash \
+		gxargs:misc/findutils
 
-USES=		alias bdb gmake libarchive libtool lua:51 pathfix pkgconfig \
-		shebangfix tar:bzip2
-INVALID_BDB_VER=51
+USES=		alias bdb sqlite cpe gmake iconv libarchive libtool \
+		lua:52+ pathfix pkgconfig shebangfix tar:bzip2
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
+BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 SHEBANG_FILES=	scripts/brp-python-bytecompile scripts/check-prereqs \
-		scripts/check-rpaths-worker scripts/pythondeps.sh \
-		scripts/mono-find-requires scripts/mono-find-provides \
-		scripts/pkgconfigdeps.sh scripts/fontconfig.prov \
-		scripts/rpmdb_loadcvt scripts/perl.prov scripts/perl.req  \
-		scripts/pythondistdeps.py scripts/find-lang.sh \
-		python/rpm/transaction.py
-CONFIGURE_ARGS=	--with-external-db \
-		--without-db \
+		scripts/check-rpaths-worker scripts/pkgconfigdeps.sh \
+		scripts/fontconfig.prov scripts/perl.prov scripts/perl.req  \
+		scripts/pythondistdeps.py scripts/find-lang.sh scripts/ocamldeps.sh \
+		scripts/find-debuginfo.sh
+CONFIGURE_ARGS=	--enable-sqlite=yes\
 		--with-popt-prefix="${LOCALBASE}" \
 		--sysconfdir=${PREFIX}/etc \
 		--localstatedir=/var \
@@ -68,10 +70,14 @@ PLUGINS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 
 post-patch:
 	@${REINPLACE_CMD} -e 's:\.\./\.\./bin/::' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's/(hpux)/& || defined(__FreeBSD__)/' \
-		${WRKSRC}/misc/fts.?
 	@${REINPLACE_CMD} -e 's/ __GLIBC__.*/& || defined(__FreeBSD__)/' \
 		${WRKSRC}/system.h
+	@${REINPLACE_CMD} -e 's/\<xargs\>/gxargs/g' ${WRKSRC}/scripts/brp-python-bytecompile \
+		${WRKSRC}/scripts/brp-strip-static-archive \
+		${WRKSRC}/scripts/check-buildroot \
+		${WRKSRC}/scripts/check-rpaths \
+		${WRKSRC}/scripts/find-debuginfo.sh \
+		${WRKSRC}/scripts/vpkg-provides.sh
 
 post-install-PYTHON-off:
 	@${RM} ${STAGEDIR}${PREFIX}/lib/rpm/pythondistdeps.py

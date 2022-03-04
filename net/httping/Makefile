@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	httping
 PORTVERSION=	2.5
@@ -46,9 +45,12 @@ USES+=		ssl
 MAKE_ENV+=	SSL=no
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000
+.if ${OPSYS} == FreeBSD
 MAKE_ENV+=	TFO=yes
 .endif
+
+post-patch-NCURSES-on:
+	@${REINPLACE_CMD} "s/-lncursesw/${NCURSESLIBS}/g" ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

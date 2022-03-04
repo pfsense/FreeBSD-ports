@@ -1,8 +1,7 @@
 # Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Business-ISBN-Data
-PORTVERSION=	20140910.003
+PORTVERSION=	20210112.006
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,11 +9,12 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Data pack for Business::ISBN
 
-LICENSE=	ART10 GPLv1+
-LICENSE_COMB=	dual
+LICENSE=	ART20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

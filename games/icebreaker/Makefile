@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	icebreaker
 PORTVERSION=	1.9.8
@@ -17,7 +16,7 @@ COMMENT=	Game similar to Jezzball or Barrack
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake tar:tgz
+USES=		gmake sdl tar:tgz
 USE_SDL=	mixer sdl
 
 PORTDOCS=	ChangeLog README README.SDL README.ifyoumakechanges \

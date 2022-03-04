@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <mat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Attribute-Handlers-Prospective
 PORTVERSION=	0.01
 PORTREVISION=	2

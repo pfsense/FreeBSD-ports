@@ -1,5 +1,4 @@
 # Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xidle
 PORTVERSION=	26052015
@@ -9,7 +8,7 @@ MASTER_SITES=	LOCAL/novel
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Run a program on X inactivity
 
-USES=	tar:bzip2
+USES=		tar:bzip2 xorg
 CFLAGS+=	-I${LOCALBASE}/include -D__dead=static
 MAKE_ARGS+=	X11BASE="${LOCALBASE}" \
 		CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"

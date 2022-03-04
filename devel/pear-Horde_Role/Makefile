@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Horde_Role
 PORTVERSION=	1.0.1
@@ -10,7 +9,7 @@ COMMENT=	PEAR installer role for Horde components
 
 PATCH_WRKSRC=	${WRKDIR}
 
-USES=	horde
+USES=	horde cpe
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${HORDE_DIR}

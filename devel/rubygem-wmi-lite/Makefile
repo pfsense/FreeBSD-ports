@@ -1,8 +1,7 @@
 # Created by: renchap@cocoa-x.com
-# $FreeBSD$
 
 PORTNAME=	wmi-lite
-PORTVERSION=	1.0.0
+PORTVERSION=	1.0.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

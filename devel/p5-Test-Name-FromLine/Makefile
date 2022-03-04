@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Name-FromLine
 PORTVERSION=	0.13
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to fill test names from caller line
 
 LICENSE=	ART10 GPLv1+

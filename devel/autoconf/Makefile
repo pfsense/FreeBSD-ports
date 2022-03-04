@@ -1,9 +1,8 @@
 # Created by: ade@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	autoconf
 PORTVERSION=	2.69
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -37,6 +36,8 @@ CONFIGURE_ARGS=	--program-suffix=-${BUILD_VERSION} --without-lispdir
 GENERIC_TOOLS=	config.guess config.sub	elisp-comp install-sh mdate-sh missing
 GENERIC_LINKS=	autoconf autoheader autom4te autoreconf autoscan autoupdate \
 		ifnames
+
+NO_ARCH=	yes
 
 post-patch:
 	@(cd ${WRKSRC}/man && \

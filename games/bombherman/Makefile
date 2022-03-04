@@ -1,9 +1,8 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bomb-her-man
 PORTVERSION=	0.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/nemysisfreebsdp/${CATEGORIES}/:icons
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -22,7 +21,7 @@ GH_ACCOUNT=	Keruspe
 GH_PROJECT=	Bomb-her-man
 GH_TAGNAME=	8f5aa22
 
-USES=		autoreconf compiler:c++11-lang gmake pkgconfig
+USES=		autoreconf compiler:c++11-lang gmake gnome pkgconfig sdl
 USE_CXXSTD=	gnu++98
 USE_SDL=	sdl image mixer ttf
 USE_GNOME=	cairo intltool librsvg2
@@ -34,7 +33,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 DESKTOP_ENTRIES="Bomb-her-man" "Bomberman clone" "${PORTNAME}" \

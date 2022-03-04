@@ -1,9 +1,8 @@
 # Created by: Janni
-# $FreeBSD$
 
 PORTNAME=	skstream
 PORTVERSION=	0.3.9
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	SF/worldforge/${PORTNAME}%20%28network%20lib%29/${PORTVERSION}
 

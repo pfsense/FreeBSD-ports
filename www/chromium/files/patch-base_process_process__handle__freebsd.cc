@@ -1,6 +1,12 @@
---- base/process/process_handle_freebsd.cc.orig	2019-03-11 22:00:51 UTC
+--- base/process/process_handle_freebsd.cc.orig	2021-09-24 04:25:55 UTC
 +++ base/process/process_handle_freebsd.cc
-@@ -16,10 +16,13 @@ namespace base {
+@@ -12,15 +12,19 @@
+ #include <unistd.h>
+ 
+ #include "base/cxx17_backports.h"
++#include "base/files/file_path.h"
+ 
+ namespace base {
  
  ProcessId GetParentProcessId(ProcessHandle process) {
    struct kinfo_proc info;

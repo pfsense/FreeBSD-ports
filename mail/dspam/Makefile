@@ -1,5 +1,4 @@
 # Created by: Dominic Marks <dom@wirespeed.org.uk>
-# $FreeBSD$
 
 # Note to committers: If don't commit a maintainer patch and as a result PKGNAME
 # or user variables (WITH*) changes please add an entry in ${FILESDIR}/UPDATING
@@ -7,7 +6,7 @@
 
 PORTNAME=	dspam
 PORTVERSION=	3.10.2
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -81,6 +80,9 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+# Dead upstream. Don't expect a proper fix for clang11.
+CFLAGS+=	-fcommon
+
 SHEBANG_FILES=	src/tools/dspam_logrotate \
 		src/tools/dspam_notify.in \
 		src/tools/dspam_train.in \
@@ -96,7 +98,7 @@ STRIP=
 
 PKGMESSAGE=	${WRKSRC}/README.FreeBSD
 
-CONFLICTS=	dspam-devel-[0-9]*
+CONFLICTS=	dspam-devel
 
 SIGNATURE_LIFE?=	15
 
@@ -162,7 +164,6 @@ _SED_SCRIPT=	-e 's,%%DOCSDIR%%,${DOCSDIR},g' \
 		-e 's,%%PORTNAME%%,${PORTNAME},g' \
 		-e 's,%%_VAR_DIR%%,${_VAR_DIR},g' \
 		-e '/^%%FreeBSD/D'
-
 
 .if ${PORT_OPTIONS:MSYSLOG}
 CONFIGURE_ARGS+=	--enable-syslog
@@ -470,6 +471,8 @@ post-patch:
 	@${REINPLACE_CMD} -e "s^%%PERL%%^${PERL}^" \
 		${WRKSRC}/src/tools/dspam_train.in \
 		${WRKSRC}/src/tools/dspam_notify.in
+	@${TEST} ${MYSQL_FLAVOUR} == mariadb && ${REINPLACE_CMD} -e \
+		's,&& defined(CR_ERROR_FIRST),,' ${WRKSRC}/configure || :
 
 pre-configure:
 .if ${PORT_OPTIONS:MVIRT_USERS} && !( ${PORT_OPTIONS:MMYSQL} || \

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	violetland
 PORTVERSION=	0.5
-PORTREVISION=	12
+PORTREVISION=	17
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -23,17 +20,17 @@ GH_TUPLE=	jarro2783:CMake-Gettext:6ee6405:cmakegettext/lib/CMake-Gettext
 USES=		cmake compiler:c++11-lang gettext gl sdl
 USE_SDL=	sdl mixer image ttf
 USE_GL=		gl glu
-USE_CXXSTD=	c++98
+USE_CXXSTD=	c++11
 CMAKE_ARGS=	-DDATA_INSTALL_DIR="${DATADIR}" \
 		-DLOCALE_INSTALL_DIR="${PREFIX}/share/locale"
 
 PORTDOCS=	*
 PORTDATA=	*
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_SUB=	yes
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_DATA} ${WRKSRC}/icon-light.png ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 

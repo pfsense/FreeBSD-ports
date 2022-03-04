@@ -1,9 +1,8 @@
 # Created by: Clement Laforet <clement@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dnsproxy
 PORTVERSION=	1.17
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	http://www.wolfermann.org/
 
@@ -19,8 +18,9 @@ GNU_CONFIGURE=	yes
 USES=		groff
 USE_RC_SUBR=	dnsproxy
 
-PLIST_FILES=	sbin/dnsproxy etc/${PORTNAME}/dnsproxy.conf.sample \
-		man/man1/dnsproxy.1.gz
+PLIST_FILES=	etc/${PORTNAME}/dnsproxy.conf.sample \
+		man/man1/dnsproxy.1.gz \
+		sbin/dnsproxy
 
 SUB_FILES=	pkg-message
 

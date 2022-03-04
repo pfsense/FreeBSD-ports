@@ -1,9 +1,8 @@
 # Created by: Matt Harris <mattdharris@users.sourceforge.net>
-# $FreeBSD$
 
 PORTNAME=	libmsocket
 PORTVERSION=	0.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel net
 MASTER_SITES=	SF/kageki/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -28,9 +27,15 @@ PLIST_FILES=	lib/libmsocket.so \
 		include/msocket.h \
 		include/msocketutils.h
 
-CFLAGS_aarch64+=-fPIC -DPIC
-CFLAGS_amd64+=	-fPIC -DPIC
-CFLAGS_i386+=	-fPIC -DPIC
+CFLAGS_aarch64=-fPIC -DPIC
+CFLAGS_amd64=	-fPIC -DPIC
+CFLAGS_armv7=	-fPIC -DPIC
+CFLAGS_i386=	-fPIC -DPIC
+CFLAGS_powerpc=	-fPIC -DPIC
+CFLAGS_powerpc64=	-fPIC -DPIC
+CFLAGS_powerpc64le=	-fPIC -DPIC
+CFLAGS_powerpcspe=	-fPIC -DPIC
+CFLAGS_riscv64=	-fPIC -DPIC
 
 DEBUG_CONFIGURE_ON=	--enable-debug
 

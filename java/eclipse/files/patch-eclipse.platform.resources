@@ -1,0 +1,204 @@
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem/natives/unix/freebsd/Makefile.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem/natives/unix/freebsd/Makefile	2021-03-08 20:18:47.266872000 +0100
+@@ -20,7 +20,7 @@
+ LIB_NAME_FULL = libunixfile_1_0_0.so
+ 
+ #Set this to be your OS type
+-OS_TYPE = linux
++OS_TYPE = freebsd
+ 
+ #Set this to be the location of your JRE
+ ifeq (${JAVA_HOME},)
+@@ -28,15 +28,11 @@
+ endif
+ 
+ JDK_INCLUDE = -I ${JAVA_HOME}/include -I ${JAVA_HOME}/include/${OS_TYPE}
+-OPT_FLAGS=-O2 -g -s -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
++OPT_FLAGS=-O2 -g -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+ 
+ core:
+-	gcc $(OPT_FLAGS) -fPIC -c $(JDK_INCLUDE) -o $(CORE.O) $(CORE.C)
+-	gcc $(OPT_FLAGS) -shared -Wl,-soname,$(LIB_NAME) -o $(LIB_NAME_FULL) $(CORE.O) -lc
++	${CC} $(OPT_FLAGS) -fPIC -c $(JDK_INCLUDE) -o $(CORE.O) $(CORE.C)
++	${CC} $(OPT_FLAGS) -shared -Wl,-soname,$(LIB_NAME) -o $(LIB_NAME_FULL) $(CORE.O) -lc
+ 
+ clean:
+ 	rm -f $(CORE.O) $(LIB_NAME_FULL)
+-
+-install: core
+-	rm -f ../../../../org.eclipse.core.filesystem.linux.x86/os/linux/x86/libunixfile_1_0_0.so
+-	mv libunixfile_1_0_0.so ../../../../org.eclipse.core.filesystem.linux.x86/os/linux/x86/
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.amd64/.project.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.amd64/.project	2021-03-08 20:18:47.267280000 +0100
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <projectDescription>
+-	<name>org.eclipse.core.filesystem.linux.x86_64</name>
++	<name>org.eclipse.core.filesystem.freebsd.amd64</name>
+ 	<comment></comment>
+ 	<projects>
+ 	</projects>
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.amd64/META-INF/MANIFEST.MF.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.amd64/META-INF/MANIFEST.MF	2021-03-08 20:18:47.267678000 +0100
+@@ -1,9 +1,9 @@
+ Manifest-Version: 1.0
+ Bundle-ManifestVersion: 2
+ Bundle-Name: %fragmentName
+-Bundle-SymbolicName: org.eclipse.core.filesystem.linux.x86_64; singleton:=true
++Bundle-SymbolicName: org.eclipse.core.filesystem.freebsd.amd64; singleton:=true
+ Bundle-Version: 1.2.300.qualifier
+ Bundle-Vendor: %providerName
+ Fragment-Host: org.eclipse.core.filesystem;bundle-version="[1.7.200,2.0.0)"
+ Bundle-Localization: fragment
+-Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86_64))
++Eclipse-PlatformFilter: (& (osgi.os=freebsd) (osgi.arch=amd64))
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.amd64/pom.xml.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.amd64/pom.xml	2021-03-08 20:18:47.268150000 +0100
+@@ -18,7 +18,7 @@
+     <relativePath>../../</relativePath>
+   </parent>
+   <groupId>org.eclipse.core</groupId>
+-  <artifactId>org.eclipse.core.filesystem.linux.x86_64</artifactId>
++  <artifactId>org.eclipse.core.filesystem.freebsd.amd64</artifactId>
+   <version>1.2.300-SNAPSHOT</version>
+   <packaging>eclipse-plugin</packaging>
+ 
+@@ -33,9 +33,9 @@
+           <resolver>p2</resolver>
+           <environments>
+             <environment>
+-              <os>linux</os>
++              <os>freebsd</os>
+               <ws>gtk</ws>
+-              <arch>x86_64</arch>
++              <arch>amd64</arch>
+             </environment>
+           </environments>
+         </configuration>
+@@ -50,7 +50,7 @@
+         <property>
+           <!-- This has to be hardcoded. Profiles are not allowed to use pom defined properties :-( -->
+           <name>native</name>
+-          <value>gtk.linux.x86_64</value>
++          <value>gtk.freebsd.amd64</value>
+         </property>
+       </activation>
+       <build>
+@@ -63,10 +63,10 @@
+                 <phase>process-resources</phase>
+                 <configuration>
+                   <target>
+-                    <exec executable="make" newenvironment="false" dir="../org.eclipse.core.filesystem/natives/unix/linux/"/>
+-           <mkdir dir="os/linux/x86_64/"/>
+-           <copy todir="os/linux/x86_64/">
+-           <fileset dir="../org.eclipse.core.filesystem/natives/unix/linux/">
++                    <exec executable="gmake" newenvironment="false" dir="../org.eclipse.core.filesystem/natives/unix/freebsd/"/>
++           <mkdir dir="os/freebsd/amd64/"/>
++           <copy todir="os/freebsd/amd64/">
++           <fileset dir="../org.eclipse.core.filesystem/natives/unix/freebsd/">
+                <include name="libunixfile_*.so"/>
+            </fileset>
+            </copy>
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64/META-INF/MANIFEST.MF.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64/META-INF/MANIFEST.MF	2021-03-08 20:18:47.268509000 +0100
+@@ -1,9 +1,9 @@
+ Manifest-Version: 1.0
+ Bundle-ManifestVersion: 2
+ Bundle-Name: %fragmentName
+-Bundle-SymbolicName: org.eclipse.core.filesystem.linux.ppc64le;singleton:=true
++Bundle-SymbolicName: org.eclipse.core.filesystem.freebsd.powerpc64;singleton:=true
+ Bundle-Version: 1.4.100.qualifier
+ Bundle-Vendor: %providerName
+ Fragment-Host: org.eclipse.core.filesystem;bundle-version="[1.1.0,2.0.0)"
+ Bundle-Localization: fragment
+-Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=ppc64le))
++Eclipse-PlatformFilter: (& (osgi.os=freebsd) (osgi.arch=powerpc64))
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64/pom.xml.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64/pom.xml	2021-03-08 20:18:47.268870000 +0100
+@@ -18,7 +18,7 @@
+     <relativePath>../../</relativePath>
+   </parent>
+   <groupId>org.eclipse.core</groupId>
+-  <artifactId>org.eclipse.core.filesystem.linux.ppc64le</artifactId>
++  <artifactId>org.eclipse.core.filesystem.freebsd.powerpc64</artifactId>
+   <version>1.4.100-SNAPSHOT</version>
+   <packaging>eclipse-plugin</packaging>
+ 
+@@ -37,9 +37,9 @@
+           <resolver>p2</resolver>
+           <environments>
+             <environment>
+-              <os>linux</os>
++              <os>freebsd</os>
+               <ws>gtk</ws>
+-              <arch>ppc64le</arch>
++              <arch>powerpc64</arch>
+             </environment>
+           </environments>
+         </configuration>
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64le/META-INF/MANIFEST.MF.orig	2021-03-08 20:20:31.138482000 +0100
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64le/META-INF/MANIFEST.MF	2021-03-08 20:20:57.684056000 +0100
+@@ -1,9 +1,9 @@
+ Manifest-Version: 1.0
+ Bundle-ManifestVersion: 2
+ Bundle-Name: %fragmentName
+-Bundle-SymbolicName: org.eclipse.core.filesystem.linux.ppc64le;singleton:=true
++Bundle-SymbolicName: org.eclipse.core.filesystem.freebsd.powerpc64le;singleton:=true
+ Bundle-Version: 1.4.100.qualifier
+ Bundle-Vendor: %providerName
+ Fragment-Host: org.eclipse.core.filesystem;bundle-version="[1.1.0,2.0.0)"
+ Bundle-Localization: fragment
+-Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=ppc64le))
++Eclipse-PlatformFilter: (& (osgi.os=freebsd) (osgi.arch=powerpc64le))
+--- eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64le/pom.xml.orig	2021-03-08 20:27:07.595490000 +0100
++++ eclipse.platform.resources/bundles/org.eclipse.core.filesystem.freebsd.powerpc64le/pom.xml	2021-03-08 20:27:29.452487000 +0100
+@@ -18,7 +18,7 @@
+     <relativePath>../../</relativePath>
+   </parent>
+   <groupId>org.eclipse.core</groupId>
+-  <artifactId>org.eclipse.core.filesystem.linux.ppc64le</artifactId>
++  <artifactId>org.eclipse.core.filesystem.freebsd.powerpc64le</artifactId>
+   <version>1.4.100-SNAPSHOT</version>
+   <packaging>eclipse-plugin</packaging>
+ 
+@@ -37,9 +37,9 @@
+           <resolver>p2</resolver>
+           <environments>
+             <environment>
+-              <os>linux</os>
++              <os>freebsd</os>
+               <ws>gtk</ws>
+-              <arch>ppc64le</arch>
++              <arch>powerpc64le</arch>
+             </environment>
+           </environments>
+         </configuration>
+--- eclipse.platform.resources/pom.xml.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/pom.xml	2021-03-08 20:22:22.387766000 +0100
+@@ -52,8 +52,9 @@
+ 
+   <modules>
+     <module>bundles/org.eclipse.core.filesystem</module>
+-    <module>bundles/org.eclipse.core.filesystem.linux.ppc64le</module>
+-    <module>bundles/org.eclipse.core.filesystem.linux.x86_64</module>
++    <module>bundles/org.eclipse.core.filesystem.freebsd.powerpc64</module>
++    <module>bundles/org.eclipse.core.filesystem.freebsd.powerpc64le</module>
++    <module>bundles/org.eclipse.core.filesystem.freebsd.amd64</module>
+     <module>bundles/org.eclipse.core.filesystem.macosx</module>
+     <module>bundles/org.eclipse.core.filesystem.win32.x86_64</module>
+ 
+--- eclipse.platform.resources/tests/org.eclipse.core.tests.filesystem.feature/feature.xml.orig	2020-05-14 17:23:06.000000000 +0200
++++ eclipse.platform.resources/tests/org.eclipse.core.tests.filesystem.feature/feature.xml	2021-03-08 20:18:47.269488000 +0100
+@@ -28,9 +28,9 @@
+          unpack="false"/-->
+ 
+    <plugin
+-         id="org.eclipse.core.filesystem.linux.x86_64"
+-         os="linux"
+-         arch="x86_64"
++         id="org.eclipse.core.filesystem.freebsd.amd64"
++         os="freebsd"
++         arch="amd64"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"

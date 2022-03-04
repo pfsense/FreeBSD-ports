@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	joken
-PORTVERSION=	1.5.0
-#DISTVERSIONPREFIX=	v
+PORTVERSION=	2.4.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	elixir-
 
@@ -15,8 +13,7 @@ USES=		elixir
 USE_GITHUB=	yes
 GH_ACCOUNT=	bryanjos
 
-MIX_BUILD_DEPS=	devel/elixir-plug \
-		security/elixir-jose
+MIX_BUILD_DEPS=	security/elixir-jose
 MIX_RUN_DEPS:=	${MIX_BUILD_DEPS}
 
 OPTIONS_DEFINE=	DOCS

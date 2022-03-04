@@ -1,8 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	twms
 PORTVERSION=	0.06y
+PORTREVISION=	1
 CATEGORIES=	www astro
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,15 +10,15 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyproj>0:graphics/py-pyproj@${PY_FLAVOR} \
-		webpy>0:www/webpy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}webpy>0:www/webpy@${PY_FLAVOR} \
+		${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR} \
 		${FREESANS}:x11-fonts/freefont-ttf
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Komzpa
 
-USES=		python:2.7  # 2.7 only because of webpy dependency
+USES=		python:3.7+
 USE_PYTHON=	distutils py3kplist optsuffix
 NO_ARCH=	yes
 

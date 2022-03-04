@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 LIB_CXX=	JXGrabKey
 SHLIB_NAME=	lib${LIB_CXX}.so
-NO_PROFILE=	nope
+MK_PROFILE=	no
 
 SRCS=		JXGrabKey.cpp
 VPATH=		src

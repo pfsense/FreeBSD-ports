@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=		vcflib
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.0.0-rc1-130
-DISTVERSIONSUFFIX=	-g7e3d806
+DISTVERSION=		1.0.2
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -11,39 +8,26 @@ COMMENT=	C++ library and CLI tools for parsing and manipulating VCF files
 
 LICENSE=	MIT
 
-BROKEN_aarch64=		fails to compile: mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
+# Should be rechecked since upgrade to 1.0.2.  Same error resolved on aarch64.
+BROKEN_riscv64=		fails to compile: mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
 
 LIB_DEPENDS=	libhts.so:biology/htslib \
-		libtabix.so:biology/tabixpp \
-		libsw.so:biology/smithwaterman
-COMMON_DEPENDS=	fastahack:biology/fastahack \
-		filevercmp:sysutils/filevercmp \
-		fsom:science/fsom \
-		multichoose>=1.0.3:math/multichoose \
-		interval_tree_test:math/intervaltree
-BUILD_DEPENDS=	${COMMON_DEPENDS}
-RUN_DEPENDS=	${COMMON_DEPENDS}
+		libtabix.so:biology/tabixpp
 
-USES=		gmake shebangfix
-USE_LDCONFIG=	yes
+USES=		cmake localbase:ldflags pkgconfig shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	ekg
-
-CXXFLAGS+=	-I${LOCALBASE}/include/smithwaterman \
-		-I${LOCALBASE}/include/multichoose \
-		-I${LOCALBASE}/include/filevercmp \
-		-I${LOCALBASE}/include/fastahack \
-		-I${LOCALBASE}/include/intervaltree \
-		-DVERSION='\"${PORTVERSION}\"'
+GH_TUPLE=	ekg:smithwaterman:2610e25:smithwaterman/smithwaterman \
+		ekg:multichoose:68733cd:multichoose/multichoose \
+		ekg:fastahack:bb33265:fastahack/fastahack \
+		ekg:intervaltree:17ddd57:intervaltree/intervaltree \
+		ekg:fsom:a6ef318:fsom/fsom \
+		ekg:filevercmp:1a9b779:filevercmp/filevercmp \
+		google:googletest:d225acc:googletest/googletest \
+		edawson:libVCFH:615a06b:libVCFH/libVCFH \
+		simd-everywhere:simde-no-tests:2931676:simd/src/simde
 
 # Clang and GCC disable sse2 by default on i386, but it's required for vcflib
 CFLAGS_i386=	-msse2
-
-MAKEFILE=	${FILESDIR}/Makefile.external-libs
-INSTALL_TARGET=	install-strip
-
-post-install:
-	${RLN} ${STAGEDIR}${PREFIX}/lib/libvcflib.so.1 \
-		${STAGEDIR}${PREFIX}/lib/libvcflib.so
 
 .include <bsd.port.mk>

@@ -1,0 +1,37 @@
+--- CMakeLists.txt.orig	2021-01-16 20:50:48 UTC
++++ CMakeLists.txt
+@@ -479,6 +479,7 @@ if(USE_JEMALLOC)
+   endif()
+ endif()
+ 
++if (ENABLE_TESTING)
+ include(CTest)
+ set(GTEST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/googletest/googletest")
+ set(GTEST_INCLUDE_DIR ${GTEST_ROOT}/include)
+@@ -489,6 +490,7 @@ set(GTEST_LIBRARY gtest)
+ 
+ add_subdirectory(${GTEST_ROOT})
+ find_package(GTest REQUIRED)
++endif()
+ 
+ # cudnn detection
+ if(USE_CUDNN)
+@@ -898,7 +900,7 @@ install(TARGETS ${MXNET_INSTALL_TARGETS}
+   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ )
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dlpack/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
++#install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/mshadow/mshadow/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mshadow)
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mxnet/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mxnet)
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/tvm/nnvm/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+@@ -943,7 +945,9 @@ endif()
+ if(BUILD_CPP_EXAMPLES)
+   add_subdirectory(example/image-classification/predict-cpp)
+ endif()
++if(ENABLE_TESTING)
+ add_subdirectory(tests)
++endif()
+ 
+ # ---[ Linter target
+ if(MSVC)

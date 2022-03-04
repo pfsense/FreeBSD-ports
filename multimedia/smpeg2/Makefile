@@ -1,12 +1,11 @@
 # Created by: Vladimir Kondratiev <wulf@mail.mipt.ru>
-# $FreeBSD$
 
 PORTNAME=	smpeg2
 PORTVERSION=	2.0.0
 PORTREVISION=	4
 CATEGORIES=	multimedia
-MASTER_SITES=	http://www.libsdl.org/projects/smpeg/release/ \
-		http://rsync.macports.org/smpeg2/
+MASTER_SITES=	https://www.libsdl.org/projects/smpeg/release/ \
+		https://distfiles.macports.org/smpeg2/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free MPEG1 video player library with sound support
@@ -17,7 +16,7 @@ LICENSE_COMB=	multi
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 CFLAGS+=	${COMPILER_FEATURES:Mc++11:C/.+/-Wno-error=narrowing/}
-USES=		compiler:features libtool
+USES=		compiler:features libtool sdl
 USE_SDL=	sdl2
 USE_LDCONFIG=	yes
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	JSON
 PORTVERSION=	1.15
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 PKGNAMESUFFIX=	1
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to convert to JSON (JavaScript Object Notation)
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

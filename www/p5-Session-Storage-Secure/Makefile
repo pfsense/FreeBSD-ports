@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Session-Storage-Secure
 PORTVERSION=	0.010
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DAGOLDEN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for encrypted, serialized session data with integrity
 
 LICENSE=	APACHE20

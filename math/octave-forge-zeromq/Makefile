@@ -1,8 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-zeromq
-PORTVERSION=	1.4.0
+PORTVERSION=	1.5.3
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -12,6 +11,8 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
 LIB_DEPENDS+=	libzmq.so:net/libzmq4
+
+USES=		pkgconfig
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	interlogic
 PORTVERSION=	0.30
 PORTREVISION=	11
@@ -11,7 +8,7 @@ DISTNAME=	interLOGIC-src-${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Move colored balls through the maze connecting it with each other
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	image sdl
 GNU_CONFIGURE=	yes
 

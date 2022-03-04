@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pygslodeiv2
-DISTVERSION=	0.9.1
+DISTVERSION=	0.9.4
 PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
@@ -18,10 +16,10 @@ LIB_DEPENDS=	libgsl.so:math/gsl
 RUN_DEPENDS=	${PYNUMPY}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		localbase python
+USES=		compiler:c++11-lang localbase python:3.6+
 USE_PYTHON=	distutils autoplist
 
 do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest
+	@cd ${WRKSRC} && ${SETENV} ${TEST_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} ${PYTHON_CMD} -m pytest
 
 .include <bsd.port.mk>

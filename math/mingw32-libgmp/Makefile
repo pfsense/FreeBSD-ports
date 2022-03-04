@@ -1,5 +1,4 @@
 # Created by: Timothy Bourke <timbob@bigpond.com>
-# $FreeBSD$
 
 PORTNAME=	libgmp
 PORTVERSION=	6.0.0
@@ -9,11 +8,14 @@ MASTER_SITES=	GNU/gmp
 PKGNAMEPREFIX=	mingw32-
 DISTNAME=	gmp-${DISTVERSION}a
 
-MAINTAINER=	cyberbotx@cyberbotx.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for arbitrary precision arithmetic (MinGW32)
 
 BUILD_DEPENDS=	${PKGNAMEPREFIX}gcc:devel/${PKGNAMEPREFIX}gcc \
 		mingwm10.dll:devel/mingw32-bin-msvcrt
+
+BROKEN_FreeBSD_13=	error: '::gets' has not been declared
+BROKEN_FreeBSD_14=	error: '::gets' has not been declared
 
 WRKSRC=		${WRKDIR}/gmp-${PORTVERSION}
 
@@ -23,6 +25,7 @@ GNU_CONFIGURE=	yes
 CC=		${PKGNAMEPREFIX}gcc
 CXX=		${PKGNAMEPREFIX}c++
 CFLAGS+=	-I/usr/include
+SSP_CFLAGS?=	-fstack-protector # XXX -strong isn't supported by GCC < 4.9
 CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split" \
 		PREFIX="${PREFIX}/${GMP_TARG}" \
 		M4="/usr/bin/m4"

@@ -1,8 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	uchardet
-PORTVERSION=	0.0.6
+DISTVERSION=	0.0.7
 CATEGORIES=	textproc
 MASTER_SITES=	https://www.freedesktop.org/software/${PORTNAME}/releases/
 
@@ -13,15 +12,15 @@ LICENSE=	GPLv2+ LGPL21+ MPL11
 LICENSE_COMB=	dual
 LICENSE_FILE_MPL11=	${WRKSRC}/COPYING
 
-USES=		cmake pathfix tar:xz
+USES=		cmake compiler:c++11-lang pathfix tar:xz
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR:PATH=${MANPREFIX}/man
 
 .if defined(WITH_DEBUG)
-PLIST_SUB+=	VERSION_SIFFIX=".debug"
+PLIST_SUB+=	VERSION_SUFFIX=".debug"
 .else
-PLIST_SUB+=	VERSION_SIFFIX=""
+PLIST_SUB+=	VERSION_SUFFIX=""
 .endif
 
 .include <bsd.port.mk>

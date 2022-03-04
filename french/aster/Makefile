@@ -1,9 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	aster
 DISTVERSION=	${ASTER_DISTVERSION}
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	french cad
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -11,8 +10,8 @@ COMMENT=	Code_Aster finite element method solver
 
 LICENSE=	GPLv2
 
-# Broken since r490369 on math/metis
-BROKEN_amd64=	does not build (conflicting types for 'WritePermutation' ibc/renum/onmetl.c vs /usr/local/include/programs/proto.h)
+NOT_FOR_ARCHS=		armv6 armv7 i386 mips powerpc
+NOT_FOR_ARCHS_REASON=	ARG_MAX is too small for Code_Aster on 32 bits systems
 
 #-----------------------------------------------------------------------
 # You may define these options:
@@ -20,51 +19,45 @@ BROKEN_amd64=	does not build (conflicting types for 'WritePermutation' ibc/renum
 # - WITH_ZSH or WITH_BASH or WITH_KSH: select a shell among
 #			zsh (default), bash or ksh;
 # - WITH_ED: select an editor accepting '-display' (e.g. gvim, nedit);
-# - WITH_ATLAS: replace blas;
-# - WITH_BLAS: don't link with atlas, even if present, but with blas;
-#			(blas might be slower, but is lighter)
 # - WITHOUT_ASTK_CLI: won't use the GUI from this machine;
-# - WITHOUT_EFICAS: don't install ASter Command FIle Editor;
 # - WITHOUT_GMSH: don't install GMSH (a mesh generator);
 # - WITHOUT_GRACE: don't install Grace (used to create 2D graph);
-# - WITHOUT_MACR_RECAL: don't install Numerical Python
-#			(required by the macro MACR_RECAL);
-# - WITHOUT_SCOTCH: don't install Scotch.
 # - WITH_MUMPS: install the interface between Code_Aster and MUMPS (experimental)
 #
 #-----------------------------------------------------------------------
 
 BUILD_DEPENDS+=	astk-serveur>0:cad/astk-serveur	\
 		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
-		${LOCALBASE}/lib/libscotch.a:cad/scotch		\
 		gnproc:sysutils/coreutils			\
 		bash:shells/bash				\
-		${PYNUMPY}
+		getopt>0:misc/getopt				\
+		xterm:x11/xterm					\
+		${PYNUMPY}	\
+		${PYTHON_PKGNAMEPREFIX}sympy>0:math/py-sympy@${PY_FLAVOR}
 #		pylupdate5:textproc/py-qt5-xml
-LIB_DEPENDS+=	libhdf5-18.so:science/hdf5-18			\
+LIB_DEPENDS+=	libhdf5.so:science/hdf5				\
+		libscotch.so:cad/scotch				\
 		libmetis.so:math/metis				\
-		libomp.so:devel/openmp				\
-		libmed.so:french/med
-#		libAsterInterface.so:science/mfront
-#		libAsterInterface.so:science/tfel
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gnuplot>0:math/py-gnuplot@${PY_FLAVOR} \
-		${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
-		astk-serveur>0:cad/astk-serveur
+		libmed.so:french/med				\
+		libAsterInterface.so:science/tfel-edf
+RUN_DEPENDS+=	${SHELL_INSTALL_ASTER}:shells/${SHIADEP}	\
+		astk-serveur>0:cad/astk-serveur			\
+		xterm:x11/xterm					\
+		${PYNUMPY}	\
+		${PYTHON_PKGNAMEPREFIX}sympy>0:math/py-sympy@${PY_FLAVOR}
 
-USES=		bison fortran gettext python:2.7 qt:5 tk
+USES=		bison blaslapack:openblas fortran gettext python:3.6+ qt:5 tk
 USE_BINUTILS=	yes
 USE_QT=		linguisttools_build
 
-.if defined(WITH_ATLAS)
-USES+=		blaslapack:atlas
-.else
-USES+=		blaslapack:netlib
-.endif
+#CONFLICTS_BUILD=${PYTHON_PKGNAMEPREFIX}cysignals-1.*
 
 HAS_CONFIGURE=	yes
-MAKE_ENV=	INCLUDES="${LOCALBASE}/include/hdf5-18 ${LOCALBASE}/include"	\
-		INCLUDEDIR="${LOCALBASE}/include/hdf5-18 ${LOCALBASE}/include"	\
+MAKE_ENV=	INCLUDES="${LOCALBASE}/include"	\
+		INCLUDEDIR="${LOCALBASE}/include"	\
 		LD_PRELOAD="${LOCALBASE}/lib/gcc${_GCC_VER}/libgcc_s.so.1"	\
+		PYTHONPATH="${PYTHON_SITELIBDIR}:${LOCALBASE}/aster/ASTK/ASTK_SERV"	\
+		PYTHONIOENCODING="utf-8" LANG=C LC_ALL="en_US.UTF-8"	\
 		LINKFLAGS="${LDFLAGS}" LD_LIBRARY_PATH="${LOCALBASE}/lib/gcc${_GCC_VER}"
 REINPLACE_ARGS=	-i ""
 
@@ -87,10 +80,23 @@ INTERACTIVE_SCRIPTS=	check_compilers.py setup.py
 .include "${.CURDIR}/../../french/aster/bsd.aster.mk"
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300068
+BROKEN=	a larger value of ARG_MAX is needed for Code_Aster, please upgrade your system
+.endif
+
 .if ${ARCH} == "i386"
 FLAGARCH=	-DP_LINUX -DLINUX
 .else
 FLAGARCH=	-DLINUX64
+.endif
+
+.if defined(WITH_DEBUG)
+DEBUG_FLAGS=	--debug
+CFLAGS+=	-D__DEBUG_ALLOCATE__
+FFLAGS+=	-D__DEBUG_ALLOCATE__
+MAKE_ENV+=	FCFLAGS="-g ${FFLAGS:C|O2|O0|} -fno-tree-dse ${FLAGARCH}"
+.else
+MAKE_ENV+=	FCFLAGS="${FFLAGS} -fno-tree-dse ${FLAGARCH}"
 .endif
 
 .if !defined(WITHOUT_ASTK_CLI)
@@ -111,8 +117,8 @@ PLIST_SUB+=	GRACE=""
 .else
 PLIST_SUB+=	GRACE="@comment "
 .endif
-.if !defined(WITHOUT_MACR_RECAL)
-RUN_DEPENDS+=	${PYNUMPY}
+.if defined(WITH_BOOST)
+LIB_DEPENDS+=	${PY_BOOST}
 .endif
 
 .if !defined(WITH_MPI)
@@ -120,14 +126,13 @@ MPISEQ=		-lmpiseq
 MUMPSLIB=	-L${LOCALBASE}/lib -ldmumps -lzmumps -lsmumps -lcmumps -lmumps_common -lpord ${MPISEQ}
 LIB_DEPENDS+=	libmpiseq.so.5:math/mumps
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/lib/libblacs.a:math/blacs	\
-		${LOCALBASE}/lib/libscalapack.a:math/scalapack
-MUMPSLIB=	-L${LOCALBASE}/lib -ldmumps -lzmumps -lsmumps -lcmumps -lmumps_common -lpord -lscalapack -lblacs -lblacsc -lblacs -L${LOCALBASE}/lib -lmpich -lmpl
+BUILD_DEPENDS+=	${LOCALBASE}/lib/libscalapack.a:math/scalapack
+MUMPSLIB=	-L${LOCALBASE}/lib -ldmumps -lzmumps -lsmumps -lcmumps -lmumps_common -lpord -lscalapack -lexecinfo -L${LOCALBASE}/lib -lmpi
 LIB_DEPENDS+=	libcmumps.so.5:math/mumps
 .endif
 
 .if defined(WITH_MPI)
-LIB_DEPENDS+=	libmpich.so:net/mpich2
+LIB_DEPENDS+=	libmpi.so:net/mpich
 HOME_MPI=	${LOCALBASE}
 .endif
 
@@ -171,11 +176,15 @@ WITH_ED=	vi
 
 INST_DAT=	elements
 INST_SH=	as_run parallel_cp
-PFX2FIX=	bin/as_run ${VE}/include/aster/asterc_config.h			\
-		${VE}/include/aster/asterf_config.h ${VE}/share/aster/profile.sh\
-		etc/codeaster/profile.sh etc/codeaster/aster			\
-		${VE}/lib/aster/aster_pkginfo.py ${VE}/aster.conf		\
-		${VE}/share/aster/CTestTestfile.cmake ${VE}/share/aster/config.txt
+PFX2FIX=	bin/as_run etc/codeaster/aster etc/codeaster/profile.sh	\
+		${VE}/aster.conf ${VE}/lib/aster/aster_pkginfo.py	\
+		${VE}/share/aster/CTestTestfile.cmake			\
+		${VE}/include/aster/asterf_config.h			\
+		${VE}/include/aster/asterc_config.h			\
+		${VE}/share/aster/execute_codeaster			\
+		${VE}/share/aster/config.txt ${VE}/share/aster/profile.sh
+POSTPY2FIX=	post-patch-waf.engine post-patch-data__post_install
+POSTBASH2FIX=	execute_codeaster create_install_script
 inst_dir=	${PREFIX}/${PORTNAME}
 tools_dir=	${PREFIX}/${PORTNAME}/outils
 tools=		cmpfillin gpmetis graphchk m2gmetis mpmetis ndmetis gnuplot
@@ -189,35 +198,29 @@ v_ifdef=	${OPSYS:tu}
 SHELL_INSTALL_ASTER=	${LOCALBASE}/bin/${SHIA}
 tcl_dir=	${LOCALBASE}
 hdf_dir=	${LOCALBASE}
-lib_math=	"-L${LOCALBASE}/lib ${BLASLIB} ${LAPACKLIB} ${ATLASLIB}"
+lib_math=	"-L${LOCALBASE}/lib ${BLASLIB} ${LAPACKLIB} -lscotch -lscotcherr"
 
 LASTKDIR?=	${PORTNAME}/ASTK/ASTK_CLIENT
 ASTKDIR=	${LOCALBASE}/${LASTKDIR}
 
 BASH2RC=	products_data.py
 
-pre-everything::
-.if defined(WITH_MPI)
-	@${ECHO_MSG} "To build Code_Aster with MPI enabled, you need to run \`mpd &'"
-.endif
+ExportPATH?=	/tmp/maillages
 
 pre-configure:
 	${REINPLACE_CMD} -e 's|PREFER_SHARED_LIBS=False|PREFER_SHARED_LIBS=True|'	\
-		${WRKSRC}/setup.cfg
-	${REINPLACE_CMD} -e 's|/opt/aster|${STAGEDIR}${inst_dir}|'	\
-		${WRKSRC}/setup.cfg
+		-e 's|/opt/aster|${STAGEDIR}${inst_dir}|' ${WRKSRC}/setup.cfg
 	${REINPLACE_CMD} -e 's|?ASTER_ROOT?|${STAGEDIR}${inst_dir}|'	\
 		${WRKSRC}/products.py
 	${REINPLACE_CMD} -e "s|'gfortran'|'${FC}'|g;s|'gcc'|'${CC}'|g"	\
 		-e "s|'g++'|'${CXX}'|g" ${WRKSRC}/check_compilers.py
-	${REINPLACE_CMD} -e "s|%%LOCALBASE%%|${LOCALBASE}|" ${WRKSRC}/as_setup.py
+	${REINPLACE_CMD} -e "s|%%LOCALBASE%%|${LOCALBASE}|"		\
+		-e "s|%%PYTHON_CMD%%|${PYTHON_CMD}|"			\
+		-e "s|%%WRKDIR%%|${WRKDIR}|" ${WRKSRC}/as_setup.py
 .for sh in ${BASH2RC}
 	${REINPLACE_CMD} -e 's|/bin/bash|${SHELL_INSTALL_ASTER}|' ${WRKSRC}/${sh}
 .endfor
-.if defined(WITH_ATLAS)
-	${REINPLACE_CMD} -e "s|cfg\['BLASLIB'\]|cfg['BLASLIB'], cfg['ATLASLIB']|"	\
-		${WRKSRC}/products.py
-.endif
+	${REINPLACE_CMD} -e 's|%%PYTHON_ABIVER%%|${PYTHON_ABIVER}|' ${WRKSRC}/setup.py
 	${ECHO_CMD} "_install_hdf5 = False"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_med = False"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_tcl = False"			>> ${WRKSRC}/setup.cfg
@@ -243,19 +246,20 @@ pre-configure:
 	${ECHO_CMD} "_install_aster_Linux = False"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "_install_scotch  = False"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "OPT_ENV = 'verbose=True'"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "PYTHONPATH = '${PYTHON_SITELIBDIR}:${LOCALBASE}/aster/ASTK/ASTK_SERV'"\
+			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "PYTHON_INCLUDE = '${PYTHON_INCLUDEDIR}'"	>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "HOME_PYTHON = '${PYTHONBASE}'"		>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "PYTHON_EXE = '${PYTHON_CMD}'"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_SCOTCH = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_METIS = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_GMSH = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_GIBI = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_HOMARD = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "INCLUDEDIR = ['${LOCALBASE}/include/hdf5-18', '${LOCALBASE}/include', '${LOCALBASE}/include/metis', ]"\
+	${ECHO_CMD} "INCLUDEDIR = ['${LOCALBASE}/include', '${LOCALBASE}/include/metis', ]"\
 			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_MUMPS = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
-# Disable MFront at the moment (compilation error)
-#	${ECHO_CMD} "HOME_MFRONT = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
-#	${ECHO_CMD} "TFELHOME = '${LOCALBASE}'"			>> ${WRKSRC}/setup.cfg
-	${REINPLACE_CMD} -e "s|waf configure|waf configure --disable-mfront|"	\
-		${WRKSRC}/products.py
+	${ECHO_CMD} "HOME_MFRONT = '${LOCALBASE}'"		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "MUMPSLIB = '${MUMPSLIB}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "CC='${CC}'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "gcc='${CC}'"				>> ${WRKSRC}/setup.cfg
@@ -264,7 +268,7 @@ pre-configure:
 	${ECHO_CMD} "F90='${FC}'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "MATHLIB='${lib_math} ${LDFLAGS} -lgfortran -lm -lkvm'"		\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "OTHERLIB='-Xlinker -export-dynamic ${MPISEQ} -lexecinfo -lutil -lpthread -lz'"	\
+	${ECHO_CMD} "OTHERLIB='-Xlinker -export-dynamic ${MPISEQ} -lc++ -lexecinfo -lutil -lpthread -lz'"	\
 		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "SYSLIB='-lpthread -lz'"			>> ${WRKSRC}/setup.cfg
 .if defined(WITH_MPI)
@@ -278,8 +282,10 @@ pre-configure:
 	${ECHO_CMD} "HOME_HDF='${hdf_dir}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_MED='${LOCALBASE}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_TCL_TK='${tcl_dir}'"			>> ${WRKSRC}/setup.cfg
-.if defined(WITH_ATLAS)
-	${ECHO_CMD} "ATLASLIB='${_ATLASLIB}'"			>> ${WRKSRC}/setup.cfg
+.if defined(WITH_BOOST)
+	${ECHO_CMD} "HOME_BOOST='${LOCALBASE}'"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "LIBPATH_BOOST='${LOCALBASE}/lib'"		>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "LIBNAME_BOOST='${PY_BOOST_LIB}'"		>> ${WRKSRC}/setup.cfg
 .endif
 	${ECHO_CMD} "BLASLIB='${_BLASLIB}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "LAPACKLIB='lapack'"			>> ${WRKSRC}/setup.cfg
@@ -287,6 +293,8 @@ pre-configure:
 	${ECHO_CMD} "SHELL_EXECUTION='${SHELL_INSTALL_ASTER}'"	>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "TERMINAL='xterm'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "EDITOR='${WITH_ED}'"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "CXXFLAGS='${CXXFLAGS}'"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "CXXFLAGS_DBG='${CXXFLAGS:C|-O2|--debug|}'"	>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "LDFLAGS='${LDFLAGS}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "FFLAGS='-c ${FFLAGS} -fno-tree-dse ${FLAGARCH}'"	\
 		>> ${WRKSRC}/setup.cfg
@@ -320,7 +328,7 @@ pre-configure:
 
 do-configure:
 	(cd ${CONFIGURE_WRKSRC}	\
-	&& TMPDIR=${WRKDIR} ${MAKE_ENV} ${PYTHON_CMD} setup.pyo ${DEBUG_FLAGS}	\
+	&& TMPDIR=${WRKDIR} ${MAKE_ENV} ${PYTHON_CMD} setup.py ${DEBUG_FLAGS}	\
 		--prefix=${STAGEDIR}${inst_dir} test | tee ${CONFIGURE_LOG})
 	@${ECHO_MSG} "---------------- Debug ------------------"
 	${CAT} ${CONFIGURE_WRKSRC}/setup.log
@@ -344,9 +352,16 @@ post-configure:
 		${STAGEDIR}${inst_dir}/${sf}
 .endfor
 
+pre-build:
+	${MKDIR} ${WRKDIR}/post_patches
+	${CP} ${FILESDIR}/post-patch-* ${WRKDIR}/post_patches/
+.for pp in ${POSTPY2FIX}
+	${REINPLACE_CMD} -e 's|%%PYTHON_CMD%%|${PYTHON_CMD}|' ${WRKDIR}/post_patches/${pp}
+.endfor
+
 do-build:
 	(cd ${BUILD_WRKSRC} &&	\
-	TMPDIR=${WRKDIR} ${MAKE_ENV} ${PYTHON_CMD} setup.pyo ${DEBUG_FLAGS} install aster	\
+	TMPDIR=${WRKDIR} ${MAKE_ENV} ${PYTHON_CMD} setup.py ${DEBUG_FLAGS} install aster	\
 		--prefix=${STAGEDIR}${inst_dir} | tee ${BUILD_WRKSRC}/build.log)
 
 do-install:
@@ -357,6 +372,12 @@ post-install:
 .for f in ${PFX2FIX}
 	${REINPLACE_CMD} -e 's|${STAGEDIR}||g' ${STAGEDIR}${inst_dir}/${f}
 .endfor
+.for f in ${POSTBASH2FIX}
+	${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}/bin/bash|'	\
+		${STAGEDIR}${inst_dir}/${VE}/share/aster/${f}
+.endfor
+	${REINPLACE_CMD} -e 's|LINUX64|LINUX64, FREEBSD|'	\
+		${STAGEDIR}${inst_dir}/asrun/core/default_configuration.py
 	(cd ${STAGEDIR}${PREFIX} && ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py	\
 		-d ${PREFIX} -f ${inst_dir:S|${PREFIX}/||})
 	(cd ${STAGEDIR}${PREFIX} && ${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py	\
@@ -392,10 +413,15 @@ post-install:
 .for f in aster.install_${VE} profile.sh
 	${MV} ${WRKDIR}/AvoidConflictWithASTK/${f} ${STAGEDIR}${inst_dir}/etc/codeaster/
 .endfor
+.for f in aster_pkginfo.cpython-${PYTHON_SUFFIX}.pyc aster_pkginfo.cpython-${PYTHON_SUFFIX}.opt-1.pyc
+	${RM} ${STAGEDIR}${inst_dir}/${VE}/lib/aster/__pycache__/${f}
+.endfor
+	${FIND} ${STAGEDIR}${PREFIX} -name "*.bak" -delete
 
 .if defined(MAINTAINER_MODE)
 regression-test:	install
 	@${ECHO_MSG} "Note: homard must be installed to run some steps succesfully."
+	${MKDIR} ${ExportPATH}
 	${CP} ${inst_dir}/${VE}/astout.export /tmp/
 	(cd ${inst_dir}/${VE} &&	\
 	${LOCALBASE}/aster/bin/as_run --list --all --vers=${VE}	\

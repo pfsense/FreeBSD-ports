@@ -1,0 +1,11 @@
+--- src/qmapshack/CMakeLists.txt.orig	2021-05-24 14:06:57 UTC
++++ src/qmapshack/CMakeLists.txt
+@@ -971,7 +971,7 @@ target_link_libraries(${APPLICATION_NAME}
+     Qt5::Help
+     ${DBUS_LIB}
+     ${GDAL_LIBRARIES}
+-    ${PROJ_LIBRARIES}
++    ${PROJ_LDFLAGS} ${PROJ_LIBRARIES}
+     ${ROUTINO_LIBRARIES}
+     ${ALGLIB_LIBRARIES}
+     QuaZip::QuaZip

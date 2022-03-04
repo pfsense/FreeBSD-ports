@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gonepass
 DISTVERSION=	g20181221
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	greg@unrelenting.technology
@@ -15,8 +14,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jbreams
 GH_TAGNAME=	3da5cfa120
 USE_GNOME=	gtk30 gtkmm30
-
-INSTALLS_ICONS=	yes
 
 PLIST_FILES=	bin/gonepass \
 		share/applications/gonepass.desktop \

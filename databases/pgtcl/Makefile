@@ -1,9 +1,8 @@
 # Created by: Mikhail Teterin
-# $FreeBSD$
 
 PORTNAME=	pgtcl
 PORTVERSION=	2.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases tcl
 MASTER_SITES=	SF/pgtclng/pgtclng/${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION}

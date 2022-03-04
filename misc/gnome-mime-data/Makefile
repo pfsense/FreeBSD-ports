@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 #    $MCom: ports/misc/gnome-mime-data/Makefile,v 1.14 2007/05/22 04:59:18 marcus Exp $
 
 PORTNAME=	gnome-mime-data
@@ -15,7 +14,7 @@ COMMENT=	MIME and Application database for GNOME
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext gmake localbase pathfix tar:bzip2
+USES=		gettext gmake gnome localbase pathfix tar:bzip2
 USE_GNOME=	gnomeprefix intlhack
 GNU_CONFIGURE=	yes
 LIBS+=		-lintl

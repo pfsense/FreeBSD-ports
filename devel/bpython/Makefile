@@ -1,8 +1,7 @@
 # Created by: Yi-Jheng Lin <yzlin@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bpython
-PORTVERSION=	0.17.1
+PORTVERSION=	0.22.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP \
 		https://bpython-interpreter.org/releases/
@@ -14,40 +13,45 @@ COMMENT=	Fancy interface to the Python interpreter
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}curtsies>=0.1.18:devel/py-curtsies@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.1.3,1:textproc/py-sphinx@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}curtsies>=0.3.5:devel/py-curtsies@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cwcwidth>=0:devel/py-cwcwidth@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}greenlet>=0:devel/py-greenlet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xdg>=0:devel/py-xdg@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>=1.5:devel/py-six@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}typing-extensions>=0:devel/py-typing-extensions@${PY_FLAVOR}
+
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	EXAMPLES NLS
 OPTIONS_SUB=	yes
 
-NO_ARCH=	yes
-USE_PYTHON=	autoplist concurrent distutils
-USES=		python
+NLS_USES=	gettext
 
-PORTEXAMPLES=	light.theme sample.theme
+.include <bsd.port.pre.mk>
 
-NLS_USES=		gettext
+.if ${PYTHON_REL} < 30700
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dataclasses>=0:devel/py-dataclasses@${PY_FLAVOR}
+.endif
 
-post-patch:
-	@${REINPLACE_CMD} -e '/build\/man\/bpython/d; /data\/bpython.desktop/d' ${WRKSRC}/setup.py
+.if ${PYTHON_REL} < 30800
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}backports.cached-property>=0:devel/py-backports.cached-property@${PY_FLAVOR}
+.endif
 
-post-install:
-	${INSTALL_MAN} ${WRKSRC}/build/man/bpython.1 ${STAGEDIR}${PREFIX}/man/man1/
-	${INSTALL_MAN} ${WRKSRC}/build/man/bpython-config.5 ${STAGEDIR}${PREFIX}/man/man5/
-	${INSTALL_DATA} ${WRKSRC}/data/bpython.desktop ${STAGEDIR}${DESKTOPDIR}/
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
-	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}/
+	${INSTALL_DATA} ${WRKSRC}/theme/*.theme ${STAGEDIR}${EXAMPLESDIR}/
 
 post-install-NLS-on:
-.for lang in it_IT nl_NL
+.for lang in es_ES fr_FR it_IT nl_NL
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/locale/${lang}/LC_MESSAGES/
 .endfor
-.for lang in de es_ES it_IT nl_NL
+.for lang in de es_ES fr_FR it_IT nl_NL
 	${INSTALL_DATA} ${WRKSRC}/bpython/translations/${lang}/LC_MESSAGES/bpython.mo ${STAGEDIR}${PREFIX}/share/locale/${lang}/LC_MESSAGES/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

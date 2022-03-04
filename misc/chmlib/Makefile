@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	chmlib
 PORTVERSION=	0.40
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-io64 --disable-pread --exec-prefix=${PREFIX} --disable-static --enable-examples
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool tar:bzip2
+USES=		cpe gmake libtool tar:bzip2
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

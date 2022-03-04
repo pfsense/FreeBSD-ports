@@ -1,5 +1,4 @@
 # Created by: pat
-# $FreeBSD$
 
 PORTNAME=	wmmaiload
 PORTVERSION=	2.3.0
@@ -12,7 +11,10 @@ COMMENT=	Incoming mail monitor dockapp with a similar look to wmcpuload
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake localbase:ldflags pkgconfig ssl tar:bzip2
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: application
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: application
+
+USES=		gmake gnome localbase:ldflags pkgconfig ssl tar:bzip2 xorg
 USE_XORG=	xpm
 USE_GNOME=	gtk20
 HAS_CONFIGURE=	yes

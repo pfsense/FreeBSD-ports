@@ -1,29 +1,31 @@
 # Created by: Hugo Leisink
-# $FreeBSD$
 
 PORTNAME=	hiawatha
-PORTVERSION=	10.9
+PORTVERSION=	10.12
 CATEGORIES=	www
 MASTER_SITES=	https://www.hiawatha-webserver.org/files/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	christopher.petrik@usm.edu
 COMMENT=	Advanced and secure webserver for Unix
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:insource compiler:c11 shebangfix
+LIB_DEPENDS=	libmbedtls.so:security/mbedtls
+
+USES=		cmake:insource compiler:c11 cpe localbase:ldflags shebangfix
+CPE_VENDOR=	${PORTNAME}-webserver
 USE_RC_SUBR=	hiawatha
 SHEBANG_FILES=	extra/letsencrypt/lefh.in
 
 CMAKE_ARGS=	-DCMAKE_INSTALL_LOCALSTATEDIR=/var \
 		-DWEBROOT_DIR=${WWWDIR} \
 		-DWORK_DIR=/var/db/${PORTNAME}
-SUB_FILES=	pkg-message
+CMAKE_ON=	USE_SYSTEM_MBEDTLS
 
-OPTIONS_DEFINE=		CACHE CGIWRAPPER IPV6 LEFH LOADCHECK MBEDTLS MONITOR \
-			RPROXY TOMAHAWK TOOLKIT XSLT
-OPTIONS_DEFAULT=	CACHE CGIWRAPPER MBEDTLS RPROXY TOOLKIT XSLT
+OPTIONS_DEFINE=		CACHE CGIWRAPPER LEFH LOADCHECK MONITOR RPROXY TOMAHAWK \
+			TOOLKIT XSLT
+OPTIONS_DEFAULT=	CACHE CGIWRAPPER RPROXY TOOLKIT XSLT
 OPTIONS_SUB=		yes
 
 CACHE_DESC=		Caching support
@@ -37,20 +39,15 @@ TOOLKIT_DESC=		URL toolkit support
 XSLT_DESC=		XSLT support
 
 CACHE_CMAKE_BOOL=	ENABLE_CACHE
-IPV6_CMAKE_BOOL=	ENABLE_IPV6
-LEFH_IMPLIES=		MBEDTLS
 LEFH_USES=		php:cli
 LOADCHECK_CMAKE_BOOL=	ENABLE_LOADCHECK
-MBEDTLS_CMAKE_BOOL=	ENABLE_TLS USE_SYSTEM_MBEDTLS
-MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
-MBEDTLS_USES=		localbase:ldflags
 MONITOR_CMAKE_BOOL=	ENABLE_MONITOR
 RPROXY_CMAKE_BOOL=	ENABLE_RPROXY
 TOMAHAWK_CMAKE_BOOL=	ENABLE_TOMAHAWK
 TOOLKIT_CMAKE_BOOL=	ENABLE_TOOLKIT
-XSLT_CMAKE_BOOL=	ENABLE_XSLT
 XSLT_USES=		gnome
 XSLT_USE=		GNOME=libxslt
+XSLT_CMAKE_BOOL=	ENABLE_XSLT
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/bin/ssi-cgi|${PREFIX}/bin/ssi-cgi|g' \
@@ -59,8 +56,7 @@ post-patch:
 		${WRKSRC}/config/hiawatha.conf.in
 	@${REINPLACE_CMD} -e 's|/usr/sbin|${PREFIX}/sbin|g' \
 		-e 's|/etc/hiawatha|${ETCDIR}|g' \
-		${WRKSRC}/man/hiawatha.1.in \
-		${WRKSRC}/man/cgi-wrapper.1.in
+		${WRKSRC}/man/hiawatha.1.in
 
 post-install:
 .for f in hiawatha.conf mimetype.conf cgi-wrapper.conf toolkit.conf \

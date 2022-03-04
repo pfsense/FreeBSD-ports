@@ -1,5 +1,4 @@
 # Created by: Oliver Breuninger <ob@breuninger.org>
-# $FreeBSD$
 
 PORTNAME=	xcmd
 PORTVERSION=	1.8
@@ -9,9 +8,9 @@ MASTER_SITES=	SUNSITE/X11/xutils \
 		http://www.breuninger.org/files/distfiles/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Xcmd is a front-end for starting programs under X11
+COMMENT=	Front-end for starting programs under X11
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xext xmu xt
 
 PLIST_FILES=	bin/xcmd \

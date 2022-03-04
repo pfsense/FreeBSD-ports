@@ -1,5 +1,4 @@
 # Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	cursor-crystal-theme
 DISTVERSION=	1.1.1
@@ -9,7 +8,7 @@ MASTER_SITES=	http://www.notmart.org/files/ \
 		http://pinguin.stttelkom.ac.id/gentoo/distfiles/
 DISTNAME=	Crystalcursors
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	KDE Crystal style X cursor theme
 
 LICENSE=	LGPL21

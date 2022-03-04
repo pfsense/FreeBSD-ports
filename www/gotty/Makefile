@@ -1,10 +1,10 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gotty
 PORTVERSION=	1.0.1
 DISTVERSIONPREFIX=	v
-CATEGORIES=	www net ipv6
+PORTREVISION=	2
+CATEGORIES=	www net
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command line tool that turns your CLI tools into web applications

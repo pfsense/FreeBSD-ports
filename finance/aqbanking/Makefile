@@ -1,10 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	aqbanking
-PORTVERSION=	5.7.8
-PORTREVISION=	1
+PORTVERSION=	6.2.10
 CATEGORIES=	finance
-MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=03&release=217&file=02&dummy=/
+MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/368/
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Online banking interface and financial data framework
@@ -17,16 +14,15 @@ LIB_DEPENDS=	libgwenhywfar.so:devel/gwenhywfar \
 		libgmp.so:math/gmp \
 		libgnutls.so:security/gnutls
 
-USES=		gettext gmake libtool localbase pathfix pkgconfig
+USES=		gettext gmake libtool localbase:ldflags pathfix pkgconfig
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-release="yes"
-LIBS+=		-lintl
 INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 
-AQB_SHLIB_VER=	35
+AQB_SHLIB_VER=	44
 PLIST_SUB=	AQB_SHLIB_VER="${AQB_SHLIB_VER}" \
 		AQB_MAJ_MIN_VER="${PORTVERSION:R}"
 
@@ -40,8 +36,9 @@ DOXYGEN_CONFIGURE_ENABLE=	full-doc
 
 EBICS_DESC=		Enable EBICS backend
 EBICS_LIB_DEPENDS=	libxmlsec1.so:security/xmlsec1
+EBICS_USES=		gnome
 EBICS_USE=		GNOME=libxml2,libxslt
-EBICS_CONFIGURE_OFF=	--with-backends="aqhbci aqnone aqofxconnect aqpaypal"
+EBICS_CONFIGURE_OFF=	--with-backends="aqhbci aqofxconnect aqpaypal"
 
 KTOBLZCHECK_DESC=	Enable KtoBlzCheck support
 
@@ -54,6 +51,11 @@ LIB_DEPENDS+=	libktoblzcheck.so:finance/ktoblzcheck
 .if ${PORT_OPTIONS:MDOCS} && !${PORT_OPTIONS:MDOXYGEN}
 PORTDOCS=	*
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e \
+	's|$$(top_builddir)/aqbanking6|$$(top_builddir)/*|g' \
+	${WRKSRC}/configure
 
 pre-configure-EBICS-on:
 	@(if [ ! -e ${LOCALBASE}/libdata/pkgconfig/xmlsec1-gnutls.pc ] ; then \

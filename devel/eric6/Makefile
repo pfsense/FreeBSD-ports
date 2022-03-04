@@ -1,29 +1,45 @@
 # Created by: Boris Samorodov <bsam@FreeBSD.org>
-# $FreeBSD$
 
-PORTREVISION=	2
-PKGNAMESUFFIX=	-${FLAVOR:U:S/_/-/}
+.include "${.CURDIR}/../../devel/eric6/bsd.eric6.mk"
+
+PKGNAMESUFFIX=	-qt5-${FLAVOR:U:S/_/-/}
 DISTNAME=	${PORTNAME}-nolang-${DISTVERSION}
+PORTREVISION=	0
 CATEGORIES=	devel python
 
-BROKEN_powerpc64=	fails to link: libstdc++.so.6: version GLIBCXX_3.4.14 required by /usr/local/lib/qt4/libqscintilla2_qt4.so.13 not found
+DEPRECATED=	Uses EOL Python 2.7 via www/py-qt5-webengine
+EXPIRATION_DATE=2021-12-31
 
-# Note to MAINTAINER: this should be converted to USES=pyqt, USE_PYQT=[...]
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/PyQt5/QtGui.so:x11-toolkits/py-qt5-gui@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt5/Qsci.so:devel/py-qt5-qscintilla2@${PY_FLAVOR}
-RUN_DEPENDS:=	${BUILD_DEPENDS} \
-		${PYTHON_SITELIBDIR}/PyQt5/QtNetwork.so:net/py-qt5-network@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt5/QtSvg.so:graphics/py-qt5-svg@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt5/QtSql.so:databases/py-qt5-sql@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt5/QtWebKit.so:www/py-qt5-webkit@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt5/QtHelp.so:devel/py-qt5-help@${PY_FLAVOR} \
-		${PYTHON_SITELIBDIR}/PyQt5/QtWebKitWidgets.so:www/py-qt5-webkitwidgets@${PY_FLAVOR} \
-		${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}toml>=0:textproc/py-toml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}virtualenv>=15.2:devel/py-virtualenv@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}docutils>=0.14:textproc/py-docutils@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}editorconfig>=0.12.0:editors/py-editorconfig@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}send2trash>=1.5:deskutils/py-send2trash@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}asttokens>=1.1:devel/py-asttokens@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}markdown>=2.3.1:textproc/py-markdown@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}enchant>=0:textproc/py-enchant@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-CONFLICTS_INSTALL=	${FLAVORS:N${FLAVOR}:C/^/${PKGNAMEPREFIX}${PORTNAME}-/:C/$/-[0-9]*/}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}toml>=0:textproc/py-toml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}virtualenv>=15.2:devel/py-virtualenv@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}docutils>=0.14:textproc/py-docutils@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}editorconfig>=0.12.0:editors/py-editorconfig@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}send2trash>=1.5:deskutils/py-send2trash@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}asttokens>=1.1:devel/py-asttokens@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}markdown>=2.3.1:textproc/py-markdown@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}enchant>=0:textproc/py-enchant@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-USES=		desktop-file-utils python:${FLAVOR:C/.*_py([0-9])/\1./}
-INSTALL_CMD=	install.py -c -f eric6config.freebsd -i ${STAGEDIR} --pyqt=5
+CONFLICTS_INSTALL=	${FLAVORS:N${FLAVOR}:C/^/${PORTNAME}-qt5-/}
+
+USES+=		desktop-file-utils python:3.5+ pyqt:5 shebangfix
+USE_PYTHON=	flavors
+USE_PYQT=	chart core gui qscintilla2 webengine \
+		help_run network_run svg_run sql_run
+INSTALL_PY=	install.py -c -f eric6config.freebsd -i ${STAGEDIR}
+SHEBANG_FILES=	*.py eric/eric6/*.py eric/scripts/*.py
 SUB_FILES=	eric6.desktop
 MASTERPORT=	yes
 
@@ -33,18 +49,7 @@ PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.include "${.CURDIR}/bsd.eric6.mk"
 .include <bsd.port.options.mk>
-
-PY_FLAVORS=	py${PYTHON_DEFAULT:S/.//} py${PYTHON2_DEFAULT:S/.//} py${PYTHON3_DEFAULT:S/.//}
-.for flavor in ${PY_FLAVORS}
-.  if empty(FLAVORS:Mqt5_${flavor})
-FLAVORS:=	${FLAVORS} qt5_${flavor}
-.  endif
-.endfor
-.if empty(FLAVOR)
-FLAVOR=		${FLAVORS:[1]}
-.endif
 
 post-patch:
 	${RM} ${WRKSRC}/eric/i18n/*.qm ${WRKSRC}/eric/i18n/*.ts
@@ -60,12 +65,16 @@ do-configure:
 
 do-install:
 	@(cd ${WRKSRC}; \
-	${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${INSTALL_CMD})
+	${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${INSTALL_PY})
 
 post-install:
 	${INSTALL_DATA} ${WRKDIR}/eric6.desktop ${STAGEDIR}${PREFIX}/share/applications/
 	${LN} -sf ${DATADIR:C|${PREFIX}(/share(/pixmaps)?)?||:C|/[^/]+|../|g}eric6/icons/default/eric.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/eric6.png
 	@${MKDIR} ${STAGEDIR}${DATADIR}/i18n
+	${REINPLACE_CMD} -e 's|${STAGEDIR}|${DATADIR}|g' \
+			 -e 's|${WRKSRC}|${DATADIR}|g' \
+			${STAGEDIR}/${DATADIR}/eric6install.json
+	@${RM}	${STAGEDIR}/${DATADIR}/eric6install.json.bak
 
 .include <bsd.port.mk>

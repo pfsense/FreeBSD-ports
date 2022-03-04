@@ -1,9 +1,8 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nnls
 PORTVERSION=	1.4
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

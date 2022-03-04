@@ -1,18 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	kitchen
-DISTVERSIONPREFIX=	v
-PORTVERSION=	1.2.5
+PORTVERSION=	1.2.6
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	arved@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Kitchen contains a cornucopia of useful code
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python
+USES=		python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	fedora-infra
 USE_PYTHON=	distutils autoplist

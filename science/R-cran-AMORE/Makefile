@@ -1,9 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	AMORE
 PORTVERSION=	0.2.14
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${PORTVERSION:C/\./-/g:C/-/./1}
 

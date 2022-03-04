@@ -1,25 +1,22 @@
 # Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kicad
-PORTVERSION=	5.1.0
+PORTVERSION=	5.1.12
 CATEGORIES=	cad
+MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-templates/-/archive/${DISTVERSION}/
 PKGNAMESUFFIX=	-library-tmpl
+DISTNAME=	${PORTNAME}-templates-${DISTVERSION}
 
-MAINTAINER=	thierry@FreeBSD.org
+MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Official KiCad project templates
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	kicad:cad/kicad
 
+USES=		cmake tar:bz2
+
 CONFLICTS=	kicad-devel-r2*
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	KiCad
-GH_PROJECT=	kicad-templates
-
-USES=		cmake
 
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Release" \

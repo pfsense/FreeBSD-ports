@@ -1,3 +1,5 @@
-TIMESTAMP = 1552627829
-SHA256 (KDE/plasma/5.15.3/kwin-5.15.3.2.tar.xz) = 3c7b5ced440cf9ecd23b5905727cea4730188fbfe6388b4fcdb5eb3f52323147
-SIZE (KDE/plasma/5.15.3/kwin-5.15.3.2.tar.xz) = 6352944
+TIMESTAMP = 1638303652
+SHA256 (KDE/plasma/5.23.4/kwin-5.23.4.tar.xz) = 4cefaf0c02c19d73417f4bcafd1354966914fefdc4e3cdab41689e0caea91167
+SIZE (KDE/plasma/5.23.4/kwin-5.23.4.tar.xz) = 6341720
+SHA256 (KDE/plasma/5.23.4/f7bd6ef6c133658f0af562d40c27ad82c5e96748.diff) = 1bcefb8c25cd02389a49483c23c28725e1301a8ab07c68f3d0eb36a84f31d16f
+SIZE (KDE/plasma/5.23.4/f7bd6ef6c133658f0af562d40c27ad82c5e96748.diff) = 323

@@ -1,10 +1,9 @@
 # Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	bmake
-PORTVERSION=	20181221
+PORTVERSION=	20210420
 CATEGORIES=	devel
-MASTER_SITES=	ftp://ftp.netbsd.org/pub/NetBSD/misc/sjg/
+MASTER_SITES=	https://ftp.netbsd.org/pub/NetBSD/misc/sjg/
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Portable version of NetBSD 'make' utility
@@ -16,6 +15,10 @@ PORTSCOUT=	skipv:200910007
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 MAKE_ENV+=	CONFIG_SITE=${CONFIG_SITE}
+
+.if defined(BATCH)
+EXTRA_PATCHES=	${FILESDIR}/extrapatch-unit-tests_Makefile
+.endif
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} 's/^\.Nx/NetBSD/' ${WRKDIR}/bmake/bmake.1

@@ -1,5 +1,4 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xcompmgr
 PORTVERSION=	1.1.8
@@ -11,7 +10,7 @@ COMMENT=	Sample X compositing manager
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xcomposite xext xfixes xdamage xrender
 
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz

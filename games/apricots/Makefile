@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	apricots
 PORTVERSION=	0.2.6
 PORTREVISION=	6
@@ -11,7 +8,7 @@ MASTER_SITES=	http://www.fishies.org.uk/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Fly a little plane around and shoot things and drop bombs
 
-USES=		dos2unix
+USES=		dos2unix sdl
 USE_SDL=	sdl
 USE_CXXSTD=	c++98
 DOS2UNIX_GLOB=	*.cpp
@@ -21,7 +18,7 @@ PLIST_FILES=	bin/${PORTNAME} libexec/${PORTNAME}
 PORTDATA=	*
 PORTDOCS=	*
 CPPFLAGS+=	-DAP_PATH="\"${DATADIR}/\""
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 DESKTOP_ENTRIES="Apricots" \
 		"${COMMENT}" \
@@ -33,7 +30,7 @@ DESKTOP_ENTRIES="Apricots" \
 OPTIONS_DEFINE=	DOCS OPENAL
 OPTIONS_DEFAULT=OPENAL
 
-OPENAL_USES=	openal:al,alut
+OPENAL_USES=	compiler:c++11-lang openal:al,alut
 OPENAL_CPPFLAGS=-DAP_AUDIO_OPENAL
 OPENAL_LDFLAGS=	-L${LOCALBASE}/lib -lopenal -lalut
 

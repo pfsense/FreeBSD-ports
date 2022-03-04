@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	HTML-Tidy
 PORTVERSION=	1.60
 CATEGORIES=	textproc www perl5

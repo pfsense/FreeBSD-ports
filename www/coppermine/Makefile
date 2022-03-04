@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	coppermine
-PORTVERSION=	1.6.05
+PORTVERSION=	1.6.12
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web picture gallery script
 
 LICENSE=	GPLv3
@@ -15,7 +13,8 @@ USES=		php
 OPTIONS_DEFINE=	DOCS IMAGEMAGICK
 IMAGEMAGICK_DESC=	Use ImageMagick instead of PHP GD extension
 
-IMAGEMAGICK_RUN_DEPENDS+=	convert:graphics/ImageMagick6
+IMAGEMAGICK_RUN_DEPENDS=	convert:graphics/ImageMagick6
+IMAGEMAGICK_USE_OFF=	PHP=gd
 
 USE_PHP=	ctype hash json mysqli pcre xml
 
@@ -27,13 +26,7 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 PORTDOCS=	CHANGELOG.txt LICENSE.txt README.txt
 
-SUB_FILES+=	pkg-message
-
-.include <bsd.port.options.mk>
-
-.if empty(PORT_OPTIONS:MIMAGEMAGICK)
-USE_PHP+=	gd
-.endif
+SUB_FILES=	pkg-message
 
 pre-everything::
 	@${ECHO_MSG} ""

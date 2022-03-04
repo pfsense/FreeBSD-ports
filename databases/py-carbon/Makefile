@@ -1,12 +1,11 @@
 # Created by: Evan Sarmiento <bsdports@wayfair.com>
-# $FreeBSD$
 
 PORTNAME=	carbon
-PORTVERSION=	1.1.5
+PORTVERSION=	1.1.8
 CATEGORIES=	databases python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Backend storage application for graphite
 
 LICENSE=	APACHE20
@@ -19,13 +18,16 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cachetools>=1.1.0:devel/py-cachetools@${PY_F
 		${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}whisper>=0.9.10:databases/py-whisper@${PY_FLAVOR}
 
-NO_ARCH=	yes
-USE_PYTHON=	distutils
-USES=		python:2.7
+USES=		python:3.6+
+USE_PYTHON=	distutils py3kplist
 USE_RC_SUBR=	carbon
 USE_GITHUB=	yes
 GH_ACCOUNT=	graphite-project
+
 MAKE_ENV=	GRAPHITE_NO_PREFIX=yes
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
+
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/setup.py

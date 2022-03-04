@@ -1,5 +1,4 @@
 # Created by: paulo@isr.uc.pt
-# $FreeBSD$
 
 PORTNAME=	povray
 PORTVERSION=	3.6.1
@@ -11,16 +10,14 @@ MASTER_SITE_SUBDIR=	Old-Versions/Official-3.62/Unix
 PKGNAMESUFFIX=	36
 DIST_SUBDIR=	povray36
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bsd@philippost.de
 COMMENT=	Persistence of Vision Ray Tracer
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-BROKEN_powerpc64=	Does not build: error: 64 bit CPU required
-
+USES=		compiler:c11 gmake jpeg tar:bzip2 xorg
 USE_XORG=	x11
-USES=		gmake jpeg tar:bzip2
 GNU_CONFIGURE=	yes
 USE_CXXSTD=	gnu++98
 

@@ -1,31 +1,29 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
-PORTNAME=	codeville
-PORTVERSION=	0.1.17
-CATEGORIES=	devel python
-MASTER_SITES=	http://bsdforge.com/projects/source/devel/codeville/
+PORTNAME=		codeville
+PORTVERSION=	0.1.18
+CATEGORIES=		devel python
+MASTER_SITES=	https://BSDforge.com/projects/source/devel/codeville/
 
-MAINTAINER=	portmaster@bsdforge.com
-COMMENT=	Anarchic control version system without unnecessary re-merges
+MAINTAINER=		portmaster@bsdforge.com
+COMMENT=		Anarchic control version system without unnecessary re-merges
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-NO_ARCH=	yes
-USES=		python:2.7 tar:xz
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}
+
+USES=		python:3.7+ tar:txz
 USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
 
-PORTDOCS=	LICENSE.txt
 PORTEXAMPLES=	cdvserver.conf.sample
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+OPTIONS_DEFINE=	EXAMPLES
 
-post-install:
-# examples
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
-# documentation
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

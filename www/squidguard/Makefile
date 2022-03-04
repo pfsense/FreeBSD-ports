@@ -1,14 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	squidGuard
 PORTVERSION=	1.4
 PORTREVISION=	15
 CATEGORIES=	www
-MASTER_SITES=	http://www.squidguard.org/Downloads/:a \
-		http://www.squidguard.org/Downloads/Contrib/:b
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:a \
-		squidGuard-1.4-quoted_string_support.diff:b \
-		squidGuard-1.4-dnsbl.patch:b
+MASTER_SITES=	LOCAL/garga/squidguard/
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		squidGuard-1.4-quoted_string_support.diff \
+		squidGuard-1.4-dnsbl.patch
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	garga@FreeBSD.org
@@ -19,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/squid:www/squid
 
-USES=		bdb
+USES=		bdb cpe
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-db-inc=${BDB_INCLUDE_DIR} \
 		--with-db-lib=${BDB_LIB_DIR} \
@@ -28,7 +25,7 @@ CONFIGURE_ARGS=	--with-db-inc=${BDB_INCLUDE_DIR} \
 		--with-sg-logdir=${LOGDIR} \
 		--with-squiduser=${SQUID_UID} \
 		--exec-prefix=${PREFIX}
-CPPFLAGS+=	-I${PREFIX}/include -I${LOCALBASE}/include
+CPPFLAGS+=	-I${PREFIX}/include -I${LOCALBASE}/include -fcommon
 
 SQUID_UID?=	squid
 SQUID_GID?=	squid

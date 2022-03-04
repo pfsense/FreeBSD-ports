@@ -1,5 +1,4 @@
 # Created by: adrianm
-# $FreeBSD$
 
 PORTNAME=	libnjb
 PORTVERSION=	2.2.7
@@ -12,6 +11,9 @@ COMMENT=	C library, API for communicating with Creative and Dell audio players
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Abandoned upstream, no new release since 2011
+EXPIRATION_DATE=2021-12-31
 
 USES=		pathfix ncurses libtool
 GNU_CONFIGURE=	yes

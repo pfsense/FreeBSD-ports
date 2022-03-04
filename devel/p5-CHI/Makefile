@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CHI
 PORTVERSION=	0.600
 CATEGORIES=	devel perl5
@@ -8,7 +6,7 @@ MASTER_SITE_SUBDIR=	CPAN:HAARG
 PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-0.60
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for unified cache interface
 
 LICENSE=	ART10 GPLv1+

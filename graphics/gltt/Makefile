@@ -1,9 +1,8 @@
 # Created by: Igor Pokrovsky <tiamat@telegraph.spb.ru>
-# $FreeBSD$
 
 PORTNAME=	gltt
 PORTVERSION=	2.5.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	graphics
 MASTER_SITES=	http://gltt.sourceforge.net/download/
 
@@ -12,7 +11,7 @@ COMMENT=	TrueType fonts rendering using OpenGL
 
 LIB_DEPENDS=	libttf.so:print/freetype
 
-USES=		gmake libtool
+USES=		gl gmake libtool
 USE_GL=		gl glut
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

@@ -3,8 +3,8 @@
  * pfblockerng_log.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for the
@@ -165,6 +165,22 @@ function pfb_htmlspecialchars($line) {
 	return htmlspecialchars($line, ENT_NOQUOTES);
 }
 
+// Function to validate file/path
+function pfb_validate_filepath($validate, $pfb_logtypes) {
+
+	$allowed_path = array();
+	foreach ($pfb_logtypes as $type) {
+		$allowed_path[$type['logdir']] = '';
+	}
+
+	$path = pathinfo($validate, PATHINFO_DIRNAME) . '/';
+	$file = basename($validate);
+
+	if ($path == '/var/unbound/' && $file != 'pfb_dnsbl.conf') {
+		return FALSE;
+	}
+	return isset($allowed_path[$path]);
+}
 
 $pconfig = array();
 if ($_POST) {
@@ -175,6 +191,10 @@ if ($_POST) {
 if ($_REQUEST['ajax']) {
 	clearstatcache();
 	$pfb_logfilename = htmlspecialchars($_REQUEST['file']);
+	if (!pfb_validate_filepath($pfb_logfilename, $pfb_logtypes)) {
+		print ("|0|" . gettext('Invalid filename/path') . ".|");
+		exit;
+	}
 
 	// Load log
 	if ($_REQUEST['action'] == 'load') {
@@ -195,7 +215,11 @@ if ($_REQUEST['ajax']) {
 
 // Download/Clear logfile
 if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
-	$s_logfile = $pconfig['logFile'];
+	$s_logfile = htmlspecialchars($pconfig['logFile']);
+	if (!pfb_validate_filepath($s_logfile, $pfb_logtypes)) {
+		print ("|0|" . gettext('Invalid filename/path') . ".|");
+		exit;
+	}
 
 	// Clear selected file
 	if ($pconfig['clear']) {

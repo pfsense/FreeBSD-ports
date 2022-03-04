@@ -1,5 +1,4 @@
 # Created by: Erwin Lansing <erwin@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Test-Differences
 PORTVERSION=	0.650
@@ -10,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/0$//}
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Test::Differences - Test strings and data structures for differences
+COMMENT=	Test strings and data structures for differences
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

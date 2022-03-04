@@ -1,51 +1,38 @@
 # Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
 
 PORTNAME=	libssh
-DISTVERSION=	0.8.6
+PORTVERSION=	0.9.6
 CATEGORIES=	security devel
-MASTER_SITES=	https://www.libssh.org/files/0.8/
+MASTER_SITES=	https://www.libssh.org/files/${PORTVERSION:R}/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library implementing the SSH2 protocol
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	STATIC GSSAPI
-OPTIONS_RADIO=	CRYPTO
-OPTIONS_RADIO_CRYPTO=	GCRYPT OPENSSL
-OPTIONS_DEFAULT=	OPENSSL STATIC GSSAPI
-OPTIONS_SUB=	yes
-
 USES=		cmake cpe tar:xz
+
+CMAKE_OFF=	WITH_EXAMPLES
+CMAKE_ON=	BUILD_STATIC_LIB
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DWITH_EXAMPLES:BOOL=OFF \
-		-DWITH_TESTING:BOOL=OFF \
-		-DWITH_ZLIB:BOOL=ON
+OPTIONS_DEFINE=	GSSAPI ZLIB
+OPTIONS_RADIO=	CRYPTO
+OPTIONS_RADIO_CRYPTO=	GCRYPT OPENSSL
+OPTIONS_DEFAULT=GSSAPI OPENSSL ZLIB
 
-GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
-GCRYPT_CMAKE_ON=	-DWITH_GCRYPT:BOOL=ON
-GCRYPT_CMAKE_OFF=	-DWITH_GCRYPT:BOOL=OFF
-
+GCRYPT_CMAKE_BOOL=	WITH_GCRYPT
+GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
+			libgpg-error.so:security/libgpg-error
+GSSAPI_CMAKE_BOOL=	WITH_GSSAPI
 OPENSSL_USES=		ssl
-
-STATIC_CMAKE_ON=	-DWITH_STATIC_LIB:BOOL=ON
-STATIC_CMAKE_OFF=	-DWITH_STATIC_LIB:BOOL=OFF
-
-GSSAPI_CMAKE_ON=	-DWITH_GSSAPI:BOOL=ON
-GSSAPI_CMAKE_OFF=	-DWITH_GSSAPI:BOOL=OFF
+ZLIB_CMAKE_BOOL=	WITH_ZLIB
 
 post-patch:
-	${RM} ${PATCH_WRKSRC}/cmake/Modules/UseDoxygen.cmake
-	${REINPLACE_CMD} \
-		-e 's|LIB_INSTALL_DIR}|CMAKE_INSTALL_PREFIX}/libdata|' \
-		-e 's|CMAKE_INSTALL_DIR}|CMAKE_INSTALL_DIR}/libssh|' \
-		${WRKSRC}/CMakeLists.txt
-#	${REINPLACE_CMD} -e 's|-lssh_threads|-lssh_threads -lpthread|' \
-#		${WRKSRC}/libssh_threads.pc.cmake
-	${REINPLACE_CMD} -e 's| -pedantic-errors||' \
-		${WRKSRC}/cmake/Modules/DefineCompilerFlags.cmake
+	@${RM} ${PATCH_WRKSRC}/cmake/Modules/UseDoxygen.cmake
+
+post-install:
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/src/libssh.a ${STAGEDIR}${PREFIX}/lib/
 
 .include <bsd.port.mk>

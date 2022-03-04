@@ -1,5 +1,4 @@
 # Created by: Don Croyle <croyle@gelemna.org>
-# $FreeBSD$
 
 PORTNAME=	xconq
 DISTVERSION=	7.5.0-0pre.0.20050612
@@ -14,7 +13,7 @@ LICENSE=	GPLv2+
 
 OPTIONS_DEFINE=	SDL
 
-USES=		compiler gmake makeinfo tar:bzip2
+USES=		compiler gmake makeinfo tar:bzip2 xorg
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-alternate-scoresdir=${SCOREDIR} \
@@ -37,6 +36,7 @@ SCOREDIR?=	/var/games/xconq
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSDL}
+USES+=		sdl
 USE_SDL=	sdl
 CONFIGURE_ARGS+=--enable-default-ui=sdl
 PLIST_SUB+=	NOSDL="@comment "

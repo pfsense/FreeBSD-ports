@@ -1,33 +1,32 @@
-# $FreeBSD$
-
 PORTNAME=		webkit
-DISTVERSION=		5.212.0-alpha2
-PORTREVISION=	20
+DISTVERSION=		5.212.0-alpha4
+PORTREVISION=		7
 CATEGORIES=		www
-MASTER_SITES=		https://github.com/annulen/${PORTNAME}/releases/download/${DISTNAME}/
+MASTER_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/releases/download/${DISTNAME}/
 PKGNAMEPREFIX=		qt5-
 DISTNAME=		qt${PORTNAME}-${DISTVERSION}
+
+PATCH_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/commit/
+PATCHFILES+=		78360c01c796b6260bf828bc9c8a0ef73c5132fd.patch:-p1
 
 MAINTAINER=		kde@FreeBSD.org
 COMMENT=		QtWebKit with a more modern WebKit code base
 
 LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
-			libgstapp-1.0.so:multimedia/gstreamer1-plugins \
-			libgstbase-1.0.so:multimedia/gstreamer1 \
 			libhyphen.so:textproc/hyphen \
 			libicui18n.so:devel/icu \
 			libpng.so:graphics/png \
-			libwebp.so:graphics/webp
+			libwebp.so:graphics/webp \
+			libwoff2dec.so:devel/woff2
 
-USES=			bison cmake compiler:c++11-lang gperf jpeg \
-			pathfix perl5 pkgconfig python:2.7,build qt:5 sqlite:3 \
-			tar:xz
+USES=			bison cmake compiler:c++11-lang gnome gperf jpeg \
+			pathfix perl5 pkgconfig python:3.5+,build qt:5 sqlite:3 \
+			tar:xz xorg
 USE_GNOME=		glib20 libxml2 libxslt
 USE_PERL5=		build
-USE_GSTREAMER1=		core
 USE_QT=			core declarative gui location network opengl printsupport \
-			sensors testlib webchannel widgets \
-			buildtools_build qmake_build
+			sensors webchannel widgets \
+			buildtools_build declarative-test_build qmake_build testlib_build
 USE_RUBY=		yes
 USE_XORG=		x11 xcomposite xrender
 
@@ -51,5 +50,15 @@ PLIST_SUB=		FULLVER="${PORTVERSION:R}"
 
 SUB_FILES=		pkg-install
 SUB_LIST=		QT_INCDIR="${QT_INCDIR}"
+
+OPTIONS_DEFINE=	GSTREAMER
+OPTIONS_DEFAULT=	GSTREAMER
+
+GSTREAMER_LIB_DEPENDS=	libgstapp-1.0.so:multimedia/gstreamer1-plugins \
+			libgstbase-1.0.so:multimedia/gstreamer1
+GSTREAMER_USE=		GSTREAMER1=core
+GSTREAMER_CMAKE_OFF=	-DUSE_GSTREAMER:BOOL=OFF
+
+BINARY_ALIAS=		python3=${PYTHON_CMD}
 
 .include <bsd.port.mk>

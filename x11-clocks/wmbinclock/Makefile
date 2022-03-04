@@ -1,5 +1,4 @@
 # Created by: Harold Gutch <logix@foobar.franken.de>
-# $FreeBSD$
 
 PORTNAME=	wmbinclock
 PORTVERSION=	0.51
@@ -15,11 +14,10 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	engerim42
 
 PLIST_FILES=	bin/wmBinClock
-USES=		gmake
-USE_XORG=	xpm
+USES=		gmake xorg
+USE_XORG=	x11 xext xpm
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|#include <values.h>||' ${WRKSRC}/wmBinClock.c
 	@${REINPLACE_CMD} -e 's|^CC.*=|CC ?=|' -e 's|^CFLAGS.*=|CFLAGS +=|' \
 		-e 's|/usr/X11R6|${LOCALBASE}|g' ${WRKSRC}/Makefile
 

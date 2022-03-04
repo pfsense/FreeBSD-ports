@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	HTTP-Proxy
 PORTVERSION=	0.304
 CATEGORIES=	www perl5

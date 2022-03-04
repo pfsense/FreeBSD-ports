@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Path-IsDev
 PORTVERSION=	1.001002
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:KENTNL
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to determine if path resembles dev source tree
 
 LICENSE=	ART10 GPLv1+

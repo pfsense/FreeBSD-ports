@@ -1,5 +1,4 @@
 # Created by: Erwin Lansing <erwin@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Text-Quoted
 PORTVERSION=	2.10
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Text::Quoted - Extract the structure of a quoted mail message
+COMMENT=	Extract structure of quoted email message in Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

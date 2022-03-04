@@ -1,0 +1,27 @@
+PORTNAME=	quickjs
+DISTVERSION=	2021.03.27
+CATEGORIES=	lang devel
+MASTER_SITES=	https://bellard.org/${PORTNAME}/
+DISTNAME=	${PORTNAME}-${DISTVERSION:S/./-/g}
+
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Embeddable Javascript interpreter in C
+
+LICENSE=	MIT
+
+USES=		compiler:c11 cpe gmake tar:xz
+CPE_VENDOR=	${PORTNAME}_project
+
+EXTRA_PATCHES=	${FILESDIR}/extra-${CHOSEN_COMPILER_TYPE}-patch-Makefile
+
+TEST_TARGET=	test
+
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+post-patch:
+	@${REINPLACE_CMD} -e 's/%%GCC_DEFAULT%%/${GCC_DEFAULT}/' \
+		${WRKSRC}/Makefile
+.endif
+
+.include <bsd.port.post.mk>

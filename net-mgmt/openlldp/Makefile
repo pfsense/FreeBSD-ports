@@ -1,9 +1,8 @@
 # Created by: Roar Pettersen <roar@uib.no>
-# $FreeBSD$
 
 PORTNAME=	openlldp
 DISTVERSION=	0.4alpha
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}
 

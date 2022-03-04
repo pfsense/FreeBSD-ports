@@ -1,10 +1,9 @@
 # Created by: Evgueni V. Gavrilov <aquatique@rusunix.org>
-# $FreeBSD$
 
 PORTNAME=	silc-toolkit
 PORTVERSION=	1.1.12
 PORTREVISION=	1
-CATEGORIES=	devel ipv6 net security
+CATEGORIES=	devel net security
 MASTER_SITES=	SF/silc/silc/toolkit/sources
 DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION}
 

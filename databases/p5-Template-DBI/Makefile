@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Template-DBI
 PORTVERSION=	2.65
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Template::Plugin::DBI - Template interface to the DBI module
+COMMENT=	Template interface to the DBI Perl module
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Template-Toolkit>=0:www/p5-Template-Toolkit \

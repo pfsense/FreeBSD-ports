@@ -1,10 +1,9 @@
 # Created by: mm@FreeBSD.org
-# $FreeBSD$
 
 PKGNAMESUFFIX=	-nox11
 PORTSCOUT=	ignore:1
 
-CONFLICTS=	libwmf-[0-9]*
+CONFLICTS=	libwmf
 MASTERDIR=	${.CURDIR}/../libwmf
 OPTIONS_EXCLUDE=	X11
 

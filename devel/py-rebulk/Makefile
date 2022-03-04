@@ -1,8 +1,8 @@
 # Created by: Andrej Ebert <andrej@ebert.su>
-# $FreeBSD$
 
 PORTNAME=	rebulk
-PORTVERSION=	0.9.0
+PORTVERSION=	3.1.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.7+
 USE_PYTHON=	autoplist distutils
 
 USE_GITHUB=	yes

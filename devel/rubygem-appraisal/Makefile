@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	appraisal
-PORTVERSION=	2.2.0
-PORTREVISION=	1
+PORTVERSION=	2.4.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -16,8 +13,9 @@ RUN_DEPENDS=	rubygem-bundler>=0:sysutils/rubygem-bundler \
 		rubygem-rake>=0:devel/rubygem-rake \
 		rubygem-thor>=0.14.0:devel/rubygem-thor
 
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
 NO_ARCH=	yes
 
 PLIST_FILES=	bin/appraisal

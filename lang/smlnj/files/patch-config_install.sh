@@ -1,7 +1,7 @@
---- config/install.sh.orig	2018-08-28 15:30:41 UTC
+--- config/install.sh.orig	2020-04-03 02:04:40 UTC
 +++ config/install.sh
-@@ -17,6 +17,8 @@ else
-     nolib=false
+@@ -56,11 +56,36 @@ if [ x"$SIZE_OPT" = x ] ; then
+     SIZE_OPT="-"$DEFAULT_SIZE
  fi
  
 +[ -n "$RECOMPILEDIR" ] && echo "RECOMPILEDIR=$RECOMPILEDIR"
@@ -9,13 +9,12 @@
  if [ x${INSTALL_QUIETLY} = xtrue ] ; then
      export CM_VERBOSE
      CM_VERBOSE=false
-@@ -37,6 +39,28 @@ complain() {
-     exit 1
- }
+ fi
  
 +#
 +# do_patch patch-file
 +# apply a patch file
++#
 +do_patch() {
 +	patchfile=$FILESDIR/$1
 +
@@ -35,10 +34,10 @@
 +	fi
 +}
 +
- this=$0
- 
- 
-@@ -96,7 +120,28 @@ trap 'cd "$ROOT"; rm -f $tmpfiles' 0 1 2 3 15
+ vsay() {
+     if [ x${INSTALL_DEBUG} = xtrue ] ; then
+ 	echo "$@"
+@@ -128,7 +153,28 @@ trap 'cd "$ROOT"; rm -f $tmpfiles' 0 1 2 3 15
  # Especially important is CM_PATHCONFIG.
  #
  export CM_PATHCONFIG
@@ -68,7 +67,7 @@
  #
  # the release version that we are installing
  #
-@@ -344,7 +389,12 @@ fi
+@@ -407,7 +453,12 @@ esac
  # the name of the bin files directory
  #
  BOOT_ARCHIVE=boot.$ARCH-unix
@@ -82,7 +81,7 @@
  
  #
  # build the run-time system
-@@ -353,9 +403,15 @@ if [ -x "$RUNDIR"/run.$ARCH-$OPSYS ]; then
+@@ -416,9 +467,15 @@ if [ -x "$RUNDIR"/run.$ARCH-$OPSYS ]; then
      vsay $this: Run-time system already exists.
  else
      "$CONFIGDIR"/unpack "$ROOT" runtime
@@ -93,13 +92,13 @@
 +    done
      cd "$BASEDIR"/runtime/objs
      echo $this: Compiling the run-time system.
--    $MAKE -f mk.$ARCH-$OPSYS $EXTRA_DEFS
-+    echo "$MAKE -f mk.$ARCH-$OPSYS $EXTRA_DEFS AS=\"$AS\" ASFLAGS=\"$ASFLAGS\" CFLAGS=\"$CFLAGS\" LDFLAGS=\"$LDFLAGS\""
-+    $MAKE -f mk.$ARCH-$OPSYS $EXTRA_DEFS AS="$AS" ASFLAGS="$ASFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+-    $MAKE -f $RT_MAKEFILE $EXTRA_DEFS
++    echo "$MAKE -f $RT_MAKEFILE $EXTRA_DEFS AS=\"$AS\" ASFLAGS=\"$ASFLAGS\" CFLAGS=\"$CFLAGS\" LDFLAGS=\"$LDFLAGS\""
++    $MAKE -f $RT_MAKEFILE $EXTRA_DEFS AS="$AS" ASFLAGS="$ASFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
      if [ -x run.$ARCH-$OPSYS ]; then
  	mv run.$ARCH-$OPSYS "$RUNDIR"
  	if [ -f runx.$ARCH-$OPSYS ]; then
-@@ -367,7 +423,7 @@ else
+@@ -430,7 +487,7 @@ else
  	if [ -f run.$ARCH-$OPSYS.a ]; then
  	    mv run.$ARCH-$OPSYS.a "$RUNDIR"
  	fi
@@ -108,7 +107,7 @@
      else
  	complain "$this: !!! Run-time system build failed for some reason."
      fi
-@@ -393,7 +449,7 @@ if [ -r "$HEAPDIR"/sml.$HEAP_SUFFIX ]; then
+@@ -456,7 +513,7 @@ if [ -r "$HEAPDIR"/sml.$HEAP_SUFFIX ]; then
  	complain "$this !!! Unable to re-create heap image (sml.$HEAP_SUFFIX)."
      fi
  else
@@ -117,7 +116,7 @@
  
      fish "$ROOT"/"$BOOT_FILES"/smlnj/basis
  
-@@ -428,7 +484,7 @@ else
+@@ -491,7 +548,7 @@ else
  	    cd "$ROOT"/"$BOOT_FILES"
  	    for anchor in * ; do
  		if [ -d $anchor ] ; then
@@ -126,7 +125,7 @@
  		    move $anchor "$LIBDIR"/$anchor
  		fi
  	    done
-@@ -451,6 +507,18 @@ installdriver _ml-build ml-build
+@@ -514,6 +571,18 @@ installdriver _ml-build ml-build
  
  cd "$ROOT"
  
@@ -145,7 +144,7 @@
  #
  # Now do all the rest using the precompiled installer
  # (see base/system/smlnj/installer for details)
-@@ -460,6 +528,12 @@ if [ $nolib = false ] ; then
+@@ -523,6 +592,12 @@ if [ $nolib = false ] ; then
      export ROOT INSTALLDIR CONFIGDIR BINDIR
      CM_TOLERATE_TOOL_FAILURES=true
      export CM_TOLERATE_TOOL_FAILURES
@@ -155,10 +154,10 @@
 +    # propagated to the resulting heaps because the heaps generated
 +    # in this stage don't contain the compiler.
 +    [ -z "$STAGEDIR" ] || CM_PATHCONFIG=$CM_LOCAL_PATHCONFIG
-     if "$BINDIR"/sml -m \$smlnj/installer.cm
+     if "$BINDIR"/sml $SIZE_OPT -m \$smlnj/installer.cm
      then
- 	vsay $this: Installation complete.
-@@ -467,5 +541,20 @@ if [ $nolib = false ] ; then
+ 	# because we create heap2exec without knowing if heap2asm is going
+@@ -536,5 +611,20 @@ if [ $nolib = false ] ; then
  	complain "$this: !!! Installation of libraries and programs failed."
      fi
  fi

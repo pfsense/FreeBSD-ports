@@ -1,5 +1,4 @@
 # Created by: Yoshiro MIHIRA <sanpei@sanpei.org>
-# $FreeBSD$
 
 PORTNAME=	xkbctrl
 PORTVERSION=	1.0
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 DIST_SUBDIR=	xkbctrl
 PLIST_FILES=	bin/xkbctrl
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xkbfile
 NO_WRKSUBDIR=	yes
 

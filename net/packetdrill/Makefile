@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	packetdrill
-PORTVERSION=	0.0.2019022601
-CATEGORIES=	net ipv6
+PORTVERSION=	0.0.2020082101
+CATEGORIES=	net
 
 MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Network stack testing tool
@@ -12,7 +10,7 @@ LICENSE=	GPLv2
 USES=		bison python:run uidfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd-net
-GH_TAGNAME=	f626eee
+GH_TAGNAME=	f7cbdaa
 WRKSRC_SUBDIR=	gtests/net/packetdrill
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	packetdrill.el packetdrill.vim
@@ -20,6 +18,9 @@ PORTDOCS=	README
 PORTEXAMPLES=	tests
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+# XXX Static libraries with PIE are currently unsupported.
+MAKE_ARGS+=	WITHOUT_PIE=true
 
 pre-build:
 	${INSTALL_DATA} ${FILESDIR}/Makefile ${FILESDIR}/Makefile.inc ${WRKSRC}

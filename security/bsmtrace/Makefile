@@ -1,13 +1,12 @@
 # Created by: alm
-# $FreeBSD$
 
 PORTNAME=	bsmtrace
 PORTVERSION=	1.4
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	LOCAL/csjp
 
-MAINTAINER=	alm@FreeBSD.org
+MAINTAINER=	csjp@FreeBSD.org
 COMMENT=	BSM based intrusion detection system
 
 LICENSE=	BSD2CLAUSE

@@ -1,9 +1,8 @@
 # Created by: Brian Dean <bsd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avrdude
 PORTVERSION=	6.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SAVANNAH/avrdude
 

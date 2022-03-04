@@ -1,9 +1,8 @@
 # Created by: Giuseppe Pilichi aka Jacula Modyun <jacula@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	hscolour
-PORTVERSION=	${HSCOLOUR_VERSION}
-PORTREVISION=	2
+PORTVERSION=	1.24.4
+PORTREVISION=	8
 PORTEPOCH=	1
 CATEGORIES=	print haskell
 
@@ -12,7 +11,8 @@ COMMENT=	Colourise Haskell code
 
 LICENSE=	GPLv2
 
-EXECUTABLE=	HsColour
+USES=		cabal
 
-.include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
+EXECUTABLES=	HsColour
+
 .include <bsd.port.mk>

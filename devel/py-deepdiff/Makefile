@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	deepdiff
-DISTVERSION=	4.0.2
+DISTVERSION=	5.6.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,6 +8,7 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Deep difference and search of any Python object/data
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonpickle>0:devel/py-jsonpickle@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ordered-set>0:devel/py-ordered-set@${PY_FLAVOR}

@@ -1,9 +1,8 @@
 # Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	quat
 PORTVERSION=	1.20
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.physcip.uni-stuttgart.de/pages/~phy11733/download/
 PKGNAMESUFFIX=	-gui
@@ -17,6 +16,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS DOCS
 
+USES=		gl xorg
 USE_XORG=	xext
 USE_GL=		gl glut
 GNU_CONFIGURE=	yes

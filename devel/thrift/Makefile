@@ -1,9 +1,8 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION}	# get these from bsd.thrift.mk. any upgrade needs to check ALL dependencies
-PORTREVISION=	1
+PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/thrift/${PORTVERSION}
@@ -13,12 +12,9 @@ COMMENT=	Framework for scalable cross-language services development
 
 LICENSE=	APACHE20
 
-USES=		autoreconf compiler:c++11-lang libtool pkgconfig
-GNU_CONFIGURE=	yes
+USES=		bison cmake compiler:c++11-lang cpe libtool pkgconfig
+CPE_VENDOR=	apache
 USE_LDCONFIG=	yes
-MAKE_JOBS_UNSAFE=	yes
-
-CONFIGURE_ENV+=	${MAKE_ENV}
 
 # For C++ support, use devel/thrift-cpp
 # For C glib support, use devel/thrift-c_glib.
@@ -29,22 +25,7 @@ CONFIGURE_ENV+=	${MAKE_ENV}
 # For nodejs support, use devel/node-thrift.
 # Other languages are not yet supported, please feel free to contribute
 # using one of the leaf ports as an example.
-CONFIGURE_ARGS+=	\
-		--without-c_glib \
-		--without-cpp \
-		--without-qt4 \
-		--without-csharp \
-		--without-erlang \
-		--without-haskell \
-		--without-java \
-		--without-perl \
-		--without-php \
-		--without-php_extension \
-		--without-python \
-		--without-ruby \
-		--without-go
-
-PLIST_FILES=	bin/thrift
+CMAKE_OFF=	BUILD_CPP BUILD_C_GLIB BUILD_JAVA BUILD_JAVASCRIPT BUILD_NODEJS BUILD_PYTHON BUILD_HASKELL
 
 .include <bsd.port.pre.mk>
 .include "bsd.thrift.mk"
@@ -52,7 +33,8 @@ PLIST_FILES=	bin/thrift
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
 post-patch:
-	${REINPLACE_CMD} 's,-Werror,,' ${WRKSRC}/lib/rb/ext/extconf.rb
+	@${REINPLACE_CMD} 's,-Werror,,' ${WRKSRC}/compiler/cpp/Makefile.am \
+		${WRKSRC}/lib/rb/ext/extconf.rb
 
 pre-configure:
 	@${REINPLACE_CMD} '/config.h/d' ${WRKSRC}/lib/cpp/Makefile.am

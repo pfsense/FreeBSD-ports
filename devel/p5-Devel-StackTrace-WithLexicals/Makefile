@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-StackTrace-WithLexicals
 PORTVERSION=	2.01
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Devel::StackTrace + PadWalker
 
 LICENSE=	ART10 GPLv1+

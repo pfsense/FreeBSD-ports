@@ -1,39 +1,40 @@
---- content/browser/child_process_launcher_helper_linux.cc.orig	2019-03-11 22:00:57 UTC
+--- content/browser/child_process_launcher_helper_linux.cc.orig	2021-04-20 18:58:32 UTC
 +++ content/browser/child_process_launcher_helper_linux.cc
-@@ -17,7 +17,9 @@
+@@ -18,9 +18,12 @@
+ #include "content/public/common/content_switches.h"
+ #include "content/public/common/result_codes.h"
  #include "content/public/common/sandboxed_process_launcher_delegate.h"
- #include "services/service_manager/sandbox/linux/sandbox_linux.h"
- #include "services/service_manager/zygote/common/common_sandbox_support_linux.h"
++
 +#if !defined(OS_BSD)
- #include "services/service_manager/zygote/common/zygote_handle.h"
+ #include "content/public/common/zygote/sandbox_support_linux.h"
+ #include "content/public/common/zygote/zygote_handle.h"
+ #include "sandbox/policy/linux/sandbox_linux.h"
 +#endif
- #include "services/service_manager/zygote/host/zygote_communication_linux.h"
- #include "services/service_manager/zygote/host/zygote_host_impl_linux.h"
  
-@@ -69,6 +71,7 @@ ChildProcessLauncherHelper::LaunchProcessOnLauncherThr
+ namespace content {
+ namespace internal {
+@@ -50,10 +53,12 @@ bool ChildProcessLauncherHelper::BeforeLaunchOnLaunche
+   options->fds_to_remap = files_to_register.GetMappingWithIDAdjustment(
+       base::GlobalDescriptors::kBaseDescriptor);
+ 
++#if !defined(OS_BSD)
+   if (GetProcessType() == switches::kRendererProcess) {
+     const int sandbox_fd = SandboxHostLinux::GetInstance()->GetChildSocket();
+     options->fds_to_remap.push_back(std::make_pair(sandbox_fd, GetSandboxFD()));
+   }
++#endif
+ 
+   options->environment = delegate_->GetEnvironment();
+ 
+@@ -68,6 +73,7 @@ ChildProcessLauncherHelper::LaunchProcessOnLauncherThr
      int* launch_result) {
    *is_synchronous_launch = true;
  
 +#if !defined(OS_BSD)
-   service_manager::ZygoteHandle zygote_handle =
+   ZygoteHandle zygote_handle =
        base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kNoZygote)
            ? nullptr
-@@ -82,7 +85,6 @@ ChildProcessLauncherHelper::LaunchProcessOnLauncherThr
-         GetProcessType());
-     *launch_result = LAUNCH_RESULT_SUCCESS;
- 
--#if !defined(OS_OPENBSD)
-     if (handle) {
-       // This is just a starting score for a renderer or extension (the
-       // only types of processes that will be started this way).  It will
-@@ -93,13 +95,13 @@ ChildProcessLauncherHelper::LaunchProcessOnLauncherThr
-       service_manager::ZygoteHostImpl::GetInstance()->AdjustRendererOOMScore(
-           handle, kLowestRendererOomScore);
-     }
--#endif
- 
-     Process process;
-     process.process = base::Process(handle);
+@@ -97,6 +103,7 @@ ChildProcessLauncherHelper::LaunchProcessOnLauncherThr
      process.zygote = zygote_handle;
      return process;
    }
@@ -41,7 +42,7 @@
  
    Process process;
    process.process = base::LaunchProcess(*command_line(), options);
-@@ -117,10 +119,14 @@ ChildProcessTerminationInfo ChildProcessLauncherHelper
+@@ -114,10 +121,14 @@ ChildProcessTerminationInfo ChildProcessLauncherHelper
      const ChildProcessLauncherHelper::Process& process,
      bool known_dead) {
    ChildProcessTerminationInfo info;
@@ -56,9 +57,9 @@
      info.status = base::GetKnownDeadTerminationStatus(process.process.Handle(),
                                                        &info.exit_code);
    } else {
-@@ -144,13 +150,17 @@ void ChildProcessLauncherHelper::ForceNormalProcessTer
+@@ -141,21 +152,27 @@ void ChildProcessLauncherHelper::ForceNormalProcessTer
    DCHECK(CurrentlyOnProcessLauncherTaskRunner());
-   process.process.Terminate(service_manager::RESULT_CODE_NORMAL_EXIT, false);
+   process.process.Terminate(RESULT_CODE_NORMAL_EXIT, false);
    // On POSIX, we must additionally reap the child.
 +#if !defined(OS_BSD)
    if (process.zygote) {
@@ -74,3 +75,13 @@
  }
  
  void ChildProcessLauncherHelper::SetProcessPriorityOnLauncherThread(
+     base::Process process,
+     const ChildProcessLauncherPriority& priority) {
+   DCHECK(CurrentlyOnProcessLauncherTaskRunner());
++#if !defined(OS_BSD)
+   if (process.CanBackgroundProcesses())
+     process.SetProcessBackgrounded(priority.is_background());
++#endif
+ }
+ 
+ // static

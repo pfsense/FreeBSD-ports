@@ -1,5 +1,4 @@
 # Created by: Sakai Hiroaki <sakai@miya.ee.kagu.sut.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xstarroll
 PORTVERSION=	1.1b
@@ -13,6 +12,7 @@ COMMENT=	Letters fly to far, far, far away
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-1.1
 
+USES=		xorg
 USE_XORG=	xpm xt xaw
 ALL_TARGET=	xstarroll
 

@@ -1,5 +1,4 @@
 # Created by: vanilla
-# $FreeBSD$
 
 PORTNAME=	Tk-XMLViewer
 PORTVERSION=	0.21
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Tk::XMLViewer - Tk widget to display XML
+COMMENT=	Perl/Tk widget to display XML
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Tk>=0:x11-toolkits/p5-Tk \

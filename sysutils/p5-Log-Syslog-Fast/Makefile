@@ -1,9 +1,7 @@
 # Created by: Matthew Seaman <matthew@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Log-Syslog-Fast
-PORTVERSION=	0.65
-PORTREVISION=	1
+PORTVERSION=	0.67
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

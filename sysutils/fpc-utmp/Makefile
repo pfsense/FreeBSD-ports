@@ -1,6 +1,3 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	sysutils lang
 PKGNAMESUFFIX=	-utmp
 

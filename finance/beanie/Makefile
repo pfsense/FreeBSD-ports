@@ -1,5 +1,4 @@
 # Created by: Dermot Tynan <dtynan@kalopa.com>
-# $FreeBSD$
 
 PORTNAME=	beanie
 PORTVERSION=	0.8.2
@@ -22,5 +21,8 @@ MAKE_JOBS_UNSAFE=	yes
 post-patch:
 	@${CP} ${WRKSRC}/beanie.mk.sample ${WRKSRC}/beanie.mk
 	@${CP} ${WRKSRC}/tmac/lhead.sample.r ${WRKSRC}/tmac/lhead.r
+# Fix the build with -fno-common (for Clang 11 and GCC 10)
+	@${REINPLACE_CMD} -e 's,int[[:blank:]]*itemno,extern &,' \
+		${WRKSRC}/import/salesorder.c
 
 .include <bsd.port.mk>

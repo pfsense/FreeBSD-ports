@@ -1,7 +1,7 @@
---- panels/user-accounts/meson.build.orig	2018-04-28 22:01:31.903197000 +0200
-+++ panels/user-accounts/meson.build	2018-04-29 08:50:01.767068000 +0200
-@@ -157,7 +157,8 @@
- )
+--- panels/user-accounts/meson.build.orig	2021-09-17 20:48:56 UTC
++++ panels/user-accounts/meson.build
+@@ -170,7 +170,8 @@ sources += gnome.mkenums_simple(
+   sources: files(enum_headers))
  
  # Kerberos support
 -krb_dep = dependency('krb5', required: false)

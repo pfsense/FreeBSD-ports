@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	pixelize
 PORTVERSION=	1.0.0
@@ -14,7 +13,7 @@ COMMENT=	Use many scaled down images to try to duplicate another image
 
 LICENSE=	GPLv2
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 PLIST_FILES=	bin/make_db bin/pixelize
 

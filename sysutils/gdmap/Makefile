@@ -1,5 +1,4 @@
 # Created by: Rodrigo Graeff <delphus@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gdmap
 PORTVERSION=	0.8.1
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
-USES=		gettext gmake pathfix perl5 pkgconfig
+USES=		gettext gmake gnome pathfix perl5 pkgconfig
 USE_PERL5=	build
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes

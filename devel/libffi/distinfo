@@ -1,2 +1,5 @@
-SHA256 (libffi-3.2.1.tar.gz) = d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37
-SIZE (libffi-3.2.1.tar.gz) = 940837
+TIMESTAMP = 1597921173
+SHA256 (libffi-3.3.tar.gz) = 72fba7922703ddfa7a028d513ac15a85c8d54c8d67f55fa5a4802885dc652056
+SIZE (libffi-3.3.tar.gz) = 1305466
+SHA256 (01a75ed76ea7e57f1b7a5c183e2b1e890e6aa0fd.diff) = 627aac849e93debaa21cd85feb82b1a28cf481687a14717cf522eaec2a2b19aa
+SIZE (01a75ed76ea7e57f1b7a5c183e2b1e890e6aa0fd.diff) = 412

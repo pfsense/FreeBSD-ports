@@ -1,11 +1,9 @@
 # Created by: Johannes Dieterich <dieterich@ogolem.org>
-# $FreeBSD$
 
 PORTNAME=	libxc
-DISTVERSION=	4.2.3
-PORTREVISION=	1
+DISTVERSION=	5.0.0
 CATEGORIES=	science
-MASTER_SITES=	http://www.tddft.org/programs/octopus/download/libxc/${DISTVERSION}/
+MASTER_SITES=	https://www.tddft.org/programs/${PORTNAME}/down/${DISTVERSION}/
 
 MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Library of exchange-correlation functionals for DFT

@@ -1,5 +1,4 @@
 # Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
 
 PORTNAME=	kmflcomp
 PORTVERSION=	0.9.9
@@ -18,9 +17,9 @@ COMMENT=	Compiler of Keyman KMFL keyboard sources to use with SCIM/IBus
 
 BUILD_DEPENDS=	bison:devel/bison
 
+USES=		iconv libtool xorg
 USE_XORG=	x11
 USE_LDCONFIG=	yes
-USES=		iconv libtool
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}

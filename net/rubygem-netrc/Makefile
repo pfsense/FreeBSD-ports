@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	netrc
 PORTVERSION=	0.11.0
 CATEGORIES=	net rubygems

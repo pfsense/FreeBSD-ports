@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libpoly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.7
+DISTVERSION=	0.1.11
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/LICENCE
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-USES=		cmake
+USES=		cmake:testing
 USE_GITHUB=	yes
 GH_ACCOUNT=	SRI-CSL
 USE_LDCONFIG=	yes

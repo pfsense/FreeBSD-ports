@@ -1,9 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	SciPlot
 PORTVERSION=	1.36
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	graphics math
 MASTER_SITES=	XCONTRIB/widgets
 
@@ -12,8 +11,8 @@ COMMENT=	Full-featured Xt widget to display 2D data in a graph
 
 LICENSE=	GPLv2
 
-USES=		imake motif
-USE_XORG=	xp xt x11
+USES=		imake motif xorg
+USE_XORG=	xt x11
 MAKE_ENV=	EXTRA_DEFINES="-fPIC" LIBNAME=${LIBNAME}
 USE_LDCONFIG=	yes
 

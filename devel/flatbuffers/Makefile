@@ -1,10 +1,8 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	flatbuffers
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.0
-PORTREVISION=	1
+DISTVERSION=	2.0.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,15 +11,15 @@ COMMENT=	Memory efficient serialization library
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake compiler:c++11-lib
+USES=		cmake compiler:c++11-lib cpe
+CPE_VENDOR=	google
 USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
 
 CMAKE_ON=	FLATBUFFERS_BUILD_SHAREDLIB
 CMAKE_OFF=	FLATBUFFERS_BUILD_FLATLIB FLATBUFFERS_BUILD_TESTS
-TEST_TARGET=	test
-PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \

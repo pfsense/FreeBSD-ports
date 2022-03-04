@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	Perl-Critic-Pulp
-PORTVERSION=	96
+PORTVERSION=	99
 CATEGORIES=	textproc devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	some add-on perlcritic policies
+COMMENT=	Collection of add-on policies for Perl::Critic
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -19,6 +17,7 @@ RUN_DEPENDS=	p5-Perl-Critic>=0:textproc/p5-Perl-Critic \
 
 USES=		perl5
 USE_PERL5=	configure
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

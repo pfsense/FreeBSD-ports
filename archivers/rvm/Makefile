@@ -1,9 +1,8 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rvm
 PORTVERSION=	1.11
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	archivers
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	an

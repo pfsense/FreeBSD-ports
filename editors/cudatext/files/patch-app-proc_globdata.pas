@@ -1,27 +1,40 @@
---- app/proc_globdata.pas	2018-04-19 12:59:47.000000000 -0500
-+++ app/proc_globdata.pas	2018-04-25 21:26:43.609078000 -0500
-@@ -745,7 +745,7 @@
-   Result:=
-   {$ifdef windows} '' {$endif}
-   {$ifdef linux} '/usr/share/cudatext' {$endif}
--  {$ifdef freebsd} '' {$endif}
-+  {$ifdef freebsd} '%%DATADIR%%' {$endif}
-   {$ifdef darwin} ExtractFileDir(OpDirExe)+'/Resources' {$endif}
+--- app/proc_globdata.pas	2020-05-11 23:45:28.000000000 -0500
++++ app/proc_globdata.pas	2020-05-13 18:40:54.377841000 -0500
+@@ -909,6 +909,10 @@
+   exit(ExtractFileDir(OpDirExe)+'/Resources');
+   {$endif}
+ 
++  {$ifdef freebsd}
++  exit('%%DATADIR%%');
++  {$endif}
++
+   Result:= '';
  end;
  
-@@ -895,6 +895,15 @@
-         '/usr/share/cudatext/settings_default'
+@@ -973,6 +977,10 @@
+   OpDirLocal:= AppDir_Home+'Library/Application Support/CudaText';
+   CreateDirUTF8(OpDirLocal);
+   {$endif}
++  {$ifdef freebsd}
++  OpDirLocal:= AppDir_Home + '.config/' + 'cudatext';
++  CreateDirUTF8(OpDirLocal);
++  {$endif}
+ 
+   AppDir_Settings:= OpDirLocal+DirectorySeparator+'settings';
+   CreateDirUTF8(AppDir_Settings);
+@@ -1000,6 +1008,15 @@
+         OpDirPrecopy+'/',
+         OpDirLocal
          ], S);
-       {$endif}
-+      {$ifdef freebsd}
-+      RunCommand('cp', ['-R',
++  {$endif}
++  {$ifdef freebsd}
++    RunCommand('cp', ['-R',
 +        '%%DATADIR%%/py',
 +        '%%DATADIR%%/data',
 +        '%%DATADIR%%/readme',
 +        '%%DATADIR%%/settings_default',
 +        OpDirLocal
-+        ], S);
-+      {$endif}
-       {$ifdef darwin}
-       //see rsync help. need options:
-       // -u (update)
++         ], S);
+   {$endif}
+ 
+   AppDir_Py:= OpDirLocal+DirectorySeparator+'py';

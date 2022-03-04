@@ -1,5 +1,4 @@
 # Created by: Frank Steinborn <steinex@nognu.de>
-# $FreeBSD$
 #    $MCom: ports/devel/libgee/Makefile,v 1.13 2012/10/14 20:47:22 kwm Exp $
 
 PORTNAME=	libgee
@@ -15,7 +14,8 @@ COMMENT=	GObject collection library
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-introspection=yes
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool pathfix pkgconfig tar:xz
+USES=		cpe gmake gnome libtool pathfix pkgconfig tar:xz
+CPE_VENDOR=	gnome
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 

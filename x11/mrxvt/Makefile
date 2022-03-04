@@ -1,5 +1,4 @@
 # Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mrxvt
 PORTVERSION=	0.4.2
@@ -18,7 +17,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-lastlog --disable-wtmp
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-USES=		jpeg tar:tgz
+USES=		cpe jpeg tar:tgz xorg
+CPE_VENDOR=	${PORTNAME}_project
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS JAPANESE XFT

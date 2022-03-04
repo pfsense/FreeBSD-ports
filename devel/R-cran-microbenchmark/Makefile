@@ -1,8 +1,7 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	microbenchmark
-PORTREVISION=	3
+PORTREVISION=	5
 DISTVERSION=	1.4-2
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}

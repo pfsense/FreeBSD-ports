@@ -1,26 +1,25 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	snort
-PORTVERSION=	2.9.13
-PORTREVISION=   1
+PORTVERSION=	2.9.19
+PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
-		ZI
+		https://snort.org/downloads/archive/snort/
 
 PATCH_DIST_STRIP=	-p1
 
-MAINTAINER=	zi@FreeBSD.org
+MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Lightweight network intrusion detection system
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	daq>=2.2.2_1:net/daq
+BUILD_DEPENDS=	daq>=2.2.2_3:net/daq
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap
-RUN_DEPENDS=	daq>=2.2.2_1:net/daq
+RUN_DEPENDS=	daq>=2.2.2_3:net/daq
 
 USES=			bison cpe libtool pathfix shebangfix ssl
 USE_RC_SUBR=		snort
@@ -43,7 +42,7 @@ OPTIONS_DEFINE=		IPV6 GRE HA NORMALIZER DOCS APPID \
 
 OPTIONS_GROUP=		ADDONS DEV
 OPTIONS_GROUP_ADDONS=	BARNYARD PULLEDPORK
-OPTIONS_GROUP_DEV=	DBGSNORT
+OPTIONS_GROUP_DEV=	DBGSNORT COREDUMPS
 OPTIONS_SUB=		yes
 OPTIONS_DEFAULT=	GRE NORMALIZER BARNYARD \
 			PERFPROFILE SOURCEFIRE PULLEDPORK
@@ -55,7 +54,6 @@ NONETHER_DESC=		Non-Ethernet Decoders
 NORMALIZER_DESC=	Normalizer
 PERFPROFILE_DESC=	Performance profiling
 SOURCEFIRE_DESC=	Sourcefire recommended build options
-TARGETBASED_DESC=	Targetbased support
 APPID_DESC=		Build with application id support (EXPERIMENTAL)
 HA_DESC=		Enable high-availability state sharing (EXPERIMENTAL)
 FILEINSPECT_DESC=	Build with extended file inspection features (EXPERIMENTAL)
@@ -63,9 +61,11 @@ ADDONS_DESC=		Depend on 3rd party addons
 BARNYARD_DESC=		Depend on barnyard2 (supports also snortsam)
 PULLEDPORK_DESC=	Depend on pulledpork
 DEV_DESC=		Developer options
-DBGSNORT_DESC=		Enable debugging symbols+core dumps
+DBGSNORT_DESC=		Enable debugging symbols
+COREDUMPS_DESC=		Enable core dumps
 
-DBGSNORT_CONFIGURE_ENABLE=	corefiles debug
+COREDUMPS_CONFIGURE_ENABLE=	corefiles
+DBGSNORT_CONFIGURE_ENABLE=	debug
 DBGSNORT_MAKE_ENV=		DONTSTRIP="yes"
 GRE_CONFIGURE_ENABLE=		gre
 LRGPCAP_CONFIGURE_ENABLE=	large-pcap
@@ -79,11 +79,17 @@ FILEINSPECT_CONFIGURE_ENABLE=	file-inspect
 
 BARNYARD_RUN_DEPENDS=	barnyard2:security/barnyard2
 PULLEDPORK_RUN_DEPENDS=	pulledpork.pl:security/pulledpork
-APPID_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit21
+APPID_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LOCALBASE}/include/luajit-2.1" \
 			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
 
-.include <bsd.port.options.mk>
+# Disable SIMD on 32-bit arm. Snort has numerous arbitrarily misaligned memory
+# accesses and some of them cause faults. The kludge below combined with
+# patch-configure seems to work around it well enough.
+#
+# Note the change is more aggressive than it possibly needs to be reduce surprises.
+CFLAGS_armv6=	-mfpu=vfpv3
+CFLAGS_armv7=	-mfpu=vfpv3
 
 CONFIG_FILES=	classification.config gen-msg.map reference.config \
 		snort.conf threshold.conf unicode.map file_magic.conf attribute_table.dtd
@@ -106,19 +112,18 @@ post-patch:
 		-e '/^# include .PREPROC_RULE/s/# include/include/' \
 		${WRKSRC}/etc/snort.conf
 
+post-patch-IPV6-off:
 # IPv6 is no longer a ./configure option!
-.if ! ${PORT_OPTIONS:MIPV6}
 	@${REINPLACE_CMD} -e '/normalize_ip6/s/^preprocessor/#preprocessor/' \
 		-e '/normalize_icmp6/s/^preprocessor/#preprocessor/' \
 		${WRKSRC}/etc/snort.conf
-.endif
 
 post-build:
 	@${FIND} ${WRKSRC}/src -name '*.0' -type f -exec ${STRIP_CMD} {} \;
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR} ${STAGEDIR}${RULES_DIR} ${STAGEDIR}${LOGS_DIR} \
-		${STAGEDIR}${PREPROC_RULE_DIR} ${STAGEDIR}${DOCSDIR}
+		${STAGEDIR}${PREPROC_RULE_DIR}
 
 .for f in ${CONFIG_FILES}
 	${INSTALL_DATA} ${WRKSRC}/etc/${f} ${STAGEDIR}${ETCDIR}/${f}-sample
@@ -127,6 +132,9 @@ post-install:
 .for f in ${PREPROC_RULES}
 	${INSTALL_DATA} ${WRKSRC}/preproc_rules/${f} ${STAGEDIR}${PREPROC_RULE_DIR}/${f}-sample
 .endfor
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${PREPROC_RULE_DIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

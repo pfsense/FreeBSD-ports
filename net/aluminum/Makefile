@@ -1,10 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	Aluminum
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.1-6
-DISTVERSIONSUFFIX=	-g78fa7ea
-PORTREVISION=	1
+DISTVERSION=	1.0.0
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,21 +8,15 @@ COMMENT=	Generic interface to high-performance communication libraries
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libhwloc.so:devel/hwloc \
+LIB_DEPENDS=	libhwloc.so:devel/hwloc2 \
 		libmpi.so:net/openmpi
 
-USES=		cmake
-USE_GITHUB=	yes
-GH_ACCOUNT=	LLNL
+USES=		cmake compiler:c11
 USE_LDCONFIG=	yes
 
-CONFLICTS_BUILD=	openmp # because OpenMP detection is broken in cmake even with port clang, see bug#234050
-LDFLAGS+=	${LOCALBASE}/llvm${LLVM_DEFAULT}/lib/libomp.so # see above
+USE_GITHUB=	yes
+GH_ACCOUNT=	LLNL
 
-# OpenMP detection is broken with base clang, see bug#223678
-BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-CPP=		clang-cpp${LLVM_DEFAULT}
-CC=		clang${LLVM_DEFAULT}
-CXX=		clang++${LLVM_DEFAULT}
+LDFLAGS+=	-lexecinfo
 
 .include <bsd.port.mk>

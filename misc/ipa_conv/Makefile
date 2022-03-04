@@ -1,5 +1,4 @@
 # Created by: Andrey Simonenko
-# $FreeBSD$
 
 PORTNAME=	ipa_conv
 PORTVERSION=	1.1
@@ -7,7 +6,7 @@ PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	SF/ipa-system/modules/ipa_conv
 
-MAINTAINER=	misc/ipa_conv
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IPA accounting/database module for converting statistics
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ipa_mod.h:sysutils/ipa

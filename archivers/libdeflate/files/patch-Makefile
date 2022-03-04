@@ -1,27 +1,23 @@
---- Makefile.orig	2019-01-15 05:37:48 UTC
+--- Makefile.orig	2020-11-10 03:29:50 UTC
 +++ Makefile
-@@ -21,7 +21,7 @@ cc-option = $(shell if $(CC) $(1) -c -x c /dev/null -o
+@@ -48,7 +48,7 @@ cc-option = $(shell if $(CC) $(1) -c -x c /dev/null -o
  	      1>&2 2>/dev/null; then echo $(1); fi)
  
  override CFLAGS :=							\
--	$(CFLAGS) -O2 -fomit-frame-pointer -std=c99 -I. -Icommon	\
-+	$(CFLAGS) -std=c99 -I. -Icommon	\
- 	-Wall -Wundef							\
+-	-O2 -fomit-frame-pointer -std=c99 -I. -Wall -Wundef		\
++	-std=c99 -I. -Wall -Wundef					\
  	$(call cc-option,-Wpedantic)					\
  	$(call cc-option,-Wdeclaration-after-statement)			\
-@@ -240,11 +240,11 @@ DEFAULT_TARGETS += gunzip$(PROG_SUFFIX)
- all:$(DEFAULT_TARGETS)
- 
+ 	$(call cc-option,-Wmissing-prototypes)				\
+@@ -305,9 +305,9 @@ all:$(DEFAULT_TARGETS)
  install:all
--	install -Dm644 -t $(DESTDIR)$(PREFIX)/lib $(STATIC_LIB)
--	install -Dm755 -t $(DESTDIR)$(PREFIX)/lib $(SHARED_LIB)
-+	install -m644 $(STATIC_LIB) $(DESTDIR)$(PREFIX)/lib
-+	install -s -m755 $(SHARED_LIB) $(DESTDIR)$(PREFIX)/lib
- 	ln -sf $(SHARED_LIB) $(DESTDIR)$(PREFIX)/lib/libdeflate.so
--	install -Dm644 -t $(DESTDIR)$(PREFIX)/include libdeflate.h
--	install -Dm755 gzip $(DESTDIR)$(PREFIX)/bin/libdeflate-gzip
-+	install -m644 libdeflate.h $(DESTDIR)$(PREFIX)/include
-+	install -s -m755 gzip $(DESTDIR)$(PREFIX)/bin/libdeflate-gzip
- 	ln -f $(DESTDIR)$(PREFIX)/bin/libdeflate-gzip $(DESTDIR)$(PREFIX)/bin/libdeflate-gunzip
- 
- uninstall:
+ 	install -d $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCDIR) $(DESTDIR)$(BINDIR)
+ 	install -m644 $(STATIC_LIB) $(DESTDIR)$(LIBDIR)
+-	install -m755 $(SHARED_LIB) $(DESTDIR)$(LIBDIR)
++	install -s -m755 $(SHARED_LIB) $(DESTDIR)$(LIBDIR)
+ 	install -m644 libdeflate.h $(DESTDIR)$(INCDIR)
+-	install -m755 gzip$(PROG_SUFFIX) \
++	install -s -m755 gzip$(PROG_SUFFIX) \
+ 		$(DESTDIR)$(BINDIR)/libdeflate-gzip$(PROG_SUFFIX)
+ 	ln -f $(DESTDIR)$(BINDIR)/libdeflate-gzip$(PROG_SUFFIX)		\
+ 	      $(DESTDIR)$(BINDIR)/libdeflate-gunzip$(PROG_SUFFIX)

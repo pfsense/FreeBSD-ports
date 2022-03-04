@@ -1,10 +1,9 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	phototonic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0
-PORTREVISION=	3
+DISTVERSION=	2.1
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org

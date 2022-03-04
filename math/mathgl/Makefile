@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	mathgl
-DISTVERSION=	2.4.2.1
+DISTVERSION=	2.4.4
 PORTREVISION=	4
 CATEGORIES=	math graphics
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION:R}
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for high-quality scientific data visualization
@@ -20,7 +18,7 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng.so:graphics/png \
 		libsz.so:science/szip
 
-USES=		cmake compiler:c++11-lang gettext-runtime jpeg python:2.7
+USES=		cmake compiler:c++11-lang gettext-runtime gl jpeg xorg
 USE_GL=		gl glu glut
 USE_XORG=	xi xmu
 USE_LDCONFIG=	yes
@@ -47,9 +45,11 @@ FLTK_DESC=		Enable fltk widget
 PLIST_SUB=		SHLIB_VER=7.5.0
 
 PYTHON_CMAKE_BOOL=	enable-python
-PYTHON_BUILD_DEPENDS=	swig3.0:devel/swig30 \
+PYTHON_BUILD_DEPENDS=	swig:devel/swig \
 			${PYNUMPY}
 PYTHON_RUN_DEPENDS=	${PYNUMPY}
+PYTHON_BROKEN=		Python option needs to be fixed: lgpl needs to be enabled for it
+
 MPI_CMAKE_BOOL=		enable-mpi
 MPI_LIB_DEPENDS=	libmpi.so:net/openmpi
 

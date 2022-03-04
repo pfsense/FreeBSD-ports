@@ -1,9 +1,8 @@
 # Created by: Noritaka Ishizumi <graphite@taurus.bekkoame.or.jp>
-# $FreeBSD$
 
 PORTNAME=	suck
 PORTVERSION=	4.3.4
-CATEGORIES=	news ipv6
+CATEGORIES=	news
 PKGNAMESUFFIX?=	${CNEWS_SUFFIX}${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org

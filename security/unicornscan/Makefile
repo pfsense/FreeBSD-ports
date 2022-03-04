@@ -1,5 +1,4 @@
 # Created by: Jon Passki <cykyc@yahoo.com>
-# $FreeBSD$
 
 PORTNAME=	unicornscan
 PORTVERSION=	0.4.2
@@ -11,6 +10,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Asynchronous TCP and UDP port scanner
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Very outdated and abandoned, current version in tree was released in 2004 and last release by upstream in Aug 2013. Please consider using security/nmap or security/rustscan
+EXPIRATION_DATE=2022-03-31
 
 LIB_DEPENDS=	libnet.so:net/libnet
 

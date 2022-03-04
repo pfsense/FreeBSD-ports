@@ -1,5 +1,4 @@
 # Created by: Ralf Becker <ralf@akk.org>
-# $FreeBSD$
 
 PORTNAME=	moon-buggy
 PORTVERSION=	1.0.51
@@ -7,7 +6,7 @@ PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://seehuhn.de/media/programs/
 
-MAINTAINER=	arved@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drive a buggy across the moons surface
 
 LICENSE=	GPLv2

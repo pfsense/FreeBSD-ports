@@ -1,5 +1,4 @@
 # Created by: Geraud Continsouzas <geraud@gcu.info>
-# $FreeBSD$
 
 PORTNAME=	Object-InsideOut
 PORTVERSION=	4.05
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JDHEDDEN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Comprehensive inside-out object support module
 
 LICENSE=	ART10 GPLv1+

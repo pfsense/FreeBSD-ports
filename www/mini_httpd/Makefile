@@ -1,10 +1,9 @@
 # Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mini_httpd
 PORTVERSION=	1.30
-PORTREVISION=	2
-CATEGORIES=	www ipv6
+PORTREVISION=	3
+CATEGORIES=	www
 MASTER_SITES=	https://www.acme.com/software/mini_httpd/
 
 MAINTAINER=	leres@FreeBSD.org

@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Horde_Crypt
 DISTVERSION=	2.7.12
@@ -12,7 +11,7 @@ COMMENT=	Horde Cryptography API
 OPTIONS_DEFINE=	BCMATH
 BCMATH_DESC=	Depend on bcmath PHP extension
 
-USES=	horde
+USES=		horde php cpe
 USE_HORDE_RUN=	Horde_Exception \
 		Horde_Mime \
 		Horde_Stream_Filter \

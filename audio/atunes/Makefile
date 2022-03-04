@@ -1,21 +1,19 @@
 # Created by: Lars Engels <lme@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	atunes
 PORTVERSION=	3.1.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/aTunes%20${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-featured audio player and manager developed in Java
 
 LICENSE=	GPLv2
 
 NO_BUILD=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 SUB_FILES=	atunes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

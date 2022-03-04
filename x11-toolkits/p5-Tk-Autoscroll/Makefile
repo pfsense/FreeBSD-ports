@@ -1,5 +1,4 @@
 # Created by: vanilla
-# $FreeBSD$
 
 PORTNAME=	Tk-Autoscroll
 PORTVERSION=	1.14
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Tk::Autoscroll - space invaders-like scrolling
+COMMENT=	Space invaders-like scrolling in Perl
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Tk>=0:x11-toolkits/p5-Tk

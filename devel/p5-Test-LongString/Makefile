@@ -1,5 +1,4 @@
 # Created by: aturetta@commit.it
-# $FreeBSD$
 
 PORTNAME=	Test-LongString
 PORTVERSION=	0.17
@@ -15,5 +14,7 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

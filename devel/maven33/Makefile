@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	maven33
 DISTVERSION=	3.3.9
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/maven/maven-3/${DISTVERSION}/binaries
 DISTNAME=	apache-maven-${DISTVERSION}-bin
@@ -11,6 +10,9 @@ COMMENT=	Java project management tool, 3.3.x branch
 
 LICENSE=	APACHE20
 
+DEPRECATED=	Outdated, unsupported upstream
+EXPIRATION_DATE=2022-01-15
+
 RUN_DEPENDS=	mvn:devel/maven-wrapper
 
 USES=		cpe
@@ -18,7 +20,6 @@ CPE_PRODUCT=	maven
 CPE_VENDOR=	apache
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 NO_BUILD=	yes
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 WRKSRC=		${WRKDIR}/apache-maven-${DISTVERSION}

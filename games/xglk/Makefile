@@ -1,5 +1,4 @@
 # Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xglk
 PORTVERSION=	411
@@ -16,7 +15,7 @@ LIB_DEPENDS+=	libpng.so:graphics/png
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		jpeg
+USES=		jpeg xorg
 USE_XORG=	x11
 MAKE_ENV+=	AR=${AR} RANLIB=${RANLIB} ECHO=${ECHO} RM=${RM:Q}
 

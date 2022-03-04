@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	haproxyctl
 PORTVERSION=	0.5
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +12,7 @@ LICENSE=	GPLv3
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist
 
 USE_GITHUB=	yes

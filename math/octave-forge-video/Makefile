@@ -1,9 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-video
-PORTVERSION=	1.2.4
-PORTREVISION=	11
+PORTVERSION=	2.0.2
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -11,8 +9,6 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
-
-BROKEN=		does not build with octave>=5.1.0
 
 USES=		pkgconfig
 GNU_CONFIGURE=	yes

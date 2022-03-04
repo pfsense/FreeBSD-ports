@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gitaly
-PORTVERSION=	0.30.0
+PORTVERSION=	14.4.0.pre.rc43
+PORTREVISION=	0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -9,16 +8,15 @@ MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Auto-generated gRPC client for gitaly
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/ruby/LICENSE.txt
 
-BUILD_DEPENDS=	rubygem-bundler>=1.12:sysutils/rubygem-bundler \
-		rubygem-rake>=10.0:devel/rubygem-rake
-RUN_DEPENDS=	rubygem-google-protobuf>=3.4.0.2:devel/rubygem-google-protobuf \
-		rubygem-grpc>=1.0:net/rubygem-grpc \
-		gitaly>=0.82.0:devel/gitaly
+RUN_DEPENDS=	rubygem-grpc142>=1.0<2.0:net/rubygem-grpc142 \
+		gitaly>=14.4:devel/gitaly
+
+USES=		cpe gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USES=		gem
-USE_RUBY=	yes
+
+CPE_VENDOR=	gitlab
 
 .include <bsd.port.mk>

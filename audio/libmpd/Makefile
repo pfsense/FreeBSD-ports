@@ -1,5 +1,4 @@
 # Created by: Stepan Zastupov [RedChrom] <redchrom@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libmpd
 PORTVERSION=	11.8.17
@@ -13,7 +12,7 @@ COMMENT=	Abstraction around libmpdclient
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool pathfix pkgconfig
+USES=		gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

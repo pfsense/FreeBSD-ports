@@ -1,0 +1,21 @@
+--- test/mpi/configure.orig	2021-01-05 15:32:00 UTC
++++ test/mpi/configure
+@@ -10907,17 +10907,7 @@ the same routine with arguments of different types." "
+ fi
+ 
+ addarg=$pac_cv_prog_f77_mismatched_args_parm
+-
+-    if test "X$addarg" != "X" ; then
+-        # We could add the names of all of the MPI routines that
+-        # accept different types.  Instead, we fail cleanly.
+-        # Some Fortran compilers allow you to turn off checking for
+-        # mismatched arguments for *all* routines.  Adding an argument
+-	# that turns off checking for *everything* is not something that
+-	# configure should do - if the user wants this, they can follow
+-	# the instructions in the following error message.
+-	as_fn_error $? "The Fortran compiler $F77 does not accept programs that call the same routine with arguments of different types without the option $addarg.  Rerun configure with FFLAGS=$addarg" "$LINENO" 5
+-    fi
++FFLAGS="$FFLAGS $addarg"
+ 
+     # Check whether we need -lU77 to get iargc and getarg, which
+     # are used for a few of the tests in spawn (U77 was needed with

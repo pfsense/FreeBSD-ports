@@ -1,10 +1,10 @@
 # Created by: Martin Preuss <martin@libchipcard.de>
-# $FreeBSD$
 
 PORTNAME=	libchipcard
 PORTVERSION=	5.0.4
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://www2.aquamaniac.de/sites/download/download.php?package=02&release=200&file=01&dummy=/
+MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/158/
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Library for easy access to chipcards
@@ -24,7 +24,7 @@ INSTALL_TARGET=	install-strip
 PLIST_SUB=	GWEN_SHLIB_VER="${GWEN_SHLIB_VER}"
 USE_LDCONFIG=	yes
 
-GWEN_SHLIB_VER=	60
+GWEN_SHLIB_VER=	79
 
 OPTIONS_DEFINE=			DOXYGEN MEMDEBUG
 

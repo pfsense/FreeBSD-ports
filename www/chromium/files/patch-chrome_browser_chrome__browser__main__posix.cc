@@ -1,11 +1,11 @@
---- chrome/browser/chrome_browser_main_posix.cc.orig	2019-03-11 22:00:53 UTC
+--- chrome/browser/chrome_browser_main_posix.cc.orig	2021-04-14 18:40:52 UTC
 +++ chrome/browser/chrome_browser_main_posix.cc
-@@ -142,7 +142,7 @@ void ChromeBrowserMainPartsPosix::PostMainMessageLoopS
- void ChromeBrowserMainPartsPosix::ShowMissingLocaleMessageBox() {
- #if defined(OS_CHROMEOS)
-   NOTREACHED();  // Should not ever happen on ChromeOS.
--#elif defined(OS_MACOSX)
-+#elif defined(OS_MACOSX) || defined(OS_BSD)
-   // Not called on Mac because we load the locale files differently.
-   NOTREACHED();
- #elif defined(USE_AURA)
+@@ -72,7 +72,7 @@ void ExitHandler::ExitWhenPossibleOnUIThread(int signa
+   } else {
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
+     switch (signal) {
+       case SIGINT:
+       case SIGHUP:

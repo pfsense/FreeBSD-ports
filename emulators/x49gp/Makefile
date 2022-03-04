@@ -1,11 +1,10 @@
 # Created by: Shaun Amott <shaun@FreeBSD.org>
-# $FreeBSD$
 
 # Note: sdcard64.tar.gz contains just an empty 64MB FAT-16 disk image
 
 PORTNAME=	x49gp
 PORTVERSION=	20100425
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	emulators math
 MASTER_SITES=	LOCAL/shaun
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} sdcard64.tar.gz
@@ -20,13 +19,11 @@ NOT_FOR_ARCHS=		aarch64 armv6 armv7
 NOT_FOR_ARCHS_REASON=	unsupported CPU = unknown
 
 WRKSRC=		${WRKDIR}/x49gp/x49gp-code
-HAVE_CONFIGURE=	yes
 
-USE_GCC=	any
+USES=		gmake gnome pkgconfig xorg
+USE_GCC=	yes
 USE_XORG=	x11
 USE_GNOME=	gtk20
-
-USES=		gmake pkgconfig
 
 OPTIONS_SINGLE=	FIRMWARE
 OPTIONS_SINGLE_FIRMWARE=FIRMWARE_215 FIRMWARE_209

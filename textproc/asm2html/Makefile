@@ -1,10 +1,9 @@
 # Created by: Ben Haga <tuxsuximus@hotmail.com>
-# $FreeBSD$
 
 PORTNAME=	asm2html
 PORTVERSION=	1.7
 CATEGORIES=	textproc
-MASTER_SITES=	http://bsdforge.com/projects/source/textproc/asm2html/
+MASTER_SITES=	https://BSDforge.com/projects/source/textproc/asm2html/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Converts NASM syntax assembly code to HTML code
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		tar:xz
 GNU_CONFIGURE=	yes
 MAKE_ARGS=	CC=${CC}
+CFLAGS+=	-fcommon
 
 PLIST_FILES=	bin/asm2html man/man1/asm2html.1.gz
 

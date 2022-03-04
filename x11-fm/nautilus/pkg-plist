@@ -19,19 +19,19 @@ lib/libnautilus-extension.so.1
 lib/libnautilus-extension.so.1.5.0
 lib/nautilus/extensions-3.0/libnautilus-image-properties.so
 lib/nautilus/extensions-3.0/libnautilus-sendto.so
+lib/nautilus/extensions-3.0/libtotem-properties-page.so
 libdata/pkgconfig/libnautilus-extension.pc
+%%DATADIR%%/ontology/nautilus.description
+%%DATADIR%%/ontology/nautilus.ontology
 share/applications/nautilus-autorun-software.desktop
 share/applications/org.gnome.Nautilus.desktop
 share/dbus-1/services/org.freedesktop.FileManager1.service
+share/dbus-1/services/org.gnome.Nautilus.Tracker3.Miner.Extract.service
+share/dbus-1/services/org.gnome.Nautilus.Tracker3.Miner.Files.service
 share/dbus-1/services/org.gnome.Nautilus.service
 share/gir-1.0/Nautilus-3.0.gir
 share/gnome-shell/search-providers/org.gnome.Nautilus.search-provider.ini
-share/icons/hicolor/16x16/apps/org.gnome.Nautilus.png
-share/icons/hicolor/22x22/apps/org.gnome.Nautilus.png
-share/icons/hicolor/24x24/apps/org.gnome.Nautilus.png
-share/icons/hicolor/32x32/apps/org.gnome.Nautilus.png
-share/icons/hicolor/48x48/apps/org.gnome.Nautilus.png
-share/icons/hicolor/512x512/apps/org.gnome.Nautilus.png
+share/icons/hicolor/scalable/apps/org.gnome.Nautilus.svg
 share/icons/hicolor/symbolic/apps/org.gnome.Nautilus-symbolic.svg
 share/locale/af/LC_MESSAGES/nautilus.mo
 share/locale/am/LC_MESSAGES/nautilus.mo
@@ -50,6 +50,7 @@ share/locale/br/LC_MESSAGES/nautilus.mo
 share/locale/bs/LC_MESSAGES/nautilus.mo
 share/locale/ca/LC_MESSAGES/nautilus.mo
 share/locale/ca@valencia/LC_MESSAGES/nautilus.mo
+share/locale/ckb/LC_MESSAGES/nautilus.mo
 share/locale/crh/LC_MESSAGES/nautilus.mo
 share/locale/cs/LC_MESSAGES/nautilus.mo
 share/locale/cy/LC_MESSAGES/nautilus.mo
@@ -87,6 +88,7 @@ share/locale/is/LC_MESSAGES/nautilus.mo
 share/locale/it/LC_MESSAGES/nautilus.mo
 share/locale/ja/LC_MESSAGES/nautilus.mo
 share/locale/ka/LC_MESSAGES/nautilus.mo
+share/locale/kab/LC_MESSAGES/nautilus.mo
 share/locale/kk/LC_MESSAGES/nautilus.mo
 share/locale/km/LC_MESSAGES/nautilus.mo
 share/locale/kn/LC_MESSAGES/nautilus.mo
@@ -100,6 +102,7 @@ share/locale/lv/LC_MESSAGES/nautilus.mo
 share/locale/mai/LC_MESSAGES/nautilus.mo
 share/locale/mg/LC_MESSAGES/nautilus.mo
 share/locale/mi/LC_MESSAGES/nautilus.mo
+share/locale/mjw/LC_MESSAGES/nautilus.mo
 share/locale/mk/LC_MESSAGES/nautilus.mo
 share/locale/ml/LC_MESSAGES/nautilus.mo
 share/locale/mn/LC_MESSAGES/nautilus.mo
@@ -150,3 +153,4 @@ share/locale/zh_HK/LC_MESSAGES/nautilus.mo
 share/locale/zh_TW/LC_MESSAGES/nautilus.mo
 share/locale/zu/LC_MESSAGES/nautilus.mo
 share/metainfo/org.gnome.Nautilus.appdata.xml
+share/tracker3/domain-ontologies/org.gnome.Nautilus.domain.rule

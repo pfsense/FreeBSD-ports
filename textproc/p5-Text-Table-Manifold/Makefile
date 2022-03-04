@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Text-Table-Manifold
-PORTVERSION=	1.01
+PORTVERSION=	1.03
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -20,8 +19,8 @@ RUN_DEPENDS=	p5-Const-Exporter>=0.2.3:devel/p5-Const-Exporter \
 		p5-List-AllUtils>=0.08:devel/p5-List-AllUtils \
 		p5-Module-Runtime>=0.014:devel/p5-Module-Runtime \
 		p5-Moo>=1.006000:devel/p5-Moo \
-		p5-Type-Tiny>=1.000004:devel/p5-Type-Tiny \
-		p5-Unicode-LineBreak>=2013.10:textproc/p5-Unicode-LineBreak
+		p5-String-TtyLength>=0.02:textproc/p5-String-TtyLength \
+		p5-Type-Tiny>=1.000004:devel/p5-Type-Tiny
 TEST_DEPENDS=	p5-Test-Pod>=1.48:devel/p5-Test-Pod
 
 USES=		perl5 tar:tgz
@@ -29,11 +28,4 @@ USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502710
-BUILD_DEPENDS+=	p5-Scalar-List-Utils>=1.50:lang/p5-Scalar-List-Utils
-RUN_DEPENDS+=	p5-Scalar-List-Utils>=1.50:lang/p5-Scalar-List-Utils
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

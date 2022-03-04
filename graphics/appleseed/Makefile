@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	appleseed
-DISTVERSION=	1.7.1-beta
-PORTREVISION=	7
+DISTVERSION=	2.1.0-beta
+PORTREVISION=	8
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -12,11 +11,13 @@ COMMENT=	Modern, physically-based production renderer
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN=		fails to build
-
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
+		liblz4.so:archivers/liblz4 \
 		libpng.so:graphics/png \
-		libIlmImf.so:graphics/openexr \
+		libIlmThread.so:graphics/openexr \
+		libImath.so:math/Imath \
+		libOpenColorIO.so:graphics/opencolorio \
+		libOpenImageIO.so:graphics/openimageio \
 		libxerces-c.so:textproc/xerces-c3 \
 		liboslexec.so:graphics/openshadinglanguage
 
@@ -26,16 +27,21 @@ GH_ACCOUNT=	${PORTNAME}hq
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	not ported to it yet
 
-USES=		cmake compiler:env
+USES=		cmake compiler:c++11-lang shebangfix
+SHEBANG_FILES=	scripts/*.py
 
-LDFLAGS+=	-lboost_atomic
-CMAKE_ARGS=	-DUSE_STATIC_BOOST:BOOL=OFF -DUSE_STATIC_OIIO:BOOL=OFF \
-		-DUSE_STATIC_OSL:BOOL=OFF -DWITH_DOXYGEN:BOOL=OFF \
-		-DWITH_HEADERS:BOOL=OFF -DWITH_PYTHON:BOOL=OFF \
-		-DWITH_TESTS:BOOL=OFF -DWARNINGS_AS_ERRORS:BOOL=OFF
+CFLAGS+=	-I${LOCALBASE}/include/Imath
+CFLAGS+=	-I${LOCALBASE}/include/OpenEXR
 
-.for lib in EXR OIIO OSL PNG SEEXPR XERCES ZLIB
-CMAKE_ARGS+=	-DUSE_EXTERNAL_${lib}:BOOL=ON
+CMAKE_ARGS=	-DWITH_PYTHON2_BINDINGS:BOOL=OFF \
+		-DWITH_DOXYGEN:BOOL=OFF \
+		-DINSTALL_HEADERS:BOOL=OFF \
+		-DINSTALL_TESTS:BOOL=OFF \
+		-DINSTALL_API_EXAMPLES:BOOL=OFF \
+		-DWARNINGS_AS_ERRORS:BOOL=OFF
+
+.for lib in BOOST EMBREE EXR OCIO OIIO OSL
+CMAKE_ARGS+=	-DUSE_STATIC_${lib}:BOOL=OFF
 .endfor
 
 # Not ready for hier(7)-conforming installation yet
@@ -45,25 +51,42 @@ PLIST_SUB=	APPHOME=${CMAKE_INSTALL_PREFIX}
 SUB_FILES=	pkg-message
 SUB_LIST:=	${PLIST_SUB}
 
-OPTIONS_DEFINE=	CPP11 EXAMPLES
+OPTIONS_DEFINE=	EMBREE PYTHON STUDIO
+OPTIONS_DEFAULT=	PYTHON STUDIO
 OPTIONS_SUB=	yes
 
-CPP11_DESC=	Build in C++11 mode
+EMBREE_DESC=	Embree intersection backend support
+EMBREE_LIB_DEPENDS=	libembree3.so:graphics/embree
+EMBREE_CMAKE_ON=	-DWITH_EMBREE:BOOL=ON
 
-CPP11_CMAKE_ON=	-DUSE_CPP11:BOOL=ON
+PYTHON_USES=	gl python:3.5+,build,run
+PYTHON_USE=	GL=gl
+PYTHON_CMAKE_ON=	-DWITH_PYTHON3_BINDINGS:BOOL=ON
 
-EXAMPLES_CMAKE_OFF=	-DWITH_SAMPLES:BOOL=OFF
-
-.include <bsd.port.pre.mk>
+STUDIO_DESC=	Build appleseed.studio (Qt-based)
+STUDIO_LIB_DEPENDS=	${PY_BOOST}
+STUDIO_USES=	qt:5
+STUDIO_USE=	QT=buildtools_build,qmake_build,concurrent,core,gui,opengl,widgets
+STUDIO_CMAKE_OFF=	-DWITH_STUDIO:BOOL=OFF
+STUDIO_IMPLIES=	PYTHON
 
 post-patch:
 	@${RMDIR} ${WRKSRC}/sandbox/docs/api
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 39
-	@${ECHO_MSG} "===>  Patching for Core Working Group (CWG) Defect 253 (see r455830)"
-	@${REINPLACE_CMD} -E 's,const (.*MDF ),\1,' \
-		${WRKSRC}/src/appleseed/renderer/modeling/bsdf/disneybrdf.cpp \
-		${WRKSRC}/src/appleseed/renderer/modeling/bsdf/microfacetbrdf.cpp \
-		${WRKSRC}/src/appleseed/foundation/meta/tests/test_microfacet.cpp
-.endif
+	@${RM} ${WRKSRC}/sandbox/share/cmake/Modules/FindOpenImageIO.cmake
+	${REINPLACE_CMD} 's,OpenEXR/Imath,Imath/Imath,' \
+                ${WRKSRC}/sandbox/share/cmake/Modules/FindImath.cmake \
+                ${WRKSRC}/src/appleseed/foundation/meta/tests/test_quaternion.cpp \
+                ${WRKSRC}/src/appleseed/foundation/meta/tests/test_matrix.cpp \
+                ${WRKSRC}/src/appleseed/foundation/meta/tests/test_quaternion.cpp \
+                ${WRKSRC}/src/appleseed/foundation/meta/tests/test_vector.cpp \
+                ${WRKSRC}/src/appleseed/foundation/meta/tests/test_aabb.cpp \
+                ${WRKSRC}/src/appleseed/foundation/meta/tests/test_color.cpp \
+                ${WRKSRC}/src/appleseed/foundation/math/vector.h \
+                ${WRKSRC}/src/appleseed/foundation/math/aabb.h \
+                ${WRKSRC}/src/appleseed/foundation/math/matrix.h \
+                ${WRKSRC}/src/appleseed/foundation/math/quaternion.h \
+                ${WRKSRC}/src/appleseed/foundation/image/color.h
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>
+
+PATCH_ARGS+=	-l

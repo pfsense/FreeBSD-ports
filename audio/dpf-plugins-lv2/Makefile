@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	dpf-plugins
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2
+DISTVERSION=	1.4
+PORTREVISION=	2
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -17,7 +16,7 @@ BUILD_DEPENDS=	lv2>0:audio/lv2 \
 LIB_DEPENDS=	liblo.so:audio/liblo \
 		libprojectM.so:graphics/libprojectm
 
-USES=		compiler:c++11-lang gl gmake localbase pkgconfig shebangfix
+USES=		compiler:c++11-lang gl gmake localbase pkgconfig shebangfix xorg
 SHEBANG_FILES=	dpf/utils/generate-ttl.sh
 USE_GITHUB=	yes
 GH_ACCOUNT=	DISTRHO

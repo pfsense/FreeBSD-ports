@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	network_interface
 PORTVERSION=	0.0.2
 CATEGORIES=	net rubygems

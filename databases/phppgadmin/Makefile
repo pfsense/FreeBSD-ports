@@ -1,9 +1,9 @@
 # Created by: nbm
-# $FreeBSD$
 
 PORTNAME=	phppgadmin
 DISTVERSIONPREFIX=	REL_
-DISTVERSION=	5-6-0
+DISTVERSION=	7-13-0
+PORTREVISION=	0
 CATEGORIES=	databases www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -18,7 +18,7 @@ USES=		cpe tar:bzip2 php:web,flavors shebangfix
 USE_GITHUB=	yes
 
 .if !defined(WITHOUT_PHP_DEPENDS)
-USE_PHP=	pgsql pcre session
+USE_PHP=	pgsql pcre session mbstring
 .endif
 
 CPE_VENDOR=	phppgadmin_project

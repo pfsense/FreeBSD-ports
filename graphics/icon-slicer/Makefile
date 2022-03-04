@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	icon-slicer
 PORTVERSION=	0.3
@@ -14,7 +13,7 @@ LICENSE=	MIT # in readme and sources; COPYING seem to be unrelated
 
 LIB_DEPENDS=	libpopt.so:devel/popt
 
-USES=		localbase pkgconfig
+USES=		gnome localbase pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 

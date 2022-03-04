@@ -1,9 +1,8 @@
 # Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
 
 PORTNAME=	fox
 PORTVERSION=	1.4.35
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://www.fox-toolkit.org/ftp/ \
 		ftp://ftp.fox-toolkit.org/pub/ \
@@ -23,7 +22,7 @@ MAJORVER=	${PORTVERSION:R}
 SHVER=		${PORTVERSION:S/${MAJORVER}.//}
 PLIST_SUB+=	MAJORVER=${MAJORVER} SHVER=${SHVER}
 
-USES=		jpeg libtool
+USES=		gl jpeg libtool
 USE_GL=		yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-opengl=yes \
@@ -48,6 +47,7 @@ SHM_DESC=	Shared Memory support
 #
 .if ${PORT_OPTIONS:MXFT}
 CONFIGURE_ARGS+=--with-xft=yes
+USES+=		xorg
 USE_XORG+=	xft
 CPPFLAGS+=	`freetype-config --cflags`
 LDFLAGS+=	`freetype-config --libs`

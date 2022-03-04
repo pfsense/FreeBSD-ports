@@ -1,9 +1,6 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
 
-# PROVIDE: frr
+# PROVIDE: frr dynamicrouting
 # REQUIRE: netif routing
 # KEYWORD: nojailvnet shutdown
 
@@ -11,14 +8,18 @@
 #  frr_enable="YES"
 #
 # You may also wish to use the following variables to fine-tune startup:
-#  frr_flags=""
-#  frr_daemons="zebra babeld bfdd bgpd eigrpd fabricd isisd ospfd ospf6d ripd ripngd staticd"
+# Enable Integrated configuration mode (using the single configuration file
+# frr.conf in place of one file for each dameon)
 #  frr_vtysh_boot="YES"
+# Selecting limited set of daemons to run
+#  frr_daemons="zebra babeld bfdd bgpd eigrpd fabricd isisd ospfd ospf6d ripd ripngd staticd"
+# Global tuning
+#  frr_flags=""
 # Per daemon tuning may be done with daemon_name_flags
 #  zebra_flags="-P 0"
 #  bgpd_flags="-nrP 0" and so on
-# If you want to give the routing deamons a chance to catchup before
-# continueing, set frr_wait_for to a "default" or certain prefix.
+# If you want to give the routing daemons a chance to catchup before
+# continuing, set frr_wait_for to a "default" or certain prefix.
 #  frr_wait_for="default"
 # Set the time limit for the wait.
 #  frr_wait_seconds="90"
@@ -32,7 +33,7 @@
 . /etc/rc.subr
 
 name=frr
-rcvar=$name_enable
+rcvar=${name}_enable
 
 start_postcmd=start_postcmd
 stop_postcmd="rm -f $pidfile"
@@ -109,7 +110,7 @@ do_cmd()
 				continue
 			fi
 		fi
-	    if [ ${frr_cmd} = "stop" ] && [ -z $(check_process ${command}) ]; then
+	    if [ ${frr_cmd} = "stop" ] && [ -z "$(check_process ${command})" ]; then
 			continue
 	    fi
 	    eval flags=\$\{${daemon}_flags:-\"${frr_flags}\"\}
@@ -136,7 +137,7 @@ case "$1" in
 esac
 shift
 
-if [ $# -ge 1 ]; then
+if [ $# -ge 1 -a "$1" != "all" ]; then
 	frr_daemons="$*"
 fi
 

@@ -1,5 +1,4 @@
 # Created by: Alexander Yerenkow <yerenkow@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	x-unikey
 PORTVERSION=	1.0.4
@@ -9,7 +8,7 @@ MASTER_SITES=	SF/unikey/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vietnamese input method for X
 
-USES=		compiler tar:bzip2
+USES=		compiler tar:bzip2 xorg
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 

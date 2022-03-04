@@ -1,9 +1,7 @@
 # Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xfce4-dev-tools
-PORTVERSION=	4.12.0
-PORTREVISION=	1
+PORTVERSION=	4.16.0
 CATEGORIES=	devel xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
@@ -19,9 +17,13 @@ RUN_DEPENDS=	autoconf>=2.69:devel/autoconf \
 		libtoolize:devel/libtool \
 		bash:shells/bash
 
-GNU_CONFIGURE=	yes
+USES=		gnome pkgconfig shebangfix tar:bzip2 xfce
 USE_GNOME=	glib20
-USES=		pkgconfig shebangfix tar:bzip2 xfce
-SHEBANG_FILES=	scripts/xdt-commit
+SHEBANG_FILES=	helpers/xfce-build helpers/xfce-do-release \
+		helpers/xfce-get-translations
+
+GNU_CONFIGURE=	yes
+
+PORTSCOUT=	limitw:1,even
 
 .include <bsd.port.mk>

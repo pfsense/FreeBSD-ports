@@ -1,48 +1,50 @@
 # Created by: Rainer Hurling <rhurlin@gwdg.de>
-# $FreeBSD$
 
 PORTNAME=	saga
-PORTVERSION=	7.2.0
+PORTVERSION=	8.0.1
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]\.[[:digit:]]*$//}/SAGA%20-%20${PORTVERSION}
 
-MAINTAINER=	rhurlin@gwdg.de
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	System for Automated Geoscientific Analyses
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	clang70:devel/llvm70 \
-		swig3.0:devel/swig30
+BUILD_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
+		swig:devel/swig
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfftw3.so:math/fftw3 \
 		libgdal.so:graphics/gdal \
+		libhdf5.so:science/hdf5 \
 		libhpdf.so:print/libharu \
 		libjasper.so:graphics/jasper \
 		liblas12.so:devel/liblas12 \
 		libodbc.so:databases/unixODBC \
-		libopencv_core.so:graphics/opencv-core \
-		libopencv_ml.so:graphics/opencv \
+		libopencv_core.so:graphics/opencv \
+		libpdal_base.so:math/pdal \
 		libproj.so:graphics/proj \
+		libqhull_r.so:math/qhull \
 		libsvm.so:science/libsvm \
-		libtbb.so:devel/tbb \
+		libsz.so:science/szip \
 		libtiff.so:graphics/tiff
-RUN_DEPENDS:=	swig3.0:devel/swig30
+RUN_DEPENDS:=	swig:devel/swig
 
-USES=		autoreconf compiler:c++11-lib desktop-file-utils dos2unix \
-		iconv:wchar_t libtool localbase pkgconfig python:2.7
-USE_LDCONFIG=	yes
-USE_WX=		3.0+
-
-CONFIGURE_ARGS=	CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" \
-		--enable-python --with-system-svm
-CONFIGURE_ENV=	SWIG="${LOCALBASE}/bin/swig3.0"
-GNU_CONFIGURE=	yes
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-INSTALLS_ICONS=	yes
+USES=		cmake compiler:c++11-lib dos2unix gnome \
+		iconv:wchar_t libtool localbase pkgconfig python
 DOS2UNIX_GLOB=	*.cpp *.h
+USE_LDCONFIG=	yes
+USE_WX=		3.1+
+
+CMAKE_ARGS+=	-DLAS_INCLUDE:PATH=${LOCALBASE}/include/liblas12/capi/liblas.h \
+		-DLAS_LIBRARY:FILEPATH=${LOCALBASE}/lib/liblas12.so \
+		-DSVM_INCLUDE:PATH=${LOCALBASE}/include/svm.h
+CMAKE_ON=	WITH_DEV_TOOLS WITH_EXCERCISES WITH_SYSTEM_SVM
+CMAKE_ON+=	CMAKE_VERBOSE_MAKEFILE
+CMAKE_OFF+=	WITH_TRIANGLE
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/saga-gis
+
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	PGSQL OPENMP VIGRA
@@ -55,44 +57,19 @@ OPENMP_DESC=	Enable Multiprocessing (only amd64 and i386)
 VIGRA_DESC=	Enable 'Vision with Generic Algorithms' Library
 
 OPENMP_CONFIGURE_ENABLE=	openmp
-OPENMP_LDFLAGS=		-L${LOCALBASE}/lib -lm
-# Use OpenMP from lang/llvm70
-OPENMP_LDFLAGS+=	-L${LOCALBASE}/llvm70/lib -lomp
-PGSQL_CONFIGURE_OFF=	--with-postgresql=no
-PGSQL_CONFIGURE_ON=	--with-postgresql=${LOCALBASE}/bin/pg_config
 PGSQL_USES=		pgsql
+PGSQL_CONFIGURE_WITH=	postgresql
 VIGRA_BUILD_DEPENDS=	${LOCALBASE}/lib/libvigraimpex.so:graphics/vigra
 VIGRA_RUN_DEPENDS=	${LOCALBASE}/lib/libvigraimpex.so:graphics/vigra
-
-INSTALL_TARGET=	install-strip
 
 .include <bsd.port.pre.mk>
 
 # make describe needs them here
-CPP=		clang-cpp70
-CC=		clang70
-CXX=		clang++70
+CPP=		clang-cpp${LLVM_DEFAULT}
+CC=		clang${LLVM_DEFAULT}
+CXX=		clang++${LLVM_DEFAULT}
 
 SUB_FILES=	pkg-message
-
-post-extract:
-	@${REINPLACE_CMD} -e 's|wx-config |${WX_CONFIG} |g' \
-		${WRKSRC}/configure.ac \
-		${WRKSRC}/src/saga_core/saga_api/Makefile.am \
-		${WRKSRC}/src/saga_core/saga_cmd/Makefile.am \
-		${WRKSRC}/src/saga_core/saga_gdi/Makefile.am \
-		${WRKSRC}/src/saga_core/saga_gui/Makefile.am \
-		${WRKSRC}/src/tools/garden/garden_3d_viewer/Makefile.am \
-		${WRKSRC}/src/tools/garden/garden_webservices/Makefile.am \
-		${WRKSRC}/src/tools/io/io_grid_image/Makefile.am \
-		${WRKSRC}/src/tools/io/io_shapes/Makefile.am \
-		${WRKSRC}/src/tools/io/io_virtual/Makefile.am \
-		${WRKSRC}/src/tools/pointcloud/pointcloud_tools/Makefile.am \
-		${WRKSRC}/src/tools/pointcloud/pointcloud_viewer/Makefile.am \
-		${WRKSRC}/src/tools/statistics/statistics_kriging/Makefile.am \
-		${WRKSRC}/src/tools/tin/tin_viewer/Makefile.am
-	@${REINPLACE_CMD} -e 's|/usr/include/opencv|${LOCALBASE}/include/opencv ${LOCALBASE}/include|g' \
-		${WRKSRC}/src/tools/imagery/imagery_opencv/Makefile.am
 
 post-patch:
 .if ${ARCH} == "powerpc"
@@ -101,18 +78,10 @@ post-patch:
 .endif
 	@${REINPLACE_CMD} -e 's|PORTVERSION|${PORTVERSION}|' \
 		${WRKSRC}/src/saga_core/saga_gui/dlg_about.cpp
-
-post-patch-OPENMP-on:
 	@${REINPLACE_CMD} -e 's|-lgomp|-lomp|' \
-		${WRKSRC}/configure.ac \
-		${WRKSRC}/configure \
 		${WRKSRC}/src/accessories/templates/template4saga-tools/my_tool_library/Makefile
-
-post-configure:
-	@${REINPLACE_CMD} -e 's|cd $$(pkgdatadir);|cd ${STAGEDIR}${DATADIR};|g' \
-		${WRKSRC}/src/saga_core/saga_gui/Makefile
-	@${REINPLACE_CMD} -e 's|^LDFLAGS = .*|& -lopencv_core|' \
-		${WRKSRC}/src/tools/imagery/imagery_opencv/Makefile
+	@${REINPLACE_CMD} -e 's|COMMAND python -c|COMMAND python${PYTHON_VER} -c|' \
+		${WRKSRC}/src/saga_core/saga_api/saga_api_python/CMakeLists.txt
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
@@ -122,7 +91,6 @@ post-install:
 # toolchains dir was moved in r2805 (and followups r2810,r2811,r2820)
 	(cd ${WRKSRC}/src/accessories && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
 	${RM} -R ${STAGEDIR}${DATADIR}/CMakeLists.txt
-	${RM} -R ${STAGEDIR}${DATADIR}/accessories/toolchains
 	${RM} -R ${STAGEDIR}${DATADIR}/templates/template4saga-tools/my_tool_library/Makefile.bak
 	${INSTALL_DATA} ${WRKSRC}/src/saga_core/saga_gui/res/saga.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/

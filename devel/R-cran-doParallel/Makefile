@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	doParallel
-PORTVERSION=	1.0.14
-PORTREVISION=	1
+PORTVERSION=	1.0.16
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

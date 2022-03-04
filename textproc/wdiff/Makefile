@@ -1,5 +1,4 @@
 # Created by: Yoshiro MIHIRA <sanpei@yy.cs.keio.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	wdiff
 PORTVERSION=	1.2.2
@@ -7,7 +6,7 @@ PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Display word differences between text files
 
 LICENSE=	GPLv3+

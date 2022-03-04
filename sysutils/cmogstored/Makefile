@@ -1,11 +1,9 @@
 # Created by: Mikolaj Golub <trociny@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cmogstored
-PORTVERSION=	1.7.0
-PORTREVISION=	1
+PORTVERSION=	1.8.1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://bogomips.org/cmogstored/files/
+MASTER_SITES=	http://yhbt.net/cmogstored/files/
 
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Alternative mogstored implementation for MogileFS

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	optimfrog
 PORTVERSION=	5.100
 CATEGORIES=	audio
@@ -12,23 +10,23 @@ COMMENT?=	Best-ratio lossless audio codec
 LICENSE=	OptimFROG
 LICENSE_NAME=	OptimFROG - License
 LICENSE_FILE=	${WRKSRC}/license.html	#only available as html
+# No fees may be collected for redistribution
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 RUN_DEPENDS+=	${LOCALBASE}/lib/compat/libstdc++.so.6:misc/compat9x
 
-CONFLICTS_INSTALL?=	optimfrog-sse2-[0-9]*
+CONFLICTS_INSTALL?=	optimfrog-sse2
 
 ONLY_FOR_ARCHS?=	amd64 i386
 
 USES=		tar:txz
 
-NO_CDROM=	No fees may be collected for redistribution
 NO_BUILD=	yes
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE_i386=	SSE2
 OPTIONS_DEFINE?=	#
-SSE2_DESCR=	Use SSE2 instructions instead of x87 FPU
+SSE2_DESC=	Use SSE2 instructions instead of x87 FPU
 
 .include <bsd.port.pre.mk>
 

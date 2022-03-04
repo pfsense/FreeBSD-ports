@@ -1,9 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Data-Sah-Normalize
-PORTVERSION=	0.05
-DISTVERSIONSUFFIX=	0
+PORTVERSION=	0.051
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	brainparty
 PORTVERSION=	0.61
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	https://launchpad.net/brainparty/trunk/${PORTVERSION}/+download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -15,7 +12,7 @@ COMMENT=	Family-friendly set of 36 puzzle games
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler gmake
+USES=		compiler gl gmake sdl
 USE_SDL=	sdl mixer ttf gfx image
 USE_GL=		gl glu
 

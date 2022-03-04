@@ -1,5 +1,4 @@
 # Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
 
 PORTNAME=	freefont-ttf
 PORTVERSION=	20120503
@@ -7,7 +6,7 @@ PORTREVISION=	2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	GNU/freefont
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	Free UCS Outline Fonts
 
 LICENSE=	GPLv3
@@ -16,6 +15,7 @@ USES=		fonts zip
 
 WRKSRC=		${WRKDIR}/freefont-${PORTVERSION}
 PORTDOCS=	AUTHORS ChangeLog CREDITS README
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 OPTIONS_DEFINE=	DOCS

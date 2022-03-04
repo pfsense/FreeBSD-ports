@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	quickcontrols
 DISTVERSION=	${QT5_VERSION}
 PORTREVISION=	1
@@ -14,6 +12,5 @@ BROKEN_armv6=		fails to install: pkg-static: Unable to access file ApplicationWi
 USES=		compiler:c++11-lang qmake qt-dist:5,quickcontrols
 USE_QT=		core declarative gui widgets \
 		buildtools_build
-USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 .include <bsd.port.mk>

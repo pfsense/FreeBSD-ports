@@ -1,8 +1,7 @@
 # Created by: Krzysztof Stryjek <ports@bsdserwis.com>
-# $FreeBSD$
 
 PORTNAME=	postsrsd
-PORTVERSION=	1.5
+PORTVERSION=	1.10
 CATEGORIES=	mail
 
 MAINTAINER=	ports@bsdserwis.com
@@ -13,22 +12,24 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	help2man:misc/help2man
 
-USES=		cmake pkgconfig
+USES=		cmake cpe pkgconfig
+CPE_VENDOR=	${PORTNAME}_project
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	roehling
+USE_RC_SUBR=	${PORTNAME}
 
 CMAKE_ARGS=	--no-warn-unused-cli \
 		-DCMAKE_INCLUDE_PATH="${LOCALBASE}/include" \
 		-DCMAKE_LIBRARY_PATH="${LOCALBASE}/lib"
-USE_RC_SUBR=	${PORTNAME}
 
-PORTDOCS=	README.md main.cf.ex README_UPGRADE.md
+PLIST_FILES=	man/man8/postsrsd.8.gz \
+		sbin/postsrsd
+
+PORTDOCS=	README.md README_UPGRADE.md main.cf.ex
 
 OPTIONS_DEFINE=	DOCS
 
 DOCS_CMAKE_BOOL=	ENABLE_DOCS
-
-PLIST_FILES=	sbin/postsrsd man/man8/postsrsd.8.gz
 
 .include <bsd.port.mk>

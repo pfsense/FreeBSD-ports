@@ -1,8 +1,7 @@
 # Created by: Anton Tornqvist <antont@inbox.lv>
-# $FreeBSD$
 
 PORTNAME=	sxhkd
-PORTVERSION=	0.6.0
+PORTVERSION=	0.6.2
 CATEGORIES=	x11
 
 MAINTAINER=	o.hushchenkov@gmail.com
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libxcb-keysyms.so:x11/xcb-util-keysyms
 
-USES=		gmake localbase:ldflags
+USES=		gmake localbase:ldflags xorg
 
 USE_XORG=	xcb
 

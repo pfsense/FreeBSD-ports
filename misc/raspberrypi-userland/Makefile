@@ -1,8 +1,8 @@
 # Created by: Mikael Urankar <mikael.urankar@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	raspberrypi-userland
 PORTVERSION=	20161026
+PORTREVISION=	1
 CATEGORIES=	misc
 
 MAINTAINER=	ports@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 
 ONLY_FOR_ARCHS=	armv6 armv7
 
-CONFLICTS_INSTALL=	mesa-libs
+CONFLICTS_INSTALL=	libglvnd
 
 USES=		cmake pkgconfig shebangfix
 

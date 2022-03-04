@@ -1,5 +1,4 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flickcurl
 PORTVERSION=	1.26
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://download.dajobe.org/flickcurl/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C library for the Flickr API
 
 LICENSE=	APACHE20 GPLv2 LGPL21
@@ -23,7 +22,7 @@ RAPTOR_DESC=	Use Raptor to serialize to triples
 OFFLINE_DESC=	Offline use of captured XML web service responses
 CAPTURE_DESC=	Capturing web service responses
 
-USES=		libtool pathfix pkgconfig
+USES=		gnome libtool pathfix pkgconfig
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-html-dir=${PREFIX}/share/doc

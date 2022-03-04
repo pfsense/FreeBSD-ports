@@ -1,18 +1,17 @@
 # Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gpstk
-PORTVERSION=	2.10.6
+PORTVERSION=	8.0.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	astro devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Toolkit for developing GPS applications
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -24,6 +23,9 @@ EXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONS_SUB=	yes
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+		SHLIB_VER=${PORTVERSION:R}
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

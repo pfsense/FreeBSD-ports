@@ -49,11 +49,7 @@ if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
 }
 $a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
 
-if (isset($_POST['id'])) {
-	$id = $_POST['id'];
-} else {
-	$id = $_GET['id'];
-}
+$id = $_REQUEST['id'];
 
 if (isset($_GET['dup'])) {
 	$id = $_GET['dup'];
@@ -70,7 +66,7 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","desc", "email",
+	"name","descr", "email",
 	"acmeserver","renewafter"
 );
 
@@ -200,7 +196,7 @@ $form = new \Form;
 $section = new \Form_Section('Edit Certificate options');
 $section->addInput(new \Form_Input('name', 'Name', 'text', $pconfig['name']
 ))->setHelp('');
-$section->addInput(new \Form_Input('desc', 'Description', 'text', $pconfig['desc']));
+$section->addInput(new \Form_Input('descr', 'Description', 'text', $pconfig['descr']));
 
 $section->addInput(new \Form_Select(
 	'acmeserver',
@@ -209,7 +205,7 @@ $section->addInput(new \Form_Select(
 	form_keyvalue_array($a_acmeserver)
 ))->setHelp('The ACME server which will be used to issue certificates using this key.%1$s' .
 	'Use testing servers until certificate validation works, then switch to production.%1$s' .
-	'Only ACME v2 servers support wildcard certificates.%1$s%1$s', '<br/>');
+	'Let\'s Encrypt ACMEv1 servers no longer allow new registrations, and in June 2021 they will be completely disabled.%1$s%1$s', '<br/>');
 
 $section->addInput(new \Form_Input(
 	'email',

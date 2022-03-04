@@ -1,9 +1,7 @@
 # Created by: Conrad Meyer <cem@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	elfutils
-PORTVERSION=	0.174
-PORTREVISION=	2
+PORTVERSION=	0.179
 CATEGORIES=	devel
 MASTER_SITES=	https://sourceware.org/elfutils/ftp/${PORTVERSION}/
 
@@ -16,24 +14,24 @@ LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING-GPLV2
 LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING-LGPLV3
 
-BROKEN_aarch64=		fails to build: fatal error: linux/uio.h: No such file or directory
 BROKEN_armv6=		fails to build: fails to compile i386_disasm.c
-BROKEN_armv7=		fails to build: fails to compile i386_disasm.c
 BROKEN_sparc64=		sparc patch does not apply cleanly to 0.172
 
 LIB_DEPENDS=	libargp.so:devel/argp-standalone
-PATCH_DEPENDS=	${NONEXISTENT}:devel/gnulib:extract
+BUILD_DEPENDS=	gnulib>=0:devel/gnulib
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=	MANPAGES NLS
+OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=	yes
 
 NLS_USES=	gettext
 NLS_USES_OFF=	gettext  # used anyway
 NLS_CONFIGURE_ENABLE=	nls
 
-USES=		autoreconf gmake libtool tar:bzip2
+USES=		autoreconf cpe gmake libtool pkgconfig tar:bzip2
+CPE_VENDOR=	${PORTNAME}_project
 USE_GCC=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -42,17 +40,26 @@ CFLAGS+=	-Wno-null-dereference -Wno-unused-value
 # For GCC8:
 CFLAGS+=	-Wno-cast-function-type
 # Give i386 a prayer of building, and we can fix the warnings later:
-CFLAGS_i386+=	-Wno-error
+CFLAGS_armv7=	-Wno-error
+CFLAGS_i386=	-Wno-error
+CFLAGS_powerpc=	-Wno-error
 
 # Avoid conflict with binutils / elftoolchain programs with the same names:
 CONFIGURE_ARGS+=	--program-prefix=eu-
+# Disable debuginfod until option support can be added:
+CONFIGURE_ARGS+=	--disable-debuginfod
 
-post-patch:
-	@${LN} -s `${MAKE} -C ${PORTSDIR}/devel/gnulib -V WRKSRC` ${WRKDIR}/gnulib
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1300512 # 2021-07-17
+CFLAGS+=	-DFREEBSD_HAS_MEMPCPY
+.endif
+
+pre-configure:
 	@${CP} -a \
-	    ${WRKDIR}/gnulib/lib/obstack.c \
-	    ${WRKDIR}/gnulib/lib/obstack.h \
-	    ${WRKDIR}/gnulib/lib/obstack_printf.c \
+	    ${LOCALBASE}/share/gnulib/lib/obstack.c \
+	    ${LOCALBASE}/share/gnulib/lib/obstack.h \
+	    ${LOCALBASE}/share/gnulib/lib/obstack_printf.c \
 	    ${WRKSRC}/lib
 
 .include <bsd.port.mk>

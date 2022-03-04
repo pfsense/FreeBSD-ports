@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	keystone-engine
 DISTVERSION=	0.9.1-3
 CATEGORIES=	devel python
@@ -12,11 +10,11 @@ COMMENT=	Keystone Assembler Engine with Python bindings
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-BROKEN_powerpc64=	fails to install: /wrkdirs/usr/ports/devel/py-keystone-engine/work-py36/keystone-engine-0.9.1-3/src/build/llvm/lib/libkeystone.so: No such file or directory
+BROKEN_FreeBSD_12_powerpc64=	fails to install: /wrkdirs/usr/ports/devel/py-keystone-engine/work-py36/keystone-engine-0.9.1-3/src/build/llvm/lib/libkeystone.so: No such file or directory
 
 BUILD_DEPENDS=	cmake:devel/cmake
 
-USES=		pkgconfig python
+USES=		pkgconfig python:3.6+
 USE_PYTHON=	distutils autoplist
 
 # setup.py loses track of its cwd when it switches over to the CMake build

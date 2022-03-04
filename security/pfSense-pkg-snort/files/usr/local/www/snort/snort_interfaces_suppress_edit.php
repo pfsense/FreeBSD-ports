@@ -3,9 +3,9 @@
  * snort_interfaces_suppress_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -43,6 +43,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 
 /* Should never be called without identifying list index, so bail */
 if (is_null($id)) {
+	unset($a_suppress);
 	header("Location: /snort/snort_interfaces_suppress.php");
 	exit;
 }
@@ -59,6 +60,7 @@ function is_validwhitelistname($name) {
 }
 
 if ($_POST['cancel']) {
+	unset($a_suppress);
 	header("Location: /snort/snort_interfaces_suppress.php");
 	exit;
 }
@@ -111,7 +113,7 @@ if ($_POST['save']) {
 		$s_list = array();
 		$s_list['name'] = $_POST['name'];
 		$s_list['uuid'] = uniqid();
-		$s_list['descr']  =  mb_convert_encoding($_POST['descr'],"HTML-ENTITIES","auto");
+		$s_list['descr'] = $_POST['descr'];
 		if ($_POST['suppresspassthru']) {
 			$s_list['suppresspassthru'] = str_replace("&#8203;", "", $s_list['suppresspassthru']);
 			$s_list['suppresspassthru'] = base64_encode(str_replace("\r\n", "\n", $_POST['suppresspassthru']));
@@ -124,13 +126,17 @@ if ($_POST['save']) {
 
 		write_config("Snort pkg: modified Suppress List {$s_list['name']}.");
 		sync_snort_package_config();
-
+		unset($a_suppress);
 		header("Location: /snort/snort_interfaces_suppress.php");
 		exit;
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Suppression List Edit"));
+// Finished with config array reference, so release it
+unset($a_suppress);
+
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_suppress.php", "@self");
+$pgtitle = array("Services", "Snort", "Suppression List", "Edit");
 include_once("head.inc");
 
 if ($input_errors)
@@ -168,10 +174,11 @@ $section->addInput(new Form_Input(
 ))->setHelp('You may enter a description here for your reference.');
 $form->add($section);
 
-$content_help = 'Valid keywords are \'suppress\', \'event_filter\' and \'rate_filter\'.' . '<br />';
+$content_help = 'Valid keywords are \'suppress\' and \'event_filter\'.' . '<br />';
+$content_help .= 'There are three types of event filters: (1) limit; (2) threshold; and (3) both.' . '<br />';
 $content_help .= 'Example 1: suppress gen_id 1, sig_id 1852, track by_src, ip 10.1.1.54' . '<br />';
 $content_help .= 'Example 2: event_filter gen_id 1, sig_id 1851, type limit, track by_src, count 1, seconds 60' . '<br />';
-$content_help .= 'Example 3: rate_filter gen_id 135, sig_id 1, track by_src, count 100, seconds 1, new_action log, timeout 10';
+$content_help .= 'Example 3: event_filter gen_id 135, sig_id 1, type threshold track by_src, count 100, seconds 1';
 $section = new Form_Section('Suppression List Content');
 $section->addInput(new Form_Textarea (
 	'suppresspassthru',

@@ -1,16 +1,15 @@
 # Created by: mutoh@openedu.org
-# $FreeBSD$
 
 PORTNAME=	pharo
 DISTVERSION=	1.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	https://gforge.inria.fr/frs/download.php/30620/
 DISTNAME=	Pharo-${DISTVERSION}-${SVNVERSION}
 EXTRACT_ONLY=	Pharo-${DISTVERSION}-${SVNVERSION}.zip
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Pharo is Smalltalk-inspired environment
+COMMENT=	Smalltalk-inspired language and environment
 
 LICENSE=	APACHE20 MIT
 LICENSE_COMB=	multi

@@ -1,5 +1,4 @@
 # Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	phpbb
 PORTVERSION=	2.0.23
@@ -12,9 +11,12 @@ DISTNAME=	phpBB-tw-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Traditional Chinese version of phpBB
 
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/docs/COPYING
+
 RUN_DEPENDS=	${LOCALBASE}/share/pear/System.php:devel/pear@${PHP_FLAVOR}
 
-CONFLICTS=	phpbb-[0-9]*
+CONFLICTS=	phpbb
 USES=		dos2unix php
 
 # Get HOSTNAME
@@ -36,6 +38,7 @@ PHPBB_URL?=	phpBB2
 #
 WRKSRC=		${WRKDIR}/phpBB2
 NO_BUILD=	yes
+NO_ARCH=	yes
 SUB_FILES=	pkg-message
 SUB_LIST=	PHPBB_URL="${PHPBB_URL}" \
 		PHPBBDIR="${PHPBBDIR}" \

@@ -1,5 +1,4 @@
 # Created by: Jeremy <karlj000@unbc.ca>
-# $FreeBSD$
 
 PORTNAME=	avida
 PORTVERSION=	2.12.4
@@ -17,10 +16,10 @@ BROKEN_armv6=		invokes x86 assembler
 BROKEN_armv7=		invokes x86 assembler
 BROKEN_mips=		invokes x86 assembler
 BROKEN_mips64=		invokes x86 assembler
+BROKEN_riscv64=		invokes x86 assembler
 BROKEN_sparc64=		missing atomics implementation
-BROKEN_powerpc64=	fails to compile: sibling call optimization does not allow automatic multiple TOCs
 
-USES=		cmake ncurses
+USES=		compiler:c11 cmake ncurses
 USE_CXXSTD=	gnu++98
 CMAKE_ARGS=	-DAPTO_UNIT_TESTS:BOOL=OFF \
 		-DAVD_UNIT_TESTS:BOOL=OFF \

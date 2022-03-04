@@ -1,5 +1,4 @@
 # Created by: Matthew West <mwest@uct.ac.za>
-# $FreeBSD$
 
 PORTNAME=	xmotd
 DISTVERSION=	1.17.3b
@@ -13,9 +12,8 @@ COMMENT=	Message-of-the-day browser for X11 and dumb-terminals
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GNU
 
-USES=		imake:noman
+USES=		imake:noman xorg
 USE_XORG=	ice sm x11 xaw xext xmu xt
-XFREE86_HTML_MAN=	no
 
 PLIST_FILES=	bin/xmotd \
 		man/man8/xmotd.8.gz

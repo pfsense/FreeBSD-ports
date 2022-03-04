@@ -1,5 +1,4 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libucl
 PORTVERSION=	0.8.1
@@ -54,7 +53,7 @@ UTILS_CONFIGURE_ENABLE=	utils
 .include <bsd.port.options.mk>
 
 # https://github.com/vstakhov/libucl/issues/203
-.if ${PORT_OPTIONS:MSIGNATURES} && ((${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base) || ${SSL_DEFAULT} == openssl111)
+.if ${PORT_OPTIONS:MSIGNATURES} && ((${OPSYS} == FreeBSD && ${SSL_DEFAULT} == base) || ${SSL_DEFAULT} == openssl)
 BROKEN=	Signatures checking support does not build with OpenSSL 1.1.1
 .endif
 

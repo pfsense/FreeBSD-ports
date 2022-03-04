@@ -1,0 +1,4 @@
+The Ruby SDK enables one to write code to manage Oracle Cloud Infrastructure
+resources. All OCI services and regions are supported.
+
+WWW: https://github.com/oracle/oci-ruby-sdk/

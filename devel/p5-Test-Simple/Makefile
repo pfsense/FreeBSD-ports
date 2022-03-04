@@ -1,13 +1,12 @@
 # Created by: Shell Hung <shell@shellhung.org>
-# $FreeBSD$
 
 PORTNAME=	Test-Simple
-PORTVERSION=	1.302162
+PORTVERSION=	1.302188
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	perl@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Basic utilities for writing tests in perl
 
 LICENSE=	ART10 GPLv1+

@@ -1,19 +1,18 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pstree
 PORTVERSION=	2.39
 CATEGORIES=	sysutils
-MASTER_SITES=	ftp://ftp.thp.uni-due.de/pub/source/ \
-		LOCAL/jgh/sysutils/${PORTNAME}/
+MASTER_SITES=	ftp://ftp.thp.uni-due.de/pub/source/
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	List processes as a tree
 
 USES=		alias
+
 NO_WRKSUBDIR=	yes
 
-CONFLICTS=	psmisc-[0-9]*
+CONFLICTS=	psmisc
 
 PLIST_FILES=	bin/pstree man/man1/pstree.1.gz
 

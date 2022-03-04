@@ -1,9 +1,8 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tcl
 PORTVERSION=	8.5.19
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	TCLTK/tcl8_5 \
 		SF/tcl/Tcl/${PORTVERSION}
@@ -17,6 +16,10 @@ LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+DEPRECATED=	Tcl/Tk 8.5 is nearing EOL, please consider switching to Tcl/Tk 8.6
+
+USES=		cpe
 
 OPTIONS_DEFINE=	TCLMAN TZDATA THREADS
 OPTIONS_DEFAULT=TCLMAN TZDATA THREADS

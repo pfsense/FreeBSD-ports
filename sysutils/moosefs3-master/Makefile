@@ -1,14 +1,15 @@
 # Created by: Jakub Kruszona-Zawadzki <acid@moosefs.com> ; Based on port created by: Chifeng Qu <chifeng@gmail.com>
-# $FreeBSD$
 
 PORTNAME=		moosefs3
-PORTVERSION=		3.0.103
+DISTVERSION=		3.0.116
+DISTVERSIONSUFFIX=	1
+PORTREVISION=		0
 CATEGORIES=		sysutils
 MASTER_SITES=		http://ppa.moosefs.com/src/
 PKGNAMESUFFIX?=		-master
-DISTNAME=		moosefs-${PORTVERSION}-1
+DISTNAME=		moosefs-${DISTVERSION}-${DISTVERSIONSUFFIX}
 
-MAINTAINER=		freebsd@moosefs.com
+MAINTAINER=		freebsd@moosefs.pro
 COMMENT?=		Fault-tolerant distributed filesystem
 
 LICENSE=		GPLv2
@@ -31,7 +32,7 @@ CONFIGURE_ARGS+=	--localstatedir=${MFS_WORKDIR} \
 			--with-default-user=${MFS_USER} \
 			--with-default-group=${MFS_GROUP}
 
-CONFLICTS=		moosefs2-${MFS_COMPONENT}-*
+CONFLICTS=		moosefs2-${MFS_COMPONENT}
 
 .if ${MFS_COMPONENT} == cgi
 MFS_CGIDIR=		${PREFIX}/share/mfscgi
@@ -74,7 +75,7 @@ CONFIGURE_ARGS+=	--disable-mfscli
 .endif
 
 .if ${MFS_COMPONENT} == client
-USES=			compiler:c11 fuse libtool pkgconfig
+USES=			compiler:c11 fuse:3 libtool pkgconfig
 USE_LDCONFIG=		yes
 CONFIGURE_ARGS+=	--enable-mfsmount
 .else

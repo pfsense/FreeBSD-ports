@@ -1,5 +1,4 @@
 # Created by: amir.husaini@gmail.com
-# $FreeBSD$
 
 PORTNAME=	tablix2
 PORTVERSION=	0.3.5
@@ -18,7 +17,7 @@ PVM_ROOT=	${LOCALBASE}/lib/pvm
 
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
-USES=		gettext gmake libtool shebangfix
+USES=		gettext gmake gnome libtool shebangfix
 SHEBANG_FILES=	${WRKSRC}/utils/tablix2_plot \
 		${WRKSRC}/utils/tablix2_benchmark \
 		${WRKSRC}/ttf/tablix2_test

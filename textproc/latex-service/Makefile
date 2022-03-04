@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	latex
 PORTVERSION=	0.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	textproc gnustep
 MASTER_SITES=	http://www.roard.com/latexservice/download/
 PKGNAMESUFFIX=	-service${PKGNAMESUFFIX2}

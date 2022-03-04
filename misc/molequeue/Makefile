@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	molequeue
 DISTVERSION=	0.9.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	https://github.com/openchemistry/molequeue/releases/download/${DISTVERSION}/
 

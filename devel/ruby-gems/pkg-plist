@@ -1,5 +1,5 @@
 bin/gem
-bin/gem%%RUBY_VER_SHORT%%
+bin/gem%%RUBY_SUFFIX%%
 %%RUBY_SITELIBDIR%%/rubygems.rb
 %%RUBY_SITELIBDIR%%/rubygems/available_set.rb
 %%RUBY_SITELIBDIR%%/rubygems/basic_specification.rb
@@ -147,6 +147,7 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems/resolver/stats.rb
 %%RUBY_SITELIBDIR%%/rubygems/resolver/vendor_set.rb
 %%RUBY_SITELIBDIR%%/rubygems/resolver/vendor_specification.rb
+%%RUBY_SITELIBDIR%%/rubygems/s3_uri_signer.rb
 %%RUBY_SITELIBDIR%%/rubygems/safe_yaml.rb
 %%RUBY_SITELIBDIR%%/rubygems/security.rb
 %%RUBY_SITELIBDIR%%/rubygems/security/policies.rb
@@ -187,8 +188,8 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems/version_option.rb
 %%RUBY_SITELIBDIR%%/ubygems.rb
 @dir lib/ruby/gems/%%RUBY_VER%%/build_info
-@dir %%EXT_DIR%%
 @dir %%CACHE_DIR%%
+@dir %%DOC_DIR%%
+@dir %%EXT_DIR%%
 @dir %%GEMS_DIR%%
 @dir %%SPEC_DIR%%
-@dir %%DOC_DIR%%

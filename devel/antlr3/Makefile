@@ -1,8 +1,8 @@
 # Created by: Takumi Takahashi <takumiiinn@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	antlr3
 PORTVERSION=	3.5.2
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.antlr3.org/download/
 DISTNAME=	antlr-${PORTVERSION}-complete
@@ -17,7 +17,6 @@ LICENSE=	BSD3CLAUSE
 NO_BUILD=	yes
 NO_ARCH=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 INSTALL_JAR=	${DISTFILES}
 SUB_LIST=	INSTALL_JAR=${INSTALL_JAR}
 SUB_FILES=	antlr.sh

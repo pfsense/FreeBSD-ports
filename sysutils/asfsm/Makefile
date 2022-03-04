@@ -1,5 +1,4 @@
 # Created by: jack
-# $FreeBSD$
 
 PORTNAME=	asfsm
 DISTVERSION=	1.0pre15
@@ -12,6 +11,7 @@ COMMENT=	File-system monitor for the AfterStep window manager
 
 LICENSE=	GPLv2
 
+USES=		xorg
 USE_XORG=	ice sm x11 xaw xext xpm xt
 GNU_CONFIGURE=	yes
 

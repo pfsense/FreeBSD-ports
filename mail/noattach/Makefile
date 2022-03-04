@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	noattach
 PORTVERSION=	1.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.dinoex.de/pub/FreeBSD/distfiles/
 

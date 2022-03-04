@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	drjava
 DISTVERSION=	20140826-r5761
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	editors java
 MASTER_SITES=	SF/${PORTNAME}/1.%20DrJava%20Stable%20Releases/${PORTNAME}-stable-${DISTVERSION}
 DISTNAME=	${PORTNAME}-stable-${PORTVERSION:S|.|-|g}
@@ -15,7 +14,6 @@ COMMENT=	Lightweight IDE for writing Java programs
 
 NO_BUILD=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 SUB_FILES=	${PORTNAME}
 SUB_LIST=	DRJAVAJAR=${DRJAVAJAR}

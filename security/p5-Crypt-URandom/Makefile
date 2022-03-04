@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-URandom
 PORTVERSION=	0.36
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to provide non blocking randomness
 
 LICENSE=	ART10 GPLv1+

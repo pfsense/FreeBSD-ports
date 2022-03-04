@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pmccabe
 PORTVERSION=	2.6
 CATEGORIES=	devel

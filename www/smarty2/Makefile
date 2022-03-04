@@ -1,5 +1,4 @@
 # Created by: Simon 'corecode' Schubert <corecode@corecode.ath.cx>
-# $FreeBSD$
 
 PORTNAME=	smarty
 PORTVERSION=	2.6.31
@@ -9,16 +8,17 @@ MASTER_SITES=	http://www.smarty.net/files/docs/:manual
 DISTFILES=	manual-en-${PORTVERSION:R}.zip:manual
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP compiling template engine
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING.lib
 
 OPTIONS_DEFINE=	DOCS
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		php:web,flavors
+USES=		cpe php:web,flavors
 USE_PHP=	pcre
 
 SUB_FILES=	pkg-message
@@ -29,6 +29,8 @@ GH_ACCOUNT=	smarty-php
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/libs && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in BUGS FAQ INSTALL NEWS README
 	${INSTALL_DATA} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cave9
 PORTVERSION=	0.4.1.git20150408
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -18,7 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	bart9h
 GH_TAGNAME=	e6896eb
 
-USES=		gmake
+USES=		compiler:c++11-lang gl gmake sdl
 USE_SDL=	sdl ttf image
 USE_GL=		gl glu
 

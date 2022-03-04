@@ -1,18 +1,22 @@
 # Created by: Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	icdiff
-PORTVERSION=	1.9.1
+PORTVERSION=	2.0.4
+DISTVERSIONPREFIX=	release-
 CATEGORIES=	textproc
-MASTER_SITES=	CHEESESHOP
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Improved colored diff
 
 LICENSE=	PSFL
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
-USE_PYTHON=	distutils autoplist concurrent optsuffix
+USES=		python:3.6+
+USE_PYTHON=	autoplist distutils noflavors
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	jeffkaufman
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

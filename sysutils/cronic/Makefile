@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cronic
 PORTVERSION=	3
 CATEGORIES=	sysutils
@@ -14,7 +12,8 @@ LICENSE=	CC0-1.0
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		shebangfix
+USES=		cpe shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes

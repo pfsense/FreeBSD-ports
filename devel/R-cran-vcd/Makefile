@@ -1,13 +1,11 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vcd
-DISTVERSION=	1.4-4
-PORTREVISION=	1
+DISTVERSION=	1.4-8
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Visualization techniques, data sets for categorical data
 
 LICENSE=	GPLv2

@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	match
 PORTVERSION=	1.0
@@ -12,7 +11,7 @@ COMMENT=	Program for matching star lists
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	avenger-[0-9]*
+CONFLICTS=	avenger
 GNU_CONFIGURE=	yes
 
 .include <bsd.port.mk>

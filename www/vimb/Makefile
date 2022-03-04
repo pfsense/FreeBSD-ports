@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	vimb
-DISTVERSION=	3.4.0
+DISTVERSION=	3.6.0
 CATEGORIES=	www
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vim like browser
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
@@ -19,10 +17,11 @@ GH_ACCOUNT=	fanglingsu
 GH_PROJECT=	vimb
 USE_GNOME=	cairo gdkpixbuf2 gtk30
 
-LDFLAGS+=	-Wl,--as-needed
 MAKE_ARGS=	MANPREFIX=${STAGEDIR}${PREFIX}/man \
 		V=1 \
 		version="${DISTVERSION}"
+LDFLAGS+=	-Wl,--as-needed
+
 PLIST_FILES=	bin/vimb \
 		lib/vimb/webext_main.so \
 		man/man1/vimb.1.gz \

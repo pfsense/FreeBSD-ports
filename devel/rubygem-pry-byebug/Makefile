@@ -1,21 +1,21 @@
-# $FreeBSD$
-
 PORTNAME=	pry-byebug
-PORTVERSION=	3.6.0
+PORTVERSION=	3.9.0
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast debugging with Pry
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-byebug>=10.0:devel/rubygem-byebug \
-		rubygem-pry>=0.10:devel/rubygem-pry
+RUN_DEPENDS=	rubygem-byebug>=11.0<12:devel/rubygem-byebug \
+		rubygem-pry>=0.13.0<1:devel/rubygem-pry
 
-NO_ARCH=	yes
 USES=		gem
 USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

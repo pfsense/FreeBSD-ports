@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	se
 PORTVERSION=	3.0.1
 CATEGORIES=	editors

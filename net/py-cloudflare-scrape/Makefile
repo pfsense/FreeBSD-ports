@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	cloudflare-scrape
-DISTVERSION=	1.9.7
+DISTVERSION=	2.1.1
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,10 +11,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}PyExecJS>=0:devel/py-PyExecJS@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=     distutils autoplist
+USES=		python:3.6+
+USE_PYTHON=	autoplist distutils
 
-USE_GITHUB=     yes
+USE_GITHUB=	yes
 GH_ACCOUNT=	Anorov
 
 .include <bsd.port.mk>

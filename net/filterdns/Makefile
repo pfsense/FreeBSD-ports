@@ -1,12 +1,12 @@
 PORTNAME=	filterdns
 PORTVERSION=	2.0
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	luiz@netgate.com
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	filterdns
 
 LICENSE=	APACHE20

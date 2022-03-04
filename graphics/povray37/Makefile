@@ -1,23 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	povray
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.7.0.8
-PORTREVISION=	3
+DISTVERSION=	3.7.0.10
+PORTREVISION=	2
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	37
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bsd@philippost.de
 COMMENT=	Persistence of Vision Ray Tracer
 
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64=	Does not build: c++: Internal error: Killed (program cc1plus)
-
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-USES=		autoreconf:build gmake
+USES=		autoreconf:build compiler:c11 gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	POV-Ray
 
@@ -42,6 +38,7 @@ IO_DESC=	Without I/O restrictions (security risk)
 
 IO_CONFIGURE_ON=	--disable-io-restrictions
 STATIC_CONFIGURE_ON=	--enable-static
+X11_USES=		sdl xorg
 X11_USE=		XORG=xpm,sm,ice,x11 SDL=sdl
 X11_CONFIGURE_OFF=	--without-x
 
@@ -81,8 +78,8 @@ CONFIGURE_ARGS+=--without-libtiff
 .if ${PORT_OPTIONS:MSTATIC}
 BUILD_DEPENDS+=	openexr>=1.6:graphics/openexr
 .else
-LIB_DEPENDS+=	libIlmImf.so:graphics/openexr
-CPPFLAGS+=	-I${LOCALBASE}/include/OpenEXR
+LIB_DEPENDS+=	libOpenEXR.so:graphics/openexr libImath.so:math/Imath
+CPPFLAGS+=	-I${LOCALBASE}/include/OpenEXR -I${LOCALBASE}/include/Imath -DInt64=uint64_t
 .endif
 .else
 CONFIGURE_ARGS+=--without-openexr

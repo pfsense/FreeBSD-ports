@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	editss
 PORTVERSION=	2.2
@@ -13,7 +12,7 @@ COMMENT=	Editor for XPilot shipshapes
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xaw xmu xt
 ALL_TARGET=	editss
 

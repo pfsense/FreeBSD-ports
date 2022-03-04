@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aqualung
 PORTVERSION=	1.0
-PORTREVISION=	10
+PORTREVISION=	17
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -30,9 +29,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libcdio_paranoia.so:sysutils/libcdio-paranoia \
 		liblrdf.so:textproc/liblrdf
 
-BROKEN_powerpc64=	fails to link: libicuuc.so: undefined reference to __cxa_throw_bad_array_new_length
-
-USES=		gettext localbase lua pkgconfig
+USES=		compiler:c++11-lang cpe gettext gnome localbase lua:52 pkgconfig
 USE_GNOME=	gtk20 libxml2 libxslt
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ifp=no
@@ -54,5 +51,11 @@ PULSEAUDIO_CONFIGURE_OFF=	--with-pulse=no
 SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 SNDIO_CONFIGURE_ON=	--with-sndio=yes
 SNDIO_CONFIGURE_OFF=	--with-sndio=no
+
+post-patch:
+# Remove unused duplicate global symbols (-fno-common)
+	@${REINPLACE_CMD} -E '/^g?char command/d' \
+		${WRKSRC}/src/gui_main.c \
+		${WRKSRC}/src/playlist.c
 
 .include <bsd.port.mk>

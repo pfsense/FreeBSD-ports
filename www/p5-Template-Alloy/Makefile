@@ -1,9 +1,5 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Template-Alloy
-PORTVERSION=	1.020
-PORTREVISION=	1
+PORTVERSION=	1.022
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:RHANDOM
@@ -17,5 +13,7 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	HTTP-Body
 PORTVERSION=	1.22
@@ -22,5 +21,7 @@ TEST_DEPENDS=	p5-Test-Deep>=0:devel/p5-Test-Deep \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

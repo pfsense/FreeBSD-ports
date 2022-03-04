@@ -1,10 +1,9 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	curlpp
 PORTVERSION=	0.8.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	ftp
 
 MAINTAINER=	sunpoet@FreeBSD.org

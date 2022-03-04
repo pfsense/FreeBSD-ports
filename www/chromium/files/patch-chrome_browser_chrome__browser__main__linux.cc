@@ -1,27 +1,29 @@
---- chrome/browser/chrome_browser_main_linux.cc.orig	2019-03-11 22:00:53 UTC
+--- chrome/browser/chrome_browser_main_linux.cc.orig	2021-07-19 18:45:08 UTC
 +++ chrome/browser/chrome_browser_main_linux.cc
-@@ -90,12 +90,14 @@ void ChromeBrowserMainPartsLinux::PreProfileInit() {
- void ChromeBrowserMainPartsLinux::PostProfileInit() {
-   ChromeBrowserMainPartsPosix::PostProfileInit();
- 
-+#if !defined(OS_BSD)
-   g_browser_process->metrics_service()->RecordBreakpadRegistration(
-       breakpad::IsCrashReporterEnabled());
-+#endif
+@@ -47,7 +47,7 @@ ChromeBrowserMainPartsLinux::~ChromeBrowserMainPartsLi
  }
  
- void ChromeBrowserMainPartsLinux::PostMainMessageLoopStart() {
--#if !defined(OS_CHROMEOS)
-+#if !defined(OS_CHROMEOS) && !defined(OS_BSD)
-   bluez::BluezDBusThreadManager::Initialize();
-   bluez::BluezDBusManager::Initialize();
+ void ChromeBrowserMainPartsLinux::PreProfileInit() {
+-#if !BUILDFLAG(IS_CHROMEOS_ASH)
++#if !BUILDFLAG(IS_CHROMEOS_ASH) && !defined(OS_BSD)
+   // Needs to be called after we have chrome::DIR_USER_DATA and
+   // g_browser_process.  This happens in PreCreateThreads.
+   // base::GetLinuxDistro() will initialize its value if needed.
+@@ -78,7 +78,7 @@ void ChromeBrowserMainPartsLinux::PreProfileInit() {
+ }
+ 
+ void ChromeBrowserMainPartsLinux::PostCreateMainMessageLoop() {
+-#if !BUILDFLAG(IS_CHROMEOS_ASH)
++#if !BUILDFLAG(IS_CHROMEOS_ASH) && !defined(OS_BSD)
+   bluez::BluezDBusManager::Initialize(nullptr /* system_bus */);
  #endif
-@@ -104,7 +106,7 @@ void ChromeBrowserMainPartsLinux::PostMainMessageLoopS
+ 
+@@ -86,7 +86,7 @@ void ChromeBrowserMainPartsLinux::PostCreateMainMessag
  }
  
  void ChromeBrowserMainPartsLinux::PostDestroyThreads() {
--#if !defined(OS_CHROMEOS)
-+#if !defined(OS_CHROMEOS) && !defined(OS_BSD)
+-#if !BUILDFLAG(IS_CHROMEOS_ASH)
++#if !BUILDFLAG(IS_CHROMEOS_ASH) && !defined(OS_BSD)
    bluez::BluezDBusManager::Shutdown();
    bluez::BluezDBusThreadManager::Shutdown();
  #endif

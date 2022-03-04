@@ -1,5 +1,4 @@
 # Created by: Axel Rau <axel.rau@chaos1.de>
-# $FreeBSD$
 
 PORTNAME=	characteristic
 PORTVERSION=	14.3.0
@@ -13,7 +12,7 @@ COMMENT=	Python attributes without boilerplate
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

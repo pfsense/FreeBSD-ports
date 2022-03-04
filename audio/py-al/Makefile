@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	al
 PORTVERSION=	0.1.0
 CATEGORIES=	audio python
@@ -8,13 +6,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	PyAL-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	PyAL is a binding of OpenAL for Python
+COMMENT=	OpenAL bindings for Python
 
 LICENSE=	PD ZLIB
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/doc/copying.rst
 
-USES=		openal:al python
+USES=		openal:al python:3.6+
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

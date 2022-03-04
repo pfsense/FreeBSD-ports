@@ -1,11 +1,10 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	Judy
-PORTVERSION=	1.0.5
-PORTREVISION=	2
+DISTVERSION=	1.0.5
+PORTREVISION=	3
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General purpose dynamic array
@@ -21,7 +20,7 @@ USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 
-WRKSRC=	${WRKDIR}/${PORTNAME:tl}-${PORTVERSION}
+WRKSRC=	${WRKDIR}/${PORTNAME:tl}-${DISTVERSION}
 
 PORTDOCS=	COPYRIGHT README *.htm
 
@@ -29,10 +28,10 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == mips || ${ARCH} == powerpc
-CONFIGURE_ARGS+=	--enable-32-bit
-.else
+.if ${ARCH:M*64*}
 CONFIGURE_ARGS+=	--enable-64-bit
+.else
+CONFIGURE_ARGS+=	--enable-32-bit
 .endif
 
 post-install:

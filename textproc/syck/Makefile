@@ -1,5 +1,4 @@
 # Created by: dd
-# $FreeBSD$
 
 PORTNAME=	syck
 PORTVERSION=	0.70
@@ -8,8 +7,6 @@ MASTER_SITES=	GHC
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for reading and writing YAML 1.0
-
-WRKSRC=		${WRKDIR}/${DISTNAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	indeyets

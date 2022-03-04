@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	ipfs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.18
-PORTREVISION=	2
+DISTVERSION=	0.8.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/ipfs/go-ipfs/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	-go
@@ -12,15 +10,18 @@ DISTNAME=	go-ipfs-source
 MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	IPFS implementation in Go
 
-LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	MIT APACHE20
+LICENSE_COMB=	dual
+LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
+LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
-USES=		go
+USES=		cpe go:modules
 
-GO_PKGNAME=	github.com/ipfs/go-ipfs
-GO_TARGET=	./cmd/ipfs
+CPE_VENDOR=	protocol
+
+GO_TARGET=	./cmd/ipfs:ipfs-go
 
 NO_WRKSUBDIR=	yes
 
@@ -43,8 +44,7 @@ GROUPS=		${IPFS_GROUP}
 
 FULLNAME=	${PORTNAME}${PKGNAMESUFFIX}
 
-do-install:
+post-install:
 	@${MKDIR} ${STAGEDIR}${IPFS_HOME}
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/ipfs ${STAGEDIR}${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
 
 .include <bsd.port.mk>

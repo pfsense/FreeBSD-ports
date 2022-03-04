@@ -1,9 +1,7 @@
 # Created by: Gerrit Beine <tux@pinguru.net>
-# $FreeBSD$
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.31.1
-PORTREVISION=	1
+PORTVERSION=	1.31.16
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	131${PHP_PKGNAMESUFFIX}
@@ -13,9 +11,12 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki12[79]-[0-9]* mediawiki130-[0-9]*
+CONFLICTS=	mediawiki13[5-7]
 
-USES=		php:flavors shebangfix
+DEPRECATED=	Upstream EOL
+EXPIRATION_DATE=2021-12-31
+
+USES=		cpe php:flavors shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
 		maintenance/postgres/*.pl \
 		maintenance/storage/make-blobs \
@@ -26,6 +27,8 @@ hhvm_CMD=	${LOCALBASE}/bin/hhvm # not installed by anything yet
 USE_PHP=	ctype dom fileinfo hash iconv intl json mbstring openssl pcre \
 		readline session xml xmlreader zlib
 MEDIAWIKIDIR?=	www/mediawiki
+
+IGNORE_WITH_PHP=	80
 
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
@@ -42,7 +45,8 @@ MEMCACHED_DESC=	Use memcached
 IMAGICK_DESC=	Use ImageMagick
 SOCKETS_DESC=	Use sockets
 
-MYSQL_USE=	mysql=client php=mysqli
+MYSQL_USES=	mysql
+MYSQL_USE=	php=mysqli
 PGSQL_USE=	php=pgsql
 SQLITE_USE=	php=sqlite3
 LDAP_USE=	php=ldap

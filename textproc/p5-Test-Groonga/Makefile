@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Groonga
 PORTVERSION=	0.06
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for testing Groonga full-text search engine
 
 LICENSE=	ART10 GPLv1+

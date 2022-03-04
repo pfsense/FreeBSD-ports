@@ -14,6 +14,7 @@ include/pcap/nflog.h
 include/pcap/pcap-inttypes.h
 include/pcap/pcap.h
 include/pcap/sll.h
+include/pcap/socket.h
 include/pcap/usb.h
 include/pcap/vlan.h
 lib/libpcap.a
@@ -46,6 +47,7 @@ man/man3/pcap_get_required_select_timeout.3.gz
 man/man3/pcap_get_selectable_fd.3.gz
 man/man3/pcap_get_tstamp_precision.3.gz
 man/man3/pcap_geterr.3.gz
+man/man3/pcap_init.3.gz
 man/man3/pcap_inject.3.gz
 man/man3/pcap_is_swapped.3.gz
 man/man3/pcap_lib_version.3.gz

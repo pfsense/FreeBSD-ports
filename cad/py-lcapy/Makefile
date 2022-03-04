@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	lcapy
 DISTVERSION=	g20171202
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	cad python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +15,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sympy>0:math/py-sympy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.7+
 USE_PYTHON=	distutils concurrent autoplist
 USE_GITHUB=	yes
 GH_ACCOUNT=	mph-

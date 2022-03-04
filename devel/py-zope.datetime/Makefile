@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.datetime
 PORTVERSION=	3.4.1
 PORTREVISION=	1
@@ -13,7 +11,7 @@ COMMENT=	Commonly used date and time related utility functions
 
 LICENSE=	ZPL21
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.browserresource
 PORTVERSION=	3.10.3
 PORTREVISION=	1
@@ -24,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zope.component>=3.8.0:devel/py-zope.componen
 		${PYTHON_PKGNAMEPREFIX}zope.publisher>=3.8:devel/py-zope.publisher@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.traversing>3.7:devel/py-zope.traversing@${PY_FLAVOR}
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

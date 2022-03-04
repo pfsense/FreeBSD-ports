@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	plex-ttf
-DISTVERSION=	1.3.1
+DISTVERSION=	6.0.0
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://github.com/IBM/plex/releases/download/v${DISTVERSION}/TrueType${EXTRACT_SUFX}?dummy=/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	delphij@FreeBSD.org
 COMMENT=	IBM's signature typeface
 
 LICENSE=	OFL11

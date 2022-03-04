@@ -1,9 +1,8 @@
 # Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
 
 PORTNAME=	lapispuzzle
 PORTVERSION=	1.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	LapisPuzzle-${PORTVERSION}

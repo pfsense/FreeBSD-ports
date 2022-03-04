@@ -1,29 +1,32 @@
 # Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cyberchef
-PORTVERSION=	8.24.2
-PORTREVISION=	2
+PORTVERSION=	9.32.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
-DISTFILES=	cyberchef.htm
-EXTRACT_ONLY=	# none
+MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${GH_TAGNAME}/
+DISTNAME=	CyberChef_${DISTVERSIONPREFIX}${PORTVERSION}
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Cyber operations within a web browser
 
 LICENSE=	APACHE20
 
-MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${GH_TAGNAME}/
+USES=		cpe zip
+CPE_VENDOR=	gchq
+
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	gchq
 GH_PROJECT=	CyberChef
 
-NO_BUILD=       yes
-NO_ARCH=        yes
+NO_BUILD=	yes
+NO_ARCH=	yes
 
 do-install:
-	${MKDIR}                            ${STAGEDIR}${WWWDIR}
-	${INSTALL} ${DISTDIR}/cyberchef.htm ${STAGEDIR}${WWWDIR}/index.html
+	${MKDIR} ${STAGEDIR}${WWWDIR}
+	${INSTALL} ${WRKDIR}/${DISTNAME}.html ${STAGEDIR}${WWWDIR}/index.html
+	${CP} -R ${WRKDIR}/images ${STAGEDIR}${WWWDIR}/
+	${CP} -R ${WRKDIR}/modules ${STAGEDIR}${WWWDIR}/
+	${CP} -R ${WRKDIR}/assets ${STAGEDIR}${WWWDIR}/
 
 .include <bsd.port.mk>

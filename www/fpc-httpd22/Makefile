@@ -1,6 +1,3 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	www lang
 PKGNAMESUFFIX=	-httpd22
 
@@ -12,10 +9,5 @@ USE_FPC=	rtl-extra
 MASTERDIR=	${.CURDIR}/../../lang/fpc
 WRKUNITDIR=	${FPCSRCDIR}/packages/${PKGNAMESUFFIX:S/-//}
 EXTRACTUNITDIR=	${WRKUNITDIR}
-
-OPTIONS_DEFINE=	APACHE22
-APACHE22_DESC=	Install apache22 server
-
-APACHE22_USE=	APACHE=22
 
 .include "${MASTERDIR}/Makefile"

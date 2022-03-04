@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Net-Plurk
 PORTVERSION=	0.11
@@ -27,8 +26,9 @@ RUN_DEPENDS=	p5-AnyEvent-HTTP>=0:www/p5-AnyEvent-HTTP \
 		p5-URI>=0:net/p5-URI \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

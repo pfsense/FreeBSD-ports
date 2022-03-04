@@ -1,31 +1,39 @@
 # Created by: Alexander Kriventsov <avk@vl.ru>
-# $FreeBSD$
 
 PORTNAME=	django-auth-ldap
-PORTVERSION=	1.7.0
+PORTVERSION=	3.0.0
 CATEGORIES=	www security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	avk@vl.ru
+MAINTAINER=	kai@FreeBSD.org
 COMMENT=	LDAP integration for django.contrib.auth
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=1.11:www/py-django111@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>=2.2:www/py-django22@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ldap>=3.1:net/py-ldap@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	autoplist distutils
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 PORTDOCS=	*
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj21-django-auth-ldap
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj31-django-auth-ldap \
+			${PYTHON_PKGNAMEPREFIX}dj32-django-auth-ldap
 
 OPTIONS_DEFINE=	DOCS
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_VARS=		PYDISTUTILS_BUILD_TARGET+="build_sphinx -a -E"
+
+.include <bsd.port.pre.mk>
+
+# Set a locale to avoid build/configure errors.  The UTF-8 mode is enabled by
+# default when the locale is C since Python 3.7.
+.if ${PYTHON_REL} < 30700
+USE_LOCALE=	en_US.UTF-8
+.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -33,4 +41,4 @@ post-install-DOCS-on:
  		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} \
 			"! -name .buildinfo -and ! -name objects.inv")
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

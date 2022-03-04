@@ -1,9 +1,8 @@
 # Created by: Li-Lun Wang <llwang@infor.org>
-# $FreeBSD$
 
 PORTNAME=	hugo
 PORTVERSION=	2.12
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	emulators
 MASTER_SITES=	http://www.zeograd.com/download/ \
 		http://www.sourcefiles.org/Emulators/Videogames/
@@ -22,7 +21,7 @@ OPTIONS_SUB=	yes
 NETPLAY_DESC=	Netplay support
 SDL_MIXER_DESC=	SDL_mixer support
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig sdl
 USE_SDL=	sdl
 USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
@@ -38,7 +37,10 @@ IGNORE=	NETPLAY support requires GTK2 support
 .endif
 
 .if ${PORT_OPTIONS:MGTK2}
-USE_GNOME=	gtk20
+LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
+USES+=		gnome
+USE_GNOME=	gtk20 cairo gdkpixbuf2
 .else
 CONFIGURE_ARGS+=	--disable-gui --disable-gtktest
 .endif

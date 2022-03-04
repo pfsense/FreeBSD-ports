@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	CsoundQt
-DISTVERSION=	0.9.5
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.8.1
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,23 +14,16 @@ LIB_DEPENDS=	libcsound64.so:audio/csound
 
 USES=		compiler:c++11-lib desktop-file-utils gl gmake qmake qt:5 shared-mime-info
 USE_GITHUB=	yes
-USE_QT=		concurrent core declarative gui network printsupport widgets xml buildtools_build
+USE_QT=		concurrent core declarative gui network printsupport webchannel webkit widgets xml buildtools_build
 USE_GL=		gl
 
 QMAKE_ARGS=	CONFIG+="CSOUND_API_INCLUDE_DIR=${LOCALBASE}/include/csound CSOUND_LIBRARY_DIR=${LOCALBASE}/lib build64" \
 		INSTALL_DIR=${PREFIX} SHARE_DIR=${PREFIX}/share \
 		qcs.pro
 
-PLIST_FILES=	bin/${PORTNAME}-d-cs6 \
-		bin/csoundqt \
-		share/applications/${PORTNAME}.desktop \
-		share/icons/hicolor/128x128/mimetypes/csound.png \
-		share/icons/hicolor/scalable/apps/qtcs.svg \
-		share/mime/packages/x-csound-csd.xml \
-		share/mime/packages/x-csound-orc.xml \
-		share/mime/packages/x-csound-sco.xml
-
 OPTIONS_DEFINE=	EXAMPLES
+
+DATADIR=	${PREFIX}/share/${PORTNAME:tl}
 
 PORTEXAMPLES=	*
 
@@ -40,7 +32,6 @@ post-patch:
 
 post-install:
 	@${MV} ${STAGEDIR}${DATADIR}/Examples ${STAGEDIR}${EXAMPLESDIR}
-	@${RMDIR} ${STAGEDIR}${DATADIR}
 	@${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/bin/${PORTNAME}-d-cs6
 
 .include <bsd.port.mk>

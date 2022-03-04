@@ -1,24 +1,23 @@
-# $FreeBSD$
-
 PORTNAME=	squid
-PORTVERSION=	4.0.25
-PORTREVISION=	3
-CATEGORIES=	www ipv6
-MASTER_SITES=	http://www.squid-cache.org/Versions/v4/ \
-		http://www2.us.squid-cache.org/Versions/v4/ \
-		http://www1.at.squid-cache.org/Versions/v4/ \
-		http://www.eu.squid-cache.org/Versions/v4/ \
-		http://www1.jp.squid-cache.org/Versions/v4/
+DISTVERSION=	5.0.6
+CATEGORIES=	www
+MASTER_SITES=	http://www2.pl.squid-cache.org/Versions/v5/ \
+		http://ca.squid-cache.org/Versions/v5/ \
+		http://www1.il.squid-cache.org/Versions/v5/ \
+		http://www1.jp.squid-cache.org/Versions/v5/ \
+		http://www2.gr.squid-cache.org/Versions/v5/ \
+		http://ca2.squid-cache.org/Versions/v5/ \
+		http://www.squid-cache.org/Versions/v5/
 PKGNAMESUFFIX=	-devel
-DIST_SUBDIR=	squid${PORTVERSION:R}
 
-PATCH_SITES=	http://www.squid-cache.org/%SUBDIR%/ \
-		http://www2.us.squid-cache.org/%SUBDIR%/ \
-		http://www1.at.squid-cache.org/%SUBDIR%/ \
-		http://www.eu.squid-cache.org/%SUBDIR%/ \
+PATCH_SITES=	http://www2.pl.squid-cache.org/%SUBDIR%/ \
+		http://ca.squid-cache.org/%SUBDIR%/ \
+		http://www1.il.squid-cache.org/%SUBDIR%/ \
 		http://www1.jp.squid-cache.org/%SUBDIR%/ \
-		http://master.squid-cache.org/~amosjeffries/patches/:nosid
-PATCH_SITE_SUBDIR=	Versions/v4/changesets
+		http://www2.gr.squid-cache.org/%SUBDIR%/ \
+		http://ca2.squid-cache.org/%SUBDIR%/ \
+		http://www.squid-cache.org/%SUBDIR%/
+PATCH_SITE_SUBDIR=	Versions/v5/changesets
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	HTTP Caching Proxy
@@ -26,11 +25,9 @@ COMMENT=	HTTP Caching Proxy
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to link: ext_time_quota_acl.cc: undefined reference to std::ctype
-
-CONFLICTS=	squid*-3.*
-
 USES=		compiler:c++11-lib cpe perl5 shebangfix tar:xz
+
+CONFLICTS=	squid3-* squid-4.*
 CPE_VENDOR=	squid-cache
 SHEBANG_FILES=	scripts/*.pl contrib/*.pl tools/*.pl
 GNU_CONFIGURE=	yes
@@ -49,7 +46,7 @@ OPTIONS_GROUP=	AUTH
 OPTIONS_RADIO=	FW
 OPTIONS_GROUP_AUTH=AUTH_LDAP AUTH_NIS AUTH_SASL AUTH_SMB AUTH_SQL
 OPTIONS_RADIO_FW=TP_IPF TP_IPFW TP_PF
-OPTIONS_DEFINE=	ARP_ACL BDB CACHE_DIGESTS DEBUG DELAY_POOLS DOCS ECAP ESI EXAMPLES \
+OPTIONS_DEFINE=	ARP_ACL TDB CACHE_DIGESTS DEBUG DELAY_POOLS DOCS ECAP ESI EXAMPLES \
 		FOLLOW_XFF FS_AUFS FS_DISKD FS_ROCK HTCP ICAP ICMP IDENT IPV6 \
 		KQUEUE LARGEFILE LAX_HTTP NETTLE PCRE SNMP SSL SSL_CRTD \
 		STACKTRACES VIA_DB WCCP WCCPV2
@@ -66,7 +63,7 @@ ARP_ACL_CONFIGURE_ENABLE=	eui
 AUTH_LDAP_CFLAGS=		-I${LOCALBASE}/include
 AUTH_LDAP_LDFLAGS=		-L${LOCALBASE}/lib
 AUTH_LDAP_USE=			OPENLDAP=yes
-AUTH_LDAP_VARS=			BASIC_AUTH+=LDAP EXTERNAL_ACL+=LDAP_group
+AUTH_LDAP_VARS=			BASIC_AUTH+=LDAP DIGEST_AUTH+="eDirectory LDAP" EXTERNAL_ACL+="LDAP_group eDirectory_userip"
 AUTH_SASL_CFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_CPPFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_LDFLAGS=		-L${LOCALBASE}/lib
@@ -76,7 +73,11 @@ AUTH_SMB_USES=			samba:run
 AUTH_SMB_VARS=			BASIC_AUTH+=SMB EXTERNAL_ACL+=wbinfo_group
 AUTH_SQL_RUN_DEPENDS=		p5-DBI>=1.08:databases/p5-DBI
 AUTH_SQL_VARS=			EXTERNAL_ACL+=SQL_session
-BDB_USES=			bdb
+TDB_CFLAGS=			-I${LOCALBASE}/include
+TDB_CONFIGURE_ENABLE=		tdb
+TDB_LDFLAGS=			-L${LOCALBASE}/lib
+TDB_LIB_DEPENDS=		libtdb.so:databases/tdb
+TDB_VARS=			EXTERNAL_ACL+="time_quota session"
 CACHE_DIGESTS_CONFIGURE_ENABLE=	cache-digests
 DELAY_POOLS_CONFIGURE_ENABLE=	delay-pools
 ECAP_CFLAGS=			-I${LOCALBASE}/include
@@ -122,7 +123,6 @@ SSL_CRTD_IMPLIES=		SSL
 STACKTRACES_CONFIGURE_ENABLE=	stacktraces
 STACKTRACES_EXTRA_PATCHES=	${FILESDIR}/extra-patch-gen-stacktrace
 STACKTRACES_LIB_DEPENDS=	libunwind.so:devel/libunwind
-STACKTRACES_CONFIGURE_ON=	--disable-strict-error-checking
 STACKTRACES_CFLAGS=		-g
 STACKTRACES_LDFLAGS=		-lunwind -L${LOCALBASE}/lib
 STACKTRACES_VARS=		STRIP=""
@@ -139,15 +139,21 @@ GSSAPI_NONE_CONFIGURE_ON=	--without-heimdal-krb5 \
 				--without-gss
 
 GSSAPI_BASE_USES=		gssapi
-GSSAPI_BASE_CONFIGURE_ON=	--with-heimdal-krb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_BASE_CONFIGURE_ON=	--with-heimdal-krb5=${GSSAPIBASEDIR} \
+				${GSSAPI_CONFIGURE_ARGS} \
+				krb5_config=${GSSAPIBASEDIR}/bin/krb5-config
 GSSAPI_BASE_PLIST_SUB=		AUTH_KERB=""
 
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal
-GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-heimdal-krb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-heimdal-krb5=${GSSAPIBASEDIR} \
+				${GSSAPI_CONFIGURE_ARGS} \
+				krb5_config=${GSSAPIBASEDIR}/bin/krb5-config
 GSSAPI_HEIMDAL_PLIST_SUB=	AUTH_KERB=""
 
 GSSAPI_MIT_USES=		gssapi:mit
-GSSAPI_MIT_CONFIGURE_ON=	--with-mit-krb5=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_MIT_CONFIGURE_ON=	--with-mit-krb5=${GSSAPIBASEDIR} \
+				${GSSAPI_CONFIGURE_ARGS} \
+				krb5_config=${GSSAPIBASEDIR}/bin/krb5-config
 GSSAPI_MIT_PLIST_SUB=		AUTH_KERB=""
 
 ARP_ACL_DESC=		ARP/MAC/EUI based authentification
@@ -157,7 +163,7 @@ AUTH_NIS_DESC=		Install NIS/YP authentication helpers
 AUTH_SASL_DESC=		Install SASL authentication helpers
 AUTH_SMB_DESC=		Install SMB auth. helpers (req. Samba)
 AUTH_SQL_DESC=		Install SQL based auth
-BDB_DESC=		Berkeley DB support required for session and time quota external helpers
+TDB_DESC=		TrivialDB support required for session and time quota external helpers
 CACHE_DIGESTS_DESC=	Use cache digests
 DEBUG_DESC=		Build with extended debugging support
 DELAY_POOLS_DESC=	Delay pools (bandwidth limiting)
@@ -218,6 +224,7 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--with-pidfile=/var/run/squid/squid.pid \
 		--with-swapdir=/var/squid/cache \
 		--without-gnutls \
+		--with-included-ltdl \
 		--enable-auth \
 		--enable-zph-qos \
 		--enable-build-info \
@@ -227,14 +234,16 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--disable-linux-netfilter \
 		--disable-linux-tproxy \
 		--disable-translation \
-		--disable-arch-native
+		--disable-arch-native \
+		--disable-strict-error-checking
 
 .include <bsd.port.options.mk>
 
 # Authentication methods and modules:
 
 BASIC_AUTH+=	DB SMB_LM NCSA PAM POP3 RADIUS fake getpwnam
-EXTERNAL_ACL+=	file_userip unix_group
+DIGEST_AUTH+=	file
+EXTERNAL_ACL+=	file_userip unix_group delayer
 
 # POLA: allow the old global make.conf(5) (pre src.conf(5)) defines, too:
 .if ${PORT_OPTIONS:MAUTH_NIS} && !defined(NO_NIS) && !defined(WITHOUT_NIS)
@@ -247,17 +256,11 @@ NEGOTIATE_AUTH=	none
 PLIST_SUB+=	AUTH_KERB="@comment "
 .else
 # The kerberos_ldap_group external helper also depends on LDAP and SASL:
+# The kerberos_sid_group external helper depends on kerberos_ldap_group meanwhile
 . if ${PORT_OPTIONS:MAUTH_LDAP} && ${PORT_OPTIONS:MAUTH_SASL}
-EXTERNAL_ACL+=	kerberos_ldap_group
+EXTERNAL_ACL+=	kerberos_ldap_group kerberos_sid_group
 . endif
 NEGOTIATE_AUTH=	kerberos wrapper
-.endif
-
-# The session and time_quota external helpers require Berkeley DB support:
-.if ${PORT_OPTIONS:MBDB}
-CPPFLAGS+=	-I${BDB_INCLUDE_DIR}
-LDFLAGS+=	-L${BDB_LIB_DIR}
-EXTERNAL_ACL+=	time_quota session
 .endif
 
 # Storage schemes:
@@ -265,14 +268,14 @@ STORAGE_SCHEMES+=	ufs
 DISKIO_MODULES+=	AIO Blocking IpcIo Mmapped
 
 CONFIGURE_ARGS+=	--enable-auth-basic="${BASIC_AUTH}" \
-			--enable-auth-digest="file" \
+			--enable-auth-digest="${DIGEST_AUTH}" \
 			--enable-external-acl-helpers="${EXTERNAL_ACL}" \
 			--enable-auth-negotiate="${NEGOTIATE_AUTH}" \
 			--enable-auth-ntlm="fake SMB_LM" \
 			--enable-storeio="${STORAGE_SCHEMES}" \
 			--enable-disk-io="${DISKIO_MODULES}" \
-			--enable-log-daemon-helpers="file" \
-			--enable-url-rewrite-helpers="fake" \
+			--enable-log-daemon-helpers="file DB" \
+			--enable-url-rewrite-helpers="fake LFS" \
 			--enable-storeid-rewrite-helpers="file" \
 			--enable-security-cert-validators="fake"
 
@@ -287,8 +290,6 @@ WITH_DEBUG?=		yes
 CONFIGURE_ARGS+=	${SQUID_CONFIGURE_ARGS}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
-		${WRKSRC}/src/cf.data.pre
 	@(cd ${WRKSRC} && ${REINPLACE_CMD} \
 		-e 's|\.conf\.default|.conf.sample|' \
 		-e 's|)\.default|).sample|' \
@@ -296,12 +297,10 @@ post-patch:
 	@(cd ${WRKSRC} && ${MV} src/mime.conf.default src/mime.conf.sample)
 
 post-patch-IPV6-off:
-	@${REINPLACE_CMD} -e's/ ::1//' -e's/ fc00::\/7//' \
-		-e's/ fe80::\/10//' -e's/ 2001:DB8::2//' \
-		-e's/ 2001:DB8::a:0\/64//' \
-		-e'/tcp_outgoing_address 2001:db8::c001 good_service_net/d' \
-		-e'/tcp_outgoing_address 2001:db8::beef normal_service_net/d' \
-		-e'/tcp_outgoing_address 2001:db8::1/d' \
+	@${REINPLACE_CMD} -E -e's| ::1$$||' -e's| ::1?/128||g' \
+		-e'/acl localnet src f[ce][08]0::/d' \
+		-e's| 2001:DB8::[^[:space:]]+$$||' \
+		-e'/tcp_outgoing_address 2001:db8::/d' \
 		${WRKSRC}/src/cf.data.pre
 
 post-install:

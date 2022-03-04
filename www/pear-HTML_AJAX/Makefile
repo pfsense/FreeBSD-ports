@@ -1,5 +1,4 @@
 # Created by: Simun Mikecin <numisemis at yahoo.com>
-# $FreeBSD$
 
 PORTNAME=	HTML_AJAX
 PORTVERSION=	0.5.8
@@ -11,6 +10,7 @@ COMMENT=	PHP and JavaScript AJAX library
 LICENSE=	LGPL21+
 
 NO_ARCH=	yes
-USES=		pear
+USES=		cpe pear
+CPE_VENDOR=	pear
 
 .include <bsd.port.mk>

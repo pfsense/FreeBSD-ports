@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	epdb
 PORTVERSION=	0.15.1
 DISTVERSIONPREFIX=	${PORTNAME}-
@@ -9,7 +7,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Enhanced Python Debugger
 
-USES=		python
+USES=		python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 

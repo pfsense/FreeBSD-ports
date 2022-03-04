@@ -1,9 +1,7 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	hydrogen
-DISTVERSION=	1.0.0-beta1-325
-DISTVERSIONSUFFIX=	-g538eaeb9
+DISTVERSION=	1.0.1
 PORTREVISION=	1
 CATEGORIES=	audio
 
@@ -19,7 +17,7 @@ LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
 USES=		cmake compiler:c++11-lang desktop-file-utils pkgconfig \
 		localbase qt:5
 USE_QT=		core gui network widgets xml xmlpatterns buildtools_build \
-		linguisttools_build qmake_build
+		linguisttools_build qmake_build testlib_build
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -78,6 +76,8 @@ TEST_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/cppunit.pc:devel/cppunit
 post-patch:
 	@${REINPLACE_CMD} 's|EXISTS(tar|EXISTS(${LOCALBASE}/lib/libtar.so|g' \
 		${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} 's|%%DATADIR%%|${DATADIR}|g' \
+		${WRKSRC}/data/i18n/CMakeLists.txt
 
 do-test-TEST-on:
 	cd ${WRKSRC} && ./src/tests/tests

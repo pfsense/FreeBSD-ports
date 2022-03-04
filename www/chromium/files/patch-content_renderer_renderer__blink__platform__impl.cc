@@ -1,56 +1,47 @@
---- content/renderer/renderer_blink_platform_impl.cc.orig	2019-03-11 22:00:58 UTC
+--- content/renderer/renderer_blink_platform_impl.cc.orig	2021-09-14 01:51:57 UTC
 +++ content/renderer/renderer_blink_platform_impl.cc
-@@ -109,7 +109,7 @@
+@@ -107,7 +107,7 @@
  
- #if defined(OS_MACOSX)
+ #if defined(OS_MAC)
  #include "content/child/child_process_sandbox_support_impl_mac.h"
--#elif defined(OS_LINUX)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
+-#elif defined(OS_LINUX) || defined(OS_CHROMEOS)
++#elif defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  #include "content/child/child_process_sandbox_support_impl_linux.h"
  #endif
  
-@@ -202,7 +202,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
-                      ->Clone();
-     thread_safe_sender_ = RenderThreadImpl::current()->thread_safe_sender();
-     blob_registry_.reset(new WebBlobRegistryImpl(thread_safe_sender_.get()));
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
-     font_loader_ = sk_make_sp<font_service::FontLoader>(connector_.get());
-     SkFontConfigInterface::SetGlobal(font_loader_);
+@@ -176,7 +176,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
+       main_thread_scheduler_(main_thread_scheduler) {
+   // RenderThread may not exist in some tests.
+   if (RenderThreadImpl::current()) {
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+     mojo::PendingRemote<font_service::mojom::FontService> font_service;
+     RenderThreadImpl::current()->BindHostReceiver(
+         font_service.InitWithNewPipeAndPassReceiver());
+@@ -186,7 +186,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
  #endif
-@@ -211,7 +211,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
-     connector_ = service_manager::Connector::Create(&request);
    }
  
--#if defined(OS_LINUX) || defined(OS_MACOSX)
-+#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
-   if (g_sandbox_enabled && sandboxEnabled()) {
- #if defined(OS_MACOSX)
-     sandbox_support_.reset(new WebSandboxSupportMac(connector_.get()));
-@@ -239,7 +239,7 @@ RendererBlinkPlatformImpl::~RendererBlinkPlatformImpl(
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
+   if (sandboxEnabled()) {
+ #if defined(OS_MAC)
+     sandbox_support_ = std::make_unique<WebSandboxSupportMac>();
+@@ -249,7 +249,7 @@ RendererBlinkPlatformImpl::WrapSharedURLLoaderFactory(
+       /*terminate_sync_load_event=*/nullptr);
  }
  
- void RendererBlinkPlatformImpl::Shutdown() {
--#if defined(OS_LINUX) || defined(OS_MACOSX)
-+#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
-   // SandboxSupport contains a map of OutOfProcessFont objects, which hold
-   // WebStrings and WebVectors, which become invalidated when blink is shut
-   // down. Hence, we need to clear that map now, just before blink::shutdown()
-@@ -320,7 +320,7 @@ RendererBlinkPlatformImpl::CreateNetworkURLLoaderFacto
- 
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  void RendererBlinkPlatformImpl::SetDisplayThreadPriority(
      base::PlatformThreadId thread_id) {
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
    if (RenderThreadImpl* render_thread = RenderThreadImpl::current()) {
-     render_thread->render_message_filter()->SetThreadPriority(
-         thread_id, base::ThreadPriority::DISPLAY);
-@@ -333,7 +333,7 @@ blink::BlameContext* RendererBlinkPlatformImpl::GetTop
+@@ -264,7 +264,7 @@ blink::BlameContext* RendererBlinkPlatformImpl::GetTop
  }
  
  blink::WebSandboxSupport* RendererBlinkPlatformImpl::GetSandboxSupport() {
--#if defined(OS_LINUX) || defined(OS_MACOSX)
-+#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
    return sandbox_support_.get();
  #else
    // These platforms do not require sandbox support.

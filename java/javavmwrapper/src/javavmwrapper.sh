@@ -25,8 +25,6 @@
 # Greg Lewis
 # ----------------------------------------------------------------------------
 #
-# $FreeBSD$
-#
 # MAINTAINER=java@FreeBSD.org
 
 _JAVAVM_SAVE_PATH=${PATH}
@@ -173,17 +171,22 @@ sortConfiguration () {
             _VM=`dirname "${_VM}"`
             _VM=`dirname "${_VM}"`
             _VM=`basename "${_VM}"`
-            # Consistent version numbering for various install directory names
-            # including 'openjdk6', 'jdk1.6.0', 'linux-sun-jdk1.6.0', etc.
-            VERSION=`echo ${VM} | sed -e 's|[^0-9]*||' -e 's|1\.||' \
-		                      -e 's|\.[0-9]||' 2>/dev/null`
-            _VERSION=`echo ${_VM} | sed -e 's|[^0-9]*||' -e 's|1\.||' \
-		                        -e 's|\.[0-9]||' 2>/dev/null`
-            if [ "${VERSION}" \> "${_VERSION}" ]; then
+            # Consistent version numbering for various install directory names.
+            VERSION=`echo ${VM} | sed -e 's|[^0-9]*||' \
+                                      -e 's|1\.\([0-9][0-9]*\)|\1|' \
+                                      -e 's|\([0-9][0-9]*\)\.[0-9]|\1|' \
+                                      -e 's|[^0-9]*\([0-9][0-9]*\)[^0-9]*|\1|'
+                                      2>/dev/null`
+            _VERSION=`echo ${_VM} | sed -e 's|[^0-9]*||' \
+                                        -e 's|1\.\([0-9][0-9]*\)|\1|' \
+                                        -e 's|\([0-9][0-9]*\)\.[0-9]|\1|' \
+                                        -e 's|[^0-9]*\([0-9][0-9]*\)[^0-9]*|\1|'
+                                        2>/dev/null`
+            if [ "${VERSION}" -gt "${_VERSION}" ]; then
                 _JAVAVMS="${_JAVAVMS}:${JAVAVM}:${_JAVAVM}"
                 JAVAVM=
                 continue
-            elif [ "${VERSION}" \< "${_VERSION}" ]; then
+            elif [ "${VERSION}" -lt "${_VERSION}" ]; then
                 _JAVAVMS="${_JAVAVMS}:${_JAVAVM}"
                 continue
             else
@@ -500,24 +503,54 @@ setJavaHome() {
         _JAVAVM_VERSION=
         for version in ${JAVA_VERSION}; do
             case "${version}" in
-                1.6+)
-                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 1.6 1.7 1.8 1.9"
+                *7+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 7 8 9 10 11 12 13 14 15 16 17"
                     ;;
-                1.7+)
-                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 1.7 1.8 1.9"
+                *8+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 8 9 10 11 12 13 14 15 16 17"
                     ;;
-                1.8+)
-                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 1.8 1.9"
+                *9+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 9 10 11 12 13 14 15 16 17"
                     ;;
-                1.9+)
-                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 1.9"
+                10+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 10 11 12 13 14 15 16 17"
+                    ;;
+                11+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 11 12 13 14 15 16 17"
+                    ;;
+                12+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 12 13 14 15 16 17"
+                    ;;
+                13+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 13 14 15 16 17"
+                    ;;
+                14+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 14 15 16 17"
+                    ;;
+                15+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 15 16 17"
+                    ;;
+                16+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 16 17"
+                    ;;
+                17+)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 17"
+                    ;;
+                1.7)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 7"
+                    ;;
+                1.8)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 8"
+                    ;;
+                1.9)
+                    _JAVAVM_VERSION="${_JAVAVM_VERSION} 9"
                     ;;
                 *)
                     _JAVAVM_VERSION="${_JAVAVM_VERSION} ${version}"
                     ;;
             esac
         done
-        JAVA_VERSION=`echo "${_JAVAVM_VERSION}" | sort | uniq`
+        JAVA_VERSION=`echo "${_JAVAVM_VERSION}" | sort -n | uniq`
     fi
 
     # Finally try to run one of the ${_JAVAVM_VMS}
@@ -528,8 +561,8 @@ setJavaHome() {
         # Respect JAVA_VERSION
         if [ -n "${JAVA_VERSION}" ]; then
             _JAVAVM_VERSION=`echo ${_JAVAVM_VM} | \
-                sed -e 's|^[^0-9]*\([0-9]\)\.\([0-9]\)\.[0-9]$|\1.\2|' \
-                    -e 's|^[^0-9]*\([0-9]\)$|1.\1|'`
+                sed -e 's|^[^0-9]*\([0-9]\)\.\([0-9]\)\.[0-9]$|\2|' \
+                    -e 's|^[^0-9]*\([0-9][0-9]*\)$|\1|'`
             for _JAVAVM_REQUESTED_VERSION in ${JAVA_VERSION}; do
                 if [ "${_JAVAVM_VERSION}" = "${_JAVAVM_REQUESTED_VERSION}" ]; then
                     _JAVAVM_VERSION=

@@ -1,11 +1,10 @@
 # Created by: Markus Brueffer <brueffer@phoenix-systems.de>
-# $FreeBSD$
 
 PORTNAME=	basket
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.49a-46
 DISTVERSIONSUFFIX=	-g60e38c6
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	deskutils kde
 
 MAINTAINER=	ports@FreeBSD.org
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgit2.so:devel/libgit2
 
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext-tools \
-		kde:5 pkgconfig qt:5 shared-mime-info tar:bzip2
+		kde:5 pkgconfig qt:5 shared-mime-info tar:bzip2 xorg
 USE_KDE=	ecm archive auth codecs completion config configwidgets \
 		coreaddons crash dbusaddons doctools filemetadata globalaccel \
 		guiaddons i18n iconthemes jobwidgets kcmutils kio \

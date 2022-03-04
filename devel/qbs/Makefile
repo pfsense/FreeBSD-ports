@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	qbs
 DISTVERSIONPREFIX=	src-
-DISTVERSION=	1.12.2
-PORTREVISION=	1
+DISTVERSION=	1.20.0
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/Qt/qbs
@@ -14,7 +11,7 @@ COMMENT=	Qbs Build Suite
 LICENSE=	GPLv3 LGPL21
 LICENSE_COMB=	dual
 
-USES=		compiler:c++11-lib python:run qmake:outsource qt:5 shebangfix
+USES=		compiler:c++11-lib gl python:run qmake:outsource qt:5 shebangfix
 USE_GL=		gl
 USE_LDCONFIG=	yes
 USE_QT=		buildtools_build core concurrent gui network script testlib \
@@ -50,6 +47,10 @@ pre-configure:
 # See QTBUG-40825 and ports bugs 194088, 195105 and 198720.
 	${MKDIR} ${CONFIGURE_WRKSRC}
 	${ECHO_CMD} 'QMAKE_LIBDIR_FLAGS = -L${CONFIGURE_WRKSRC}/lib' >> ${CONFIGURE_WRKSRC}/.qmake.cache
+
+# Workaround strip(1) problems
+post-stage:
+	-${RM} ${STAGEDIR}${LOCALBASE}/libexec/qbs/ecp.*
 
 # The file in question is not used on FreeBSD. To silence stage-qa, remove it from stage-dir.
 post-install:

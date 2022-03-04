@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aylet
 PORTVERSION=	0.5
@@ -23,6 +22,7 @@ OPTIONS_DEFINE=	GUI
 OPTIONS_DEFAULT=GUI
 OPTIONS_SUB=	yes
 
+GUI_USES=	gnome
 GUI_USE=	GNOME=atk,cairo,gdkpixbuf2,glib20,gtk20,pango
 
 ALL_TARGET=	aylet

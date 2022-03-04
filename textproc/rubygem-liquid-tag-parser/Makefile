@@ -1,9 +1,8 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	liquid-tag-parser
-PORTVERSION=	1.9.0
-PORTREVISION=	2
+PORTVERSION=	2.0.2
+PORTREVISION=	1
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -12,12 +11,13 @@ COMMENT=	Parse liquid tags easily
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-extras>=0.3:devel/rubygem-extras \
-		rubygem-liquid>=3.0:textproc/rubygem-liquid
+RUN_DEPENDS=	rubygem-extras>=0.3<1:devel/rubygem-extras \
+		rubygem-liquid4>=3.0<5.0:textproc/rubygem-liquid4
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USES=		compiler:c++11-lang gem
-USE_RUBY=	yes
 
 # Disable rdoc
 OPTIONS_EXCLUDE=DOCS

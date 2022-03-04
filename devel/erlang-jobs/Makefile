@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jobs
 PORTVERSION=	0.7.2
 CATEGORIES=	devel

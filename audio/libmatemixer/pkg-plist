@@ -18,10 +18,10 @@ lib/libmatemixer.a
 lib/libmatemixer.so
 lib/libmatemixer.so.0
 lib/libmatemixer.so.0.0.0
-%%ALSA%%lib/libmatemixer/libmatemixer-alsa.a
-%%ALSA%%lib/libmatemixer/libmatemixer-alsa.so
 lib/libmatemixer/libmatemixer-oss.a
 lib/libmatemixer/libmatemixer-oss.so
+%%ALSA%%lib/libmatemixer/libmatemixer-alsa.a
+%%ALSA%%lib/libmatemixer/libmatemixer-alsa.so
 %%PULSEAUDIO%%lib/libmatemixer/libmatemixer-pulse.a
 %%PULSEAUDIO%%lib/libmatemixer/libmatemixer-pulse.so
 libdata/pkgconfig/libmatemixer.pc
@@ -98,6 +98,7 @@ share/locale/hu/LC_MESSAGES/libmatemixer.mo
 share/locale/hy/LC_MESSAGES/libmatemixer.mo
 share/locale/ia/LC_MESSAGES/libmatemixer.mo
 share/locale/id/LC_MESSAGES/libmatemixer.mo
+share/locale/ie/LC_MESSAGES/libmatemixer.mo
 share/locale/is/LC_MESSAGES/libmatemixer.mo
 share/locale/it/LC_MESSAGES/libmatemixer.mo
 share/locale/ja/LC_MESSAGES/libmatemixer.mo
@@ -157,3 +158,4 @@ share/locale/xh/LC_MESSAGES/libmatemixer.mo
 share/locale/zh_CN/LC_MESSAGES/libmatemixer.mo
 share/locale/zh_HK/LC_MESSAGES/libmatemixer.mo
 share/locale/zh_TW/LC_MESSAGES/libmatemixer.mo
+share/locale/zu/LC_MESSAGES/libmatemixer.mo

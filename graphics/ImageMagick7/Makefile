@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	ImageMagick
-DISTVERSION=	7.0.8-47
+DISTVERSION=	7.1.0-13
 CATEGORIES=	graphics perl5
-MASTER_SITES=	http://www.imagemagick.org/download/ \
-		http://www.imagemagick.org/download/legacy/ \
+MASTER_SITES=	https://www.imagemagick.org/download/ \
+		https://www.imagemagick.org/download/releases/ \
 		http://servingzone.com/mirrors/ImageMagick/ \
 		http://mirror.checkdomain.de/imagemagick/ \
 		http://imagemagick.spd.co.il/ \
@@ -27,13 +25,14 @@ MASTER_SITES=	http://www.imagemagick.org/download/ \
 		ftp://ftp.fifi.org/pub/ImageMagick/
 PKGNAMESUFFIX=	7
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Image processing tools
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl
+LIB_DEPENDS=	libltdl.so:devel/libltdl	\
+		libzip.so:archivers/libzip
 
 TESTS_DEPENDS=	gsfonts>=0:print/gsfonts
 
@@ -50,7 +49,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	MAKE=${MAKE_CMD}
 CONFIGURE_ARGS=	--without-dps \
 		--without-flif \
-		--without-raqm \
 		--without-zstd
 USE_LDCONFIG=	yes
 USE_GNOME=	libxml2
@@ -63,16 +61,17 @@ SAMPLE_FILES=	colors.xml delegates.xml log.xml mime.xml policy.xml \
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFTW FONTCONFIG FPX FREETYPE \
+OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFMPEG FFTW FONTCONFIG FPX FREETYPE \
 		GRAPHVIZ GSLIB JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES \
-		OPENEXR OPENMP PANGO PDF PERL PNG SVG TESTS TIFF WEBP WMF \
+		OPENEXR OPENMP PANGO PDF PERL PNG RAQM SVG TESTS TIFF WEBP WMF \
 		THREADS X11 16BIT_PIXEL HDRI HEIF RAW
 OPTIONS_DEFAULT=	16BIT_PIXEL BZIP2 FFTW FONTCONFIG FREETYPE \
-		JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES PDF PERL PNG SVG \
+		JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES PDF PERL PNG RAQM SVG \
 		TIFF WEBP WMF THREADS X11 HDRI RAW
 
 DJVU_DESC=		DJVU format support (needs THREADS)
 GSLIB_DESC=		libgs (Postscript SHLIB) support
+FFMPEG_DESC=		VIDEO codec support as FFmpeg
 TESTS_DESC=		Run bundled self-tests after build
 #SIMD_CONFIGURE_WITH=	gcc-arch
 CONFIGURE_ARGS+=	--without-gcc-arch
@@ -148,6 +147,10 @@ PANGO_IMPLIES=		X11
 PNG_CONFIGURE_WITH=	png
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
 
+RAQM_DESC=		Complex text layout support
+RAQM_CONFIGURE_WITH=	raqm
+RAQM_LIB_DEPENDS=	libraqm.so:print/libraqm
+
 # libraw is by default liked to lcms2, whichs also ends up in IM regardless
 # of the IM LCMS option.
 RAW_DESC=		RAW format support (implies the lcms2 option)
@@ -157,8 +160,7 @@ RAW_IMPLIES=		LCMS2
 
 SVG_DESC=		SVG vector image format support (via librsvg, implies the x11 option)
 SVG_CONFIGURE_WITH=	rsvg
-SVG_LIB_DEPENDS=	librsvg-2.so:graphics/librsvg2
-SVG_USE=		gnome=cairo,gdkpixbuf2
+SVG_USE=		gnome=cairo,gdkpixbuf2,librsvg2
 SVG_IMPLIES=		X11
 
 TIFF_CONFIGURE_WITH=	tiff
@@ -168,9 +170,10 @@ WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 
 X11_CONFIGURE_WITH=	x
+X11_USES=		xorg
 X11_USE=		xorg=ice,sm,x11,xext,xt
 X11_VARS=		CONFLICTS_INSTALL+="ImageMagick7-nox11-* \
-			CONFLICTS+=display-[0-9]*
+			CONFLICTS+=display
 X11_VARS_OFF=		CONFLICTS_INSTALL+="ImageMagick7-*" \
 			PKGNAMESUFFIX=7-nox11
 
@@ -226,13 +229,11 @@ _IMAGEMAGICK_THREADS=no
 . if ${_IMAGEMAGICK_THREADS} == "no"
 IGNORE=OpenMP requires threads${_IMAGEMAGICK_THREADS_IGNORE_MSG}
 . else
-CONFIGURE_ARGS+=	--enable-openmp
-USES+=		compiler:openmp
+CONFIGURE_ARGS+=       --enable-openmp
 . endif
 .else
-CONFIGURE_ARGS+=	--disable-openmp
+CONFIGURE_ARGS+=       --disable-openmp
 .endif
-
 .if defined(WITH_WINDOWS_FONT_DIR)
 CONFIGURE_ARGS+=	--with-windows-font-dir=${WITH_WINDOWS_FONT_DIR}
 .endif
@@ -241,8 +242,8 @@ CONFIGURE_ARGS+=	--with-windows-font-dir=${WITH_WINDOWS_FONT_DIR}
 . if ${_IMAGEMAGICK_THREADS} == "no"
 IGNORE=OpenEXR requires threads. ${_IMAGEMAGICK_THREADS_IGNORE_MSG}
 . else
-LIB_DEPENDS+=		libIlmImf.so:graphics/openexr \
-			libImath.so:graphics/ilmbase
+LIB_DEPENDS+=		libOpenEXR.so:graphics/openexr \
+			libImath.so:math/Imath
 PLIST_SUB+=		OPENEXR=""
 . endif
 .else
@@ -299,6 +300,11 @@ USES+=		ghostscript
 RUN_DEPENDS+=	gsfonts>=0:print/gsfonts
 .endif
 
+.if ${PORT_OPTIONS:MFFMPEG}
+BUILD_DEPENDS+=		ffmpeg:multimedia/ffmpeg
+RUN_DEPENDS+=		ffmpeg:multimedia/ffmpeg
+.endif
+
 .if ${PORT_OPTIONS:MDOCS}
 INSTALL_TARGET=	install-strip install-docDATA install-data-html
 .else
@@ -322,8 +328,12 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|@\.@MAGICK_ABI_SUFFIX@|@|g' \
 		${WRKSRC}/PerlMagick/Makefile.PL.in \
 		${WRKSRC}/PerlMagick/quantum/Makefile.PL.in \
+		${WRKSRC}/Magick++/bin/Magick++-config.in \
 		${WRKSRC}/Magick++/lib/Magick++.pc.in \
+		${WRKSRC}/MagickCore/MagickCore-config.in \
 		${WRKSRC}/MagickCore/MagickCore.pc.in \
+		${WRKSRC}/MagickCore/ImageMagick.pc.in \
+		${WRKSRC}/MagickWand/MagickWand-config.in \
 		${WRKSRC}/MagickWand/MagickWand.pc.in
 
 pre-configure:

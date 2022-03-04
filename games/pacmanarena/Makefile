@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pacmanarena
 PORTVERSION=	0.15
@@ -19,6 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/arena//}
 
+USES=		gnome sdl
 USE_SDL=	mixer net sdl
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-lm
@@ -26,7 +26,6 @@ LDFLAGS+=	-lm
 PORTDOCS=	README
 OPTIONS_DEFINE=	DOCS
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 DESKTOP_ENTRIES="Pacman Arena" "" "${PORTNAME}" \
@@ -36,6 +35,8 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|@prefix@|${DATADIR}|; \
 		s|@datadir@/pacman|${DATADIR}|' \
 		${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e '/keyboard_map/,+1d' \
+		${WRKSRC}/include/input.h
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME:S/arena//} \

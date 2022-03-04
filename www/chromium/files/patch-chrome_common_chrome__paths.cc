@@ -1,82 +1,81 @@
---- chrome/common/chrome_paths.cc.orig	2019-03-21 01:36:35.000000000 +0100
-+++ chrome/common/chrome_paths.cc	2019-03-24 18:44:09.907854000 +0100
-@@ -52,21 +52,21 @@
-     FILE_PATH_LITERAL("Internet Plug-Ins/PepperFlashPlayer");
- #endif
+--- chrome/common/chrome_paths.cc.orig	2021-09-24 04:26:00 UTC
++++ chrome/common/chrome_paths.cc
+@@ -43,17 +43,25 @@
  
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
+ namespace {
+ 
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  // The path to the external extension <id>.json files.
  // /usr/share seems like a good choice, see: http://www.pathname.com/fhs/
  const base::FilePath::CharType kFilepathSinglePrefExtensions[] =
- #if defined(GOOGLE_CHROME_BUILD)
++#if defined(OS_BSD)
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++    FILE_PATH_LITERAL("/usr/local/share/google-chrome/extensions");
++#else
++    FILE_PATH_LITERAL("/usr/local/share/chromium/extensions");
++#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#else
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
      FILE_PATH_LITERAL("/usr/share/google-chrome/extensions");
  #else
--    FILE_PATH_LITERAL("/usr/share/chromium/extensions");
-+    FILE_PATH_LITERAL("/usr/local/share/chromium/extensions");
- #endif  // defined(GOOGLE_CHROME_BUILD)
+     FILE_PATH_LITERAL("/usr/share/chromium/extensions");
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#endif
  
- // The path to the hint file that tells the pepper plugin loader
- // where it can find the latest component updated flash.
- const base::FilePath::CharType kComponentUpdatedFlashHint[] =
-     FILE_PATH_LITERAL("latest-component-updated-flash");
--#endif  // defined(OS_LINUX)
-+#endif  // defined(OS_LINUX) || defined(OS_BSD)
+-#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
++#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
  
- #if defined(OS_CHROMEOS)
- const base::FilePath::CharType kChromeOSComponentFlash[] = FILE_PATH_LITERAL(
-@@ -197,7 +197,7 @@
+ #if BUILDFLAG(ENABLE_WIDEVINE)
+ // The name of the hint file that tells the latest component updated Widevine
+@@ -172,7 +180,7 @@ bool PathProvider(int key, base::FilePath* result) {
          return false;
        break;
      case chrome::DIR_DEFAULT_DOWNLOADS_SAFE:
--#if defined(OS_WIN) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
+-#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
        if (!GetUserDownloadsDirectorySafe(&cur))
          return false;
        break;
-@@ -459,10 +459,12 @@
-       if (!base::PathExists(cur))  // We don't want to create this
-         return false;
-       break;
--#if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_OPENBSD)
-+#if defined(OS_POSIX) && !defined(OS_MACOSX)
+@@ -415,6 +423,9 @@ bool PathProvider(int key, base::FilePath* result) {
      case chrome::DIR_POLICY_FILES: {
- #if defined(GOOGLE_CHROME_BUILD)
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
        cur = base::FilePath(FILE_PATH_LITERAL("/etc/opt/chrome/policies"));
 +#elif defined(OS_BSD)
-+      cur = base::FilePath(FILE_PATH_LITERAL("/usr/local/etc/chrome/policies"));
++      cur = base::FilePath(FILE_PATH_LITERAL(
++          "/usr/local/etc/chrome/policies"));
  #else
        cur = base::FilePath(FILE_PATH_LITERAL("/etc/chromium/policies"));
  #endif
-@@ -470,7 +472,7 @@
-     }
- #endif
- #if defined(OS_CHROMEOS) || (defined(OS_LINUX) && defined(CHROMIUM_BUILD)) || \
--    defined(OS_MACOSX)
-+    defined(OS_MACOSX) || defined(OS_BSD)
+@@ -426,7 +437,7 @@ bool PathProvider(int key, base::FilePath* result) {
+ #if BUILDFLAG(IS_CHROMEOS_ASH) ||                            \
+     ((defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) && \
+      BUILDFLAG(CHROMIUM_BRANDING)) ||                        \
+-    defined(OS_MAC)
++    defined(OS_MAC) || defined(OS_BSD)
      case chrome::DIR_USER_EXTERNAL_EXTENSIONS: {
        if (!base::PathService::Get(chrome::DIR_USER_DATA, &cur))
          return false;
-@@ -478,7 +480,7 @@
+@@ -434,7 +445,7 @@ bool PathProvider(int key, base::FilePath* result) {
        break;
      }
  #endif
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
      case chrome::DIR_STANDALONE_EXTERNAL_EXTENSIONS: {
        cur = base::FilePath(kFilepathSinglePrefExtensions);
        break;
-@@ -513,7 +515,7 @@
+@@ -469,7 +480,7 @@ bool PathProvider(int key, base::FilePath* result) {
  #endif
        break;
  
--#if defined(OS_LINUX) || defined(OS_MACOSX)
-+#if defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
      case chrome::DIR_NATIVE_MESSAGING:
- #if defined(OS_MACOSX)
- #if defined(GOOGLE_CHROME_BUILD)
-@@ -527,6 +529,9 @@
- #if defined(GOOGLE_CHROME_BUILD)
+ #if defined(OS_MAC)
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+@@ -483,6 +494,9 @@ bool PathProvider(int key, base::FilePath* result) {
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
        cur = base::FilePath(FILE_PATH_LITERAL(
            "/etc/opt/chrome/native-messaging-hosts"));
 +#elif defined(OS_BSD)
@@ -85,30 +84,12 @@
  #else
        cur = base::FilePath(FILE_PATH_LITERAL(
            "/etc/chromium/native-messaging-hosts"));
-@@ -539,7 +544,7 @@
+@@ -495,7 +509,7 @@ bool PathProvider(int key, base::FilePath* result) {
          return false;
        cur = cur.Append(FILE_PATH_LITERAL("NativeMessagingHosts"));
        break;
--#endif  // defined(OS_LINUX) || defined(OS_MACOSX)
-+#endif  // defined(OS_LINUX) || defined(OS_MACOSX) || defined(OS_BSD)
+-#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
++#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
  #if !defined(OS_ANDROID)
      case chrome::DIR_GLOBAL_GCM_STORE:
        if (!base::PathService::Get(chrome::DIR_USER_DATA, &cur))
-@@ -547,7 +552,7 @@
-       cur = cur.Append(kGCMStoreDirname);
-       break;
- #endif  // !defined(OS_ANDROID)
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
-     case chrome::FILE_COMPONENT_FLASH_HINT:
-       if (!base::PathService::Get(
-               chrome::DIR_COMPONENT_UPDATED_PEPPER_FLASH_PLUGIN, &cur)) {
-@@ -555,7 +560,7 @@
-       }
-       cur = cur.Append(kComponentUpdatedFlashHint);
-       break;
--#endif  // defined(OS_LINUX)
-+#endif  // defined(OS_LINUX) || defined(OS_BSD)
- #if defined(OS_CHROMEOS)
-     case chrome::FILE_CHROME_OS_COMPONENT_FLASH:
-       cur = base::FilePath(kChromeOSComponentFlash);

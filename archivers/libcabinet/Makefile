@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libcabinet
 PORTVERSION=	0.30
@@ -10,11 +9,8 @@ MASTER_SITES=	http://www.bsd-geek.de/FreeBSD/distfiles/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable library and utility to use Microsoft cabinet files (.cab)
 
-USE_LDCONFIG=	yes
-
-BROKEN_aarch64=	Fails to link: linker command failed with exit code 1
-
 USES=		uidfix
+USE_LDCONFIG=	yes
 SRCFILE=	${WRKSRC}/listcab.cpp
 PROGFILE=	${SRCFILE:S/.cpp$//}
 MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null

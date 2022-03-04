@@ -1,27 +1,29 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	game
-PORTVERSION=	1.9.1
-PORTREVISION=	8
+DISTVERSION=	2.0.2
 CATEGORIES=	devel python
-MASTER_SITES=	https://www.pygame.org/ftp/
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	py${PORTNAME}-${PORTVERSION}release
+DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Module designed to write games in Python
 
 LICENSE=	LGPL21
-LICENSE_FILE=	${WRKSRC}/LGPL
+LICENSE_FILE=	${WRKSRC}/docs/LGPL.txt
 
-LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg
-RUN_DEPENDS=	${PYNUMPY}
+BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libpng.so:graphics/png \
+		libsmpeg.so:multimedia/smpeg
+RUN_DEPENDS=	${PYNUMPY} \
+		v4l_compat>0:multimedia/v4l_compat
 
-USES=		dos2unix python
-DOS2UNIX_FILES=	src/scale_mmx64.c
-USE_SDL=	ttf image mixer sdl
+USES=		compiler:c11 jpeg pkgconfig python:3.6+ sdl xorg
+USE_SDL=	sdl2 ttf2 image2 mixer2
 USE_PYTHON=	autoplist distutils
+USE_XORG=	x11
 
 SDLNOX11=	sdl-nox11-[0-9]*
 
@@ -30,30 +32,27 @@ EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|^_camera|#_camera|' \
-		-e 's|^pypm|#pypm|' ${WRKSRC}/Setup.in
-	@${REINPLACE_CMD} -e "s|Dependency('PORT|#Dependency('PORT|" \
-		${WRKSRC}/config_unix.py
+PORTDOCS=	*
+PORTEXAMPLES=	*
 
-pre-configure:
-	@invalid=`${PKG_INFO} -I ${SDLNOX11:C/.+/'&'/} 2>/dev/null | ${AWK} '{print $$1}'`
-	@if [ ! -z "$$invalid" ]; then \
-		${ECHO_MSG} "${PKGNAME} is marked as broken: devel/sdl12 needs to be built with X11 support enabled."; \
-		exit 1; \
-	fi
-
-do-configure:
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} config.py -auto
+post-extract:
+	@${RM} -r ${WRKSRC}/examples/.editorconfig
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+
+#Remove Un-needed macosx files
+	@${RM} -r ${WRKSRC}/examples/macosx
 	${TAR} -C ${WRKSRC}/examples -cf - . | \
 		${TAR} --unlink -C ${STAGEDIR}${EXAMPLESDIR} -xf -
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${TAR} -C ${WRKSRC}/docs -cf - . | \
-		${TAR} --unlink -C ${STAGEDIR}${DOCSDIR} -xf -
+	${TAR} --unlink -C ${STAGEDIR}${DOCSDIR} -xf -
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pygame/*.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pygame/_sdl2/*.so
 
 .include <bsd.port.mk>

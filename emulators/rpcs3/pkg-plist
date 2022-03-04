@@ -2,13 +2,24 @@ bin/rpcs3
 share/applications/rpcs3.desktop
 share/icons/hicolor/48x48/apps/rpcs3.png
 share/icons/hicolor/scalable/apps/rpcs3.svg
-share/metainfo/rpcs3.appdata.xml
+share/metainfo/rpcs3.metainfo.xml
 %%DATADIR%%/GuiConfigs/Classic (Bright).qss
 %%DATADIR%%/GuiConfigs/Darker Style by TheMitoSan.qss
+%%DATADIR%%/GuiConfigs/Envy.qss
 %%DATADIR%%/GuiConfigs/Kuroi (Dark) by Ani.qss
 %%DATADIR%%/GuiConfigs/ModernBlue Theme by TheMitoSan.qss
+%%DATADIR%%/GuiConfigs/Nekotekina by GooseWing.qss
+%%DATADIR%%/GuiConfigs/Skyline (Nightfall).qss
+%%DATADIR%%/GuiConfigs/Skyline.qss
 %%DATADIR%%/GuiConfigs/YoRHa by Ani.qss
 %%DATADIR%%/GuiConfigs/YoRHa-background.jpg
+%%DATADIR%%/GuiConfigs/kot-bg.jpg
+%%DATADIR%%/GuiConfigs/list_arrow_blue.png
+%%DATADIR%%/GuiConfigs/list_arrow_down_blue.png
+%%DATADIR%%/GuiConfigs/list_arrow_down_green.png
+%%DATADIR%%/GuiConfigs/list_arrow_down_white.png
+%%DATADIR%%/GuiConfigs/list_arrow_green.png
+%%DATADIR%%/GuiConfigs/list_arrow_white.png
 %%DATADIR%%/Icons/ui/L1.png
 %%DATADIR%%/Icons/ui/L2.png
 %%DATADIR%%/Icons/ui/R1.png
@@ -30,3 +41,5 @@ share/metainfo/rpcs3.appdata.xml
 %%DATADIR%%/Icons/ui/square.png
 %%DATADIR%%/Icons/ui/start.png
 %%DATADIR%%/Icons/ui/triangle.png
+%%DATADIR%%/git/README.md
+%%DATADIR%%/git/commits.lst

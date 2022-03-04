@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	pengupop
 PORTVERSION=	2.2.6
 PORTREVISION=	3
@@ -12,7 +9,7 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Online multiplayer clone of Bust a Move
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -pthread

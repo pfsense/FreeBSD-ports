@@ -1,5 +1,4 @@
 # Created by: Pavel I Volkov <pavelivolkov@googlemail.com>
-# $FreeBSD$
 
 PORTNAME=	dynamips
 PORTVERSION=	0.2.17
@@ -12,14 +11,14 @@ COMMENT=	Cisco 1700/2600/3600/3700/7200 Simulator
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libelf.so:devel/libelf
-
-BROKEN_powerpc=		fails to compile: invokes x86 assembler
+BROKEN_riscv64=		fails to compile: common/dynamips_common.h:71:2: Please define your architecture!
 BROKEN_sparc64=		fails to compile: invokes x86 assembler
+
+LIB_DEPENDS=	libelf.so:devel/libelf
 
 CFLAGS+=	-I${PREFIX}/include/libelf
 
-CONFLICTS=	dynamips-[0-9]* dynamips-devel-[0-9]*
+CONFLICTS=	dynamips dynamips-devel
 
 USES=		cmake:insource
 USE_GITHUB=	yes

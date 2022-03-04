@@ -1,9 +1,8 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tremulous
 PORTVERSION=	1.1.0
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}
 
@@ -12,7 +11,7 @@ COMMENT=	Free FPS game featuring two opposing teams: humans and aliens
 
 LICENSE=	GPLv2
 
-USES=		gmake zip
+USES=		cpe gmake zip
 MAKE_ENV=	DEFAULT_BASEDIR="${DATADIR}" PTHREAD_LIBS="-lpthread"
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -59,15 +58,18 @@ MAKE_ENV+=	USE_OPENAL_DLOPEN=1
 .  endif
 # SDL
 .  if ${PORT_OPTIONS:MSDL_AUDIO}
+USES+=		sdl
 USE_SDL=	sdl
 MAKE_ENV+=	USE_SDL_AUDIO=1
 .  endif
 .  if ${PORT_OPTIONS:MSDL_VIDEO}
+USES+=		sdl
 USE_SDL=	sdl
 MAKE_ENV+=	USE_SDL_VIDEO=1
 .  else
+USES+=		gl xorg
 USE_GL=		gl
-USE_XORG=	x11 xxf86dga
+USE_XORG=	x11 xxf86dga xxf86vm
 .  endif
 # Vorbis
 .  if ${PORT_OPTIONS:MVORBIS}

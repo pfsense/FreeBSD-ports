@@ -1,5 +1,4 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gcc6-aux
 PORTVERSION=	${SNAPSHOT}
@@ -10,7 +9,7 @@ MASTER_SITES=	http://downloads.dragonlace.net/src/:boot \
 		LOCAL/marino:boot LOCAL/ericbsd:boot GCC/${MS_SUBDIR}
 DISTFILES=	${IDENTIFICATION}.tar.xz
 
-MAINTAINER=	ericbsd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Version of GCC ${GCC_BRANCH} with full Ada support
 
 LICENSE=	GPLv3 GPLv3RLE
@@ -30,13 +29,12 @@ NO_MTREE=		yes
 CPPFLAGS+=		-I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib
 
-OPTIONS_GROUP=		Standard Bootstrap
-OPTIONS_GROUP_Standard=	FORTRAN OBJC NLS TESTSUITE ALLSTAGES STATIC
-OPTIONS_GROUP_Bootstrap=BOOTSTRAP
+OPTIONS_GROUP=		STANDARD BOOTSTRAP
+OPTIONS_GROUP_STANDARD=	FORTRAN OBJC NLS TESTSUITE ALLSTAGES STATIC
+OPTIONS_GROUP_BOOTSTRAP=BOOTSTRAP
 OPTIONS_DEFAULT=	FORTRAN OBJC
 NO_OPTIONS_SORT=	yes
 
-OBJC_DESC=		Objective-C language support
 TESTSUITE_DESC=		Activate test support
 ALLSTAGES_DESC=		Build compiler with itself (twice, brings in libcc1)
 STATIC_DESC=		Link compilers and drivers statically
@@ -52,17 +50,7 @@ BOOTSTRAP_DESC=		Create bootstrap compiler (overrides other options)
 .if ${OPSYS} == FreeBSD
 ONLY_FOR_ARCHS=		aarch64 amd64 i386
 MODERN_BINUTILS=	yes
-.  if ${ARCH} == aarch64 && ${OSVERSION} > 1200075 #ino64
-BOOTSTRAP_COMPILER=	ada-bootstrap.aarch64.freebsd.120.tar.bz2
-.  elif ${ARCH} == aarch64
-BOOTSTRAP_COMPILER=	ada-bootstrap.aarch64.freebsd.111.tar.bz2
-.  elif ${ARCH} == amd64 && ${OSVERSION} > 1200030 #ino64
 BOOTSTRAP_COMPILER=	ada-bootstrap.${GARCH}.freebsd.120.tar.bz2
-.  elif ${ARCH} == i386  && ${OSVERSION} > 1200030 #ino64
-BOOTSTRAP_COMPILER=	ada-bootstrap.${GARCH}.freebsd.120.tar.bz2
-.  else
-BOOTSTRAP_COMPILER=	ada-bootstrap.${GARCH}.freebsd.100B.tar.bz2
-.  endif
 .endif
 .if ${OPSYS} == DragonFly
 ONLY_FOR_ARCHS=		x86_64

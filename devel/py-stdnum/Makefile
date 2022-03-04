@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	stdnum
-PORTVERSION=	1.10
+PORTVERSION=	1.13
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +11,7 @@ COMMENT=	Python module to handle standardized numbers and codes
 LICENSE=	LGPL21
 
 # Python3 ready
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

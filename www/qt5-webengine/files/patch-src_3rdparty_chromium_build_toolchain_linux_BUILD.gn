@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/build/toolchain/linux/BUILD.gn.orig	2018-11-13 18:25:11 UTC
+--- src/3rdparty/chromium/build/toolchain/linux/BUILD.gn.orig	2019-11-27 21:12:25 UTC
 +++ src/3rdparty/chromium/build/toolchain/linux/BUILD.gn
-@@ -14,7 +14,6 @@ clang_toolchain("clang_arm") {
+@@ -22,7 +22,6 @@ clang_toolchain("clang_arm") {
  }
  
  clang_toolchain("clang_arm64") {

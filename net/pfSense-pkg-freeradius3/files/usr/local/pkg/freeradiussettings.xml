@@ -8,7 +8,7 @@
  * freeradiussettings.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -169,6 +169,18 @@
 			</options>
 		</field>
 		<field>
+			<fielddescr>Save settings after deletion</fielddescr>
+			<fieldname>keep_settings</fieldname>
+			<description>If enabled, the settings will be preserved across package reinstalls.</description>
+			<sethelp>
+				<![CDATA[
+				<strong><span class="text-danger">Important:</span> If disabled, all settings will be wiped on package uninstall/reinstall/upgrade.</strong>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
 			<name>Logging Configuration</name>
 			<type>listtopic</type>
 		</field>
@@ -195,7 +207,7 @@
 			<description>
 				<![CDATA[
 				This enables logging of accepted or rejected authentication.
-				<span class="text-info">(Default: Disable)</span>
+				<span class="text-info">(Default: Enable)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -227,7 +239,7 @@
 			<fieldname>varsettingsauthbadpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user connects. Click Info for details.
+				You can add additional information to the syslog output if a user is rejected. Click Info for details.
 				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
 				<code>%{User-Name}</code> - Logs the username.</br>
@@ -260,7 +272,7 @@
 			<fieldname>varsettingsauthgoodpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user is rejected. Click Info for details.
+				You can add additional information to the syslog output if a user connects. Click Info for details.
 				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
 				<code>%{User-Name}</code> - Logs the username.</br>

@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	lxqt-qtplugin
-PORTVERSION=	0.14.0
+PORTVERSION=	1.0.0
 CATEGORIES=	sysutils
 MASTER_SITES=	LXQT
 
@@ -14,7 +13,8 @@ LICENSE=	LGPL21+
 LIB_DEPENDS=	libdbusmenu-qt5.so:devel/libdbusmenu-qt \
 		libexif.so:graphics/libexif
 
-USES=	cmake compiler:c++14-lang kde:5 lxqt pkgconfig tar:xz qt:5 gnome gettext-runtime
+USES=	cmake compiler:c++14-lang gnome kde:5 lxqt pkgconfig tar:xz qt:5 \
+	gettext-runtime xorg
 
 USE_XORG=xcb
 USE_GNOME=glib20

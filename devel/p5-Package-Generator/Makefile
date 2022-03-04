@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Package-Generator
 PORTVERSION=	1.106
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	This module lets you quickly and easily construct new packages
+COMMENT=	Quickly and easily construct new packages
 
 LICENSE=	GPLv1 ART10
 LICENSE_COMB=	dual

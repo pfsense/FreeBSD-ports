@@ -1,10 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	pbbam
 DISTVERSION=	0.18.0 # Test with biology/unanimity before upgrading!
+PORTREVISION=	5
 CATEGORIES=	biology
 
-MAINTAINER=	jwb@FreeBSD.org
+# As of March 2018, unanimity is no longer open source.
+# See https://github.com/PacificBiosciences/ccs.
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PacBio BAM C++ library, with SWIG bindings
 
 LICENSE=	BSD3CLAUSE

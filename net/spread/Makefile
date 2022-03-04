@@ -1,15 +1,19 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	spread
 PORTVERSION=	3.17.4
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	net perl5
-MASTER_SITES=	http://bsdforge.com/projects/source/net/spread/
+MASTER_SITES=	https://BSDforge.com/projects/source/net/spread/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	The Spread Group Communication System, a network toolkit
+
+LICENSE=	SPREAD_OPEN-SOURCE_LICENSE
+LICENSE_NAME=	Spread Open-Source License
+LICENSE_FILE=	files/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 MAKE_JOBS_UNSAFE=	yes
 

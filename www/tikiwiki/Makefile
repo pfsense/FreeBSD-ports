@@ -1,10 +1,9 @@
 # Created by: Babak Farrokhi <babak@farrokhi.net>
-# $FreeBSD$
 
 PORTNAME=	tikiwiki
-DISTVERSION=	19.1
+DISTVERSION=	21.2
 CATEGORIES=	www
-MASTER_SITES=	SF/${PORTNAME}/Tiki_19.x_Denebola/${DISTVERSION}/
+MASTER_SITES=	SF/${PORTNAME}/Tiki_21.x_UY_Scuti/${DISTVERSION}/
 DISTNAME=	tiki-${DISTVERSION}
 
 MAINTAINER=	joneum@FreeBSD.org

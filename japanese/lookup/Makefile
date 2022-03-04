@@ -1,13 +1,12 @@
 # Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lookup
 PORTVERSION=	1.99.96.20180209
-PORTREVISION=   2
+PORTREVISION=	9
 CATEGORIES=	japanese elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Emacs search interface for CD-ROM books, etc
 
 LICENSE=	GPLv2+

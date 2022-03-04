@@ -1,9 +1,8 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	enscribe
 PORTVERSION=	0.1.0
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	audio graphics
 MASTER_SITES=	http://www.coppercloudmusic.com/enscribe/
 

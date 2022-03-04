@@ -1,11 +1,11 @@
---- chrome/app/chrome_command_ids.h.orig	2019-03-11 22:00:52 UTC
+--- chrome/app/chrome_command_ids.h.orig	2021-07-19 18:45:06 UTC
 +++ chrome/app/chrome_command_ids.h
-@@ -63,7 +63,7 @@
- #define IDC_VISIT_DESKTOP_OF_LRU_USER_2 34049
- #define IDC_VISIT_DESKTOP_OF_LRU_USER_3 34050
+@@ -66,7 +66,7 @@
+ #define IDC_NAME_WINDOW                 34049
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
  #define IDC_USE_SYSTEM_TITLE_BAR        34051
  #define IDC_RESTORE_WINDOW              34052
  #endif

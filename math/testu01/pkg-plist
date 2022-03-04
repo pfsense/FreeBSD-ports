@@ -114,7 +114,6 @@ lib/libtestu01.so.0.0.1
 %%PORTDOCS%%%%DOCSDIR%%/guidemylib.pdf
 %%PORTDOCS%%%%DOCSDIR%%/guideprobdist.pdf
 %%PORTDOCS%%%%DOCSDIR%%/guideshorttestu01.pdf
-%%PORTDOCS%%%%DOCSDIR%%/testu01.pdf
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/bat1.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/bat1.res
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/bat2.c

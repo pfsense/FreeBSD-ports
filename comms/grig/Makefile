@@ -1,5 +1,4 @@
 # Created by: Matt Dawson <matt@mattsnetwork.co.uk>
-# $FreeBSD$
 
 PORTNAME=	grig
 PORTVERSION=	0.8.1
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libhamlib.so:comms/hamlib
 
 USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake gnome pkgconfig
 
 LIBS+=		-lm
 

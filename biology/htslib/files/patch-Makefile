@@ -1,46 +1,19 @@
---- Makefile.orig	2017-10-18 08:03:33 UTC
+--- Makefile.orig	2021-03-20 15:53:14 UTC
 +++ Makefile
-@@ -22,41 +22,26 @@
- # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- # DEALINGS IN THE SOFTWARE.
- 
--CC     = gcc
--AR     = ar
--RANLIB = ranlib
--
--# Default libraries to link if configure is not used
--htslib_default_libs = -lz -lm -lbz2 -llzma
--
--CPPFLAGS =
--# TODO: probably update cram code to make it compile cleanly with -Wc++-compat
--# For testing strict C99 support add -std=c99 -D_XOPEN_SOURCE=600
--#CFLAGS   = -g -Wall -O2 -pedantic -std=c99 -D_XOPEN_SOURCE=600 -D__FUNCTION__=__func__
--CFLAGS   = -g -Wall -O2
- EXTRA_CFLAGS_PIC = -fpic
--LDFLAGS  =
--LIBS     = $(htslib_default_libs)
- 
--prefix      = /usr/local
-+prefix      = ${PREFIX}
- exec_prefix = $(prefix)
- bindir      = $(exec_prefix)/bin
- includedir  = $(prefix)/include
- libdir      = $(exec_prefix)/lib
- libexecdir  = $(exec_prefix)/libexec
- datarootdir = $(prefix)/share
--mandir      = $(datarootdir)/man
-+mandir      = $(prefix)/man
- man1dir     = $(mandir)/man1
- man5dir     = $(mandir)/man5
+@@ -53,13 +53,14 @@ man5dir     = $(mandir)/man5
+ man7dir     = $(mandir)/man7
  pkgconfigdir= $(prefix)/libdata/pkgconfig
  
- MKDIR_P = mkdir -p
+-MKDIR_P = mkdir -p
 -INSTALL = install -p
 -INSTALL_DATA    = $(INSTALL) -m 644
 -INSTALL_DIR     = $(MKDIR_P) -m 755
 -INSTALL_LIB     = $(INSTALL_DATA)
 -INSTALL_MAN     = $(INSTALL_DATA)
 -INSTALL_PROGRAM = $(INSTALL)
++# Use ports BSD_INSTALL_PROGRAM to strip if WITH_DEBUG is not set
++MKDIR_P         = mkdir -p
++INSTALL 	= install -p
 +INSTALL_DATA    = ${BSD_INSTALL_DATA}
 +INSTALL_DIR     = $(MKDIR_P)
 +INSTALL_LIB     = ${BSD_INSTALL_LIB}
@@ -49,12 +22,12 @@
  
  # Set by config.mk if plugins are enabled
  plugindir =
-@@ -87,7 +72,7 @@ BUILT_THRASH_PROGRAMS = \
- 	test/thrash_threads5 \
- 	test/thrash_threads6
+@@ -102,7 +103,7 @@ BUILT_THRASH_PROGRAMS = \
+ 	test/thrash_threads6 \
+ 	test/thrash_threads7
  
--all: lib-static lib-shared $(BUILT_PROGRAMS) plugins $(BUILT_TEST_PROGRAMS)
-+all: lib-static lib-shared $(BUILT_PROGRAMS) plugins
+-all: lib-static lib-shared $(BUILT_PROGRAMS) plugins $(BUILT_TEST_PROGRAMS) \
++all: lib-static lib-shared $(BUILT_PROGRAMS) plugins \
+      htslib_static.mk htslib-uninstalled.pc
  
- HTSPREFIX =
- include htslib_vars.mk
+ ALL_CPPFLAGS = -I. $(CPPFLAGS)

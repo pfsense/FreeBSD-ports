@@ -1,14 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	nfs-ganesha-kmod
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2
 CATEGORIES=	net
 
-MAINTAINER=	fatih@gandi.net
+MAINTAINER=	freebsd@gandi.net
 COMMENT=	Modules to implement required syscalls for userspace fileservers
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN=		fails to compile: fhlink.c:57: error: redefinition of 'struct fhlink_args'
 
 USES=		kmod
 

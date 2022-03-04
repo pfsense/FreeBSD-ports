@@ -1,77 +1,73 @@
 # Created by: mbr@FreeBSD.org
-# $FreeBSD$
 
-PORTNAME=		open-vm-tools
-PORTVERSION=		${RELEASE_VER}
-PORTREVISION=		1
+PORTNAME=	open-vm-tools
+PORTVERSION=	11.3.5
+PORTREVISION=	1
 DISTVERSIONPREFIX=	stable-
-PORTEPOCH=		2
-CATEGORIES=		emulators
+PORTEPOCH=	2
+CATEGORIES=	emulators
 
-MAINTAINER=		jpaetzel@FreeBSD.org
-COMMENT?=		Open VMware tools for FreeBSD VMware guests
+MAINTAINER=	garga@FreeBSD.org
+COMMENT=	Open VMware tools for FreeBSD VMware guests ${${FLAVOR}_COMMENT}
 
-LICENSE=		LGPL21
-LICENSE_FILE=		${WRKSRC}/COPYING
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS=	amd64 aarch64 i386
 
-LIB_DEPENDS=		libmspack.so:archivers/libmspack \
-			libdnet.so:net/libdnet
+LIB_DEPENDS=	libdnet.so:net/libdnet \
+		libmspack.so:archivers/libmspack
 
-RELEASE_VER=		10.3.0
-BUILD_VER=		8931395
+FLAVORS=			default nox11
+default_CONFLICTS_INSTALL=	open-vm-tools-nox11
+nox11_PKGNAMESUFFIX=		-nox11
+nox11_CONFLICTS_INSTALL=	open-vm-tools
+nox11_COMMENT=			(without X11)
 
-OPTIONS_DEFINE=		LIBNOTIFY OPENSSL X11
-OPTIONS_DEFAULT=	LIBNOTIFY OPENSSL X11
+USES=		autoreconf gettext-runtime gnome kmod libtool localbase \
+		pathfix pkgconfig
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	vmware
+USE_GNOME=	glib20
+USE_LDCONFIG=	yes
+USE_RC_SUBR=	vmware-guestd vmware-kmod
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS+=--disable-vgauth \
+		--sysconfdir=${PREFIX}/etc \
+		--without-icu
+CONFIGURE_ENV+=	SYSDIR=${SRC_BASE}/sys
+
+INSTALL_TARGET=	install-strip
+
+CPPFLAGS+=	-Wno-deprecated-declarations
+SSP_UNSAFE=	kernel module does not support ssp
+
+WRKSRC_SUBDIR=	open-vm-tools
+
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS FUSE LIBNOTIFY OPENSSL X11
+OPTIONS_DEFAULT=DOCS FUSE LIBNOTIFY OPENSSL X11
+.if ${FLAVOR:U} == nox11
+OPTIONS_EXCLUDE:=	LIBNOTIFY X11
+.endif
 OPTIONS_SUB=
 
 LIBNOTIFY_DESC=		Desktop notification support
 
-X11_CONFIGURE_WITH=	x gtk2 gtkmm
-X11_USE=		xorg=ice,sm,x11,xext,xi,xinerama,xorgproto,xrandr,xrender,xtst \
-			gnome=gdkpixbuf2,gtk20,gtkmm24
-X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-			libfreetype.so:print/freetype2
+DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
+DOCS_CONFIGURE_ENABLE=	docs
+FUSE_USES=		fuse
 LIBNOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
 OPENSSL_CONFIGURE_WITH=	ssl
-
-WRKSRC_SUBDIR=		open-vm-tools
-
-GNU_CONFIGURE=		yes
-USES=			autoreconf fuse gettext-runtime kmod libtool localbase pathfix pkgconfig gnome
-USE_GNOME=		glib20
-
-USE_GITHUB=		yes
-GH_ACCOUNT=		vmware
-
-USE_LDCONFIG=		yes
-CPPFLAGS+=		-Wno-deprecated-declarations
-
-SSP_UNSAFE=		kernel module does not support ssp
-
-CONFIGURE_ARGS+=	--without-icu \
-			--disable-vgauth \
-			--sysconfdir=${PREFIX}/etc
-
-CONFLICTS+=		vmware-guestd[0-9]* vmware-tools[0-9]*
-
-USE_RC_SUBR=		vmware-guestd vmware-kmod
-
-INSTALL_TARGET=		install-strip
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MX11}
-CONFLICTS+=		open-vm-tools-nox11-[0-9]*
-.else
-CONFLICTS+=		open-vm-tools-[0-9]*
-.endif
-
-CONFIGURE_ENV+=		SYSDIR=${SRC_BASE}/sys
-
-.include <bsd.port.pre.mk>
+X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+			libfreetype.so:print/freetype2
+X11_USES=		xorg
+X11_USE=		GNOME=gdkpixbuf2,gtk30,gtkmm30 \
+			XORG=ice,sm,x11,xext,xi,xinerama,xorgproto,xrandr,xrender,xtst
+X11_CONFIGURE_WITH=	gtk3 gtkmm3 x
 
 post-patch:
 	@${REINPLACE_CMD} -e "s@%%PREFIX%%@${PREFIX}@"\
@@ -83,12 +79,14 @@ post-build:
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/vmware-tools/modules/drivers
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/vmware-tools/modules/input
-	${INSTALL_DATA} ${WRKSRC}/modules/freebsd/vmblock.ko ${STAGEDIR}${PREFIX}/lib/vmware-tools/modules/drivers/vmblock.ko
-	${INSTALL_DATA} ${WRKSRC}/modules/freebsd/vmmemctl.ko ${STAGEDIR}${PREFIX}/lib/vmware-tools/modules/drivers/vmmemctl.ko
-	${INSTALL_DATA} ${WRKSRC}/modules/freebsd/vmxnet.ko ${STAGEDIR}${PREFIX}/lib/vmware-tools/modules/drivers/vmxnet.ko
+	${INSTALL_DATA} ${WRKSRC}/modules/freebsd/vmblock.ko \
+		${STAGEDIR}${PREFIX}/lib/vmware-tools/modules/drivers/vmblock.ko
+	${INSTALL_DATA} ${WRKSRC}/modules/freebsd/vmmemctl.ko \
+		${STAGEDIR}${PREFIX}/lib/vmware-tools/modules/drivers/vmmemctl.ko
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/tools.conf \
+		${STAGEDIR}${DATADIR}/tools.conf.sample
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/open-vm-tools/scripts/vmware/
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/open-vm-tools/scripts/
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/open-vm-tools/tests/
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.conf.d
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	snow
-DISTVERSION=	0.4-3
-PORTREVISION=	1
+DISTVERSION=	0.4-4
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

@@ -1,14 +1,15 @@
 # Created by: Anton Yudin <toha@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	warmux
 DISTVERSION=	11.04.1
 PORTREVISION=	10
 CATEGORIES=	games
-MASTER_SITES=	http://download.gna.org/${PORTNAME}/ \
-		http://download.gna.org/${PORTNAME}/archive/
+MASTER_SITES=	http://ftp.nluug.nl/ibiblio/distributions/slitaz/sources/packages-cooking/w/ \
+		http://mirror.clarkson.edu/slitaz/sources/packages/w/ \
+		http://ftp.ec-m.fr/pub/OpenBSD/distfiles/ \
+		https://ftp.uni-erlangen.de/gentoo/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Turn-based artillery game with free software mascots
 
 LICENSE=	GPLv2+
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libxml++-2.6.so:textproc/libxml++26 \
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	cxx_present=yes
-USES=		compiler dos2unix gmake pkgconfig tar:bzip2
+USES=		compiler dos2unix gmake pkgconfig sdl tar:bzip2
 USE_SDL=	sdl image mixer ttf gfx net
 DOS2UNIX_GLOB=	fixed_class.h
 

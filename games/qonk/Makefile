@@ -1,5 +1,4 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	qonk
 PORTVERSION=	0.3.1
@@ -14,7 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		gmake localbase
+USES=		gmake localbase sdl
 USE_SDL=	sdl gfx ttf image
 
 post-patch:

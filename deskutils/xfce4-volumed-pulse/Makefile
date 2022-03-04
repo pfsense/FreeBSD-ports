@@ -1,11 +1,10 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	xfce4-volumed-pulse
 PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	deskutils xfce
-MASTER_SITES=	XFCE/src/apps/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -16,11 +15,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
 		libnotify.so:devel/libnotify \
-		libkeybinder-3.0.so:x11/keybinder-gtk3 \
-		libdbus-glib-1.so:devel/dbus-glib \
-		libdbus-1.so:devel/dbus
+		libkeybinder-3.0.so:x11/keybinder-gtk3
 
-USES=		gmake gnome libtool pkgconfig tar:bz2 xfce:gtk3
+USES=		gmake gnome libtool pkgconfig tar:bz2 xfce
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
 USE_XFCE=	xfconf
 

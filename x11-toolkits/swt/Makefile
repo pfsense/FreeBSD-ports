@@ -1,70 +1,52 @@
 # Created by: Robert C. Noland III <rnoland@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	swt
-DISTVERSION=	4.7.3a
+DISTVERSION=	4.20
 CATEGORIES=	x11-toolkits devel java
-MASTER_SITES=	http://archive.eclipse.org/eclipse/downloads/drops4/R-${DISTVERSION}-201803300640/
-DISTNAME=	swt-${DISTVERSION}-${DIST_EXT}
+MASTER_SITES=	http://archive.eclipse.org/eclipse/downloads/drops4/R-${DISTVERSION}-202106111600/
+DISTNAME=	${PORTNAME}-${DISTVERSION}-gtk-linux-x86_64
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Standard Widget Toolkit for Java
 
 LICENSE=	EPL
 
-ONLY_FOR_ARCHS=	amd64 i386
-BROKEN_i386=	missing distinfo
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 
-USES=		gl gnome pkgconfig zip:infozip
+USES=		compiler:c++11-lang gl gmake gnome pkgconfig zip:infozip xorg
 
-SWT_VERSION=	4763
-OUTPUT_JAR=	swt.jar
-
+USE_ANT=	yes
 USE_GL=		glu gl
-USE_GNOME=	gtk20
+USE_GNOME=	gdkpixbuf2 gtk30
 USE_JAVA=	yes
 USE_XORG=	xtst
-JAVA_VERSION=	1.6+
 JAVA_OS=	native
-USE_ANT=	yes
-MAKE_ARGS+=	-Doutput.jar=${OUTPUT_JAR}
+
+SWT_VERSION=	4944r26
+
 MAKEFILE=	make_freebsd.mak
-USE_LDCONFIG=	yes
-PLIST_SUB=	BUILD=${SWT_VERSION}
-PLIST_FILES=	${JAVAJARDIR}/${OUTPUT_JAR} \
-		lib/libswt-atk-gtk-${SWT_VERSION}.so \
-		lib/libswt-awt-gtk-${SWT_VERSION}.so \
-		lib/libswt-gtk-${SWT_VERSION}.so \
-		lib/libswt-glx-gtk-${SWT_VERSION}.so \
-		lib/libswt-pi-gtk-${SWT_VERSION}.so
+MAKE_ENV=	SWT_VERSION=${SWT_VERSION}
+PLIST_SUB=	SWT_VERSION=${SWT_VERSION}
 
 NO_WRKSUBDIR=	yes
 
-OPTIONS_DEFINE=	CAIRO
+OPTIONS_DEFINE=	CAIRO WEBKIT
 OPTIONS_DEFAULT=	CAIRO
+OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
+CAIRO_USE=		GNOME=cairo
+CAIRO_MAKE_ENV=		MAKE_CAIRO=make_cairo
 
-.if ${PORT_OPTIONS:MCAIRO}
-LIB_DEPENDS+=	libcairo.so:graphics/cairo
-PLIST_FILES+=	lib/libswt-cairo-gtk-${SWT_VERSION}.so
-MAKE_CAIRO=	make_cairo
-.endif
-
-MAKE_ENV+=	MAKE_CAIRO=${MAKE_CAIRO} \
-		MAKE_MOZILLA=${MAKE_MOZILLA} \
-		JAVA_HOME=${JAVA_HOME}
-
-.if (${ARCH} == "amd64")
-DIST_EXT=	gtk-linux-x86_64
-.else
-DIST_EXT=	gtk-linux-x86
-.endif
+WEBKIT_IMPLIES=		CAIRO
+WEBKIT_LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+			libwebkit2gtk-4.0.so:www/webkit2-gtk3
+WEBKIT_MAKE_ENV=	BUILD_WEBKIT2EXTENSION=yes
+WEBKIT_MAKE_ENV_OFF=	BUILD_WEBKIT2EXTENSION=no
 
 post-extract:
 	@(cd ${WRKSRC} && ${UNZIP_CMD} -qo "*.zip")
-	@${RM} ${WRKSRC}/*.o ${WRKSRC}/*.so ${WRKSRC}/*.jar
 	@${CP} ${FILESDIR}/build.xml ${WRKSRC}/build.xml
+	@${CP} ${WRKSRC}/make_linux.mak ${WRKSRC}/make_freebsd.mak
 
 post-patch:
 	${SED} -e 's|freebsd|dragonfly|g' ${WRKSRC}/make_freebsd.mak \
@@ -73,6 +55,6 @@ post-patch:
 do-install:
 	@${MKDIR} ${STAGEDIR}${JAVAJARDIR}
 	${INSTALL_LIB} ${WRKSRC}/libswt-*.so ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_DATA} ${WRKSRC}/${OUTPUT_JAR} ${STAGEDIR}${JAVAJARDIR}/
+	${INSTALL_DATA} ${WRKSRC}/swt.jar ${STAGEDIR}${JAVAJARDIR}/
 
 .include <bsd.port.mk>

@@ -1,9 +1,7 @@
 # Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flamegraph
-PORTVERSION=	g20170824
-PORTREVISION=	1
+PORTVERSION=	1.1
 CATEGORIES=	benchmarks
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -15,15 +13,16 @@ LICENSE_FILE=	${WRKSRC}/docs/cddl1.txt
 BUILD_DEPENDS=	bash>=0:shells/bash
 RUN_DEPENDS=	bash>=0:shells/bash
 
+USES=		shebangfix perl5 python
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	brendangregg
 GH_PROJECT=	FlameGraph
-GH_TAGNAME=	a8d807a
+GH_TAGNAME=	810687f
 
-USES=		shebangfix perl5
 NO_BUILD=	yes
 
-SHEBANG_FILES=	*.pl *.sh
+SHEBANG_FILES=	*.php *.pl *.py *.sh
 
 SOURCE_FILES=	aix-perf.pl \
 		difffolded.pl \
@@ -32,18 +31,24 @@ SOURCE_FILES=	aix-perf.pl \
 		pkgsplit-perf.pl \
 		range-perf.pl \
 		stackcollapse-aix.pl \
+		stackcollapse-bpftrace.pl \
+		stackcollapse-chrome-tracing.py \
 		stackcollapse-elfutils.pl \
 		stackcollapse-gdb.pl \
 		stackcollapse-go.pl \
 		stackcollapse-instruments.pl \
+		stackcollapse-java-exceptions.pl \
 		stackcollapse-jstack.pl \
 		stackcollapse-ljp.awk \
+		stackcollapse-perf-sched.awk \
 		stackcollapse-perf.pl \
 		stackcollapse-pmc.pl \
 		stackcollapse-recursive.pl \
+		stackcollapse-sample.awk \
 		stackcollapse-stap.pl \
 		stackcollapse-vsprof.pl \
 		stackcollapse-vtune.pl \
+		stackcollapse-xdebug.php \
 		stackcollapse.pl
 
 do-install:

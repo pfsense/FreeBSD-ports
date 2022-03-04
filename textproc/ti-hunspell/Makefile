@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	20090911
 PORTREVISION=	1
@@ -17,10 +15,10 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/ti_ER.dic \
-		%%DATADIR%%/ti_ER.aff \
-		%%DATADIR%%/ti_ET.dic \
-		%%DATADIR%%/ti_ET.aff
+PLIST_FILES=	${DATADIR}/ti_ER.dic \
+		${DATADIR}/ti_ER.aff \
+		${DATADIR}/ti_ET.dic \
+		${DATADIR}/ti_ET.aff
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

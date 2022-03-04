@@ -1,15 +1,18 @@
---- make/Makefile.orig	2019-01-16 04:21:45 UTC
+--- make/Makefile.orig	2021-09-29 02:42:24 UTC
 +++ make/Makefile
-@@ -84,7 +84,7 @@ APBS_LIBS = -lapbsmainroutines -lapbs -l
- 
+@@ -87,9 +87,9 @@ APBS_LIBS = -lapbsmainroutines -lapbs -lmaloc -lapbsbl
  F77 = gfortran
  F77FLAGS = -c
+ #OPTFLAGS = -Ofast -march=native -fopenmp
 -OPTFLAGS = -Ofast -mssse3 -fopenmp
 +OPTFLAGS = -Ofast $(PORT_SIMD_FLAGS) -fopenmp
  #OPTFLAGS = -Og -fbacktrace -fcheck=bounds -Wunused -Wmaybe-uninitialized
- LIBDIR = -L. -L$(TINKER_LIBDIR)/macos
+-LIBDIR = -L. -L$(TINKER_LIBDIR)/macos
++#LIBDIR = -L. -L$(TINKER_LIBDIR)/macos
  LIBS = 
-@@ -787,132 +787,132 @@ listing:
+ LIBFLAGS = -crusv
+ RANLIB = ranlib -c
+@@ -803,136 +803,136 @@ listing:
  	cat *.f *.c > tinker.txt
  
  rename_bin:
@@ -19,11 +22,13 @@
 -	mv  archive.x    $(BINDIR)/archive
 -	mv  bar.x        $(BINDIR)/bar
 -	mv  correlate.x  $(BINDIR)/correlate
+-	mv  critical.x   $(BINDIR)/critical
 -	mv  crystal.x    $(BINDIR)/crystal
 -	mv  diffuse.x    $(BINDIR)/diffuse
 -	mv  distgeom.x   $(BINDIR)/distgeom
 -	mv  document.x   $(BINDIR)/document
 -	mv  dynamic.x    $(BINDIR)/dynamic
+-	mv  freefix.x    $(BINDIR)/freefix
 -	mv  gda.x        $(BINDIR)/gda
 -	mv  intedit.x    $(BINDIR)/intedit
 -	mv  intxyz.x     $(BINDIR)/intxyz
@@ -81,11 +86,13 @@
 +	${BSD_INSTALL_PROGRAM}  archive.x    $(BINDIR)/archive
 +	${BSD_INSTALL_PROGRAM}  bar.x        $(BINDIR)/bar
 +	${BSD_INSTALL_PROGRAM}  correlate.x  $(BINDIR)/correlate
++	${BSD_INSTALL_PROGRAM}  critical.x   $(BINDIR)/critical
 +	${BSD_INSTALL_PROGRAM}  crystal.x    $(BINDIR)/crystal
 +	${BSD_INSTALL_PROGRAM}  diffuse.x    $(BINDIR)/diffuse
 +	${BSD_INSTALL_PROGRAM}  distgeom.x   $(BINDIR)/distgeom
 +	${BSD_INSTALL_PROGRAM}  document.x   $(BINDIR)/document
 +	${BSD_INSTALL_PROGRAM}  dynamic.x    $(BINDIR)/dynamic
++	${BSD_INSTALL_PROGRAM}  freefix.x    $(BINDIR)/freefix
 +	${BSD_INSTALL_PROGRAM}  gda.x        $(BINDIR)/gda
 +	${BSD_INSTALL_PROGRAM}  intedit.x    $(BINDIR)/intedit
 +	${BSD_INSTALL_PROGRAM}  intxyz.x     $(BINDIR)/intxyz
@@ -145,11 +152,13 @@
 -	mv  archive.x    $(BINDIR)/archive.exe
 -	mv  bar.x        $(BINDIR)/bar.exe
 -	mv  correlate.x  $(BINDIR)/correlate.exe
+-	mv  critical.x   $(BINDIR)/critical.exe
 -	mv  crystal.x    $(BINDIR)/crystal.exe
 -	mv  diffuse.x    $(BINDIR)/diffuse.exe
 -	mv  distgeom.x   $(BINDIR)/distgeom.exe
 -	mv  document.x   $(BINDIR)/document.exe
 -	mv  dynamic.x    $(BINDIR)/dynamic.exe
+-	mv  freefix.x    $(BINDIR)/freefix.exe
 -	mv  gda.x        $(BINDIR)/gda.exe
 -	mv  intedit.x    $(BINDIR)/intedit.exe
 -	mv  intxyz.x     $(BINDIR)/intxyz.exe
@@ -207,11 +216,13 @@
 +	${BSD_INSTALL_PROGRAM}  archive.x    $(BINDIR)/archive.exe
 +	${BSD_INSTALL_PROGRAM}  bar.x        $(BINDIR)/bar.exe
 +	${BSD_INSTALL_PROGRAM}  correlate.x  $(BINDIR)/correlate.exe
++	${BSD_INSTALL_PROGRAM}  critical.x   $(BINDIR)/critical.exe
 +	${BSD_INSTALL_PROGRAM}  crystal.x    $(BINDIR)/crystal.exe
 +	${BSD_INSTALL_PROGRAM}  diffuse.x    $(BINDIR)/diffuse.exe
 +	${BSD_INSTALL_PROGRAM}  distgeom.x   $(BINDIR)/distgeom.exe
 +	${BSD_INSTALL_PROGRAM}  document.x   $(BINDIR)/document.exe
 +	${BSD_INSTALL_PROGRAM}  dynamic.x    $(BINDIR)/dynamic.exe
++	${BSD_INSTALL_PROGRAM}  freefix.x    $(BINDIR)/freefix.exe
 +	${BSD_INSTALL_PROGRAM}  gda.x        $(BINDIR)/gda.exe
 +	${BSD_INSTALL_PROGRAM}  intedit.x    $(BINDIR)/intedit.exe
 +	${BSD_INSTALL_PROGRAM}  intxyz.x     $(BINDIR)/intxyz.exe

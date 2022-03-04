@@ -1,11 +1,8 @@
-# Created by: Alexander Leidinger
-# $FreeBSD$
-
 PORTNAME=	openhab2
-PORTVERSION=	2.4.0
-#PORTREVISION=	3
+PORTVERSION=	2.5.12
+PORTREVISION=	0
 CATEGORIES=	misc java
-MASTER_SITES=	https://bintray.com/openhab/mvn/download_file?file_path=org%2Fopenhab%2Fdistro%2Fopenhab%2F${PORTVERSION}/
+MASTER_SITES=	https://openhab.jfrog.io/artifactory/libs-release-local/org/openhab/distro/openhab/${PORTVERSION}/
 DISTNAME=	openhab-${PORTVERSION}
 
 MAINTAINER=	netchild@FreeBSD.org
@@ -14,6 +11,7 @@ COMMENT=	Vendor and technology agnostic open source smart-home software
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
+USES=		cpe zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.8
 JAVA_RUN=	yes
@@ -22,8 +20,12 @@ SUB_FILES=	pkg-message update.freebsd
 NO_WRKSUBDIR=	yes
 NO_ARCH=	yes
 
+CPE_PRODUCT=	openhab
+
 USERS=	openhab
 GROUPS=	openhab
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 post-patch:
 	@${REINPLACE_CMD} -e "s:%%LOCALBASE%%:${LOCALBASE}:g" ${WRKSRC}/runtime/bin/setenv
@@ -63,5 +65,16 @@ do-install:
 .endfor
 	${INSTALL_SCRIPT} ${WRKDIR}/update.freebsd ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}/runtime/bin/
 	(cd ${WRKSRC}/userdata && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/${PORTNAME})
+
+gen-plist:
+	${FIND} ${STAGEDIR} -type f | ${SED} -e "s:${STAGEDIR}${PREFIX}/::g ; s:${PORTVERSION}:%%PORTVERSION%%:g" | ${SORT} -u | ${GREP} libexec/ >pkg-plist.new
+	echo '@owner openhab' >>pkg-plist.new
+	echo '@group openhab' >>pkg-plist.new
+	${FIND} ${STAGEDIR}${DATADIR} -type f | ${SED} -E -e "s:${STAGEDIR}${DATADIR}/(.*):@sample %%DATADIR%%/\\1 /var/db/openhab2/userdata/\\1:g ; s:${PORTVERSION}:%%PORTVERSION%%:g" | ${SORT} -u >>pkg-plist.new
+	${FIND} ${STAGEDIR}${ETCDIR} -type d | ${SORT} -u | ${SED} -e "s:${STAGEDIR}${ETCDIR}:@dir %%ETCDIR%%:g ; s:${PORTVERSION}:%%PORTVERSION%%:g"  >>pkg-plist.new
+	${FIND} ${STAGEDIR}${ETCDIR} -type f | ${SORT} -u | ${SED} -E -e "s:${STAGEDIR}${ETCDIR}/:%%ETCDIR%%/:g ; s:${PORTVERSION}:%%PORTVERSION%%:g ; s:(.*.sample)$:@sample(openhab,openhab,640) \\1:" >>pkg-plist.new
+	${FIND} ${STAGEDIR}/var/db/${PORTNAME} -type d | ${SORT} -ru | ${SED} -e "s:${STAGEDIR}:@dir :g" >>pkg-plist.new
+	echo "@dir /var/log/${PORTNAME}" >>pkg-plist.new
+	echo "@dir /var/run/${PORTNAME}" >>pkg-plist.new
 
 .include <bsd.port.mk>

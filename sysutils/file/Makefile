@@ -1,10 +1,11 @@
 # Created by: Jason Harris <jharris@widomaker.com>
-# $FreeBSD$
 
 PORTNAME=	file
-PORTVERSION=	5.36
+PORTVERSION=	5.39
 CATEGORIES=	sysutils
-MASTER_SITES=	ftp://ftp.astron.com/pub/file/ \
+MASTER_SITES=	https://astron.com/pub/file/ \
+		https://www.nic.funet.fi/pub/mirrors/ftp.astron.com/pub/file/ \
+		https://ftp.icm.edu.pl/packages/file/ \
 		ftp://ftp.fu-berlin.de/unix/tools/file/
 
 MAINTAINER=	jharris@widomaker.com
@@ -13,7 +14,8 @@ COMMENT=	Utility to determine file type
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool
+USES=		cpe libtool
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

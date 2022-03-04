@@ -1,5 +1,4 @@
 # Created by: Alexander Leidinger <netchild@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cil
 PORTVERSION=	1.7.3
@@ -13,9 +12,11 @@ COMMENT=	Infrastructure for C Program Analysis and Transformation
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-CONFLICTS=	ccured-[0-9]*
+CONFLICTS=	ccured
 
-ONLY_FOR_ARCHS=	i386 amd64
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
+
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le
 USES=		gmake perl5
 USE_OCAML=	yes
 USE_OCAML_FINDLIB=	yes

@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	srecord
 PORTVERSION=	1.64
-PORTREVISION=	14
+PORTREVISION=	17
 CATEGORIES=	devel
 MASTER_SITES=	SF
 

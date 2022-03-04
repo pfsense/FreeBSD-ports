@@ -1,5 +1,4 @@
 # Created by: arved
-# $FreeBSD$
 
 PORTNAME=	matrixssl
 PORTVERSION=	3.3
@@ -14,9 +13,12 @@ COMMENT=	Small alternative SSL implementation
 
 LICENSE=	GPLv2+
 
+DEPRECATED=	Abandonware, dead upstream
+EXPIRATION_DATE=2022-03-31
+
 WRKSRC=		${WRKDIR}/${DISTNAME}/${PORTNAME}-${PORTVERSION:S/./-/g}-open
 
-USES=		gmake tar:tgz
+USES=		cpe gmake tar:tgz
 MAKE_ARGS=	CC="${CC}" DFLAGS="${CFLAGS}" STRIP="${TEST}"
 USE_LDCONFIG=	yes
 
@@ -24,7 +26,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == mips64 || ${ARCH} == powerpc64 || ${ARCH} == sparc64
+.if ${ARCH:M*64*}
 CFLAGS+=	-DPSTM_64BIT
 .endif
 

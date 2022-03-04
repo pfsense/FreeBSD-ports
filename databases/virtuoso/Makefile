@@ -1,14 +1,13 @@
 # Created by: Max Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	virtuoso
 PORTVERSION=	7.2.5
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-opensource-${PORTVERSION}
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Universal SQL/Application Server
 
 LICENSE=	GPLv2
@@ -18,7 +17,7 @@ BROKEN_aarch64=		Fails to link: missing sbrk
 BROKEN_mips64=		Does not compile: error: DV_INT_TAG_WORD undeclared
 BROKEN_powerpc64=	Does not compile: error: DV_INT_TAG_WORD undeclared
 BROKEN_sparc64=		Does not compile: error: DV_INT_TAG_WORD undeclared
-NOT_FOR_ARCHS=	arm armv6 armv7 i386 mips powerpc
+NOT_FOR_ARCHS=		armv6 armv7 i386 mips powerpc powerpcspe
 NOT_FOR_ARCHS_REASON=	can only be built on 64bit platforms
 
 BUILD_DEPENDS=	gawk:lang/gawk\
@@ -70,6 +69,7 @@ check:
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	OpenSSL version 1.1.0 or greater is currently not supported
 BROKEN_FreeBSD_13=	OpenSSL version 1.1.0 or greater is currently not supported
+BROKEN_FreeBSD_14=	OpenSSL version 1.1.0 or greater is currently not supported
 .endif
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}

@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	chyves
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	bhyve front-end manager
 
 LICENSE=	BSD2CLAUSE
@@ -18,7 +16,7 @@ NO_ARCH=	yes
 
 MAKE_ARGS+=	-e
 
-do-patch:
+post-patch:
 	${REINPLACE_CMD} 's%\$$(PREFIX)%${STAGEDIR}/$$(PREFIX)%g' ${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

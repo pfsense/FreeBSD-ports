@@ -1,10 +1,9 @@
 # Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tokyodystopia
 PORTVERSION=	0.9.15
 CATEGORIES=	textproc
-MASTER_SITES=	https://fallabs.com/${PORTNAME}/
+MASTER_SITES=	https://dbmx.net/${PORTNAME}/
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Full-text search system based on Tokyo Cabinet
@@ -14,7 +13,7 @@ LICENSE=	LGPL21
 LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet
 
 GNU_CONFIGURE=	yes
-USES=		gmake pathfix
+USES=		gmake localbase pathfix
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--libdir=${LOCALBASE}/lib --includedir=${LOCALBASE}/include
 

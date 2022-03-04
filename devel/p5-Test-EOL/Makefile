@@ -1,5 +1,4 @@
 # Created by: milki@rescomp.berkeley.edu
-# $FreeBSD$
 
 PORTNAME=	Test-EOL
 PORTVERSION=	1.5
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BOBTFISH
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Check the correct line endings in your project
 
 LICENSE=	ART10 GPLv1+

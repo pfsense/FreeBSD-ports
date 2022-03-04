@@ -1,10 +1,9 @@
 # Created by: Marcin Cieslak
-# $FreeBSD$
 
 PORTNAME=	xerces-j
 PORTVERSION=	2.12.0
 CATEGORIES=	textproc java
-MASTER_SITES=	APACHE/xerces/j
+MASTER_SITES=	https://archive.apache.org/dist/xerces/j/binaries/
 DISTNAME=	Xerces-J-bin.${PORTVERSION}
 
 MAINTAINER=	ale@FreeBSD.org
@@ -13,7 +12,6 @@ COMMENT=	XML parser for Java
 LICENSE=	APACHE20
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

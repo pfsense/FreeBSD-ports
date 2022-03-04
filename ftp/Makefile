@@ -1,25 +1,24 @@
-# $FreeBSD$
-#
-
     COMMENT = FTP client and server utilities
 
     SUBDIR += R-cran-RCurl
     SUBDIR += R-cran-curl
-    SUBDIR += atftp
     SUBDIR += axel
-    SUBDIR += bbftp
+    SUBDIR += bbftp-client
+    SUBDIR += bbftp-server
     SUBDIR += bftpd
     SUBDIR += bsdftpd-ssl
-    SUBDIR += cftp
     SUBDIR += cmdftp
+    SUBDIR += coeurl
     SUBDIR += curl
+    SUBDIR += curlie
     SUBDIR += curlpp
     SUBDIR += dmachine
     SUBDIR += fastdfs
     SUBDIR += filezilla
+    SUBDIR += fineftp-server
     SUBDIR += fmirror
     SUBDIR += fpc-libcurl
-    SUBDIR += frox
+    SUBDIR += freebsd-ftpd
     SUBDIR += ftpcopy
     SUBDIR += ftpfind
     SUBDIR += ftplib
@@ -31,20 +30,14 @@
     SUBDIR += gnustep-ftp
     SUBDIR += gstreamer1-plugins-curl
     SUBDIR += horde-gollem
-    SUBDIR += hs-curl
     SUBDIR += hsftp
     SUBDIR += jftp
-    SUBDIR += jftpgw
     SUBDIR += lftp
     SUBDIR += libfilezilla
-    SUBDIR += linux-c6-curl
     SUBDIR += linux-c7-curl
-    SUBDIR += llnlxdir
-    SUBDIR += llnlxftp
     SUBDIR += mirror
     SUBDIR += multiget
     SUBDIR += ncftp3
-    SUBDIR += ncftpd
     SUBDIR += net2ftp
     SUBDIR += netdumpd
     SUBDIR += ocaml-ocurl
@@ -62,19 +55,18 @@
     SUBDIR += pear-Net_FTP
     SUBDIR += pftpd
     SUBDIR += php-fastdfs
-    SUBDIR += php71-curl
-    SUBDIR += php71-ftp
-    SUBDIR += php72-curl
-    SUBDIR += php72-ftp
     SUBDIR += php73-curl
     SUBDIR += php73-ftp
+    SUBDIR += php74-curl
+    SUBDIR += php74-ftp
+    SUBDIR += php80-curl
+    SUBDIR += php80-ftp
     SUBDIR += phpwebftp
     SUBDIR += proftpd
     SUBDIR += proftpd-mod_vroot
     SUBDIR += profxp
     SUBDIR += puf
     SUBDIR += pure-ftpd
-    SUBDIR += pureadmin
     SUBDIR += py-aioftp
     SUBDIR += py-ftputil
     SUBDIR += py-pycurl
@@ -85,6 +77,8 @@
     SUBDIR += quftp
     SUBDIR += rexx-curl
     SUBDIR += rubygem-curb
+    SUBDIR += rubygem-net-ftp
+    SUBDIR += sftpgo
     SUBDIR += smbftpd
     SUBDIR += spegla
     SUBDIR += tftp-hpa

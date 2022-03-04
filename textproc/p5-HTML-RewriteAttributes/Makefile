@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-RewriteAttributes
 PORTVERSION=	0.05
 PORTREVISION=	1

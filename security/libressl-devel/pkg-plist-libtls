@@ -1,0 +1,11 @@
+%%NC%%bin/nc
+etc/ssl/openssl.cnf
+etc/ssl/x509v3.cnf
+include/tls.h
+lib/libtls.a
+lib/libtls.so
+lib/libtls.so.22
+lib/libtls.so.22.0.0
+libdata/pkgconfig/libtls.pc
+%%NC%%man/man1/nc.1.gz
+@dir etc/ssl/certs

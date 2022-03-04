@@ -1,5 +1,4 @@
 # Created by: eric
-# $FreeBSD$
 
 PORTNAME=	jed
 DISTVERSION=	0.99-19
@@ -16,7 +15,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libslang.so:devel/libslang2
 
-CONFLICTS=	jed-devel-[0-9]*
+CONFLICTS=	jed-devel
 
 OPTIONS_DEFINE=	X11 PERMS HOSTLOOKUP DOCS
 OPTIONS_DEFAULT=X11 HOSTLOOKUP
@@ -36,6 +35,7 @@ MAKE_ENV+=	DEST_DOC_DIR=${STAGEDIR}${DOCSDIR}
 
 ALL_TARGET=	all getmail
 
+X11_USES=	xorg
 X11_USE=	XORG=x11 XORG=ice XORG=xt
 X11_ALL_TARGET=	xjed
 

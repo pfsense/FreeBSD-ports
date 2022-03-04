@@ -1,16 +1,15 @@
 # Created by: mwest@uct.ac.za
-# $FreeBSD$
 
 PORTNAME=	glui
 PORTVERSION=	2.36
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel graphics
 MASTER_SITES=	SF/${PORTNAME}/Source/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GLUT-based C++ user interface library
 
-USES=		gmake tar:tgz
+USES=		gl gmake tar:tgz xorg
 USE_GL=		glut
 USE_XORG=	xmu xext x11 xi
 USE_LDCONFIG=	yes

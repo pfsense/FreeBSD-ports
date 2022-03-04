@@ -1,9 +1,8 @@
 # Created by: Jan Henrik Sylvester <me@janh.de>
-# $FreeBSD$
 
 PORTNAME=	xournal
 PORTVERSION=	0.4.8.2016
-PORTREVISION=	1
+PORTREVISION=	31
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -16,12 +15,11 @@ LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		pkgconfig desktop-file-utils shared-mime-info
+USES=		gnome pkgconfig desktop-file-utils shared-mime-info xorg
 USE_GNOME=	cairo libgnomecanvas
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--docdir="${DOCSDIR}"
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install desktop-install
 
 OPTIONS_DEFINE=		GHOSTSCRIPT DOCS

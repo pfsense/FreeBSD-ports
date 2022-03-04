@@ -1,5 +1,4 @@
 # Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	reverend
 PORTVERSION=	0.3
@@ -11,7 +10,7 @@ DISTNAME=	Reverend-${PORTVERSION}
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Simple Bayesian classifier written in Python
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 OPTIONS_DEFINE=	EXAMPLES
 

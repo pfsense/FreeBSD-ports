@@ -1,5 +1,4 @@
 # Created by: brett@peloton.physics.montana.edu
-# $FreeBSD$
 
 PORTNAME=	asmail
 PORTVERSION=	2.1
@@ -11,7 +10,7 @@ MASTER_SITES=	AFTERSTEP/apps/asmail/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Biff-type program, designed to match AfterStep
 
-USES=		ssl
+USES=		ssl xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shaping \

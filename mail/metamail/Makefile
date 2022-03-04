@@ -1,5 +1,4 @@
 # Created by: torstenb
-# $FreeBSD$
 
 PORTNAME=	metamail
 PORTVERSION=	2.7
@@ -27,6 +26,7 @@ X11_BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
 			mkfontscale>=0:x11-fonts/mkfontscale
 X11_RUN_DEPENDS=	xloadimage:x11/xloadimage \
 			mkfontscale>=0:x11-fonts/mkfontscale
+X11_USES=		xorg
 X11_USE=		XORG=x11
 X11_EXTRA_PATCHES=	${FILESDIR}/extra-patch-Makefile-x11
 X11_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-Makefile-nox11

@@ -1,8 +1,7 @@
 # Created by: rpsfa@rit.edu
-# $FreeBSD$
 
 PORTNAME=	pdfkit
-PORTVERSION=	0.8.2
+PORTVERSION=	0.8.5
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
@@ -14,8 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	wkhtmltopdf:converters/wkhtmltopdf
 
-NO_ARCH=	yes
+USES=		cpe gem
+CPE_VENDOR=	${PORTNAME}_project
 USE_RUBY=	yes
-USES=		gem
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,12 +1,11 @@
 # Created by: Alexey V. Degtyarev <alexey@renatasystems.org>
-# $FreeBSD$
 
 PORTNAME=	sieve-connect
-DISTVERSION=	0.89
+DISTVERSION=	0.90
 CATEGORIES=	mail
 MASTER_SITES=	http://people.spodhuis.org/phil.pennock/software/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Command-line client for the MANAGESIEVE protocol
 
 LICENSE=	BSD3CLAUSE

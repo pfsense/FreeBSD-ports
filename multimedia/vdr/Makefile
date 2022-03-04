@@ -1,9 +1,8 @@
 # Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vdr
 PORTVERSION=	1.7.29
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	multimedia
 MASTER_SITES=	ftp://ftp.tvdr.de/vdr/Developer/
 DIST_SUBDIR=	vdr
@@ -14,7 +13,7 @@ COMMENT=	Video Disk Recorder - development version
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=  v4l_compat>=1.0.20120501:multimedia/v4l_compat \
+BUILD_DEPENDS=	v4l_compat>=1.0.20120501:multimedia/v4l_compat \
 		${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:x11-fonts/fontconfig
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:x11-fonts/fontconfig \
 		xorg-fonts-truetype>=0:x11-fonts/xorg-fonts-truetype
@@ -69,7 +68,7 @@ IGNORE=		will not work due to lack of driver support
 .endif
 
 .if ${ARCH} == "i386"
-USE_GCC=	any
+USE_GCC=	yes
 .endif
 
 post-patch:

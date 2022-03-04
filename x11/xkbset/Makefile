@@ -1,21 +1,23 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	xkbset
-PORTVERSION=	0.5
-PORTREVISION=	3
+PORTVERSION=	0.6
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	x11
-MASTER_SITES=	http://faculty.missouri.edu/~stephen/software/xkbset/ \
-		http://www.math.missouri.edu/~stephen/software/xkbset/
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Manage various XKB features of X Window
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	stephenmontgomerysmith
+
+USES=		perl5 xorg
 USE_XORG=	x11
 USE_PERL5=	build
-USES=		perl5
 
 MAKE_ARGS=	X11BASE="${LOCALBASE}" X11PREFIX="${PREFIX}" \
 		INSTALL_DATA="${INSTALL_DATA}" \

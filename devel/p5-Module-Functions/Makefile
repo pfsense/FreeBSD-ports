@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Functions
 PORTVERSION=	2.1.3
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to get function list from package
 
 RUN_DEPENDS=	\

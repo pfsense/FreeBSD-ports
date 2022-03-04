@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	thinglaunch
 PORTVERSION=	1.8
@@ -12,6 +11,7 @@ COMMENT=	Very fast launcher program for X
 
 LICENSE=	MIT
 
+USES=		xorg
 USE_XORG=	x11 xorgproto
 
 CPPFLAGS+=	-I${LOCALBASE}/include -lX11

@@ -1,8 +1,7 @@
 # Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	TeX-Encode
-PORTVERSION=	2.005
+PORTVERSION=	2.010
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ATHREEF

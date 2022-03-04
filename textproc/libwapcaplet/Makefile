@@ -1,13 +1,12 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	libwapcaplet
-PORTVERSION=	0.4.1
+PORTVERSION=	0.4.3
 CATEGORIES=	textproc
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 EXTRACT_SUFX=	-src.tar.gz
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	String internment library
 
 LICENSE=	MIT
@@ -18,7 +17,8 @@ BUILD_DEPENDS=	netsurf-buildsystem>=1.5:devel/netsurf-buildsystem \
 USES=		gmake
 USE_LDCONFIG=	yes
 
-MAKE_ENV=	COMPONENT_TYPE="lib-shared" \
+MAKE_ENV=	BUILD_CC="${CC}" \
+		COMPONENT_TYPE="lib-shared" \
 		FLEX="${LOCALBASE}/bin/flex"
 
 PLIST_SUB=	VERSION=${PORTVERSION}

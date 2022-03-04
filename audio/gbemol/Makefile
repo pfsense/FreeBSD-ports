@@ -1,5 +1,4 @@
 # Created by: Thomas M. Hermann <tmh.public@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gbemol
 PORTVERSION=	0.3.2
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libmpd.so:audio/libmpd \
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake gnome pkgconfig
 USE_GNOME=	gtk20 intltool
 
 post-patch:

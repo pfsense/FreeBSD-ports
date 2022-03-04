@@ -1,11 +1,11 @@
 # Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
 
 PORTNAME=	checkmol
 PORTVERSION=	0.5
-PORTREVISION=	4
+PORTREVISION=	11
 CATEGORIES=	science
-MASTER_SITES=	http://merian.pch.univie.ac.at/pch/download/chemistry/checkmol/
+MASTER_SITES=	https://homepage.univie.ac.at/norbert.haider/download/chemistry/checkmol/
+DISTFILES=	${PORTNAME}
 EXTRACT_SUFX=	.pas
 
 MAINTAINER=	acm@FreeBSD.org
@@ -23,13 +23,11 @@ USES=		fpc
 
 PLIST_FILES=	bin/checkmol bin/matchmol
 
-LLD_UNSAFE=	yes
-
 do-build:
 	(cd ${WRKSRC} && ${LOCALBASE}/bin/fpc ${EXTRACT_ONLY} -S2 -O3)
 
 do-install:
-	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ${DISTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME})
+	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME})
 	(cd ${STAGEDIR}${PREFIX}/bin && ${LN} ${PORTNAME} matchmol)
 
 .include <bsd.port.mk>

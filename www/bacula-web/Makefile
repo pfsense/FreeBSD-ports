@@ -1,39 +1,36 @@
 # Created by: Dan Langille <dan@langille.org>
-# $FreeBSD$
 
 PORTNAME=	bacula-web
-DISTVERSION=	7.2.0
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	8.5.1
+PORTREVISION=	0
 CATEGORIES=	www sysutils
-MASTER_SITES=	http://www.bacula-web.org/files/bacula-web.org/downloads/
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	dvl@FreeBSD.org
+MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Bacula-web provides a summarized output of Bacula jobs
 
 LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/docs/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		php:web tar:tgz
-USE_PHP=	gd gettext session
+RUN_DEPENDS=	${LOCALBASE}/bin/composer:devel/php-composer@${PHP_FLAVOR}
+
+USES=		php:web,flavors
+USE_PHP=	dom gd gettext posix session simplexml tokenizer xml xmlwriter
+USE_GITHUB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
-NO_WRKSUBDIR=	yes
-
-BACULAWEB_HOME?=${WWWDIR}
-BASE=		${BACULAWEB_HOME:S|${PREFIX}/||}
 SUB_FILES=	pkg-message
-PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} BASE=${BASE}
-SUB_LIST=	BASE=${BASE}
 
 OPTIONS_DEFINE=		MYSQL PGSQL SQLITE
-OPTIONS_DEFAULT=	PGSQL
+OPTIONS_DEFAULT=	MYSQL PGSQL SQLITE
 
 SQLITE_USES=	sqlite
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=		yes
+USES+=			mysql
 CONFIGURE_ARGS+=	--with-mysql=yes
 SUB_LIST+=		REQ_MYSQL=mysql
 USE_PHP+=		pdo_mysql
@@ -53,11 +50,9 @@ USE_PHP+=		pdo_sqlite
 .endif
 
 do-install:
-	@${ECHO} "Installing in ${BACULAWEB_HOME}"
-	${MKDIR} ${STAGEDIR}${BACULAWEB_HOME}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} application \
-		${STAGEDIR}${BACULAWEB_HOME}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} core ${STAGEDIR}${BACULAWEB_HOME}
-	${INSTALL_DATA} ${WRKSRC}/*.php ${STAGEDIR}${BACULAWEB_HOME}
+	# Maybe we should delete some files
+	${FIND} ${WRKSRC} -name '*.orig' -delete
+	@${ECHO} "Installing in ${WWWDIR}"
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/www/${PORTNAME})
 
 .include <bsd.port.mk>

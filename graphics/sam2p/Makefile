@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	sam2p
 PORTVERSION=	0.49.4
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/releases/download/v${PORTVERSION}/
@@ -21,7 +20,8 @@ RUN_DEPENDS=	zip:archivers/zip \
 #USE_GITHUB=	yes
 GH_ACCOUNT=	pts
 
-USES=		ghostscript:run gmake jpeg:run perl5
+USES=		cpe ghostscript:run gmake jpeg:run perl5
+CPE_VENDOR=	${PORTNAME}_project
 USE_GCC=	yes
 USE_PERL5=	build
 GNU_CONFIGURE=	yes

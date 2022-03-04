@@ -1,5 +1,4 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	jewel
 PORTVERSION=	0.12.41
@@ -13,7 +12,7 @@ COMMENT=	Window manager based on aewm++
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler gmake
+USES=		compiler gmake xorg
 USE_XORG=	x11 xext xpm
 ALL_TARGET=	all
 PORTDOCS=	Changelog Changelog.DLR Changelog.jewel INSTALL README

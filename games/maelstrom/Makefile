@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	maelstrom
 PORTVERSION=	3.0.6
@@ -18,6 +17,7 @@ COMMENT=	Asteroids-style game for X Window System
 
 LICENSE=	GPLv2
 
+USES=		sdl xorg
 USE_CXXSTD=	gnu++98
 USE_SDL=	sdl net
 USE_XORG=	xpm

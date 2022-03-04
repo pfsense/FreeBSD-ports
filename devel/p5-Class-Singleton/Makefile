@@ -1,9 +1,7 @@
 # Created by: will
-# $FreeBSD$
 
 PORTNAME=	Class-Singleton
-PORTVERSION=	1.5
-PORTREVISION=	1
+PORTVERSION=	1.6
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	almostti
 PORTVERSION=	1.3
@@ -10,7 +9,7 @@ DISTNAME=	AlmostTI13-Unix-DougMelton-051409
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Texas Instruments Z80 series calculator emulator
 
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	x11 xext
 
 WRKSRC=		${WRKDIR}/AlmostTI-DougMelton-Source

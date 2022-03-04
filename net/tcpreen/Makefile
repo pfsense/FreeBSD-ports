@@ -1,10 +1,9 @@
 # Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
 
 PORTNAME=	tcpreen
 PORTVERSION=	1.4.4
 PORTREVISION=	3
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	http://www.remlab.net/files/tcpreen/
 
 MAINTAINER=	jmohacsi@bsd.hu
@@ -12,7 +11,7 @@ COMMENT=	Simple TCP session re-engineering tool
 
 LICENSE=	GPLv2+
 
-USES=		tar:bzip2
+USES=		cpe tar:bzip2
 GNU_CONFIGURE=	yes
 
 OPTIONS_SUB=	yes

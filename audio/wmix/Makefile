@@ -1,5 +1,4 @@
 # Created by: Konstantinos Konstantinidis <kkonstan@daemon.gr>
-# $FreeBSD$
 
 PORTNAME=	wmix
 PORTVERSION=	3.1
@@ -14,6 +13,7 @@ OPTIONS_DEFINE=	DOCS
 
 PLIST_FILES=	bin/wmix
 ALL_TARGET=	${PORTNAME}
+USES=		xorg
 USE_XORG=	xpm
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -I${LOCALBASE}/include" \
 		LDFLAGS="${LDFLAGS} -L${LOCALBASE}/lib"

@@ -8,7 +8,7 @@
  * freeradiuseapconf.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2013 Marcello Coutinho (revocation list code)
  * All rights reserved.
@@ -85,7 +85,7 @@
 		<field>
 			<fielddescr>Disable Weak EAP Types</fielddescr>
 			<fieldname>vareapconfdisableweakeaptypes</fieldname>
-			<description>Disables weak EAP types: MD5, GTC and LEAP</description>
+			<description>Disables weak EAP types: MD5, and GTC</description>
 			<sethelp>
 				<![CDATA[
 				When enabled, only stronger EAP types like TLS, TTLS, PEAP, and MSCHAPv2 are allowed.<br/>
@@ -174,6 +174,18 @@
 			<default_value>4096</default_value>
 		</field>
 		<field>
+			<fielddescr>Minimum TLS version</fielddescr>
+			<fieldname>vareapconftlsminversion</fieldname>
+			<description>Set minimum TLS version. Leave 1.0 if you have old clients.</description>
+			<type>select</type>
+			<default_value>1.0</default_value>
+			<options>
+				<option><name>1.0</name><value>1.0</value></option>
+				<option><name>1.1</name><value>1.1</value></option>
+				<option><name>1.2</name><value>1.2</value></option>
+			</options>
+		</field>
+		<field>
 			<name>Certificates for TLS</name>
 			<type>listtopic</type>
 		</field>
@@ -188,7 +200,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_ca_certs()]]></source>
+			<source><![CDATA[cert_build_list('ca', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
@@ -222,7 +234,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source><![CDATA[freeradius_get_server_certs()]]></source>
+			<source><![CDATA[cert_build_list('cert', 'IPsec', true, true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>

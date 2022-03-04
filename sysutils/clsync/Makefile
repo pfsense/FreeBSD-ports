@@ -1,5 +1,4 @@
 # Created by: Dmitry Yu Okunev dyokunev@ut.mephi.ru
-# $FreeBSD$
 
 PORTNAME=	clsync
 DISTVERSION=	0.4~rc2
@@ -14,7 +13,7 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf compiler:features gmake libtool pkgconfig
+USES=		autoreconf compiler:features gmake gnome libtool pkgconfig
 USE_GNOME=	glib20
 
 USE_RC_SUBR=	clsync

@@ -1,11 +1,10 @@
 # Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
 
 PORTNAME=	ScrollZ
 PORTVERSION=	2.3
 DISTVERSIONPREFIX=	${PORTNAME}-
 PORTREVISION=	1
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 
 MAINTAINER=	freebsd@bitchx.org
 COMMENT=	Enhanced ircII client that supports scripts, colors, and more

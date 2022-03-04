@@ -1,11 +1,10 @@
 # Created by: dnscheckengine-port@academ.com (Stan Barber)
-# $FreeBSD$
 
 PORTNAME=	dnscheckengine
 PORTVERSION=	1.1
 PORTREVISION=	4
 CATEGORIES=	dns perl5
-MASTER_SITES=	ftp://www.ns.gen.tx.us/pub/software/dnscheck-se/
+MASTER_SITES=	https://BSDforge.com/projects/source/dns/dnscheckengine/
 DISTNAME=	DNSCheck-1.1
 
 MAINTAINER=	portmaster@bsdforge.com

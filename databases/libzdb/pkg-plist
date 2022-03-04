@@ -6,8 +6,9 @@ include/zdb/ResultSet.h
 include/zdb/SQLException.h
 include/zdb/URL.h
 include/zdb/zdb.h
+include/zdb/zdbpp.h
 lib/libzdb.a
 lib/libzdb.so
-lib/libzdb.so.11
-lib/libzdb.so.11.0.0
+lib/libzdb.so.13
+lib/libzdb.so.13.0.0
 libdata/pkgconfig/zdb.pc

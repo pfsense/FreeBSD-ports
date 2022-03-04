@@ -1,8 +1,8 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	orbit
 PORTVERSION=	0.1.431
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://gitlab.com/OpenMusicKontrollers/orbit.lv2/repository/archive.tar.gz?ref=aca0b7a&dummy=/
 PKGNAMESUFFIX=	-lv2

@@ -1,8 +1,7 @@
 # Created by: Dreamcat4 <dreamcat4@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	dtv-scan-tables
-PORTVERSION=	20180927
+PORTVERSION=	20210430
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/decke
 

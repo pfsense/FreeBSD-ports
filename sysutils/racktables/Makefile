@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	racktables
-DISTVERSION=	0.21.1
+DISTVERSION=	0.21.5
 CATEGORIES?=	sysutils www
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	RackTables-${DISTVERSION}

@@ -1,20 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-debugger
 PORTVERSION=	${GEANY_VER}
-PKGNAMESUFFIX=	-gtk2
 CATEGORIES=	devel
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Geany plugin: ${${GEANY_PLUGIN}_DESC}
 
-LIB_DEPENDS=	libgeany.so:devel/geany@gtk2
-
-FLAVORS=	# intentionally left empty
-
-USES=		gnome
-USE_GNOME=	vte
+USES=		gnome xorg
 USE_XORG=	x11 xext
+USE_GNOME=	vte3
 
 .include "${.CURDIR}/../geany-plugins/files/Makefile.common"
 .include <bsd.port.mk>

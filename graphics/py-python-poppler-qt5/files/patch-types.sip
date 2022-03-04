@@ -1,16 +1,60 @@
-PyList_SET_ITEM() is supposed to be void, but as a macro it's an
-expression and has a pointer value. Clang 4.0 trips on the bogus
-pointer comparison; given the comparison, it should be PyList_SetItem()
-which returns -1 on failure.
+From https://github.com/frescobaldi/python-poppler-qt5/pull/33/commits/6cc4d83b172ffb2d206e696ce508e508cd46b7c3
 
---- types.sip.orig	2017-01-21 07:19:29 UTC
+--- types.sip.orig	2019-11-22 05:56:45 UTC
 +++ types.sip
-@@ -27,7 +27,7 @@
-     foreach (Poppler::Document::RenderBackend value, set)
-     {
-         PyObject *obj = PyLong_FromLong ((long) value);
--        if (obj == NULL || PyList_SET_ITEM (l, i, obj) < 0)
-+        if (obj == NULL || PyList_SetItem (l, i, obj) < 0)
-         {
-             Py_DECREF(l);
+@@ -182,7 +182,7 @@ template <TYPE>
+   if ((l = PyList_New(sipCpp->size())) == NULL)
+     return NULL;
  
+-  const sipMappedType* qlinkedlist_type = sipFindMappedType("QLinkedList<TYPE>");
++  const sipTypeDef* qlinkedlist_type = sipFindType("QLinkedList<TYPE>");
+ 
+   // Set the list elements.
+   for (int i = 0; i < sipCpp->size(); ++i)
+@@ -190,7 +190,7 @@ template <TYPE>
+     QLinkedList<TYPE>* t = new QLinkedList<TYPE>(sipCpp->at(i));
+     PyObject *tobj;
+ 
+-    if ((tobj = sipConvertFromMappedType(t, qlinkedlist_type, sipTransferObj)) == NULL)
++    if ((tobj = sipConvertFromType(t, qlinkedlist_type, sipTransferObj)) == NULL)
+     {
+       Py_DECREF(l);
+       delete t;
+@@ -203,7 +203,7 @@ template <TYPE>
+ %End
+ 
+ %ConvertToTypeCode
+-  const sipMappedType* qlinkedlist_type = sipFindMappedType("QLinkedList<TYPE>");
++  const sipTypeDef* qlinkedlist_type = sipFindType("QLinkedList<TYPE>");
+ 
+   // Check the type if that is all that is required.
+   if (sipIsErr == NULL)
+@@ -212,7 +212,7 @@ template <TYPE>
+       return 0;
+ 
+     for (int i = 0; i < PySequence_Size(sipPy); ++i)
+-      if (!sipCanConvertToMappedType(PySequence_ITEM(sipPy, i), qlinkedlist_type, SIP_NOT_NONE))
++      if (!sipCanConvertToType(PySequence_ITEM(sipPy, i), qlinkedlist_type, SIP_NOT_NONE))
+         return 0;
+ 
+     return 1;
+@@ -224,16 +224,16 @@ template <TYPE>
+   for (int i = 0; i < PySequence_Size(sipPy); ++i)
+   {
+     int state;
+-    QLinkedList<TYPE> * t = reinterpret_cast< QLinkedList<TYPE> * >(sipConvertToMappedType(PySequence_ITEM(sipPy, i), qlinkedlist_type, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
++    QLinkedList<TYPE> * t = reinterpret_cast< QLinkedList<TYPE> * >(sipConvertToType(PySequence_ITEM(sipPy, i), qlinkedlist_type, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
+ 
+     if (*sipIsErr)
+     {
+-      sipReleaseInstance(t, sipClass_TYPE, state);
++      sipReleaseType(t, qlinkedlist_type, state);
+       delete ql;
+       return 0;
+     }
+     ql->append(*t);
+-    sipReleaseInstance(t, sipClass_TYPE, state);
++    sipReleaseType(t, qlinkedlist_type, state);
+   }
+ 
+   *sipCppPtr = ql;

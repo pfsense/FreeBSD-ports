@@ -1,8 +1,7 @@
 # Created by: Martin Tournoij <carpetsmoker@xs4all.nl>
-# $FreeBSD$
 
 PORTNAME=	pcmanfm
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.2
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF/${PORTNAME}/PCManFM%20%2B%20Libfm%20%28tarball%20release%29/PCManFM/
 
@@ -25,8 +24,9 @@ gtk3_LIB_DEPENDS=	libfm-gtk3.so:x11/libfm@gtk3
 gtk2_CONFLICTS_INSTALL=	pcmanfm-gtk3
 gtk3_CONFLICTS_INSTALL=	pcmanfm
 
-USES=		desktop-file-utils gmake gnome gettext libtool localbase \
-		pkgconfig tar:xz
+USES=		cpe desktop-file-utils gmake gnome gettext libtool localbase \
+		pkgconfig tar:xz xorg
+CPE_VENDOR=	${PORTNAME}_project
 USE_GNOME=	cairo gdkpixbuf2 intltool
 USE_XORG=	x11
 GNU_CONFIGURE=	yes

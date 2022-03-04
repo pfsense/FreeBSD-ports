@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
 
 PORTNAME=	Tie-NetAddr-IP
 PORTVERSION=	1.51
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Tie::NetAddr::IP - Implements a Hash where the key is a subnet
+COMMENT=	Perl hash implementation with subnets as keys
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-NetAddr-IP>0:net-mgmt/p5-NetAddr-IP

@@ -1,5 +1,4 @@
 # Created by: is grammatically incorrect in this context.
-# $FreeBSD$
 
 PORTNAME=	ptmalloc2
 PORTVERSION=	20060605
@@ -15,6 +14,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 BROKEN_aarch64=	Fails to link: missing sbrk
+BROKEN_riscv64=	Fails to link: missing sbrk
 
 USES=		gmake
 WRKSRC=		${WRKDIR}/${PORTNAME}

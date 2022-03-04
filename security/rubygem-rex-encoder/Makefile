@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	rex-encoder
-PORTVERSION=	0.1.4
+PORTVERSION=	0.1.6
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 

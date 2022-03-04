@@ -1,4 +1,4 @@
---- base/posix/unix_domain_socket.cc.orig	2019-03-11 22:00:51 UTC
+--- base/posix/unix_domain_socket.cc.orig	2021-09-14 01:51:47 UTC
 +++ base/posix/unix_domain_socket.cc
 @@ -5,7 +5,10 @@
  #include "base/posix/unix_domain_socket.h"
@@ -27,12 +27,12 @@
  bool CreateSocketPair(ScopedFD* one, ScopedFD* two) {
    int raw_socks[2];
 @@ -150,7 +161,7 @@ ssize_t UnixDomainSocket::RecvMsgWithFlags(int fd,
- #if !defined(OS_NACL_NONSFI) && !defined(OS_MACOSX)
+ #if !defined(OS_NACL_NONSFI) && !defined(OS_APPLE)
        // The PNaCl toolchain for Non-SFI binary build and macOS do not support
        // ucred. macOS supports xucred, but this structure is insufficient.
 -      + CMSG_SPACE(sizeof(struct ucred))
 +      + CMSG_SPACE(sizeof(struct cmsgcred))
- #endif  // OS_NACL_NONSFI or OS_MACOSX
+ #endif  // !defined(OS_NACL_NONSFI) && !defined(OS_APPLE)
        ;
    char control_buffer[kControlBufferSize];
 @@ -180,9 +191,9 @@ ssize_t UnixDomainSocket::RecvMsgWithFlags(int fd,
@@ -45,5 +45,5 @@
 -        pid = reinterpret_cast<struct ucred*>(CMSG_DATA(cmsg))->pid;
 +        pid = getpid();
        }
- #endif  // !defined(OS_NACL_NONSFI) && !defined(OS_MACOSX)
+ #endif  // !defined(OS_NACL_NONSFI) && !defined(OS_APPLE)
      }

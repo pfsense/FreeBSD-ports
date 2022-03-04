@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	premailer
 PORTVERSION=	3.1.1
 CATEGORIES=	mail python
@@ -20,7 +18,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils concurrent
 
 do-test:

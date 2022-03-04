@@ -1,8 +1,7 @@
 # Created by: Jordan Irwin <antumdeluge@gmail.com>
-# $FreeBSD$
 
 PORTNAME=		stendhal
-PORTVERSION=		1.19
+PORTVERSION=		1.35
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=		games java
 MASTER_SITES=		SF/arianne/${PORTNAME}/${PORTVERSION}/
@@ -13,12 +12,11 @@ COMMENT=		Two-dimensional massively multi-player online RPG
 LICENSE=		BSD2CLAUSE GPLv2
 LICENSE_COMB=		multi
 
-WRKSRC=			${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-USE_JAVA=		yes
-JAVA_VERSION=		1.6+
-USE_ANT=		yes
 USES=			shebangfix
+USE_JAVA=		yes
+USE_ANT=		yes
+
+WRKSRC=			${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 OPTIONS_MULTI=		COMPONENTS
 OPTIONS_MULTI_COMPONENTS=	\
@@ -58,7 +56,7 @@ do-install:
 		${COPYTREE_SHARE} lib ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/libs/log4j.jar ${STAGEDIR}${DATADIR}/lib
 	${INSTALL_DATA} ${WRKSRC}/libs/marauroa.jar ${STAGEDIR}${DATADIR}/lib
-	${INSTALL_DATA}	${WRKSRC}/README.txt ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA}	${WRKSRC}/README.md ${STAGEDIR}${DATADIR}
 
 	# CLIENT
 .if ${PORT_OPTIONS:MCLIENT}
@@ -74,7 +72,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/build/lib/${CLIENTSTARTER}-${PORTVERSION}.jar \
 		${STAGEDIR}${DATADIR}/${CLIENTSTARTER}.jar
 	${INSTALL} ${FILESDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA}	${WRKSRC}/.hotspotrc ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/${CLIENTICON}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop ${STAGEDIR}${PREFIX}/share/applications

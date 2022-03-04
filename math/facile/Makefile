@@ -1,8 +1,8 @@
 # Created by: arved
-# $FreeBSD$
 
 PORTNAME=	facile
 PORTVERSION=	1.1.3
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://opti.recherche.enac.fr/facile/distrib/
 

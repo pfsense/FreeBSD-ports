@@ -1,4 +1,4 @@
-etc/xdg/ksmtp.categories
+share/qlogging-categories5/ksmtp.categories
 include/KPim/KSMTP/KSMTP/Job
 include/KPim/KSMTP/KSMTP/LoginJob
 include/KPim/KSMTP/KSMTP/SendJob
@@ -28,11 +28,14 @@ share/locale/de/LC_MESSAGES/libksmtp5.mo
 share/locale/en_GB/LC_MESSAGES/libksmtp5.mo
 share/locale/es/LC_MESSAGES/libksmtp5.mo
 share/locale/et/LC_MESSAGES/libksmtp5.mo
+share/locale/eu/LC_MESSAGES/libksmtp5.mo
 share/locale/fi/LC_MESSAGES/libksmtp5.mo
 share/locale/fr/LC_MESSAGES/libksmtp5.mo
 share/locale/ga/LC_MESSAGES/libksmtp5.mo
 share/locale/gl/LC_MESSAGES/libksmtp5.mo
+share/locale/hi/LC_MESSAGES/libksmtp5.mo
 share/locale/hu/LC_MESSAGES/libksmtp5.mo
+share/locale/ia/LC_MESSAGES/libksmtp5.mo
 share/locale/it/LC_MESSAGES/libksmtp5.mo
 share/locale/ja/LC_MESSAGES/libksmtp5.mo
 share/locale/km/LC_MESSAGES/libksmtp5.mo

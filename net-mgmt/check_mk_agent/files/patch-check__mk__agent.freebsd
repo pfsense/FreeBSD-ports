@@ -1,0 +1,31 @@
+--- check_mk_agent.freebsd.orig	2021-10-31 19:22:57 UTC
++++ check_mk_agent.freebsd
+@@ -27,15 +27,15 @@ $MK_RUN_SYNC_PARTS || {
+ export LC_ALL=C
+ unset LANG
+ 
+-export MK_LIBDIR="/usr/local/lib/check_mk_agent"
+-export MK_CONFDIR="/etc/check_mk"
+-export MK_TMPDIR="/var/run/check_mk"
++export MK_LIBDIR="%%CHECKMK_LIBDIR%%"
++export MK_CONFDIR="%%CHECKMK_CONFDIR%%"
++export MK_TMPDIR="%%CHECKMK_TMPDIR%%"
+ 
+ # Optionally set a tempdir for all subsequent calls
+ #export TMPDIR=
+ 
+ # Make sure, locally installed binaries are found
+-PATH=$PATH:/usr/local/bin:/usr/local/sbin
++PATH=$PATH:%%LOCALBASE%%/bin:%%LOCALBASE%%/sbin
+ [ -d /var/qmail/bin ] && PATH=$PATH:/var/qmail/bin
+ 
+ # All executables in PLUGINSDIR will simply be executed and their
+@@ -102,7 +102,7 @@ function run_cached() {
+ 
+     # Cache file outdated and new job not yet running? Start it
+     if [ -z "$USE_CACHEFILE" -a ! -e "$CACHEFILE.new" ] ; then
+-        echo "$CMDLINE" | daemon /usr/local/bin/bash -o noclobber > $CACHEFILE.new && mv $CACHEFILE.new $CACHEFILE || rm -f $CACHEFILE $CACHEFILE.new &
++        echo "$CMDLINE" | daemon %%BASH%% -o noclobber > $CACHEFILE.new && mv $CACHEFILE.new $CACHEFILE || rm -f $CACHEFILE $CACHEFILE.new &
+     fi
+ }
+ 

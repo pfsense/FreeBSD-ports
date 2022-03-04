@@ -1,10 +1,9 @@
 # Created by: Shaun Amott <shaun@inerd.com>
-# $FreeBSD$
 
 PORTNAME=	ircd-ratbox
 PORTVERSION=	3.0.7
 PORTREVISION=	3
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 MASTER_SITES=	http://www.ratbox.org/download/				\
 		http://www.ratbox.org/download/old/
 PKGNAMESUFFIX=	-devel
@@ -14,9 +13,7 @@ COMMENT=	Advanced, stable IRC daemon, used widely on EFnet ('testing' release)
 
 LICENSE=	GPLv2
 
-CONFLICTS=	ircd-ratbox-[0-9]* charybdis-[0-9]*
-
-BROKEN_aarch64=	Fails to link: missing sbrk
+CONFLICTS=	ircd-ratbox charybdis
 
 USES=		libtool perl5 sqlite tar:bzip2
 USE_RC_SUBR=	ircd-ratbox

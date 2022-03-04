@@ -1,5 +1,4 @@
 # Created by: Stacey D. Son <sds@son.org>
-# $FreeBSD$
 
 PORTNAME=	aoe
 PORTVERSION=	1.2.0
@@ -8,7 +7,7 @@ CATEGORIES=	net
 MASTER_SITES=	http://www.son.org/download/
 DISTNAME=	${PORTNAME}-freebsd-${PORTVERSION}
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD driver for ATA over Ethernet (AoE)
 
 BROKEN_aarch64=		fails to compile: redefinition of frame
@@ -17,6 +16,7 @@ BROKEN_armv7=		fails to compile: redefinition of frame
 BROKEN_sparc64=		fails to compile: redefinition of frame
 BROKEN_FreeBSD_12=	no member named 'tqh_first' in 'struct ifnethead'
 BROKEN_FreeBSD_13=	no member named 'tqh_first' in 'struct ifnethead'
+BROKEN_FreeBSD_14=	no member named 'tqh_first' in 'struct ifnethead'
 
 USES=	kmod
 

@@ -1,5 +1,4 @@
 # Created by: b.f. <bf@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lrng
 PORTVERSION=	20130314
@@ -60,7 +59,7 @@ base system profiling libraries
 .endif
 PLIST_FILES+=	lib/lib${LIB}_p.a
 .else
-MAKE_ENV+=	NO_PROFILE=yes
+MAKE_ENV+=	WITHOUT_PROFILE=yes
 .endif
 
 post-extract:
@@ -70,16 +69,16 @@ post-extract:
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}
 	@${INSTALL_DATA} ${WRKSRC}/*.h ${STAGEDIR}${PREFIX}/include/${PORTNAME}
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@(cd ${WRKSRC}; ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@(cd ${WRKSRC}; ${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR})
-.endif
 
-check regression-test test: build
+do-test:
 	@${CC} ${CFLAGS} -o ${WRKSRC}/ex1 ${WRKSRC}/ex1.c ${WRKSRC}/lib${LIB}.a
 	@${WRKSRC}/ex1
 	@${CC} ${CFLAGS} ${LDFLAGS} -o ${WRKSRC}/ex1s ${WRKSRC}/ex1.c -L${WRKSRC} -l${LIB}

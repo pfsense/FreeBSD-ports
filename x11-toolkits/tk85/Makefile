@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tk
 PORTVERSION=	8.5.19
@@ -17,7 +16,9 @@ LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES+=		tcl:${SHORT_TK_VER},tea
+DEPRECATED=	Tcl/Tk 8.5 is nearing EOL, please consider switching to Tcl/Tk 8.6
+
+USES+=		tcl:${SHORT_TK_VER},tea xorg
 USE_XORG=	x11 xft xscrnsaver
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME:S/-src//}/unix

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	postgresql
 PORTVERSION=	1.1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP \
 		http://python.projects.postgresql.org/files/

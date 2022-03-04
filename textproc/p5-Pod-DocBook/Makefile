@@ -1,5 +1,4 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	Pod-DocBook
 PORTVERSION=	1.2
@@ -18,5 +17,7 @@ RUN_DEPENDS=	p5-podlators>=0:textproc/p5-podlators \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

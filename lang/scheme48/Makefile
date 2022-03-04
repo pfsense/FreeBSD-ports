@@ -1,5 +1,4 @@
 # Created by: jmacd
-# $FreeBSD$
 
 PORTNAME=	scheme48
 PORTVERSION=	1.9.2
@@ -12,11 +11,12 @@ COMMENT=	Scheme Underground's implementation of R5RS
 LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	multi
 
-CONFLICTS=	scsh-[0-9]*
+CONFLICTS=	scsh
 
 ALL_TARGET=	enough
-USES=		gmake tar:tgz
+USES=		cpe gmake tar:tgz
 GNU_CONFIGURE=	yes
+CPE_VENDOR=	s48
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	unix-connect
 PORTVERSION=	0.95
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	german comms news mail
 MASTER_SITES=	ftp://ftp.dinoex.org/pub/unix-connect/ \
 		SF
 
 MAINTAINER=	dinoex@FreeBSD.org
-COMMENT=	Unix-Connect - mail+news-gateway for Zconnect (tm)
+COMMENT=	Mail and news gateway for Zconnect
 
 BUILD_DEPENDS=	lrz:comms/lrzsz
 
@@ -48,7 +46,7 @@ SENDMAIL_DESC=	build mail scripts for sendmail
 POSTFIX_DESC=	build mail scripts for postfix
 QMAIL_DESC=	build mail scripts for qmail
 SMAIL_DESC=	build mail scripts for smail
-NOMAIL_DESC=	no mail scripts
+NO_MAIL_DESC=	no mail scripts
 CNEWS_DESC=	build news scripts for cnews
 INN_DESC=	build news scripts for inn
 NO_NEWS_DESC=	no news scripts
@@ -56,7 +54,7 @@ SENDMAIL_CONFIGURE_ON=	--with-mail=sendmail
 POSTFIX_CONFIGURE_ON=	--with-mail=postfix
 QMAIL_CONFIGURE_ON=	--with-mail=qmail
 SMAIL_CONFIGURE_ON=	--with-mail=smail
-NOMAIL_CONFIGURE_ON=	--with-mail=no
+NO_MAIL_CONFIGURE_ON=	--with-mail=no
 CNEWS_CONFIGURE_ON=	--with-news=cnews
 INN_CONFIGURE_ON=	--with-news=inn
 NO_NEWS_CONFIGURE_ON=	--with-news=no

@@ -1,9 +1,9 @@
 # Created by: Daichi GOTO <daichi@FreeBSD.org>
-# $FreeBSD$
 
 PKGNAMEPREFIX=	ja-ibus-
 
 COMMENT=	Mozc engine for IBus
+
 DATADIR=	${PREFIX}/share/ibus-${PORTNAME}
 
 MASTERDIR=	${.CURDIR}/../../japanese/mozc-server

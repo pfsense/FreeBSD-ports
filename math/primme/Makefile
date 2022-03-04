@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	primme
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2
-PORTREVISION=	1
+DISTVERSION=	3.2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -38,19 +35,22 @@ NETLIB_USES=		blaslapack:netlib
 NETLIB_LDFLAGS=		-lblas # XXX why this isn't covered by blaslapack:netlib?
 OPENBLAS_USES=		blaslapack:openblas
 
-TEST_ENV=	${MAKE_ENV} F77=gfortran${GCC_DEFAULT} FLDR=gfortran${GCC_DEFAULT} \
-		LDFLAGS="-lm -Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT} ${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so" \
+TEST_ENV=	${MAKE_ENV} LDFLAGS="-lm -Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT} ${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so" \
 		USE_MPI=no USE_PETSC=no PETSC_DIR=${LOCALBASE}
+TEST_ARGS=	F77=gfortran${GCC_DEFAULT} FC=gfortran${GCC_DEFAULT} FLDR=gfortran${GCC_DEFAULT}
 TEST_TARGET=	all_tests test
 
 PLIST_FILES=	include/primme.h \
 		include/primme_eigs.h \
 		include/primme_eigs_f77.h \
+		include/primme_eigs_f90.inc \
 		include/primme_f77.h \
+		include/primme_f90.inc \
 		include/primme_svds.h \
 		include/primme_svds_f77.h \
+		include/primme_svds_f90.inc \
 		lib/libprimme.so \
-		lib/libprimme.so.2 \
-		lib/libprimme.so.2.2
+		lib/libprimme.so.3 \
+		lib/libprimme.so.3.2
 
 .include <bsd.port.mk>

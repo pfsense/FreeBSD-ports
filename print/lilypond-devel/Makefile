@@ -1,8 +1,7 @@
 # Created by: patrick, trevor
-# $FreeBSD$
 
 PORTNAME=	lilypond
-DISTVERSION=	2.19.82
+DISTVERSION=	2.23.4
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -12,27 +11,45 @@ COMMENT=	GNU music typesetter
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	pdftexi2dvi:print/texinfo \
-		t1ascii:print/t1utils \
-		bash:shells/bash \
-		convert:graphics/ImageMagick6 \
+BUILD_DEPENDS=	bash:shells/bash \
+		convert:graphics/ImageMagick7 \
 		dblatex:textproc/dblatex \
 		fontforge:print/fontforge \
 		help2man:misc/help2man \
+		pdftexi2dvi:print/texinfo \
 		pngtopnm:graphics/netpbm \
 		rsync:net/rsync \
+		t1ascii:print/t1utils \
 		texi2html:textproc/texi2html \
 		zip:archivers/zip
-RUN_DEPENDS=	mftrace:print/mftrace \
-		${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu
-LIB_DEPENDS=	libltdl.so:devel/libltdl \
-		libguile.so:lang/guile \
-		libgmp.so:math/gmp \
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig
+		libgmp.so:math/gmp \
+		libharfbuzz.so:print/harfbuzz \
+		libltdl.so:devel/libltdl
+RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu \
+		mftrace:print/mftrace
 
-INFO=		internals \
-		lilypond-changes \
+USES=		bison:build compiler:c++11-lib cpe ghostscript gmake gnome perl5 \
+		pkgconfig python:3.5+
+USE_CXXSTD=	c++11
+USE_GNOME=	pango
+USE_PERL5=	build
+USE_TEX=	latex texmf
+
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre
+CONFIGURE_ENV+=		ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
+			FLEX=${FLEX} \
+			HOME=${WRKDIR} \
+			YACC=${YACC}
+
+MAKEFILE=	GNUmakefile
+ALL_TARGET=	all
+
+BINARY_ALIAS=	python=${PYTHON_VERSION}
+
+INFO=		lilypond-changes \
 		lilypond-contributor \
 		lilypond-essay \
 		lilypond-extending \
@@ -41,39 +58,31 @@ INFO=		internals \
 		lilypond-notation \
 		lilypond-snippets \
 		lilypond-usage \
-		lilypond-web \
 		music-glossary
-
-USES=		bison:build gettext ghostscript gmake pkgconfig perl5 \
-		compiler:gcc-c++11-lib python:2.7
-USE_CXXSTD=	c++11
-USE_TEX=	latex texmf
-USE_PERL5=	build
-USE_GNOME=	pango
-
-MAKEFILE=	GNUmakefile
-GNU_MAKEFILE=	yes
-
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre \
-		--with-python-include=${PYTHON_INCLUDEDIR} --without-urwotf-dir
-CONFIGURE_ENV+=	ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
-		FLEX=${FLEX} YACC=${YACC} HOME=${WRKDIR}
-
-ALL_TARGET=	all
-
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=	GUILE2 NLS URW
 OPTIONS_SUB=	yes
 
+GUILE2_DESC=	Use guile2 (will incur some performance penalty)
+URW_DESC=	Use bundled URW fonts
+
+GUILE2_LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
+			libguile-2.2.so:lang/guile2
+GUILE2_LIB_DEPENDS_OFF=	libguile.so:lang/guile1
+
+NLS_USES=	gettext
+
+URW_BUILD_DEPENDS=	urw-base35-fonts>0:x11-fonts/urw-base35-fonts
+URW_RUN_DEPENDS_OFF=	urw-base35-fonts>0:x11-fonts/urw-base35-fonts
+
+URW_CONFIGURE_WITH=	urwotf-dir=${LOCALBASE}/share/fonts/urw-base35-fonts
+
 post-patch:
-	@${FIND} ${WRKSRC} -name "*.cc" | ${XARGS} \
-	    ${REINPLACE_CMD} -e 's|isinf[ ]*(|::isinf(|g' -e 's|isnan|::isnan|g'
 	@${REINPLACE_CMD} -e 's|<FlexLexer.h>|"/usr/include/FlexLexer.h"|' \
-	    ${WRKSRC}/lily/include/includable-lexer.hh
-		${SED} -e 's|%%FONTDIR%%|${WRKDIR}/fontconfig/cache/|'  \
-			${FILESDIR}/fonts.conf > ${WRKDIR}/.fonts.conf
+		${WRKSRC}/lily/include/includable-lexer.hh
+	@${SED} -e 's|%%FONTDIR%%|${WRKDIR}/fontconfig/cache/|'  \
+		${FILESDIR}/fonts.conf > ${WRKDIR}/.fonts.conf
 
 post-patch-NLS-off:
 	@${REINPLACE_CMD} -e '/po \\$$/d' ${WRKSRC}/${MAKEFILE}.in

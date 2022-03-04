@@ -1,9 +1,8 @@
 # Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
 
 PORTNAME=	wanderlust
 PORTVERSION=	2.15.9.b.${SNAPDATE}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -21,10 +20,10 @@ RUN_DEPENDS=	emacs-w3m${EMACS_PKGNAMESUFFIX}>0:www/emacs-w3m@${EMACS_FLAVOR} \
 
 USES=		emacs
 USE_GITHUB=	yes
-GH_TAGNAME=	ebde9a4
+GH_TAGNAME=	475514f
 
 NO_ARCH=	yes
-SNAPDATE=	20180826
+SNAPDATE=	20211028
 
 MAKE_ARGS+=	EMACS=${EMACS_CMD} \
 		FLAGS="-batch -q -no-site-file" \
@@ -49,7 +48,6 @@ post-install:
 		${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}
 	${INSTALL_DATA} \
 		${WRKSRC}/elmo/elmo-shimbun.el \
-		${WRKSRC}/utils/bbdb-wl.el \
 		${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/wl
 	${INSTALL_DATA} ${WRKSRC}/etc/ja.Emacs ${STAGEDIR}${DATADIR}
 

@@ -21,32 +21,15 @@
 # LIABILITY, OR	TORT (INCLUDING	NEGLIGENCE OR OTHERWISE) ARISING IN ANY	WAY
 # OUT OF THE USE OF THIS SOFTWARE, EVEN	IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-#
-# $FreeBSD$
-#
 
 SYS?=		/sys
-NOMAN=		YES
 KMOD=		rtc
-.if ${OSVERSION} < 500002
-KMODDEPS=	linux
-.else
-MODULE_DEPEND=	linux
-.endif
-CDEV_MAJOR?=	202
-DEVNAME= 	${KMOD}
 SRCS=		rtc.c rtc_linux.c vnode_if.h
 
 INCLUDE=	-I${.CURDIR} -I${SYS}
 
-CFLAGS+=	${INCLUDE} -DCDEV_MAJOR_=${CDEV_MAJOR}
+CFLAGS+=	${INCLUDE}
 
 all:	vnode_if.h
-
-#afterinstall: device
-
-device:
-	rm -f /dev/${DEVNAME}
-	mknod /dev/${DEVNAME} c ${CDEV_MAJOR} 0
 
 .include <bsd.kmod.mk>

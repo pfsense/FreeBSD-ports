@@ -1,5 +1,4 @@
 # Created by: sec@42.org
-# $FreeBSD$
 
 PORTNAME=	tileworld
 PORTVERSION=	1.3.0
@@ -13,7 +12,7 @@ COMMENT=	Emulation of the game "Chip's Challenge"
 
 USE_SDL=	sdl
 GNU_CONFIGURE=	YES
-USES=		gmake
+USES=		gmake sdl
 ALL_TARGET=	tworld
 DATADIR=	share/tworld
 

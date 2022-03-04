@@ -1,11 +1,10 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 #   $MCom: ports/trunk/audio/libcanberra-gtk3/Makefile 19814 2014-08-15 20:17:00Z gusi $
 
 CATEGORIES=	audio devel
 PKGNAMESUFFIX=	-gtk3
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Implementation of the Freedesktop sound theme spec
 
 MASTERDIR=	${.CURDIR}/../../audio/libcanberra

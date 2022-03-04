@@ -1,9 +1,8 @@
 # Created by: wenheping@gmail.com
-# $FreeBSD$
 
 PORTNAME=	sakai
 PORTVERSION=	10.2
-CATEGORIES=	www java
+CATEGORIES=	www education java
 MASTER_SITES=	http://source.sakaiproject.org/release/${PORTVERSION}/artifacts/
 DISTNAME=	${PORTNAME}-bin-${PORTVERSION}
 
@@ -19,8 +18,9 @@ RUN_DEPENDS=	${LOCALBASE}/apache-tomcat-7.0/bin/bootstrap.jar:www/tomcat7
 
 IGNORE=		does not work correctly
 
+USES=		cpe
+CPE_VENDOR=	${PORTNAME}lms
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

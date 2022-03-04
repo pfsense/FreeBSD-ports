@@ -1,9 +1,8 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hiredis
 PORTVERSION=	0.6.3
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 

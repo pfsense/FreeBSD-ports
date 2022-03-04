@@ -1,5 +1,4 @@
 # Created by: David Thiel <lx@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nacl
 PORTVERSION=	20110221
@@ -11,6 +10,9 @@ MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	High speed cryptography library
 
 LICENSE=	PD
+
+DEPRECATED=	Unmaintained by upstream, use libsodium instead
+EXPIRATION_DATE=2021-12-31
 
 USES=		tar:bzip2
 USE_BINUTILS=	yes

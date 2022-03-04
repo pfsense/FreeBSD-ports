@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	fprintd
 DISTVERSIONPREFIX=	V_
 DISTVERSION=	0_8_1
 CATEGORIES=	security
 
-MAINTAINER=	la5lbtyi@aon.at
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemon that provides fingerprint scanning functionality over D-Bus
 
 LICENSE=	GPLv2
@@ -25,7 +23,7 @@ GH_PROJECT=	libfprint-${PORTNAME}
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-MAKE_ARGS=	sysconfdir="${ETCDIR}/" mandir="${MANDIRS}"
+MAKE_ARGS=	sysconfdir="${ETCDIR}/"
 
 OPTIONS_DEFINE=	NLS PAM
 OPTIONS_SUB=	yes

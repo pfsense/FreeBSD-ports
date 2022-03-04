@@ -1,16 +1,11 @@
---- src/nomos/agent/STRINGS.in.orig	2018-11-29 10:09:35 UTC
+--- src/nomos/agent/STRINGS.in.orig	2021-05-07 09:49:07 UTC
 +++ src/nomos/agent/STRINGS.in
-@@ -1782,11 +1782,11 @@
+@@ -13302,7 +13302,7 @@ k
  #
- %ENTRY% _LT_DUAL_LICENSE_46
+ %ENTRY% _UTIL_LATEX
  %KEY% =NULL=
--%STR% "as an alternative.{,20}you may use this file under"
-+%STR% "as an alternative.{0,20}you may use this file under"
+-%STR% "\\htmladdnormallink"
++%STR% "\\\\htmladdnormallink"
  #
- %ENTRY% _LT_DUAL_LICENSE_47
+ %ENTRY% _UTIL_HYPHEN
  %KEY% =NULL=
--%STR% "under the terms of either.{,15}or"
-+%STR% "under the terms of either.{0,15}or"
- #
- %ENTRY% _LT_SUBSEQUENT_VERSION
- %KEY% "licen[cs]"

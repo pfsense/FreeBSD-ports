@@ -1,29 +1,28 @@
 # Created by: Reed A. Cartwright <cartwright@asu.edu>
-# $FreeBSD$
 
 PORTNAME=	htslib
-DISTVERSION=	1.9
+DISTVERSION=	1.13
 CATEGORIES=	biology devel
+# Github generated distfiles are incomplete, so use custom tarball
+MASTER_SITES=	https://github.com/samtools/htslib/releases/download/${DISTVERSION}/
 
-MAINTAINER=	cartwright@asu.edu
+MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	C library for high-throughput sequencing data formats
 
 LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+LIB_DEPENDS=	libdeflate.so:archivers/libdeflate
 TEST_DEPENDS=	bash:shells/bash
 
-USES=		autoreconf gmake localbase \
-		pathfix perl5 shebangfix
-USE_GITHUB=	yes
-GH_ACCOUNT=	samtools
+USES=		autoreconf cpe gmake localbase pathfix perl5 shebangfix tar:bzip2
 USE_PERL5=	test
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
+
+GNU_CONFIGURE=		yes
 PATHFIX_MAKEFILEIN=	Makefile
-SHEBANG_FILES=		test/compare_sam.pl \
-			test/test.pl
+SHEBANG_FILES=		test/*.pl
 
 OPTIONS_DEFINE=		CURL
 OPTIONS_DEFAULT=	CURL

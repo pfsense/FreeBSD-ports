@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libhtp
-PORTVERSION=	0.5.30
+PORTVERSION=	0.5.33
 CATEGORIES=	devel
 
 MAINTAINER=	koobs@FreeBSD.org
@@ -10,7 +8,8 @@ COMMENT=	Security-aware parser for the HTTP protocol
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf iconv:translit libtool pathfix pkgconfig
+USES=		autoreconf cpe iconv:translit libtool pathfix pkgconfig
+CPE_VENDOR=	oisf
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 

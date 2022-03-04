@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	css_parser
-PORTVERSION=	1.7.0
+PORTVERSION=	1.10.0
 CATEGORIES=	textproc www rubygems
 MASTER_SITES=	RG
 

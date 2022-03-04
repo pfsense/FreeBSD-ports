@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tzinfo-data
-PORTVERSION=	1.2018.9
+PORTVERSION=	1.2021.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

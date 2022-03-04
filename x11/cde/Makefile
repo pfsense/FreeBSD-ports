@@ -1,18 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	cde
-DISTVERSION=	2.3.0
-PORTREVISION=	1
+DISTVERSION=	2.4.0
 CATEGORIES=	x11
 MASTER_SITES=	SF/cdesktopenv/src/
 
-MAINTAINER=	crees@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Common Desktop Environment
 
 LICENSE=	LGPL21
 
 BROKEN_mips64=		fails to build: ./config/imake/imake: No such file or directory
 BROKEN_powerpc64=	fails to build: ./config/imake/imake: No such file or directory
+BROKEN_i386=		cannot bind to a temporary of type va_list
 
 BUILD_DEPENDS=	ksh93:shells/ksh93			\
 		bdftopcf:x11-fonts/bdftopcf		\
@@ -20,27 +18,27 @@ BUILD_DEPENDS=	ksh93:shells/ksh93			\
 		biconv:converters/iconv			\
 		${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:x11-fonts/fontconfig \
 		${LOCALBASE}/libdata/pkgconfig/freetype2.pc:print/freetype2
-RUN_DEPENDS=	${LOCALBASE}/bin/fc-cache:x11-fonts/fontconfig \
+RUN_DEPENDS=	ksh93:shells/ksh93			\
+		${LOCALBASE}/bin/fc-cache:x11-fonts/fontconfig \
 		${LOCALBASE}/libdata/pkgconfig/freetype2.pc:print/freetype2 \
-		ksh93:shells/ksh93 \
 		xrdb:x11/xrdb \
 		xset:x11/xset
 
-USES=		iconv:wchar_t motif perl5 shebangfix tcl:85
-SHEBANG_LANG=	pl ksh tcl
-SHEBANG_FILES=	programs/dtdocbook/sgmls/sgmls.pl \
-		programs/dtinfo/tools/bin/ccdate \
+USES=		iconv:wchar_t jpeg motif perl5 shebangfix tcl:86 xorg
+SHEBANG_LANG=	pl
+SHEBANG_FILES=	programs/dtinfo/tools/bin/ccdate \
 		programs/dtdocbook/doc2sdl/docbook.tcl \
 		programs/dtdocbook/doc2sdl/dtdocbook
 USE_LDCONFIG=	${PREFIX}/dt/lib
-USE_RC_SUBR=	dtcms dtspc
-USE_XORG=	ice sm x11 xau xdmcp xext xinerama xmu xp xscrnsaver xt
+USE_RC_SUBR=	dtcms dtlogin
+USE_XORG=	ice sm x11 xau xdmcp xext xinerama xmu xscrnsaver xt
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 ALL_TARGET=	World
-MAKE_ARGS+=	PERL=${PERL}
+MAKE_ARGS+=	PERL=${PERL} "LOCAL_LDFLAGS=${LDFLAGS}"
 MAKE_JOBS_UNSAFE=yes
 SUB_FILES=	pkg-message
+LDFLAGS+=	-z muldefs #--allow-multiple-definition
 
 post-patch:
 	@if [ -f /usr/include/iconv.h ]; then \
@@ -71,8 +69,9 @@ post-patch:
 # Fix all hardcoded path
 	@${REINPLACE_CMD} -e 's|/usr/bin/perl|${LOCALBASE}/bin/perl|g' \
 		${WRKSRC}/config/cf/Imake.tmpl \
-		${WRKSRC}/programs/dtdocbook/sgmls/sgmls.pl \
 		${WRKSRC}/programs/dtinfo/tools/bin/ccdate
+	@${REINPLACE_CMD} -e 's|/bin/ksh|${LOCALBASE}/bin/ksh93|g' \
+		${WRKSRC}/programs/dtopen/dtopen.src
 	@${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} -e \
 		's|/usr/dt|${LOCALBASE}/dt|g ; \
 		s|/etc/dt|${LOCALBASE}/etc/dt|g'
@@ -86,11 +85,11 @@ post-patch:
 
 # we need to remove a few LOCALBASE
 	@${REINPLACE_CMD} -e 's|${LOCALBASE}/etc/dtinfogen|/etc/dtinfogen|g' \
-		${WRKSRC}/databases/CDE-RUN.udb \
+		${WRKSRC}/databases/CDE-RUN.src \
 		${WRKSRC}/config/cf/cde.tmpl
 	@${REINPLACE_CMD} -e 's|${LOCALBASE}/etc/dtsr|/etc/dtsr|g' -e \
 		's|${LOCALBASE}/etc/dtinfo_start|/etc/dtinfo_start|g' \
-		${WRKSRC}/databases/CDE-RUN.udb \
+		${WRKSRC}/databases/CDE-RUN.src \
 		${WRKSRC}/programs/tttypes/dtinfo_start.ptype \
 		${WRKSRC}/programs/tttypes/dtinfo.ptype
 	@${REINPLACE_CMD} -e 's|${LOCALBASE}||g' \
@@ -104,14 +103,6 @@ post-patch:
 		${WRKSRC}/programs/dtmail/libDtMail/Common/FileShare.C \
 		${WRKSRC}/programs/dtmail/libDtMail/RFC/RFCMailBox.C
 
-# The docs say not necessary, but unreliable without
-#	@${MKDIR} ${WRKSRC}/imports/x11/include
-#	@${LN} -s ${LOCALBASE}/include/X11 ${WRKSRC}/imports/x11/include
-#	@${LN} -s ${LOCALBASE}/include/Xm ${WRKSRC}/imports/x11/include
-#	@${LN} -s ${LOCALBASE}/include/fontconfig ${WRKSRC}/imports/x11/include
-#	@${LN} -s ${LOCALBASE}/include/freetype2 ${WRKSRC}/imports/x11/include
-
-
 do-install:
 	cd ${WRKSRC}/admin/IntegTools/dbTools && \
 		./installCDE -s ${WRKSRC} -destdir ${STAGEDIR}
@@ -124,9 +115,5 @@ do-install:
 
 post-install:
 	${FIND} ${STAGEDIR}/${PREFIX}/dt -type f -exec ${SH} -c '${STRIP_CMD} {} > /dev/null 2>&1' \;
-
-#	Documented switches don't actually produce desired effect!
-#	./installCDE -s ${WRKSRC} -pI ${STAGEDIR}${PREFIX}/dt \
-#		   -pV ${STAGEDIR}/var -pC ${STAGEDIR}${PREFIX}/etc
 
 .include <bsd.port.mk>

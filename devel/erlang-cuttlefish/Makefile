@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cuttlefish
 PORTVERSION=	2.0.11
 PORTREVISION=	2
@@ -10,6 +8,8 @@ MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Configuration library for Erlang
 
 LICENSE=	APACHE20
+
+BROKEN=		does not build with Erlang 24
 
 USES=		erlang:rebar
 USE_GITHUB=	yes

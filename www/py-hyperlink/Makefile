@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hyperlink
-PORTVERSION=	18.0.0
+PORTVERSION=	21.0.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,8 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}idna>=2.5:dns/py-idna@${PY_FLAVOR}
 
-NO_ARCH=	yes
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

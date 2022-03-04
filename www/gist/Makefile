@@ -1,8 +1,7 @@
 # Created by: Ricky E. <codeblock@eighthbit.net>
-# $FreeBSD$
 
 PORTNAME=	gist
-PORTVERSION=	5.0.0
+PORTVERSION=	5.1.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www net
 
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.MIT
 
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
-CONFLICTS=	p5-App-gist-[0-9]*
+CONFLICTS=	p5-App-gist
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	defunkt

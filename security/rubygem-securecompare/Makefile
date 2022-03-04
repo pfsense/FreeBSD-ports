@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	securecompare
 PORTVERSION=	1.0.0
 CATEGORIES=	security rubygems

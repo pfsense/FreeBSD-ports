@@ -1,9 +1,8 @@
 # Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
 
 PORTNAME=	tclhttpd
 PORTVERSION=	3.5.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www tcl
 MASTER_SITES=	TCLTK/httpd
 DISTNAME=	${PORTNAME}${PORTVERSION}

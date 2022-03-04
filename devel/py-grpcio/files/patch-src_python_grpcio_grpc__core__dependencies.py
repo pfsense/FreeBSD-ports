@@ -1,9 +1,9 @@
---- src/python/grpcio/grpc_core_dependencies.py.orig	2018-04-13 19:56:08 UTC
+--- src/python/grpcio/grpc_core_dependencies.py.orig	2020-08-05 07:00:06 UTC
 +++ src/python/grpcio/grpc_core_dependencies.py
-@@ -631,53 +631,4 @@ CORE_SOURCE_FILES = [
-     'third_party/zlib/trees.c',
-     'third_party/zlib/uncompr.c',
-     'third_party/zlib/zutil.c',
+@@ -793,56 +793,6 @@ CORE_SOURCE_FILES = [
+     'third_party/boringssl-with-bazel/src/ssl/tls13_server.cc',
+     'third_party/boringssl-with-bazel/src/ssl/tls_method.cc',
+     'third_party/boringssl-with-bazel/src/ssl/tls_record.cc',
 -    'third_party/cares/cares/ares__close_sockets.c',
 -    'third_party/cares/cares/ares__get_hostent.c',
 -    'third_party/cares/cares/ares__read_line.c',
@@ -46,6 +46,7 @@
 -    'third_party/cares/cares/ares_strcasecmp.c',
 -    'third_party/cares/cares/ares_strdup.c',
 -    'third_party/cares/cares/ares_strerror.c',
+-    'third_party/cares/cares/ares_strsplit.c',
 -    'third_party/cares/cares/ares_timeout.c',
 -    'third_party/cares/cares/ares_version.c',
 -    'third_party/cares/cares/ares_writev.c',
@@ -53,4 +54,6 @@
 -    'third_party/cares/cares/inet_net_pton.c',
 -    'third_party/cares/cares/inet_ntop.c',
 -    'third_party/cares/cares/windows_port.c',
- ]
+     'third_party/re2/re2/bitstate.cc',
+     'third_party/re2/re2/compile.cc',
+     'third_party/re2/re2/dfa.cc',

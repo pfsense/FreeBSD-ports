@@ -1,0 +1,8 @@
+PORTREVISION=	0
+PKGNAMESUFFIX=	-qt5
+
+MASTERDIR=	${.CURDIR}/../yuzu
+
+OPTIONS_SLAVE=	QT5
+
+.include "${MASTERDIR}/Makefile"

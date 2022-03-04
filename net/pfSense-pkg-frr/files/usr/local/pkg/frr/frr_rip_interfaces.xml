@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_rip_interfaces.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2021-2022 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_ripd_interfaces</name>
+	<title>Services/FRR/RIP</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_rip_interfaces.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>RIP</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>pkg.php?xml=frr/frr_rip_interfaces.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_rip_neighbors.xml</url>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php?protocol=rip</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Authentication</fielddescr>
+			<fieldname>authtype</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Interface Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface</fieldname>
+			<description>Enter the desired participating interface here.</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_interfaces(false, false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Interface is Passive</fielddescr>
+			<fieldname>passive</fieldname>
+			<description>Prevent transmission of RIP packets on this interface.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Authentication</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Authentication Type</fielddescr>
+			<fieldname>authtype</fieldname>
+			<description>
+				<![CDATA[
+				The type of RIP authentication to use on this interface.
+				This type must match all neighbors reachable through this interface.
+				<br />
+				Using Message Digest is the best practice as Simple Password authentication is weak.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value></default_value>
+			<options>
+				<option><value></value><name>None (default)</name></option>
+				<option><value>digest</value><name>Message Digest (MD5 Hash)</name></option>
+				<option><value>simple</value><name>Simple Password</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Password</fielddescr>
+			<fieldname>password</fieldname>
+			<description>
+				<![CDATA[
+				Password to use with Simple Password or Message Digest authentication.
+				This value must match all neighbors reachable through this interface.
+				<br />
+				Passwords may be up to 16 characters.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Advanced</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Split Horizon</fielddescr>
+			<fieldname>splithorizon</fieldname>
+			<description>Perform Split Horizon.</description>
+			<type>select</type>
+			<default_value></default_value>
+			<options>
+				<option><value>none</value><name>Disabled</name></option>
+				<option><value>splithorizon</value><name>Enabled</name></option>
+				<option><value>reversepoison</value><name>Enabled with poisoned-reverse</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Send Broadcast</fielddescr>
+			<fieldname>sendbroadcast</fieldname>
+			<description>Send Broadcast updates instead of multicast for RIPv2.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Send Version</fielddescr>
+			<fieldname>sendversion</fieldname>
+			<description>Advertisement transmission version.</description>
+			<type>select</type>
+			<default_value></default_value>
+			<options>
+				<option><value>2</value><name>RIPv2</name></option>
+				<option><value>1</value><name>RIPv1</name></option>
+				<option><value>1 2</value><name>RIPv1+RIPv2</name></option>
+				<option><value>none</value><name>None</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Receive Version</fielddescr>
+			<fieldname>receiveversion</fieldname>
+			<description>Advertisement reception version.</description>
+			<type>select</type>
+			<default_value></default_value>
+			<options>
+				<option><value>2</value><name>RIPv2</name></option>
+				<option><value>1</value><name>RIPv1</name></option>
+				<option><value>1 2</value><name>RIPv1+RIPv2</name></option>
+				<option><value>none</value><name>None</name></option>
+			</options>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_rip_interfaces_validate_input();
+	</custom_php_validation_command>
+</packagegui>

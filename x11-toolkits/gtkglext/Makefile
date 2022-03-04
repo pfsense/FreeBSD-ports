@@ -1,9 +1,8 @@
 # Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
 
 PORTNAME=	gtkglext
 PORTVERSION=	1.2.0
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF
 DIST_SUBDIR=	gnome2
@@ -15,7 +14,8 @@ LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake iconv libtool pathfix pkgconfig tar:bzip2
+USES=		gettext gl gmake gnome iconv libtool pathfix pkgconfig \
+		tar:bzip2 xorg
 USE_GL=		glu
 USE_GNOME=	gtk20 pangox-compat
 USE_LDCONFIG=	yes

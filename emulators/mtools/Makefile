@@ -1,9 +1,8 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	mtools
-PORTVERSION=	4.0.10
-PORTREVISION=	6
+PORTVERSION=	4.0.26
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	GNU
 
@@ -12,7 +11,7 @@ COMMENT=	Collection of tools for manipulating MS-DOS files
 
 LICENSE=	GPLv3
 
-CONFLICTS_INSTALL=	multimarkdown-*
+CONFLICTS_INSTALL=	multimarkdown
 
 USES=		gmake makeinfo tar:bzip2
 GNU_CONFIGURE=	yes
@@ -32,11 +31,13 @@ OPTIONS_DEFAULT=ICONV X11
 USES+=		iconv
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
+LIB_DEPENDS+=	libiconv.so:converters/libiconv
 .else
 CONFIGURE_ENV+=	ac_cv_header_iconv_h=no
 .endif
 
 .if ${PORT_OPTIONS:MX11}
+USES+=		xorg
 USE_XORG=	x11 sm ice xau
 PLIST_SUB+=	X11=""
 .else
@@ -51,6 +52,8 @@ post-patch:
 		${WRKSRC}/llong.h
 	@${REINPLACE_CMD} -e 's|/etc/mtools.conf|${PREFIX}/etc/mtools.conf|g' \
 		${WRKSRC}/mformat.c
+	@${REINPLACE_CMD} -e 's|^\(SAMPLE FILE\)$$|#\1|' \
+		${WRKSRC}/mtools.conf
 .for f in mtools.5 mtools.texi
 	@${REINPLACE_CMD} -e 's|/usr/local/etc/|${PREFIX}/etc/|g' \
 		${WRKSRC}/${f}

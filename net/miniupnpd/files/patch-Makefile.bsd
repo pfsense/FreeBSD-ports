@@ -1,0 +1,11 @@
+--- Makefile.bsd.orig	2020-11-09 19:43:35 UTC
++++ Makefile.bsd
+@@ -149,7 +149,7 @@ install:	miniupnpd genuuid
+ 	$(INSTALL) -d $(DESTDIR)$(INSTALLBINDIR)
+ 	$(INSTALL) -m 755 miniupnpd $(DESTDIR)$(INSTALLBINDIR)
+ 	$(INSTALL) -d $(DESTDIR)$(INSTALLETCDIR)
+-	$(INSTALL) -b miniupnpd.conf $(DESTDIR)$(INSTALLETCDIR)
++	$(INSTALL) -b miniupnpd.conf $(DESTDIR)$(INSTALLETCDIR)/miniupnpd.conf.sample
+ 	$(INSTALL) -d $(DESTDIR)$(INSTALLMANDIR)
+ 	$(INSTALL) -m 644 miniupnpd.8 $(DESTDIR)$(INSTALLMANDIR)/man8/miniupnpd.8
+ 

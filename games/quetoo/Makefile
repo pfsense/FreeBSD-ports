@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	quetoo
 PORTVERSION=	0.6.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://tastyspleen.net/~jdolan/ \
 		http://freebsd.nsu.ru/distfiles/
@@ -13,9 +12,9 @@ COMMENT=	Fast, stable, compatible, and secure Quake II client
 
 LICENSE=	GPLv2
 
-USE_SDL=	sdl
+USES=		dos2unix gl sdl tar:bzip2
 USE_GL=		glut
-USES=		dos2unix tar:bzip2
+USE_SDL=	sdl
 DOS2UNIX_FILES=	src/vanctf/g_local.h
 
 GNU_CONFIGURE=	yes
@@ -69,7 +68,7 @@ PLIST_SUB+=	VANCTF="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 CONFIGURE_ARGS+=	--with-mysql
 CONFIGURE_ENV+=	MYSQL_LIBS="-L${LOCALBASE}/lib/mysql -lmysqlclient" \
 		MYSQL_CFLAGS="-I${LOCALBASE}/include"

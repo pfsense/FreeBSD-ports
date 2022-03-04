@@ -1,5 +1,4 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	0verkill
 PORTVERSION=	0.16
@@ -9,10 +8,12 @@ MASTER_SITES=	http://artax.karlin.mff.cuni.cz/~brain/0verkill/release/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	mich@FreeBSD.org
-COMMENT=	0verkill is a bloody 2D action Deathmatch-like game in ASCII-art
+COMMENT=	Bloody 2D action deathmatch-like game in ASCII art
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
+
+USES=		cpe
 
 GNU_CONFIGURE=	yes
 
@@ -20,8 +21,12 @@ OPTIONS_DEFINE=	X11 DOCS
 OPTIONS_DEFAULT=X11
 
 OPTIONS_SUB=	yes
+X11_USES=	xorg
 X11_USE=	XORG=xpm
 X11_CONFIGURE_WITH=	x
+
+# Dead upstream, don't expect a proper fix for duplicate symbols.
+CFLAGS+=	-fcommon
 
 .include <bsd.port.options.mk>
 

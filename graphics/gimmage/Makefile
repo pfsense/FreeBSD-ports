@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gimmage
 PORTVERSION=	0.2.3
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	graphics
 MASTER_SITES=	BERLIOS
 
@@ -28,10 +27,12 @@ NLS_CONFIGURE_ENABLE=	gettext
 
 CONFIGURE_ARGS=	--with-libintl-prefix=${LOCALBASE}
 
-.if !exists(/usr/lib/libstdc++.so)
+.include <bsd.port.pre.mk>
+
+.if ! ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-Wc++11-extensions -Wc++11-long-long \
 		-Wunused-command-line-argument -Wreturn-type \
 		-Wwritable-strings -Wlogical-op-parentheses
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

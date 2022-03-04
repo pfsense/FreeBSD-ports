@@ -1,5 +1,4 @@
 # Created by: Vladimir Kondratiev <wulf@mail.mipt.ru>
-# $FreeBSD$
 
 PORTNAME=	debugger-xml
 PORTVERSION=	0.4.1
@@ -16,9 +15,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 RUN_DEPENDS=	rubygem-builder>=2.0.0:devel/rubygem-builder \
 		rubygem-byebug>=0:devel/rubygem-byebug
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/rdebug-ide bin/rdebug-vim
 

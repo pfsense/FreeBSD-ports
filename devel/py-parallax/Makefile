@@ -1,20 +1,18 @@
 # Created by: David Shane Holden <dpejesh@yahoo.com>
-# $FreeBSD$
 
 PORTNAME=		parallax
-PORTVERSION=		1.0.3
+PORTVERSION=		1.0.6
 CATEGORIES=		devel python
+MASTER_SITES=		CHEESESHOP
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=		dpejesh@yahoo.com
+MAINTAINER=		egypcio@FreeBSD.org
 COMMENT=		Python API for SSH
 
 LICENSE=		BSD3CLAUSE
+LICENSE_FILE=		${WRKSRC}/COPYING
 
-USES=			python
+USES=			python:3.6+
 USE_PYTHON=		distutils autoplist
-
-USE_GITHUB=		yes
-GH_ACCOUNT=		krig
 
 .include <bsd.port.mk>

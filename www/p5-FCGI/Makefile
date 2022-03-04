@@ -1,8 +1,7 @@
 # Created by: Kelly Yancey <kbyanc@posi.net>
-# $FreeBSD$
 
 PORTNAME=	FCGI
-PORTVERSION=	0.78
+PORTVERSION=	0.82
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,6 +13,8 @@ LICENSE=	OpenMarket
 LICENSE_NAME=	Open Market License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+TEST_DEPENDS=	p5-FCGI-Client>=0:www/p5-FCGI-Client
 
 USES=		perl5
 USE_PERL5=	configure

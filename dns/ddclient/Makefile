@@ -1,16 +1,15 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ddclient
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.8.3-104
-DISTVERSIONSUFFIX=	-gec2acfb
+DISTVERSION=	3.9.1
 CATEGORIES=	dns
 
 MAINTAINER=	mjl@luckie.org.nz
 COMMENT=	Update dynamic DNS entries
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	p5-Data-Validate-IP>0:net-mgmt/p5-Data-Validate-IP
 
@@ -23,23 +22,26 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	pkg-message ddclient_force
 
+PLIST_FILES=	"@sample(,,600) etc/ddclient.conf.sample" \
+		etc/periodic/daily/ddclient_force \
+		sbin/ddclient
+PORTDOCS=	COPYRIGHT ChangeLog README.cisco README.ssl README.md \
+		sample-etc_cron.d_ddclient sample-etc_dhclient-exit-hooks \
+		sample-etc_dhcpc_dhcpcd-eth0.exe sample-etc_ppp_ip-up.local
+
 OPTIONS_DEFINE=	SSL DOCS
 OPTIONS_DEFAULT=SSL
 
 SSL_RUN_DEPENDS=ca_root_nss>0:security/ca_root_nss \
 		p5-IO-Socket-SSL>0:security/p5-IO-Socket-SSL
 
-PORTDOCS=	COPYRIGHT ChangeLog README.cisco README.ssl README.md \
-		sample-etc_cron.d_ddclient sample-etc_dhclient-exit-hooks \
-		sample-etc_dhcpc_dhcpcd-eth0.exe sample-etc_ppp_ip-up.local
-PLIST_FILES=	"@sample etc/ddclient.conf.sample" etc/periodic/daily/ddclient_force \
-		sbin/ddclient
-
 post-patch:
 	@${GREP} -lR '/usr' ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} -e \
 		's|/usr|${PREFIX}|g'
 	@${REINPLACE_CMD} -e 's|%%ETCDIR%%|${PREFIX}/etc| ; \
 		 s|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/ddclient
+	@${REINPLACE_CMD} -e '/^\#\!\/usr\/local\/local/d' \
+		${WRKSRC}/ddclient
 
 do-install:
 	(cd ${WRKSRC} && ${INSTALL_DATA} sample-etc_ddclient.conf \

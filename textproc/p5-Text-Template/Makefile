@@ -1,8 +1,7 @@
 # Created by: Bill "I hate Perl" Fumerola
-# $FreeBSD$
 
 PORTNAME=	Text-Template
-PORTVERSION=	1.55
+PORTVERSION=	1.60
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,16 +1,20 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	hexcurse
-PORTVERSION=	1.55
+PORTVERSION=	1.60.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
-MASTER_SITES=	DEBIAN
-DISTFILES=	${PORTNAME}_${PORTVERSION}.orig
 
-MAINTAINER=	jadawin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Versatile ncurses-based hex editor
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 USES=		ncurses
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	LonnyGomes
 
 GNU_CONFIGURE=	yes
 

@@ -1,26 +1,27 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	codelite
 PORTVERSION=	12.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	editors devel
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source IDE for C/C++
 
 LICENSE=	GPLv2+
 
+BROKEN=		outdated, doesn't build with Pango 1.46.2 or newer - PR 249879
+
 RUN_DEPENDS=	xterm:x11/xterm
 LIB_DEPENDS+=	libhunspell-1.7.so:textproc/hunspell
 
-BROKEN_armv6=		fails to configure: has leading or trailing whitespace.  This is now an error according to policy CMP0004
+#BROKEN_armv6=		fails to configure: has leading or trailing whitespace.  This is now an error according to policy CMP0004
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	eranif
 
-USES=		cmake:noninja compiler:c++11-lib dos2unix gettext \
-		pathfix pkgconfig shebangfix sqlite
+USES=		cmake:noninja compiler:c++11-lib dos2unix gettext gnome pathfix \
+		pkgconfig shebangfix sqlite
 USE_GNOME+=	cairo gtk20
 DOS2UNIX_GLOB=	*.cpp *.txt
 SHEBANG_FILES=	Runtime/codelite_xterm
@@ -30,7 +31,6 @@ CMAKE_ARGS=	-DPREFIX:STRING="${PREFIX}" \
 		-DIS_FREEBSD:STRING=1 \
 		-DCL_WX_CONFIG:STRING="${WX_CONFIG:T}"
 USE_LDCONFIG=	${PREFIX}/lib/codelite
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		CSCOPE SFTP
 OPTIONS_RADIO=		CLANG

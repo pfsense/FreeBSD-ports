@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	flare
-PORTVERSION=	1.09.01
+PORTVERSION=	1.12
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 PKGNAMESUFFIX=	-game
@@ -20,7 +17,6 @@ GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
 
 USES=		cmake gnome
 CMAKE_BUILD_TYPE=	#empty
-INSTALLS_ICONS=	yes
 NO_ARCH=	yes
 
 CMAKE_ARGS=	-DBINDIR="bin" -DDATADIR="share/flare"

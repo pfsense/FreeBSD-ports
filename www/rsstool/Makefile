@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rsstool
 PORTVERSION=	1.0.0
@@ -13,7 +12,7 @@ COMMENT=	Read, parse, merge and write RSS and Atom feeds
 
 LICENSE=	GPLv2+
 
-USES=		iconv gmake
+USES=		gmake gnome iconv
 USE_GNOME=	libxml2
 BUILD_WRKSRC=	${WRKSRC}/src
 CONFIGURE_WRKSRC=	${WRKSRC}/src

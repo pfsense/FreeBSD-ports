@@ -1,16 +1,17 @@
 bin/kquitapp5
-etc/xdg/kdbusaddons.categories
 include/KF5/KDBusAddons/KDBusConnectionPool
 include/KF5/KDBusAddons/KDBusInterProcessLock
 include/KF5/KDBusAddons/KDBusService
 include/KF5/KDBusAddons/KDEDModule
 include/KF5/KDBusAddons/KDEInitInterface
+include/KF5/KDBusAddons/UpdateLaunchEnvironmentJob
 include/KF5/KDBusAddons/kdbusaddons_export.h
 include/KF5/KDBusAddons/kdbusconnectionpool.h
 include/KF5/KDBusAddons/kdbusinterprocesslock.h
 include/KF5/KDBusAddons/kdbusservice.h
 include/KF5/KDBusAddons/kdedmodule.h
 include/KF5/KDBusAddons/kdeinitinterface.h
+include/KF5/KDBusAddons/updatelaunchenvironmentjob.h
 include/KF5/kdbusaddons_version.h
 lib/cmake/KF5DBusAddons/KF5DBusAddonsConfig.cmake
 lib/cmake/KF5DBusAddons/KF5DBusAddonsConfigVersion.cmake
@@ -23,6 +24,7 @@ lib/libKF5DBusAddons.so.5
 lib/libKF5DBusAddons.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KDBusAddons.pri
 share/locale/ar/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/az/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/bs/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ca/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ca@valencia/LC_MESSAGES/kdbusaddons5_qt.qm
@@ -38,6 +40,7 @@ share/locale/fi/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/fr/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/gd/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/gl/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/hi/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/hu/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ia/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/id/LC_MESSAGES/kdbusaddons5_qt.qm
@@ -45,6 +48,7 @@ share/locale/it/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ja/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ko/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/lt/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/ml/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/nb/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/nds/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/nl/LC_MESSAGES/kdbusaddons5_qt.qm
@@ -63,7 +67,10 @@ share/locale/sr@ijekavian/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/sr@ijekavianlatin/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/sr@latin/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/sv/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/tg/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/tr/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/uk/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/zh_CN/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/kdbusaddons5_qt.qm
+share/qlogging-categories5/kdbusaddons.categories
+share/qlogging-categories5/kdbusaddons.renamecategories

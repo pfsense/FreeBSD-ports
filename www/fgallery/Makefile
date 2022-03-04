@@ -1,9 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fgallery
 PORTVERSION=	1.8.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www graphics
 
 MAINTAINER=	ehaupt@FreeBSD.org

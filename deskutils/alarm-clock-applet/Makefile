@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alarm-clock-applet
 PORTVERSION=	0.3.4
 CATEGORIES=	deskutils
@@ -20,10 +18,9 @@ BUILD_DEPENDS=	gnome-icon-theme>0:misc/gnome-icon-theme
 RUN_DEPENDS=	gnome-icon-theme>0:misc/gnome-icon-theme
 
 GNU_CONFIGURE=	yes
-USES=		gmake gettext-tools pkgconfig
+USES=		gettext-tools gmake gnome pkgconfig
 USE_GNOME=	cairo gconf2 gtk20 intltool
 USE_GSTREAMER1=	yes
-INSTALLS_ICONS=	yes
 
 GCONF_SCHEMAS=	alarm-clock.schemas
 

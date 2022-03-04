@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kterm
 PORTVERSION=	6.2.0
 DISTVERSIONPREFIX=	v
@@ -17,9 +15,7 @@ LICENSE=	MIT
 
 BUILD_DEPENDS=	nkf:japanese/nkf
 
-BROKEN_aarch64=	Fails to build: fatal error: kfontlist.c file not found
-
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd

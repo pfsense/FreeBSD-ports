@@ -1,5 +1,4 @@
 # Created by: philip@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	pylru-cache
 PORTVERSION=	0.1.4
@@ -14,7 +13,7 @@ COMMENT=	LRU cache for Python
 LICENSE=	BSD3CLAUSE GPLv3
 LICENSE_COMB=	dual
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

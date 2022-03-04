@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	openmesh
-DISTVERSION=	7.1
+DISTVERSION=	8.1
 PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://www.openmesh.org/media/Releases/${DISTVERSION}/
@@ -13,7 +11,7 @@ COMMENT=	Generic data structure for manipulating polygonal meshes
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake dos2unix gl qt:5
+USES=		cmake compiler:c++11-lang dos2unix gl qt:5 xorg
 DOS2UNIX_FILES=	src/OpenMesh/Tools/CMakeLists.txt
 USE_QT=		core concurrent gui help network opengl printsupport script scripttools sql svg x11extras xml xmlpatterns webkit widgets \
 		buildtools_build qmake_build uitools_build

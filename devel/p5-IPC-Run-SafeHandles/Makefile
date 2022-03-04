@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	IPC-Run-SafeHandles
 PORTVERSION=	0.04
 PORTREVISION=	1

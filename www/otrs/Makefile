@@ -1,8 +1,9 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	otrs
-PORTVERSION=	6.0.10
+DISTVERSIONPREFIX=	rel-
+DISTVERSION=	6_0_29
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	m.tsatsenko@gmail.com
@@ -43,20 +44,26 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-Lingua-Translit>=0:devel/p5-Lingua-Translit \
 		p5-Pod-Strip>=0:textproc/p5-Pod-Strip \
 		p5-Template-Toolkit>=0:www/p5-Template-Toolkit \
-		p5-Sisimai>=0:mail/p5-Sisimai
+		p5-Sisimai>=0:mail/p5-Sisimai \
+		p5-XML-Parser>=0:textproc/p5-XML-Parser \
+		p5-XML-LibXML>=0:textproc/p5-XML-LibXML \
+		p5-XML-LibXML-Simple>=0:textproc/p5-XML-LibXML-Simple \
+		p5-XML-LibXSLT>=0:textproc/p5-XML-LibXSLT \
+		p5-Locale-Codes>=0:misc/p5-Locale-Codes \
+		p5-Math-Random-Secure>=0:math/p5-Math-Random-Secure \
+		p5-Schedule-Cron-Events>=0:sysutils/p5-Schedule-Cron-Events
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		cpe shebangfix perl5 tar:bzip2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OTRS
-GH_TAGNAME=	51cbe50
 
 SHEBANG_FILES=	bin/cgi-bin/*.pl bin/cgi-bin/app.psgi bin/fcgi-bin/*.pl bin/*.pl \
 		scripts/tools/*.pl scripts/*.pl
 
 OPTIONS_DEFINE=		MYSQL PGSQL REPORTS SMTP POP3 IMAP LDAP PDF \
-			GNUPG APACHE SSL XML
+			GNUPG APACHE SSL
 OPTIONS_DEFAULT=	MYSQL REPORTS SMTP POP3 IMAP PDF ASPELL APACHE \
 			SSL
 OPTIONS_RADIO=		SPELL
@@ -76,7 +83,7 @@ SUB_FILES=	pkg-message
 SUB_LIST=	OTRS_USER=${USERS} OTRS_GROUP=${USERS} WWWOWN=${WWWOWN}
 NO_ARCH=	YES
 
-ROOT_DIRS_LIST=	Kernel bin scripts
+ROOT_DIRS_LIST=	Kernel bin scripts doc
 BIN_DIRS_LIST=	"" cgi-bin fcgi-bin
 PM_DIRS_LIST=	Kernel Kernel/Config Kernel/Config/Files Kernel/Language \
 		Modules Kernel/Output/HTML Kernel/Output/HTML/Lite \
@@ -125,10 +132,6 @@ ISPELL_RUN_DEPENDS=	ispell:textproc/aspell-ispell
 ASPELL_RUN_DEPENDS=	aspell:textproc/aspell
 
 GNUPG_RUN_DEPENDS=	gpg:security/gnupg1
-
-XML_RUN_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser \
-			p5-XML-LibXML>=0:textproc/p5-XML-LibXML \
-			p5-XML-LibXSLT>=0:textproc/p5-XML-LibXSLT
 
 .include <bsd.port.pre.mk>
 

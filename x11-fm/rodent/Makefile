@@ -1,9 +1,8 @@
 # Created by: Jens K. Loewe <bsd@tuxproject.de>
-# $FreeBSD$
 
 PORTNAME=	rodent
 PORTVERSION=	5.3.16.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF/xffm/${PORTVERSION}
 
@@ -19,12 +18,12 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libmagic.so.1:sysutils/file \
 		librfm.so:x11-fm/librfm
 
-USES=		desktop-file-utils gmake libtool:keepla pkgconfig tar:bzip2 shebangfix
+USES=		desktop-file-utils gmake gnome libtool:keepla pkgconfig \
+		shebangfix tar:bzip2
 USE_GNOME=	glib20 gtk20 librsvg2 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--docdir=${DOCSDIR}
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 SHEBANG_FILES=	configure
 

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Korean support
 
     SUBDIR += FreeWnn-lib
@@ -11,8 +8,7 @@
     SUBDIR += d2coding-ttf
     SUBDIR += engdic
     SUBDIR += fcitx-hangul
-    SUBDIR += gimp-help
-    SUBDIR += gtkcomm
+    SUBDIR += fcitx5-hangul
     SUBDIR += h2ps
     SUBDIR += hanyangfonts
     SUBDIR += hcode
@@ -28,20 +24,21 @@
     SUBDIR += ko.TeX-fonts-extra
     SUBDIR += libhangul
     SUBDIR += libreoffice
-    SUBDIR += man-doc
     SUBDIR += munhwafonts-cid
     SUBDIR += nabi
     SUBDIR += nanumcoding-ttf
     SUBDIR += nanumfonts-otf
     SUBDIR += nanumfonts-ttf
     SUBDIR += nhpf
+    SUBDIR += p5-Lingua-KO-Hangul-Util
+    SUBDIR += p5-Lingua-KO-Romanize-Hangul
     SUBDIR += scim-hangul
     SUBDIR += scim-tables
     SUBDIR += sourcehansans-otf
     SUBDIR += sourcehanserif-otf
+    SUBDIR += spoqahansans-ttf
     SUBDIR += unfonts-core
     SUBDIR += unfonts-extra
     SUBDIR += uniksc
-    SUBDIR += xpdf
 
 .include <bsd.port.subdir.mk>

@@ -1,5 +1,4 @@
 # Created by: Paul Dlug <paul@nerdlabs.com>
-# $FreeBSD$
 
 PORTNAME=	nsca
 PORTVERSION=	2.7.2
@@ -10,7 +9,7 @@ MASTER_SITES=	SF/nagios/nsca-2.x/nsca-${PORTVERSION}
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	Nagios Service Check Acceptor
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 
 #.if !defined(_BUILDING_NSCA_CLIENT)
 #RUN_DEPENDS=	nagios:net-mgmt/nagios

@@ -1,9 +1,8 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	iceicepenguin
 PORTVERSION=	1.5.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games python
 MASTER_SITES=	SF/${PORTNAME}/Default/Ice%20Ice%20Penguin/ \
 		SF/nemysisfreebsdp/games/:icons
@@ -21,14 +20,13 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/"ice ice penguin"
 
-USES=		python:run shebangfix zip
+USES=		gnome python:run shebangfix zip
 SHEBANG_FILES=	iceicepengui.py
 NO_BUILD=	yes
 NO_ARCH=	yes
 
 PORTDOCS=	CHANGELOG.txt readme.txt
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 SUB_FILES=	${PORTNAME}

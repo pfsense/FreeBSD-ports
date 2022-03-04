@@ -1,10 +1,9 @@
 # Created by: Jordan Hubbard <jkh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	spegla
 PORTVERSION=	1.1p5
 DISTVERSIONPREFIX=	v
-CATEGORIES=	ftp ipv6
+CATEGORIES=	ftp
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Mirror program for FTP sites (written in C)

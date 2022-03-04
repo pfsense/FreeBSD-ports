@@ -1,5 +1,4 @@
 # Created by: David Le Brun <david@dyn-ns.net>
-# $FreeBSD$
 
 PORTNAME=	gtkpod
 PORTVERSION=	1.0.0
@@ -15,13 +14,12 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libid3tag.so:audio/libid3tag \
 		libgpod.so:audio/libgpod
 
-USES=		gettext gmake pkgconfig python:run shebangfix
+USES=		gettext gmake gnome pkgconfig python:run shebangfix
 SHEBANG_FILES=	scripts/mab2vcard scripts/sync-evolution.sh \
 		scripts/sync-knotes.sh scripts/sync-ldif.sh \
 		scripts/sync-palm-jppy.py
 USE_GNOME=	gtk20 intltool libglade2
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -51,6 +49,12 @@ post-patch:
 # Fix location of the <endian.h> header
 	@${REINPLACE_CMD} -e 's|endian\.h|sys/&|' ${WRKSRC}/configure \
 		${WRKSRC}/src/mp4file.c
+# Fix the build with -fno-common (for Clang 11 and GCC 10)
+	@${REINPLACE_CMD} -e '/main_window_xml/s|^|extern |' \
+		${WRKSRC}/src/display.h
+	@${REINPLACE_CMD} -e '51s|^|GladeXML *main_window_xml;|' \
+		${WRKSRC}/src/display.c
+	@${REINPLACE_CMD} -e 's|} CONF_ID|}|' ${WRKSRC}/src/confirmation.h
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

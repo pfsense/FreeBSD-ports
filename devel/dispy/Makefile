@@ -1,8 +1,7 @@
 # Created by: Mikhail Teterin
-# $FreeBSD$
 
 PORTNAME=	dispy
-PORTVERSION=	4.10.4
+PORTVERSION=	4.10.6
 CATEGORIES=	devel net
 MASTER_SITES=	SF/${PORTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycos>=4.8.0:devel/pycos@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 

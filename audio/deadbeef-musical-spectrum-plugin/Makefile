@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	deadbeef-musical-spectrum-plugin
 DISTVERSION=	0.0.2015.10.13
@@ -17,7 +16,7 @@ GH_ACCOUNT=	cboxdoerfer
 GH_PROJECT=	ddb_musical_spectrum
 GH_TAGNAME=	353870a
 
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 
 OPTIONS_DEFINE=	GTK2 GTK3
 OPTIONS_DEFAULT=	GTK2

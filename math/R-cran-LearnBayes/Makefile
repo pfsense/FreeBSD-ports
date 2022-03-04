@@ -1,10 +1,9 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	LearnBayes
 PORTVERSION=	2.15.1
-PORTREVISION=	1
-CATEGORIES=	math
+PORTREVISION=	3
+CATEGORIES=	math education
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org

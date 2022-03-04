@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	meteo
-PORTVERSION=	0.9.6
+PORTVERSION=	0.9.8
 CATEGORIES=	deskutils
 
-MAINTAINER=	tagattie@yandex.com
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Weather forecast application using OpenWeatherMap API
 
 LICENSE=	GPLv3+
@@ -23,13 +21,13 @@ USES=		compiler:c11 desktop-file-utils gettext gnome meson pkgconfig \
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	bitseater
-GL_COMMIT=	1a36202057ddd502556afd9335a8f8d51b714537
+GL_COMMIT=	2c90bd8ab6d07c8c72e61efc03f90aa4d809e8e0
+
 USE_GNOME=	gtk30
 
 SHEBANG_FILES=	meson/post_install.py
 
 GLIB_SCHEMAS=	com.gitlab.bitseater.meteo.gschema.xml
-INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS CONTRIBUTING.md CREDITS.md README.md changelog
 
@@ -40,8 +38,6 @@ post-extract:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for doc in ${PORTDOCS}
-	${INSTALL_MAN} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
-.endfor
+	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

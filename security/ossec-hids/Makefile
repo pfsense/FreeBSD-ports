@@ -1,14 +1,4 @@
-# $FreeBSD$
-
-PORTNAME=	ossec-hids
-PORTVERSION=	3.1.0
-PORTREVISION=
-CATEGORIES=	security
-
-MAINTAINER=	dominik.lisiak@bemsoft.pl
-COMMENT=	Security tool to monitor and check logs and intrusions
-
-LICENSE=	GPLv2
+.include "${.CURDIR}/version.mk"
 
 RUN_DEPENDS=	ossec-hids-${OSSEC_TYPE}>=${PORTVERSION}:security/ossec-hids-${OSSEC_TYPE}
 

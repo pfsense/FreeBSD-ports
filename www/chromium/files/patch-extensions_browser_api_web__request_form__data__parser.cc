@@ -1,6 +1,6 @@
---- extensions/browser/api/web_request/form_data_parser.cc.orig	2019-03-11 22:00:58 UTC
+--- extensions/browser/api/web_request/form_data_parser.cc.orig	2021-07-19 18:45:16 UTC
 +++ extensions/browser/api/web_request/form_data_parser.cc
-@@ -15,7 +15,11 @@
+@@ -17,7 +17,11 @@
  #include "base/values.h"
  #include "net/base/escape.h"
  #include "net/http/http_request_headers.h"

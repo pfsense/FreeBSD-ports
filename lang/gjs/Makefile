@@ -1,32 +1,36 @@
 # Created by: Pawel Worach <pawel.worach@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gjs
-PORTVERSION=	1.52.4
-PORTREVISION=	1
+PORTVERSION=	1.70.0
 CATEGORIES=	lang gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	59bbb5e4795d.patch:-p1 # https://gitlab.gnome.org/GNOME/gjs/-/merge_requests/694
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME Javascript binding
 
 LICENSE=	MPL11 LGPL20+ GPLv2+
 LICENSE_COMB=	multi
-LICENSE_FILE_MPL11=	${WRKSRC}/COPYING
-LICENSE_FILE_LGPL20+=	${WRKSRC}/COPYING.LGPL
+LICENSE_FILE_MPL11=	${WRKSRC}/LICENSES/MPL-1.1.txt
+LICENSE_FILE_LGPL20+ =	${WRKSRC}/LICENSES/LGPL-2.1-or-later.txt
 
-LIB_DEPENDS=	libmozjs-52.so:lang/spidermonkey52 \
+LIB_DEPENDS=	libmozjs-78.so:lang/spidermonkey78 \
 		libffi.so:devel/libffi
 
-USES=		compiler:c++11-lib gettext gmake gnome libtool \
-		localbase pathfix pkgconfig python:build readline tar:xz
+USES=		compiler:c++11-lib gettext gnome \
+		localbase meson pkgconfig python:build readline tar:xz xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection
 USE_XORG=	x11 xext
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
-CONFIGURE_ARGS+=--disable-profiler
+MESON_ARGS=	-Dcairo=enabled \
+		-Dreadline=enabled \
+		-Dprofiler=disabled \
+		-Dinstalled_tests=false
 USE_LDCONFIG=	yes
-INSTALL_TARGET=	install-strip
+
+CONFIGURE_ENV=	PYTHONDONTWRITEBYTECODE=1
+MAKE_ENV=	PYTHONDONTWRITEBYTECODE=1
 
 .include <bsd.port.mk>

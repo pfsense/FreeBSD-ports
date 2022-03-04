@@ -1,5 +1,4 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	xmltodict
 PORTVERSION=	0.12.0
@@ -15,11 +14,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USE_LOCALE=	en_US.UTF-8
+USE_LOCALE=	en_US.UTF-8 # Python 3.6
 
 do-test:
 	@cd ${WRKSRC} && ${LOCALBASE}/bin/nosetests-${PYTHON_VER}

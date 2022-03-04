@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-BaseDSN
 PORTVERSION=	1.22
 PORTREVISION=	2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	omniauth-kerberos
 PORTVERSION=	0.3.0
 CATEGORIES=	net rubygems

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	macchanger
 PORTVERSION=	1.7.0
 PORTREVISION=	2
@@ -10,7 +8,7 @@ COMMENT=	GNU MAC Changer
 
 LICENSE=	GPLv3
 
-USE_GITHUB=	true
+USE_GITHUB=	yes
 GH_ACCOUNT=	alobbs
 
 GNU_CONFIGURE=	yes

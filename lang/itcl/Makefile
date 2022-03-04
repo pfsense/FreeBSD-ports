@@ -1,5 +1,4 @@
 # Created by: chuckr
-# $FreeBSD$
 
 PORTNAME=	itcl
 PORTVERSION=	3.4.1
@@ -12,7 +11,7 @@ DISTNAME=	itcl${PORTVERSION}
 MAINTAINER=	erik@bz.bzflag.bz
 COMMENT=	Object-oriented extension to Tcl [incr Tcl]
 
-USES+=		tcl:85+,tea
+USES+=		tcl:tea
 
 USE_LDCONFIG=	${PREFIX}/lib/itcl${PORTVERSION:R}
 

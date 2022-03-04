@@ -1,9 +1,7 @@
 # Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
 
 PORTNAME=	tellico
-DISTVERSION=	3.1.4
-PORTREVISION=	4
+DISTVERSION=	3.4.2
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
 
@@ -22,16 +20,18 @@ LIB_DEPENDS=	libbtparse.so:textproc/btparse \
 		libtag.so:audio/taglib \
 		libyaz.so:net/yaz
 
-USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 \
-		pkgconfig python:run qt:5 shared-mime-info shebangfix tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext gnome \
+		kde:5 pkgconfig python:run qt:5 shared-mime-info shebangfix \
+		tar:xz
 USE_GNOME=	libxml2 libxslt
 USE_KDE=	archive attica5 auth bookmarks codecs completion config \
-		configwidgets coreaddons crash ecm filemetadata guiaddons \
+		configwidgets coreaddons crash filemetadata guiaddons \
 		i18n iconthemes itemmodels itemviews jobwidgets js khtml kio \
 		libkcddb libksane newstuff parts service solid sonnet \
-		textwidgets wallet widgetsaddons windowsystem xmlgui
+		textwidgets wallet widgetsaddons windowsystem xmlgui \
+		doctools_build ecm_build
 USE_QT=		concurrent core dbus gui network widgets xml  \
-		buildtools_build qmake_build
+		buildtools_build qmake_build testlib_build
 
 SHEBANG_FILES=	src/fetch/scripts/dark_horse_comics.py \
 		src/fetch/scripts/fr.allocine.py

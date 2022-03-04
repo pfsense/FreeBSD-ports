@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	griels-quest
 PORTVERSION=	git20150512
 PORTREVISION=	1
@@ -11,6 +8,7 @@ COMMENT=	Griel's Quest for the Sangraal
 
 LICENSE=	GPLv3
 
+USES=		sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	nevat
 GH_TAGNAME=	0282e6a2e3

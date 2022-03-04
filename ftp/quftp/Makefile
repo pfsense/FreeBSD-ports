@@ -1,9 +1,8 @@
 # Created by: Frank Laszlo <laszlof@vonostingroup.com>
-# $FreeBSD$
 
 PORTNAME=	quftp
 PORTVERSION=	1.0.7
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	ftp
 MASTER_SITES=	SF
 

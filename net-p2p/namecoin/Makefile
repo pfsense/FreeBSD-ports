@@ -1,10 +1,9 @@
 # Created by: Chad J. Milios <milios@ccsys.com>
-# $FreeBSD$
 
 PORTNAME=	namecoin
-PORTVERSION=	0.17.0
+PORTVERSION=	0.21.0.1
 DISTVERSIONPREFIX=	nc
-PORTREVISION=	5
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-p2p dns
 
@@ -15,9 +14,6 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libevent.so:devel/libevent
-
-CONFLICTS_INSTALL=	namecoin-beta-[0-9]* namecoin-beta-daemon-[0-9]* namecoin-beta-utils-[0-9]* \
-		namecoin-stable-[0-9]* namecoin-stable-daemon-[0-9]* namecoin-stable-utils-[0-9]*
 
 USES=		autoreconf compiler:c++11-lib gmake libtool pkgconfig ssl
 GNU_CONFIGURE=	yes
@@ -76,10 +72,14 @@ UPNP_LIBS=		-L${LOCALBASE}/lib
 QRCODES_CONFIGURE_WITH=	qrencode
 QRCODES_LIB_DEPENDS=	libqrencode.so:graphics/libqrencode
 
-WALLET_CONFIGURE_ENABLE=	wallet
-WALLET_CXXFLAGS=		-I${BDB_INCLUDE_DIR}
-WALLET_LIBS=			-L${BDB_LIB_DIR}
-WALLET_USES=			bdb:48
+WALLET_CONFIGURE_OFF=	--disable-wallet
+WALLET_CONFIGURE_ON=	--enable-wallet \
+			--with-incompatible-bdb \
+			BDB_CFLAGS=-I${BDB_INCLUDE_DIR} \
+			BDB_LIBS="-L${BDB_LIB_DIR} \
+				-Wl,-rpath=${BDB_LIB_DIR} \
+				-l${BDB_LIB_CXX_NAME}"
+WALLET_USES=		bdb:5+
 
 ZMQ_CONFIGURE_ENABLE=	zmq
 ZMQ_BUILD_DEPENDS=	libzmq4>0:net/libzmq4

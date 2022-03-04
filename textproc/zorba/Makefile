@@ -1,9 +1,8 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	zorba
 PORTVERSION=	2.7.0
-PORTREVISION=	26
+PORTREVISION=	33
 CATEGORIES=	textproc java
 MASTER_SITES=	https://launchpadlibrarian.net/119058962/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -34,10 +33,10 @@ RUBY_CMAKE_BOOL=	WITH_RUBY
 JAVA_CMAKE_BOOL=	WITH_JAVA
 
 # Both install include/xqc.h
-CONFLICTS=	xqilla-[0-9]*
+CONFLICTS=	xqilla
 CONFLICTS_BUILD=	bison
 
-USES=		cmake compiler:c++11-lib libedit
+USES=		cmake compiler:c++11-lib gnome libedit
 USE_GNOME=	libxml2 libxslt
 USE_LDCONFIG=	yes
 USE_CXXSTD=	c++11
@@ -87,8 +86,7 @@ CMAKE_ARGS+=	-DJAVA_LIBDIR:PATH=${JAVALIBDIR}
 .endif
 
 .if defined(WITH_SWIG)
-BUILD_DEPENDS+=	swig3.0:devel/swig30
-BINARY_ALIAS=	swig=swig3.0
+BUILD_DEPENDS+=	swig:devel/swig
 .endif
 
 post-patch:

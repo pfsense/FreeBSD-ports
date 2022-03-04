@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	phrap
 PORTVERSION=	1.090518
 CATEGORIES=	biology
@@ -8,9 +6,14 @@ DISTFILES=	distrib.tar.gz
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	mzaki@m.u-tokyo.ac.jp
-COMMENT=	Phrap is a program for assembling shotgun DNA sequence data
+COMMENT=	Program for assembling shotgun DNA sequence data
 
-RESTRICTED=	Redistribution is not permitted in any form. You must request the tarball via e-mail. Free for academic use.
+# Converted from RESTRICTED
+LICENSE=	PHRAP
+LICENSE_NAME=	phrap
+LICENSE_TEXT=	Redistribution is not permitted in any form. You must request the tarball via e-mail. Free for academic use.
+LICENSE_PERMS=	auto-accept
+
 .if defined(PACKAGE_BUILDING)
 IGNORE=		distribution files must be obtained via the authors
 .endif

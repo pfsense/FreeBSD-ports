@@ -1,8 +1,4 @@
-This module is used by a guy who calls himself "schmorp" to produce
-warnings if you're using any supported version of Perl.
-
-This port is designed to prevent these warnings, but you can set
-the "ACTIVATE" option to turn them back on. All of the instructions
-in the warnings are considered harmful and should not be followed.
-
-WWW: https://metacpan.org/release/Canary-Stability
+This is a stub to satisy dependencies for a number of modules.
+The original Canary::Stability contains system checks that produce
+warnings that must be ignored (and which would be harmful if
+acted upon). This stub is a no-op.

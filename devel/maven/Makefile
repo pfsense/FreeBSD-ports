@@ -1,8 +1,7 @@
 # Created by: JonathanChen <jonc@chen.org.nz>
-# $FreeBSD$
 
 PORTNAME=	maven
-DISTVERSION=	3.6.0
+DISTVERSION=	3.8.4
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/maven/maven-3/${DISTVERSION}/binaries
 DISTNAME=	apache-maven-${DISTVERSION}-bin
@@ -19,18 +18,18 @@ USE_JAVA=	yes
 
 CPE_PRODUCT=	maven
 CPE_VENDOR=	apache
-JAVA_VERSION=	1.7+
 NO_BUILD=	yes
 NO_ARCH=	yes
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 WRKSRC=		${WRKDIR}/apache-maven-${DISTVERSION}
 SUB_FILES=	mvn.sh
-SUB_LIST=	CLASSWORLDS_JAR=plexus-classworlds-2.5.2.jar
+SUB_LIST=	CLASSWORLDS_JAR=plexus-classworlds-2.6.0.jar
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 INSTANCE_FILE=	${PORTNAME}-${PORTVERSION}
 INSTANCES_DIR=	etc/maven-wrapper/instances.d/
 
 post-extract:
-	${RM} -r ${WRKSRC}/lib/jansi-native ${WRKSRC}/bin/*.bat
+	${RM} -r ${WRKSRC}/lib/jansi-native ${WRKSRC}/bin/*.cmd
 	${ECHO_CMD} "${DATADIR}" > ${WRKSRC}/${INSTANCE_FILE}
 
 do-install:

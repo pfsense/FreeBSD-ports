@@ -1,2 +1,3 @@
-SHA256 (accounts-qt-1.13.tar.bz2) = 9033891b7f122f578d0ccf22b0e31fc478e644e97f24e7ad8fb54ef0a5da30f0
-SIZE (accounts-qt-1.13.tar.bz2) = 544655
+TIMESTAMP = 1617891830
+SHA256 (KDE/accounts-sso/accounts-sso-libaccounts-qt-525ec684cfa8d234f797d7e49e21c476eea04d8e_GL0.tar.gz) = 87f5a6e1cdcaa115bced1e6db1936746152fa17f03eae406dcf2469f45749709
+SIZE (KDE/accounts-sso/accounts-sso-libaccounts-qt-525ec684cfa8d234f797d7e49e21c476eea04d8e_GL0.tar.gz) = 64429

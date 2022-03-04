@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gambit
 DISTVERSION=	0.1.6
 CATEGORIES=	textproc python
@@ -12,7 +10,7 @@ COMMENT=	Micro library for performing multi queries in elasticsearch
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

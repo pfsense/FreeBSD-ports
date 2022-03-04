@@ -1,10 +1,9 @@
 # Created by: Alan Eldridge <alane@geeksrus.net>
-# $FreeBSD$
 
 PORTNAME=	sa
 PORTVERSION=	1.2.6
 PORTREVISION=	1
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	OSSP/lib/${PORTNAME}
 PKGNAMEPREFIX=	ossp-
 

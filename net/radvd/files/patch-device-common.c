@@ -1,4 +1,4 @@
---- device-common.c.orig	2017-06-29 04:32:29 UTC
+--- device-common.c.orig	2019-07-20 03:58:19 UTC
 +++ device-common.c
 @@ -20,10 +20,24 @@
  
@@ -25,10 +25,12 @@
  	if (ioctl(sock, SIOCGIFFLAGS, &ifr) < 0) {
  		flog(LOG_ERR, "ioctl(SIOCGIFFLAGS) failed on %s: %s", iface->props.name, strerror(errno));
  		return -1;
-@@ -52,6 +66,43 @@ int check_device(int sock, struct Interf
- 		dlog(LOG_ERR, 4, "%s supports multicast", iface->props.name);
- 	}
- 
+@@ -54,6 +68,43 @@ int check_device(int sock, struct Interface *iface)
+ 	} else {
+ 		dlog(LOG_ERR, 4, "%s supports multicast or is point-to-point",
+ 		     iface->props.name);
++	}
++
 +	mib[0] = CTL_NET;
 +	mib[1] = PF_LINK;
 +	mib[2] = NETLINK_GENERIC;
@@ -64,8 +66,6 @@
 +		} else {
 +			dlog(LOG_ERR, 4, "%s is active", iface->props.name);
 +		}
-+	}
-+
- 	return 0;
- }
+ 	}
  
+ 	return 0;

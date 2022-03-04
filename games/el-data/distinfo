@@ -1,7 +1,7 @@
-TIMESTAMP = 1532763438
-SHA256 (el/el_linux_install_195.sh) = ff45c755db2aeec2ab69f72473216cae25e7530112664c46d65aac0749d13ddb
-SIZE (el/el_linux_install_195.sh) = 57317916
-SHA256 (el/EL_sound_191.zip) = e73046ab03c916d562cda2d243427969678e3bb7a22d98c3b44646b4c3ae5da7
-SIZE (el/EL_sound_191.zip) = 42979628
-SHA256 (el/EL_music_full.zip) = 1ea4de25081034ac684aaebf127ab6ca8524ba5367532863d84d63837dd631ec
-SIZE (el/EL_music_full.zip) = 65511882
+TIMESTAMP = 1627698011
+SHA256 (el/eternallands-data_1.9.5.9-1.zip) = 00f105ce44998b939bb92361c113961f2220afa0a3b21e53beed35968ae23ae4
+SIZE (el/eternallands-data_1.9.5.9-1.zip) = 66147974
+SHA256 (el/eternallands-sound_1.9.5.9.zip) = 13a030bf5aca4e9e881707216f269df5826ff00345c93afac94a3f58455af542
+SIZE (el/eternallands-sound_1.9.5.9.zip) = 42907788
+SHA256 (el/eternallands-music_1.9.5.9.zip) = 1ea4de25081034ac684aaebf127ab6ca8524ba5367532863d84d63837dd631ec
+SIZE (el/eternallands-music_1.9.5.9.zip) = 65511882

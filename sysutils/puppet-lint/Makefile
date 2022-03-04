@@ -1,8 +1,7 @@
 # Created by: Tim Bishop <tdb@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	puppet-lint
-PORTVERSION=	2.3.6
+PORTVERSION=	2.5.2
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 

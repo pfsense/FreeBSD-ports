@@ -1,4 +1,4 @@
---- oss/pcm_oss.c.orig	2016-07-26 13:27:23 UTC
+--- oss/pcm_oss.c.orig	2016-03-31 13:11:29 UTC
 +++ oss/pcm_oss.c
 @@ -22,7 +22,11 @@
  #include <sys/ioctl.h>
@@ -10,10 +10,10 @@
 +#include <sys/soundcard.h>
 +#endif
  
- #define ARRAY_SIZE(x)	(sizeof(x) / sizeof(*(x)))
- 
-@@ -258,7 +262,7 @@ static int oss_drain(snd_pcm_ioplug_t *i
- #endif
+ typedef struct snd_pcm_oss {
+ 	snd_pcm_ioplug_t io;
+@@ -116,7 +120,7 @@ static int oss_drain(snd_pcm_ioplug_t *io)
+ 	snd_pcm_oss_t *oss = io->private_data;
  
  	if (io->stream == SND_PCM_STREAM_PLAYBACK)
 -		ioctl(oss->fd, SNDCTL_DSP_SYNC);
@@ -21,9 +21,9 @@
  	return 0;
  }
  
-@@ -272,7 +276,7 @@ static int oss_prepare(snd_pcm_ioplug_t 
- 	fprintf(stderr, "%s()\n", __func__);
- #endif
+@@ -125,7 +129,7 @@ static int oss_prepare(snd_pcm_ioplug_t *io)
+ 	snd_pcm_oss_t *oss = io->private_data;
+ 	int tmp;
  
 -	ioctl(oss->fd, SNDCTL_DSP_RESET);
 +	ioctl(oss->fd, SNDCTL_DSP_RESET, NULL);

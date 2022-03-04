@@ -1,5 +1,4 @@
 # Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	virustotal-api
 PORTVERSION=	1.1.3
@@ -12,7 +11,7 @@ COMMENT=	Virus Total Public/Private/Intel API
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

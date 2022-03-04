@@ -1,5 +1,4 @@
 # Created by: Phillip Neumann <pneumann@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	murrine
 PORTVERSION=	0.98.2
@@ -12,7 +11,7 @@ PKGNAMESUFFIX=	-engine
 MAINTAINER=	pneumann@gmail.com
 COMMENT=	Murrine GTK+ 2.x cairo based engine
 
-USES=		gettext gmake libtool pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pkgconfig tar:xz xorg
 USE_XORG=	pixman
 USE_GNOME=	gtk20 intltool intlhack
 USE_LDCONFIG=	yes

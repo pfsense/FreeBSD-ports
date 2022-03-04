@@ -1,20 +1,20 @@
---- base/i18n/icu_util.cc.orig	2019-03-11 22:00:51 UTC
+--- base/i18n/icu_util.cc.orig	2021-05-12 22:05:40 UTC
 +++ base/i18n/icu_util.cc
-@@ -20,7 +20,7 @@
- #include "build/build_config.h"
- #include "third_party/icu/source/common/unicode/putil.h"
- #include "third_party/icu/source/common/unicode/udata.h"
--#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_ANDROID)
-+#if (defined(OS_LINUX) || defined(OS_BSD) && !defined(OS_CHROMEOS)) || defined(OS_ANDROID)
- #include "third_party/icu/source/i18n/unicode/timezone.h"
+@@ -49,7 +49,7 @@
+ #include "third_party/icu/source/common/unicode/unistr.h"
  #endif
  
-@@ -315,7 +315,7 @@ bool InitializeICU() {
- // TODO(jungshik): Some callers do not care about tz at all. If necessary,
- // add a boolean argument to this function to init'd the default tz only
- // when requested.
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
-   if (result)
-     std::unique_ptr<icu::TimeZone> zone(icu::TimeZone::createDefault());
+-#if defined(OS_ANDROID) || defined(OS_FUCHSIA) || \
++#if defined(OS_ANDROID) || defined(OS_FUCHSIA) || defined(OS_BSD) || \
+     ((defined(OS_LINUX) || defined(OS_CHROMEOS)) && !BUILDFLAG(IS_CHROMECAST))
+ #include "third_party/icu/source/i18n/unicode/timezone.h"
  #endif
+@@ -343,7 +343,7 @@ void InitializeIcuTimeZone() {
+       FuchsiaIntlProfileWatcher::GetPrimaryTimeZoneIdForIcuInitialization();
+   icu::TimeZone::adoptDefault(
+       icu::TimeZone::createTimeZone(icu::UnicodeString::fromUTF8(zone_id)));
+-#elif (defined(OS_LINUX) || defined(OS_CHROMEOS)) && !BUILDFLAG(IS_CHROMECAST)
++#elif (defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)) && !BUILDFLAG(IS_CHROMECAST)
+   // To respond to the time zone change properly, the default time zone
+   // cache in ICU has to be populated on starting up.
+   // See TimeZoneMonitorLinux::NotifyClientsFromImpl().

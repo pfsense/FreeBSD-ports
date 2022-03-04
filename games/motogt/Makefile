@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	motogt
 PORTVERSION=	20110505
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/motogt/MotoGT1/
 DISTNAME=	MotoGT-${PORTVERSION}
@@ -16,10 +13,10 @@ LIB_DEPENDS=	libsfml1-system.so:devel/sfml1 \
 
 LICENSE=	GPLv2 CC-BY-SA-3.0
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv20=	${WRKSRC}/doc/gpl.txt
+LICENSE_FILE_GPLv2=	${WRKSRC}/doc/gpl.txt
 LICENSE_FILE_CC-BY-SA-3.0=	${WRKSRC}/doc/cc-by-sa.txt
 
-USES=		localbase:ldflags zip
+USES=		gl localbase:ldflags zip
 USE_GL=		gl
 BUILD_WRKSRC=	${WRKSRC}/src
 MAKEFILE=	Makefile.lnx

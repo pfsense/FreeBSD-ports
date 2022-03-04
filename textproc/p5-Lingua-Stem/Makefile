@@ -1,9 +1,7 @@
 # Created by: Thorsten Greiner <thorsten.greiner@web.de>
-# $FreeBSD$
 
 PORTNAME=	Lingua-Stem
-PORTVERSION=	0.84
-PORTREVISION=	1
+PORTVERSION=	2.31
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -26,5 +24,7 @@ RUN_DEPENDS=	p5-Lingua-PT-Stemmer>=0:textproc/p5-Lingua-PT-Stemmer \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
 # Created by: sten@blinkenlights.nl
-# $FreeBSD$
 
 PORTNAME=	ladvd
 PORTVERSION=	1.1.2
 DISTVERSIONPREFIX=v
+PORTREVISION=	1
 CATEGORIES=	net
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Minimal LLDP/CDP/EDP/FDP/NDP sender daemon
 
 LICENSE=	MIT

@@ -1,5 +1,4 @@
 # Created by: Konstantinos Konstantinidis <kkonstan@daemon.gr>
-# $FreeBSD$
 
 PORTNAME=	webfonts
 PORTVERSION=	0.30
@@ -17,6 +16,7 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	TrueType core fonts for the Web
 
+# Restrictive license - cannot sell for profit or distribute in modified form
 LICENSE=	EULA
 LICENSE_NAME=	End User License Agreement
 LICENSE_FILE=	${WRKSRC}/licen.txt
@@ -26,13 +26,13 @@ EXTRACT_DEPENDS=cabextract:archivers/cabextract
 
 USES=		fonts
 NO_BUILD=	yes
-RESTRICTED=	Restrictive license - cannot sell for profit or distribute in modified form
 
 EXTRACT_CMD=		${LOCALBASE}/bin/cabextract
 EXTRACT_BEFORE_ARGS=	-qLF '[a-uw-z]*.ttf' -d ${WRKSRC}
 EXTRACT_AFTER_ARGS=
 
-OPTIONS_DEFINE=	EXTRAFONTS CLEARTYPE NEWVERDANA DOCS
+OPTIONS_DEFINE=	EXTRAFONTS CLEARTYPE NEWVERDANA DOCS COMIC
+OPTIONS_DEFAULT=	COMIC
 OPTIONS_SUB=	yes
 
 EXTRAFONTS_DESC=	Fonts licensed under MS Windows license
@@ -42,8 +42,11 @@ CLEARTYPE_DESC=	Install ClearType fonts
 CLEARTYPE_DISTFILES=	PowerPointViewer.exe:group3
 
 NEWVERDANA_DESC=	Install y2006 version of Verdana (broken bold N, W)
+COMIC_DESC=		Install Comic Sans
 
 SUB_FILES=	pkg-message
+
+NO_ARCH=	yes
 
 .include <bsd.port.options.mk>
 
@@ -62,6 +65,9 @@ post-extract-NEWVERDANA-off:
 
 post-extract-NEWVERDANA-on:
 	${EXTRACT_CMD} -qLF 'v*.ttf' -d ${WRKSRC} ${_DISTDIR}/EUupdate.EXE
+
+post-extract-COMIC-off:
+	${RM} ${WRKSRC}/comic.ttf ${WRKSRC}/comicbd.ttf
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${FONTSDIR}

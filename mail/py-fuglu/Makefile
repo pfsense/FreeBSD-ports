@@ -1,5 +1,4 @@
 # Created by: Kevin Golding <ports@caomhin.org>
-# $FreeBSD$
 
 PORTNAME=	fuglu
 PORTVERSION=	0.8.0
@@ -17,7 +16,7 @@ RUN_DEPENDS=	postfix:mail/postfix \
 		${PYTHON_PKGNAMEPREFIX}rarfile>0:archivers/py-rarfile@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lzma>0:archivers/py-lzma@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 USE_RC_SUBR=	fuglu

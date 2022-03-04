@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tiffgt
-DISTVERSION=	4.0.10
+DISTVERSION=	4.3.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://download.osgeo.org/libtiff/
 DISTNAME=	tiff-${DISTVERSION}
@@ -13,9 +12,10 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libjbig.so:graphics/jbigkit \
-		libtiff.so:graphics/tiff
+		libtiff.so:graphics/tiff \
+		libzstd.so:archivers/zstd
 
-USES=		cpe jpeg libtool pathfix
+USES=		cpe gl jpeg libtool pathfix xorg
 
 CPE_PRODUCT=	libtiff
 CPE_VERSION=	${DISTVERSION:C/[a-z]+//}

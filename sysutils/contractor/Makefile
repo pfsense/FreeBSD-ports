@@ -1,11 +1,10 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	contractor
-PORTVERSION=	0.3.4
+PORTVERSION=	0.3.5
 CATEGORIES=	sysutils
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	duchateau.olivier@gmail.com
 COMMENT=	Desktop-wide extension service
 
 LICENSE=	GPLv3
@@ -15,7 +14,7 @@ BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 		libgee-0.8.so:devel/libgee
 
-USES=		gettext-runtime meson pkgconfig tar:xz
+USES=		gettext-runtime gnome meson pkgconfig tar:xz
 USE_GITHUB=	yes
 GH_ACCOUNT=	elementary
 USE_GNOME=	glib20

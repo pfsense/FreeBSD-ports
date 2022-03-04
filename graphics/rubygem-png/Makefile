@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	png
 PORTVERSION=	1.2.1
@@ -11,10 +10,11 @@ COMMENT=	Almost-pure-ruby PNG library
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-rubyinline>=3.9:devel/rubygem-rubyinline
+RUN_DEPENDS=	rubygem-rubyinline>=3.9<4:devel/rubygem-rubyinline
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

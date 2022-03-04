@@ -1,10 +1,9 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mkvtoolnix
-PORTVERSION=	34.0.0
+PORTVERSION=	63.0.0
 CATEGORIES=	multimedia audio
-MASTER_SITES=	http://www.bunkus.org/videotools/mkvtoolnix/sources/ \
+MASTER_SITES=	https://www.bunkus.org/videotools/mkvtoolnix/sources/ \
 		https://mkvtoolnix.download/sources/
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -23,9 +22,12 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libebml.so:textproc/libebml \
 		libboost_regex.so:devel/boost-libs \
 		libpugixml.so:textproc/pugixml \
-		libmatroska.so:multimedia/libmatroska
+		libmatroska.so:multimedia/libmatroska \
+		libcmark.so:textproc/cmark \
+		libgmp.so:math/gmp
 
-USES=		compiler:c++17-lang iconv localbase pkgconfig tar:xz
+USES=		compiler:c++17-lang iconv localbase pkgconfig qmake:no_env qt:5 tar:xz
+USE_QT=		buildtools_build concurrent core linguisttools_build multimedia
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_path_PO4A=no
@@ -33,15 +35,26 @@ CONFIGURE_ARGS=	--with-boost=${LOCALBASE} \
 		--with-boost-filesystem=boost_filesystem \
 		--with-boost-system=boost_system \
 		--with-boost-regex=boost_regex \
-		--with-docbook-xsl-root=${PREFIX}/share/xsl/docbook
+		--with-docbook-xsl-root=${PREFIX}/share/xsl/docbook \
+		--disable-qt6
 MAKE_ENV=	V=1
 MAKE_CMD=	rake -v
 MAKEFILE=	Rakefile
 ALL_TARGET=	#Empty
 
-OPTIONS_DEFINE=	FLAC NLS QT5 MANTRANS
-OPTIONS_DEFAULT=	FLAC QT5
+BINARY_ALIAS=	qmake=${QMAKE} \
+		lconvert=${LCONVERT} \
+		moc=${MOC} \
+		rcc=${RCC} \
+		uic=${UIC}
+
+OPTIONS_DEFINE=	DVDREAD FLAC GUI NLS MANTRANS
+OPTIONS_DEFAULT=	FLAC GUI
 OPTIONS_SUB=	yes
+
+DVDREAD_DESC=		Support reading DVD chapters via libdvdread
+DVDREAD_LIB_DEPENDS=	libdvdread.so:multimedia/libdvdread
+DVDREAD_CONFIGURE_WITH=	dvdread
 
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
 FLAC_CONFIGURE_WITH=	flac
@@ -49,12 +62,9 @@ FLAC_CONFIGURE_WITH=	flac
 NLS_USES=	gettext
 NLS_CONFIGURE_WITH=	gettext
 
-QT5_DESC=	Build and install GUI application (Qt 5)
-QT5_USES=	desktop-file-utils qt:5 shared-mime-info
-QT5_USE=	QT=buildtools_build,concurrent,core,dbus,declarative,gui,multimedia,network,widgets
-QT5_CONFIGURE_ENABLE=	qt
-QT5_BUILD_DEPENDS=	qmake:devel/qt5-qmake
-QT5_LIB_DEPENDS=	libcmark.so:textproc/cmark
+GUI_DESC=	Build and install GUI application (Qt 5)
+GUI_USES=	desktop-file-utils shared-mime-info
+GUI_USE=	QT=dbus,declarative,gui,network,widgets
 
 MANTRANS_DESC=		Build and install manpage translations
 MANTRANS_BUILD_DEPENDS=	po4a:textproc/po4a

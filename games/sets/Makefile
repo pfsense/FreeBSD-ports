@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sets
 PORTVERSION=	1.0.0
@@ -12,11 +11,11 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	This is an implementation of the sets game
+COMMENT=	Implementation of the sets game
 
 LICENSE=	GPLv3
 
-USES=		gmake tar:tgz
+USES=		gmake sdl tar:tgz
 USE_SDL=	sdl image
 ALL_TARGET=	${PORTNAME}
 

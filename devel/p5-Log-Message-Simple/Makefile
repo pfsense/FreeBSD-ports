@@ -1,5 +1,4 @@
 # Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Log-Message-Simple
 PORTVERSION=	0.10
@@ -16,5 +15,7 @@ RUN_DEPENDS=	p5-Log-Message>=0:devel/p5-Log-Message
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

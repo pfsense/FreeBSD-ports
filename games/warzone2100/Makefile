@@ -1,10 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	warzone2100
-PORTVERSION=	3.2.3
-PORTREVISION=	6
+PORTVERSION=	4.0.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/releases/${PORTVERSION}/
+DISTNAME=	${PORTNAME}_src
+DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Innovative 3D real-time strategy game
@@ -12,47 +12,56 @@ COMMENT=	Innovative 3D real-time strategy game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	zip:archivers/zip
+BUILD_DEPENDS=	7z:archivers/p7zip \
+		a2x:textproc/asciidoc
 LIB_DEPENDS=	libphysfs.so:devel/physfs \
 		libpng.so:graphics/png \
 		libvorbis.so:audio/libvorbis \
 		libogg.so:audio/libogg \
 		libtheora.so:multimedia/libtheora \
-		libfribidi.so:converters/fribidi \
 		libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libharfbuzz.so:print/harfbuzz
+		libharfbuzz.so:print/harfbuzz \
+		libsodium.so:security/libsodium \
+		libcurl.so:ftp/curl \
+		libsqlite3.so:databases/sqlite3 \
+		libminiupnpc.so:net/miniupnpc
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu
 
-USES=		bison compiler:c++11-lib gmake localbase openal:al pkgconfig \
-		qmake:no_env qt:5 ssl tar:xz
-GNU_CONFIGURE=	yes
-USE_GL=		gl glu glew
+USES=		cmake bison compiler:c++11-lib gl openal:al pkgconfig \
+		sdl tar:xz
+USE_GL=		gl
 USE_SDL=	sdl2
-USE_XORG=	x11 xrandr
-USE_QT=		core gui widgets script buildtools_build
-CONFIGURE_ARGS=	--program-transform-name="" --with-distributor="FreeBSD ports"
-CONFIGURE_ENV=	LIBCRYPTO_CFLAGS="-I${OPENSSLINC}" \
-		LIBCRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto"
+CMAKE_ARGS=	-DWZ_DISTRIBUTOR="FreeBSD ports" \
+		-DCMAKE_DISABLE_FIND_PACKAGE_Asciidoctor=TRUE \
+	       	-DCMAKE_DISABLE_FIND_PACKAGE_Git=TRUE \
+		-DWZ_ENABLE_WARNINGS_AS_ERRORS=FALSE \
+		-DFETCHCONTENT_FULLY_DISCONNECTED=TRUE
+
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PORTDOCS=	*
 PORTDATA=	*
 
-OPTIONS_DEFINE=	DOCS NLS MANPAGES
-OPTIONS_DEFAULT=MANPAGES
+OPTIONS_DEFINE=	VULKAN DOCS NLS
+OPTIONS_DEFAULT=VULKAN
 OPTIONS_SUB=	yes
 
-NLS_USES=		gettext
-NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=	gettext
+NLS_CMAKE_BOOL=	ENABLE_NLS
 
-MANPAGES_BUILD_DEPENDS=	a2x:textproc/asciidoc
+VULKAN_DESC=		Enable Vulkan backend
+VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
+VULKAN_BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers \
+			${LOCALBASE}/bin/glslc:graphics/shaderc
+VULKAN_CMAKE_BOOL=	WZ_ENABLE_BACKEND_VULKAN
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|-Werror||g; s|-R$$found_dir||g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|./build_tools/autorevision|& -f|g' ${WRKSRC}/src/Makefile.in
-	@${REINPLACE_CMD} -e '/INSTALL_DATA.*warzone2100.appdata.xml/d' ${WRKSRC}/icons/Makefile.*
+	@${FIND} ${WRKSRC} -type f -iname "*cmake*" -exec \
+		${REINPLACE_CMD} -i '' -e '/find_package(Git/d' {} \;
 
-post-install:
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/metainfo
+post-extract:
+.for bundled in miniupnp SQLiteCpp/sqlite3
+	@${RM} -rf ${WRKSRC}/3rdparty/${bundled}
+.endfor
 
 .include <bsd.port.mk>

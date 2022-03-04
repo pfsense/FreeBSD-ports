@@ -1,5 +1,4 @@
 # Created by: Neil Blakey-Milner
-# $FreeBSD$
 
 PORTNAME=	pwm
 PORTVERSION=	2007.07.20
@@ -10,10 +9,10 @@ MASTER_SITES=	http://modeemi.fi/~tuomov/dl/ \
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//g}
 
 MAINTAINER=	schot@a-eskwadraat.nl
-COMMENT=	lightweight window manager with emphasis on usability
+COMMENT=	Lightweight window manager with emphasis on usability
 
+USES=		gmake xorg
 USE_XORG=	x11
-USES=		gmake
 MAKE_ENV=	X11_PREFIX="${LOCALBASE}" HAS_SYSTEM_ASPRINTF=1
 
 OPTIONS_DEFINE=	DOCS

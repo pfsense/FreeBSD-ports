@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Dancer-Plugin-CORS
 PORTVERSION=	0.13
 CATEGORIES=	www perl5

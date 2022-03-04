@@ -1,12 +1,12 @@
-# Created by: loïc bartoletti <lbartoletti@tuxfamily.org>
-# $FreeBSD$
+# Created by: loïc bartoletti <lbartoletti@FreeBSD.org>
 
 PORTNAME=	sqlitebrowser
-PORTVERSION=	3.11.1
+PORTVERSION=	3.12.1
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Visual tool to manage SQLite databases
 
 LICENSE=	MPL20 GPLv3
@@ -22,12 +22,12 @@ USE_QT=		core concurrent gui network printsupport testlib widgets \
 		buildtools_build linguisttools_build qmake_build xml
 USE_GITHUB=	yes
 
-INSTALLS_ICONS=	yes
+PORTSCOUT=	ignore:1
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|' \
-		${WRKSRC}/src/PreferencesDialog.cpp
-	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|' \
-		${WRKSRC}/src/Application.cpp
+		${WRKSRC}/src/PreferencesDialog.cpp ${WRKSRC}/src/Application.cpp
+	@${REINPLACE_CMD} -e 's|metainfo|appdata|' \
+		${WRKSRC}/src/src.pro ${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

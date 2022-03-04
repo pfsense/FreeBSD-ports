@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	open-beagle
 PORTVERSION=	3.0.3
@@ -11,7 +10,7 @@ DISTNAME=	beagle-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Evolutionary Computation Framework
 
-CONFLICTS=	beagle-[0-9]*
+CONFLICTS=	beagle
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-optimization --with-zlib=/usr

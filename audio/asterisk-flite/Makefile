@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	flite
 PORTVERSION=	3.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -13,25 +11,20 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libflite.so:audio/flite
 
-FLAVORS=			asterisk13 asterisk15 asterisk16
-FLAVOR?=			${FLAVORS[1]}
-
-asterisk13_PKGNAMEPREFIX=	asterisk13-
-asterisk13_CONFLICTS_INSTALL=	asterisk15-flite asterisk16-flite
-asterisk13_BUILD_DEPENDS=	asterisk:net/asterisk13
-asterisk13_RUN_DEPENDS=		asterisk:net/asterisk13
-
-asterisk15_PKGNAMEPREFIX=	asterisk15-
-asterisk15_CONFLICTS_INSTALL=	asterisk13-flite asterisk16-flite
-asterisk15_BUILD_DEPENDS=	asterisk:net/asterisk15
-asterisk15_RUN_DEPENDS=		asterisk:net/asterisk15
+FLAVORS=			asterisk18 asterisk16
+FLAVOR?=			${FLAVORS:[1]}
 
 asterisk16_PKGNAMEPREFIX=	asterisk16-
-asterisk16_CONFLICTS_INSTALL=	asterisk13-flite asterisk15-flite
+asterisk16_CONFLICTS_INSTALL=	asterisk13-flite asterisk18-flite
 asterisk16_BUILD_DEPENDS=	asterisk:net/asterisk16
 asterisk16_RUN_DEPENDS=		asterisk:net/asterisk16
 
-USES=		compiler gmake localbase
+asterisk18_PKGNAMEPREFIX=       asterisk18- 
+asterisk18_CONFLICTS_INSTALL=   asterisk13-flite asterisk16-flite
+asterisk18_BUILD_DEPENDS=       asterisk:net/asterisk18
+asterisk18_RUN_DEPENDS=         asterisk:net/asterisk18
+
+USES=		compiler:c11 gmake localbase
 INSTALL_TARGET=	install samples
 
 USE_GITHUB=	yes

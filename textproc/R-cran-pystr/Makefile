@@ -1,8 +1,7 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pystr
-PORTREVISION=	3
+PORTREVISION=	5
 DISTVERSION=	2.0.0
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${DISTVERSION}

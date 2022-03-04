@@ -1,5 +1,4 @@
 # Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	statcvs
 PORTVERSION=	0.7.0
@@ -19,8 +18,8 @@ BROKEN_armv7=		fails to compile: build.xml: compilation failed
 
 USES=		zip
 USE_JAVA=	yes
+JAVA_VERSION=	8
 USE_ANT=	yes
-JAVA_VERSION=	1.6+
 NO_ARCH=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -38,7 +37,7 @@ DOCS_ALL_TARGET=javadoc
 
 .include <bsd.port.pre.mk>
 
-.if ${JAVA_PORT_VERSION} == "1.6.0"
+.if ${JAVA_PORT_VERSION:M*6*}
 PLIST_SUB+=	JDK6=""
 .else
 PLIST_SUB+=	JDK6="@comment "

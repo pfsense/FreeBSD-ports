@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	elasticsearch-transport
-PORTVERSION=	6.2.0
+PORTVERSION=	7.15.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -10,9 +9,9 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby client for Elasticsearch
 
 LICENSE=	APACHE20
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-faraday>=0:www/rubygem-faraday \
+RUN_DEPENDS=	rubygem-faraday>=1<2:www/rubygem-faraday \
 		rubygem-multi_json>=0:devel/rubygem-multi_json
 
 USES=		gem

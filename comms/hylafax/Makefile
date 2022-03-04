@@ -1,5 +1,4 @@
 # Created by: Julian Stacey <jhs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hylafax
 PORTVERSION=	6.0.7
@@ -16,7 +15,7 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/afm/Courier:print/afm
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libjbig.so:graphics/jbigkit
 
-USES=		fakeroot ghostscript jpeg
+USES=		cpe fakeroot ghostscript jpeg
 
 USE_RC_SUBR=	hylafax
 

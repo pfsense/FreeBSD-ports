@@ -1,5 +1,4 @@
 # Created by: lev@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	mod_dav_svn
 DISTNAME=	subversion-${PORTVERSION}
@@ -10,9 +9,6 @@ MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Apache module for subversion serving
 
 USES=		apache:2.2+
-
-PORTREVISION_111=	1
-PORTREVISION_19=	0
 
 .include "${.CURDIR}/../../devel/subversion/Makefile.addons"
 

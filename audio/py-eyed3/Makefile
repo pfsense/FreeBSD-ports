@@ -1,9 +1,7 @@
 # Created by: Hye-Shik Chang <perky@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	eyed3
-PORTVERSION=	0.7.10
-PORTREVISION=	1
+PORTVERSION=	0.9.6
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,26 +10,29 @@ DISTNAME=	eyeD3-${PORTVERSION}
 MAINTAINER=	rm@FreeBSD.org
 COMMENT=	Python module for processing ID3 tags
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
-USES=		python:2.7
+USES=		cpe python:3.6+
+CPE_VENDOR=	travis_shirk
 USE_PYTHON=	autoplist distutils
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}deprecation>0:devel/py-deprecation@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}filetype>0:devel/py-filetype@${PY_FLAVOR}
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
-PORTDOCS=	AUTHORS ChangeLog README.rst
+PORTDOCS=	AUTHORS.rst CONTRIBUTING.rst HISTORY.rst README.rst
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-patch:
-	${REINPLACE_CMD} -e 's,bash,sh,g;s,python,${PYTHON_CMD},g' \
-		${WRKSRC}/bin/eyeD3
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 

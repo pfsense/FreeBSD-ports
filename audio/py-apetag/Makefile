@@ -1,5 +1,4 @@
 # Created by: Chao Shin <quakelee@cn.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	apetag
 PORTVERSION=	1.2
@@ -12,7 +11,7 @@ DISTNAME=	py-ApeTag-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for APE Tag written in Python
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

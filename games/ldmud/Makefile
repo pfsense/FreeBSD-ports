@@ -1,16 +1,18 @@
 # Created by: glewis@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	ldmud
 PORTVERSION=	3.3.720
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	games net
 MASTER_SITES=	http://www.bearnip.com/ftp/mud/ \
 		ftp://mud.stack.nl/pub/ldmud/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern version of the LPMud game driver
+
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKRSC}/COPYRIGHT
 
 BUILD_DEPENDS=	help2man:misc/help2man
 LIB_DEPENDS=	libpcre.so:devel/pcre
@@ -36,7 +38,7 @@ OPTIONS_SINGLE_MUDLIB=	LPMUD DEMOLIB
 OPTIONS_SUB=	yes
 LPMUD_DESC=	Install default mudlib (LP-245)
 IPV6_CONFIGURE_ENABLE=	use-ipv6
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ENABLE=	use-mysql
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ENABLE=	use-pgsql
@@ -45,17 +47,11 @@ SQLITE_CONFIGURE_ENABLE=use-sqlite
 
 .include <bsd.port.options.mk>
 
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_12=	incomplete definition of type 'struct rsa_st'
-BROKEN_FreeBSD_13=	incomplete definition of type 'struct rsa_st'
-.endif
-
 .if ${PORT_OPTIONS:MMYSQL}
 LDFLAGS+=	-L${LOCALBASE}/lib/mysql
 .endif
 
 post-install:
-#	# Install mudlib and other directories
 	@${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}/var/log/${PORTNAME} \
 		${STAGEDIR}/var/run/${PORTNAME}
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/ldmud

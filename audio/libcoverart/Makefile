@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libcoverart
 PORTVERSION=	1.0.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/metabrainz/${PORTNAME}/releases/download/release-${PORTVERSION}/
 
@@ -21,7 +19,9 @@ USE_LDCONFIG=	yes
 
 CXXFLAGS+=	-Wno-implicit-fallthrough
 
-.if exists(/usr/lib/libstdc++.so)
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-Wno-unused-function -Wno-class-memaccess -Wno-catch-value
 CFLAGS+=	-Wno-format-overflow
 .endif
@@ -30,4 +30,4 @@ post-patch:
 	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		 ${WRKSRC}/cmake/modules/*.cmake
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

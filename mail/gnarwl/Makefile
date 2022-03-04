@@ -1,17 +1,17 @@
 # Created by: Xavier Beaudouin <kiwi@oav.net>
-# $FreeBSD$
 
 PORTNAME=	gnarwl
 PORTVERSION=	3.6
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	http://www.onyxbits.de/sites/default/files/download/15/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Email autoresponder that gets data from LDAP
 
+LICENSE=	GPLv2
+
 LIB_DEPENDS=	libgdbm.so:databases/gdbm
-BUILD_DEPENDS=	${LOCALBASE}/bin/gsed:textproc/gsed
 
 USES=		iconv gmake groff tar:tgz
 USE_OPENLDAP=	yes

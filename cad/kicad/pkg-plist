@@ -12,7 +12,6 @@ bin/idf2vrml
 bin/idfcyl
 bin/idfrect
 bin/kicad
-bin/kicad-ogltest
 bin/kicad2step
 bin/pcb_calculator
 bin/pcbnew
@@ -45,7 +44,6 @@ share/appdata/kicad.appdata.xml
 %%PORTDOCS%%%%DOCSDIR%%/development/compiling.md
 %%PORTDOCS%%%%DOCSDIR%%/development/config-strings.md
 %%PORTDOCS%%%%DOCSDIR%%/development/pcbnew-plugins.md
-%%PORTDOCS%%%%DOCSDIR%%/development/road-map-r5.md
 %%PORTDOCS%%%%DOCSDIR%%/development/road-map-r6.md
 %%PORTDOCS%%%%DOCSDIR%%/development/road-map.md
 %%PORTDOCS%%%%DOCSDIR%%/development/stable-release-policy.md
@@ -249,6 +247,7 @@ share/icons/hicolor/scalable/mimetypes/application-x-kicad-schematic.svg
 %%DATADIR%%/demos/simulation/pspice/schematic_libspice.dcm
 %%DATADIR%%/demos/simulation/pspice/schematic_libspice.lib
 %%DATADIR%%/demos/simulation/pspice/sym-lib-table
+%%DATADIR%%/demos/simulation/rectifier/diode.mod
 %%DATADIR%%/demos/simulation/rectifier/rectifier-cache.lib
 %%DATADIR%%/demos/simulation/rectifier/rectifier.pro
 %%DATADIR%%/demos/simulation/rectifier/rectifier.sch

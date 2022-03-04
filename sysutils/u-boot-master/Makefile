@@ -1,4 +1,3 @@
-# $FreeBSD$
 #
 # Common infrastructure for u-boot ports
 #
@@ -7,7 +6,8 @@ PORTNAME=	u-boot
 PORTVERSION=	${UBOOT_VERSION}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX?=	-${MODEL}
-MASTER_SITES=	ftp://ftp.denx.de/pub/u-boot/
+MASTER_SITES=	https://ftp.denx.de/pub/u-boot/ \
+		ftp://ftp.denx.de/pub/u-boot/
 DIST_SUBDIR=	u-boot
 
 MAINTAINER?=	uboot@FreeBSD.org
@@ -16,15 +16,16 @@ COMMENT=	Cross-build das u-boot for model ${MODEL}
 LICENSE=	GPLv2
 
 BUILD_DEPENDS+=	gsed:textproc/gsed \
-		swig3.0:devel/swig30 \
+		swig:devel/swig \
 		dtc>=1.4.1:sysutils/dtc \
-		mkimage:sysutils/u-boot-tools
+		mkimage:sysutils/u-boot-tools \
+		${PYTHON_PKGNAMEPREFIX}setuptools-pkg>=0:devel/py-setuptools-pkg@${PY_FLAVOR}
 BUILD_DEPENDS+=	${COMPILER}:devel/${COMPILER}
 
-USES=		bison gmake python:2.7,build shebangfix tar:bz2
-BINARY_ALIAS=	bison=${LOCALBASE}/bin/bison dtc=${LOCALBASE}/bin/dtc sed=gsed swig=swig3.0
+USES=		bison gmake python:3.7+,build shebangfix tar:bz2
+BINARY_ALIAS=	bison=${LOCALBASE}/bin/bison dtc=${LOCALBASE}/bin/dtc sed=gsed python3=${PYTHON_CMD}
 
-SHEBANG_FILES=	tools/binman/binman.py arch/arm/mach-rockchip/make_fit_atf.py
+SHEBANG_FILES=	tools/binman/binman arch/arm/mach-rockchip/make_fit_atf.py
 SSP_UNSAFE=	yes
 UBOOT_DIR=	share/u-boot/${PORTNAME}${PKGNAMESUFFIX}
 INST=		${PREFIX}/${UBOOT_DIR}
@@ -36,7 +37,7 @@ NO_ARCH=	yes
 
 # Use upstreamed patches not yet mainlined
 PATCH_DIST_STRIP=	-p1
-PATCH_SITES+=	http://patchwork.ozlabs.org/patch/
+PATCH_SITES+=	https://patchwork.ozlabs.org/patch/
 
 # Sanity checks
 .if !defined(MODEL) && !defined(BOARD_CONFIG) && !defined(FAMILY)
@@ -71,8 +72,8 @@ UBOOT_PLIST_ALLWINNER64=${UBOOT_PLIST_ALLWINNER}
 UBOOT_ARCH_ALLWINNER64=aarch64
 UBOOT_METADATA_ALLWINNER64_FILES=	${UBOOT_PLIST_ALLWINNER64}
 UBOOT_METADATA_ALLWINNER64_METHOD=	raw
-UBOOT_METADATA_ALLWINNER64_RAW_OFFSET=	8
-UBOOT_METADATA_ALLWINNER64_RAW_BS=	1k
+UBOOT_METADATA_ALLWINNER64_RAW_OFFSET=	1
+UBOOT_METADATA_ALLWINNER64_RAW_BS=	128k
 
 # Overrides for Zynq 7000 family
 UBOOT_PLIST_ZYNQ_7000=u-boot.img boot.bin uEnv.txt
@@ -89,8 +90,12 @@ UBOOT_METADATA_IMX6_METHOD=	raw
 UBOOT_METADATA_IMX6_RAW_OFFSET=	2
 UBOOT_METADATA_IMX6_RAW_BS=	512
 
+# Override for RK3328 family
+UBOOT_PLIST_RK3328=	idbloader.img u-boot.itb
+UBOOT_ARCH_RK3328=	aarch64
+
 # Override for RK3399 family
-UBOOT_PLIST_RK3399=	idbspl.img u-boot.itb
+UBOOT_PLIST_RK3399=	idbloader.img u-boot.itb
 UBOOT_ARCH_RK3399=	aarch64
 
 # Override for ARMADA38X family
@@ -100,11 +105,19 @@ UBOOT_METADATA_ARMADA38X_METHOD=	raw
 UBOOT_METADATA_ARMADA38X_RAW_OFFSET=	1
 UBOOT_METADATA_ARMADA38X_RAW_BS=	512
 
+# Override for QEMU family
+UBOOT_PLIST_QEMU=	u-boot.bin
+
 # Uboot variables
 .if !defined(UBOOT_VERSION) && defined(UBOOT_VERSION_${FAMILY:tu})
 UBOOT_VERSION=${UBOOT_VERSION_${FAMILY:tu}}
 .endif
-UBOOT_VERSION?=	2019.01
+UBOOT_VERSION?=	2021.07
+
+# If a slave port defines a PORTREVISION use it
+.if defined(U_BOOT_SLAVE_PORTREVISION_${UBOOT_VERSION})
+PORTREVISION=	${U_BOOT_SLAVE_PORTREVISION_${UBOOT_VERSION}}
+.endif
 
 .if !defined(UBOOT_PLIST) && defined(UBOOT_PLIST_${FAMILY:tu})
 UBOOT_PLIST=${UBOOT_PLIST_${FAMILY:tu}}
@@ -119,10 +132,12 @@ UBOOT_ARCH?=	arm
 .if ${UBOOT_ARCH} == arm
 CROSS_COMPILE=arm-none-eabi-
 ARCHFLAGS=ARCH=${UBOOT_ARCH}
-UBOOT_PLIST+=	boot.scr
 .elif ${UBOOT_ARCH} == aarch64
 CROSS_COMPILE=aarch64-none-elf-
 ARCHFLAGS=ARCH=arm
+.elif ${UBOOT_ARCH} == riscv64
+CROSS_COMPILE=riscv64-none-elf-
+ARCHFLAGS=ARCH=riscv
 .else
 # Best guess for other architectures
 CROSS_COMPILE=${UBOOT_ARCH}-none-elf-
@@ -136,8 +151,19 @@ UBOOT_MOVE=${UBOOT_MOVE_${FAMILY:tu}}
 
 # Per family dependancies
 .if defined(FAMILY) && ${FAMILY} == allwinner64
+.if defined(SUBFAMILY) && ${SUBFAMILY} == h6
+BUILD_DEPENDS+=	${LOCALBASE}/share/atf-sun50i_h6/bl31.bin:sysutils/atf-sun50i_h6
+MAKE_ENV+=	BL31=${LOCALBASE}/share/atf-sun50i_h6/bl31.bin
+.else
 BUILD_DEPENDS+=	${LOCALBASE}/share/atf-sun50i_a64/bl31.bin:sysutils/atf-sun50i_a64
 MAKE_ENV+=	BL31=${LOCALBASE}/share/atf-sun50i_a64/bl31.bin
+.endif
+.endif
+
+.if defined(FAMILY) && ${FAMILY} == rk3328
+BUILD_DEPENDS+=	${LOCALBASE}/share/atf-rk3328/bl31.elf:sysutils/atf-rk3328 \
+		${PYTHON_PKGNAMEPREFIX}pyelftools>0:devel/py-pyelftools@${PY_FLAVOR}
+MAKE_ENV+=	BL31=${LOCALBASE}/share/atf-rk3328/bl31.elf
 .endif
 
 .if defined(FAMILY) && ${FAMILY} == rk3399
@@ -152,6 +178,13 @@ PLIST_FILES+=	${UBOOT_DIR}/${i}
 .endfor
 PLIST_FILES+=	${UBOOT_DIR}/README
 
+.if defined(PLIST_EXTRAS)
+.for i in ${PLIST_EXTRAS}
+PLIST_FILES+=	${UBOOT_DIR}/${i}
+.endfor
+.endif
+
+.if !defined(NO_METADATA)
 .if defined(UBOOT_METADATA_${FAMILY:tu}_METHOD)
 METADATA_METHOD=${UBOOT_METADATA_${FAMILY:tu}_METHOD}
 METADATA_FILES=${UBOOT_METADATA_${FAMILY:tu}_FILES}
@@ -165,10 +198,10 @@ METADATA_BS=${UBOOT_METADATA_${FAMILY:tu}_RAW_BS}
 .error "Unsupported METADATA_METHOD"
 .endif
 .endif
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|make|${MAKE_CMD}|" ${WRKSRC}/scripts/kconfig/merge_config.sh
-	${CP} ${FILESDIR}/boot.cmd ${WRKSRC}/
 .if defined(METADATA_METHOD)
 	@echo "METHOD=uboot-${METADATA_METHOD}" > ${WRKSRC}/metadata
 	@echo "FILES=\"${METADATA_FILES}\"" >> ${WRKSRC}/metadata
@@ -180,7 +213,7 @@ post-patch:
 .endif
 
 .if ${UBOOT_ARCH} == arm && !defined(CONFIG_FRAGMENT)
-# For armv6/v7 we want CONFIG_API
+# For armv6/v7 we want do disable secure mode and cache cleaning
 # Use a KConfig fragment for that
 FRAGMENT_NAME=		FreeBSD_Fragment
 CONFIG_FRAGMENT=	${FILESDIR}/${FRAGMENT_NAME}
@@ -196,16 +229,10 @@ do-configure:
 .endif
 
 post-build:
-.if ${UBOOT_ARCH} == arm
-	mkimage -C none -A arm -T script -d ${FILESDIR}/boot.cmd ${WRKSRC}/boot.scr
-.endif
 .if defined(UBOOT_EXTRA_TARGETS)
 .for i in ${UBOOT_EXTRA_TARGETS}
 	(cd ${WRKSRC}; ${SETENV} ${CONFIGURE_ENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${i})
 .endfor
-.endif
-.if defined(FAMILY) && ${FAMILY} == rk3399
-	mkimage -n rk3399 -T rksd -d ${WRKSRC}/spl/u-boot-spl.bin ${WRKSRC}/idbspl.img
 .endif
 # If we need to put anything into WRKSRC, do so now so we can build the PLIST
 # in do-install

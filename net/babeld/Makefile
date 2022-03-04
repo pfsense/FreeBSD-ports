@@ -1,10 +1,9 @@
 # Created by: Hung-Yi Chen <gaod@hychen.org>
-# $FreeBSD$
 
 PORTNAME=	babeld
-PORTVERSION=	1.8.2
+PORTVERSION=	1.8.5
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	net
-MASTER_SITES=	http://www.pps.univ-paris-diderot.fr/~jch/software/files/
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Distance-vector routing protocol
@@ -17,7 +16,9 @@ PLIST_FILES=	bin/babeld \
 		man/man8/babeld.8.gz \
 		"@sample etc/babeld.conf.sample"
 
-USE_RC_SUBR= babeld
+USE_GITHUB=	yes
+GH_ACCOUNT=	jech
+USE_RC_SUBR=	babeld
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/babeld ${STAGEDIR}${PREFIX}/bin/

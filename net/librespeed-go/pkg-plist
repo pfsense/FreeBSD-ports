@@ -1,0 +1,10 @@
+bin/librespeed-go
+@sample %%ETCDIR%%/settings.toml.sample
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/index.html
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/linode.html
+%%WWWDIR%%/speedtest.js
+%%WWWDIR%%/speedtest_worker.js
+@owner %%LIBRESPEED_USER%%
+@group %%LIBRESPEED_GROUP%%
+@dir /var/db/librespeed-go
+@dir /var/run/librespeed-go

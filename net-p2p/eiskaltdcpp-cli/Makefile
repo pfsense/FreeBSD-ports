@@ -1,13 +1,12 @@
 # Created by: Maxim Ignatenko <gelraen.ua@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	eiskaltdcpp
-PORTREVISION=	0
+PORTREVISION=	20
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	-cli
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	EiskaltDC++ Direct Connect command-line interface
+COMMENT=	EiskaltDC++ client command-line interface
 
 LICENSE=	GPLv3
 

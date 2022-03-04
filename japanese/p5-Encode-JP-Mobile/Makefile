@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Encode-JP-Mobile
 PORTVERSION=	0.30
 PORTREVISION=	1
 CATEGORIES=	japanese perl5
 MASTER_SITES=	CPAN
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for encoding for mobile phones in Japan
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

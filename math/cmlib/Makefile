@@ -1,9 +1,8 @@
 # Created by: Anton Shterenlikht <mexas@bris.ac.uk>
-# $FreeBSD$
 
 PORTNAME=	cmlib
 PORTVERSION=	3.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	math
 MASTER_SITES=	NL/blas:blas ftp://ftp.nist.gov/pub/cmlib/
 # Get d1mach.f, i1mach.f, r1mach.f from BLAS, rather than from CMLIB.
@@ -24,6 +23,7 @@ LDADD ?=	-lgfortran -lm
 SRCCONF=	/dev/null
 MAKE_ENV=	LDADD="${LDADD}" SHLIB_MAJOR="${SHLIB_MAJOR}" \
 		SRCCONF="${SRCCONF}"
+FFLAGS+=	-std=legacy
 
 NO_WRKSUBDIR=	yes
 

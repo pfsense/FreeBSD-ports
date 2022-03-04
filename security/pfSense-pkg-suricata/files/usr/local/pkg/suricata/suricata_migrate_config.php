@@ -3,8 +3,8 @@
  * suricata_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (C) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,8 +40,6 @@ if (!is_array($config['installedpackages']['suricata']['rule']))
 // Just exit if this is a clean install with no saved settings
 if (empty($config['installedpackages']['suricata']['rule']))
 	return;
-
-$rule = &$config['installedpackages']['suricata']['rule'];
 
 /****************************************************************************/
 /* Loop through all the <rule> elements in the Suricata configuration and   */
@@ -101,10 +99,12 @@ if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migrat
 }
 
 /**********************************************************/
-/* Create new Auto GeoIP update setting if not set        */
+/* Default Auto GeoLite2 DB update setting to "off" due   */
+/* to recent MaxMind changes to the GeoLite2 database     */
+/* download permissions.                                  */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'])) {
-	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = "on";
+if (empty($config['installedpackages']['suricata']['config'][0]['autogeoipupdate']) || empty($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'])) {
+	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = "off";
 	$updated_cfg = true;
 }
 
@@ -121,6 +121,33 @@ if (empty($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enabl
 /**********************************************************/
 if (empty($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'])) {
 	$config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] = "off";
+	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Remove the two deprecated Rules Update Status fields   */
+/* from the package configuration. The status is now      */
+/* stored in a local file.                                */
+/**********************************************************/
+if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status']);
+	$updated_cfg = true;
+}
+if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']);
+	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Randomize the Rules Update Start Time minutes field    */
+/* per request of Snort.org team to minimize impact of    */
+/* large numbers of pfSense users hitting Snort.org at    */
+/* the same minute past the hour for rules updates.       */
+/**********************************************************/
+if (empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) || 
+	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] == '00:05' || 
+	strlen($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) < 5) {
+	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 	$updated_cfg = true;
 }
 
@@ -151,15 +178,6 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['eve_log_retent
 }
 if (!isset($config['installedpackages']['suricata']['config'][0]['eve_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'] != '0') {
 	$config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'] = "5000";
-	$updated_cfg = true;
-}
-
-if (!isset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention']) && $config['installedpackages']['suricata']['config'][0]['files_json_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['files_json_log_retention'] = "168";
-	$updated_cfg = true;
-}
-if (!isset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'] = "1000";
 	$updated_cfg = true;
 }
 
@@ -200,13 +218,41 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['tls_certs_stor
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention']) && $config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] = "168";
+/**********************************************************/
+/* Remove deprecated file-log settings from LOGS MGMT     */
+/**********************************************************/
+if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention']);
+	$updated_cfg = true;
+}
+if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size']);
 	$updated_cfg = true;
 }
 
+/**********************************************************/
+/* Add new multiple alias & custom IP assignment feature  */
+/* for Pass Lists by converting existing <address>        */
+/* element for existing entries into an array. Migrate    */
+/* any existing <address> to the new array structure.     */
+/**********************************************************/
+if (is_array($config['installedpackages']['suricata']['passlist']['item'])) {
+	foreach ($config['installedpackages']['suricata']['passlist']['item'] as &$wlisti) {
+		if (!is_array($wlisti['address']) && !is_array($wlisti['address']['item']) && !empty($wlisti['address'])) {
+			$tmp = $wlisti['address'];
+			$wlisti['address'] = array();
+			$wlisti['address']['item'] = array();
+			$wlisti['address']['item'][] = $tmp;
+			$updated_cfg = true;
+		}
+	}
+
+	// Release reference to whitelist array
+	unset($wlisti);
+}
+
 // Now process the interface-specific settings
-foreach ($rule as &$r) {
+foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 
 	// Initialize arrays for supported preprocessors if necessary
 	if (!is_array($r['libhtp_policy']))
@@ -244,11 +290,38 @@ foreach ($rule as &$r) {
 		}
 	}
 
+	// Release config array references used immediately above
+	unset($http_serv, $policy);
+
 	/***********************************************************/
 	/* Add the new 'dns-events.rules' file to the rulesets.    */
 	/***********************************************************/
 	if (strpos($pconfig['rulesets'], "dns-events.rules") === FALSE) {
 		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||dns-events.rules";	
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Add the new 'dhcp-events.rules' file to the rulesets.    */
+	/***********************************************************/
+	if (strpos($pconfig['rulesets'], "dhcp-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||dhcp-events.rules";	
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Add the new 'http2-events.rules' file to the rulesets.    */
+	/***********************************************************/
+	if (strpos($pconfig['rulesets'], "http2-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||http2-events.rules";	
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Add the new 'mqtt-events.rules' file to the rulesets.    */
+	/***********************************************************/
+	if (strpos($pconfig['rulesets'], "mqtt-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||mqtt-events.rules";	
 		$updated_cfg = true;
 	}
 
@@ -311,6 +384,10 @@ foreach ($rule as &$r) {
 		$pconfig['eve_log_alerts'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['eve_log_alerts_metadata'])) {
+		$pconfig['eve_log_alerts_metadata'] = "on";
+		$updated_cfg = true;
+	}
 	if (!isset($pconfig['eve_log_http'])) {
 		$pconfig['eve_log_http'] = "on";
 		$updated_cfg = true;
@@ -343,6 +420,18 @@ foreach ($rule as &$r) {
 		$pconfig['eve_log_tls'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['eve_log_ftp'])) {
+		$pconfig['eve_log_ftp'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_http2'])) {
+		$pconfig['eve_log_http2'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_rfb'])) {
+		$pconfig['eve_log_rfb'] = "on";
+		$updated_cfg = true;
+	}
 	if (!isset($pconfig['eve_log_dhcp'])) {
 		$pconfig['eve_log_dhcp'] = "on";
 		$updated_cfg = true;
@@ -369,6 +458,20 @@ foreach ($rule as &$r) {
 	}    
 	if (!isset($pconfig['eve_log_drop'])) {
 		$pconfig['eve_log_drop'] = "on";
+		$updated_cfg = true;
+	}
+
+	if (!isset($pconfig['eve_log_http_extended_headers'])) {
+		$pconfig['eve_log_http_extended_headers'] = "accept, accept-charset, accept-datetime, accept-encoding, accept-language, accept-range, age, allow, authorization, cache-control, ";
+		$pconfig['eve_log_http_extended_headers'] .= "connection, content-encoding, content-language, content-length, content-location, content-md5, content-range, content-type, cookie, ";
+		$pconfig['eve_log_http_extended_headers'] .= "date, dnt, etags, from, last-modified, link, location, max-forwards, origin, pragma, proxy-authenticate, proxy-authorization, range, ";
+		$pconfig['eve_log_http_extended_headers'] .= "referrer, refresh, retry-after, server, set-cookie, te, trailer, transfer-encoding, upgrade, vary, via, warning, www-authenticate, ";
+		$pconfig['eve_log_http_extended_headers'] .= "x-authenticated-user, x-flash-version, x-forwarded-proto, x-requested-with";
+		$updated_cfg = true;
+	}
+
+	if (!isset($pconfig['eve_log_smtp_extended_fields'])) {
+		$pconfig['eve_log_smtp_extended_fields'] = "received, x-mailer, x-originating-ip, relays, reply-to, bcc";
 		$updated_cfg = true;
 	}
 
@@ -471,11 +574,6 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
-	if (isset($pconfig['u2_archive_log_retention'])) {
-		unset($pconfig['u2_archive_log_retention']);
-		$updated_cfg = true;
-	}
-
 	/************************************************************/
 	/* Create new DNS App-Layer parser settings if not set      */
 	/************************************************************/
@@ -556,7 +654,7 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 	if (empty($pconfig['tls_ja3_fingerprint'])) {
-		$pconfig['tls_ja3_fingerprint'] = "off";
+		$pconfig['tls_ja3_fingerprint'] = "auto";
 		$updated_cfg = true;
 	}
 
@@ -595,6 +693,26 @@ foreach ($rule as &$r) {
 		$pconfig['msn_parser'] = "detection-only";
 		$updated_cfg = true;
 	}
+	if (empty($pconfig['snmp_parser'])) {
+		$pconfig['snmp_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['rdp_parser'])) {
+		$pconfig['rdp_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['sip_parser'])) {
+		$pconfig['sip_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['http2_parser'])) {
+		$pconfig['http2_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['rfb_parser'])) {
+		$pconfig['rfb_parser'] = "yes";
+		$updated_cfg = true;
+	}
 
 	/**********************************************************/
 	/* Create interface IP Reputation settings if not set     */
@@ -617,30 +735,18 @@ foreach ($rule as &$r) {
 	}
 
 	/**********************************************************/
-	/* Create interface Unified2 XFF log settings if not set  */
-	/**********************************************************/
-	if (!isset($pconfig['barnyard_xff_logging'])) {
-		$pconfig['barnyard_xff_logging'] = "off";
-		$updated_cfg = true;
-	}
-	if (!isset($pconfig['barnyard_xff_mode'])) {
-		$pconfig['barnyard_xff_mode'] = "extra-data";
-		$updated_cfg = true;
-	}
-	if (!isset($pconfig['barnyard_xff_deployment'])) {
-		$pconfig['barnyard_xff_deployment'] = "reverse";
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['barnyard_xff_header'])) {
-		$pconfig['barnyard_xff_header'] = "X-Forwarded-For";
-		$updated_cfg = true;
-	}
-
-	/**********************************************************/
 	/* Create new interface stream setting if not set         */
 	/**********************************************************/
 	if (empty($pconfig['max_synack_queued'])) {
 		$pconfig['max_synack_queued'] = "5";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['stream_bypass'])) {
+		$pconfig['stream_bypass'] = "no";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['stream_drop_invalid'])) {
+		$pconfig['stream_drop_invalid'] = "no";
 		$updated_cfg = true;
 	}
 
@@ -679,6 +785,191 @@ foreach ($rule as &$r) {
 	if (empty($pconfig['intf_snaplen'])) {
 		$pconfig['intf_snaplen'] = "1518";
 		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Migrate old performance stats logging option to new    */
+	/* control parameter.                                     */
+	/**********************************************************/
+	if (!isset($pconfig['enable_stats_collection'])) {
+		$updated_cfg = true;
+		if ($pconfig['enable_stats_log'] == "on") {
+			$pconfig['enable_stats_collection'] = "on";
+		}
+		else {
+			$pconfig['enable_stats_collection'] = "off";
+		}
+	}
+
+	/**********************************************************/
+	/* Remove deprecated file-log configuration parameters.   */
+	/* This functionality has been migrated into EVE logging. */
+	/**********************************************************/
+	if (isset($pconfig['enable_json_file_log'])) {
+		unset($pconfig['enable_json_file_log']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['append_json_file_log'])) {
+		unset($pconfig['append_json_file_log']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['enable_tracked_files_magic'])) {
+		unset($pconfig['enable_tracked_files_magic']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['tracked_files_hash'])) {
+		unset($pconfig['tracked_files_hash']);
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Remove deprecated Barnyard2 configuration parameters   */
+	/* from this interface if any are present.                */
+	/**********************************************************/
+	if (isset($pconfig['barnyard_enable'])) {
+		unset($pconfig['barnyard_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dump_payload'])) {
+		unset($pconfig['barnyard_dump_payload']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_mysql_enable'])) {
+		unset($pconfig['barnyard_mysql_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_enable'])) {
+		unset($pconfig['barnyard_syslog_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_local'])) {
+		unset($pconfig['barnyard_syslog_local']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_rhost'])) {
+		unset($pconfig['barnyard_syslog_rhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_dport'])) {
+		unset($pconfig['barnyard_syslog_dport']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_proto'])) {
+		unset($pconfig['barnyard_syslog_proto']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_opmode'])) {
+		unset($pconfig['barnyard_syslog_opmode']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_facility'])) {
+		unset($pconfig['barnyard_syslog_facility']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_priority'])) {
+		unset($pconfig['barnyard_syslog_priority']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_disable_sig_ref_tbl'])) {
+		unset($pconfig['barnyard_disable_sig_ref_tbl']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_sensor_id'])) {
+		unset($pconfig['barnyard_sensor_id']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_sensor_name'])) {
+		unset($pconfig['barnyard_sensor_name']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbhost'])) {
+		unset($pconfig['barnyard_dbhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbname'])) {
+		unset($pconfig['barnyard_dbname']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbuser'])) {
+		unset($pconfig['barnyard_dbuser']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_enable'])) {
+		unset($pconfig['barnyard_bro_ids_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_rhost'])) {
+		unset($pconfig['barnyard_bro_ids_rhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_dport'])) {
+		unset($pconfig['barnyard_bro_ids_dport']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnconfigpassthru'])) {
+		unset($pconfig['barnconfigpassthru']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbpwd'])) {
+		unset($pconfig['barnyard_dbpwd']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_show_year'])) {
+		unset($pconfig['barnyard_show_year']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_archive_enable'])) {
+		unset($pconfig['barnyard_archive_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_obfuscate_ip'])) {
+		unset($pconfig['barnyard_obfuscate_ip']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_logging'])) {
+		unset($pconfig['barnyard_xff_logging']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_mode'])) {
+		unset($pconfig['barnyard_xff_mode']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_deployment'])) {
+		unset($pconfig['barnyard_xff_deployment']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_header'])) {
+		unset($pconfig['barnyard_xff_header']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['unified2_log_limit'])) {
+		unset($pconfig['unified2_log_limit']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['u2_archive_log_retention'])) {
+		unset($pconfig['u2_archive_log_retention']);
+		$updated_cfg = true;
+	}
+	/**********************************************************/
+	/* End Barnyard2 parameter removal                        */
+	/**********************************************************/
+
+	/**********************************************************/
+	/* Add new 'netmap_threads' parameter for the interface   */
+	/* when using Inline IPS Mode. Default is 'auto'.         */
+	/**********************************************************/
+	if (!isset($pconfig['ips_netmap_threads'])) {
+		$updated_cfg = true;
+		$pconfig['ips_netmap_threads'] = 'auto';
+	}
+
+	/**********************************************************/
+	/* Add new 'autofp-scheduler' parameter for the interface */
+	/* when using 'autofp" runmode.                           */
+	/**********************************************************/
+	if (!isset($pconfig['autofp_scheduler'])) {
+		$updated_cfg = true;
+		$pconfig['autofp_scheduler'] = 'hash';
 	}
 
 	// Save the new configuration data into the $config array pointer

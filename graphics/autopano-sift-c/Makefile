@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	autopano-sift-C
 PORTVERSION=	2.5.1
 PORTREVISION=	5
@@ -14,20 +11,17 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libpng.so:graphics/png \
 		libpano13.so:graphics/libpano13
 
-RESTRICTED=	May be covered by patents
-
-CONFLICTS=	autopano-sift-[0-9]*
+CONFLICTS=	autopano-sift
 
 USE_GNOME=	libxml2
-USES=		cmake jpeg
+USES=		cmake gnome jpeg
 
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|share/man|man|' -e '/set(all_libs/s/$$/ m/' \
-		${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/set(all_libs/s/$$/ m/' ${WRKSRC}/CMakeLists.txt
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

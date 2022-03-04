@@ -1,5 +1,4 @@
 # Created by: giffunip@asme.org
-# $FreeBSD$
 
 PORTNAME=	the
 PORTVERSION=	3.3.r4
@@ -9,7 +8,7 @@ MASTER_SITES=	http://downloads.sourceforge.net/hessling-editor/
 DISTNAME=	THE-${PORTVERSION:S/.r/RC/}
 
 MAINTAINER=	comet.berkeley@gmail.com
-COMMENT=	THE, The Hessling Editor, is like the vm/cms xedit editor
+COMMENT=	The Hessling Editor, like the VM/CMS xedit editor
 
 LICENSE=	GPLv2
 
@@ -22,9 +21,9 @@ ALL_TARGET=	all html
 CPPFLAGS+=	-I${LOCALBASE}/include
 
 OPTIONS_DEFINE=		DOCS XAW3D
-OPTIONS_SINGLE=		Display Rexx
-OPTIONS_SINGLE_Display=	NCURSES XCURSES
-OPTIONS_SINGLE_Rexx=	REXX_IMC REGINA
+OPTIONS_SINGLE=		DISPLAY REXX
+OPTIONS_SINGLE_DISPLAY=	NCURSES XCURSES
+OPTIONS_SINGLE_REXX=	REXX_IMC REGINA
 OPTIONS_DEFAULT=	NCURSES REGINA
 OPTIONS_SUB=		yes
 

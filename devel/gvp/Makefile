@@ -1,5 +1,4 @@
 # Created by: Luke Jee <lukejee@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gvp
 PORTVERSION=	0.3.0
@@ -12,10 +11,9 @@ COMMENT=	Go Versioning Manager
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-RUN_DEPENDS=	bash:shells/bash \
-		go:lang/go
+RUN_DEPENDS=	bash:shells/bash
 
-USES=		shebangfix
+USES=		go:run shebangfix
 
 SHEBANG_FILES=	bin/gvp
 

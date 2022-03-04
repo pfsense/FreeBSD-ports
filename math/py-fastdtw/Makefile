@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	fastdtw
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.2
-PORTREVISION=	1
+DISTVERSION=	0.3.4
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -17,7 +14,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${P
 RUN_DEPENDS=	${PYNUMPY}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_GITHUB=	yes # tests are only on github
 GH_ACCOUNT=	slaypni
 USE_PYTHON=	distutils cython autoplist

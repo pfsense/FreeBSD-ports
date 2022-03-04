@@ -3,11 +3,11 @@
  * suricata_sid_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -355,7 +355,8 @@ foreach ($sidmodlists as $list) {
 	$sidmodselections[] = $list['name'];
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("SID Management"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "SID Management");
 include_once("head.inc");
 
 $tab_array = array();
@@ -364,6 +365,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");
@@ -372,10 +374,6 @@ $tab_array[] = array(gettext("SID Mgmt"), true, "/suricata/suricata_sid_mgmt.php
 $tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
 $tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
 display_top_tabs($tab_array, true);
-
-if ($g['platform'] == "nanobsd") {
-	$input_errors[] = gettext("SID auto-management is not supported on NanoBSD installs");
-}
 
 /* Display Alert message, under form tag or no refresh */
 if ($input_errors) {
@@ -558,6 +556,12 @@ if ($savemsg) {
 				</thead>
 				<tbody>
 			   <?php foreach ($a_nat as $k => $natent): ?>
+				<?php
+					// Skip displaying any instance where the physical pfSense interface is missing
+					if (get_real_interface($natent['interface']) == "") {
+						continue;
+					}
+				?>
 				<tr>
 					<td class="text-center">
 						<input type="checkbox" name="torestart[]" id="torestart[]" value="<?=$k;?>" title="<?=gettext("Apply new configuration and rebuild rules for this interface when saving");?>" />

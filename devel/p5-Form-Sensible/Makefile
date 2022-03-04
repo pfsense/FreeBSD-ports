@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Form-Sensible
 PORTVERSION=	0.20023
@@ -22,11 +21,12 @@ RUN_DEPENDS=	p5-DateTime>=0:devel/p5-DateTime \
 		p5-Template-Toolkit>=0:www/p5-Template-Toolkit \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
 
-post-extract:
+NO_ARCH=	yes
+
+post-patch:
 	@${RM} ${WRKSRC}/lib/Form/Sensible/Renderer/HTML/RenderedForm.pm.orig
 
 .include <bsd.port.mk>

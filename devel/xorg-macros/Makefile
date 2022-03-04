@@ -1,8 +1,7 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xorg-macros
-PORTVERSION=	1.19.2
+PORTVERSION=	1.19.3
 CATEGORIES=	devel x11
 DISTNAME=	util-macros-${PORTVERSION}
 
@@ -12,7 +11,7 @@ COMMENT=	X.Org development aclocal macros
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	util
+USES=		xorg-cat:util
 
 NO_ARCH=	yes
 

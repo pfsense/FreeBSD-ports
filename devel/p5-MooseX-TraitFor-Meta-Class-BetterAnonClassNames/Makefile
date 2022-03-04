@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	MooseX-TraitFor-Meta-Class-BetterAnonClassNames
 PORTVERSION=	0.002003
@@ -20,8 +19,9 @@ RUN_DEPENDS=	p5-Moose>=0:devel/p5-Moose \
 TEST_DEPENDS=	p5-Test-CheckDeps>=0.010:devel/p5-Test-CheckDeps \
 		p5-Test-Moose-More>=0:devel/p5-Test-Moose-More
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	lxqt-build-tools
-PORTVERSION=	0.6.0
+PORTVERSION=	0.10.0
 CATEGORIES=	devel
 MASTER_SITES=	LXQT/${PORTNAME}
 

@@ -1,5 +1,4 @@
 # Created by: Aaron Baugher
-# $FreeBSD$
 
 PORTNAME=	xlogical
 DISTVERSION=	1.0-8
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir="/var/games"
-USES=		autoreconf dos2unix gmake tar:bzip2
+USES=		autoreconf dos2unix gmake sdl tar:bzip2
 DOS2UNIX_FILES=	*.h *.cpp
 USE_SDL=	sdl image mixer
 

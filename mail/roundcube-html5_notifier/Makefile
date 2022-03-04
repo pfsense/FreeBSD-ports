@@ -1,8 +1,5 @@
-# Created by: Koichiro IWAO <meta+ports@vmeta.jp>
-# $FreeBSD$
-
 PORTNAME=	html5_notifier
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 PKGNAMEPREFIX=	roundcube-
@@ -17,6 +14,7 @@ RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
 BUILD_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
 
 USES=	php:flavors
+IGNORE_WITH_PHP=80
 USE_GITHUB=	yes
 GH_ACCOUNT=	stremlau
 

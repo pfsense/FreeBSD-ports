@@ -1,8 +1,8 @@
 # Created by: glewis
-# $FreeBSD$
 
 PORTNAME=	findbugs
 PORTVERSION=	1.3.9
+PORTREVISION=	1
 CATEGORIES=	devel java
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	java-

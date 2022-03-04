@@ -98,8 +98,8 @@ if ($_POST) {
 	}
 }
 
-if ($_GET['act'] == "del") {
-	$id = $_GET['id'];
+if ($_POST['act'] == "del") {
+	$id = $_POST['id'];
 	$id = get_accountkey_id($id);
 	if (isset($a_accountkeys[$id])) {
 		if (!$input_errors) {
@@ -132,7 +132,7 @@ echo "</div>";
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">×</span>
 	</button>
-	<div id="renewoutput" class="pull-left">
+	<div id="renewoutput" class="pull-left" style="white-space: pre-wrap">
 	</div>
 </div>
 
@@ -169,20 +169,20 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				<?=$accountname;?>
 			  </td>
 			  <td>
-				<?=htmlspecialchars($accountkey['desc']);?>
+				<?=htmlspecialchars($accountkey['descr']);?>
 			  </td>
 			  <td>
 				<?=htmlspecialchars($accountkey['acmeserver']);?>
 			  </td>
 			  <td class="action-icons">
-				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$accountname?>" name="move_<?=$accountname?>" value="move_<?=$accountname?>"></button>
-				<a href="acme_accountkeys_edit.php?id=<?=$accountname;?>">
+				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=urlencode($accountname)?>" name="move_<?=urlencode($accountname)?>" value="move_<?=urlencode($accountname)?>"></button>
+				<a href="acme_accountkeys_edit.php?id=<?=urlencode($accountname);?>">
 					<?=acmeicon("edit", gettext("edit"))?>
 				</a>
-				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" onclick="return confirm('Do you really want to delete this entry?')">
+				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" usepost>
 					<?=acmeicon("delete", gettext("delete"))?>
 				</a>
-				<a href="acme_accountkeys_edit.php?dup=<?=$accountname;?>">
+				<a href="acme_accountkeys_edit.php?dup=<?=urlencode($accountname);?>">
 					<?=acmeicon("clone", gettext("clone"))?>
 				</a>
 			  </td>
@@ -219,7 +219,7 @@ function set_content(elementid, image) {
 
 function js_callbackrenew(data) {
 	$('#renewoutputbox').removeClass("hidden");
-	$('#renewoutput').html(data);
+	$('#renewoutput').text(data);
 }
 
 function js_callback(req_content) {

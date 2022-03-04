@@ -28,12 +28,17 @@ if (!is_array($config['installedpackages']['avahi']['config'])) {
 }
 $a_avahi = &$config['installedpackages']['avahi']['config'][0];
 
+$actions = array(
+	"allow" => gettext("Allow Interfaces"),
+	"deny" => gettext("Deny Interfaces"),
+);
 
 if (isset($a_avahi)) {
 	if (isset($a_avahi['interfaces'])) {
 		$pconfig = $a_avahi;
 	} elseif (isset($a_avahi['denyinterfaces'])) {
 		$pconfig['enable'] = $a_avahi['enable'];
+		$pconfig['carpstatusvid'] = $a_avahi['carpstatusvid'];
 
 		$available_interfaces = get_configured_interface_list();
 		unset($available_interfaces['wan']);
@@ -71,11 +76,8 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	$pconfig['interfaces'] = implode(',', $pconfig['interfaces_a']);
-
-	/* Confirm at least one interface has been chosen */
-	if (empty($pconfig['interfaces_a'])) {
-		$input_errors[] = gettext("At least one interface must be selected");
+	if (isset($pconfig['interfaces_a']) && is_array($pconfig['interfaces_a'])) {
+		$pconfig['interfaces'] = implode(',', $pconfig['interfaces_a']);
 	}
 
 	/* Confirm that at least one protocol is enabled */
@@ -90,11 +92,31 @@ if ($_POST) {
 	if ($pconfig['override_domain'] && !preg_match('/^[a-zA-Z0-9-.]+$/', $pconfig['override_domain'])) {
 		$input_errors[] = gettext("Domain name may contain [a-zA-Z0-9-.] only");
 	}
+	if (!array_key_exists($pconfig['action'], $actions)) {
+		$input_errors[] = gettext("Invalid interface action");
+	}
+
+	$filter = array();
+	for ($x = 0; $x < 99; $x++) {
+		if (!empty($_POST["destination{$x}"])) {
+			if (!is_domain($_POST["destination{$x}"])) {
+				$input_errors[] = sprintf(gettext('%s is not valid Service name'),
+					htmlspecialchars($_POST["destination{$x}"]));
+			} else {
+				$filtering['rule'][] = array(
+					'destination' => $_POST["destination{$x}"],
+				);
+			}
+		}
+	}
+	$pconfig['filtering'] = $filtering;
 
 	if (!$input_errors) {
 		$avahi = array();
 
 		$avahi['enable'] = $pconfig['enable'];
+		$avahi['carpstatusvid'] = $pconfig['carpstatusvid'];
+		$avahi['action'] = $pconfig['action'];
 		$avahi['interfaces'] = $pconfig['interfaces'];
 		$avahi['disable_ipv4'] = $pconfig['disable_ipv4'];
 		$avahi['disable_ipv6'] = $pconfig['disable_ipv6'];
@@ -112,6 +134,8 @@ if ($_POST) {
 			$avahi['publish_ipv6_a'] = $pconfig['publish_ipv6_a'];
 		}
 
+		$avahi['filtering'] = $filtering;
+
 		$a_avahi = $avahi;
 		write_config("Updated Avahi settings");
 
@@ -125,12 +149,13 @@ if ($_POST) {
 
 $available_interfaces = get_configured_interface_with_descr();
 unset($available_interfaces['wan']);
-$pconfig['interfaces_a'] = explode(',', $pconfig['interfaces']);
 
+if (!empty($pconfig['interfaces'])) {
+	$pconfig['interfaces_a'] = explode(',', $pconfig['interfaces']);
+}
 
 $pgtitle = array(gettext("Services"), gettext("Avahi"));
 include("head.inc");
-
 
 if (isset($migration_warning)) {
 	print_info_box($migration_warning);
@@ -152,13 +177,34 @@ $section->addInput(new Form_Checkbox(
 ));
 
 $section->addInput(new Form_Select(
+	'carpstatusvid',
+	'CARP Status VIP',
+	$pconfig['carpstatusvid'],
+	avahi_get_carp_list()
+))->setHelp('Used to determine the HA MASTER/BACKUP status. Avahi will be stopped when the chosen VIP is in BACKUP status, and started in MASTER status.');
+
+$section->addInput(new Form_Select(
+	'action',
+	'Interface Action',
+	$pconfig['action'],
+	$actions,
+	false
+))->setHelp(
+	'Specify whether the interfaces selected below will be allowed or denied. ' .
+	'When using Deny mode, take care to select WANs and other interfaces where binding Avahi could be dangerous. ' .
+	'Also note that in Deny mode, Avahi will bind to unassigned interfaces.'
+);
+
+$section->addInput(new Form_Select(
 	'interfaces_a',
 	'Interfaces',
 	$pconfig['interfaces_a'],
 	$available_interfaces,
 	true
 ))->setHelp(
-	'Interfaces that the Avahi daemon will listen and send on'
+	'Interfaces that the Avahi daemon will listen and send on (Allow mode) ' .
+	'or be prevented from listening or sending on (Deny mode). ' .
+	'If empty, Avahi will listen on all available interfaces.'
 );
 
 $section->addInput(new Form_Checkbox(
@@ -186,6 +232,57 @@ $section->addInput(new Form_Checkbox(
 
 $form->add($section);
 
+$section = new Form_Section('Reflection Filtering');
+$section->addClass('filtering');
+
+$section->addInput(new Form_StaticText(
+	null,
+	sprintf(gettext('List of allowed service names to be reflected. Each service that is ' .
+		'seen must match an entry in this list to be reflected to other networks.%1$s ' .
+		'This list can match the type of service or the name of the machine providing ' .
+		'the service. Defaults to allowing all services.%1$s%1$s'), '<br/>')
+))->setHelp('Example printer services: _printer._tcp.local, _ipp._tcp.local, _pdl-datastream._tcp.local');
+
+if (!$pconfig['filtering']) {
+	$pconfig['filtering'] = array();
+	$pconfig['filtering']['rule']  = array(array('destination' => ''));
+}
+
+$numrows = count($item) -1;
+$counter = 0;
+
+$numrows = count($pconfig['filtering']['rule']) -1;
+
+foreach ($pconfig['filtering']['rule'] as $rule) {
+	$group = new Form_Group(($counter == 0) ? 'Service':null);
+	$group->addClass('repeatable');
+
+	$group->add(new Form_IpAddress(
+		'destination' . $counter,
+		null,
+		$rule['destination']
+	));
+
+	$group->add(new Form_Button(
+		'deleterow' . $counter,
+		'Delete',
+		null,
+		'fa-trash'
+	))->addClass('btn-warning');
+
+	$section->add($group);
+
+	$counter++;
+}
+
+$section->addInput(new Form_Button(
+	'addrow',
+	'Add',
+	null,
+	'fa-plus'
+))->addClass('btn-success');
+
+$form->add($section);
 
 $section = new Form_Section('Publishing');
 
@@ -344,6 +441,15 @@ events.push(function() {
 		$('#advancedbutton').html('<i class="fa fa-cog"></i> ' + text);
 	}
 
+	function show_filtering() {
+		hide = !$('#reflection').prop('checked');
+		hideClass('filtering', hide);
+	}
+
+	$('#reflection').click(function () {
+		show_filtering();
+	});
+
 	// Show/Hide publish settings
 	$('#publishing').click(function() {
 		publishingChange();
@@ -366,6 +472,8 @@ events.push(function() {
 	IPv4Change();
 	IPv6Change();
 	advancedChange(true);
+	show_filtering();
+	checkLastRow();
 });
 //]]>
 </script>

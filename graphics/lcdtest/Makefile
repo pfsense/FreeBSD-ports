@@ -1,5 +1,4 @@
 # Created by: Eric P. Scott <eps+pbug0703@ana.com>
-# $FreeBSD$
 
 PORTNAME=	lcdtest
 PORTVERSION=	1.18
@@ -19,6 +18,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	liberation-fonts-ttf>0:x11-fonts/liberation-fonts-ttf
 
+USES=		sdl
 USE_SDL=	sdl image ttf
 
 PLIST_FILES=	bin/${PORTNAME} \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Products.PloneLanguageTool
 PORTVERSION=	3.2.7
 PORTREVISION=	1
@@ -14,7 +12,7 @@ COMMENT=	Allows to set the available languages in Plone site
 LICENSE=	GPLv2
 
 NO_ARCH=	yes
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

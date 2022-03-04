@@ -3,7 +3,7 @@
  * status_monitoring.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)
@@ -29,6 +29,16 @@ require("guiconfig.inc");
 require_once("filter.inc");
 require("shaper.inc");
 
+/*
+ * Check user privileges to test if the user is allowed to disable graphing / reset data.
+ */
+phpsession_begin();
+$guiuser = getUserEntry($_SESSION['Username']);
+$read_only = (is_array($guiuser) && userHasPrivilege($guiuser, "user-config-readonly"));
+phpsession_end();
+
+$saveclass = 'success';
+
 function createOptions($dropdown) {
 	echo 'var newOptions = {' . "\n";
 	$terms = count($dropdown);
@@ -50,10 +60,8 @@ chdir($home);
 
 function createSlug($string) {
 
-    //Lower case everything
-    $string = strtolower($string);
     //Make alphanumeric (removes all other characters)
-    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+    $string = preg_replace("/[^a-zA-Z0-9_\s-]/", "", $string);
     //Clean up multiple dashes or whitespaces
     $string = preg_replace("/[\s-]+/", " ", $string);
     //Convert whitespaces and underscore to dash
@@ -71,25 +79,36 @@ if(!empty($_POST['view-title'])) {
 
 $changedesc = gettext("Status: Monitoring:") . " ";
 if($_POST['enable']) {
-	if(($_POST['enable'] === 'false')) {
-		unset($config['rrd']['enable']);
-		$savemsg = "RRD graphing has been disabled.";
-		$changedesc .= gettext("RRD graphing has been disabled.");
+	if ($read_only) {
+		$savemsg = "Insufficient privileges to make the requested change (read only).";
+		$saveclass = 'danger';
 	} else {
-		$config['rrd']['enable'] = true;
-		$savemsg = "RRD graphing has been enabled.";
-		$changedesc .= gettext("RRD graphing has been enabled.");
-	}
-	write_config($changedesc);
+		if(($_POST['enable'] === 'false')) {
+			unset($config['rrd']['enable']);
+			$savemsg = "RRD graphing has been disabled.";
+			$changedesc .= gettext("RRD graphing has been disabled.");
+		} else {
+			$config['rrd']['enable'] = true;
+			$savemsg = "RRD graphing has been enabled.";
+			$changedesc .= gettext("RRD graphing has been enabled.");
+		}
+		write_config($changedesc);
 
-	enable_rrd_graphing();
+		enable_rrd_graphing();
+	}
 }
 
 if ($_POST['ResetRRD']) {
-	mwexec('/bin/rm /var/db/rrd/*');
-	enable_rrd_graphing();
-	setup_gateways_monitor();
-	$savemsg = "RRD data has been cleared. New RRD files have been generated.";
+	if ($read_only) {
+		$savemsg = "Insufficient privileges to make the requested change (read only).";
+		$saveclass = 'danger';
+	} else {
+		mwexec('/bin/rm /var/db/rrd/*');
+		enable_rrd_graphing();
+		setup_gateways_monitor();
+		$savemsg = "RRD data has been cleared. New RRD files have been generated.";
+
+	}
 }
 
 //old config that needs to be updated
@@ -103,55 +122,35 @@ if ($_POST['save-view']) {
 
 	$title = $view_title;
 
-	if (is_array($config['rrd']['savedviews'])) {
-
+	init_config_arr(array('rrd', 'savedviews'));
+	if (!empty($config['rrd']['savedviews'])) {
 		if($title == "default") {
-
 			$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
-
 		} else {
-
 			foreach ($config['rrd']['savedviews'] as $key => $view) {
-
 				if($title == createSlug($view['title'])) {
-
 					$config['rrd']['savedviews'][$key]['category'] =  "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
-
 				}
-
 			}
-
 		}
-
 	} else {
-
 		$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
-
 	}
 
 	write_config(gettext("Status Monitoring View Updated"));
-
 	$savemsg = "The current view has been updated.";
 }
 
 //add a new view and make sure the string isn't empty
-if ($_POST['add-view']) {
+if ($_POST['add-view'] && !empty($view_title) && strtolower($view_title) != "default") {
 
 	$title = $view_title;
 
 	$values = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
 
-	if (is_array($config['rrd']['savedviews'])) {
-
-			$key = "view" . count($config['rrd']['savedviews']);
-
-			$config['rrd']['savedviews'][$key] = array('title' => $title, 'category' => $values);
-
-	} else {
-
-		$config['rrd']['savedviews']["view0"] = array('title' => $title, 'category' => $values);
-
-	}
+	init_config_arr(array('rrd', 'savedviews'));
+	$key = "view" . count($config['rrd']['savedviews']);
+	$config['rrd']['savedviews'][$key] = array('title' => $title, 'category' => $values);
 
 	write_config(gettext("Status Monitoring View Added"));
 
@@ -163,7 +162,7 @@ $view_removed = false;
 //remove current view
 if ($_POST['remove-view']) {
 
-	if ($view_title == "default") {
+	if (strtolower($view_title) == "default") {
 
 		$savemsg = "Can't remove default view.";
 
@@ -171,28 +170,20 @@ if ($_POST['remove-view']) {
 
 		$title = htmlspecialchars($view_title);
 
-		if (is_array($config['rrd']['savedviews'])) {
-
+		init_config_arr(array('rrd', 'savedviews'));
+		if (!empty($config['rrd']['savedviews'])) {
 			$savedviews = [];
 			$view_count = 0;
 
 			foreach ($config['rrd']['savedviews'] as $key => $view) {
-
 				if (createSlug($view['title']) !== $title) {
-
 					$view_key = "view" . $view_count;
-
-					//unset($config['rrd']['savedviews'][$key]);
 					$savedviews[$view_key] = array('title' => $view['title'], 'category' => $view['category']);
-
 					$view_count++;
-
 				}
-
 			}
 
 			$config['rrd']['savedviews'] = $savedviews;
-
 		}
 
 		write_config(gettext("Status Monitoring View Removed"));
@@ -208,30 +199,19 @@ if ($_POST['remove-view']) {
 $pconfig['enable'] = isset($config['rrd']['enable']);
 
 //grab settings for the active view
-if (is_array($config['rrd']['savedviews'])) {
-
+init_config_arr(array('rrd', 'savedviews'));
+if (!empty($config['rrd']['savedviews'])) {
 	if ($view_title == "default" || $view_removed) {
-
 		$pconfig['category'] = $config['rrd']['category'];
-
 	} else {
-
 		foreach ($config['rrd']['savedviews'] as $key => $view) {
-
 			if ($view_title === createSlug($view['title'])) {
-
 				$pconfig['category'] =  $view['category'];
-
 			}
-
 		}
-
 	}
-
 } else {
-
 	$pconfig['category'] = $config['rrd']['category'];
-
 }
 
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = $wireless = $cellular = [];
@@ -256,6 +236,9 @@ foreach ($databases as $db) {
 				break;
 			case "mbuf":
 				$system[$db_name] = "Mbuf Clusters";
+				break;
+			case "sensors":
+				$system[$db_name] = "Thermal Sensors";
 				break;
 			default:
 				$system[$db_name] = $db_arr[1];
@@ -405,7 +388,7 @@ $pgtitle = array(gettext("Status"), gettext("Monitoring"));
 include("head.inc");
 
 if ($savemsg) {
-	print_info_box($savemsg, 'success');
+	print_info_box($savemsg, $saveclass);
 }
 
 $tab_array = array();
@@ -419,23 +402,14 @@ if ($view_title == "default" || $view_removed) {
 
 $tab_array[] = array(gettext("Default"), $active_tab, "/status_monitoring.php?view=default");
 
-if (is_array($config['rrd']['savedviews'])) {
-
-	foreach ($config['rrd']['savedviews'] as $key => $view) {
-
-		$active_tab = false;
-
-		if ($view_title == createSlug($view['title'])) {
-
-			$active_tab = true;
-
-		}
-
-		$view_slug = "/status_monitoring.php?view=" . createSlug($view['title']);
-		$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
-
+init_config_arr(array('rrd', 'savedviews'));
+foreach ($config['rrd']['savedviews'] as $key => $view) {
+	$active_tab = false;
+	if ($view_title == createSlug($view['title'])) {
+		$active_tab = true;
 	}
-
+	$view_slug = "/status_monitoring.php?view=" . createSlug($view['title']);
+	$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
 }
 
 display_top_tabs($tab_array);
@@ -507,6 +481,7 @@ display_top_tabs($tab_array);
 						<option value="system-processor" selected>Processes</option>
 						<option value="system-memory">Memory</option>
 						<option value="system-mbuf">Mbuf Clusters</option>
+						<option value="system-sensors">Thermal Sensors</option>
 					</select>
 
 					<span class="help-block">Graph</span>
@@ -738,6 +713,7 @@ events.push(function() {
 		"processor": "Utilization, Number",
 		"memory": "Utilization, Percent",
 		"mbuf": "Utilization, Percent",
+		"sensors": "Temperature, °C",
 		"packets": "Packets Per Second",
 		"vpnusers": "Users",
 		"quality": "Milliseconds, Percent",
@@ -756,6 +732,7 @@ events.push(function() {
 		"processor": ".2f",
 		"memory": ".2f",
 		"mbuf": ".2s",
+		"sensors": ".2s",
 		"packets": ".2s",
 		"vpnusers": ".2f",
 		"quality": ".2f",
@@ -952,7 +929,7 @@ events.push(function() {
 
 	function createSlug(string) {
 
-	    return string.toString().toLowerCase()
+	    return string.toString()
 			.replace(/\s+/g, '-')       // Replace spaces with -
 			.replace(/[^\w\-]+/g, '')   // Remove all non-word chars
 			.replace(/\-\-+/g, '-')     // Replace multiple - with single -
@@ -1150,7 +1127,7 @@ events.push(function() {
 
 			var this_title = $(this).find('a:first').attr('href').split('=');
 
-			current_titles.push(this_title[1]);
+			current_titles.push(this_title[1].toLowerCase());
 
 	    });
 
@@ -1162,7 +1139,7 @@ events.push(function() {
 			}
 	        var title_slug = createSlug(view_title);
 
-	        if(jQuery.inArray(title_slug, current_titles) !== -1) {
+	        if(jQuery.inArray(title_slug.toLowerCase(), current_titles) !== -1) {
 
 				alert('That title is already used, try again.');
 
@@ -1393,7 +1370,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 100)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "system-name")
 					.text(systemName);
 
@@ -1402,7 +1379,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 400)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "time-period")
 					.text("Time Period: " + timePeriod);
 
@@ -1411,7 +1388,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 570)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "resolution")
 					.text("Resolution: " + stepLookup[data[0].step]);
 
@@ -1420,7 +1397,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 755)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "current-date")
 					.text(currentDate);
 

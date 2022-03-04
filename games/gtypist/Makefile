@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	gtypist
 PORTVERSION=	2.9.5
 PORTREVISION=	2
-CATEGORIES=	games
+CATEGORIES=	games education
 MASTER_SITES=	GNU
 
 MAINTAINER=	naddy@FreeBSD.org
@@ -36,5 +34,6 @@ post-patch:
 		${WRKSRC}/src/script.c \
 		${WRKSRC}/src/gtypist.c \
 		${WRKSRC}/src/utf8.c
+	${REINPLACE_CMD} -e 's/-lncursesw/${NCURSESLIBS}/g' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	DateTime-Calendar-Hebrew
 PORTVERSION=	0.05
 PORTREVISION=	1

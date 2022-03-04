@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Spreadsheet-ParseXLSX
 PORTVERSION=	0.27
 CATEGORIES=	textproc perl5
@@ -8,7 +6,7 @@ MASTER_SITE_SUBDIR=	CPAN:DOY
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Spreadsheet::ParseXLSX - parse XLSX files
+COMMENT=	Perl module for parsing XLSX files
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-CryptX>=0:security/p5-CryptX \

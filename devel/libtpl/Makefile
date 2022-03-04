@@ -1,13 +1,12 @@
 # Created by: Frederic Culot <frederic@culot.org>
-# $FreeBSD$
 
 PORTNAME=	libtpl
 PORTVERSION=	1.6
 PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	culot@FreeBSD.org
-COMMENT=	Tpl is a library for serializing C data
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Library for serializing C data
 
 LICENSE=	GPLv3 MIT
 LICENSE_COMB=	multi

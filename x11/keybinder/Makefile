@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	keybinder
 PORTVERSION=	0.3.1
-PORTREVISION=	2
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11
 
@@ -15,20 +13,19 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	engla
 
-USES=		autoreconf gmake libtool pathfix pkgconfig
+USES=		autoreconf gmake gnome libtool pathfix pkgconfig xorg
 USE_GNOME=	gtk20 introspection:build
 USE_XORG=	x11 xext xrender
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-python
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	EXAMPLES GTKDOC LUA PYTHON
-OPTIONS_DEFAULT=	PYTHON
+OPTIONS_DEFINE=	EXAMPLES DOCS LUA
 OPTIONS_SUB=	yes
 
-GTKDOC_DESC=		Build API documentation (requires textproc/gtk-doc)
-GTKDOC_BUILD_DEPENDS=	gtkdocize:textproc/gtk-doc
-GTKDOC_CONFIGURE_ON=	--enable-gtk-doc
+DOCS_BUILD_DEPENDS=	gtkdocize:textproc/gtk-doc
+DOCS_CONFIGURE_ON=	--enable-gtk-doc
 
 # Override LUA description
 LUA_DESC=		Lua bindings
@@ -36,15 +33,11 @@ LUA_USES=		lua:51
 LUA_CONFIGURE_ON=	--with-lua-includes=${LUA_INCDIR}
 LUA_CONFIGURE_OFF=	--disable-lua
 
-PYTHON_USES=		python:2.7
-PYTHON_USE=		gnome=pygtk2
-PYTHON_CONFIGURE_OFF=	--disable-python
-
-post-patch-GTKDOC-off:
+post-patch-DOCS-off:
 	@${REINPLACE_CMD} -E '/GTK_DOC_CHECK|docs/d' ${WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e '/^SUBDIRS/s, docs,,' ${WRKSRC}/Makefile.am
 
-pre-configure-GTKDOC-on:
+pre-configure-DOCS-on:
 	@(cd ${CONFIGURE_WRKSRC} && ${LOCALBASE}/bin/gtkdocize)
 
 post-build-EXAMPLES-on:

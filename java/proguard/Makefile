@@ -1,11 +1,9 @@
 # Created by: Alex Semenyaka <alex@rinet.ru>
-# $FreeBSD$
 
 PORTNAME=	proguard
-PORTVERSION=	6.0.3
+PORTVERSION=	7.0.0
 CATEGORIES=	java devel
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:C/.[0-9]$//}
-DISTNAME=	${PORTNAME}${PORTVERSION}
+MASTER_SITES=	https://github.com/Guardsquare/proguard/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java class file shrinker, optimizer, and obfuscator
@@ -22,6 +20,9 @@ SUB_FILES=	proguard.sh proguard-gui.sh retrace.sh
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
+
+post-extract:
+	@${RMDIR} ${WRKSRC}/examples/android/.gradle/6.4/vcsMetadata-1
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

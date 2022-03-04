@@ -1,5 +1,4 @@
 # Created by: Vanilla I. Shu <vanilla@MinJe.com.TW>
-# $FreeBSD$
 
 PORTNAME=	hfsutils
 PORTVERSION=	3.2.6
@@ -13,7 +12,7 @@ COMMENT=	Utilities for accessing Apple's HFS volumes
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	hfs-[0-9]*
+CONFLICTS=	hfs
 
 USES=		gmake			# passing -jX breaks BSD make(1)
 GNU_CONFIGURE=	yes

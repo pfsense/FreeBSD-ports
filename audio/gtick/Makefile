@@ -1,8 +1,7 @@
 # Created by: Liam J. Foy <liamfoy@sepulcrum.org>
-# $FreeBSD$
 
 PORTNAME=	gtick
-PORTVERSION=	0.5.4
+PORTVERSION=	0.5.5
 PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.antcom.de/gtick/download/
@@ -12,13 +11,14 @@ COMMENT=	Metronome application
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libsndfile.so:audio/libsndfile \
 		libpulse-simple.so:audio/pulseaudio
 
 USES=		desktop-file-utils gnome pkgconfig
 GNU_CONFIGURE=	yes
-USE_GNOME=	gtk20
-INSTALLS_ICONS=	yes
+USE_GNOME=	cairo gtk20
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	NLS

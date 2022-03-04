@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Class-Virtual
 PORTVERSION=	0.08
@@ -20,5 +19,7 @@ RUN_DEPENDS=	p5-Carp-Assert>=0:devel/p5-Carp-Assert \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,10 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	airspy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.9-18
-DISTVERSIONSUFFIX=	-gbfb6670
-PORTREVISION=	1
+DISTVERSION=	1.0.10
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,8 +8,6 @@ COMMENT=	AirSpy's usemode driver and associated tools
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/airspy-tools/LICENSE.md
-
-BROKEN_aarch64=		fails to compile: invalid conversion between vector type '__m64' and integer type 'int'
 
 USES=		cmake pkgconfig
 USE_GITHUB=	yes

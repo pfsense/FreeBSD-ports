@@ -3,9 +3,9 @@
  * snort_ip_list_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -127,7 +127,8 @@ if (isset($_POST['save']) && isset($_POST['iplist_data'])) {
 // so we can pick up any changes made to files in code above.
 $ipfiles = return_dir_as_array($iprep_path);
 
-$pgtitle = array(gettext('Services'), gettext('Snort'), gettext('IP Reputation Lists'));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array('Services', 'Snort', 'IP Reputation Lists');
 include_once("head.inc");
 
 if ($input_errors) {
@@ -163,15 +164,6 @@ display_top_tabs($tab_array, true);
 
 		<div class="table-responsive">
 
-	<?php if ($g['platform'] == "nanobsd") : ?>
-			<table id="maintable" class="table table-striped table-hover table-condensed">
-				<tbody>
-				<tr>
-					<td><?php echo gettext("IP Reputation is not supported on NanoBSD installs"); ?></td>
-				</tr>
-				</tbody>
-			</table>
-	<?php else: ?>
 			<table id="maintable" class="table table-striped table-hover table-condensed">
 				<thead>
 					<tr>
@@ -236,7 +228,6 @@ display_top_tabs($tab_array, true);
 				</p>
 			</div>
 		</div>
-	<?php endif; ?>
 		</form>
 	</div>
 </div>

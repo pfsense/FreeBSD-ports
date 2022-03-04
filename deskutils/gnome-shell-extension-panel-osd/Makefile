@@ -1,8 +1,8 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gnome-shell-extension-panel-osd
 PORTVERSION=	0.0.0.20171023
+PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome3
 

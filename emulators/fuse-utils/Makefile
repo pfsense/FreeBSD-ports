@@ -1,8 +1,8 @@
 # Created by: rene
-# $FreeBSD$
 
 PORTNAME=	fuse-utils
 DISTVERSION=	1.4.3
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/fuse-emulator/${PORTNAME}/${PORTVERSION}
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libaudiofile.so:audio/libaudiofile \
 		libpng.so:graphics/png \
 		libspectrum.so:emulators/libspectrum
 
-USES=		gettext iconv jpeg pkgconfig
+USES=		gettext gnome iconv jpeg pkgconfig
 USE_GNOME=	glib20
 
 GNU_CONFIGURE=	yes

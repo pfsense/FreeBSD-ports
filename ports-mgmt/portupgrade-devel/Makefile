@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	portupgrade
 PORTVERSION=	20180309
@@ -16,7 +15,7 @@ COMMENT=	FreeBSD ports/packages management tool (devel version)
 
 LICENSE=	BSD3CLAUSE
 
-CONFLICTS_INSTALL=	portupgrade-[0-9]*
+CONFLICTS_INSTALL=	portupgrade
 
 USES=		uidfix
 

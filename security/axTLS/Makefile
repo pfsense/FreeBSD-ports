@@ -1,5 +1,4 @@
 # Created by: Hirohisa Yamaguchi <umq@ueo.co.jp>
-# $FreeBSD$
 
 PORTNAME=	axTLS
 PORTVERSION=	1.4.9
@@ -11,6 +10,9 @@ MAINTAINER=	umq@ueo.co.jp
 COMMENT=	SSL/TLS client/server library implementation
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=	Very outdated and abandoned, current version in tree was released in 2013 and last by upstream in 2019
+EXPIRATION_DATE=2022-03-31
 
 OPTIONS_DEFINE=	COMPAT_OPENSSL HTTPD TLSWRAP X509 PERL DOCS DEBUG TEST
 OPTIONS_SINGLE=	MODE PROT
@@ -38,7 +40,8 @@ PROT_HIGH_DESC=		Use the strongest cipher(s) at the cost of speed
 CONFIG_SUB=	PREFIX=\"${PREFIX}\" WWWDIR=\"${WWWDIR}\" \
 		HTTP_PORT=${WITH_HTTP_PORT} SSL_PORT=${WITH_SSL_PORT}
 NO_OPTIONS_SORT=yes
-USES=		gmake
+USES=		cpe gmake
+CPE_VENDOR=	${PORTNAME:tl}_project
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 STAGE=		${WRKSRC}/_stage
@@ -46,8 +49,7 @@ STAGE=		${WRKSRC}/_stage
 WITH_HTTP_PORT?=	80
 WITH_SSL_PORT?=		443
 
-PERL_BUILD_DEPENDS=	swig3.0:devel/swig30
-PERL_BINARY_ALIAS=	swig=swig3.0
+PERL_BUILD_DEPENDS=	swig:devel/swig
 PERL_USES=	perl5
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 

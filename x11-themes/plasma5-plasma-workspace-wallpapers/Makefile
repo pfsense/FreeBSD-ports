@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-workspace-wallpapers
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	x11-themes kde kde-plasma
@@ -12,9 +10,10 @@ LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING.LGPL3
 
-USES=		cmake cpe kde:5 qt:5 tar:xz
+USES=		cmake kde:5 qt:5 tar:xz
 USE_KDE=	ecm
-USE_QT=		buildtools_build qmake_build
+USE_QT=		buildtools_build \
+		qmake_build
 
 # The qmake dependency is only needed so that kf5-e-c-m can query qmake for
 # some installation directories.

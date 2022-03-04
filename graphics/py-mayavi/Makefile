@@ -1,54 +1,55 @@
 # Created by: Vladimir Chukharev
-# $FreeBSD$
 
 PORTNAME=	mayavi
-PORTVERSION=	4.5.0
-PORTREVISION=	4
+DISTVERSION=	4.7.4
 CATEGORIES=	graphics science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	Vladimir.Chukharev@gmail.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Application and library for 3D visualization and plotting in Python
 
-LICENSE=	BSD3CLAUSE LGPL21 LGPL20 EPL LGPL3 BSD2CLAUSE APACHE11
-LICENSE_COMB=	multi
+LICENSE=			BSD3CLAUSE LGPL21 LGPL20 EPL LGPL3 BSD2CLAUSE APACHE11 # see ${WRKSRC}/image_LICENSE.txt
+LICENSE_COMB=			multi
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/LICENSE.txt
-LICENSE_FILE_LGPL21=	${WRKSRC}/image_LICENSE_Nuvola.txt
-LICENSE_FILE_LGPL20=	${WRKSRC}/image_LICENSE_CP.txt
-LICENSE_FILE_EPL=	${WRKSRC}/image_LICENSE_Eclipse.txt
-LICENSE_FILE_LGPL3=	${WRKSRC}/image_LICENSE_OOo.txt
+LICENSE_FILE_LGPL21=		${WRKSRC}/image_LICENSE_Nuvola.txt
+LICENSE_FILE_LGPL20=		${WRKSRC}/image_LICENSE_CP.txt
+LICENSE_FILE_EPL=		${WRKSRC}/image_LICENSE_Eclipse.txt
+LICENSE_FILE_LGPL3=		${WRKSRC}/image_LICENSE_OOo.txt
 LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/LICENSE_YORICK.txt
-LICENSE_FILE_APACHE11=	${WRKSRC}/LICENSE_COLORBREWER.txt
-# See ${WRKSRC}/image_LICENSE.txt for per file license information
+LICENSE_FILE_APACHE11=		${WRKSRC}/LICENSE_COLORBREWER.txt
 
-BUILD_DEPENDS=	vtk6>=6.1.0_8:math/vtk6 \
-		${PYTHON_PKGNAMEPREFIX}sphinx>=1.3.1_2:textproc/py-sphinx@${PY_FLAVOR}
-RUN_DEPENDS=	vtk6>=6.1.0_8:math/vtk6 \
+BROKEN_i386=	Building TVTK classes... Fatal Python error: Segmentation fault # might be specific to Mayavi or Python versions
+
+BUILD_DEPENDS=	vtk9>0:math/vtk9 \
 		${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}envisage>=4.4.0:devel/py-envisage@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyface>=4.5.2:devel/py-pyface@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scimath>=4.1.2:science/py-scimath@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}traitsui>=4.5.1:graphics/py-traitsui@${PY_FLAVOR}
+		${PY_SPHINX} \
+		sphinx-build:textproc/py-sphinx@${PY_FLAVOR}
+RUN_DEPENDS=	vtk9>0:math/vtk9 \
+		${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}apptools>0:devel/py-apptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}envisage>0:devel/py-envisage@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyface>=6.0.0:devel/py-pyface@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pygments>0:textproc/py-pygments@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}traits>=4.6.0:devel/py-traits@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}traitsui>=6.0.0:graphics/py-traitsui@${PY_FLAVOR}
 
-USES=		python:2.7 shebangfix tar:bzip2
-USE_PYTHON=	autoplist distutils
-USE_WX=		2.8+
+USES=		python:3.6+ shebangfix
+USE_PYTHON=	noflavors distutils autoplist # noflavors to force python to be of the same version as in vtk9, which always has default python version
+
+USE_WX=		3.0+
 WX_COMPS=	python:run
+
 SHEBANG_FILES=	mayavi/tests/csv_files/csv_2_py
 
-DEP1=		vtk6
-
-pre-configure:
-	if [ ! -e ${PREFIX}/lib/python2.7/site-packages/vtk/__init__.py ]; then \
-		${ECHO_MSG} "Port math/vtk6 is installed without PYTHON option."; \
-		${ECHO_MSG} "Please reinstall with PYTHON selected."; \
-		${FALSE}; \
-	else \
-		${ECHO_MSG} "Good, math/vtk6 is installed with PYTHON option!"; \
-	fi
+POST_PLIST=	fix-plist
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/tvtk/array_ext.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/tvtk/array_ext*.so
+
+fix-plist:
+	@${REINPLACE_CMD} -e "s|${PYTHONPREFIX_SITELIBDIR:S/${PREFIX}\///}/mayavi/preferences/__pycache__$$||" ${TMPPLIST}
+	@${REINPLACE_CMD} -e "s|${PYTHONPREFIX_SITELIBDIR:S/${PREFIX}\///}/tvtk/plugins/scene/__pycache__$$||" ${TMPPLIST}
 
 .include <bsd.port.mk>

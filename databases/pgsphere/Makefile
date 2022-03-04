@@ -1,9 +1,8 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@sunpoet.net>
-# $FreeBSD$
 
 PORTNAME=	pgsphere
 PORTVERSION=	1.1.5
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	databases geography
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -25,7 +24,7 @@ TEST_TARGET=	installcheck
 DATADIR=	${PREFIX}/share/postgresql
 DOCSDIR?=	${PREFIX}/share/doc/postgresql
 
-GH_TAGNAME=	f36ffd6
+GH_TAGNAME=	e0b303d
 USE_GITHUB=	yes
 
 DOCS_MAKE_ARGS_OFF=	DOCS=""

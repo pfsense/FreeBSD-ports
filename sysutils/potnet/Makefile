@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	potnet
-DISTVERSION=	0.1.2
-PORTREVISION=	4
+DISTVERSION=	0.4.4
+PORTREVISION=	17
 CATEGORIES=	sysutils
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -16,79 +14,95 @@ USES=	cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	pizzamig
 
-PLIST_FILES=	bin/potnet
+PLIST_FILES=	bin/potcpu bin/potnet
 
-CARGO_CRATES=	aho-corasick-0.6.9 \
-		ansi_term-0.11.0 \
-		atty-0.2.11 \
-		backtrace-0.3.9 \
-		backtrace-sys-0.1.24 \
-		bitflags-0.9.1 \
-		bitflags-1.0.4 \
-		bytecount-0.3.2 \
-		cargo_metadata-0.5.8 \
-		cc-1.0.25 \
-		cfg-if-0.1.6 \
-		clap-2.32.0 \
-		env_logger-0.5.13 \
-		error-chain-0.11.0 \
-		failure-0.1.3 \
-		failure_derive-0.1.3 \
-		fuchsia-zircon-0.3.3 \
-		fuchsia-zircon-sys-0.3.3 \
+CARGO_CRATES=	ansi_term-0.11.0 \
+		arrayref-0.3.5 \
+		arrayvec-0.4.11 \
+		atty-0.2.13 \
+		autocfg-0.1.6 \
+		backtrace-0.3.38 \
+		backtrace-sys-0.1.31 \
+		base64-0.10.1 \
+		bitflags-1.1.0 \
+		blake2b_simd-0.5.8 \
+		bytecount-0.4.0 \
+		byteorder-1.3.2 \
+		cargo_metadata-0.6.4 \
+		cc-1.0.45 \
+		cfg-if-0.1.9 \
+		chrono-0.4.9 \
+		clap-2.33.0 \
+		cloudabi-0.0.3 \
+		constant_time_eq-0.1.4 \
+		crossbeam-utils-0.6.6 \
+		dirs-2.0.2 \
+		dirs-sys-0.3.4 \
+		either-1.5.3 \
+		error-chain-0.12.1 \
+		failure-0.1.5 \
+		failure_derive-0.1.5 \
+		fuchsia-cprng-0.1.1 \
 		glob-0.2.11 \
-		heck-0.3.0 \
-		humantime-1.1.1 \
-		itoa-0.4.3 \
-		lazy_static-1.1.0 \
-		libc-0.2.49 \
-		log-0.4.6 \
-		memchr-2.1.1 \
-		proc-macro2-0.4.20 \
-		pulldown-cmark-0.1.2 \
-		quick-error-1.2.2 \
-		quote-0.6.9 \
-		rand-0.4.3 \
-		redox_syscall-0.1.40 \
-		redox_termios-0.1.1 \
-		regex-1.0.5 \
-		regex-syntax-0.6.2 \
-		remove_dir_all-0.5.1 \
-		rustc-demangle-0.1.9 \
-		ryu-0.2.6 \
-		same-file-1.0.4 \
+		heck-0.3.1 \
+		ipnet-2.0.0 \
+		itertools-0.8.0 \
+		itoa-0.4.4 \
+		lazy_static-1.4.0 \
+		libc-0.2.62 \
+		log-0.4.8 \
+		nodrop-0.1.13 \
+		num-integer-0.1.41 \
+		num-traits-0.2.8 \
+		proc-macro-error-0.2.6 \
+		proc-macro2-0.4.30 \
+		proc-macro2-1.0.4 \
+		pulldown-cmark-0.2.0 \
+		quote-0.6.13 \
+		quote-1.0.2 \
+		rand-0.4.6 \
+		rand_core-0.3.1 \
+		rand_core-0.4.2 \
+		rand_os-0.1.3 \
+		rdrand-0.4.0 \
+		redox_syscall-0.1.56 \
+		redox_users-0.3.1 \
+		remove_dir_all-0.5.2 \
+		rust-argon2-0.5.1 \
+		rustc-demangle-0.1.16 \
+		ryu-1.0.0 \
+		same-file-1.0.5 \
 		semver-0.9.0 \
 		semver-parser-0.7.0 \
-		serde-1.0.80 \
-		serde_derive-1.0.80 \
-		serde_json-1.0.32 \
-		skeptic-0.13.3 \
-		strsim-0.7.0 \
-		structopt-0.2.13 \
-		structopt-derive-0.2.13 \
-		structopt-flags-0.2.1 \
-		syn-0.15.17 \
-		synstructure-0.10.1 \
+		serde-1.0.101 \
+		serde_derive-1.0.101 \
+		serde_json-1.0.40 \
+		simplelog-0.7.3 \
+		skeptic-0.13.4 \
+		strsim-0.8.0 \
+		structopt-0.3.2 \
+		structopt-derive-0.3.2 \
+		structopt-flags-0.3.5 \
+		syn-0.15.44 \
+		syn-1.0.5 \
+		synstructure-0.10.2 \
 		tempdir-0.3.7 \
-		termcolor-1.0.4 \
-		termion-1.5.1 \
-		textwrap-0.10.0 \
-		thread_local-0.3.6 \
-		ucd-util-0.1.2 \
-		unicode-segmentation-1.2.1 \
-		unicode-width-0.1.5 \
+		term-0.6.1 \
+		textwrap-0.11.0 \
+		time-0.1.42 \
+		unicode-segmentation-1.3.0 \
+		unicode-width-0.1.6 \
 		unicode-xid-0.1.0 \
-		utf8-ranges-1.0.2 \
+		unicode-xid-0.2.0 \
 		vec_map-0.8.1 \
 		version_check-0.1.5 \
-		walkdir-2.2.6 \
-		winapi-0.3.6 \
+		walkdir-2.2.9 \
+		winapi-0.3.8 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.1 \
-		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		wincolor-1.0.1
+		winapi-util-0.1.2 \
+		winapi-x86_64-pc-windows-gnu-0.4.0
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/potnet
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/potcpu
 .include <bsd.port.mk>
-

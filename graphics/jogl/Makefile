@@ -1,9 +1,8 @@
 # Created by: Peter Jeremy <peterjeremy@optushome.com.au>
-# $FreeBSD$
 
 PORTNAME=	jogl
 PORTVERSION=	1.1.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics devel java
 MASTER_SITES=	http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1/
 EXTRACT_SUFX=	-src.zip
@@ -28,14 +27,13 @@ ALL_TARGET=	all
 # jogl/make/build.xml
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=		zip
+USES=		gl xorg zip
 USE_XORG=	x11 xau xdamage xdmcp xext xfixes xorgproto xt xxf86vm
 USE_GL=		gl
 USE_ANT=	yes
 USE_LDCONFIG=	yes
 USE_LOCALE=	en_US.UTF-8
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 BUILD_WRKSRC=	${WRKSRC}/jogl/make
 BUILD_BINPATH=	${WRKSRC}/bin
@@ -51,20 +49,20 @@ ALL_TARGET+=	javadoc
 
 .include <bsd.port.pre.mk>
 
-.if ${JAVA_PORT_VERSION:M1.6.*}
+.if ${JAVA_PORT_VERSION:M*6*}
 PLIST_SUB+=	JDK6=""
 PLIST_SUB+=	JDK7="@comment "
 .endif
-.if ${JAVA_PORT_VERSION:M1.7.*}
+.if ${JAVA_PORT_VERSION:M*7*}
 PLIST_SUB+=	JDK6="@comment "
 PLIST_SUB+=	JDK7=""
 .endif
-.if ${JAVA_PORT_VERSION:M1.8.*}
+.if ${JAVA_PORT_VERSION:M*8*}
 PLIST_SUB+=	JDK6="@comment "
 PLIST_SUB+=	JDK7="@comment "
 .endif
 
-.if ${JAVA_PORT_VERSION:M1.8.*}
+.if ${JAVA_PORT_VERSION:M*8*}
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-build.xml
 .endif
 

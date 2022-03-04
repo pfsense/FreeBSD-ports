@@ -1,9 +1,8 @@
 # Created by: Ganbold Tsagaankhuu <ganbold@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ateam_mysql_ldap_auth
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 
 MAINTAINER=	ganbold@FreeBSD.org
@@ -16,6 +15,8 @@ LIB_DEPENDS=	libconfig.so:devel/libconfig
 
 USE_OPENLDAP=	yes
 USES=		gmake mysql:client,server
+
+IGNORE_WITH_MYSQL=	57 80 101m 102m 103m 57p 57w
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ateamsystems

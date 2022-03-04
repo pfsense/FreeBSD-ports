@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	etm
-DISTVERSION=	1.0.4
-PORTREVISION=	1
+DISTVERSION=	1.1.1
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

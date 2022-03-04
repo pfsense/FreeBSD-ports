@@ -1,5 +1,4 @@
 # Created by: Joe Barbish <fbsd_user@a1poweruser.com>
-# $FreeBSD$
 
 PORTNAME=	ipfilter2dshield
 PORTVERSION=	1.0
@@ -11,6 +10,9 @@ EXTRACT_SUFX=	.txt
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Official DShield client for ipfilter firewall logs
+
+DEPRECATED=	Abandonware, no word of it on upstream web site
+EXPIRATION_DATE=2022-03-31
 
 RUN_DEPENDS=	p5-Net-Netmask>=0:net-mgmt/p5-Net-Netmask
 

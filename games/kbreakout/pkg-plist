@@ -1,4 +1,5 @@
 bin/kbreakout
+share/qlogging-categories5/kbreakout.categories
 share/applications/org.kde.kbreakout.desktop
 share/icons/hicolor/128x128/apps/kbreakout.png
 share/icons/hicolor/16x16/apps/kbreakout.png
@@ -56,6 +57,7 @@ share/locale/ga/LC_MESSAGES/kbreakout.mo
 share/locale/gl/LC_MESSAGES/kbreakout.mo
 share/locale/hr/LC_MESSAGES/kbreakout.mo
 share/locale/hu/LC_MESSAGES/kbreakout.mo
+share/locale/id/LC_MESSAGES/kbreakout.mo
 share/locale/is/LC_MESSAGES/kbreakout.mo
 share/locale/it/LC_MESSAGES/kbreakout.mo
 share/locale/ja/LC_MESSAGES/kbreakout.mo
@@ -64,6 +66,7 @@ share/locale/km/LC_MESSAGES/kbreakout.mo
 share/locale/ko/LC_MESSAGES/kbreakout.mo
 share/locale/lt/LC_MESSAGES/kbreakout.mo
 share/locale/lv/LC_MESSAGES/kbreakout.mo
+share/locale/ml/LC_MESSAGES/kbreakout.mo
 share/locale/mr/LC_MESSAGES/kbreakout.mo
 share/locale/nb/LC_MESSAGES/kbreakout.mo
 share/locale/nds/LC_MESSAGES/kbreakout.mo
@@ -76,6 +79,7 @@ share/locale/ro/LC_MESSAGES/kbreakout.mo
 share/locale/ru/LC_MESSAGES/kbreakout.mo
 share/locale/sk/LC_MESSAGES/kbreakout.mo
 share/locale/sl/LC_MESSAGES/kbreakout.mo
+share/locale/sq/LC_MESSAGES/kbreakout.mo
 share/locale/sr/LC_MESSAGES/kbreakout.mo
 share/locale/sv/LC_MESSAGES/kbreakout.mo
 share/locale/tr/LC_MESSAGES/kbreakout.mo

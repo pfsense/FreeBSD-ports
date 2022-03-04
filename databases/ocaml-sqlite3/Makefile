@@ -1,5 +1,4 @@
 # Created by: "Meikel Brandmeyer" <ocaml-sqlite3-port@kotka.de>
-# $FreeBSD$
 
 PORTNAME=	sqlite3
 PORTVERSION=	4.0.5
@@ -7,13 +6,15 @@ DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	ocaml-
 
-MAINTAINER=	dem.procopiou@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml bindings to sqlite3 library
 
 LICENSE=	OCSQLT3
 LICENSE_NAME=	OCaml-SQLite3 unique permissive license
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 USES=			compiler:features gmake pkgconfig sqlite
 USE_OCAML=		yes

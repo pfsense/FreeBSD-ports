@@ -1,5 +1,4 @@
 # Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	springframework
 PORTVERSION=	3.2.1
@@ -17,7 +16,6 @@ CONFLICTS=	springframework-3.1.*
 NO_BUILD=	yes
 USE_JAVA=	yes
 USES=		zip
-JAVA_VERSION=	1.6+
 
 OPTIONS_DEFINE=	DOCS RESRCS
 RESRCS_DESC=	Install resource files

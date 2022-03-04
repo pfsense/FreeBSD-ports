@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyblake2
 PORTVERSION=	1.1.2
 CATEGORIES=	security python
@@ -12,7 +10,7 @@ COMMENT=	BLAKE2 hash function extension module
 LICENSE=	CC0-1.0
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 

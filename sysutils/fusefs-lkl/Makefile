@@ -1,9 +1,8 @@
 # Created by: Conrad Meyer <cem@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lkl
 DISTVERSION=	4.16.g20180628
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
@@ -27,7 +26,7 @@ GH_PROJECT=	linux
 GH_TAGNAME=	86dd3afb590eccc1903611bdaa8bac87757eb80d
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=No one has added other architecture ld formats yet
+ONLY_FOR_ARCHS_REASON=ld formats not available for other architectures
 
 WRKSRC_SUBDIR=	tools/lkl
 MAKE_JOBS_UNSAFE=yes

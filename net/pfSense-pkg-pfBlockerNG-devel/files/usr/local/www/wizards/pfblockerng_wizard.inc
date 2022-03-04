@@ -3,8 +3,8 @@
  * pfblockerng_wizard.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2018 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,7 +67,7 @@ function step2_submitphpaction() {
 }
 
 function step3_submitphpaction() {
-        global $config, $stepid, $input_errors;
+	global $config, $stepid, $input_errors;
 
 	if ($_POST) {
 		if ($_POST['back'] == 'Back') {
@@ -104,7 +104,7 @@ function step4_submitphpaction() {
 	if (json_last_error() !== JSON_ERROR_NONE || !is_array($feed_info_raw)) {
 		$input_errors[] = 'pfBlockerNG: Feeds database missing. Cannot continue - Reinstall package.';
 		return;
-        }
+	}
 
 	// Remove any pfBlockerNG settings and file/folder contents
 	pfb_remove_config_settings();
@@ -129,10 +129,13 @@ function step4_submitphpaction() {
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip']		= $config['pfblockerng_wizard']['step3']['pfb_dnsvip'];
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport'];
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport_ssl']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport_ssl'];
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']		= $config['pfblockerng_wizard']['step3']['pfb_dnsblv6'] ? 'on' : '';
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsbl'] 		= 'on';
 
 	// Default DNSBL Whitelist
-	$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']		= 
+	if ($config['pfblockerng_wizard']['step3']['suppression'] == 'on') {
+
+		$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']		= 
 
 "czMuYW1hem9uYXdzLmNvbQ0KczMtMS5hbWF6b25hd3MuY29tICMgQ05BTUUgZm9yIChzMy5hbWF6b25hd3MuY29tKQ0KLmdpdGh1Yi5jb20NCi5naXRodWJ1c2VyY29udGVudC5jb20gDQp
 naXRodWIubWFwLmZhc3RseS5uZXQgIyBDTkFNRSBmb3IgKHJhdy5naXRodWJ1c2VyY29udGVudC5jb20pDQouZ2l0bGFiLmNvbQ0KLmFwcGxlLmNvbSANCi5zb3VyY2Vmb3JnZS5uZXQNCi5mbHMtbmEuYW1hem9uLmNvbSAjIGFsZXhhDQouY29udHJ
@@ -146,17 +149,13 @@ kcm9wYm94LmNvbQ0Kd3d3LmRyb3Bib3guY29tDQp3d3cuZHJvcGJveC1kbnMuY29tICMgQ05BTUUgZm9
 lLmNvbQ0KcGJzLnR3aW1nLmNvbSAjIHR3aXR0ZXIgaW1hZ2VzDQp3d3cucGJzLnR3aW1nLmNvbSAjIHR3aXR0ZXIgaW1hZ2VzDQpjczE5Ni53YWMuZWRnZWNhc3RjZG4ubmV0ICMgQ05BTUUgZm9yIChwYnMudHdpbWcuY29tKQ0KY3MyLXdhYy5hcHI
 tODMxNS5lZGdlY2FzdGRucy5uZXQgIyBDTkFNRSBmb3IgKHBicy50d2ltZy5jb20pDQpjczItd2FjLXVzLjgzMTUuZWNkbnMubmV0ICMgQ05BTUUgZm9yIChwYnMudHdpbWcuY29tKQ0KY3M0NS53YWMuZWRnZWNhc3RjZG4ubmV0ICMgQ05BTUUgZm9
 yIChwYnMudHdpbWcuY29tKQ==";
+	}
 
 	// Selected Alias/Groups to add to default installation
 	$new = array();
 	$new['pfblockernglistsv4']		= $new['pfblockerngdnsbl'] = $new['pfblockerngdnsbl'] = array();
 	$new['pfblockernglistsv4']['PRI1']	= $feed_info_raw['ipv4']['PRI1'];
-	$new['pfblockerngdnsbl']['EasyList']	= $feed_info_raw['dnsbl']['EasyList'];
-	$new['pfblockerngdnsbl']['ADs']		= $feed_info_raw['dnsbl']['ADs'];
-	$new['pfblockerngdnsbl']['Malicious']	= $feed_info_raw['dnsbl']['Malicious'];
-
-	// Use only EasyList/EasyPrivacy configuration 
-	$new['pfblockerngdnsbl']['EasyList']['feeds'] = array_slice($new['pfblockerngdnsbl']['EasyList']['feeds'], 0, 2);
+	$new['pfblockerngdnsbl']['ADs_Basic']	= $feed_info_raw['dnsbl']['ADs_Basic'];
 
 	foreach ($new as $key => $data) {
 		foreach ($data as $alias => $info) {

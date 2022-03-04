@@ -1,8 +1,7 @@
 # Created by: Martin Matuska (mm@FreeBSD.org)
-# $FreeBSD$
 
 PORTNAME=	gollem
-PORTVERSION=	3.0.12
+PORTVERSION=	3.0.13
 CATEGORIES=	ftp www pear
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
@@ -12,7 +11,7 @@ COMMENT=	Horde Web-based File Manager
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		horde cpe
+USES=		horde php cpe
 USE_PHP=	gettext json
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \

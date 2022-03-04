@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-squidGuard
 PORTVERSION=	1.16.18
-PORTREVISION=	1
+PORTREVISION=	20
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,8 @@ COMMENT=	pfSense package squidGuard
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/squidGuard:www/squidguard
+RUN_DEPENDS=	pfSense-pkg-squid>0:www/pfSense-pkg-squid \
+		squidGuard>0:www/squidguard
 
 NO_BUILD=	yes
 NO_MTREE=	yes

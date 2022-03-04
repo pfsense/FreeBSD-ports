@@ -1,7 +1,6 @@
 # Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	2
 PKGNAMESUFFIX=	-video-arachnoid
 DISTFILES=	${PORTNAME}${PKGNAMESUFFIX}-src-${PORTVERSION}${EXTRACT_SUFX}:plugin
 
@@ -9,6 +8,7 @@ COMMENT=	The arachnoid video plugin for Mupen64plus
 
 LIB_DEPENDS=	libmupen64plus.so.2:emulators/mupen64plus-core
 
+USES+=		gl
 USE_GL=		gl glu
 USE_SDL=	#
 

@@ -1,15 +1,14 @@
 # Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	clucene
 PORTVERSION=	2.3.3.4
-PORTREVISION=	16
+PORTREVISION=	19
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-core-unstable/2.3
 DISTNAME=	${PORTNAME}-core-${PORTVERSION}
 
 MAINTAINER=	office@FreeBSD.org
-COMMENT=	CLucene is a C++ port of Lucene
+COMMENT=	C++ port of Lucene
 
 LICENSE=	APACHE20 LGPL21
 LICENSE_COMB=	dual

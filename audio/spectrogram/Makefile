@@ -1,11 +1,8 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	spectrogram
-PORTVERSION=	20161017
+PORTVERSION=	20190725
 CATEGORIES=	audio
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Audio visualization for sndio
 
 LICENSE=	ISCL
@@ -14,12 +11,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsndio.so:audio/sndio
 
-USES=	pkgconfig
+USES=		pkgconfig xorg
 USE_XORG=	x11
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dim13
-GH_TAGNAME=	432e96b
+GH_TAGNAME=	a5f5fef
 
 PLIST_FILES=	bin/spectrogram
 

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	construo
 PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -17,7 +14,7 @@ LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	Construo
 
-USES=		autoreconf gmake
+USES=		autoreconf gl gmake xorg
 USE_XORG=	sm ice x11 xext xxf86vm
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes

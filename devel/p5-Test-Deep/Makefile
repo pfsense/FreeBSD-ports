@@ -1,8 +1,7 @@
 # Created by: Alex Kapranoff <alex@kapranoff.ru>
-# $FreeBSD$
 
 PORTNAME=	Test-Deep
-PORTVERSION=	1.128
+PORTVERSION=	1.130
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

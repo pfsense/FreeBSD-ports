@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	ecrire
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.3
+DISTVERSION=	0.3.4
 CATEGORIES=	editors enlightenment
 DIST_SUBDIR=	enlightenment
 

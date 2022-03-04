@@ -1,9 +1,8 @@
 # Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ogmrip
 PORTVERSION=	1.0.1
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}
 
@@ -25,18 +24,18 @@ RUN_DEPENDS=	lame:audio/lame \
 		mplayer:multimedia/mplayer \
 		ogmmerge:multimedia/ogmtools
 
-USES=		desktop-file-utils gmake libtool localbase:ldflags pathfix pkgconfig
+USES=		desktop-file-utils gmake gnome libtool localbase:ldflags \
+		pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 intlhack libxml2
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	GTK2 ENCHANT MATROSKA MP4BOX NLS THEORA FAAC SRT DEBUG
+OPTIONS_DEFINE=	GTK2 ENCHANT MATROSKA NLS THEORA FAAC SRT DEBUG
 OPTIONS_DEFAULT=GTK2
 OPTIONS_SUB=	yes
 ENCHANT_DESC=	Enable spell checking for text subtitles
 MATROSKA_DESC=	Enable Matroska container support
-MP4BOX_DESC=	Enable Mpeg-4 container support
 THEORA_DESC=	Enable Ogg Theora video codec support
 SRT_DESC=	Enable SRT text subtitles support
 
@@ -51,9 +50,6 @@ ENCHANT_LIB_DEPENDS=	libenchant.so:textproc/enchant
 
 MATROSKA_CONFIGURE_ENABLE=mkv-support
 MATROSKA_RUN_DEPENDS=	mkvmerge:multimedia/mkvtoolnix
-
-MP4BOX_CONFIGURE_ENABLE=mp4-support
-MP4BOX_RUN_DEPENDS=	mp4box:multimedia/gpac-mp4box
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls

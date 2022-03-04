@@ -1,31 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	epson-inkjet-printer-escpr
-PORTVERSION=	1.6.33
+DISTVERSION=	1.7.17
 DISTVERSIONSUFFIX=	-1lsb3.2
 CATEGORIES=	print
-MASTER_SITES=	https://download3.ebz.epson.net/dsc/f/03/00/08/70/14/e33b7a89e843b3ac97dcab773f03fbac7769f147/
+MASTER_SITES=	https://download3.ebz.epson.net/dsc/f/03/00/12/99/78/73605b3f8aac63694fdabee6bd43389731696cd9/
 
 MAINTAINER=	tatsuki_makino@hotmail.com
 COMMENT=	Epson Inkjet Printer Driver (ESC/P-R) for Linux
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcupsimage.so:print/cups
-FETCH_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
+RUN_DEPENDS=	${LOCALBASE}/libexec/cups/filter/gstoraster:print/cups-filters
 
-USES=		autoreconf dos2unix gmake libtool
+USES=		autoreconf dos2unix libtool
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
+PORTDOCS=	AUTHORS NEWS README README.ja
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-lsb
 INSTALL_TARGET=	install-strip
+# PORTSCOUT=ignore:1 MASTER_SITES is changed in each version
+PORTSCOUT=	ignore:1
 SUB_FILES=	pkg-message
-PORTDOCS=	AUTHORS COPYING NEWS README README.ja
 
 OPTIONS_DEFINE=	DOCS
-
-PORTSCOUT=	ignore	# MASTER_SITES is changed in each version
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

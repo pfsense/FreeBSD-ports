@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	xetex
 PORTVERSION=	0.99992
-PORTREVISION=	22
+PORTREVISION=	42
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
 PKGNAMEPREFIX=	tex-
@@ -12,7 +10,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	texlive-${DISTVERSION_TEXLIVE_SOURCE}-source${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	TeX System with Unicode and Modern Font Technologies
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
@@ -23,7 +21,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png \
 		libTECkit.so:textproc/teckit
 
-USES=		compiler:c++11-lib pkgconfig tar:xz
+USES=		compiler:c++11-lib gnome pkgconfig tar:xz xorg
 USE_CXXSTD=	gnu++11
 USE_TEX=	kpathsea web2c texmf formats fmtutil dvipdfmx
 USE_XORG=	pixman
@@ -77,6 +75,8 @@ CONFIGURE_ARGS+=--with-system-$L \
 		--with-$L-include=${LOCALBASE}/include \
 		--with-$L-libdir=${LOCALBASE}/lib
 .endfor
+CONFIGURE_ARGS+=CC="${CC}" \
+		CXX="${CXX}"
 CPPFLAGS+=	-I${LOCALBASE}/include/harfbuzz -I${LOCALBASE}/include
 MAKE_JOBS_UNSAFE=	yes
 TEX_FORMATS=	xetex

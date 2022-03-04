@@ -1,9 +1,8 @@
 # Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
 
 PORTNAME=	split-sequence
 PORTVERSION=	20011114.1
-PORTREVISION=	33
+PORTREVISION=	63
 CATEGORIES=	devel lisp
 PKGNAMEPREFIX=	cl-
 DISTFILES=	# none

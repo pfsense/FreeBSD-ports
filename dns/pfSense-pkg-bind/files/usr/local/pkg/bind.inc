@@ -3,7 +3,7 @@
  * bind.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2013 Marcello Coutinho
@@ -114,7 +114,7 @@ function bind_sync() {
 	$bind = $config['installedpackages']['bind']['config'][0];
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
-	$rndc_port = $bind['controlport'] == "" ? "953" : $bind['controlport'];
+	$rndc_port = $bind['controlport'] == "" ? "8953" : $bind['controlport'];
 	$rndc_confgen_opts = "-p " . escapeshellarg($rndc_port);
 	if (!file_exists(BIND_LOCALBASE."/etc/rndc-confgen.pfsense") && file_exists($rndc_confgen)) {
 		exec("$rndc_confgen $rndc_confgen_opts ", $rndc_conf);
@@ -145,6 +145,7 @@ function bind_sync() {
 			if (preg_match("/named.conf/", $line)) {
 				$confgen = "named.conf";
 				file_put_contents(BIND_LOCALBASE . "/etc/rndc.conf", $rndc_file);
+				@symlink(BIND_LOCALBASE . "/etc/rndc.conf", BIND_LOCALBASE . "/etc/namedb/rndc.conf");
 			}
 		}
 	}
@@ -154,13 +155,8 @@ function bind_sync() {
 	} else {
 		$bindzone = array();
 	}
-	$rpz_zones = array();
-	foreach ($bindzone as $zone) {
-		if (isset($zone['rpz']) && ($zone['rpz'] == "on")) {
-			$rpz_zones[] = $zone["name"];
-		}
-	}
 	$bind_enable = $bind['enable_bind'];
+	$bind_dnssec_validation = $bind['bind_dnssec_validation'];
 	$bind_forwarder = $bind['bind_forwarder'];
 	$forwarder_ips = $bind['bind_forwarder_ips'];
 	$ram_limit = $bind['bind_ram_limit'] ? $bind['bind_ram_limit'] : "256M";
@@ -183,13 +179,17 @@ options {
 	max-cache-size {$ram_limit};
 
 EOD;
-	if (count($rpz_zones) > 0) {
-		$bind_conf .= "\tresponse-policy {\n";
-		foreach ($rpz_zones as $rpz) {
-			$bind_conf .= "\t\tzone \"{$rpz}\";\n";
-		}
-		$bind_conf .= "\t};\n";
+
+	$bind_conf .= "\tdnssec-validation ";
+	if ($bind_dnssec_validation == 'on') {
+		$bind_conf .= "yes";
+	} elseif ($bind_dnssec_validation == 'off') {
+		$bind_conf .= "no";
+	} else {
+		$bind_conf .= "auto";
 	}
+	$bind_conf .= ";\n\n";
+
 	// Check response rate limit option
 	//https://kb.isc.org/article/AA-01000/0/A-Quick-Introduction-to-Response-Rate-Limiting.html
 	//http://ss.vix.su/~vjs/rl-arm.html
@@ -240,6 +240,9 @@ EOD;
 
 	// Forwarder config
 	if ($bind_forwarder == 'on') {
+		if (!empty($forwarder_ips) && !strpos($forwarder_ips, ';', -1)) {
+			$forwarder_ips .= ';';
+		}
 		$bind_conf .= "\tforwarders { {$forwarder_ips} };\n";
 	}
 	if ($bind_notify == 'on') {
@@ -352,6 +355,22 @@ EOD;
 		$bind_conf .= "\trecursion {$viewrecursion};\n";
 		$bind_conf .= "\tmatch-clients { $viewmatchclients; };\n";
 		$bind_conf .= "\tallow-recursion { $viewallowrecursion; };\n";
+
+		$rpz_zones = array();
+		foreach ($bindzone as $zone) {
+			if (isset($zone['rpz']) && ($zone['rpz'] == "on") &&
+			    ($zone['disabled'] != "on") && ($zone['view'] == $viewname)) {
+			    $rpz_zones[] = reverse_zonename($zone['name'], $zone['reverso'], $zone['reversv6o']);
+			}
+		}
+		if (!empty($rpz_zones)) {
+			$bind_conf .= "\n\tresponse-policy {\n";
+			foreach ($rpz_zones as $rpz) {
+				$bind_conf .= "\t\tzone \"{$rpz}\";\n";
+			}
+			$bind_conf .= "\t};\n";
+		}
+
 		if (!empty($viewcustomoptions)) {
 			$bind_conf .= preg_replace("/^/m", "\t", $viewcustomoptions)."\n";
 		}
@@ -411,15 +430,7 @@ EOD;
 			if (in_array($viewname, $zoneviewlist)) {
 				$zoneview = $viewname;
 				// Add zone name
-				if ($zonereverso == "on") {
-					if ($zonereversv6o == "on") {
-						$bind_conf .= "\tzone \"{$zonename}.ip6.arpa\" {\n";
-					} else {
-						$bind_conf .= "\tzone \"{$zonename}.in-addr.arpa\" {\n";
-					}
-				} else {
-					$bind_conf .= "\tzone \"{$zonename}\" {\n";
-				}
+				$bind_conf .= "\tzone \"" . reverse_zonename($zonename, $zonereverso, $zonereversv6o) . "\" {\n";
 
 				$bind_conf .= "\t\ttype {$zonetype};\n";
 				// Add zone file (if not forwarder)
@@ -450,7 +461,9 @@ EOD;
 					case 'slave':
 						$bind_conf .= "\t\tmasters { $zoneipslave; };\n";
 						$bind_conf .= "\t\tallow-query { $zoneallowquery; };\n";
-						$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
+						if (!preg_match('/allow-transfer/', $zonecustom)) {
+							$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
+						}
 						break;
 					case 'forward':
 						$bind_conf .= "\t\tforward only;\n";
@@ -494,15 +507,7 @@ EOD;
 						$zonereversv6o = $zone['reversv6o'];
 
 						$zone_conf = "\$TTL {$zonetll}\n;\n";
-						if ($zonereverso == "on") {
-							if ($zonereversv6o == "on") {
-								$zone_conf .= "\$ORIGIN {$zonename}.ip6.arpa.\n\n";
-							} else {
-								$zone_conf .= "\$ORIGIN {$zonename}.in-addr.arpa.\n\n";
-							}
-						} elseif (!$zonerpz) {
-							$zone_conf .= "\$ORIGIN {$zonename}.\n\n";
-						}
+						$zone_conf .= "\$ORIGIN " . reverse_zonename($zonename, $zonereverso, $zonereversv6o) . ".\n\n";
 						$zone_conf .= ";\tDatabase file {$zonename}.DB for {$zonename} zone.\n";
 						$zone_conf .= ";\tDo not edit this file!!!\n";
 						$zone_conf .= ";\tZone version {$zoneserial}\n;\n";
@@ -585,15 +590,30 @@ EOD;
 							$zone_conf .= "\n\n;\n;custom zone records\n;\n".base64_decode($zone['customzonerecords'])."\n";
 						}
 
+						// Freeze dynamic zones to prevent journal corruption
+						$zone_is_dynamic = (($zone['enable_updatepolicy'] == "on") || ($zoneallowupdate != "none"));
+						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
+						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
+						if ($zone_is_dynamic) {
+							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+							// TODO: diff frozen zone DB with pfSense's stored DB file
+							//       and (optionally?) add dynamic records to customzonerecords
+						}
+
 						// Save zone configuration DB file
 						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
+
+						// Thaw frozen dynamic zone
+						if ($zone_is_dynamic) {
+							exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+						}
 
 						$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($zone_conf);
 						$write_config++;
 						// Check DNSSEC keys creation for master zones
 						if ($zone['dnssec'] == "on") {
 							$zone_found = 0;
-							foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/*{$zonename}*key", GLOB_NOSORT) as $filename) {
+							foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$zone_found++;
 							}
 							if ($zone_found == 0) {
@@ -612,15 +632,7 @@ EOD;
 									log_error("[bind] {$key_restored} DNSSEC keys restored from XML backup for {$zonename} zone.");
 								}
 								$dnssec_bin = "/usr/local/sbin/dnssec-keygen";
-								if ($zonereverso == "on") {
-									if ($zonereversv6o == "on") {
-										$z = "{$zonename}.ip6.arpa";
-									} else {
-										$z = "{$zonename}.in-addr.arpa";
-									}
-								} else {
-									$z = $zonename;
-								}
+								$z = reverse_zonename($zonename, $zonereverso, $zonereversv6o);
 								if (file_exists($dnssec_bin) && $key_restored == 0) {
 									exec("{$dnssec_bin} -a ECDSAP256SHA256 -K " . CHROOT_LOCALBASE . "/etc/namedb/keys {$z}", $kout);
 									exec("{$dnssec_bin} -a ECDSAP256SHA256 -K " . CHROOT_LOCALBASE . "/etc/namedb/keys -fk {$z}", $kout);
@@ -633,7 +645,7 @@ EOD;
 							}
 							// Get DS keys
 							$dsfromkey = "/usr/local/sbin/dnssec-dsfromkey";
-							foreach (glob(CHROOT_LOCALBASE."/etc/namedb/keys/*{$zonename}*key", GLOB_NOSORT) as $filename) {
+							foreach (glob(CHROOT_LOCALBASE."/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$zone_key = file_get_contents($filename);
 								if (preg_match("/IN DNSKEY 257 /", $zone_key) && file_exists($dsfromkey)) {
 									exec("$dsfromkey $filename", $dsset);
@@ -645,7 +657,7 @@ EOD;
 							// Save DNSSEC keys to xml
 							if ($zone['backupkeys'] == "on") {
 								$dnssec_keys = 0;
-								foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/*{$zonename}*", GLOB_NOSORT) as $filename) {
+								foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/K{$zonename}*", GLOB_NOSORT) as $filename) {
 									$file_found = 0;
 									if (is_array($config['installedpackages']['dnsseckeys']) && is_array($config['installedpackages']['dnsseckeys']['config'])) {
 										foreach ($config['installedpackages']['dnsseckeys']['config'] as $filer) {
@@ -702,7 +714,7 @@ EOD;
 				}
 			}
 		}
-		if (!$custom_root_zone) {
+		if (!$custom_root_zone && ($bind_forwarder != 'on')) {
 			$bind_conf .= "\tzone \".\" {\n";
 			$bind_conf .= "\t\ttype hint;\n";
 			$bind_conf .= "\t\tfile \"/etc/namedb/named.root\";\n";
@@ -729,13 +741,22 @@ EOD;
 		}
 		exec("/sbin/devfs -m {$bind_dev_dir} rule applyset", $dout);
 	}
+	// Handle /usr/local/lib/named for chroot
+	$bind_plugin_dir = CHROOT_LOCALBASE . BIND_LOCALBASE . "/lib/named";
+	rmdir_recursive($bind_plugin_dir);
+	safe_mkdir($bind_plugin_dir, 0755);
+	foreach (glob(BIND_LOCALBASE . "/lib/named/*.so") as $bind_plugin) {
+		copy($bind_plugin, CHROOT_LOCALBASE . $bind_plugin);
+	}
 	// http://www.unixwiz.net/techtips/bind9-chroot.html
 	file_put_contents(CHROOT_LOCALBASE . '/etc/namedb/named.conf', $bind_conf);
 	file_put_contents(CHROOT_LOCALBASE . '/etc/namedb/rndc.conf', $rndc_file);
 
 	if (!file_exists(CHROOT_LOCALBASE . "/etc/namedb/named.root")) {
-		// dig +tcp @a.root-servers.net > CHROOT_LOCALBASE."/etc/namedb/named.root"
 		$named_root = file_get_contents("http://www.internic.net/domain/named.root");
+		if (empty($named_root)) {
+			$named_root = file_get_contents("/usr/local/etc/namedb/named.root");
+		}
 		file_put_contents(CHROOT_LOCALBASE . "/etc/namedb/named.root", $named_root, LOCK_EX);
 	}
 	if (!file_exists(CHROOT_LOCALBASE."/etc/localtime")) {
@@ -752,7 +773,7 @@ EOD;
 	if ($bind_enable == "on") {
 		chmod($bind_sh, 0755);
 		restart_service("named");
-	} elseif (is_service_running('named')) {
+	} else {
 		stop_service("named");
 		chmod($bind_sh, 0644);
 	}
@@ -892,6 +913,9 @@ function bind_write_rcfile() {
 		fi
 EOD;
 	$rc['stop'] = <<<EOD
+		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
+		sleep 5
 		/usr/bin/killall -TERM named 2>/dev/null
 		sleep 2
 EOD;
@@ -900,8 +924,11 @@ EOD;
 		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		else
+			{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+			{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
+			sleep 5
 			/usr/bin/killall -TERM named 2>/dev/null
-				sleep 3
+			sleep 3
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		fi
 EOD;
@@ -1136,6 +1163,18 @@ function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 		} else {
 			log_error("BIND XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
 		}
+	}
+}
+
+function reverse_zonename($zonename, $zonereverso=false, $zonereversv6o=false) {
+	if ($zonereverso == "on") {
+		if ($zonereversv6o == "on") {
+			return $zonename . ".ip6.arpa";
+		} else {
+			return $zonename . ".in-addr.arpa";
+		}
+	} else {
+		return $zonename;
 	}
 }
 

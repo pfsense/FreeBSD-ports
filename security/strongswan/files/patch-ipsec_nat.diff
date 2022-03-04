@@ -72,6 +72,31 @@
  	}
  }
  
+--- src/libcharon/plugins/vici/vici_config.c.orig	2019-12-05 02:24:57 UTC
++++ src/libcharon/plugins/vici/vici_config.c
+@@ -751,7 +752,22 @@ CALLBACK(parse_ts, bool,
+ 	}
+ 	else
+ 	{
++		protoport = strchr(buf, '|');
++		if (protoport)
++			*(protoport++) = '\0';
++
+ 		ts = traffic_selector_create_from_cidr(buf, proto, from, to);
++
++		/* Deal with a specified NAT address as part of config as address|NATaddress */
++		if (protoport) {
++			traffic_selector_t *tmpts;
++
++			tmpts = traffic_selector_add_nat_from_subnet(ts, protoport);
++			if (tmpts == NULL) {
++				DBG1(DBG_CFG, "invalid NAT subnet: %s, skipped", protoport);
++				ts->destroy(ts);
++			}
++		}
+ 	}
+ 	if (!ts)
+ 	{
 --- src/libstrongswan/selectors/traffic_selector.c.orig	2017-08-27 17:45:53 UTC
 +++ src/libstrongswan/selectors/traffic_selector.c
 @@ -80,6 +80,21 @@ struct private_traffic_selector_t {

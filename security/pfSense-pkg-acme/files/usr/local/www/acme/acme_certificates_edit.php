@@ -53,9 +53,9 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","desc","status",
+	"name","descr","status",
 	"acmeaccount","keylength","ocspstaple",
-	"dnssleep","renewafter"
+	"debug","dnssleep","renewafter"
 );
 
 
@@ -345,7 +345,7 @@ $form = new \Form;
 $section = new \Form_Section('Edit Certificate options');
 $section->addInput(new \Form_Input('name', 'Name', 'text', $pconfig['name']
 ))->setHelp('The name set here will also be used to create or overwrite a certificate that might already exist with this name in the pfSense Certificate Manager.');
-$section->addInput(new \Form_Input('desc', 'Description', 'text', $pconfig['desc']));
+$section->addInput(new \Form_Input('descr', 'Description', 'text', $pconfig['descr']));
 $activedisable = array();
 $activedisable['active'] = "Active";
 $activedisable['disabled'] = "Disabled";
@@ -384,6 +384,13 @@ $section->addInput(new \Form_Checkbox(
 	'Add the OCSP Must Staple extension to the certificate.',
 	$pconfig['ocspstaple']
 ))->setHelp('Do not enable this option unless the software using the certificate also supports OCSP stapling.');
+
+$section->addInput(new \Form_Checkbox(
+	'debug',
+	'Debug',
+	'Log debug messages.',
+	$pconfig['debug']
+))->setHelp('Log and print debug messages on Issue/Renew.');
 
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 

@@ -3,7 +3,7 @@
  * status_frr.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2010-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2010-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2010 Nick Buraglio <nick@buraglio.com>
  * All rights reserved.
  *
@@ -155,6 +155,16 @@ if (is_array($config['installedpackages']['frrospf6d']['config'])) {
 }
 $ospf6d_enabled = (isset($ospf6d_conf) && !empty($ospf6d_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospf6d']);
 
+if (is_array($config['installedpackages']['frrripd']['config'])) {
+	$ripd_conf = &$config['installedpackages']['frrripd']['config'][0];
+}
+$ripd_enabled = (isset($ripd_conf) && !empty($ripd_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['ripd']);
+
+if (is_array($config['installedpackages']['frrbfd']['config'])) {
+	$bfdd_conf = &$config['installedpackages']['frrbfd']['config'][0];
+}
+$bfdd_enabled = (isset($bfdd_conf) && !empty($bfdd_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']);
+
 $pgtitle = array(gettext("Services"),gettext("FRR"),gettext("Status"));
 
 /* General commands for "All" screen or specific protocol pages */
@@ -178,10 +188,20 @@ if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf")) && $frr_
 	defCmdT("ospf_routes", "OSPF Routes", "{$control_script} ospf route", true, 1);
 }
 
+if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "rip")) && $frr_enabled && $ripd_enabled) {
+	defCmdT("rip_general", "RIP General", "{$control_script} rip general");
+	defCmdT("rip_routes", "RIP Routes", "{$control_script} rip routes");
+}
+
 if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf6")) && $frr_enabled && $ospf6d_enabled) {
 	defCmdT("ospf6_general", "OSPF6 General", "{$control_script} ospf6 general");
 	defCmdT("ospf6_neighbors", "OSPF6 Neighbors", "{$control_script} ospf6 neighbor");
 	defCmdT("ospf6_routes", "OSPF6 Routes", "{$control_script} ospf6 route", true, 1);
+}
+
+if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "bfd")) && $frr_enabled && $bfdd_enabled) {
+	defCmdT("bfd_peers_brief", "BFD Peers Brief", "{$control_script} bfd peer_br");
+	defCmdT("bfd_peers", "BFD Peers", "{$control_script} bfd peer");
 }
 
 $title_label = "FRR";
@@ -229,17 +249,31 @@ switch ($_REQUEST['protocol']) {
 			$message = "OSPF6 is not enabled";
 		}
 		break;
+	case "rip":
+		$title_label = "RIP";
+		if ($frr_enabled && $ripd_enabled) {
+			defCmdT("rip_general", "RIP General", "{$control_script} rip general");
+			defCmdT("rip_routes", "RIP Routes", "{$control_script} rip routes");
+		} else {
+			$message = "RIP is not enabled";
+		}
+		break;
+	case "bfd":
+		$title_label = "BFD";
+		if ($frr_enabled && $bfdd_enabled) {
+			defCmdT("bfd_peers_counters", "BFD Peers Counters", "{$control_script} bfd counters");
+		} else {
+			$message = "BFD is not enabled";
+		}
+		break;
 	case "config":
 		$title_label = "FRR Configuration";
 		$config_files = array(
-			'zebra',
-			'bgpd',
-			'ospfd',
-			'ospf6d',
+			'frr',
 			);
 		foreach ($config_files as $cf) {
 			if (file_exists("{$pkg_homedir}/{$cf}.conf") &&
-			    (filesize("{$pkg_homedir}/{$cf}.conf") > 0)) {
+				(filesize("{$pkg_homedir}/{$cf}.conf") > 0)) {
 				defCmdT("frr_{$cf}_config", "FRR {$cf}.conf", "/bin/cat {$pkg_homedir}/{$cf}.conf");
 			}
 		}
@@ -267,11 +301,15 @@ $tab_array[] = array(gettext("Zebra "), ($_REQUEST['protocol'] == "zebra"), "/st
 $tab_array[] = array(gettext("BGP"), ($_REQUEST['protocol'] == "bgp"), "/status_frr.php?protocol=bgp");
 $tab_array[] = array(gettext("OSPF"), ($_REQUEST['protocol'] == "ospf"), "/status_frr.php?protocol=ospf");
 $tab_array[] = array(gettext("OSPF6 "), ($_REQUEST['protocol'] == "ospf6"), "/status_frr.php?protocol=ospf6");
+$tab_array[] = array(gettext("RIP"), ($_REQUEST['protocol'] == "rip"), "/status_frr.php?protocol=rip");
+$tab_array[] = array(gettext("BFD"), ($_REQUEST['protocol'] == "bfd"), "/status_frr.php?protocol=bfd");
 $tab_array[] = array(gettext("Configuration"), ($_REQUEST['protocol'] == "config"), "/status_frr.php?protocol=config");
 $tab_array[] = array(gettext("[Global]"), false, "/pkg_edit.php?xml=frr.xml");
 $tab_array[] = array(gettext("[BGP Settings]"), false, "pkg_edit.php?xml=frr/frr_bgp.xml");
 $tab_array[] = array(gettext("[OSPF Settings]"), false, "/pkg_edit.php?xml=frr/frr_ospf.xml");
 $tab_array[] = array(gettext("[OSPF6 Settings]"), false, "/pkg_edit.php?xml=frr/frr_ospf6.xml");
+$tab_array[] = array(gettext("[RIP Settings]"), false, "/pkg_edit.php?xml=frr/frr_rip.xml");
+$tab_array[] = array(gettext("[BFD Settings]"), false, "/pkg_edit.php?xml=frr/frr_bfd.xml");
 
 include("head.inc");
 display_top_tabs($tab_array);

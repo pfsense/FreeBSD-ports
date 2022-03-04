@@ -1,8 +1,7 @@
 # Created by: Zhen REN <bg1tpt@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	phpmailer
-PORTVERSION=	5.2.27
+PORTVERSION=	5.2.28
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 

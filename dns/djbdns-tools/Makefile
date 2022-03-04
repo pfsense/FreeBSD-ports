@@ -1,5 +1,4 @@
 # Created by: Sergei Kolobov <sergei@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	djbdns
 PORTVERSION=	1.05
@@ -14,7 +13,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Resolver tools from djbdns package
 
-CONFLICTS=	djbdns-[0-9]*
+CONFLICTS=	djbdns
 
 PROGRAMS=	dnsip dnsipq dnsname dnstxt dnsmx dnsfilter \
 		random-ip dnsqr dnsq dnstrace
@@ -25,7 +24,7 @@ MANPAGES=	dnsfilter.1 dnsip.1 dnsipq.1 dnsmx.1 dnsname.1 \
 
 ALL_TARGET=	it
 
-do-patch:
+do-configure:
 	@${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/conf-cc
 	@${ECHO_CMD} "${CC} ${STRIP}" > ${WRKSRC}/conf-ld
 	@${ECHO_CMD} "${PREFIX}" > ${WRKSRC}/conf-home

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	kartofel
 PORTVERSION=	1.2
 PORTREVISION=	17

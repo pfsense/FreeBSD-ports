@@ -1,5 +1,4 @@
 # Created by: Dima Sivachenko <dima@Chg.RU>
-# $FreeBSD$
 
 PORTNAME=	calamaris
 PORTVERSION=	2.59
@@ -12,7 +11,7 @@ COMMENT=	Perl script to produce statistics out of Squid log files
 
 LICENSE=	GPLv2
 
-CONFLICTS_INSTALL=	calamaris-devel-[0-9]*
+CONFLICTS_INSTALL=	calamaris-devel
 
 USES=		shebangfix perl5
 NO_BUILD=	yes

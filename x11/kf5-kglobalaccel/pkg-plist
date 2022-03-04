@@ -1,5 +1,4 @@
 bin/kglobalaccel5
-etc/xdg/kglobalaccel.categories
 include/KF5/KGlobalAccel/KGlobalAccel
 include/KF5/KGlobalAccel/KGlobalShortcutInfo
 include/KF5/KGlobalAccel/kglobalaccel.h
@@ -20,6 +19,7 @@ lib/libKF5GlobalAccelPrivate.so.5
 lib/libKF5GlobalAccelPrivate.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_PLUGINDIR%%/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
 %%QT_MKSPECDIR%%/modules/qt_KGlobalAccel.pri
+lib/systemd/user/plasma-kglobalaccel.service
 share/dbus-1/interfaces/kf5_org.kde.KGlobalAccel.xml
 share/dbus-1/interfaces/kf5_org.kde.kglobalaccel.Component.xml
 share/dbus-1/services/org.kde.kglobalaccel.service
@@ -27,6 +27,7 @@ share/kservices5/kglobalaccel5.desktop
 share/locale/af/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/ar/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/as/LC_MESSAGES/kglobalaccel5_qt.qm
+share/locale/az/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/be/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/be@latin/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/bg/LC_MESSAGES/kglobalaccel5_qt.qm
@@ -123,3 +124,5 @@ share/locale/xh/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/zh_CN/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/zh_HK/LC_MESSAGES/kglobalaccel5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/kglobalaccel5_qt.qm
+share/qlogging-categories5/kglobalaccel.categories
+share/qlogging-categories5/kglobalaccel.renamecategories

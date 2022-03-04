@@ -1,5 +1,4 @@
 # Created by: William Grzybowski
-# $FreeBSD$
 
 PORTNAME=	hgtools
 PORTVERSION=	6.3
@@ -13,7 +12,7 @@ COMMENT=	Classes and setuptools plugin for Mercurial repositories
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

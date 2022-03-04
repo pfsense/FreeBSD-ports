@@ -1,5 +1,4 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	xloadimage
 PORTVERSION=	4.1.24
@@ -17,7 +16,7 @@ LICENSE=	MIT
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-CONFLICTS_INSTALL=	xli-*
+CONFLICTS_INSTALL=	xli
 
 EXTRA_PATCHES=	${WRKDIR}/debian/patches/*.patch
 IGNORE_PATCHES=	07_SYSPATHFILE.patch 24_libtiff5.patch \
@@ -28,7 +27,7 @@ PATCH_STRIP=	-p1
 VERSION=	${PORTVERSION:R}
 REVISION=	${PORTVERSION:E}
 
-USES=		jpeg
+USES=		jpeg xorg
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 

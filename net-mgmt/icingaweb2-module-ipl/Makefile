@@ -1,14 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	icingaweb2-module-ipl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.1
+DISTVERSION=	0.5.0
 CATEGORIES=	net-mgmt www
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Icinga PHP library
 
-RUN_DEPENDS=	icingaweb2>=2.4.1:net-mgmt/icingaweb2
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.4.1:net-mgmt/icingaweb2@${PHP_FLAVOR}
+
+USES=		php:web,flavors
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga

@@ -1,5 +1,4 @@
 # Created by: smyru@heron.pl
-# $FreeBSD$
 
 PORTNAME=	gnugadu2
 PORTVERSION=	2.3.0
@@ -20,14 +19,14 @@ LIB_DEPENDS=	libaudiofile.so:audio/libaudiofile \
 		libfontconfig.so:x11-fonts/fontconfig
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
-USES=		gettext gmake libtool localbase pathfix perl5 pkgconfig tar:bzip2
+USES=		gettext gmake gnome libtool localbase pathfix perl5 pkgconfig \
+		tar:bzip2 xorg
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xaw ice xscrnsaver
 INSTALL_TARGET=	install-strip
 # there is a header conflict here, that breaks build
-CONFLICTS=	qhacc-[0-9]*
+CONFLICTS=	qhacc
 
 CONFIGURE_ARGS=	--disable-esdtest \
 		--with-external-libgadu \

@@ -1,8 +1,7 @@
 # Created by: Andrey <gugu@zoo.rambler.ru>
-# $FreeBSD$
 
 PORTNAME=	Math-BigInt-Pari
-PORTVERSION=	1.3005
+PORTVERSION=	1.3008
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,7 +13,7 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Math-BigInt>=1.999812:math/p5-Math-BigInt \
+RUN_DEPENDS=	p5-Math-BigInt>=1.999819:math/p5-Math-BigInt \
 		p5-Math-Pari>=2.010709:math/p5-Math-Pari
 
 USES=		perl5

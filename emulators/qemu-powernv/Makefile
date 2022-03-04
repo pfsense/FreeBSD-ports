@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	qemu-powernv
 PORTVERSION=	3.0.50
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	http://people.freebsd.org/~kbowling/distfiles/
 
@@ -11,12 +9,14 @@ COMMENT=	Fork of QEMU with experimental PowerNV emulation support
 
 LICENSE=	GPLv2
 
+BROKEN_riscv64=		fails to build: qemu-powernv-3.0.50_2.log: Unsupported CPU = riscv, try --enable-tcg-interpreter
+
 BUILD_DEPENDS=		${LOCALBASE}/lib/libfdt.so:sysutils/dtc
 
-USES=		bison:build gmake gnome libtool makeinfo pkgconfig \
-		python:2.7,build tar:bz2
+USES=		bison:build compiler:c11 gmake gnome libtool makeinfo \
+		pkgconfig python:build tar:bz2 xorg
 USE_XORG=	pixman
-USE_GNOME=	glib20
+USE_GNOME=	glib20 libxml2
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=--target-list=ppc64-softmmu \

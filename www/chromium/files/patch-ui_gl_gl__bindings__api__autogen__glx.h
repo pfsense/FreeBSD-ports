@@ -1,4 +1,4 @@
---- ui/gl/gl_bindings_api_autogen_glx.h.orig	2019-03-11 22:01:19 UTC
+--- ui/gl/gl_bindings_api_autogen_glx.h.orig	2021-04-14 18:41:39 UTC
 +++ ui/gl/gl_bindings_api_autogen_glx.h
 @@ -88,6 +88,7 @@ bool glXGetMscRateOMLFn(Display* dpy,
                          GLXDrawable drawable,

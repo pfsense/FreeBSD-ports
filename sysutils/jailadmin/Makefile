@@ -1,10 +1,9 @@
 # Created by: Kirk Strauser <kirk@strauser.com>
-# $FreeBSD$
 
 PORTNAME=	jailadmin
 PORTVERSION=	1.9
 CATEGORIES=	sysutils
-MASTER_SITES=	http://BSDforge.com/projects/source/sysutils/jailadmin/
+MASTER_SITES=	https://BSDforge.com/projects/source/sysutils/jailadmin/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Jail management system with optional SNMP support

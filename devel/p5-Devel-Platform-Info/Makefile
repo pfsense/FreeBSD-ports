@@ -1,8 +1,7 @@
 # Created by: James E Keenan <jkeenan@cpan.org>
-# $FreeBSD$
 
 PORTNAME=	Devel-Platform-Info
-PORTVERSION=	0.16
+PORTVERSION=	1.00
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

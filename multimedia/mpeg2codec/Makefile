@@ -1,5 +1,4 @@
 # Created by: Philippe Charnier <charnier@lirmm.fr>
-# $FreeBSD$
 
 PORTNAME=	mpeg2codec
 PORTVERSION=	1.2
@@ -27,6 +26,7 @@ DATADIR=	${PREFIX}/share/mpeg2
 
 CFLAGS+=	-DVERIFY -DVERBOSE -DTRACE
 
+X11_USES=	xorg
 X11_USE=	XORG=xext
 X11_MAKE_ARGS=	USE_DISP="-DDISPLAY" \
 		USE_SHMEM="-DSH_MEM" \

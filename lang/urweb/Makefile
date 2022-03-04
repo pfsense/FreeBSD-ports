@@ -1,9 +1,8 @@
 # Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
 
 PORTNAME=	urweb
 PORTVERSION=	20150520
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang www
 MASTER_SITES=	http://www.impredicative.com/ur/
 
@@ -13,6 +12,7 @@ COMMENT=	Ultimate host for embedded domain-specific languages
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		fails to build
 BROKEN_FreeBSD_12=	invalid target: self
 BROKEN_FreeBSD_13=	invalid target: self
 
@@ -57,7 +57,7 @@ CONFIGURE_ENV+=	SQHEADER="no"
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 .else
 CONFIGURE_ENV+=	MSHEADER="no"
 .endif

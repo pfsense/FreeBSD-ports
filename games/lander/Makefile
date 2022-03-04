@@ -1,12 +1,9 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	lander
 PORTVERSION=	0.6.6
-PORTREVISION=	16
+PORTREVISION=	21
 CATEGORIES=	games
-MASTER_SITES=	http://www.nickg.me.uk/files/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://www.nickg.me.uk/files/ \
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Lunar Lander clone
@@ -14,14 +11,14 @@ COMMENT=	Lunar Lander clone
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to configure: error: Could not link against boost_filesystem-boost_filesystem
+BROKEN_FreeBSD_12_powerpc64=	fails to configure on powerpc64 elfv1: could not link against boost_filesystem-boost_filesystem
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libboost_filesystem.so:devel/boost-libs \
 		libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lib gettext localbase pkgconfig
+USES=		compiler:c++11-lib gettext gl localbase pkgconfig sdl
 USE_SDL=	sdl image mixer
 USE_GL=		gl glu
 
@@ -39,9 +36,6 @@ DESKTOP_ENTRIES="Lunar Lander" \
 		false
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-R$$found_dir||g' ${WRKSRC}/configure
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

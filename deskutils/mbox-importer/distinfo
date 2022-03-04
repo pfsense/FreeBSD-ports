@@ -1,3 +1,3 @@
-TIMESTAMP = 1551811010
-SHA256 (KDE/applications/18.12.3/mbox-importer-18.12.3.tar.xz) = a220ca69dd6f78cf18c3d8cb1bb293dc2ab2ff45f2a25df72cad8df78f581201
-SIZE (KDE/applications/18.12.3/mbox-importer-18.12.3.tar.xz) = 33468
+TIMESTAMP = 1636032608
+SHA256 (KDE/release-service/21.08.3/mbox-importer-21.08.3.tar.xz) = 2eea9de5fb92ef6fbac51a5f1e69c6ef6d1513c61b6c083e9bae8fae725025a6
+SIZE (KDE/release-service/21.08.3/mbox-importer-21.08.3.tar.xz) = 28660

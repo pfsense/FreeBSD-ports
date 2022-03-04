@@ -1,5 +1,4 @@
 # Created by: Rihaz Jerrin <rihaz.jerrin@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	cisco-torch
 PORTVERSION=	0.4
@@ -11,6 +10,10 @@ MAINTAINER=	rihaz.jerrin@gmail.com
 COMMENT=	Mass Cisco Vulnerability Scanner
 
 LICENSE=	LGPL21
+
+BROKEN=		Unfetchable
+DEPRECATED=	Abandonware, dead upstream
+EXPIRATION_DATE=2022-03-31
 
 RUN_DEPENDS=	p5-Net-Telnet>=0:net/p5-Net-Telnet \
 		p5-Net-SSH2>=0:net/p5-Net-SSH2 \

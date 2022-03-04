@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 CATEGORIES=	www
 PKGNAMESUFFIX=	-web
+PORTREVISION=	1
 
-USES=		cpe
 NO_ARCH=	yes
 NO_BUILD=	yes
 PORTDATA=	web
@@ -13,12 +11,5 @@ DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${NONEXISTENT}
 
 SLAVEPORT=	web
-
-#post-extract:
-#	@${FIND} ${WRKSRC}/web \( -name '*.am' -o -name '*.in' \
-		-o -name '*.scss' \) -delete
-
-#do-install:
-#	( cd ${WRKSRC} && ${COPYTREE_SHARE} web ${STAGEDIR}${DATADIR} )
 
 .include "${MASTERDIR}/Makefile"

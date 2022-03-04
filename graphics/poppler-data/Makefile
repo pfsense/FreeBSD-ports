@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	poppler-data
-PORTVERSION=	0.4.9
+DISTVERSION=	0.4.11
 CATEGORIES=	graphics
 MASTER_SITES=	http://poppler.freedesktop.org/
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Poppler encoding data
 
 LICENSE=	MIT ADOBE GPLv2

@@ -1,5 +1,4 @@
 # Created by: ofsen@enderunix.org
-# $FreeBSD$
 
 PORTNAME=	isoqlog
 PORTVERSION=	2.2.1
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+CFLAGS+=	-fcommon
 
 SUB_FILES=	pkg-message
 

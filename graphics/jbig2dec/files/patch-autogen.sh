@@ -1,6 +1,6 @@
---- autogen.sh.orig	2018-09-03 16:39:20 UTC
+--- autogen.sh.orig	2019-10-02 12:52:19 UTC
 +++ autogen.sh
-@@ -164,12 +164,3 @@ $AUTOMAKE --add-missing --copy $AUTOMAKE
+@@ -169,12 +169,3 @@ $AUTOMAKE --add-missing --copy $AUTOMAKE
  
  echo "  autoconf"
  autoconf

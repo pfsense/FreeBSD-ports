@@ -1,5 +1,4 @@
 # Created by: Ernst de Haan <znerd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xmlenc
 PORTVERSION=	0.52
@@ -12,6 +11,7 @@ COMMENT=	Light-weight XML encoding library for Java
 
 USES=		tar:tgz
 USE_JAVA=	yes
+JAVA_VERSION=	8
 USE_ANT=	yes
 NO_ARCH=	yes
 

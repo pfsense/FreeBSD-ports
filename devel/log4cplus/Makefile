@@ -1,5 +1,4 @@
 # Created by: Petri Totterman <petri.totterman@hmv.fi>
-# $FreeBSD$
 
 PORTNAME=	log4cplus
 PORTVERSION=	1.1.2
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		libtool pathfix tar:xz
+USES=		compiler:c++11-lang libtool pathfix tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-threads=yes

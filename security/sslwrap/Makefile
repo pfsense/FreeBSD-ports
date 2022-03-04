@@ -1,5 +1,4 @@
 # Created by: Zahemszky, Gabor <ZGabor at CoDe dot HU>
-# $FreeBSD$
 
 PORTNAME=	sslwrap
 PORTVERSION=	2.0.6
@@ -16,6 +15,9 @@ COMMENT=	Another SSL Wrapper application, which uses SSLEay/OpenSSL
 # making it identical to classic BSD4CLAUSE
 LICENSE=	BSD4CLAUSE
 
+DEPRECATED=	Abandonware, marked BROKEN on 12+ in 2019
+EXPIRATION_DATE=2022-03-31
+
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION:S/.//g}
 
 USES=		ssl
@@ -30,6 +32,7 @@ OPTIONS_DEFINE=	DOCS
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	incomplete definition of type 'struct dh_st'
 BROKEN_FreeBSD_13=	incomplete definition of type 'struct dh_st'
+BROKEN_FreeBSD_14=	incomplete definition of type 'struct dh_st'
 .endif
 
 post-patch:

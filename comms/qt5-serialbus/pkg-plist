@@ -1,4 +1,5 @@
 %%QT_BINDIR%%/canbusutil
+%%DEBUG%%%%QT_BINDIR%%/canbusutil.debug
 %%QT_INCDIR%%/QtSerialBus/%%FULLVER%%/QtSerialBus/private/qcanbusdevice_p.h
 %%QT_INCDIR%%/QtSerialBus/%%FULLVER%%/QtSerialBus/private/qcanbusdeviceinfo_p.h
 %%QT_INCDIR%%/QtSerialBus/%%FULLVER%%/QtSerialBus/private/qmodbus_symbols_p.h
@@ -32,6 +33,7 @@
 %%QT_INCDIR%%/QtSerialBus/QModbusRtuSerialSlave
 %%QT_INCDIR%%/QtSerialBus/QModbusServer
 %%QT_INCDIR%%/QtSerialBus/QModbusTcpClient
+%%QT_INCDIR%%/QtSerialBus/QModbusTcpConnectionObserver
 %%QT_INCDIR%%/QtSerialBus/QModbusTcpServer
 %%QT_INCDIR%%/QtSerialBus/QtSerialBus
 %%QT_INCDIR%%/QtSerialBus/QtSerialBusDepends
@@ -54,6 +56,7 @@
 %%QT_INCDIR%%/QtSerialBus/qmodbustcpserver.h
 %%QT_INCDIR%%/QtSerialBus/qserialbusglobal.h
 %%QT_INCDIR%%/QtSerialBus/qtserialbus-config.h
+%%QT_INCDIR%%/QtSerialBus/qtserialbusglobal.h
 %%QT_INCDIR%%/QtSerialBus/qtserialbusversion.h
 %%QT_CMAKEDIR%%/Qt5SerialBus/Qt5SerialBusConfig.cmake
 %%QT_CMAKEDIR%%/Qt5SerialBus/Qt5SerialBusConfigVersion.cmake

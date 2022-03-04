@@ -1,4 +1,4 @@
---- etc/95.pl.orig	2016-11-04 16:36:01 UTC
+--- etc/95.pl.orig	2020-09-23 14:55:01 UTC
 +++ etc/95.pl
 @@ -31,7 +31,7 @@ $pass="rtgdefault";
  $onedaysec=60*60*24;

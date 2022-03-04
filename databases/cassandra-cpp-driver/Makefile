@@ -1,8 +1,7 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	cassandra-cpp-driver
-PORTVERSION=	2.11.0
+PORTVERSION=	2.16.0
 PORTREVISION=	0
 CATEGORIES=	databases
 
@@ -23,11 +22,15 @@ CMAKE_ARGS=	-DCMAKE_INSTALL_LIBDIR:STRING=lib \
 		-DCASS_BUILD_STATIC:BOOL=ON
 
 PLIST_FILES=	include/cassandra.h \
+		include/dse.h \
 		lib/libcassandra.so \
 		lib/libcassandra.so.2 \
 		lib/libcassandra.so.${PORTVERSION} \
 		lib/libcassandra_static.a \
 		libdata/pkgconfig/cassandra.pc \
 		libdata/pkgconfig/cassandra_static.pc
+
+post-patch:
+	${REINPLACE_CMD} -e 's|-Werror||' ${WRKSRC}/src/CMakeLists.txt
 
 .include <bsd.port.mk>

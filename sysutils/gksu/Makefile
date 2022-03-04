@@ -1,5 +1,4 @@
 # Created by: Jesse van den Kieboom <troplosti@orcaweb.cjb.net>
-# $FreeBSD$
 
 PORTNAME=	gksu
 PORTVERSION=	2.0.2
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libgnome-keyring.so:security/libgnome-keyring \
 		libstartup-notification-1.so:x11/startup-notification
 
-USES=		gettext-tools gmake libtool pathfix pkgconfig
+USES=		gettext-tools gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	cairo gconf2 gdkpixbuf2 gnomeprefix gtk20 intlhack
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

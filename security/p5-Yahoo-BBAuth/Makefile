@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Yahoo-BBAuth
 PORTVERSION=	0.50
@@ -19,9 +18,10 @@ RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \
 		p5-JSON>=0:converters/p5-JSON \
 		p5-libwww>=5.6:www/p5-libwww
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5 shebangfix
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 SHEBANG_FILES=	eg/*.cgi
 

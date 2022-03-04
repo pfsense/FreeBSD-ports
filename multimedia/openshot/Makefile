@@ -1,42 +1,48 @@
 # Created by: Charlie Kester <corky1951@comcast.net>
-# $FreeBSD$
 
 PORTNAME=	openshot
-PORTVERSION=	1.4.3
-PORTREVISION=	11
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.6.1
 CATEGORIES=	multimedia
-MASTER_SITES=	http://launchpad.net/openshot/${PORTVERSION:C/\.[0-9]+$//}/${PORTVERSION}/+download/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Non-linear video editor
+MAINTAINER=	tatsuki_makino@hotmail.com
+COMMENT=	OpenShot Video Editor
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
-		frei0r-plugins>=0:graphics/frei0r-plugins \
-		${PYTHON_PKGNAMEPREFIX}goocanvas>=0:graphics/py-goocanvas@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}httplib2>=0:www/py-httplib2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mlt>=0:multimedia/py-mlt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}xdg>=0:devel/py-xdg@${PY_FLAVOR} \
-		scrollkeeper-install:textproc/rarian \
-		sox:audio/sox
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}libopenshot>=0.2.7:multimedia/libopenshot@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sentry-sdk>=0:devel/py-sentry-sdk@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyzmq>=0:net/py-pyzmq@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}distro>=0:sysutils/py-distro@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR}
 
-USES=		desktop-file-utils gettext python:2.7 shared-mime-info
-USE_GNOME=	pygtk2
-USE_PYTHON=	distutils
-INSTALLS_OMF=	yes
+USES=		desktop-file-utils pyqt:5 python:3.5+ shared-mime-info shebangfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	OpenShot
+GH_PROJECT=	${PORTNAME}-qt
+USE_PYQT=	core gui svg webkitwidgets widgets
+USE_PYTHON=	distutils optsuffix
+SHEBANG_FILES=	src/language/generate_translations.py\
+		src/language/show_translations.py\
+		src/language/test_translations.py
 NO_ARCH=	yes
 
-post-patch:
-	@${FIND} ${WRKSRC}/docs/omf -name '*.omf' | ${XARGS} ${REINPLACE_CMD} -e \
-		's|/usr/share|${PREFIX}/share|g'
+OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFAULT=
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>=0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
+DOCS_PORTDOCS=	*
 
-pre-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/omf/${PORTNAME}
-	${INSTALL_DATA} ${WRKSRC}/docs/omf/*.omf ${STAGEDIR}${PREFIX}/share/omf/${PORTNAME}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/gnome/help/${PORTNAME}
-	@cd ${WRKSRC}/docs/gnome && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/gnome/help/${PORTNAME}
+do-build-DOCS-on:
+	@(cd ${BUILD_WRKSRC}/doc; if ! ${DO_MAKE_BUILD} html; then \
+		(${ECHO_CMD} "===> ${.TARGET} failed unexpectedly.") | ${FMT_80} ; \
+		${FALSE}; \
+		fi)
+
+do-install-DOCS-on:
+	@(cd ${INSTALL_WRKSRC}/doc/_build &&\
+		${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

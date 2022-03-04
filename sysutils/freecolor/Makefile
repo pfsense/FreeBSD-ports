@@ -1,14 +1,15 @@
 # Created by: Tim Bishop <tim@bishnet.net>
-# $FreeBSD$
 
 PORTNAME=	freecolor
-PORTVERSION=	0.9.2
-PORTREVISION=	1
+PORTVERSION=	0.9.3
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.rkeene.org/files/oss/freecolor/
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Displays free memory as a bargraph
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libstatgrab.so:devel/libstatgrab
 

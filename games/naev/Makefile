@@ -1,9 +1,8 @@
 # Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	naev
 PORTVERSION=	0.7.0
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
@@ -13,13 +12,17 @@ COMMENT=	2D action/RPG space game
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: nglActiveTexture
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: nglActiveTexture
+
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libvorbisfile.so:audio/libvorbis \
 		libzip.so:archivers/libzip
 RUN_DEPENDS=	${LOCALBASE}/${DATADIR_REL}/${DISTNAME}-ndata.zip:games/naev-data
 
-USES=		autoreconf:build compiler:features gmake pkgconfig tar:bzip2
+USES=		autoreconf:build compiler:features gl gmake gnome pkgconfig sdl \
+		tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GL=		gl glu
 USE_GNOME=	libxml2
@@ -39,6 +42,8 @@ PLIST_FILES=	bin/${PORTNAME} man/man6/${PORTNAME}.6.gz \
 
 OPTIONS_DEFINE=	DOCS OPENAL SDL2 SDL_MIXER
 OPTIONS_DEFAULT=	LUA_JIT OPENAL SDL2 SDL_MIXER
+OPTIONS_DEFAULT_powerpc64=	LUA_SHARED
+OPTIONS_EXCLUDE_powerpc64=	LUA_JIT
 OPTIONS_SINGLE=		LUA
 OPTIONS_SINGLE_LUA=	LUA_INTERNAL LUA_SHARED LUA_JIT
 
@@ -51,7 +56,6 @@ LUA_JIT_DESC=		Use LuaJIT from lang/luajit
 LUA_JIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 OPENAL_USES=	openal
 OPENAL_CONFIGURE_WITH=	openal
-OPENAL_VARS=	LLD_UNSAFE=yes # cf. PR 226980
 SDL_MIXER_DESC=	SDL_mixer sound backend
 SDL_MIXER_CONFIGURE_WITH=	sdlmixer
 SDL2_DESC=	Use SDL2 instead of SDL

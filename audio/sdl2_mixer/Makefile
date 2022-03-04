@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	sdl2_mixer
 PORTVERSION=	2.0.4
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	audio
-MASTER_SITES=	http://www.libsdl.org/projects/SDL_mixer/release/
+MASTER_SITES=	https://www.libsdl.org/projects/SDL_mixer/release/
 DISTNAME=	SDL2_mixer-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -13,7 +11,7 @@ COMMENT=	Sample multi-channel audio mixer library
 LICENSE=	ZLIB
 LICENSE_FILE_ZLIB=${WRKSRC}/COPYING.txt
 
-USES=		gmake pathfix pkgconfig libtool localbase
+USES=		gmake libtool localbase pathfix pkgconfig sdl
 USE_SDL=	sdl2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

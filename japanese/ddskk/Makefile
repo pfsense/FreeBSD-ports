@@ -1,10 +1,9 @@
 # Created by: Shigeyuki FUKUSHIMA <shige@kuis.kyoto-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	ddskk
 DISTVERSION=	16.2
+PORTREVISION=	9
 CATEGORIES=	japanese elisp
-PORTREVISION=   2
 MASTER_SITES=	ftp://ftp.ring.gr.jp/pub/elisp/skk/maintrunk/ \
 		http://www.ring.gr.jp/archives/elisp/skk/maintrunk/ \
 		http://openlab.ring.gr.jp/skk/maintrunk/

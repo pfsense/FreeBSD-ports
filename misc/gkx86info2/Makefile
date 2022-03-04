@@ -1,5 +1,4 @@
 # Created by: Tobias Roth <ports@fsck.ch>
-# $FreeBSD$
 
 PORTNAME=	gkx86info2
 PORTVERSION=	0.0.2
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2
 
 ONLY_FOR_ARCHS=	i386 amd64
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 
 WRKSRC=		${WRKDIR}/gkx86info${PORTVERSION}

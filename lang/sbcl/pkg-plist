@@ -18,6 +18,8 @@ lib/sbcl/contrib/sb-executable.asd
 lib/sbcl/contrib/sb-executable.fasl
 lib/sbcl/contrib/sb-gmp.asd
 lib/sbcl/contrib/sb-gmp.fasl
+lib/sbcl/contrib/sb-graph.asd
+lib/sbcl/contrib/sb-graph.fasl
 lib/sbcl/contrib/sb-grovel.asd
 lib/sbcl/contrib/sb-grovel.fasl
 lib/sbcl/contrib/sb-introspect.asd
@@ -46,6 +48,10 @@ lib/sbcl/sb-aclrepl/sb-aclrepl.asd
 lib/sbcl/sb-aclrepl/tests.lisp
 lib/sbcl/sb-aclrepl/toplevel.lisp
 lib/sbcl/sb-bsd-sockets/constants.lisp
+lib/sbcl/sb-bsd-sockets/constants-addrinfo.lisp
+lib/sbcl/sb-bsd-sockets/constants-gethostbyname.lisp
+lib/sbcl/sb-bsd-sockets/constants-unix.lisp
+lib/sbcl/sb-bsd-sockets/constants-win32.lisp
 lib/sbcl/sb-bsd-sockets/defpackage.lisp
 lib/sbcl/sb-bsd-sockets/inet.lisp
 lib/sbcl/sb-bsd-sockets/inet4.lisp
@@ -59,7 +65,6 @@ lib/sbcl/sb-bsd-sockets/sockets.lisp
 lib/sbcl/sb-bsd-sockets/sockopt.lisp
 lib/sbcl/sb-bsd-sockets/tests.lisp
 lib/sbcl/sb-bsd-sockets/util.lisp
-lib/sbcl/sb-bsd-sockets/win32-constants.lisp
 lib/sbcl/sb-bsd-sockets/win32-lib.lisp
 lib/sbcl/sb-bsd-sockets/win32-sockets.lisp
 lib/sbcl/sb-cltl2/compiler-let.lisp
@@ -123,6 +128,8 @@ lib/sbcl/sb-rotate-byte/arm64-vm.lisp
 lib/sbcl/sb-rotate-byte/compiler.lisp
 lib/sbcl/sb-rotate-byte/package.lisp
 lib/sbcl/sb-rotate-byte/ppc-vm.lisp
+lib/sbcl/sb-rotate-byte/ppc64-vm.lisp
+lib/sbcl/sb-rotate-byte/riscv-vm.lisp
 lib/sbcl/sb-rotate-byte/rotate-byte-tests.lisp
 lib/sbcl/sb-rotate-byte/rotate-byte.lisp
 lib/sbcl/sb-rotate-byte/sb-rotate-byte.asd

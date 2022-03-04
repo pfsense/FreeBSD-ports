@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	sdl2
-PORTVERSION=	2.0.9
-PORTREVISION=	2
+PORTVERSION=	2.0.12
+PORTREVISION=	7
 CATEGORIES=	devel
-MASTER_SITES=	http://www.libsdl.org/release/
+MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,10 +13,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 GNU_CONFIGURE=	yes
 USES=		gmake iconv libtool localbase:ldflags pathfix pkgconfig
+USE_CSTD=	c99
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS+=	--disable-altivec \
-			--disable-arts \
+CONFIGURE_ARGS+=	--disable-arts \
 			--enable-diskaudio \
 			--enable-dummyaudio \
 			--enable-video-dummy \
@@ -53,7 +51,7 @@ CONFIGURE_ARGS+=	--disable-sse3
 
 MAKE_ENV=	V=1
 
-OPTIONS_DEFINE=		ALSA ASM DLOPEN ESOUND HIDAPI JACK NAS OSS	\
+OPTIONS_DEFINE=		ALSA ASM DLOPEN HIDAPI JACK NAS OSS	\
 			PULSEAUDIO SAMPLERATE SNDIO PTHREADS		\
 			SDL_ATOMIC SDL_AUDIO SDL_CPUINFO SDL_EVENTS	\
 			SDL_FILE SDL_HAPTIC SDL_JOYSTICK SDL_LOADSO	\
@@ -66,10 +64,13 @@ OPTIONS_DEFAULT=	ASM DLOPEN OSS PTHREADS SDL_ATOMIC SDL_AUDIO	\
 			SDL_THREADS SDL_TIMERS SDL_VIDEO VIDEO_KMSDRM	\
 			VIDEO_OPENGL VIDEO_OPENGLES2 VIDEO_WAYLAND	\
 			VIDEO_X11
+OPTIONS_DEFINE_powerpc=	ALTIVEC
+OPTIONS_DEFINE_powerpc64=	ALTIVEC
+OPTIONS_DEFAULT_powerpc=	ALTIVEC
+OPTIONS_DEFAULT_powerpc64=	ALTIVEC
 
 ALSA_DESC=		Audio output via the ALSA audio architecture
 DLOPEN_DESC=		Use dlopen for loading 3rd party libraries
-ESOUND_DESC=		Audio output via the EsounD sound server
 HIDAPI_DESC=		Use HIDAPI for low level joystick drivers
 JACK_DESC=		Audio output via the JackD sound server
 NAS_DESC=		Audio output via the Network Audio System
@@ -97,6 +98,7 @@ VIDEO_OPENGLES2_DESC=	OpenGL ES 2.x rendering support
 VIDEO_WAYLAND_DESC=	Wayland display support
 VIDEO_X11_DESC=		X11 display support
 
+ALTIVEC_CONFIGURE_ENABLE=	altivec
 ASM_CONFIGURE_ENABLE=		assembly
 DLOPEN_CONFIGURE_ENABLE=	sdl-dlopen
 DLOPEN_CONFIGURE_OFF=		--disable-video-vulkan
@@ -124,6 +126,12 @@ UDEV_BUILD_DEPENDS=		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
 .include <bsd.port.options.mk>
 
+# Similar to x11/pixman
+.if ${ARCH} == "armv6" || ${ARCH} == "armv7"
+BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
+CFLAGS+=	-B${LOCALBASE}/bin -no-integrated-as
+.endif
+
 .if ${PORT_OPTIONS:MALSA}
 .if !${PORT_OPTIONS:MSDL_AUDIO}
 IGNORE=	option ALSA requires SDL_AUDIO
@@ -144,15 +152,7 @@ LIB_DEPENDS+=		libjack.so:audio/jack
 CONFIGURE_ARGS+=	--disable-jack --disable-jack-shared
 .endif
 
-.if ${PORT_OPTIONS:MESOUND}
-.if !${PORT_OPTIONS:MSDL_AUDIO}
-IGNORE=	option ESOUND requires SDL_AUDIO
-.endif
-CONFIGURE_ARGS+=	--enable-esd --enable-esd-shared
-USE_GNOME+=		esound
-.else
 CONFIGURE_ARGS+=	--disable-esd --disable-esd-shared
-.endif
 
 .if ${PORT_OPTIONS:MNAS}
 .if !${PORT_OPTIONS:MSDL_AUDIO}
@@ -197,8 +197,7 @@ CONFIGURE_ARGS+=	--disable-sndio --disable-sndio-shared
 IGNORE=	option VIDEO_KMSDRM requires SDL_VIDEO
 .endif
 CONFIGURE_ARGS+=	--enable-video-kmsdrm --enable-kmsdrm-shared
-BUILD_DEPENDS+=		${LOCALBASE}/libdata/pkgconfig/libdrm.pc:graphics/libdrm \
-			${LOCALBASE}/libdata/pkgconfig/gbm.pc:graphics/mesa-libs
+USE_GL+=		gbm
 .else
 CONFIGURE_ARGS+=	--disable-video-kmsdrm --disable-video-kmsdrm
 .endif
@@ -208,6 +207,7 @@ CONFIGURE_ARGS+=	--disable-video-kmsdrm --disable-video-kmsdrm
 IGNORE=	option VIDEO_OPENGL requires SDL_VIDEO
 .endif
 CONFIGURE_ARGS+=	--enable-video-opengl
+USES+=			gl
 USE_GL+=		gl
 .else
 CONFIGURE_ARGS+=	--disable-video-opengl
@@ -226,6 +226,7 @@ CONFIGURE_ARGS+=	--enable-video-x11 \
 			--enable-video-x11-scrnsaver \
 			--enable-video-x11-xshape \
 			--enable-video-x11-vm
+USES+=		xorg
 USE_XORG+=	xinerama xcursor xi xrandr xscrnsaver xxf86vm xext
 .else
 CONFIGURE_ARGS+=	--disable-video-x11 \

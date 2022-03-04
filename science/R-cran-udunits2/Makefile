@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	udunits2
-PORTVERSION=	0.13
-PORTREVISION=	2
+PORTVERSION=	0.13.1
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

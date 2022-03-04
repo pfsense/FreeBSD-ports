@@ -1,40 +1,42 @@
---- bin/named/config.c.orig	2019-03-29 15:22:57 UTC
+Add the override-cache-ttl feature.
+
+--- bin/named/config.c.orig	2021-10-08 10:07:46 UTC
 +++ bin/named/config.c
-@@ -176,6 +176,7 @@ options {\n\
+@@ -182,6 +182,7 @@ options {\n\
  	notify-source *;\n\
  	notify-source-v6 *;\n\
  	nsec3-test-zone no;\n\
 +	override-cache-ttl 0; /* do not override */\n\
+ 	parental-source *;\n\
+ 	parental-source-v6 *;\n\
  	provide-ixfr true;\n\
- 	qname-minimization relaxed;\n\
- 	query-source address *;\n\
---- bin/named/server.c.orig	2019-03-29 15:22:57 UTC
+--- bin/named/server.c.orig	2021-10-08 10:07:46 UTC
 +++ bin/named/server.c
-@@ -4231,6 +4231,11 @@ configure_view(dns_view_t *view, dns_viewlist_t *viewl
+@@ -4479,6 +4479,11 @@ configure_view(dns_view_t *view, dns_viewlist_t *viewl
  	}
  
  	obj = NULL;
 +	result = named_config_get(maps, "override-cache-ttl", &obj);
 +	INSIST(result == ISC_R_SUCCESS);
-+	view->overridecachettl = cfg_obj_asuint32(obj);
++	view->overridecachettl = cfg_obj_asduration(obj);
 +
 +	obj = NULL;
  	result = named_config_get(maps, "max-cache-ttl", &obj);
  	INSIST(result == ISC_R_SUCCESS);
- 	view->maxcachettl = cfg_obj_asuint32(obj);
---- lib/dns/include/dns/view.h.orig	2019-03-29 15:22:57 UTC
+ 	view->maxcachettl = cfg_obj_asduration(obj);
+--- lib/dns/include/dns/view.h.orig	2021-10-08 10:07:46 UTC
 +++ lib/dns/include/dns/view.h
-@@ -152,6 +152,7 @@ struct dns_view {
- 	bool				requestnsid;
- 	bool				sendcookie;
- 	dns_ttl_t			maxcachettl;
-+	dns_ttl_t			overridecachettl;
- 	dns_ttl_t			maxncachettl;
- 	dns_ttl_t			mincachettl;
- 	dns_ttl_t			minncachettl;
---- lib/dns/resolver.c.orig	2019-03-29 15:22:57 UTC
+@@ -154,6 +154,7 @@ struct dns_view {
+ 	bool		      requestnsid;
+ 	bool		      sendcookie;
+ 	dns_ttl_t	      maxcachettl;
++	dns_ttl_t	      overridecachettl;
+ 	dns_ttl_t	      maxncachettl;
+ 	dns_ttl_t	      mincachettl;
+ 	dns_ttl_t	      minncachettl;
+--- lib/dns/resolver.c.orig	2021-10-08 10:07:46 UTC
 +++ lib/dns/resolver.c
-@@ -6011,6 +6011,12 @@ cache_name(fetchctx_t *fctx, dns_name_t *name, dns_adb
+@@ -5910,6 +5910,12 @@ cache_name(fetchctx_t *fctx, dns_name_t *name, dns_mes
  		}
  
  		/*
@@ -47,13 +49,13 @@
  		 * Enforce the configure maximum cache TTL.
  		 */
  		if (rdataset->ttl > res->view->maxcachettl) {
---- lib/isccfg/namedconf.c.orig	2019-03-29 15:22:57 UTC
+--- lib/isccfg/namedconf.c.orig	2021-10-08 10:07:46 UTC
 +++ lib/isccfg/namedconf.c
-@@ -1899,6 +1899,7 @@ view_clauses[] = {
- #endif
- 	{ "max-acache-size", &cfg_type_sizenodefault, CFG_CLAUSEFLAG_OBSOLETE },
+@@ -2049,6 +2049,7 @@ static cfg_clausedef_t view_clauses[] = {
+ #endif /* ifdef HAVE_LMDB */
+ 	{ "max-acache-size", NULL, CFG_CLAUSEFLAG_ANCIENT },
  	{ "max-cache-size", &cfg_type_sizeorpercent, 0 },
-+	{ "override-cache-ttl", &cfg_type_ttlval, 0 },
- 	{ "max-cache-ttl", &cfg_type_ttlval, 0 },
++	{ "override-cache-ttl", &cfg_type_duration, 0 },
+ 	{ "max-cache-ttl", &cfg_type_duration, 0 },
  	{ "max-clients-per-query", &cfg_type_uint32, 0 },
- 	{ "max-ncache-ttl", &cfg_type_ttlval, 0 },
+ 	{ "max-ncache-ttl", &cfg_type_duration, 0 },

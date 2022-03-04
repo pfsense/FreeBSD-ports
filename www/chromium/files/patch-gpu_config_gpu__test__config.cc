@@ -1,11 +1,11 @@
---- gpu/config/gpu_test_config.cc.orig	2019-03-11 22:00:59 UTC
+--- gpu/config/gpu_test_config.cc.orig	2021-04-14 18:41:04 UTC
 +++ gpu/config/gpu_test_config.cc
-@@ -25,7 +25,7 @@ namespace {
+@@ -28,7 +28,7 @@ namespace {
  GPUTestConfig::OS GetCurrentOS() {
- #if defined(OS_CHROMEOS)
+ #if BUILDFLAG(IS_CHROMEOS_ASH)
    return GPUTestConfig::kOsChromeOS;
--#elif defined(OS_LINUX) || defined(OS_OPENBSD)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
+-#elif (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || \
++#elif (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD) || \
+     defined(OS_OPENBSD)
    return GPUTestConfig::kOsLinux;
  #elif defined(OS_WIN)
-   int32_t major_version = 0;

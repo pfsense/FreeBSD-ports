@@ -1,9 +1,8 @@
 # Created by: Florent Thoumie <flz@xbsd.org>
-# $FreeBSD$
 
 PORTNAME=	ctorrent
 PORTVERSION=	3.3.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/dtorrent/dtorrent/${PORTVERSION} \
 		http://www.rahul.net/dholmes/ctorrent/

@@ -1,27 +1,40 @@
-# $FreeBSD$
-
 PORTNAME=	pspg
-DISTVERSION=	1.6.4
+DISTVERSION=	5.3.4
 CATEGORIES=	databases
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Tabular data pager designed to be used with psql
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf gmake localbase ncurses pkgconfig readline
+USES=		autoreconf compiler:c11 gmake localbase ncurses:port pkgconfig \
+		readline
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	okbob
+
 GNU_CONFIGURE=	yes
+
+SUB_FILES=	pkg-message
 
 PLIST_FILES=	bin/pspg
 PORTDOCS=	README.md
 
-SUB_FILES=	pkg-message
+OPTIONS_DEFINE=		DOCS INOTIFY PGSQL
+OPTIONS_DEFAULT=	INOTIFY PGSQL
 
-OPTIONS_DEFINE=	DOCS
+INOTIFY_DESC=	Use inotify instead of polling
+PGSQL_DESC=	Work as PostgreSQL interactive client
+
+INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
+# configure script doesn't understand --with-inotify
+INOTIFY_CONFIGURE_OFF=	--without-inotify
+INOTIFY_LDFLAGS=	-linotify
+
+PGSQL_USES=		pgsql
+PGSQL_CONFIGURE_WITH=	postgresql=yes
+PGSQL_VARS=		WANT_PGSQL=client
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pspg

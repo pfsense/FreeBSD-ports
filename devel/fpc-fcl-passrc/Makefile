@@ -1,9 +1,5 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-fcl-passrc
-PORTREVISION=	1
 
 COMMENT=	Free Pascal language parsing library (FPC)
 

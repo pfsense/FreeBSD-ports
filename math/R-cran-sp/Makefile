@@ -1,9 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	sp
-DISTVERSION=	1.3-1
-PORTREVISION=	1
+DISTVERSION=	1.4-5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

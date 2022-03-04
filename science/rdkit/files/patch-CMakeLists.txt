@@ -1,11 +1,18 @@
---- CMakeLists.txt.orig	2018-10-22 02:29:34 UTC
+--- CMakeLists.txt.orig	2020-06-10 03:59:48 UTC
 +++ CMakeLists.txt
-@@ -410,7 +410,7 @@ if(NOT RDK_INSTALL_INTREE)
+@@ -432,12 +432,14 @@ if(NOT RDK_INSTALL_INTREE)
+       COMPONENT data
        PATTERN ".svn" EXCLUDE
        )
++  if (FREEBSD_INSTALL_DOCS)
    install(DIRECTORY Docs DESTINATION
 -      ${RDKit_ShareDir}
 +      ${FREEBSD_DOCSDIR}
        COMPONENT docs
        PATTERN ".svn" EXCLUDE
        PATTERN "_build" EXCLUDE
+       )
++  endif()
+   install(DIRECTORY Contrib DESTINATION
+       ${RDKit_ShareDir}
+       COMPONENT extras

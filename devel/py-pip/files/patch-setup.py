@@ -1,11 +1,17 @@
---- setup.py.orig	2015-11-14 14:08:36 UTC
+--- setup.py.orig	2020-08-11 11:26:41 UTC
 +++ setup.py
-@@ -78,8 +78,6 @@ setup(
+@@ -76,10 +76,10 @@ setup(
      entry_points={
          "console_scripts": [
-             "pip=pip:main",
--            "pip%s=pip:main" % sys.version[:1],
--            "pip%s=pip:main" % sys.version[:3],
+             "pip=pip._internal.cli.main:main",
+-            "pip{}=pip._internal.cli.main:main".format(sys.version_info[0]),
+-            "pip{}.{}=pip._internal.cli.main:main".format(
+-                *sys.version_info[:2]
+-            ),
++            #"pip{}=pip._internal.cli.main:main".format(sys.version_info[0]),
++            #"pip{}.{}=pip._internal.cli.main:main".format(
++            #    *sys.version_info[:2]
++            #),
          ],
      },
-     tests_require=tests_require,
+ 

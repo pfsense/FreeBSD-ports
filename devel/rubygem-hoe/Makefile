@@ -1,8 +1,7 @@
 # Created by: Jonathan Weiss (<jw@innerewut.de>)
-# $FreeBSD$
 
 PORTNAME=	hoe
-PORTVERSION=	3.17.2
+PORTVERSION=	3.23.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +10,7 @@ COMMENT=	Simple rake/rubygems helper for project Rakefiles
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-rake>=0.8:devel/rubygem-rake
+RUN_DEPENDS=	rubygem-rake>=0.8<15.0:devel/rubygem-rake
 
 USES=		gem
 USE_RUBY=	yes

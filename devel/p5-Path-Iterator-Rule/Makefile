@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Path-Iterator-Rule
 PORTVERSION=	1.008
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DAGOLDEN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for iterative, recursive file finder
 
 LICENSE=	APACHE20

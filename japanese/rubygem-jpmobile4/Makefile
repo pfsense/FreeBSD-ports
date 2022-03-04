@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@rtfm.jp>
-# $FreeBSD$
 
 PORTNAME=	jpmobile
-PORTVERSION=	4.2.3
-PORTREVISION=	1
+PORTVERSION=	4.2.5
 CATEGORIES=	japanese www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	4

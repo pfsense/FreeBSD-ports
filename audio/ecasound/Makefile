@@ -1,15 +1,14 @@
 # Created by: The Anarcat <anarcat@anarcat.dyndns.org>
-# $FreeBSD$
 
 PORTNAME=	ecasound
-PORTVERSION=	2.9.1
-PORTREVISION=	4
+PORTVERSION=	2.9.3
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://ecasound.seul.org/download/ \
 		http://nosignal.fi/download/ \
 		http://ecawave.sourceforge.net/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Multitrack audio processing software
 
 LICENSE=	GPLv2 LGPL21
@@ -17,14 +16,14 @@ LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
 
-USES=		gmake libtool localbase:ldflags pkgconfig readline:port shebangfix
+USES=		gmake libtool localbase:ldflags ncurses pkgconfig \
+		readline shebangfix
 SHEBANG_FILES=	ecatools/ecamonitor
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-liblilv \
 		--disable-rubyecasound \
 		--enable-sys-readline=no \
 		--disable-arts
-USE_LDCONFIG=	yes
 
 LDFLAGS+=	-pthread
 
@@ -33,6 +32,8 @@ OPTIONS_DEFAULT=PYTHON
 OPTIONS_SUB=	yes
 
 ALSA_CONFIGURE_ENABLE=	alsa
+# Prevent from linking libasound.so if ALSA disabled.
+ALSA_CONFIGURE_ENV_OFF=	ac_cv_search_snd_pcm_open=no
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 AUDIOFILE_CONFIGURE_ENABLE=	audiofile
 AUDIOFILE_LIB_DEPENDS=	libaudiofile.so:audio/libaudiofile
@@ -56,5 +57,9 @@ post-patch:
 		 s| $$EXTRACPPFLAGS||g ; \
 		 s| -D_P1003_1B_VISIBLE|| ; \
 		 s|python -c|$$PYTHONPATH -c|' ${WRKSRC}/configure
+
+post-install-PYTHON-off:
+	${RM} -R ${STAGEDIR}${PREFIX}/bin/ecamonitor
+	${RM} -R ${STAGEDIR}${MANPREFIX}/man/man1/ecamonitor.1.gz
 
 .include <bsd.port.mk>

@@ -1,22 +1,26 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	mcron
-PORTVERSION=	1.0.8
-PORTREVISION=	2
+PORTVERSION=	1.2.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	100% compatible replacement for Vixie cron
 
-RUN_DEPENDS=	guile2>=2.0:lang/guile2
-BUILD_DEPENDS=	${RUN_DEPENDS}
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig
+LIB_DEPENDS=	libguile-2.2.so:lang/guile2
+
+USES=		gmake pkgconfig
 GNU_CONFIGURE=	yes
-MAKEFILE=	makefile
+TEST_TARGET=	check
 
 INFO=		mcron
+
+PLIST_SUB=	GUILE_SITE=share/guile/site/2.2 \
+		GUILE_SITE_CCACHE=lib/guile/2.2/site-ccache
 
 .include <bsd.port.mk>

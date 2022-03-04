@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	waifu2x-w2xc
-DISTVERSION=	r6
-PORTREVISION=	4
+DISTVERSION=	r8
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -19,34 +16,20 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	HomeOfVapourSynthEvolution
 GH_PROJECT=	VapourSynth-Waifu2x-w2xc
 
-USES=		compiler:c++11-lib gmake localbase pkgconfig
-HAS_CONFIGURE=	yes
-CPPFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
-		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
-CONFIGURE_ARGS=	--install="${STAGEDIR}${DATADIR}" \
-		--cxx="${CXX}" \
-		--extra-cxxflags="${CPPFLAGS} ${CXXFLAGS}" \
-		--extra-ldflags="${LDFLAGS}" \
-		--extra-libs="${LIBS}"
-MAKEFILE=	GNUmakefile
-MAKE_ARGS=	STRIP="${STRIP_CMD}"
+USES=		compiler:c++14-lang localbase:ldflags meson pkgconfig
+CPPFLAGS+=	-DHAVE_OPENCV # https://github.com/DeadSix27/waifu2x-converter-cpp/commit/248797748d5a
 DATADIR=	${PREFIX}/lib/vapoursynth
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
-PLIST_FILES=	%%DATADIR%%/libwaifu2x-w2xc.so
-PORTDATA=	models
+PORTDATA=	lib${PORTNAME}.so models
 PORTDOCS=	*.md
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e 's/\*linux\*/*/' \
-		-e 's/-O3 //; /=.*-mfpmath/d; /-msse/d' \
-		${WRKSRC}/configure
-	@${REINPLACE_CMD} '/STRIP/s/-x //' ${WRKSRC}/${MAKEFILE}
+# FreeBSD i386 defaults to -march=i686 (i486 with Clang < 9)
+	@${REINPLACE_CMD} '/-msse2/d' ${WRKSRC}/meson.build
 
 post-install:
-	(cd ${WRKSRC}/Waifu2x-w2xc && ${COPYTREE_SHARE} \
-		"${PORTDATA}" ${STAGEDIR}${DATADIR})
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 

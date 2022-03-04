@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Return-Value
 PORTVERSION=	1.666005
@@ -9,7 +8,7 @@ MASTER_SITE_SUBDIR=	CPAN:RJBS
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Return::Value - Polymorphic Return Values
+COMMENT=	Polymorphic return values for Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

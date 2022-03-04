@@ -1,11 +1,10 @@
 # Created by: chinsan
-# $FreeBSD$
 
 PORTNAME=	vld
-PORTVERSION=	0.15.0
+PORTVERSION=	0.17.1
 CATEGORIES=	devel pear
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Dump the internal representation of PHP scripts
 
 LICENSE=	BSD2CLAUSE

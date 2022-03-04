@@ -1,8 +1,7 @@
 # Created by: Lefteris Chatzibarbas <lefcha@hellug.gr>
-# $FreeBSD$
 
 PORTNAME=	imapfilter
-PORTVERSION=	2.6.12
+PORTVERSION=	2.7.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 
@@ -11,9 +10,11 @@ COMMENT=	IMAP mail filtering utility
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
-USES=		lua ssl
+USES=		cpe lua ssl
+
+CPE_VENDOR=	imapfilter_project
 
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LUA_INCDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}

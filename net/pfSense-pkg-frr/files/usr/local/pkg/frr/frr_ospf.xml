@@ -8,7 +8,7 @@
  * frr_ospf.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,21 +31,29 @@
 	<aftersaveredirect>pkg_edit.php?xml=frr/frr_ospf.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF Settings</text>
+			<text>OSPF</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>OSPF Interfaces</text>
+			<text>Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Areas</text>
-			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_ospf_neighbors.xml</url>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[BGP]</text>
@@ -54,6 +62,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -78,8 +90,9 @@
 			<fieldname>routerid</fieldname>
 			<description>
 				<![CDATA[
-				Specify the Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				Override the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
 				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
+
 				]]>
 			</description>
 			<type>input</type>
@@ -106,7 +119,16 @@
 			</description>
 			<type>input</type>
 		</field>
-
+		<field>
+			<name>Modules</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
+		</field>
 		<field>
 			<name>Default Area</name>
 			<type>listtopic</type>
@@ -123,7 +145,7 @@
 		</field>
 		<field>
 			<fielddescr>Default Area</fielddescr>
-			<fieldname>area</fieldname>
+			<fieldname>defaultarea</fieldname>
 			<description>
 				<![CDATA[
 				Default OSPF area for this instance of OSPF.
@@ -132,11 +154,10 @@
 				]]>
 			</description>
 			<type>input</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>Default Area Type</fielddescr>
-			<fieldname>areatype</fieldname>
+			<fieldname>defaultareatype</fieldname>
 			<description>Defines how the default area behaves</description>
 			<type>select</type>
 			<default_value>none</default_value>
@@ -148,7 +169,6 @@
 				<option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option>
 			</options>
 		</field>
-
 		<field>
 			<name>OSPF Networks</name>
 			<type>listtopic</type>
@@ -160,14 +180,14 @@
 				<strong>DEPRECATED</strong>:
 				Define <a href="/pkg.php?xml=frr/frr_ospf_areas.xml">areas</a> and use areas on <a href="/pkg.php?xml=frr/frr_ospf_interfaces.xml">interfaces</a> instead.
 				Use route-maps and distribute lists to limit distributed networks.
-				<br/><br/>
+				<br />
 				The networks listed below define valid connected networks to redistribute to OSPF neighbors.<br/>
 				The exact networks specified will not be distributed, but instead determine which interfaces will be active in OSPF.<br/>
 				To advertise an interface network without activating it for OSPF, define it on the Interfaces tab and mark it as a Passive Interface.<br/>
 				Interfaces must have link and be up or their networks will not be advertised.
-				<br/><br/>
+				<br />
 				These rules take precedence over any redistribute options specified above.
-				<br/><br/>
+				<br />
 				<strong>Networks listed here will conflict with overlapping interface networks and may prevent ospfd from starting.</strong>
 				]]>
 			</description>
@@ -192,7 +212,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>Route Redistribution</name>
 			<type>listtopic</type>
@@ -202,7 +221,7 @@
 			<description>
 				<![CDATA[
 				The options in this section control how routes are redistributed into OSPF from other sources.
-				<br/><br/>
+				<br />
 				The route map and distribute list controls can filter the routes so that specific networks will be prevented from distribution.
 				]]>
 			</description>
@@ -233,7 +252,7 @@
 			<fieldname>redistributeconnectedsubnets_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -243,7 +262,7 @@
 			<fieldname>redistributeconnectedsubnets_distlist</fieldname>
 			<description>Distribute List</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -257,7 +276,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<fielddescr>pfSense Kernel Routes</fielddescr>
 			<fieldname>redistributekernel</fieldname>
@@ -283,7 +301,7 @@
 			<fieldname>redistributekernel_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -293,7 +311,7 @@
 			<fieldname>redistributekernel_distlist</fieldname>
 			<description>Distribute List</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -307,7 +325,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<fielddescr>BGP Routes</fielddescr>
 			<fieldname>redistributebgp</fieldname>
@@ -333,7 +350,7 @@
 			<fieldname>redistributebgp_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -343,7 +360,7 @@
 			<fieldname>redistributebgp_distlist</fieldname>
 			<description>Distribute List</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -357,7 +374,55 @@
 			</description>
 			<type>info</type>
 		</field>
-
+		<field>
+			<fielddescr>RIP Routes</fielddescr>
+			<fieldname>redistributerip</fieldname>
+			<description>Redistribute RIP</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Metric</fielddescr>
+			<fieldname>redistributerip_metric</fieldname>
+			<description>Metric</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Metric Type</fielddescr>
+			<fieldname>redistributerip_metrictype</fieldname>
+			<description>Metric Type 1/2</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<fieldname>redistributerip_routemap</fieldname>
+			<description>Route Map</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Distribute List</fielddescr>
+			<fieldname>redistributerip_distlist</fieldname>
+			<description>Distribute List</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				RIP routes are routes obtained from RIP neighbors.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
 		<field>
 			<fielddescr>FRR Static Routes</fielddescr>
 			<fieldname>redistributestatic</fieldname>
@@ -383,7 +448,7 @@
 			<fieldname>redistributestatic_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -393,7 +458,7 @@
 			<fieldname>redistributestatic_distlist</fieldname>
 			<description>Distribute List</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -407,7 +472,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<name>Default Route Redistribution</name>
 			<type>listtopic</type>
@@ -441,11 +505,10 @@
 			<fieldname>redistributedefaultroute_routemap</fieldname>
 			<description>Route Map used to filter default route redistribution.</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>Advanced</name>
 			<type>listtopic</type>
@@ -468,7 +531,6 @@
 			<description>Base value, in Mbit/s, used to calculate automatic interface costs. Must be set the same on all OSPF routers (1-4294967, default 100).</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<fielddescr>Max Metric</fielddescr>
 			<fieldname>max_metric_administrative</fieldname>
@@ -508,7 +570,6 @@
 				<option><name>Standard (RFC2328)</name><value>standard</value></option>
 			</options>
 		</field>
-
 	</fields>
 	<custom_php_resync_config_command>
 		frr_generate_config();

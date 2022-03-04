@@ -1,5 +1,4 @@
 # Created by: Björn König <bkoenig@alpha-tierchen.de>
-# $FreeBSD$
 
 PORTNAME=	sablevm-classpath
 PORTVERSION=	1.13
@@ -12,11 +11,14 @@ COMMENT=	Classpath of SableVM
 
 LICENSE=	GPLv2
 
+BROKEN_aarch64=		Fails to configure: Endianess not declared
+BROKEN_riscv64=		Fails to configure: Endianess not declared
+
 BUILD_DEPENDS=	jikes:java/jikes
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool pkgconfig
+USES=		gmake libtool pkgconfig xorg
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 USE_XORG=	x11 ice xtst sm
 
@@ -35,6 +37,7 @@ ZIP_DESC=	Compress class library
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGTK2}
+USES+=			gnome
 USE_GNOME+=		gtk20
 PLIST_SUB+=		GTK2=""
 .if ${PORT_OPTIONS:MCAIRO}
@@ -56,8 +59,6 @@ PLIST_SUB+=		WITHOUT_ZIP="@comment " WITH_ZIP=""
 CONFIGURE_ARGS+=	--with-compressed-classes=no
 PLIST_SUB+=		WITHOUT_ZIP="" WITH_ZIP="@comment "
 .endif
-
-BROKEN_aarch64=		Fails to configure: Endianess not declared
 
 post-patch:
 	@${CP} -f ${WRKSRC}/resource/java/security/classpath.security \

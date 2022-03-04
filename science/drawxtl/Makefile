@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	DRAWxtl
 DISTVERSION=	5.5
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	https://www.lwfinger.com/drawxtl/
 DISTNAME=	${PORTNAME}${DISTVERSION:S/.//}
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
-USES=		desktop-file-utils gl gmake localbase
+USES=		desktop-file-utils gl gmake localbase xorg
 USE_GL=		gl glu
 USE_XORG=	xinerama xft xext x11 xpm
 

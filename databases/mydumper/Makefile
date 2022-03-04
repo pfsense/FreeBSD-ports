@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	mydumper
-PORTVERSION=	0.9.5
+PORTVERSION=	0.11.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -13,14 +12,19 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-CMAKE_OFF=	BUILD_DOCS WITH_BINLOG
+USES=		cmake:insource compiler:c11 gnome mysql pkgconfig ssl
 USE_GNOME=	glib20
-USES=		cmake:insource gnome mysql pkgconfig
+
+CMAKE_ARGS=	${CMAKE_ARGS_${CHOSEN_COMPILER_TYPE}}
+CMAKE_ARGS_gcc=	-DMYSQL_LIBRARIES_atomic:FILEPATH=${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libatomic.so
+CMAKE_OFF=	BUILD_DOCS WITH_BINLOG
 
 PLIST_FILES=	sbin/mydumper sbin/myloader
 
 GH_ACCOUNT=	maxbube
 USE_GITHUB=	yes
+
+PORTSCOUT=	skipv:v0.10.7-2
 
 post-patch:
 	@${REINPLACE_CMD} -e '/link_libraries(mydumper/ s|)$$| -lm)|; s|-Werror||' ${WRKSRC}/CMakeLists.txt

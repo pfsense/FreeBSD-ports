@@ -1,5 +1,4 @@
 # Created by: Shaun Amott <shaun@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kaitaistruct
 PORTVERSION=	0.8
@@ -12,7 +11,7 @@ COMMENT=	Kaitai Struct declarative parser generator for binary data
 
 LICENSE=	MIT
 
-USES?=		python
+USES?=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

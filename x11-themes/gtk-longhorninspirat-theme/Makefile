@@ -1,11 +1,11 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	longhorninspirat
 PORTVERSION=	1.0
 PORTREVISION=	9
 CATEGORIES=	x11-themes gnome
-MASTER_SITES=	http://www.users.monornet.hu/linux/gtk2/oldies/
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe \
+		https://bsdforge.com/projects/source/x11-themes/gtk-longhorninspirat-theme/
 PKGNAMEPREFIX=	${TYPE}-
 PKGNAMESUFFIX=	-theme
 DISTNAME=	Longhorn_Inspirat
@@ -23,6 +23,7 @@ WRKSRC=		${WRKDIR}/${THEME_NAME}
 .if ${TYPE} == gtk
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}
 PLIST_SUB+=	GTK20="" METACITY="@comment "
+USES+=		gnome
 USE_GNOME=	gtk20
 .else	# metacity
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}

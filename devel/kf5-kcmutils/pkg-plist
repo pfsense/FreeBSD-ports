@@ -1,10 +1,12 @@
 include/KF5/KCMUtils/KCModuleContainer
+include/KF5/KCMUtils/KCModuleData
 include/KF5/KCMUtils/KCModuleInfo
 include/KF5/KCMUtils/KCModuleLoader
 include/KF5/KCMUtils/KCModuleProxy
 include/KF5/KCMUtils/KCMultiDialog
 include/KF5/KCMUtils/KPluginSelector
 include/KF5/KCMUtils/kcmodulecontainer.h
+include/KF5/KCMUtils/kcmoduledata.h
 include/KF5/KCMUtils/kcmoduleinfo.h
 include/KF5/KCMUtils/kcmoduleloader.h
 include/KF5/KCMUtils/kcmoduleproxy.h
@@ -20,8 +22,11 @@ include/KF5/KCMUtils/ksettings/pluginpage.h
 include/KF5/kcmutils_version.h
 lib/cmake/KF5KCMUtils/KF5KCMUtilsConfig.cmake
 lib/cmake/KF5KCMUtils/KF5KCMUtilsConfigVersion.cmake
+lib/cmake/KF5KCMUtils/KF5KCMUtilsMacros.cmake
 lib/cmake/KF5KCMUtils/KF5KCMUtilsTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF5KCMUtils/KF5KCMUtilsTargets.cmake
+lib/cmake/KF5KCMUtils/kcmutilsgeneratemoduledata.cpp.in
+lib/cmake/KF5KCMUtils/kcmutilsgeneratemoduledata.h.in
 lib/libKF5KCMUtils.so
 lib/libKF5KCMUtils.so.5
 lib/libKF5KCMUtils.so.%%KDE_FRAMEWORKS_VERSION%%
@@ -31,6 +36,7 @@ share/kservicetypes5/kcmoduleinit.desktop
 share/locale/af/LC_MESSAGES/kcmutils5.mo
 share/locale/ar/LC_MESSAGES/kcmutils5.mo
 share/locale/as/LC_MESSAGES/kcmutils5.mo
+share/locale/az/LC_MESSAGES/kcmutils5.mo
 share/locale/be/LC_MESSAGES/kcmutils5.mo
 share/locale/be@latin/LC_MESSAGES/kcmutils5.mo
 share/locale/bg/LC_MESSAGES/kcmutils5.mo
@@ -127,3 +133,4 @@ share/locale/xh/LC_MESSAGES/kcmutils5.mo
 share/locale/zh_CN/LC_MESSAGES/kcmutils5.mo
 share/locale/zh_HK/LC_MESSAGES/kcmutils5.mo
 share/locale/zh_TW/LC_MESSAGES/kcmutils5.mo
+share/qlogging-categories5/kcmutils.categories

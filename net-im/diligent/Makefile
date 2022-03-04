@@ -1,13 +1,12 @@
 # Created by: Kris Moore <kmoore@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	diligent
 PORTVERSION=	0.2.7
-PORTREVISION=	7
+PORTREVISION=	9
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
 
-MAINTAINER=	kmoore@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unofficial Qt Slack client
 
 LICENSE=	LGPL3
@@ -16,17 +15,17 @@ USE_LDCONFIG=	yes
 USE_QT=		core gui linguist network svg \
 		webkit widgets x11extras buildtools_build
 USE_GL=		gl
-USES=		compiler:c++11-lang qmake qt:5
+USES=		compiler:c++11-lang gl qmake qt:5
 
 QMAKE_ARGS=	CONFIG+="configure"
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
-GH_PROJECT=	diligent
+
 PLIST_FILES=	bin/diligent \
 		share/applications/diligent.desktop \
 		share/icons/diligent.png
-SUB_FILES=      diligent.desktop
+SUB_FILES=	diligent.desktop
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/diligent ${STAGEDIR}${PREFIX}/bin

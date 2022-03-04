@@ -1,115 +1,113 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	glib
-PORTVERSION=	2.56.3
-PORTREVISION=	3
-PORTEPOCH=	1
+DISTVERSION=	2.70.2
+PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome2
+DIST_SUBDIR=	gnome
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Some useful routines of C programming (current stable version)
 
 LICENSE=	LGPL20
 
-USES=		tar:xz
-PORTSCOUT=	limitw:1,even
+LIB_DEPENDS=	libffi.so:devel/libffi \
+		libpcre.so:devel/pcre
 
-.if !defined(REFERENCE_PORT)
-
-LIB_DEPENDS+=	libpcre.so:devel/pcre \
-		libffi.so:devel/libffi
-
-GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
 # iconv:wchar_t - our iconv in base doesn't support utf-8 -> wchar_t (boooo)
 # (wchar_t is used by glibmm, rawtherapee triggered this)
-USES+=		compiler:c11 gettext gmake gnome iconv:wchar_t libtool \
-		localbase pathfix perl5 pkgconfig python shebangfix
-USE_PYTHON=	py3kplist
+USES=		compiler:c11 cpe gettext gnome iconv:wchar_t localbase:ldflags \
+		meson perl5 pkgconfig python:3.6+ tar:xz
+USE_LDCONFIG=	yes
 USE_PERL5=	build
-CONFIGURE_ARGS=	--disable-gtk-doc --with-html-dir=${PREFIX}/share/doc \
-		--enable-static=yes \
-		--with-pcre=system \
-		--disable-fam
-CONFIGURE_ENV=	ac_cv_header_sys_inotify_h=
-INSTALL_TARGET=	install-strip
+USE_PYTHON=	py3kplist
+MESON_ARGS=	-Db_lundef=false \
+		-Ddefault_library=both \
+		-Dinstalled_tests=false \
+		-Dlibmount=disabled \
+		-Dlocalstatedir=/var \
+		-Dselinux=disabled \
+		-Dxattr=false
+BINARY_ALIAS=	python3=${PYTHON_CMD}
+PORTSCOUT=	limitw:1,even
+CPE_VENDOR=	gnome
 
-SHEBANG_FILES=	*/*.pl
+_LIBVERSION=	0.7000.2
+PLIST_SUB=	LIBVERSION=${_LIBVERSION}
 
-LIBVERSION=	0.5600.3
-PLIST_SUB+=	LIBVERSION=${LIBVERSION}
-
-glib_MAN=	gtester.1 gtester-report.1 glib-gettextize.1
-gio_MAN=	gdbus.1 gsettings.1 gio-querymodules.1 gio.1 \
-		glib-compile-schemas.1 gapplication.1 \
-		glib-compile-resources.1 gresource.1 gdbus-codegen.1
-gobject_MAN=	glib-genmarshal.1 glib-mkenums.1 gobject-query.1
-
-OPTIONS_DEFINE=	DEBUG MANPAGES NLS
+OPTIONS_DEFINE=	DEBUG FAM_ALTBACKEND MANPAGES NLS TEST
 OPTIONS_DEFAULT=	MANPAGES
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
-DEBUG_CONFIGURE_ON=	--enable-debug=yes
+FAM_ALTBACKEND_DESC=	Alternate file monitor backend
 
-MANPAGES_BUILD_DEPENDS=		docbook-xml>4.1.2:textproc/docbook-xml \
-				docbook-xsl>0:textproc/docbook-xsl
-MANPAGES_USE=			GNOME=libxslt:build
-MANPAGES_CONFIGURE_ENABLE=	man
-MANPAGES_CONFIGURE_ON=		--with-xml-catalog=${LOCALBASE}/share/xml/catalog
+MANPAGES_BUILD_DEPENDS=	docbook-xml>4.1.2:textproc/docbook-xml \
+			docbook-xsl>0:textproc/docbook-xsl
+MANPAGES_USE=		GNOME=libxslt:build
+MANPAGES_MESON_TRUE=	man
+
+TEST_DEPENDS=		dbus-daemon:devel/dbus
+TEST_MESON_TRUE=	tests
 
 .include <bsd.port.pre.mk>
 
 # doesn't build yet
-CONFIGURE_ARGS+=--disable-dtrace
+MESON_ARGS+=	-Ddtrace=false
 
 .if empty(ICONV_LIB)
-CONFIGURE_ARGS+=	--with-libiconv=no
+# native?
+MESON_ARGS+=	-Diconv=libc
 .else
-CONFIGURE_ARGS+=	--with-libiconv=gnu
+MESON_ARGS+=	-Diconv=external
 .endif
 
-.if ${ARCH} == powerpc64
-EXTRA_PATCHES+=	${FILESDIR}/extra-arch-powerpc64
-.endif
-
-# Let glib use asm code for implementing atomic ops on i386 and amd64.
-.if ${ARCH} == "i386"
-GLIB_ARCH=	i486
-.elif ${ARCH} == "amd64"
-GLIB_ARCH=	x86_64
-.else
-GLIB_ARCH=	${ARCH}
-.endif
-CONFIGURE_TARGET=${GLIB_ARCH}-portbld-freebsd${OSREL}
+pre-configure-FAM_ALTBACKEND-on:
+	@${REINPLACE_CMD} -e 's|kqueue-helper.c|kqueue_fnm.c|g ; \
+		s|.*kqueue-missing.c.*||g ; \
+		s|.*dep-list.c.*||g' \
+		${WRKSRC}/gio/kqueue/meson.build
+	@${CP} -f ${FILESDIR}/gkqueuefilemonitor.c ${WRKSRC}/gio/kqueue/gkqueuefilemonitor.c
+	@${CP} ${FILESDIR}/kqueue_fnm.c ${WRKSRC}/gio/kqueue/kqueue_fnm.c
+	@${CP} ${FILESDIR}/kqueue_fnm.h ${WRKSRC}/gio/kqueue/kqueue_fnm.h
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g ; \
+	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g ; \
 		s|/usr/share/locale/locale|${LOCALBASE}/share/locale/locale|g' \
-			${WRKSRC}/glib/gutils.c
-	@${REINPLACE_CMD} -e 's|inotify_support=yes|inotify_support=no| ; \
-		s|-Werror|| ; \
-		s|#define HAVE_SYS_INOTIFY_H 1||' ${WRKSRC}/configure
+		${WRKSRC}/glib/gutils.c
+	${REINPLACE_CMD} -e 's|@PYTHON@|${PYTHON_CMD}|g' \
+		${WRKSRC}/gio/gdbus-2.0/codegen/gdbus-codegen.in \
+		${WRKSRC}/glib/gtester-report.in \
+		${WRKSRC}/gobject/glib-genmarshal.in \
+		${WRKSRC}/gobject/glib-mkenums.in
+	${REINPLACE_CMD} -e '/inotify_init1/d' \
+		-e '/inotify.h/d' \
+		${WRKSRC}/meson.build
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+		${WRKSRC}/gio/xdgmime/xdgmime.c \
+		${WRKSRC}/glib/gutils.c \
+		${WRKSRC}/glib/tests/utils.c
 
-do-build-MANPAGES-on:
-.for m in glib gio gobject
-. for file in ${${m}_MAN}
-	cd ${WRKSRC}/docs/reference/${m} && ${GMAKE} ${file}
-. endfor
-.endfor
+CODEGENDIR=	${PREFIX}/share/glib-2.0/codegen
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/GConf/gsettings
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/gio/modules
-
-post-install-MANPAGES-on:
-.for m in glib gio gobject
-	${INSTALL_MAN} ${${m}_MAN:S|^|${WRKSRC}/docs/reference/${m}/|} \
-		${STAGEDIR}${PREFIX}/man/man1
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/GConf/gsettings
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/gio/modules
+# generates .py[co] files for installed modules
+# if that's not done, ${PYTHON_SITELIBDIR}/gps will be polluted
+# with these files when module is imported from root user
+	${FIND} ${STAGEDIR}${PREFIX} -name \*.pyc -delete
+	(cd ${STAGEDIR}${PREFIX} && \
+	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
+		-d ${CODEGENDIR} -f ${CODEGENDIR:S;${PREFIX}/;;} && \
+	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
+		-d ${CODEGENDIR} -f ${CODEGENDIR:S;${PREFIX}/;;})
+# install bash completion regardless if bash is present
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions
+.for file in gapplication gdbus gio gresource gsettings
+	${INSTALL_DATA} ${WRKSRC}/gio/completion/${file} \
+		${STAGEDIR}${PREFIX}/share/bash-completion/completions/
 .endfor
+	${RM} -r ${STAGEDIR}${PREFIX}/libexec/installed-tests
 
 .include <bsd.port.post.mk>
-
-.endif

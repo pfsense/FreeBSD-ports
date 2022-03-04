@@ -1,5 +1,4 @@
 # Created by: Corey Smith <corsmith@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	torrus
 PORTVERSION=	2.09
@@ -26,7 +25,7 @@ BUILD_DEPENDS=	rrdtool>=0:databases/rrdtool \
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USE_GNOME=	libxml2
-USES=		perl5
+USES=		gnome perl5
 USE_PERL5=	run
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes

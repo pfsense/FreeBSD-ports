@@ -1,6 +1,6 @@
---- ui/gfx/render_text.cc.orig	2019-03-11 22:01:19 UTC
+--- ui/gfx/render_text.cc.orig	2021-09-24 04:26:39 UTC
 +++ ui/gfx/render_text.cc
-@@ -934,32 +934,33 @@ void RenderText::SetDisplayOffset(int horizontal_offse
+@@ -1230,30 +1230,31 @@ void RenderText::SetDisplayOffset(Vector2d offset) {
    const int extra_content = GetContentWidth() - display_rect_.width();
    const int cursor_width = cursor_enabled_ ? 1 : 0;
  
@@ -33,14 +33,9 @@
          break;
      }
    }
--  if (horizontal_offset < min_offset)
--    horizontal_offset = min_offset;
--  else if (horizontal_offset > max_offset)
--    horizontal_offset = max_offset;
-+  if (horizontal_offset < _min_offset)
-+    horizontal_offset = _min_offset;
-+  else if (horizontal_offset > _max_offset)
-+    horizontal_offset = _max_offset;
  
-   cached_bounds_and_offset_valid_ = true;
-   display_offset_.set_x(horizontal_offset);
+-  const int horizontal_offset = base::clamp(offset.x(), min_offset, max_offset);
++  const int horizontal_offset = base::clamp(offset.x(), _min_offset, _max_offset);
+ 
+   // y-offset is set only when the vertical alignment is ALIGN_TOP.
+   // TODO(jongkown.lee): Support other vertical alignments.

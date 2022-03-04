@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pyahocorasick
-DISTVERSION=	1.1.8
+DISTVERSION=	1.4.1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,12 +10,15 @@ COMMENT=	Python and C implementation of the Aho-Corasick algorithm
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist
 
 PORTDOCS=	README.rst
 
 OPTIONS_DEFINE=	DOCS
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ahocorasick*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

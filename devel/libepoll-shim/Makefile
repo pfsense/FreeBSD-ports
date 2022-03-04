@@ -1,35 +1,35 @@
 # Created by: Johannes Lundberg <johalun0@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libepoll-shim
-PORTVERSION=	0.0.20181229
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.0.20210418
 CATEGORIES=	devel
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	epoll shim implemented using kevent
+COMMENT=	Small epoll implementation using kqueue
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	FreeBSDDesktop
-GH_PROJECT=	epoll-shim
-GH_TAGNAME=	212c17b
-
+USES=		cmake compiler:c11
 USE_LDCONFIG=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	jiixyj
+GH_PROJECT=	epoll-shim
+PLIST_SUB=	SHIM_EVENTFD="${exists(/usr/include/sys/eventfd.h):?@comment :}"
 
-USES=		compiler uidfix
-MAKE_ARGS=	INCSDIR=${PREFIX}/include/libepoll-shim/sys \
-		LIBDIR=${PREFIX}/lib WITHOUT_PROFILE=yes
+do-test:
+	# Exclude certain tests in resource restricted environments
+	@(if [ `ulimit -n` -lt 20100 ]; then \
+	    ${ECHO} "Skipping test perf-many-fds.perf_many_fds__perf"; \
+	    SKIP_TESTS="-E ^(perf-many-fds.perf_many_fds__perf"; \
+	    if [ `ulimit -n` -lt 1100 ]; then \
+	        ${ECHO} "Skipping test timerfd-test.timerfd__many_timers"; \
+	        SKIP_TESTS=$$SKIP_TESTS"|timerfd-test.timerfd__many_timers"; \
+	    fi; \
+	    SKIP_TESTS=$$SKIP_TESTS")$$"; \
+	fi; \
+	cd ${TEST_WRKSRC} && \
+	${SETENV} ${TEST_ENV} ctest -C ${CMAKE_BUILD_TYPE} $$SKIP_TESTS)
 
-.include <bsd.port.pre.mk>
-
-post-patch:
-.if "${CHOSEN_COMPILER_TYPE}" == "gcc"
-	@${REINPLACE_CMD} -e 's|Wno-missing-variable-declarations|Wno-missing-declarations|' \
-		-e 's|-Wno-thread-safety-analysis||' ${WRKSRC}/Makefile
-.endif
-
-pre-install:
-	@${MKDIR} ${STAGEDIR}/${PREFIX}/include/libepoll-shim/sys
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

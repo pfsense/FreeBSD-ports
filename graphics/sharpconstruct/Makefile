@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	sharpconstruct
 PORTVERSION=	0.11
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	graphics
 MASTER_SITES=	SF/sharp3d/SharpConstruct/${PORTVERSION}
 
@@ -16,17 +13,27 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libgtkglextmm-x11-1.2.so:x11-toolkits/gtkglextmm \
 		libglademm-2.4.so:devel/libglademm24
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc64le
 ONLY_FOR_ARCHS_REASON=	uses SSE instructions
 
-USES=		compiler:c++11-lang tar:bzip2 gmake pkgconfig
+USES=		gl tar:bzip2 gmake pkgconfig
 USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes
-USE_GL=		yes
+USE_GL=		gl glu
 
+CXXFLAGS_i386=	-msse
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man1/${PORTNAME}.1.gz
 PORTDATA=	*
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64le
+CXXFLAGS+=	-DNO_WARN_X86_INTRINSICS
+USES+=		compiler:gcc-c++11-lib
+.else
+USES+=		compiler:c++11-lang
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|malloc.h|stdlib.h|' ${WRKSRC}/include/Align.hh

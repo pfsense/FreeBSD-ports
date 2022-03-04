@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	git-version-bump
-PORTVERSION=	0.16.0
+PORTVERSION=	0.17.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

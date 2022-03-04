@@ -1,5 +1,4 @@
 # Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	concordance
 PORTVERSION=	1.2
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	comms
 MASTER_SITES=	SF
 
-MAINTAINER=	shurd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line Logitech Harmony configuration tool
 
 LICENSE=	GPLv2

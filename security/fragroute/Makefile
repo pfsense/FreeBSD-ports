@@ -1,9 +1,8 @@
 # Created by: Dominic Marks <dominic.marks@btinternet.com>
-# $FreeBSD$
 
 PORTNAME=	fragroute
 PORTVERSION=	1.2
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	security net
 MASTER_SITES=	http://monkey.org/~dugsong/fragroute/ \
 		PACKETSTORM/UNIX/security
@@ -13,6 +12,8 @@ COMMENT=	Tool for intercepting, modifying, and rewriting egress traffic
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		compiler:c11
 
 LIB_DEPENDS=	libdnet.so:net/libdnet \
 		libevent.so:devel/libevent

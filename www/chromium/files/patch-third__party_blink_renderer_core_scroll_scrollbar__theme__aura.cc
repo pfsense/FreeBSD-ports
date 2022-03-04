@@ -1,11 +1,20 @@
---- third_party/blink/renderer/core/scroll/scrollbar_theme_aura.cc.orig	2019-03-11 22:01:03 UTC
+--- third_party/blink/renderer/core/scroll/scrollbar_theme_aura.cc.orig	2021-07-19 18:45:22 UTC
 +++ third_party/blink/renderer/core/scroll/scrollbar_theme_aura.cc
-@@ -332,7 +332,7 @@ ScrollbarPart ScrollbarThemeAura::InvalidateOnThumbPos
- 
- bool ScrollbarThemeAura::ShouldCenterOnThumb(const Scrollbar& scrollbar,
+@@ -151,7 +151,7 @@ bool ScrollbarThemeAura::SupportsDragSnapBack() const 
+ // is true for at least GTK and QT apps).
+ // TODO(crbug.com/1052397): Revisit once build flag switch of lacros-chrome is
+ // complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
+   return false;
+ #else
+   return true;
+@@ -326,7 +326,7 @@ bool ScrollbarThemeAura::ShouldCenterOnThumb(const Scr
                                               const WebMouseEvent& event) {
--#if (defined(OS_LINUX) && !defined(OS_CHROMEOS))
-+#if ((defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS))
+ // TODO(crbug.com/1052397): Revisit once build flag switch of lacros-chrome is
+ // complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
    if (event.button == WebPointerProperties::Button::kMiddle)
      return true;
  #endif

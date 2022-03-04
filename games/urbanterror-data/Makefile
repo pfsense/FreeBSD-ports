@@ -1,5 +1,4 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME=	data
 PORTVERSION=	4.2.023
@@ -15,8 +14,16 @@ EXTRACT_ONLY=
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standalone realism based mod originally for Quake III Arena
 
+# Converted from NO_CDROM
+LICENSE=	UrbanTerror
+LICENSE_NAME=	UrbanTerror
+LICENSE_TEXT=	The mod files may not be sold or distributed on physical media unless with permission from id Software.
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
+BROKEN_mips=		Fails to install: runaway process
+BROKEN_mips64=		Fails to install: runaway process
+
 NO_BUILD=	yes
-NO_CDROM=	The mod files may not be sold or distributed on physical media unless with permission from id Software.
 
 DATADIR=	${PREFIX}/share/quake3
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
@@ -25,10 +32,6 @@ URT_VER=	${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
 URT_REV=	${PORTVERSION:C/([0-9]+\.[0-9]+).*\.([0-9]+)/\2/}
 
 PLIST_SUB+=	VER=${URT_VER}
-
-BROKEN_aarch64=		Fails to install: runaway process
-BROKEN_mips=		Fails to install: runaway process
-BROKEN_mips64=		Fails to install: runaway process
 
 OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes

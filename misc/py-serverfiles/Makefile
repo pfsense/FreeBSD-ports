@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	serverfiles
-DISTVERSION=	0.3.0
+DISTVERSION=	0.3.1
 CATEGORIES=	misc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +11,7 @@ LICENSE=	GPLv3+
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.11.1:www/py-requests@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

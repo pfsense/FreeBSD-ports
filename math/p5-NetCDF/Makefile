@@ -1,9 +1,8 @@
 # Created by: Douglas K. Rand (rand@meridian-enviro.com)
-# $FreeBSD$
 
 PORTNAME=	NetCDF
 PORTVERSION=	1.2.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	math perl5
 MASTER_SITES=	ftp://ftp.unidata.ucar.edu/pub/netcdf-perl/
 PKGNAMEPREFIX=	p5-

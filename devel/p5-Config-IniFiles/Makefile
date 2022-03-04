@@ -1,20 +1,20 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Config-IniFiles
-PORTVERSION=	2.98
+PORTVERSION=	3.000003
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Read .ini-style configuration files
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-IO-stringy>0:devel/p5-IO-stringy
+RUN_DEPENDS=	p5-IO-Stringy>0:devel/p5-IO-Stringy
 
 NO_ARCH=	yes
 USES=		perl5

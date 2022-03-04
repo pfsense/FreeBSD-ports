@@ -1,9 +1,7 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tmux-mem-cpu-load
-PORTVERSION=	3.4.0
-PORTREVISION=	2
+PORTVERSION=	3.5.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -11,8 +9,6 @@ MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	CPU, RAM, and load monitor for use with tmux
 
 LICENSE=	APACHE20
-
-RUN_DEPENDS=	tmux:sysutils/tmux
 
 USES=		cmake compiler:c++11-lang
 USE_GITHUB=	yes

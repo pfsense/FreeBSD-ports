@@ -1,19 +1,14 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	nordlicht
 PORTVERSION=	0.4.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create moodbars from video files
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
-
-BROKEN_aarch64=		Fails to install: runaway process
 
 BUILD_DEPENDS=	help2man:misc/help2man
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \

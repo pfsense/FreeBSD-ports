@@ -1,5 +1,4 @@
 # Created by: Satoshi Asami <asami@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yeahconsole
 PORTVERSION=	0.3.4
@@ -12,6 +11,7 @@ COMMENT=	Terminal wrapper for creating drop-down consoles
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		xorg
 USE_XORG=	x11
 ALL_TARGET=	${PORTNAME}
 

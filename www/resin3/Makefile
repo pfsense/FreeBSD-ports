@@ -1,5 +1,4 @@
 # Created by: Jean-Baptiste Quenot <jb.quenot@caraldi.com>
-# $FreeBSD$
 
 PORTNAME=	resin
 PORTVERSION=	3.1.16
@@ -11,11 +10,11 @@ COMMENT=	Java-based Application Server, 3.x branch
 
 LICENSE=	GPLv2
 
-USES=		libtool python ssl
+USES=		cpe libtool python ssl
+CPE_VENDOR=	caucho
 USE_JAVA=	yes
 
 # Pass JAVA_HOME as determined by bsd.java.mk
-JAVA_VERSION=	1.6+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-java-home=${JAVA_HOME} \
 		--with-openssl-lib=${OPENSSLLIB} \

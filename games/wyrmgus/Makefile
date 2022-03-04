@@ -1,8 +1,7 @@
 # Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
 
 PORTNAME=	wyrmgus
-PORTVERSION=	3.5.4
+PORTVERSION=	5.2.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games devel
 
@@ -12,25 +11,27 @@ COMMENT=	Modified Stratagus engine for Wyrmsun
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png \
-		libtolua++-${LUA_VER}.so:lang/tolua++ \
-		libogg.so:audio/libogg \
-		liboaml.so:audio/oaml
+LIB_DEPENDS=	libtolua++-${LUA_VER}.so:lang/tolua++
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/tokenizer.hpp:devel/boost-libs
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     Andrettin
-GH_PROJECT=     Wyrmgus
+# recheck with boost >= 1.73
+BROKEN_FreeBSD_14=	does not build because boost asio is not compatible with c++20
 
-USES=		compiler:c++11-lib cmake lua:51 pkgconfig sqlite
-USE_SDL=	sdl
+USE_GITHUB=	yes
+GH_ACCOUNT=	Andrettin
+GH_PROJECT=	Wyrmgus
+
+USES=		cmake compiler:c++17-lang lua:51 pkgconfig sdl sqlite qt:5 xorg
+USE_QT=		core gui widgets multimedia location \
+		quickcontrols quickcontrols2 graphicaleffects \
+		qmake_build buildtools_build
+USE_XORG=	x11
+USE_SDL=	sdl2 mixer2
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DTOLUA++_APP:STRING="tolua++-${LUA_VER}" \
 		-DTOLUA++_INCLUDE_DIR:STRING="${LUA_INCDIR}" \
 		-DTOLUA++_LIBRARY:STRING="${LUA_LIBDIR}/libtolua++.so" \
-		-DENABLE_USEGAMEDIR:BOOL=OFF \
-		-DWITH_MIKMOD:BOOL=OFF \
-		-DWITH_THEORA:BOOL=OFF
+		-DENABLE_USEGAMEDIR:BOOL=OFF
 
 PORTDOCS=	*
 
@@ -45,13 +46,7 @@ OPENGL_USE=		GL=gl,glu
 OPENGL_CMAKE_ON=	-DWITH_RENDERER="OpenGL"
 OPENGL_CMAKE_OFF=	-DWITH_RENDERER="NativeSDL"
 
-post-patch:
-# fix debug build
-	@${REINPLACE_CMD} -e 's|OAML_LIBRARIES_SHARED_DEBUG|OAML_LIBRARIES_SHARED|' ${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -e '/stratagus-dbg/ d' ${WRKSRC}/CMakeLists.txt
-
-do-install:
-	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/stratagus ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+post-install:
 	${INSTALL_DATA} ${WRKSRC}/src/win32/wyrmsun.ico ${STAGEDIR}${PREFIX}/share/pixmaps/
 
 .include <bsd.port.mk>

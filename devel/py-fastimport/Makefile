@@ -1,9 +1,8 @@
 # Created by: Carlo Strub
-# $FreeBSD$
 
 PORTNAME=	fastimport
-PORTVERSION=	0.9.8
-CATEGORIES=	devel
+PORTVERSION=	0.9.14
+CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,8 +12,9 @@ COMMENT=	Fastimport parser and generator in Python
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NO_ARCH=	yes
-USES=		python
+USES=		python:3.5+
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

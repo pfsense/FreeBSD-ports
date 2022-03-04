@@ -1,5 +1,4 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	camlidl
 PORTVERSION=	1.05
@@ -35,6 +34,7 @@ post-extract:
 
 	@${REINPLACE_CMD} -e \
 		"/^install/,/^$$/s,\([ \t]*\)cp,\1${INSTALL_SCRIPT},g" \
+		-e 's,$$(OCAMLC),& -warn-error -a,' \
 		${WRKSRC}/compiler/Makefile
 
 	@${REINPLACE_CMD} -e \

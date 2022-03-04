@@ -1,12 +1,12 @@
 # Created by: Yoichi NAKAYAMA <yoichi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	elscreen
 PORTVERSION=	1.4.6.20180320
+PORTREVISION=	6
 CATEGORIES=	misc elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emacs utility similar to GNU Screen
 
 LICENSE=	GPLv2

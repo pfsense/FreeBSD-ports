@@ -1,8 +1,7 @@
 # Created by: Jeremy Norris <ishmael27@home.com>
-# $FreeBSD$
 
 PORTNAME=	imlib2_loaders
-PORTVERSION=	1.5.0
+PORTVERSION=	1.7.0
 PORTEPOCH=	2
 CATEGORIES=	graphics enlightenment
 MASTER_SITES=	SF/enlightenment/imlib2-src/${PORTVERSION}
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool localbase pathfix pkgconfig tar:bzip2
+USES=		libtool localbase pathfix pkgconfig tar:bzip2 xorg
 USE_XORG=	x11 xext
 
 CONFIGURE_ARGS=	--disable-static

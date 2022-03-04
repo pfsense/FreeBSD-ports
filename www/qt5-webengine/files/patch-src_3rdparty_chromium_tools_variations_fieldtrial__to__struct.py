@@ -1,10 +1,10 @@
---- src/3rdparty/chromium/tools/variations/fieldtrial_to_struct.py.orig	2018-11-13 18:25:11 UTC
+--- src/3rdparty/chromium/tools/variations/fieldtrial_to_struct.py.orig	2020-11-07 01:22:36 UTC
 +++ src/3rdparty/chromium/tools/variations/fieldtrial_to_struct.py
-@@ -30,6 +30,7 @@ _platforms = [
-   'linux',
-   'mac',
-   'windows',
-+  'bsd',
- ]
- 
- # Convert a platform argument to the matching Platform enum value in
+@@ -35,6 +35,7 @@ _platforms = [
+     'android_weblayer',
+     'android_webview',
+     'chromeos',
++    'freebsd',
+     'fuchsia',
+     'ios',
+     'linux',

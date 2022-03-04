@@ -1,5 +1,4 @@
 # Created by: Alex Miller <asm@asm.kiev.ua>
-# $FreeBSD$
 
 PORTNAME=	ilbc
 DISTVERSION=	rfc3951
@@ -10,7 +9,7 @@ MASTER_SITES=	http://simon.morlat.free.fr/download/1.2.x/source/
 MAINTAINER=	asm@asm.kiev.ua
 COMMENT=	Internet Low Bit Rate codec (RFC3951)
 
-CONFLICTS=	libilbc-[0-9]*
+CONFLICTS=	libilbc
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

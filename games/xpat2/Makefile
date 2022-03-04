@@ -1,5 +1,4 @@
 # Created by: Matthew Hunt <mph@pobox.com>
-# $FreeBSD$
 
 PORTNAME=	xpat2
 PORTVERSION=	1.07
@@ -15,7 +14,7 @@ LICENSE=	GPLv2+
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	xaw
 
 CFLAGS+=	-D_POSIX_SOURCE -DNO_CUSERID -D_POSIX_SAVED_IDS

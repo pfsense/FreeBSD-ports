@@ -1,5 +1,4 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	l0phtcrack
 PORTVERSION=	1.5
@@ -13,9 +12,17 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cracks SAMBA or Windows NT passwords
 
+DEPRECATED=	Obsolete, Microsoft LANMAN and NT password hashes are deprecated
+EXPIRATION_DATE=2022-03-31
+
+# Converted from RESTRICTED
+LICENSE=	l0phtcrack
+LICENSE_NAME=	l0phtcrack
+LICENSE_TEXT=	uses GNU getopt with BSDish-licensed code from OpenSSL
+LICENSE_PERMS=	auto-accept
+
 USES=		dos2unix perl5 zip
 USE_PERL5=	build
-RESTRICTED=	uses GNU getopt with BSDish-licensed code from OpenSSL
 NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/lc_CLI

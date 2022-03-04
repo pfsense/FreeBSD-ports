@@ -1,14 +1,14 @@
---- Build/DesktopFile.hs.orig	2017-06-12 17:56:05 UTC
+--- Build/DesktopFile.hs.orig	2019-06-26 16:31:40 UTC
 +++ Build/DesktopFile.hs
-@@ -25,6 +25,7 @@ import System.Environment
- #ifndef mingw32_HOST_OS
- import System.Posix.User
- #endif
-+import System.FilePath.Posix
- import Data.Maybe
- import Control.Applicative
- import Prelude
-@@ -50,12 +51,17 @@ writeFDODesktop :: FilePath -> IO ()
+@@ -20,6 +20,7 @@ import Config.Files
+ import Utility.OSX
+ import Assistant.Install.AutoStart
+ import Assistant.Install.Menu
++import System.FilePath ((</>))
+ 
+ import System.Environment
+ import System.PosixCompat.User
+@@ -48,13 +49,18 @@ writeFDODesktop :: FilePath -> IO ()
  writeFDODesktop command = do
  	systemwide <- systemwideInstall
  
@@ -24,7 +24,9 @@
  	installMenu command menufile "doc" icondir
  
 -	configdir <- if systemwide then return systemConfigDir else userConfigDir
+-	installAutoStart command 
 +	configdir <- if systemwide then return scdir else userConfigDir
- 	installAutoStart command 
++	installAutoStart command
  		=<< inDestDir (autoStartPath "git-annex" configdir)
  
+ writeOSXDesktop :: FilePath -> IO ()

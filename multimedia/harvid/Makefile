@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	harvid
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 MAINTAINER=	marcelbonnet@gmail.com

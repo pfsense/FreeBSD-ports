@@ -1,4 +1,4 @@
---- net/proxy_resolution/proxy_config_service_linux.cc.orig	2019-03-11 22:01:01 UTC
+--- net/proxy_resolution/proxy_config_service_linux.cc.orig	2021-09-14 01:52:00 UTC
 +++ net/proxy_resolution/proxy_config_service_linux.cc
 @@ -6,7 +6,9 @@
  
@@ -10,15 +10,15 @@
  #include <unistd.h>
  
  #include <map>
-@@ -495,6 +497,7 @@ int StringToIntOrDefault(base::StringPiece value, int 
-   return default_value;
+@@ -504,6 +506,7 @@ bool SettingGetterImplGSettings::CheckVersion(
  }
+ #endif  // defined(USE_GIO)
  
 +#if !defined(OS_BSD)
- // This is the KDE version that reads kioslaverc and simulates gsettings.
- // Doing this allows the main Delegate code, as well as the unit tests
- // for it, to stay the same - and the settings map fairly well besides.
-@@ -986,6 +989,7 @@ class SettingGetterImplKDE : public ProxyConfigService
+ // Converts |value| from a decimal string to an int. If there was a failure
+ // parsing, returns |default_value|.
+ int StringToIntOrDefault(base::StringPiece value, int default_value) {
+@@ -1004,6 +1007,7 @@ class SettingGetterImplKDE : public ProxyConfigService
  
    DISALLOW_COPY_AND_ASSIGN(SettingGetterImplKDE);
  };
@@ -26,12 +26,13 @@
  
  }  // namespace
  
-@@ -1197,8 +1201,10 @@ ProxyConfigServiceLinux::Delegate::Delegate(
+@@ -1218,9 +1222,11 @@ ProxyConfigServiceLinux::Delegate::Delegate(
      case base::nix::DESKTOP_ENVIRONMENT_KDE3:
      case base::nix::DESKTOP_ENVIRONMENT_KDE4:
      case base::nix::DESKTOP_ENVIRONMENT_KDE5:
 +#if !defined(OS_BSD)
-       setting_getter_.reset(new SettingGetterImplKDE(env_var_getter_.get()));
+       setting_getter_ =
+           std::make_unique<SettingGetterImplKDE>(env_var_getter_.get());
        break;
 +#endif
      case base::nix::DESKTOP_ENVIRONMENT_XFCE:

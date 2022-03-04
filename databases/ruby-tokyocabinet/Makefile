@@ -1,10 +1,9 @@
 # Created by: Damian Gerow <dgerow@afflictions.org>
-# $FreeBSD$
 
 PORTNAME=	tokyocabinet
 PORTVERSION=	1.31
 CATEGORIES=	databases ruby
-MASTER_SITES=	https://fallabs.com/${PORTNAME}/rubypkg/
+MASTER_SITES=	https://dbmx.net/${PORTNAME}/rubypkg/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME}-ruby-${PORTVERSION}
 DIST_SUBDIR=	ruby

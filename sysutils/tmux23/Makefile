@@ -1,8 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	tmux
 DISTVERSION=	2.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/tmux/tmux/releases/download/${PORTVERSION}/
 PKGNAMESUFFIX=	23
@@ -16,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS_INSTALL=	tmux
 
-USES=		ncurses pkgconfig
+USES=		cpe ncurses pkgconfig
+CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	nodefault
 GH_TUPLE=	imomaliev:tmux-bash-completion:ef56d3e:bash
 

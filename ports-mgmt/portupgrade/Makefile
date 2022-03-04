@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	portupgrade
 PORTVERSION=	2.4.16
@@ -17,7 +16,7 @@ LICENSE=	BSD3CLAUSE
 
 OPTIONS_DEFINE=	DOCS
 
-CONFLICTS_INSTALL=	portupgrade-devel-*
+CONFLICTS_INSTALL=	portupgrade-devel
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd

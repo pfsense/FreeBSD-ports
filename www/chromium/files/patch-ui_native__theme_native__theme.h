@@ -1,11 +1,11 @@
---- ui/native_theme/native_theme.h.orig	2019-03-11 22:01:19 UTC
+--- ui/native_theme/native_theme.h.orig	2021-05-12 22:06:47 UTC
 +++ ui/native_theme/native_theme.h
-@@ -48,7 +48,7 @@ class NATIVE_THEME_EXPORT NativeTheme {
-   // The part to be painted / sized.
-   enum Part {
+@@ -56,7 +56,7 @@ class NATIVE_THEME_EXPORT NativeTheme {
      kCheckbox,
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
      kFrameTopArea,
  #endif
      kInnerSpinButton,

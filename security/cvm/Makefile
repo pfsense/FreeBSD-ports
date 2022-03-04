@@ -1,5 +1,4 @@
 # Created by: Sergei Kolobov <sergei@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cvm
 PORTVERSION=	0.97
@@ -7,7 +6,7 @@ CATEGORIES=	security
 MASTER_SITES=	http://untroubled.org/${PORTNAME}/ \
 		http://untroubled.org/${PORTNAME}/archive/
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Credential Validation Modules
 
 LICENSE=	GPLv2
@@ -34,6 +33,8 @@ VCHKPW_DESC=	Compile cvm-vchkpw
 VCHKPW_ALL_TARGET=	cvm-vchkpw
 
 VCHKPW_BUILD_DEPENDS=	${LOCALBASE}/vpopmail/lib/libvpopmail.a:mail/vpopmail
+
+MAKE_JOBS_UNSAFE=	yes
 
 do-configure:
 	${ECHO_CMD} "${PREFIX}"		> ${WRKSRC}/conf-home

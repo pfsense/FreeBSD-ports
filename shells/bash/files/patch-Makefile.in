@@ -1,4 +1,4 @@
---- Makefile.in.orig	2018-05-25 12:47:09 UTC
+--- Makefile.in.orig	2020-12-19 20:55:00 UTC
 +++ Makefile.in
 @@ -824,7 +824,9 @@ install:	.made installdirs
  		infodir=$(infodir) htmldir=$(htmldir) DESTDIR=$(DESTDIR) $@ )

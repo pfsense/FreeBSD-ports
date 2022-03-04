@@ -1,5 +1,4 @@
 # Created by: Chuck Hein <geekdude@pacbell.net>
-# $FreeBSD$
 
 PORTNAME=	mpexpr
 PORTVERSION=	1.2
@@ -38,7 +37,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/pkgIndex.tcl ${STAGEDIR}${PREFIX}/lib/Mpexpr12
 	${INSTALL_MAN} ${WRKDIR}/${DISTNAME}/doc/mpexpr.man ${STAGEDIR}${PREFIX}/man/mann/mpexpr.n
 
-do-test: build
+do-test:
 	cd ${WRKSRC} && ${MAKE_CMD} test
 
 .include <bsd.port.mk>

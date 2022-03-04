@@ -1,9 +1,8 @@
 # Created by: jfitz
-# $FreeBSD$
 
 PORTNAME=	analog
 PORTVERSION=	6.0
-PORTREVISION=	11
+PORTREVISION=	12
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://analog.gsp.com/ \

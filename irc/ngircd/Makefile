@@ -1,13 +1,11 @@
 # Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
 
 PORTNAME=	ngircd
-PORTVERSION=	24
-PORTREVISION=	1
+PORTVERSION=	26.1
 PORTEPOCH=	1
-CATEGORIES=	irc ipv6
-MASTER_SITES=	http://arthur.barton.de/pub/${PORTNAME}/ \
-		http://ngircd.mirror.3rz.org/pub/${PORTNAME}/
+CATEGORIES=	irc
+MASTER_SITES=	https://ngircd.barton.de/pub/ngircd/ \
+		https://ngircd.mirror.3rz.de/pub/ngircd/
 
 MAINTAINER=	fgsch@lodoss.net
 COMMENT=	Free open source daemon for Internet Relay Chat (IRC)
@@ -34,14 +32,14 @@ OPTIONS_RADIO=		TLS
 OPTIONS_RADIO_TLS=	GNUTLS OPENSSL
 OPTIONS_DEFAULT=	ICONV IRCPLUS LIBWRAP OPENSSL PAM SYSLOG ZLIB
 
-DEBUG_CONFIGURE_EBABLE=		debug
+DEBUG_CONFIGURE_ENABLE=		debug
 GNUTLS_LIB_DEPENDS=		libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_WITH=		gnutls
 ICONV_USES=			iconv
 ICONV_CONFIGURE_WITH=		iconv
 IDENT_DESC=			IDENT (AUTH) protocol support
 IDENT_LIB_DEPENDS=		libident.so:security/libident
-INDENT_CONFIGURE_WITH=		dent
+IDENT_CONFIGURE_WITH=		ident
 IPV6_CONFIGURE_ENABLE=		ipv6
 IRCPLUS_DESC=			IRC+ protocol
 IRCPLUS_CONFIGURE_ENABLE=	ircplus

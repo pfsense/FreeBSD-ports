@@ -1,18 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	xpdf
 PORTVERSION=	3.04
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics print
-MASTER_SITES=	http://mirrors.rit.edu/zi/ \
-		ftp://ftp.foolabs.com/pub/xpdf/ \
-		TEX_CTAN/support/xpdf \
-		http://komquats.com/distfiles/
+MASTER_SITES=	https://xpdfreader-dl.s3.amazonaws.com/old/
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	3
-CONFLICTS_INSTALL=	xpdf4-* xpdf-*
+CONFLICTS_INSTALL=	xpdf4 xpdf
 .else
-CONFLICTS_INSTALL=	xpdf4-*	xpdf3-*
+CONFLICTS_INSTALL=	xpdf4 xpdf3
 .endif
 
 MAINTAINER=	cy@FreeBSD.org
@@ -24,8 +19,11 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
-USES=		gmake cpe localbase
-CPE_VENDOR=	foolabs
+USES=		gmake cpe localbase xorg
+USE_XORG=	ice sm x11 xext xt
+
+CPE_VENDOR=	glyphandcog
+CPE_PRODUCT=	xpdfreader
 CONFIGURE_ARGS=	--enable-opi \
 		--with-freetype2-library="${LOCALBASE}/lib" \
 		--with-freetype2-includes="${LOCALBASE}/include/freetype2" \

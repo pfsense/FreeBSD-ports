@@ -1,10 +1,9 @@
 # Created by: cartola (Carlos E. G. Carvalho)
-# $FreeBSD$
 
 PORTNAME=	vigra
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.11.1
-PORTREVISION=	2
+PORTREVISION=	20
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
@@ -13,14 +12,16 @@ COMMENT=	VIGRA stands for "Vision with Generic Algorithms"
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libHalf.so:graphics/ilmbase \
+LIB_DEPENDS=	libImath.so:math/Imath \
 		libsz.so:science/szip
 
-USES=		cmake compiler:c++14-lang python:2.7,run shebangfix
+USES=		cmake compiler:c++14-lang python:run shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	ukoethe
 GH_TAGNAME=	8acd73a
 USE_LDCONFIG=	yes
+
+CFLAGS+=	-I${LOCALBASE}/include/Imath
 
 CMAKE_ARGS=	-DDEPENDENCY_SEARCH_PREFIX:PATH=${LOCALBASE} \
 		-DDOCINSTALL:PATH=${DOCSDIR_REL}
@@ -36,15 +37,15 @@ HDF5_CMAKE_BOOL=	WITH_HDF5
 HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5
 
 OPENEXR_CMAKE_BOOL=	WITH_OPENEXR
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr
 
 NUMPY_DESC=		NumPy mathematical computing (USE Fortran/GCC47+)
 NUMPY_CMAKE_BOOL=	WITH_VIGRANUMPY
-NUMPY_USES=		compiler:gcc-c++11-lib python:2.7,build
-NUMPY_BUILD_DEPENDS=	nosetests:devel/py-nose \
-			f2py:math/py-numpy
-NUMPY_RUN_DEPENDS=	nosetests:devel/py-nose \
-			f2py:math/py-numpy
+NUMPY_USES=		compiler:gcc-c++11-lib python:build
+NUMPY_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
+			${PYNUMPY}
+NUMPY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
+			${PYNUMPY}
 NUMPY_LIB_DEPENDS=	${PY_BOOST}
 # On FreeBSD < 11 libc++ lacks support for sized delete operators.
 # GCC dropped the builtin version of these operators in 6+ by

@@ -1,5 +1,4 @@
 # Created by: Mark Reidel <ports@mark.reidel.info>
-# $FreeBSD$
 
 PORTNAME=	gmpc
 PORTVERSION=	11.8.16
@@ -24,10 +23,10 @@ LIB_DEPENDS=	libmpd.so:audio/libmpd \
 		libfreetype.so:print/freetype2
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake libtool localbase pathfix pkgconfig sqlite
+USES=		gettext gmake gnome libtool localbase pathfix pkgconfig sqlite \
+		xorg
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo glib20 gtk20 intltool libglade2
-INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--enable-system-libsexy
 LIBS+=		-lm
 

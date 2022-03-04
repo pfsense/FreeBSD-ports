@@ -1,5 +1,4 @@
 # Created by: Jing-Tang Keith Jang <keith@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libtabe
 PORTVERSION=	0.2.6
@@ -30,6 +29,7 @@ MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		DOCS X11
 OPTIONS_SUB=		yes
+X11_USES=		xorg
 X11_USE=		XORG=x11
 X11_CONFIGURE_WITH=	x
 

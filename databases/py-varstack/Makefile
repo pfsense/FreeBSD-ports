@@ -1,17 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	varstack
 PORTVERSION=	g.2015.10.22
 CATEGORIES=	databases python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
-COMMENT=	create stacked configuration structures
+COMMENT=	Create stacked configuration structures
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 USE_GITHUB=	yes
 GH_ACCOUNT=	conversis

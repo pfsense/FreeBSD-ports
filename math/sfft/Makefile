@@ -1,9 +1,8 @@
 # Created by: bf@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	sfft
 PORTVERSION=	0.1.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	math
 MASTER_SITES=	http://spiral.net/software/sfft/ LOCAL/bf
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -71,7 +70,7 @@ base system profiling libraries
 .endif
 PLIST_FILES+=	lib/libsfft_p.a
 .else
-MAKE_ENV+=	NO_PROFILE=yes
+MAKE_ENV+=	WITHOUT_PROFILE=yes
 .endif
 
 post-extract:

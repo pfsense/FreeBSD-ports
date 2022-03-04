@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	powermanga
 PORTVERSION=	0.93.1
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		autoreconf localbase tar:tgz
+USES=		autoreconf localbase sdl tar:tgz xorg
 USE_XORG=	xext xxf86dga
 USE_SDL=	sdl mixer
 GNU_CONFIGURE=	yes

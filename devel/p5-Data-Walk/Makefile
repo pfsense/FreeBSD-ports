@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Walk
 PORTVERSION=	2.01
 CATEGORIES=	devel perl5

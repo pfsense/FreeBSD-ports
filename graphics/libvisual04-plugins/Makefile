@@ -1,9 +1,8 @@
 # Created by: Björn König <bkoenig@alpha-tierchen.de>
-# $FreeBSD$
 
 PORTNAME=	libvisual
 PORTVERSION=	0.4.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-plugins/${PORTNAME}-plugins-${PORTVERSION}
 PKGNAMESUFFIX=	04-plugins
@@ -12,9 +11,12 @@ DISTNAME=	${PORTNAME}-${PKGNAMESUFFIX:C/.*-//}-${PORTVERSION}
 MAINTAINER=	bkoenig@alpha-tierchen.de
 COMMENT=	Set of plugins for the libvisual framework
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: _oink_table_cos
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: _oink_table_cos
+
 LIB_DEPENDS=	libvisual-${MAJORMINOR}.so:graphics/libvisual04
 
-USES=		libtool pkgconfig
+USES=		gl libtool pkgconfig xorg
 USE_GL=		yes
 USE_XORG=	x11
 GNU_CONFIGURE=	yes

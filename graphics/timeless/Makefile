@@ -1,5 +1,4 @@
 # Created by: Jeff Molofee
-# $FreeBSD$
 
 PORTNAME=	timeless
 PORTVERSION=	1.0
@@ -10,6 +9,7 @@ MASTER_SITES=	LOCAL/shaun
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD/SDL port of Tran's Timeless Demo with Sound
 
+USES=		sdl
 USE_SDL=	sdl mixer
 LDFLAGS+=	-lm
 

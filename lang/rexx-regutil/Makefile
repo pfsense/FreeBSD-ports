@@ -1,9 +1,8 @@
 # Created by: Bob Eager <bob@eager.cx>
-# $FreeBSD$
 
 PORTNAME=	regutil
 PORTVERSION=	1.26
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	http://home.interlog.com/~ptjm/ \
 		http://www.ancientgeek.org.uk/distfiles/
@@ -21,7 +20,6 @@ USES=		ncurses zip
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 USE_LDCONFIG=	yes
-LLD_UNSAFE=	yes	# lld lacks built-in search paths
 MAKEFILE=	Makefile.bsd
 MAKE_ARGS+=	PLIBS="${LDFLAGS:M-L*} -lncurses"
 CFLAGS+=	-D_WANT_SEMUN

@@ -1,25 +1,21 @@
 bin/transmission-gtk
 man/man1/transmission-gtk.1.gz
+%%NLS%%share/appdata/transmission-gtk.appdata.xml
 share/applications/transmission-gtk.desktop
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
-%%PORTDOCS%%%%DOCSDIR%%/NEWS
-%%PORTDOCS%%%%DOCSDIR%%/README
+%%PORTDOCS%%%%DOCSDIR%%/NEWS.md
+%%PORTDOCS%%%%DOCSDIR%%/README.md
 %%PORTDOCS%%%%DOCSDIR%%/rpc-spec.txt
 %%PORTDOCS%%%%DOCSDIR%%/send-email-when-torrent-done.sh
-share/icons/hicolor/16x16/apps/transmission.png
-share/icons/hicolor/22x22/apps/transmission.png
-share/icons/hicolor/24x24/apps/transmission.png
-share/icons/hicolor/256x256/apps/transmission.png
-share/icons/hicolor/32x32/apps/transmission.png
-share/icons/hicolor/48x48/apps/transmission.png
+share/icons/hicolor/scalable/apps/transmission-devel.svg
 share/icons/hicolor/scalable/apps/transmission.svg
+share/icons/hicolor/symbolic/apps/transmission-symbolic.svg
 %%NLS%%share/locale/an/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ar/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ast/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/az/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/be/LC_MESSAGES/transmission-gtk.mo
-%%NLS%%share/locale/be@latin/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/bg/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/bn/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/bo/LC_MESSAGES/transmission-gtk.mo
@@ -30,6 +26,7 @@ share/icons/hicolor/scalable/apps/transmission.svg
 %%NLS%%share/locale/ceb/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ckb/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/cs/LC_MESSAGES/transmission-gtk.mo
+%%NLS%%share/locale/cy/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/da/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/de/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/el/LC_MESSAGES/transmission-gtk.mo
@@ -45,6 +42,7 @@ share/icons/hicolor/scalable/apps/transmission.svg
 %%NLS%%share/locale/fil/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/fo/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/transmission-gtk.mo
+%%NLS%%share/locale/fr_CA/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ga/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/gl/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/gv/LC_MESSAGES/transmission-gtk.mo
@@ -58,6 +56,7 @@ share/icons/hicolor/scalable/apps/transmission.svg
 %%NLS%%share/locale/is/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/it/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ja/LC_MESSAGES/transmission-gtk.mo
+%%NLS%%share/locale/jbo/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ka/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/kk/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ko/LC_MESSAGES/transmission-gtk.mo
@@ -81,6 +80,7 @@ share/icons/hicolor/scalable/apps/transmission.svg
 %%NLS%%share/locale/pl/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/pt/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/transmission-gtk.mo
+%%NLS%%share/locale/pt_PT/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ro/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/ru/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/si/LC_MESSAGES/transmission-gtk.mo
@@ -90,7 +90,7 @@ share/icons/hicolor/scalable/apps/transmission.svg
 %%NLS%%share/locale/sr/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/sv/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/sw/LC_MESSAGES/transmission-gtk.mo
-%%NLS%%share/locale/ta_LK/LC_MESSAGES/transmission-gtk.mo
+%%NLS%%share/locale/ta/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/te/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/th/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/tl/LC_MESSAGES/transmission-gtk.mo
@@ -101,4 +101,5 @@ share/icons/hicolor/scalable/apps/transmission.svg
 %%NLS%%share/locale/uz/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/vi/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/transmission-gtk.mo
+%%NLS%%share/locale/zh_HK/LC_MESSAGES/transmission-gtk.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/transmission-gtk.mo

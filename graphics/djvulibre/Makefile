@@ -1,13 +1,12 @@
 # Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
 
 PORTNAME=	djvulibre
-PORTVERSION=	3.5.27
-PORTREVISION=	2
+PORTVERSION=	3.5.28
+PORTREVISION=	1
 CATEGORIES=	graphics www
 MASTER_SITES=	SF/djvu/DjVuLibre/${PORTVERSION}
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	DjVu base libraries and utilities
 
 LICENSE=	GPLv2+
@@ -38,8 +37,7 @@ ANY2DJVU_DESC=		Install any2djvu script (requires curl)
 ANY2DJVU_RUN_DEPENDS=	curl:ftp/curl
 DESKTOPFILES_DESC=	Install icons and mime types
 DESKTOPFILES_CONFIGURE_ENABLE=	desktopfiles
-DESKTOPFILES_USES=	gnome shared-mime-info
-DESKTOPFILES_VARS=	INSTALLS_ICONS=yes
+DESKTOPFILES_USES=	gnome
 
 post-patch:
 # Remove custom optimization compiler flags

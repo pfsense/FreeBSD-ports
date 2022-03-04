@@ -129,7 +129,7 @@
 			<description>Enable the protected mode of search engines to limit access to mature content.</description>
 			<sethelp>
 			<![CDATA[
-				At the moment it is supported by Google, Yandex, Yahoo, MSN, Live Search and Bing. Make sure that the search engines can be accessed. It is recommended to prohibit access to others.<br>
+				At the moment it is supported by Google, Yandex, Yahoo, MSN, Live Search, Bing, DuckDuckGo, OneSearch, Rambler, Ecosia and Qwant. Make sure that the search engines can be accessed. It is recommended to prohibit access to others.<br>
 				<b>Note:</b> This option overrides 'Rewrite' setting.
 			]]>
 			</sethelp>

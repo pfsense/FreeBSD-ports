@@ -1,31 +1,29 @@
 # Created by: Roman Bogorodskiy
-# $FreeBSD$
 
 PORTNAME=	wzdftpd
 PORTVERSION=	0.8.3
-PORTREVISION=	6
-CATEGORIES=	ftp ipv6
+PORTREVISION=	8
+CATEGORIES=	ftp
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-sources/${PORTNAME}-${PORTVERSION:R}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fuz@fuz.su
 COMMENT=	Modular FTP server configurable online using SITE commands
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf gettext-tools libtool localbase pkgconfig
+USES=		autoreconf cpe gettext-tools libtool localbase pkgconfig
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--sysconfdir=${ETCDIR} --without-pam --disable-bonjour
+CONFIGURE_ARGS=	--sysconfdir=${ETCDIR} --disable-bonjour --disable-static
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 USE_RC_SUBR=	wzdftpd
 
-OPTIONS_DEFINE=	ICONV IPV6 MYSQL PERL PGSQL SQLITE TCL DOCS
-OPTIONS_RADIO=	TLS ZEROCONF
+OPTIONS_DEFINE=	AVAHI DOCS ICONV IPV6 MYSQL PAM PERL PGSQL SQLITE TCL
+OPTIONS_RADIO=	TLS
 OPTIONS_RADIO_TLS=	GNUTLS OPENSSL
-OPTIONS_RADIO_ZEROCONF=	AVAHI HOWL
-OPTIONS_DEFAULT=	AVAHI GNUTLS
+OPTIONS_DEFAULT=	AVAHI GNUTLS ICONV PAM PERL SQLITE
 OPTIONS_SUB=	yes
 
 ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
@@ -48,7 +46,9 @@ PERL_CONFIGURE_ENABLE=	perl
 PERL_USES=		perl5
 
 MYSQL_CONFIGURE_ENABLE=	mysql
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
+
+PAM_CONFIGURE_WITH=	pam
 
 PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}
 PGSQL_CONFIGURE_OFF=	--disable-pgsql
@@ -60,19 +60,6 @@ SQLITE_USES=			sqlite:3
 AVAHI_CONFIGURE_ON=	--with-zeroconf --enable-avahi
 AVAHI_LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 			libavahi-core.so:net/avahi-app
-
-HOWL_DESC=		Zeroconf support via Howl
-HOWL_CONFIGURE_ON=	--with-zeroconf --enable-howl
-HOWL_CPPFLAGS=		-I${LOCALBASE}/include/howl
-HOWL_LIB_DEPENDS=	libhowl.so:net/howl
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MAVAHI} || ${PORT_OPTIONS:MHOWL}
-PLIST_SUB+=	ZEROCONF=""
-.else
-PLIST_SUB+=	ZEROCONF="@comment "
-.endif
 
 post-patch:
 	@${TOUCH} ${WRKSRC}/config.rpath
@@ -90,8 +77,10 @@ post-patch:
 		'/^libdir/s|$${pkgdatadir}|$${prefix}/lib/wzdftpd|'
 .endfor
 	@${FIND} ${WRKSRC} -name "*_tls.c" | ${XARGS} ${REINPLACE_CMD} -e \
-		'/<gcrypt.h>/d ; \
-		 /gcry_control/d' \
+		'/<gcrypt\.h>/d ; /gcry_control/d'
+	@${REINPLACE_CMD} -e \
+		's|^wzd_sfv_config SfvConfig|extern &|' \
+		${WRKSRC}/modules/sfv/libwzd_sfv_main.h
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/*.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig

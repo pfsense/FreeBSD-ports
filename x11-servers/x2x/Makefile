@@ -1,5 +1,4 @@
 # Created by: grog
-# $FreeBSD$
 
 PORTNAME=	x2x
 PORTVERSION=	1.30.20180709
@@ -11,7 +10,7 @@ COMMENT=	Program to link multiple X servers together
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf gmake pkgconfig
+USES=		autoreconf gmake pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	dottedmag
 GH_TAGNAME=	e62a535

@@ -1,8 +1,7 @@
 # Created by: Anton Yudin (<contact@toha.org.ua>)
-# $FreeBSD$
 
 PORTNAME=	dbvis
-PORTVERSION=	9.2.14
+PORTVERSION=	11.0.3
 CATEGORIES=	java databases
 MASTER_SITES=	http://www.dbvis.com/product_download/${PORTNAME}-${PORTVERSION}/media/
 DISTNAME=	dbvis_unix_${PORTVERSION:S/./_/g}
@@ -13,13 +12,12 @@ COMMENT=	DbVisualizer database tool
 LICENSE=	DbVisualizer_EULA
 LICENSE_NAME=	End-User License Agreement for DbVisualizer
 LICENSE_TEXT=	Full license can be found at http://www.dbvis.com/eula/
+# Redistribution is not permitted
 LICENSE_PERMS=	auto-accept
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 JAVA_VENDOR=	openjdk
 NO_BUILD=	yes
-RESTRICTED=	Redistribution is not permitted
 
 PLIST_FILES=	bin/dbvis
 WRKSRC=		${WRKDIR}/DbVisualizer

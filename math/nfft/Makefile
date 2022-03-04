@@ -1,26 +1,26 @@
-# $FreeBSD$
-
 PORTNAME=	nfft
-PORTVERSION=	3.4.1
+PORTVERSION=	3.5.2
 PORTREVISION=	1
 CATEGORIES=	math
 
-MAINTAINER=	mike.d.ft402@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nonequispaced fast Fourier transform
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libfftw3.so:math/fftw3
 BUILD_DEPENDS=	bash:shells/bash
+LIB_DEPENDS=	libfftw3.so:math/fftw3
+
+USES=		autoreconf libtool
+USE_GITHUB=	yes
+GH_ACCOUNT=	NFFT
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-fftw3=${PREFIX}
-USES=		autoreconf libtool
-USE_LDCONFIG=	yes
-TEST_TARGET=	check
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	NFFT
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=	DOCS DOXYGEN
 OPTIONS_SUB=	yes
@@ -28,8 +28,6 @@ OPTIONS_SUB=	yes
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_ALL_TARGET=	all doc
 DOXYGEN_IMPLIES=	DOCS
-
-INSTALL_TARGET=install-strip
 
 .include <bsd.port.pre.mk>
 

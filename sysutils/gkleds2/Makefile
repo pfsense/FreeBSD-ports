@@ -1,5 +1,4 @@
 # Created by: Jan Stocker <Jan.Stocker@t-online.de>
-# $FreeBSD$
 
 PORTNAME=	gkleds2
 PORTVERSION=	0.8.2
@@ -17,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2
 
-USES=		gmake libtool pkgconfig
+USES=		gmake gnome libtool pkgconfig xorg
 GNU_CONFIGURE=	yes
 USE_XORG=	x11 xtst
 USE_GNOME=	gtk20

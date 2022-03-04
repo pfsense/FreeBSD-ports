@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Catalyst-View-REST-XML
 PORTVERSION=	0.02
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Catalyst XML View Class
 
 LICENSE=	ART10 GPLv1+

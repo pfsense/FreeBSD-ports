@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Log-Colorize-Helper
 PORTVERSION=	0.1.1
 PORTREVISION=	1

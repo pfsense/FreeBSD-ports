@@ -1,5 +1,4 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Net-ZooKeeper
 PORTVERSION=	0.41
@@ -9,6 +8,8 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Perl extension for Apache ZooKeeper
+
+BROKEN=		No longer compiles with newer versions of ZooKeeper
 
 LICENSE=	APACHE20
 

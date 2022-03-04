@@ -1,8 +1,8 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-themes-extra
 PORTVERSION=	3.28
+PORTREVISION=	2
 CATEGORIES=	x11-themes gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -21,7 +21,6 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 
 USES=		gettext-tools gmake gnome libtool pathfix pkgconfig tar:xz
 USE_GNOME=	cairo gtk20 intltool gtk30 librsvg2
-INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 

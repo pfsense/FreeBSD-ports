@@ -1,19 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	arel-helpers
-PORTVERSION=	2.8.0
+PORTVERSION=	2.12.1
+PORTREVISION=	1
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Helpers to construct database queries with ActiveRecord and Arel
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-activerecord4>=3.1.0:databases/rubygem-activerecord4
+RUN_DEPENDS=	rubygem-activerecord60>=6.0:databases/rubygem-activerecord60
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

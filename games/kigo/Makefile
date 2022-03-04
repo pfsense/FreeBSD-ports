@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	kigo
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	games kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	${${PORTNAME}_DESC}
+COMMENT=	${${PORTNAME:tu}_DESC}
 
-USES=		cmake kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils kde:5 qt:5 tar:xz
 USE_KDE=	attica auth codecs completion config configwidgets \
-		coreaddons crash dbusaddons ecm i18n jobwidgets kio \
-		libkdegames newstuff notifyconfig service sonnet textwidgets \
-		widgetsaddons xmlgui
-USE_QT=		core dbus declarative gui network svg widgets xml \
+		coreaddons crash dbusaddons i18n jobwidgets kio \
+		libkdegames newstuff notifyconfig service solid sonnet textwidgets \
+		widgetsaddons windowsystem xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus declarative gui network svg widgets xml \
 		buildtools_build qmake_build
 
 OPTIONS_DEFINE=	DOCS

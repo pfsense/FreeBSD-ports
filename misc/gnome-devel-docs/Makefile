@@ -1,16 +1,18 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-devel-docs
-PORTVERSION=	3.28.0
+PORTVERSION=	40.3
 CATEGORIES=	misc gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Documents targeted for GNOME developers
 
 BUILD_DEPENDS=	itstool:textproc/itstool
+
+LICENSE=	GFDL CC-BY-SA-4.0 CC-BY-SA-3.0
+LICENSE_COMB=	multi
 
 PORTSCOUT=	limitw:1,even
 

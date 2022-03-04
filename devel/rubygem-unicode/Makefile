@@ -1,5 +1,4 @@
 # Created by: Alexey V. Degtyarev <alexey@renatasystems.org>
-# $FreeBSD$
 
 PORTNAME=	unicode
 PORTVERSION=	0.4.4.4
@@ -9,7 +8,9 @@ MASTER_SITES=	RG
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Unicode string manipulation library for Ruby
 
-USE_RUBY=	yes
+LICENSE=	RUBY
+
 USES=		gem
+USE_RUBY=	yes
 
 .include <bsd.port.mk>

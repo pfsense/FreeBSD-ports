@@ -1,6 +1,4 @@
 #!/bin/sh
-# $FreeBSD$
-#
 
 # PROVIDE: fakeidentd
 # REQUIRE: LOGIN
@@ -17,13 +15,14 @@
 # The username does not need to exist anywhere in your system.
 
 name=fakeidentd
+desc="Standalone 'fake' ident daemon"
 rcvar=fakeidentd_enable
 
 load_rc_config $name
 
 : ${fakeidentd_enable:="NO"}
 
-command=%%PREFIX%%/sbin/identd
+command="%%PREFIX%%/sbin/identd"
 pidfile=/var/run/identd.pid
 
 command_args="nobody && echo -n ' fakeidentd'"

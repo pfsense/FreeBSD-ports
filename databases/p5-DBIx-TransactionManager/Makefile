@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-TransactionManager
 PORTVERSION=	1.13
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:NEKOKAK
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for database transaction handling
 
 LICENSE=	ART10 GPLv1+

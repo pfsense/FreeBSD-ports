@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gti
-PORTVERSION=	1.6.1
+PORTVERSION=	1.7.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 

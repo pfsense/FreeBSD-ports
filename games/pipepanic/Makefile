@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	pipepanic
 PORTVERSION=	0.1.3
 PORTREVISION=	6
@@ -20,6 +17,7 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 LICENSE_FILE_FAL=	${WRKSRC}/COPYING-ARTWORK
 LICENSE_PERMS_FAL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+USES=		sdl
 USE_SDL=	sdl
 
 PLIST_FILES=	bin/${PORTNAME}

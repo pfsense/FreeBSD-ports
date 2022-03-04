@@ -1,11 +1,9 @@
-# $FreeBSD$
-#
-
     COMMENT = Internet Relay Chat utilities
 
     SUBDIR += anope
     SUBDIR += atheme-services
     SUBDIR += bip
+    SUBDIR += birch
     SUBDIR += bitchx
     SUBDIR += bitlbee
     SUBDIR += bitlbee-discord
@@ -14,8 +12,8 @@
     SUBDIR += bitlbee-steam
     SUBDIR += bnc
     SUBDIR += bopm
+    SUBDIR += catgirl
     SUBDIR += cgiirc
-    SUBDIR += charybdis
     SUBDIR += ctrlproxy
     SUBDIR += cwirc
     SUBDIR += dancer
@@ -23,17 +21,14 @@
     SUBDIR += dircproxy
     SUBDIR += dxirc
     SUBDIR += eggdrop
-    SUBDIR += eggdrop-devel
     SUBDIR += epic4
     SUBDIR += epic5
+    SUBDIR += ergo
     SUBDIR += evangeline
     SUBDIR += ezbounce
-    SUBDIR += fisg
     SUBDIR += gruftistats
-    SUBDIR += gseen.mod
     SUBDIR += hexchat
     SUBDIR += hexchat-fish
-    SUBDIR += hybserv
     SUBDIR += icbirc
     SUBDIR += ii
     SUBDIR += infobot
@@ -45,28 +40,22 @@
     SUBDIR += ircd-hybrid
     SUBDIR += ircd-ratbox
     SUBDIR += ircd-ratbox-devel
-    SUBDIR += ircd-ru
     SUBDIR += ircproxy
-    SUBDIR += ircservices
     SUBDIR += iroffer-dinoex
-    SUBDIR += iroffer-lamm
     SUBDIR += irssi
     SUBDIR += irssi-dcc_send_limiter
     SUBDIR += irssi-fish
     SUBDIR += irssi-icb
-    SUBDIR += irssi-otr
     SUBDIR += irssi-scripts
     SUBDIR += irssi-xmpp
     SUBDIR += irssistats
     SUBDIR += keitairc2
+    SUBDIR += komanda-cli
     SUBDIR += konversation
     SUBDIR += kvirc
     SUBDIR += libircclient
-    SUBDIR += lostirc
     SUBDIR += miau
-    SUBDIR += minbif
     SUBDIR += muh
-    SUBDIR += nethirc
     SUBDIR += ngircd
     SUBDIR += ninja
     SUBDIR += onis
@@ -93,20 +82,16 @@
     SUBDIR += pircbot
     SUBDIR += pisg
     SUBDIR += polari
-    SUBDIR += psybnc
+    SUBDIR += pounce
     SUBDIR += py-fishcrypt
     SUBDIR += py-irc
     SUBDIR += py-limnoria
-    SUBDIR += py-supybot
-    SUBDIR += py-supybot-plugins
     SUBDIR += quassel
     SUBDIR += quassel-core
     SUBDIR += quirc
     SUBDIR += ratbox-respond
-    SUBDIR += ratbox-services
     SUBDIR += rbot
     SUBDIR += riece
-    SUBDIR += roxirc
     SUBDIR += rubygem-cinch
     SUBDIR += rubygem-cogbot
     SUBDIR += rubygem-lita-irc
@@ -116,6 +101,9 @@
     SUBDIR += simpleirc
     SUBDIR += sirc
     SUBDIR += smartirc4net
+    SUBDIR += smuxi
+    SUBDIR += soju
+    SUBDIR += srain
     SUBDIR += srvx
     SUBDIR += thales
     SUBDIR += tircproxy
@@ -123,7 +111,6 @@
     SUBDIR += unreal
     SUBDIR += weechat
     SUBDIR += weechat-otr
-    SUBDIR += xaric
     SUBDIR += znc
     SUBDIR += znc-push
 

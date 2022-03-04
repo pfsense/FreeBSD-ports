@@ -1,5 +1,4 @@
 # Created by: Jonas Palm <jonaspalm@posteo.de>
-# $FreeBSD$
 
 PORTNAME=	num2words
 PORTVERSION=	0.5.9
@@ -12,7 +11,7 @@ COMMENT=	Library to convert numbers to words in multiple languages
 
 LICENSE=	LGPL21
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

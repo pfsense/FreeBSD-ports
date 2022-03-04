@@ -1,14 +1,13 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Term-Menus
-PORTVERSION=	3.019
+PORTVERSION=	3.024
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:REEDFISH
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Create Powerful Terminal, Console, and CMD Environment Menus
 
 LICENSE=	AGPLv3

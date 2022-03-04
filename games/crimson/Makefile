@@ -1,5 +1,4 @@
 # Created by: Jan Jungnickel <jan@jungnickel.com>
-# $FreeBSD$
 
 PORTNAME=	crimson
 PORTVERSION=	0.5.3
@@ -16,7 +15,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	mixer sdl ttf
 
 .include <bsd.port.mk>

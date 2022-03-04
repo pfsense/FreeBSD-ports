@@ -8,7 +8,7 @@
  * frr.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,16 @@
 		<url>/pkg_edit.php?xml=frr.xml</url>
 	</menu>
 	<menu>
+		<name>FRR BFD</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr/frr_bfd.xml</url>
+	</menu>
+	<menu>
 		<name>FRR BGP</name>
 		<section>Services</section>
 		<configfile>frr.xml</configfile>
-		<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		<url>/pkg_edit.php?xml=frr/frr_bgp.xml</url>
 	</menu>
 	<menu>
 		<name>FRR OSPF</name>
@@ -52,6 +58,12 @@
 		<section>Services</section>
 		<configfile>frr.xml</configfile>
 		<url>/pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+	</menu>
+	<menu>
+		<name>FRR RIP</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr/frr_rip.xml</url>
 	</menu>
 	<menu>
 		<name>FRR</name>
@@ -82,6 +94,10 @@
 			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -92,6 +108,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -111,6 +131,12 @@
 		<description>FRR static route daemon</description>
 	</service>
 	<service>
+		<name>FRR bfdd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>bfdd</executable>
+		<description>FRR BFD daemon</description>
+	</service>
+	<service>
 		<name>FRR bgpd</name>
 		<rcfile>frr.sh</rcfile>
 		<executable>bgpd</executable>
@@ -128,6 +154,18 @@
 		<executable>ospf6d</executable>
 		<description>FRR OSPF6 routing daemon</description>
 	</service>
+	<service>
+		<name>FRR ripd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>ripd</executable>
+		<description>FRR RIP routing daemon</description>
+	</service>
+	<service>
+		<name>FRR watchfrr</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>watchfrr</executable>
+		<description>FRR watchfrr watchdog daemon</description>
+	</service>
 	<plugins>
 		<item>
 			<type>plugin_carp</type>
@@ -141,6 +179,18 @@
 			<type>checkbox</type>
 		</field>
 		<field>
+			<fielddescr>Default Router ID</fielddescr>
+			<fieldname>routerid</fieldname>
+			<description>
+				<![CDATA[
+				Specify the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.<br />
+				Per-daemon configuration will take precedence over this setting.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Master Password</fielddescr>
 			<fieldname>password</fieldname>
 			<description>Password to access the management daemons. Required.</description>
@@ -148,11 +198,29 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>Encrypt Password</fielddescr>
+			<fieldname>passwordencrypt</fieldname>
+			<description>Enable password encryption service.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Ignore IPsec Restart</fielddescr>
+			<fieldname>ignoreipsecrestart</fieldname>
+			<description>
+				<![CDATA[
+					Ignore IPsec restart events.
+					When unchecked, IPsec VTI interfaces will be reset in FRR when IPsec restarts.
+					This reset can prevent routes from becoming inactive in the routing table after interface events.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>CARP Status IP</fielddescr>
 			<fieldname>carpstatusvid</fieldname>
 			<description>
 				<![CDATA[
-				Used to determine the CARP status. When the CARP vhid is in BACKUP status, frr will not be started.<br />
+				Used to determine the CARP status. When the CARP vhid is in BACKUP status, FRR will not be started.<br />
 				]]>
 			</description>
 			<type>select_source</type>
@@ -161,21 +229,35 @@
 			<source_value>value</source_value>
 		</field>
 		<field>
-			<fielddescr>Logging</fielddescr>
+			<name>Logging</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Syslog Logging</fielddescr>
 			<fieldname>logging</fieldname>
-			<description>If set to yes, Logs will be written via syslog.</description>
+			<description>If set to yes, FRR daemon Logs will be written via syslog.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Router ID</fielddescr>
-			<fieldname>routerid</fieldname>
-			<description>
-				<![CDATA[
-				Specify the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
-				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
-				]]>
-			</description>
-			<type>input</type>
+			<fielddescr>Package Logging Level</fielddescr>
+			<fieldname>pkgloglevel</fieldname>
+			<description>Set the log level for package scripts</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Normal</name><value>0</value></option>
+				<option><name>Extended</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Modules</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<name>Route Handling</name>
@@ -186,9 +268,9 @@
 			<description>
 				<![CDATA[
 				Networks marked <b>Do Not Accept</b> will be prevented from having exact-matching routes accepted from routing protocols
-				<br/><br/>
+				<br />
 				Networks marked <b>Null Route</b> will never be routed, and traffic destined for these networks will be dropped.
-				<br/><br/>
+				<br />
 				Networks with a selected <b>Static Route Target</b> will have a route entered into the FRR/Zebra static route table, which
 				can be used by other protocols for route redistribution. The <b>Null Route</b> option takes precedence and will cause this
 				option to be ignored. These routes are also added to the operating system routing table.
@@ -230,8 +312,42 @@
 					<source_name>name</source_name>
 					<source_value>value</source_value>
 				</rowhelperfield>
-
 			</rowhelper>
+		</field>
+		<field>
+			<name>Next hop Tracking</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Resolve via default route</fielddescr>
+			<fieldname>nht</fieldname>
+			<description>By default, next hop tracking does not resolve next hops via the default route. Allowing this behavior can be useful, for example, so BGP can peer across the default route.</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Default (none)</name><value>none</value></option>
+				<option><name>IPv4</name><value>ipv4</value></option>
+				<option><name>IPv6</name><value>ipv6</value></option>
+				<option><name>IPv4+IPv6</name><value>both</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Force Service Restart</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Force Service Restart</fielddescr>
+			<fieldname>service_force_restart</fieldname>
+			<type>button</type>
+			<buttonicon>fa-cog</buttonicon>
+			<buttonclass>btn-danger</buttonclass>
+			<description>
+				<![CDATA[
+				Click to force a service restart.<br />
+				<b>This will cause a reconvergance of any enabled routing protocols!</b>
+				]]>
+			</description>
+			<placeonbottom/>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
@@ -243,4 +359,5 @@
 	<custom_php_install_command>
 		frr_package_install();
 	</custom_php_install_command>
+	<ipsec_reload_function>frr_ipsec_reload</ipsec_reload_function>
 </packagegui>

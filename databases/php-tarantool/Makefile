@@ -1,8 +1,7 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tarantool
-PORTVERSION=	0.3.2
+PORTVERSION=	0.3.3
 CATEGORIES=	databases
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -17,6 +16,6 @@ USES=		php:ext
 CONFIGURE_ARGS=	--with-tarantool
 
 USE_GITHUB=	yes
-GH_PROJECT=	${PORTNAME}-php
+GH_PROJECT=	tarantool-php
 
 .include <bsd.port.mk>

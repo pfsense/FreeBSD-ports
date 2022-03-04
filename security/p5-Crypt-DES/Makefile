@@ -1,9 +1,8 @@
 # Created by: James FitzGibbon <jfitz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Crypt-DES
 PORTVERSION=	2.07
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Crypt-CBC>=0:security/p5-Crypt-CBC
+TEST_DEPENDS=	p5-Crypt-CBC>=0:security/p5-Crypt-CBC
 
 USES=		perl5
 USE_PERL5=	configure

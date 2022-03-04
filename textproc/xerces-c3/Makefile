@@ -1,8 +1,7 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	xerces-c
-PORTVERSION=	3.2.2
+PORTVERSION=	3.2.3
 CATEGORIES=	textproc
 MASTER_SITES=	APACHE/xerces/c/3/sources
 PKGNAMESUFFIX=	3
@@ -13,7 +12,7 @@ COMMENT=	Validating XML parser from the Apache XML Project
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe iconv libtool pathfix
+USES=		compiler cpe iconv libtool pathfix
 
 CONFIGURE_ARGS=	--enable-netaccessor-socket \
 		--enable-transcoder-iconv \
@@ -31,7 +30,7 @@ CPE_VENDOR=	apache
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mpowerpc*}
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 PLIST_SUB+=	MUTEXMGR="PosixMutexMgr"
 .else
 PLIST_SUB+=	MUTEXMGR="StdMutexMgr"

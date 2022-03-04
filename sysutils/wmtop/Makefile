@@ -1,21 +1,21 @@
 # Created by: Dan Piponi <wmtop@tanelorn.demon.co.uk>
-# $FreeBSD$
 
 PORTNAME=	wmtop
 PORTVERSION=	0.84
 PORTREVISION=	3
 CATEGORIES=	sysutils windowmaker
-MASTER_SITES=	SF
+MASTER_SITES=	https://www.dockapps.net/download/
 
 MAINTAINER=	uqs@FreeBSD.org
 COMMENT=	Dockapp to display top three CPU consuming processes
 
 LICENSE=	GPLv2
 
-USES=		gmake			# gmake is needed for -jX builds
+USES=		gmake xorg		# gmake is needed for -jX builds
 USE_XORG=	xpm x11
 USE_CSTD=	gnu89
 ALL_TARGET=	freebsd
+CFLAGS+=	-fcommon  # clang11/gcc10
 
 PORTDOCS=	BUGS CHANGES README TODO
 PLIST_FILES=	bin/wmtop \

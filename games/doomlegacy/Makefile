@@ -1,8 +1,7 @@
 # Created by: Alexander G. Chetirbock <bock@bock.nnov.ru>
-# $FreeBSD$
 
 PORTNAME=	doomlegacy
-PORTVERSION=	1.46.3
+PORTVERSION=	1.48.8
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	games
@@ -16,8 +15,8 @@ COMMENT=	Improved and extended version of Doom
 
 LICENSE=	GPLv2
 
-USES=		gmake tar:bzip2
-USE_GL=		glu
+USES=		gl gmake sdl tar:bzip2
+USE_GL=		gl glu
 USE_SDL=	mixer sdl
 
 PLIST_FILES=	bin/${PORTNAME} share/doom/legacy.wad
@@ -25,6 +24,7 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 OPTIONS_DEFINE_i386=	ASM
+ASM_BROKEN=	segmentation fault in ASM_PatchRowBytes()
 
 .if exists(/usr/include/netipx/ipx.h)
 OPTIONS_DEFINE+=	IPX
@@ -38,7 +38,7 @@ ASM_MAKE_ENV=		USEASM=1
 
 post-patch: .SILENT
 # Adjust default WAD search path
-	${REINPLACE_CMD} -e '/DEFWADS20/s|/.*|${DMDIR}"|' \
+	${REINPLACE_CMD} -e '/DEFWADS04/s|/.*|${DMDIR}"|' \
 		${WRKSRC}/src/doomdef.h
 .if ! ${PORT_OPTIONS:MIPX}
 	${REINPLACE_CMD} -e '/USE_IPX/s|define|undef|' ${WRKSRC}/src/doomdef.h

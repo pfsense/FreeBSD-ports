@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	pybonjour
 PORTVERSION=	1.1.1
 CATEGORIES=	dns python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	jhixson@freebsd.org
+MAINTAINER=	jhixson@FreeBSD.org
 COMMENT=	Pure-Python interface to Apple Bonjour
 
 LICENSE=	MIT

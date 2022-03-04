@@ -1,5 +1,4 @@
 # Created by: Matthew Hunt <mph@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xzip
 PORTVERSION=	1.8.2
@@ -14,6 +13,7 @@ EXTRACT_SUFX=	.tar.Z
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Infocom game interpreter that runs under X11
 
+USES=		xorg
 USE_XORG=	x11
 WRKSRC=		${WRKDIR}/xzip
 ALL_TARGET=

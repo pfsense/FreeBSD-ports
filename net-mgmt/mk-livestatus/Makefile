@@ -1,11 +1,12 @@
 # Created by: Peter C. Lai <cowbert@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mk-livestatus
 PORTVERSION=	1.2.8p25
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
-MASTER_SITES=	http://mathias-kettner.de/download/
+MASTER_SITES=	https://mirrors.xtom.com/freebsd-ports/distfiles/check_mk/ \
+		https://mirrors.xtom.nl/freebsd-ports/distfiles/check_mk/ \
+		http://mathias-kettner.de/download/
 DIST_SUBDIR=	check_mk
 
 MAINTAINER=	egypcio@FreeBSD.org
@@ -59,4 +60,11 @@ post-install-EXAMPLES-on:
 		${PORTEXAMPLES:S|^|${WRKSRC}/api/python/|}
 	${INSTALL_DATA} ${PORTEXAMPLES:S|^|${WRKSRC}/api/python/|} ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# Fix building with clang 11 ("ld: error: duplicate symbol: g_mainthread_id")
+.if ${OSVERSION} >= 1300000
+CFLAGS+=	-fcommon
+.endif
+
+.include <bsd.port.post.mk>

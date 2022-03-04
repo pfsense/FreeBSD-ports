@@ -1,11 +1,13 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-settings-daemon
-PORTVERSION=	3.28.1
+PORTVERSION=	3.38.2
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	28e28e9e5983.patch:-p1 # meson >= 0.60
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME 3 settings daemon
@@ -24,34 +26,28 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		libgeoclue-2.so:net/geoclue \
 		libupower-glib.so:sysutils/upower \
 		libgeocode-glib.so:net/geocode-glib \
-		libgweather-3.so:net/libgweather
+		libgweather-3.so:net/libgweather \
+		libcups.so:print/cups \
+		libnss3.so:security/nss \
+		libnspr4.so:devel/nspr
 
 PORTSCOUT=	limitw:1,even
 
 USE_XORG=	x11 xext xi xtst
 USE_GNOME=	cairo gnomedesktop3 gtk30
 USES=		gettext gnome localbase:ldflags meson perl5 \
-		pkgconfig python:3.6+,build tar:xz
+		pkgconfig python:3.6+,build tar:xz xorg
 USE_PERL5=	build
-INSTALLS_ICONS=	yes
 #		-Dnssdb_dir=${LOCALBASE}/share/certs/ca-root-nss.crt
 MESON_ARGS=	-Dnssdb_dir=${LOCALBASE}/share/certs/ \
 		-Dalsa=false \
 		-Drfkill=false \
-		-Dnetwork_manager=false
+		-Dnetwork_manager=false \
+		-Dsystemd=false \
+		-Dwwan=false \
+		-Dcups=true \
+		-Dsmartcard=true
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
-
-OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	CUPS SMARTCARD
-OPTIONS_DEFAULT=CUPS SMARTCARD
-
-CUPS_MESON_TRUE=	cups
-CUPS_LIB_DEPENDS=	libcups.so:print/cups
-
-SMARTCARD_DESC=	Smartcard support
-SMARTCARD_MESON_TRUE=	smartcard
-SMARTCARD_LIB_DEPENDS=	libnss3.so:security/nss \
-			libnspr4.so:devel/nspr
 
 # wayland doesn't build yet, undefined symbol
 MESON_ARGS+=	-Dwayland=false -Dgudev=false

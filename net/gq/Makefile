@@ -1,9 +1,8 @@
 # Created by: Roman Shterenzon <roman@xpert.com>
-# $FreeBSD$
 
 PORTNAME=	gq
 PORTVERSION=	1.3.4
-PORTREVISION=	13
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}client/GQ%20Unstable/${PORTVERSION}
@@ -15,14 +14,17 @@ LICENSE=	GPLv2+ LGPL21+ # some source files are under lgpl
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: dt_entry_handler
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: dt_entry_handler
+
 LIB_DEPENDS=	libgnome-keyring.so:security/libgnome-keyring
 
-USE_GNOME=	intltool libglade2 gnomedocutils
+USES=		desktop-file-utils gettext gmake gnome pkgconfig \
+		shared-mime-info ssl
+USE_GNOME=	intltool libglade2
 USE_OPENLDAP=	yes
-USES=		desktop-file-utils gettext pkgconfig gmake shared-mime-info ssl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ldap-prefix=${LOCALBASE} --disable-update-mimedb
-INSTALLS_ICONS=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include -Wno-return-type
 LIBS+=		-L${LOCALBASE}/lib -lcrypto

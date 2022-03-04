@@ -1,9 +1,7 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	calculix
-PORTVERSION=	2.14
-PORTREVISION=	2
+PORTVERSION=	2.18
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
 DISTFILES=	${DIST_SOURCES}
@@ -15,12 +13,11 @@ COMMENT=	Three-Dimensional Structural Finite Element Program
 
 LICENSE=	GPLv2
 
-BROKEN=		checksum and size mismatch
-DEPRECATED=	Broken for more than 6 months
-EXPIRATION_DATE=	2019-03-05
-BROKEN_aarch64=		fails to link: shapeFunctions.c:(function attach_new): relocation R_AARCH64_CALL26 out of range
-
 RUN_DEPENDS=	ccx:cad/calculix-ccx
+
+USES=		gl gmake tar:bzip2 compiler:c++11-lib xorg
+USE_XORG=	ice sm x11 xext xi xmu xt
+USE_GL=		gl glu # uses its own glut
 
 DIST_SOURCES=	cgx_${PORTVERSION}.all${EXTRACT_SUFX}
 DIST_HTM=	cgx_${PORTVERSION}.htm${EXTRACT_SUFX}
@@ -30,14 +27,10 @@ DIST_EXAMPLES=	cgx_${PORTVERSION}.exa${EXTRACT_SUFX}
 WRKSRC=		${WRKDIR}/CalculiX
 CGX_VER=	cgx_${PORTVERSION}
 
-USES=		gmake tar:bzip2 compiler:c++11-lib
-USE_XORG=	ice sm x11 xext xi xmu xt
-USE_GL=		gl glu # uses its own glut
+CXXFLAGS+=	-std=c++98
 
 BROWSER?=	firefox
 PSVIEWER?=	gv
-
-CXXFLAGS+=	-std=c++98
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -69,6 +62,8 @@ pre-build:
 	s+"firefox"+"${BROWSER}"+ ; \
 	s+"gv"+"${PSVIEWER}"+ ;' \
 		${WRKSRC}/${CGX_VER}/src/cgx.h
+	@${REINPLACE_CMD} -e 's!CalculiX/${CGX_VER}/doc!share/doc/CalculiX!g;' \
+		${WRKSRC}/${CGX_VER}/src/cgx.h
 
 do-build:
 	@(cd ${WRKSRC}/libSNL/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} )
@@ -81,7 +76,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/cgx
 	@(cd ${WRKSRC}/${CGX_VER}/doc/cgx && ${COPYTREE_SHARE} . \
 	  ${STAGEDIR}${DOCSDIR}/cgx)
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/cgx_${PORTVERSION}.pdf \
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${DIST_PDF} \
 	  ${STAGEDIR}${DOCSDIR}
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}

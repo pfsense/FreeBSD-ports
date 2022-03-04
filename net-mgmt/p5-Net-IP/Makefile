@@ -1,10 +1,9 @@
 # Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
 
 PORTNAME=	Net-IP
 PORTVERSION=	1.26
 PORTREVISION=	1
-CATEGORIES=	net-mgmt perl5 ipv6
+CATEGORIES=	net-mgmt perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
@@ -16,6 +15,8 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|my $$count|& = 0|' ${WRKSRC}/ipcount

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	brickout
 PORTVERSION=	2002.06.09
 CATEGORIES=	games
@@ -12,7 +9,7 @@ COMMENT=	Ball-and-paddle game
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		localbase
+USES=		localbase sdl
 USE_SDL=	sdl mixer
 
 PORTDOCS=	CHANGES.txt README.txt TODO.txt

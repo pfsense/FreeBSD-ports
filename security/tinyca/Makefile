@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tinyca
 PORTVERSION=	0.7.6
 PORTREVISION=	2

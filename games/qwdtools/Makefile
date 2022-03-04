@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	qwdtools
 CATEGORIES=	games converters
@@ -9,6 +8,9 @@ PKGMESSAGE=	/nonexistent
 
 BUILD_WRKSRC=	${WRKSRC}/tools/qwdtools/source
 GH_PROJECT=	mvdsv
+
+CFLAGS+=	-DVERSION_NUMBER=\\\"${PORTVERSION}\\\" \
+		-DHOMEPAGE_URL=SERVER_HOME_URL
 
 MASTERDIR=	${.CURDIR}/../mvdsv
 

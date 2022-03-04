@@ -1,10 +1,9 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	gngeo
 PORTVERSION=	0.8
 DISTVERSIONPREFIX=	${PORTNAME}_
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	emulators
 MASTER_SITES=	LOCAL/acm/${PORTNAME}
 
@@ -13,9 +12,11 @@ COMMENT=	NeoGeo emulator
 
 LICENSE=	GPLv2
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: current_fix
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: current_fix
 BROKEN_i386=	unknown argument: '-frerun-loop-opt'
 
-USES=		autoreconf compiler:features gmake
+USES=		autoreconf compiler:features gl gmake sdl
 USE_SDL=	image sdl
 USE_GL=		yes
 USE_GITHUB=	yes

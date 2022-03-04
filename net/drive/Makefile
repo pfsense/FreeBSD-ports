@@ -1,10 +1,9 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	drive
-PORTVERSION=	0.3.9.1
+PORTVERSION=	0.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	net
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -21,48 +20,40 @@ GO_TARGET=	${GO_PKGNAME}/cmd/${GH_PROJECT}
 PLIST_FILES=	bin/drive
 
 GH_ACCOUNT=	odeke-em
-GH_TUPLE=	boltdb:bolt:v1.3.1:boltdb_bolt/../src/github.com/boltdb/bolt \
-		cheggaaa:pb:v1.0.26:cheggaaa_pb/../src/github.com/cheggaaa/pb \
-		fatih:color:v1.7.0:fatih_color/../src/github.com/fatih/color \
-		golang:crypto:3d3f9f4:golang_crypto/../src/golang.org/x/crypto \
-		golang:net:adae6a3:golang_net/../src/golang.org/x/net \
-		golang:oauth2:8f65e30:golang_oauth2/../src/golang.org/x/oauth2 \
-		golang:sys:62eef0e:golang_sys/../src/golang.org/x/sys \
-		google:google-api-go-client:dde16f2:google_googleapigoclient/../src/google.golang.org/api \
-		GoogleCloudPlatform:google-cloud-go:v0.33.1:GoogleCloudPlatform_googlecloudgo/../src/cloud.google.com/go \
-		mattn:go-colorable:v0.0.9:mattn_gocolorable/../src/github.com/mattn/go-colorable \
-		mattn:go-isatty:v0.0.4:mattn_goisatty/../src/github.com/mattn/go-isatty \
-		mattn:go-runewidth:v0.0.3:mattn_gorunewidth/../src/github.com/mattn/go-runewidth \
-		odeke-em:cache:baf8e43:odekeem_cache/../src/github.com/odeke-em/cache \
-		odeke-em:cli-spinner:610063b:odekeem_clispinner/../src/github.com/odeke-em/cli-spinner \
-		odeke-em:command:91ca5ec:odekeem_command/../src/github.com/odeke-em/command \
-		odeke-em:exponential-backoff:96e25d3:odekeem_exponential_backoff/../src/github.com/odeke-em/exponential-backoff \
-		odeke-em:extractor:801861a:odekeem_extractor/../src/github.com/odeke-em/extractor \
-		odeke-em:go-utils:e8ebaed:odekeem_go_utils/../src/github.com/odeke-em/go-utils \
-		odeke-em:go-uuid:b211d76:odekeem_gouuid/../src/github.com/odeke-em/go-uuid \
-		odeke-em:log:8d60a69:odekeem_log/../src/github.com/odeke-em/log \
-		odeke-em:meddler:d2b51d2:odekeem_meddler/../src/github.com/odeke-em/meddler \
-		odeke-em:namespace:0ab79ba:odekeem_namespace/../src/github.com/odeke-em/namespace \
-		odeke-em:pretty-words:9d37a7f:odekeem_prettywords/../src/github.com/odeke-em/pretty-words \
-		odeke-em:semalim:9c88bf5:odekeem_semalim/../src/github.com/odeke-em/semalim \
-		odeke-em:statos:292960a:odekeem_statos/../src/github.com/odeke-em/statos \
-		skratchdot:open-golang:75fb7ed:skratchdot_opengolang/../src/github.com/skratchdot/open-golang \
-		VividCortex:ewma:v1.1.1:VividCortex_ewma/../src/github.com/VividCortex/ewma
+GH_TUPLE=	boltdb:bolt:v1.3.1:boltdb_bolt/vendor/github.com/boltdb/bolt \
+		census-instrumentation:opencensus-go:v0.23.0:census_instrumentation_opencensus/vendor/go.opencensus.io \
+		cheggaaa:pb:v3.0.8:cheggaaa_pb/vendor/github.com/cheggaaa/pb \
+		golang:crypto:c084706:golang_crypto/vendor/golang.org/x/crypto \
+		golang:groupcache:41bb18b:golang_groupcache/vendor/github.com/golang/groupcache \
+		golang:net:978cfad:golang_net/vendor/golang.org/x/net \
+		golang:oauth2:2bc19b1:golang_oauth2/vendor/golang.org/x/oauth2 \
+		golang:protobuf:v1.5.2:golang_protobuf/vendor/github.com/golang/protobuf \
+		golang:sys:d61c044:golang_sys/vendor/golang.org/x/sys \
+		golang:text:v0.3.7:golang_text/vendor/golang.org/x/text \
+		google:go-genproto:b395a37:google_go_genproto/vendor/google.golang.org/genproto \
+		googleapis:google-api-go-client:v0.57.0:google_googleapigoclient/vendor/google.golang.org/api \
+		googleapis:google-cloud-go:v0.94.1:googleapis_googlecloudgo/vendor/cloud.google.com/go \
+		googleapis:gax-go:v2.0.5:googleapis_gaxgo/vendor/github.com/googleapis/gax-go \
+		grpc:grpc-go:v1.40.0:grpc_grpc_go/vendor/google.golang.org/grpc \
+		mattn:go-isatty:v0.0.14:mattn_goisatty/vendor/github.com/mattn/go-isatty \
+		mattn:go-runewidth:v0.0.13:mattn_gorunewidth/vendor/github.com/mattn/go-runewidth \
+		mxk:go-flowrate:cca7078:mxk_goflowrate/vendor/github.com/mxk/go-flowrate \
+		odeke-em:cache:baf8e43:odekeem_cache/vendor/github.com/odeke-em/cache \
+		odeke-em:cli-spinner:610063b:odekeem_clispinner/vendor/github.com/odeke-em/cli-spinner \
+		odeke-em:command:91ca5ec:odekeem_command/vendor/github.com/odeke-em/command \
+		odeke-em:exponential-backoff:96e25d3:odekeem_exponential_backoff/vendor/github.com/odeke-em/exponential-backoff \
+		odeke-em:extractor:801861a:odekeem_extractor/vendor/github.com/odeke-em/extractor \
+		odeke-em:go-utils:e8ebaed:odekeem_go_utils/vendor/github.com/odeke-em/go-utils \
+		odeke-em:go-uuid:b211d76:odekeem_gouuid/vendor/github.com/odeke-em/go-uuid \
+		odeke-em:log:8d60a69:odekeem_log/vendor/github.com/odeke-em/log \
+		odeke-em:meddler:d2b51d2:odekeem_meddler/vendor/github.com/odeke-em/meddler \
+		odeke-em:namespace:0ab79ba:odekeem_namespace/vendor/github.com/odeke-em/namespace \
+		odeke-em:pretty-words:9d37a7f:odekeem_prettywords/vendor/github.com/odeke-em/pretty-words \
+		odeke-em:semalim:9c88bf5:odekeem_semalim/vendor/github.com/odeke-em/semalim \
+		odeke-em:statos:292960a:odekeem_statos/vendor/github.com/odeke-em/statos \
+		protocolbuffers:protobuf-go:v1.27.1:protocolbuffers_protobuf_go/vendor/google.golang.org/protobuf \
+		rivo:uniseg:v0.2.0:rivo_uniseg/vendor/github.com/rivo/uniseg \
+		skratchdot:open-golang:eef8423:skratchdot_opengolang/vendor/github.com/skratchdot/open-golang
 USE_GITHUB=	yes
-
-post-patch:
-	@${MKDIR} ${GO_WRKDIR_SRC}/gopkg.in/cheggaaa/
-	@${LN} -s ${GO_WRKDIR_SRC}/github.com/cheggaaa/pb ${GO_WRKDIR_SRC}/gopkg.in/cheggaaa/pb.v1
-	@${MKDIR} ${GO_WRKDIR_SRC}/gopkg.in/fatih/
-	@${LN} -s ${GO_WRKDIR_SRC}/github.com/fatih/color ${GO_WRKDIR_SRC}/gopkg.in/fatih/color.v1
-	@${MKDIR} ${GO_WRKDIR_SRC}/gopkg.in/mattn/
-	@${LN} -s ${GO_WRKDIR_SRC}/github.com/mattn/go-colorable ${GO_WRKDIR_SRC}/gopkg.in/mattn/go-colorable.v0
-	@${LN} -s ${GO_WRKDIR_SRC}/github.com/mattn/go-isatty ${GO_WRKDIR_SRC}/gopkg.in/mattn/go-isatty.v0
-	@${LN} -s ${GO_WRKDIR_SRC}/github.com/mattn/go-runewidth ${GO_WRKDIR_SRC}/gopkg.in/mattn/go-runewidth.v0
-	@${MKDIR} ${GO_WRKDIR_SRC}/gopkg.in/VividCortex/
-	@${LN} -s ${GO_WRKDIR_SRC}/github.com/VividCortex/ewma ${GO_WRKDIR_SRC}/gopkg.in/VividCortex/ewma.v1
-
-do-install:
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/drive ${STAGEDIR}${PREFIX}/bin/drive
 
 .include <bsd.port.mk>

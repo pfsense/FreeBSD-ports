@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	phpunit
-DISTVERSION=	7.5.7
+DISTVERSION=	7.5.20
 CATEGORIES=	devel www
 MASTER_SITES=	https://phar.phpunit.de/
 PKGNAMESUFFIX=	7${PHP_PKGNAMESUFFIX}
@@ -12,7 +10,7 @@ COMMENT=	Testing framework for unit tests
 
 LICENSE=	BSD3CLAUSE
 
-CONFLICTS_INSTALL=	phpunit6
+CONFLICTS_INSTALL=	phpunit8
 
 USES=		cpe php:flavors
 CPE_VENDOR=	phpunit_project

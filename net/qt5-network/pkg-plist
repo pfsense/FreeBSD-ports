@@ -36,6 +36,7 @@
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnativesocketengine_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnativesocketengine_winrt_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnet_unix_p.h
+%%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnetconmonitor_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnetworkaccessauthenticationmanager_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnetworkaccessbackend_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnetworkaccesscache_p.h
@@ -62,6 +63,8 @@
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnetworkreplywasmimpl_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnetworkrequest_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qnetworksession_p.h
+%%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qocsp_p.h
+%%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qocspresponse_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsctpserver_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsctpsocket_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsharednetworksession_p.h
@@ -77,11 +80,10 @@
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslkey_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslpresharedkeyauthenticator_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_mac_p.h
-%%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_openssl11_symbols_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_openssl_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_openssl_symbols_p.h
-%%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_opensslpre11_symbols_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_p.h
+%%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_schannel_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qsslsocket_winrt_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qtcpserver_p.h
 %%QT_INCDIR%%/QtNetwork/%%FULLVER%%/QtNetwork/private/qtcpsocket_p.h
@@ -104,6 +106,7 @@
 %%QT_INCDIR%%/QtNetwork/QHostInfo
 %%QT_INCDIR%%/QtNetwork/QHstsPolicy
 %%QT_INCDIR%%/QtNetwork/QHttpMultiPart
+%%QT_INCDIR%%/QtNetwork/QHttp2Configuration
 %%QT_INCDIR%%/QtNetwork/QHttpPart
 %%QT_INCDIR%%/QtNetwork/QIPv6Address
 %%QT_INCDIR%%/QtNetwork/QLocalServer
@@ -124,6 +127,8 @@
 %%QT_INCDIR%%/QtNetwork/QNetworkReply
 %%QT_INCDIR%%/QtNetwork/QNetworkRequest
 %%QT_INCDIR%%/QtNetwork/QNetworkSession
+%%QT_INCDIR%%/QtNetwork/QOcspResponse
+%%QT_INCDIR%%/QtNetwork/QPasswordDigestor
 %%QT_INCDIR%%/QtNetwork/QSctpServer
 %%QT_INCDIR%%/QtNetwork/QSctpSocket
 %%QT_INCDIR%%/QtNetwork/QSsl
@@ -152,6 +157,7 @@
 %%QT_INCDIR%%/QtNetwork/qhostaddress.h
 %%QT_INCDIR%%/QtNetwork/qhostinfo.h
 %%QT_INCDIR%%/QtNetwork/qhstspolicy.h
+%%QT_INCDIR%%/QtNetwork/qhttp2configuration.h
 %%QT_INCDIR%%/QtNetwork/qhttpmultipart.h
 %%QT_INCDIR%%/QtNetwork/qlocalserver.h
 %%QT_INCDIR%%/QtNetwork/qlocalsocket.h
@@ -167,6 +173,7 @@
 %%QT_INCDIR%%/QtNetwork/qnetworkreply.h
 %%QT_INCDIR%%/QtNetwork/qnetworkrequest.h
 %%QT_INCDIR%%/QtNetwork/qnetworksession.h
+%%QT_INCDIR%%/QtNetwork/qocspresponse.h
 %%QT_INCDIR%%/QtNetwork/qpassworddigestor.h
 %%QT_INCDIR%%/QtNetwork/qsctpserver.h
 %%QT_INCDIR%%/QtNetwork/qsctpsocket.h

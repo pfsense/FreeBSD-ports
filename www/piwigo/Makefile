@@ -1,54 +1,54 @@
 # Created by: Goran Lowkrantz <glz@hidden-powers.com>
-# $FreeBSD$
 
 PORTNAME=	piwigo
-DISTVERSION=	2.9.4
-PORTREVISION=	2
+DISTVERSION=	11.5.0
 CATEGORIES=	www
 MASTER_SITES=	https://piwigo.org/download/dlcounter.php?code=${PORTVERSION}&/
 
-MAINTAINER=	tremere@cainites.net
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP based Web Gallery
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
-NO_BUILD=	yes
-NO_ARCH=	yes
+RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/sodium.so:security/pecl-libsodium@${PHP_FLAVOR}
+
 USES=		cpe php:web zip
-USE_PHP=	calendar ctype dom exif filter gd gettext hash iconv json \
-		mbstring mcrypt mysqli openssl pcre pdf pdo posix \
-		session simplexml sockets spl tokenizer xml xmlreader \
-		xmlwriter zlib
+USE_PHP=	ctype dom exif filter gd hash iconv json mbstring mysqli \
+		openssl pcre pdo session simplexml spl tokenizer xml zlib
+
+NO_ARCH=	yes
+NO_BUILD=	yes
+SUB_FILES=	pkg-deinstall pkg-message
+SUB_LIST+=	CHOWN="${CHOWN}" \
+		CP="${CP}" \
+		MKDIR="${MKDIR}" \
+		TOUCH="${TOUCH}" \
+		WWWGRP="${WWWGRP}" \
+		WWWOWN="${WWWOWN}"
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-SUB_FILES=	pkg-deinstall pkg-message
-SUB_LIST+=	CP="${CP}" \
-		MKDIR="${MKDIR}" \
-		CHOWN="${CHOWN}" \
-		TOUCH="${TOUCH}" \
-		WWWOWN="${WWWOWN}" \
-		WWWGRP="${WWWGRP}"
-
-OPTIONS_DEFINE=	IMAGICK X11 DOCS EXAMPLES
-OPTIONS_DEFAULT=IMAGICK
-IMAGICK_DESC=	${IMAGEMAGICK_DESC}
-
+PLIST_SUB+=	CHOWN="${CHOWN}" \
+		WWWGRP="${WWWGRP}" \
+		WWWOWN="${WWWOWN}"
 PORTDOCS=	README_ca.txt README_en.txt README_fr.txt
 
-PLIST_SUB+=	WWWOWN="${WWWOWN}" \
-		WWWGRP="${WWWGRP}" \
-		CHOWN="${CHOWN}"
+OPTIONS_DEFINE=		DOCS EXAMPLES
+OPTIONS_GROUP=		OPT
+OPTIONS_GROUP_OPT=	EXIFTOOL FFMPEG IMAGICK MEDIAINFO
+
+EXIFTOOL_DESC=	exiftool support (for plugins)
+IMAGICK_DESC=	${IMAGEMAGICK_DESC}
+MEDIAINFO_DESC=	mediainfo support (for plugins)
+OPT_DESC=	Optional dependencies
+
+EXIFTOOL_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
+FFMPEG_RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
+IMAGICK_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:graphics/pecl-imagick@${PHP_FLAVOR}
+MEDIAINFO_RUN_DEPENDS=	mediainfo:multimedia/mediainfo
 
 .include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MIMAGICK}
-.if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6
-.else
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6-nox11
-.endif
-.endif
 
 pre-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/

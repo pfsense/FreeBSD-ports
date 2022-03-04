@@ -1,5 +1,4 @@
 # Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cgilib
 PORTVERSION=	0.7
@@ -10,6 +9,8 @@ MASTER_SITES=	http://www.infodrom.org/projects/cgilib/download/ \
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Library of procedures for developing CGI programs in C
+
+LICENSE=	GPLv2
 
 USES=		uidfix
 

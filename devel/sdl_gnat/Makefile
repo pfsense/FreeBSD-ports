@@ -1,9 +1,8 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sdl_gnat
 PORTVERSION=	2013
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.dragonlace.net/src/
 
@@ -12,7 +11,7 @@ COMMENT=	Ada thin bindings for SDL (GPLv3)
 
 LICENSE=	GPLv3
 
-USES=		ada tar:bzip2
+USES=		ada gl sdl tar:bzip2
 USE_SDL=	sdl ttf
 USE_GL=		glu gl
 

@@ -1,5 +1,4 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vanitygen
 PORTVERSION=	0.22
@@ -28,6 +27,7 @@ PLIST_FILES=	bin/keyconv bin/vanitygen
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	field has incomplete type 'BIGNUM' (aka 'struct bignum_st')
 BROKEN_FreeBSD_13=	field has incomplete type 'BIGNUM' (aka 'struct bignum_st')
+BROKEN_FreeBSD_14=	field has incomplete type 'BIGNUM' (aka 'struct bignum_st')
 .endif
 
 post-patch:

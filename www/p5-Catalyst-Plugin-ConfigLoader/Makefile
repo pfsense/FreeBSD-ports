@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Catalyst-Plugin-ConfigLoader
 PORTVERSION=	0.34
 PORTREVISION=	1
@@ -22,5 +20,7 @@ RUN_DEPENDS=	p5-Catalyst-Runtime>=5.7008:www/p5-Catalyst-Runtime \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

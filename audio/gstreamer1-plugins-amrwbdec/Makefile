@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 CATEGORIES=	audio
 PKGNAMESUFFIX=	1-plugins-amrwbdec

@@ -3,7 +3,7 @@
  * syslog-ng.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,10 +26,10 @@ $priv_list['page-services-syslogng']['name'] = "WebCfg - Services: syslog-ng pac
 $priv_list['page-services-syslogng']['descr'] = "Allow access to syslog-ng package GUI";
 $priv_list['page-services-syslogng']['match'] = array();
 
-$priv_list['page-services-syslogng']['match'][] = "pkg.php?xml=syslog-ng.xml*";
+$priv_list['page-services-syslogng']['match'][] = "pkg.php?xml=syslogng.xml*";
 $priv_list['page-services-syslogng']['match'][] = "pkg.php?xml=syslog-ng_advanced.xml*";
 
-$priv_list['page-services-syslogng']['match'][] = "pkg_edit.php?xml=syslog-ng.xml*";
+$priv_list['page-services-syslogng']['match'][] = "pkg_edit.php?xml=syslogng.xml*";
 $priv_list['page-services-syslogng']['match'][] = "pkg_edit.php?xml=syslog-ng_advanced.xml*";
 
 $priv_list['page-services-syslogng']['match'][] = "syslog-ng_log_viewer.php*";

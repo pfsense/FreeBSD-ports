@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tinc
-PORTVERSION=	1.1pre17
-PORTREVISION=	1
-CATEGORIES=	security
+PORTVERSION=	1.1pre18
+CATEGORIES=	security net-vpn
 MASTER_SITES=	https://www.tinc-vpn.org/packages/ \
 		http://www.tinc-vpn.org/packages/
 PKGNAMESUFFIX=	-devel
@@ -23,6 +20,7 @@ CONFIGURE_ARGS=	--localstatedir=/var --with-curses=/usr
 USE_RC_SUBR=	tincd
 INFO=		tinc
 PLIST_FILES=	sbin/tincd sbin/tinc \
+		share/bash-completion/completions/tinc \
 		man/man8/tinc-gui.8.gz man/man5/tinc.conf.5.gz \
 		man/man8/tinc.8.gz man/man8/tincd.8.gz
 

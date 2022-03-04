@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.deferredimport
 PORTVERSION=	3.5.3
 PORTREVISION=	1
@@ -15,7 +13,7 @@ LICENSE=	ZPL21
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zope.proxy>=0:net/py-zope.proxy@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

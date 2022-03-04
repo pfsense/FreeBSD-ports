@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-cli-base
 PORTVERSION=	1.0.0
 CATEGORIES=	sysutils python
@@ -11,10 +9,9 @@ COMMENT=	Shared namespace for py-azure-* ports
 
 LICENSE=	MIT
 
-NO_FETCH=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	flavors py3kplist
 
 do-install:

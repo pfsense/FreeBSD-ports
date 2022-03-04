@@ -1,5 +1,5 @@
-TIMESTAMP = 1532682273
-SHA256 (boost_1_65_1.tar.gz) = a13de2c8fbad635e6ba9c8f8714a0e6b4264b60a29b964b940a22554705b6b60
-SIZE (boost_1_65_1.tar.gz) = 97448134
-SHA256 (intel-hyperscan-v4.7.0_GH0.tar.gz) = a0c07b48ae80903001ab216b03fdf6359bfd5777b2976de728947725b335e941
-SIZE (intel-hyperscan-v4.7.0_GH0.tar.gz) = 1738159
+TIMESTAMP = 1617709924
+SHA256 (boost_1_75_0.tar.gz) = aeb26f80e80945e82ee93e5939baebdca47b9dee80a07d3144be1e1a6a66dd6a
+SIZE (boost_1_75_0.tar.gz) = 143817536
+SHA256 (intel-hyperscan-v5.4.0_GH0.tar.gz) = e51aba39af47e3901062852e5004d127fa7763b5dbbc16bcca4265243ffa106f
+SIZE (intel-hyperscan-v5.4.0_GH0.tar.gz) = 1844963

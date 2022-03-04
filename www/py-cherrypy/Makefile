@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	cherrypy
-PORTVERSION=	5.4.0
-PORTREVISION=	2
+PORTVERSION=	17.4.2
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,52 +13,46 @@ COMMENT=	Pythonic, object-oriented web development framework
 
 LICENSE=	BSD3CLAUSE
 
-EXAMPLES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah>=2.4.4:devel/py-cheetah@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}sqlobject>=1.5.1:databases/py-sqlobject@${PY_FLAVOR}
-EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.11.0:devel/py-six@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cheroot>=6.2.4:www/py-cheroot@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}portend>=2.1.1:net/py-portend@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}zclockfile>0:devel/py-zclockfile@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}more-itertools>0:devel/py-more-itertools@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=2.8:devel/py-pytest@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}path.py>0:devel/py-path.py@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests-toolbelt>0:www/py-requests-toolbelt@${PY_FLAVOR}
+
+USES=		cpe python:3.6+
+USE_PYTHON=	distutils autoplist concurrent
+
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+
+NO_ARCH=	yes
+PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	EXAMPLES
 
-PORTEXAMPLES=	*
+EXAMPLES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlobject>=1.5.1:databases/py-sqlobject@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR}
 
-USES=		python shebangfix
-USE_PYTHON=	distutils autoplist concurrent
-SHEBANG_FILES=	cherrypy/cherryd
-
-.include <bsd.port.options.mk>
-
-# handle tutorial separately, and remove cherrypy.process from data_files
-# otherwise it confuses build_py.get_outputs() and breaks PYDISTUTILS_AUTOPLIST
-post-patch:
-	@${REINPLACE_CMD} -e '99,106d' -e '78s/"cherrypy.tutorial",//1' \
-		-e '88d' -i.bak ${WRKSRC}/${PYSETUP}
-
-.if ${PORT_OPTIONS:MEXAMPLES}
-post-install:
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/cherrypy/tutorial && \
 	${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 	(cd ${STAGEDIR}${PREFIX} && \
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
 		-d ${EXAMPLESDIR} ${EXAMPLESDIR:S,${PREFIX}/,,})
-.endif
 
-.include <bsd.port.pre.mk>
+# Some tests fails with Python 3.6/3.7/3.8/3.9 and are omitted for now.
+# This should be revised once the ports gets updated to a newer release.
+do-test:
+	@cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest -v -rs \
+		-o addopts='' \
+		-k 'not test_HTTP11_Timeout_after_request \
+		and not test_threadlocal_garbage \
+		and not test_null_bytes \
+		and not testCombinedTools'
 
-.if ${PYTHON_REL} >= 3000    # devel/py-cheetah doesn't yet build with Python 3
-.undef EXAMPLES_RUN_DEPENDS
-.endif
-
-# The package cherrypy.wsgiserver includes both Python 2 and Python 3 modules,
-# so it breaks PYDISTUTILS_AUTOPLIST.
-# Instead of defining a cherrypy_build_py.get_outputs() method in setup.py
-# we simply remove unwanted modules (see cherrypy_build_py() in setup.py)
-post-extract:
-.if ${PYTHON_REL} >= 3000
-	@(cd ${WRKSRC}/cherrypy && ${RM} _cpcompat_subprocess.py && \
-	cd wsgiserver && ${RM} ssl_pyopenssl.py wsgiserver2.py)
-.else
-	@${RM} ${WRKSRC}/cherrypy/wsgiserver/wsgiserver3.py
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

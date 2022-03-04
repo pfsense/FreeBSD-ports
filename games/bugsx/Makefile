@@ -1,5 +1,4 @@
 # Created by: Don Croyle <croyle@gelemna.org>
-# $FreeBSD$
 
 PORTNAME=	bugsx
 PORTVERSION=	1.08
@@ -13,7 +12,7 @@ COMMENT=	Breed bugs using genetic algorithms
 
 LICENSE=	GPLv1
 
-USES=		imake tar:tgz
+USES=		imake tar:tgz xorg
 USE_XORG=	x11 xext
 WRKSRC=		${WRKDIR}/bugsx
 PLIST_FILES=	bin/bugsx man/man1/bugsx.1.gz

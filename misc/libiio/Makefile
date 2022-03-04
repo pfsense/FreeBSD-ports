@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libiio
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17
+DISTVERSION=	0.21
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 
-USES=		cmake gnome
+USES=		cmake gnome localbase
 USE_GITHUB=	yes
 GH_ACCOUNT=	analogdevicesinc
 USE_GNOME=	libxml2

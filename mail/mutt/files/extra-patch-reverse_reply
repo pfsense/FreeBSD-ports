@@ -1,26 +1,26 @@
---- PATCHES.orig	2018-11-29 22:55:14 UTC
+--- PATCHES.orig	2021-06-13 21:49:47 UTC
 +++ PATCHES
 @@ -0,0 +1 @@
 +patch-1.5.6.cb.reverse_reply.2
---- init.h.orig	2018-11-29 22:55:14 UTC
+--- init.h.orig	2021-06-13 21:49:46 UTC
 +++ init.h
-@@ -2820,6 +2820,13 @@ struct option_t MuttVars[] = {
-   ** possibly including eventual real names.  When it is \fIunset\fP, mutt will
-   ** override any such real names with the setting of the $$realname variable.
+@@ -3322,6 +3322,13 @@ struct option_t MuttVars[] = {
+   ** In either case, a missing real name will be filled in afterwards
+   ** using the value of $$realname.
    */
-+  { "reverse_reply",	DT_BOOL, R_NONE, OPTREVREPLY, 0 },
++  { "reverse_reply",	DT_BOOL, R_NONE, {.l=OPTREVREPLY}, {.l=0} },
 +  /*
 +  ** .pp
 +  ** When set, this variable uses the name from your aliases in the To and Cc
 +  ** headers of reply mails you send, like $reverse_alias does in the index.
 +  ** When unset, the headers taken from the original mail are left unchanged.
 +  */
-   { "rfc2047_parameters", DT_BOOL, R_NONE, OPTRFC2047PARAMS, 0 },
+   { "rfc2047_parameters", DT_BOOL, R_NONE, {.l=OPTRFC2047PARAMS}, {.l=0} },
    /*
    ** .pp
---- mutt.h.orig	2018-11-29 22:55:14 UTC
+--- mutt.h.orig	2021-06-13 21:49:46 UTC
 +++ mutt.h
-@@ -478,6 +478,7 @@ enum
+@@ -525,6 +525,7 @@ enum
    OPTREVALIAS,
    OPTREVNAME,
    OPTREVREAL,
@@ -28,19 +28,19 @@
    OPTRFC2047PARAMS,
    OPTSAVEADDRESS,
    OPTSAVEEMPTY,
---- protos.h.orig	2018-11-24 19:06:21 UTC
+--- protos.h.orig	2021-05-23 18:20:51 UTC
 +++ protos.h
-@@ -85,6 +85,7 @@ ADDRESS *mutt_get_address (ENVELOPE *, c
+@@ -85,6 +85,7 @@ char* mutt_extract_message_id (const char *, const cha
+ ADDRESS *mutt_get_address (ENVELOPE *, char **);
  ADDRESS *mutt_lookup_alias (const char *s);
  ADDRESS *mutt_remove_duplicates (ADDRESS *);
- ADDRESS *mutt_remove_xrefs (ADDRESS *, ADDRESS *);
 +ADDRESS *mutt_reverse_address (ADDRESS *);
  ADDRESS *mutt_expand_aliases (ADDRESS *);
  ADDRESS *mutt_parse_adrlist (ADDRESS *, const char *);
  
---- send.c.orig	2018-10-04 22:30:10 UTC
+--- send.c.orig	2021-05-28 19:33:58 UTC
 +++ send.c
-@@ -600,6 +600,10 @@ void mutt_fix_reply_recipients (ENVELOPE
+@@ -739,6 +739,10 @@ void mutt_fix_reply_recipients (ENVELOPE *env)
    /* the CC field can get cluttered, especially with lists */
    env->to = mutt_remove_duplicates (env->to);
    env->cc = mutt_remove_duplicates (env->cc);
@@ -49,11 +49,11 @@
 +	env->cc = mutt_reverse_address (env->cc);
 +  }
    env->cc = mutt_remove_xrefs (env->to, env->cc);
-   
+ 
    if (env->cc && !env->to)
---- sendlib.c.orig	2018-11-24 19:06:11 UTC
+--- sendlib.c.orig	2021-05-23 18:20:51 UTC
 +++ sendlib.c
-@@ -2754,6 +2754,35 @@ static void set_noconv_flags (BODY *b, s
+@@ -3044,6 +3044,35 @@ static void set_noconv_flags (BODY *b, short flag)
    }
  }
  
@@ -86,6 +86,6 @@
 +  return addr;
 +}
 +
- int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, char *fcc)
+ int mutt_write_fcc (const char *path, SEND_CONTEXT *sctx, const char *msgid, int post, const char *fcc)
  {
-   CONTEXT f;
+   HEADER *hdr;

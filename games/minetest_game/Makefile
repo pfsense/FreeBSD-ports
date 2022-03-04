@@ -1,14 +1,13 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minetest_game
-PORTVERSION=	0.4.17
+PORTVERSION=	5.4.1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	The main game for the Minetest game engine
 
-LICENSE=	LGPL21+
+LICENSE=	LGPL21+ CC-BY-SA-3.0
+LICENSE_COMB=	multi
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	minetest:games/minetest
 
@@ -19,16 +18,22 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 DATADIR=	${PREFIX}/share/minetest/games/${PORTNAME}
 PORTDATA=	*
-PORTDOCS=	*
+PORTDOCS=	README.md game_api.txt schematic_tables.txt settingtypes.txt
+PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "game.conf menu mods" ${STAGEDIR}${DATADIR}/
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.txt ${STAGEDIR}${DOCSDIR}/
+.for f in ${PORTDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
+.endfor
+
+do-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/minetest.conf.example ${STAGEDIR}${EXAMPLESDIR}/
 
 .include <bsd.port.mk>

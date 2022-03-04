@@ -1,8 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	meandmyshadow
 PORTVERSION=	0.5a
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -15,13 +13,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		cmake compiler:c++11-lang dos2unix libarchive lua:53
+USES=		cmake compiler:c++11-lang dos2unix libarchive lua:53 sdl
 DOS2UNIX_FILES=	CMakeLists.txt src/Functions.cpp
 USE_SDL=	sdl2 image2 ttf2 mixer2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-CXXFLAGS+=	-Wno-c++11-narrowing
 
 PLIST_FILES=	bin/${PORTNAME} \
 		share/pixmaps/${PORTNAME}.png

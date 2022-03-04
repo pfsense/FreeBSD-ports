@@ -1,9 +1,8 @@
 # Created by: mutoh@openedu.org
-# $FreeBSD$
 
 PORTNAME=	seaside
 DISTVERSION=	080908-sq39
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese lang
 MASTER_SITES=	ftp://swikis.ddo.jp/SeasideJ/
 DISTNAME=	Seaside-JPatched${DISTVERSION}

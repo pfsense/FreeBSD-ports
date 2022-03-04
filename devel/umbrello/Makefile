@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	umbrello
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	devel kde kde-applications
@@ -9,18 +7,16 @@ COMMENT=	UML modeller for KDE
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-USES=		cmake compiler:c++11-lang gnome kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gnome kde:5 qt:5 tar:xz
 USE_GNOME=	libxml2 libxslt
 USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
-		coreaddons crash ecm guiaddons i18n iconthemes itemviews \
+		coreaddons crash guiaddons i18n iconthemes init itemviews \
 		jobwidgets kdelibs4support kio notifications parts service \
-		solid sonnet texteditor textwidgets unitconversion \
-		widgetsaddons windowsystem xmlgui
-USE_QT=		core dbus gui network printsupport svg webkit widgets xml \
-		buildtools_build qmake_build
-
-# Build the KDE Frameworks 5 based version.
-CMAKE_BOOL=	BUILD_KF5
+		solid sonnet syntaxhighlighting texteditor textwidgets unitconversion \
+		widgetsaddons windowsystem xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus gui network printsupport svg webkit widgets xml \
+		buildtools_build qmake_build testlib_build
 
 OPTIONS_DEFINE=	DOCS
 

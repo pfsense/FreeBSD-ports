@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcftools
 PORTVERSION=	1.0.8.20130212
 PORTREVISION=	1
@@ -18,7 +16,8 @@ GH_ACCOUNT=	j-jorge
 GH_TAGNAME=	d72ba82
 
 # option NLS (for gettext) is wrong as this port allways needs NLS:
-USES=	libtool cmake:insource,noninja gmake iconv pkgconfig perl5 gettext
+USES=	cpe libtool cmake:insource,noninja gmake iconv pkgconfig perl5 gettext
+CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	build run
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -41,7 +40,7 @@ MAKE_JOBS_UNSAFE=	yes
 OPTIONS_DEFINE=	DOCS TESTS
 TESTS_DESC=	Run self-tests (faulty) (pulls in graphics/netpbm shells/bash)
 
-TEST_BUILD_DEPENDS=	pngtopnm:graphics/netpbm \
+TESTS_BUILD_DEPENDS=	pngtopnm:graphics/netpbm \
 			bash:shells/bash
 
 .include <bsd.port.options.mk>

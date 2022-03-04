@@ -1,11 +1,10 @@
 # Created by: Chris Hutchinson <portmaster@BSDforge.com>
-# $FreeBSD$
 
 PORTNAME=	xvt
 PORTVERSION=	3.0.1
 PORTREVISION=	1
 CATEGORIES+=	x11
-MASTER_SITES=	http://BSDforge.com/projects/source/x11/xvt/
+MASTER_SITES=	https://BSDforge.com/projects/source/x11/xvt/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Xterm replacement, supporting color, transparency, and more, with less
@@ -15,7 +14,7 @@ LICENSE_COMB=	multi
 
 PORTDOCS=	xvt.1.html xvtRef.html xvtRef.txt
 
-USES=		libtool perl5 tar:xz
+USES=		libtool perl5 tar:xz xorg
 USE_LDCONFIG=	yes
 USE_PERL5=	build patch
 USE_XORG=	x11 xpm

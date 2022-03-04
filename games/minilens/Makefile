@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	minilens
 PORTVERSION=	1.2
 DISTVERSIONPREFIX=	v

@@ -1,13 +1,9 @@
 # Created by: Matthew Seaman
-# $FreeBSD$
 
 PORTNAME=	phpldapadmin
-PORTVERSION=	1.2.3
-PORTREVISION=	9
-PORTEPOCH=	1
+PORTVERSION=	1.2.6.2
 CATEGORIES=	net www
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-php5/${PORTVERSION}
-PKGNAMESUFFIX=  ${PHP_PKGNAMESUFFIX}
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	ports@bsdserwis.com
 COMMENT=	PHP application to administer LDAP over the web
@@ -17,11 +13,20 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe php:web,flavors tar:tgz
 USE_PHP=	gettext ldap openssl pcre session xml iconv hash
+USE_GITHUB=	yes
+GH_ACCOUNT=	leenooks
+GH_PROJECT=	phpLDAPadmin
 
-IGNORE_WITH_PHP=73
 NO_ARCH=	yes
 NO_BUILD=	yes
-CPE_VENDOR=	deon_george
+CPE_VENDOR=	phpldapadmin_project
+
+OPTIONS_DEFINE=	MCRYPT
+
+MCRYPT_DESC=	Use pecl-mcrypt for password hashing
+MCRYPT_USE=	PHP=mcrypt
+
+.include <bsd.port.options.mk>
 
 GROUPS?=	${WWWGRP}
 CFGDIR=		config
@@ -34,6 +39,8 @@ SUB_LIST+=	PKGNAME=${PKGNAME}
 SUB_FILES+=	pkg-message
 
 .SILENT:
+
+.include <bsd.port.pre.mk>
 
 post-patch:
 	cd ${WRKSRC} ;							    \
@@ -53,4 +60,4 @@ do-install:
 	    fi						 \
 	done
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

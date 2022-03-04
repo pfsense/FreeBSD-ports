@@ -1,21 +1,18 @@
 # Created by: janos.mohacsi@bsd.hu
-# $FreeBSD$
 
 PORTNAME=	aslookup
-PORTVERSION=	0.12
-PORTREVISION=	1
+PORTVERSION=	0.13d
 CATEGORIES=	net
-MASTER_SITES=	http://www.bugest.net/software/aslookup/
-DISTNAME=	${PORTNAME}-alpha${PORTVERSION}
+MASTER_SITES=	http://aslookup.bgpview.org/download/ \
+		https://BSDforce.com/source/net/aslookup/
+DISTNAME=	${PORTNAME}-beta${PORTVERSION}
 
-MAINTAINER=	jmohacsi@bsd.hu
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Tool that searches the sequence of AS numbers
 
-OPTIONS_DEFINE=	DOCS
+CFLAGS+=	-DARINDB -DJPNICDB -DAPNICDB
 
-post-patch:
-	@${REINPLACE_CMD} -E -e "s|CFLAGS.*=|CFLAGS +=|" \
-		-e "s|CC.*=|CC ?=|" ${WRKSRC}/Makefile
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/aslookup ${STAGEDIR}${PREFIX}/bin

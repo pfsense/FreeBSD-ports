@@ -1,9 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Test-Spelling
-PORTVERSION=	0.20
-PORTREVISION=	1
+PORTVERSION=	0.25
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,6 +19,7 @@ RUN_DEPENDS=	p5-Pod-Spell>=0:textproc/p5-Pod-Spell \
 
 USES=		perl5
 USE_PERL5=	configure
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

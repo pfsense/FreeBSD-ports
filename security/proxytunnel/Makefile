@@ -1,8 +1,8 @@
 # Created by: Hammurabi Mendes <hmendes@brturbo.com>
-# $FreeBSD$
 
 PORTNAME=	proxytunnel
-PORTVERSION=	1.9.1
+PORTVERSION=	1.10.20210604
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
 		minixmlto:textproc/minixmlto
 
-USES=		pkgconfig gmake ssl
+USES=		cpe gmake pkgconfig ssl
 USE_GITHUB=	yes
 
 PLIST_FILES=	bin/proxytunnel man/man1/proxytunnel.1.gz

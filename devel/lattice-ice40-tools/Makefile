@@ -1,17 +1,16 @@
 # Created by: Johnny Sorocil <jsorocil@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	lattice-ice40-tools
 PORTVERSION=	g20181021
 CATEGORIES=	devel
 
-MAINTAINER=	jsorocil@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source tools for Lattice iCE40 FPGAs
 
 RUN_DEPENDS=	abc:cad/abc \
 		arachne-pnr:devel/arachne-pnr \
 		icepack:devel/icestorm \
-		yosys:devel/yosys
+		yosys:cad/yosys
 
 USES=		metaport
 

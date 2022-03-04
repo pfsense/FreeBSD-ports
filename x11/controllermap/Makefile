@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	controllermap
-PORTVERSION=	2.0.9
+PORTVERSION=	2.0.12
 CATEGORIES=	x11
-MASTER_SITES=	http://www.libsdl.org/release/
+MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${DISTVERSION}
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -12,6 +10,7 @@ COMMENT=	Game controller mapping generator
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		sdl
 USE_SDL=	sdl2
 WRKSRC_SUBDIR=	test
 CFLAGS+=	`sdl2-config --cflags`

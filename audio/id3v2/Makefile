@@ -1,5 +1,4 @@
 # Created by: David MacKenzie <djm@pix.net>
-# $FreeBSD$
 
 PORTNAME=	id3v2
 PORTVERSION=	0.1.12
@@ -13,9 +12,11 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libid3.so:audio/id3lib
 
+USES=		compiler:c++11-lang
+
 MAKE_JOBS_UNSAFE=	yes
 
 PLIST_FILES=	bin/id3v2 \
-		man/man1/id3v2.1.gz
+		share/man/man1/id3v2.1.gz
 
 .include <bsd.port.mk>

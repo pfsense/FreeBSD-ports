@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	lxi-tools
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.21
+PORTREVISION=	1
 CATEGORIES=	misc
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Collection of tools that enables control of LXI compatible instruments
 
 LICENSE=	BSD3CLAUSE
@@ -15,12 +14,9 @@ LIB_DEPENDS=	liblxi.so:misc/liblxi
 
 USES=		autoreconf libtool localbase lua:52 pkgconfig readline
 USE_GITHUB=	yes
-GH_ACCOUNT=	lxi-tools
-
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
 		--with-bash-completion-dir=${PREFIX}/etc/bash_completion.d
-CFLAGS+=	-D_WITH_GETLINE # enable getline(3) prototype
 
 PORTDOCS=	README
 
@@ -31,7 +27,7 @@ PLIST_FILES=	bin/lxi \
 
 OPTIONS_DEFINE=	DOCS GUI
 
-GUI_USES=		qmake:no_env qt:5
+GUI_USES=		gl qmake:no_env qt:5
 GUI_USE=		qt=core,gui,charts,widgets,buildtools_build,qmake_build gl=gl
 GUI_CONFIGURE_ENABLE=	lxi-gui
 GUI_CONFIGURE_ENV+=	LDFLAGS="${LDFLAGS} -L${QT_LIBDIR}"

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	html5-parser
-PORTVERSION=	0.4.5
+PORTVERSION=	0.4.10
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,11 +11,11 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.8.0:devel/py-lxml@${PY_FLAVOR}
 
-USES=		pkgconfig python
+USES=		gnome pkgconfig python:3.6+
 USE_PYTHON=	autoplist distutils
 USE_GNOME=	libxml2
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/html5_parser/html_parser.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/html5_parser/html_parser*.so
 
 .include <bsd.port.mk>

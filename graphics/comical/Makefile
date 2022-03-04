@@ -1,9 +1,8 @@
 # Created by: John McAree <john@mcaree.org>
-# $FreeBSD$
 
 PORTNAME=	comical
 PORTVERSION=	0.8
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -14,7 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libminizip.so:archivers/minizip \
-		libunrar.so.5:archivers/libunrar5
+		libunrar.so.6:archivers/libunrar6
 
 USES=		compiler:c++11-lang gmake
 USE_WX=		2.8+
@@ -41,7 +40,7 @@ PLIST_FILES=	bin/comical \
 pre-patch:
 	@${MV} ${WRKSRC}/Comical\ Icons ${WRKSRC}/ComicalIcons
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 pre-configure:
 	${REINPLACE_CMD} -e 's|-Wno-unused-local-typedef||' ${WRKSRC}/src/Makefile
 .endif

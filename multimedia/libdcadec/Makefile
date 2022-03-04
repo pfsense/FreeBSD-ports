@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libdcadec
 PORTVERSION=	0.2.0
 PORTREVISION=	1
@@ -15,7 +13,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	foo86
 GH_PROJECT=	dcadec
 
-NO_CONFIGURE=	yes
 USES=		pkgconfig gmake
 LDFLAGS+=	-lm
 MAKE_ENV+=	CONFIG_SHARED=yes

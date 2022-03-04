@@ -1,3 +1,5 @@
-TIMESTAMP = 1495689208
-SHA256 (krrishnarraj-clpeak-1.0g20170524-75c8746_GH0.tar.gz) = 1e393a04df56777d00baf5e954fca3224fbd2c010580db3e6f28a7182bee05c5
-SIZE (krrishnarraj-clpeak-1.0g20170524-75c8746_GH0.tar.gz) = 201266
+TIMESTAMP = 1585218729
+SHA256 (krrishnarraj-clpeak-1.1.0_GH0.tar.gz) = af74d9fb8f86fcd113b11d34d6f675f67c35d36737eac69ba6688267ed79b7eb
+SIZE (krrishnarraj-clpeak-1.1.0_GH0.tar.gz) = 289613
+SHA256 (db42d30028ba.patch) = 73cedf92396ea67ff8e92bfc45aa389c367243d15129803cf6a65250e04a38d3
+SIZE (db42d30028ba.patch) = 3548

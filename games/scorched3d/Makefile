@@ -1,9 +1,8 @@
 # Created by: mdodd
-# $FreeBSD$
 
 PORTNAME=	scorched3d
 PORTVERSION=	0.${SCORCH_VERSION}${SCORCH_REVISION}
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Version%20${SCORCH_VERSION}
 DISTNAME=	Scorched3D-${SCORCH_VERSION}-src
@@ -23,31 +22,33 @@ OPTIONS_DEFINE=	MYSQL
 
 WRKSRC=		${WRKDIR}/scorched
 
-USES=		autoreconf compiler:c++11-lang dos2unix gmake iconv jpeg \
-		openal:al,alut perl5 pkgconfig
+USES=		autoreconf compiler:c++11-lang dos2unix gl gmake iconv jpeg \
+		openal:al,alut perl5 pkgconfig sdl
 USE_GL=		glew glu
 USE_SDL=	mixer net sdl
 USE_WX=		2.8
 WX_CONF_ARGS=	absolute
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--datadir=${DATADIR}
-LLD_UNSAFE=	yes
 
 DOS2UNIX_GLOB=	*.h *.cpp
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS_i386=	-Wl,-znotext
 
 SCORCH_VERSION=		43.3d
 SCORCH_REVISION=	# none
 
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_ON=	--with-mysql
 
 PLIST_FILES=	bin/scorched3d \
 		bin/scorched3dc \
 		bin/scorched3ds
 PORTDATA=	*
+
+BINARY_ALIAS=	freetype-config=true
 
 post-extract:
 	@${RM} ${WRKSRC}/src/client/GLEXT/[a-z]*

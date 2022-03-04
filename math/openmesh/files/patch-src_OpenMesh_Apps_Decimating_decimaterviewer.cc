@@ -1,12 +1,12 @@
---- src/OpenMesh/Apps/Decimating/decimaterviewer.cc.orig	2018-10-21 23:51:30 UTC
+--- src/OpenMesh/Apps/Decimating/decimaterviewer.cc.orig	2020-03-12 13:55:53 UTC
 +++ src/OpenMesh/Apps/Decimating/decimaterviewer.cc
-@@ -63,6 +63,9 @@
- #else
- #include <GL/glut.h>
+@@ -44,6 +44,9 @@
+ #ifdef _MSC_VER
+ #  pragma warning(disable: 4267 4311)
  #endif
 +#if defined(__FreeBSD__)
 +#include <unistd.h>
 +#endif
  
- void usage_and_exit(int xcode);
- 
+ #include <iostream>
+ #include <fstream>

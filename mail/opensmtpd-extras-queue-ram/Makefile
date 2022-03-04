@@ -1,8 +1,7 @@
 # Created by: fluffy
-# $FreeBSD$
 
 PKGNAMESUFFIX=		-queue-ram
-PORTREVISION=		2
+PORTREVISION=		0
 
 COMMENT=		RAM queue support for OpenSMTPD
 

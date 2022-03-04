@@ -1,8 +1,8 @@
 # Created by: mt@primats.org.ua
-# $FreeBSD$
 
 PORTNAME=	sarg
-PORTVERSION=	2.3.11
+PORTVERSION=	2.4.0
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -25,6 +25,7 @@ CONFIGURE_ARGS=	--sysconfdir="${ETCDIR}" \
 		--enable-imagedir="${ETCDIR}/images"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
+CFLAGS+=	-fcommon
 
 NLS_USES=		gettext
 NLS_USES_OFF=		gettext-tools
@@ -36,14 +37,10 @@ PHP_CONFIGURE_ON=	--enable-sargphp="${ETCDIR}"
 PHP_CONFIGURE_OFF=	--disable-sargphp
 PCRE_CONFIGURE_WITH=	pcre
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
-LDAP_USE=		USE_OPENLDAP=yes
+LDAP_USE=		OPENLDAP=yes
 LDAP_CONFIGURE_WITH=	ldap
 ICONV_USES=		iconv
 ICONV_CONFIGURE_WITH=	iconv
 ICONV_LDFLAGS=		${ICONV_LIB}
-
-post-patch:
-	@${REINPLACE_CMD} -e '/test .*==/ s/==/=/' \
-		${WRKSRC}/configure
 
 .include <bsd.port.mk>

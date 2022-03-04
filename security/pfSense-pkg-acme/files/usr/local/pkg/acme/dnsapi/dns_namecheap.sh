@@ -3,10 +3,10 @@
 # Namecheap API
 # https://www.namecheap.com/support/api/intro.aspx
 #
-# Requires Namecheap API key set in 
-#NAMECHEAP_API_KEY, 
+# Requires Namecheap API key set in
+#NAMECHEAP_API_KEY,
 #NAMECHEAP_USERNAME,
-#NAMECHEAP_SOURCEIP 
+#NAMECHEAP_SOURCEIP
 # Due to Namecheap's API limitation all the records of your domain will be read and re applied, make sure to have a backup of your records you could apply if any issue would arise.
 
 ########  Public functions #####################
@@ -157,14 +157,14 @@ _namecheap_set_publicip() {
 
   if [ -z "$NAMECHEAP_SOURCEIP" ]; then
     _err "No Source IP specified for Namecheap API."
-    _err "Use your public ip address or an url to retrieve it (e.g. https://ipconfig.co/ip) and export it as NAMECHEAP_SOURCEIP"
+    _err "Use your public ip address or an url to retrieve it (e.g. https://ifconfig.co/ip) and export it as NAMECHEAP_SOURCEIP"
     return 1
   else
     _saveaccountconf NAMECHEAP_SOURCEIP "$NAMECHEAP_SOURCEIP"
     _debug sourceip "$NAMECHEAP_SOURCEIP"
 
     ip=$(echo "$NAMECHEAP_SOURCEIP" | _egrep_o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')
-    addr=$(echo "$NAMECHEAP_SOURCEIP" | _egrep_o '(http|https)://.*')
+    addr=$(echo "$NAMECHEAP_SOURCEIP" | _egrep_o '(http|https):\/\/.*')
 
     _debug2 ip "$ip"
     _debug2 addr "$addr"
@@ -175,7 +175,7 @@ _namecheap_set_publicip() {
       _publicip=$(_get "$addr")
     else
       _err "No Source IP specified for Namecheap API."
-      _err "Use your public ip address or an url to retrieve it (e.g. https://ipconfig.co/ip) and export it as NAMECHEAP_SOURCEIP"
+      _err "Use your public ip address or an url to retrieve it (e.g. https://ifconfig.co/ip) and export it as NAMECHEAP_SOURCEIP"
       return 1
     fi
   fi
@@ -208,7 +208,7 @@ _namecheap_parse_host() {
   _hostid=$(echo "$_host" | _egrep_o ' HostId="[^"]*' | cut -d '"' -f 2)
   _hostname=$(echo "$_host" | _egrep_o ' Name="[^"]*' | cut -d '"' -f 2)
   _hosttype=$(echo "$_host" | _egrep_o ' Type="[^"]*' | cut -d '"' -f 2)
-  _hostaddress=$(echo "$_host" | _egrep_o ' Address="[^"]*' | cut -d '"' -f 2)
+  _hostaddress=$(echo "$_host" | _egrep_o ' Address="[^"]*' | cut -d '"' -f 2 | _xml_decode)
   _hostmxpref=$(echo "$_host" | _egrep_o ' MXPref="[^"]*' | cut -d '"' -f 2)
   _hostttl=$(echo "$_host" | _egrep_o ' TTL="[^"]*' | cut -d '"' -f 2)
 
@@ -404,4 +404,8 @@ _namecheap_set_tld_sld() {
 
   done
 
+}
+
+_xml_decode() {
+  sed 's/&quot;/"/g'
 }

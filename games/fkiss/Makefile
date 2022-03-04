@@ -1,5 +1,4 @@
 # Created by: Seiichirou Hiraoka <flathill@flathill.gr.jp>
-# $FreeBSD$
 
 PORTNAME=	fkiss
 PORTVERSION=	0.33a
@@ -24,7 +23,7 @@ BROKEN_armv7=		fails to compile: passing char * to parameter of incompatible typ
 
 EXTRA_PATCHES=	${WRKDIR}/${PORTNAME}-${PORTVERSION}.diff
 
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	x11 xorgproto
 GNU_CONFIGURE=	yes
 MAKE_ARGS=	ACLOCAL="${TRUE}" AUTOCONF="${TRUE}" AUTOHEADER="${TRUE}" \

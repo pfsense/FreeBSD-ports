@@ -1,9 +1,8 @@
 # Created by: Fabian Keil <fk@fabiankeil.de>
-# $FreeBSD$
 
 PORTNAME=	Event-Lib
 PORTVERSION=	1.03
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

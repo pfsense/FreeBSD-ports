@@ -1,5 +1,4 @@
 # Created by: Scott Flatman <sf@dsinw.com>
-# $FreeBSD$
 
 PORTNAME=	cmucl-extra
 DISTVERSION=	21b
@@ -10,7 +9,7 @@ MASTER_SITES=	https://common-lisp.net/project/cmucl/downloads/release/${DISTVERS
 		http://www.rgrjr.com/cmucl/downloads/release/${DISTVERSION}/
 DISTNAME=	cmucl-${DISTVERSION}-x86-FreeBSD.extra
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Optional extras for the CMU implementation of Common Lisp
 
 LICENSE=	PD

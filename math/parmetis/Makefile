@@ -1,9 +1,8 @@
 # Created by: Eoin Lawless (eoin@maths.tcd.ie)
-# $FreeBSD$
 
 PORTNAME=	ParMetis
 PORTVERSION=	4.0.3
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	math parallel
 MASTER_SITES=	http://glaros.dtc.umn.edu/gkhome/fetch/sw/parmetis/
 DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
@@ -47,7 +46,7 @@ pre-configure:
 	@${REINPLACE_CMD} -e \
 		's|"-O3"|""|' ${WRKSRC}/metis/GKlib/GKlibSystem.cmake
 .if ((${ARCH}=="amd64") || (${ARCH}=="aarch64") || (${ARCH}=="sparc64") || (${ARCH}=="ppc64") || (${ARCH}=="ia64"))
-	@${REINPLACE_CMD}-e \
+	@${REINPLACE_CMD} -e \
 		's|IDXTYPEWIDTH 32|IDXTYPEWIDTH 64|' \
 		${WRKSRC}/metis/include/metis.h
 .endif

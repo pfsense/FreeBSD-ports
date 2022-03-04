@@ -1,5 +1,4 @@
 # Created by: dikshie@sfc.wide.ad.jp
-# $FreeBSD$
 
 PORTNAME=	iffinder
 PORTVERSION=	1.38
@@ -20,7 +19,7 @@ PORTDOCS=	README
 
 MAKE_ARGS+=	CC="${CC}"
 
-MAKE_JOBS_UNSAFE= yes
+MAKE_JOBS_UNSAFE=	yes
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/iffinder ${STAGEDIR}${PREFIX}/bin

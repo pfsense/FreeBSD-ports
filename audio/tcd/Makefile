@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	tcd
 PORTVERSION=	2.2.0
@@ -12,7 +11,7 @@ COMMENT=	Simple, user-friendly ncurses-based CD player
 
 LICENSE=	GPLv2
 
-USES=		ncurses
+USES=		ncurses sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 

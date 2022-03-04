@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	svmlight
 PORTVERSION=	6.02
@@ -20,7 +19,7 @@ LICENSE_PERMS=	# none
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of Support Vector Machines (SVMs) in C
 
-CFLAGS+=	-fPIC
+CFLAGS+=	-fPIC -fcommon
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" LD="${CC}" LFLAGS="${CFLAGS}"
 NO_WRKSUBDIR=	yes
 USES=		gmake

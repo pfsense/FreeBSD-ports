@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	em-redis-unified
 PORTVERSION=	1.0.1
 CATEGORIES=	databases rubygems
@@ -12,8 +10,9 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-eventmachine>=0.12.10:devel/rubygem-eventmachine
 
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

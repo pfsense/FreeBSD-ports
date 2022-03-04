@@ -1,11 +1,10 @@
 # Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	screenFetch
-PORTVERSION=	3.8.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.9.1-56
+DISTVERSIONSUFFIX=	-gc3a4789
 CATEGORIES=	sysutils
-MASTER_SITES=	LOCAL/jgh/sysutils/${PORTNAME:tl}/
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Bash Screenshot Information Tool
@@ -13,10 +12,13 @@ COMMENT=	Bash Screenshot Information Tool
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	bash:shells/bash \
-		xdpyinfo:x11/xdpyinfo
+RUN_DEPENDS=	bash:shells/bash
+X11_RUN_DEPENDS=	xdpyinfo:x11/xdpyinfo
 
-OPTIONS_DEFINE=	DOCS
+CONFLICTS_INSTALL?=	screenFetch-nox11
+
+OPTIONS_DEFINE=	DOCS X11
+OPTIONS_DEFAULT=	X11
 
 NO_BUILD=	yes
 NO_ARCH=	yes

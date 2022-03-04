@@ -4,7 +4,7 @@
  * net-snmp.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -181,6 +181,7 @@ function netsnmp_resync() {
 	/* If the service isn't enabled, nothing to do. Stop the service and return. */
 	if ($nsettings['enable_snmpd'] != "on") {
 		stop_service('net-snmpd');
+		unlink_if_exists('/usr/local/etc/rc.d/net-snmpd.sh');
 		return;
 	}
 
@@ -200,7 +201,11 @@ function netsnmp_resync() {
 		}
 		/* An address or hostname is optional but needs to be before the port */
 		if (!empty($agent['ipaddress'])) {
-			$aa = "{$agent['ipaddress']}:{$aa}";
+			if (is_ipaddrv6($agent['ipaddress'])) {
+				$aa = "[{$agent['ipaddress']}]:{$aa}";
+			} else {
+				$aa = "{$agent['ipaddress']}:{$aa}";
+			}
 		}
 		/* Transport is optional (UDP is assumed) */
 		if (!empty($agent['transport'])) {
@@ -307,6 +312,10 @@ function netsnmp_resync() {
 	}
 	if (!empty($nhisettings['sysdescr'])) {
 		$snmpd_config .= "sysDescr {$nhisettings['sysdescr']}\n";
+	} else {
+		$snmpd_config .= "sysDescr {$g['product_name']} {$config['system']['hostname']}.{$config['system']['domain']}" .
+						 " {$g['product_version_string']} " . php_uname("s") .
+						 " " . php_uname("r") . " " . php_uname("m") . "\n";
 	}
 
 	if (!empty($nhisettings['interface_fadeout'])) {
@@ -520,99 +529,69 @@ function netsnmp_resync() {
 	}
 
 	/* Support up to three SNMPv1 Trap Sinks */
-	if (!empty($ntgsettings['trapsink1_host'])) {
-		$snmpd_config .= "trapsink {$ntgsettings['trapsink1_host']}";
-		if (!empty($ntgsettings['trapsink1_community'])) {
-			$snmpd_config .= " {$ntgsettings['trapsink1_community']}";
-			if (!empty($ntgsettings['trapsink1_port'])) {
-				$snmpd_config .= " {$ntgsettings['trapsink1_port']}";
+	for ($i = 1; $i <= 3; $i++) {
+		if (!empty($ntgsettings['trapsink'.$i.'_host'])) {
+			$snmpd_config .= "trapsink {$ntgsettings['trapsink'.$i.'_host']}";
+			if (!empty($ntgsettings['trapsink'.$i.'_community'])) {
+				$snmpd_config .= " {$ntgsettings['trapsink'.$i.'_community']}";
+				if (!empty($ntgsettings['trapsink'.$i.'_port'])) {
+					$snmpd_config .= " {$ntgsettings['trapsink'.$i.'_port']}";
+				}
 			}
+			$snmpd_config .= "\n";
 		}
-		$snmpd_config .= "\n";
-	}
-	if (!empty($ntgsettings['trapsink3_host'])) {
-		$snmpd_config .= "trapsink {$ntgsettings['trapsink3_host']}";
-		if (!empty($ntgsettings['trapsink2_community'])) {
-			$snmpd_config .= " {$ntgsettings['trapsink2_community']}";
-			if (!empty($ntgsettings['trapsink2_port'])) {
-				$snmpd_config .= " {$ntgsettings['trapsink2_port']}";
-			}
-		}
-		$snmpd_config .= "\n";
-	}
-	if (!empty($ntgsettings['trapsink3_host'])) {
-		$snmpd_config .= "trapsink {$ntgsettings['trapsink3_host']}";
-		if (!empty($ntgsettings['trapsink3_community'])) {
-			$snmpd_config .= " {$ntgsettings['trapsink3_community']}";
-			if (!empty($ntgsettings['trapsink1_port'])) {
-				$snmpd_config .= " {$ntgsettings['trapsink3_port']}";
-			}
-		}
-		$snmpd_config .= "\n";
 	}
 
-	/* Support up to three SNMPv2c/3 Trap Sinks */
-	if (!empty($ntgsettings['trap2sink1_host'])) {
-		$snmpd_config .= "trap2sink {$ntgsettings['trap2sink1_host']}";
-		if (!empty($ntgsettings['trap2sink1_community'])) {
-			$snmpd_config .= " {$ntgsettings['trap2sink1_community']}";
-			if (!empty($ntgsettings['trap2sink1_port'])) {
-				$snmpd_config .= " {$ntgsettings['trap2sink1_port']}";
+	/* Support up to three SNMPv2c Trap Sinks */
+	for ($i = 1; $i <= 3; $i++) {
+		if (!empty($ntgsettings['trap2sink'.$i.'_host'])) {
+			$snmpd_config .= "trap2sink {$ntgsettings['trap2sink'.$i.'_host']}";
+			if (!empty($ntgsettings['trap2sink'.$i.'_community'])) {
+				$snmpd_config .= " {$ntgsettings['trap2sink'.$i.'_community']}";
+				if (!empty($ntgsettings['trap2sink'.$i.'_port'])) {
+					$snmpd_config .= " {$ntgsettings['trap2sink'.$i.'_port']}";
+				}
 			}
+			$snmpd_config .= "\n";
 		}
-		$snmpd_config .= "\n";
-	}
-	if (!empty($ntgsettings['trap2sink2_host'])) {
-		$snmpd_config .= "trap2sink {$ntgsettings['trap2sink2_host']}";
-		if (!empty($ntgsettings['trap2sink2_community'])) {
-			$snmpd_config .= " {$ntgsettings['trap2sink2_community']}";
-			if (!empty($ntgsettings['trap2sink2_port'])) {
-				$snmpd_config .= " {$ntgsettings['trap2sink2_port']}";
-			}
-		}
-		$snmpd_config .= "\n";
-	}
-	if (!empty($ntgsettings['trap2sink3_host'])) {
-		$snmpd_config .= "trap2sink {$ntgsettings['trap2sink3_host']}";
-		if (!empty($ntgsettings['trap2sink3_community'])) {
-			$snmpd_config .= " {$ntgsettings['trap2sink3_community']}";
-			if (!empty($ntgsettings['trap2sink3_port'])) {
-				$snmpd_config .= " {$ntgsettings['trap2sink3_port']}";
-			}
-		}
-		$snmpd_config .= "\n";
 	}
 
-	/* Support up to three SNMPv2c/3 Inform notification hosts */
-	if (!empty($ntgsettings['informsink1_host'])) {
-		$snmpd_config .= "informsink {$ntgsettings['informsink1_host']}";
-		if (!empty($ntgsettings['informsink1_community'])) {
-			$snmpd_config .= " {$ntgsettings['informsink1_community']}";
-			if (!empty($ntgsettings['informsink1_port'])) {
-				$snmpd_config .= " {$ntgsettings['informsink1_port']}";
+	/* Support up to three SNMPv2c Inform notification hosts */
+	for ($i = 1; $i <= 3; $i++) {
+		if (!empty($ntgsettings['informsink'.$i.'_host'])) {
+			$snmpd_config .= "informsink {$ntgsettings['informsink'.$i.'_host']}";
+			if (!empty($ntgsettings['informsink'.$i.'_community'])) {
+				$snmpd_config .= " {$ntgsettings['informsink'.$i.'_community']}";
+				if (!empty($ntgsettings['informsink'.$i.'_port'])) {
+					$snmpd_config .= " {$ntgsettings['informsink'.$i.'_port']}";
+				}
 			}
+			$snmpd_config .= "\n";
 		}
-		$snmpd_config .= "\n";
 	}
-	if (!empty($ntgsettings['informsink2_host'])) {
-		$snmpd_config .= "informsink {$ntgsettings['informsink2_host']}";
-		if (!empty($ntgsettings['informsink2_community'])) {
-			$snmpd_config .= " {$ntgsettings['informsink2_community']}";
-			if (!empty($ntgsettings['informsink2_port'])) {
-				$snmpd_config .= " {$ntgsettings['informsink2_port']}";
-			}
+
+	/* Support up to three SNMPv3 Trap notification hosts */
+	for ($i = 1; $i <= 3; $i++) {
+		if (!empty($ntgsettings['trap3sink'.$i.'_host']) && !empty($ntgsettings['trap3sink'.$i.'_user'])) {
+			$snmpd_config .= "trapsess -v 3 -I {$ntgsettings['trap3sink'.$i.'_security']}"; 
+			$snmpd_config .= " -u {$ntgsettings['trap3sink'.$i.'_user']} {$ntgsettings['trap3sink'.$i.'_host']}";
+				if (!empty($ntgsettings['trap3sink'.$i.'_port'])) {
+					$snmpd_config .= " {$ntgsettings['trap3sink'.$i.'_port']}";
+				}
+			$snmpd_config .= "\n";
 		}
-		$snmpd_config .= "\n";
 	}
-	if (!empty($ntgsettings['informsink3_host'])) {
-		$snmpd_config .= "informsink {$ntgsettings['informsink3_host']}";
-		if (!empty($ntgsettings['informsink3_community'])) {
-			$snmpd_config .= " {$ntgsettings['informsink3_community']}";
-			if (!empty($ntgsettings['informsink3_port'])) {
-				$snmpd_config .= " {$ntgsettings['informsink3_port']}";
-			}
+
+	/* Support up to three SNMPv3 Inform notification hosts */
+	for ($i = 1; $i <= 3; $i++) {
+		if (!empty($ntgsettings['inform3sink'.$i.'_host']) && !empty($ntgsettings['inform3sink'.$i.'_user'])) {
+			$snmpd_config .= "trapsess -v 3 -Ci -I {$ntgsettings['inform3sink'.$i.'_security']}"; 
+			$snmpd_config .= " -u {$ntgsettings['inform3sink'.$i.'_user']} {$ntgsettings['inform3sink'.$i.'_host']}";
+				if (!empty($ntgsettings['inform3sink'.$i.'_port'])) {
+					$snmpd_config .= " {$ntgsettings['inform3sink'.$i.'_port']}";
+				}
+			$snmpd_config .= "\n";
 		}
-		$snmpd_config .= "\n";
 	}
 
 	/* 'monitor' entries define conditions to trigger traps. The control is a rowhelper, so loop through its entries. */
@@ -652,7 +631,7 @@ echo "Starting net-snmpd..."
 /usr/bin/killall -9 snmpd 2>/dev/null
 sleep 1
 
-/usr/local/sbin/snmpd -LF 0-4 d \
+/usr/local/sbin/snmpd -LS 0-6 d \
 			-p /var/run/net_snmpd.pid \
 			-M /usr/share/snmp/mibs/:/usr/local/share/snmp/mibs \
 			-C \
@@ -699,6 +678,7 @@ function netsnmp_resync_snmptrapd() {
 	/* If snmptrapd is not enabled, then stop the service and do not write the config */
 	if ($nsettings['enable_snmptrapd'] != "on") {
 		stop_service('net-snmptrapd');
+		unlink_if_exists('/usr/local/etc/rc.d/net-snmptrapd.sh');
 		return;
 	}
 
@@ -732,7 +712,7 @@ function netsnmp_resync_snmptrapd() {
 
 	/* Agent address list is comma-separated, no spaces: a:b:c,d:e:f,g:h:i */
 	if (!empty($agentaddresses)) {
-		$snmptrapd_config .= "agentaddress " . implode(',', $agentaddresses) . "\n";
+		$snmptrapd_config .= "snmpTrapdAddr " . implode(',', $agentaddresses) . "\n";
 	}
 
 	if (!empty($nsettings['donotretainnotificationlogs'])) {
@@ -1468,4 +1448,57 @@ function netsnmp_validate_netsnmptrapdforwards($post, &$input_errors) {
 		}
 		$i++;
 	}
+}
+
+function netsnmp_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'netsnmp', 'config'));
+	$conf = $config['installedpackages']['netsnmp']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($conf) &&
+	    ($conf['enable_snmpd'] == 'on')) {
+		init_config_arr(array('installedpackages', 'netsnmp', 'config', 0, 'row'));
+		$rowconf = $config['installedpackages']['netsnmp']['config'][0]['row'];
+		foreach ($rowconf as $rconf) {
+			if (strstr($rconf['transport'], 'tls')) {
+				$tls = true;
+				break;
+			}
+		}
+		if (!$tls) {
+			return $result;
+		}
+
+		$result['pkgname'] = "SNMP (NET-SNMP)";
+		$result['certificatelist'] = array();
+
+		if (($pluginparams['event'] == 'used_ca') && !empty($conf['ca_cert'])) {
+			$item = array();
+			$cert = $conf['ca_cert'];
+			$item['usedby'] = 'DTLS CA Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates')) {
+			if (!empty($conf['server_cert'])) {
+				$item = array();
+				$cert = $conf['server_cert'];
+				$item['usedby'] = 'DTLS Server Certificate';
+				$result['certificatelist'][$cert][] = $item;
+			}
+			init_config_arr(array('installedpackages', 'netsnmpusers', 'config'));
+			$usersconf = $config['installedpackages']['netsnmpusers']['config'][0];
+			foreach ($usersconf as $user) {
+				if (!empty($user['user_cert'])) {
+					$item = array();
+					$cert = $user['user_cert'];
+					$item['usedby'] = 'DTLS User Certificate';
+					$result['certificatelist'][$cert][] = $item;
+				}
+			}
+		}
+	}
+
+	return $result;
 }

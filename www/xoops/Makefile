@@ -1,13 +1,12 @@
 # Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	xoops
-PORTVERSION=	2.5.8
+PORTVERSION=	2.5.10
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/XOOPS%20Core%20%28stable%20releases%29/XOOPS_${PORTVERSION}
 DISTNAME=	XoopsCore25-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Dynamic Web CMS
 
 LICENSE=	GPLv2

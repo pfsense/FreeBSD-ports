@@ -1,8 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	bayesm
-DISTVERSION=	3.1-1
+DISTVERSION=	3.1-4
+PORTREVISION=	1
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

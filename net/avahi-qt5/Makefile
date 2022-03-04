@@ -1,7 +1,6 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org
-# $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	net
 PKGNAMESUFFIX=	-qt5
 

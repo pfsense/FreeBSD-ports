@@ -1,9 +1,8 @@
 # Created by: Eric van Gyzen <vangyzen@stat.duke.edu>
-# $FreeBSD$
 
 PORTNAME=	mcmc-jags
 DISTVERSION=	4.3.0
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	SF/mcmc-jags/JAGS/${S}.x/Source/:1 \
 		SF/mcmc-jags/Examples/${S}.x/:2 \

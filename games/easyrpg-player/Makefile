@@ -1,9 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	easyrpg-player
-PORTVERSION=	0.6.0
-PORTREVISION=	1
+PORTVERSION=	0.7.0
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -25,8 +21,9 @@ LIB_DEPENDS=	liblcf.so:games/liblcf \
 		libopus.so:audio/opus \
 		libWildMidi.so:audio/wildmidi \
 		libxmp.so:audio/libxmp \
-		libFLAC.so:audio/flac \
-		libmodplug.so:audio/libmodplug
+		libfmt.so:devel/libfmt \
+		libasound.so:audio/alsa-lib \
+		libfluidsynth.so:audio/fluidsynth
 # these come from liblcf
 LIB_DEPENDS+=	libicui18n.so:devel/icu \
 		libexpat.so:textproc/expat2
@@ -37,11 +34,12 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	EasyRPG
 GH_PROJECT=	Player
 
-USES=		cmake:insource compiler:c++11-lib localbase:ldflags pkgconfig sdl
-CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=man \
-		-DPLAYER_AUDIO_BACKEND=SDL2_mixer
+USES=		cmake:insource compiler:c++14-lang localbase:ldflags pkgconfig \
+		sdl xorg
+CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=share/man
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_Git
 USE_XORG=	pixman
-USE_SDL=	sdl2 mixer2
+USE_SDL=	sdl2
 
 PORTDOCS=	AUTHORS.md README.md
 

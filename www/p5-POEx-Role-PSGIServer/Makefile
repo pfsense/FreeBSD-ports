@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POEx-Role-PSGIServer
 PORTVERSION=	1.110670
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:FRODWITH
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for encapsulated PSGI server behaviors for POE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

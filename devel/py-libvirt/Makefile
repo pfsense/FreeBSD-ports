@@ -1,8 +1,7 @@
 # Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libvirt
-PORTVERSION=	5.1.0
+PORTVERSION=	7.10.0
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/python/ \
 		ftp://libvirt.org/libvirt/python/
@@ -16,13 +15,14 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libvirt.so:devel/libvirt
 
-USES=	pkgconfig python shebangfix
+USES=		cpe pkgconfig python:3.6+ shebangfix
+CPE_VENDOR=	redhat
 SHEBANG_FILES=	generator.py sanitytest.py setup.py
 USE_PYTHON=	distutils autoplist
 
 post-install:
 .for lib in libvirtmod libvirtmod_qemu libvirtmod_lxc
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/site-packages/${lib}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/site-packages/${lib}*.so
 .endfor
 
 .include <bsd.port.mk>

@@ -1,3 +1,8 @@
-OpenStack microversion header parser
+microversion_parse is a small set of functions to manage OpenStack microversion
+headers that can be used in middleware, application handlers and decorators to
+effectively manage microversions.
 
-WWW: https://pypi.org/project/microversion_parse/
+Also included, in the middleware module, is a MicroversionMiddleware that will
+process incoming microversion headers.
+
+WWW: https://github.com/openstack/microversion-parse

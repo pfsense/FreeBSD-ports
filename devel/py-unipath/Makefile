@@ -1,5 +1,4 @@
 # Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Unipath
 PORTVERSION=	1.1
@@ -12,7 +11,7 @@ COMMENT=	Object-oriented alternative to os/os.path/shutil
 
 LICENSE=	PSFL
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

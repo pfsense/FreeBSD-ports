@@ -1,12 +1,11 @@
 # Created by: peter
-# $FreeBSD$
 
 PORTNAME=	rdist
 PORTVERSION=	6.1.5
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net
-MASTER_SITES=	http://www.magnicomp.com/download/rdist/ \
-		ftp://ftp.sunet.se/pub/unix/admin/mirror-magnicomp/download/rdist/
+MASTER_SITES=	https://fossies.org/linux/misc/old/ \
+		http://www.magnicomp.com/download/rdist/
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Network file distribution/synchronisation utility
@@ -21,7 +20,7 @@ PLIST_SUB=	RDIST_NAME=${RDIST_NAME}
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200050
+.if ${OPSYS} == FreeBSD
 RUN_DEPENDS+=	rsh:net/bsdrcmds
 .endif
 

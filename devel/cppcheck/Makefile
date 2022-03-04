@@ -1,8 +1,7 @@
 # Created by: Gabor Pali <pgj@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cppcheck
-PORTVERSION=	1.87
+PORTVERSION=	2.6.2
 PORTREVISION?=	0	# devel/cppcheck-gui
 CATEGORIES=	devel
 
@@ -23,7 +22,7 @@ RUN_DEPENDS=		cppcheck:devel/cppcheck
 
 CMAKE_ARGS=		-DBUILD_GUI=TRUE
 USES+=			qt:5
-USE_QT=			core gui widgets printsupport qmake_build buildtools_build linguisttools_build
+USE_QT=			core gui widgets printsupport help qmake_build buildtools_build linguisttools_build
 
 BUILD_WRKSRC=		${WRKSRC}/gui
 INSTALL_WRKSRC=		${WRKSRC}/gui
@@ -34,6 +33,8 @@ PKGNAMESUFFIX=		-gui
 .else
 USES+=			shebangfix
 SHEBANG_FILES=		htmlreport/cppcheck-htmlreport
+
+PORTDATA=		*
 
 OPTIONS_DEFINE=		RULES HTMLREPORT MANPAGES MATCHCOMPILER TEST
 OPTIONS_DEFAULT=	RULES HTMLREPORT MANPAGES MATCHCOMPILER
@@ -74,7 +75,7 @@ post-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/man/cppcheck.1 ${STAGEDIR}${PREFIX}/man/man1
 
 do-test-TEST-on:
-	cd ${WRKSRC} && ctest
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ctest
 .endif
 
 .include <bsd.port.mk>

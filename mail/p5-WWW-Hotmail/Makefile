@@ -1,5 +1,4 @@
 # Created by: Steven Kreuzer <skreuzer@f2o.org>
-# $FreeBSD$
 
 PORTNAME=	WWW-Hotmail
 PORTVERSION=	0.10
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	skreuzer@FreeBSD.org
-COMMENT=	This module simplifies access to hotmail
+COMMENT=	Module that simplifies access to Hotmail
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-WWW-Mechanize>=0:www/p5-WWW-Mechanize \

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	toycars
 PORTVERSION=	0.3.10
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -15,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
-USES=		gl gmake localbase
+USES=		gl gmake localbase sdl
 USE_CXXSTD=	c++98
 GNU_CONFIGURE=	yes
 USE_SDL=	image sdl

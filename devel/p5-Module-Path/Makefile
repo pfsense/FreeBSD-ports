@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Path
 PORTVERSION=	0.19
 CATEGORIES=	devel perl5
@@ -16,5 +14,7 @@ TEST_DEPENDS=	p5-Devel-FindPerl>0:devel/p5-Devel-FindPerl
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,15 +1,14 @@
 # Created by: Mahdi Mokhtari <mokhi64@gmail.com>
-# $FreeBSD$
 
 PORTNAME?=	mysql
-PORTVERSION=	5.7.26
-PORTREVISION?=	1
-CATEGORIES=	databases ipv6
+PORTVERSION=	5.7.36
+PORTREVISION?=	0
+CATEGORIES=	databases
 MASTER_SITES=	MYSQL/MySQL-5.7
 PKGNAMESUFFIX?=	57-server
 DISTNAME=	${PORTNAME}-boost-${PORTVERSION}
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
 LICENSE=	GPLv2
@@ -18,7 +17,9 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 SLAVEDIRS=	databases/mysql57-client
 USES=		bison:build cmake:noninja compiler:c11 compiler:c++11-lib \
-		cpe libedit localbase perl5 shebangfix ssl
+		cpe groff:run libedit localbase perl5 shebangfix ssl
+
+CPE_VENDOR=	oracle
 
 USE_PERL5=	run
 
@@ -32,6 +33,9 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libprotobuf.so:devel/protobuf
 
 CMAKE_BUILD_TYPE=	Release
+
+CFLAGS+=	-DNDEBUG
+CXXFLAGS+=	-DNDEBUG
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_LDCONFIGDIR="${LOCALBASE}/libdata/ldconfig" \
@@ -83,15 +87,15 @@ OPTIONS_SUB=		YES
 .if !defined(CLIENT_ONLY)
 USES+=		mysql:57
 
-CONFLICTS_INSTALL=	mysql5[0-68-9]-server-* \
-			mysql[0-46-9][0-9]-server-* \
-			mysqlwsrep* \
-			mariadb[0-9][0-9]-server-* \
-			percona[0-9][0-9]-server-*
+CONFLICTS_INSTALL=	mysql5[0-68-9]-server \
+			mysql[0-46-9][0-9]-server \
+			mysqlwsrep*-server \
+			mariadb[0-9][0-9]-server \
+			percona[0-9][0-9]-server
 
 USE_RC_SUBR=	mysql-server
 
-SUB_FILES=	my.cnf.sample
+SUB_FILES=	my.cnf.sample pkg-message
 
 USERS=		mysql
 GROUPS=		mysql
@@ -145,12 +149,6 @@ CMAKE_ARGS+=	-DWITH_AUTHENTICATION_LDAP=0
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
-
 .include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} == base
@@ -161,6 +159,10 @@ CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-fpermissive
+.endif
+
+.if ${ARCH} == powerpc
+LLD_UNSAFE=	yes
 .endif
 
 post-extract:

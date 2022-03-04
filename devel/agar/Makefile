@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	agar
 PORTVERSION=	1.5.0
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://stable.hypertriton.com/agar/
 
@@ -9,6 +8,9 @@ MAINTAINER=	vedge@hypertriton.com
 COMMENT=	Cross-platform GUI toolkit
 
 LICENSE=	BSD2CLAUSE
+
+BROKEN_FreeBSD_12_powerpc64=	fails to compile: cpuinfo.c:289: error: 'IllegalInsn' undeclared (first use in this function)
+BROKEN_FreeBSD_13_powerpc64=	fails to compile: include/agar/core/byteswap.h:46:8: error: unsupported inline asm: input with type 'int' matching output with type 'u_int16_t' (aka 'unsigned short')
 
 USES=		libtool pathfix perl5 pkgconfig jpeg
 USE_PERL5=	build
@@ -39,7 +41,6 @@ SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 SNDFILE_IMPLIES=	PORTAUDIO
 
 GUI_CONFIGURE_ENABLE=	gui
-GUI_USE=		JPEG=jpeg
 
 GUI_CONFIGURE_ON=	--with-jpeg=${LOCALBASE} \
 			--with-png=${LOCALBASE} \
@@ -52,6 +53,7 @@ FONTCONFIG_CONFIGURE_WITH=fontconfig
 FONTCONFIG_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
 FONTCONFIG_IMPLIES=	GUI
 
+X11_USES=		gl xorg
 X11_USE=		GL=gl XORG=x11,xext
 X11_CONFIGURE_ON=	--with-x=${LOCALBASE} --with-glx
 X11_CONFIGURE_OFF=	--without-x --without-glx
@@ -61,6 +63,7 @@ XINERAMA_USE=		XORG=xinerama
 XINERAMA_CONFIGURE_WITH=xinerama
 XINERAMA_IMPLIES=	X11
 
+SDL_USES=		gl sdl
 SDL_USE=		SDL=sdl GL=gl
 SDL_CONFIGURE_WITH=	sdl
 SDL_IMPLIES=		GUI

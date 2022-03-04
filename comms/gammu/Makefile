@@ -1,8 +1,7 @@
 # Created by: Kirill Bezzubets <kirill@solaris.ru>
-# $FreeBSD$
 
 PORTNAME=	gammu
-PORTVERSION=	1.40.0
+PORTVERSION=	1.42.0
 CATEGORIES=	comms
 MASTER_SITES=	http://dl.cihar.com/gammu/releases/
 

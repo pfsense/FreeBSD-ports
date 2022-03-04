@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	miller
-DISTVERSION=	5.4.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	5.10.2
 CATEGORIES=	textproc
 
 MAINTAINER=	jungleboogie0+mlr@gmail.com
@@ -10,9 +9,8 @@ COMMENT=	Sed/awk/cut/join/sort for name-indexed data such as CSV, TSV and JSON
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_aarch64=	Fails to compile: undefined reference to .mcount
-
-USES=		autoreconf libtool
+USES=		autoreconf cpe libtool
+CPE_VENDOR=	johnkerl
 USE_GITHUB=	yes
 GH_ACCOUNT=	johnkerl
 

@@ -1,15 +1,18 @@
-bin/vmhgfs-fuse
+/etc/vmware-tools/tools.conf.example
+bin/vm-support
+%%FUSE%%bin/vmhgfs-fuse
 bin/vmtoolsd
 bin/vmware-checkvm
 bin/vmware-hgfsclient
 bin/vmware-namespace-cmd
 bin/vmware-rpctool
 bin/vmware-toolbox-cmd
-bin/vmware-vmblock-fuse
 %%X11%%bin/vmware-user
 %%X11%%bin/vmware-user-suid-wrapper
-%%X11%%etc/xdg/autostart/vmware-user.desktop
+%%FUSE%%bin/vmware-vmblock-fuse
 bin/vmware-xferlogs
+etc/pam.d/vmtoolsd
+%%X11%%etc/xdg/autostart/vmware-user.desktop
 include/vmGuestLib/includeCheck.h
 include/vmGuestLib/vmGuestLib.h
 include/vmGuestLib/vmSessionId.h
@@ -26,36 +29,46 @@ lib/libvmtools.a
 lib/libvmtools.so
 lib/libvmtools.so.0
 lib/libvmtools.so.0.0.0
-@dir lib/vmware-tools/modules/input
 lib/open-vm-tools/plugins/common/libhgfsServer.so
 lib/open-vm-tools/plugins/common/libvix.so
 lib/open-vm-tools/plugins/vmsvc/libguestInfo.so
 lib/open-vm-tools/plugins/vmsvc/libpowerOps.so
 lib/open-vm-tools/plugins/vmsvc/libtimeSync.so
 lib/open-vm-tools/plugins/vmsvc/libvmbackup.so
-%%X11%%lib/open-vm-tools/plugins/vmusr/libresolutionSet.so
 %%X11%%lib/open-vm-tools/plugins/vmusr/libdesktopEvents.so
 %%X11%%lib/open-vm-tools/plugins/vmusr/libdndcp.so
+%%X11%%lib/open-vm-tools/plugins/vmusr/libresolutionSet.so
 lib/vmware-tools/modules/drivers/vmblock.ko
 lib/vmware-tools/modules/drivers/vmmemctl.ko
-lib/vmware-tools/modules/drivers/vmxnet.ko
 libdata/pkgconfig/vmguestlib.pc
 sbin/mount_vmblock
+%%DATADIR%%/messages/de/toolboxcmd.vmsg
+%%DATADIR%%/messages/de/vmtoolsd.vmsg
+%%DATADIR%%/messages/en/toolboxcmd.vmsg
+%%DATADIR%%/messages/en/vmtoolsd.vmsg
+%%DATADIR%%/messages/es/toolboxcmd.vmsg
+%%DATADIR%%/messages/es/vmtoolsd.vmsg
+%%DATADIR%%/messages/fr/toolboxcmd.vmsg
+%%DATADIR%%/messages/fr/vmtoolsd.vmsg
+%%DATADIR%%/messages/it/toolboxcmd.vmsg
+%%DATADIR%%/messages/it/vmtoolsd.vmsg
+%%DATADIR%%/messages/ja/toolboxcmd.vmsg
+%%DATADIR%%/messages/ja/vmtoolsd.vmsg
+%%DATADIR%%/messages/ko/toolboxcmd.vmsg
+%%DATADIR%%/messages/ko/vmtoolsd.vmsg
+%%DATADIR%%/messages/zh_CN/toolboxcmd.vmsg
+%%DATADIR%%/messages/zh_CN/vmtoolsd.vmsg
+%%DATADIR%%/messages/zh_TW/toolboxcmd.vmsg
+%%DATADIR%%/messages/zh_TW/vmtoolsd.vmsg
+@sample %%DATADIR%%/tools.conf.sample
 share/vmware-tools/poweroff-vm-default
 share/vmware-tools/poweron-vm-default
 share/vmware-tools/resume-vm-default
 share/vmware-tools/scripts/vmware/network
 share/vmware-tools/statechange.subr
 share/vmware-tools/suspend-vm-default
-share/vmware-tools/vm-support
-%%DATADIR%%/messages/de/toolboxcmd.vmsg
-%%DATADIR%%/messages/de/vmtoolsd.vmsg
-%%DATADIR%%/messages/ja/toolboxcmd.vmsg
-%%DATADIR%%/messages/ja/vmtoolsd.vmsg
-%%DATADIR%%/messages/ko/toolboxcmd.vmsg
-%%DATADIR%%/messages/ko/vmtoolsd.vmsg
-%%DATADIR%%/messages/zh_CN/toolboxcmd.vmsg
-@rmtry etc/vmware-tools/plugins
-etc/pam.d/vmtoolsd
+@dir lib/vmware-tools/modules/input
 @dir %%DATADIR%%/scripts/vmware
 @dir %%DATADIR%%/tests
+@dir /etc/vmware-tools
+@preunexec %%PREFIX%%/bin/vmware-rpctool 'tools.set.version 0' 2>/dev/null || /usr/bin/true

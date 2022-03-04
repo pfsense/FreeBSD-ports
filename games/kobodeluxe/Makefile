@@ -1,9 +1,8 @@
 # Created by: Amar Takhar <verm@drunkmonk.net>
-# $FreeBSD$
 
 PORTNAME=	kobodeluxe
 PORTVERSION=	0.5.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	http://olofson.net/kobodl/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -12,13 +11,11 @@ DISTNAME=	KoboDeluxe-${DISTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	SDL port of the scrolling game XKobo
 
-USES=		compiler tar:bzip2
+USES=		sdl tar:bzip2
 USE_SDL=	image sdl
+USE_CXXSTD=	c++98
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sharedstatedir=${SCOREDIR} --enable-oss
-
-CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
-CXXFLAGS_clang=	-Wno-reserved-user-defined-literal
 
 SCOREDIR=	/var/games/${PORTNAME}
 
@@ -32,6 +29,7 @@ PORTDATA=	*
 OPTIONS_DEFINE=	DOCS OPENGL
 OPTIONS_DEFAULT=OPENGL
 
+OPENGL_USES=	gl
 OPENGL_USE=	GL=gl
 OPENGL_CONFIGURE_ENABLE=	opengl
 

@@ -1,5 +1,4 @@
 # Created by: simonm@dcs.gla.ac.uk
-# $FreeBSD$
 
 PORTNAME=	cgoban
 PORTVERSION=	1.9.14
@@ -11,6 +10,7 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Internet Go Server client and game editor
 
 GNU_CONFIGURE=	yes
+USES=		xorg
 USE_XORG=	x11 ice sm
 
 PLIST_FILES=	bin/cgoban \

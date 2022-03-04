@@ -1,9 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	op
 PORTVERSION=	1.34
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -17,6 +16,9 @@ GH_ACCOUNT=	dagwieers
 
 GNU_CONFIGURE=	yes
 CONFLICTS_INSTALL=	security/1password-client
+
+post-configure:
+	@${REINPLACE_CMD} -e 's|\(OPENLOG_VOID\) 0|\1 1|' ${WRKSRC}/config.h
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/op.d

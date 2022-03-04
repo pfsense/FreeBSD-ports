@@ -1,9 +1,8 @@
 # Created by: Pedro F. Giffuni
-# $FreeBSD$
 
 PORTNAME=	isaac
 PORTVERSION=	4.2
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}-cfd/${PORTNAME}-cfd/ISAAC%20Version%20${PORTVERSION}
 DISTFILES=	${PORTNAME}src.4_2${EXTRACT_SUFX} ${PORTNAME}mk.4_2${EXTRACT_SUFX}
@@ -22,6 +21,7 @@ NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile
 MAKE_ARGS=	CPPFLAGS=-I.
 USES=		fortran gmake
+FFLAGS+=	-std=legacy
 
 PLIST_FILES=	bin/isaac
 PORTDOCS=	man.4_2.ps.gz

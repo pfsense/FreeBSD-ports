@@ -1,11 +1,7 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mkgmap
-PORTVERSION=	r4284
+PORTVERSION=	r4827
 CATEGORIES=	astro converters java
-MASTER_SITES=	http://www.mkgmap.org.uk/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://www.mkgmap.org.uk/download/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Convert OpenStreetMap data into a Garmin format
@@ -19,6 +15,7 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 
 SUB_FILES=	${PORTNAME}.sh
+SUB_LIST=	JAVA="${JAVA}"
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*
@@ -41,5 +38,8 @@ do-install-DOCS-on:
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+
+do-test:
+	${JAVA} -jar ${WRKSRC}/${PORTNAME}.jar --help >/dev/null 2>&1
 
 .include <bsd.port.mk>

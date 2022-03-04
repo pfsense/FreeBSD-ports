@@ -1,5 +1,4 @@
 # Created by: Espen Tagestad <espen@tagestad.no>
-# $FreeBSD$
 
 PORTNAME=	DBIx-Class-Schema-Config
 PORTVERSION=	0.001008
@@ -24,5 +23,7 @@ TEST_DEPENDS=	p5-Config-Any>=0.23:devel/p5-Config-Any \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

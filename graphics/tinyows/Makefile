@@ -1,9 +1,8 @@
 # Created by: Joris Dedieu <joris.dedieu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	tinyows
 PORTVERSION=	1.1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics www geography
 MASTER_SITES=	https://download.osgeo.org/mapserver/
 

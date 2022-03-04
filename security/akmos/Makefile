@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	akmos
 PORTVERSION=	0.7.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	melanhit@gmail.com
@@ -10,6 +8,8 @@ COMMENT=	Cryptographic library with low footprint
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BUILD_DEPENDS=	as:devel/binutils
 
 USES=		cmake compiler:c++11-lang
 
@@ -19,6 +19,9 @@ GH_ACCOUNT=	melanhit
 GNU_CONFIGURE=	yes
 
 USE_LDCONFIG=	yes
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	ASM TEST BENCH
 OPTIONS_DEFAULT=ASM

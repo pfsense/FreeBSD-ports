@@ -1,11 +1,10 @@
 # Created by: n@nectar.com
-# $FreeBSD$
 
 PORTNAME=	hesiod
 PORTVERSION=	3.2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
-MASTER_SITES=	http://BSDforge.com/projects/source/dns/hesiod/
+MASTER_SITES=	https://BSDforge.com/projects/source/dns/hesiod/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Directory service built on DNS and BIND
@@ -16,7 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 OPTIONS_DEFINE=	IDN
 OPTIONS_DEFAULT=IDN
 
-USES=		libtool pathfix
+USES=		cpe libtool pathfix
+CPE_VENDOR=	${PORTNAME}_project
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes

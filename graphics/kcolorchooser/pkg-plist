@@ -1,4 +1,8 @@
 bin/kcolorchooser
+share/locale/az/LC_MESSAGES/kcolorchooser.mo
+share/locale/be/LC_MESSAGES/kcolorchooser.mo
+share/locale/sq/LC_MESSAGES/kcolorchooser.mo
+share/locale/vi/LC_MESSAGES/kcolorchooser.mo
 share/applications/org.kde.kcolorchooser.desktop
 share/icons/hicolor/16x16/apps/kcolorchooser.png
 share/icons/hicolor/22x22/apps/kcolorchooser.png
@@ -33,6 +37,7 @@ share/locale/km/LC_MESSAGES/kcolorchooser.mo
 share/locale/ko/LC_MESSAGES/kcolorchooser.mo
 share/locale/lt/LC_MESSAGES/kcolorchooser.mo
 share/locale/lv/LC_MESSAGES/kcolorchooser.mo
+share/locale/ml/LC_MESSAGES/kcolorchooser.mo
 share/locale/mr/LC_MESSAGES/kcolorchooser.mo
 share/locale/nb/LC_MESSAGES/kcolorchooser.mo
 share/locale/nds/LC_MESSAGES/kcolorchooser.mo
@@ -54,3 +59,4 @@ share/locale/uk/LC_MESSAGES/kcolorchooser.mo
 share/locale/wa/LC_MESSAGES/kcolorchooser.mo
 share/locale/zh_CN/LC_MESSAGES/kcolorchooser.mo
 share/locale/zh_TW/LC_MESSAGES/kcolorchooser.mo
+share/metainfo/org.kde.kcolorchooser.appdata.xml

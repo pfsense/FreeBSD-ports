@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	libffi
 PORTVERSION=	3.0.13
@@ -8,7 +7,7 @@ CATEGORIES=	devel
 MASTER_SITES=	ftp://sourceware.org/pub/libffi/
 PKGNAMEPREFIX=	mingw32-
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The libffi library cross-compiled for MinGW32
 
 BUILD_DEPENDS=	${PKGNAMEPREFIX}gcc:devel/${PKGNAMEPREFIX}gcc \
@@ -20,7 +19,8 @@ GNU_CONFIGURE_PREFIX=	${PREFIX}/mingw32
 CONFIGURE_ARGS=	--host="mingw32" --enable-shared
 CC=		${PKGNAMEPREFIX}gcc
 CFLAGS=		-O2	# Override CFLAGS for a cross-build
-USES=		libtool
+USES=		cpe libtool
+CPE_VENDOR=	${PORTNAME}_project
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 post-patch:

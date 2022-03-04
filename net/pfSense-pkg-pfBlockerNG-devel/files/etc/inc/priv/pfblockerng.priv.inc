@@ -3,8 +3,8 @@
  * pfblockerng.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2008-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,8 +23,8 @@
 global $priv_list;
 
 $priv_list['page-firewall-pfblockerng'] = array();
-$priv_list['page-firewall-pfblockerng']['name'] = "WebCfg - Firewall: pfBlockerNG";
-$priv_list['page-firewall-pfblockerng']['descr'] = "Allow access to pfBlockerNG package gui";
+$priv_list['page-firewall-pfblockerng']['name'] = gettext("WebCfg - Firewall: pfBlockerNG");
+$priv_list['page-firewall-pfblockerng']['descr'] = gettext("Allow access to pfBlockerNG package gui");
 $priv_list['page-firewall-pfblockerng']['match'] = array();
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_general.php";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_ip.php*";
@@ -49,9 +49,14 @@ $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_Pr
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_reputation.php";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_blacklist.php*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_threats.php*";
-
-$priv_list['page-firewall-pfblockerng']['match'][] = "widgets/widgets/pfblockerng.widget.php";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_safesearch.php";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/www/index.php";
-
 $priv_list['page-firewall-pfblockerng']['match'][] = "wizards/pfblockerng_wizard.xml";
+$priv_list['page-firewall-pfblockerng']['match'][] = "widgets/widgets/pfblockerng.widget.php";
+
+$priv_list['page-dashboard-pfblockerng'] = array();
+$priv_list['page-dashboard-pfblockerng']['name'] = gettext("WebCfg - Dashboard Widget (pfBlockerNG)");
+$priv_list['page-dashboard-pfblockerng']['descr'] = gettext("Allow access to dashboard (pfBlockerNG)");
+$priv_list['page-dashboard-pfblockerng']['match'] = array();
+$priv_list['page-dashboard-pfblockerng']['match'][] = "widgets/widgets/pfblockerng.widget.php";
 ?>

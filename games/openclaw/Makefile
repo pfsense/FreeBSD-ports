@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	OpenClaw
 DISTVERSION=	0.0-51
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONSUFFIX=	-gbac7730
 CATEGORIES=	games
 
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libtinyxml.so:textproc/tinyxml
 
-USES=		cmake compiler:c++11-lib pkgconfig localbase:ldflags
+USES=		cmake compiler:c++11-lib localbase:ldflags pkgconfig sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	pjasicek
 USE_SDL=	gfx2 image2 mixer2 ttf2

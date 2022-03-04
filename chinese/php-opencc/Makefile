@@ -1,5 +1,4 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	opencc
 PORTVERSION=	0.0.0.20161110
@@ -19,5 +18,6 @@ GH_PROJECT=	opencc4php
 GH_TAGNAME=	8007639
 
 USES=		php:ext
+IGNORE_WITH_PHP=	80
 
 .include <bsd.port.mk>

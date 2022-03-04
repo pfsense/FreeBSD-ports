@@ -3,11 +3,11 @@
  * snort_sid_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -360,7 +360,8 @@ foreach ($sidmodlists as $list) {
 	$sidmodselections[] = $list['name'];
 }
 
-$pgtitle = array(gettext('Services'), gettext('Snort'), gettext('SID Management'));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array('Services', 'Snort', 'SID Management');
 include_once("head.inc");
 
 /* Display Alert message, under form tag or no refresh */
@@ -549,6 +550,12 @@ print($section);
 				</thead>
 				<tbody>
 			   <?php foreach ($a_nat as $k => $natent): ?>
+				<?php
+					// Skip displaying any instance where the physical pfSense interface is missing
+					if (get_real_interface($natent['interface']) == "") {
+						continue;
+					}
+				?>
 				<tr>
 					<td class="text-center">
 						<input type="checkbox" name="torestart[]" id="torestart[]" value="<?=$k;?>" title="<?=gettext("Apply new configuration and rebuild rules for this interface when saving");?>" />
@@ -656,6 +663,7 @@ print($section);
 			</table>
 		</div>
 	</div>
+</div>
 	<div>
 		<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" >
 			<i class="fa fa-save icon-embed-btn"></i>
@@ -680,9 +688,11 @@ print($section);
 				gettext("The Enable SID File, Disable SID File, Modify SID File, Drop SID File and Reject SID File drop-down controls specify which rule modification lists are run automatically for the interface.  Setting a list control to 'None' disables that modification. " . 
 					"Setting all list controls for an interface to 'None' disables automatic SID state management for the interface.") .
 			'</p>', 'info', false);
+
+		// Finished with config array reference, so release it
+		unset($a_nat);
 	?>
 	</div>
-</div>
 
 <script type="text/javascript">
 //<![CDATA[

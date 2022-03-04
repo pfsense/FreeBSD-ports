@@ -28,6 +28,7 @@ bin/pmat-list-orphans
 %%SITE_ARCH%%/Devel/MAT/Tool/Stack.pm
 %%SITE_ARCH%%/Devel/MAT/Tool/Summary.pm
 %%SITE_ARCH%%/Devel/MAT/Tool/Symbols.pm
+%%SITE_ARCH%%/Devel/MAT/ToolBase/GraphWalker.pm
 %%SITE_ARCH%%/Devel/MAT/UI.pod
 %%SITE_ARCH%%/Devel/MAT/UserGuide.pod
 %%SITE_ARCH%%/Devel/MAT/UserGuide/IdentifyingAnSV.pod
@@ -65,6 +66,7 @@ bin/pmat-list-orphans
 %%SITE_ARCH%%/auto/share/module/Devel-MAT-UI/icons/type-SCALAR.svg
 %%SITE_ARCH%%/auto/share/module/Devel-MAT-UI/icons/type-STASH.svg
 %%SITE_ARCH%%/auto/share/module/Devel-MAT-UI/icons/type-UNDEF.svg
+%%PERL5_MAN1%%/pmat.1.gz
 %%PERL5_MAN3%%/Devel::MAT.3.gz
 %%PERL5_MAN3%%/Devel::MAT::Cmd.3.gz
 %%PERL5_MAN3%%/Devel::MAT::Cmd::Terminal.3.gz

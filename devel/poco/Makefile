@@ -1,12 +1,10 @@
 # Created by: Wes Peters <wes@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	poco
-PORTVERSION=	1.8.0.1
-PORTREVISION=	2
+DISTVERSION=	1.10.1
 DISTVERSIONSUFFIX=	-all
 CATEGORIES=	devel net
-MASTER_SITES=	http://pocoproject.org/releases/${PORTNAME}-${PORTVERSION}/
+MASTER_SITES=	https://pocoproject.org/releases/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	henry.hu.sh@gmail.com
 COMMENT=	C++ libraries with a network/internet focus
@@ -17,13 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libexpat.so:textproc/expat2
 
-CONFLICTS=	poco-ssl-[0-9]*
-
-USES=		cmake compiler:c++11-lang localbase pkgconfig
-CMAKE_ARGS=	-DPOCO_UNBUNDLED:BOOL=ON
+USES=		cmake compiler:c++14-lang cpe localbase pkgconfig tar:bz2
 USE_LDCONFIG=	yes
 
-SHLIB_MAJOR=	50
+CONFLICTS=	poco-ssl
+
+CPE_VENDOR=	pocoproject
+
+CMAKE_ARGS=	-DPOCO_UNBUNDLED:BOOL=ON
+SHLIB_MAJOR=	71
 PLIST_SUB=	SHLIB_MAJOR=${SHLIB_MAJOR}
 
 OPTIONS_DEFINE=		MYSQL REDIS SQLITE SSL TEST
@@ -46,10 +46,17 @@ UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 UNIXODBC_CMAKE_ON=	-DODBC_INCLUDE_DIRECTORIES:PATH=${LOCALBASE}/include \
 			-DODBC_LIBRARIES:FILEPATH=${LOCALBASE}/lib/libodbc.so
 TEST_CMAKE_ON=		-DENABLE_TESTS:BOOL=ON
-TEST_IMPLIES=		SQLITE
+TEST_IMPLIES=		SQLITE SSL
+TEST_TEST_TARGET=	test
 REDIS_CMAKE_OFF=	-DENABLE_REDIS:BOOL=OFF
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MMYSQL} || ${PORT_OPTIONS:MSQLITE} || ${PORT_OPTIONS:MIODBC} || ${PORT_OPTIONS:MUNIXODBC}
+PLIST_SUB+=	DATA=""
+.else
+PLIST_SUB+=	DATA="@comment "
+.endif
 
 .if ${PORT_OPTIONS:MIODBC} || ${PORT_OPTIONS:MUNIXODBC}
 PLIST_SUB+=	ODBC=""
@@ -62,6 +69,7 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's|-D_XOPEN_SOURCE=500 || ; \
 		 s|_EPOLL|_POLL| ; \
+		 s|CMAKE_DEBUG_POSTFIX "d"|CMAKE_DEBUG_POSTFIX ""| ; \
 		 s|dl rt|rt|' ${WRKSRC}/cmake/DefinePlatformSpecifc.cmake
 
 .include <bsd.port.mk>

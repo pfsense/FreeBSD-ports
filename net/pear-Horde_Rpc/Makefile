@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Rpc
-DISTVERSION=	2.1.8
+DISTVERSION=	2.1.9
 CATEGORIES=	net www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde RPC API
 
-USES=	horde
+USES=		horde cpe
 USE_HORDE_RUN=	Horde_Core \
 		Horde_Dav \
 		Horde_Exception \

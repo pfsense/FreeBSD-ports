@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	docbook
 PORTVERSION=	5.0
 PORTREVISION=	3
 CATEGORIES=	textproc
-MASTER_SITES=	${DBFILES:C,(.*):(.*),http://www.docbook.org/xml/\1/:\2,:C,:docbook-xml-([0-9]+).([0-9]+).?([0-9]*),:db\1\2\3,:C,:docbook-([0-9]+).([0-9]+).?([0-9]*),:db\1\2\3,}
+MASTER_SITES=	${DBFILES:C,(.*):(.*),https://docbook.org/xml/\1/:\2,:C,:docbook-xml-([0-9]+).([0-9]+).?([0-9]*),:db\1\2\3,:C,:docbook-([0-9]+).([0-9]+).?([0-9]*),:db\1\2\3,}
 PKGNAMESUFFIX=	-xml
 DISTFILES=	${DBFILES:C,.*:(.*),\1.zip:\1,:C,:docbook-xml-([0-9]+).([0-9]+).?([0-9]*),:db\1\2\3,:C,:docbook-([0-9]+).([0-9]+).?([0-9]*),:db\1\2\3,}
 
@@ -16,6 +14,7 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xml/xmlcharent/catalog.xml:textproc/xmlcharent
 RUN_DEPENDS=	${LOCALBASE}/share/xml/xmlcharent/catalog.xml:textproc/xmlcharent \
 		xmlcatmgr:textproc/xmlcatmgr
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 DBFILES=4.1.2:docbkx412 4.2:docbook-xml-4.2 4.3:docbook-xml-4.3 \

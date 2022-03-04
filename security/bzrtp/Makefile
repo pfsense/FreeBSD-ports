@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bzrtp
 PORTVERSION=	1.0.6
 CATEGORIES=	security
@@ -13,7 +11,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libbctoolbox.so:net/bctoolbox
 
-USES=		cmake sqlite
+USES=		cmake cpe gnome sqlite
+CPE_VENDOR=	${PORTNAME}_project
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 

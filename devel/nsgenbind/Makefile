@@ -1,13 +1,12 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	nsgenbind
-PORTVERSION=	0.6
+PORTVERSION=	0.8
 CATEGORIES=	devel
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	NetSurf Generator for JavaScript bindings
 
 LICENSE=	MIT
@@ -18,7 +17,8 @@ BUILD_DEPENDS=	netsurf-buildsystem>=1.5:devel/netsurf-buildsystem \
 
 USES=		bison gmake
 WRKSRC=		${WRKDIR}/${DISTNAME:S/-src//}
-MAKE_ENV+=	COMPONENT_TYPE="lib-shared" \
+MAKE_ENV+=	BUILD_CC="${CC}" \
+		COMPONENT_TYPE="lib-shared" \
 		FLEX="${LOCALBASE}/bin/flex"
 PLIST_FILES=	bin/nsgenbind
 

@@ -1,5 +1,4 @@
 # Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nexfontsel
 PORTVERSION=	3.0.1
@@ -14,7 +13,7 @@ COMMENT=	NeXtaw based replacement for xfontsel
 
 LIB_DEPENDS=	libneXtaw.so:x11-toolkits/neXtaw
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	xaw
 
 post-patch:

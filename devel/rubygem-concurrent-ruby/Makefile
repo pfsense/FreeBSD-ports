@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	concurrent-ruby
-PORTVERSION=	1.1.5
+PORTVERSION=	1.1.9
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -9,7 +7,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Modern concurrency tools for Ruby
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		gem
 USE_RUBY=	yes

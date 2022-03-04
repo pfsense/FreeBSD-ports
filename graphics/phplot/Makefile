@@ -1,9 +1,8 @@
 # Created by: yukinopo@livedoor.com
-# $FreeBSD$
 
 PORTNAME=	phplot
 PORTVERSION=	6.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics www
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/Manual/20130511:source2

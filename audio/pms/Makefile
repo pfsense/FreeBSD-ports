@@ -1,9 +1,8 @@
 # Created by: Ashish SHUKLA <wahjava@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	pms
 PORTVERSION=	0.42
-PORTREVISION=	11
+PORTREVISION=	14
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -12,7 +11,7 @@ COMMENT=	ncurses-based client for the Music Player Daemon
 
 LICENSE=	GPLv3
 
-USES=		gettext ncurses pkgconfig tar:bzip2
+USES=		gettext gnome ncurses pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 

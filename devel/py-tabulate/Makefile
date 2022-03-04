@@ -1,9 +1,7 @@
 # Created by: Nikolay Dachev <freebsd@dacehv.info>
-# $FreeBSD$
 
 PORTNAME=	tabulate
-PORTVERSION=	0.8.2
-PORTREVISION=	1
+PORTVERSION=	0.8.6
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +12,7 @@ COMMENT=	Pretty-print tabular data in Python
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 

@@ -1,9 +1,8 @@
 # Created by: Volker Stolz <vs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ncc
 PORTVERSION=	2.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://students.ceid.upatras.gr/~sxanth/ncc/
 

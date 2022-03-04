@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	wmapp
 PORTVERSION=	0.0.4.3
@@ -13,7 +12,7 @@ COMMENT=	DockApp Graphics Library
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	x11 xpm
 CFLAGS+=	-I${LOCALBASE}/include
 ALL_TARGET=	# empty

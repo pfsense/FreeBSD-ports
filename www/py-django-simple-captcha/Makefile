@@ -1,8 +1,7 @@
 # Created by: John Hixson <john@ixsystems.com>
-# $FreeBSD$
 
 PORTNAME=	django-simple-captcha
-PORTVERSION=	0.5.10
+PORTVERSION=	0.5.14
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,12 +12,12 @@ COMMENT=	Simple, yet powerful, Django captcha application
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=1.7.0:www/py-django111@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>=1.7.0:www/py-django22@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-ranged-response>=0.2.0:www/py-django-ranged-response@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=2.2.2:graphics/py-pillow@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>=1.2.0:devel/py-six@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}six>=1.2.0:devel/py-six@${PY_FLAVOR} \
+		${PY_PILLOW}
 
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
@@ -26,7 +25,7 @@ NO_ARCH=	yes
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS MIGRATIONS
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_VARS=		PYDISTUTILS_BUILD_TARGET+="build_sphinx -a -E"
 MIGRATIONS_DESC=	Schema and data migration support (via south)
 MIGRATIONS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}south>0:databases/py-south@${PY_FLAVOR}

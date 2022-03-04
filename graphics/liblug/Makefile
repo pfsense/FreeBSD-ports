@@ -1,5 +1,4 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=		liblug
 PORTVERSION=		1.0.6
@@ -13,6 +12,7 @@ COMMENT=		Multi-format graphics manipulation library
 LIB_DEPENDS=		libtiff.so:graphics/tiff
 
 PLIST_FILES=		lib/liblug.a
+USES=			xorg
 USE_XORG=		x11
 CFLAGS+=		-Wno-return-type
 

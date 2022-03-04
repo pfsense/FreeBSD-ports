@@ -1,5 +1,4 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libXau
 PORTVERSION=	1.0.9
@@ -11,7 +10,7 @@ COMMENT=	Authentication Protocol library for X11
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	lib
+USES=		xorg xorg-cat:lib
 USE_XORG=	xorgproto
 
 INSTALL_TARGET=install-strip

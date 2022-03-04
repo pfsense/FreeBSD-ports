@@ -1,8 +1,7 @@
 # Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
 
 PORTNAME=	Statistics-Descriptive
-PORTVERSION=	3.0702
+PORTVERSION=	3.0800
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

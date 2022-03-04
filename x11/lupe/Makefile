@@ -1,5 +1,4 @@
 # Created by: FURUSAWA,Kazuhisa <kazu@jp.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	lupe
 PORTVERSION=	0.08c
@@ -14,6 +13,7 @@ OPTIONS_DEFINE=	DOCS
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
+USES=		xorg
 USE_XORG=	x11 xext
 GNU_CONFIGURE=	yes
 

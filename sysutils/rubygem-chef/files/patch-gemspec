@@ -1,16 +1,11 @@
---- chef.gemspec.orig	2017-12-09 23:16:54 UTC
+--- chef.gemspec.orig	2021-03-25 07:46:34 UTC
 +++ chef.gemspec
-@@ -42,11 +42,11 @@ Gem::Specification.new do |s|
-       s.add_runtime_dependency(%q<plist>.freeze, ["~> 3.2"])
-       s.add_runtime_dependency(%q<iniparse>.freeze, ["~> 1.4"])
-       s.add_runtime_dependency(%q<addressable>.freeze, [">= 0"])
--      s.add_runtime_dependency(%q<iso8601>.freeze, ["~> 0.9.1"])
-+      s.add_runtime_dependency(%q<iso8601>.freeze, ["~> 0.9", ">= 0.9.1"])
-       s.add_runtime_dependency(%q<rspec-core>.freeze, ["~> 3.5"])
-       s.add_runtime_dependency(%q<rspec-expectations>.freeze, ["~> 3.5"])
-       s.add_runtime_dependency(%q<rspec-mocks>.freeze, ["~> 3.5"])
--      s.add_runtime_dependency(%q<rspec_junit_formatter>.freeze, ["~> 0.2.0"])
-+      s.add_runtime_dependency(%q<rspec_junit_formatter>.freeze, ["~> 0.2"])
-       s.add_runtime_dependency(%q<serverspec>.freeze, ["~> 2.7"])
-       s.add_runtime_dependency(%q<specinfra>.freeze, ["~> 2.10"])
-       s.add_runtime_dependency(%q<syslog-logger>.freeze, ["~> 1.6"])
+@@ -50,7 +50,7 @@ Gem::Specification.new do |s|
+       s.add_runtime_dependency(%q<tty-table>.freeze, ["~> 0.11"])
+       s.add_runtime_dependency(%q<pastel>.freeze, [">= 0"])
+       s.add_runtime_dependency(%q<erubis>.freeze, ["~> 2.7"])
+-      s.add_runtime_dependency(%q<diff-lcs>.freeze, [">= 1.2.4", "< 1.4.0"])
++      s.add_runtime_dependency(%q<diff-lcs>.freeze, [">= 1.2.4", "< 1.5.0"])
+       s.add_runtime_dependency(%q<ffi-libarchive>.freeze, ["~> 1.0", ">= 1.0.3"])
+       s.add_runtime_dependency(%q<chef-zero>.freeze, [">= 14.0.11"])
+       s.add_runtime_dependency(%q<chef-vault>.freeze, [">= 0"])

@@ -1,40 +1,29 @@
 # Created by: Guixing Bai <khsing.cn@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	tornado
-PORTVERSION=	5.1.1
+PORTVERSION=	6.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	gblach@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python Web Server from FriendFeed
 
 LICENSE=	APACHE20
 
-CONFLICTS=	py[0-9]*-tornado[46]-*
+USES=		cpe python:3.5+
+USE_PYTHON=	autoplist concurrent distutils
 
-USES=		python
-USE_PYTHON=	autoplist distutils
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}tornado4 \
+			${PYTHON_PKGNAMEPREFIX}tornado5 \
+			${PYTHON_PKGNAMEPREFIX}tornado6
 
-.include <bsd.port.pre.mk>
+CPE_VENDOR=	tornadoweb
 
-.if ${PYTHON_REL} < 3200
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}futures>0:devel/py-futures@${PY_FLAVOR}
-.endif
+post-install:
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
-.if ${PYTHON_REL} < 3400
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}singledispatch>0:devel/py-singledispatch@${PY_FLAVOR}
-.endif
-
-.if ${PYTHON_REL} < 3500
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}backports_abc>=0.4:devel/py-backports_abc@${PY_FLAVOR}
-.endif
-
-post-build:
-	@${FIND} ${WRKSRC}/build -name speedups.so -exec ${STRIP_CMD} {} \;
-
-regression-test: build
+do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m tornado.test.runtests
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

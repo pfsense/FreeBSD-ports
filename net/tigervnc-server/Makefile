@@ -1,26 +1,26 @@
-# $FreeBSD$
-
-PORTREVISION=	1
+PORTREVISION=	4
 PKGNAMESUFFIX=	-server
-CATEGORIES=	net x11-servers
 
 COMMENT=	TigerVNC Server
 
 PATCH_DEPENDS+=	${NONEXISTENT}:x11-servers/xorg-server:patch
 BUILD_DEPENDS+=	${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/mesa-dri \
 		${LOCALBASE}/libdata/pkgconfig/fontutil.pc:x11-fonts/font-util \
-		gm4:devel/m4 \
 		bash:shells/bash
 LIB_DEPENDS=	libxshmfence.so:x11/libxshmfence
 # almost equivalent to x11-servers/xorg-server's
 RUN_DEPENDS+=	${LOCALBASE}/share/X11/xkb/rules/base:x11/xkeyboard-config \
 		xkbcomp:x11/xkbcomp
 
-USES+=		autoreconf:build gl jpeg libtool pkgconfig ssl
+USES+=		autoreconf:build compiler:c11 gl jpeg libtool pkgconfig ssl shebangfix xorg
 USE_LDCONFIG=	yes
 USE_GL+=	gl
-USE_XORG+=	ice pixman sm x11 xau xdamage xdmcp xext xfixes xfont xkbfile \
-		xorg-macros xorgproto xrandr xrender xtrans xtst
+USE_XORG+=	ice pixman sm x11 xau xdamage xdmcp xext xfixes xfont2 \
+		xkbfile xorg-macros xorgproto xrandr xrender xtrans xtst
+
+SHEBANG_LANG=	bash
+SHEBANG_FILES=	unix/vncserver/vncsession-start.in
+BINARY_WRAPPERS=	gm4
 
 OPTIONS_DEFINE=	DOCS GNUTLS PAM
 OPTIONS_DEFAULT=	GNUTLS PAM
@@ -49,6 +49,8 @@ CONFIGURE_ARGS+=	\
 		--disable-xwayland \
 		--with-fontrootdir=${LOCALBASE}/share/fonts
 
+CFLAGS+=	-I${LOCALBASE}/include/libdrm
+
 # This is server port, disabling some features
 # - disable vncviewer
 # - server is not internationalized
@@ -75,9 +77,9 @@ post-build:
 post-install:
 	@cd ${WRKSRC}/unix/xserver/hw/vnc/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/Xvnc ${STAGEDIR}${PREFIX}/lib/xorg/modules/extensions/libvnc.so
+	@${INSTALL_SCRIPT} ${FILESDIR}/vncserver.ports ${STAGEDIR}${PREFIX}/bin/vncserver
 
-MASTERDIR=	${.CURDIR}/../tigervnc
-.include "${MASTERDIR}/Makefile.common.mk"
+.include "${.CURDIR}/Makefile.common.mk"
 
 # import from x11-server/xorg-server/Makefile
 .if ${SSL_DEFAULT} == base
@@ -89,6 +91,6 @@ CONFIGURE_ENV=	SHA1_LIB="-L/usr/lib -lcrypto" SHA1_CFLAGS="-I/usr/include"
 .endif
 
 # keep in sync with all platforms where libunwind is available
-.if (${ARCH} == amd64 || ${ARCH} == i386)
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif

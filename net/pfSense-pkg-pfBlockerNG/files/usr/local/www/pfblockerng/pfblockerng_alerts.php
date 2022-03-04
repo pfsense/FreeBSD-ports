@@ -3,7 +3,7 @@
  * pfblockerng_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -38,7 +38,13 @@ global $g, $pfb, $rule_list, $pfb_localsub;
 pfb_global();
 
 // Application paths
-$pathgeoip = "/usr/local/bin/mmdblookup -f {$pfb['geoipshare']}/GeoLite2-Country.mmdb -i";
+if (file_exists('/usr/local/bin/mmdblookup') && file_exists("{$pfb['geoipshare']}/GeoLite2-Country.mmdb")) {
+	$pathgeoip = "/usr/local/bin/mmdblookup -f {$pfb['geoipshare']}/GeoLite2-Country.mmdb -i";
+} else {
+	$pathgeoip = '';
+}
+
+
 
 // Define file locations
 $filter_logfile = "{$g['varlog_path']}/filter.log";
@@ -421,7 +427,12 @@ if (!empty($results)) {
 // Define common variables and arrays for report tables
 $fields_array	= $pfb_local = $pfb_localsub = $dnsbl_int = $local_hosts = array();
 
-$pfblines	= exec("/usr/local/sbin/clog {$filter_logfile} | {$pfb['grep']} -c ^");
+if (substr(trim(file_get_contents('/etc/version')), 0, 3) > '2.5') {
+	$pfblines = exec("{$pfb['grep']} -c ^ {$filter_logfile}");
+} else {
+	$pfblines = exec("/usr/local/sbin/clog {$filter_logfile} | {$pfb['grep']} -c ^");
+}
+
 $fields_array	= conv_log_filter_lite($filter_logfile, $pfblines, $pfblines, $pfbdenycnt, $pfbpermitcnt, $pfbmatchcnt);
 $continents	= array('pfB_Africa', 'pfB_Antartica', 'pfB_Asia', 'pfB_Europe', 'pfB_NAmerica', 'pfB_Oceania', 'pfB_SAmerica', 'pfB_Top');
 
@@ -641,7 +652,11 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 
 	if (file_exists($logfile)) {
 		// Collect filter.log entries
-		exec("/usr/local/sbin/clog {$logfile} | {$pfb['grep']} -v '\"CLOG\"\|\"\033\"' | {$pfb['grep']} 'filterlog:' | /usr/bin/tail -r -n {$tail}", $logarr);
+		if (substr(trim(file_get_contents('/etc/version')), 0, 3) > '2.5') {
+			exec("{$pfb['grep']} -v '\"CLOG\"\|\"\033\"' {$logfile} | {$pfb['grep']} 'filterlog:' | /usr/bin/tail -r -n {$tail}", $logarr);
+		} else {
+			exec("/usr/local/sbin/clog {$logfile} | {$pfb['grep']} -v '\"CLOG\"\|\"\033\"' | {$pfb['grep']} 'filterlog:' | /usr/bin/tail -r -n {$tail}", $logarr);
+		}
 	} else {
 		 return;
 	}
@@ -1350,9 +1365,14 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 			}
 
 			// Determine Country code of host
-			$country = exec("{$pathgeoip} {$host} country iso_code | grep -v '^$' | cut -d '\"' -f2 2>&1");
-			if (empty($country)) {
-				$country = 'Unknown';
+			if (!empty($pathgeoip)) {
+				$country = exec("{$pathgeoip} {$host} country iso_code | grep -v '^$' | cut -d '\"' -f2 2>&1");
+				if (empty($country)) {
+					$country = 'Unk';
+				}
+			}
+			else {
+				$country = 'Unk';
 			}
 
 			// Find the header which alerted this host

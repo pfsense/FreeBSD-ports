@@ -1,10 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libmusicxml
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.14-1
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g52654a71
+DISTVERSION=	3.18
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,7 +18,11 @@ CMAKE_SOURCE_PATH=	${WRKSRC}/build
 OPTIONS_DEFINE=	DOCS
 PORTDOCS=	*
 
-post-build-DOCS-on:
+post-stage:
+	@${RM} ${STAGEDIR}${PREFIX}/CHANGELOG.txt
+	@${RM} ${STAGEDIR}${PREFIX}/README.html
+
+post-stage-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} \
 		${WRKSRC}/doc/presentation/libmusicxml2.pdf \

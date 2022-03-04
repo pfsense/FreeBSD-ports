@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	libva
-PORTVERSION=	2.4.1
+DISTVERSION=	2.13.0
 PORTREVISION=	1
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	c2a431cc3cab.patch:-p1 5cfcd31635b1.patch:-p1
-PATCHFILES+=	394b1eb4ce5f.patch:-p1
+PATCHFILES+=	0c9e5f2fff22.patch:-p1 # https://github.com/intel/libva/pull/292
+PATCHFILES+=	657d77406161.patch:-p1 # https://github.com/intel/libva/pull/292
+PATCHFILES+=	ae7174b3dbae.patch:-p1 # https://github.com/intel/libva/pull/547
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT?=	VAAPI wrapper and dummy driver
@@ -21,7 +20,6 @@ USES=		meson pkgconfig
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
-LDFLAGS+=	-lpthread # for pthread_getthreadid_np
 
 OPTIONS_DEFINE=	GLX WAYLAND X11
 OPTIONS_DEFAULT=GLX WAYLAND X11
@@ -37,11 +35,8 @@ GLX_IMPLIES=		X11
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_MESON_YES=	with_wayland
 
+X11_USES=		xorg
 X11_USE=		XORG=x11,xorgproto,xext,xfixes
 X11_MESON_YES=		with_x11
-
-post-patch:	.SILENT
-# V4L2 is unused since http://github.com/intel/libva/commit/70074679333c
-	${REINPLACE_CMD} '/videodev2\.h/d' ${WRKSRC}/va/va_backend.h
 
 .include <bsd.port.mk>

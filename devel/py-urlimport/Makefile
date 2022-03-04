@@ -1,5 +1,4 @@
 # Created by: Li-Wen Hsu <lwhsu@lwhsu.org>
-# $FreeBSD$
 
 PORTNAME=	urlimport
 PORTVERSION=	0.42b
@@ -14,7 +13,7 @@ COMMENT=	Python script for importing modules/packages over the net
 
 NO_WRKSUBDIR=	yes
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 do-extract:

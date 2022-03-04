@@ -3,7 +3,7 @@
  * haproxy.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * Copyright (c) 2011 Thomas Schaefer - Tomschaefer.org
  * Copyright (c) 2011 Marcello Coutinho
@@ -156,6 +156,8 @@ if ($show_clients == "YES" and $show_clients_traffic != "YES") {
 print "</td>";
 print "<td class=\"listlr\" colspan=\"2\"><strong><center>Status<br>/<br>Actions</center></strong></td>";
 
+$show_controls = (userHasPrivilege($user, "page-service-haproxy") || userHasPrivilege($user, "page-all"));
+
 foreach ($backends as $be => $bedata) {
 	if ($bedata['status'] == "UP") {
 		$statusicon = $in;
@@ -204,7 +206,7 @@ foreach ($backends as $be => $bedata) {
 			print "<td class=\"listlr\">".$srvdata['scur']."</td>";
 			print "<td class=\"listlr\"$icondetails><center>".$statusicon."</center></td>";
 			
-			if ((userHasPrivilege($user, "page-service-haproxy") || userHasPrivilege($user, "page-all"))) {
+			if ($show_controls) {
 				print "<td class=\"listlr\"><center><a  onclick=\"control_haproxy('".$nextaction."','".$bedata['pxname']."','".$srvdata['svname']."');\">".$acticon."</a></center></td></tr>";
 			}
 			if ($show_clients == "YES") {

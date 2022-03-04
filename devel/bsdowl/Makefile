@@ -1,9 +1,8 @@
 # Created by: Michael Le Barbier GrÃ¼newald <michipili@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	bsdowl
 PORTVERSION=	2.2.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/michipili/bsdowl/releases/download/v${PORTVERSION}/
 

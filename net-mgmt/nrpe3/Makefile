@@ -1,5 +1,4 @@
 # Created by: Paul Dlug<paul@nerdlabs.com>
-# $FreeBSD$
 
 PORTNAME=	nrpe
 PORTVERSION=	3.2.1
@@ -11,7 +10,8 @@ PKGNAMESUFFIX=	3
 MAINTAINER=	zeising@FreeBSD.org
 COMMENT?=	Nagios Remote Plugin Executor
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	NagiosEnterprises
@@ -39,8 +39,8 @@ SSL_CFLAGS=		-I${OPENSSLINC}
 ARGS_CONFIGURE_ON=	--enable-command-args
 ARGS_CONFIGURE_OFF=	--disable-command-args
 
-MONPLUGINS_RUN_DEPENDS= ${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/monitoring-plugins
-NAGPLUGINS_RUN_DEPENDS= ${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
+MONPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/monitoring-plugins
+NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
 
 NAGIOSUSER?=	nagios
 NAGIOSGROUP?=	nagios

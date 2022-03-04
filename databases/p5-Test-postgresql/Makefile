@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	Test-postgresql
 PORTVERSION=	0.09
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of postgresql runner for tests
 
 LICENSE=	ART10 GPLv1+

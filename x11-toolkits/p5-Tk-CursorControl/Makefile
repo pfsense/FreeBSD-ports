@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Tk-CursorControl
 PORTVERSION=	0.4
@@ -17,14 +16,9 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Tk>=800.015:x11-toolkits/p5-Tk
 
-ALL_TARGETS=	pure_install
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
 
-post-patch:
-	@${REINPLACE_CMD} -e \
-		'/Tk\/demos\/widtrib\/cursor.pl/ s|cursor.pl|cursorcontrol.pl|' \
-		${WRKSRC}/Makefile.PL
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
 
 PORTNAME=	metalock
 PORTVERSION=	0.8.0
@@ -15,7 +14,7 @@ COMMENT=	Enhanced X11 screen locker
 LICENSE=	MIT
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE
 
-USES=		tar:bzip2
+USES=		tar:bzip2 xorg
 USE_XORG=	x11 xt xorgproto xext xpm
 
 OPTIONS_DEFINE=	IMLIB2 XFT ULTRAGETOPT

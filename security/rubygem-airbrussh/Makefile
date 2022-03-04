@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	airbrussh
-PORTVERSION=	1.3.1
+PORTVERSION=	1.4.0
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 

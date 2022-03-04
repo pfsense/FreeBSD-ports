@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 #   $MCom: ports/x11-themes/gtk-engines2/Makefile,v 1.82 2010/04/19 10:51:27 kwm Exp $
 
 PORTNAME=	gtk-engines2
@@ -13,10 +12,10 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Theme engine for the GTK+-2.0 toolkit
 
-CONFLICTS=	gtk-smooth-engine-[0-9]* clearlooks-[0-9]*
+CONFLICTS=	gtk-smooth-engine clearlooks
 
 USE_GNOME=	gtk20 intlhack
-USES=		gettext gmake libtool pathfix pkgconfig tar:bzip2
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

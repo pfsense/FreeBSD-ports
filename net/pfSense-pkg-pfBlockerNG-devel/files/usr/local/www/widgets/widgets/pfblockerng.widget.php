@@ -3,8 +3,8 @@
  * pfblockerng.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based Upon pfBlocker
@@ -97,7 +97,8 @@ if ($_POST) {
 
 		// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
 		foreach (array( 'clearip', 'cleardnsbl') as $type) {
-			if ($pfb['wglobal']['widget-' . $type] != 'never') {
+			if (isset($pfb['wglobal']['widget-' . $type]) &&
+			    $pfb['wglobal']['widget-' . $type] != 'never') {
 
 				$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
 
@@ -106,9 +107,9 @@ if ($_POST) {
 					$pfb_day = '7';
 				}
 
-				if (!pfblockerng_cron_exists($pfb_cmd, '*', '0', '*', $pfb_day)) {
+				if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
 					install_cron_job("pfblockerng.php {$type}", false);
-					install_cron_job($pfb_cmd, true, '*', '0', '*', '*', $pfb_day, 'root');
+					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
 				}
 			}
 			else {
@@ -136,7 +137,8 @@ if ($_POST) {
 	// Clear widget IP/DNSBL Packet Counts
 	elseif ($_POST['pfblockerngclearall']) {
 		pfBlockerNG_clearip();
-		pfBlockerNG_cleardnsbl('clearall');
+		pfBlockerNG_clearsqlite('clearip');
+		pfBlockerNG_clearsqlite('cleardnsbl');
 		header("Location: /");
 		exit(0);
 	}
@@ -144,13 +146,14 @@ if ($_POST) {
 	// Clear widget IP Packet Counts
 	elseif ($_POST['pfblockerngclearip']) {
 		pfBlockerNG_clearip();
+		pfBlockerNG_clearsqlite('clearip');
 		header("Location: /");
 		exit(0);
 	}
 
 	// Clear widget DNSBL Packet Counts
 	elseif ($_POST['pfblockerngcleardnsbl']) {
-		pfBlockerNG_cleardnsbl('clearall');
+		pfBlockerNG_clearsqlite('cleardnsbl');
 		header("Location: /");
 		exit(0);
 	}
@@ -224,7 +227,7 @@ function pfBlockerNG_update_table() {
 			$line = trim(str_replace(array( '[', ']' ), '', $line));
 			if (substr($line, 0, 1) == '-') {
 				$pfb_alias = trim(strstr($line, 'pfB', FALSE));
-				if (empty($pfb_alias)) {
+				if (empty($pfb_alias) || $pfb_alias == 'pfB_DNSBL_VIPs') {
 					unset($pfb_alias);
 					continue;
 				}
@@ -234,8 +237,10 @@ function pfBlockerNG_update_table() {
 				}
 				$pfb_table[$pfb_alias] = array('count' => $match[1], 'img' => $pfb['down']);
 				exec("{$pfb['ls']} -l -D'%b %d %T' {$pfb['aliasdir']}/{$pfb_alias}.txt | {$pfb['awk']} '{ print $6,$7,$8 }'", $update);
-				$pfb_table[$pfb_alias]['update'] = $update[0];
-				$pfb_table[$pfb_alias]['rule'] = 0;
+
+				$pfb_table[$pfb_alias]['update']	= $update[0];
+				$pfb_table[$pfb_alias]['rule']		= 0;
+				$pfb_table[$pfb_alias]['packets']	= 0;
 				unset($match, $update);
 				continue;
 			}
@@ -246,11 +251,7 @@ function pfBlockerNG_update_table() {
 					$pfb_table[$pfb_alias]['count'] = $addr;
 					continue;
 				}
-				if (substr($line, 0, 11) == 'Evaluations') {
-					$packets = trim(substr(strrchr($line, ':'), 1));
-					$pfb_table[$pfb_alias]['packets'] = $packets;
-					unset($pfb_alias);
-				}
+				unset($pfb_alias);
 			}
 		}
 	}
@@ -260,22 +261,53 @@ function pfBlockerNG_update_table() {
 	}
 
 	// Determine if firewall rules are defined
+	$pfb_packets = pfSense_get_pf_rules();
 	if (isset($config['filter']['rule'])) {
 		foreach ($config['filter']['rule'] as $rule) {
-			// Skip disabled rules
-			if (isset($rule['disabled'])) {
+
+			if (strpos($rule['descr'], 'pfB_DNSBL_Ping') !== FALSE || strpos($rule['descr'], 'pfB_DNSBL_Permit') !== FALSE) {
 				continue;
 			}
 
 			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
-				$pfb_table[$rule['source']['address']]['img'] = $pfb['up'];
-				$pfb_table[$rule['source']['address']]['rule'] += 1;
-				$pfb_table[$rule['source']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
+				foreach ($pfb_packets as $pkey => $prule) {
+					if ($rule['tracker'] == $prule['tracker']) {
+						if (!isset($pfb_table[$rule['source']['address']]['packets'])) {
+							$pfb_table[$rule['source']['address']]['packets'] = 0;
+						}
+						if (isset($prule['packets']) && $prule['packets'] > 0) {
+							$pfb_table[$rule['source']['address']]['packets'] += $prule['packets'];
+						}
+						unset($pfb_packets[$pkey]);
+						break;
+					}
+				} 
+
+				if (!isset($rule['disabled'])) {
+					$pfb_table[$rule['source']['address']]['img'] = $pfb['up'];
+					$pfb_table[$rule['source']['address']]['rule'] += 1;
+					$pfb_table[$rule['source']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
+				}
 			}
 			if (isset($rule['destination']['address']) && stripos($rule['destination']['address'], 'pfb_') !== FALSE) {
-				$pfb_table[$rule['destination']['address']]['img'] = $pfb['up'];
-				$pfb_table[$rule['destination']['address']]['rule'] += 1;
-				$pfb_table[$rule['destination']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
+				foreach ($pfb_packets as $pkey => $prule) {
+					if ($rule['tracker'] == $prule['tracker']) {
+						if (!isset($pfb_table[$rule['destination']['address']]['packets'])) {
+							$pfb_table[$rule['destination']['address']]['packets'] = 0;
+						}
+						if (isset($prule['packets']) && $prule['packets'] > 0) {
+							$pfb_table[$rule['destination']['address']]['packets'] += $prule['packets'];
+						}
+						unset($pfb_packets[$pkey]);
+						break;
+					}
+				}
+
+				if (!isset($rule['disabled'])) {
+					$pfb_table[$rule['destination']['address']]['img'] = $pfb['up'];
+					$pfb_table[$rule['destination']['address']]['rule'] += 1;
+					$pfb_table[$rule['destination']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
+				}
 			}
 		}
 	}
@@ -437,28 +469,55 @@ function pfBlockerNG_get_header($mode='') {
 	$pfb_table = pfBlockerNG_update_table();
 
 	$pfb_table['stats'] = $pfb_table['counts'] = array();
-	$types = array_flip(array('Deny', 'Pass', 'Match'));
+	$pfb_ip_types = array_flip(array('Deny', 'Pass', 'Match'));
 
 	if (!empty($pfb_table)) {
 		foreach ($pfb_table as $pfb_alias => $values) {
 
+			if (empty($values)) {
+				continue;
+			}
+
 			// TODO: Split Deny evaluations into Block and Reject
-			if ($values['type'] == 'Block' || $values['type'] == 'Reject') {
+			if (isset($values['type']) && ($values['type'] == 'Block' || $values['type'] == 'Reject')) {
 				$values['type'] = 'Deny';
 			}
 
 			if (!isset($values['id'])) {
-				$pfb_table['stats']['DNSBL']		+= $values['packets'];
-				$pfb_table['counts']['DNSBL']		+= $values['count'];
+				if (!isset($pfb_table['stats']['DNSBL'])) {
+					$pfb_table['stats']['DNSBL'] = 0;
+				}
+				if (!isset($pfb_table['counts']['DNSBL'])) {
+					$pfb_table['counts']['DNSBL'] = 0;
+				}
+
+				if (is_numeric($values['packets'])) {
+					$pfb_table['stats']['DNSBL']		+= $values['packets'];
+				}
+				if (is_numeric($values['count'])) {
+					$pfb_table['counts']['DNSBL']		+= $values['count'];
+				}
 			}
-			elseif (isset($values['id']) && isset($types[$values['type']])) {
-				$pfb_table['stats'][$values['type']]	+= $values['packets'];
-				$pfb_table['counts'][$values['type']]	+= $values['count'];
+			elseif (isset($values['id']) && isset($values['type']) && isset($pfb_ip_types[$values['type']])) {
+				if (!isset($pfb_table['stats'][$values['type']])) {
+					$pfb_table['stats'][$values['type']] = 0;
+				}
+
+				if (!isset($pfb_table['counts'][$values['type']])) {
+					$pfb_table['counts'][$values['type']] = 0;
+				}
+
+				if (is_numeric($values['packets'])) {
+					$pfb_table['stats'][$values['type']]	+= $values['packets'];
+				}
+				if (is_numeric($values['count'])) {
+					$pfb_table['counts'][$values['type']]	+= $values['count'];
+				}
 			}
 		}
 	}
 
-	foreach ($types as $key => $type) {
+	foreach ($pfb_ip_types as $key => $itype) {
 		if (!isset($pfb_table['stats'][$key])) {
 			$pfb_table['stats'][$key] = 0;
 		}
@@ -473,7 +532,7 @@ function pfBlockerNG_get_header($mode='') {
 		$pfb_msg	= 'pfBlockerNG is Active.';
 
 		// Check Masterfile Database Sanity
-		if ($pfb['config']['enable_dup'] == 'on') {
+		if (isset($pfb['config']['enable_dup']) && $pfb['config']['enable_dup'] == 'on') {
 			$db_sanity = exec("{$pfb['grep']} 'Sanity check' {$pfb['logdir']}/pfblockerng.log | tail -1 | {$pfb['grep']} -o 'PASSED'");
 			if ($db_sanity != 'PASSED') {
 				$pfb_status	= 'fa fa-exclamation-circle text-warning';
@@ -485,22 +544,48 @@ function pfBlockerNG_get_header($mode='') {
 		$pfb_msg = 'pfBlockerNG is Disabled.';
 	}
 
+	$unbound_validate = FALSE;
+	if (file_exists("{$pfb['dnsbldir']}/unbound.conf")) {
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
+			$py_mode = '(Python mode)';
+			if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_unbound.py') !== FALSE) {
+				$unbound_validate = TRUE;
+			}
+		} else {
+			$py_mode = '(Unbound mode)';
+			if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
+				$unbound_validate = TRUE;
+			}
+		}
+	}
+
 	// Status indicator if DNSBL is actively running
-	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on'
-	    && strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
+	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on' && $unbound_validate) {
 
 		// Check DNSBL Database Sanity
 		$db_sanity = exec("{$pfb['grep']} 'DNSBL update' {$pfb['logdir']}/pfblockerng.log | tail -1 | {$pfb['grep']} -o 'OUT OF SYNC'");
 		if ($db_sanity == 'OUT OF SYNC') {
 			$dnsbl_status	= 'fa fa-exclamation-circle text-warning';
-			$dnsbl_msg	= 'DNSBL is out of sync. Perform a Force Reload to correct.';
+			$dnsbl_msg	= "DNSBL {$py_mode} is out of sync. Perform a Force Reload to correct.";
 		} else {
 			$dnsbl_status	= 'fa fa-check-circle text-success';
-			$dnsbl_msg	= "DNSBL is Active on vip: {$pfb['dnsbl_vip']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
+			$dnsbl_msg	= "DNSBL {$py_mode} is Active on vip: {$pfb['dnsbl_vip']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
+		}
+
+		// Check for any Python Integration errors
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python' && (int)@filesize($pfb['pyerrlog']) > 0) {
+			$dnsbl_status	= 'fa fa-exclamation-circle text-warning';
+			$dnsbl_msg	= "DNSBL {$py_mode} errors Found! Review py_error.log";
 		}
 	} else {
 		$dnsbl_status		= 'fa fa-times-circle text-danger';
-		$dnsbl_msg		= 'DNSBL is Disabled.';
+
+		// Check for any Python Integration errors
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python' && (int)@filesize($pfb['pyerrlog']) > 0) {
+			$dnsbl_msg = "DNSBL {$py_mode} is Disabled with errors! Review py_error.log";
+		} else {
+			$dnsbl_msg = "DNSBL {$py_mode} is Disabled.";
+		}
 	}
 
 	// Collect folder/file counts
@@ -520,8 +605,8 @@ function pfBlockerNG_get_header($mode='') {
 
 			$stats[$key][$type] = 0;
 			if ($type == 'DNSBL') {
-				if ($pfb['dnsbl_missing']) {
-					$stats[$key][$type] = "<span title='*** SQLite database missing, Force Reload DNSBL to recover! ***'>Unknown</span>";
+				if (isset($pfb['dnsbl_missing'])) {
+					$stats[$key][$type] = "<span title='*** SQLite database 'pfb_py_dnsbl.sqlite' is missing, Force Reload DNSBL to recover! ***'>Unknown</span>";
 				} else {
 					$stats[$key][$type] = $pfb_table['stats']['DNSBL'];
 				}
@@ -605,6 +690,31 @@ function pfBlockerNG_get_header($mode='') {
 		unset($pfb_table['counts']);
 	}
 
+	// Collect Last packet clear timestamps
+	if ($pfb['enable'] == 'on') {
+		$db_handle = pfb_open_sqlite(6, 'Last Clear Stats');
+		$pfb_found = FALSE;
+		if ($db_handle) {
+			$result = $db_handle->query("SELECT * FROM lastclear WHERE row = 0;");
+			if ($result) {
+				while ($res = $result->fetchArray(SQLITE3_ASSOC)) {
+					if ($res['lastipclear'] !== NULL) {
+						$ip_last_clear = "{$res['lastipclear']}";
+						$dnsbl_last_clear = "{$res['lastdnsblclear']}";
+						$pfb_found = TRUE;
+					}
+				}
+			}
+
+			if (!$pfb_found) {
+				$db_update = "INSERT into lastclear (row, lastipclear, lastdnsblclear) VALUES (0, 'Unknown', 'Unknown');";
+				$db_handle->exec("BEGIN TRANSACTION;"
+						. "{$db_update}"
+						. "END TRANSACTION;");
+			}
+		}
+	}
+
 	// Update values via AJAX
 	if ($mode == 'js') {
 
@@ -624,13 +734,18 @@ function pfBlockerNG_get_header($mode='') {
 		}
 
 		// Update titles
-		print("Deny||Number of BLOCK & REJECT packet(s) blocked: {$stats[0]['Deny']}_BR_Total Count: {$counts['Deny']}||title\n");
-		print("Pass||Number of PASS packet(s) passed: {$stats[0]['Pass']}_BR_Total Count: {$counts['Pass']}||title\n");
-		print("Match||Number of MATCH packet(s) matched: {$stats[0]['Match']}_BR_Total Count: {$counts['Match']}||title\n");
+		print("Deny||Number of BLOCK & REJECT packet(s) blocked: {$stats[0]['Deny']}_BR_Total Count: {$counts['Deny']}"
+			. "_BR_Last clear: {$ip_last_clear}||title\n");
+		print("Pass||Number of PASS packet(s) passed: {$stats[0]['Pass']}_BR_Total Count: {$counts['Pass']}"
+			. "_BR_Last clear: {$ip_last_clear}||title\n");
+		print("Match||Number of MATCH packet(s) matched: {$stats[0]['Match']}_BR_Total Count: {$counts['Match']}"
+			. "_BR_Last clear: {$ip_last_clear}||title\n");
 
 		// Don't add DNSBL title if entry is "Unknown"
 		if (!isset($pfb['dnsbl_missing'])) {
-			print("DNSBL||Number of DNSBL Packet(s) blocked: {$stats[1]['DNSBL']}_BR_Total Count: {$counts['DNSBL']}||title\n");
+			print("DNSBL||Number of DNSBL Packet(s) blocked: {$stats[1]['DNSBL']}_BR_Total Count: {$counts['DNSBL']}"
+				. "_BR_Last clear: {$dnsbl_last_clear}||title\n");
+			print("Queries||Number of Unbound Resolver Queries since last clearing_BR_Last clear: {$dnsbl_last_clear}\n");
 		}
 		else {
 			print("DNSBL||{$counts['DNSBL']}\n");
@@ -649,16 +764,21 @@ function pfBlockerNG_get_header($mode='') {
 
 		// Title descriptions
 		$titles = array ( array (	'Deny'		=> "Number of BLOCK & REJECT packet(s) blocked: {$stats[0]['Deny']}"
-									. "\nTotal Count: {$counts['Deny']}",
+									. "\nTotal Count: {$counts['Deny']}"
+									. "\nLast clear: {$ip_last_clear}",
 						'Pass'		=> "Number of PASS packet(s) passed: {$stats[0]['Pass']}"
-									. "\nTotal Count: {$counts['Pass']}",
+									. "\nTotal Count: {$counts['Pass']}"
+									. "\nLast clear: {$ip_last_clear}",
 						'Match'		=> "Number of MATCH packet(s) matched: {$stats[0]['Match']}"
-									. "\nTotal Count: {$counts['Match']}",
+									. "\nTotal Count: {$counts['Match']}"
+									. "\nLast clear: {$ip_last_clear}",
 						'Suppression'	=> 'Number of IP entries in the Suppression List'),
 
 				 array (	'DNSBL'		=> "Number of DNSBL Packet(s) blocked: {$stats[1]['DNSBL']}"
-									. "\nTotal Count: {$counts['DNSBL']}",
-						'Queries'	=> 'Number of Unbound Resolver Queries since last clearing',
+									. "\nTotal Count: {$counts['DNSBL']}"
+									. "\nLast clear: {$dnsbl_last_clear}",
+						'Queries'	=> 'Number of Unbound Resolver Queries since last clearing'
+									. "\nLast clear: {$dnsbl_last_clear}",
 						'Percent'	=> 'Percentage of Domains Blocked vs Unbound Resolver Queries',
 						'Whitelist'	=> 'Number of Domain entries in the DNSBL Whitelist'));
 
@@ -733,7 +853,7 @@ function pfBlockerNG_get_table($mode='', $pfb_table) {
 					$packets  = "<a href=\"/pfblockerng/pfblockerng_alerts.php?filterdnsbl={$pfb_alias}\" ";
 					$packets .= "target=\"_blank\" title=\"Click to view these packets in Alerts tab\" >{$values['packets']}</a>";
 				} else {
-					$packets = $values['packets'];
+					$packets = $values['packets'] ?: 0;
 				}
 			} else {
 				// Add firewall rules count associated with alias
@@ -753,7 +873,7 @@ function pfBlockerNG_get_table($mode='', $pfb_table) {
 					$packets .= "title=\"Click to view these packets in Alerts tab\" >{$values['packets']}</a>";
 				}
 				else {
-					$packets = $values['packets'];
+					$packets = $values['packets'] ?: 0;
 				}
 
 				// Alias table popup
@@ -827,12 +947,12 @@ function pfBlockerNG_get_table($mode='', $pfb_table) {
 		<table id="pfb-tbl" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 			<thead>
 				<tr>
-					<th><?=gettext("Alias");?></th>
-					<th title="The count can be a mixture of Single IPs or CIDR values"><?=gettext("Count");?></th>
-					<th title="Total Packet counts by IP Alias / DNSBL Group"><?=gettext("Packets");?>
+					<th id="pfB_col1" ><?=gettext("Alias");?></th>
+					<th id="pfB_col2" title="The count can be a mixture of Single IPs or CIDR values"><?=gettext("Count");?></th>
+					<th id="pfB_col3" title="Total Packet counts by IP Alias / DNSBL Group"><?=gettext("Packets");?>
 						<i class='fa fa-trash-o icon-pointer' id='pfblockerngclearicon' title="Clear Packets"></i>
 					</th>
-					<th title="Last Update (Date/Time) of the Alias"><?=gettext("Updated");?></th>
+					<th id="pfB_col4" title="Last Update (Date/Time) of the Alias"><?=gettext("Updated");?></th>
 					<th><?=$pfb['down']?>&nbsp;<?=$pfb['up']?></th>
 				</tr>
 			</thead>

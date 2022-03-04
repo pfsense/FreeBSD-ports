@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	fastcache
-PORTVERSION=	1.0.2
+PORTVERSION=	1.1.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,10 +9,10 @@ COMMENT=	C implementation of Python 3 functools.lru_cache
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/fastcache/_lrucache.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/fastcache/_lrucache*.so
 
 .include <bsd.port.mk>

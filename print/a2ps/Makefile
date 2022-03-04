@@ -1,9 +1,8 @@
 # Created by: Chuck Robey <chuckr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	a2ps
 PORTVERSION=	4.13b
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	print
 MASTER_SITES=	GNU LOCAL/hrs/a2ps/:i18n
 
@@ -52,6 +51,10 @@ EMACS_CONFIGURE_ON=	--with-lispdir=${LOCALBASE}/${EMACS_SITE_LISPDIR}
 CONFIGURE_ENV+=	EMACS=no
 .endif
 
+.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1300512
+CFLAGS+=	-DHAVE_MEMPCPY
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -e 's|^DESTDIR|#DESTDIR|' \
 		`${FIND} ${WRKSRC} -name "Makefile.in"`
@@ -77,13 +80,6 @@ post-configure:
 .endif
 
 post-install:
-.if ${PORT_OPTIONS:MEMACS}
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/xemacs/site-lisp
-	${LN} -sf ${PREFIX}/share/emacs/site-lisp/a2ps-print.el \
-		  ${STAGEDIR}${PREFIX}/lib/xemacs/site-lisp/a2ps-print.el
-	${LN} -sf ${PREFIX}/share/emacs/site-lisp/a2ps.el \
-		  ${STAGEDIR}${PREFIX}/lib/xemacs/site-lisp/a2ps.el
-.endif
 	cd ${WRKSRC}/doc && \
 		${SETENV} ${MAKE_ENV} ${MAKE} ${.MAKEFLAGS} ${MAKE_ARGS} ${INSTALL_TARGET}
 	${RM} ${STAGEDIR}${PREFIX}/lib/liba2ps.la

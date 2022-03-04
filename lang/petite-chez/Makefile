@@ -1,5 +1,4 @@
 # Created by: Vitaly Magerya <vmagerya@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	petite-chez
 PORTVERSION=	8.4
@@ -13,7 +12,7 @@ MAINTAINER=	vmagerya@gmail.com
 COMMENT=	Free interpreter for Chez Scheme system
 
 # Both install bin/scheme-script
-CONFLICTS=	ikarus-*
+CONFLICTS=	ikarus
 
 ONLY_FOR_ARCHS=	i386 amd64
 

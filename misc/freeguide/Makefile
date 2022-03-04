@@ -1,5 +1,4 @@
 # Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freeguide
 PORTVERSION=	0.11.1
@@ -14,11 +13,8 @@ LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 RUN_DEPENDS=	tv_cat:textproc/p5-xmltv
 
-BROKEN_armv6=		fails to package: freeguide.1.gz: No such file or directory
-BROKEN_armv7=		fails to package: freeguide.1.gz: No such file or directory
-
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	8
 USE_ANT=	yes
 NO_ARCH=	yes
 

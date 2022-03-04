@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	pbzip2
 PORTVERSION=	1.1.13
@@ -14,7 +13,7 @@ LICENSE=	BSD4CLAUSE
 MAKE_ARGS=	CFLAGS="${CXXFLAGS}" CC="${CXX}"
 
 PLIST_FILES=	bin/pbzip2 bin/pbunzip2 \
-		man/man1/pbzip2.1.gz man/man1/pbunzip2.1.gz
+		share/man/man1/pbzip2.1.gz share/man/man1/pbunzip2.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,PRI[iu]MAX, & ,g' ${WRKSRC}/pbzip2.cpp \
@@ -26,7 +25,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 	${LN} -sf ${PORTNAME} ${STAGEDIR}${PREFIX}/bin/pbunzip2
-	${INSTALL_MAN} ${WRKSRC}/pbzip2.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
-	${LN} -sf pbzip2.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/pbunzip2.1
+	${INSTALL_MAN} ${WRKSRC}/pbzip2.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	${LN} -sf pbzip2.1 ${STAGEDIR}${PREFIX}/share/man/man1/pbunzip2.1
 
 .include <bsd.port.mk>

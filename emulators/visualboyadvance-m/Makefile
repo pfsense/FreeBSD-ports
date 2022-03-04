@@ -1,21 +1,27 @@
 # Created by: Nicole Reid <root@cooltrainer.org>
-# $FreeBSD$
 
 PORTNAME=	visualboyadvance-m
 PORTVERSION=	2.0.0b2
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	emulators
 
 MAINTAINER=	root@cooltrainer.org
 COMMENT=	Game Boy Advance emulator with GTK frontend
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/doc/gpl.txt
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-BROKEN_aarch64=		fails to build: regparm is not valid on this platform
-BROKEN_armv6=		fails to build: regparm is not valid on this platform
-BROKEN_armv7=		fails to build: regparm is not valid on this platform
+USES=		cmake:insource,noninja dos2unix gl gnome \
+		pkgconfig sdl xorg
+DOS2UNIX_REGEX=	.*\.(c|cpp|h|ypp)
+USE_XORG=	x11 xext
+USE_GL=		gl glu
+USE_SDL=	sdl
+CMAKE_ARGS=	-DVERSION:STRING="${PORTVERSION}" \
+		-DSYSCONFDIR:STRING="${PREFIX}/etc"  \
+		-DENABLE_WX:BOOL=no
 
 USE_GITHUB=	yes
 GH_TAGNAME=	VBA-M_Beta_2
@@ -36,31 +42,19 @@ DEBUGGER_DESC=	Enable the debugger
 ASMCORE_DESC=	Enable x86 ASM CPU cores (i386 only)
 ASMSCALERS_DESC=	Enable x86 ASM graphic filters (i386 only)
 
-DOS2UNIX_REGEX=	.*\.(c|cpp|h|ypp)
-USE_XORG=	x11 xext
-USE_GL=		gl glu
-USE_SDL=	sdl
-USES=		compiler:c++11-lang cmake:insource dos2unix gnome gl pkgconfig
-INSTALLS_ICONS=	yes
-CMAKE_ARGS=	-DVERSION:STRING="${PORTVERSION}" \
-		-DSYSCONFDIR:STRING="${PREFIX}/etc"  \
-		-DENABLE_WX:BOOL=no
-
 ASMCORE_BUILD_DEPENDS=	as:devel/binutils
 ASMCORE_CMAKE_BOOL=	ENABLE_ASM_CORE
 
-ASMSCALERS_BUILD_DEPENDS=	as:devel/binutils
-ASMSCALERS_CMAKE_ARGS=	ENABLE_ASM_SCALERS
+ASMSCALERS_BUILD_DEPENDS=	nasm:devel/nasm
+ASMSCALERS_CMAKE_BOOL=		ENABLE_ASM_SCALERS
 
-GVBAM_USE_GNOME=	gtk20
-GVBAM_LIB_DEPENDS=	libgtkmm-2.4.so:x11-toolkits/gtkmm24 \
-			libglibmm-2.4.so:devel/glibmm \
-			libgiomm-2.4.so:devel/glibmm \
-			libcairomm-1.0.so:graphics/cairomm \
-			libglademm-2.4.so:devel/libglademm24 \
+GVBAM_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+			libfreetype.so:print/freetype2 \
+			libgdkglext-x11-1.0.so:x11-toolkits/gtkglext \
 			libgdkglextmm-x11-1.2.so:x11-toolkits/gtkglextmm
-GVBAM_CMAKE_BOOL=	ENABLE_GTK
 GVBAM_USES=		desktop-file-utils
+GVBAM_USE=		GNOME=gtkmm24,pangox-compat
+GVBAM_CMAKE_BOOL=	ENABLE_GTK
 
 SDL_IMPLIES=		DEBUGGER
 SDL_CMAKE_BOOL=		ENABLE_SDL
@@ -79,6 +73,14 @@ LINK_LIB_DEPENDS=	libsfml-system.so:devel/sfml
 LIRC_LIB_DEPENDS=	liblirc_client.so:comms/lirc
 LIRC_RUN_DEPENDS=	lircd:comms/lirc
 LIRC_CMAKE_BOOL=	ENABLE_LIRC
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+USES+=		compiler:gcc-c++11-lib
+.else
+USES+=		compiler:c++11-lang
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/SET.*LIRC_CLIENT_LIBRARY/ s|lirc_client|${LOCALBASE}/lib/lib&.so|; \

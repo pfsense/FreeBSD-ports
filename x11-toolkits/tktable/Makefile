@@ -1,5 +1,4 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	tktable
 PORTVERSION=	2.10
@@ -8,7 +7,7 @@ CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME:S/tk/Tk/}${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Table/matrix widget extension to Tk
 
 LICENSE=	TclTk

@@ -1,11 +1,10 @@
 # Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
 
 PORTNAME=	gnubg
 PORTVERSION=	1.06.002
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
-MASTER_SITES=	http://files.gnubg.org/media/sources/
+MASTER_SITES=	GNU
 DISTFILES=	gnubg-release-${PORTVERSION}-sources.tar.gz
 
 MAINTAINER=	cs@FreeBSD.org
@@ -22,7 +21,8 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		bison gmake libtool pathfix shebangfix python pkgconfig compiler:c++11-lang readline gnome gl
+USES=		bison gl gmake gnome libtool pathfix shebangfix python \
+		pkgconfig compiler:c++11-lang readline xorg
 USE_GNOME=	glib20 gtk20 cairo pangox-compat
 USE_XORG+=	xmu xt sm ice x11
 USE_GL+=	glu gl
@@ -32,7 +32,6 @@ CONFIGURE_ENV=	ac_cv_path_ARTSC_CONFIG=no ac_cv_path_LIBART_CONFIG=no
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	NLS DOCS

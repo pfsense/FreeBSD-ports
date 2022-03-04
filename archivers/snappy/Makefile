@@ -1,8 +1,8 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	snappy
-PORTVERSION=	1.1.6
+PORTVERSION=	1.1.9
+PORTREVISION=	1
 CATEGORIES=	archivers
 
 MAINTAINER=	vanilla@FreeBSD.org
@@ -10,18 +10,20 @@ COMMENT=	Fast compressor/decompressor library
 
 LICENSE=	BSD3CLAUSE
 
-USES=		autoreconf compiler:c++11-lang libtool pathfix pkgconfig
-CONFIGURE_ARGS=	--disable-gtest
-GNU_CONFIGURE=	yes
+USES=		cmake compiler:c++11-lang cpe
 USE_LDCONFIG=	yes
-CFLAGS+=	-DNDEBUG
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	SNAPPY_BUILD_TESTS SNAPPY_BUILD_BENCHMARKS
+CMAKE_BUILD_TYPE=	Release
+CPE_VENDOR=	google
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-TEST_TARGET=	check
-
-OPTIONS_DEFINE=	DOCS
+PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+SUB_FILES+=	snappy.pc
+SUB_LIST+=	PORTVERSION=${PORTVERSION}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/lib/libsnappy.so.1.1.6
+	@${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/lib/libsnappy.so.${PORTVERSION}
+	${INSTALL_DATA} ${WRKDIR}/snappy.pc ${STAGEDIR}${LOCALBASE}/libdata/pkgconfig
 
 .include <bsd.port.mk>

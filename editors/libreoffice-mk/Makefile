@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 LO_I18N=	mk
 LO_HAS_HELPPACK=	yes
 

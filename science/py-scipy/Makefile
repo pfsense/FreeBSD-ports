@@ -1,10 +1,9 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	scipy
-PORTVERSION=	1.2.0
+DISTVERSION=	1.7.1
 CATEGORIES=	science python
-MASTER_SITES=	https://docs.scipy.org/doc/scipy/:doc \
+MASTER_SITES=	https://docs.scipy.org/doc/scipy-${PORTVERSION}/:doc \
 		CHEESESHOP:source \
 		SF:source
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,22 +17,29 @@ COMMENT=	Scientific tools for Python
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	${PYNUMPY}
+BUILD_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pythran>=0:devel/py-pythran
+LIB_DEPENDS=	libblas.so:math/blas \
+		libopenblas.so:math/openblas
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		fortran python
-USE_PYTHON=	autoplist concurrent distutils
+USES=		compiler:c++14-lang cpe fortran python:3.7+ shebangfix
+USE_PYTHON=	autoplist concurrent cython distutils
+
+FFLAGS+=	-std=legacy
 LDFLAGS+=	-shared
 PYDISTUTILS_BUILDARGS=	--fcompiler=gnu95
 PYDISTUTILS_CONFIGUREARGS=	--fcompiler=gnu95
 
-OPTIONS_DEFINE=	DOCS
-
 PORTDOCS=	scipy-ref-${PORTVERSION}.pdf
 
+SHEBANG_FILES=	scipy/sparse/linalg/isolve/tests/test_gcrotmk.py
+
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
-# Syntax error with GCC 5
-	@${REINPLACE_CMD} -e "s|) IF(| .AND. |" ${WRKSRC}/scipy/odr/odrpack/d_lpkbls.f
 # This line help fix the plist error because autoplist list it as a file but it is a directory
 	@${TOUCH} ${WRKSRC}/scipy/stats/tests/data/tmp
 
@@ -42,6 +48,6 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/scipy-ref-${PORTVERSION}.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

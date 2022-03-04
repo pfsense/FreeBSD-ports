@@ -1,17 +1,16 @@
 # Created by: Securedog <securedog@users.sourceforge.jp>
-# $FreeBSD$
 
 PORTNAME=	pkg_replace
-PORTVERSION=	20181024
+PORTVERSION=	20210726
 CATEGORIES=	ports-mgmt
-MASTER_SITES=	http://member.tokoha-u.ac.jp/~kdeguchi/download/
 
 MAINTAINER=	kdeguchi@sz.tokoha-u.ac.jp
 COMMENT=	Utility for upgrading installed packages
 
-LICENSE=	PD
+LICENSE=	CC0-1.0
 
-USES=		tar:xz
+USE_GITHUB=	yes
+GH_ACCOUNT=	kdeguchi
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -30,10 +29,12 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}.sh \
 		${STAGEDIR}${PREFIX}/sbin/${PORTNAME}
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${MANPREFIX}/share/man/man1/
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.conf \
 		${STAGEDIR}${ETCDIR}/${PORTNAME}.conf.sample
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 

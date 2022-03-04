@@ -1,10 +1,9 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	swell-foop
-PORTVERSION=	3.28.0
+PORTVERSION=	41.0.1
 CATEGORIES=	games gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -13,19 +12,18 @@ COMMENT=	Gnome swell-foop
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	vala:lang/vala \
-		itstool:textproc/itstool
+BUILD_DEPENDS=	itstool:textproc/itstool \
+		vala:lang/vala
 LIB_DEPENDS=	libclutter-1.0.so:graphics/clutter \
-		libclutter-gtk-1.0.so:graphics/clutter-gtk3
+		libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
+		libgnome-games-support-1.so:games/libgnome-games-support
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gnome localbase meson \
-		pkgconfig python:3.6+,build tar:xz
+USES=		gettext gnome localbase meson pkgconfig python:3.6+,build \
+		tar:xz
 USE_GNOME=	gtk30
-INSTALLS_ICONS=	yes
+GLIB_SCHEMAS=	org.gnome.SwellFoop.gschema.xml
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
-
-GLIB_SCHEMAS=	org.gnome.swell-foop.gschema.xml
 
 .include <bsd.port.mk>

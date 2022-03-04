@@ -1,11 +1,12 @@
 # Created by: Gautam Mani <execve@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	stockfish
-DISTVERSION=	10
-DISTVERSIONSUFFIX=	-src
+DISTVERSIONPREFIX=	sf_
+DISTVERSION=	14
 CATEGORIES=	games
-MASTER_SITES=	http://stockfish.s3.amazonaws.com/
+MASTER_SITES=	https://tests.stockfishchess.org/api/nn/:nnue
+DISTFILES=	nn-${_NNUE_VER}.nnue:nnue
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	execve@gmail.com
 COMMENT=	Open source chess engine
@@ -13,62 +14,71 @@ COMMENT=	Open source chess engine
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/../Copying.txt
 
-NOT_FOR_ARCHS=	sparc64
-BROKEN_aarch64=	Fails to build: cannot detect architecture
-BROKEN_armv6=	Fails to configure: config-sanity: Error 1
-BROKEN_armv7=	Fails to configure: config-sanity: Error 1
-BROKEN_mips64=	Fails to build: cannot detect architecture
+USES=		compiler:c++11-lang gmake perl5
+USE_GITHUB=	yes
+GH_ACCOUNT=	official-stockfish
+GH_PROJECT=	Stockfish
+USE_PERL5=	build
 
-USES=		compiler:c++11-lang gmake zip
+MAKE_ARGS=	ARCH=${MYARCH} \
+		COMP=${CHOSEN_COMPILER_TYPE} \
+		CXX="${CXX}" \
+		PREFIX=${PREFIX}
+ALL_TARGET=	build
 
-NO_WRKSUBDIR=	yes
+_NNUE_VER=	3475407dc199
+
 WRKSRC_SUBDIR=	src
-MYARCH=		${ARCH}
-MYCC=		${CHOSEN_COMPILER_TYPE}
-TGTBLD=		build
-
-LDFLAGS+=	-fuse-ld=lld
 
 PLIST_FILES=	bin/stockfish
-PORTDOCS=	Readme.md
+PORTDOCS=	README.md
 
-OPTIONS_DEFINE=	DOCS POPCNT
+OPTIONS_DEFINE=		DOCS
+OPTIONS_RADIO=		MACHDEP
+OPTIONS_RADIO_MACHDEP=	AVX2 BMI2 POPCNT
+OPTIONS_EXCLUDE=	${${ARCH} != amd64:?${OPTIONS_RADIO_MACHDEP}:}
 
+AVX2_DESC=	Use the AVX2 instruction set
+BMI2_DESC=	Use the BMI2 instruction set
 POPCNT_DESC=	Use the POPCNT instruction
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MPOPCNT} && ${ARCH} != amd64
-BROKEN=		POPCNT compiles only on amd64
-.endif
 
 # workaround the ARCH usage in the stockfish Makefile
 .if ${ARCH} == "i386"
 MYARCH=		x86-32
 .elif ${ARCH} == "amd64"
-.  if ${PORT_OPTIONS:MPOPCNT}
+.  if ${PORT_OPTIONS:MBMI2}
+MYARCH=		x86-64-bmi2
+.  elif ${PORT_OPTIONS:MAVX2}
+MYARCH=		x86-64-avx2
+.  elif ${PORT_OPTIONS:MPOPCNT}
 MYARCH=		x86-64-modern
 .  else
 MYARCH=		x86-64
 .  endif
+.elif ${ARCH} == aarch64
+MYARCH=		armv8
+.elif ${ARCH} == armv7
+MYARCH=		armv7-neon
 .elif ${ARCH} == powerpc
 MYARCH=		ppc-32
-.elif ${ARCH} == powerpc64
+.elif ${ARCH:Mpowerpc64*}
 MYARCH=		ppc-64
+.elif ${ARCH:M*64*}
+MYARCH=		general-64
+.else
+MYARCH=		general-32
 .endif
 
-ALL_TARGET=	${TGTBLD} ARCH=${MYARCH} COMP=${MYCC}
-
 post-patch:
-	@${REINPLACE_CMD} -e "s/^PREFIX =/PREFIX ?=/" ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e "s/CXX=g++/CXX=g++${GCC_DEFAULT}/" \
-		${WRKSRC}/Makefile
+	@${CP} ${_DISTDIR}/nn-${_NNUE_VER}.nnue ${WRKSRC}/.
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/stockfish ${STAGEDIR}${PREFIX}/bin
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/../Readme.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/../README.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

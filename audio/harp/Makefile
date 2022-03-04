@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	harp
 PORTVERSION=	0.6.0
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	heckendorfc@gmail.com

@@ -1,11 +1,10 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wdm
 PORTVERSION=	1.28
 PORTREVISION=	16
 CATEGORIES=	x11 windowmaker
-MASTER_SITES=	http://voins.program.ru/wdm/:wdm \
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/wdm/:wdm GENTOO:wdm \
 		http://wolfram.schneider.org/bsd/gif/bsd/:pic_large \
 		LOCAL/tg:pic_small
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:wdm \
@@ -17,16 +16,16 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	WINGs Display Manager; an xdm replacement
 
-LIB_DEPENDS=	libWINGs.so:x11-wm/windowmaker
+LICENSE=	GPLv2+
 
-NOT_FOR_ARCHS=	sparc64
+LIB_DEPENDS=	libWINGs.so:x11-wm/windowmaker
 
 OPTIONS_DEFINE=	PAM
 OPTIONS_DEFAULT=	PAM
 OPTIONS_SUB=	yes
 
-USES=		gettext localbase tar:bzip2
-USE_XORG=	x11 xmu
+USES=		gettext localbase tar:bzip2 xorg
+USE_XORG=	ice sm x11 xau xdmcp xext xinerama xmu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	DEF_SERVER="${DEF_SERVER}" XRDB_PATH="${XRDB_PATH}"
 CONFIGURE_ARGS=	--with-logdir=/var/log \
@@ -61,8 +60,6 @@ post-patch:
 		's|/usr/X11R6|${PREFIX}|g' ${WRKSRC}/configs/Xsession.in
 	@${REINPLACE_CMD} -e \
 		's|$$(DESTDIR)$$(PAMDIR)/wdm||g' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's|-ldl||g ; \
-		 s|/authdir||g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e \
 		's|@FAILSAFE@|@FAILSAFE_PATH@|g' ${WRKSRC}/configs/Xsession.in
 	@${REINPLACE_CMD} -e \

@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	dtcp
 PORTVERSION=	20130602
-PORTREVISION=	2
-CATEGORIES=	net ipv6
+PORTREVISION=	3
+CATEGORIES=	net
 MASTER_SITES=	http://www.mahoroba.org/~ume/ipv6/
 
 MAINTAINER=	ume@FreeBSD.org
@@ -11,8 +9,9 @@ COMMENT=	Dynamic Tunnel Configuration Protocol daemon and client
 
 LICENSE=	BSD3CLAUSE
 
+RUN_DEPENDS=	rubygem-dbm>0:databases/rubygem-dbm
 .if defined(WITH_QPOPAUTH)
-RUN_DEPENDS=	qpopauth:mail/qpopper
+RUN_DEPENDS+=	qpopauth:mail/qpopper
 .endif
 
 USES=		uidfix

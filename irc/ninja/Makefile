@@ -1,5 +1,4 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ninja
 PORTVERSION=	1.5.8.1
@@ -15,10 +14,6 @@ USES=		ncurses
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	IRCLIB="${DATADIR}"
 MAKE_JOBS_UNSAFE=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e "s|%%IRCLIB%%|${DATADIR}|g" \
-		${WRKSRC}/include/config.h.dist
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ninja ${STAGEDIR}${PREFIX}/bin

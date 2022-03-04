@@ -1,5 +1,4 @@
 # Created by: Marcin Jessa <yazzy@yazzy.org>
-# $FreeBSD$
 
 PORTNAME=	ezxml
 PORTVERSION=	0.8.6
@@ -9,6 +8,9 @@ MASTER_SITES=	SF/${PORTNAME}/ezXML/ezXML%20${PORTVERSION} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Easy to use C library for parsing XML documents
+
+USES=		cpe
+CPE_VENDOR=	${PORTNAME}_project
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

@@ -1,8 +1,7 @@
 # Created by: Leo Vandewoestijne <freebsd@dns.company>
-# $FreeBSD$
 
 PORTNAME=	dsp
-PORTVERSION=	2.0.0
+PORTVERSION=	2.0.1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.dns-oarc.net/files/dsc/ \
 		https://dns.company/files/dsc/
@@ -25,7 +24,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 GNU_CONFIGURE=	yes
 
 USES=		gmake perl5
-PERL5=		configure patch shebangfix
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS

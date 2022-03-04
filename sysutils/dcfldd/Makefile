@@ -1,15 +1,20 @@
 # Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dcfldd
-DISTVERSION=	1.3.4-1
+DISTVERSION=	1.7.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT=	Enhanced dd tool with MD5 hashing capability
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		autoreconf
 GNU_CONFIGURE=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	resurrecting-open-source-projects
 
 PLIST_FILES=	bin/dcfldd \
 		man/man1/dcfldd.1.gz

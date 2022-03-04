@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	smstools
 PORTVERSION=	3.1.21
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 
-CONFLICTS=	gnokii-[0-9]* smstools-2.* sendsms-[0-9]*
+CONFLICTS=	gnokii smstools-2.* sendsms
 
 OPTIONS_DEFINE=	STATS UTF8 EXAMPLES DOCS
 OPTIONS_DEFAULT=	STATS UTF8
@@ -40,6 +39,7 @@ PLIST_SUB+=	SPOOLDIR="${SPOOLDIR}" LOGDIR="${LOGDIR}" PIDDIR="${PIDDIR}" \
 		SMSD_USER="${SMSD_USER}" SMSD_GROUP="${SMSD_GROUP}"
 SUB_FILES=	pkg-install pkg-deinstall
 
+CFLAGS+=	-fcommon
 LDFLAGS+=	-linotify
 
 PORTDOCS=	*

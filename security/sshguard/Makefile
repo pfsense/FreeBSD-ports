@@ -1,12 +1,13 @@
 # Created by: Mij <mij@bitchx.it>
-# $FreeBSD$
 
 PORTNAME=	sshguard
-PORTVERSION=	2.3.1
+PORTVERSION=	2.4.2
+PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	SF/sshguard/sshguard/${PORTVERSION}
 
-MAINTAINER=	dan.mcgregor@usask.ca
+MAINTAINER=	kevinz5000@gmail.com
 COMMENT=	Protect hosts from brute-force attacks against SSH and other services
 
 LICENSE=	BSD2CLAUSE
@@ -23,7 +24,7 @@ post-patch:
 		${WRKSRC}/examples/sshguard.conf.sample
 
 post-install:
-	${INSTALL} -d ${STAGEDIR}${PREFIX}/etc
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_DATA} ${WRKSRC}/examples/sshguard.conf.sample \
 		${STAGEDIR}${PREFIX}/etc
 

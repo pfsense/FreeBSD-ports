@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # QtWebEngine itself is a very thin layer of Qt code on top of a large part of
 # Chromium (everything up to the content/ layer). As such, most of the work in
 # this port revolves around taming Chromium and getting it to build on FreeBSD.
@@ -8,8 +6,6 @@
 # - We are using several stub files, especially in Chromium's base/ and net/
 #   layers. We should look at implementing the missing bits instead.
 # - We are currently not using any sandboxing mechanism.
-# - We are disabling support for features such as WebRTC. We need to see what
-#   it would take to properly support them.
 # - We need to see if more "use_system_<FOO>" flags can be passed.
 # - The process of porting QtWebEngine needs to be documented so we can move to
 #   newer releases more easily.
@@ -20,7 +16,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -28,12 +24,12 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 5 library to render web content
 
 BUILD_DEPENDS=	bison:devel/bison \
-		ninja:devel/ninja \
 		yasm:devel/yasm \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libdbus-1.so:devel/dbus \
+		libdouble-conversion.so:devel/double-conversion \
 		libevent.so:devel/libevent \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
@@ -51,7 +47,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libwebp.so:graphics/webp
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
-QT5_VERSION=	5.12.1
+QT5_VERSION=	5.15.2
 
 OPTIONS_SINGLE=		AUDIO
 OPTIONS_SINGLE_AUDIO=	ALSA PULSEAUDIO SNDIO
@@ -75,18 +71,17 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 # We pass `norecursive' to USES=qmake because src/plugins/plugins.pro checks
 # whether webenginewidgets is available, which fails when qmake processes all
 # .pro files at once.
-USES=		gl gnome gperf jpeg python:2.7,build pkgconfig \
-		qmake:norecursive,outsource qt-dist:5,webengine shebangfix
+USES=		gl gnome gperf jpeg ninja:build pkgconfig python:2.7,build \
+		qmake:norecursive,outsource qt-dist:5,webengine shebangfix xorg
 USE_GL=		gl
 USE_GNOME=	glib20 libxml2 libxslt
-USE_QT=		core declarative designer gui location network webchannel \
-		widgets buildtools_build qmake_build printsupport
-USE_XORG=	x11 xcb xcomposite xcursor xext xi xorgproto \
+USE_QT=		core declarative gui location network printsupport \
+		webchannel widgets \
+		buildtools_build designer_build qmake_build
+USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xorgproto \
 		xrandr xrender xscrnsaver xtst
 
-USE_LDCONFIG=	${QT_LIBDIR}
-
-QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg -disable-webrtc
+QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
 
 # We could just set it to an empty string as well. "all" does not account for
 # dependencies correctly in the generated Makefiles, use the right target here.
@@ -113,9 +108,19 @@ MAKE_ENV+=	CC="${CC}" CXX="${CXX}"			\
 		CPLUS_INCLUDE_PATH=${LOCALBASE}/include	\
 		${CONFIGURE_ENV}
 
+QT_BINARIES=	yes
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+PLIST_SUB+=	BE="" LE="@comment "
+.else
+PLIST_SUB+=	BE="@comment " LE=""
+.endif
+
 post-extract:
 # Install FreeBSD's freebsd.pri file.
-	${CP} ${FILESDIR}/freebsd.pri ${WRKSRC}/src/core/config/freebsd.pri
+	${CP} ${FILESDIR}/freebsd.pri ${WRKSRC}/src/buildtools/config/freebsd.pri
 
 post-extract-SNDIO-on:
 	@cd ${WRKSRC}/src/3rdparty/chromium/media/audio && ${MKDIR} sndio openbsd
@@ -123,6 +128,20 @@ post-extract-SNDIO-on:
 		${WRKSRC}/src/3rdparty/chromium/media/audio/sndio
 	@${CP} ${FILESDIR}/audio_manager_openbsd.* \
 		${WRKSRC}/src/3rdparty/chromium/media/audio/openbsd
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+		${WRKSRC}/src/3rdparty/chromium/base/linux_util.cc \
+		${WRKSRC}/src/3rdparty/chromium/build/toolchain/gcc_toolchain.gni \
+		${WRKSRC}/src/3rdparty/chromium/chrome/common/chrome_paths.cc \
+		${WRKSRC}/src/3rdparty/chromium/third_party/pdfium/core/fxge/fx_ge_linux.cpp \
+		${WRKSRC}/src/3rdparty/chromium/third_party/pdfium/xfa/fgas/font/cfx_fontsourceenum_file.cpp \
+		${WRKSRC}/src/3rdparty/gn/build/gen.py
+
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+	@${REINPLACE_CMD} -e 's/icudtl.dat/icudtb.dat/' \
+		${WRKSRC}/src/core/core_module.pro
+.endif
 
 pre-configure:
 # Link in ${PYTHON_CMD} to ${CONFIGURE_WRKSRC}/bin -- the scripts hardcode 'python'
@@ -135,4 +154,4 @@ pre-configure:
 # Rerun syncqt.pl -- otherwise the resulting package misses some forwarding headers.
 	cd ${WRKSRC} && ${QT_BINDIR}/syncqt.pl -version ${QT5_VERSION}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

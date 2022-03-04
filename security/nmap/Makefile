@@ -1,22 +1,23 @@
 # Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
 
 PORTNAME=	nmap
-DISTVERSION=	7.70
-PORTREVISION=	0
-CATEGORIES=	security ipv6
+DISTVERSION=	7.91
+PORTREVISION=	3
+CATEGORIES=	security
 MASTER_SITES=	https://nmap.org/dist/ \
 		LOCAL/ohauer
 
-MAINTAINER?=	ohauer@FreeBSD.org
+MAINTAINER?=	cy@FreeBSD.org
 COMMENT?=	Port scanning utility for large networks
 
 # nmap-6.47 => svn.nmap.org/nmap-releases/nmap-6.47 (r33605)
 # https://nmap.org/book/man-legal.html
 # Install the nmap modified license because of
 # http://insecure.org/news/download-com-fiasco.html
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	NPSL
+LICENSE_NAME=	Nmap Public Source License
+LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror pkg-sell
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 .if !defined(MASTERDIR)
 
@@ -27,7 +28,7 @@ GNU_CONFIGURE=	yes
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	DOCS PCAP SSH2 SSL
-OPTIONS_DEFAULT=PCAP SSH2 SSL
+OPTIONS_DEFAULT=SSH2 SSL
 
 PCAP_DESC=		Build with libpcap from nmap
 SSH2_DESC=		SSH2 protocol support
@@ -52,9 +53,24 @@ CONFIGURE_ARGS+=--without-localdirs \
 		--with-liblua=included \
 		--without-nmap-update
 
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MPCAP}
+BROKEN_FreeBSD_14=	Conflicts with pcap in base
+.endif
+
 # XXX limit results if we do a grep in the sources!
 post-extract:
 	@${RM} -r ${WRKSRC}/mswin32
+
+.if exists(/usr/lib/libibverbs.a)
+# Link with libibverbs is needed by static libpcap
+post-patch-PCAP-on:
+	@${REINPLACE_CMD} -E -e "s|(PCAP_LIBS=['\"].*)(['\"])$$|\1 -libverbs\2|" \
+		${WRKSRC}/configure \
+		${WRKSRC}/nping/configure \
+		${WRKSRC}/ncat/configure
+.endif
 
 post-configure:
 	@${REINPLACE_CMD} -e "s|^DESTDIR *=|& ${DESTDIR}|" ${WRKSRC}/Makefile

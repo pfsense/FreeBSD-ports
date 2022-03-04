@@ -1,5 +1,4 @@
 # Created by: Brian Handy <handy@physics.montana.edu>
-# $FreeBSD$
 
 PORTNAME=	astime
 PORTVERSION=	2.8
@@ -13,6 +12,7 @@ COMMENT=	Time/Date applet for WindowMaker
 
 LICENSE=	GPLv2
 
+USES=		xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-xpm-includes=${LOCALBASE}/include \

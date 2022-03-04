@@ -1,0 +1,12 @@
+--- Cargo.toml.orig	2021-08-22 18:42:16 UTC
++++ Cargo.toml
+@@ -48,9 +48,6 @@ features = ["derive"]
+ predicates = "2.0.1"
+ assert_cmd = "1.0.7"
+ 
+-[features]
+-vendored-openssl = ['openssl/vendored']
+-
+ [[bin]]
+ path = "src/main.rs"
+ name = "cargo-generate"

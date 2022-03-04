@@ -1,9 +1,8 @@
 # Created by: Aleksander Fafula <alex@BSDGuru.org>
-# $FreeBSD$
 
 PORTNAME=	vinetto
 PORTVERSION=	0.07
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-beta-${PORTVERSION}
 DISTNAME=	${PORTNAME}-beta-${PORTVERSION}
@@ -14,9 +13,12 @@ COMMENT=	Forensics tool to examine Thumbs.db files
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
+DEPRECATED=	Obsolete, targets deprecated Windows operating systems such as XP and 2003 Server
+EXPIRATION_DATE=2022-03-31
 
-USES=		python
+RUN_DEPENDS=	${PY_PILLOW}
+
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils concurrent optsuffix
 PYDISTUTILS_PKGVERSION=	0.06alpha
 NO_ARCH=	yes

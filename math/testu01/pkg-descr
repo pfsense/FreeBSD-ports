@@ -19,4 +19,4 @@ kind of test and a given class of random number generators, to determine how
 large should be the sample size of the test, as a function of the generator's
 period length, before the generator starts to fail the test systematically.
 
-WWW: http://www.iro.umontreal.ca/~simardr/testu01/tu01.html
+WWW: http://simul.iro.umontreal.ca/testu01/tu01.html

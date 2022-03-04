@@ -1,9 +1,8 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	traingame
 PORTVERSION=	0.3
-PORTREVISION=	18
+PORTREVISION=	23
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
@@ -20,7 +19,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	nickg
 GH_TAGNAME=	cb6513e
 
-USES=		cmake:insource compiler:c++11-lib dos2unix pkgconfig
+USES=		cmake:insource compiler:c++11-lib dos2unix gl gnome pkgconfig \
+		sdl
 DOS2UNIX_GLOB=	*.mtl *.obj
 USE_CXXSTD=	c++11
 USE_SDL=	sdl image
@@ -32,7 +32,6 @@ CFLAGS+=	-Wno-return-type
 PORTDOCS=	model_notes.txt models.gnuplot
 OPTIONS_DEFINE=	DOCS
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	22x22 32x32 48x48 64x64 72x72 96x96 128x128 192x192
 
 SUB_FILES=	${PORTNAME} pkg-message

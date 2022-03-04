@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	cake
 PORTVERSION=	2005.12.26
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 DISTNAME=	${PORTNAME}_src_${PORTVERSION:S/.//g}
@@ -13,7 +12,7 @@ COMMENT=	Quake3 map viewer (and powerful 3D game engine)
 
 LICENSE=	GPLv2
 
-USES=		gmake jpeg ncurses zip
+USES=		gl gmake jpeg ncurses xorg zip
 USE_GL=		glut
 USE_XORG=	x11 xext xmu xt xi sm ice
 

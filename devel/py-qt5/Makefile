@@ -1,28 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	qt5
 PORTVERSION=	${PYQT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for the Qt 5 toolkit (meta port)
 
-USES=		metaport python pyqt:5
+USES=		metaport python:3.5+ pyqt:5
 USE_PYTHON=	concurrent flavors py3kplist
 
-# Keep these synchronized with _USE_PYQT_ALL / _USE_PYQT5_ONLY in Mk/Use/pyqt.mk
-OPTIONS_DEFINE=	core dbus dbussupport demo designer \
-		designerplugin gui multimedia multimediawidgets \
-		network opengl printsupport qml qscintilla2 quickwidgets \
-		sql serialport svg test webchannel webengine webkit \
-		webkitwidgets widgets xml xmlpatterns
-OPTIONS_DEFAULT=${OPTIONS_DEFINE:Nwebengine}
+# Keep these synchronized with _USE_PYQT_ALL in Mk/Use/pyqt.mk
+# portedit merge -i -e "OPTIONS_DEFINE=$(make -V _USE_PYQT_ALL:tu | tr '\n' ' ')" .
+OPTIONS_DEFINE=		CORE CHART DBUS DBUSSUPPORT DEMO DESIGNER DESIGNERPLUGIN \
+			GUI HELP LOCATION MULTIMEDIA MULTIMEDIAWIDGETS NETWORK NETWORKAUTH \
+			OPENGL POSITIONING PRINTSUPPORT QML QSCINTILLA2 QUICK QUICKWIDGETS \
+			SENSORS SERIALPORT SQL SVG TEST WEBCHANNEL WEBENGINE \
+			WEBKIT WEBKITWIDGETS WIDGETS WEBSOCKETS XML XMLPATTERNS \
+			SIP
+OPTIONS_DEFAULT=	${OPTIONS_DEFINE:NWEBENGINE}
 
 .for opt in ${OPTIONS_DEFINE}
-${opt}_USE=	PYQT=${opt}_run
-${opt}_DESC=	${py-${opt}_DESC}
+${opt}_USE=	PYQT=${opt:tl}_run
+${opt}_DESC=	${py-${opt:tl}_DESC}
 .endfor
 
 .include <bsd.port.mk>

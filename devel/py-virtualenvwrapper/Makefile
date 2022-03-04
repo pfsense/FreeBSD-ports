@@ -1,15 +1,14 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	virtualenvwrapper
-PORTVERSION=	4.8.2
+PORTVERSION=	4.8.4
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	Set of extensions to virtualenv
+COMMENT=	Enhancements to virtualenv
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,25 +18,37 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}stevedore>0:devel/py-stevedore@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}virtualenv>0:devel/py-virtualenv@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}virtualenv-clone>0:devel/py-virtualenv-clone@${PY_FLAVOR}
 
-OPTIONS_DEFINE=	DOCS
-
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}sphinxcontrib-bitbucket>=1.0:textproc/py-sphinxcontrib-bitbucket@${PY_FLAVOR}
-
-USES=		python:2.7
+# Actually 2.6-2.7,3.3-3.6
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
-DOCS_VARS=	DOCSDIR=${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME} \
-		PYDISTUTILS_BUILD_TARGET+=build_sphinx \
-		PYDISTUTILS_BUILDARGS="-a -E"
+OPTIONS_DEFINE=	DOCS
+
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sphinxcontrib-bitbucket>=1.0:textproc/py-sphinxcontrib-bitbucket@${PY_FLAVOR}
+DOCS_VARS=		PYDISTUTILS_BUILD_TARGET+=build_sphinx \
+			PYDISTUTILS_BUILDARGS="-a -E"
+
+PORTDOCS=	*
+
+NO_ARCH=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|$$(command \\which python)|${PYTHON_CMD}|1' \
+	${REINPLACE_CMD} \
+		-e 's|$$(command \\which python)|${PYTHON_CMD}|1' \
+		-e 's|="virtualenv"|="virtualenv${UNIQUE_SUFFIX}"|1' \
+		-e 's|="virtualenv-clone"|="virtualenv-clone${UNIQUE_SUFFIX}"|1' \
 		${WRKSRC}/${PORTNAME}.sh
+	${REINPLACE_CMD} \
+		-e 's|which virtualenvwrapper.sh|which ${PORTNAME}.sh${UNIQUE_SUFFIX}|' \
+		${WRKSRC}/${PORTNAME}_lazy.sh
 
 post-patch-DOCS-on:
 	@${REINPLACE_CMD} -e 's|python setup.py|${PYTHON_CMD} setup.py|' \
 		${WRKSRC}/docs/source/conf.py
+
+post-build-DOCS-on:
+	@${RM} ${WRKSRC}/docs/build/html/.buildinfo
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

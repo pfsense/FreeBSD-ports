@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	stlink
-PORTVERSION=	1.5.0
-PORTREVISION=	2
+DISTVERSION=	1.7.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	lev@FreeBSD.org
@@ -10,29 +8,38 @@ COMMENT=	STM32 ST-Link JTAG variant tools
 
 LICENSE=	BSD3CLAUSE
 
-OPTIONS_DEFINE=		GTK3 DOCS
-OPTIONS_SUB=		yes
-GTK3_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-pacth-turn-off-gtk
-GTK3_USE=		GNOME=gtk30
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	texane
-
 USES=		cmake pkgconfig
+USE_CSTD=	c99
+USE_GITHUB=	yes
+GH_ACCOUNT=	stlink-org
 USE_LDCONFIG=	yes
 
-PORTDOCS=	README.md tested-boards.md tutorial.md
+PORTDOCS=	${ALLDOCS} README.md
+
+ALLDOCS=	compiling.md dev/developer.txt devices_boards.md \
+		flashloaders.md release.md tutorial.md version_support.md
+
+FLASHLOADERS=	cleanroom.md linker.ld Makefile stm32f0.s stm32f4.s stm32f4lv.s \
+		stm32f7.s stm32f7lv.s stm32l4.s stm32lx.s
+
+OPTIONS_DEFINE=		DOCS GTK3
+OPTIONS_SUB=		yes
+GTK3_USES=		gnome
+GTK3_USE=		GNOME=gtk30
+GTK3_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-pacth-turn-off-gtk
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "i386" || ${ARCH} == "powerpc" || ${ARCH} == "arm" || ${ARCH} == "armv6" || ${ARCH} == "mips"
-EXTRA_PATCHES+=	${FILESDIR}/extra-pacth-32bit
-.endif
-
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/dev
 	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}/README.md
-	${INSTALL_DATA} ${WRKSRC}/doc/tested-boards.md ${STAGEDIR}${DOCSDIR}/tested-boards.md
-	${INSTALL_DATA} ${WRKSRC}/doc/tutorial.md ${STAGEDIR}${DOCSDIR}/tutorial.md
+.for DOC in ${ALLDOCS}
+	${INSTALL_DATA} ${WRKSRC}/doc/${DOC} ${STAGEDIR}${DOCSDIR}/${DOC}
+.endfor
+	${MKDIR} ${STAGEDIR}${DATADIR}
+.for F in ${FLASHLOADERS}
+	${INSTALL_DATA} ${WRKSRC}/flashloaders/${F} ${STAGEDIR}${DATADIR}/${F}
+.endfor
 
 .include <bsd.port.post.mk>

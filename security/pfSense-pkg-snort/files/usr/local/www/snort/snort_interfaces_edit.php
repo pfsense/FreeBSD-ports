@@ -3,9 +3,9 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,13 @@ global $g, $config, $rebuild_rules;
 $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
 
+$netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
+if (pfs_version_compare(false, 2.4, $g['product_version'])) {
+	/* add FreeBSD 12 iflib(4) supported devices */
+	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'igc', 'bnxt', 'vmx'));
+	sort($netmapifs);
+}
+
 if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
 }
@@ -40,6 +47,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 if (is_null($id)) {
+	unset($a_rule);
         header("Location: /snort/snort_interfaces.php");
         exit;
 }
@@ -51,13 +59,13 @@ if ($_REQUEST['ajax']) {
 	$type = $_REQUEST['type'];
 
 	if (isset($id) && isset($wlist)) {
-		$a_rule = $config['installedpackages']['snortglobal']['rule'][$id];
+		$rule = $config['installedpackages']['snortglobal']['rule'][$id];
 		if ($type == "homenet") {
-			$list = snort_build_list($a_rule, empty($wlist) ? 'default' : $wlist);
+			$list = snort_build_list($rule, empty($wlist) ? 'default' : $wlist);
 			$contents = implode("\n", $list);
 		}
 		elseif ($type == "passlist") {
-			$list = snort_build_list($a_rule, $wlist, true);
+			$list = snort_build_list($rule, $wlist, true);
 			$contents = implode("\n", $list);
 		}
 		elseif ($type == "suppress") {
@@ -66,14 +74,14 @@ if ($_REQUEST['ajax']) {
 		}
 		elseif ($type == "externalnet") {
 			if (empty($wlist) || $wlist == "default") {
-				$list = snort_build_list($a_rule, $a_rule['homelistname']);
+				$list = snort_build_list($rule, $rule['homelistname']);
 				$contents = "";
 				foreach ($list as $ip)
 					$contents .= "!{$ip}\n";
 				$contents = trim($contents, "\n");
 			}
 			else {
-				$list = snort_build_list($a_rule, $wlist, false, true);
+				$list = snort_build_list($rule, $wlist, false, true);
 				$contents = implode("\n", $list);
 			}
 		}
@@ -96,28 +104,43 @@ else
 
 $pconfig = array();
 if (empty($config['installedpackages']['snortglobal']['rule'][$id]['uuid'])) {
-	/* Adding new interface, so flag rules to build. */
+	/* Adding new interface, so generate a UUID and flag the rules to build. */
 	$pconfig['uuid'] = snort_generate_id();
 	$rebuild_rules = true;
+	$new_interface = true;
 }
 else {
 	$pconfig['uuid'] = $a_rule[$id]['uuid'];
 	$pconfig['descr'] = $a_rule[$id]['descr'];
 	$rebuild_rules = false;
+	$new_interface = false;
 }
 $snort_uuid = $pconfig['uuid'];
 
 // Get the physical configured interfaces on the firewall
 $interfaces = get_configured_interface_with_descr();
 
+// Footnote real interface associated with each configured interface
+foreach ($interfaces as $if => $desc) {
+	$interfaces[$if] = $interfaces[$if] . " (" . get_real_interface($if) . ")";
+}
+
+// Add a special "Unassigned" interface selection at end of list
+$interfaces["Unassigned"] = gettext("Unassigned");
+
 // See if interface is already configured, and use its values
 if (isset($id) && $a_rule[$id]) {
 	/* old options */
+	$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 	$pconfig = $a_rule[$id];
 	if (!empty($pconfig['configpassthru']))
 		$pconfig['configpassthru'] = base64_decode($pconfig['configpassthru']);
 	if (empty($pconfig['uuid']))
 		$pconfig['uuid'] = $snort_uuid;
+	if (get_real_interface($pconfig['interface']) == "") {
+		$pconfig['interface'] = gettext("Unassigned");
+		$pconfig['enable'] = "off";
+	}
 }
 // Must be a new interface, so try to pick next available physical interface to use
 elseif (isset($id) && !isset($a_rule[$id])) {
@@ -128,7 +151,21 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
-			$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+			$if_friendly = convert_friendly_interface_to_friendly_descr($i);
+
+			// If the interface is a VLAN, use the VLAN description
+			// if set, otherwise default to the friendly description.
+			if ($vlan = interface_is_vlan(get_real_interface($i))) {
+				if (strlen($vlan['descr']) > 0) {
+					$pconfig['descr'] = $vlan['descr'];
+				}
+				else {
+					$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+				}
+			}
+			else {
+				$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+			}
 			$pconfig['enable'] = 'on';
 			break;
 		}
@@ -141,6 +178,10 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 }
 
 // Set defaults for empty key parameters
+if (empty($pconfig['enable_pkt_caps']))
+	$pconfig['enable_pkt_caps'] = "off";
+if (empty($pconfig['tcpdump_file_size']))
+	$pconfig['tcpdump_file_size'] = "128";
 if (empty($pconfig['blockoffendersip']))
 	$pconfig['blockoffendersip'] = "both";
 if (empty($pconfig['blockoffenderskill']))
@@ -168,7 +209,20 @@ if (strcasecmp($action, 'dup') == 0) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
 			$pconfig['enable'] = 'on';
-			$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+
+			// If the interface is a VLAN, use the VLAN description
+			// if set, otherwise default to the friendly description.
+			if ($vlan = interface_is_vlan(get_real_interface($i))) {
+				if (strlen($vlan['descr']) > 0) {
+					$pconfig['descr'] = $vlan['descr'];
+				}
+				else {
+					$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+				}
+			}
+			else {
+				$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+			}
 			break;
 		}
 	}
@@ -186,6 +240,7 @@ if (strcasecmp($action, 'dup') == 0) {
 }
 
 if ($_POST['save'] && !$input_errors) {
+	$snort_start = $snort_restart = $snort_reload = $snort_new_passlist = FALSE;
 	if (!isset($_POST['interface']))
 		$input_errors[] = "Interface is mandatory";
 
@@ -199,16 +254,30 @@ if ($_POST['save'] && !$input_errors) {
 		}
 	}
 
+	if ($_POST['ips_mode'] == 'ips_mode_inline') {
+		$is_netmap = false;
+		$realint = get_real_interface($_POST['interface']);
+		foreach ($netmapifs as $if) {
+			if (substr($realint, 0, strlen($if)) == $if) {
+				$is_netmap = true;
+				break;
+			}
+		}
+		if (!$is_netmap) {
+			$input_errors[] = gettext("The '{$_POST['interface']}' interface do not support Inline Mode.");
+		}
+	}
+
 	// If Snort is disabled on this interface, stop any running instance,
 	// save the change, and exit.
 	if ($_POST['enable'] != 'on') {
 		$a_rule[$id]['enable'] = $_POST['enable'] ? 'on' : 'off';
 		touch("{$g['varrun_path']}/snort_{$a_rule[$id]['uuid']}.disabled");
-		touch("{$g['varrun_path']}/barnyard2_{$a_rule[$id]['uuid']}.disabled");
 		snort_stop($a_rule[$id], get_real_interface($a_rule[$id]['interface']));
 		write_config("Snort pkg: modified interface configuration for {$a_rule[$id]['interface']}.");
 		$rebuild_rules = false;
 		sync_snort_package_config();
+		unset($a_rule);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -221,15 +290,14 @@ if ($_POST['save'] && !$input_errors) {
 	/* if no errors write to conf */
 	if (!$input_errors) {
 		/* Most changes don't require a rules rebuild, so default to "off" */
-		$rebuild_rules = false;
+		$rebuild_rules = FALSE;
 
 		$natent = $a_rule[$id];
 		$natent['interface'] = $_POST['interface'];
 		$natent['enable'] = $_POST['enable'] ? 'on' : 'off';
 		$natent['uuid'] = $pconfig['uuid'];
 
-		/* See if the HOME_NET, EXTERNAL_NET, or SUPPRESS LIST values were changed */
-		$snort_reload = false;
+		/* See if the HOME_NET, EXTERNAL_NET, or SUPPRESS LIST were changed and flag a reload if "yes" */
 		if ($_POST['homelistname'] && ($_POST['homelistname'] <> $natent['homelistname']))
 			$snort_reload = true;
 		if ($_POST['externallistname'] && ($_POST['externallistname'] <> $natent['externallistname']))
@@ -237,10 +305,29 @@ if ($_POST['save'] && !$input_errors) {
 		if ($_POST['suppresslistname'] && ($_POST['suppresslistname'] <> $natent['suppresslistname']))
 			$snort_reload = true;
 
+		/* See if the Pass List was changed and flag a Snort restart if "yes" */
+		if ($_POST['whitelistname'] && ($_POST['whitelistname'] <> $natent['whitelistname']))
+			$snort_new_passlist = true;
+
+		/* See if any Blocking settings changed and flag a restart if "yes" */
+		if ($_POST['blockoffenders7'] && ($_POST['blockoffenders7'] <> $natent['blockoffenders7']))
+			$snort_restart = true;
+		if ($_POST['blockoffenderskill'] && ($_POST['blockoffenderskill'] <> $natent['blockoffenderskill']))
+			$snort_restart = true;
+		if ($_POST['blockoffendersip'] && ($_POST['blockoffendersip'] <> $natent['blockoffendersip']))
+			$snort_restart = true;
+		if ($_POST['ips_mode'] && ($_POST['ips_mode'] <> $natent['ips_mode']))
+			$snort_restart = true;
+
 		if ($_POST['descr']) $natent['descr'] =  $_POST['descr']; else $natent['descr'] = convert_friendly_interface_to_friendly_descr($natent['interface']);
 		if ($_POST['performance']) $natent['performance'] = $_POST['performance']; else  unset($natent['performance']);
 		if ($_POST['snaplen'] && is_numeric($_POST['snaplen'])) $natent['snaplen'] = $_POST['snaplen'];
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
+		if ($_POST['enable_pkt_caps'] == "on") $natent['enable_pkt_caps'] = 'on'; else $natent['enable_pkt_caps'] = 'off';
+		if ($_POST['tcpdump_file_size'] && is_numeric($_POST['tcpdump_file_size'])) $natent['tcpdump_file_size'] = $_POST['tcpdump_file_size'];
+		if ($_POST['unified2_logging_enable'] == "on") $natent['unified2_logging_enable'] = 'on'; else $natent['unified2_logging_enable'] = 'off';
+		if ($_POST['unified2_log_vlan_events'] == "on") $natent['unified2_log_vlan_events'] = 'on'; else $natent['unified2_log_vlan_events'] = 'off';
+		if ($_POST['unified2_log_mpls_events'] == "on") $natent['unified2_log_mpls_events'] = 'on'; else $natent['unified2_log_mpls_events'] = 'off';
 		if ($_POST['blockoffenders7'] == "on") $natent['blockoffenders7'] = 'on'; else $natent['blockoffenders7'] = 'off';
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
@@ -264,7 +351,7 @@ if ($_POST['save'] && !$input_errors) {
 			// See if moving an existing Snort instance to another physical interface
 			if ($natent['interface'] != $a_rule[$id]['interface']) {
 				$oif_real = get_real_interface($a_rule[$id]['interface']);
-				if (snort_is_running($a_rule[$id]['uuid'], $oif_real)) {
+				if (snort_is_running($a_rule[$id]['uuid'])) {
 					snort_stop($a_rule[$id], $oif_real);
 					$snort_start = true;
 				}
@@ -410,6 +497,17 @@ if ($_POST['save'] && !$input_errors) {
 			$natent['sf_appid_statslog'] = "on";
 			$natent['sf_appid_stats_period'] = "300";
 
+			$natent['ssh_preproc_ports'] = '22';
+			$natent['ssh_preproc_max_encrypted_packets'] = 20;
+			$natent['ssh_preproc_max_client_bytes'] = 19600;
+			$natent['ssh_preproc_max_server_version_len'] = 100;
+			$natent['ssh_preproc_enable_respoverflow'] = 'on';
+			$natent['ssh_preproc_enable_srvoverflow'] = 'on';
+			$natent['ssh_preproc_enable_ssh1crc32'] = 'on';
+			$natent['ssh_preproc_enable_protomismatch'] = 'on';
+
+			$natent['autoflowbitrules'] = 'on';
+
 			$a_rule[] = $natent;
 		}
 
@@ -424,26 +522,46 @@ if ($_POST['save'] && !$input_errors) {
 		sync_snort_package_config();
 
 		/* See if we need to restart Snort after an interface re-assignment */
-		if ($snort_start == true) {
-			snort_start($natent, $if_real);
+		if ($snort_start) {
+			snort_start($natent, $if_real, TRUE);
+			$savemsg = gettext('Starting Snort on interface due to interface re-assignment.');
+		}
+
+		/* See if we need to restart Snort to activate changes made */
+		if ($snort_restart && !$snort_start && snort_is_running($natent['uuid'])) {
+			snort_start($natent, $if_real, TRUE);
+			$savemsg = gettext('Restarted Snort on this interface to activate new saved configuration settings.');
+		}
+
+		/* See if we need to restart Snort after a Pass List re-assignment, */
+		/* but only if we did not restart for any other reason.             */
+		if ($snort_new_passlist && !$snort_start && !$snort_restart && snort_is_running($natent['uuid'])) {
+			snort_start($natent, $if_real, TRUE);
+			$savemsg = gettext('Restarted Snort on this interface due to a Pass List change.');
 		}
 
 		/*******************************************************/
 		/* Signal Snort to reload configuration if we changed  */
-		/* HOME_NET, EXTERNAL_NET or Suppress list values.     */
-		/* The function only signals a running Snort instance  */
-		/* to safely reload these parameters.                  */
+		/* HOME_NET, EXTERNAL_NET or Suppress list values      */
+		/* unless we already restarted Snort earlier.  The     */
+		/* function only signals a running Snort instance to   */
+		/* safely reload these parameters.                     */
 		/*******************************************************/
-		if ($snort_reload == true)
+		if ($snort_reload && !$snort_start && !$snort_restart && snort_is_running($natent['uuid'])) {
 			snort_reload_config($natent, "SIGHUP");
+			$savemsg = gettext('Signaled Snort to reload configuration due to change in HOME_NET, EXTERNAL_NET or Suppress List assignments.');
+		}
 
-		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
-		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-		header( 'Cache-Control: post-check=0, pre-check=0', false );
-		header( 'Pragma: no-cache' );
-		header("Location: /snort/snort_interfaces.php");
-		exit;
+		/* If using Inline IPS and the current interface is a VLAN, advise  */
+		/* advise user that VLAN Hardware Filtering should be disabled.     */
+		if ($natent['enable'] == 'on' && $natent['ips_mode'] == 'ips_mode_inline' && interface_is_vlan(get_real_interface($natent['interface']))) {
+			$vlan_warn_msg = gettext('NOTICE:  When using Inline IPS Mode with VLAN interfaces, hardware-level VLAN filtering should be disabled with most network cards. Follow the steps in the Netgate documentation ') . 
+					 '<a target="_blank" href="https://docs.netgate.com/pfsense/en/latest/hardware/tuning-and-troubleshooting-network-cards.html#intel-ix-4-cards">' . gettext('here') . 
+					 '</a>' . gettext(' to disable hardware VLAN filtering.');
+		}
+
+		$pconfig = $natent;
+		$new_interface = false;
 	} else
 		$pconfig = $_POST;
 }
@@ -463,24 +581,29 @@ function snort_get_config_lists($lists) {
 	return $result;
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
-if (empty($if_friendly)) {
-	$if_friendly = "None";
-}
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Edit Interface"), gettext("{$if_friendly}"));
+// Finished with config array reference, so release it
+unset($a_rule);
+
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "{$if_friendly} - Interface Settings");
 include("head.inc");
 
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
 
+if ($vlan_warn_msg)
+	print_info_box($vlan_warn_msg);
+
 if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 
+// If using Inline IPS, check that CSO, TSO and LRO are all disabled
 if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
-	print_info_box(gettext('IPS inline mode requires that Hardware Checksum, Hardware TCP Segmentation and Hardware Large Receive Offloading ' .
-				'all be disabled on the ') . '<b>' . gettext('System > Advanced > Networking ') . '</b>' . gettext('tab.'));
+	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
+				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
+			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));
 }
 
 $form = new Form(new Form_Button(
@@ -540,6 +663,40 @@ $section->addInput(new Form_Select(
 	array(  'log_emerg' => gettext('LOG_EMERG'), 'log_crit' => gettext('LOG_CRIT'), 'log_alert' => gettext('LOG_ALERT'), 'log_err' => gettext('LOG_ERR'), 
 		'log_warning' => gettext('LOG_WARNING'), 'log_notice' => gettext('LOG_NOTICE'), 'log_info' => gettext('LOG_INFO'), 'log_debug' => gettext('LOG_DEBUG') )
 ))->setHelp('Select system log Priority (Level) to use for reporting. Default is LOG_ALERT.');
+$section->addInput(new Form_Checkbox(
+	'enable_pkt_caps',
+	'Enable Packet Captures',
+	'Checking this option will automatically capture packets that generate a Snort alert into a tcpdump compatible file',
+	$pconfig['enable_pkt_caps'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'tcpdump_file_size',
+	'Packet Capture File Size',
+	'number',
+	$pconfig['tcpdump_file_size']
+))->setHelp('Enter a value in megabytes for the packet capture file size limit. Default is 128 megabytes. When the limit is reached, the current packet capture file in directory ' . SNORTLOGDIR . '/snort_' . get_real_interface($pconfig['interface']) . $pconfig['uuid'] . ' is rotated and a new file opened.');
+$section->addInput(new Form_Checkbox(
+	'unified2_logging_enable',
+	'Enable Unified2 Logging',
+	'Checking this option will cause Snort to simultaneously log alerts to a unified2 binary format log file in the logging subdirectory for this interface. Default is Not Checked.',
+	$pconfig['unified2_logging_enable'] == 'on' ? true:false,
+	'on'
+))->setHelp(' Log size and retention limits for the Unified2 log should be configured on the LOG MGMT tab when this option is enabled.');
+$section->addInput(new Form_Checkbox(
+	'unified2_log_vlan_events',
+	'Log U2 VLAN Events',
+	'Checking this option will cause Snort to log VLAN events to the unified2 binary format log for this interface. Default is Not Checked.',
+	$pconfig['unified2_log_vlan_events'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'unified2_log_mpls_events',
+	'Log U2 MPLS Events',
+	'Checking this option will cause Snort to log MPLS events to the unified2 binary format log for this interface. Default is Not Checked.',
+	$pconfig['unified2_log_mpls_events'] == 'on' ? true:false,
+	'on'
+));
 
 $form->add($section);
 
@@ -562,8 +719,8 @@ $group->add(new Form_Select(
 $group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' . 
 		'Snort can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' . 
 		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' . 
-		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap!  If the ' . 
-		'hardware NIC driver does not support Netmap, using Inline Mode can result in a firewall system crash!  If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
+		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap! ' . 
+		'Supported drivers: ' . implode(', ', $netmapifs) . '. If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
 $section->add($group);
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
@@ -617,7 +774,7 @@ $section->addInput(new Form_Checkbox(
 	'Split ANY-ANY',
 	'Enable splitting of ANY-ANY port group.  Default is Not Checked.',
 	$pconfig['fpm_split_any_any'] == 'on' ? true:false,
-	'yes'
+	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'fpm_search_optimize',
@@ -784,7 +941,11 @@ $tab_array = array();
 	$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
 	$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
 	$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
+	if ($new_interface) {
+		$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
+	} else {
+		$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
+	}
 	$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
 	$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
 	$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
@@ -797,13 +958,14 @@ display_top_tabs($tab_array, true);
 $tab_array = array();
 	$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
 	$tab_array[] = array($menu_iface . gettext("Settings"), true, "/snort/snort_interfaces_edit.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
+	if (!$new_interface) {
+		$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
+	}
 display_top_tabs($tab_array, true, 'nav nav-tabs');
 
 print($form);
@@ -832,11 +994,27 @@ events.push(function(){
 		hideSelect('alertsystemlog_priority', hide);
 	}
 
+	function toggle_enable_pkt_caps() {
+		var hide = ! $('#enable_pkt_caps').prop('checked');
+		hideInput('tcpdump_file_size', hide);
+	}
+
+	function toggle_unified2_events_logging() {
+		var hide = ! $('#unified2_logging_enable').prop('checked');
+		hideCheckbox('unified2_log_vlan_events', hide);
+		hideCheckbox('unified2_log_mpls_events', hide);
+	}
+
 	function enable_change() {
 		var hide = ! $('#enable').prop('checked');
 		disableInput('alertsystemlog', hide);
 		disableInput('alertsystemlog_facility', hide);
 		disableInput('alertsystemlog_priority', hide);
+		disableInput('enable_pkt_caps', hide);
+		disableInput('tcpdump_file_size', hide);
+		disableInput('unified2_logging_enable', hide);
+		disableInput('unified2_log_vlan_events', hide);
+		disableInput('unified2_log_mpls_events', hide);
 		disableInput('blockoffenders7', hide);
 		disableInput('ips_mode', hide);
 		disableInput('blockoffenderskill', hide);
@@ -909,9 +1087,19 @@ events.push(function(){
 		toggle_system_log();
 	});
 
+	// When 'unified2_logging_enable' is clicked, disable/enable associated form controls
+	$('#unified2_logging_enable').click(function() {
+		toggle_unified2_events_logging();
+	});
+
 	// When 'blockoffenders7' is clicked, disable/enable associated form controls
 	$('#blockoffenders7').click(function() {
 		enable_blockoffenders();
+	});
+
+	// When 'enable_pkt_caps' is clicked, disable/enable associated form controls
+	$('#enable_pkt_caps').click(function() {
+		toggle_enable_pkt_caps();
 	});
 
 	$('#ips_mode').on('change', function() {
@@ -933,6 +1121,8 @@ events.push(function(){
 	enable_change();
 	enable_blockoffenders();
 	toggle_system_log();
+	toggle_unified2_events_logging();
+	toggle_enable_pkt_caps();
 });
 //]]>
 </script>

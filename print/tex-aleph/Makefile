@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aleph
 PORTVERSION=	1.15.2.1.r.4
 PORTREVISION=	4
@@ -12,13 +10,13 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	texlive-${DISTVERSION_TEXLIVE_SOURCE}-source${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	TeX Engine including Omega and e-TeX features
 
 LIB_DEPENDS=	libmpfr.so:math/mpfr \
 		libpng.so:graphics/png
 
-USES=		tar:xz pkgconfig
+USES=		gnome pkgconfig tar:xz xorg
 USE_TEX=	kpathsea web2c texmf formats fmtutil
 USE_XORG=	pixman
 USE_GNOME=	cairo

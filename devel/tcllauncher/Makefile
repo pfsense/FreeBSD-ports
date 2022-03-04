@@ -1,8 +1,7 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	tcllauncher
-PORTVERSION=	1.8
+PORTVERSION=	1.10
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 

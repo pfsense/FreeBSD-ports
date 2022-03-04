@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rofi-pass
 DISTVERSION=	2.0.2
 PORTREVISION=	2

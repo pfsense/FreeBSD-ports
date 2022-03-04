@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-bandwidthd
 PORTVERSION=	0.7.4
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

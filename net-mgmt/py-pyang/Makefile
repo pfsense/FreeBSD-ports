@@ -1,5 +1,4 @@
 # Created by: Bruce Simpson
-# $FreeBSD$
 
 PORTNAME=	pyang
 PORTVERSION=	1.7.8
@@ -14,7 +13,7 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

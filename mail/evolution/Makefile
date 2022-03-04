@@ -1,12 +1,10 @@
 # Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	evolution
-PORTVERSION=	3.28.5
-PORTREVISION=	2
+DISTVERSION=	3.42.1
 CATEGORIES=	mail gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Integrated mail, calendar and address book distributed suite
@@ -21,7 +19,7 @@ BUILD_DEPENDS=	itstool:textproc/itstool \
 		iso-codes>=0:misc/iso-codes \
 		highlight:textproc/highlight
 LIB_DEPENDS=	libnss3.so:security/nss \
-		libgcr-3.so:security/gcr \
+		libgcr-base-3.so:security/gcr \
 		libgtkspell3-3.so:textproc/gtkspell3 \
 		libgnome-autoar-gtk-0.so:archivers/gnome-autoar \
 		libsoup-2.4.so:devel/libsoup \
@@ -37,20 +35,21 @@ LIB_DEPENDS=	libnss3.so:security/nss \
 		libcryptui.so:security/libcryptui \
 		libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
-		libnotify.so:devel/libnotify
+		libnotify.so:devel/libnotify \
+		libgspell-1.so:textproc/gspell
 RUN_DEPENDS=	highlight:textproc/highlight \
 		iso-codes>=0:misc/iso-codes
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 desktop-file-utils cmake gettext gnome \
+USES=		compiler:c11 cpe desktop-file-utils cmake gettext gnome \
 		iconv:wchar_t sqlite libarchive localbase pathfix pkgconfig \
-		tar:xz
+		tar:xz xorg
 USE_GNOME=	cairo evolutiondataserver3 gnomedesktop3 intltool
 GNU_CONFIGURE=	yes
 USE_XORG=	x11
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
+CPE_VENDOR=	gnome
 CMAKE_ARGS=	-DENABLE_TEXT_HIGHLIGHT=YES \
 		-DWITH_ENCHANT_VERSION=2 \
 		-DVERSION_COMMENT="FreeBSD GNOME Team"
@@ -70,6 +69,7 @@ GLIB_SCHEMAS=	org.gnome.evolution.addressbook.gschema.xml \
 		org.gnome.evolution.plugin.mail-notification.gschema.xml \
 		org.gnome.evolution.plugin.prefer-plain.gschema.xml \
 		org.gnome.evolution.plugin.publish-calendar.gschema.xml \
+		org.gnome.evolution.plugin.sender-validator.gschema.xml \
 		org.gnome.evolution.plugin.templates.gschema.xml \
 		org.gnome.evolution.shell.gschema.xml \
 		org.gnome.evolution.spamassassin.gschema.xml \
@@ -130,6 +130,7 @@ MAPS_LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 			libclutter-1.0.so:graphics/clutter \
 			libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
 			libchamplain-0.12.so:graphics/libchamplain
+MAPS_USES=		gl xorg
 MAPS_USE=		xorg=xcomposite,xdamage,xext,xfixes,xi,xrandr gl=egl
 
 .include <bsd.port.mk>

@@ -1,17 +1,16 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnet
 PORTVERSION=	2.0.8
 PORTREVISION=	3
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Simple network library built upon Glib-2
 
-USES=		libtool pathfix pkgconfig
+USES=		gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

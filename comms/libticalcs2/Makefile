@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libticalcs2
 PORTVERSION=	1.1.9
 CATEGORIES=	comms
@@ -16,7 +14,8 @@ LIB_DEPENDS=	libticables2.so:comms/libticables2	\
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		autoreconf gettext-tools gmake libtool pkgconfig tar:bzip2
+USES=		autoreconf gettext-tools gmake gnome libtool pkgconfig \
+		tar:bzip2
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

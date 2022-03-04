@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	Amon2-DBI
 PORTVERSION=	0.33
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of simple DBI wrapper
 
 RUN_DEPENDS=	\

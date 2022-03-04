@@ -1,12 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	moonlight-embedded
-DISTVERSION=	2.4.7
-PORTREVISION=	2
+DISTVERSION=	2.4.11
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/irtimmer/moonlight-embedded/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	tobik@FreeBSD.org
+PATCH_SITES=	https://github.com/irtimmer/moonlight-embedded/commit/
+PATCHFILES=	5b6639c8a76c4bbb5e0b4bcfe41b8df136608885.patch:-p1
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gamestream client
 
 LICENSE=	GPLv3+
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libopus.so:audio/opus \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		cmake localbase:ldflags perl5 pkgconfig ssl tar:xz
+USES=		cmake localbase:ldflags perl5 pkgconfig sdl ssl tar:xz
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_SDL=	sdl2

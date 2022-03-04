@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	kid3
-PORTVERSION=	3.7.1
+PORTVERSION=	3.8.6
 PORTREVISION?=	0
 CATEGORIES=	audio kde
-MASTER_SITES=	SF
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 PKGNAMESUFFIX=	-${SLAVE}
 
 MAINTAINER=	jhale@FreeBSD.org
@@ -15,7 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl
 
-USES=		cmake compiler:c++11-lang desktop-file-utils gnome pkgconfig qt:5
+USES=		cmake compiler:c++11-lang desktop-file-utils gnome \
+		pkgconfig qt:5 tar:xz
 USE_GNOME=	libxslt:build
 USE_LDCONFIG=	yes
 USE_QT=		core dbus gui multimedia network xml widgets \
@@ -38,8 +37,9 @@ KID3_APPS+=	QT
 .else
 # KF5
 USES+=		kde:5
-USE_KDE+=	auth codecs config configwidgets coreaddons \
-		widgetsaddons xmlgui doctools_build ecm_build
+USE_KDE+=	auth codecs config configwidgets coreaddons kio \
+		service widgetsaddons xmlgui doctools_build ecm_build
+USE_QT+=	concurrent
 PLIST_SUB+=	KF5="" QT="@comment " QT_SUFX=""
 KID3_APPS+=	KDE
 .endif
@@ -65,6 +65,7 @@ CLI_VARS=		KID3_APPS+=CLI
 
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
 FLAC_CMAKE_BOOL=	WITH_FLAC
+FLAC_IMPLIES=		VORBIS
 
 MP3_LIB_DEPENDS=	libid3.so:audio/id3lib
 MP3_CMAKE_BOOL=		WITH_ID3LIB
@@ -77,6 +78,7 @@ TAGLIB_LIB_DEPENDS=	libtag.so:audio/taglib
 TAGLIB_CMAKE_BOOL=	WITH_TAGLIB
 
 TEST_USE=		LOCALE=en_US.UTF-8 QT=testlib_build
+TEST_CMAKE_BOOL=	BUILD_TESTING
 TEST_WRKSRC=		${BUILD_WRKSRC}/src/test
 TEST_VARS=		KID3_APPS+=TEST
 
@@ -85,12 +87,6 @@ VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 VORBIS_CMAKE_BOOL=	WITH_VORBIS
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MFLAC} || ${PORT_OPTIONS:MVORBIS}
-PLIST_SUB+=	OGGFLAC=""
-.else
-PLIST_SUB+=	OGGFLAC="@comment "
-.endif
 
 pre-test:
 	@${CP} ${WRKSRC}/src/test/*.py ${TEST_WRKSRC}

@@ -1,9 +1,8 @@
 # Created by: Hakisho Nukama <nukama@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fuel
 DISTVERSION=	1.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://fuel-scm.org/files/releases/
 

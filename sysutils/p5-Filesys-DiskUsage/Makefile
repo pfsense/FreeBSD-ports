@@ -1,13 +1,12 @@
 # Created by: Alex Deiter <tiamat@komi.mts.ru>
-# $FreeBSD$
 
 PORTNAME=	Filesys-DiskUsage
-PORTVERSION=	0.12
+PORTVERSION=	0.13
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl equivalent of du(1)
 
 LICENSE=	ART10 GPLv1+

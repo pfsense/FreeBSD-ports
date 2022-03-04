@@ -1,5 +1,4 @@
 # Created by: Eugene Ossintsev
-# $FreeBSD$
 
 PORTNAME=	ocaml-nox11
 CATEGORIES=	lang
@@ -7,11 +6,9 @@ CATEGORIES=	lang
 MAINTAINER=	michael.grunewald@laposte.net
 COMMENT=	Objective Caml compiler and programming environment (no X11)
 
-BROKEN_powerpc64=	Does not build: error: too few arguments to function gethostbyname_r
-
 MASTERDIR=	${.CURDIR}/../ocaml
 
-CONFLICTS=	metaocaml-[0-9]* ocaml-[0-9]* ocaml-notk-[0-9]*
+CONFLICTS=	metaocaml ocaml ocaml-notk
 
 OPTIONS_EXCLUDE=TK X11
 

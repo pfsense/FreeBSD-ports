@@ -1,9 +1,8 @@
 # Created by: Arjan van Leeuwen <avleeuwen@piwebs.com>
-# $FreeBSD$
 
 PORTNAME=	cube
 DISTVERSION=	2005_08_29
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 DISTFILES=	${CUBE_DATA} ${CUBE_SRC}
@@ -34,6 +33,7 @@ OPTIONS_SUB=	yes
 
 FLAVOR_DESC=	Clients and servers
 CLIENT_DESC=	Build client
+CLIENT_USES=			gl sdl xorg
 CLIENT_USE=			GL=gl,glu SDL=image,mixer,sdl XORG=x11
 CLIENT_LDFLAGS=			-lX11
 CLIENT_ALL_TARGET=		client

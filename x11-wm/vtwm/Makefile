@@ -1,5 +1,4 @@
 # Created by: Bruce A. Mah <bmah@ca.sandia.gov>
-# $FreeBSD$
 
 PORTNAME=	vtwm
 PORTVERSION=	5.5.0
@@ -13,7 +12,7 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=	pkgconfig
+USES=	pkgconfig xorg
 
 GNU_CONFIGURE=	yes
 USE_XORG=	x11 xext xft xinerama xpm xmu xrandr

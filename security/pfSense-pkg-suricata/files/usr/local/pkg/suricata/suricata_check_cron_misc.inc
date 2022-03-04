@@ -3,11 +3,11 @@
  * suricata_check_cron_misc.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,13 +27,30 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 
 global $g, $config;
 
+function suricata_folderSize($dir) {
+
+	/********************************************************
+	 * This function returns the size, in bytes, of the     *
+	 * content (including any sub-folders) stored under the *
+	 * passed directory.                                    *
+	 ********************************************************/
+
+	$size = 0;
+	foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+		$size += is_file($each) ? filesize($each) : suricata_folderSize($each);
+	}
+
+	return $size;
+}
+
 function suricata_check_dir_size_limit($suricataloglimitsize) {
 
 	/********************************************************
 	 * This function checks the total size of the Suricata  *
 	 * logging sub-directory structure and prunes the files *
 	 * for all Suricata interfaces if the size exceeds the  *
-	 * passed limit.                                        *
+	 * passed limit. Pruning stops when the directory size  *
+	 * is below the configured limit.                       *
 	 *                                                      *
 	 * On Entry: $surictaaloglimitsize = dir size limit     *
 	 *                                   in megabytes       *
@@ -49,18 +66,33 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		syslog(LOG_NOTICE, gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. Starting cleanup of Suricata logs."));
 
 		// Initialize an array of the log files we want to prune
-		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "files-json.log", "sid_changes.log", "stats.log", "tls.log" );
+		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "sid_changes.log", "stats.log", "tls.log" );
 
 		// Clean-up the rotated logs for each configured Suricata instance
 		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 			$if_real = get_real_interface($value['interface']);
+
+			// Skip instances where pfSense physical interface
+			// has been removed.
+			if ($if_real == "") {
+				continue;
+			}
 			$suricata_uuid = $value['uuid'];
 			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
 			syslog(LOG_NOTICE, gettext("[Suricata] Cleaning logs for {$value['descr']} ({$if_real})..."));
-			suricata_post_delete_logs($suricata_uuid);
 
+			// Clean-up packet capture files if any exist
+			$filelist = glob("{$suricata_log_dir}/log.pcap.*");
+
+			// Keep most recent file
+			unset($filelist[count($filelist) - 1]);
+			foreach ($filelist as $file) {
+				unlink_if_exists($file);
+			}
+			unset($filelist);
+
+			// Cleanup any rotated logs
 			foreach ($logs as $file) {
-				// Cleanup any rotated logs
 				syslog(LOG_NOTICE, gettext("[Suricata] Deleting rotated log files except last for {$value['descr']} ({$if_real}) $file..."));
 				$filelist = glob("{$suricata_log_dir}/{$file}.*");
 				// Keep most recent file
@@ -72,34 +104,41 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 			}
 
 			// Check for any captured stored files and clean them up
-			unlink_if_exists("{$suricata_log_dir}/files/*");
+			unlink_if_exists("{$suricata_log_dir}/filestore/*");
 
 			// Check for any captured stored TLS certs and clean them up
 			unlink_if_exists("{$suricata_log_dir}/certs/*");
 		}
 
+		// If we are now below the configured Directory Size Limit, then skip
+		// deleting the active logs and just exit.
 		if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
 			goto cleanupExit;
 		}
 
-		// Cleanup any rotated logs not caught above
+		// Continue by cleaning up any other rotated logs not handled above
 		syslog(LOG_NOTICE, gettext("[Suricata] Deleting any additional rotated log files..."));
 		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.log.*");
 		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.json.*");
 
+		// If we are now below the configured Directory Size Limit, then skip
+		// deleting the active logs and just exit.
 		if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
 			goto cleanupExit;
 		}
 
 		// Clean-up active logs for each configured Suricata instance
+		// until we get below the configured Directory Size Limit.
 		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 			$if_real = get_real_interface($value['interface']);
+
+			// Skip instances where pfSense physical interface
+			// has been removed.
+			if ($if_real == "") {
+				continue;
+			}
 			$suricata_uuid = $value['uuid'];
 			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-			if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
-				goto cleanupExit;
-			}
-
 			foreach ($logs as $file) {
 				// Truncate the log file if it exists
 				if (file_exists("{$suricata_log_dir}/{$file}")) {
@@ -110,13 +149,18 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 					}
 				}
 
+				// Stop deleting logs when directory size is below configured limit
 				if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
-					goto cleanupExit;
+					break;
 				}
 			}
 
+			// Signal Suricata on this interface that log files have been truncated
+			suricata_reload_config($value, "SIGHUP");
+
+			// Stop deleting logs when directory size is below configured limit
 			if (suricata_Getdirsize(SURICATALOGDIR) < $suricataloglimitsizeKB) {
-				goto cleanupExit;
+				break;
 			}
 		}
 
@@ -131,10 +175,101 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		}
 
 		cleanupExit:
-		// This is needed if suricata is run as suricata user
-		mwexec('/bin/chmod 660 /var/log/suricata/*', true);
 		syslog(LOG_NOTICE, gettext("[Suricata] Automatic clean-up of Suricata logs completed."));
 	}
+}
+
+function suricata_check_filestore_limit_size($store_path, $store_limit) {
+
+	/***********************************************************
+	 * This recursive function checks the passed File Store    *
+	 * path to see if it is consuming more than the configured *
+	 * disk space limit. If it is, stored captured files are   *
+	 * are purged to reduce the storage below the limit.       *
+	 *                                                         *
+	 * On Entry: $store_path   -> full pathname to check       *
+	 *           $store_limit  -> size limit in MB             *
+	 *                                                         *
+	 * On Exit:  returns number of removed files               *
+	 ***********************************************************/
+
+	$removed = 0;
+
+	if (!is_dir($store_path)) {
+		return $removed;
+	}
+
+	if (intval(suricata_folderSize($store_path)/1000000) >= $store_limit) {
+		$msg = sprintf("[Suricata] Automatic prune of File Store path '%s' started due to exceeding configured Captured Files storage size limit of %d Megabytes.", $store_path, $store_limit);
+		syslog(LOG_NOTICE, gettext($msg));
+
+		// Get captured file names into array and sort by
+		// modified date/time ascending.
+		$files = glob(rtrim($store_path, '/').'/*');
+		array_multisort(array_map('filemtime', $files), SORT_NUMERIC, SORT_ASC, $files);
+
+		// Start deleting older files until we are
+		// under the passed limit by at least 10%.
+		for ($file_index = 0; ($file_index < count($files)) && (intval(suricata_folderSize($store_path)/1000000) > intval($store_limit * 0.9)); $file_index++) {
+			if (is_dir($files[$file_index])) {
+				$removed += suricata_check_filestore_limit_size($files[$file_index], $store_limit);
+			}
+			else {
+				unlink_if_exists($files[$file_index]);
+				$removed++;
+			}
+			$file_index--;
+		}
+
+		$msg = sprintf("[Suricata] Automatic prune of File Store path '%s' completed. Removed %d captured files.", $store_path, $removed);
+		syslog(LOG_NOTICE, gettext($msg));
+	}
+	return $removed;
+}
+
+function suricata_check_prune_filestore_files($store_path, $retention = 0) {
+
+	/********************************************************
+	 * This recursive function checks the passed File Store * 
+	 * path to see if any stored captured files are         *
+	 * exceedubg the retention limit. Files exceeding the   *
+	 * limit are removed.                                   *
+	 *                                                      *
+	 * On Entry: $store_path -> full pathname to check      *
+	 *           $retention  -> retention period in hours   *
+	 *                          for captured files. Zero    *
+	 *                          means never remove.         *
+	 *                                                      *
+	 * On Exit:  returns number of pruned files             *
+	 ********************************************************/
+
+	$prune_count = 0;
+
+	if ($retention < 1) {
+		return $prune_count;
+	}
+
+	// Get captured files names into array.
+	$files = glob(rtrim($store_path, '/').'/*');
+	$now = time();
+	foreach ($files as $f) {
+
+		// If this is a directory, execute
+		// a recursive call to enumerate and
+		// prune its contents.
+		if (is_dir($f)) {
+			$prune_count += suricata_check_prune_filestore_files($f, $retention);
+		}
+		else {
+			if (($now - filemtime($f)) > ($retention * 3600)) {
+				$prune_count++;
+				unlink_if_exists($f);
+			}
+		}
+	}
+
+	unset($files);
+	return $prune_count;
 }
 
 function suricata_check_rotate_log($log_file, $log_limit, $retention) {
@@ -154,18 +289,23 @@ function suricata_check_rotate_log($log_file, $log_limit, $retention) {
 	 *           $retention -> retention period in hours    *
 	 *                         for rotated logs. Zero       *
 	 *                         means never remove.          *
+	 *                                                      *
+	 * On Exit:  returns number of rotated files            *
 	 ********************************************************/
+
+	$rotated_count = 0;
 
 	// Check the current log to see if it needs rotating.
 	// If it does, rotate it and put the current time
 	// on the end of the filename as UNIX timestamp.
 	if (!file_exists($log_file))
-		return;
+		return $rotated_count;
 	if (($log_limit > 0) && (filesize($log_file) >= $log_limit)) {
 		$newfile = $log_file . "." . date('Y_md_Hi');
 		try {
 			rename($log_file, $newfile);
 			touch($log_file);
+			$rotated_count++;
 		} catch (Exception $e) {
 			syslog(LOG_ERR, "[Suricata] ERROR: Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
 		}
@@ -184,6 +324,8 @@ function suricata_check_rotate_log($log_file, $log_limit, $retention) {
 		}
 		unset($rotated_files);
 	}
+
+	return $rotated_count;
 }
 
 /*************************
@@ -207,8 +349,6 @@ $logs['block.log']['limit'] = $config['installedpackages']['suricata']['config']
 $logs['block.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['block_log_retention'];
 $logs['eve.json']['limit'] = $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'];
 $logs['eve.json']['retention'] = $config['installedpackages']['suricata']['config'][0]['eve_log_retention'];
-$logs['files-json.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'];
-$logs['files-json.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['files_json_log_retention'];
 $logs['http.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['http_log_limit_size'];
 $logs['http.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['http_log_retention'];
 $logs['sid_changes.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'];
@@ -222,43 +362,47 @@ $logs['tls.log']['retention'] = $config['installedpackages']['suricata']['config
 if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'on') {
 	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 		$if_real = get_real_interface($value['interface']);
+
+		// Skip instances where pfSense physical interface
+		// has been removed.
+		if ($if_real == "") {
+			continue;
+		}
 		$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$value['uuid']}";
+		$rotated = 0;
 		foreach ($logs as $k => $p) {
-			suricata_check_rotate_log("{$suricata_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
+			$rotated += suricata_check_rotate_log("{$suricata_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
+		}
+		if ($rotated > 0) {
+			// Send the running Suricata instance on this interface a SIGHUP signal
+			// so it will re-open the log files we rotated and truncated.
+			suricata_reload_config($value, "SIGHUP");
+			syslog(LOG_NOTICE, gettext("[Suricata] Logs Mgmt job rotated {$rotated} file(s) in '{$suricata_log_dir}/' ..."));
 		}
 
-		// Prune any aged-out Barnyard2 archived logs if any exist
-		if (is_dir("{$suricata_log_dir}/barnyard2/archive") &&
-		    $config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] > 0) {
-			$now = time();
-			$files = glob("{$suricata_log_dir}/barnyard2/archive/unified2.alert.*");
-			$prune_count = 0;
-			foreach ($files as $f) {
-				if (($now - filemtime($f)) > ($config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] * 3600)) {
-					$prune_count++;
-					unlink_if_exists($f);
-				}
-			}
-			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] Barnyard2 archived logs cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/barnyard2/archive/..."));
-			unset($files);
-		}
-
-		// Prune aged-out File Store files if any exist
-		if (is_dir("{$suricata_log_dir}/files") &&
+		// Prune aged-out File Store captured files if any exist
+		if (is_dir("{$suricata_log_dir}/filestore") &&
 		    $config['installedpackages']['suricata']['config'][0]['file_store_retention'] > 0) {
-			$now = time();
-			$files = glob("{$suricata_log_dir}/files/file.*");
-			$prune_count = 0;
-			foreach ($files as $f) {
-				if (($now - filemtime($f)) > ($config['installedpackages']['suricata']['config'][0]['file_store_retention'] * 3600)) {
-					$prune_count++;
-					unlink_if_exists($f);
-				}
-			}
+
+			$prune_count = suricata_check_prune_filestore_files("{$suricata_log_dir}/filestore", $config['installedpackages']['suricata']['config'][0]['file_store_retention']);
 			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] File Store cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/files/..."));
-			unset($files);
+				syslog(LOG_NOTICE, gettext("[Suricata] File Store captured files cleanup job removed {$prune_count} file(s) from '{$suricata_log_dir}/filestore/' path..."));
+		}
+
+		// Check File Store captured files storage limit and prune if necessary
+		if (is_dir("{$suricata_log_dir}/filestore") && 
+		    $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] > 0 && 
+		    (intval(suricata_folderSize("{$suricata_log_dir}/filestore")/1000000) >= $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'])) {
+			suricata_check_filestore_limit_size("{$suricata_log_dir}/filestore", $config['installedpackages']['suricata']['config'][0]['file_store_limit_size']);
+		}
+
+		// If a user-customized file store directory is set, check it, too
+		if (isset($value['file_store_logdir'])) {
+			if (is_dir($value['file_store_logdir']) && 
+			    $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] > 0 && 
+			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'])) {
+				suricata_check_filestore_limit_size($value['file_store_logdir'], $config['installedpackages']['suricata']['config'][0]['file_store_limit_size']);
+			}
 		}
 
 		// Prune aged-out TLS Certs Store files if any exist
@@ -296,17 +440,12 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 				syslog(LOG_NOTICE, gettext("[Suricata] Packet Capture log cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/..."));
 			unset($files, $remove_files);
 		}
-
-		// Send the running Suricata instance on this interface a SIGHUP signal
-		// so it will re-open the log files we rotated and truncated.
-		if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$value['uuid']}.pid")) {
-			mwexec_bg("/bin/pkill -SIGHUP -F {$g['varrun_path']}/suricata_{$if_real}{$value['uuid']}.pid");
-		}
 	}
 }
 
 // Check the overall log directory limit (if enabled) and prune if necessary
-if ($config['installedpackages']['suricata']['config'][0]['suricataloglimit'] == 'on')
+if ($config['installedpackages']['suricata']['config'][0]['suricataloglimit'] == 'on') {
 	suricata_check_dir_size_limit($config['installedpackages']['suricata']['config'][0]['suricataloglimitsize']);
+}
 
 ?>

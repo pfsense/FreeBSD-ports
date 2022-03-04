@@ -1,9 +1,8 @@
 # Created by: NAKATA Maho <chat95@mbox.kyoto-inet.or.jp>
-# $FreeBSD$
 
 PORTNAME=	lapack++
 PORTVERSION=	2.5.4
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	math
 MASTER_SITES=	SF/lapackpp \
 		http://math.nist.gov/lapack++/:doc
@@ -19,13 +18,13 @@ USES=		fortran gmake pathfix libtool
 
 OPTIONS_DEFINE=	DOCS
 
-OPTIONS_RADIO=  BLAS
-OPTIONS_RADIO_BLAS=     OPENBLAS NETLIB ATLAS
-OPTIONS_DEFAULT=        OPENBLAS
+OPTIONS_RADIO=		BLAS
+OPTIONS_RADIO_BLAS=	ATLAS NETLIB OPENBLAS
+OPTIONS_DEFAULT=	OPENBLAS
 
-OPENBLAS_USES=  blaslapack:openblas
-NETLIB_USES=    blaslapack:netlib
-ATLAS_USES=     blaslapack:atlas
+OPENBLAS_USES=	blaslapack:openblas
+NETLIB_USES=	blaslapack:netlib
+ATLAS_USES=	blaslapack:atlas
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

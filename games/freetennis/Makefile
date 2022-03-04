@@ -1,9 +1,8 @@
 # Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freetennis
 PORTVERSION=	0.4.8
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -24,7 +23,7 @@ OCAML_DEPENDS=	${LOCALBASE}/lib/ocaml/site-lib/lablgtk2/gtk.ml:x11-toolkits/ocam
 		${LOCALBASE}/lib/ocaml/lablGL/gl.ml:graphics/ocaml-lablgl \
 		${LOCALBASE}/lib/ocaml/site-lib/sdl/sdl.mli:devel/ocaml-sdl
 
-USES=		gettext tar:bzip2
+USES=		gettext gl gnome sdl tar:bzip2 xorg
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 pango
 USE_GL=		gl glu
 USE_SDL=	ttf mixer sdl

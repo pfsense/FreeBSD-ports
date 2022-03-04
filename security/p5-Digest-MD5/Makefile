@@ -1,8 +1,7 @@
 # Created by: ache
-# $FreeBSD$
 
 PORTNAME=	Digest-MD5
-PORTVERSION=	2.55
+PORTVERSION=	2.58
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

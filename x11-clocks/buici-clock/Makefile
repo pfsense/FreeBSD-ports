@@ -1,5 +1,4 @@
 # Created by: Hendrik Scholz <hscholz@raisdorf.net>
-# $FreeBSD$
 
 PORTNAME=	buici-clock
 PORTVERSION=	0.4.9.4
@@ -18,8 +17,8 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo
 
 WRKSRC=		${WRKDIR}/buici
 
+USES=		tar:xz bison gmake pkgconfig autoreconf xorg
 USE_XORG=	x11 xext
-USES=		tar:xz bison gmake pkgconfig autoreconf
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=yes
 

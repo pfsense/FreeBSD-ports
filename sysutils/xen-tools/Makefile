@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-PORTVERSION=	4.11.1
-PORTREVISION=	2
+PORTVERSION=	4.15.0
+PORTREVISION=	3
 CATEGORIES=	sysutils emulators
 MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
 
@@ -16,10 +14,12 @@ LICENSE_COMB=	multi
 LIB_DEPENDS=	libyajl.so:devel/yajl \
 		liblzo2.so:archivers/lzo2 \
 		libpixman-1.so:x11/pixman \
-		libargp.so:devel/argp-standalone
-BUILD_DEPENDS=	seabios>0:misc/seabios
-RUN_DEPENDS=	seabios>0:misc/seabios
-DOCS_BUILD_DEPENDS=markdown:textproc/markdown
+		libargp.so:devel/argp-standalone \
+		libxml2.so:textproc/libxml2
+BUILD_DEPENDS=	seabios>0:misc/seabios \
+		${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd:sysutils/edk2@xen_x64
+RUN_DEPENDS=	seabios>0:misc/seabios \
+		${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd:sysutils/edk2@xen_x64
 
 OPTIONS_DEFINE=		DOCS SPICE
 OPTIONS_DEFAULT=	DOCS
@@ -31,30 +31,25 @@ SPICE_BUILD_DEPENDS=	spice-protocol>=0.12.10:devel/spice-protocol
 SPICE_LIB_DEPENDS=	libspice-server.so:devel/libspice-server
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	"not yet ported to anything other than amd64"
+ONLY_FOR_ARCHS_REASON=	not yet ported to anything other than amd64
 
-USES=		cpe gettext gmake libtool localbase:ldflags perl5 pkgconfig \
-		python:2.7 shebangfix
+USES=		cpe gettext gmake gnome libtool localbase:ldflags perl5 \
+		pkgconfig python:3.6+ shebangfix iconv bison
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
+USE_PYTHON=	py3kplist
 HAS_CONFIGURE=	yes
 # Set ARCH=x86_64 in order to overwrite the environment ARCH=amd64
 MAKE_ARGS=	clang=y ARCH=x86_64
 
-# Set correct include paths taking /usr/local into account.
-EXTRA_PATCHES=	${FILESDIR}/0001-build-fix-include-paths-in-FreeBSD.patch:-p1
-# Build with lld (LLVM linker)
-EXTRA_PATCHES+=	${FILESDIR}/0001-x86-replace-usage-in-the-linker-script.patch:-p1
-# Fix docs build
-EXTRA_PATCHES+=	${FILESDIR}/0001-docs-use-the-make-wildcard-function-instead-of-find.patch:-p1
-# Fix hvmloader build with LLVM LD
-EXTRA_PATCHES+=	${FILESDIR}/0001-hvmloader-fix-build-with-LLVM-Linker.patch:-p1
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 CONFIGURE_ARGS+=	--with-system-seabios=${LOCALBASE}/share/seabios/bios.bin \
-			--mandir=${MANPREFIX}/man
+			--with-system-ovmf=${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd \
+			--mandir=${MANPREFIX}/man \
+			--disable-golang
 
-SHEBANG_FILES=	tools/misc/xen-ringwatch \
-		tools/misc/xencov_split \
+SHEBANG_FILES=	tools/misc/xencov_split \
 		tools/python/scripts/convert-legacy-stream \
 		tools/python/scripts/verify-stream-v2 \
 		tools/xenmon/xenmon.py
@@ -64,18 +59,24 @@ DOCS_ALL_TARGET=	docs
 INSTALL_TARGET=		install-tools
 DOCS_INSTALL_TARGET=	install-docs
 
+# Fix pv shim build with clang 13.0.0
+EXTRA_PATCHES+=	${PATCHDIR}/0001-efi-fix-alignment-of-function-parameters-in-compat-m.patch:-p1
+
 .include <bsd.port.options.mk>
 
 .if ${OPSYS} != FreeBSD
 IGNORE=		only supported on FreeBSD
 .endif
 
-.if ${OSVERSION} < 1200074
-IGNORE=		only supported on FreeBSD 12.0 or newer
-.endif
-
 .if ${PORT_OPTIONS:MSPICE} && ${OSVERSION} < 1300008
 BROKEN=	SPICE support requires FreeBSD version 13.0 or higher
+.endif
+
+# ivshmem requires eventfd
+.if ${OSVERSION} >= 1300000
+PLIST_SUB+=	IVSHMEM=""
+.else
+PLIST_SUB+=	IVSHMEM="@comment "
 .endif
 
 post-patch:
@@ -95,5 +96,7 @@ do-install:
 
 post-install:
 	${MKDIR} ${STAGEDIR}/var/run/xen
+	# Empty dir, purge it.
+	${RMDIR} ${STAGEDIR}/${PREFIX}/lib/xen/include
 
 .include <bsd.port.mk>

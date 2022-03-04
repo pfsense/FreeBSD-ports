@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-Accessor-Constructor
 PORTVERSION=	1.111590
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for constructor generator
 
 RUN_DEPENDS=	\

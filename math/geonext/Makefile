@@ -1,9 +1,8 @@
 # Created by: Andreas Fehlner (fehlner@gmx.de)
-# $FreeBSD$
 
 PORTNAME=	geonext
 PORTVERSION=	1.74
-CATEGORIES+=	math graphics java
+CATEGORIES+=	math education graphics java
 MASTER_SITES=	http://geonext.uni-bayreuth.de/data/download/${PORTVERSION}/
 DISTNAME=	geonext.${PORTVERSION}
 
@@ -17,7 +16,6 @@ WRKSRC=		${WRKDIR}/geonext_install
 NO_BUILD=	yes
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 DATA=	cacerts didmat.crt geonext-batik.jar geonext.html geonext.jar \
 	help.jar help_de.jar help_fr.jar help_gr.jar help_it.jar \

@@ -1,25 +1,27 @@
-# $FreeBSD$
-
 PORTNAME=	desktop-installer
-DISTVERSION=	0.6.5
+DISTVERSION=	0.7.5-4
+DISTVERSIONSUFFIX=	-g0ae72b1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://acadix.biz/Ports/distfiles/
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Quickly configure a FreeBSD desktop system
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	auto-admin>=0.4.7:sysutils/auto-admin
+RUN_DEPENDS=	auto-admin>=0.7.7:sysutils/auto-admin
 
 USES=		tar:xz
+USE_GITHUB=	yes
+
+GH_ACCOUNT=	outpaddling
 
 NO_BUILD=	yes
 NO_ARCH=	yes
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_SCRIPT} ${WRKSRC}/Scripts/battery_shutdown.sh ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_SCRIPT} ${WRKSRC}/Scripts/battery-shutdown.sh ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_MAN} ${WRKSRC}/Doc/${PORTNAME}.man \
 		${STAGEDIR}${PREFIX}/man/man1/${PORTNAME}.1
 	@${MKDIR} ${STAGEDIR}${DATADIR}

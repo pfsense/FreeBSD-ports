@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	opensubdiv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3_3_3
-PORTREVISION=	1
+DISTVERSION=	3_4_3
+PORTREVISION=	4
 CATEGORIES?=	graphics
 
 MAINTAINER=	FreeBSD@Shaneware.biz
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	glfw>2.7.0:graphics/glfw
 
-USES=		cmake
+USES=		cmake gl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	PixarAnimationStudios
@@ -25,7 +23,7 @@ USE_LDCONFIG=	yes
 CMAKE_ON=	NO_CUDA NO_DX NO_OMP
 
 OPTIONS_DEFINE=		DOCS EXAMPLES OPENCL PTEX TBB TEST TUTORIALS
-OPTIONS_DEFAULT=	TBB
+#OPTIONS_DEFAULT=	TBB -- off until onetbb support is available
 OPTIONS_SUB=		yes
 
 DOCS_CMAKE_BOOL_OFF=	NO_DOC
@@ -34,6 +32,7 @@ DOCS_BUILD_DEPENDS=	rst2html.py:textproc/py-docutils \
 DOCS_USES=		python:build
 
 EXAMPLES_CMAKE_BOOL_OFF=	NO_EXAMPLES
+EXAMPLES_USES=		xorg
 EXAMPLES_USE=		xorg=ice,sm,x11,xcursor,xext,xi,xinerama,xrandr,xxf86vm
 EXAMPLES_LIB_DEPENDS=	libglfw.so:graphics/glfw
 
@@ -52,10 +51,17 @@ PTEX_LIB_DEPENDS=	libPtex.so:graphics/ptex
 TBB_DESC=		Intel threading building blocks
 TBB_CMAKE_BOOL_OFF=	NO_TBB
 TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
+TBB_BROKEN=		not available until transition to onetbb is complete
 
 TEST_CMAKE_BOOL_OFF=	NO_REGRESSION NO_TESTS NO_GL_TESTS
 TEST_LIB_DEPENDS=	libglfw.so:graphics/glfw
+TEST_USES=		xorg
 TEST_USE=		xorg=ice,sm,x11,xcursor,xext,xi,xinerama,xrandr,xxf86vm
+
+# the tutorials and tests include use of deprecated parts of the library
+# using clang 10 on 32 bit fails to build all tutorials and tests
+# currently 12.1 still works - 11.4 and current fail
+# CMake files and pkg-plist are patched to prevent failing builds
 
 TUTORIALS_DESC=		Install tutorial programs
 TUTORIALS_CMAKE_BOOL_OFF=	NO_TUTORIALS

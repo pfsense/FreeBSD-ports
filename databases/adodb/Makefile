@@ -1,5 +1,4 @@
 # Created by: abgoeree@uwnet.nl
-# $FreeBSD$
 
 PORTNAME=	adodb
 PORTVERSION=	4.99.2
@@ -13,10 +12,12 @@ COMMENT=	Database library for PHP
 LICENSE=	BSD4CLAUSE LGPL21
 LICENSE_COMB=	dual
 
-USES=		tar:tgz
+USES=		cpe php tar:tgz
 USE_PHP=	pcre
 
 CONFLICTS=	adodb-5.*
+
+CPE_VENDOR=	adodb_project
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes

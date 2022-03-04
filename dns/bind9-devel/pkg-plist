@@ -1,18 +1,20 @@
-bin/bind9-config
 %%DNSTAP%%bin/dnstap-read
-bin/isc-config.sh
+bin/named-checkconf
+bin/named-checkzone
+bin/named-compilezone
+bin/named-journalprint
+%%LMDB%%bin/named-nzd2nzf
 @sample etc/mtree/BIND.chroot.dist.sample
 @sample etc/mtree/BIND.chroot.local.dist.sample
 %%ETCDIR%%/bind.keys
-%%ETCDIR%%/master/empty.db
-%%ETCDIR%%/master/localhost-forward.db
-%%ETCDIR%%/master/localhost-reverse.db
+%%ETCDIR%%/primary/empty.db
+%%ETCDIR%%/primary/localhost-forward.db
+%%ETCDIR%%/primary/localhost-reverse.db
 @sample %%ETCDIR%%/named.conf.sample
 %%ETCDIR%%/named.root
 %%ETCDIR%%/rndc.conf.sample
 include/bind9/check.h
 include/bind9/getaddresses.h
-include/bind9/version.h
 include/dns/acl.h
 include/dns/adb.h
 include/dns/badcache.h
@@ -27,7 +29,6 @@ include/dns/clientinfo.h
 include/dns/compress.h
 include/dns/db.h
 include/dns/dbiterator.h
-include/dns/dbtable.h
 include/dns/diff.h
 include/dns/dispatch.h
 include/dns/dlz.h
@@ -39,7 +40,6 @@ include/dns/dnstap.h
 include/dns/ds.h
 include/dns/dsdigest.h
 include/dns/dyndb.h
-include/dns/ecdb.h
 include/dns/ecs.h
 include/dns/edns.h
 include/dns/enumclass.h
@@ -51,11 +51,12 @@ include/dns/geoip.h
 include/dns/ipkeylist.h
 include/dns/iptable.h
 include/dns/journal.h
+include/dns/kasp.h
 include/dns/keydata.h
 include/dns/keyflags.h
+include/dns/keymgr.h
 include/dns/keytable.h
 include/dns/keyvalues.h
-include/dns/lib.h
 include/dns/librpz.h
 include/dns/log.h
 include/dns/lookup.h
@@ -70,7 +71,6 @@ include/dns/nta.h
 include/dns/opcode.h
 include/dns/order.h
 include/dns/peer.h
-include/dns/portlist.h
 include/dns/private.h
 include/dns/rbt.h
 include/dns/rcode.h
@@ -96,17 +96,16 @@ include/dns/secproto.h
 include/dns/soa.h
 include/dns/ssu.h
 include/dns/stats.h
-include/dns/tcpmsg.h
 include/dns/time.h
 include/dns/timer.h
 include/dns/tkey.h
+include/dns/transport.h
 include/dns/tsec.h
 include/dns/tsig.h
 include/dns/ttl.h
 include/dns/types.h
 include/dns/update.h
 include/dns/validator.h
-include/dns/version.h
 include/dns/view.h
 include/dns/xfrin.h
 include/dns/zone.h
@@ -115,30 +114,28 @@ include/dns/zoneverify.h
 include/dns/zt.h
 include/dst/dst.h
 include/dst/gssapi.h
-include/dst/result.h
-include/irs/context.h
-include/irs/dnsconf.h
-include/irs/netdb.h
-include/irs/platform.h
 include/irs/resconf.h
-include/irs/types.h
-include/irs/version.h
 include/isc/aes.h
+include/isc/align.h
 include/isc/app.h
 include/isc/assertions.h
+include/isc/astack.h
 include/isc/atomic.h
+include/isc/attributes.h
 include/isc/backtrace.h
+include/isc/barrier.h
 include/isc/base32.h
 include/isc/base64.h
 include/isc/bind9.h
 include/isc/buffer.h
-include/isc/bufferlist.h
+include/isc/cmocka.h
 include/isc/commandline.h
 include/isc/condition.h
 include/isc/counter.h
 include/isc/crc64.h
 include/isc/deprecated.h
 include/isc/dir.h
+include/isc/endian.h
 include/isc/errno.h
 include/isc/error.h
 include/isc/event.h
@@ -147,23 +144,23 @@ include/isc/file.h
 include/isc/formatcheck.h
 include/isc/fsaccess.h
 include/isc/fuzz.h
+include/isc/glob.h
 include/isc/hash.h
 include/isc/heap.h
 include/isc/hex.h
 include/isc/hmac.h
+include/isc/hp.h
 include/isc/ht.h
 include/isc/httpd.h
 include/isc/interfaceiter.h
 include/isc/iterated_hash.h
-include/isc/json.h
 include/isc/lang.h
 include/isc/lex.h
-include/isc/lfsr.h
-include/isc/lib.h
 include/isc/likely.h
 include/isc/list.h
 include/isc/log.h
 include/isc/magic.h
+include/isc/managers.h
 include/isc/md.h
 include/isc/mem.h
 include/isc/meminfo.h
@@ -172,13 +169,13 @@ include/isc/mutexblock.h
 include/isc/net.h
 include/isc/netaddr.h
 include/isc/netdb.h
+include/isc/netmgr.h
 include/isc/netscope.h
 include/isc/nonce.h
 include/isc/offset.h
 include/isc/once.h
 include/isc/os.h
 include/isc/parseint.h
-include/isc/platform.h
 include/isc/pool.h
 include/isc/portset.h
 include/isc/print.h
@@ -192,10 +189,10 @@ include/isc/regex.h
 include/isc/region.h
 include/isc/resource.h
 include/isc/result.h
-include/isc/resultclass.h
 include/isc/rwlock.h
 include/isc/safe.h
 include/isc/serial.h
+include/isc/siphash.h
 include/isc/sockaddr.h
 include/isc/socket.h
 include/isc/stat.h
@@ -212,34 +209,32 @@ include/isc/taskpool.h
 include/isc/thread.h
 include/isc/time.h
 include/isc/timer.h
+include/isc/tls.h
 include/isc/tm.h
 include/isc/types.h
+include/isc/url.h
+include/isc/utf8.h
 include/isc/util.h
-include/isc/version.h
-include/isc/xml.h
 include/isccc/alist.h
 include/isccc/base64.h
 include/isccc/cc.h
 include/isccc/ccmsg.h
 include/isccc/events.h
-include/isccc/result.h
 include/isccc/sexpr.h
 include/isccc/symtab.h
 include/isccc/symtype.h
 include/isccc/types.h
 include/isccc/util.h
-include/isccc/version.h
 include/isccfg/aclconf.h
 include/isccfg/cfg.h
-include/isccfg/dnsconf.h
 include/isccfg/grammar.h
+include/isccfg/kaspconf.h
 include/isccfg/log.h
 include/isccfg/namedconf.h
-include/isccfg/version.h
 include/ns/client.h
+include/ns/events.h
 include/ns/hooks.h
 include/ns/interfacemgr.h
-include/ns/lib.h
 include/ns/listenlist.h
 include/ns/log.h
 include/ns/notify.h
@@ -249,58 +244,61 @@ include/ns/sortlist.h
 include/ns/stats.h
 include/ns/types.h
 include/ns/update.h
-include/ns/version.h
 include/ns/xfrout.h
-include/pk11/constants.h
-include/pk11/internal.h
-include/pk11/pk11.h
-include/pk11/result.h
-include/pk11/site.h
-include/pkcs11/cryptoki.h
-include/pkcs11/eddsa.h
-include/pkcs11/pkcs11.h
-include/pkcs11/pkcs11f.h
-include/pkcs11/pkcs11t.h
-lib/libbind9.a
-lib/libdns.a
-lib/libirs.a
-lib/libisc.a
-lib/libisccc.a
-lib/libisccfg.a
-lib/libns.a
-lib/named/filter-aaaa.so
-man/man1/bind9-config.1.gz
-%%DNSTAP%%man/man1/dnstap-read.1.gz
-man/man1/isc-config.sh.1.gz
-man/man5/named.conf.5.gz
-man/man5/rndc.conf.5.gz
-man/man8/ddns-confgen.8.gz
-man/man8/filter-aaaa.8.gz
-man/man8/named-checkconf.8.gz
-man/man8/named-checkzone.8.gz
-man/man8/named-compilezone.8.gz
-%%LMDB%%man/man8/named-nzd2nzf.8.gz
-man/man8/named.8.gz
-%%NATIVE_PKCS11%%man/man8/pkcs11-destroy.8.gz
-%%NATIVE_PKCS11%%man/man8/pkcs11-keygen.8.gz
-%%NATIVE_PKCS11%%man/man8/pkcs11-list.8.gz
-%%NATIVE_PKCS11%%man/man8/pkcs11-tokens.8.gz
-man/man8/rndc-confgen.8.gz
-man/man8/rndc.8.gz
-man/man8/tsig-keygen.8.gz
+lib/bind/filter-a.so
+lib/bind/filter-aaaa.so
+lib/libbind9.so
+lib/libbind9-9.17.18.so
+lib/libdns.so
+lib/libdns-9.17.18.so
+lib/libirs.so
+lib/libirs-9.17.18.so
+lib/libisc.so
+lib/libisc-9.17.18.so
+lib/libisccc.so
+lib/libisccc-9.17.18.so
+lib/libisccfg.so
+lib/libisccfg-9.17.18.so
+lib/libns.so
+lib/libns-9.17.18.so
+@comment man/man1/arpaname.1.gz
+@comment man/man1/delv.1.gz
+@comment man/man1/dig.1.gz
+@comment man/man1/dnssec-cds.1.gz
+@comment man/man1/dnssec-dsfromkey.1.gz
+@comment man/man1/dnssec-importkey.1.gz
+@comment man/man1/dnssec-keyfromlabel.1.gz
+@comment man/man1/dnssec-keygen.1.gz
+@comment man/man1/dnssec-revoke.1.gz
+@comment man/man1/dnssec-settime.1.gz
+@comment man/man1/dnssec-signzone.1.gz
+@comment man/man1/dnssec-verify.1.gz
+%%MANPAGES%%%%DNSTAP%%man/man1/dnstap-read.1.gz
+@comment man/man1/host.1.gz
+@comment man/man1/mdig.1.gz
+%%MANPAGES%%man/man1/named-checkconf.1.gz
+%%MANPAGES%%man/man1/named-checkzone.1.gz
+%%MANPAGES%%man/man1/named-compilezone.1.gz
+%%MANPAGES%%man/man1/named-journalprint.1.gz
+%%MANPAGES%%%%LMDB%%man/man1/named-nzd2nzf.1.gz
+@comment man/man1/named-rrchecker.1.gz
+@comment man/man1/nsec3hash.1.gz
+@comment man/man1/nslookup.1.gz
+@comment man/man1/nsupdate.1.gz
+%%MANPAGES%%man/man5/named.conf.5.gz
+%%MANPAGES%%man/man5/rndc.conf.5.gz
+%%MANPAGES%%man/man8/ddns-confgen.8.gz
+%%MANPAGES%%man/man8/filter-a.8.gz
+%%MANPAGES%%man/man8/filter-aaaa.8.gz
+%%MANPAGES%%man/man8/named.8.gz
+%%MANPAGES%%man/man8/rndc-confgen.8.gz
+%%MANPAGES%%man/man8/rndc.8.gz
+%%MANPAGES%%man/man8/tsig-keygen.8.gz
 sbin/ddns-confgen
 sbin/named
-sbin/named-checkconf
-sbin/named-checkzone
-sbin/named-compilezone
-%%LMDB%%sbin/named-nzd2nzf
-%%NATIVE_PKCS11%%sbin/pkcs11-destroy
-%%NATIVE_PKCS11%%sbin/pkcs11-keygen
-%%NATIVE_PKCS11%%sbin/pkcs11-list
-%%NATIVE_PKCS11%%sbin/pkcs11-tokens
 sbin/rndc
 sbin/rndc-confgen
 sbin/tsig-keygen
 @dir(bind,bind,) %%ETCDIR%%/dynamic
-@dir(bind,bind,) %%ETCDIR%%/slave
+@dir(bind,bind,) %%ETCDIR%%/secondary
 @dir(bind,bind,) %%ETCDIR%%/working

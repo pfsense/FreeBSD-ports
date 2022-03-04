@@ -1,5 +1,4 @@
 # Created by: Brion Moss <brion@queeg.com>
-# $FreeBSD$
 
 PORTNAME=	catdoc
 PORTVERSION=	0.95
@@ -15,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-install-root="${STAGEDIR}"
-USES=		gmake
+USES=		cpe gmake
+CPE_VENDOR=	fossies
 
 PORTDATA=	*
 

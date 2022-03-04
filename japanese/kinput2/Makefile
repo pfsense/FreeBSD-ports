@@ -1,5 +1,4 @@
 # Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kinput2
 PORTVERSION=	3.1
@@ -13,7 +12,7 @@ COMMENT=	Japanese text input server for X11 applications
 
 MAKE_JOBS_UNSAFE=	yes
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 SUB_FILES=	Kinput2.conf
 PLIST_FILES=	bin/kinput2 lib/X11/app-defaults/Kinput2 man/man1/kinput2.1.gz
@@ -88,7 +87,7 @@ CONF+=		${${I}_CONF}
 CONF+=	TRANSPORTDEFS="-DNO_TCP_TRANSPORT"
 .endif
 
-pre-configure: apply-slist
+pre-configure:
 	${INSTALL_DATA} ${WRKDIR}/Kinput2.conf ${WRKSRC}/Kinput2.conf
 	${PRINTF} "%s\n" ${CONF} > ${WRKSRC}/Kinput2_im.conf
 

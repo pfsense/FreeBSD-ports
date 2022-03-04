@@ -1,9 +1,8 @@
 # Created by: erich@rrnet.com
-# $FreeBSD$
 
 PORTNAME=	rc
 PORTVERSION=	1.7.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	shells plan9
 MASTER_SITES=	http://static.tobold.org/rc/
 
@@ -13,6 +12,8 @@ COMMENT=	Unix incarnation of the plan9 shell
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		cpe
+CPE_VENDOR=	${PORTNAME}_project
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-history
 

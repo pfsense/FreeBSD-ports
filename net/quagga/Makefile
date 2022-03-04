@@ -1,25 +1,26 @@
 # Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	quagga
 PORTVERSION=	1.2.4
-PORTREVISION=	4
-CATEGORIES=	net ipv6
-MASTER_SITES=	SAVANNAH
+PORTREVISION=	8
+CATEGORIES=	net
+MASTER_SITES=	https://github.com/Quagga/quagga/releases/download/${DISTNAME}/
 
-MAINTAINER=	pi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free RIPv1, RIPv2, OSPFv2, BGP4, IS-IS route software
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	gawk:lang/gawk
-
-CONFLICTS=	frr3 frr4 frr5 frr6 openbgpd pimd zebra
-
 USES=		compiler:c11 cpe gmake libtool makeinfo \
 		perl5 readline ssl
+
+CONFLICTS=	frr7 openbgpd pimd zebra
+
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV+=	GAWK=${AWK}
+
+CFLAGS+=	-fcommon
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 USE_PERL5=	build

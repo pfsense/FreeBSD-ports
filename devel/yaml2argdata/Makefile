@@ -1,9 +1,9 @@
 # Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yaml2argdata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3
+DISTVERSION=	0.4
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	ed@FreeBSD.org

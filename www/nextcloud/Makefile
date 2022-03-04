@@ -1,10 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	nextcloud
-DISTVERSION=	15.0.5
+PORTVERSION=	23.0.0
 CATEGORIES=	www
 MASTER_SITES=	https://download.nextcloud.com/server/releases/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
+DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Personal cloud which runs on your own server
@@ -12,9 +11,9 @@ COMMENT=	Personal cloud which runs on your own server
 LICENSE=	AGPLv3
 
 USES=		cpe gettext-runtime php:flavors,web tar:bzip2
-USE_PHP=	bz2 ctype curl dom fileinfo filter gd hash iconv json \
-		mbstring pdo posix session simplexml xml xmlreader xmlwriter \
-		xsl wddx zip zlib
+USE_PHP=	bcmath bz2 ctype curl dom fileinfo filter gd gmp hash iconv \
+		json mbstring pcntl pdo posix session simplexml xml xmlreader \
+		xmlwriter xsl zip zlib
 
 NEXTCLOUD_USERNAME?=	${WWWOWN}
 NEXTCLOUD_GROUPNAME?=	${WWWGRP}
@@ -22,13 +21,14 @@ NEXTCLOUD_GROUPNAME?=	${WWWGRP}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 NO_ARCH=	yes
-SUB_FILES=	config.sample.php pkg-message
-PLIST_SUB=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
+SUB_FILES=	config.sample.php occ pkg-message plist.post
+SUB_LIST=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
 		NEXTCLOUD_GROUPNAME=${NEXTCLOUD_GROUPNAME}
+PLIST_SUB=	${SUB_LIST}
 
 OPTIONS_DEFINE=		EXIF IMAGICK INTL LDAP PCNTL SMB SSL
 OPTIONS_GROUP=		CACHING
-OPTIONS_GROUP_CACHING=	APCU MEMCACHED OPCACHE REDIS
+OPTIONS_GROUP_CACHING=	APCU OPCACHE REDIS
 OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	MYSQL PGSQL SQLITE
 OPTIONS_DEFAULT=	APCU EXIF INTL LDAP MYSQL OPCACHE SSL
@@ -40,11 +40,11 @@ DB_DESC=	Database backend(s)
 EXIF_DESC=	Image rotation support
 IMAGICK_DESC=	Thumbnail support (recommended)
 INTL_DESC=	International character support (recommended)
-MEMCACHED_DESC=	Distributed data caching using Memcached
 OPCACHE_DESC=	Enable OPcode caching (recommended)
 PCNTL_DESC=	Long-running process control (recommended)
 REDIS_DESC=	Distributed data caching using Redis
 
+APCU_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}APCu>0:devel/pecl-APCu@${PHP_FLAVOR}
 EXIF_USE=	PHP=exif
 IMAGICK_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}imagick>=2.2.2:graphics/pecl-imagick@${PHP_FLAVOR}
 INTL_USE=	PHP=intl
@@ -58,27 +58,29 @@ SMB_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}smbclient>=0.9.0:net/pecl-smbclient@${PHP_
 SQLITE_USE=	PHP=pdo_sqlite,sqlite3
 SSL_USE=	PHP=openssl
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MAPCU}
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/apcu.so:devel/pecl-APCu@${PHP_FLAVOR}
-.endif
-
 post-extract:
 	@${MV} ${WRKSRC}/config/config.sample.php ${WRKSRC}/config/config.documented.php
+	@${MV} ${WRKSRC}/.htaccess ${WRKSRC}/.htaccess.dist
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/var/www/${PORTNAME}|${WWWDIR}|;s|/var/log/|/var/log/${PORTNAME}/|' \
 		${WRKSRC}/config/config.documented.php
+	@${RM} ${WRKSRC}/config/config.documented.php.* \
+		 ${WRKSRC}/updater/updater.phar
 	@${MV} ${WRKSRC}/apps ${WRKSRC}/apps-pkg
 
 do-install:
 	@${MKDIR} -m 0755 ${STAGEDIR}${WWWDIR}
-	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
-	${INSTALL_SCRIPT} ${WRKDIR}/config.sample.php ${STAGEDIR}${WWWDIR}/config/config.sample.php
-	@${RM} ${STAGEDIR}${WWWDIR}/updater/updater.phar
-	@${MKDIR} ${STAGEDIR}${WWWDIR}/data
-	@${MKDIR} ${STAGEDIR}${WWWDIR}/apps
-	@${MKDIR} ${STAGEDIR}/var/log/${PORTNAME}
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
+	${INSTALL_SCRIPT} ${WRKDIR}/config.sample.php \
+		${STAGEDIR}${WWWDIR}/config/config.sample.php
+	@${MKDIR} ${STAGEDIR}${WWWDIR}/data ${STAGEDIR}${WWWDIR}/apps \
+		${STAGEDIR}/var/log/${PORTNAME}
+	(cd ${WRKSRC}; ${FIND} . -type f) | ${SORT} | \
+		${SED} -Ee '/^\.\/\.(htaccess\.dist|user\.ini)/d' \
+			-e '/^\.\/config\/config\.sample\.php/d' \
+			-e 's,^\.,${WWWDIR_REL},' >> ${TMPPLIST}
+	${CAT} ${WRKDIR}/plist.post >> ${TMPPLIST}
+	${INSTALL_SCRIPT} ${WRKDIR}/occ ${STAGEDIR}${LOCALBASE}/bin/occ
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

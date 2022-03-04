@@ -1,5 +1,4 @@
 # Created by: mi
-# $FreeBSD$
 
 PORTNAME=	jode
 PORTVERSION=	1.1.1.1
@@ -16,7 +15,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 VENDOR_VERSION=	1.1.2-pre1
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NEED_JAVAC=	yes
 GNU_CONFIGURE=	yes
 USES=		gmake perl5 shebangfix

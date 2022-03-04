@@ -1,27 +1,31 @@
 # Created by: Chris Petrik <chris@officialunix.com>
-# $FreeBSD$
 
 PORTNAME=	diakonos
-PORTVERSION=	0.9.4
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.7
 PORTREVISION=	1
 CATEGORIES=	editors ruby
-MASTER_SITES=	http://diakonos.pist0s.ca/archives/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Linux editor for the masses
+MAINTAINER=	christopher.petrik@usm.edu
+COMMENT=	Console editor for the masses
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENCE
 
+RUN_DEPENDS=	rubygem-curses>=1.3.1:devel/rubygem-curses
+
+USES=		shebangfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	Pistos
 USE_RUBY=	yes
+SHEBANG_FILES=	bin/${PORTNAME}
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	installation.rb
 SUB_LIST=	RUBY_SITELIBDIR=${RUBY_SITELIBDIR}
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} 's|/usr/bin/env ruby|${RUBY}|g' ${WRKSRC}/bin/${PORTNAME}
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
@@ -33,10 +37,10 @@ do-install:
 		${STAGEDIR}${PREFIX}/etc/diakonos.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/diakonos-256-colour.conf \
 		${STAGEDIR}${PREFIX}/etc/diakonos-256-colour.conf.sample
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}/help
 
 post-install-DOCS-on:
-	(cd ${WRKSRC} && ${INSTALL_DATA} CHANGELOG LICENCE README.rdoc \
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/help
+	(cd ${WRKSRC} && ${INSTALL_DATA} CHANGELOG README.rdoc \
 		${STAGEDIR}${DOCSDIR})
 	${INSTALL_DATA} ${WRKSRC}/help/*.dhf ${STAGEDIR}${DOCSDIR}/help
 

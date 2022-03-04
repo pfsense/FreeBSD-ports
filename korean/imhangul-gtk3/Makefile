@@ -1,5 +1,4 @@
 # Created by: Junho CHOI <junho.choi@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	imhangul
 PORTVERSION=	3.1.1
@@ -23,7 +22,7 @@ USE_GITHUB=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_GNOME=	cairo gdkpixbuf2 gtk30
-USES=		autoreconf gmake libtool pkgconfig
+USES=		autoreconf gmake gnome libtool pkgconfig
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

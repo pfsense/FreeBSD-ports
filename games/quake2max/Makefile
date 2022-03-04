@@ -1,14 +1,12 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	quake2max
 PORTVERSION=	0.45
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
-MASTER_SITES=	http://www.bfeared.com/library/quake/archive/quakedev/qudos/quake2/engines/Quake2MaX/:src \
-		LOCAL/alepulver/:data
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 DISTNAME=	Quake2maX_${PORTVERSION}-src_unix
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:src ${Q2MAX_DATA}:data
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${Q2MAX_DATA}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -19,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/gnu.txt
 
 EXTRACT_DEPENDS=	unrar:archivers/unrar
 
-USES=		gmake tar:bzip2
+USES=		gmake tar:bzip2 xorg
 USE_XORG=	x11 xext xxf86vm xxf86dga
 ALL_TARGET=	release
 WRKSRC=		${WRKDIR}/${DISTNAME:S/quake2max/Quake2maX/}
@@ -44,11 +42,12 @@ SDLGL_DESC=	Build SDL OpenGL renderer
 
 .if ${PORT_OPTIONS:MGLX} || ${PORT_OPTIONS:MSDLGL}
 LIB_DEPENDS=	libpng.so:graphics/png
-USES+=		jpeg
+USES+=		gl jpeg
 USE_GL=		glu
 .endif
 
 .if ${PORT_OPTIONS:MSDLCLIENT} || ${PORT_OPTIONS:MSDLGL}
+USES+=		sdl
 USE_SDL=	sdl
 .endif
 

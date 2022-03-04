@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libnumbertext
-PORTVERSION=	1.0.5
+PORTVERSION=	1.0.7
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/Numbertext/libnumbertext/releases/download/${PORTVERSION}/
 
@@ -15,5 +13,7 @@ USES=		compiler:c++11-lang gmake libtool tar:xz
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

@@ -1,42 +1,47 @@
 # Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	font-manager
-PORTVERSION=	0.5.7
-PORTREVISION=	7
+PORTVERSION=	0.8.7
 CATEGORIES=	x11-fonts gnome
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Font management application for the GNOME desktop
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	cmake:devel/cmake \
+		itstool:textproc/itstool \
+		valac:lang/vala \
+		yelp-build:textproc/yelp-tools
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libsqlite3.so:databases/sqlite3
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2.py:textproc/py-libxml2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
+		libjson-glib-1.0.so:devel/json-glib \
+		libsoup-2.4.so:devel/libsoup \
+		libwebkit2gtk-4.0.so:www/webkit2-gtk3
 
+USES=		compiler:c++11-lang desktop-file-utils gettext-tools gnome \
+		meson pkgconfig python:3.6+ shebangfix sqlite
 USE_GITHUB=	yes
 GH_ACCOUNT=	FontManager
-GH_PROJECT=	master
+USE_GNOME=	cairo glib20 gtk30 libxml2 pango
+GLIB_SCHEMAS=	org.gnome.FontManager.gschema.xml \
+		org.gnome.FontViewer.gschema.xml
+USE_LDCONFIG=	yes
 
-USE_GNOME=	pygtk2
-GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig python:2.7 tar:bzip2
+SHEBANG_GLOB=	*.py
 
-PORTDATA=	*
+PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
 OPTIONS_DEFINE=	NLS
-
 OPTIONS_SUB=	yes
 
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=	gettext
-NLS_USES_OFF=	gettext-runtime
+NLS_USES=	gettext-runtime
+NLS_MESON_TRUE=	enable-nls
 
-pre-configure:
-	@${CHMOD} 0544 ${WRKSRC}/configure ${WRKSRC}/po/pogen.sh
+post-patch:
+	@${REINPLACE_CMD} \
+		-e "s|\(find_installation.*\)python3|\1${PYTHON_CMD}|" \
+		${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

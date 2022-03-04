@@ -2,7 +2,7 @@
  * pfSense.c
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,6 +93,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <inttypes.h>
 #include <ifaddrs.h>
 #include <libgen.h>
+#include <libpfctl.h>
 #include <netgraph.h>
 #include <netdb.h>
 #include <poll.h>
@@ -101,6 +102,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <strings.h>
 #include <termios.h>
 #include <unistd.h>
+#include <kenv.h>
 
 #define IS_EXT_MODULE
 
@@ -131,6 +133,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_get_pf_states, NULL)
     PHP_FE(pfSense_get_pf_stats, NULL)
     PHP_FE(pfSense_get_os_hw_data, NULL)
+    PHP_FE(pfSense_kenv_dump, NULL)
     PHP_FE(pfSense_get_os_kern_data, NULL)
     PHP_FE(pfSense_vlan_create, NULL)
     PHP_FE(pfSense_interface_rename, NULL)
@@ -141,6 +144,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_bridge_member_flags, NULL)
     PHP_FE(pfSense_interface_listget, NULL)
     PHP_FE(pfSense_interface_create, NULL)
+    PHP_FE(pfSense_interface_create2, NULL)
     PHP_FE(pfSense_interface_destroy, NULL)
     PHP_FE(pfSense_interface_flags, NULL)
     PHP_FE(pfSense_interface_capabilities, NULL)
@@ -258,50 +262,6 @@ prefix(void *val, int size)
 		if (name[byte])
 			return(0);
 	return (plen);
-}
-
-static int
-get_pf_states(int fd, struct pfioc_states* ps)
-{
-	char *inbuf, *newbuf;
-	int retry;
-	size_t len;
-
-	memset(ps, 0, sizeof(*ps));
-	ps->ps_len = 0;
-	inbuf = NULL;
-
-	// ask the kernel how much memory we need to allocate
-	if (ioctl(fd, DIOCGETSTATES, ps) == -1)
-		return (-1);
-
-	/* no states */
-	if (ps->ps_len == 0)
-		return (0);
-
-	for (retry = 5; retry > 0; retry--) {
-
-		len = ps->ps_len + sizeof(struct pfioc_states) +
-		    sizeof(struct pfsync_state) * 20;
-		newbuf = realloc(inbuf, len);
-		if (newbuf == NULL)
-			return (-1);
-
-		ps->ps_buf = inbuf = newbuf;
-
-		// really retrieve the different states
-		if (ioctl(fd, DIOCGETSTATES, ps) == -1) {
-			free(ps->ps_buf);
-			return (-1);
-		}
-
-		if (ps->ps_len + sizeof(struct pfioc_states) <= len)
-			return (ps->ps_len / sizeof(struct pfsync_state));
-	}
-
-	free(inbuf);
-
-	return (-1);
 }
 
 static int
@@ -611,7 +571,7 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 	struct pfioc_src_node_kill psnk;
 	struct addrinfo *res[2], *resp[2];
 	struct sockaddr last_src, last_dst;
-	int killed, sources, dests;
+	int killed, sources;
 	int ret_ga;
 
 	int dev;
@@ -625,7 +585,7 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 
-	killed = sources = dests = 0;
+	killed = sources = 0;
 
 	memset(&psnk, 0, sizeof(psnk));
 	memset(&psnk.psnk_src.addr.v.a.mask, 0xff,
@@ -664,7 +624,6 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 		}
 
 		if (ip2 != NULL) {
-			dests = 0;
 			memset(&psnk.psnk_dst.addr.v.a.mask, 0xff,
 			    sizeof(psnk.psnk_dst.addr.v.a.mask));
 			memset(&last_dst, 0xff, sizeof(last_dst));
@@ -686,8 +645,6 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 				    sizeof(last_dst)) == 0)
 					continue;
 				last_dst = *(struct sockaddr *)resp[1]->ai_addr;
-
-				dests++;
 
 				if (psnk.psnk_af == AF_INET)
 					psnk.psnk_dst.addr.v.a.addr.v4 =
@@ -731,7 +688,7 @@ PHP_FUNCTION(pfSense_kill_states)
 	struct pfioc_state_kill psk;
 	struct addrinfo *res[2], *resp[2];
 	struct sockaddr last_src, last_dst;
-	int killed, sources, dests;
+	int killed, sources;
 	int ret_ga;
 
 	int dev;
@@ -745,7 +702,7 @@ PHP_FUNCTION(pfSense_kill_states)
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 
-	killed = sources = dests = 0;
+	killed = sources = 0;
 
 	memset(&psk, 0, sizeof(psk));
 	memset(&psk.psk_src.addr.v.a.mask, 0xff,
@@ -800,7 +757,6 @@ PHP_FUNCTION(pfSense_kill_states)
 		}
 
 		if (ip2 != NULL && ip2_len > 0) {
-			dests = 0;
 			memset(&psk.psk_dst.addr.v.a.mask, 0xff,
 			    sizeof(psk.psk_dst.addr.v.a.mask));
 			memset(&last_dst, 0xff, sizeof(last_dst));
@@ -824,8 +780,6 @@ PHP_FUNCTION(pfSense_kill_states)
 				    sizeof(last_dst)) == 0)
 					continue;
 				last_dst = *(struct sockaddr *)resp[1]->ai_addr;
-
-				dests++;
 
 				if (psk.psk_af == AF_INET)
 					psk.psk_dst.addr.v.a.addr.v4 =
@@ -955,7 +909,7 @@ table_get_info(ipfw_obj_header *oh, ipfw_xtable_info *i)
 static int
 get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 {
-	int i;
+	int i, ret;
 	size_t l;
 	char *ap, *ptr, *optr;
 	struct ether_addr *mac;
@@ -967,14 +921,15 @@ get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 		return (0);
 	}
 
+	ret = -1;
 	optr = ptr = strdup(p);
 	if ((ap = strsep(&ptr, "&/")) != NULL && *ap != 0) {
 		l = strlen(ap);
 		if (strspn(ap, macset) != l || (mac = ether_aton(ap)) == NULL)
-			return (-1);
+			goto out;
 		bcopy(mac, addr, ETHER_ADDR_LEN);
 	} else
-		return (-1);
+		goto out;
 
 	if (ptr != NULL) { /* we have mask? */
 		if (p[ptr - optr - 1] == '/') { /* mask len */
@@ -987,7 +942,7 @@ get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 			l = strlen(ptr);
 			if (strspn(ptr, macset) != l ||
 			    (mac = ether_aton(ptr)) == NULL)
-				return (-1);
+				goto out;
 			bcopy(mac, mask, ETHER_ADDR_LEN);
 		}
 	} else { /* default mask: ff:ff:ff:ff:ff:ff */
@@ -997,9 +952,11 @@ get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 	for (i = 0; i < ETHER_ADDR_LEN; i++)
 		addr[i] &= mask[i];
 
+	ret = 0;
+out:
 	free(optr);
 
-	return (0);
+	return (ret);
 }
 
 static int
@@ -1293,7 +1250,7 @@ table_show_value(zval *rarray, ipfw_table_value *v, uint32_t vmask)
 {
 	char abuf[INET6_ADDRSTRLEN + IF_NAMESIZE + 2];
 	struct sockaddr_in6 sa6;
-	uint32_t flag, i, l;
+	uint32_t flag, i;
 	struct in_addr a4;
 
 	/*
@@ -1308,8 +1265,6 @@ table_show_value(zval *rarray, ipfw_table_value *v, uint32_t vmask)
 	for (i = 1; i < (1 << 31); i *= 2) {
 		if ((flag = (vmask & i)) == 0)
 			continue;
-		l = 0;
-
 		switch (flag) {
 		case IPFW_VTYPE_TAG:
 			add_assoc_long(rarray, "tag", v->tag);
@@ -2561,15 +2516,17 @@ PHP_FUNCTION(pfSense_ip_to_mac)
 			break;
 		}
 	}
-	free(buf);
 
-	if (found_entry == 0)
+	if (found_entry == 0) {
+		free(buf);
 		RETURN_NULL();
+	}
 
 	array_init(return_value);
 	bzero(outputbuf, sizeof outputbuf);
 	ether_ntoa_r((struct ether_addr *)LLADDR(sdl), outputbuf);
 	add_assoc_string(return_value, "macaddr", outputbuf);
+	free(buf);
 }
 
 PHP_FUNCTION(pfSense_getall_interface_addresses)
@@ -3072,23 +3029,44 @@ PHP_FUNCTION(pfSense_interface_listget) {
 	freeifaddrs(ifdata);
 }
 
+static int interface_create(char *ifname, unsigned long op, zend_string **str, zval *return_value) {
+	struct ifreq ifr;
+
+	memset(&ifr, 0, sizeof(ifr));
+	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
+
+	*str = NULL;
+	if (ioctl(PFSENSE_G(s), op, &ifr) == -1) {
+		array_init(return_value);
+		add_assoc_string(return_value, "error", "Could not create interface");
+		return (-1);
+	}
+	*str = zend_string_init(ifr.ifr_name, strlen(ifr.ifr_name), 0);
+	return (0);
+}
+
 PHP_FUNCTION(pfSense_interface_create) {
 	char *ifname;
 	size_t ifname_len;
-	struct ifreq ifr;
 	zend_string *str;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
 		RETURN_NULL();
 	}
+	if (interface_create(ifname, SIOCIFCREATE, &str, return_value) == 0) {
+		RETURN_STR(str);
+	}
+}
 
-	memset(&ifr, 0, sizeof(ifr));
-	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
-	if (ioctl(PFSENSE_G(s), SIOCIFCREATE2, &ifr) < 0) {
-		array_init(return_value);
-		add_assoc_string(return_value, "error", "Could not create interface");
-	} else {
-		str = zend_string_init(ifr.ifr_name, strlen(ifr.ifr_name), 0);
+PHP_FUNCTION(pfSense_interface_create2) {
+	char *ifname;
+	size_t ifname_len;
+	zend_string *str;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
+		RETURN_NULL();
+	}
+	if (interface_create(ifname, SIOCIFCREATE2, &str, return_value) == 0) {
 		RETURN_STR(str);
 	}
 }
@@ -3106,7 +3084,7 @@ PHP_FUNCTION(pfSense_interface_destroy) {
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 	if (ioctl(PFSENSE_G(s), SIOCIFDESTROY, &ifr) < 0) {
 		array_init(return_value);
-		add_assoc_string(return_value, "error", "Could not create interface");
+		add_assoc_string(return_value, "error", "Could not destroy interface");
 	} else
 		RETURN_TRUE;
 }
@@ -3531,8 +3509,8 @@ PHP_FUNCTION(pfSense_get_interface_stats)
 PHP_FUNCTION(pfSense_get_pf_rules) {
 	int dev;
 	struct pfioc_rule pr;
+	struct pfctl_rule r;
 	uint32_t mnr, nr;
-	zval array;
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
@@ -3546,35 +3524,39 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	mnr = pr.nr;
 	array_init(return_value);
 	for (nr = 0; nr < mnr; ++nr) {
-		pr.nr = nr;
-		if (ioctl(dev, DIOCGETRULE, &pr)) {
+		zval array;
+
+		if (pfctl_get_rule(dev, nr, pr.ticket, pr.anchor, pr.action,
+		    &r, pr.anchor_call)) {
 			add_assoc_string(return_value, "error", strerror(errno));
 			break;
 		}
 
 		array_init(&array);
-		add_assoc_long(&array, "id", (long)pr.rule.nr);
-		add_assoc_long(&array, "tracker", (long)pr.rule.cuid);
-		add_assoc_string(&array, "label", pr.rule.label);
-		add_assoc_double(&array, "evaluations", (double)pr.rule.evaluations);
-		add_assoc_double(&array, "packets", (double)(pr.rule.packets[0] + pr.rule.packets[1]));
-		add_assoc_double(&array, "bytes", (double)(pr.rule.bytes[0] + pr.rule.bytes[1]));
-		add_assoc_double(&array, "states", (double)pr.rule.u_states_cur);
-		add_assoc_long(&array, "pid", (long)pr.rule.cpid);
-		add_assoc_double(&array, "state creations", (double)pr.rule.u_states_tot);
-		add_index_zval(return_value, pr.rule.nr, &array);
+		add_assoc_long(&array, "id", (long)r.nr);
+		add_assoc_long(&array, "tracker", (long)r.ridentifier);
+		add_assoc_string(&array, "label", r.label[0]);
+		add_assoc_double(&array, "evaluations", (double)r.evaluations);
+		add_assoc_double(&array, "packets", (double)(r.packets[0] + r.packets[1]));
+		add_assoc_double(&array, "bytes", (double)(r.bytes[0] + r.bytes[1]));
+		add_assoc_double(&array, "states", (double)r.states_cur);
+		add_assoc_long(&array, "pid", (long)r.cpid);
+		add_assoc_double(&array, "state creations", (double)r.states_tot);
+		add_index_zval(return_value, r.nr, &array);
 	}
 	close(dev);
 }
 
 PHP_FUNCTION(pfSense_get_pf_states) {
-	char buf[128], *filter; //, *key;
-	int count, dev, filter_if, filter_rl, found, min, sec, states;
-	struct pfioc_states ps;
-	struct pfsync_state *s, state;
-	struct pfsync_state_peer *src, *dst;
-	struct pfsync_state_key *sk, *nk;
+	char buf[128], *filter;
+	int count, dev, filter_if, filter_rl, found, min, sec;
+	sa_family_t af;
+	struct pfctl_states states;
+	struct pfctl_state *s;
+	struct pfctl_state_peer *src, *dst;
+	struct pfctl_state_key *sk, *nk;
 	struct protoent *p;
+	uint8_t proto;
 	uint32_t expire, creation;
 	uint64_t bytes[2], id, packets[2];
 	zval array, *zvar;
@@ -3632,20 +3614,22 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			RETURN_NULL();
 	}
 
-	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+	if ((dev = open("/dev/pf", O_RDONLY)) < 0)
 		RETURN_NULL();
-	states = get_pf_states(dev, &ps);
-	if (states <= 0) {
+	memset(&states, 0, sizeof(states));
+	if (pfctl_get_states(dev, &states) != 0) {
 		close(dev);
 		RETURN_NULL();
 	}
 	close(dev);
 
-	s = ps.ps_states;
+	count = 0;
 	array_init(return_value);
-	/* Limit the result to 50.000 states maximum. */
-	for (count = 0; states > 0 && count < 50000; states--, s++) {
-		memcpy(&state, s, sizeof(state));
+	TAILQ_FOREACH(s, &states.states, entry) {
+		/* Limit the result to 50.000 states maximum. */
+		if (++count == 50000)
+			break;
+
 		if (filter_if || filter_rl) {
 			found = 0;
 			hash1 = Z_ARRVAL_P(zvar);
@@ -3657,20 +3641,19 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 					entries = 1;
 
 					if (filter_if) {
-						if (strcasecmp(state.ifname, Z_STRVAL_P(val2)) == 0) {
+						if (strcasecmp(s->orig_ifname, Z_STRVAL_P(val2)) == 0) {
 							found = 1;
 						}
 					} else if (filter_rl) {
-						if (ntohl(state.rule) != -1 &&
-						    (long)ntohl(state.rule) == Z_LVAL_P(val2)) {
+						if (s->rule != -1 &&
+						    s->rule == Z_LVAL_P(val2)) {
 							found = 1;
 						}
 					}
 				} ZEND_HASH_FOREACH_END();
 
 				if (entries == 0) {
-					free(ps.ps_buf);
-					close(dev);
+					pfctl_free_states(&states);
 					RETURN_NULL();
 				}
 			} ZEND_HASH_FOREACH_END();
@@ -3679,19 +3662,21 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				continue;
 		}
 
-		if (state.direction == PF_OUT) {
-			src = &state.src;
-			dst = &state.dst;
-			sk = &state.key[PF_SK_STACK];
-			nk = &state.key[PF_SK_WIRE];
-			if (state.proto == IPPROTO_ICMP || state.proto == IPPROTO_ICMPV6)
+		af = s->key[PF_SK_WIRE].af;
+		proto = s->key[PF_SK_WIRE].proto;
+		if (s->direction == PF_OUT) {
+			src = &s->src;
+			dst = &s->dst;
+			sk = &s->key[PF_SK_STACK];
+			nk = &s->key[PF_SK_WIRE];
+			if (proto == IPPROTO_ICMP || proto == IPPROTO_ICMPV6)
 				sk->port[0] = nk->port[0];
 		} else {
-			src = &state.dst;
-			dst = &state.src;
-			sk = &state.key[PF_SK_WIRE];
-			nk = &state.key[PF_SK_STACK];
-			if (state.proto == IPPROTO_ICMP || state.proto == IPPROTO_ICMPV6)
+			src = &s->dst;
+			dst = &s->src;
+			sk = &s->key[PF_SK_WIRE];
+			nk = &s->key[PF_SK_STACK];
+			if (proto == IPPROTO_ICMP || proto == IPPROTO_ICMPV6)
 				sk->port[1] = nk->port[1];
 		}
 
@@ -3699,51 +3684,51 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 		array_init(&array);
 
-		add_assoc_string(&array, "if", state.ifname);
-		if ((p = getprotobynumber(state.proto)) != NULL) {
+		add_assoc_string(&array, "if", s->orig_ifname);
+		if ((p = getprotobynumber(proto)) != NULL) {
 			add_assoc_string(&array, "proto", p->p_name);
 			if (filter != NULL && strstr(p->p_name, filter))
 				found = 1;
 		} else
-			add_assoc_long(&array, "proto", (long)state.proto);
+			add_assoc_long(&array, "proto", (long)proto);
 		add_assoc_string(&array, "direction",
-		    ((state.direction == PF_OUT) ? "out" : "in"));
+		    ((s->direction == PF_OUT) ? "out" : "in"));
 
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&nk->addr[1], nk->port[1], state.af, buf, sizeof(buf));
-		add_assoc_string(&array, ((state.direction == PF_OUT) ? "src" : "dst"), buf);
+		pf_print_host(&nk->addr[1], nk->port[1], af, buf, sizeof(buf));
+		add_assoc_string(&array, ((s->direction == PF_OUT) ? "src" : "dst"), buf);
 		if (filter != NULL && !found && strstr(buf, filter))
 			found = 1;
 
-		if (PF_ANEQ(&nk->addr[1], &sk->addr[1], state.af) ||
+		if (PF_ANEQ(&nk->addr[1], &sk->addr[1], af) ||
 		    nk->port[1] != sk->port[1]) {
 			memset(buf, 0, sizeof(buf));
-			pf_print_host(&sk->addr[1], sk->port[1], state.af, buf,
+			pf_print_host(&sk->addr[1], sk->port[1], af, buf,
 			    sizeof(buf));
 			add_assoc_string(&array,
-			    ((state.direction == PF_OUT) ? "src-orig" : "dst-orig"), buf);
+			    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf);
 			if (filter != NULL && !found && strstr(buf, filter))
 				found = 1;
 		}
 
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&nk->addr[0], nk->port[0], state.af, buf, sizeof(buf));
-		add_assoc_string(&array, ((state.direction == PF_OUT) ? "dst" : "src"), buf);
+		pf_print_host(&nk->addr[0], nk->port[0], af, buf, sizeof(buf));
+		add_assoc_string(&array, ((s->direction == PF_OUT) ? "dst" : "src"), buf);
 		if (filter != NULL && !found && strstr(buf, filter))
 			found = 1;
 
-		if (PF_ANEQ(&nk->addr[0], &sk->addr[0], state.af) ||
+		if (PF_ANEQ(&nk->addr[0], &sk->addr[0], af) ||
 		    nk->port[0] != sk->port[0]) {
 			memset(buf, 0, sizeof(buf));
-			pf_print_host(&sk->addr[0], sk->port[0], state.af, buf,
+			pf_print_host(&sk->addr[0], sk->port[0], af, buf,
 			    sizeof(buf));
 			add_assoc_string(&array,
-			    ((state.direction == PF_OUT) ? "dst-orig" : "src-orig"), buf);
+			    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf);
 			if (filter != NULL && !found && strstr(buf, filter))
 				found = 1;
 		}
 
-		if (state.proto == IPPROTO_TCP) {
+		if (proto == IPPROTO_TCP) {
 			if (src->state <= TCPS_TIME_WAIT &&
 			    dst->state <= TCPS_TIME_WAIT) {
 				snprintf(buf, sizeof(buf) - 1, "%s:%s",
@@ -3766,7 +3751,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				    src->state, dst->state);
 				add_assoc_string(&array, "state", buf);
 			}
-		} else if (state.proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
+		} else if (proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
 		    dst->state < PFUDPS_NSTATES) {
 			const char *states[] = PFUDPS_NAMES;
 
@@ -3779,7 +3764,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			    strstr(states[dst->state], filter))) {
 				found = 1;
 			}
-		} else if (state.proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
+		} else if (proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
 		    dst->state < PFOTHERS_NSTATES) {
 			/* XXX ICMP doesn't really have state levels */
 			const char *states[] = PFOTHERS_NAMES;
@@ -3803,14 +3788,14 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			continue;
 		}
 
-		creation = ntohl(state.creation);
+		creation = s->creation;
 		sec = creation % 60;
 		creation /= 60;
 		min = creation % 60;
 		creation /= 60;
 		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", creation, min, sec);
 		add_assoc_string(&array, "age", buf);
-		expire = ntohl(state.expire);
+		expire = s->expire;
 		sec = expire % 60;
 		expire /= 60;
 		min = expire % 60;
@@ -3818,35 +3803,34 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", expire, min, sec);
 		add_assoc_string(&array, "expires in", buf);
 
-		bcopy(state.packets[0], &packets[0], sizeof(uint64_t));
-		bcopy(state.packets[1], &packets[1], sizeof(uint64_t));
-		bcopy(state.bytes[0], &bytes[0], sizeof(uint64_t));
-		bcopy(state.bytes[1], &bytes[1], sizeof(uint64_t));
+		bcopy(&s->packets[0], &packets[0], sizeof(uint64_t));
+		bcopy(&s->packets[1], &packets[1], sizeof(uint64_t));
+		bcopy(&s->bytes[0], &bytes[0], sizeof(uint64_t));
+		bcopy(&s->bytes[1], &bytes[1], sizeof(uint64_t));
 		add_assoc_double(&array, "packets total",
-		    (double)(be64toh(packets[0]) + be64toh(packets[1])));
+		    (double)(packets[0] + packets[1]));
 		add_assoc_double(&array, "packets in",
-		    (double)be64toh(packets[0]));
+		    (double)packets[0]);
 		add_assoc_double(&array, "packets out",
-		    (double)be64toh(packets[1]));
+		    (double)packets[1]);
 		add_assoc_double(&array, "bytes total",
-		    (double)(be64toh(bytes[0]) + be64toh(bytes[1])));
-		add_assoc_double(&array, "bytes in", (double)be64toh(bytes[0]));
-		add_assoc_double(&array, "bytes out", (double)be64toh(bytes[1]));
-		if (ntohl(state.anchor) != -1)
-			add_assoc_long(&array, "anchor", (long)ntohl(state.anchor));
-		if (ntohl(state.rule) != -1)
-			add_assoc_long(&array, "rule", (long)ntohl(state.rule));
+		    (double)(bytes[0] + bytes[1]));
+		add_assoc_double(&array, "bytes in", (double)bytes[0]);
+		add_assoc_double(&array, "bytes out", (double)bytes[1]);
+		if (s->anchor != -1)
+			add_assoc_long(&array, "anchor", (long)s->anchor);
+		if (s->rule != -1)
+			add_assoc_long(&array, "rule", (long)s->rule);
 
-		bcopy(&state.id, &id, sizeof(uint64_t));
-		snprintf(buf, sizeof(buf) - 1, "%016jx", (uintmax_t)be64toh(id));
+		bcopy(&s->id, &id, sizeof(uint64_t));
+		snprintf(buf, sizeof(buf) - 1, "%016jx", (uintmax_t)id);
 		add_assoc_string(&array, "id", buf);
-		snprintf(buf, sizeof(buf) - 1, "%08x", ntohl(state.creatorid));
+		snprintf(buf, sizeof(buf) - 1, "%08x", s->creatorid);
 		add_assoc_string(&array, "creatorid", buf);
 
 		add_next_index_zval(return_value, &array);
-		count++;
 	}
-	free(ps.ps_buf);
+	pfctl_free_states(&states);
 }
 
 PHP_FUNCTION(pfSense_get_pf_stats) {
@@ -4133,6 +4117,7 @@ errormodem:
 
 PHP_FUNCTION(pfSense_get_os_hw_data) {
 	int mib[4], idata;
+	u_long ldata;
 	size_t len;
 	char *data;
 
@@ -4182,21 +4167,21 @@ PHP_FUNCTION(pfSense_get_os_hw_data) {
 
 	mib[0] = CTL_HW;
 	mib[1] = HW_PHYSMEM;
-	len = sizeof(idata);
-	if (!sysctl(mib, 2, &idata, &len, NULL, 0))
-		add_assoc_long(return_value, "physmem", idata);
+	len = sizeof(ldata);
+	if (!sysctl(mib, 2, &ldata, &len, NULL, 0))
+		add_assoc_long(return_value, "physmem", ldata);
 
 	mib[0] = CTL_HW;
 	mib[1] = HW_USERMEM;
-	len = sizeof(idata);
-	if (!sysctl(mib, 2, &idata, &len, NULL, 0))
-		add_assoc_long(return_value, "usermem", idata);
+	len = sizeof(ldata);
+	if (!sysctl(mib, 2, &ldata, &len, NULL, 0))
+		add_assoc_long(return_value, "usermem", ldata);
 
 	mib[0] = CTL_HW;
 	mib[1] = HW_REALMEM;
-	len = sizeof(idata);
-	if (!sysctl(mib, 2, &idata, &len, NULL, 0))
-		add_assoc_long(return_value, "realmem", idata);
+	len = sizeof(ldata);
+	if (!sysctl(mib, 2, &ldata, &len, NULL, 0))
+		add_assoc_long(return_value, "realmem", ldata);
 }
 
 PHP_FUNCTION(pfSense_get_os_kern_data) {
@@ -4397,4 +4382,37 @@ PHP_FUNCTION(pfSense_ipsec_list_sa) {
 
 	vici_deinit();
 
+}
+
+PHP_FUNCTION(pfSense_kenv_dump) {
+	char *buf, *bp, *cp;
+	int size;
+
+	size = kenv(KENV_DUMP, NULL, NULL, 0);
+	if (size < 0)
+		return;
+	size += 1;
+	buf = malloc(size);
+	if (buf == NULL)
+		return;
+	if (kenv(KENV_DUMP, NULL, buf, size) < 0) {
+		free(buf);
+		return;
+	}
+
+	array_init(return_value);
+
+	/*
+	 * Stolen from bin/kenv
+	 */
+	for (bp = buf; *bp != '\0'; bp += strlen(bp) + 1) {
+		cp = strchr(bp, '=');
+		if (cp == NULL)
+			continue;
+		*cp++ = '\0';
+		add_assoc_string(return_value, bp, cp);
+		bp = cp;
+	}
+
+	free(buf);
 }

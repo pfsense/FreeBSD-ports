@@ -1,13 +1,12 @@
 # Created by: Hendrik Scholz <hendrik@scholz.net>
-# $FreeBSD$
 
 PORTNAME=	transcode
 PORTVERSION=	1.1.7
-PORTREVISION=	38
+PORTREVISION=	48
 CATEGORIES=	multimedia
 MASTER_SITES=	https://bitbucket.org/france/transcode-tcforge/downloads/
 
-MAINTAINER=	cyberbotx@cyberbotx.com
+MAINTAINER=	se@FreeBSD.org
 COMMENT=	Text-console utility for video stream processing
 
 LICENSE=	GPLv2
@@ -15,7 +14,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 
 USE_LDCONFIG=	yes
-USES=		gmake libtool pkgconfig tar:bzip2
+USES=		gmake libtool pkgconfig tar:bzip2 gettext-runtime
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-oss
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -29,9 +28,9 @@ OPTIONS_DEFAULT=	LAME DVDREAD JPEG ICONV
 BKTR_DESC=		Bktr capture card support
 POSTPROC_DESC=		Libpostproc support
 DVDREAD_DESC=		Libdvdread support
-LZO_DESC=		LZO compression support
 
-X11_USE=			xorg=xv,xaw,xpm
+X11_USES=			xorg
+X11_USE=			xorg=xv,xaw,xpm,sm,ice,xext,x11,xt
 X11_CONFIGURE_WITH=		x
 
 MPEG2_LIB_DEPENDS=		libmpeg2.so:multimedia/libmpeg2
@@ -86,15 +85,16 @@ FAAC_LIB_DEPENDS=		libfaac.so:audio/faac
 FAAC_CONFIGURE_ENABLE=		faac
 FAAC_CONFIGURE_ON=		--with-faac-prefix=${LOCALBASE}
 
+LIBXML2_USES=			gnome
 LIBXML2_USE=			GNOME=libxml2
 LIBXML2_CONFIGURE_ENABLE=	libxml2
 
 MJPEGTOOLS_LIB_DEPENDS=		liblavjpeg.so:multimedia/mjpegtools
 MJPEGTOOLS_CONFIGURE_ENABLE=	mjpegtools
 
+SDL_USES=			sdl
 SDL_USE=			SDL=sdl
 SDL_CONFIGURE_ENABLE=		sdl
-SDL_CONFIGURE_ENV_ON=		SDL_CONFIG="${SDL_CONFIG}"
 
 IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
 IMAGEMAGICK_CONFIGURE_ENABLE=	imagemagick

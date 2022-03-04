@@ -1,9 +1,7 @@
 # Created by: swallace
-# $FreeBSD$
 
 PORTNAME=	xpipeman
-PORTVERSION=	1.0
-PORTREVISION=	4
+PORTVERSION=	1.5
 CATEGORIES=	games
 MASTER_SITES=	SUNSITE/games/strategy
 DISTNAME=	${PORTNAME}
@@ -11,7 +9,7 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Connect the pipes to stop the leaks
 
-USES=		imake tar:Z
+USES=		imake tar:Z xorg
 USE_XORG=	x11 xaw xext xmu xt sm ice
 CFLAGS+=	-Wno-error=return-type
 

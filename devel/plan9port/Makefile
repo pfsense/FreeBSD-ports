@@ -1,13 +1,12 @@
 # Created by: Serge Gagnon <serge.gagnon@b2b2c.ca>
-# $FreeBSD$
 
 PORTNAME=	plan9port
-PORTVERSION=	20180205
+PORTVERSION=	20200816
 CATEGORIES=	devel plan9
 DIST_SUBDIR=	plan9port
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Plan 9 from User Space
 
 LICENSE=	LUCENT
@@ -15,19 +14,19 @@ LICENSE_NAME=	Lucent Public License Version 1.02
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_aarch64=		fails to compile: no such file or directory: 'getcallerpc-arm64'
-BROKEN_armv6=		fails to compile: thread.c:130:5: no member named 'arm_r0' in 'mcontext_t'
-BROKEN_armv7=		fails to compile: thread.c:130:5: no member named 'arm_r0' in 'mcontext_t'
+BROKEN_armv6=	fails to compile: thread.c:130:5: no member named 'arm_r0' in 'mcontext_t'
+BROKEN_armv7=	fails to compile: thread.c:130:5: no member named 'arm_r0' in 'mcontext_t'
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig
+BUILD_DEPENDS=	as:devel/binutils
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 
-USES=		localbase:ldflags perl5 shebangfix
+USES=		compiler:c11 localbase:ldflags perl5 shebangfix xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	9fans
-GH_TAGNAME=	4798a8a5560552480efde5fe8b1f7963a25a96d3
+GH_TAGNAME=	1f098efb7370a0b28306d10681e21883fb1c1507
 USE_PERL5=	build
-USE_XORG=	x11 xt xext
+USE_XORG=	x11 xext xt
 
 SHEBANG_GLOB=	*
 SHEBANG_LANG=	rc
@@ -37,14 +36,18 @@ rc_CMD=		${PREFIX}/plan9/bin/rc
 SUB_FILES=	pkg-message
 SUB_LIST=	OPSYS=${OPSYS}
 
-OPTIONS_DEFINE=	DATA
+OPTIONS_DEFINE=		DATA
 OPTIONS_DEFAULT=	DATA
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
 DATA_DESC=	Install dictionary, thesaurus, and other data files
 
 DATA_MASTER_SITES=	https://9fans.github.io/plan9port/dist/
-DATA_DISTFILES=		pgw.tar.bz2 roget.tar.bz2 scat.tgz
+DATA_DISTFILES=		pgw.tar.bz2 \
+			roget.tar.bz2 \
+			scat.tgz
+
+.include <bsd.port.pre.mk>
 
 post-extract-DATA-on:
 	@cd ${WRKSRC}/dict && ${TAR} -xf ${DISTDIR}/${DIST_SUBDIR}/pgw.tar.bz2
@@ -52,20 +55,20 @@ post-extract-DATA-on:
 	@cd ${WRKSRC}/sky && ${TAR} -xf ${DISTDIR}/${DIST_SUBDIR}/scat.tgz
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|\[5-9\]\.||' ${WRKSRC}/bin/9l
 	@${REINPLACE_CMD} -e 's|/lib/font/bit|${PREFIX}/plan9/font|' \
 		${WRKSRC}/src/cmd/acme/acme.c
 	@${REINPLACE_CMD} -e 's|#!/bin/rc|#!${PREFIX}/plan9/bin/rc|' \
 		${WRKSRC}/src/cmd/upas/ml/mlmgr.c \
 		${WRKSRC}/src/cmd/tcs/font/mkfile
 	@${REINPLACE_CMD} -e 's|ulong|u64int|' ${WRKSRC}/src/libmach/FreeBSD.c
-# Fix 9term: no ptys
-	@${SED} -e 's|util\.h|lib&|' ${WRKSRC}/src/cmd/9term/OpenBSD.c \
-		> ${WRKSRC}/src/cmd/9term/${OPSYS}.c
 
 do-configure:
-	@${ECHO_CMD} 'CFLAGS="${CFLAGS}"' > ${WRKSRC}/LOCAL.config
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+	@${ECHO_CMD} 'CC9="${CC}"' > ${WRKSRC}/LOCAL.config
+.endif
+	@${ECHO_CMD} 'CFLAGS="${CFLAGS}"' >> ${WRKSRC}/LOCAL.config
 	@${ECHO_CMD} 'LDFLAGS="${LDFLAGS}"' >> ${WRKSRC}/LOCAL.config
+	@${ECHO_CMD} 'FONTSRV=fontsrv' >> ${WRKSRC}/LOCAL.config
 
 do-build:
 	@cd ${WRKSRC} && ${SETENV} CC9=${CC} ./INSTALL -b
@@ -86,4 +89,4 @@ post-install:
 			${STRIP_CMD} $$f > /dev/null 2>&1 || ${TRUE}; \
 		done
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

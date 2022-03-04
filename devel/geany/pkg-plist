@@ -19,6 +19,7 @@ include/geany/plugindata.h
 include/geany/pluginutils.h
 include/geany/prefs.h
 include/geany/project.h
+include/geany/scintilla/Compat.h
 include/geany/scintilla/SciLexer.h
 include/geany/scintilla/Sci_Position.h
 include/geany/scintilla/Scintilla.h
@@ -90,8 +91,14 @@ share/applications/geany.desktop
 %%DATADIR%%/filedefs/filetypes.Cython.conf
 %%DATADIR%%/filedefs/filetypes.Genie.conf
 %%DATADIR%%/filedefs/filetypes.Graphviz.conf
+%%DATADIR%%/filedefs/filetypes.Groovy.conf
 %%DATADIR%%/filedefs/filetypes.JSON.conf
+%%DATADIR%%/filedefs/filetypes.Kotlin.conf
+%%DATADIR%%/filedefs/filetypes.Meson.conf
+%%DATADIR%%/filedefs/filetypes.Nim.conf
 %%DATADIR%%/filedefs/filetypes.Scala.conf
+%%DATADIR%%/filedefs/filetypes.Swift.conf
+%%DATADIR%%/filedefs/filetypes.TypeScript.conf
 %%DATADIR%%/filedefs/filetypes.abaqus
 %%DATADIR%%/filedefs/filetypes.abc
 %%DATADIR%%/filedefs/filetypes.actionscript
@@ -99,6 +106,7 @@ share/applications/geany.desktop
 %%DATADIR%%/filedefs/filetypes.asciidoc
 %%DATADIR%%/filedefs/filetypes.asm
 %%DATADIR%%/filedefs/filetypes.batch
+%%DATADIR%%/filedefs/filetypes.bibtex
 %%DATADIR%%/filedefs/filetypes.c
 %%DATADIR%%/filedefs/filetypes.caml
 %%DATADIR%%/filedefs/filetypes.cmake
@@ -125,6 +133,7 @@ share/applications/geany.desktop
 %%DATADIR%%/filedefs/filetypes.html
 %%DATADIR%%/filedefs/filetypes.java
 %%DATADIR%%/filedefs/filetypes.javascript
+%%DATADIR%%/filedefs/filetypes.julia
 %%DATADIR%%/filedefs/filetypes.latex
 %%DATADIR%%/filedefs/filetypes.lisp
 %%DATADIR%%/filedefs/filetypes.lua
@@ -144,6 +153,7 @@ share/applications/geany.desktop
 %%DATADIR%%/filedefs/filetypes.ruby
 %%DATADIR%%/filedefs/filetypes.rust
 %%DATADIR%%/filedefs/filetypes.sh
+%%DATADIR%%/filedefs/filetypes.smalltalk
 %%DATADIR%%/filedefs/filetypes.sql
 %%DATADIR%%/filedefs/filetypes.tcl
 %%DATADIR%%/filedefs/filetypes.txt2tags
@@ -153,11 +163,10 @@ share/applications/geany.desktop
 %%DATADIR%%/filedefs/filetypes.xml
 %%DATADIR%%/filedefs/filetypes.yaml
 %%DATADIR%%/filedefs/filetypes.zephir
-%%GTK3%%%%DATADIR%%/geany-3.0.css
-%%GTK3%%%%DATADIR%%/geany-3.20.css
-%%GTK3%%%%DATADIR%%/geany.css
+%%DATADIR%%/geany-3.0.css
+%%DATADIR%%/geany-3.20.css
+%%DATADIR%%/geany.css
 %%DATADIR%%/geany.glade
-%%GTK2%%%%DATADIR%%/geany.gtkrc
 %%DATADIR%%/snippets.conf
 %%DATADIR%%/tags/entities.html.tags
 %%DATADIR%%/tags/std.pas.tags
@@ -236,10 +245,12 @@ share/icons/hicolor/scalable/apps/geany.svg
 %%NLS%%share/locale/hi/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/hu/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/id/LC_MESSAGES/geany.mo
+%%NLS%%share/locale/ie/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/it/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/ja/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/kk/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/ko/LC_MESSAGES/geany.mo
+%%NLS%%share/locale/ku/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/lb/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/lt/LC_MESSAGES/geany.mo
 %%NLS%%share/locale/lv/LC_MESSAGES/geany.mo

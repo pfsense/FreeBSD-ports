@@ -1,8 +1,7 @@
 # Created by: Anders Troback
-# $FreeBSD$
 
 PORTNAME=	check_ports
-PORTVERSION=	0.7.3
+PORTVERSION=	0.7.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 PKGNAMEPREFIX=	nagios-

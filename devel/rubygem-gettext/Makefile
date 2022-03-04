@@ -1,25 +1,32 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	gettext
-PORTVERSION=	3.2.6
+PORTVERSION=	3.4.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby implementation of the gettext library
 
-LICENSE=	RUBY LGPL3
+LICENSE=	LGPL3 RUBY
 LICENSE_COMB=	dual
+LICENSE_FILE_LGPL3=	${WRKSRC}/doc/text/lgpl-3.0.txt
+LICENSE_FILE_RUBY=	${WRKSRC}/doc/text/ruby-license.txt
 
 RUN_DEPENDS=	rubygem-locale>=2.0.5:devel/rubygem-locale \
 		rubygem-text>=1.3.0:textproc/rubygem-text
 
+USES=		gem shebangfix
+USE_RUBY=	yes
+
 NO_ARCH=	yes
 
-USE_RUBY=	yes
-USES=		gem shebangfix
+PLIST_FILES=	bin/rmsgcat \
+		bin/rmsgfmt \
+		bin/rmsginit \
+		bin/rmsgmerge \
+		bin/rxgettext
+
 SHEBANG_FILES=	samples/*.rb samples/cgi/*.rb
-PLIST_FILES=	bin/rmsgcat bin/rmsgfmt bin/rmsginit bin/rmsgmerge bin/rxgettext
 
 .include <bsd.port.mk>

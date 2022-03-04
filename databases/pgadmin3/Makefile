@@ -1,27 +1,25 @@
 # Created by: Max Khon
-# $FreeBSD$
 
 PORTNAME=	pgadmin3
 PORTVERSION=	1.22.2
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	databases
 MASTER_SITES=	PGSQL/pgadmin/pgadmin3/v${PORTVERSION}/src
 DIST_SUBDIR=	postgresql
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostgreSQL database design and management system
 
 LICENSE=	PostgreSQL
 
 BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 
-USES=		compiler:c++11-lib gettext gmake pgsql:9.0+ ssl
+USES=		compiler:c++11-lib gettext gmake gnome pgsql:9.0+ ssl
 USE_GNOME=	libxml2 libxslt
 USE_WX=		3.0
 USE_CXXSTD=	c++11
 
 WX_COMPS=	wx
-INSTALLS_ICONS=	yes
 ICON_SIZES=	16 32
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-wx-version=${USE_WX} --enable-databasedesigner

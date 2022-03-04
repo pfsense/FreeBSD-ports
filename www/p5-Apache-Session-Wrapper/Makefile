@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Apache-Session-Wrapper
 PORTVERSION=	0.34
 PORTREVISION=	1

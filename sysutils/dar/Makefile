@@ -1,9 +1,8 @@
 # Created by: Edson Brandi <ebrandi@fugspbr.org>
-# $FreeBSD$
 
 PORTNAME=	dar
 PORTVERSION=	2.5.14
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONSUFFIX=	-bis
 CATEGORIES=	sysutils archivers
 MASTER_SITES=	SF

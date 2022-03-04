@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pimd
 PORTVERSION=	2.3.2
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	olivier@FreeBSD.org

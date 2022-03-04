@@ -1,14 +1,20 @@
---- content/browser/BUILD.gn.orig	2019-03-11 22:00:57 UTC
+--- content/browser/BUILD.gn.orig	2021-09-24 04:26:05 UTC
 +++ content/browser/BUILD.gn
-@@ -1939,11 +1939,6 @@ jumbo_source_set("browser") {
-       "tracing/cros_tracing_agent.h",
-     ]
-     deps += [ "//chromeos/resources" ]
--  } else {
--    sources += [
--      "memory/memory_monitor_linux.cc",
--      "memory/memory_monitor_linux.h",
--    ]
+@@ -2311,6 +2311,17 @@ source_set("browser") {
+     deps += [ "//third_party/speech-dispatcher" ]
    }
  
-   if (is_chromeos || is_android || is_chromecast) {
++  if (is_bsd) {
++    sources -= [
++      "compute_pressure/cpu_probe_linux.cc",
++      "compute_pressure/cpu_probe_linux.h",
++      "sandbox_host_linux.cc",
++      "sandbox_host_linux.h",
++      "sandbox_ipc_linux.cc",
++      "sandbox_ipc_linux.h",
++    ]
++  }
++
+   # ChromeOS also defines linux but their memory-monitors conflict.
+   if (is_chromeos_ash) {
+     sources += [

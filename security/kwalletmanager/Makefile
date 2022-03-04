@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kwalletmanager
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	security kde kde-applications
@@ -10,11 +8,12 @@ COMMENT=	Password manager for KDE
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext \
 		kde:5 qt:5 tar:xz
 USE_KDE=	archive auth codecs config configwidgets coreaddons crash \
-		dbusaddons doctools ecm emoticons i18n iconthemes init \
+		dbusaddons doctools emoticons i18n iconthemes init \
 		itemmodels itemviews kcmutils kdelibs4support kio \
 		jobwidgets notifications service wallet widgetsaddons \
-		windowsystem xmlgui
-USE_QT=		core dbus gui network widgets xml \
+		windowsystem xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus gui network widgets xml \
 		buildtools_build qmake_build
 
 OPTIONS_DEFINE=	DOCS

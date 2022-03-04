@@ -1,5 +1,4 @@
 # Created by: Andrew Greenwood <greenwood.andy@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Net-DNSBL-MultiDaemon
 PORTVERSION=	0.39
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	Net::DNSBL::MultiDaemon - multi DNSBL prioritization
+COMMENT=	Perl module for multi DNSBL prioritization
 
 LICENSE=	ART10 GPLv1 GPLv2 GPLv3
 LICENSE_COMB=	dual
@@ -31,6 +30,8 @@ RHBL_RUN_DEPENDS=	p5-URBL-Prepare>=0.08:dns/p5-URBL-Prepare
 
 USES=		perl5 shebangfix
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 SHEBANG_FILES=	MultiDaemon.pm lib/Net/DNSBL/Utilities.pm
 

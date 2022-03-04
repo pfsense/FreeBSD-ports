@@ -1,5 +1,4 @@
 # Created by: verm
-# $FreeBSD$
 
 PORTNAME=	sed
 PORTVERSION=	3.62
@@ -9,7 +8,7 @@ MASTER_SITES=	http://sed.sourceforge.net/grabbag/ssed/
 PKGNAMEPREFIX=	s
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Super-sed - a heavily enhanced version of sed
+COMMENT=	Heavily enhanced version of sed(1)
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=s

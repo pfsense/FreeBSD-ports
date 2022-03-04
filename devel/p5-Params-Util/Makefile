@@ -1,9 +1,7 @@
 # Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Params-Util
-PORTVERSION=	1.07
-PORTREVISION=	2
+PORTVERSION=	1.102
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,6 +12,8 @@ COMMENT=	Utility functions to aid in parameter checking
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+TEST_DEPENDS=	p5-Test-LeakTrace>=0:devel/p5-Test-LeakTrace
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-FindPerl
 PORTVERSION=	0.015
 CATEGORIES=	devel perl5

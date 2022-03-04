@@ -1,8 +1,8 @@
---- src/ruby/ext/grpc/extconf.rb.orig	2017-12-31 07:02:12 UTC
+--- src/ruby/ext/grpc/extconf.rb.orig	2021-04-24 13:33:17 UTC
 +++ src/ruby/ext/grpc/extconf.rb
-@@ -56,9 +56,9 @@ ENV['LD'] = ENV['CC']
- 
- ENV['AR'] = 'libtool -o' if RUBY_PLATFORM =~ /darwin/
+@@ -42,9 +42,9 @@ if RUBY_PLATFORM =~ /darwin/
+   ENV['ARFLAGS'] = '-o'
+  end
  
 -ENV['EMBED_OPENSSL'] = 'true'
 -ENV['EMBED_ZLIB'] = 'true'
@@ -10,10 +10,10 @@
 +ENV['EMBED_OPENSSL'] = 'false'
 +ENV['EMBED_ZLIB'] = 'false'
 +ENV['EMBED_CARES'] = 'false'
+ 
  ENV['ARCH_FLAGS'] = RbConfig::CONFIG['ARCH_FLAG']
- ENV['ARCH_FLAGS'] = '-arch i386 -arch x86_64' if RUBY_PLATFORM =~ /darwin/
- ENV['CPPFLAGS'] = '-DGPR_BACKWARDS_COMPATIBILITY_MODE'
-@@ -67,17 +67,18 @@ output_dir = File.expand_path(RbConfig::CONFIG['topdir
+ if RUBY_PLATFORM =~ /darwin/
+@@ -61,22 +61,23 @@ output_dir = File.expand_path(RbConfig::CONFIG['topdir
  grpc_lib_dir = File.join(output_dir, 'libs', grpc_config)
  ENV['BUILDDIR'] = output_dir
  
@@ -35,10 +35,17 @@
 +#end
  
 -$CFLAGS << ' -I' + File.join(grpc_root, 'include')
--$LDFLAGS << ' ' + File.join(grpc_lib_dir, 'libgrpc.a') unless windows
 +#$CFLAGS << ' -I' + File.join(grpc_root, 'include')
-+#$LDFLAGS << ' ' + File.join(grpc_lib_dir, 'libgrpc.a') unless windows
+ 
+ ext_export_file = File.join(grpc_root, 'src', 'ruby', 'ext', 'grpc', 'ext-export')
+-$LDFLAGS << ' -Wl,--version-script="' + ext_export_file + '.gcc"' if RUBY_PLATFORM =~ /linux/
+-$LDFLAGS << ' -Wl,-exported_symbols_list,"' + ext_export_file + '.clang"' if RUBY_PLATFORM =~ /darwin/
++#$LDFLAGS << ' -Wl,--version-script="' + ext_export_file + '.gcc"' if RUBY_PLATFORM =~ /linux/
++#$LDFLAGS << ' -Wl,-exported_symbols_list,"' + ext_export_file + '.clang"' if RUBY_PLATFORM =~ /darwin/
 +$LDFLAGS << ' -lgrpc' unless windows
+ 
+-$LDFLAGS << ' ' + File.join(grpc_lib_dir, 'libgrpc.a') unless windows
++#$LDFLAGS << ' ' + File.join(grpc_lib_dir, 'libgrpc.a') unless windows
  if grpc_config == 'gcov'
    $CFLAGS << ' -O0 -fprofile-arcs -ftest-coverage'
    $LDFLAGS << ' -fprofile-arcs -ftest-coverage -rdynamic'

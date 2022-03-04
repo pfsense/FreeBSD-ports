@@ -1,5 +1,4 @@
 # Created by: Palle Girgensohn
-# $FreeBSD$
 
 PORTNAME=	crimson
 PORTVERSION=	1.1.3
@@ -10,6 +9,9 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implements the Java API for XML Processing (JAXP)
+
+DEPRECATED=	Deprecated by upstream 2010-08-06
+EXPIRATION_DATE=2022-03-31
 
 USE_JAVA=	yes
 

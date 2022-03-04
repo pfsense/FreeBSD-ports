@@ -1,10 +1,10 @@
 # Created by: Yuri Victorovich <yuri@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	SCIP
-DISTVERSION=	6.0.1
+DISTVERSION=	7.0.3
+PORTREVISION=	1
 CATEGORIES=	math science
-MASTER_SITES=	http://scip.zib.de/download/release/
+MASTER_SITES=	https://www.scipopt.org/download/release/
 DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,13 +19,27 @@ EXTRACT_DEPENDS=	gtar:archivers/gtar
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libsoplex.so:math/SoPlex
 
-CONFLICTS_BUILD=	Ipopt
-
 USES=		compiler:c11 cmake readline tar:tgz
 EXTRACT_CMD=	gtar
 USE_LDCONFIG=	yes
-PLIST_SUB=	SHL4=${DISTVERSION}.0 SHL2=${DISTVERSION:R}
+
+CMAKE_OFF=	PAPILO
 
 CXXFLAGS+=	-I${LOCALBASE}/include/soplex
+
+OPTIONS_DEFINE=		IPOPT ZIMPL
+OPTIONS_DEFAULT=	IPOPT
+
+IPOPT_DESC=		Non-linear optimization support via Ipopt
+IPOPT_USES=		fortran pkgconfig
+IPOPT_CMAKE_BOOL=	IPOPT
+IPOPT_LIB_DEPENDS=	libblas.so:math/blas \
+			libipopt.so:math/ipopt \
+			liblapack.so:math/lapack
+
+ZIMPL_DESC=		Build with Zimpl to translate LP models
+ZIMPL_CMAKE_BOOL=	ZIMPL
+ZIMPL_LIB_DEPENDS=	libzimpl.so:math/zimpl
+ZIMPL_BROKEN=		see https://github.com/scipopt/scip/issues/4
 
 .include <bsd.port.mk>

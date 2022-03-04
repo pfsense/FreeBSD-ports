@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pafy
-PORTVERSION=	0.5.4
-PORTREVISION=	0
+PORTVERSION=	0.5.5
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,10 +13,10 @@ COMMENT=	Python API for YouTube
 LICENSE=	GPLv3
 
 # At the moment the internal backend does not work
-BUILD_DEPENDS=	youtube_dl>=2016.02.22:www/youtube_dl
-RUN_DEPENDS=	youtube_dl>=2016.02.22:www/youtube_dl
+BUILD_DEPENDS=	yt-dlp:www/yt-dlp
+RUN_DEPENDS=	yt-dlp:www/yt-dlp
 
-USES=	python
+USES=	python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 post-patch:

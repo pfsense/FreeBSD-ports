@@ -1,5 +1,4 @@
 # Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
 
 PORTNAME=	dumb
 PORTVERSION=	0.9.3
@@ -19,9 +18,9 @@ ALLEGRO_DESC=	Enable allegro support
 ALLEGRO_LIB_DEPENDS=	liballeg.so:devel/allegro
 ALLEGRO_MAKE_ARGS=	_PORT_ALLEGRO_CFLAGS="`allegro-config --cflags`" \
 			LINK_ALLEGRO="`allegro-config --libs` -lm"
-ALLEGRO_CONFLICTS=	dumb-[0-9]*
+ALLEGRO_CONFLICTS=	dumb
 ALLEGRO_MAKE_ARGS_OFF=	_PORT_ALLEGRO_CFLAGS=
-ALLEGRO_CONFLICTS_OFF=	dumb-allegro-[0-9]*
+ALLEGRO_CONFLICTS_OFF=	dumb-allegro
 
 # libdumb.a is linked into libaudiere.so from audio/audiere.
 CFLAGS+=	-fPIC

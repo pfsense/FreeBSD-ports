@@ -1,6 +1,3 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
-
 CATEGORIES=	math lang
 PKGNAMESUFFIX=	-fftw
 

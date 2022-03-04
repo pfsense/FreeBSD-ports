@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	vkquake
-DISTVERSION=	1.00.0
+DISTVERSION=	1.11.0
 CATEGORIES=	games
 
 MAINTAINER=	greg@unrelenting.technology
@@ -10,22 +8,19 @@ COMMENT=	Quake 1 port using Vulkan instead of OpenGL, based on QuakeSpasm
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 
-BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
-LIB_DEPENDS=	libX11-xcb.so:x11/libX11 \
-		libvulkan.so:graphics/vulkan-loader
+BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
+LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 
 WRKSRC_SUBDIR=	Quake
 
-USES=		desktop-file-utils gmake pkgconfig
+USES=		desktop-file-utils gmake gnome pkgconfig sdl
 USE_SDL=	sdl2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Novum
 GH_PROJECT=	vkQuake
 
-INSTALLS_ICONS=	yes
-
-MAKE_ENV=	prefix=${PREFIX} bindir=${PREFIX}/bin
+MAKE_ENV=	prefix=${PREFIX} bindir=${PREFIX}/bin VULKAN_SDK=${LOCALBASE}
 ALL_TARGET=	# empty
 
 .include	"${.CURDIR}/../quake-data/Makefile.include"
@@ -57,9 +52,9 @@ FLAC_MAKE_ARGS=		USE_CODEC_FLAC=1
 FLAC_MAKE_ARGS_OFF=	USE_CODEC_FLAC=0
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
 
-MP3_MAKE_ARGS=		USE_CODEC_MP3=1 MP3LIB=mad
+MP3_MAKE_ARGS=		USE_CODEC_MP3=1 MP3LIB=mpg123
 MP3_MAKE_ARGS_OFF=	USE_CODEC_MP3=0
-MP3_LIB_DEPENDS=	libmad.so:audio/libmad
+MP3_LIB_DEPENDS=	libmpg123.so:audio/mpg123
 
 VORBIS_MAKE_ARGS=	USE_CODEC_VORBIS=1 VORBISLIB=vorbis
 VORBIS_MAKE_ARGS_OFF=	USE_CODEC_VORBIS=0

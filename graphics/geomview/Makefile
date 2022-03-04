@@ -1,10 +1,9 @@
 # Created by: fenner
-# $FreeBSD$
 
 PORTNAME=	geomview
 PORTVERSION=	1.9.5
-PORTREVISION=	3
-CATEGORIES=	graphics
+PORTREVISION=	4
+CATEGORIES=	graphics education
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		libtool makeinfo motif tar:bzip2
+USES=		cpe gl libtool makeinfo motif tar:bzip2
 USE_GL=		glu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-htmlbrowser=xdg-open --with-pdfviewer=xdg-open \

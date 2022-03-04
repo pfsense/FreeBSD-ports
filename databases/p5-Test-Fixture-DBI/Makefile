@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Fixture-DBI
 PORTVERSION=	0.09
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to load fixture data into database
 
 LICENSE=	ART10 GPLv1+

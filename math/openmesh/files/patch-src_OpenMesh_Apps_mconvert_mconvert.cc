@@ -1,6 +1,6 @@
---- src/OpenMesh/Apps/mconvert/mconvert.cc.orig	2018-10-21 23:39:10 UTC
+--- src/OpenMesh/Apps/mconvert/mconvert.cc.orig	2020-03-12 13:55:54 UTC
 +++ src/OpenMesh/Apps/mconvert/mconvert.cc
-@@ -50,6 +50,9 @@
+@@ -45,6 +45,9 @@
  #include <iterator>
  #include <fstream>
  #include <string>

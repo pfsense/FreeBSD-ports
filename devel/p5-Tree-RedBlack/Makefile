@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Tree-RedBlack
 PORTVERSION=	0.5
@@ -13,8 +12,9 @@ COMMENT=	Perl implementation of Red/Black tree, a type of balanced tree
 
 LICENSE=	ART10
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

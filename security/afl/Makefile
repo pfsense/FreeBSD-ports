@@ -1,5 +1,4 @@
 # Created by: Fabian Keil <fk@fabiankeil.de>
-# $FreeBSD$
 
 PORTNAME=	afl
 PORTVERSION=	2.52
@@ -8,36 +7,44 @@ PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	http://lcamtuf.coredump.cx/afl/releases/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast instrumented fuzzer
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
+DEPRECATED=	Abandoned upstream, no new release since 2017. Please consider using security/afl++ instead
+EXPIRATION_DATE=2022-03-31
+
 # In theory afl supports other architectures with the LLVM plugin.
 # It has to be compiled with AFL_NO_X86=1 in that case.
 ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	Uses binary instrumentation
+ONLY_FOR_ARCHS_REASON=	uses binary instrumentation
 
-USES=	gmake tar:tgz
+USES=		gmake tar:tgz
 
 ALL_TARGET=	all libdislocator
 TEST_TARGET=	test_build
 
-OPTIONS_DEFINE=	DEBUG DOCS LLVM
+OPTIONS_DEFINE=		DEBUG DOCS LLVM
 OPTIONS_DEFAULT=	LLVM
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
 LLVM_DESC=	LLVM-based instrumentation
 
-LLVM_ALL_TARGET=	llvm_mode
 LLVM_BUILD_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 LLVM_RUN_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-LLVM_TEST_TARGET=	test_llvm_mode
 LLVM_MAKE_ARGS=		LLVM_CONFIG=llvm-config${LLVM_DEFAULT}
-LLVM_VARS=	CC=clang${LLVM_DEFAULT} CXX=clang++${LLVM_DEFAULT}
+LLVM_ALL_TARGET=	llvm_mode
+LLVM_TEST_TARGET=	test_llvm_mode
+LLVM_VARS=		CC=clang${LLVM_DEFAULT} \
+			CXX=clang++${LLVM_DEFAULT}
 
 .include <bsd.port.options.mk>
+
+.if ${LLVM_DEFAULT:C/[1-5]./&0/:S,-devel,990,} >= 90
+LLVM_DEFAULT=	80
+.endif
 
 .if ${ARCH} == "i386"
 # Clang i386 emits .cfi_sections which base as(1) doesn't understand

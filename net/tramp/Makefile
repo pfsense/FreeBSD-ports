@@ -1,18 +1,21 @@
 # Created by: Yoichi NAKAYAMA <yoichi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tramp
 PORTVERSION=	2.3.0
-PORTREVISION=	6
+PORTREVISION=	12
 CATEGORIES=	net elisp
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Transparent remote file access tool for Emacs
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Not updated in 5 years and now part of Emacs
+EXPIRATION_DATE=	2022-01-01
+BROKEN=		plist issues with gvfs detection
 
 USES=		cpe emacs gmake makeinfo
 
@@ -30,8 +33,12 @@ INFO=		tramp
 post-patch:
 	@${REINPLACE_CMD} 's/^make/${MAKE_CMD}/' ${WRKSRC}/configure
 
+.include <bsd.port.pre.mk>
+
 .if ${FLAVOR:U} != nox && ${FLAVOR:U} != devel_nox
+.if ! ( ${OSVERSION} >= 1300000 && ${FLAVOR:U} == devel_full )
 PLIST_FILES+=	${TRAMP_LISPDIR}/tramp-gvfs.el ${TRAMP_LISPDIR}/tramp-gvfs.elc
 .endif
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

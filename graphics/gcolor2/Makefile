@@ -1,5 +1,4 @@
 # Created by: Piotr Smyrak, piotr.smyrak@heron.pl
-# $FreeBSD$
 
 PORTNAME=	gcolor2
 PORTVERSION=	0.4
@@ -10,11 +9,11 @@ MASTER_SITES=	SF
 MAINTAINER=	ps.ports@smyrak.com
 COMMENT=	Simple GTK+ 2.0 color selector
 
-USES=		pkgconfig
+LICENSE=	GPLv2
+
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20 gnomeprefix intltool
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 SUB_FILES=	gcolor2.desktop
 

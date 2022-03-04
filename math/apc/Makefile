@@ -1,5 +1,4 @@
 # Created by: Eric A. Griff <eagriff@global2000.net>
-# $FreeBSD$
 
 PORTNAME=	apc
 PORTVERSION=	1.0
@@ -14,6 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libforms.so:x11-toolkits/xforms
 
+USES=		xorg
 USE_XORG=	x11 xpm
 PLIST_FILES=	bin/apc man/man1/apc.1.gz
 

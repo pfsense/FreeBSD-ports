@@ -1,8 +1,8 @@
---- Source/JavaScriptCore/assembler/ARMv7Assembler.h.orig	2019-02-12 11:21:03 UTC
+--- Source/JavaScriptCore/assembler/ARMv7Assembler.h.orig	2021-09-22 23:05:58 UTC
 +++ Source/JavaScriptCore/assembler/ARMv7Assembler.h
-@@ -2471,6 +2471,8 @@ class ARMv7Assembler { (public)
+@@ -2402,6 +2402,8 @@ class ARMv7Assembler { (public)
      {
- #if OS(IOS_FAMILY)
+ #if OS(DARWIN)
          sys_cache_control(kCacheFunctionPrepareForExecution, code, size);
 +#elif OS(FREEBSD) || OS(NETBSD)
 +        __clear_cache(code, reinterpret_cast<char*>(code) + size);

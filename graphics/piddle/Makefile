@@ -1,5 +1,4 @@
 # Created by: dom@happygiraffe.net
-# $FreeBSD$
 
 PORTNAME=	piddle
 PORTVERSION=	1.0.15
@@ -13,7 +12,7 @@ COMMENT=	Graphical Drawing library for Python
 
 LICENSE=	GPLv2+
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

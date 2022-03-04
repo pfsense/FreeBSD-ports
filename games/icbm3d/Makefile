@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	icbm3d
 PORTVERSION=	0.4
@@ -16,6 +15,7 @@ COMMENT=	Inter-Continental Ballistic Missiles, 3D
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
+USES=		xorg
 USE_XORG=	x11
 MAKEFILE=	makefile
 ALL_TARGET=	${PORTNAME}

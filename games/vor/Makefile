@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	vor
-PORTVERSION=	0.5.7
+PORTVERSION=	0.5.8
 CATEGORIES=	games
 MASTER_SITES=	https://jasonwoof.com/downloads/vor/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -13,7 +10,7 @@ COMMENT=	Dodge the rocks until you die
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake pkgconfig tar:tgz
+USES=		gmake pkgconfig sdl tar:tgz
 USE_SDL=	mixer image sdl
 GNU_CONFIGURE=	yes
 
@@ -30,6 +27,6 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

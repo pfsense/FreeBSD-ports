@@ -1,11 +1,10 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	zipmix
 DISTVERSION=	20070221
 CATEGORIES=	archivers
 MASTER_SITES=	http://www.advsys.net/ken/util/ \
-		http://BSDforge.com/projects/source/archivers/zipmix/
+		https://BSDforge.com/projects/source/archivers/zipmix/
 DISTNAME=	${PORTNAME}_src
 
 MAINTAINER=	portmaster@BSDforge.com

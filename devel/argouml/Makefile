@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	argouml
 PORTVERSION=	0.34
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel java
 MASTER_SITES=	http://argouml-downloads.tigris.org/nonav/argouml-${PORTVERSION}/
 DISTNAME=	ArgoUML-${PORTVERSION}
@@ -24,10 +23,8 @@ PORTSCOUT=	limitw:1,even \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 NO_BUILD=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 SUB_FILES=	argouml.sh
-SUB_LIST=	JAVA_VERSION=${JAVA_VERSION}
 PORTDOCS=	manual-${PORTVERSION}.pdf quickguide-${PORTVERSION}.pdf
 
 OPTIONS_DEFINE=	DOCS

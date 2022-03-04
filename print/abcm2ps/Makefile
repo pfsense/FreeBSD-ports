@@ -1,17 +1,16 @@
 # Created by: arved
-# $FreeBSD$
 
 PORTNAME=	abcm2ps
 PORTVERSION=	8.13.23
 DISTVERSIONPREFIX=	v
 CATEGORIES=	print audio
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Converts ABC to music sheet in PostScript format
 
 LICENSE=	GPLv2
 
-USES=		cpe gettext-runtime
+USES=		cpe gettext-runtime gnome
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
 CPE_VENDOR=	moinejf
 GNU_CONFIGURE=	yes

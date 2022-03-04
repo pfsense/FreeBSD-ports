@@ -1,12 +1,11 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-nibbles
-PORTVERSION=	3.24.0
+PORTVERSION=	3.38.2
 PORTREVISION=	1
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gnome nibbles
@@ -28,16 +27,13 @@ LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome localbase pathfix \
-		pkgconfig tar:xz
-USE_GNOME=	cairo gtk30 intlhack librsvg2 libxml2:build
-INSTALLS_ICONS=	yes
+USES=		gettext gl gnome meson pathfix \
+		pkgconfig tar:xz xorg
+USE_GNOME=	cairo gsound gtk30 librsvg2 libxml2:build
 USE_GL=		gl egl
 USE_XORG=	x11 xcomposite xdamage xext xi xfixes xrandr
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--localstatedir=${PREFIX}/share
 
-GLIB_SCHEMAS=	org.gnome.nibbles.gschema.xml
+GLIB_SCHEMAS=	org.gnome.Nibbles.gschema.xml
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/games

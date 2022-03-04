@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rake-compiler-dock
 PORTVERSION=	0.6.2
 CATEGORIES=	devel rubygems
@@ -14,7 +12,6 @@ NO_ARCH=	yes
 USES=		gem shebangfix
 USE_RUBY=	yes
 
-SHEBANK_LANG=	bash
 SHEBANG_FILES=	build/runas
 
 PLIST_FILES=	bin/rake-compiler-dock

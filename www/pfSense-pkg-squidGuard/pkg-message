@@ -1,1 +1,1 @@
-Please visit Services - SquidGuard Proxy Filter - Target Categories and set up at least one category there before enabling SquidGuard. See https://forum.pfsense.org/index.php?topic=94312.0 for details.
+Please visit Services - SquidGuard Proxy Filter - Target Categories and set up at least one category there before enabling SquidGuard. See https://docs.netgate.com/pfsense/en/latest/packages/cache-proxy/squidguard.html for details.

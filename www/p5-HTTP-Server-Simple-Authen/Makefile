@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	HTTP-Server-Simple-Authen
 PORTVERSION=	0.04
@@ -18,9 +17,10 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Authen-Simple>=0.4:security/p5-Authen-Simple \
 		p5-HTTP-Server-Simple>=0.16:www/p5-HTTP-Server-Simple
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5 shebangfix
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 SHEBANG_FILES=	server.pl
 

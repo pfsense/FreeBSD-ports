@@ -1,5 +1,4 @@
 # Created by: Anton Karpov <toxa@toxahost.ru>
-# $FreeBSD$
 
 PORTNAME=	graveman
 DISTVERSION=	0.3.12-5
@@ -15,7 +14,7 @@ BUILD_DEPENDS=	cdrecord:sysutils/cdrtools
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 GNU_CONFIGURE=	yes
-USES=		pathfix pkgconfig gettext gmake tar:bzip2
+USES=		gettext gmake gnome pathfix pkgconfig tar:bzip2
 USE_GNOME=	libglade2 intlhack gnomeprefix
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib

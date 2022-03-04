@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mochiweb
 PORTVERSION=	2.9.0p2
 CATEGORIES=	www devel
@@ -11,7 +9,7 @@ COMMENT=	Erlang library for building lightweight HTTP servers (Basho fork)
 
 LICENSE=	MIT
 
-CONFLICTS=	mochiweb-[0-9]*
+CONFLICTS=	mochiweb
 
 USES=		erlang:rebar
 USE_GITHUB=	yes

@@ -1,5 +1,4 @@
 bin/katomic
-etc/xdg/katomic.knsrc
 share/applications/org.kde.katomic.desktop
 share/icons/hicolor/128x128/apps/katomic.png
 share/icons/hicolor/16x16/apps/katomic.png
@@ -11,8 +10,9 @@ share/icons/hicolor/64x64/apps/katomic.png
 %%DATADIR%%/pics/default_theme.svgz
 share/kconf_update/katomic-levelset-upd.pl
 share/kconf_update/katomic-levelset.upd
-share/kxmlgui5/katomic/katomicui.rc
+share/knsrcfiles/katomic.knsrc
 share/locale/ar/LC_MESSAGES/katomic.mo
+share/locale/be/LC_MESSAGES/katomic.mo
 share/locale/bg/LC_MESSAGES/katomic.mo
 share/locale/bs/LC_MESSAGES/katomic.mo
 share/locale/ca/LC_MESSAGES/katomic.mo
@@ -35,6 +35,7 @@ share/locale/he/LC_MESSAGES/katomic.mo
 share/locale/hi/LC_MESSAGES/katomic.mo
 share/locale/hr/LC_MESSAGES/katomic.mo
 share/locale/hu/LC_MESSAGES/katomic.mo
+share/locale/id/LC_MESSAGES/katomic.mo
 share/locale/is/LC_MESSAGES/katomic.mo
 share/locale/it/LC_MESSAGES/katomic.mo
 share/locale/ja/LC_MESSAGES/katomic.mo
@@ -43,6 +44,7 @@ share/locale/km/LC_MESSAGES/katomic.mo
 share/locale/ko/LC_MESSAGES/katomic.mo
 share/locale/lt/LC_MESSAGES/katomic.mo
 share/locale/lv/LC_MESSAGES/katomic.mo
+share/locale/ml/LC_MESSAGES/katomic.mo
 share/locale/mr/LC_MESSAGES/katomic.mo
 share/locale/nb/LC_MESSAGES/katomic.mo
 share/locale/nds/LC_MESSAGES/katomic.mo
@@ -54,13 +56,19 @@ share/locale/pt/LC_MESSAGES/katomic.mo
 share/locale/pt_BR/LC_MESSAGES/katomic.mo
 share/locale/ro/LC_MESSAGES/katomic.mo
 share/locale/ru/LC_MESSAGES/katomic.mo
+share/locale/se/LC_MESSAGES/katomic.mo
 share/locale/sk/LC_MESSAGES/katomic.mo
 share/locale/sl/LC_MESSAGES/katomic.mo
+share/locale/sq/LC_MESSAGES/katomic.mo
 share/locale/sr/LC_MESSAGES/katomic.mo
 share/locale/sv/LC_MESSAGES/katomic.mo
+share/locale/ta/LC_MESSAGES/katomic.mo
+share/locale/tg/LC_MESSAGES/katomic.mo
 share/locale/tr/LC_MESSAGES/katomic.mo
 share/locale/ug/LC_MESSAGES/katomic.mo
 share/locale/uk/LC_MESSAGES/katomic.mo
+share/locale/vi/LC_MESSAGES/katomic.mo
 share/locale/zh_CN/LC_MESSAGES/katomic.mo
 share/locale/zh_TW/LC_MESSAGES/katomic.mo
 share/metainfo/org.kde.katomic.appdata.xml
+share/qlogging-categories5/katomic.categories

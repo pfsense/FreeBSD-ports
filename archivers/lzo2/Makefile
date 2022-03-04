@@ -1,5 +1,4 @@
 # Created by: giffunip@asme.org
-# $FreeBSD$
 
 PORTNAME=	lzo2
 PORTVERSION=	2.10
@@ -14,10 +13,11 @@ COMMENT=	Portable speedy, lossless data compression library
 
 LICENSE=	GPLv2
 
-USES=		libtool
+USES=		cpe libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared --docdir=${DOCSDIR} --with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
 USE_LDCONFIG=	yes
+CPE_VENDOR=	oberhumer
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

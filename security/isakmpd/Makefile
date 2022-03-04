@@ -1,5 +1,4 @@
 # Created by: Martti Kuparinen <martti.kuparinen@iki.fi>
-# $FreeBSD$
 
 PORTNAME=	isakmpd
 PORTVERSION=	20041207
@@ -14,6 +13,9 @@ COMMENT=	OpenBSD IKE daemon
 .if !exists(/usr/include/netipsec/ipsec.h) && !exists(/usr/include/netinet6/ipsec.h)
 BROKEN=		requires IPsec support
 .endif
+
+DEPRECATED=	15+ years old and broken on multiple versions
+EXPIRATION_DATE=2022-03-31
 
 # If keynote is in use, bring the dependency
 .if defined(USE_KEYNOTE)
@@ -30,6 +32,7 @@ MAKE_JOBS_UNSAFE=	yes
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	variable has incomplete type 'X509_STORE_CTX' (aka 'struct x509_store_ctx_st')
 BROKEN_FreeBSD_13=	variable has incomplete type 'X509_STORE_CTX' (aka 'struct x509_store_ctx_st')
+BROKEN_FreeBSD_14=	variable has incomplete type 'X509_STORE_CTX' (aka 'struct x509_store_ctx_st')
 .endif
 
 OPENSSLINC?=	/usr/include

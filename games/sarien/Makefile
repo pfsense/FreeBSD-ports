@@ -1,5 +1,4 @@
 # Created by: Radim Kolar
-# $FreeBSD$
 
 PORTNAME=	sarien
 PORTVERSION=	0.7.0
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	x11
 MAKE_JOBS_UNSAFE=	yes
 

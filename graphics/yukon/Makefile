@@ -1,9 +1,8 @@
 # Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yukon
 PORTVERSION=	2010011201
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	LOCAL/bms
 
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libseom.so:graphics/seom
 
-USES=		gmake tar:bzip2
+USES=		gl gmake tar:bzip2 xorg
 USE_XORG=	x11 xv
 USE_GL=		gl
 USE_LDCONFIG=	${PREFIX}/lib/yukon

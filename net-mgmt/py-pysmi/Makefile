@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pysmi
-PORTVERSION=	0.3.3
-PORTREVISION=	2
+PORTVERSION=	0.3.4
+PORTREVISION=	1
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	CHEESESHOP \
 		SF/pysmi/pysmi/${PORTVERSION}
@@ -15,7 +13,7 @@ LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	caffeine-ng
-DISTVERSION=	3.4.2
+DISTVERSION=	3.5.1
+PORTREVISION=	1
 CATEGORIES=	x11 python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	tagattie@yandex.com
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Tray bar app to temporarily inhibit screensaver and sleep mode
 
 LICENSE=	GPLv3+ LGPL3+
@@ -22,19 +21,20 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docopt>=0.6.2:devel/py-docopt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xdg>=0.25:devel/py-xdg@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setproctitle>=1.1.10:devel/py-setproctitle@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.29.0:devel/py-wheel@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pulsectl>0:audio/py-pulsectl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flake8>0:devel/py-flake8@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}flake8-bugbear>0:devel/py-flake8-bugbear@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flake8-import-order>0:devel/py-flake8-import-order@${PY_FLAVOR}
 
-USES=		desktop-file-utils gettext-tools gnome python:3.3+
+USES=		desktop-file-utils gettext-tools gnome python:3.6+
 USE_GNOME=	gdkpixbuf2 gtk30 pygobject3
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 
 GLIB_SCHEMAS=	net.launchpad.caffeine.gschema.xml
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DOCS
 

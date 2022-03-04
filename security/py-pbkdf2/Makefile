@@ -1,5 +1,4 @@
 # Created by: Neil Booth <kyuupichan@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	pbkdf2
 PORTVERSION=	1.3
@@ -12,7 +11,9 @@ COMMENT=	PKCS5 v2.0 PBKDF2 Module
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

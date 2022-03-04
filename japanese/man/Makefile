@@ -1,5 +1,4 @@
 # Created by: Kiriyama Kazuhiko <kiri@kiri.toba-cmt.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	man
 PORTVERSION=	1.1j
@@ -26,6 +25,11 @@ BROKEN_mips=	fails to compile: man.c:37:10: fatal error: 'config.h' file not fou
 MAKE_ENV=	GZCAT=${GZCAT} GZIP_CMD="${GZIP_CMD}"
 USES=		shebangfix
 SHEBANG_FILES=	catman/catman.perl makewhatis/makewhatis.perl
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
+# XXX PIE static libraries currently not supported by base system /usr/share/mk
+MAKE_ARGS+=	WITHOUT_PIE=true
 
 post-patch:
 .for file in	apropos/apropos.sh catman/catman.perl \

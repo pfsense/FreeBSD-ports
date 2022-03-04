@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	dio
-DISTVERSION=	0.1.0
+DISTVERSION=	0.2.0
 CATEGORIES=	devel pear
 
 MAINTAINER=	flo@FreeBSD.org

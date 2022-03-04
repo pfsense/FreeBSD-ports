@@ -1,17 +1,15 @@
 #-*- tab-width: 4; -*-
 # ex:ts=4
 #
-# $FreeBSD$
-#
 # bsd.octave.mk - Octave related macro
 # Common code to install octave-forge packages.
 # It is, in effect, a wrapper using the package handling already built
 # into math/octave.
 
 MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases \
-		SF/octave/Octave%20Forge%20Packages/R2009-06-07 \
-		SF/octave/Octave%20Forge%20Packages/R2009-05-08
-DISTNAME=	${OCTAVE_PKGNAME}-${PORTVERSION}
+		SF/octave/Octave%20Forge%20Packages/Old%20Monolithic%20Releases/R2009-06-07 \
+		SF/octave/Octave%20Forge%20Packages/Old%20Monolithic%20Releases/R2009-05-08
+DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 bsd_octave_mk_MAINTAINER=	stephen@FreeBSD.org
 
@@ -28,8 +26,10 @@ OCTAVE_PKGNAME=	${PORTNAME:S/octave-forge-//}
 TARBALLS_DIR=	${LOCALBASE}/share/octave/tarballs
 INSTALL_TARBALLS_DIR=	${STAGEDIR}${PREFIX}/share/octave/tarballs
 
+.include "${.CURDIR}/../../math/octave/Makefile.version"
+
 MAKE_ENV+=	PACKAGE=${WRKDIR}/${DISTNAME}.tar.gz
-MAKE_ARGS=	CC="${CC}" CXX="${CXX}" LD_CXX="${CXX}" DL_LD="${CXX}" MKOCTFILE="${LOCALBASE}/bin/mkoctfile" OCTAVE_VERSION=-`${MAKE} -C ${.CURDIR}/../../math/octave -V PORTVERSION`
+MAKE_ARGS=	CC="${CC}" CXX="${CXX}" LD_CXX="${CXX}" DL_LD="${CXX}" MKOCTFILE="${LOCALBASE}/bin/mkoctfile" OCTAVE_VERSION=-${OCTAVE_VERSION}
 
 LOAD_OCTAVE_PKG_CMD=	${LOCALBASE}/libexec/octave/load-octave-pkg
 

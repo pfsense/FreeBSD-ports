@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	five.globalrequest
 PORTVERSION=	1.0
 PORTREVISION=	1
@@ -15,7 +13,7 @@ LICENSE=	ZPL21
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zope.globalrequest>=0:devel/py-zope.globalrequest@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

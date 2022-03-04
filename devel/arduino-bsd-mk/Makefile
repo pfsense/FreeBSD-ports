@@ -1,9 +1,7 @@
 # Created by: Craig Leres <leres@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	arduino-bsd-mk
-PORTVERSION=	1.1
-PORTREVISION=	1
+PORTVERSION=	2.3
 CATEGORIES=	devel
 MASTER_SITES=	https://xse.com/leres/arduino/arduino-bsd-mk/ \
 		LOCAL/leres/arduino-bsd-mk
@@ -13,10 +11,7 @@ COMMENT=	Build Arduino sketches from the command line on FreeBSD
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	arduino:devel/arduino \
-		avr-gcc:devel/avr-gcc
-
-USES=		python:2.7,run shebangfix
+USES=		python:3.6+,run shebangfix
 
 SHEBANG_FILES=	arduino-boards.py
 
@@ -36,10 +31,12 @@ ALL_SCRIPTS=	arduino-bsd-mk/scripts/arduino-boards.py \
 		arduino-bsd-mk/scripts/gcc-version.sh
 
 pre-patch:
-	# Honor PREFIX in the man page
-	${REINPLACE_CMD} -e 's,/usr/local/,${PREFIX}/,' ${WRKSRC}/bsd.arduino.mk.7
+	# Honor PREFIX
+	${REINPLACE_CMD} -e 's,/usr/local/,${PREFIX}/,' \
+	    ${WRKSRC}/arduino-boards.py ${WRKSRC}/bsd.arduino.mk
 
 post-install:
-	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}$/${EXAMPLESDIR})
+	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . \
+	    ${STAGEDIR}$/${EXAMPLESDIR}
 
 .include <bsd.port.mk>

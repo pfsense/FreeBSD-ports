@@ -1,8 +1,7 @@
 # Created by: mp39590@gmail.com
-# $FreeBSD$
 
 PORTNAME=	acsccid
-PORTVERSION=	1.1.6
+PORTVERSION=	1.1.8
 CATEGORIES=	devel
 MASTER_SITES=	SF
 

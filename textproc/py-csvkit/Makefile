@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	csvkit
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.6
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +15,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}agate>=1.5.4:textproc/py-agate@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}agate-sql>=0.5.0:databases/py-agate-sql@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.6.1:devel/py-six@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

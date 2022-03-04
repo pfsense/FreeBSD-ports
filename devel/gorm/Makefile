@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gorm
 PORTVERSION=	1.2.23
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel gnustep
 
 USE_GITHUB=	yes
@@ -10,7 +8,7 @@ GH_ACCOUNT=	gnustep
 GH_PROJECT=	apps-gorm
 GH_TAGNAME=	04554d2
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical Object Relationship Modeller
 
 LICENSE=	GPLv3

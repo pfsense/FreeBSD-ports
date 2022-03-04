@@ -1,30 +1,31 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	fasm
-PORTVERSION=	1.73.09
+PORTVERSION=	1.73.28
 CATEGORIES=	lang devel
-MASTER_SITES=	http://flatassembler.net/
+MASTER_SITES=	https://flatassembler.net/ \
+		LOCAL/sunpoet
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Flat, multiple-pass assembler for IA-32 & x86-64 architectures
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS=	amd64 i386
 IA32_BINARY_PORT=	yes
 
-PLIST_FILES=	bin/fasm
-PORTDOCS=	*
 WRKSRC=		${WRKDIR}/${PORTNAME}
+
+PLIST_FILES=	bin/fasm
+PORTDOCS=	fasm.txt readme.txt whatsnew.txt
 
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} != "i386"
-CFLAGS+=		-m32 -L/usr/lib32 -B/usr/lib32
+CFLAGS+=	-m32 -L/usr/lib32 -B/usr/lib32
 .endif
 
 do-build:
@@ -32,7 +33,9 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/fasm ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.txt ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

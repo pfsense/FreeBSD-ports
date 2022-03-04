@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	black-box
 PORTVERSION=	1.4.8
@@ -18,6 +17,7 @@ COMMENT=	Shoot in and watch where the shot leaves the box
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		sdl
 USE_SDL=	sdl image mixer
 GNU_CONFIGURE=	yes
 

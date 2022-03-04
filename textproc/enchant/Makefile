@@ -1,5 +1,4 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	enchant
 PORTVERSION=	1.6.0
@@ -13,7 +12,7 @@ COMMENT=	Dictionary/spellchecking framework
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		gmake libtool pathfix pkgconfig
+USES=		gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20
 CONFIGURE_ARGS=	--disable-uspell \
 		--disable-voikko

@@ -1,9 +1,7 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	trophy
-PORTVERSION=	2.0.3
-PORTREVISION=	4
+PORTVERSION=	2.0.4
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -12,6 +10,9 @@ COMMENT=	Single player racing game
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Depends on expired devel/clanlib1
+EXPIRATION_DATE=2021-12-31
 
 LIB_DEPENDS=	libclanCore.so:devel/clanlib1
 

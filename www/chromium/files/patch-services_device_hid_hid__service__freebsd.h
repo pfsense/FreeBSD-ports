@@ -1,4 +1,4 @@
---- services/device/hid/hid_service_freebsd.h.orig	2019-03-17 01:47:14 UTC
+--- services/device/hid/hid_service_freebsd.h.orig	2021-09-29 12:19:04 UTC
 +++ services/device/hid/hid_service_freebsd.h
 @@ -0,0 +1,48 @@
 +// Copyright 2014 The Chromium Authors. All rights reserved.
@@ -25,23 +25,23 @@
 +  ~HidServiceFreeBSD() override;
 +
 +  void Connect(const std::string& device_guid,
-+               const ConnectCallback& connect) override;
++               bool allow_protected_reports,
++	       bool allow_fido_reports,
++               ConnectCallback connect) override;
 +  base::WeakPtr<HidService> GetWeakPtr() override;
 +
 + private:
 +  struct ConnectParams;
-+  class BlockingTaskHelper;
++  class BlockingTaskRunnerHelper;
 +
 +  static void OpenOnBlockingThread(std::unique_ptr<ConnectParams> params);
 +  static void FinishOpen(std::unique_ptr<ConnectParams> params);
-+  static void CreateConnection(std::unique_ptr<ConnectParams> params);
 +
-+  const scoped_refptr<base::SequencedTaskRunner> task_runner_;
 +  const scoped_refptr<base::SequencedTaskRunner> blocking_task_runner_;
 +  // |helper_| lives on the sequence |blocking_task_runner_| posts to and holds
 +  // a weak reference back to the service that owns it.
-+  std::unique_ptr<BlockingTaskHelper> helper_;
-+  base::WeakPtrFactory<HidServiceFreeBSD> weak_factory_;
++  std::unique_ptr<BlockingTaskRunnerHelper, base::OnTaskRunnerDeleter> helper_;
++  base::WeakPtrFactory<HidServiceFreeBSD> weak_factory_{this};
 +
 +  DISALLOW_COPY_AND_ASSIGN(HidServiceFreeBSD);
 +};

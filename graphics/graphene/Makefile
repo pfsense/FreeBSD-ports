@@ -1,21 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	graphene
-PORTVERSION=	1.8.2
+DISTVERSION=	1.10.6
 CATEGORIES=	graphics devel
-MASTER_SITES=	GNOME
+MASTER_SITES=	https://github.com/ebassi/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Optimizations for speeding up vector operations
 
 LICENSE=	MIT
 
-USES=		gnome meson pkgconfig python:3.4+ shebangfix tar:xz
+USES=		compiler:c11 gnome meson pkgconfig python:3.6+ shebangfix tar:xz
 USE_GNOME=	glib20 pygobject3
 USE_LDCONFIG=	yes
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	GTKDOC #INTROSPECTION
+OPTIONS_DEFINE=	DOCS #INTROSPECTION
 #OPTIONS_DEFAULT=INTROSPECTION
 
 SHEBANG_FILES=	src/identfilter.py
@@ -25,13 +23,10 @@ USE_GNOME+=		introspection:build
 #INTROSPECTION_USE=	gnome=introspection:build
 #INTROSPECTION_MESON_OFF=	-Denable-introspection=false
 
-GTKDOC_MESON_TRUE=	gtk_doc
-GTKDOC_DESC=		Build documentation
-GTKDOC_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
+DOCS_MESON_TRUE=	gtk_doc
+DOCS_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|=python |=${PYTHON_VERSION} |g' \
-		${WRKSRC}/src/meson.build
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 # We don't want install tests
 post-install:

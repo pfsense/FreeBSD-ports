@@ -31,7 +31,7 @@ def authenticate(username, secretkey, pin, code_attempt):
         hm = hmac.HMAC(secretkey, b, hashlib.sha1).digest()
 
         # extract 4 bytes from digest based on LSB
-        offset = ord(hm[-1]) & 0x0F
+        offset = hm[-1] & 0x0F
         truncatedHash = hm[offset:offset+4]
 
         # get the code from it

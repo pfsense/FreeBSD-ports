@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	brickshooter
 PORTVERSION=	0.04
 PORTREVISION=	8
@@ -11,6 +8,7 @@ MASTER_SITES=	http://bilious.homelinux.org/~paxed/brickshooter/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Push blocks on to the playing field, match block colors to remove them
 
+USES=		sdl
 USE_SDL=	sdl mixer image
 
 PLIST_FILES=	bin/${PORTNAME}

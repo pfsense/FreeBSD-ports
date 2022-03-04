@@ -1,5 +1,4 @@
 # Created by: Stephane Legrand <stephane@freebsd-fr.org>
-# $FreeBSD$
 
 PORTNAME=	jetty
 PORTVERSION=	8.1.15
@@ -22,8 +21,8 @@ CONFLICTS=	jetty-9.*
 JDVDATE=	v20140411
 USE_RC_SUBR=	${PORTNAME}
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
-USES=		python
+USES=		cpe python
+CPE_VENDOR=	eclipse
 PKGMESSAGE=	${WRKDIR}/pkg-message
 PLIST_SUB+=	RUNASUSER=${RUNASUSER} GROUP=${GROUP}
 

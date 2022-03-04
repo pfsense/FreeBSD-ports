@@ -1,9 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	snappy
-PORTVERSION=	1.1.1
-DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+DISTVERSION=	1.1.2
 CATEGORIES=	archivers
 PKGNAMEPREFIX=	erlang-
 
@@ -12,11 +8,10 @@ COMMENT=	Erlang interface to Google Snappy (de)compressor
 
 LICENSE=	APACHE20
 
-USES=		erlang:rebar gmake
+USES=		erlang:rebar
 USE_GITHUB=	yes
 GH_ACCOUNT=	skunkwerks
 GH_PROJECT=	snappy-erlang-nif
-GH_TAGNAME=	0951a1b
 
 OPTIONS_DEFINE=	DOCS
 

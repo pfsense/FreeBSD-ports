@@ -1,5 +1,4 @@
 # Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Template-Plugin-Subst
 PORTVERSION=	0.02
@@ -16,5 +15,7 @@ RUN_DEPENDS=	p5-Template-Toolkit>=0:www/p5-Template-Toolkit
 
 USES=		perl5
 USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

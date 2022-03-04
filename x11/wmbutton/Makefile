@@ -1,5 +1,4 @@
 # Created by: Jim Mock <jim@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wmbutton
 PORTVERSION=	0.6.1
@@ -13,6 +12,7 @@ COMMENT=	Dockapp that displays 9 buttons to run apps of your choice
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		xorg
 USE_XORG=	xpm
 
 SUB_FILES=	pkg-message

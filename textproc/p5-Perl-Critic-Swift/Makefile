@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Perl-Critic-Swift
 PORTVERSION=	1.0.3
 DISTVERSIONPREFIX=	v
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	A set of additional policies for Perl::Critic
+COMMENT=	Additional policies for Perl::Critic
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

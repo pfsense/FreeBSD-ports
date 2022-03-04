@@ -8,7 +8,7 @@
  * frr_global_prefixes.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,6 +52,10 @@
 			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -64,11 +68,19 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
 		</tab>
 	</tabs>
 	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>IP Type</fielddescr>
+			<fieldname>iptype</fieldname>
+		</columnitem>
 		<columnitem>
 			<fielddescr>Name</fielddescr>
 			<fieldname>name</fieldname>
@@ -79,6 +91,18 @@
 		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
+		<field>
+			<fielddescr>IP Type</fielddescr>
+			<fieldname>iptype</fieldname>
+			<description>Prefix list IP version.</description>
+			<type>select</type>
+			<default_value>IPv4</default_value>
+			<options>
+				<option><name>IPv4</name><value>IPv4</value></option>
+				<option><name>IPv6</name><value>IPv6</value></option>
+			</options>
+			<required/>
+		</field>
 		<field>
 			<fielddescr>Name</fielddescr>
 			<fieldname>name</fieldname>
@@ -102,9 +126,9 @@
 			<description>
 				<![CDATA[
 				Prefix List entries determine parts of networks which can be allowed or denied in specific contexts used in routing daemons.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving. The networks may be a network or "any".
-				<br/><br/>
+				<br />
 				The Minimum and Maximum Prefix Length boxes may be left blank, or have one, the other, or both defined.
 				]]>
 			</description>
@@ -139,6 +163,11 @@
 					<size>25</size>
 				</rowhelperfield>
 				<rowhelperfield>
+					<fielddescr>Any</fielddescr>
+					<fieldname>any</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+				<rowhelperfield>
 					<fielddescr>Minimum Prefix</fielddescr>
 					<fieldname>ge</fieldname>
 					<type>input</type>
@@ -153,6 +182,9 @@
 			</rowhelper>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

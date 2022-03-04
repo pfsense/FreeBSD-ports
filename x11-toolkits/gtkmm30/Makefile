@@ -1,8 +1,7 @@
 # Created by: Martin Klaffenboeck <martin.klaffenboeck@gmx.at>
-# $FreeBSD$
 
 PORTNAME=	gtkmm
-PORTVERSION=	3.22.2
+PORTVERSION=	3.24.2
 PORTREVISION?=	0
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
@@ -18,10 +17,6 @@ USES+=		tar:xz
 
 PORTSCOUT=	limitw:1,even
 
-.if !defined(REFERENCE_PORT)
-
-BUILD_DEPENDS=	gm4:devel/m4
-
 USES+=		gettext gmake gnome libtool pathfix pkgconfig \
 		compiler:c++11-lang
 USE_CXXSTD=	c++11
@@ -30,6 +25,7 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--disable-documentation
 INSTALL_TARGET=	install-strip
+BINARY_WRAPPERS=	gm4
 
 PLIST_SUB=	API_VERSION="3.0"
 
@@ -38,5 +34,3 @@ post-patch:
 		${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>
-
-.endif

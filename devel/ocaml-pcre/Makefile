@@ -1,5 +1,4 @@
 # Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
 
 PORTNAME=	pcre
 PORTVERSION=	7.2.3
@@ -13,6 +12,7 @@ COMMENT=	Perl compatible regular expressions for Objective Caml
 
 LICENSE=	LGPL21
 
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USE_GITHUB=	yes

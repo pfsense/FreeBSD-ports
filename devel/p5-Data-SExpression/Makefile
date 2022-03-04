@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-SExpression
 PORTVERSION=	0.41
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to parse lisp S-expressions into perl data structures
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

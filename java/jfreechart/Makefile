@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	jfreechart
 PORTVERSION=	1.0.17
@@ -14,7 +13,6 @@ LICENSE=	LGPL21
 RUN_DEPENDS=	${JAVALIBDIR}/jcommon.jar:java/jcommon
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 OPTIONS_DEFINE=	COMPILE DOCS
 OPTIONS_DEFAULT=COMPILE

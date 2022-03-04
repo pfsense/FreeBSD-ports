@@ -1,9 +1,8 @@
 # Created by: Yuri Victorovich <yuri@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libmesh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.0
+DISTVERSION=	1.6.2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,14 +11,11 @@ COMMENT=	Numerical simulation of partial differential equations
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to link: libcontrib_opt.a: relocation truncated to fit: R_PPC64_GOT_TLSLD16 against .LANCHOR1
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs	\
+		libmetis.so:math/metis
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs
-
-USES=		autoreconf eigen:3 gmake libtool
+USES=		compiler:c++11-lang eigen:3 gmake libtool perl5
 GNU_CONFIGURE=	yes
-USE_GITHUB=	yes
-GH_ACCOUNT=	libMesh
 CONFIGURE_ARGS=	--disable-static \
 		--with-methods=opt \
 		--with-thread-model=pthread \
@@ -29,10 +25,21 @@ CONFIGURE_ARGS=	--disable-static \
 		--enable-tetgen \
 		--enable-triagle \
 		--with-boost=${LOCALBASE} \
+		--with-metis=${LOCALBASE} \
 		--with-eigen-include=${LOCALBASE}/include/eigen3 \
 		--disable-netcdf --disable-netcdf-4 # https://github.com/libMesh/libmesh/issues/1542
-MAKE_ARGS=	LDFLAGS="-pthread -lexecinfo"
+CONFIGURE_ARGS+=	--disable-metaphysicl # enabling this causes libmesh to install a bundled metaphysicl that would conflict with the metaphysicl package
+MAKE_ARGS=	LDFLAGS="-pthread -lexecinfo -L${LOCALBASE}/lib"
 USE_LDCONFIG=	yes
+
+INSTALL_TARGET=	install-strip
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	libMesh
+GH_TUPLE=	\
+		libMesh:autoconf-submodule:a993d79:autoconf_submodule/m4/autoconf-submodule \
+		libMesh:TIMPI:5b3b387:TIMPI/contrib/timpi \
+		roystgnr:MetaPhysicL:30d13f2:MetaPhysicL/contrib/metaphysicl
 
 OPTIONS_DEFINE=			GLPK HDF5 MPI EXAMPLES
 OPTIONS_DEFAULT=		MPI
@@ -43,7 +50,6 @@ GLPK_LIB_DEPENDS=		libglpk.so:math/glpk
 HDF5_CONFIGURE_ENABLE=		hdf5
 HDF5_LIB_DEPENDS=		libhdf5.so:science/hdf5
 MPI_CONFIGURE_ENABLE=		mpi
-FSCURVES_CONFIGURE_ENABLE=	sfc
 EXAMPLES_CONFIGURE_ENABLE=	examples
 EXAMPLES_VARS=			PKGMESSAGE=pkg-message-examples
 SUB_FILES=			pkg-message-examples

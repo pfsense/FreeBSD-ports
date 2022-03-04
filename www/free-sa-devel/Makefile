@@ -1,5 +1,4 @@
 # Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-# $FreeBSD$
 
 PORTNAME=	free-sa
 PORTVERSION=	2.0.0b6.7
@@ -13,7 +12,7 @@ COMMENT=	Statistic analyzer for daemons log files similar to SARG
 
 LICENSE=	GPLv3
 
-CONFLICTS=	free-sa-[0-9]*
+CONFLICTS=	free-sa
 
 WWWDIR?=	${PREFIX}/www/${PORTNAME}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${DISTVERSION}
@@ -38,6 +37,9 @@ MAKE_ARGS+=	PREFIX="${PREFIX}" \
 		HAVE_STRL="1" \
 		MANDIR="${MANPREFIX}/man" \
 		STAGEDIR="${STAGEDIR}"
+
+# Fix build with clang11. Upstream seems dead, so don't expect a proper fix.
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=		OPTIMIZED_CFLAGS SA_DEBUG DOCS
 OPTIMIZED_CFLAGS_DESC=	Build with distribution-recommended CFLAGS

@@ -1,8 +1,7 @@
 # Created by: Luiz Eduardo R. Cordeiro
-# $FreeBSD$
 
 PORTNAME=	chkrootkit
-PORTVERSION=	0.52
+PORTVERSION=	0.53
 CATEGORIES=	security
 MASTER_SITES=	ftp://ftp.pangeia.com.br/pub/seg/pac/
 
@@ -11,6 +10,8 @@ COMMENT=	Tool to locally check for signs of a rootkit
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
+USES=		cpe
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,9 +1,8 @@
 # Created by: Jie Gao	<gaoj@cpsc.ucalgary.ca>
-# $FreeBSD$
 
 PORTNAME=	scim
 PORTVERSION=	1.4.9
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
@@ -15,7 +14,7 @@ LICENSE=	LGPL21
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USES=		compiler:c++11-lang gettext gmake gnome iconv libtool pathfix \
-		pkgconfig
+		pkgconfig xorg
 USE_GNOME=	gtk20 intlhack
 USE_XORG=	x11 xpm
 USE_LDCONFIG=	yes

@@ -1,5 +1,4 @@
 # Created by: tdb
-# $FreeBSD$
 
 PORTNAME=	libmowgli2
 PORTVERSION=	2.1.3
@@ -8,6 +7,9 @@ CATEGORIES=	devel
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Development framework for C
+
+LICENSE=	ISCL
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	atheme

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.sequencesort
 PORTVERSION=	3.4.0
 PORTREVISION=	1
@@ -13,7 +11,7 @@ COMMENT=	Very Advanced Sequence Sorting
 
 LICENSE=	ZPL21
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

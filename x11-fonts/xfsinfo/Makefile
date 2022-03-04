@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xfsinfo
 PORTVERSION=	1.0.6
 CATEGORIES=	x11-fonts
@@ -10,7 +8,7 @@ COMMENT=	X font server information utility
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 libfs
 
 PLIST_FILES=	bin/xfsinfo man/man1/xfsinfo.1.gz

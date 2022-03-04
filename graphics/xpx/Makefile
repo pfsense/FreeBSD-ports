@@ -1,5 +1,4 @@
 # Created by: Seiichirou Hiraoka
-# $FreeBSD$
 
 PORTNAME=	xpx
 PORTVERSION=	1.41
@@ -13,7 +12,7 @@ COMMENT=	Simple pixel editing tool to generate data for KISS
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		imake:notall
+USES=		imake:notall xorg
 USE_XORG=	x11 xext
 
 DOCSDIR=	${PREFIX}/share/doc/ja/${PORTNAME}

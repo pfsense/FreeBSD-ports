@@ -3,8 +3,8 @@
  * pfblockerng_general.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -60,6 +60,8 @@ $pconfig['log_max_ip_permitlog']	= $pfb['gconfig']['log_max_ip_permitlog']		?: 2
 $pconfig['log_max_ip_matchlog']		= $pfb['gconfig']['log_max_ip_matchlog']		?: 20000;
 $pconfig['log_max_dnslog']		= $pfb['gconfig']['log_max_dnslog']			?: 20000;
 $pconfig['log_max_dnsbl_parse_err']	= $pfb['gconfig']['log_max_dnsbl_parse_err']		?: 20000;
+$pconfig['log_max_dnsreplylog']		= $pfb['gconfig']['log_max_dnsreplylog']		?: 20000;
+$pconfig['log_max_unilog']		= $pfb['gconfig']['log_max_unilog']			?: 20000;
 
 // Validate input fields and save
 if ($_POST) {
@@ -86,6 +88,8 @@ if ($_POST) {
 		$pfb['gconfig']['log_max_ip_matchlog']		= $_POST['log_max_ip_matchlog']		?: '';
 		$pfb['gconfig']['log_max_dnslog']		= $_POST['log_max_dnslog']		?: '';
 		$pfb['gconfig']['log_max_dnsbl_parse_err']	= $_POST['log_max_dnsbl_parse_err']	?: '';
+		$pfb['gconfig']['log_max_dnsreplylog']		= $_POST['log_max_dnsreplylog']		?: '';
+		$pfb['gconfig']['log_max_unilog']		= $_POST['log_max_unilog']		?: '';
 
 		if (!$input_errors) {
 			write_config('[pfBlockerNG] save General settings');
@@ -205,9 +209,11 @@ $section->addInput(new Form_Select(
 $form->add($section);
 
 $section = new Form_Section('Log Settings (max lines)');
-$log_types = array (	'General'	=> array('pfBlockerNG' => 'log', 'Error' => 'errlog', 'Extras' => 'extraslog'),
+$log_types = array (	'General'	=> array('pfBlockerNG' => 'log', 'Unified Log' => 'unilog', 'Error' => 'errlog', 'Extras' => 'extraslog'),
 			'IP'		=> array('IP Block' => 'ip_blocklog', 'IP Permit' => 'ip_permitlog', 'IP Match' => 'ip_matchlog'),
-			'DNSBL'		=> array('DNSBL' => 'dnslog', 'DNSBL Parse Error' => 'dnsbl_parse_err'));
+			'DNSBL'		=> array('DNSBL' => 'dnslog', 'DNSBL Parse Error' => 'dnsbl_parse_err'),
+			'DNS Reply'	=> array('DNS Reply' => 'dnsreplylog')
+			);
 
 foreach ($log_types as $logdescr => $logtype) {
 	$group = new Form_Group($logdescr);
@@ -216,9 +222,12 @@ foreach ($log_types as $logdescr => $logtype) {
 			'log_max_' . $type,
 			$descr,
 			$pconfig['log_max_' . $type],
- 			[	'100' => '100', '1000' => '1000', '2000' => '2000', '4000' => '4000', '6000' => '6000',
-				'8000' => '8000', '10000' => '10000', '20000' => '20000', '40000' => '40000', '60000' => '60000',
-				'80000' => '80000', '100000' => '100000', 'nolimit' => 'No Limit (Not recommended)' ]
+ 			[	'100' => '100', '1000' => '1,000', '2000' => '2,000', '4000' => '4,000', '6000' => '6,000',
+				'8000' => '8,000', '10000' => '10,000', '20000' => '20,000', '40000' => '40,000', '60000' => '60,000',
+				'80000' => '80,000', '100000' => '100,000', '200000' => '200,000 - Memory intensive...', '400000' => '400,000',
+				'600000' => '600,000', '800000' => '800,000', '1000000' => '1,000,000', '1500000' => '1,500,000',
+				'2000000' => '2,000,000', '2500000' => '2,500,000', '3000000' => '3,000,000',
+				'nolimit' => 'No Limit - Not recommended' ]
 		))->setHelp("Default: <strong>20000<br />{$descr}</strong> Log")
 		  ->setWidth(2);
 	}
@@ -232,16 +241,14 @@ $section->addInput(new Form_StaticText(
 	'
 <div>
 <div style="width: 75%; height: 180px; float: left;">
-	<strong>pfBlockerNG</strong> created in 2015 by:
-	<a target="_blank" href="https://forum.pfsense.org/index.php?action=profile;u=238481">BBcan177</a><br />
+	<strong>pfBlockerNG</strong> is created, designed, developed, supported and maintained by:
+	<a target="_blank" href="https://forum.netgate.com/user/bbcan177">BBcan177</a><br />
 
 	<ul class="list-inline" style="margin-top: 4px; margin-bottom: -2px; border-style: outset; border-bottom-color: #8B181B; border-right-color: #8B181B; border-width: 2px;">
 		<li class="list-inline-item"><a target="_blank" href="http://pfblockerng.com">
 			<span style="color: #8B181B;" class="fa fa-globe"></span> HomePage</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://twitter.com/intent/follow?screen_name=BBcan177">
 			<span style="color: #8B181B;" class="fa fa-twitter"></span> Follow on Twitter</a></li>
-		<li class="list-inline-item"><a target="_blank" href="https://plus.google.com/u/0/109775911285900340944">
-			<span style="color: #8B181B;" class="fa fa-google-plus"></span> Google+</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/r/pfBlockerNG/new/">
 			<span style="color: #8B181B;" class="fa fa-reddit"></span> Reddit</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://github.com/BBcan177">

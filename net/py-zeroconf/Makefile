@@ -1,9 +1,7 @@
 # Created by: John Hixson <jhixson@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	zeroconf
-PORTVERSION=	0.21.3
-PORTREVISION=	3
+PORTVERSION=	0.36.0
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,10 +11,9 @@ COMMENT=	Pure python implementation of multicast DNS service discovery
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ifaddr>=0.1.6:net/py-ifaddr@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ifaddr>=0.1.7:net/py-ifaddr@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 USE_GITHUB=	yes
 GH_ACCOUNT=	jstasiak

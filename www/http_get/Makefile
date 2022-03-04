@@ -1,9 +1,8 @@
 # Created by: Aaron Zauner <az_mail@gmx.at>
-# $FreeBSD$
 
 PORTNAME=	http_get
 PORTVERSION=	1.0.20140814
-CATEGORIES=	www ipv6
+CATEGORIES=	www
 MASTER_SITES=	http://www.acme.com/software/http_get/
 DISTNAME=	${PORTNAME}_14Aug2014
 

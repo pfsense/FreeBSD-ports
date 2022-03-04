@@ -1,5 +1,4 @@
 # Created by: Mark Hannon <markhannon@optusnet.com.au>
-# $FreeBSD$
 
 PORTNAME=	gnome-ssh-askpass
 PORTVERSION=	6.6p1
@@ -20,7 +19,7 @@ BUILD_WRKSRC=	${WRKSRC}/contrib
 ALL_TARGET=	gnome-ssh-askpass2
 
 PLIST_FILES=	bin/gnome-ssh-askpass2
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 
 CFLAGS+=	-lpthread

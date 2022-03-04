@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Encode-JP-Emoji
 PORTVERSION=	0.60
 PORTREVISION=	1
 CATEGORIES=	japanese perl5
 MASTER_SITES=	CPAN
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Emoji encodings and cross-mapping tables
 
 USES=		perl5

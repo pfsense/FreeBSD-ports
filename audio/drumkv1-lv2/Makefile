@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	drumkv1
-DISTVERSION=	0.9.6
+DISTVERSION=	0.9.23
+PORTREVISION=	1
 CATEGORIES=	audio multimedia
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	-lv2
@@ -17,11 +16,10 @@ LIB_DEPENDS=	libjack.so:audio/jack \
 		libsndfile.so:audio/libsndfile \
 		liblo.so:audio/liblo
 
-USES=		compiler:c++11-lang gl gmake localbase:ldflags pkgconfig qt:5 shared-mime-info
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-alsa-midi
-USE_QT=		core gui widgets xml buildtools_build qmake_build
+USES=		cmake compiler:c++17-lang gl localbase:ldflags pkgconfig qt:5 shared-mime-info
+USE_QT=		core gui widgets xml buildtools_build linguisttools_build qmake_build
 USE_GL=		gl
-USE_LDCONFIG=	yes
+
+CMAKE_OFF=	CONFIG_ALSA_MIDI
 
 .include <bsd.port.mk>

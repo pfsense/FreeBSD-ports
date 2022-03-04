@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Amon2-Plugin-LogDispatch
 PORTVERSION=	0.01
 PORTREVISION=	2
@@ -7,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of Log::Dispatch glue for Amon2
 
 RUN_DEPENDS=	\

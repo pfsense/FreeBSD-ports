@@ -1,8 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	http
-PORTVERSION=	3.2.0
+PORTVERSION=	3.2.4
+PORTREVISION=	2
 CATEGORIES=	www
 DISTNAME=	pecl_${PORTNAME}-${PORTVERSION}
 
@@ -21,10 +21,13 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/raphf.so:devel/pecl-raphf2@${
 RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/raphf.so:devel/pecl-raphf2@${PHP_FLAVOR} \
 		${LOCALBASE}/lib/php/${PHP_EXT_DIR}/propro.so:devel/pecl-propro2@${PHP_FLAVOR}
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libevent.so:devel/libevent
+		libevent.so:devel/libevent \
+		libicudata.so:devel/icu
 
 USES=		php:pecl
 USE_PHP=	zlib:build
+IGNORE_WITH_PHP=	80
+
 CONFLICTS=	pecl-http[12]*
 
 .include <bsd.port.mk>

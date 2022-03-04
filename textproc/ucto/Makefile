@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	ucto
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.1
+DISTVERSION=	0.23
 PORTREVISION=	1
 CATEGORIES=	textproc
 
@@ -17,17 +15,19 @@ BUILD_DEPENDS=	autoconf-archive>0:devel/autoconf-archive \
 LIB_DEPENDS=	libexttextcat-2.0.so:textproc/libexttextcat \
 		libfolia.so:textproc/libfolia \
 		libicuio.so:devel/icu \
-		libomp.so:devel/openmp \
 		libticcutils.so:devel/ticcutils
 RUN_DEPENDS=	uctodata>0:textproc/uctodata
 
-USES=		autoreconf gmake gnome libedit libtool pkgconfig readline
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-static
-USE_GITHUB=	yes
-GH_ACCOUNT=	LanguageMachines
+USES=		autoreconf compiler:c++11-lang gmake gnome libedit libtool \
+		pkgconfig readline
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	LanguageMachines
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-static
 
 INSTALL_TARGET=	install-strip
 

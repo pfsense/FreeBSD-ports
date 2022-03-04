@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	brikx
 PORTVERSION=	0.4.5
 PORTREVISION=	9
@@ -12,13 +9,12 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Puzzle game - remove all tiles from the table
 
-USES=		compiler:c++11-lang tar:bzip2
+USES=		sdl tar:bzip2
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer image ttf
+USE_CXXSTD=	c++98
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-
-CXXFLAGS+=	-Wno-reserved-user-defined-literal
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*

@@ -1,13 +1,12 @@
 # Created by: Stas Timokhin <stast@bsdportal.ru>
-# $FreeBSD$
 
 PORTNAME=	eiskaltdcpp
-PORTREVISION=	11
+PORTREVISION=	20
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	-gtk
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	EiskaltDC++ Direct Connect client GTK GUI
+COMMENT=	EiskaltDC++ client GTK graphic interface
 
 LICENSE=	GPLv3
 
@@ -16,16 +15,15 @@ LIB_DEPENDS=	libeiskaltdcpp.so:net-p2p/eiskaltdcpp-lib
 
 MASTERDIR=	${.CURDIR}/../eiskaltdcpp-lib
 
-USES=		cmake gettext compiler:c++11-lib desktop-file-utils ssl
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext gnome ssl
 USE_GNOME=	pango glib20
 
 OPTIONS_DEFINE=	LIBNOTIFY FREE_SPACE
 OPTIONS_DEFAULT=	LIBNOTIFY FREE_SPACE GTK2 NOSOUND
 OPTIONS_SINGLE=	GTK SOUND
 OPTIONS_SINGLE_GTK=	GTK2 GTK3
-OPTIONS_SINGLE_SOUND=	NOSOUND LIBGNOME2 LIBCANBERRA
+OPTIONS_SINGLE_SOUND=	NOSOUND LIBCANBERRA
 NOSOUND_DESC=	Disable sound notification support
-LIBGNOME2_DESC=	Sound notification support via libgnome
 LIBCANBERRA_DESC=	Sound notification support via libcanberra
 LIBNOTIFY_DESC=	Popup notification support
 FREE_SPACE_DESC=Free space bar in status panel
@@ -36,9 +34,6 @@ CMAKE_ARGS+=	-DCREATE_MO:BOOL=ON
 CMAKE_ARGS+=	-DINSTALL_DATA:BOOL=OFF
 
 NOSOUND_CMAKE_ON=	-DUSE_LIBGNOME2:BOOL=OFF -DUSE_LIBCANBERRA:BOOL=OFF
-
-LIBGNOME2_USE=		gnome=libgnome
-LIBGNOME2_CMAKE_ON=	-DUSE_LIBGNOME2:BOOL=ON -DUSE_LIBCANBERRA:BOOL=OFF
 
 LIBCANBERRA_LIB_DEPENDS=libcanberra-gtk.so:audio/libcanberra
 LIBCANBERRA_CMAKE_ON=	-DUSE_LIBGNOME2:BOOL=OFF -DUSE_LIBCANBERRA:BOOL=ON

@@ -1,14 +1,15 @@
 # Created by: Takefu
-# $FreeBSD$
 
 PORTNAME=	wordpress
-DISTVERSION=	5.1.1
+DISTVERSION=	5.8
 DISTVERSIONSUFFIX=	-ja
 CATEGORIES=	japanese www
 MASTER_SITES=	http://ja.wordpress.org/
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	State-of-the-art semantic personal publishing platform
+
+BROKEN=		fails to fetch (checksum mismatch)
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
@@ -19,7 +20,8 @@ CONFLICTS_INSTALL=	wordpress-[0-9].* de-wordpress-[0-9].* ru-wordpress-[0-9].*
 NO_ARCH=	yes
 NO_BUILD=	yes
 USES=		cpe php:web
-USE_PHP=	curl gd mysqli pcre tokenizer xml zip zlib ftp
+USE_PHP=	curl exif fileinfo ftp gd hash json mysqli pcre tokenizer xml zip zlib
+RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:graphics/pecl-imagick@${PHP_FLAVOR}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 CPE_LANG=	ja

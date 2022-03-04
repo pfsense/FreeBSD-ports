@@ -1,5 +1,4 @@
 # Created by: Lars Erik Gullerud <lerik@nolink.net>
-# $FreeBSD$
 
 PORTNAME=	radix
 PORTVERSION=	0.10.0
@@ -14,10 +13,10 @@ COMMENT=	Python radix-tree implementation
 LICENSE=	ISCL BSD4CLAUSE
 LICENSE_COMB=	dual
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/_${PORTNAME}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/_${PORTNAME}*.so
 
 .include <bsd.port.mk>

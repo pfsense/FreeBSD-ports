@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	msiklm
-DISTVERSION=	g20180507
+DISTVERSION=	g20200426
 CATEGORIES=	sysutils
 
 MAINTAINER=	jhale@FreeBSD.org
@@ -11,7 +9,7 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	This hardware is only found on x86 systems
+ONLY_FOR_ARCHS_REASON=	this hardware is only found on x86 systems
 
 LIB_DEPENDS=	libhidapi.so:comms/hidapi
 
@@ -20,7 +18,7 @@ DOS2UNIX_FILES=	README.md
 USE_GITHUB=	yes
 GH_ACCOUNT=	Gibtnix
 GH_PROJECT=	MSIKLM
-GH_TAGNAME=	329c4b1
+GH_TAGNAME=	9faa58
 
 MAKEFILE=	${FILESDIR}/Makefile.bsd
 PORTDOCS=	README.md

@@ -1,14 +1,17 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Email-Stuffer
-PORTVERSION=	0.017
+PORTVERSION=	0.018
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	More casual approach to creating and sending Email
+
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Params-Util>=0.23:devel/p5-Params-Util \
@@ -18,5 +21,7 @@ RUN_DEPENDS=	p5-Params-Util>=0.23:devel/p5-Params-Util \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Sakai Hiroaki <sakai@miya.ee.kagu.sut.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xmangekyou
 PORTVERSION=	2.0.1
@@ -10,6 +9,7 @@ MASTER_SITES=	http://ftp.vector.co.jp/16/65/1309/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Kaleidoscope on X
 
+USES=		xorg
 USE_XORG=	x11 xpm xaw
 ALL_TARGET=	xmangekyou
 

@@ -1,9 +1,8 @@
 # Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
 
 PORTNAME=	starplot
 PORTVERSION=	0.95.5
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	astro
 MASTER_SITES=	http://starplot.org/downloads/
 

@@ -1,12 +1,12 @@
 # Created by: t.vanklaveren@student.utwente.nl
-# $FreeBSD$
 
 PORTNAME=	libvorbis
-PORTVERSION=	1.3.6
+PORTVERSION=	1.3.7
+PORTREVISION=	2
 PORTEPOCH=	3
 CATEGORIES=	audio
 MASTER_SITES=	https://downloads.xiph.org/releases/vorbis/ \
-		https://download.videolan.org/videolan/testing/contrib/vorbis/
+		https://ftp.osuosl.org/pub/xiph/releases/vorbis/
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Audio compression codec library
@@ -16,8 +16,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libogg.so:audio/libogg
 
-USES=		libtool pathfix tar:xz
+USES=		cpe libtool pathfix tar:xz
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	xiph.org
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ogg=${LOCALBASE}

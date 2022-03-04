@@ -1,5 +1,4 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	cfg
 PORTVERSION=	2.0.4
@@ -14,6 +13,7 @@ LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 BUILD_DEPENDS=	menhir:devel/menhir
+BUILD_DEPENDS+=	ocamlbuild:devel/ocaml-ocamlbuild
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mmottl

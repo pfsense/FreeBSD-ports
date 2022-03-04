@@ -1,9 +1,8 @@
 # Created by: jeff@cetlink.net
-# $FreeBSD$
 
 PORTNAME=	libgd
-PORTVERSION=	2.2.5
-PORTREVISION=	1
+PORTVERSION=	2.3.1
+PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES+=	graphics
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/gd-${PORTVERSION}/
@@ -14,30 +13,47 @@ COMMENT?=	Graphics library for fast creation of images
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libtiff.so:graphics/tiff \
-		libpng.so:graphics/png \
-		libfreetype.so:print/freetype2
-
 CONFLICTS=	bazaar-1.*
 
-USES=		tar:xz pkgconfig pathfix libtool:keepla shebangfix jpeg
+USES=		cpe tar:xz pkgconfig pathfix libtool:keepla shebangfix
 SHEBANG_FILES=	${WRKSRC}/src/bdftogd
 GNU_CONFIGURE=	yes
+SUB_FILES=	gdlib-config
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=	FONTCONFIG ICONV XPM WEBP
-OPTIONS_DEFAULT=FONTCONFIG WEBP
+OPTIONS_DEFINE=	PNG JPEG WEBP TIFF FREETYPE FONTCONFIG RAQM XPM ICONV
+OPTIONS_DEFAULT=PNG JPEG WEBP TIFF FREETYPE FONTCONFIG ICONV
 NO_OPTIONS_SORT=yes
+OPTIONS_SUB=	yes
+PNG_LIB_DEPENDS=	libpng.so:graphics/png
+PNG_CONFIGURE_OFF=	--without-png
+PNG_CPPFLAGS=		-I${LOCALBASE}/include
+JPEG_USES=		jpeg
+JPEG_CONFIGURE_OFF=	--without-jpeg
+JPEG_CPPFLAGS=		-I${LOCALBASE}/include
+WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
+WEBP_CONFIGURE_OFF=	--without-webp
+WEBP_CPPFLAGS=		-I${LOCALBASE}/include
+TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
+TIFF_CONFIGURE_OFF=	--without-tiff
+TIFF_CPPFLAGS=		-I${LOCALBASE}/include
+FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
+FREETYPE_CONFIGURE_OFF=	--without-freetype
+FREETYPE_CPPFLAGS=	-I${LOCALBASE}/include
 FONTCONFIG_LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig
 FONTCONFIG_CONFIGURE_OFF=	--with-fontconfig=no
-ICONV_USES=	iconv
-ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
+FONTCONFIG_CPPFLAGS=		-I${LOCALBASE}/include
+RAQM_DESC=	Raqm text layout support
+RAQM_LIB_DEPENDS=	libraqm.so:print/libraqm
+RAQM_CONFIGURE_OFF=	--with-raqm=no
+RAQM_CPPFLAGS=	-I${LOCALBASE}/include
+XPM_USES=	xorg
 XPM_USE=	xorg=xpm,x11
 XPM_CONFIGURE_ON=	--with-x
 XPM_CONFIGURE_OFF=	--with-xpm=no
-WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-WEBP_CONFIGURE_OFF=	--without-webp
+ICONV_USES=	iconv
+ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
 
 .include <bsd.port.options.mk>
 
@@ -92,5 +108,7 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/src/gdhelpers.h \
 		${STAGEDIR}${PREFIX}/include/
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgd.so.6*
+	${INSTALL_SCRIPT} ${WRKDIR}/gdlib-config \
+		${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

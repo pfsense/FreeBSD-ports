@@ -1,17 +1,22 @@
-# $FreeBSD$
-
 PORTNAME=	lha
 PORTVERSION=	1.14i
 PORTREVISION=	10
 CATEGORIES=	archivers
-MASTER_SITES=	OSDN/lha/22231
+MASTER_SITES=	OSDN/lha
 PKGNAMESUFFIX=	-ac${PKGNAMESUFFIX2}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-ac20050924p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Archive files using LZSS and Huffman compression (.lzh files)
 
-RESTRICTED=	No redistribution allowed
+# Converted from RESTRICTED
+LICENSE=	LHA
+LICENSE_NAME=	LHA
+LICENSE_TEXT=	No redistribution allowed
+LICENSE_PERMS=	auto-accept
+
+USES=		cpe
+CPE_VENDOR=	tsugio_okamoto
 
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/lha-ac

@@ -1,13 +1,11 @@
 # Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fBasics
-DISTVERSION=	3042.89
-PORTREVISION=	2
+DISTVERSION=	3042.89.1
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	Rmetrics - Markets and Basic Statistics
 
 LICENSE=	GPLv2+

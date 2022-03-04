@@ -1,8 +1,7 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	js_regex
-PORTVERSION=	3.1.1
+PORTVERSION=	3.7.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -11,9 +10,9 @@ COMMENT=	Convert ruby native regular expressions for JavaScript
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-character_set>=1.1.0:textproc/rubygem-character_set \
-		rubygem-regexp_parser>=1.1.0:textproc/rubygem-regexp_parser \
-		rubygem-regexp_property_values>=0.3:textproc/rubygem-regexp_property_values
+RUN_DEPENDS=	rubygem-character_set>=1.4<2:textproc/rubygem-character_set \
+		rubygem-regexp_parser>=2.1<3:textproc/rubygem-regexp_parser \
+		rubygem-regexp_property_values>=1.0<2:textproc/rubygem-regexp_property_values
 
 USES=		gem
 USE_RUBY=	yes

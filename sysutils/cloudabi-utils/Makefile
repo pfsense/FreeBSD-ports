@@ -1,9 +1,9 @@
 # Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cloudabi-utils
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.38
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	ed@FreeBSD.org

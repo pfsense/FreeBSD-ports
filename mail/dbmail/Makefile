@@ -1,17 +1,16 @@
 # Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
 
 PORTNAME=	dbmail
-PORTVERSION=	3.2.3
-PORTREVISION=	3
+PORTVERSION=	3.2.5
+DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
-MASTER_SITES=	http://git.dbmail.eu/paul/dbmail/snapshot/ \
-		http://www.dbmail.org/download/3.2/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	SQL database-based mail system (POP3 and IMAP)
 
 LICENSE=	GPLv2
+
+BROKEN_aarch64=	Fails to link: missing sbrk
 
 LIB_DEPENDS=	libgmime-2.6.so:mail/gmime26 \
 		libzdb.so:databases/libzdb \
@@ -21,37 +20,37 @@ BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
 		xmlto:textproc/xmlto \
 		docbook-sgml>0:textproc/docbook-sgml
 
-BROKEN_aarch64=	Fails to link: missing sbrk
+USES=		autoreconf gmake gnome libtool localbase pkgconfig \
+		shebangfix ssl
+USE_GITHUB=	yes
+USE_GNOME=	glib20
+USE_LDCONFIG=	${PREFIX}/lib/dbmail
+USE_RC_SUBR=	dbmail-pop3d dbmail-lmtpd dbmail-imapd dbmail-timsieved
 
-CONFLICTS=	dbmail22-[0-9]*
+CONFLICTS=	dbmail22
 
 OPTIONS_DEFINE=	DOCS LDAP SIEVE
 OPTIONS_DEFAULT=	SIEVE
+OPTIONS_SUB=	yes
 SIEVE_DESC=	Sieve mail sorting language support
 
-OPTIONS_SUB=	yes
-
 INSTALL_TARGET=	install-strip
-USE_LDCONFIG=	${PREFIX}/lib/dbmail
-USE_RC_SUBR=	dbmail-pop3d dbmail-lmtpd dbmail-imapd dbmail-timsieved
-USES=		autoreconf gmake libtool pkgconfig shebangfix ssl tar:bzip2
 GNU_CONFIGURE=	yes
 
 SHEBANG_FILES=	man/fixsp.pl
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=	--with-zdb=${LOCALBASE} --sysconfdir=${LOCALBASE}/etc --enable-manpages
 
 MAKE_ARGS+=	mandir=${MANPREFIX}/man
 
-DOCS=		AUTHORS BUGS INSTALL THANKS UPGRADING
+DOCS=		AUTHORS CHANGELOG.md INSTALL README THANKS UPGRADING
 
 SIEVE_CONFIGURE_WITH=	sieve
 SIEVE_LIB_DEPENDS=	libsieve.so:mail/libsieve
 
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		gettext-runtime
 
 DBMAIL_USER?=	mailnull
 DBMAIL_GROUP?=	mail

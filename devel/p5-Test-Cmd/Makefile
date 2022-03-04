@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Test-Cmd
 PORTVERSION=	1.09
 CATEGORIES=	devel perl5

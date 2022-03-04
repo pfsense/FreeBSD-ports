@@ -1,11 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	pim-data-exporter
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Import and export KDE PIM settings
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgpg-error.so:security/libgpg-error \
@@ -15,19 +16,19 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 
 USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
 USE_KDE=	archive auth bookmarks codecs completion config configwidgets \
-		coreaddons crash dbusaddons ecm i18n itemmodels itemviews \
+		coreaddons crash dbusaddons i18n itemmodels itemviews \
 		jobwidgets kio notifications service solid wallet \
-		widgetsaddons xmlgui
+		widgetsaddons windowsystem xmlgui \
+		ecm_build
 # pim components
-USE_KDE+=	akonadi akonadicontacts akonadimime contacts \
-		identitymanagement libkdepim libkleo mailcommon mailtransport \
-		messagelib mime pimcommon pimtextedit
-USE_QT=		core dbus gui network widgets xml \
+USE_KDE+=	akonadi akonadicontacts akonadimime akonadinotes calendarcore contacts \
+		grantleetheme identitymanagement imap libkdepim libkleo mailcommon \
+		mailtransport messagelib mime pimcommon pimtextedit
+USE_QT=		concurrent core dbus gui network widgets xml \
 		buildtools_build qmake_build
 USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
-
 
 OPTIONS_DEFINE=	DOCS
 

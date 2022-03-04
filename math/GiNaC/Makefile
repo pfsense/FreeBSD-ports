@@ -1,8 +1,7 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	GiNaC
-PORTVERSION=	1.7.5
+PORTVERSION=	1.8.1
 CATEGORIES=	math
 MASTER_SITES=	ftp://ftpthep.physik.uni-mainz.de/pub/GiNaC/ \
 		http://www.ginac.de/
@@ -16,15 +15,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcln.so:math/cln
 
-USES=		gmake libtool makeinfo pathfix pkgconfig python:build \
-		tar:bzip2 compiler:c++11-lib
+USES=		compiler:c++11-lib gmake libtool makeinfo ncurses pathfix \
+		pkgconfig python:build readline tar:bzip2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
 
 INFO=		ginac ginac-examples
 

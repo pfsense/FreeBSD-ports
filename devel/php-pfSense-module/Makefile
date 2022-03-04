@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-PORTVERSION=	0.68
+PORTVERSION=	0.76
 CATEGORIES=	devel
 MASTER_SITES=	#
 DISTFILES=	#
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-module
 
-MAINTAINER=	garga@pfsense.org
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	Library for getting useful info
 
 LIB_DEPENDS=	libvici.so:security/strongswan

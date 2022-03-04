@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	WordPress-XMLRPC
 PORTVERSION=	2.12
 CATEGORIES=	www perl5

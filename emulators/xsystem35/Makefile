@@ -1,12 +1,11 @@
 # Created by: Seiichirou Hiraoka
-# $FreeBSD$
 
 PORTNAME=	xsystem35
 DISTVERSION=	1.7.3-pre5
 PORTREVISION=	4
 CATEGORIES=	emulators games
 MASTER_SITES=	DEBIAN
-DISTNAME=	${PORTNAME}_${DISTVERSION}.orig
+DISTFILES=	${DISTNAME:S/-/_/}.orig${EXTRACT_SUFX}
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	AliceSoft System 3.5/3.6/3.8/3.9 on X Window System
@@ -25,7 +24,8 @@ MMX_BUILD_DEPENDS=nasm:devel/nasm
 MMX_CONFIGURE_ENABLE=mmx
 
 EXTRACT_AFTER_ARGS=--exclude libltdl
-USES=		gettext gmake gnome jpeg libtool localbase pkgconfig shebangfix
+USES=		gettext gmake gnome jpeg libtool localbase pkgconfig \
+		shebangfix xorg
 USE_GNOME=	gtk20
 SHEBANG_FILES=	contrib/instgame
 USE_XORG=	x11 xext xxf86vm
@@ -44,7 +44,6 @@ INSTALL_TARGET=	install-strip
 
 SUB_FILES=	pkg-message
 
-WRKSRC=		${WRKDIR}/${DISTNAME:S/_/-/:S/.orig//}
 DOCSDIR=	${PREFIX}/share/doc/ja/${PORTNAME}
 
 post-patch:

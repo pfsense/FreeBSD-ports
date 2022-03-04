@@ -1,12 +1,11 @@
 # Created by: Michael Reifenberger (mike@Reifenberger.com)
-# $FreeBSD$
 
 PORTNAME=	pyla
 PORTVERSION=	1.1.7.1
 PORTREVISION=	2
 CATEGORIES=	comms python
 #MASTER_SITES=	http://www.teamsw.it/pyla/download/
-MASTER_SITES=   LOCAL/mr
+MASTER_SITES=	LOCAL/mr
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	pyla${PORTVERSION}
 

@@ -3,11 +3,11 @@
  * suricata_ip_list_mgmt.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -152,7 +152,9 @@ if (isset($_POST['iplist_edit_save']) && isset($_POST['iplist_data'])) {
 // so we can pick up any changes made to files in code above.
 $ipfiles = return_dir_as_array($iprep_path);
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("IP Reputation Lists"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "IP Lists Management");
+
 include_once("head.inc");
 
 if ($input_errors) {
@@ -169,6 +171,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -182,19 +185,6 @@ display_top_tabs($tab_array, true);
 <div id="container">
 
 <?php
-
-if ($g['platform'] == "nanobsd") {
-?>
-
-	<div class="panel panel-default">
-		<div class="panel-heading"><h2 class="panel-title"><?=gettext("IP Reputation List Management")?></h2></div>
-		<div class="panel-body text-center">
-				<h4><?=gettext("IP Reputation is not supported on NanoBSD installs"); ?></h4>
-		</div>
-	</div>
-
-<?php
-} else {
 
 $form = new Form;
 $section = new Form_Section('IP Reputation List Management');
@@ -300,10 +290,6 @@ print $form;
 		</div>
 	</div>
 </form>
-
-<?php
-}
-?>
 
 <div class="infoblock">
 	<div class="alert alert-info clearfix" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

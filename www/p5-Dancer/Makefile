@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	Dancer
-PORTVERSION=	1.3500
+PORTVERSION=	1.3513
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BIGPRESH
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for minimal-effort oriented web application framework
 
 LICENSE=	ART10 GPLv1+

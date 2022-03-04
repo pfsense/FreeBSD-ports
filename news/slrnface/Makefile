@@ -1,5 +1,4 @@
 # Created by: Oliver Braun <obraun@informatik.unibw-muenchen.de>
-# $FreeBSD$
 
 PORTNAME=	slrnface
 PORTVERSION=	2.1.1
@@ -18,6 +17,7 @@ ALL_TARGET=	slrnface
 MAKE_ARGS=	CC="${CC}" C_FLAGS="${CFLAGS}" \
 		X_INCL=-I${LOCALBASE}/include \
 		XF_LIB="-L${LOCALBASE}/lib -lcompface"
+USES=		xorg
 USE_XORG=	xt
 
 PLIST_FILES=	bin/slrnface man/man1/slrnface.1.gz %%DATADIR%%/slrnface.sl

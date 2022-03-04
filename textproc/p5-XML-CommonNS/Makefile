@@ -1,5 +1,4 @@
 # Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	XML-CommonNS
 PORTVERSION=	0.06
@@ -19,5 +18,7 @@ RUN_DEPENDS=	p5-XML-NamespaceFactory>=0:textproc/p5-XML-NamespaceFactory
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

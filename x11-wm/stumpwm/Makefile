@@ -1,10 +1,9 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	stumpwm
-DISTVERSION=	18.11-2
-DISTVERSIONSUFFIX=	-g84f093e
-PORTREVISION=	3
+DISTVERSION=	20.11-90
+DISTVERSIONSUFFIX=	-gccb964d
+PORTREVISION=	4
 CATEGORIES=	x11-wm lisp
 
 MAINTAINER=	jrm@FreeBSD.org
@@ -30,13 +29,13 @@ RUN_DEPENDS=	cl-alexandria>=0:devel/cl-alexandria \
 USE_GITHUB=	yes
 USE_SBCL=	yes
 
-PLIST_SUB=	ASDF_PATHNAME="${ASDF_PATHNAME:S,^${PREFIX}/,,}" \
-		ASDF_REGISTRY="${ASDF_REGISTRY:S,^${PREFIX}/,,}"
 SUB_FILES=	stumpwm
 SUB_LIST=	ASDF_REGISTRY=${ASDF_REGISTRY} \
 		SBCL=${SBCL}
 
 INFO=		${PORTNAME}
+PLIST_SUB=	ASDF_PATHNAME="${ASDF_PATHNAME:S,^${PREFIX}/,,}" \
+		ASDF_REGISTRY="${ASDF_REGISTRY:S,^${PREFIX}/,,}"
 PORTDOCS=	AUTHORS COPYING HACKING NEWS README.md
 PORTEXAMPLES=	sample-stumpwmrc.lisp
 
@@ -54,12 +53,15 @@ do-build:
 	(cd ${WRKSRC} && \
 		CL_SOURCE_REGISTRY="${WRKSRC}" \
 		ASDF_OUTPUT_TRANSLATIONS="/:" \
+		FBSD_ASDF_COMPILE_PORT=t PORTNAME=${PORTNAME} WRKSRC=${WRKSRC}/ \
 		${SBCL} \
-		--eval "(asdf:oos 'asdf:compile-op :${PORTNAME})" \
-		--eval "(load \"load-stumpwm.lisp\")" \
-		--eval "(load \"manual.lisp\")" \
-		--eval "(stumpwm::generate-manual)" \
-		--eval "(sb-ext:quit)" && \
+		--noinform --no-sysinit --no-userinit \
+		--eval '#.(load "${LOCALBASE}/etc/asdf-init")' \
+		--eval "(asdf:oos 'asdf:compile-op :${PORTNAME} :force t)" \
+		--eval '(load "load-stumpwm.lisp")' \
+		--eval '(load "manual.lisp")' \
+		--eval '(stumpwm::generate-manual)' \
+		--eval '(sb-ext:quit)' && \
 		makeinfo stumpwm.texi)
 
 do-install:

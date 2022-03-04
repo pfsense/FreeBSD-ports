@@ -1,6 +1,5 @@
 #!/bin/sh
 # Start or stop strongswan
-# $FreeBSD$
 
 # PROVIDE: strongswan
 # REQUIRE: DAEMON
@@ -15,18 +14,19 @@
 #	Valid options are:
 #	"stroke" for the old ipsec/startr interface
 #	"vici" for the newer swanctl intrface
-#	Default is "stroke"
+#	Default is "%%INTERFACE%%"
 
 . /etc/rc.subr
 
 name=strongswan
 desc="Strongswan IPsec startup script"
+required_modules="ipsec"
 rcvar=strongswan_enable
 
 load_rc_config $name
 
 : ${strongswan_enable:=NO}
-: ${strongswan_interface:="stroke"}
+: ${strongswan_interface:="%%INTERFACE%%"}
 
 extra_commands="reload statusall"
 

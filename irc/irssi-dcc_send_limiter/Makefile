@@ -1,5 +1,4 @@
 # Created by: Timothy Redaelli <drizzt@gufi.org>
-# $FreeBSD$
 
 PORTNAME=	dcc_send_limiter
 PORTVERSION=	0.8.10
@@ -22,7 +21,7 @@ LICENSE=	GPLv2+
 BUILD_DEPENDS=	irssi:irc/irssi
 RUN_DEPENDS=	irssi:irc/irssi
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	glib20
 NO_WRKSUBDIR=	yes
 

@@ -1,6 +1,6 @@
---- gdist/man.py.orig	2016-04-22 21:47:37 UTC
+--- gdist/man.py.orig	2019-10-05 20:22:11 UTC
 +++ gdist/man.py
-@@ -40,7 +40,7 @@ class install_man(Command):
+@@ -54,7 +54,7 @@ class install_man(Command):
          )
  
          if self.mandir is None:

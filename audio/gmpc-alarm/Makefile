@@ -1,5 +1,4 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gmpc-alarm
 PORTVERSION=	11.8.16
@@ -20,7 +19,7 @@ RUN_DEPENDS=	gmpc:audio/gmpc
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-USES=		gettext gmake libtool pkgconfig
+USES=		gettext gmake gnome libtool pkgconfig
 USE_GNOME=	glib20 gtk20 intltool
 INSTALL_TARGET=	install-strip
 

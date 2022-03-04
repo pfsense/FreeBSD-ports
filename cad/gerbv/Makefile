@@ -1,12 +1,12 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	gerbv
 PORTVERSION=	2.7.0
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Gerber file viewer
 
 LICENSE=	GPLv2+
@@ -22,7 +22,7 @@ USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_aux_dir="."
-INSTALLS_ICONS=	yes
+CFLAGS+=	-fcommon
 INSTALL_TARGET=	install-strip
 
 PLIST_SUB=	VERSION="${PORTVERSION}"

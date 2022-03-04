@@ -1,8 +1,7 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gdl
-PORTVERSION=	3.28.0
+PORTVERSION=	3.34.0
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3

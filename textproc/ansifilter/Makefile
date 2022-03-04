@@ -1,8 +1,7 @@
 # Created by: Yi-Jheng Lin <yzlin@cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	ansifilter
-PORTVERSION=	2.13
+PORTVERSION=	2.18
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.andre-simon.de/zip/
 
@@ -51,7 +50,7 @@ pre-build:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1.gz \
+	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 \
 		${STAGEDIR}${MANPREFIX}/man/man1
 
 do-install-DOCS-on:

@@ -1,9 +1,10 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	colortail
 PORTVERSION=	0.3.3
+PORTREVISION=	1
 CATEGORIES=	misc
+MASTER_SITES=	https://github.com/joakim666/colortail/releases/download/${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	tail(1) replacement with color support
@@ -11,11 +12,12 @@ COMMENT=	tail(1) replacement with color support
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf
-GNU_CONFIGURE=	yes
+LIB_DEPENDS=	libgnuregex.so.6:devel/libgnuregex
 
-GH_ACCOUNT=	joakim666
-USE_GITHUB=	yes
+USES=		localbase:ldflags
+
+GNU_CONFIGURE=	yes
+LIBS+=		-lgnuregex
 
 OPTIONS_DEFINE=	EXAMPLES
 

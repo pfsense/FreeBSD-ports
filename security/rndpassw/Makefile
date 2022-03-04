@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rndpassw
 PORTVERSION=	0.2.2
 CATEGORIES=	security

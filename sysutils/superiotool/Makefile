@@ -1,6 +1,3 @@
-# Created by: Andriy Gapon <avg@icyb.net.ua>
-# $FreeBSD$
-
 PORTNAME=	superiotool
 DISTVERSION=	20121019
 PORTREVISION=	1
@@ -8,13 +5,13 @@ CATEGORIES=	sysutils
 MASTER_SITES=	LOCAL/avg \
 		http://www.icyb.net.ua/~avg/distfiles/
 
-MAINTAINER=	avg@icyb.net.ua
+MAINTAINER=	avg@FreeBSD.org
 COMMENT=	Helper tool for Super I/O chip detection and analysis
 
 LIB_DEPENDS=	libpci.so:devel/libpci
 
 ONLY_FOR_ARCHS=	i386 amd64
-ONLY_FOR_ARCHS_REASON=The tool is for x86-specific hardware
+ONLY_FOR_ARCHS_REASON=	this tool is for x86-specific hardware
 
 USES=		gmake tar:bzip2
 

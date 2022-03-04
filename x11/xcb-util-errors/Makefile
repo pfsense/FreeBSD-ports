@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcb-util-errors
 PORTVERSION=	1.0
 CATEGORIES=	x11
@@ -13,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	xcb-proto>=1.6:x11/xcb-proto
 
-XORG_CAT=	lib
+USES=		xorg xorg-cat:lib
 USE_XORG=	xcb
 INSTALL_TARGET=	install-strip
 

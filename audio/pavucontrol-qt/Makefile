@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	pavucontrol-qt
-PORTVERSION=	0.14.0
+PORTVERSION= 	1.0.0
 CATEGORIES=	audio
 MASTER_SITES=	LXQT/${PORTNAME}
 

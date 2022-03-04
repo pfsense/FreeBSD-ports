@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-MicroTemplate-Extended
 PORTVERSION=	0.17
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for extended MicroTemplate
 
 LICENSE=	ART10 GPLv1+

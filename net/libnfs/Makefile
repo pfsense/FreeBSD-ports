@@ -1,8 +1,8 @@
 # Created by: Manuel Creach <manuel.creach@icloud.com>
-# $FreeBSD$
 
 PORTNAME=	libnfs
 PORTVERSION=	4.0.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	net
 

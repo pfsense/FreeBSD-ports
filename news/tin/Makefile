@@ -1,10 +1,9 @@
 # Created by: obrien@cs.ucdavis.edu
-# $FreeBSD$
 
 PORTNAME=	tin
-PORTVERSION=	2.4.2
-PORTREVISION=	4
-CATEGORIES+=	news ipv6
+PORTVERSION=	2.4.5
+PORTREVISION=	2
+CATEGORIES+=	news
 MASTER_SITES=	ftp://ftp.tin.org/pub/news/clients/tin/v${PORTVERSION:R}/ \
 		ftp://ftp.sunet.se/pub/news/readers/tin/v${PORTVERSION:R}/ \
 		ftp://sunsite.icm.edu.pl/pub/unix/news/tin/v${PORTVERSION:R}/ \
@@ -18,7 +17,7 @@ MASTER_SITES=	ftp://ftp.tin.org/pub/news/clients/tin/v${PORTVERSION:R}/ \
 		ftp://ftp.cs.tu-berlin.de/pub/net/news/tin/v${PORTVERSION:R}/ \
 		ftp://ftp.informatik.uni-hamburg.de/pub/soft/news/tin/v${PORTVERSION:R}/
 
-MAINTAINER?=	johans@FreeBSD.org
+MAINTAINER?=	kbowling@FreeBSD.org
 COMMENT=	Easy-to-use threaded newsreader with NOV/NNTP support
 
 LICENSE=	BSD3CLAUSE
@@ -41,14 +40,14 @@ OPTIONS_SUB=		yes
 NNTP_ONLY_DESC=		Only read news via NNTP (no spool dir support)
 NNTP_ONLY_CONFIGURE_ENABLE=nntp-only
 GNUPG_RUN_DEPENDS=	gpg:security/gnupg
-GNUPG_CONFIGURE_ON=	--with-gpg=${PREFIX}/bin/gpg \
+GNUPG_CONFIGURE_ON=	--with-gpg=${LOCALBASE}/bin/gpg \
 			--without-pgp --without-pgpk
 GNUPG_CONFIGURE_OFF=	--disable-pgp-gpg
 ISPELL_RUN_DEPENDS=	ispell:textproc/aspell-ispell
-ISPELL_CONFIGURE_ARGS=	--with-ispell=${PREFIX}/bin/ispell
+ISPELL_CONFIGURE_ON=	--with-ispell=${LOCALBASE}/bin/ispell
 METAMAIL_DESC?=		Use metamail to handle MIME attachments
 METAMAIL_RUN_DEPENDS=	metamail:mail/metamail
-METAMAIL_CONFIGURE_ARGS=--with-metamail=${PREFIX}/bin/metamail
+METAMAIL_CONFIGURE_ON=	--with-metamail=${LOCALBASE}/bin/metamail
 CANLOCK_DESC=		Enable Cancel-Lock key support via libcanlock
 CANLOCK_CONFIGURE_ENABLE=cancel-locks
 NLS_CONFIGURE_ENABLE=	nls
@@ -65,7 +64,7 @@ CONFIGURE_ARGS+=--with-nntp-default-server=news \
 		--with-libdir=${PREFIX}/news/lib \
 		--with-defaults-dir=${PREFIX}/etc \
 		--with-editor=${TIN_EDITOR} \
-		--with-pcre=yes \
+		--with-pcre=${PREFIX}/lib \
 		--with-screen=${TIN_SCREEN} \
 		--enable-break-long-lines \
 		${ICONV_CONFIGURE_ARG} \
@@ -98,6 +97,7 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/tin.defaults \
 		${STAGEDIR}${PREFIX}/etc/tin.defaults.sample
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tin
 	ln -sf tin ${STAGEDIR}${PREFIX}/bin/rtin
 
 .include <bsd.port.mk>

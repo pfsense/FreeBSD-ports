@@ -1,8 +1,5 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Data-Dumper
-PORTVERSION=	2.173
+PORTVERSION=	2.183
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

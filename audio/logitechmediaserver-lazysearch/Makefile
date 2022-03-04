@@ -1,5 +1,4 @@
 # Created by: Tim Bishop <tdb@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lazysearch
 PORTVERSION=	3.6.5
@@ -9,7 +8,7 @@ PKGNAMEPREFIX=	logitechmediaserver-
 DISTNAME=	LazySearch2-7-${PORTVERSION}
 DIST_SUBDIR=	logitechmediaserver
 
-MAINTAINER=	mark@tranquillussoftware.co.uk
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Logitech Media Server plugin for performing lazy searches
 
 LICENSE=	GPLv2

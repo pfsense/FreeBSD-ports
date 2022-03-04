@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	php73
 PORTVERSION=	1.0
 CATEGORIES=	lang
@@ -10,7 +8,7 @@ COMMENT=	"meta-port" to install PHP extensions
 
 USES=		metaport php
 PHP_VER=	73
-IGNORE_WITH_PHP=	71 72
+IGNORE_WITH_PHP=	72 74
 
 OPTIONS_DEFINE=	BCMATH BZ2 CALENDAR CTYPE CURL DBA \
 		DOM ENCHANT EXIF FILEINFO FILTER FTP GD GETTEXT \
@@ -59,7 +57,6 @@ PDO_MYSQL_DESC=		PDO MySQL driver
 PDO_ODBC_DESC=		PDO ODBC driver
 PDO_PGSQL_DESC=		PDO PostgreSQL driver
 PDO_SQLITE_DESC=	PDO sqlite driver
-PGSQL_DESC=		PostgreSQL database support
 PHAR_DESC=		phar support
 POSIX_DESC=		POSIX-like functions
 PSPELL_DESC=		pspell support

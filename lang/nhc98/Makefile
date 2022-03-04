@@ -1,9 +1,8 @@
 # Created by: Oliver Braun <obraun@informatik.unibw-muenchen.de>
-# $FreeBSD$
 
 PORTNAME=	nhc98
 PORTVERSION=	1.22
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	lang haskell
 MASTER_SITES=	http://haskell.org/${PORTNAME}/
 DISTFILES=	${PORTNAME}src-${PORTVERSION}${EXTRACT_SUFX}
@@ -28,7 +27,7 @@ DOCS_CONFIGURE_ON=	--docdir=${DOCSDIR} +docs
 DOCS_CONFIGURE_OFF=	-docs
 
 PORTDOCS=	*
-CONFLICTS=	hs-cpphs-[0-9]*
+CONFLICTS=	hs-cpphs
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-O3|${CFLAGS}|' ${WRKSRC}/Makefile.inc

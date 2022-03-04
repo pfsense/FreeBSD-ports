@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cliapp
 PORTVERSION=	1.20180812.1
 CATEGORIES=	devel
@@ -10,12 +8,12 @@ MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Python framework for command line utilities
 
 LICENSE=	GPLv2
-LICENSE_FILES=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
-USES=		python:2.7
+USES=		python:3.5+
 NO_ARCH=	yes
 
 USE_PYTHON=	distutils autoplist

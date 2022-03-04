@@ -1,5 +1,4 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jgroups
 PORTVERSION=	2.12.0
@@ -14,7 +13,6 @@ LICENSE=	LGPL21
 OPTIONS_DEFINE=	DOCS
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 ALL_TARGET=	jar
 NO_ARCH=	yes

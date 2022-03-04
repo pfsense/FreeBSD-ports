@@ -1,12 +1,11 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnustep
 PORTVERSION=	1.28.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel lang gnustep
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Objective-C libraries based on the OpenStep standard
 
 USES=		metaport gnustep

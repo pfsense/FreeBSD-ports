@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mandelbulber
-PORTVERSION=	2.17
+PORTVERSION=	2.26
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,6 +12,7 @@ LIB_DEPENDS=	libgsl.so:math/gsl \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
 		liblzo2.so:archivers/lzo2
+BUILD_DEPENDS=	${LOCALBASE}/include/stb/stb_image.h:devel/stb
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	buddhi1980
@@ -22,9 +20,8 @@ GH_PROJECT=	${PORTNAME}2
 
 USES=		cmake compiler:c++11-lang gnome jpeg localbase:ldflags \
 		pkgconfig qt:5
-USE_QT=		core widgets network gui multimedia testlib \
+USE_QT=		core widgets network gui multimedia testlib concurrent \
 		qmake_build buildtools_build uitools_build
-INSTALLS_ICONS=	yes
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/mandelbulber2/cmake
 
@@ -37,7 +34,8 @@ OPTIONS_EXCLUDE=	OPENMP  # not properly supported yet
 
 OPENCL_BUILD_DEPENDS=	opencl>=0:devel/opencl
 
-OPENMP_LIB_DEPENDS=	libomp.so:devel/openmp
+post-extract:
+	@${RM} -rf ${WRKSRC}/mandelbulber2/third-party
 
 post-patch-OPENMP-off:
 	@${REINPLACE_CMD} -e 's|-fopenmp||' \

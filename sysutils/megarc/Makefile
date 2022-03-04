@@ -1,5 +1,4 @@
 # Created by: Gerrit Beine <tux@pinguru.net>
-# $FreeBSD$
 
 PORTNAME=	megarc
 PORTVERSION=	1.51
@@ -11,6 +10,12 @@ EXTRACT_SUFX=	.zip
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LSI Logic's MegaRAID controlling software
 
+# Converted from RESTRICTED
+LICENSE=	LSI
+LICENSE_NAME=	LSI
+LICENSE_TEXT=	Must be downloaded directly from the manufacturer
+LICENSE_PERMS=	auto-accept
+
 OPTIONS_DEFINE=	DOCS
 
 USES=		dos2unix
@@ -20,7 +25,6 @@ NO_WRKSUBDIR=	yes
 STRIP=
 
 ONLY_FOR_ARCHS=	i386 amd64
-RESTRICTED=	Must be downloaded directly from the manufacturer
 
 PLIST_FILES=	sbin/megarc
 PORTDOCS=	*

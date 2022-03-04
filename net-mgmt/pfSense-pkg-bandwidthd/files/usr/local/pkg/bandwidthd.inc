@@ -81,17 +81,6 @@ function bandwidthd_install_config() {
 	$output_cdf_val = ($bandwidthd_config['outputcdf'] != "" ? "output_cdf true" : "");
 	$recover_cdf_val = ($bandwidthd_config['recovercdf'] != "" ? "recover_cdf true" : "");
 
-	/* PostgreSQL Options */
-	if ($bandwidthd_config['outputpostgresql']) {
-		$postgresql_host = $bandwidthd_config['postgresqlhost'];
-		$postgresql_database = $bandwidthd_config['postgresqldatabase'];
-		$postgresql_username = $bandwidthd_config['postgresqlusername'];
-		$postgresql_password = base64_decode($bandwidthd_config['postgresqlpasswordenc']);
-		$postgresql_string_val = "pgsql_connect_string \"user = $postgresql_username dbname = $postgresql_database password = $postgresql_password host = $postgresql_host\"\n";
-	} else {
-		$postgresql_string_val = "";
-	}
-
 	/* Advanced Filter */
 	if ($bandwidthd_config['advfilter']) {
 		$filter_text_val = 'filter "' . base64_decode($bandwidthd_config['advfilter']) . '"';
@@ -145,10 +134,6 @@ function bandwidthd_install_config() {
 #Read back the cdf file on startup
 {$recover_cdf_val}
 
-# Standard postgres connect string, just like php, see postgres docs for
-# details
-{$postgresql_string_val}
-
 # Arbitrary sensor name, I recommend the sensors fully qualified domain
 # name
 {$sensor_id_string_val}
@@ -176,75 +161,18 @@ EOF;
 	fwrite($fd, $config_file);
 	fclose($fd);
 
-	/* nanobsd hacks */
-	if ($g['platform'] == 'nanobsd') {
-		$bandwidthd_nano_dir = "/var/bandwidthd";
-		$bandwidthd_htdocs_dir = $bandwidthd_nano_dir . "/htdocs";
-		if (!is_dir($bandwidthd_nano_dir)) {
-			unlink_if_exists($bandwidthd_nano_dir);
-			mkdir($bandwidthd_nano_dir);
-		}
-	} else {
-		$bandwidthd_htdocs_dir = $bandwidthd_base_dir . "/htdocs";
-	}
+	$bandwidthd_htdocs_dir = $bandwidthd_base_dir . "/htdocs";
 
 	$rc = array();
 	$rc['file'] = 'bandwidthd.sh';
 	$rc['stop'] = '/usr/bin/killall bandwidthd';
 
 	if ($bandwidthd_config['enable']) {
-		if ($g['platform'] == 'nanobsd') {
-		/* On nanobsd:
-		* first, /var/bandwidthd is created, with real /var/bandwidth/htdocs inside, where the graph data is written;
-		* soft link to the real bandwidth program is made - /var/bandwidthd/bandwidthd;
-		* soft link to the etc folder with the conf file is made - /var/bandwidthd/etc;
-		* bandwidthd is started from /var/bandwidthd with the current dir /var/bandwidth.
-		* This way, it looks in ./etc for the conf file, writes graph files in ./htdocs
-		* writes cdf log files (if selected in the config) to ./
-		* All of these are on the /var filesystem, which is a read-write memory disk on nanobsd	*/
-
-			$rc['start'] = <<<EOD
-if [ ! -d "{$bandwidthd_nano_dir}" ] ; then
-	if [ -e "{$bandwidthd_nano_dir}" ] ; then
-		/bin/rm -f {$bandwidthd_nano_dir}
-	fi
-	/bin/mkdir -p {$bandwidthd_nano_dir}
-fi
-if [ ! -d "{$bandwidthd_htdocs_dir}" ] ; then
-	if [ -e "{$bandwidthd_htdocs_dir}" ] ; then
-		/bin/rm -f {$bandwidthd_htdocs_dir}
-	fi
-	/bin/mkdir -p {$bandwidthd_htdocs_dir}
-fi
-if [ ! -L "{$bandwidthd_nano_dir}/bandwidthd" ] ; then
-	if [ -e "{$bandwidthd_nano_dir}/bandwidthd" ] ; then
-		/bin/rm -Rf {$bandwidthd_nano_dir}/bandwidthd
-	fi
-	/bin/ln -s {$bandwidthd_base_dir}/bandwidthd {$bandwidthd_nano_dir}/bandwidthd
-fi
-if [ ! -L "{$bandwidthd_nano_dir}/etc" ] ; then
-	if [ -e "{$bandwidthd_nano_dir}/etc" ] ; then
-		/bin/rm -Rf {$bandwidthd_nano_dir}/etc
-	fi
-	/bin/ln -s {$bandwidthd_config_dir} {$bandwidthd_nano_dir}/etc
-fi
-if [ ! -f "{$bandwidthd_htdocs_dir}/legend.gif" ] ; then
-	/bin/cp {$bandwidthd_base_dir}/htdocs/legend.gif {$bandwidthd_htdocs_dir}
-fi
-if [ ! -f "{$bandwidthd_htdocs_dir}/logo.gif" ] ; then
-	/bin/cp {$bandwidthd_base_dir}/htdocs/logo.gif {$bandwidthd_htdocs_dir}
-fi
-cd {$bandwidthd_nano_dir}
-{$bandwidthd_nano_dir}/bandwidthd
-cd -
-EOD;
-		} else {
-			$rc['start'] = <<<EOD
+		$rc['start'] = <<<EOD
 cd {$bandwidthd_base_dir}
 {$bandwidthd_base_dir}/bandwidthd
 cd -
 EOD;
-		}
 	} else {
 		// bandwidthd is disabled, so do not put any real start commands in the script.
 		// This effectively disables it but keeps all the files in place (e.g. saved logs) ready to reload when it is enabled.
@@ -298,11 +226,6 @@ function bandwidthd_upgrade_config() {
 	if (isset($bandwidthd_config['filter'])) {
 		$config['installedpackages']['bandwidthd']['config'][0]['advfilter'] = base64_encode($bandwidthd_config['filter']);
 		unset($config['installedpackages']['bandwidthd']['config'][0]['filter']);
-		$changes++;
-	}
-	if (isset($bandwidthd_config['postgresqlpassword'])) {
-		$config['installedpackages']['bandwidthd']['config'][0]['postgresqlpasswordenc'] = base64_encode($bandwidthd_config['postgresqlpassword']);
-		unset($config['installedpackages']['bandwidthd']['config'][0]['postgresqlpassword']);
 		$changes++;
 	}
 	// Subnet(s) for Statistics Collection - convert old subnets_custom to interface_array here as well.
@@ -392,23 +315,6 @@ function bandwidthd_validate_input($post, &$input_errors) {
 	}
 	if (($post['graphcutoff']) && (!is_numericint($post['graphcutoff']))) {
 		$input_errors[] = gettext("The value for 'Graph Cutoff' must be a positive integer.");
-	}
-	if ($post['outputpostgresql']) {
-		if (!$post['postgresqlhost']) {
-		$input_errors[] = gettext("The value for 'Database Host' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-		if (!$post['postgresqldatabase']) {
-		$input_errors[] = gettext("The value for 'Database Name' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-		if (!$post['postgresqlusername']) {
-		$input_errors[] = gettext("The value for 'Database User' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-		if (!$post['postgresqlpasswordenc']) {
-		$input_errors[] = gettext("The value for 'Database Password' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-	}
-	if (($post['postgresqlhost']) && (!is_hostname($post['postgresqlhost']))) {
-		$input_errors[] = gettext("The value for 'Database Host' must be a valid hostname or IPv4.");
 	}
 	if (($post['advfilter']) && !preg_match("/^[a-zA-Z0-9\+\-\=\(\):. ]*$/", $post['advfilter'])) {
 		$input_errors[] = gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');

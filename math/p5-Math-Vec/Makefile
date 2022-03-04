@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Math-Vec
 PORTVERSION=	1.01
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Object-Oriented Vector Math Methods in Perl
 
 USES=		perl5

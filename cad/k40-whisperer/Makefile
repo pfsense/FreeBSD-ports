@@ -1,10 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	k40-whisperer
-DISTVERSION=	0.19
+DISTVERSION=	0.58
 CATEGORIES=	cad python
 MASTER_SITES=	http://www.scorchworks.com/K40whisperer/
-PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	K40_Whisperer-${DISTVERSION}_src
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -14,54 +11,38 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/gpl-3.0.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}usb>0:devel/py-usb@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pyusb>0:devel/py-pyusb@${PY_FLAVOR} \
+		${PY_PILLOW}
 
-USES=		python:2.7 zip
+USES=		python:run,3.6+ shebangfix zip
+SHEBANG_FILES=	*.py
 
-OPTIONS_DEFINE=		DOCS
-
+DESKTOP_ENTRIES=	"K40 Whisperer" \
+			"${COMMENT}" \
+			"${DATADIR}/scorchworks.ico" \
+			"${_WHISPERER_COMMAND}" \
+			"Development;Art;Engineering;VectorGraphics;" \
+			false
+NO_ARCH=	yes
 NO_BUILD=	yes
+SUB_FILES=	${_WHISPERER_COMMAND} pkg-message
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} \
+		WHISPERER_COMMAND=${_WHISPERER_COMMAND}
+PLIST_SUB=	WHISPERER_COMMAND=${_WHISPERER_COMMAND}
 
-WHISPERER_COMMAND=	${PORTNAME}
-SUB_FILES=	pkg-message ${WHISPERER_COMMAND}
-SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} WHISPERER_COMMAND=${WHISPERER_COMMAND}
-PLIST_SUB=	WHISPERER_COMMAND=${WHISPERER_COMMAND}
+OPTIONS_DEFINE=	DOCS
 
-DATA=	bezmisc.py \
-	CC.png \
-	cspsubdiv.py \
-	cubicsuperpath.py \
-	down.png \
-	dxf.py \
-	egv.py \
-	emblem64 \
-	ffgeom.py \
-	g_code_library.py \
-	inkex.py \
-	interpolate.py \
-	k40_whisperer.py \
-	left.png \
-	LL.png \
-	LR.png \
-	nano_library.py \
-	right.png \
-	simplepath.py \
-	simplestyle.py \
-	simpletransform.py \
-	svg_reader.py \
-	UL.png \
-	up.png \
-	UR.png
-
-DOCS=	README_Linux.txt \
-	README_MacOS.md
+_DOCS=			Change_Log.txt README_Linux.txt README_MacOS.md
+_NON_DATA_FILES=	${_DOCS} ${LICENSE_FILE:S,${WRKSRC}/,,} build_exe.bat \
+			py2exe_setup.py requirements.txt
+_WHISPERER_COMMAND=	${PORTNAME}
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/${WHISPERER_COMMAND} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKDIR}/${_WHISPERER_COMMAND} ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${DATA:S,^,${WRKSRC}/,} ${STAGEDIR}${DATADIR}
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} . \
+		${STAGEDIR}${DATADIR} "${_NON_DATA_FILES:S,^,! -name &,}")
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${_DOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Tom McLaughlin <tmclaugh@sdf.lonestar.org>
-# $FreeBSD$
 
 PORTNAME=	vino
 PORTVERSION=	3.22.0
@@ -27,12 +26,11 @@ LIB_DEPENDS=	libgnutls.so:security/gnutls \
 PORTSCOUT=	limitw:1,even
 
 USES=		cpe gettext gmake gnome jpeg localbase pathfix \
-		pkgconfig tar:xz
+		pkgconfig tar:xz xorg
 CPE_VENDOR=	david_king
 USE_GNOME=	cairo gtk30 intlhack
 USE_XORG=	ice x11 xdamage xext xfixes sm xtst
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 CPPFLAGS+=	-Wno-format-nonliteral
 GLIB_SCHEMAS=	org.gnome.Vino.enums.xml org.gnome.Vino.gschema.xml
 

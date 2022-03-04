@@ -927,8 +927,6 @@ lib/cmake/KF5KDELibs4Support/FindEigen2.cmake
 lib/cmake/KF5KDELibs4Support/FindExiv2.cmake
 lib/cmake/KF5KDELibs4Support/FindFFmpeg.cmake
 lib/cmake/KF5KDELibs4Support/FindFlac.cmake
-lib/cmake/KF5KDELibs4Support/FindFontconfig.cmake
-lib/cmake/KF5KDELibs4Support/FindGLIB2.cmake
 lib/cmake/KF5KDELibs4Support/FindGMP.cmake
 lib/cmake/KF5KDELibs4Support/FindGObject.cmake
 lib/cmake/KF5KDELibs4Support/FindGStreamer.cmake
@@ -958,7 +956,6 @@ lib/cmake/KF5KDELibs4Support/FindNetworkManager.cmake
 lib/cmake/KF5KDELibs4Support/FindOggVorbis.cmake
 lib/cmake/KF5KDELibs4Support/FindPlasma.cmake
 lib/cmake/KF5KDELibs4Support/FindPopplerQt4.cmake
-lib/cmake/KF5KDELibs4Support/FindPulseAudio.cmake
 lib/cmake/KF5KDELibs4Support/FindPythonLibrary.cmake
 lib/cmake/KF5KDELibs4Support/FindQImageBlitz.cmake
 lib/cmake/KF5KDELibs4Support/FindQt5Transitional.cmake
@@ -1025,9 +1022,9 @@ share/dbus-1/interfaces/kf5_org.freedesktop.PowerManagement.xml
 share/dbus-1/interfaces/kf5_org.kde.Solid.Networking.Client.xml
 share/dbus-1/interfaces/kf5_org.kde.Solid.PowerManagement.PolicyAgent.xml
 share/doc/HTML/ca/kcontrol5/kcm_ssl/details.png
-share/doc/HTML/ca/kcontrol5/kcm_ssl/module.png
 share/doc/HTML/ca/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/ca/kcontrol5/kcm_ssl/index.docbook
+share/doc/HTML/ca/kcontrol5/kcm_ssl/module.png
 share/doc/HTML/ca/kdebugdialog5/index.cache.bz2
 share/doc/HTML/ca/kdebugdialog5/index.docbook
 share/doc/HTML/de/kcontrol5/kcm_ssl/index.cache.bz2
@@ -1040,10 +1037,14 @@ share/doc/HTML/en/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/en/kcontrol5/kcm_ssl/module.png
 share/doc/HTML/en/kdebugdialog5/index.cache.bz2
 share/doc/HTML/en/kdebugdialog5/index.docbook
-share/doc/HTML/es/kdebugdialog5/index.cache.bz2
-share/doc/HTML/es/kdebugdialog5/index.docbook
 share/doc/HTML/es/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/es/kcontrol5/kcm_ssl/index.docbook
+share/doc/HTML/es/kdebugdialog5/index.cache.bz2
+share/doc/HTML/es/kdebugdialog5/index.docbook
+share/doc/HTML/fr/kcontrol5/kcm_ssl/index.cache.bz2
+share/doc/HTML/fr/kcontrol5/kcm_ssl/index.docbook
+share/doc/HTML/fr/kdebugdialog5/index.cache.bz2
+share/doc/HTML/fr/kdebugdialog5/index.docbook
 share/doc/HTML/it/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/it/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/it/kdebugdialog5/index.cache.bz2
@@ -1062,6 +1063,8 @@ share/doc/HTML/pt_BR/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/pt_BR/kcontrol5/kcm_ssl/module.png
 share/doc/HTML/pt_BR/kdebugdialog5/index.cache.bz2
 share/doc/HTML/pt_BR/kdebugdialog5/index.docbook
+share/doc/HTML/ru/kcontrol5/kcm_ssl/index.cache.bz2
+share/doc/HTML/ru/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/sr/kdebugdialog5/index.cache.bz2
 share/doc/HTML/sr/kdebugdialog5/index.docbook
 share/doc/HTML/sr@latin/kdebugdialog5/index.cache.bz2
@@ -1070,8 +1073,6 @@ share/doc/HTML/sv/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/sv/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/sv/kdebugdialog5/index.cache.bz2
 share/doc/HTML/sv/kdebugdialog5/index.docbook
-share/doc/HTML/ru/kcontrol5/kcm_ssl/index.cache.bz2
-share/doc/HTML/ru/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/uk/kcontrol5/kcm_ssl/index.cache.bz2
 share/doc/HTML/uk/kcontrol5/kcm_ssl/index.docbook
 share/doc/HTML/uk/kdebugdialog5/index.cache.bz2
@@ -1798,7 +1799,6 @@ share/kf5/widgets/pics/kpushbutton.png
 share/kf5/widgets/pics/krestrictedline.png
 share/kf5/widgets/pics/ktextbrowser.png
 share/kservices5/kcm_ssl.desktop
-share/kservices5/metainfo.protocol
 share/kservices5/qimageioplugins/bmp.desktop
 share/kservices5/qimageioplugins/gif.desktop
 share/kservices5/qimageioplugins/ico.desktop
@@ -1822,6 +1822,8 @@ share/kservicetypes5/qimageio_plugin.desktop
 share/locale/af/LC_MESSAGES/kdelibs4support.mo
 share/locale/ar/LC_MESSAGES/kdelibs4support.mo
 share/locale/as/LC_MESSAGES/kdelibs4support.mo
+share/locale/ast/LC_MESSAGES/kdelibs4support.mo
+share/locale/az/LC_MESSAGES/kdelibs4support.mo
 share/locale/be/LC_MESSAGES/kdelibs4support.mo
 share/locale/be@latin/LC_MESSAGES/kdelibs4support.mo
 share/locale/bg/LC_MESSAGES/kdelibs4support.mo

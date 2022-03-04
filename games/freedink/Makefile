@@ -1,11 +1,10 @@
 # Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freedink
 PORTVERSION=	108.4
 CATEGORIES=	games
 
-MAINTAINER=	shurd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Metaport for FreeDink engine and data
 
 RUN_DEPENDS=	freedink-engine>=${PORTVERSION}:games/freedink-engine \

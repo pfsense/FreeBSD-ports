@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	libdbi-drivers
 PORTVERSION=	0.9.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	databases devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${DISTVERSION}
 
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libdbi.so:databases/libdbi
 
-USES=		gmake libtool
+USES=		compiler:c11 gmake libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
 		--with-dbi-incdir=${LOCALBASE}/include \
@@ -48,8 +47,6 @@ SQLITE3_CONFIGURE_WITH=	sqlite3
 SQLITE3_PLIST_FILES=	lib/dbd/libdbdsqlite3.so
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|-O20|${CFLAGS}|g' \
-		-e 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/configure
 	@${TOUCH} ${WRKSRC}/drivers/*/dbd_*/*
 
 .include <bsd.port.mk>

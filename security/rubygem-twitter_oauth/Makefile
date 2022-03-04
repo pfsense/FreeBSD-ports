@@ -1,5 +1,4 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	twitter_oauth
 PORTVERSION=	0.4.94
@@ -16,8 +15,9 @@ RUN_DEPENDS=	rubygem-json>=1.8.0:devel/rubygem-json \
 		rubygem-mime-types>=1.16:misc/rubygem-mime-types \
 		rubygem-oauth>=0.4.7:net/rubygem-oauth
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

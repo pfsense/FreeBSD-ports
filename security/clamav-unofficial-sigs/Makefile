@@ -1,12 +1,10 @@
 # Created by: Marko Njezic <sf@maxempire.com>
-# $FreeBSD$
 
 PORTNAME=	clamav-unofficial-sigs
-PORTVERSION=	5.6.2
-PORTREVISION=	1
+PORTVERSION=	7.0.1
 CATEGORIES=	security
 
-MAINTAINER=	sf@maxempire.com
+MAINTAINER=	freebsd@mnd.sc
 COMMENT=	Update script for third-party ClamAV databases
 
 LICENSE=	BSD3CLAUSE
@@ -45,10 +43,10 @@ do-install:
 
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/config/master.conf ${STAGEDIR}${ETCDIR}/master.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/config/os.freebsd.conf ${STAGEDIR}${ETCDIR}/os.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/config/os/os.freebsd.conf ${STAGEDIR}${ETCDIR}/os.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/config/user.conf ${STAGEDIR}${ETCDIR}/user.conf.sample
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} INSTALL LICENSE README.md ${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC} && ${INSTALL_DATA} INSTALL.md LICENSE README.md ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

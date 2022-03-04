@@ -1,8 +1,7 @@
 # Created by: Gustau Perez <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libdmapsharing
-PORTVERSION=	2.9.39
+PORTVERSION=	2.9.41
 CATEGORIES=	net gnome
 MASTER_SITES=	https://www.flyn.org/projects/libdmapsharing/
 DIST_SUBDIR=	gnome3
@@ -21,11 +20,13 @@ USES=		gettext gnome gmake libtool pathfix pkgconfig
 USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 introspection:build
 USE_GSTREAMER1=	yes
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	--disable-introspection	\
+CONFIGURE_ARGS=	--disable-tests \
+		--disable-gtk-doc \
+		--disable-introspection \
 		--with-mdns=avahi
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include `pkg-config --cflags gtk+-3.0`
-LDFLAGS+=	-L${LOCALBASE}/lib `pkg-config --libs gtk+-3.0`
+LDFLAGS+=	-L${LOCALBASE}/lib `pkg-config --libs gtk+-3.0` -lm
 INSTALL_TARGET=	install-strip
 
 OPTIONS_SUB=	yes

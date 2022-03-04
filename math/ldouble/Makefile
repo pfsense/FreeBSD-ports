@@ -1,5 +1,4 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ldouble
 PORTVERSION=	0.1
@@ -11,6 +10,8 @@ DISTFILES=	${LDOUBLE_DISTFILE}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Long double math precision functions
+
+BUILD_DEPENDS=	as:devel/binutils
 
 NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile

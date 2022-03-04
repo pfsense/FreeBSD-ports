@@ -1,8 +1,8 @@
 # Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
 
 PORTNAME=	hexter
 PORTVERSION=	1.0.3
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF/dssi/${PORTNAME}/${PORTVERSION}
 
@@ -17,16 +17,13 @@ LIB_DEPENDS=	libdssialsacompat.so:audio/libdssialsacompat \
 		libjack.so:audio/jack
 BUILD_DEPENDS=	${LOCALBASE}/include/dssi.h:audio/dssi
 
-USES=		gmake libtool pkgconfig tar:bzip2
+USES=		gmake gnome libtool pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20
 
 PORTDOCS=	AUTHORS ChangeLog README
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-finline-limit=5000||' ${WRKSRC}/configure
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/dssi/hexter.so

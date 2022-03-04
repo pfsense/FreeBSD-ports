@@ -1,5 +1,4 @@
 # Created by: Joseph Benden <joe@thrallingpenguin.com>
-# $FreeBSD$
 
 PORTNAME=	wdm
 PORTVERSION=	0.1.1
@@ -11,7 +10,9 @@ COMMENT=	Library for monitoring directories for changes
 
 LICENSE=	MIT
 
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

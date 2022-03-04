@@ -1,10 +1,8 @@
 # Created by: Matthew Seaman
-# $FreeBSD$
 
 PORTNAME=	pglogical
 DISTVERSIONPREFIX=	REL
-DISTVERSION=	2_2_1
-PORTREVISION=	2
+DISTVERSION=	2_4_0
 CATEGORIES=	databases
 
 MAINTAINER=	matthew@FreeBSD.org
@@ -12,7 +10,8 @@ COMMENT=	Logical replication system as a PostgreSQL extension
 
 LICENSE=	PostgreSQL
 
-USES=		gettext-runtime gmake pgsql:9.4+
+USES=		compiler:c11 cpe gettext-runtime gmake pgsql
+CPE_VENDOR=	2ndquadrant
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	2ndQuadrant
@@ -30,16 +29,6 @@ DOCS_PORTDOCS=	*
 
 .include <bsd.port.pre.mk>
 
-.if ${PGSQL_VER:M9.4}
-PLIST_SUB+=	PGSQL94=""
-.else
-PLIST_SUB+=	PGSQL94="@comment "
-.endif
-
-.if ${PGSQL_VER} >= 11
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-pglogical__apply__spi.c
-.endif
-
 # FFI
 #TEST_DEPENDS=	pg_regress:databases/postgresql${PGSQL_VER_NODOT}-pg_regress
 #TEST_TARGET=	do-test
@@ -48,9 +37,6 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pglogical_create_subscriber
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/pglogical.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/pglogical_output.so
-.if ${PGSQL_VER:M9.4}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pglogical_dump
-.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

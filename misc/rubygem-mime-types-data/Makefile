@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mime-types-data
-PORTVERSION=	3.2018.0812
+PORTVERSION=	3.2021.0901
 CATEGORIES=	misc rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +11,9 @@ COMMENT=	MIME Type registry data
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/Licence.md
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

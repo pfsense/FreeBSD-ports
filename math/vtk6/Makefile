@@ -1,16 +1,15 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
-PORTREVISION=	8
+PORTREVISION=	15
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
 DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
 MAINTAINER=	stephen@FreeBSD.org
-COMMENT=	The Visualization Toolkit
+COMMENT=	Visualization toolkit
 
 LICENSE=	BSD3CLAUSE
 
@@ -23,12 +22,10 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 # TODO
 # * VTK Groups
 
-CONFLICTS=	vtk5 vtk8
+CONFLICTS=	vtk8 vtk9
+USES=		alias cmake jpeg localbase xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	xt sm ice x11 xext
-USES=		alias cmake jpeg
-CXXFLAGS+=	-I${LOCALBASE}/include
-
 VTK_SHORT_VER=	${PORTVERSION:R}
 PLIST_SUB+=	VER2=${VTK_SHORT_VER}
 
@@ -37,8 +34,8 @@ DATADIR=	${PREFIX}/share/vtk-${VTK_SHORT_VER}
 
 # Options
 OPTIONS_DEFINE=	DESIGNER DOCS OSMESA EXAMPLES SHARED QT5
-OPTIONS_DEFAULT=PYTHON SHARED
-#OPTIONS_DEFAULT=MPI Qt JAVA PYTHON TCLTK DESIGNER
+OPTIONS_DEFAULT=SHARED
+#OPTIONS_DEFAULT=MPI Qt JAVA TCLTK DESIGNER
 OSMESA_DESC=	Use Mesa for off-screen rendering
 DESIGNER_DESC=	Build the Qt Designer plugin
 OPTIONS_SUB=	yes
@@ -46,18 +43,18 @@ OPTIONS_SUB=	yes
 # Options groups
 #VTK_GROUPS=	Imaging MPI Qt Rendering StandAlone Views
 VTK_GROUPS=	MPI
-VTK_WRAPS=	JAVA TCLTK PYTHON
-OPTIONS_GROUP=	Groups Wrapping
-OPTIONS_GROUP_Groups=${VTK_GROUPS}
-OPTIONS_GROUP_Wrapping=${VTK_WRAPS}
+VTK_WRAPS=	JAVA TCLTK
+OPTIONS_GROUP=	GROUPS WRAPPING
+OPTIONS_GROUP_GROUPS=${VTK_GROUPS}
+OPTIONS_GROUP_WRAPPING=${VTK_WRAPS}
+GROUPS_DESC=	Groups
+WRAPPING_DESC=	Wrapping
 .for g in ${VTK_GROUPS}
 $g_DESC=	Build the $g group
 .endfor
 .for w in ${VTK_WRAPS}
 $w_DESC=	$w wrapping
 .endfor
-
-QT5_DESC=	Qt 5 toolkit support
 
 CMAKE_ARGS+=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DVTK_INSTALL_ARCHIVE_DIR=lib/vtk-${VTK_SHORT_VER} \
@@ -71,7 +68,8 @@ CMAKE_ARGS+=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DVTK_USE_SYSTEM_ZLIB:BOOL=ON \
 		-DSTAGEDIR=${STAGEDIR} \
 		-DModule_vtkTestingCore:BOOL=ON \
-		-DModule_vtkTestingRendering:BOOL=ON
+		-DModule_vtkTestingRendering:BOOL=ON \
+		-DVTK_WRAP_PYTHON:BOOL=OFF
 
 SHARED_CMAKE_ON=	-DBUILD_SHARED_LIBS:BOOL=ON
 SHARED_CMAKE_OFF=	-DBUILD_SHARED_LIBS:BOOL=OFF
@@ -103,6 +101,7 @@ CMAKE_ARGS+=	-DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
 PLIST_SUB+=	X11="@comment " \
 		OSMESA=""
 .else
+USES+=		gl
 USE_GL=		gl glu
 PLIST_SUB+=	X11="" \
 		OSMESA="@comment "
@@ -113,8 +112,8 @@ CMAKE_ARGS+=	-DBUILD_EXAMPLES:BOOL=ON
 .endif
 
 .if ${PORT_OPTIONS:MMPI}
-LIB_DEPENDS+=	libmpi.so:net/openmpi
-CMAKE_ARGS+=	-DMPIEXEC=${LOCALBASE}/mpi/openmpi/bin/mpiexec
+LIB_DEPENDS+=	libmpi.so:net/openmpi3
+CMAKE_ARGS+=	-DMPIEXEC=${LOCALBASE}/mpi/openmpi3/bin/mpiexec
 PLIST_SUB+=	MPI=""
 .else
 PLIST_SUB+=	MPI="@comment "
@@ -165,19 +164,6 @@ CMAKE_ARGS+=	-DVTK_WRAP_JAVA:BOOL=OFF \
 PLIST_SUB+=	JAVA="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MPYTHON}
-USES+=		python:2.7
-CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=ON \
-		-DVTK_INSTALL_PYTHON_MODULE_DIR:STRING=${PYTHONPREFIX_SITELIBDIR} \
-		-DModule_vtkRenderingMatplotlib:BOOL=ON \
-		-DModule_vtkPythonInterpreter:BOOL=ON
-PLIST_SUB+=	PYTHON=""
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
-.else
-CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=OFF
-PLIST_SUB+=	PYTHON="@comment "
-.endif
-
 .if ${PORT_OPTIONS:MTCLTK}
 USES+=		tk
 CMAKE_ARGS+=	-DVTK_WRAP_TCL:BOOL=ON \
@@ -192,7 +178,7 @@ CMAKE_ARGS+=	-DVTK_WRAP_TCL:BOOL=OFF \
 PLIST_SUB+=	TCLTK="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MJAVA} || ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MTCLTK}
+.if ${PORT_OPTIONS:MJAVA} || ${PORT_OPTIONS:MTCLTK}
 PLIST_SUB+=	WRAP=""
 .else
 PLIST_SUB+=	WRAP="@comment "
@@ -207,4 +193,10 @@ USE_PERL5+=	build
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=OFF
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
+CXXFLAGS+=	-mminimal-toc
+.endif
+
+.include <bsd.port.post.mk>

@@ -1,5 +1,4 @@
 # Created by: TERAMOTO Masahiro <markun@onohara.to>
-# $FreeBSD$
 
 PORTNAME=	MouseX-ConfigFromFile
 PORTVERSION=	0.05
@@ -19,5 +18,7 @@ RUN_DEPENDS=	p5-Filter>=0:devel/p5-Filter \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

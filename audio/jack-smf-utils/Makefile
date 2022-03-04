@@ -1,9 +1,8 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jack-smf-utils
 PORTVERSION=	1.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libjack.so:audio/jack \
 		liblash.so:audio/lash
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 

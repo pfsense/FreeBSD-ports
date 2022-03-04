@@ -1,5 +1,4 @@
 # Created by: Douglas Carmichael <dcarmich@mcs.com>
-# $FreeBSD$
 
 PORTNAME=	amiwm
 PORTVERSION=	0.21.pl2
@@ -11,7 +10,7 @@ DISTNAME=	${PORTNAME}0.21pl2
 MAINTAINER=	dcarmich@dcarmichael.net
 COMMENT=	Window manager that makes your desktop look like an Amiga(TM)
 
-USES=		shebangfix
+USES=		shebangfix xorg
 SHEBANG_FILES=	Xinitrc.in \
 		Xsession.in \
 		Xsession2.in

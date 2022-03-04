@@ -1,5 +1,4 @@
 # Created by: Mitchell Smith <mjs@bur.st>
-# $FreeBSD$
 
 PORTNAME=	grails
 DISTVERSION=	1.3.6
@@ -15,9 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:tu}
 
-USES=		zip
+USES=		cpe zip
+CPE_VENDOR=	gopivotal
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 NO_ARCH=	yes
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

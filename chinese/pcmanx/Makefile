@@ -1,9 +1,8 @@
 # Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	pcmanx
 PORTVERSION=	1.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	chinese net gnome
 MASTER_SITES=	https://github.com/pcman-bbs/${PORTNAME}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-gtk2-${PORTVERSION}
@@ -14,7 +13,7 @@ COMMENT=	BBS client using GTK+ 2.x
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lang gmake iconv pkgconfig tar:xz
+USES=		compiler:c++11-lang gmake gnome iconv pkgconfig tar:xz
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20 intlhack
@@ -30,7 +29,6 @@ NANCY_DESC=	Nancy bot support
 MOUSE_DESC=	Mouse click and wheel support
 EXTERNAL_DESC=	External SSH/Telnet support
 IPLOOKUP_DESC=	IP location lookup support
-PROXY_DESC=	Proxy support
 
 NLS_USES=		gettext
 NLS_USES_OFF=	gettext-tools

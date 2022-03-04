@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	typetools
 PORTVERSION=	2.108
@@ -19,6 +18,6 @@ CONFIGURE_ARGS=	--with-kpathsea=${LOCALBASE}
 
 DATADIR=	${PREFIX}/share/lcdf-${PORTNAME}
 
-CONFLICTS_INSTALL=	texlive-base-[0-9]*
+CONFLICTS_INSTALL=	texlive-base
 
 .include <bsd.port.mk>

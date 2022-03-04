@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	snuffleupagus
-DISTVERSIONPREFIX=v
-DISTVERSION=	0.4.1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.7.0
 CATEGORIES=	security
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -12,18 +10,20 @@ COMMENT=	Security module for PHP 7+
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
+
+USES=		localbase:ldflags php:ext
+USE_GITHUB=	yes
+GH_ACCOUNT=	jvoisin
+USE_PHP=	hash:build session:build
+
+CONFIGURE_ARGS=	--enable-snuffleupagus
 
 TEST_TARGET=	test
 
+# Fix build with clang11
+CFLAGS+=	-fcommon
+
 WRKSRC_SUBDIR=	src
-
-USES=		localbase:ldflags php:ext
-USE_PHP=	hash:build session:build
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	nbs-system
-
-CONFIGURE_ARGS=	--enable-snuffleupagus
 
 .include <bsd.port.mk>

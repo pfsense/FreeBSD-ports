@@ -1,46 +1,44 @@
 # Created by: obrien@cs.ucdavis.edu
-# $FreeBSD$
 
 PORTNAME=	minicom
 PORTVERSION=	2.7.1
+PORTREVISION=	2
 CATEGORIES=	comms
-MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/4215/ \
-		http://alioth.debian.org/frs/download.php/file/4215/ \
-		http://fossies.org/linux/misc/
+MASTER_SITES=	https://fossies.org/linux/misc/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MS-DOS Telix serial communication program "workalike"
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	lrz:comms/lrzsz
 
-OPTIONS_DEFINE=	DOCS NLS
-OPTIONS_SUB=	yes
-NLS_USES=	gettext
-NLS_CONFIGURE_ENABLE=	nls
-
-USES=		iconv ncurses
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib ${ICONV_LIB} -lncurses
+USES=		cpe iconv localbase ncurses
+CPE_VENDOR=	minicom_project
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--enable-dfl-baud=57600 \
-			--sysconfdir=${PREFIX}/etc/minicom \
-			--enable-lock-dir=/var/spool/lock \
-			--enable-dfl-port=/dev/cuau0
+CONFIGURE_ARGS=	--enable-dfl-baud=57600 \
+		--enable-dfl-port=/dev/cuau0 \
+		--enable-lock-dir=/var/spool/lock \
+		--sysconfdir=${PREFIX}/etc/minicom
+LIBS+=		${ICONV_LIB} -lncurses
+
+OPTIONS_DEFINE=		DOCS NLS
+OPTIONS_SUB=		yes
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:
 	${REINPLACE_CMD} -e "s@/usr/local/bin/@${LOCALBASE}/bin/@; \
 		s@/sz@/lsz@;s@/sb@/lsb@;s@/sx@/lsx@;s@/rz@/lrz@; \
 		s@/rb@/lrb@;s@/rx@/lrx@" ${WRKSRC}/src/rwconf.c
-	${REINPLACE_CMD} -E -e "s@^(SUBDIRS = .*) intl@\1@" \
-		${WRKSRC}/Makefile.in
 
 post-install:
-	${INSTALL} -d -m 0755 ${STAGEDIR}${PREFIX}/etc/minicom
-	${INSTALL} -d -m 0755 ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${ETCDIR}
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/AUTHORS ${STAGEDIR}${DOCSDIR}/
-	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}/
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${STAGEDIR}${DOCSDIR}/
 	(umask 022 && cd ${WRKSRC} && ${TAR} --exclude '*/Makefile*' \
 		 --exclude '*.orig' -chf - extras doc | ${TAR}  -xf - -C \

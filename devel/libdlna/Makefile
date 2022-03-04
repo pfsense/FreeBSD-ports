@@ -1,9 +1,8 @@
 # Created by: Dave Grochowski <malus.x@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libdlna
 PORTVERSION=	0.2.3
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	devel
 MASTER_SITES=	http://libdlna.geexbox.org/releases/ \
 		LOCAL/ehaupt

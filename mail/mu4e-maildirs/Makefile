@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	mu4e-maildirs
-PORTVERSION=	0.8.20180606
+PORTVERSION=	0.8.20201028
+PORTREVISION=	2
 CATEGORIES=	mail
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -19,10 +18,9 @@ USES=		emacs
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME}-extension
 GH_ACCOUNT=	agpchil
-GH_TAGNAME=	3ef4c48
+GH_TAGNAME=	1167bc6
 
 NO_ARCH=	yes
-NO_CONFIGURE=	yes
 PLIST_FILES=	${EMACS_SITE_LISPDIR}/mu4e/mu4e-maildirs-extension.elc \
 		${EMACS_SITE_LISPDIR}/mu4e/mu4e-maildirs-extension.el.gz
 PORTDOCS=	README.md
@@ -31,7 +29,13 @@ OPTIONS_DEFINE=	DOCS
 
 do-build:
 	cd ${WRKSRC} && ${EMACS_CMD} --batch \
-	    -f batch-byte-compile mu4e-maildirs-extension.el && \
+	    --eval "(provide 'mu4e)" \
+	    --eval "(defvar mu4e~main-buffer-name \"tests\")" \
+	    --eval "(defvar mu4e-mu-binary \"mu\")" \
+	    --eval "(require 'cl)" \
+	    -l dash.el \
+	    -l mu4e-maildirs-extension.el \
+	    --eval "(byte-compile-file \"mu4e-maildirs-extension.el\")" && \
 	    ${GZIP_CMD} mu4e-maildirs-extension.el
 
 do-install:

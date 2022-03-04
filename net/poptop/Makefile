@@ -1,10 +1,9 @@
 # Created by: Nick Sayer <nsayer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	poptop
 PORTVERSION=	1.4.0
 PORTREVISION=	1
-CATEGORIES=	net
+CATEGORIES=	net net-vpn
 MASTER_SITES=	SF/${PORTNAME}/pptpd/pptpd-${PORTVERSION} \
 		SAMBA/ppp:pppd
 DISTFILES=	pptpd-${PORTVERSION}${EXTRACT_SUFX} \

@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	systempreferences
 PORTVERSION=	1.2.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	GNUSTEP/usr-apps
 DISTNAME=	SystemPreferences-${PORTVERSION}
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	System Preferences application for GNUstep
 
 LICENSE=	GPLv2

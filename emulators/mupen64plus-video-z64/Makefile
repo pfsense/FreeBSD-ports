@@ -1,7 +1,6 @@
 # Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
-PORTREVISION=	2
+PORTREVISION=	3
 PKGNAMESUFFIX=	-video-z64
 DISTFILES=	${PORTNAME}${PKGNAMESUFFIX}-src-${PORTVERSION}${EXTRACT_SUFX}:plugin
 
@@ -9,6 +8,7 @@ COMMENT=	Low-level RDP plugin for the Mupen64Plus
 
 LIB_DEPENDS=	libmupen64plus.so.2:emulators/mupen64plus-core
 
+USES=		gl sdl
 USE_GL=		gl glu glew
 USE_SDL=	sdl2
 

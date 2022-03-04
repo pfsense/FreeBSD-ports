@@ -1,5 +1,4 @@
 # Created by: Johannes Dieterich <dieterich@ogolem.org>
-# $FreeBSD$
 
 PORTNAME=	aparapi
 PORTVERSION=	1.0.0
@@ -17,12 +16,11 @@ BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 USE_GITHUB=	yes
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 USE_ANT=	yes
 ALL_TARGET=	dist
 

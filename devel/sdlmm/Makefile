@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	sdlmm
 PORTVERSION=	0.1.8
@@ -14,7 +13,7 @@ COMMENT=	C++ Wrapper for the SDL (Simple DirectMedia Layer)
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool
+USES=		libtool sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

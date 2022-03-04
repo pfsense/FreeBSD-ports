@@ -1,14 +1,14 @@
 # Created by: Josh Gilliam <josh@quick.net>
-# $FreeBSD$
 
 PORTNAME=	nawk
 PORTVERSION=	20121220
+PORTREVISION=	1
 CATEGORIES=	lang
-MASTER_SITES=	http://www.cs.princeton.edu/~bwk/btl.mirror/
+MASTER_SITES=	https://BSDforge.com/projects/source/lang/nawk/
 DISTNAME=	awk
 DIST_SUBDIR=	nawk-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Brian Kernighan's pattern scanning and processing language
 
 NO_WRKSUBDIR=	yes

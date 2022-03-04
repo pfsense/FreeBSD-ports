@@ -1,9 +1,6 @@
-# Created by: Andriy Gapon <avg@icyb.net.ua>
-# $FreeBSD$
-
 PORTNAME=	charmtimetracker
 DISTVERSION=	1.12.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	deskutils
 
 # PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -18,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain
 
-USES=		cmake compiler:c++11-lib pkgconfig qt:5
+USES=		cmake compiler:c++11-lib pkgconfig qt:5 xorg
 CMAKE_ARGS=	-DCharm_VERSION:STRING=${PORTVERSION}
 
 USE_GITHUB=	yes

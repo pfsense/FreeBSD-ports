@@ -1,5 +1,4 @@
 # Created by: Daniel Roethlisberger <daniel@roe.ch>
-# $FreeBSD$
 
 PORTNAME=	libspf
 DISTVERSION=	1.0.0-p5
@@ -18,7 +17,7 @@ MAKE_JOBS_UNSAFE=yes
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		autoreconf libtool tar:bzip2
+USES=		autoreconf cpe libtool tar:bzip2
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*

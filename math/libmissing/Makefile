@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libmissing
 DISTVERSION=	20130815
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	LOCAL/bf
 
@@ -42,7 +40,7 @@ base system profiling libraries
 .endif
 PLIST_FILES+=	lib/libmissing_p.a
 .else
-MAKE_ENV+=	NO_PROFILE=yes
+MAKE_ENV+=	WITHOUT_PROFILE=yes
 .endif
 
 post-patch:

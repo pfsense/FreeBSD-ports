@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # handle dependency on Kerberos port
 #
 # Feature:	gssapi
@@ -95,7 +93,7 @@ GSSAPIINCDIR=	${GSSAPIBASEDIR}/include
 _HEADERS+=	gssapi/gssapi.h gssapi/gssapi_krb5.h krb5.h
 GSSAPICPPFLAGS=	-I"${GSSAPIINCDIR}"
 GSSAPILIBS=	-lkrb5 -lgssapi -lgssapi_krb5
-GSSAPILDFLAGS=	-L"${GSSAPILIBDIR}"
+GSSAPILDFLAGS=
 .elif ${_local} == "heimdal"
 HEIMDAL_HOME?=	${LOCALBASE}
 GSSAPIBASEDIR=	${HEIMDAL_HOME}

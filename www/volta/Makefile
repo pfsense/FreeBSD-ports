@@ -1,5 +1,4 @@
 # Created by: mahlon
-# $FreeBSD$
 
 PORTNAME=	volta
 PORTVERSION=	0.3.0
@@ -15,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libcdb.so:databases/tinycdb
 
-USES=		gmake pkgconfig lua tar:tgz
+USES=		gmake pkgconfig lua:52 tar:tgz
 ALL_TARGET=	${PORTNAME}
 
 CFLAGS+=	-I${PREFIX}/include

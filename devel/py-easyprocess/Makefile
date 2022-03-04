@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	easyprocess
 PORTVERSION=	0.2.3
 CATEGORIES=	devel python
@@ -15,10 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paver>0:devel/py-paver@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cog>=2.3:devel/py-cog@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 
 NO_ARCH=	YES
 USE_PYTHON=	autoplist distutils
-USES=		python
+USES=		python:3.6+
 
 .include <bsd.port.mk>

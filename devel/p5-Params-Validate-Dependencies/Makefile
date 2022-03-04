@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Params-Validate-Dependencies
 PORTVERSION=	1.40
@@ -12,6 +11,8 @@ COMMENT=	Validate combinations of parameters
 
 LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual
+LICENSE_FILE_ART10=	${WRKSRC}/ARTISTIC.txt
+LICENSE_FILE_GPLv2=	${WRKSRC}/GPL2.txt
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Clone>=0.38:devel/p5-Clone \
@@ -24,8 +25,9 @@ TEST_DEPENDS=	p5-Test-Differences>=0:devel/p5-Test-Differences \
 		p5-Test-Pod-Coverage>=1:devel/p5-Test-Pod-Coverage \
 		p5-Test-Warnings>=0.026:devel/p5-Test-Warnings
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

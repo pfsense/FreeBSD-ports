@@ -1,9 +1,8 @@
 # Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
 
 PORTNAME=	ladder
 PORTVERSION=	1.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games gnustep
 MASTER_SITES=	SAVANNAH/gap
 PKGNAMEPREFIX=	gnustep-

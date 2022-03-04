@@ -1,9 +1,8 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	libgltext
 PORTVERSION=	0.3.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gltext/gltext/${PORTVERSION}
 DISTNAME=	gltext-${PORTVERSION}
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-USES=		gmake localbase libtool
+USES=		gl gmake localbase libtool pkgconfig xorg
 USE_GL=		gl glu
 USE_XORG=	x11 xmu
 GNU_CONFIGURE=	yes
@@ -26,6 +25,8 @@ OPTIONS_DEFINE=	EXAMPLES DOCS
 OPTIONS_SUB=	yes
 EXAMPLES_DESC=	Compile examples, need libglut
 EXAMPLES_USE=	GL=glut
+
+BINARY_ALIAS=	freetype-config=true
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/.libs/${PORTNAME}-${PORTVERSION}.so \

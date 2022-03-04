@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tesseract
 DISTVERSION=	2014_05_12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://download.tuxfamily.org/${PORTNAME}/
 PKGNAMESUFFIX=	-game
@@ -31,6 +29,7 @@ OPTIONS_MULTI=	FLAVOR
 OPTIONS_MULTI_FLAVOR=CLIENT DEDICATED MASTER
 
 CLIENT_DESC=		Build client
+CLIENT_USES=		gl sdl xorg
 CLIENT_USE=		GL=gl SDL=image2,mixer2 XORG=x11
 CLIENT_ALL_TARGET=	client
 CLIENT_PLIST_FILES=	bin/tess_client libexec/tess_client

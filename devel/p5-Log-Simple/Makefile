@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Log-Simple
 PORTVERSION=	1.8
@@ -13,7 +12,9 @@ COMMENT=	Basic runtime logger
 
 LICENSE=	GPLv2
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

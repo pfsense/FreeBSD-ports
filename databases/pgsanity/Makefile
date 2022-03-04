@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	pgsanity
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.9
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	databases python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,7 +11,7 @@ COMMENT=	Check syntax of PostgreSQL SQL files
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		pgsql python
+USES=		pgsql python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 USE_GITHUB=	yes

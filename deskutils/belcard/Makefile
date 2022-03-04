@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	belcard
 PORTVERSION=	1.0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 MASTER_SITES=	https://www.linphone.org/releases/sources/belcard/
 
@@ -19,6 +17,6 @@ USES=		cmake compiler:c++11-lib
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DENABLE_STATIC=NO -DENABLE_STRICT=NO -DENABLE_UNIT_TESTS=NO
-WRKSRC= 	${WRKDIR}/${DISTNAME}-0
+WRKSRC=		${WRKDIR}/${DISTNAME}-0
 
 .include <bsd.port.mk>

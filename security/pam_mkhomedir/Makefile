@@ -1,5 +1,4 @@
 # Created by: Martin Mersberger
-# $FreeBSD$
 
 PORTNAME=	pam_mkhomedir
 PORTVERSION=	0.2
@@ -21,13 +20,13 @@ PLIST_FILES+=	lib/libpam_mkhomedir_p.a
 MAKE_ARGS+=	PROFILE=yes
 WITH_STATIC=	yes
 .else
-MAKE_ARGS+=	NO_PROFILE=yes
+MAKE_ARGS+=	MK_PROFILE=no
 .endif
 
 .if defined(WITH_STATIC)
 PLIST_FILES+=	lib/libpam_mkhomedir.a
 .else
-MAKE_ARGS+=	NO_INSTALLLIB=yes
+MAKE_ARGS+=	MK_INSTALLLIB=no
 .endif
 
 pre-everything::

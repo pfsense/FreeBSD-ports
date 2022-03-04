@@ -1,9 +1,7 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	statsmodels
-PORTVERSION=	0.9.0
-PORTREVISION=	1
+PORTVERSION=	0.13.1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,22 +10,22 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Complement to SciPy for statistical computations
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}pandas>=0.14:math/py-pandas@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}patsy>=0.4.0:math/py-patsy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scipy>=0.14:science/py-scipy@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.22:lang/cython@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>=1.17,1:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>=1.3:science/py-scipy@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.17,1:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pandas>=0.25,1:math/py-pandas@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}patsy>=0.5.2:math/py-patsy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>=1.3:science/py-scipy@${PY_FLAVOR}
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
-USES=		python shebangfix
+USES=		python:3.7+ shebangfix
 USE_PYTHON=	autoplist concurrent cython distutils
 
-PORTDOCS=	README.rst README_l1.txt
-PORTEXAMPLES=	*
-
 SHEBANG_GLOB=	*.py
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +

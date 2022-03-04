@@ -1,24 +1,30 @@
 # Created by: Juraj Lutter <otis@sk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	libconfuse
-DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.1
-PORTREVISION=	1
+PORTVERSION=	3.3
+PORTREVISION=	2
 CATEGORIES=	devel
+MASTER_SITES=	https://github.com/libconfuse/libconfuse/releases/download/v${PORTVERSION}/
+DISTNAME=	confuse-${PORTVERSION}
 
-MAINTAINER=	otis@freebsd.sk
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Configuration file parsing library
 
 LICENSE=	ISCL
 
-USES=		autoreconf gettext-tools iconv pathfix pkgconfig libtool
+USES=		cpe iconv libtool pathfix pkgconfig tar:xz
+CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
-USE_GITHUB=	yes
-GH_ACCOUNT=	martinh
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-nls --enable-shared
+CONFIGURE_ARGS=	--enable-shared --disable-examples
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
+NLS_USES=			gettext
+NLS_CONFIGURE_ENABLE=		nls
 
 .include <bsd.port.mk>

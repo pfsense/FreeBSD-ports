@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-suricata
-PORTVERSION=	4.1.4
-PORTREVISION=	4
+PORTVERSION=	6.0.4
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,8 +13,7 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	suricata>=4.1.4:security/suricata \
-		barnyard2:security/barnyard2
+RUN_DEPENDS=	suricata>=6.0.4:security/suricata
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -109,8 +108,6 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_define_vars.php \
 		${STAGEDIR}${PREFIX}/www/suricata
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_barnyard.php \
-		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_ip_list_mgmt.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_ip_reputation.php \
@@ -124,6 +121,10 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/widget-suricata.inc \
 		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_blocked.php \
+		${STAGEDIR}${PREFIX}/www/suricata
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_files.php \
+		${STAGEDIR}${PREFIX}/www/suricata
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_filecheck.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_passlist.php \
 		${STAGEDIR}${PREFIX}/www/suricata
@@ -143,8 +144,5 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
-.if ${ARCH} == "armv6" || ${ARCH} == "armv7" || ${ARCH} == "aarch64"
-	cd ${FILESDIR}/arm && ${COPYTREE_SHARE} . ${STAGEDIR}
-.endif
 
 .include <bsd.port.post.mk>

@@ -1,13 +1,11 @@
 # Created by: Tony Maher <tonymaher@optusnet.com.au>
-# $FreeBSD$
 
 PORTNAME=	wcslib
-PORTVERSION=	6.2
-PORTREVISION=	1
+PORTVERSION=	7.7
 CATEGORIES=	astro
 MASTER_SITES=	ftp://ftp.atnf.csiro.au/pub/software/wcslib/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for parsing/generating FITS headers
 
 LICENSE=	GPLv3
@@ -35,6 +33,7 @@ PGPLOT_CONFIGURE_WITH=	pgplot
 PGPLOT_LIB_DEPENDS=	libpgplot.so:graphics/pgplot \
 			libpng.so:graphics/png
 PGPLOT_USE=		XORG=x11
+PGPLOT_USES=		xorg
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#%%PKGDIR%%#${STAGEDIR}${PREFIX}/libdata#g' \

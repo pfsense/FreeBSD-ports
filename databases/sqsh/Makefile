@@ -1,8 +1,8 @@
 # Created by: Domas Mituzas <midom@dammit.lt>
-# $FreeBSD$
 
 PORTNAME=	sqsh
 PORTVERSION=	2.5.16.1
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R:R}
 
@@ -11,6 +11,8 @@ COMMENT=	Interactive tool for querying Sybase database servers
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		cmd_connect.c:1897:17: error: use of undeclared identifier 'CS_MAX_CHAR'
 
 LIB_DEPENDS=	libct.so:databases/freetds
 

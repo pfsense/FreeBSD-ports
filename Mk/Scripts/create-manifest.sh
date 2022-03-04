@@ -1,9 +1,9 @@
 #!/bin/sh
-# $FreeBSD$
 #
 # MAINTAINER: portmgr@FreeBSD.org
 
 set -e
+set -o pipefail
 
 . "${dp_SCRIPTSDIR}/functions.sh"
 
@@ -11,10 +11,9 @@ validate_env dp_ACTUAL_PACKAGE_DEPENDS dp_CATEGORIES dp_COMMENT \
 	dp_COMPLETE_OPTIONS_LIST dp_DEPRECATED dp_DESCR dp_EXPIRATION_DATE \
 	dp_GROUPS dp_LICENSE dp_LICENSE_COMB dp_MAINTAINER dp_METADIR \
 	dp_NO_ARCH dp_PKGBASE dp_PKGDEINSTALL dp_PKGINSTALL dp_PKGMESSAGES \
-	dp_PKGORIGIN dp_PKGPOSTDEINSTALL dp_PKGPOSTINSTALL dp_PKGPOSTUPGRADE \
-	dp_PKGPREDEINSTALL dp_PKGPREINSTALL dp_PKGPREUPGRADE dp_PKGUPGRADE \
-	dp_PKGVERSION dp_PKG_BIN dp_PKG_IGNORE_DEPENDS dp_PKG_NOTES \
-	dp_PORT_OPTIONS dp_PREFIX dp_USERS dp_WWW
+	dp_PKGORIGIN dp_PKGPOSTDEINSTALL dp_PKGPOSTINSTALL dp_PKGPREDEINSTALL \
+	dp_PKGPREINSTALL dp_PKGVERSION dp_PKG_BIN dp_PKG_IGNORE_DEPENDS \
+	dp_PKG_NOTES dp_PORT_OPTIONS dp_PREFIX dp_USERS dp_WWW
 
 [ -n "${DEBUG_MK_SCRIPTS}" -o -n "${DEBUG_MK_SCRIPTS_CREATE_MANIFEST}" ] && set -x
 
@@ -62,7 +61,8 @@ EOT
 
 # Then the key/values sections
 echo "deps: { "
-eval ${dp_ACTUAL_PACKAGE_DEPENDS} | grep -v -E ${dp_PKG_IGNORE_DEPENDS} | sort -u
+# Ignore grep's return value.
+eval ${dp_ACTUAL_PACKAGE_DEPENDS} | { grep -v -E ${dp_PKG_IGNORE_DEPENDS} || :; } | sort -u
 echo "}"
 
 echo "options: {"
@@ -90,7 +90,7 @@ cp ${dp_DESCR} ${dp_METADIR}/+DESC
 
 # Concatenate all the scripts
 output_files=
-for stage in INSTALL DEINSTALL UPGRADE; do
+for stage in INSTALL DEINSTALL; do
 	for prepost in '' PRE POST; do
 		output=${dp_METADIR}/+${prepost:+${prepost}_}${stage}
 		[ -f "${output}" ] && output_files="${output_files:+${output_files} }${output}"
@@ -98,12 +98,13 @@ for stage in INSTALL DEINSTALL UPGRADE; do
 done
 [ -n "${output_files}" ] && rm -f ${output_files}
 
-for stage in INSTALL DEINSTALL UPGRADE; do
+for stage in INSTALL DEINSTALL; do
 	for prepost in '' PRE POST; do
 		eval files="\${dp_PKG${prepost}${stage}}"
 		output=${dp_METADIR}/+${prepost:+${prepost}_}${stage}
 		for input in ${files}; do
 			[ -f "${input}" ] && cat ${input} >> ${output}
+			[ -f "${input}.lua" ] && cp ${input}.lua ${dp_METADIR}
 		done
 	done
 done
@@ -112,14 +113,24 @@ done
 
 exec >${dp_METADIR}/+DISPLAY
 
+echo '['
 for message in ${dp_PKGMESSAGES}; do
-  [ -f "${message}" ] && cat "${message}"
+	if [ -f "${message}" ]; then
+		#if if starts with [ then it is ucl and we do drop last and first line
+		if head -1 "${message}" | grep -q '^\['; then
+			sed '1d;$d' "${message}"
+		else
+			echo '{type: install, message=<<EOD'
+			cat "${message}"
+			printf 'EOD\n},\n'
+		fi
+	fi
 done
 
 # Try and keep these messages in sync with check-deprecated
 if [ ${dp_MAINTAINER} = "ports@FreeBSD.org" ]; then
-	if [ -f "${dp_METADIR}/+DISPLAY" ]; then echo; fi
 	cat <<-EOT
+	{ message=<<EOD
 	===>   NOTICE:
 
 	The ${dp_PKGBASE} port currently does not have a maintainer. As a result, it is
@@ -130,13 +141,15 @@ if [ ${dp_MAINTAINER} = "ports@FreeBSD.org" ]; then
 
 	More information about port maintainership is available at:
 
-	https://www.freebsd.org/doc/en/articles/contributing/ports-contributing.html#maintain-port
+	https://docs.freebsd.org/en/articles/contributing/#ports-contributing
+	EOD
+	},
 	EOT
 fi
 
 if [ -n "${dp_DEPRECATED}" ]; then
-	if [ -f "${dp_METADIR}/+DISPLAY" ]; then echo; fi
 	cat <<-EOT
+	{ message=<<EOD
 	===>   NOTICE:
 
 	This port is deprecated; you may wish to reconsider installing it:
@@ -151,8 +164,6 @@ if [ -n "${dp_DEPRECATED}" ]; then
 
 		EOT
 	fi
+	printf 'EOD\n},\n'
 fi
-
-if [ ! -s ${dp_METADIR}/+DISPLAY ]; then
-	rm -f ${dp_METADIR}/+DISPLAY
-fi
+echo ']'

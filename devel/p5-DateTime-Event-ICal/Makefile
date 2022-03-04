@@ -1,5 +1,4 @@
 # Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
 
 PORTNAME=	DateTime-Event-ICal
 PORTVERSION=	0.13
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Perl DateTime extension for computing rfc2445 recurrences
+COMMENT=	Perl DateTime extension for computing RFC 2445 recurrences
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

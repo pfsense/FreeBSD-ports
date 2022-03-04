@@ -1,9 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	kmymoney
-PORTVERSION=	5.0.3
+PORTVERSION=	5.1.1
+PORTREVISION=	3
 CATEGORIES=	finance kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
+
+PATCH_SITES=	https://invent.kde.org/office/kmymoney/-/commit/
+PATCHFILES+=	a9722f40ec94bd7fdda078e393807dc1e78bbec3.diff:-p1 # Python 3.8 compat
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	KDE personal finance manager
@@ -89,9 +91,9 @@ SQLCIPHER_LIB_DEPENDS=	libsqlcipher.so:databases/sqlcipher
 SQLCIPHER_CMAKE_BOOL=	ENABLE_SQLCIPHER
 
 WEBOOB_DESC=		Online banking via Web Outside Of Browsers
-WEBOOB_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}weboob>0:www/py-weboob@${PY_FLAVOR}
-WEBOOB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}weboob>0:www/py-weboob@${PY_FLAVOR}
-WEBOOB_USES=		python:2.7
+WEBOOB_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}weboob-qt>0:www/py-weboob-qt@${PY_FLAVOR}
+WEBOOB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}weboob-qt>0:www/py-weboob-qt@${PY_FLAVOR}
+WEBOOB_USES=		python:3.7+
 WEBOOB_USE=		qt=concurrent
 WEBOOB_CMAKE_BOOL=	ENABLE_WEBOOB
 
@@ -104,6 +106,13 @@ create-plist: stage
 		-e '/ofximport/s|^|%%OFX%%|g' -e '/qsqlcipher/s|^|%%SQLCIPHER%%|g' \
 		-e '/weboob/s|^|%%WEBOOB%%|g' \
 		pkg-plist)
+.endif
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQTWEBENGINE}
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 .endif
 
 .include <bsd.port.mk>

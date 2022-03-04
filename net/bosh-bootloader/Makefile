@@ -1,13 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	bosh-bootloader
-PORTVERSION=	7.4.0
+PORTVERSION=	7.6.0
+PORTREVISION=	1
 CATEGORIES=	net sysutils
 
 MAINTAINER=	dumbbell@FreeBSD.org
 COMMENT=	CLI for standing up CloudFoundry or Concourse on an IAAS
 
 LICENSE=	APACHE20
+
+BROKEN_aarch64= fails to build: vendor/golang.org/x/sys/unix/cap_freebsd.go:18:23: undefined: CAP_RIGHTS_VERSION_00
 
 USE_GITHUB=	yes
 GH_TUPLE=	cloudfoundry:bosh-bootloader:v${PORTVERSION}

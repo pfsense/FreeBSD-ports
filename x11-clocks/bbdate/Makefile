@@ -1,5 +1,4 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bbdate
 PORTVERSION=	0.2.4
@@ -14,6 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
+USES=		xorg
 USE_XORG=	x11 xau xdmcp xext xfixes xi xrandr ice sm
 
 PLIST_FILES=	bin/bbdate share/bbtools/README.bbdate \

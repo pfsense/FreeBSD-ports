@@ -1,9 +1,8 @@
 # Created by: Dylan Simon <dylan@dylex.net>
-# $FreeBSD$
 
 PORTNAME=	orpie
 PORTVERSION=	1.5.2
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES+=	math
 MASTER_SITES=	GENTOO http://pessimization.com/software/orpie/
 

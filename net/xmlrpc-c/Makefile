@@ -1,9 +1,7 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xmlrpc-c
-PORTVERSION=	1.51.03
-PORTREVISION=	1
+PORTVERSION=	1.51.07
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/Xmlrpc-c%20Super%20Stable/${PORTVERSION}
 

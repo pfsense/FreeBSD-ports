@@ -1,5 +1,4 @@
 # Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kippo
 PORTVERSION=	0.9
@@ -7,7 +6,7 @@ DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	net
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Medium interaction ssh honeypot
 
 LICENSE=	BSD3CLAUSE

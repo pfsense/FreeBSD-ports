@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	shlock
-PORTVERSION=	2.6.3
+PORTVERSION=	2.6.4
 CATEGORIES=	sysutils
 MASTER_SITES=	ISC/inn
 DISTNAME=	inn-${PORTVERSION}
@@ -17,13 +15,14 @@ CONFIGURE_ARGS=	--disable-shared
 CONFIGURE_ENV=	ac_cv_path_PERL="${TRUE}"
 GNU_CONFIGURE=	yes
 
-PLIST_FILES=	bin/shlock man/man1/shlock.1.gz
+PLIST_FILES=	bin/shlock \
+		share/man/man1/shlock.1.gz
 
 post-build:
 	@${DO_MAKE_BUILD} -C ${WRKSRC}/backends shlock
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/backends/shlock ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/man/shlock.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/man/shlock.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

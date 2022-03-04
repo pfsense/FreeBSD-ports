@@ -1,8 +1,8 @@
 # Created by: Johann Visagie <wjv@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	recombine
 PORTVERSION=	1.41
+PORTREVISION=	2
 CATEGORIES=	biology
 MASTER_SITES=	http://evolution.gs.washington.edu/lamarc/recombine/
 DISTNAME=	${PORTNAME}${PORTVERSION}.src.doc

@@ -1,9 +1,8 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	bdb
 PORTVERSION=	0.6.6
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	databases ruby
 MASTER_SITES=	ftp://ftp.idaemons.org/pub/distfiles/ruby/ \
 		http://idaemons.org/distfiles/ruby/ \
@@ -11,23 +10,24 @@ MASTER_SITES=	ftp://ftp.idaemons.org/pub/distfiles/ruby/ \
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DIST_SUBDIR=	ruby
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby interface to Oracle Berkeley DB revision 2 or later
 
 LICENSE=	RUBY
 
-BROKEN_RUBY25=	yes
+BUILD_DEPENDS=	rubygem-rdoc>=0.a:devel/rubygem-rdoc
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
+USES=		bdb shebangfix tar:bzip2
 USE_RUBY=		yes
 USE_RUBY_EXTCONF=	yes
-MAKE_ENV+=		RUBY_RDOC=${LOCALBASE}/bin/rdoc
 
 ALL_TARGET=	all rdoc
 CONFIGURE_ARGS=	--with-db-include=${BDB_INCLUDE_DIR} \
 		--with-db-lib=${BDB_LIB_DIR}
 INSTALL_TARGET=	site-install
+MAKE_ENV=	RUBY_RDOC=${LOCALBASE}/bin/rdoc
 
 DOCS=		Changes README.en bdb.rd docs/*.rd
 DOCSDIR=	${RUBY_MODDOCDIR}
@@ -36,7 +36,6 @@ SHAREMODE=	0644
 PLIST_FILES=	%%RUBY_SITEARCHLIBDIR%%/bdb.so
 PORTDOCS=	*
 PORTEXAMPLES=	*
-USES=		bdb shebangfix tar:bzip2
 SHEBANG_FILES=	examples/record.rb \
 		examples/recno.rb \
 		examples/zeroc.rb \

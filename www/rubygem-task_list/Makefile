@@ -1,8 +1,8 @@
 # Created by: Torsten Zuhlsdorff <ports@toco-domains.de>
-# $FreeBSD$
 
 PORTNAME=	task_list
 PORTVERSION=	1.0.2
+PORTREVISION=	1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -12,10 +12,11 @@ COMMENT=	GitHub-flavored-Markdown TaskList components
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-html-pipeline1>=0:textproc/rubygem-html-pipeline1
+RUN_DEPENDS=	rubygem-html-pipeline>=0:textproc/rubygem-html-pipeline
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 .include <bsd.port.mk>

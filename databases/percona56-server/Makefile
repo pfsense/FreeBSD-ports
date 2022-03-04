@@ -1,10 +1,9 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.6.42-84.2
+DISTVERSION=	5.6.51-91.0
 PORTREVISION?=	0
-CATEGORIES=	databases ipv6
+CATEGORIES=	databases
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-${DISTVERSION}/source/tarball/
 PKGNAMESUFFIX?=	56-server
 DISTNAME=	percona-server-${DISTVERSION}
@@ -72,10 +71,10 @@ USES+=		libedit
 # MySQL-Server part
 USES+=mysql:56p
 
-CONFLICTS_INSTALL=	mysql*-server-* \
-			mysqlwsrep* \
-			mariadb*-server-* \
-			percona5[0-57-9]-server-*
+CONFLICTS_INSTALL=	mysql*-server \
+			mysqlwsrep*-server \
+			mariadb*-server \
+			percona5[0-57-9]-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -95,11 +94,8 @@ CMAKE_ARGS+=	-DWITH_EMBEDDED_SERVER="ON"
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
+# Workaround to clang11/gcc10 with -fno-common by default
+CFLAGS+=        -fcommon
 
 post-install:
 	@${MKDIR} ${STAGEDIR}/var/db/mysql

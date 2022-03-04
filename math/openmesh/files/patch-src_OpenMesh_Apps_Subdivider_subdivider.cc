@@ -1,6 +1,6 @@
---- src/OpenMesh/Apps/Subdivider/subdivider.cc.orig	2018-10-21 23:37:26 UTC
+--- src/OpenMesh/Apps/Subdivider/subdivider.cc.orig	2020-03-12 13:55:53 UTC
 +++ src/OpenMesh/Apps/Subdivider/subdivider.cc
-@@ -48,6 +48,9 @@
+@@ -43,6 +43,9 @@
  
  #include <iostream>
  #include <sstream>

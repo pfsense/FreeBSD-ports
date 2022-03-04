@@ -1,9 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pwhois
-PORTVERSION=	2.2.0.1
-PORTREVISION=	2
+PORTVERSION=	2.2.1.0
 CATEGORIES=	net
 MASTER_SITES=	http://pwhois.org/get/ \
 		ZI
@@ -25,9 +23,8 @@ FETCH_ARGS=	-p
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
 
-USES=		shebangfix tar:tgz
+USES=		mysql shebangfix tar:tgz
 SHEBANG_FILES=	pwhois-updatedb
-USE_MYSQL=	client
 USE_RC_SUBR=	${PORTNAME}d
 SUB_FILES=	pkg-message 512.pwhois-updatedb
 SUB_LIST=	TOUCH="${TOUCH}" RM="${RM}" CHOWN="${CHOWN}" \

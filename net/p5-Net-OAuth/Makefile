@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	Net-OAuth
 PORTVERSION=	0.28
@@ -21,7 +20,9 @@ RUN_DEPENDS=	p5-Class-Accessor>=0.31:devel/p5-Class-Accessor \
 		p5-URI>=1.35:net/p5-URI
 TEST_DEPENDS=	p5-Test-Warn>=0.21:devel/p5-Test-Warn
 
-USE_PERL5=	modbuild
 USES=		perl5
+USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-repo
-DISTVERSION=	2.5.0
+DISTVERSION=	2.7.0
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,8 +12,6 @@ COMMENT=	Setup pfSense pkg(8) repositories
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/pfSense-upgrade:sysutils/pfSense-upgrade
-
 NO_MTREE=	yes
 
 SUB_FILES=	pkg-install
@@ -23,19 +21,25 @@ SUB_LIST=	PORTNAME=${PORTNAME} \
 
 DATADIR=	${PREFIX}/share/pfSense
 
+# Flag used to detect when we want to reinstall all packages during upgrade
+PFSENSE_PKG_SET_VERSION?=	${DISTVERSION}
+
 .include <bsd.port.pre.mk>
 
+MIRROR_TYPE?=	srv
 PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
 PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
 PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
+SIGNATURE_TYPE?=	fingerprints
 DEFAULT_REPO=	${DATADIR}/pkg/repos/${PFSENSE_DEFAULT_REPO_${ARCH}}.conf
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.abi/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.altabi/}
 PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//} \
-		${DEFAULT_REPO}.default
+		${DEFAULT_REPO}.default \
+		${DATADIR}/next_pkg_set_version
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
 
 .if ${ARCH} == "aarch64"
@@ -84,6 +88,7 @@ do-build:
 	@${REINPLACE_CMD} -i '' \
 		-e "s,%%ARCH%%,${ARCH},g" \
 		-e "s,%%ARCH_OLD%%,${ARCH_OLD},g" \
+		-e "s/%%MIRROR_TYPE%%/${MIRROR_TYPE}/" \
 		-e "s,%%PKG_REPO_BRANCH_DEVEL%%,${PKG_REPO_BRANCH_DEVEL},g" \
 		-e "s,%%PKG_REPO_BRANCH_RELEASE%%,${PKG_REPO_BRANCH_RELEASE},g" \
 		-e "s,%%PKG_REPO_SERVER_DEVEL%%,${PKG_REPO_SERVER_DEVEL},g" \
@@ -91,6 +96,7 @@ do-build:
 		-e "s,%%POUDRIERE_PORTS_NAME%%,${POUDRIERE_PORTS_NAME},g" \
 		-e "s,%%PRODUCT_NAME%%,${PRODUCT_NAME},g" \
 		-e "s,%%REPO_BRANCH_PREFIX%%,${REPO_BRANCH_PREFIX},g" \
+		-e "s,%%SIGNATURE_TYPE%%,${SIGNATURE_TYPE},g" \
 		${WRKSRC}/${f}.conf
 	@if [ -f ${WRKSRC}/${f}.abi ]; then \
 		${REINPLACE_CMD} -i '' \
@@ -123,5 +129,7 @@ do-install:
 		${ECHO_CMD} ${DEFAULT_ALTABI} > ${STAGEDIR}${DATADIR}/pkg/repos/${f}.altabi; \
 	fi
 .endfor
+	${ECHO_CMD} ${PFSENSE_PKG_SET_VERSION} \
+		> ${STAGEDIR}${DATADIR}/next_pkg_set_version
 
 .include <bsd.port.post.mk>

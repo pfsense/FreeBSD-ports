@@ -1,22 +1,28 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cfv
-PORTVERSION=	1.18.3
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.0.0.dev0
 CATEGORIES=	security
-MASTER_SITES=	SF
+MASTER_SITES=	GH
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	terry-freebsd@glaver.org
 COMMENT=	Utility to both test and create .sfv, .csv, and md5sum files
 
-USES=		python:2.7
-ALL_TARGET=	cfv.wrapper
-INSTALL_TARGET=	install-wrapper
-MAKE_ARGS=	PYTHON=${PYTHON_CMD}
+LICENSE=	GPLv2+
 
-post-patch:
-	@${REINPLACE_CMD} -e "s,%%SITELIBDIR%%,${PYTHON_SITELIBDIR},g" \
-	        -e "s,%%PREFIX%%,${PREFIX},g" ${WRKSRC}/Makefile
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR}
+
+USES=		python
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	cfv-project
+
+USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
+
+do-test:
+	cd ${WRKSRC}/test && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} test.py
 
 .include <bsd.port.mk>

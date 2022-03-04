@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PSGI
 PORTVERSION=	1.102
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MIYAGAWA
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Pod documentation for Perl Web Server Gateway Interface Specification
 
 USES=	perl5

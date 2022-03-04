@@ -1,9 +1,8 @@
 # Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
 
 PORTNAME=	net6
 PORTVERSION=	1.3.14
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net devel
 MASTER_SITES=	http://releases.0x539.de/net6/
 

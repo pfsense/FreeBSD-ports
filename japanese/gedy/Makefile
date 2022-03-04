@@ -1,11 +1,10 @@
 # Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gedy
 PORTVERSION=	0.9.0
 PORTREVISION=	3
 CATEGORIES=	japanese ruby
-MASTER_SITES=	http://homepage3.nifty.com/slokar/pasori/
+MASTER_SITES=	http://hito.music.coocan.jp/pasori/
 DISTNAME=	${PORTNAME}
 EXTRACT_SUFX=	# empty
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}

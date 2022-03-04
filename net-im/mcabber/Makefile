@@ -1,12 +1,11 @@
 # Created by: vsevolod
-# $FreeBSD$
 
 PORTNAME=	mcabber
-PORTVERSION=	1.1.0
+PORTVERSION=	1.1.2
 CATEGORIES=	net-im
 MASTER_SITES=	http://www.lilotux.net/~mikael/mcabber/files/
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small Jabber console client
 
 LICENSE=	GPLv2+
@@ -17,11 +16,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libloudmouth-1.so:net-im/loudmouth \
 		libcharset.so:converters/libiconv
 
-USES=		gettext iconv:wchar_t libtool localbase ncurses pathfix pkgconfig tar:bzip2
+USES=		cpe gettext gnome iconv:wchar_t libtool localbase ncurses pathfix \
+		pkgconfig tar:bzip2
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-hgcset
 INSTALL_TARGET=	install-strip
+
+PORTDATA=	*
+PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=		EXAMPLES GPGME OTR IDN
 OPTIONS_DEFAULT=	IDN

@@ -1,9 +1,8 @@
 # Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Test-Pod-Coverage
 PORTVERSION=	1.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,10 +13,11 @@ COMMENT=	Check for pod coverage in your distribution
 LICENSE=	ART20
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Pod-Coverage>0:devel/p5-Pod-Coverage \
-		p5-Test-Simple>0:devel/p5-Test-Simple
+RUN_DEPENDS=	p5-Pod-Coverage>=0:devel/p5-Pod-Coverage
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: mtm@identd.net
-# $FreeBSD$
 
 PORTNAME=	asmix
 PORTVERSION=	1.5
@@ -13,6 +12,7 @@ COMMENT=	Volume control dock-app for the AfterStep Window Manager
 
 LICENSE=	GPLv2
 
+USES=		xorg
 USE_XORG=	xpm x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-xpm \

@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	goonies
 PORTVERSION=	1.4.1528
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://braingames.jorito.net/goonies/downloads/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -14,7 +11,7 @@ COMMENT=	Remake of the 8 bit classic game 'The Goonies'
 
 LICENSE=	NONE
 
-USES=		gmake tar:tgz
+USES=		gl gmake sdl tar:tgz
 USE_SDL=	sdl mixer image
 USE_GL=		gl glu
 USE_CXXSTD=	c++98

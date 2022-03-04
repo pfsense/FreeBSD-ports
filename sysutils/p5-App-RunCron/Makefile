@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	App-RunCron
 PORTVERSION=	0.08
 CATEGORIES=	sysutils perl5
@@ -22,5 +20,7 @@ TEST_DEPENDS=	p5-Capture-Tiny>=0:devel/p5-Capture-Tiny \
 
 USES=		perl5
 USE_PERL5=	modbuild
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

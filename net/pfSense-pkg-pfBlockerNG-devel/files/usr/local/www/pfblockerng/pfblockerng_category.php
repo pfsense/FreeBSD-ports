@@ -3,8 +3,8 @@
  * pfblockerng_category.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -91,7 +91,8 @@ switch ($gtype) {
 		$active		= array('ip' => TRUE, 'geoip' => TRUE);
 		break;
 	case 'dnsbl':
-		$type		= 'DNSBL Feeds';
+	default:
+		$type		= 'DNSBL Groups';
 		$conf_type	= 'pfblockerngdnsbl';
 		$active		= array('dnsbl' => TRUE);
 		break;
@@ -123,6 +124,13 @@ if ($type != 'GeoIP') {
 		$continent_config[0]['description']		= "GeoIP {$continent}";
 		$rowdata = array_merge($rowdata, $continent_config);
 	}
+}
+
+// Remove any empty '<config></config>' XML tags
+if (isset($rowdata[0]) && empty($rowdata[0])) {
+	unset($rowdata[0]);
+	$rowdata = array_values($rowdata);
+	write_config("pfBlockerNG: Removed empty rowdata");
 }
 
 if (!empty($action) && isset($gtype) && isset($rowid)) {
@@ -210,8 +218,9 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6' || $gtype == 'geoip') {
 	$tab_array[]	= array(gettext('Reputation'),	false,			'/pfblockerng/pfblockerng_reputation.php');
 }
 else {
-	$tab_array[]	= array(gettext('DNSBL Feeds'),		$active['dnsbl'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
+	$tab_array[]	= array(gettext('DNSBL Groups'),	$active['dnsbl'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
+	$tab_array[]	= array(gettext('DNSBL SafeSearch'),	false,			'/pfblockerng/pfblockerng_safesearch.php');
 }
 display_top_tabs($tab_array, true);
 
@@ -238,6 +247,20 @@ if (isset($savemsg)) {
 		<?php endif; ?>
 	</div>
 	<div id="<?=$pageid;?>" class="panel-body">
+
+		<?php
+			// Maxmind License Key verification
+			if ($gtype == 'geoip') {
+				$maxmind_verify = TRUE;
+				if (empty($pfb['maxmind_key'])) {
+					$maxmind_verify = FALSE;
+					print_callout('<br /><p><strong>'
+							. 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.'
+							. '</strong></p><br />', 'warning', '');
+				}
+			}
+		?>
+
 		<div class="table-responsive">
 		<table id="<?=$pageid;?>" class="table table-striped table-hover table-compact sortable-theme-bootstrap table-rowdblclickedit" data-sortable>
 			<thead>
@@ -245,10 +268,14 @@ if (isset($savemsg)) {
 					<th><?=gettext('Name');?></th>
 					<th><?=gettext('Description');?></th>
 					<th><?=gettext('Action');?></th>
-					<? if ($gtype != 'geoip'): ?>
+					<?php if ($gtype != 'geoip'): ?>
 					<th><?=gettext('Frequency');?></th>
-					<? endif; ?>
-					<th><?=gettext('Logging');?></th>
+					<?php endif; ?>
+					<?php if ($gtype == 'dnsbl'): ?>
+						<th><?=gettext('Logging/Blocking Mode');?></th>
+					<?php else: ?>
+						<th><?=gettext('Logging');?></th>
+					<?php endif; ?>
 					<th><!----- Buttons -----></th>
 				</tr>
 			</thead>
@@ -337,13 +364,41 @@ if (isset($savemsg)) {
 							$logtype = $rowdata[$r_id]['logging'];
 						}
 
+						$log_error = '';
+						if ($gtype == 'dnsbl') {
+							if ($pfb['dnsbl_py_blacklist']) {
+								$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
+										'disabled'	=> 'Null Block (no logging)',
+										'disabled_log'	=> 'Null Block (logging)'];
+							} else {
+								$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
+										'disabled'	=> 'Null Block (no logging)'];
+							}
+
+							// Global DNSBL Logging/Blocking mode
+							if (!empty($pfb['dnsbl_global_log'])) {
+								if (!$pfb['dnsbl_py_blacklist'] && $pfb['dnsbl_global_log'] == 'disabled_log') {
+									$logtype		= 'enabled';
+									$log_error		= "Global Log 'Null Block (logging)' not available in Unbound Mode."
+												. " Re-configure Global Log option!";
+								} else {
+									$logtype		= $pfb['dnsbl_global_log'];
+									$log_options[$logtype]	= "{$log_options[$logtype]} (Global)";
+								}
+							}
+						}
+						else {
+							$log_options = [ 'enabled' => 'Enabled', 'disabled' => 'Disabled' ];
+						}
+
 						$selectadd = new Form_Select(
 								$field,
-								'Logging',
+								'Logging/Blocking Mode',
 								$logtype,
-								[ 'enabled' => 'Enabled', 'disabled' => 'Disabled' ]
+								$log_options
 						);
-						$selectadd->setWidth(8)->setAttribute('style', 'width: auto');
+						$selectadd->setWidth(8)->setAttribute('style', 'width: auto')
+							  ->setHelp($log_error);
 						print ($selectadd);
 					?>
 					</td>
@@ -375,7 +430,7 @@ if (isset($savemsg)) {
 							<i class="fa fa-check-square-o" style="cursor: default" title="DNSBL Primary Group order defined"></i>
 							<?php endif; ?>
 
-					<?php else: ?>
+					<?php elseif ($maxmind_verify && file_exists("/usr/local/www/pfblockerng/pfblockerng_{$row['filename']}.php")): ?>
 						<a href="/pfblockerng/pfblockerng_<?=$row['filename'];?>.php">
 							<i class="fa fa-pencil" alt="edit"></i>
 						</a>

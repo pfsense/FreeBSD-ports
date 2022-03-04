@@ -1,5 +1,4 @@
 # Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
 
 PORTNAME=	xpired
 PORTVERSION=	1.22
@@ -13,6 +12,7 @@ COMMENT=	Action-puzzle maze escape game
 
 LICENSE=	GPLv2+
 
+USES=		sdl
 USE_SDL=	gfx image mixer sdl
 WRKSRC=		${WRKDIR}/src
 

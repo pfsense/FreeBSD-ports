@@ -1,5 +1,4 @@
 # Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	locker
 PORTVERSION=	0.4.0
@@ -22,9 +21,9 @@ LIB_DEPENDS=	libDesktop.so:x11/deforaos-libdesktop \
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/Panel.pc:x11/deforaos-panel
 
+USES=		desktop-file-utils gnome pkgconfig xorg
 USE_GNOME=	gtk20 cairo gdkpixbuf2
 USE_XORG=	x11 xext
-USES=		desktop-file-utils pkgconfig
 MAKE_ARGS+=	PREFIX=${PREFIX}
 MAKE_ENV+=	MANDIR=${STAGEDIR}${MANPREFIX}/man
 LDFLAGS+=	-lXext

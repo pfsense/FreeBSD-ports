@@ -1,5 +1,4 @@
 # Created by: David K. Gerry
-# $FreeBSD$
 
 PORTNAME=	yasr
 PORTVERSION=	0.6.9
@@ -29,9 +28,6 @@ PLIST_FILES=	bin/yasr \
 		%%DATADIR%%/yasr.conf \
 		%%NLS%%share/locale/es/LC_MESSAGES/yasr.mo \
 		%%NLS%%share/locale/fr/LC_MESSAGES/yasr.mo
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|/bin/bash|/bin/csh|' ${WRKSRC}/yasr.conf
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

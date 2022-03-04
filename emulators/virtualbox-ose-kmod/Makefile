@@ -1,8 +1,7 @@
 # Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.26
+PORTVERSION=	6.1.30
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX=	-kmod
@@ -19,11 +18,11 @@ BUILD_DEPENDS=	kmk:devel/kBuild
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
 
-USES=		cpe kmod tar:bzip2
+USES=		cpe compiler:c++14-lang kmod tar:bzip2
 PATCHDIR=	${.CURDIR}/../${PORTNAME}/files
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 USE_RC_SUBR=	vboxnet
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--build-headless
@@ -37,8 +36,8 @@ CONFIGURE_ARGS+=	--disable-alsa \
 			--disable-xpcom
 CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
-CONFLICTS_INSTALL=	virtualbox-ose-kmod-devel-* \
-			virtualbox-ose-kmod-legacy-*
+CONFLICTS_INSTALL=	virtualbox-ose-kmod-devel \
+			virtualbox-ose-kmod-legacy
 
 OPTIONS_DEFINE=	DEBUG VIMAGE
 OPTIONS_DEFAULT=VIMAGE
@@ -79,12 +78,12 @@ SYMBOLSUFFIX=	debug
 PLIST_SUB+=	SYMBOLSUFFIX=${SYMBOLSUFFIX}
 
 post-patch:
-	@${ECHO} 'VBOX_WITH_VBOXDRV = 1' > ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_NETFLT = 1' >> ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_NETADP = 1' >> ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_ADDITIONS =' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_WITH_VBOXDRV = 1' > ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_WITH_NETFLT = 1' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_WITH_NETADP = 1' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_WITH_ADDITIONS =' >> ${WRKSRC}/LocalConfig.kmk
 .if ${PORT_OPTIONS:MVIMAGE}
-	@${ECHO} 'VBOX_WITH_NETFLT_VIMAGE = 1' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO_CMD} 'VBOX_WITH_NETFLT_VIMAGE = 1' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 	    ${WRKSRC}/Config.kmk ${WRKSRC}/configure

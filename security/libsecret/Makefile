@@ -1,9 +1,7 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libsecret
-PORTVERSION=	0.18.6
-PORTREVISION=	1
+PORTVERSION=	0.20.4
 CATEGORIES=	security gnome
 MASTER_SITES=	GNOME
 

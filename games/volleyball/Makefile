@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	volleyball
 PORTVERSION=	0.8.6
 PORTREVISION=	12
@@ -13,7 +10,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Game similar to GNU Arcade Volleyball
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl image mixer
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--mandir="${MANPREFIX}/man" --disable-nls # strangeness in nls support

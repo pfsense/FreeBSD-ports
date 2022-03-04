@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	${SQLRELAY_PORTNAME}
 PORTVERSION=	${SQLRELAY_PORTVERSION}
@@ -112,7 +111,7 @@ CONFIGURE_ARGS+=	--disable-sqlite
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 CONFIGURE_ARGS+=	--with-mysql-prefix="${LOCALBASE}"
 TOSTRIP+=		libexec/sqlrelay/sqlrconnection_mysql.so
 .else
@@ -160,7 +159,7 @@ post-patch:
 		-e 's#-release \$$\(SQLR_VERSION\)##g;'
 
 post-configure:
-	@${REINPLACE_CMD} 's,-Werror,,' ${WRKSRC}/config.mk
+	${REINPLACE_CMD} 's,-Werror,,' ${WRKSRC}/config.mk
 
 post-install:
 .for f in ${TOSTRIP}

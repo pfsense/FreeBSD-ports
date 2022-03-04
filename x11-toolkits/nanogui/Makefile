@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	nanogui
-DISTVERSION=	g20180413
-PORTREVISION=	2
+DISTVERSION=	g20190922
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,19 +13,19 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libglfw.so:graphics/glfw
 
-USES=		cmake compiler:c++14-lang eigen:3,build,run
+USES=		cmake compiler:c++14-lang eigen:3,build,run gl xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	wjakob
-GH_TAGNAME=	885e4fc
-GH_TUPLE=	wjakob:nanovg:ab38df8:nanovg/ext/nanovg
+GH_TAGNAME=	e9ec8a1a9861cf578d9c6e85a6420080aa715c03
+GH_TUPLE=	wjakob:nanovg:50826f7bf0d910962e6aba2c3310ede889726917:wjakob_nanovg/ext/nanovg
 USE_GL=		gl
 USE_XORG=	x11 xcursor xi xinerama xrandr xxf86vm
 USE_LDCONFIG=	yes
 CMAKE_OFF=	NANOGUI_BUILD_EXAMPLE GLFW_BUILD_EXAMPLES
 
-OPTIONS_DEFINE=	PYTHON
+OPTIONS_DEFINE=		PYTHON
 OPTIONS_DEFAULT=	PYTHON
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
 PYTHON_CMAKE_BOOL=	NANOGUI_BUILD_PYTHON
 PYTHON_USES=		python
@@ -38,7 +36,7 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/ext/nanovg/src/*.h ${STAGEDIR}${PREFIX}/include/nanogui/  # bundled dependency headers aren't installed
 
 post-install-PYTHON-on:
-	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}
-	${MV} ${STAGEDIR}${PREFIX}/lib/nanogui.so ${STAGEDIR}${PYTHON_SITELIBDIR}
+	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+	${MV} ${STAGEDIR}${PREFIX}/lib/nanogui*.so ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 .include <bsd.port.mk>

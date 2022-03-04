@@ -1,10 +1,9 @@
 # Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
 
 PORTNAME=	bindtest
 PORTVERSION=	1.56
 PORTREVISION=	1
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.kame.net/pub/kame/misc/ \
 		ftp://sunsite.cnlab-switch.ch/mirror/kame/misc/ \
 		ftp://ftp.pasta.cs.uit.no/pub/IPv6/kame/misc/ \

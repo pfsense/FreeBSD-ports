@@ -1,8 +1,8 @@
 # Created by: Douglas Thrift <douglas@douglasthrift.net>
-# $FreeBSD$
 
 PORTNAME=	keyring
-DISTVERSION=	12.0.1
+PORTVERSION=	18.0.1
+PORTEPOCH=	1
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +12,11 @@ COMMENT=	Store and access your passwords safely
 
 LICENSE=	PSFL
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=1.15.1:devel/py-setuptools_scm@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}entrypoints>=0.2.3:devel/py-entrypoints@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=1.15.0:devel/py-setuptools_scm@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}entrypoints>=0:devel/py-entrypoints@${PY_FLAVOR}
 
-USES=		python
+USES=		cpe python:3.6+
+CPE_VENDOR=	python
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 
@@ -27,6 +28,6 @@ SECRET_SERVICE_DESC=	Install SecretStorage to support the SecretService backend
 
 DBUS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR}
 KEYRINGS_ALT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}keyrings.alt>0:security/py-keyrings.alt@${PY_FLAVOR}
-SECRET_SERVICE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}SecretStorage>=1.0.0:security/py-SecretStorage@${PY_FLAVOR}
+SECRET_SERVICE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}SecretStorage>0:security/py-SecretStorage@${PY_FLAVOR}
 
 .include <bsd.port.mk>

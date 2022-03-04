@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	blackshadeselite
 PORTVERSION=	0.0.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	http://download.gna.org/blackshadeselite/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -16,14 +13,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 
-USES=		gl gmake openal:al,alut tar:bzip2
+USES=		compiler:c++11-lang gl gmake openal:al,alut sdl tar:bzip2
 USE_CXXSTD=	c++98
 USE_SDL=	sdl
 USE_GL=		gl glu
 
-LLD_UNSAFE=	yes
-
 MAKE_ARGS=	CC="${CC}" CXX="${CXX}"
+LDFLAGS_i386=	-Wl,-znotext
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

@@ -1,5 +1,4 @@
 bin/kalzium
-etc/xdg/kalzium.knsrc
 include/libkdeedu/chemicaldataobject.h
 include/libkdeedu/element.h
 include/libkdeedu/elementparser.h
@@ -54,17 +53,14 @@ share/icons/hicolor/scalable/apps/kalzium.svgz
 %%DATADIR%%/data/htmlview/abundance.png
 %%DATADIR%%/data/htmlview/boilingpoint.png
 %%DATADIR%%/data/htmlview/book.png
-%%DATADIR%%/data/htmlview/characteristics.png
 %%DATADIR%%/data/htmlview/discovery.png
 %%DATADIR%%/data/htmlview/electronaffinity.png
-%%DATADIR%%/data/htmlview/header.png
 %%DATADIR%%/data/htmlview/icons.svg
 %%DATADIR%%/data/htmlview/ionization.png
 %%DATADIR%%/data/htmlview/mass.png
 %%DATADIR%%/data/htmlview/meltingpoint.png
 %%DATADIR%%/data/htmlview/radius.png
 %%DATADIR%%/data/htmlview/structure.png
-%%DATADIR%%/data/htmlview/style.css
 %%DATADIR%%/data/iconsets/school/1.svg
 %%DATADIR%%/data/iconsets/school/10.svg
 %%DATADIR%%/data/iconsets/school/100.svg
@@ -371,6 +367,7 @@ share/icons/hicolor/scalable/apps/kalzium.svgz
 %%DATADIR%%/icons/hicolor/scalable/actions/statematter.svgz
 %%DATADIR%%/icons/hicolor/scalable/actions/timeline.svgz
 %%DATADIR%%/icons/hicolor/scalable/actions/tooltip.svgz
+share/knsrcfiles/kalzium.knsrc
 share/kxmlgui5/kalzium/kalziumui.rc
 share/libkdeedu/data/elements.xml
 share/libkdeedu/data/isotopes.xml
@@ -378,6 +375,7 @@ share/libkdeedu/data/spectra.xml
 share/libkdeedu/data/symbols.csv
 share/libkdeedu/data/symbols2.csv
 share/locale/ar/LC_MESSAGES/kalzium.mo
+share/locale/be/LC_MESSAGES/kalzium.mo
 share/locale/bg/LC_MESSAGES/kalzium.mo
 share/locale/bg/LC_MESSAGES/plasma_applet_kalzium.mo
 share/locale/bg/LC_MESSAGES/plasma_engine_kalzium.mo
@@ -459,9 +457,12 @@ share/locale/et/LC_MESSAGES/plasma_applet_kalzium.mo
 share/locale/et/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
 share/locale/et/LC_MESSAGES/plasma_engine_kalzium.mo
 share/locale/eu/LC_MESSAGES/kalzium.mo
+share/locale/eu/LC_MESSAGES/plasma_applet_Molmasscalculator.mo
 share/locale/eu/LC_MESSAGES/plasma_applet_concentrationCalculator.mo
 share/locale/eu/LC_MESSAGES/plasma_applet_gasCalculator.mo
+share/locale/eu/LC_MESSAGES/plasma_applet_kalzium.mo
 share/locale/eu/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
+share/locale/eu/LC_MESSAGES/plasma_engine_kalzium.mo
 share/locale/fa/LC_MESSAGES/kalzium.mo
 share/locale/fi/LC_MESSAGES/kalzium.mo
 share/locale/fi/LC_MESSAGES/plasma_applet_Molmasscalculator.mo
@@ -554,6 +555,13 @@ share/locale/lv/LC_MESSAGES/plasma_applet_gasCalculator.mo
 share/locale/lv/LC_MESSAGES/plasma_applet_kalzium.mo
 share/locale/lv/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
 share/locale/lv/LC_MESSAGES/plasma_engine_kalzium.mo
+share/locale/ml/LC_MESSAGES/kalzium.mo
+share/locale/ml/LC_MESSAGES/plasma_applet_Molmasscalculator.mo
+share/locale/ml/LC_MESSAGES/plasma_applet_concentrationCalculator.mo
+share/locale/ml/LC_MESSAGES/plasma_applet_gasCalculator.mo
+share/locale/ml/LC_MESSAGES/plasma_applet_kalzium.mo
+share/locale/ml/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
+share/locale/ml/LC_MESSAGES/plasma_engine_kalzium.mo
 share/locale/mr/LC_MESSAGES/kalzium.mo
 share/locale/mr/LC_MESSAGES/plasma_applet_Molmasscalculator.mo
 share/locale/mr/LC_MESSAGES/plasma_applet_concentrationCalculator.mo
@@ -630,6 +638,7 @@ share/locale/ru/LC_MESSAGES/plasma_applet_gasCalculator.mo
 share/locale/ru/LC_MESSAGES/plasma_applet_kalzium.mo
 share/locale/ru/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
 share/locale/ru/LC_MESSAGES/plasma_engine_kalzium.mo
+share/locale/se/LC_MESSAGES/kalzium.mo
 share/locale/sk/LC_MESSAGES/kalzium.mo
 share/locale/sk/LC_MESSAGES/plasma_applet_Molmasscalculator.mo
 share/locale/sk/LC_MESSAGES/plasma_applet_concentrationCalculator.mo
@@ -644,6 +653,12 @@ share/locale/sl/LC_MESSAGES/plasma_applet_gasCalculator.mo
 share/locale/sl/LC_MESSAGES/plasma_applet_kalzium.mo
 share/locale/sl/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
 share/locale/sl/LC_MESSAGES/plasma_engine_kalzium.mo
+share/locale/sq/LC_MESSAGES/kalzium.mo
+share/locale/sq/LC_MESSAGES/plasma_applet_concentrationCalculator.mo
+share/locale/sq/LC_MESSAGES/plasma_applet_gasCalculator.mo
+share/locale/sq/LC_MESSAGES/plasma_applet_kalzium.mo
+share/locale/sq/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
+share/locale/sq/LC_MESSAGES/plasma_engine_kalzium.mo
 share/locale/sv/LC_MESSAGES/kalzium.mo
 share/locale/sv/LC_MESSAGES/plasma_applet_Molmasscalculator.mo
 share/locale/sv/LC_MESSAGES/plasma_applet_concentrationCalculator.mo
@@ -651,6 +666,8 @@ share/locale/sv/LC_MESSAGES/plasma_applet_gasCalculator.mo
 share/locale/sv/LC_MESSAGES/plasma_applet_kalzium.mo
 share/locale/sv/LC_MESSAGES/plasma_applet_nuclearCalculator.mo
 share/locale/sv/LC_MESSAGES/plasma_engine_kalzium.mo
+share/locale/ta/LC_MESSAGES/kalzium.mo
+share/locale/tg/LC_MESSAGES/kalzium.mo
 share/locale/tr/LC_MESSAGES/kalzium.mo
 share/locale/tr/LC_MESSAGES/plasma_applet_Molmasscalculator.mo
 share/locale/tr/LC_MESSAGES/plasma_applet_concentrationCalculator.mo

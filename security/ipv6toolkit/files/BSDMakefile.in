@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 SUBDIR=	libipv6 addr6 flow6 frag6 icmp6 jumbo6 \
 	na6 ni6 ns6 path6 ra6 rd6 rs6 scan6 tcp6 udp6
 
@@ -19,7 +17,6 @@ PREFIX?=	/usr/local
 BINDIR?=	${PREFIX}/bin
 MANDIR?=	${PREFIX}/man/man
 MAN=		blackhole6.1 script6.1 ipv6toolkit.conf.5 ipv6toolkit.7
-NO_MANCOMPRESS=
 
 data/ipv6toolkit.conf:
 	echo "# SI6 Networks' IPv6 Toolkit Configuration File" > ${.TARGET}

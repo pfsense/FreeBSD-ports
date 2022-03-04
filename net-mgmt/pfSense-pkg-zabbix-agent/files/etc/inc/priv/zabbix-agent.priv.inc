@@ -3,7 +3,7 @@
  * zabbix-agent.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +26,6 @@ $priv_list['page-services-zabbix-agent']['name'] = "WebCfg - Services: Zabbix Ag
 $priv_list['page-services-zabbix-agent']['descr'] = "Allow access to Zabbix Agent package GUI";
 
 $priv_list['page-services-zabbix-agent']['match'] = array();
-$priv_list['page-services-zabbix-agent']['match'][] = "pkg_edit.php?xml=zabbix-agent.xml*";
+$priv_list['page-services-zabbix-agent']['match'][] = "pkg_edit.php?xml=zabbixagent.xml*";
 
 ?>

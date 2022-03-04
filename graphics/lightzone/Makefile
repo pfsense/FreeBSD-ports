@@ -1,12 +1,14 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	lightzone
 DISTVERSION=	4.1.8-3
-PORTREVISION=	2
 DISTVERSIONSUFFIX=	-g36e87773
+PORTREVISION=	7
 CATEGORIES=	graphics java
 DIST_SUBDIR=	${PORTNAME}
+
+PATCH_SITES=	https://github.com/ktgw0316/LightZone/commit/
+PATCHFILES=	376ec67ddfb1.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Professional-level digital darkroom and photo editor
@@ -20,10 +22,10 @@ BUILD_DEPENDS=	jhindexer:java/javahelp \
 		tidy:www/tidy-lib \
 		autoconf:devel/autoconf
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
-		libomp.so:devel/openmp \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS=	jhindexer:java/javahelp
 
+BROKEN_aarch64=		fails to link: /usr/local/bin/ld: LC_JNIUtils.o: relocation R_AARCH64_ADR_PREL_PG_HI21 against symbol
 BROKEN_armv6=		fails to compile: build.xml: exec returned: 1
 BROKEN_armv7=		fails to compile: build.xml: exec returned: 1
 
@@ -31,21 +33,21 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	ktgw0316
 GH_PROJECT=	LightZone
 
-USES=		desktop-file-utils gmake jpeg pkgconfig
+USES=		desktop-file-utils gmake gnome jpeg pkgconfig xorg
 USE_ANT=	yes
 USE_JAVA=	yes
 USE_GCC=	yes
 USE_LDCONFIG=	yes
 USE_XORG=	x11
 JAVA_VENDOR=	openjdk
-JAVA_VERSION=	1.6+
 JAVA_BUILD=	yes
 JAVA_RUN=	yes
-INSTALLS_ICONS=	yes
+
+PATCH_WRKSRC=	${WRKSRC:H}
+WRKSRC_SUBDIR=	linux
 
 LIBDIR=		${PREFIX}/lib/${PORTNAME}
 PLIST_SUB=	LIBDIR="${LIBDIR}"
-WRKSRC_SUBDIR=	linux
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|gcc|${CC}|' -e 's|g++|${CXX}|' ${WRKSRC}/../lightcrafts/mk/platform.mk

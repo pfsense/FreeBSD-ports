@@ -1,3 +1,5 @@
-TIMESTAMP = 1511291774
-SHA256 (supertuxkart-0.9.3-src.tar.xz) = d8014e7106ba84f98b5ec5f146249dcffc284fc4083f8f237ff420b9e2219cb0
-SIZE (supertuxkart-0.9.3-src.tar.xz) = 544517772
+TIMESTAMP = 1598745498
+SHA256 (SuperTuxKart-1.2-src.tar.xz) = 052edf0afdbeb99583fe8676fb0ab80ecb6103fb88b7540f858d1b5fa1297d37
+SIZE (SuperTuxKart-1.2-src.tar.xz) = 614569164
+SHA256 (61833c9c26da5520f.patch) = ff1f35d7cc83ad98f531f9d77eb1caacd2e65fd64a8da42c693812ca5741d966
+SIZE (61833c9c26da5520f.patch) = 5396

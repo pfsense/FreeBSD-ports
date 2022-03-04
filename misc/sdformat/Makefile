@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	sdformat
 DISTVERSION=	8.0.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	misc
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
@@ -14,9 +12,9 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	ignition-cmake==2:devel/ignition-cmake \
 		ignition-tools>0:devel/ignition-tools
 LIB_DEPENDS=	libignition-math6.so:math/ignition-math \
-		libconsole_bridge.so:misc/console-bridge \
+		libconsole_bridge.so:devel/ros-console_bridge \
 		libtinyxml2.so:textproc/tinyxml2 \
-		liburdfdom_world.so:misc/urdfdom
+		liburdfdom_world.so:devel/ros-urdfdom
 RUN_DEPENDS=	ignition-tools>0:devel/ignition-tools
 
 USES=		cmake compiler:c++17-lang pkgconfig

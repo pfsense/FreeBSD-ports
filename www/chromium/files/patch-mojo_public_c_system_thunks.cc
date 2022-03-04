@@ -1,47 +1,46 @@
---- mojo/public/c/system/thunks.cc.orig	2019-03-11 22:01:00 UTC
+--- mojo/public/c/system/thunks.cc.orig	2021-07-19 18:45:18 UTC
 +++ mojo/public/c/system/thunks.cc
-@@ -16,7 +16,7 @@
- #include "build/build_config.h"
+@@ -20,7 +20,7 @@
  #include "mojo/public/c/system/core.h"
+ #include "mojo/public/c/system/macros.h"
  
 -#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
 +#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
  #include "base/environment.h"
  #include "base/files/file_path.h"
- #include "base/optional.h"
-@@ -28,7 +28,7 @@ namespace {
+ #include "base/scoped_native_library.h"
+@@ -68,7 +68,7 @@ class CoreLibraryInitializer {
+   ~CoreLibraryInitializer() = default;
  
- typedef void (*MojoGetSystemThunksFunction)(MojoSystemThunks* thunks);
- 
+   MojoResult LoadLibrary(base::FilePath library_path) {
 -#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
 +#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
- PROTECTED_MEMORY_SECTION
- base::ProtectedMemory<MojoGetSystemThunksFunction> g_get_thunks;
- #endif
-@@ -65,7 +65,7 @@ namespace mojo {
- class CoreLibraryInitializer {
-  public:
-   CoreLibraryInitializer(const MojoInitializeOptions* options) {
--#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
-+#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
-     bool application_provided_path = false;
-     base::Optional<base::FilePath> library_path;
-     if (options && options->struct_size >= sizeof(*options) &&
-@@ -84,7 +84,7 @@ class CoreLibraryInitializer {
+     if (library_ && library_->is_valid())
+       return MOJO_RESULT_OK;
  
-     if (!library_path) {
+@@ -82,7 +82,7 @@ class CoreLibraryInitializer {
+ 
+     if (library_path.empty()) {
        // Default to looking for the library in the current working directory.
 -#if defined(OS_CHROMEOS) || defined(OS_LINUX)
 +#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_BSD)
        const base::FilePath::CharType kDefaultLibraryPathValue[] =
            FILE_PATH_LITERAL("./libmojo_core.so");
  #elif defined(OS_WIN)
-@@ -147,7 +147,7 @@ class CoreLibraryInitializer {
-   ~CoreLibraryInitializer() = default;
+@@ -126,13 +126,13 @@ class CoreLibraryInitializer {
+ 
+     library_ = std::move(library);
+     return MOJO_RESULT_OK;
+-#else   // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
++#else   // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
+     return MOJO_RESULT_UNIMPLEMENTED;
+-#endif  // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
++#endif  // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
+   }
  
   private:
 -#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
 +#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
-   base::Optional<base::ScopedNativeLibrary> library_;
+   absl::optional<base::ScopedNativeLibrary> library_;
  #endif
- 
+ };

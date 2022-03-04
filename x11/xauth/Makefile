@@ -1,18 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	xauth
-PORTVERSION=	1.0.10
+PORTVERSION=	1.1
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X authority file utility
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 TEST_DEPENDS=	cmdtest:devel/py-cmdtest
 
-USES=		shebangfix
-XORG_CAT=	app
+USES=		shebangfix xorg xorg-cat:app
 USE_XORG=	x11 xau xext xmuu
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check

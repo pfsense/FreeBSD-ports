@@ -1,8 +1,7 @@
 # Created by: Babak Farrokhi <farrokhi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	uvloop
-PORTVERSION=	0.12.1
+PORTVERSION=	0.16.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
-USES=		python:3.5+
+USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
@@ -24,7 +23,7 @@ PORTDOCS=	*
 PORTEXAMPLES=	*
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/uvloop/loop.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/uvloop/loop*.so
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/

@@ -1,5 +1,4 @@
 # Created by: Martin Klaffenboeck <martin.klaffenboeck@gmx.at>
-# $FreeBSD$
 
 PORTNAME=	rubrica
 PORTVERSION=	2.1.6
@@ -16,7 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libnotify.so:devel/libnotify
 RUN_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme
 
-USES=		desktop-file-utils gmake libtool localbase pathfix pkgconfig tar:bzip2
+USES=		desktop-file-utils gmake gnome libtool localbase pathfix \
+		pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	gconf2 gnomeprefix libglade2 intltool
 USE_LDCONFIG=	yes

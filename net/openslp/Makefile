@@ -1,5 +1,4 @@
 # Created by: Joe Clarke
-# $FreeBSD$
 
 PORTNAME=	openslp
 PORTVERSION=	2.0.0
@@ -12,7 +11,7 @@ COMMENT=	Open-source implementation of the Service Location Protocol
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		alias libtool ssl
+USES=		alias cpe libtool ssl
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/openslp \
 		--localstatedir=/var

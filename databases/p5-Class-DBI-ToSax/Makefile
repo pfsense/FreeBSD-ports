@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <mat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-ToSax
 PORTVERSION=	0.10
 PORTREVISION=	1

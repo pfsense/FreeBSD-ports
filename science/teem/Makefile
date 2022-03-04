@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	teem
 DISTVERSION=	1.11.0
 DISTVERSIONSUFFIX=	-src
@@ -12,7 +10,7 @@ COMMENT=	Libraries for representing, processing and visualizing scientific data
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libpng16.so:graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		cmake
 USE_LDCONFIG=	yes

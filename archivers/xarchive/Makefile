@@ -1,5 +1,4 @@
 # Created by: Mark Kane <mark@mkproductions.org>
-# $FreeBSD$
 
 PORTNAME=	xarchive
 DISTVERSION=	0.2.8-6
@@ -12,7 +11,7 @@ COMMENT=	GTK+ front end for various archiving tools
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20
 

@@ -1,5 +1,4 @@
 # Created by: Philip Schulz <phs@deadc0.de>
-# $FreeBSD$
 
 PORTNAME=	dev86
 PORTVERSION=	0.16.20
@@ -12,8 +11,8 @@ DISTNAME=	Dev86src-${PORTVERSION}
 MAINTAINER=	phs@deadc0.de
 COMMENT=	8086 development tools
 
-CONFLICTS=	bcc-[0-9]* \
-		bin86-[0-9]*
+CONFLICTS=	bcc \
+		bin86
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DESTDIRNAME=	DIST

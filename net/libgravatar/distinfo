@@ -1,3 +1,3 @@
-TIMESTAMP = 1551810934
-SHA256 (KDE/applications/18.12.3/libgravatar-18.12.3.tar.xz) = c44c139fbaffda352f0fe461065622cff65b6f1cc13cee8a0137acb27de143ee
-SIZE (KDE/applications/18.12.3/libgravatar-18.12.3.tar.xz) = 30140
+TIMESTAMP = 1636032635
+SHA256 (KDE/release-service/21.08.3/libgravatar-21.08.3.tar.xz) = 3d5ad62fac06275495a39e602f8a4452123e83d56f905a6bea1bf5ebf2a3225a
+SIZE (KDE/release-service/21.08.3/libgravatar-21.08.3.tar.xz) = 34868

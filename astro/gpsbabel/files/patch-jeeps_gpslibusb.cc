@@ -1,13 +1,11 @@
---- jeeps/gpslibusb.cc.orig	2016-01-03 02:09:17 UTC
+--- jeeps/gpslibusb.cc.orig	2020-09-12 23:57:25 UTC
 +++ jeeps/gpslibusb.cc
-@@ -20,8 +20,8 @@
-  */
- 
- 
--#include <stdio.h>
--#include <stdlib.h>
-+#include <cstdio>
-+#include <cstdlib>
- #include <ctype.h>
- #if HAVE_CONFIG_H
- #include "config.h"
+@@ -32,7 +32,7 @@
+ // We use our own libusb.
+ #    include "mac/libusb/libusb.h"
+ #  else
+-#    include <libusb-1.0/libusb.h>
++#    include <libusb.h>
+ #  endif
+ #include "../defs.h"
+ #include "garminusb.h"

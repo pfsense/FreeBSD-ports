@@ -1,5 +1,4 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	makeindex
 PORTVERSION=	3.0.8
@@ -12,7 +11,7 @@ EXTRACT_SUFX=	.tar.Z
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General purpose, formatter-independent index processor
 
-CONFLICTS=	teTeX-base-[0-9]*
+CONFLICTS=	teTeX-base
 
 WRKSRC=		${WRKDIR}/makeindex
 

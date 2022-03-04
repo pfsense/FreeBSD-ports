@@ -1,9 +1,8 @@
 # Created by: Mark A. Wicks <mwicks@kettering.edu>
-# $FreeBSD$
 
 PORTNAME=	monotone
 PORTVERSION=	1.1
-PORTREVISION=	15
+PORTREVISION=	19
 CATEGORIES=	devel
 MASTER_SITES=	http://www.monotone.ca/downloads/${PORTVERSION}/
 

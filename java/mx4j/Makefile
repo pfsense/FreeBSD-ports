@@ -1,5 +1,4 @@
 # Created by: Filippo Natali <filippo@widestore.net>
-# $FreeBSD$
 
 PORTNAME=	mx4j
 PORTVERSION=	3.0.2
@@ -11,7 +10,6 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source implementation of the Java Management Extensions (JMX)
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 JARFILES=	mx4j-examples.jar mx4j-impl.jar mx4j-jmx.jar \

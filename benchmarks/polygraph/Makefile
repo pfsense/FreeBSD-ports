@@ -1,9 +1,8 @@
 # Created by: Dima Sivachenko <dima@chg.ru>
-# $FreeBSD$
 
 PORTNAME=	polygraph
 DISTVERSION=	4.13.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	benchmarks www
 MASTER_SITES=	http://www.web-polygraph.org/downloads/srcs/
 EXTRACT_SUFX=	-src.tgz
@@ -14,9 +13,11 @@ COMMENT=	Benchmarking tool for Web proxies
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=		does not build: libstdc++.so: undefined reference to __floatunditf@GCC_4.2.0
+
 USES=		gmake ncurses shebangfix
 SHEBANG_FILES=	tools/*.pl
-USE_GCC=	any
+USE_GCC=	yes
 GNU_CONFIGURE=	yes
 
 # The port does not build with C++11 or later (bug 219275).

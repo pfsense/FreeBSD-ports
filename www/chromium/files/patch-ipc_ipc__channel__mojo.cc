@@ -1,11 +1,15 @@
---- ipc/ipc_channel_mojo.cc.orig	2019-03-11 22:00:59 UTC
+--- ipc/ipc_channel_mojo.cc.orig	2021-09-14 01:51:58 UTC
 +++ ipc/ipc_channel_mojo.cc
-@@ -64,7 +64,7 @@ class MojoChannelFactory : public ChannelFactory {
+@@ -112,10 +112,10 @@ class ThreadSafeChannelProxy : public mojo::ThreadSafe
  };
  
  base::ProcessId GetSelfPID() {
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
    if (int global_pid = Channel::GetGlobalPid())
      return global_pid;
- #endif  // OS_LINUX
+-#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
++#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ #if defined(OS_NACL)
+   return -1;
+ #else

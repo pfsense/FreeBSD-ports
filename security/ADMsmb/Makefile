@@ -1,5 +1,4 @@
 # Created by: Jacek Serwatynski <tutus@trynet.eu.org>
-# $FreeBSD$
 
 PORTNAME=	ADMsmb
 PORTVERSION=	0.3
@@ -7,7 +6,7 @@ CATEGORIES=	security
 MASTER_SITES=	PACKETSTORM/groups/ADM
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	mauro@eldritch.com.ar
+MAINTAINER=	mauroeldritch@gmail.com
 COMMENT=	Security scanner for Samba
 
 USES=		gmake

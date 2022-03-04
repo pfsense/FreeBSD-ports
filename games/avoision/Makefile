@@ -1,9 +1,8 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avoision
 PORTVERSION=	1.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/avsn/
 
@@ -20,7 +19,7 @@ LIB_DEPENDS=	liblua-5.1.so:lang/lua51 \
 		libphysfs.so:devel/physfs
 RUN_DEPENDS=	zip:archivers/zip
 
-USES=		pkgconfig
+USES=		gl pkgconfig sdl
 USE_SDL=	sdl sound
 USE_GL=		glu
 GNU_CONFIGURE=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Auth
 PORTVERSION=	2.2.2
 CATEGORIES=	security www pear
@@ -7,7 +5,7 @@ CATEGORIES=	security www pear
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Authentication API
 
-USES=	horde
+USES=		horde php cpe
 USE_HORDE_RUN=	Horde_Exception Horde_Util
 USE_PHP=	hash
 

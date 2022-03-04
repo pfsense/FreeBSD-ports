@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	metasm
-PORTVERSION=	1.0.3
+PORTVERSION=	1.0.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,9 +9,10 @@ COMMENT=	Cross-architecture assembler, disassembler, linker, and debugger
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-NO_ARCH=	yes
-
+USES=		gem shebangfix
 USE_RUBY=	yes
-USES=		gem
+
+NO_ARCH=	yes
+SHEBANG_FILES=	samples/emubios.rb
 
 .include <bsd.port.mk>

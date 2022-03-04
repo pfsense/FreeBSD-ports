@@ -1,8 +1,7 @@
 # Created by: Ganael LAPLANCHE <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	amule
-PORTVERSION=	10998
+PORTVERSION=	11065
 PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://amule.sourceforge.net/tarballs/
@@ -17,9 +16,9 @@ LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
 LIB_DEPENDS=	libcryptopp.so:security/cryptopp
 
-CONFLICTS=	amule-[0-9]*
+CONFLICTS=	amule
 
-USES=		bison compiler:c++11-lang desktop-file-utils desktop-file-utils \
+USES=		bison compiler:c++11-lang cpe desktop-file-utils desktop-file-utils \
 		gmake localbase:ldflags perl5 pkgconfig shebangfix tar:bzip2
 USE_PERL5=	build
 USE_WX=		2.8
@@ -36,8 +35,8 @@ CONFIGURE_ENV=	LEX="${FLEX}" PKG_CONFIG="${PKG_CONFIG}" \
 CXXFLAGS+=	`pkgconf --cflags-only-other libcryptopp`
 LDFLAGS+=	-lpthread
 
-OPTIONS_DEFINE=	ALC ALCC AMULECMD AMULEDAEMON AMULEGUI CAS DEBUG DOCS ED2K \
-	FILEVIEW MMAP MONOLITHIC NLS OPTIMIZED_CFLAGS UPNP \
+OPTIONS_DEFINE=	ALC ALCC AMULECMD AMULEDAEMON AMULEGUI BOOST CAS DEBUG DOCS \
+	ED2K FILEVIEW MMAP MONOLITHIC NLS OPTIMIZED_CFLAGS UPNP \
 	WEBSERVER WXCAS XAS
 ALC_DESC=		Compile aMule Link Creator for GUI
 ALCC_DESC=		Compile aMule Link Creator for console
@@ -72,6 +71,9 @@ AMULEDAEMON_CONFIGURE_ON=	--enable-amule-daemon
 AMULEDAEMON_USE=	RC_SUBR=amuled
 
 AMULEGUI_CONFIGURE_ON=	--enable-amule-gui
+
+BOOST_CONFIGURE_ON=	--with-boost
+BOOST_LIB_DEPENDS+=	libboost_system.so:devel/boost-libs
 
 CAS_CONFIGURE_ON=	--enable-cas
 CAS_LIB_DEPENDS=	libgd.so:graphics/gd

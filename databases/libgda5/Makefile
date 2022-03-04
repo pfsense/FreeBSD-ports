@@ -1,9 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libgda
-PORTVERSION?=	5.2.5
-PORTREVISION?=	0
+DISTVERSION?=	5.2.10
 CATEGORIES=	databases gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	5
@@ -12,7 +10,13 @@ DIST_SUBDIR=	gnome3
 MAINTAINER?=	gnome@FreeBSD.org
 COMMENT?=	Provides uniform access to different kinds of data sources
 
-USES=		python readline shebangfix tar:xz
+LICENSE=	GPLv2+ LGPL20+
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING.LIB
+
+USES=		cpe python readline shebangfix tar:xz
+CPE_VENDOR=	gnome
 LIBGDA5_SLAVE?=	no
 SHEBANG_FILES=	libgda-report/RML/*/*.py
 
@@ -47,7 +51,6 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 CONFIGURE_ARGS+=--with-ui
 USE_GNOME+=	cairo gtk30
-INSTALLS_ICONS=	yes
 .else
 CONFIGURE_ARGS+=--without-ui
 .endif
@@ -90,7 +93,6 @@ CONFIGURE_ARGS+=	--without-mdb
 
 .if ${LIBGDA5_SLAVE}==jdbc
 USE_JAVA=		yes
-JAVA_VERSION=		1.6+
 JAVA_VENDOR=		bsdjava openjdk
 CFLAGS+=		-I${JAVA_HOME}/include -I${JAVA_HOME}/include/freebsd
 .else
@@ -109,13 +111,14 @@ post-patch:
 		${WRKSRC}/providers/bdb/gda-bdb-provider.c \
 		${WRKSRC}/providers/bdb/gda-bdb-test.c
 .if ${LIBGDA5_SLAVE} == jdbc
-	@${REINPLACE_CMD} -e 's|lib/amd64|lib/${ARCH}|g' \
+	@${REINPLACE_CMD} -e 's|lib/amd64|lib/${ARCH:S/powerpc64/ppc64/}|g' \
 		${WRKSRC}/getsp.java
 .endif
 .if ${LIBGDA5_SLAVE}!="no"
 	@${FIND} ${WRKSRC} -name Makefile.in -exec ${REINPLACE_CMD} \
 		-e 's|$$(top_builddir)/libgda/libgda-5.0.la|-lgda-5.0|g' \
 		-e 's|../libgda/libgda-5.0.la|-lgda-5.0|g' \
+		-e '/LIBS =/s|-lgda-5.0|gda-5.0|g' \
 		{} \;
 .endif
 

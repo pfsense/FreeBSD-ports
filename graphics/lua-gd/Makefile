@@ -1,9 +1,8 @@
 # Created by: Sergey V. Dyatko <sergey.dyatko@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	lua-gd
 PORTVERSION=	2.0.33r2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://files.luaforge.net/releases/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}forLua5.1/
 
@@ -16,21 +15,24 @@ LIB_DEPENDS=	libgd.so:graphics/gd
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USES=		lua:51
+USES=		lua:51,module
 CFLAGS+=	-I${LUA_INCDIR} -I${LOCALBASE}/include
 LDFLAGS+=	-shared -L${LOCALBASE}/lib -lgd -L${LUA_LIBDIR} -llua-${LUA_VER} -lm
 GDFEATURES=	`gdlib-config --features |sed -e "s/GD_/-DGD_/g"`
 
+DOCSDIR=	${LUA_DOCSDIR}
+EXAMPLESDIR=	${LUA_EXAMPLESDIR}
+
 .include <bsd.port.options.mk>
 
-CFLAGS_aarch64+=-fPIC
-CFLAGS_amd64+=	-fPIC
-CFLAGS_i386+=	-fPIC
+CFLAGS_aarch64=	-fPIC
+CFLAGS_amd64=	-fPIC
+CFLAGS_armv7=	-fPIC
+CFLAGS_i386=	-fPIC
+CFLAGS_powerpc=	-fPIC
 
 do-build:
 	${CC} -o ${WRKSRC}/gd.so ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} ${GDFEATURES} ${WRKSRC}/luagd.c
-
-LUA_MODLIBDIR=	${PREFIX}/lib/lua/${LUA_VER}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${LUA_MODLIBDIR}

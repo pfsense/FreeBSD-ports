@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	libfo
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -18,9 +17,8 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 
 CONFLICTS_INSTALL=	xmlroff-0.6.[12] xmlroff-0.6.2_[12345]
 
-USES=		autoreconf gettext gmake libtool pkgconfig pathfix
-USE_GNOME=	libgnomeprint libxslt \
-		libxml2 gtk20 glib20 pango \
+USES=		autoreconf gettext gmake gnome localbase libtool pathfix pkgconfig
+USE_GNOME=	libxslt libxml2 gtk20 glib20 pango \
 		librsvg2 gdkpixbuf2
 USE_GITHUB=	yes
 GH_PROJECT=	xmlroff
@@ -28,9 +26,8 @@ GH_ACCOUNT=	xmlroff
 USE_LDCONFIG=	yes
 WRKSRC_SUBDIR=	xmlroff
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --disable-gtk-doc
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+CONFIGURE_ARGS=	--disable-gtk-doc \
+		--disable-gp
 INSTALL_TARGET=	install-strip
 
 post-patch:

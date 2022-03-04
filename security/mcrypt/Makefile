@@ -1,5 +1,4 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	mcrypt
 PORTVERSION=	2.6.8
@@ -13,8 +12,13 @@ MASTER_SITES=	SF/${PORTNAME}/MCrypt/${PORTVERSION} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Replacement for crypt(1)
 
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 LIB_DEPENDS=	libmcrypt.so:security/libmcrypt \
 		libmhash.so:security/mhash
+
+USES=		cpe
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

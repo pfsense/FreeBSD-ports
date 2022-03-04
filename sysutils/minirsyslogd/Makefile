@@ -1,13 +1,15 @@
 # Created by: lx@redundancy.redundancy.org
-# $FreeBSD$
 
 PORTNAME=	minirsyslogd
 PORTVERSION=	1.02
+PORTREVISION=	1
 CATEGORIES=	sysutils net
 MASTER_SITES=	http://redundancy.redundancy.org/mirror/
 
 MAINTAINER=	lx@FreeBSD.org
 COMMENT=	Minimal, fast and secure syslog receiver
+
+USE_RC_SUBR=	minirsyslogd
 
 do-build:
 	cd ${WRKSRC} && ${CC} ${CFLAGS} -o ${PORTNAME} ${PORTNAME}.c

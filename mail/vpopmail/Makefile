@@ -1,9 +1,8 @@
 # Created by: Neil Blakey-Milner
-# $FreeBSD$
 
 PORTNAME=	vpopmail
 PORTVERSION=	5.4.33
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-stable/${PORTVERSION}
 
@@ -69,7 +68,7 @@ OPTIONS_DEFINE=	DOCS \
 		SQL_LOG \
 		SQL_LOG_TRIM
 OPTIONS_SINGLE=	AUTH
-OPTIONS_SINGLE_AUTH=	CDB MYSQL PGSQL LDAP LDAP_SASL ORACLE SYBASE
+OPTIONS_SINGLE_AUTH=	CDB MYSQL PGSQL LDAP ORACLE SYBASE
 
 OPTIONS_DEFAULT=MD5_PASSWORDS \
 		CDB \
@@ -91,7 +90,6 @@ MYSQL_REPLICATION_DESC=		MySQL database replication support
 MYSQL_LIMITS_DESC=		MySQL mailbox limitations support
 ORACLE_DESC=			Auth via Oracle
 LDAP_DESC=			Auth via LDAP
-LDAP_SASL_DESC=			Auth via LDAP SASL
 VALIAS_DESC=			Store aliases in DB instead of .qmail files
 ROAMING_DESC=			roaming users support
 IP_ALIAS_DESC=			IP alias support
@@ -256,9 +254,6 @@ VPOPMAIL_DIR?=			${PREFIX}/vpopmail
 
 .if ${PORT_OPTIONS:MLDAP}
 USE_OPENLDAP=	yes
-.if ${PORT_OPTIONS:MLDAP_SASL}
-WANT_OPENLDAP_SASL=	yes
-.endif
 LDAP_FILES=		${WRKSRC}/doc/README.ldap \
 			${WRKSRC}/ldap/nsswitch.conf \
 			${WRKSRC}/ldap/pam_ldap.conf \
@@ -269,7 +264,7 @@ LDAP_FILES=		${WRKSRC}/doc/README.ldap \
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=		yes
+USES+=		mysql
 
 .if defined(WITH_MYSQL_USER) || defined(WITH_MYSQL_READ_USER) || defined(WITH_MYSQL_UPDATE_USER)
 BROKEN_MYSQL_PARAMS=	true
@@ -297,7 +292,7 @@ BROKEN=		The WITH_APOP option is deprecated; set WITH_CLEAR_PASSWD instead, APOP
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USES=	pgsql
+USES+=	pgsql
 .endif
 
 .if ${PORT_OPTIONS:MSQL_LOG_TRIM}

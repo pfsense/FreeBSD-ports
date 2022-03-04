@@ -1,5 +1,4 @@
 # Created by: Matt Harris <mattdharris@users.sourceforge.net>
-# $FreeBSD$
 
 PORTNAME=	libpwstor
 PORTVERSION=	0.1
@@ -9,6 +8,9 @@ MASTER_SITES=	SF/kageki/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Password storage library for C programmers
+
+DEPRECATED=	Abandonware, last release in 2008
+EXPIRATION_DATE=2022-03-31
 
 USES=		ssl tar:bzip2
 USE_LDCONFIG=	yes

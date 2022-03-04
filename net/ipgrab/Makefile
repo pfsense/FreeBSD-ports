@@ -1,5 +1,4 @@
 # Created by: Aaron Zauner <az_mail@gmx.at>
-# $FreeBSD$
 
 PORTNAME=	ipgrab
 PORTVERSION=	0.9.10
@@ -8,7 +7,7 @@ CATEGORIES=	net security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	IPgrab is a verbose packet sniffer for UNIX hosts
+COMMENT=	Verbose packet sniffer for Unix hosts
 
 BUILD_DEPENDS=	${LOCALBASE}/include/pcap.h:net/libpcap
 

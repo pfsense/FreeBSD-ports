@@ -1,15 +1,18 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome3
-PORTVERSION=	3.28
-PORTREVISION=1
+PORTVERSION=	3.36
+PORTREVISION=	4
 CATEGORIES?=	x11 gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT?=	"meta-port" for the GNOME 3 integrated X11 desktop
+COMMENT=	"meta-port" for the GNOME 3 integrated X11 desktop
+
+FLAVORS=	full lite
+FLAVOR?=	full
 
 RUN_DEPENDS?=	dconf-editor:devel/dconf-editor \
+		gdm>=3.0.0:x11/gdm \
 		gnome-session>=3.0.0:x11/gnome-session \
 		gnome-themes-extra>=3.28:x11-themes/gnome-themes-extra \
 		gnome-icon-theme-extras>=3.0.0:misc/gnome-icon-theme-extras \
@@ -17,14 +20,12 @@ RUN_DEPENDS?=	dconf-editor:devel/dconf-editor \
 		gnome-keyring>=3.0.0:security/gnome-keyring \
 		gnome-power-manager>=3.0.0:sysutils/gnome-power-manager \
 		orca>=3.0.0:accessibility/orca \
-		gnome-mount:sysutils/gnome-mount \
 		gnome-shell>=3.0.0:x11/gnome-shell \
 		gnome-shell-extensions>=3.0.0:x11/gnome-shell-extensions \
 		gnome-tweaks:deskutils/gnome-tweaks \
 		sushi>=0:x11-fm/sushi \
 		nautilus>=3.0.0:x11-fm/nautilus \
 		${LOCALBASE}/share/fonts/bitstream-vera/Vera.ttf:x11-fonts/bitstream-vera \
-		${LOCALBASE}/share/hal/fdi/information/10freedesktop/10-camera-ptp.fdi:sysutils/hal-info \
 		yelp>=3.0.0:x11/yelp \
 		zenity>=3.0.0:x11/zenity \
 		seahorse>=3.0.0:security/seahorse \
@@ -33,20 +34,19 @@ RUN_DEPENDS?=	dconf-editor:devel/dconf-editor \
 		caribou>=0:accessibility/caribou \
 		${LOCALBASE}/share/sounds/freedesktop/index.theme:audio/freedesktop-sound-theme
 
-CONFLICTS?=	gnome3-lite-[0-9]*
+OPTIONS_DEFINE=	DOCS
 
 USES=		metaport
 
-.if ${.CURDIR:T}!="gnome3-lite"
-OPTIONS_DEFINE+=DOCS
-
-DOCS_RUN_DEPENDS=	gnome-user-docs>=0:misc/gnome-user-docs \
-			gnome-getting-started-docs>=0:misc/gnome-getting-started-docs
+.if ${FLAVOR} ==lite
+OPTIONS_EXCLUDE=	DOCS
+PKGNAMESUFFIX=	-lite
+COMMENT=	The "meta-port" of the GNOME desktop slimmed down for only the basics
+PKGMESSAGE=	${.CURDIR}/pkg-message-lite
+DESCR=		${.CURDIR}/pkg-descr-lite
 .endif
 
-.include <bsd.port.options.mk>
-
-.if ${.CURDIR:T}!="gnome3-lite"
+.if ${FLAVOR} == "full"
 RUN_DEPENDS+=	epiphany>=3.0.0:www/epiphany \
 		gucharmap>=3.0.0:deskutils/gucharmap \
 		gnome-characters>=3.0.0:deskutils/gnome-characters \
@@ -67,12 +67,13 @@ RUN_DEPENDS+=	epiphany>=3.0.0:www/epiphany \
 		gnome-games>=3.0.0:games/gnome-games \
 		totem>=3.0.0:multimedia/totem \
 		gconf-editor>=3.0.0:sysutils/gconf-editor \
-		gdm>=3.0.0:x11/gdm \
 		gnome-color-manager>=0:graphics/gnome-color-manager \
 		evolution>=3.0.0:mail/evolution \
-		cheese>=3.0.0:multimedia/cheese \
-		ekiga:net-im/ekiga
+		cheese>=3.0.0:multimedia/cheese
 
 .endif # !gnome3-lite section
+
+DOCS_RUN_DEPENDS=	gnome-user-docs>=0:misc/gnome-user-docs \
+			gnome-getting-started-docs>=0:misc/gnome-getting-started-docs
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Josh Gilliam <josh@quick.net>
-# $FreeBSD$
 
 PORTNAME=	emil
 PORTVERSION=	2.1b9
@@ -12,8 +11,10 @@ MASTER_SITES=	ftp://ftp.uu.se/pub/unix/networking/mail/emil/ \
 		ftp://sunsite.doc.ic.ac.uk/Mirrors/ftp.uu.se/pub/unix/networking/mail/emil/
 DISTNAME=	${PORTNAME}-2.1.0-beta9
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mail format/encoding converter
+
+USES=		cpe
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	YACC=byacc

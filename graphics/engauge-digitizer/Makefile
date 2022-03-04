@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	engauge-digitizer
 DISTVERSIONPREFIX=	v
-DISTVERSION=	10.12
+DISTVERSION=	12.2.2
+PORTREVISION=	19
 CATEGORIES=	graphics math science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	markummitchell
 USE_QT=		core gui printsupport sql xml widgets buildtools_build
 USE_GL=		gl
-CONFIGURE_ENV=	OPENJPEG_INCLUDE=${PREFIX}/include/openjpeg-2.3 OPENJPEG_LIB=${PREFIX}/lib \
+CONFIGURE_ENV=	OPENJPEG_INCLUDE=${PREFIX}/include/openjpeg-2.4 OPENJPEG_LIB=${PREFIX}/lib \
 		POPPLER_INCLUDE=${PREFIX}/include/poppler/qt5 POPPLER_LIB=${PREFIX}/lib
 QMAKE_ARGS=	"CONFIG+=jpeg2000 pdf"
 
@@ -33,8 +32,11 @@ DOCS_USE=	QT=help,linguist_build
 do-patch-NLS-on:
 	@${REINPLACE_CMD} -e 's|QCoreApplication::applicationDirPath () + "/translations",|"${DATADIR}/translations",|' ${WRKSRC}/src/Translator/TranslatorContainer.cpp
 
+do-patch-DOCS-on:
+	@${REINPLACE_CMD} -e 's|qcollectiongenerator|${QCOLLECTIONGENERATOR}|' ${WRKSRC}/help/build.bash
+
 post-build-NLS-on:
-	@cd ${WRKSRC} && lrelease engauge.pro
+	@cd ${WRKSRC} && ${LRELEASE} engauge.pro
 
 post-build-DOCS-on:
 	@cd ${WRKSRC}/help && ./build.bash

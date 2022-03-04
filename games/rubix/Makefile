@@ -1,9 +1,8 @@
 # Created by: Will Andrews <andrews@technologist.com>
-# $FreeBSD$
 
 PORTNAME=	rubix
 PORTVERSION=	1.0.6
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://sed.free.fr/rubix/ \
 		http://mirror.mcx2.org/
@@ -11,7 +10,7 @@ MASTER_SITES=	http://sed.free.fr/rubix/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Another Rubik's cube game with a rather interesting interface
 
-USES=		compiler:nestedfct gmake tar:bzip2
+USES=		compiler:nestedfct gmake tar:bzip2 xorg
 USE_XORG=	x11
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -DENGLISH" \
 		XINC="-I${LOCALBASE}/include" XLIB="-L${LOCALBASE}/lib -lX11"
@@ -24,7 +23,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if (${ARCH} == mips || ${ARCH} == mips64 || ${ARCH} == powerpc || ${ARCH} == powerpc64) && ${CHOSEN_COMPILER_TYPE} == gcc
+.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
 CFLAGS+=	-fnested-functions
 .endif
 

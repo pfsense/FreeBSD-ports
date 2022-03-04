@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cowboy
 PORTVERSION=	1.1.2
 CATEGORIES=	www

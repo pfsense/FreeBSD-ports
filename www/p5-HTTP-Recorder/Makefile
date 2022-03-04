@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	HTTP-Recorder
 PORTVERSION=	0.07
 PORTREVISION=	1

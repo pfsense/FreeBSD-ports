@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	redis
-PORTVERSION=	4.1.0
+PORTVERSION=	4.5.1
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 

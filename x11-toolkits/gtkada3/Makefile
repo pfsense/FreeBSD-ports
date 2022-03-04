@@ -1,9 +1,8 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gtkada
 PORTVERSION=	3.14.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	x11-toolkits
 PKGNAMESUFFIX=	3
 
@@ -27,7 +26,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libgraphite2.so:graphics/graphite2 \
 		libdbus-1.so:devel/dbus
 
-USES=		ada:run gmake iconv:wchar_t perl5 pkgconfig
+USES=		ada:run gl gmake gnome iconv:wchar_t perl5 pkgconfig xorg
 USE_PERL5=	build
 USE_GNOME=	gtk30 cairo gdkpixbuf2
 USE_XORG=	ice sm xxf86vm xcb xdmcp xau x11 pixman xfixes xdamage \
@@ -45,7 +44,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 MAKE_ARGS=	PROCESSORS=${MAKE_JOBS_NUMBER}
 
-CONFLICTS_INSTALL=	gtkada-*
+CONFLICTS_INSTALL=	gtkada
 
 CONFIGURE_ARGS+=	--with-GL=auto \
 			--with-GL-prefix=${PREFIX} \

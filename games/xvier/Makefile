@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xvier
 PORTVERSION=	1.0
@@ -14,7 +13,7 @@ EXTRACT_ONLY=	${PORTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Throw stones into free columns
 
-USES=		imake tar:Z
+USES=		imake tar:Z xorg
 USE_XORG=	x11 xext
 USE_CSTD=	gnu89
 

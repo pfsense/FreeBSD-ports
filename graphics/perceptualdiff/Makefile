@@ -1,9 +1,8 @@
 # Created by: sobomax
-# $FreeBSD$
 
 PORTNAME=	perceptualdiff
 PORTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 

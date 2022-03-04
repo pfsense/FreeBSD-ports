@@ -1,9 +1,9 @@
 # Created by: Rob Farmer <rfarmer@predatorlabs.net>
-# $FreeBSD$
 
 PORTNAME=	tumble
-PORTVERSION=	0.36
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.36
+PORTREVISION=	1
 CATEGORIES=	graphics print
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,9 +11,6 @@ COMMENT=	Creates a PDF file from image files
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-NOT_FOR_ARCHS=	powerpc sparc64
-NOT_FOR_ARCHS_REASON=	Only works on little endian systems
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libnetpbm.so:graphics/netpbm
@@ -25,8 +22,8 @@ GH_ACCOUNT=	brouhaha
 
 CFLAGS+=	-I${LOCALBASE}/include/netpbm
 
-PORTDOCS=	README
 PLIST_FILES=	bin/tumble
+PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
 

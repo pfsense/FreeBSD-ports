@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	stlfilt
 PORTVERSION=	20080203
@@ -18,9 +17,6 @@ NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/gSTLFilt.pl bin/gfilt
-
-post-patch:
-	@${REINPLACE_CMD} -e "s,[$$]HOME,${PREFIX}/bin," ${WRKSRC}/gfilt
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/gSTLFilt.pl ${STAGEDIR}${PREFIX}/bin

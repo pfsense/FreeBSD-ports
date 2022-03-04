@@ -1,5 +1,4 @@
 # Created by: Frank W. Josellis <frank@dynamical-systems.org>
-# $FreeBSD$
 
 PORTNAME=	ipfw2dshield
 PORTVERSION=	0.5
@@ -11,6 +10,9 @@ COMMENT=	DShield client for ipfw logs
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Abandonware, no word of it on upstream web site
+EXPIRATION_DATE=2022-03-31
 
 PORTDOCS=	CHANGES README.html README.txt
 

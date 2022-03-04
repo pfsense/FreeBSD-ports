@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	yubikey-manager-qt
 DISTVERSIONPREFIX=	yubikey-manager-qt-
-DISTVERSION=	1.0.1
+DISTVERSION=	1.2.0
 PORTREVISION=	1
 CATEGORIES=	security
 

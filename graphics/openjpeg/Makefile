@@ -1,10 +1,8 @@
 # Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
 
 PORTNAME=	openjpeg
-PORTVERSION=	2.3.0
+PORTVERSION=	2.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
 CATEGORIES=	graphics
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -27,7 +25,6 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION} VER=${PORTVERSION:R}
 GH_ACCOUNT=	uclouvain
 USE_GITHUB=	yes
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|$${OPENJPEG_INSTALL_LIB_DIR}/pkgconfig|libdata/pkgconfig|' ${WRKSRC}/CMakeLists.txt
+CPE_VENDOR=	uclouvain
 
 .include <bsd.port.mk>

@@ -1,9 +1,8 @@
 # Created by: Vasil Dimov <vd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qtum
-PORTVERSION=	0.17.2
-DISTVERSIONPREFIX=	mainnet-ignition-v
+PORTVERSION=	0.20.3
+DISTVERSIONPREFIX=	mainnet-fastlane-v
 PORTREVISION=	1
 CATEGORIES=	net-p2p finance
 
@@ -18,15 +17,18 @@ BUILD_DEPENDS=	libzmq4>0:net/libzmq4
 RUN_DEPENDS=	libzmq4>0:net/libzmq4
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libevent.so:devel/libevent \
+		libgmp.so:math/gmp \
 		libminiupnpc.so:net/miniupnpc \
 		libprotobuf.so:devel/protobuf \
 		libqrencode.so:graphics/libqrencode
 
-USES=		autoreconf bdb:5+ compiler:c++14-lang gmake libtool pkgconfig qt:5 ssl
+USES=		autoreconf bdb:5+ compiler:c++14-lang cpe gmake libtool pkgconfig qt:5 ssl
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	BDB_CFLAGS="-I${BDB_INCLUDE_DIR}" \
-		BDB_LIBS="-L${BDB_LIB_DIR} -l${BDB_LIB_CXX_NAME}"
+CONFIGURE_ENV+=	BDB_CFLAGS="-I${BDB_INCLUDE_DIR}" \
+		BDB_LIBS="-L${BDB_LIB_DIR} -l${BDB_LIB_CXX_NAME}" \
+		LDFLAGS="-L${LOCALBASE}/lib" \
+		CPPFLAGS="-I${LOCALBASE}/include"
 # * Man pages have not been adjusted after cloning the Bitcoin code base.
 #   They are the old Bitcoin man pages, so do not install them.
 # * --with-incompatible-bdb is required in order to use bdb-5.
@@ -42,7 +44,10 @@ CONFIGURE_ARGS=	--disable-man \
 USE_QT=		buildtools core dbus gui linguisttools network testlib widgets
 USE_GITHUB=	yes
 GH_TUPLE=	qtumproject:qtum:${DISTVERSIONPREFIX}${PORTVERSION} \
-		qtumproject:cpp-eth-qtum:d6081ecc98e3c5f4701363:cppeth/src/cpp-ethereum
+		qtumproject:cpp-eth-qtum:3f8e2fa7a3b97:cppeth1/src/cpp-ethereum \
+		ethereum:cable:3fc90c6eed80a2cbe81e968:cppeth2/src/cpp-ethereum/cmake/cable \
+		chfast:ethash:67a3216a5494834f7c221df9:cppeth3/src/cpp-ethereum/ethash \
+		ethereum:evmc:1de783316a95fccb4fe7c24f:cppeth4/src/cpp-ethereum/evmc
 
 .include <bsd.port.pre.mk>
 
@@ -53,9 +58,9 @@ GH_TUPLE=	qtumproject:qtum:${DISTVERSIONPREFIX}${PORTVERSION} \
 # setting some related environment variables.
 .if ${SSL_DEFAULT} == base
 CONFIGURE_ENV+=	CRYPTO_CFLAGS="-I${OPENSSLINC}" \
-		CRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto" \
+		CRYPTO_LIBS="-lcrypto" \
 		SSL_CFLAGS="-I${OPENSSLINC}" \
-		SSL_LIBS="-L${OPENSSLLIB} -lssl"
+		SSL_LIBS="-lssl"
 .endif
 
 .include <bsd.port.post.mk>

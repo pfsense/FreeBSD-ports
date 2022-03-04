@@ -1,5 +1,4 @@
 # Created by: Maxim Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dahdi-kmod26
 PORTVERSION=	${DAHDI_VERSION:S/-/./g}
@@ -13,12 +12,12 @@ DISTFILES=	${DISTNAME}.tar.bz2\
 		oslec-linux-${OSLEC_VERSION}${EXTRACT_SUFX}\
 		zaphfc-${ZAPHFC_VERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	dgilbert@eicat.ca
 COMMENT=	Digium/Asterisk Hardware Device Interface
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/dahdi_cfg:misc/dahdi
 
-ONLY_FOR_ARCHS=		amd64 i386 sparc64
+ONLY_FOR_ARCHS=		amd64 i386 powerpc powerpc64 powerpc64le sparc64
 
 DAHDI_VERSION=		2.6.1-r10747
 DAHDI_TOOLS_VERSION=	2.4.0-rc1
@@ -43,10 +42,10 @@ WRKSRC=		${WRKDIR}/${DISTNAME}
 #PATCH_STRIP=	-p1
 MAKEFILE=	BSDmakefile
 USE_RC_SUBR=	dahdi
-MAKE_ARGS=	NO_FETCH=yes WITHOUT_HEADERS=yes #ADDITIONAL_DRIVERS="wcb1xxp"
+MAKE_ARGS=	NO_FETCH=yes WITHOUT_HEADERS=yes WERROR= #ADDITIONAL_DRIVERS="wcb1xxp"
 GROUPS=		dahdi
 
-CONFLICTS=	zaptel-[0-9]* dahdi-kmod-*
+CONFLICTS=	zaptel dahdi-kmod
 
 KMODDIR=	${PREFIX}/lib/dahdi
 USES=		kmod uidfix

@@ -1,9 +1,8 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	shim
 PORTVERSION=	0.9
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	egypcio@FreeBSD.org

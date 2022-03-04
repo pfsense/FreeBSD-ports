@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	glsfcave
 PORTVERSION=	1.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://user.ecc.u-tokyo.ac.jp/~g650192/glsfcave/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -11,7 +8,7 @@ MASTER_SITES=	http://user.ecc.u-tokyo.ac.jp/~g650192/glsfcave/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Control a ribbon to avoid hitting walls
 
-USES=		tar:bzip2
+USES=		gl tar:bzip2
 USE_GL=		glut
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

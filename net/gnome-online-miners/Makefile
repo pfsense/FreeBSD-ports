@@ -1,8 +1,7 @@
 # Created by: Gustau Perez <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gnome-online-miners
-PORTVERSION=	3.26.0
+PORTVERSION=	3.34.0
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -22,12 +21,10 @@ LIB_DEPENDS=	libgdata.so:devel/libgdata \
 		libzapojit-0.0.so:net/libzapojit \
 		libgrilo-0.3.so:net/grilo
 
-USES=		gettext gmake libtool localbase pathfix \
-		pkgconfig tar:xz
+USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

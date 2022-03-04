@@ -1,12 +1,12 @@
---- src/OpenMesh/Apps/QtViewer/meshviewer.cc.orig	2018-10-21 23:50:54 UTC
+--- src/OpenMesh/Apps/QtViewer/meshviewer.cc.orig	2020-03-12 13:55:53 UTC
 +++ src/OpenMesh/Apps/QtViewer/meshviewer.cc
-@@ -63,6 +63,9 @@
- #else
- #include <GL/glut.h>
+@@ -42,6 +42,9 @@
+ #ifdef _MSC_VER
+ #  pragma warning(disable: 4267 4311)
  #endif
 +#if defined(__FreeBSD__)
 +#include <unistd.h>
 +#endif
  
- #include "MeshViewerWidget.hh"
- 
+ #include <iostream>
+ #include <fstream>

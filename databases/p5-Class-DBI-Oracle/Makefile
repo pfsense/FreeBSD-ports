@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <mat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	Class-DBI-Oracle
 PORTVERSION=	0.51
 PORTREVISION=	1

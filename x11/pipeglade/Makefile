@@ -1,5 +1,4 @@
 # Created by: Bert Burgemeister <trebbu@googlemail.com>
-# $FreeBSD$
 
 PORTNAME=	pipeglade
 PORTVERSION=	4.7.0
@@ -13,7 +12,7 @@ LICENSE=	MIT
 USE_GITHUB=	yes
 GH_ACCOUNT=	trebb
 
-USES=		gettext-runtime pkgconfig
+USES=		gettext-runtime gnome pkgconfig
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 libxml2
 
 OPTIONS_DEFINE=	EXAMPLES

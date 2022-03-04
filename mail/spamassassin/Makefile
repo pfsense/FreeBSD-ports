@@ -1,11 +1,9 @@
 # Created by: Anthony Kim
-# $FreeBSD$
 
 PORTNAME=	spamassassin
-PORTVERSION=	3.4.2
-PORTREVISION?=	3	# also bump japanese/spamassassin
+PORTVERSION=	3.4.5
 CATEGORIES?=	mail perl5
-MASTER_SITES=	APACHE/spamassassin/source CPAN/Mail
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/source/ CPAN/Mail
 DISTNAME=	Mail-SpamAssassin-${PORTVERSION}
 
 MAINTAINER?=	zeising@FreeBSD.org
@@ -29,7 +27,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 TEST_DEPENDS+=	${${dep}_RUN_DEPENDS}
 .endfor
 
-CONFLICTS?=	ja-spamassassin-[0-9]*
+CONFLICTS?=	ja-spamassassin
 
 CPE_VENDOR=	apache
 
@@ -146,6 +144,7 @@ post-patch::
 		-e 's,B_CONFDIR)/v340.pre,B_CONFDIR)/v340.pre.sample,g' \
 		-e 's,B_CONFDIR)/v341.pre,B_CONFDIR)/v341.pre.sample,g' \
 		-e 's,B_CONFDIR)/v342.pre,B_CONFDIR)/v342.pre.sample,g' \
+		-e 's,B_CONFDIR)/v343.pre,B_CONFDIR)/v343.pre.sample,g' \
 		-e 's/require DBI/0/' \
 		${WRKSRC}/Makefile.PL
 	${REINPLACE_CMD} -e '/^CC =/d; \

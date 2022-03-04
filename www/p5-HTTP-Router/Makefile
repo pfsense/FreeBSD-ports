@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Router
 PORTVERSION=	0.05
 PORTREVISION=	3
@@ -7,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of Yet Another Path Router for HTTP
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

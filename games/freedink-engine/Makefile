@@ -1,5 +1,4 @@
 # Created by: Stephen Hurd <shurd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freedink
 PORTVERSION=	108.4
@@ -8,13 +7,13 @@ CATEGORIES=	games
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	-engine
 
-MAINTAINER=	shurd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dink Smallwood RPG and RPG Construction Set
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libcheck.so:devel/check
 
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake pkgconfig sdl
 USE_SDL=	sdl gfx ttf image mixer
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --disable-upx

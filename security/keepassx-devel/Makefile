@@ -1,9 +1,8 @@
 # Created by: Eric Camachat <eric@camachat.org>
-# $FreeBSD$
 
 PORTNAME=	keepassx
 PORTVERSION=	2.0.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	security
 PKGNAMESUFFIX=	-devel
 
@@ -21,11 +20,11 @@ LICENSE_PERMS_NOKIA-LGPL-EXCEPTION=	dist-mirror dist-sell pkg-mirror pkg-sell au
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-CONFLICTS_INSTALL=	keepassx-0.* keepassx2-* keepassxc-*
+CONFLICTS_INSTALL=	keepassx-0.* keepassx2 keepassxc
 
-USES=		cmake compiler:c++11-lib desktop-file-utils qt:5 shared-mime-info
+USES=		cmake compiler:c++11-lib cpe desktop-file-utils gnome qt:5 \
+		shared-mime-info xorg
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 USE_QT=		buildtools_build concurrent core gui linguisttools qmake_build \
 		testlib widgets x11extras
 USE_XORG=	ice xorgproto sm x11 xcursor xext xfixes xi xrandr xrender \

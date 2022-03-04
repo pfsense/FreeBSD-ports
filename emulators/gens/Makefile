@@ -1,9 +1,8 @@
 # Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
 
 PORTNAME=	gens
 PORTVERSION=	2.15.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Gens%20Source%20Code/Gens%20${PORTVERSION}
 
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	nasm:devel/nasm
 ONLY_FOR_ARCHS=	i386
 ONLY_FOR_ARCHS_REASON=	uses i386 assembly code
 
-USES=		gmake localbase pkgconfig
+USES=		gl gmake gnome localbase pkgconfig sdl
 USE_GNOME=	gtk20
 USE_GL=		gl
 USE_SDL=	sdl

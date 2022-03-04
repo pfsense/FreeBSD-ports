@@ -1,5 +1,3 @@
-TIMESTAMP = 1552233173
-SHA256 (v5.5.0.zip) = c6afd51d0283e9d5f0911f046824bddf41926c277ce995ab78e128b32737e400
-SIZE (v5.5.0.zip) = 169083630
-SHA256 (bsdgames_2.17.orig.tar.gz) = 066f924aef6c1c5ea946f588e36f303021f5dfc093944738f025d8edbc6fff60
-SIZE (bsdgames_2.17.orig.tar.gz) = 2563311
+TIMESTAMP = 1583224301
+SHA256 (pianojockl-bsdgames-v0.75_GH0.tar.gz) = e0b40634300598db73d8ee5fa38cc52098770850c3f0538042b9e4402115a65e
+SIZE (pianojockl-bsdgames-v0.75_GH0.tar.gz) = 2500764

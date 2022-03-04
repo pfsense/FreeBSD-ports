@@ -3,11 +3,11 @@
  * suricata_suppress_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,7 +101,7 @@ if ($_POST['save']) {
 		$s_list = array();
 		$s_list['name'] = $_POST['name'];
 		$s_list['uuid'] = uniqid();
-		$s_list['descr']  =  mb_convert_encoding($_POST['descr'],"HTML-ENTITIES","auto");
+		$s_list['descr'] = $_POST['descr'];
 		if ($_POST['suppresspassthru']) {
 			$s_list['suppresspassthru'] = str_replace("&#8203;", "", $s_list['suppresspassthru']);
 			$s_list['suppresspassthru'] = base64_encode($_POST['suppresspassthru']);
@@ -112,7 +112,7 @@ if ($_POST['save']) {
 		else
 			$a_suppress[] = $s_list;
 
-		write_config();
+		write_config("Suricata pkg: saved changes to Suppress List {$s_list['name']}.");
 		sync_suricata_package_config();
 
 		header("Location: /suricata/suricata_suppress.php");
@@ -120,7 +120,8 @@ if ($_POST['save']) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Suppression List Edit"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_suppress.php", "@self");
+$pgtitle = array("Services", "Suricata", "Suppression List", "Edit");
 include_once("head.inc");
 
 if ($input_errors) print_input_errors($input_errors);
@@ -132,6 +133,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), true, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");
@@ -157,10 +159,10 @@ $section->addInput(new Form_Input(
 ))->setHelp('You may enter a description here for your reference.');
 $form->add($section);
 
-$content_help = gettext('Valid keywords are \'suppress\', \'event_filter\' and \'rate_filter\'.') . '<br />';
+$content_help = gettext('Valid keywords are \'suppress\', \'event_filter\' and \'threshold\'.') . '<br />';
 $content_help .= gettext('Example 1: suppress gen_id 1, sig_id 1852, track by_src, ip 10.1.1.54') . '<br />';
 $content_help .= gettext('Example 2: event_filter gen_id 1, sig_id 1851, type limit, track by_src, count 1, seconds 60') . '<br />';
-$content_help .= gettext('Example 3: rate_filter gen_id 135, sig_id 1, track by_src, count 100, seconds 1, new_action log, timeout 10');
+$content_help .= gettext('Example 3: threshold gen_id 135, sig_id 1, type threshold, track by_src, count 100, seconds 1');
 
 $section = new Form_Section('Suppression List Content');
 $section->addInput(new Form_Textarea (

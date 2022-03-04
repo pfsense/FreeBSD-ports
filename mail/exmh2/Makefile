@@ -1,13 +1,13 @@
 # Created by: Peter Wemm <peter@FreeBSD.org>
-# $FreeBSD$
 
 # "+=" and "?=" lines are for sharing this Makefile with japanese/exmh2.
 
 PORTNAME=	exmh
-PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTVERSION=	2.9.0
+PORTREVISION=	5
 CATEGORIES+=	mail tk
-MASTER_SITES=	TCLTK/${PORTNAME} SF/${PORTNAME}
+# XXX: Standard SF fails with a hung download
+MASTER_SITES=	https://sourceforge.net/projects/${PORTNAME}/files/${PORTNAME}/${PORTVERSION}/
 
 MAINTAINER?=	cy@FreeBSD.org
 COMMENT?=	X11/TK based mail reader front end to MH
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	tclsh8.0jp:japanese/tcl80
 WISH=		wish8.0jp
 TCLSH=		tclsh8.0jp
 .else
-USES=		tk
+USES=		cpe tk:87
 .endif
 
 # exmh is pretty useless without this, but it's not needed to build it.

@@ -1,5 +1,4 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	python-lzo
 DISTVERSION=	1.12
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 
-USES=		localbase python
+USES=		localbase python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

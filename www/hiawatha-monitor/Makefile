@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hiawatha-monitor
 PORTVERSION=	1.6
 CATEGORIES=	www
@@ -7,7 +5,7 @@ MASTER_SITES=	https://www.hiawatha-webserver.org/files/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	monitor-${PORTVERSION}
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	christopher.petrik@usm.edu
 COMMENT=	Monitoring tool for the Hiawatha webserver
 
 LICENSE=	GPLv3

@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	unetbootin
-PORTVERSION=	661
+PORTVERSION=	702
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-source-${PORTVERSION}
@@ -26,11 +25,13 @@ NO_WRKSUBDIR=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/,${PREFIX}/,g' \
 		${WRKSRC}/main.cpp
+	@${REINPLACE_CMD} -e 's,this->setWindowTitle(UNETBOOTINB,& \
+		" ${PORTVERSION}",' ${WRKSRC}/unetbootin.cpp
 
 do-configure:
-	${LUPDATE} ${WRKSRC}/unetbootin.pro
-	${LRELEASE} ${WRKSRC}/unetbootin.pro
-	cd ${WRKSRC} && ${QMAKE_ENV} ${QMAKE} ${QMAKE_ARGS}
+	cd ${CONFIGURE_WRKSRC} && ${LUPDATE} unetbootin.pro \
+		     && ${LRELEASE} unetbootin.pro \
+		     && ${QMAKE_ENV} ${QMAKE} ${QMAKE_ARGS}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/unetbootin ${STAGEDIR}${PREFIX}/bin

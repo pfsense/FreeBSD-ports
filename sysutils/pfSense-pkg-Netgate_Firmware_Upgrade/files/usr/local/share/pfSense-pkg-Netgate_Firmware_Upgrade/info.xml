@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Netgate Firmware Upgrade</name>
+		<internal_name>Netgate_Firmware_Upgrade</internal_name>
+		<descr><![CDATA[Provide a mechanism to upgrade Firmware for Netgate hardware models.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>netgate_firmware_upgrade.xml</configurationfile>
+	</package>
+</pfsensepkgs>

@@ -1,5 +1,4 @@
 # Created by: Cheng-Lung Sung <clsung@dragon2.net>
-# $FreeBSD$
 
 PORTNAME=	Class-XPath
 PORTVERSION=	1.4
@@ -13,5 +12,7 @@ COMMENT=	Base class to add xpath matching to object trees
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

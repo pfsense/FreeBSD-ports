@@ -1,8 +1,7 @@
 # Created by: joerg
-# $FreeBSD$
 
 PORTNAME=	cpmtools2
-PORTVERSION=	2.20
+PORTVERSION=	2.22
 CATEGORIES=	emulators sysutils
 MASTER_SITES=	http://www.moria.de/~michael/cpmtools/files/
 DISTNAME=	${PORTNAME:C/2$//}-${PORTVERSION}
@@ -12,9 +11,9 @@ COMMENT=	Tools to access CP/M disks and disk images
 
 LICENSE=	GPLv3
 
-USES=		desthack ncurses
+USES=		ncurses
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--bindir=${STAGEDIR}${PREFIX}/sbin \
+CONFIGURE_ARGS+=	--bindir=${PREFIX}/sbin \
 		--datarootdir=${DATADIR}
 
 OPTIONS_DEFINE=	LIBDSK

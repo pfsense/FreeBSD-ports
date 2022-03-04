@@ -1,9 +1,8 @@
 # Created by: Yoshiro MIHIRA <sanpei@sanpei.org>
-# $FreeBSD$
 
 PORTNAME=	kanji
 PORTVERSION=	1.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	japanese x11-fonts
 MASTER_SITES=	PORTS_JP/${DISTNAME}
 PKGNAMEPREFIX=	ja-font-
@@ -19,6 +18,8 @@ BUILD_DEPENDS=	mkbold:x11-fonts/mkbold-mkitalic \
 		bdftopcf:x11-fonts/bdftopcf
 
 USES=		fonts
+FONTNAME=	${PORTNAME}${PKGNAMESUFFIX}
+FONTPATHSPEC=	${FONTNAME}:unscaled:pri=60
 NO_ARCH=	yes
 NO_WRKSUBDIR=	yes
 EXTRACT_CMD=		${GZCAT}
@@ -28,7 +29,7 @@ EXTRACT_AFTER_ARGS=	| ${SED} '/bin\/sh/,/exit 0/!d' \
 PKGINSTALL=	${WRKDIR}/pkg-install
 PKGDEINSTALL=	${WRKDIR}/pkg-install
 MAKEFILE=	${WRKDIR}/Makefile
-SUB_FILES=	Makefile pkg-install pkg-message
+SUB_FILES=	Makefile pkg-install
 SUB_LIST=	FONTSALIAS="${FONTSDIR}/fonts.alias.${PKGNAMESUFFIX}" \
 		SRCS="${SRCS}"
 PORTDOCS=	README.${PORTNAME}${PKGNAMESUFFIX}
@@ -48,8 +49,6 @@ post-extract:
 	cd ${WRKSRC} && \
 	    ${SED} -f ${RESIZESED_FILE} < ${PORTNAME}${PKGNAMESUFFIX}.bdf \
 	    > ${PORTNAME}${RESIZESED_FILE:R:C/^[0-9][0-9]to//}.bdf
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias.${PKGNAMESUFFIX} \

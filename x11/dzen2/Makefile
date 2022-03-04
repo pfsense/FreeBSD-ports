@@ -1,5 +1,4 @@
 # Created by: Morten Slot Kristensen
-# $FreeBSD$
 
 PORTNAME=	dzen
 PORTVERSION=	0.9.5
@@ -11,11 +10,11 @@ COMMENT=	General purpose messaging, notification and menuing program for X11
 
 LICENSE=	MIT
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     robm
+USE_GITHUB=	yes
+GH_ACCOUNT=	robm
 GH_TAGNAME=	488ab66
 
-USES=		pkgconfig
+USES=		pkgconfig xorg
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	EXAMPLES GADGETS XPM XINERAMA XFT

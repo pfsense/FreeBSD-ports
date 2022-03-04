@@ -1,5 +1,4 @@
 # Created by: Dan Langille
-# $FreeBSD$
 
 PORTNAME=	robotframework-databaselibrary
 PORTVERSION=	1.1.1
@@ -19,7 +18,7 @@ GH_ACCOUNT=	franz-see
 GH_PROJECT=	Robotframework-Database-Library
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

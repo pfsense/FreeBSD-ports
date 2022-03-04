@@ -1,11 +1,11 @@
---- ui/message_center/views/message_popup_view.cc.orig	2019-03-11 22:01:19 UTC
+--- ui/message_center/views/message_popup_view.cc.orig	2021-07-19 18:45:44 UTC
 +++ ui/message_center/views/message_popup_view.cc
-@@ -114,7 +114,7 @@ void MessagePopupView::AutoCollapse() {
- void MessagePopupView::Show() {
-   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
-   params.keep_on_top = true;
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
-   params.opacity = views::Widget::InitParams::OPAQUE_WINDOW;
- #else
-   params.opacity = views::Widget::InitParams::TRANSLUCENT_WINDOW;
+@@ -115,7 +115,7 @@ void MessagePopupView::Show() {
+   params.z_order = ui::ZOrderLevel::kFloatingWindow;
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
+   // Make the widget explicitly activatable as TYPE_POPUP is not activatable by
+   // default but we need focus for the inline reply textarea.
+   params.activatable = views::Widget::InitParams::Activatable::kYes;

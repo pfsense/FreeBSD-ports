@@ -1,16 +1,14 @@
 # Created by: bf <bf2006a@yahoo.com>
-# $FreeBSD$
 
 PORTNAME=	TestU01
 PORTVERSION=	1.2.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
-MASTER_SITES=	http://www.iro.umontreal.ca/~simardr/testu01/:0 \
-		http://www.iro.umontreal.ca/~lecuyer/myftp/papers/:1
-DISTFILES=	${PORTNAME}${EXTRACT_SUFX}:0 testu01.pdf:1
-EXTRACT_ONLY=	${PORTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	http://simul.iro.umontreal.ca/${PORTNAME:tl}/
+DISTNAME=	${PORTNAME}
+DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Utilities for statistical testing of uniform random number generators
 
 LICENSE=	TestU01
@@ -20,36 +18,30 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-CONFLICTS=	emboss-[0-9]*
-
-USES=		gmake zip libtool localbase
+USES=		gmake libtool localbase zip
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--includedir="${PREFIX}/include/${PORTNAME}"
 MAKE_ARGS=	docdir="${DOCSDIR}" exdir="${EXAMPLESDIR}"
-USE_LDCONFIG=	 yes
+USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+
+CONFLICTS=	emboss
 
 CFLAGS+=	-fPIC
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|return|& (0)|' ${WRKSRC}/testu01/fftc.c
+pre-configure-DOCS-off:
+	${REINPLACE_CMD} -e  '/^SUBDIRS \=/s/ doc / /' ${WRKSRC}/Makefile.in
+	${FIND} -X ${WRKSRC} -name 'Makefile.in' | ${XARGS} ${REINPLACE_CMD} \
+		-e '/^install-data-am\: /s/install-docDATA//'
 
-post-patch-DOCS-off:
-	@${REINPLACE_CMD} -e  '/^SUBDIRS \=/s/ doc / /' ${WRKSRC}/Makefile.in
-	@${FIND} -X ${WRKSRC} -name 'Makefile.in' | ${XARGS} ${REINPLACE_CMD} \
-	-e '/^install-data-am\: /s/install-docDATA//'
-
-post-patch-EXAMPLES-off:
-	@${REINPLACE_CMD} -e  '/^SUBDIRS \=/s/ examples / /' ${WRKSRC}/Makefile.in
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/testu01.pdf ${STAGEDIR}${DOCSDIR}
+pre-configure-EXAMPLES-off:
+	${REINPLACE_CMD} -e  '/^SUBDIRS \=/s/ examples / /' ${WRKSRC}/Makefile.in
 
 do-test:
-	@cd ${WRKSRC}/examples ; \
+	cd ${WRKSRC}/examples ; \
 	for f in [mx]*.c ; do \
 		${CC} ${CFLAGS} -c $${f} -I. -I../include ; \
 	done ; \

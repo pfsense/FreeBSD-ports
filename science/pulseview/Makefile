@@ -1,11 +1,14 @@
 # Created by: Uffe Jakobsen <uffe@uffe.org>
-# $FreeBSD$
 
 PORTNAME=	pulseview
-PORTVERSION=	0.4.1
-PORTREVISION=	3
+PORTVERSION=	0.4.2
+PORTREVISION=	1
 CATEGORIES=	science cad
 MASTER_SITES=	http://sigrok.org/download/source/pulseview/
+
+# Fix build with glib 2.68.3
+PATCH_SITES=	https://github.com/sigrokproject/pulseview/commit/
+PATCHFILES=	ed643f0b4ac587204a5243451cda181ee1405d62.diff:-p1
 
 MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	GUI client that supports various hardware logic analyzers
@@ -19,11 +22,10 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 
 USES=		cmake compiler:c++14-lang desktop-file-utils gnome pkgconfig qt:5
 USE_GNOME=	glibmm glib20 libsigc++20
-USE_QT=		buildtools core gui qmake_build svg widgets
+USE_QT=		buildtools_build core gui linguisttools_build qmake_build svg widgets
 
 CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH=${MANPREFIX}/man \
 		-DDISABLE_WERROR:BOOL=TRUE
-INSTALLS_ICONS=	yes
 
 PLIST_FILES=	bin/pulseview man/man1/pulseview.1.gz \
 		share/applications/org.sigrok.PulseView.desktop \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cmake-modules-webos
 DISTVERSION=	1.0b
 CATEGORIES=	devel

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	GunghoX-FollowLinks
 PORTVERSION=	0.00006
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DMAKI
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to follow links within responses for Gungho
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

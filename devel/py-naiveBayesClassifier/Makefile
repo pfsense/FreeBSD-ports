@@ -1,5 +1,4 @@
 # Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	naiveBayesClassifier
 PORTVERSION=	0.1.3
@@ -13,7 +12,7 @@ COMMENT=	Yet another general purpose naive bayesian classifier
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

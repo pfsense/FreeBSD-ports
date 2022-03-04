@@ -1,5 +1,4 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	re
 PORTVERSION=	1.4.1
@@ -11,6 +10,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pure OCaml regular expressions
 
 LICENSE=	LGPL21
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 USES=	gmake
 HAS_CONFIGURE=	yes

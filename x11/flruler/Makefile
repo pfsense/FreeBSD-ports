@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flruler
 PORTVERSION=	1.05
@@ -13,7 +12,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libfltk.a:x11-toolkits/fltk
 
-USES=		gmake perl5
+USES=		gmake perl5 xorg
 USE_PERL5=	build
 USE_XORG=	x11 xcursor xext xfixes xft xinerama
 

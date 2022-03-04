@@ -1,9 +1,8 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xmlada
 PORTVERSION=	17.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,7 +14,7 @@ USES=		ada:run
 USE_GITHUB=	yes
 GH_ACCOUNT=	AdaCore
 GH_PROJECT=	xmlada
-GH_TAGNAME=	1184d97
+GH_TAGNAME=	e5bbafe
 
 MAKE_ARGS+=	PROCESSORS=${MAKE_JOBS_NUMBER} \
 		LIBVER=${PORTVERSION}

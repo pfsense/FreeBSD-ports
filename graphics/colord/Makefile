@@ -1,10 +1,10 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	colord
 PORTVERSION=	1.3.5
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.freedesktop.org/software/colord/releases/
+MASTER_SITES=	https://www.freedesktop.org/software/colord/releases/
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Manage color profiles to accurately color input/output devices
@@ -12,15 +12,15 @@ COMMENT=	Manage color profiles to accurately color input/output devices
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	spotread:graphics/argyllcms
-LIB_DEPENDS=	libpolkit-gobject-1.so:sysutils/polkit \
-		libdbus-1.so:devel/dbus \
+LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		liblcms2.so:graphics/lcms2
 RUN_DEPENDS=	spotread:graphics/argyllcms
 
 USERS=		colord
 GROUPS=		colord
 
-USES=		gettext gmake libtool localbase pathfix pkgconfig sqlite tar:xz
+USES=		gettext gmake gnome libtool localbase pathfix pkgconfig sqlite \
+		tar:xz
 USE_GNOME=	glib20 intlhack introspection:build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -39,12 +39,22 @@ INSTALL_TARGET=	install-strip
 GLIB_SCHEMAS=	org.freedesktop.ColorHelper.gschema.xml
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	MANPAGES PPROFILES
+OPTIONS_DEFINE=	POLKIT MANPAGES PPROFILES VALA
+OPTIONS_DEFAULT=POLKIT VALA
 
-MANPAGES_BUILD_DEPENDS=	docbook2html:textproc/docbook-utils \
-			docbook-sgml>0:textproc/docbook-sgml
-PPROFILES_DESC=		Build extra print profiles (long build time)
+PPROFILES_DESC=	Build extra print profiles (long build time)
+POLKIT_DESC=	Build with Polkit support
+VALA_DESC=	Build Vala language bindings
+
+POLKIT_LIB_DEPENDS=		libpolkit-gobject-1.so:sysutils/polkit
+POLKIT_CONFIGURE_ENABLE=	polkit
+
+MANPAGES_BUILD_DEPENDS=		docbook2html:textproc/docbook-utils \
+				docbook-sgml>0:textproc/docbook-sgml
 PPROFILES_CONFIGURE_ENABLE=	print-profiles
+VALA_CONFIGURE_ENABLE=		vala
+VALA_BUILD_DEPENDS=		vapigen:lang/vala
+MAKE_ENV=		PYTHONDONTWRITEBYTECODE=1
 
 .include <bsd.port.options.mk>
 

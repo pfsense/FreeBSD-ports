@@ -1,8 +1,7 @@
 # Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
 
 PORTNAME=	typhoeus
-PORTVERSION=	1.3.1
+PORTVERSION=	1.4.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

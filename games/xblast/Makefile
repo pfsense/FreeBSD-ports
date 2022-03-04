@@ -1,9 +1,8 @@
 # Created by: se
-# $FreeBSD$
 
 PORTNAME=	xblast
 PORTVERSION=	2.10.4
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Sources/${PORTVERSION} \
 		SF/${PORTNAME}/Images/${IMAGES_DATE}:images \
@@ -41,7 +40,9 @@ OPTIONS_SUB=	yes
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
+SDL_USES=		sdl
 SDL_USE=		SDL=gfx,image,mixer,net,ttf,sdl
+SDL_USES_OFF=		xorg
 SDL_USE_OFF=		XORG=ice,x11,xt
 SDL_CONFIGURE_ENABLE=	sdl
 SDL_RUN_DEPENDS=	${FONTSDIR}/Vera.ttf:x11-fonts/bitstream-vera

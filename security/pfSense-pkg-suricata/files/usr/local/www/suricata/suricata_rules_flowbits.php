@@ -3,11 +3,11 @@
  * suricata_rules_flowbits.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,7 +126,7 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 	}
 
 	if ($found_list) {
-		write_config();
+		write_config("Suricata pkg: added suppress entry for rule {$_POST['gid']}:{$_POST['sid']} to Suppress List {$a_nat[$id]['suppresslistname']}.");
 		$rebuild_rules = false;
 		sync_suricata_package_config();
 		suricata_reload_config($a_nat[$id]);

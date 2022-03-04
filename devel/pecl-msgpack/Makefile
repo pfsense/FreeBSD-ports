@@ -1,11 +1,10 @@
 # Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	msgpack
-PORTVERSION=	2.0.3
+PORTVERSION=	2.1.2
 CATEGORIES=	devel
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Provides API for communicating with MessagePack serialization
 
 LICENSE=	BSD3CLAUSE

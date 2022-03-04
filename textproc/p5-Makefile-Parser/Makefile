@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Makefile-Parser
 PORTVERSION=	0.216
@@ -9,7 +8,7 @@ MASTER_SITE_SUBDIR=	CPAN:AGENT
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Makefile::Parser - A Simple Parser for Makefiles
+COMMENT=	Simple Perl parser for makefiles
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Class-Accessor>=0:devel/p5-Class-Accessor \

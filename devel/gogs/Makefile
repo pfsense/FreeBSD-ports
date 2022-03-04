@@ -1,32 +1,24 @@
-# $FreeBSD$
-
 PORTNAME=	gogs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11.86
+DISTVERSION=	0.12.3
+PORTREVISION=	1
 CATEGORIES=	devel www
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Painless self-hosted Git service
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go:lang/go
+BUILD_DEPENDS=	go-bindata:devel/go-bindata
 RUN_DEPENDS=	git:devel/git \
 		bash:shells/bash
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	gogs
-GH_SUBDIR=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
+USES=		cpe go:modules
 
-OPTIONS_DEFINE=	DOCS
-
-USERS=		git
-GROUPS=		git
-
-GOGS_DBDIR?=	/var/db/gogs
-GOGS_LOGDIR?=	/var/log/gogs
-PORTNAME_FANCY=	Gogs
+GO_MODULE=	gogs.io/gogs
+GO_TARGET=	:${PREFIX}/libexec/${PORTNAME}/${PORTNAME}
+GO_BUILDFLAGS=	-tags "sqlite pam cert"
 
 SUB_FILES=	gogs \
 		gogs-service \
@@ -37,12 +29,22 @@ SUB_LIST=	PORTNAME=${PORTNAME} \
 		GOGS_USER=${USERS} \
 		GOGS_DBDIR=${GOGS_DBDIR} \
 		GOGS_LOGDIR=${GOGS_LOGDIR}
+
+USERS=		git
+GROUPS=		git
+
 PLIST_SUB=	GOGS_USER=${USERS} \
 		GOGS_GROUP=${GROUPS} \
 		GOGS_DBDIR=${GOGS_DBDIR} \
 		GOGS_LOGDIR=${GOGS_LOGDIR}
 
 PORTDOCS=	README.md
+
+OPTIONS_DEFINE=	DOCS
+
+GOGS_DBDIR?=	/var/db/gogs
+GOGS_LOGDIR?=	/var/log/gogs
+PORTNAME_FANCY=	Gogs
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -51,16 +53,14 @@ post-patch:
 		-e 's|^RUN_MODE = dev$$|RUN_MODE = prod|' \
 		-e 's|^ROOT =$$|ROOT = ${GOGS_DBDIR}/repositories|' \
 		-e 's|^ROOT_PATH =$$|ROOT_PATH = ${GOGS_LOGDIR}|' \
-		-e 's|^DB_TYPE = mysql$$|DB_TYPE = sqlite3|' \
+		-e 's|^TYPE = postgres$$|DB_TYPE = sqlite3|' \
 		${WRKSRC}/conf/app.ini
 
-do-build:
-	@(cd ${WRKSRC}/${GH_SUBDIR} && \
-		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go build -tags "sqlite pam cert" -p ${MAKE_JOBS_NUMBER} -o ${PORTNAME})
+pre-build:
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} generate internal/assets/templates/templates.go \
 
-do-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}/
+post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/gogs ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKDIR}/gogs-rm-data ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKDIR}/gogs-service ${STAGEDIR}${PREFIX}/etc/rc.d/gogs
@@ -74,7 +74,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${GOGS_LOGDIR}
 	@${LN} -sf ${GOGS_LOGDIR} ${STAGEDIR}/${PREFIX}/libexec/${PORTNAME}/log
 
-do-install-DOCS-on:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

@@ -1,5 +1,4 @@
 # Created by: Jonathan Liu <Net147@hotmail.com>
-# $FreeBSD$
 
 PORTNAME=	linrename
 PORTVERSION=	2.25.2
@@ -11,7 +10,7 @@ MASTER_SITES=	http://ftp.ntu.edu.tw/ftp/linux/%SUBDIR%/ \
 MASTER_SITE_SUBDIR=	utils/util-linux/v${PORTVERSION:R}
 DISTNAME=	util-linux-${PORTVERSION}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rename multiple files using substitution
 
 BUILD_WRKSRC=	${WRKSRC}/misc-utils

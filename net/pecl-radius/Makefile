@@ -1,11 +1,11 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
 
 PORTNAME=	radius
-DISTVERSION=	1.4.0b1
+PORTVERSION=	1.4.0b1
+PORTREVISION=	1
 CATEGORIES=	net security pear
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Radius client library for PHP
 
 LICENSE=	BSD3CLAUSE

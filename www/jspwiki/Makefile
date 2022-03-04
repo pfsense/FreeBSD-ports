@@ -1,9 +1,8 @@
 # Created by: wenheping@gmail.com
-# $FreeBSD$
 
 PORTNAME=	jspwiki
 PORTVERSION=	2.8.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www java
 MASTER_SITES=	http://www.ecyrd.com/~jalkanen/JSPWiki/${PORTVERSION}/
 DISTNAME=	JSPWiki-${PORTVERSION}-bin
@@ -14,10 +13,12 @@ COMMENT=	Feature-rich and extensible Wiki engine built around J2EE
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKDIR}/jspwiki/LICENSE
 
-USES=		zip
+USES=		cpe zip
 USE_JAVA=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
+
+CPE_VENDOR=	apache
 
 TOMCATDIR=	${PREFIX}/${TOMCATVER}
 APPHOME=	${LOCALBASE}/${TOMCATVER}
@@ -29,21 +30,11 @@ PORTDOCS=	ChangeLog README ReleaseNotes JSPWiki-*.zip
 PLIST_SUB=	TOMCATDIR=${TOMCATDIR:S|^${PREFIX}/||}
 
 OPTIONS_DEFINE=	DOCS
-OPTIONS_SINGLE=	AS
-OPTIONS_SINGLE_AS=	TOMCAT6 TOMCAT7
-OPTIONS_DEFAULT=	TOMCAT6
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MTOMCAT6}
-TOMCATVER=	apache-tomcat-6.0
-RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat6
-.endif
-
-.if ${PORT_OPTIONS:MTOMCAT7}
 TOMCATVER=	apache-tomcat-7.0
 RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
-.endif
 
 post-extract:
 	@${MV} ${WRKDIR}/${WEBAPP} ${WRKDIR}/${PORTNAME}

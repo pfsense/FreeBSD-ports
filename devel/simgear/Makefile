@@ -1,36 +1,45 @@
-# $FreeBSD$
-
 PORTNAME=	simgear
-PORTVERSION=	2018.3.2
+PORTVERSION=	2020.3.11
 CATEGORIES=	devel games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Toolkit for 3D games and simulations
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+ LGPL20+
+LICENSE_COMB=	multi
+LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
-		libosg.so:graphics/osg
+		libosg.so:graphics/osg \
+		libexpat.so:textproc/expat2 \
+		libcurl.so:ftp/curl
 
 USES=		alias cmake compiler:c++11-lib cpe gl jpeg openal:al,alut \
-		tar:bzip2
+		tar:bzip2 xorg
 USE_XORG=	ice sm x11 xext xi xmu xt
 USE_GL=		gl glu glut
 
-LDFLAGS_mips=	-losgDB
-LDFLAGS_mips64=	-losgDB
-LDFLAGS_powerpc64=	-losgDB
-LDFLAGS_powerpc=	-losgDB
-LDFLAGS_powerpcspe=	-losgDB
-LDFLAGS_sparc64=	-losgDB
+USE_LDCONFIG=	yes
+
+LDFLAGS_gcc=	-losgDB
+LDFLAGS+=	${LDFLAGS_${CHOSEN_COMPILER_TYPE}}
+
+CMAKE_ARGS+=	-DSYSTEM_EXPAT:BOOL=ON \
+		-DENABLE_TESTS:BOOL=OFF
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_ARGS+=	-DENABLE_SIMD:BOOL=OFF
+.endif
 
 post-patch:
-# Avoid conflict with C++20 <version> by adding .txt suffix
-	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
-	@${REINPLACE_CMD} -Ei .c++20 '/file|set_prop/s/version[[:>:]]/&.txt/' \
-		${WRKSRC}/CMakeLists.txt
+# Avoid conflict with C++20 <version> - used version file is simgear-version
+	@${RM} ${WRKSRC}/version
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

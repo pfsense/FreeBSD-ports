@@ -1,7 +1,0 @@
-%%LUA%%%%LUA_MODLIBDIR%%/xapian.so
-%%PYTHON%%%%PYTHON_SITELIBDIR%%/xapian/__init__.py
-%%PYTHON%%%%PYTHON_SITELIBDIR%%/xapian/__init__.pyc
-%%PYTHON%%%%PYTHON_SITELIBDIR%%/xapian/__init__.pyo
-%%PYTHON%%%%PYTHON_SITELIBDIR%%/xapian/_xapian.so
-%%RUBY%%%%RUBY_SITELIBDIR%%/xapian.rb
-%%RUBY%%%%RUBY_SITEARCHLIBDIR%%/_xapian.so

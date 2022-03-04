@@ -1,5 +1,4 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pcsc-ada
 PORTVERSION=	0.7.3
@@ -24,8 +23,8 @@ PORTEXAMPLES=	src bin
 
 OPTIONS_DEFINE=	UNIT_TEST INTF_TEST DOCS EXAMPLES
 OPTIONS_SUB=	yes
-UNIT_TEST_DESC= Run unit test suite before installation
-INTF_TEST_DESC= Run interface tests against installed smart card after build
+UNIT_TEST_DESC=	Run unit test suite before installation
+INTF_TEST_DESC=	Run interface tests against installed smart card after build
 NO_OPTIONS_SORT=yes
 
 DOCS_USES=		gmake

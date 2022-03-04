@@ -1,9 +1,8 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mod_sql_tds
 DISTVERSION=	4.13
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	databases ftp
 PKGNAMEPREFIX=	proftpd-
 

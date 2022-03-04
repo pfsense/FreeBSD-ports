@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	neverball
 PORTVERSION=	1.6.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://icculus.org/neverball/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -17,11 +15,12 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libvorbis.so:audio/libvorbis \
 		libphysfs.so:devel/physfs
 
-USES=		gmake iconv jpeg
+USES=		gl gmake iconv jpeg sdl
 USE_GL=		gl
 USE_SDL=	sdl2 ttf2
 MAKE_ARGS+=	DATADIR="${DATADIR}" \
 		LOCALEDIR="${PREFIX}/share/locale"
+CFLAGS+=	-fcommon
 
 PORTDOCS=	*
 PORTDATA=	*
@@ -29,7 +28,7 @@ PORTDATA=	*
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 NLS_USES=		gettext
-NLS_MAKE_ENV_ON=	ENABLE_NLS=1
+NLS_MAKE_ENV=		ENABLE_NLS=1
 NLS_MAKE_ENV_OFF=	ENABLE_NLS=0
 
 do-install:

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qmake
 DISTVERSION=	${QT5_VERSION}
 PORTREVISION=	1
@@ -33,6 +31,8 @@ INSTALL_TARGET=	sub-qmake-qmake-aux-pro-install_subtargets install_mkspecs
 
 BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
 
+QT_BINARIES=	yes
+
 post-patch:
 # Clean up files created by patching
 	@${RM} ${WRKSRC}/mkspecs/*/*.orig
@@ -43,5 +43,6 @@ post-build:
 		${SETENV} CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
 		CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" BUILD_QMAKE=1 \
 		${CONFIGURE_ENV} ${CONFIGURE_CMD} ${CONFIGURE_ARGS}
-
+post-install:
+	${RLN} ${STAGEDIR}${QT_BINDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-qt5
 .include <bsd.port.mk>

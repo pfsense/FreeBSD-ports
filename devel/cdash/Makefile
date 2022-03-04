@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	cdash
 PORTVERSION=	2.2.3
@@ -8,13 +7,13 @@ CATEGORIES=	devel
 MASTER_SITES=	http://www.cdash.org/wp-content/uploads/2014/11/
 DISTNAME=	CDash-2-2-3
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Web-based software testing server
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
 
-USES=		dos2unix cmake zip
+USES=		cmake dos2unix php zip
 DOS2UNIX_GLOB=	*.php *.xml *.xsl *.txt
 CMAKE_ARGS=	-DCDASH_DB_NAME:STRING=cdash \
 		-DCDASH_DB_LOGIN:STRING=cdash \

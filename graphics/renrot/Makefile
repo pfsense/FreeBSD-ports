@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	renrot
 PORTVERSION=	1.2.0
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	ftp://download.gnu.org.ua/pub/release/${PORTNAME}/
 
-MAINTAINER=	zeus@ibs.dn.ua
+MAINTAINER=	zeus@gnu.org.ua
 COMMENT=	Program to rename and rotate image files according to EXIF tags
 
 LICENSE=	ART20

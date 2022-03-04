@@ -1,10 +1,8 @@
 # Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
 
 PORTNAME=	mythmusic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	30.0
-PORTREVISION=	0
+DISTVERSION=	31.0
 CATEGORIES=	audio
 PKGNAMEPREFIX=	mythplugin-
 
@@ -18,7 +16,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libmp3lame.so:audio/lame \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis \
-		libmyth-30.so:multimedia/mythtv
+		libmyth-31.so:multimedia/mythtv
 
 USES=		gmake qt:5
 USE_GITHUB=	yes
@@ -57,6 +55,6 @@ post-patch:
 		${WRKSRC}/configure
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/mythtv/plugins/libmythmusic.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/mythtv/plugins/libmythmusic.so
 
 .include <bsd.port.mk>

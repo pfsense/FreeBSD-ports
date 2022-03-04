@@ -1,9 +1,8 @@
 # Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jaxup
 PORTVERSION=	1.01
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc java
 MASTER_SITES=	http://klomp.org/jaxup/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -22,7 +21,6 @@ USES=		zip
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 

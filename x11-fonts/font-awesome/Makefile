@@ -1,13 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	font-awesome
-DISTVERSION=	5.7.2
-PORTREVISION=	1
+DISTVERSION=	5.14.0
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://use.fontawesome.com/releases/v${DISTVERSION}/
 DISTNAME=	fontawesome-free-${DISTVERSION}-desktop
 
-MAINTAINER=	dg@syrec.org
+MAINTAINER=	dmgk@FreeBSD.org
 COMMENT=	Suite of pictographic icons from Font Awesome (free version)
 
 LICENSE=	OFL11

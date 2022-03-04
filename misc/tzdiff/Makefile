@@ -1,8 +1,7 @@
 # Created by: Naito Yuichiro <naito.yuichiro@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	tzdiff
-PORTVERSION=	1.1
+PORTVERSION=	1.1.1
 CATEGORIES=	misc
 
 MAINTAINER=	naito.yuichiro@gmail.com

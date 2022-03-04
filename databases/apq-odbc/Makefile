@@ -1,5 +1,4 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	apq-odbc
 PORTVERSION=	${APQ_VERSION}
@@ -22,7 +21,7 @@ LIB_DEPENDS=	libodbc.so:databases/unixODBC
 USES=		ada tar:bzip2
 HAS_CONFIGURE=	yes
 WRKPATH=	${WRKDIR}/build
-CONFIGURE_ARGS= --prefix=${PREFIX} \
+CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--disable-relocatable \
 		--work-path=${WRKPATH} \
 		--processors=${MAKE_JOBS_NUMBER}

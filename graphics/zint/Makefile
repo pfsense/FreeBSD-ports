@@ -1,14 +1,12 @@
 # Created by: Gvozdikov Veniamin <g.veniamin@googlemail.com>
-# $FreeBSD$
 
 PORTNAME=	zint
-DISTVERSION=	2.6.3_rc2	# NOT a "release candidate", fixup for 2.6.3
-PORTREVISION=	1
+PORTVERSION=	2.10.0
 CATEGORIES=	graphics
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/2.6.3
-DISTNAME=	${PORTNAME}-${DISTVERSION}.src
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
+DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Zint Barcode Generator
 
 LICENSE=	GPLv3+
@@ -16,12 +14,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-PORTSCOUT=	skipv:2.6.3
-
-USES=		cmake compiler:c++11-lang qt:5
+USES=		cmake compiler:c++11-lang cpe qt:5
 USE_LDCONFIG=	yes
-USE_QT=		buildtools_build qmake_build uitools_build core gui widgets
+USE_QT=		buildtools_build qmake_build uitools_build core gui \
+		widgets xml
 
 DESKTOP_ENTRIES="Zint" "Barcode generator" "" "zint-qt" "" false
+
+post-patch:
+	@${REINPLACE_CMD} -e '/^add_library/s,STATIC,SHARED,' \
+		${WRKSRC}/backend_qt/CMakeLists.txt
 
 .include <bsd.port.mk>

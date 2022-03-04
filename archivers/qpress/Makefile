@@ -1,5 +1,4 @@
-# Created by: Alex Samorukov <samm@os2.kiev.ua>
-# $FreeBSD$
+# Created by: Alex Samorukov <samm@freebsd.org>
 
 PORTNAME=	qpress
 PORTVERSION=	1.1
@@ -7,7 +6,7 @@ CATEGORIES=	archivers
 MASTER_SITES=	http://www.quicklz.com/
 DISTNAME=	qpress-11-source
 
-MAINTAINER=	samm@os2.kiev.ua
+MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Portable file archiver using QuickLZ
 
 LICENSE=	GPLv2

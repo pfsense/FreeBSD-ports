@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	facter
-PORTVERSION=	3.13.0
+PORTVERSION=	3.14.21
 CATEGORIES?=	sysutils
 MASTER_SITES=	https://downloads.puppetlabs.com/facter/
 
@@ -23,7 +21,8 @@ CONFLICTS_INSTALL=	rubygem-facter-2*
 
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
-USES=		cmake:noninja compiler:c++11-lib ssl
+USES=		cmake:noninja compiler:c++11-lib cpe ssl
+CPE_VENDOR=	puppet
 USE_LDCONFIG=	yes
 USE_RUBY=	yes
 CMAKE_ARGS+=	-DMAN_PATH=${MANPREFIX}/man

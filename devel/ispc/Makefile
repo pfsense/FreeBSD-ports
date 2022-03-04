@@ -1,10 +1,9 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	ispc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.0
-PORTREVISION=	2
+DISTVERSION=	1.16.1
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,37 +12,60 @@ COMMENT=	Intel's compiler for high-performance SIMD programming
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	only available for x86 architectures
+ONLY_FOR_ARCHS=		aarch64 amd64 i386
+ONLY_FOR_ARCHS_REASON=	only available for these architectures
 
-LIB_DEPENDS=	libLLVM.so:devel/llvm${LLVM_DEFAULT}
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
+		m4:devel/m4
+LIB_DEPENDS=	libLLVM.so:devel/llvm${LLVM_VERSION}
 
-USES=		bison gmake python:build shebangfix
+USES=		bison cmake compiler:c++14-lang python:build,test shebangfix
 USE_GITHUB=	yes
-
-ALL_TARGET=	default
-MAKE_ENV=	LLVM_HOME="${LOCALBASE}"
 SHEBANG_FILES=	*.py
 
-MAKE_ARGS=	LLVM_CONFIG=${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT} \
-		CLANG=clang${LLVM_DEFAULT} CXX=clang++${LLVM_DEFAULT}
+#LLVM_VERSION=	-devel # fails with 12: call to non-static member function without an object argument: llvm::DebugLoc::get
+		# Release notes https://github.com/ispc/ispc/blob/master/docs/ReleaseNotes.txt list compatible LLVM versions, but they assume that extra patches are applied to LLVM
+		# LLVM build script: https://github.com/ispc/ispc/blob/master/scripts/build.sh
+LLVM_VERSION=	11 # it fails with -devel (13.0.d20210308), with 12.0.0.r2 it also fails, using 11 that it succeeds with
 
-PLIST_FILES=	bin/ispc
+CONFIGURE_ENV=	PATH=${LOCALBASE}/llvm${LLVM_VERSION}/bin:${PATH}
+CMAKE_OFF=	ISPC_NO_DUMPS ISPC_INCLUDE_EXAMPLES
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|python|${PYTHON_CMD}| ; s|@$$(C|$$(C|' \
-		${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e '/alloca\.h/d' ${WRKSRC}/src/util.cpp
-	@${REINPLACE_CMD} -e '/^LLVM_LIBS=/s|$$| -lexecinfo|' \
-		${WRKSRC}/Makefile
+BINARY_ALIAS=	flex=${LOCALBASE}/bin/flex python=${PYTHON_CMD} m4=${LOCALBASE}/bin/gm4
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/ispc ${STAGEDIR}${PREFIX}/bin
+PLIST_FILES=	bin/ispc \
+		bin/check_isa
 
-do-test:
-	@cd ${WRKSRC} && ISPC_HOME=${WRKSRC} ./run_tests.py
+OPTIONS_DEFINE_amd64=	GENX
+OPTIONS_DEFAULT_amd64=	GENX
 
-run-examples:
+GENX_DESC=		Intel GPU 8/16-wide SIMD support
+GENX_BUILD_DEPENDS=	${LOCALBASE}/llvm${LLVM_VERSION}/lib/libLLVMGenXIntrinsics.a:devel/vc-intrinsics@llvm${LLVM_VERSION}
+GENX_LIB_DEPENDS=	libze_loader.so:devel/level-zero \
+			libLLVMSPIRVLib.so.${LLVM_VERSION}:devel/spirv-llvm-translator@llvm${LLVM_VERSION}
+GENX_CMAKE_BOOL=	GENX_ENABLED
+GENX_CMAKE_BOOL_OFF=	ISPCRT_BUILD_TESTS
+GENX_CMAKE_ON=		-DGENX_DEPS_DIR:PATH="${LOCALBASE}/llvm${LLVM_VERSION}"
+GENX_PLIST_FILES=	include/ispcrt/ispcrt.h \
+			include/ispcrt/ispcrt.hpp \
+			include/ispcrt/ispcrt.isph \
+			lib/cmake/ispcrt-${PORTVERSION}/Findlevel_zero.cmake \
+			lib/cmake/ispcrt-${PORTVERSION}/ispc.cmake \
+			lib/cmake/ispcrt-${PORTVERSION}/ispcrtConfig.cmake \
+			lib/cmake/ispcrt-${PORTVERSION}/ispcrt_Exports-%%CMAKE_BUILD_TYPE%%.cmake \
+			lib/cmake/ispcrt-${PORTVERSION}/ispcrt_Exports.cmake \
+			lib/libispcrt.so \
+			lib/libispcrt.so.1 \
+			lib/libispcrt.so.${PORTVERSION} \
+			lib/libispcrt_static.a
+
+do-test: # some tests fail: https://github.com/ispc/ispc/issues/1868
+	@cd ${WRKSRC} && ISPC_HOME=${BUILD_WRKSRC}/bin ./run_tests.py
+
+test-check-all: # the upstream claims that some of these checks are broken without using their patched llvm version, hence using llvm-devel
+	@cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} check-all
+
+run-examples: build
 	@[ -f ${LOCALBASE}/lib/libtbb.so ] || ! echo "ERROR run-examples target requires devel/tbb package installed"
 .for e in simple sort mandelbrot stencil
 	@cd ${WRKSRC}/examples/${e} && \

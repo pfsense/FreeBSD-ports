@@ -1,3 +1,3 @@
-TIMESTAMP = 1551811086
-SHA256 (KDE/applications/18.12.3/libkomparediff2-18.12.3.tar.xz) = f70bf7470f67419a7071a4df23d929c4c4ed80d588b3096d48486ee0f27d890c
-SIZE (KDE/applications/18.12.3/libkomparediff2-18.12.3.tar.xz) = 173456
+TIMESTAMP = 1636032578
+SHA256 (KDE/release-service/21.08.3/libkomparediff2-21.08.3.tar.xz) = 1e47cd1cc462d62477eaec0dc26c266ee4b73ba38fb8ee279e85bd1827406928
+SIZE (KDE/release-service/21.08.3/libkomparediff2-21.08.3.tar.xz) = 172420

@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	evdev-proto
-PORTVERSION=	4.19
+PORTVERSION=	5.8
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/torvalds/linux/raw/v${PORTVERSION}/include/uapi/linux/
-DISTFILES=	input.h input-event-codes.h uinput.h
+DISTFILES=	input.h input-event-codes.h joystick.h uinput.h
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	x11@FreeBSD.org
@@ -46,6 +44,7 @@ post-patch:
 		/#define/ s/_IOW(.*), *int/_IOWINT\1/ ; \
 		/#define/ s/_IOW(.*), *char\*/_IO\1/ ; \
 		/#define/ s/_IOC_READ/IOC_OUT/' \
+		${WRKSRC}/joystick.h \
 		${WRKSRC}/uinput.h
 
 do-install:

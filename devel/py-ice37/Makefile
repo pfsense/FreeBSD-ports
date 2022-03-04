@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,7 +10,7 @@ BUILD_DEPENDS=	mcpp:devel/mcpp
 LIB_DEPENDS=	libIce.so.${LIB_VRS}:devel/ice37 \
 		libmcpp.so:devel/mcpp
 
-USES=		gettext-runtime python shebangfix
+USES=		gettext-runtime python:-3.9 shebangfix
 USE_PYTHON=	py3kplist
 SLAVE_PORT=	yes
 MASTERDIR=	${.CURDIR}/../ice37
@@ -33,7 +31,7 @@ OPTIONS_DEFINE=	DEBUG TEST
 TEST_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib@${PY_FLAVOR}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYSITEDIR}/IcePy.so
+	${STRIP_CMD} ${STAGEDIR}${PYSITEDIR}/IcePy*.so
 	${ECHO} "Ice" > ${STAGEDIR}${PYSITEDIR}/Ice.pth
 	@${FIND} ${STAGEDIR}${PYSITEDIR}/Ice \( -name "*.pyc" -or -name "*.pyo" \) \
 		-exec ${CHMOD} u+w {} \;

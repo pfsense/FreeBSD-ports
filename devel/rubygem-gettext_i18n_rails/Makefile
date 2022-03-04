@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gettext_i18n_rails
-PORTVERSION=	1.8.0
+PORTVERSION=	1.8.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -14,8 +13,9 @@ LICENSE_FILE=	${WRKSRC}/MIT-LICENSE.txt
 
 RUN_DEPENDS=	rubygem-fast_gettext>=0.9.0:devel/rubygem-fast_gettext
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

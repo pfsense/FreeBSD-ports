@@ -1,15 +1,15 @@
 # Created by: Hiroyuki Iwatsuki <don@na.rim.or.jp>
-# $FreeBSD$
 
 PKGNAMEPREFIX=	ruby-
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Ruby bindings for version control system
 
+USES+=		compiler:c11
 USE_RUBY=	yes
 
-PORTREVISION_111=	0
-PORTREVISION_19=	0
+PORTREVISION_114=	0
+PORTREVISION_LTS=	0
 
 SVN_BUILD_BINDINGS=	yes
 

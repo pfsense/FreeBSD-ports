@@ -1,9 +1,8 @@
 # Created by: Jesper Skriver <jesper@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Net-SSH-Perl
 PORTVERSION=	2.14
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

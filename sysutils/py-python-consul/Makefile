@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-consul
 PORTVERSION=	1.1.0
 DISTVERSIONPREFIX=	v
@@ -21,7 +19,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/consul:sysutils/consul \
 				${PYTHON_PKGNAMEPREFIX}six>=1.4:devel/py-six@${PY_FLAVOR}
 
 # 2.7 or 3.6+, but it cannot be expressed right now.
-USES=	python
+USES=	python:3.6+
 
 USE_PYTHON=	distutils autoplist
 

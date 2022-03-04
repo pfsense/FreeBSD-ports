@@ -1,5 +1,4 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Horde_Mime_Viewer
 PORTVERSION=	2.2.2
@@ -12,7 +11,7 @@ CONFLICTS=	horde-3*
 
 USE_HORDE_BUILD=	Horde_Role
 
-USES=	horde
+USES=		horde php cpe
 USE_HORDE_RUN=	Horde_Role \
 		Horde_Browser \
 		Horde_Compress \

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	sct
-DISTVERSION=	0.3.1
+DISTVERSION=	1.0.0
 CATEGORIES=	accessibility
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -10,6 +8,7 @@ COMMENT=	Utility to change screen temperature
 LICENSE=	UNLICENSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	0mp
 USE_XORG=	x11 xrandr

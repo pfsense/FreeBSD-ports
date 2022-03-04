@@ -1,11 +1,9 @@
-# Created by: Mathieu Arnold <mat@freebsd.org>
-# $FreeBSD$
-
 PORTNAME=	lg
 PORTVERSION=	1.9.s20140622
 PORTREVISION=	1
-MASTER_SITES=	LOCAL/mat/lg GH
 CATEGORIES=	net-mgmt perl5
+MASTER_SITES=	LOCAL/mat/lg \
+		GH
 
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Looking Glass written in Perl as a CGI script
@@ -13,18 +11,20 @@ COMMENT=	Looking Glass written in Perl as a CGI script
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	DOCS
+USES=		cpe perl5 shebangfix
+CPE_VENDOR=	${PORTNAME}_project
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cougar
 GH_TAGNAME=	0d53e4b
 
-USES=		perl5 shebangfix
-SHEBANG_FILES=	lg.cgi makeaslist.pl makedb.pl
 USE_PERL5=	run
+SHEBANG_FILES=	lg.cgi makeaslist.pl makedb.pl
 
-NO_BUILD=	yes
 NO_ARCH=	yes
+NO_BUILD=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}

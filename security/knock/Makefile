@@ -1,5 +1,4 @@
 # Created by: Shaun Amott <shaun@inerd.com>
-# $FreeBSD$
 
 PORTNAME=	knock
 PORTVERSION=	0.5
@@ -15,7 +14,7 @@ COMMENT=	Flexible port-knocking server and client
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	doorman-[0-9]*
+CONFLICTS=	doorman
 
 GNU_CONFIGURE=	yes
 

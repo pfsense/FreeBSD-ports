@@ -1,9 +1,8 @@
 # Created by: clsung
-# $FreeBSD$
 
 PORTNAME=	Search-VectorSpace
 PORTVERSION=	0.02
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

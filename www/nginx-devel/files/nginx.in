@@ -1,5 +1,4 @@
 #!/bin/sh
-# $FreeBSD$
 
 # PROVIDE: nginx
 # REQUIRE: LOGIN cleanvar
@@ -17,10 +16,15 @@
 # nginxlimits_enable (bool):	Set to "NO" by default.
 #				Set it to yes to run `limits $limits_args`
 #				just before nginx starts.
+# nginx_reload_quiet (bool):	Set to "NO" by default.
+#				Set it to yes to suppress info output when testng config.
 # nginx_flags (str):		Set to "" by default.
 #				Extra flags passed to start command.
 # nginxlimits_args (str):	Default to "-e -U %%WWWOWN%%"
 #				Arguments of pre-start limits run.
+# nginx_http_accept_enable (bool): Set to "NO" by default.
+#				Set to yes to check for accf_http kernel module
+#				on start-up and load if not loaded.
 
 . /etc/rc.subr
 
@@ -44,6 +48,8 @@ extra_commands="reload configtest upgrade gracefulstop"
 [ -z "$nginx_enable" ]		&& nginx_enable="NO"
 [ -z "$nginxlimits_enable" ]	&& nginxlimits_enable="NO"
 [ -z "$nginxlimits_args" ]	&& nginxlimits_args="-e -U %%WWWOWN%%"
+[ -z "$nginx_http_accept_enable" ] && nginx_http_accept_enable="NO"
+[ -z "$nginx_reload_quiet" ]	&& nginx_reload_quiet="NO"
 
 load_rc_config $name
 
@@ -93,8 +99,12 @@ nginx_checkconfig()
 {
 	nginx_checktmpdir
 
-	echo "Performing sanity check on nginx configuration:"
-	eval ${command} ${nginx_flags} -t
+	if checkyesno nginx_reload_quiet; then
+		eval ${command} ${nginx_flags} -t -q
+	else
+		echo "Performing sanity check on nginx configuration:"
+		eval ${command} ${nginx_flags} -t
+	fi
 }
 
 nginx_gracefulstop()
@@ -123,6 +133,11 @@ nginx_upgrade()
 
 nginx_precmd() 
 {
+	if checkyesno nginx_http_accept_enable
+	then
+		required_modules="$required_modules accf_http accf_data"
+	fi
+
 	nginx_checkconfig
 
 	if checkyesno nginxlimits_enable

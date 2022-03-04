@@ -1,12 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	openbor
 # Hint: svn revision is git rev-list --count ${GH_TAGNAME}
-PORTVERSION?=	7056
+PORTVERSION?=	7138
 .ifndef PKGNAMESUFFIX
-PORTREVISION=	0
+PORTREVISION=	1
 .endif
 CATEGORIES=	games
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+.if ${PORTVERSION} < 3971
+PATCHFILES+=	794ba23189a3.patch:-p2
+.elif ${PORTVERSION} < 7084
+PATCHFILES+=	731d96887795.patch:-p2
+.endif
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	2D side scrolling engine for beat 'em ups, shooters, and more #'
@@ -31,9 +36,9 @@ PORTSCOUT=	ignore:1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	DCurrent
-GH_TAGNAME?=	6de201a4
+GH_TAGNAME?=	3caaddd5
 
-USES+=		gmake pkgconfig
+USES+=		cpe gmake pkgconfig sdl
 .if ${PORTVERSION} < 4433
 USE_CSTD=	gnu89
 .endif
@@ -50,6 +55,9 @@ MAKE_ENV=	BUILD_LINUX=1 SDKPATH="${LOCALBASE}" \
 MAKE_ARGS=	CC="${CC}" LIBRARIES="${LOCALBASE}/lib" \
 		TARGET_ARCH=${ARCH:S/i386/x86/} ARCHFLAGS="" \
 		TARGET_FINAL='${TARGET}' BUILD_MMX="" ECHO="${ECHO}"
+.if ${PORTVERSION} < 7098
+CFLAGS+=	-fcommon # https://github.com/DCurrent/openbor/issues/206
+.endif
 LDFLAGS+=	-Wl,--as-needed # ogg, pthread, zlib
 SUB_FILES=	pkg-message
 SUB_LIST=	PKGBASE=${PKGBASE}
@@ -93,6 +101,7 @@ post-patch:
 		's,malloc\.h,stdlib.h,'
 	@${REINPLACE_CMD} -e 's/^function \(.*\) {/\1() {/' \
 		-e '/^[[:space:]]*VERSION_.*=0000/d' \
+		-e '/.*read -r VERSION_/d' \
 		${WRKSRC}/version.sh
 
 do-configure:

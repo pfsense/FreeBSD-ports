@@ -1,6 +1,6 @@
---- src/OpenMesh/Apps/Smoothing/smooth.cc.orig	2018-10-21 23:39:56 UTC
+--- src/OpenMesh/Apps/Smoothing/smooth.cc.orig	2020-03-12 13:55:53 UTC
 +++ src/OpenMesh/Apps/Smoothing/smooth.cc
-@@ -53,6 +53,9 @@
+@@ -48,6 +48,9 @@
  #include <OpenMesh/Tools/Utils/Timer.hh>
  #include <OpenMesh/Tools/Smoother/JacobiLaplaceSmootherT.hh>
  #include <OpenMesh/Tools/Utils/getopt.h>

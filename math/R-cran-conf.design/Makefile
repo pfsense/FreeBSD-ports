@@ -1,9 +1,8 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	conf.design
 DISTVERSION=	2.0.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

@@ -1,4 +1,4 @@
---- third_party/breakpad/breakpad/src/common/simple_string_dictionary.h.orig	2019-03-11 22:07:58 UTC
+--- third_party/breakpad/breakpad/src/common/simple_string_dictionary.h.orig	2021-04-14 18:42:57 UTC
 +++ third_party/breakpad/breakpad/src/common/simple_string_dictionary.h
 @@ -33,7 +33,7 @@
  #include <assert.h>

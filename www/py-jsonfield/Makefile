@@ -1,9 +1,7 @@
 # Created by: René Ladan <rene@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jsonfield
-PORTVERSION=	2.0.2
-PORTREVISION=	1
+PORTVERSION=	3.1.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,11 +12,13 @@ COMMENT=	Reusable JSONField model for Django to store validated JSON
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=0:www/py-django111@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>=2.2:www/py-django22@${PY_FLAVOR} \
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}dj22-jsonfield
 
 .include <bsd.port.mk>

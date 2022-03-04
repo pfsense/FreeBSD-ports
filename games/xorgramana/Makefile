@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xorgramana
 PORTVERSION=	0.0.8
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	http://www.jwm-art.net/XorGramana/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -12,7 +9,7 @@ DISTNAME=	XorGramana-${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Logic word puzzle game set inside a series of mazes
 
-USES=		tar:bzip2 gmake
+USES=		gl gmake sdl tar:bzip2 
 USE_SDL=	sdl image
 USE_GL=		glu
 

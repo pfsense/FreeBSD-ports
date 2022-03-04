@@ -1,5 +1,4 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ada
 PORTVERSION=	1.0			# made-up; no version info on GH
@@ -15,7 +14,7 @@ LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	gprbuild:devel/gprbuild
 
-USES=		ada lua
+USES=		ada lua:52
 USE_GITHUB=	yes
 GH_ACCOUNT=	AdaCore
 GH_PROJECT=	ada-lua

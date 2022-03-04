@@ -1,5 +1,4 @@
 # Created by: NAKATA, Maho <maho@FreeBSD.org>
-# $FreeBSD$
 
 # NB: Do not delete or wrap post-install section, since we have to provide
 #     READMEj and README
@@ -15,7 +14,7 @@ COMMENT=	Rotating Object on the screen (Zalgaller polyhedra)
 
 LICENSE=	MIT
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

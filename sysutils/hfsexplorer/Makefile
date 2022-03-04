@@ -1,5 +1,4 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hfsexplorer
 DISTVERSIONPREFIX=	${PORTNAME}-
@@ -20,7 +19,6 @@ DESKTOP_ENTRIES="hfsexplorer" "reader Mac-formatted harddisk" \
 USE_GITHUB=	yes
 GH_ACCOUNT=	unsound
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS

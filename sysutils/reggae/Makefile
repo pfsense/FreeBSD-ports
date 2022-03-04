@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	reggae
-PORTVERSION=	0.1.1
+PORTVERSION=	0.1.20
 CATEGORIES=	sysutils
 
 MAINTAINER=	meka@tilda.center
@@ -11,12 +9,12 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${LOCALBASE}/bin/cbsd:sysutils/cbsd \
-		curl:ftp/curl \
 		sudo:security/sudo
-
-NO_ARCH=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	cbsd
+USE_RC_SUBR=	reggae_pf
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

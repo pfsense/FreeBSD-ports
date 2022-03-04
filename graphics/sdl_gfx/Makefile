@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	sdl_gfx
 PORTVERSION=	2.0.26
@@ -13,7 +12,7 @@ COMMENT=	SDL graphics drawing primitives and other support functions
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf gmake libtool pathfix
+USES=		autoreconf gmake libtool pathfix sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

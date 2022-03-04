@@ -1,9 +1,8 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gmpc-mserver
 PORTVERSION=	0.20.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/
 
@@ -23,7 +22,7 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_GNOME=	glib20 gtk20 intltool libxml2
-USES=		gettext gmake libtool pathfix pkgconfig
+USES=		gettext gmake gnome libtool pathfix pkgconfig
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

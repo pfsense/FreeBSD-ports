@@ -1,9 +1,8 @@
 # Created by: pypt
-# $FreeBSD$
 
 PORTNAME=	quake3
 PORTVERSION=	1.32c
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	ftp://mancubus.net/pub/idgames/idstuff/source/ \
 		http://ftp.mancubus.net/pub/idgames/idstuff/source/ \
@@ -13,6 +12,9 @@ DISTNAME=	${PORTNAME}-${REALVERSION}-source
 
 MAINTAINER=	shirshegsm@gmail.com
 COMMENT=	Quake III Arena -- first person shooter (native build)
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: re
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: re
 
 USES=		dos2unix gmake zip
 ONLY_FOR_ARCHS=	i386
@@ -55,8 +57,9 @@ MAKE_ENV+=	DLL_ONLY=true
 .endif
 
 .if ${PORT_OPTIONS:MCLIENT} || ${PORT_OPTIONS:MTHREADS}
-USE_GL=		yes
-USE_XORG=	xxf86dga
+USES+=		gl xorg
+USE_GL=		glu
+USE_XORG=	xxf86dga xxf86vm
 .endif
 
 .if ${PORT_OPTIONS:MCLIENT}

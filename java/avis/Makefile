@@ -1,5 +1,4 @@
 # Created by: Benjamin Close <benjsc@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avis
 PORTVERSION=	1.2.0
@@ -13,7 +12,6 @@ COMMENT=	Elvin Publish/Subscribe Message Bus server based on the Elvin protocol
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 .if !defined(WITHOUT_COMPILE)

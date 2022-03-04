@@ -1,31 +1,21 @@
---- setup.py.orig	2018-10-20 16:02:34 UTC
+--- setup.py.orig	2021-06-01 06:43:44 UTC
 +++ setup.py
-@@ -190,17 +190,17 @@ else:
- def get_version():
-     """Get a valid pywikibot module version string."""
-     version = '3.0'
+@@ -158,12 +158,12 @@ def get_validated_version():  # pragma: no cover
+     # validate version for sdist
+     from contextlib import suppress
+     from subprocess import PIPE, run
 -    try:
--        import subprocess
--        date = subprocess.check_output(
--            ['git', 'log', '-1', '--format=%ci']).strip()
--        date = date.decode().split(' ')[0].replace('-', '')
--        version += '.' + date
--        if 'sdist' not in sys.argv:
--            version += '.dev0'
+-        tags = run(['git', 'tag'], check=True, stdout=PIPE,
+-                   universal_newlines=True).stdout.splitlines()
 -    except Exception as e:
 -        print(e)
--        version += '.dev0'
+-        sys.exit('Creating source distribution canceled.')
 +    #try:
-+    #    import subprocess
-+    #    date = subprocess.check_output(
-+    #        ['git', 'log', '-1', '--format=%ci']).strip()
-+    #    date = date.decode().split(' ')[0].replace('-', '')
-+    #    version += '.' + date
-+    #    if 'sdist' not in sys.argv:
-+    #        version += '.dev0'
++    #    tags = run(['git', 'tag'], check=True, stdout=PIPE,
++    #               universal_newlines=True).stdout.splitlines()
 +    #except Exception as e:
 +    #    print(e)
-+    #    version += '.dev0'
-     return version
++    #    sys.exit('Creating source distribution canceled.')
  
- 
+     for tag in ('stable', 'python2'):
+         with suppress(ValueError):

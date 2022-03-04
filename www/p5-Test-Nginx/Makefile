@@ -1,8 +1,7 @@
 # Created by: vanilla@
-# $FreeBSD$
 
 PORTNAME=	Test-Nginx
-PORTVERSION=	0.26
+PORTVERSION=	0.29
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,8 +1,7 @@
 # Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
 
 PORTNAME=	fpdns
-PORTVERSION=	0.10.0.20190131
+PORTVERSION=	20190131
 CATEGORIES=	dns net perl5
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -21,6 +20,5 @@ NO_ARCH=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kirei
-GH_TAGNAME=	${PORTVERSION:E}
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Emmanuel Richiardone (err@tollari.org)
-# $FreeBSD$
 
 PORTNAME=	netembryo
 PORTVERSION=	0.1.1
@@ -23,7 +22,7 @@ OPTIONS_EXCLUDE_DragonFly=	SCTP
 IPV6_CONFIGURE_ENABLE=		ipv6
 SCTP_CONFIGURE_ENABLE=		sctp
 
-USES=		gmake libtool pathfix pkgconfig tar:bzip2
+USES=		gmake gnome libtool pathfix pkgconfig tar:bzip2
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

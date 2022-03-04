@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	oroborus
 PORTVERSION=	2.0.20
@@ -11,9 +10,11 @@ MAINTAINER=	matt@peterson.org
 COMMENT=	Small and simple GNOME-compatible window manager
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		xorg
+USE_XORG=	xpm x11 xext sm ice
 GNU_CONFIGURE=	yes
-USE_XORG=	xpm
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

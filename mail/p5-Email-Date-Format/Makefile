@@ -1,5 +1,4 @@
 # Created by: Anton Yuzhaninov <citrin@rambler-co.ru>
-# $FreeBSD$
 
 PORTNAME=	Email-Date-Format
 PORTVERSION=	1.005
@@ -15,5 +14,7 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

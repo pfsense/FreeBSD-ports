@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hyphen
 PORTVERSION=	2.0
@@ -17,7 +16,7 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/hyph_cs_CZ.dic
+PLIST_FILES=	${DATADIR}/hyph_cs_CZ.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

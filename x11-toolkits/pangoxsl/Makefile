@@ -1,5 +1,4 @@
 # Created by: James Earl
-# $FreeBSD$
 
 PORTNAME=	pangoxsl
 PORTVERSION=	1.6.0.3
@@ -13,7 +12,7 @@ COMMENT=	Implements Pango library with a PDF backend for PDF output
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake libtool pathfix pkgconfig
+USES=		gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	pango
 USE_LDCONFIG=	yes
 

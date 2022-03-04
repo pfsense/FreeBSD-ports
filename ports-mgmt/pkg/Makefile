@@ -1,32 +1,33 @@
-# $FreeBSD$
-
 PORTNAME=	pkg
-DISTVERSION=	1.10.5
-PORTREVISION=	8
+DISTVERSION=	1.17.5
+PORTREVISION=	2
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
-MASTER_SITES=	\
-		http://files.etoilebsd.net/${PORTNAME}/ \
-		LOCAL/portmgr \
-		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
+#MASTER_SITES=	\
+#		http://files.etoilebsd.net/${PORTNAME}/ \
+#		LOCAL/portmgr \
+#		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
 
 MAINTAINER=	pkg@FreeBSD.org
 COMMENT=	Package manager
 
 LICENSE=	BSD2CLAUSE
 
-USE_LDCONFIG=	yes
-USES=		libtool tar:xz
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-maintainer-mode
-INSTALL_TARGET=	install-strip
+USE_GITHUB=	yes
+GH_ACCOUNT=	freebsd
+
+USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
+HAS_CONFIGURE=	yes
 PORTDOCS=	NEWS
 PORTSCOUT=	ignore:1
+CONFIGURE_ARGS=	--mandir=${PREFIX}/man --prefix="${PREFIX}"
+CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 
-# Use a submake as 'deinstall install' needs to reevaluate PKG_CMD
+# Use a submake as 'deinstall install' needs to reevaluate PKG_REGISTER
 # so that pkg-static is used from the wrkdir
 USE_SUBMAKE=	yes
 CFLAGS+=	-Wno-error
+CFLAGS_powerpc64le=	-DSQLITE_BYTEORDER=1234
 
 OPTIONS_DEFINE=	DOCS
 
@@ -70,6 +71,13 @@ pre-everything::
 .endif
 .endif
 
+.if !exists(/usr/libdata/pkgconfig/liblzma.pc)
+LIBLZMA_LIBS=	-llzma
+.else
+LIBLZMA_PC!=	${EGREP} ^Libs /usr/libdata/pkgconfig/liblzma.pc
+LIBLZMA_LIBS=	${LIBLZMA_PC:M-l*}
+.endif
+
 #define PKG_DEPENDS to nothing to avoid infinite loop looking for pkg :)
 PKG_DEPENDS=
 .undef INSTALLS_DEPENDS
@@ -80,9 +88,12 @@ PKG_DEPENDS=
 PKG_BIN=	${WRKSRC}/src/pkg-static
 .endif
 
+post-patch:
+	${REINPLACE_CMD} -e "s|-llzma|${LIBLZMA_LIBS}|g" ${WRKSRC}/auto.def \
+		${WRKSRC}/src/Makefile.autosetup ${WRKSRC}/tests/Makefile.autosetup
+
 post-install:
-	@${MV} ${STAGEDIR}${PREFIX}/lib/libpkg_static.a \
-		${STAGEDIR}${PREFIX}/lib/libpkg.a
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/compat/pkg
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

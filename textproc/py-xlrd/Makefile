@@ -1,8 +1,7 @@
 # Created by: Dikshie <dikshie@sfc.wide.ad.jp>
-# $FreeBSD$
 
 PORTNAME=	xlrd
-PORTVERSION=	1.2.0
+PORTVERSION=	2.0.1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +12,7 @@ COMMENT=	Reading data and formatting information from Excel files
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

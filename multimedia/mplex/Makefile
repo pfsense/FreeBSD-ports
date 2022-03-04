@@ -1,5 +1,4 @@
 # Created by: erich@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	mplex
 PORTVERSION=	1.1
@@ -12,7 +11,7 @@ COMMENT=	Multiplexes MPEG component streams into system layers
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	mjpegtools-*
+CONFLICTS=	mjpegtools
 
 PLIST_FILES=	bin/mplex man/man1/mplex.1.gz
 

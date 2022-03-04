@@ -1,5 +1,4 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pynzb
 PORTVERSION=	0.1.0
@@ -13,7 +12,7 @@ COMMENT=	Unified API for parsing NZB files
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 OPTIONS_DEFINE=	LXML

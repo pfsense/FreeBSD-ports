@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freedesktop-sound-theme
 PORTVERSION=	0.8
@@ -11,7 +10,7 @@ MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Sound theme based on the FreeDesktop specification
 
 USE_GNOME=	intlhack
-USES=		gettext-tools gmake tar:bzip2
+USES=		gettext-tools gmake gnome tar:bzip2
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes
 

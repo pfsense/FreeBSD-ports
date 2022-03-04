@@ -1,5 +1,4 @@
 # Created by: pgs (original)
-# $FreeBSD$
 
 PORTNAME=	xbl
 PORTVERSION=	1.1.6
@@ -12,6 +11,7 @@ COMMENT=	3D block-dropping game
 LICENSE=	GPLv1+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		xorg
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_prog_IMAKE="" ac_cv_prog_XMKMF=""

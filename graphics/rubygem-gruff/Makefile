@@ -1,9 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	gruff
-PORTVERSION=	0.7.0
-PORTREVISION=	1
+PORTVERSION=	0.14.0
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
@@ -13,12 +11,12 @@ COMMENT=	Beautiful graphing library for Ruby using RMagick
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-rmagick>=2.13.4:graphics/rubygem-rmagick
+RUN_DEPENDS=	rubygem-histogram>=0:graphics/rubygem-histogram \
+		rubygem-rmagick>=0:graphics/rubygem-rmagick
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem shebangfix
-SHEBANG_FILES=	test/image_compare.rb
-ruby_OLD_CMD=	ruby
 
 .include <bsd.port.mk>

@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pynmsg
-PORTVERSION=	0.4.0
+PORTVERSION=	0.5.0
+PORTREVISION=	1
 CATEGORIES=	net python
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +13,8 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libnmsg.so:net/nmsg
 
-USE_PYTHON=	autoplist distutils
-USES=		pkgconfig python shebangfix uniquefiles:dirs
+USES=		pkgconfig python:3.6+ shebangfix uniquefiles:dirs
+USE_PYTHON=	autoplist cython distutils
 
 SHEBANG_FILES=	examples/*.py
 
@@ -26,7 +25,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_nmsg.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_nmsg*.so
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 

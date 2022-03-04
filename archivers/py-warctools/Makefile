@@ -1,5 +1,4 @@
 # Created by: Poul-Henning Kamp <phk@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	warctools
 PORTVERSION=	4.10.0
@@ -14,6 +13,6 @@ LICENSE=	MIT
 
 NO_ARCH=	yes
 USE_PYTHON=	autoplist distutils
-USES=		python
+USES=		python:3.6+
 
 .include <bsd.port.mk>

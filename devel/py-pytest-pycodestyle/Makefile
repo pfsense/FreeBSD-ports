@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-pycodestyle
-DISTVERSION=	1.4.0
+DISTVERSION=	2.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +14,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}py>0:devel/py-py@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycodestyle>0:devel/py-pycodestyle@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

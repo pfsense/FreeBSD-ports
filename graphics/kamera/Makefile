@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kamera
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	graphics kde kde-applications
@@ -9,10 +7,11 @@ COMMENT=	Digital camera manager for KDE
 
 LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2
 
-USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
-USE_KDE=	auth codecs config configwidgets coreaddons doctools ecm i18n \
-		kio service widgetsaddons xmlgui
-USE_QT=		core dbus gui widgets xml \
+USES=		cmake compiler:c++11-lang gettext kde:5 localbase qt:5 tar:xz
+USE_KDE=	auth codecs config configwidgets coreaddons doctools i18n \
+		kio service widgetsaddons xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus gui network widgets xml \
 		buildtools_build qmake_build
 
 OPTIONS_DEFINE=	DOCS

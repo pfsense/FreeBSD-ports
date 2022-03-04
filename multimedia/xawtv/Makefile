@@ -1,32 +1,45 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	xawtv
-PORTVERSION=	3.103
-PORTREVISION=	2
+PORTVERSION=	3.107
 CATEGORIES=	multimedia
 MASTER_SITES=	http://linuxtv.org/downloads/xawtv/
 
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	TV viewing application and a few TV utilities
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le
+
 BUILD_DEPENDS=	${LOCALBASE}/share/fonts/misc/led-iso8859-1.pcf.gz:x11-fonts/tv-fonts
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/misc/led-iso8859-1.pcf.gz:x11-fonts/tv-fonts
 LIB_DEPENDS=	libpng.so:graphics/png
 
-OPTIONS_DEFINE=	AALIB DV QUICKTIME ZVBI
+USES=		cpe gmake iconv jpeg motif ncurses perl5 tar:bzip2 pkgconfig xorg
+
+CPE_VENDOR=	linuxtv
+
+OPTIONS_DEFINE=		AALIB BKTR DV QUICKTIME ZVBI
 OPTIONS_DEFINE_i386=	MMX
-OPTIONS_DEFAULT=	AALIB
+OPTIONS_DEFAULT=	AALIB BKTR
+.if !exists(/usr/include/dev/bktr/ioctl_bt848.h)
+OPTIONS_EXCLUDE=	BKTR
+.endif
+OPTIONS_SUB=		yes
+
+BKTR_DESC=	bktr(4) support
 ZVBI_DESC=	Enable libzvbi support
 
-USES=		gmake iconv jpeg motif ncurses perl5 tar:bzip2 pkgconfig
+BKTR_MAKE_ARGS=	HAVE_BKTR=yes
+
 GNU_CONFIGURE=	yes
 USE_XORG=	x11 xaw
 CPPFLAGS+=	-I${WRKSRC}/common
 LIBS+=		-L${LOCALBASE}/lib
 MAKE_ENV=	verbose=yes
 USE_LDCONFIG=	yes
-ONLY_FOR_ARCHS=	amd64 i386
 
 FILES_LIBJPEG=	console/Subdir.mk x11/Subdir.mk libng/plugins/Subdir.mk
 
@@ -35,28 +48,22 @@ FILES_LIBJPEG=	console/Subdir.mk x11/Subdir.mk libng/plugins/Subdir.mk
 .if ${PORT_OPTIONS:MAALIB}
 CONFIGURE_ARGS+=--enable-aa
 LIB_DEPENDS+=	libaa.so:graphics/aalib
-PLIST_SUB+=	AA=""
 .else
 CONFIGURE_ARGS+=--disable-aa
-PLIST_SUB+=	AA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MZVBI}
 LIB_DEPENDS+=	libzvbi.so:devel/libzvbi
 CONFIGURE_ARGS+=--enable-zvbi
-PLIST_SUB+=	ZVBI=""
 .else
 CONFIGURE_ARGS+=--enable-zvbi=no
-PLIST_SUB+=	ZVBI="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MDV}
 LIB_DEPENDS+=	libdv.so:multimedia/libdv
 CONFIGURE_ARGS+=--enable-dv
-PLIST_SUB+=	DV=
 .else
 CONFIGURE_ARGS+=--enable-dv=no
-PLIST_SUB+=	DV="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMMX}
@@ -67,10 +74,8 @@ CFLAGS+=	-DMMX=1
 .if ${PORT_OPTIONS:MQUICKTIME}
 CONFIGURE_ARGS+=--enable-quicktime
 LIB_DEPENDS+=	libquicktime.so:multimedia/libquicktime
-PLIST_SUB+=	QT=
 .else
 CONFIGURE_ARGS+=--enable-quicktime=no
-PLIST_SUB+=	QT="@comment "
 .endif
 
 PLIST_SUB+=	X11PREFIX=${LOCALBASE}

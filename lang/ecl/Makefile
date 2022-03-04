@@ -1,67 +1,75 @@
 # Created by: Julian Stecklina
-# $FreeBSD$
 
 PORTNAME=	ecl
-PORTVERSION=	15.3.7
-PORTREVISION=	5
+PORTVERSION=	21.2.1
 CATEGORIES=	lang lisp
-MASTER_SITES=	SF/${PORTNAME}s/${PORTNAME}s/15.3/
+MASTER_SITES=	https://common-lisp.net/project/ecl/static/files/release/
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	ANSI Common Lisp implementation
 
 LICENSE=	LGPL20
 
-BROKEN_aarch64=		fails to compile: error: unknown type name AO_TS_t
-BROKEN_mips=		fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
-BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+BROKEN_mips=	fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+BROKEN_mips64=	fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
 
-LIB_DEPENDS=	libgmp.so:math/gmp
+BUILD_DEPENDS=	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
+LIB_DEPENDS=	libgc.so:devel/boehm-gc \
+		libgmp.so:math/gmp
+RUN_DEPENDS=	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
 
-MAKE_JOBS_UNSAFE=	yes
-USES=		gmake perl5 tar:tgz
+USES=		autoreconf gmake localbase makeinfo perl5 tar:tgz
+USE_CSTD=	c99
+USE_LDCONFIG=	yes
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-system-gmp --with-gmp-prefix=${LOCALBASE} --enable-boehm=system
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-USE_LDCONFIG=	yes
+CONFIGURE_ARGS=	--enable-boehm=system \
+		--enable-libatomic=system \
+		--with-gmp-prefix=${LOCALBASE} \
+		--with-system-gmp
 
-OPTIONS_DEFINE=	ASDF CLX DFFI SOCKETS THREADS
-OPTIONS_DEFAULT=ASDF DFFI SOCKETS THREADS
+MAKE_JOBS_UNSAFE=	yes
+
+AUTORECONF_WRKSRC=	${WRKSRC}/src
+INFO=			ecl
+PLIST_SUB=		VERSION="${PORTVERSION}"
+
+OPTIONS_DEFINE=		ASDF DFFI SAGE SOCKETS THREADS X11
+OPTIONS_DEFAULT=	ASDF DFFI SAGE SOCKETS THREADS
+OPTIONS_SUB=		yes
 
 ASDF_DESC=	Enable ASDF building facility
-CLX_DESC=	Enable X11 interface
-SOCKETS_DESC=	Enable socket interface
 DFFI_DESC=	Dynamic foreign-function support
-
-OPTIONS_SUB=	yes
-PLIST_SUB=	VERSION="${PORTVERSION}"
+SAGE_DESC=	Build with patches for sage
+SOCKETS_DESC=	Enable socket interface
 
 ASDF_CONFIGURE_ON=	--with-asdf=yes
 ASDF_CONFIGURE_OFF=	--with-asdf=no
-
-CLX_USE=		XORG=x11
-CLX_CONFIGURE_ON=	--with-clx=yes
-CLX_CONFIGURE_OFF=	--with-clx=no
-
-SOCKETS_CONFIGURE_ON=	--with-tcp=yes
-SOCKETS_CONFIGURE_OFF=	--with-tcp=no
-
 DFFI_LIB_DEPENDS=	libffi.so:devel/libffi
 DFFI_CONFIGURE_ON=	--with-dffi=system
 DFFI_CONFIGURE_OFF=	--with-dffi=no
-
-THREADS_CONFIGURE_ON=	--enable-threads=yes
-THREADS_LDFLAGS=	-lpthread
+SAGE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_aclocal.m4 \
+			${PATCHDIR}/extra-patch-src_c_file.d \
+			${PATCHDIR}/extra-patch-src_compile.lsp.in \
+			${PATCHDIR}/extra-patch-src_configure.ac \
+			${PATCHDIR}/extra-patch-src_Makefile.in
+SOCKETS_CONFIGURE_ON=	--with-tcp=yes
+SOCKETS_CONFIGURE_OFF=	--with-tcp=no
 THREADS_LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded
+THREADS_CONFIGURE_ON=	--enable-threads=yes
 THREADS_CONFIGURE_OFF=	--enable-threads=no
-THREADS_LIB_DEPENDS_OFF=	libgc.so:devel/boehm-gc
+THREADS_LDFLAGS=	-lpthread -lgc-threaded
+X11_USES=		xorg
+X11_USE=		XORG=x11
+X11_CONFIGURE_ON=	--with-x=yes
+X11_CONFIGURE_OFF=	--with-x=no
 
 post-patch-THREADS-on:
 	@${REINPLACE_CMD} -e 's|-lgc|-lgc-threaded|' ${WRKSRC}/src/configure
 
 post-install:
 	${RMDIR} ${STAGEDIR}${PREFIX}/include/ecl/gc/private
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libecl.so.${PORTVERSION}
+	${LN} -sf ecl-${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/ecl
 
 .include <bsd.port.mk>

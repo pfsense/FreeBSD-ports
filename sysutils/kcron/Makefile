@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kcron
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	sysutils kde kde-applications
@@ -11,10 +9,11 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-
 		docbook-xml>0:textproc/docbook-xml
 
 USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
-USE_KDE=	auth codecs completion config configwidgets coreaddons ecm \
-		doctools i18n iconthemes jobwidgets kio service widgetsaddons \
-		xmlgui
-USE_QT=		core gui network printsupport widgets xml \
+USE_KDE=	auth codecs completion config configwidgets coreaddons \
+		doctools i18n iconthemes jobwidgets kio service solid widgetsaddons \
+		windowsystem xmlgui \
+		ecm_build
+USE_QT=		concurrent core dbus gui network printsupport widgets xml \
 		buildtools_build qmake_build
 
 OPTIONS_DEFINE=	DOCS

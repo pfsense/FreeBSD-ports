@@ -1,8 +1,7 @@
 # Created by: dk
-# $FreeBSD$
 
 PORTNAME=	fmsx
-PORTVERSION=	5.4
+PORTVERSION=	6.0
 CATEGORIES=	emulators
 MASTER_SITES=	http://fms.komkon.org/fMSX/:code \
 		http://fms.komkon.org/fMSX/src/:rom
@@ -23,10 +22,12 @@ LICENSE_TEXT=	This program is NOT in public domain.\
 		Legal status of distributed ROM images is unclear.
 LICENSE_PERMS=	none
 
-USES=		dos2unix gmake zip
+USES=		dos2unix gmake xorg zip
 USE_XORG=	x11 xext
 DOS2UNIX_FILES=	EMULib/Unix/LibUnix.c EMULib/Unix/NetUnix.c EMULib/Rules.gcc \
 		EMULib/Rules.Unix fMSX/fMSX.html
+
+CFLAGS+=	-fcommon
 
 NO_WRKSUBDIR=	yes
 SUB_FILES=	${PORTNAME}

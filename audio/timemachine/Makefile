@@ -1,9 +1,8 @@
 # Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
 
 PORTNAME=	timemachine
 PORTVERSION=	0.3.3
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	http://plugin.org.uk/timemachine/
 
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libjack.so:audio/jack \
 
 OPTIONS_DEFINE=	LASH
 
-USES=		gmake pathfix pkgconfig
+USES=		gmake gnome pathfix pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-lm

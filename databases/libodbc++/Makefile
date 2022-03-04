@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	libodbc++
 PORTVERSION=	0.2.5
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases devel
 MASTER_SITES=	SF/libodbcxx/libodbc%2B%2B/${PORTVERSION}
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ class library and toolset for ODBC access to data sources
 
 LICENSE=	GPLv2

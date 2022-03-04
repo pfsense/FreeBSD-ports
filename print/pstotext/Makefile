@@ -1,5 +1,4 @@
 # Created by: Oliver Breuninger <ob@seicom.NET>
-# $FreeBSD$
 
 PORTNAME=	pstotext
 PORTVERSION=	1.9
@@ -18,7 +17,7 @@ LICENSE_NAME=	End User License Agreement
 LICENSE_FILE=	${WRKSRC}/pstotext.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		ghostscript:run
+USES=		cpe ghostscript:run
 
 SUB_LIST=	LICENSE=${LICENSE} \
 		LICENSE_DIR=${_LICENSE_DIR}

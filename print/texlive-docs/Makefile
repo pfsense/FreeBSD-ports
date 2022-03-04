@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	texlive
 PORTVERSION=	20150523
 CATEGORIES=	print
@@ -8,13 +6,12 @@ PKGNAMESUFFIX=	-docs
 DISTNAME=	${PORTNAME}-${PORTVERSION}-texmf
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	TeX Live Typesetting System, documentation
 
 USES=		tar:xz
 USE_TEX=	texmf
 NO_BUILD=	yes
-NO_WRKSRC=	yes
 
 EXCLUDE_FILES=	\*/doc/man \
 	texmf-dist/doc/aleph \

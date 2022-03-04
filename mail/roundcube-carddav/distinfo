@@ -1,3 +1,3 @@
-TIMESTAMP = 1536140344
-SHA256 (carddav-3.0.2.tar.bz2) = c591609c707e10a18e90a59fd3d9bf11cb24365703a3219639c4df1d9ba38adb
-SIZE (carddav-3.0.2.tar.bz2) = 300259
+TIMESTAMP = 1613130609
+SHA256 (carddav-4.0.4-vendor.tar.bz2) = 3d31545b60e86e2b0b0af36f51a66b4841e1d17c9cb30f47b9573472a4fa887c
+SIZE (carddav-4.0.4-vendor.tar.bz2) = 367805

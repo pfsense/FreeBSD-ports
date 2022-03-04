@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gitaly-proto
-PORTVERSION=	1.13.0
+PORTVERSION=	1.37.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

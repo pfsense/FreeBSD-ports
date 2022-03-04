@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Text-Diff
 PORTVERSION=	1.45
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Text::Diff - Perform diffs on files and record sets
+COMMENT=	Perl module to perform diffs on files and record sets
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

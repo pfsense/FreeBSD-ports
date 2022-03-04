@@ -1,8 +1,7 @@
 # Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	DBIx-Handler
-PORTVERSION=	0.14
+PORTVERSION=	0.15
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

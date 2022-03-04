@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	senna
 PORTVERSION=	1.1.5
-PORTREVISION=	8
+PORTREVISION=	9
 PORTEPOCH=	1
 CATEGORIES=	textproc
-MASTER_SITES=	OSDN/senna/46945
+MASTER_SITES=	OSDN/senna
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Embeddable Fulltext Search Engine
 
 BROKEN_aarch64=		does not build: libsenna.so: undefined reference to SEN_ATOMIC_ADD_EX
@@ -17,7 +15,7 @@ BROKEN_sparc64=		does not build: libsenna.so: undefined reference to SEN_ATOMIC_
 
 USES=		compiler:c11 gmake libtool pathfix
 GNU_CONFIGURE=	yes
-USE_GCC=	any
+USE_GCC=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--with-sennahome=${SENNA_HOME}
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib

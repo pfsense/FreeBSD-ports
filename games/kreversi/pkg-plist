@@ -29,6 +29,7 @@ share/knotifications5/kreversi.notifyrc
 %%DATADIR%%/sounds/reversi-click.wav
 %%DATADIR%%/sounds/reversi-won.wav
 share/locale/ar/LC_MESSAGES/kreversi.mo
+share/locale/be/LC_MESSAGES/kreversi.mo
 share/locale/bg/LC_MESSAGES/kreversi.mo
 share/locale/bs/LC_MESSAGES/kreversi.mo
 share/locale/ca/LC_MESSAGES/kreversi.mo
@@ -51,6 +52,7 @@ share/locale/he/LC_MESSAGES/kreversi.mo
 share/locale/hi/LC_MESSAGES/kreversi.mo
 share/locale/hr/LC_MESSAGES/kreversi.mo
 share/locale/hu/LC_MESSAGES/kreversi.mo
+share/locale/id/LC_MESSAGES/kreversi.mo
 share/locale/is/LC_MESSAGES/kreversi.mo
 share/locale/it/LC_MESSAGES/kreversi.mo
 share/locale/ja/LC_MESSAGES/kreversi.mo
@@ -59,6 +61,7 @@ share/locale/km/LC_MESSAGES/kreversi.mo
 share/locale/ko/LC_MESSAGES/kreversi.mo
 share/locale/lt/LC_MESSAGES/kreversi.mo
 share/locale/lv/LC_MESSAGES/kreversi.mo
+share/locale/ml/LC_MESSAGES/kreversi.mo
 share/locale/mr/LC_MESSAGES/kreversi.mo
 share/locale/nb/LC_MESSAGES/kreversi.mo
 share/locale/nds/LC_MESSAGES/kreversi.mo
@@ -70,10 +73,14 @@ share/locale/pt/LC_MESSAGES/kreversi.mo
 share/locale/pt_BR/LC_MESSAGES/kreversi.mo
 share/locale/ro/LC_MESSAGES/kreversi.mo
 share/locale/ru/LC_MESSAGES/kreversi.mo
+share/locale/se/LC_MESSAGES/kreversi.mo
 share/locale/sk/LC_MESSAGES/kreversi.mo
 share/locale/sl/LC_MESSAGES/kreversi.mo
+share/locale/sq/LC_MESSAGES/kreversi.mo
 share/locale/sr/LC_MESSAGES/kreversi.mo
 share/locale/sv/LC_MESSAGES/kreversi.mo
+share/locale/ta/LC_MESSAGES/kreversi.mo
+share/locale/tg/LC_MESSAGES/kreversi.mo
 share/locale/tr/LC_MESSAGES/kreversi.mo
 share/locale/ug/LC_MESSAGES/kreversi.mo
 share/locale/uk/LC_MESSAGES/kreversi.mo

@@ -1,9 +1,8 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fiche
 PORTVERSION=	0.9.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	zi@FreeBSD.org

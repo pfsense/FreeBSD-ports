@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	icons-tango-extras
 PORTVERSION=	0.1.0
 PORTREVISION=	5
@@ -13,12 +11,11 @@ COMMENT=	Extra set of icons from the Tango project
 
 BUILD_DEPENDS=	${LOCALBASE}/libexec/icon-name-mapping:x11-themes/icon-naming-utils \
 		${LOCALBASE}/share/icons/Tango/16x16/actions/add.png:x11-themes/icons-tango \
-		Magick-config:graphics/ImageMagick6
+		convert:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
 RUN_DEPENDS=	${LOCALBASE}/share/icons/Tango/16x16/actions/add.png:x11-themes/icons-tango
 
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 USE_GNOME=	intlhack
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.mk>

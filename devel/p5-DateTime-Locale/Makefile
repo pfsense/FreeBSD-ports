@@ -1,8 +1,7 @@
 # Created by: Mathieu Arnold <m@absolight.net>
-# $FreeBSD$
 
 PORTNAME=	DateTime-Locale
-PORTVERSION=	1.24
+PORTVERSION=	1.33
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -23,20 +22,14 @@ RUN_DEPENDS=	p5-Dist-CheckConflicts>=0.02:devel/p5-Dist-CheckConflicts \
 		p5-namespace-autoclean>=0.19:devel/p5-namespace-autoclean
 TEST_DEPENDS=	p5-CPAN-Meta-Check>=0.011:devel/p5-CPAN-Meta-Check \
 		p5-IPC-System-Simple>=0:devel/p5-IPC-System-Simple \
-		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
+		p5-Path-Tiny>=0:devel/p5-Path-Tiny \
 		p5-Test-File-ShareDir>=0:devel/p5-Test-File-ShareDir \
-		p5-Test-Requires>=0:devel/p5-Test-Requires \
-		p5-Test-Warnings>=0:devel/p5-Test-Warnings
+		p5-Test2-Plugin-NoWarnings>=0:devel/p5-Test2-Plugin-NoWarnings \
+		p5-Test2-Suite>=0:devel/p5-Test2-Suite
 
 USES=		perl5
 USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502501
-RUN_DEPENDS+=	p5-Scalar-List-Utils>=1.45:lang/p5-Scalar-List-Utils
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

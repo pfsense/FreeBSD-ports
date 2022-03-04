@@ -1,5 +1,4 @@
 # Created by: Maxim Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dahdi
 PORTVERSION=	${DAHDI_VERSION:S/-//g}
@@ -8,7 +7,7 @@ CATEGORIES=	misc
 MASTER_SITES=	LOCAL/fjoe
 DISTNAME=	${PORTNAME}-freebsd-complete-${DAHDI_VERSION}+${DAHDI_TOOLS_VERSION}
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DAHDI userland utilities and libraries
 
 LIB_DEPENDS=	libnewt.so:devel/newt
@@ -25,7 +24,7 @@ PATCH_WRKSRC=	${WRKDIR}/${DISTNAME}
 USE_LDCONFIG=	yes
 MAKE_ENV=	HOST_CC=${CC}
 
-CONFLICTS=	zaptel-[0-9]*
+CONFLICTS=	zaptel
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}/etc,g'\

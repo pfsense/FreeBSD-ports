@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gitolite
-DISTVERSIONPREFIX=v
-DISTVERSION=	3.6.11
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.6.12
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -19,24 +17,24 @@ USES=		cpe perl5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	sitaramc
 
-CONFLICTS=	gitolite-[^3]*
-
-CPE_VENDOR=	sitaram_chamarty
-NO_ARCH=	yes
-
 SHEBANG_REGEX=	.*
 bash_CMD=	/bin/sh
 
+CONFLICTS=	gitolite-[^3]*
+
+NO_ARCH=	yes
+
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	GITUSER DOCS CONTRIB
+OPTIONS_DEFINE=		CONTRIB DOCS GITUSER
 OPTIONS_DEFAULT=	CONTRIB
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
-CONTRIB_DESC=	Install additionnal contrib files
+CONTRIB_DESC=	Install additional contrib files
 GITUSER_DESC=	Create git user as gitolite provider
 
-GITUSER_VARS=	USERS=git GROUPS=git
+GITUSER_VARS=	GROUPS=git \
+		USERS=git
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,#!/usr/bin/perl,#!${PERL},' \
@@ -56,14 +54,14 @@ do-install:
 	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} Gitolite ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/)
 	${RLN} ${STAGEDIR}${PREFIX}/libexec/gitolite/gitolite ${STAGEDIR}${PREFIX}/bin/gitolite
 
-do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.markdown ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/CHANGELOG ${STAGEDIR}${DOCSDIR}
-
 do-install-CONTRIB-on:
 	@${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}${PREFIX}/share/vim
 	(cd ${WRKSRC}/contrib && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
 	${MV} ${STAGEDIR}${DATADIR}/vim ${STAGEDIR}${PREFIX}/share/vim/vimfiles
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.markdown ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/CHANGELOG ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

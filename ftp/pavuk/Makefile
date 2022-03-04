@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	pavuk
 PORTVERSION=	0.9.35
@@ -13,7 +12,7 @@ COMMENT=	HTTP, FTP, and Gopher mirroring tool
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		localbase tar:bzip2 ssl
+USES=		cpe localbase ssl tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-locale-dir=${PREFIX}/share/locale \
 		--disable-debug --disable-gnome --disable-js \
@@ -28,6 +27,7 @@ NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
 GTK2_CONFIGURE_ENABLE=	gtk
+GTK2_USES=		gnome
 GTK2_USE=		GNOME=gtk20
 
 DANTE_CONFIGURE_ENABLE=	socks

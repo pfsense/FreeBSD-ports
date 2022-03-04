@@ -1,5 +1,4 @@
 # Created by: Foxfair Hu <foxfair@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libXrender
 PORTVERSION=	0.9.10
@@ -11,7 +10,8 @@ COMMENT=	X Render extension library
 
 LICENSE=	MIT
 
-XORG_CAT=	lib
+USES=		cpe xorg xorg-cat:lib
 USE_XORG=	x11 xorgproto
+CPE_VENDOR=	x.org
 
 .include <bsd.port.mk>

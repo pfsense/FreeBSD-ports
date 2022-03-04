@@ -1,9 +1,8 @@
 # Created by: lichray@gmail.com
-# $FreeBSD$
 
 PORTNAME=	pinpoint
 DISTVERSION=	0.1.4
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 
@@ -15,10 +14,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libclutter-glx-1.0.so:graphics/clutter
 
+USES=		gl gnome pathfix pkgconfig gmake tar:xz
 USE_GL=		gl
 USE_GNOME=	librsvg2
 GNU_CONFIGURE=	yes
-USES=	pathfix pkgconfig gmake tar:xz
 
 OPTIONS_DEFINE=	GST
 GST_DESC=	Live videos as slide backgrounds

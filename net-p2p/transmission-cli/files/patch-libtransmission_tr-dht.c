@@ -1,14 +1,11 @@
---- libtransmission/tr-dht.c.orig	2018-12-27 04:04:08 UTC
+--- libtransmission/tr-dht.c.orig	2021-06-14 01:02:25 UTC
 +++ libtransmission/tr-dht.c
-@@ -694,6 +694,11 @@ dht_random_bytes (void * buf, size_t size)
-     return size;
- }
+@@ -716,7 +716,7 @@ static int tr_dhtAnnounce(tr_torrent* tor, int af, boo
+     {
+         rc = dht_search(tor->info.hash, announce ? tr_sessionGetPeerPort(session) : 0, af, callback, NULL);
  
-+int dht_sendto(int sockfd, void const* buf, int len, int flags, struct sockaddr const* to, int tolen)
-+{
-+    return sendto(sockfd, buf, len, flags, to, tolen);
-+}
-+
- #if defined (_WIN32) && !defined (__MINGW32__)
- int
- dht_gettimeofday (struct timeval * tv, struct timezone * tz)
+-        if (rc >= 1)
++        if (rc >= 0)
+         {
+             tr_logAddTorInfo(tor, "Starting %s DHT announce (%s, %d nodes)", af == AF_INET6 ? "IPv6" : "IPv4",
+                 tr_dhtPrintableStatus(status), numnodes);

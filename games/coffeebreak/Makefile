@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coffeebreak
 DISTVERSION=	0.1.1
 CATEGORIES=	games

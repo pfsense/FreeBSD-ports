@@ -1,5 +1,4 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	data
 PORTVERSION=	2.5
@@ -11,14 +10,13 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}-${PORTNAME}
 EXTRACT_SUFX=	.tar
 DIST_SUBDIR=	${PKGNAMEPREFIX:S/-//}
 
-MAINTAINER=	m.tsatsenko@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	UFO alien invasion data files
 
 # See http://ufoai.org/wiki/License
 LICENSE=	GPLv2 CC-BY-SA-3.0
 LICENSE_COMB=	multi
 
-BROKEN_aarch64=		Fails to install: runaway process
 BROKEN_mips64=		Fails to install: runaway process
 
 EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip

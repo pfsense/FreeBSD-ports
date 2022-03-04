@@ -1,5 +1,4 @@
 bin/kmplot
-%%QT_PLUGINDIR%%/kmplotpart.so
 man/ca/man1/kmplot.1.gz
 man/de/man1/kmplot.1.gz
 man/es/man1/kmplot.1.gz
@@ -15,6 +14,7 @@ man/pt_BR/man1/kmplot.1.gz
 man/ru/man1/kmplot.1.gz
 man/sv/man1/kmplot.1.gz
 man/uk/man1/kmplot.1.gz
+%%QT_PLUGINDIR%%/kf5/parts/kmplotpart.so
 share/applications/org.kde.kmplot.desktop
 share/config.kcfg/kmplot.kcfg
 share/dbus-1/interfaces/org.kde.kmplot.KmPlot.xml
@@ -33,6 +33,7 @@ share/kxmlgui5/kmplot/kmplot_part.rc
 share/kxmlgui5/kmplot/kmplot_part_readonly.rc
 share/kxmlgui5/kmplot/kmplot_shell.rc
 share/locale/ar/LC_MESSAGES/kmplot.mo
+share/locale/be/LC_MESSAGES/kmplot.mo
 share/locale/bg/LC_MESSAGES/kmplot.mo
 share/locale/bs/LC_MESSAGES/kmplot.mo
 share/locale/ca/LC_MESSAGES/kmplot.mo
@@ -63,6 +64,7 @@ share/locale/km/LC_MESSAGES/kmplot.mo
 share/locale/ko/LC_MESSAGES/kmplot.mo
 share/locale/lt/LC_MESSAGES/kmplot.mo
 share/locale/lv/LC_MESSAGES/kmplot.mo
+share/locale/ml/LC_MESSAGES/kmplot.mo
 share/locale/mr/LC_MESSAGES/kmplot.mo
 share/locale/nb/LC_MESSAGES/kmplot.mo
 share/locale/nds/LC_MESSAGES/kmplot.mo
@@ -74,12 +76,17 @@ share/locale/pt/LC_MESSAGES/kmplot.mo
 share/locale/pt_BR/LC_MESSAGES/kmplot.mo
 share/locale/ro/LC_MESSAGES/kmplot.mo
 share/locale/ru/LC_MESSAGES/kmplot.mo
+share/locale/se/LC_MESSAGES/kmplot.mo
 share/locale/sk/LC_MESSAGES/kmplot.mo
 share/locale/sl/LC_MESSAGES/kmplot.mo
+share/locale/sq/LC_MESSAGES/kmplot.mo
 share/locale/sv/LC_MESSAGES/kmplot.mo
+share/locale/ta/LC_MESSAGES/kmplot.mo
+share/locale/tg/LC_MESSAGES/kmplot.mo
 share/locale/tr/LC_MESSAGES/kmplot.mo
 share/locale/ug/LC_MESSAGES/kmplot.mo
 share/locale/uk/LC_MESSAGES/kmplot.mo
+share/locale/vi/LC_MESSAGES/kmplot.mo
 share/locale/zh_CN/LC_MESSAGES/kmplot.mo
 share/locale/zh_TW/LC_MESSAGES/kmplot.mo
 share/metainfo/org.kde.kmplot.appdata.xml

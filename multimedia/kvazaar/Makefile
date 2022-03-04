@@ -1,21 +1,13 @@
-# $FreeBSD$
-
 PORTNAME=	kvazaar
 DISTVERSIONPREFIX=	v
-DISTVERSION?=	1.2.0
-PORTREVISION?=	3
+DISTVERSION?=	2.1.0
 CATEGORIES=	multimedia
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	93e1c9f1c39c.patch:-p1 \
-		4f4bea749680.patch:-p1 \
-		4b24cd03a24e.patch:-p1 \
-		411276d6f2b2.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	H.265/HEVC encoder implemented in C
 
-LICENSE=	LGPL21+
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ultravideo
@@ -47,10 +39,4 @@ post-patch:
 		-e '/AM_INIT_AUTOMAKE/s/])/ serial-tests&/' \
 		${WRKSRC}/configure.ac
 
-pre-install:	do-test
-
 .include <bsd.port.mk>
-
-# XXX test_external_symbols.sh fails with CRYPTOPP=on
-# XXX beefy5 (fails) vs. beefy4 (succeeds). Missed CPUID check?
-do-test:	.IGNORE

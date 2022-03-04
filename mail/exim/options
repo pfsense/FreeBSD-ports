@@ -1,6 +1,7 @@
 OPTIONS_DEFINE+=	ALT_CONFIG_PREFIX \
 			CONTENT_SCAN \
 			DAEMON \
+			DANE \
 			DEBUG \
 			DISABLE_D_OPT \
 			DKIM \
@@ -17,6 +18,7 @@ OPTIONS_DEFINE+=	ALT_CONFIG_PREFIX \
 			PRDR \
 			READLINE \
 			SUID \
+			TAINTWARN \
 			TCP_WRAPPERS \
 			WISHLIST \
 			EVENT \
@@ -49,6 +51,7 @@ OPTIONS_DEFAULT+=	AUTH_CRAM_MD5 \
 			PAM \
 			PASSWD \
 			PRDR \
+			SPF \
 			SUID \
 			TLS
 
@@ -66,7 +69,7 @@ OPTIONS_GROUP_LOOKUP=	CDB BDB DNSDB DSEARCH LSEARCH MYSQL NIS OPENLDAP PGSQL RED
 LOOKUP_DESC=	Lookup support
 OPTIONS_GROUP_STORAGE=	MAILDIR MAILSTORE MBX
 STORAGE_DESC=	Supported storage formats
-OPTIONS_GROUP_EXPERIMENTAL= CERTNAMES DANE DCC DMARC DSN ARC LMDB QUEUEFILE
+OPTIONS_GROUP_EXPERIMENTAL= CERTNAMES DCC DMARC DSN ARC LMDB QUEUEFILE
 EXPERIMENTAL_DESC=	Experimental options
 OPTIONS_GROUP=	AUTH LOOKUP STORAGE EXPERIMENTAL
 
@@ -123,6 +126,7 @@ SPF_DESC=		Enable Sender Policy Framework checking
 SQLITE_DESC=		Enable SQLite lookups
 SRS_DESC=		Enable Sender Rewriting Scheme
 SUID_DESC=		Install the exim binary suid root
+TAINTWARN_DESC=		Allow insecure tainted data (pre-4.93 config style, deprecated)
 TCP_WRAPPERS_DESC=	Enable /etc/hosts.allow access control
 GNUTLS_DESC=		Use GnuTLS instead of OpenSSL for TLS
 WISHLIST_DESC=		Include the unsupported patches

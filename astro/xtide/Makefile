@@ -1,8 +1,7 @@
 # Created by: Brion Moss <brion@queeg.com>
-# $FreeBSD$
 
 PORTNAME=	xtide
-PORTVERSION=	2.15.2
+PORTVERSION=	2.15.3
 CATEGORIES=	astro geography
 MASTER_SITES=	https://flaterco.com/files/xtide/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -17,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		compiler:c++0x gmake libtool localbase tar:bzip2
+USES=		compiler:c++0x gmake libtool localbase tar:xz
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -34,13 +33,14 @@ OPTIONS_SUB=		yes
 
 WVS_DESC=		Use world vector shoreline data (37MB)
 WVS_DISTFILES=		${DISTNAME_WVS}${EXTRACT_SUFX}
+X11_USES=		xorg
 X11_USE=		xorg=ice,sm,x11,xaw,xext,xmu,xpm,xt
 X11_CONFIGURE_WITH=	x
 X11_DESKTOP_ENTRIES=	"XTide" "" "xtide" "xtide" "" ""
 
-DISTNAME_TCD=	libtcd-2.2.7-r2
+DISTNAME_TCD=	libtcd-2.2.7-r3
 WRKSRC_TCD=	${WRKDIR}/${DISTNAME_TCD:C/-r[0-9]+//}
-DISTNAME_HARM=	harmonics-dwf-20151227-free
+DISTNAME_HARM=	harmonics-dwf-20210110-free
 WRKSRC_HARM=	${WRKDIR}/${DISTNAME_HARM:C/-free//}
 DISTNAME_WVS=	wvs
 

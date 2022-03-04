@@ -1,8 +1,7 @@
 # Created by: Xin LI <delphij@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sdparm
-PORTVERSION=	1.10
+PORTVERSION=	1.12
 CATEGORIES=	sysutils
 MASTER_SITES=	http://sg.danny.cz/sg/p/
 

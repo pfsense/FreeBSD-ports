@@ -1,10 +1,9 @@
 # Created by: Yoichi NAKAYAMA <yoichi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bbdb
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.2
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	databases elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -12,6 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Big Brother Database
 
 LICENSE=	GPLv3+
+
+.if ${FLAVOR:U} == devel_full || ${FLAVOR:U} == devel_nox
+BROKEN=		Error occurred processing bbdb.el: Wrong type argument ((stringp nil))
+.endif
 
 BUILD_DEPENDS=	texi2dvi:print/texinfo
 

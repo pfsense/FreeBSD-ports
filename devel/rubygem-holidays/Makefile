@@ -1,12 +1,11 @@
 # Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
 
 PORTNAME=	holidays
-PORTVERSION=	7.0.0
+PORTVERSION=	8.4.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Collection of Ruby methods to deal with statutory and other holidays
 
 LICENSE=	MIT

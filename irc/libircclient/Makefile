@@ -1,18 +1,26 @@
 # Created by: Julien Laffaye <kimelto@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libircclient
-PORTVERSION=	1.7
+DISTVERSION=	1.10
 CATEGORIES=	irc devel
 MASTER_SITES=	SF
 
-MAINTAINER=	jlaffaye@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IRC library to create IRC clients
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	OPENSSL IPV6 EXAMPLES
+USES=		compiler:c11
+USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-shared
+
+MAKE_ARGS=	exec_prefix=${PREFIX}
+BUILD_WRKSRC=	${WRKSRC}/src
+
+OPTIONS_DEFINE=		OPENSSL IPV6 EXAMPLES
 OPTIONS_DEFAULT=	OPENSSL
 
 OPENSSL_USES=			ssl
@@ -22,12 +30,7 @@ OPENSSL_LDFLAGS=		-L${OPENSSLLIB}
 OPENSSL_CFLAGS=			-I${OPENSSLINC}
 IPV6_CONFIGURE_ENABLE=		ipv6
 
-BUILD_WRKSRC=	${WRKSRC}/src
-GNU_CONFIGURE=	yes
-
-do-install:
-	${INSTALL_DATA} ${WRKSRC}/include/*.h ${STAGEDIR}${PREFIX}/include
-	${INSTALL_DATA} ${WRKSRC}/src/libircclient.a ${STAGEDIR}${PREFIX}/lib
+PORTEXAMPLES=	*
 
 do-install-EXAMPLES-on:
 	(cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})

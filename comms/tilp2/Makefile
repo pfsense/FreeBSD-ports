@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tilp2
 PORTVERSION=	1.18
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms
 MASTER_SITES=	SF/tilp/tilp2-linux/${DISTNAME}
 
@@ -18,9 +16,8 @@ LIB_DEPENDS=	libticables2.so:comms/libticables2	\
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		autoreconf compiler:c11 desktop-file-utils gettext \
-		gmake groff localbase \
-		libtool pkgconfig shared-mime-info tar:bzip2
+USES=		autoreconf compiler:c11 desktop-file-utils gettext gmake gnome \
+		groff libtool localbase pkgconfig shared-mime-info tar:bzip2
 USE_GNOME=	gtk20 intltool
 
 OPTIONS_DEFINE=	NLS

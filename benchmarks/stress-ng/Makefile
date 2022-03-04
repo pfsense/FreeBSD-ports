@@ -1,9 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	stress-ng
-PORTVERSION=	0.09.54
+DISTVERSIONPREFIX=	V
+DISTVERSION=	0.13.07
+PORTREVISION=	0
 CATEGORIES=	benchmarks
-MASTER_SITES=	http://kernel.ubuntu.com/~cking/tarballs/stress-ng/
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Stress test benchmarks
@@ -14,10 +13,20 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_aarch64=	Fails to link: missing sbrk
 
 USES=		compiler:c11 gmake tar:xz
+USE_GITHUB=	yes
+GH_ACCOUNT=	ColinIanKing
 
 ALL_TARGET=	# empty
 
 PLIST_FILES=	bin/stress-ng man/man1/stress-ng.1.gz
+
+OPTIONS_DEFINE=	LIBINOTIFY
+OPTIONS_DEFAULT=	LIBINOTIFY
+LIBINOTIFY_DESC=	Install the kevent based libinotify to enable its stress
+
+LIBINOTIFY_CFLAGS	+=	-I${LOCALBASE}/include
+LIBINOTIFY_LDFLAGS	+=	-L${LOCALBASE}/lib -linotify
+LIBINOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
 
 post-patch:
 	${REINPLACE_CMD} -e \

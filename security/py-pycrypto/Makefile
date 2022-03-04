@@ -1,5 +1,4 @@
 # Created by: nbm
-# $FreeBSD$
 
 PORTNAME=	pycrypto
 PORTVERSION=	2.6.1
@@ -14,10 +13,12 @@ COMMENT=	Python Cryptography Toolkit
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pycryptodome-*
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pycryptodome
 
-USES=		python
+USES=		cpe python:3.6+
 USE_PYTHON=	distutils autoplist
+
+CPE_VENDOR=	dlitz
 
 GNU_CONFIGURE=	yes
 

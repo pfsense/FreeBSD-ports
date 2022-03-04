@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	oracle11g
 PORTVERSION=	11.2.0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases java
 MASTER_SITES=	# http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html
 PKGNAMEPREFIX=	jdbc-
@@ -13,13 +11,16 @@ DIST_SUBDIR=	oracle11g
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JDBC drivers for Oracle 11g
 
+# Converted from RESTRICTED
+LICENSE=	ORACLE
+LICENSE_NAME=	Oracle
+LICENSE_TEXT=	Packaging prohibited by Oracle license
+LICENSE_PERMS=	auto-accept
+
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	1.7 1.8
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-
-RESTRICTED=	Packaging prohibited by Oracle license
-NO_CDROM=	Packaging prohibited by Oracle license
 
 PLIST_FILES=	%%JAVAJARDIR%%/ojdbc-${PORTVERSION}.jar
 

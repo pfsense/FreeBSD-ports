@@ -1,5 +1,4 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gmpc-mdcover
 PORTVERSION=	0.20.0
@@ -20,7 +19,7 @@ RUN_DEPENDS=	gmpc:audio/gmpc
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-USES=		gettext gmake libtool pkgconfig
+USES=		gettext gmake gnome libtool pkgconfig
 USE_GNOME=	intltool glib20 gtk20 libxml2
 INSTALL_TARGET=	install-strip
 

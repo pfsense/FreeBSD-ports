@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xlaby
 PORTVERSION=	2.0.1
@@ -12,7 +11,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemonic X Labyrinth played directly with the mouse pointer
 
 NO_WRKSUBDIR=	yes
-USES=		imake tar:tgz
+USES=		imake tar:tgz xorg
 USE_XORG=	x11
 PLIST_FILES=	man/man6/xlaby.6.gz
 

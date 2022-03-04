@@ -1,5 +1,4 @@
 # Created by: Dima Sivachenko <dima@chg.ru>
-# $FreeBSD$
 
 PORTNAME=	pvm
 PORTVERSION=	3.4.6
@@ -15,6 +14,7 @@ LICENSE=	MIT
 
 BROKEN_mips=		fails to compile: 'SIGCLD' undeclared (first use in this function)
 BROKEN_mips64=		fails to compile: 'SIGCLD' undeclared (first use in this function)
+BROKEN_riscv64=		fails to build: grep: pvm3/conf/UNKNOWN.def: No such file or directory
 
 USES=		tar:tgz
 USE_LDCONFIG=	yes
@@ -29,6 +29,7 @@ OPTIONS_DEFINE=	X11
 OPTIONS_DEFAULT=X11
 OPTIONS_SUB=	yes
 
+X11_USES=	xorg
 X11_USE=	XORG=x11,xaw,xext,xmu,xt
 
 .include <bsd.port.options.mk>

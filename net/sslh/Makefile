@@ -1,10 +1,8 @@
 # Created by: Jui-Nan Lin <jnlin@csie.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	sslh
-PORTVERSION=	1.19c
+PORTVERSION=	1.21c
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	olivier@FreeBSD.org

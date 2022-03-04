@@ -1,11 +1,8 @@
 # Created by: Bill Fumerola <billf@mu.org>
-# $FreeBSD$
-
-PORTREVISION=	1
 
 LITE=		yes
 
-CONFLICTS_INSTALL?=	tshark-[0-9]* wireshark-[0-9]* wireshark-lite-[0-9]*
+CONFLICTS_INSTALL?=	tshark wireshark wireshark-lite
 
 MASTERDIR=	${.CURDIR}/../tshark
 COMMENT=	Powerful network analyzer/capture tool (lite package)

@@ -1,5 +1,4 @@
 # Created by: Daniel Kahn Gillmor <dkg@fifthhorseman.net>
-# $FreeBSD$
 
 PORTNAME=	monkeysphere
 PORTVERSION=	0.42
@@ -11,6 +10,10 @@ MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Use the OpenPGP web of trust to verify ssh connections
 
 LICENSE=	GPLv3
+
+BROKEN=		Unfetchable
+DEPRECATED=	Abandonware, dead upstream
+EXPIRATION_DATE=2022-03-31
 
 LIB_DEPENDS=	libassuan.so:security/libassuan \
 		libgcrypt.so:security/libgcrypt \

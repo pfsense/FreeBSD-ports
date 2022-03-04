@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	1.0.2
 PORTREVISION=	1
@@ -19,8 +17,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/dictionaries
 
-PLIST_FILES=	%%DATADIR%%/so_SO.aff \
-		%%DATADIR%%/so_SO.dic
+PLIST_FILES=	${DATADIR}/so_SO.aff \
+		${DATADIR}/so_SO.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

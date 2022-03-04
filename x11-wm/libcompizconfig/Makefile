@@ -1,12 +1,11 @@
 # Created by: Robert Noland <rnoland@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libcompizconfig
 PORTVERSION=	0.8.8
 CATEGORIES=	x11-wm
-MASTER_SITES=	http://releases.compiz.org/${PORTVERSION}/
+MASTER_SITES=	https://BSDforge.com/projects/source/x11-wm/libcompizconfig/
 
-MAINTAINER=	freebsd-ports@dan.me.uk
+MAINTAINER=	potmaster@BSDforge.com
 COMMENT=	Alternative configuration system for Compiz
 
 LICENSE=	GPLv2
@@ -16,7 +15,7 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/compiz.pc:x11-wm/compiz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-USES=		gettext gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		gettext gmake gnome libtool:keepla pathfix pkgconfig tar:bzip2
 USE_GNOME=	intltool libxml2
 
 CPPFLAGS+=	-I${LOCALBASE}/include

@@ -1,12 +1,10 @@
 # Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libasr
 PORTVERSION=	201602131606
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	dns
-MASTER_SITES=	http://www.opensmtpd.org/archives/ \
-		http://distfiles.pirateparty.in/ashish/
+MASTER_SITES=	http://www.opensmtpd.org/archives/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	fluffy@FreeBSD.org
@@ -16,14 +14,26 @@ LICENSE=	ISCL BSD4CLAUSE BSD3CLAUSE BSD2CLAUSE
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-CONFLICTS=	libasr-[0-9]*
+USES=		cpe groff libtool
 
-USES=		groff libtool ssl:build
+CONFLICTS=	libasr
+
+OPTIONS_DEFINE=	CA_BUNDLE
+OPTIONS_DEFAULT=	CA_BUNDLE
+
+CA_BUNDLE_DESC=	Use NSS CA bundle for SSL instead of /etc/ssl/cert.pem
+
+CPE_VENDOR=	openbsd
+
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--with-mantype="man"
 INSTALL_TARGET=	install-strip
 
-CFLAGS+=	-I${OPENSSLINC}
+CA_BUNDLE_CONFIGURE_WITH=	ca-file=${LOCALBASE}/share/certs/ca-root-nss.crt
+CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+
+post-patch:
+	${REINPLACE_CMD} -e '/opensslv.h/d' ${WRKSRC}/openbsd-compat/includes.h
 
 .include <bsd.port.mk>

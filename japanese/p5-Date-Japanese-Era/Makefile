@@ -1,9 +1,7 @@
 # Created by: Kimura Fuyuki <fuyuki@mj.0038.net>
-# $FreeBSD$
 
 PORTNAME=	Date-Japanese-Era
-PORTVERSION=	0.06
-PORTREVISION=	2
+PORTVERSION=	0.07
 CATEGORIES=	japanese perl5
 MASTER_SITES=	CPAN
 
@@ -16,6 +14,8 @@ RUN_DEPENDS=	p5-Date-Calc>=0:devel/p5-Date-Calc \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	y
 
 .include <bsd.port.pre.mk>
 

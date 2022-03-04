@@ -1,5 +1,4 @@
 # Created by: Serge Gagnon <gagnon__s@videotron.ca>
-# $FreeBSD$
 
 PORTNAME=	9box
 PORTVERSION=	0.2.1
@@ -11,10 +10,13 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	9box can "pack" windows inside itself
 
 PLIST_FILES=	bin/9box
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	xbitmaps x11 xt
 
 BUILD_WRKSRC=	${WRKSRC}/src
+
+# Dead upstream. Don't expect a proper fix.
+CFLAGS+=	-fcommon
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g; \

@@ -3,7 +3,7 @@
  * freeradius_view_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2011 Marcello Coutinho <marcellocoutinho@gmail.com>
  * All rights reserved.
@@ -40,7 +40,7 @@ function get_file($file) {
 
 	if ($files[$file] != "" && file_exists($files[$file])) {
 		print '<pre>';
-		print $files[$file] . "\n" . file_get_contents($files[$file]);
+		print $files[$file] . "\n" . htmlspecialchars(file_get_contents($files[$file]));
 		print '</pre>';
 	}
 }

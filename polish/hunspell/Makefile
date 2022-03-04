@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
-PORTVERSION=	20190226
+PORTVERSION=	20210731
 CATEGORIES=	polish textproc
 MASTER_SITES=	https://sjp.pl/slownik/ort/ \
 		LOCAL/sunpoet/${PORTNAME}
@@ -19,8 +17,8 @@ USES=		zip
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-PLIST_FILES=	%%DATADIR%%/pl_PL.aff \
-		%%DATADIR%%/pl_PL.dic
+PLIST_FILES=	${DATADIR}/pl_PL.aff \
+		${DATADIR}/pl_PL.dic
 
 post-extract:
 	@${MKDIR} ${WRKSRC}

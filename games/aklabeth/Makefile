@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	aklabeth
 PORTVERSION=	1.0
 CATEGORIES=	games
@@ -12,8 +9,10 @@ COMMENT=	Remake of Richard Garriott's Ultima prequel
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-GNU_CONFIGURE=	yes
+USES=		sdl
 USE_SDL=	sdl
+
+GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/${PORTNAME}
 

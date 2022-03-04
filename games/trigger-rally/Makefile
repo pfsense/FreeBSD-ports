@@ -1,9 +1,8 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	trigger-rally
-PORTVERSION=	0.6.5
-PORTREVISION=	3
+PORTVERSION=	0.6.6.1
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/trigger-rally/trigger-${PORTVERSION}
 
@@ -11,18 +10,21 @@ MAINTAINER=	alfix86@gmail.com
 COMMENT=	Rally car racing game
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WORKINGSRC}/doc/COPYING.txt
 
 LIB_DEPENDS=	libphysfs.so:devel/physfs
 LIB_DEPENDS+=	libalut.so:audio/freealut
+LIB_DEPENDS+=	libtinyxml2.so:textproc/tinyxml2
 
-WRKSRC_SUBDIR=	src
-USES=		compiler:c++11-lang gmake openal:al,alut
-USE_SDL=	sdl2 image2
-USE_GL=		glu gl glew
+USES=		compiler:c++11-lang gmake openal:al,alut sdl gl gnome
+
+USE_SDL=	image2
+USE_GL=		glu glew
 MAKEFILE=	GNUmakefile
 ALL_TARGET=	build
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
+WRKSRC_SUBDIR=	src
 WORKINGSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DATADIR=	${PREFIX}/share/games/trigger-rally
 
@@ -32,6 +34,9 @@ DESKTOP_ENTRIES="Trigger" "" "trigger" \
 PORTDOCS=	README-stereo.txt README.txt DATA_AUTHORS.txt
 
 OPTIONS_DEFINE=	DOCS
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/Trigger/main.cpp
 
 do-install:
 	${INSTALL_PROGRAM} ${WORKINGSRC}/bin/trigger-rally ${STAGEDIR}${PREFIX}/bin

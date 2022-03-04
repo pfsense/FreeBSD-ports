@@ -1,5 +1,4 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	progressbar
 PORTVERSION=	2.5
@@ -16,7 +15,7 @@ LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE.txt
 
 NO_ARCH=	yes
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python
+USES=		python:3.6+
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}progressbar231
 

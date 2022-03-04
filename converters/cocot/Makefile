@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	cocot
 PORTVERSION=	20120313
@@ -7,14 +6,14 @@ DISTVERSIONPREFIX=	${PORTNAME}-1.1-
 PORTREVISION=	1
 CATEGORIES=	converters
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Code Converter on TTY
 
 LICENSE=	BSD3CLAUSE
 
 OPTIONS_DEFINE=	DOCS
 
-USE_GITHUB=     yes
+USE_GITHUB=	yes
 GH_ACCOUNT=	vmi
 
 USES=		iconv

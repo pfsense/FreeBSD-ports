@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	entombed
 PORTVERSION=	2007.07.04
@@ -17,7 +16,7 @@ COMMENT=	One- or two-player maze game based on the Entombed
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/COPYING.txt
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	image mixer sdl
 
 PORTDOCS=	AUTHORS.txt CHANGES.txt README.txt

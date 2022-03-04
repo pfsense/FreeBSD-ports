@@ -1,8 +1,8 @@
 # Created by: Jeroen Schot <schot@a-eskwadraat.nl>
-# $FreeBSD$
 
 PORTNAME=	dwm
 DISTVERSION=	6.2
+PORTREVISION=	2
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://dl.suckless.org/${PORTNAME}/
 
@@ -17,29 +17,36 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
 # do-test target.
 TEST_DEPENDS=	${LOCALBASE}/libexec/atf-check:devel/kyua
 
+USES=		xorg
 USE_XORG=	x11 xft
 
 MAKE_ARGS=	CC="${CC}" \
 		FREETYPEINC="${LOCALBASE}/include/freetype2" \
-		MANPREFIX="${MANPREFIX}/man" \
 		PREFIX="${PREFIX}" \
 		VERSION="${PORTVERSION}" \
 		X11INC="${LOCALBASE}/include" \
 		X11LIB="${LOCALBASE}/lib"
 
+SUB_FILES=	dwm.desktop
+SUB_LIST=	COMMENT="${COMMENT}"
 PLIST_FILES=	bin/dwm \
-		man/man1/dwm.1.gz
+		share/man/man1/dwm.1.gz \
+		share/xsessions/dwm.desktop
 PORTDOCS=	README
 
-OPTIONS_DEFINE=	DMENUANDSTERM DOCS SUPERASMODKEY VOLUMECONTROL XINERAMA
+OPTIONS_DEFINE=	DMENUANDSTERM DOCS RUGAPS SUPERASMODKEY VOLUMECONTROL XINERAMA
 OPTIONS_DEFAULT=DMENUANDSTERM XINERAMA
 
 DMENUANDSTERM_DESC=	Install x11/dmenu and x11/sterm as runtime dependencies
+RUGAPS_DESC=		Add resizeable runtime useless gaps
 SUPERASMODKEY_DESC=	Use Super instead of Alt for the dwm mod key
 VOLUMECONTROL_DESC=	Use multimedia keys to raise or lower volume
 
 DMENUANDSTERM_RUN_DEPENDS=	dmenu:x11/dmenu \
 				st:x11/sterm
+
+RUGAPS_PATCH_SITES=		https://dwm.suckless.org/patches/ru_gaps/
+RUGAPS_PATCHFILES=		dwm-ru_gaps-6.2.diff:-p1
 
 SUPERASMODKEY_EXTRA_PATCHES=	${PATCHDIR}/superasmodkey-patch-config.def.h
 VOLUMECONTROL_EXTRA_PATCHES=	${PATCHDIR}/volumecontrol-patch-config.def.h
@@ -67,6 +74,8 @@ post-configure:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/dwm
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/xsessions
+	${INSTALL_DATA} ${WRKDIR}/dwm.desktop ${STAGEDIR}${PREFIX}/share/xsessions
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

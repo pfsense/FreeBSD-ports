@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xwit
 PORTVERSION=	3.4
@@ -12,7 +11,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}:source1 \
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	X interface tool
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 
 PLIST_FILES=	bin/xwit man/man1/xwit.1.gz

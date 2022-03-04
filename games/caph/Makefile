@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	caph
 PORTVERSION=	1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/caphgame/${PORTNAME}/caphgame-${PORTVERSION}/
 
@@ -15,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/doc/caph/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		tar:bzip2 iconv
+USES=		gl iconv sdl tar:bzip2
 USE_SDL=	sdl
 USE_GL=		gl
 

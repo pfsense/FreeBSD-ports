@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Math-ProvablePrime
 PORTVERSION=	0.045
 CATEGORIES=	math perl5

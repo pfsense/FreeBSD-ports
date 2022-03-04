@@ -1,5 +1,4 @@
 # Created by: Mons Anderson <mons@cpan.org>
-# $FreeBSD$
 
 PORTNAME=	Object-Event
 PORTVERSION=	1.220
@@ -21,5 +20,7 @@ RUN_DEPENDS=	p5-AnyEvent>=3.5:devel/p5-AnyEvent \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

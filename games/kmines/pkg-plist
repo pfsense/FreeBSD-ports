@@ -18,8 +18,8 @@ share/icons/hicolor/64x64/apps/kmines.png
 %%DATADIR%%/themes/kmines_classic.svgz
 %%DATADIR%%/themes/kmines_green.svgz
 %%DATADIR%%/themes/kmines_oxygen.svgz
-share/knotifications5/kmines.notifyrc
 share/locale/ar/LC_MESSAGES/kmines.mo
+share/locale/be/LC_MESSAGES/kmines.mo
 share/locale/bg/LC_MESSAGES/kmines.mo
 share/locale/bs/LC_MESSAGES/kmines.mo
 share/locale/ca/LC_MESSAGES/kmines.mo
@@ -42,6 +42,7 @@ share/locale/he/LC_MESSAGES/kmines.mo
 share/locale/hi/LC_MESSAGES/kmines.mo
 share/locale/hr/LC_MESSAGES/kmines.mo
 share/locale/hu/LC_MESSAGES/kmines.mo
+share/locale/id/LC_MESSAGES/kmines.mo
 share/locale/is/LC_MESSAGES/kmines.mo
 share/locale/it/LC_MESSAGES/kmines.mo
 share/locale/ja/LC_MESSAGES/kmines.mo
@@ -50,6 +51,7 @@ share/locale/km/LC_MESSAGES/kmines.mo
 share/locale/ko/LC_MESSAGES/kmines.mo
 share/locale/lt/LC_MESSAGES/kmines.mo
 share/locale/lv/LC_MESSAGES/kmines.mo
+share/locale/ml/LC_MESSAGES/kmines.mo
 share/locale/mr/LC_MESSAGES/kmines.mo
 share/locale/nb/LC_MESSAGES/kmines.mo
 share/locale/nds/LC_MESSAGES/kmines.mo
@@ -61,10 +63,14 @@ share/locale/pt/LC_MESSAGES/kmines.mo
 share/locale/pt_BR/LC_MESSAGES/kmines.mo
 share/locale/ro/LC_MESSAGES/kmines.mo
 share/locale/ru/LC_MESSAGES/kmines.mo
+share/locale/se/LC_MESSAGES/kmines.mo
 share/locale/sk/LC_MESSAGES/kmines.mo
 share/locale/sl/LC_MESSAGES/kmines.mo
+share/locale/sq/LC_MESSAGES/kmines.mo
 share/locale/sr/LC_MESSAGES/kmines.mo
 share/locale/sv/LC_MESSAGES/kmines.mo
+share/locale/ta/LC_MESSAGES/kmines.mo
+share/locale/tg/LC_MESSAGES/kmines.mo
 share/locale/tr/LC_MESSAGES/kmines.mo
 share/locale/ug/LC_MESSAGES/kmines.mo
 share/locale/uk/LC_MESSAGES/kmines.mo
@@ -72,3 +78,4 @@ share/locale/wa/LC_MESSAGES/kmines.mo
 share/locale/zh_CN/LC_MESSAGES/kmines.mo
 share/locale/zh_TW/LC_MESSAGES/kmines.mo
 share/metainfo/org.kde.kmines.appdata.xml
+share/qlogging-categories5/kmines.categories

@@ -1,11 +1,10 @@
 # Created by: John Chen <johnpupu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ev
-PORTVERSION=	1.0.4
+PORTVERSION=	1.1.5
 CATEGORIES=	devel
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Libev extension for PHP
 
 LICENSE=	PHP301

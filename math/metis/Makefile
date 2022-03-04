@@ -1,9 +1,8 @@
 # Created by: Pedro Giffuni <giffunip@asme.org>
-# $FreeBSD$
 
 PORTNAME=	metis
 PORTVERSION=	5.1.0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	math
 MASTER_SITES=	http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/
 
@@ -14,51 +13,40 @@ LICENSE=	APACHE20
 
 USES=		cmake:noninja compiler:c11
 
-CONFLICTS=	metis4-4* metis-edf-[0-9]*
+CONFLICTS=	metis-edf metis4-4*
 
-OPTIONS_DEFINE=	OPENMP SHARED STATIC DOCS
+PORTDOCS=	manual.pdf
+
+BINS=		cmpfillin gpmetis graphchk m2gmetis mpmetis ndmetis
+SHLIB_MAJOR?=	2
+
+OPTIONS_DEFINE=		DOCS OPENMP SHARED STATIC
+OPTIONS_DEFAULT=	SHARED STATIC
+OPTIONS_SUB=		yes
 
 OPENMP_DESC=	multithreading via OpenMP
-#PROFILE_DESC=	profiling libraries
 SHARED_DESC=	shared library and dynamically-linked executables
 STATIC_DESC=	libmetis archive
 
-OPTIONS_DEFAULT=	SHARED STATIC
+OPENMP_CMAKE_BOOL=	OPENMP
 
-BINS=	cmpfillin gpmetis graphchk m2gmetis mpmetis ndmetis
+SHARED_USE=	LDCONFIG=yes
+
+CMAKE_ARGS_SHARED=	-DSHARED=1 -DSHLIB_MAJOR="${SHLIB_MAJOR}"
+ALL_TARGET_SHARED=	all
+WRKSRC_SHARED=		${WRKSRC}_SHARED
+INSTALL_WRKSRC_SHARED=	${WRKSRC_SHARED}
+
+ALL_TARGET_STATIC=	metis
+WRKSRC_STATIC=		${WRKSRC}
+INSTALL_WRKSRC_STATIC=	${WRKSRC_STATIC}/libmetis
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MOPENMP}
-USES+=		compiler:openmp
-CMAKE_ARGS+=	-DOPENMP=1
-.endif
-
-.if ${PORT_OPTIONS:MSHARED}
-ALL_TARGET_SHARED=	all
-CMAKE_ARGS_SHARED=	-DSHARED=1
-PLIST_SUB+=		SHARED=""
 .if ${ARCH} == "sparc64"
-SHARED_FLAGS?=		-fPIC
+CFLAGS+=	-fPIC
 .else
-SHARED_FLAGS?=		-fpic
-.endif
-SHLIB_MAJOR?=		2
-CMAKE_ARGS+=		-DSHLIB_MAJOR="${SHLIB_MAJOR}"
-USE_LDCONFIG=		yes
-WRKSRC_SHARED=		${WRKSRC}_SHARED
-INSTALL_WRKSRC_SHARED=	${WRKSRC_SHARED}
-.else
-PLIST_SUB+=		SHARED="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MSTATIC}
-ALL_TARGET_STATIC=	metis
-PLIST_SUB+=		STATIC=""
-WRKSRC_STATIC=		${WRKSRC}
-INSTALL_WRKSRC_STATIC=	${WRKSRC_STATIC}/libmetis
-.else
-PLIST_SUB+=		STATIC="@comment "
+CFLAGS+=	-fpic
 .endif
 
 pre-configure:
@@ -67,19 +55,17 @@ pre-configure:
 	${WRKSRC}/GKlib/GKlibSystem.cmake
 	@${REINPLACE_CMD} -e "\|/home/karypis/|d" \
 	${WRKSRC}/programs/CMakeLists.txt
-.if ((${ARCH}=="amd64") || (${ARCH}=="aarch64") || (${ARCH}=="sparc64") || (${ARCH}=="powerpc64"))
-	@${REINPLACE_CMD}-e \
+.if ${ARCH:M*64*}
+	@${REINPLACE_CMD} -e \
 		's|IDXTYPEWIDTH 32|IDXTYPEWIDTH 64|' \
 		${WRKSRC}/include/metis.h
 .endif
-.for o in SHARED #PROFILE
-.if ${PORT_OPTIONS:M${o}}
-	@${CP} -R ${WRKSRC} ${WRKSRC_${o}}
-.endif
-.endfor
+
+pre-configure-SHARED-on:
+	@${CP} -R ${WRKSRC} ${WRKSRC_SHARED}
 
 do-configure:
-.for o in SHARED STATIC #PROFILE
+.for o in SHARED STATIC
 .if ${PORT_OPTIONS:M${o}}
 	@${PRINTF} "\n\nConfiguring ${o}:\n\n\n"
 	@cd ${WRKSRC_${o}}; ${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} \
@@ -89,7 +75,7 @@ do-configure:
 .endfor
 
 do-build:
-.for o in SHARED STATIC #PROFILE
+.for o in SHARED STATIC
 .if ${PORT_OPTIONS:M${o}}
 	@${PRINTF} "\n\nBuilding ${o}:\n\n\n"
 	@cd ${WRKSRC_${o}}; ${SETENV} ${MAKE_ENV} ${MAKE} ${_MAKE_JOBS} \
@@ -108,7 +94,7 @@ check regression-test test: build
 	cd ${WRKSRC_SHARED}/graphs ; ../programs/gpmetis ./4elt.graph 5
 
 do-install:
-.for o in SHARED STATIC #PROFILE
+.for o in SHARED STATIC
 .if ${PORT_OPTIONS:M${o}}
 	@${PRINTF} "\n\nInstalling ${o}:\n\n\n"
 	@cd ${INSTALL_WRKSRC_${o}}; ${SETENV} ${MAKE_ENV} ${MAKE} ${_MAKE_JOBS} \
@@ -116,12 +102,8 @@ do-install:
 .endif
 .endfor
 
-.if ${PORT_OPTIONS:MDOCS}
-PORTDOCS=	manual.pdf
-
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/manual/manual.pdf ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

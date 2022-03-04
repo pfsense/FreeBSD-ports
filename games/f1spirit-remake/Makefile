@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	f1spirit-remake
 PORTVERSION=	1.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	games
 # Original braingames site is really slow
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/ \
@@ -15,7 +12,7 @@ COMMENT=	Remake of classic F1 Spirit racing game
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		dos2unix gmake zip
+USES=		dos2unix gl gmake sdl zip
 USE_SDL=	sdl net image mixer sound
 USE_GL=		gl glu
 DOS2UNIX_GLOB=	*.h *.cpp

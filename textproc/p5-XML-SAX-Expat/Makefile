@@ -1,5 +1,4 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	XML-SAX-Expat
 PORTVERSION=	0.51
@@ -21,6 +20,8 @@ RUN_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser \
 
 USES=		perl5 dos2unix
 USE_PERL5=	configure
+
 CONFIGURE_ENV=	SKIP_SAX_INSTALL=yes
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: FURUSAWA, Kazuhisa <kazu@jp.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	mouseclock
 PORTVERSION=	1.0
@@ -13,7 +12,7 @@ COMMENT=	Display the current time using the X root cursor
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		imake:notall
+USES=		imake:notall xorg
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS

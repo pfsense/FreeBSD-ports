@@ -1,10 +1,8 @@
 # Created by: Palle Girgensohn <girgen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	powa-archivist
 DISTVERSIONPREFIX=	REL_
-DISTVERSION=	3_2_0
-PORTREVISION=	1
+DISTVERSION=	4_0_1
 CATEGORIES=	databases
 
 MAINTAINER=	girgen@FreeBSD.org

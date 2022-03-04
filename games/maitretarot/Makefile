@@ -1,5 +1,4 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	maitretarot
 PORTVERSION=	0.1.98
@@ -14,7 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libmaitretarot.so:games/libmaitretarot
 
-USES=		pkgconfig tar:bzip2
+USES=		gnome pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 libxml2
 

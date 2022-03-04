@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libticonv
 PORTVERSION=	1.1.5
 CATEGORIES=	converters
@@ -13,7 +11,7 @@ LICENSE=	GPLv2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-iconv
 INSTALL_TARGET=	install-strip
-USES=		autoreconf gmake iconv libtool pkgconfig tar:bzip2
+USES=		autoreconf gmake gnome iconv libtool pkgconfig tar:bzip2
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

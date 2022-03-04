@@ -1,8 +1,7 @@
 # Created by: Peter Pentchev <roam@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	paperkey
-PORTVERSION=	1.5
+PORTVERSION=	1.6
 CATEGORIES=	security
 MASTER_SITES=	http://www.jabberwocky.com/software/paperkey/ \
 		ZI

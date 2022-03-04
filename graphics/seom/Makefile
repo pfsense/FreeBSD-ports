@@ -1,9 +1,8 @@
 # Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	seom
 PORTVERSION=	2010011201
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	LOCAL/bms
 
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 ONLY_FOR_ARCHS=		amd64 i386
 ONLY_FOR_ARCHS_REASON=	not yet ported to any arch other than x86
 
-USES=		gmake tar:bzip2
+USES=		gl gmake tar:bzip2 xorg
 USE_XORG=	x11 xv xext
 USE_GL=		gl
 USE_LDCONFIG=	yes

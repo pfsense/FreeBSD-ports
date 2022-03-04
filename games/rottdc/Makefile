@@ -1,5 +1,4 @@
 # Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
 
 PORTNAME=	rottdc
 DISTVERSION=	1.0-2
@@ -10,7 +9,7 @@ MASTER_SITES=	SF/sdl-dc/${PORTNAME}/1.0-2
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Apogee's Rise Of The Triad source port
 
-USES=		gmake tar:bzip2
+USES=		compiler:c11 gmake sdl tar:bzip2
 USE_SDL=	sdl mixer
 PATCH_WRKSRC=	${WRKSRC}/rott
 # Crashes when compiling with -O2 or greater, so downgrade to -O1.

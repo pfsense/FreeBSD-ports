@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libmatemixer
-PORTVERSION=	1.20.1
-PORTREVISION=	1
+PORTVERSION=	1.26.0
 CATEGORIES=	audio mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -14,7 +11,7 @@ LICENSE=	LGPL21
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 USE_GNOME=	glib20 intlhack
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-null \
@@ -25,7 +22,6 @@ CONFIGURE_ARGS=	--disable-null \
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=		PULSEAUDIO ALSA
-OPTIONS_DEFAULT=	PULSEAUDIO
 OPTIONS_SUB=		yes
 
 PULSEAUDIO_CONFIGURE_ENABLE=	pulseaudio

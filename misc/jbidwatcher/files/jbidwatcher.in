@@ -1,5 +1,3 @@
 #!/bin/sh
-#
-# $FreeBSD$
 
-JAVA_VERSION="%%JAVA_VERSION%%" "%%LOCALBASE%%/bin/java" -jar "%%JAVAJARDIR%%/JBidwatcher-%%PORTVERSION%%.jar" "$@"
+"%%LOCALBASE%%/bin/java" -jar "%%JAVAJARDIR%%/JBidwatcher-%%PORTVERSION%%.jar" "$@"

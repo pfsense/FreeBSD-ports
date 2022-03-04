@@ -1,12 +1,11 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	sauerbraten
-PORTVERSION=	20130203
-PORTREVISION=	4
+PORTVERSION=	20201221
+PORTREVISION=	1
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/2013_01_04
-DISTNAME=	${PORTNAME}_2013_02_03_collect_edition_linux
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/2020_11_29
+DISTNAME=	${PORTNAME}_2020_12_21_linux
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	First person shooter based on Cube
@@ -14,18 +13,14 @@ COMMENT=	First person shooter based on Cube
 LICENSE=	MIT ZLIB
 LICENSE_COMB=	multi
 
-USES=		gmake tar:bzip2
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ACLOCAL=true AUTOCONF=true AUTOMAKE=true
-CONFIGURE_WRKSRC=	${WRKSRC}/src/enet
-CONFIGURE_ARGS=	--enable-shared=no --enable-static=yes
+USES=		compiler:c++11-lang cpe gmake tar:bzip2
 BUILD_WRKSRC=	${WRKSRC}/src
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=	libenet
 
 PORTDATA=	data packages
 PORTDOCS=	*
-PLIST_DIRS=	%%DATADIR%%/packages/brush
+PLIST_DIRS=	%%DATADIR%%/packages/prefab
 
 OPTIONS_MULTI=	BUILD
 OPTIONS_MULTI_BUILD=	CLIENT DEDICATED MASTER
@@ -36,7 +31,8 @@ SUB_FILES=	pkg-message ${PLIST_FILES:Mbin/*:T}
 OPTIONS_DEFINE=	DOCS
 
 CLIENT_DESC=	Build client
-CLIENT_USE=		GL=gl SDL=image,mixer,sdl XORG=x11
+CLIENT_USES=		gl sdl xorg
+CLIENT_USE=		GL=gl SDL=image2,mixer2,sdl2 XORG=x11
 CLIENT_ALL_TARGET=	client
 CLIENT_PLIST_FILES=	bin/sauer_client libexec/sauer_client
 DEDICATED_DESC=	Build dedicated server
@@ -58,8 +54,7 @@ post-extract:
 		${XARGS} -0 ${RM} -R
 
 post-patch:
-	@${REINPLACE_CMD} -Ee '/^#define (HAS_GETHOSTBY(NAME|ADDR)_R) 1/d' \
-		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}
+	@${REINPLACE_CMD}  '1d' ${WRKSRC}/src/enet/Makefile
 
 do-install:
 .for f in ${PLIST_FILES:Mbin/*}

@@ -1,5 +1,4 @@
 # Created by: Max Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Term-Animation
 PORTVERSION=	2.6
@@ -8,7 +7,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	fjoe@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	ASCII sprite animation framework
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

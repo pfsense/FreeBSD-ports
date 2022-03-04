@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	piranha
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	math
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -21,12 +19,12 @@ LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
 		libmpfr.so:math/mpfr \
 		${PY_BOOST}
 
-USES=		cmake compiler:c++14-lang python
+USES=		cmake compiler:c++14-lang python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	bluescarni
 USE_PYTHON=	flavors
 
-PYTHON_SUFFIX_LETTER=	${PYTHON_VER:C/^2.*//:C/^3.*/m/}
+PYTHON_SUFFIX_LETTER=	${PYTHON_VER:C/^3.[67]/m/:C/^3.[89]//}
 
 CMAKE_ON=	BUILD_PYRANHA
 CMAKE_OFF=	PIRANHA_INSTALL_HEADERS
@@ -41,6 +39,6 @@ post-patch: # FIND_PACKAGE(Boost) only supports modules python and python3
 	@${REINPLACE_CMD} -e 's|$${REQUIRED_BOOST_LIBS} python)|$${REQUIRED_BOOST_LIBS} python${PYTHON_MAJOR_VER:S/2//})|' ${WRKSRC}/CMakeLists.txt
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyranha/_core.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyranha/_core*.so
 
 .include <bsd.port.mk>

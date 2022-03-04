@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	hieracles
 PORTVERSION=	0.4.2
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	mose@gandi.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CLI tool for Hiera parameters visualisation and analysis
 
 LICENSE=	MIT

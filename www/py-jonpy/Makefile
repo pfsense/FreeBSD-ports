@@ -1,5 +1,4 @@
 # Created by: Søren Straarup <xride@x12.dk>
-# $FreeBSD$
 
 PORTNAME=	jonpy
 PORTVERSION=	0.12
@@ -12,7 +11,7 @@ COMMENT=	Python FastCGI interface library
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

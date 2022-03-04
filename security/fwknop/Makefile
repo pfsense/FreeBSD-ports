@@ -1,9 +1,8 @@
 # Created by: Sean Greven <sean.greven@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fwknop
 PORTVERSION=	2.6.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://www.cipherdyne.org/fwknop/download/
 
@@ -12,9 +11,9 @@ COMMENT=	SPA implementation for Linux and FreeBSD
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS= wget:ftp/wget
-RUN_DEPENDS=   wget:ftp/wget
-LIB_DEPENDS+=  libassuan.so:security/libassuan
+BUILD_DEPENDS=	wget:ftp/wget
+RUN_DEPENDS=	wget:ftp/wget
+LIB_DEPENDS+=	libassuan.so:security/libassuan
 
 USES=		cpe libtool
 USE_LDCONFIG=	yes

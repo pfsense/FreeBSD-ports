@@ -1,5 +1,4 @@
 # Created by: searle
-# $FreeBSD$
 
 PORTNAME=	stars
 PORTVERSION=	1.0
@@ -13,6 +12,7 @@ COMMENT=	Star field demo
 
 PLIST_FILES=	bin/stars
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+USES=		xorg
 USE_XORG=	x11
 
 do-build:

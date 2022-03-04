@@ -1,5 +1,4 @@
 # Created by: Philippe Audeoud <jadawin@tuxaco.net>
-# $FreeBSD$
 
 PORTNAME=	Net-Proxy
 PORTVERSION=	0.13
@@ -8,7 +7,7 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	jadawin@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Framework for proxying network connections in many ways
 
 LICENSE=	ART10 GPLv1+

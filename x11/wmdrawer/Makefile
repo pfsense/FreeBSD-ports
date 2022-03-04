@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	wmdrawer
 PORTVERSION=	0.10.5
@@ -8,12 +7,12 @@ CATEGORIES=	x11 windowmaker
 MASTER_SITES=	http://people.easter-eggs.org/~valos/wmdrawer/ \
 		http://www.sourcefiles.org/Utilities/Desktops/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	xride@FreeBSD.org
 COMMENT=	Dockapp which provides a drawer to launch applications
 
 LICENSE=	GPLv2+
 
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig xorg
 USE_GNOME=	gdkpixbuf2
 USE_XORG=	x11 xext xi
 MAKE_ENV=	USE_GDKPIXBUF2=1

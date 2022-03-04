@@ -1,8 +1,7 @@
 # Created by: Dave Cottlehuber <dch@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	riemann
-PORTVERSION=	0.3.1
+DISTVERSION=	0.3.6
 CATEGORIES=	net-mgmt java
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${PORTVERSION}/
 

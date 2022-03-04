@@ -1,12 +1,11 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	openvswitch
-DISTVERSION=	2.11.0
+DISTVERSION=	2.16.1
 CATEGORIES=	net
 MASTER_SITES=	http://openvswitch.org/releases/
 
-MAINTAINER=	koue@chaosophia.net
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Production quality, multilayer virtual switch
 
 LICENSE=	APACHE20
@@ -15,11 +14,23 @@ BROKEN_mips64=		fails to compile: ofp-actions.h:486: flexible array member in ot
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
-USES=		compiler:c++14-lang cpe gmake libtool perl5 pkgconfig python:2.7 shebangfix ssl
-SHEBANG_FILES=	ovn/utilities/ovndb-servers.ocf \
+USES=		compiler:c11 cpe gmake libtool perl5 pkgconfig python \
+		shebangfix ssl
+SHEBANG_FILES=	ipsec/ovs-monitor-ipsec.in \
+		utilities/bugtool/ovs-bugtool-get-port-stats \
 		utilities/bugtool/ovs-bugtool-ovs-ofctl-loop-over-bridges \
-		utilities/ovs-docker \
+		utilities/bugtool/ovs-bugtool.in \
 		utilities/ovs-appctl-bashcomp.bash \
+		utilities/ovs-check-dead-ifs.in \
+		utilities/ovs-docker \
+		utilities/ovs-dpctl-top.in \
+		utilities/ovs-l3ping.in \
+		utilities/ovs-parse-backtrace.in \
+		utilities/ovs-pcap.in \
+		utilities/ovs-tcpdump.in  \
+		utilities/ovs-tcpundump.in \
+		utilities/ovs-test.in \
+		utilities/ovs-vlan-test.in \
 		vtep/ovs-vtep.in
 
 USE_LDCONFIG=	yes
@@ -34,9 +45,13 @@ INSTALL_TARGET=install-strip
 SHLIB_VER=	${DISTVERSION:C/\.[0-9]*$//}
 PLIST_SUB=	SHLIB_VER=${SHLIB_VER}
 
+post-patch:
+	@${REINPLACE_CMD} -e 's|uuid_from_string(|uuid_from_string_ovs(|g' \
+		${WRKSRC}/*/*.c ${WRKSRC}/*/*.h
+
 post-install:
-	@${MKDIR} ${STAGEDIR}/var/run/openvswitch
-	@${MKDIR} ${STAGEDIR}/var/log/openvswitch
+	${MKDIR} ${STAGEDIR}/var/run/openvswitch
+	${MKDIR} ${STAGEDIR}/var/log/openvswitch
 	${INSTALL_DATA} ${WRKSRC}/vswitchd/vswitch.ovsschema ${STAGEDIR}${PREFIX}/share/openvswitch/
 
 .include <bsd.port.mk>

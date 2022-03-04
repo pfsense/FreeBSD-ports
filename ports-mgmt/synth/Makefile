@@ -1,22 +1,20 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	synth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.08
+DISTVERSION=	2.12
 CATEGORIES=	ports-mgmt
 
-MAINTAINER=	ericbsd@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Custom package repository builder for FreeBSD and DragonFly
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/License.txt
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libncurses.a:devel/ncurses \
-		${GPR}/ini_file_manager.gpr:misc/ini_file_manager \
+BUILD_DEPENDS=	${GPR}/ini_file_manager.gpr:misc/ini_file_manager \
 		${GPR}/adacurses.gpr:devel/adacurses
 
-USES=		ada:6
+USES=		ada:6 ncurses:base
 USE_GITHUB=	yes
 GH_ACCOUNT=	jrmarino
 
@@ -29,6 +27,14 @@ OPTIONS_DEFAULT=WATCHDOG
 WATCHDOG_DESC=	Build with watchdog monitor
 
 WATCHDOG_EXTRA_PATCHES_OFF=	${FILESDIR}/extrapatch-nowatchdog-portscan-buildcycle.adb
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1300079
+USES+=		ncurses:base
+.else
+USES+=		ncurses:port
+.endif
 
 .include <bsd.port.pre.mk>
 

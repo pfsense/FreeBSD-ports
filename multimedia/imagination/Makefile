@@ -1,9 +1,8 @@
 # Created by: Jesse <jessefrgsmith@yahoo.ca>
-# $FreeBSD$
 
 PORTNAME=	imagination
 PORTVERSION=	3.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
@@ -14,9 +13,8 @@ LIB_DEPENDS=	libsox.so:audio/sox \
 		libavcodec.so:multimedia/ffmpeg
 
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig libtool localbase
+USES=		gmake gnome libtool localbase pkgconfig
 USE_GNOME=	gtk20 intltool libxslt
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	NLS

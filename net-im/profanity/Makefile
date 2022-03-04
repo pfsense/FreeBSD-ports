@@ -1,12 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	profanity
-PORTVERSION=	0.6.0
+PORTVERSION=	0.11.1
 CATEGORIES=	net-im
-MASTER_SITES=	http://www.profanity.im/ \
-		LOCAL/arved
 
-MAINTAINER=	arved@FreeBSD.org
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Console based XMPP client
 
 LICENSE=	GPLv3+
@@ -19,14 +15,22 @@ LIB_DEPENDS=	libmesode.so:net-im/libmesode \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libgpgme.so:security/gpgme \
 		libassuan.so:security/libassuan \
-		libgpg-error.so:security/libgpg-error
+		libgpg-error.so:security/libgpg-error \
+		libgcrypt.so:security/libgcrypt \
+		libsignal-protocol-c.so:net/libsignal-protocol-c \
+		libsqlite3.so:databases/sqlite3
 
-USES=		ncurses pkgconfig ssl python readline autoreconf libtool gnome
+USES=		cpe ncurses pkgconfig ssl python readline autoreconf libtool gnome
+CPE_VENDOR=	${PORTNAME}_project
 USE_GNOME=	glib20
+USE_GITHUB=	yes
+GH_ACCOUNT=	profanity-im
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-otr --enable-python-plugins --enable-c-plugins \
-		--enable-pgp --enable-icons=no --with-xscreensaver=no
+		--enable-pgp --enable-icons-and-clipboard=no \
+		--with-xscreensaver=no \
+		--enable-omemo
 CONFIGURE_ENV=	LIBS="${CFLAGS} -lcrypto"
 INSTALL_TARGET=	install-strip
 OPTIONS_DEFINE=	NOTIFY

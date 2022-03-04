@@ -1,4 +1,4 @@
---- media/formats/mp2t/es_parser_mpeg1audio.cc.orig	2019-03-11 22:00:59 UTC
+--- media/formats/mp2t/es_parser_mpeg1audio.cc.orig	2021-04-14 18:41:05 UTC
 +++ media/formats/mp2t/es_parser_mpeg1audio.cc
 @@ -108,11 +108,11 @@ bool EsParserMpeg1Audio::LookForMpeg1AudioFrame(
    const uint8_t* es;
@@ -15,7 +15,7 @@
      const uint8_t* cur_buf = &es[offset];
      if (cur_buf[0] != 0xff)
        continue;
-@@ -153,7 +153,7 @@ bool EsParserMpeg1Audio::LookForMpeg1AudioFrame(
+@@ -155,7 +155,7 @@ bool EsParserMpeg1Audio::LookForMpeg1AudioFrame(
      return true;
    }
  

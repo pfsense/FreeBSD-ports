@@ -1,20 +1,29 @@
---- ui/base/dragdrop/os_exchange_data_provider_factory.cc.orig	2019-03-11 22:01:19 UTC
+--- ui/base/dragdrop/os_exchange_data_provider_factory.cc.orig	2021-04-14 18:41:37 UTC
 +++ ui/base/dragdrop/os_exchange_data_provider_factory.cc
-@@ -8,7 +8,7 @@
+@@ -7,7 +7,7 @@
+ #include "base/notreached.h"
+ #include "build/build_config.h"
  
- #if defined(USE_X11)
- #include "ui/base/dragdrop/os_exchange_data_provider_aurax11.h"
--#elif defined(OS_LINUX)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
- #include "ui/base/dragdrop/os_exchange_data_provider_aura.h"
- #elif defined(OS_MACOSX)
- #include "ui/base/dragdrop/os_exchange_data_provider_builder_mac.h"
-@@ -42,7 +42,7 @@ OSExchangeDataProviderFactory::CreateProvider() {
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ #include "ui/base/dragdrop/os_exchange_data_provider_non_backed.h"
+ #include "ui/base/ui_base_features.h"
+ #if defined(USE_OZONE)
+@@ -26,7 +26,7 @@ namespace ui {
  
+ namespace {
+ 
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+ std::unique_ptr<OSExchangeDataProvider> CreateProviderForLinux() {
+ #if defined(USE_OZONE)
+   // The instance can be nullptr in tests that do not instantiate the platform,
+@@ -50,7 +50,7 @@ std::unique_ptr<OSExchangeDataProvider> CreateProvider
+ // static
+ std::unique_ptr<OSExchangeDataProvider>
+ OSExchangeDataProviderFactory::CreateProvider() {
+-#if defined(OS_LINUX) || defined(OS_CHROMEOS)
++#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+   if (features::IsUsingOzonePlatform())
+     return CreateProviderForLinux();
  #if defined(USE_X11)
-   return std::make_unique<OSExchangeDataProviderAuraX11>();
--#elif defined(OS_LINUX)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
-   return std::make_unique<OSExchangeDataProviderAura>();
- #elif defined(OS_MACOSX)
-   return ui::BuildOSExchangeDataProviderMac();

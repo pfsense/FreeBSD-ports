@@ -1,6 +1,6 @@
---- setup.py.orig	2018-10-13 20:39:26 UTC
+--- setup.py.orig	2019-05-10 21:59:01 UTC
 +++ setup.py
-@@ -295,18 +295,9 @@ package_data_exclude = {
+@@ -295,19 +295,9 @@ package_data_exclude = {
  }
  
  data_files = [
@@ -11,6 +11,7 @@
 -    ('service/FreeBSD', ['FreeBSD/theonionbox.sh']),
 -    ('service/init.d', ['init.d/theonionbox.sh']),
 -    ('service/systemd', ['systemd/theonionbox.service']),
+-    ('service/Docker', ['Docker/Dockerfile', 'Docker/theonionbox.cfg']),
 -    ('support', []),
 -    ('support/osxtemp', []),
 -    ('support/osxtemp/libsmc', ['support/osxtemp/libsmc/LICENSE', 'support/osxtemp/libsmc/Makefile']),
@@ -22,13 +23,16 @@
  ]
  # print(generate_data_files(data_files))
  
-@@ -375,8 +366,7 @@ setup(
-     },
-     install_requires=[
-         'psutil>=5.4.0',
--        'apscheduler>=2.1.2, <3.*; python_version<"3.0"',
--        'apscheduler>=3.4; python_version>="3.0"',
-+        'apscheduler>=3.5.1',
-         'requests>2.18',
+@@ -381,10 +371,10 @@ setup(
+         'requests>=2.21',
          'PySocks>=1.6.7',
          'bottle>=0.12.13',
+-        'stem>=1.5.4, <=1.6',
++        'stem>=1.5.4',
+         'tzlocal>=1.5',
+         'futures>=3.2; python_version<"3.0"',
+-        'urllib3>=1.24.2, <1.25'    # '<1.25' due to requests 2.21 requirement
++        'urllib3>=1.21.1,<1.27' # copied (except the exclusions) from requests 2.25.1
+     ],
+     long_description_content_type='text/x-rst; charset=UTF-8',
+     classifiers=[

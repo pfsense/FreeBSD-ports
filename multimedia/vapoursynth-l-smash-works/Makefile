@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	l-smash-works
-DISTVERSION=	0.0-935 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g3edd194
-PORTREVISION=	2
+DISTVERSION=	0.0-940 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-g198cc78
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -41,8 +38,8 @@ CPPFLAGS+=	`pkg-config vapoursynth --cflags`
 USE_LDCONFIG=	yes
 DATADIR=	${PREFIX}/lib/vapoursynth
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
-PLIST_FILES=	lib/libvslsmashsource.so.${PORTVERSION:E} \
-		%%DATADIR%%/libvslsmashsource.so
+PLIST_FILES=	lib/libvslsmashsource.so.${PORTVERSION:E}
+PORTDATA=	libvslsmashsource.so
 PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
@@ -55,6 +52,8 @@ post-patch:
 	@${REINPLACE_CMD} 's/ -msse2 -g0//' ${WRKSRC}/${MAKEFILE}
 
 post-install:
+	${RLN} ${STAGEDIR}${PREFIX}/lib/libvslsmashsource.so.${PORTVERSION:E} \
+		${STAGEDIR}${DATADIR}/libvslsmashsource.so
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 

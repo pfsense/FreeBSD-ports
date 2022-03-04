@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	check_logfiles
-PORTVERSION=	3.8.1.4
-PORTREVISION=	1
+PORTVERSION=	3.13
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://labs.consol.de/assets/downloads/nagios/
 

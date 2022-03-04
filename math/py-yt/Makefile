@@ -1,8 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	yt
-DISTVERSION=	3.5.0
+DISTVERSION=	4.0.1
 PORTREVISION=	1
 CATEGORIES=	math astro python
 MASTER_SITES=	CHEESESHOP
@@ -14,21 +13,29 @@ COMMENT=	Analysis and visualization toolkit for volumetric data
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}pyembree>0:graphics/py-pyembree@${PY_FLAVOR}
-LIB_DEPENDS=	libembree.so:graphics/embree \
-		libomp.so:devel/openmp
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sympy>=1.0:math/py-sympy@${PY_FLAVOR} \
-		${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}pyembree>0:graphics/py-pyembree@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.3:math/py-matplotlib@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ipython5>=1.0:devel/ipython5@${PY_FLAVOR}
+BROKEN_i386=	call to 'countOnes' is ambiguous, see https://github.com/yt-project/yt/issues/3477
 
-USES=		dos2unix localbase python
+# dependencies are in setup.cfg
+BUILD_DEPENDS=	${PYNUMPY}
+RUN_DEPENDS=	\
+		${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}ipython>=1.0:devel/ipython@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}matplotlib>=2.0.2:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}more-itertools>=8.4:devel/py-more-itertools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>=20.9:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sympy>=1.2:math/py-sympy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}toml>=0.10.2:textproc/py-toml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tqdm>=3.4.0:misc/py-tqdm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}unyt>=2.8.0:math/py-unyt@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>=4.2b1:devel/py-yaml@${PY_FLAVOR}
+
+USES=		dos2unix localbase python:3.7+
 USE_PYTHON=	distutils cython autoplist concurrent
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|check_for_pyembree() is not None|True|; s|check_for_openmp() is True|True|" \
+	@${REINPLACE_CMD} -e "s|check_for_pyembree() is not None|False|" \
+		${WRKSRC}/setup.py
+	@${REINPLACE_CMD} -e "s|check_for_openmp() is True|True|" \
 		${WRKSRC}/setup.py
 	@${REINPLACE_CMD} -e "s|\['-fopenmp', filename\]|['-I${LOCALBASE}/include', '-L${LOCALBASE}/lib', '-lm', '-fopenmp', filename]|" \
 		${WRKSRC}/setupext.py

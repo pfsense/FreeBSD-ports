@@ -1,11 +1,10 @@
 # Created by: <janos.mohacsi@bsd.hu>
-# $FreeBSD$
 
 PORTNAME=	njam
 PORTVERSION=	1.25
 PORTREVISION=	12
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,7 +14,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		gmake localbase
+USES=		gmake localbase sdl
 USE_SDL=	mixer image net sdl
 
 PORTDOCS=	*

@@ -1,5 +1,4 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
-# $FreeBSD$
 #    $MCom: ports/trunk/audio/libaudiofile/Makefile 18610 2013-06-30 16:33:05Z marcus $
 
 PORTNAME=	libaudiofile
@@ -18,7 +17,9 @@ LIB_DEPENDS=	libFLAC.so:audio/flac
 
 CONFLICTS=	osalp-0.7.*
 
-USES=		pathfix pkgconfig tar:xz libtool
+USES=		cpe pathfix pkgconfig tar:xz libtool
+CPE_PRODUCT=	audiofile
+
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 

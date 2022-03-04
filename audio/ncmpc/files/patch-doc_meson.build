@@ -1,14 +1,22 @@
---- doc/meson.build.orig	2018-10-25 17:01:44 UTC
+Keep rsync optional with meson >= 0.58 after
+https://github.com/mesonbuild/meson/commit/80c89a650b6f
+
+--- doc/meson.build.orig	2020-10-16 10:59:17 UTC
 +++ doc/meson.build
-@@ -30,9 +30,9 @@ endif
- if get_option('manual')
+@@ -18,6 +18,8 @@ if get_option('html_manual')
+     install_dir: join_paths(get_option('datadir'), 'doc', meson.project_name()),
+   )
+ 
++  rsync = find_program('rsync', required: false)
++  if rsync.found()
    custom_target(
-     'Manpage documentation',
--    output: 'man',
-+    output: 'man1',
-     input: ['index.rst', 'conf.py'],
--    command: [sphinx, '-q', '-b', 'man', '-d', '@OUTDIR@/man_doctrees', meson.current_source_dir(), '@OUTPUT@/man1'],
-+    command: [sphinx, '-q', '-b', 'man', '-d', '@OUTDIR@/man_doctrees', meson.current_source_dir(), '@OUTPUT@'],
-     build_by_default: true,
-     install: true,
-     install_dir: get_option('mandir'),
+     'upload',
+     input: sphinx_output,
+@@ -29,6 +31,7 @@ if get_option('html_manual')
+       '--chmod=a+rX',
+     ],
+   )
++  endif
+ endif
+ 
+ if get_option('manual')

@@ -1,10 +1,8 @@
 # Created by: Andreev Maxim <andreevmaxim@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	qconf
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4
-PORTREVISION=	1
+DISTVERSION=	2.5
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org

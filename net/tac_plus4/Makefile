@@ -1,5 +1,4 @@
 # Created by: Igor Vinokurov <igor@zynaps.ru>
-# $FreeBSD$
 
 PORTNAME=	tac_plus
 PORTVERSION=	F4.0.4.28
@@ -11,17 +10,19 @@ MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Cisco remote authentication/authorization/accounting server
 
 GNU_CONFIGURE=	yes
-USES=		bison perl5 libtool
+USES=		bison cpe perl5 libtool
 USE_PERL5=	build
 USE_RC_SUBR=	tac_plus
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--with-groupid=$$(/usr/bin/id -g tacacs 2>/dev/null || echo '559') \
 		--with-userid=$$(/usr/bin/id -u tacacs 2>/dev/null || echo '559')
 
+CPE_VENDOR=	cisco
+
 USERS=		tacacs
 GROUPS=		tacacs
 
-CONFLICTS=	ru-tac+ia-[0-9]* tac_plus-libradius-[0-9]*
+CONFLICTS=	ru-tac+ia tac_plus-libradius
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	DOCS

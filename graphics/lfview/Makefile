@@ -1,5 +1,4 @@
 # Created by: Yuu Yashiki
-# $FreeBSD$
 
 PORTNAME=	lfview
 PORTVERSION=	1.1a
@@ -10,7 +9,7 @@ MASTER_SITES=	http://hoshina.denpa.org/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphic viewer for Leaf products
 
-USES=		imake tar:tgz
+USES=		imake tar:tgz xorg
 USE_XORG=	x11 xext
 USE_LDCONFIG=	yes
 

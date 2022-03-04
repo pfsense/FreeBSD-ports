@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	texlive
 PORTVERSION=	20150523
 PORTREVISION=	4
@@ -12,13 +10,14 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}${PKGNAMESUFFIX}${EXTRACT_SUFX}:texmf \
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	latex-base-20150101.2${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	TeX Live Typesetting System, texmf Tree
 
 CONFLICTS_INSTALL=	texlive-base-201[234]* \
 			texlive-texmf-201[234]*
 
-USES=		python:run shebangfix tar:xz
+USES=		cpe python:run shebangfix tar:xz
+CPE_VENDOR=	tug
 USE_TEX=	basic:extract base tlmgr:run texhash
 TEXHASHDIRS=	${TEXMFDIR} ${TEXMFDISTDIR}
 NO_BUILD=	yes

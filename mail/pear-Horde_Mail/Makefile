@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Mail
 PORTVERSION=	2.6.5
 CATEGORIES=	mail www pear
@@ -7,7 +5,7 @@ CATEGORIES=	mail www pear
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Mail Library
 
-USES=	horde
+USES=	horde cpe
 USE_HORDE_RUN=	Horde_Exception \
 		Horde_Idna \
 		Horde_Stream_Filter

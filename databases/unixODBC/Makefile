@@ -1,8 +1,7 @@
 # Created by: Nick Sayer <nsayer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	unixODBC
-PORTVERSION=	2.3.7
+PORTVERSION=	2.3.9
 CATEGORIES=	databases
 MASTER_SITES=	http://www.unixodbc.org/ \
 		ftp://ftp.unixodbc.org/pub/unixODBC/
@@ -21,7 +20,7 @@ CONFIGURE_ARGS=	--enable-static --enable-shared \
 		${ICONV_CONFIGURE_ARG}
 INSTALL_TARGET=	install-strip
 # :keepla because port uses lt_dlopen
-USES=		iconv libtool:keepla
+USES=		cpe iconv libtool:keepla
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*

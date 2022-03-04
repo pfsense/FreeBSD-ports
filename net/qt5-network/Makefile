@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	network
 DISTVERSION=	${QT5_VERSION}
-CATEGORIES=	net ipv6
+PORTREVISION=	1
+CATEGORIES=	net
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
@@ -14,13 +13,19 @@ USES=		compiler:c++11-lang qmake:no_env qt-dist:5,base ssl
 USE_QT=		core buildtools_build
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-gui -no-xcb
-USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
 
 QT_DEFINES=	OPENSSL SSL
 QT_CONFIG=	openssl
+
+.include <bsd.port.pre.mk>
+
+# LibreSSL does not currently support BIO_ADDR in DTLSv1_listen()
+.if ${SSL_DEFAULT:Mlibressl*}
+CONFIGURE_ARGS+=	-no-feature-dtls
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
@@ -44,4 +49,4 @@ post-install:
 		${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} \
 		${MAKE_ARGS} ${INSTALL_TARGET}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

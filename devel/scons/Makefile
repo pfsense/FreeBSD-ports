@@ -1,31 +1,21 @@
 # Created by: Peter Haight <peterh@sapros.com>
-# $FreeBSD$
 
 PORTNAME=	scons
-PORTVERSION=	3.0.4
+PORTVERSION=	4.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	SF
+PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Build tool alternative to make
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	gm4:devel/m4
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
-USES=		python shebangfix
-SHEBANG_FILES=	script/scons*
-USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
-
-PLIST_SUB=	SCONS_VER=${PORTVERSION}
-
-post-patch:
-	@${REINPLACE_CMD} \
-		-e 's,distutils\.command\.install$$,setuptools\.command\.install,' \
-		-e 's,distutils\.command\.install\.,setuptools\.command\.install\.,' \
-		${WRKSRC}/setup.py
-	@${FIND} ${WRKSRC} -name \*.orig -delete
+WRKSRC=		${WRKDIR}/SCons-${PORTVERSION}
 
 .include <bsd.port.mk>

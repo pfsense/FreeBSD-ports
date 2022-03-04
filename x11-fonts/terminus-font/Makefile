@@ -1,9 +1,7 @@
 # Created by: Michael Hsin <mhsin@mhsin.org>
-# $FreeBSD$
 
 PORTNAME=	terminus-font
-PORTVERSION=	4.47
-PORTREVISION=	1
+PORTVERSION=	4.48
 CATEGORIES=	x11-fonts
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}-${PORTVERSION}
 

@@ -1,6 +1,6 @@
---- tgl/tl-parser/portable_endian.h.orig	2016-08-11 06:34:54 UTC
+--- tgl/tl-parser/portable_endian.h.orig	2020-04-27 11:49:17 UTC
 +++ tgl/tl-parser/portable_endian.h
-@@ -53,15 +53,6 @@
+@@ -72,15 +72,6 @@
  
  #	include <sys/endian.h>
  

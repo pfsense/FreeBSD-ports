@@ -1,9 +1,8 @@
 # Created by: Dan Smith <dan@algenta.com>
-# $FreeBSD$
 
 PORTNAME=	crossip
 DISTVERSION=	1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	dns java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/CrossIP%20${PORTVERSION}
 
@@ -14,7 +13,6 @@ LICENSE=	GPLv2
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 NO_BUILD=	yes
 

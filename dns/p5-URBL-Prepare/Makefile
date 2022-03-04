@@ -1,5 +1,4 @@
 # Created by: Kurt Jaeger <fbsd-ports@opsec.eu>
-# $FreeBSD$
 
 PORTNAME=	URBL-Prepare
 PORTVERSION=	0.09
@@ -14,5 +13,7 @@ COMMENT=	Prepare hostname for URBL domain lookup
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

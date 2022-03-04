@@ -1,8 +1,7 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	ming
-DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSIONPREFIX=	ming-
 DISTVERSION=	0_4_8
 CATEGORIES=	graphics perl5
 PKGNAMEPREFIX=	p5-
@@ -20,22 +19,24 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libming.so:graphics/ming \
 		libpng.so:graphics/png
 
-OPTIONS_DEFINE=	EXAMPLES
-
-PORTSCOUT=	limit:^ming-
+USES=		autoreconf bison gmake libtool localbase perl5 pkgconfig  shebangfix
 
 CONFIGURE_ARGS=	--enable-perl
 GNU_CONFIGURE=	yes
-USES=		autoreconf bison gmake libtool localbase perl5 shebangfix
-SHEBANG_FILES=	perl_ext/examples/*.cgi
 
 BUILD_WRKSRC=	${WRKSRC}/perl_ext
 INSTALL_WRKSRC=	${WRKSRC}/perl_ext
 PORTEXAMPLES=	*
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	lib${PORTNAME}
-GH_PROJECT=	lib${PORTNAME}
+GH_ACCOUNT=	libming
+GH_PROJECT=	libming
+
+PORTSCOUT=	limit:^ming-
+
+SHEBANG_FILES=	perl_ext/examples/*.cgi
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e '/ming_is_compiled()/ s|^|#|; /LIBS/d' ${WRKSRC}/perl_ext/Makefile.PL

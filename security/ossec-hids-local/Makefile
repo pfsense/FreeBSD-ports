@@ -1,35 +1,31 @@
-# $FreeBSD$
-
-PORTNAME=	ossec-hids
-PORTVERSION=	3.1.0
-PORTREVISION=	2
-CATEGORIES=	security
-PKGNAMESUFFIX=	-${OSSEC_TYPE}
-
-MAINTAINER=	dominik.lisiak@bemsoft.pl
-COMMENT=	Security tool to monitor and check logs and intrusions
-
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/LICENSE
-
-USES=		gmake readline ssl
-
+PKGNAMESUFFIX?=	-${OSSEC_TYPE}
+COMMENT?=	Security tool to monitor and check logs and intrusions - local (standalone) installation
 OSSEC_TYPE?=	local
 
+.include "${.CURDIR}/../ossec-hids/version.mk"
+
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_aarch64=		fails to compile: rootcheck/os_string.c:186:20: use of undeclared identifier '__LDPGSZ'
+BROKEN_riscv64=		fails to compile: rootcheck/os_string.c:186:20: use of undeclared identifier '__LDPGSZ'
+
+USES=		compiler gmake ssl
+
 .if ${OSSEC_TYPE} == local
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == agent
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-local-* \
-			ossec-hids-server-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-local \
+			ossec-hids-server
 .elif ${OSSEC_TYPE} == server
-CONFLICTS_INSTALL=	ossec-hids-client-* \
-			ossec-hids-agent-* \
-			ossec-hids-local-*
+CONFLICTS_INSTALL=	ossec-hids-client \
+			ossec-hids-agent \
+			ossec-hids-local
 .endif
 
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 libevent.so:devel/libevent
 .if ${OSSEC_TYPE} != agent
 RUN_DEPENDS=	expect:lang/expect
 .endif
@@ -38,19 +34,24 @@ INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
 PRELUDE_LIB_DEPENDS=	libprelude.so:security/libprelude
 ZEROMQ_LIB_DEPENDS=	libczmq.so:net/czmq
 
+INOTIFY_USES=	pkgconfig
+LUA_USES=	readline
 MYSQL_USE=	mysql
 PGSQL_USES=	pgsql
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ossec
+
 USE_RC_SUBR=	ossec-hids
 
-.if ${OSSEC_TYPE} != agent
 USES+=		shebangfix
+SHEBANG_FILES=	active-response/ossec-pagerduty.sh
+
+.if ${OSSEC_TYPE} != agent
 SHEBANG_LANG=	expect
 expect_OLD_CMD=	"/usr/bin/env expect"
 expect_CMD=	${LOCALBASE}/bin/expect
-SHEBANG_FILES=	src/agentlessd/scripts/main.exp \
+SHEBANG_FILES+=	src/agentlessd/scripts/main.exp \
 		src/agentlessd/scripts/ssh.exp \
 		src/agentlessd/scripts/ssh_asa-fwsmconfig_diff \
 		src/agentlessd/scripts/ssh_foundry_diff \
@@ -64,7 +65,7 @@ SHEBANG_FILES=	src/agentlessd/scripts/main.exp \
 .endif
 
 OPTIONS_SUB=			yes
-OPTIONS_DEFINE=			DOCS INOTIFY
+OPTIONS_DEFINE=			DOCS INOTIFY LUA
 
 .if ${OSSEC_TYPE} != agent
 OPTIONS_DEFINE+=		PRELUDE ZEROMQ
@@ -81,6 +82,7 @@ ZEROMQ_DESC=		ZeroMQ support (experimental)
 DATABASE_DESC=		Database output
 
 INOTIFY_VARS=	OSSEC_ARGS+=USE_INOTIFY=yes
+LUA_VARS=	OSSEC_ARGS+=LUA_ENABLE=yes STRIP_FILES+=ossec-lua STRIP_FILES+=ossec-luac
 PRELUDE_VARS=	OSSEC_ARGS+=USE_PRELUDE=yes
 ZEROMQ_VARS=	OSSEC_ARGS+=USE_ZEROMQ=yes
 MYSQL_VARS=	OSSEC_ARGS+=DATABASE=mysql PKGMSG_FILES+=message-database DB_TYPE=mysql DB_SCHEMA=mysql.schema
@@ -92,8 +94,6 @@ STRIP_FILES=	agent-auth \
 		ossec-agentd \
 		ossec-execd \
 		ossec-logcollector \
-		ossec-lua \
-		ossec-luac \
 		ossec-syscheckd
 .else
 STRIP_FILES=	agent_control \
@@ -108,8 +108,6 @@ STRIP_FILES=	agent_control \
 		ossec-execd \
 		ossec-logcollector \
 		ossec-logtest \
-		ossec-lua \
-		ossec-luac \
 		ossec-maild \
 		ossec-makelists \
 		ossec-monitord \
@@ -132,7 +130,12 @@ FIREWALL_DROP_BIN=	${OSSEC_HOME}/active-response/bin/firewall-drop.sh
 IPFILTER_BIN=		${OSSEC_HOME}/active-response/bin/ipfilter.sh
 RESTART_OSSEC_BIN=	${OSSEC_HOME}/active-response/bin/restart-ossec.sh
 SHARED_DIR=		${OSSEC_HOME}/etc/shared
-INTERNAL_OPTS_CONF=	${OSSEC_HOME}/etc/local_internal_options.conf
+
+SAMPLE_FILES=		${OSSEC_HOME}/etc/local_internal_options.conf \
+			${OSSEC_HOME}/active-response/bin/cloudflare-ban.sh \
+			${OSSEC_HOME}/active-response/bin/ossec-pagerduty.sh \
+			${OSSEC_HOME}/active-response/bin/ossec-slack.sh \
+			${OSSEC_HOME}/active-response/bin/ossec-tweeter.sh
 
 .if empty(USER)
 USER=$$(${ID} -un)
@@ -159,7 +162,6 @@ SUB_LIST+=	PORTNAME=${PORTNAME} \
 		VERSION=${PORTVERSION} \
 		DB_TYPE=${DB_TYPE} \
 		DB_SCHEMA=${DOCSDIR}/${DB_SCHEMA} \
-		USER=${USER} \
 		OSSEC_USER=${OSSEC_USER} \
 		OSSEC_GROUP=${OSSEC_GROUP} \
 		OSSEC_RC=${OSSEC_RC}
@@ -174,14 +176,20 @@ PLIST_SUB=	OSSEC_HOME=${PORTNAME}
 PLIST_SUB=	OSSEC_HOME=${OSSEC_HOME}
 .endif
 PLIST=		${PKGDIR}/pkg-plist-${OSSEC_TYPE}
-DOCSFILES=	BUGS CHANGELOG CONTRIBUTORS LICENSE README.md SUPPORT.md
+DOCSFILES=	BUGS CHANGELOG.md CONTRIBUTORS LICENSE README.md SUPPORT.md
 PKGHELP=	${PKGDIR}/pkg-help-${OSSEC_TYPE}
 PKGMESSAGE=	${WRKDIR}/pkg-message
 PKGMSG_FILES=	message-header
 
+PKG_CONFIG=	${CONFIGURE_ENV:MPKG_CONFIG=*:S/PKG_CONFIG=//}
 CFLAGS+=	-I${LOCALBASE}/include
+INOTIFY_CFLAGS=	$$(${PKG_CONFIG} --cflags libinotify)
+INOTIFY_LDFLAGS=$$(${PKG_CONFIG} --libs libinotify)
 
-OSSEC_ARGS+=	TARGET=${OSSEC_TYPE} INSTALL_LOCALTIME=no
+OSSEC_ARGS+=	TARGET=${OSSEC_TYPE} PCRE2_SYSTEM=yes INSTALL_LOCALTIME=no INSTALL_RESOLVCONF=no
+.if defined(OSSEC_MAX_AGENTS)
+OSSEC_ARGS+=	MAXAGENTS=${OSSEC_MAX_AGENTS}
+.endif
 .if !defined(MAINTAINER_MODE)
 OSSEC_ARGS+=	INSTALL_CMD=install
 .endif
@@ -196,7 +204,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|-DLUA_USE_LINUX|& ${CPPFLAGS}|' \
 		-e 's|-lreadline|& ${LDFLAGS}|' \
 		${WRKSRC}/src/external/lua/src/Makefile
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+.if ${CHOSEN_COMPILER_TYPE} == gcc
 	@${REINPLACE_CMD} -e 's|-Wno-implicit-fallthrough||g' ${WRKSRC}/src/Makefile
 .endif
 
@@ -207,20 +215,24 @@ do-install:
 	@cd ${WRKSRC}/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${INSTALL_ARGS} install
 
 post-install:
-	@${MV} -f ${STAGEDIR}${INTERNAL_OPTS_CONF} ${STAGEDIR}${INTERNAL_OPTS_CONF}.sample
+.for file_path in ${SAMPLE_FILES}
+	@${MV} -f ${STAGEDIR}${file_path} ${STAGEDIR}${file_path}.sample
+.endfor
 	@${MV} -f ${STAGEDIR}${FIREWALL_DROP_BIN} ${STAGEDIR}${IPFILTER_BIN}
 	@${CP} ${WRKDIR}/restart-ossec.sh ${STAGEDIR}${RESTART_OSSEC_BIN}
 	@${CHMOD} 550 ${STAGEDIR}${RESTART_OSSEC_BIN}
 .if defined(MAINTAINER_MODE)
 	@${CHOWN} ${USER}:${OSSEC_GROUP} ${STAGEDIR}${RESTART_OSSEC_BIN}
+.else
+	@${SH} ${SCRIPTDIR}/sanitize-stage.sh ${OSSEC_TYPE} ${OSSEC_HOME} ${STAGEDIR}
 .endif
 
 .if ${OSSEC_TYPE} == agent
-.if defined(MAINTAINER_MODE)
+. if defined(MAINTAINER_MODE)
 	@for file_name in $$(find "${STAGEDIR}${SHARED_DIR}" -type f); do ${CHMOD} 0644 $${file_name}; ${CHOWN} ${OSSEC_USER}:${OSSEC_GROUP} $${file_name}; done
-.else
+. else
 	@for file_name in $$(find "${STAGEDIR}${SHARED_DIR}" -type f); do ${CHMOD} 0644 $${file_name}; done
-.endif
+. endif
 .endif
 	@${ECHO_CMD} -n > ${PKGMESSAGE}
 .for file_name in ${PKGMSG_FILES}

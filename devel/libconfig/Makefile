@@ -1,5 +1,4 @@
 # Created by: Nikos Ntarmos <ntarmos@ceid.upatras.gr>
-# $FreeBSD$
 
 PORTNAME=	libconfig
 PORTVERSION=	1.7.2
@@ -22,7 +21,7 @@ CONFIGURE_ARGS+=	--prefix=${PREFIX}
 USE_GITHUB=	YES
 GH_ACCOUNT=	hyperrealm
 
-CONFLICTS=	wand-libconfig-[0-9]*
+CONFLICTS=	wand-libconfig
 
 INFO=	libconfig
 

@@ -1,8 +1,7 @@
 # Created by: Oliver Eikemeier
-# $FreeBSD$
 
 PORTNAME=	swaks
-PORTVERSION=	20170101.0
+PORTVERSION=	20201014.0
 CATEGORIES=	mail
 MASTER_SITES=	http://jetmore.org/john/code/swaks/
 

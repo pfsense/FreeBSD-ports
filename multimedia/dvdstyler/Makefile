@@ -1,15 +1,14 @@
 # Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
 
 PORTNAME=	dvdstyler
-PORTVERSION=	2.9.6
-PORTREVISION=	11
+PORTVERSION=	3.1
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 DISTNAME=	DVDStyler-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ahicks@p-o.co.uk
 COMMENT=	WxWidgets frontend to dvd recoding and authoring programs
 
 LICENSE=	GPLv2
@@ -41,14 +40,12 @@ USE_WX=		3.0
 WX_CONF_ARGS=	absolute
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_path_AVCONV_PATH="" OBJCXX="${CXX}"
+CONFIGURE_ARGS=	--without-gnome
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	DOCS GNOME
-
-GNOME_USE=		GNOME=libgnomeui
-GNOME_CONFIGURE_WITH=	gnome
+OPTIONS_DEFINE=	DOCS
 
 .if defined(WITH_DVD_DEVICE)
 DEFAULT_DVD_DEVICE=${WITH_DVD_DEVICE}

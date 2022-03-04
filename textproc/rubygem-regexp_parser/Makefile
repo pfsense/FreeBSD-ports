@@ -1,8 +1,7 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	regexp_parser
-PORTVERSION=	1.3.0
+PORTVERSION=	2.1.1
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

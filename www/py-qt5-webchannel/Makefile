@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	webchannel
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www devel python
 
 MAINTAINER=	kde@FreeBSD.org
@@ -9,11 +7,8 @@ COMMENT=	Python bindings for the Qt5 toolkit, QtWebChannel module
 
 # LICENSE set in Mk/Uses/pyqt.mk
 
-BUILD_DEPENDS=	${PY_ENUM34}
-RUN_DEPENDS=	${PY_ENUM34}
-
-USES=		python pyqt:5 qt:5
-USE_PYQT=	sip_build core_run gui_run network_run qml_run widgets_run
+USES=		python:3.5+ pyqt:5 qt:5
+USE_PYQT=	sip_build core_run gui_run qml_run network_run widgets_run
 USE_PYTHON=	concurrent flavors py3kplist
 USE_QT=		core declarative qmake_build gui network webchannel widgets
 

@@ -1,25 +1,28 @@
-# $FreeBSD$
-
 PORTNAME=	J
+PORTVERSION=	${JVERSION:S/^j//:S/-release//}
 DISTVERSIONPREFIX=	j
-DISTVERSION=	808
 DISTVERSIONSUFFIX=	-release
+PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	lang math
 
 MAINTAINER=	sevenjp@gmail.com
 COMMENT=	J programming language
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/license.txt
+LICENSE_FILE=	${WRKDIR}/jsource-${JVERSION}/license.txt
+
+BROKEN=		does not build
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON_i386=	i386 needs hostdefs and netdefs files to be generated.
+ONLY_FOR_ARCHS_REASON=	not built or tested on other architectures; i386 needs hostdefs and netdefs files to be generated
 
 BUILD_DEPENDS=	bash:shells/bash
-LIB_DEPENDS=	libpcreposix.so:devel/pcre \
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
 		libsqlite3.so:databases/sqlite3
 
 USES+=		libedit gmake shebangfix uidfix
+
 SHEBANG_GLOB=	*.sh
 
 SUB_FILES=	jconsole profile.ijs
@@ -28,8 +31,14 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jsoftware
 GH_PROJECT=	jsource
 
+# J is released with ports-unfriendly versioning
+JVERSION=	j807-release
+
 BIN_FILES=	jconsole
 LIB_FILES=	libj.so libtsdll.so
+
+# J wants to install jconsole, also provided by openjdk
+CONFLICTS_INSTALL=	openjdk[0-9]*
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/j/bin

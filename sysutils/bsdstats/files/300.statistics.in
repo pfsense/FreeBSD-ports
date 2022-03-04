@@ -1,7 +1,4 @@
 #!/bin/sh -
-#
-# $FreeBSD$
-#
 
 #
 # options
@@ -26,23 +23,11 @@ WC=/usr/bin/wc
 MV=/bin/mv
 RM=/bin/rm
 case $(${UNAME}) in
-  FreeBSD)
-    UMASK=/usr/bin/umask
-    OPENSSL=/usr/bin/openssl
-    CHOWN=/usr/sbin/chown
-    NC=/usr/bin/nc
-    ;;
   OpenBSD)
     UMASK=/usr/bin/umask
     OPENSSL=/usr/sbin/openssl
     CHOWN=/sbin/chown
     NC=/usr/bin/nc
-    ;;
-  DragonFly)
-    UMASK=/usr/bin/umask
-    OPENSSL=/usr/bin/openssl
-    CHOWN=/usr/sbin/chown
-    NC=/usr/local/bin/netcat
     ;;
   NetBSD)
     UMASK=umask
@@ -82,6 +67,9 @@ fi
 #
 # global values
 #
+monthly_statistics_enable=${monthly_statistics_enable:-"NO"}
+monthly_statistics_report_devices=${monthly_statistics_report_devices:-"YES"}
+monthly_statistics_report_ports=${monthly_statistics_report_ports:-"YES"}
 checkin_server=${monthly_statistics_checkin_server:-"rpt.bsdstats.org"}
 bsdstats_log=${monthly_statistics_logfile:-"/var/log/bsdstats"}
 id_token_file='/var/db/bsdstats'
@@ -351,16 +339,24 @@ setup_proxies() {
 
 report_devices() {
   case $(${UNAME}) in
-    FreeBSD|DragonFly)
+    FreeBSD|DragonFly|MidnightBSD)
       local query_string=""
       local line
-      for line in $(${PCICONF} -l); do
+      while read line
+      do
         local DRIVER=$(echo "${line}" | ${AWK} -F\@ '{print $1}')
-        local DEV=$(echo "${line}" | ${AWK} '{print $4}' | ${CUT} -c8-15)
+        if [ "0`echo "${line}" | awk '{print $5}' | awk -F= '{print $1}'`" = "0vendor" ]; then
+          local VENDOR=$(echo "${line}" | ${AWK} '{print $5}' | ${CUT} -c10-15)
+          local DEVICE=$(echo "${line}" | ${AWK} '{print $6}' | ${CUT} -c10-15)
+          local DEV=$(echo "${DEVICE}${VENDOR}")
+        else
+          local DEV=$(echo "${line}" | ${AWK} '{print $4}' | ${CUT} -c8-15)
+        fi
         local CLASS=$(echo "${line}" | ${AWK} '{print $2}' | ${CUT} -c9-14)
         query_string=$query_string`echo \&dev[]=${DRIVER}:${DEV}:${CLASS}`
-      done
-
+      done << EOT
+$(${PCICONF} -l)
+EOT
       echo_begin "Posting device statistics to ${checkin_server_description}"
       do_http_request_check_status "GET" "/scripts/report_devices.php?token=${TOKEN}&key=${KEY}$query_string" \
         "" "" "system devices submission"
@@ -373,15 +369,38 @@ report_devices() {
   esac
 }
 
+get_mports() {
+  for i in `/usr/libexec/mport.list | xargs`
+  do
+    pkg=$(echo "select pkg from packages where pkg || '-' || version = '$i'" | sqlite3 /var/db/mport/master.db)
+    echo -n "$i "
+    mport info $pkg | grep Origin | awk '{print $3}'
+  done
+}
+
 report_ports() {
   case $(${UNAME}) in
-    FreeBSD|DragonFly)
+    FreeBSD|DragonFly|MidnightBSD)
       local query_string=""
       # Detect pkgng
       if [ -e /var/db/pkg/local.sqlite ]; then
         # Use pkgng
-        query_string="${query_string}$(pkg info -o "*" | ${SED} -E -e 's/\+/%2b/g' -e 's/,/%2c/g' -e 's/^([^ ]+) +([^\/]+)\/.+$/\&port[]=\2:\1/g' | tr -d '\n')"
+        case $(${UNAME}) in
+          MidnightBSD)
+            report_uri="/scripts/report_ports.php"
+            query_string="${query_string}$( get_mports | ${SED} -E -e 's/\+/%2b/g' -e 's/,/%2c/g' -e 's/^([^ ]+) +([^\/]+)\/.+$/\&port[]=\2:\1/g' | tr -d '\n')"
+            ;;
+          *)
+            report_uri="/scripts/report_ports_v2.php"
+            if [ -f %%PREFIX%%/etc/bsdstats.conf -a "0" = "0`grep ^all-ports /usr/local/etc/bsdstats.conf`" ]; then
+              query_string=$( pkg query %n:%v:%o | fgrep -f %%PREFIX%%/etc/bsdstats.conf | awk -F\/ '{print $1}' | sed -E -e 's/\+/%2b/g' -e 's/,/%2c/g' | awk '{printf"&port[]=%s", $1}' )
+            else
+              query_string=$( pkg query %n:%v:%o | awk -F\/ '{print $1}' | sed -E -e 's/\+/%2b/g' -e 's/,/%2c/g' | awk '{printf"&port[]=%s", $1}' )
+            fi
+            ;;
+        esac
       else
+        report_uri="/scripts/report_ports.php"
     #-----BEGIN LEGACY: to delete when FreeBSD with pkg_ tools is out of support period (!!! don't forget to clarify what does DragonFly use before removing !!!) -----
         # Use obsolete pkg_* tools
         local line
@@ -394,7 +413,7 @@ report_ports() {
     #-----END LEGACY-----
       fi
       echo_begin "Posting port statistics to ${checkin_server_description}"
-      do_http_request_check_status "POST" "/scripts/report_ports.php" \
+      do_http_request_check_status "POST" $report_uri \
         "token=${TOKEN}&key=${KEY}${query_string}" "application/x-www-form-urlencoded" "ports submission"
       echo_end_success
       log "INFO" "Posted port statistics to ${checkin_server_description}"
@@ -515,27 +534,14 @@ report_all() {
        report_devices
        report_cpu
        ;;
-    [Nn][Oo])
-       echo "Posting monthly device/CPU statistics disabled"
-       echo "    set monthly_statistics_report_devices=\"YES\" in $periodic_conf"
-       ;;
     *)
-       # opt-out for devices
-       report_devices
-       report_cpu
        ;;
   esac
   case "$monthly_statistics_report_ports" in
     [Yy][Ee][Ss])
       report_ports
       ;;
-    [Nn][Oo])
-      echo "Posting monthly ports statistics disabled"
-      echo "    set monthly_statistics_report_ports=\"YES\" in $periodic_conf"
-      ;;
     *)
-      # opt-out for ports
-      report_ports
       ;;
   esac
   # end
@@ -553,14 +559,7 @@ case "$monthly_statistics_enable" in
     # explicitly enabled: report it
     report_all "$1"
     ;;
-  [Nn][Oo])
-    echo "Posting monthly OS statistics disabled"
-    echo "    set monthly_statistics_enable=\"YES\" in $periodic_conf"
-    rc=1
-    ;;
   *)
-    # opt-out: we report when user has BSDstats installed, and user didn't say "NO"
-    report_all "$1"
     ;;
 esac
 

@@ -1,11 +1,10 @@
 # Created by: olgeni@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	netbeans
-DISTVERSION=	10.0
+DISTVERSION=	12.3
 CATEGORIES=	java devel
-MASTER_SITES=	APACHE/incubator/netbeans/incubating-netbeans/incubating-${PORTVERSION}/
-DISTNAME=	incubating-netbeans-${DISTVERSION}-bin
+MASTER_SITES=	APACHE/netbeans/netbeans/${PORTVERSION}/
+DISTNAME=	netbeans-${DISTVERSION}-bin
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Modular, standards-based integrated development environment
@@ -13,7 +12,9 @@ COMMENT=	Modular, standards-based integrated development environment
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		shebangfix zip
+USES=		cpe shebangfix zip
+
+CPE_VENDOR=	apache
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.8+
@@ -42,7 +43,7 @@ DESKTOP_ENTRIES="Apache NetBeans" \
 		false
 
 post-patch:
-	@${REINPLACE_CMD} -i '' -e '80s|#||;80s|/path/to/jdk|${JAVA_HOME}|' \
+	@${REINPLACE_CMD} -i '' -e '77s|#||;77s|/path/to/jdk|${JAVA_HOME}|' \
 	    ${WRKSRC}/etc/netbeans.conf
 	@${FIND} ${WRKSRC} -name "*.orig" -delete
 

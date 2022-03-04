@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	Pyomo
-DISTVERSION=	5.5.1
+DISTVERSION=	6.1.2
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,14 +8,13 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python Optimization Modeling Objects
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}appdirs>0:devel/py-appdirs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}PyUtilib>=5.6.3:devel/py-PyUtilib@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>=1.4:devel/py-six@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

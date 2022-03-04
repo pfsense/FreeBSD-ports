@@ -1,5 +1,4 @@
 # Created by: john@zoner.org
-# $FreeBSD$
 
 PORTNAME=	pyx12
 PORTVERSION=	2.3.3
@@ -14,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 
 NO_ARCH=	yes
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

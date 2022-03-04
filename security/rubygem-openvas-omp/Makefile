@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openvas-omp
 PORTVERSION=	0.0.4
 CATEGORIES=	security rubygems

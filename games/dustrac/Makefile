@@ -1,38 +1,38 @@
-# $FreeBSD$
-
 PORTNAME=	dustrac
-PORTVERSION=	1.11.0
-PORTREVISION=	6
+PORTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	2D top-view racing game
 
-LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib cmake openal pkgconfig qt:5
-USE_GL=		glu
-USE_QT=		core opengl xml widgets \
-		buildtools_build linguisttools_build qmake_build
-CMAKE_ARGS=	-DReleaseBuild=on \
-		-DDATA_PATH=${DATADIR} \
-		-DDOC_PATH=${DOCSDIR}
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
+RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	juzzlin
 GH_PROJECT=	DustRacing2D
+GH_TAGNAME=	ae380b8  # includes crash fix
+
+USES=		compiler:c++11-lib cmake gl openal pkgconfig qt:5
+USE_GL=		gl glu
+USE_QT=		core gui opengl xml widgets testlib sql \
+		buildtools_build linguisttools_build qmake_build
+CMAKE_ARGS=	-DReleaseBuild=on \
+		-DSystemFonts=on \
+		-DDATA_PATH=${DATADIR} \
+		-DDOC_PATH=${DOCSDIR}
+LDFLAGS+=	-L${LOCALBASE}/lib
+
+PORTDATA=	*
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-STRIP_FILES=	bin/dustrac-game \
-		bin/dustrac-editor
-
-post-patch:
-	${REINPLACE_CMD} -e '/add_subdirectory(UnitTests)/d' \
-		${WRKSRC}/src/game/MiniCore/CMakeLists.txt
-
 post-install:
-	${STRIP_CMD} ${STRIP_FILES:S,^,${STAGEDIR}${PREFIX}/,}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/dustrac-editor
 
 .include <bsd.port.mk>

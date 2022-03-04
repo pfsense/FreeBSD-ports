@@ -1,9 +1,7 @@
 # Created by: Jean Milanez Melo <jmelo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libepp-nicbr
-PORTVERSION=	1.15
-PORTREVISION=	1
+PORTVERSION=	1.18
 CATEGORIES=	devel
 MASTER_SITES=	ftp://ftp.registro.br/pub/libepp-nicbr/
 

@@ -1,8 +1,7 @@
 # Created by: Joseph Benden <joe@thrallingpenguin.com>
-# $FreeBSD$
 
 PORTNAME=	gssapi
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.0
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 

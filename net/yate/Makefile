@@ -1,19 +1,18 @@
 # Created by: Valery Komarov <komarov@valerka.net>
-# $FreeBSD$
 
 PORTNAME=	yate
-PORTVERSION=	6.1.0
+PORTVERSION=	6.4.0
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://yate.null.ro/tarballs/yate6/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-1
 
-MAINTAINER=	koue@chaosophia.net
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Yet Another Telephony Engine
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 sparc64
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le sparc64
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libspeex.so:audio/speex \
@@ -52,7 +51,6 @@ DAHDI_DESC=	Dahdi support
 H323_DESC=	H323 software channel/protocol support
 ILBC_DESC=	iLBC narrowband speech codec support
 SCTP_DESC=	Stream Control Transmission Protocol support
-SPANDSP_DESC=	Spandsp faxing support
 
 OPTIONS_SUB=	yes
 
@@ -73,8 +71,7 @@ ILBC_CONFIGURE_ENABLE=	ilbc
 ILBC_LIB_DEPENDS=	libilbc.so:net/ilbc
 
 MYSQL_CONFIGURE_WITH=	mysql
-MYSQL_USE=		mysql=yes
-MYSQL_USES=		ssl
+MYSQL_USES=		mysql ssl
 
 PGSQL_CONFIGURE_WITH=	libpq=${LOCALBASE}
 PGSQL_USES=		pgsql

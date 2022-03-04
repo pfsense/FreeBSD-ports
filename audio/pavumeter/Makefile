@@ -1,9 +1,8 @@
 # Created by: Romain Tartière <romain@blogreen.org>
-# $FreeBSD$
 
 PORTNAME=	pavumeter
 PORTVERSION=	0.9.3
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	http://0pointer.de/lennart/projects/${PORTNAME}/
 

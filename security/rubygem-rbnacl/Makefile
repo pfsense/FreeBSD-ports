@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rbnacl
 PORTVERSION=	5.0.0
 CATEGORIES=	security rubygems

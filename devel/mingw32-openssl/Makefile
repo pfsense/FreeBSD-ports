@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	openssl
 PORTVERSION=	1.0.2d
@@ -10,7 +9,7 @@ MASTER_SITES=	http://www.openssl.org/source/ \
 PKGNAMEPREFIX=	mingw32-
 DIST_SUBDIR=	${DISTNAME}
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The OpenSSL library cross-compiled for MinGW32
 
 BUILD_DEPENDS=	makedepend:devel/makedepend \
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	makedepend:devel/makedepend \
 		${LOCALBASE}/mingw32/include/stdlib.h:devel/${PKGNAMEPREFIX}bin-msvcrt \
 		${LOCALBASE}/mingw32/lib/libz.a:devel/mingw32-zlib
 
-USES=		perl5 shebangfix
+USES=		cpe perl5 shebangfix
 SHEBANG_FILES=	apps/tsget
 USE_PERL5=	build
 MAKE_JOBS_UNSAFE=	yes

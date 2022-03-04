@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	artifactory
 DISTVERSION=	5.8.3
 CATEGORIES=	devel java
@@ -18,7 +16,8 @@ RUN_DEPENDS=	bash:shells/bash
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-oss-${PORTVERSION}
 
-USES=		shebangfix zip
+USES=		cpe shebangfix zip
+CPE_VENDOR=	jfrog
 SHEBANG_FILES=	bin/artifactory.sh
 USE_JAVA=	yes
 JAVA_VERSION=	1.8+

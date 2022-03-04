@@ -1,9 +1,7 @@
 # Created by: bf@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	libflame
-DISTVERSION=	5.1.0-53
-DISTVERSIONSUFFIX=	-gf4e27a74
+DISTVERSION=	5.2.0
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -11,13 +9,13 @@ COMMENT=	FLAME dense linear algebra library
 
 LICENSE=	BSD3CLAUSE
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le powerpcspe
 ONLY_FOR_ARCHS_REASON=	make system does not support other architectures yet
 
 BUILD_DEPENDS=	bash:shells/bash
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		compiler:c11 gmake python:3.7
 USE_CSTD=	c99
 USE_LDCONFIG=	yes
 
@@ -65,17 +63,13 @@ CONFIGURE_ARGS+=	--enable-multithreading=pthreads
 CONFIGURE_ARGS+=	--enable-multithreading=no
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200060
-IGNORE=			requires a newer linker such as lld
-.endif
-
 .if !(defined(USE_GCC) || !empty(CC:M*gcc4*))
 CONFIGURE_ARGS+=	--disable-autodetect-f77-ldflags \
 			--disable-autodetect-f77-name-mangling
 .endif
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/include/libflame
-	${INSTALL_DATA} ${WRKSRC}/include_local/* ${STAGEDIR}/${PREFIX}/include/libflame/
+#post-install:
+#	@${MKDIR} ${STAGEDIR}${PREFIX}/include/libflame
+#	${INSTALL_DATA} ${WRKSRC}/include_local/* ${STAGEDIR}/${PREFIX}/include/libflame/
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	MooseX-Has-Sugar
 PORTVERSION=	1.000006
@@ -22,5 +21,7 @@ TEST_DEPENDS=	p5-MooseX-Types>=0.44:devel/p5-MooseX-Types \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

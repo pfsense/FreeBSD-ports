@@ -1,9 +1,8 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	impact
 PORTVERSION=	0.7.06.038
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	cad java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Version%20${PORTVERSION} \
@@ -24,7 +23,6 @@ WRKSRC=		${WRKDIR}/Impact
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 DATADIR=	${JAVASHAREDIR}/Impact

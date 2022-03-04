@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	GPyOpt
-DISTVERSION=	1.2.5
+DISTVERSION=	1.2.6
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,9 +12,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=0.16:science/py-scipy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}GPy>=1.8>0:science/py-GPy@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}GPy>=1.8:science/py-GPy@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist
 
 NO_ARCH=	yes

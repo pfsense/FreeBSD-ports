@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	minify
-PORTVERSION=	2.3.8
+PORTVERSION=	2.9.22
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc www
 
@@ -10,25 +9,22 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Go minifiers for web formats
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		go:modules
 
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
-GO_TARGET=	${GO_PKGNAME}/cmd/${GH_PROJECT}
+GO_TARGET=	./cmd/${GH_PROJECT}
 
 PLIST_FILES=	bin/minify
 
 GH_ACCOUNT=	tdewolff
-GH_TUPLE=	dustin:go-humanize:v1.0.0:dustin_go_humanize/../src/github.com/dustin/go-humanize \
-		fsnotify:fsnotify:v1.4.7:fsnotify_fsnotify/../src/github.com/fsnotify/fsnotify \
-		golang:sys:770c602:golang_sys/../src/golang.org/x/sys \
-		matryer:try:v1:matryer_try/../src/github.com/matryer/try \
-		spf13:pflag:v1.0.3:spf13_pflag/../src/github.com/spf13/pflag \
-		tdewolff:parse:v2.3.5:tdewolff_parse/../src/github.com/tdewolff/parse
+GH_TUPLE=	djherbis:atime:v1.1.0:djherbis_atime/vendor/github.com/djherbis/atime \
+		dustin:go-humanize:v1.0.0:dustin_go_humanize/vendor/github.com/dustin/go-humanize \
+		fsnotify:fsnotify:v1.5.1:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
+		golang:sys:d61c044:golang_sys/vendor/golang.org/x/sys \
+		matryer:try:9ac251b:matryer_try/vendor/github.com/matryer/try \
+		spf13:pflag:d5e0c06:spf13_pflag/vendor/github.com/spf13/pflag \
+		tdewolff:parse:v2.5.21:tdewolff_parse/vendor/github.com/tdewolff/parse/v2
 USE_GITHUB=	yes
-
-do-install:
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/minify ${STAGEDIR}${PREFIX}/bin/minify
 
 .include <bsd.port.mk>

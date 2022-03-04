@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	django-bootstrap3
-PORTVERSION=	11.0.0
+PORTVERSION=	15.0.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,12 +10,20 @@ COMMENT=	Bootstrap 3 support for Django projects
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>=2.2:www/py-django22@${PY_FLAVOR}
+
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 
-post-extract:
-	@${FIND} ${WRKSRC} -name ".DS_Store" -type f -delete
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if ${PYTHON_REL} < 30800
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=1.5.0:devel/py-importlib-metadata@${PY_FLAVOR}
+.endif
+
+do-test:
+	@cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} manage.py test -v3 --noinput
+
+.include <bsd.port.post.mk>

@@ -1,5 +1,4 @@
 # Created by: Frank Behrens <frank@pinky.sax.de>
-# $FreeBSD$
 
 PORTNAME=	polipo
 PORTVERSION=	1.1.1
@@ -13,7 +12,8 @@ COMMENT=	Small and fast caching web proxy
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		makeinfo
+USES=		cpe makeinfo
+CPE_VENDOR=	${PORTNAME}_project
 USE_RC_SUBR=	polipo
 
 INFO=		polipo

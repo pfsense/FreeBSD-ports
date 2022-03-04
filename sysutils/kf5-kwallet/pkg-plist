@@ -1,6 +1,5 @@
 bin/kwalletd5
 bin/kwallet-query
-etc/xdg/kwallet.categories
 include/KF5/KWallet/KWallet
 include/KF5/KWallet/kwallet.h
 include/KF5/KWallet/kwallet_export.h
@@ -18,12 +17,13 @@ lib/libkwalletbackend5.so.%%KDE_FRAMEWORKS_VERSION%%
 man/man1/kwallet-query.1.gz
 %%QT_MKSPECDIR%%/modules/qt_KWallet.pri
 share/dbus-1/interfaces/kf5_org.kde.KWallet.xml
-share/dbus-1/services/org.kde.kwalletd.service
 share/dbus-1/services/org.kde.kwalletd5.service
 share/knotifications5/kwalletd.notifyrc
 share/kservices5/kwalletd5.desktop
 share/locale/ar/LC_MESSAGES/kwallet-query.mo
 share/locale/ar/LC_MESSAGES/kwalletd5.mo
+share/locale/az/LC_MESSAGES/kwallet-query.mo
+share/locale/az/LC_MESSAGES/kwalletd5.mo
 share/locale/be/LC_MESSAGES/kwalletd5.mo
 share/locale/bg/LC_MESSAGES/kwalletd5.mo
 share/locale/bn/LC_MESSAGES/kwalletd5.mo
@@ -31,14 +31,15 @@ share/locale/bn_IN/LC_MESSAGES/kwalletd5.mo
 share/locale/bs/LC_MESSAGES/kwalletd5.mo
 share/locale/ca/LC_MESSAGES/kwallet-query.mo
 share/locale/ca/LC_MESSAGES/kwalletd5.mo
-share/locale/ca@valencia/LC_MESSAGES/kwalletd5.mo
 share/locale/ca@valencia/LC_MESSAGES/kwallet-query.mo
+share/locale/ca@valencia/LC_MESSAGES/kwalletd5.mo
 share/locale/cs/LC_MESSAGES/kwallet-query.mo
 share/locale/cs/LC_MESSAGES/kwalletd5.mo
 share/locale/da/LC_MESSAGES/kwallet-query.mo
 share/locale/da/LC_MESSAGES/kwalletd5.mo
 share/locale/de/LC_MESSAGES/kwallet-query.mo
 share/locale/de/LC_MESSAGES/kwalletd5.mo
+share/locale/el/LC_MESSAGES/kwallet-query.mo
 share/locale/el/LC_MESSAGES/kwalletd5.mo
 share/locale/en_GB/LC_MESSAGES/kwallet-query.mo
 share/locale/en_GB/LC_MESSAGES/kwalletd5.mo
@@ -47,8 +48,8 @@ share/locale/es/LC_MESSAGES/kwallet-query.mo
 share/locale/es/LC_MESSAGES/kwalletd5.mo
 share/locale/et/LC_MESSAGES/kwallet-query.mo
 share/locale/et/LC_MESSAGES/kwalletd5.mo
-share/locale/eu/LC_MESSAGES/kwalletd5.mo
 share/locale/eu/LC_MESSAGES/kwallet-query.mo
+share/locale/eu/LC_MESSAGES/kwalletd5.mo
 share/locale/fa/LC_MESSAGES/kwalletd5.mo
 share/locale/fi/LC_MESSAGES/kwallet-query.mo
 share/locale/fi/LC_MESSAGES/kwalletd5.mo
@@ -87,6 +88,7 @@ share/locale/lt/LC_MESSAGES/kwalletd5.mo
 share/locale/lv/LC_MESSAGES/kwalletd5.mo
 share/locale/mai/LC_MESSAGES/kwalletd5.mo
 share/locale/mk/LC_MESSAGES/kwalletd5.mo
+share/locale/ml/LC_MESSAGES/kwallet-query.mo
 share/locale/ml/LC_MESSAGES/kwalletd5.mo
 share/locale/mr/LC_MESSAGES/kwalletd5.mo
 share/locale/ms/LC_MESSAGES/kwalletd5.mo
@@ -97,6 +99,7 @@ share/locale/nl/LC_MESSAGES/kwalletd5.mo
 share/locale/nn/LC_MESSAGES/kwallet-query.mo
 share/locale/nn/LC_MESSAGES/kwalletd5.mo
 share/locale/or/LC_MESSAGES/kwalletd5.mo
+share/locale/pa/LC_MESSAGES/kwallet-query.mo
 share/locale/pa/LC_MESSAGES/kwalletd5.mo
 share/locale/pl/LC_MESSAGES/kwallet-query.mo
 share/locale/pl/LC_MESSAGES/kwalletd5.mo
@@ -124,6 +127,7 @@ share/locale/sr@latin/LC_MESSAGES/kwalletd5.mo
 share/locale/sv/LC_MESSAGES/kwallet-query.mo
 share/locale/sv/LC_MESSAGES/kwalletd5.mo
 share/locale/te/LC_MESSAGES/kwalletd5.mo
+share/locale/tg/LC_MESSAGES/kwallet-query.mo
 share/locale/tg/LC_MESSAGES/kwalletd5.mo
 share/locale/th/LC_MESSAGES/kwalletd5.mo
 share/locale/tr/LC_MESSAGES/kwallet-query.mo
@@ -137,4 +141,5 @@ share/locale/zh_CN/LC_MESSAGES/kwallet-query.mo
 share/locale/zh_CN/LC_MESSAGES/kwalletd5.mo
 share/locale/zh_TW/LC_MESSAGES/kwallet-query.mo
 share/locale/zh_TW/LC_MESSAGES/kwalletd5.mo
-
+share/qlogging-categories5/kwallet.categories
+share/qlogging-categories5/kwallet.renamecategories

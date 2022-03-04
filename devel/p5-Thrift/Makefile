@@ -1,5 +1,4 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	Thrift
 PORTVERSION=	${THRIFT_PORTVERSION}	# need to keep this in sync with ../thrift see ../thrift/bsd.thrift.mk
@@ -15,9 +14,10 @@ BUILD_DEPENDS=	p5-Bit-Vector>=0:math/p5-Bit-Vector
 RUN_DEPENDS=	p5-Bit-Vector>=0:math/p5-Bit-Vector
 FETCH_DEPENDS+=	${NONEXISTENT}:devel/thrift:extract
 
-USES=		perl5
+USES=		cpe perl5
 USE_PERL5=	configure
 NO_ARCH=	yes
+CPE_VENDOR=	apache
 
 post-extract:
 	@${LN} -sfh \

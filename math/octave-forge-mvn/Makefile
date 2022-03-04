@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-mvn
 PORTVERSION=	1.1.0
-PORTREVISION=	15
+PORTREVISION=	18
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

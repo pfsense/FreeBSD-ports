@@ -1,8 +1,7 @@
 # Created by: dcf@aracnet.com
-# $FreeBSD$
 
 PORTNAME=	IO-Tee
-PORTVERSION=	0.65
+PORTVERSION=	0.66
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,5 +14,7 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

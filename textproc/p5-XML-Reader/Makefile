@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	XML-Reader
 PORTVERSION=	0.67
 CATEGORIES=	textproc perl5

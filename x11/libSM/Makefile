@@ -1,5 +1,4 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libSM
 PORTVERSION=	1.2.3
@@ -11,8 +10,7 @@ COMMENT=	Session Management library for X11
 
 LICENSE=	MIT
 
-USES=		pathfix
-XORG_CAT=	lib
+USES=		pathfix xorg xorg-cat:lib
 USE_XORG=	ice xorgproto xtrans
 
 CONFIGURE_ARGS+=--disable-docs --without-xmlto

@@ -1,5 +1,4 @@
 # Created by: Jase Thew <freebsd@beardz.net>
-# $FreeBSD$
 
 PORTNAME=	Object-Pluggable
 PORTVERSION=	1.29
@@ -20,6 +19,8 @@ RUN_DEPENDS=	p5-Task-Weaken>=0:devel/p5-Task-Weaken
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	EXAMPLES
 

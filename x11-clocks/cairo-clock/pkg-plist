@@ -1,5 +1,4 @@
 bin/cairo-clock
-man/man1/cairo-clock.1.gz
 share/applications/cairo-clock.desktop
 %%DATADIR%%/glade/cairo-clock.glade
 %%DATADIR%%/pixmaps/cairo-clock-logo.png
@@ -249,4 +248,5 @@ share/locale/sv/LC_MESSAGES/cairo-clock.mo
 share/locale/tr/LC_MESSAGES/cairo-clock.mo
 share/locale/zh_CN/LC_MESSAGES/cairo-clock.mo
 share/locale/zh_TW/LC_MESSAGES/cairo-clock.mo
+share/man/man1/cairo-clock.1.gz
 share/pixmaps/cairo-clock.png

@@ -1,9 +1,9 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sift
 PORTVERSION=	0.9.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	17
 CATEGORIES=	textproc
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -19,13 +19,11 @@ GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
 PLIST_FILES=	bin/sift
 
 GH_ACCOUNT=	svent
-GH_TUPLE=	golang:crypto:3d3f9f4:golang_crypto/../src/golang.org/x/crypto \
-		golang:sys:62eef0e:golang_sys/../src/golang.org/x/sys \
-		svent:go-flags:4bcbad3:svent_goflags/../src/github.com/svent/go-flags \
-		svent:go-nbreader:7cef48d:svent_gonbreader/../src/github.com/svent/go-nbreader
+GH_TUPLE=	golang:crypto:c084706:golang_crypto/vendor/golang.org/x/crypto \
+		golang:sys:d61c044:golang_sys/vendor/golang.org/x/sys \
+		golang:term:140adaa:golang_term/vendor/golang.org/x/term \
+		svent:go-flags:4bcbad3:svent_goflags/vendor/github.com/svent/go-flags \
+		svent:go-nbreader:7cef48d:svent_gonbreader/vendor/github.com/svent/go-nbreader
 USE_GITHUB=	yes
-
-do-install:
-	${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/sift ${STAGEDIR}${PREFIX}/bin/sift
 
 .include <bsd.port.mk>

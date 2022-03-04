@@ -1,35 +1,34 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	spatialite
-PORTVERSION=	4.3.0
+PORTVERSION=	5.0.1
 CATEGORIES=	databases geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/libspatialite-sources/
 DISTNAME=	lib${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Spatial Extensions for SQLite
 
-LICENSE=	MPL11 LGPL20 GPLv2
-LICENSE_COMB=	dual
+LICENSE=	GPLv2 # Only GPLv2 since we enable rttopo and gcp
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgeos_c.so:graphics/geos \
 		libproj.so:graphics/proj \
-		libfreexl.so:textproc/freexl
+		libfreexl.so:textproc/freexl \
+		libminizip.so:archivers/minizip \
+		librttopo.so:devel/librttopo
 
 GNU_CONFIGURE=	yes
-USES=		gmake iconv pathfix pkgconfig libtool sqlite
+USES=		gmake gnome iconv libtool pathfix pkgconfig sqlite
 USE_GNOME=	libxml2
 
 CFLAGS+=	-I${WRKSRC}/src/headers -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
-CONFIGURE_ARGS+= --enable-gcp=yes --enable-libxml2=yes CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+CONFIGURE_ARGS+=	--enable-gcp=yes --enable-libxml2=yes --enable-rttopo=yes \
+			CFLAGS="${CFLAGS}" \
+			LDFLAGS="${LDFLAGS}"
 USE_LDCONFIG=	yes
-
-OPTIONS_DEFINE=LWGEOM
-LWGEOM_DESC=Enable lwgeom (PostGIS) functions
-LWGEOM_CONFIGURE_ENABLE=	lwgeom
-LWGEOM_LIB_DEPENDS=	liblwgeom.so:databases/postgis21
+INSTALL_TARGET=install-strip
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-ldl| |' ${WRKSRC}/src/Makefile.am

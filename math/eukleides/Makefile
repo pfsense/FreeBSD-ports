@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	eukleides
 PORTVERSION=	1.5.4
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	http://www.eukleides.org/files/
 
@@ -16,9 +15,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	pstoedit:graphics/pstoedit \
 		getopt>=0:misc/getopt
 
+USES=		bison gettext iconv gmake readline tar:bzip2
 USE_TEX=	latex
-USES=		bison gettext iconv gmake readline:port tar:bzip2
 INSTALL_TARGET=	install PREFIX=${STAGEDIR}${PREFIX}
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 PORTDOCS=	de.pdf fr.pdf
 PORTEXAMPLES=	greenwich.euk sundial.euk vonkoch.euk
@@ -38,7 +40,8 @@ post-patch:
 		 -e "s|%%PREFIX%%|${PREFIX}|g" \
 		 -e "s|%%LOCALBASE%%|${LOCALBASE}|g" \
 		 -e "s|%%EXAMPLESDIR%%|\$${PREFIX}/${EXAMPLESDIR_REL}|g" \
-		 -e "s|%%DOCSDIR%%|\$${PREFIX}/${DOCSDIR_REL}|g"
+		 -e "s|%%DOCSDIR%%|\$${PREFIX}/${DOCSDIR_REL}|g" \
+		 -e "s|%%CFLAGS%%|${CFLAGS}|g"
 	@${GREP} -lFR "gcc" ${WRKSRC} |${XARGS} ${REINPLACE_CMD} \
 		-e "s|gcc|${CC}|g"
 

@@ -1,14 +1,11 @@
 # Created by: olgeni@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	wings
-PORTVERSION=	1.5.4
-PORTREVISION=	2
+DISTVERSION=	2.2.7p1
 CATEGORIES=	graphics
-MASTER_SITES=	SF
 DIST_SUBDIR=	erlang
 
-MAINTAINER=	amdmi3@FreeBSD.org
+MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Polygon mesh modeler written in Erlang
 
 LICENSE=	Wings3D
@@ -16,21 +13,29 @@ LICENSE_NAME=	Wings 3D License # similar to TclTk license
 LICENSE_FILE=	${WRKSRC}/license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+# c_src/Makefile line 103
+NOT_FOR_ARCHS=		armv6 armv7 i386 mips powerpc
+NOT_FOR_ARCHS_REASON=	subcomponent libigl does not support 32bit platforms
+
 BUILD_DEPENDS=	erl:lang/erlang \
-		erlang-esdl>0:devel/erlang-esdl \
-		erlang-cl>0:devel/erlang-cl
+		erlang-cl>0:devel/erlang-cl \
+		erlang-wx>0:lang/erlang-wx \
+		pkg-config:devel/pkgconf
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-MAKE_ENV=	ESDL_PATH=${LOCALBASE}/lib/erlang/lib/esdl
-PLIST_SUB=	VERSION="${PORTVERSION}"
+USES=		gl tar:bzip2 eigen:3 gmake
+
+ALL_TARGET=	lang
 MAKE_JOBS_UNSAFE=yes
-USE_GL=		gl glu
 
 SUB_FILES=	${PORTNAME}.sh
 
-USES=		tar:bzip2 gmake
+USE_GITHUB=	yes
+GH_ACCOUNT=	dgud
+GH_PROJECT=	wings libigl:igl
+GH_TAGNAME=	a41df275e v2.1.0:igl
 
-PORTSCOUT=	limitw:1,even
+USE_GL=		gl glu
 
 DESKTOP_ENTRIES="Wings" \
 		"${COMMENT}" \
@@ -39,24 +44,29 @@ DESKTOP_ENTRIES="Wings" \
 		"Graphics;3DGraphics;" \
 		""
 
+post-extract:
+	@${MKDIR} ${WRKSRC}/_deps
+	@${LN} -s ${WRKSRC_igl} ${WRKSRC}/_deps/libigl
+
 post-patch:
-	@${REINPLACE_CMD} -e 's|$$(GCC)|${CC} -I${LOCALBASE}/include -L${LOCALBASE}/lib|g' \
-		${WRKSRC}/plugins_src/accel/Makefile
-	@${REINPLACE_CMD} -e 's|random:|rand:|' \
-		${WRKSRC}/src/wings_deform.erl \
-		${WRKSRC}/src/wings_sel_cmd.erl \
-		${WRKSRC}/e3d/e3d_util.erl \
-		${WRKSRC}/plugins_src/autouv/auv_mapping.erl
-#	@${FIND} ${WRKSRC} -name "*.orig" -delete
+	@${REINPLACE_CMD} -e 's,include_lib("wings/,include_lib(",g' \
+		${WRKSRC}/src/*.erl \
+		${WRKSRC}/plugins_src/*.erl \
+		${WRKSRC}/plugins_src/import_export/*.erl \
+		${WRKSRC}/plugins_src/primitives/*.erl \
+		${WRKSRC}/plugins_src/commands/*.erl \
+		${WRKSRC}/plugins_src/commands/*.hrl \
+		${WRKSRC}/plugins_src/autouv/*.erl \
+		${WRKSRC}/icons/*.erl
 
 do-install:
-	cd ${WRKSRC} && ${COPYTREE_SHARE} "src ebin fonts plugins textures shaders patches" \
-		${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}
-	${LN} -sf ${DISTNAME} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} "ebin icons plugins textures shaders patches" \
+		${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} "src" \
+		${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME} "-name *\.erl"
+	cd ${WRKSRC} && ${COPYTREE_SHARE} "priv" \
+		${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME} "-name *\.so"
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_DATA} ${WRKSRC}/src/${PORTNAME}.icon ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.ico
-	${CHMOD} u+w ${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}/plugins/accel/*.so
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}/plugins/accel/*.so
-	${CHMOD} u-w ${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}/plugins/accel/*.so
 
 .include <bsd.port.mk>

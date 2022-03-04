@@ -1,5 +1,4 @@
 # Created by: Joshua D. Abraham <jabra@ccs.neu.edu>
-# $FreeBSD$
 
 PORTNAME=	Test-DatabaseRow
 PORTVERSION=	2.04
@@ -7,7 +6,7 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple database tests
 
 LICENSE=	ART10 GPLv1+

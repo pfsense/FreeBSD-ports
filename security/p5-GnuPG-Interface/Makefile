@@ -1,9 +1,7 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	GnuPG-Interface
-PORTVERSION=	0.52
-PORTREVISION=	1
+PORTVERSION=	1.02
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -22,5 +20,7 @@ RUN_DEPENDS=	gpg2:security/gnupg \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

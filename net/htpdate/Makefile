@@ -1,9 +1,9 @@
 # Created by: Vsevolod Stakhov <vsevolod@highsecure.ru>
-# $FreeBSD$
 
 PORTNAME=	htpdate
-PORTVERSION=	1.1.2
-CATEGORIES=	net ipv6
+PORTVERSION=	1.2.2
+PORTREVISION=	1
+CATEGORIES=	net
 MASTER_SITES=	http://www.vervest.org/htp/archive/c/ \
 		http://twekkel.home.xs4all.nl/htp/
 
@@ -12,7 +12,8 @@ COMMENT=	Time synchronization over http utility
 
 LICENSE=	GPLv2+
 
-USES=	tar:bzip2
+USES=	tar:xz
+
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
 
 PLIST_FILES=	bin/${PORTNAME} man/man8/${PORTNAME}.8.gz

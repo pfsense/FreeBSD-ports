@@ -1,9 +1,8 @@
 # Created by: bf <bf2006a@yahoo.com>
-# $FreeBSD$
 
 PORTNAME=	paq
 PORTVERSION=	20140131
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	archivers
 MASTER_SITES=	http://mattmahoney.net/dc/ LOCAL/bf/paq/
 DISTFILES=	wbpe110.zip zpaqd633.zip zpaq657.zip zpipe.201.zip
@@ -66,7 +65,7 @@ PORTDATA=	${WDATA} ${DDATA} zpsfx
 
 .if ${PORT_OPTIONS:MOPENMP}
 OPENMP_CFLAGS+=	-fopenmp
-USE_GCC=	any
+USE_GCC=	yes
 BROKEN=		does not build
 .endif
 

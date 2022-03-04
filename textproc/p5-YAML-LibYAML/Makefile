@@ -1,8 +1,7 @@
 # Created by: TERAMOTO Masahiro <markun@onohara.to>
-# $FreeBSD$
 
 PORTNAME=	YAML-LibYAML
-DISTVERSION=	0.76
+PORTVERSION=	0.83
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

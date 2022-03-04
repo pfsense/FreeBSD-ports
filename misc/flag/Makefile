@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flag
 PORTVERSION=	1.0.5
 CATEGORIES=	misc

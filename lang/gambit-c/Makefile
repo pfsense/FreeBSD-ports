@@ -1,10 +1,9 @@
 # Created by: Rob Zinkov
-# $FreeBSD$
 
 PORTNAME=	gambit-c
-PORTVERSION=	4.8.8
-PORTREVISION=	6
+PORTVERSION=	4.9.3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	lang
 
@@ -14,10 +13,10 @@ COMMENT=	Gambit programming system where the compiler generates portable C code
 LICENSE=	APACHE20 LGPL21
 LICENSE_COMB=	dual
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	feeley
-GH_PROJECT=	gambit
 USES=		compiler gmake
+USE_GITHUB=	yes
+GH_ACCOUNT=	gambit
+GH_PROJECT=	gambit
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-single-host \
 		--enable-gcc-opts \
@@ -34,18 +33,12 @@ INFO=		gambit
 OPTIONS_DEFINE=	DOCS GCC
 OPTIONS_DEFAULT=GCC
 
-GCC_DESC=	Build with GCC
+GCC_DESC=	Build with GCC from ports
 
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MGCC}
-USE_GCC=	any
-.endif
-
-.if ${COMPILER_TYPE} == gcc
-# This is needed because 4.2 < gcc -v < 4.4 has optimisations that make the
-# build take more than 20Gb of virtual memory.
-CFLAGS+=	-fno-move-loop-invariants
+USE_GCC=	yes
 .endif
 
 post-patch:

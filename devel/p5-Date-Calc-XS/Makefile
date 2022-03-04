@@ -1,5 +1,4 @@
 # Created by: Denis Pokataev <catone@cpan.org>
-# $FreeBSD$
 
 PORTNAME=	Date-Calc-XS
 PORTVERSION=	6.4
@@ -7,7 +6,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	XS wrapper and C library plug-in for Date::Calc
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

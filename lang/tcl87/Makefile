@@ -1,13 +1,12 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	tcl
-DISTVERSION=	8.7a1
-PORTREVISION=	4
+DISTVERSION=	${TCL_VERSION}${TCL_RC}
+PORTREVISION=	1
 CATEGORIES=	lang
-MASTER_SITES=	SF/tcl/Tcl/${DISTVERSION} \
+MASTER_SITES=	SF/tcl/Tcl/${TCL_VERSION} \
 		TCLTK/tcl8_7
-PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
+PKGNAMESUFFIX=	${SHORT_TCL_VER}
 DISTNAME=	${PORTNAME}${DISTVERSION}-src
 
 MAINTAINER=	tcltk@FreeBSD.org
@@ -18,38 +17,53 @@ LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+USES=		compiler:c11 cpe localbase pathfix
+
+LIB_DEPENDS=	libtommath.so:math/libtommath
+
 OPTIONS_DEFINE=	TCLMAN TZDATA DEBUG
 OPTIONS_DEFAULT=TCLMAN TZDATA
 OPTIONS_DEFINE_amd64=	DTRACE
 OPTIONS_DEFAULT_amd64=	DTRACE
+OPTIONS_DEFINE_powerpc64=	DTRACE
+OPTIONS_DEFINE_powerpc64le=	DTRACE
+OPTIONS_DEFAULT_powerpc64=	DTRACE
+OPTIONS_DEFAULT_powerpc64le=	DTRACE
+OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
+OPTIONS_EXCLUDE_powerpc64_11=	DTRACE
+OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
 TCLMAN_DESC=	Install Tcl function manpages
 TZDATA_DESC=	Install Tcl timezone data
 OPTIONS_SUB=	yes
-
-USES=		pathfix
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
-PATCH_WRKSRC=	${WRKDIR}/${PORTNAME}${DISTVERSION}
+PATCH_WRKSRC=	${WRKDIR}/${PORTNAME}${TCL_VERSION}
 WRKSRC=		${PATCH_WRKSRC}/unix
 
 ALL_TARGET=	binaries libraries doc
-INSTALL_TARGET=	install-strip
 TEST_TARGET=	test-tcl
+INSTALL_TARGET+=install-libraries \
+		install-msgs \
+		install-private-headers
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared \
 		--enable-man-suffix=.${MAN_SUFFIX} \
 		--includedir=${PREFIX}/include/tcl${TCL_VER} \
-		--enable-symbols
+		--enable-symbols \
+		--with-system-libtommath
 
-TCL_VER=	${PORTVERSION:R}
+TCL_VERSION=	8.7a5
+TCL_VER=	8.7
+TCL_RC=
+SHORT_TCL_VER=	${TCL_VER:S/.//}
 MAN_SUFFIX=	${PKGBASE}
 
-MAKE_ENV=	SHORT_TCL_VER=${PKGNAMESUFFIX} \
+MAKE_ENV=	SHORT_TCL_VER=${SHORT_TCL_VER} \
 		MAN_SUFFIX=.${MAN_SUFFIX} \
 
 PLIST_SUB=	TCL_VER=${TCL_VER} \
@@ -61,6 +75,12 @@ DEBUG_CONFIGURE_ENABLE=	symbols
 DTRACE_CONFIGURE_ENABLE=	dtrace
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MDEBUG}
+INSTALL_TARGET+=install
+.else
+INSTALL_TARGET+=install-strip
+.endif
 
 .if ${PORT_OPTIONS:MDTRACE}
 PLIST_SUB+=	DTRACE=""
@@ -86,8 +106,8 @@ post-configure:
 		-e 's,^COMPAT_OBJS.*,,' ${WRKSRC}/Makefile
 post-install:
 	# Make sure users of USES=tcl:87 are able to look up the library
-	${LN} -s libtcl${TCL_VER}.so ${STAGEDIR}${PREFIX}/lib/libtcl${PKGNAMESUFFIX}.so
-	${LN} -s libtcl${PKGNAMESUFFIX}.so ${STAGEDIR}${PREFIX}/lib/libtcl${PKGNAMESUFFIX}.so.1
+	${LN} -fs libtcl${TCL_VER}.so ${STAGEDIR}${PREFIX}/lib/libtcl${PKGNAMESUFFIX}.so
+	${LN} -fs libtcl${PKGNAMESUFFIX}.so ${STAGEDIR}${PREFIX}/lib/libtcl${PKGNAMESUFFIX}.so.1
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/tcl${TCL_VER}/doc
 	${INSTALL_DATA} ${WRKSRC}/../doc/man.macros ${STAGEDIR}${PREFIX}/include/tcl${TCL_VER}/doc/man.macros
 

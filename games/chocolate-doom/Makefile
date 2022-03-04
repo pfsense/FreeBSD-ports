@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	chocolate-doom
-PORTVERSION=	3.0.0
+PORTVERSION=	3.0.1
 CATEGORIES=	games
 MASTER_SITES=	http://www.chocolate-doom.org/downloads/${PORTVERSION}/
 
@@ -12,7 +10,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake python:build pkgconfig
+USES=		gmake pkgconfig python:build sdl
 USE_SDL=	mixer2 net2 sdl2
 GNU_CONFIGURE=	yes
 BINARY_ALIAS=	python=${PYTHON_CMD}

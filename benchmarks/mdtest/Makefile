@@ -1,9 +1,8 @@
 # Created by: Chao Shin <quakelee@cn.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	mdtest
 PORTVERSION=	1.9.3
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	benchmarks
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20latest/${PORTNAME}-${PORTVERSION}
 

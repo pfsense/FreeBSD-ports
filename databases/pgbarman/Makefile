@@ -1,12 +1,11 @@
 # Created by: Matthew Seaman
-# $FreeBSD$
 
 PORTNAME=	barman
-DISTVERSION=	2.7
+DISTVERSION=	2.12
 CATEGORIES=	databases
 MASTER_SITES=	SF/${PKGNAMEPREFIX}${PORTNAME}/${DISTVERSION}
 PKGNAMEPREFIX=	pg
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} tutorial.pdf
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} manual.pdf
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	matthew@FreeBSD.org
@@ -20,7 +19,7 @@ RUN_DEPENDS=	rsync:net/rsync						\
 		${PYTHON_PKGNAMEPREFIX}argh>=0.21.2:devel/py-argh@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}argcomplete>0:devel/py-argcomplete@${PY_FLAVOR}
 
-USES=		pgsql python
+USES=		pgsql python:3.6+
 USE_PYTHON=	autoplist distutils concurrent optsuffix
 
 WANT_PGSQL=	client
@@ -29,7 +28,7 @@ NO_ARCH=	yes
 USERS=		barman
 GROUPS=		barman
 
-PORTDOCS=	tutorial.pdf
+PORTDOCS=	manual.pdf
 
 OPTIONS_DEFINE=	DOCS
 

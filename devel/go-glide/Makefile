@@ -1,13 +1,14 @@
 # Created by: Carlo Strub <cs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	glide
 PORTVERSION=	0.13.2
+DEPRECATED=	use go mod instead of glide
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Package Management for Golang
 
 LICENSE=	MIT

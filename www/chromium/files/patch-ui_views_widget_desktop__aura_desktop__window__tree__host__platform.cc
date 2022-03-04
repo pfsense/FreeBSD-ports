@@ -1,20 +1,11 @@
---- ui/views/widget/desktop_aura/desktop_window_tree_host_platform.cc.orig	2019-03-17 17:58:04 UTC
+--- ui/views/widget/desktop_aura/desktop_window_tree_host_platform.cc.orig	2021-09-24 04:26:39 UTC
 +++ ui/views/widget/desktop_aura/desktop_window_tree_host_platform.cc
-@@ -89,7 +89,7 @@ void DesktopWindowTreeHostPlatform::OnNativeWidgetCrea
-     const Widget::InitParams& params) {
-   native_widget_delegate_->OnNativeWidgetCreated();
+@@ -884,7 +884,7 @@ display::Display DesktopWindowTreeHostPlatform::GetDis
+ // DesktopWindowTreeHost:
  
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
-   // Setup a non_client_window_event_filter, which handles resize/move, double
-   // click and other events.
-   DCHECK(!non_client_window_event_filter_);
-@@ -540,7 +540,7 @@ void DesktopWindowTreeHostPlatform::Relayout() {
- }
- 
- void DesktopWindowTreeHostPlatform::RemoveNonClientEventFilter() {
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
-   if (!non_client_window_event_filter_)
-     return;
- 
+ // Linux subclasses this host and adds some Linux specific bits.
+-#if !defined(OS_LINUX) && !defined(OS_CHROMEOS)
++#if !defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(OS_BSD)
+ // static
+ DesktopWindowTreeHost* DesktopWindowTreeHost::Create(
+     internal::NativeWidgetDelegate* native_widget_delegate,

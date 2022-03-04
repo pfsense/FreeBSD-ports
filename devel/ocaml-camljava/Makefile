@@ -1,5 +1,4 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	camljava
 PORTVERSION=	0.3
@@ -13,7 +12,6 @@ COMMENT=	OCaml-Java library interface
 
 USE_OCAML=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 
 post-patch:
 	@${REINPLACE_CMD} -e "s,^\(JAVAC=\).*,\1${JAVAC},g" \
@@ -23,6 +21,7 @@ post-patch:
 		-e "s,^\(CC=\).*,#\&,g" \
 		-e "s,i386,${ARCH},g" \
 		${WRKSRC}/Makefile.config
+	@${REINPLACE_CMD} -e 's,(int64,&_t,' ${WRKSRC}/lib/jnistubs.c
 
 test:
 	@${ECHO_CMD} "Testing IDL library"

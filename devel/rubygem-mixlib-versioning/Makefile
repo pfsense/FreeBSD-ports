@@ -1,18 +1,19 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mixlib-versioning
-PORTVERSION=	1.2.2
+PORTVERSION=	1.2.12
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	A library to parse, compare and manipulate version strings
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Library to parse, compare and manipulate version strings
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gem shebangfix
+USES=		gem
 USE_RUBY=	yes
-SHEBANG_FILES=	.expeditor/update_version.sh
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

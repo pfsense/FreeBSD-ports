@@ -3,7 +3,7 @@
  * zabbix-agent.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Danilo G. Baio
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -46,24 +46,45 @@ function php_deinstall_zabbix_agent() {
 function validate_input_zabbix_agent($post, &$input_errors) {
 
 	if (isset($post['agentenabled'])) {
-		if (!preg_match("/\w+/", $post['server'])) {
+		if ($post['server'] != '') {
+			foreach (explode(",", $post['server']) as $srv) {
+				$srv = trim($srv);
+				if (!is_ipaddr($srv) && !is_hostname($srv)) {
+					$input_errors[] = htmlspecialchars($srv) .
+					" is not a valid IP address or hostname for 'Server'.";
+				}
+			}
+		} else {
 			$input_errors[] = "Server field is required.";
 		}
 
-		if (!preg_match("/\w+/", $post['hostname'])) {
+		if ($post['serveractive'] != '') {
+			foreach (explode(",", $post['serveractive']) as $sact) {
+				$sact = trim($sact);
+				if (!is_ipaddr($sact) && !is_hostname($sact) &&
+				    !is_ipaddrwithport($sact) && !is_hostnamewithport($sact)) {
+					$input_errors[] = htmlspecialchars($sact) .
+					" is not a valid IP address or hostname with port for 'Server Active'.";
+				}
+			}
+		}
+
+		if (!is_domain($post['hostname'])) {
 			$input_errors[] = "Hostname field is required.";
 		}
 
 		if ($post['listenip'] != '') {
-			if (!is_ipaddr_configured($post['listenip']) && !preg_match("/(127.0.0.1|0.0.0.0)/", $post['listenip'])) {
-				$input_errors[] = "'Listen IP' is not a configured IP address.";
+			foreach (explode(",", $post['listenip']) as $listip) {
+				$listip = trim($listip);
+				if (!is_ipaddr_configured($listip) && !preg_match("/(127.0.0.1|0.0.0.0|::1|::)/", $listip)) {
+					$input_errors[] = htmlspecialchars($listip) .
+					" is not a configured IP address for 'Listen IP'.";
+				}
 			}
 		}
 
 		if ($post['listenport'] != '') {
-			if (!is_numericint($post['listenport'])) {
-				$input_errors[] = "'Listen Port' value is not numeric.";
-			} elseif ($post['listenport'] < 1 || $post['listenport'] > 65535) {
+			if (!is_port($post['listenport'])) {
 				$input_errors[] = "You must enter a valid value for 'Listen Port'.";
 			}
 		}
@@ -268,13 +289,13 @@ EOF;
 
 	if [ ! -d /var/log/zabbix-agent ]; then
 		/bin/mkdir -p /var/log/zabbix-agent
-		/usr/sbin/chmod 755 /var/log/zabbix-agent
+		/bin/chmod 755 /var/log/zabbix-agent
 	fi
 	/usr/sbin/chown -R zabbix:zabbix /var/log/zabbix-agent
 
 	if [ ! -d /var/run/zabbix-agent ]; then
 		/bin/mkdir -p /var/run/zabbix-agent
-		/usr/sbin/chmod 755 /var/run/zabbix-agent
+		/bin/chmod 755 /var/run/zabbix-agent
 	fi
 	/usr/sbin/chown -R zabbix:zabbix /var/run/zabbix-agent
 
@@ -314,6 +335,75 @@ function zabbix_agent_add_keyfile($data, $directive) {
 	file_put_contents($fpath, base64_decode($data));
 	@chmod($fpath, 0600);
 	@chown($fpath, "zabbix");
+}
+
+function zabbix_agent_certca($type) {
+	global $config;
+	$c_arr = array();
+	$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+	if (isset($config[$type]) && is_array($config[$type])) {
+		foreach ($config[$type] as $c) {
+			if (!empty($c['prv'])) {
+				$res_key = openssl_pkey_get_private(base64_decode($c['prv']));
+				$key_details = openssl_pkey_get_details($res_key);
+				if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
+					$c_arr[] = $c;
+				}
+			} elseif ($type == 'ca') {
+				$c_arr[] = $c;
+			}
+		}
+	}
+	return $c_arr;
+}
+
+function zabbixagent_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'zabbixagentlts', 'config'));
+	$zabbixconf = $config['installedpackages']['zabbixagentlts']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {
+		if (($pluginparams['event'] == 'used_ca') && ($zabbixconf['tlscaso'] != 'on') &&
+		    !empty($zabbixconf['tlscafile']) && ($zabbixconf['tlscafile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Agent";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscafile'];
+			$item['usedby'] = 'TLS CA';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($zabbixconf['tlscertfile']) &&
+		    ($zabbixconf['tlscertfile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Agent";
+			$result['certificatelist'] = array();
+		        if ($zabbixconf['tlsconnect'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Connect';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		        if ($zabbixconf['tlsaccept'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Accept';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		}
+
+		if (($pluginparams['event'] == 'used_crl') && !empty($zabbixconf['tlscrlfile']) &&
+		    ($zabbixconf['tlscrlfile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Agent";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscrlfile'];
+			$item['usedby'] = 'TLS CRL';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
 }
 
 ?>

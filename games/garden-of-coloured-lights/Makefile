@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	garden-of-coloured-lights
 PORTVERSION=	1.0.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/garden/garden/${PORTVERSION}/
 DISTNAME=	garden-${PORTVERSION}
@@ -17,8 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	liballeg.so:devel/allegro
 
 GNU_CONFIGURE=	yes
-USES=		desktop-file-utils localbase
-INSTALLS_ICONS=	yes
+USES=		desktop-file-utils gnome localbase
 
 DATADIR=	${PREFIX}/share/garden
 

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Vietnamese support
 
     SUBDIR += aspell

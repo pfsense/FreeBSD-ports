@@ -1,20 +1,26 @@
---- sql/mysqld.cc.orig	2018-10-07 08:44:22 UTC
+--- sql/mysqld.cc.orig	2019-09-20 08:30:51 UTC
 +++ sql/mysqld.cc
-@@ -4493,7 +4493,7 @@ static int warn_self_signed_ca() {
+@@ -5109,7 +5109,7 @@ static int init_thread_environment() {
  
  static PSI_memory_key key_memory_openssl = PSI_NOT_INSTRUMENTED;
  
 -#if OPENSSL_VERSION_NUMBER < 0x10100000L
-+#if defined(LIBRESSL_VERSION_NUMBER) || OPENSSL_VERSION_NUMBER < 0x10100000L
++#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
  #define FILE_LINE_ARGS
  #else
  #define FILE_LINE_ARGS , const char *, int
-@@ -4530,7 +4530,7 @@ static void init_ssl() {
+@@ -5143,12 +5143,14 @@ static void init_ssl() {
+ }
  
- static void init_ssl() {
- #ifdef HAVE_OPENSSL
--#if !defined(HAVE_WOLFSSL) && !defined(__sun)
-+#if !defined(HAVE_WOLFSSL) && !defined(LIBRESSL_VERSION_NUMBER) && !defined(__sun)
- #if defined(HAVE_PSI_MEMORY_INTERFACE)
-   static PSI_memory_info all_openssl_memory[] = {
-       {&key_memory_openssl, "openssl_malloc", 0, 0,
+ static int init_ssl_communication() {
++#ifndef LIBRESSL_VERSION_NUMBER
+   char ssl_err_string[OPENSSL_ERROR_LENGTH] = {'\0'};
+   int ret_fips_mode = set_fips_mode(opt_ssl_fips_mode, ssl_err_string);
+   if (ret_fips_mode != 1) {
+     LogErr(ERROR_LEVEL, ER_SSL_FIPS_MODE_ERROR, ssl_err_string);
+     return 1;
+   }
++#endif /* LIBRESSL_VERSION_NUMBER */
+   if (TLS_channel::singleton_init(&mysql_main, mysql_main_channel, opt_use_ssl,
+                                   &server_main_callback, opt_initialize))
+     return 1;

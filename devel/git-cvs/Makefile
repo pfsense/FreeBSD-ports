@@ -1,25 +1,9 @@
-# Created by: mp39590@gmail.com
-# $FreeBSD$
+COMMENT=	CVS emulation and import/export for git
 
-PORTNAME=	git-cvs
-PORTVERSION=	0.1.0
-PORTREVISION=	1
-CATEGORIES=	devel python
+SUBPORT=	cvs
 
-MAINTAINER=	mp39590@gmail.com
-COMMENT=	Tool to incrementally import changesets from CVS into Git
+MASTERDIR=	${.CURDIR}/../git
+DESCR=		${.CURDIR}/pkg-descr
+PLIST=		${.CURDIR}/pkg-plist
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=1.0:devel/py-nose@${PY_FLAVOR}
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}rcsparse>0:devel/py-rcsparse@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
-
-LICENSE_FILE=	${WRKSRC}/LICENSE
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	ustuehler
-
-USES=		python:2.7 shebangfix
-USE_PYTHON=	autoplist distutils
-SHEBANG_FILES=	scripts/git-cvs
-
-.include <bsd.port.mk>
+.include "${MASTERDIR}/Makefile"

@@ -1,5 +1,4 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jiic
 PORTVERSION=	20120110
@@ -16,7 +15,6 @@ RUN_DEPENDS=	${JAVALIBDIR}/sabre.jar:devel/sabre
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 MAKE_ENV=	ANT_INCLUDE_SHARED_JARS=YES
 ALL_TARGET=	jar

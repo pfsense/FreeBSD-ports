@@ -1,13 +1,14 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ipfmeta
 PORTVERSION=	1.3
+PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	http://www.sentia.org/downloads/
+MASTER_SITES=	http://cschubert.com/distfiles/ \
+		LOCAL/cy
 
 MAINTAINER=	cy@FreeBSD.org
-COMMENT=	ipfmeta - use objects in IPfilter files
+COMMENT=	Use objects in IPfilter files
 
 USES=		perl5 shebangfix
 

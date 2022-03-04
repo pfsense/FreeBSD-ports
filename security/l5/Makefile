@@ -1,5 +1,4 @@
 # Created by: andrew@scoop.co.nz
-# $FreeBSD$
 
 PORTNAME=	l5
 PORTVERSION=	1.2
@@ -11,6 +10,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File Integrity Assessment Tool
 
 BROKEN_amd64=	incorrect runtime output
+DEPRECATED=	Abandonware, broken on amd64 for 10+ years
+EXPIRATION_DATE=2022-03-31
 
 USES=		tar:tgz
 NO_WRKSUBDIR=	yes

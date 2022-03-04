@@ -1,10 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gr-osmosdr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.4-99
-DISTVERSIONSUFFIX=	-gc98be5d
-PORTREVISION=	5
+DISTVERSION=	0.2.3
 PORTEPOCH=	1
 CATEGORIES=	comms hamradio
 
@@ -13,28 +9,31 @@ COMMENT=	GNU Radio OsmoSDR module
 
 LICENSE=	GPLv3
 
-BROKEN=		does not build with Gnuradio 3.8
-
-BUILD_DEPENDS=	swig3.0:devel/swig30 \
-		cheetah:devel/py-cheetah
+BUILD_DEPENDS=	swig:devel/swig \
+		cheetah:devel/py-cheetah3@${PY_FLAVOR}
 LIB_DEPENDS=	libgnuradio-runtime.so:comms/gnuradio \
 		libgnuradio-pmt.so:comms/gnuradio \
 		libgnuradio-blocks.so:comms/gnuradio \
+		libvolk.so:devel/volk \
 		libboost_system.so:devel/boost-libs \
-		libboost_thread.so:devel/boost-libs
+		libboost_thread.so:devel/boost-libs \
+		liblog4cpp.so:devel/log4cpp \
+		libgmpxx.so:math/gmp \
+		libgmp.so:math/gmp \
+		liborc-0.4.so:devel/orc
 
-USES=	cmake compiler:c++11-lang fortran pkgconfig python:2.7 tar:tgz
+USES=	cmake compiler:c++11-lang fortran pkgconfig python:3.7+ tar:tgz
+
+SUB_LIST=	VERSION=${PORTVERSION}
+SUB_FILES=	gnuradio-osmosdr.pc
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	osmocom
 
 USE_LDCONFIG=	yes
-BINARY_ALIAS=	swig=swig3.0
 
 # See lib/CMakeLists.txt to enable more components
-CMAKE_ARGS+=	-DENABLE_DEFAULT:BOOL=OFF \
-		-DENABLE_FCD:BOOL=ON \
-		-DENABLE_FILE:BOOL=ON \
+CMAKE_ARGS+=	-DENABLE_FILE:BOOL=ON \
 		-DENABLE_PYTHON=ON \
 		-DPYTHON_EXECUTABLE:STRING="${PYTHON_CMD}"
 
@@ -50,6 +49,7 @@ HACKRF_LIB_DEPENDS=	libhackrf.so:comms/hackrf
 HACKRF_CMAKE_ON=	-DENABLE_HACKRF:BOOL=ON
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgnuradio-osmosdr.so.0.1.5git
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgnuradio-osmosdr.so.0.2.0
+	${INSTALL_DATA} ${WRKDIR}/gnuradio-osmosdr.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/
 
 .include <bsd.port.mk>

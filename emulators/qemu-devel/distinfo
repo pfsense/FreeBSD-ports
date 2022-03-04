@@ -1,3 +1,13 @@
-TIMESTAMP = 1551235571
-SHA256 (qemu/3.1.0/qemu-3.1.0.tar.xz) = 6a0508df079a0a33c2487ca936a56c12122f105b8a96a44374704bef6c69abfc
-SIZE (qemu/3.1.0/qemu-3.1.0.tar.xz) = 36070104
+TIMESTAMP = 1632836307
+SHA256 (qemu/6.1.0.20210928/qemu-qemu-de8ed1055c2ce18c95f597eb10df360dcb534f99_GL0.tar.gz) = 9f898082d12be51c9ec06e3007f40a9e69871ba3285b55488fa9e1806bf32a05
+SIZE (qemu/6.1.0.20210928/qemu-qemu-de8ed1055c2ce18c95f597eb10df360dcb534f99_GL0.tar.gz) = 31495981
+SHA256 (qemu/6.1.0.20210928/qemu-project-keycodemapdb-d21009b1c9f94b740ea66be8e48a1d8ad8124023_GL0.tar.gz) = ac074e95824ae5337e19024eae21119caeea67884fb2a3b4aaa8679bcd0f9ccc
+SIZE (qemu/6.1.0.20210928/qemu-project-keycodemapdb-d21009b1c9f94b740ea66be8e48a1d8ad8124023_GL0.tar.gz) = 49211
+SHA256 (qemu/6.1.0.20210928/qemu-project-dtc-e33ce1d6a8c7e54e3ad12cff33690b6da0aee1dc_GL0.tar.gz) = fd1d927e216b51547cfb409853d00f1cbf48c9fead9f9bd0537c63459618a573
+SIZE (qemu/6.1.0.20210928/qemu-project-dtc-e33ce1d6a8c7e54e3ad12cff33690b6da0aee1dc_GL0.tar.gz) = 205791
+SHA256 (qemu/6.1.0.20210928/qemu-project-meson-5fa0fd3b473f792bd7333cf6ae6e2f4c851b6108_GL0.tar.gz) = ad215ee7ef61f413715532487a83223c3c426f9fc1d66e8d1ee5c6d47a169247
+SIZE (qemu/6.1.0.20210928/qemu-project-meson-5fa0fd3b473f792bd7333cf6ae6e2f4c851b6108_GL0.tar.gz) = 4089447
+SHA256 (qemu/6.1.0.20210928/qemu-project-berkeley-softfloat-3-b64af41c3276f97f0e181920400ee056b9c88037_GL0.tar.gz) = faae889814ea6a292f7ca03d9b36e6c7e95bab2a64777804883cc822b8d48757
+SIZE (qemu/6.1.0.20210928/qemu-project-berkeley-softfloat-3-b64af41c3276f97f0e181920400ee056b9c88037_GL0.tar.gz) = 148741
+SHA256 (qemu/6.1.0.20210928/qemu-project-berkeley-testfloat-3-5a59dcec19327396a011a17fd924aed4fec416b3_GL0.tar.gz) = c1f92abe87764de22f6cf8372d697717d18e7951ceb11b6e12c6767b7d1e3a65
+SIZE (qemu/6.1.0.20210928/qemu-project-berkeley-testfloat-3-5a59dcec19327396a011a17fd924aed4fec416b3_GL0.tar.gz) = 139221

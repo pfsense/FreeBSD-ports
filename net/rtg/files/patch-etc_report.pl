@@ -1,4 +1,4 @@
---- etc/report.pl.orig	2016-11-04 16:36:08 UTC
+--- etc/report.pl.orig	2020-09-23 14:55:01 UTC
 +++ etc/report.pl
 @@ -30,7 +30,7 @@ $pass="rtgdefault";
  $onedaysec=60*60*24;

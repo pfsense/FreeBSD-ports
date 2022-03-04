@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-nlwing2
 PORTVERSION=	1.2.0
-PORTREVISION=	20
+PORTREVISION=	23
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

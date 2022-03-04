@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gtkhtml
 PORTVERSION=	4.10.0
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 		libenchant.so:textproc/enchant
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
 
-USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz xorg
 USE_XORG=	xinerama xi xrandr xcursor xcomposite xdamage xorgproto
 USE_GNOME=	gnomeprefix intlhack gtk30
 USE_LDCONFIG=	yes

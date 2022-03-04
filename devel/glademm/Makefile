@@ -1,5 +1,4 @@
 # Created by: Alexander Nedotsukov <bland@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	glademm
 PORTVERSION=	2.6.0
@@ -11,7 +10,7 @@ DISTNAME=	${PORTNAME:S/2$//}-${PORTVERSION}
 MAINTAINER=	bland@FreeBSD.org
 COMMENT=	C++ code generator backend for glade and glade2
 
-USES=		gmake pathfix pkgconfig
+USES=		gmake gnome pathfix pkgconfig
 USE_GNOME=	gnomeprefix
 GNU_CONFIGURE=	yes
 

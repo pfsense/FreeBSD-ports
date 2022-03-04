@@ -3,11 +3,11 @@
  * suricata_rules.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -269,11 +269,18 @@ if ($_POST['action'] == 'loadRule') {
 	if (isset($_POST['gid']) && isset($_POST['sid'])) {
 		$gid = $_POST['gid'];
 		$sid = $_POST['sid'];
-		print(base64_encode($rules_map[$gid][$sid]['rule']));
+		$rule_text = base64_encode($rules_map[$gid][$sid]['rule']);
 	}
 	else {
-		print(base64_encode(gettext('Invalid rule signature - no matching rule was found!')));
+		$rule_text = base64_encode(gettext('Invalid rule signature - no matching rule was found!'));
 	}
+	if (strpos($currentruleset, 'snort_') !== false) {
+		$rule_link = "https://www.snort.org/rule_docs/{$gid}-{$sid}";
+	} else {
+		$rule_link = "";
+	}	
+	$response = array('rule_text' => $rule_text, 'rule_link' => $rule_link);
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
 	exit;
 }
 
@@ -856,6 +863,12 @@ elseif ($_POST['filterrules_submit']) {
 	$filterfieldsarray = array();
 	$filterfieldsarray['show_enabled'] = $_POST['filterrules_enabled'] ? $_POST['filterrules_enabled'] : null;
 	$filterfieldsarray['show_disabled'] = $_POST['filterrules_disabled'] ? $_POST['filterrules_disabled'] : null;
+	if ($a_rule[$id]['blockoffenders'] == 'on'){
+		$filterfieldsarray['show_drop'] = $_POST['filterrules_drop'] ? $_POST['filterrules_drop'] : null;
+	}
+	if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+		$filterfieldsarray['show_reject'] = $_POST['filterrules_reject'] ? $_POST['filterrules_reject'] : null;
+	}
 }
 elseif ($_POST['filterrules_clear']) {
 	$filterfieldsarray = array();
@@ -916,7 +929,8 @@ function build_cat_list() {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gettext("Rules: ") . $currentruleset);
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - Rules");
 include_once("head.inc");
 
 if (is_subsystem_dirty('suricata_rules')) {
@@ -947,6 +961,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php?instance={$id}");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -964,7 +979,6 @@ $tab_array[] = array($menu_iface . gettext("Rules"), true, "/suricata/suricata_r
 $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
 
@@ -1070,33 +1084,55 @@ else {
 $group = new Form_Group('');
 $group->add(new Form_Checkbox(
 	'filterrules_enabled',
-	'Show Enabled Rules',
-	'Show enabled rules',
+	'Enabled Rules',
+	'Enabled Rules',
 	$filterfieldsarray['show_enabled'] == 'on' ? true:false,
 	'on'
 ));
 $group->add(new Form_Checkbox(
 	'filterrules_disabled',
-	'Show Disabled Rules',
-	'Show disabled rules',
+	'Disabled Rules',
+	'Disabled Rules',
 	$filterfieldsarray['show_disabled'] == 'on' ? true:false,
 	'on'
 ));
+
+// Show DROP and REJECT filters for Inline IPS Mode operation
+if ($a_rule[$id]['blockoffenders'] == 'on') {
+	$group->add(new Form_Checkbox(
+		'filterrules_drop',
+		'Drop Rules',
+		'Drop Rules',
+		$filterfieldsarray['show_drop'] == 'on' ? true:false,
+		'on'
+	));
+}
+if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+	$group->add(new Form_Checkbox(
+		'filterrules_reject',
+		'Reject Rules',
+		'Reject Rules',
+		$filterfieldsarray['show_reject'] == 'on' ? true:false,
+		'on'
+	));
+}
+$section->add($group);
+
+// Add APPLY and CLEAR buttons
+$group = new Form_Group('');
 $group->add(new Form_Button(
 	'filterrules_submit',
-	'Filter',
+	'Apply Filter',
 	null,
 	'fa-filter'
-))->setHelp("Apply filter")
-  ->removeClass("btn-primary")
+))->removeClass("btn-primary")
   ->addClass("btn-sm btn-success");
 $group->add(new Form_Button(
 	'filterrules_clear',
-	'Clear',
+	'Clear Filter',
 	null,
 	'fa-trash-o'
-))->setHelp("Remove all filters")
-  ->removeclass("btn-primary")
+))->removeclass("btn-primary")
   ->addClass("btn-sm btn-danger no-confirm");
 $section->add($group);
 print($section);
@@ -1118,30 +1154,31 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action/content modified by SID Mgmt');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
-				<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') : ?>
-						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
-				<?php else : ?>
-						<td><td></td></td>
-				<?php endif; ?>
+						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule contains noalert option');?></small></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
-						<td><td></td></td>
+						<td></td><td></td>
 				<?php if ($a_rule[$id]['blockoffenders'] == 'on') : ?>
 						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
+					<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline') : ?>
+						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
+					<?php else : ?>
+						<td></td><td></td>
+					<?php endif; ?>
 				<?php else : ?>
-						<td><td></td></td>
+						<td></td><td></td>
 				<?php endif; ?>
-						<td><td></td></td>
+						<td></td><td></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<table  style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
+		<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 			<colgroup>
 				<col width="5%">
 				<col width="5%">
@@ -1155,17 +1192,17 @@ print($section);
 				<col>
 			</colgroup>
 			<thead>
-			   <tr>
-				<th><?=gettext("State");?></th>
-				<th><?=gettext("Action");?></th>
-				<th><?=gettext("GID");?></th>
-				<th><?=gettext("SID");?></th>
-				<th><?=gettext("Proto");?></th>
-				<th><?=gettext("Source");?></th>
-				<th><?=gettext("SPort");?></th>
-				<th><?=gettext("Destination");?></th>
-				<th><?=gettext("DPort");?></th>
-				<th><?=gettext("Message");?></th>
+			   <tr class="sortableHeaderRowIdentifier">
+				<th data-sortable="false"><?=gettext("State");?></th>
+				<th data-sortable="false"><?=gettext("Action");?></th>
+				<th data-sortable="true" data-sortable-type="numeric"><?=gettext("GID");?></th>
+				<th data-sortable="true" data-sortable-type="numeric"><?=gettext("SID");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Proto");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Source");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("SPort");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Destination");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("DPort");?></th>
+				<th data-sortable="true" data-sortable-type="alpha"><?=gettext("Message");?></th>
 			   </tr>
 			</thead>
 			<tbody>
@@ -1182,12 +1219,22 @@ print($section);
 								$ruleset = $currentruleset;
 								$style = "";
 
-								// Apply rule state filters if filtering is enabled
+								// Apply rule state and action filters if filtering is enabled
 								if ($filterrules) {
-									if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
+									if (isset($filterfieldsarray['show_disabled'])) {
+										if (($v['disabled'] == 0 || isset($enablesid[$gid][$sid])) && !isset($disablesid[$gid][$sid])) {
+											continue;
+										}
+									}
+									if (isset($filterfieldsarray['show_enabled'])) {
+										if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
+											continue;
+										}
+									}
+									if (isset($filterfieldsarray['show_drop']) && $v['action'] != "drop") {
 										continue;
 									}
-									elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
+									if (isset($filterfieldsarray['show_reject']) && $v['action'] != "reject") {
 										continue;
 									}
 								}
@@ -1259,6 +1306,12 @@ print($section);
 									$title_act .= gettext("  Click to change rule action.");
 								}
 
+								// Rules with "noalert;" option enabled get special treatment
+								if ($v['noalert'] == 1) {
+									$iconact_class = 'class="fa fa-exclamation-triangle text-success text-center"';
+									$title_act = gettext("Rule contains the 'noalert;' and/or 'flowbits:noalert;' options.");
+								}
+
 								// Pick off the first section of the rule (prior to the start of the MSG field),
 								// and then use a REGX split to isolate the remaining fields into an array.
 								$tmp = substr($v['rule'], 0, strpos($v['rule'], "("));
@@ -1279,6 +1332,13 @@ print($section);
 								$destination_port = $rule_content[6]; //destination port field
 								$message = suricata_get_msg($v['rule']); // description field
 								$sid_tooltip = gettext("View the raw text for this rule");
+
+								// Show text of "noalert;" flagged rules in Bootstrap SUCCESS color
+								if ($v['noalert'] == 1) {
+									$tag_class = ' class="text-success" ';
+								} else {
+									$tag_class = "";
+								}
 					?>
 								<tr class="text-nowrap">
 									<td><?=$textss; ?>
@@ -1289,7 +1349,7 @@ print($section);
 						<?php endif; ?>
 									</td>
 
-						<?php if ($a_rule[$id]['blockoffenders'] == 'on') : ?>
+						<?php if ($a_rule[$id]['blockoffenders'] == 'on' && $v['noalert'] == 0) : ?>
 								       <td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
 										<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
 								       </td>
@@ -1306,22 +1366,22 @@ print($section);
 										onclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');" 
 										title="<?=$sid_tooltip;?>"><?=$textss . $sid . $textse;?></a>
 								       </td>
-								       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$textss . $protocol . $textse;?>
 							       	       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$srcspan . $source;?></span>
 								       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$srcprtspan . $source_port;?></span>
 								       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$dstspan . $destination;?></span>
 								       </td>
-								       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+								       <td <?=$tag_class;?> style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									       <?=$dstprtspan . $destination_port;?></span>
 								       </td>
-									<td style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
+									<td <?=$tag_class;?> style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 										<?=$textss . $message . $textse;?>
 								       </td>
 								</tr>
@@ -1387,7 +1447,7 @@ print($section);
 					<i class="fa fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
-				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+				<button type="button" class="btn btn-sm btn-warning" id="cancel_sid_action" name="cancel_sid_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
 					<?=gettext("Cancel");?>
 				</button>
 			</div>
@@ -1424,7 +1484,7 @@ print($section);
 					<i class="fa fa-save icon-embed-btn"></i>
 					<?=gettext("Save");?>
 				</button>
-				<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
+				<button type="button" class="btn btn-sm btn-warning" id="cancel_state_action" name="cancelcancel_state_action" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit selector");?>">
 					<?=gettext("Cancel");?>
 				</button>
 			</div>
@@ -1441,7 +1501,7 @@ $modal = new Modal('View Rules Text', 'rulesviewer', 'large', 'Close');
 $modal->addInput(new Form_StaticText (
 	'Category',
 	'<div class="text-left" id="modal_rule_category"></div>'
-));
+))->setHelp('<span id="modal_rule_link_text"></span><a id="modal_rule_link" target="_blank"></a>');
 $modal->addInput(new Form_Textarea (
 	'rulesviewer_text',
 	'Rule Text',
@@ -1505,8 +1565,14 @@ function showRuleContents(gid, sid) {
 }
 
 function loadComplete(req) {
-		$('#rulesviewer_text').text(atob(req.responseText));
+		var response = $.parseJSON(req.responseText);
+		$('#rulesviewer_text').text(atob(response.rule_text));
 		$('#rulesviewer_text').attr('readonly', true);
+		if (response.rule_link) {
+			$('#modal_rule_link_text').text('Snort Rule Doc: ');
+			$('#modal_rule_link').attr('href', response.rule_link);
+			$('#modal_rule_link').text(response.rule_link);
+		}
 }
 
 events.push(function() {
@@ -1532,6 +1598,14 @@ events.push(function() {
 
 	$('#filterrules_disabled').click(function() {
 		$('#filterrules_enabled').prop("checked", false);
+	});
+
+	$('#filterrules_drop').click(function() {
+		$('#filterrules_reject').prop("checked", false);
+	});
+
+	$('#filterrules_reject').click(function() {
+		$('#filterrules_drop').prop("checked", false);
 	});
 
 	<?php if (!empty($anchor)): ?>

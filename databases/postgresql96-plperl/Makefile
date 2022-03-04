@@ -1,6 +1,10 @@
 # Created by: Palle Girgensohn <girgen@partitur.se>
-# $FreeBSD$
 
 WANT_PGSQL_VER=	9.6
 
-.include "${.CURDIR}/../postgresql95-plperl/Makefile"
+INSTALL_DIRS=	src/pl/plperl contrib/hstore_plperl
+
+# this port fails to build in parallel
+MAKE_JOBS_UNSAFE=	yes
+
+.include "${.CURDIR}/../postgresql14-plperl/Makefile"

@@ -1,5 +1,4 @@
 # Created by: Göran Runfeldt <goranrunfeldt@home.se>
-# $FreeBSD$
 
 PORTNAME=	xtux
 PORTVERSION=	20030306
@@ -7,7 +6,7 @@ CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Humorous Arcade game for X
 
 LICENSE=	GPLv2
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gmake
+USES=		gmake xorg
 USE_XORG=	xpm
 MAKE_ENV=	CPP="${CC} -E"
 

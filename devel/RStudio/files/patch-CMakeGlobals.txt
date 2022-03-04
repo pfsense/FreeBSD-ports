@@ -1,33 +1,37 @@
---- CMakeGlobals.txt.orig	2019-02-18 00:38:08 UTC
+--- CMakeGlobals.txt.orig	2021-05-24 22:22:25 UTC
 +++ CMakeGlobals.txt
-@@ -74,17 +74,19 @@ endif()
+@@ -118,7 +118,7 @@ endif()
  
  # record git revision hash (cache it since we don't use this in development
  # mode and we don't want it to force rebuilds there)
--if(NOT RSTUDIO_GIT_REVISION_HASH)
--   find_program(GIT_EXECUTABLE git)
--   if(GIT_EXECUTABLE)
--      execute_process(
--         COMMAND git rev-parse HEAD
--         WORKING_DIRECTORY "${ROOT_SRC_DIR}"
--         OUTPUT_VARIABLE RSTUDIO_GIT_REVISION_HASH
--         OUTPUT_STRIP_TRAILING_WHITESPACE)
--      SET(RSTUDIO_GIT_REVISION_HASH "${RSTUDIO_GIT_REVISION_HASH}" CACHE STRING "Git Revision Hash")
--   endif()
--endif()
-+#if(NOT RSTUDIO_GIT_REVISION_HASH)
-+#   find_program(GIT_EXECUTABLE git)
-+#   if(GIT_EXECUTABLE)
-+#      execute_process(
-+#         COMMAND git rev-parse HEAD
-+#         WORKING_DIRECTORY "${ROOT_SRC_DIR}"
-+#         OUTPUT_VARIABLE RSTUDIO_GIT_REVISION_HASH
-+#         OUTPUT_STRIP_TRAILING_WHITESPACE)
-+#      SET(RSTUDIO_GIT_REVISION_HASH "${RSTUDIO_GIT_REVISION_HASH}" CACHE STRING "Git Revision Hash")
-+#   endif()
-+#endif()
-+
+-if(NOT RSTUDIO_SESSION_WIN32 AND NOT RSTUDIO_GIT_REVISION_HASH)
++if(FALSE AND NOT RSTUDIO_SESSION_WIN32 AND NOT RSTUDIO_GIT_REVISION_HASH)
+    find_program(GIT_EXECUTABLE git)
+    if(GIT_EXECUTABLE)
+       execute_process(
+@@ -129,6 +129,7 @@ if(NOT RSTUDIO_SESSION_WIN32 AND NOT RSTUDIO_GIT_REVIS
+       SET(RSTUDIO_GIT_REVISION_HASH "${RSTUDIO_GIT_REVISION_HASH}" CACHE STRING "Git Revision Hash")
+    endif()
+ endif()
 +SET(RSTUDIO_VERSION "${FREEBSD_RSTUDIO_VERSION}" CACHE STRING "FreeBSD RStudio version")
  
  # record these from Jenkins if available
  if("$ENV{GIT_COMMIT}" STREQUAL "")
+@@ -238,14 +239,14 @@ else()
+ endif()
+ 
+ # if the install prefix is /usr/local then tweak as appropriate
+-if(NOT DEFINED CMAKE_INSTALL_PREFIX)
++if(TRUE OR NOT DEFINED CMAKE_INSTALL_PREFIX) # force to set deeper CMAKE_INSTALL_PREFIX because many files are installed into its root
+    if(APPLE)
+       set(CMAKE_INSTALL_PREFIX "/Applications")
+    elseif(UNIX)
+       if(RSTUDIO_DESKTOP)
+-         set(CMAKE_INSTALL_PREFIX "/usr/local/lib/rstudio")
++         set(CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/lib/rstudio")
+       else()
+-         set(CMAKE_INSTALL_PREFIX "/usr/local/lib/rstudio-server")
++         set(CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/lib/rstudio-server")
+       endif()
+    endif()
+ endif()

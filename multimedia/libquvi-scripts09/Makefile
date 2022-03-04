@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libquvi-scripts
 PORTVERSION=	0.9.20131130
@@ -15,10 +14,10 @@ COMMENT=	Embedded lua scripts for libquvi and utility scripts
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}bitop>=1.0.1:devel/lua-bitop \
-		${LUA_PKGNAMEPREFIX}luaexpat>=1.2.0:textproc/luaexpat \
-		${LUA_PKGNAMEPREFIX}json>=1.1.1:converters/lua-json \
-		${LUA_PKGNAMEPREFIX}luasocket>=2.0.2:net/luasocket
+RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}bitop>=1.0.1:devel/lua-bitop@${LUA_FLAVOR} \
+		${LUA_PKGNAMEPREFIX}luaexpat>=1.2.0:textproc/luaexpat@${LUA_FLAVOR} \
+		${LUA_PKGNAMEPREFIX}json>=1.1.1:converters/lua-json@${LUA_FLAVOR} \
+		${LUA_PKGNAMEPREFIX}luasocket>=2.0.2:net/luasocket@${LUA_FLAVOR}
 
 OPTIONS_DEFINE=	NSFW
 OPTIONS_SUB=	yes

@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libzen
-PORTVERSION=	18.12
+PORTVERSION=	21.09
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -29,7 +28,6 @@ WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/ZenLib/Project/GNU/Library
 post-patch:
 	@${REINPLACE_CMD} -e '/^ZenLib_LIBS/ s|$$(pwd)[^ ]*|${LOCALBASE}/lib|' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's| -lstdc++||g' ${WRKSRC}/configure ${WRKSRC}/libzen.pc.in
-	@${REINPLACE_CMD} -e '1 s|bin/bash|bin/sh|' ${WRKSRC}/libzen-config.in
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/../../../Source/ZenLib/BitStream_Fast.h ${STAGEDIR}${PREFIX}/include/ZenLib/BitStream_Fast.h

@@ -1,5 +1,4 @@
 # Created by: Pav Lucistnik <pav@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aacplusenc
 PORTVERSION=	0.17.5
@@ -11,15 +10,21 @@ DISTFILES=	${DISTNAME:S,-,_,}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	AacPlus v2 command-line encoder
 
-USES=		gmake
+USES=		cpe gmake
+
+# Converted from RESTRICTED
+LICENSE=	AACPLUSENC
+LICENSE_NAME=	aacplusenc
+LICENSE_TEXT=	unclear legal status, probably need licenses from 3GPP, Via Licensing and Coding Technologies
+LICENSE_PERMS=	auto-accept
+
+CPE_VENDOR=	aacplusenc_project
 
 OPTIONS_DEFINE=	FFTW3
 OPTIONS_DEFAULT=	FFTW3
 FFTW3_DESC=	Use FFTW3 library for performance
 
-RESTRICTED=	unclear legal status, probably need licenses from 3GPP, Via Licensing and Coding Technologies
-
-CONFLICTS=	libaacplus-[0-9]*
+CONFLICTS=	libaacplus
 
 PLIST_FILES=	bin/aacplusenc
 MAKE_ARGS+=	INSTDIR=${STAGEDIR}${PREFIX}

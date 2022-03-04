@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	gitinspector
 PORTVERSION=	0.4.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel python
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 
@@ -15,9 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	git:devel/git
 
-NO_ARCH=	yes
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python
+
+NO_ARCH=	yes
 
 GH_ACCOUNT=	ejwa
 USE_GITHUB=	yes

@@ -1,7 +1,7 @@
 # Created by: Pierre David <pdagog@gmail.com>, Jean Benoit <jean@unistra.fr>
-# $FreeBSD$
 
 PORTNAME=	netmagis
+PORTREVISION=	1
 PKGNAMESUFFIX=	-detecteq
 
 COMMENT=	Files for detection of equipment modifications

@@ -1,5 +1,4 @@
 # Created by: Horia Racoviceanu <horia@racoviceanu.com>
-# $FreeBSD$
 
 PORTNAME=	haml-contrib
 PORTVERSION=	1.0.0.1
@@ -13,8 +12,9 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-haml>=4.0.0:www/rubygem-haml
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

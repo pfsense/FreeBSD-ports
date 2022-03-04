@@ -1,12 +1,12 @@
 # Created by: José García Juanino <jjuanino@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	purple-hangouts
-PORTVERSION=	20181202
+PORTVERSION=	20190607
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	https://bitbucket.org/EionRobb/${PORTNAME}/get/
 # Commit tag. Must be changed according with PORTVERSION.
-DISTNAME=	cccf2f62d439
+DISTNAME=	3f7d89bf9ce2
 
 MAINTAINER=	jjuanino@gmail.com
 COMMENT=	Hangouts plugin for libpurple
@@ -20,6 +20,7 @@ LIB_DEPENDS=	libpurple.so:net-im/libpurple \
 
 USES=		gmake gnome pkgconfig zip
 USE_GNOME=	glib20
+PATCH_STRIP=	-p1 --ignore-whitespace
 
 WRKSRC=		${WRKDIR}/EionRobb-${PORTNAME}-${DISTNAME}
 

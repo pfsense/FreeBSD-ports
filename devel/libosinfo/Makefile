@@ -1,40 +1,39 @@
 # Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libosinfo
-PORTVERSION=	1.4.0
+PORTVERSION=	1.9.0
 CATEGORIES=	devel
 MASTER_SITES=	https://releases.pagure.org/libosinfo/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Library for managing OS information for virtualization
 
-LIB_DEPENDS=	libsoup-gnome-2.4.so:devel/libsoup-gnome
+LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup
 BUILD_DEPENDS=	${LOCALBASE}/share/pciids/pci.ids:misc/pciids \
 		${LOCALBASE}/share/usbids/usb.ids:misc/usbids
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		osinfo-db-import:sysutils/osinfo-db-tools \
 		${LOCALBASE}/share/osinfo/VERSION:misc/osinfo-db
 
-USES=		gettext-tools gmake libtool pathfix pkgconfig
+USES=		compiler:c11 cpe gettext gmake gnome libtool pathfix \
+		pkgconfig tar:xz meson
 USE_GNOME=	glib20 libxml2 libxslt introspection:build intlhack
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-CONFIGURE_ARGS=	--disable-tests --disable-vala \
-		--with-usb-ids-path=${LOCALBASE}/share/usbids/usb.ids \
-		--with-pci-ids-path=${LOCALBASE}/share/pciids/pci.ids
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+CONFIGURE_ARGS+=	-Denable-vala=disabled \
+			-Dwith-usb-ids-path=${LOCALBASE}/share/usbids/usb.ids \
+			-Dwith-pci-ids-path=${LOCALBASE}/share/pciids/pci.ids
 
-OPTIONS_DEFINE=	NLS
-OPTIONS_SUB=yes
-
-NLS_USES=	gettext
-NLS_CONFIGURE_ENABLE=	nls
-
-SHLIB_VER=	${PORTVERSION:C/(^[0-9])\./0.\100/}
+SHLIB_VER=	0.1009.0
 PLIST_SUB=	SHLIB_VER=${SHLIB_VER}
+
+OPTIONS_DEFINE=	GTKDOC
+OPTIONS_DEFAULT=	GTKDOC
+OPTIONS_SUB=	yes
+
+GTKDOC_DESC=	Build gtk-doc documentation
+GTKDOC_BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc
+GTKDOC_MESON_TRUE=	enable-gtk-doc
 
 .include <bsd.port.mk>

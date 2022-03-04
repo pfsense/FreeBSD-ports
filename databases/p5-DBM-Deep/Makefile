@@ -1,8 +1,7 @@
 # Created by: Janos.Mohacsi@bsd.hu
-# $FreeBSD$
 
 PORTNAME=	DBM-Deep
-PORTVERSION=	2.0014
+PORTVERSION=	2.0016
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

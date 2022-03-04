@@ -1,12 +1,9 @@
-# Created by: Andreas Sommer <andreas.sommer87@googlemail.com>
-# $FreeBSD$
-
 PORTNAME=		kiss-templates
 PORTVERSION=		0.19
-PORTREVISION=		9
+PORTREVISION=		13
 CATEGORIES=		textproc
 
-MAINTAINER=		andreas.sommer87@googlemail.com
+MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Type safe "Keep it simple, stupid" text templates for C++
 
 LICENSE=		BSD2CLAUSE
@@ -24,12 +21,5 @@ PLIST_FILES=		bin/kiste2cpp \
 			include/kiste/raw_type.h \
 			include/kiste/serializer_builder.h \
 			include/kiste/terminal.h
-
-OPTIONS_DEFINE=		TEST
-TEST_DESC=		Build with unit tests
-TEST_BUILD_DEPENDS=	boost-libs>=1.55:devel/boost-libs
-TEST_USES=		python:2.7,build,test shebangfix
-TEST_TEST_TARGET=	test
-SHEBANG_FILES=		tests/comparison-based/generate.py tests/differ.py
 
 .include <bsd.port.mk>

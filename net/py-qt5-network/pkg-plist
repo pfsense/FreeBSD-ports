@@ -8,6 +8,7 @@
 %%PYQT_SIPDIR%%/QtNetwork/qhostaddress.sip
 %%PYQT_SIPDIR%%/QtNetwork/qhostinfo.sip
 %%PYQT_SIPDIR%%/QtNetwork/qhstspolicy.sip
+%%PYQT_SIPDIR%%/QtNetwork/qhttp2configuration.sip
 %%PYQT_SIPDIR%%/QtNetwork/qhttpmultipart.sip
 %%PYQT_SIPDIR%%/QtNetwork/qlocalserver.sip
 %%PYQT_SIPDIR%%/QtNetwork/qlocalsocket.sip
@@ -23,6 +24,8 @@
 %%PYQT_SIPDIR%%/QtNetwork/qnetworkreply.sip
 %%PYQT_SIPDIR%%/QtNetwork/qnetworkrequest.sip
 %%PYQT_SIPDIR%%/QtNetwork/qnetworksession.sip
+%%PYQT_SIPDIR%%/QtNetwork/qocspresponse.sip
+%%PYQT_SIPDIR%%/QtNetwork/qpassworddigestor.sip
 %%PYQT_SIPDIR%%/QtNetwork/qpynetwork_qhash.sip
 %%PYQT_SIPDIR%%/QtNetwork/qpynetwork_qmap.sip
 %%PYQT_SIPDIR%%/QtNetwork/qssl.sip

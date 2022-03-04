@@ -1,5 +1,4 @@
 # Created by: Joshua Goodall <joshua@roughtrade.net>
-# $FreeBSD$
 
 PORTNAME=	spread
 PORTVERSION=	3.17.3
@@ -18,7 +17,6 @@ BROKEN_armv6=		fails to package: java/docs/*.html: No such file or directory
 BROKEN_armv7=		fails to package: java/docs/*.html: No such file or directory
 
 USE_JAVA=	YES
-JAVA_VERSION=	1.6+
 PKGMESSAGE=	${WRKSRC}/../license.txt
 
 ANT?=		${LOCALBASE}/bin/ant

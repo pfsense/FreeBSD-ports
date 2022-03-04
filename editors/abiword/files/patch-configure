@@ -1,6 +1,6 @@
---- configure.orig	2014-12-23 06:13:20.000000000 +0100
-+++ configure	2016-01-26 21:22:33.585049000 +0100
-@@ -23915,7 +23915,7 @@
+--- configure.orig	2021-07-03 15:48:11 UTC
++++ configure
+@@ -23069,7 +23069,7 @@ fi
  
  
  
@@ -9,7 +9,16 @@
  wpg_deps="no"
  
  if test "$enable_wpg" != ""; then
-@@ -24341,8 +24341,8 @@
+@@ -23820,7 +23820,7 @@ fi
+ test "$enable_collab" = "auto" && PLUGINS="$PLUGINS collab"
+ 
+ COLLAB_CFLAGS="$COLLAB_CFLAGS "'${PLUGIN_CFLAGS}'
+-COLLAB_LIBS="$COLLAB_LIBS "'${PLUGIN_LIBS}'
++COLLAB_LIBS='${PLUGIN_LIBS}'" $COLLAB_LIBS "
+ 
+ fi # plugin conditional
+ 
+@@ -26311,8 +26311,8 @@ fi
  
  
  
@@ -20,7 +29,7 @@
  wordperfect_deps="no"
  
  WORDPERFECT_CFLAGS=
-@@ -24385,7 +24385,7 @@
+@@ -26355,7 +26355,7 @@ if test -n "$PKG_CONFIG" && \
    $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
    test $ac_status = 0; }; then
  

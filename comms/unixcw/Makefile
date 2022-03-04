@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 # NOTE: comms/xcwcp is a sub-port of this.  When making changes, ensure
 #       it still works as well.
 
 PORTNAME?=	unixcw
 PORTVERSION=	3.5.1
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/unixcw/unixcw-${PORTVERSION}
 DISTNAME=	unixcw_${PORTVERSION}.orig

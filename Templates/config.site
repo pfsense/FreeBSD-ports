@@ -1,4 +1,3 @@
-# $FreeBSD$
 # Do not add:
 #	- toolchain related
 #	- arch-dependent values
@@ -80,7 +79,6 @@
 : ${ac_cv_header_strings_h=yes}
 : ${ac_cv_header_sys_acl_h=yes}
 : ${ac_cv_header_sys_cdefs_h=yes}
-: ${ac_cv_header_sys_dir_h=yes}
 : ${ac_cv_header_sys_fcntl_h=yes}
 : ${ac_cv_header_sys_file_h=yes}
 : ${ac_cv_header_sys_ioctl_h=yes}
@@ -120,7 +118,6 @@
 : ${ac_cv_header_argz_h=no}
 : ${ac_cv_header_byteswap_h=no}
 : ${ac_cv_header_dl_h=no}
-: ${ac_cv_header_malloc_h=no}
 : ${ac_cv_header_random_h=no}
 : ${ac_cv_header_vfork_h=no}
 
@@ -682,7 +679,6 @@
 : ${ac_cv_have_decl_getpagesize=yes}
 : ${ac_cv_have_decl_getrlimit=yes}
 : ${ac_cv_have_decl_getrusage=yes}
-: ${ac_cv_have_decl_gets=yes}
 : ${ac_cv_have_decl_getsubopt=yes}
 : ${ac_cv_have_decl_gettimeofday=yes}
 : ${ac_cv_have_decl_getusershell=yes}
@@ -878,7 +874,7 @@
 : ${gl_cv_func_ldexp_no_libm=yes}
 : ${gl_cv_func_lseek_pipe=yes}
 : ${gl_cv_func_lstat_dereferences_slashed_symlink=yes}
-: ${gl_cv_func_malloc_0_nonnull=1}
+: ${gl_cv_func_malloc_0_nonnull=yes}
 : ${gl_cv_func_malloc_posix=yes}
 : ${gl_cv_func_mbrtowc_incomplete_state=yes}
 : ${gl_cv_func_mbrtowc_nul_retval=yes}
@@ -899,7 +895,7 @@
 : ${gl_cv_func_printf_positions=yes}
 : ${gl_cv_func_printf_precision=yes}
 : ${gl_cv_func_printf_sizes_c99=yes}
-: ${gl_cv_func_sigprocmask=1}
+: ${gl_cv_func_sigprocmask=yes}
 : ${gl_cv_func_snprintf_retval_c99=yes}
 : ${gl_cv_func_snprintf_size1=yes}
 : ${gl_cv_func_snprintf_usable=yes}
@@ -954,7 +950,6 @@
 : ${gl_cv_have_raw_decl_getlogin=yes}
 : ${gl_cv_have_raw_decl_getlogin_r=yes}
 : ${gl_cv_have_raw_decl_getpagesize=yes}
-: ${gl_cv_have_raw_decl_gets=yes}
 : ${gl_cv_have_raw_decl_getsubopt=yes}
 : ${gl_cv_have_raw_decl_gettimeofday=yes}
 : ${gl_cv_have_raw_decl_getusershell=yes}

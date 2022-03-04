@@ -1,9 +1,5 @@
-# Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD$
-
 PORTNAME=	suricata
-DISTVERSION=	4.1.4
-PORTREVISION=	2
+DISTVERSION=	6.0.4
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -13,41 +9,50 @@ COMMENT=	High Performance Network IDS, IPS and Security Monitoring engine
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libnet.so:net/libnet \
+BUILD_DEPENDS=	rustc:lang/${RUST_DEFAULT}
+LIB_DEPENDS=	libjansson.so:devel/jansson \
 		liblz4.so:archivers/liblz4 \
+		libnet.so:net/libnet \
+		libpcre.so:devel/pcre \
 		libyaml.so:textproc/libyaml
 
-USES=		autoreconf cpe gmake iconv:translit libtool pathfix pkgconfig
-
-CONFLICTS_INSTALL=libhtp
-
-USE_LDCONFIG=	yes
-USE_RC_SUBR=	${PORTNAME}
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
-
-GNU_CONFIGURE=	yes
+USES=		autoreconf cpe gmake iconv:translit libtool localbase pathfix \
+		pkgconfig
 
 CPE_VENDOR=	openinfosecfoundation
 
-INSTALL_TARGET=		install-strip
-TEST_TARGET=		check
+USE_LDCONFIG=	yes
+USE_RC_SUBR=	${PORTNAME}
 
-OPTIONS_DEFINE=		GEOIP IPFW JSON NETMAP NSS PORTS_PCAP PRELUDE \
-			PYTHON REDIS RUST TESTS
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--disable-gccmarch-native \
+			--enable-bundled-htp \
+			--enable-gccprotect
+MAKE_ENV=		RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:C/.+/-C link-arg=&/}"
+
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
+CONFLICTS_INSTALL=	libhtp
+
+SUB_FILES=	pkg-message
+PLIST_SUB=	PORTVERSION=${DISTVERSION:C/-/_/g}
+
+OPTIONS_DEFINE=		GEOIP IPFW NETMAP NSS PORTS_PCAP PRELUDE PYTHON REDIS \
+			TESTS
 OPTIONS_DEFINE_amd64=	HYPERSCAN
-OPTIONS_DEFAULT=	IPFW JSON NETMAP PYTHON RUST
-OPTIONS_SUB=		yes
+OPTIONS_DEFAULT=	IPFW NETMAP PYTHON
 
 OPTIONS_RADIO=		SCRIPTS
 OPTIONS_RADIO_SCRIPTS=	LUA LUAJIT
 
-SCRIPTS_DESC=		Scripting
+OPTIONS_SUB=	yes
+
+PRELUDE_BROKEN=	Compilation broken, see https://redmine.openinfosecfoundation.org/issues/4065
 
 GEOIP_DESC=		GeoIP support
 HYPERSCAN_DESC=		Hyperscan support
 IPFW_DESC=		IPFW and IP Divert support for inline IDP
-JSON_DESC=		JSON output support
 LUAJIT_DESC=		LuaJIT scripting support
 LUA_DESC=		LUA scripting support
 NETMAP_DESC=		Netmap support for inline IDP
@@ -56,100 +61,69 @@ PORTS_PCAP_DESC=	Use libpcap from ports
 PRELUDE_DESC=		Prelude support for NIDS alerts
 PYTHON_DESC=		Python-based update and control utilities
 REDIS_DESC=		Redis output support
-RUST_DESC=		Rust parser support
+SCRIPTS_DESC=		Scripting
 TESTS_DESC=		Unit tests in suricata binary
 
-GEOIP_LIB_DEPENDS=		libmaxminddb.so:net/libmaxminddb
-GEOIP_CONFIGURE_ON=		--enable-geoip
+GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
+GEOIP_CONFIGURE_ON=	--enable-geoip
 
-HYPERSCAN_LIB_DEPENDS=		libhs.so:devel/hyperscan
-HYPERSCAN_CONFIGURE_ON=		--with-libhs-includes=${LOCALBASE}/include \
-				--with-libhs-libraries=${LOCALBASE}/lib
+HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
 
-IPFW_CONFIGURE_ON=		--enable-ipfw
+IPFW_CONFIGURE_ON=	--enable-ipfw
 
-JSON_LIB_DEPENDS=		libjansson.so:devel/jansson
-JSON_CONFIGURE_ON=		--with-libjansson-includes=${LOCALBASE}/include \
-				--with-libjansson-libraries=${LOCALBASE}/lib
+LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
+LUAJIT_CONFIGURE_ON=	--enable-luajit
 
-LUA_USES=			lua:51
-LUA_CONFIGURE_ON=		--enable-lua \
-				--with-liblua-includes=${LUA_INCDIR} \
-				--with-liblua-libraries=${LUA_LIBDIR}
-
-LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit21
-LUAJIT_CONFIGURE_ON=		--enable-luajit
-
-NSS_LIB_DEPENDS=		libnss3.so:security/nss \
-				libnspr4.so:devel/nspr
-NSS_CONFIGURE_OFF=		--disable-nss --disable-nspr
-NSS_CONFIGURE_ON=		--with-libnss-includes=${LOCALBASE}/include/nss/nss \
-				--with-libnss-libraries=${LOCALBASE}/lib \
-				--with-libnspr-libraries=${LOCALBASE}/lib \
-				--with-libnspr-includes=${LOCALBASE}/include/nspr
+LUA_USES=		lua:51
+LUA_CONFIGURE_ON=	--enable-lua
 
 NETMAP_CONFIGURE_ENABLE=	netmap
 
-PORTS_PCAP_LIB_DEPENDS=		libpcap.so.1:net/libpcap
-PORTS_PCAP_CONFIGURE_ON=	--with-libpcap-includes=${LOCALBASE}/include \
-				--with-libpcap-libraries=${LOCALBASE}/lib
-PORTS_PCAP_CONFIGURE_OFF=	--with-libpcap-includes=/usr/include \
-				--with-libpcap-libraries=/usr/lib
+NSS_LIB_DEPENDS=	libnspr4.so:devel/nspr \
+			libnss3.so:security/nss
+NSS_CONFIGURE_OFF=	--disable-nspr \
+			--disable-nss
 
-PRELUDE_LIB_DEPENDS=		libprelude.so:security/libprelude \
+PORTS_PCAP_LIB_DEPENDS=	libpcap.so.1:net/libpcap
+
+PRELUDE_LIB_DEPENDS=		libgcrypt.so:security/libgcrypt \
 				libgnutls.so:security/gnutls \
-				libgcrypt.so:security/libgcrypt \
 				libgpg-error.so:security/libgpg-error \
-				libltdl.so:devel/libltdl
-PRELUDE_CONFIGURE_ENABLE=	prelude
+				libltdl.so:devel/libltdl \
+				libprelude.so:security/libprelude
 PRELUDE_CONFIGURE_ON=		--with-libprelude-prefix=${LOCALBASE}
+PRELUDE_CONFIGURE_ENABLE=	prelude
 
+PYTHON_BUILD_DEPENDS=		${PYTHON_RUN_DEPENDS}
+PYTHON_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 PYTHON_USES=			python
 PYTHON_USE=			PYTHON=py3kplist
 PYTHON_CONFIGURE_ENABLE=	python
-PYTHON_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
-PYTHON_BUILD_DEPENDS=		${PYTHON_RUN_DEPENDS}
 
-REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
-REDIS_CONFIGURE_ON=		--enable-hiredis \
-				--with-libhiredis-includes=${LOCALBASE}/include \
-				--with-libhiredis-libraries=${LOCALBASE}/lib
-
-RUST_BUILD_DEPENDS=		rustc:lang/${RUST_DEFAULT}
-RUST_CONFIGURE_ENABLE=		rust
-
-TESTS_CONFIGURE_ENABLE=		unittests
-
-SUB_FILES=	pkg-message
-
-CONFIGURE_ARGS+=--enable-gccprotect \
-		--enable-bundled-htp \
-		--with-libpcre-includes=${LOCALBASE}/include \
-		--with-libpcre-libraries=${LOCALBASE}/lib \
-		--with-libyaml-includes=${LOCALBASE}/include \
-		--with-libyaml-libraries=${LOCALBASE}/lib \
-		--with-libnet-includes=${LOCALBASE}/include \
-		--with-libnet-libraries=${LOCALBASE}/lib \
-		--with-libhtp-includes=${LOCALBASE}/include/ \
-		--with-libhtp-libraries=${LOCALBASE}/lib \
-	        --disable-gccmarch-native
-
-CONFIG_DIR?=	${ETCDIR}
-CONFIG_FILES=	suricata.yaml classification.config reference.config threshold.config
-LOGS_DIR?=	/var/log/${PORTNAME}
+REDIS_LIB_DEPENDS=	libevent_pthreads.so:devel/libevent \
+			libhiredis.so:databases/hiredis
+REDIS_CONFIGURE_ON=	--enable-hiredis
+TESTS_CONFIGURE_ENABLE=	unittests
 
 pre-patch:
 	@${CP} ${FILESDIR}/ax_check_compile_flag.m4 ${WRKSRC}/m4
+
+post-patch:
+# Disable vendor checksums
+	@${REINPLACE_CMD} 's,"files":{[^}]*},"files":{},' \
+		${WRKSRC}/rust/vendor/*/.cargo-checksum.json
 
 post-patch-PYTHON-on:
 	@${REINPLACE_CMD} -e "/AC_PATH_PROGS.*HAVE_PYTHON/ s/python[^,]*,/${PYTHON_VERSION},/g" \
 		${WRKSRC}/configure.ac
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${CONFIG_DIR}
-	@${MKDIR} ${STAGEDIR}${LOGS_DIR}
-.for f in ${CONFIG_FILES}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${CONFIG_DIR}/${f}.sample
+	@${MKDIR} ${STAGEDIR}${ETCDIR} ${STAGEDIR}/var/log/suricata
+.for f in classification.config reference.config
+	@${MV} ${STAGEDIR}${DATADIR}/${f} ${STAGEDIR}${ETCDIR}/${f}.sample
+.endfor
+.for f in suricata.yaml threshold.config
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${ETCDIR}/${f}.sample
 .endfor
 
 post-install-PYTHON-on:

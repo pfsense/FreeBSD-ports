@@ -1,5 +1,4 @@
 # Created by: Anonymous <swell.k@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	apngasm
 PORTVERSION=	2.91
@@ -7,7 +6,7 @@ DISTVERSIONSUFFIX=-src
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create Animated PNG from a sequence of files
 
 LICENSE=	ZLIB

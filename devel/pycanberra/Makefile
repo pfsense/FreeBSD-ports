@@ -1,9 +1,8 @@
 # Created by: blubee <hello@blubee.me>
-# $FreeBSD$
 
 PORTNAME=	pycanberra
 DISTVERSION=	1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	hello@blubee.me
@@ -12,7 +11,7 @@ COMMENT=	Very basic wrapper for libcanberra
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils optsuffix
 
 USE_GITHUB=	yes

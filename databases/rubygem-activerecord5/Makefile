@@ -1,8 +1,7 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	activerecord
-PORTVERSION=	5.1.6.2
+PORTVERSION=	5.1.7
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	5
@@ -15,13 +14,13 @@ LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
 RUN_DEPENDS=	rubygem-activemodel5>=${PORTVERSION}:databases/rubygem-activemodel5 \
 		rubygem-activesupport5>=${PORTVERSION}:devel/rubygem-activesupport5 \
-		rubygem-arel8>=8.0:databases/rubygem-arel8
-
-PORTSCOUT=	limit:^5\.1\.
+		rubygem-arel8>=8.0,1<9,1:databases/rubygem-arel8
 
 USES=		gem
 USE_RUBY=	yes
 
 NO_ARCH=	yes
+
+PORTSCOUT=	limit:^5\.1\.
 
 .include <bsd.port.mk>

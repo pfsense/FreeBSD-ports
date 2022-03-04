@@ -1,8 +1,7 @@
 # Created by: Eygene Ryabinkin <rea-fbsd@codelabs.ru>
-# $FreeBSD$
 
 PORTNAME=	geshi
-DISTVERSION=	1.0.9.0
+DISTVERSION=	1.0.9.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	php-
@@ -12,7 +11,8 @@ COMMENT=	Native PHP syntax highlighting engine
 
 LICENSE=	GPLv2
 
-USES=	php
+USES=		cpe php
+CPE_VENDOR=	qbnz
 USE_GITHUB=	yes
 GH_ACCOUNT=	GeSHi
 GH_PROJECT=	geshi-1.0

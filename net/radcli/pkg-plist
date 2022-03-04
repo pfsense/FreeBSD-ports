@@ -1,13 +1,13 @@
-@sample %%ETCDIR%%/radiusclient-tls.conf.sample
-@sample %%ETCDIR%%/radiusclient.conf.sample
-@sample %%ETCDIR%%/servers-tls.sample
-@sample %%ETCDIR%%/servers.sample
+@sample etc/radcli/radiusclient-tls.conf.sample
+@sample etc/radcli/radiusclient.conf.sample
+@sample etc/radcli/servers-tls.sample
+@sample etc/radcli/servers.sample
 include/radcli/radcli.h
 include/radcli/version.h
 lib/libradcli.a
 lib/libradcli.so
-lib/libradcli.so.4
-lib/libradcli.so.4.3.0
+lib/libradcli.so.5
+lib/libradcli.so.5.3.0
 libdata/pkgconfig/radcli.pc
 man/man3/radcli.h.3.gz
 man/man3/rc_aaa.3.gz

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	connection
 PORTVERSION=	1.0.4
 DISTVERSIONPREFIX=	v

@@ -1,51 +1,41 @@
-*****************************************************************
+[
+{
+  type: install
+  message: <<INSTALL
+To enable caddy:
 
-www/caddy does not ship with any in-tree documentation. Online
-documentation can be found at https://caddyserver.com/docs.
+- Edit %%ETCDIR%%/Caddyfile
+  See https://caddyserver.com/docs/
+- Add caddy_enable="YES" to /etc/rc.conf
 
-To use www/caddy, create a configuration file in the Caddyfile
-format in %%PREFIX%%/www/Caddyfile and enable caddy in your
-rc.conf:
+%%PREFIX%%/etc/rc.d/caddy has the following defaults:
 
-# sysrc caddy_enable="YES"
-# service caddy start
+- Server log: /var/log/caddy/caddy.log
+  (runtime messages, NOT an access.log)
+- Automatic SSL certificate storage: /var/db/caddy/data/caddy/
+- Runs as root:wheel (you can run as another user, like www,
+  but caddy will be unable to bind to low-numbered ports,
+  including 80 and 443)
 
-Example Caddyfile
-=================
-mysite.com {
-    root %%PREFIX%%/www/mysite.com
+INSTALL
 }
+{
+  type: upgrade
+  maximum_version: 2.3.0
+  message: <<UPGRADE
+The default locations for caddy runtime files have changed!
 
-sub.mysite.com {
-    root %%PREFIX%%/www/sub.mysite.com
-    gzip
-    log /var/log/sub.mysite.com/access.log
+- Caddy's runtime log is now /var/log/caddy/caddy.log
+  (was /var/log/caddy.log)
+
+- Automatic SSL certs are now stored in /var/db/caddy/data/caddy
+  (was /root/.local/share/caddy)
+
+- Configuration autosaves are now stored in /var/db/caddy/config/caddy
+  (was /root/.config/caddy)
+
+You can change these defaults. See %%PREFIX%%/etc/rc.d/caddy
+
+UPGRADE
 }
-
-Automatic HTTPS using letsencrypt.org
-=====================================
-
-Provide an SSL certificate issuer email in your rc.conf. By
-providing an email address you automatically agree to
-letsencrypt.org's general terms and conditions:
-
-caddy_cert_email="your.email@example.org"
-
-Telemetry
-=========
-
-Since version 0.11.0, caddy includes an optional telemetry
-client, which is disabled by this port by default.
-
-If the telemetry client is enabled, you can view global stats
-as well as stats from your caddy instance using the instance
-uuid (stored in ~/.caddy/uuid unless a different $CADDYPATH
-is specified) on https://caddyserver.com/stats.
-
-Specific metrics can be disabled at run-time using the
--disabled-metrics flag.
-
-More information about the Caddy Telemetry Project can be found
-at https://caddyserver.com/docs/telemetry.
-
-*****************************************************************
+]

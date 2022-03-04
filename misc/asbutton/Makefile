@@ -1,5 +1,4 @@
 # Created by: Jim Mock <jim@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	asbutton
 PORTVERSION=	0.3
@@ -13,6 +12,7 @@ COMMENT=	Dockapp that displays 4 or 9 buttons to run apps of your choice
 
 LICENSE=	GPLv2
 
+USES=		xorg
 USE_XORG=	x11 xpm
 ALL_TARGET=	asbutton
 MAKE_ARGS=	INCLUDES="-I${LOCALBASE}/include/X11 -I${LOCALBASE}/include" \

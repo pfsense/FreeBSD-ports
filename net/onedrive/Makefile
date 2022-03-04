@@ -1,45 +1,49 @@
-# $FreeBSD$
-
 PORTNAME=	onedrive
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.3
+DISTVERSION=	2.4.12
 CATEGORIES=	net
 
 MAINTAINER=	hiroo.ono+freebsd@gmail.com
-COMMENT=	Microsoft OneDrive client
+COMMENT=	OneDrive Free client
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	ldmd2:lang/ldc
+BUILD_DEPENDS=	ldc2:lang/ldc
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libinotify.so:devel/libinotify
+RUN_DEPENDS=	${LOCALBASE}/sbin/logrotate:sysutils/logrotate
 
-USES=		sqlite
+USES=		autoreconf gmake pkgconfig sqlite
+
 USE_GITHUB=	yes
-GH_ACCOUNT=	skilion
+GH_ACCOUNT=	abraunegg
 
-OPTIONS_DEFAULT=	LDC
-OPTIONS_SINGLE=		DLANG
-OPTIONS_SINGLE_DLANG=	DMD1 DMD2 LDC
+GNU_CONFIGURE=	yes
+PKGCONFIG=		pkgconf
 
-DMD1_DESC=	Use lang/dmd1 as D compiler
-DMD2_DESC=	Use lang/dmd2 as D compiler
-LDC_DESC=	Use lang/ldc as D compiler
+OPTIONS_DEFINE=		DOCS NOTIFY COMPLETION
+OPTIONS_DEFAULT=	NOTIFY COMPLETION
+OPTIONS_SUB=		yes
 
-DMD1_MAKE_ARGS=	DC=dmd1
-DMD2_MAKE_ARGS=	DC=dmd
-LDC_MAKE_ARGS=	DC=ldmd2
+NOTIFY_CONFIGURE_ENABLE=	notifications
+NOTIFY_USES=		gnome
+NOTIFY_USE=		GNOME=glib20,gdkpixbuf2
+NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
 
-.include <bsd.port.pre.mk>
+COMPLETION_DESC=		Install completion for BASH, FISH and ZSH
+COMPLETION_CONFIGURE_ENABLE=	completions
+COMPLETION_BUILD_DEPENDS=	bash-completion>0:shells/bash-completion
+COMPLETION_RUN_DEPENDS=		bash-completion>0:shells/bash-completion
+
+ONEDRIVE_LOGDIR=	/var/log/${PORTNAME}
+
+PORTDOCS=	*
 
 post-extract:
 	${CP} ${FILESDIR}/freebsd_inotify.d ${WRKSRC}/src
-	${CP} ${FILESDIR}/version ${WRKSRC}
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/onedrive ${STAGEDIR}${PREFIX}/bin
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/config ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+post-install:
+	${INSTALL} -d -m 0775 ${STAGEDIR}${ONEDRIVE_LOGDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

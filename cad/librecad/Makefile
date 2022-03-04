@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	librecad
-DISTVERSION=	2.2.0-rc1
-PORTREVISION=	7
+DISTVERSION=	2.2.0-rc2
+PORTREVISION=	1
 CATEGORIES=	cad
 
 MAINTAINER=	jhale@FreeBSD.org
@@ -15,7 +13,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/version.hpp:devel/boost-libs
 LIB_DEPENDS=	libmuparser.so:math/muparser \
 		libfreetype.so:print/freetype2
 
-USES=		compiler:c++11-lib desktop-file-utils pkgconfig qmake qt:5
+USES=		compiler:c++11-lib cpe desktop-file-utils pkgconfig gl qmake qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	LibreCAD
 GH_PROJECT=	LibreCAD

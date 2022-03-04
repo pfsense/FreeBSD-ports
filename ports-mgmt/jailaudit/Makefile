@@ -1,8 +1,7 @@
 # Created by: Philipp Wuensche <cryx-ports@h3q.com>
-# $FreeBSD$
 
 PORTNAME=	jailaudit
-PORTVERSION=	1.5.2
+PORTVERSION=	1.6.1
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://outpost.h3q.com/software/jailaudit/
 

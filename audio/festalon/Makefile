@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	festalon
 PORTVERSION=	0.5.5
@@ -18,7 +17,7 @@ ONLY_FOR_ARCHS=	amd64
 
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 
-USES=		libtool pkgconfig tar:bzip2
+USES=		cpe libtool pkgconfig sdl tar:bzip2
 USE_SDL=	sdl
 
 GNU_CONFIGURE=	yes

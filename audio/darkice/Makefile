@@ -1,11 +1,10 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	darkice
-PORTVERSION=	1.3
-PORTREVISION=	2
+PORTVERSION=	1.4
+PORTREVISION=	1
 CATEGORIES=	audio net
-MASTER_SITES=	SF
+MASTER_SITES=	https://github.com/rafael2k/darkice/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IceCast, IceCast2, and ShoutCast live audio streamer
@@ -13,18 +12,18 @@ COMMENT=	IceCast, IceCast2, and ShoutCast live audio streamer
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig
+USES=		compiler:c++11-lang pkgconfig
+USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ac_cv_prog_acx_pthread_config=no
 CONFIGURE_ARGS=	--without-alsa
+CONFIGURE_ENV=	ac_cv_prog_acx_pthread_config=no
 
 SUB_FILES=	pkg-message
-USE_RC_SUBR=	${PORTNAME}
 
 OPTIONS_DEFINE=		JACK PULSEAUDIO
+OPTIONS_DEFAULT=	VORBIS
 OPTIONS_MULTI=		CODEC
 OPTIONS_MULTI_CODEC=	AACPLUS FAAC LAME OPUS TWOLAME VORBIS
-OPTIONS_DEFAULT=	VORBIS
 
 AACPLUS_DESC=		AAC HEv2 and libsamplerate support
 AACPLUS_LIB_DEPENDS=	libaacplus.so:audio/libaacplus \
@@ -55,7 +54,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.cfg \
 		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.cfg.sample
-	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.cfg.5 ${STAGEDIR}${MAN5PREFIX}/man/man5
+	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.cfg.5 ${STAGEDIR}${PREFIX}/share/man/man5
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	90secondportraits
 PORTVERSION=	1.01b
 PORTREVISION=	1
@@ -16,8 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 RUN_DEPENDS=	love10:devel/love10
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	SimonLarsen:DEFAULT
-GH_PROJECT=	90-Second-Portraits:DEFAULT
+GH_ACCOUNT=	SimonLarsen
+GH_PROJECT=	90-Second-Portraits
 GH_TUPLE=	vrld:hump:537ca76:hump/hump \
 		kikito:middleclass:f670920:middleclass/middleclass
 

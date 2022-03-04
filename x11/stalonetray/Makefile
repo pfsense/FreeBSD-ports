@@ -1,5 +1,4 @@
 # Created by: Stepan Zastupov [RedChrom] <redchrom@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	stalonetray
 PORTVERSION=	0.8.3
@@ -11,7 +10,7 @@ COMMENT=	STAnd-aLONE system tray
 
 LICENSE=	GPLv2
 
-USES=		tar:bzip2
+USES=		tar:bzip2 xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-native-kde \

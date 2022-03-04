@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Handle dependency on jpeg
 #
 # Feature:	jpeg
@@ -8,7 +6,7 @@
 #
 # User defined variables:
 # JPEG_PORT		- jpeg implementation
-#			Valid values: graphics/jpeg and graphics/jpeg-turbo
+#			Valid values: graphics/jpeg-turbo, graphics/mozjpeg
 #			Default value: graphics/jpeg-turbo
 #
 # MAINTAINER: portmgr@FreeBSD.org

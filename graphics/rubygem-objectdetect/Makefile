@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@rtfm.jp>
-# $FreeBSD$
 
 PORTNAME=	objectdetect
 PORTVERSION=	0.0.3
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
@@ -11,6 +10,8 @@ MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Simple library for detecting objects in pictures
 
 LICENSE=	MIT
+
+BROKEN=		OpenCV4 no longer ships OpencCV-1.0 headers
 
 LIB_DEPENDS=	libopencv_video.so:graphics/opencv
 

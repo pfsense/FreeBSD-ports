@@ -1,5 +1,4 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rack-protection
 PORTVERSION=	1.5.5
@@ -15,10 +14,11 @@ LICENSE_FILE=	${WRKSRC}/License
 
 RUN_DEPENDS=	rubygem-rack>=0:www/rubygem-rack
 
-PORTSCOUT=	limit:^1\.
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
+
+PORTSCOUT=	limit:^1\.
 
 .include <bsd.port.mk>

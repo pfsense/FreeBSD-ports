@@ -1,10 +1,9 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gottet
-PORTVERSION=	1.1.7
-PORTREVISION=	3
+PORTVERSION=	1.1.9
 DISTVERSIONSUFFIX=	-src
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	https://gottcode.org/gottet/
 
@@ -14,7 +13,7 @@ COMMENT=	Tetris clone
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib qmake qt:5 tar:bzip2
+USES=		compiler:c++11-lib gl qmake qt:5 tar:bzip2
 USE_GL=		gl
 USE_QT=		core gui widgets \
 		buildtools_build linguisttools_build

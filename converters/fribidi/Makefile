@@ -1,26 +1,29 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	fribidi
-PORTVERSION=	0.19.7
+DISTVERSION=	1.0.11
 CATEGORIES=	converters
-MASTER_SITES=	http://fribidi.org/download/
+MASTER_SITES=	https://github.com/fribidi/fribidi/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Free Implementation of the Unicode Bidirectional Algorithm
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake libtool pathfix tar:bz2
+USES=		cpe meson python:3.6+,test shebangfix tar:xz
+CPE_VENDOR=	gnu
+SHEBANG_FILES=	test/test-runner.py
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-static --without-glib
-INSTALL_TARGET=	install-strip
 
-.if !defined(WITH_DEBUG)
-CONFIGURE_ARGS+=--disable-debug
-.endif
+TEST_TARGET=	test
+
+OPTIONS_DEFINE=	OPTIMIZED_CFLAGS TEST
+OPTIONS_DEFAULT=OPTIMIZED_CFLAGS
+
+OPTIMIZED_CFLAGS_CFLAGS=	-O3
+
+TEST_MESON_TRUE=tests
 
 post-patch:
 	@${SED} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' < \

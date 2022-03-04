@@ -1,8 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	pydicom
-PORTVERSION=	1.2.2
+PORTVERSION=	2.2.2
 DISTVERSIONPREFIX=v
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +11,8 @@ COMMENT=	Read, modify, and write DICOM files with Python code
 
 LICENSE=	MIT
 
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	pydicom
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

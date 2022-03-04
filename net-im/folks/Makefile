@@ -1,9 +1,8 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	folks
-PORTVERSION=	0.11.4
-PORTREVISION=	2
+PORTVERSION=	0.15.3
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 
@@ -13,10 +12,9 @@ COMMENT=	Library to aggregates people from multiple sources
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	vapigen:lang/vala \
-		${LOCALBASE}/bin/egrep:textproc/gnugrep
+BUILD_DEPENDS=	vapigen:lang/vala
 LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
-		libgcr-3.so:security/gcr \
+		libgcr-base-3.so:security/gcr \
 		libzeitgeist-2.0.so:sysutils/zeitgeist \
 		libtelepathy-glib.so:net-im/telepathy-glib \
 		libnspr4.so:devel/nspr \
@@ -26,33 +24,19 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libdbus-1.so:devel/dbus
 
-USES=		gettext gmake gnome libtool localbase pathfix pkgconfig \
+USES=		gettext gnome localbase meson python:3.5+,build pkgconfig \
 		readline sqlite tar:xz
 USE_GNOME=	evolutiondataserver3 intlhack introspection:build
 USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-bluez-backend \
-		--disable-libsocialweb-backend
-CONFIGURE_ENV+=	ac_cv_path_EGREP=${LOCALBASE}/bin/egrep
-INSTALL_TARGET=	install-strip
+MESON_ARGS=	-Dbluez_backend=false
 
 GLIB_SCHEMAS=	org.freedesktop.folks.gschema.xml
 
-PLIST_SUB=	LIBVER=25 VERSION=43 LIBVERLONG=25.18.4
+PLIST_SUB=	LIBVER=26 LIBVERLONG=26.0.0
 
-OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	TRACKER
-OPTIONS_DEFAULT=TRACKER
-TRACKER_DESC=	Tracker backend
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-TRACKER_CONFIGURE_ENABLE=	tracker-backend
-TRACKER_LIB_DEPENDS=	libtracker-control-2.0.so:sysutils/tracker
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|--fatal-warnings||g' \
-		${WRKSRC}/configure
-	# Until after when the bundled gir is updated >= 0.11.4
-	@${RM} ${WRKSRC}/backends/tracker/lib/FolksTracker-0.6.gir
+PORTSCOUT=	limitw:1,even
 
 .include <bsd.port.mk>

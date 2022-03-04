@@ -1,5 +1,4 @@
 # Created by: janek
-# $FreeBSD$
 
 PORTNAME=	xboing
 PORTVERSION=	2.4
@@ -13,7 +12,7 @@ COMMENT=	X11 arcade game
 
 LICENSE=	MIT
 
-USES=		imake
+USES=		cpe imake xorg
 USE_XORG=	xpm xext x11
 WRKSRC=		${WRKDIR}/xboing
 

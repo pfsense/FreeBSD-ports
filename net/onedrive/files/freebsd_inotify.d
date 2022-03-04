@@ -12,7 +12,9 @@ struct inotify_event
 	uint32_t mask;   /* Watch mask.  */
 	uint32_t cookie; /* Cookie to synchronize two events.  */
 	uint32_t len;    /* Length (including NULLs) of name.  */
-	char[] name;     /* Name.  */
+	char[0] name;     /* Name.  */
+
+	@disable this(this);
 };
 
 
@@ -48,6 +50,7 @@ enum IN_MASK_ADD =    0x20000000;    /* Add to the mask of an already
 enum IN_ISDIR =       0x40000000;    /* Event occurred against dir.  */
 enum IN_ONESHOT =     0x80000000;    /* Only send event once.  */
 
+enum IN_ALL_EVENTS = (IN_ACCESS | IN_MODIFY | IN_ATTRIB | IN_CLOSE_WRITE | IN_CLOSE_NOWRITE | IN_OPEN | IN_MOVED_FROM | IN_MOVE_SELF | IN_MOVED_TO | IN_DELETE | IN_CREATE | IN_DELETE_SELF);
 
 /* Create and initialize inotify-kqueue instance. */
 extern (C) int inotify_init ();

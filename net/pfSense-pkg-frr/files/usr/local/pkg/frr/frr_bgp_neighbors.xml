@@ -8,7 +8,7 @@
  * frr_bgp_neighbors.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,8 +52,16 @@
 			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
 		</tab>
 		<tab>
+			<text>RPKI Cache Servers</text>
+			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF]</text>
@@ -62,6 +70,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -81,6 +93,10 @@
 			<fielddescr>Remote AS</fielddescr>
 			<fieldname>asnum</fieldname>
 		</columnitem>
+		<columnitem>
+			<fielddescr>Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
@@ -89,7 +105,7 @@
 			<description>
 				<![CDATA[
 				The name of a peer group, or IP address of a neighbor.
-				<br/><br/>
+				<br />
 				Enter a text name to define a Peer Group. Enter an IP Address to define a Peer.
 				]]>
 			</description>
@@ -141,6 +157,36 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
+			<name>Shutdown</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+			<description>Neighbor administrative shutdown</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Shutdown Message</fielddescr>
+			<fieldname>shutdownmessage</fieldname>
+			<description>Shutdown message (optional)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Auto-Shutdown</fielddescr>
+			<fieldname>shutdownautortt</fieldname>
+			<description>RTT in milliseconds to automatically shutdown the peer if exceeded.</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Auto-Shutdown Keepalive Count</fielddescr>
+			<fieldname>shutdownautortt</fieldname>
+			<description>Number of keepalive messages to count before shutting down the peer when round-trip-time exceeds the set threshold.</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
 			<name>Basic Options</name>
 			<type>listtopic</type>
 		</field>
@@ -153,6 +199,7 @@
 				]]>
 			</description>
 			<type>input</type>
+			<required/>
 		</field>
 		<field>
 			<fielddescr>Update Source</fielddescr>
@@ -179,14 +226,35 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
+			<fielddescr>Address Family</fielddescr>
+			<fieldname>bothaf</fieldname>
+			<description>Allow neighbor to advertise and receive routes for both IPv4 and IPv6</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Default Originate</fielddescr>
 			<fieldname>defaultoriginate</fieldname>
-			<description>Originate default route to this neighbor. Choose a Route Map to restrict origination.</description>
-			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<description>Originate default route to this neighbor.</description>
+			<type>select</type>
+			<options>
+				<option><name>Disabled</name><value>no</value></option>
+				<option><name>IPv4</name><value>ipv4</value></option>
+				<option><name>IPv6</name><value>ipv6</value></option>
+				<option><name>IPv4 + IPv6</name><value>yes</value></option>
+			</options>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
-			<required/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Default Originate Route Map</fielddescr>
+			<fieldname>defaultoriginateroutemap</fieldname>
+			<description>Choose a Route Map to restrict origination.</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fielddescr>Send Community</fielddescr>
@@ -240,7 +308,6 @@
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>
-
 		<field>
 			<name>Peer Filtering</name>
 			<type>listtopic</type>
@@ -370,7 +437,63 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
+		<field>
+			<name>BFD</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				<b>BFD Enable</b>: Listen for BFD events registered on the same target as this BGP neighbor.
+				<br />
+				<b>BFD Check Control Plane Failure</b>: Allow FRR to write CBIT independence in outgoing BFD packets. Also allow FRR to read both the CBIT value of BFD and lookup BGP peer status.
+				This option allows BFD to ignore down events during a graceful restart of the remote peer if graceful restarts are enabled in BGP.
+				When enabled, if BFD catches a down event it first checks if the BGP peer has requested that local the BGP daemon keep the remote BGP entries marked as stale. In that case it can safely ignore the event to allow the restart to happen gracefully (RFC 4724).
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>BFD</fielddescr>
+			<fieldname>bfdenable</fieldname>
+			<description>BFD Enable</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>BFD Check Control Plane Failure</fielddescr>
+			<fieldname>bfd_check_control_plane_failure</fieldname>
+			<description>BFD Check Control Plane Failure</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>BFD Peer</fielddescr>
+			<fieldname>bfd_peer</fieldname>
+			<description>Select a BFD peer to subscribe, default is to use the neighbor address</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_bfd_peers()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>Graceful Restart</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Graceful Restart Mode</fielddescr>
+			<fieldname>grmode</fieldname>
+			<description>Neighbor graceful restart mode</description>
+			<type>select</type>
+			<default_value>default</default_value>
+			<options>
+				<option><name>Default</name><value>default</value></option>
+				<option><name>Restart</name><value>restart</value></option>
+				<option><name>Helper</name><value>helper</value></option>
+				<option><name>Disable</name><value>disable</value></option>
+			</options>
+		</field>
 		<field>
 			<name>Advanced Options</name>
 			<type>listtopic</type>
@@ -474,41 +597,31 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fielddescr>BFD Support</fielddescr>
-			<fieldname>bfd_multiplier</fieldname>
-			<description>Detect Multiplier (2-255)</description>
-			<type>input</type>
+			<fielddescr>Advertise Capability</fielddescr>
+			<fieldname>capability</fieldname>
+			<description>Advertise Dynamic capability</description>
+			<type>checkbox</type>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fielddescr>Min Receive Interval</fielddescr>
-			<fieldname>bfd_minrx</fieldname>
-			<description>Required Minimum Receive Interval (50-60000)</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Min Transmit Interval</fielddescr>
-			<fieldname>bfd_mintx</fieldname>
-			<description>Desired Minimum Transmit Interval (50-60000)</description>
-			<type>input</type>
-			<combinefields>end</combinefields>
+			<fielddescr>Advertise Capability Nexthop</fielddescr>
+			<fieldname>capability_nexthop</fieldname>
+			<description>Advertise Extended Next-Hop capability. This is automatically enabled when peering with IPv6 link-local addresses.</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Advertise Capability</fielddescr>
-			<fieldname>capability</fieldname>
-			<description>
-				<![CDATA[
-				Advertise capabilities to the neighbor
-				]]>
-			</description>
+			<fieldname>capability_orf</fieldname>
+			<description>Advertise Outbound Route Filter capability</description>
 			<type>select</type>
 			<default_value>disabled</default_value>
 			<options>
 				<option><name>Disabled</name><value>disabled</value></option>
-				<option><name>Dynamic</name><value>dynamic</value></option>
-				<option><name>Extended Next-Hop</name><value>extended-nexthop</value></option>
-				<option><name>ORF</name><value>orf</value></option>
+				<option><name>Send</name><value>send</value></option>
+				<option><name>Receive</name><value>receive</value></option>
+				<option><name>Both</name><value>both</value></option>
 			</options>
+			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fielddescr>Disable Capability Negotiation</fielddescr>
@@ -528,7 +641,7 @@
 			<description>
 				<![CDATA[
 				The maximum hop count to allow for BGP neighbors (1-254)
-				<br/><br/>
+				<br />
 				Leave blank to disable
 				]]>
 			</description>
@@ -546,7 +659,7 @@
 			<description>
 				<![CDATA[
 				The maximum hop count to allow for EBGP neighbors not on directly connected networks (1-255)
-				<br/><br/>
+				<br />
 				Leave blank to disable
 				]]>
 			</description>
@@ -605,6 +718,12 @@
 			<type>input</type>
 		</field>
 		<field>
+			<fielddescr>Maximum Prefix Out</fielddescr>
+			<fieldname>maximumprefixout_num</fieldname>
+			<description>Maximum Prefix to Send (1-4294967295)</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Remove Private AS</fielddescr>
 			<fieldname>removeprivateas</fieldname>
 			<description>Remove private ASNs in outbound updates</description>
@@ -624,7 +743,6 @@
 			<type>checkbox</type>
 			<combinefields>end</combinefields>
 		</field>
-
 		<field>
 			<fielddescr>Route Client</fielddescr>
 			<fieldname>routeclient_reflector</fieldname>
@@ -645,8 +763,10 @@
 			<description>Neighbor is part of its own update group</description>
 			<type>checkbox</type>
 		</field>
-
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

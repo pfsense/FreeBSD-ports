@@ -1,84 +1,94 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	ocp
-PORTVERSION=	0.1.21
-PORTREVISION=	5
+PORTVERSION=	0.2.90
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	audio
-MASTER_SITES=	SF/opencubicplayer/${DISTNAME} \
-		LOCAL/ehaupt
+MASTER_SITES=	https://github.com/mywave82/opencubicplayer/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Legendary Open Cubic Player
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
+BUILD_DEPENDS=	xa65:devel/xa65
 LIB_DEPENDS=	libid3tag.so:audio/libid3tag \
 		libmad.so:audio/libmad \
-		libvorbis.so:audio/libvorbis \
-		libsidplay.so:audio/libsidplay \
-		libogg.so:audio/libogg
+		libogg.so:audio/libogg \
+		libvorbis.so:audio/libvorbis
 
-USES=		gmake iconv localbase:ldflags makeinfo ncurses pkgconfig tar:xz
-USE_LDCONFIG=	yes
+USES=		compiler:c11 dos2unix gmake gnome iconv localbase:ldflags \
+		makeinfo ncurses pkgconfig tar:bz2
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
+CONFIGURE_ARGS=	--libdir=${PREFIX}/lib \
+		--with-dir-suffix="" \
+		--without-sdl
+CONFIGURE_ENV=	SHARED_FLAGS="${LDFLAGS} -shared" \
+		XA=${PREFIX}/bin/xa65
 
 MAKE_JOBS_UNSAFE=	yes
 
-CONFIGURE_ARGS=	--with-dir-suffix="" \
-		--without-alsa \
-		--libdir=${PREFIX}/lib
-CONFIGURE_ENV=	SHARED_FLAGS="${LDFLAGS} -shared"
+LDFLAGS_i386=	-Wl,-z,notext
 
 INFO=		ocp
 
-TIMIDITY_CFG=	${LOCALBASE}/share/timidity/timidity.cfg
-
-OPTIONS_DEFINE=	ADPLUG FLAC MIDI X11 SDL DOCS
-OPTIONS_DEFAULT=ADPLUG FLAC MIDI X11 SDL
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		ADPLUG ALSA DOCS FLAC MIDI OSS SDL X11
+OPTIONS_DEFAULT=	ADPLUG ALSA FLAC MIDI OSS SDL X11
+OPTIONS_SUB=		yes
 
 ADPLUG_DESC=	adplug support
 MIDI_DESC=	timidity support
 
+ADPLUG_LIB_DEPENDS=	libadplug.so:audio/libadplug \
+			libbinio.so:devel/libbinio
 ADPLUG_CONFIGURE_WITH=	adplug
-ADPLUG_LIB_DEPENDS=	libbinio.so:devel/libbinio \
-			libadplug.so:audio/libadplug
 
-FLAC_CONFIGURE_WITH=	flac
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_CONFIGURE_WITH=	alsa
+
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
+FLAC_CONFIGURE_WITH=	flac
 
 MIDI_RUN_DEPENDS=	eawpats>0:audio/eawpats
 
-SDL_CONFIGURE_WITH=	sdl
+OSS_CONFIGURE_WITH=	oss
+
+SDL_IMPLIES=		X11
+SDL_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+SDL_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+			libpng.so:graphics/png
+SDL_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+SDL_USES=		desktop-file-utils jpeg sdl
+SDL_USE=		SDL=sdl2
+SDL_CONFIGURE_WITH=	sdl2 \
+			unifontdir=${LOCALBASE}/share/fonts/gnu-unifont-ttf
 SDL_PLIST_SUB=		DESKTOP=''
 SDL_PLIST_SUB_OFF=	DESKTOP='@comment '
-SDL_USE=		SDL=sdl
 
-X11_CONFIGURE_WITH=	x11
-X11_PLIST_SUB=		XORG='' DESKTOP=''
-X11_PLIST_SUB_OFF=	XORG='@comment ' DESKTOP='@comment '
-X11_USE=		XORG=xxf86dga,xxf86vm,xpm,xext,x11
+X11_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+X11_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+			libpng.so:graphics/png
+X11_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+X11_USES=		desktop-file-utils jpeg xorg
+X11_USE=		XORG=x11,xext,xpm,xxf86dga,xxf86vm
+X11_CONFIGURE_WITH=	unifontdir=${LOCALBASE}/share/fonts/gnu-unifont-ttf x11
+X11_PLIST_SUB=		DESKTOP='' \
+			XORG=''
+X11_PLIST_SUB_OFF=	DESKTOP='@comment ' \
+			XORG='@comment '
 
-# needed despite stage-qa's warning
-SDL_USES=	desktop-file-utils
-X11_USES=	desktop-file-utils
+TIMIDITY_CFG=	${LOCALBASE}/share/timidity/timidity.cfg
 
-LDFLAGS_i386=	-Wl,-z,notext
+post-patch-SDL-off:
+	@${REINPLACE_CMD} -E '/(LIBJPEG|LIBPNG_LIBS)/d' ${WRKSRC}/Rules.make.in
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/.*\.cfg|${TIMIDITY_CFG}|' \
-		${WRKSRC}/playgmi/gmitimidity.c
-# conflicts with fnmatch.h from security/heimdal
-	@${REINPLACE_CMD} -e 's|<\(fnmatch.h\)>|"/usr/include/\1"|' \
-		${WRKSRC}/filesel/adb.c \
-		${WRKSRC}/filesel/pfilesel.c
-	@${REINPLACE_CMD} -e '1s|bash|sh|' ${WRKSRC}/ultrafix.sh
+post-patch-X11-off:
+	@${REINPLACE_CMD} -E '/(LIBJPEG|LIBPNG_LIBS)/d' ${WRKSRC}/Rules.make.in
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ocp

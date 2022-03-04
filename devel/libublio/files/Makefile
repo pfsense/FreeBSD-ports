@@ -1,7 +1,4 @@
 # BSD Makefile for libublio
-#
-# $FreeBSD$
-#
 
 SRCS=	ublio.c
 
@@ -13,5 +10,7 @@ INCSDIR=${PREFIX}/include
 LIB=	ublio
 SHLIB_MAJOR=	1
 LIBDIR=	${PREFIX}/lib
+
+MK_PROFILE=	no
 
 .include <bsd.lib.mk>

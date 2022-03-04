@@ -1,3 +1,3 @@
-TIMESTAMP = 1540486502
-SHA256 (aioredis-1.2.0.tar.gz) = 84d62be729beb87118cf126c20b0e3f52d7a42bb7373dc5bcdd874f26f1f251a
-SIZE (aioredis-1.2.0.tar.gz) = 150616
+TIMESTAMP = 1575397772
+SHA256 (aioredis-1.3.1.tar.gz) = 15f8af30b044c771aee6787e5ec24694c048184c7b9e54c3b60c750a4b93273a
+SIZE (aioredis-1.3.1.tar.gz) = 155577

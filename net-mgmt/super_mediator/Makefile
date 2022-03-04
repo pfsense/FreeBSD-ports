@@ -1,13 +1,13 @@
 # Created by: Inacio <nacho319+freebsdZilla@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	super_mediator
 PORTVERSION=	1.6.0
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 
 MAINTAINER=	nacho319+freebsdZilla@gmail.com
-COMMENT=	SuperMediator is an IPFIX mediator by CMU CERT generally used with YAF
+COMMENT=	IPFIX mediator by CMU CERT generally used with YAF
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libfixbuf.so:net/libfixbuf \
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool pathfix perl5 pkgconfig ssl
+USES=		compiler:c11 gnome libtool pathfix perl5 pkgconfig ssl
 USE_GNOME=	glib20
 
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
@@ -33,7 +33,7 @@ SKIPSET_LIB_DEPENDS=	libsilk.so:security/silktools
 SPREAD_LIB_DEPENDS=	libspread.so:net/spread4
 MYSQL_LIB_DEPENDS=	libmysqlclient.so:${_MYSQL_CLIENT}
 
-MYSQL_USE=	mysql
+MYSQL_USES=	mysql
 
 MYSQL_CONFIGURE_WITH=	mysql
 SKIPSET_CONFIGURE_WITH=	skipset

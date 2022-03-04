@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	MooX-HandlesVia
-PORTVERSION=	0.001008
+PORTVERSION=	0.001009
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,5 +19,7 @@ TEST_DEPENDS=	p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

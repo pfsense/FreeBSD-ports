@@ -1,9 +1,8 @@
 # Created by: Janni
-# $FreeBSD$
 
 PORTNAME=	wfmath
 PORTVERSION=	1.0.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	math
 MASTER_SITES=	SF/worldforge/${PORTNAME}%20%28math%20lib%29/${PORTVERSION}
 

@@ -1,26 +1,31 @@
 # Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
 
 PORTNAME=	glew
-PORTVERSION=	2.1.0
+PORTVERSION=	2.2.0
+PORTREVISION?=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
-MAINTAINER=	zeising@FreeBSD.org
+# Keep glew-wayland patches here to avoid version desync in distinfo
+PATCH_SITES=	https://github.com/nigels-com/${PORTNAME}/commit/
+PATCHFILES+=	8e2e31e69bb6.patch:-p1 # https://github.com/nigels-com/glew/pull/329
+PATCHFILES+=	062067f2bad8.patch:-p1 # https://github.com/nigels-com/glew/pull/330
+
+MAINTAINER?=	zeising@FreeBSD.org
 COMMENT=	OpenGL Extension Wrangler Library
 
 LICENSE=	MIT BSD3CLAUSE
 LICENSE_COMB=	dual
 
-USES=		gmake tar:tgz
-USE_XORG=	x11 xext xi xmu
-USE_GL=		gl glu
+USES=		gmake gl tar:tgz xorg
+USE_XORG?=	x11
+USE_GL?=	gl glu
 USE_LDCONFIG=	yes
 
 MAKE_ENV=	GLEW_DEST=${PREFIX} GLEW_PREFIX=${PREFIX}
-INSTALL_TARGET=	install.all
+INSTALL_TARGET?=install.all
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE?=DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|CFLAGS =|CFLAGS +=|' \

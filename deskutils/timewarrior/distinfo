@@ -1,3 +1,5 @@
-TIMESTAMP = 1529603473
-SHA256 (timew-1.1.1.tar.gz) = 1f7d9a62e55fc5a3126433654ccb1fd7d2d135f06f05697f871897c9db77ccc9
-SIZE (timew-1.1.1.tar.gz) = 166484
+TIMESTAMP = 1636159987
+SHA256 (GothenburgBitFactory-timewarrior-v1.4.3_GH0.tar.gz) = 32613c8b0adb0d54b680d4bca4e91b4f0a1cc541905a684a794161b6ecb872ef
+SIZE (GothenburgBitFactory-timewarrior-v1.4.3_GH0.tar.gz) = 186633
+SHA256 (GothenburgBitFactory-libshared-c1760be_GH0.tar.gz) = def13c1dd413c2ae88d23e6919bd328e768838c3027a4995764e0c25fbd74394
+SIZE (GothenburgBitFactory-libshared-c1760be_GH0.tar.gz) = 159502

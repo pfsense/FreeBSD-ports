@@ -1,5 +1,4 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	triangle
 PORTVERSION=	1.6
@@ -12,9 +11,13 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Two-Dimensional Quality Mesh Generator and Delaunay Triangulator
 
-NO_CDROM=	No commercial use without prior arrangement with the author
+# Converted from NO_CDROM
+LICENSE=	triangle
+LICENSE_NAME=	triangle
+LICENSE_TEXT=	No commercial use without prior arrangement with the author
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-USES=		zip
+USES=		zip xorg
 NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile
 USE_XORG=	x11
@@ -35,7 +38,7 @@ do-install:
 	cd ${STAGEDIR}${PREFIX}/lib && ${LN} -s lib${PORTNAME}.so.${PORTVERSION} lib${PORTNAME}.so
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib${PORTNAME}.so.${PORTVERSION}
 
-do-test: build
+do-test:
 	@cd ${INSTALL_WRKSRC} && ./${PORTNAME} -p A.poly && ./showme A.1.poly
 
 .include <bsd.port.mk>

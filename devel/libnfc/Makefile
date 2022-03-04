@@ -1,9 +1,8 @@
 # Created by: Romain Tartiere <romain@blogreen.org>
-# $FreeBSD$
 
 PORTNAME=	libnfc
 PORTVERSION=	1.7.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	http://dl.bintray.com/nfc-tools/sources/ \
 		http://romain.blogreen.org/distfiles/

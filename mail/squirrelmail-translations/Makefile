@@ -1,8 +1,7 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	squirrelmail-translations
-PORTVERSION=	20170705
+PORTVERSION=	20200422
 CATEGORIES=	mail www
 MASTER_SITES=	http://snapshots.squirrelmail.org/ \
 	http://freebsd.uzsolt.hu/src/

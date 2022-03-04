@@ -1,13 +1,13 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	opentsdb
 PORTVERSION=	2.3.0
+PORTREVISION=	1
 CATEGORIES=	databases java
 MASTER_SITES=	https://github.com/OpenTSDB/opentsdb/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	kbowling@FreeBSD.org
-COMMENT=	OpenTSDB is the Scalable Timeseries Database
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Distributed, scalable Time Series Database
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libhadoop.so:devel/hadoop2
 RUN_DEPENDS=	hbase>0:databases/hbase
 
-USES=		gmake python shebangfix
+USES=		cpe gmake python shebangfix
 USE_JAVA=	yes
 JAVA_VERSION=	1.8+
 SHEBANG_FILES=	tools/check_tsd tools/opentsdb_restart.py \

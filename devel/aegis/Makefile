@@ -1,10 +1,9 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME=	aegis
 PORTVERSION=	4.25
 DISTVERSIONSUFFIX=	.D510
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -16,7 +15,7 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	libcurl.so:ftp/curl
 RUN_DEPENDS=	tkdiff:textproc/tkdiff
 
-USES=		gettext ghostscript groff perl5 tk
+USES=		cpe gettext ghostscript gnome groff perl5 tk bison
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	"-I${LOCALBASE}/include"

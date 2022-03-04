@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	volumeicon
 PORTVERSION=	0.5.1
 PORTREVISION=	1
 CATEGORIES=	audio
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight volume control for the systray
 
 LICENSE=	GPLv3
@@ -16,7 +14,7 @@ CONFIGURE_ARGS=	--enable-oss=v3 \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 
-USES=		autoreconf gmake gettext pkgconfig
+USES=		autoreconf gmake gnome gettext pkgconfig xorg
 USE_GNOME=	gtk30 intltool cairo gdkpixbuf2
 USE_XORG=	x11
 USE_CSTD=	gnu99

@@ -1,5 +1,4 @@
 # Created by: Joel Sutton <jsutton@bbcon.com.au>
-# $FreeBSD$
 
 PORTNAME=	oonsoo
 PORTVERSION=	1.2
@@ -12,6 +11,7 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Solitaire card game for X
 
+USES=		xorg
 USE_XORG=	x11
 PLIST_FILES=	bin/oonsoo
 MAKEFILE=	Makefile.Linux

@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	nethack
 PORTVERSION=	3.4.3
@@ -8,7 +7,7 @@ CATEGORIES=	japanese games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//g}-src
 
-PATCH_SITES=	OSDN/jnethack/58545
+PATCH_SITES=	OSDN/jnethack
 PATCHFILES=	jnethack-${PORTVERSION}-0.11.diff.gz
 PATCH_DIST_STRIP=	-p1
 
@@ -17,7 +16,7 @@ COMMENT=	Japanized NetHack
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		gmake tar:tgz
+USES=		cpe gmake tar:tgz
 MAKE_ENV=	GRAPHICS="${GRAPHICS}"
 PLIST_SUB=	HACKNAME="${HACKNAME}"
 
@@ -40,6 +39,7 @@ SHELL_DESC=	Shell support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MX11}
+USES+=		xorg
 USE_XORG=	xaw xpm
 GRAPHICS=	X11_GRAPHICS
 .endif

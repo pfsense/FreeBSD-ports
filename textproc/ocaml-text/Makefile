@@ -1,5 +1,4 @@
 # Created by: Jaap Boender <jaapb@kerguelen.org>
-# $FreeBSD$
 
 PORTNAME=	text
 PORTVERSION=	0.8
@@ -8,6 +7,8 @@ PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml library for dealing with text
+
+BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	vbmithr

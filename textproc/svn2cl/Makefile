@@ -1,12 +1,11 @@
 # Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
 
 PORTNAME=	svn2cl
 PORTVERSION=	0.14
 CATEGORIES=	textproc
 MASTER_SITES=	http://arthurdejong.org/svn2cl/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subversion ChangeLog generator
 
 RUN_DEPENDS=	xsltproc:textproc/libxslt \

@@ -1,5 +1,4 @@
 # Created by: chinsan
-# $FreeBSD$
 
 PORTNAME=	kuklomenos
 PORTVERSION=	0.4.5
@@ -19,7 +18,7 @@ OPTIONS_DEFINE=	VORBIS
 OPTIONS_DEFAULT=	VORBIS
 OPTIONS_SUB=	yes
 
-USES=		compiler
+USES=		compiler sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 

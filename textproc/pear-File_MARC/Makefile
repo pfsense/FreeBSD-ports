@@ -1,8 +1,7 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	File_MARC
-PORTVERSION=	1.3.0
+PORTVERSION=	1.4.1
 CATEGORIES=	textproc pear
 
 MAINTAINER=	dbaio@FreeBSD.org

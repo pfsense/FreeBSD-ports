@@ -1,9 +1,9 @@
 # Created by: andreas
-# $FreeBSD$
 
 PORTNAME=	ntp
-PORTVERSION=	4.2.8p13
-CATEGORIES=	net ipv6
+PORTVERSION=	4.2.8p15
+PORTREVISION=	3
+CATEGORIES=	net
 MASTER_SITES=	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ \
 		http://archive.ntp.org/ntp4/ntp-4.2/ \
 		ftp://ftp.netlab.is.tsukuba.ac.jp/pub/network/ntp/ntp4/
@@ -14,15 +14,15 @@ COMMENT=	The Network Time Protocol Distribution
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-CONFLICTS=	ntp-devel-* openntpd-*
+CONFLICTS=	ntp-devel ntpsec openntpd
 
 USES=		cpe pathfix shebangfix libedit libtool localbase:ldflags \
 		pkgconfig
-USES+=		autoreconf # until trustedbsd-mac changes accepted upstream
+USES+=		autoreconf # until rlimit_memlock changes accepted upstream
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-leap-smear --enable-trustedbsd-mac \
-		--with-locfile=freebsd
+		--with-locfile=freebsd --with-memlock=-1
 
 TEST_TARGET=	check
 
@@ -77,6 +77,9 @@ ${D}_CONFIGURE_ENABLE=	${D}
 post-extract:
 	@${TOUCH} ${WRKSRC}/scripts/build/checkHtmlFileDates
 	@${CHMOD} +x ${WRKSRC}/scripts/build/checkHtmlFileDates
+
+post-configure:
+	@${ECHO_CMD} '#define HAVE_CLOSEFROM	1' >> ${WRKSRC}/config.h
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

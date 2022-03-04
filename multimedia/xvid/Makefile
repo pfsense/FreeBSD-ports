@@ -1,8 +1,7 @@
 # Created by: Michael Nottebrock <michaelnottebrock@gmx.net> et al
-# $FreeBSD$
 
 PORTNAME=	xvid
-PORTVERSION=	1.3.5
+PORTVERSION=	1.3.7
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://downloads.xvid.com/downloads/
@@ -14,7 +13,7 @@ COMMENT=	Opensource MPEG-4 codec, based on OpenDivx
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKDIR}/xvidcore/LICENSE
 
-USES=		gmake tar:bz2
+USES=		cpe gmake tar:bz2
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes

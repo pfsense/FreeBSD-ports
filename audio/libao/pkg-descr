@@ -7,8 +7,8 @@ On FreeBSD, it currently supports:
    * WAV files
    * OSS (Open Sound System)
 And optionally:
-   * ESD (ESounD or Enlightened Sound Daemon)
    * NAS (Network Audio System)
    * PulseAudio
+   * Sndio
 
 WWW: https://www.xiph.org/ao/

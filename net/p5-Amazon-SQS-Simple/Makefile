@@ -1,5 +1,4 @@
 # Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Amazon-SQS-Simple
 PORTVERSION=	1.06
@@ -23,6 +22,8 @@ RUN_DEPENDS=	p5-Digest-HMAC>=0:security/p5-Digest-HMAC \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 SUB_FILES=	pkg-message
 

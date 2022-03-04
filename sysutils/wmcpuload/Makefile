@@ -1,17 +1,17 @@
 # Created by: Soeren Boll Overgaard <boll@tolkien.dk>
-# $FreeBSD$
 
 PORTNAME=	wmcpuload
-PORTVERSION=	1.0.1
-PORTREVISION=	4
+DISTVERSION=	1.1.1
+
 CATEGORIES=	sysutils windowmaker
-MASTER_SITES=	http://seiichisato.jp/dockapps/src/
+MASTER_SITES=	https://www.dockapps.net/download/
 
-MAINTAINER=	xride@FreeBSD.org
+MAINTAINER=	drtr0jan@yandex.ru
 COMMENT=	"lcd" dockapp for windowmaker, which displays the current cpuload
+LICENSE=	GPLv2
 
-USES=		tar:bzip2
-USE_XORG=	xpm
+USES=		xorg
+USE_XORG+=	x11 xext xpm
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	ChangeLog README
@@ -21,8 +21,6 @@ PLIST_FILES=	"@(,kmem,2555) bin/wmcpuload" \
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e '/^DEFS/s|-I\.\.$$|-I.. -I../libdockapp/|g ; \
-		 /^CFLAGS/s|-I../libdockapp/||g' ${WRKSRC}/src/Makefile.in
 	@${REINPLACE_CMD} '/SETGID_FLAGS=/d' ${WRKSRC}/configure
 
 post-install:

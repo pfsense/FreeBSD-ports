@@ -1,8 +1,7 @@
 # Created by: Danilo G. Baio <dbaio@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Validate_ISPN
-PORTVERSION=	0.6.1
+PORTVERSION=	0.8.0
 CATEGORIES=	textproc pear
 
 MAINTAINER=	dbaio@FreeBSD.org

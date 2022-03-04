@@ -1,9 +1,8 @@
 # Created by: Josh Paetzel <josh@tcbug.org>
-# $FreeBSD$
 
 PORTNAME=	epic5
-PORTVERSION=	2.1.1
-CATEGORIES=	irc ipv6
+PORTVERSION=	2.1.6
+CATEGORIES=	irc
 MASTER_SITES=	http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/
 
 MAINTAINER=	mp39590@gmail.com
@@ -27,6 +26,7 @@ RUBY_USE=	ruby=yes
 RUBY_CONFIGURE_WITH=	ruby
 TCL_USES=	tcl
 TCL_CONFIGURE_ON=	--with-tcl=${TCL_LIBDIR}/tclConfig.sh
+TCL_CONFIGURE_OFF=	--with-tcl=no
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lcurses|-lncurses|' ${WRKSRC}/configure

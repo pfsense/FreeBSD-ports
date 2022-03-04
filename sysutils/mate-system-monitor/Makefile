@@ -1,9 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mate-system-monitor
-PORTVERSION=	1.20.1
-PORTREVISION=	1
+PORTVERSION=	1.26.0
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -11,13 +9,16 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	MATE system monitor program
 
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
 		libdbus-glib-1.so:devel/dbus-glib
 
 PORTSCOUT=	limitw:1,even
 
-USES=		alias compiler:c++11-lib gettext gmake localbase \
+USES=		alias compiler:c++11-lib gettext gmake gnome localbase mate \
 		pathfix pkgconfig tar:xz
 USE_MATE=	icontheme
 USE_GNOME=	gtkmm30 intlhack librsvg2 libwnck3 libxml2

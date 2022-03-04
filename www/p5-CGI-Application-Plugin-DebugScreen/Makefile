@@ -1,5 +1,4 @@
 # Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
 
 PORTNAME=	CGI-Application-Plugin-DebugScreen
 PORTVERSION=	1.00
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	This plug-in add DebugScreen support to CGI::Application
+COMMENT=	DebugScreen support for CGI::Application
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

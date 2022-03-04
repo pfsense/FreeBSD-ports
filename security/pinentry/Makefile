@@ -1,9 +1,8 @@
 # Created by: Michael Nottebrock <lofi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pinentry
-PORTVERSION=	1.1.0
-PORTREVISION?=	4
+PORTVERSION=	1.1.1
+PORTREVISION?=	0
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/pinentry
 
@@ -22,8 +21,8 @@ NO_BUILD=	yes
 PLIST_FILES=	bin/pinentry
 
 OPTIONS_SINGLE=	FRONTEND
-OPTIONS_SINGLE_FRONTEND=	TTY NCURSES FLTK GTK2 QT5 GNOME3
-OPTIONS_DEFAULT=	TTY
+OPTIONS_SINGLE_FRONTEND=	TTY NCURSES EFL FLTK GTK2 QT5 GNOME3
+OPTIONS_DEFAULT=	NCURSES
 
 FRONTEND_DESC=	Default frontend
 
@@ -34,6 +33,10 @@ TTY_RUN_DEPENDS=	${PINENTRY_TTY}:security/pinentry-tty
 NCURSES_DESC=	Curses frontend
 PINENTRY_NCURSES=	pinentry-curses
 NCURSES_RUN_DEPENDS=	${PINENTRY_NCURSES}:security/pinentry-curses
+
+EFL_DESC=	EFL frontend
+PINENTRY_EFL=	pinentry-efl
+EFL_RUN_DEPENDS=	${PINENTRY_EFL}:security/pinentry-efl
 
 FLTK_DESC=	FLTK frontend
 PINENTRY_FLTK=	pinentry-fltk
@@ -49,7 +52,11 @@ QT5_RUN_DEPENDS=	${PINENTRY_QT5}:security/pinentry-qt5
 
 GNOME3_DESC=	GNOME 3 frontend
 PINENTRY_GNOME3=	pinentry-gnome3
-GNOME3_RUN_DEPENDS=	${PINENTRY_GNOME3}:security/pinentry-gnome3
+# Due to a dependency loop that exists between security/pinentry-gnome3,
+# security/gcr, security/gnupg and security/pinentry, the user must install
+# pinentry-gnome3 manually. See pkg-message.gnome3 for more details.
+#GNOME3_RUN_DEPENDS=	${PINENTRY_GNOME3}:security/pinentry-gnome3
+GNOME3_VARS=		PKGMESSAGE+=${.CURDIR}/pkg-message.gnome3
 
 .include <bsd.port.options.mk>
 
@@ -78,11 +85,11 @@ OPTIONS_DEFINE=	LIBSECRET
 LIBSECRET_DESC=	Saving the passphrase with libsecret
 LIBSECRET_CONFIGURE_ENABLE=	libsecret
 LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
+LIBSECRET_USES=		gnome
 LIBSECRET_USE=		GNOME=glib20
 
 .if ${PINENTRY_GUI} == "gnome3"
 OPTIONS_SLAVE=	LIBSECRET
-USE_GNOME+=	gtk20
 LIB_DEPENDS+=	libgcr-base-3.so:security/gcr
 PLIST_FILES=	bin/pinentry-gnome3
 .else
@@ -100,10 +107,18 @@ CONFIGURE_ARGS+=--disable-pinentry-qt --disable-pinentry-qt5
 .endif
 
 .if ${PINENTRY_GUI} == "gtk2"
+USES+=		gnome
 USE_GNOME+=	gtk20
 PLIST_FILES=	bin/pinentry-gtk-2
 .else
 CONFIGURE_ARGS+=--disable-pinentry-gtk2
+.endif
+
+.if ${PINENTRY_GUI} == "efl"
+LIB_DEPENDS+=	libefl.so:devel/efl
+PLIST_FILES=	bin/pinentry-efl
+.else
+CONFIGURE_ARGS+=--disable-pinentry-efl
 .endif
 
 .if ${PINENTRY_GUI} == "fltk"

@@ -1,10 +1,10 @@
 # Created by: jpaetzel@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	catfish
-PORTVERSION=	1.4.7
+PORTVERSION=	4.16.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	XFCE/src/apps/${PORTNAME:tl}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -15,18 +15,34 @@ LICENSE=	GPLv3
 RUN_DEPENDS=	\
 	${PYTHON_PKGNAMEPREFIX}python-distutils-extra>0:devel/py-python-distutils-extra@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR} \
-	gksu:sysutils/gksu
-BUILD_DEPENDS=	${RUN_DEPENDS}
+	${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR} \
+	pdftotext:graphics/poppler-utils
+BUILD_DEPENDS=	\
+	${PYTHON_PKGNAMEPREFIX}python-distutils-extra>0:devel/py-python-distutils-extra@${PY_FLAVOR} \
+	${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR}
 
-USES=		desktop-file-utils gettext-tools gnome python:2.7 tar:bz2
-NO_ARCH=	yes
-USE_PYTHON=	distutils
+USES=		cpe desktop-file-utils gettext-tools gnome python:3.4+ tar:bz2
+USE_PYTHON=	distutils noflavors
 USE_GNOME=	gtk30 intltool pygobject3
 
-OPTIONS_DEFINE=	DOCS ZEITGEIST
-OPTIONS_DEFAULT=ZEITGEIST
+CPE_VENDOR=	catfish_project
 
-ZEITGEIST_DESC=	Provide recent search suggestions
+NO_ARCH=	yes
+
+PORTSCOUT=	limitw:1,even
+
+OPTIONS_DEFINE=	DOCS ZEITGEIST
+OPTIONS_DEFAULT=POLKIT
+OPTIONS_MULTI=	PRIVILEGES
+OPTIONS_MULTI_PRIVILEGES=	POLKIT SUDO
+
+POLKIT_DESC=	Provide Polkit (pkexec) support
+POLKIT_RUN_DEPENDS=	pkexec:sysutils/polkit
+
+SUDO_DESC=	Provide sudo support
+SUDO_RUN_DEPENDS=	sudo:security/sudo
+
+ZEITGEIST_DESC=	Provide recent search suggestions (broken)
 ZEITGEIST_LIB_DEPENDS=	libzeitgeist-2.0.so:sysutils/zeitgeist
 
 .include <bsd.port.pre.mk>

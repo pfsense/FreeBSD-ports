@@ -1,5 +1,4 @@
 # Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
 
 PORTNAME=	m17n-im-config
 PORTVERSION=	0.9.0
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libm17n.so:devel/m17n-lib
 MAKE_JOBS_UNSAFE=	yes
 
 USE_GNOME=	gtk20 intltool intlhack glib20
-USES=		gettext pathfix pkgconfig libtool
+USES=		gettext gnome libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	foswiki
 PORTVERSION=	2.1.6
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	www
 MASTER_SITES=	SF
 DISTNAME=	Foswiki-${PORTVERSION}
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Free and open source enterprise wiki
 
 LICENSE=	GPLv2
@@ -24,7 +22,6 @@ RUN_DEPENDS=	p5-Error>=0.15:lang/p5-Error \
 
 USES=		cpe perl5 tar:tgz
 
-NO_BUILD=	yes
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	OPTINT OPTOTH APACHE
@@ -64,7 +61,7 @@ post-patch:
 	@cd ${WRKSRC} && \
 		${REINPLACE_CMD} -i "" \
 		-e "s|^#[[:space:]]*\(.*\)/home/httpd/foswiki|\1${WWWDIR}|g" \
-		-e "s|^#[[:space:]]*\(.*\)\(\= \'/foswiki/\)|\1\2|g" \
+		-e "s|^#[[:space:]]*\(.*\)\(= '/foswiki/\)|\1\2|g" \
 		-e "s|/bin/grep|/usr/bin/grep|g" \
 		lib/Foswiki.spec
 	@cd ${WRKSRC} && \

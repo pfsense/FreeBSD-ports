@@ -1,11 +1,10 @@
 # Created by: vanilla@
-# $FreeBSD$
 
 PORTNAME=	iconv
 PORTVERSION=	7
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	converters
-MASTER_SITES=	GHC
+MASTER_SITES=	https://github.com/downloads/ittner/lua-iconv/
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 DISTNAME=	lua-${PORTNAME}-${PORTVERSION}
 
@@ -15,11 +14,7 @@ COMMENT=	Iconv binding for Lua 5
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig iconv lua
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	ittner
-GH_PROJECT=	lua-${PORTNAME}
+USES=		pkgconfig iconv lua:module
 
 PLIST_FILES=	${LUA_MODLIBDIR}/iconv.so
 CFLAGS+=	`pkgconf --cflags lua-${LUA_VER}` -I${LOCALBASE}/include
@@ -27,7 +22,10 @@ MAKE_ARGS=	LUABIN=${LUA_CMD} CFLAGS="${CFLAGS}"
 LDFLAGS+=	-shared ${ICONV_LIB} -L${LOCALBASE}/lib
 CFLAGS_aarch64=	-fPIC
 CFLAGS_amd64=	-fPIC
+CFLAGS_armv6=	-fPIC
+CFLAGS_armv7=	-fPIC
 CFLAGS_i386=	-fPIC
+CFLAGS_powerpc=	-fPIC
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${LUA_MODLIBDIR}

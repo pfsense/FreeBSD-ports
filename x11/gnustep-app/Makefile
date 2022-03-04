@@ -1,12 +1,11 @@
 # Created by: dirk.meyer@dinoex.sub.org
-# $FreeBSD$
 
 PORTNAME=	gnustep-app
 PORTVERSION=	2.0.0
-PORTREVISION=	14
+PORTREVISION=	17
 CATEGORIES=	x11 gnustep
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Metaport for GNUstep applications
 
 USES=		metaport gnustep
@@ -33,7 +32,6 @@ RUN_DEPENDS=	aclock>0:x11-clocks/aclock \
 		fortytwo-bdb>0:databases/fortytwo-bdb \
 		fortytwo-encore>0:devel/fortytwo-encore \
 		fortytwo>0:graphics/fortytwo \
-		freetar>0:archivers/freetar \
 		gmastermind>0:games/gmastermind \
 		gmines>0:games/gmines \
 		gnumail>0:mail/gnumail \

@@ -1,10 +1,9 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	zmap
 PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -27,10 +26,10 @@ OPTIONS_DEFINE=	REDIS MONGO JSON
 OPTIONS_DEFAULT=JSON
 JSON_DESC=	Build with support for JSON
 
-REDIS_LIB_DEPENDS=	libhiredis.so:/databases/hiredis
+REDIS_LIB_DEPENDS=	libhiredis.so:databases/hiredis
 REDIS_CMAKE_BOOL=	WITH_REDIS
 
-MONGO_LIB_DEPENDS=	libmongoc-1.0.so:/devel/mongo-c-driver
+MONGO_LIB_DEPENDS=	libmongoc-1.0.so:devel/mongo-c-driver
 MONGO_CMAKE_BOOL=	WITH_MONGO
 
 JSON_LIB_DEPENDS=	libjson-c.so:devel/json-c

@@ -1,9 +1,8 @@
 # Created by: Klaus Aehlig <aehlig@linta.de>
-# $FreeBSD$
 
 PORTNAME=	h5utils
 DISTVERSION=	1.13.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	science
 
 MAINTAINER=	aehlig@linta.de

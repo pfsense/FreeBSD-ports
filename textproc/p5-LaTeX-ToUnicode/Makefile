@@ -1,9 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	LaTeX-ToUnicode
-PORTVERSION=	0.03
-PORTREVISION=	1
+PORTVERSION=	0.11
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:GERHARD
@@ -14,8 +12,11 @@ COMMENT=	Convert LaTeX commands to Unicode
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

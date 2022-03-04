@@ -1,21 +1,19 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	DirectoryScanner
 PORTVERSION=	1.3.2
 CATEGORIES=	devel pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}TheSeer_
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Recursive directory scanner and filter
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=	php:flavors pear:env
+USES=		php:flavors pear:env
 USE_GITHUB=	yes
 GH_ACCOUNT=	theseer
-GH_PROJECT=	DirectoryScanner
 
 USE_PHP=	fileinfo
 PEAR_CHANNEL=	theseer

@@ -1,5 +1,4 @@
 # Created by: jkh
-# $FreeBSD$
 
 PORTNAME=	xcb
 PORTVERSION=	2.4
@@ -14,7 +13,7 @@ COMMENT=	Tool for managing x11 cut-buffers
 
 LICENSE=	MIT
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xt
 
 PLIST_FILES=	bin/xcb \

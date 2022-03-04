@@ -1,15 +1,17 @@
 # Created by: paulh@logicsquad.net
-# $FreeBSD$
 
 PORTNAME=	refdb
 PORTVERSION=	0.9.9
 DISTVERSIONSUFFIX=	-1
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTNAME}-src-${PORTVERSION}-1
 
 MAINTAINER=	ohartman@zedat.fu-berlin.de
 COMMENT=	Bibliographic reference database
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: thecommandlist
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: thecommandlist
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libbtparse.so:textproc/btparse \
@@ -45,7 +47,7 @@ USE_RC_SUBR=	refdbd
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 # If libdbi-drivers has been built without MySQL driver, abort
 .if exists(${LOCALBASE}/lib/dbd) && !exists(${LOCALBASE}/lib/dbd/libdbdmysql.so)
 IGNORE=		rebuild databases/libdbi-drivers with MySQL support

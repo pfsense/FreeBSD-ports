@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	xbindkeys
 PORTVERSION=	1.8.6
@@ -13,6 +12,7 @@ COMMENT=	Allows you to launch shell commands under X with your keyboard
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		xorg
 USE_XORG=	x11 xi
 GNU_CONFIGURE=	yes
 

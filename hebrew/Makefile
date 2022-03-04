@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Hebrew support
 
     SUBDIR += aspell

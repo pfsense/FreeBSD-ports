@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	love
 PORTVERSION=	0.8.0
-PORTREVISION=	14
+PORTREVISION=	19
 CATEGORIES=	devel games
 MASTER_SITES=	http://cdn.bitbucket.org/rude/love/downloads/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -23,14 +20,14 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 
 PORTSCOUT=	limit:^0\.8\.
 
-USES=		gmake openal dos2unix lua:51
+USES=		compiler:c++11-lang gl gmake openal dos2unix lua:51 sdl
 USE_SDL=	sdl mixer
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/freetype2 \
 		-I${LUA_INCDIR} `${SDL_CONFIG} --cflags`
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 CONFIGURE_ARGS=	--bindir=${PREFIX}/bin --libdir=${PREFIX}/lib \
 		--program-suffix=08
 WRKSRC=		${WRKDIR}/love-${PORTVERSION}
@@ -38,6 +35,7 @@ DOS2UNIX_FILES=	src/modules/graphics/opengl/GLee.h
 
 PLIST_FILES=	bin/love08
 
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
@@ -49,7 +47,7 @@ post-patch:
 		${WRKSRC}/configure
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in changes.txt readme.md
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor

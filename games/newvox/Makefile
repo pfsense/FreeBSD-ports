@@ -1,15 +1,15 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	newvox
 PORTVERSION=	1.0
 PORTREVISION=	8
 CATEGORIES=	games
-MASTER_SITES=	http://www.libsdl.org/projects/newvox/src/
+MASTER_SITES=	https://www.libsdl.org/projects/newvox/src/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Voxel-style landscape rendering fly-by
 
+USES=		sdl
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-lm

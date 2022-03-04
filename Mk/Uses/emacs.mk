@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Provide support for ports requiring Emacs.  This includes flavors with proper
 # dependencies and useful variables.
 #
@@ -36,15 +34,15 @@
 #                             This will prevent flavors.
 #
 # Variables, which can be read by ports:
-# EMACS_CMD:                  Emacs command with full path (e.g. /usr/local/bin/emacs-26.1)
+# EMACS_CMD:                  Emacs command with full path (e.g. /usr/local/bin/emacs-27.1)
 # EMACS_FLAVOR:               Used for dependencies (e.g. BUILD_DEPENDS= dash.el${EMACS_PKGNAMESUFFIX}>0:devel/dash@${EMACS_FLAVOR})
 # EMACS_LIBDIR:               Emacs Library directory without ${PREFIX} (e.g. share/emacs)
-# EMACS_LIBDIR_WITH_VER:      Library directory without ${PREFIX} including version (e.g. share/emacs/26.1)
-# EMACS_MAJOR_VER:            Emacs major version (e.g. 26)
+# EMACS_LIBDIR_WITH_VER:      Library directory without ${PREFIX} including version (e.g. share/emacs/27.1)
+# EMACS_MAJOR_VER:            Emacs major version (e.g. 27)
 # EMACS_PKGNAMESUFFIX:        PKGNAMESUFFIX to distinguish Emacs flavors
 # EMACS_SITE_LISPDIR:         Emacs site-lisp directory without ${PREFIX} (e.g. share/emacs/site-lisp)
-# EMACS_VER:                  Emacs version (e.g. 26.1)
-# EMACS_VERSION_SITE_LISPDIR: Include version (e.g. share/emacs/26.1/site-lisp)
+# EMACS_VER:                  Emacs version (e.g. 27.1)
+# EMACS_VERSION_SITE_LISPDIR: Include version (e.g. share/emacs/27.1/site-lisp)
 #-------------------------------------------------------------------------------
 #
 # MAINTAINER:	emacs@FreeBSD.org
@@ -82,6 +80,10 @@ _EMACS_RUN_DEP=		yes
 # Only set FLAVORS when...
 .if defined(_EMACS_RUN_DEP) && !defined(_EMACS_NOFLAVORS)
 FLAVORS=	full canna nox devel_full devel_nox
+# Sort the default to be first
+.if defined(EMACS_DEFAULT)
+FLAVORS:=	${EMACS_DEFAULT} ${FLAVORS:N${EMACS_DEFAULT}}
+.endif
 .for flavor in ${EMACS_FLAVORS_EXCLUDE}
 FLAVORS:=	${FLAVORS:N${flavor}}
 .endfor
@@ -103,10 +105,10 @@ EMACS_FLAVOR=	full
 .endif
 
 .if ${FLAVOR:Mdevel*}
-EMACS_VER=			27.0.50
+EMACS_VER=		29.0.50
 EMACS_PORTDIR=		editors/emacs-devel
 .else
-EMACS_VER=			26.1
+EMACS_VER=		27.2
 EMACS_PORTDIR=		editors/emacs
 .endif
 
@@ -115,12 +117,14 @@ EMACS_LIBDIR=		share/emacs
 EMACS_LIBDIR_WITH_VER=	share/emacs/${EMACS_VER}
 EMACS_PORT_NAME=	emacs${EMACS_MAJOR_VER}
 
-.if ${FLAVOR:M*nox}
-EMACS_PKGNAMESUFFIX=		-${EMACS_PORT_NAME}_nox
-.elif ${FLAVOR:Mcanna}
-EMACS_PKGNAMESUFFIX=		-${EMACS_PORT_NAME}_canna
+.if ${EMACS_FLAVOR} == "devel_full"
+EMACS_PKGNAMESUFFIX=	-emacs_devel
+.elif ${EMACS_FLAVOR} == "devel_nox"
+EMACS_PKGNAMESUFFIX=	-emacs_devel_nox
+.elif ${EMACS_FLAVOR} == "full"
+EMACS_PKGNAMESUFFIX=
 .else
-EMACS_PKGNAMESUFFIX=		-${EMACS_PORT_NAME}
+EMACS_PKGNAMESUFFIX=	-emacs_${EMACS_FLAVOR}
 .endif
 
 EMACS_CMD=	${PREFIX}/bin/emacs-${EMACS_VER}

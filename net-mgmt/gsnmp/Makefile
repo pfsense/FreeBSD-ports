@@ -1,5 +1,4 @@
 # Created by: Matt Peterson <matt@peterson.org>
-# $FreeBSD$
 
 PORTNAME=	gsnmp
 PORTVERSION=	0.2.0
@@ -14,7 +13,7 @@ COMMENT=	SNMP library written on top of glib and gnet2
 
 LIB_DEPENDS=	libgnet-2.0.so:net/gnet2
 
-USES=		libtool pathfix pkgconfig
+USES=		gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

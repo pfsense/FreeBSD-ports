@@ -1,5 +1,4 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fXSL
 PORTVERSION=	1.1.0
@@ -8,13 +7,13 @@ MASTER_SITES=	http://pear.netpirates.net/get/
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}TheSeer_
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	XSL wrapper / extension to the PHP 5.x XSLTProcessor
 
 LICENSE=	BSD3CLAUSE
 
 USE_PHP=	dom xml xsl
 PEAR_CHANNEL=	theseer
-USES=	pear
+USES=		pear php
 
 .include <bsd.port.mk>

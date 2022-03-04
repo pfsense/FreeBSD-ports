@@ -1,25 +1,28 @@
-# Created by: Loïc BARTOLETTI <lbartoletti@tuxfamily.org>
-# $FreeBSD$
+# Created by: Loïc BARTOLETTI <lbartoletti@FreeBSD.org>
 
 PORTNAME=	postgis
-PORTVERSION=	2.4.7
+PORTVERSION=	2.4.9
+PORTREVISION=	6
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	24
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Geographic objects support for PostgreSQL databases
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Deprecated in favour of databases/postgis3x
+EXPIRATION_DATE=2021-12-31
 
 LIB_DEPENDS=	libproj.so:graphics/proj \
 		libgeos.so:graphics/geos \
 		libjson-c.so:devel/json-c \
 		libgdal.so:graphics/gdal
 
-USES=		alias gettext gmake gnome iconv:wchar_t libtool:keepla \
-		localbase perl5 pkgconfig pgsql:9.3-10 shebangfix
+USES=		alias cpe gettext gmake gnome iconv:wchar_t libtool:keepla \
+		localbase perl5 pkgconfig pgsql:9.5-12 shebangfix
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_PERL5=	build
@@ -40,7 +43,7 @@ TOPOLOGY_DESC=	Topology support
 SFCGAL_DESC=	Enable sfcgal
 ADDRSTD_DESC=	Enable address standardizer
 
-CONFLICTS_INSTALL=	postgis20  postgis21 postgis22 postgis23 postgis25
+CONFLICTS_INSTALL=	postgis20 postgis21 postgis22 postgis23 postgis25 postgis30 postgis31
 
 LOADERGUI_CONFIGURE_WITH=	gui
 LOADERGUI_USE=			GNOME=gtk20

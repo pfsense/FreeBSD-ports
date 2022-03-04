@@ -1,5 +1,4 @@
 # Created by: Steven Kreuzer <skreuzer@f2o.org>
-# $FreeBSD$
 
 PORTNAME=	innotop
 PORTVERSION=	1.11.4
@@ -19,9 +18,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USE_GITHUB=	yes
 
-USES=		perl5
+USES=		mysql perl5
 USE_PERL5=	configure
-USE_MYSQL=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/innotop|${PREFIX}/etc|g' ${WRKSRC}/innotop

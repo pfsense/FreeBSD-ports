@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	void-zones-tools
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	dns
 
 MAINTAINER=	vidar@karlsen.tech

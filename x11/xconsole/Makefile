@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xconsole
 PORTVERSION=	1.0.7
 PORTREVISION=	1
@@ -10,7 +8,7 @@ COMMENT=	Monitor system console messages with X
 
 LICENSE=	MIT
 
-XORG_CAT=	app
+USES=		xorg xorg-cat:app
 USE_XORG=	x11 xmu xt xaw
 
 .include <bsd.port.mk>

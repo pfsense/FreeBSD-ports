@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xtriangles
 PORTVERSION=	5.5.2
@@ -11,7 +10,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Triangles puzzle
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext xt sm ice
 
 PLIST_FILES=	bin/xtriangles \

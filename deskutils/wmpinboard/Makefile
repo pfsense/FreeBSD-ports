@@ -1,5 +1,4 @@
 # Created by: Jim Mock <jim@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wmpinboard
 PORTVERSION=	1.0
@@ -13,8 +12,8 @@ COMMENT=	Post-it notes for the WindowMaker dock or AfterStep Wharf
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}.orig
 
+USES=		gmake xorg
 USE_XORG=	xpm
-USES=		gmake
 GNU_CONFIGURE=	yes
 MAKE_ARGS=	ACLOCAL="${TRUE}" AUTOCONF="${TRUE}" AUTOMAKE="${TRUE}" \
 		AUTOHEADER="${TRUE}"

@@ -1,5 +1,3 @@
 #!/bin/sh
-#
-# $FreeBSD$
 
-JAVA_VERSION="%%JAVA_VERSION%%" "%%LOCALBASE%%/bin/java" -jar "%%DATADIR%%/fidocadj.jar" "$@"
+"%%JAVA%%" -jar "%%DATADIR%%/fidocadj-%%PORTVERSION%%.jar" "$@"

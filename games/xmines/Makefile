@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xmines
 PORTVERSION=	1.0
@@ -11,6 +10,7 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Minesweeper game for the X Window System
 
+USES=		xorg
 USE_XORG=	x11 xt
 CFLAGS+=	-Wno-error=return-type
 

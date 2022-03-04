@@ -1,4 +1,7 @@
-Check_MK may collect additional data if the following ports are installed:
+[
+{ type: install
+  message: <<EOM
+Checkmk may collect additional data if the following ports are installed:
 - devel/libstatgrab
 - sysutils/ipmitool
 - sysutils/megacli
@@ -9,4 +12,7 @@ See the code of the agent (%%PREFIX%%/bin/%%PORTNAME%%) for details.
 
 Configuration instructions may be found in one of the following places:
 - %%DOCSDIR%%/README.FreeBSD
-- https://mathias-kettner.com/checkmk_freebsd.html
+- https://checkmk.com/checkmk_freebsd.html
+EOM
+}
+]

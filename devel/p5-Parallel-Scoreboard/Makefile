@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Parallel-Scoreboard
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of scoreboard for monitoring status of many workers
 
 LICENSE=	ART10 GPLv1+

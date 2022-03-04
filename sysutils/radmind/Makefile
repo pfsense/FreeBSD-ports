@@ -1,9 +1,8 @@
 # Created by: Paul Dlug <paul@aps.org>
-# $FreeBSD$
 
 PORTNAME=	radmind
-PORTVERSION=	1.15.1
-PORTREVISION=	2019101801
+PORTVERSION=	1.15.4
+PORTREVISION=	2021062801
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/voretaq7/${PORTNAME}/releases/download/${PORTNAME}-${PORTVERSION}/
 
@@ -15,26 +14,28 @@ LICENSE_NAME=	University of Michigan License
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=	ssl
+USES=	gmake ssl
 USE_RC_SUBR=	radmind
-MAKE_JOBS_UNSAFE=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-radminddir=${RADMIND_BASE_DIR}
 
-RADMINUSER=	radmind
+MAKE_JOBS_UNSAFE=	yes
+
+SUB_FILES+=	pkg-install pkg-message
+SUB_LIST=	RADMIND_BASE_DIR=${RADMIND_BASE_DIR} RADMINUSER=${RADMINUSER}
+
 USERS=		${RADMINUSER}
 GROUPS=		${RADMINUSER}
-RADMIND_BASE_DIR?=	/var/radmind
 
-SUB_LIST=	RADMIND_BASE_DIR=${RADMIND_BASE_DIR} RADMINUSER=${RADMINUSER}
 PLIST_SUB=	RADMIND_BASE_DIR=${RADMIND_BASE_DIR:S@/@@} RADMINUSER=${RADMINUSER}
-SUB_FILES+=	pkg-install pkg-message
+
+OPTIONS_DEFINE=	DOCS
 
 DOCS=		COPYRIGHT SPEC README.md
 
-OPTIONS_DEFINE=	DOCS
-IGNORE_TIMESTAMPS_DESC=	Add '-t' option to fsdiff
+RADMIND_BASE_DIR?=	${DESTDIR}/var/radmind
+RADMINUSER=	radmind
 
 .include <bsd.port.options.mk>
 

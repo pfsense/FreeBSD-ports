@@ -1,9 +1,8 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME?=	ioquake3
 PORTVERSION?=	${IOQUAKE3VER}
-PORTREVISION?=	16
+PORTREVISION?=	17
 CATEGORIES=	games
 MASTER_SITES?=	http://ioquake3.org/files/${DISTVERSION}/
 # Using zip this way enables slaves to override it.
@@ -15,12 +14,12 @@ COMMENT?=	Cleaned-up and enhanced version of Quake 3
 LICENSE?=	GPLv2
 LICENSE_FILE?=	${WRKSRC}/COPYING.txt
 
-USES=		pkgconfig gmake
+USES=		cpe pkgconfig gmake
 
 # Port configuration flags:
 #	CLIENT SERVER TOOLS DLRENDERER GAMELIBS OPUS OPENGL2
 IOQ3?=		CLIENT TOOLS GAMELIBS
-IOQ3ARCH?=	${ARCH}
+IOQ3ARCH?=	${ARCH:S/powerpc/ppc/}
 IOQ3SDL?=	sdl
 
 .if ! ${IOQ3:MCLIENT} && ! ${IOQ3:MSERVER}
@@ -33,6 +32,7 @@ OPTIONS_DEFINE=	SERVER CURL OPENAL MUMBLE VORBIS DEBUG
 OPTIONS_DEFAULT=	SERVER CURL OPENAL MUMBLE VORBIS
 SERVER_DESC=	Install dedicated server
 MUMBLE_DESC=	Enable Mumble support (no dependencies)
+USES+=		gl
 USE_GL+=	gl
 .endif
 IOQ3_OPTIONS=	${IOQ3:MTOOLS} ${IOQ3:MDLRENDERER} ${IOQ3:MGAMELIBS} \
@@ -52,7 +52,7 @@ MAKE_ARGS+=	DEFAULT_BASEDIR="${Q3DIR}" \
 		TOOLS_CC="${CC}" \
 		USE_LOCAL_HEADERS=0
 ALL_TARGET=	release
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 LIBDIR=		lib/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	share/doc/${PORTNAME}${PKGNAMESUFFIX}
@@ -86,7 +86,7 @@ Q3INSTALL?=
 Q3ENGINEVER?=	${DISTVERSION}
 IOQUAKE3VER=	1.36
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
 DEBUG_VARS=		ALL_TARGET=debug
 SERVER_RUN_DEPENDS=	${Q3SERVER}${BINSUFFIX}:games/${PORTNAME}-server
@@ -116,6 +116,10 @@ SMP_MAKE_ARGS_OFF=	BUILD_CLIENT_SMP=0
 DLRENDERER_MAKE_ARGS=	USE_RENDERER_DLOPEN=1
 DLRENDERER_MAKE_ARGS_OFF=	USE_RENDERER_DLOPEN=0
 
+.if !defined(Q3TOTALCONV)
+.include "${.CURDIR}/../quake3-data/Makefile.include"
+.endif
+
 .include <bsd.port.options.mk>
 
 .if !defined(DESKTOP_ENTRIES)
@@ -132,6 +136,7 @@ DESKTOP_ENTRIES+=	"${Q3CLIENT} ${Q3ENGINEVER} SMP" "${COMMENT}" \
 .if ${IOQ3:MCLIENT}
 MAKE_ARGS+=	BUILD_CLIENT=1
 Q3BIN+=		${Q3CLIENT}
+USES+=		sdl
 USE_SDL=	${IOQ3SDL}
 .else
 MAKE_ARGS+=	BUILD_CLIENT=0
@@ -140,6 +145,8 @@ MAKE_ARGS+=	BUILD_CLIENT=0
 .if ${IOQ3:MSERVER}
 MAKE_ARGS+=	BUILD_SERVER=1
 Q3BIN+=		${Q3SERVER}
+USE_RC_SUBR+=	ioq3ded
+SUB_LIST+=	Q3DIR=${Q3DIR}
 .else
 MAKE_ARGS+=	BUILD_SERVER=0
 .endif
@@ -189,6 +196,10 @@ IOQ3_INST+=	DATA;../../${doc};${DOCSDIR}/${doc}
 .for inst in ${IOQ3_INST}
 PLIST_FILES+=	${inst:C/.*;//}
 .endfor
+# additional rules for our custom server.cfg from filesdir
+.if ${IOQ3:MSERVER}
+PLIST_FILES+=	${Q3DIR}/server.cfg
+.endif
 
 # Generate install target
 do-install: ${Q3INSTALL}
@@ -199,9 +210,11 @@ do-install: ${Q3INSTALL}
 	${INSTALL_${inst:C/;.*//}} ${BUILDDIR}/${inst:C/[^;]*;//:C/;.*//} \
 		${STAGEDIR}${PREFIX}/${inst:C/.*;//}
 .endfor
-
-.if !defined(Q3TOTALCONV)
-.include "${.CURDIR}/../quake3-data/Makefile.include"
+# additional rules for our custom server.cfg from filesdir
+.if ${IOQ3:MSERVER}
+	${MKDIR} ${STAGEDIR}${Q3DIR}
+	${INSTALL_DATA} ${FILESDIR}/server.cfg \
+		${STAGEDIR}${Q3DIR}/server.cfg
 .endif
 
 .include <bsd.port.mk>

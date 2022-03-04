@@ -1,5 +1,4 @@
 # Created by: mgrooms@shrew.net
-# $FreeBSD$
 
 PORTNAME=	ike
 PORTVERSION=	2.2.1
@@ -11,7 +10,10 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-release
 MAINTAINER=	mgrooms@shrew.net
 COMMENT=	Shrew Soft IKE daemon and client tools
 
-ONLY_FOR_ARCHS=	i386 amd64
+DEPRECATED=	Abandonware, last release in 2013 and IKEv1 is considered to be insecure
+EXPIRATION_DATE=2022-03-31
+
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
 USE_RC_SUBR=	iked
 USES=		bison cmake:insource libedit localbase:ldflags tar:tbz2 ssl
@@ -36,13 +38,6 @@ LDAP_USE=	OPENLDAP=yes
 LDAP_CMAKE_ON=	-DLDAP=YES
 NATT_CMAKE_ON=	-DNATT=YES
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_12=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'evp_cipher_ctx_st')
-BROKEN_FreeBSD_13=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'evp_cipher_ctx_st')
-.endif
-
 post-install:
 	@if ! ${SYSCTL} -a | ${GREP} -q ipsec; then \
 	${ECHO_MSG} "===> -------------------------------------------------------------------------"; \
@@ -58,4 +53,6 @@ post-install-NATT-on:
 	@${ECHO_MSG} "===>   options IPSEC_NAT_T"
 	@${ECHO_MSG} "===> -------------------------------------------------------------------------"
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>
+
+PATCH_ARGS+=	-l

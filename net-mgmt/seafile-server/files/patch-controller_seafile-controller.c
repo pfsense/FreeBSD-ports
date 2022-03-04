@@ -1,4 +1,4 @@
---- controller/seafile-controller.c.orig	2018-04-27 06:38:45 UTC
+--- controller/seafile-controller.c.orig	2019-12-23 10:30:49 UTC
 +++ controller/seafile-controller.c
 @@ -17,6 +17,19 @@
  #include "log.h"
@@ -19,13 +19,13 @@
 +
  #define CHECK_PROCESS_INTERVAL 10        /* every 10 seconds */
  
- SeafileController *ctl;
-@@ -259,7 +272,20 @@ static void
+ #if defined(__sun)
+@@ -246,7 +259,20 @@ static void
  init_seafile_path ()
  {
      GError *error = NULL;
 +#if defined(__linux__)
-     char *binary = g_file_read_link ("/proc/self/exe", &error);
+     char *binary = g_file_read_link (PROC_SELF_PATH, &error);
 +#elif defined(__FreeBSD__) || defined(__DragonFly__) || defined(__NetBSD__) || defined(__OpenBSD__)
 +    /*
 +     * seafile.sh starts the process using abs path
@@ -41,7 +41,7 @@
      char *tmp = NULL;
      if (error != NULL) {
          seaf_warning ("failed to readlink: %s\n", error->message);
-@@ -273,7 +299,9 @@ init_seafile_path ()
+@@ -260,7 +286,9 @@ init_seafile_path ()
  
      topdir = g_path_get_dirname (installpath);
  
@@ -51,7 +51,7 @@
      g_free (tmp);
  }
  
-@@ -415,12 +443,41 @@ need_restart (int which)
+@@ -416,12 +444,41 @@ need_restart (int which)
          return FALSE;
      } else {
          char buf[256];
@@ -93,7 +93,7 @@
          }
      }
  }
-@@ -913,6 +970,9 @@ int main (int argc, char **argv)
+@@ -794,6 +851,9 @@ int main (int argc, char **argv)
          exit (1);
      }
  
@@ -103,7 +103,7 @@
      char *config_dir = DEFAULT_CONFIG_DIR;
      char *central_config_dir = NULL;
      char *seafile_dir = NULL;
-@@ -949,7 +1009,7 @@ int main (int argc, char **argv)
+@@ -830,7 +890,7 @@ int main (int argc, char **argv)
          case 'f':
              daemon_mode = 0;
              break;

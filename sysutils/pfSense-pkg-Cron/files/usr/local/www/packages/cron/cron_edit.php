@@ -3,7 +3,7 @@
  * cron_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -33,6 +33,12 @@ $a_cron = &$config['cron']['item'];
 $id = $_GET['id'];
 if (isset($_POST['id'])) {
 	$id = $_POST['id'];
+}
+
+$dup = false;
+if (isset($_GET['dup']) && is_numericint($_GET['dup'])) {
+	$id = $_GET['dup'];
+	$dup = true;
 }
 
 if ($_GET['act'] == "del") {
@@ -72,7 +78,7 @@ if ($_POST) {
 		$ent['who'] = $_POST['who'];
 		$ent['command'] = $_POST['command'];
 
-		if (isset($id) && $a_cron[$id]) {
+		if (isset($id) && $a_cron[$id] && !$dup) {
 			// update
 			$a_cron[$id] = $ent;
 		} else {

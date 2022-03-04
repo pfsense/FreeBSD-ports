@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	duo
-PORTVERSION=	1.11.1
+PORTVERSION=	1.11.4
 CATEGORIES=	security
 MASTER_SITES=	https://dl.duosecurity.com/ \
 		ZI
@@ -22,7 +21,9 @@ USE_LDCONFIG=	yes
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	DOCS
+SUID_DESC=	Install login_duo with suid bit set
+OPTIONS_DEFINE=	DOCS SUID
+OPTIONS_SUB=	yes
 
 post-patch:
 	${REINPLACE_CMD} -e 's| /etc| ${PREFIX}/etc|g' \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Provide support for MySQL
 # Feature:	mysql
 # Usage:	USES=mysql or USES=mysql:args
@@ -7,7 +5,8 @@
 #
 # version	If no version is given (by the maintainer via the port), try to
 #		find the currently installed version.  Fall back to default if
-#		necessary (MySQL-5.6 = 56).
+#		necessary (MySQL-5.7 = 57, look at bsd.default-versions.mk for
+#		possible values).
 # client	Depends on the libmysqlclient library (default)
 # server/embedded
 #		Depend on the server at run/build time. If none of these is
@@ -65,7 +64,7 @@ DEFAULT_MYSQL_VER?=	${MYSQL_DEFAULT:S/.//}
 # MySQL client version currently supported.
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.for v in 55 55m 55p 56 56p 56w 100m 101m
+.for v in 55 55m 56 56p 56w 100m 101m
 MYSQL${v}_LIBVER=	18
 .endfor
 MYSQL57_LIBVER=		20
@@ -73,6 +72,8 @@ MYSQL57p_LIBVER=	20
 MYSQL80_LIBVER=		21
 MYSQL102m_LIBVER=	3
 MYSQL103m_LIBVER=	3
+MYSQL104m_LIBVER=	3
+MYSQL105m_LIBVER=	3
 
 # Setting/finding MySQL version we want.
 .if exists(${LOCALBASE}/bin/mysql)

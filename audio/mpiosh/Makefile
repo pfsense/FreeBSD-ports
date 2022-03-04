@@ -1,15 +1,17 @@
 # Created by: Sergey Akifyev <asa@gascom.ru>
-# $FreeBSD$
 
 PORTNAME=	mpiosh
 PORTVERSION=	0.7.1.p2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	SF/mpio/mpio%20pre-release/0.7.1-pre2
 DISTNAME=	mpio-${PORTVERSION:S|.p|_pre|}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Digit@lway MPIO MP3 player tool
+
+DEPRECATED=	Abandoned upstream, no new release since 2004
+EXPIRATION_DATE=2021-12-31
 
 USES=		autoreconf iconv libtool readline
 GNU_CONFIGURE=	yes

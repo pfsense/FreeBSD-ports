@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	jrdesktop
 PORTVERSION=	0.3.1.0
@@ -14,7 +13,6 @@ COMMENT=	View and/or control a remote PC
 LICENSE=	GPLv3
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 SUB_FILES=	jrdesktop

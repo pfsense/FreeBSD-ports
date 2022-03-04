@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Tk-ToolBar
 PORTVERSION=	0.12
@@ -17,8 +16,8 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Tk>=0:x11-toolkits/p5-Tk
 TEST_DEPENDS=	p5-Test-Pod>=1.14:devel/p5-Test-Pod
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+
+USE_PERL5=	configure
 
 .include <bsd.port.mk>

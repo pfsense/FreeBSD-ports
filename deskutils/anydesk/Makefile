@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	anydesk
-DISTVERSION=	2.9.1
+DISTVERSION=	6.0.1
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	https://download.anydesk.com/freebsd/
 DISTNAME=	${PORTNAME}-freebsd-${PORTVERSION}-${ARCH:S/amd64/x86_64/:S/i386/i386/}
@@ -9,18 +8,25 @@ DISTNAME=	${PORTNAME}-freebsd-${PORTVERSION}-${ARCH:S/amd64/x86_64/:S/i386/i386/
 MAINTAINER=	freebsd@sysctl.cz
 COMMENT=	Fast remote desktop
 
-LICENSE=	commercial
-LICENSE_NAME=	commercial
-LICENSE_TEXT=	Commercial software
-LICENSE_PERMS=	auto-accept
+#LICENSE=	commercial
+#LICENSE_NAME=	commercial
+#LICENSE_FILE=	${WRKSRC}/copyright
+#LICENSE_PERMS=	no-auto-accept no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
+		libinotify.so:devel/libinotify \
+		libpolkit-gobject-1.so:sysutils/polkit \
+		libxkbfile.so:x11/libxkbfile
 
-USE_GL=		gl
-USE_GNOME=	gtk20 glib20 gdkpixbuf2 cairo
-USE_XORG=	x11 xi xcb xrandr xtst xext xfixes xdamage
+USES=		cpe gl gnome xorg
+
+USE_GL=		gl glu
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 pangox-compat
+USE_XORG=	x11 xcb xdamage xext xfixes xi xrandr xrender xtst
 NO_BUILD=	YES
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

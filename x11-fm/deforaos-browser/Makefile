@@ -1,5 +1,4 @@
 # Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	deforaos-browser
 PORTVERSION=	0.5.1
@@ -25,11 +24,10 @@ NLS_USES=		gettext
 DOCS_BUILD_DEPENDS=	xsltproc:textproc/libxslt \
     ${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
 
-USES=		desktop-file-utils gnome pkgconfig
+USES=		desktop-file-utils gnome pkgconfig xorg
 USE_GNOME=	gtk20 cairo
 USE_XORG=	x11
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 MAKE_ARGS+=	PREFIX=${PREFIX}
 MAKE_ENV+=	MANDIR=${STAGEDIR}${MANPREFIX}/man
 

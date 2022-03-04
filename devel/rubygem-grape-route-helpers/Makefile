@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	grape-route-helpers
 PORTVERSION=	2.1.0
@@ -16,8 +15,9 @@ RUN_DEPENDS=	rubygem-activesupport4>=0:devel/rubygem-activesupport4 \
 		rubygem-grape>=0.16.0:devel/rubygem-grape \
 		rubygem-rake>=0:devel/rubygem-rake
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

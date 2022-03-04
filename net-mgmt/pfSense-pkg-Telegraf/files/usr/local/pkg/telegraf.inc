@@ -3,7 +3,7 @@
  * telegraf.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,7 +63,7 @@ function telegraf_resync_config() {
 	if (count($a_ca)) {
 		$ca_pem = '';
 		foreach ($a_ca as $ca) {
-			$ca_pem .= base64_decode($ca['crt']);
+			$ca_pem .= base64_decode($ca['crt']) . "\n";
 		}
 		file_put_contents($ca_pem_file, $ca_pem);
 	}
@@ -82,7 +82,7 @@ function telegraf_resync_config() {
 	fielddrop = ["time_*"]
 
 [[inputs.disk]]
-	ignore_fs = ["tmpfs", "devtmpfs"]
+	ignore_fs = ["tmpfs", "devtmpfs", "devfs"]
 
 [[inputs.diskio]]
 
@@ -186,9 +186,8 @@ EOD;
 
 	/* Raw additional configuration options */
  	if ($telegraf_conf["telegraf_raw_config"]) {
-		#$telegraf_conf["telegraf_raw_config"] = $_POST["telegraf_raw_config"];
 		$cfg .= "\n# Additional Raw Options\n";
-		$cfg .= $_POST["telegraf_raw_config"];
+		$cfg .= base64_decode($telegraf_conf["telegraf_raw_config"]);
 		$cfg .= "\n";
 	}
 

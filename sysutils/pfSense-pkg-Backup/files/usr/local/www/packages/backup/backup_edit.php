@@ -3,7 +3,7 @@
  * backup_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -41,7 +41,7 @@ if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
 		if ($a_backup[$_GET['id']]) {
 			unset($a_backup[$_GET['id']]);
-			write_config();
+			write_config("Backup: Item deleted");
 			backup_sync_package();
 			header("Location: backup.php");
 			exit;
@@ -79,7 +79,7 @@ if ($_POST) {
 			$a_backup[] = $ent;
 		}
 
-		write_config();
+		write_config("Backup: Settings saved");
 		backup_sync_package();
 
 		header("Location: backup.php");

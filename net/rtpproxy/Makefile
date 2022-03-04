@@ -1,10 +1,8 @@
 # Created by: sobomax
-# $FreeBSD$
 
 PORTNAME=	rtpproxy
-PORTVERSION=	2.0.0
+PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	farrokhi@FreeBSD.org
@@ -14,6 +12,7 @@ LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libgsm.so:audio/gsm
 
+USES+=		cpe libtool
 USE_GITHUB=	yes
 GH_ACCOUNT=	sippy
 

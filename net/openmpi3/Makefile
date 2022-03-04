@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	openmpi
-PORTVERSION=	3.1.3
+PORTVERSION=	3.1.6
 PORTREVISION=	1
 CATEGORIES=	net parallel
 MASTER_SITES=	http://www.open-mpi.org/software/ompi/v${PORTVERSION:R}/downloads/
@@ -13,13 +11,11 @@ COMMENT=	High Performance Message Passing Library
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		fails to package: pkg-static: mca_patcher_overwrite.la: No such file or directory
 BROKEN_armv6=		fails to package: pkg-static: mca_patcher_overwrite.la: No such file or directory
 BROKEN_armv7=		fails to package: pkg-static: mca_patcher_overwrite.la: No such file or directory
 BROKEN_sparc64=		fails to compile on sparc64
 
-LIB_DEPENDS=	libhwloc.so:devel/hwloc \
-		libltdl.so:devel/libltdl \
+LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libevent.so:devel/libevent \
 		libmunge.so:security/munge
 
@@ -40,12 +36,11 @@ PLIST_SUB+=	MPIDIR=${MPIDIR}
 CONFIGURE_ARGS+=	--prefix=${PREFIX}/${MPIDIR} \
 			--mandir=${PREFIX}/${MPIDIR}/man \
 			--program-prefix= \
-			--with-hwloc=external \
+			--with-hwloc=internal \
 			--with-libltdl \
 			--enable-mpi-fortran=usempi \
 			--enable-mpi-cxx \
 			--enable-cxx-exceptions \
-			--enable-mpi-thread-multiple \
 			--with-libevent=external \
 			--enable-mca-no-build=verbs,btl_openib,oob_ud \
 			--without-verbs \
@@ -64,6 +59,7 @@ OPTIONS_DEFINE=	DEBUG IPV6 SLURM TORQUE
 TORQUE_DESC=	Enable Torque support
 SLURM_DESC=	Enable SLURM support
 OPTIONS_DEFAULT=	SLURM
+OPTIONS_EXCLUDE_i386=	SLURM
 OPTIONS_SUB=	yes
 
 DEBUG_CONFIGURE_ENABLE=	debug
@@ -93,6 +89,12 @@ SLURM_PLIST_FILES=	${MPIDIR}/lib/openmpi/mca_ess_slurm.la \
 			${MPIDIR}/lib/openmpi/mca_schizo_slurm.so \
 			${MPIDIR}/share/openmpi/help-plm-slurm.txt \
 			${MPIDIR}/share/openmpi/help-ras-slurm.txt
+
+.include <bsd.port.options.mk>
+
+.if ${FORTRAN_DEFAULT} == gfortran && ${GCC_DEFAULT} >= 10
+FCFLAGS+=	-fallow-argument-mismatch
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|$$(libdir)/pkgconfig|${PREFIX}/${MPIDIR}/libdata/pkgconfig|g' \

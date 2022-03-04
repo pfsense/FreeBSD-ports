@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	quake2lnx
 PORTVERSION=	0.16.2
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	http://offload1.icculus.org/quake2/files/
 DISTNAME=	quake2-r${PORTVERSION}
@@ -52,6 +51,7 @@ REDBLUE_DESC=		Enable 3D glasses rendering
 #                       ###
 
 .if ${PORT_OPTIONS:MX11}
+USES+=		xorg
 USE_XORG=	x11 xext xxf86dga xxf86vm
 MAKE_ARGS+=	BUILD_X11=YES
 REF_TARGETS+=	softx
@@ -61,6 +61,7 @@ PLIST_SUB+=	X11="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MGLX} || ${PORT_OPTIONS:MEYECANDY}
+USES+=		gl xorg
 USE_GL=		gl
 USE_XORG=	x11 xext xxf86dga xxf86vm
 MAKE_ARGS+=	BUILD_GLX=YES
@@ -72,7 +73,7 @@ PLIST_SUB+=	GLX="@comment "
 
 .if ${PORT_OPTIONS:MEYECANDY}
 DISTFILES+=	maxpak.pak
-USES+=		jpeg
+USES+=		gl jpeg
 USE_GL=		glu
 MAKE_ARGS+=	BUILD_QMAX=YES
 PLIST_SUB+=	QMAX=""
@@ -81,6 +82,7 @@ PLIST_SUB+=	QMAX="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSOFTSDL}
+USES+=		sdl
 USE_SDL=	sdl
 MAKE_ARGS+=	BUILD_SDL=YES
 REF_TARGETS+=	softsdl
@@ -90,6 +92,7 @@ PLIST_SUB+=	SOFTSDL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSDLGL}
+USES+=		sdl
 USE_SDL=	sdl
 MAKE_ARGS+=	BUILD_SDLGL=YES
 REF_TARGETS+=	sdlgl
@@ -99,6 +102,7 @@ PLIST_SUB+=	SDLGL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSDLCLIENT}
+USES+=		sdl
 USE_SDL=	sdl
 MAKE_ARGS+=	BUILD_SDLQUAKE2=YES
 EXE_TARGETS+=	quake2-sdl
@@ -177,7 +181,6 @@ MAKE_ARGS+=	BUILD_REDBLUE=YES
 .endif
 
 .if ${PORT_OPTIONS:MIPV6}
-CATEGORIES+=	ipv6
 MAKE_ARGS+=	HAVE_IPV6=YES
 .endif
 
@@ -205,6 +208,10 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -e '/BUILDSTRING/s|Linux|${OPSYS}|' \
 		-e '/CPUSTRING/s|Unknown|${ARCH}|' \
 		${WRKSRC}/src/qcommon/qcommon.h
+.if ${PORT_OPTIONS:MASM}
+	${REINPLACE_CMD} -e '/^SHLIBLDFLAGS/s|$$| -Wl,-z,notext|' \
+		${WRKSRC}/Makefile
+.endif
 
 do-install:
 .for tgt in ${EXE_TARGETS}

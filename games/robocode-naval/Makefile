@@ -1,9 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	robocode
 PORTVERSION=	0.9.2
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-setup
-CATEGORIES=	games java
+CATEGORIES=	games education java
 MASTER_SITES=	SF/${PORTNAME}/naval-robocode/${PORTVERSION}
 PKGNAMESUFFIX=	-naval
 EXTRACT_SUFX=	.jar
@@ -16,10 +15,10 @@ LICENSE=	EPL
 
 PORTSCOUT=	limit:^\d+\.\d+\.\d+$$
 
-USES=		dos2unix zip
+USES=		cpe dos2unix zip
+CPE_VENDOR=	${PORTNAME}_project
 DOS2UNIX_GLOB=	*.css *.team *.properties package-list MANIFEST.MF
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_EXTRACT=	yes
 JAVA_RUN=	yes
 NO_WRKSUBDIR=	yes

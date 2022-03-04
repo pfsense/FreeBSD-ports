@@ -1,5 +1,4 @@
 # Created by: David O'Brien (obrien@cs.ucdavis.edu)
-# $FreeBSD$
 
 PORTNAME=	figlet
 PORTVERSION=	2.2.5
@@ -7,7 +6,7 @@ CATEGORIES=	misc
 MASTER_SITES=	ftp://ftp.figlet.org/pub/figlet/program/unix/ \
 		LOCAL/obrien
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	SysV banner-like program prints strings in large fancy ASCII art
 
 LICENSE=	BSD3CLAUSE

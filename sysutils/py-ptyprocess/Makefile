@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	ptyprocess
-PORTVERSION=	0.6.0
+PORTVERSION=	0.7.0
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +9,9 @@ COMMENT=	Run a subprocess in a pseudo terminal
 
 LICENSE=	ISCL
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

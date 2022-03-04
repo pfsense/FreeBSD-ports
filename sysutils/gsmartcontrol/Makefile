@@ -1,9 +1,8 @@
 # Created by: Pawel Pekala <c0rn@o2.pl>
-# $FreeBSD$
 
 PORTNAME=	gsmartcontrol
 PORTVERSION=	1.1.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -25,10 +24,9 @@ RUN_DEPENDS=	bash:shells/bash \
 		smartctl:sysutils/smartmontools \
 		xterm:x11/xterm
 
-USES=		compiler:c++11-lang libtool pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gnome libtool pkgconfig tar:bzip2
 USE_CXXSTD=	c++11
 USE_GNOME=	atkmm cairo glibmm gtk30 gtkmm30 libsigc++20 pangomm
-INSTALLS_ICONS=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-libglade

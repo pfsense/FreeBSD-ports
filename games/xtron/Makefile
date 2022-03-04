@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xtron
 PORTVERSION=	1.1a
@@ -11,6 +10,10 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Avoid running into walls, your own tail, and that of your opponent
 
+BROKEN_FreeBSD_13=	duplicate symbol: b
+BROKEN_FreeBSD_14=	duplicate symbol: b
+
+USES=		xorg
 USE_XORG=	x11 xpm
 
 PLIST_FILES=	bin/${PORTNAME} lib/X11/app-defaults/Tron

@@ -1,8 +1,7 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	grilo-plugins
-PORTVERSION=	0.3.8
+PORTVERSION=	0.3.14
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -25,7 +24,7 @@ LIB_DEPENDS=	libgrilo-0.3.so:net/grilo \
 		libgmime-2.6.so:mail/gmime26 \
 		libjson-glib-1.0.so:devel/json-glib
 
-USES=		gettext gperf gnome meson pathfix pkgconfig sqlite tar:xz
+USES=		gettext gperf gnome libarchive meson pathfix pkgconfig sqlite tar:xz
 USE_LDCONFIG=	yes
 USE_GNOME=	glib20 intlhack libxml2
 USE_GSTREAMER1=	chromaprint
@@ -43,4 +42,12 @@ DMAP_DESC=			DMAP (DAAP, DPAP & DACP) support with libdmapsharing
 DMAP_MESON_YES=			enable-dmap
 DMAP_LIB_DEPENDS=		libdmapsharing-3.0.so:net/libdmapsharing
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MTRACKER}
+PLIST_SUB+= TRACKER="@comment "
+.else
+PLIST_SUB+= TRACKER=""
+.endif
+
+.include <bsd.port.post.mk>

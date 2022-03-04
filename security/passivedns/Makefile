@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	passivedns
-DISTVERSION=	1.1.3-60
+DISTVERSION=	1.2.1-22
+DISTVERSIONSUFFIX=	-gd757713
 PORTREVISION=	1
-DISTVERSIONSUFFIX=	-ga6c7e26
 CATEGORIES=	security
 
 MAINTAINER=	shadowbq@gmail.com
@@ -13,17 +11,24 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libldns.so:dns/ldns
 
+USES=		autoreconf gmake libtool
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	gamelinux
 
 SUB_FILES=	pkg-message
 
-USES=		autoreconf gmake libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ldns-includes=${LOCALBASE}/include \
 		--with-ldns-libraries=${LOCALBASE}/lib
 
 USE_RC_SUBR=	passivedns
+
+OPTIONS_DEFINE=	JSON
+OPTIONS_DEFAULT=	JSON
+
+JSON_CONFIGURE_ENABLE=	json
+JSON_LIB_DEPENDS=	libjansson.so:devel/jansson
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/passivedns \

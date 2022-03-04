@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	a2pdf
 PORTVERSION=	1.13
@@ -8,7 +7,7 @@ CATEGORIES=	print perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JONALLEN
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Text to PDF converter
 
 LICENSE=	ART20

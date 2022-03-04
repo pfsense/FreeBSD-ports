@@ -1,5 +1,4 @@
 # Created by: Lars Thegler <lth@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mocked
 PORTVERSION=	0.09
@@ -10,7 +9,7 @@ MASTER_SITE_SUBDIR=	CPAN:LUKEC
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	mocked - use mocked libraries in unit tests
+COMMENT=	Use mocked libraries in unit tests
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-URI>=0:net/p5-URI

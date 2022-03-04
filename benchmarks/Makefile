@@ -1,8 +1,6 @@
-# $FreeBSD$
-#
-
     COMMENT = Benchmarking tools
 
+    SUBDIR += ali
     SUBDIR += apib
     SUBDIR += autobench
     SUBDIR += blogbench
@@ -26,24 +24,32 @@
     SUBDIR += gtkperf
     SUBDIR += hey
     SUBDIR += himenobench
+    SUBDIR += hipercontracer
     SUBDIR += hpl
-    SUBDIR += hs-criterion
-    SUBDIR += hs-criterion-measurement
     SUBDIR += httperf
     SUBDIR += hyperfine
     SUBDIR += imb
+    SUBDIR += inferno
     SUBDIR += interbench
     SUBDIR += iorate
     SUBDIR += iozone
     SUBDIR += iozone21
     SUBDIR += iperf
     SUBDIR += iperf3
+    SUBDIR += kdiskmark
     SUBDIR += libcelero
     SUBDIR += libmicro
+    SUBDIR += linux-gputest
+    SUBDIR += linux-unigine-heaven
+    SUBDIR += linux-unigine-sanctuary
+    SUBDIR += linux-unigine-tropics
+    SUBDIR += linux-unigine-valley
     SUBDIR += linux-vdbench
     SUBDIR += lmbench
     SUBDIR += lzbench
+    SUBDIR += mangohud
     SUBDIR += mdtest
+    SUBDIR += mst-bench
     SUBDIR += nbench
     SUBDIR += netio
     SUBDIR += netperf
@@ -70,14 +76,18 @@
     SUBDIR += py-naarad
     SUBDIR += py-throughpy
     SUBDIR += py-zopkio
-    SUBDIR += pybench
     SUBDIR += raidtest
     SUBDIR += ramspeed
     SUBDIR += randomio
+    SUBDIR += rubygem-benchmark
     SUBDIR += rubygem-benchmark-ips
+    SUBDIR += rubygem-benchmark-memory
+    SUBDIR += rubygem-derailed_benchmarks
+    SUBDIR += rubygem-gitlab-derailed_benchmarks
     SUBDIR += rubygem-railsbench
     SUBDIR += scimark2
     SUBDIR += scimark2c
+    SUBDIR += shellbench
     SUBDIR += siege
     SUBDIR += sipp
     SUBDIR += slowloris
@@ -96,6 +106,8 @@
     SUBDIR += unixbench
     SUBDIR += uperf
     SUBDIR += vegeta
+    SUBDIR += vkmark
+    SUBDIR += vkpeak
     SUBDIR += webbench
     SUBDIR += wrk
 

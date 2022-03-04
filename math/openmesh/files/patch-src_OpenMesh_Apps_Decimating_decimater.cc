@@ -1,6 +1,6 @@
---- src/OpenMesh/Apps/Decimating/decimater.cc.orig	2018-10-21 23:36:03 UTC
+--- src/OpenMesh/Apps/Decimating/decimater.cc.orig	2020-03-12 13:55:53 UTC
 +++ src/OpenMesh/Apps/Decimating/decimater.cc
-@@ -58,6 +58,9 @@
+@@ -53,6 +53,9 @@
  #include <string>
  #include <memory>
  #include <map>

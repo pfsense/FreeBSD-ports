@@ -1,20 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	xml
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc devel python
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for the Qt5 toolkit, QtXml module
 
-BUILD_DEPENDS=	${PY_ENUM34}
-RUN_DEPENDS=	${PY_ENUM34}
-
 CONFIGURE_ARGS=	--enable QtXml
 PYQT_DIST=	yes
 
-USES=		python pyqt:5 qt:5
-USE_PYQT=	sip_build core_run
+USES=		python:3.5+ pyqt:5 qt:5
+USE_PYQT=	sip_build core_run 
 USE_PYTHON=	concurrent flavors py3kplist
 USE_QT=		core xml buildtools_build qmake_build
 
@@ -35,5 +30,8 @@ post-install:
 	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
 		-f -d ${PYTHONPREFIX_SITELIBDIR}/PyQt5 \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt5
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt5/QtXml.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt5/pyrcc.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt5/pylupdate.so
 
 .include <bsd.port.mk>

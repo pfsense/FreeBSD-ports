@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	sfml
 PORTVERSION=	2.5.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -36,7 +33,7 @@ MODULES_DESC=	SFML modules
 
 WINDOW_DESC=		SFML Window module
 WINDOW_CMAKE_BOOL=	SFML_BUILD_WINDOW
-WINDOW_USES=		gl
+WINDOW_USES=		gl xorg
 WINDOW_USE=		XORG=x11,xrandr GL=gl
 
 GRAPHICS_DESC=		SFML Graphics module

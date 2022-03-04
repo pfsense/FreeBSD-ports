@@ -1,44 +1,40 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
 
 PORTNAME=	jogamp-jogl
-PORTVERSION=	2.2.4
-PORTREVISION=	6
+PORTVERSION=	2.3.2
+PORTREVISION=	1
 CATEGORIES=	graphics devel java
 MASTER_SITES=	http://jogamp.org/deployment/jogamp-current/archive/Sources/ \
 		http://jogamp.org/deployment/v${PORTVERSION}/archive/Sources/
-DISTFILES=	jogl-v${PORTVERSION}.tar.7z \
-		gluegen-v${PORTVERSION}.tar.7z
+DISTFILES=	jogl-v${PORTVERSION}.tar.xz \
+		gluegen-v${PORTVERSION}.tar.xz \
+		jcpp-v${PORTVERSION}.tar.xz
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Java bindings for OpenGL
 
-EXTRACT_DEPENDS=	${7Z_CMD}:archivers/p7zip
-BUILD_DEPENDS=	${JAVALIBDIR}/swt-devel.jar:x11-toolkits/swt-devel
-RUN_DEPENDS=	${JAVALIBDIR}/swt-devel.jar:x11-toolkits/swt-devel
+BUILD_DEPENDS=	${JAVALIBDIR}/swt.jar:x11-toolkits/swt
+RUN_DEPENDS=	${JAVALIBDIR}/swt.jar:x11-toolkits/swt
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	i386 amd64 powerpc64 powerpc64le
+
+USES=		compiler tar:xz xorg
 
 USE_ANT=	yes
-USE_GCC=	yes
 USE_JAVA=	yes
 USE_XORG=	x11 xcursor xrandr xrender xxf86vm
 
-7Z_CMD=		${LOCALBASE}/bin/7z
-EXTRACT_CMD=	${7Z_CMD}
-EXTRACT_BEFORE_ARGS=	x -so
-EXTRACT_AFTER_ARGS=	| ${TAR} -xf -
-
 PATCH_WRKSRC=	${WRKDIR}
 BUILD_WRKSRC=	${WRKDIR}/jogl/make
-BUILD_BINPATH=	${WRKSRC}/bin
-MAKE_ENV+=	PATH="${BUILD_BINPATH}:${PATH}"
+
+# compiler must be literally "gcc" or "clang"
+BINARY_ALIAS=	${CHOSEN_COMPILER_TYPE}=${CC}
+MAKE_ARGS=	-Dgcc.compat.compiler=${CHOSEN_COMPILER_TYPE}
 
 post-extract:
 	${MV} ${WRKDIR}/gluegen-v${PORTVERSION} ${WRKDIR}/gluegen
+	${MV} ${WRKDIR}/jcpp-v${PORTVERSION}/src ${WRKDIR}/gluegen/jcpp/src
 	${MV} ${WRKDIR}/jogl-v${PORTVERSION} ${WRKDIR}/jogl
-	${MKDIR} ${BUILD_BINPATH}
-	${LN} -sf ${LOCALBASE}/bin/${CC} ${BUILD_BINPATH}/gcc
 
 post-patch:
 	${REINPLACE_CMD} -e 's|%%JAVALIBDIR%%|${JAVALIBDIR}|g' \

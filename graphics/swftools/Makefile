@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	swftools
 PORTVERSION=	0.9.2
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.swftools.org/ \
 		http://www.c-s.li/ports/
@@ -19,8 +18,7 @@ LIB_DEPENDS=	libt1.so:devel/t1lib \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gmake pkgconfig jpeg
-USE_GL=		glut
+USES=		cpe gmake pkgconfig jpeg
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_lib_zzip_zzip_file_open=no
 
@@ -29,16 +27,20 @@ LMAN1=		as3compile.1 font2swf.1 gif2swf.1 jpeg2swf.1 pdf2swf.1 \
 		swfextract.1 swfrender.1 swfstrings.1 wav2swf.1
 
 CPPFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-fcommon
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 BINFILES=	as3compile font2swf gif2swf jpeg2swf pdf2swf png2swf \
 		swfbbox swfc swfcombine swfdump swfextract swfrender \
 		swfstrings wav2swf
 
-OPTIONS_DEFINE=	LAME PDF
+OPTIONS_DEFINE=	LAME PDF OPENGL
+OPTIONS_DEFAULT=OPENGL
 OPTIONS_SUB=	yes
 LAME_LIB_DEPENDS=	libmp3lame.so:audio/lame
 PDF_LIB_DEPENDS=	libpdf.so:print/pdflib
+OPENGL_USES=	gl
+OPENGL_USE=	GL=glut
 
 .include <bsd.port.options.mk>
 

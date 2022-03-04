@@ -1,5 +1,4 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	celt
 PORTVERSION=	0.11.3
@@ -12,6 +11,9 @@ COMMENT=	The CELT ultra-low delay audio codec
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Deprecated and considered obsolete by upstream in 2016 in favour of (lib)opus
+EXPIRATION_DATE=2021-12-31
 
 LIB_DEPENDS=	libogg.so:audio/libogg
 

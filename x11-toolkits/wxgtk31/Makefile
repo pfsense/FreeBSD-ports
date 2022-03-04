@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	wx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.2
-PORTREVISION=	2
+DISTVERSION=	3.1.5
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 PKGNAMESUFFIX=	31-gtk3
 
@@ -13,7 +11,8 @@ COMMENT=	GUI toolkit (wxWidgets) with GTK+ bindings
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/gpl.txt
 
-LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libjbig.so:graphics/jbigkit \
@@ -22,11 +21,15 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libsecret-1.so:security/libsecret \
 		libsoup-2.4.so:devel/libsoup \
 		libtiff.so:graphics/tiff \
+		libwayland-egl.so:graphics/wayland
 
-USES=		compiler:c++11-lib gl gmake gnome iconv jpeg localbase pkgconfig
+USES=		compiler:c++11-lib gl gmake gnome iconv jpeg localbase \
+		pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	wxWidgets
 GH_PROJECT=	wxWidgets
+GH_TUPLE=	wxWidgets:Catch:ee4acb6:wxWidgets_Catch/3rdparty/catch
+
 GNU_CONFIGURE=	yes
 USE_XORG=	x11 sm xxf86vm xtst
 USE_GL=		gl glu
@@ -61,7 +64,7 @@ OPTIONS_SUB=		yes
 NLS_USES=			gettext
 
 GSTREAMER_CONFIGURE_ENABLE=	mediactrl
-GSTREAMER_USE=			GNOME=gconf2 GSTREAMER1=bad
+GSTREAMER_USE=			GSTREAMER1=bad
 
 MSPACK_CONFIGURE_WITH=		libmspack
 MSPACK_LIB_DEPENDS=		libmspack.so:archivers/libmspack

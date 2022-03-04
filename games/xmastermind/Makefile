@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xmastermind
 PORTVERSION=	0.1
@@ -14,6 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libforms.so:x11-toolkits/xforms
 
+USES=		xorg
 USE_XORG=	x11 xpm
 MAKE_ENV=	GRAPHLIBS="${LDFLAGS}"
 

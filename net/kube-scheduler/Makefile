@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kube-scheduler
 PORTVERSION=	1.13.3
 DISTVERSIONPREFIX=	v
@@ -10,7 +8,11 @@ COMMENT=	Kubernetes scheduler daemon
 
 LICENSE=	APACHE20
 
-USES=		go
+BROKEN_aarch64=	fails to build: vendor/golang.org/x/sys/unix/cap_freebsd.go:18:23: undefined: CAP_RIGHTS_VERSION_00
+
+USES=		cpe go
+CPE_VENDOR=	jenkins
+CPE_PRODUCT=	kubernetes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kubernetes

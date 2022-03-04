@@ -1,9 +1,7 @@
 # Created by: bf <bf@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	arpack-ng
-DISTVERSION=	3.6.3
-PORTREVISION=	2
+DISTVERSION=	3.8.0
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libmpich.so:net/mpich # MPI is incremental: it adds the libparpack.so lib, it is a candidate for a sub-package
 
-USES=		autoreconf:build fortran libtool
+USES=		autoreconf fortran libtool pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	opencollab
 GNU_CONFIGURE=	yes
@@ -53,16 +51,8 @@ LIB_DEPENDS+=	libblas.so:math/blas \
 IGNORE=		unknown value of WITH_BLAS: ${WITH_BLAS}
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} -Ee 's|\(libdir\)(/pkgconfig)|(prefix)/libdata\1|' ${WRKSRC}/Makefile.am
-
 pre-configure:
 	@cd ${WRKSRC}; ./bootstrap
-	@${REINPLACE_CMD} -e '/BLAS_LIBS.*LAPACK_LIBS/ \
-	{s/LAPACK_LIBS/BLAS_LIBS/;s/BLAS_LIBS/LAPACK_LIBS/;}' \
-	${WRKSRC}/Makefile.in \
-	${WRKSRC}/arpack.pc.in \
-	${WRKSRC}/TESTS/Makefile.in
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*arpack.so.*.*

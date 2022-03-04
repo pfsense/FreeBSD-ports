@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	calcoo
 PORTVERSION=	1.3.18
 PORTREVISION=	7
@@ -9,7 +7,7 @@ MASTER_SITES=	SF
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	RPN and algebraic scientific calculator
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 LIBS+=		-lm

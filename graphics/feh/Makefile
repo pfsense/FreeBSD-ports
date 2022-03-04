@@ -1,8 +1,7 @@
 # Created by: Jeremy Norris <ishmael127@home.com>
-# $FreeBSD$
 
 PORTNAME=	feh
-PORTVERSION=	3.1.3
+PORTVERSION=	3.5
 CATEGORIES=	graphics
 MASTER_SITES=	http://feh.finalrewind.org/ \
 		LOCAL/uqs
@@ -17,10 +16,9 @@ LIB_DEPENDS=	libImlib2.so:graphics/imlib2 \
 		libpng.so:graphics/png
 
 USES=		compiler:c++11-lang cpe desktop-file-utils gmake localbase:ldflags \
-		tar:bzip2
+		tar:bzip2 xorg
 USE_XORG=	x11 xt xinerama
-USE_PERL5=	run
-CPE_VENDOR=	daniel_friesel
+CPE_VENDOR=	feh_project
 
 MAKE_ENV+=	LDFLAGS="${LDFLAGS}" verscmp=0
 

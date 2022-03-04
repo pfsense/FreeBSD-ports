@@ -1,10 +1,9 @@
 # Created by: james@targetnet.com
-# $FreeBSD$
 
 PORTNAME=	libunp
 PORTVERSION=	1.0
 PORTREVISION=	1
-CATEGORIES=	net ipv6
+CATEGORIES=	net
 MASTER_SITES=	http://www.kohala.com/start/unpv12e/
 DISTNAME=	unpv12e
 

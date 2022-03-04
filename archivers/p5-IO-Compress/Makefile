@@ -1,8 +1,7 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	IO-Compress
-PORTVERSION=	2.084
+PORTVERSION=	2.101
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -23,7 +22,6 @@ USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-post-patch:
-	@${REINPLACE_CMD} -e '/EXE_FILES/d' ${WRKSRC}/Makefile.PL
+PORTSCOUT=	skipv:2.102
 
 .include <bsd.port.mk>

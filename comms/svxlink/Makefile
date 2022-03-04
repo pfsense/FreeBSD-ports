@@ -1,14 +1,14 @@
 # Created by: shurd
-# $FreeBSD$
 
 PORTNAME?=	svxlink
-PORTVERSION=	17.12.2
+PORTVERSION=	19.09.1
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT?=	General purpose ham radio voice services
 
-LICENSE=	GPLv2
+LICENSE?=	GPLv2
 
 LIB_DEPENDS?=	libgsm.so:audio/gsm \
 		libspeex.so:audio/speex \
@@ -17,7 +17,8 @@ LIB_DEPENDS?=	libgsm.so:audio/gsm \
 		libsigc-2.0.so:devel/libsigc++20 \
 		libpopt.so:devel/popt \
 		libopus.so:audio/opus \
-		librtlsdr.so:comms/rtl-sdr
+		librtlsdr.so:comms/rtl-sdr \
+		libcurl.so:ftp/curl
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
 USES+=		cmake:noninja compiler:c++11-lang groff pkgconfig tcl
@@ -26,8 +27,10 @@ GH_ACCOUNT=	sm0svx
 GH_PROJECT=	svxlink
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/src
-CMAKE_ARGS+=	-DMAN_INSTALL_DIR:FILEPATH=${MANDIRS} \
-		-DLOCAL_STATE_DIR=/var
+CMAKE_ARGS+=	-DMAN_INSTALL_DIR:FILEPATH=${PREFIX}/share/man \
+		-DLOCAL_STATE_DIR=/var \
+		-DLOCALBASE:STRING="${LOCALBASE}"
+
 .if ${PORTNAME}==svxlink
 CMAKE_ARGS+=	-DUSE_QT:BOOL=NO
 .endif
@@ -66,8 +69,7 @@ post-patch:
 		${WRKSRC}/src/doc/man/svxlink.conf.5 \
 		${WRKSRC}/src/svxlink/svxlink/svxlink.conf.in
 	@${REINPLACE_CMD} -e 's|/usr/lib|${PREFIX}/lib|' \
-		${WRKSRC}/src/doc/man/svxlink.conf.5 \
-		${WRKSRC}/src/svxlink/svxlink/svxlink.conf.in
+		${WRKSRC}/src/doc/man/svxlink.conf.5
 post-patch-OSS-on:
 	@${GREP} -lr alsa:default ${WRKSRC} | ${GREP} -v .bak | ${GREP} -v .orig | ${XARGS} \
 		${REINPLACE_CMD} -e 's|alsa:default|oss:/dev/dsp|'
@@ -106,6 +108,12 @@ post-install:
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleSelCallEnc.conf.sample
 	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTclVoiceMail.conf \
 		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTclVoiceMail.conf.sample
+	${MV}	${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTrx.conf \
+		${STAGEDIR}${PREFIX}/etc/svxlink/svxlink.d/ModuleTrx.conf.sample
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/src/doc/README-19.09.adoc ${STAGEDIR}${DOCSDIR}
 .endif
 .if ${PORTNAME}==qtel
 post-install:

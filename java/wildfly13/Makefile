@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	wildfly13
 PORTVERSION=	13.0.0
+PORTREVISION=	1
 CATEGORIES=	java www
 MASTER_SITES=	http://download.jboss.org/wildfly/${WILDFLY_VERSION}/
 DISTNAME=	wildfly-${WILDFLY_VERSION}
@@ -13,7 +12,6 @@ LICENSE=	GPLv2
 
 USE_RC_SUBR=	wildfly13
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 USER=		www
 GROUP=		www
 VAR_DIR?=	/var
@@ -47,6 +45,7 @@ CONFIG_FILES=	appclient/configuration/appclient.xml \
 		standalone/configuration/logging.properties \
 		standalone/configuration/mgmt-groups.properties \
 		standalone/configuration/mgmt-users.properties \
+		standalone/configuration/standalone-ee8.xml \
 		standalone/configuration/standalone-full-ha.xml \
 		standalone/configuration/standalone-full.xml \
 		standalone/configuration/standalone-ha.xml \

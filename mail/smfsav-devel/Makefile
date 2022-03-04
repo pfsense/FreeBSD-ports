@@ -1,5 +1,4 @@
 # Created by: Anton Lysenok <bart@tapolsky.net.ua>
-# $FreeBSD$
 
 PORTNAME=	smfsav
 PORTVERSION=	2.1
@@ -9,7 +8,7 @@ MASTER_SITES=	http://smf-sav.anw.at/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	smf-sav-reloaded-${PORTVERSION}
 
-MAINTAINER=	sasaki@fcc.ad.jp
+MAINTAINER=	sasaki12@gmail.com
 COMMENT=	Sendmail Sender Address Validator
 
 LICENSE=	GPLv2+

@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Protocol-SocketIO
 PORTVERSION=	0.07
@@ -16,8 +15,9 @@ LICENSE=	ART20
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-JSON>=0:converters/p5-JSON
 
-NO_ARCH=	yes
-USE_PERL5=	modbuildtiny
 USES=		perl5
+USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

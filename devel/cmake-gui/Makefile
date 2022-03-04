@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	cmake
-DISTVERSION=	3.13.4
+DISTVERSION=	3.21.4
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-gui
@@ -34,6 +33,8 @@ ALL_TARGET=	cmake-gui documentation
 INSTALL_WRKSRC=	${WRKSRC}/Source/QtDialog
 
 DISTINFO_FILE=	${.CURDIR}/../cmake/distinfo
+
+CXXFLAGS+=	-D__BSD_VISIBLE
 
 post-patch:
 	@(${FIND} ${WRKSRC}/Modules -name "*.cmake" -print0; \

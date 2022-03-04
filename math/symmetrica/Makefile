@@ -1,23 +1,30 @@
-# $FreeBSD$
-
 PORTNAME=	symmetrica
-DISTVERSION=	2.0
+DISTVERSION=	3.0.1
 CATEGORIES=	math
-MASTER_SITES=	http://www.algorithm.uni-bayreuth.de/en/research/SYMMETRICA/
-DISTFILES=	SYM2_0_tar.gz
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Collection of routines for combinatorial mathematics
+COMMENT=	Library with a collection of routines for combinatorial mathematics
 
 LICENSE=	PD
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake
-MAKEFILE=	makefile
-NO_WRKSUBDIR=	yes
+USES=		autoreconf gmake libtool
+USE_GITLAB=	yes
+GL_ACCOUNT=	sagemath
+GL_COMMIT=	e29c85915f368d6fb2f89d703b6695ff29ab9eae
+USE_LDCONFIG=	yes
 
-PLIST_FILES=	bin/${PORTNAME}
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-static
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/test ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
+
+PLIST_FILES=	include/symmetrica.h \
+		include/${PORTNAME}/def.h \
+		include/${PORTNAME}/macro.h \
+		lib/libsymmetrica.so \
+		lib/libsymmetrica.so.2 \
+		lib/libsymmetrica.so.2.0.0
 
 .include <bsd.port.mk>

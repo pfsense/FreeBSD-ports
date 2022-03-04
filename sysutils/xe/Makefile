@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	xe
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11
@@ -12,7 +9,7 @@ COMMENT=	Simple xargs and apply replacement
 LICENSE=	CC0-1.0
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	chneukirchen
+GH_ACCOUNT=	leahneukirchen
 
 USES=		perl5
 USE_PERL5=	test

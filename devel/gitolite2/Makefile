@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gitolite
 PORTVERSION=	2.3.1
 DISTVERSIONPREFIX=	v
@@ -21,7 +19,6 @@ GH_ACCOUNT=	sitaramc
 CONFLICTS=	gitolite-[^2]*
 
 USES=		cpe perl5 shebangfix
-CPE_VENDOR=	sitaram_chamarty
 SHEBANG_FILES=	hooks/common/update \
 		src/gl-admin-push \
 		src/gl-auth-command \

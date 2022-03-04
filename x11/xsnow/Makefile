@@ -1,25 +1,27 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	xsnow
-PORTVERSION=	1.42
-PORTREVISION=	1
+PORTVERSION=	3.3.2
 CATEGORIES=	x11
-MASTER_SITES=	http://dropmix.xs4all.nl/rick/Xsnow/
+MASTER_SITES=	SF/${PORTNAME}/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Create a snowy and Santa-y desktop
 
-USES=		imake
-USE_XORG=	xpm
-PLIST_FILES=	bin/xsnow man/man6/xsnow.6.gz
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-post-configure:
+USES=		compiler:c11 gmake gnome pkgconfig xorg
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 libxml2
+USE_XORG=	x11 xpm xt xorgproto
+GNU_CONFIGURE=	yes
+PLIST_FILES=	bin/xsnow man/man6/xsnow.6.gz \
+		share/applications/xsnow.desktop \
+		share/pixmaps/xsnow.svg
+
+post-patch:
 	@${REINPLACE_CMD} \
-		-e 's: BINDIR .*:BINDIR=${PREFIX}/bin:' \
-		-e 's: MANDIR .*:MANDIR=${PREFIX}/man/man6:' \
-		-e 's: MANSUFFIX .*:MANSUFFIX=6:' \
-		-e 's/^Makefile::/^Makefile:/' \
-			${WRKSRC}/Makefile
+		-e 's,/games,/bin,g' \
+			${WRKSRC}/src/Makefile.in
 
 .include <bsd.port.mk>

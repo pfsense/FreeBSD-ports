@@ -1,9 +1,8 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cpuminer
 PORTVERSION=	2.5.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-p2p math
 MASTER_SITES=	SF/cpuminer
 DISTNAME=	pooler-${PORTNAME}-${PORTVERSION}

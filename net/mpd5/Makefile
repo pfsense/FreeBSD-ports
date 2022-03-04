@@ -1,9 +1,8 @@
 # Created by: Archie Cobbs
-# $FreeBSD$
 
 PORTNAME=	mpd
-DISTVERSION=	5.8
-PORTREVISION=	10
+DISTVERSION=	5.9
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/Mpd5/Mpd-${PORTVERSION}
 PKGNAMESUFFIX=	5
@@ -14,13 +13,17 @@ COMMENT=	Multi-link PPP daemon based on netgraph(4)
 
 LICENSE=	BSD3CLAUSE
 
-OPTIONS_DEFINE=	DOCS NG_IPACCT
+USES=		cpe ssl
+
+CPE_VENDOR=	mpd_project
+
+OPTIONS_DEFINE=	DOCS NG_IPACCT RADIUS
+OPTIONS_DEFAULT=	RADIUS
 NG_IPACCT_DESC=	Use ng_ipacct kernel module from port
+RADIUS_DESC=	Enable RADIUS support
 
 HAS_CONFIGURE=	YES
 CONFIGURE_WRKSRC=	"${WRKSRC}/src"
-
-USES=		ssl
 
 .include <bsd.port.options.mk>
 
@@ -35,7 +38,12 @@ RUN_DEPENDS+=	/boot/modules/ng_ipacct.ko:net-mgmt/ng_ipacct
 .endif
 .else
 CONFIGURE_ENV+=	USE_NG_IPACCT=no
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-no-ng_ipacct
+MAKE_ARGS+=	USE_NG_IPACCT=no
+.endif
+
+.if ! ${PORT_OPTIONS:MRADIUS}
+CONFIGURE_ENV+=	USE_RADIUS=no
+MAKE_ARGS+=	USE_RADIUS=no
 .endif
 
 USE_RC_SUBR=	mpd5

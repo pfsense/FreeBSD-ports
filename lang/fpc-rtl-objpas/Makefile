@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-rtl-objpas
-PORTREVISION=	1
 
 COMMENT=	Free Pascal compatibility unit with Delphi
 

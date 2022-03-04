@@ -1,11 +1,8 @@
 # Created by: Yashin Dmitry <yashin.dm@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	uhub
-PORTVERSION=	0.5.0
-DISTVERSIONSUFFIX=	-src
+PORTVERSION=	0.5.1
 CATEGORIES=	net-p2p
-MASTER_SITES=	http://www.extatic.org/downloads/uhub/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance peer-to-peer hub for the ADC network
@@ -15,11 +12,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_aarch64=	fails to compile: CPUINFO not defined
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
 USES=		cmake:insource perl5 sqlite
-USE_RC_SUBR=	uhub
 USE_PERL5=	build
+USE_GITHUB=	yes
+GH_ACCOUNT=	janvidar
+GH_TAGNAME=	a8ee6e7
+USE_RC_SUBR=	uhub
 
 USERS=		uhub
 GROUPS=		uhub
@@ -34,11 +32,6 @@ OPENSSL_USES=		ssl
 OPENSSL_CMAKE_BOOL=	SSL_SUPPORT
 
 .include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_12=	incomplete definition of type 'struct bio_st'
-BROKEN_FreeBSD_13=	incomplete definition of type 'struct bio_st'
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \

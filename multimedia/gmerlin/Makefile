@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gmerlin
 PORTVERSION=	1.2.0
-PORTREVISION=	14
+PORTREVISION=	19
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
@@ -17,7 +14,7 @@ LIB_DEPENDS=	libexif.so:graphics/libexif \
 		libgavl.so:multimedia/gavl \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		gettext libtool makeinfo pathfix pkgconfig sqlite
+USES=		gettext gl gnome libtool makeinfo pathfix pkgconfig sqlite xorg
 USE_GNOME=	gtk20 libxml2
 USE_XORG=	x11 xext xfixes xinerama xv
 USE_GL=		gl
@@ -29,7 +26,6 @@ CONFIGURE_ARGS=	--disable-v4l --disable-v4l2 --disable-v4lconvert \
 USE_LDCONFIG=	yes
 LLD_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
-INSTALL_ICONS=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib

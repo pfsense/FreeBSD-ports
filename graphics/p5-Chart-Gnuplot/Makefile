@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Chart-Gnuplot
 PORTVERSION=	0.23
 CATEGORIES=	graphics perl5

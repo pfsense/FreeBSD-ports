@@ -1,10 +1,9 @@
 # Created by: Chris Hutchinson <portmaster@bsdforge.com>
-# $FreeBSD$
 
 PORTNAME=	sansi
 PORTVERSION=	1.0.2
 CATEGORIES=	textproc sysutils
-MASTER_SITES=	http://BSDforge.com/projects/source/textproc/sansi/
+MASTER_SITES=	https://BSDforge.com/projects/source/textproc/sansi/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Removes ANSI control sequences/characters, from files

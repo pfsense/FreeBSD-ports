@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	grape_logging
-PORTVERSION=	1.8.1
+PORTVERSION=	1.8.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

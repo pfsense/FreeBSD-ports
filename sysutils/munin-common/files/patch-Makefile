@@ -1,6 +1,8 @@
---- Makefile.orig	2019-02-28 14:43:36 UTC
+Install things at the correct places.
+
+--- Makefile.orig	2020-03-24 12:31:00 UTC
 +++ Makefile
-@@ -95,60 +95,47 @@ install: install-master-prime install-common-prime ins
+@@ -94,96 +94,77 @@ install: install-master-prime install-common-prime ins
  
  install-pre: $(MAKEFILES)
  	@$(CHECKUSER)
@@ -86,9 +88,8 @@
 +	$(INSTALL) -m 0755 build/master/_bin/munin-cgi-graph $(DESTDIR)$(CGIDIR)/munin-cgi-graph
 +	$(INSTALL) -m 0755 build/master/_bin/munin-cgi-html $(DESTDIR)$(CGIDIR)/munin-cgi-html
  
- # Not ready to be installed yet
- # $(INSTALL) -m 0755 build/master/_bin/munin-gather $(LIBDIR)/
-@@ -158,36 +145,30 @@ install-node-plugins: install-plugins-prime
+ install-node-plugins: install-plugins-prime
+ 
  install-plugins-prime: install-plugins build $(PLUGINS) $(MAKEFILES)
  	@$(CHECKGROUP)
  
@@ -136,7 +137,7 @@
  		fi \
  	done
  
-@@ -198,14 +179,14 @@ install-plugins-java: build-plugins-java
+@@ -194,14 +175,14 @@ install-plugins-java: build-plugins-java
  install-async-prime: install-async
  
  install-async:

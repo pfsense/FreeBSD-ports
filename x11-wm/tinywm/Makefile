@@ -1,5 +1,4 @@
 # Created by: Florent Thoumie <flz@xbsd.org>
-# $FreeBSD$
 
 PORTNAME=	tinywm
 PORTVERSION=	1.3
@@ -14,6 +13,7 @@ COMMENT=	Ridiculously tiny window manager
 OPTIONS_DEFINE=	DOCS
 
 PLIST_FILES=	bin/tinywm
+USES=		xorg
 USE_XORG=	x11
 PORTDOCS=	README
 

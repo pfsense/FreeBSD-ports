@@ -1,9 +1,7 @@
 # Created by: Vasil Dimov <vd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cppzmq
-PORTVERSION=	4.3.0
-PORTREVISION=	2
+PORTVERSION=	4.8.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 

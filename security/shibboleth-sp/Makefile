@@ -1,8 +1,7 @@
 # Created by: Janos Mohacsi <janos.mohacsi@bsd.hu>
-# $FreeBSD$
 
 PORTNAME=	shibboleth-sp
-PORTVERSION=	3.0.4
+PORTVERSION=	3.3.0
 CATEGORIES=	security www
 MASTER_SITES=	http://shibboleth.net/downloads/service-provider/${PORTVERSION}/
 
@@ -13,12 +12,15 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
 LIB_DEPENDS=	libsaml.so:security/opensaml \
-		libxmltooling-lite.so:devel/xmltooling \
 		liblog4shib.so:devel/log4shib \
-		libxerces-c.so:textproc/xerces-c3 \
-		libxml-security-c.so:security/apache-xml-security-c
+		libxerces-c-3.2.so:textproc/xerces-c3 \
+		libxml-security-c.so:security/apache-xml-security-c \
+		libxmltooling.so:devel/xmltooling \
+		libapr-1.so:devel/apr1 \
+		libgdbm.so:databases/gdbm \
+		libexpat.so:textproc/expat2
 
-USES=		gmake tar:bzip2 cpe pkgconfig libtool
+USES=		gmake tar:bzip2 cpe pkgconfig libtool bdb
 GNU_CONFIGURE=	yes
 MAKE_ENV=	NOKEYGEN=YES
 USE_LDCONFIG=	yes

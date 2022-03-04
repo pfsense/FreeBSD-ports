@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyzmail
 DISTVERSION=	1.0.3
 CATEGORIES=	mail python
@@ -12,7 +10,7 @@ COMMENT=	Easy mail library to parse, compose and send emails
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 NO_BUILD=	yes

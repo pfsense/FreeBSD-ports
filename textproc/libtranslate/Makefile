@@ -1,5 +1,4 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	libtranslate
 PORTVERSION=	0.99
@@ -15,7 +14,7 @@ PATCH_DIST_STRIP=-p1
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Natural language translation library
 
-USES=		gettext gmake libtool pathfix pkgconfig
+USES=		gettext gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20 intlhack
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

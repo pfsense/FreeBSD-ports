@@ -1,5 +1,4 @@
 # Created by: Hye-Shik Chang <perky@python.or.kr>
-# $FreeBSD$
 
 PORTNAME=	jython
 PORTVERSION=	2.7.0
@@ -23,8 +22,10 @@ RUN_DEPENDS=	bash:shells/bash
 # Extract only license files
 EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions \
 			LICENSE.txt LICENSE_Apache.txt
+
+USES=		cpe
+CPE_VENDOR=	python
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 NO_BUILD=	yes
 NO_ARCH=	yes
 REINPLACE_ARGS=	-i ""

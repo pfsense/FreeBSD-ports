@@ -1,0 +1,18 @@
+--- tools/train/CMakeLists.txt.orig	2021-06-11 09:17:13 UTC
++++ tools/train/CMakeLists.txt
+@@ -30,6 +30,7 @@ endif()
+ IF(MNN_SEP_BUILD)
+     add_library(MNNTrain SHARED ${MNN_TRAIN_SRCS})
+     target_link_libraries(MNNTrain MNN MNN_Express)
++    install(TARGETS MNNTrain LIBRARY DESTINATION lib)
+ ELSE()
+     add_library(MNNTrain OBJECT ${MNN_TRAIN_SRCS})
+ ENDIF()
+@@ -56,6 +57,7 @@ list(APPEND MNN_TRAIN_TOOLS dataTransformer.out)
+ list(APPEND MNN_TRAIN_TOOLS runTrainDemo.out)
+ foreach(TARGET ${MNN_TRAIN_TOOLS})
+     target_link_libraries(${TARGET} PRIVATE ${MNN_DEPS})
++    install(TARGETS MNNTrain LIBRARY DESTINATION lib)
+     IF(MNN_SEP_BUILD)
+         target_link_libraries(${TARGET} PRIVATE MNNTrain)
+     ENDIF()

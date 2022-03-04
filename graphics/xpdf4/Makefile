@@ -1,11 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	xpdf
-PORTVERSION=	4.01
-PORTREVISION=	1
+PORTVERSION=	4.03
 PORTEPOCH=	1
 CATEGORIES=	graphics print
-MASTER_SITES=	https://xpdfreader-dl.s3.amazonaws.com/
+MASTER_SITES=	https://dl.xpdfreader.com/
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	4
 .endif
@@ -17,13 +14,12 @@ LICENSE=	GPLv2
 
 CONFLICTS_INSTALL=	xpdf
 .if !defined(MASTERDIR)
-CONFLICTS_INSTALL+=	xpdf3-* xpdf-*
+CONFLICTS_INSTALL+=	xpdf3 xpdf
 .else
-CONFLICTS_INSTALL+=	xpdf3-*	xpdf4-*
+CONFLICTS_INSTALL+=	xpdf3 xpdf4
 .endif
 
-USES=		compiler:c++11-lang cmake localbase:ldflags \
-		desktop-file-utils
+USES=		compiler:c++11-lang cmake cpe localbase:ldflags
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 BUILD_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/d050000l.pfb:print/gsfonts
@@ -37,11 +33,12 @@ CMAKE_ARGS+=	-DOPI_SUPPORT:BOOL=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt4:BOOL=ON \
 		-DCMAKE_INSTALL_MANDIR=${PREFIX}/share/xpdf/man \
 		-DNO_TEXT_SELECT:BOOL=OFF \
 		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Widgets:BOOL=FALSE
+CPE_VENDOR=	xpdfreader
 
 PLIST_SUB=		DESKTOPDIR="${DESKTOPDIR}"
 
-OPTIONS_DEFINE=		TYPE1 LIBPAPER PRINT GUI
-OPTIONS_DEFAULT=	TYPE1 PRINT GUI
+OPTIONS_DEFINE=		FONTCONFIG GUI LIBPAPER PRINT TYPE1
+OPTIONS_DEFAULT=	FONTCONFIG GUI PRINT TYPE1
 OPTIONS_SUB=		yes
 
 TYPE1_CMAKE_BOOL=	TYPE1
@@ -53,8 +50,7 @@ LIBPAPER_LIB_DEPENDS=	libpaper.so:print/libpaper
 
 GUI_CMAKE_OFF=		-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Widgets=1
 GUI_DESC=		QT5 interface
-GUI_CMAKE_ARGS+=	-DNO_TEXT_SELECT:BOOL=OFF
-GUI_USES=		qt:5
+GUI_USES=		qt:5 desktop-file-utils
 GUI_USE=		QT=buildtools_build,qmake_build,concurrent,core,gui,widgets,printsupport,svg,network,printsupport
 
 PRINT_CMAKE_ON=		-DXPDFWIDGET_PRINTING:BOOL=ON -DCUPS:BOOL=ON
@@ -62,6 +58,10 @@ PRINT_CMAKE_OFF=	-DXPDFWIDGET_PRINTING:BOOL=OFF -DCUPS:BOOL=OFF
 PRINT_DESC=		Print support (CUPS dependency)
 PRINT_LDFLAGS=		-L${LOCALBASE}/lib
 PRINT_LIB_DEPENDS=	libcups.so:print/cups
+
+FONTCONFIG_DESC=		Enable use of libfontconfig (not for XFCE)
+FONTCONFIG_IMPLIES=		GUI
+FONTCONFIG_CMAKE_BOOL_OFF=	NO_FONTCONFIG
 
 post-install:
 		@cd ${STAGEDIR}${PREFIX}; \

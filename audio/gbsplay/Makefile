@@ -1,9 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	gbsplay
-DISTVERSION=	0.0.93-130
-DISTVERSIONSUFFIX=	-g6225989
+DISTVERSION=	0.0.94
 PORTEPOCH=	1
 CATEGORIES=	audio
 
@@ -22,21 +20,22 @@ GH_ACCOUNT=	mmitch
 
 HAS_CONFIGURE=	yes
 
-CONFIGURE_ARGS+=	--prefix=${PREFIX} --without-xmmsplugin \
-			--sysconfdir=${PREFIX}/etc
+CONFIGURE_ARGS+=	--prefix=${PREFIX} \
+			--sysconfdir=${PREFIX}/etc \
+			--without-xmmsplugin
 
 MAKE_ENV+=	EXAMPLESDIR="${STAGEDIR}${EXAMPLESDIR}"
 
-OPTIONS_DEFINE=	BASH_COMPLETIONS DOCS EXAMPLES NAS NLS
-OPTIONS_DEFAULT=BASH_COMPLETIONS
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		BASH_COMPLETIONS DOCS EXAMPLES NAS NLS
+OPTIONS_DEFAULT=	BASH_COMPLETIONS
+OPTIONS_SUB=		yes
 
 BASH_COMPLETIONS_DESC=	Install bash completions
 
 NAS_LIB_DEPENDS=	libaudio.so:audio/nas
 NAS_CONFIGURE_ENABLE=	nas
-NLS_CONFIGURE_OFF=	--disable-i18n
 NLS_USES=		gettext
+NLS_CONFIGURE_OFF=	--disable-i18n
 NLS_LDFLAGS=		-lintl
 
 post-patch:

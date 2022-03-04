@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kde5
 DISTVERSION=	${KDE_PLASMA_VERSION}.${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	x11 kde # kde-plasma
@@ -48,5 +46,12 @@ KDEUTILS_DESC=		Collection of utilities for KDE
 KDEUTILS_RUN_DEPENDS=	kdeutils>=${KDE_APPLICATIONS_VERSION}:misc/kdeutils
 
 PULSEAUDIO_USE=		KDE=plasma-pa
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MKDEPIM}
+DEPRECATED=	Uses EOL Python 2.7 via deskutils/kdepim
+EXPIRATION_DATE=2021-06-23
+.endif
 
 .include <bsd.port.mk>

@@ -1,9 +1,8 @@
 # Created by: Romain Tartiere <romain@blogreen.org>
-# $FreeBSD$
 
 PORTNAME=	paman
 PORTVERSION=	0.9.4
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	audio
 MASTER_SITES=	http://0pointer.de/lennart/projects/${PORTNAME}/
 

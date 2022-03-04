@@ -1,5 +1,4 @@
 # Created by: Mark Reidel <ports@mark.reidel.info>
-# $FreeBSD$
 
 PORTNAME=	glurp
 PORTVERSION=	0.12.3
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libmpd.so:audio/libmpd
 
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 USE_GNOME=	gtk20 glib20 libglade2
 MAKE_ARGS+=	CPPFLAGS="-I${LOCALBASE}/include" \
 		LDFLAGS="-L${LOCALBASE}/lib -export-dynamic" \

@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xminehunter
 PORTVERSION=	0.4
@@ -17,7 +16,7 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		compiler motif
+USES=		compiler motif xorg
 USE_XORG=	xpm
 ALL_TARGET=	${PORTNAME}
 

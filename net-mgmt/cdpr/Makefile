@@ -1,5 +1,4 @@
 # Created by: Michael L. Hostbaek (mich@freebsdcluster.org)
-# $FreeBSD$
 
 PORTNAME=	cdpr
 PORTVERSION=	2.4
@@ -11,10 +10,12 @@ COMMENT=	Cisco Discovery Protocol Reporter
 
 LICENSE=	GPLv2
 
-USES=		dos2unix
-USES=		tar:tgz
+USES=		dos2unix tar:tgz
 DOS2UNIX_GLOB=	*.c *.h
 LDFLAGS+=	-L${LOCALBASE}/lib -lpcap
+
+# Upstreams website seems dead. Fix build with clang11
+CFLAGS+=		-fcommon
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 

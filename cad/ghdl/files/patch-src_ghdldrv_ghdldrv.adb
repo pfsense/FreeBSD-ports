@@ -1,24 +1,22 @@
---- src/ghdldrv/ghdldrv.adb.orig	2015-10-23 05:51:44 UTC
+--- src/ghdldrv/ghdldrv.adb.orig	2021-02-02 19:52:50 UTC
 +++ src/ghdldrv/ghdldrv.adb
-@@ -42,8 +42,8 @@ package body Ghdldrv is
-    --  Name of the tools used.
-    Compiler_Cmd : String_Access := null;
-    Post_Processor_Cmd : String_Access := null;
--   Assembler_Cmd : constant String := "as";
--   Linker_Cmd : constant String := "gcc";
-+   Assembler_Cmd : aliased String := "@AS_COMMAND@";
-+   Linker_Cmd : aliased String := "@LINKER_COMMAND@";
- 
-    --  Path of the tools.
-    Compiler_Path : String_Access;
-@@ -502,8 +502,9 @@ package body Ghdldrv is
-       --  Linker.
-       Linker_Path := Locate_Exec_On_Path (Linker_Cmd);
-       if Linker_Path = null then
--         Tool_Not_Found (Linker_Cmd);
-+         Assembler_Path := Assembler_Cmd'Access;
+@@ -483,7 +483,7 @@ package body Ghdldrv is
+          Cmd.Assembler_Cmd := new String'("as");
        end if;
-+      Linker_Path := Linker_Cmd'Access;
-    end Locate_Tools;
+       if Cmd.Linker_Cmd = null then
+-         Cmd.Linker_Cmd := new String'("gcc");
++         Cmd.Linker_Cmd := new String'("cc");
+       end if;
+    end Set_Tools_Name;
  
-    procedure Setup_Compiler (Load : Boolean)
+@@ -755,8 +755,8 @@ package body Ghdldrv is
+       Put_Line ("   Set the path of the ghdl1 compiler");
+       Put_Line (" --AS=as");
+       Put_Line ("   Use as for the assembler");
+-      Put_Line (" --LINK=gcc");
+-      Put_Line ("   Use gcc for the linker driver");
++      Put_Line (" --LINK=cc");
++      Put_Line ("   Use cc for the linker driver");
+       Put_Line (" -S");
+       Put_Line ("   Do not assemble");
+       Put_Line (" -o FILE");

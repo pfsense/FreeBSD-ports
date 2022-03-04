@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	fxite
 DISTVERSIONPREFIX=	FXITE-
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	yetanothergeek
 
-USES=		autoreconf desktop-file-utils gettext gmake lua pkgconfig
+USES=		autoreconf desktop-file-utils gettext gmake lua:52 pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-system-lua \
 		--with-lua-pkg=lua-${LUA_VER}

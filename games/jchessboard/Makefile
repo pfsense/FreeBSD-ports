@@ -1,9 +1,8 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	jchessboard
 PORTVERSION=	1.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games java
 MASTER_SITES=	SF
 DISTNAME=	JChessBoard-${PORTVERSION}
@@ -16,7 +15,6 @@ LICENSE=	GPLv2
 USES=		tar:tgz
 USE_ANT=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_LOCALE=	en_US.ISO8859-1
 NO_ARCH=	yes
 

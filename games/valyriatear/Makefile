@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	valyriatear
-PORTVERSION=	1.0.0
-PORTREVISION=	8
+PORTVERSION=	1.1.0
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -21,19 +18,16 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Bertram25
 GH_PROJECT=	ValyriaTear
-GH_TAGNAME=	${PORTVERSION}-gcc5 # contains relevant tolua++ fixes
+GH_TUPLE=	ValyriaTear:luabind:76d4061:luabind/src/luabind \
+		ValyriaTear:vt-utils:299411e:utils/src/utils
 
-USES=		alias cmake compiler gettext-tools gl iconv lua:51 \
-		openal
+USES=		alias cmake compiler:c++11-lang gettext-tools gl gnome iconv \
+		lua:51 openal sdl xorg
 CMAKE_ARGS=	-DUSE_PCH_COMPILATION=OFF
-USE_SDL=	sdl image ttf
-USE_GL=		gl glu
+USE_SDL=	sdl2 image2 ttf2
+USE_GL=		gl glu glew
 USE_XORG=	x11 xext sm ice
-INSTALLS_ICONS=	yes
-LLD_UNSAFE=	yes
-
-CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}
-CXXFLAGS_clang=	-Wno-reserved-user-defined-literal
+LDFLAGS_i386=	-Wl,-znotext
 
 PORTDOCS=	*
 PORTDATA=	*
@@ -41,7 +35,7 @@ PORTDATA=	*
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 
-NLS_CMAKE_OFF=	-DDISABLE_TRANSLATIONS:BOOL=OFF
+#NLS_CMAKE_OFF=	-DDISABLE_TRANSLATIONS:BOOL=ON  # broken, so be happy with just not installing translation files
 NLS_USES=	gettext
 
 post-patch:

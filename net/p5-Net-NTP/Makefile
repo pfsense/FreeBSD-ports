@@ -1,10 +1,10 @@
 # Created by: brd@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	Net-NTP
 PORTVERSION=	1.5
 CATEGORIES=	net
 MASTER_SITES=	CPAN
+PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for decoding NTP server responses

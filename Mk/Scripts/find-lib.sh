@@ -1,6 +1,7 @@
 #!/bin/sh
 # MAINTAINER: portmgr@FreeBSD.org
-# $FreeBSD$
+
+set -o pipefail
 
 [ -n "${DEBUG_MK_SCRIPTS}" -o -n "${DEBUG_MK_SCRIPTS_FIND_LIB}" ] && set -x
 

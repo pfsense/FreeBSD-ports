@@ -1,9 +1,8 @@
 # Created by: Alex de Kruijff
-# $FreeBSD$
 
 PORTNAME=	samesame
 PORTVERSION=	1.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://samesame.kruijff.org/ \
 		LOCAL/dhn
@@ -13,7 +12,7 @@ COMMENT=	Find duplicate files and optionally link them together
 
 LICENSE=	BSD2CLAUSE
 
-CONFLICTS=	samefile-[0-9]*
+CONFLICTS=	samefile
 
 HAS_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -34,7 +33,7 @@ PROFILER_DESC=			Enables gprof support
 DISK_STORAGE_CONFIGURE_ENABLE=	disk-storage
 LOW_MEMORY_PROFILE_CONFIGURE_ON=	--enable-low-memory-profile --disable-read-onces
 EXPERIMENTAL_CONFIGURE_ENABLE=	experimental fsort #checksums preread
-PROFILE_CONFIGURE_ENABLE=	profiler
+PROFILER_CONFIGURE_ENABLE=	profiler
 DEBUG_CONFIGURE_ENABLE=		debug
 
 .include <bsd.port.options.mk>

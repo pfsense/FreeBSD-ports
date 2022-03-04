@@ -1,5 +1,4 @@
 # Created by: Kay Lehmann <kay_lehmann@web.de>
-# $FreeBSD$
 
 PORTNAME=	gorilla
 PORTVERSION=	1.5.3.6
@@ -35,7 +34,7 @@ WITHOUTSO=	"@comment "
 PLIST_SUB+=	GORILLAARCH=${GORILLAARCH:tl} WITHOUTSO=${WITHOUTSO}
 
 WRKSRC=		${WRKDIR}/zdia-${PORTNAME}-${DISTVERSIONSUFFIX}
-USES=		tk:85+,run
+USES=		tk:run
 SUB_FILES=	gorilla
 SUB_LIST=	WISH=${WISH}
 PORTDOCS=	*

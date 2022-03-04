@@ -1,9 +1,7 @@
 # Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Array-Diff
-PORTVERSION=	0.07
-PORTREVISION=	1
+PORTVERSION=	0.09
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,4 +19,5 @@ RUN_DEPENDS=	p5-Algorithm-Diff>=1.19:devel/p5-Algorithm-Diff \
 USES=		perl5
 USE_PERL5=	configure
 
+NO_ARCH=	yes
 .include <bsd.port.mk>

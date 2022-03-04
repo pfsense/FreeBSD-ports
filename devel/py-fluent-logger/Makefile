@@ -1,5 +1,4 @@
 # Created by: Edward Chuang <edwardchuang@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fluent-logger
 PORTVERSION=	0.9.2
@@ -17,6 +16,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>0:devel/py-msgpack@${PY_FLAVOR}
 
 NO_ARCH=	yes
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python
+USES=		python:3.6+
 
 .include <bsd.port.mk>

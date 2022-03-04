@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	btsixad
-PORTVERSION=	0.1
+PORTVERSION=	0.1.1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://althenia.net/files/
 
@@ -9,8 +7,6 @@ MAINTAINER=	aaz@q-fu.com
 COMMENT=	Driver for Sixaxis gamepad connected over Bluetooth
 
 LICENSE=	BSD2CLAUSE
-
-LIB_DEPENDS=	libcuse4bsd.so:multimedia/cuse4bsd-kmod
 
 USES=		uidfix
 

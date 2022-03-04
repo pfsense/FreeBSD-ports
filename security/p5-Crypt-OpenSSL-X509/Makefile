@@ -1,8 +1,7 @@
 # Created by: kftseng@iyard.org
-# $FreeBSD$
 
 PORTNAME=	Crypt-OpenSSL-X509
-PORTVERSION=	1.812
+PORTVERSION=	1.910
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -17,9 +16,6 @@ USES=		perl5 ssl
 USE_PERL5=	configure
 
 MAKE_ARGS=	PASTHRU_INC=-I${OPENSSLINC}
-
-post-patch:
-	@${REINPLACE_CMD} -e '/cc_optimize_flags/ s| -Werror||' ${WRKSRC}/Makefile.PL
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${SITE_ARCH}/auto/Crypt/OpenSSL/X509/X509.so

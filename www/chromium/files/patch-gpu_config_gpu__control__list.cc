@@ -1,8 +1,8 @@
---- gpu/config/gpu_control_list.cc.orig	2019-03-11 22:00:59 UTC
+--- gpu/config/gpu_control_list.cc.orig	2021-09-24 04:26:07 UTC
 +++ gpu/config/gpu_control_list.cc
-@@ -16,7 +16,11 @@
- #include "base/values.h"
+@@ -19,7 +19,11 @@
  #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
  #include "gpu/config/gpu_util.h"
 +#if defined(OS_BSD)
 +#include <re2/re2.h>
@@ -12,21 +12,21 @@
  
  namespace gpu {
  namespace {
-@@ -213,7 +217,7 @@ bool GpuControlList::More::GLVersionInfoMismatch(
+@@ -262,7 +266,7 @@ bool GpuControlList::More::GLVersionInfoMismatch(
  GpuControlList::GLType GpuControlList::More::GetDefaultGLType() {
- #if defined(OS_CHROMEOS)
+ #if BUILDFLAG(IS_CHROMEOS_ASH)
    return kGLTypeGL;
--#elif defined(OS_LINUX) || defined(OS_OPENBSD)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
+-#elif (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || \
++#elif (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD) || \
+     defined(OS_OPENBSD)
    return kGLTypeGL;
- #elif defined(OS_MACOSX)
-   return kGLTypeGL;
-@@ -699,7 +703,7 @@ GpuControlList::OsType GpuControlList::GetOsType() {
+ #elif defined(OS_MAC)
+@@ -768,7 +772,7 @@ GpuControlList::OsType GpuControlList::GetOsType() {
    return kOsAndroid;
  #elif defined(OS_FUCHSIA)
    return kOsFuchsia;
--#elif defined(OS_LINUX) || defined(OS_OPENBSD)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
+-#elif (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || \
++#elif (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD) || \
+     defined(OS_OPENBSD)
    return kOsLinux;
- #elif defined(OS_MACOSX)
-   return kOsMacosx;
+ #elif defined(OS_MAC)

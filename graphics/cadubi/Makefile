@@ -1,10 +1,8 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cadubi
-PORTVERSION=	1.3.3
+PORTVERSION=	1.3.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	graphics editors
 
 MAINTAINER=	ports@FreeBSD.org

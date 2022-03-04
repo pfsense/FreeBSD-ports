@@ -1,5 +1,4 @@
 # Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	multi_xml
 PORTVERSION=	0.6.0
@@ -12,12 +11,15 @@ COMMENT=	Ruby library provide swappable XML backends
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-OPTIONS_DEFINE=	NOKOGIRI
-NOKOGIRI_DESC=	Nokogiri is a HTML, XML, SAX, and Reader parser
+USES=		cpe gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
+
+CPE_VENDOR=	erik_michaels-ober
+
+OPTIONS_DEFINE=	NOKOGIRI
+NOKOGIRI_DESC=	Use Nokogiri for parsing
 
 NOKOGIRI_RUN_DEPENDS=	rubygem-nokogiri>=0:textproc/rubygem-nokogiri
 

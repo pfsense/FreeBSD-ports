@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.19
+DISTVERSION=	3.0.25
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -20,17 +19,26 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libgdbm.so:databases/gdbm \
 		libtalloc.so:devel/talloc
 
+FLAVORS=	default ldap mysql pgsql sqlite3
+FLAVOR?=	${FLAVORS:[1]}
+ldap_PKGNAMESUFFIX=	-ldap
+mysql_PKGNAMESUFFIX=	-mysql
+pgsql_PKGNAMESUFFIX=	-pgsql
+sqlite3_PKGNAMESUFFIX=	-sqlite3
+
 LOGDIR?=	/var/log
 KRB5_CONFIG?=	/usr/bin/krb5-config --libs
 
 CONFLICTS_INSTALL=	gnu-radius-[0-9].* openradius-[0-9].* radiusd-cistron-[0-9].* \
 		freeradius-mysql-[0-9].* freeradius-[^3].*
 
-USES=		gmake readline shebangfix ssl tar:bzip2
+USES=		cpe gmake readline shebangfix ssl tar:bzip2
 USE_RC_SUBR=	radiusd
 
-SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay
+SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay \
+		scripts/sql/rlm_sqlippool_tool
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS+=--without-rlm_python
 # Prevent /root/.rnd leftover
 MAKE_ARGS+=	HOME=/dev/null
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -50,6 +58,19 @@ OPTIONS_DEFINE=	USER LDAP MYSQL PGSQL UNIXODBC FIREBIRD REDIS \
 OPTIONS_DEFAULT=USER PERL HEIMDAL UDPFROMTO
 OPTIONS_SINGLE=	KRB
 OPTIONS_SINGLE_KRB=	NOKRB HEIMDAL HEIMDAL_PORT MITKRB_PORT
+
+.if ${FLAVOR} == ldap
+OPTIONS_DEFAULT+=	LDAP
+.endif
+.if ${FLAVOR} == mysql
+OPTIONS_DEFAULT+=	MYSQL
+.endif
+.if ${FLAVOR} == pgsql
+OPTIONS_DEFAULT+=	PGSQL
+.endif
+.if ${FLAVOR} == sqlite3
+OPTIONS_DEFAULT+=	SQLITE3
+.endif
 
 USER_DESC=		Run as user freeradius, group freeradius
 KRB_DESC=		${KERBEROS_DESC}
@@ -101,11 +122,12 @@ PERL_USES=			perl5
 PGSQL_USES=			pgsql
 PGSQL_VARS=			_REQUIRE+=postgresql
 PGSQL_CONFIGURE_WITH=		rlm_sql_postgresql
-PYTHON_CONFIGURE_WITH=		rlm_python
-PYTHON_CONFIGURE_ON=		--with-rlm-python-lib-dir=${PYTHON_LIBDIR} \
-				--with-rlm-python-include-dir=${PYTHON_INCLUDEDIR}
-PYTHON_USES=			python:2.7 gettext-runtime
-PYTHON_VARS=			SHEBANG_FILES+=src/modules/rlm_python/*.py
+PYTHON_CONFIGURE_WITH=		rlm_python3
+PYTHON_CONFIGURE_ON=		--with-rlm-python3-lib-dir=${PYTHON_LIBDIR} \
+				--with-rlm-python3-config-bin=${PYTHON_CMD}-config \
+				--with-rlm-python3-include-dir=${PYTHON_INCLUDEDIR}
+PYTHON_USES=			python gettext-runtime
+PYTHON_VARS=			SHEBANG_FILES+=src/modules/rlm_python3/*.py
 REDIS_CONFIGURE_WITH=		rlm_redis rlm_rediswho
 REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
 REST_CONFIGURE_WITH=		rlm_rest
@@ -145,6 +167,11 @@ GROUPS=		${RADIUS_GROUP}
 
 # Firebird module is still experimental
 .if ${PORT_OPTIONS:MFIREBIRD} && empty(PORT_OPTIONS:MEXPERIMENTAL)
+EXPM=		yes
+.endif
+
+# python3 module is still experimental
+.if ${PORT_OPTIONS:MPYTHON} && empty(PORT_OPTIONS:MEXPERIMENTAL)
 EXPM=		yes
 .endif
 

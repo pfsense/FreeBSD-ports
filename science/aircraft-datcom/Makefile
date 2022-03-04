@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	aircraft-datcom
 DISTVERSION=	0.0.20120723
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	science
 
-MAINTAINER=	mike.d.ft402@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modified USAF Aircraft Stability and Control Data Compendium
 
 LICENSE=	GPLv3
@@ -15,6 +13,7 @@ GH_ACCOUNT=	arktools
 GH_TAGNAME=	ed877bb
 
 USES=	fortran cmake
+FFLAGS+=	-std=legacy
 
 OPTIONS_DEFINE=	DOCS
 

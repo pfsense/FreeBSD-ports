@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_rip_neighbors.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2021-2022 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_ripd_neighbors</name>
+	<title>Services/FRR/RIP</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_rip_neighbors.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>RIP</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>pkg.php?xml=frr/frr_rip_interfaces.xml</url>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_rip_neighbors.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php?protocol=rip</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Neighbor</fielddescr>
+			<fieldname>neighbor</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>RIP Neighbors</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Define neighbors for "non-broadcast" and "point-to-multipoint" network types.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>RIP Neighbor IPv4 Address</fielddescr>
+			<fieldname>neighbor</fieldname>
+			<size>30</size>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_rip_neighbors_validate_input();
+	</custom_php_validation_command>
+</packagegui>

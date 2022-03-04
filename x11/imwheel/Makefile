@@ -1,5 +1,4 @@
 # Created by: jhb
-# $FreeBSD$
 
 PORTNAME=	imwheel
 DISTVERSION=	1.0.0pre12
@@ -14,8 +13,8 @@ COMMENT=	Utility to translate mouse wheel actions into X keyboard events
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		dos2unix gmake xorg
 USE_XORG=	x11 xpm xtst xext xmu
-USES=		dos2unix gmake
 DOS2UNIX_FILES=	getopt/getopt.c
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-gpm

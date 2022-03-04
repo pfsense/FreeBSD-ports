@@ -1,14 +1,17 @@
 # Created by: Alexey Illarionov <littlesavage@rambler.ru>
-# $FreeBSD$
 
 PORTNAME=	paratype
 PORTVERSION=	2.005
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
-MASTER_SITES=	http://www.paratype.com/uni/public/
-DISTFILES=	PTSans.zip PTSerif.zip PTMono.zip
+MASTER_SITES=	https://info.paratype.ru/wp-content/uploads/2019/07/
+DISTFILES=	ptsans-1.zip \
+		PTSansExpert.zip \
+		ptserif.zip \
+		ptserifexpert.zip \
+		ptmono.zip
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	greg@unrelenting.technology
 COMMENT=	ParaType font collection for the languages of Russia
 
 LICENSE=	OFL11

@@ -1,9 +1,5 @@
-# Created by: Tobias C. Berner <tcberner@gmail.com>
-# $FreeBSD$
-
 PORTNAME=	kdevelop-pg-qt
-DISTVERSION=	2.1.0
-PORTREVISION=	3
+DISTVERSION=	2.2.1
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}/src
 DIST_SUBDIR=	KDE/kdevelop

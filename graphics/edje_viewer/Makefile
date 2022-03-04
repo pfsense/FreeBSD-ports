@@ -1,9 +1,8 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	edje_viewer
 PORTVERSION=	20130520
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics enlightenment
 MASTER_SITES=	LOCAL/gblach/e17/extra/
 

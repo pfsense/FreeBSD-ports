@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flex-sdk
 PORTVERSION=	3.5.0.12683
 PORTREVISION=	1
@@ -14,7 +12,6 @@ COMMENT=	Adobe Flex SDK
 CONFLICTS=	ja-flex-sdk-2.* flex-sdk2-2.* flex-sdk-4.*
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 SUB_FILES=	${SCRIPTS:C/\$/.sh/g}
 PLIST_SUB=	PORTNAME=${PORTNAME}
 SUB_LIST=	PORTNAME=${PORTNAME}

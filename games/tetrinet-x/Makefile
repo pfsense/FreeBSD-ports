@@ -1,5 +1,4 @@
 # Created by: gmarco@giovannelli.it
-# $FreeBSD$
 
 PORTNAME=	tetrinet-x
 PORTVERSION=	1.13.16
@@ -10,7 +9,7 @@ MASTER_SITES=	http://utenti.gufi.org/~gmarco/files/distfiles/ \
 DISTNAME=	${PORTNAME}.${PORTVERSION}
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	gmarco@gufi.org
+MAINTAINER=	gmarco@giovannelli.it
 COMMENT=	Addictive 6 player tetr*s game
 
 WRKSRC=		${WRKDIR}/tetrinetx-${PORTVERSION}

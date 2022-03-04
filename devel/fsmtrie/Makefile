@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	fsmtrie
-PORTVERSION=	1.1.0
+PORTVERSION=	2.0.0
 CATEGORIES=	devel
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 

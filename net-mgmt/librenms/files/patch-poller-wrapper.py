@@ -1,11 +1,11 @@
---- poller-wrapper.py.orig	2018-08-29 23:25:16 UTC
+--- poller-wrapper.py.orig	2021-01-14 02:21:36 UTC
 +++ poller-wrapper.py
-@@ -37,6 +37,8 @@ except:
-     print "threading, Queue, sys, subprocess, time, os, json"
+@@ -44,6 +44,8 @@ except ImportError as exc:
+     print('ERROR: %s' % exc)
      sys.exit(2)
  
-+os.environ['PATH'] += ':/usr/local/sbin:/usr/local/bin'
++os.environ['PATH'] += ':%%LOCALBASE%%/sbin:%%LOCALBASE%%/bin'
 +
- try:
-     import MySQLdb
- except:
+ 
+ APP_NAME = "poller_wrapper"
+ LOG_FILE = "logs/" + APP_NAME + ".log"

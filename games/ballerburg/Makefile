@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ballerburg
 PORTVERSION=	1.2.0
@@ -16,7 +15,7 @@ LICENSE=	GPLv3+
 
 GNU_CONFIGURE=	yes
 NLS_USES=	gettext
-USES=		cmake:insource
+USES=		cmake:insource sdl
 USE_SDL=	sdl
 
 OPTIONS_DEFINE=	DOCS NLS

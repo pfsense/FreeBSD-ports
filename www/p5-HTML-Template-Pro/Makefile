@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-Template-Pro
 PORTVERSION=	0.9510
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to use HTML Templates from CGI scripts
 
 RUN_DEPENDS=	\

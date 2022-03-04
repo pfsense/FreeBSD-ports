@@ -1,10 +1,9 @@
 # Created by: Nikolay Korotkiy <sikmir@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	openorienteering-mapper
-PORTVERSION=	0.8.4
+PORTVERSION=	0.9.2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	graphics geography
 
 MAINTAINER=	sikmir@gmail.com
@@ -18,8 +17,8 @@ LIB_DEPENDS=	libpolyclipping.so:graphics/polyclipping \
 
 USES=		cmake:noninja compiler:c++14-lang \
 		desktop-file-utils gmake qt:5 shared-mime-info
-USE_QT=		buildtools_build help qmake_build core gui \
-		network printsupport widgets
+USE_QT=		buildtools_build help qmake_build concurrent core gui \
+		network printsupport testlib widgets
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenOrienteering
 GH_PROJECT=	mapper
@@ -39,13 +38,12 @@ GDAL_DESC=	Use the GDAL library
 GDAL_CMAKE_BOOL=	Mapper_USE_GDAL
 GDAL_LIB_DEPENDS=	libgdal.so:graphics/gdal
 NLS_CMAKE_BOOL=	Mapper_WITH_NLS
-NLS_BUILD_DEPENDS=	gsed:textproc/gsed
 NLS_USE=	QT=linguisttools_build
 NLS_USES=	gettext-runtime
 POSITIONING_DESC=	GPS positioning
-POSITIONING_CMAKE_ON=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Positioning=0 -DCMAKE_DISABLE_FIND_PACKAGE_Qt5Sensors=0
-POSITIONING_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Positioning=1 -DCMAKE_DISABLE_FIND_PACKAGE_Qt5Sensors=1
-POSITIONING_USE=	QT=location,sensors
+POSITIONING_CMAKE_ON=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Positioning=0 -DCMAKE_DISABLE_FIND_PACKAGE_Qt5Sensors=0 -DCMAKE_DISABLE_FIND_PACKAGE_Qt5SerialPort=0
+POSITIONING_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Positioning=1 -DCMAKE_DISABLE_FIND_PACKAGE_Qt5Sensors=1 -DCMAKE_DISABLE_FIND_PACKAGE_Qt5SerialPort=1
+POSITIONING_USE=	QT=location,sensors,serialport
 TEST_CMAKE_BOOL=	Mapper_WITH_TEST
 TEST_USE=	QT=testlib_build
 TEST_TEST_TARGET=	test

@@ -1,35 +1,39 @@
 # Created by: Garrett Rooney <rooneg@electricjellyfish.net>
-# $FreeBSD$
 
 PORTNAME=	metacity
-PORTVERSION=	3.18.3
-PORTREVISION=	1
+PORTVERSION=	3.42.0
 CATEGORIES=	x11-wm
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Window manager for the adult in you
 
-BUILD_DEPENDS=	zenity>=3.0.0:x11/zenity \
+LICENSE=	GPLv2
+
+BUILD_DEPENDS=	gsettings-desktop-schemas>=3.3.0:devel/gsettings-desktop-schemas \
 		itstool:textproc/itstool \
-		gsettings-desktop-schemas>=3.3.0:devel/gsettings-desktop-schemas
-LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
+		zenity>=3.0.0:x11/zenity
+LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 		libgtop-2.0.so:devel/libgtop \
-		libcanberra-gtk3.so:audio/libcanberra-gtk3
-RUN_DEPENDS=	zenity>=3.0.0:x11/zenity \
-		gsettings-desktop-schemas>=3.3.0:devel/gsettings-desktop-schemas
+		libstartup-notification-1.so:x11/startup-notification
+RUN_DEPENDS=	gsettings-desktop-schemas>=3.3.0:devel/gsettings-desktop-schemas \
+		zenity>=3.0.0:x11/zenity
 
 PORTSCOUT=	limitw:1,even
 
-USE_XORG=	x11 xcomposite xdamage xrender xcursor xinerama xext xrandr
-USES=		compiler:c11 gettext gmake gnome libtool \
-		localbase pathfix pkgconfig tar:xz
+USES=		compiler:c11 gettext gmake gnome libtool localbase pathfix \
+		pkgconfig tar:xz xorg
 GNU_CONFIGURE=	yes
+USE_XORG=	x11 xcomposite xcursor xdamage xext xinerama xpresent xrandr \
+		xrender xres
 USE_GNOME=	gnomeprefix gtk30 intlhack libxml2:build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
-GLIB_SCHEMAS=	org.gnome.metacity.gschema.xml
+GLIB_SCHEMAS=	org.gnome.metacity.enums.xml \
+		org.gnome.metacity.gschema.xml \
+		org.gnome.metacity.keybindings.gschema.xml \
+		org.gnome.metacity.theme.gschema.xml
 
 .include <bsd.port.mk>

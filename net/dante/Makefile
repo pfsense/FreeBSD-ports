@@ -1,14 +1,12 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	dante
-PORTVERSION=	1.4.2
-PORTREVISION=	1
-CATEGORIES=	net security ipv6
+PORTVERSION=	1.4.3
+CATEGORIES=	net security
 MASTER_SITES=	http://www.inet.no/dante/files/ \
 		ftp://ftp.inet.no/pub/socks/
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Circuit-level firewall/proxy
 
 LICENSE=	BSD4CLAUSE
@@ -17,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libminiupnpc.so:net/miniupnpc \
 		libsasl2.so:security/cyrus-sasl2
 
-CONFLICTS=	socks5-[0-9]*
+CONFLICTS=	socks5
 
 USES=		libtool localbase
 GNU_CONFIGURE=	yes

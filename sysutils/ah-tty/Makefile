@@ -1,14 +1,13 @@
 # Created by: Michael L. Hostbaek <mich@freebsdcluster.org>
-# $FreeBSD$
 
 PORTNAME=	ah-tty
 PORTVERSION=	0.3.12
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
 MAINTAINER=	mich@FreeBSD.org
-COMMENT=	Ah-tty is an automatic helper for command prompts and shells
+COMMENT=	Automatic helper for command prompts and shells
 
 USES=		ncurses
 GNU_CONFIGURE=	yes

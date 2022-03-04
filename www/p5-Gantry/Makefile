@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Gantry
 PORTVERSION=	3.64
@@ -41,7 +40,7 @@ WWWDIR=		${PREFIX}/www/${PORTNAME:tl}
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/home/httpd/html/gantry,${WWWDIR},g' \
-		-e 's,\$ENV{'GANTRY_TEMPLATE_PATH'},${WWWDIR},g' \
+		-e 's,$$ENV{'GANTRY_TEMPLATE_PATH'},${WWWDIR},g' \
 	    ${WRKSRC}/Build.PL
 
 .include <bsd.port.mk>

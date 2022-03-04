@@ -1,11 +1,19 @@
---- third_party/googletest/src/googletest/include/gtest/internal/gtest-port.h.orig	2019-03-11 22:08:00 UTC
+--- third_party/googletest/src/googletest/include/gtest/internal/gtest-port.h.orig	2021-09-24 04:28:07 UTC
 +++ third_party/googletest/src/googletest/include/gtest/internal/gtest-port.h
-@@ -623,7 +623,7 @@ typedef struct _RTL_CRITICAL_SECTION GTEST_CRITICAL_SE
-   (GTEST_OS_WINDOWS || GTEST_OS_CYGWIN || GTEST_OS_AIX || GTEST_OS_OS2)
+@@ -1644,6 +1644,8 @@ class ThreadLocal : public ThreadLocalBase {
+ // MutexBase and Mutex implement mutex on pthreads-based platforms.
+ class MutexBase {
+  public:
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wthread-safety-analysis"
+   // Acquires this mutex.
+   void Lock() {
+     GTEST_CHECK_POSIX_SUCCESS_(pthread_mutex_lock(&mutex_));
+@@ -1660,6 +1662,7 @@ class MutexBase {
+     has_owner_ = false;
+     GTEST_CHECK_POSIX_SUCCESS_(pthread_mutex_unlock(&mutex_));
+   }
++#pragma GCC diagnostic pop
  
- // Determines whether test results can be streamed to a socket.
--#if GTEST_OS_LINUX
-+#if GTEST_OS_LINUX || GTEST_OS_FREEBSD
- # define GTEST_CAN_STREAM_RESULTS_ 1
- #endif
- 
+   // Does nothing if the current thread holds the mutex. Otherwise, crashes
+   // with high probability.

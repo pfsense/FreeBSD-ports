@@ -1,0 +1,28 @@
+--- CMakeLists.txt.orig	2020-04-07 06:57:48 UTC
++++ CMakeLists.txt
+@@ -144,6 +144,12 @@ message (STATUS "PROJECT_NAME  = ${PROJECT_NAME}")
+ message (STATUS "BUILD_HOSTNAME = ${BUILD_HOSTNAME}")
+ message (STATUS "CMAKE_SYSTEM = ${CMAKE_SYSTEM}")
+ 
++# We need to be able to #include "file" from a few places,
++# * The original source dir
++# * The generated source dir
++include_directories(${CMAKE_CURRENT_BINARY_DIR}/src)
++include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
++
+ # Find POPT
+ find_package(POPT)
+ if (POPT_FOUND)
+@@ -310,12 +316,6 @@ enable_testing()
+ 
+ # Create conf files
+ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/src/config.h)
+-
+-# We need to be able to #include "file" from a few places,
+-# * The original source dir
+-# * The generated source dir
+-include_directories(${CMAKE_CURRENT_BINARY_DIR}/src)
+-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+ 
+ 
+ ########### next target ###############

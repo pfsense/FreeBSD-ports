@@ -1,5 +1,4 @@
 # Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
 
 PORTNAME=	libapreq2
 PORTVERSION=	2.13
@@ -15,7 +14,8 @@ LICENSE=	APACHE20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-apache2-apxs=${APXS} --with-expat=${LOCALBASE}
 INSTALL_TARGET=	install-strip
-USES=		apache:2.2+ libtool
+USES=		apache:2.2+ cpe libtool
+CPE_VENDOR=	apache
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

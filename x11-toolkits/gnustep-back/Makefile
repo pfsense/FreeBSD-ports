@@ -1,11 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	gnustep-back
 DISTVERSIONPREFIX=	back-
-DISTVERSION=	0_27_0
+DISTVERSION=	0_28_0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits gnustep
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep GUI backend
 
 LICENSE_COMB=	multi
@@ -18,7 +17,7 @@ LIB_DEPENDS+=	libgif.so:graphics/giflib \
 		libfreetype.so:print/freetype2 \
 		libcairo.so:graphics/cairo
 
-USES=		gnustep jpeg pkgconfig gl
+USES=		gl gnustep jpeg pkgconfig xorg
 USE_GNUSTEP=	base gui build
 USE_XORG=	xft xrender xmu xext x11 xcursor xfixes xmu
 USE_GL=	gl

@@ -1,5 +1,4 @@
 # Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
 
 PORTNAME=	slurpie
 PORTVERSION=	2.0b
@@ -12,6 +11,9 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Passwd file cracker (supports distributed nodes)
+
+DEPRECATED=	Abandonware, last release around 2000 and dead upstream
+EXPIRATION_DATE=2022-03-31
 
 PLIST_FILES=	sbin/slurp sbin/slurpie
 PORTDOCS=	README

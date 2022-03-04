@@ -1,12 +1,13 @@
 # Created by: torstenb
-# $FreeBSD$
 
-PORTNAME=	inn
-PORTVERSION=	2.6.1
-CATEGORIES=	news ipv6
-MASTER_SITES=	ISC/${PORTNAME}
+PORTNAME?=		inn
+PORTVERSION?=		2.6.4
+PORTREVISION?=		0
+CATEGORIES=		news
+MASTER_SITES=		ISC
+MASTER_SITE_SUBDIR?=	${PORTNAME}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	InterNetNews -- the Internet meets Netnews
 
 BUILD_DEPENDS=	p5-GD>=0:graphics/p5-GD \
@@ -20,9 +21,9 @@ SUB_FILES=	pkg-install
 USES=		cpe gmake libtool perl5 uidfix
 CPE_VENDOR=	isc
 
-CONFLICTS?=	inn-stable-[0-9]* inn-current-[0-9]*
+CONFLICTS?=	inn-current
 
-OPTIONS_DEFINE=		BERKELEYDB GNUPG KERBEROS SASL KEYWORDS \
+OPTIONS_DEFINE=		BERKELEYDB GNUPG KERBEROS PYTHON SASL KEYWORDS \
 			LARGE_FILES OPENSSL SETGID_INEWS TAGGED_HASH \
 			UUCP_RNEWS DOCS EXAMPLES
 OPTIONS_DEFAULT=	BERKELEYDB GNUPG KEYWORDS OPENSSL LARGE_FILES \
@@ -30,6 +31,7 @@ OPTIONS_DEFAULT=	BERKELEYDB GNUPG KEYWORDS OPENSSL LARGE_FILES \
 OPTIONS_SUB=		yes
 
 KERBEROS_DESC=		Enable Kerberos v5 (for auth_krb5)
+PYTHON_DESC=		Enable support for embedded Python
 SASL_DESC=		Enable SASL (for imapfeed authentication)
 TAGGED_HASH_DESC=	Use tagged hash table for history
 LARGE_FILES_DESC=	Support for files larger than 2GB
@@ -39,6 +41,18 @@ OPENSSL_DESC=		Enable OpenSSL (for NNTP over TLS/SSL support)
 GNUPG_DESC=		GnuPG support (for pgpverify control message)
 UUCP_RNEWS_DESC=	Install rnews suitable for use with net/freebsd-uucp
 SETGID_INEWS_DESC=	Enable posting articles locally for all users
+
+.if ${BRANCH:U} == 2.7
+OPTIONS_DEFINE+=	SQLITE
+OPTIONS_DEFAULT+=	SQLITE
+SQLITE_DESC=		Enable SQLite (for ovsqlite overview method)
+
+PLIST_SUB+=		SNAPSHOT=""
+.else
+EXTRA_PATCHES=		${PATCHDIR}/extra-patch-storage_buffindexed_shmem.c
+
+PLIST_SUB+=		SNAPSHOT="@comment "
+.endif
 
 VARBASE?=	/var
 
@@ -58,15 +72,28 @@ CONFIGURE_ARGS+=	--mandir=${MANPREFIX}/man		\
 			--datarootdir=${INN_SHAREDIR}		\
 			--with-perl
 
-UUCP_RNEWS_CONFIGURE_ON=--enable-uucp-rnews
 UUCP_RNEWS_RUN_DEPENDS=	uucp:net/freebsd-uucp
 
-INNLIB_LONG=		4.0.0
-LIBVER_LONG=		3.0.1
+INNLIB_LONG=		6.0.1
+LIBVER_LONG=		3.0.4
 PLIST_SUB+=		LIBVER=${LIBVER_LONG:R:R} LIBVER_LONG=${LIBVER_LONG} \
 			INNLIB=${INNLIB_LONG:R:R} INNLIB_LONG=${INNLIB_LONG}
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MSQLITE}
+USES+=			sqlite
+CONFIGURE_ARGS+=	--with-sqlite3=${LOCALBASE}
+PLIST_SUB+=		SQLITE=""
+
+TO_BE_STRIPPED+=	bin/ovsqlite-server
+CONFIG_FILES+=		ovsqlite.conf
+.else
+.  if ${BRANCH:U} == 2.7
+CONFIGURE_ARGS+=	--without-sqlite3
+.  endif
+PLIST_SUB+=		SQLITE="@comment "
+.endif
 
 .if ${PORT_OPTIONS:MBERKELEYDB}
 USES+=			bdb
@@ -88,6 +115,10 @@ CONFIGURE_ENV+=		ac_cv_func_krb5_init_ets=yes
 CONFIGURE_ARGS+=	--without-krb5
 .endif
 
+.if ${PORT_OPTIONS:MKEYWORDS}
+CONFIGURE_ARGS+=	--enable-keywords
+.endif
+
 .if ${PORT_OPTIONS:MLARGE_FILES}
 CONFIGURE_ARGS+=	--enable-largefiles
 .    if ${PORT_OPTIONS:MTAGGED_HASH}
@@ -95,8 +126,9 @@ IGNORE=			cannot be compiled with both LARGE_FILES and TAGGED_HASH: please re-ru
 .    endif
 .endif
 
-.if ${PORT_OPTIONS:MKEYWORDS}
-CONFIGURE_ARGS+=	--enable-keywords
+.if ${PORT_OPTIONS:MPYTHON}
+USES+=			python
+CONFIGURE_ARGS+=	--with-python
 .endif
 
 .if ${PORT_OPTIONS:MSASL}
@@ -135,7 +167,7 @@ PLIST_SUB+=		MODE_INEWS=""
 .endif
 PORTDOCS=	CONTRIBUTORS HACKING INSTALL LICENSE MANIFEST NEWS README TODO
 
-TO_BE_STRIPPED=	bin/actsync bin/archive bin/auth/passwd/auth_krb5 \
+TO_BE_STRIPPED+=	bin/actsync bin/archive bin/auth/passwd/auth_krb5 \
 	bin/auth/passwd/ckpasswd bin/auth/passwd/radius bin/auth/resolv/domain \
 	bin/auth/resolv/ident bin/batcher bin/buffchan bin/buffindexed_d \
 	bin/convdate bin/ctlinnd bin/cvtbatch bin/expire bin/expireover \
@@ -149,7 +181,7 @@ TO_BE_STRIPPED=	bin/actsync bin/archive bin/auth/passwd/auth_krb5 \
 	lib/libinn.so.${INNLIB_LONG} lib/libinnhist.so.${LIBVER_LONG} \
 	lib/libstorage.so.${LIBVER_LONG}
 
-CONFIG_FILES=	actsync.cfg actsync.ign buffindexed.conf control.ctl \
+CONFIG_FILES+=	actsync.cfg actsync.ign buffindexed.conf control.ctl \
 	control.ctl.local cycbuff.conf distrib.pats distributions expire.ctl \
 	localgroups incoming.conf inn.conf innfeed.conf innreport.conf \
 	innshellvars.local innshellvars.pl.local innshellvars.tcl.local \

@@ -1,11 +1,11 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qmailmrtg7
 PORTVERSION=	4.2
 PORTREVISION=	5
 CATEGORIES=	mail net-mgmt
-MASTER_SITES=	http://www.inter7.com/qmailmrtg7/
+MASTER_SITES=	http://www.inter7.com/wp-content/uploads/2014/12/ \
+		LOCAL/otis/mail_qmailmrtg7/
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Program to create mrtg graphs for qmail activity
@@ -14,13 +14,13 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	mrtg:net-mgmt/mrtg
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
 USES=		qmail
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 post-patch:
-	@${REINPLACE_CMD} "s|cc|${CC}|g;s|-s -O|${CFLAGS}|g" ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} "s|/usr/local|${PREFIX}|g;s|/var/qmail|${QMAIL_PREFIX}|g" \
+	${REINPLACE_CMD} "s|cc|${CC}|g;s|-s -O|${CFLAGS}|g" ${WRKSRC}/Makefile
+	${REINPLACE_CMD} "s|/usr/local|${PREFIX}|g;s|/var/qmail|${QMAIL_PREFIX}|g" \
 		${WRKSRC}/checkq.c ${WRKSRC}/qmail.mrtg.cfg
 
 do-install:

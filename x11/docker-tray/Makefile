@@ -1,5 +1,4 @@
 # Created by: Samy Al Bahra <samy@kerneled.org>
-# $FreeBSD$
 
 PORTNAME=	docker
 PORTVERSION=	1.5
@@ -14,9 +13,9 @@ COMMENT=	Dockapp with support for GNOME2 and KDE3 tray icons
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		gmake gnome pkgconfig xorg
 USE_XORG=	x11
 USE_GNOME=	glib20
-USES=		gmake pkgconfig
 
 PLIST_FILES=	bin/docker
 

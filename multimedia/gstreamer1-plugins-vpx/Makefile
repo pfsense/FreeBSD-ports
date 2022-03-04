@@ -1,6 +1,4 @@
-# $FreeBSD$
-
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 COMMENT=	GStreamer vp8 codec plugin

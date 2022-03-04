@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	colored
-DISTVERSION=	1.3.93
+DISTVERSION=	1.4.2
 CATEGORIES=	misc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +9,7 @@ COMMENT=	Very simple Python library for color and formatting in terminal
 
 LICENSE=	MIT
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

@@ -1,11 +1,10 @@
 # Created by: Alex Hayward <xelah@xelah.com>
-# $FreeBSD$
 
 PORTNAME=	pngquant
-PORTVERSION=	2.12.2
+PORTVERSION=	2.13.1
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	graphics
-MASTER_SITES=	http://pngquant.org/
+MASTER_SITES=	https://pngquant.org/
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Converts 32-bit RGBA PNGs into 8-bit RGBA-palette PNGs
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=	gmake pkgconfig
+USES=		cpe gmake pkgconfig
 HAS_CONFIGURE=	yes
 
 PORTDOCS=	CHANGELOG README.md
@@ -28,7 +27,7 @@ OPTIONS_DEFINE=	OPTIMIZED_FLAGS LCMS2 DEBUG DOCS
 OPTIONS_DEFINE_i386=	SSE
 OPTIONS_DEFINE_amd64=	SSE
 LCMS2_DESC=	Support for ICC profiles via LCMS library
-OPTIMIZED_FLAGS_DESC= ${OPTIMIZED_CFLAGS_DESC}
+OPTIMIZED_FLAGS_DESC=	${OPTIMIZED_CFLAGS_DESC}
 OPTIONS_DEFAULT_amd64=	SSE
 
 DEBUG_CONFIGURE_ON=	--enable-debug

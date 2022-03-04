@@ -1,8 +1,7 @@
 # Created by: chinsan
-# $FreeBSD$
 
 PORTNAME=	libmaa
-PORTVERSION=	1.4.3
+PORTVERSION=	1.4.7
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -14,15 +13,14 @@ LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
 BUILD_DEPENDS=	mk-configure>=0.29.1:devel/mk-configure
 
-OPTIONS_DEFINE=	DOCS
-
 MAKE_ARGS=	DOCDIR=${DOCSDIR}
 MAKE_CMD=	mkcmake
-NO_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 GH_ACCOUNT=	cheusov
 USE_GITHUB=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^FILES *=/ s|LICENSE||' ${WRKSRC}/doc/Makefile

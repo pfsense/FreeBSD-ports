@@ -1,9 +1,8 @@
 # Created by: Bartek Rutkowski <r@robakdesign.com>
-# $FreeBSD$
 
 PORTNAME=	jggtrans
 PORTVERSION=	2.2.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im polish
 MASTER_SITES=	https://github.com/Jajcus/jggtrans/releases/download/v${DISTVERSION}/
 
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libidn.so:dns/libidn \
 		libgadu.so:polish/libgadu
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake gnome pkgconfig
 USE_GNOME=	glib20
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

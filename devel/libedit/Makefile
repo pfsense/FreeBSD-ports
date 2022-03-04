@@ -1,9 +1,7 @@
 # Created by: jasone
-# $FreeBSD$
 
 PORTNAME=	libedit
 PORTVERSION=	${EDITVERSION}.${EDITDATE}
-PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://thrysoee.dk/editline/
@@ -14,16 +12,14 @@ COMMENT=	Command line editor library
 
 LICENSE=	BSD2CLAUSE
 
-USES=		libtool ncurses pathfix
+USES=		libtool localbase ncurses pathfix
 EDITVERSION=	3.1
-EDITDATE=	20181209
+EDITDATE=	20210216
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
-CONFIGURE_ARGS=	--enable-widec
-LDFLAGS+=	-L${LOCALBASE}/lib
 
-CONFLICTS_INSTALL=	editline-*
+CONFLICTS_INSTALL=	editline
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/man/man3/history.3 ${STAGEDIR}${PREFIX}/man/man3/el_history.3

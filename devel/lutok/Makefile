@@ -1,9 +1,8 @@
 # Created by: Alan Somers <asomers@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lutok
 PORTVERSION=	0.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/jmmv/lutok/releases/download/${PORTNAME}-${PORTVERSION}/ \
 		LOCAL/jmmv

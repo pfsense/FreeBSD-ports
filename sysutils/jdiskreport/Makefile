@@ -1,5 +1,4 @@
 # Created by: jon@witchspace.com
-# $FreeBSD$
 
 PORTNAME=	jdiskreport
 DISTVERSION=	1_4_1
@@ -11,7 +10,6 @@ COMMENT=	Java program to graphically display disk usage statistics
 
 USES=		zip
 USE_JAVA=	YES
-JAVA_VERSION=	1.6+
 
 PLIST_SUB=	JDISKDIR=${JDISKDIR:S,${PREFIX}/,,g}
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}

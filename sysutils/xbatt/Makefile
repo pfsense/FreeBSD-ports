@@ -1,5 +1,4 @@
 # Created by: Nobuhiro Yasutomi <nobu@psrc.isac.co.jp>
-# $FreeBSD$
 
 PORTNAME=	xbatt
 PORTVERSION=	1.2.1
@@ -12,7 +11,7 @@ COMMENT=	Laptop battery status display for X11
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-USES=		imake:noman
+USES=		imake:noman xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 PLIST_FILES=	"@(,operator,2755) bin/xbatt"
 

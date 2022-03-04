@@ -1,5 +1,4 @@
 # Created by: Michael Moll <kvedulv@kvedulv.de>
-# $FreeBSD$
 
 PORTNAME=	hammer_cli_foreman_salt
 PORTVERSION=	0.0.5
@@ -13,15 +12,15 @@ LICENSE=	GPLv3+
 
 RUN_DEPENDS=	rubygem-hammer_cli_foreman>=0.1.2:sysutils/rubygem-hammer_cli_foreman
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	"@sample etc/hammer/cli.modules.d/foreman_salt.yml.sample"
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/hammer/cli.modules.d
-	${INSTALL_DATA} ${WRKSRC}/config/foreman_salt.yml \
-		${STAGEDIR}${PREFIX}/etc/hammer/cli.modules.d/foreman_salt.yml.sample
+	${INSTALL_DATA} ${WRKSRC}/config/foreman_salt.yml ${STAGEDIR}${PREFIX}/etc/hammer/cli.modules.d/foreman_salt.yml.sample
 
 .include <bsd.port.mk>

@@ -1,131 +1,161 @@
 # Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
 
 PORTNAME=	racer
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.17
-PORTREVISION=	2
+DISTVERSION=	2.1.48
+PORTREVISION=	3
 CATEGORIES=	devel
+MASTER_SITES=	CRATESIO
+DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
-MAINTAINER=	beyert@cs.ucr.edu
+MAINTAINER=	rust@FreeBSD.org
 COMMENT=	Rust code completion helper
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE-MIT
 
 USES=		cargo
-USE_GITHUB=	yes
-GH_ACCOUNT=	racer-rust
-
-PLIST_FILES=	bin/racer
-
-## https://github.com/alexcrichton/scoped-tls/issues/5
-# error[E0554]: #![feature] may not be used on the stable release channel
-#   --> cargo-crates/scoped-tls-0.1.2/src/lib.rs:47:34
-#    |
-# 47 | #![cfg_attr(feature = "nightly", feature(macro_vis_matcher))]
-#    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-# error[E0554]: #![feature] may not be used on the stable release channel
-#   --> cargo-crates/scoped-tls-0.1.2/src/lib.rs:48:34
-#    |
-# 48 | #![cfg_attr(feature = "nightly", feature(allow_internal_unstable))]
-#    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-MAKE_ENV=	RUSTC_BOOTSTRAP=1
-
-CARGO_CRATES=	aho-corasick-0.6.9 \
+CARGO_CRATES=	aho-corasick-0.7.10 \
+		annotate-snippets-0.8.0 \
 		ansi_term-0.11.0 \
-		arrayvec-0.4.8 \
-		atty-0.2.11 \
-		bitflags-1.0.4 \
-		byteorder-1.2.7 \
-		cfg-if-0.1.6 \
-		clap-2.32.0 \
-		cloudabi-0.0.3 \
-		crossbeam-deque-0.2.0 \
-		crossbeam-epoch-0.3.1 \
-		crossbeam-utils-0.2.2 \
-		derive_more-0.13.0 \
-		either-1.5.0 \
-		ena-0.11.0 \
-		env_logger-0.6.0 \
-		fuchsia-zircon-0.3.3 \
-		fuchsia-zircon-sys-0.3.3 \
-		humantime-1.1.1 \
-		itoa-0.4.3 \
-		lazy_static-1.2.0 \
-		lazycell-1.2.0 \
-		libc-0.2.49 \
-		lock_api-0.1.5 \
-		log-0.4.6 \
-		memchr-2.1.1 \
-		memoffset-0.2.1 \
-		nodrop-0.1.13 \
-		num_cpus-1.8.0 \
-		owning_ref-0.4.0 \
-		parking_lot-0.6.4 \
-		parking_lot_core-0.3.1 \
-		proc-macro2-0.4.24 \
-		quick-error-1.2.2 \
-		quote-0.6.10 \
-		rand-0.4.3 \
-		rand-0.5.5 \
-		rand-0.6.1 \
-		rand_chacha-0.1.0 \
-		rand_core-0.2.2 \
-		rand_core-0.3.0 \
-		rand_hc-0.1.0 \
-		rand_isaac-0.1.1 \
-		rand_pcg-0.1.1 \
-		rand_xorshift-0.1.0 \
-		redox_syscall-0.1.43 \
-		redox_termios-0.1.1 \
-		regex-1.0.6 \
-		regex-syntax-0.6.3 \
-		remove_dir_all-0.5.1 \
-		rls-span-0.4.0 \
-		rustc-ap-arena-306.0.0 \
-		rustc-ap-graphviz-306.0.0 \
-		rustc-ap-rustc_cratesio_shim-306.0.0 \
-		rustc-ap-rustc_data_structures-306.0.0 \
-		rustc-ap-rustc_errors-306.0.0 \
-		rustc-ap-rustc_target-306.0.0 \
-		rustc-ap-serialize-306.0.0 \
-		rustc-ap-syntax-306.0.0 \
-		rustc-ap-syntax_pos-306.0.0 \
-		rustc-hash-1.0.1 \
-		rustc-rayon-0.1.1 \
-		rustc-rayon-core-0.1.1 \
-		rustc_version-0.2.3 \
-		ryu-0.2.7 \
-		scoped-tls-0.1.2 \
-		scopeguard-0.3.3 \
-		semver-0.9.0 \
-		semver-parser-0.7.0 \
-		serde-1.0.80 \
-		serde_derive-1.0.80 \
-		serde_json-1.0.33 \
-		smallvec-0.6.6 \
+		arrayvec-0.7.0 \
+		atty-0.2.14 \
+		autocfg-1.0.0 \
+		bitflags-1.2.1 \
+		block-buffer-0.9.0 \
+		cc-1.0.53 \
+		cfg-if-0.1.10 \
+		cfg-if-1.0.0 \
+		clap-2.33.0 \
+		cloudabi-0.1.0 \
+		cpuid-bool-0.1.2 \
+		crossbeam-deque-0.7.3 \
+		crossbeam-epoch-0.8.2 \
+		crossbeam-queue-0.2.3 \
+		crossbeam-utils-0.7.2 \
+		crossbeam-utils-0.8.4 \
+		derive_more-0.99.5 \
+		digest-0.9.0 \
+		either-1.5.3 \
+		ena-0.14.0 \
+		env_logger-0.7.1 \
+		generic-array-0.14.4 \
+		getopts-0.2.21 \
+		getrandom-0.2.2 \
+		hashbrown-0.8.2 \
+		hermit-abi-0.1.10 \
+		humantime-1.3.0 \
+		humantime-2.0.0 \
+		indexmap-1.5.2 \
+		instant-0.1.7 \
+		itoa-0.4.5 \
+		jobserver-0.1.21 \
+		lazy_static-1.4.0 \
+		lazycell-1.2.1 \
+		libc-0.2.77 \
+		lock_api-0.4.4 \
+		log-0.4.8 \
+		maybe-uninit-2.0.0 \
+		md-5-0.9.1 \
+		measureme-9.1.0 \
+		memchr-2.3.3 \
+		memmap-0.7.0 \
+		memmap2-0.2.2 \
+		memoffset-0.5.4 \
+		num_cpus-1.12.0 \
+		opaque-debug-0.3.0 \
+		parking_lot-0.11.0 \
+		parking_lot_core-0.8.0 \
+		perf-event-open-sys-1.0.1 \
+		ppv-lite86-0.2.10 \
+		proc-macro2-1.0.10 \
+		psm-0.1.8 \
+		quick-error-1.2.3 \
+		quote-1.0.3 \
+		racer-2.1.47 \
+		racer-cargo-metadata-0.1.2 \
+		racer-interner-0.1.0 \
+		racer-testutils-0.1.0 \
+		rand-0.8.3 \
+		rand_chacha-0.3.0 \
+		rand_core-0.6.2 \
+		rand_hc-0.3.0 \
+		redox_syscall-0.1.56 \
+		redox_syscall-0.2.7 \
+		regex-1.3.6 \
+		regex-syntax-0.6.17 \
+		remove_dir_all-0.5.2 \
+		rls-span-0.5.2 \
+		rustc-ap-rustc_arena-718.0.0 \
+		rustc-ap-rustc_arena-722.0.0 \
+		rustc-ap-rustc_ast-718.0.0 \
+		rustc-ap-rustc_ast-722.0.0 \
+		rustc-ap-rustc_ast_pretty-718.0.0 \
+		rustc-ap-rustc_ast_pretty-722.0.0 \
+		rustc-ap-rustc_data_structures-718.0.0 \
+		rustc-ap-rustc_data_structures-722.0.0 \
+		rustc-ap-rustc_errors-718.0.0 \
+		rustc-ap-rustc_errors-722.0.0 \
+		rustc-ap-rustc_feature-718.0.0 \
+		rustc-ap-rustc_feature-722.0.0 \
+		rustc-ap-rustc_fs_util-718.0.0 \
+		rustc-ap-rustc_fs_util-722.0.0 \
+		rustc-ap-rustc_graphviz-718.0.0 \
+		rustc-ap-rustc_graphviz-722.0.0 \
+		rustc-ap-rustc_index-718.0.0 \
+		rustc-ap-rustc_index-722.0.0 \
+		rustc-ap-rustc_lexer-718.0.0 \
+		rustc-ap-rustc_lexer-722.0.0 \
+		rustc-ap-rustc_lint_defs-718.0.0 \
+		rustc-ap-rustc_lint_defs-722.0.0 \
+		rustc-ap-rustc_macros-718.0.0 \
+		rustc-ap-rustc_macros-722.0.0 \
+		rustc-ap-rustc_parse-718.0.0 \
+		rustc-ap-rustc_parse-722.0.0 \
+		rustc-ap-rustc_serialize-718.0.0 \
+		rustc-ap-rustc_serialize-722.0.0 \
+		rustc-ap-rustc_session-718.0.0 \
+		rustc-ap-rustc_session-722.0.0 \
+		rustc-ap-rustc_span-718.0.0 \
+		rustc-ap-rustc_span-722.0.0 \
+		rustc-ap-rustc_target-718.0.0 \
+		rustc-ap-rustc_target-722.0.0 \
+		rustc-hash-1.1.0 \
+		rustc-rayon-0.3.1 \
+		rustc-rayon-core-0.3.1 \
+		ryu-1.0.3 \
+		scoped-tls-1.0.0 \
+		scopeguard-1.1.0 \
+		serde-1.0.105 \
+		serde_derive-1.0.105 \
+		serde_json-1.0.50 \
+		sha-1-0.9.2 \
+		sha2-0.9.2 \
+		smallvec-1.6.1 \
 		stable_deref_trait-1.1.1 \
-		strsim-0.7.0 \
-		syn-0.15.22 \
-		tempfile-3.0.5 \
-		termcolor-1.0.4 \
-		termion-1.5.1 \
-		textwrap-0.10.0 \
-		thread_local-0.3.6 \
-		ucd-util-0.1.3 \
-		unicode-width-0.1.5 \
-		unicode-xid-0.1.0 \
-		unreachable-1.0.0 \
-		utf8-ranges-1.0.2 \
+		stacker-0.1.12 \
+		strsim-0.8.0 \
+		syn-1.0.17 \
+		synstructure-0.12.3 \
+		tempfile-3.2.0 \
+		termcolor-1.1.0 \
+		termize-0.1.1 \
+		textwrap-0.11.0 \
+		thread_local-1.0.1 \
+		tracing-0.1.19 \
+		tracing-attributes-0.1.11 \
+		tracing-core-0.1.15 \
+		typenum-1.12.0 \
+		unicode-normalization-0.1.12 \
+		unicode-width-0.1.7 \
+		unicode-xid-0.2.0 \
 		vec_map-0.8.1 \
-		version_check-0.1.5 \
-		void-1.0.2 \
-		winapi-0.3.6 \
+		version_check-0.9.2 \
+		wasi-0.10.2+wasi-snapshot-preview1 \
+		winapi-0.3.8 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.1 \
-		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		wincolor-1.0.1
+		winapi-util-0.1.4 \
+		winapi-x86_64-pc-windows-gnu-0.4.0
+MAKE_ENV=	RUSTC_BOOTSTRAP=1
+PLIST_FILES=	bin/racer
 
 .include <bsd.port.mk>

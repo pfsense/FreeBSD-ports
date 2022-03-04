@@ -1,5 +1,4 @@
 # Created by: J.F. Dockes
-# $FreeBSD$
 
 PORTNAME=	xapian-core
 PORTVERSION=	1.2.25
@@ -15,19 +14,20 @@ COMMENT=	Probabilistic text search database engine
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL=	xapian-core xapian-core10
-
-OPTIONS_DEFINE=	DOCS SSE2
-SSE2_DESC=	Use SSE2 for floating point
-
-PORTSCOUT=	limitw:1,even
+USES=		libtool pathfix tar:xz
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		libtool pathfix tar:xz
 
 PORTDOCS=	*
+
+CONFLICTS_INSTALL=	xapian-core xapian-core10
+
+PORTSCOUT=	limitw:1,even
+
+OPTIONS_DEFINE=	DOCS SSE2
+SSE2_DESC=	Use SSE2 for floating point
 
 SSE2_CONFIGURE_ENABLE=	sse
 

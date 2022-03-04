@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	HTML-Fraction
 PORTVERSION=	0.50
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	HTML::Fraction - Encode fractions as HTML entities
+COMMENT=	Encode fractions as HTML entities with Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

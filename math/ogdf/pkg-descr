@@ -10,4 +10,4 @@ The library provides:
 * Self-contained code that does not require any additional libraries
   (except for some optional branch-and-cut algorithms).
 
-WWW: http://www.ogdf.net
+WWW: https://ogdf.uos.de/

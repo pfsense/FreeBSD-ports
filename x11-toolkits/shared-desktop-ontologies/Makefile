@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	shared-desktop-ontologies
 PORTVERSION=	0.11.0
 CATEGORIES=	x11-toolkits

@@ -1,5 +1,4 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTREVISION=	0
 CATEGORIES=	net lang
@@ -8,7 +7,7 @@ PKGNAMESUFFIX=	-${LIBPROXY_SLAVE}
 
 COMMENT=	Python binding for libproxy
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	flavors py3kplist
 
 LIBPROXY_SLAVE=	python

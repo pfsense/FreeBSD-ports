@@ -1,5 +1,4 @@
 # Created by: Tim Vanderhoek <ac199@freenet.hamilton.on.ca>
-# $FreeBSD$
 
 PORTNAME=	uudeview
 PORTVERSION=	0.5.20
@@ -11,6 +10,8 @@ COMMENT=	Program for uu/xx/Base64/BinHex/yEnc de-/encoding
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		cpe
 
 LIB_DEPENDS=	libuu.so:converters/uulib
 

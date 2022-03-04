@@ -1,25 +1,28 @@
 # Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	Genshi
-PORTVERSION=	0.7
-PORTREVISION=	2
-#PORTEPOCH=	0
+PORTVERSION=	0.7.3
 CATEGORIES=	textproc www python
-MASTER_SITES=	http://ftp.edgewall.com/pub/${PORTNAME:tl}/
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	Python toolkit for stream-based generation of output for the web
+COMMENT=	Toolkit for generation of output for the web
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		python:3.6+
+USE_PYTHON=	distutils autoplist
 
 OPTIONS_DEFINE=	BABEL
 BABEL_DESC=	I18n support through the Babel plugin
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+BABEL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=0.8:devel/py-babel@${PY_FLAVOR}
 
-BABEL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=0.9.6:devel/py-babel@${PY_FLAVOR}
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

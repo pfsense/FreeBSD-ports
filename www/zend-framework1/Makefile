@@ -1,8 +1,8 @@
 # Created by: Greg Larkin <glarkin@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ZendFramework
 PORTVERSION=	1.12.16
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://packages.zendframework.com/releases/${DISTNAME}/
 PKGNAMESUFFIX=	1
@@ -12,6 +12,8 @@ COMMENT=	Framework for developing PHP web applications
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+IGNORE_WITH_PHP=	74
 
 NO_ARCH=	yes
 NO_BUILD=	yes

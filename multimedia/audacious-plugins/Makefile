@@ -1,63 +1,93 @@
 # Created by: Zastupov Stepan [RedChrom] <redchrom@mail.ru>
-# $FreeBSD$
 
 PORTNAME=	audacious-plugins
-PORTVERSION=	3.10.1
-PORTREVISION=	1
+PORTVERSION=	4.1
+PORTREVISION=	3
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://distfiles.audacious-media-player.org/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Plugins needed for audacious
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	audacious:multimedia/audacious
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 		libdbus-1.so:devel/dbus \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libmpg123.so:audio/mpg123
-RUN_DEPENDS=	audacious:multimedia/audacious
+
+FLAVORS=	qt5 gtk2
+FLAVOR?=	${FLAVORS:[1]}
 
 USES=		compiler:c++11-lib gettext-tools gmake gnome iconv \
-		localbase pkgconfig tar:bzip2
-USE_GNOME=	gtk20 glib20 libxml2 cairo gdkpixbuf2
+		localbase pkgconfig tar:bzip2 xorg
+USE_GNOME=	glib20 libxml2 gdkpixbuf2
 USE_XORG=	x11
 
-CONFLICTS_INSTALL=	audacious-plugins-gtk3-3.*
+qt5_CONFLICTS_INSTALL=	audacious-plugins-gtk2
+qt5_RUN_DEPENDS=	audacious:multimedia/audacious@qt5
+qt5_BUILD_DEPENDS=	audacious:multimedia/audacious@qt5
+
+gtk2_PKGNAMESUFFIX=	-gtk2
+gtk2_CONFLICTS_INSTALL=	audacious-plugins
+gtk2_RUN_DEPENDS=	audacious:multimedia/audacious@gtk2
+gtk2_BUILD_DEPENDS=	audacious:multimedia/audacious@gtk2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-console --disable-soxr \
-		--enable-gnomeshortcuts \
-		--enable-gtk --enable-hotkey
+		--enable-gnomeshortcuts
 
-OPTIONS_DEFINE=	AAC AMIDI AOSD BS2B CDDA CUE FFMPEG FLAC LAME LIRC \
-		MMS MODPLUG MPRIS NEON NLS NOTIFY OPENGL SAMPLERATE \
+.if ${FLAVOR} == qt5
+CONFIGURE_ARGS+=	--enable-qt --disable-gtk
+USES+=			qt:5
+USE_QT=			core gui widgets
+PLIST_SUB=		QT5="" GTK2="@comment "
+.elif ${FLAVOR} == gtk2
+CONFIGURE_ARGS+=	--disable-qt --enable-gtk --enable-hotkey
+USE_GNOME+=		gtk20 cairo
+PLIST_SUB=		QT5="@comment " GTK2=""
+.endif
+
+OPTIONS_DEFINE=	AAC ADPLUG AMIDI BS2B CDDA CUE FFMPEG FLAC LAME LIRC \
+		MMS MODPLUG MPRIS NEON NLS NOTIFY OPENMPT SAMPLERATE \
 		SCROBBLER SID SNDFILE SPEEDPITCH VORBIS WAVPACK
 OPTIONS_MULTI=		OUTPUT
 OPTIONS_MULTI_OUTPUT=	ALSA FILEWRITER JACK OSS PULSEAUDIO SDL SNDIO
-OPTIONS_DEFAULT=AAC AOSD CDDA CUE FILEWRITER FFMPEG FLAC \
-		MMS MPRIS NEON NLS NOTIFY OSS SCROBBLER VORBIS WAVPACK
+OPTIONS_DEFAULT=	AAC ADPLUG CDDA CUE FILEWRITER FFMPEG FLAC MMS MPRIS \
+			NEON NLS NOTIFY OPENMPT OSS PULSEAUDIO SCROBBLER \
+			SID VORBIS WAVPACK
 OPTIONS_SUB=	yes
 
+.if ${FLAVOR} == gtk2
+OPTIONS_DEFINE+=	AOSD OPENGL
+OPTIONS_DEFAULT+=	AOSD
+.endif
+
+ADPLUG_DESC=	ADPLUG plugin
 AMIDI_DESC=	Amidi decoder
 AOSD_DESC=	Audacious OSD
 BS2B_DESC=	BS2B effect
 FILEWRITER_DESC=File writer
 MPRIS_DESC=	NPRIS plugin
 NEON_DESC=	Neon plugin
+OPENMPT_DESC=	OpenMPT plugin
 SCROBBLER_DESC=	Scrobbler decoder
 SID_DESC=	Sound chip emulator of Commodore
 SPEEDPITCH_DESC=Speed and Pitch plugin
 
 AAC_LIB_DEPENDS=	libfaad.so:audio/faad
 AAC_CONFIGURE_ENABLE=	aac
+ADPLUG_LIB_DEPENDS=	libadplug.so:audio/libadplug \
+			libbinio.so:devel/libbinio
+ADPLUG_CONFIGURE_ENABLE=	adplug
+
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CONFIGURE_ENABLE=	alsa
 AMIDI_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 AMIDI_CONFIGURE_ENABLE=	amidiplug
+AOSD_USES=		xorg
 AOSD_USE=		gnome=pango xorg=xrender
 AOSD_LIB_DEPENDS=	libXcomposite.so:x11/libXcomposite
 AOSD_CONFIGURE_ENABLE=	aosd
@@ -92,9 +122,11 @@ NLS_USES=		gettext-runtime
 NLS_CONFIGURE_ENABLE=	nls
 NOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
 NOTIFY_CONFIGURE_ENABLE=notify
-OPENGL_USES=		gl
+OPENGL_USES=		gl xorg
 OPENGL_USE=		xorg=x11 gl=gl
 OPENGL_CONFIGURE_ENABLE=glspectrum
+OPENMPT_LIB_DEPENDS=	libopenmpt.so:audio/libopenmpt
+OPENMPT_CONFIGURE_ENABLE=	openmpt
 OSS_CONFIGURE_ENABLE=	oss4
 PULSEAUDIO_LIB_DEPENDS=	libpulse-mainloop-glib.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ENABLE=	pulse
@@ -104,6 +136,7 @@ SCROBBLER_LIB_DEPENDS=	libcurl.so:ftp/curl
 SCROBBLER_CONFIGURE_ENABLE=	scrobbler2
 SDL_CONFIGURE_ON=	--enable-sdlout --with-libsdl=2
 SDL_CONFIGURE_OFF=	--disable-sdlout
+SDL_USES=		sdl
 SDL_USE=		SDL=sdl2
 SID_LIB_DEPENDS=	libsidplayfp.so:audio/libsidplayfp
 SID_CONFIGURE_ENABLE=	sid
@@ -131,5 +164,13 @@ post-patch-NLS-off:
 post-install:
 	@${FIND} ${STAGEDIR}${PREFIX}/lib/audacious/ -name "*.so" \
 		-exec ${STRIP_CMD} {} \;
+
+post-install-ADPLUG-on:
+	${INSTALL_LIB} ${WRKSRC}/src/adplug/adplug.so \
+		${STAGEDIR}${PREFIX}/lib/audacious/Input
+
+post-install-OPENMPT-on:
+	${INSTALL_LIB} ${WRKSRC}/src/openmpt/openmpt.so \
+		${STAGEDIR}${PREFIX}/lib/audacious/Input
 
 .include <bsd.port.mk>

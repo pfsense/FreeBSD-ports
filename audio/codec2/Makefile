@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	codec2
 DISTVERSION=	0.8.1
+PORTREVISION=	2
 CATEGORIES=	audio hamradio
 MASTER_SITES=	https://hobbes1069.fedorapeople.org/freetel/codec2/
 
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libspeexdsp.so:audio/speexdsp
 
-CONFLICTS=	libcodec2-[0-9]*
+CONFLICTS=	libcodec2
 USES=		cmake pathfix pkgconfig shebangfix tar:xz
 USE_LDCONFIG=	yes
 

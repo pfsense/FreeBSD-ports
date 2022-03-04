@@ -3,7 +3,7 @@ bin/kde-add-printer
 bin/kde-print-queue
 lib/libkcupslib.so
 %%QT_PLUGINDIR%%/kcm_printer_manager.so
-%%QT_PLUGINDIR%%/kded_printmanager.so
+%%QT_PLUGINDIR%%/kf5/kded/printmanager.so
 %%QT_QMLDIR%%/org/kde/plasma/printmanager/libprintmanager.so
 %%QT_QMLDIR%%/org/kde/plasma/printmanager/qmldir
 share/applications/org.kde.ConfigurePrinter.desktop
@@ -11,10 +11,12 @@ share/applications/org.kde.PrintQueue.desktop
 share/applications/org.kde.kde-add-printer.desktop
 share/knotifications5/printmanager.notifyrc
 share/kservices5/kcm_printer_manager.desktop
-share/kservices5/kded/printmanager.desktop
-share/kservices5/plasma-applet-org.kde.plasma.printmanager.desktop
 share/locale/ar/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/ar/LC_MESSAGES/print-manager.mo
+share/locale/ast/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
+share/locale/ast/LC_MESSAGES/print-manager.mo
+share/locale/az/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
+share/locale/az/LC_MESSAGES/print-manager.mo
 share/locale/bg/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/bg/LC_MESSAGES/print-manager.mo
 share/locale/bs/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
@@ -51,6 +53,8 @@ share/locale/hu/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/hu/LC_MESSAGES/print-manager.mo
 share/locale/ia/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/ia/LC_MESSAGES/print-manager.mo
+share/locale/id/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
+share/locale/id/LC_MESSAGES/print-manager.mo
 share/locale/it/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/it/LC_MESSAGES/print-manager.mo
 share/locale/ja/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
@@ -93,6 +97,8 @@ share/locale/sr/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/sr/LC_MESSAGES/print-manager.mo
 share/locale/sv/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/sv/LC_MESSAGES/print-manager.mo
+share/locale/tg/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
+share/locale/tg/LC_MESSAGES/print-manager.mo
 share/locale/tr/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/tr/LC_MESSAGES/print-manager.mo
 share/locale/ug/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
@@ -104,12 +110,10 @@ share/locale/zh_CN/LC_MESSAGES/print-manager.mo
 share/locale/zh_TW/LC_MESSAGES/plasma_applet_org.kde.plasma.printmanager.mo
 share/locale/zh_TW/LC_MESSAGES/print-manager.mo
 share/metainfo/org.kde.plasma.printmanager.appdata.xml
-share/plasma/plasmoids/org.kde.plasma.printmanager/contents/config/config.qml
+share/metainfo/org.kde.print-manager.metainfo.xml
 share/plasma/plasmoids/org.kde.plasma.printmanager/contents/config/main.xml
 share/plasma/plasmoids/org.kde.plasma.printmanager/contents/ui/PopupDialog.qml
 share/plasma/plasmoids/org.kde.plasma.printmanager/contents/ui/PrinterItem.qml
-share/plasma/plasmoids/org.kde.plasma.printmanager/contents/ui/StatusView.qml
-share/plasma/plasmoids/org.kde.plasma.printmanager/contents/ui/config.qml
 share/plasma/plasmoids/org.kde.plasma.printmanager/contents/ui/printmanager.qml
 share/plasma/plasmoids/org.kde.plasma.printmanager/metadata.desktop
 share/plasma/plasmoids/org.kde.plasma.printmanager/metadata.json

@@ -1,9 +1,7 @@
 # Created by: Andrew L. Neporada <andrew@chg.ru>
-# $FreeBSD$
 
 PORTNAME=	gsl
-PORTVERSION=	2.5
-PORTREVISION=	1
+PORTVERSION=	2.7
 CATEGORIES=	math
 MASTER_SITES=	GNU
 

@@ -1,11 +1,11 @@
---- shell/completion.bash.orig	2017-12-03 14:55:24 UTC
+--- shell/completion.bash.orig	2020-08-03 09:46:24 UTC
 +++ shell/completion.bash
-@@ -219,7 +219,7 @@ _fzf_complete_kill() {
+@@ -262,7 +262,7 @@ _fzf_complete_kill() {
  
-   local selected fzf
-   fzf="$(__fzfcmd_complete)"
--  selected=$(command ps -ef | sed 1d | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-50%} --min-height 15 --reverse $FZF_DEFAULT_OPTS --preview 'echo {}' --preview-window down:3:wrap $FZF_COMPLETION_OPTS" $fzf -m | awk '{print $2}' | tr '\n' ' ')
-+  selected=$(ps -uef | sed 1d | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-50%} --min-height 15 --reverse $FZF_DEFAULT_OPTS --preview 'echo {}' --preview-window down:3:wrap $FZF_COMPLETION_OPTS" $fzf -m | awk '{print $2}' | tr '\n' ' ')
-   printf '\e[5n'
+ _fzf_proc_completion() {
+   _fzf_complete -m --preview 'echo {}' --preview-window down:3:wrap --min-height 15 -- "$@" < <(
+-    command ps -ef | sed 1d
++    command ps -uef | sed 1d
+   )
+ }
  
-   if [ -n "$selected" ]; then

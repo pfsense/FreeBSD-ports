@@ -1,10 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	cadence
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.0-7
-DISTVERSIONSUFFIX=	-g4a5f5b4
-PORTREVISION=	3
+DISTVERSION=	0.9.1
+PORTREVISION=	7
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	falkTX
 GH_PROJECT=	Cadence
 USE_QT=		core gui widgets buildtools_build
-USE_PYQT=	core_run gui_run network_run widgets_run sip xml dbussupport
+USE_PYQT=	core_run gui_run network_run opengl_run svg_run widgets_run xml_run sip xml dbussupport
 
 CXXFLAGS+=	-DJACKBRIDGE_PROPER_CPP11_SUPPORT=yes
 # Give the Makefile the proper versioned binaries of PyQt
@@ -39,8 +36,9 @@ post-patch:
 		cadence cadence-aloop-daemon cadence-jacksettings cadence-logs \
 		cadence-pulse2jack cadence-pulse2loopback cadence-render \
 		cadence-session-start catarina catia claudia claudia-launcher
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
-	${REINPLACE_CMD} -e 's|-mtune=generic -msse -mfpmath=sse||' ${WRKSRC}/c++/Makefile.mk
+	${REINPLACE_CMD} -e 's|-mtune=generic||' ${WRKSRC}/c++/Makefile.mk
+.if ! ${ARCH} == amd64 && ! ${ARCH} == i386
+	${REINPLACE_CMD} -e 's|-msse -mfpmath=sse||' ${WRKSRC}/c++/Makefile.mk
 .endif
 
 .include <bsd.port.post.mk>

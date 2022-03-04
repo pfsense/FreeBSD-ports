@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	elixir-nats
 DISTVERSION=	0.1.4-alpha
 CATEGORIES=	devel

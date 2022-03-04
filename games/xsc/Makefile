@@ -1,5 +1,4 @@
 # Created by: Mark Pulford <mark@kyne.com.au>
-# $FreeBSD$
 
 PORTNAME=	xsc
 PORTVERSION=	1.6
@@ -16,7 +15,7 @@ COMMENT=	Vector graphics space shoot'em up game
 
 LICENSE=	GPLv2
 
-USES=		compiler
+USES=		compiler xorg
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 CXXFLAGS+=	${CXXFLAGS_${CHOSEN_COMPILER_TYPE}}

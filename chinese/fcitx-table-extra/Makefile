@@ -1,5 +1,4 @@
 # Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fcitx-table-extra
 PORTVERSION=	0.3.8
@@ -16,8 +15,7 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libfcitx-config.so:chinese/fcitx
 
-USES=		tar:xz cmake gettext
-INSTALLS_ICONS=	yes
+USES=		cmake gettext gnome tar:xz
 STRIP=
 
 .include <bsd.port.mk>

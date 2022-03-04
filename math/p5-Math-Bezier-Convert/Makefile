@@ -1,5 +1,4 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	Math-Bezier-Convert
 PORTVERSION=	0.02
@@ -13,5 +12,7 @@ COMMENT=	Convert cubic and quadratic Bezier each other
 
 USES=		perl5 dos2unix
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

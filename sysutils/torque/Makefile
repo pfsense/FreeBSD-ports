@@ -1,5 +1,4 @@
 # Created by: trasz
-# $FreeBSD$
 
 PORTNAME=	torque
 PORTVERSION=	2.5.13
@@ -12,6 +11,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source distributed computing resource manager based on PBS
 
 BROKEN_aarch64=		fails to link: missing sbrk
+BROKEN_riscv64=		fails to link: missing sbrk
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 USES=		gmake perl5 libtool
@@ -25,7 +25,7 @@ USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 CFLAGS+=	-D_WANT_VMMETER
 
-CONFLICTS_INSTALL=	qstat-[0-9]* zh-qterm-[0-9]*
+CONFLICTS_INSTALL=	qstat zh-qterm
 
 OPTIONS_DEFINE=	EXAMPLES
 

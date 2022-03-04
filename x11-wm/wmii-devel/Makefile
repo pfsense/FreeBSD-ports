@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wmii
 PORTVERSION=	3.9.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://dl.suckless.org/wmii/
 PKGNAMESUFFIX=	-devel
@@ -17,9 +16,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libixp.so:devel/libixp
 
-CONFLICTS=	wmii-[0-9]*
+CONFLICTS=	wmii
 
-USES=		pkgconfig python:run shebangfix tar:tbz
+USES=		pkgconfig python:run shebangfix tar:tbz xorg
 SHEBANG_FILES=	alternative_wmiircs/python/wmiirc
 USE_XORG=	x11 xext xrandr xrender xinerama xft
 

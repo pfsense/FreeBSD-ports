@@ -1,15 +1,18 @@
 # Created by: Josef El-Rayes <josef@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wmbsdbatt
 PORTVERSION=	0.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils windowmaker
-MASTER_SITES=	http://homepage.univie.ac.at/l.ertl/wmbsdbatt/files/
+MASTER_SITES=	http://mirror.its.dal.ca/freebsd/distfiles/	\
+		https://discovery.midnightbsd.org/mports/distfiles/
 
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	Dockapp for battery & temperature monitoring through ACPI
 
+LICENSE=	GPLv2
+
+USES=		xorg
 USE_XORG=	x11 xpm
 
 PLIST_FILES=	bin/wmbsdbatt

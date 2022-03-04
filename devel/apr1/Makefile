@@ -1,5 +1,4 @@
 # Created by: Garrett Rooney <rooneg@electricjellyfish.net>
-# $FreeBSD$
 
 PORTNAME=	apr
 PORTVERSION=	${APR_VERSION}.${APU_VERSION}
@@ -20,7 +19,7 @@ USES=		iconv pathfix libtool cpe
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
-APR_VERSION=	1.6.5
+APR_VERSION=	1.7.0
 APU_VERSION=	1.6.1
 
 CPE_VENDOR=	apache
@@ -33,11 +32,10 @@ OPTIONS_DEFINE=		IPV6
 OPTIONS_GROUP_APU=	BDB GDBM LDAP MYSQL NDBM ODBC PGSQL SQLITE
 OPTIONS_RADIO=		CRYPTO
 OPTIONS_RADIO_CRYPTO=	SSL NSS
-OPTIONS_DEFAULT=	DEVRANDOM BDB GDBM SSL
+OPTIONS_DEFAULT=	BDB GDBM SSL
 
 APU_DESC=		Database support
 CRYPTO_DESC=		Cryptography provider
-DEVRANDOM_DESC=		Use /dev/random or compatible
 NDBM_DESC=		NDBM support
 NSS_DESC=		NSS crypto driver
 SSL_DESC=		OpenSSL crypto driver
@@ -114,6 +112,10 @@ APU_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${AP
 
 .include <bsd.port.options.mk>
 
+.if ${ARCH} == powerpc || ${ARCH} == powerpcspe
+CONFIGURE_ENV+=	ap_cv_atomic_builtins=no
+.endif
+
 .if ${PORT_OPTIONS:MSSL} || ${PORT_OPTIONS:MNSS}
 APU_CONF_ARGS+=	--with-crypto
 .else
@@ -122,10 +124,6 @@ APU_CONF_ARGS+=	--without-crypto
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MMYSQL} && ${MYSQL_VER} == 80
-BROKEN=	Does not build with MySQL 8.0, see https://bz.apache.org/bugzilla/show_bug.cgi?id=62631
-.endif
-
 post-extract:
 # cleanup files not used on this platform
 	@${FIND} ${WRKDIR} -type f \( -name 'NWGNU*' -o -name '*.ds?' -o -name '*.dep' -o -name '*.mak' -o -name '*.win' \) -delete
@@ -133,8 +131,6 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's/OSVERSION/${OSVERSION}/g' \
 		${APR_WRKDIR}/configure
-	@${REINPLACE_CMD} -e '/recursive:/s/$$/ .MAKE/' \
-		${APR_WRKDIR}/build/apr_rules.mk.in
 
 do-configure:
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-${APR_VERSION}"

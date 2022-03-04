@@ -1,8 +1,7 @@
 # Created by: vanilla@
-# $FreeBSD$
 
 PORTNAME=	protobuf
-PORTVERSION=	3.7.1
+PORTVERSION=	3.17.3
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
@@ -16,11 +15,11 @@ LICENSE=	BSD3CLAUSE
 BUILD_DEPENDS=	protoc:devel/protobuf
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.9:devel/py-six@${PY_FLAVOR}
 
-USES=		python
+USES=		cpe python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
-DO_MAKE_TEST=	${PYTHON_CMD} ${PYDISTUTILS_SETUP}
 NO_ARCH=	yes
-TEST_TARGET=	test
+
+CPE_VENDOR=	google
 
 .include <bsd.port.mk>

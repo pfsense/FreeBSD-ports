@@ -1,8 +1,7 @@
 # Created by: James Bailie <jimmy@mammothcheese.ca>
-# $FreeBSD$
 
 PORTNAME=	munger
-PORTVERSION=	5.10
+PORTVERSION=	5.12
 CATEGORIES=	lang
 MASTER_SITES=	http://www.mammothcheese.ca/
 

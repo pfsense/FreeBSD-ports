@@ -1,5 +1,4 @@
 # Created by: Vincent Tantardini <vinc@FreeBSD-fr.org>
-# $FreeBSD$
 
 PORTNAME=	libcaca
 DISTVERSION=	0.99.beta19
@@ -10,7 +9,7 @@ MASTER_SITES=	http://caca.zoy.org/raw-attachment/wiki/libcaca/
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Graphics library that outputs text instead of pixels
 
-USES=		libtool ncurses pathfix pkgconfig
+USES=		cpe libtool ncurses pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--disable-doc \
@@ -23,6 +22,7 @@ CONFIGURE_ARGS=	--disable-doc \
 		--disable-zzuf
 MAKE_ENV=	V=1
 INSTALL_TARGET=	install-strip
+CPE_VENDOR=	libcaca_project
 
 DOCS=		AUTHORS COPYING COPYING.GPL COPYING.LGPL ChangeLog NEWS \
 		NOTES README THANKS
@@ -32,6 +32,7 @@ OPTIONS_DEFAULT=	X11 IMLIB2
 X11_DESC=	X11 and OpenGL support
 FTGL_DESC=	Freetype font rendering in OpenGL
 
+X11_USES=	gl xorg
 X11_USE=	XORG=x11 GL=glut
 X11_CONFIGURE_OFF=	--disable-x11 --disable-gl
 IMLIB2_LIB_DEPENDS=	libImlib2.so:graphics/imlib2

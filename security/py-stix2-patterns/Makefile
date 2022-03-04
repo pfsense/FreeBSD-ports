@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	stix2-patterns
-PORTVERSION=	1.1.0
+PORTVERSION=	1.3.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +18,7 @@ GH_ACCOUNT=	oasis-open
 GH_PROJECT=	cti-pattern-validator
 
 NO_ARCH=	yes
-USES=		python:3.4+
+USES=		python:3.5+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

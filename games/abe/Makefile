@@ -1,5 +1,4 @@
 # Created by: Alejandro Pulver <alejandro@varnet.biz>
-# $FreeBSD$
 
 PORTNAME=	abe
 PORTVERSION=	1.1
@@ -16,7 +15,7 @@ COMMENT=	Abe's Amazing Adventure
 
 LICENSE=	GPLv2
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	mixer sdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-data-dir=${DATADIR}

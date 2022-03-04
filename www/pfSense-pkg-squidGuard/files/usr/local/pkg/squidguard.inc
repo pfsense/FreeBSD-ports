@@ -3,7 +3,7 @@
  * squidguard.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2013 Marcello Coutinho
@@ -698,7 +698,7 @@ function squidguard_before_form_dest(&$pkg) {
 function make_grid_general_items($id = '') {
 	global $squidguard_config;
 
-	$bg_color = 'bgcolor="#dddddd"';
+	$bg_color = 'bgcolor="#919191"';
 	$res = '';
 	$res .= '<table width="100%">';
 
@@ -749,11 +749,11 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
     foreach($items as $item) {
         if ($x === 0) {
             $color = '';
-            $color2 = 'style="background-color: #dddddd;"';
+            $color2 = 'style="background-color: #919191;"';
             $x = 1;
         }
         else {
-            $color = 'style="background-color: #dddddd;"';
+            $color = 'style="background-color: #919191;"';
             $color2 = '';
             $x = 0;
         }
@@ -826,7 +826,7 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
 
     # header
     if (!empty($tbl)) {
-        $color = 'style="background-color: #dddddd;"';
+        $color = 'style="background-color: #919191;"';
         $thdr = '';
         $hdr1up = "<big>Target Categories</big>";
         $hdr1ov = "<big>Target Categories for off-time</big>";
@@ -901,7 +901,7 @@ function sg_check_unique_name($module_id, $name, $log='') {
 function sg_check_reserved_name($name, $log='')
 {
     $res = true;
-    $reserved = array("acl", "all", "allow", "dbhome", "default", "dest", "in-addr", "log", "logdir", "none", "pass", "rew", "src", "url", "user");
+    $reserved = array("acl", "all", "allow", "dbhome", "default", "dest", "in-addr", "log", "logdir", "none", "pass", "rew", "src", "squidstatus", "url", "user");
 
     if (in_array(strtolower(trim($name)), $reserved)) {
         $res = false;
@@ -1020,68 +1020,69 @@ EOF;
 # convert_pfxml_to_sgxml
 # -----------------------------------------------------------------
 function convert_pfxml_to_sgxml() {
+	capability_update_source();
 
-    capability_update_source();
+	global $config;
+	$sgxml = array();
+	$pfxml = $config['installedpackages'][MODULE_GENERAL]['config'][0];
 
-    global $config;
-    $sgxml = array();
-    $pfxml = $config['installedpackages'][MODULE_GENERAL]['config'][0];
+	$sgxml[F_LOGDIR]           = SQUIDGUARD_LOGDIR;
+	$sgxml[F_DBHOME]           = SQUIDGUARD_DBHOME;
+	$sgxml[F_LDAPENABLE]       = $pfxml['ldap_enable'];
+	$sgxml[F_LDAPBINDDN]       = $pfxml['ldapbinddn'];
+	$sgxml[F_LDAPBINDPASS]     = $pfxml['ldapbindpass'];
+	$sgxml[F_LDAPCACHETIME]    = $pfxml['ldapcachetime'];
+	$sgxml[F_LDAPVERSION]      = $pfxml['ldapversion'];
+	$sgxml[F_STRIPNTDOMAIN]    = $pfxml['stripntdomain'];
+	$sgxml[F_STRIPREALM]       = $pfxml['striprealm'];
+	$sgxml[F_BINPATH]          = SQUIDGUARD_BINPATH;
+	$sgxml[F_WORKDIR]          = SQUIDGUARD_WORKDIR;
+	$sgxml[F_SGCONF_XML]       = SQUIDGUARD_WORKDIR . SQUIDGUARD_CONFXML;
+	$sgxml[F_ENABLED]          = $pfxml[F_SQUIDGUARDENABLE];
+	$sgxml[F_BLACKLISTENABLED] = $pfxml[F_BLACKLIST];
+	$sgxml[F_BLACKLISTURL]     = $pfxml[F_BLACKLISTURL];
+	$sgxml[F_SOURCES]          = convert_pfxml_to_sgxml_source($config);
+	$sgxml[F_DESTINATIONS]     = convert_pfxml_to_sgxml_destination($config);
+	$sgxml[F_REWRITES]         = convert_pfxml_to_sgxml_rewrite($config);
+	$sgxml[F_TIMES]            = convert_pfxml_to_sgxml_time($config);
+	$sgxml[F_ACLS]             = convert_pfxml_to_sgxml_acl($config);
+	$sgxml[F_DEFAULT]          = convert_pfxml_to_sgxml_default($config);
 
-    $sgxml[F_LOGDIR]           = SQUIDGUARD_LOGDIR;
-    $sgxml[F_DBHOME]           = SQUIDGUARD_DBHOME;
-    $sgxml[F_LDAPENABLE]       = $pfxml['ldap_enable'];
-    $sgxml[F_LDAPBINDDN]       = $pfxml['ldapbinddn'];
-    $sgxml[F_LDAPBINDPASS]     = $pfxml['ldapbindpass'];
-    $sgxml[F_LDAPVERSION]      = $pfxml['ldapversion'];
-    $sgxml[F_STRIPNTDOMAIN]    = $pfxml['stripntdomain'];
-    $sgxml[F_STRIPREALM]       = $pfxml['striprealm'];
-    $sgxml[F_BINPATH]          = SQUIDGUARD_BINPATH;
-    $sgxml[F_WORKDIR]          = SQUIDGUARD_WORKDIR;
-    $sgxml[F_SGCONF_XML]       = SQUIDGUARD_WORKDIR . SQUIDGUARD_CONFXML;
-    $sgxml[F_ENABLED]          = $pfxml[F_SQUIDGUARDENABLE];
-    $sgxml[F_BLACKLISTENABLED] = $pfxml[F_BLACKLIST];
-    $sgxml[F_BLACKLISTURL]     = $pfxml[F_BLACKLISTURL];
-    $sgxml[F_SOURCES]          = convert_pfxml_to_sgxml_source($config);
-    $sgxml[F_DESTINATIONS]     = convert_pfxml_to_sgxml_destination($config);
-    $sgxml[F_REWRITES]         = convert_pfxml_to_sgxml_rewrite($config);
-    $sgxml[F_TIMES]            = convert_pfxml_to_sgxml_time($config);
-    $sgxml[F_ACLS]             = convert_pfxml_to_sgxml_acl($config);
-    $sgxml[F_DEFAULT]          = convert_pfxml_to_sgxml_default($config);
+	# url_rewrite_children options
+	$sgxml[F_REWRITE_CH]		= $pfxml['rewrite_children'];
+	$sgxml[F_REWRITE_CH_STARTUP]	= $pfxml['rewrite_children_startup'];
+	$sgxml[F_REWRITE_CH_IDLE]		= $pfxml['rewrite_children_idle'];
 
-    # log
-    $sgxml[F_ENABLELOG]    = $pfxml['enable_log']    == 'on' ? 'on' : 'off';
-    $sgxml[F_ENABLEGUILOG] = $pfxml['enable_guilog'] == 'on' ? 'on' : 'off';
-    $sgxml[F_LOGROTATION]  = $pfxml['log_rotation']  == 'on' ? 'on' : 'off';
+	# log
+	$sgxml[F_ENABLELOG]    = $pfxml['enable_log']    == 'on' ? 'on' : 'off';
+	$sgxml[F_ENABLEGUILOG] = $pfxml['enable_guilog'] == 'on' ? 'on' : 'off';
+	$sgxml[F_LOGROTATION]  = $pfxml['log_rotation']  == 'on' ? 'on' : 'off';
 
-    #Clean adversiting
-    $sgxml[F_ADV_BLANKIMG] = $pfxml['adv_blankimg']  == 'on' ? 'on' : 'off';
+	#Clean adversiting
+	$sgxml[F_ADV_BLANKIMG] = $pfxml['adv_blankimg']  == 'on' ? 'on' : 'off';
 
+	# other
+	$lanip = $config['interfaces']['lan']['ipaddr'];
+	$sgxml[F_CURRENT_LAN_IP] = $lanip;
 
-    # other
-    $lanip = $config['interfaces']['lan']['ipaddr'];
-    $sgxml[F_CURRENT_LAN_IP] = $lanip;
+	# transparent
+	$squidxml = $config['installedpackages']['squid']['config'][0];
+	if($squidxml['transparent_proxy'] == 'on') {
+		$sgxml[F_SQUID_TRANSPARENT_MODE] = 'on';
+	} else {
+		unset($sgxml[F_SQUID_TRANSPARENT_MODE]);
+	}
 
-    # transparent
-    $squidxml = $config['installedpackages']['squid']['config'][0];
-    if($squidxml['transparent_proxy'] == 'on') {
-        $guiport = $config['system']['webgui']['port'];
-        $guiprotocol = $config['system']['webgui']['protocol'];
+	# WebGUI
+	$sgxml[F_CURRENT_GUI_PORT]  = $config['system']['webgui']['port'];
+	$sgxml[F_CURRENT_GUI_PROTO] = $config['system']['webgui']['protocol'];
 
-        $sgxml[F_SQUID_TRANSPARENT_MODE] = 'on';
-        $sgxml[F_CURRENT_GUI_PORT]  = $guiport;
-        $sgxml[F_CURRENT_GUI_PROTO] = $guiprotocol;
-    } else {
-        unset($sgxml[F_SQUID_TRANSPARENT_MODE]);
-        unset($sgxml[F_CURRENT_GUI_PORT]);
-        unset($sgxml[F_CURRENT_GUI_PROTO]);
-    }
+	# store cfg cache
+	$cfg_xml = dump_xml_config($sgxml, F_SQUIDGUARD);
+	safe_mkdir(dirname($sgxml[F_SGCONF_XML]));
+	file_put_contents($sgxml[F_SGCONF_XML], $cfg_xml);
 
-    # store cfg cache
-    $cfg_xml = dump_xml_config($sgxml, F_SQUIDGUARD);
-    safe_mkdir(dirname($sgxml[F_SGCONF_XML]));
-    file_put_contents($sgxml[F_SGCONF_XML], $cfg_xml);
-
-    return $sgxml;
+	return $sgxml;
 }
 
 # -----------------------------------------------------------------
@@ -1398,6 +1399,15 @@ function squidguard_adt_safesrch_add(&$rewrite_item)
     $rewrite_item[] = array(F_TARGETURL => '(search\.live\..*/.*q=.*)',  F_REPLACETO => '\1\&adlt=strict', F_MODE => 'i');
     $rewrite_item[] = array(F_TARGETURL => '(search\.msn\..*/.*q=.*)',   F_REPLACETO => '\1\&adlt=strict', F_MODE => 'i');
     $rewrite_item[] = array(F_TARGETURL => '(\.bing\..*/.*q=.*)',        F_REPLACETO => '\1\&adlt=strict', F_MODE => 'i');
+
+    # DuckDuckGo
+    $rewrite_item[] = array(F_TARGETURL => '(duckduckgo\..*/?.*q=.*)', F_REPLACETO => '\1\&kp=1', F_MODE => 'i');
+
+    # Extra search engines
+    $rewrite_item[] = array(F_TARGETURL => '(rambler\..*/?.*query=.*)', F_REPLACETO => '\1\&adult=family', F_MODE => 'i');
+    $rewrite_item[] = array(F_TARGETURL => '(qwant\..*/?.*q=.*)', F_REPLACETO => '\1\&s=2', F_MODE => 'i');
+    $rewrite_item[] = array(F_TARGETURL => '(ecosia\..*/search.*q=.*)', F_REPLACETO => '\1\&safesearch=2', F_MODE => 'i');
+    $rewrite_item[] = array(F_TARGETURL => '(onesearch\..*/yhs/search.*)', F_REPLACETO => '\1\&vm=r', F_MODE => 'i');
 
     return $rewrite_item;
 }

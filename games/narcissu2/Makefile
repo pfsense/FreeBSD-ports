@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	narcissu2
 PORTVERSION=	1.1
 CATEGORIES=	games
@@ -22,7 +20,7 @@ LICENSE_TEXT=	Permission has been granted to anyone to redistribute \
 		game data are not modified.
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-RUN_DEPENDS=	ponscr:games/ponscripter-sekai
+RUN_DEPENDS=	ponscr:games/ponscripter-07th-mod
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -30,8 +28,8 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-installer
 PORTDATA=	*
 PORTDOCS=	README
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man6/${PORTNAME}.6.gz \
-		share/icons/hicolor/48x48/apps/${PORTNAME}.png
+		share/icons/hicolor/48x48/apps/${PORTNAME}.png \
+		share/man/man6/${PORTNAME}.6.gz
 
 DESKTOP_ENTRIES="Narcissu & Narcissu: Side 2nd" \
 		"" \
@@ -54,7 +52,7 @@ do-install:
 	(cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
 	${INSTALL_DATA} -p ${WRKDIR}/*.utf ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.6 \
-		${STAGEDIR}${MAN6PREFIX}/man/man6/${PORTNAME}.6
+		${STAGEDIR}${PREFIX}/share/man/man6/${PORTNAME}.6
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 

@@ -1,9 +1,9 @@
 # Created by: Maxim Ignatenko
-# $FreeBSD$
 
 PORTNAME=	vsftpd-ext
 PORTVERSION=	${UPSTREAMVERSION}.${EXTVERSION}
-CATEGORIES=	ftp ipv6
+PORTREVISION=	1
+CATEGORIES=	ftp
 MASTER_SITES=	http://vsftpd.devnet.ru/files/${UPSTREAMVERSION}/ext.${EXTVERSION}/
 PKGNAMESUFFIX?=	${SSL_SUFFIX}${PKGNAMESUFFIX2}
 DISTNAME=	vsFTPd-${UPSTREAMVERSION}-ext${EXTVERSION}
@@ -12,6 +12,7 @@ MAINTAINER=	xjflyttp@gmail.com
 COMMENT=	FTP daemon that aims to be "very secure". Extended build
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 UPSTREAMVERSION=3.0.3
 EXTVERSION=	1

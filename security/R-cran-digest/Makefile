@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	digest
-PORTVERSION=	0.6.18
-PORTREVISION=	1
+PORTVERSION=	0.6.29
 CATEGORIES=	security
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

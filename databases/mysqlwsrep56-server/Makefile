@@ -1,11 +1,11 @@
 # Created by: Philip Stoev <philip.stoev@galeracluster.com>
-# $FreeBSD$
 
 PORTNAME=	mysqlwsrep
-PORTVERSION?=	5.6.42
+PORTVERSION?=	5.6.51
 DISTVERSIONPREFIX?=	wsrep_
-DISTVERSIONSUFFIX?=	-25.24
-CATEGORIES=	databases ipv6
+DISTVERSIONSUFFIX?=	-25.33
+PORTREVISION?=	0
+CATEGORIES=	databases
 PKGNAMESUFFIX=	56-server
 
 MAINTAINER=	devel@galeracluster.com
@@ -17,26 +17,22 @@ NOT_FOR_ARCHS=		aarch64 armv6 armv7 powerpc64
 NOT_FOR_ARCHS_REASON=	error: Unsupported platform
 
 RUN_DEPENDS=	bash:shells/bash \
-		lsof:sysutils/lsof \
-		netcat:net/netcat \
 		rsync:net/rsync \
 		socat:net/socat
 LIB_DEPENDS=	libevent.so:devel/libevent liblz4.so:archivers/liblz4
-
-BROKEN_SSL=	openssl111
-BROKEN_SSL_REASON_openssl111=	incomplete definition of type 'struct dh_st'
-
-DATADIR=	${PREFIX}/share/mysql
-ETCDIR=		${PREFIX}/etc/mysql
 
 USES=		bison \
 		cmake:noninja \
 		compiler:c++11-lib \
 		compiler:c11 \
+		mysql:56 \
 		libedit \
 		perl5 \
 		shebangfix \
 		ssl
+
+DATADIR=	${PREFIX}/share/mysql
+ETCDIR=		${PREFIX}/etc/mysql
 
 USE_PERL5=	run
 USE_LDCONFIG=	yes
@@ -79,6 +75,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DOPENSSL_LIBRARY=${OPENSSLLIB}/libssl.so \
 		-DINSTALL_MYSQLTESTDIR=0 \
 		-DWITH_LIBWRAP=1 \
+		-DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 \
 		-DWITH_WSREP=1
 
 SHEBANG_FILES=	scripts/*.pl* scripts/*.sh scripts/wsrep_sst_*
@@ -95,11 +92,11 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 		MY_SECDIR=${MY_SECDIR} \
 		MY_TMPDIR=${MY_TMPDIR}
 
-CONFLICTS_INSTALL=	mariadb*-server-* \
-			mysql[0-9]*-server-* \
-			mysqlwsrep57*-server-* \
-			mysqlwsrep[1-489]*-server-* \
-			percona*-server-*
+CONFLICTS_INSTALL=	mariadb*-server \
+			mysql[0-9]*-server \
+			mysqlwsrep57*-server \
+			mysqlwsrep[1-489]*-server \
+			percona*-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -136,13 +133,13 @@ MMAN1=		my_print_defaults.1 \
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
-
 .include <bsd.port.pre.mk>
+
+# Plugin innodb_memcached requires -fcommon to avoid duplicate symbol linker
+# error with llmv11.
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && ${OSVERSION} >= 1300109
+CFLAGS+=	-fcommon
+.endif
 
 post-patch:
 	${REINPLACE_CMD} 's/*.1/${MMAN1}/' ${WRKSRC}/man/CMakeLists.txt

@@ -1,9 +1,7 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lmtest
-DISTVERSION=	0.9-36
-PORTREVISION=	1
+DISTVERSION=	0.9-38
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

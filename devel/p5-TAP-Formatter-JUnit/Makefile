@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	TAP-Formatter-JUnit
 PORTVERSION=	0.11
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for Harness output delegate for JUnit output
 
 LICENSE=	ART10 GPLv1+
@@ -20,7 +18,7 @@ RUN_DEPENDS=	\
 	p5-File-Slurp>0:devel/p5-File-Slurp \
 	p5-XML-Generator>0:textproc/p5-XML-Generator \
 	p5-List-MoreUtils>0:lang/p5-List-MoreUtils
-TEST_DEPENDS=	p5-IO-stringy>=0:devel/p5-IO-stringy
+TEST_DEPENDS=	p5-IO-Stringy>=0:devel/p5-IO-Stringy
 
 USES=		perl5
 USE_PERL5=	modbuild

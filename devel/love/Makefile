@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	love
-PORTVERSION=	11.2
+PORTVERSION=	11.3
 PORTREVISION=	1
 CATEGORIES=	devel games
 MASTER_SITES=	https://bitbucket.org/rude/love/downloads/ \
@@ -15,7 +12,7 @@ COMMENT=	Open-source 2D game engine
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe sparc64
+NOT_FOR_ARCHS=		mips mips64 powerpc powerpc64 powerpcspe sparc64
 NOT_FOR_ARCHS_REASON=	Hashing not yet implemented for big endian
 
 LIB_DEPENDS=	libmodplug.so:audio/libmodplug \
@@ -26,13 +23,14 @@ LIB_DEPENDS=	libmodplug.so:audio/libmodplug \
 		libogg.so:audio/libogg
 
 USES=		autoreconf compiler:c++11-lib desktop-file-utils gl gmake \
-		libtool localbase openal pkgconfig shared-mime-info
+		libtool localbase openal pkgconfig sdl shared-mime-info
 USE_SDL=	sdl2
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
 WRKSRC=		${WRKDIR}/love-${PORTVERSION}
 INSTALL_TARGET=	install-strip
 
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS LUAJIT GME

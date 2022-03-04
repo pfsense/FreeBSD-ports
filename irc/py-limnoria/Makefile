@@ -1,8 +1,7 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	limnoria
-PORTVERSION=	2018.09.09
+PORTVERSION=	2019.09.08
 CATEGORIES=	irc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,13 +17,14 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=0:textproc/py-feedparser@${PY_F
 		${PYTHON_PKGNAMEPREFIX}pytz>=0:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR}
 
-USES=		python # 2.6+
+USES=		cpe python:3.6-3.9
+CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
 
 GH_ACCOUNT=	ProgVal
 GH_PROJECT=	Limnoria
-GH_TAGNAME=	master-2018-09-10
+GH_TAGNAME=	master-2019-09-08
 
 OPTIONS_DEFINE=		ECDSA PROXY
 OPTIONS_DEFAULT=	ECDSA ENCODING RSS TIME

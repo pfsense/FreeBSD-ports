@@ -1,17 +1,19 @@
-# $FreeBSD$
-
 PORTNAME=	myrddin
 PORTVERSION=	0.3.1
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://myrlang.org/releases/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Myrddin Compiler
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64
+
+BUILD_DEPENDS=	as:devel/binutils
+RUN_DEPENDS=	as:devel/binutils
 
 USES=	gmake
 

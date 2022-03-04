@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	SoundFile
-DISTVERSION=	0.10.2
+DISTVERSION=	0.10.3.post1
 PORTREVISION=	1
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
@@ -18,8 +16,9 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.0:devel/py-cffi@${PY_FLAVOR} \
 		${PYNUMPY} \
 		${PREFIX}/lib/libsndfile.so:audio/libsndfile
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

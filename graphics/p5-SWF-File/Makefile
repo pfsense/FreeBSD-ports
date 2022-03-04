@@ -1,5 +1,4 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	SWF-File
 PORTVERSION=	0.42
@@ -17,5 +16,7 @@ RUN_DEPENDS=	p5-Data-TemporaryBag>=0:devel/p5-Data-TemporaryBag
 
 USES=		perl5 dos2unix
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

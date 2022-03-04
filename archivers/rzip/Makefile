@@ -1,5 +1,4 @@
 # Created by: Pav Lucistnik <pav@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rzip
 PORTVERSION=	2.1
@@ -12,7 +11,12 @@ COMMENT=	Compression program similar to gzip or bzip2
 
 LICENSE=	GPLv2
 
+USES=		cpe
+
+CPE_VENDOR=	rzip_project
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_PREFIX=${STAGEDIR}${PREFIX}
 
 PLIST_FILES=	bin/rzip man/man1/rzip.1.gz
 

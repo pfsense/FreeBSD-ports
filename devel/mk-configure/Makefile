@@ -1,8 +1,7 @@
 # Created by: Mikolaj Golub <to.my.trociny@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mk-configure
-PORTVERSION=	0.30.0
+PORTVERSION=	0.37.0
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -15,9 +14,12 @@ BUILD_DEPENDS=	${BMAKE}:devel/bmake
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		bmkdep:devel/bmkdep
 
+MAKE_JOBS_UNSAFE=	yes
+
 BMAKE?=		${LOCALBASE}/bin/bmake
 INSTALL_TARGET=	installdirs install install-doc
 
+PORTDATA=	*
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

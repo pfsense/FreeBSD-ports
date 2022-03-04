@@ -1,19 +1,18 @@
 # Created by: Stas Timokhin <stast@bsdportal.ru>
-# $FreeBSD$
 
 PORTNAME=	eiskaltdcpp
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	-data
-PORTREVISION=	0
+PORTREVISION=	20
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Shared data for EiskaltDC++ GUIs
+COMMENT=	Shared data for EiskaltDC++ client GUIs
 
 LICENSE=	GPLv3
 
 MASTERDIR=	${.CURDIR}/../eiskaltdcpp-lib
 
-USES=		cmake shebangfix
+USES=		cmake gnome shebangfix
 SHEBANG_FILES=	data/examples/commands.ru_RU.UTF-8.php \
 		data/examples/deadbeef.ru_RU.UTF-8.sh \
 		data/examples/mod.amarok.sh \
@@ -23,7 +22,6 @@ SHEBANG_FILES=	data/examples/commands.ru_RU.UTF-8.php \
 php_OLD_CMD=	/usr/bin/php5
 NO_ARCH=	yes
 NO_BUILD=	yes
-INSTALLS_ICONS=	yes
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/data
 

@@ -1,9 +1,8 @@
 # Created by: Greg Lehey <grog@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tempcontrol
 PORTVERSION=	1.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	http://www.lemis.com/grog/brewing/src/brewing/tempcontrol/
 

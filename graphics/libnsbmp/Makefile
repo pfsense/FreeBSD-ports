@@ -1,23 +1,23 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	libnsbmp
-PORTVERSION=	0.1.5
+PORTVERSION=	0.1.6
 CATEGORIES=	graphics
 MASTER_SITES=	http://download.netsurf-browser.org/libs/releases/
 EXTRACT_SUFX=	-src.tar.gz
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	NetSurf BMP decoder
 
 LICENSE=	MIT
 
 BUILD_DEPENDS=	netsurf-buildsystem>=1.5:devel/netsurf-buildsystem
 
-USES=		gmake
+USES=		cpe gmake
+CPE_VENDOR=	netsurf-browser
 USE_LDCONFIG=	yes
 
-MAKE_ENV=	COMPONENT_TYPE="lib-shared"
+MAKE_ENV=	BUILD_CC="${CC}" COMPONENT_TYPE="lib-shared"
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 

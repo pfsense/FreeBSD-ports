@@ -1,8 +1,7 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gnome-shell-extension-trash
-PORTVERSION=	0.0.0.20171125
+PORTVERSION=	0.2.0
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome3
 

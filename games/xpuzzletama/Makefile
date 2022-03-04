@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xpuzzletama
 PORTVERSION=	1.5b
@@ -17,7 +16,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle tama, a Tetris like game
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-USES=		imake:noman
+USES=		imake:noman xorg
 USE_XORG=	xpm
 
 PLIST_FILES=	bin/xpuzzletama lib/X11/xpuzzletama/tama_score

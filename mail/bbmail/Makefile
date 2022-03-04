@@ -1,5 +1,4 @@
 # Created by: Chris Piazza <cpiazza@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bbmail
 PORTVERSION=	0.9.3
@@ -13,7 +12,7 @@ LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/libbt.pc:x11-wm/blackbox
 
-USES=		pkgconfig
+USES=		pkgconfig xorg
 USE_XORG=	xext
 GNU_CONFIGURE=	yes
 

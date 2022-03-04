@@ -8,7 +8,6 @@ pkg/snort/snort_uninstall.php
 pkg/snort/snort_sync.xml
 pkg/snort/deprecated_rules
 www/snort/snort_alerts.php
-www/snort/snort_barnyard.php
 www/snort/snort_blocked.php
 www/snort/snort_define_servers.php
 www/snort/snort_download_updates.php

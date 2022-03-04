@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	gnutls
-PORTVERSION=	3.1.2
+PORTVERSION=	3.1.3
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +12,7 @@ LICENSE=	LGPL20
 
 LIB_DEPENDS=	libgnutls.so:security/gnutls
 
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_PYTHON=	autoplist distutils
 PYDISTUTILS_PKGNAME=	python_gnutls
 NO_ARCH=	yes

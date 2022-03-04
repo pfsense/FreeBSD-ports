@@ -1,8 +1,8 @@
 # Created by: Nicola Vitale	<nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rhino
 DISTVERSION=	1_7R4
+PORTREVISION=	1
 CATEGORIES=	lang java
 MASTER_SITES=	GHC \
 		LOCAL/nivit/${PORTNAME}/:swingex \
@@ -21,8 +21,6 @@ LICENSE=	MPL20
 ALL_TARGET=	jar
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
-
-JAVA_VERSION=	1.6+
 
 LINEDIT_DESC=	Enable line editing in the Rhino shell
 LINEDIT_RUN_DEPENDS=	${JLINEJAR}:devel/jline

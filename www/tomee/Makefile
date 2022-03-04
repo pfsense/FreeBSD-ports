@@ -1,10 +1,9 @@
 # Created by: Cecile Neu <neu@mycontrol.de>
-# $FreeBSD$
 
 PORTNAME=	tomee
 PORTVERSION=	1.7.4
 CATEGORIES=	www java
-MASTER_SITES=	APACHE/tomee/tomee-${PORTVERSION}
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-webprofile
 
 MAINTAINER=	neu@mycontrol.de
@@ -12,13 +11,12 @@ COMMENT=	Open-source Java EE Container by Apache
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	jsvc:devel/jakarta-commons-daemon
+RUN_DEPENDS=	jsvc:devel/apache-commons-daemon
 
 USES=		cpe
 CPE_VENDOR=	apache
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_ARCH=	yes
 NO_BUILD=	yes
 

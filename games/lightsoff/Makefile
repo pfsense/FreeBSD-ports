@@ -1,10 +1,9 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	lightsoff
-PORTVERSION=	3.28.0
+PORTVERSION=	40.0.1
 CATEGORIES=	games gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -22,14 +21,12 @@ LIB_DEPENDS=	libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome localbase pathfix pkgconfig \
-		sqlite tar:xz
+USES=		gettext gl gmake gnome localbase meson \
+		pathfix pkgconfig sqlite tar:xz xorg
 USE_GNOME=	cairo gtk30 intlhack librsvg2 libxml2:build
-INSTALLS_ICONS=	yes
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
 USE_GL=		egl gl
-GNU_CONFIGURE=	yes
 
-GLIB_SCHEMAS=	org.gnome.lightsoff.gschema.xml
+GLIB_SCHEMAS=	org.gnome.LightsOff.gschema.xml
 
 .include <bsd.port.mk>

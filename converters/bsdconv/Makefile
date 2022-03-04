@@ -1,9 +1,7 @@
 # Created by: buganini@gmail.com
-# $FreeBSD$
 
 PORTNAME=	bsdconv
-PORTVERSION=	11.5
-PORTREVISION=	1
+PORTVERSION=	11.6
 CATEGORIES=	converters
 
 MAINTAINER=	buganini@gmail.com

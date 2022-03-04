@@ -3,7 +3,7 @@
 # frrctl
 #
 # part of pfSense (https://www.pfsense.org)
-# Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
+# Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
 # All rights reserved.
 #
 # originally based on m0n0wall (http://neon1.net/m0n0wall)
@@ -23,37 +23,16 @@
 # limitations under the License.
 
 RC_SCRIPT=/usr/local/etc/rc.d/frr.sh
-FRR_CONFIG_BASE=/var/etc/frr
-
-ZEBRA_CONFIG=${FRR_CONFIG_BASE}/zebra.conf
-ZEBRA_PORT=2601
-if [ -f ${ZEBRA_CONFIG} ]; then
-	ZEBRA_PASSWORD=`/usr/bin/grep '^password ' ${ZEBRA_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
-
-OSPF_CONFIG=${FRR_CONFIG_BASE}/ospfd.conf
-OSPF_PORT=2604
-if [ -f ${OSPF_CONFIG} ]; then
-	OSPF_PASSWORD=`/usr/bin/grep '^password ' ${OSPF_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
-
-OSPF6_CONFIG=${FRR_CONFIG_BASE}/ospf6d.conf
-OSPF6_PORT=2606
-if [ -f ${OSPF6_CONFIG} ]; then
-	OSPF6_PASSWORD=`/usr/bin/grep '^password ' ${OSPF6_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
-
-BGP_CONFIG=${FRR_CONFIG_BASE}/bgpd.conf
-BGP_PORT=2605
-if [ -f ${BGP_CONFIG} ]; then
-	BGP_PASSWORD=`/usr/bin/grep '^password ' ${BGP_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
+FRR_VTYSH_PATH=/usr/local/bin/vtysh
 
 daemon_command() {
-	COMMANDS=${2}
-	COMMANDS=${COMMANDS}`echo -e "\n${3}\n"`
-	COMMANDS=${COMMANDS}`echo -e "\nexit\n"`
-	echo "$COMMANDS" | /usr/bin/nc localhost ${1} | /usr/bin/tail -n +10 | sed '$d'
+	VTYSH_COMMAND=""
+
+	for var in "$@"; do
+		VTYSH_COMMAND="${VTYSH_COMMAND}-c \"${var%% }\" "
+	done
+
+	eval $FRR_VTYSH_PATH "${VTYSH_COMMAND}"
 }
 
 case $1 in
@@ -73,23 +52,23 @@ zebra)
 	fi
 	case $2 in
 	cpu*)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show thread cpu"
+		daemon_command "show thread cpu"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show memory $*"
+		daemon_command "show memory $*"
 		;;
 	int*)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show interface $3"
+		daemon_command "show interface $3"
 		;;
 	route6)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ipv6 route"
+		daemon_command "show ipv6 route"
 		;;
 	route)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route"
+		daemon_command "show ip route"
 		;;
 	bgpr*)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route bgp"
+		daemon_command "show ip route bgp"
 		;;
 	esac ;;
 ospf6)
@@ -99,31 +78,31 @@ ospf6)
 	fi
 	case $2 in
 	cpu*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show thread cpu"
+		daemon_command "show thread cpu"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show memory $*"
+		daemon_command "show memory $*"
 		;;
 	gen*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6"
+		daemon_command "show ipv6 ospf6"
 		;;
 	nei*)
 		shift; shift;
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 neighbor $*"
+		daemon_command "show ipv6 ospf6 neighbor $*"
 		;;
 	dat*)
 		shift; shift;
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 database $*"
+		daemon_command "show ipv6 ospf6 database $*"
 		;;
 	int*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 interface $3"
+		daemon_command "show ipv6 ospf6 interface $3"
 		;;
 	bor*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 border-routers"
+		daemon_command "show ipv6 ospf6 border-routers"
 		;;
 	rou*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 route"
+		daemon_command "show ipv6 ospf6 route"
 		;;
 	esac ;;
 ospf)
@@ -133,31 +112,31 @@ ospf)
 	fi
 	case $2 in
 	cpu*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show thread cpu"
+		daemon_command "show thread cpu"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show memory $*"
+		daemon_command "show memory $*"
 		;;
 	gen*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf"
+		daemon_command "show ip ospf"
 		;;
 	nei*)
 		shift; shift;
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf neighbor $*"
+		daemon_command "show ip ospf neighbor $*"
 		;;
 	dat*)
 		shift; shift;
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf database $*"
+		daemon_command "show ip ospf database $*"
 		;;
 	int*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf interface $3"
+		daemon_command "show ip ospf interface $3"
 		;;
 	bor*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf border-routers"
+		daemon_command "show ip ospf border-routers"
 		;;
 	rou*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf route"
+		daemon_command "show ip ospf route"
 		;;
 	esac ;;
 bgp6*)
@@ -167,7 +146,7 @@ bgp6*)
 	fi
 	case $2 in
 	rou*)
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp"
+		daemon_command "show bgp ipv6"
 		;;
 	esac ;;
 bgp*)
@@ -177,27 +156,69 @@ bgp*)
 	fi
 	case $2 in
 	rou*)
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp"
+		daemon_command "show bgp ipv4"
 		;;
 	nei*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp neighbors $*"
+		daemon_command "show bgp neighbors $*"
 		;;
 	peer*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp peer-group $*"
+		daemon_command "show bgp peer-group $*"
 		;;
 	sum*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp summary $*"
+		daemon_command "show bgp summary $*"
 		;;
 	nexth*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp nexthop detail $*"
+		daemon_command "show bgp nexthop detail $*"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp memory $*"
+		daemon_command "show bgp memory $*"
+		;;
+	cycleneighbor)
+		daemon_command "config terminal" "router bgp $3"  "neighbor $4 shutdown"
+		sleep 1;
+		daemon_command "config terminal" "router bgp $3"  "no neighbor $4 shutdown"
 		;;
 	esac ;;
+bfd*)
+	if [ "`pgrep bfdd`" = "" ]; then
+		echo "bfdd does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	peer_br*)
+		daemon_command "show bfd peers brief"
+		;;
+	peer*)
+		daemon_command "show bfd peers"
+		;;
+	count*)
+		daemon_command "show bfd peers counters"
+		;;
+	esac ;;
+rip*)
+	if [ "`pgrep ripd`" = "" ]; then
+		echo "ripd does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	rou*)
+		daemon_command "show ip rip"
+		;;
+	gen*)
+		daemon_command "show ip rip status"
+		;;
+	esac ;;
+cycleinterface)
+	daemon_command "config terminal" "interface $2" "shutdown"
+	sleep 1;
+	daemon_command "config terminal" "interface $2" "no shutdown"
+	;;
+*)
+	echo "Unknown command"
+	exit 1
 esac

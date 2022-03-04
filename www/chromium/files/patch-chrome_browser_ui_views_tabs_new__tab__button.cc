@@ -1,11 +1,11 @@
---- chrome/browser/ui/views/tabs/new_tab_button.cc.orig	2019-03-11 22:00:54 UTC
+--- chrome/browser/ui/views/tabs/new_tab_button.cc.orig	2021-04-14 18:40:56 UTC
 +++ chrome/browser/ui/views/tabs/new_tab_button.cc
-@@ -63,7 +63,7 @@ const gfx::Size NewTabButton::kButtonSize{28, 28};
- NewTabButton::NewTabButton(TabStrip* tab_strip, views::ButtonListener* listener)
-     : views::ImageButton(listener), tab_strip_(tab_strip) {
-   set_animate_on_state_change(true);
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
-   set_triggerable_event_flags(triggerable_event_flags() |
-                               ui::EF_MIDDLE_MOUSE_BUTTON);
+@@ -58,7 +58,7 @@ NewTabButton::NewTabButton(TabStrip* tab_strip, Presse
+   SetAnimateOnStateChange(true);
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
+   SetTriggerableEventFlags(GetTriggerableEventFlags() |
+                            ui::EF_MIDDLE_MOUSE_BUTTON);
  #endif

@@ -1,9 +1,7 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libXfixes
-PORTVERSION=	5.0.3
-PORTREVISION=	2
+DISTVERSION=	6.0.0
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -11,10 +9,11 @@ COMMENT=	X Fixes extension library
 
 LICENSE=	MIT
 
-XORG_CAT=	lib
+USES=		cpe xorg xorg-cat:lib
 USE_XORG=	x11 xorgproto
-USES+=	cpe
 CPE_PRODUCT=	libxfixes
 CPE_VENDOR=	x
+
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

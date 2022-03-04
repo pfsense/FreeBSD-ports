@@ -1,26 +1,29 @@
-# $FreeBSD$
-
 PORTNAME=	flex
 PORTVERSION=	2.6.4
-PORTREVISION=	1
-CATEGORIES=	textproc
+PORTREVISION=	2
+CATEGORIES=	textproc devel
 MASTER_SITES=	https://github.com/westes/flex/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Fast lexical analyzer generator
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	help2man:misc/help2man \
-		gm4:devel/m4
-RUN_DEPENDS=	gm4:devel/m4
+BUILD_DEPENDS=	help2man:misc/help2man
 
-USES=		bison gmake libtool makeinfo
+USES=		bison:alias cpe gmake libtool makeinfo
+CPE_VENDOR=	${PORTNAME}_project
 GNU_CONFIGURE=	yes
 # install flex header to its own dir to avoid conflict with system flex.
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/flex --disable-shared
-CONFIGURE_ENV=	M4=${LOCALBASE}/bin/gm4 MAKEINFO="${MAKEINFO} --no-split"
+CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split" \
+		CC_FOR_BUILD="${CC}" \
+                CFLAGS_FOR_BUILD="${CFLAGS}" \
+                CPPFLAGS_FOR_BUILD="${CPPFLAGS}" \
+                CXX_FOR_BUILD="${CXX}" \
+                CXXFLAGS_FOR_BUILD="${CXXFLAGS}" \
+                LDFLAGS_FOR_BUILD="${LDFLAGS}"
 INSTALL_TARGET=	install-strip
 
 INFO=		flex

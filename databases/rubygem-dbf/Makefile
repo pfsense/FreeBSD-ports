@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dbf
-PORTVERSION=	4.1.2
+PORTVERSION=	4.2.0
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 

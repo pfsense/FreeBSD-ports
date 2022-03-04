@@ -1,12 +1,13 @@
 #!/bin/sh
-# $FreeBSD$
 
 # PROVIDE: pot
-# REQUIRE: LOGIN
+# REQUIRE: NETWORKING LOGIN FILESYSTEM
+# BEFORE: securelevel
 # KEYWORD: shutdown nojail
 
 . /etc/rc.subr
 
+PATH=$PATH:%%PREFIX%%/bin
 name="pot"
 desc="Pot containers"
 procname="pot"
@@ -18,28 +19,47 @@ status_cmd="pot_status"
 
 load_rc_config $name
 : ${pot_enable:=NO}
-: ${pot_list:=""}
 
 pot_start()
 {
-	local _pname
-	for _pname in $pot_list ; do
-		if %%PREFIX%%/bin/${name} info -qp $_pname ; then
-			%%PREFIX%%/bin/${name} start $_pname
-		else
-			echo "pot start: pot $_pnmame not found"
+	local _pname _dyn_pot_list _start
+	_dyn_pot_list=$(%%PREFIX%%/bin/pot ls -q)
+	for _pname in $_dyn_pot_list ; do
+		if [ "$( %%PREFIX%%/bin/pot get-attr -p "$_pname" -A start-at-boot -q )" = "YES" ]; then
+			%%PREFIX%%/bin/pot start "$_pname"
 		fi
 	done
 }
 
 pot_stop()
 {
-	local _pname
-	for _pname in $pot_list ; do
-		if %%PREFIX%%/bin/${name} info -qp $_pname ; then
-			%%PREFIX%%/bin/${name} stop $_pname
-		else
-			echo "pot stop: pot $_pname not found"
+	local _pname _dyn_pot_list _start
+	_dyn_pot_list=$(%%PREFIX%%/bin/pot ls -q)
+	for _pname in $_dyn_pot_list ; do
+		if [ "$( %%PREFIX%%/bin/pot get-attr -p "$_pname" -A start-at-boot -q )" = "YES" ]; then
+			%%PREFIX%%/bin/pot stop "$_pname"
+		fi
+	done
+}
+
+pot_early_start()
+{
+	local _pname _dyn_pot_list _start
+	_dyn_pot_list=$(%%PREFIX%%/bin/pot ls -q)
+	for _pname in $_dyn_pot_list ; do
+		if [ "$( %%PREFIX%%/bin/pot get-attr -p "$_pname" -A early-start-at-boot -q )" = "YES" ]; then
+			%%PREFIX%%/bin/pot start "$_pname"
+		fi
+	done
+}
+
+pot_early_stop()
+{
+	local _pname _dyn_pot_list _start
+	_dyn_pot_list=$(%%PREFIX%%/bin/pot ls -q)
+	for _pname in $_dyn_pot_list ; do
+		if [ "$( %%PREFIX%%/bin/pot get-attr -p "$_pname" -A early-start-at-boot -q )" = "YES" ]; then
+			%%PREFIX%%/bin/pot stop "$_pname"
 		fi
 	done
 }
@@ -47,18 +67,24 @@ pot_stop()
 pot_restart()
 {
 	pot_stop
+	pot_early_stop
 	sleep 5
+	pot_early_start
 	pot_start
 }
 
 pot_status()
 {
-	local _p
-	for _p in $pot_list ; do
-		if %%PREFIX%%/bin/${name} info -qrp $_p ; then
-			echo "pot $_p is up and running"
-		else
-			echo "pot $_p is not running"
+	local _pname _dyn_pot_list
+	_dyn_pot_list=$(%%PREFIX%%/bin/pot ls -q)
+	for _pname in $_dyn_pot_list ; do
+		if [ "$( %%PREFIX%%/bin/pot get-attr -p "$_pname" -A early-start-at-boot -q )" = "YES" ] ||
+		   [ "$( %%PREFIX%%/bin/pot get-attr -p "$_pname" -A start-at-boot -q )" = "YES" ]; then
+			if %%PREFIX%%/bin/pot info -qrp "$_pname" ; then
+				echo "pot $_pname is up and running"
+			else
+				echo "pot $_pname is not running"
+			fi
 		fi
 	done
 }

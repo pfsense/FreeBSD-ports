@@ -1,17 +1,14 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Zelig
-DISTVERSION=	5.1.6
-PORTREVISION=	1
+DISTVERSION=	5.1.7
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Everyone's Statistical Software
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv3+
 
 BUILD_DEPENDS=	R-cran-AER>=0:finance/R-cran-AER \
 		R-cran-Amelia>=0:math/R-cran-Amelia \
@@ -40,6 +37,6 @@ RUN_DEPENDS=	R-cran-AER>=0:finance/R-cran-AER \
 		R-cran-geepack>=0:math/R-cran-geepack \
 		R-cran-survey>=0:math/R-cran-survey
 
-USES=	cran:auto-plist
+USES=		cran:auto-plist
 
 .include <bsd.port.mk>

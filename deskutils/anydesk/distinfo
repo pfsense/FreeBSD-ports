@@ -1,5 +1,5 @@
-TIMESTAMP = 1521392807
-SHA256 (anydesk-freebsd-2.9.1-x86_64.tar.gz) = aacc333b063b52f3f2b3c795a88003898faf51df733aa7c540c88db68bbdba69
-SIZE (anydesk-freebsd-2.9.1-x86_64.tar.gz) = 2574053
-SHA256 (anydesk-freebsd-2.9.1-i386.tar.gz) = 267abec3fb76af7436ed8ab43047d4988b923a1451da3b734aab873cbb1eb0f5
-SIZE (anydesk-freebsd-2.9.1-i386.tar.gz) = 2418470
+TIMESTAMP = 1598609156
+SHA256 (anydesk-freebsd-6.0.1-x86_64.tar.gz) = c5fb1e38a1db8d3eb7455c7354f104ae7926ce0ef0a52e57e68e053fd087c0cd
+SIZE (anydesk-freebsd-6.0.1-x86_64.tar.gz) = 4917632
+SHA256 (anydesk-freebsd-6.0.1-i386.tar.gz) = 7b4eef110e61a792cd1637f7202762abd0368e5ed522ec3e3d90622ecab7ced6
+SIZE (anydesk-freebsd-6.0.1-i386.tar.gz) = 4542225

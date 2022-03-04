@@ -1,5 +1,4 @@
 # Created by: Loren M. Lang <loren@north-winds.org>
-# $FreeBSD$
 
 PORTNAME=	mozplugger
 PORTVERSION=	2.1.6
@@ -13,7 +12,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		desthack gmake webplugin:native
+USES=		desthack gmake webplugin:native xorg
 USE_XORG=	x11 xt
 LLD_UNSAFE=	yes
 

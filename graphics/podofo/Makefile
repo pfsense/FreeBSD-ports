@@ -1,8 +1,7 @@
 # Created by: stas
-# $FreeBSD$
 
 PORTNAME=	podofo
-PORTVERSION=	0.9.6
+PORTVERSION=	0.9.7
 CATEGORIES=	graphics print
 MASTER_SITES=	SF
 
@@ -16,18 +15,21 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libidn.so:dns/libidn
 
-OPTIONS_DEFINE=	IMPOSE JPEG PNG TIFF
-OPTIONS_DEFAULT=JPEG PNG TIFF
-IMPOSE_DESC=	Build impose tool (Lua required)
+USES=		cmake compiler:c++11-lang cpe dos2unix pkgconfig ssl
 
 CMAKE_ARGS=	-DFONTCONFIG_LIBRARIES=${LOCALBASE}/lib/libfontconfig.so \
 		-DOPENSSL_INCLUDE_DIR=${OPENSSLINC} \
 		-DOPENSSL_LIBRARIES=${OPENSSLDIR}
 CMAKE_ON=	PODOFO_BUILD_SHARED PODOFO_BUILD_STATIC
 USE_LDCONFIG=	yes
-USES=		cmake compiler dos2unix pkgconfig ssl
+
+CPE_VENDOR=	podofo_project
 
 DOS2UNIX_FILES=	cmake/modules/FindFREETYPE.cmake
+
+OPTIONS_DEFINE=	IMPOSE JPEG PNG TIFF
+OPTIONS_DEFAULT=JPEG PNG TIFF
+IMPOSE_DESC=	Build impose tool (Lua required)
 
 IMPOSE_CMAKE_BOOL=	WANT_LUA
 IMPOSE_CXXFLAGS=	-I${LUA_INCDIR}
@@ -40,14 +42,4 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 TIFF_CMAKE_BOOL=	WANT_TIFF
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc && ${COMPILER_VERSION} >= 50
-CXXFLAGS+=	-std=gnu++11 -D_GLIBCXX_USE_C99=1
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|$${LIBDIRNAME}/pkgconfig|${PREFIX}/libdata/pkgconfig|' ${WRKSRC}/src/CMakeLists.txt
-	@${REINPLACE_CMD} -e '/^Libs: / s|-@PODOFO_VERSION_MAJOR@||' ${WRKSRC}/src/libpodofo.pc.in
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	deadbeef-mpris2-plugin
 PORTVERSION=	1.12
@@ -17,7 +16,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USE_GITHUB=	yes
 GH_ACCOUNT=	Serranya
 
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf gnome libtool pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 

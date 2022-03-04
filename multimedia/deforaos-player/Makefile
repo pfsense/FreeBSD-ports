@@ -1,5 +1,4 @@
 # Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	player
 PORTVERSION=	0.1.6
@@ -22,7 +21,7 @@ RUN_DEPENDS=	mplayer:multimedia/mplayer
 
 MAKE_ARGS+=	PREFIX=${PREFIX}
 USE_GNOME=	gtk20
-USES=		desktop-file-utils gettext pkgconfig
+USES=		desktop-file-utils gettext gnome pkgconfig
 
 MAKE_ENV+=	MANDIR=${STAGEDIR}${MANPREFIX}/man
 

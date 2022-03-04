@@ -1,5 +1,4 @@
 # Created by: Masanori Kiriake <seiken@nbs.co.jp>
-# $FreeBSD$
 
 PORTNAME=	ack
 PORTVERSION=	1.39
@@ -12,7 +11,7 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	CQG00620@nifty.ne.jp
 COMMENT=	Kanji code converter
 
-CONFLICTS_INSTALL=	p5-ack-[0-9]* ack-[0-9]*
+CONFLICTS_INSTALL=	p5-ack ack
 
 ALL_TARGET=	ack
 CFLAGS+=	-Wno-error=return-type

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# PROVIDE: dhclient
-# KEYWORD: nojail
+# PROVIDE: dhclient dhcpcd
+# KEYWORD: nojailvnet
 #
 
 . /etc/rc.subr
@@ -16,16 +16,19 @@ if [ -n "$ifn" ]; then
 	if [ -z "$flags" -a -n "$specific" ]; then
 		rc_flags="$specific"
 	fi
-	pidfile="/var/run/dhcpcd-$ifn.pid"
+	pidfile="/var/run/dhcpcd/dhcpcd-$ifn.pid"
 else
 	pidfile="$($command -P $rc_flags)"
+	: ${dhcpcd_enable:=NO}
+	rcvar=dhcpcd_enable
+
 fi
 start_precmd="dhcpcd_precmd"
 
 dhcpcd_precmd()
 {
 	# dhcpcd may need local binaries
-	export PATH=${PATH}:/usr/local/sbin
+	export PATH=${PATH}:/usr/local/sbin:/usr/local/bin
 }
 
 load_rc_config $name

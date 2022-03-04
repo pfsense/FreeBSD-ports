@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 #   $MCom: ports/x11-toolkits/gtksourceview2/Makefile,v 1.96 2010/09/29 12:42:49 kwm Exp $
 
 PORTNAME=	gtksourceview2
@@ -17,9 +16,7 @@ USES=		tar:bzip2
 
 PORTSCOUT=	ignore:1
 
-.if !defined(REFERENCE_PORT)
-
-USES+=		gettext gmake libtool:keepla pathfix pkgconfig
+USES+=		gettext gmake gnome libtool:keepla pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_GNOME=	gnomeprefix gtk20 gconf2 libxml2 intlhack referencehack
 GNU_CONFIGURE=	yes
@@ -29,5 +26,3 @@ LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>
-
-.endif

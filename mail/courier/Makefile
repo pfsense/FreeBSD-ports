@@ -1,10 +1,9 @@
 # Created by: Yarema <yds@CoolRat.org>
-# $FreeBSD$
 
 PORTNAME=	courier
 PORTVERSION=	0.65.3
-PORTREVISION=	5
-CATEGORIES=	mail ipv6
+PORTREVISION=	6
+CATEGORIES=	mail
 MASTER_SITES=	SF
 
 MAINTAINER=	bsd@dino.sk
@@ -12,6 +11,9 @@ COMMENT=	Courier SMTP IMAP POP3 HTTP mail server suite
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.GPL
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: sqwebmail_content_charset
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: sqwebmail_content_charset
 
 BUILD_DEPENDS=	courierauthconfig:security/courier-authlib-base
 LIB_DEPENDS=	libidn.so:dns/libidn \

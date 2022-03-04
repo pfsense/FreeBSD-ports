@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	nanoblogger
 PORTVERSION=	3.4.2
@@ -14,6 +13,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	bash:shells/bash
+
+USES=		cpe
 
 NO_BUILD=	yes
 

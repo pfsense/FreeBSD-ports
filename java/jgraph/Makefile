@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	jgraph
 PORTVERSION=	5.13.0.4
@@ -22,7 +21,6 @@ COMPILE_DESC=	Compile from source instead of using prebuilt binaries
 USES=		zip
 NO_WRKSUBDIR=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 JAVA_RUN=	yes
 
 .include <bsd.port.options.mk>

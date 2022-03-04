@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CGI-Session-Driver-memcached
 PORTVERSION=	0.04
 PORTREVISION=	1
@@ -7,7 +5,7 @@ CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for persistent session data in CGI applications
 
 RUN_DEPENDS=	\

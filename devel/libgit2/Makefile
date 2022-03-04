@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 # Also update devel/libgit2-glib, devel/rubygem-rugged, devel/py-pygit2
 # Make sure you bump revision of depending ports, if SONAME changes
 # objdump -p libgit2.so |grep SONAME
 # Tools/scripts/search_lib_depends_and_bump.sh devel/libgit2
 
 PORTNAME=	libgit2
-PORTVERSION=	0.28.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.3.0
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -15,34 +13,40 @@ COMMENT=	Portable, pure C implementation of the Git core
 
 LICENSE=	GPLv2
 
-USES=		cmake pathfix pkgconfig python:build ssl
-USE_LDCONFIG=	yes
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
+		libhttp_parser.so:www/http-parser
+
+USES=		cmake cpe pkgconfig ssl
 USE_GITHUB=	yes
-GH_ACCOUNT=	libgit2
+USE_LDCONFIG=	yes
 
-PLIST_SUB=	PORTVERSION=${PORTVERSION} SHLIB_VER=${PORTVERSION:R:E}
+CMAKE_ARGS=	-DREGEX_BACKEND=pcre2 -DUSE_HTTP_PARSER=system
+CMAKE_OFF=	BUILD_CLAR
 
-OPTIONS_DEFINE=	SSH THREADS CURL
-OPTIONS_DEFAULT=SSH THREADS CURL
+PLIST_SUB=	DISTVERSION=${DISTVERSION} \
+		SHLIB_VER=${DISTVERSION:R}
+
+OPTIONS_DEFINE=	SSH THREADS
+OPTIONS_DEFAULT=SSH THREADS
 SSH_DESC=	Enable SSH support through libssh2
-CURL_DESC=	Enable HTTP support through cURL
 
 SSH_LIB_DEPENDS=	libssh2.so:security/libssh2
-SSH_CMAKE_ON=		-DUSE_SSH=ON
-SSH_CMAKE_OFF=		-DUSE_SSH=OFF
-THREADS_CMAKE_ON=	-DTHREADSAFE=ON
-THREADS_CMAKE_OFF=	-DTHREADSAFE=OFF
-CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
-CURL_CMAKE_ON=		-DCURL=ON
-CURL_CMAKE_OFF=		-DCURL=OFF
+SSH_CMAKE_BOOL=		USE_SSH
+THREADS_CMAKE_BOOL=	THREADSAFE
 
 .include <bsd.port.pre.mk>
 
-post-patch:
-	@${REINPLACE_CMD} -e "/LIBGIT2_PC_REQUIRES.*zlib/ d" ${WRKSRC}/CMakeLists.txt
 .if ${SSL_DEFAULT} == base
+post-patch:
 	@${REINPLACE_CMD} -e "/LIBGIT2_PC_REQUIRES.*openssl/ d" \
-		${WRKSRC}/src/CMakeLists.txt
+		${WRKSRC}/cmake/SelectHTTPSBackend.cmake
 .endif
+
+do-test:
+	@cd ${BUILD_WRKSRC} && \
+		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} \
+		-DBUILD_CLAR=ON ${CMAKE_SOURCE_PATH} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
+		${SETENV} ${MAKE_ENV} CTEST_OUTPUT_ON_FAILURE=1 ${MAKE_CMD} ${MAKE_ARGS} test
 
 .include <bsd.port.post.mk>

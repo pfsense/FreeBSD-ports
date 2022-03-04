@@ -3,11 +3,11 @@
  * suricata_blocked.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,6 +49,9 @@ $bnentries = $pconfig['blertnumber'];
 if (isset($_POST['resolve'])) {
 	$ip = strtolower($_POST['resolve']);
 	$res = (is_ipaddr($ip) ? gethostbyaddr($ip) : '');
+	if (strpos($res, 'xn--') !== false) {
+		$res = idn_to_utf8($res);
+	}
 
 	if ($res && $res != $ip)
 		$response = array('resolve_ip' => $ip, 'resolve_text' => $res);
@@ -59,6 +62,32 @@ if (isset($_POST['resolve'])) {
 	exit;
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
+
+# --- AJAX GEOIP CHECK Start ---
+if (isset($_POST['geoip'])) {
+	$ip = strtolower($_POST['geoip']);
+	if (is_ipaddr($ip)) {
+		$url = "https://api.hackertarget.com/geoip/?q={$ip}";
+		$conn = curl_init("https://api.hackertarget.com/geoip/?q={$ip}");
+		curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($conn, CURLOPT_FRESH_CONNECT,  true);
+		curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+		set_curlproxy($conn);
+		$res = curl_exec($conn);
+		curl_close($conn);
+	} else {
+		$res = '';
+	}
+
+	if ($res && $res != $ip && !preg_match('/error/', $res))
+		$response = array('geoip_text' => $res);
+	else
+		$response = array('geoip_text' => gettext("Cannot check {$ip}"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX GEOIP CHECK End ---
 
 if ($_POST['mode'] == 'todelete') {
 	$ip = "";
@@ -137,7 +166,8 @@ if ($_POST['save'])
 
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Blocked Hosts"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Blocked Hosts");
 include_once("head.inc");
 
 /* refresh every 60 secs */
@@ -159,6 +189,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), true, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$instanceid}");
@@ -367,6 +398,12 @@ print($form);
 				$rdns_link = "";
 				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
 				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
+				/* Add GeoIP check icon */
+				if (!is_private_ip($block_ip_str) && (substr($block_ip_str, 0, 2) != 'fc') &&
+				    (substr($block_ip_str, 0, 2) != 'fd')) {
+					$rdns_link .= "&nbsp;&nbsp;<i class=\"fa fa-globe\" onclick=\"javascript:geoip_with_ajax('{$block_ip_str}');\" title=\"";
+					$rdns_link .= gettext("Check host GeoIP data") . "\" alt=\"Icon Check host GeoIP\"></i>";
+				}
 		?>
 				<tr class="text-nowrap">
 					<td><?=$counter;?></td>
@@ -423,6 +460,26 @@ function resolve_ip_callback(transport) {
 	var response = $.parseJSON(transport.responseText);
 	var msg = 'IP address "' + response.resolve_ip + '" resolves to\n';
 	alert(msg + 'host "' + htmlspecialchars(response.resolve_text) + '"');
+}
+
+function geoip_with_ajax(ip_to_check) {
+	var url = "/suricata/suricata_blocked.php";
+
+	$.ajax(
+		url,
+		{
+			type: 'post',
+			dataType: 'json',
+			data: {
+				geoip: ip_to_check,
+			      },
+			complete: geoip_callback
+		});
+}
+
+function geoip_callback(transport) {
+	var response = $.parseJSON(transport.responseText);
+	alert(htmlspecialchars(response.geoip_text));
 }
 
 // From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities

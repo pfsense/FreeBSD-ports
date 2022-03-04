@@ -1,9 +1,8 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	dolphin-emu
-PORTVERSION=	5.0.9209
-PORTREVISION=	1
+PORTVERSION=	5.0.12716
+PORTREVISION=	3
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -12,16 +11,16 @@ COMMENT=	Gamecube and Wii Emulator
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BROKEN_aarch64=	fails to build: Source/Core/Common/ArmCPUDetect.cpp:5:10: fatal error: 'asm/hwcap.h' file not found
-
 # Notes on dependencies:
-# - alsa support disabled (not optimal)
+# - alsa support has been disabled (not optimal)
 # - enet and soundtouch come from Externals/ as Dolphin's versions diverge
 #   (see comments in CMakeLists.txt)
 # Various problems that may be addressed in the future:
 # - xxhash comes from Externals/ as it cannot be properly detected yet
-# - gtest detection is missing (Externals/ version enforced by CMakeLists.txt)
+# - minizip comes from Externals/ as v>=2.0.0 is not available from ports yet
+# - freesurround comes from Externals/ as it is not available from ports yet
 # - cubeb comes from Externals/ as it is not available from ports yet
+# - gtest detection is missing (Externals/ version enforced by CMakeLists.txt)
 LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
 		libavcodec.so:multimedia/ffmpeg \
 		libavdevice.so:multimedia/ffmpeg \
@@ -39,22 +38,25 @@ LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
 		libminiupnpc.so:net/miniupnpc \
 		libmbedtls.so:security/mbedtls \
 		libcurl.so:ftp/curl \
-		libhidapi.so:comms/hidapi
+		libhidapi.so:comms/hidapi \
+		libzstd.so:archivers/zstd \
+		libfmt.so:devel/libfmt
 
 USES=		cmake compiler:c++17-lang desktop-file-utils gl iconv \
-		pkgconfig qmake qt:5
+		pkgconfig qmake qt:5 sdl xorg
 
+# See: https://fr.dolphin-emu.org/download/?ref=btn
+# for latest beta version and associated commit
 USE_GITHUB=	yes
 GH_PROJECT=	dolphin
-GH_TAGNAME=	2dcd058
+GH_TAGNAME=	3152428
 
 USE_GL=		gl glew glu
 USE_SDL=	sdl2
 USE_XORG=	ice sm x11 xext xi xrandr
 USE_QT=		buildtools_build core gui widgets
 
-CMAKE_ARGS+=	-DTRY_X11:BOOL=ON \
-		-DUSE_UPNP:BOOL=ON \
+CMAKE_ARGS+=	-DUSE_UPNP:BOOL=ON \
 		-DENABLE_QT:BOOL=ON \
 		-DENABLE_ALSA:BOOL=OFF \
 		-DENABLE_PULSEAUDIO:BOOL=ON \

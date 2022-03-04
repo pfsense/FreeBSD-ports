@@ -1,5 +1,4 @@
 # Created by: swallace
-# $FreeBSD$
 
 PORTNAME=	xrobots
 PORTVERSION=	1.0
@@ -11,7 +10,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-ss-10.20
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fight off villainous robots (X version)
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xaw xext xmu xt sm ice
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

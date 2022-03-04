@@ -1,5 +1,4 @@
 # Created by: KIRIYAMA Kazuhiko <kiri@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sdocbook-xml
 PORTVERSION=	1.1
@@ -20,8 +19,10 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 RUN_DEPENDS+=	xmlcatmgr:textproc/xmlcatmgr
 
 USES=		zip
-NO_MTREE=	yes
+
+NO_ARCH=	yes
 NO_BUILD=	yes
+NO_MTREE=	yes
 NO_WRKSUBDIR=	yes
 
 CATALOG_FILES=	catalog catalog.xml

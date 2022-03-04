@@ -1,8 +1,7 @@
 # Created by: Olivier Cochard-Labbé <olivier@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	maxminddb
-PORTVERSION=	1.4.1
+PORTVERSION=	2.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net python geography
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,9 +13,8 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
-RUN_DEPENDS=	${PY_IPADDRESS}
 
-USES=		localbase python
+USES=		compiler:c11 localbase python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	maxmind
 GH_PROJECT=	MaxMind-DB-Reader-python
@@ -24,6 +22,6 @@ GH_PROJECT=	MaxMind-DB-Reader-python
 USE_PYTHON=	autoplist distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/maxminddb/extension.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/maxminddb/extension*.so
 
 .include <bsd.port.mk>

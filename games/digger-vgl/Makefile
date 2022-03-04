@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	digger
 PORTVERSION=	20020314
@@ -16,8 +15,9 @@ MAKEFILE=	Makefile.fbsd
 
 OPTIONS_DEFINE=	SOUND DOCS
 
+SOUND_USES=	sdl
 SOUND_USE=	SDL=sdl
-SOUND_MAKE_ENV= SOUND=yes
+SOUND_MAKE_ENV=	SOUND=yes
 SOUND_VARS=	PKGMESSAGE=${PKGDIR}/pkg-message.sound
 
 post-patch:

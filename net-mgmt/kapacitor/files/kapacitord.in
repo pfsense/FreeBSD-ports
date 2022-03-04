@@ -1,5 +1,4 @@
 #!/bin/sh
-# $FreeBSD$
 
 # PROVIDE: kapacitord
 # REQUIRE: DAEMON NETWORKING
@@ -35,7 +34,7 @@ start_precmd=kapacitord_prestart
 kapacitord_pidfile="/var/run/${name}.pid"
 procname="%%PREFIX%%/bin/${name}"
 command=/usr/sbin/daemon
-start_cmd="kapacitord_startcmd_%%KAPACITORD_LOGCMD%%"
+start_cmd="kapacitord_startcmd_daemon"
 
 kapacitord_startcmd_daemon()
 {

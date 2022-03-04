@@ -1,5 +1,4 @@
 # Created by: Oddbjorn Steffensen <oddbjorn@tricknology.org>
-# $FreeBSD$
 
 PORTNAME=	pyweblib
 PORTVERSION=	1.3.13
@@ -12,7 +11,7 @@ COMMENT=	Yet another web programming framework for Python
 
 LICENSE=	GPLv2
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 PORTDOCS=	pyweblib.forms.html pyweblib.helper.html \

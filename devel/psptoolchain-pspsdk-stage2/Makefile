@@ -1,5 +1,4 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
 
 PORTREVISION=		2
 
@@ -18,6 +17,11 @@ BUILD_DEPENDS=		psp-cpp:devel/psptoolchain-gcc-stage2 \
 # psp-gcc doesn't need -march=... in CFLAGS (e.g. set by CPUTYPE in make.conf)
 CONFIGURE_ENV=		CFLAGS="${CFLAGS:C/(^|[[:space:]])-march=[^[:space:]]*//g}"
 CONFIGURE_ARGS=		--prefix=${PREFIX} --with-pspdev="${LOCALBASE}"
+# there is no libssp w/ PSP SDK, disable stack guards as they would be
+# unresolved symbols, explicitly disable to be on the safe side
+SSP_UNSAFE=	yes
+CFLAGS+=	-fno-stack-protector
+LDFLAGS+=	-fno-stack-protector
 
 PLIST=			${.CURDIR}/pkg-plist
 MASTERDIR=		${.CURDIR}/../psptoolchain-pspsdk-stage1

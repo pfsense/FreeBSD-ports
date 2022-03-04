@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Avahi
-PORTVERSION=	2.0.0
-PORTREVISION=	2
+PORTVERSION=	2.2
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +12,8 @@ COMMENT=	pfSense package Avahi
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	avahi-app>=0:net/avahi-app
+RUN_DEPENDS=	avahi-app>=0:net/avahi-app \
+		nss_mdns>0:dns/nss_mdns
 
 NO_BUILD=	yes
 NO_MTREE=	yes

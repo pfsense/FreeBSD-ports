@@ -1,5 +1,4 @@
 # Created by: tobez
-# $FreeBSD$
 
 PORTNAME=	Class-ReturnValue
 PORTVERSION=	0.55
@@ -16,5 +15,7 @@ RUN_DEPENDS=	p5-Devel-StackTrace>=0:devel/p5-Devel-StackTrace
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

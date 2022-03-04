@@ -1,23 +1,23 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	avahi
 PORTVERSION=	0.6.31
-PORTREVISION=	1
+DISTVERSIONSUFFIX=	-20.el7
+PORTREVISION=	4
 CATEGORIES=	net linux
 PKGNAMESUFFIX=	-libs
-LIB_DISTNAMES=	${LINUXNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Libraries for Avahi (Linux CentOS ${LINUX_DIST_VER})
 
-CONFLICTS=	linux-c6-${LINUXNAME}-[0-9]*
-
-DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
-LINUXNAME=	${PORTNAME}${PKGNAMESUFFIX}
-RPMVERSION=	17.el7
-USES=		linux:c7
+USES=		cpe linux:c7
 USE_LDCONFIG=	yes
+USE_LINUX=	dbuslibs
 USE_LINUX_RPM=	yes
+
+LIB_DISTNAMES=	${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSIONFULL}
+
+CONFLICTS=	linux-c6-${PORTNAME}${PKGNAMESUFFIX}
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 .include <bsd.port.mk>

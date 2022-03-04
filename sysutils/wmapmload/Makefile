@@ -1,5 +1,4 @@
 # Created by: pat
-# $FreeBSD$
 
 PORTNAME=	wmapmload
 PORTVERSION=	0.3.4
@@ -14,6 +13,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	i386
+USES=		xorg
 USE_XORG=	x11 xpm
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=""

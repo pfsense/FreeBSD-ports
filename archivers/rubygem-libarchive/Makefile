@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	libarchive
 PORTVERSION=	0.1.2
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	archivers rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby bindings for libarchive
 
 LICENSE=	BSD3CLAUSE

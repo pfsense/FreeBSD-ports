@@ -8,7 +8,7 @@
  * squidguard.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006-2013 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -79,6 +79,7 @@
 		<name>squidGuard</name>
 		<description><![CDATA[Proxy server filter Service]]></description>
 		<executable>squidGuard</executable>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<fields>
 		<field>
@@ -88,7 +89,7 @@
 			<sethelp>
 				<![CDATA[
 				<strong><span class="errmsg">Important: </span></strong>Please set up at least one category on the 'Target Categories' tab before enabling.
-				See <a href="https://forum.pfsense.org/index.php?topic=94312.0">this link for details</a>.
+				See <a href="https://docs.netgate.com/pfsense/en/latest/packages/cache-proxy/squidguard.html">this link for details</a>.
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -116,6 +117,13 @@
 			<fieldname>ldapbindpass</fieldname>
 			<description><![CDATA[Password must be initialize with letters (Ex: Change123), valid format: [a-zA-Z\/][a-zA-Z0-9/_\-\.\/\:\%\+\?=&]]]></description>
 			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>LDAP Cache Time</fielddescr>
+			<fieldname>ldapcachetime</fieldname>
+			<description><![CDATA[Number of seconds to cache LDAP Results (recommended value: 300)]]></description>
+			<default_value>0</default_value>
+			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Strip NT domain name</fielddescr>
@@ -146,6 +154,31 @@
 					<value>3</value>
 				</option>
 			</options>
+		</field>
+		<field>
+			<name>Service options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Rewrite process children</fielddescr>
+			<fieldname>rewrite_children</fieldname>
+			<description>Maximum number of SquidGuard redirector processes that Squid may spawn. Using too few of these helper processes (a.k.a. "helpers") creates request queues. Using too many helpers wastes your system resources. (Default: 16)</description>
+			<default_value>16</default_value>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Rewrite process children startup</fielddescr>
+			<fieldname>rewrite_children_startup</fieldname>
+			<description>Sets a minimum of how many SquidGuard processes are to be spawned when Squid starts or reconfigures. (Default: 8)</description>
+			<default_value>8</default_value>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Rewrite process children idle</fielddescr>
+			<fieldname>rewrite_children_idle</fieldname>
+			<description>Sets a minimum of how many SquidGuard processes Squid is to try and keep available at all times. (Default: 4)</description>
+			<default_value>4</default_value>
+			<type>input</type>
 		</field>
 		<field>
 			<name>Logging options</name>
@@ -187,11 +220,6 @@
 			<fielddescr>Blacklist</fielddescr>
 			<fieldname>blacklist</fieldname>
 			<description>Check this option to enable blacklist</description>
-			<sethelp>
-				<![CDATA[
-				<strong><span class="errmsg">Do NOT enable this on NanoBSD installs!</span></strong>
-				]]>
-			</sethelp>
 			<type>checkbox</type>
 			<enablefields>blacklist_proxy,blacklist_url</enablefields>
 		</field>

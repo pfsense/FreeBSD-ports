@@ -1,13 +1,13 @@
 # Created by: Jin-Shan Tseng <tjs@cdpa.nsysu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	Test-Dependencies
-PORTVERSION=	0.23
+PORTVERSION=	0.30
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	perl@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ensure that your Makefile.PL specifies all module dependencies
 
 LICENSE=	ART10 GPLv1+
@@ -23,4 +23,13 @@ TEST_DEPENDS=	p5-Test-Needs>=0:devel/p5-Test-Needs
 USES=		perl5
 USE_PERL5=	configure
 
-.include <bsd.port.mk>
+NO_ARCH=	yes
+
+.include <bsd.port.pre.mk>
+
+.if ${PERL_LEVEL} < 503200
+BUILD_DEPENDS+=	p5-Module-CoreList>=5.20200620:devel/p5-Module-CoreList
+RUN_DEPENDS+=	p5-Module-CoreList>=5.20200620:devel/p5-Module-CoreList
+.endif
+
+.include <bsd.port.post.mk>

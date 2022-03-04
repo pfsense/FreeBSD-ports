@@ -1,5 +1,4 @@
 # Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	ps2eps
 PORTVERSION=	1.64
@@ -10,6 +9,8 @@ MASTER_SITES=	http://www.tm.uka.de/~bless/ \
 
 MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw
 COMMENT=	Generate Encapsulated Postscript file from Postscript document
+
+CONFLICTS_INSTALL=	texlive-base
 
 WRKSRC=		${WRKDIR}/ps2eps
 

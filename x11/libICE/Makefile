@@ -1,9 +1,7 @@
 # Created by: Eric Anholt <anholt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libICE
-PORTVERSION=	1.0.9
-PORTREVISION=	3
+PORTVERSION=	1.0.10
 PORTEPOCH=	1
 CATEGORIES=	x11
 
@@ -13,8 +11,9 @@ COMMENT=	Inter Client Exchange library for X11
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	lib
+USES=		cpe xorg xorg-cat:lib
 USE_XORG=	xorgproto xtrans
 INSTALL_TARGET=	install-strip
+CPE_VENDOR=	freedesktop
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POEx-Role-SessionInstantiation
 PORTVERSION=	1.102610
 PORTREVISION=	1
@@ -8,7 +6,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:NPEREZ
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension of Moose role for turning objects into POE sessions
 
 LICENSE=	ART10 GPLv1+

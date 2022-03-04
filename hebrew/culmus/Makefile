@@ -1,9 +1,7 @@
 # Created by: Yonatan <onatan@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	culmus
-PORTVERSION=	0.131
-PORTREVISION=	1
+PORTVERSION=	0.133
 CATEGORIES=	hebrew
 MASTER_SITES=	SF
 

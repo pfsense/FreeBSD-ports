@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 COMMENT=	The ${PHP_MODNAME} shared extension for php
 
 USES+=	php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	73
-IGNORE_WITH_PHP= 71 72
+IGNORE_WITH_PHP= 72 74
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -95,7 +93,7 @@ USES+=		ssl
 .if ${PHP_MODNAME} == "gd"
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
-USES+=		jpeg
+USES+=		jpeg pkgconfig
 
 CONFIGURE_ARGS+=--with-gd=${LOCALBASE} \
 		--with-freetype-dir=${LOCALBASE} \
@@ -146,7 +144,10 @@ USES+=	iconv:translit
 
 .if ${PHP_MODNAME} == "imap"
 PHP_MOD_PRIO=	30
-OPTIONS_DEFINE=	PANDA
+OPTIONS_RADIO=  CLIENT
+OPTIONS_RADIO_CLIENT=	CCLIENT PANDA
+OPTIONS_DEFAULT=PANDA
+CCLIENT_DESC=	Uses the original but unmaintained cclient
 PANDA_DESC=	Uses the forked panda-cclient instead of the original cclient
 
 CONFIGURE_ARGS+=--with-imap=${LOCALBASE} \
@@ -173,13 +174,9 @@ CONFIGURE_ARGS+=--enable-json
 .endif
 
 .if ${PHP_MODNAME} == "ldap"
-CONFIGURE_ARGS+=--with-ldap=${LOCALBASE}
+CONFIGURE_ARGS+=--with-ldap=${LOCALBASE} --with-ldap-sasl=${LOCALBASE}
 
 USE_OPENLDAP=	yes
-
-. ifdef(WANT_OPENLDAP_SASL)
-CONFIGURE_ARGS+=--with-ldap-sasl=${LOCALBASE}
-. endif
 .endif
 
 .if ${PHP_MODNAME} == "mbstring"
@@ -509,8 +506,6 @@ USES+=	mysql
 .	endif
 .endif
 
-.include <bsd.port.pre.mk>
-
 .if ${PHP_MODNAME} == "gd"
 .	if ${PORT_OPTIONS:MTRUETYPE}
 CONFIGURE_ARGS+=--enable-gd-native-ttf
@@ -524,11 +519,14 @@ LIB_DEPENDS+=   libwebp.so:graphics/webp
 CONFIGURE_ARGS+=--with-webp-dir=${LOCALBASE}
 .   endif
 .	if ${PORT_OPTIONS:MX11}
+USES+=		xorg
 USE_XORG=	xpm
 
 CONFIGURE_ARGS+=--with-xpm-dir=${LOCALBASE}
 .	endif
 .endif
+
+.include <bsd.port.pre.mk>
 
 .if ${PHP_MODNAME} == "imap"
 .	if ${PORT_OPTIONS:MPANDA}

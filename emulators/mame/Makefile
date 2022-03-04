@@ -1,63 +1,67 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME?=	mame
-PORTVERSION=	0.200
-PORTREVISION=	3
+PORTVERSION=	0.226
+PORTREVISION=	1
 CATEGORIES=	emulators
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	manu@FreeBSD.org
 COMMENT=	Multi Arcade Machine Emulator
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	not yet ported to any arch other than x86
+ONLY_FOR_ARCHS=		amd64 armv7 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	not yet ported to any architecture other than armv7, x86, and powerpc*
 
 LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libpugixml.so:textproc/pugixml
 RUN_DEPENDS=	liberation-fonts-ttf>=0:x11-fonts/liberation-fonts-ttf
 
-USES=		compiler:c++14-lang gmake jpeg pkgconfig python:2.7,build qt:5 shebangfix
+USES=		compiler:c++14-lang gl gmake jpeg localbase pkgconfig \
+		python:3.7,build qt:5 sdl shebangfix xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mamedev
 GH_PROJECT=	mame				# explicit (master port)
 GH_TAGNAME=	mame${PORTVERSION:S/.//}
-
-OPTIONS_DEFINE=		DEBUG DOCS EXAMPLES
+USE_GL=		gl
+USE_QT=		buildtools core gui qmake_build widgets
+USE_SDL=	sdl2 ttf2
+USE_XORG=	x11 xext xi xinerama xrender
 
 SHEBANG_FILES=	src/devices/cpu/m6502/m6502make.py \
 		src/devices/cpu/m6809/m6809make.py \
 		src/devices/cpu/mcs96/mcs96make.py \
 		src/devices/cpu/tms57002/tmsmake.py
-USE_XORG=	x11 xext xi xinerama xrender
-USE_GL=		gl
-USE_SDL=	sdl2 ttf2
-USE_QT=		buildtools core gui qmake_build widgets
-MTARGET?=	mame
-MSUBTARGET?=	mame
-CFLAGS+=	-I${LOCALBASE}/include
+
+MAKEFILE=	makefile
+MAKE_ARGS=	TARGETOS=freebsd VERBOSE=1 TOOLS=1 USE_SYSTEM_LIB_PUGIXML=1
 MAKE_ENV=	NOWERROR=1 USE_NETWORK=1 \
 		LD="${CXX}" PYTHON="${PYTHON_CMD}" \
 		OPT_FLAGS="${CXXFLAGS}" GCC_LDFLAGS="${LDFLAGS}" \
 		TARGET="${MTARGET}" SUBTARGET="${MSUBTARGET}" FULLNAME="mame" SDL_NETWORK="pcap"
-MAKE_ARGS=	TARGETOS=freebsd VERBOSE=1 TOOLS=1
-MAKEFILE=	makefile
-GENIE=		${WRKSRC}/3rdparty/genie
-PORTDOCS=	*
-PORTEXAMPLES=	${MSUBTARGET}.ini
+MAKE_JOBS_UNSAFE=	yes
 
 SUB_FILES=	pkg-message target.ini
 SUB_LIST=	MTARGET=${MTARGET} MSUBTARGET=${MSUBTARGET}
 
+PORTDOCS=	*
+PORTEXAMPLES=	${MSUBTARGET}.ini
+
+OPTIONS_DEFINE=		DEBUG DOCS EXAMPLES
+
 DEBUG_MAKE_ENV=		DEBUG=1
+
+GENIE=		${WRKSRC}/3rdparty/genie
+MSUBTARGET?=	mame
+MTARGET?=	mame
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == amd64
+.if ${ARCH} == amd64 || ${ARCH:Mpowerpc64*}
 MAKE_ARGS+=	PTR64=1
 EMULATOR=	${MSUBTARGET}64
 .else
@@ -78,7 +82,6 @@ post-patch:
 		 s| .(ARCH)|| ; \
 		 s|FreeBSD|${OPSYS}|g' \
 		 ${WRKSRC}/makefile \
-		 ${WRKSRC}/src/devices/cpu/m68000/makefile \
 		 ${GENIE}/build/gmake.bsd/genie.make
 	@${REINPLACE_CMD} -e 's|gcc|cc|; s|g++|c++|' \
 		${GENIE}/src/tools/gcc.lua \
@@ -94,6 +97,8 @@ post-patch:
 		${WRKSRC}/scripts/genie.lua
 	@${GREP} -rl '"png.h"' ${WRKSRC}/src | ${XARGS} ${REINPLACE_CMD} \
 		-e 's|"png.h"|"localpng.h"|'
+	@${REINPLACE_CMD} -e 's|"util/png.h"|"util/localpng.h"|' \
+		${WRKSRC}/src/frontend/mame/ui/icorender.cpp
 	@${MV} ${WRKSRC}/src/lib/util/png.h ${WRKSRC}/src/lib/util/localpng.h
 
 do-install:
@@ -110,7 +115,7 @@ do-install:
 .endif
 .if ${MSUBTARGET:Mmess}
 	(cd ${WRKSRC} && ${INSTALL_PROGRAM} castool chdman floptool imgtool jedutil \
-		ldresample ldverify nltool nlwav pngcmp regrep romcmp split src2html \
+		ldresample ldverify nltool nlwav pngcmp regrep romcmp split \
 		srcclean unidasm \
 		${STAGEDIR}${PREFIX}/libexec/mess)
 .endif

@@ -1,9 +1,8 @@
 # Created by: andrewb@cs.cmu.edu
-# $FreeBSD$
 
 PORTNAME=	twelf
 PORTVERSION=	1.7.1
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONPREFIX=	src-
 CATEGORIES=	lang math
 MASTER_SITES=	http://twelf.plparty.org/releases/ \

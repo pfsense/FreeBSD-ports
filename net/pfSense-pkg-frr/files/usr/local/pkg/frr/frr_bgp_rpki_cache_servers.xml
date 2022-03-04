@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_bgp_rpki.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_bgp_rpki_cache_servers</name>
+	<title>Services/FRR/BGP</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>BGP</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp_advanced.xml</url>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_bgp_neighbors.xml</url>
+		</tab>
+		<tab>
+			<text>AS Paths</text>
+			<url>pkg.php?xml=frr/frr_bgp_aspaths.xml</url>
+		</tab>
+		<tab>
+			<text>Communities</text>
+			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
+		</tab>
+		<tab>
+			<text>RPKI Cache Servers</text>
+			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Cache Server Address</fielddescr>
+			<fieldname>cacheserver</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Port</fielddescr>
+			<fieldname>port</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Preference</fielddescr>
+			<fieldname>preference</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Address</fielddescr>
+			<fieldname>cacheserver</fieldname>
+			<description>Address of the cache server</description>
+			<type>input</type>
+			<size>80</size>
+			<required/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>port</fieldname>
+			<description>Port number to connect to the cache server</description>
+			<type>input</type>
+			<required/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Preference</fielddescr>
+			<fieldname>preference</fieldname>
+			<description>Cache server preference</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Username</fielddescr>
+			<fieldname>username</fieldname>
+			<description>SSH username to establish an SSH connection to the cache server</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Private Key Path</fielddescr>
+			<fieldname>privkeypath</fieldname>
+			<description>Local path that includes the private key file of the router</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Public Key Path</fielddescr>
+			<fieldname>pubkeypath</fieldname>
+			<description>Local path that includes the public key file of the router</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Known Hosts Path</fielddescr>
+			<fieldname>knownhostspath</fieldname>
+			<description>Local path that includes the known hosts file</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_bgp_rpki_cache_server_validate_input();
+	</custom_php_validation_command>
+</packagegui>

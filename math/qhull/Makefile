@@ -1,9 +1,9 @@
 # Created by: pusto@web.de
-# $FreeBSD$
 
 PORTNAME=	qhull
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.2.1
+DISTVERSION=	7.3.2
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	math
 
@@ -19,12 +19,15 @@ USES=		cmake
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
-CONFLICTS=	qhull afni qhull5
+CONFLICTS=	qhull8 afni qhull5
 
 OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
 
 DOCS_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-CMakeLists.txt
+
+post-install:
+	${RM} ${STAGEDIR}${PREFIX}/lib/cmake/Qhull/QhullTargets-${CMAKE_BUILD_TYPE:tl}.cmake
 
 .include <bsd.port.mk>

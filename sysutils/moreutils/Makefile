@@ -1,8 +1,7 @@
 # Created by: Charlie Kester <corky1951@comcast.net>
-# $FreeBSD$
 
 PORTNAME=	moreutils
-PORTVERSION=	0.63
+PORTVERSION=	0.66
 CATEGORIES=	sysutils
 MASTER_SITES=	https://git.joeyh.name/index.cgi/moreutils.git/snapshot/ \
 		LOCAL/sunpoet
@@ -14,10 +13,6 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	p5-IPC-Run>=0:devel/p5-IPC-Run
-
-OPTIONS_DEFINE=	MANPAGES
-OPTIONS_DEFAULT=MANPAGES
-OPTIONS_SUB=	yes
 
 USES=		gmake perl5 shebangfix
 
@@ -42,6 +37,10 @@ PERL_MANPAGES=	chronic.1 \
 
 SHEBANG_FILES=	${PERL_MANPAGES:R}
 
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
+OPTIONS_SUB=	yes
+
 post-extract:
 .for file in parallel.c parallel.docbook ts
 	@${MV} ${WRKSRC}/${file} ${WRKSRC}/moreutils-${file}
@@ -61,7 +60,7 @@ post-build:
 do-install:
 	cd ${WRKSRC}/ && ${INSTALL_PROGRAM} ${CANNED_MANPAGES:R} ${STAGEDIR}${PREFIX}/bin/
 	cd ${WRKSRC}/ && ${INSTALL_SCRIPT} ${PERL_MANPAGES:R} ${STAGEDIR}${PREFIX}/bin/
-	cd ${WRKSRC}/ && ${INSTALL_MAN} ${CANNED_MANPAGES} ${PERL_MANPAGES} ${STAGEDIR}${PREFIX}/man/man1/
+	cd ${WRKSRC}/ && ${INSTALL_MAN} ${CANNED_MANPAGES} ${PERL_MANPAGES} ${STAGEDIR}${PREFIX}/share/man/man1/
 
 # maintainer section:
 # require: docbook-xsl, libxml2, libxslt

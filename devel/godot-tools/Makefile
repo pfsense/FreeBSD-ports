@@ -1,6 +1,6 @@
 # Created by: Shane Ambler <FreeBSD@Shaneware.biz>
-# $FreeBSD$
 
+PORTREVISION=	4
 PKGNAMESUFFIX=	-tools
 
 COMMENT=	Game integrated development environment

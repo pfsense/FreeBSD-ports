@@ -1,43 +1,46 @@
-# Created by: Tobias Kortkamp <tobias.kortkamp@gmail.com>
-# $FreeBSD$
+#
 
 PORTNAME=	chibi-scheme
-DISTVERSION=	0.8
+DISTVERSION=	0.10.0
 CATEGORIES=	lang
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Minimal Scheme implementation for use as a C extension language
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	ashinn
-
-USES=		gmake
+GH_TAGNAME=	${DISTVERSION:R}
 USE_LDCONFIG=	yes
 
-MAKE_ARGS=	IMAGE_FILES="" \
-		LDCONFIG=${TRUE} \
-		LIBDIR=${PREFIX}/lib \
-		MANDIR=${PREFIX}/man/man1 \
-		MODDIR=${PREFIX}/lib/chibi \
-		PKGCONFDIR=${PREFIX}/libdata/pkgconfig
-# tries to generate meta files with ./chibi-scheme when it's not yet built
-MAKE_JOBS_UNSAFE=	yes
+OPTIONS_DEFINE=	DOCS
 
-ALL_TARGET=	all libchibi-scheme.a
+MAKE_ARGS=	IMAGE_FILES="" \
+		LDCONFIG=${TRUE}
+ALL_TARGET=	all doc libchibi-scheme.a
 TEST_TARGET=	test
 
 PORTSCOUT=	skipv:stable
+PLIST_SUB=	SOVERSION=${DISTVERSION}
+
+PORTDOCS=	*
 
 post-patch:
-	@${REINPLACE_CMD} -e 's@ -g -g3 -O3 @ @' \
-		-e '/$$(SO)/ s@$$(INSTALL_EXE) -m0755 @$$(BSD_INSTALL_LIB) @' \
-		-e '/tools/ s@$$(INSTALL) -m0755 @$$(BSD_INSTALL_SCRIPT) @' \
-		-e 's@$$(INSTALL_EXE) -m0755 @$$(BSD_INSTALL_PROGRAM) @' \
-		-e '/$$(MANDIR)/ s@$$(INSTALL) -m0644 @$$(BSD_INSTALL_MAN) @' \
-		-e 's@$$(INSTALL) -m0644 @$$(BSD_INSTALL_DATA) @' \
-		${WRKSRC}/Makefile
+	@${REINPLACE_CMD} \
+	    -e '/$$(SO)/s|$$(INSTALL_EXE) -m0755|$$(BSD_INSTALL_LIB)|' \
+	    -e '/tools/s|$$(INSTALL) -m0755|$$(BSD_INSTALL_SCRIPT)|' \
+	    -e 's|$$(INSTALL_EXE) -m0755|$$(BSD_INSTALL_PROGRAM)|' \
+	    -e '/$$(MANDIR)/s|$$(INSTALL) -m0644|$$(BSD_INSTALL_MAN)|' \
+	    -e 's|$$(INSTALL) -m0644|$$(BSD_INSTALL_DATA)|' \
+	    ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} 's|-g -g3 -O3 ||' ${WRKSRC}/Makefile.detect
+
+post-install:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/lib
+	${INSTALL_DATA} ${WRKSRC}/doc/chibi.html ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/doc/lib && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR}/lib
 
 .include <bsd.port.mk>

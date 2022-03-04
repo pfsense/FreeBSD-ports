@@ -1,9 +1,8 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME=	multiget
 PORTVERSION=	1.1.3
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	ftp www
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 

@@ -1,9 +1,7 @@
 # Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	codequery
-PORTVERSION=	0.21.1
-PORTREVISION=	2
+PORTVERSION=	0.24.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -28,8 +26,5 @@ PLIST_FILES=	bin/codequery \
 		bin/cqmakedb \
 		bin/cqsearch
 DESKTOP_ENTRIES="CodeQuery" "" "" "${PORTNAME}" "Development;" ""
-
-post-patch:
-	@${REINPLACE_CMD} 's,../build/gui/,,' ${WRKSRC}/gui/codequery.qrc
 
 .include <bsd.port.mk>

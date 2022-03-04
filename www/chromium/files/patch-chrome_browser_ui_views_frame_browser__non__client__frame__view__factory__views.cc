@@ -1,20 +1,20 @@
---- chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc.orig	2019-03-11 22:00:54 UTC
+--- chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc.orig	2021-09-24 04:26:00 UTC
 +++ chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc
-@@ -13,7 +13,7 @@
+@@ -15,7 +15,7 @@
  #include "chrome/browser/ui/views/frame/glass_browser_frame_view.h"
  #endif
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_BSD) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
- #include "ui/views/linux_ui/linux_ui.h"
- #endif
- 
-@@ -32,7 +32,7 @@ OpaqueBrowserFrameView* CreateOpaqueBrowserFrameView(
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+ #include "chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h"
+ #include "chrome/browser/ui/views/frame/browser_frame_view_layout_linux_native.h"
+ #include "chrome/browser/ui/views/frame/browser_frame_view_linux.h"
+@@ -32,7 +32,7 @@ namespace {
+ std::unique_ptr<OpaqueBrowserFrameView> CreateOpaqueBrowserFrameView(
+     BrowserFrame* frame,
      BrowserView* browser_view) {
- #if BUILDFLAG(ENABLE_NATIVE_WINDOW_NAV_BUTTONS)
-   std::unique_ptr<views::NavButtonProvider> nav_button_provider;
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
-   if (ThemeServiceFactory::GetForProfile(browser_view->browser()->profile())
-           ->UsingSystemTheme() &&
-       views::LinuxUI::instance()) {
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+   auto* linux_ui = views::LinuxUI::instance();
+   auto* profile = browser_view->browser()->profile();
+   auto* theme_service_factory = ThemeServiceFactory::GetForProfile(profile);

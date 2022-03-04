@@ -1,6 +1,6 @@
---- src/OpenMesh/Apps/VDProgMesh/mkbalancedpm/mkbalancedpm.cc.orig	2018-10-21 23:38:43 UTC
+--- src/OpenMesh/Apps/VDProgMesh/mkbalancedpm/mkbalancedpm.cc.orig	2020-03-12 13:55:54 UTC
 +++ src/OpenMesh/Apps/VDProgMesh/mkbalancedpm/mkbalancedpm.cc
-@@ -50,6 +50,9 @@
+@@ -45,6 +45,9 @@
  #include <iostream>
  #include <sstream>
  #include <cmath>

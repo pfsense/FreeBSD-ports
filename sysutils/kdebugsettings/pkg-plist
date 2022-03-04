@@ -1,8 +1,10 @@
 bin/kdebugsettings
-etc/xdg/kde.categories
-etc/xdg/kde.renamecategories
+lib/libkdebugsettings.so.%%KDE_APPLICATIONS_VERSION%%
+lib/libkdebugsettings.so.5
 share/applications/org.kde.kdebugsettings.desktop
+%%DATADIR%%/groups/Full Debug Ruqola
 share/locale/ar/LC_MESSAGES/kdebugsettings.mo
+share/locale/az/LC_MESSAGES/kdebugsettings.mo
 share/locale/ca/LC_MESSAGES/kdebugsettings.mo
 share/locale/ca@valencia/LC_MESSAGES/kdebugsettings.mo
 share/locale/cs/LC_MESSAGES/kdebugsettings.mo
@@ -37,3 +39,6 @@ share/locale/tr/LC_MESSAGES/kdebugsettings.mo
 share/locale/uk/LC_MESSAGES/kdebugsettings.mo
 share/locale/zh_CN/LC_MESSAGES/kdebugsettings.mo
 share/locale/zh_TW/LC_MESSAGES/kdebugsettings.mo
+share/metainfo/org.kde.kdebugsettings.appdata.xml
+share/qlogging-categories5/kde.renamecategories
+share/qlogging-categories5/kdebugsettings.categories

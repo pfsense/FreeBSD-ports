@@ -1,10 +1,8 @@
 # Created by: Andrew Turner <andrew+ports@fubar.geek.nz>
-# $FreeBSD$
 
 PORTNAME=	posix
-PORTVERSION=	34.0.4
+PORTVERSION=	35.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
@@ -14,14 +12,15 @@ COMMENT=	Lua bindings for POSIX APIs
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}stdlib-normalize>=0:devel/lua-stdlib-normalize
+RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}stdlib-normalize>=0:devel/lua-stdlib-normalize@${LUA_FLAVOR}
 
-USES=		lua shebangfix
-SHEBANG_FILES=	build-aux/luke
+USES=		lua:module shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	luaposix
 GH_PROJECT=	luaposix
+
+SHEBANG_FILES=	build-aux/luke
 
 do-build:
 	@cd ${WRKSRC} && build-aux/luke all \

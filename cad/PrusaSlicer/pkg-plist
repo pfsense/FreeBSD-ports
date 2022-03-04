@@ -1,0 +1,4 @@
+bin/prusa-gcodeviewer
+bin/prusa-slicer
+share/applications/PrusaGcodeviewer.desktop
+share/applications/PrusaSlicer.desktop

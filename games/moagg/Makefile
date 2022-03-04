@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	moagg
 PORTVERSION=	1.95b
@@ -22,7 +21,6 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 PORTDOCS=	AUTHORS README.txt

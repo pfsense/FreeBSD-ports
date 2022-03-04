@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	milton
-PORTVERSION=	1.6.0
+PORTVERSION=	1.9.1
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	graphics
@@ -17,11 +16,11 @@ BUILD_DEPENDS=	icotool:graphics/icoutils
 USE_GITHUB=	yes
 GH_ACCOUNT=	serge-rgb
 
-USES=		cmake gl gnome
-USE_GL=		gl
-USE_GNOME=	gtk20
+USES=		cmake compiler:c++11-lang gl gnome sdl xorg
+USE_GL=		gl glu
+USE_GNOME=	cairo gtk20
 USE_SDL=	sdl2 image2
-INSTALLS_ICONS=	yes
+USE_XORG=	ice sm x11 xext xi
 
 PLIST_FILES=	bin/milton ${DATADIR_REL}/Carlito.ttf
 .for n in 16 32 48 64 128 256
@@ -35,6 +34,8 @@ post-patch:
 		${WRKSRC}/src/sdl_milton.cc
 	@${REINPLACE_CMD} -e 's:milton\.png:${PREFIX}/share/icons/hicolor/256x256/apps/&:' \
 		${WRKSRC}/src/platform_linux.cc
+	@${REINPLACE_CMD} -E '/case (ENODATA|ENOST?R|ETIME):/d' \
+		${WRKSRC}/src/shadergen.cc
 
 do-install:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/Milton \

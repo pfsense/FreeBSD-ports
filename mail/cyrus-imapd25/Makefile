@@ -1,12 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	cyrus-imapd
-PORTVERSION=	2.5.13
-#PORTREVISION=	0
-CATEGORIES=	mail ipv6
-MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/ \
-		https://www.cyrusimap.org/releases/ \
-		ftp://ftp.cyrusimap.org/cyrus-imapd/
+PORTVERSION=	2.5.17
+PORTREVISION=	1
+CATEGORIES=	mail
+MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	25
 
 MAINTAINER=	ume@FreeBSD.org
@@ -17,6 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_armv6=		fails to build: ./tools/config2header: Error code 1
 BROKEN_armv7=		fails to build: ./tools/config2header: Error code 1
+BROKEN_riscv64=		fails to build: lib/imapopts.c: Error 1
 
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libpcre.so:devel/pcre
@@ -24,9 +21,8 @@ LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 CONFLICTS_INSTALL=	cyrus-imapd-2.[^5].* cyrus-imapd2[^5]-2.[^5].* \
 			cyrus-imapd3*
 
-USE_RC_SUBR=	imapd
-
 USES=		cpe libtool perl5 ssl
+USE_RC_SUBR=	imapd
 GNU_CONFIGURE=	yes
 CYRUS_PREFIX=	${PREFIX}/cyrus
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
@@ -62,7 +58,7 @@ HTTP_DESC=		Enable HTTP (beta quality)
 HTTP_CONFIGURE_ENABLE=	http
 HTTP_LIB_DEPENDS=	libjansson.so:devel/jansson \
 			libical.so:devel/libical
-HTTP_USES=		pkgconfig
+HTTP_USES=		gnome pkgconfig
 HTTP_USE=		GNOME=libxml2
 IDLED_DESC=		Enable IMAP idled support
 IDLED_CONFIGURE_ENABLE=	idled

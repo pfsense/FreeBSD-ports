@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	metronome
 DISTVERSION=	0.9.0
-PORTREVISION=	7
+PORTREVISION=	12
 CATEGORIES=	net-mgmt dns
 
 MAINTAINER=	krion@FreeBSD.org
@@ -13,7 +11,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-USES=		autoreconf:build compiler:c++11-lang eigen:3 libtool:build pathfix pkgconfig
+USES=		autoreconf:build compiler:c++11-lang eigen:3 libtool:build \
+		pathfix pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ahupowerdns

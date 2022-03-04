@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	askuserinfo
 PORTVERSION=	1.1
 PORTREVISION=	2

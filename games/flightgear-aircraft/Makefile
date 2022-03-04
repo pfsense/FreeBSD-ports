@@ -1,8 +1,7 @@
 # Created by: Jean-Yves Lefort <jylefort@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flightgear-aircraft
-PORTVERSION=	20180516
+PORTVERSION=	20190826
 CATEGORIES=	games
 # See http://www.flightgear.org/templates.js
 MASTER_SITES=	http://mirrors.ibiblio.org/flightgear/ftp/Aircraft/ \
@@ -54,8 +53,9 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${LOCALBASE}/share/flightgear/version:games/flightgear-data
 
-NO_BUILD=	yes
 USES=		zip
+
+NO_BUILD=	yes
 WRKSRC=	${WRKDIR}/fgaircraft
 EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
 DATADIR=	${PREFIX}/share/flightgear/Aircraft
@@ -74,7 +74,7 @@ pre-install:
 	@${RM} ${PLIST}
 	@cd ${WRKSRC} && \
 	${FIND} * -type d -empty | ${SORT} \
-		| ${SED} -e 's|^|@exec ${MKDIR} %D/share/flightgear/Aircraft/|' >> ${PLIST} && \
+		| ${SED} -e 's|^|@preexec ${MKDIR} %D/share/flightgear/Aircraft/|' >> ${PLIST} && \
 	${FIND} * -type f | ${SORT} \
 		| ${SED} -e 's|^|%%DATADIR%%/|' >> ${PLIST} && \
 	${FIND} * -type d -empty | ${SORT} -r \

@@ -1,8 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	pyobfuscate
 PORTVERSION=	0.3.20131129
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	cs@FreeBSD.org
@@ -15,7 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	astrand
 GH_TAGNAME=	47cc6e49bf65649c9fc53fbf4ae7d6e23b565550
 
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_PYTHON=	distutils autoplist concurrent optsuffix
 NO_ARCH=	yes
 SHEBANG_FILES=	*.py pyobfuscate pyobfuscate-install

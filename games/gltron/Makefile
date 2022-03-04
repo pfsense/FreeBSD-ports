@@ -1,9 +1,8 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	gltron
 PORTVERSION=	0.70
-PORTREVISION=	17
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/${PORTVERSION}
 EXTRACT_SUFX=	-source.tar.gz
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake
+USES=		gl gmake sdl
 USE_GL=		gl
 USE_SDL=	sdl sound
 GNU_CONFIGURE=	yes
@@ -28,7 +27,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 OPTIONS_DEFINE=	SDL_NET DOCS
 SDL_NET_DESC=	Network Support
 SDL_NET_USE=	SDL=net
-SLD_NET_CONFIGURE_ENABLE=	network
+SDL_NET_CONFIGURE_ENABLE=	network
 
 DESKTOP_ENTRIES=	"GLtron" \
 	"3D lightcycle game" \

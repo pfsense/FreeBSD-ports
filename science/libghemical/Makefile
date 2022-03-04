@@ -1,9 +1,8 @@
 # Created by: Nakata Maho <maho@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libghemical
 PORTVERSION=	3.0.0
-PORTREVISION=	14
+PORTREVISION=	17
 CATEGORIES=	science
 MASTER_SITES=	http://bioinformatics.org/ghemical/download/release20111012/	\
 		http://bioinformatics.org/ghemical/download/current/
@@ -23,13 +22,11 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		liblapack.so:math/lapack \
 		libmpqc.so:science/mpqc
 
-USES=		fortran gettext gl gmake libtool localbase pathfix pkgconfig 
+USES=		fortran gettext gl gmake libtool localbase pathfix pkgconfig
 USE_CXXSTD=	c++98
 USE_GL=		gl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-CONFIGURE_ENV=	LD_PRELOAD=${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so # workaround: otherwise configure fails
 
 CONFIGURE_ARGS+=	--enable-mpqc
 LDFLAGS+=	-lSCbasis -lSCcints -lSCclass -lSCcontainer -lSCdft -lSCgroup \

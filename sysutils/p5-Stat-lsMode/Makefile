@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
 
 PORTNAME=	Stat-lsMode
 PORTVERSION=	0.50
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Stat::lsMode - format file modes like the ls -l command does
+COMMENT=	Format file modes like "ls -l" command does
 
 USES=		perl5
 USE_PERL5=	configure

@@ -1,23 +1,20 @@
---- theonionbox/theonionbox.py.orig	2018-10-12 18:06:09 UTC
+--- theonionbox/theonionbox.py.orig	2019-11-09 13:37:29 UTC
 +++ theonionbox/theonionbox.py
-@@ -520,17 +520,17 @@ required_modules = {
+@@ -513,7 +513,7 @@ required_modules = {
+         'info': "Check 'https://pypi.python.org/pypi/psutil' for installation instructions."
      },
-     'apscheduler2': {
-         'module': 'apscheduler',
--        'version': '>=2.1.2, <3.*; python_version<"3.0"'
-+        'version': '>=3.4'
+     'stem': {
+-        'version': '>=1.5.4, <=1.6'
++        'version': '>=1.5.4'
      },
-     'apscheduler3': {
-         'module': 'apscheduler',
--        'version': '>=3.4; python_version>="3.0"'
-+        'version': '>=3.4'
+     'bottle': {
+         'version': '>=0.12.13'
+@@ -539,7 +539,7 @@ required_modules = {
+         'version': '>=3.2; python_version<"3.0"'
      },
-     'requests': {
-         'version': '>=2.18.0'
-     },
-     'tzlocal': {
--        'version': '>=1.5'
-+        'version': '>=1.4'
-     },
-     'pysocks': {
-         'version': '>=1.6.7'
+     'urllib3': {
+-        'version': '>=1.24.2, <1.25'
++        'version': '>=1.21.1,<1.26'    #copied (except the exclusions) from requests 2.22
+     }
+ }
+ 

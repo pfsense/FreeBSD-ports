@@ -1,5 +1,4 @@
 # Created by: Nicola Stanislao Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	adapta-backgrounds
 PORTVERSION=	0.5.2.3
@@ -22,7 +21,7 @@ OPTIONS_DEFINE=	DOCS
 
 NO_ARCH=	yes
 
-USES=		autoreconf gmake pkgconfig
+USES=		autoreconf gmake gnome pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	glib20 libxml2
 

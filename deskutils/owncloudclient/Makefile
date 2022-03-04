@@ -1,13 +1,13 @@
 # Created by: Mathieu Arnold
-# $FreeBSD$
 
 PORTNAME=	owncloudclient
-DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.1
-PORTREVISION=	4
+DISTVERSION=	2.8.2
+DISTVERSIONSUFFIX=	.4246
 CATEGORIES=	deskutils
+MASTER_SITES=	https://download.owncloud.com/desktop/ownCloud/stable/${DISTVERSION}${DISTVERSIONSUFFIX}/source/
+DISTNAME=	ownCloud-${DISTVERSION}${DISTVERSIONSUFFIX}
 
-MAINTAINER=	yonas@fizk.net
+MAINTAINER=	daniel@morante.net
 COMMENT=	OwnCloud Desktop Syncing Client
 
 LICENSE=	GPLv2
@@ -16,28 +16,24 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libqt5keychain.so:security/qtkeychain
 
-USES=		cmake:noninja compiler:c++11-lib gmake iconv kde:5 \
-		localbase:ldflags pkgconfig qt:5 sqlite
-USE_QT=		buildtools_build concurrent core dbus gui linguist_build network \
-		qmake_build sql webkit widgets xml
-USE_KDE=	completion config coreaddons jobwidgets kio service widgetsaddons
-CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=OFF \
-		-DCMAKE_INSTALL_MANDIR:STRING=man \
-		-DWITH_STACK_PROTECTOR:BOOL=OFF
-USE_GITHUB=	yes
-GH_ACCOUNT=	owncloud
-GH_PROJECT=	client
+USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gmake \
+		iconv kde:5 localbase:ldflags pkgconfig qt:5 shared-mime-info \
+		sqlite tar:xz
+USE_KDE=	completion config coreaddons jobwidgets kio service \
+		widgetsaddons windowsystem
 USE_LDCONFIG=	yes
+USE_QT=		concurrent core dbus gui network sql webkit widgets xml \
+		buildtools_build linguist_build qmake_build
 
-OPTIONS_DEFINE=		DEBUG DOCS
-
-DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
-DOCS_USE=		tex=dvipsk:build,latex:build
-DOCS_CMAKE_ON=		-DWITH_DOC:BOOL=ON
-
-DEBUG_CMAKE_ON=		-DCMAKE_BUILD_TYPE:STRING=Debug
+CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR:STRING=man \
+		-DSYSCONF_INSTALL_DIR="${PREFIX}/etc"
+CMAKE_OFF=	BUILD_WITH_QT4 WITH_DOC WITH_STACK_PROTECTOR
 
 PLIST_SUB=	VERSION=${PORTVERSION}
+
+OPTIONS_DEFINE=		DEBUG
+
+DEBUG_CMAKE_ON=		-DCMAKE_BUILD_TYPE:STRING=Debug
 
 post-patch:
 	@${REINPLACE_CMD} -e \

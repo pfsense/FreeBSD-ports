@@ -1,17 +1,18 @@
 # Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	smtube
-PORTVERSION=	18.9.0
-PORTREVISION=	3
+DISTVERSION=	21.10.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/smtube/SMTube/${PORTVERSION}/
 
-MAINTAINER=	kikadf.01@gmail.com
+MAINTAINER=	vvd@unislabs.com
 COMMENT=	SMPlayer YouTube browser
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Copying.txt
+
+RUN_DEPENDS=	yt-dlp:www/yt-dlp
 
 USES=		gl gmake qt:5 tar:bzip2
 USE_GL=		gl
@@ -30,13 +31,11 @@ OPTIONS_MULTI_PLAYER=	MPLAYER MPV SMPLAYER VLC
 OPTIONS_DEFINE=		DOCS
 OPTIONS_DEFAULT=	QT5 SMPLAYER
 
-TOOLKIT_DESC=	Qt toolkit version
 PLAYER_DESC=	Video player
 MPLAYER_DESC=	MPlayer dependency for video playback
 MPV_DESC=	mpv dependency for video playback
 SMPLAYER_DESC=	SMPlayer dependency for video playback
 VLC_DESC=	VLC dependency for video playback
-
 
 MPLAYER_RUN_DEPENDS=		mplayer:multimedia/mplayer
 MPV_RUN_DEPENDS=		mpv:multimedia/mpv

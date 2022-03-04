@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	blockrage
 PORTVERSION=	0.2.3
@@ -16,13 +15,13 @@ COMMENT=	Falling blocks game with 2-player hotseat mode
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		gnome sdl
 USE_SDL=	sdl image mixer
 GNU_CONFIGURE=	yes
 ALL_TARGET=	${PORTNAME}
 
 PORTDOCS=	ChangeLog KNOWN_BUGS README
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96
 
 SUB_FILES=	${PORTNAME}

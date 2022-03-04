@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Geo-JSON
 PORTVERSION=	0.007
@@ -12,6 +11,7 @@ COMMENT=	Perl OO interface for geojson
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-JSON>=0:converters/p5-JSON \
@@ -22,7 +22,9 @@ TEST_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
 		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 		p5-Test-Most>=0:devel/p5-Test-Most
 
-USE_PERL5=	modbuildtiny
 USES=		perl5
+USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

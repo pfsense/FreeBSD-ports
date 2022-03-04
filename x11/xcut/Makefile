@@ -1,5 +1,4 @@
 # Created by: Cy Schubert <Cy.Schubert@uumail.gov.bc.ca>
-# $FreeBSD$
 
 PORTNAME=	xcut
 PORTVERSION=	0.2
@@ -11,7 +10,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTVERSION} \
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Manipulate X cut buffers from the commandline
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11
 PLIST_FILES=	bin/xcut man/man1/xcut.1.gz
 

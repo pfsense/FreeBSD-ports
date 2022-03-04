@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pathtools
 PORTVERSION=	0.1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,23 +10,22 @@ COMMENT=	File system general utilities for Python
 
 LICENSE=	MIT
 
-OPTIONS_DEFINE=	DOCS
-
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
-.if ${PORT_OPTIONS:MDOCS}
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.1.3:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
+
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 
-post-build:
+PORTDOCS=	*
+
+post-build-DOCS-on:
 	@(cd ${WRKSRC}/docs ; ${MAKE} SPHINXBUILD=sphinx-build-${PYTHON_VER} html)
 
-post-install:
+post-install-DOCS-on:
 	@(cd ${WRKSRC}/docs/build/html ; ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} \
 		"! -name .buildinfo -and ! -name objects.inv")
-.endif
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libquvi
 PORTVERSION=	0.4.1
@@ -12,7 +11,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cross-platform library for parsing flash media stream URLs
 
 LICENSE=	LGPL21+
-LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 LIB_DEPENDS=	libcurl.so:ftp/curl

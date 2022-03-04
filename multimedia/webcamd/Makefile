@@ -1,12 +1,10 @@
 # Created by: Andrew Thompson <thompsa@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	webcamd
-PORTVERSION=	4.20.0.1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	5.13.2.6
 PORTREVISION=	2
 CATEGORIES=	multimedia
-MASTER_SITES=	http://www.selasky.org/hans_petter/distfiles/ \
-		http://home.selasky.org/distfiles/
 
 MAINTAINER=	hselasky@FreeBSD.org
 COMMENT=	Port of Linux USB webcam and DVB drivers into userspace
@@ -14,36 +12,30 @@ COMMENT=	Port of Linux USB webcam and DVB drivers into userspace
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	v4l_compat>=1.0.20100321:multimedia/v4l_compat
-LIB_DEPENDS=	libv4l1.so:multimedia/libv4l
 
 USES=		pkgconfig tar:bzip2 uidfix
-MAKE_ARGS=	LIBDIR="${LOCALBASE}/lib"
+MAKE_ARGS=	LIBDIR="${LOCALBASE}/lib" HAVE_CUSE="YES"
 USE_RC_SUBR=	webcamd
 SUB_FILES=	webcamd.conf
-USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	CUSE DEBUG HAL VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
-OPTIONS_DEFAULT=DVB HAL INPUT RADIO WEBCAM
+USE_GITHUB=	yes
+GH_ACCOUNT=	hselasky
+GH_PROJECT=	${PORTNAME}
+GH_TUPLE=	torvalds:linux:v5.13-rc2:linux/media_tree \
+		swills:v4l2loopback:8ab6a12:v4l2loopback/contrib/v4l2loopback
 
-.if exists(/usr/lib/libcuse.so)
-OPTIONS_DEFAULT+=	CUSE
-.else
-OPTIONS_EXCLUDE+=	CUSE
-.endif
+OPTIONS_DEFINE=	DEBUG VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM V4L2LOOPBACK
+OPTIONS_DEFAULT=DVB INPUT RADIO WEBCAM V4L2LOOPBACK
 
-CUSE_DESC=	Use cuse(3) over multimedia/cuse4bsd-kmod
-CUSE_MAKE_ARGS=		HAVE_CUSE="YES"
-CUSE_SUB_LIST=		LIBCUSE=""
-CUSE_BUILD_DEPENDS_OFF=	cuse4bsd-kmod>=0.1.24:multimedia/cuse4bsd-kmod
-CUSE_LIB_DEPENDS_OFF=	libcuse4bsd.so:multimedia/cuse4bsd-kmod
-CUSE_SUB_LIST_OFF=	LIBCUSE="${LOCALBASE}/lib/libcuse4bsd.so"
+#
+# 32-bit compatibility support is mostly useful for
+# platforms using 32-bit applications:
+#
+OPTIONS_DEFINE_amd64=		COMPAT32
+OPTIONS_DEFAULT_amd64=		COMPAT32
 
-HAL_DESC=	Build with HAL and DBUS support
-HAL_LIB_DEPENDS+=	libhal.so:sysutils/hal
-HAL_LIB_DEPENDS+=	libdbus-1.so:devel/dbus
-HAL_MAKE_ARGS=		HAVE_HAL="YES"
-HAL_SUB_LIST=		LIBHAL="${LOCALBASE}/lib/libhal.so:${LOCALBASE}/lib/libdbus-1.so:"
-HAL_SUB_LIST_OFF=	LIBHAL=""
+COMPAT32_DESC=	Enable 32-bit compatibility support
+COMPAT32_MAKE_ARGS=	HAVE_COMPAT32="YES"
 
 DEBUG_MAKE_ARGS=	HAVE_DEBUG="YES"
 
@@ -71,18 +63,24 @@ RADIO_MAKE_ARGS=	HAVE_RADIO_DRV="YES"
 WEBCAM_DESC=	Build with USB webcam support (UVC, gspca, ...)
 WEBCAM_MAKE_ARGS=	HAVE_WEBCAM_DRV="YES"
 
+V4L2LOOPBACK_DESC=	Build with V4L2 loopback support
+V4L2LOOPBACK_MAKE_ARGS=	HAVE_V4L2LOOPBACK_DRV="YES"
+
 USERS=		webcamd
 GROUPS=		webcamd
 
 MAKE_ARGS+=	HAVE_MAN="YES"
 MAKE_ARGS+=	PTHREAD_LIBS="-lpthread"
 
+WEBCAMDDIR=	${WRKDIR}/webcamd-${DISTVERSION}
+LINUXDIR=	${WRKDIR}/linux-*
+
 do-configure:
-	${MAKE} -C${WRKSRC}/tools/linux_make
-	${MAKE} ${MAKE_ARGS} configure -C${WRKSRC}
+	${MAKE} -C${WEBCAMDDIR}/tools/linux_make
+	${MAKE} ${MAKE_ARGS} configure -C${WEBCAMDDIR}
 
 post-patch:
-	@(cd ${WRKSRC}/patches && ${SH} ./do_patch.sh)
+	@(cd ${WEBCAMDDIR}/patches && ${SH} ./do_patch.sh)
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/devd

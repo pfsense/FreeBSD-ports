@@ -1,13 +1,12 @@
 # Created by: Samy Al Bahra <samy@kerneled.org>
-# $FreeBSD$
 
 PORTNAME=	elf
 PORTVERSION=	0.5.4p1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	PACKETSTORM/linux/reverse-engineering
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Commandline based ELF header analyzer
 
 LICENSE=	GPLv2

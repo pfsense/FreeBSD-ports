@@ -1,9 +1,8 @@
 # Created by: Dan Rench <citric@cubicone.tmetic.com>
-# $FreeBSD$
 
 PORTNAME=	spidermonkey17
 DISTVERSION=	1.7.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/js
 DISTNAME=	js-${DISTVERSION}
@@ -11,20 +10,19 @@ DISTNAME=	js-${DISTVERSION}
 MAINTAINER=	citric@cubicone.tmetic.com
 COMMENT=	Standalone JavaScript interpreter from the Mozilla project
 
-LIB_DEPENDS=	libnspr4.so:devel/nspr
+BROKEN_aarch64=		fails to link: missing sbrk
+BROKEN_armv6=		fails to link: final link failed: Nonrepresentable section on output
+BROKEN_armv7=		fails to link: /nxb-bin/usr/bin/ld: FreeBSD12.0-CURRENT_DBG.OBJ/js: hidden symbol `__aeabi_uidivmod' in /usr/lib/libgcc.a(aeabi_uidivmod.o) is referenced by DSO
+BROKEN_mips64=		fails to link: final link failed: Nonrepresentable section on output
+BROKEN_riscv64=		fails to link: missing sbrk
+BROKEN_sparc64=		fails to link
 
-CONFLICTS=	njs-[0-9]*
+LIB_DEPENDS=	libnspr4.so:devel/nspr
 
 MAKE_ARGS+=	JS_THREADSAFE=YES \
 		PROG_LIBS="-lreadline -lncurses -lm -lpthread" \
 		LDFLAGS="-L${LOCALBASE}/lib"
 CFLAGS+=	-I${LOCALBASE}/include/nspr
-
-BROKEN_aarch64=		fails to link: missing sbrk
-BROKEN_armv6=		fails to link: final link failed: Nonrepresentable section on output
-BROKEN_armv7=		fails to link: /nxb-bin/usr/bin/ld: FreeBSD12.0-CURRENT_DBG.OBJ/js: hidden symbol `__aeabi_uidivmod' in /usr/lib/libgcc.a(aeabi_uidivmod.o) is referenced by DSO
-BROKEN_mips64=		fails to link: final link failed: Nonrepresentable section on output
-BROKEN_sparc64=		fails to link
 
 USES=		gmake ncurses readline
 MAKEFILE=	Makefile.ref

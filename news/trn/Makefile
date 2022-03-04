@@ -1,5 +1,4 @@
 # Created by: smace
-# $FreeBSD$
 
 PORTNAME=	trn
 PORTVERSION=	3.6
@@ -7,7 +6,7 @@ CATEGORIES=	news
 MASTER_SITES=	ftp://ftp.uu.net/networking/news/readers/trn/ \
 		ftp://ftp.funet.fi/pub/unix/news/trn/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Threaded Read News newsreader
 
 RUN_DEPENDS=	munpack:converters/mpack

@@ -1,5 +1,4 @@
 # Created by: Leland Wang <llwang@infor.org>
-# $FreeBSD$
 
 PORTNAME=	proggy_fonts
 PORTVERSION=	1.0
@@ -28,8 +27,8 @@ COMMENT=	The perfect monospaced bitmap programming fonts
 ALREADY_UNZIP=	${DISTDIR}/Opti.pcf.gz ${DISTDIR}/OptiSmall.pcf.gz \
 	        ${DISTDIR}/PixelCarnageMono.pcf.gz
 
+USES=		fonts xorg zip
 USE_XORG=	x11
-USES=		fonts zip
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 

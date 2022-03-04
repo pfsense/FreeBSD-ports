@@ -1,5 +1,4 @@
 # Created by: Matthew Gibson <mdg583@hotmail.com>
-# $FreeBSD$
 
 PORTNAME=	cuyo
 PORTVERSION=	2.1.0
@@ -13,14 +12,10 @@ COMMENT=	Nice, innovative, challenging Tetris-like game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake iconv
+USES=		gmake gnome iconv localbase:ldflags sdl xorg
 USE_SDL=	mixer image
 USE_XORG=	x11 xau xdmcp
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 # Do not use older versions
 PORTSCOUT=	limit:[0-9]\.[0-9]\.
@@ -34,7 +29,7 @@ NLS_USES=		gettext perl5
 NLS_USE=		perl5=build
 NLS_LDFLAGS=		-lintl
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} NEWS README ${STAGEDIR}${DOCSDIR})
 

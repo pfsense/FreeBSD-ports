@@ -1,5 +1,4 @@
 # Created by: Oleg Pudeyev <oleg@bsdpower.com>
-# $FreeBSD$
 
 PORTNAME=	gtk-theme-switch
 DISTVERSION=	2.0.0rc2
@@ -10,7 +9,7 @@ MASTER_SITES=	http://www.muhri.net/
 MAINTAINER=	oleg@bsdpower.com
 COMMENT=	Command line tool for switching GTK+ 2.0 themes
 
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig xorg
 USE_XORG=	x11
 USE_GNOME=	gtk20
 

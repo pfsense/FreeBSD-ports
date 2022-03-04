@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	flobopuyo
 PORTVERSION=	0.20
 PORTREVISION=	16
@@ -14,7 +11,7 @@ COMMENT=	Clone of the famous PuyoPuyo
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		bison gmake dos2unix tar:tgz
+USES=		bison dos2unix gmake sdl tar:tgz
 DOS2UNIX_FILES=	IosVector.cpp PuyoGame.cpp
 USE_SDL=	sdl mixer image
 

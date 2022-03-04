@@ -3,7 +3,7 @@
  * tftp_files.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -79,6 +79,8 @@ if ($_POST['upload'] == "Upload" && $_FILES["tftpd_fileup"]["error"] == UPLOAD_E
 		$tmp_name = $_FILES["tftpd_fileup"]["tmp_name"];
 		$name = basename($_FILES["tftpd_fileup"]["name"]);
 		move_uploaded_file($tmp_name, FILES_DIR . "/{$name}");
+		chown(FILES_DIR . "/{$name}", 'nobody');
+		chgrp(FILES_DIR . "/{$name}", 'nobody');
 	} else {
 		$input_errors[] = gettext("Failed to upload file {$_FILES["tftpd_fileup"]["name"]}");
 	}

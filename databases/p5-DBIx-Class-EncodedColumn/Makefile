@@ -1,8 +1,7 @@
 # Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	DBIx-Class-EncodedColumn
-PORTVERSION=	0.00015
+PORTVERSION=	0.00020
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,6 +11,7 @@ COMMENT=	Automatically encode columns
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-DBIx-Class>=0.06002:databases/p5-DBIx-Class \
@@ -22,7 +22,9 @@ TEST_DEPENDS=	p5-DBD-SQLite>=0:databases/p5-DBD-SQLite \
 		p5-Test-Exception>=0:devel/p5-Test-Exception
 
 USES=		perl5
-USE_PERL5=	configure
+USE_PERL5=	modbuildtiny
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	BLOWFISH OPENPGP
 OPTIONS_DEFAULT=BLOWFISH OPENPGP

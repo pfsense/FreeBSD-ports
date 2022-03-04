@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	App-Genpass
 PORTVERSION=	2.401
@@ -26,8 +25,9 @@ RUN_DEPENDS=	p5-Config-Any>=0:devel/p5-Config-Any \
 TEST_DEPENDS=	p5-List-MoreUtils>=0:lang/p5-List-MoreUtils \
 		p5-Test-Deep>=0:devel/p5-Test-Deep
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

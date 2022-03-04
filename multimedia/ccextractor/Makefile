@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	ccextractor
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.85
-PORTREVISION=	12
+PORTREVISION=	22
 CATEGORIES=	multimedia
 
 MAINTAINER=	oz@nixil.net
@@ -16,7 +14,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libgmp.so:math/gmp \
 		libgnutls.so:security/gnutls \
 		libogg.so:audio/libogg \
-		libopencv_core.so:graphics/opencv-core \
+		libopencv_core.so:graphics/opencv \
 		libpng.so:graphics/png \
 		libschroedinger-1.0.so:multimedia/schroedinger \
 		libtheoraenc.so:multimedia/libtheora \
@@ -29,7 +27,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libx265.so:multimedia/x265 \
 		libxvidcore.so:multimedia/xvid
 
-USES=		cmake iconv localbase:ldflags pkgconfig
+USES=		cmake iconv localbase:ldflags pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	CCExtractor
 USE_XORG=	x11

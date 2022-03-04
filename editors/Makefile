@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Editors
 
     SUBDIR += 2bsd-vi
@@ -21,14 +18,13 @@
     SUBDIR += chexedit
     SUBDIR += codelite
     SUBDIR += cooledit
+    SUBDIR += cpeditor
     SUBDIR += cream
     SUBDIR += cudatext
     SUBDIR += deforaos-editor
-    SUBDIR += dexed
     SUBDIR += dhex
     SUBDIR += diakonos
     SUBDIR += dkns
-    SUBDIR += dlangide
     SUBDIR += drjava
     SUBDIR += dte
     SUBDIR += e3
@@ -37,6 +33,7 @@
     SUBDIR += ecrire
     SUBDIR += edith
     SUBDIR += editorconfig-core-c
+    SUBDIR += elementary-code
     SUBDIR += emacs
     SUBDIR += emacs-devel
     SUBDIR += encryptpad
@@ -47,7 +44,6 @@
     SUBDIR += fpc-ide
     SUBDIR += fte
     SUBDIR += fxite
-    SUBDIR += gate
     SUBDIR += gedit
     SUBDIR += gedit-plugins
     SUBDIR += ghex
@@ -56,6 +52,8 @@
     SUBDIR += gnome-latex
     SUBDIR += gobby
     SUBDIR += gomate
+    SUBDIR += gummi
+    SUBDIR += helix
     SUBDIR += heme
     SUBDIR += hexcurse
     SUBDIR += hexedit
@@ -63,6 +61,7 @@
     SUBDIR += hexpert
     SUBDIR += hnb
     SUBDIR += hte
+    SUBDIR += imhex
     SUBDIR += impress
     SUBDIR += jed
     SUBDIR += jedit
@@ -73,10 +72,13 @@
     SUBDIR += kak-lsp
     SUBDIR += kakoune
     SUBDIR += kate
+    SUBDIR += kibi
     SUBDIR += kile
     SUBDIR += komodo-edit
     SUBDIR += lazarus
+    SUBDIR += lazarus-devel
     SUBDIR += lazarus-qt5
+    SUBDIR += lazarus-qt5-devel
     SUBDIR += le
     SUBDIR += leafpad
     SUBDIR += led
@@ -95,6 +97,7 @@
     SUBDIR += libreoffice-bs
     SUBDIR += libreoffice-ca
     SUBDIR += libreoffice-ca_valencia
+    SUBDIR += libreoffice-ckb
     SUBDIR += libreoffice-cs
     SUBDIR += libreoffice-cy
     SUBDIR += libreoffice-da
@@ -110,6 +113,7 @@
     SUBDIR += libreoffice-eu
     SUBDIR += libreoffice-fa
     SUBDIR += libreoffice-fi
+    SUBDIR += libreoffice-fur
     SUBDIR += libreoffice-fy
     SUBDIR += libreoffice-ga
     SUBDIR += libreoffice-gd
@@ -168,6 +172,7 @@
     SUBDIR += libreoffice-st
     SUBDIR += libreoffice-sv
     SUBDIR += libreoffice-sw_TZ
+    SUBDIR += libreoffice-szl
     SUBDIR += libreoffice-ta
     SUBDIR += libreoffice-te
     SUBDIR += libreoffice-tg
@@ -182,28 +187,31 @@
     SUBDIR += libreoffice-vec
     SUBDIR += libreoffice-xh
     SUBDIR += libreoffice-zu
+    SUBDIR += libreoffice6
+    SUBDIR += linux-bcompare
     SUBDIR += linux-sublime
+    SUBDIR += linux-sublime-text4
     SUBDIR += linux-sublime3
+    SUBDIR += linux-wps-office
     SUBDIR += madedit
-    SUBDIR += medit
+    SUBDIR += marker
     SUBDIR += mg
     SUBDIR += micro
     SUBDIR += mined
+    SUBDIR += mle
     SUBDIR += morla
     SUBDIR += mousepad
     SUBDIR += mp
     SUBDIR += nano
-    SUBDIR += nano-devel
     SUBDIR += ne
     SUBDIR += nedit
     SUBDIR += neovim
     SUBDIR += neovim-qt
-    SUBDIR += nvi-devel
     SUBDIR += nvi-m17n
-    SUBDIR += omegaT
+    SUBDIR += nvi2
+    SUBDIR += o
     SUBDIR += openoffice-4
     SUBDIR += openoffice-devel
-    SUBDIR += p5-Padre
     SUBDIR += p5-Proc-InvokeEditor
     SUBDIR += p5-Vimana
     SUBDIR += paredit-mode.el
@@ -212,19 +220,28 @@
     SUBDIR += pico-alpine
     SUBDIR += picpas
     SUBDIR += pluma
+    SUBDIR += pluma-plugins
     SUBDIR += poedit
+    SUBDIR += poke
     SUBDIR += psgml
     SUBDIR += puff
+    SUBDIR += py-babi
     SUBDIR += py-editorconfig
     SUBDIR += py-pynvim
-    SUBDIR += py-room
-    SUBDIR += rox-edit
+    SUBDIR += py-vim-bridge
+    SUBDIR += quilter
+    SUBDIR += rehex
     SUBDIR += rubygem-neovim
     SUBDIR += scite
     SUBDIR += se
     SUBDIR += semi
+    SUBDIR += setzer
     SUBDIR += shed
     SUBDIR += slime
+    SUBDIR += sly
+    SUBDIR += sly-asdf
+    SUBDIR += sly-named-readtables
+    SUBDIR += sly-quicklisp
     SUBDIR += ssed
     SUBDIR += sted
     SUBDIR += tamago
@@ -235,18 +252,18 @@
     SUBDIR += texmacs
     SUBDIR += texmaker
     SUBDIR += texstudio
+    SUBDIR += textadept
     SUBDIR += texworks
     SUBDIR += the
-    SUBDIR += thoteditor
     SUBDIR += treeform
     SUBDIR += tweak
     SUBDIR += uemacs
     SUBDIR += uzap
+    SUBDIR += ved
     SUBDIR += vigor
     SUBDIR += vile
     SUBDIR += vim
-    SUBDIR += vim-console
-    SUBDIR += vim-tiny
+    SUBDIR += vscode
     SUBDIR += web-mode
     SUBDIR += with-editor
     SUBDIR += wordgrinder
@@ -254,10 +271,10 @@
     SUBDIR += xcoral
     SUBDIR += xed
     SUBDIR += xi-core
+    SUBDIR += xi-term
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
     SUBDIR += yudit
     SUBDIR += zile
-    SUBDIR += zoinks
 
 .include <bsd.port.subdir.mk>

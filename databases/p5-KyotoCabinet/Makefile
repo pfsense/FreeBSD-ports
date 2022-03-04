@@ -1,11 +1,10 @@
 # Created by: Geraud CONTINSOUZAS <geraud@gcu.info>
-# $FreeBSD$
 
 PORTNAME=	KyotoCabinet
 PORTVERSION=	1.20
 PORTREVISION=	2
 CATEGORIES=	databases perl5
-MASTER_SITES=	https://fallabs.com/kyotocabinet/perlpkg/
+MASTER_SITES=	https://dbmx.net/kyotocabinet/perlpkg/
 PKGNAMEPREFIX=	p5-
 DISTNAME=	kyotocabinet-perl-${PORTVERSION}
 

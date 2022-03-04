@@ -1,9 +1,8 @@
 # Created by: Pietro Cerutti <gahr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	thingylaunch
 PORTVERSION=	2.0.3
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11
 MASTER_SITES=	http://gahr.ch/thingylaunch/
 
@@ -19,9 +18,9 @@ LIBX11_DESC=		Build against libX11
 LIBXCB_DESC=		Build against libXCB
 OPTIONS_DEFAULT=	LIBX11
 
+USES=		cmake compiler:c++11-lib xorg
 USE_XORG=	xorgproto
 USE_CXXSTD=	c++11
-USES=		cmake compiler:c++11-lib
 
 .include <bsd.port.options.mk>
 

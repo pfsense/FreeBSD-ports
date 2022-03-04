@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	mastergear
 PORTVERSION=	2.0
@@ -18,6 +17,7 @@ NO_WRKSUBDIR=	yes
 ONLY_FOR_ARCHS=	i386
 ONLY_FOR_ARCHS_REASON=	is an i386 binary
 
+USES=		xorg
 USE_XORG=	x11 xext
 
 NO_BUILD=	yes

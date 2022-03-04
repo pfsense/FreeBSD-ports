@@ -1,5 +1,4 @@
 # Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ghmm
 DISTVERSION=	0.9-rc3
@@ -16,7 +15,7 @@ LICENSE=	GPLv3
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_GNOME=	libxml2
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf gnome libtool pkgconfig
 CONFIGURE_ARGS+=	--without-python
 
 USE_LDCONFIG=	yes

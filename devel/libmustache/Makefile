@@ -1,10 +1,9 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libmustache
 PORTVERSION=	0.5.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	devel
 #MASTER_SITES=	
 

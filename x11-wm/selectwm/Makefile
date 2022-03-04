@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	selectwm
 PORTVERSION=	0.4.1
 PORTREVISION=	10
@@ -9,7 +7,7 @@ MASTER_SITES=	http://ordiluc.net/selectwm/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK application to let you select a window manager when starting X
 
-USES=		pkgconfig tar:bzip2
+USES=		gnome pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 

@@ -1,5 +1,4 @@
 # Created by: Brian Candler <B.Candler@pobox.com>
-# $FreeBSD$
 
 PORTNAME=	SGMLSpm
 PORTVERSION=	1.03
@@ -15,8 +14,10 @@ COMMENT=	Perl module for postprocessing the output from sgmls and nsgmls
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_PERL5=	run
 USES=		shebangfix perl5
+USE_PERL5=	run
+
+NO_ARCH=	yes
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

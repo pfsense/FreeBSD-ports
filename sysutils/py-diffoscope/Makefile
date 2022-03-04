@@ -1,8 +1,7 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	diffoscope
-PORTVERSION=	108
+PORTVERSION=	193
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,12 +20,13 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR} \
 		isoinfo:sysutils/cdrkit \
 		rpm2cpio:archivers/rpm2cpio
 
-USES=		python:3.5+
+USES=		cpe python:3.7+
+CPE_VENDOR=	reproducible_builds
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
 do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test --pytest-args="-rsx -l -vv"
+	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs -o addopts=
 
 .include <bsd.port.mk>

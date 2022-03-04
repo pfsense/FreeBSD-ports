@@ -1,8 +1,7 @@
 # Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mdocml
-PORTVERSION=	1.14.4
+PORTVERSION=	1.14.5
 CATEGORIES=	textproc
 MASTER_SITES=	http://mdocml.bsd.lv/snapshots/ \
 		LOCAL/uqs
@@ -19,11 +18,11 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 EXAMPLESDIR=	${PREFIX}/share/examples/mandoc
 
 HAS_CONFIGURE=	yes
-CFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-I${LOCALBASE}/include -fcommon  # clang11/gcc10
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 post-configure:
-	@${REINPLACE_CMD} -e '/^CFLAGS/s/-g//' -e '/^PREFIX/s/=/?=/' \
+	@${REINPLACE_CMD} -e '/^CFLAGS/s/=/?=/' -e '/^PREFIX/s/=/?=/' \
 		-e 's/^INSTALL_PROGRAM.*/INSTALL_PROGRAM=${INSTALL_PROGRAM}/' \
 		${WRKSRC}/Makefile.local
 

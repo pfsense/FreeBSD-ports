@@ -1,6 +1,6 @@
---- src/OpenMesh/Tools/CMakeLists.txt.orig	2017-01-08 22:09:58 UTC
+--- src/OpenMesh/Tools/CMakeLists.txt.orig	2021-03-25 00:45:18 UTC
 +++ src/OpenMesh/Tools/CMakeLists.txt
-@@ -46,7 +46,7 @@ if (WIN32)
+@@ -43,7 +43,7 @@ if (WIN32)
    endif()
  
  else ()
@@ -9,7 +9,7 @@
    set_target_properties (OpenMeshTools PROPERTIES VERSION ${OPENMESH_VERSION_MAJOR}.${OPENMESH_VERSION_MINOR}
                                                  SOVERSION ${OPENMESH_VERSION_MAJOR}.${OPENMESH_VERSION_MINOR} )
  endif ()
-@@ -54,7 +54,7 @@ endif ()
+@@ -51,7 +51,7 @@ endif ()
  target_link_libraries (OpenMeshTools OpenMeshCore)
  
  IF( NOT WIN32 )
@@ -18,7 +18,7 @@
  ENDIF(NOT WIN32)
  
  if ( (${PROJECT_NAME} MATCHES "OpenMesh") AND BUILD_APPS )
-@@ -70,7 +70,7 @@ if ( (${PROJECT_NAME} MATCHES "OpenMesh"
+@@ -67,7 +67,7 @@ if ( (${PROJECT_NAME} MATCHES "OpenMesh") AND BUILD_AP
    if (APPLE)
      # let bundle generation depend on target
      add_dependencies (fixbundle OpenMeshTools)

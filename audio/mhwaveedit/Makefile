@@ -1,9 +1,8 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	mhwaveedit
 PORTVERSION=	1.4.24
-PORTREVISION=	1
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
 
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USE_GITHUB=	yes
 GH_ACCOUNT=	magnush
 
-USES=		autoreconf localbase pathfix pkgconfig tar:bzip2
+USES=		autoreconf gnome localbase pathfix pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-alsalib \
@@ -47,6 +46,7 @@ PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_WITH=	pulse
 SAMPLERATE_LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 SAMPLERATE_CONFIGURE_WITH=	libsamplerate
+SDL_USES=		sdl
 SDL_USE=		sdl=sdl
 SDL_CONFIGURE_WITH=	sdl
 SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile

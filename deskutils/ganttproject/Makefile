@@ -1,38 +1,44 @@
-# Created by: ijliao
-# $FreeBSD$
-
 PORTNAME=	ganttproject
-DISTVERSION=	2.8.9
-DISTVERSIONSUFFIX=	-r2335
+DISTVERSION=	3.1.3100
 CATEGORIES=	deskutils java
-MASTER_SITES=	https://dl.ganttproject.biz/${PORTNAME}-${DISTVERSION}/
+MASTER_SITES=	https://github.com/bardsoftware/ganttproject/releases/download/ganttproject-${DISTVERSION}/ \
+		https://dl.ganttproject.biz/ganttproject-3.1.3100/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	freebsd@ny-central.org
 COMMENT=	Gantt chart based project scheduling and management tool
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		shebangfix zip
-SHEBANG_FILES=	ganttproject
-bash_CMD=	${SH}
+RUN_DEPENDS=	openjfx14>=14:java/openjfx14
 
+USES=		desktop-file-utils shebangfix zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	11+
+SHEBANG_FILES=	ganttproject
+bash_CMD=	/bin/sh
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
-DESKTOP_ENTRIES="GanttProject" "" "ganttproject" "ganttproject" "" ""
+post-extract:
+	${RM} ${WRKSRC}/ganttproject.exe
+	${RM} ${WRKSRC}/ganttproject.bat
+	${RM} ${WRKSRC}/ganttproject.command
+
+post-patch:
+	${REINPLACE_CMD} -e 's@$$PREFIX@${PREFIX}@g' ${WRKSRC}/ganttproject
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${DATADIR}
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
-	${LN} -sf ../${DATADIR_REL}/ganttproject ${STAGEDIR}${PREFIX}/bin
+	cd ${WRKSRC} && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
+	${RLN} ${STAGEDIR}${DATADIR}/ganttproject ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps
-	${RLN} ${STAGEDIR}${PREFIX}/${DATADIR_REL}/plugins-${DISTVERSION}/ganttproject/data/resources/icons/ganttproject.png \
+	${RLN} ${STAGEDIR}${DATADIR}/plugins/base/ganttproject/resources/icons/ganttproject.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps/ganttproject.png
+	${INSTALL_DATA} ${FILESDIR}/ganttproject.desktop \
+		${STAGEDIR}${PREFIX}/share/applications
 
 .include <bsd.port.mk>

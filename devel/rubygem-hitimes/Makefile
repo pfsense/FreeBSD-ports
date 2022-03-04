@@ -1,8 +1,7 @@
 # Created by: Michael Moll <kvedulv at kvedulv.de>
-# $FreeBSD$
 
 PORTNAME=	hitimes
-PORTVERSION=	1.3.0
+PORTVERSION=	2.0.0
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
@@ -12,7 +11,9 @@ COMMENT=	High resolution timer library for Ruby
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	stransball2
 PORTVERSION=	1.5
 PORTREVISION=	10
@@ -15,9 +12,12 @@ COMMENT=	Sequel to Transball and Transball 2 THRUST-type games
 LICENSE=	GPLv2
 LICENSE_FILE=	${BUILD_WRKSRC}/LICENSE
 
+DEPRECATED=	Depends on expired devel/sdl_sge
+EXPIRATION_DATE=2021-12-31
+
 LIB_DEPENDS=	libSGE.so:devel/sdl_sge
 
-USES=		gmake dos2unix zip
+USES=		dos2unix gmake sdl zip
 DOS2UNIX_FILES=	sources/main.cpp sources/auxiliar.cpp
 USE_SDL=	sdl image mixer sound
 

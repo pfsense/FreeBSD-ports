@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	micromachine
 PORTVERSION=	2.1.0
 CATEGORIES=	devel rubygems
@@ -12,10 +10,11 @@ COMMENT=	Minimal Finite State Machine
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PORTSCOUT=	limit:^2\.
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
+
+PORTSCOUT=	limit:^2\.
 
 .include <bsd.port.mk>

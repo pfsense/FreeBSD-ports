@@ -1,10 +1,10 @@
 # Created by: Brian Somers <brian@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vlc
-DISTVERSION=	3.0.7.1
+DISTVERSION=	3.0.16
+PORTREVISION=	8
 PORTEPOCH=	4
-CATEGORIES=	multimedia audio ipv6 net www
+CATEGORIES=	multimedia audio net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
 		http://ftp.snt.utwente.nl/pub/software/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
 		ftp://ftp.crans.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/
@@ -19,25 +19,31 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libidn.so:dns/libidn \
-		libmatroska.so:multimedia/libmatroska
-BUILD_DEPENDS=	ffmpeg>=3.4.1,1:multimedia/ffmpeg \
+		libmatroska.so:multimedia/libmatroska \
+		libgpg-error.so:security/libgpg-error \
+		libebml.so:textproc/libebml
+BUILD_DEPENDS=	gsed:textproc/gsed \
+		ffmpeg>=3.4.1,1:multimedia/ffmpeg \
 		yasm:devel/yasm
 RUN_DEPENDS=	ffmpeg>=3.4.1,1:multimedia/ffmpeg
 
-USES=		compiler:c++11-lib desktop-file-utils gettext-tools gmake gnome \
-		iconv libtool pathfix pkgconfig tar:xz
+USES=		compiler:c++17-lang cpe desktop-file-utils gettext-tools gmake gnome \
+		iconv:wchar_t libtool localbase pathfix pkgconfig tar:xz
+
+CPE_VENDOR=	videolan
 
 # VLC git (post 2.2.4) requires C++11 support and passes the appropriate flag
 # to the compiler. Until the port is updated, we explicitly pass -std=c++11 to
 # the compiler because Qt 5.7+ requires C++11 support, and FreeBSD 10's clang
 # does not default to C++11 mode.
-USE_CXXSTD=	c++11
+# USE_CXXSTD=	c++11
 
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
 GNU_CONFIGURE=	yes
+BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 		--enable-fontconfig --enable-freetype --enable-libgcrypt \
 		--enable-libxml2 --enable-oss --enable-postproc \
@@ -45,7 +51,7 @@ CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 		--disable-alsa --disable-archive --disable-chromaprint --disable-crystalhd \
 		--disable-dc1394 --disable-decklink --disable-dsm \
 		--disable-dv1394 --disable-fdkaac --disable-gst-decode \
-		--disable-gles2 --disable-kai --disable-kva \
+		--disable-gles2 --disable-kai --disable-kva --disable-mpg123 \
 		--disable-vnc --disable-opencv --disable-projectm \
 		--disable-secret --disable-soxr --disable-telx \
 		--disable-tiger --disable-tremor --disable-udev \
@@ -57,22 +63,24 @@ CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=--enable-debug
 .endif
-CPPFLAGS+=	-I${LOCALBASE}/include
 CFLAGS_i386=	-fomit-frame-pointer
-LIBS+=		-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	A52 AALIB AOM ASS AVAHI CACA CHROMECAST DAV1D DBUS DCA DOCS DVDREAD \
-		DVDNAV FAAD FLAC FLUID FREERDP FRIBIDI GME GNUTLS \
+		DEBUG DVDNAV FAAD FLAC FLUID FREERDP FRIBIDI GME GNUTLS \
 		GOOM HARFBUZZ JACK JPEG KATE LIBBLURAY LIBPLACEBO LIBRSVG2 LIBSSH2 LIRC \
-		LIVEMEDIA LUA MAD MODPLUG MPEG2 MTP MUSEPACK \
+		LIVEMEDIA LUA MAD MFX MODPLUG MPEG2 MTP MUSEPACK \
 		NCURSES NFS NLS NOTIFY OGG OGGSPOTS OPTIMIZED_CFLAGS OPUS PNG PULSEAUDIO \
 		QT5 REALRTSP RUNROOT SAMPLERATE SIDPLAY SCHROEDINGER \
 		SDL SHOUTCAST SKINS SMB SNDIO STREAM SPEEX TAGLIB THEORA \
 		TWOLAME UPNP V4L VAAPI VCD VDPAU VPX VORBIS WAYLAND X11 X264 X265 ZVBI
-OPTIONS_DEFAULT=A52 AVAHI DAV1D DBUS DCA DVDREAD DVDNAV FAAD FLAC GNUTLS JPEG \
-		LIVEMEDIA LUA MAD MPEG2 OGG OPTIMIZED_CFLAGS \
+OPTIONS_DEFINE_powerpc=	ALTIVEC
+OPTIONS_DEFINE_powerpc64=	ALTIVEC
+OPTIONS_DEFAULT=ASS AVAHI DAV1D DBUS DVDREAD DVDNAV GNUTLS HARFBUZZ JPEG \
+		LIVEMEDIA LUA OGG OPTIMIZED_CFLAGS \
 		OPUS PNG QT5 SAMPLERATE STREAM SPEEX TAGLIB THEORA TWOLAME \
 		V4L VAAPI VCD VDPAU VORBIS WAYLAND X11
+OPTIONS_DEFAULT_powerpc=	ALTIVEC
+OPTIONS_DEFAULT_powerpc64=	ALTIVEC
 OPTIONS_SUB=	yes
 
 AOM_DESC=	AV1 video encoding/decoding via libaom
@@ -89,6 +97,7 @@ HARFBUZZ_DESC=	OpenType text shaping engine
 KATE_DESC=	Kate codec support
 LIBPLACEBO_DESC=HDR tonemapping support through libplacebo
 LIBSSH2_DESC=	SCP/SFTP support via libssh2
+MFX_DESC=	Intel MediaSDK (aka Quick Sync Video)
 OGGSPOTS_DESC=	Experimental OggSpots codec
 REALRTSP_DESC=	Real RTSP access module
 RUNROOT_DESC=	Enable running as root
@@ -109,6 +118,8 @@ AALIB_CONFIGURE_ENABLE=	aa
 ASS_LIB_DEPENDS=	libass.so:multimedia/libass
 ASS_CONFIGURE_ENABLE=	libass
 
+ALTIVEC_CONFIGURE_ENABLE=	altivec
+
 AOM_LIB_DEPENDS=	libaom.so:multimedia/aom
 AOM_CONFIGURE_ENABLE=	aom
 
@@ -119,7 +130,7 @@ CACA_LIB_DEPENDS=	libcaca.so:graphics/libcaca
 CACA_CONFIGURE_ENABLE=	caca
 
 CHROMECAST_LIB_DEPENDS=	libprotobuf-lite.so:devel/protobuf
-CHROMECASE_CONFIGURE_ENABLE=	chromecast
+CHROMECAST_CONFIGURE_ENABLE=	chromecast
 
 DAV1D_LIB_DEPENDS=	libdav1d.so:multimedia/dav1d
 DAV1D_CONFIGURE_ENABLE=	dav1d
@@ -194,6 +205,7 @@ LIRC_LIB_DEPENDS=	liblirc_client.so:comms/lirc
 LIRC_CONFIGURE_ENABLE=	lirc
 LIRC_CONFIGURE_ENV=	LIBS_lirc="-L${LOCALBASE}/lib -llirc_client"
 
+LIVEMEDIA_USES=		ssl
 LIVEMEDIA_LIB_DEPENDS=	libliveMedia.so:net/liveMedia
 LIVEMEDIA_CONFIGURE_ENABLE=	live555
 LIVEMEDIA_CONFIGURE_ENV= \
@@ -203,7 +215,8 @@ LIVEMEDIA_CONFIGURE_ENV= \
 			-I${LOCALBASE}/include/BasicUsageEnvironment" \
 	LIVE555_LIBS="-L${LOCALBASE}/lib -lliveMedia \
 			-lgroupsock -lBasicUsageEnvironment \
-			-lUsageEnvironment"
+			-lUsageEnvironment \
+			-L${OPENSSLLIB} -lssl -lcrypto"
 
 LUA_USES=		lua
 LUA_CONFIGURE_ENABLE=	lua
@@ -213,6 +226,9 @@ LUA_CONFIGURE_ON=	LUAC=${LUAC_CMD} LUA_CFLAGS="-I${LUA_INCDIR}" \
 MAD_LIB_DEPENDS=	libmad.so:audio/libmad
 MAD_CONFIGURE_ENABLE=	mad
 MAD_CONFIGURE_ON=	--with-mad=${LOCALBASE}
+
+MFX_LIB_DEPENDS=	libmfx.so:multimedia/intel-media-sdk
+MFX_CONFIGURE_ENABLE=	mfx
 
 MODPLUG_LIB_DEPENDS=	libmodplug.so:audio/libmodplug
 MODPLUG_CONFIGURE_ENABLE=	mod
@@ -300,7 +316,8 @@ SMB_CONFIGURE_ENABLE=	smbclient
 
 STREAM_CONFIGURE_ENABLE=sout
 
-SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex
+SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex \
+			libspeexdsp.so:audio/speexdsp
 SPEEX_CONFIGURE_ENABLE=	speex
 
 TAGLIB_LIB_DEPENDS=	libtag.so:audio/taglib
@@ -340,7 +357,7 @@ WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
 
 X11_USE=		GL=gl XORG=xcb,xorgproto,sm,ice,x11
-X11_USES=		gl
+X11_USES=		gl xorg
 X11_LIB_DEPENDS=	libxcb-keysyms.so:x11/xcb-util-keysyms
 X11_CONFIGURE_ENABLE=	xcb xvideo
 X11_CONFIGURE_WITH=	x
@@ -363,7 +380,13 @@ WITH_DVD_DEVICE?=/dev/cd0
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MX11}
-INSTALLS_ICONS=	yes
+.endif
+
+.if ${PORT_OPTIONS:MDEBUG}
+WITH_DEBUG=yes
+CONFIGURE_ARGS+=--enable-debug --disable-optimizations
+CFLAGS+=-g -O0
+CXXFLAGS+=-g -O0
 .endif
 
 post-patch:

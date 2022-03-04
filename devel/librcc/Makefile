@@ -1,9 +1,8 @@
 # Created by: Ulrich Spoerlein <uspoerlein@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	librcc
 PORTVERSION=	0.2.12
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	http://dside.dyndns.org/files/rusxmms/ \
 		LOCAL/fluffy
@@ -74,9 +73,5 @@ pre-everything::
 	@${ECHO} 'Use it with caution'
 .endif
 .endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' \
-		${WRKSRC}/external/rccexternal.c
 
 .include <bsd.port.post.mk>

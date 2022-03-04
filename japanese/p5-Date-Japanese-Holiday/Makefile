@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	Date-Japanese-Holiday
 PORTVERSION=	0.05
 PORTREVISION=	3
 CATEGORIES=	japanese perl5
 MASTER_SITES=	CPAN
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for Calculate Japanese Holiday
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

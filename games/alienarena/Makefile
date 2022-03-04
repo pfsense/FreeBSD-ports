@@ -1,9 +1,8 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME=	alienarena
 PORTVERSION=	2013.766
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF/alienarena.mirror/Alien%20Arena%207.66/ \
 		http://icculus.org/alienarena/Files/ \
@@ -25,6 +24,9 @@ LIBS+=		-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=--with-xf86vm \
 		--with-xf86dga \
 		--with-system-libode
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 EXTRACT_AFTER_ARGS=	--exclude "data1"
 
@@ -48,7 +50,7 @@ LIBDIR=		${PREFIX}/lib/${PORTNAME}
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLIENT}
-USES+=		jpeg openal:soft,alut pkgconfig
+USES+=		gl jpeg openal:soft,alut pkgconfig xorg
 LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png \

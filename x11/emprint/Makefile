@@ -1,9 +1,8 @@
 # Created by: Stanislav Sedov <stas@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	emprint
 PORTVERSION=	20130520
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11 enlightenment
 MASTER_SITES=	LOCAL/gblach/e17/extra/
 

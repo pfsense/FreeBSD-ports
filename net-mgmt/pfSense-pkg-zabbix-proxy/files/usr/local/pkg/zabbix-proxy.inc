@@ -3,7 +3,7 @@
  * zabbix-proxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Danilo G. Baio
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -250,19 +250,19 @@ EOF;
 
 	if [ ! -d /var/log/zabbix-proxy ]; then
 		/bin/mkdir -p /var/log/zabbix-proxy
-		/usr/sbin/chmod 755 /var/log/zabbix-proxy
+		/bin/chmod 755 /var/log/zabbix-proxy
 	fi
 	/usr/sbin/chown -R zabbix:zabbix /var/log/zabbix-proxy
 
 	if [ ! -d /var/run/zabbix-proxy ]; then
 		/bin/mkdir -p /var/run/zabbix-proxy
-		/usr/sbin/chmod 755 /var/run/zabbix-proxy
+		/bin/chmod 755 /var/run/zabbix-proxy
 	fi
 	/usr/sbin/chown -R zabbix:zabbix /var/run/zabbix-proxy
 
 	if [ ! -d /var/db/zabbix-proxy ]; then
 		/bin/mkdir -p /var/db/zabbix-proxy
-		/usr/sbin/chmod 755 /var/db/zabbix-proxy
+		/bin/chmod 755 /var/db/zabbix-proxy
 	fi
 	/usr/sbin/chown -R zabbix:zabbix /var/db/zabbix-proxy
 
@@ -314,6 +314,75 @@ function zabbix_proxy_add_keyfile($data, $directive) {
 	file_put_contents($fpath, base64_decode($data));
 	@chmod($fpath, 0600);
 	@chown($fpath, "zabbix");
+}
+
+function zabbix_proxy_certca($type) {
+        global $config;
+        $c_arr = array();
+        $c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
+        if (isset($config[$type]) && is_array($config[$type])) {
+                foreach ($config[$type] as $c) {
+                        if (!empty($c['prv'])) {
+                                $res_key = openssl_pkey_get_private(base64_decode($c['prv']));
+                                $key_details = openssl_pkey_get_details($res_key);
+                                if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
+                                        $c_arr[] = $c;
+                                }
+                        } elseif ($type == 'ca') {
+                                $c_arr[] = $c;
+                        }
+                }
+        }
+        return $c_arr;
+}
+
+function zabbixproxy_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'zabbixproxylts', 'config'));
+	$zabbixconf = $config['installedpackages']['zabbixproxylts']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {
+		if (($pluginparams['event'] == 'used_ca') && ($zabbixconf['tlscaso'] != 'on') &&
+		    !empty($zabbixconf['tlscafile']) && ($zabbixconf['tlscafile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Proxy";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscafile'];
+			$item['usedby'] = 'TLS CA';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($zabbixconf['tlscertfile']) &&
+		    ($zabbixconf['tlscertfile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Proxy";
+			$result['certificatelist'] = array();
+		        if ($zabbixconf['tlsconnect'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Proxy';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		        if ($zabbixconf['tlsaccept'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Proxy';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		}
+
+		if (($pluginparams['event'] == 'used_crl') && !empty($zabbixconf['tlscrlfile']) &&
+		    ($zabbixconf['tlscrlfile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Proxy";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscrlfile'];
+			$item['usedby'] = 'TLS CRL';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
 }
 
 ?>

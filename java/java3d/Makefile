@@ -1,9 +1,8 @@
 # Created by: nork@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	java3d
 PORTVERSION=	1.5.2
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	java graphics games devel
 MASTER_SITES=	https://sites.google.com/site/daemonwizard/
 
@@ -17,11 +16,10 @@ BROKEN_aarch64=		fails to compile: GVector.java:168: bad use of '>'
 BROKEN_armv6=		fails to compile: build.xml: Compile failed; see the compiler error output for details
 BROKEN_armv7=		fails to compile: build.xml: Compile failed; see the compiler error output for details
 
-USES=		gl tar:bzip2
-USE_JAVA=	yes
+USES=		compiler:c11 gl tar:bzip2 xorg
+USE_JAVA=	8
 USE_GL=		gl
 USE_XORG=	xt
-JAVA_VERSION=	1.6+
 JAVA_VENDOR=	openjdk
 USE_ANT=	yes
 LLD_UNSAFE=	yes

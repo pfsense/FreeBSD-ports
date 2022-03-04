@@ -1,5 +1,4 @@
 # Created by: Toni Gundogdu <legatvs@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	quvi
 PORTVERSION=	0.4.2
@@ -12,7 +11,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Command line tool for parsing flash media stream URLs
 
 LICENSE=	LGPL21+
-LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 LIB_DEPENDS=	libcurl.so:ftp/curl

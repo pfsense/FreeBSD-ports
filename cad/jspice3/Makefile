@@ -1,5 +1,4 @@
 # Created by: Pedro F. Giffuni
-# $FreeBSD$
 
 PORTNAME=	jspice3
 DISTVERSION=	2.5-110615
@@ -9,9 +8,12 @@ MASTER_SITES=	http://www.wrcad.com/ftp/pub/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Adaptation of the Berkeley Spice3f4 with superconductivity
 
-BROKEN_aarch64=	Fails to link jspice3
+BROKEN_aarch64=		fails to install: jspice3: No such file or directory
+BROKEN_riscv64=		fails to install: jspice3: No such file or directory
+BROKEN_FreeBSD_13=	fails to install: jspice3: No such file or directory
+BROKEN_FreeBSD_14=	fails to install: jspice3: No such file or directory
 
-CONFLICTS=	spice-[0-9]*
+CONFLICTS=	spice
 
 OPTIONS_DEFINE=	X11 EXAMPLES
 OPTIONS_DEFAULT=	X11
@@ -19,6 +21,7 @@ OPTIONS_SUB=		yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 
+X11_USES=	xorg
 X11_USE=	XORG=x11,xaw,xt
 
 post-patch:
@@ -27,6 +30,9 @@ post-patch:
 		 /^SPICE_HOST/s|=.*|= localhost| ; \
 		 /^CC_OPT/s|=.*|= ${CFLAGS}|' \
 		${WRKSRC}/conf/unixconf/mkheader.0
+	@cd ${WRKSRC}/src && \
+		${REINPLACE_CMD} 's,va_copy,var_copy,g' include/cpextern.h \
+		lib/fte/options.c lib/cp/variable.c
 
 post-patch-X11-off:
 	@${REINPLACE_CMD} -e \

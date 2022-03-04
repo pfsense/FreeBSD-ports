@@ -1,5 +1,4 @@
 # Created by: Helmut Ritter <freebsd-ports@charlieroot.de>
-# $FreeBSD$
 
 PORTNAME=	typo3
 PORTVERSION=	${PORT_V_MAJOR}.${PORT_V_MINOR}.${PORT_V_PATCH}
@@ -13,7 +12,8 @@ COMMENT=	Typo3 content management system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-IGNORE_WITH_PHP=71
+DEPRECATED=	Mainstream support ended 2021-09-30
+EXPIRATION_DATE=2024-09-30
 
 USES=		cpe php:web,flavors shebangfix
 USE_PHP=	ctype dom fileinfo filter hash intl json openssl pcre session simplexml \
@@ -27,7 +27,7 @@ PORTSCOUT=	limit:^${PORT_V_MAJOR}\.${PORT_V_MINOR}\.
 
 PORT_V_MAJOR=	9
 PORT_V_MINOR=	5
-PORT_V_PATCH=	4
+PORT_V_PATCH=	31
 
 TYPO3WWW=	www
 TYPO3SRC=	${PORTNAME}_src-${PORTVERSION}

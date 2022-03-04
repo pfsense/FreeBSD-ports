@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	xcubes
 PORTVERSION=	5.5.2
@@ -11,7 +10,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cube puzzle for X11
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext xt sm ice
 
 PLIST_FILES=	bin/xcubes \

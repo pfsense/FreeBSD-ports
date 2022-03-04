@@ -8,7 +8,7 @@
  * frr_global_routemaps.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,6 +52,10 @@
 			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -62,6 +66,10 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -110,7 +118,7 @@
 			<description>
 				<![CDATA[
 				Route maps can match or set various values for use by routing daemons, especially BGP.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving.
 				]]>
 			</description>
@@ -335,7 +343,6 @@
 			<options>
 				<option><name>None (Do Nothing)</name><value>none</value></option>
 				<option><name>Match AS Path</name><value>match</value></option>
-				<option><name>Set</name><value>set</value></option>
 				<option><name>Set Exclude</name><value>setexclude</value></option>
 				<option><name>Set Prepend</name><value>setprepend</value></option>
 				<option><name>Set Prepend Last-AS</name><value>setprependlast</value></option>
@@ -497,8 +504,26 @@
 				The tag number to set or match, an integer 1-4294967295.
 			</description>
 		</field>
+		<field>
+			<name>RPKI</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Validate BGP Updates</fielddescr>
+			<fieldname>rpki_state</fieldname>
+			<description>Match RKPI State</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do not match)</name><value>none</value></option>
+				<option><name>Prefix not found</name><value>notfound</value></option>
+				<option><name>Invalid prefix</name><value>invalid</value></option>
+				<option><name>Valid prefix</name><value>valid</value></option>
+			</options>
+		</field>
 	</fields>
 	<custom_php_resync_config_command>
+		frr_config_sort_route_map();
 		frr_generate_config();
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>

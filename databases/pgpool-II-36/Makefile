@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pgpool-II
-PORTVERSION=	3.6.17
+PORTVERSION=	3.6.21
 CATEGORIES=	databases
 MASTER_SITES=	http://www.pgpool.net/mediawiki/images/
 PKGNAMESUFFIX=	36
@@ -19,7 +17,7 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 USE_RC_SUBR=	pgpool
-CONFLICTS=	pgpool-II-[0-9]*
+CONFLICTS=	pgpool-II
 
 PORTDOCS=	*
 

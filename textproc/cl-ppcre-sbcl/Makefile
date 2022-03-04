@@ -1,9 +1,8 @@
 # Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
 
 PORTNAME=	cl-ppcre
-PORTVERSION=	2.0.3
-PORTREVISION=	32
+PORTVERSION=	2.1.1
+PORTREVISION=	12
 CATEGORIES=	textproc lisp
 DISTFILES=	# none
 

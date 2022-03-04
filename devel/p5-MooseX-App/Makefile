@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	MooseX-App
-PORTVERSION=	1.39
+PORTVERSION=	1.42
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,10 +13,9 @@ LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Config-Any>=0:devel/p5-Config-Any \
-		p5-IO-Interactive>=0:devel/p5-IO-Interactive \
+RUN_DEPENDS=	p5-IO-Interactive>=0:devel/p5-IO-Interactive \
+		p5-Module-Pluggable>=0:devel/p5-Module-Pluggable \
 		p5-Moose>=2:devel/p5-Moose \
-		p5-MooseX-Types-Path-Class>=0:devel/p5-MooseX-Types-Path-Class \
 		p5-Path-Class>=0:devel/p5-Path-Class \
 		p5-Pod-Elemental>=0:textproc/p5-Pod-Elemental \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
@@ -29,10 +27,4 @@ USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502502
-RUN_DEPENDS+=	p5-Scalar-List-Utils>=1.44:lang/p5-Scalar-List-Utils
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,6 +1,6 @@
---- src/OpenMesh/Apps/VDProgMesh/Analyzer/vdpmanalyzer.cc.orig	2018-10-21 23:40:29 UTC
+--- src/OpenMesh/Apps/VDProgMesh/Analyzer/vdpmanalyzer.cc.orig	2020-03-12 13:55:54 UTC
 +++ src/OpenMesh/Apps/VDProgMesh/Analyzer/vdpmanalyzer.cc
-@@ -56,6 +56,9 @@
+@@ -51,6 +51,9 @@
  #include <limits>
  #include <exception>
  #include <cmath>

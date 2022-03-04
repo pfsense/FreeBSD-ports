@@ -1,6 +1,4 @@
-# $FreeBSD$
-
-#PORTREVISION=	0
+PORTREVISION=	2
 
 COMMENT=	RFC 2222 SASL (Simple Authentication and Security Layer)
 

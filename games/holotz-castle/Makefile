@@ -1,9 +1,8 @@
 # Created by: Pierre-Paul Lavoie <ppl@nbnet.nb.ca>
-# $FreeBSD$
 
 PORTNAME=	holotz-castle
 PORTVERSION=	1.3.14
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/nemysisfreebsdp/${CATEGORIES}/${PORTNAME}/
 DISTFILES=	${PORTNAME}-${DISTVERSION}-src${EXTRACT_SUFX} \
@@ -27,7 +26,6 @@ MAKE_ARGS=	HC_BASE=${PREFIX}/share/${PORTNAME}/ \
 		HC_BIN_DIR=${PREFIX}/bin/
 MAKE_JOBS_UNSAFE=	yes
 
-INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
 
 SUB_FILES=	pkg-message ${PORTNAME}-solutions

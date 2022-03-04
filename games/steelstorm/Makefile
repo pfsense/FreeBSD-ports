@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	steelstorm
 DISTVERSION=	beta-r1591
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 
@@ -19,6 +16,7 @@ LICENSE_PERMS_EULA=	# none
 LICENSE_FILE_EULA=	${WRKSRC}/license.txt
 MANUAL_PACKAGE_BUILD=	needs interactive license confirmation
 
+USES=		gl
 USE_GL=		gl
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -40,6 +38,7 @@ CLIENT_DESC=	Build client
 DEDICATED_DESC=	Dedicated server
 
 CLIENT_ALL_TARGET=	cl-release
+CLIENT_USES=		xorg
 CLIENT_USE=		XORG=x11,xext,xpm,xxf86dga,xxf86vm
 CLIENT_PLIST_FILES=	bin/${PORTNAME}
 

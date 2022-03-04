@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	cf
-PORTVERSION=	6.43.0
+PORTVERSION=	6.49.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -18,7 +16,10 @@ GH_ACCOUNT=	cloudfoundry
 GH_PROJECT=	cli
 
 USES=		go
+
+GO_BUILDFLAGS=	-ldflags="-X code.cloudfoundry.org/cli/version.binaryVersion=${PORTVERSION}"
 GO_PKGNAME=	code.cloudfoundry.org/cli
+GO_TARGET=	:cf
 
 PLIST_FILES=	bin/cf
 
@@ -26,18 +27,10 @@ PORTDOCS=	NOTICE README.md
 
 OPTIONS_DEFINE=	DOCS
 
-do-build:
-	(cd ${WRKDIR}; \
-	${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} \
-		install -v -ldflags="-X code.cloudfoundry.org/cli/version.binaryVersion=${PORTVERSION}" ${GO_TARGET})
-
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for x in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${x} ${STAGEDIR}${DOCSDIR}
 .endfor
-
-post-install:
-	${MV} ${STAGEDIR}${PREFIX}/bin/cli ${STAGEDIR}${PREFIX}/bin/cf
 
 .include <bsd.port.mk>

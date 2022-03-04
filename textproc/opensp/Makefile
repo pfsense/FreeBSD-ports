@@ -1,5 +1,4 @@
 # Created by: kuriyama
-# $FreeBSD$
 
 PORTNAME=	OpenSP
 PORTVERSION=	1.5.2
@@ -7,8 +6,8 @@ PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	SF/openjade/${PORTNAME:tl}/${PORTVERSION}
 
-MAINTAINER=	kuriyama@FreeBSD.org
-COMMENT=	This package is a collection of SGML/XML tools called OpenSP
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Collection of SGML/XML tools
 
 LICENSE=	JamesClark
 LICENSE_NAME=	License of James Clark's Software

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pouetchess
 PORTVERSION=	0.1.1
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.11
 DISTNAME=	pouetChess_0.11_src
@@ -12,7 +10,7 @@ COMMENT=	Open-source 3D chess game
 
 LICENSE=	GPLv2  # from sourceforge page
 
-USES=		compiler dos2unix gmake
+USES=		compiler dos2unix gl gmake sdl
 USE_SDL=	sdl image
 USE_GL=		gl glu
 DOS2UNIX_GLOB=	*.cpp *.h Makefile config.ini

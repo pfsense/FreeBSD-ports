@@ -2,7 +2,6 @@
 libexec/dwarffortress/Dwarf_Fortress
 libexec/dwarffortress/libgcc_s.so.1
 libexec/dwarffortress/libgraphics.so
-libexec/dwarffortress/libstdc++.so.6
 %%DATADIR%%/data/announcement/diplomatrebuffed
 %%DATADIR%%/data/announcement/end2
 %%DATADIR%%/data/announcement/end3
@@ -202,6 +201,8 @@ libexec/dwarffortress/libstdc++.so.6
 %%DATADIR%%/data/speech/wandering_profession_year.txt
 %%DATADIR%%/raw/graphics/example/dwarves.bmp
 %%DATADIR%%/raw/graphics/graphics_example.txt
+%%DATADIR%%/raw/interaction examples/example - bogeyman transformation.txt
+%%DATADIR%%/raw/interaction examples/example - shrine effects.txt
 %%DATADIR%%/raw/interaction examples/interaction_disturbance.txt
 %%DATADIR%%/raw/interaction examples/interaction_region.txt
 %%DATADIR%%/raw/interaction examples/interaction_secret.txt

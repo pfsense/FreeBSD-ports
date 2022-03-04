@@ -1,19 +1,16 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pdagent
-PORTVERSION=	1.5
+PORTVERSION=	1.7.2
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	PagerDuty Agent software
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-USES=		python:2.7 shebangfix
+USES=		python:3.7+ shebangfix
 USE_PYTHON=	flavors
 USE_RC_SUBR=	pdagentd
 USE_GITHUB=	yes
@@ -29,7 +26,7 @@ BINFILES=	pd-queue pd-send pdagentd.py
 USERS=		pdagent
 GROUPS=		pdagent
 
-do-patch:
+post-patch:
 	${REINPLACE_CMD} -e 's|/var/lib/pdagent|/var/db/pdagent| ; s|/etc|${ETCDIR}|' \
 		${WRKSRC}/pdagent/confdirs.py
 

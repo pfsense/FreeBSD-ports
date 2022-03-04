@@ -1,8 +1,8 @@
 # Created by: trevor
-# $FreeBSD$
 
 PORTNAME=	pd
 DISTVERSION=	0.47-1
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	.src
 CATEGORIES=	audio
 MASTER_SITES=	http://msp.ucsd.edu/Software/
@@ -13,6 +13,9 @@ COMMENT=	MIDI-capable real-time audio processor/synthesizer
 LICENSE=	BSD3CLAUSE LGPL21
 LICENSE_COMB=	multi
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/LICENSE.txt
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: glist_reloadingabstraction
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: glist_reloadingabstraction
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		dejavu>0:x11-fonts/dejavu

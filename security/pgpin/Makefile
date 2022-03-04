@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pgpin
 PORTVERSION=	010323
 PORTREVISION=	1
@@ -13,14 +11,15 @@ COMMENT=	PGP International version - improved for use in IN-CA
 
 LICENSE=	MIT
 
-PORTSCOUT=	ignore:1
-
 BROKEN_mips64=		Does not build
+BROKEN_riscv64=		Does not build: make: don't know how to make freebsd-riscv64
+
+PORTSCOUT=	ignore:1
 
 USES=		tar:tgz
 WRKSRC=		${WRKDIR}/pgp263in/src
 MAKEFILE=	makefile
-ALL_TARGET=	freebsd-${ARCH} OS_CFLAGS="${CFLAGS}"
+ALL_TARGET=	freebsd-${ARCH:S/powerpc64le/powerpc64/} OS_CFLAGS="${CFLAGS}"
 PGPLIB=		${STAGEDIR}${PREFIX}/lib/pgpin
 OPTIONS_DEFINE=	DOCS
 

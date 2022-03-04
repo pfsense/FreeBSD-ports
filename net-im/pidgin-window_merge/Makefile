@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	window_merge
 PORTVERSION=	0.3
 CATEGORIES=	net-im
@@ -18,7 +16,7 @@ RUN_DEPENDS=	pidgin:net-im/pidgin
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
 
-USES=		autoreconf gmake libtool pkgconfig localbase:ldflags
+USES=		autoreconf gmake gnome libtool localbase:ldflags pkgconfig
 USE_GNOME=	intltool
 
 INSTALL_TARGET=	install-strip

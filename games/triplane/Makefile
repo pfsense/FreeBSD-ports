@@ -1,5 +1,4 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	triplane
 PORTVERSION=	1.08.r20130224
@@ -14,8 +13,9 @@ COMMENT=	Port of the original Triplane Turmoil game
 
 LICENSE=	GPLv3
 
-USES=		gmake
+USES=		gmake sdl
 USE_SDL=	sdl mixer
+
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
 CFLAGS+=	-DTRIPLANE_DATA=\\\"${DATADIR}\\\"

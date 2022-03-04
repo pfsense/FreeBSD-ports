@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	sendmail
-PORTVERSION=	8.15.2
-PORTREVISION=	18
-CATEGORIES=	mail ipv6
+PORTVERSION=	8.17.1
+PORTREVISION=	2
+CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
 
@@ -15,7 +13,7 @@ LICENSE_NAME=	Sendmail License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS?=	courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd-*
+CONFLICTS?=	courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd
 
 USERS=		smmsp
 GROUPS=		smmsp
@@ -33,7 +31,7 @@ DOCS=		KNOWNBUGS LICENSE PGPKEYS README RELEASE_NOTES \
 		sendmail/TRACEFLAGS sendmail/SECURITY sendmail/TUNING
 PLIST_SUB+=	PREFIX=${PREFIX:S=${PREFIX}/==} \
 		MANPREFIX=${MANPREFIX:S=$=/=:S=${PREFIX}==:S=^/==}
-PKGMESSAGE=	${WRKSRC}/pkg-message
+SUB_FILES=	pkg-message
 
 WCONF=		${WRKSRC}/devtools/Site
 SITE=		${FILESDIR}/site.config.m4.pre4
@@ -46,15 +44,16 @@ SENDMAIL=	${PREFIX}/sbin/sendmail
 BASEMAIL=	/usr/libexec/sendmail/sendmail
 MILTER_SOVER?=	6
 
-OPTIONS_DEFINE?=	SHMEM SEM LA NIS IPV6 TLS SASL SASLAUTHD LDAP BDB \
-			GDBM SOCKETMAP CYRUSLOOKUP BLACKLISTD SMTPUTF8 \
+OPTIONS_DEFINE?=	SHMEM SEM LA NIS IPV6 TLS DANE SASL SASLAUTHD LDAP \
+			BDB GDBM SOCKETMAP CYRUSLOOKUP BLACKLISTD SMTPUTF8 \
 			PICKY_HELO_CHECK MILTER DOCS
-OPTIONS_DEFAULT?=	SHMEM SEM LA NIS TLS SASL SASLAUTHD BDB1 \
+OPTIONS_DEFAULT?=	SHMEM SEM LA NIS TLS DANE SASL SASLAUTHD BDB1 \
 			BLACKLISTD PICKY_HELO_CHECK MILTER
 NO_OPTIONS_SORT=yes
 SHMEM_DESC=		System V shared memory support
 LA_DESC=		load averages support
 TLS_DESC=		SMTP-TLS and SMTPS support
+DANE_DESC=		Enable DANE support
 SASLAUTHD_DESC=		SASLAUTHD support
 BDB_DESC=		Berkeley DB version 4+ support
 GDBM_DESC=		GNU dbm library support (option COMPAT needed)
@@ -67,18 +66,16 @@ SMTPUTF8_DESC=		Enable unicode address support
 
 TLS_USES=	ssl
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
-SASLAUTHD_RUN_DEPENDS=	${LOCALBASE}/sbin/saslauthd:security/cyrus-sasl2-saslauthd
+SASLAUTHD_RUN_DEPENDS=	saslauthd:security/cyrus-sasl2-saslauthd
+DANE_IMPLIES=	TLS
 LDAP_USE=	OPENLDAP=yes
+LDAP_IMPLIES=	DANE
 BDB_USES=	bdb
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_WITH=	compat
 SMTPUTF8_LIB_DEPENDS=	libidn2.so:dns/libidn2 libicui18n.so:devel/icu
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
-PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${LDAP_SUFFIX}${BDB_SUFFIX}${PKGNAMESUFFIX2}
-.endif
 
 .if ${PORT_OPTIONS:MSHMEM} && !defined(BUILDING_INDEX)
 IPCCHECK!=	ipcrm -q 0 2>&1 || true
@@ -106,9 +103,6 @@ IGNORE=		option CYRUSLOOKUP requires option SOCKETMAP
 EXTRA_PATCHES+=	${FILESDIR}/cyruslookup.patch
 .endif
 .endif
-.if ${PORT_OPTIONS:MSMTPUTF8}
-EXTRA_PATCHES+=	${FILESDIR}/smtputf8.patch
-.endif
 .if ${PORT_OPTIONS:MTLS}
 TLS_SUFFIX?=	+tls
 CONFLICTS+=	sendmail-ldap-8.* sendmail-sasl2-8.*
@@ -130,6 +124,9 @@ SITE+=	${FILESDIR}/site.config.m4
 .if ${PORT_OPTIONS:MIPV6}
 SITE+=	${FILESDIR}/site.config.m4.ipv6
 .endif
+.if ${PORT_OPTIONS:MDANE}
+SITE+=	${FILESDIR}/site.config.m4.dane
+.endif
 .if ${PORT_OPTIONS:MSASL}
 SITE+=	${FILESDIR}/site.config.m4.sasl2
 .endif
@@ -146,7 +143,7 @@ SITE+=	${FILESDIR}/site.config.m4.smtputf8
 SITE+=	${FILESDIR}/site.config.m4.milter
 .endif
 .if ${PORT_OPTIONS:MGDBM}
-NO_PACKAGE=	GPLv3 license conflict
+LICENSE_PERMS=	dist-mirror dist-sell no-pkg-mirror no-pkg-sell auto-accept
 SITE+=	${FILESDIR}/site.config.m4.gdbm
 .endif
 
@@ -158,21 +155,12 @@ SED_SCRIPT+=	-e "s;-DNIS ;;"
 .endif
 
 post-patch:
-	@${SED} -e "s=%%PREFIX%%=${PREFIX}=g" \
-		-e "s=%%LOCALBASE%%=${LOCALBASE}=g" \
-		-e "s=%%PORTSDIR%%=${PORTSDIR}=g" \
-		${PKGDIR}/pkg-message > ${WRKSRC}/pkg-message
+	@cd ${WRKSRC} && ${FIND} cf -type f -name "*.orig" -print0 | ${XARGS} -0 ${RM}
 
 do-configure:
 .if ${PORT_OPTIONS:MGDBM}
 	@(if [ ! -e "${LOCALBASE}/lib/libgdbm_compat.so" ] ; then \
 	  ${ECHO_MSG} "===> option COMPAT is missing in databases/gdbm."; \
-	  ${FALSE}; \
-	  fi)
-.endif
-.if ${PORT_OPTIONS:MBLACKLISTD}
-	@(if [ ! -e "${DESTDIR}/usr/lib/libblacklist.so" ] ; then \
-	  ${ECHO_MSG} "===> libblacklist.so not found. Please update to FreeBSD 11"; \
 	  ${FALSE}; \
 	  fi)
 .endif
@@ -285,13 +273,8 @@ post-install-DOCS-on:
 
 mailer.base:
 	@${SED} \
-	-e "s=^sendmail[ 	]*/.*$$=sendmail	${BASEMAIL}=" \
-	-e "s=^send-mail[ 	]*/.*$$=send-mail	${BASEMAIL}=" \
-	-e "s=^mailq[ 	]*/.*$$=mailq		${BASEMAIL}=" \
-	-e "s=^newaliases[ 	]*/.*$$=newaliases	${BASEMAIL}=" \
-	-e "s=^hoststat[ 	]*/.*$$=hoststat	${BASEMAIL}=" \
-	-e "s=^purgestat[ 	]*/.*$$=purgestat	${BASEMAIL}=" \
-	 ${DESTDIR}/etc/mail/mailer.conf > ${DESTDIR}/etc/mail/mailer.conf.new
+	 -e "s=\([ 	]\)/.*$$=\\1${BASEMAIL}=" \
+	 ${FILESDIR}/mailer.conf > ${DESTDIR}/etc/mail/mailer.conf.new
 	${MV} ${DESTDIR}/etc/mail/mailer.conf.new \
 		${DESTDIR}/etc/mail/mailer.conf
 
@@ -375,7 +358,7 @@ pre-everything::
 	@${ECHO_CMD} "#"
 	@${ECHO_CMD} "# Please install with normal PREFIX"
 	@${ECHO_CMD} "# and activate the port version with"
-	@${ECHO_CMD} "# cd ${PORTSDIR}/mail/sendmail && make mailer.conf"
+	@${ECHO_CMD} "# cd /usr/local/etc/mail && cp mailer.conf.sendmail mailer.conf"
 	@${ECHO_CMD} "#"
 	@${FALSE}
 .endif

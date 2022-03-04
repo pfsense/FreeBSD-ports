@@ -1,5 +1,4 @@
 # Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fcitx-configtool
 PORTVERSION=	0.4.9
@@ -17,7 +16,7 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
 LIB_DEPENDS=	libfcitx-config.so:chinese/fcitx
 
 USE_GNOME=	intltool
-USES=		cmake gettext pkgconfig tar:xz
+USES=		cmake gettext gnome pkgconfig tar:xz
 LDFLAGS+=	-lintl
 
 OPTIONS_SINGLE=	UI

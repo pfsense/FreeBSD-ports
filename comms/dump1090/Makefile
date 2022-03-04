@@ -1,9 +1,7 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dump1090
-PORTVERSION=	20150225
-PORTREVISION=	1
+PORTVERSION=	20200718
 CATEGORIES=	comms
 
 MAINTAINER=	skreuzer@FreeBSD.org
@@ -11,13 +9,13 @@ COMMENT=	Simple Mode S decoder for RTLSDR devices
 
 LICENSE=	BSD3CLAUSE
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	antirez
-GH_TAGNAME=	4c53e25
-
 LIB_DEPENDS=	librtlsdr.so:comms/rtl-sdr
 
 USES=	gmake
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	antirez
+GH_TAGNAME=	de61bd5
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lrtlsdr -lusb -lpthread -lm

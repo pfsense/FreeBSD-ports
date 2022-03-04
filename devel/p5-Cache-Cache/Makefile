@@ -1,5 +1,4 @@
 # Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
 
 PORTNAME=	Cache-Cache
 PORTVERSION=	1.08
@@ -21,5 +20,7 @@ RUN_DEPENDS=	p5-Cache>=0:devel/p5-Cache \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

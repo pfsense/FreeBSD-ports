@@ -1,9 +1,8 @@
 # Created by: Stas Timokhin <stast@bsdportal.ru>
-# $FreeBSD$
 
 PORTNAME=	blockout
 PORTVERSION=	2.5
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/BlockOut%20${PORTVERSION}/ \
 		http://www.stasyan.com/devel/distfiles/
@@ -14,10 +13,8 @@ COMMENT=	BlockOut II is an adaptation of the original Blockout DOS game
 
 LICENSE=	GPLv2+
 
-ONLY_FOR_ARCHS=	i386 amd64
-
+USES=		dos2unix gl gmake sdl
 USE_SDL=	mixer sdl
-USES=		gmake dos2unix
 DOS2UNIX_FILES=	ImageLib/src/gif/gif.h \
 		ImageLib/src/gif/gif.cpp BlockOut/*.cpp \
 		ImageLib/src/png/hpng.c

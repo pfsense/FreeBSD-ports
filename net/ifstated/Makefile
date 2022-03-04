@@ -1,16 +1,15 @@
 # Created by: Matthew George <mdg@secureworks.net>
-# $FreeBSD$
 
 PORTNAME=	ifstated
 PORTVERSION=	5.1
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	3
 CATEGORIES=	net
 MASTER_SITES=	LOCAL/tobik \
 		http://pkg.tobik.me/distfiles/ \
 		http://christianserving.org/ports/net/ifstated/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interface state daemon
 
 LIB_DEPENDS=	libevent.so:devel/libevent

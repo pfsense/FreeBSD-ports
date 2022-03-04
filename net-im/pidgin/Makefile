@@ -1,5 +1,4 @@
 # Created by: Jim Mock <jim@FreeBSD.org>
-# $FreeBSD$
 #   $MCom: ports/net-im/pidgin/Makefile,v 1.17 2007/09/17 19:53:06 marcus Exp $
 
 PORTNAME=	pidgin
@@ -13,14 +12,13 @@ LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 MASTERDIR=	${.CURDIR}/../libpurple
 BUILD_WRKSRC=	${WRKSRC}/pidgin
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
-INSTALLS_ICONS=	yes
 DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${.CURDIR}/pkg-plist
 
 PIDGIN_SLAVE=	yes
 WITH_GTKUI=	yes
 
-USES=		python:build
+USES=		gnome python:build xorg
 USE_LDCONFIG=	yes
 USE_GNOME=	gnomeprefix gtk20 intltool
 USE_XORG=	xscrnsaver sm

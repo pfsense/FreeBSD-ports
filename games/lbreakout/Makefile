@@ -1,5 +1,4 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lbreakout
 PORTVERSION=	010315
@@ -14,7 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_SDL=	sdl
-USES=		gmake
+USES=		gmake sdl
 GNU_CONFIGURE=	yes
 LIBS+=		-lcompat
 

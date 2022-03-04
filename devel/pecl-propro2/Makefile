@@ -1,5 +1,4 @@
 # Created by: Muhammad Moinur Rahman<bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	propro
 PORTVERSION=	2.1.0
@@ -14,6 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 PORTSCOUT=	limit:^2.*
 
 USES=		gmake php:pecl
+IGNORE_WITH_PHP=	80
 CONFLICTS=	pecl-propro-1*
 
 .include <bsd.port.mk>

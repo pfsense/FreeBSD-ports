@@ -1,9 +1,8 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	deadbeef
 PORTVERSION=	0.7.2
-PORTREVISION=	13
+PORTREVISION=	19
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/
 
@@ -13,13 +12,9 @@ COMMENT=	Ultimate music player for Unix-like systems
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
 
-BROKEN_aarch64=		Fails to compile: error: invalid conversion between vector type and integer type
-BROKEN_armv6=		Fails to compile: error: invalid conversion between vector type and integer type
-BROKEN_armv7=		Fails to compile: error: invalid conversion between vector type and integer type
-
 GNU_CONFIGURE=	yes
-USES=		compiler:c11 desktop-file-utils gettext gmake iconv libtool \
-		pkgconfig shebangfix tar:bzip2
+USES=		compiler:c11 desktop-file-utils gettext gmake gnome iconv \
+		libtool pkgconfig shebangfix tar:bzip2
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--disable-alsa --disable-nullout --disable-static
 CPPFLAGS+=	-I../dumb/dumb-kode54/include -I../../plugins/libmp4ff \
@@ -30,7 +25,6 @@ CFLAGS+=	-Wno-narrowing
 LDFLAGS_i386=	-Wl,-z,notext
 LIBS+=		-L${LOCALBASE}/lib -lexecinfo -lintl
 USE_GNOME=	intltool
-INSTALLS_ICONS=	yes
 SHEBANG_FILES=	yasmwrapper.sh
 INSTALL_TARGET=	install-strip
 
@@ -176,13 +170,13 @@ SC68_CONFIGURE_OFF=	--disable-sc68
 
 SHN_CONFIGURE_OFF=	--disable-shn
 
-SHELLEXEC_CONFIGURE_ARGS+=	--disable-shellexec
+SHELLEXEC_CONFIGURE_OFF=	--disable-shellexec
 
 NLS_CONFIGURE_OFF=	--disable-nls
 
 M3U_CONFIGURE_OFF=	--disable-m3u
 
-SPF_CONFIGURE_OFF=	--disable-psf
+PSF_CONFIGURE_OFF=	--disable-psf
 
 DSP_LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 DSP_CONFIGURE_OFF=	--disable-src

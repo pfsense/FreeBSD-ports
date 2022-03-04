@@ -1,9 +1,8 @@
 # Created by: lon_kamikaze@gmx.de
-# $FreeBSD$
 
 PORTNAME=	veditor
 PORTVERSION=	1.2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	java cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20runtime/VEditor%20${PORTVERSION}
 DISTNAME=	net.sourceforge.${PORTNAME}_${PORTVERSION}

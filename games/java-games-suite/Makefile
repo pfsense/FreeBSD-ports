@@ -1,8 +1,8 @@
 # Created by: Jason Helfman <jgh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	java-games-suite
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	games java
 MASTER_SITES=	SF/javagamessuite
 
@@ -10,14 +10,16 @@ MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Simple Java games collection
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+
+NO_ARCH=	yes
+
 PLIST_FILES=	bin/java-games-suite \
-		%%JAVAJARDIR%%/MM.jar \
-		%%JAVAJARDIR%%/reversi.jar \
-		%%JAVAJARDIR%%/Mine.jar \
-		%%JAVAJARDIR%%/Tetris.jar \
-		%%JAVAJARDIR%%/RT.jar \
-		%%JAVAJARDIR%%/Number.jar
+		${JAVAJARDIR}/MM.jar \
+		${JAVAJARDIR}/reversi.jar \
+		${JAVAJARDIR}/Mine.jar \
+		${JAVAJARDIR}/Tetris.jar \
+		${JAVAJARDIR}/RT.jar \
+		${JAVAJARDIR}/Number.jar
 SUB_FILES=	${PORTNAME}.sh
 GAMES=	MM reversi Mine Tetris RT Number
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-OpenStack-Attack
 PORTVERSION=	1.0500
 PORTREVISION=	1
@@ -12,6 +10,7 @@ COMMENT=	Tools for stress testing an OpenStack deployment
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Any-Moose>=0:devel/p5-Any-Moose \
@@ -21,8 +20,9 @@ RUN_DEPENDS=	p5-Any-Moose>=0:devel/p5-Any-Moose \
 		p5-Net-HTTPS-NB>=0:net/p5-Net-HTTPS-NB \
 		p5-libwww>=0:www/p5-libwww
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

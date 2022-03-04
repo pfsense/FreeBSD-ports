@@ -1,8 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-power-manager
-PORTVERSION=	3.26.0
+PORTVERSION=	3.32.0
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -19,7 +18,6 @@ LIB_DEPENDS=	libupower-glib.so:sysutils/upower
 PORTSCOUT=	limitw:1,even
 
 USES=		gettext gnome localbase:ldflags meson pathfix pkgconfig tar:xz
-INSTALLS_ICONS=	yes
 USE_GNOME=	cairo gtk30 intlhack
 MESON_ARGS=	-Denable-tests=false
 

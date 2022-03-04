@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	markdown-math
-PORTVERSION=	0.6
+PORTVERSION=	0.8
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	python-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	arved@FreeBSD.org
-COMMENT=	This extension adds math formulas support to Python-Markdown
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Math formulas support to Python-Markdown
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

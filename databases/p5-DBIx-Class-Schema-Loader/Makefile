@@ -1,5 +1,4 @@
 # Created by: Lars Balker Rasmussen <lbr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	DBIx-Class-Schema-Loader
 PORTVERSION=	0.07049
@@ -43,7 +42,7 @@ NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 
-MYSQL_USE=		mysql
+MYSQL_USES=		mysql
 PGSQL_USES=		pgsql
 SQLITE_USES=		sqlite
 

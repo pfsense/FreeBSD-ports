@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Pithub
-PORTVERSION=	0.01034
+PORTVERSION=	0.01036
 CATEGORIES=	devel
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:OALDERS
@@ -27,8 +26,9 @@ TEST_DEPENDS=	p5-Import-Into>=0:devel/p5-Import-Into \
 		p5-Path-Tiny>=0:devel/p5-Path-Tiny \
 		p5-Test-Most>=0:devel/p5-Test-Most
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

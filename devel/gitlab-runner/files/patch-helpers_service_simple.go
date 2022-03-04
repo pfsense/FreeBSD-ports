@@ -1,15 +1,15 @@
---- helpers/service/simple.go.orig	2017-06-22 10:21:35 UTC
+--- helpers/service/simple.go.orig	2021-07-20 11:41:09 UTC
 +++ helpers/service/simple.go
 @@ -6,6 +6,8 @@ import (
- 	"os"
  	"os/signal"
  	"syscall"
+ 
 +	"fmt"
 +	"log/syslog"
+ 	"github.com/kardianos/service"
  )
  
- var (
-@@ -18,6 +20,39 @@ type SimpleService struct {
+@@ -25,6 +27,39 @@ type SimpleService struct {
  	c *service.Config
  }
  
@@ -49,7 +49,7 @@
  // Run should be called shortly after the program entry point.
  // After Interface.Stop has finished running, Run will stop blocking.
  // After Run stops blocking, the program must exit shortly after.
-@@ -79,7 +114,13 @@ func (s *SimpleService) Logger(errs chan<- error) (ser
+@@ -86,7 +121,13 @@ func (s *SimpleService) Logger(errs chan<- error) (ser
  // SystemLogger opens and returns a system logger. If errs is non-nil errors
  // will be sent on errs as well as returned from Logger's functions.
  func (s *SimpleService) SystemLogger(errs chan<- error) (service.Logger, error) {

@@ -1,11 +1,10 @@
 # Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xcite
 PORTVERSION=	1.60
-PORTREVISION=	12
+PORTREVISION=	17
 CATEGORIES=	mail elisp
-MASTER_SITES=	http://www.gentei.org/~yuuji/software/
+MASTER_SITES=	https://www.gentei.org/~yuuji/software/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 DISTNAME=	${PORTNAME}.el
 EXTRACT_SUFX=	# empty

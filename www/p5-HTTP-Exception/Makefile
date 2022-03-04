@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Exception
 PORTVERSION=	0.04006
 PORTREVISION=	2
@@ -7,7 +5,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to throw HTTP-Errors as (Exception::Class-) Exceptions
 
 LICENSE=	ART10 GPLv1+

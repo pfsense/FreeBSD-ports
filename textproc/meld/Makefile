@@ -1,8 +1,8 @@
 # Created by: Pav Lucistnik <pav@oook.cz>
-# $FreeBSD$
 
 PORTNAME=	meld
-PORTVERSION=	3.20.0
+PORTVERSION=	3.20.4
+PORTEPOCH=	1
 CATEGORIES=	textproc devel python
 MASTER_SITES=	GNOME
 
@@ -23,7 +23,6 @@ USE_GNOME=	gtksourceview3 intltool libxml2:build pygobject3
 SHEBANG_FILES=	bin/meld
 GLIB_SCHEMAS=	org.gnome.meld.gschema.xml
 PYDISTUTILS_INSTALL_TARGET=	--no-update-icon-cache --no-compile-schemas install
-INSTALLS_ICONS=	yes
 NO_ARCH=	yes
 
 PLIST_SUB=	PORTVER=${PORTVERSION}

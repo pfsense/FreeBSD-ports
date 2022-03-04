@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	openmx
 DISTVERSION=	3.8.5 # the 18June12 patch upgrades 3.8 -> 3.8.5
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	science
 MASTER_SITES=	http://www.openmx-square.org/ \
 		http://www.openmx-square.org/bugfixed/18June12/:patch
@@ -21,25 +19,26 @@ BROKEN_i386=	undefined reference to `__atomic_load', see bug#229605 and https://
 LIB_DEPENDS=	libblas.so:math/blas \
 		libfftw3.so:math/fftw3 \
 		liblapack.so:math/lapack \
-		libmpich.so:net/mpich \
-		libomp.so:devel/openmp
+		libmpich.so:net/mpich
 
 USES=		dos2unix fortran gmake localbase:ldflags
-DOS2UNIX_FILES=	openmx_common.h
 USE_CXXSTD=	c++11
+
+DOS2UNIX_FILES=	openmx_common.h
+
 MAKEFILE=	makefile
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${DISTVERSION:R}
 
-CFLAGS+=	-Dkcomp
-LDFLAGS+=	${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgcc_s.so ${LOCALBASE}/lib/libmpifort.so
+CFLAGS+=	-Dkcomp -fcommon
+LDFLAGS+=	-lmpifort
+FFLAGS+=	-fallow-argument-mismatch
 
 WRKSRC_SUBDIR=	source
 
 MAKE_ENV=	MPICH_CC=${CC}
-MAKE_ARGS+=	CFLAGS="${CFLAGS}" FFLAGS="${FFLAGS}" LDFLAGS="${LDFLAGS}" GCC_LIB=${LOCALBASE}/lib/gcc${GCC_DEFAULT}/libgfortran.so
 
-BINARY_ALIAS=	gcc=${CXX} gcc7=${CXX}
+BINARY_ALIAS=	gcc=${CXX}
 
 UTIL_PROGS=	DosMain jx analysis_example esp polB bandgnu13 bin2txt cube2xsf intensity_map md2axsf
 

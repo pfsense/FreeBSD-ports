@@ -1,5 +1,4 @@
 # Created by: Florent Thoumie <flz@FreeBSD.org>
-# $FreeBSD$
 #    $MCom: ports/trunk/net-im/telepathy-idle/Makefile 20041 2014-11-04 11:13:49Z kwm $
 
 PORTNAME=	telepathy-idle
@@ -14,7 +13,7 @@ COMMENT=	IRC Connection Manager for Telepathy Framework
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 		libtelepathy-glib.so:net-im/telepathy-glib
 
-USES=		gmake libtool pathfix pkgconfig python:2.7,build ssl
+USES=		gmake gnome libtool pathfix pkgconfig python:build ssl
 USE_GNOME=	glib20 libxslt:build
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

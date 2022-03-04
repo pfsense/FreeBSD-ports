@@ -15,12 +15,12 @@
 %%DATADIR%%/Apache/Ocsinventory/Interface/Internals.pm
 %%DATADIR%%/Apache/Ocsinventory/Interface/Inventory.pm
 %%DATADIR%%/Apache/Ocsinventory/Interface/Ipdiscover.pm
+%%DATADIR%%/Apache/Ocsinventory/Interface/Saas.pm
 %%DATADIR%%/Apache/Ocsinventory/Interface/Snmp.pm
 %%DATADIR%%/Apache/Ocsinventory/Interface/SoftwareCategory.pm
 %%DATADIR%%/Apache/Ocsinventory/Interface/Updates.pm
 %%DATADIR%%/Apache/Ocsinventory/Map.pm
 %%DATADIR%%/Apache/Ocsinventory/Plugins.pm
-%%DATADIR%%/Apache/Ocsinventory/Plugins/Apache.pm
 %%DATADIR%%/Apache/Ocsinventory/Plugins/Modules.pm
 %%DATADIR%%/Apache/Ocsinventory/SOAP.pm
 %%DATADIR%%/Apache/Ocsinventory/Server/Capacities/Datafilter.pm
@@ -46,6 +46,7 @@
 %%DATADIR%%/Apache/Ocsinventory/Server/Inventory/Data.pm
 %%DATADIR%%/Apache/Ocsinventory/Server/Inventory/Export.pm
 %%DATADIR%%/Apache/Ocsinventory/Server/Inventory/Filter.pm
+%%DATADIR%%/Apache/Ocsinventory/Server/Inventory/Software.pm
 %%DATADIR%%/Apache/Ocsinventory/Server/Inventory/Update.pm
 %%DATADIR%%/Apache/Ocsinventory/Server/Inventory/Update/AccountInfos.pm
 %%DATADIR%%/Apache/Ocsinventory/Server/Inventory/Update/Hardware.pm
@@ -62,10 +63,10 @@
 %%DATADIR%%/Api/Ocsinventory/Restapi/Computer/Get/ComputersSearch.pm
 %%DATADIR%%/Api/Ocsinventory/Restapi/Ipdiscover/Get/Ipdiscover.pm
 %%DATADIR%%/Api/Ocsinventory/Restapi/Ipdiscover/Get/IpdiscoverNetwork.pm
+%%DATADIR%%/Api/Ocsinventory/Restapi/Ipdiscover/Get/IpdiscoverTag.pm
 %%DATADIR%%/Api/Ocsinventory/Restapi/Loader.pm
 %%DATADIR%%/Api/Ocsinventory/Restapi/README.md
 %%DATADIR%%/Api/Ocsinventory/Restapi/References/api.json
-%%DATADIR%%/Api/Ocsinventory/Restapi/Snmp/Get/Snmp.pm
 %%DATADIR%%/Api/Ocsinventory/Restapi/Snmp/Get/SnmpId.pm
 %%DATADIR%%/Api/Ocsinventory/Restapi/Snmp/Get/SnmpIdField.pm
 %%DATADIR%%/Api/Ocsinventory/Restapi/Snmp/Get/SnmpListId.pm
@@ -78,6 +79,7 @@
 %%DATADIR%%/binutils/ocsinventory-injector.pl
 %%DATADIR%%/binutils/ocsinventory-log.README
 %%DATADIR%%/binutils/ocsinventory-log.pl
+%%DATADIR%%/binutils/ocsinventory-powershell-injector.ps1
 %%DATADIR%%/binutils/soap-client.README
 %%DATADIR%%/binutils/soap-client.pl
 %%DATADIR%%/dtd/Interface/get_computers_V1-request.dtd

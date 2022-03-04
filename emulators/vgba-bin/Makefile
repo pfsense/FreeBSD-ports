@@ -1,5 +1,4 @@
 # Created by: Mario S F Ferreira <lioux@linf.unb.br> et al.
-# $FreeBSD$
 
 PORTNAME=	vgba
 PORTVERSION=	3.0
@@ -19,6 +18,7 @@ LIB_DEPENDS=	libc.so.5:misc/compat5x \
 ONLY_FOR_ARCHS=	i386
 NO_BUILD=	no
 NO_WRKSUBDIR=	no
+USES=		xorg
 USE_XORG=	x11 xext
 
 PLIST_FILES=	bin/vgba

@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wmii
 DISTVERSION=	3.6	# this is stable version; for 3.9.x, use -devel port
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://dl.suckless.org/wmii/
 
@@ -16,9 +15,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libixp.so:devel/libixp
 RUN_DEPENDS=	dmenu:x11/dmenu
 
-CONFLICTS=	wmii-devel-[0-9]*
-
+USES=		xorg
 USE_XORG=	x11 xorgproto xt xext
+
+CONFLICTS=	wmii-devel
 
 MAKE_ARGS=	PREFIX="${PREFIX}" MAN="${MANPREFIX}/man" \
 		INCLUDE="${LOCALBASE}/include" \

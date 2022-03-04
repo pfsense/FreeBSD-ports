@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	oyranos
 PORTVERSION=	0.9.6
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	graphics
 
 MAINTAINER=	bsam@FreeBSD.org
@@ -18,7 +16,6 @@ LIB_DEPENDS=	libraw.so:graphics/libraw \
 		libpng.so:graphics/png \
 		libcairo.so:graphics/cairo \
 		libyajl.so:devel/yajl \
-		libfltk.so:x11-toolkits/fltk \
 		libcups.so:print/cups \
 		libxdot.so:graphics/graphviz \
 		liblcms.so:graphics/lcms \
@@ -30,7 +27,8 @@ LIB_DEPENDS=	libraw.so:graphics/libraw \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	oyranos-cms
-USES=		cmake compiler:c++11-lib desktop-file-utils gettext iconv jpeg pkgconfig qt:5
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext gl gnome \
+		iconv jpeg pkgconfig qt:5 xorg
 USE_GL=		gl
 USE_LDCONFIG=	yes
 USE_GNOME=	libxml2
@@ -41,9 +39,15 @@ CMAKE_ARGS+=	-DXDG_CONFIG_DIR=${PREFIX}/etc/xdg
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 MAKE_JOBS_UNSAFE=yes
 
-OPTIONS_DEFINE=	DOXYGEN DOCS
+OPTIONS_DEFINE=	DOCS DOXYGEN FLTK
+OPTIONS_SUB=	yes
+FLTK_DESC=	Build FLTK-based auxiliary programs
+FLTK_BROKEN=	fails to build, see https://github.com/oyranos-cms/oyranos/issues/62
+
 DOXYGEN_IMPLIES=	DOCS
 DOXYGEN_BUILD_DEPENDS=	${LOCALBASE}/bin/doxygen:devel/doxygen
+
+FLTK_LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
 PORTDOCS=	*
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
@@ -51,7 +55,7 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 PLIST_SUB+=	VER=${PORTVERSION}
 
 .if !exists(/usr/bin/clang)
-USE_GCC=   yes
+USE_GCC=	yes
 .endif
 
 post-patch:

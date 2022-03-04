@@ -1,24 +1,27 @@
 # Created by: Rainer Hurling <rhurlin@gwdg.de>
-# $FreeBSD$
 
 PORTNAME=	ggobi
 PORTVERSION=	2.1.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.ggobi.org/downloads/
 
-MAINTAINER=	rhurlin@gwdg.de
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Data visualization system
 
 LICENSE=	EPL
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libcgraph.so:graphics/graphviz \
+		libltdl.so:devel/libltdl
 
-USES=		pkgconfig tar:bzip2 libtool pathfix desktop-file-utils
-USE_GNOME=	gtk20 libxml2
+USES=		desktop-file-utils gnome libtool pathfix pkgconfig tar:bzip2
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk20 libxml2
+USE_GCC=	yes
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-all-plugins
 
 SUB_FILES=	pkg-message

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jxrlib
 PORTVERSION=	1.1
 CATEGORIES=	graphics devel
@@ -29,7 +27,7 @@ do-configure:
 post-build:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/jxrlib
 
-regression-test test check: build
+do-test:
 	${SETENV} WRKSRC="${WRKSRC}" ${SH} -x ${FILESDIR}/test.sh
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	rezerwar
 PORTVERSION=	0.4.2
 PORTREVISION=	3
@@ -11,7 +8,10 @@ MASTER_SITES=	http://tamentis.com/projects/rezerwar/files/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Puzzle game involving organizing blocks with pipes
 
-USES=		gmake
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: screen
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: screen
+
+USES=		gmake sdl
 USE_SDL=	sdl mixer
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	Unix

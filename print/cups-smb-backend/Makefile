@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cups-smb-backend
 PORTVERSION=	1.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	print
 MASTER_SITES=	# empty
 DISTFILES=	# empty

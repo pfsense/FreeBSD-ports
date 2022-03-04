@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	openiked
-PORTVERSION=	2.1
-CATEGORIES=	security net ipv6
+PORTVERSION=	2.2
+CATEGORIES=	security net
 
 MAINTAINER=	marcel@FreeBSD.org
 COMMENT=	IKEv2 daemon
@@ -12,6 +10,8 @@ LICENSE=	ISCL
 LIB_DEPENDS=	libevent.so:devel/libevent
 
 USES=		autoreconf libtool ssl
+
+CONFLICTS_INSTALL=		openiked-portable[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	xcllnt

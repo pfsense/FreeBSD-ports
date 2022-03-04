@@ -1,9 +1,8 @@
 # Created by: aaron@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	mkhexgrid
 PORTVERSION=	0.1.1
-PORTREVISION=	17
+PORTREVISION=	21
 CATEGORIES=	games
 MASTER_SITES=	http://www.nomic.net/~uckelman/mkhexgrid/releases/ \
 		http://aaron.daltons.ca/freebsd/

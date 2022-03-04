@@ -1,5 +1,4 @@
 # Created by: Dom Mitchell <dom@myrddin.demon.co.uk>
-# $FreeBSD$
 
 PORTNAME=	daemontools
 PORTVERSION=	0.76
@@ -15,7 +14,7 @@ COMMENT=	Service monitoring and logging utilities by djb
 
 LICENSE=	PD
 
-CONFLICTS=	freedt-[0-9]* serialmail-[0-9]*
+CONFLICTS=	freedt serialmail
 
 OPTIONS_DEFINE=	MAN SIGQ12 TESTS
 OPTIONS_SUB=	yes

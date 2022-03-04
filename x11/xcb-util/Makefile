@@ -1,5 +1,4 @@
 # Created by: Nikos Ntarmos <ntarmos@ceid.upatras.gr>
-# $FreeBSD$
 
 PORTNAME=	xcb-util
 PORTVERSION=	0.4.0
@@ -14,8 +13,7 @@ COMMENT=	Module with libxcb/libX11 extension/replacement libraries
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-XORG_CAT=	lib
-USES=		gmake tar:bzip2
+USES=		gmake tar:bzip2 xorg xorg-cat:lib
 USE_XORG=	xau xcb xdmcp
 INSTALL_TARGET=	install-strip
 

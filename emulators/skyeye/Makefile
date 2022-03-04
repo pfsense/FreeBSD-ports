@@ -1,9 +1,8 @@
 # Created by: Ruan Wei (iamayan@gmail.com)
-# $FreeBSD$
 
 PORTNAME=	skyeye
 PORTVERSION=	1.2.5
-PORTREVISION=	6
+PORTREVISION=	7
 DISTVERSIONSUFFIX=	_REL
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
@@ -15,9 +14,10 @@ LICENSE=	GPLv2
 
 USE_CSTD=	gnu89
 USE_BINUTILS=	yes
-USE_GCC=	any
+USE_GCC=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_func_working_mktime=yes
+CFLAGS+=	-fcommon
 
 PLIST_FILES=	bin/skyeye
 

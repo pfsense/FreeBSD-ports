@@ -1,5 +1,4 @@
 # Created by: Matt Emmerton <matt@gsicomp.on.ca>
-# $FreeBSD$
 
 PORTNAME=	lifelines
 PORTVERSION=	3.1.1
@@ -15,6 +14,7 @@ LICENSE=	MIT
 USES=		autoreconf bison gmake iconv ncurses
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	YACC="bison -y"
 
 MAKE_JOBS_UNSAFE=yes
 

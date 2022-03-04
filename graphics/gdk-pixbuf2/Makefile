@@ -1,14 +1,13 @@
 # Created by: Ade Lovett <ade@lovett.com>
-# $FreeBSD$
 
 PORTNAME=	gdk-pixbuf
-PORTVERSION=	2.36.12
+PORTVERSION=	2.40.0
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
 DIST_SUBDIR=	gnome
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Graphic library for GTK+
 
 LICENSE=	LGPL20+
@@ -42,6 +41,7 @@ TIFF_MESON_TRUE=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 X11_MESON_TRUE=		x11
+X11_USES=		xorg
 X11_USE=		xorg=x11
 
 post-install:

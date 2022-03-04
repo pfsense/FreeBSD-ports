@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-upgrade
-PORTVERSION=	0.68
+PORTVERSION=	1.0
+PORTREVISION=	12
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -25,6 +26,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pfSense
 	${INSTALL_SCRIPT} ${WRKSRC}/pfSense-upgrade \
 		${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} ${WRKSRC}/pfSense-upgrade.wrapper \

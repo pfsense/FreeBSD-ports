@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libticables2
 PORTVERSION=	1.3.5
 PORTREVISION=	1
@@ -13,7 +11,8 @@ LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		autoreconf gettext-tools gmake libtool pkgconfig tar:bzip2
+USES=		autoreconf gettext-tools gmake gnome libtool pkgconfig \
+		tar:bzip2
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

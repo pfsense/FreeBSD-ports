@@ -1,8 +1,7 @@
 # Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sexp_processor
-PORTVERSION=	4.11.0
+PORTVERSION=	4.16.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,8 +10,9 @@ COMMENT=	Generic sexp processing tools
 
 LICENSE=	MIT
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

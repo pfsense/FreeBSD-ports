@@ -1,5 +1,4 @@
 # Created by: David O'Brien (obrien@NUXI.com)
-# $FreeBSD$
 
 PORTNAME=	trinokiller
 PORTVERSION=	1.0
@@ -10,6 +9,9 @@ EXTRACT_SUFX=	.c
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Remotely kill trino nodes
+
+DEPRECATED=	Abandonware, dead upstream
+EXPIRATION_DATE=2022-03-31
 
 PLIST_FILES=	sbin/trinokiller
 

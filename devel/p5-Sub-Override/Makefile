@@ -1,5 +1,4 @@
 # Created by: Lars Eggert <lars.eggert@gmx.net>
-# $FreeBSD$
 
 PORTNAME=	Sub-Override
 PORTVERSION=	0.09
@@ -18,5 +17,7 @@ TEST_DEPENDS=	p5-Test-Fatal>=0.010:devel/p5-Test-Fatal
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

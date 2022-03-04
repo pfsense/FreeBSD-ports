@@ -1,9 +1,8 @@
 # Created by: hrkfrd@googlemail.com
-# $FreeBSD$
 
 PORTNAME=	mpdas
 PORTVERSION=	0.4.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	http://50hz.ws/mpdas/
 

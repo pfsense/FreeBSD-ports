@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	tld
-PORTVERSION=	0.9.2
+PORTVERSION=	0.11.11
 CATEGORIES=	dns python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,11 +10,8 @@ COMMENT=	Extract the top level domain (TLD) from the URL given
 LICENSE=	MPL11 GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
-
 NO_ARCH=	yes
-USES=		python shebangfix
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
-SHEBANG_FILES=	src/tld/bin/update-tld-names
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nplot
 PORTVERSION=	0.9.11
 PORTREVISION=	1
@@ -26,6 +24,12 @@ PLIST_FILES=	lib/mono/NPlot/NPlot.dll \
 		lib/mono/gac/NPlot/0.9.11.0__1d82a50c5d01c44e/NPlot.dll \
 		libdata/pkgconfig/NPlot.pc
 
+.include <bsd.port.pre.mk>
+
+.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
+BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: Failure adding assembly dbus-sharp.dll to the cache: Strong name cannot be verified for delay-signed assembly
+.endif
+
 pre-build:
 	openssl enc -base64 -d <${PATCHDIR}/Dynamic.key >${WRKSRC}/src/Dynamic.snk
 
@@ -39,4 +43,4 @@ do-install:
 		-root ${STAGEDIR}${PREFIX}/lib/ -package NPlot -i bin/NPlot.dll)
 	(cd ${WRKDIR} && ${INSTALL_DATA} NPlot.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

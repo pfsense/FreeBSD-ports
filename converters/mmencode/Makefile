@@ -1,5 +1,4 @@
 # Created by: kbyanc
-# $FreeBSD$
 
 PORTNAME=	mmencode
 PORTVERSION=	2.7
@@ -7,7 +6,7 @@ CATEGORIES=	converters
 MASTER_SITES=	ftp://ftp.funet.fi/pub/unix/mail/metamail/
 DISTNAME=	mm${PORTVERSION}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Translate to and from mail-oriented encoding formats
 
 LICENSE=	MIT

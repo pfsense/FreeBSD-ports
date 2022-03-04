@@ -1,6 +1,3 @@
-# Created by: Mathieu Arnold <mat@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	DateTime-TimeZone-LMT
 PORTVERSION=	1.01
 CATEGORIES=	devel perl5

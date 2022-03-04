@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	timeout_user
 PORTVERSION=	1.1.1
 PORTREVISION=	5

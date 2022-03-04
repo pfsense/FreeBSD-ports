@@ -1,11 +1,10 @@
 # Created by: Mark Kane <mark@mkproductions.org>
-# $FreeBSD$
 
 PORTNAME=	streamtranscoder
 PORTVERSION=	1.2.8
 PORTREVISION=	13
 CATEGORIES=	audio
-MASTER_SITES=	http://BSDforge.com/projects/source/audio/streamtranscoder/
+MASTER_SITES=	https://BSDforge.com/projects/source/audio/streamtranscoder/
 
 MAINTAINER=	mark@mkproductions.org
 COMMENT=	Transcode and stream audio to a SHOUTcast/Icecast/Peercast server

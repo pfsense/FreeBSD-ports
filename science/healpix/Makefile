@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	healpix
 DISTVERSION=	3.50
 DISTVERSIONSUFFIX=	_2018Dec10
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}/Healpix_${DISTVERSION}/
 DISTNAME=	Healpix_${DISTVERSIONFULL}
@@ -12,8 +11,6 @@ COMMENT=	Software for pixelization, visualization, etc of data on the sphere
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_aarch64=	fails to configure: could not find the cfitsio library
 
 LIB_DEPENDS=	libcfitsio.so:astro/cfitsio \
 		libcurl.so:ftp/curl

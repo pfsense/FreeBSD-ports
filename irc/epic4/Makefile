@@ -1,15 +1,14 @@
 # Created by: Ben Hutchinson <benhutch@xfiles.org.uk>
-# $FreeBSD$
 
 PORTNAME=	epic4
-PORTVERSION=	2.10.7
-CATEGORIES=	irc ipv6
+PORTVERSION=	2.10.9
+CATEGORIES=	irc
 MASTER_SITES=	http://ftp.epicsol.org/pub/epic/EPIC4-PRODUCTION/ \
 		http://ftp.cc.uoc.gr/mirrors/irc/epic/EPIC4-PRODUCTION/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}-help-20050315.tar.bz2
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	(E)nhanced (P)rogrammable (I)RC-II (C)lient
 
 LICENSE=	BSD3CLAUSE

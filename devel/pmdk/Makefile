@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	pmdk
-DISTVERSION=	1.5
+DISTVERSION=	1.6.1
 CATEGORIES=	devel
 
-MAINTAINER=	d.scott.phillips@intel.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libraries and tools to manage and access persistent memory devices
 
 # PMDK code is BSD3CLAUSE, jemalloc is BSD2CLAUSE,
@@ -19,11 +17,8 @@ LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
 
 USES=		autoreconf:build gmake pkgconfig
 USE_GITHUB=	yes
-USE_LDCONFIG=	yes
-
 GH_ACCOUNT=	pmem
-
-MAKE_ARGS=	EXTRA_CFLAGS=-Wno-error=unused-value
+USE_LDCONFIG=	yes
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/bin/pmreorder

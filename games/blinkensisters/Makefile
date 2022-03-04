@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	blinkensisters
 PORTVERSION=	0.5.3
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Blinkensisters%20-%20Lost%20Pixels/LostPixels%20${PORTVERSION}
 
@@ -15,7 +12,8 @@ LICENSE_FILE=	${WRKSRC}/DOC/LICENSE
 
 BROKEN_sparc64=	does not compile on sparc64
 
-USES=		cmake:insource compiler:c++11-lang localbase perl5 # actually, old gcc fails in theora.h
+# actually, old gcc fails in theora.h
+USES=		cmake:insource compiler:c++11-lang localbase perl5 sdl
 USE_SDL=	sdl image ttf
 USE_PERL5=	build
 

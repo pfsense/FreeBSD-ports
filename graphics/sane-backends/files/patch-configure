@@ -1,0 +1,29 @@
+--- configure.orig
++++ configure
+@@ -22378,7 +22378,7 @@
+ int
+ main ()
+ {
+-pthread_t k; k * 1;
++pthread_t k; k = (pthread_t) -1;
+   ;
+   return 0;
+ }
+@@ -26520,7 +26520,7 @@
+     ;;
+ 
+     v4l)
+-    if test "${have_linux_ioctl_defines}" != "yes" \
++    if test "${have_libv4l1}" != "yes" \
+       || test "${have_libv4l1}" != "yes"; then
+       echo "*** $be backend requires v4l libraries - $DISABLE_MSG"
+       backend_supported="no"
+@@ -26734,7 +26734,7 @@
+     ;;
+ 
+     v4l)
+-    if test "${have_linux_ioctl_defines}" != "yes" \
++    if test "${have_libv4l1}" != "yes" \
+       || test "${have_libv4l1}" != "yes"; then
+       echo "*** $be backend requires v4l libraries - $DISABLE_MSG"
+       backend_supported="no"

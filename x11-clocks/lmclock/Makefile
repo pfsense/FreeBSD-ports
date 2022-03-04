@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	lmclock
 PORTVERSION=	1.2
@@ -10,7 +9,7 @@ MASTER_SITES=	LOCAL/ehaupt
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Xerox Lisp machine clock clone
 
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 
 PLIST_FILES=	bin/lmclock

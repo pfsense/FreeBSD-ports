@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	svn_load_dirs
 PORTVERSION=	1.8.4
@@ -11,7 +10,7 @@ DISTFILES=	LICENSE_AFL3.txt \
 		svn_load_dirs_property_table.example
 DIST_SUBDIR=	subversion/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl script to load directories into a Subversion repository
 
 OPTIONS_DEFINE=	DOCS EXAMPLES

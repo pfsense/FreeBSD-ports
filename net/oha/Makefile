@@ -1,0 +1,229 @@
+# Created by: Juraj Lutter <otis@FreeBSD.org>
+
+PORTNAME=	oha
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.4.7
+PORTREVISION=	1
+CATEGORIES=	net
+
+MAINTAINER=	otis@FreeBSD.org
+COMMENT=	Web load generator
+
+LICENSE=	MIT
+
+USES=		cargo ssl
+USE_GITHUB=	yes
+GH_ACCOUNT=	hatoo
+
+CARGO_CRATES=	ansi_term-0.11.0 \
+		anyhow-1.0.44 \
+		assert_cmd-2.0.2 \
+		async-trait-0.1.51 \
+		atty-0.2.14 \
+		autocfg-1.0.1 \
+		average-0.13.1 \
+		base64-0.13.0 \
+		bitflags-1.3.2 \
+		block-buffer-0.9.0 \
+		bstr-0.2.17 \
+		buf_redux-0.8.4 \
+		bumpalo-3.7.1 \
+		byte-unit-4.0.12 \
+		byteorder-1.4.3 \
+		bytes-1.1.0 \
+		cassowary-0.3.0 \
+		cc-1.0.71 \
+		cfg-if-1.0.0 \
+		clap-2.33.3 \
+		core-foundation-0.9.2 \
+		core-foundation-sys-0.8.3 \
+		cpufeatures-0.2.1 \
+		crossterm-0.20.0 \
+		crossterm-0.21.0 \
+		crossterm_winapi-0.8.0 \
+		data-encoding-2.3.2 \
+		difflib-0.4.0 \
+		digest-0.9.0 \
+		doc-comment-0.3.3 \
+		easy-cast-0.4.4 \
+		either-1.6.1 \
+		enum-as-inner-0.3.3 \
+		float-ord-0.3.2 \
+		flume-0.10.9 \
+		fnv-1.0.7 \
+		foreign-types-0.3.2 \
+		foreign-types-shared-0.1.1 \
+		form_urlencoded-1.0.1 \
+		futures-0.3.17 \
+		futures-channel-0.3.17 \
+		futures-core-0.3.17 \
+		futures-executor-0.3.17 \
+		futures-io-0.3.17 \
+		futures-macro-0.3.17 \
+		futures-sink-0.3.17 \
+		futures-task-0.3.17 \
+		futures-util-0.3.17 \
+		generic-array-0.14.4 \
+		get-port-4.0.0 \
+		getrandom-0.1.16 \
+		getrandom-0.2.3 \
+		h2-0.3.6 \
+		hashbrown-0.11.2 \
+		headers-0.3.4 \
+		headers-core-0.2.0 \
+		heck-0.3.3 \
+		hermit-abi-0.1.19 \
+		hostname-0.3.1 \
+		http-0.2.5 \
+		http-body-0.4.3 \
+		httparse-1.5.1 \
+		httpdate-1.0.1 \
+		humantime-2.1.0 \
+		hyper-0.14.13 \
+		idna-0.2.3 \
+		indexmap-1.7.0 \
+		input_buffer-0.4.0 \
+		instant-0.1.11 \
+		ipconfig-0.2.2 \
+		ipnet-2.3.1 \
+		itertools-0.10.1 \
+		itoa-0.4.8 \
+		js-sys-0.3.55 \
+		lazy_static-1.4.0 \
+		libc-0.2.103 \
+		libm-0.2.1 \
+		linked-hash-map-0.5.4 \
+		lock_api-0.4.5 \
+		log-0.4.14 \
+		lru-cache-0.1.2 \
+		match_cfg-0.1.0 \
+		matches-0.1.9 \
+		memchr-2.4.1 \
+		mime-0.3.16 \
+		mime_guess-2.0.3 \
+		mio-0.7.13 \
+		miow-0.3.7 \
+		multipart-0.17.1 \
+		nanorand-0.6.1 \
+		native-tls-0.2.8 \
+		ntapi-0.3.6 \
+		num-traits-0.2.14 \
+		num_cpus-1.13.0 \
+		once_cell-1.8.0 \
+		opaque-debug-0.3.0 \
+		openssl-0.10.36 \
+		openssl-probe-0.1.4 \
+		openssl-sys-0.9.67 \
+		parking_lot-0.11.2 \
+		parking_lot_core-0.8.5 \
+		percent-encoding-2.1.0 \
+		pin-project-1.0.8 \
+		pin-project-internal-1.0.8 \
+		pin-project-lite-0.2.7 \
+		pin-utils-0.1.0 \
+		pkg-config-0.3.20 \
+		ppv-lite86-0.2.14 \
+		predicates-2.0.3 \
+		predicates-core-1.0.2 \
+		predicates-tree-1.0.4 \
+		proc-macro-error-1.0.4 \
+		proc-macro-error-attr-1.0.4 \
+		proc-macro-hack-0.5.19 \
+		proc-macro-nested-0.1.7 \
+		proc-macro2-1.0.30 \
+		quick-error-1.2.3 \
+		quote-1.0.10 \
+		rand-0.7.3 \
+		rand-0.8.4 \
+		rand_chacha-0.2.2 \
+		rand_chacha-0.3.1 \
+		rand_core-0.5.1 \
+		rand_core-0.6.3 \
+		rand_hc-0.2.0 \
+		rand_hc-0.3.1 \
+		redox_syscall-0.2.10 \
+		regex-automata-0.1.10 \
+		remove_dir_all-0.5.3 \
+		resolv-conf-0.7.0 \
+		rlimit-0.6.2 \
+		ryu-1.0.5 \
+		safemem-0.3.3 \
+		schannel-0.1.19 \
+		scoped-tls-1.0.0 \
+		scopeguard-1.1.0 \
+		security-framework-2.4.2 \
+		security-framework-sys-2.4.2 \
+		serde-1.0.130 \
+		serde_json-1.0.68 \
+		serde_urlencoded-0.7.0 \
+		sha-1-0.9.8 \
+		signal-hook-0.3.10 \
+		signal-hook-mio-0.2.1 \
+		signal-hook-registry-1.4.0 \
+		slab-0.4.5 \
+		smallvec-1.7.0 \
+		socket2-0.3.19 \
+		socket2-0.4.2 \
+		spin-0.9.2 \
+		strsim-0.8.0 \
+		structopt-0.3.23 \
+		structopt-derive-0.4.16 \
+		syn-1.0.80 \
+		tempfile-3.2.0 \
+		termtree-0.2.1 \
+		textwrap-0.11.0 \
+		thiserror-1.0.30 \
+		thiserror-impl-1.0.30 \
+		time-0.1.43 \
+		tinyvec-1.5.0 \
+		tinyvec_macros-0.1.0 \
+		tokio-1.12.0 \
+		tokio-macros-1.5.0 \
+		tokio-native-tls-0.3.0 \
+		tokio-stream-0.1.7 \
+		tokio-tungstenite-0.13.0 \
+		tokio-util-0.6.8 \
+		tower-service-0.3.1 \
+		tracing-0.1.29 \
+		tracing-core-0.1.21 \
+		trust-dns-proto-0.20.3 \
+		trust-dns-resolver-0.20.3 \
+		try-lock-0.2.3 \
+		tui-0.16.0 \
+		tungstenite-0.12.0 \
+		twoway-0.1.8 \
+		typenum-1.14.0 \
+		unicase-2.6.0 \
+		unicode-bidi-0.3.7 \
+		unicode-normalization-0.1.19 \
+		unicode-segmentation-1.8.0 \
+		unicode-width-0.1.9 \
+		unicode-xid-0.2.2 \
+		url-2.2.2 \
+		utf-8-0.7.6 \
+		utf8-width-0.1.5 \
+		vcpkg-0.2.15 \
+		vec_map-0.8.2 \
+		version_check-0.9.3 \
+		wait-timeout-0.2.0 \
+		want-0.3.0 \
+		warp-0.3.1 \
+		wasi-0.9.0+wasi-snapshot-preview1 \
+		wasi-0.10.2+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.78 \
+		wasm-bindgen-backend-0.2.78 \
+		wasm-bindgen-macro-0.2.78 \
+		wasm-bindgen-macro-support-0.2.78 \
+		wasm-bindgen-shared-0.2.78 \
+		widestring-0.4.3 \
+		winapi-0.3.9 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		winreg-0.6.2
+
+PLIST_FILES=	bin/oha
+
+post-install:
+		${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/oha
+
+.include <bsd.port.mk>

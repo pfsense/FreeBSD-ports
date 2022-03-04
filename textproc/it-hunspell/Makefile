@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	2016.02.10
 CATEGORIES=	textproc
@@ -18,8 +16,8 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/it_IT.aff \
-		%%DATADIR%%/it_IT.dic
+PLIST_FILES=	${DATADIR}/it_IT.aff \
+		${DATADIR}/it_IT.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

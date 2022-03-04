@@ -1,5 +1,4 @@
 # Created by: Rick & Samu
-# $FreeBSD$
 
 PORTNAME=	sniff
 PORTVERSION=	1.0
@@ -10,6 +9,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to sniff logins and passwords
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Abandonware, last release around 2000 and dead upstream. Please consider using net/wireshark
+EXPIRATION_DATE=2022-03-31
 
 GNU_CONFIGURE=	yes
 

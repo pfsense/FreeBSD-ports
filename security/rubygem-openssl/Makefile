@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	openssl
-PORTVERSION=	2.1.2
+PORTVERSION=	2.2.1
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 
@@ -13,7 +11,11 @@ LICENSE_COMB=	dual
 LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/BSDL
 LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE.txt
 
-USES=		gem ssl
+RUN_DEPENDS=	rubygem-ipaddr>=0:net/rubygem-ipaddr
+
+USES=		cpe gem ssl
 USE_RUBY=	yes
+
+CPE_VENDOR=	ruby-lang
 
 .include <bsd.port.mk>

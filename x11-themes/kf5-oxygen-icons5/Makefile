@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oxygen-icons5
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	x11-themes kde kde-frameworks
@@ -20,7 +18,5 @@ CMAKE_ARGS=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5Core=TRUE \
 		-DQMAKE_EXECUTABLE:PATH=${QMAKE}
 
 NO_ARCH=	yes
-
-CONFLICTS_INSTALL=	kde4-oxygen-icons-*
 
 .include <bsd.port.mk>

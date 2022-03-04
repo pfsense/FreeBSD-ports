@@ -1,5 +1,4 @@
 # Created by: Rene Ladan <rene@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	stemming
 PORTVERSION=	1.0.1
@@ -12,7 +11,7 @@ COMMENT=	Algorithms for stemming
 
 LICENSE=	PD
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

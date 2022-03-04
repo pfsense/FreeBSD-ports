@@ -1,8 +1,8 @@
 # Created by: FreeBSD GNOME Team <gnome@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-taquin
-PORTVERSION=	3.28.0
+PORTVERSION=	3.38.1
+PORTREVISION=	1
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -20,12 +20,10 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome localbase pathfix pkgconfig tar:xz
-USE_GNOME=	cairo gtk30 intlhack librsvg2 libxml2:build
+USES=		gettext gmake gnome localbase meson pathfix pkgconfig tar:xz xorg
+USE_GNOME=	cairo gsound gtk30 intlhack librsvg2 libxml2:build
 USE_XORG=	x11
-INSTALLS_ICONS=	yes
-GNU_CONFIGURE=	yes
 
-GLIB_SCHEMAS=	org.gnome.taquin.gschema.xml
+GLIB_SCHEMAS=	org.gnome.Taquin.gschema.xml
 
 .include <bsd.port.mk>

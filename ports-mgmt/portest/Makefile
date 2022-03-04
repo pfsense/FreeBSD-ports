@@ -1,8 +1,8 @@
 # Created by: Richard Gallamore <ultima@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	portest
 PORTVERSION=	0.1.9
+PORTREVISION=	1
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	ultima@FreeBSD.org
@@ -19,7 +19,6 @@ PLIST_FILES=	sbin/portest
 
 OPTIONS_DEFINE=		GIT PORTLINT PORTTOOLS POUDRIERE
 
-GIT_DESC=		Git support
 GIT_RUN_DEPENDS=	git:devel/git
 
 PORTLINT_DESC=		Portlint support

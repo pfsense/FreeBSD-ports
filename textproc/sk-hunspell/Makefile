@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	20110228
 PORTREVISION=	1
@@ -22,8 +20,8 @@ USES=		zip
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-PLIST_FILES=	%%DATADIR%%/sk_SK.aff \
-		%%DATADIR%%/sk_SK.dic
+PLIST_FILES=	${DATADIR}/sk_SK.aff \
+		${DATADIR}/sk_SK.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

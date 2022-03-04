@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	2008.06.10
 PORTREVISION=	1
@@ -19,10 +17,10 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_FILES=	%%DATADIR%%/th_sv_SE.dat \
-		%%DATADIR%%/th_sv_SE.idx \
-		%%DATADIR%%/th_sv_FI.dat \
-		%%DATADIR%%/th_sv_FI.idx
+PLIST_FILES=	${DATADIR}/th_sv_SE.dat \
+		${DATADIR}/th_sv_SE.idx \
+		${DATADIR}/th_sv_FI.dat \
+		${DATADIR}/th_sv_FI.idx
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

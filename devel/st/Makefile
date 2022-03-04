@@ -1,5 +1,4 @@
 # Created by: tobez
-# $FreeBSD$
 
 PORTNAME=	st
 PORTVERSION=	1.9
@@ -7,7 +6,7 @@ PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}ate-threads/${PORTNAME}ate-threads/${PORTVERSION}
 
-MAINTAINER=	tobez@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	State Threads Library for Internet Applications
 
 USES=		uidfix

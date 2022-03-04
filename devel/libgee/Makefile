@@ -1,10 +1,10 @@
 # Created by: Frank Steinborn <steinex@nognu.de>
-# $FreeBSD$
 
 PORTNAME=	libgee
-PORTVERSION=	0.20.1
+PORTVERSION=	0.20.3
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	GObject collection library
@@ -18,9 +18,10 @@ PORTSCOUT=	limitw:1,even
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-introspection=yes
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		cpe gettext gmake gnome libtool pathfix pkgconfig tar:xz
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+CPE_VENDOR=	gnome
 
 .include <bsd.port.mk>

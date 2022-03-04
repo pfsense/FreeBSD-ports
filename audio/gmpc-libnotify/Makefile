@@ -1,5 +1,4 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gmpc-libnotify
 PORTVERSION=	11.8.16
@@ -20,7 +19,7 @@ RUN_DEPENDS=	gmpc:audio/gmpc
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 gtk20 intltool
-USES=		gettext gmake libtool pkgconfig
+USES=		gettext gmake gnome libtool pkgconfig
 INSTALL_TARGET=	install-strip
 
 PLIST_FILES=	lib/gmpc/plugins/libnotifyplugin.so

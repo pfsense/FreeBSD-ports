@@ -1,8 +1,8 @@
 # Created by: netch@netch.kiev.ua
-# $FreeBSD$
 
 PORTNAME=	linuxfdisk
 PORTVERSION=	2.11z
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	KERNEL_ORG/linux/utils/util-linux/v2.11/ \
 		http://ftp.be.debian.org/pub/linux/utils/util-linux/v2.11/ \
@@ -12,9 +12,10 @@ DISTNAME=	util-linux-${PORTVERSION}
 MAINTAINER=	netch@netch.kiev.ua
 COMMENT=	Fdisk, a partition tables manipulator, from util-linux
 
+LICENSE=	GPLv2+
+
 WRKSRC=		${WRKDIR}/util-linux-${PORTVERSION}/fdisk
 USES=		tar:bzip2
-ONLY_FOR_ARCHS=	i386 amd64
 
 pre-patch:
 	@${CP} ${FILESDIR}/linuxfdisk-Makefile ${WRKSRC}/Makefile

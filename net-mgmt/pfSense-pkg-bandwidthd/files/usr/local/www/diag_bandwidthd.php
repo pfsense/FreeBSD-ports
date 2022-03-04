@@ -3,7 +3,7 @@
  * diag_bandwidthd.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ display_top_tabs($tab_array);
 
 <?php include("foot.inc"); ?>
 <script>
-$('#bandwidthd').load(function() {
+$('#bandwidthd').on('load', function() {
 	/* Find height of iframe contnet and then add 20px for padding */
 	$(this).height( $(this).contents().find("body").height() + 20 );
 });

@@ -1,8 +1,7 @@
 # Created by: frankch@waru.life.nthu.edu.tw
-# $FreeBSD$
 
 PORTNAME=	seaview
-PORTVERSION=	4.7
+PORTVERSION=	5.0.5
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	ftp://pbil.univ-lyon1.fr/pub/mol_phylogeny/seaview/archive/
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 PORTSCOUT=	skipv:4.6.1.3
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gmake jpeg
+USES=		gmake jpeg xorg
 USE_XORG=	x11 xcursor xext xfixes xft xinerama xrender
 
 MAKE_ENV=	HELPFILE='-DDEFAULT_HELPFILE=\"${DATADIR}/seaview.html\"' \
@@ -38,6 +37,7 @@ post-patch:
 	${REINPLACE_CMD} -e \
 		's|^\(CC\) |#\1 | ; s|-ldl || ; \
 		s|^\(CXX\) |#\1 |' ${WRKSRC}/Makefile
+	${ECHO_CMD} 'boolean javarun;' >> ${WRKSRC}/csrc/phylip.c
 
 do-install:
 	(cd ${WRKSRC} && ${INSTALL_PROGRAM} seaview \

@@ -1,61 +1,65 @@
-# $FreeBSD$
-
-PORTNAME=	bareos-webui
-PORTVERSION=	17.2.5
-PORTREVISION=	1
+PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-CATEGORIES=	www sysutils
+DISTVERSION=	20.0.3
+CATEGORIES?=	www sysutils
+PKGNAMESUFFIX=	-webui
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	PHP-Frontend to manage Bareos over the web
 
 LICENSE=	AGPLv3+
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/webui/LICENSE
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	bareos
-GH_PROJECT=	bareos-webui
 
-USES=		php
+USES=		cpe php:build cmake gettext
 USE_PHP=	openssl gettext ctype hash json session iconv
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-SUB_FILES=	pkg-message
-PLIST_SUB+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
-SUB_LIST=	BAREOSWEBUIDIR=${WWWDIR}
+CMAKE_SOURCE_PATH=	${WRKSRC}/webui
+CMAKE_INSTALL_PREFIX=	${STAGEDIR}
+CMAKE_ARGS+=	-DSHARE_INSTALL_PREFIX:PATH=${PREFIX}/www \
+		-DCMAKE_INSTALL_FULL_SYSCONFDIR:PATH=${PREFIX}/etc \
+		-Dsysconfdir=${PREFIX}/etc \
+		-Dwebuiconfdir=${PREFIX}/${ETCDIRWEBUI}
 
-OPTIONS_DEFINE=		MYSQL PGSQL ZENDFRAMEWORK
+SUB_FILES=	pkg-message
+SUB_LIST+=	ETCDIRWEBUI=${PREFIX}/${ETCDIRWEBUI}
+PLIST_SUB+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} ETCDIRWEBUI=${ETCDIRWEBUI}
+
+OPTIONS_DEFINE=		MYSQL PGSQL
 OPTIONS_DEFAULT=	PGSQL
-ZENDFRAMEWORK_DESC=	Install zend framework
 
 MYSQL_USE=		PHP=pdo_mysql
 PGSQL_USE=		PHP=pdo_pgsql
-ZENDFRAMEWORK_RUN_DEPENDS=	${LOCALBASE}/share/ZendFramework/bin/classmap_generator.php:www/zend-framework
+
+ETCDIRWEBUI=		etc/${PORTNAME}${PKGNAMESUFFIX}
 
 post-extract:
-	${RM} ${WRKSRC}/config/autoload/.gitignore
-	${RM} ${WRKSRC}/data/cache/.gitignore
-	${RM} ${WRKSRC}/vendor/.gitignore
+	${FIND} ${WRKSRC}/webui -name .gitignore -delete
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/|${LOCALBASE}/etc/|g' ${WRKSRC}/config/autoload/global.php
+pre-install:
+	${FIND} ${WRKSRC}/webui -name *.in -delete
 
 do-install:
 	@${ECHO} "Installing in ${WWWDIR}"
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/bareos-dir.d/console
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile
 	@${MKDIR} ${STAGEDIR}${BAREOSWEB_HOME}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} "config data module public vendor" \
+	cd ${WRKSRC}/webui && ${COPYTREE_SHARE} "config data module public vendor" \
 		${STAGEDIR}${WWWDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.php ${STAGEDIR}${WWWDIR}
-	${INSTALL_DATA} ${WRKSRC}/composer* ${STAGEDIR}${WWWDIR}
-	${INSTALL_DATA} ${WRKSRC}/phpunit.xml ${STAGEDIR}${WWWDIR}
-	${INSTALL_DATA} ${WRKSRC}/install/directors.ini ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} ${WRKSRC}/install/configuration.ini ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} ${WRKSRC}/install/bareos/bareos-dir.d/console/admin.conf.example ${STAGEDIR}${ETCDIR}/bareos-dir.d/console/admin.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/install/bareos/bareos-dir.d/profile/webui-admin.conf ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile/webui-admin.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/install/apache/bareos-webui.conf ${STAGEDIR}${ETCDIR}/apache-bareos-webui.conf
-	${INSTALL_DATA} ${WRKSRC}/install/nginx/bareos-webui.conf ${STAGEDIR}${ETCDIR}/nginx-bareos-webui.conf
+	${INSTALL_DATA} ${WRKSRC}/webui/*.php ${STAGEDIR}${WWWDIR}
+	${INSTALL_DATA} ${WRKSRC}/webui/composer* ${STAGEDIR}${WWWDIR}
+	${INSTALL_DATA} ${WRKSRC}/webui/phpunit.xml ${STAGEDIR}${WWWDIR}
+	${INSTALL_DATA} ${WRKSRC}/webui/install/directors.ini ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/directors.ini
+	${INSTALL_DATA} ${WRKSRC}/webui/install/configuration.ini ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/configuration.ini
+	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/console/admin.conf.example ${STAGEDIR}${ETCDIR}/bareos-dir.d/console/admin.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/profile/webui-admin.conf ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile/webui-admin.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/profile/webui-limited.conf.example ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile/webui-limited.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/profile/webui-readonly.conf ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile/webui-readonly.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/webui/install/apache/bareos-webui.conf ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/apache-bareos-webui.conf
+	${INSTALL_DATA} ${WRKSRC}/webui/install/nginx/bareos-webui.conf ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/nginx-bareos-webui.conf
 
 .include <bsd.port.mk>

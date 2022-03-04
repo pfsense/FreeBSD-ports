@@ -1,5 +1,4 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	iaikPkcs11Wrapper
 PORTVERSION=	1.2.18
@@ -18,7 +17,6 @@ USES=		dos2unix gmake zip
 USE_JAVA=	yes
 DOS2UNIX_GLOB=	Makefile *.c
 DOS2UNIX_WRKSRC=	${WRKDIR}/src/native
-JAVA_VERSION=	1.6+
 JAVA_OS=	native
 ALL_TARGET=	release
 

@@ -1,54 +1,48 @@
 # Created by: Julien Laffaye <kimelto@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	discount
-DISTVERSION=	2.2.2
+PORTVERSION=	2.2.7
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	textproc devel
-MASTER_SITES=	http://www.pell.portland.or.us/~orc/Code/discount/ \
-		LOCAL/jlaffaye
 
-MAINTAINER=	jlaffaye@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C implementation of the Markdown markup language
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-USES=	tar:bzip2
-HAS_CONFIGURE=	yes
-CONFIGURE_SCRIPT=configure.sh
-CONFIGURE_ARGS=	--prefix=${PREFIX} \
-		--mandir=${MANPREFIX}/man
-INSTALL_TARGET=	install install.man
+USES=		cpe pkgconfig
 
-PLIST_FILES=	bin/markdown lib/libmarkdown.a include/mkdio.h \
-		man/man1/markdown.1.gz man/man3/markdown.3.gz \
-		man/man3/mkd-callbacks.3.gz man/man3/mkd-functions.3.gz \
-		man/man3/mkd-line.3.gz man/man3/mkd_cleanup.3.gz \
-		man/man3/mkd_compile.3.gz man/man3/mkd_css.3.gz \
-		man/man3/mkd_doc_author.3.gz man/man3/mkd_doc_date.3.gz \
-		man/man3/mkd_doc_title.3.gz man/man3/mkd_generatecss.3.gz \
-		man/man3/mkd_generatehtml.3.gz man/man3/mkd_generateline.3.gz \
-		man/man3/mkd_in.3.gz man/man3/mkd_line.3.gz \
-		man/man3/mkd_string.3.gz man/man7/markdown.7.gz \
-		man/man7/mkd-extensions.7.gz
+CPE_VENDOR=	discount_project
 
-OPTIONS_DEFINE=	EXTRA TAB8 SAMPLES
-OPTIONS_DEFAULT=	EXTRA TAB8
-
-EXTRA_DESC=	Enable all extra features
-TAB8_DESC=	Use a tabstop of 8 (default is 4)
-SAMPLES_DESC=	Install sample programs
-
-EXTRA_CONFIGURE_ON=	--with-dl=both --with-fenced-code --with-github-tags \
-			--with-id-anchor
-
-TAB8_CONFIGURE_ON=	--with-tabstops=8
+USE_GITHUB=	yes
+GH_ACCOUNT=	Orc
 
 CFLAGS+=	-fPIC
+CONFIGURE_ARGS=	--mandir=${PREFIX}/share/man --prefix=${PREFIX} --shared
+CONFIGURE_SCRIPT=	configure.sh
+HAS_CONFIGURE=	yes
+MAKE_JOBS_UNSAFE=	yes # libmarkdown is used before it is built
+INSTALL_TARGET=	install install.man
+TEST_TARGET=	test
+USE_LDCONFIG=	yes
 
-SAMPLES_INSTALL_TARGET=	install install.samples
-SAMPLES_PLIST_FILES=	bin/makepage bin/mkd2html bin/theme \
-			man/man1/makepage.1.gz man/man1/mkd2html.1.gz \
-			man/man1/theme.1.gz
+CONFLICTS_INSTALL=	markdown
+
+OPTIONS_DEFINE=	EXTRA SAMPLES TAB8
+OPTIONS_DEFAULT=EXTRA TAB8
+OPTIONS_SUB=	yes
+EXTRA_DESC=	Enable all extra features
+SAMPLES_DESC=	Install sample programs
+TAB8_DESC=	Use a tabstop of 8 (default is 4)
+
+EXTRA_CONFIGURE_ON=	--with-dl=both --with-fenced-code --with-github-tags --with-id-anchor
+SAMPLES_INSTALL_TARGET=	install.samples
+TAB8_CONFIGURE_ON=	--with-tabstops=8
+
+post-install:
+	${INSTALL_DATA} ${WRKSRC}/libmarkdown.a ${STAGEDIR}${PREFIX}/lib/libmarkdown.a
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmarkdown.so
 
 .include <bsd.port.mk>

@@ -1,9 +1,8 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	pam_mount
 PORTVERSION=	2.12
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME:S/_/-/}/${PORTNAME}/${PORTVERSION}/
 
@@ -15,7 +14,7 @@ LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libHX.so:lang/libhx
 
-USES=		pkgconfig libtool perl5 ssl tar:xz
+USES=		gnome libtool perl5 pkgconfig ssl tar:xz
 USE_GNOME=	libxml2
 
 INSTALL_TARGET=	install-strip
@@ -32,6 +31,7 @@ CONFIGURE_ARGS+=--localstatedir=/var \
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'struct evp_cipher_ctx_st')
 BROKEN_FreeBSD_13=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'struct evp_cipher_ctx_st')
+BROKEN_FreeBSD_14=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'struct evp_cipher_ctx_st')
 .endif
 
 post-patch:

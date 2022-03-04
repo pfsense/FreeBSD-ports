@@ -1,16 +1,15 @@
-# $FreeBSD$
-
 PORTNAME=	knavalbattle
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	games kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	${${PORTNAME}_DESC}
+COMMENT=	${${PORTNAME:tu}_DESC}
 
-USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext kde:5 qt:5 tar:xz
 USE_KDE=	auth codecs completion config configwidgets coreaddons crash \
-		dbusaddons dnssd doctools ecm i18n libkdegames sonnet \
-		textwidgets widgetsaddons xmlgui
+		dbusaddons dnssd doctools i18n libkdegames sonnet \
+		textwidgets widgetsaddons xmlgui \
+		ecm_build
 USE_QT=		core dbus declarative gui network widgets xml \
 		buildtools_build qmake_build
 

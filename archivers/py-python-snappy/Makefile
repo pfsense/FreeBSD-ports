@@ -1,8 +1,7 @@
 # Created by: antoine@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	python-snappy
-PORTVERSION=	0.5.3
+PORTVERSION=	0.5.4
 CATEGORIES=	archivers devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libsnappy.so:archivers/snappy
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 CPPFLAGS+=	-I${LOCALBASE}/include
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}

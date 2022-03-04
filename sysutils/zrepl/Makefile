@@ -1,44 +1,39 @@
 # Created by: Nikolai Lifanov <lifanov@FreeBSD.org> and Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	zrepl
-PORTVERSION=	0.0.3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.4.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	ZFS dataset replication tool
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		gmake go:modules
 USE_RC_SUBR=	zrepl
+
+GO_MODULE=	github.com/${PORTNAME}/${PORTNAME}
+
 SUB_FILES=	pkg-message
 
-USE_GITHUB=	yes
-GH_SUBDIR=	src/github.com/zrepl/zrepl
-GH_TUPLE=	davecgh:go-spew:v1.1.0:go_spew/src/github.com/davecgh/go-spew \
-		dustin:go-humanize:bb3d318:go_humanize/src/github.com/dustin/go-humanize \
-		ftrvxmtrx:fd:c6d8003:fd/src/github.com/ftrvxmtrx/fd \
-		go-logfmt:logfmt:v0.3.0:go_logfmt/src/github.com/go-logfmt/logfmt \
-		go-yaml:yaml:eb3733d:go_yaml/src/github.com/go-yaml/yaml \
-		jinzhu:copier:db4671f:copier/src/github.com/jinzhu/copier \
-		kr:logfmt:b84e30a:logfmt/src/github.com/kr/logfmt \
-		kr:pretty:cfb55aa:pretty/src/github.com/kr/pretty \
-		kr:text:7cafcd8:text/src/github.com/kr/text \
-		mattn:go-isatty:v0.0.3:go_isatty/src/github.com/mattn/go-isatty \
-		mitchellh:mapstructure:d0303fe:mapstructure/src/github.com/mitchellh/mapstructure \
-		pkg:errors:v0.8.0:errors/src/github.com/pkg/errors \
-		pmezard:go-difflib:v1.0.0:go_difflib/src/github.com/pmezard/go-difflib \
-		problame:go-netssh:53a2e44:go_netssh/src/github.com/problame/go-netssh \
-		problame:go-rwccmd:391d2c7:go_rwccmd/src/github.com/problame/go-rwccmd \
-		spf13:cobra:b787445:cobra/src/github.com/spf13/cobra \
-		spf13:pflag:v1.0.0:pflag/src/github.com/spf13/pflag \
-		stretchr:testify:v1.1.4:testify/src/github.com/stretchr/testify
+OPTIONS_DEFINE=		EXAMPLES MANPAGES
+OPTIONS_DEFAULT=	MANPAGES
 
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+MANPAGES_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.8.5,1:textproc/py-sphinx@${PY_FLAVOR}
+MANPAGES_USES=		python:build,3.6+
+MANPAGES_PLIST_FILES=	man/man1/zrepl.1.gz
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1300079
+USES+=		ncurses
+.else
+USES+=		ncurses:port
+CFLAGS+=	-I${LOCALBASE}/include/ncurses
+.endif
 
 .if ${OPSYS} == "FreeBSD"
 SUB_LIST+=	DAEMON_LOGGING="-S -l \$${zrepl_facility} -s \$${zrepl_priority} -T \$${name}"
@@ -46,18 +41,25 @@ SUB_LIST+=	DAEMON_LOGGING="-S -l \$${zrepl_facility} -s \$${zrepl_priority} -T \
 SUB_LIST+=	DAEMON_LOGGING=""
 .endif
 
-post-extract:
-	${LN} -sf ${WRKSRC}/src ${WRKDIR}
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+post-build-MANPAGES-on:
+	@${MAKE_CMD} -C ${WRKSRC}/docs SPHINXBUILD=sphinx-build-${PYTHON_VER} man
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d \
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR} \
+		${STAGEDIR}${ETCDIR} \
+		${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d \
 		${STAGEDIR}${PREFIX}/etc/syslog.d \
-		${STAGEDIR}${PREFIX}/etc/zrepl
-	${INSTALL_DATA} ${FILESDIR}/newsyslog-zrepl.conf ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d/zrepl.conf.sample
-	${INSTALL_DATA} ${FILESDIR}/syslog-zrepl.conf.sample ${STAGEDIR}${PREFIX}/etc/syslog.d/zrepl.conf.sample
-	${INSTALL_DATA} ${FILESDIR}/zrepl.yml.sample ${STAGEDIR}${PREFIX}/etc/zrepl/zrepl.yml.sample
+		${STAGEDIR}/var/run/zrepl
+	${INSTALL_DATA} ${FILESDIR}/newsyslog.conf ${STAGEDIR}${EXAMPLESDIR}/newsyslog.conf
+	${INSTALL_DATA} ${FILESDIR}/syslog.conf ${STAGEDIR}${EXAMPLESDIR}/syslog.conf
+	${INSTALL_DATA} ${FILESDIR}/zrepl.yml ${STAGEDIR}${ETCDIR}/zrepl.yml.sample
 
-.include <bsd.port.post.mk>
+post-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/hooks
+	(cd ${WRKSRC}/config/samples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
+	${INSTALL_DATA} ${WRKSRC}/dist/grafana/grafana-prometheus-zrepl.json ${STAGEDIR}${EXAMPLESDIR}
+
+post-install-MANPAGES-on:
+	${INSTALL_MAN} ${WRKSRC}/docs/_build/man/zrepl.1 ${STAGEDIR}${PREFIX}/man/man1
+
+.include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphen
 PORTVERSION=	4.3
 PORTREVISION=	1
@@ -22,7 +20,7 @@ USES=		zip
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-PLIST_FILES=	%%DATADIR%%/hyph_bg_BG.dic
+PLIST_FILES=	${DATADIR}/hyph_bg_BG.dic
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

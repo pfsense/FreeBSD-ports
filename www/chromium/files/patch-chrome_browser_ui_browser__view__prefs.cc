@@ -1,20 +1,24 @@
---- chrome/browser/ui/browser_view_prefs.cc.orig	2019-03-11 22:00:54 UTC
+--- chrome/browser/ui/browser_view_prefs.cc.orig	2021-09-24 04:26:00 UTC
 +++ chrome/browser/ui/browser_view_prefs.cc
-@@ -34,7 +34,7 @@ void RegisterBrowserViewLocalPrefs(PrefRegistrySimple*
+@@ -29,7 +29,7 @@ const char kTabStripLayoutType[] = "tab_strip_layout_t
  
- void RegisterBrowserViewProfilePrefs(
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
+ bool GetCustomFramePrefDefault() {
+ #if defined(USE_OZONE)
+   if (features::IsUsingOzonePlatform()) {
+@@ -57,10 +57,10 @@ void RegisterBrowserViewProfilePrefs(
      user_prefs::PrefRegistrySyncable* registry) {
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
-   bool custom_frame_pref_default = false;
- #if defined(USE_X11)
-   custom_frame_pref_default = ui::GetCustomFramePrefDefault();
-@@ -45,7 +45,7 @@ void RegisterBrowserViewProfilePrefs(
- #endif
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
    registry->RegisterBooleanPref(prefs::kUseCustomChromeFrame,
-                                 custom_frame_pref_default);
--#endif  // OS_LINUX && !OS_CHROMEOS
-+#endif  // (OS_LINUX && !OS_CHROMEOS) || defined(OS_BSD)
+                                 GetCustomFramePrefDefault());
+-#endif  // (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) &&
++#endif  // (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)) &&
+         // defined(!OS_CHROMEOS)
  }
  
- void MigrateBrowserTabStripPrefs(PrefService* prefs) {

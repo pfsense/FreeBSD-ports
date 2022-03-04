@@ -1,14 +1,13 @@
 # Created by: Andrey Chernov <ache@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	HTML-SimpleLinkExtor
-PORTVERSION=	1.271
+PORTVERSION=	1.273
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	This is a simple HTML link extractor
+COMMENT=	Simple HTML link extractor
 
 LICENSE=	ART20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,8 +18,9 @@ RUN_DEPENDS=	p5-HTML-Parser>=1.28:www/p5-HTML-Parser \
 		p5-libwww>=0:www/p5-libwww
 TEST_DEPENDS=	p5-Test-Output>=0:devel/p5-Test-Output
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

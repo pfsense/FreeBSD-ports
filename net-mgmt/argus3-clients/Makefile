@@ -1,9 +1,7 @@
 # Created by: Stefan Esser <se@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	argus-clients
-PORTVERSION=	3.0.8.2
-PORTREVISION=	2
+PORTVERSION=	3.0.8.3
 CATEGORIES=	net-mgmt security
 MASTER_SITES=	http://qosient.com/argus/src/ \
 		ftp://qosient.com/pub/argus/src/
@@ -13,6 +11,7 @@ COMMENT=	Client programs for the argus IP network transaction auditing tool
 
 LICENSE=	GPLv3
 
+USES=		bison ncurses perl5 readline shebangfix
 CONFLICTS=	argus-clients-2* argus-clients-sasl-2*
 
 OPTIONS_DEFINE=	MYSQL SASL DOCS EXAMPLES
@@ -22,9 +21,11 @@ SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_CONFIGURE_ON=	--with-sasl=${LOCALBASE}
 MYSQL_USES=	mysql
 
-USES=		bison ncurses perl5 readline
-USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
+SHEBANG_FILES=	examples/rahosts/raips.pl
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 .include <bsd.port.options.mk>
 
@@ -32,10 +33,16 @@ GNU_CONFIGURE=	yes
 PKGNAMESUFFIX+=	-sasl
 .endif
 
+post-patch:
+	@${REINPLACE_CMD} -e 's|/etc/radium.conf|${PREFIX}/etc/radium.conf|' ${WRKSRC}/clients/radium.c
+	@${REINPLACE_CMD} -e 's|/usr/lib/sasl2|${PREFIX}/lib/sasl2|' ${WRKSRC}/common/argus_auth.c
+	@${REINPLACE_CMD} -e 's|/etc/ra.conf|${PREFIX}/etc/ra.conf|' ${WRKSRC}/common/argus_util.c
+	@${REINPLACE_CMD} -e 's|/etc/rapolicy.conf|${PREFIX}/etc/rapolicy.conf|' \
+		${WRKSRC}/examples/rapolicy/rapolicy.c
+	@${REINPLACE_CMD} -e 's|/usr/local/bin/ra|${PREFIX}/bin/ra|' \
+		${WRKSRC}/examples/ramysql/rasql.c
+
 do-install:
-.for i in radark ragraph rahosts raips raplot raports
-	@${REINPLACE_CMD} -e 's#/usr/bin/perl#${LOCALBASE}/bin/perl#' ${WRKSRC}/bin/$i
-.endfor
 .for i in ra rabins racluster raconvert racount radium radump raevent \
 	rafilteraddr ragrep rahisto ralabel ranonymize rapath rapolicy \
 	rarpwatch raservices rasort rasplit rastream rastrip \
@@ -43,9 +50,6 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/$i ${STAGEDIR}/${PREFIX}/bin/$i
 .endfor
 .for i in argusclientbug radark ragraph rahosts raips raplot raports
-	${INSTALL_SCRIPT} ${WRKSRC}/bin/$i ${STAGEDIR}/${PREFIX}/bin/$i
-.endfor
-.for i in radark ragraph rahosts raports
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/$i ${STAGEDIR}/${PREFIX}/bin/$i
 .endfor
 .for i in ra.1 rabins.1 racluster.1 raconvert.1 racount.1 radump.1 raevent.1 \
@@ -69,14 +73,14 @@ do-install-MYSQL-on:
 .endfor
 
 do-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}/${DOCSDIR}/
+	@${MKDIR} ${STAGEDIR}/${DOCSDIR}/
 .for i in AUTHORS CHANGES CREDITS ChangeLog INSTALL \
 	MANIFEST README VERSION
 	${INSTALL_DATA} ${WRKSRC}/$i ${STAGEDIR}/${DOCSDIR}
 .endfor
 
 do-install-EXAMPLES-on:
-	${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
 .for i in Config Database Startup System
 	${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}/$i
 .endfor

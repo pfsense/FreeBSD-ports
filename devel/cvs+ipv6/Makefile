@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	3
 PKGNAMESUFFIX=	+ipv6
 

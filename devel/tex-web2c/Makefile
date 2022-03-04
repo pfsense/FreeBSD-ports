@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	web2c
 PORTVERSION=	20150521
 PORTREVISION=	3
@@ -9,7 +7,7 @@ PKGNAMEPREFIX=	tex-
 DISTNAME=	texlive-${PORTVERSION}-source
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	TeX implementation translating WEB to C
 
 LIB_DEPENDS=	libopenjpeg.so:graphics/openjpeg15 \
@@ -17,7 +15,7 @@ LIB_DEPENDS=	libopenjpeg.so:graphics/openjpeg15 \
 		libzzip.so:devel/zziplib \
 		libmpfr.so:math/mpfr
 
-USES=		pathfix pkgconfig libtool tar:xz
+USES=		gnome pathfix pkgconfig libtool tar:xz xorg
 USE_TEX=	kpathsea ptexenc
 USE_XORG=	pixman
 USE_GNOME=	cairo

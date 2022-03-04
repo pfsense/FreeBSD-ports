@@ -1,5 +1,4 @@
 # Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xvmcinfo
 PORTVERSION=	0.1
@@ -9,6 +8,7 @@ DISTFILES=
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Print out XvMC extension adaptor information
 
+USES=		xorg
 USE_XORG=	xvmc xv x11
 
 LDFLAGS+=	-lXvMC -lXv -lX11

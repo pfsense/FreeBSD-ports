@@ -1,8 +1,7 @@
 # Created by: alp@sfedu.ru
-# $FreeBSD$
 
 PORTNAME=	postgresql-repmgr
-PORTVERSION=	4.2.0
+PORTVERSION=	5.2.0
 CATEGORIES=	databases
 MASTER_SITES=	http://www.repmgr.org/download/
 DISTNAME=	repmgr-${PORTVERSION}
@@ -14,7 +13,7 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	rsync:net/rsync
 
-USES+=		gettext gmake pgsql:9.3+
+USES=		gettext gmake pgsql
 
 GNU_CONFIGURE=	yes
 LLD_UNSAFE=	yes

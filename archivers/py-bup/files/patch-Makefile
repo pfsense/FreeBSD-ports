@@ -1,11 +1,11 @@
---- Makefile.orig	2017-03-26 22:24:25 UTC
-+++ Makefile
-@@ -80,7 +80,7 @@ man_html := $(patsubst %.md,%.html,$(man
+--- Makefile.orig	2020-12-15 12:37:40.871053000 -0800
++++ Makefile	2020-12-15 12:38:46.984653000 -0800
+@@ -28,7 +28,7 @@
+ os := $(shell ($(pf); uname | sed 's/[-_].*//') $(isok))
+ os := $(call shout,$(os),Unable to determine OS)
  
- INSTALL=install
- PREFIX=/usr/local
--MANDIR=$(PREFIX)/share/man
-+MANDIR=$(PREFIX)/man
- DOCDIR=$(PREFIX)/share/doc/bup
- BINDIR=$(PREFIX)/bin
- LIBDIR=$(PREFIX)/lib/bup
+-CFLAGS := -Wall -Wformat=2 -O2 -Werror -Wno-unknown-pragmas $(CFLAGS)
++CFLAGS := -Wall -O2 -Wno-unknown-pragmas $(PYINCLUDE) $(CFLAGS)
+ CFLAGS := -D_FILE_OFFSET_BITS=64 $(PYINCLUDE) $(CFLAGS)
+ SOEXT:=.so
+ 

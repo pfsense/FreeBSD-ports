@@ -1,9 +1,7 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libwps
-PORTVERSION=	0.4.10
-PORTREVISION=	1
+PORTVERSION=	0.4.12
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -23,5 +21,8 @@ GNU_CONFIGURE=	yes
 USES=		compiler:c++11-lib libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+
+LIBVERSION=	4.0.12
+PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
 .include <bsd.port.mk>

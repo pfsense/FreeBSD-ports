@@ -1,9 +1,8 @@
 # Created by: Giacomo Mariani <giacomomariani_at_yahoo_dot_it>
-# $FreeBSD$
 
 PORTNAME=	clewn
 PORTVERSION=	1.14
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel editors
 MASTER_SITES=	SF/${PORTNAME}/OldFiles/${PORTNAME}-${PORTVERSION}/
 

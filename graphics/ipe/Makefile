@@ -1,9 +1,9 @@
 # Created by: David Bremner <bremner@unb.ca>
-# $FreeBSD$
 
 PORTNAME=	ipe
-PORTVERSION=	7.2.11
+PORTVERSION=	7.2.23
 DISTVERSIONSUFFIX=	-src
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://dl.bintray.com/otfried/generic/ipe/${PORTVERSION:R}/
 
@@ -13,15 +13,19 @@ COMMENT=	Extensible vector graphics editor with LaTeX support
 LICENSE=	GPLv3+
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
-LIB_DEPENDS=	libpng.so:graphics/png \
-		libfreetype.so:print/freetype2
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libfreetype.so:print/freetype2 \
+		libgsl.so:math/gsl \
+		libpng.so:graphics/png \
+		libspiro.so:graphics/libspiro
 
-USES=		compiler:c++11-lib gmake gnome jpeg lua:52 pkgconfig qt:5
+USES=		compiler:c++11-lib gmake gnome jpeg lua:52 pkgconfig shebangfix qt:5
 USE_GNOME=	cairo
 USE_QT=		buildtools_build core gui qmake_build widgets
 USE_TEX=	pdftex
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
+SHEBANG_FILES=	${WRKSRC}/ipecurl/ipecurl.sh
 
 MAKE_ENV=	DL_LIBS="" \
 		INSTALL_DIR="${MKDIR}" \
@@ -48,15 +52,14 @@ OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		's|^INSTALL_|#INSTALL_| ; \
-		 /-O2/s|^|#|' ${WRKSRC}/common.mak
-	@${REINPLACE_CMD} -e \
 		's|\([[:blank:]]\)=|\1?=|' ${WRKSRC}/config.mak
-	@${REINPLACE_CMD} -e \
-		'/%s/s|gnome-open|xdg-open|' ${WRKSRC}/ipe/lua/prefs.lua
 
 post-install:
 	@${LN} -sf ${DATADIR}/${PORTVERSION}/ipe.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libipe*
+.for filename in ipe6upgrade iperender ipeextract ipescript ipetoipe ipepresenter ipe
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${filename}
+.endfor
 
 .include <bsd.port.mk>

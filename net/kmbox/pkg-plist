@@ -1,5 +1,5 @@
-etc/xdg/kmbox.categories
-etc/xdg/kmbox.renamecategories
+share/qlogging-categories5/kmbox.categories
+share/qlogging-categories5/kmbox.renamecategories
 include/KF5/KMbox/KMbox/MBox
 include/KF5/KMbox/KMbox/MBoxEntry
 include/KF5/KMbox/kmbox/kmbox_export.h
@@ -13,4 +13,4 @@ lib/cmake/KF5Mbox/KF5MboxTargets.cmake
 lib/libKF5Mbox.so
 lib/libKF5Mbox.so.5
 lib/libKF5Mbox.so.%%KDE_APPLICATIONS_SHLIB_VER%%
-%%QT_MKSPECDIR%%/modules/qt_Mbox.pri
+%%QT_MKSPECDIR%%/modules/qt_KMbox.pri

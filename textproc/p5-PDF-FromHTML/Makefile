@@ -1,9 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	PDF-FromHTML
-PORTVERSION=	0.31
-PORTREVISION=	1
+PORTVERSION=	0.33
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -22,5 +20,7 @@ RUN_DEPENDS=	p5-Graphics-ColorNames>=0:graphics/p5-Graphics-ColorNames \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

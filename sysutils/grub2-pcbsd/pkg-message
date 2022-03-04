@@ -1,3 +1,6 @@
+[
+{ type: install
+  message: <<EOM
 To install GRUB as your boot-loader, use the following command:
 
 # grub-install /dev/ada0 (replace ada0 with your disk)
@@ -32,3 +35,6 @@ must have your root zpool setup in the following manner:
 Where <tank> is your zpool, and <be> is your '/' mountpoint.
 The "beadm" utility must be installed and working before using
 GRUB utilities.
+EOM
+}
+]

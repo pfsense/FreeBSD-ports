@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	hocon
-PORTVERSION=	1.2.5
+PORTVERSION=	1.3.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -13,6 +11,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gem
 USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/hocon
 

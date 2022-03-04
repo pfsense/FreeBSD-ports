@@ -1,5 +1,4 @@
 # Created by: Mij <mij@bitchx.it>
-# $FreeBSD$
 
 PORTNAME=	greylite
 PORTVERSION=	2.3
@@ -16,9 +15,9 @@ RUN_DEPENDS=	tcpserver:sysutils/ucspi-tcp
 
 USES=		sqlite tar:bzip2
 PLIST_FILES=	bin/greylite \
-		%%DNSBLENV%%bin/dnsblenv	\
-		%%UCSPI2SOCKET%%bin/ucspi2socket \
 		man/man8/greylite.8.gz
+DNSBLENV_PLIST_FILES=	bin/dnsblenv
+UCSPI2SOCKET_PLIST_FILES=	bin/ucspi2socket
 
 SUB_FILES=	pkg-message
 

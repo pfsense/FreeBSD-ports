@@ -1,18 +1,17 @@
 # Created by: Gabor Kovesdan <gabor@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	grep
-PORTVERSION=	3.3
+PORTVERSION=	3.7
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	GNU version of popular pattern matching utility
 
 LICENSE=	GPLv3+
 
-CONFLICTS=	bsd-grep-[0-9]*
+CONFLICTS=	bsd-grep
 
 USES=		charsetfix cpe tar:xz
 GNU_CONFIGURE=	yes
@@ -27,17 +26,14 @@ LIBSIGSEGV_DESC=	Use alternative page fault handler (GNU libsigsegv)
 OPTIONS_SUB=		yes
 
 ICONV_CONFIGURE_USES=	iconv
-ICONV_CONFIGURE_ON=	--with-libiconv-prefix=${LOCALBASE}
-ICONV_CONFIGURE_OFF=	--without-libiconv-prefix
+ICONV_CONFIGURE_WITH=	libiconv-prefix=${LOCALBASE}
 
 LIBSIGSEGV_LIB_DEPENDS=	libsigsegv.so:devel/libsigsegv
-LIBSIGSEGV_CONFIGURE_ON=	--with-libsigsegv-prefix=${LOCALBASE}
-LIBSIGSEGV_CONFIGURE_OFF=	--without-libsigsegv-prefix
+LIBSIGSEGV_CONFIGURE_WITH=	libsigsegv-prefix=${LOCALBASE}
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
-NLS_CONFIGURE_ON=	--with-libintl-prefix=${LOCALBASE}
-NLS_CONFIGURE_OFF=	--without-libintl-prefix
+NLS_CONFIGURE_WITH=	libintl-prefix=${LOCALBASE}
 
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PCRE_USES=		pkgconfig

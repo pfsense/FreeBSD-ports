@@ -1,14 +1,13 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Data-Validate-Domain
-PORTVERSION=	0.14
+PORTVERSION=	0.15
 CATEGORIES=	dns perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Data::Validate::Domain - domain validation methods
+COMMENT=	Domain validation methods in Perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -22,10 +21,4 @@ USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 502600
-TEST_DEPENDS+=	p5-Test-Simple>=1.302015:devel/p5-Test-Simple
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

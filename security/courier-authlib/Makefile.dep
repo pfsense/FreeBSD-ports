@@ -1,5 +1,4 @@
 # Created by: Oliver Lehmann
-# $FreeBSD$
 
 # To depend on courier-authlib you might consider using this file by specifying 
 #
@@ -18,6 +17,9 @@ BUILD_DEPENDS+=	${LOCALBASE}/lib/courier-authlib/libauthmysql.so:databases/couri
 .endif
 .if ${PORT_OPTIONS:MAUTH_PGSQL}
 BUILD_DEPENDS+=	${LOCALBASE}/lib/courier-authlib/libauthpgsql.so:databases/courier-authlib-pgsql
+.endif
+.if ${PORT_OPTIONS:MAUTH_SQLITE}
+BUILD_DEPENDS+=	${LOCALBASE}/lib/courier-authlib/libauthsqlite.so:databases/courier-authlib-sqlite
 .endif
 .if ${PORT_OPTIONS:MAUTH_USERDB}
 .if ${PORT_OPTIONS:MGDBM}

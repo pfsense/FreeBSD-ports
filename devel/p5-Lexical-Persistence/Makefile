@@ -1,5 +1,4 @@
 # Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Lexical-Persistence
 PORTVERSION=	1.023
@@ -8,7 +7,7 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	jadawin@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Persistent lexical variable values for arbitrary calls
 
 LICENSE=	ART10 GPLv1+

@@ -1,5 +1,4 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	McBain
 PORTVERSION=	2.001000
@@ -14,6 +13,7 @@ COMMENT=	Lightweight auto-validating, self-documenting web framework
 LICENSE=	GPLv1 ARTPERL10
 LICENSE_COMB=	dual
 
+BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Brannigan>=0:devel/p5-Brannigan \
 		p5-Getopt-Compact>=0:devel/p5-Getopt-Compact \
 		p5-Try-Tiny>=0:lang/p5-Try-Tiny

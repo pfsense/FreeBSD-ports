@@ -1,24 +1,37 @@
 # Created by: Neil Booth
-# $FreeBSD$
 
 PORTNAME=	ecdsa
-PORTVERSION=	0.11
-PORTREVISION=	1
+PORTVERSION=	0.16.0
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	kyuupichan@gmail.com
+MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	ECDSA cryptographic signature library (pure python)
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}hypothesis>0:devel/py-hypothesis@${PY_FLAVOR}
+
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+OPTIONS_RADIO=		FASTER
+OPTIONS_RADIO_FASTER=	GMPY GMPY2
+OPTIONS_DEFAULT=	GMPY2
+
+GMPY_DESC=	GMPY support
+GMPY2_DESC=	GMPY2 support
+
+GMPY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gmpy>=0:math/py-gmpy@${PY_FLAVOR}
+GMPY2_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gmpy2>=0:math/py-gmpy2@${PY_FLAVOR}
+
 NO_ARCH=	yes
 
 do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} test
+	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest)
 
 .include <bsd.port.mk>

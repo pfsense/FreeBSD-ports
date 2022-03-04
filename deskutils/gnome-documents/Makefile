@@ -1,8 +1,7 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gnome-documents
-PORTVERSION=	3.28.2
+PORTVERSION=	3.34.0
 PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
@@ -33,12 +32,10 @@ PORTSCOUT=	limitw:1,even
 USES=		compiler:c++11-lib desktop-file-utils gettext gnome localbase \
 		meson pkgconfig python:3.6+,build tar:xz
 USE_GNOME=	cairo gnomedesktop3 introspection libxslt:build
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 
 GLIB_SCHEMAS=	org.gnome.Documents.enums.xml \
-		org.gnome.books.gschema.xml \
 		org.gnome.documents.gschema.xml
 
 .include <bsd.port.mk>

@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	fabla2
 DISTVERSION=	g20180331
+PORTREVISION=	2
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -15,7 +14,7 @@ BUILD_DEPENDS=	lv2>0:audio/lv2
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile
 
-USES=		cmake compiler:c++11-lang gnome pkgconfig
+USES=		cmake compiler:c++11-lang gnome pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	openAVproductions
 GH_PROJECT=	openAV-Fabla2
@@ -32,5 +31,8 @@ PLIST_FILES=	lib/lv2/fabla2.lv2/fabla2.so \
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|GLOB srcUI  |GLOB srcUI  ${FILESDIR}/mntent_compat.c++ |' ${WRKSRC}/CMakeLists.txt
+.for f in src/ui.cxx src/ui/avtk/lv2/testUi.cxx
+	@cd ${WRKSRC} && ${REINPLACE_CMD} -e 's/ _LV2UI_Descriptor/ LV2UI_Descriptor/' ${f} # fix for audio/lv2 1.18.0
+.endfor
 
 .include <bsd.port.mk>

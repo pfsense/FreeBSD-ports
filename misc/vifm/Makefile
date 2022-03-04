@@ -1,8 +1,7 @@
 # Created by: Stefan Walter <swalter@lettermax.de>
-# $FreeBSD$
 
 PORTNAME=	vifm
-PORTVERSION=	0.10
+PORTVERSION=	0.11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc
 
@@ -16,9 +15,11 @@ USES=		desktop-file-utils gmake ncurses shebangfix
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-gtk
 
-SHEBANG_FILES=	data/vifm-media
+SHEBANG_FILES=	data/vifm-media data/vifm-media-osx
 
 USE_GITHUB=	yes
+
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	DOCS
 

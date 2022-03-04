@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	HTTP-Request-Params
 PORTVERSION=	1.02
 CATEGORIES=	www perl5

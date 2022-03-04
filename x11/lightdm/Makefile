@@ -1,13 +1,12 @@
 # Created by: Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lightdm
-PORTVERSION=	1.28.0
-PORTREVISION=	1
+PORTVERSION=	1.30.0
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/CanonicalLtd/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Lightweight Display Manager
 
 # library/bindings are LGPLv2 or LGPLv3, the rest GPLv3+
@@ -23,32 +22,35 @@ LIB_DEPENDS=	libaccountsservice.so:sysutils/accountsservice \
 		libgcrypt.so:security/libgcrypt \
 		libxklavier.so:x11/libxklavier
 
-USES=		compiler:c++11-lang gettext gmake gnome libtool localbase \
-		pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lang cpe gettext gmake gnome libtool localbase \
+		pathfix pkgconfig tar:xz xorg
+CPE_VENDOR=	${PORTNAME}_project
 USE_CXXSTD=	c++11
 USE_GNOME=	glib20 intltool
 USE_XORG=	x11 xcb xdmcp
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	lightdm
 
+CONFLICTS_INSTALL=	sddm
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-tests # PAM errors
 INSTALL_TARGET=	install-strip
 USERS=		lightdm
-GROUPS=		lightdm
+GROUPS=		lightdm video
 PORTSCOUT=	limitw:1,even
 SUB_FILES=	Xsession
 
-OPTIONS_DEFINE=	DOCS VALA
-OPTIONS_DEFAULT=VALA
+OPTIONS_DEFINE=	DOCS VAPI
+OPTIONS_DEFAULT=VAPI
 OPTIONS_SUB=	yes
 
 DOCS_BUILD_DEPENDS=	gtkdoc-check:textproc/gtk-doc
 DOCS_CONFIGURE_ENABLE=	gtk-doc
 
-VALA_BUILD_DEPENDS=	vapigen:lang/vala
-VALA_CONFIGURE_ENABLE=	vala
-VALA_USE=		gnome=introspection:build
+VAPI_BUILD_DEPENDS=	vapigen:lang/vala
+VAPI_CONFIGURE_ENABLE=	vala
+VAPI_USE=		gnome=introspection:build
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,%%PREFIX%%,${PREFIX},' \

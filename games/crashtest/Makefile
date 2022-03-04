@@ -1,10 +1,7 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	crashtest
 PORTVERSION=	1.1
-PORTREVISION=	2
-CATEGORIES=	games
+PORTREVISION=	3
+CATEGORIES=	games education
 MASTER_SITES=	http://www.stolk.org/crashtest/
 
 MAINTAINER=	amdmi3@FreeBSD.org

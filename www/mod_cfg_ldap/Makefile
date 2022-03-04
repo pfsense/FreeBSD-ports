@@ -1,9 +1,8 @@
 # Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
 
 PORTNAME=	mod_cfg_ldap
 PORTVERSION=	1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES=	SF/modcfgldap/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	apache2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lager
 PORTVERSION=	3.2.4
 CATEGORIES=	devel

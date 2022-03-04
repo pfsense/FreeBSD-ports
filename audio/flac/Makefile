@@ -1,12 +1,11 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flac
-PORTVERSION=	1.3.2
+PORTVERSION=	1.3.3
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://downloads.xiph.org/releases/flac/ \
-		https://download.videolan.org/contrib/flac/ \
-		SF/flac/flac-src
+		https://ftp.osuosl.org/pub/xiph/releases/flac/
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Free lossless audio codec
@@ -18,7 +17,9 @@ LICENSE_FILE_GFDL=	${WRKSRC}/COPYING.FDL
 
 LIB_DEPENDS=	libogg.so:audio/libogg
 
-USES=		iconv libtool pathfix pkgconfig tar:xz
+USES=		autoreconf compiler:c11 cpe iconv libtool pathfix pkgconfig tar:xz
+
+CPE_VENDOR=	flac_project
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -39,8 +40,11 @@ OPTIONS_DEFINE=	DOCS
 BUILD_DEPENDS+=	nasm:devel/nasm
 .endif
 
+.if ${ARCH} != powerpc64le
+CONFIGURE_ARGS+=--disable-vsx
+.endif
+
 post-install:
-	cd ${STAGEDIR}${PREFIX}/share/doc && ${MV} ${DISTNAME} flac
 	${REINPLACE_CMD} 's:%%PREFIX%%:${PREFIX}:' \
 	    ${STAGEDIR}${PREFIX}/man/man1/flac.1
 	${RM} ${STAGEDIR}${PREFIX}/man/man1/flac.1.bak

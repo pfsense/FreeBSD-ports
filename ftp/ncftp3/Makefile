@@ -1,9 +1,8 @@
 # Created by: ache
-# $FreeBSD$
 
 PORTNAME=	ncftp
 PORTVERSION=	3.2.6
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	ftp
 MASTER_SITES=	ftp://ftp.ncftp.com/ncftp/ \
 		ftp://ftp.mirrorservice.org/sites/ftp.ncftp.com/ncftp/

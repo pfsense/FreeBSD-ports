@@ -1,9 +1,7 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-online-accounts
-PORTVERSION=	3.28.0
-PORTREVISION=	1
+PORTVERSION=	3.40.1
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -30,13 +28,14 @@ USES=		compiler:c++11-lib gettext gmake gnome libtool \
 USE_GNOME=	cairo gtk30 introspection:build libxml2 libxslt:build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--enable-lastfm
 
 GLIB_SCHEMAS=	org.gnome.online-accounts.gschema.xml
 
-CONFIGURE_ARGS+=--enable-kerberos=no
+CONFIGURE_ARGS+=--disable-kerberos \
+		--disable-fedora \
+		--disable-gudev
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	TELEPATHY

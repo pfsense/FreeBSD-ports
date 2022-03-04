@@ -1,9 +1,8 @@
 # Created by: michaelnottebrock@gmx.net
-# $FreeBSD$
 
 PORTNAME=	dirmngr
 PORTVERSION=	1.1.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DISTNAME}${EXTRACT_SUFX}.sig
@@ -27,6 +26,7 @@ INFO=		dirmngr
 
 CONFIGURE_ARGS+=	--docdir=${DOCSDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib
+CFLAGS+=	-fcommon
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

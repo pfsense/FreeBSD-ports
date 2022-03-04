@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	gwenhywfar
-PORTVERSION=	4.20.0
+PORTVERSION=	5.6.0
 PORTREVISION?=	1
 CATEGORIES=	devel net security
-MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=01&release=208&file=02&dummy=/
+MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/364/
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Multi-platform helper library for networking and security applications
@@ -16,29 +14,41 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libgnutls.so:security/gnutls \
 		libgpg-error.so:security/libgpg-error
 
-USES=		gettext gmake iconv:translit libtool pathfix pkgconfig ssl
+USES=		cpe gettext gmake iconv:translit libtool localbase:ldflags \
+		pathfix pkgconfig
+CPE_VENDOR=	aquamaniac
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-release="yes" \
 		--with-guis="${SLAVEPORT}"
-CPPFLAGS+=	-isystem ${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-GWEN_SHLIB_VER=	60
+GWEN_SHLIB_VER=	79
 PLIST_SUB=	GWEN_SHLIB_VER="${GWEN_SHLIB_VER}" \
 		GWEN_MAJ_MIN_VER="${PORTVERSION:R}"
 
 .if !defined(SLAVEPORT)
-OPTIONS_DEFINE=			DOXYGEN MEMDEBUG
+OPTIONS_DEFINE=			DOXYGEN LIBXML2 MEMDEBUG OPENSSL
+OPTIONS_DEFAULT=		OPENSSL
+OPTIONS_SUB=			yes
 
 DOXYGEN_BUILD_DEPENDS=		doxygen:devel/doxygen \
 				dot:graphics/graphviz
 DOXYGEN_CONFIGURE_ENABLE=	full-doc
 
+LIBXML2_USES=			gnome
+LIBXML2_USE=			gnome=libxml2
+LIBXML2_CONFIGURE_ON=		--with-libxml2-code=yes
+
 MEMDEBUG_DESC=			Enable memory debugger statistic
 MEMDEBUG_CONFIGURE_ENABLE=	memtrace
+
+OPENSSL_USES=			ssl
+OPENSSL_CONFIGURE_ENV=		OPENSSL_CFLAGS="-I${OPENSSLINC}" \
+				OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
+OPENSSL_CONFIGURE_ENV_OFF=	OPENSSL_CFLAGS="" \
+				OPENSSL_LIBS=""
 .endif
 
 .include <bsd.port.options.mk>
@@ -55,11 +65,13 @@ CONFIGURE_ARGS+=--with-fox-includes=${LOCALBASE}/include/fox-1.6 \
 .  elif ${SLAVEPORT}=="gtk2"
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
+USES+=		gnome
 USE_GNOME+=	cairo gdkpixbuf2 gtk20
 .  elif ${SLAVEPORT}=="gtk3"
+USES+=		gnome
 USE_GNOME+=	cairo gdkpixbuf2 gtk30
 .  elif ${SLAVEPORT}=="qt5"
-USES+=		compiler:c++11-lang qmake:no_env qt:5
+USES+=		compiler:c++11-lang gl qmake:no_env qt:5
 USE_GL=		gl
 USE_QT=		core gui widgets \
 		buildtools_build qmake_build
@@ -70,6 +82,10 @@ CONFIGURE_ARGS+=--with-qt5-qmake=${QMAKE} \
 .endif
 
 post-patch:
+	${REINPLACE_CMD} -e '/^LIBS/s|$$| @i18n_libs@|' \
+		${WRKSRC}/tools/gcttool/Makefile.in \
+		${WRKSRC}/tools/typemaker/Makefile.in \
+		${WRKSRC}/tools/xmlmerge/Makefile.in
 .if defined(SLAVEPORT)
 	@${FIND} ${BUILD_WRKSRC} -name "Makefile.in" -type f | ${XARGS} \
 	${REINPLACE_CMD} -e 's|[$$][(]top_builddir[)]/src/[$$][(]gwenhywfar_internal_libname[)]|$$(gwenhywfar_libs)|g' \

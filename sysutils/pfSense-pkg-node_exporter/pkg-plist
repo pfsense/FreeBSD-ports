@@ -1,0 +1,4 @@
+pkg/node_exporter.xml
+pkg/node_exporter.inc
+%%DATADIR%%/interface-collector.py
+%%DATADIR%%/info.xml

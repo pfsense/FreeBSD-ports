@@ -1,10 +1,9 @@
 # Created by: Leo Vandewoestijne <freebsd@dns.company>
-# $FreeBSD$
 
 PORTNAME=	packetq
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 
 MAINTAINER=	freebsd@dns.company

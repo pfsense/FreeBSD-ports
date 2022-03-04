@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Archive-Any
-PORTVERSION=	0.0945
+PORTVERSION=	0.0946
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -22,8 +21,9 @@ RUN_DEPENDS=	p5-Archive-Zip>=1.07:archivers/p5-Archive-Zip \
 TEST_DEPENDS=	p5-Test-Perl-Critic>=0:textproc/p5-Test-Perl-Critic \
 		p5-Test-Warn>=0:devel/p5-Test-Warn
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

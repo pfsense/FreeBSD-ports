@@ -1,5 +1,4 @@
 # Created by: Beat Gaetzi <beat@chruetertee.ch>
-# $FreeBSD$
 
 PORTNAME=	thinkingrock
 PORTVERSION=	2.2.1
@@ -15,7 +14,6 @@ RUN_DEPENDS=	${LOCALBASE}/bin/xdg-open:devel/xdg-utils \
 		${LOCALBASE}/bin/xdg-email:devel/xdg-utils
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rabbitpy
 PORTVERSION=	1.0.0
 CATEGORIES=	net python
@@ -15,7 +13,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pamqp>0:net/py-pamqp@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pamqp>0:net/py-pamqp@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

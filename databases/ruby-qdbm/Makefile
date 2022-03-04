@@ -1,11 +1,10 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qdbm
 PORTVERSION=	1.8.78
 PORTREVISION=	4
 CATEGORIES=	databases
-MASTER_SITES=	https://fallabs.com/qdbm/
+MASTER_SITES=	https://dbmx.net/qdbm/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 
 MAINTAINER=	hrs@FreeBSD.org

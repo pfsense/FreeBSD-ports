@@ -1,0 +1,44 @@
+--- CMakeLists.txt.orig	2020-09-25 19:33:09 UTC
++++ CMakeLists.txt
+@@ -184,7 +184,7 @@ else()
+ 	set(CMAKE_PACKAGE_SUFFIX_OVERRIDE "" CACHE STRING "Override for the suffix.")
+ 
+ 	if(UNIX)
+-		set(UNIX_LOCAL_STRUCTURE TRUE CACHE BOOL "Package for a local linux install.")
++		#set(UNIX_LOCAL_STRUCTURE TRUE CACHE BOOL "Package for a local linux install.")
+ 	endif()
+ 
+ 	if(NOT ${PropertyPrefix}OBS_DOWNLOAD)
+@@ -636,9 +636,9 @@ if((CMAKE_C_COMPILER_ID STREQUAL "GNU")
+ 	OR (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+ 	OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+ 	if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+-		list(APPEND PROJECT_LIBRARIES
+-			"stdc++fs"
+-		)
++		#list(APPEND PROJECT_LIBRARIES
++		#	"stdc++fs"
++		#)
+ 	endif()
+ endif()
+ 
+@@ -1226,8 +1226,8 @@ else()
+ 	else()
+ 		install(
+ 			TARGETS ${PROJECT_NAME}
+-			RUNTIME DESTINATION "./obs-plugins/${BITS}bit/" COMPONENT Runtime
+-			LIBRARY DESTINATION "./obs-plugins/${BITS}bit/" COMPONENT Runtime
++			RUNTIME DESTINATION "lib/obs-plugins" COMPONENT Runtime
++			LIBRARY DESTINATION "lib/obs-plugins" COMPONENT Runtime
+ 		)
+ 		if(MSVC)
+ 			install(
+@@ -1239,7 +1239,7 @@ else()
+ 	
+ 		install(
+ 			DIRECTORY "data/"
+-			DESTINATION "./data/obs-plugins/${PROJECT_NAME}/"
++			DESTINATION "share/obs/obs-plugins/${PROJECT_NAME}/"
+ 		)
+ 		
+ 		add_custom_target(

@@ -1,5 +1,6 @@
-=============================================================================
-
+[
+{ type: install
+  message: <<EOM
 VirtualBox was installed.
 
 You need to load the vboxdrv kernel module via /boot/loader.conf:
@@ -63,5 +64,18 @@ Check wiki page for known issues and troubleshooting:
 http://wiki.freebsd.org/VirtualBox
 
 Please report any problems to emulation@. Thanks!
+EOM
+}
+{ type: upgrade
+  maximum_version: 6.1.22
+  message: <<EOM
+The PULSEAUDIO option has been forcibly disabled since VirtualBox
+version 6.1.24 due to a bug in it preventing virtual machines
+configured to use it from starting.
 
-=============================================================================
+When upgrading from a previous version please reconfigure any virtual
+machines using the Pulseaudio host audio driver to use another
+supported one.
+EOM
+}
+]

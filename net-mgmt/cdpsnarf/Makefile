@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cdpsnarf
 PORTVERSION=	0.1.6
 PORTREVISION=	1

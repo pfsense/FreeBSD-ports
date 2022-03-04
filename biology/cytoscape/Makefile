@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cytoscape
 DISTVERSION=	3.6.1
 CATEGORIES=	biology java
@@ -13,9 +11,7 @@ COMMENT=	Software to visualize molecular interaction networks, gene expression
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/api/LICENSE
 
-BROKEN_aarch64=		fails to build: Cytoscape Third-Party Dependencies (third-party): FAILURE
-BROKEN_armv6=		fails to build: Cytoscape Third-Party Dependencies (third-party): FAILURE
-BROKEN_armv7=		fails to build: Cytoscape Third-Party Dependencies (third-party): FAILURE
+BROKEN=		fails to build: Cytoscape Third-Party Dependencies (third-party): FAILURE
 
 BUILD_DEPENDS=	mvn:devel/maven \
 		bash:shells/bash
@@ -24,7 +20,6 @@ RUN_DEPENDS=	bash:shells/bash
 USES=		shebangfix
 SHEBANG_FILES=	gui-distribution/assembly/src/main/bin/cytoscape.sh
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 USE_GITHUB=	yes
 GH_TUPLE=	${PORTNAME}:${PORTNAME}-parent:${DISTVERSION}:p/parent \
 		${PORTNAME}:${PORTNAME}-api:${DISTVERSION}:a/api \

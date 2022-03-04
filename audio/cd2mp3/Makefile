@@ -1,5 +1,4 @@
 # Created by: Jamie Heckford <jamie@blackhole.net>
-# $FreeBSD$
 
 PORTNAME=	cd2mp3
 PORTVERSION=	0.82
@@ -7,7 +6,7 @@ PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://mark.foster.cc/pub/freebsd/ports/distfiles/ \
-		http://BSDforge.com/projects/source/audio/cd2mp3/ \
+		https://BSDforge.com/projects/source/audio/cd2mp3/ \
 		LOCAL/feld
 
 MAINTAINER=	portmaster@BSDforge.com

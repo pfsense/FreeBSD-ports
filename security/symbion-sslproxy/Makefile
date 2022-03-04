@@ -1,5 +1,4 @@
 # Created by: Gabor Kovesdan
-# $FreeBSD$
 
 PORTNAME=	symbion-sslproxy
 PORTVERSION=	1.0.5
@@ -12,6 +11,9 @@ COMMENT=	SSL proxy for securing insecure connections
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Abandonware, last release in 2009 and inactive upstream
+EXPIRATION_DATE=2022-03-31
 
 USES=		gmake ssl tar:tgz
 CFLAGS+=	-I${OPENSSLINC}

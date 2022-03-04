@@ -1,5 +1,4 @@
 # Created by: Kris Moore <kmoore@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libfm
 PKGNAMESUFFIX=	-extra
@@ -7,7 +6,9 @@ PKGNAMESUFFIX=	-extra
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LibFM-Extra library
 
-LICENSE=	LGPL21
+LICENSE=	GPLv2+ LGPL20+
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
 MASTERDIR=	${.CURDIR}/../${PORTNAME}
 

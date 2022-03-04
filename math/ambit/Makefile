@@ -1,10 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	ambit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2-37
-DISTVERSIONSUFFIX=	-g9c7049a
-PORTREVISION=	6
+DISTVERSION=	0.5.1
 CATEGORIES=	math
 PKGNAMESUFFIX=	-tensor # avoid clash with shells/ambit
 
@@ -15,16 +11,17 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
+		libopenblas.so:math/openblas \
 		libsz.so:science/szip
 
-USES=		cmake compiler:c++11-lang
-USE_GCC=	yes
+USES=		cmake compiler:c++11-lang python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	jturney
+USE_LDCONFIG=	yes
 
 # some declared cmake options do nothing: see https://github.com/jturney/ambit/issues/25 and the patch
 CMAKE_ARGS+=	-DSHARED_ONLY:BOOL=ON
-CMAKE_ARGS+=	-DENABLE_OPENMP:BOOL=ON # bug#223678: find_package(OpenMP) doesn't find the openmp package
+CMAKE_ARGS+=	-DENABLE_OPENMP:BOOL=ON
 CMAKE_ARGS+=	-DENABLE_TESTS:BOOL=OFF # https://github.com/jturney/ambit/issues/24
 
 .include <bsd.port.mk>

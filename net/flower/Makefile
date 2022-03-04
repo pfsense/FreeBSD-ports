@@ -1,10 +1,9 @@
 # Created by: Ed Schouten <ed@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flower
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	net
 
 MAINTAINER=	ed@FreeBSD.org

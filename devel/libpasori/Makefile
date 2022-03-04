@@ -1,11 +1,10 @@
 # Created by: Yoshihiko Sarumaru <mistral@imasy.or.jp>
-# $FreeBSD$
 
 PORTNAME=	libpasori
 PORTVERSION=	02
 PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	OSDN/${PORTNAME}/20457
+MASTER_SITES=	OSDN/${PORTNAME}
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org

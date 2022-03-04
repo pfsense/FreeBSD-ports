@@ -1,7 +1,7 @@
-TIMESTAMP = 1482092677
-SHA256 (centos/SDL-1.2.15-14.el7.i686.rpm) = a1288ca1da85f225b62d3e1f5d458dba40dc26dd10300de9df5b30996286f996
-SIZE (centos/SDL-1.2.15-14.el7.i686.rpm) = 216756
-SHA256 (centos/SDL-1.2.15-14.el7.x86_64.rpm) = 20add1fd02fc7ae0bb74195322b864816b7e5b01817135e5d023ee606faf8ebb
-SIZE (centos/SDL-1.2.15-14.el7.x86_64.rpm) = 209280
-SHA256 (centos/SDL-1.2.15-14.el7.src.rpm) = b41b7da5c099f4ae64ee725c14afbee3d1be1aa7dd843c740f23594facd18ca4
-SIZE (centos/SDL-1.2.15-14.el7.src.rpm) = 3569191
+TIMESTAMP = 1614793397
+SHA256 (centos/SDL-1.2.15-17.el7.i686.rpm) = 8f9872bcdb331e59997b456f354c058c91fe8df61edbefd3bf52257c12a981ec
+SIZE (centos/SDL-1.2.15-17.el7.i686.rpm) = 218288
+SHA256 (centos/SDL-1.2.15-17.el7.x86_64.rpm) = 6bd64d409db21fb8aa937fe99ffbbe6a73dbf83fa01e094be67904d2507ca5e5
+SIZE (centos/SDL-1.2.15-17.el7.x86_64.rpm) = 210724
+SHA256 (centos/SDL-1.2.15-17.el7.src.rpm) = 86f73c0681d7c707ea0cd70d4a84e066ad9cdd3b522c57794ebbb143d73017cc
+SIZE (centos/SDL-1.2.15-17.el7.src.rpm) = 3582563

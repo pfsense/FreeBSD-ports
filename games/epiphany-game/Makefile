@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	epiphany
 PORTVERSION=	0.7.0
 CATEGORIES=	games
@@ -15,7 +12,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf localbase
+USES=		autoreconf localbase sdl
 USE_SDL=	sdl mixer
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	ibus-table-chinese
-PORTVERSION=	1.8.2
-PORTREVISION=	2
+PORTVERSION=	1.8.3
 CATEGORIES=	chinese
 
 MAINTAINER=	ports@FreeBSD.org
@@ -10,6 +7,8 @@ COMMENT=	Chinese input tables for IBus
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		does not build: TypeError: cannot use a string pattern on a bytes-like object
 
 BUILD_DEPENDS=	${LOCALBASE}/share/cmake/Modules/ManageEnvironment.cmake:devel/cmake-fedora \
 		ibus-daemon:textproc/ibus \

@@ -1,9 +1,8 @@
 # Created by: Shin-ya MURAKAMI <murashin@gfd-dennou.org>
-# $FreeBSD$
 
 PORTNAME=	gsl
 PORTVERSION=	2.1.0.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math rubygems
 MASTER_SITES=	RG
 PKGNAMEPREFIX=	rubygem-rb-

@@ -1,5 +1,4 @@
 # Created by: Eric L. Camachat <eric@camachat.org>
-# $FreeBSD$
 
 PORTNAME=	ibus-chewing
 PORTVERSION=	1.5.1
@@ -20,7 +19,7 @@ CMAKE_ARGS=	-DSYSCONF_INSTALL_DIR=${PREFIX}/etc \
 		-DLIB_DIR=${PREFIX}/lib
 LDFLAGS+=	-L${LOCALBASE}/lib
 GLIB_SCHEMAS=	org.freedesktop.IBus.Chewing.gschema.xml
-USES=		cmake:noninja gettext pkgconfig
+USES=		cmake:noninja gettext gnome pkgconfig xorg
 USE_GNOME=	gtk20
 USE_XORG=	xtst
 

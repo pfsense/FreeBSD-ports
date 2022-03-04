@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	opt_parse_validator
-PORTVERSION=	0.0.16.5
+PORTVERSION=	1.9.3
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -9,13 +8,14 @@ MAINTAINER=	rihaz.jerrin@gmail.com
 COMMENT=	Implementation of validators for the ruby OptionParser lib
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-activesupport5>=5.1.6:devel/rubygem-activesupport5 \
-	        rubygem-addressable>=2.5.2:www/rubygem-addressable
+RUN_DEPENDS=	rubygem-activesupport60>=5.2<6.2.0:devel/rubygem-activesupport60 \
+	        rubygem-addressable>=2.5<2.9:www/rubygem-addressable
 
 USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 
 .include <bsd.port.mk>

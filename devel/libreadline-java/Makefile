@@ -1,10 +1,9 @@
 # Created by: Martin Kammerhofer <mkamm@gmx.net>
-# $FreeBSD$
 
 PORTNAME=	libreadline-java
 PORTVERSION=	0.8.0
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel java
 MASTER_SITES=	SF/java-readline/java-readline/${PORTVERSION}
 
@@ -22,6 +21,7 @@ PLIST_FILES=	%%JAVAJARDIR%%/libreadline-java.jar \
 PORTDOCS=	README.1st README jython.sh JReadlineCompleter.py
 USES=		gmake libedit ncurses readline
 USE_JAVA=	yes
+JAVA_VERSION=	8
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_JOBS_UNSAFE=	yes

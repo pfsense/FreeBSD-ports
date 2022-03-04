@@ -1,9 +1,8 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	thegrind
 PORTVERSION=	0.1.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/radius-engine/ld21/
 
@@ -19,7 +18,7 @@ LIB_DEPENDS=	liblua-5.1.so:lang/lua51 \
 		libphysfs.so.1:devel/physfs
 RUN_DEPENDS=	zip:archivers/zip
 
-USES=		pkgconfig
+USES=		gl pkgconfig sdl
 USE_SDL=	sdl sound
 USE_GL=		glu
 GNU_CONFIGURE=	yes

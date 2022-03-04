@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/base/security_unittest.cc.orig	2017-01-26 00:49:07 UTC
+--- src/3rdparty/chromium/base/security_unittest.cc.orig	2020-04-08 09:41:36 UTC
 +++ src/3rdparty/chromium/base/security_unittest.cc
-@@ -74,7 +74,7 @@ bool IsTcMallocBypassed() {
+@@ -60,7 +60,7 @@ NOINLINE Type HideValueFromCompiler(volatile Type valu
  // FAILS_ is too clunky.
  void OverflowTestsSoftExpectTrue(bool overflow_detected) {
    if (!overflow_detected) {

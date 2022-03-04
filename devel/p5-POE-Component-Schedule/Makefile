@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	POE-Component-Schedule
 PORTVERSION=	0.95
 PORTREVISION=	2

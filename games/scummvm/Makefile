@@ -1,56 +1,63 @@
-# Created by: Alex Trull <freebsd.alex@trull.org>
-# $FreeBSD$
+#_ Created by: Alex Trull <freebsd.alex@trull.org>
 
 PORTNAME=	scummvm
-PORTVERSION=	2.0.0
-PORTREVISION=	2
+PORTVERSION=	2.5.0
+PORTREVISION=	1
 CATEGORIES=	games emulators
-MASTER_SITES=	http://www.scummvm.org/frs/scummvm/${PORTVERSION}/
+MASTER_SITES=	https://downloads.scummvm.org/frs/${PORTNAME}/${PORTVERSION}/
 
-MAINTAINER=	lme@FreeBSD.org
+MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Interpreter for several adventure games
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libtheoradec.so:multimedia/libtheora \
+LIB_DEPENDS=	liba52.so:audio/liba52 \
 		libfaad.so:audio/faad \
+		libfreetype.so:print/freetype2 \
+		libfribidi.so:converters/fribidi \
+		libmad.so:audio/libmad \
 		libmpeg2.so:multimedia/libmpeg2 \
-		libfreetype.so:print/freetype2
+		libogg.so:audio/libogg \
+		libpng.so:graphics/png \
+		libtheoradec.so:multimedia/libtheora \
+		libvorbis.so:audio/libvorbis
 
-USES=		gmake jpeg tar:xz
+USES=		cpe gl gmake gnome iconv jpeg pkgconfig sdl tar:xz
+USE_GL=		gl glew
 HAS_CONFIGURE=	yes
 USE_SDL=	sdl2
-INSTALLS_ICONS=	yes
 
-CONFIGURE_ARGS=	--with-sdl-prefix=${LOCALBASE} \
-		--with-jpeg-prefix=${LOCALBASE} \
-		--disable-alsa \
-		--with-zlib-prefix=/usr \
+CONFIGURE_ARGS=	--disable-alsa \
 		--disable-debug \
+		--disable-fluidlite \
+		--disable-gtk \
 		--disable-nasm \
 		--disable-tremor \
-		--enable-verbose-build
+		--enable-verbose-build \
+		--with-a52-prefix=${LOCALBASE} \
+		--with-jpeg-prefix=${LOCALBASE} \
+		--with-mad-prefix=${LOCALBASE} \
+		--with-ogg-prefix=${LOCALBASE} \
+		--with-png-prefix=${LOCALBASE} \
+		--with-sdl-prefix=${LOCALBASE} \
+		--with-vorbis-prefix=${LOCALBASE} \
+		--with-zlib-prefix=/usr
 
 LDFLAGS+=	-lpthread
 
-OPTIONS_DEFINE=	VORBIS MP3 PNG FLAC FLUIDSYNTH MT32EMU DOCS SNDIO
+OPTIONS_DEFINE=		CURL DOCS FLAC GIF FLUIDSYNTH MT32EMU SNDIO TTS XENGINES
+OPTIONS_DEFAULT=	GIF MT32EMU
+OPTIONS_SUB=		yes
+
+CURL_DESC=	Enable ScummVM cloud storage backend
 MT32EMU_DESC=	MT-32 emulator
-OPTIONS_DEFAULT=	VORBIS MP3 PNG MT32EMU
+TTS_DESC=	Text-to-Speech support
+XENGINES_DESC=	Experimental/Unstable engine support
 
-VORBIS_LIB_DEPENDS=	libogg.so:audio/libogg \
-			libvorbis.so:audio/libvorbis
-VORBIS_CONFIGURE_ON=	--with-ogg-prefix=${LOCALBASE} \
-			--with-vorbis-prefix=${LOCALBASE}
-VORBIS_CONFIGURE_OFF=	--disable-vorbis
-
-MP3_LIB_DEPENDS=	libmad.so:audio/libmad
-MP3_CONFIGURE_ON=	--with-mad-prefix=${LOCALBASE}
-MP3_CONFIGURE_OFF=	--disable-mad
-
-PNG_LIB_DEPENDS=	libpng.so:graphics/png
-PNG_CONFIGURE_ON=	--with-png-prefix=${LOCALBASE}
-PNG_CONFIGURE_OFF=	--disable-png
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
+CURL_CONFIGURE_ON=	--with-libcurl-prefix=${LOCALBASE}
+CURL_CONFIGURE_OFF=	--disable-libcurl
 
 FLAC_LIB_DEPENDS=	libFLAC.so:audio/flac
 FLAC_CONFIGURE_ON=	--with-flac-prefix=${LOCALBASE}
@@ -60,11 +67,22 @@ FLUIDSYNTH_LIB_DEPENDS=		libfluidsynth.so:audio/fluidsynth
 FLUIDSYNTH_CONFIGURE_ON=	--with-fluidsynth-prefix=${LOCALBASE}
 FLUIDSYNTH_CONFIGURE_OFF=	--disable-fluidsynth
 
+GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
+GIF_CONFIGURE_ON=	--with-gif-prefix=${LOCALBASE}
+GIF_CONFIGURE_OFF=	--disable-gif
+
 MT32EMU_CONFIGURE_OFF=	--disable-mt32emu
 
 SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 SNDIO_CONFIGURE_ON=	--with-sndio-prefix=${LOCALBASE}
 SNDIO_CONFIGURE_OFF=	--disable-sndio
+
+TTS_LIB_DEPENDS=	libspeechd.so:accessibility/speech-dispatcher
+TTS_CONFIGURE_ON=	--enable-tts
+TTS_CONFIGURE_OFF=	--disable-tts
+
+XENGINES_CONFIGURE_ON=	--enable-all-engines
+XENGINES_CONFIGURE_OFF=	--disable-all-unstable-engines
 
 .include <bsd.port.pre.mk>
 
@@ -73,7 +91,7 @@ CONFIGURE_ENV+=	ASFLAGS=-meabi=5
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e '/^mandir=/s/datarootdir/prefix/' \
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		${WRKSRC}/configure
 
 post-install:

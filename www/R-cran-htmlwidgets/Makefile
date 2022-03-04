@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	htmlwidgets
-PORTVERSION=	1.3
-PORTREVISION=	1
+PORTVERSION=	1.5.4
 CATEGORIES=	www
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

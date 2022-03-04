@@ -1,6 +1,3 @@
-# Created by: mat
-# $FreeBSD$
-
 PORTNAME=	Alzabo
 PORTVERSION=	0.92
 PORTREVISION=	1

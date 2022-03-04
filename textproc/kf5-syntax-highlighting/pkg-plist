@@ -1,5 +1,4 @@
 bin/kate-syntax-highlighter
-etc/xdg/org_kde_ksyntaxhighlighting.categories
 include/KF5/KSyntaxHighlighting/AbstractHighlighter
 include/KF5/KSyntaxHighlighting/Definition
 include/KF5/KSyntaxHighlighting/DefinitionDownloader
@@ -9,6 +8,7 @@ include/KF5/KSyntaxHighlighting/Repository
 include/KF5/KSyntaxHighlighting/State
 include/KF5/KSyntaxHighlighting/SyntaxHighlighter
 include/KF5/KSyntaxHighlighting/Theme
+include/KF5/KSyntaxHighlighting/WildcardMatcher
 include/KF5/KSyntaxHighlighting/abstracthighlighter.h
 include/KF5/KSyntaxHighlighting/definition.h
 include/KF5/KSyntaxHighlighting/definitiondownloader.h
@@ -19,6 +19,7 @@ include/KF5/KSyntaxHighlighting/repository.h
 include/KF5/KSyntaxHighlighting/state.h
 include/KF5/KSyntaxHighlighting/syntaxhighlighter.h
 include/KF5/KSyntaxHighlighting/theme.h
+include/KF5/KSyntaxHighlighting/wildcardmatcher.h
 include/KF5/ksyntaxhighlighting_version.h
 lib/cmake/KF5SyntaxHighlighting/KF5SyntaxHighlightingConfig.cmake
 lib/cmake/KF5SyntaxHighlighting/KF5SyntaxHighlightingConfigVersion.cmake
@@ -30,6 +31,7 @@ lib/libKF5SyntaxHighlighting.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_MKSPECDIR%%/modules/qt_KSyntaxHighlighting.pri
 share/locale/af/LC_MESSAGES/syntaxhighlighting5_qt.qm
 share/locale/ar/LC_MESSAGES/syntaxhighlighting5_qt.qm
+share/locale/az/LC_MESSAGES/syntaxhighlighting5_qt.qm
 share/locale/be/LC_MESSAGES/syntaxhighlighting5_qt.qm
 share/locale/bg/LC_MESSAGES/syntaxhighlighting5_qt.qm
 share/locale/bn/LC_MESSAGES/syntaxhighlighting5_qt.qm
@@ -112,3 +114,5 @@ share/locale/wa/LC_MESSAGES/syntaxhighlighting5_qt.qm
 share/locale/xh/LC_MESSAGES/syntaxhighlighting5_qt.qm
 share/locale/zh_CN/LC_MESSAGES/syntaxhighlighting5_qt.qm
 share/locale/zh_TW/LC_MESSAGES/syntaxhighlighting5_qt.qm
+share/qlogging-categories5/ksyntaxhighlighting.categories
+share/qlogging-categories5/ksyntaxhighlighting.renamecategories

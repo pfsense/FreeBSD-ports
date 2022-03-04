@@ -1,11 +1,10 @@
 # Created by: Vasil Dimov <vd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	monero-cli
 # To build from an arbitrary git commit comment PORTVERSION and PORTREVISION (if present)
-PORTVERSION=	0.14.0.2
+PORTVERSION=	0.17.2.3
 DISTVERSIONPREFIX=	v
-# and uncomment the following two lines
+# and uncomment the following two lines (use for example -git-HEAD or -git-b6420e1)
 #PORTVERSION=	0
 #PKGNAMESUFFIX=	-git-HEAD
 CATEGORIES=	net-p2p finance
@@ -15,10 +14,7 @@ COMMENT=	Private, secure, untraceable, decentralised digital currency (CLI)
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN_aarch64=		fails to compile: the clang compiler does not support -march=native
-BROKEN_armv6=		fails to compile: the clang compiler does not support -march=native
-BROKEN_armv7=		fails to compile: the clang compiler does not support -march=native
-BROKEN_powerpc64=	fails to compile: the clang compiler does not support -march=native
+BROKEN_i386=	fails to compile: register r15d is only available in 64-bit mode
 
 LIB_DEPENDS=	\
 		libboost_chrono.so:devel/boost-libs \
@@ -40,12 +36,16 @@ BUILD_DEPENDS=	${LOCALBASE}/include/rapidjson/document.h:devel/rapidjson \
 
 USES=		cmake compiler:c++11-lib pkgconfig readline ssl
 USE_GITHUB=	yes
-
-GH_ACCOUNT=	monero-project
-GH_PROJECT=	monero
 .if defined(PKGNAMESUFFIX)
-GH_TAGNAME=	${PKGNAMESUFFIX:C/-git-//}
+GIT_COMMIT=	${PKGNAMESUFFIX:C/-git-//}
+.else
+GIT_COMMIT=	${DISTVERSIONPREFIX}${PORTVERSION}
 .endif
+GH_TUPLE=	monero-project:monero:${GIT_COMMIT} \
+		monero-project:supercop:633500ad8c875999:ext1/external/supercop \
+		tevador:RandomX:fe4324e8c0c035fec3affd6e:ext2/external/randomx \
+		trezor:trezor-common:bff7fdfe436c727982c:ext3/external/trezor-common
+
 CFLAGS+=	-D_WANT_SEMUN
 
 OPTIONS_DEFINE=		DOXYGEN
@@ -60,8 +60,6 @@ DOXYGEN_CMAKE_BOOL=	BUILD_DOCUMENTATION
 # /usr/bin/ld -melf_amd64 -r -b binary -o blocksdat.o blocks.dat
 # See Bug 226996 - net-p2p/monero-cli: fails to link with lld as the system linker
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=226996
-.if ${OSVERSION} >= 1200000
-
 .if ${ARCH} == aarch64
 LD_EMULATION=	aarch64elf
 .elif ${ARCH} == amd64
@@ -72,15 +70,17 @@ LD_EMULATION=	elf_i386_fbsd
 LD_EMULATION=	elf32ppc
 .elif ${ARCH} == powerpc64
 LD_EMULATION=	elf64ppc
+.elif ${ARCH} == powerpc64le
+LD_EMULATION=	elf64lppc
 .endif
 
 CMAKE_ARGS+=	-DLD_RAW_FLAGS:STRING=-m${LD_EMULATION}
 
-.endif
-
 # keep in sync with all platforms where libunwind is available
-.if (${ARCH} == amd64 || ${ARCH} == i386)
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
+.else
+CMAKE_ARGS+=	-DSTACK_TRACE:BOOL=OFF
 .endif
 
 CMAKE_ARGS+=	-DMANUAL_SUBMODULES:BOOL=ON
@@ -96,7 +96,11 @@ PLIST_FILES=	\
 		bin/monero-blockchain-export \
 		bin/monero-blockchain-import \
 		bin/monero-blockchain-mark-spent-outputs \
+		bin/monero-blockchain-prune \
+		bin/monero-blockchain-prune-known-spent-data \
+		bin/monero-blockchain-stats \
 		bin/monero-blockchain-usage \
+		bin/monero-gen-ssl-cert \
 		bin/monero-gen-trusted-multisig \
 		bin/monero-wallet-cli \
 		bin/monero-wallet-rpc \

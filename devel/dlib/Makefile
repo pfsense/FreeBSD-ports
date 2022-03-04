@@ -1,8 +1,7 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dlib
-PORTVERSION=	0.15.0
+PORTVERSION=	0.19.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 

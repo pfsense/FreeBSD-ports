@@ -1,5 +1,4 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gmpc-extraplaylist
 PORTVERSION=	0.20.0
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gmpc.pc:audio/gmpc
 RUN_DEPENDS=	gmpc:audio/gmpc
 
 GNU_CONFIGURE=	yes
-USES=		libtool pkgconfig
+USES=		gnome libtool pkgconfig
 USE_GNOME=	glib20 gtk20 libglade2 libxml2
 INSTALL_TARGET=	install-strip
 

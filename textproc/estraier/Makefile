@@ -1,11 +1,10 @@
 # Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
 
 PORTNAME=	estraier
 PORTVERSION=	1.2.30
 PORTREVISION=	4
 CATEGORIES=	textproc
-MASTER_SITES=	https://fallabs.com/estraier/
+MASTER_SITES=	https://dbmx.net/estraier/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search system for personal use

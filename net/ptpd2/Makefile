@@ -1,5 +1,4 @@
 # Created by: Steven Kreuzer <skreuzer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ptpd
 DISTVERSION=	2.3.1
@@ -11,20 +10,17 @@ COMMENT=	Implementation of the precision time protocol IEEE 1588-2008
 
 LICENSE=	BSD2CLAUSE
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	ptpd
-GH_TAGNAME=	d27a6e0
-
 CONFLICTS=	ptpd2-devel.*
 
 ETCDIR=	${PREFIX}/etc/${PORTNAME}${PKGNAMESUFFIX}
 
-GNU_CONFIGURE=	yes
 USES=		autoreconf gmake libtool
+GNU_CONFIGURE=	yes
+USE_GITHUB=	yes
+GH_TAGNAME=	d27a6e0
+USE_RC_SUBR=	ptpd2
 
 PORTDOCS=	*
-
-USE_RC_SUBR=	ptpd2
 
 OPTIONS_DEFINE=	DOCS SNMP
 OPTIONS_DEFAULT=SNMP
