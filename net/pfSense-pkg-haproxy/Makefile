@@ -13,7 +13,7 @@ COMMENT=	pfSense package haproxy
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	haproxy18>0:net/haproxy18
+RUN_DEPENDS=	haproxy22>0:net/haproxy22
 
 CONFLICTS=	pfSense-pkg-haproxy-devel-[0-9]*
 
