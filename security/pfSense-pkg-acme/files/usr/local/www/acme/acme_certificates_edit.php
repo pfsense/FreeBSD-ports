@@ -55,7 +55,7 @@ global $simplefields;
 $simplefields = array(
 	"name","descr","status",
 	"acmeaccount","keylength","ocspstaple",
-	"debug","dnssleep","renewafter"
+	"dnssleep","renewafter"
 );
 
 
@@ -384,13 +384,6 @@ $section->addInput(new \Form_Checkbox(
 	'Add the OCSP Must Staple extension to the certificate.',
 	$pconfig['ocspstaple']
 ))->setHelp('Do not enable this option unless the software using the certificate also supports OCSP stapling.');
-
-$section->addInput(new \Form_Checkbox(
-	'debug',
-	'Debug',
-	'Log debug messages.',
-	$pconfig['debug']
-))->setHelp('Log and print debug messages on Issue/Renew.');
 
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 

@@ -55,18 +55,13 @@ class acme_sh {
 	private $accountconfig;
 	private $path_account;
 	private $name;
-	public $debug;
+	private $debug = true;
 	public $dnssleep;
 	public $ocspstaple;
 	
 	private function execacmesh($command, $envvariables = null) {
 		global $config;
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
-		if (isset($this->debug) && ($this->debug != 'yes')) {
-			$this->debug = false;
-		} else {
-			$this->debug = true;
-		}
 		if ($this->debug) {
 			echo "\n{$command}\n";
 		}
