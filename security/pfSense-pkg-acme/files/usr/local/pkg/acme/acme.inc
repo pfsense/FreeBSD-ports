@@ -958,7 +958,7 @@ $acme_domain_validation_method['dns_mydnsjp'] = array('name' => "DNS-MyDNS.jp",
 			'description' => "MyDNS.jp Password"
 		)
 	));
-$acme_domain_validation_method['dns_mythic_beast'] = array('name' => "DNS-Mythic Beasts",
+$acme_domain_validation_method['dns_mythic_beasts'] = array('name' => "DNS-Mythic Beasts",
 	'fields' => array(
 		'MB_AK' => array('name' => "mb_ak", 'columnheader' => "Key", 'type' => "textbox",
 			'description' => "OAuth2 Key"
