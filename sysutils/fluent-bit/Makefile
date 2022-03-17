@@ -2,7 +2,7 @@
 
 PORTNAME=	fluent-bit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.10
+DISTVERSION=	1.8.13
 CATEGORIES=	sysutils
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -12,7 +12,6 @@ LICENSE=	APACHE20
 
 BROKEN_mips=		fails to build: conflicting types for 'restrict'
 BROKEN_mips64=		fails to build: conflicting types for 'restrict'
-BROKEN_riscv64=		fails to build: No support for this architecture (yet)
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	fluent
@@ -40,7 +39,7 @@ USE_RC_SUBR=	${PORTNAME}
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH:Mpowerpc64*}
+.if ${ARCH:Mpowerpc64*} || ${ARCH:Mriscv64*}
 CMAKE_ARGS+=	-DFLB_LUAJIT:BOOL=OFF
 .elif ${ARCH} == powerpc
 LDFLAGS+=	-latomic

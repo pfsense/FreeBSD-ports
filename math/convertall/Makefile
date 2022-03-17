@@ -2,7 +2,7 @@
 
 PORTNAME=	convertall
 PORTVERSION=	0.8.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/doug-101/ConvertAll/releases/download/v${PORTVERSION}/
 
@@ -13,7 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
 USES=		pyqt:5 python:3.5+ shebangfix
-USE_PYQT=	core gui widgets sip
+USE_PYQT=	pyqt5 sip
 
 SHEBANG_FILES=	source/convertall.py
 

@@ -1,6 +1,5 @@
 PORTNAME=	asterisk
-PORTVERSION=	18.8.0
-PORTREVISION=	1
+PORTVERSION=	18.10.1
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -241,6 +240,7 @@ post-extract-OPUS-on:
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/var/lib|${PREFIX}/share|g' ${WRKSRC}/configs/samples/musiconhold.conf.sample
+	@${REINPLACE_CMD} -e 's/@XMLSTARLET@//' ${WRKSRC}/makeopts.in
 .if exists(${FILESDIR}/.asterisk.makeopts)
 	${CP} ${FILESDIR}/.asterisk.makeopts ${WRKSRC}/menuselect.makeopts
 .endif

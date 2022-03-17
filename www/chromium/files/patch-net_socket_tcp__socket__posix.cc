@@ -1,10 +1,10 @@
---- net/socket/tcp_socket_posix.cc.orig	2021-05-12 22:05:57 UTC
+--- net/socket/tcp_socket_posix.cc.orig	2022-02-28 16:54:41 UTC
 +++ net/socket/tcp_socket_posix.cc
-@@ -90,6 +90,17 @@ bool SetTCPKeepAlive(int fd, bool enable, int delay) {
+@@ -95,6 +95,17 @@ bool SetTCPKeepAlive(int fd, bool enable, int delay) {
      PLOG(ERROR) << "Failed to set TCP_KEEPALIVE on fd: " << fd;
      return false;
    }
-+#elif defined(OS_BSD)
++#elif BUILDFLAG(IS_FREEBSD)
 +  // Set seconds until first TCP keep alive.
 +  if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPIDLE, &delay, sizeof(delay))) {
 +    PLOG(ERROR) << "Failed to set TCP_KEEPIDLE on fd: " << fd;

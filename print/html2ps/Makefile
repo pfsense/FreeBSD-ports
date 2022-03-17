@@ -13,13 +13,14 @@ COMMENT=	HTML to PostScript converter
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	mogrify:graphics/ImageMagick6 \
-		p5-libwww>=0:www/p5-libwww \
+RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
 		weblint++:www/weblint++ \
 		paperconf:print/libpaper
 
 NO_BUILD=	yes
-USES=		ghostscript:run perl5
+USES=		ghostscript:run magick:6,run perl5
+
+CONFLICTS_INSTALL=	p5-DocSet # bin/html2ps
 
 SUB_FILES=	html2psrc
 

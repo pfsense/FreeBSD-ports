@@ -19,6 +19,8 @@ USES=		cpe jpeg localbase tar:xz
 CPPFLAGS+=	-I${LOCALBASE}/include/jasper
 LIBS+=		-ljasper -ljpeg -llcms2 -lm
 
+CONFLICTS_INSTALL=	ufraw
+
 PLIST_FILES=	bin/dcraw \
 		share/man/man1/dcraw.1.gz
 
@@ -37,7 +39,7 @@ MS_DIFF=	${MS_WRKSRC}/dcraw.c.diff
 MS_VERSION=	`${CAT} ${MS_VERSIONFILE}`
 MS_VERSIONFILE=	${MS_WRKSRC}/.version
 MS_WRKSRC=	${WRKSRC}/tmp
-MS_MASTER_SITE=	https://www.cybercom.net/~dcoffin/dcraw/
+MS_MASTER_SITE=	https://www.dechifro.org/dcraw/
 MS_DISTFILES=	dcraw.1 dcraw.c
 
 maketar: do-clean extract

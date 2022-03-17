@@ -1,5 +1,6 @@
 PORTNAME=	emby-server
 DISTVERSION=	4.6.7.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/MediaBrowser/Emby.Releases/releases/download/${PORTVERSION}/ \
 		https://mediabrowser.github.io/embytools/
@@ -24,7 +25,8 @@ LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 ONLY_FOR_ARCHS=	amd64
 
 BUILD_DEPENDS=	nasm:devel/nasm
-LIB_DEPENDS=	libass.so:multimedia/libass \
+LIB_DEPENDS=	libaribb24.so:multimedia/aribb24 \
+		libass.so:multimedia/libass \
 		libdav1d.so:multimedia/dav1d \
 		libdrm.so:graphics/libdrm \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -66,6 +68,7 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 		--enable-gnutls \
 		--enable-gpl \
 		--enable-iconv \
+		--enable-libaribb24 \
 		--enable-libass \
 		--enable-libdav1d \
 		--enable-libdrm \
@@ -87,6 +90,8 @@ CONFIGURE_ARGS=	--cc="${CC}" \
 
 MAKE_ENV=	V=1
 
+CONFLICTS_INSTALL=	emby-server-devel
+
 NOPRECIOUSMAKEVARS=	yes
 SUB_FILES=	ImageMagickSharp.dll.config \
 		SQLitePCLRaw.provider.sqlite3.dll.config
@@ -106,9 +111,8 @@ OPTIONS_DEFAULT=	LAME X11
 LAME_LIB_DEPENDS=	libmp3lame.so:audio/lame
 LAME_CONFIGURE_ENABLE=	libmp3lame
 
-X11_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6
-X11_LIB_DEPENDS_OFF=	libMagickWand-6.so:graphics/ImageMagick6-nox11
-X11_USES=		xorg
+X11_USES=		xorg magick:6
+X11_USES_OFF=		magick:6,nox11
 X11_USE=		xorg=x11
 
 FFVERSION=	2021_02_27

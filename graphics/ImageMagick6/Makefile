@@ -1,6 +1,6 @@
 PORTNAME=	ImageMagick
-DISTVERSION=	6.9.12-12
-PORTREVISION=	3
+DISTVERSION=	6.9.12-34
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://www.imagemagick.org/download/ \
@@ -175,9 +175,8 @@ WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 X11_CONFIGURE_WITH=	x
 X11_USES=		xorg
 X11_USE=		xorg=ice,sm,x11,xext,xt
-X11_VARS=		CONFLICTS_INSTALL+="ImageMagick-nox11-6* ImageMagick6-nox11-6*" \
-			CONFLICTS+=display
-X11_VARS_OFF=		CONFLICTS_INSTALL+="ImageMagick-6* ImageMagick6-6*" \
+X11_VARS=		CONFLICTS_INSTALL+="ImageMagick6-nox11"
+X11_VARS_OFF=		CONFLICTS_INSTALL+="ImageMagick6" \
 			PKGNAMESUFFIX=6-nox11
 
 .include <bsd.port.options.mk>

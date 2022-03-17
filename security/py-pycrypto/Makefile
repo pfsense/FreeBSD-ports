@@ -7,7 +7,7 @@ CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python Cryptography Toolkit
 
 LICENSE=	PD
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pycryptodome
 
-USES=		cpe python:3.6+
+USES=		cpe python:3.6-3.10
 USE_PYTHON=	distutils autoplist
 
 CPE_VENDOR=	dlitz

@@ -1,11 +1,11 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 
 PORTNAME=	wine
-DISTVERSION=	6.23
+DISTVERSION=	7.1
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
-		http://mirrors.ibiblio.org/wine/source/6.x/
+		http://mirrors.ibiblio.org/wine/source/7.x/
 PKGNAMESUFFIX=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -18,9 +18,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
-LIB_DEPENDS=	libFAudio.so:audio/faudio \
-		libxml2.so:textproc/libxml2
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex llvm${_LLVM_VERSION}>=0:devel/llvm${_LLVM_VERSION}
 
 USES=		bison cpe desktop-file-utils gmake localbase \
 		pkgconfig sdl shebangfix tar:xz
@@ -41,11 +39,11 @@ CONFIGURE_ARGS+=--verbose \
 		--without-dbus \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
+		--without-gssapi \
 		--without-gstreamer \
-		--without-hal \
 		--without-inotify \
 		--without-krb5 \
-		--without-mingw \
+		--with-mingw CROSSCC="clang" CROSSCFLAGS="-isystem ${FILESDIR}/clang" \
 		--without-netapi \
 		--without-opencl \
 		--without-osmesa \
@@ -53,7 +51,6 @@ CONFIGURE_ARGS+=--verbose \
 		--with-pcap \
 		--with-pthread \
 		--without-pulse \
-		--without-quicktime \
 		--without-sane \
 		--with-sdl \
 		--without-udev \
@@ -66,6 +63,9 @@ USE_LDCONFIG=	${WINELIBDIR} ${WINELIBDIR}/wine
 .endif
 SHEBANG_FILES=	tools/make_requests tools/winemaker/winemaker \
 		tools/winedump/function_grep.pl
+
+BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${_LLVM_VERSION} \
+		lld-link=${LOCALBASE}/bin/lld-link${_LLVM_VERSION}
 
 SUB_FILES=	pkg-message
 
@@ -124,6 +124,12 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 .include <bsd.port.pre.mk>
 
+.if (${LLVM_DEFAULT} == 90 || ${LLVM_DEFAULT} == 10 || ${LLVM_DEFAULT} == 11)
+_LLVM_VERSION=	12
+.else
+_LLVM_VERSION=	${LLVM_DEFAULT}
+.endif
+
 .if ${ARCH} == amd64
 # Wine is composed of three parts:
 #  - wine (aka this port on FreeBSD/i386) is the 32-bit component
@@ -147,7 +153,9 @@ PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
 .endif
 
 post-extract-STAGING-on: fix-shebang
-	cd ${WRKSRC} && ${TAR} xf ${DISTDIR}/${STAGING_DIST} --strip-components 1
+	@${LN} -s ${WRKDIR}/${PORTNAME}-staging-${DISTVERSION}/patches ${WRKSRC}/patches
+
+post-patch-STAGING-on:
 	cd ${WRKSRC} && ${PATCH} -p0 < ${PATCHDIR}/extra-gitapply
 	cd ${WRKSRC} && bash ./patches/patchinstall.sh --backend=patch DESTDIR=${WRKSRC} --all
 

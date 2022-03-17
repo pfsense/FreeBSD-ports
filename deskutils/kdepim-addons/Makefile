@@ -1,14 +1,12 @@
 PORTNAME=	kdepim-addons
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE PIM addons
 
 LICENSE=	LGPL21
-
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
 
 BUILD_DEPENDS=	markdown:textproc/discount
 RUN_DEPENDS=	markdown:textproc/discount

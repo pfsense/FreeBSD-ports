@@ -1,69 +1,47 @@
---- chrome/browser/policy/configuration_policy_handler_list_factory.cc.orig	2021-09-24 04:25:59 UTC
+--- chrome/browser/policy/configuration_policy_handler_list_factory.cc.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/policy/configuration_policy_handler_list_factory.cc
-@@ -1363,11 +1363,11 @@ const PolicyToPreferenceMapEntry kSimplePolicyMap[] = 
+@@ -1443,7 +1443,7 @@ const PolicyToPreferenceMapEntry kSimplePolicyMap[] = 
      base::Value::Type::BOOLEAN },
- #endif // !defined(OS_MAC) && !defined(OS_CHROMEOS)
+ #endif // !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_CHROMEOS)
  
--#if defined(OS_LINUX) || defined(OS_MAC) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_MAC) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    { key::kAuthNegotiateDelegateByKdcPolicy,
      prefs::kAuthNegotiateDelegateByKdcPolicy,
      base::Value::Type::BOOLEAN },
--#endif // defined(OS_LINUX) || defined(OS_MAC) || defined(OS_CHROMEOS)
-+#endif // defined(OS_LINUX) || defined(OS_MAC) || defined(OS_CHROMEOS) || defined(OS_BSD)
+@@ -1552,7 +1552,7 @@ const PolicyToPreferenceMapEntry kSimplePolicyMap[] = 
+     base::Value::Type::BOOLEAN },
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
  
- #if !defined(OS_MAC)
-   { key::kFullscreenAllowed,
-@@ -1728,7 +1728,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
-       SimpleSchemaValidatingPolicyHandler::MANDATORY_ALLOWED));
- #endif  // defined(OS_ANDROID)
+-#if BUILDFLAG(ENABLE_EXTENSIONS) && (BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX))
++#if BUILDFLAG(ENABLE_EXTENSIONS) && (BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD))
+   { key::kChromeAppsEnabled,
+     extensions::pref_names::kChromeAppsEnabled,
+     base::Value::Type::BOOLEAN },
+@@ -1848,7 +1848,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
+ #endif  // BUILDFLAG(IS_ANDROID)
  
--#if defined(OS_LINUX) || defined(OS_MAC) || defined(OS_WIN) || \
-+#if defined(OS_LINUX) || defined(OS_MAC) || defined(OS_WIN) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
    handlers->AddHandler(
        std::make_unique<
-@@ -1736,7 +1736,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
-           key::kContextAwareAccessSignalsAllowlist,
-           enterprise_connectors::kContextAwareAccessSignalsAllowlistPref,
-           chrome_schema));
--#endif  // defined(OS_LINUX) || defined(OS_MAC) || defined(OS_WIN) ||
-+#endif  // defined(OS_LINUX) || defined(OS_MAC) || defined(OS_WIN) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
- 
- #if defined(OS_CHROMEOS)
-@@ -2091,14 +2091,14 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
-       SimpleSchemaValidatingPolicyHandler::RECOMMENDED_PROHIBITED,
+           enterprise_connectors::EnterpriseConnectorsPolicyHandler>(
+@@ -2213,7 +2213,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
        SimpleSchemaValidatingPolicyHandler::MANDATORY_ALLOWED));
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_FUCHSIA)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
    handlers->AddHandler(std::make_unique<SimpleSchemaValidatingPolicyHandler>(
        key::kWebAppSettings, prefs::kWebAppSettings, chrome_schema,
        SCHEMA_ALLOW_UNKNOWN,
-       SimpleSchemaValidatingPolicyHandler::RECOMMENDED_PROHIBITED,
-       SimpleSchemaValidatingPolicyHandler::MANDATORY_ALLOWED));
--#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_FUCHSIA)
- 
- #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
-@@ -2119,7 +2119,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
+@@ -2244,7 +2244,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
            policy::key::kSpellcheckLanguageBlocklist));
  #endif  // BUILDFLAG(ENABLE_SPELLCHECK)
  
--#if defined(OS_LINUX)
-+#if defined(OS_LINUX) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    handlers->AddHandler(std::make_unique<SimpleDeprecatingPolicyHandler>(
        std::make_unique<SimplePolicyHandler>(key::kAllowNativeNotifications,
                                              prefs::kAllowNativeNotifications,
-@@ -2127,7 +2127,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildH
-       std::make_unique<SimplePolicyHandler>(key::kAllowSystemNotifications,
-                                             prefs::kAllowSystemNotifications,
-                                             base::Value::Type::BOOLEAN)));
--#endif  // defined(OS_LINUX)
-+#endif  // defined(OS_LINUX) || defined(OS_BSD)
- 
-   return handlers;
- }

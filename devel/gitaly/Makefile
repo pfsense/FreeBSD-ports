@@ -1,5 +1,5 @@
 PORTNAME=	gitaly
-DISTVERSION=	14.5.2
+DISTVERSION=	14.8.2
 PORTREVISION=	0
 CATEGORIES=	devel
 
@@ -18,23 +18,23 @@ MY_DEPENDS=	git>=2.33.0:devel/git \
 		rubygem-bundler>=2.1.4:sysutils/rubygem-bundler \
 		rubygem-rugged>=1.2<2:devel/rubygem-rugged \
 		rubygem-github-linguist>=7.12.1<8:textproc/rubygem-github-linguist \
-		rubygem-gitlab-markup>=1.7.1<1.8.0:textproc/rubygem-gitlab-markup \
-		rubygem-activesupport61>=6.1.4.1<6.1.4.2:devel/rubygem-activesupport61 \
+		rubygem-gitlab-markup>=1.8.0<1.9.0:textproc/rubygem-gitlab-markup \
+		rubygem-activesupport61>=6.1.4.6<6.1.5:devel/rubygem-activesupport61 \
 		rubygem-rdoc>=6.3.2<7.0:devel/rubygem-rdoc \
-		rubygem-gitlab-gollum-lib>=4.2.7.10.gitlab.1<4.2.8:www/rubygem-gitlab-gollum-lib \
+		rubygem-gitlab-gollum-lib>=4.2.7.10.gitlab.2<4.2.8:www/rubygem-gitlab-gollum-lib \
 		rubygem-gitlab-gollum-rugged_adapter>=0.4.4.4.gitlab.1<0.4.5.0:www/rubygem-gitlab-gollum-rugged_adapter \
 		rubygem-grpc142>=1.42.0.pre1<2:net/rubygem-grpc142 \
 		rubygem-sentry-raven>=3.0<4:devel/rubygem-sentry-raven \
 		rubygem-faraday>=1.0.1<2:www/rubygem-faraday \
 		rubygem-rbtrace>=0.4.14:devel/rubygem-rbtrace \
-		rubygem-gitlab-labkit>=0.21.1<0.22:devel/rubygem-gitlab-labkit \
+		rubygem-gitlab-labkit>=0.22.0<0.23:devel/rubygem-gitlab-labkit \
 		rubygem-licensee>=9.14.1<9.15:devel/rubygem-licensee \
 		rubygem-google-protobuf>=3.19.0<3.20:devel/rubygem-google-protobuf
 BUILD_DEPENDS=	gem:devel/ruby-gems \
 		bash>0:shells/bash \
 		${MY_DEPENDS}
 RUN_DEPENDS=	${MY_DEPENDS} \
-		gitlab-shell>=9.3.0:devel/gitlab-shell
+		gitlab-shell>=13.22.1:devel/gitlab-shell
 LIB_DEPENDS=	libgit2.so:devel/libgit2
 
 USES=		cpe gmake go:modules,no_targets pkgconfig
@@ -49,12 +49,12 @@ MAKE_ENV+=	${GO_ENV}
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 # Find this here: https://gitlab.com/gitlab-org/gitaly/-/tags
-GL_COMMIT=	5d5df6138d9bc6b93503ee529a5b099ea8e5e839
+GL_COMMIT=	b8b72829690dc33e7aeb9ca7b304e9c057e7357d
 
 # for go dependencies
 USE_GITHUB=	nodefault
 # generated with: make gomod-vendor
-# 138dd
+# 145dd
 GH_TUPLE=	\
 		Azure:azure-pipeline-go:v0.2.3:azure_azure_pipeline_go/vendor/github.com/Azure/azure-pipeline-go \
 		Azure:azure-storage-blob-go:v0.13.0:azure_azure_storage_blob_go/vendor/github.com/Azure/azure-storage-blob-go \
@@ -71,6 +71,7 @@ GH_TUPLE=	\
 		alexbrainman:sspi:4729b3d4d858:alexbrainman_sspi/vendor/github.com/alexbrainman/sspi \
 		avast:retry-go:v2.4.2:avast_retry_go/vendor/github.com/avast/retry-go \
 		aws:aws-sdk-go:v1.38.35:aws_aws_sdk_go/vendor/github.com/aws/aws-sdk-go \
+		beevik:ntp:v0.3.0:beevik_ntp/vendor/github.com/beevik/ntp \
 		beorn7:perks:v1.0.1:beorn7_perks/vendor/github.com/beorn7/perks \
 		census-ecosystem:opencensus-go-exporter-stackdriver:v0.13.8:census_ecosystem_opencensus_go_exporter_stackdriver/vendor/contrib.go.opencensus.io/exporter/stackdriver \
 		census-instrumentation:opencensus-go:v0.23.0:census_instrumentation_opencensus_go/vendor/go.opencensus.io \
@@ -103,7 +104,7 @@ GH_TUPLE=	\
 		godbus:dbus:v5.0.4:godbus_dbus_v5/vendor/github.com/godbus/dbus/v5 \
 		gogo:protobuf:v1.3.2:gogo_protobuf/vendor/github.com/gogo/protobuf \
 		golang:appengine:v1.6.7:golang_appengine/vendor/google.golang.org/appengine \
-		golang:crypto:38f3c27a63bf:golang_crypto/vendor/golang.org/x/crypto \
+		golang:crypto:a769d52b0f97:golang_crypto/vendor/golang.org/x/crypto \
 		golang:exp:e8c3332aa8e5:golang_exp/vendor/golang.org/x/exp \
 		golang:groupcache:41bb18bfe9da:golang_groupcache/vendor/github.com/golang/groupcache \
 		golang:lint:83fdc39ff7b5:golang_lint/vendor/golang.org/x/lint \
@@ -135,6 +136,14 @@ GH_TUPLE=	\
 		hashicorp:yamux:a95892c5f864:hashicorp_yamux/vendor/github.com/hashicorp/yamux \
 		hhatto:gorst:ca9f730cac5b:hhatto_gorst/vendor/github.com/hhatto/gorst \
 		imdario:mergo:v0.3.12:imdario_mergo/vendor/github.com/imdario/mergo \
+		jackc:chunkreader:v2.0.1:jackc_chunkreader_v2/vendor/github.com/jackc/chunkreader/v2 \
+		jackc:pgconn:v1.10.1:jackc_pgconn/vendor/github.com/jackc/pgconn \
+		jackc:pgio:v1.0.0:jackc_pgio/vendor/github.com/jackc/pgio \
+		jackc:pgpassfile:v1.0.0:jackc_pgpassfile/vendor/github.com/jackc/pgpassfile \
+		jackc:pgproto3:v2.2.0:jackc_pgproto3_v2/vendor/github.com/jackc/pgproto3/v2 \
+		jackc:pgservicefile:2b9c44734f2b:jackc_pgservicefile/vendor/github.com/jackc/pgservicefile \
+		jackc:pgtype:v1.9.1:jackc_pgtype/vendor/github.com/jackc/pgtype \
+		jackc:pgx:v4.14.1:jackc_pgx_v4/vendor/github.com/jackc/pgx/v4 \
 		jbenet:go-context:d14ea06fba99:jbenet_go_context/vendor/github.com/jbenet/go-context \
 		jcmturner:aescts:v1.0.1:jcmturner_aescts/vendor/gopkg.in/jcmturner/aescts.v1 \
 		jcmturner:dnsutils:v1.0.1:jcmturner_dnsutils/vendor/gopkg.in/jcmturner/dnsutils.v1 \
@@ -146,8 +155,7 @@ GH_TUPLE=	\
 		jstemmer:go-junit-report:v0.9.1:jstemmer_go_junit_report/vendor/github.com/jstemmer/go-junit-report \
 		kelseyhightower:envconfig:v1.3.0:kelseyhightower_envconfig/vendor/github.com/kelseyhightower/envconfig \
 		kevinburke:ssh_config:4977a11b4351:kevinburke_ssh_config/vendor/github.com/kevinburke/ssh_config \
-		lib:pq:v1.10.1:lib_pq/vendor/github.com/lib/pq \
-		libgit2:git2go:v32.0.5:libgit2_git2go_v32/vendor/github.com/libgit2/git2go/v32 \
+		libgit2:git2go:v33.0.6:libgit2_git2go_v33/vendor/github.com/libgit2/git2go/v33 \
 		lightstep:lightstep-tracer-common:a8dfcb80d3a7:lightstep_lightstep_tracer_common_gogo/vendor/github.com/lightstep/lightstep-tracer-common \
 		lightstep:lightstep-tracer-go:v0.24.0:lightstep_lightstep_tracer_go/vendor/github.com/lightstep/lightstep-tracer-go \
 		mattn:go-ieproxy:v0.0.1:mattn_go_ieproxy/vendor/github.com/mattn/go-ieproxy \

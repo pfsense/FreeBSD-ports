@@ -8,6 +8,9 @@ PKGNAMESUFFIX=	150
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Cross-platform windowing and multimedia library
 
+DEPRECATED=	No longer needed, use graphics/py-pyglet instead
+EXPIRATION_DATE=2022-04-16
+
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
@@ -16,5 +19,7 @@ CONFLICTS_INSTALL=${PYTHON_PKGNAMEPREFIX}pyglet
 USES=		python:3.5+ zip
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
+
+PORTSCOUT=	ignore:1
 
 .include <bsd.port.mk>

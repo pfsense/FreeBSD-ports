@@ -1,7 +1,7 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
 
 PORTNAME=	django
-PORTVERSION=	2.2.24
+PORTVERSION=	2.2.27
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP \
 		https://www.djangoproject.com/m/releases/${PORTVERSION}/
@@ -15,6 +15,9 @@ COMMENT=	High-level Python Web Framework
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Django 2.2 is now in Extended Support, receives security fixes only and will reach End-Of-Life on 2022-04-01. Upgrade to a later Django version. See https://www.djangoproject.com/download/
+EXPIRATION_DATE=	2022-06-30
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>0:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlparse>=0:databases/py-sqlparse@${PY_FLAVOR}
@@ -32,8 +35,7 @@ PORTDOCS=	*
 SHEBANG_FILES=	django/bin/django-admin.py \
 		django/conf/project_template/manage.py-tpl
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django30 \
-			${PYTHON_PKGNAMEPREFIX}django31 ${PYTHON_PKGNAMEPREFIX}django32
+CONFLICTS_INSTALL=	py*-django* # bin/django-admin
 
 CPE_VENDOR=	djangoproject
 

@@ -1,8 +1,9 @@
 .if !defined(_SCCACHE_OVERLAY_INCLUDED) && !defined(NO_SCCACHE)
 _SCCACHE_OVERLAY_INCLUDED=	yes
-_SCCACHE_SIZE_DEFAULT=		16G
 
-SCCACHE_SIZE?=	${_SCCACHE_SIZE_DEFAULT}
+SCCACHE_SIZE?=		16G
+SCCACHE_IDLE_TIMEOUT?=	0
+SCCACHE_UNIX_LISTEN?=	/tmp/sccache-overlay.socket
 
 _SCCACHE_LIBS=	${LOCALBASE}/share/sccache/overlay/lib
 .for odir in ${OVERLAYS}
@@ -26,7 +27,9 @@ IGNORE=		SCCACHE_DIR not set
 _SCCACHE_ENV=	RUSTC_WRAPPER="${SCCACHE_BIN}" \
 		SCCACHE_CACHE_SIZE="${SCCACHE_SIZE}" \
 		SCCACHE_DIR="${SCCACHE_DIR}" \
-		SCCACHE_MAX_FRAME_LENGTH=104857600
+		SCCACHE_IDLE_TIMEOUT="${SCCACHE_IDLE_TIMEOUT}" \
+		SCCACHE_MAX_FRAME_LENGTH=104857600 \
+		SCCACHE_UNIX_LISTEN="${SCCACHE_UNIX_LISTEN}"
 CONFIGURE_ENV+=	${_SCCACHE_ENV}
 MAKE_ENV+=	${_SCCACHE_ENV}
 
@@ -44,8 +47,7 @@ sccache-stats:
 	@${SETENV} ${_SCCACHE_ENV} ${SCCACHE_BIN} --show-stats || ${TRUE}
 
 # We let Poudriere clean up the server. Users who build locally
-# can stop the server with `make sccache-stop` manually or wait
-# 10 minutes after the build until it shuts down automatically.
+# can stop the server with `make sccache-stop` manually.
 sccache-stop:
 	@${ECHO_MSG} "==> Stopping sccache"
 	@${SETENV} ${_SCCACHE_ENV} ${SCCACHE_BIN} --stop-server

@@ -1,6 +1,6 @@
 PORTNAME=	onedrive
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.12
+DISTVERSION=	2.4.15
 CATEGORIES=	net
 
 MAINTAINER=	hiroo.ono+freebsd@gmail.com
@@ -46,4 +46,13 @@ post-extract:
 post-install:
 	${INSTALL} -d -m 0775 ${STAGEDIR}${ONEDRIVE_LOGDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# llvm 13.0 and above.
+.if (${OSVERSION} >= 1400042) || \
+	(${OSVERSION} < 1400000 && ${OSVERSION} >= 1300522) || \
+	(${OSVERSION} < 1300000 && ${OSVERSION} >= 1203505)
+CONFIGURE_ARGS+=	DCFLAGS=-L=-Wl,-z,nostart-stop-gc
+.endif
+
+.include <bsd.port.post.mk>

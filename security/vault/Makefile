@@ -1,9 +1,10 @@
 PORTNAME=	vault
-PORTVERSION=	1.8.2
+PORTVERSION=	1.8.7
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
 MAINTAINER=	swills@FreeBSD.org
+# co-maintainer: brd
 COMMENT=	Tool for securely accessing secrets
 
 LICENSE=	MPL20

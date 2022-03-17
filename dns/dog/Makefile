@@ -1,7 +1,7 @@
 PORTNAME=	dog
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.0
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	dns net
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -15,6 +15,8 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 USES=		cargo ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	ogham
+
+CONFLICTS_INSTALL=	py*-datadog
 
 CARGO_CRATES=	addr2line-0.14.0 \
 		adler-0.2.3 \

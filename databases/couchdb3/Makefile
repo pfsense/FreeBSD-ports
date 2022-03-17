@@ -1,5 +1,5 @@
 PORTNAME=	couchdb3
-DISTVERSION=	3.2.0
+PORTVERSION=	3.2.1
 PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/couchdb/source/${DISTVERSION}
@@ -8,11 +8,11 @@ DISTNAME=	apache-couchdb-${DISTVERSION}
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	JSON document database with HTTP API and scalable multi-master sync
 
-LICENSE=	APACHE20 BSD3CLAUSE ISCL WTFPL OFL11
+LICENSE=	APACHE20 BSD3CLAUSE ISCL OFL11 WTFPL
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	rebar:devel/rebar \
-		erlang-runtime${ERLVER}>=${ERLVER}.0:lang/erlang-runtime${ERLVER}
+BUILD_DEPENDS=	erlang-runtime${ERLVER}>=${ERLVER}.0:lang/erlang-runtime${ERLVER} \
+		rebar:devel/rebar
 LIB_DEPENDS=	libicudata.so:devel/icu \
 		libmozjs-78.so:lang/spidermonkey78
 RUN_DEPENDS=	erlang-runtime${ERLVER}>=${ERLVER}.0:lang/erlang-runtime${ERLVER}
@@ -37,7 +37,9 @@ SUB_LIST=	APPDIR=${APPDIR} \
 PLIST_SUB=	VERSION=${DISTVERSION}
 
 HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--skip-deps --user ${USERS} --rebar ${LOCALBASE}/bin/rebar \
+CONFIGURE_ARGS=	--skip-deps \
+		--user ${USERS} \
+		--rebar ${LOCALBASE}/bin/rebar \
 		--spidermonkey-version 78
 
 ALL_TARGET=	release
@@ -80,7 +82,7 @@ post-patch:
 .endif
 
 pre-install:
-	# relocate user-modifiable runtime configs to match hier(7)
+# relocate user-modifiable runtime configs to match hier(7)
 	${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/rel/couchdb/etc/local.ini \
 		${STAGEDIR}${ETCDIR}/local.ini.sample
@@ -88,11 +90,11 @@ pre-install:
 		${STAGEDIR}${ETCDIR}/vm.args.sample
 	${INSTALL_MAN} ${WRKSRC}/share/docs/man/apachecouchdb.1 \
 		${STAGEDIR}${MANPREFIX}/man/man1
-	# prune build artefacts and surplus headers
+# prune build artefacts and surplus headers
 	${FIND} -E ${WRKSRC} -type f \
 		-regex '.*\.(a|buildinfo|c|cc|cmd|d|o|orig|h|cpp)' -print -delete
 	@${CP} ${WRKSRC}/src/docs/images/favicon.ico ${WRKSRC}/share/www/
-	# remove runtime dirs and files that were moved to match hier(7)
+# remove runtime dirs and files that were moved to match hier(7)
 	${RM} -rv \
 		${WRKSRC}/rel/couchdb/etc/*.d \
 		${WRKSRC}/rel/couchdb/etc/local.ini \
@@ -111,7 +113,7 @@ post-install:
 	@${MKDIR} \
 		${STAGEDIR}${DBDIR} \
 		${STAGEDIR}${LOGDIR}
-	# fauxton UI is a required component
+# fauxton UI is a required component
 	(cd ${WRKSRC}/share/www && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR})
 
 post-install-DOCS-on:

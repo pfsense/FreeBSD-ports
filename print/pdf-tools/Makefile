@@ -1,7 +1,6 @@
 PORTNAME=	pdf-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.90-90
-DISTVERSIONSUFFIX=	-ga8847b7
+DISTVERSION=	0.91
 CATEGORIES=	print elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -15,16 +14,17 @@ BROKEN_FreeBSD_12_powerpc64=	fails to configure on powerpc64 elfv1: cannot find 
 
 BUILD_DEPENDS=	cask${EMACS_PKGNAMESUFFIX}>0:devel/cask@${EMACS_FLAVOR} \
 		tablist${EMACS_PKGNAMESUFFIX}>=0.70.4:devel/tablist@${EMACS_FLAVOR}
-LIB_DEPENDS=	libMagickCore-7.so:graphics/ImageMagick7 \
-		libpng.so:graphics/png \
+LIB_DEPENDS=	libpng.so:graphics/png \
 		libpoppler-glib.so:graphics/poppler-glib \
 		libpoppler.so:graphics/poppler
 RUN_DEPENDS=	tablist${EMACS_PKGNAMESUFFIX}>=0.70:devel/tablist@${EMACS_FLAVOR}
 
-USES=		autoreconf:build emacs gettext-runtime gmake gnome
+USES=		autoreconf:build emacs gettext-runtime gmake gnome magick:7
 USE_GITHUB=	yes
 GH_ACCOUNT=	vedang
 USE_GNOME=	cairo glib20
+
+CONFLICTS_INSTALL=	pdf-tools pdf-tools-emacs_* # bin/epdfinfo
 
 EMACS_FLAVORS_EXCLUDE=	devel_nox nox
 

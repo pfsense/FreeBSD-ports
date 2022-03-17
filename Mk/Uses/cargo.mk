@@ -97,7 +97,7 @@ WRKSRC_crate_${_crate}=	${WRKDIR}/${_wrksrc}
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.57.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.59.0:lang/${RUST_DEFAULT}
 .endif
 
 # Location of toolchain (default to lang/rust's toolchain)
@@ -113,6 +113,7 @@ CARGO_BUILD_TARGET?=	${_CARGO_RUST_ARCH_${ARCH}:U${ARCH}}-unknown-${OPSYS:tl}
 
 _CARGO_RUST_ARCH_amd64=		x86_64
 _CARGO_RUST_ARCH_i386=		i686
+_CARGO_RUST_ARCH_riscv64=	riscv64gc
 
 # Environment for cargo
 #  - CARGO_HOME: local cache of the registry index

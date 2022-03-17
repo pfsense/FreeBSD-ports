@@ -30,6 +30,8 @@ CFLAGS+=	-Wno-return-type
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+CONFLICTS_INSTALL=	gohugo
+
 .include <bsd.port.options.mk>
 
 .if empty(PORT_OPTIONS:MGTK2) && ${PORT_OPTIONS:MNETPLAY}

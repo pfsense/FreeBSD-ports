@@ -9,6 +9,7 @@
     SUBDIR += bind9-devel
     SUBDIR += bind911
     SUBDIR += bind916
+    SUBDIR += bind918
     SUBDIR += bindgraph
     SUBDIR += blocky
     SUBDIR += bundy
@@ -86,7 +87,6 @@
     SUBDIR += idnkit2
     SUBDIR += inadyn
     SUBDIR += ipcheck
-    SUBDIR += ironsides
     SUBDIR += kadnode
     SUBDIR += kf5-kdnssd
     SUBDIR += knock
@@ -185,6 +185,7 @@
     SUBDIR += py-dns-crawler
     SUBDIR += py-dns-lexicon
     SUBDIR += py-dnspython
+    SUBDIR += py-dnspython1
     SUBDIR += py-dnspython2
     SUBDIR += py-easyzone
     SUBDIR += py-idna

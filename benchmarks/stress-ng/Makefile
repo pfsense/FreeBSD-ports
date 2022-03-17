@@ -1,6 +1,6 @@
 PORTNAME=	stress-ng
 DISTVERSIONPREFIX=	V
-DISTVERSION=	0.13.07
+DISTVERSION=	0.13.12
 PORTREVISION=	0
 CATEGORIES=	benchmarks
 
@@ -10,9 +10,7 @@ COMMENT=	Stress test benchmarks
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=	Fails to link: missing sbrk
-
-USES=		compiler:c11 gmake tar:xz
+USES=		compiler:c11 gmake localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	ColinIanKing
 
@@ -20,18 +18,26 @@ ALL_TARGET=	# empty
 
 PLIST_FILES=	bin/stress-ng man/man1/stress-ng.1.gz
 
-OPTIONS_DEFINE=	LIBINOTIFY
-OPTIONS_DEFAULT=	LIBINOTIFY
-LIBINOTIFY_DESC=	Install the kevent based libinotify to enable its stress
+OPTIONS_DEFINE=		JUDY LIBINOTIFY
+OPTIONS_DEFINE_amd64=	INTELIPSEC
+OPTIONS_DEFAULT=	JUDY LIBINOTIFY
+OPTIONS_DEFAULT_amd64=	INTELIPSEC
 
-LIBINOTIFY_CFLAGS	+=	-I${LOCALBASE}/include
-LIBINOTIFY_LDFLAGS	+=	-L${LOCALBASE}/lib -linotify
-LIBINOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
+INTELIPSEC_DESC=	Enable support for Intel's IPsec library
+JUDY_DESC=		Enable support for (lib)Judy
+LIBINOTIFY_DESC=	Enable support for libinotify
 
-post-patch:
-	${REINPLACE_CMD} -e \
-		's/int main(void)/int main(void) __attributes__((noinline))/' \
-		${WRKSRC}/stress-atomic.c
+INTELIPSEC_LIB_DEPENDS=		libIPSec_MB.so:security/intel-ipsec-mb
+INTELIPSEC_MAKE_ARGS_OFF=	HAVE_LIB_IPSEC_MB=0
+
+JUDY_LIB_DEPENDS=		libJudy.so:devel/judy
+JUDY_MAKE_ARGS_OFF=		HAVE_LIB_JUDY=0
+
+LIBINOTIFY_LIB_DEPENDS=		libinotify.so:devel/libinotify
+LIBINOTIFY_LDFLAGS=		-linotify
+LIBINOTIFY_MAKE_ARGS_OFF=	HAVE_SYS_INOTIFY_H=0
+
+MAKE_ARGS=	VERBOSE=1
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/stress-ng ${STAGEDIR}${PREFIX}/bin

@@ -2,7 +2,7 @@
 # to upload them to ~/public_distfiles on freefall in preparation
 # for the next lang/rust update.
 PORTNAME=	rust
-PORTVERSION=	1.57.0
+PORTVERSION=	1.59.0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/
 PKGNAMEPREFIX=	${FLAVOR:S/_/-/g}-
@@ -18,7 +18,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	untested on other architectures
 
 BUILD_DEPENDS=	${FLAVOR:S/_/-/g}-freebsd-sysroot>=a2021.09.14:devel/freebsd-sysroot@${FLAVOR} \
@@ -27,7 +27,7 @@ BUILD_DEPENDS=	${FLAVOR:S/_/-/g}-freebsd-sysroot>=a2021.09.14:devel/freebsd-sysr
 		rust>=${PORTVERSION}:lang/rust
 
 FLAVORS=	aarch64 amd64 armv6 armv7 i386 powerpc64_elfv1 powerpc64_elfv2 \
-		powerpc64le powerpc
+		powerpc64le powerpc riscv64
 FLAVOR?=	${FLAVORS:[1]}
 
 USES=		cpe ninja:build perl5 python:3.6+,build tar:xz
@@ -51,6 +51,7 @@ _RUST_ARCH_amd64=			x86_64
 _RUST_ARCH_i386=			i686
 _RUST_ARCH_powerpc64_elfv1=		powerpc64
 _RUST_ARCH_powerpc64_elfv2=		powerpc64
+_RUST_ARCH_riscv64=			riscv64gc
 _RUST_HOST=				${_RUST_ARCH_${ARCH}:U${ARCH}}-unknown-${OPSYS:tl}
 _RUST_TARGET=				${_RUST_ARCH_${FLAVOR}:U${FLAVOR}}-unknown-${OPSYS:tl}
 _RUST_LLVM_TARGET=			${_RUST_LLVM_TARGET_${FLAVOR}}
@@ -63,13 +64,14 @@ _RUST_LLVM_TARGET_powerpc64_elfv1=	PowerPC
 _RUST_LLVM_TARGET_powerpc64_elfv2=	PowerPC
 _RUST_LLVM_TARGET_powerpc64le=		PowerPC
 _RUST_LLVM_TARGET_powerpc=		PowerPC
+_RUST_LLVM_TARGET_riscv64=		RISCV
 
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} != FreeBSD
 IGNORE=	is only for FreeBSD
 .endif
-.if ${FLAVOR} == powerpc64le && ${OSVERSION} < 1300116
+.if (${FLAVOR} == powerpc64le || ${FLAVOR} == riscv64) && ${OSVERSION} < 1300116
 IGNORE=	will not build on 12.x due to old system
 .endif
 
@@ -112,6 +114,9 @@ do-configure:
 	@${ECHO_CMD} '[rust]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'channel="stable"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'default-linker="${CC}"' >> ${WRKSRC}/config.toml
+.if ${FLAVOR} == riscv64
+	@${ECHO_CMD} 'debug=true' >> ${WRKSRC}/config.toml
+.endif
 	@${ECHO_CMD} 'deny-warnings=false' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[llvm]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'link-shared=false' >> ${WRKSRC}/config.toml
@@ -148,7 +153,7 @@ do-configure:
 do-build:
 	@cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ${PYTHON_CMD} x.py dist --jobs=${MAKE_JOBS_NUMBER} \
-		cargo src/librustc library/std
+		cargo rustc rust-std
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/rust-bootstrap/${FLAVOR}

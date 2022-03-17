@@ -1,5 +1,5 @@
 PORTNAME=	facter
-PORTVERSION=	3.14.21
+PORTVERSION=	3.14.22
 CATEGORIES?=	sysutils
 MASTER_SITES=	https://downloads.puppetlabs.com/facter/
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		liblibcpp-hocon.so:devel/cpp-hocon \
 		libyaml-cpp.so:devel/yaml-cpp
 
-CONFLICTS_INSTALL=	rubygem-facter-2*
+CONFLICTS_INSTALL=	rubygem-facter
 
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 

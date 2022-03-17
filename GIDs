@@ -242,9 +242,9 @@ owncast:*:299:
 backuppc:*:300:
 openvpn:*:301:
 netdata:*:302:
-# free: 303
-# free: 304
-# free: 305
+onlyoffice:*:303:www
+glewlwyd:*:304:
+nats:*:305:
 # free: 306
 # free: 307
 # free: 308
@@ -298,10 +298,10 @@ nzbhydra2:*:355:
 lidarr:*:356:
 bazarr:*:357:
 autoscan:*:358:
-# free: 359
+prowlarr:*:359:
 v2ray:*:360:
 httptunnel:*:361:
-# free: 362
+readarr:*:362:
 # free: 363
 # free: 364
 # free: 365
@@ -810,7 +810,7 @@ opensearch:*:855:
 # free: 867
 # free: 868
 # free: 869
-# free: 870
+buildbot:*:870
 # free: 871
 bitmark:*:872:
 bitmark-recorder:*:873:

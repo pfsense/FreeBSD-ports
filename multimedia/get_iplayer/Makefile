@@ -1,10 +1,10 @@
 PORTNAME=	get_iplayer
-PORTVERSION=	3.27
+PORTVERSION=	3.29
 DISTVERSIONPREFIX=	v
 CATEGORIES=	multimedia net
 
 MAINTAINER=	jamie@catflap.org
-COMMENT=	Lists and records BBC iPlayer TV and BBC Sounds radio programs
+COMMENT=	Lists and records BBC iPlayer TV and BBC Sounds radio programmes
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

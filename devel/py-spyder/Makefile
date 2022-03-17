@@ -3,7 +3,7 @@
 PORTNAME=	spyder
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.2.7
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	devel science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -29,7 +29,7 @@ USES=		desktop-file-utils python:3.7+ pyqt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	spyder-ide
 USE_PYTHON=	distutils autoplist noflavors
-USE_PYQT=	core_run gui_run network_run sip_run svg_run webkit_run webkitwidgets_run
+USE_PYQT=	pyqt5 sip
 NO_ARCH=	yes
 
 DOCSDIR=	${PYTHON_SITELIBDIR}/spyder

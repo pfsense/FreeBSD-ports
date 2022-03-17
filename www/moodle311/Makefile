@@ -1,7 +1,7 @@
 # Created by: Javier Martin Rueda <jmrueda@diatel.upm.es>
 
 PORTNAME=	moodle
-PORTVERSION=	3.11.4
+PORTVERSION=	3.11.6
 CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable311/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
@@ -17,9 +17,9 @@ USES=		cpe php:flavors tar:tgz
 USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json mbstring \
 		opcache openssl pcre session simplexml soap sodium spl tokenizer \
 		xml xmlreader xmlrpc zip zlib
-WRKSRC=		${WRKDIR}/moodle
+IGNORE_WITH_PHP=	81
 
-IGNORE_WITH_PHP=	80
+WRKSRC=		${WRKDIR}/moodle
 
 OPTIONS_SINGLE=		BACKEND
 OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL MSSQL

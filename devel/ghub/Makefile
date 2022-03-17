@@ -1,12 +1,12 @@
 PORTNAME=	ghub
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.5.4
+DISTVERSION=	3.5.5
 PORTREVISION=	1
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	yasu@FreeBSD.org
-COMMENT=	Minuscule client library for the Github API
+COMMENT=	Client libraries for the APIs of various Git forges
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,13 +19,24 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	magit
 
 MAKE_ARGS=	LOAD_PATH="-L ${PREFIX}/${EMACS_SITE_LISPDIR} -L ${PREFIX}/${EMACS_VERSION_SITE_LISPDIR} -L ."
+ALL_TARGET=	lisp info
 
 NO_ARCH=	yes
 
 INFO=		ghub
-PORTDOCS=	README.md
+PORTDOCS=	CHANGELOG README.md ghub.html
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS PDF
+
+PDF_DESC=	Build and install PDF document
+
+DOCS_BUILD_DEPENDS=	gsed:textproc/gsed
+DOCS_ALL_TARGET=	html
+DOCS_BINARY_ALIAS=	sed=gsed
+PDF_BUILD_DEPENDS=	texi2pdf:print/texinfo
+PDF_USE=		TEX=dvipdfmx:build
+PDF_ALL_TARGET=		pdf
+PDF_PLIST_FILES=	${DOCSDIR}/ghub.pdf
 
 ELISP_FILES=	buck.el buck.elc ghub-autoloads.el ghub-graphql.el \
 		ghub-graphql.elc ghub.el ghub.elc glab.el glab.elc gogs.el \
@@ -33,14 +44,17 @@ ELISP_FILES=	buck.el buck.elc ghub-autoloads.el ghub-graphql.el \
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}
-.for f in ${ELISP_FILES}
-	${INSTALL_DATA} ${WRKSRC}/${f} \
+	${INSTALL_DATA} ${ELISP_FILES:C/^/${WRKSRC}\/lisp\//} \
 		${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}
-.endfor
-	${INSTALL_DATA} ${WRKSRC}/*.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
+	${INSTALL_DATA} ${WRKSRC}/docs/*.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/CHANGELOG ${WRKSRC}/README.md \
+		${WRKSRC}/docs/ghub.html ${STAGEDIR}${DOCSDIR}
+
+do-install-PDF-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/ghub.pdf ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

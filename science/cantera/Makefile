@@ -1,6 +1,7 @@
 PORTNAME=	cantera
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.5.1-611
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-gc4d6ecc15
 CATEGORIES=	science # chemistry physics
 
@@ -17,7 +18,6 @@ LICENSE_FILE=	${WRKSRC}/License.txt
 BUILD_DEPENDS=	googletest>0:devel/googletest \
 		${LOCALBASE}/include/boost/algorithm/string.hpp:devel/boost-libs
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
-		libsundials_cvodes.so:math/sundials \
 		libyaml-cpp.so:devel/yaml-cpp
 
 USES=		compiler:c++11-lang eigen:3 scons
@@ -25,9 +25,10 @@ USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cantera
+GH_TUPLE=	LLNL:sundials:887af43:sundials/ext/sundials # bundled sundials is only needed for the Octave option
 
 MAKE_ARGS=	system_eigen='y' \
-		system_sundials='y' \
+		system_sundials='n' \
 		system_fmt='y' \
 		system_yamlcpp='y' \
 		googletest='system' \
@@ -41,13 +42,19 @@ MAKE_ARGS=	system_eigen='y' \
 ALL_TARGET=	build
 TEST_TARGET=	test # some tests fail, see https://github.com/Cantera/cantera/issues/1095
 
-OPTIONS_DEFINE=		PYTHON
-OPTIONS_DEFAULT=	PYTHON
+OPTIONS_DEFINE=		OCTAVE PYTHON
+OPTIONS_DEFAULT=	PYTHON # OCTAVE is off by default because Octave interface is not as frequently requested feature
 OPTIONS_SUB=		yes
+
+OCTAVE_DESC=		Octave support
+OCTAVE_MAKE_ARGS=	matlab_toolbox=y matlab_path=${LOCALBASE}
+OCTAVE_CXXFLAGS=	-I${LOCALBASE}/include/octave-6.4.0/octave
+OCTAVE_LIB_DEPENDS=	liboctave.so:math/octave
+OCTAVE_SUB_FILES=	pkg-message-octave
 
 PYTHON_USES=		python:3.6+
 PYTHON_USE=		PYTHON=cython
-PYTHON_MAKE_ARGS=	python_cmd="${PYTHON_CMD}"
+PYTHON_MAKE_ARGS=	python_cmd=${PYTHON_CMD} python_package=full
 PYTHON_MAKE_ARGS_OFF=	python_package="none"
 PYTHON_BUILD_DEPENDS=	${PYNUMPY}
 PYTHON_RUN_DEPENDS=	${PYNUMPY} \
@@ -65,5 +72,10 @@ do-install:
 
 do-install-PYTHON-on:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cantera/_cantera.cpython-${PYTHON_VER:S/.//}.so
+
+post-install-OCTAVE-on: # adjust .mex file name
+	@${MV} \
+		${STAGEDIR}${PREFIX}/lib/cantera/matlab/toolbox/ctmethods.mexa64 \
+		${STAGEDIR}${PREFIX}/lib/cantera/matlab/toolbox/ctmethods.mex
 
 .include <bsd.port.mk>

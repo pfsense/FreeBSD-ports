@@ -2,10 +2,11 @@
 
 PORTNAME=	pillow
 PORTVERSION=	8.2.0
+PORTREVISION=	1
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fork of the Python Imaging Library (PIL)
 
 LICENSE=	PIL

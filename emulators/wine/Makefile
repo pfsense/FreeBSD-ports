@@ -1,8 +1,7 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 
 PORTNAME=	wine
-DISTVERSION=	6.0.2
-PORTREVISION=	1
+DISTVERSION=	6.0.3
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
@@ -28,7 +27,7 @@ USE_SDL=	sdl2
 
 CPE_VENDOR=	winehq
 
-CONFLICTS_INSTALL=	wine-devel-*
+CONFLICTS_INSTALL=	wine-devel
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--verbose \
@@ -41,6 +40,7 @@ CONFIGURE_ARGS+=--verbose \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
 		--without-gsm \
+		--without-gssapi \
 		--without-gstreamer \
 		--without-hal \
 		--without-inotify \
@@ -53,6 +53,7 @@ CONFIGURE_ARGS+=--verbose \
 		--with-pcap \
 		--with-pthread \
 		--without-pulse \
+		--without-quicktime \
 		--without-sane \
 		--with-sdl \
 		--without-tiff \

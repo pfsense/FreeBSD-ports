@@ -1,7 +1,7 @@
 # Created by: Tomoyuki Sakurai <cherry@trombik.org>
 
 PORTNAME=	facter
-PORTVERSION=	4.2.5
+PORTVERSION=	4.2.7
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -18,6 +18,8 @@ RUN_DEPENDS=	rubygem-ffi>=1.0:devel/rubygem-ffi \
 USES=		cpe gem
 CPE_VENDOR=	puppet
 USE_RUBY=	yes
+
+CONFLICTS_INSTALL=	facter # bin/facter
 
 NO_ARCH=	yes
 

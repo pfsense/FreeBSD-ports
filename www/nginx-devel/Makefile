@@ -1,7 +1,8 @@
 # Created by: Sergey A. Osokin <osa@FreeBSD.org>
 
 PORTNAME?=	nginx
-PORTVERSION=	1.21.4
+PORTVERSION=	1.21.6
+PORTREVISION=	7
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa
@@ -54,7 +55,8 @@ CONFIGURE_ARGS+=--prefix=${ETCDIR} \
 		--pid-path=${NGINX_RUNDIR}/nginx.pid \
 		--error-log-path=${NGINX_ERRORLOG} \
 		--user=${WWWOWN} --group=${WWWGRP} \
-		--with-compat
+		--with-compat \
+		--with-pcre
 ALL_TARGET=
 
 PLIST_SUB+=	NGINX_TMPDIR=${NGINX_TMPDIR} NGINX_LOGDIR=${NGINX_LOGDIR} WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
@@ -69,8 +71,8 @@ OPTIONS_GROUP=	HTTPGRP MAILGRP STREAMGRP
 OPTIONS_GROUP_HTTPGRP=	GOOGLE_PERFTOOLS HTTP HTTP_ADDITION HTTP_AUTH_REQ \
 	HTTP_CACHE HTTP_DAV HTTP_DEGRADATION HTTP_FLV HTTP_GUNZIP_FILTER \
 	HTTP_GZIP_STATIC HTTP_IMAGE_FILTER HTTP_MP4 HTTP_PERL \
-	HTTP_RANDOM_INDEX HTTP_REALIP HTTP_REWRITE HTTP_SECURE_LINK \
-	HTTP_SLICE HTTP_SSL HTTP_STATUS HTTP_SUB HTTP_XSLT HTTPV2
+	HTTP_RANDOM_INDEX HTTP_REALIP HTTP_SECURE_LINK HTTP_SLICE HTTP_SSL \
+	HTTP_STATUS HTTP_SUB HTTP_XSLT HTTPV2 HTTPV3 HTTPV3_BORING HTTPV3_QTLS
 
 OPTIONS_GROUP_MAILGRP=	MAIL MAIL_IMAP MAIL_POP3 MAIL_SMTP MAIL_SSL
 
@@ -79,16 +81,16 @@ OPTIONS_GROUP_STREAMGRP=	STREAM STREAM_REALIP STREAM_SSL \
 
 OPTIONS_DEFINE=		DEBUG DEBUGLOG DSO FILE_AIO IPV6 NJS THREADS WWW
 OPTIONS_DEFAULT?=	DSO FILE_AIO HTTP HTTP_ADDITION HTTP_AUTH_REQ HTTP_CACHE \
-		HTTP_DAV HTTP_FLV HTTP_GUNZIP_FILTER HTTP_GZIP_STATIC \
-		HTTP_MP4 HTTP_RANDOM_INDEX HTTP_REALIP HTTP_REWRITE \
-		HTTP_SECURE_LINK HTTP_SLICE HTTP_SSL HTTP_STATUS \
-		HTTP_SUB HTTPV2 MAIL MAIL_SSL STREAM STREAM_REALIP \
-		STREAM_SSL STREAM_SSL_PREREAD THREADS WWW
+		HTTP_DAV HTTP_FLV HTTP_GUNZIP_FILTER HTTP_GZIP_STATIC HTTP_MP4 \
+		HTTP_RANDOM_INDEX HTTP_REALIP HTTP_SECURE_LINK HTTP_SLICE HTTP_SSL \
+		HTTP_STATUS HTTP_SUB HTTPV2 MAIL MAIL_SSL PCRE_ONE STREAM \
+		STREAM_REALIP STREAM_SSL STREAM_SSL_PREREAD THREADS WWW
 
-OPTIONS_RADIO+=		GSSAPI
-OPTIONS_RADIO_GSSAPI=	GSSAPI_HEIMDAL GSSAPI_MIT
-GSSAPI_HEIMDAL_USES=	gssapi:heimdal,flags
-GSSAPI_MIT_USES=	gssapi:mit
+OPTIONS_RADIO+=		PCRE
+OPTIONS_RADIO_PCRE=	PCRE_ONE PCRE_TWO
+PCRE_ONE_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE_ONE_CONFIGURE_ON=	--without-pcre2
+PCRE_TWO_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 OPTIONS_SUB=	yes
 
@@ -105,9 +107,6 @@ ${opt}_IMPLIES=	HTTP
 .for opt in ${OPTIONS_GROUP_STREAMGRP:NSTREAM}
 ${opt}_IMPLIES=	STREAM
 .endfor
-
-GSSAPI_HEIMDAL_IMPLIES=	HTTP_AUTH_KRB5
-GSSAPI_MIT_IMPLIES=	HTTP_AUTH_KRB5
 
 # If the target is makesum, make sure that every distfile is fetched.
 .if ${.TARGETS:Mmakesum}
@@ -152,20 +151,28 @@ HTTP_PERL_USES=			perl5
 HTTP_PERL_VARS=			DSO_BASEMODS+=http_perl_module
 HTTP_RANDOM_INDEX_CONFIGURE_ON=	--with-http_random_index_module
 HTTP_REALIP_CONFIGURE_ON=	--with-http_realip_module
-HTTP_REWRITE_LIB_DEPENDS=	libpcre.so:devel/pcre
-HTTP_REWRITE_CONFIGURE_ON=	--with-pcre
-HTTP_REWRITE_CONFIGURE_OFF=	--without-http_rewrite_module
 HTTP_SECURE_LINK_CONFIGURE_ON=	--with-http_secure_link_module
 HTTP_SLICE_CONFIGURE_ON=	--with-http_slice_module
 HTTP_SSL_CONFIGURE_ON=		--with-http_ssl_module
 HTTP_SSL_USES=			ssl
 HTTP_STATUS_CONFIGURE_ON=	--with-http_stub_status_module
 HTTP_SUB_CONFIGURE_ON=		--with-http_sub_module
-HTTP_XSLT_USES=			gnome
-HTTP_XSLT_USE=			GNOME=libxml2,libxslt
+HTTP_XSLT_LIB_DEPENDS=		libxml2.so:textproc/libxml2 \
+				libxslt.so:textproc/libxslt
 HTTP_XSLT_VARS=			DSO_BASEMODS+=http_xslt_module
 HTTPV2_IMPLIES=			HTTP_SSL
 HTTPV2_CONFIGURE_ON=		--with-http_v2_module
+HTTPV3_CONFIGURE_ON=		--build=nginx-quic \
+				--with-stream_quic_module \
+				--with-http_v3_module
+HTTPV3_EXTRA_PATCHES=		${PATCHDIR}/extra-patch-httpv3:-p1
+HTTPV3_BORING_BUILD_DEPENDS=	${LOCALBASE}/bin/bssl:security/boringssl
+HTTPV3_BORING_RUN_DEPENDS=	${LOCALBASE}/bin/bssl:security/boringssl
+HTTPV3_BORING_IMPLIES=		HTTPV3
+HTTPV3_BORING_PREVENTS=		HTTPV3_QTLS
+HTTPV3_QTLS_BUILD_DEPENDS=	${LOCALBASE}/include/openssl/quic.h:security/openssl-quictls
+HTTPV3_QTLS_RUN_DEPENDS=	${LOCALBASE}/include/openssl/quic.h:security/openssl-quictls
+HTTPV3_QTLS_IMPLIES=		HTTPV3
 MAIL_VARS=			DSO_BASEMODS+=mail
 MAIL_IMAP_CONFIGURE_OFF=	--without-mail_imap_module
 MAIL_POP3_CONFIGURE_OFF=	--without-mail_pop3_module
@@ -218,10 +225,19 @@ CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
 .endif
 
-.if ${PORT_OPTIONS:MHTTP_AUTH_KRB5} && (empty(PORT_OPTIONS:MGSSAPI_HEIMDAL) && empty(PORT_OPTIONS:MGSSAPI_MIT))
-IGNORE=		required at least GSSAPI_HEIMDAL or \
-		GSSAPI_MIT to be defined. Please do \
-		'make config' again
+.if empty(PORT_OPTIONS:MPCRE_ONE) && empty(PORT_OPTIONS:MPCRE_TWO)
+IGNORE=		required at least PCRE_ONE or PCRE_TWO \
+		to be defined. Please do 'make config' again
+.endif
+
+.if ${PORT_OPTIONS:MHTTPV3} && \
+    (empty(PORT_OPTIONS:MHTTPV3_BORING) && empty(PORT_OPTIONS:MHTTPV3_QTLS))
+IGNORE=		required HTTPV3_BORING or HTTPV3_QTLS \
+		to be defined. Please do 'make config' again
+.endif
+
+.if ${PORT_OPTIONS:MPCRE_ONE}
+NJS_CONFIGURE_ARGS=	--no-pcre2
 .endif
 
 pre-everything::
@@ -237,6 +253,9 @@ pre-everything::
 post-extract-GRIDFS-on:
 	@${RMDIR} ${WRKSRC_gridfs}/mongo-c-driver/
 	@${MV} ${WRKSRC_mongo_c} ${WRKSRC_gridfs}/mongo-c-driver
+
+pre-patch-HTTPV3-on:
+	@${MV} ${WRKSRC}/README ${WRKSRC}/README.1st
 
 post-patch:
 	@${REINPLACE_CMD} 's!%%HTTP_PORT%%!${HTTP_PORT}!; \
@@ -306,7 +325,7 @@ pre-configure-SMALL_LIGHT-on:
 	( cd ${WRKSRC_small_light} && ./setup )
 
 do-configure-NJS-on:
-	( cd ${WRKSRC_njs} && ${SETENV} ${CONFIGURE_ENV} ${CONFIGURE_CMD} )
+	( cd ${WRKSRC_njs} && ${SETENV} ${CONFIGURE_ENV} ${CONFIGURE_CMD} ${NJS_CONFIGURE_ARGS} )
 
 .if !target(do-install)
 do-install:
@@ -341,9 +360,6 @@ do-install-NAXSI-on:
 	${INSTALL_DATA} \
 	${WRKDIR}/naxsi-${NAXSI_NGINX_VER}/naxsi_config/naxsi_core.rules \
 	${STAGEDIR}${ETCDIR}
-
-do-install-NJS-on:
-	${INSTALL_PROGRAM} ${WRKSRC_njs}/build/njs ${STAGEDIR}${PREFIX}/sbin
 .endif
 
 .if !target(post-install)

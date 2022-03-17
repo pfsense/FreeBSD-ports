@@ -1,3 +1,5 @@
-TIMESTAMP = 1627115326
-SHA256 (rofl0r-proxychains-ng-v4.15_GH0.tar.gz) = c94edded38baa0447766f6e5d0ec1963bb27c7b55b2a78b305d6f58e171388f8
-SIZE (rofl0r-proxychains-ng-v4.15_GH0.tar.gz) = 49119
+TIMESTAMP = 1643228306
+SHA256 (proxychains-ng-4.16.tar.xz) = 37a9983d995857cc398cfeefb96739827b3d86a71e03a5193b99f1b097046812
+SIZE (proxychains-ng-4.16.tar.xz) = 43808
+SHA256 (07c15a0.patch) = 4718680d486cc8b34feddcad61924caca0156e7191d91ebda3c62164a7193a50
+SIZE (07c15a0.patch) = 3640

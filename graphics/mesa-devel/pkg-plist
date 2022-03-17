@@ -4,11 +4,12 @@
 %%NO_COINST%%include/EGL/eglmesaext.h
 %%NO_COINST%%include/GL/internal/dri_interface.h
 %%NO_COINST%%include/gbm.h
-%%i965%%lib/dri%%SUFFIX%%/i965_dri.so
 %%crocus%%lib/dri%%SUFFIX%%/crocus_dri.so
 %%iris%%lib/dri%%SUFFIX%%/iris_dri.so
+%%panfrost%%lib/dri%%SUFFIX%%/panfrost_dri.so
 %%r600%%lib/dri%%SUFFIX%%/r600_dri.so
 %%radeonsi%%lib/dri%%SUFFIX%%/radeonsi_dri.so
+%%panfrost%%lib/dri%%SUFFIX%%/rockchip_dri.so
 %%VAAPI%%%%r600%%lib/dri%%SUFFIX%%/r600_drv_video.so
 %%VAAPI%%%%radeonsi%%lib/dri%%SUFFIX%%/radeonsi_drv_video.so
 %%NO_COINST%%lib/libEGL_mesa%%SUFFIX%%.so
@@ -38,6 +39,7 @@ lib/libglapi%%SUFFIX%%.so.0.0.0
 %%NO_COINST%%libdata/pkgconfig/dri.pc
 %%NO_COINST%%libdata/pkgconfig/gbm.pc
 share/drirc.d/00-mesa%%SUFFIX%%-defaults.conf
+%%radv%%share/drirc.d/00-radv%%SUFFIX%%-defaults.conf
 %%NO_COINST%%share/glvnd/egl_vendor.d/50_mesa.json
 %%VKLAYERS%%share/vulkan/explicit_layer.d/VkLayer_MESA_overlay.json
 %%anv%%%%NO_COINST%%share/vulkan/icd.d/intel_icd.%%ARCH%%.json

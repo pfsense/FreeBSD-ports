@@ -2,6 +2,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	11.2.1.s20211009
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -28,7 +29,7 @@ USES=		compiler:c++11-lang cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
 
-CONFLICTS=	gcc11-11.*
+CONFLICTS=	gcc11
 
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}
@@ -84,7 +85,7 @@ CONFIGURE_OUTSOURCE=	yes
 .if empty(PORT_OPTIONS:MBOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
 .else
-CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
+CONFIGURE_ARGS+=--with-build-config=bootstrap-lto-noplugin
 ALL_TARGET=	bootstrap-lean
 .endif
 INSTALL_TARGET=	install-strip

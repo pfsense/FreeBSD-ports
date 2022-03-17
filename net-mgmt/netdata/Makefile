@@ -2,14 +2,16 @@
 
 PORTNAME=	netdata
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.32.0
+DISTVERSION=	1.33.1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/ \
 		https://github.com/forkbomb9/netdata/commit/:dashboard
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} b531c8c60c24ff5e4cf6a85289d77159d0e39b68.patch:dashboard
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		eaaddaa3b1f4b748e2468ffd4d7afbc7cb0efe78.patch:dashboard
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Scalable distributed realtime performance and health monitoring
 
 LICENSE=	GPLv3
@@ -20,22 +22,21 @@ PATCH_DEPENDS=	gpatch:devel/patch
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libuv.so:devel/libuv
-RUN_DEPENDS=	bash:shells/bash \
-		curl:ftp/curl \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR}
+		bash:shells/bash \
+		curl:ftp/curl
 
 USES=		autoreconf cpe gmake pathfix pkgconfig:both python shebangfix \
 		ssl
-SHEBANG_GLOB=	*
-
 USE_RC_SUBR=	${PORTNAME}
-
-INSTALL_TARGET=	install-strip
-CPPFLAGS+=	-D_WANT_VMMETER
+SHEBANG_GLOB=	*
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-unit-tests
+
+INSTALL_TARGET=	install-strip
+CPPFLAGS+=	-D_WANT_VMMETER
 
 SUB_FILES=	${PORTNAME}.conf.sample
 SUB_LIST=	NETDATA_CACHE=${NETDATA_CACHE} \
@@ -61,6 +62,7 @@ DBENGINE_DESC=		Enable support for database engine
 FREEIPMI_DESC=		Enable support for freeipmi
 GOPLUGIN_DESC=		Enable the go collector plugin
 
+CLOUD_LIB_DEPENDS=		libprotobuf.so:devel/protobuf
 CLOUD_CONFIGURE_ON=		--with-aclk-ng
 CLOUD_CONFIGURE_OFF=		--disable-cloud
 CUPS_LIB_DEPENDS=		libcups.so:print/cups
@@ -84,22 +86,6 @@ NETDATA_CACHE=	/var/cache/${PORTNAME}
 NETDATA_LOG=	/var/log/${PORTNAME}
 NETDATA_PERST=	/var/db/${PORTNAME}
 
-.if ! ${PORT_OPTIONS:MCLOUD}
-post-patch:
-	cd ${WRKSRC} && gpatch -p1 < ${_DISTDIR}/b531c8c60c24ff5e4cf6a85289d77159d0e39b68.patch
-	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|g' \
-	    ${PATCH_WRKSRC}/configure.ac
-	@${REINPLACE_CMD} -e 's|%%NETDATA_CACHE%%|${NETDATA_CACHE}|g' \
-	    ${PATCH_WRKSRC}/configure.ac
-	@${REINPLACE_CMD} -e 's|%%NETDATA_LOG%%|${NETDATA_LOG}|g' \
-	    ${PATCH_WRKSRC}/configure.ac
-	@${REINPLACE_CMD} -e 's|%%NETDATA_PERST%%|${NETDATA_PERST}|g' \
-	    ${PATCH_WRKSRC}/configure.ac
-	@${REINPLACE_CMD} -e 's|%%ETCDIR%%|${ETCDIR}|g' \
-	    ${PATCH_WRKSRC}/configure.ac
-	@${REINPLACE_CMD} -e 's|%%PYTHON%%|${PYTHON_CMD}|g' \
-	    ${PATCH_WRKSRC}/collectors/python.d.plugin/python.d.plugin.in
-.else
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|g' \
 	    ${PATCH_WRKSRC}/configure.ac
@@ -113,7 +99,9 @@ post-patch:
 	    ${PATCH_WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|%%PYTHON%%|${PYTHON_CMD}|g' \
 	    ${PATCH_WRKSRC}/collectors/python.d.plugin/python.d.plugin.in
-.endif
+
+post-patch-CLOUD-off:
+	cd ${WRKSRC} && gpatch -p1 < ${_DISTDIR}/eaaddaa3b1f4b748e2468ffd4d7afbc7cb0efe78.patch
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
@@ -127,5 +115,8 @@ post-install:
 			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.txt ; do \
 		${MV} $$fi $$fi".sample"; \
 	done)
+
+post-install-CLOUD-off:
+	rm ${STAGEDIR}${PREFIX}/sbin/netdata-claim.sh
 
 .include <bsd.port.mk>

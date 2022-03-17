@@ -10,33 +10,29 @@ DISTNAME=	${PORTNAME}-core-${PORTVERSION}
 MAINTAINER=	eksffa@freebsdbrasil.com.br
 COMMENT=	Web based GroupWare system
 
-# php extensions
-USE_PHP=	curl \
-		gd \
-		pcre \
-		session \
-		xml
-
-USES=	gettext php:mod
-
-OPTIONS_DEFINE=	ADDONS NLS
-OPTIONS_SINGLE=	DB
-OPTIONS_SINGLE_DB=	PGSQL MYSQL
-OPTIONS_DEFAULT=	MYSQL
-ADDONS_DESC=	install additional workgroup features (addons)
-OPTIONS_SUB=	yes
-
-NLS_USES=		gettext
-PGSQL_USES=	pgsql
+USES=		gettext php:mod
 WANT_PGSQL=	server
-MYSQL_USES=	mysql:server
-
-ADDONS_DISTFILES=	${PORTNAME}-addons-${PORTVERSION}${EXTRACT_SUFX}
-NO_BUILD=	yes
-WRKSRC=	${WRKDIR}/${PORTNAME}
+# php extensions
+USE_PHP=	curl gd pcre session xml
 
 SHAREOWN=	${WWWOWN}
 SHAREGRP=	${WWWGRP}
+NO_BUILD=	yes
+
+WRKSRC=		${WRKDIR}/${PORTNAME}
+
+OPTIONS_DEFINE=		ADDONS NLS
+OPTIONS_DEFAULT=	MYSQL
+OPTIONS_SINGLE=		DB
+OPTIONS_SINGLE_DB=	MYSQL PGSQL
+OPTIONS_SUB=		yes
+
+ADDONS_DESC=	install additional workgroup features (addons)
+
+ADDONS_DISTFILES=	${PORTNAME}-addons-${PORTVERSION}${EXTRACT_SUFX}
+MYSQL_USES=		mysql:server
+NLS_USES=		gettext
+PGSQL_USES=		pgsql
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}

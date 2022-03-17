@@ -1,11 +1,11 @@
---- chrome/browser/web_applications/externally_managed_app_install_task.cc.orig	2021-09-24 04:26:00 UTC
+--- chrome/browser/web_applications/externally_managed_app_install_task.cc.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/web_applications/externally_managed_app_install_task.cc
-@@ -320,7 +320,7 @@ void ExternallyManagedAppInstallTask::OnWebAppInstalle
-   options.os_hooks[OsHookType::kProtocolHandlers] = true;
-   options.os_hooks[OsHookType::kUninstallationViaOsSettings] = true;
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS))
-+    (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD)
+@@ -363,7 +363,7 @@ void ExternallyManagedAppInstallTask::OnWebAppInstalle
+   const WebApp* web_app = registrar_->GetAppById(app_id);
+   options.os_hooks[OsHookType::kUninstallationViaOsSettings] =
+       web_app->CanUserUninstallWebApp();
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD) || \
+     (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS))
    options.os_hooks[OsHookType::kUrlHandlers] = true;
  #else
-   options.os_hooks[OsHookType::kUrlHandlers] = false;

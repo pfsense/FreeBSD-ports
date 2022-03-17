@@ -1,6 +1,5 @@
 PORTNAME=	warzone2100
-PORTVERSION=	4.0.1
-PORTREVISION=	1
+PORTVERSION=	4.2.7
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_src
@@ -12,7 +11,7 @@ COMMENT=	Innovative 3D real-time strategy game
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	7z:archivers/p7zip \
+BUILD_DEPENDS=	7zz:archivers/7-zip \
 		a2x:textproc/asciidoc
 LIB_DEPENDS=	libphysfs.so:devel/physfs \
 		libpng.so:graphics/png \

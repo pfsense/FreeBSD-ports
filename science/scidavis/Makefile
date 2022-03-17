@@ -1,6 +1,6 @@
 PORTNAME=	scidavis
-PORTVERSION=	2.4.0
-PORTREVISION=	3
+PORTVERSION=	2.7
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	makc@FreeBSD.org
@@ -34,7 +34,7 @@ OPTIONS_SUB=	yes
 
 PYTHON_DESC=	Python scripting support
 PYTHON_USES=	pyqt:5 python:3.6+
-PYTHON_USE=	pyqt=core,gui,printsupport,sip,widgets
+PYTHON_USE=	PYQT=pyqt5 sip
 PYTHON_CMAKE_ON=	-DPython3_EXECUTABLE=${PYTHON_CMD} \
 			-DSCRIPTING_PYTHON=True
 PYTHON_CMAKE_OFF=	-DSCRIPTING_PYTHON=False

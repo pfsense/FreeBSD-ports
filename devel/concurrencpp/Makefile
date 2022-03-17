@@ -1,6 +1,6 @@
 PORTNAME=	concurrencpp
 DISTVERSIONPREFIX=	v.
-DISTVERSION=	0.1.3
+DISTVERSION=	0.1.4
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,6 +17,15 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	David-Haim
 
 CMAKE_ON=	BUILD_SHARED_LIBS
+
+.include <bsd.port.options.mk>
+
+.if (${ARCH} == powerpc64le || ${ARCH} == powerpc64 || ${ARCH} == powerpc) && ${OSVERSION} < 1300523
+BUILD_DEPENDS=	llvm13>0:devel/llvm13
+CPP=		${LOCALBASE}/bin/clang-cpp13
+CC=		${LOCALBASE}/bin/clang13
+CXX=		${LOCALBASE}/bin/clang++13
+.endif
 
 do-test: # same as recommended in https://github.com/David-Haim/concurrencpp#building-installing-and-testing
 	@cd ${WRKSRC} && \

@@ -1,10 +1,10 @@
 PORTNAME=	epson-inkjet-printer-escpr2
-DISTVERSION=	1.1.42
+DISTVERSION=	1.1.48
 DISTVERSIONSUFFIX=	-1lsb3.2
 CATEGORIES=	print
-MASTER_SITES=	https://download3.ebz.epson.net/dsc/f/03/00/13/07/72/9d995c5ca77e67662b6c78f9c71145a20a13af14/:i386 \
-		https://download3.ebz.epson.net/dsc/f/03/00/13/07/72/f13c18f6f1ac9a89bedf3093f5dd47406ab1efe0/:amd64 \
-		https://download3.ebz.epson.net/dsc/f/03/00/13/07/72/df79cc238a167b9526f70cc123459c6bbe1edbad/:SOURCE
+MASTER_SITES=	https://download3.ebz.epson.net/dsc/f/03/00/13/52/26/aa037d9dd467507d8ee854be475b4173d0ec691f/:i386 \
+		https://download3.ebz.epson.net/dsc/f/03/00/13/52/26/a4b879d576a72177e92e91cbc42ebee39fda1336/:amd64 \
+		https://download3.ebz.epson.net/dsc/f/03/00/13/52/26/977f2b2c13cc185981479fbd225b802c35c92beb/:SOURCE
 EXTRACT_SUFX=	.rpm
 DISTFILES_amd64=	${DISTNAME}.x86_64${EXTRACT_SUFX}:amd64
 DISTFILES_i386=	${DISTNAME}.i486${EXTRACT_SUFX}:i386
@@ -24,11 +24,15 @@ LICENSE_DISTFILES_EPSON=	${DISTNAME}.i486${EXTRACT_SUFX} \
 				${DISTNAME}.src${EXTRACT_SUFX}
 
 LEGAL_TEXT=	License does not permit public sharing and revenue earning, and restricts exports
+ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS_REASON=	${PORTNAME} for ARM is available.\
+			But binaries that can be used on aarch64 need to be built.
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/cups/filter/gstoraster:print/cups-filters \
 		cupsfilter:print/cups
 
 USES=		linux
+USE_LDCONFIG=	yes
 USE_LINUX=	cups-libs
 SRC_DISTFILES=	${DISTNAME}.src${EXTRACT_SUFX}:SOURCE
 NO_BUILD=	yes

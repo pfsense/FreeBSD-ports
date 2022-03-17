@@ -1,6 +1,6 @@
 PORTNAME=	bpytop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.67
+DISTVERSION=	1.0.68
 CATEGORIES=	sysutils
 
 MAINTAINER=	lwhsu@FreeBSD.org
@@ -16,7 +16,7 @@ USES=		python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	aristocratos
 
-SHEBANG_FILES=	${WRKSRC}/bpytop.py
+SHEBANG_FILES=	bpytop.py
 
 NO_ARCH=	yes
 

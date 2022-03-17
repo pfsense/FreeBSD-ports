@@ -1,6 +1,5 @@
 PORTNAME=	labwc
-DISTVERSION=	0.3.0
-PORTREVISION=	1
+DISTVERSION=	0.5.0
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -8,8 +7,9 @@ COMMENT=	Wayland stacking compositor
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols \
-		wlroots>=0.14.0<0.15.0:x11-toolkits/wlroots
+BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
+		wayland-protocols>0:graphics/wayland-protocols \
+		wlroots>=0.15.0<0.16.0:x11-toolkits/wlroots
 LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
 		libinput.so:x11/libinput \
@@ -19,7 +19,8 @@ USES=		compiler:c11 gnome meson pkgconfig xorg
 USE_GITHUB=	yes
 USE_GNOME=	cairo libxml2 pango
 USE_XORG=	pixman
-PLIST_FILES=	bin/${PORTNAME}
+PLIST_FILES=	bin/${PORTNAME} \
+		share/wayland-sessions/${PORTNAME}.desktop
 
 OPTIONS_DEFINE=	MANPAGES X11
 OPTIONS_DEFAULT=MANPAGES X11
@@ -48,6 +49,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}&,' \
 		-e 's,/usr/local,${PREFIX},' \
 		${WRKSRC}/docs/${PORTNAME}-config.5.scd \
+		${WRKSRC}/docs/${PORTNAME}-environment.5.scd \
 		${WRKSRC}/src/common/dir.c
 
 .include <bsd.port.mk>

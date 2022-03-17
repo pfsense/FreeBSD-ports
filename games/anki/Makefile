@@ -2,7 +2,7 @@
 
 PORTNAME=	anki
 DISTVERSION=	2.1.48
-PORTREVISION=	2
+PORTREVISION=	6
 # Don't forget to update ${_MY_BUILDHASH} if DISTVERSION changes
 CATEGORIES=	games education python
 MASTER_SITES=	LOCAL/kai/:yarncache
@@ -13,9 +13,6 @@ COMMENT=	Flashcard trainer with spaced repetition
 
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Uses EOL Python 2.7 via www/py-qt5-webengine
-EXPIRATION_DATE=2021-06-23
 
 NOT_FOR_ARCHS=	armv6 armv7 i386 mips powerpc
 NOT_FOR_ARCHS_REASON=	the bazel build framework supports only 64-bit systems.
@@ -73,7 +70,7 @@ GH_TUPLE+=	bazelbuild:bazel-skylib:e59b620:bzlskylib \
 		ankitects:rules_rust:f66001a:bzlrrust \
 		ankitects:rules_sass:275ace7:bzlrsass
 
-USE_PYQT=	core gui network printsupport sip svg webchannel webengine widgets xml_build
+USE_PYQT=	pyqt5 sip webengine
 
 SHEBANG_FILES=	qt/tools/runanki.system.in
 

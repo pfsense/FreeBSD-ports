@@ -1,7 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
 
 PORTNAME=	x42-plugins
-DISTVERSION=	20211016 # the version is published here: http://gareus.org/misc/x42-plugins.php
+DISTVERSION=	20220107 # the version is published here: http://gareus.org/misc/x42-plugins.php
 CATEGORIES=	audio
 MASTER_SITES=	http://gareus.org/misc/x42-plugins/
 PKGNAMESUFFIX=	-lv2
@@ -37,6 +37,8 @@ MAKE_ENV=	BUILDOPENGL=yes BUILDGTK=no LV2DIR=${PREFIX}/lib/lv2 MANDIR=${PREFIX}/
 SHEBANG_FILES=	stepseq.lv2/gridgen.sh
 
 CXXFLAGS+=	-std=c++98
+
+CONFLICTS_INSTALL=	phaserotate-lv2 # lib/lv2/phaserotate.lv2/phaserotate.so
 
 OPTIONS_DEFINE_amd64=	SSE
 OPTIONS_DEFINE_i386=	SSE

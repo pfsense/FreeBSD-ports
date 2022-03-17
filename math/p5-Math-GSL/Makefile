@@ -1,7 +1,7 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
 
 PORTNAME=	Math-GSL
-PORTVERSION=	0.42
+PORTVERSION=	0.43
 PORTREVISION=	1
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
@@ -13,7 +13,8 @@ COMMENT=	Perl interface to GNU Scientific Library
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-PkgConfig>=0.07720:devel/p5-PkgConfig
+BUILD_DEPENDS=	p5-PkgConfig>=0.07720:devel/p5-PkgConfig \
+	        p5-Alien-GSL>=1.01:math/p5-Alien-GSL
 LIB_DEPENDS=	libgsl.so:math/gsl
 TEST_DEPENDS=	p5-Test-Class>=0.12:devel/p5-Test-Class \
 		p5-Test-Exception>=0.21:devel/p5-Test-Exception \

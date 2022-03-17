@@ -1,11 +1,11 @@
---- chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h.orig	2021-09-24 18:32:31 UTC
+--- chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h
-@@ -62,7 +62,7 @@ class SigninViewControllerDelegateViews
-       Browser* browser,
-       signin_metrics::ReauthAccessPoint);
+@@ -71,7 +71,7 @@ class SigninViewControllerDelegateViews
+ #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
-     BUILDFLAG(IS_CHROMEOS_LACROS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS_LACROS)
++    BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
    static std::unique_ptr<views::WebView> CreateEnterpriseConfirmationWebView(
        Browser* browser,
+       const AccountInfo& account_info,

@@ -1,8 +1,11 @@
 PORTNAME=	aom
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.0
+DISTVERSION=	3.3.0
 PORTREVISION=	1
 CATEGORIES=	multimedia
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	b389ce89bdb6.patch:-p1 # unbreak JXL
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	AV1 reference encoder/decoder
@@ -22,8 +25,13 @@ GH_ACCOUNT=	jbeich # mirror
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	ENABLE_DOCS ENABLE_TESTS
 
-OPTIONS_DEFINE=	VMAF
-OPTIONS_DEFAULT=VMAF
+OPTIONS_DEFINE=	JXL VMAF
+OPTIONS_DEFAULT=JXL VMAF
+
+JXL_DESC=		Encoding tuning for Butteraugli
+JXL_LIB_DEPENDS=	libjxl.so:graphics/libjxl
+JXL_USES=		pkgconfig
+JXL_CMAKE_ON=		-DCONFIG_TUNE_BUTTERAUGLI:STRING=1
 
 VMAF_DESC=		Encoding tuning for VMAF
 VMAF_LIB_DEPENDS=	libvmaf.so:multimedia/vmaf

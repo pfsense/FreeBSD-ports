@@ -92,6 +92,7 @@ OPTIONS_DEFINE_i386=	COMPILER_RT OPENMP
 OPTIONS_DEFINE_powerpc=	GOLD
 OPTIONS_DEFINE_powerpc64=	GOLD OPENMP
 OPTIONS_DEFINE_powerpc64le=	GOLD OPENMP
+OPTIONS_DEFINE_riscv64=	OPENMP
 OPTIONS_DEFAULT+=	EXTRAS FLANG LIT LLDB MLIR STATIC_LIBS
 OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFAULT_i386=	COMPILER_RT OPENMP
@@ -100,8 +101,10 @@ OPTIONS_DEFAULT_powerpc64=	${OPTIONS_DEFAULT_powerpc64_${OSREL:R}} OPENMP
 OPTIONS_DEFAULT_powerpc64_13=	GOLD
 OPTIONS_DEFAULT_powerpc64_14=	GOLD
 OPTIONS_DEFAULT_powerpc64le=	GOLD OPENMP
+OPTIONS_DEFAULT_riscv64=	OPENMP
 OPTIONS_EXCLUDE_i386=	FLANG
 OPTIONS_EXCLUDE_powerpc=	FLANG
+OPTIONS_EXCLUDE_riscv64=	LLDB
 .endif
 OPTIONS_SUB=	yes
 _ALL_OPTIONS=	CLANG COMPILER_RT DOCS EXTRAS FLANG GOLD LIT LLD LLDB MLIR \
@@ -114,7 +117,6 @@ PLIST_FILES=
 PLIST_SUB_SED_EXCLUDE_VAL=	lib "3.0.0"
 
 CLANG_DESC=	Build clang
-CLANG_CONFLICTS_INSTALL=	clang-devel-3.[1234567]*
 CLANG_CMAKE_ON=		-DCLANG_DEFAULT_OPENMP_RUNTIME=libomp \
 			-DCLANG_LINK_LLVM_DYLIB=ON
 CLANG_PORTDOCS=		clang
@@ -164,14 +166,16 @@ LLDB_USE=		GNOME=libxml2
 LLDB_VARS=		_USES_PYTHON=python:3.6+
 MLIR_DESC=		Multi-Level Intermediate Representation
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
+OPENMP_CMAKE_ON=	-DLIBOMPTARGET_BUILD_DEVICERTL_BCLIB=OFF
 OPENMP_PORTDOCS=	openmp
-OPENMP_CONFLICTS_INSTALL=	libiomp5-devel
 OPENMP_USES=		perl5
 OPENMP_USE=		PERL5=build
 STATIC_LIBS_DESC=	Install static libraries (does not effect sanitizers)
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
 GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
+
+CONFLICTS_INSTALL=	llvm-devel llvm-devel-lite
 
 PLIST_SUB+=	LLVM_MAJOR=${LLVM_MAJOR} \
 		LLVM_RELEASE=${LLVM_RELEASE}
@@ -198,6 +202,7 @@ MAN1SRCS+=	bugpoint.1 \
 		llvm-dwarfdump.1 \
 		llvm-exegesis.1 \
 		llvm-extract.1 \
+		llvm-ifs.1 \
 		llvm-install-name-tool.1 \
 		llvm-lib.1 \
 		llvm-libtool-darwin.1 \
@@ -221,6 +226,7 @@ MAN1SRCS+=	bugpoint.1 \
 		llvm-strip.1 \
 		llvm-symbolizer.1 \
 		llvm-tblgen.1 \
+		llvm-tli-checker.1 \
 		mlir-tblgen.1 \
 		opt.1 \
 		tblgen.1
@@ -253,7 +259,7 @@ EXTRAS_PATTERN=	${EXTRAS_COMMANDS:tW:C/  */|/g}|${EXTRAS_LIBS:tW:C/  */|/g}|${EX
 
 FLANG_PATTERN=	${FLANG_COMMANDS:S/^/bin./:tW:C/  */|/g}|flang|libFIR|libFortran
 
-MLIR_PATTERN=	${MLIR_COMMANDS:S/^/bin./:tW:C/  */|/g}|mlir|libMLIR
+MLIR_PATTERN=	${MLIR_COMMANDS:S/^/bin./:tW:C/  */|/g}|mlir|libMLIR|obj.MLIRCAP
 
 .include <bsd.port.options.mk>
 
@@ -353,6 +359,7 @@ _COMPILER_RT_LIBS_i386= \
 	libclang_rt.asan-i386.a \
 	libclang_rt.asan-i386.so \
 	libclang_rt.asan-preinit-i386.a \
+	libclang_rt.asan_static-i386.a \
 	libclang_rt.asan_cxx-i386.a \
 	libclang_rt.builtins-i386.a \
 	libclang_rt.cfi-i386.a \
@@ -371,6 +378,7 @@ _COMPILER_RT_IGNORELISTS+=	asan_ignorelist.txt
 _COMPILER_RT_IGNORELISTS+=	msan_ignorelist.txt
 _COMPILER_RT_LIBS= \
 	libclang_rt.asan-preinit-x86_64.a \
+	libclang_rt.asan_static-x86_64.a \
 	libclang_rt.asan-x86_64.a \
 	libclang_rt.asan-x86_64.a.syms \
 	libclang_rt.asan-x86_64.so \
@@ -399,6 +407,7 @@ _COMPILER_RT_LIBS= \
 	libclang_rt.stats_client-x86_64.a \
 	libclang_rt.tsan-x86_64.a \
 	libclang_rt.tsan-x86_64.a.syms \
+	libclang_rt.tsan-x86_64.so \
 	libclang_rt.tsan_cxx-x86_64.a \
 	libclang_rt.tsan_cxx-x86_64.a.syms \
 	libclang_rt.ubsan_minimal-x86_64.a \
@@ -454,7 +463,8 @@ post-install:
 post-install-DOCS-on:
 	${RM} -r ${STAGEDIR}${DOCSDIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/doc/* ${STAGEDIR}${DOCSDIR}
+	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/doc/LLVM/* ${STAGEDIR}${DOCSDIR}
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/doc/LLVM
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/doc
 .for _man in ${MAN1SRCS}
 	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/${_man} \
@@ -537,6 +547,7 @@ build-plist:
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PYTHON_SITELIBDIR:C|${PREFIX}/||}|%%PYTHON_SITELIBDIR%%|' \
+	    -e 's|${PYTHON_EXT_SUFFIX:C/\./\\./g}|%%PYTHON_EXT_SUFFIX%%|' \
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \

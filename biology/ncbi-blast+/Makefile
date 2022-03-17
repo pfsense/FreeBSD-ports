@@ -1,6 +1,6 @@
 PORTNAME=	ncbi-blast+
 DISTVERSION=	2.12.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	biology perl5 python
 MASTER_SITES=	https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ \
 		https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${PORTVERSION}/
@@ -48,6 +48,8 @@ GNU_CONFIGURE=	yes
 # a postinstall mv.
 CONFIGURE_ARGS=	AR="ar cr" --without-boost --libdir=${PREFIX}/lib/ncbi-tools++
 
+CONFLICTS_INSTALL=	ncbi-cxx-toolkit
+
 WRKSRC_SUBDIR=	c++
 
 .include <bsd.port.pre.mk>
@@ -55,6 +57,10 @@ WRKSRC_SUBDIR=	c++
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 # In case of problems: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=220822
 LDFLAGS+=	-latomic # Only exists in gcc libs
+.endif
+
+.if ${ARCH} == powerpc
+CONFIGURE_ARGS+=	--without-openmp
 .endif
 
 post-install:

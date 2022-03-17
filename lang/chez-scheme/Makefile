@@ -1,13 +1,13 @@
 # Created by: Ashish SHUKLA <ashish@FreeBSD.org>
 
 PORTNAME=	chez-scheme
-PORTVERSION=	9.5.4
+PORTVERSION=	9.5.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	lang
 MASTER_SITES=	http://distfiles.pirateparty.in/ashish/:boot \
 		LOCAL/ashish:boot
-DISTFILES=	${PORTNAME}-boot-a6fb-${PORTVERSION}.tar.xz:boot \
-		${PORTNAME}-boot-i3fb-${PORTVERSION}.tar.xz:boot
+DISTFILES=	${PORTNAME}-boot-ta6fb-${PORTVERSION}.tar.xz:boot \
+		${PORTNAME}-boot-ti3fb-${PORTVERSION}.tar.xz:boot
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Chez Scheme system
@@ -24,7 +24,7 @@ USES=		gmake iconv:lib ncurses
 USE_GITHUB=	yes
 GH_ACCOUNT=	cisco
 GH_PROJECT=	ChezScheme
-GH_TUPLE=	nanopass:nanopass-framework-scheme:v1.9.1:nanopass/nanopass \
+GH_TUPLE=	nanopass:nanopass-framework-scheme:v1.9.2:nanopass/nanopass \
 		madler:zlib:v1.2.11:zlib/zlib \
 		dybvig:stex:v1.2.2:stex/stex \
 		lz4:lz4:3d67671:lz4/lz4
@@ -52,11 +52,11 @@ X11_USE=	XORG=x11
 .include <bsd.port.pre.mk>
 
 .if (${ARCH} == "amd64")
-CONFIGURE_ARGS+=	--threads --64 -m=a6fb
-CHEZ_ARCH=	a6fb
+CONFIGURE_ARGS+=	--threads --64 -m=ta6fb
+CHEZ_ARCH=	ta6fb
 .elif (${ARCH} == "i386")
-CONFIGURE_ARGS+=	--threads --32 -m=i3fb
-CHEZ_ARCH=	i3fb
+CONFIGURE_ARGS+=	--threads --32 -m=ti3fb
+CHEZ_ARCH=	ti3fb
 .endif
 
 post-patch:

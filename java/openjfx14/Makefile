@@ -22,7 +22,7 @@ COMMENT=	JavaFX SDK overlay for OpenJDK 11
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		apache-ant>0:devel/apache-ant \
@@ -106,8 +106,8 @@ pre-patch:
 
 post-patch:
 	@${MKDIR} ${WRKDIR}/bin
-	@${PRINTF} '#!/bin/sh\nexec ${CCACHE_BIN} ${CC} ${CFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/ccwrapper
-	@${PRINTF} '#!/bin/sh\nexec ${CCACHE_BIN} ${CXX} ${CXXFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/cxxwrapper
+	@${PRINTF} '#!/bin/sh\nexport CCACHE_DIR=${CCACHE_DIR}\nexec ${CCACHE_BIN} ${CC} ${CFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/ccwrapper
+	@${PRINTF} '#!/bin/sh\nexport CCACHE_DIR=${CCACHE_DIR}\nexec ${CCACHE_BIN} ${CXX} ${CXXFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/cxxwrapper
 	@${CHMOD} +x ${WRKDIR}/bin/ccwrapper ${WRKDIR}/bin/cxxwrapper
 	@${REINPLACE_CMD} -e 's|gcc|${WRKDIR}/bin/ccwrapper|g' \
 			  -e 's|g\+\+|${WRKDIR}/bin/cxxwrapper|g' \
@@ -145,7 +145,7 @@ do-configure:
 # the java doc are not installed on FreeBSD so exclude the javadoc task
 # as it'll fail otherwise
 do-build:
-	@cd ${WRKSRC} && ${SETENV} ${_GRADLE_RUN} zips --exclude-task javadoc
+	@cd ${WRKSRC} && ${_GRADLE_RUN} zips --exclude-task javadoc
 
 # it's not recommended to install openjfx inside openjdk directory
 do-install:

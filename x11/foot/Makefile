@@ -1,5 +1,5 @@
 PORTNAME=	foot
-DISTVERSION=	1.10.2
+DISTVERSION=	1.11.0
 CATEGORIES=	x11
 MASTER_SITES=	https://codeberg.org/dnkl/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
@@ -25,7 +25,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 OPTIONS_DEFINE=	DOCS LTO NOTIFY PGO UTF8PROC XDG
 OPTIONS_DEFAULT=LTO NOTIFY PGO UTF8PROC XDG
 OPTIONS_EXCLUDE+=	${CC:T:Mgcc*:C/.+/LTO/} # undefined reference to `xstrdup'
-OPTIONS_EXCLUDE_powerpc64=	${"${/usr/bin/ld:L:tA}"==/usr/bin/ld.lld:?LTO:} # LLVM bug 47353
+OPTIONS_EXCLUDE_powerpc64=	${"${/usr/bin/ld:L:tA}"==/usr/bin/ld.lld:?LTO:} # https://github.com/llvm/llvm-project/issues/46697
 OPTIONS_EXCLUDE_FreeBSD_12=	${WAYLAND_DISPLAY:UPGO} # ./pgo hangs
 
 DOCS_BUILD_DEPENDS=	scdoc:textproc/scdoc
@@ -63,6 +63,7 @@ MESON_ARGS+=	-Dterminfo=disabled -Ddefault-terminfo=xterm-256color
 
 .if !defined(DEFAULT_POST_BUILD)
 post-build-PGO-on:
+	(cd ${BUILD_WRKSRC} && ./tests/test-config) # -Wbackend-plugin/-Wmissing-profile
 	(cd ${BUILD_WRKSRC} && ./${PORTNAME}client --version) # -Wbackend-plugin/-Wmissing-profile
 .if defined(WAYLAND_DISPLAY)
 # Likely a local build, so optimize for the current config

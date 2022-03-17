@@ -1,20 +1,30 @@
---- services/cert_verifier/cert_verifier_creation.cc.orig	2021-09-24 18:55:25 UTC
+--- services/cert_verifier/cert_verifier_creation.cc.orig	2022-02-28 16:54:41 UTC
 +++ services/cert_verifier/cert_verifier_creation.cc
 @@ -86,7 +86,7 @@ scoped_refptr<net::CertVerifyProc> CreateCertVerifyPro
  scoped_refptr<net::CertVerifyProc> CreateOldDefaultWithoutCaching(
      scoped_refptr<net::CertNetFetcher> cert_net_fetcher) {
    scoped_refptr<net::CertVerifyProc> verify_proc;
--#if defined(OS_FUCHSIA) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_FUCHSIA) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    verify_proc =
        net::CertVerifyProc::CreateBuiltinVerifyProc(std::move(cert_net_fetcher));
  #else
-@@ -103,7 +103,7 @@ scoped_refptr<net::CertVerifyProc> CreateOldDefaultWit
- scoped_refptr<net::CertVerifyProc> CreateNewDefaultWithoutCaching(
+@@ -104,7 +104,7 @@ scoped_refptr<net::CertVerifyProc> CreateNewDefaultWit
      scoped_refptr<net::CertNetFetcher> cert_net_fetcher) {
    scoped_refptr<net::CertVerifyProc> verify_proc;
--#if BUILDFLAG(CHROME_ROOT_STORE_SUPPORTED) && defined(OS_LINUX)
-+#if BUILDFLAG(CHROME_ROOT_STORE_SUPPORTED) && (defined(OS_LINUX) || defined(OS_BSD))
+ #if BUILDFLAG(CHROME_ROOT_STORE_SUPPORTED) && \
+-    (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN))
++    (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD))
    verify_proc = net::CreateCertVerifyProcBuiltin(
        std::move(cert_net_fetcher), net::CreateSslSystemTrustStoreChromeRoot());
  #elif BUILDFLAG(BUILTIN_CERT_VERIFIER_FEATURE_SUPPORTED)
+@@ -122,7 +122,8 @@ bool IsUsingCertNetFetcher() {
+ #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) ||      \
+     BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) ||       \
+     BUILDFLAG(TRIAL_COMPARISON_CERT_VERIFIER_SUPPORTED) || \
+-    BUILDFLAG(BUILTIN_CERT_VERIFIER_FEATURE_SUPPORTED)
++    BUILDFLAG(BUILTIN_CERT_VERIFIER_FEATURE_SUPPORTED) || \
++    BUILDFLAG(IS_BSD)
+   return true;
+ #else
+   return false;

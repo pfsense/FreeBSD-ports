@@ -1,7 +1,7 @@
 PORTNAME=	dune-alugrid
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.0rc1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -39,5 +39,7 @@ DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen \
 			sphinx-build:textproc/py-sphinx
 
 PORTDOCS=	*
+
+CXXFLAGS+=	-fsigned-char
 
 .include <bsd.port.mk>

@@ -32,6 +32,7 @@ include/harfbuzz/hb-set.h
 include/harfbuzz/hb-shape-plan.h
 include/harfbuzz/hb-shape.h
 include/harfbuzz/hb-style.h
+include/harfbuzz/hb-subset-repacker.h
 include/harfbuzz/hb-subset.h
 include/harfbuzz/hb-unicode.h
 include/harfbuzz/hb-version.h
@@ -88,7 +89,6 @@ share/gir-1.0/HarfBuzz-0.0.gir
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-1-5-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-1-6-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-1-7-2.html
-%%DOCS%%share/gtk-doc/html/harfbuzz/api-index-1-7-5.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-1-7-7.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-1-8-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-1-8-1.html
@@ -111,6 +111,9 @@ share/gir-1.0/HarfBuzz-0.0.gir
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-2-9-1.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-3-0-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-3-1-0.html
+%%DOCS%%share/gtk-doc/html/harfbuzz/api-index-3-3-0.html
+%%DOCS%%share/gtk-doc/html/harfbuzz/api-index-4-0-0.html
+%%DOCS%%share/gtk-doc/html/harfbuzz/api-index-3-4-0.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/api-index-full.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/apple-advanced-typography-api.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/buffers-language-script-and-direction.html
@@ -133,6 +136,7 @@ share/gir-1.0/HarfBuzz-0.0.gir
 %%DOCS%%share/gtk-doc/html/harfbuzz/harfbuzz-hb-coretext.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/harfbuzz-hb-deprecated.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/harfbuzz-hb-directwrite.html
+%%DOCS%%share/gtk-doc/html/harfbuzz/harfbuzz-hb-draw.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/harfbuzz-hb-face.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/harfbuzz-hb-font.html
 %%DOCS%%share/gtk-doc/html/harfbuzz/harfbuzz-hb-ft.html

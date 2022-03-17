@@ -1,7 +1,8 @@
 # Created by: Andreas Fehlner <fehlner@gmx.de>
 
 PORTNAME=	gramps
-PORTVERSION=	5.1.4
+PORTVERSION=	5.1.5
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	science gnome python
 
@@ -10,6 +11,9 @@ COMMENT=	GTK3-based genealogy program
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Requires py-bsddb3 which requires upstream EOLd db5
+EXPIRATION_DATE=	2022-06-30
 
 LIB_DEPENDS=	libgeocode-glib.so:net/geocode-glib \
 		libosmgpsmap-1.0.so:x11-toolkits/osm-gps-map
@@ -23,7 +27,6 @@ USES=		desktop-file-utils gettext gnome python:3.3+ shared-mime-info
 USE_GITHUB=	yes
 GH_ACCOUNT=	gramps-project
 USE_GNOME=	cairo gtk30 intltool librsvg2 pango pygobject3
-INSTALLS_OMF=	yes
 USE_PYTHON=	autoplist distutils noflavors
 
 CONFIGURE_ARGS=	--disable-mime-install

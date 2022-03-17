@@ -1,3 +1,3 @@
-TIMESTAMP = 1636145342
-SHA256 (rubygem/aws-sdk-lambdapreview-1.31.0.gem) = 607cd2c52b0f8813d3bc699183925f805a2ecbbf8764f9258d6cf18abda87d73
-SIZE (rubygem/aws-sdk-lambdapreview-1.31.0.gem) = 25088
+TIMESTAMP = 1646058522
+SHA256 (rubygem/aws-sdk-lambdapreview-1.35.0.gem) = ce1106c61f6fc4dbf0e03cc8667710390b2e48bfdaef3e289e80a1869e69d570
+SIZE (rubygem/aws-sdk-lambdapreview-1.35.0.gem) = 25088

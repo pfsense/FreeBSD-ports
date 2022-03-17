@@ -1,48 +1,29 @@
---- media/gpu/buffer_validation.cc.orig	2021-04-14 18:41:05 UTC
+--- media/gpu/buffer_validation.cc.orig	2022-03-16 08:38:25 UTC
 +++ media/gpu/buffer_validation.cc
-@@ -12,15 +12,15 @@
+@@ -15,7 +15,7 @@
  #include "ui/gfx/geometry/size.h"
  #include "ui/gfx/gpu_memory_buffer.h"
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include <sys/types.h>
  #include <unistd.h>
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- 
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+@@ -23,7 +23,7 @@
  namespace media {
  
  bool GetFileSize(const int fd, size_t* size) {
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (fd < 0) {
      VLOGF(1) << "Invalid file descriptor";
      return false;
-@@ -46,7 +46,7 @@ bool GetFileSize(const int fd, size_t* size) {
- #else
-   NOTIMPLEMENTED();
-   return false;
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- }
- 
- bool VerifyGpuMemoryBufferHandle(media::VideoPixelFormat pixel_format,
-@@ -56,7 +56,7 @@ bool VerifyGpuMemoryBufferHandle(media::VideoPixelForm
-     VLOGF(1) << "Unexpected GpuMemoryBufferType: " << gmb_handle.type;
+@@ -66,7 +66,7 @@ bool VerifyGpuMemoryBufferHandle(
+              << coded_size.ToString();
      return false;
    }
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    const size_t num_planes = media::VideoFrame::NumPlanes(pixel_format);
    if (num_planes != gmb_handle.native_pixmap_handle.planes.size() ||
        num_planes == 0) {
-@@ -108,7 +108,7 @@ bool VerifyGpuMemoryBufferHandle(media::VideoPixelForm
- #else
-   NOTIMPLEMENTED();
-   return false;
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- }
- 
- }  // namespace media

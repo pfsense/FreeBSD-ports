@@ -1,5 +1,5 @@
 PORTNAME=	got
-PORTVERSION=	0.64
+PORTVERSION=	0.67
 CATEGORIES=	devel
 MASTER_SITES=	https://gameoftrees.org/releases/
 
@@ -10,6 +10,8 @@ LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
 USES=		uidfix
+
+CONFLICTS_INSTALL=	p5-App-GitGot
 
 # Insert #include "openbsd-compat.h" into each source file,
 # after the <...> includes and before the "..." ones.

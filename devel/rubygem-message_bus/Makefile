@@ -1,7 +1,7 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
 
 PORTNAME=	message_bus
-PORTVERSION=	3.3.6
+PORTVERSION=	3.3.8
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -13,10 +13,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-rack>=1.1.3:www/rubygem-rack
 
-USES=		gem shebangfix
+USES=		cpe gem shebangfix
 USE_RUBY=	yes
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	discourse
 
 SHEBANG_FILES=	examples/chat/docker_container/update_chat
 

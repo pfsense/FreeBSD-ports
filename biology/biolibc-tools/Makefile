@@ -1,8 +1,7 @@
 # Created by: J. Bacon <jwb@FreeBSD.org>
 
 PORTNAME=	biolibc-tools
-DISTVERSION=	0.1.0-34
-DISTVERSIONSUFFIX=	-gf1224de
+DISTVERSION=	0.1.2
 CATEGORIES=	biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -20,6 +19,7 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	auerlab
 
+MAKE_ENV=	VERSION=${PORTVERSION}
 INSTALL_TARGET=	install-strip
 
 pre-build:

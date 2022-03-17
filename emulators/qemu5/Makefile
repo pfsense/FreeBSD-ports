@@ -6,7 +6,7 @@ MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
-COMMENT=	QEMU CPU Emulator - 5.X.X branch
+COMMENT=	QEMU CPU Emulator - 5.X.X branch ${${FLAVOR}_COMMENT}
 
 LICENSE=	GPLv2
 
@@ -22,9 +22,9 @@ LIB_DEPENDS=	libnettle.so:security/nettle \
 		libzstd.so:archivers/zstd
 
 FLAVORS=	default nox11
-default_CONFLICTS_INSTALL=	qemu*
+default_CONFLICTS_INSTALL=	qemu-devel qemu-nox11 qemu42 qemu5
 nox11_PKGNAMESUFFIX=            5-nox11
-nox11_CONFLICTS_INSTALL=        qemu*
+nox11_CONFLICTS_INSTALL=        qemu qemu-devel qemu42 qemu5
 nox11_COMMENT=                  (without X11)
 
 USES=		bison compiler:c11 cpe gmake gnome iconv:wchar_t ninja perl5 \
@@ -33,6 +33,8 @@ USE_GNOME=	cairo glib20 libxml2
 USE_PERL5=	build
 USE_PYTHON=	distutils noflavors
 USE_XORG=	pixman
+
+CONFLICTS_INSTALL=	qemu qemu-devel qemu-nox11 qemu42 qemu5
 
 HAS_CONFIGURE=	yes
 
@@ -113,7 +115,6 @@ CONFIGURE_ARGS=	--localstatedir=/var --extra-ldflags=-L\"/usr/lib\" \
 		--disable-linux-user --disable-linux-aio --disable-xen \
 		--enable-debug-info --python=${PYTHON_CMD} \
 		--extra-cflags=-I${WRKSRC}\ -I${LOCALBASE}/include\ -DPREFIX=\\\"\"${PREFIX}\\\"\"
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.options.mk>
 

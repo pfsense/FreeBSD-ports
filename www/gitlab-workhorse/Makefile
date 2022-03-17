@@ -1,7 +1,7 @@
 # Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
 
 PORTNAME=	gitlab-workhorse
-PORTVERSION=	14.5.2
+PORTVERSION=	14.8.2
 PORTREVISION=	0
 CATEGORIES=	www
 
@@ -18,17 +18,19 @@ USES=		gmake go:modules,no_targets
 MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
 MAKE_ENV+=	${GO_ENV}
 WRKSRC_SUBDIR=	workhorse
+# found in work/gitlab-foss*/workhorse/go.mod
+#GO_MODULE=	gitlab.com/gitlab-org/gitlab/workhorse
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 GL_PROJECT=	gitlab-foss
 # Find the commit hash here: https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-GL_COMMIT=	76ceea558aae5013c4e16b3b2f97363608765c21
+GL_COMMIT=	c7be43f6dd37211709111be3796af9e1f00d3713
 
 # for go dependencies
 USE_GITHUB=	nodefault
 # generated with: make gomod-vendor
-# 104dd
+# 105dd
 GH_TUPLE=	\
 		Azure:azure-pipeline-go:v0.2.3:azure_azure_pipeline_go/vendor/github.com/Azure/azure-pipeline-go \
 		Azure:azure-storage-blob-go:v0.13.0:azure_azure_storage_blob_go/vendor/github.com/Azure/azure-storage-blob-go \
@@ -132,6 +134,7 @@ GH_TUPLE=	\
 		uber:jaeger-lib:v2.4.1:uber_jaeger_lib/vendor/github.com/uber/jaeger-lib
 
 GL_TUPLE=	gitlab-org:gitaly:df7dadcc3f74276a7176234d4b1475299f46c05c:gitlab_org_gitaly_v14/vendor/gitlab.com/gitlab-org/gitaly/v14 \
+		gitlab-org:golang-archive-zip:84007c99e03b62ee4dc62a94048d6e59552299d7:gitlab_org_golang_archive_zip/vendor/gitlab.com/gitlab-org/golang-archive-zip \
 		gitlab-org:labkit:9205b46eea68f47a36cefa783a306476f0b2dbfd:gitlab_org_labkit/vendor/gitlab.com/gitlab-org/labkit
 
 PLIST_FILES=	bin/gitlab-resize-image \
@@ -157,4 +160,3 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/${PORTNAME}
 
 .include <bsd.port.mk>
-

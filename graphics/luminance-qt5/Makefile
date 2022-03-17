@@ -2,7 +2,7 @@
 
 PORTNAME=	luminance-hdr
 DISTVERSION=	2.6.1.1
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	graphics
 MASTER_SITES=	SF/qtpfsgui/luminance/${DISTVERSION}
 
@@ -40,11 +40,6 @@ HELPBROWSER_USE=	QT=webchannel,webengine
 HELPBROWSER_CMAKE_BOOL=	WITH_HELPBROWSER
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MHELPBROWSER}
-DEPRECATED=	Uses EoL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=	2021-06-23
-.endif
 
 post-patch:
 # Do not install yet another copy of GPL (we use license framework instead)

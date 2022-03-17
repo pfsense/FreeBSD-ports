@@ -1,11 +1,13 @@
---- sandbox/policy/switches.cc.orig	2021-07-19 18:45:20 UTC
+--- sandbox/policy/switches.cc.orig	2022-02-28 16:54:41 UTC
 +++ sandbox/policy/switches.cc
-@@ -93,7 +93,7 @@ const char kGpuSandboxFailuresFatal[] = "gpu-sandbox-f
+@@ -95,7 +95,9 @@ const char kGpuSandboxFailuresFatal[] = "gpu-sandbox-f
  // Meant to be used as a browser-level switch for testing purposes only.
  const char kNoSandbox[] = "no-sandbox";
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++const char kDisableUnveil[] = "disable-unveil";
++
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  // Instructs the zygote to launch without a sandbox. Processes forked from this
  // type of zygote will apply their own custom sandboxes later.
  const char kNoZygoteSandbox[] = "no-zygote-sandbox";

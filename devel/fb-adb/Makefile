@@ -27,6 +27,9 @@ COMMENT=	Better shell for Android devices
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Last release in 2016 and deprecated by upstream, please consider using devel/android-tools-adb instead
+EXPIRATION_DATE=2022-03-31
+
 ONLY_FOR_ARCHS=	amd64 i386
 IGNORE_DragonFly=	requires linuxulator for Android NDK
 
@@ -37,7 +40,7 @@ RUN_DEPENDS=	adb:devel/android-tools-adb
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook
 
-USES=		7z:partial autoreconf gmake linux ncurses perl5 python:3.4+,build
+USES=		autoreconf gmake linux ncurses perl5 python:3.4+,build
 USE_LINUX=	base:build
 USE_PERL5=	build # pod2man
 BASH_CMD?=	bash # can be zsh

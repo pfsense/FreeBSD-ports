@@ -37,6 +37,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 ALL_TARGET=	World
 MAKE_ARGS+=	PERL=${PERL} "LOCAL_LDFLAGS=${LDFLAGS}"
 MAKE_JOBS_UNSAFE=yes
+MAKE_ENV=	MALLOC_CONF=junk:false
 SUB_FILES=	pkg-message
 LDFLAGS+=	-z muldefs #--allow-multiple-definition
 
@@ -115,5 +116,7 @@ do-install:
 
 post-install:
 	${FIND} ${STAGEDIR}/${PREFIX}/dt -type f -exec ${SH} -c '${STRIP_CMD} {} > /dev/null 2>&1' \;
+	# Only a problem on armv7 so far
+	${FIND} ${STAGEDIR}/${PREFIX}/dt -type f -name 'ecp.*' -delete
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 # Created by: Matthias Andree <mandree@FreeBSD.org>
 
 PORTNAME=		openvpn
-DISTVERSION=		2.5.4
+DISTVERSION=		2.5.5
 PORTREVISION?=		1
 CATEGORIES=		security net net-vpn
 MASTER_SITES=		https://swupdate.openvpn.org/community/releases/ \
@@ -36,17 +36,18 @@ GROUPS=			openvpn
 PORTDOCS=		*
 PORTEXAMPLES=		*
 
-OPTIONS_DEFINE=		PKCS11 EASYRSA DOCS EXAMPLES X509ALTUSERNAME \
-			TEST LZ4 LZO SMALL TUNNELBLICK ASYNC_PUSH UNITTESTS
-OPTIONS_DEFAULT=	EASYRSA OPENSSL TEST LZ4 LZO
+OPTIONS_DEFINE=		ASYNC_PUSH DOCS EASYRSA EXAMPLES LZ4 LZO PKCS11 SMALL \
+			TEST TUNNELBLICK UNITTESTS X509ALTUSERNAME
+OPTIONS_DEFAULT=	EASYRSA LZ4 LZO OPENSSL PKCS11 TEST
 OPTIONS_SINGLE=		SSL
 OPTIONS_SINGLE_SSL=	OPENSSL MBEDTLS
 ASYNC_PUSH_DESC=	Enable async-push support
 EASYRSA_DESC=		Install security/easy-rsa RSA helper package
+LZO_DESC=		LZO compression (incompatible with LibreSSL)
 MBEDTLS_DESC=		SSL/TLS via mbedTLS (lacks TLS v1.3)
 PKCS11_DESC=		Use security/pkcs11-helper (OpenSSL only)
 SMALL_DESC=		Build a smaller executable with fewer features
-TUNNELBLICK_DESC=	Tunnelblick XOR scramble patch (READ HELP!)
+TUNNELBLICK_DESC=	XOR scrambling patch - DEPRECATED!
 UNITTESTS_DESC=		Enable unit tests
 X509ALTUSERNAME_DESC=	Enable --x509-username-field (OpenSSL only)
 
@@ -100,8 +101,29 @@ _tlslibs=libmbedtls libmbedx509 libmbedcrypto
 _tlslibs=libssl libcrypto
 .endif
 
+.if ${PORT_OPTIONS:MLZO}
+IGNORE_SSL=libressl libressl-devel
+IGNORE_SSL_REASON=OpenVPN does not have permission to include LZO with LibreSSL. Compile against OpenSSL, or if your setups support it, disable LZO support
+.endif
+
 .if ! ${PORT_OPTIONS:MLZ4} && ! ${PORT_OPTIONS:MLZO}
 CONFIGURE_ARGS+=	--enable-comp-stub
+.endif
+
+.include <bsd.port.pre.mk>
+
+.if !empty(PORT_OPTIONS:MLZO) && !empty(SSL_DEFAULT:Nbase:Nopenssl*)
+# in-depth security net if Mk/Uses/ssl.mk changes
+pre-everything::
+	@${ECHO_CMD} >&2 "ERROR: OpenVPN is not licensed to combine LZO with other OpenSSL-licensed libraries than OpenSSL. Compile against OpenSSL, or if your setups support it, disable LZO support."
+	@${SHELL} -c 'exit 1'
+.endif
+
+.if !empty(PORT_OPTIONS:MMBEDTLS) || !empty(PORT_OPTIONS:MTUNNELBLICK)
+pre-everything::
+	@${ECHO_CMD} >&2 "======================================================================"
+	@${ECHO_CMD} >&2 "Note that the mbedTLS and Tunnelblick options will go away 2022-03-31."
+	@${ECHO_CMD} >&2 "======================================================================"
 .endif
 
 post-patch:
@@ -162,4 +184,4 @@ post-install-EXAMPLES-on:
 	${CHMOD} ${BINMODE} ${STAGEDIR}${EXAMPLESDIR}/sample-scripts/*
 	${RM} ${STAGEDIR}${EXAMPLESDIR}/sample-config-files/*.orig
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

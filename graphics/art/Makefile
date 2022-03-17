@@ -1,5 +1,5 @@
 PORTNAME=	art
-DISTVERSION=	1.10.1
+DISTVERSION=	1.12.1
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/agriggio/art/downloads/
 PKGNAMESUFFIX=	-raw-image-editor
@@ -31,6 +31,12 @@ USE_GNOME=	atk atkmm cairo cairomm glibmm gtkmm30 librsvg2
 USE_XORG=	x11
 
 EXTRACT_CMD=	gtar
+
+OPTIONS_DEFINE=		OPENMP
+#OPTIONS_DEFAULT=	OPENMP
+
+OPENMP_CMAKE_BOOL=	OPTION_OMP
+OPENMP_BROKEN=		OpenMP causes asserts, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=261360
 
 post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/share/doc/ART

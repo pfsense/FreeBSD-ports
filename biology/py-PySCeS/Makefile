@@ -1,5 +1,5 @@
 PORTNAME=	PySCeS
-DISTVERSION=	1.0.0
+DISTVERSION=	1.0.1
 CATEGORIES=	biology python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -27,8 +27,8 @@ LDFLAGS+=	-lpython${PYTHON_VER} -shared # see https://github.com/PySCeS/pysces/i
 
 post-install:
 	@${STRIP_CMD} \
-		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pysces/pitcon/pitcon.cpython-38.so \
-		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pysces/nleq2/nleq2.cpython-38.so
+		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pysces/pitcon/pitcon.cpython-${PYTHON_SUFFIX}.so \
+		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pysces/nleq2/nleq2.cpython-${PYTHON_SUFFIX}.so
 
 do-test: install # from section 2.1 Loading PySCeS in http://pysces.sourceforge.net/pdf/userguide.pdf
 	@${PYTHON_CMD} -c "import pysces; pysces.test();"

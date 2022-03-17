@@ -1,5 +1,5 @@
-TIMESTAMP = 1631912873
-SHA256 (go/net_k6/k6-v0.34.1/v0.34.1.mod) = 8a80e99c90f6e009d50bf88750c3098ba8d09e9b3bbdd115a931b5c2ec454737
-SIZE (go/net_k6/k6-v0.34.1/v0.34.1.mod) = 2167
-SHA256 (go/net_k6/k6-v0.34.1/v0.34.1.zip) = 9e52680daa1d166d1502f39e6e6fd912c0f6af17e94c69eb509785a9dfdbd154
-SIZE (go/net_k6/k6-v0.34.1/v0.34.1.zip) = 1487745
+TIMESTAMP = 1643293545
+SHA256 (go/net_k6/k6-v0.36.0/v0.36.0.mod) = d6c378462342db064ee441a79e44951e7b475b78afac3d6613c8aeff5069fceb
+SIZE (go/net_k6/k6-v0.36.0/v0.36.0.mod) = 2636
+SHA256 (go/net_k6/k6-v0.36.0/v0.36.0.zip) = eb7db9cfdd25f1fdb4685bfa69d5f812eef26c2ea63f7974d8d7088798e554a5
+SIZE (go/net_k6/k6-v0.36.0/v0.36.0.zip) = 1516618

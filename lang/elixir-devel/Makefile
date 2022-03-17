@@ -1,6 +1,6 @@
 PORTNAME=	elixir
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.13.0
+DISTVERSION=	1.13.3
 CATEGORIES=	lang
 MASTER_SITES+=	https://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
 PKGNAMESUFFIX=	-devel
@@ -23,7 +23,7 @@ GH_ACCOUNT=	elixir-lang
 USE_LOCALE=	en_US.UTF-8
 ALL_TARGET=	# empty
 
-CONFLICTS=	elixir
+CONFLICTS=	elixir # bin/elixir bin/elixirc bin/iex
 
 REINPLACE_ARGS=	-i ""
 NO_ARCH=	yes

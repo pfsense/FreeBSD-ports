@@ -1,11 +1,11 @@
---- chrome/browser/ui/signin_view_controller_delegate.h.orig	2021-09-24 18:29:25 UTC
+--- chrome/browser/ui/signin_view_controller_delegate.h.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/ui/signin_view_controller_delegate.h
-@@ -63,7 +63,7 @@ class SigninViewControllerDelegate {
-       const CoreAccountId& account_id,
-       signin_metrics::ReauthAccessPoint access_point);
+@@ -74,7 +74,7 @@ class SigninViewControllerDelegate {
+ #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
-     BUILDFLAG(IS_CHROMEOS_LACROS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS_LACROS)
++    BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
    // Returns a platform-specific SigninViewContolllerDelegate instance that
    // displays the enterprise confirmation modal dialog. The returned object
+   // should delete itself when the window it's managing is closed.

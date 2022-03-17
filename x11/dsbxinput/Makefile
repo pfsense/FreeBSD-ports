@@ -1,5 +1,6 @@
 PORTNAME=	dsbxinput
 DISTVERSION=	0.1.1
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	mk@nic-nac-project.org
@@ -15,7 +16,7 @@ USE_QT=		linguisttools_build
 USE_GITHUB=	yes
 GH_ACCOUNT=	mrclksr
 GH_PROJECT=	DSBXinput
-USE_PYQT=	core gui widgets
+USE_PYQT=	pyqt5
 
 BINARY_ALIAS=	lrelease=${LRELEASE}
 .include <bsd.port.mk>

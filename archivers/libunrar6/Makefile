@@ -1,5 +1,5 @@
 PORTNAME=	libunrar6
-PORTVERSION=	6.0.5
+PORTVERSION=	6.1.6
 CATEGORIES=	archivers
 MASTER_SITES=	http://www.rarlab.com/rar/
 DISTNAME=	unrarsrc-${PORTVERSION}
@@ -15,6 +15,8 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 USES=		compiler:c++11-lang gmake
 USE_LDCONFIG=	yes
 
+CONFLICTS_INSTALL=	libunrar # lib/libunrar.so
+
 ALL_TARGET=	lib
 MAKEFILE=	makefile
 MAKE_ARGS=	AR="${AR}" \
@@ -24,8 +26,6 @@ MAKE_ARGS=	AR="${AR}" \
 		STRIP="${STRIP_CMD}"
 SONAME=		libunrar.so.6
 WRKSRC=		${WRKDIR}/unrar
-
-CONFLICTS_INSTALL=	libunrar-3*
 
 OPTIONS_DEFINE=		OPENSSL_AES
 OPTIONS_DEFAULT=	OPENSSL_AES

@@ -1,20 +1,21 @@
---- components/feature_engagement/public/feature_configurations.cc.orig	2021-07-19 18:45:13 UTC
+--- components/feature_engagement/public/feature_configurations.cc.orig	2022-02-28 16:54:41 UTC
 +++ components/feature_engagement/public/feature_configurations.cc
-@@ -12,7 +12,7 @@ namespace feature_engagement {
- 
+@@ -35,7 +35,7 @@ FeatureConfig CreateAlwaysTriggerConfig(const base::Fe
  absl::optional<FeatureConfig> GetClientSideFeatureConfig(
      const base::Feature* feature) {
--#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (kIPHPasswordsAccountStorageFeature.name == feature->name) {
      absl::optional<FeatureConfig> config = FeatureConfig();
-@@ -41,7 +41,7 @@ absl::optional<FeatureConfig> GetClientSideFeatureConf
-         EventConfig("profile_menu_shown", Comparator(EQUAL, 0), 360, 360);
-     return config;
-   }
--#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS)
+     config->valid = true;
+@@ -721,7 +721,8 @@ absl::optional<FeatureConfig> GetClientSideFeatureConf
+ #endif  // BUILDFLAG(IS_ANDROID)
  
- #if defined(OS_ANDROID)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || \
++    BUILDFLAG(IS_BSD)
+   if (kIPHAutofillVirtualCardSuggestionFeature.name == feature->name) {
+     // A config that allows the virtual card credit card suggestion IPH to be
+     // shown when:

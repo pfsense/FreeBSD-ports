@@ -72,14 +72,16 @@ bin/3dDFT
 bin/3dDTeig
 bin/3dDTtoDWI
 bin/3dDTtoNoisyDWI
+bin/3dDiff
 bin/3dDWItoDT
 bin/3dDWUncert
 bin/3dDeconvolve
 bin/3dDegreeCentrality
+bin/3dDepthMap
 bin/3dDespike
 bin/3dDetrend
 bin/3dECM
-bin/3dEduProg
+bin/3dEdu_01_scale
 bin/3dEigsToDT
 bin/3dEmpty
 bin/3dEntropy
@@ -231,6 +233,7 @@ bin/3ddelay
 bin/3ddot
 bin/3ddot_beta
 bin/3dedge3
+bin/3dedgedog
 bin/3dfim+
 bin/3dfractionize
 bin/3dhistog
@@ -297,7 +300,8 @@ bin/@GetAfniRes
 bin/@GetAfniView
 bin/@GradFlipTest
 bin/@Install_3dPFM_Demo
-bin/@Install_AP_MULTI_DEMO1
+bin/@Install_APMULTI_Demo1_rest
+bin/@Install_APMULTI_Demo2_realtime
 bin/@Install_AfniRetinoDemo
 bin/@Install_ClustScat_Demo
 bin/@Install_D99_macaque
@@ -679,7 +683,8 @@ include/afni/rcmat.h
 include/afni/tagset.h
 include/afni/thd_atlas.h
 include/afni/thd_compress.h
-include/afni/thd_depth.h
+include/afni/thd_depth_map_edt.h
+include/afni/thd_edge_dog.h
 include/afni/thd_iochan.h
 include/afni/thd_maker.h
 include/afni/thd_ttatlas_CA_EZ.h
@@ -792,6 +797,7 @@ lib/afni/plug_zeropad.so
 %%PYTHON_SITELIBDIR%%/afnipy/lib_apqc_html.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_apqc_html_css.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_apqc_io.py
+%%PYTHON_SITELIBDIR%%/afnipy/lib_apqc_stats_dset.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_apqc_tcsh.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_b0_corr.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_cdiflist.py
@@ -800,6 +806,7 @@ lib/afni/plug_zeropad.so
 %%PYTHON_SITELIBDIR%%/afnipy/lib_dti_sundry.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_fat_funcs.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_fat_plot_sel.py
+%%PYTHON_SITELIBDIR%%/afnipy/lib_format_cmd_str.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_gershgorin.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_info_dict.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_mat2d_base.py
@@ -815,6 +822,7 @@ lib/afni/plug_zeropad.so
 %%PYTHON_SITELIBDIR%%/afnipy/lib_subjects.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_surf_clustsim.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_system_check.py
+%%PYTHON_SITELIBDIR%%/afnipy/lib_tedana_afni.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_textdata.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_timing.py
 %%PYTHON_SITELIBDIR%%/afnipy/lib_tsv.py

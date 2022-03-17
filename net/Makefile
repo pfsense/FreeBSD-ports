@@ -3,10 +3,10 @@
     SUBDIR += 3proxy
     SUBDIR += 44bsd-rdist
     SUBDIR += 6tunnel
+    SUBDIR += R-cran-pingr
     SUBDIR += R-cran-twitteR
     SUBDIR += Sockets
     SUBDIR += activemq
-    SUBDIR += adasockets
     SUBDIR += addrwatch
     SUBDIR += afpfs-ng
     SUBDIR += aget
@@ -16,11 +16,9 @@
     SUBDIR += akonadi-notes
     SUBDIR += akonadi-search
     SUBDIR += aluminum
-    SUBDIR += anet
     SUBDIR += aoe
     SUBDIR += apache-commons-net
     SUBDIR += apinger
-    SUBDIR += appkonference
     SUBDIR += aprsc
     SUBDIR += aquantia-atlantic-kmod
     SUBDIR += arataga
@@ -205,6 +203,7 @@
     SUBDIR += google-cloud-sdk-app-engine-go
     SUBDIR += gopher
     SUBDIR += goreplay
+    SUBDIR += gorss
     SUBDIR += gotthard
     SUBDIR += gq
     SUBDIR += graphpath
@@ -243,6 +242,7 @@
     SUBDIR += haproxy21
     SUBDIR += haproxy22
     SUBDIR += haproxy23
+    SUBDIR += haproxy24
     SUBDIR += hblock
     SUBDIR += hexinject
     SUBDIR += hlmaster
@@ -341,6 +341,7 @@
     SUBDIR += l2tpd
     SUBDIR += ladvd
     SUBDIR += lambdamoo
+    SUBDIR += landrop
     SUBDIR += latd
     SUBDIR += ldap-stats
     SUBDIR += ldapbrowser
@@ -408,8 +409,8 @@
     SUBDIR += librespeed-go
     SUBDIR += librsync
     SUBDIR += libsignal-protocol-c
+    SUBDIR += libslirp
     SUBDIR += libsrtp2
-    SUBDIR += libstorj
     SUBDIR += libtnl
     SUBDIR += libtrace
     SUBDIR += libunp
@@ -469,6 +470,7 @@
     SUBDIR += mpd5
     SUBDIR += mpich
     SUBDIR += mpich2
+    SUBDIR += mpifx
     SUBDIR += mping
     SUBDIR += mptsd
     SUBDIR += mrouted
@@ -481,9 +483,12 @@
     SUBDIR += nakenchat
     SUBDIR += nanomsg
     SUBDIR += nast
+    SUBDIR += nats-nkeys
+    SUBDIR += nats-nsc
     SUBDIR += nats-server
     SUBDIR += nats-streaming-server
     SUBDIR += nats-top
+    SUBDIR += natscli
     SUBDIR += nbd-server
     SUBDIR += nbdkit
     SUBDIR += nc
@@ -974,10 +979,6 @@
     SUBDIR += pecl-zmq
     SUBDIR += pen
     SUBDIR += pfinger
-    SUBDIR += php73-ldap
-    SUBDIR += php73-soap
-    SUBDIR += php73-sockets
-    SUBDIR += php73-xmlrpc
     SUBDIR += php74-ldap
     SUBDIR += php74-soap
     SUBDIR += php74-sockets
@@ -985,12 +986,14 @@
     SUBDIR += php80-ldap
     SUBDIR += php80-soap
     SUBDIR += php80-sockets
+    SUBDIR += php81-ldap
+    SUBDIR += php81-soap
+    SUBDIR += php81-sockets
     SUBDIR += phpldapadmin
     SUBDIR += pichi
     SUBDIR += pimcommon
     SUBDIR += pimd
     SUBDIR += pimdd
-    SUBDIR += pipsecd
     SUBDIR += pjsip
     SUBDIR += pkt-gen
     SUBDIR += pktanon
@@ -1032,7 +1035,6 @@
     SUBDIR += py-ec2-cli-tools
     SUBDIR += py-errbot
     SUBDIR += py-eventlet
-    SUBDIR += py-flask-xml-rpc
     SUBDIR += py-gdown
     SUBDIR += py-geopy
     SUBDIR += py-gntp
@@ -1113,7 +1115,6 @@
     SUBDIR += py-pyu2f
     SUBDIR += py-pyvmomi
     SUBDIR += py-pyzmq
-    SUBDIR += py-qt5-network
     SUBDIR += py-qt5-networkauth
     SUBDIR += py-rabbitpy
     SUBDIR += py-radix
@@ -1123,6 +1124,7 @@
     SUBDIR += py-ripe.atlas.tools
     SUBDIR += py-s3cmd
     SUBDIR += py-s3transfer
+    SUBDIR += py-s4cmd
     SUBDIR += py-saltyrtc.server
     SUBDIR += py-sbws
     SUBDIR += py-shodan
@@ -1132,6 +1134,7 @@
     SUBDIR += py-smbprotocol
     SUBDIR += py-soap2py
     SUBDIR += py-socketio-client
+    SUBDIR += py-socksio
     SUBDIR += py-softlayer
     SUBDIR += py-speedtest-cli
     SUBDIR += py-sshtunnel
@@ -1215,6 +1218,7 @@
     SUBDIR += rubygem-activestorage52
     SUBDIR += rubygem-activestorage60
     SUBDIR += rubygem-activestorage61
+    SUBDIR += rubygem-activestorage70
     SUBDIR += rubygem-amazon-ec2
     SUBDIR += rubygem-amq-protocol
     SUBDIR += rubygem-amqp
@@ -1243,7 +1247,6 @@
     SUBDIR += rubygem-fog-aws
     SUBDIR += rubygem-fog-azure
     SUBDIR += rubygem-fog-brightbox
-    SUBDIR += rubygem-fog-brightbox0
     SUBDIR += rubygem-fog-cloudatcost
     SUBDIR += rubygem-fog-cloudstack
     SUBDIR += rubygem-fog-digitalocean
@@ -1251,7 +1254,6 @@
     SUBDIR += rubygem-fog-dynect
     SUBDIR += rubygem-fog-ecloud
     SUBDIR += rubygem-fog-google
-    SUBDIR += rubygem-fog-google19
     SUBDIR += rubygem-fog-gridscale
     SUBDIR += rubygem-fog-internet-archive
     SUBDIR += rubygem-fog-joyent
@@ -1294,8 +1296,6 @@
     SUBDIR += rubygem-google-cloud-spanner-v1
     SUBDIR += rubygem-google-cloud-storage
     SUBDIR += rubygem-grpc
-    SUBDIR += rubygem-grpc124
-    SUBDIR += rubygem-grpc130
     SUBDIR += rubygem-grpc142
     SUBDIR += rubygem-hangouts-chat
     SUBDIR += rubygem-http-parser
@@ -1323,7 +1323,6 @@
     SUBDIR += rubygem-octokit
     SUBDIR += rubygem-octopress-deploy
     SUBDIR += rubygem-omniauth-auth0
-    SUBDIR += rubygem-omniauth-auth014
     SUBDIR += rubygem-omniauth-authentiq
     SUBDIR += rubygem-omniauth-azure-activedirectory-v2
     SUBDIR += rubygem-omniauth-azure-oauth2
@@ -1511,7 +1510,6 @@
     SUBDIR += traff
     SUBDIR += trafshow
     SUBDIR += trafshow3
-    SUBDIR += tramp
     SUBDIR += trickle
     SUBDIR += tsclient
     SUBDIR += tsctp
@@ -1534,6 +1532,7 @@
     SUBDIR += unison232
     SUBDIR += unison240
     SUBDIR += unison248
+    SUBDIR += unison251
     SUBDIR += unix2tcp
     SUBDIR += urelay
     SUBDIR += uriparser
@@ -1598,7 +1597,6 @@
     SUBDIR += yconalyzer
     SUBDIR += yggdrasil
     SUBDIR += yptransitd
-    SUBDIR += zebra
     SUBDIR += zebra-server
     SUBDIR += zeroconf-ioslave
     SUBDIR += zerotier

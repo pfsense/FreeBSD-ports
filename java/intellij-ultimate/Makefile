@@ -1,5 +1,5 @@
 PORTNAME=	intellij-ultimate
-DISTVERSION=	2021.2.3
+DISTVERSION=	2021.3.2
 CATEGORIES=	java devel
 MASTER_SITES=	https://download-cf.jetbrains.com/idea/
 DISTNAME=	ideaIU-${DISTVERSION}-no-jbr
@@ -17,7 +17,7 @@ RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 		intellij-pty4j>=0.11.4:java/intellij-pty4j \
 		lsof:sysutils/lsof
 
-USES=		python:run shebangfix
+USES=		python:run shebangfix ssl
 
 USE_JAVA=	yes
 JAVA_VERSION=	11+
@@ -27,7 +27,7 @@ SHEBANG_FILES=	bin/printenv.py bin/restart.py \
 		plugins/spy-js/server/proxy-nix.sh \
 		plugins/spy-js/server/proxy-osx.sh
 
-CONFLICTS=	intellij-20*
+CONFLICTS=	idea intellij
 
 NO_ARCH=	yes
 NO_ARCH_IGNORE=	libjansi.so
@@ -35,7 +35,7 @@ NO_BUILD=	yes
 SUB_FILES=	idea idea.desktop pkg-message
 
 BUILD_TYPE=	IU
-BUILD_VERSION=	212.5457.46
+BUILD_VERSION=	213.6777.52
 BUILD_MARKER=	${BUILD_TYPE}-${BUILD_VERSION}
 PLIST_SUB=	BUILD_MARKER=${BUILD_MARKER}
 WRKSRC=		${WRKDIR}/idea-${BUILD_MARKER}

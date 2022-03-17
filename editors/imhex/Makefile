@@ -1,5 +1,5 @@
 PORTNAME=	imhex
-PORTVERSION=	1.10.1
+PORTVERSION=	1.15.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 MASTER_SITES=	https://git.sr.ht/~danyspin97/xdgpp/blob/f01f810714443d0f10c333d4d1d9c0383be41375/:xdg
@@ -16,13 +16,14 @@ NOT_FOR_ARCHS=	i386 powerpc
 NOT_FOR_ARCHS_REASON=	__uint128_t and __int128_t are not supported
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
 		btzy-nativefiledialog-extended-${GH_TAG_NATIVEFILEDIALOG}_GH0${EXTRACT_SUFX} \
-		fmtlib-fmt-${GH_TAG_FMT}_GH0${EXTRACT_SUFX}
+		capstone-engine-capstone-${GH_TAG_CAPSTONE}_GH0${EXTRACT_SUFX} \
+		fmtlib-fmt-${GH_TAG_FMT}_GH0${EXTRACT_SUFX} \
+		WerWolv-libromfs-${GH_TAG_LIBROMFS}_GH0${EXTRACT_SUFX}
 
 BUILD_DEPENDS=	glm>0:math/glm \
 		nlohmann-json>0:devel/nlohmann-json \
 		${LOCALBASE}/include/range/v3/range.hpp:devel/range-v3
-LIB_DEPENDS=	libcapstone.so:devel/capstone4 \
-		libcurl.so:ftp/curl \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
 		libglfw.so:graphics/glfw \
 		libharfbuzz.so:print/harfbuzz \
@@ -39,11 +40,15 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	WerWolv
 GH_PROJECT=	ImHex
 GH_TUPLE=	btzy:nativefiledialog-extended:${GH_TAG_NATIVEFILEDIALOG}:nativefiledialog \
-		fmtlib:fmt:${GH_TAG_FMT}:fmt
+		capstone-engine:capstone:${GH_TAG_CAPSTONE}:capstone \
+		fmtlib:fmt:${GH_TAG_FMT}:fmt \
+		WerWolv:libromfs:${GH_TAG_LIBROMFS}:libromfs
+GH_TAG_CAPSTONE=	c7c665f
 GH_TAG_FMT=	d141cdb
-GH_TAG_NATIVEFILEDIALOG=	800e880
+GH_TAG_NATIVEFILEDIALOG=	322d1bc
+GH_TAG_LIBROMFS=	5d32734
 
-CMAKE_ARGS=	-DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_YARA=ON
+CMAKE_ARGS=	-DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_YARA=ON -DUSE_SYSTEM_NLOHMANN_JSON=ON
 
 PORTDOCS=	README.md
 
@@ -51,9 +56,11 @@ OPTIONS_DEFINE=	DOCS NLS
 NLS_USES=	gettext
 
 post-extract:
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/xdg.hpp ${WRKSRC}/external/xdgpp
-	${CP} -R ${WRKSRC_fmt}/* ${WRKSRC}/external/fmt
-	${CP} -R ${WRKSRC_nativefiledialog}/* ${WRKSRC}/external/nativefiledialog
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/xdg.hpp ${WRKSRC}/lib/external/xdgpp
+	${CP} -R ${WRKSRC_capstone}/* ${WRKSRC}/lib/external/capstone
+	${CP} -R ${WRKSRC_fmt}/* ${WRKSRC}/lib/external/fmt
+	${CP} -R ${WRKSRC_libromfs}/* ${WRKSRC}/lib/external/libromfs
+	${CP} -R ${WRKSRC_nativefiledialog}/* ${WRKSRC}/lib/external/nativefiledialog
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

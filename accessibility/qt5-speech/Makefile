@@ -1,20 +1,20 @@
 PORTNAME=	speech
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	2
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	accessibility
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Accessibilty features for Qt5
 
-USES=		compiler:c++11-lang gl pkgconfig qmake:outsource,norecursive \
+USES=		compiler:c++11-lang gl pkgconfig perl5 qmake:outsource,norecursive \
 		qt-dist:5,speech xorg
 USE_GL=		gl
+USE_PERL5=	extract
 USE_QT=		core gui buildtools_build qmake_build
 
 OPTIONS_DEFINE=		ALSA
-OPTIONS_MULTI=		BACKEND
-OPTIONS_MULTI_BACKEND=	SPEECHD FLITE
+OPTIONS_RADIO=		BACKEND
+OPTIONS_RADIO_BACKEND=	SPEECHD FLITE
 OPTIONS_DEFAULT=	SPEECHD
 OPTIONS_SUB=		yes
 

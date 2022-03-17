@@ -247,9 +247,9 @@ owncast:*:299:299::0:0:& daemon:/nonexistent:/usr/sbin/nologin
 backuppc:*:300:300::0:0:BackupPC pseudo-user:/nonexistent:/usr/sbin/nologin
 openvpn:*:301:301::0:0:OpenVPN pseudo-user:/nonexistent:/usr/sbin/nologin
 netdata:*:302:302::0:0:NetData Daemon:/var/cache/netdata:/usr/sbin/nologin
-# free: 303
-# free: 304
-# free: 305
+onlyoffice:*:303:303::0:0:Onlyoffice pseudo-user:/usr/local/www/onlyoffice/documentserver:/usr/sbin/nologin
+glewlwyd:*:304:304::0:0:Glewlwyd SSO server:/nonexistent:/usr/sbin/nologin
+nats:*:305:305::0:0:NATS Daemon:/nonexistent:/usr/sbin/nologin
 # free: 306
 # free: 307
 # free: 308
@@ -303,10 +303,10 @@ nzbhydra2:*:355:355::0:0:NZBHydra 2 Daemon:/nonexistent:/usr/sbin/nologin
 lidarr:*:356:356::0:0:Lidarr Daemon:/nonexistent:/usr/sbin/nologin
 bazarr:*:357:357::0:0:Bazarr Daemon:/nonexistent:/usr/sbin/nologin
 autoscan:*:358:358::0:0:Autoscan Daemon:/nonexistent:/usr/sbin/nologin
-# free: 359
+prowlarr:*:359:359::0:0:Prowlarr Daemon:/nonexistent:/usr/sbin/nologin
 v2ray:*:360:360::0:0:V2Ray Daemon:/nonexistent:/usr/sbin/nologin
 httptunnel:*:361:361::0:0:httptunnel Daemon:/nonexistent:/usr/sbin/nologin
-# free: 362
+readarr:*:362:362::0:0:Readarr Daemon:/nonexistent:/usr/sbin/nologin
 # free: 363
 # free: 364
 # free: 365
@@ -815,7 +815,7 @@ opensearch:*:855:855::0:0:opensearch user:/nonexistent:/usr/sbin/nologin
 # free: 867
 # free: 868
 # free: 869
-# free: 870
+buildbot:*:870:870::0:0:Buildbot user:/var/db/buildbot:/usr/sbin/nologin
 archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 bitmark:*:872:872::0:0:Bitmark Property System:/var/lib/bitmarkd:/usr/sbin/nologin
 bitmark-recorder:*:873:873::0:0:Bitmark Property Recorder:/var/lib/recorderd:/usr/sbin/nologin

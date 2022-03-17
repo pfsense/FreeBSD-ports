@@ -1,6 +1,5 @@
 PORTNAME=	breathe
-PORTVERSION=	4.31.0
-PORTREVISION=	1
+PORTVERSION=	4.33.1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,7 +13,7 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR} \
 		doxygen:devel/doxygen
 
-USES=		gmake python:3.6+
+USES=		gmake python:3.7+
 USE_GITHUB=	yes
 GH_TUPLE=	michaeljones:breathe:v${PORTVERSION}
 USE_PYTHON=	autoplist distutils

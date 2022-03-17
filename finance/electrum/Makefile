@@ -2,6 +2,7 @@
 
 PORTNAME=	electrum
 PORTVERSION=	4.1.5
+PORTREVISION=	4
 CATEGORIES=	finance python
 MASTER_SITES=	https://download.electrum.org/${PORTVERSION}/ \
 		http://download.electrum.org/${PORTVERSION}/
@@ -22,7 +23,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp-socks>=0.3:net/py-aiohttp-socks@${PY
 		${PYTHON_PKGNAMEPREFIX}bitstring>0:devel/py-bitstring@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}certifi>0:security/py-certifi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cryptography>=2.6:security/py-cryptography@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dnspython<2.0:dns/py-dnspython@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dnspython>=2.0:dns/py-dnspython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}httplib2>=0:www/py-httplib2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonrpclib-pelix>0:devel/py-jsonrpclib-pelix@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pbkdf2>=1.3:security/py-pbkdf2@${PY_FLAVOR} \
@@ -50,7 +51,7 @@ OPTIONS_SUB=		yes
 HARDWARE_DESC=	Enable Bitcoin hardware wallet support
 
 GUI_USES=		desktop-file-utils pyqt:5
-GUI_USE=		PYQT=sip,widgets,gui_run
+GUI_USE=		PYQT=sip,pyqt5
 HARDWARE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}btchip-python>=0.1.30:security/py-btchip-python@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}ckcc-protocol>=0.7.7:security/py-ckcc-protocol@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}hidapi>=0:comms/py-hidapi@${PY_FLAVOR} \

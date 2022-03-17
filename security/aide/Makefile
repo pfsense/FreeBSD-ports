@@ -1,7 +1,7 @@
 # Created by: Cy Schubert (Cy.Schubert@uumail.gov.bc.ca)
 
 PORTNAME=	aide
-PORTVERSION=	0.16.1
+PORTVERSION=	0.17.4
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/aide/aide/releases/download/v${PORTVERSION}/
 
@@ -11,7 +11,7 @@ COMMENT=	File and directory integrity checker
 LIB_DEPENDS=	libmhash.so:security/mhash \
 		libpcre.so:devel/pcre
 
-USES=		autoreconf bison gmake localbase
+USES=		bison gmake localbase
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-mhash \

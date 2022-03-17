@@ -5,12 +5,19 @@ PORTVERSION=	${PORT_V_MAJOR}.${PORT_V_MINOR}.${PORT_V_PATCH}
 CATEGORIES=	www
 MASTER_SITES=	https://typo3.azureedge.net/typo3/${PORTVERSION}/
 PKGNAMESUFFIX=	-${PORT_V_MAJOR}${PHP_PKGNAMESUFFIX}
+DISTNAME=	${TYPO3SRC}
 
 MAINTAINER=	freebsd-ports@charlieroot.de
 COMMENT=	Typo3 content management system
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Requires php 7.4 which is set to expire on 2022-11-29
+EXPIRATION_DATE=2022-11-28
+
+IGNORE_WITH_PHP=	80 81
+IGNORE_WITH_MYSQL=	101m
 
 USES=		cpe php:web,flavors shebangfix
 USE_PHP=	ctype dom fileinfo filter hash intl json openssl pcre session simplexml \
@@ -24,7 +31,7 @@ PORTSCOUT=	limit:^${PORT_V_MAJOR}\.${PORT_V_MINOR}\.
 
 PORT_V_MAJOR=	10
 PORT_V_MINOR=	4
-PORT_V_PATCH=	21
+PORT_V_PATCH=	25
 
 TYPO3WWW=	www
 TYPO3SRC=	${PORTNAME}_src-${PORTVERSION}
@@ -38,8 +45,6 @@ SUB_LIST+=	PREFIX=${PREFIX} \
 		TYPO3WWW=${TYPO3WWW} \
 		TYPO3DIR=${TYPO3DIR}
 
-DISTFILES+=	${TYPO3SRC}${EXTRACT_SUFX}
-
 OPTIONS_DEFINE=	CURL GD GMP IMAGICK MBSTRING MYSQL POSTGRES SQLSRV SQLITE ZLIB
 OPTIONS_DEFAULT=MYSQL
 GD_DESC=	GDlib/freetype support
@@ -47,7 +52,7 @@ IMAGICK_DESC=	${IMAGEMAGICK_DESC}
 MBSTRING_DESC=	${MULTIBYTE_DESC}
 MYSQL_DESC=	Use MySQL as DBMS
 POSTGRES_DESC=	Use PostgreSQL as DBMS
-SQLITE_DESC=	Use SQLiet as DBMS
+SQLITE_DESC=	Use SQLite as DBMS
 SQLSRV_DESC=	Use MSSQL as DBMS
 
 CURL_USE=	PHP=curl
@@ -57,16 +62,16 @@ MBSTRING_USE=	PHP=mbstring
 MYSQL_USE=	PHP=mysqli
 POSTGRES_USE=	PHP=postgresql
 SQLSRV_USE=	PHP=sqlsrv
-SQLITE_USE=	PHP=sqlite
+SQLITE_USE=	PHP=sqlite3
 ZLIB_USE=	PHP=zlib
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MIMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	convert:graphics/ImageMagick6
+USES+=		magick:6,run
 .else
-RUN_DEPENDS+=	convert:graphics/ImageMagick6-nox11
+USES+=		magick:6,run,nox11
 .endif
 .endif
 

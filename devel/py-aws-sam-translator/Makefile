@@ -1,5 +1,5 @@
 PORTNAME=	aws-sam-translator
-PORTVERSION=	1.39.0
+PORTVERSION=	1.42.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}boto3>=1.5:www/py-boto3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>=3.2:devel/py-jsonschema@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.15:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.6-3.8
+USES=		python:3.6-3.9
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

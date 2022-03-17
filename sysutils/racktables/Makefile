@@ -1,9 +1,10 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
 
 PORTNAME=	racktables
-DISTVERSION=	0.21.5
+DISTVERSION=	0.22.0
 CATEGORIES?=	sysutils www
 MASTER_SITES=	SF/${PORTNAME}/
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	RackTables-${DISTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
@@ -16,10 +17,11 @@ RACKHOME?=	www/racktables
 
 PORTEXAMPLES=	cleanup_ldap_cache.php init-sample-racks.sql syncdomain.php
 
-USES=		shebangfix php:web perl5 python:run
+USES=		cpe shebangfix php:web,flavors perl5 python:run
 NO_ARCH=	yes
 USE_PERL5=	run
 SHEBANG_FILES=	gateways/*
+CPE_VENDOR=	racktables_project
 
 USE_PHP=	bcmath gd json mbstring mysqli pdo_mysql session
 SUB_FILES=	pkg-message

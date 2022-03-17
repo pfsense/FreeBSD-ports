@@ -1,11 +1,14 @@
 PORTNAME=	pytesseract
-PORTVERSION=	0.3.8
+PORTVERSION=	0.3.9
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	wrapper for Google's Tesseract OCR engine
+
+PATCH_STRIP=	-p1
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,8 +18,9 @@ RUN_DEPENDS=	tesseract:graphics/tesseract \
 TEST_DEPENDS=	${RUN_DEPENDS} \
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR}
+		# if py-tox cannot detect py-filelock, be sure to have version 3.4.2_1 of the latter
 
-USES=		localbase python:3.4+
+USES=		localbase python:3.7+
 USE_GITHUB=	yes
 GH_ACCOUNT=	madmaze
 USE_PYTHON=	autoplist concurrent distutils
@@ -24,7 +28,7 @@ USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 
 do-test:
-		cd ${WRKSRC} && ${SETENV} ${TEST_ENV} tox -e ${PY_FLAVOR} --sitepackages
+		cd ${WRKSRC} && ${SETENV} ${TEST_ENV} tox-${PYTHON_VER} -e ${PY_FLAVOR} --sitepackages
 
 .include <bsd.port.pre.mk>
 

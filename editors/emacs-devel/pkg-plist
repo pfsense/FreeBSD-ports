@@ -779,6 +779,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/nxml/README
 %%DATADIR%%/%%EMACS_VER%%/etc/nxml/test-invalid.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/nxml/test-valid.xml
+%%PGTK%%%%GSETTINGS%%%%DATADIR%%/%%EMACS_VER%%/etc/org.gnu.emacs.defaults.gschema.valid
+%%DATADIR%%/%%EMACS_VER%%/etc/org.gnu.emacs.defaults.gschema.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/org/OrgOdtContentTemplate.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/org/OrgOdtStyles.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/org/README
@@ -888,6 +890,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/adwaita-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/deeper-blue-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/dichromacy-theme.el
+%%DATADIR%%/%%EMACS_VER%%/etc/themes/leuven-dark-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/leuven-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/light-blue-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/manoj-dark-theme.el
@@ -949,8 +952,6 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/auth-source-pass.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/auth-source.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/auth-source.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/autoarg.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/autoarg.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/autoinsert.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/autoinsert.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/autorevert.el.gz
@@ -1571,6 +1572,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/crm.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cursor-sensor.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cursor-sensor.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/debug-early.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/debug-early.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/debug.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/debug.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/derived.el.gz
@@ -1585,8 +1588,6 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/edebug.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/eieio-base.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/eieio-base.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/eieio-compat.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/eieio-compat.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/eieio-core.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/eieio-core.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/eieio-custom.el.gz
@@ -1646,6 +1647,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/map-ynp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/map.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/map.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/multisession.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/multisession.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/nadvice.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/nadvice.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/package-x.el.gz
@@ -1658,6 +1661,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/pp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/radix-tree.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/radix-tree.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/range.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/range.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/re-builder.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/re-builder.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/regexp-opt.el.gz
@@ -1704,6 +1709,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/trace.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/unsafep.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/unsafep.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/vtable.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/vtable.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/warnings.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/warnings.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lock.el.gz
@@ -1843,6 +1850,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-cmpl.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-dirs.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-dirs.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-extpipe.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-extpipe.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-glob.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-glob.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/eshell/em-hist.el.gz
@@ -2023,6 +2032,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-registry.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-rfc1843.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-rfc1843.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-rmail.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-rmail.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-salt.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-salt.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/gnus-score.el.gz
@@ -2245,6 +2256,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/eucjp-ms.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/fontset.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/fontset.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/international/idna-mapping.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/isearch-x.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/isearch-x.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/iso-ascii.el.gz
@@ -2283,6 +2295,10 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/rfc1843.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/robin.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/robin.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/international/textsec-check.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/international/textsec-check.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/international/textsec.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/international/textsec.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/titdic-cnv.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/titdic-cnv.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/ucs-normalize.el.gz
@@ -2292,6 +2308,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-category.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-combining.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-comment.el
+%%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-confusable.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-decimal.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-decomposition.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-digit.el
@@ -2300,6 +2317,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-name.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-numeric.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-old-name.el
+%%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-scripts.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-special-lowercase.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-special-titlecase.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/international/uni-special-uppercase.el
@@ -2459,6 +2477,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/cyrillic.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/czech.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/czech.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/emoji.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/emoji.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/ethiopic.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/ethiopic.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/georgian.el.gz
@@ -2566,6 +2586,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/footnote.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/hashcash.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/hashcash.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/mail/ietf-drums-date.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/mail/ietf-drums-date.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/ietf-drums.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/ietf-drums.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/mail-extr.el.gz
@@ -2936,6 +2958,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/abbrevlist.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/assoc.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/assoc.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/autoarg.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/autoarg.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/bruce.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/bruce.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/cc-compat.el.gz
@@ -2950,6 +2974,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/crisp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/cust-print.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/cust-print.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/eieio-compat.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/eieio-compat.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/erc-hecomplete.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/erc-hecomplete.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/eudcb-ph.el.gz
@@ -3041,6 +3067,10 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/vi.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/vip.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/vip.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/vt-control.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/vt-control.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/vt100-led.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/vt100-led.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/ws-mode.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/ws-mode.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/yow.el.gz
@@ -3607,6 +3637,10 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/soundex.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/speedbar.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/speedbar.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/sqlite-mode.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/sqlite-mode.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/sqlite.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/sqlite.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/startup.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/startup.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/strokes.el.gz
@@ -3659,6 +3693,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/ns-win.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/pc-win.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/pc-win.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/term/pgtk-win.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/term/pgtk-win.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/rxvt.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/rxvt.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/screen.el.gz
@@ -3969,10 +4005,6 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/version.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/view.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/view.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/vt-control.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/vt-control.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/vt100-led.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/vt100-led.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/w32-fns.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/w32-fns.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/w32-vars.el.gz
@@ -4143,6 +4175,14 @@ share/applications/emacsclient-mail.desktop
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/nsxwidget.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pdumper.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pdumper.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkfns.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkgui.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkim.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkmenu.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkselect.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkselect.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkterm.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/pgtkterm.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/print.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/process.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/process.h
@@ -4158,6 +4198,7 @@ share/applications/emacsclient-mail.desktop
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sheap.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sheap.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sound.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sqlite.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/syntax.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/syntax.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sysdep.c

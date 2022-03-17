@@ -1,20 +1,20 @@
---- content/shell/browser/shell_browser_main_parts.cc.orig	2021-09-14 01:51:57 UTC
+--- content/shell/browser/shell_browser_main_parts.cc.orig	2022-02-28 16:54:41 UTC
 +++ content/shell/browser/shell_browser_main_parts.cc
-@@ -60,7 +60,7 @@
- #include "ui/events/devices/x11/touch_factory_x11.h"  // nogncheck
+@@ -49,7 +49,7 @@
+ #include "net/base/network_change_notifier.h"
  #endif
  
--#if defined(USE_AURA) && (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+#if defined(USE_AURA) && (defined(OS_LINUX) || defined(OS_BSD) || BUILDFLAG(IS_CHROMEOS_LACROS))
+-#if defined(USE_AURA) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
++#if defined(USE_AURA) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD))
  #include "ui/base/ime/init/input_method_initializer.h"
  #endif
  
-@@ -148,7 +148,7 @@ void ShellBrowserMainParts::PostCreateMainMessageLoop(
+@@ -129,7 +129,7 @@ void ShellBrowserMainParts::PostCreateMainMessageLoop(
  }
  
  int ShellBrowserMainParts::PreEarlyInitialization() {
--#if defined(USE_AURA) && (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+#if defined(USE_AURA) && (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD))
+-#if defined(USE_AURA) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
++#if defined(USE_AURA) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD))
    ui::InitializeInputMethodForTesting();
  #endif
- #if defined(OS_ANDROID)
+ #if BUILDFLAG(IS_ANDROID)

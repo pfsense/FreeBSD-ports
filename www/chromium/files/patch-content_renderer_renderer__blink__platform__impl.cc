@@ -1,47 +1,48 @@
---- content/renderer/renderer_blink_platform_impl.cc.orig	2021-09-14 01:51:57 UTC
+--- content/renderer/renderer_blink_platform_impl.cc.orig	2022-02-28 16:54:41 UTC
 +++ content/renderer/renderer_blink_platform_impl.cc
-@@ -107,7 +107,7 @@
+@@ -108,7 +108,7 @@
  
- #if defined(OS_MAC)
+ #if BUILDFLAG(IS_MAC)
  #include "content/child/child_process_sandbox_support_impl_mac.h"
--#elif defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#elif defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include "content/child/child_process_sandbox_support_impl_linux.h"
  #endif
  
-@@ -176,7 +176,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
+@@ -177,7 +177,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
        main_thread_scheduler_(main_thread_scheduler) {
    // RenderThread may not exist in some tests.
    if (RenderThreadImpl::current()) {
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
      mojo::PendingRemote<font_service::mojom::FontService> font_service;
      RenderThreadImpl::current()->BindHostReceiver(
          font_service.InitWithNewPipeAndPassReceiver());
-@@ -186,7 +186,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
+@@ -187,7 +187,7 @@ RendererBlinkPlatformImpl::RendererBlinkPlatformImpl(
  #endif
    }
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
    if (sandboxEnabled()) {
- #if defined(OS_MAC)
+ #if BUILDFLAG(IS_MAC)
      sandbox_support_ = std::make_unique<WebSandboxSupportMac>();
-@@ -249,7 +249,7 @@ RendererBlinkPlatformImpl::WrapSharedURLLoaderFactory(
+@@ -261,7 +261,8 @@ RendererBlinkPlatformImpl::WrapSharedURLLoaderFactory(
        /*terminate_sync_load_event=*/nullptr);
  }
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++// pledge
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && !BUILDFLAG(IS_BSD)
  void RendererBlinkPlatformImpl::SetDisplayThreadPriority(
      base::PlatformThreadId thread_id) {
    if (RenderThreadImpl* render_thread = RenderThreadImpl::current()) {
-@@ -264,7 +264,7 @@ blink::BlameContext* RendererBlinkPlatformImpl::GetTop
+@@ -276,7 +277,7 @@ blink::BlameContext* RendererBlinkPlatformImpl::GetTop
  }
  
  blink::WebSandboxSupport* RendererBlinkPlatformImpl::GetSandboxSupport() {
--#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
    return sandbox_support_.get();
  #else
    // These platforms do not require sandbox support.

@@ -1,6 +1,6 @@
 PORTNAME=	mcfly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.10
+DISTVERSION=	0.5.13
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
@@ -89,6 +89,8 @@ PLIST_FILES=	bin/${PORTNAME} \
 		share/zsh/site-functions/_${PORTNAME}
 
 post-install: # install shell completion files
+	# strip
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/mcfly
 	# bash
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.bash ${STAGEDIR}${PREFIX}/etc/bash_completion.d

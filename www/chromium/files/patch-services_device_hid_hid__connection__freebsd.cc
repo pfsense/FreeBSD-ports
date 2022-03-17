@@ -1,6 +1,6 @@
---- services/device/hid/hid_connection_freebsd.cc.orig	2021-09-29 12:19:04 UTC
+--- services/device/hid/hid_connection_freebsd.cc.orig	2022-02-07 13:39:41 UTC
 +++ services/device/hid/hid_connection_freebsd.cc
-@@ -0,0 +1,242 @@
+@@ -0,0 +1,243 @@
 +// Copyright (c) 2014 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -15,9 +15,9 @@
 +#include "base/location.h"
 +#include "base/numerics/safe_math.h"
 +#include "base/posix/eintr_wrapper.h"
-+#include "base/single_thread_task_runner.h"
 +#include "base/strings/stringprintf.h"
 +#include "base/task/post_task.h"
++#include "base/task/single_thread_task_runner.h"
 +#include "base/threading/scoped_blocking_call.h"
 +#include "base/threading/thread_restrictions.h"
 +#include "base/threading/thread_task_runner_handle.h"
@@ -39,6 +39,9 @@
 +    report_buffer_size_ = device_info->max_input_report_size() + 1;
 +    has_report_id_ = device_info->has_report_id();
 +  }
++
++  BlockingTaskRunnerHelper(const BlockingTaskRunnerHelper&) = delete;
++  BlockingTaskRunnerHelper& operator=(const BlockingTaskRunnerHelper&) = delete;
 +
 +  ~BlockingTaskRunnerHelper() { DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_); }
 +
@@ -175,8 +178,6 @@
 +  base::WeakPtr<HidConnectionFreeBSD> connection_;
 +  const scoped_refptr<base::SequencedTaskRunner> origin_task_runner_;
 +  std::unique_ptr<base::FileDescriptorWatcher::Controller> file_watcher_;
-+
-+  DISALLOW_COPY_AND_ASSIGN(BlockingTaskRunnerHelper);
 +};
 +
 +HidConnectionFreeBSD::HidConnectionFreeBSD(

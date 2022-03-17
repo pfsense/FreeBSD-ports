@@ -1,20 +1,20 @@
---- chrome/browser/download/download_prefs.h.orig	2021-04-14 18:40:53 UTC
+--- chrome/browser/download/download_prefs.h.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/download/download_prefs.h
-@@ -117,7 +117,7 @@ class DownloadPrefs {
-   // Disables auto-open based on file extension.
+@@ -122,7 +122,7 @@ class DownloadPrefs {
    void DisableAutoOpenByUserBasedOnExtension(const base::FilePath& file_name);
  
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
    // Store the user preference to disk. If |should_open| is true, also disable
    // the built-in PDF plugin. If |should_open| is false, enable the PDF plugin.
-@@ -176,7 +176,7 @@ class DownloadPrefs {
- 
+   void SetShouldOpenPdfInSystemReader(bool should_open);
+@@ -181,7 +181,7 @@ class DownloadPrefs {
    std::unique_ptr<policy::URLBlocklist> auto_open_allowed_by_urls_;
  
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
    bool should_open_pdf_in_system_reader_;
  #endif
+ 

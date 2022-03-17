@@ -1,22 +1,22 @@
 # Created by: Alan Eldridge <alane@FreeBSD.org>
 
 PORTNAME=	firefox
-DISTVERSION=	95.0
+DISTVERSION=	98.0.1
 PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
-		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source
+		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build2/source
 DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
 BUILD_DEPENDS=	nspr>=4.32:devel/nspr \
-		nss>=3.72:security/nss \
-		icu>=69.1,1:devel/icu \
+		nss>=3.75:security/nss \
+		icu>=70.1:devel/icu \
 		libevent>=2.1.8:devel/libevent \
-		harfbuzz>=2.9.1:print/harfbuzz \
+		harfbuzz>=3.1.2:print/harfbuzz \
 		graphite2>=1.3.14:graphics/graphite2 \
 		png>=1.6.37:graphics/png \
 		libvpx>=1.8.2:multimedia/libvpx \
@@ -48,7 +48,7 @@ MOZ_OPTIONS=	--enable-application=browser \
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == powerpc64
-MOZ_OPTIONS+=	--without-wasm-sandboxed-libraries
+MOZ_OPTIONS+=	--disable-webrtc --without-wasm-sandboxed-libraries
 .else
 BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx \
 		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \

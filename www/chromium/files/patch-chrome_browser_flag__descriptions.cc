@@ -1,65 +1,56 @@
---- chrome/browser/flag_descriptions.cc.orig	2021-09-24 04:25:58 UTC
+--- chrome/browser/flag_descriptions.cc.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/flag_descriptions.cc
-@@ -5110,7 +5110,7 @@ const char kDownloadShelfWebUIDescription[] =
- 
+@@ -5323,7 +5323,7 @@ const char kDownloadShelfWebUIDescription[] =
  // Random platform combinations -----------------------------------------------
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  
- const char kEnableOopPrintDriversName[] =
-@@ -5134,10 +5134,10 @@ const char kSettingsLandingPageRedesignDescription[] =
-     "Changes the layout of the chrome://settings page to only show one section "
-     "at a time.";
+ const char kWebUIBrandingUpdateName[] = "WebUI Branding Update";
+ const char kWebUIBrandingUpdateDescription[] =
+@@ -5338,7 +5338,7 @@ const char kWebuiFeedbackDescription[] =
+         // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
--#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
- 
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  
  const char kCommanderName[] = "Commander";
  const char kCommanderDescription[] =
-@@ -5153,7 +5153,7 @@ const char kDesktopDetailedLanguageSettingsName[] =
- const char kDesktopDetailedLanguageSettingsDescription[] =
-     "Enable the new detailed language settings page";
+@@ -5357,7 +5357,7 @@ const char kDesktopDetailedLanguageSettingsDescription
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
+         // BUILDFLAG(IS_FUCHSIA)
  
--#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD)
- 
- #if defined(OS_CHROMEOS) || defined(OS_LINUX)
- #if BUILDFLAG(USE_TCMALLOC)
-@@ -5178,11 +5178,11 @@ const char kWebShareDescription[] =
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ const char kImproveAccessibilityTreeUsingLocalMLName[] =
+     "Enable improving accessibility tree using local machine learning library.";
+ const char kImproveAccessibilityTreeUsingLocalMLDescription[] =
+@@ -5372,7 +5372,7 @@ const char kWebShareDescription[] =
      "platforms.";
- #endif  // defined(OS_WIN) || BUILDFLAG(IS_CHROMEOS_ASH) || defined(OS_MAC)
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC)
  
--#if defined(OS_LINUX) && defined(USE_OZONE)
-+#if (defined(OS_LINUX) || defined(OS_BSD)) && defined(USE_OZONE)
- const char kUseOzonePlatformName[] = "Use ozone.";
- const char kUseOzonePlatformDescription[] =
-     "Use the Ozone/X11 platform implementation on X11.";
--#endif  // defined(OS_LINUX) && defined(USE_OZONE)
-+#endif  // (defined(OS_LINUX) || defined(OS_BSD)) && defined(USE_OZONE)
+-#if BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
++#if (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)) || BUILDFLAG(IS_BSD)
+ const char kOzonePlatformHintChoiceDefault[] = "Default";
+ const char kOzonePlatformHintChoiceAuto[] = "Auto";
+ const char kOzonePlatformHintChoiceX11[] = "X11";
+@@ -5384,7 +5384,7 @@ const char kOzonePlatformHintDescription[] =
+     "\"X11\". \"Auto\" selects Wayland if possible, X11 otherwise. ";
+ #endif  // BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
  
- // Feature flags --------------------------------------------------------------
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ const char kCleanUndecryptablePasswordsLinuxName[] =
+     "Cleanup local undecryptable passwords during initial sync flow";
+ const char kCleanUndecryptablePasswordsLinuxDescription[] =
+@@ -5500,7 +5500,7 @@ const char kElasticOverscrollDescription[] =
  
-@@ -5249,7 +5249,7 @@ const char kAutofillCreditCardUploadDescription[] =
- 
- #endif  // defined(TOOLKIT_VIEWS) || defined(OS_ANDROID)
- 
--#if !defined(OS_WIN) && !defined(OS_FUCHSIA)
-+#if !defined(OS_WIN) && !defined(OS_FUCHSIA) && !defined(OS_BSD)
- const char kSendWebUIJavaScriptErrorReportsName[] =
-     "Send WebUI JavaScript Error Reports";
- const char kSendWebUIJavaScriptErrorReportsDescription[] =
-@@ -5264,7 +5264,7 @@ const char kElasticOverscrollDescription[] =
-     "Enables Elastic Overscrolling on touchscreens and precision touchpads.";
- #endif  // defined(OS_WIN) || defined(OS_ANDROID)
- 
--#if defined(OS_WIN) || (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || \
-+#if defined(OS_WIN) || (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD) || \
-     defined(OS_MAC)
+ #if BUILDFLAG(IS_WIN) ||                                      \
+     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || \
+-    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  const char kUIDebugToolsName[] = "Debugging tools for UI";
  const char kUIDebugToolsDescription[] =
+     "Enables additional keyboard shortcuts to help debugging.";

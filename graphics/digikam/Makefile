@@ -1,8 +1,10 @@
 PORTNAME=	digikam
-DISTVERSION=	7.3.0
+DISTVERSION=	7.6.0
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/digikam/${PORTVERSION}
+# One bit changed in the naming convention ..
+DISTFILES=	digiKam-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}${EXTRACT_SUFX}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE digital photo management application
@@ -14,7 +16,6 @@ LIB_DEPENDS=	libKF5Sane.so:graphics/libksane \
 		libboost_graph.so:devel/boost-libs \
 		libexiv2.so:graphics/exiv2 \
 		libexpat.so:textproc/expat2 \
-		libMagickCore-6.so:graphics/ImageMagick6 \
 		libgphoto2.so:graphics/libgphoto2 \
 		libicalss.so:devel/libical \
 		libjasper.so:graphics/jasper \
@@ -28,7 +29,7 @@ LIB_DEPENDS=	libKF5Sane.so:graphics/libksane \
 		libx265.so:multimedia/x265
 
 USES=		bison cmake compiler:c++11-lib desktop-file-utils eigen:3 gl \
-		gnome jpeg kde:5 pkgconfig qt:5 shebangfix tar:xz xorg
+		gnome jpeg kde:5 magick pkgconfig qt:5 shebangfix tar:xz xorg
 USE_GL=		gl glu
 USE_GNOME=	glib20 libxml2 libxslt
 USE_KDE=	archive auth bookmarks calendarcore codecs completion config \
@@ -63,7 +64,8 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_IMPLIES=	DOCS
 
 KDEPIM_DESC=		KDEPim Addressbook support
-KDEPIM_USE=		KDE=akonadi,akonadicontacts,contacts
+KDEPIM_USE=		KDE=akonadi,akonadicontacts,contacts,grantleetheme
+KDEPIM_USES=		grantlee:5
 KDEPIM_CMAKE_BOOL=	ENABLE_AKONADICONTACTSUPPORT
 KDEPIM_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5AkonadiContact
 
@@ -97,12 +99,5 @@ WEBENGINE_USE_OFF=	QT=webkit
 WEBENGINE_CMAKE_BOOL=	ENABLE_QWEBENGINE
 
 PLIST_SUB=		SHLIB_VER=${DISTVERSION}
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MWEBENGINE}
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-.endif
 
 .include <bsd.port.mk>

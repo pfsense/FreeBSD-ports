@@ -1,7 +1,7 @@
 PORTNAME=	gleam
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17.0
-PORTREVISION=	2
+DISTVERSION=	0.20.1
+PORTREVISION=	1
 CATEGORIES=	lang
 
 MAINTAINER=	dch@FreeBSD.org
@@ -9,8 +9,6 @@ COMMENT=	ML-flavoured type-safe language using Erlang's BEAM runtime
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/compiler-core/LICENCE
-
-RUN_DEPENDS=	rebar3:devel/rebar3
 
 USES=		cargo ssl
 USE_GITHUB=	yes
@@ -39,5 +37,8 @@ post-install:
 
 post-install-DOCS-on:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} README.md ${STAGEDIR}${DOCSDIR})
+
+do-test:
+	(cd ${WRKSRC} && gleam new hello && cd hello && gleam test)
 
 .include <bsd.port.mk>

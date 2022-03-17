@@ -1,8 +1,6 @@
-# Created by: asami
-
 PORTNAME=	xNetHack
 DISTVERSIONPREFIX=	xnh
-DISTVERSION=	6.1
+DISTVERSION=	7.0
 CATEGORIES=	games
 
 MAINTAINER=	fuz@fuz.su
@@ -13,60 +11,57 @@ LICENSE_NAME=	NETHACK GENERAL PUBLIC LICENSE
 LICENSE_FILE=	${WRKSRC}/dat/license
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		alias compiler:c11 gmake ncurses tar:tgz lua
-USE_GITHUB=	yes
+FLAVORS=	x11 nox11 qt
+FLAVOR?=	${FLAVORS:[1]}
+nox11_PKGNAMESUFFIX=	-nox11
+qt_PKGNAMESUFFIX=	-qt
 
+USES=		alias compiler:c11 gmake ncurses tar:tgz lua:54
+USE_GITHUB=	yes
 GH_ACCOUNT=	copperwater
-GH_PROJECT=	xNetHack
 
 MAKE_ENV=	GRAPHICS="${GRAPHICS}"
-PLIST_SUB=	HACKNAME="${HACKNAME}" \
-		HACKEXT="${HACKEXT}"
-TRUEPORTNAME=	xnethack
+PLIST_SUB=	HACKNAME="${HACKNAME}"
 
 # Configure these variables as you want them to be.
-HACKEXT?=
-HACKNAME?=	${TRUEPORTNAME}${HACKEXT}
+HACKNAME?=	${PORTNAME:tl}
 HACKDIR?=	share/${HACKNAME}
-HACKLINK=	${TRUEPORTNAME}
 
 DATADIR=	${PREFIX}/${HACKDIR}
 DOCSDIR=	${PREFIX}/share/doc/${HACKNAME}
-PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
 
-.if !defined(PKGNAMESUFFIX)
+.if ${FLAVOR} == "x11"
 USES+=		xorg
 USE_XORG=	xaw xpm xmu xext xt x11 sm ice
-CFLAGS+=	-DX11_GRAPHICS -DUSE_TILES
+CFLAGS+=	-DUSE_TILES
 GRAPHICS=	X11_GRAPHICS
-.else
-.if ${PKGNAMESUFFIX} == "-nox11"
+.elif ${FLAVOR} == "nox11"
 GRAPHICS=	# none
+.elif ${FLAVOR} == "qt"
+USES+=		localbase pkgconfig qt:5
+USE_QT=		buildtools_build core gui multimedia network widgets
+MAKE_ENV+=	MOCPATH=${MOC} LINK="${CXX} -pie"
+# Qt wants PIC for some reason.  For C code, PIE should be enough.
+CFLAGS+=	-I${QT_INCDIR} -fpie
+CXXFLAGS+=	-I${QT_INCDIR} -fpic
+GRAPHICS=	QT_GRAPHICS
 .endif
-.endif
+
 CFLAGS+=	-DNOMAIL -DCURSES_GRAPHICS
 
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if !exists(${PREFIX}/bin/${HACKLINK}) && ${HACKNAME} != ${HACKLINK}
-PLIST_SUB+=	HACKLINK=""
-.else
-PLIST_SUB+=	HACKLINK="@comment "
-.endif
-
 post-patch:
 .for f in include/config.h sys/unix/Makefile.doc sys/unix/Makefile.src sys/unix/Makefile.top
 	@${REINPLACE_CMD} -e 's|%%HACKNAME%%|${HACKNAME}|g' \
 		-e 's|%%HACKDIR%%|${PREFIX}/${HACKDIR}|g' \
-		-e 's|%%HACKEXT%%|${HACKEXT}|g' \
 		${WRKSRC}/${f}
 .endfor
 .for f in dlb.6 nethack.6 recover.6
 	@${REINPLACE_CMD} -e 's|%%HACKNAME%%|${HACKNAME}|g' \
 		-e 's|%%HACKDIR%%|${PREFIX}/${HACKDIR}|g' \
-		-e 's|%%HACKEXT%%|${HACKEXT}|g' \
 		${WRKSRC}/doc/${f}
 .endfor
 .if defined(WITHOUT_SHELL)
@@ -77,16 +72,14 @@ post-patch:
 .endif
 
 do-configure:
+	${TOUCH} ${WRKSRC}/dat/gitinfo.txt
 	@cd ${WRKSRC}/sys/unix; ${SH} setup.sh
-
-pre-install:
-	@${CAT} ${FILESDIR}/pkg-deinstall.in | ${SED} \
-		-e 's|%%HACKDIR%%|${HACKDIR}|g' > ${PKGDEINSTALL}
+	# work around a race condition
+	cd ${WRKSRC}/util; ${MAKE_CMD} tiletxt.c
 
 post-install:
-.if !exists(${PREFIX}/bin/${HACKLINK}) && ${HACKNAME} != ${HACKLINK}
-	@${LN} -s -f ${PREFIX}/bin/${HACKNAME} ${STAGEDIR}${PREFIX}/bin/${HACKLINK}
-.endif
+	${STRIP_CMD} ${STAGEDIR}${DATADIR}/recover
+	${STRIP_CMD} ${STAGEDIR}${DATADIR}/${HACKNAME}
 	@cd ${WRKSRC}/doc; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} manpages
 	@${MKDIR} ${STAGEDIR}${DATADIR}/save
 	@${CP} ${WRKSRC}/sys/unix/sysconf ${STAGEDIR}/${DATADIR}/sysconf
@@ -94,6 +87,7 @@ post-install:
 	@${CP} ${STAGEDIR}/${DATADIR}/sysconf ${STAGEDIR}/${DATADIR}/sysconf.sample
 	# Make "sample" files from records to prevent them being removed
 	# if they have been altered
+	@${CP} ${STAGEDIR}/${DATADIR}/logfile ${STAGEDIR}/${DATADIR}/livelog.sample
 	@${CP} ${STAGEDIR}/${DATADIR}/logfile ${STAGEDIR}/${DATADIR}/logfile.sample
 	@${CP} ${STAGEDIR}/${DATADIR}/record ${STAGEDIR}/${DATADIR}/record.sample
 	@${CP} ${STAGEDIR}/${DATADIR}/xlogfile ${STAGEDIR}/${DATADIR}/xlogfile.sample

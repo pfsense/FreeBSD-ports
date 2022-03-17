@@ -1,6 +1,6 @@
 PORTNAME=	oneVPL
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2021.6.0
+DISTVERSION=	2022.0.6
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,9 +16,10 @@ LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libwayland-client.so:graphics/wayland \
 		libva.so:multimedia/libva
 
-USES=		cmake:testing compiler:c++17-lang localbase:ldflags pkgconfig
+USES=		cmake:testing compiler:c++17-lang localbase:ldflags pkgconfig xorg
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
+USE_XORG=	x11 xcb
 GH_ACCOUNT=	oneapi-src
 CMAKE_TESTING_ON=	BUILD_TESTS
 
@@ -29,6 +30,7 @@ OPTIONS_SUB=	yes
 PYTHON_USES=		python
 PYTHON_BUILD_DEPENDS=	pybind11>0:devel/pybind11
 PYTHON_CMAKE_BOOL=	BUILD_PYTHON_BINDING
+PYTHON_CMAKE_ON=	-DPython3_EXECUTABLE:FILEPATH="${PYTHON_CMD}"
 
 post-patch:
 	@${REINPLACE_CMD} -e '/pkgconfig/s,FULL_LIBDIR},PREFIX}/libdata,' \

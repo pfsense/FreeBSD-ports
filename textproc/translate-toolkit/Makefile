@@ -1,7 +1,7 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
 
 PORTNAME=	translate-toolkit
-PORTVERSION=	3.5.1
+PORTVERSION=	3.5.3
 CATEGORIES=	textproc
 MASTER_SITES=	CHEESESHOP
 
@@ -17,7 +17,7 @@ RUN_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}lxml>=4.6.3:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		gettext python:3.6+ shebangfix
+USES=		gettext python:3.7+ shebangfix
 USE_PYTHON=	autoplist distutils noflavors
 
 NO_ARCH=	yes
@@ -49,15 +49,15 @@ ICAL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}vobject>=0.9.6.1:deskutils/py-vobject@$
 ICAL_VARS=		MANPAGES+="ical2po po2ical"
 INI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}iniparse>=0.5:devel/py-iniparse@${PY_FLAVOR}
 INI_VARS=		MANPAGES+="ini2po po2ini"
-LANGUAGES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycountry>=20.7.3:textproc/py-pycountry@${PY_FLAVOR}
+LANGUAGES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycountry>=22.1.10:textproc/py-pycountry@${PY_FLAVOR}
 LEVENSHTEIN_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}python-Levenshtein>=0.12:devel/py-python-Levenshtein@${PY_FLAVOR}
 PHP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}phply>=1.2.5:devel/py-phply@${PY_FLAVOR}
 PHP_VARS=		MANPAGES+="php2po po2php"
-RC_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pyparsing>=3.0.5:devel/py-pyparsing@${PY_FLAVOR}
+RC_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pyparsing>=3.0.6:devel/py-pyparsing@${PY_FLAVOR}
 RC_VARS=		MANPAGES+="po2rc rc2po"
 SPELLCHECK_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}enchant>=3.2.2:textproc/py-enchant@${PY_FLAVOR}
 SUBTITLES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aeidon>=1.10.1:textproc/py-aeidon@${PY_FLAVOR}
-TMSERVER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheroot>=8.5.2:www/py-cheroot@${PY_FLAVOR}
+TMSERVER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheroot>=8.6.0:www/py-cheroot@${PY_FLAVOR}
 TRADOS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.3:www/py-beautifulsoup@${PY_FLAVOR}
 YAML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ruamel.yaml>=0.16.12:devel/py-ruamel.yaml@${PY_FLAVOR}
 YAML_VARS=		MANPAGES+="po2yaml yaml2po"

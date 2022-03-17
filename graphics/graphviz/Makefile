@@ -1,10 +1,10 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
 
 PORTNAME=	graphviz
-PORTVERSION=	2.44.1
-PORTREVISION=	17
+PORTVERSION=	2.50.0
+PORTREVISION=	0
 CATEGORIES=	graphics tk
-MASTER_SITES=	https://www2.graphviz.org/Packages/stable/portable_source/
+MASTER_SITES=	https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${PORTVERSION}/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Graph Visualization Software from AT&T and Bell Labs
@@ -19,6 +19,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libexpat.so:textproc/expat2 \
+		libharfbuzz.so:print/harfbuzz \
 		libgd.so:${GD_PORT}
 
 USES=		compiler:c++11-lang cpe pathfix shebangfix gmake bison \
@@ -34,6 +35,9 @@ CFLAGS_armv7=	-fno-builtin-sincos -fno-builtin-sin -fno-builtin-cos \
 		-fno-builtin-sincosf -fno-builtin-sinf -fno-builtin-cosf \
 		-fno-builtin-sincosl -fno-builtin-sinl -fno-builtin-cosl
 MAKE_ENV=	EXPR_COMPAT=yes
+
+CONFLICTS_INSTALL=	ghmm
+
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
@@ -52,12 +56,13 @@ OPTIONS_DEFINE=	XPM DIGCOLA IPSEPCOLA ICONV NLS PANGOCAIRO POPPLER \
 		ANN GTS GTK2 GDK GDK_PIXBUF SMYRNA DEVIL \
 		GHOSTSCRIPT PERL PHP PYTHON RUBY LUA TCL TK GUILE GO \
 		NVTHREADS DOCS EXAMPLES
-OPTIONS_DEFAULT=	XPM DIGCOLA IPSEPCOLA ICONV PANGOCAIRO NVTHREADS
+OPTIONS_DEFAULT=XPM DIGCOLA IPSEPCOLA ICONV PANGOCAIRO NVTHREADS
 NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
 DIGCOLA_DESC=	neato layout engine with DIGCOLA features
 IPSEPCOLA_DESC=	neato layout engine with IPSEPCOLA features
 PANGOCAIRO_DESC=pangocairo support
+POPPLER_DESC=	PDF and PS file support via poppler (requires PANGOCAIRO)
 ANN_DESC=	ANN edge bundling support
 GTS_DESC=	GNU Triangulated Surface Library support
 GTK2_DESC=	gtk2 plugin (requires PANGOCAIRO)
@@ -89,8 +94,8 @@ SMYRNA_USES=	gnome gl
 SMYRNA_USE=	GNOME=libglade2,pangox-compat,gdkpixbuf2 GL=glut,glu,gl
 GHOSTSCRIPT_USES=ghostscript
 PERL_USES=	perl5
+PHP_USES=	php:build gnome
 PHP_USE=	GNOME=libxml2
-PHP_USES=	php:build
 PYTHON_USES=	python:build
 RUBY_USE=	RUBY=yes
 LUA_USES=	lua
@@ -112,12 +117,14 @@ GHOSTSCRIPT_LIB_DEPENDS=	libgs.so:print/${_GS_PORT}
 
 XPM_CONFIGURE_WITH=		x
 XPM_CONFIGURE_ENV=		ac_cv_header_sys_inotify_h=no
+XPM_CONFIGURE_ON=		--enable-lefty
 DIGCOLA_CONFIGURE_WITH=		digcola
 IPSEPCOLA_CONFIGURE_WITH=	ipsepcola
 IPSEPCOLA_IMPLIES=		DIGCOLA
 NLS_CONFIGURE_ENABLE=		nls
 PANGOCAIRO_CONFIGURE_WITH=	pangocairo
 POPPLER_CONFIGURE_WITH=		poppler
+POPPLER_IMPLIES=		PANGOCAIRO
 ANN_CONFIGURE_WITH=		ann
 ANN_CONFIGURE_ENV=	ANN_CFLAGS=-I${LOCALBASE}/include ANN_LIBS=-lann
 GTS_CONFIGURE_WITH=		gts

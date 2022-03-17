@@ -1,8 +1,11 @@
 PORTNAME=	openfx-arena
 PORTVERSION=	2.3.14
 DISTVERSIONPREFIX=	Natron-
-PORTREVISION=	46
+PORTREVISION=	47
 CATEGORIES=	graphics
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	bc06a46bb1ccef8f7da6caf17faf165fbac662db.diff:-p1
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Extra OpenFX plugins for Natron
@@ -17,7 +20,6 @@ LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
 		librevenge-0.0.so:textproc/librevenge \
 		libpoppler-glib.so:graphics/poppler-glib \
 		liblcms2.so:graphics/lcms2 \
-		libMagick++-6.so:graphics/ImageMagick6 \
 		libzip.so:archivers/libzip \
 		libexpat.so:textproc/expat2 \
 		libfreetype.so:print/freetype2 \
@@ -33,7 +35,7 @@ LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
 		libltdl.so:devel/libltdl \
 		libpoppler.so:graphics/poppler
 
-USES=		gl gmake gnome iconv xorg
+USES=		gl gmake gnome iconv magick:6 xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	NatronGitHub
 GH_TUPLE=	NatronGitHub:openfx-supportext:e600cae:openfx_supportext/SupportExt \

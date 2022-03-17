@@ -1,6 +1,7 @@
 PORTNAME=	latte-integrale
 DISTVERSIONPREFIX=	version_
 DISTVERSION=	1_7_6
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -27,7 +28,7 @@ GH_ACCOUNT=	latte-int
 GH_PROJECT=	latte
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	latte
+CONFLICTS_INSTALL=	latte p5-Math-SigFigs schilyutils # bin/count
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

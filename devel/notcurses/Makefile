@@ -1,6 +1,6 @@
 PORTNAME=	notcurses
 DISTVERSIONPREFIX=	v
-DISTVERSION=	${ABIVERSION}.4.9
+DISTVERSION=	${ABIVERSION}.0.7
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/:docs
 DISTFILES=	${PORTNAME}-doc-${DISTVERSION}.tar.gz:docs
@@ -12,11 +12,11 @@ LICENSE=	APACHE20 MIT
 LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
+		libdeflate.so:archivers/libdeflate \
 		libqrcodegen.so:graphics/qr-code-generator \
 		libunistring.so:devel/libunistring
 
-USES=		cmake:noninja compiler:c++17-lang localbase ncurses:port \
-		pkgconfig
+USES=		cmake:noninja compiler:c++17-lang localbase pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	dankamongmen
 USE_LDCONFIG=	yes
@@ -35,7 +35,16 @@ OPTIONS_DEFINE=		DOCS MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=		yes
 
-ABIVERSION=	2
+ABIVERSION=	3
+
+.include <bsd.port.options.mk>
+
+# ncursesw and tinfo >= 6.1 seem to be needed (see CMakeLists.txt:l104)
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400035
+USES+=ncurses:port
+.else
+USES+=ncurses
+.endif
 
 post-patch-DOCS-off:
 	@${REINPLACE_CMD} -e 's|install(FILES $${MARKDOWN} DESTINATION $${CMAKE_INSTALL_DOCDIR})|#install(FILES $${MARKDOWN} DESTINATION $${CMAKE_INSTALL_DOCDIR})|' \

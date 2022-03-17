@@ -1,5 +1,5 @@
 PORTNAME=	ansible-core
-DISTVERSION=	2.11.6
+DISTVERSION=	2.12.3
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -26,7 +26,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=0:security/py-bcrypt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR}
 
-USES=		ansible:env cpe gmake python:3.6+ shebangfix
+USES=		ansible:env cpe gmake python:3.8+ shebangfix
 CPE_VENDOR=	redhat
 CPE_PRODUCT=	ansible
 USE_PYTHON=	autoplist concurrent distutils
@@ -39,7 +39,7 @@ TEST_ARGS=	VERSION=${DISTVERSION} \
 TEST_ENV=	PYTHON_VERSION=${PYTHON_VER}
 TEST_TARGET=	tests
 
-CONFLICTS=	py*-ansible-base
+CONFLICTS=	py*-ansible-base py*-ansible2 py-ansible-core211
 
 NO_ARCH=	yes
 

@@ -1,6 +1,6 @@
 PORTNAME=	tdlib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.8 # 1.7.8 is not tagged, just set in CMakeLists.txt
+DISTVERSION=	1.8.0
 CATEGORIES=	net-im devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,8 +12,8 @@ USES=		cmake:testing compiler:c++14-lang gperf ssl
 
 USE_GITHUB=	yes
 GH_PROJECT=	td
-GH_TAGNAME=	a7dcbe8c18938c67d35dee6da7782851e3b5ec4b
 
+CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	BUILD_TESTING FREEBSD_BUILD_BENCHMARKS
 
 do-test:

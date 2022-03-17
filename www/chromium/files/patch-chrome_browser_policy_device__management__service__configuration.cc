@@ -1,20 +1,20 @@
---- chrome/browser/policy/device_management_service_configuration.cc.orig	2021-09-14 01:51:50 UTC
+--- chrome/browser/policy/device_management_service_configuration.cc.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/policy/device_management_service_configuration.cc
-@@ -20,7 +20,7 @@
- #endif
+@@ -21,7 +21,7 @@
  
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    ((defined(OS_LINUX) || defined(OS_CHROMEOS)) && !defined(OS_ANDROID))
-+    ((defined(OS_LINUX) || defined(OS_CHROMEOS)) && !defined(OS_ANDROID)) || defined(OS_BSD)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) ||           \
+     ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
+-     !BUILDFLAG(IS_ANDROID))
++     !BUILDFLAG(IS_ANDROID)) || BUILDFLAG(IS_BSD)
  #include "chrome/browser/enterprise/connectors/common.h"
  #include "chrome/browser/enterprise/connectors/connectors_service.h"
  #endif
-@@ -98,7 +98,7 @@ std::string
- DeviceManagementServiceConfiguration::GetReportingConnectorServerUrl(
+@@ -100,7 +100,7 @@ DeviceManagementServiceConfiguration::GetReportingConn
      content::BrowserContext* context) const {
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    ((defined(OS_LINUX) || defined(OS_CHROMEOS)) && !defined(OS_ANDROID))
-+    ((defined(OS_LINUX) || defined(OS_CHROMEOS)) && !defined(OS_ANDROID)) || defined(OS_BSD)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) ||           \
+     ((BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
+-     !BUILDFLAG(IS_ANDROID))
++     !BUILDFLAG(IS_ANDROID)) || BUILDFLAG(IS_BSD)
    auto* service =
        enterprise_connectors::ConnectorsServiceFactory::GetForBrowserContext(
            context);

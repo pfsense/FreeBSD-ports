@@ -1,7 +1,7 @@
 # Created by: Thierry Thomas <thierry@FreeBSD.org>
 
 PORTNAME=	netgen
-PORTVERSION=	6.2.2105
+PORTVERSION=	6.2.2202
 DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
 
@@ -11,6 +11,8 @@ COMMENT=	Automatic 3D tetrahedral mesh generator
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	compiler errors
+
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR} \
 		git:devel/git
 
@@ -18,7 +20,7 @@ USES=		cmake python tcl tk gl xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	NGSolve
-GH_TUPLE=	NGSolve:pybind11:v2.4.3:pybind11/external_dependencies/pybind11
+GH_TUPLE=	NGSolve:pybind11:v2.7.1:pybind11/external_dependencies/pybind11
 
 USE_GL=		gl glu
 USE_XORG=	x11 xmu xi
@@ -27,6 +29,10 @@ USE_LDCONFIG=	yes
 CFLAGS+=	-I${LOCALBASE}/include -I${TK_INCLUDEDIR}/generic -I${TK_INCLUDEDIR}/unix
 CXXFLAGS+=	-I${LOCALBASE}/include -I${TK_INCLUDEDIR}/generic -I${TK_INCLUDEDIR}/unix
 LDFLAGS+=	-lexecinfo
+
+CMAKE_OFF=	USE_NATIVE_ARCH
+
+CONFLICTS_INSTALL=	libvisual netgen-lvs pybind11 # bin/netgen include/pybind11/attr.h lib/libvisual.so
 
 OPTIONS_DEFINE=	JPEG MPEG CGNS
 

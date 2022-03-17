@@ -1,11 +1,11 @@
---- chrome/browser/media/webrtc/webrtc_event_log_uploader.cc.orig	2021-09-24 04:25:58 UTC
+--- chrome/browser/media/webrtc/webrtc_event_log_uploader.cc.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/media/webrtc/webrtc_event_log_uploader.cc
-@@ -42,6 +42,8 @@ const char kProduct[] = "Chrome_Mac";
+@@ -40,7 +40,7 @@ const char kProduct[] = "Chrome";
+ const char kProduct[] = "Chrome_Mac";
+ #elif BUILDFLAG(IS_CHROMEOS_ASH)
  const char kProduct[] = "Chrome_ChromeOS";
- #elif defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
+-#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
  const char kProduct[] = "Chrome_Linux";
-+#elif defined(OS_FREEBSD)
-+const char kProduct[] = "Chrome_FreeBSD";
- #elif defined(OS_ANDROID)
+ #elif BUILDFLAG(IS_ANDROID)
  const char kProduct[] = "Chrome_Android";
- #elif defined(OS_FUCHSIA)

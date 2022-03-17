@@ -2,7 +2,7 @@
 
 PORTNAME=	asymptote
 PORTVERSION=	2.67
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -27,7 +27,7 @@ USE_GL=		gl glu glut
 USE_GNOME=	librsvg2:run
 USE_PERL5=	build
 USE_TEX=	dvipsk formats
-USE_PYQT=	svg_run widgets_run
+USE_PYQT=	pyqt5_run
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes

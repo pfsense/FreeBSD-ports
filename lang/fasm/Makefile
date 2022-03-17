@@ -1,7 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
 
 PORTNAME=	fasm
-PORTVERSION=	1.73.28
+PORTVERSION=	1.73.30
 CATEGORIES=	lang devel
 MASTER_SITES=	https://flatassembler.net/ \
 		LOCAL/sunpoet
@@ -19,6 +19,9 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PLIST_FILES=	bin/fasm
 PORTDOCS=	fasm.txt readme.txt whatsnew.txt
+
+# bin/fasm
+CONFLICTS_INSTALL=	fasm-fpga SASM
 
 OPTIONS_DEFINE=	DOCS
 

@@ -185,10 +185,11 @@ cbsd/etc/defaults/vm-freebsd-FreeBSD-riscv64-13.0.conf
 cbsd/etc/defaults/vm-freebsd-FreeBSD-x64-12.3.conf
 cbsd/etc/defaults/vm-freebsd-FreeBSD-x64-13.0.conf
 cbsd/etc/defaults/vm-freebsd-FreeBSD-x64-14.0-LATEST.conf
-cbsd/etc/defaults/vm-freebsd-GhostBSD-x64-21.conf
+cbsd/etc/defaults/vm-freebsd-GhostBSD-x64-22.conf
 cbsd/etc/defaults/vm-freebsd-HardenedBSD-x64-13-STABLE.conf
 cbsd/etc/defaults/vm-freebsd-HardenedBSD-x64-14.0-LATEST.conf
-cbsd/etc/defaults/vm-freebsd-OPNsense-21-RELEASE-amd64.conf
+cbsd/etc/defaults/vm-freebsd-MidnightBSD-x64-2.1.2.conf
+cbsd/etc/defaults/vm-freebsd-OPNsense-22-RELEASE-amd64.conf
 cbsd/etc/defaults/vm-freebsd-TrueNAS-x64-12.conf
 cbsd/etc/defaults/vm-freebsd-XigmaNAS-12.conf
 cbsd/etc/defaults/vm-freebsd-cloud-FreeBSD-ufs-x64-12.3.conf
@@ -199,8 +200,10 @@ cbsd/etc/defaults/vm-freebsd-cloud-FreeBSD-zfs-x64-13.0.conf
 cbsd/etc/defaults/vm-freebsd-cloud-FreeBSD-zfs-x64-14.conf
 cbsd/etc/defaults/vm-freebsd-cloud-OPNSense-21-RELEASE-amd64-21.conf
 cbsd/etc/defaults/vm-freebsd-pfSense-2-RELEASE-amd64.conf
+cbsd/etc/defaults/vm-linux-Alpine-extended-3.conf
+cbsd/etc/defaults/vm-linux-Alpine-standart-3.conf
 cbsd/etc/defaults/vm-linux-Android-x86.conf
-cbsd/etc/defaults/vm-linux-ArchLinux-x86-2021.conf
+cbsd/etc/defaults/vm-linux-ArchLinux-x86-2022.conf
 cbsd/etc/defaults/vm-linux-CentOS-7-x86_64.conf
 cbsd/etc/defaults/vm-linux-CentOS-stream-8-x86_64.conf
 cbsd/etc/defaults/vm-linux-CentOS-stream-9-x86_64.conf
@@ -211,11 +214,12 @@ cbsd/etc/defaults/vm-linux-Debian-x86-9-minimal.conf
 cbsd/etc/defaults/vm-linux-Debian-x86-9.conf
 cbsd/etc/defaults/vm-linux-FreePBX-64bit-15.conf
 cbsd/etc/defaults/vm-linux-Kali-2021-amd64.conf
+cbsd/etc/defaults/vm-linux-Mint-20.conf
 cbsd/etc/defaults/vm-linux-OracleLinux-7.conf
 cbsd/etc/defaults/vm-linux-OracleLinux-8.conf
 cbsd/etc/defaults/vm-linux-Parrot-security-4-x64.conf
 cbsd/etc/defaults/vm-linux-Rocky-8-x86_64.conf
-cbsd/etc/defaults/vm-linux-TinyCore-x86-12.conf
+cbsd/etc/defaults/vm-linux-TinyCore-x86-13.conf
 cbsd/etc/defaults/vm-linux-cloud-CentOS-7-x86_64.conf
 cbsd/etc/defaults/vm-linux-cloud-CentOS-stream-8-x86_64.conf
 cbsd/etc/defaults/vm-linux-cloud-CentOS-stream-9-x86_64.conf
@@ -225,7 +229,7 @@ cbsd/etc/defaults/vm-linux-cloud-Debian-x86-9.conf
 cbsd/etc/defaults/vm-linux-cloud-Oracle-7-x86_64.conf
 cbsd/etc/defaults/vm-linux-cloud-Oracle-8-x86_64.conf
 cbsd/etc/defaults/vm-linux-cloud-Rocky-8-x86_64.conf
-cbsd/etc/defaults/vm-linux-cloud-kubernetes-21.conf
+cbsd/etc/defaults/vm-linux-cloud-kubernetes-23.conf
 cbsd/etc/defaults/vm-linux-cloud-ubuntuserver-amd64-20.04.conf
 cbsd/etc/defaults/vm-linux-fedora-server-34-x86_64.conf
 cbsd/etc/defaults/vm-linux-fedora-server-35-x86_64.conf
@@ -322,6 +326,7 @@ cbsd/misc/elf_tables
 cbsd/misc/fmagic
 cbsd/misc/ipv6range
 cbsd/misc/mtree
+cbsd/misc/next-ng-port
 cbsd/misc/next-vale-port
 cbsd/misc/nics-list
 cbsd/misc/pwcrypt
@@ -354,6 +359,7 @@ cbsd/modules/bsdconf.d/cloud-tpl/centos7/20-user-data-root-lockpassword
 cbsd/modules/bsdconf.d/cloud-tpl/centos7/20-user-data-root-password
 cbsd/modules/bsdconf.d/cloud-tpl/centos7/20-user-data-user-lockpassword
 cbsd/modules/bsdconf.d/cloud-tpl/centos7/20-user-data-user-password
+cbsd/modules/bsdconf.d/cloud-tpl/centos7/30-network-config-dhcp4
 cbsd/modules/bsdconf.d/cloud-tpl/centos7/30-network-config-static
 cbsd/modules/bsdconf.d/cloud-tpl/centos7/30-user-data-chpasswd
 cbsd/modules/bsdconf.d/cloud-tpl/centos7/40-network-config
@@ -623,9 +629,9 @@ cbsd/share/emulators/ostype_bhyve.subr
 cbsd/share/emulators/ostype_qemu.subr
 cbsd/share/emulators/ostype_virtualbox.subr
 cbsd/share/emulators/ostype_xen.subr
-cbsd/share/etcupdate_11.txt.xz
 cbsd/share/etcupdate_12.txt.xz
 cbsd/share/etcupdate_13.txt.xz
+cbsd/share/etcupdate_14.txt.xz
 cbsd/share/examples/bhyve/bhyverun.sh
 cbsd/share/examples/cbsdfile/CBSDfile
 cbsd/share/examples/cloud-init/centos/meta-data
@@ -828,6 +834,7 @@ cbsd/subr/time.subr
 cbsd/subr/tools.subr
 cbsd/subr/universe.subr
 cbsd/subr/up.subr
+cbsd/subr/vale.subr
 cbsd/subr/virtual.subr
 cbsd/subr/virtualbox.subr
 cbsd/subr/vnet.subr
@@ -937,6 +944,7 @@ cbsd/tools/freectr
 cbsd/tools/freejname
 cbsd/tools/fwcounters
 cbsd/tools/geli
+cbsd/tools/get-next-ng-port
 cbsd/tools/get-next-nic
 cbsd/tools/get-next-tcp-port
 cbsd/tools/get-next-vale-port
@@ -1151,6 +1159,10 @@ cbsd/upgrade/pre-patch-13.0.16.0
 cbsd/upgrade/pre-patch-13.0.19.0
 cbsd/upgrade/pre-patch-13.0.19.1
 cbsd/upgrade/pre-patch-13.0.2.0
+cbsd/upgrade/pre-patch-13.0.21.0
+cbsd/upgrade/pre-patch-13.0.21.1
+cbsd/upgrade/pre-patch-13.0.23.0
+cbsd/upgrade/pre-patch-13.0.24.0
 cbsd/upgrade/pre-patch-13.0.3.0
 cbsd/upgrade/pre-patch-13.0.3.1
 cbsd/upgrade/pre-patch-13.0.4.0

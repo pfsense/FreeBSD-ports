@@ -2,7 +2,7 @@
 
 PORTNAME=	gri
 PORTVERSION=	2.12.23
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	math
 MASTER_SITES=	SF
 
@@ -32,7 +32,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MEXAMPLES}
-BUILD_DEPENDS+=	convert:graphics/ImageMagick6
+USES+=		magick:6,build
 .endif
 
 post-patch:

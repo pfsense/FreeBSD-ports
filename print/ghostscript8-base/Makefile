@@ -12,7 +12,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:gs_srcs ${EPAG_SRCS}:epag
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	doceng@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ghostscript 8.x PostScript interpreter, base part
 
 LICENSE=	GPLv3
@@ -26,12 +26,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS=	${LOCALBASE}/share/${PORTNAME}/fonts/a010013l.pfb:print/gsfonts
 
-CONFLICTS_INSTALL= \
-		gambc \
-		ghostscript[789] \
-		ghostscript[789]-nox11 \
-		ghostscript9-agpl \
-		ghostscript9-agpl-nox11
+CONFLICTS_INSTALL=	ghostscript*-base # CHECK
 
 USES=		autoreconf cpe gmake pkgconfig shebangfix tar:xz
 USE_LDCONFIG=	yes

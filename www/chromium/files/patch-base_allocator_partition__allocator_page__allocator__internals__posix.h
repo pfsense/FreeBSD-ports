@@ -1,56 +1,16 @@
---- base/allocator/partition_allocator/page_allocator_internals_posix.h.orig	2021-07-19 18:45:05 UTC
+--- base/allocator/partition_allocator/page_allocator_internals_posix.h.orig	2022-02-28 16:54:41 UTC
 +++ base/allocator/partition_allocator/page_allocator_internals_posix.h
-@@ -28,10 +28,14 @@
- #if defined(OS_ANDROID)
- #include <sys/prctl.h>
- #endif
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- #include <sys/resource.h>
- #endif
+@@ -346,8 +346,12 @@ bool TryRecommitSystemPagesInternal(
  
-+#if defined(OS_BSD)
-+#include <fcntl.h>
-+#endif
-+
- #include "base/allocator/partition_allocator/page_allocator.h"
- 
- #ifndef MAP_ANONYMOUS
-@@ -151,12 +155,19 @@ void* SystemAllocPagesInternal(void* hint,
-   PA_DCHECK(PageTag::kFirst <= page_tag);
-   PA_DCHECK(PageTag::kLast >= page_tag);
-   int fd = VM_MAKE_TAG(static_cast<int>(page_tag));
-+#elif defined(OS_FREEBSD)
-+  int fd = HANDLE_EINTR(open("/dev/zero", O_RDWR | O_CLOEXEC));
-+  PA_PCHECK(fd != -1);
- #else
-   int fd = -1;
- #endif
- 
-   int access_flag = GetAccessFlags(accessibility);
-+#if defined(OS_FREEBSD)
-+  int map_flags = MAP_PRIVATE;
+ void DiscardSystemPagesInternal(uintptr_t address, size_t length) {
+   void* ptr = reinterpret_cast<void*>(address);
+-#if BUILDFLAG(IS_APPLE)
++#if BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_BSD)
++#if BUILDFLAG(IS_BSD)
++  int ret = madvise(ptr, length, MADV_FREE);
 +#else
-   int map_flags = MAP_ANONYMOUS | MAP_PRIVATE;
+   int ret = madvise(ptr, length, MADV_FREE_REUSABLE);
 +#endif
- 
- #if defined(OS_APPLE)
-   // On macOS 10.14 and higher, executables that are code signed with the
-@@ -183,6 +194,8 @@ void* SystemAllocPagesInternal(void* hint,
-     prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ret, length,
-           PageTagToName(page_tag));
-   }
-+#elif defined(OS_FREEBSD)
-+  HANDLE_EINTR(close(fd));
- #endif
- 
-   return ret;
-@@ -334,6 +347,8 @@ void DiscardSystemPagesInternal(void* address, size_t 
-     ret = madvise(address, length, MADV_DONTNEED);
-   }
-   PA_PCHECK(ret == 0);
-+#elif defined(OS_FREEBSD)
-+  PA_PCHECK(0 == madvise(address, length, MADV_FREE));
- #else
-   // We have experimented with other flags, but with suboptimal results.
-   //
+   if (ret) {
+     // MADV_FREE_REUSABLE sometimes fails, so fall back to MADV_DONTNEED.
+     ret = madvise(ptr, length, MADV_DONTNEED);

@@ -1,7 +1,8 @@
 PORTNAME=	airsaned
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.2-50
-DISTVERSIONSUFFIX=	-gdeab313
+DISTVERSION=	0.3.2-54
+DISTVERSIONSUFFIX=	-g433b762
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	fbsd@opal.com
@@ -16,7 +17,8 @@ LIB_DEPENDS=	libavahi-client.so:net/avahi-app \
 
 USES=		cmake compiler:c++11-lib jpeg localbase:ldflags
 USE_GITHUB=	yes
-USE_RC_SUBR=	${PORTNAME}
+
+RC_SUBR=	freebsd/${PORTNAME}
 
 GH_ACCOUNT=	SimulPiscator
 GH_PROJECT=	AirSane
@@ -26,6 +28,9 @@ post-patch:
 	    ${PATCH_WRKSRC}/server/server.cpp
 
 post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d
+	@${SED} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/${RC_SUBR} >${STAGEDIR}${PREFIX}/etc/rc.d/${PORTNAME}
+	@${CHMOD} +x ${STAGEDIR}${PREFIX}/etc/rc.d/${PORTNAME}
 	@${MV} ${STAGEDIR}${PREFIX}/etc/airsane/ignore.conf ${STAGEDIR}${PREFIX}/etc/airsane/ignore.conf.sample
 	@${MV} ${STAGEDIR}${PREFIX}/etc/airsane/options.conf ${STAGEDIR}${PREFIX}/etc/airsane/options.conf.sample
 

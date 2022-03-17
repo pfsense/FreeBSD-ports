@@ -1,5 +1,6 @@
 PORTNAME=	qtconsole
 PORTVERSION=	5.1.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipykernel5>=5.1:devel/py-ipykernel5@${PY_FLA
 
 USES=		pyqt:5 python:3.7+
 
-USE_PYQT=	core gui svg sip printsupport widgets
+USE_PYQT=	sip pyqt5
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

@@ -1,3 +1,5 @@
-TIMESTAMP = 1629121654
-SHA256 (Alexays-Waybar-0.9.8_GH0.tar.gz) = 3f067c484aaee3e7d8ded382e72c280a92913b0c4e8a20d0ac9afdf8baf19405
-SIZE (Alexays-Waybar-0.9.8_GH0.tar.gz) = 158869
+TIMESTAMP = 1646902405
+SHA256 (Alexays-Waybar-0.9.12_GH0.tar.gz) = 1f3f6692de99567c43939e7ad2e96f8c6a5ef83f760ad6f77865e46a3c6811d6
+SIZE (Alexays-Waybar-0.9.12_GH0.tar.gz) = 183392
+SHA256 (8b6bc215ccdd.patch) = 53ce1f7a8ebd7a1f361e7fe3f72c054979c1c84e59d536647177c616a50df0ff
+SIZE (8b6bc215ccdd.patch) = 1396

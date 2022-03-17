@@ -1,6 +1,7 @@
 PORTNAME=	qmcpack
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.11.0
+DISTVERSION=	3.13.0
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,31 +12,52 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_i386=	undefined reference to `__atomic_load'
 
-BUILD_DEPENDS=	catch>0:devel/catch
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfftw3.so:math/fftw3 \
 		libhdf5.so:science/hdf5 \
 		libmpich.so:net/mpich \
 		libopenblas.so:math/openblas \
 		libsz.so:science/szip
+TEST_DEPENDS=	bash:shells/bash
 
-USES=		cmake compiler:c++11-lang fortran gnome localbase:ldflags pkgconfig python:build
-USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME:tu}
+USES=		cmake:testing compiler:c++17-lang fortran gnome localbase:ldflags pkgconfig python shebangfix
 USE_GNOME=	libxml2
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	${PORTNAME:tu}
+
+SHEBANG_FILES=	src/QMCTools/gpaw4qmcpack.py \
+		${NEXUS_PLIST_FILES:C/^/nexus\//}
+SHEBANG_GLOB=	check.sh
+
 CMAKE_OFF=	BUILD_UNIT_TESTS
+CMAKE_ARGS=	-DFREEBSD_PYTHON_VER=${PYTHON_VER}
+CMAKE_TESTING_ON=	BUILD_UNIT_TESTS # at least 3 testcases are known to fail
 
-CXXFLAGS+=	-I${LOCALBASE}/include/catch2
-
-PROGS=		convert4qmc qmc-check-affinity qmc-extract-eshdf-kvectors qmc-get-supercell qmcpack
+PROGS=		convert4qmc convertpw4qmc gpaw4qmcpack.py ppconvert qmc-check-affinity qmc-extract-eshdf-kvectors qmc-get-supercell qmcfinitesize qmcpack qmcpack.settings
 PLIST_FILES=	${PROGS:C/^/bin\//}
 
-BINARY_ALIAS=	python=${PYTHON_CMD}
+BINARY_ALIAS=	python=${PYTHON_CMD} python3=${PYTHON_CMD}
 
-do-install:
-.for p in ${PROGS}
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/bin/${p} ${STAGEDIR}${PREFIX}/bin
-.endfor
+OPTIONS_DEFINE=		NEXUS
+OPTIONS_DEFAULT=	NEXUS
+OPTIONS_SUB=		yes
+
+NEXUS_DESC=		Install Nexus (workflow utility) alongside QMCPACK
+NEXUS_CMAKE_BOOL=	INSTALL_NEXUS
+NEXUS_PY_DEPENDS=	${PYNUMPY} \
+			${PYTHON_PKGNAMEPREFIX}h5py>0:science/py-h5py@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pyscf>0:science/py-pyscf@${PY_FLAVOR}
+NEXUS_BUILD_DEPENDS=	${NEXUS_PY_DEPENDS}
+NEXUS_RUN_DEPENDS=	${NEXUS_PY_DEPENDS}
+NEXUS_PLIST_FILES=	bin/eshdf \
+			bin/nxs-redo \
+			bin/nxs-sim \
+			bin/nxs-test \
+			bin/qdens \
+			bin/qdens-radial \
+			bin/qmc-fit \
+			bin/qmca
 
 .include <bsd.port.mk>

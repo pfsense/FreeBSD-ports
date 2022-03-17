@@ -14,9 +14,9 @@ lib/libdolphinprivate.so.%%SHLIB_VER%%
 lib/libdolphinvcs.so
 lib/libdolphinvcs.so.%%SHLIB_SHVER%%
 lib/libdolphinvcs.so.%%SHLIB_VER%%
-%%QT_PLUGINDIR%%/kcm_dolphingeneral.so
-%%QT_PLUGINDIR%%/kcm_dolphinnavigation.so
-%%QT_PLUGINDIR%%/kcm_dolphinviewmodes.so
+%%QT_PLUGINDIR%%/dolphin/kcms/libkcm_dolphingeneral.so
+%%QT_PLUGINDIR%%/dolphin/kcms/libkcm_dolphinnavigation.so
+%%QT_PLUGINDIR%%/dolphin/kcms/libkcm_dolphinviewmodes.so
 %%QT_PLUGINDIR%%/kf%%SHLIB_SHVER%%/parts/dolphinpart.so
 lib/systemd/user/plasma-dolphin.service
 share/applications/org.kde.dolphin.desktop
@@ -76,6 +76,7 @@ share/locale/gl/LC_MESSAGES/dolphin.mo
 share/locale/gl/LC_MESSAGES/dolphin_servicemenuinstaller.mo
 share/locale/he/LC_MESSAGES/dolphin.mo
 share/locale/hi/LC_MESSAGES/dolphin.mo
+share/locale/hi/LC_MESSAGES/dolphin_servicemenuinstaller.mo
 share/locale/hr/LC_MESSAGES/dolphin.mo
 share/locale/hu/LC_MESSAGES/dolphin.mo
 share/locale/hu/LC_MESSAGES/dolphin_servicemenuinstaller.mo

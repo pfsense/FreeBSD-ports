@@ -1,5 +1,6 @@
 bin/kate
 bin/kwrite
+%%QT_PLUGINDIR%%/ktexteditor/compilerexplorer.so
 %%QT_PLUGINDIR%%/ktexteditor/externaltoolsplugin.so
 %%QT_PLUGINDIR%%/ktexteditor/katebacktracebrowserplugin.so
 %%QT_PLUGINDIR%%/ktexteditor/katebuildplugin.so
@@ -20,7 +21,9 @@ bin/kwrite
 %%QT_PLUGINDIR%%/ktexteditor/katexmlcheckplugin.so
 %%QT_PLUGINDIR%%/ktexteditor/katexmltoolsplugin.so
 %%QT_PLUGINDIR%%/ktexteditor/ktexteditorpreviewplugin.so
+%%QT_PLUGINDIR%%/ktexteditor/latexcompletionplugin.so
 %%QT_PLUGINDIR%%/ktexteditor/lspclientplugin.so
+%%QT_PLUGINDIR%%/ktexteditor/rainbowparens.so
 %%QT_PLUGINDIR%%/ktexteditor/tabswitcherplugin.so
 %%QT_PLUGINDIR%%/ktexteditor/textfilterplugin.so
 %%QT_PLUGINDIR%%/plasma/dataengine/plasma_engine_katesessions.so
@@ -32,6 +35,7 @@ man/man1/kate.1.gz
 man/nl/man1/kate.1.gz
 man/pt/man1/kate.1.gz
 man/pt_BR/man1/kate.1.gz
+man/ru/man1/kate.1.gz
 man/sv/man1/kate.1.gz
 man/uk/man1/kate.1.gz
 share/applications/org.kde.kate.desktop
@@ -68,6 +72,7 @@ share/katexmltools/xhtml1-frameset.dtd.xml
 share/katexmltools/xhtml1-strict.dtd.xml
 share/katexmltools/xhtml1-transitional.dtd.xml
 share/katexmltools/xslt-1.0.dtd.xml
+share/kservices5/plasma-applet-org.kde.plasma.katesessions.desktop
 share/kservices5/plasma-dataengine-katesessions.desktop
 share/locale/ar/LC_MESSAGES/kate-ctags-plugin.mo
 share/locale/ar/LC_MESSAGES/kate-replicode-plugin.mo
@@ -572,9 +577,12 @@ share/locale/hu/LC_MESSAGES/kate.mo
 share/locale/hu/LC_MESSAGES/katebacktracebrowserplugin.mo
 share/locale/hu/LC_MESSAGES/katebuild-plugin.mo
 share/locale/hu/LC_MESSAGES/katecloseexceptplugin.mo
+share/locale/hu/LC_MESSAGES/katecolorpickerplugin.mo
+share/locale/hu/LC_MESSAGES/kateexternaltoolsplugin.mo
 share/locale/hu/LC_MESSAGES/katefilebrowserplugin.mo
 share/locale/hu/LC_MESSAGES/katefiletree.mo
 share/locale/hu/LC_MESSAGES/kategdbplugin.mo
+share/locale/hu/LC_MESSAGES/kategitblameplugin.mo
 share/locale/hu/LC_MESSAGES/katekonsoleplugin.mo
 share/locale/hu/LC_MESSAGES/kateproject.mo
 share/locale/hu/LC_MESSAGES/katesearch.mo
@@ -582,8 +590,11 @@ share/locale/hu/LC_MESSAGES/katesnippetsplugin.mo
 share/locale/hu/LC_MESSAGES/katesql.mo
 share/locale/hu/LC_MESSAGES/katesymbolviewer.mo
 share/locale/hu/LC_MESSAGES/katetextfilter.mo
+share/locale/hu/LC_MESSAGES/katexmlcheck.mo
 share/locale/hu/LC_MESSAGES/katexmltools.mo
+share/locale/hu/LC_MESSAGES/ktexteditorpreviewplugin.mo
 share/locale/hu/LC_MESSAGES/kwrite.mo
+share/locale/hu/LC_MESSAGES/lspclient.mo
 share/locale/hu/LC_MESSAGES/plasma_applet_org.kde.plasma.katesessions.mo
 share/locale/hu/LC_MESSAGES/tabswitcherplugin.mo
 share/locale/ia/LC_MESSAGES/kate-ctags-plugin.mo

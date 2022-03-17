@@ -2,19 +2,14 @@
 #  devel/kdev-php
 #  devel/kdev-python
 PORTNAME=	kdevelop
-DISTVERSION=	5.6.2
-PORTREVISION=	1
-CATEGORIES=	devel kde
-MASTER_SITES=	KDE/stable/kdevelop/${DISTVERSION}/src
-DIST_SUBDIR=	KDE/kdevelop
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+CATEGORIES=	devel kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plugin extensible IDE for C/C++ and other languages
 
 LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
-LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	kdev-pg-qt:devel/kdevelop-pg-qt \
 		llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
@@ -49,9 +44,10 @@ USE_QT+=	testlib
 CMAKE_ARGS=	-DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLLVM_ROOT=${LOCALBASE}/llvm${LLVM_DEFAULT}
 
 # Versioning values, to reduce plist churn
-PLATFORM_VER=	34
-SO_VER=		56
-PLIST_SUB+=	PLATFORM_VER=${PLATFORM_VER} SO_VER=${SO_VER} SO_VER_LONG=${DISTVERSION}
+PLATFORM_VER=	35
+SO_VER=		57
+SO_VER_LONG=	5.7.211203
+PLIST_SUB+=	PLATFORM_VER=${PLATFORM_VER} SO_VER=${SO_VER} SO_VER_LONG=${SO_VER_LONG}
 
 OPTIONS_DEFINE=	WEBENGINE
 WEBENGINE_DESC=	Use WebEngine as help reader
@@ -63,12 +59,5 @@ WEBENGINE_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngineWidgets:BOOL=TRUE
 SHEBANG_LANG=	zsh
 zsh_OLD_CMD=	/bin/zsh
 zsh_CMD=	${LOCALBASE}/bin/zsh
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MWEBENGINE}
-DEPRECATED=	Uses EOL Pyton 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-.endif
 
 .include <bsd.port.mk>

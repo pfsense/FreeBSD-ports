@@ -1,46 +1,38 @@
---- mojo/public/c/system/thunks.cc.orig	2021-07-19 18:45:18 UTC
+--- mojo/public/c/system/thunks.cc.orig	2022-02-28 16:54:41 UTC
 +++ mojo/public/c/system/thunks.cc
-@@ -20,7 +20,7 @@
+@@ -19,7 +19,7 @@
  #include "mojo/public/c/system/core.h"
  #include "mojo/public/c/system/macros.h"
  
--#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
-+#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
  #include "base/environment.h"
  #include "base/files/file_path.h"
  #include "base/scoped_native_library.h"
-@@ -68,7 +68,7 @@ class CoreLibraryInitializer {
+@@ -67,7 +67,7 @@ class CoreLibraryInitializer {
    ~CoreLibraryInitializer() = default;
  
    MojoResult LoadLibrary(base::FilePath library_path) {
--#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
-+#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
      if (library_ && library_->is_valid())
        return MOJO_RESULT_OK;
  
-@@ -82,7 +82,7 @@ class CoreLibraryInitializer {
+@@ -81,7 +81,7 @@ class CoreLibraryInitializer {
  
      if (library_path.empty()) {
        // Default to looking for the library in the current working directory.
--#if defined(OS_CHROMEOS) || defined(OS_LINUX)
-+#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_BSD)
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
        const base::FilePath::CharType kDefaultLibraryPathValue[] =
            FILE_PATH_LITERAL("./libmojo_core.so");
- #elif defined(OS_WIN)
-@@ -126,13 +126,13 @@ class CoreLibraryInitializer {
- 
-     library_ = std::move(library);
-     return MOJO_RESULT_OK;
--#else   // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
-+#else   // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
-     return MOJO_RESULT_UNIMPLEMENTED;
--#endif  // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
-+#endif  // defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
+ #elif BUILDFLAG(IS_WIN)
+@@ -131,7 +131,7 @@ class CoreLibraryInitializer {
    }
  
   private:
--#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN)
-+#if defined(OS_CHROMEOS) || defined(OS_LINUX) || defined(OS_WIN) || defined(OS_BSD)
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
    absl::optional<base::ScopedNativeLibrary> library_;
  #endif
  };

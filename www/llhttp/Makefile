@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	llhttp
-PORTVERSION=	6.0.5
+PORTVERSION=	6.0.6
 DISTVERSIONPREFIX=	 release/v
 CATEGORIES=	www
 
@@ -11,7 +11,7 @@ COMMENT=	Port of http_parser to llparse
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE-MIT
 
-USES=		cmake
+USES=		cmake cpe
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 

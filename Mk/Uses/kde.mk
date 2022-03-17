@@ -75,18 +75,18 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.23.4
+KDE_PLASMA_VERSION?=		5.24.3
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.88.0
+KDE_FRAMEWORKS_VERSION?=	5.91.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	21.08.3
-KDE_APPLICATIONS_SHLIB_VER?=	5.18.3
+KDE_APPLICATIONS_VERSION?=	21.12.3
+KDE_APPLICATIONS_SHLIB_VER?=	5.19.3
 # G as in KDE Gear, and as in "don't make the variable name longer than required"
-KDE_APPLICATIONS_SHLIB_G_VER?=	21.8.3
+KDE_APPLICATIONS_SHLIB_G_VER?=	21.12.3
 KDE_APPLICATIONS_BRANCH?=	stable
 
 # Extended KDE universe applications.
@@ -431,7 +431,7 @@ kde-kio_PORT=			devel/kf5-kio
 kde-kio_LIB=			libKF5KIOCore.so
 
 kde-kirigami2_PORT=		x11-toolkits/kf5-kirigami2
-kde-kirigami2_PATH=		${QT_QMLDIR}/org/kde/kirigami.2/libkirigamiplugin.so
+kde-kirigami2_PATH=		${QT_QMLDIR}/org/kde/kirigami.2/libKirigamiPlugin.so
 
 kde-kquickcharts_PORT=		graphics/kf5-kquickcharts
 kde-kquickcharts_PATH=		${QT_QMLDIR}/org/kde/quickcharts/controls/libchartscontrolsplugin.so
@@ -572,10 +572,10 @@ kde-kde-gtk-config_PORT=	x11-themes/plasma5-kde-gtk-config
 kde-kde-gtk-config_PATH=	${KDE_PREFIX}/lib/kconf_update_bin/gtk_theme
 
 kde-kdeplasma-addons_PORT=	x11-toolkits/plasma5-kdeplasma-addons
-kde-kdeplasma-addons_PATH=	${QT_PLUGINDIR}/kcm_krunner_dictionary.so
+kde-kdeplasma-addons_LIB=	libplasmapotdprovidercore.so
 
 kde-kgamma5_PORT=		x11/plasma5-kgamma5
-kde-kgamma5_PATH=		${QT_PLUGINDIR}/kcm_kgamma.so
+kde-kgamma5_PATH=		${QT_PLUGINDIR}/plasma/kcms/systemsettings/kcm_kgamma.so
 
 kde-kmenuedit_PORT=		sysutils/plasma5-kmenuedit
 kde-kmenuedit_PATH=		${KDE_PREFIX}/bin/kmenuedit

@@ -1,0 +1,8 @@
+--- ssl/CMakeLists.txt.orig	2022-01-18 16:46:15 UTC
++++ ssl/CMakeLists.txt
+@@ -63,3 +63,5 @@ if(WIN32)
+   target_link_libraries(ssl_test ws2_32)
+ endif()
+ add_dependencies(all_tests ssl_test)
++
++SET_TARGET_PROPERTIES(ssl PROPERTIES SOVERSION 1)

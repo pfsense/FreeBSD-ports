@@ -1,7 +1,7 @@
 PORTNAME=	kitty
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.23.1
+DISTVERSION=	0.24.2
 CATEGORIES=	x11
+MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	alexis.praga@free.fr
 COMMENT=	Cross-platform, fast, featureful, GPU-based terminal emulator
@@ -21,13 +21,13 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libharfbuzz.so:print/harfbuzz \
 		liblcms2.so:graphics/lcms2 \
 		libpng.so:graphics/png \
+		librsync.so:net/librsync \
 		libwayland-client.so:graphics/wayland \
 		libwayland-cursor.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
 
-USES=		compiler:c11 cpe gettext-runtime gl gmake ncurses:port pkgconfig \
-		python:3.5+ shebangfix terminfo xorg
-USE_GITHUB=	yes
+USES=		compiler:c11 cpe gettext-runtime gl gmake pkgconfig \
+		python:3.5+ shebangfix tar:xz terminfo xorg
 GH_ACCOUNT=	kovidgoyal
 USE_GL=		gl
 USE_XORG=	x11 xcb xcursor xi xinerama xrandr
@@ -48,7 +48,9 @@ _STRIP_TARGETS=	lib/kitty/kitty/fast_data_types.so lib/kitty/kitty/glfw-x11.so \
 		lib/kitty/kittens/diff/diff_speedup.so \
 		lib/kitty/kittens/unicode_input/unicode_names.so \
 		lib/kitty/kitty/glfw-wayland.so \
-		lib/kitty/kittens/choose/subseq_matcher.so bin/kitty
+		lib/kitty/kittens/choose/subseq_matcher.so bin/kitty \
+		lib/kitty/kittens/transfer/rsync.so
+
 _EMPTY_DIRS=	kittens/choose kittens/diff kittens/unicode_input kittens kitty
 
 .include <bsd.port.options.mk>
@@ -57,9 +59,17 @@ _EMPTY_DIRS=	kittens/choose kittens/diff kittens/unicode_input kittens kitty
 MAKE_ENV+=	KITTY_NO_LTO=1
 .endif
 
+# ncursesw and tinfo >= 6.1 seem to be neededd
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400035
+USES+=ncurses:port
+.else
+USES+=ncurses
+.endif
+
+# For librsync, we need to set header and library path
 do-build:
 	(cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} ${PYTHON_CMD} setup.py linux-package --update-check-interval 0)
+	        ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} setup.py linux-package --update-check-interval 0 --extra-include-dirs ${LOCALBASE}/include/ --extra-library-dirs ${LOCALBASE}/lib)
 	${FIND} ${INSTALL_WRKSRC} -name __pycache__ -type d -exec ${RM} -r -- {} +
 
 do-install:

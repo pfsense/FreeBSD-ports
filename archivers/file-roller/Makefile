@@ -2,6 +2,7 @@
 
 PORTNAME=	file-roller
 PORTVERSION=	3.40.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	archivers gnome
 MASTER_SITES=	GNOME
@@ -40,7 +41,7 @@ OPTIONS_GROUP_FORMATS=	7ZIP ARJ LZO RAR ZIP
 FORMATS_DESC=	Additional compression formats support
 
 7ZIP_DESC=	7zip archive support
-7ZIP_RUN_DEPENDS=	7z:archivers/p7zip
+7ZIP_RUN_DEPENDS=	7zz:archivers/7-zip
 
 ARJ_DESC=	ARJ archive support
 ARJ_RUN_DEPENDS=	arj:archivers/arj
@@ -62,5 +63,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/src/fr-command-tar.c \
 		${WRKSRC}/src/fr-command-zip.c
+	@${REINPLACE_CMD} -e 's|"7z"|"7zz"|g' \
+		${WRKSRC}/src/fr-archive-libarchive.c \
+		${WRKSRC}/src/fr-command-7z.c \
+		${WRKSRC}/src/fr-command-tar.c
 
 .include <bsd.port.mk>

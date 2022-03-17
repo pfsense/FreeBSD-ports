@@ -1,13 +1,10 @@
 PORTNAME=	sway
-DISTVERSION=	1.6.1
-PORTREVISION=	2
+DISTVERSION=	1.7
 CATEGORIES=	x11-wm
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	cd9d1038a822.patch:-p1 # https://github.com/swaywm/sway/pull/5090
 PATCHFILES+=	f98ca3ab7ca1.patch:-p1 # https://github.com/swaywm/sway/pull/5090
-PATCHFILES+=	86b08e3257a4.patch:-p1 # WLR_RENDERER=vulkan
-PATCHFILES+=	ff468584abdd.patch:-p1 # https://github.com/swaywm/sway/pull/6566
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	i3-compatible Wayland compositor
@@ -16,8 +13,8 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayland-protocols>=1.14:graphics/wayland-protocols \
-		wlroots>=0.14.0<0.15.0:x11-toolkits/wlroots
+		wayland-protocols>=1.24:graphics/wayland-protocols \
+		wlroots>=0.15.0<0.16.0:x11-toolkits/wlroots
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libevdev.so:devel/libevdev \
 		libudev.so:devel/libudev-devd \

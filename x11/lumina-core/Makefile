@@ -2,8 +2,8 @@
 
 PORTNAME=	lumina-core
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.0
-PORTREVISION=	1
+DISTVERSION=	1.6.2
+PORTREVISION=	4
 CATEGORIES=	x11
 
 MAINTAINER=	lbartoletti@FreeBSD.org
@@ -13,11 +13,12 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
 RUN_DEPENDS=	fluxbox>=0:x11-wm/fluxbox \
-		xscreensaver>=0:x11/xscreensaver \
+		fluxbox-tenr-styles-pack>=0:x11-themes/fluxbox-tenr-styles-pack \
 		xbrightness>=0:x11/xbrightness \
 		compton>=0:x11-wm/compton \
 		xrandr>=0:x11/xrandr \
-		numlockx>=0:x11/numlockx
+		numlockx>=0:x11/numlockx \
+		${LOCALBASE}/share/icons/La-Capitaine/index.theme:x11-themes/la-capitaine-icon-theme
 LIB_DEPENDS+=	libxcb-ewmh.so:x11/xcb-util-wm \
 		libxcb-icccm.so:x11/xcb-util-wm \
 		libxcb-image.so:x11/xcb-util-image \
@@ -28,8 +29,8 @@ USES=		compiler:c++11-lang gl qmake qt:5 xorg
 USE_GL=		gl
 USE_XORG=	x11 xdamage xcb
 USE_LDCONFIG=	yes
-USE_QT=		buildtools_build concurrent core dbus gui imageformats \
-		multimedia network svg widgets x11extras
+USE_QT=		buildtools_build concurrent core dbus declarative gui \
+		imageformats multimedia network svg widgets x11extras
 USE_GITHUB=	yes
 GH_ACCOUNT=	lumina-desktop
 GH_PROJECT=	lumina
@@ -50,6 +51,10 @@ NLS_QMAKE_ON=	CONFIG+=WITH_I18N
 
 WRKSRC_SUBDIR=	src-qt5/core
 
+CONFIGURE_ENV+=	DESTDIR=${STAGEDIR}
+
 CONFLICTS_INSTALL=	lumina-1.2.*
 
+post-install:
+	${FIND} ${STAGEDIR}${PREFIX}/share -name "ecp.*" -delete
 .include <bsd.port.mk>

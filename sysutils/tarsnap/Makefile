@@ -1,7 +1,8 @@
 # Created by: Colin Percival
 
 PORTNAME=	tarsnap
-PORTVERSION=	1.0.39
+PORTVERSION=	1.0.40
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.tarsnap.com/download-http/
 DISTNAME=	${PORTNAME}-autoconf-${PORTVERSION}
@@ -15,6 +16,8 @@ LICENSE_NAME=	tarsnap
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CFLAGS="-I${OPENSSLINC} ${CFLAGS}" \
 		LDFLAGS="-L${OPENSSLLIB} ${LDFLAGS}"
+CONFIGURE_ARGS=	--with-bash-completion-dir=${PREFIX}/etc/bash_completion.d/	\
+		--with-zsh-completion-dir=${PREFIX}/share/zsh/site-functions
 
 USES=		gmake tar:tgz ssl
 

@@ -2,12 +2,14 @@
 
     SUBDIR += Bento4
     SUBDIR += QtAV
+    SUBDIR += ab-av1
     SUBDIR += ab25
     SUBDIR += acidrip
     SUBDIR += aegisub
     SUBDIR += aom
     SUBDIR += aravis
     SUBDIR += arcan
+    SUBDIR += aribb24
     SUBDIR += assimp
     SUBDIR += atomicparsley
     SUBDIR += audacious
@@ -56,6 +58,7 @@
     SUBDIR += dvdstyler
     SUBDIR += elementary-videos
     SUBDIR += emby-server
+    SUBDIR += emby-server-devel
     SUBDIR += emovix
     SUBDIR += ffaudioconverter
     SUBDIR += ffdec
@@ -160,6 +163,8 @@
     SUBDIR += kooha
     SUBDIR += kvazaar
     SUBDIR += l-smash
+    SUBDIR += lebiniou
+    SUBDIR += lebiniou-data
     SUBDIR += libaacs
     SUBDIR += libass
     SUBDIR += libbdplus
@@ -242,7 +247,6 @@
     SUBDIR += mlt6-qt5
     SUBDIR += mlt7
     SUBDIR += mlt7-qt5
-    SUBDIR += mmsclient
     SUBDIR += mmsrip
     SUBDIR += motion
     SUBDIR += mp3cd
@@ -274,6 +278,9 @@
     SUBDIR += neolink
     SUBDIR += nordlicht
     SUBDIR += nostt
+    SUBDIR += nymphcast
+    SUBDIR += nymphcastlib
+    SUBDIR += nymphrpc
     SUBDIR += obs-audio-spectralizer
     SUBDIR += obs-ndi
     SUBDIR += obs-qtwebkit
@@ -291,6 +298,7 @@
     SUBDIR += onevpl
     SUBDIR += openh264
     SUBDIR += openshot
+    SUBDIR += opentimelineio
     SUBDIR += opentoonz
     SUBDIR += oscam
     SUBDIR += p5-Audio-M4P
@@ -334,11 +342,10 @@
     SUBDIR += py-mido
     SUBDIR += py-mlt6
     SUBDIR += py-moviepy
+    SUBDIR += py-opentimelineio
     SUBDIR += py-periscope
     SUBDIR += py-pretty_midi
     SUBDIR += py-pymediainfo
-    SUBDIR += py-qt5-multimedia
-    SUBDIR += py-qt5-multimediawidgets
     SUBDIR += py-soco
     SUBDIR += py-subliminal
     SUBDIR += py-tvnamer

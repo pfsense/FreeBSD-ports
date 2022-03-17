@@ -1,7 +1,7 @@
 # Created by: Robert Gogolok <gogo@cs.uni-sb.de>
 
 PORTNAME=	bundler
-PORTVERSION=	2.2.30
+DISTVERSION=	2.3.6
 PORTEPOCH=	1
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
@@ -17,6 +17,9 @@ USE_RUBY=	yes
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/bundle bin/bundler
+PLIST_FILES=	bin/bundle \
+		bin/bundler
+
+CONFLICTS_INSTALL=	go-tools # bin/bundle
 
 .include <bsd.port.mk>

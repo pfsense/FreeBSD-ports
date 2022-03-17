@@ -1,14 +1,12 @@
 PORTNAME=	kdepim-runtime
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE PIM tools and services
 
 LICENSE=	LGPL21
-
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libcurl.so:ftp/curl \

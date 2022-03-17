@@ -10,6 +10,7 @@
     SUBDIR += bochs
     SUBDIR += bsvc
     SUBDIR += cannonball
+    SUBDIR += catapult
     SUBDIR += cemu
     SUBDIR += cingb
     SUBDIR += citra
@@ -22,11 +23,13 @@
     SUBDIR += dolphin-emu
     SUBDIR += dosbox
     SUBDIR += dosbox-staging
+    SUBDIR += dps8m
     SUBDIR += dynamips-community
     SUBDIR += edumips64
     SUBDIR += elliott-803
     SUBDIR += emu64
     SUBDIR += emulationstation
+    SUBDIR += fceux
     SUBDIR += fmsx
     SUBDIR += frodo
     SUBDIR += fs-uae
@@ -106,12 +109,10 @@
     SUBDIR += qemu-powernv
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
-    SUBDIR += qemu-utils
-    SUBDIR += qemu41
-    SUBDIR += qemu42
     SUBDIR += qemu5
     SUBDIR += qmc2
     SUBDIR += quasi88
+    SUBDIR += ripes
     SUBDIR += riscv-isa-sim
     SUBDIR += rpcs3
     SUBDIR += rtc
@@ -156,6 +157,7 @@
     SUBDIR += vmips
     SUBDIR += vmsbackup
     SUBDIR += vmw
+    SUBDIR += vt100
     SUBDIR += vxtools
     SUBDIR += wine
     SUBDIR += wine-devel
@@ -177,7 +179,6 @@
     SUBDIR += xzx
     SUBDIR += yaze-ag
     SUBDIR += yuzu
-    SUBDIR += yuzu-qt5
     SUBDIR += z80pack
     SUBDIR += zsnes
 

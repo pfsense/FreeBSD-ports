@@ -1,12 +1,12 @@
 # Created by: Michael Gmelin <grembo@FreeBSD.org>
 
 PORTNAME=	buildbot-waterfall-view
-PORTVERSION=	2.10.5
+PORTVERSION=	3.5.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Buildbot Waterfall View plugin
 
 LICENSE=	GPLv2

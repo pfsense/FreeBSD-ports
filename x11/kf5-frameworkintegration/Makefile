@@ -11,7 +11,7 @@ USE_KDE=	auth attica codecs config configwidgets coreaddons i18n \
 		iconthemes newstuff notifications widgetsaddons \
 		ecm_build
 USE_QT=		core dbus gui network widgets xml \
-		buildtools_build qmake_build 
+		buildtools_build qmake_build
 USE_XORG=	xcb xcursor
 
 .include <bsd.port.mk>

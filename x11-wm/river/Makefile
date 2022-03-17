@@ -1,22 +1,18 @@
 PORTNAME=	river
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.0
-PORTREVISION=	1
+DISTVERSION=	0.1.3
 CATEGORIES=	x11-wm
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	0cbe2b9fc34f.patch:-p1 # docs: remove reference to /etc/river/init
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Dynamic tiling Wayland compositor
 
-LICENSE=	GPLv3+
+LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>0:graphics/wayland-protocols \
-		wlroots>=0.14.0:x11-toolkits/wlroots \
-		zig>=0.8.0:lang/zig
+		wlroots>=0.15.0:x11-toolkits/wlroots \
+		zig>=0.9.0:lang/zig
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
@@ -27,13 +23,14 @@ USES=		pkgconfig xorg
 USE_GITHUB=	yes
 USE_XORG=	pixman
 GH_ACCOUNT=	riverwm
-GH_TUPLE=	ifreund:zig-pixman:88520f2:zig_pixman/deps/zig-pixman \
-		ifreund:zig-wayland:a8e1efc:zig_wayland/deps/zig-wayland \
-		ifreund:zig-xkbcommon:10cdca6:zig_xkbcommon/deps/zig-xkbcommon \
-		swaywm:zig-wlroots:9bb6b03:zig_wlroots/deps/zig-wlroots
+GH_TUPLE=	ifreund:zig-pixman:d381567:zig_pixman/deps/zig-pixman \
+		ifreund:zig-wayland:80166ba:zig_wayland/deps/zig-wayland \
+		ifreund:zig-xkbcommon:60dde05:zig_xkbcommon/deps/zig-xkbcommon \
+		swaywm:zig-wlroots:49a5f81:zig_wlroots/deps/zig-wlroots
 MAKE_ENV=	DESTDIR="${STAGEDIR}"
 CONFIGURE_ARGS=	--prefix "${PREFIX}" \
-		${WITH_DEBUG:U-Drelease-fast=true} \
+		${WITH_DEBUG:D:U-Drelease-fast} \
+		-Dcpu=${CPUTYPE:Ubaseline} \
 		--verbose
 NO_INSTALL=	yes # strip(1) breaks runtime
 PLIST_FILES=	bin/${PORTNAME} \

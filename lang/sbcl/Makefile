@@ -3,7 +3,7 @@
 # pinned to exact versions of everything used to build them.
 
 PORTNAME=	sbcl
-DISTVERSION=	2.1.10
+DISTVERSION=	2.2.2
 DISTVERSIONSUFFIX=	-source
 PORTEPOCH=	1
 CATEGORIES=	lang lisp
@@ -33,22 +33,23 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 PORTDOCS=	*
 
 # All options explained into file: ${WRKSRC}/base-target-features.lisp-expr
-OPTIONS_DEFINE=		DOCS QSHOW RENAME SAFEPOINT THREADS UNICODE XREF ZLIB
-OPTIONS_DEFAULT=	RENAME SBCL THREADS UNICODE
+OPTIONS_DEFINE=		DOCS LINKABLE_RUNTIME QSHOW SAFEPOINT THREADS UNICODE \
+			XREF ZLIB
+OPTIONS_DEFAULT=	SBCL THREADS UNICODE
 
 OPTIONS_SINGLE=			BOOTSTRAP
 OPTIONS_SINGLE_BOOTSTRAP=	ABCL CCL CMUCL SBCL
 OPTIONS_EXCLUDE=		ABCL CMUCL
 
-ABCL_DESC=	Armed Bear Common Lisp
-BOOTSTRAP_DESC=	Supported languages of the build host
-CCL_DESC=	Clozure Common Lisp
-CMUCL_DESC=	Carnegie Mellon University Common Lisp
-QSHOW_DESC=	C runtime with low-level debugging output
-RENAME_DESC=	Rename suffix .core to _core
-SAFEPOINT_DESC=	Using safepoints instead of signals
-SBCL_DESC=	Steel Bank Common Lisp
-XREF_DESC=	XREF data for SBCL internals
+ABCL_DESC=		Armed Bear Common Lisp
+BOOTSTRAP_DESC=		Supported languages of the build host
+CCL_DESC=		Clozure Common Lisp
+CMUCL_DESC=		Carnegie Mellon University Common Lisp
+LINKABLE_RUNTIME_DESC=	Enable SB-LINKABLE-RUNTIME feature (experimental)
+QSHOW_DESC=		C runtime with low-level debugging output
+SAFEPOINT_DESC=		Using safepoints instead of signals
+SBCL_DESC=		Steel Bank Common Lisp
+XREF_DESC=		XREF data for SBCL internals
 
 ABCL_BUILD_DEPENDS=	abcl:lang/abcl
 ABCL_VARS=		XC_HOST="abcl"
@@ -61,18 +62,18 @@ CMUCL_VARS=		XC_HOST="lisp -nositeinit -noinit -batch -quiet"
 
 DOCS_VARS=	INFO="asdf sbcl"
 
+LINKABLE_RUNTIME_VARS=		MAKE_SH_ARGS+="--with-sb-linkable-runtime"
+LINKABLE_RUNTIME_VARS_OFF=	MAKE_SH_ARGS+="--without-sb-linkable-runtime"
+
 QSHOW_VARS=	MAKE_SH_ARGS+="--with-sb-qshow"
 QSHOW_VARS_OFF=	MAKE_SH_ARGS+="--without-sb-qshow"
-
-RENAME_PLIST_SUB=	CORE_SUFFIX="_core"
-RENAME_PLIST_SUB_OFF=	CORE_SUFFIX=".core"
 
 SAFEPOINT_IMPLIES=	THREADS
 SAFEPOINT_VARS=		MAKE_SH_ARGS+="--with-sb-safepoint --with-sb-thruption --with-sb-wtimer"
 SAFEPOINT_VARS_OFF=	MAKE_SH_ARGS+="--without-sb-safepoint --without-sb-thruption --without-sb-wtimer"
 
 SBCL_DISTFILES=	${PORTNAME}-${SBCL_BOOT_LIST:M${ARCHOS_PATTERN}}-binary${EXTRACT_SUFX}:binaries
-SBCL_VARS=	XC_HOST="${BOOT_WRKSRC}/src/runtime/sbcl --core ${BOOT_WRKSRC}/output/${CORE} --noinform --disable-debugger --no-sysinit --no-userinit"
+SBCL_VARS=	XC_HOST="${BOOT_WRKSRC}/src/runtime/sbcl --core ${BOOT_WRKSRC}/output/sbcl.core --noinform --disable-debugger --no-sysinit --no-userinit"
 
 THREADS_VARS=		MAKE_SH_ARGS+="--with-sb-thread"
 THREADS_VARS_OFF=	MAKE_SH_ARGS+="--without-sb-thread"
@@ -105,21 +106,20 @@ SBCL_BOOT_LIST=	${BOOTVERSION}-x86-64-freebsd ${BOOTVERSION}-x86-freebsd \
 ARCHOS_PATTERN=	*-${ARCH:S/amd64/x86-64/:S/i386/x86/}-${OPSYS:tl}*
 BOOT_WRKSRC=	${WRKDIR}/${PORTNAME}-${SBCL_BOOT_LIST:M${ARCHOS_PATTERN}}
 
+.if ${PORT_OPTIONS:MLINKABLE_RUNTIME}
+PLIST_SUB+=	LINKABLE_RUNTIME=""
+.else
+PLIST_SUB+=	LINKABLE_RUNTIME="@comment "
+.endif
+
 # for port maintenance, invoke "make makesum PLUS_BOOTSTRAPS=1"
 .if defined (PLUS_BOOTSTRAPS)
 . for B in ${SBCL_BOOT_LIST}
-.  if ! ${DISTFILES:Msbcl-${B}-*}
+.  if !${DISTFILES:Msbcl-${B}-*}
 DISTFILES:=	${DISTFILES} \
 		${PORTNAME}-${B}-binary${EXTRACT_SUFX}:binaries
 .  endif
 . endfor
-.endif
-
-# Old FreeBSD bootstraps feature the older core name for SBCL bootstrap
-.if ${OPSYS} == FreeBSD
-CORE=		sbcl.core
-.else
-CORE=		sbcl_core
 .endif
 
 post-patch:
@@ -127,9 +127,6 @@ post-patch:
 		${WRKSRC}/src/code/toplevel.lisp \
 		${WRKSRC}/doc/${PORTNAME}.1 \
 		${WRKSRC}/doc/manual/start-stop.texinfo
-
-post-patch-RENAME-on:
-	${GREP} -Frl '.core' ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} -e 's|\.core|_core|g'
 
 do-build:
 	(cd ${WRKSRC} && ${SH} make.sh ${MAKE_SH_ARGS})
@@ -143,6 +140,7 @@ do-install:
 	MAN_DIR="${STAGEDIR}${MANPREFIX}/man" \
 	INFO_DIR="${STAGEDIR}${PREFIX}/${INFO_PATH}" \
 	DOC_DIR="${STAGEDIR}${DOCSDIR}" \
+	SBCL_HOME="" \
 	${SH} install.sh)
 .for M in ${CONMODULES}
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/${M}

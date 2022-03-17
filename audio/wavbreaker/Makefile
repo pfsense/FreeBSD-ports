@@ -1,5 +1,5 @@
 PORTNAME=	wavbreaker
-PORTVERSION=	0.13
+PORTVERSION=	0.14
 CATEGORIES=	audio
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -14,6 +14,8 @@ USES=		desktop-file-utils gettext-tools gnome meson pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	cairo gtk30
 GH_ACCOUNT=	thp
+
+CONFLICTS_INSTALL=	aften # bin/wavinfo
 
 OPTIONS_DEFINE=	MOODBAR MPG123
 OPTIONS_DEFAULT=MOODBAR MPG123

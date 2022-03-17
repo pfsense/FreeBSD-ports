@@ -2,6 +2,7 @@
 
 PORTNAME=	genius
 DISTVERSION=	1.0.27
+PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME \
 		http://ftp.5z.com/pub/genius/
@@ -12,19 +13,16 @@ COMMENT=	Arbitrary precision calculator for Gnome Desktop Environment
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	rarian-sk-config:textproc/rarian
 LIB_DEPENDS=	libamtk-5.so:x11-toolkits/amtk \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgmp.so:math/gmp \
 		libharfbuzz.so:print/harfbuzz \
 		libmpfr.so:math/mpfr
-RUN_DEPENDS=	rarian-sk-config:textproc/rarian
 
 USES=		desktop-file-utils gmake gnome libtool pathfix pkgconfig \
 		readline shared-mime-info tar:xz xorg
 USE_GNOME=	cairo gnomeprefix gdkpixbuf2 gtksourceview4 intltool vte3
-INSTALLS_OMF=	yes
 USE_XORG=	x11 xext
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-extra-gcc-optimization \

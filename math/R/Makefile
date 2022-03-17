@@ -1,7 +1,7 @@
 # Created by: Maurice Castro <maurice@serc.rmit.edu.au>
 
 PORTNAME=	R
-DISTVERSION=	4.1.2
+DISTVERSION=	4.1.3
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
@@ -15,8 +15,9 @@ ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 BUILD_DEPENDS=	texi2any:print/texinfo
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre2-8.so:devel/pcre2
-# R packages may require GNU make
-RUN_DEPENDS=	gmake:devel/gmake
+# R packages may require GNU make or cmake to build
+RUN_DEPENDS=	gmake:devel/gmake \
+		cmake:devel/cmake
 
 # possible TODO
 # - Use --with-recommended-packages=no by default
@@ -116,7 +117,8 @@ RBLAS_EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_extra_blas_Makefile.in \
 RPROF_CONFIGURE_ENABLE=		R-profiling
 TCLTK_IMPLIES=			X11
 TCLTK_USES=			tcl tk
-TCLTK_CONFIGURE_WITH=		tcltk
+TCLTK_CONFIGURE_WITH=		tcltk tcl_config=${TCL_LIBDIR}/tclConfig.sh \
+				tk_config=${TK_LIBDIR}/tkConfig.sh
 TEXDOCS_USE=			TEX=dvipsk:build,kpathsea:build,pdftex:build
 .for i in KPSEWHICH MAKEINDEX PDFLATEX PDFTEX TEX TEXI2DVI
 TEXDOCS_CONFIGURE_ENV_OFF+=	ac_cv_path_${i}=""

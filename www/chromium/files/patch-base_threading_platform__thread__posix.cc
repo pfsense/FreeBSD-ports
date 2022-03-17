@@ -1,22 +1,21 @@
---- base/threading/platform_thread_posix.cc.orig	2021-09-14 01:51:47 UTC
+--- base/threading/platform_thread_posix.cc.orig	2022-02-28 16:54:41 UTC
 +++ base/threading/platform_thread_posix.cc
-@@ -32,6 +32,10 @@
- #include <sys/syscall.h>
- #endif
+@@ -75,7 +75,7 @@ void* ThreadFunc(void* params) {
+     if (!thread_params->joinable)
+       base::DisallowSingleton();
  
-+#if defined(OS_BSD)
-+#include <pthread_np.h>
-+#endif
-+
- #if defined(OS_FUCHSIA)
- #include <zircon/process.h>
+-#if !BUILDFLAG(IS_NACL)
++#if !BUILDFLAG(IS_NACL) && !BUILDFLAG(IS_BSD)
+ #if BUILDFLAG(USE_PARTITION_ALLOC_AS_MALLOC)
+     internal::PCScan::NotifyThreadCreated(internal::GetStackPointer());
+ #endif
+@@ -362,6 +362,9 @@ bool PlatformThread::CanChangeThreadPriority(ThreadPri
+ // static
+ void PlatformThread::SetCurrentThreadPriorityImpl(ThreadPriority priority) {
+ #if BUILDFLAG(IS_NACL)
++  NOTIMPLEMENTED();
++// avoid pledge(2) violation
++#elif BUILDFLAG(IS_BSD)
+   NOTIMPLEMENTED();
  #else
-@@ -193,6 +197,8 @@ PlatformThreadId PlatformThread::CurrentId() {
-   // into the kernel.
- #if defined(OS_APPLE)
-   return pthread_mach_thread_np(pthread_self());
-+#elif defined(OS_BSD)
-+  return pthread_getthreadid_np();
- #elif defined(OS_LINUX) || defined(OS_CHROMEOS)
-   static InitAtFork init_at_fork;
-   if (g_thread_id == -1) {
+   if (internal::SetCurrentThreadPriorityForPlatform(priority))

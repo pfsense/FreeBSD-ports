@@ -2,18 +2,15 @@
 
     SUBDIR += J
     SUBDIR += abcl
-    SUBDIR += adacontrol
     SUBDIR += alchemist.el
     SUBDIR += algol68g
     SUBDIR += angelscript
     SUBDIR += apache-commons-jelly
-    SUBDIR += asis
     SUBDIR += asn1c
     SUBDIR += atlast
     SUBDIR += awka
     SUBDIR += bas2tap
     SUBDIR += basic256
-    SUBDIR += bf2c
     SUBDIR += bsh
     SUBDIR += bwbasic
     SUBDIR += c
@@ -105,7 +102,6 @@
     SUBDIR += ghc
     SUBDIR += gjs
     SUBDIR += gleam
-    SUBDIR += gnat_util
     SUBDIR += gnatcross-binutils-aarch64
     SUBDIR += gnatcross-sysroot-aarch64
     SUBDIR += gnatdroid-binutils
@@ -143,6 +139,7 @@
     SUBDIR += jimtcl
     SUBDIR += jpm
     SUBDIR += jruby
+    SUBDIR += julia
     SUBDIR += jython
     SUBDIR += kawa
     SUBDIR += kf5-kross
@@ -165,7 +162,6 @@
     SUBDIR += linux-dotnet11-runtime
     SUBDIR += linux-dotnet11-sdk
     SUBDIR += linux-j
-    SUBDIR += lua-ada
     SUBDIR += lua51
     SUBDIR += lua52
     SUBDIR += lua53
@@ -195,7 +191,6 @@
     SUBDIR += munger
     SUBDIR += myrddin
     SUBDIR += nawk
-    SUBDIR += nbc
     SUBDIR += nbfc
     SUBDIR += neko
     SUBDIR += nesasm
@@ -203,7 +198,7 @@
     SUBDIR += nhc98
     SUBDIR += nickle
     SUBDIR += nim
-    SUBDIR += nml
+    SUBDIR += njs
     SUBDIR += nqc
     SUBDIR += nwcc
     SUBDIR += nx
@@ -258,12 +253,12 @@
     SUBDIR += pfe
     SUBDIR += pharo
     SUBDIR += php-mode.el
-    SUBDIR += php73
-    SUBDIR += php73-extensions
     SUBDIR += php74
     SUBDIR += php74-extensions
     SUBDIR += php80
     SUBDIR += php80-extensions
+    SUBDIR += php81
+    SUBDIR += php81-extensions
     SUBDIR += picoc
     SUBDIR += plexil
     SUBDIR += pocl
@@ -273,7 +268,6 @@
     SUBDIR += purescript
     SUBDIR += py-hy
     SUBDIR += py-lupa
-    SUBDIR += py-qt5-qml
     SUBDIR += py-textX
     SUBDIR += python
     SUBDIR += python-doc-html
@@ -287,7 +281,6 @@
     SUBDIR += python3
     SUBDIR += python310
     SUBDIR += python311
-    SUBDIR += python36
     SUBDIR += python37
     SUBDIR += python38
     SUBDIR += python39
@@ -307,6 +300,7 @@
     SUBDIR += ruby26
     SUBDIR += ruby27
     SUBDIR += ruby30
+    SUBDIR += ruby31
     SUBDIR += rubygem-ruby_language_server
     SUBDIR += runawk
     SUBDIR += rust
@@ -317,7 +311,6 @@
     SUBDIR += sather-tutorial
     SUBDIR += sbcl
     SUBDIR += scala
-    SUBDIR += scala-docs
     SUBDIR += scheme48
     SUBDIR += scm
     SUBDIR += sdcc
@@ -337,7 +330,6 @@
     SUBDIR += snobol4
     SUBDIR += solidity
     SUBDIR += spidermonkey17
-    SUBDIR += spidermonkey60
     SUBDIR += spidermonkey78
     SUBDIR += spl
     SUBDIR += squeak

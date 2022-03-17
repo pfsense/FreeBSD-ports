@@ -1,5 +1,6 @@
     COMMENT = Archivers
 
+    SUBDIR += 7-zip
     SUBDIR += 9e
     SUBDIR += R-cran-zip
     SUBDIR += advancecomp
@@ -87,6 +88,7 @@
     SUBDIR += mar
     SUBDIR += maxcso
     SUBDIR += minizip
+    SUBDIR += minizip-ng
     SUBDIR += mscompress
     SUBDIR += mtf
     SUBDIR += nfpm
@@ -132,7 +134,6 @@
     SUBDIR += p5-PerlIO-gzip
     SUBDIR += p5-PerlIO-via-Bzip2
     SUBDIR += p7zip
-    SUBDIR += p7zip-codec-rar
     SUBDIR += packddir
     SUBDIR += paq
     SUBDIR += par
@@ -152,10 +153,6 @@
     SUBDIR += php-lz4
     SUBDIR += php-snappy
     SUBDIR += php-zstd
-    SUBDIR += php73-bz2
-    SUBDIR += php73-phar
-    SUBDIR += php73-zip
-    SUBDIR += php73-zlib
     SUBDIR += php74-bz2
     SUBDIR += php74-phar
     SUBDIR += php74-zip
@@ -164,6 +161,10 @@
     SUBDIR += php80-phar
     SUBDIR += php80-zip
     SUBDIR += php80-zlib
+    SUBDIR += php81-bz2
+    SUBDIR += php81-phar
+    SUBDIR += php81-zip
+    SUBDIR += php81-zlib
     SUBDIR += pigz
     SUBDIR += pixz
     SUBDIR += plzip
@@ -184,6 +185,7 @@
     SUBDIR += py-lzstring
     SUBDIR += py-python-lhafile
     SUBDIR += py-python-lzo
+    SUBDIR += py-python-rpm-packaging
     SUBDIR += py-python-snappy
     SUBDIR += py-rarfile
     SUBDIR += py-rcssmin
@@ -220,6 +222,7 @@
     SUBDIR += snzip
     SUBDIR += squsq
     SUBDIR += star
+    SUBDIR += stormlib
     SUBDIR += streamvbyte
     SUBDIR += stuffit
     SUBDIR += szip
@@ -258,9 +261,9 @@
     SUBDIR += xpk
     SUBDIR += zchunk
     SUBDIR += zip
-    SUBDIR += zip-ada
     SUBDIR += zipmix
     SUBDIR += zipper
+    SUBDIR += zlib-ng
     SUBDIR += zoo
     SUBDIR += zopfli
     SUBDIR += zstd

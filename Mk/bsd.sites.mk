@@ -212,8 +212,8 @@ MASTER_SITE_EXIM+= \
 
 .if !defined(IGNORE_MASTER_SITE_CENTOS_LINUX)
 MASTER_SITE_CENTOS_LINUX+= \
-	http://mirror.centos.org/%SUBDIR%/:DEFAULT,amd64,i386 \
-	http://vault.centos.org/%SUBDIR%/:DEFAULT,amd64,i386,SOURCE
+	http://mirror.centos.org/%SUBDIR%/:DEFAULT,aarch64,amd64,i386 \
+	http://vault.centos.org/%SUBDIR%/:DEFAULT,aarch64,amd64,i386,SOURCE
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_EPEL)
@@ -228,8 +228,10 @@ MASTER_SITE_EPEL+= \
 
 .if !defined(IGNORE_MASTER_SITE_EPEL7)
 MASTER_SITE_EPEL7+= \
+	https://dl.fedoraproject.org/pub/epel/7/aarch64/Packages/%SUBDIR%/:DEFAULT,aarch64 \
 	https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/%SUBDIR%/:DEFAULT,amd64 \
 	https://dl.fedoraproject.org/pub/epel/7/SRPMS/Packages/%SUBDIR%/:SOURCE \
+	http://dl.fedoraproject.org/pub/epel/7/aarch64/Packages/%SUBDIR%/:DEFAULT,aarch64 \
 	http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/%SUBDIR%/:DEFAULT,amd64 \
 	http://dl.fedoraproject.org/pub/epel/7/SRPMS/Packages/%SUBDIR%/:SOURCE
 .endif
@@ -1114,12 +1116,11 @@ MASTER_SITE_TCLTK+= \
 
 .if !defined(IGNORE_MASTER_SITE_TEX_CTAN)
 MASTER_SITE_TEX_CTAN+= \
-	http://ctan.unsw.edu.au/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/CTAN/%SUBDIR%/ \
-	ftp://ctan.tug.org/tex-archive/%SUBDIR%/ \
-	ftp://ftp.dante.de/tex-archive/%SUBDIR%/ \
-	ftp://mirror.macomnet.net/pub/CTAN/%SUBDIR%/ \
-	ftp://ftp.funet.fi/pub/TeX/CTAN/%SUBDIR%/
+	https://ftp.math.utah.edu/pub/tex/historic/%SUBDIR%/ \
+	https://ftp.tu-chemnitz.de/pub/tug/historic/%SUBDIR%/ \
+	https://pi.kwarc.info/historic/%SUBDIR%/ \
+	https://mirrors.tuna.tsinghua.edu.cn/tex-historic-archive/%SUBDIR%/ \
+	https://mirror.nju.edu.cn/tex-historic/%SUBDIR%/
 .endif
 
 # Derived from: https://www.torproject.org/getinvolved/mirrors.html.en

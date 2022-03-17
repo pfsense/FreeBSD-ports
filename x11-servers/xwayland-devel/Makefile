@@ -1,14 +1,14 @@
 PORTNAME=	xwayland
 DISTVERSIONPREFIX=	xorg-server-
-DISTVERSION=	21.0.99.1-136
-DISTVERSIONSUFFIX=	-g0146fd6d3
+DISTVERSION=	21.0.99.1-177
+DISTVERSIONSUFFIX=	-g9e5a37961
 CATEGORIES=	x11-servers
 PKGNAMESUFFIX=	-devel
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	e3035b20b1ca.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	3e9e6f9f8131.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	d1c0fc0ce005.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	42e34498f87a.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	0d56c27582a2.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	1f7b28547011.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	X11 server as Wayland client (development snapshot)
@@ -34,7 +34,6 @@ USE_GL=		gbm gl
 USE_XORG=	pixman xau xdmcp xfont2 xkbfile xshmfence xtrans
 GH_ACCOUNT=	freedesktop
 GH_PROJECT=	xorg-xserver
-GH_TUPLE=	freedesktop:xorg-xorgproto:xorgproto-2021.4.99.2:xorgproto/subprojects/xorgproto
 MESON_ARGS=	-D${PORTNAME}=true \
 		-Dxorg=false \
 		-Dxnest=false \
@@ -65,14 +64,5 @@ OPTIONS_DEFINE=	NVIDIA
 NVIDIA_DESC=		EGLStream support for glamor on Xwayland
 NVIDIA_BUILD_DEPENDS=	egl-wayland>0:graphics/egl-wayland
 NVIDIA_MESON_TRUE=	xwayland_eglstream
-
-.ifdef GH_TUPLE
-post-install:
-# https://github.com/mesonbuild/meson/issues/2550
-	@${RM} -r ${STAGEDIR}${PREFIX}/include/GL
-	@${RM} -r ${STAGEDIR}${PREFIX}/include/X11
-	@${RM} -r ${STAGEDIR}${PREFIX}/share/doc/xorgproto
-	@${RM} -r ${STAGEDIR}${PREFIX}/share/pkgconfig
-.endif
 
 .include <bsd.port.mk>

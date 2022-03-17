@@ -32,7 +32,8 @@ man/man8/stunnel.pl.8.gz
 %%PORTDOCS%%%%DOCSDIR%%/README.md
 %%PORTDOCS%%%%DOCSDIR%%/TODO.md
 %%PORTDOCS%%@dir %%DOCSDIR%%
+@comment share/bash-completion/completions/stunnel.bash
 @dir lib/stunnel
 @dir etc/stunnel
 @dir etc/stunnel/conf.d
-@unexec if [ -d %D/etc/stunnel ]; then echo "If you are permanently removing this port, you should run ``rm -rf %D/etc/stunnel`` to remove any configuration files left."; fi
+@preunexec if [ -d %D/etc/stunnel ]; then echo "If you are permanently removing this port, you should run ``rm -rf %D/etc/stunnel`` to remove any configuration files left."; fi

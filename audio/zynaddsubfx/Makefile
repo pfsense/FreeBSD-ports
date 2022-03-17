@@ -1,8 +1,8 @@
 # Created by: trasz <trasz@pin.if.uz.zgora.pl>
 
 PORTNAME=	zynaddsubfx
-DISTVERSION=	3.0.6-rc4
-PORTEPOCH=	1
+DISTVERSION=	3.0.6
+PORTEPOCH=	2
 CATEGORIES=	audio
 
 MAINTAINER=	hselasky@FreeBSD.org
@@ -10,7 +10,9 @@ COMMENT=	Realtime software synthesizer
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libfftw3.so:math/fftw3 \
+BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3
+
+LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libmxml.so:textproc/mxml \
 		liblo.so:audio/liblo
 
@@ -18,9 +20,9 @@ USES=		cmake:insource compiler:c++11-lang pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
-GH_TUPLE=	DISTRHO:DPF:e0d8e14a14d407648768da7e34bcf31812245387:d/DPF \
-		fundamental:rtosc:a86bb27bd16d796b10104f264e8ea96130c1d61c:e/rtosc \
-		zynaddsubfx:instruments:39e17e1c5c3db56fe9d0308af28be90f172e455e:f/instruments
+GH_TUPLE=	DISTRHO:DPF:86a621bfd86922a49ce593fec2a618a1e0cc6ef3:d/DPF \
+		fundamental:rtosc:2aec26327e0139131c9bd7439c9928370fccf1ce:e/rtosc \
+		zynaddsubfx:instruments:c5c912131b31df5fdf372d2f06a25aaf2375837f:f/instruments
 
 OPTIONS_DEFINE=		BASH OSS JACK GUI PORTAUDIO SNDIO LASH DOCS EXAMPLES
 OPTIONS_DEFAULT=	OSS JACK GUI PORTAUDIO
@@ -87,16 +89,6 @@ CMAKE_ARGS+=	-DZYN_DATADIR:STRING=${DATADIR}
 CMAKE_ARGS+=	-DZYN_EXAMPLESDIR:STRING=${EXAMPLESDIR}
 
 .include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386" || ${ARCH} == "amd64"
-CFLAGS+=	-DASM_F2I_YES
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|-O3 .* -fomit-frame-pointer|| ; \
-		 /-DASM_F2I_YES/d ; \
-		 /-g #/d' ${WRKSRC}/src/CMakeLists.txt
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/banks \

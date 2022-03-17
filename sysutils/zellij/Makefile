@@ -1,6 +1,6 @@
 PORTNAME=	zellij
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.21.0
+DISTVERSION=	0.26.0
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
@@ -23,7 +23,6 @@ PLIST_FILES=	bin/zellij
 CARGO_CRATES=	addr2line-0.15.2 \
 		adler-1.0.2 \
 		aho-corasick-0.7.15 \
-		ansi_term-0.11.0 \
 		ansi_term-0.12.1 \
 		anyhow-1.0.45 \
 		arc-swap-0.4.8 \
@@ -40,7 +39,7 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		async-trait-0.1.51 \
 		atomic-waker-1.0.0 \
 		atty-0.2.14 \
-		autocfg-1.0.1 \
+		autocfg-1.1.0 \
 		backtrace-0.3.59 \
 		base64-0.13.0 \
 		bincode-1.3.3 \
@@ -55,13 +54,16 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		cfg-if-0.1.10 \
 		cfg-if-1.0.0 \
 		chrono-0.4.19 \
-		clap-2.33.3 \
+		clap-3.0.10 \
+		clap_complete-3.0.4 \
+		clap_derive-3.0.6 \
 		close_fds-0.3.2 \
 		colored-2.0.0 \
 		colorsys-0.6.5 \
 		concurrent-queue-1.2.2 \
 		console-0.14.1 \
 		console-0.15.0 \
+		core-foundation-sys-0.8.3 \
 		cranelift-bforest-0.68.0 \
 		cranelift-codegen-0.68.0 \
 		cranelift-codegen-meta-0.68.0 \
@@ -75,20 +77,14 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		crossbeam-epoch-0.9.5 \
 		crossbeam-queue-0.3.2 \
 		crossbeam-utils-0.8.5 \
-		crossterm-0.19.0 \
-		crossterm_winapi-0.7.0 \
 		ctor-0.1.21 \
 		daemonize-0.4.1 \
 		darling-0.13.0 \
 		darling_core-0.13.0 \
 		darling_macro-0.13.0 \
-		darwin-libproc-0.2.0 \
-		darwin-libproc-sys-0.2.0 \
 		derivative-2.2.0 \
 		dialoguer-0.9.0 \
 		directories-next-2.0.0 \
-		dirs-2.0.2 \
-		dirs-sys-0.3.6 \
 		dirs-sys-next-0.1.2 \
 		dtoa-0.4.8 \
 		either-1.6.1 \
@@ -114,7 +110,6 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		futures-util-0.3.17 \
 		generational-arena-0.2.8 \
 		getopts-0.2.21 \
-		getrandom-0.1.16 \
 		getrandom-0.2.3 \
 		ghost-0.1.2 \
 		gimli-0.22.0 \
@@ -122,6 +117,7 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		gloo-timers-0.2.1 \
 		hashbrown-0.11.2 \
 		heck-0.3.3 \
+		heck-0.4.0 \
 		hermit-abi-0.1.19 \
 		highway-0.6.4 \
 		humantime-2.1.0 \
@@ -139,8 +135,8 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		kv-log-macro-1.0.7 \
 		lazy_static-1.4.0 \
 		leb128-0.2.5 \
-		lev_distance-0.1.0 \
-		libc-0.2.106 \
+		lev_distance-0.1.1 \
+		libc-0.2.112 \
 		libloading-0.6.7 \
 		libssh2-sys-0.2.23 \
 		libz-sys-1.1.3 \
@@ -151,7 +147,7 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		log4rs-1.0.0 \
 		mach-0.3.2 \
 		matches-0.1.9 \
-		memchr-2.3.4 \
+		memchr-2.4.1 \
 		memmap2-0.2.3 \
 		memoffset-0.6.4 \
 		miniz_oxide-0.4.4 \
@@ -160,7 +156,6 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		more-asserts-0.2.1 \
 		names-0.11.0 \
 		nix-0.19.1 \
-		nom-5.1.2 \
 		ntapi-0.3.6 \
 		num-integer-0.1.44 \
 		num-traits-0.2.14 \
@@ -171,14 +166,11 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		once_cell-1.8.0 \
 		openssl-sys-0.9.70 \
 		ordered-float-2.8.0 \
+		os_str_bytes-6.0.0 \
 		parking-2.0.0 \
 		parking_lot-0.11.2 \
 		parking_lot_core-0.8.5 \
 		percent-encoding-2.1.0 \
-		phf-0.8.0 \
-		phf_codegen-0.8.0 \
-		phf_generator-0.8.0 \
-		phf_shared-0.8.0 \
 		pin-project-lite-0.2.7 \
 		pin-utils-0.1.0 \
 		pkg-config-0.3.22 \
@@ -193,17 +185,12 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		quote-1.0.10 \
 		rand-0.3.23 \
 		rand-0.4.6 \
-		rand-0.7.3 \
 		rand-0.8.4 \
-		rand_chacha-0.2.2 \
 		rand_chacha-0.3.1 \
 		rand_core-0.3.1 \
 		rand_core-0.4.2 \
-		rand_core-0.5.1 \
 		rand_core-0.6.3 \
-		rand_hc-0.2.0 \
 		rand_hc-0.3.1 \
-		rand_pcg-0.2.1 \
 		rayon-1.5.1 \
 		rayon-core-1.9.1 \
 		rdrand-0.4.0 \
@@ -226,11 +213,9 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		serde_derive-1.0.130 \
 		serde_json-1.0.69 \
 		serde_yaml-0.8.21 \
-		signal-hook-0.1.17 \
 		signal-hook-0.3.10 \
 		signal-hook-registry-1.4.0 \
 		similar-1.3.0 \
-		siphasher-0.3.7 \
 		slab-0.4.5 \
 		smallvec-1.7.0 \
 		socket2-0.4.2 \
@@ -238,21 +223,18 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		ssh2-0.9.3 \
 		stable_deref_trait-1.2.0 \
 		strip-ansi-escapes-0.1.1 \
-		strsim-0.8.0 \
 		strsim-0.10.0 \
-		structopt-0.3.25 \
-		structopt-derive-0.4.18 \
 		strum-0.20.0 \
 		strum_macros-0.20.1 \
-		suggestion-0.1.0 \
+		suggestion-0.3.0 \
 		syn-1.0.81 \
+		sysinfo-0.22.5 \
 		target-lexicon-0.11.2 \
 		tempfile-3.2.0 \
-		termbg-0.2.4 \
+		termcolor-1.1.2 \
 		terminal_size-0.1.17 \
-		terminfo-0.7.3 \
 		termion-1.5.6 \
-		textwrap-0.11.0 \
+		textwrap-0.14.2 \
 		thiserror-1.0.30 \
 		thiserror-impl-1.0.30 \
 		thread-id-3.3.0 \
@@ -277,12 +259,10 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		uuid-0.8.2 \
 		value-bag-1.0.0-alpha.8 \
 		vcpkg-0.2.15 \
-		vec_map-0.8.2 \
 		version_check-0.9.3 \
 		vte-0.10.1 \
 		vte_generate_state_changes-0.1.1 \
 		waker-fn-1.1.0 \
-		wasi-0.9.0+wasi-snapshot-preview1 \
 		wasi-0.10.0+wasi-snapshot-preview1 \
 		wasm-bindgen-0.2.78 \
 		wasm-bindgen-backend-0.2.78 \
@@ -309,6 +289,7 @@ CARGO_CRATES=	addr2line-0.15.2 \
 		which-4.2.2 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
 		yaml-rust-0.4.5 \
 		zeroize-1.4.3

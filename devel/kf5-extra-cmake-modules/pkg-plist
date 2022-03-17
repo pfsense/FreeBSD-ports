@@ -55,7 +55,11 @@ share/ECM/kde-modules/KDEFrameworkCompilerLegacySettings.cmake
 share/ECM/kde-modules/KDEFrameworkCompilerSettings.cmake
 share/ECM/kde-modules/KDEGitCommitHooks.cmake
 share/ECM/kde-modules/KDEInstallDirs.cmake
+share/ECM/kde-modules/KDEInstallDirs5.cmake
+share/ECM/kde-modules/KDEInstallDirs6.cmake
+share/ECM/kde-modules/KDEInstallDirsCommon.cmake
 share/ECM/kde-modules/KDEPackageAppTemplates.cmake
+share/ECM/kde-modules/KDESetupPrefixScript.cmake
 share/ECM/kde-modules/appstreamtest.cmake
 share/ECM/kde-modules/clang-format.cmake
 share/ECM/kde-modules/kde-git-commit-hooks/clang-format.sh
@@ -71,9 +75,11 @@ share/ECM/modules/ECMCheckOutboundLicense.cmake
 share/ECM/modules/ECMConfiguredInstall.cmake
 share/ECM/modules/ECMCoverageOption.cmake
 share/ECM/modules/ECMCreateQmFromPoFiles.cmake
+share/ECM/modules/ECMDeprecationSettings.cmake
 share/ECM/modules/ECMEnableSanitizers.cmake
 share/ECM/modules/ECMFindModuleHelpers.cmake
-share/ECM/modules/ECMFindQMLModule.cmake.in
+share/ECM/modules/ECMFindQmlModule.cmake
+share/ECM/modules/ECMFindQmlModule.cmake.in
 share/ECM/modules/ECMGenerateDBusServiceFile.cmake
 share/ECM/modules/ECMGenerateExportHeader.cmake
 share/ECM/modules/ECMGenerateHeaders.cmake
@@ -90,6 +96,11 @@ share/ECM/modules/ECMQMLModules.cmake
 share/ECM/modules/ECMQchDoxygen.config.in
 share/ECM/modules/ECMQchDoxygenLayout.xml
 share/ECM/modules/ECMQmLoader.cpp.in
+share/ECM/modules/ECMQmlModule.cmake
+share/ECM/modules/ECMQmlModule.cpp.in
+share/ECM/modules/ECMQmlModule.cpp.in.license
+share/ECM/modules/ECMQmlModule.h.in
+share/ECM/modules/ECMQmlModule.h.in.license
 share/ECM/modules/ECMQtDeclareLoggingCategory.cmake
 share/ECM/modules/ECMQtDeclareLoggingCategory.cpp.in
 share/ECM/modules/ECMQtDeclareLoggingCategory.h.in
@@ -101,6 +112,7 @@ share/ECM/modules/ECMUninstallTarget.cmake
 share/ECM/modules/ECMUseFindModules.cmake
 share/ECM/modules/ECMVersionHeader.h.in
 share/ECM/modules/ECMWinResolveSymlinks.cmake
+share/ECM/modules/QtVersionOption.cmake
 share/ECM/modules/check-outbound-license.py
 share/ECM/modules/ecm_uninstall.cmake.in
 share/ECM/test-modules/test_execute_and_compare.cmake

@@ -1,13 +1,10 @@
 # Created by: Pawel Worach <pawel.worach@gmail.com>
 
 PORTNAME=	gjs
-PORTVERSION=	1.70.0
+PORTVERSION=	1.70.1
 CATEGORIES=	lang gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
-
-PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
-PATCHFILES+=	59bbb5e4795d.patch:-p1 # https://gitlab.gnome.org/GNOME/gjs/-/merge_requests/694
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME Javascript binding

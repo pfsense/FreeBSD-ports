@@ -1,10 +1,10 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
 
 PORTNAME=	tt-rss
-PORTVERSION=	g20211119
+PORTVERSION=	g20220310
 PORTEPOCH=	2
 CATEGORIES=	www
-MASTER_SITES=	https://git.tt-rss.org/fox/tt-rss/archive/
+MASTER_SITES=	https://git-gitea.tt-rss.org/fox/tt-rss/archive/
 DISTNAME=	${_GIT_TAGNAME}
 DIST_SUBDIR=	${PORTNAME}
 
@@ -17,12 +17,12 @@ RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git
 
 USES=		gettext-tools php:cli,web shebangfix
 USE_PHP=	ctype dom exif fileinfo filter hash iconv intl json mbstring \
-		openssl pcntl pdo posix session tokenizer xml xmlrpc zip
+		openssl pcntl pdo posix session tokenizer xml zip
 USE_RC_SUBR=	ttrssd
 
 SHEBANG_FILES=	update.php update_daemon2.php
 
-_GIT_TAGNAME=	2b4ba59a7
+_GIT_TAGNAME=	170385021
 
 REINPLACE_ARGS=	-i ""
 

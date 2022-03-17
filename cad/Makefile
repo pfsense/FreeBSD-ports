@@ -22,6 +22,7 @@
     SUBDIR += csxcad
     SUBDIR += cura
     SUBDIR += cura-engine
+    SUBDIR += cvc
     SUBDIR += digital
     SUBDIR += dinotrace
     SUBDIR += ecpprog
@@ -39,7 +40,6 @@
     SUBDIR += gdt
     SUBDIR += geda
     SUBDIR += gerbv
-    SUBDIR += ghdl
     SUBDIR += gmsh
     SUBDIR += gnucap
     SUBDIR += gplcver
@@ -84,6 +84,7 @@
     SUBDIR += ngspice_rework
     SUBDIR += nvc
     SUBDIR += opencascade
+    SUBDIR += opencascade740
     SUBDIR += openctm
     SUBDIR += openfpgaloader
     SUBDIR += openroad
@@ -94,6 +95,7 @@
     SUBDIR += oregano
     SUBDIR += p5-GDS2
     SUBDIR += p5-Verilog-Perl
+    SUBDIR += padring
     SUBDIR += pcb
     SUBDIR += pdnmesh
     SUBDIR += py-cadquery
@@ -104,6 +106,7 @@
     SUBDIR += py-ocp
     SUBDIR += py-phidl
     SUBDIR += py-pyfda
+    SUBDIR += py-pymtl
     SUBDIR += python-gdsii
     SUBDIR += qcad
     SUBDIR += qcsxcad
@@ -120,9 +123,11 @@
     SUBDIR += stepcode
     SUBDIR += stm32flash
     SUBDIR += sumo
+    SUBDIR += surelog
     SUBDIR += sweethome3d
     SUBDIR += tkgate
     SUBDIR += tochnog
+    SUBDIR += uhdm
     SUBDIR += uranium
     SUBDIR += verilator
     SUBDIR += verilog-mode.el

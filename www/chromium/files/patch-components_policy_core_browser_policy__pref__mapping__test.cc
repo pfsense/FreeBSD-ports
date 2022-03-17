@@ -1,11 +1,11 @@
---- components/policy/core/browser/policy_pref_mapping_test.cc.orig	2021-09-24 04:26:04 UTC
+--- components/policy/core/browser/policy_pref_mapping_test.cc.orig	2022-02-28 16:54:41 UTC
 +++ components/policy/core/browser/policy_pref_mapping_test.cc
-@@ -339,6 +339,8 @@ class PolicyTestCase {
+@@ -340,7 +340,7 @@ class PolicyTestCase {
+     const std::string os("chromeos_lacros");
+ #elif BUILDFLAG(IS_IOS)
+     const std::string os("ios");
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+     const std::string os("linux");
+ #elif BUILDFLAG(IS_MAC)
      const std::string os("mac");
- #elif defined(OS_WIN)
-     const std::string os("win");
-+#elif defined(OS_FREEBSD)
-+    const std::string os("freebsd");
- #else
- #error "Unknown platform"
- #endif

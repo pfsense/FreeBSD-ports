@@ -1,18 +1,11 @@
---- printing/printing_features.cc.orig	2021-04-14 18:41:07 UTC
+--- printing/printing_features.cc.orig	2022-02-28 16:54:41 UTC
 +++ printing/printing_features.cc
-@@ -43,13 +43,13 @@ bool ShouldPrintUsingXps(bool source_is_pdf) {
- }
- #endif  // defined(OS_WIN)
+@@ -8,7 +8,7 @@
+ #include "printing/buildflags/buildflags.h"
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS)
- // Enables printing interactions with the operating system to be performed
- // out-of-process.
- const base::Feature kEnableOopPrintDrivers{"EnableOopPrintDrivers",
-                                            base::FEATURE_DISABLED_BY_DEFAULT};
--#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ #include "base/metrics/field_trial_params.h"
+ #endif
  
- }  // namespace features

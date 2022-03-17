@@ -76,9 +76,10 @@ HTTP_AUTH_JWT_GH_TUPLE=		TeslaGov:ngx-http-auth-jwt-module:80d89d9:http_auth_jwt
 HTTP_AUTH_JWT_VARS=			DSO_EXTMODS+=http_auth_jwt
 HTTP_AUTH_JWT_LIB_DEPENDS=	libjwt.so:www/libjwt libjansson.so:devel/jansson
 
-HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:72c8ee0:auth_krb5
+HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:c626163:auth_krb5
 HTTP_AUTH_KRB5_VARS=		DSO_EXTMODS+=auth_krb5
-HTTP_AUTH_KRB5_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-spnego-http-auth-nginx-module-config
+HTTP_AUTH_KRB5_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-spnego-http-auth-nginx-module-config \
+				${PATCHDIR}/extra-patch-ngx_http_auth_spnego_module.c
 
 HTTP_AUTH_LDAP_GH_TUPLE=	kvspb:nginx-auth-ldap:42d195d:http_auth_ldap
 HTTP_AUTH_LDAP_VARS=		DSO_EXTMODS+=http_auth_ldap
@@ -96,7 +97,7 @@ HTTP_DAV_EXT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_dav_ext_module.c
 HTTP_EVAL_GH_TUPLE=		openresty:nginx-eval-module:582bd25:eval
 HTTP_EVAL_VARS=			DSO_EXTMODS+=eval
 
-HTTP_FANCYINDEX_GH_TUPLE=	aperezdc:ngx-fancyindex:v0.5.1:fancyindex
+HTTP_FANCYINDEX_GH_TUPLE=	aperezdc:ngx-fancyindex:v0.5.2:fancyindex
 HTTP_FANCYINDEX_VARS=		DSO_EXTMODS+=fancyindex
 
 HTTP_FOOTER_GH_TUPLE=		alibaba:nginx-http-footer-filter:1.2.2:footer
@@ -221,7 +222,7 @@ LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 LUA_RUN_DEPENDS=	lua-resty-core>0:www/lua-resty-core
 LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 			LUAJIT_LIB=${LOCALBASE}/lib
-LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.19:lua
+LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.20:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
 MEMC_GH_TUPLE=		openresty:memc-nginx-module:v0.19:memc
@@ -245,7 +246,7 @@ OPENTRACING_LIB_DEPENDS=	libopentracing.so:devel/libopentracing
 OPENTRACING_VARS=	DSO_EXTMODS+=opentracing OPENTRACING_SUBDIR=/opentracing
 OPENTRACING_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-opentracing-opentracing-config
 
-PASSENGER_NGINX_VER=	6.0.8
+PASSENGER_NGINX_VER=	6.0.12
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake
@@ -291,8 +292,8 @@ SHIBBOLETH_VARS=	DSO_EXTMODS+=shibboleth
 SLOWFS_CACHE_GH_TUPLE=	baysao:ngx_slowfs_cache:d011a18:slowfs_cache
 SLOWFS_CACHE_VARS=	DSO_EXTMODS+=slowfs_cache
 
-SMALL_LIGHT_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6 \
-				libpcre.so:devel/pcre
+SMALL_LIGHT_USES=		magick:6
+SMALL_LIGHT_LIB_DEPENDS=	libpcre.so:devel/pcre
 SMALL_LIGHT_GH_TUPLE=		cubicdaiya:ngx_small_light:v0.9.2:small_light
 SMALL_LIGHT_VARS=		DSO_EXTMODS+=small_light
 

@@ -1,7 +1,7 @@
 PORTNAME=	python-poppler-qt5
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.75.0
-PORTREVISION=	22
+PORTREVISION=	24
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,7 +18,7 @@ USES=		compiler:c++11-lang gl pkgconfig pyqt:5 python:3.7-3.9 qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	frescobaldi
 USE_GL=		gl
-USE_PYQT=	gui qtbuilder xml sip_build
+USE_PYQT=	pyqt5 sip_build
 USE_QT=		core gui xml
 
 PLIST_SUB=	_PY_SONAME=${_PY_SONAME}

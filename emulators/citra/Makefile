@@ -1,7 +1,14 @@
 PORTNAME=	citra
-PORTVERSION=	s20211101
-PORTREVISION?=	1
+PORTVERSION=	s20220305
+PORTREVISION?=	0
 CATEGORIES=	emulators
+.if make(makesum)
+MASTER_SITES=	https://api.citra-emu.org/gamedb/?dummy=/:gamedb
+.else
+MASTER_SITES=	LOCAL/jbeich:gamedb
+.endif
+DISTFILES=	${PORTNAME}/compatibility_list.json:gamedb
+EXTRACT_ONLY=	${DISTFILES:N*\:gamedb:C/\:.*//}
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Nintendo 3DS emulator/debugger
@@ -21,9 +28,9 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	citra-emu
-GH_TAGNAME=	5a7d80172
+GH_TAGNAME=	ac98458e0
 GH_TUPLE=	citra-emu:ext-boost:36603a1:boost/externals/boost \
-		citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
+		citra-emu:ext-libressl-portable:8289d0d:libressl/externals/libressl \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
 		MerryMage:dynarmic:r3-222-gaf0d4a7c:dynarmic/externals/dynarmic \
 		arsenm:sanitizers-cmake:aab6948:sanitizers_cmake/externals/cubeb/cmake/sanitizers-cmake \
@@ -33,12 +40,12 @@ GH_TUPLE=	citra-emu:ext-boost:36603a1:boost/externals/boost \
 		facebook:zstd:v1.4.8:zstd/externals/zstd \
 		fmtlib:fmt:7.1.2:fmt/externals/fmt \
 		herumi:xbyak:v5.96:xbyak/externals/xbyak \
-		kinetiknz:cubeb:cubeb-0.2-1341-gdcc5cb5:cubeb/externals/cubeb \
-		lsalzman:enet:0eaf48e:enet/externals/enet \
+		kinetiknz:cubeb:cubeb-0.2-1350-gf79e0cf:cubeb/externals/cubeb \
+		lsalzman:enet:v1.3.17-8-g498b9e3:enet/externals/enet \
 		lvandeve:lodepng:31d9704:lodepng/externals/lodepng/lodepng \
 		neobrain:nihstro:fd69de1:nihstro/externals/nihstro \
-		weidai11:cryptopp:CRYPTOPP_7_0_0-23-gf320e7d9:cryptopp/externals/cryptopp/cryptopp \
-		wwylele:teakra:3e032a7:teakra/externals/teakra
+		weidai11:cryptopp:CRYPTOPP_8_5_0:cryptopp/externals/cryptopp/cryptopp \
+		wwylele:teakra:01db7cd:teakra/externals/teakra
 
 USES=		cmake:testing compiler:c++17-lang localbase:ldflags sdl
 USE_SDL=	sdl2
@@ -88,5 +95,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/@GIT_BRANCH@/master/' \
 		-e 's/@GIT_DESC@/${GH_TAGNAME}/' \
 		${WRKSRC}/src/common/scm_rev.cpp.in
+
+post-configure:
+	@${CP} ${DISTFILES:M*\:gamedb:C/\:.*//:S,^,${_DISTDIR},} \
+		${BUILD_WRKSRC}/dist/compatibility_list/
 
 .include <bsd.port.mk>

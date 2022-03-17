@@ -1,7 +1,7 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
 
 PORTNAME=	gradle
-PORTVERSION=	7.3.1
+PORTVERSION=	7.4.1
 CATEGORIES=	devel java
 MASTER_SITES=	https://downloads.gradle.org/distributions/
 EXTRACT_SUFX=	-bin.zip
@@ -15,6 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe zip
 USE_JAVA=	yes
+
+CONFLICTS_INSTALL=	gradle6 gradle62
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	gradle

@@ -1,7 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	orca
-PORTVERSION=	41.0
+PORTVERSION=	41.2
 CATEGORIES=	accessibility gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome3
@@ -23,7 +23,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR} \
 
 # conflict with py*-json-py because orca uses the json from python itself
 # and py*-json-py shadows this.
-CONFLICTS=	py*-json-py
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}orca # lib/python3.8/site-packages/orca/__init__.py
 PORTSCOUT=	limitw:1,even
 
 NO_ARCH=	yes

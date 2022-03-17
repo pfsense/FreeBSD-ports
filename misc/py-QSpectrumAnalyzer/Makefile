@@ -1,6 +1,6 @@
 PORTNAME=	QSpectrumAnalyzer
 DISTVERSION=	2.1.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	misc hamradio python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}soapy_power>=1.5.0:misc/py-soapy_power@${PY_FLAVOR}
 
 USES=		fortran python:3.4+ pyqt:5
-USE_PYQT=	core gui widgets
+USE_PYQT=	pyqt5
 USE_PYTHON=	distutils concurrent autoplist
 
 PLIST_FILES=	bin/${PORTNAME:tl}.shadow

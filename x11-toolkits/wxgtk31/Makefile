@@ -1,11 +1,11 @@
 PORTNAME=	wx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 PKGNAMESUFFIX=	31-gtk3
 
-MAINTAINER=	yuri@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI toolkit (wxWidgets) with GTK+ bindings
 
 LICENSE=	GPLv2+
@@ -49,7 +49,8 @@ CONFIGURE_ARGS=	--with-libpng=sys \
 		--enable-backtrace \
 		--enable-ipv6 \
 		--enable-optimise \
-		--enable-utf8 \
+		--enable-unicode \
+		--enable-std_string \
 		--enable-graphics_ctx \
 		--enable-compat28 \
 		--enable-compat30

@@ -1,0 +1,20 @@
+--- CMakeLists.txt.orig	2021-12-24 20:26:54 UTC
++++ CMakeLists.txt
+@@ -1238,7 +1238,6 @@ endif()
+ install(TARGETS stratagus DESTINATION ${GAMEDIR})
+ install(TARGETS png2stratagus DESTINATION ${BINDIR})
+ 
+-if(ENABLE_DOC AND DOXYGEN_FOUND)
+ 	install(FILES doc/stratagus.6 DESTINATION ${MANDIR})
+ 	install(FILES
+ 		doc/development.html
+@@ -1252,8 +1251,7 @@ if(ENABLE_DOC AND DOXYGEN_FOUND)
+ 		doc/README-SDL.txt
+ 		DESTINATION share/doc/stratagus
+ 	)
+-	install(DIRECTORY doc/graphics doc/scripts ${CMAKE_CURRENT_BINARY_DIR}/doxygen DESTINATION ${DOCDIR})
+-endif(ENABLE_DOC AND DOXYGEN_FOUND)
++	install(DIRECTORY doc/graphics doc/scripts DESTINATION ${DOCDIR})
+ 
+ if(ENABLE_DEV)
+ 	install(FILES ${gameheaders_HDRS} DESTINATION ${STRATAGUS_HEADERS})

@@ -1,8 +1,9 @@
 PORTNAME=	imv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.3.0
+DISTVERSION=	4.3.1
 PORTREVISION=	1
 CATEGORIES=	graphics
+MASTER_SITES=	https://git.sr.ht/~exec64/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Simple image viewer
@@ -18,11 +19,11 @@ RUN_DEPENDS=	bash:shells/bash
 
 USES=		compiler:c11 desktop-file-utils gettext-runtime gl gnome meson \
 		pkgconfig shebangfix
-USE_GITHUB=	yes
-GH_ACCOUNT=	eXeC64
 USE_GL=		egl
 USE_GNOME=	cairo glib20 pango
 SHEBANG_FILES=	contrib/imv-folder
+
+CONFLICTS_INSTALL=	renameutils
 
 OPTIONS_DEFINE=		FREEIMAGE HEIF JPEG NSGIF PNG SVG TEST TIFF
 OPTIONS_DEFAULT=	ALL FREEIMAGE HEIF JPEG NSGIF PNG SVG TIFF

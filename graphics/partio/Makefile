@@ -1,5 +1,6 @@
 PORTNAME=	partio
 PORTVERSION=	1.14.6
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics math
 
@@ -35,7 +36,7 @@ DOXYGEN_ALL_TARGET=	all doc
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 PYQT_USES=		pyqt:5
-PYQT_USE=		PYQT=core,gui,widgets
+PYQT_USE=		PYQT=pyqt5
 PYQT_PLIST_FILES=	bin/partedit bin/partinspect
 
 TEST_LIB_DEPENDS=	libgtest.so:devel/googletest

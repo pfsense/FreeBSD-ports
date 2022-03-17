@@ -1,3 +1,1021 @@
+  <vuln vid="47197b47-6a1a-11ec-8be6-d4c9ef517024">
+    <topic>Roundcube -- XSS vulnerability</topic>
+    <affects>
+      <package>
+	<name>roundcube</name>
+	<range><lt>1.5.2,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Roundcube project reports:</p>
+	<blockquote cite="://roundcube.net/news/2021/12/30/update-1.5.2-released">
+	  <p>Cross-site scripting (XSS) via HTML messages with malicious CSS
+	    content</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://roundcube.net/news/2021/12/30/update-1.5.2-released</url>
+    </references>
+    <dates>
+      <discovery>2021-12-30</discovery>
+      <entry>2021-12-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c1b2b492-6999-11ec-a50c-001cc0382b2f">
+    <topic>Mbed TLS -- Potential double-free after an out of memory error</topic>
+    <affects>
+      <package>
+	<name>mbedtls</name>
+	<range><lt>2.16.12</lt></range>
+	<range><ge>2.17.0</ge><lt>2.28.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Manuel Pégourié-Gonnard reports:</p>
+	<blockquote cite="https://tls.mbed.org/tech-updates/security-advisories/mbedtls-security-advisory-2021-12">
+	  <p>If mbedtls_ssl_set_session() or mbedtls_ssl_get_session() were to
+	    fail with MBEDTLS_ERR_SSL_ALLOC_FAILED (in an out of memory
+	    condition), then calling mbedtls_ssl_session_free() and
+	    mbedtls_ssl_free() in the usual manner would cause an internal
+	    session buffer to be freed twice, due to two structures both having
+	    valid pointers to it after a call to ssl_session_copy().</p>
+	  <p>An attacker could potentially trigger the out of memory condition,
+	    and therefore use this bug to create memory corruption, which could
+	    then be further exploited or targetted.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44732</cvename>
+      <url>https://tls.mbed.org/tech-updates/security-advisories/mbedtls-security-advisory-2021-12</url>
+    </references>
+    <dates>
+      <discovery>2021-12-14</discovery>
+      <entry>2021-12-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ede832bf-6576-11ec-a636-000c29061ce6">
+    <topic>OpenDMARC - Remote denial of service</topic>
+    <affects>
+      <package>
+	<name>opendmarc</name>
+	<range><ge>1.4.1</ge><lt>1.4.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenDMARC 1.4.1 and 1.4.1.1 will dereference a NULL pointer when
+	encountering a multi-value From: header field. A remote attacker can
+	send a specially crafted message resulting in a denial of service.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-34555</cvename>
+      <url>https://github.com/trusteddomainproject/OpenDMARC/issues/179</url>
+    </references>
+    <dates>
+      <discovery>2021-06-09</discovery>
+      <entry>2021-12-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="937aa1d6-685e-11ec-a636-000c29061ce6">
+    <topic>OpenDMARC - Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>opendmarc</name>
+	<range><lt>1.4.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenDMARC releases prior to 1.4.1 are susceptible to the following
+	vulnerabilities:</p>
+	<ul>
+	  <li>(CVE-2019-16378) OpenDMARC through 1.3.2 and 1.4.x through
+	    1.4.0-Beta1 is prone to a signature-bypass vulnerability with
+	    multiple From: addresses, which might affect applications that
+	    consider a domain name to be relevant to the origin of an e-mail
+	    message.</li>
+	  <li>(CVE-2019-20790) OpenDMARC through 1.3.2 and 1.4.x, when used
+	    with pypolicyd-spf 2.0.2, allows attacks that bypass SPF and DMARC
+	    authentication in situations where the HELO field is inconsistent
+	    with the MAIL FROM field.</li>
+	  <li>(CVE-2020-12272) OpenDMARC through 1.3.2 and 1.4.x allows
+	    attacks that inject authentication results to provide false
+	    information about the domain that originated an e-mail
+	    message.</li>
+	  <li>(CVE-2020-12460) OpenDMARC through 1.3.2 and 1.4.x through
+	    1.4.0-Beta1 has improper null termination in the function
+	    opendmarc_xml_parse that can result in a one-byte heap overflow in
+	    opendmarc_xml when parsing a specially crafted DMARC aggregate
+	    report. This can cause remote memory corruption.</li>
+	</ul>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2019-16378</cvename>
+      <cvename>CVE-2019-20790</cvename>
+      <cvename>CVE-2020-12272</cvename>
+      <cvename>CVE-2020-12460</cvename>
+      <url>https://github.com/trusteddomainproject/OpenDMARC/blob/rel-opendmarc-1-4-1-1/RELEASE_NOTES</url>
+    </references>
+    <dates>
+      <discovery>2021-04-06</discovery>
+      <entry>2021-12-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a4ff3673-d742-4b83-8c2b-3ddafe732034">
+    <topic>minio -- User privilege escalation</topic>
+    <affects>
+      <package>
+	<name>minio</name>
+	<range><lt>2021.12.27.07.23.18</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>minio developers report:</p>
+	<blockquote cite="https://github.com/minio/minio/security/advisories/GHSA-j6jc-jqqc-p6cx">
+	  <p>AddUser() API endpoint was exposed to a legacy behavior. i.e it accepts a "policy" field</p>
+	  <p>This API is mainly used to create a user or update a user's password.</p>
+	  <p>However, a malicious client can hand-craft an HTTP API call that allows for updating Policy for a user and gaining higher privileges.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-43858</cvename>
+      <url>https://github.com/minio/minio/security/advisories/GHSA-j6jc-jqqc-p6cx</url>
+    </references>
+    <dates>
+      <discovery>2021-12-27</discovery>
+      <entry>2021-12-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ed8a4215-675c-11ec-8dd4-a0f3c100ae18">
+    <topic>Pillow -- Regular Expression Denial of Service (ReDoS)</topic>
+    <affects>
+      <package>
+	<name>py38-pillow</name>
+	<range><ge>5.2.0</ge><lt>8.3.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>GitHub Advisory Database reports:</p>
+	<blockquote cite="https://github.com/advisories/GHSA-98vv-pw6r-q6q4">
+	  <p>Uncontrolled Resource Consumption in pillow.</p>
+	  <p>The package pillow from 0 and before 8.3.2 are vulnerable to Regular
+	     Expression Denial of Service (ReDoS) via the getrgb function.</p>
+	  <p>References:</p>
+	  <ul>
+	    <li>https://nvd.nist.gov/vuln/detail/CVE-2021-23437</li>
+	    <li>https://github.com/python-pillow/Pillow/commit/9e08eb8f78fdfd2f476e1b20b7cf38683754866b</li>
+	    <li>https://pillow.readthedocs.io/en/stable/releasenotes/8.3.2.html</li>
+	    <li>https://snyk.io/vuln/SNYK-PYTHON-PILLOW-1319443</li>
+	    <li>https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/RNSG6VFXTAROGF7ACYLMAZNQV4EJ6I2C/</li>
+	    <li>https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/VKRCL7KKAKOXCVD7M6WC5OKFGL4L3SJT/</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-23437</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-23437</url>
+    </references>
+    <dates>
+      <discovery>2021-09-02</discovery>
+      <entry>2021-09-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d1be3d73-6737-11ec-9eea-589cfc007716">
+    <topic>OpenSearch -- Log4Shell</topic>
+    <affects>
+      <package>
+	<name>opensearch</name>
+	<range><lt>1.2.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenSearch reports:</p>
+	<blockquote cite="https://opensearch.org/blog/releases/2021/12/update-1-2-3/">
+	  <p>CVE-2021-45105 for Log4j was issued after the release of OpenSearch 1.2.2. This CVE advises upgrading to Log4j 2.17.0. While there has been no observed reproduction of the issue described in CVE-2021-45105 in OpenSearch, we have released OpenSearch 1.2.3 which updates Log4j to version 2.17.0.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-45105</cvename>
+      <url>https://opensearch.org/blog/releases/2021/12/update-1-2-3/</url>
+    </references>
+    <dates>
+      <discovery>2021-12-16</discovery>
+      <entry>2021-12-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b0f49cb9-6736-11ec-9eea-589cfc007716">
+    <topic>OpenSearch -- Log4Shell</topic>
+    <affects>
+      <package>
+	<name>opensearch</name>
+	<range><lt>1.2.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenSearch reports:</p>
+	<blockquote cite="https://opensearch.org/blog/releases/2021/12/update-1-2-2/">
+	  <p>CVE-2021-45046 was issued shortly following the release of OpenSearch 1.2.1. This new CVE advises upgrading from Log4j 2.15.0 (used in OpenSearch 1.2.1) to Log4j 2.16.0. Out of an abundance of caution, the team is releasing OpenSearch 1.2.2 which includes Log4j 2.16.0. While there has been no observed reproduction of the issue described in CVE-2021-45046, Log4j 2.16.0 takes much more extensive JNDI mitigation measures.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-45046</cvename>
+      <url>https://opensearch.org/blog/releases/2021/12/update-1-2-2/</url>
+    </references>
+    <dates>
+      <discovery>2021-12-14</discovery>
+      <entry>2021-12-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1135e939-62b4-11ec-b8e2-1c1b0d9ea7e6">
+    <topic>opengrok -- Easily exploitable vulnerability allows low privileged attacker with network access via HTTPS to compromise OpenGrok.</topic>
+    <affects>
+      <package>
+	<name>opengrok</name>
+	<range><le>1.6.7</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Bobby Rauch of Accenture reports:</p>
+	<blockquote cite="https://medium.com/@bobbyrsec/oracle-opengrok-rce-cve-2021-2322-a284e5621bfe">
+	  <p>I ended up finding OpenGrok, and after careful testing, discovered that OpenGrok insecurely deserializes XML input, which can lead to Remote Code Execution. This vulnerability was found in all versions of OpenGrok &lt;1.6.8 and was reported to Oracle. The vulnerability has now been patched in OpenGrok 1.6.9, and has been issued a CVE. (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-2322)</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-2322</cvename>
+      <url>https://www.oracle.com/security-alerts/oracle-open-source-cves-outside-other-oracle-public-documents.html</url>
+      <url>https://www.oracle.com/security-alerts/oracle-open-source-cves-outside-other-oracle-public-documents.html</url>
+      <url>https://github.com/oracle/opengrok/pull/3528</url>
+    </references>
+    <dates>
+      <discovery>2021-04-07</discovery>
+      <entry>2021-12-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0a50bb48-625f-11ec-a1fb-080027cb2f6f">
+    <topic>mediawiki -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mediawiki135</name>
+	<range><lt>1.35.5</lt></range>
+      </package>
+      <package>
+	<name>mediawiki136</name>
+	<range><lt>1.36.3</lt></range>
+      </package>
+      <package>
+	<name>mediawiki137</name>
+	<range><lt>1.37.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mediawiki reports:</p>
+	<blockquote cite="https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/QEN3EK4JXAVJMJ5GF3GYOAKNJPEKFQYA/">
+	  <p>(T292763. CVE-2021-44854) REST API incorrectly publicly caches
+	    autocomplete search results from private wikis.</p>
+	  <p>(T271037, CVE-2021-44856) Title blocked in AbuseFilter can be created via
+	    Special:ChangeContentModel.</p>
+	  <p>(T297322, CVE-2021-44857) Unauthorized users can use action=mcrundo to
+	    replace the content of arbitrary pages.</p>
+	  <p> (T297322, CVE-2021-44858) Unauthorized users can view contents of private
+	    wikis using various actions.</p>
+	  <p>(T297574, CVE-2021-45038) Unauthorized users can access private wiki
+	    contents using rollback action</p>
+	  <p>(T293589, CVE-2021-44855) Blind Stored XSS in VisualEditor media dialog.</p>
+	  <p>(T294686) Special:Nuke doesn't actually delete pages.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44854</cvename>
+      <cvename>CVE-2021-44856</cvename>
+      <cvename>CVE-2021-44857</cvename>
+      <cvename>CVE-2021-44858</cvename>
+      <cvename>CVE-2021-45038</cvename>
+      <cvename>CVE-2021-44855</cvename>
+      <url>https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/QEN3EK4JXAVJMJ5GF3GYOAKNJPEKFQYA/</url>
+    </references>
+    <dates>
+      <discovery>2021-12-01</discovery>
+      <entry>2021-12-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="650734b2-7665-4170-9a0a-eeced5e10a5e">
+    <topic>graylog -- remote code execution in log4j from user-controlled log input</topic>
+    <affects>
+      <package>
+    <name>graylog</name>
+    <range><lt>4.2.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>Apache Software Foundation reports:</p>
+    <blockquote cite="https://logging.apache.org/log4j/2.x/security.html">
+      <p>It was found that the fix to address CVE-2021-44228 in Apache
+       Log4j 2.15.0 was incomplete in certain non-default
+       configurations. This could allows attackers with control over
+       Thread Context Map (MDC) input data when the logging
+       configuration uses a non-default Pattern Layout with either a
+       Context Lookup (for example, $${ctx:loginId}) or a Thread
+       Context Map pattern (%X, %mdc, or %MDC) to craft malicious input
+       data using a JNDI Lookup pattern resulting in a denial of
+       service (DOS) attack. Log4j 2.15.0 makes a best-effort attempt
+       to restrict JNDI LDAP lookups to localhost by default. Log4j
+       2.16.0 fixes this issue by removing support for message lookup
+       patterns and disabling JNDI functionality by default.
+      </p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-45046</cvename>
+      <url>https://github.com/Graylog2/graylog2-server/commit/d3e441f</url>
+      <url>https://github.com/Graylog2/graylog2-server/commit/dd24b85</url>
+      <url>https://logging.apache.org/log4j/2.x/security.html</url>
+    </references>
+    <dates>
+      <discovery>2021-11-14</discovery>
+      <entry>2021-12-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ca982e2d-61a9-11ec-8be6-d4c9ef517024">
+    <topic>Apache httpd -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>apache24</name>
+	<range><lt>2.4.52</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Apache httpd project reports:</p>
+	<blockquote cite="https://httpd.apache.org/security/vulnerabilities_24.html">
+	  <p>moderate: Possible NULL dereference or SSRF in forward proxy
+	    configurations in Apache HTTP Server 2.4.51 and earlier (CVE-2021-44224)
+	    <br/>A crafted URI sent to httpd configured as a forward proxy
+	    (ProxyRequests on) can cause a crash (NULL pointer dereference) or, for
+	    configurations mixing forward and reverse proxy declarations, can allow
+	    for requests to be directed to a declared Unix Domain Socket endpoint
+	    (Server Side Request Forgery).</p>
+	  <p>high: Possible buffer overflow when parsing multipart content in
+	    mod_lua of Apache HTTP Server 2.4.51 and earlier (CVE-2021-44790)<br/>A
+	    carefully crafted request body can cause a buffer overflow in the
+	    mod_lua multipart parser (r:parsebody() called from Lua scripts).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44224</cvename>
+      <cvename>CVE-2021-44790</cvename>
+      <url>https://httpd.apache.org/security/vulnerabilities_24.html</url>
+    </references>
+    <dates>
+      <discovery>2021-12-20</discovery>
+      <entry>2021-12-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1ea05bb8-5d74-11ec-bb1e-001517a2e1a4">
+    <topic>serviio -- affected by log4j vulnerability</topic>
+    <affects>
+      <package>
+	<name>serviio</name>
+	<range><lt>2.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Serviio reports:</p>
+	<blockquote cite="https://serviio.org/news/124-version-2-2-1-released">
+	  <p>Serviio is affectred by the log4j vulnerability.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44228</cvename>
+    </references>
+    <dates>
+      <discovery>2021-12-13</discovery>
+      <entry>2021-12-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="897e1962-5d5a-11ec-a3ed-040e3c3cf7e7">
+    <topic>Privoxy -- Multiple vulnerabilities (memory leak, XSS)</topic>
+    <affects>
+      <package>
+	<name>dropbear</name>
+	<range><lt>3.0.33</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Privoxy reports:</p>
+	<blockquote cite="https://lists.privoxy.org/pipermail/privoxy-announce/2021-December/000009.html">
+	<p>cgi_error_no_template(): Encode the template name to prevent
+	    XSS (cross-site scripting) when Privoxy is configured to servce
+	    the user-manual itself.</p>
+	<p>Commit 0e668e9409c. OVE-20211102-0001. CVE-2021-44543.
+	    Reported by: Artem Ivanov</p>
+	<p>get_url_spec_param(): Free memory of compiled pattern spec
+	    before bailing.
+	    Reported by Joshua Rogers (Opera) who also provided the fix.
+	    Commit 652b4b7cb0. OVE-20211201-0003. CVE-2021-44540.</p>
+	<p>process_encrypted_request_headers(): Free header memory when
+	    failing to get the request destination.
+	    Reported by Joshua Rogers (Opera) who also provided the fix.
+	    Commit 0509c58045. OVE-20211201-0002. CVE-2021-44541.</p>
+	<p>send_http_request(): Prevent memory leaks when handling errors
+	    Reported by Joshua Rogers (Opera) who also provided the fix.
+	    Commit c48d1d6d08. OVE-20211201-0001. CVE-2021-44542.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44540</cvename>
+      <cvename>CVE-2021-44541</cvename>
+      <cvename>CVE-2021-44542</cvename>
+      <cvename>CVE-2021-44543</cvename>
+      <url>https://lists.privoxy.org/pipermail/privoxy-announce/2021-December/000009.html</url>
+    </references>
+    <dates>
+      <discovery>2021-12-09</discovery>
+      <entry>2021-12-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0132ca5b-5d11-11ec-8be6-d4c9ef517024">
+    <topic>OpenSSL -- Certificate validation issue</topic>
+    <affects>
+      <package>
+	<name>openssl-devel</name>
+	<range><lt>3.0.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenSSL project reports:</p>
+	<blockquote cite="https://www.openssl.org/news/secadv/20211214.txt">
+	  <p>Invalid handling of X509_verify_cert() internal errors in libssl
+	    (Moderate)</p>
+	  <p>Internally libssl in OpenSSL calls X509_verify_cert() on the client
+	    side to verify a certificate supplied by a server. That function may
+	    return a negative return value to indicate an internal error (for
+	    example out of memory). Such a negative return value is mishandled by
+	    OpenSSL and will cause an IO function (such as SSL_connect() or
+	    SSL_do_handshake()) to not indicate success and a subsequent call to
+	    SSL_get_error() to return the value SSL_ERROR_WANT_RETRY_VERIFY.
+	    This return value is only supposed to be returned by OpenSSL if the
+	    application has previously called SSL_CTX_set_cert_verify_callback().
+	    Since most applications do not do this the
+	    SSL_ERROR_WANT_RETRY_VERIFY return value from SSL_get_error() will be
+	    totally unexpected and applications may not behave correctly as a
+	    result. The exact behaviour will depend on the application but it
+	    could result in crashes, infinite loops or other similar incorrect
+	    responses.</p>
+	  </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-4044</cvename>
+      <url>https://www.openssl.org/news/secadv/20211214.txt</url>
+    </references>
+    <dates>
+      <discovery>2021-12-14</discovery>
+      <entry>2021-12-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="515df85a-5cd7-11ec-a16d-001517a2e1a4">
+    <topic>bastillion -- log4j vulnerability</topic>
+    <affects>
+      <package>
+	<name>bastillion</name>
+	<range><lt>3.10.00_1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>FreeBSD port maintainer reports:</p>
+	<blockquote>
+	  <p>Bastillion uses log4j.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44228</cvename>
+    </references>
+    <dates>
+      <discovery>2021-12-10</discovery>
+      <entry>2021-12-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fb9ba490-5cc4-11ec-aac7-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>96.0.4664.110</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/12/stable-channel-update-for-desktop_13.html">
+	  <p>This release contains 5 security fixes, including:</p>
+	  <ul>
+	    <li>[1263457] Critical CVE-2021-4098: Insufficient data validation
+	      in Mojo. Reported by Sergei Glazunov of Google Project Zero on
+	      2021-10-26</li>
+	    <li>[1270658] High CVE-2021-4099: Use after free in Swiftshader.
+	      Reported by Aki Helin of Solita on 2021-11-16</li>
+	    <li>[1272068] High CVE-2021-4100: Object lifecycle issue in ANGLE.
+	      Reported by Aki Helin of Solita on 2021-11-19</li>
+	    <li>[1262080] High CVE-2021-4101: Heap buffer overflow in
+	      Swiftshader. Reported by Abraruddin Khan and Omair on
+	      2021-10-21</li>
+	    <li>[1278387] High CVE-2021-4102: Use after free in V8. Reported by
+	      Anonymous on 2021-12-09</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-4098</cvename>
+      <cvename>CVE-2021-4099</cvename>
+      <cvename>CVE-2021-4100</cvename>
+      <cvename>CVE-2021-4101</cvename>
+      <cvename>CVE-2021-4102</cvename>
+      <url>https://chromereleases.googleblog.com/2021/12/stable-channel-update-for-desktop_13.html</url>
+    </references>
+    <dates>
+      <discovery>2021-12-13</discovery>
+      <entry>2021-12-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0dcf68fa-5c31-11ec-875e-901b0e9408dc">
+    <topic>Matrix clients -- several vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>cinny</name>
+	<range><lt>1.6.0</lt></range>
+      </package>
+      <package>
+	<name>element-web</name>
+	<range><lt>1.9.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Matrix developers report:</p>
+	<blockquote cite="https://matrix.org/blog/2021/12/13/disclosure-buffer-overflow-in-libolm-and-matrix-js-sdk">
+	  <p>Today we are releasing security updates to libolm, matrix-js-sdk,
+	  and several clients including Element Web / Desktop. Users are
+	  encouraged to upgrade as soon as possible.</p>
+	  <p>These releases mitigate a buffer overflow in olm_session_describe,
+	  a libolm debugging function used by matrix-js-sdk in its end-to-end
+	  encryption (E2EE) implementation. If you rely on matrix-js-sdk for
+	  E2EE, you are affected.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://matrix.org/blog/2021/12/13/disclosure-buffer-overflow-in-libolm-and-matrix-js-sdk</url>
+    </references>
+    <dates>
+      <discovery>2021-12-03</discovery>
+      <entry>2021-12-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="93a1c9a7-5bef-11ec-a47a-001517a2e1a4">
+    <topic>openhab -- log4j remote code injection</topic>
+    <affects>
+      <package>
+	<name>openhab2</name>
+	<name>openhab</name>
+	<range><le>2.5.12</le></range>
+	<range><lt>3.1.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Openhab reports:</p>
+	<blockquote cite="https://github.com/openhab/openhab-distro/security/advisories/GHSA-j99j-qp89-pcfq">
+	  <p>Any openHAB instance that is publicly available or which consumes untrusted content from remote servers is potentially a target of this attack.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44228</cvename>
+      <url>https://github.com/openhab/openhab-distro/security/advisories/GHSA-j99j-qp89-pcfq</url>
+      <url>https://github.com/ops4j/org.ops4j.pax.logging/security/advisories/GHSA-xxfh-x98p-j8fr</url>
+      <url>https://github.com/advisories/GHSA-jfh8-c2jp-5v3q</url>
+    </references>
+    <dates>
+      <discovery>2021-12-10</discovery>
+      <entry>2021-12-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="66cf7c43-5be3-11ec-a587-001b217b3468">
+    <topic>Solr -- Apache Log4J</topic>
+    <affects>
+      <package>
+	<name>apache-solr</name>
+	<range><lt>8.11.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Solr reports:</p>
+	<blockquote cite="https://solr.apache.org/security.html">
+	  <p>Apache Solr affected by Apache Log4J</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://solr.apache.org/security.html</url>
+    </references>
+    <dates>
+      <discovery>2021-12-10</discovery>
+      <entry>2021-12-13</entry>
+      <modified>2021-12-13</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="4b1ac5a3-5bd4-11ec-8602-589cfc007716">
+    <topic>OpenSearch -- Log4Shell</topic>
+    <affects>
+      <package>
+	<name>opensearch</name>
+	<range><lt>1.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenSearch reports:</p>
+	<blockquote cite="https://opensearch.org/blog/releases/2021/12/update-to-1-2-1/">
+	  <p>A <a href="https://www.lunasec.io/docs/blog/log4j-zero-day/">recently published</a> security issue (<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228">CVE-2021-44228</a>) affects several versions of the broadly-used <a href="https://logging.apache.org/log4j/2.x/">Apache Log4j</a> library. Some software in the OpenSearch project includes versions of Log4j referenced in this CVE. While, at time of writing, the team has not found a reproduceable example in OpenSearch of remote code execution (RCE) described in this issue, its severity is such that all users should take mitigation measures. As recommended by the advisory, the team has released OpenSearch 1.2.1, which updates Log4j to version 2.15.0. For those who cannot upgrade to 1.2.1, the <a href="https://logging.apache.org/log4j/2.x/">Log4j website outlines additional measures to mitigate the issue</a>. This patch release also addresses <a href="https://alas.aws.amazon.com/AL2/ALAS-2021-1722.html">CVE-2021-4352</a> in the OpenSearch Docker distributions..</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44228</cvename>
+      <url>https://opensearch.org/blog/releases/2021/12/update-to-1-2-1/</url>
+    </references>
+    <dates>
+      <discovery>2021-12-11</discovery>
+      <entry>2021-12-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c2a7de31-5b42-11ec-8398-6c3be5272acd">
+    <topic>Grafana -- Directory Traversal</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<name>grafana8</name>
+	<range><ge>8.0.0</ge><lt>8.3.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>GitHub Security Labs reports:</p>
+	<blockquote cite="https://github.com/grafana/grafana/security/advisories/GHSA-7533-c8qv-jm9m">
+	  <p>A vulnerability through which authenticated users could read out fully lowercase or fully uppercase <code>.md</code> files through directory traversal. Doing our own follow-up investigation we found a related vulnerability through which authenticated users could read out arbitrary <code>.csv</code> files through directory traversal. Thanks to our defense-in-depth approach, at no time has <a href="https://grafana.com/cloud">Grafana Cloud</a> been vulnerable.</p>
+	  <p><strong>The vulnerable URL path is:</strong> <code>/api/ds/query</code></p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-43815</cvename>
+      <url>https://grafana.com/blog/2021/12/10/grafana-8.3.2-and-7.5.12-released-with-moderate-severity-security-fix/</url>
+    </references>
+    <dates>
+      <discovery>2021-12-09</discovery>
+      <entry>2021-12-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a994ff7d-5b3f-11ec-8398-6c3be5272acd">
+    <topic>Grafana -- Directory Traversal</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<range><ge>5.0.0</ge><lt>7.5.12</lt></range>
+	<range><ge>8.0.0</ge><lt>8.3.2</lt></range>
+      </package>
+      <package>
+	<name>grafana6</name>
+	<range><ge>6.0.0</ge></range>
+      </package>
+      <package>
+	<name>grafana7</name>
+	<range><ge>7.0.0</ge><lt>7.5.12</lt></range>
+      </package>
+      <package>
+	<name>grafana8</name>
+	<range><ge>8.0.0</ge><lt>8.3.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>GitHub Security Labs reports:</p>
+	<blockquote cite="https://github.com/grafana/grafana/security/advisories/GHSA-c3q8-26ph-9g2q">
+	  <p>A vulnerability through which authenticated users could read out fully lowercase or fully uppercase <code>.md</code> files through directory traversal. Doing our own follow-up investigation we found a related vulnerability through which authenticated users could read out arbitrary <code>.csv</code> files through directory traversal. Thanks to our defense-in-depth approach, at no time has <a href="https://grafana.com/cloud">Grafana Cloud</a> been vulnerable.</p>
+	  <p><strong>The vulnerable URL path is:</strong> <code>/api/plugins/.*/markdown/.*</code> for <code>.md</code> files</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-43813</cvename>
+      <url>https://grafana.com/blog/2021/12/10/grafana-8.3.2-and-7.5.12-released-with-moderate-severity-security-fix/</url>
+    </references>
+    <dates>
+      <discovery>2021-12-09</discovery>
+      <entry>2021-12-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e33880ed-5802-11ec-8398-6c3be5272acd">
+    <topic>Grafana -- Path Traversal</topic>
+    <affects>
+      <package>
+	<name>grafana8</name>
+	<name>grafana</name>
+	<range><ge>8.0.0</ge><lt>8.0.7</lt></range>
+	<range><ge>8.1.0</ge><lt>8.1.8</lt></range>
+	<range><ge>8.2.0</ge><lt>8.2.7</lt></range>
+	<range><ge>8.3.0</ge><lt>8.3.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2021/12/07/grafana-8.3.1-8.2.7-8.1.8-and-8.0.7-released-with-high-severity-security-fix/">
+	  <p>Grafana is vulnerable to directory traversal, allowing access to local files. We have confirmed this for versions v8.0.0-beta1 to v8.3.0. Thanks to our defense-in-depth approach, at no time has <a href="https://grafana.com/cloud/?pg=blog">Grafana Cloud</a> been vulnerable.</p>
+	  <p><strong>The vulnerable URL path is:</strong> &lt;grafana_host_url&gt;<em>/public/plugins/&lt;“plugin-id”&gt;</em> where <em>&lt;“plugin-id”&gt;</em> is the plugin ID for any installed plugin.</p>
+	  <p>Every Grafana instance comes with pre-installed plugins like the Prometheus plugin or MySQL plugin so the following URLs are vulnerable for every instance:</p>
+	  <ul>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/alertlist/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/annolist/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/barchart/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/bargauge/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/candlestick/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/cloudwatch/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/dashlist/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/elasticsearch/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/gauge/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/geomap/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/gettingstarted/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/grafana-azure-monitor-datasource/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/graph/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/heatmap/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/histogram/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/influxdb/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/jaeger/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/logs/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/loki/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/mssql/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/mysql/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/news/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/nodeGraph/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/opentsdb</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/piechart/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/pluginlist/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/postgres/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/prometheus/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/stackdriver/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/stat/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/state-timeline/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/status-history/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/table/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/table-old/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/tempo/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/testdata/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/text/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/timeseries/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/welcome/</li>
+	    <li>&lt;grafana_host_url&gt;/public/plugins/zipkin/</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-43798</cvename>
+      <url>https://grafana.com/blog/2021/12/07/grafana-8.3.1-8.2.7-8.1.8-and-8.0.7-released-with-high-severity-security-fix/</url>
+    </references>
+    <dates>
+      <discovery>2021-12-03</discovery>
+      <entry>2021-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="99bff2bd-4852-11ec-a828-6c3be5272acd">
+    <topic>Grafana -- Incorrect Access Control</topic>
+    <affects>
+      <package>
+	<name>grafana8</name>
+	<name>grafana</name>
+	<range><ge>8.0.0</ge><lt>8.2.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2021/11/15/grafana-8.2.4-released-with-security-fixes/">
+	  <p>When the fine-grained access control beta feature is enabled and there is more than one organization in the Grafana instance, Grafana 8.0 introduced a mechanism which allowed users with the Organization Admin role to list, add, remove, and update users’ roles in other organizations in which they are not an admin.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-41244</cvename>
+      <url>https://grafana.com/blog/2021/11/15/grafana-8.2.4-released-with-security-fixes/</url>
+    </references>
+    <dates>
+      <discovery>2021-11-02</discovery>
+      <entry>2021-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4b478274-47a0-11ec-bd24-6c3be5272acd">
+    <topic>Grafana -- XSS</topic>
+    <affects>
+      <package>
+	<name>grafana8</name>
+	<name>grafana</name>
+	<range><ge>8.0.0</ge><lt>8.2.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2021/11/03/grafana-8.2.3-released-with-medium-severity-security-fix-cve-2021-41174-grafana-xss/">
+	  <p>If an attacker is able to convince a victim to visit a URL referencing a vulnerable page, arbitrary JavaScript content may be executed within the context of the victim’s browser.</p>
+	  <p>The user visiting the malicious link must be unauthenticated, and the link must be for a page that contains the login button in the menu bar.</p>
+	  <p>There are two ways an unauthenticated user can open a page in Grafana that contains the login button:</p>
+	  <ul>
+	    <li>Anonymous authentication is enabled. This means all pages in Grafana would be open for the attack.</li>
+	    <li>The link is to an unauthenticated page. The following pages are vulnerable:
+	      <ul>
+		<li><code>/dashboard-solo/snapshot/*</code></li>
+		<li><code>/dashboard/snapshot/*</code></li>
+		<li><code>/invite/:code</code></li>
+	      </ul>
+	    </li>
+	  </ul>
+	  <p>The url has to be crafted to exploit AngularJS rendering and contain the interpolation binding for AngularJS expressions. AngularJS uses double curly braces for interpolation binding: <code>{{ }}</code></p>
+	  <p>An example of an expression would be: <code>{{constructor.constructor(‘alert(1)’)()}}</code>. This can be included in the link URL like this:</p>
+	  <p><a href="https://play.grafana.org/dashboard/snapshot/%7B%7Bconstructor.constructor('alert(1)')()%7D%7D?orgId=1">https://play.grafana.org/dashboard/snapshot/%7B%7Bconstructor.constructor('alert(1)')()%7D%7D?orgId=1</a></p>
+	  <p>When the user follows the link and the page renders, the login button will contain the original link with a query parameter to force a redirect to the login page. The URL is not validated, and the AngularJS rendering engine will execute the JavaScript expression contained in the URL.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-41174</cvename>
+      <url>https://grafana.com/blog/2021/11/03/grafana-8.2.3-released-with-medium-severity-security-fix-cve-2021-41174-grafana-xss/</url>
+    </references>
+    <dates>
+      <discovery>2021-10-21</discovery>
+      <entry>2021-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="942fff11-5ac4-11ec-89ea-c85b76ce9b5a">
+    <topic>p7zip -- usage of uninitialized memory</topic>
+    <affects>
+      <package>
+	<name>p7zip</name>
+	<range><lt>18.05</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NVD reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2018-10115">
+      <p>
+       Incorrect initialization logic of RAR decoder objects in
+       7-Zip 18.03 and before can lead to usage of
+       uninitialized memory, allowing remote attackers to cause
+       a denial of service (segmentation fault) or execute
+       arbitrary code via a crafted RAR archive.
+      </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2018-10115</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2018-10115</url>
+    </references>
+    <dates>
+      <discovery>2018-05-02</discovery>
+      <entry>2021-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3fadd7e4-f8fb-45a0-a218-8fd6423c338f">
+      <topic>graylog -- include log4j patches</topic>
+    <affects>
+      <package>
+	<name>graylog</name>
+	<range><lt>4.2.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Apache Software Foundation repos:</p>
+	<blockquote cite="https://logging.apache.org/log4j/2.x/security.html">
+      <p>Apache Log4j2 JNDI features do not protect against attacker
+       controlled LDAP and other JNDI related endpoints. An attacker
+       who can control log messages or paramters can execute arbitrary
+       code from attacker-controller LDAP servers when message lookup
+       substitution is enabled.
+      </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44228</cvename>
+      <url>https://github.com/Graylog2/graylog2-server/commit/d3e441f1126f0dc292e986879039a87c59375b2a</url>
+      <url>https://logging.apache.org/log4j/2.x/security.html</url>
+    </references>
+    <dates>
+      <discovery>2021-12-10</discovery>
+      <entry>2021-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="720505fe-593f-11ec-9ba8-002324b2fba8">
+    <topic>go -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>go</name>
+	<range><lt>1.17.5,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+  <blockquote cite="https://github.com/golang/go/issues/50058">
+	  <p>net/http: limit growth of header canonicalization cache. An
+	    attacker can cause unbounded memory growth in a Go server accepting
+	    HTTP/2 requests.</p>
+	</blockquote>
+	<blockquote cite="https://github.com/golang/go/issues/50057">
+	  <p>syscall: don’t close fd 0 on ForkExec error. When a Go program
+	    running on a Unix system is out of file descriptors and calls
+	    syscall.ForkExec (including indirectly by using the os/exec
+	    package), syscall.ForkExec can close file descriptor 0 as it fails.
+	    If this happens (or can be provoked) repeatedly, it can result in
+	    misdirected I/O such as writing network traffic intended for one
+	    connection to a different connection, or content intended for one
+	    file to a different one.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-44716</cvename>
+      <url>https://github.com/golang/go/issues/50058</url>
+      <cvename>CVE-2021-44717</cvename>
+      <url>https://github.com/golang/go/issues/50057</url>
+    </references>
+    <dates>
+      <discovery>2021-12-08</discovery>
+      <entry>2021-12-09</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="18ac074c-579f-11ec-aac7-3065ec8fd3ec">
     <topic>chromium -- multiple vulnerabilities</topic>
     <affects>
@@ -5915,7 +6933,7 @@ In limited circumstances it was possible for users to authenticate using variati
     <affects>
       <package>
 	<name>libX11</name>
-	<range><lt>1.7.1</lt></range>
+	<range><lt>1.7.1,1</lt></range>
       </package>
     </affects>
     <description>
@@ -5938,6 +6956,7 @@ In limited circumstances it was possible for users to authenticate using variati
     <dates>
       <discovery>2021-05-11</discovery>
       <entry>2021-06-01</entry>
+      <modified>2022-02-08</modified>
     </dates>
   </vuln>
 

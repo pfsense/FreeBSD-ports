@@ -1,11 +1,8 @@
-JACK is a low latency audio server, written for POSIX-conformant operating
-systems.  It can connect a number of different applications to an audio
-device, as well as allowing them to share audio between themselves.  Its
-clients can run in their own processes (i.e. as normal applications), or
-can they can run within the JACK server (i.e. as a "plugin").
+JACK Audio Connection Kit (or JACK) is a professional sound server API and pair
+of daemon implementations to provide real-time, low-latency connections for
+both audio and MIDI data between applications.
 
-JACK was designed from the ground up for professional audio work, and its
-design focuses on two key areas: synchronous execution of all clients, and
-low latency operation.
+This provides the JACK server and libraries, example clients and tools are
+distributed separately now.
 
 WWW: https://jackaudio.org/

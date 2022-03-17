@@ -2,9 +2,13 @@
 
 PORTNAME=	evince
 DISTVERSION=	41.3
+PORTREVISION=	1
 CATEGORIES=	graphics print gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	1060b24d0516.patch:-p1 # https://gitlab.gnome.org/GNOME/evince/-/merge_requests/398
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME 3 multi-format document viewer
@@ -50,9 +54,11 @@ OPTIONS_EXCLUDE=	DBUS NAUTILUS
 PLIST=			${.CURDIR}/pkg-plist-lite
 PKGNAMESUFFIX=		-lite
 COMMENT+=		without GNOME dependencies
+CONFLICTS_INSTALL=	evince
 .else
 USE_GNOME+=		introspection:build
 MESON_ARGS+=		-Dintrospection=true
+CONFLICTS_INSTALL=	evince-lite
 .endif
 
 GLIB_SCHEMAS=	org.gnome.Evince.gschema.xml

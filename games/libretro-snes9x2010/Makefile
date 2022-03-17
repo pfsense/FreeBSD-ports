@@ -1,8 +1,8 @@
 PORTNAME=	libretro-snes9x2010
-PORTVERSION=	0.20210214
+PORTVERSION=	0.20211102
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Snes9x - Portable Super Nintendo emulator (1.52)
 
 # Commercial users must seek permission from copyright holders.
@@ -17,7 +17,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	snes9x2010
-GH_TAGNAME=	a3e65b8
+GH_TAGNAME=	714b1c8
 
 PLIST_FILES=	lib/libretro/snes9x2010_libretro.so
 

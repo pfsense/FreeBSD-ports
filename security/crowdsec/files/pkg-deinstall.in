@@ -1,0 +1,9 @@
+#!/bin/sh
+
+case $2 in
+       "DEINSTALL")
+               service crowdsec status && touch /var/run/crowdsec.running
+               service crowdsec stop || :
+               ;;
+esac
+

@@ -1,7 +1,7 @@
 # Created by: proler@gmail.com
 
 PORTNAME=	clickhouse
-PORTVERSION=	21.7.4.18
+PORTVERSION=	22.1.3.7
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=-stable
 CATEGORIES=	databases
@@ -17,7 +17,7 @@ ONLY_FOR_ARCHS_REASON=	only supported on aarch64 and amd64
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cmake:insource cpe localbase python shebangfix
+USES=		cmake cpe localbase python shebangfix
 
 CPE_VENDOR=	yandex
 
@@ -25,82 +25,87 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	yandex
 GH_PROJECT=	ClickHouse
 GH_TUPLE=	\
-		ClickHouse-Extras:AMQP-CPP:03781aa:ClickHouse_Extras_AMQP_CPP/contrib/AMQP-CPP \
-		ClickHouse-Extras:NuRaft:976874b:ClickHouse_Extras_NuRaft/contrib/NuRaft \
-		ClickHouse-Extras:abseil-cpp:4f3b686:ClickHouse_Extras_abseil_cpp/contrib/abseil-cpp \
-		ClickHouse-Extras:antlr4-runtime:672643e:ClickHouse_Extras_antlr4_runtime/contrib/antlr4-runtime \
-		ClickHouse-Extras:arrow:debf751:ClickHouse_Extras_arrow/contrib/arrow \
+		ClickHouse-Extras:AMQP-CPP:1a6c51f:ClickHouse_Extras_AMQP_CPP/contrib/AMQP-CPP \
+		ClickHouse-Extras:NuRaft:c2043aa:ClickHouse_Extras_NuRaft/contrib/NuRaft \
+		ClickHouse-Extras:abseil-cpp:2151058:ClickHouse_Extras_abseil_cpp/contrib/abseil-cpp \
+		ClickHouse-Extras:arrow:1d9cc51:ClickHouse_Extras_arrow/contrib/arrow \
 		ClickHouse-Extras:avro:e43c46e:ClickHouse_Extras_avro/contrib/avro \
-		ClickHouse-Extras:aws-sdk-cpp:7d48b2c:ClickHouse_Extras_aws_sdk_cpp/contrib/aws \
+		ClickHouse-Extras:aws-sdk-cpp:00b0360:ClickHouse_Extras_aws_sdk_cpp/contrib/aws \
 		ClickHouse-Extras:aws-c-common:736a82d:ClickHouse_Extras_aws_c_common/contrib/aws-c-common \
 		ClickHouse-Extras:aws-c-event-stream:3bc3366:ClickHouse_Extras_aws_c_event_stream/contrib/aws-c-event-stream \
 		ClickHouse-Extras:aws-checksums:519d6d9:ClickHouse_Extras_aws_checksums/contrib/aws-checksums \
-		ClickHouse-Extras:Turbo-Base64:af9b331:ClickHouse_Extras_Turbo_Base64/contrib/base64 \
-		ClickHouse-Extras:boost:1ccbb5a:ClickHouse_Extras_boost/contrib/boost \
-		ClickHouse-Extras:boringssl:a6a2e2a:ClickHouse_Extras_boringssl/contrib/boringssl \
+		ClickHouse-Extras:azure-sdk-for-cpp:ac4b763:ClickHouse_Extras_azure_sdk_for_cpp/contrib/azure \
+		ClickHouse-Extras:Turbo-Base64:9499e0c:ClickHouse_Extras_Turbo_Base64/contrib/base64 \
+		ClickHouse-Extras:boost:c0807e8:ClickHouse_Extras_boost/contrib/boost \
+		ClickHouse-Extras:boringssl:c1e01a4:ClickHouse_Extras_boringssl/contrib/boringssl \
 		google:brotli:63be8a9:google_brotli/contrib/brotli \
-		capnproto:capnproto:a00ccd9:capnproto_capnproto/contrib/capnproto \
-		ClickHouse-Extras:cpp-driver:eb9b68d:ClickHouse_Extras_cpp_driver/contrib/cassandra \
-		ClickHouse-Extras:cctz:c0f1bcb:ClickHouse_Extras_cctz/contrib/cctz \
+		ClickHouse-Extras:bzip2:bf905ea:ClickHouse_Extras_bzip2/contrib/bzip2 \
+		capnproto:capnproto:c8189ec:capnproto_capnproto/contrib/capnproto \
+		ClickHouse-Extras:cpp-driver:f4a31e9:ClickHouse_Extras_cpp_driver/contrib/cassandra \
+		ClickHouse-Extras:cctz:9edd086:ClickHouse_Extras_cctz/contrib/cctz \
 		mfontanini:cppkafka:5a119f6:mfontanini_cppkafka/contrib/cppkafka \
 		RoaringBitmap:CRoaring:2c867e9:RoaringBitmap_CRoaring/contrib/croaring \
 		curl:curl:3b8bbbb:curl_curl/contrib/curl \
 		ClickHouse-Extras:cyrus-sasl:e6466ed:ClickHouse_Extras_cyrus_sasl/contrib/cyrus-sasl \
+		apache:datasketches-cpp:7d73d76:apache_datasketches/contrib/datasketches-cpp \
 		google:double-conversion:cf2f0f3:google_double_conversion/contrib/double-conversion \
-		apache:datasketches-cpp:7d73d76:contrib/datasketches-cpp \
-		google:double-conversion:cf2f0f3:contrib/double-conversion \
 		ClickHouse-Extras:dragonbox:923705a:ClickHouse_Extras_dragonbox/contrib/dragonbox \
 		fastfloat:fast_float:7eae925:fastfloat_fast_float/contrib/fast_float \
-		ClickHouse-Extras:fastops:88752a5:ClickHouse_Extras_fastops/contrib/fastops \
+		ClickHouse-Extras:fastops:1460583:ClickHouse_Extras_fastops/contrib/fastops \
 		google:flatbuffers:eb3f827:google_flatbuffers/contrib/flatbuffers \
 		fmtlib:fmt:c108ee1:fmtlib_fmt/contrib/fmtlib \
-		kthohr:gcem:8d4f1b5:kthohr_gcem/contrib/gcem \
 		google:googletest:e7e5917:google_googletest/contrib/googletest \
-		ClickHouse-Extras:grpc:60c986e:ClickHouse_Extras_grpc/contrib/grpc \
-		ClickHouse-Extras:h3:e209086:ClickHouse_Extras_h3/contrib/h3 \
+		ClickHouse-Extras:grpc:7eac189:ClickHouse_Extras_grpc/contrib/grpc \
+		ClickHouse-Extras:h3:c7f46cf:ClickHouse_Extras_h3/contrib/h3 \
+		ClickHouse-Extras:hive-metastore:809a77d:ClickHouse_Extras_hive_metastore/contrib/hive-metastore \
 		ClickHouse-Extras:hyperscan:e9f08df:ClickHouse_Extras_hyperscan/contrib/hyperscan \
 		unicode-org:icu:faa2f9f:unicode_org_icu/contrib/icu \
 		ClickHouse-Extras:icudata:f020820:ClickHouse_Extras_icudata/contrib/icudata \
-		ClickHouse-Extras:jemalloc:e6891d9:ClickHouse_Extras_jemalloc/contrib/jemalloc \
+		ClickHouse-Extras:jemalloc:a140480:ClickHouse_Extras_jemalloc/contrib/jemalloc \
 		ClickHouse-Extras:krb5:5149dea:ClickHouse_Extras_krb5/contrib/krb5 \
-		ClickHouse-Extras:libc-headers:a720b71:ClickHouse_Extras_libc_headers/contrib/libc-headers \
+		ClickHouse-Extras:lemmagen-c:59537bd:ClickHouse_Extras_lemmagen_c/contrib/lemmagen-c \
 		ClickHouse-Extras:libcpuid:8db3b8d:ClickHouse_Extras_libcpuid/contrib/libcpuid \
-		ClickHouse-Extras:libcxx:2fa892f:ClickHouse_Extras_libcxx/contrib/libcxx \
+		ClickHouse-Extras:libcxx:61e6029:ClickHouse_Extras_libcxx/contrib/libcxx \
 		ClickHouse-Extras:libcxxabi:df8f1e7:ClickHouse_Extras_libcxxabi/contrib/libcxxabi \
 		ClickHouse-Extras:libgsasl:383ee28:ClickHouse_Extras_libgsasl/contrib/libgsasl \
-		ClickHouse-Extras:libhdfs3:095b9d4:ClickHouse_Extras_libhdfs3/contrib/libhdfs3 \
-		ClickHouse-Extras:libpq:c762458:ClickHouse_Extras_libpq/contrib/libpq \
-		jtv:libpqxx:357608d:jtv_libpqxx/contrib/libpqxx \
-		ClickHouse-Extras:librdkafka:43491d3:ClickHouse_Extras_librdkafka/contrib/librdkafka \
-		ClickHouse-Extras:libunwind:6b816d2:ClickHouse_Extras_libunwind/contrib/libunwind \
-		ClickHouse-Extras:libuv:e2e9b7e:ClickHouse_Extras_libuv/contrib/libuv \
+		ClickHouse-Extras:libhdfs3:9194af4:ClickHouse_Extras_libhdfs3/contrib/libhdfs3 \
+		ClickHouse-Extras:libpq:e071ea5:ClickHouse_Extras_libpq/contrib/libpq \
+		jtv:libpqxx:63e20f9:jtv_libpqxx/contrib/libpqxx \
+		google:libprotobuf-mutator:ffd86a3:google_libprotobuf_mutator/contrib/libprotobuf-mutator \
+		ClickHouse-Extras:librdkafka:b8554f1:ClickHouse_Extras_librdkafka/contrib/librdkafka \
+		ClickHouse-Extras:libstemmer_c:c753054:ClickHouse_Extras_libstemmer_c/contrib/libstemmer_c \
+		ClickHouse-Extras:libunwind:c4ea984:ClickHouse_Extras_libunwind/contrib/libunwind \
+		ClickHouse-Extras:libuv:95081e7:ClickHouse_Extras_libuv/contrib/libuv \
 		GNOME:libxml2:18890f4:GNOME_libxml2/contrib/libxml2 \
-		ClickHouse-Extras:llvm:e575145:ClickHouse_Extras_llvm/contrib/llvm \
+		ClickHouse-Extras:llvm:20607e6:ClickHouse_Extras_llvm/contrib/llvm \
 		lz4:lz4:f39b79f:lz4_lz4/contrib/lz4 \
+		Neargye:magic_enum:38f86e4:Neargye_magic_enum/contrib/magic_enum \
 		ClickHouse-Extras:mariadb-connector-c:5f4034a:ClickHouse_Extras_mariadb_connector_c/contrib/mariadb-connector-c \
 		danlark1:miniselect:be0af6b:danlark1_miniselect/contrib/miniselect \
 		msgpack:msgpack-c:4668426:msgpack_msgpack_c/contrib/msgpack-c \
-		nanodbc:nanodbc:9fc4596:contrib/nanodbc \
+		nanodbc:nanodbc:df52a12:contrib/nanodbc \
 		ClickHouse-Extras:openldap:0208811:ClickHouse_Extras_openldap/contrib/openldap \
-		apache:orc:0a936f6:apache_orc/contrib/orc \
-		ClickHouse-Extras:poco:5994506:ClickHouse_Extras_poco/contrib/poco \
-		ClickHouse-Extras:protobuf:73b1281:ClickHouse_Extras_protobuf/contrib/protobuf \
+		ClickHouse-Extras:orc:0a936f6:ClickHouse_Extras/contrib/orc \
+		ClickHouse-Extras:poco:520a90e:ClickHouse_Extras_poco/contrib/poco \
+		ClickHouse-Extras:protobuf:6bb7019:ClickHouse_Extras_protobuf/contrib/protobuf \
 		ClickHouse-Extras:rapidjson:c4ef90c:ClickHouse_Extras_rapidjson/contrib/rapidjson \
 		google:re2:13ebb37:google_re2/contrib/re2 \
-		ClickHouse-Extras:replxx:c81be6c:ClickHouse_Extras_replxx/contrib/replxx \
-		ClickHouse-Extras:rocksdb:07c7754:ClickHouse_Extras_rocksdb/contrib/rocksdb \
-		ClickHouse-Extras:sentry-native:94644e9:ClickHouse_Extras_sentry_native/contrib/sentry-native \
+		ClickHouse-Extras:replxx:f019cba:ClickHouse_Extras_replxx/contrib/replxx \
+		ClickHouse-Extras:rocksdb:e7c2b2f:ClickHouse_Extras_rocksdb/contrib/rocksdb \
+		ClickHouse-Extras:s2geometry:471fe9d:ClickHouse_Extras_s2geometry/contrib/s2geometry \
+		ClickHouse-Extras:sentry-native:f431047:ClickHouse_Extras_sentry_native/contrib/sentry-native \
 		ClickHouse-Extras:simdjson:8df32ce:ClickHouse_Extras_simdjson/contrib/simdjson \
-		google:snappy:3f194ac:google_snappy/contrib/snappy \
+		ClickHouse-Extras:snappy:fb057ed:ClickHouse_Extras_snappy/contrib/snappy \
 		sparsehash:sparsehash-c11:cf0bffa:sparsehash_sparsehash_c11/contrib/sparsehash-c11 \
-		kthohr:stats:b6dd459:kthohr_stats/contrib/stats \
+		azadkuh:sqlite-amalgamation:9818baa:azadkuh_sqlite_amalgamation/contrib/sqlite-amalgamation \
+		ClickHouse-Extras:sysroot:bbcac83:ClickHouse_Extras_sysroot/contrib/sysroot \
 		apache:thrift:010ccf0:apache_thrift/contrib/thrift \
 		ClickHouse-Extras:UnixODBC:b0ad30f:ClickHouse_Extras_UnixODBC/contrib/unixodbc \
+		ClickHouse-Extras:wordnet-blast:1d16ac2:ClickHouse_Extras_wordnet_blast/contrib/wordnet-blast \
 		xz-mirror:xz:869b9d1:xz_mirror_xz/contrib/xz \
 		ClickHouse-Extras:yaml-cpp:0c86ada:ClickHouse_Extras_yaml_cpp/contrib/yaml-cpp \
-		ClickHouse-Extras:zlib-ng:db232d3:ClickHouse_Extras_zlib_ng/contrib/zlib-ng \
-		facebook:zstd:a488ba1:facebook_zstd/contrib/zstd \
-		c-ares:c-ares:e982924:c_ares_c_ares/contrib/grpc/third_party/cares/cares
+		ClickHouse-Extras:zlib-ng:bffad6f:ClickHouse_Extras_zlib_ng/contrib/zlib-ng \
+		facebook:zstd:a488ba1:facebook_zstd/contrib/zstd
 
 USE_RC_SUBR=	${PORTNAME}
 
@@ -127,7 +132,7 @@ SHEBANG_FILES=	src/Storages/System/StorageSystemLicenses.sh \
 		tests/queries/0_stateless/01179_insert_values_semicolon.expect \
 		tests/queries/0_stateless/01180_client_syntax_errors.expect \
 		tests/queries/0_stateless/01246_insert_into_watch_live_view.py \
-		tests/queries/0_stateless/01293_client_interactive_vertical_multiline_long.expect \
+		tests/queries/0_stateless/01293_client_interactive_vertical_multiline.expect \
 		tests/queries/0_stateless/01293_client_interactive_vertical_singleline.expect \
 		tests/queries/0_stateless/01300_client_save_history_when_terminated_long.expect \
 		tests/queries/0_stateless/01370_client_autocomplete_word_break_characters.expect \
@@ -136,9 +141,6 @@ SHEBANG_FILES=	src/Storages/System/StorageSystemLicenses.sh \
 		tests/queries/0_stateless/01565_reconnect_after_client_error.expect \
 		tests/queries/0_stateless/01599_multiline_input_and_singleline_comments.sh \
 		tests/queries/0_stateless/01610_client_spawn_editor.sh \
-		tests/queries/0_stateless/01755_client_highlight_multi_line_comment_regression.expect \
-		tests/queries/0_stateless/01910_client_replxx_container_overflow_long.expect  \
-		tests/queries/0_stateless/01921_test_progress_bar.py \
 		tests/queries/0_stateless/helpers/00900_parquet_create_table_columns.py \
 		tests/queries/0_stateless/helpers/client.py \
 		tests/queries/0_stateless/helpers/httpclient.py \
@@ -147,33 +149,53 @@ SHEBANG_FILES=	src/Storages/System/StorageSystemLicenses.sh \
 		tests/queries/0_stateless/helpers/pure_http_client.py \
 		tests/queries/0_stateless/helpers/shell.py \
 		tests/queries/0_stateless/helpers/uexpect.py \
-		utils/build/build_debian.sh utils/build/build_debian_shared.sh \
-		utils/build/build_freebsd.sh utils/build/build_macos.sh \
-		utils/build/build_minimal.sh utils/build/build_no_submodules.sh \
+		tests/queries/0_stateless/01910_client_replxx_container_overflow_long.expect \
+		tests/queries/0_stateless/02132_client_history_navigation.expect \
+		tests/queries/0_stateless/01933_client_replxx_convert_history.expect \
+		tests/queries/0_stateless/01945_show_debug_warning.expect \
+		tests/queries/0_stateless/01059_window_view_event_hop_watch_strict_asc.py \
+		tests/queries/0_stateless/01070_window_view_watch_events.py \
+		tests/queries/0_stateless/02116_interactive_hello.expect \
+		tests/queries/0_stateless/01755_client_highlight_multi_line_comment_regression.expect \
+		tests/queries/0_stateless/02112_delayed_clickhouse_client_with_queries_file.expect \
+		tests/queries/0_stateless/02112_delayed_clickhouse_local_with_queries_file.expect \
+		tests/queries/0_stateless/02010_lc_native.python \
+		tests/queries/0_stateless/02105_backslash_letter_commands.expect \
+		tests/queries/0_stateless/01069_window_view_proc_tumble_watch.py \
+		tests/queries/0_stateless/01062_window_view_event_hop_watch_asc.py \
+		tests/queries/0_stateless/01921_test_progress_bar.py \
+		tests/queries/0_stateless/02112_delayed_clickhouse_local.expect \
+		tests/queries/0_stateless/02049_clickhouse_local_merge_tree.expect \
+		tests/queries/0_stateless/01056_window_view_proc_hop_watch.py \
+		tests/queries/0_stateless/01065_window_view_event_hop_watch_bounded.py \
+		tests/queries/0_stateless/02003_memory_limit_in_client.expect \
+		tests/queries/0_stateless/02047_client_exception.expect \
+		tests/queries/0_stateless/02164_clickhouse_local_interactive_exception.expect \
 		utils/check-style/check-duplicate-includes.sh \
 		utils/check-style/check-ungrouped-includes.sh \
 		utils/check-style/format.sh utils/check-style/shellcheck-run.sh \
 		utils/ci/build-clang-from-sources.sh \
 		utils/ci/build-debian-packages.sh \
-		utils/ci/build-gcc-from-sources.sh utils/ci/build-normal.sh \
-		utils/ci/check-docker.sh utils/ci/check-syntax.sh \
+		utils/ci/build-gcc-from-sources.sh \
+		utils/ci/build-normal.sh \
+		utils/ci/check-docker.sh \
+		utils/ci/check-syntax.sh \
 		utils/ci/check-tzdata-updates.sh \
 		utils/ci/create-sources-tarball.sh \
-		utils/ci/docker-multiarch/update.sh utils/ci/get-sources.sh \
+		utils/ci/get-sources.sh \
 		utils/ci/install-compiler-from-packages.sh \
 		utils/ci/install-compiler-from-sources.sh \
-		utils/ci/install-libraries.sh utils/ci/install-os-packages.sh \
-		utils/ci/jobs/quick-build/run.sh \
+		utils/ci/install-libraries.sh \
+		utils/ci/install-os-packages.sh \
 		utils/ci/prepare-docker-image-ubuntu.sh \
 		utils/ci/prepare-toolchain.sh \
 		utils/ci/prepare-vagrant-image-freebsd.sh \
 		utils/ci/run-clickhouse-from-binaries.sh \
-		utils/ci/run-with-docker.sh utils/ci/run-with-vagrant.sh \
+		utils/ci/run-with-docker.sh \
+		utils/ci/run-with-vagrant.sh \
 		utils/clickhouse-docker utils/compressor/test.sh \
 		utils/durability-test/durability-test.sh \
 		utils/durability-test/install.sh \
-		utils/generate-ya-make/generate-ya-make.sh \
-		utils/link-validate/link-validate.sh \
 		utils/list-licenses/list-licenses.sh \
 		utils/list-versions/list-versions.sh
 SHEBANG_LANG=	expect
@@ -183,9 +205,16 @@ expect_CMD=	${LOCALBASE}/bin/expect
 
 CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=20 \
 		-DENABLE_EMBEDDED_COMPILER=OFF \
+		-DENABLE_THINLTO=OFF \
 		-DENABLE_PARQUET=OFF \
 		-DENABLE_UTILS=ON \
 		-DNO_WERROR=1
+
+.if defined(WITH_DEBUG)
+CMAKE_BUILD_TYPE=Debug
+.else
+CMAKE_BUILD_TYPE=RelWithDebInfo
+.endif
 
 USERS=		clickhouse
 GROUPS=		clickhouse
@@ -200,13 +229,21 @@ TEST_CMAKE_BOOL=	ENABLE_TESTS
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} < 1300000
-CC=			clang11
-CXX=		clang++11
-BUILD_DEPENDS+= clang++11:devel/llvm11
+.if ${OSVERSION} < 1400000
+CC=			clang13
+CXX=		clang++13
+BUILD_DEPENDS+=	clang++13:devel/llvm13
 .else
 CC=			clang
 CXX=		clang++
+.endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
+SUB_LIST+=	LEGACY_LIMITS="@comment " \
+		MODERN_LIMITS=""
+.else
+SUB_LIST+=	LEGACY_LIMITS="" \
+		MODERN_LIMITS="@comment "
 .endif
 
 SOVERSION=	${PORTVERSION}

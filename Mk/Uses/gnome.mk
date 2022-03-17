@@ -42,10 +42,6 @@
 #				add the following to your Makefile:
 #				"GLIB_SCHEMAS=foo.gschema.xml bar.gschema.xml".
 #
-# INSTALLS_OMF		- If set, bsd.gnome.mk will automatically scan pkg-plist
-#				file and add apropriate @postexec/@postunexec directives for
-#				each .omf file found to track OMF registration database.
-#
 # MAINTAINER: gnome@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_GNOME_MK)
@@ -59,8 +55,7 @@ IGNORE=	USES=gnome takes no arguments
 
 # non-version specific components
 _USE_GNOME_ALL= intlhack intltool introspection \
-		referencehack gnomemimedata \
-		gnomeprefix
+		gnomemimedata gnomeprefix
 
 # GNOME 2 components
 _USE_GNOME_ALL+= atk cairo \
@@ -70,7 +65,7 @@ _USE_GNOME_ALL+= atk cairo \
 		libglade2 libgnomecanvas \
 		libgsf libidl librsvg2 libwnck \
 		libxml2 libxslt \
-		orbit2 pango pangox-compat \
+		pango pangox-compat \
 		vte
 
 # GNOME 3 components
@@ -91,12 +86,6 @@ _USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm gtkmm24 \
 # glib-mkenums often fails with C locale
 # https://gitlab.gnome.org/GNOME/glib/issues/1430
 USE_LOCALE?=	en_US.UTF-8
-
-GNOME_MAKEFILEIN?=	Makefile.in
-SCROLLKEEPER_DIR=	/var/db/rarian
-
-referencehack_PRE_PATCH=	${FIND} ${WRKSRC} -name "Makefile.in" -type f | ${XARGS} ${FRAMEWORK_REINPLACE_CMD} -e \
-				"s|test \"\$$\$$installfiles\" = '\$$(srcdir)/html/\*'|:|"
 
 GNOME_HTML_DIR?=	${PREFIX}/share/doc
 GCONF_CONFIG_OPTIONS?=	merged
@@ -189,9 +178,6 @@ GTK4_VERSION=		4.0.0
 libidl_LIB_DEPENDS=	libIDL-2.so:devel/libIDL
 libidl_USE_GNOME_IMPL=	glib20
 
-orbit2_LIB_DEPENDS=	libORBit-2.so:devel/ORBit2
-orbit2_USE_GNOME_IMPL=	libidl
-
 libglade2_LIB_DEPENDS=	libglade-2.0.so:devel/libglade2
 libglade2_USE_GNOME_IMPL=libxml2 gtk20
 
@@ -211,7 +197,7 @@ introspection_USE_GNOME_IMPL=	glib20
 introspection_MAKE_ENV=		GI_SCANNER_DISABLE_CACHE=1
 
 gconf2_LIB_DEPENDS=	libgconf-2.so:devel/gconf2
-gconf2_USE_GNOME_IMPL=	orbit2 libxml2 gtk20
+gconf2_USE_GNOME_IMPL=	libxml2
 
 libgnomecanvas_LIB_DEPENDS=	libgnomecanvas-2.so:graphics/libgnomecanvas
 libgnomecanvas_USE_GNOME_IMPL=	libglade2 libartlgpl2
@@ -434,17 +420,6 @@ gnome-post-glib-schemas:
 		${ECHO_CMD} "share/glib-2.0/schemas/$${i}" >> ${TMPPLIST}; \
 	done
 	@${ECHO_CMD} "@glib-schemas" >> ${TMPPLIST};
-.endif
-
-.if defined(INSTALLS_OMF)
-_USES_install+=	690:gnome-post-omf
-gnome-post-omf:
-	@for i in `${GREP} "\.omf$$" ${TMPPLIST}`; do \
-		${ECHO_CMD} "@postexec scrollkeeper-install -q %D/$${i} 2>/dev/null || /usr/bin/true" \
-			>> ${TMPPLIST}; \
-		${ECHO_CMD} "@postunexec scrollkeeper-uninstall -q %D/$${i} 2>/dev/null || /usr/bin/true" \
-			>> ${TMPPLIST}; \
-	done
 .endif
 
 .endif

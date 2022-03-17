@@ -2,6 +2,7 @@
 
 PORTNAME=	qstylizer
 PORTVERSION=	0.2.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -29,7 +30,7 @@ USES=		pyqt:5 python:3.7+
 USE_GITHUB=	yes
 GH_ACCOUNT=	blambright
 
-USE_PYQT=	core widgets
+USE_PYQT=	pyqt5
 USE_PYTHON=	autoplist distutils
 
 MAKE_ENV=	PBR_VERSION=${PORTVERSION}

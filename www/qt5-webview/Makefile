@@ -1,6 +1,5 @@
 PORTNAME=	webview
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	2
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -15,8 +14,6 @@ USE_QT=		core declarative gui location network webchannel \
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64 || ${ARCH} == i386
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
 PLIST_SUB+=	WEBENGINE=""
 USE_QT+=	webengine
 .else

@@ -5,11 +5,11 @@ CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
 MAINTAINER=	java@FreeBSD.org
-COMMENT=	Java Development Kit ${JDK_MAJOR_VERSION}
+COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		autoconf>0:devel/autoconf \
@@ -50,15 +50,19 @@ MAKE_ENV=	LANG="C" \
 
 JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:S/i386/x86/:S/powerpc64/ppc64/}
 JDK_BUILDDIR=	${WRKSRC}/build/${JDK_OSARCH}-${JDK_BUILD_JVM}-${JDK_BUILD_TYPE}
+.if defined(BUILD_JRE)
+JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jre
+.else
 JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jdk
+.endif
 INSTALLDIR=	${PREFIX}/${PKGBASE}
 
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	17
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	1
-JDK_BUILD_NUMBER=	12
+JDK_PATCH_VERSION=	2
+JDK_BUILD_NUMBER=	8
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -99,13 +103,17 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 
 JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
 
+.if defined(BUILD_JRE)
+ALL_TARGET=		legacy-images
+.else
 ALL_TARGET=		images
+.endif
 JDK_BUILD_TYPE=		release
 
 .include <bsd.port.pre.mk>
 
 BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk17
-.if ${ARCH} == aarch64 || ${ARCH} == amd64
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || (defined(PPC_ABI) && ${PPC_ABI} == ELFv2) || ${ARCH} == powerpc64le
 BOOTSTRAP_JDKS+=	${LOCALBASE}/bootstrap-openjdk17
 .endif
 BOOTSTRAP_JDKS+=	${LOCALBASE}/openjdk16
@@ -119,7 +127,7 @@ BOOTSTRAPJDKDIR=	${BJDK}
 
 # if no valid jdk found, set dependency
 .if !defined(BOOTSTRAPJDKDIR)
-.  if ${ARCH} == aarch64 || ${ARCH} == amd64
+.  if ${ARCH} == aarch64 || ${ARCH} == amd64 || (defined(PPC_ABI) && ${PPC_ABI} == ELFv2) || ${ARCH} == powerpc64le
 BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk17
 BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk17
 .  else
@@ -135,7 +143,7 @@ CONFIGURE_ARGS+=	--with-toolchain-type=${COMPILER_TYPE}
 
 .if ${COMPILER_TYPE} == gcc
 USE_GCC=	yes
-CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT} -L/usr/local/lib/gcc${GCC_DEFAULT}" \
+CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT} -L${LOCALBASE}/lib/gcc${GCC_DEFAULT}" \
 			--with-extra-cflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}" \
 			--with-extra-cxxflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}"
 .else

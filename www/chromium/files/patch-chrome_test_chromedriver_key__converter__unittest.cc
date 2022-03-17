@@ -1,25 +1,7 @@
---- chrome/test/chromedriver/key_converter_unittest.cc.orig	2021-05-12 22:05:46 UTC
+--- chrome/test/chromedriver/key_converter_unittest.cc.orig	2022-02-28 16:54:41 UTC
 +++ chrome/test/chromedriver/key_converter_unittest.cc
-@@ -264,7 +264,7 @@ TEST(KeyConverter, AllShorthandKeys) {
-       ->Generate(&key_events);
-   builder.Generate(&key_events);
-   builder.SetKeyCode(ui::VKEY_TAB);
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   builder.SetText("\t", "\t")->Generate(&key_events);
- #else
-   builder.SetText(std::string(), std::string());
-@@ -272,7 +272,7 @@ TEST(KeyConverter, AllShorthandKeys) {
-   key_events.push_back(builder.SetType(kKeyUpEventType)->Build());
- #endif
-   builder.SetKeyCode(ui::VKEY_BACK);
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
-   builder.SetText("\b", "\b")->Generate(&key_events);
- #else
-   builder.SetText(std::string(), std::string());
-@@ -283,7 +283,7 @@ TEST(KeyConverter, AllShorthandKeys) {
-   CheckEventsReleaseModifiers("\n\r\n\t\b ", key_events);
+@@ -246,7 +246,7 @@ TEST(KeyConverter, ToggleModifiers) {
+   CheckEventsReleaseModifiers(keys, key_events);
  }
  
 -#if defined(OS_LINUX) || defined(OS_CHROMEOS)
@@ -27,7 +9,7 @@
  // Fails on bots: crbug.com/174962
  #define MAYBE_AllEnglishKeyboardSymbols DISABLED_AllEnglishKeyboardSymbols
  #else
-@@ -340,7 +340,7 @@ TEST(KeyConverter, AllEnglishKeyboardTextChars) {
+@@ -303,7 +303,7 @@ TEST(KeyConverter, AllEnglishKeyboardTextChars) {
  TEST(KeyConverter, AllSpecialWebDriverKeysOnEnglishKeyboard) {
    ui::ScopedKeyboardLayout keyboard_layout(ui::KEYBOARD_LAYOUT_ENGLISH_US);
    const char kTextForKeys[] = {

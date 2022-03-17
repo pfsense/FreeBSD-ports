@@ -1,4 +1,4 @@
---- pcap/bpf.h.orig	2021-12-10 19:41:41 UTC
+--- pcap/bpf.h.orig	2021-06-07 20:21:35 UTC
 +++ pcap/bpf.h
 @@ -78,6 +78,10 @@
   */

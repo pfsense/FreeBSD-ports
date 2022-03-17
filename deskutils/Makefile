@@ -140,6 +140,7 @@
     SUBDIR += kmail
     SUBDIR += kmail-account-wizard
     SUBDIR += knotes
+    SUBDIR += kodaskanna
     SUBDIR += kongress
     SUBDIR += kontact
     SUBDIR += korganizer
@@ -171,13 +172,14 @@
     SUBDIR += mencal
     SUBDIR += menumaker
     SUBDIR += meteo
+    SUBDIR += mindforger
     SUBDIR += moregroupware
     SUBDIR += mozo
     SUBDIR += myitcrm
-    SUBDIR += nautilus-actions
     SUBDIR += nautilus-sendto
     SUBDIR += nextcloudclient
     SUBDIR += note
+    SUBDIR += notekit
     SUBDIR += noti
     SUBDIR += notification-daemon
     SUBDIR += notify-osd
@@ -240,6 +242,7 @@
     SUBDIR += taskd
     SUBDIR += tasksh
     SUBDIR += taskwarrior
+    SUBDIR += taskwarrior-tui
     SUBDIR += teapot
     SUBDIR += terminal-image-viewer
     SUBDIR += thinkingrock

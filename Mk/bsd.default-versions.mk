@@ -60,9 +60,9 @@ GHOSTSCRIPT_DEFAULT?=	agpl
 IMAGEMAGICK_DEFAULT?=	7
 # Possible values: 7, 8, 11, 12, 13, 14, 15, 16
 JAVA_DEFAULT?=		8
-# Possible values: 2.0.12, 2.3.0
+# Possible values: 2.2.0, 2.3.0
 .if !defined(WANT_LAZARUS_DEVEL)
-LAZARUS_DEFAULT?=       2.0.12
+LAZARUS_DEFAULT?=       2.2.0
 .else
 LAZARUS_DEFAULT?=       2.3.0
 .endif
@@ -105,17 +105,17 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .endif
-# Possible values: 9.6, 10, 11, 12, 13, 14
+# Possible values: 10, 11, 12, 13, 14
 PGSQL_DEFAULT?=		13
-# Possible values: 7.3, 7.4, 8.0
-PHP_DEFAULT?=		7.4
-# Possible values: 2.7, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11
+# Possible values: 7.4, 8.0, 8.1
+PHP_DEFAULT?=		8.0
+# Possible values: 2.7, 3.7, 3.8, 3.9, 3.10, 3.11
 PYTHON_DEFAULT?=	3.8
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
-# Possible values: 3.6, 3.7, 3.8, 3.9, 3.10
+# Possible values: 3.7, 3.8, 3.9, 3.10, 3.11
 PYTHON3_DEFAULT?=	3.8
-# Possible values: 2.6, 2.7, 3.0
+# Possible values: 2.6, 2.7, 3.0, 3.1
 RUBY_DEFAULT?=		2.7
 # Possible values: rust, rust-nightly
 RUST_DEFAULT?=		rust

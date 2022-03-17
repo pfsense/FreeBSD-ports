@@ -1,11 +1,11 @@
---- headless/lib/headless_content_main_delegate.cc.orig	2021-09-14 01:51:58 UTC
+--- headless/lib/headless_content_main_delegate.cc.orig	2022-02-28 16:54:41 UTC
 +++ headless/lib/headless_content_main_delegate.cc
-@@ -325,7 +325,7 @@ void HeadlessContentMainDelegate::InitCrashReporter(
-     const base::CommandLine& command_line) {
-   if (command_line.HasSwitch(::switches::kDisableBreakpad))
-     return;
--#if defined(OS_FUCHSIA)
-+#if defined(OS_FUCHSIA) || defined(OS_BSD)
-   // TODO(crbug.com/1226159): Implement this when crash reporting/Breakpad are
-   // available in Fuchsia.
-   NOTIMPLEMENTED();
+@@ -331,7 +331,7 @@ void HeadlessContentMainDelegate::InitCrashReporter(
+   if (process_type != switches::kZygoteProcess) {
+     g_headless_crash_client.Pointer()->set_crash_dumps_dir(
+         options()->crash_dumps_dir);
+-#if !BUILDFLAG(IS_WIN)
++#if !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_BSD)
+     crash_reporter::InitializeCrashpad(process_type.empty(), process_type);
+ #endif  // !BUILDFLAG(IS_WIN)
+     crash_keys::SetSwitchesFromCommandLine(command_line, nullptr);

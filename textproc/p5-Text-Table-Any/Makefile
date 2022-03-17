@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	Text-Table-Any
-PORTVERSION=	0.104
+PORTVERSION=	0.111
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,7 +14,8 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Text-Table-Sprintf>=0:textproc/p5-Text-Table-Sprintf
+RUN_DEPENDS=	p5-Text-Table-Sprintf>=0.006:textproc/p5-Text-Table-Sprintf
+TEST_DEPENDS=	p5-Test-Exception>=0:devel/p5-Test-Exception
 
 USES=		perl5
 USE_PERL5=	configure
@@ -25,8 +26,9 @@ OPTIONS_DEFINE=	RECOMMENDED
 OPTIONS_DEFAULT=RECOMMENDED
 RECOMMENDED_DESC=	Recommended dependencies by upstream
 
-RECOMMENDED_BUILD_DEPENDS=	p5-Term-TablePrint>=0:devel/p5-Term-TablePrint \
-				p5-Text-ANSITable>=0:textproc/p5-Text-ANSITable \
+RECOMMENDED_BUILD_DEPENDS=	p5-Term-Table>=0:devel/p5-Term-Table \
+				p5-Term-TablePrint>=0:devel/p5-Term-TablePrint \
+				p5-Text-ANSITable>=0.602:textproc/p5-Text-ANSITable \
 				p5-Text-ASCIITable>=0:textproc/p5-Text-ASCIITable \
 				p5-Text-FormatTable>=0:textproc/p5-Text-FormatTable \
 				p5-Text-MarkdownTable>=0:textproc/p5-Text-MarkdownTable \
@@ -34,11 +36,11 @@ RECOMMENDED_BUILD_DEPENDS=	p5-Term-TablePrint>=0:devel/p5-Term-TablePrint \
 				p5-Text-Table-ASV>=0:textproc/p5-Text-Table-ASV \
 				p5-Text-Table-CSV>=0.022:textproc/p5-Text-Table-CSV \
 				p5-Text-Table-HTML>=0:textproc/p5-Text-Table-HTML \
-				p5-Text-Table-HTML-DataTables>=0:textproc/p5-Text-Table-HTML-DataTables \
+				p5-Text-Table-HTML-DataTables>=0.009:textproc/p5-Text-Table-HTML-DataTables \
 				p5-Text-Table-LTSV>=0:textproc/p5-Text-Table-LTSV \
 				p5-Text-Table-Manifold>=0:textproc/p5-Text-Table-Manifold \
 				p5-Text-Table-More>=0:textproc/p5-Text-Table-More \
-				p5-Text-Table-Org>=0:textproc/p5-Text-Table-Org \
+				p5-Text-Table-Org>=0.030:textproc/p5-Text-Table-Org \
 				p5-Text-Table-Paragraph>=0:textproc/p5-Text-Table-Paragraph \
 				p5-Text-Table-TSV>=0:textproc/p5-Text-Table-TSV \
 				p5-Text-Table-Tiny>=0:textproc/p5-Text-Table-Tiny \
@@ -50,8 +52,9 @@ RECOMMENDED_BUILD_DEPENDS=	p5-Term-TablePrint>=0:devel/p5-Term-TablePrint \
 				p5-Text-Table-XLSX>=0:textproc/p5-Text-Table-XLSX \
 				p5-Text-TabularDisplay>=0:textproc/p5-Text-TabularDisplay \
 				p5-Text-UnicodeBox>=0:textproc/p5-Text-UnicodeBox
-RECOMMENDED_RUN_DEPENDS=	p5-Term-TablePrint>=0:devel/p5-Term-TablePrint \
-				p5-Text-ANSITable>=0:textproc/p5-Text-ANSITable \
+RECOMMENDED_RUN_DEPENDS=	p5-Term-Table>=0:devel/p5-Term-Table \
+				p5-Term-TablePrint>=0:devel/p5-Term-TablePrint \
+				p5-Text-ANSITable>=0.602:textproc/p5-Text-ANSITable \
 				p5-Text-ASCIITable>=0:textproc/p5-Text-ASCIITable \
 				p5-Text-FormatTable>=0:textproc/p5-Text-FormatTable \
 				p5-Text-MarkdownTable>=0:textproc/p5-Text-MarkdownTable \
@@ -59,11 +62,11 @@ RECOMMENDED_RUN_DEPENDS=	p5-Term-TablePrint>=0:devel/p5-Term-TablePrint \
 				p5-Text-Table-ASV>=0:textproc/p5-Text-Table-ASV \
 				p5-Text-Table-CSV>=0.022:textproc/p5-Text-Table-CSV \
 				p5-Text-Table-HTML>=0:textproc/p5-Text-Table-HTML \
-				p5-Text-Table-HTML-DataTables>=0:textproc/p5-Text-Table-HTML-DataTables \
+				p5-Text-Table-HTML-DataTables>=0.009:textproc/p5-Text-Table-HTML-DataTables \
 				p5-Text-Table-LTSV>=0:textproc/p5-Text-Table-LTSV \
 				p5-Text-Table-Manifold>=0:textproc/p5-Text-Table-Manifold \
 				p5-Text-Table-More>=0:textproc/p5-Text-Table-More \
-				p5-Text-Table-Org>=0:textproc/p5-Text-Table-Org \
+				p5-Text-Table-Org>=0.030:textproc/p5-Text-Table-Org \
 				p5-Text-Table-Paragraph>=0:textproc/p5-Text-Table-Paragraph \
 				p5-Text-Table-TSV>=0:textproc/p5-Text-Table-TSV \
 				p5-Text-Table-TickitWidget>=0:textproc/p5-Text-Table-TickitWidget \

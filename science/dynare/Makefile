@@ -1,5 +1,6 @@
 PORTNAME=	dynare
-DISTVERSION=	4.6.4
+DISTVERSION=	5.0
+PORTREVISION=	1
 CATEGORIES=	science # economics
 MASTER_SITES=	https://www.dynare.org/release/source/
 
@@ -45,6 +46,7 @@ OCTAVE_LIB_DEPENDS=		libfftw3.so:math/fftw3 \
 OCTAVE_RUN_DEPENDS=		octave:math/octave
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/dynare/matlab/preprocessor64/dynare_m
+	# remove empty directories, see https://git.dynare.org/Dynare/dynare/-/issues/1835
+	@${FIND} ${STAGEDIR}${PREFIX} -type d -empty -delete
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	xv
 PORTVERSION=	3.10a
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES+=	graphics
 MASTER_SITES=	ftp://ftp.cis.upenn.edu/pub/xv/:base \
 		SF/png-mng/XV%20jumbo%20patches/20070520
@@ -40,6 +40,9 @@ CFLAGS:= ${CFLAGS:S/-O2//g}
 .if ${PORT_OPTIONS:MM17N}
 MAKE_ENV=	LOCALE_EXTENSION=-DTV_MULTILINGUAL
 DESCR=	${FILESDIR}/pkg-descr
+CONFLICTS_INSTALL=	xv
+.else
+CONFLICTS_INSTALL=	xv-m17n
 .endif
 
 pre-patch:

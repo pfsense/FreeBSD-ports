@@ -1,5 +1,5 @@
 PORTNAME=	mgba
-DISTVERSION=	0.9.2
+DISTVERSION=	0.9.3
 CATEGORIES=	emulators
 
 MAINTAINER=	greg@unrelenting.technology
@@ -61,8 +61,7 @@ LIBRETRO_CMAKE_BOOL=	BUILD_LIBRETRO
 LIBRETRO_CMAKE_ON=	-DLIBRETRO_LIBDIR:PATH="${PREFIX}/lib/libretro"
 LIBRETRO_CONFLICTS_INSTALL=	libretro-mgba
 
-MAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick6 \
-			libMagickCore-6.so:graphics/ImageMagick6
+MAGICK_USES=		magick:6
 MAGICK_CMAKE_BOOL=	USE_MAGICK
 
 QT5_USES=	desktop-file-utils qt:5

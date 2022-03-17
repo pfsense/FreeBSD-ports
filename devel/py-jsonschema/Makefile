@@ -1,8 +1,7 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
 
 PORTNAME=	jsonschema
-PORTVERSION=	4.2.1
-PORTREVISION=	1
+PORTVERSION=	4.4.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,6 +21,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
+
+CONFLICTS_INSTALL=	py*-jsonschema3 # bin/jsonschema
 
 NO_ARCH=	yes
 

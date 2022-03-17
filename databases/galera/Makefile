@@ -1,7 +1,7 @@
 # Created by: Horia Racoviceanu <horia@racoviceanu.com>
 
 PORTNAME=	galera
-PORTVERSION?=	25.3.35
+PORTVERSION?=	25.3.36
 DISTVERSIONPREFIX?=	release_
 CATEGORIES=	databases
 
@@ -14,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BROKEN_aarch64=		fails to compile: gu_int128.h: use of undeclared identifier '__bswap64_var'
 BROKEN_armv6=		fails to compile: gu_int128.h: use of undeclared identifier '__bswap64_var'
 BROKEN_armv7=		fails to compile: gu_int128.h: use of undeclared identifier '__bswap64_var'
-BROKEN_riscv64=		fails to compile: gu_int128.h: use of undeclared identifier '__bswap64_var'
 NOT_FOR_ARCHS=		i386 powerpc
 # On i386 older versions of clang produce:
 #   cannot compile this atomic library call yet ... __atomic_add_fetch
@@ -41,6 +40,8 @@ GH_TUPLE?=	codership:galera:${DISTVERSIONPREFIX}${PORTVERSION}${DISTVERSIONSUFFI
 		codership:wsrep-API:eab2d5d5a31672c0b7d116ef1629ff18392fd7d0:dummy/wsrep/src
 
 CMAKE_ARGS+=	-DGALERA_REVISION=${GH_TAGNAME}
+
+CONFLICTS_INSTALL=	galera26
 
 USE_RC_SUBR=	garb.sh
 

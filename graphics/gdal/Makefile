@@ -1,8 +1,8 @@
 # Created by: Randall Hopper
 
 PORTNAME=	gdal
-PORTVERSION=	3.3.3
-PORTREVISION=	1
+PORTVERSION=	3.4.1
+PORTREVISION=	7
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -20,15 +20,16 @@ LIB_DEPENDS=	libgeotiff.so:graphics/libgeotiff \
 		libjson-c.so:devel/json-c \
 		libpng.so:graphics/png \
 		libproj.so:graphics/proj \
-		libqhull.so:math/qhull \
+		libqhull_r.so:math/qhull \
 		libtiff.so:graphics/tiff
 
-OPTIONS_DEFINE=	ARMADILLO CFITSIO CHARLS CRYPTOPP CURL DEFLATE DODS ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF JASPER KML LERC LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
+OPTIONS_DEFINE=	ARMADILLO BRUNSLI CFITSIO CHARLS CRYPTOPP CURL DEFLATE DODS ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF JASPER KML LERC LIBXML2 LZ4 MYSQL NETCDF ODBC OPENJPEG PCRE PCRE2 PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
-OPTIONS_DEFAULT=CURL EXPAT FREEXL GEOS JASPER LIBXML2 OPENJPEG PCRE PGSQL POPPLER WEBP ZSTD \
+OPTIONS_DEFAULT=CURL EXPAT FREEXL GEOS JASPER LIBXML2 LZ4 OPENJPEG PCRE2 PGSQL POPPLER WEBP ZSTD \
 		HDF5 KML NETCDF SPATIALITE SFCGAL SQLITE XERCES
 OPTIONS_SUB=	yes
+BRUNSLI_DESC=	Brunsli support via libbrunsli library
 CHARLS_DESC=	JPEG-Lossless support via charls
 CRYPTOPP_DESC=	Cryptopp support
 DEFLATE_DESC=	Faster deflate support via libdeflate library
@@ -37,6 +38,7 @@ EXR_DESC=	EXR support via OpenEXR library
 HEIF_DESC=	HEIF support via libheif library
 LERC_DESC=	LERC (Limited Error Raster Compression) support
 PCRE_DESC=	Regular expression support for SQLite
+PCRE2_DESC=	Regular expression support for SQLite
 RASTERLITE2_DESC=	RasterLite2 support
 TILEDB_DESC=	TileDB support
 
@@ -61,6 +63,7 @@ CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		--with-proj=yes \
 		--with-qhull=yes \
 		--with-threads=yes \
+		--without-jpeg12 \
 		--without-libtool \
 		${ICONV_CONFIGURE_ARG}
 GNU_CONFIGURE=	yes
@@ -94,6 +97,8 @@ HEADER_FILES=	alg/gdalwarpkernel_opencl.h \
 ARMADILLO_CONFIGURE_OFF=--with-armadillo=no
 ARMADILLO_CONFIGURE_ON=	--with-armadillo=${LOCALBASE}
 ARMADILLO_LIB_DEPENDS=	libarmadillo.so:math/armadillo
+BRUNSLI_CONFIGURE_WITH=	brunsli
+BRUNSLI_LIB_DEPENDS=	libbrunslidec-c.so:graphics/brunsli
 CFITSIO_CONFIGURE_WITH=	cfitsio
 CFITSIO_LIB_DEPENDS=	libcfitsio.so:astro/cfitsio
 CHARLS_CONFIGURE_WITH=	charls
@@ -138,6 +143,9 @@ LERC_LIB_DEPENDS=	libLerc.so:graphics/lerc
 LIBXML2_CONFIGURE_OFF=	--with-xml2=no
 LIBXML2_CONFIGURE_ON=	--with-xml2=yes
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
+LZ4_CONFIGURE_OFF=	--with-lz4=no
+LZ4_CONFIGURE_ON=	--with-lz4=yes
+LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
 MYSQL_CONFIGURE_OFF=	--with-mysql=no
 MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
 MYSQL_USES=		mysql
@@ -150,6 +158,8 @@ OPENJPEG_CONFIGURE_WITH=openjpeg
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 PCRE_CONFIGURE_WITH=	pcre
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE2_CONFIGURE_WITH=	pcre2
+PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 PGSQL_CONFIGURE_WITH=	pg
 PGSQL_USES=		pgsql
 PODOFO_CONFIGURE_WITH=	podofo

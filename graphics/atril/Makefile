@@ -4,7 +4,7 @@
 
 PORTNAME=	atril
 PORTVERSION=	1.26.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics print mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -43,8 +43,10 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=--disable-thumbnailer \
 		--without-matedesktop \
 		--disable-previewer
+CONFLICTS_INSTALL=	atril
 .else
 USE_MATE+=	desktop
+CONFLICTS_INSTALL=	atril-lite
 .endif
 
 GLIB_SCHEMAS=	org.mate.Atril.gschema.xml

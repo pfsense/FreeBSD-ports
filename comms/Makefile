@@ -136,9 +136,8 @@
     SUBDIR += py-hid
     SUBDIR += py-hidapi
     SUBDIR += py-libimobiledevice
+    SUBDIR += py-libscrc
     SUBDIR += py-pyserial
-    SUBDIR += py-qt5-sensors
-    SUBDIR += py-qt5-serialport
     SUBDIR += py-xmodem
     SUBDIR += pyla
     SUBDIR += qico

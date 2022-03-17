@@ -1,10 +1,10 @@
 # Created by: Shaun Amott <shaun@inerd.com>
 
 PORTNAME=	portscout
-PORTVERSION=	0.8.1.4
+PORTVERSION=	0.8.1.5
 CATEGORIES=	ports-mgmt
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Tool to scan for new versions of FreeBSD ports
 
 LICENSE=	BSD2CLAUSE

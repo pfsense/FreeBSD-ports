@@ -1,8 +1,8 @@
 # Created by: Torsten Blum <torstenb@FreeBSD.org>
 
 PORTNAME=	postfix
-DISTVERSION=	3.6.3
-PORTREVISION?=	0
+DISTVERSION=	3.7.0
+PORTREVISION?=	1
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://ftp.porcupine.org/mirrors/postfix-release/ \
@@ -47,14 +47,14 @@ SCRIPTS_ENV+=	POSTFIX_DEFAULT_MTA="${POSTFIX_DEFAULT_MTA}"
 CONFLICTS_INSTALL=	courier-0.* opensmtpd opensmtpd-devel \
 			postfix-current sendmail sendmail-devel
 
-PORTSCOUT=	limit:^3\.6\.
+PORTSCOUT=	limit:^3\.7\.
 
 USERS=		postfix
 GROUPS=		mail maildrop postfix
 
 OPTIONS_DEFINE=		BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LMDB MYSQL \
-			NIS PCRE PGSQL SASL SQLITE TEST TLS
-OPTIONS_DEFAULT?=	BLACKLISTD EAI PCRE TLS
+			NIS PCRE2 PGSQL SASL SQLITE TEST TLS
+OPTIONS_DEFAULT?=	BLACKLISTD EAI PCRE2 TLS
 OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKMIT SASLKRB5
 .if ${FLAVOR:U} == ldap
@@ -74,6 +74,7 @@ EAI_DESC=		Email Address Internationalization (SMTPUTF8) support
 INST_BASE_DESC=		Install into /usr and /etc/postfix
 LDAP_DESC=		LDAP maps (uses WITH_OPENLDAP_VER)
 LMDB_DESC=		LMDB maps
+PCRE2_DESC=             Use Perl Compatible Regular Expressions, version 2
 RG1_DESC=		Kerberos network authentication protocol type
 SASLKMIT_DESC=		If your SASL req. MIT Kerberos5, select this
 SASLKRB5_DESC=		If your SASL req. Kerberos5, select this
@@ -87,7 +88,7 @@ EAI_LIB_DEPENDS=		libicuuc.so:devel/icu
 LDAP_USE=			OPENLDAP=yes
 LMDB_LIB_DEPENDS=		liblmdb.so:databases/lmdb
 MYSQL_USES?=			mysql
-PCRE_LIB_DEPENDS=		libpcre.so:devel/pcre
+PCRE2_LIB_DEPENDS=		libpcre2-8.so:devel/pcre2
 PGSQL_USES=			pgsql
 SASLKMIT_LIB_DEPENDS=		libkrb5.so:security/krb5
 SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
@@ -190,10 +191,10 @@ POSTFIX_AUXLIBS+=	-L${LOCALBASE}/lib -licuuc
 POSTFIX_CCARGS+=	-DNO_EAI
 .endif
 
-.if ${PORT_OPTIONS:MPCRE}
+.if ${PORT_OPTIONS:MPCRE2}
 DYN_EXT+=		pcre
-POSTFIX_CCARGS+=	-DHAS_PCRE -I${LOCALBASE}/include
-POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_PCRE=`${LOCALBASE}/bin/pcre-config --libs`"
+POSTFIX_CCARGS+=	-DHAS_PCRE=2 -I${LOCALBASE}/include
+POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_PCRE=`${LOCALBASE}/bin/pcre2-config --libs8`"
 .else
 POSTFIX_CCARGS+=	-DNO_PCRE
 .endif
@@ -307,11 +308,11 @@ REINPLACE=	s!^PATH=.*!PATH=/bin:/sbin:/usr/bin:/usr/sbin:${PREFIX}/bin:${PREFIX}
 		s!^(sample_directory =)!\1 ${ETCDIR}!g;\
 		s!($$config_directory/(access|aliases|canonical|generic|header_checks|relocated|transport|virtual):f:root:-:644:)p1!\1o!;
 
-pre-patch:
+post-patch:
 .if ${PORT_OPTIONS:MSASL} && ! ${PORT_OPTIONS:MMYSQL} && exists(${LOCALBASE}/lib/libsasl2.a)
 	@if /usr/bin/nm ${LOCALBASE}/lib/libsasl2.a | ${GREP} -wq "mysql_init"; then \
 		${ECHO_MSG}; \
-		${ECHO_MSG} "Your SASL library it's compiled with MYSQL"; \
+		${ECHO_MSG} "Your SASL library is compiled with MYSQL"; \
 		${ECHO_MSG} "If you use MYSQL in ${PORTNAME} consider CTRL+C and"; \
 		${ECHO_MSG} "select MYSQL OPTION in config menu."; \
 		${ECHO_MSG} "# make clean config"; \
@@ -328,7 +329,6 @@ pre-patch:
 		-type f -a ! \( -name INSTALL -o -name aliases \) | ${XARGS} \
 		${REINPLACE_CMD} -i '' -E -e '${REINPLACE}'
 
-post-patch:
 .for f in ${HTML1}
 	@${ECHO_CMD} '$$html_directory/$f:f:root:-:644' \
 		>> ${WRKSRC}/conf/postfix-files

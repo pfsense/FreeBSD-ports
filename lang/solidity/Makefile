@@ -1,7 +1,7 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
 
 PORTNAME=	solidity
-PORTVERSION=	0.8.10
+PORTVERSION=	0.8.12
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/ethereum/solidity/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -34,7 +34,8 @@ CVC4_CMAKE_OFF=	USE_CVC4
 CMAKE_ARGS+=	-DUSE_LD_GOLD=OFF -DTESTS=OFF \
 		-DRANGE_V3_INCLUDE_DIR="${LOCALBASE}/include" \
 		-DJSONCPP_INCLUDE_DIR:STRING="${LOCALBASE}/include/jsoncpp" \
-		-DJSONCPP_LIB_DIR:STRING="${LOCALBASE}/lib"
+		-DJSONCPP_LIB_DIR:STRING="${LOCALBASE}/lib" \
+		-DSTRICT_Z3_VERSION=OFF
 
 PLIST_FILES=	bin/solc \
 		bin/solidity-upgrade \

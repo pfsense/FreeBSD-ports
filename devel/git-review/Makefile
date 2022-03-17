@@ -1,5 +1,5 @@
 PORTNAME=	git-review
-DISTVERSION=	1.28.0
+DISTVERSION=	2.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 
@@ -13,11 +13,11 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pbr>0:devel/py-pbr@${PY_FLAVOR}
 RUN_DEPENDS=	git:devel/git \
 		${PYTHON_PKGNAMEPREFIX}requests>2.4:www/py-requests@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.7+
 USE_PYTHON=	autoplist distutils concurrent optsuffix
 NO_ARCH=	yes
 
-PORTDOCS=	README.rst HACKING.rst AUTHORS
+PORTDOCS=	README.rst CONTRIBUTING.rst AUTHORS
 
 OPTIONS_DEFINE=	DOCS
 

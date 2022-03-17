@@ -1,42 +1,29 @@
---- third_party/vulkan-deps/vulkan-loader/src/loader/vk_loader_platform.h.orig	2021-07-19 18:47:36 UTC
+--- third_party/vulkan-deps/vulkan-loader/src/loader/vk_loader_platform.h.orig	2022-02-07 13:39:41 UTC
 +++ third_party/vulkan-deps/vulkan-loader/src/loader/vk_loader_platform.h
-@@ -35,7 +35,7 @@
- #include "vulkan/vk_platform.h"
- #include "vulkan/vk_sdk_platform.h"
+@@ -42,7 +42,7 @@
+ #include "dlopen_fuchsia.h"
+ #endif  // defined(__Fuchsia__)
  
--#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__)
-+#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__)
+-#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__)
++#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+ #include <unistd.h>
+ // Note: The following file is for dynamic loading:
+ #include <dlfcn.h>
+@@ -102,7 +102,7 @@
+ // Override layer information
+ #define VK_OVERRIDE_LAYER_NAME "VK_LAYER_LUNARG_override"
+ 
+-#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__)
++#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__) || defined(__OpenBSD__)
  /* Linux-specific common code: */
  
- // Headers:
-@@ -52,6 +52,12 @@
- #include <stdlib.h>
- #include <libgen.h>
- 
-+#if defined(__FreeBSD__)
-+#include <sys/types.h>
-+#include <sys/user.h>
-+#include <libutil.h>
-+#endif
-+
  // VK Library Filenames, Paths, etc.:
- #define PATH_SEPARATOR ':'
- #define DIRECTORY_SYMBOL '/'
-@@ -120,6 +126,17 @@ static inline char *loader_platform_executable_path(ch
-     int ret = proc_pidpath(pid, buffer, size);
-     if (ret <= 0) return NULL;
-     buffer[ret] = '\0';
-+    return buffer;
-+}
-+#elif defined(__FreeBSD__)
-+static inline char *loader_platform_executable_path(char *buffer, size_t size) {
-+    pid_t pid = getpid();
-+    struct kinfo_proc *p = kinfo_getproc(pid);
-+    if (p == NULL) return NULL;
-+    size_t len = strnlen(p->ki_comm, size - 1);
-+    memcpy(buffer, p->ki_comm, len);
-+    buffer[len] = '\0';
-+    free(p);
+@@ -195,7 +195,7 @@ static inline char *loader_platform_executable_path(ch
+ 
      return buffer;
  }
- #elif defined(__Fuchsia__)
+-#elif defined(__Fuchsia__)
++#elif defined(__Fuchsia__) || defined(__OpenBSD__) || defined(__FreeBSD__)
+ static inline char *loader_platform_executable_path(char *buffer, size_t size) { return NULL; }
+ #elif defined(__QNXNTO__)
+ 

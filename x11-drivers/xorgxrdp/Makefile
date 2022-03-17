@@ -1,6 +1,7 @@
 PORTNAME=	xorgxrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.17
+DISTVERSION=	0.2.18
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 DIST_SUBDIR=	xrdp
 
@@ -21,7 +22,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	neutrinolabs
-GH_TUPLE=	neutrinolabs:xrdp:v0.9.17:xrdp
+GH_TUPLE=	neutrinolabs:xrdp:v0.9.18.1:xrdp
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 

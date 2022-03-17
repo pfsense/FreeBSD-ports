@@ -1,7 +1,7 @@
 # Created by: David O'Brien (obrien@NUXI.com)
 
 PORTNAME=	cdecl
-PORTVERSION=	11.6
+PORTVERSION=	11.14
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	devel
 

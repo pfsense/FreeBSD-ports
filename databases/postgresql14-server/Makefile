@@ -1,7 +1,7 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
 
 PORTNAME?=	postgresql
-DISTVERSION?=	14.1
+DISTVERSION?=	14.2
 # PORTREVISION must be ?= otherwise, all slave ports get this PORTREVISION and
 # not their own.  Probably best to keep it at ?=0 when reset here too.
 PORTREVISION?=	0
@@ -266,15 +266,26 @@ LLVM_PORT_SUFFIX=	${COMPILER_VERSION:C/.$//}
 .if ${COMPILER_VERSION} > ${LLVM_DEFAULT_VERSION}
 # LLVM versions in ports are, in order, 70, 80 90, 10, 11, 12... where 10 > 90. [sic]
 .  if ${LLVM_PORT_SUFFIX} < 70
+#    PR 261976 postgresql fails to build with LLVM 14
+.    if ${LLVM_PORT_SUFFIX} > 13
+PG_LLVM_VERSION=13
+PG_COMPILER_VERSION=13
+.    else
 PG_LLVM_VERSION=${LLVM_PORT_SUFFIX}
 PG_COMPILER_VERSION=${LLVM_PORT_SUFFIX}
+.    endif
 .  else
 PG_LLVM_VERSION=11
 PG_COMPILER_VERSION=11
 .  endif
 .else
+.  if ${LLVM_PORT_SUFFIX} > 13
+PG_LLVM_VERSION=13
+PG_COMPILER_VERSION=13
+.  else
 PG_LLVM_VERSION=${LLVM_DEFAULT}
 PG_COMPILER_VERSION=${LLVM_PORT_SUFFIX}
+.  endif
 .endif
 
 .if ${DISTVERSION:C/([0-9]*).*/\1/} >= 11

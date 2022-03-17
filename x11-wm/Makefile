@@ -13,6 +13,7 @@
     SUBDIR += blackbox
     SUBDIR += bspwm
     SUBDIR += cage
+    SUBDIR += cagebreak
     SUBDIR += chamfer
     SUBDIR += compiz
     SUBDIR += compiz-plugins-extra
@@ -24,6 +25,7 @@
     SUBDIR += cwm
     SUBDIR += devilspie
     SUBDIR += durden
+    SUBDIR += dwl
     SUBDIR += dwm
     SUBDIR += e16
     SUBDIR += e16-docs

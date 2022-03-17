@@ -1,7 +1,7 @@
 # Created by: Daniel Solsona <daniel@ish.com.au>, Guido Falsi <madpilot@FreeBSD.org>
 
 PORTNAME=	logstash
-PORTVERSION=	7.15.2
+PORTVERSION=	7.16.3
 DISTVERSIONSUFFIX=	-darwin-x86_64
 CATEGORIES=	sysutils java
 MASTER_SITES=	https://artifacts.elastic.co/downloads/logstash/
@@ -11,6 +11,8 @@ MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	Server-side data ingestion and transformation tool
 
 LICENSE=	APACHE20
+
+ONLY_FOR_ARCHS= aarch64 amd64
 
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
@@ -60,6 +62,12 @@ do-install:
 	${CHMOD} ${BINMODE} ${STAGEDIR}${LOGSTASH_HOME}/${LOGSTASH_JRUBY_SUBDIR}/${x}
 .endfor
 	${INSTALL} -lrs ${STAGEDIR}${ETCDIR} ${STAGEDIR}${LOGSTASH_HOME}/config
+	${RM} -rf ${STAGEDIR}${LOGSTASH_HOME}/vendor/jruby/lib/jni
+	${MKDIR} ${STAGEDIR}${LOGSTASH_HOME}/vendor/jruby/lib/jni
+	(cd ${WRKSRC}/vendor/jruby/lib/jni && \
+	 ${COPYTREE_SHARE} ${ARCH:S/amd64/x86_64/}-FreeBSD \
+	 ${STAGEDIR}${LOGSTASH_HOME}/vendor/jruby/lib/jni)
+
 
 post-install:
 	${ECHO} "@sample ${ETCDIR}/logstash.conf.sample" >> ${TMPPLIST}

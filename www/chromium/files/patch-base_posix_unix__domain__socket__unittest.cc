@@ -1,12 +1,11 @@
---- base/posix/unix_domain_socket_unittest.cc.orig	2021-04-14 18:40:48 UTC
+--- base/posix/unix_domain_socket_unittest.cc.orig	2022-02-28 16:54:41 UTC
 +++ base/posix/unix_domain_socket_unittest.cc
-@@ -8,6 +8,9 @@
- #include <stdint.h>
- #include <sys/socket.h>
+@@ -10,6 +10,8 @@
  #include <sys/types.h>
-+#if defined(OS_BSD)
-+#include <signal.h>
-+#endif
  #include <unistd.h>
  
++#include <signal.h>
++
  #include "base/bind.h"
+ #include "base/callback_helpers.h"
+ #include "base/files/file_util.h"

@@ -2,7 +2,7 @@
 
 PORTNAME=	kbibtex
 DISTVERSION=	0.9.2
-PORTREVISION=	23
+PORTREVISION=	24
 CATEGORIES=	databases kde
 MASTER_SITES=	KDE/stable/KBibTeX/${DISTVERSION}
 
@@ -35,12 +35,5 @@ WEBENGINE_DESC=		Add dependency on qt5-webengine
 WEBENGINE_USE=		QT=webengine
 WEBENGINE_USE_OFF=	QT=webkit
 WEBENGINE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngineWidgets
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MWEBENGINE}
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-.endif
 
 .include <bsd.port.mk>

@@ -1,37 +1,29 @@
---- chrome/browser/metrics/chrome_metrics_service_client.cc.orig	2021-09-24 04:25:58 UTC
+--- chrome/browser/metrics/chrome_metrics_service_client.cc.orig	2022-02-28 16:54:41 UTC
 +++ chrome/browser/metrics/chrome_metrics_service_client.cc
-@@ -721,10 +721,10 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
+@@ -752,7 +752,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
+ 
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+    (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD)
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD) || \
+     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
    metrics_service_->RegisterMetricsProvider(
        std::make_unique<DesktopPlatformFeaturesMetricsProvider>());
--#endif  // defined(OS_WIN) || defined(OS_MAC) || (defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || (defined(OS_LINUX) || defined(OS_BSD) ||
-         // BUILDFLAG(IS_CHROMEOS_LACROS))
- 
- #if BUILDFLAG(ENABLE_PLUGINS)
-@@ -819,10 +819,10 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
+@@ -848,7 +848,7 @@ void ChromeMetricsServiceClient::RegisterMetricsServic
        std::make_unique<PowerMetricsProvider>());
  #endif
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD)
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    metrics_service_->RegisterMetricsProvider(
        metrics::CreateDesktopSessionMetricsProvider());
--#endif  // defined(OS_WIN) || defined(OS_MAC) || (defined(OS_LINUX)
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || (defined(OS_LINUX) || defined(OS_BSD)
- }
- 
- void ChromeMetricsServiceClient::RegisterUKMProviders() {
-@@ -996,7 +996,7 @@ bool ChromeMetricsServiceClient::RegisterForProfileEve
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || (BUILDFLAG(IS_LINUX)
+@@ -1024,7 +1024,7 @@ bool ChromeMetricsServiceClient::RegisterForProfileEve
+ #endif
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+    (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD)
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD) || \
+     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
    // This creates the DesktopProfileSessionDurationsServices if it didn't exist
    // already.
-   metrics::DesktopProfileSessionDurationsServiceFactory::GetForBrowserContext(

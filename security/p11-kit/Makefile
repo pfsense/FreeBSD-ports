@@ -1,7 +1,7 @@
 # Created by: Roman Bogorodskiy <novel@FreeBSD.org>
 
 PORTNAME=	p11-kit
-DISTVERSION=	0.24.0
+DISTVERSION=	0.24.1
 CATEGORIES=	security devel
 MASTER_SITES=	https://github.com/p11-glue/p11-kit/releases/download/${DISTVERSION}/
 

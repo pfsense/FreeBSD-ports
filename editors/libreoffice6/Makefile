@@ -1,5 +1,5 @@
 
-PORTREVISION=	18
+PORTREVISION=	20
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -13,6 +13,9 @@ EXTRACT_ONLY:=	${DISTFILES}
 PKGNAMESUFFIX=	6
 
 COMMENT=	Full integrated office productivity suite
+
+DEPRECATED=	Unsupported upstream. Please consider using editors/libreoffice instead
+EXPIRATION_DATE=2022-03-31
 
 BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		zip:archivers/zip \
@@ -40,7 +43,6 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libcdr-0.1.so:graphics/libcdr01 \
 		libepoxy.so:graphics/libepoxy \
 		libfreehand-0.1.so:graphics/libfreehand \
-		libgltf-0.0.so:graphics/libgltf \
 		libwpg-0.3.so:graphics/libwpg03 \
 		libzmf-0.0.so:graphics/libzmf \
 		libpng.so:graphics/png \
@@ -153,6 +155,7 @@ I18N_CONFIGURE_WITH=	lang=ALL
 I18N_DISTFILES=		${PORTNAME}-dictionaries-${LOVERSION}${EXTRACT_SUFX} \
 			${PORTNAME}-translations-${LOVERSION}${EXTRACT_SUFX}
 I18N_EXTRACT_ONLY=	${I18N_DISTFILES}
+I18N_USES=	gettext-tools
 
 JAVA_BUILD_DEPENDS=	ant:devel/apache-ant \
 			${JAVAJARDIR}/commons-codec.jar:java/apache-commons-codec \

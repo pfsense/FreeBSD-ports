@@ -41,7 +41,6 @@
     SUBDIR += clifm
     SUBDIR += cloc
     SUBDIR += clpbar
-    SUBDIR += cmatrix
     SUBDIR += colortail
     SUBDIR += colwide
     SUBDIR += compat10x
@@ -54,6 +53,7 @@
     SUBDIR += compat8x
     SUBDIR += compat9x
     SUBDIR += concourse
+    SUBDIR += copperspice-examples
     SUBDIR += countrycodes
     SUBDIR += cpuid
     SUBDIR += crosti
@@ -88,7 +88,6 @@
     SUBDIR += erlang-mimerl
     SUBDIR += erlang-mimetypes
     SUBDIR += estic
-    SUBDIR += excel-writer
     SUBDIR += exercism
     SUBDIR += explosions
     SUBDIR += ezc3d
@@ -107,6 +106,7 @@
     SUBDIR += fortune-mod-psalms
     SUBDIR += fortuneit
     SUBDIR += fpc-chm
+    SUBDIR += fq
     SUBDIR += free42
     SUBDIR += freebsd-doc-all
     SUBDIR += freebsd-doc-bn
@@ -356,9 +356,9 @@
     SUBDIR += pecl-timezonedb
     SUBDIR += perkeep
     SUBDIR += pfm
-    SUBDIR += php73-calendar
     SUBDIR += php74-calendar
     SUBDIR += php80-calendar
+    SUBDIR += php81-calendar
     SUBDIR += pinfo
     SUBDIR += pipe
     SUBDIR += posixtestsuite
@@ -408,7 +408,6 @@
     SUBDIR += py-pyprind
     SUBDIR += py-python-geohash
     SUBDIR += py-python-utils
-    SUBDIR += py-qt5-demo
     SUBDIR += py-scikit-fusion
     SUBDIR += py-serverfiles
     SUBDIR += py-soapy_power
@@ -449,7 +448,6 @@
     SUBDIR += rubygem-iesd
     SUBDIR += rubygem-mime-types
     SUBDIR += rubygem-mime-types-data
-    SUBDIR += rubygem-mime-types1
     SUBDIR += rubygem-mimemagic
     SUBDIR += rubygem-octicons
     SUBDIR += rubygem-rabbit
