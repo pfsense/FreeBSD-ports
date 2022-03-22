@@ -77,7 +77,6 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <net/pfvar.h>
 #include <net/route.h>
 #include <netgraph/ng_message.h>
-#include <netgraph/ng_ether.h>
 #include <netinet/if_ether.h>
 #include <netinet/in.h>
 #include <netinet/in_var.h>
@@ -151,8 +150,6 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_interface_setaddress, NULL)
     PHP_FE(pfSense_interface_deladdress, NULL)
     PHP_FE(pfSense_ngctl_name, NULL)
-    PHP_FE(pfSense_ngctl_attach, NULL)
-    PHP_FE(pfSense_ngctl_detach, NULL)
     PHP_FE(pfSense_get_modem_devices, NULL)
     PHP_FE(pfSense_sync, NULL)
     PHP_FE(pfSense_fsync, NULL)
@@ -3210,48 +3207,6 @@ PHP_FUNCTION(pfSense_ngctl_name) {
 	/* Send message */
 	if (NgNameNode(PFSENSE_G(csock), ifname, "%s", newifname) < 0)
 		RETURN_NULL();
-
-	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_ngctl_attach) {
-	char *ifname, *newifname;
-	size_t ifname_len, newifname_len;
-	struct ngm_name name;
-
-	if (PFSENSE_G(csock) == -1)
-		RETURN_NULL();
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &newifname, &newifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
-
-	snprintf(name.name, sizeof(name.name), "%s", newifname);
-	/* Send message */
-	if (NgSendMsg(PFSENSE_G(csock), ifname, NGM_GENERIC_COOKIE,
-		NGM_ETHER_ATTACH, &name, sizeof(name)) < 0)
-			RETURN_NULL();
-
-	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_ngctl_detach) {
-	char *ifname, *newifname;
-	size_t ifname_len, newifname_len;
-	struct ngm_name name;
-
-	if (PFSENSE_G(csock) == -1)
-		RETURN_NULL();
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &newifname, &newifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
-
-	snprintf(name.name, sizeof(name.name), "%s", newifname);
-	/* Send message */
-	if (NgSendMsg(PFSENSE_G(csock), ifname, NGM_ETHER_COOKIE,
-		NGM_ETHER_DETACH, &name, sizeof(name)) < 0)
-			RETURN_NULL();
 
 	RETURN_TRUE;
 }
