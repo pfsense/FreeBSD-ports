@@ -10,6 +10,8 @@ COMMENT=	Pytest plugin for measuring coverage
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pytest4-cov
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>=4.4:devel/py-coverage@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=3.6:devel/py-pytest@${PY_FLAVOR}
 

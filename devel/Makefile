@@ -4458,6 +4458,7 @@
     SUBDIR += py-deepmerge
     SUBDIR += py-defusedxml
     SUBDIR += py-demjson
+    SUBDIR += py-deprecat
     SUBDIR += py-deprecated
     SUBDIR += py-deprecation
     SUBDIR += py-devtools
@@ -5114,6 +5115,9 @@
     SUBDIR += py-pytest-virtualenv
     SUBDIR += py-pytest-xdist
     SUBDIR += py-pytest-xprocess
+    SUBDIR += py-pytest4
+    SUBDIR += py-pytest4-asyncio
+    SUBDIR += py-pytest4-cov
     SUBDIR += py-python-Levenshtein
     SUBDIR += py-python-application
     SUBDIR += py-python-bugzilla

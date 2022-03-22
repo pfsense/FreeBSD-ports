@@ -1,7 +1,7 @@
 # Created by: Stefan Wendler <stefan.wendler@tngtech.com>
 
 PORTNAME=	rubymine
-PORTVERSION=	2021.3.2
+PORTVERSION=	2021.3.3
 CATEGORIES=	devel java
 MASTER_SITES=	https://download.jetbrains.com/ruby/ \
 		http://download.jetbrains.com/ruby/
@@ -17,10 +17,12 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier
 
-USES=		python:run shebangfix ssl
+USES=		cpe python:run shebangfix ssl
 
 USE_JAVA=	yes
 JAVA_VERSION=	11+
+
+CPE_VENDOR=	jetbrains
 
 SHEBANG_FILES=	bin/printenv.py bin/restart.py
 

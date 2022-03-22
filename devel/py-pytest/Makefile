@@ -11,6 +11,8 @@ COMMENT=	Simple powerful testing with Python
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pytest4
+
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}atomicwrites>=1.0:devel/py-atomicwrites@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}attrs>=17.4.0:devel/py-attrs@${PY_FLAVOR} \
