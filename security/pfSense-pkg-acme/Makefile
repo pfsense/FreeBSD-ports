@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.7
-PORTREVISION=	4
+PORTVERSION=	0.7.1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -94,6 +93,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cpanel.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_curanet.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cx.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cyon.sh \
@@ -149,6 +150,8 @@ do-install:
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_gdnsdk.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_gd.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_geoscaling.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_he.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
@@ -271,6 +274,8 @@ do-install:
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_servercow.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_tele3.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_udr.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ultra.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi

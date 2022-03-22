@@ -516,6 +516,15 @@ $acme_domain_validation_method['dns_cn'] = array('name' => "DNS-Core-Networks",
 			'description' => "Core Networks Password"
 		)
 	));
+$acme_domain_validation_method['dns_curanet'] = array('name' => "DNS-curanet.dk, scannet.dk, wannafind.dk, and dandomain.dk",
+	'fields' => array(
+		'CURANET_AUTHCLIENTID' => array('name' => "curanet_authclientid", 'columnheader' => "Client ID", 'type' => "textbox",
+			'description' => "Authentication Client ID"
+		),
+		'CURANET_AUTHSECRET' => array('name' => "curanet_authsecret", 'columnheader' => "Secret", 'type' => "password",
+			'description' => "Authentication Secret"
+		)
+	));
 $acme_domain_validation_method['dns_cyon'] = array('name' => "DNS-cyon.ch",
 	'fields' => array(
 		'CY_Username' => array('name' => "cy_username", 'columnheader' => "Username", 'type' => "textbox",
@@ -712,6 +721,15 @@ $acme_domain_validation_method['dns_freedns'] = array('name' => "DNS-FreeDNS",
 	'fields' => array(
 		'GANDI_LIVEDNS_KEY' => array('name' => "gandi_livedns_key", 'columnheader' => "API Key", 'type' => "textbox",
 			'description' => "Gandi LiveDNS API Key, retrieved from <a href=\"https://account.gandi.net\">https://account.gandi.net</a>"
+		)
+	));
+$acme_domain_validation_method['dns_geoscaling'] = array('name' => "DNS-Geoscaling",
+	'fields' => array(
+		'GEOSCALING_Username' => array('name' => "geoscaling_username", 'columnheader' => "Username", 'type' => "textbox",
+			'description' => "Username"
+		),
+		'GEOSCALING_Password' => array('name' => "geoscaling_password", 'columnheader' => "Password", 'type' => "password",
+			'description' => "Password"
 		)
 	));
 $acme_domain_validation_method['dns_gd'] = array('name' => "DNS-GoDaddy",
@@ -1270,6 +1288,15 @@ $acme_domain_validation_method['dns_tele3'] = array('name' => "DNS-Tele3.cz",
 		),
 		'TELE3_Secret' => array('name' => "tele3_secret", 'columnheader' => "Secret", 'type' => "password",
 			'description' => "Tele3 Secret"
+		)
+	));
+$acme_domain_validation_method['dns_udr'] = array('name' => "DNS-United-Domains Reselling",
+	'fields' => array(
+		'UDR_USER' => array('name' => "udr_user", 'columnheader' => "Username", 'type' => "textbox",
+			'description' => "Username"
+		),
+		'UDR_PASS' => array('name' => "udr_pass", 'columnheader' => "Password", 'type' => "password",
+			'description' => "Password"
 		)
 	));
 $acme_domain_validation_method['dns_ultra'] = array('name' => "DNS-UltraDNS",
