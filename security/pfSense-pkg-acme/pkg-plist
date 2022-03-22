@@ -28,6 +28,7 @@ pkg/acme/dnsapi/dns_cn.sh
 pkg/acme/dnsapi/dns_conoha.sh
 pkg/acme/dnsapi/dns_constellix.sh
 pkg/acme/dnsapi/dns_cpanel.sh
+pkg/acme/dnsapi/dns_curanet.sh
 pkg/acme/dnsapi/dns_cx.sh
 pkg/acme/dnsapi/dns_cyon.sh
 pkg/acme/dnsapi/dns_da.sh
@@ -56,6 +57,7 @@ pkg/acme/dnsapi/dns_gandi_livedns.sh
 pkg/acme/dnsapi/dns_gcloud.sh
 pkg/acme/dnsapi/dns_gdnsdk.sh
 pkg/acme/dnsapi/dns_gd.sh
+pkg/acme/dnsapi/dns_geoscaling.sh
 pkg/acme/dnsapi/dns_he.sh
 pkg/acme/dnsapi/dns_hetzner.sh
 pkg/acme/dnsapi/dns_hexonet.sh
@@ -117,6 +119,7 @@ pkg/acme/dnsapi/dns_selectel.sh
 pkg/acme/dnsapi/dns_servercow.sh
 pkg/acme/dnsapi/dns_simply.sh
 pkg/acme/dnsapi/dns_tele3.sh
+pkg/acme/dnsapi/dns_udr.sh
 pkg/acme/dnsapi/dns_ultra.sh
 pkg/acme/dnsapi/dns_unoeuro.sh
 pkg/acme/dnsapi/dns_variomedia.sh
