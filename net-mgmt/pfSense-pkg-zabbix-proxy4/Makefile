@@ -7,7 +7,8 @@ PORTNAME=	pfSense-pkg-zabbix-proxy4
 CONFLICTS=	pfSense-pkg-zabbix-proxy \
 		pfSense-pkg-zabbix-proxy44 \
 		pfSense-pkg-zabbix-proxy5 \
-		pfSense-pkg-zabbix-proxy54
+		pfSense-pkg-zabbix-proxy54 \
+		pfSense-pkg-zabbix-proxy6
 
 RUN_DEPENDS=	zabbix_proxy:net-mgmt/zabbix4-proxy
 

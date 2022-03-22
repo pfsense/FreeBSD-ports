@@ -16968,3 +16968,5 @@ games/pushover|games/domino-chain|2022-03-17|Chase upstream rename
 graphics/darktable38|graphics/darktable|2022-03-19|Darktable was upgraded to 3.8, separate port no longer needed
 security/1password-client-devel|security/1password-client2|2022-03-19|cli version 2 is now released.
 x11-toolkits/pangoxsl||2022-03-20|Has expired: Abandonware and not used by any port
+net-mgmt/pfSense-pkg-zabbix-agent|net-mgmt/pfSense-pkg-zabbix-agent4|2022-03-22|Zabbix 3 expired
+net-mgmt/pfSense-pkg-zabbix-proxy|net-mgmt/pfSense-pkg-zabbix-proxy4|2022-03-22|Zabbix 3 expired
