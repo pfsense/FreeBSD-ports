@@ -635,7 +635,7 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/so_rules/");
 
-		/* If we extracted the SO rule library objects, then also extract the rules stubs
+		/* If we extracted the SO rule library objects, then also extract the rules stubs */
 		if ($nosorules == false) {
 			/* extract Shared Object stub rules, rename and copy to the rules folder. */
 			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "--exclude precompiled/ --exclude src/ so_rules/")) {
