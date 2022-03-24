@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -576,12 +576,14 @@ if ($snortdownload == 'on') {
 		snort_update_status(gettext("Installing Snort Subscriber ruleset..."));
 
 		/* Determine the platform FreeBSD major version so we can unpack  */
-		/* the corresponding SO rules. Default to FreeBSD-11.             */
-		$freebsd_version_so = 'FreeBSD-11';
-		$major_os_ver = strcspn(php_uname('r'), ".-");
-		if ($major_os_ver > 0) {
-			$freebsd_version_so = 'FreeBSD-' . substr(php_uname('r'), 0, $major_os_ver);
-		}
+		/* the corresponding SO rules. Default to FreeBSD-13 for now.     */
+		$freebsd_version_so = 'FreeBSD-13';
+
+# Leave the automated OS version determination commented-out until pfSense moves off of FreeBSD-12
+#		$major_os_ver = strcspn(php_uname('r'), ".-");
+#		if ($major_os_ver > 0) {
+#			$freebsd_version_so = 'FreeBSD-' . substr(php_uname('r'), 0, $major_os_ver);
+#		}
 
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;
@@ -616,22 +618,24 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/preproc_rules");
 
-		/* extract so rules */
-		error_log(gettext("\tUsing Snort Subscriber precompiled SO rules for {$freebsd_version_so} ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		/* extract SO rules */
 		$snort_arch = php_uname("m");
-		$nosorules = false;
-		if ($snort_arch  == 'i386'){
-			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/i386/{$snort_version}/")) {
-				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/i386/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
+		$nosorules = true;
+
+		/****************************************************************************/
+		/* Snort SO rules only exist for Intel/AMD 64-bit architecture on FreeBSD,  */
+		/* so check if our platform is compatible, else set flag for "no SO rules". */
+		/****************************************************************************/
+		if ($snort_arch == 'amd64') {
+			error_log(gettext("\tUsing Snort Subscriber precompiled SO rules for {$freebsd_version_so} ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/x86_64/{$snort_version}/")) {
+				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/x86_64/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
+				$nosorules = false;
 			}
-		} elseif ($snort_arch == 'amd64') {
-			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/x86-64/{$snort_version}/")) {
-				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/x86-64/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
-			}
-		} else
-			$nosorules = true;
+		}
 		rmdir_recursive("{$tmpfname}/so_rules/");
 
+		/* If we extracted the SO rule library objects, then also extract the rules stubs */
 		if ($nosorules == false) {
 			/* extract Shared Object stub rules, rename and copy to the rules folder. */
 			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "--exclude precompiled/ --exclude src/ so_rules/")) {
@@ -643,6 +647,7 @@ if ($snortdownload == 'on') {
 			}
 			rmdir_recursive("{$tmpfname}/so_rules/");
 		}
+
 		/* extract base etc files */
 		if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "etc/")) {
 			foreach (array("classification.config", "reference.config", "gen-msg.map", "unicode.map") as $file) {
