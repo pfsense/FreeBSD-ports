@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pfBlockerNG-devel
 PORTVERSION=	3.1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -117,16 +117,16 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng.sh \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_unbound.py \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_unbound_include.inc \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_py_hsts.txt \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/pfblockerng/www/index.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/pfblockerng/www/dnsbl_default.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
-	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_unbound.py \
-		${STAGEDIR}/var/unbound
-	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_unbound_include.inc \
-		${STAGEDIR}/var/unbound
-	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_py_hsts.txt \
-		${STAGEDIR}/var/unbound
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
