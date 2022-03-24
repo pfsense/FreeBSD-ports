@@ -8486,6 +8486,17 @@ function sync_package_pfblockerng($cron='') {
 							$pfb_script_post = "/usr/local/pkg/pfblockerng/{$list['script_post']}";
 						}
 
+						// IP v4/6 Advanced Tunable - (Pre/Post Script processing)
+						$pfb_script_pre = FALSE;
+						if (isset($list['script_pre']) && !empty($list['script_pre'])) {
+							$pfb_script_pre = "/usr/local/pkg/pfblockerng/{$list['script_pre']}";
+						}
+
+						$pfb_script_post = FALSE;
+						if (isset($list['script_post']) && !empty($list['script_post'])) {
+							$pfb_script_post = "/usr/local/pkg/pfblockerng/{$list['script_post']}";
+						}
+
 						// Determine 'list' details (return array $pfbarr)
 						if (isset($list['dnsblip'])) {
 							$list_type = 'pfblockerngdnsblsettings';
