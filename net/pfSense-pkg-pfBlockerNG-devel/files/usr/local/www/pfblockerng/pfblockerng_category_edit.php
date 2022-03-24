@@ -3,7 +3,7 @@
  * pfblockerng_category_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -20,7 +20,6 @@
  * limitations under the License.
  */
 
-require_once('util.inc');
 require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
@@ -408,7 +407,6 @@ if ($_POST && isset($_POST['save'])) {
 			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']	?: 'default';
 
 			$config['installedpackages'][$conf_type]['config'][$rowid]['suppression_cidr']	= $_POST['suppression_cidr']	?: 'Disabled';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['srcint']		= $_POST['srcint']		?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['whois_convert']	= $_POST['whois_convert']	?: '';
 		}
 		else {
@@ -530,7 +528,6 @@ else {
 		$pconfig['agateway_out']	= $rowdata[$rowid]['agateway_out'];
 
 		$pconfig['suppression_cidr']	= $rowdata[$rowid]['suppression_cidr'];
-		$pconfig['srcint']		= $rowdata[$rowid]['srcint'];
 
 		$pconfig['whois_convert']	= $rowdata[$rowid]['whois_convert'];
 	}
@@ -1188,7 +1185,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		$form->add($section);
 	}
 
-	if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+	if ($gtype == 'ipv4') {
 
 		// Print Advanced Tunables section
 		$section = new Form_Section('Advanced Tuneables', 'advancedtunable', COLLAPSIBLE|SEC_CLOSED);
@@ -1196,36 +1193,17 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 			NULL,
 			'These are \'Advanced\' settings and are typically best left at Default settings!')
 		);
-		
-		$interfaces_list = get_interface_list();
-		$src_interfaces = array('lo0' => 'Localhost');
-		foreach ($interfaces_list as $key => $value) {
-			$src_interfaces = array_merge(array($key => strtoupper($interfaces_list[$key]['friendly'])), $src_interfaces);
-		}
-		$src_interfaces = array_merge(array('' => 'Default'), $src_interfaces);
-	
-		if ($gtype == 'ipv4') {
 
-			$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, -1), range(1, 17, -1));
-			$section->addInput(new Form_Select(
-				'suppression_cidr',
-				'Suppression CIDR Limit',
-				$pconfig['suppression_cidr'],
-				$list
-			))->setHelp('When suppression is enabled, this option will limit the CIDR block for this entire IPv4 Alias'
-					. '(Excluding the Custom List IP addresses)<br />Default: <strong>Disabled</strong> (No CIDR limit)')
-			  ->setAttribute('style', 'width: auto');
-		}
-		
-		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
-			$section->addInput(new Form_Select(
-				'srcint',
-				'cURL Interface',
-				$pconfig['srcint'],
-				$src_interfaces
-			))->setHelp('Use this interface when downloadling lists. This option sets <code>CURLOPT_INTERFACE</code> to the value selected above for all Feeds in this Alias.')
-		 	 ->setAttribute('style', 'width: auto');
-		}
+		$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, -1), range(1, 17, -1));
+
+		$section->addInput(new Form_Select(
+			'suppression_cidr',
+			'Suppression CIDR Limit',
+			$pconfig['suppression_cidr'],
+			$list
+		))->setHelp('When suppression is enabled, this option will limit the CIDR block for this entire IPv4 Alias'
+				. '(Excluding the Custom List IP addresses)<br />Default: <strong>Disabled</strong> (No CIDR limit)')
+		  ->setAttribute('style', 'width: auto');
 
 		$form->add($section);
 	}
