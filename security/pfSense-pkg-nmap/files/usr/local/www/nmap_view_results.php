@@ -104,8 +104,8 @@ if (file_exists($fp.$fn) and $processisrunning != true) {
 		'clearbtn',
 		'Clear Results',
 		null,
-		'fa-undo'
-	))->setHelp('Clear scan results file.')->addClass('btn-danger restore');
+		'fa-trash'
+	))->setHelp('Clear scan results file.')->addClass('btn-danger');
 
 	$section->add($group);
 
