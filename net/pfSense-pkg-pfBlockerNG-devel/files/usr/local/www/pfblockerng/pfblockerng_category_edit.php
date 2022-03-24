@@ -407,6 +407,9 @@ if ($_POST && isset($_POST['save'])) {
 			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']	?: 'default';
 
 			$config['installedpackages'][$conf_type]['config'][$rowid]['suppression_cidr']	= $_POST['suppression_cidr']	?: 'Disabled';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['script_pre']	= $_POST['script_pre']		?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['script_post']	= $_POST['script_post']		?: '';
+
 			$config['installedpackages'][$conf_type]['config'][$rowid]['whois_convert']	= $_POST['whois_convert']	?: '';
 		}
 		else {
@@ -528,6 +531,8 @@ else {
 		$pconfig['agateway_out']	= $rowdata[$rowid]['agateway_out'];
 
 		$pconfig['suppression_cidr']	= $rowdata[$rowid]['suppression_cidr'];
+		$pconfig['script_pre']		= $rowdata[$rowid]['script_pre'];
+		$pconfig['script_post']		= $rowdata[$rowid]['script_post'];
 
 		$pconfig['whois_convert']	= $rowdata[$rowid]['whois_convert'];
 	}
@@ -1191,6 +1196,42 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		$form->add($section);
 	}
 
+	// Collect pre/post processing scripts
+	$listpre = $listpost = array();
+	$indexdir = '/usr/local/pkg/pfblockerng/';
+	if (is_dir("{$indexdir}")) {
+		
+		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+			$list_prefix = 'ip';
+		} else {
+			$list_prefix = 'dnsbl';
+		}
+
+		$list = glob("{$indexdir}/{$list_prefix}_pre_*.{sh,py}", GLOB_BRACE);
+		if (!empty($list)) {
+			foreach ($list as $line) {
+				$file = pathinfo($line, PATHINFO_BASENAME);
+				$l = array($file => $file);
+				$listpre = array_merge($listpre, $l);
+			}
+		}
+
+		$list = glob("{$indexdir}/{$list_prefix}_post_*.{sh,py}", GLOB_BRACE);
+		if (!empty($list)) {
+			foreach ($list as $line) {
+				$file = pathinfo($line, PATHINFO_BASENAME);
+				$l = array($file => $file);
+				$listpost = array_merge($listpost, $l);
+			}
+		}
+	}
+
+	$listpre = array_merge(array('' => 'None'), $listpre);
+	$listpre_size = count($listpre) ?: '1';
+
+	$listpost = array_merge(array('' => 'None'), $listpost);
+	$listpost_size = count($listpost) ?: '1';
+
 	if ($gtype == 'ipv4') {
 
 		// Print Advanced Tunables section
@@ -1210,6 +1251,26 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		))->setHelp('When suppression is enabled, this option will limit the CIDR block for this entire IPv4 Alias'
 				. '(Excluding the Custom List IP addresses)<br />Default: <strong>Disabled</strong> (No CIDR limit)')
 		  ->setAttribute('style', 'width: auto');
+
+		$section->addInput(new Form_Select(
+			'script_pre',
+			'Pre-process Script',
+			$pconfig['script_pre'],
+			$listpre
+		))->sethelp("Pre-processing Shell script after download.<br />"
+		  	. "Script location: /usr/local/pkg/pfblockerng/<strong>ip_pre_SCRIPT NAME.sh|py</strong> or <strong>dnsbl_pre_SCRIPT NAME.sh|py</strong>")
+		  ->setAttribute('style', 'width: auto')
+		  ->setAttribute('size', $listpre_size);
+
+		$section->addInput(new Form_Select(
+			'script_post',
+			'Post-process Script',
+			$pconfig['script_post'],
+			$listpost
+		))->sethelp("Post-processing Shell script after download.<br />"
+			. "Script location: /usr/local/pkg/pfblockerng/<strong>ip_post_SCRIPT NAME.sh|py</strong> or <strong>dnsbl_post_SCRIPT name.sh|py</strong>")
+		  ->setAttribute('style', 'width: auto')
+		  ->setAttribute('size', $listpost_size);
 
 		$form->add($section);
 	}

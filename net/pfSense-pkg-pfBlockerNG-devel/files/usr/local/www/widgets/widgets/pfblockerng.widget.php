@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2015-2022 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based Upon pfBlocker
@@ -593,15 +593,15 @@ function pfBlockerNG_get_header($mode='') {
 	$widget_head = 	array ( array (	'Deny'		=> '',
 					'Pass'		=> '',
 					'Match'		=> '',
-					'Suppression'	=> "{$pfb['supptxt']}"),
+					'Suppression'	=> "{$pfb['ipconfig']['v4suppression']}"),
 
 				array (	'DNSBL'		=> '',
 					'Queries'	=> '',
 					'Percent'	=> '',
-					'Whitelist'	=> "{$pfb['dnsbl_supptxt']}"));
+					'Whitelist'	=> "{$pfb['dnsblconfig']['suppression']}"));
 
 	foreach ($widget_head as $key => $line) {
-		foreach ($line as $type => $file_path) {
+		foreach ($line as $type => $config_path) {
 
 			$stats[$key][$type] = 0;
 			if ($type == 'DNSBL') {
@@ -612,9 +612,15 @@ function pfBlockerNG_get_header($mode='') {
 				}
 			}
 
-			elseif (($type == 'Suppression' || $type == 'Whitelist') && file_exists("{$file_path}")) {
+			elseif ($type == 'Suppression' || $type == 'Whitelist') {
 
-				$gcount = exec("{$pfb['grep']} -c ^ {$file_path} 2>&1");
+				$gcount = 0;
+				foreach (pfbng_text_area_decode($config_path, TRUE, FALSE, TRUE) as $cline) {
+					if (substr(trim($cline), 0, 1) != '#' && !empty($cline)) {
+						$gcount++;
+					}
+				}
+
 				if (is_numeric($gcount)) {
 					$stats[$key][$type] = number_format( $gcount, 0, '', ',' ) ?: 0;
 				} else {

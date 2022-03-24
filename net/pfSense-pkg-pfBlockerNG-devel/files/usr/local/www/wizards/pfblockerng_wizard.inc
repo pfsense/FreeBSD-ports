@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2015-2022 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -165,9 +165,12 @@ yIChwYnMudHdpbWcuY29tKQ==";
 			$add['description']	= $info['description'];
 
 			foreach($info['feeds'] as $row) {
-				if (isset($row['register'])) {
+
+				// Remove Feeds that require Registration and Discontinued Feeds
+				if (isset($row['register']) || (isset($row['status']) && $row['status'] == 'discontinued')) {
 					continue;
 				}
+
 				if (!is_array($add['row'])) {
 					$add['row'] = array();
 				}
