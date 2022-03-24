@@ -27,4 +27,5 @@ $priv_list['page-diagnostics-nmap']['descr'] = "Allow access to nmap package GUI
 $priv_list['page-diagnostics-nmap']['match'] = array();
 $priv_list['page-diagnostics-nmap']['match'][] = "pkg_edit.php?xml=nmap.xml*";
 
+$priv_list['page-diagnostics-nmap']['match'][] = "nmap_view_results.php*";
 ?>

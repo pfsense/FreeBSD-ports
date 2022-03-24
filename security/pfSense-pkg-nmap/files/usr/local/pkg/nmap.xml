@@ -27,7 +27,7 @@
 ]]>
 	</copyright>
 	<name>nmap</name>
-	<title>Diagnostics: NMap</title>
+	<title>Diagnostics: Nmap</title>
 	<savetext>Scan</savetext>
 	<saveicon>fa-rss</saveicon>
 	<savebtnclass>btn-primary</savebtnclass>
@@ -35,10 +35,21 @@
 	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/nmap.inc</include_file>
 	<menu>
-		<name>NMap</name>
+		<name>Nmap</name>
 		<section>Diagnostics</section>
 		<configfile>nmap.xml</configfile>
 	</menu>
+	<tabs>
+		<tab>
+			<text>Scan</text>
+			<url>/pkg_edit.php?xml=nmap.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>View Results</text>
+			<url>/nmap_view_results.php</url>
+		</tab>
+	</tabs>
 	<fields>
 		<field>
 			<fielddescr>IP or Hostname</fielddescr>
