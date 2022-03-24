@@ -654,7 +654,10 @@
 				{
 					"feed":		"Nix Spam",
 					"website":	"https://www.heise.de/ix/NiX-Spam-DNSBL-and-blacklist-for-download-499637.html",
-					"url":		"http://www.dnsbl.manitu.net/download/nixspam-ip.dump.gz",
+					"url":		"https://www.nixspam.net/download/nixspam-ip.dump.gz",
+					"past_urls": [
+								"http://www.dnsbl.manitu.net/download/nixspam-ip.dump.gz"
+					],
 					"header":	"Nix_Spam"
 				},
 				{
