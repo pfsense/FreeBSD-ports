@@ -3,7 +3,7 @@
  * pfblockerng_category_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -20,6 +20,7 @@
  * limitations under the License.
  */
 
+require_once('util.inc');
 require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
@@ -407,6 +408,13 @@ if ($_POST && isset($_POST['save'])) {
 			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']	?: 'default';
 
 			$config['installedpackages'][$conf_type]['config'][$rowid]['suppression_cidr']	= $_POST['suppression_cidr']	?: 'Disabled';
+<<<<<<< HEAD
+			$config['installedpackages'][$conf_type]['config'][$rowid]['srcint']		= $_POST['srcint']		?: '';
+=======
+			$config['installedpackages'][$conf_type]['config'][$rowid]['script_pre']	= $_POST['script_pre']		?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['script_post']	= $_POST['script_post']		?: '';
+
+>>>>>>> bbaa2f754684 (pfBlockerNG-devel v3.1.0_2)
 			$config['installedpackages'][$conf_type]['config'][$rowid]['whois_convert']	= $_POST['whois_convert']	?: '';
 		}
 		else {
@@ -528,6 +536,12 @@ else {
 		$pconfig['agateway_out']	= $rowdata[$rowid]['agateway_out'];
 
 		$pconfig['suppression_cidr']	= $rowdata[$rowid]['suppression_cidr'];
+<<<<<<< HEAD
+		$pconfig['srcint']		= $rowdata[$rowid]['srcint'];
+=======
+		$pconfig['script_pre']		= $rowdata[$rowid]['script_pre'];
+		$pconfig['script_post']		= $rowdata[$rowid]['script_post'];
+>>>>>>> bbaa2f754684 (pfBlockerNG-devel v3.1.0_2)
 
 		$pconfig['whois_convert']	= $rowdata[$rowid]['whois_convert'];
 	}
@@ -1185,7 +1199,47 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		$form->add($section);
 	}
 
+<<<<<<< HEAD
+	if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+=======
+	// Collect pre/post processing scripts
+	$listpre = $listpost = array();
+	$indexdir = '/usr/local/pkg/pfblockerng/';
+	if (is_dir("{$indexdir}")) {
+		
+		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+			$list_prefix = 'ip';
+		} else {
+			$list_prefix = 'dnsbl';
+		}
+
+		$list = glob("{$indexdir}/{$list_prefix}_pre_*.{sh,py}", GLOB_BRACE);
+		if (!empty($list)) {
+			foreach ($list as $line) {
+				$file = pathinfo($line, PATHINFO_BASENAME);
+				$l = array($file => $file);
+				$listpre = array_merge($listpre, $l);
+			}
+		}
+
+		$list = glob("{$indexdir}/{$list_prefix}_post_*.{sh,py}", GLOB_BRACE);
+		if (!empty($list)) {
+			foreach ($list as $line) {
+				$file = pathinfo($line, PATHINFO_BASENAME);
+				$l = array($file => $file);
+				$listpost = array_merge($listpost, $l);
+			}
+		}
+	}
+
+	$listpre = array_merge(array('' => 'None'), $listpre);
+	$listpre_size = count($listpre) ?: '1';
+
+	$listpost = array_merge(array('' => 'None'), $listpost);
+	$listpost_size = count($listpost) ?: '1';
+
 	if ($gtype == 'ipv4') {
+>>>>>>> bbaa2f754684 (pfBlockerNG-devel v3.1.0_2)
 
 		// Print Advanced Tunables section
 		$section = new Form_Section('Advanced Tuneables', 'advancedtunable', COLLAPSIBLE|SEC_CLOSED);
@@ -1193,17 +1247,56 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 			NULL,
 			'These are \'Advanced\' settings and are typically best left at Default settings!')
 		);
+		
+		$interfaces_list = get_interface_list();
+		$src_interfaces = array('lo0' => 'Localhost');
+		foreach ($interfaces_list as $key => $value) {
+			$src_interfaces = array_merge(array($key => strtoupper($interfaces_list[$key]['friendly'])), $src_interfaces);
+		}
+		$src_interfaces = array_merge(array('' => 'Default'), $src_interfaces);
+	
+		if ($gtype == 'ipv4') {
 
-		$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, -1), range(1, 17, -1));
+			$list = array('Disabled' => 'Disabled') + array_combine(range(1, 17, -1), range(1, 17, -1));
+			$section->addInput(new Form_Select(
+				'suppression_cidr',
+				'Suppression CIDR Limit',
+				$pconfig['suppression_cidr'],
+				$list
+			))->setHelp('When suppression is enabled, this option will limit the CIDR block for this entire IPv4 Alias'
+					. '(Excluding the Custom List IP addresses)<br />Default: <strong>Disabled</strong> (No CIDR limit)')
+			  ->setAttribute('style', 'width: auto');
+		}
+		
+		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+			$section->addInput(new Form_Select(
+				'srcint',
+				'cURL Interface',
+				$pconfig['srcint'],
+				$src_interfaces
+			))->setHelp('Use this interface when downloadling lists. This option sets <code>CURLOPT_INTERFACE</code> to the value selected above for all Feeds in this Alias.')
+		 	 ->setAttribute('style', 'width: auto');
+		}
 
 		$section->addInput(new Form_Select(
-			'suppression_cidr',
-			'Suppression CIDR Limit',
-			$pconfig['suppression_cidr'],
-			$list
-		))->setHelp('When suppression is enabled, this option will limit the CIDR block for this entire IPv4 Alias'
-				. '(Excluding the Custom List IP addresses)<br />Default: <strong>Disabled</strong> (No CIDR limit)')
-		  ->setAttribute('style', 'width: auto');
+			'script_pre',
+			'Pre-process Script',
+			$pconfig['script_pre'],
+			$listpre
+		))->sethelp("Pre-processing Shell script after download.<br />"
+		  	. "Script location: /usr/local/pkg/pfblockerng/<strong>ip_pre_SCRIPT NAME.sh|py</strong> or <strong>dnsbl_pre_SCRIPT NAME.sh|py</strong>")
+		  ->setAttribute('style', 'width: auto')
+		  ->setAttribute('size', $listpre_size);
+
+		$section->addInput(new Form_Select(
+			'script_post',
+			'Post-process Script',
+			$pconfig['script_post'],
+			$listpost
+		))->sethelp("Post-processing Shell script after download.<br />"
+			. "Script location: /usr/local/pkg/pfblockerng/<strong>ip_post_SCRIPT NAME.sh|py</strong> or <strong>dnsbl_post_SCRIPT name.sh|py</strong>")
+		  ->setAttribute('style', 'width: auto')
+		  ->setAttribute('size', $listpost_size);
 
 		$form->add($section);
 	}
