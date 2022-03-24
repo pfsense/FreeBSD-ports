@@ -39,47 +39,61 @@ function nmap_custom_php_validation_command($post, &$input_errors) {
 }
 
 function nmap_custom_add_php_command() {
-	$nmap_options = "";
+	$fp = "/root/";
+	$fn = "nmap.result";
+	/* check if nmap scan is already running */
+	$processcheck = (trim(shell_exec("/bin/ps axw -O pid= | /usr/bin/grep 'tee {$fp}{$fn}' | /usr/bin/egrep -v '(pflog|grep)'")));
 
-	if (is_ipaddrv6($_POST['hostname']) || is_subnetv6($_POST['hostname'])) {
-		$nmap_options .= " -6";
-	}
+	$processisrunning = ($processcheck != "");
 
-	switch($_POST['scanmethod']) {
-		case 'syn':
-			$nmap_options .= " -sS";
-			break;
-		case 'connect':
-			$nmap_options .= " -sT";
-			break;
-		case 'icmp':
-			$nmap_options .= " -sP";
-			break;
-		case 'udp':
-			$nmap_options .= " -sU";
-			break;
-		case 'arp':
-			$nmap_options .= " -sP -PR";
-			break;
-	}
+	if ($processisrunning) {
+		echo "<strong>Nmap is already running. Please wait for current scan to complete</strong><br />";
+		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to Nmap") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to Nmap") . '</button>';
+	} else {
+		$nmap_options = "";
 
-	if ($_POST['noping']) {
-		$nmap_options .= " -P0";
-	}
-	if ($_POST['servicever']) {
-		$nmap_options .= " -sV";
-	}
-	if ($_POST['osdetect']) {
-		$nmap_options .= " -O";
-	}
-	if (!empty($_POST['interface'])) {
-		$nmap_options .= " -e " . get_real_interface($_POST['interface']);
-	}
+		if (is_ipaddrv6($_POST['hostname']) || is_subnetv6($_POST['hostname'])) {
+			$nmap_options .= " -6";
+		}
 
-	$nmap_options .= " " . escapeshellarg($_POST['hostname']);
-	echo "<strong>Running: /usr/local/bin/nmap {$nmap_options}</strong><br />";
-	system("/usr/local/bin/nmap" . $nmap_options);
-	echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to NMap") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to NMap") . '</button>';
+		switch($_POST['scanmethod']) {
+			case 'syn':
+				$nmap_options .= " -sS";
+				break;
+			case 'connect':
+				$nmap_options .= " -sT";
+				break;
+			case 'icmp':
+				$nmap_options .= " -sP";
+				break;
+			case 'udp':
+				$nmap_options .= " -sU";
+				break;
+			case 'arp':
+				$nmap_options .= " -sP -PR";
+				break;
+		}
+
+		if ($_POST['noping']) {
+			$nmap_options .= " -P0";
+		}
+		if ($_POST['servicever']) {
+			$nmap_options .= " -sV";
+		}
+		if ($_POST['osdetect']) {
+			$nmap_options .= " -O";
+		}
+		if (!empty($_POST['interface'])) {
+			$nmap_options .= " -e " . get_real_interface($_POST['interface']);
+		}
+
+		$nmap_options .= " " . escapeshellarg($_POST['hostname']);
+		$cmd = "/usr/local/bin/nmap {$nmap_options} | /usr/bin/tee {$fp}{$fn}";
+		echo "<strong>Running: {$cmd}</strong><br />";
+		mwexec_bg($cmd);
+		echo "<strong>Check results in View Results TAB</strong><br />";
+		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to Nmap") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to Nmap") . '</button>';
+	}
 }
 
 function nmap_get_interfaces() {
