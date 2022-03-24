@@ -3329,7 +3329,7 @@ function find_reported_header($ip, $pfbfolder, $geoip=FALSE) {
 
 
 // Function to download feeds
-function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $logtype, $vtype='', $timeout=300, $type='', $username='', $password='') {
+function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $logtype, $vtype='', $timeout=300, $type='', $username='', $password='', $srcint=FALSE) {
 	global $pfb;
 	$http_status = '';
 	$elog = ">> {$pfb['log']} 2>&1";
@@ -3402,6 +3402,10 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 				curl_setopt($ch, CURLOPT_FILE, $fhandle);	// Add $fhandle setting to cURL
 				curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);	// Set cURL download timeout
 				curl_setopt($ch, CURLOPT_ENCODING, 'gzip');	// Request 'gzip' encoding from server if available
+				if ($srcint) {
+					curl_setopt($ch, CURLOPT_INTERFACE, $srcint);	// Use a specific interface when downloading lists
+					pfb_logger("\nList: ${header} will be downloaded via interface: {$srcint}\n", 1);
+				}
 
 				if (!empty($username) && !empty($password)) {
 					curl_setopt($ch, CURLOPT_USERPWD, "{$username}:{$password}");
@@ -7433,7 +7437,7 @@ function sync_package_pfblockerng($cron='') {
 									} else {
 										// Download file
 										if (!pfb_download($row['url'], $file_dwn, $pflex, $header,
-											$row['format'], 1)) {
+											$row['format'], 1, '', '', '', '', '', $srcint)) {
 
 											// Determine reason for download failure
 											pfb_download_failure($alias, $header, $pfbfolder, $row['url']);
@@ -8448,6 +8452,9 @@ function sync_package_pfblockerng($cron='') {
 						if (isset($list['suppression_cidr'])) {
 							$pfbcidr = "{$list['suppression_cidr']}";
 						}
+						
+						// cURL Source Interface (sets CURLOPT_INTERFACE)
+						$srcint = $list['srcint'] ?: FALSE;
 
 						// Determine 'list' details (return array $pfbarr)
 						if (isset($list['dnsblip'])) {
@@ -8532,7 +8539,7 @@ function sync_package_pfblockerng($cron='') {
 								else {
 									// Download list
 									if (!pfb_download($row['url'], $file_dwn, $pflex, $header, $row['format'],
-										1, $list['vtype'])) {
+										1, $list['vtype'], '', '', '', '', $srcint)) {
 
 										// Determine reason for download failure
 										pfb_download_failure($alias, $header, $pfbfolder, $row['url']);
