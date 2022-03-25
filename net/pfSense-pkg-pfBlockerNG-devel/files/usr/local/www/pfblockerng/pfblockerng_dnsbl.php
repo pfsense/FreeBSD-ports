@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2015-2022 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -2530,12 +2530,12 @@ $section->addInput(new Form_Checkbox(
 
 $form->add($section);
 
-$section = new Form_Section('DNSBL Whitelist', 'DNSBL_Whitelist_customlist', COLLAPSIBLE|SEC_CLOSED);
-
 // Create page anchor for DNSBL Whitelist
 $section->addInput(new Form_StaticText(
 	NULL,
 	'<div id="Whitelist"></div>'));
+
+$form->add($section);
 
 $suppression_text = 'No Regex Entries Allowed!&emsp;
 			<div class="infoblock">
@@ -2552,6 +2552,7 @@ $suppression_text = 'No Regex Entries Allowed!&emsp;
 				&emsp; ie: \'drill @8.8.8.8 example.com\'
 			</div>';
 
+$section = new Form_Section('DNSBL Whitelist', 'DNSBL_Whitelist_customlist', COLLAPSIBLE|SEC_CLOSED);
 $section->addInput(new Form_Textarea(
 	'suppression',
 	NULL,

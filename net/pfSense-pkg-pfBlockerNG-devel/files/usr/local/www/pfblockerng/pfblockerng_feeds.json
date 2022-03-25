@@ -6,7 +6,7 @@
 			"*",
 			"* part of pfSense (https://www.pfsense.org)",
 			"* Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)",
-			"* Copyright (c) 2015-2021 BBcan177@gmail.com",
+			"* Copyright (c) 2015-2022 BBcan177@gmail.com",
 			"* All rights reserved.",
 			"*",
 			"* Licensed under the Apache License, Version 2.0 (the \"License\")",
@@ -855,6 +855,20 @@
 					"header":	"BlockListDE_Strong"
 				}
 			]
+		},
+		"AWS_4": {
+			"info":		"IP ranges for Amazon AWS. Use the IPv4 Advanced Tunable to configure a Pre-Script to collect the AWS Region IPs",
+			"description":	"IP ranges for Amazon AWS.",
+			"action":	"permit",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"AWS",
+					"website":	"https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html",
+					"url":		"https://ip-ranges.amazonaws.com/ip-ranges.json",
+					"header":	"AWS"
+				}
+			]
 		}
 	},
 	"ipv6": {
@@ -979,6 +993,20 @@
 					"website":	"https://github.com/ejrv/VPNs",
 					"url":		"https://raw.githubusercontent.com/ejrv/VPNs/master/vpn-ipv6.txt",
 					"header":	"Ejrv_VPNv6"
+				}
+			]
+		},
+		"AWS_6": {
+			"info":		"IP ranges for Amazon AWS. Use the IPv6 Advanced Tunable to configure a Pre-Script to collect the AWS Region IPs",
+			"description":	"IP ranges for Amazon AWS.",
+			"action":	"permit",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"AWS",
+					"website":	"https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html",
+					"url":		"https://ip-ranges.amazonaws.com/ip-ranges.json",
+					"header":	"AWS6"
 				}
 			]
 		}
@@ -1372,8 +1400,8 @@
 				{
 					"feed":		"Malware Patrol",
 					"website":	"https://lists.malwarepatrol.net/",
-					"register":	"https://www.malwarepatrol.net/signup-free.shtml",
-					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=8&list=mozilla_adblock",
+					"register":	"https://malwareblocklist.org/",
+					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=37&list=pfblockerng",
 					"header":	"MPatrol"
 				},
 				{

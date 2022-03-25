@@ -1,6 +1,6 @@
 #!/bin/sh
 # pfBlockerNG Shell Function Script - By BBcan177@gmail.com - 04-12-14
-# Copyright (c) 2015-2021 BBcan177@gmail.com
+# Copyright (c) 2015-2022 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
