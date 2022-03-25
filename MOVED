@@ -16973,3 +16973,4 @@ net-mgmt/pfSense-pkg-zabbix-proxy|net-mgmt/pfSense-pkg-zabbix-proxy4|2022-03-22|
 print/lgrind||2022-03-22|Has expired: Abandonware as last release was in 2001
 devel/py-decorator4||2022-03-22|Has expired: Legacy version, use devel/py-decorator instead
 devel/p5-Log-Any-Adapter-Callback|devel/p5-Log-Any|2022-03-22|Has expired: Use devel/p5-Log-Any (Log::Any::Adapter::Capture) instead
+math/py-mutatormath|math/py-MutatorMath|2022-03-25|Remove duplicate port
