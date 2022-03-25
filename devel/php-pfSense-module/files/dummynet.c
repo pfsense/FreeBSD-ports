@@ -56,7 +56,7 @@
 
 static int do_cmd(int optname, void *optval, uintptr_t optlen);
 
-ZEND_DECLARE_MODULE_GLOBALS(pfSense)
+ZEND_EXTERN_MODULE_GLOBALS(pfSense)
 
 static struct _s_x dummynet_params[] = {
 	{ "plr",		TOK_PLR },
