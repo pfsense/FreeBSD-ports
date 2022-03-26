@@ -1561,10 +1561,7 @@ function haproxy_writeconf($configpath) {
 		}
 
 		fwrite ($fd, "\tgid\t\t\t80\n");
-		// Set numprocs if defined or use system default (#cores)
-		$numprocs = $a_global['nbproc'] ? $a_global['nbproc'] : "1";
 		$numthread = $a_global['nbthread'] ? $a_global['nbthread'] : "1";
-		fwrite ($fd, "\tnbproc\t\t\t{$numprocs}\n");
 		if (haproxy_version() >= "1.8") {
 			fwrite ($fd, "\tnbthread\t\t\t{$numthread}\n");
 		}

@@ -125,7 +125,6 @@ if ($_POST) {
 			$haproxycfg['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
 			$haproxycfg['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
 			$haproxycfg['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
-			$haproxycfg['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;
 			foreach($simplefields as $stat) {
 				$haproxycfg[$stat] = $_POST[$stat];
 			}
@@ -159,7 +158,6 @@ $pconfig['loglevel'] = $config['installedpackages']['haproxy']['loglevel'];
 $pconfig['carpdev'] = $config['installedpackages']['haproxy']['carpdev'];
 $pconfig['localstatsport'] = $config['installedpackages']['haproxy']['localstatsport'];
 $pconfig['advanced'] = base64_decode($config['installedpackages']['haproxy']['advanced']);
-$pconfig['nbproc'] = $config['installedpackages']['haproxy']['nbproc'];
 foreach($simplefields as $stat) {
 	$pconfig[$stat] = $config['installedpackages']['haproxy'][$stat];
 }
@@ -281,14 +279,6 @@ EOD
 $section->add($group);
 
 $cpucores = trim(`/sbin/sysctl kern.smp.cpus | cut -d" " -f2`);
-
-$section->addInput(new Form_Input('nbproc', 'Number of processes to start', 'text', $pconfig['nbproc']
-))->setPlaceholder("1")->setHelp(<<<EOD
-	Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
-	Note : Consider leaving this value empty or 1  because in multi-process mode (nbproc > 1) memory is not shared between the processes, which could result in random behaviours for several options like ACL's, sticky connections, stats pages, admin maintenance options and some others.<br/>
-	For more information about the <b>"nbproc"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#nbproc' target='_blank'>HAProxy Documentation</a></b>
-EOD
-);
 
 if (haproxy_version() >= "1.8") {
 	$section->addInput(new Form_Input('nbthread', 'Number of threads to start per process', 'text', $pconfig['nbthread']
