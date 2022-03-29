@@ -2528,8 +2528,6 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ))->setHelp('Default: <strong>Enabled</strong><br />Enable the backup and restore of the DNS Resolver Cache on DNSBL Update|Reload|Cron events');
 
-$form->add($section);
-
 // Create page anchor for DNSBL Whitelist
 $section->addInput(new Form_StaticText(
 	NULL,
