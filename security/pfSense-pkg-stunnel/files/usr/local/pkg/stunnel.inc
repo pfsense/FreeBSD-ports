@@ -236,8 +236,10 @@ function stunnel_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
 	$xml['stunnel'] = $config['installedpackages']['stunnel'];
 
 	$remote_stunnel_config_apply = <<<EOD
-require_once('/usr/local/pkg/stunnel.inc');
-stunnel_save();
+if (file_exists('/usr/local/pkg/stunnel.inc')) {
+	require_once('/usr/local/pkg/stunnel.inc');
+	stunnel_save();
+}
 EOD;
 
 	$synctimeout = intval($synctimeout);
