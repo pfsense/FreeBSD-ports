@@ -613,6 +613,14 @@ EOD;
 						// Check DNSSEC keys creation for master zones
 						if ($zone['dnssec'] == "on") {
 							$zone_found = 0;
+							/* move DNSSEC keys from old chroot,
+							 * see https://redmine.pfsense.org/issues/13002 */
+							foreach (glob("/cf/named/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
+								$newkey = CHROOT_LOCALBASE . "/etc/namedb/keys/" . basename($filename);
+								if (!file_exists($newkey)) {
+									rename($filename, $newkey);
+								}
+							}
 							foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$zone_found++;
 							}
@@ -908,12 +916,12 @@ function bind_write_rcfile() {
 	$rc['file'] = 'named.sh';
 	// Curly braces in the following <<<EOD are PHP {$variable}, not named.conf text { value; }
 	$rc['start'] = <<<EOD
-		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
+	if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
 		fi
 EOD;
 	$rc['stop'] = <<<EOD
-		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+	{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
 		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
 		sleep 5
 		/usr/bin/killall -TERM named 2>/dev/null
