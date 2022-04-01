@@ -684,7 +684,7 @@ $acme_domain_validation_method['dns_dynu'] = array('name' => "DNS-Dynu",
 $acme_domain_validation_method['dns_easydns'] = array('name' => "DNS-easyDNS",
 	'fields' => array(
 		'EASYDNS_Key' => array('name' => "easydns_key", 'columnheader' => "API Key", 'type' => "textbox",
-			'description' => "easyDNS API Key. Sign up for a key at http://docs.sandbox.rest.easydns.net/beta_signup.php"
+			'description' => "easyDNS API Key. Sign up for a key at https://cp.easydns.com/manage/security/api/signup.php"
 		),
 		'EASYDNS_Token' => array('name' => "easydns_token", 'columnheader' => "Token", 'type' => "textbox",
 			'description' => "easyDNS API Token"
