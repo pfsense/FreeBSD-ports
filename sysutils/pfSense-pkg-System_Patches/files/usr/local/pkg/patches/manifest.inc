@@ -65,7 +65,7 @@ $recommended_patches = [
 ],
 [
   'uniqid' => 'fd30b9eda98900eb5f1a0c37d600ef4deaf582ad',
-  'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'versions' => ['2.6.0', '22.01'],
   'descr' => 'Fix Captive Portal handling of non-TCP traffic after login',
   'links' => [
       [ 'text' => 'Redmine #12834',
