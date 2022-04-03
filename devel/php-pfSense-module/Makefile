@@ -14,8 +14,8 @@ COMMENT=	Library for getting useful info
 
 LIB_DEPENDS=	libvici.so:security/strongswan
 
-OPTIONS_DEFINE=	IPFW ETHERSWITCH
-OPTIONS_DEFAULT=IPFW ETHERSWITCH
+OPTIONS_DEFINE=	IPFW ETHERSWITCH PF_CAPTIVEPORTAL
+OPTIONS_DEFAULT=IPFW ETHERSWITCH PF_CAPTIVEPORTAL
 
 IPFW_DESC=	Enable IPFW functions
 ETHERSWITCH_DESC=	Enable etherswitch functions
@@ -27,14 +27,14 @@ CFLAGS+=	-I/usr/local/include -I. -DTCPSTATES
 CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline
 IPFW_CFLAGS=	-DIPFW_FUNCTIONS
 ETHERSWITCH_CFLAGS=	-DETHERSWITCH_FUNCTIONS
-
+PF_CAPTIVEPORTAL_CFLAGS=	-DPF_CP_FUNCTIONS
 CONFIGURE_ARGS=	--enable-pfSense
 
 .include <bsd.port.options.mk>
 
 extract:
 	mkdir -p ${WRKSRC}
-	cp -r files/* ${WRKSRC}
+	cp -r ${FILESDIR}/* ${WRKSRC}
 .if ${PORT_OPTIONS:MIPFW}
 	@${REINPLACE_CMD} -e "s,%%DUMMYNET%%,dummynet.c," \
 		${WRKSRC}/config.m4

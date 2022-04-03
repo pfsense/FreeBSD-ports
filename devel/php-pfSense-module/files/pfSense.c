@@ -61,6 +61,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <sys/endian.h>
 #include <sys/ioctl.h>
+#include <sys/param.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/sysctl.h>
@@ -83,6 +84,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <netinet/ip_fw.h>
 #include <netinet/tcp_fsm.h>
 #include <netinet6/in6_var.h>
+#include <netpfil/pf/pf.h>
 #include <net80211/ieee80211_ioctl.h>
 
 #include <vm/vm_param.h>
@@ -183,6 +185,13 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_etherswitch_setmode, NULL)
 #endif
     PHP_FE(pfSense_ipsec_list_sa, NULL)
+#ifdef PF_CP_FUNCTIONS
+    PHP_FE(pfSense_pf_cp_flush, NULL)
+    PHP_FE(pfSense_pf_cp_get_eth_pipes, NULL)
+    PHP_FE(pfSense_pf_cp_get_eth_rule_counters, NULL)
+    PHP_FE(pfSense_pf_cp_get_eth_last_active,NULL)
+    PHP_FE(pfSense_pf_cp_zerocnt, NULL)
+#endif
     {NULL, NULL, NULL}
 };
 
@@ -4338,6 +4347,179 @@ PHP_FUNCTION(pfSense_ipsec_list_sa) {
 	vici_deinit();
 
 }
+
+#ifdef PF_CP_FUNCTIONS
+#define FLUSH_TYPE_RULES "rules"
+#define FLUSH_TYPE_NAT "nat"
+#define FLUSH_TYPE_ETH "ether"
+PHP_FUNCTION(pfSense_pf_cp_flush) {
+	char *path, *type;
+	size_t path_len, type_len = 0;
+	int dev = 0, ret = -1;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &path, &path_len, &type, &type_len) == FAILURE) {
+		RETURN_NULL();
+	}
+	if ((dev = open("/dev/pf", O_RDWR)) < 0) {
+		RETURN_NULL();
+	}
+
+	if (strncmp(FLUSH_TYPE_RULES, type, MIN(strlen(FLUSH_TYPE_RULES), type_len)) == 0) {
+		ret = pfctl_clear_rules(dev, path);
+	} else if (strncmp(FLUSH_TYPE_NAT, type, MIN(strlen(FLUSH_TYPE_NAT), type_len)) == 0) {
+		ret = pfctl_clear_nat(dev, path);
+	} else if (strncmp(FLUSH_TYPE_ETH, type, MIN(strlen(FLUSH_TYPE_ETH), type_len)) == 0) {
+		ret = pfctl_clear_eth_rules(dev, path);
+	} else {
+		close(dev);
+		RETURN_NULL();
+	}
+
+	close(dev);
+	if (ret == 0) {
+		RETURN_TRUE;
+	}
+	RETURN_FALSE;
+}
+
+PHP_FUNCTION(pfSense_pf_cp_get_eth_pipes) {
+	char *path;
+	size_t path_len;
+	struct pfctl_eth_rules_info info;
+	struct pfctl_eth_rule rule;
+	char anchor_call[MAXPATHLEN];
+	int dev = 0;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE)
+		RETURN_NULL();
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+	if (pfctl_get_eth_rules_info(dev, &info, path))
+		goto error_out;
+
+	array_init(return_value);
+	for (int nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, 0, anchor_call) != 0)
+			goto error_out;
+		if (rule.dnflags & PFRULE_DN_IS_PIPE) {
+			add_next_index_long(return_value, (zend_long)rule.dnpipe);
+			add_next_index_long(return_value, (zend_long)rule.dnpipe + 1);
+		}
+	}
+
+error_out:
+	close(dev);
+}
+
+PHP_FUNCTION(pfSense_pf_cp_get_eth_rule_counters) {
+	char *path;
+	size_t path_len;
+	struct pfctl_eth_rules_info info;
+	struct pfctl_eth_rule rule;
+	char anchor_call[MAXPATHLEN];
+	int dev = 0;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE)
+		RETURN_NULL();
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+	if (pfctl_get_eth_rules_info(dev, &info, path))
+		goto error_out;
+	array_init(return_value);
+	for (int nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, 0,
+		    anchor_call) != 0)
+			goto error_out;
+		if (rule.dnflags&PFRULE_DN_IS_PIPE) {
+			add_next_index_long(return_value, (zend_long)rule.packets[1]);
+			add_next_index_long(return_value, (zend_long)rule.bytes[1]);
+			add_next_index_long(return_value, (zend_long)rule.packets[0]);
+			add_next_index_long(return_value, (zend_long)rule.bytes[0]);
+		}
+	}
+
+error_out:
+	close(dev);
+}
+
+PHP_FUNCTION(pfSense_pf_cp_zerocnt) {
+	char *path;
+	size_t path_len;
+	struct pfctl_rules_info info;
+	struct pfctl_rule rule;
+	struct pfctl_eth_rules_info einfo;
+	struct pfctl_eth_rule erule;
+
+	char anchor_call[MAXPATHLEN];
+	uint32_t if_rulesets[] = {PF_RULESET_SCRUB, PF_RULESET_FILTER, PF_RULESET_NAT,PF_RULESET_BINAT, PF_RULESET_RDR,
+				  PF_RULESET_MAX};
+
+	int dev = 0;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE)
+		RETURN_NULL();
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+
+	/* Zero eth rule counters */
+	if (pfctl_get_eth_rules_info(dev, &einfo, path))
+		goto error_out;
+	for (int nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &erule, true, anchor_call) != 0)
+			goto error_out;
+	}
+
+	/* Zero all other rules */
+	for (int nrs = 0; nrs < nitems(if_rulesets); nrs++) {
+		if (pfctl_get_rules_info(dev, &info, if_rulesets[nrs], path))
+			goto error_out;
+		for (int nr = 0; nr < info.nr; nr++) {
+			if (pfctl_get_clear_rule(dev, nr, info.ticket, path, if_rulesets[nr], &rule, anchor_call,
+			    true) != 0)
+				goto error_out;
+		}
+	}
+error_out:
+	close(dev);
+}
+
+PHP_FUNCTION(pfSense_pf_cp_get_eth_last_active) {
+	char *path;
+	size_t path_len;
+	struct pfctl_eth_rules_info info;
+	struct pfctl_eth_rule rule;
+	char anchor_call[MAXPATHLEN];
+	int dev = 0;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &path, &path_len) == FAILURE)
+		RETURN_NULL();
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+
+	array_init(return_value);
+	for (int nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, true, anchor_call) != 0)
+			goto error_out;
+		add_next_index_long(return_value, (zend_long)rule.last_active_timestamp);
+	}
+
+error_out:
+	close(dev);
+}
+#endif
 
 PHP_FUNCTION(pfSense_kenv_dump) {
 	char *buf, *bp, *cp;
