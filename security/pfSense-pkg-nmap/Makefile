@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-nmap
 PORTVERSION=	1.4.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -31,11 +31,9 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/nmap.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nmap.inc \
-		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/nmap.priv.inc \
 		${STAGEDIR}/etc/inc/priv
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/nmap_view_results.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/nmap_scan.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

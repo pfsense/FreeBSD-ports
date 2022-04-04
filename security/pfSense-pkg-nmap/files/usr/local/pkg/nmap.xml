@@ -28,103 +28,11 @@
 	</copyright>
 	<name>nmap</name>
 	<title>Diagnostics: Nmap</title>
-	<savetext>Scan</savetext>
-	<saveicon>fa-rss</saveicon>
-	<savebtnclass>btn-primary</savebtnclass>
-	<preoutput>yes</preoutput>
-	<donotsave>true</donotsave>
-	<include_file>/usr/local/pkg/nmap.inc</include_file>
 	<menu>
 		<name>Nmap</name>
 		<section>Diagnostics</section>
-		<configfile>nmap.xml</configfile>
+		<tooltiptext></tooltiptext>
+		<url>/nmap_scan.php</url>
 	</menu>
-	<tabs>
-		<tab>
-			<text>Scan</text>
-			<url>/pkg_edit.php?xml=nmap.xml&amp;id=0</url>
-			<active/>
-		</tab>
-		<tab>
-			<text>View Results</text>
-			<url>/nmap_view_results.php</url>
-		</tab>
-	</tabs>
-	<fields>
-		<field>
-			<fielddescr>IP or Hostname</fielddescr>
-			<fieldname>hostname</fieldname>
-			<description>Enter the IP address or hostname that you would like to scan.</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Interface</fielddescr>
-			<fieldname>interface</fieldname>
-			<description>Select the source interface here.</description>
-			<type>select_source</type>
-			<source><![CDATA[nmap_get_interfaces()]]></source>
-			<source_name>name</source_name>
-			<source_value>value</source_value>
-		</field>
-		<field>
-			<fielddescr>Scan Method</fielddescr>
-			<fieldname>scanmethod</fieldname>
-			<type>select</type>
-			<default_value>syn</default_value>
-			<options>
-				<option><name>SYN</name><value>syn</value></option>
-				<option><name>TCP connect()</name><value>connect</value></option>
-				<option><name>Ping</name><value>icmp</value></option>
-				<option><name>UDP</name><value>udp</value></option>
-				<option><name>ARP (directly connected networks only!)</name><value>arp</value></option>
-			</options>
-			<typehint>Select scan method.</typehint>
-		</field>
-		<field>
-			<fielddescr>-P0</fielddescr>
-			<fieldname>noping</fieldname>
-			<description>Do not attempt to ping hosts before scanning</description>
-			<sethelp>
-				<![CDATA[
-				This allows the scanning of networks that don't allow ICMP echo requests (or responses) through their firewall.<br/>
-				microsoft.com is an example of such a network, and thus you should always use -P0 or -PT80 when port scanning microsoft.com.<br/>
-				Note the "ping" in this context may involve more than the traditional ICMP echo request packet. Nmap supports many such probes, including arbitrary combinations of TCP, UDP, and ICMP probes.<br/>
-				By default, Nmap sends an ICMP echo request and a TCP ACK packet to port 80.
-				]]>
-			</sethelp>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>-sV</fielddescr>
-			<fieldname>servicever</fieldname>
-			<description>Attempt to identify service versions</description>
-			<sethelp>
-				<![CDATA[
-				After TCP and/or UDP ports are discovered using one of the other scan methods, version detection communicates with those ports to try and determine more about what is actually running.<br/>
-				A file called nmap-service-probes is used to determine the best probes for detecting various services and the match strings to expect.<br/>
-				Nmap tries to determine the service protocol (e.g. ftp, ssh, telnet, http), the application name (e.g. ISC Bind, Apache httpd, Solaris telnetd), the version number, and sometimes miscellaneous details like whether an X server is open to connections or the SSH protocol version).
-				]]>
-			</sethelp>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>-O</fielddescr>
-			<fieldname>osdetect</fieldname>
-			<description>Enable Operating System detection</description>
-			<sethelp>
-				<![CDATA[
-				Activates remote host identification via TCP/IP fingerprinting.<br/>
-				In other words, it uses techniques to detect subtleties in the underlying operating system network stack of the computers being scanned.<br/>
-				It uses this information to create a "fingerprint" which it compares with its database of known OS fingerprints (the nmap-os-fingerprints file) to determine the operating system of the target host.
-				]]>
-			</sethelp>
-			<type>checkbox</type>
-		</field>
-	</fields>
-	<custom_add_php_command>
-		nmap_custom_add_php_command();
-	</custom_add_php_command>
-	<custom_php_validation_command>
-		nmap_custom_php_validation_command($_POST, $input_errors);
-	</custom_php_validation_command>
 </packagegui>
+
