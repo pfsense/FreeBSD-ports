@@ -6263,6 +6263,7 @@ function sync_package_pfblockerng($cron='') {
 				unlink_if_exists("{$pfb['dbdir']}/masterfile");
 				unlink_if_exists("{$pfb['dbdir']}/mastercat");
 			}
+			$pfb['conf_mod'] = TRUE;
 			break;
 		case 'updatednsbl':
 			$pfb['reuse'] = '';
