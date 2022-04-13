@@ -151,6 +151,65 @@ _exit() {
 	exit ${_rc}
 }
 
+# returns the active BE
+_be_get_active() {
+	/sbin/bectl list -H | /usr/bin/awk 'index($2, "N") {print $1}' | head -n1
+}
+
+# sanity check for BE support (e.g. fails on UFS systems)
+_be_check() {
+	/sbin/bectl check 1>/dev/null 2>&1
+}
+
+# activate a given BE by name
+_be_activate() {
+	local _name="${1}"
+	_echo -n ">>> Activating boot environment ${_name}... "
+	/sbin/bectl activate "${_name}" 1>/dev/null 2>&1
+	_rc=$?
+	if [ ${_rc} -eq 0 ]; then
+		_echo "done."
+	else
+		_echo "failed."
+	fi
+	return ${_rc}
+}
+
+# create a given BE by name
+_be_create() {
+	local _name="${1}"
+	_echo -n ">>> Creating boot environment ${_name}... "
+	/sbin/bectl create -r "${_name}" 1>/dev/null 2>&1
+	_rc=$?
+	if [ ${_rc} -eq 0 ]; then
+		_echo "done."
+	else
+		_echo "failed."
+	fi
+	return ${_rc}
+}
+
+# prepare system to upgrade by creating a new BE prior to upgrading
+# the current BE that is actively being upgraded
+_be_prep_upgrade() {
+	local _timestamp=$( date "+%Y%m%d%H%M%S" )
+	if _be_check; then
+		_be_create "$( _be_get_active )_${_timestamp}"
+		return $?
+	fi
+	return 0
+}
+
+# prepare system to reboot by ensuring we are rebooting into the
+# BE that is actively being upgraded
+_be_prep_reboot() {
+	if _be_check; then
+		_be_activate "$( _be_get_active )"
+		return $?
+	fi
+	return 0
+}
+
 notice() {
 	msg="$@"
 
@@ -647,6 +706,15 @@ pkg_upgrade() {
 	if [ -z "${next_stage}" ]; then
 		if [ -f "${logfile}" ]; then
 			rm -f ${logfile}
+		fi
+
+		# prepare system to upgrade by creating a new BE prior to upgrading
+		# the current BE that is actively being upgraded
+		_be_prep_upgrade
+		if [ $? -ne 0 ]; then
+			_echo "ERROR: Unable to create backup boot environment prior" \
+				"to upgrading."
+			_exit 1
 		fi
 
 		pkg_update force
@@ -1274,6 +1342,13 @@ do_reboot() {
 		_msg="now."
 	else
 		_msg="in ${reboot_after} seconds."
+	fi
+
+	# Ensure that we are *always* rebooting into the BE that is actively being upgraded
+	_be_prep_reboot
+	if [ $? -ne 0 ]; then
+		_echo "ERROR: Unable to activate the current boot environment ($( _be_get_active ))."
+		_exit 1
 	fi
 
 	local _complete="System is going to be upgraded"
