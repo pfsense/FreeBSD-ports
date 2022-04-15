@@ -151,6 +151,29 @@ _exit() {
 	exit ${_rc}
 }
 
+# returns the current root filesystem
+_be_get_rootfs() {
+	/sbin/mount | /usr/bin/awk '/ \/ / {print $1}'
+}
+
+# returns the ZFS pool that holds the root filesystem
+_be_get_pool() {
+	echo $( _be_get_rootfs ) | /usr/bin/awk -F '/' '{print $1}'
+}
+
+# translates a BE name into a dataset path
+_be_name_to_ds() {
+	local _name="${1}"
+	local _beds="$( echo $( _be_get_rootfs ) | /usr/bin/awk -F '/' '{print $2}' )"
+	echo "$( _be_get_pool )/${_beds}/${_name}"
+}
+
+# returns the version of a package
+_get_pkg_version() {
+	local _pkg="${1}"
+	_pkg query %v "${_pkg}" | head -n1
+}
+
 # returns the active BE
 _be_get_active() {
 	/sbin/bectl list -H | /usr/bin/awk 'index($2, "N") {print $1}' | head -n1
@@ -164,38 +187,40 @@ _be_check() {
 # activate a given BE by name
 _be_activate() {
 	local _name="${1}"
-	_echo -n ">>> Activating boot environment ${_name}... "
 	/sbin/bectl activate "${_name}" 1>/dev/null 2>&1
-	_rc=$?
-	if [ ${_rc} -eq 0 ]; then
-		_echo "done."
-	else
-		_echo "failed."
-	fi
-	return ${_rc}
 }
 
 # create a given BE by name
 _be_create() {
 	local _name="${1}"
-	_echo -n ">>> Creating boot environment ${_name}... "
 	/sbin/bectl create -r "${_name}" 1>/dev/null 2>&1
-	_rc=$?
-	if [ ${_rc} -eq 0 ]; then
-		_echo "done."
-	else
-		_echo "failed."
-	fi
-	return ${_rc}
 }
 
-# prepare system to upgrade by creating a new BE prior to upgrading
-# the current BE that is actively being upgraded
+# set a zfs property
+_zfs_set_property() {
+	local _target="${1}"
+	local _property="${2}"
+	local _value="${3}"
+	/sbin/zfs set "${_property}=${_value}" "${_target}" 1>/dev/null 2>&1
+}
+
+# prepare system to upgrade by creating a BE before touching the
+# current environment. we also set some useful ZFS user properties
+# here as well for the UI
 _be_prep_upgrade() {
-	local _timestamp=$( date "+%Y%m%d%H%M%S" )
 	if _be_check; then
-		_be_create "$( _be_get_active )_${_timestamp}"
-		return $?
+		local _timestamp="$( date "+%Y%m%d%H%M%S" )"
+		local _be_name="$( _be_get_active )_${_timestamp}"
+		local _ds_name="$( _be_name_to_ds ${_be_name} )"
+
+		_echo ">>> Creating automatic pre-upgrade boot environment... "
+		_be_create ${_be_name}
+		_rc=$?
+		if [ ${_rc} -eq 0 ]; then
+			_zfs_set_property "${_ds_name}" pfsense:version "$( _get_pkg_version pfSense-base )"
+			_zfs_set_property "${_ds_name}" pfsense:description "Automatically created by system update"
+		fi
+		return ${_rc}
 	fi
 	return 0
 }
@@ -204,7 +229,9 @@ _be_prep_upgrade() {
 # BE that is actively being upgraded
 _be_prep_reboot() {
 	if _be_check; then
-		_be_activate "$( _be_get_active )"
+		local _name="$( _be_get_active )"
+		_echo ">>> Activating boot environment ${_name}..."
+		_be_activate "${_name}"
 		return $?
 	fi
 	return 0
@@ -712,8 +739,7 @@ pkg_upgrade() {
 		# the current BE that is actively being upgraded
 		_be_prep_upgrade
 		if [ $? -ne 0 ]; then
-			_echo "ERROR: Unable to create backup boot environment prior" \
-				"to upgrading."
+			_echo "ERROR: Unable to create automatic pre-upgrade boot environment."
 			_exit 1
 		fi
 
@@ -1347,7 +1373,7 @@ do_reboot() {
 	# Ensure that we are *always* rebooting into the BE that is actively being upgraded
 	_be_prep_reboot
 	if [ $? -ne 0 ]; then
-		_echo "ERROR: Unable to activate the current boot environment ($( _be_get_active ))."
+		_echo "ERROR: Unable to activate the boot environment being upgraded ($( _be_get_active ))."
 		_exit 1
 	fi
 
