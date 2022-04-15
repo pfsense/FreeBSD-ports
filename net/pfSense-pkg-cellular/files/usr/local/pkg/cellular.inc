@@ -184,7 +184,7 @@ function cellular_validate_input($post, &$input_errors) {
 
 	// Reset
 	if (isset($post['reset'])) {
-			exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg('^RESET') . " -v", $sig);
+			exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg('+CFUN=1,1') . " -v", $sig);
 	}
 
 	// Timeout
