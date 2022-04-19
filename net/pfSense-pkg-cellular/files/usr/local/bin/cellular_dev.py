@@ -34,6 +34,9 @@ data_file = "cuaZ99.0"
 data_path = "/dev/" + data_file
 mgm_file = "cuaZ99.1"
 mgmt_path = "/dev/" + mgm_file
+gps_file = "cuaZ99.2"
+gps_path = "/dev/" + gps_file
+
 
 def remove_link():
 
@@ -42,6 +45,9 @@ def remove_link():
 
     if os.path.lexists(mgmt_path):
         os.remove(mgmt_path)
+        
+    if os.path.lexists(gps_path):
+        os.remove(gps_path)
 
     #Remove locks
     data_lock = "/var/spool/lock/LCK.." + data_file
@@ -52,6 +58,11 @@ def remove_link():
     if os.path.exists(mgmt_lock):
         os.remove(mgmt_lock)
 
+    gps_lock = "/var/spool/lock/LCK.." + gps_file
+    if os.path.exists(gps_lock):
+        os.remove(gps_lock)
+ 
+    
 # Argument parser
 parser = argparse.ArgumentParser(description = "Interface for Cellular Dev Point")
 
@@ -76,13 +87,19 @@ args = parser.parse_args()
 args.silent = False
 
 if args.add:
-    if args.device and args.model:
+    if args.device and args.model: #Huawei
 
         dataport = ".0"
         controlport = ".2"
-        if args.model == "1e0e9001":
+        if args.model == "1e0e9001": #Simcom
             dataport = ".2"
             controlport = ".3"
+            gpsport = ".1"
+        if args.model == "2c7c0125": #Quectel EC25
+            dataport = ".2"
+            controlport = ".3"
+            gpsport = ".1"
+           
 
         #Make sure the links are gone
         remove_link()
@@ -105,6 +122,11 @@ if args.add:
         if os.path.exists(mgmt_ug):
             os.symlink(mgmt_ug, mgmt_path)
 
+        gps_ug = path_ug + gpsport
+        if os.path.exists(gps_ug):
+            os.symlink(gps_ug, gps_path)
+
+            
 elif args.remove:
 
     remove_link()
