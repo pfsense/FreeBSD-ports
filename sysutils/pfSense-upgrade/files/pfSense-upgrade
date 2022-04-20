@@ -156,22 +156,71 @@ _be_get_rootfs() {
 	/sbin/mount | /usr/bin/awk '/ \/ / {print $1}'
 }
 
-# Returns the ZFS pool that holds the root filesystem
-_be_get_pool() {
-	echo "$( _be_get_rootfs )" | /usr/bin/awk -F '/' '{print $1}'
+# Returns the pool that contains the root filesystem
+_be_get_root_pool() {
+	_be_get_rootfs | /usr/bin/awk -F '/' '{print $1}'
+}
+
+# Returns the BE dataset
+_be_get_beds() {
+	local _pool="$( _be_get_root_pool )"
+	local _beds="$( _be_get_rootfs | /usr/bin/awk -F '/' '{print $2}' )"
+
+	echo "${_pool}/${_beds}"
+}
+
+# determine the ZFS dataset that holds a given file/folder
+_be_get_dataset_of_path() {
+	local _path="${1}"
+
+	/sbin/zfs list -H -t filesystem -o name -r "${_path}" 2>/dev/null
+}
+
+# determines if a given path is held by the root dataset or a child of
+# the root dataset.
+_be_is_path_on_root() {
+	local _path="${1}"
+
+	_be_get_dataset_of_path "${_path}" | grep -q -m 1 "$( _be_get_rootfs )"
+}
+
+#
+# test the system for BE-readiness (e.g. fails on UFS systems)
+#
+# notes:
+#    1. Perform a sanity check using `bectl check`
+#    2. Check to see if /cf lives on the root dataset
+#    3. Check to see if /var/db/pkg lives on the root dataset
+#    4. TODO: add additional sanity checks?
+#
+_be_readiness_check() {
+	/sbin/bectl check \
+		&& _be_is_path_on_root "/cf" \
+		&& _be_is_path_on_root "/var/db/pkg"
 }
 
 # Translates a BE name into a dataset path
 _be_name_to_ds() {
 	local _name="${1}"
-	local _beds="$( echo $( _be_get_rootfs ) | /usr/bin/awk -F '/' '{print $2}' )"
-	echo "$( _be_get_pool )/${_beds}/${_name}"
+	local _beds="$( _be_get_beds )"
+
+	echo "${_beds}/${_name}"
 }
 
-# Returns the version of a package
-_get_pkg_version() {
-	local _pkg="${1}"
-	_pkg query %v "${_pkg}" | head -n1
+# returns the base package version
+_be_get_pkg_version() {
+	_ver="$( _pkg query %v "${product}-base" 2>/dev/null )"
+	if [ $? -eq 0 ]; then
+		echo "${_ver}"
+		return 0
+	fi
+	echo "unknown"
+	return 1
+}
+
+# Returns the active BE
+_be_get_active() {
+	/sbin/bectl list -H | /usr/bin/awk 'index($2, "N") {print $1}' | /usr/bin/head -n1
 }
 
 # Returns the active dataset
@@ -179,105 +228,83 @@ _be_get_active_ds() {
 	_be_name_to_ds "$( _be_get_active )"
 }
 
-# Returns the active BE
-_be_get_active() {
-	/sbin/bectl list -H | /usr/bin/awk 'index($2, "N") {print $1}' | head -n1
-}
-
-# Sanity check for BE support (e.g. fails on UFS systems)
-_be_check() {
-	/sbin/bectl check 1>/dev/null 2>&1
-}
-
-# Activate a given BE by name
-_be_activate() {
-	local _name="${1}"
-	/sbin/bectl activate "${_name}" 1>/dev/null 2>&1
-}
-
-# Create a given BE by name
-_be_create() {
-	local _name="${1}"
-	/sbin/bectl create -r "${_name}" 1>/dev/null 2>&1
-}
-
 # Set a ZFS property
-_zfs_set_property() {
+_be_zfs_set_property() {
 	local _target="${1}"
 	local _property="${2}"
 	local _value="${3}"
+
 	/sbin/zfs set "${_property}=${_value}" "${_target}" 1>/dev/null 2>&1
 }
 
 # Get a ZFS property
-_zfs_get_property() {
+_be_zfs_get_property() {
 	local _target="${1}"
 	local _property="${2}"
+
 	/sbin/zfs get -H -o value "${_property}" "${_target}" 2>/dev/null
 }
 
 # Sanity check that we have a valid rollback BE
 _be_has_valid_rollback_be() {
 	local _active_ds="$( _be_get_active_ds )"
-	local _rollback_be="$( _zfs_get_property "${_active_ds}" pfsense:rollbackbe )"
+	local _rollback_be="$( _be_zfs_get_property "${_active_ds}" pfsense:rollbackbe )"
+
 	/sbin/zfs list "$( _be_name_to_ds "${_rollback_be}" )" 1>/dev/null 2>&1
 }
 
 # Check if we are in the process of upgrading. This flag is reset at startup
 _be_is_upgrading() {
 	local _active_ds="$( _be_get_active_ds )"
-	local _is_upgrading="$( _zfs_get_property "${_active_ds}" pfsense:isupgrading )"
-	[ "${_is_upgrading}" = "yes" ]
+	local _upgrading="$( _be_zfs_get_property "${_active_ds}" pfsense:upgrading )"
+
+	[ "${_upgrading}" = "yes" ]
 }
 
 # Prepare the system to upgrade by creating a BE before touching the
 # current environment. We also set some useful ZFS user properties
 # here as well for displaying in the UI.
 _be_prep_upgrade() {
-	if _be_check; then
-		# We need to ensure that we only run this once or unless absolutely
-		# necessary. Because pfSense-upgrade self-updates, it is possible
-		# that this code is executed more than once. We only want one
-		# rollback BE to be created per system upgrade.
-		if _be_is_upgrading; then
-			return 0;
-		fi
+	# short-circuit if we aren't on a BE-ready system or we are already upgrading
+	( !(_be_readiness_check) || _be_is_upgrading ) && return 0
 
-		_echo ">>> Creating automatic pre-upgrade boot environment..."
+	local _timestamp="$( date "+%Y%m%d%H%M%S" )"
+	local _be_name="$( _be_get_active )_${_timestamp}"
 
-		local _timestamp="$( date "+%Y%m%d%H%M%S" )"
-		local _be_name="$( _be_get_active )_${_timestamp}"
+	_echo ">>> Creating automatic rollback boot environment..."
 
-		_be_create ${_be_name}
-		if [ $? -eq 0 ]; then
-			local _active_ds="$( _be_get_active_ds )"
-			local _ds_name="$( _be_name_to_ds ${_be_name} )"
+	# create the rollback boot environment
+	/sbin/bectl create -r "${_be_name}" 1>/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		local _active_ds="$( _be_get_active_ds )"
+		local _ds_name="$( _be_name_to_ds ${_be_name} )"
 
-			_zfs_set_property ${_active_ds} pfsense:isupgrading yes
-			_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
+		# save a tiny bit of state to ensure we only run this once
+		_be_zfs_set_property ${_active_ds} pfsense:upgrading yes
+		_be_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
 
-			_zfs_set_property ${_ds_name} pfsense:description "Automatically created by system update"
-			_zfs_set_property ${_ds_name} pfsense:version "$( _get_pkg_version ${product}-base )"
-		fi
-		
-		# A test to be sure we really created a valid rollback BE
-		if !(_be_has_valid_rollback_be); then
-			return 1
-		fi
+		# this wil be displayed in the UI
+		_be_zfs_set_property ${_ds_name} pfsense:description "Automatically created by system update"
+		_be_zfs_set_property ${_ds_name} pfsense:version "$( _be_get_pkg_version )"
 	fi
+
+	# did we actually create a valid rollback_be?
+	!(_be_has_valid_rollback_be) && return 1
+
+	# looks good
 	return 0
 }
 
 # Prepare the system to reboot by ensuring that we are rebooting into the
 # BE that is actively being upgraded.
 _be_prep_reboot() {
-	if _be_check; then
-		local _name="$( _be_get_active )"
-		_echo ">>> Activating boot environment ${_name}..."
-		_be_activate "${_name}"
-		return $?
-	fi
-	return 0
+	# short-circuit if we aren't on a BE-ready system
+	!(_be_readiness_check) && return 0
+
+	local _name="$( _be_get_active )"
+
+	_echo ">>> Activating boot environment ${_name}..."
+	/sbin/bectl activate "${_name}" 1>/dev/null 2>&1
 }
 
 notice() {
@@ -782,7 +809,7 @@ pkg_upgrade() {
 		# the current BE that is actively being upgraded
 		_be_prep_upgrade
 		if [ $? -ne 0 ]; then
-			_echo "ERROR: Unable to create automatic pre-upgrade boot environment."
+			_echo "ERROR: Unable to create automatic rollback boot environment."
 			_exit 1
 		fi
 
