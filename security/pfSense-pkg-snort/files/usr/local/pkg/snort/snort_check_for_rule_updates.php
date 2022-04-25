@@ -430,7 +430,11 @@ safe_mkdir("{$snortiprepdir}");
 /* See if we need to automatically clear the Update Log based on 1024K size limit */
 if (file_exists(SNORT_RULES_UPD_LOGFILE)) {
 	if (1048576 < filesize(SNORT_RULES_UPD_LOGFILE))
-		unlink_if_exists("{SNORT_RULES_UPD_LOGFILE}");
+		file_put_contents(SNORT_RULES_UPD_LOGFILE, "");
+}
+else {
+	/* Create the file if not already present */
+	file_put_contents(SNORT_RULES_UPD_LOGFILE, "");
 }
 
 /* Sleep for random number of seconds between 0 and 35 to spread load on rules site */
