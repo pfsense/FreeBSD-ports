@@ -202,9 +202,8 @@ _be_readiness_check() {
 # Translates a BE name into a dataset path
 _be_name_to_ds() {
 	local _name="${1}"
-	local _beds="$( _be_get_beds )"
 
-	echo "${_beds}/${_name}"
+	echo "$( _be_get_beds )/${_name}"
 }
 
 # returns the base package version
@@ -235,6 +234,9 @@ _be_zfs_set_property() {
 	local _value="${3}"
 
 	/sbin/zfs set "${_property}=${_value}" "${_target}" 1>/dev/null 2>&1
+
+	# sanity check by reading the value back and comparing with what we expect
+	[ "$( _be_zfs_get_property "${_target}" "${_property}" )" = "${_value}" ]
 }
 
 # Get a ZFS property
@@ -245,15 +247,24 @@ _be_zfs_get_property() {
 	/sbin/zfs get -H -o value "${_property}" "${_target}" 2>/dev/null
 }
 
+# Check if dataset exists
+_be_zfs_dataset_exists() {
+	local _dataset="${1}"
+
+	/sbin/zfs list "${_dataset}" 1>/dev/null 2>&1
+}
+
 # Sanity check that we have a valid rollback BE
 _be_has_valid_rollback_be() {
 	local _active_ds="$( _be_get_active_ds )"
 	local _rollback_be="$( _be_zfs_get_property "${_active_ds}" pfsense:rollbackbe )"
 
-	/sbin/zfs list "$( _be_name_to_ds "${_rollback_be}" )" 1>/dev/null 2>&1
+	_be_zfs_dataset_exists "$( _be_name_to_ds "${_rollback_be}" )"
 }
 
-# Check if we are in the process of upgrading. This flag is reset at startup
+# Check if we are in the process of upgrading.
+# We don't necessarily know how many times pfSense-upgrade will be called during a given
+# system upgrade, so we wait and reset this flag in pfSense-rc to be sure we are done.
 _be_is_upgrading() {
 	local _active_ds="$( _be_get_active_ds )"
 	local _upgrading="$( _be_zfs_get_property "${_active_ds}" pfsense:upgrading )"
@@ -269,7 +280,7 @@ _be_prep_upgrade() {
 	( !(_be_readiness_check) || _be_is_upgrading ) && return 0
 
 	local _timestamp="$( date "+%Y%m%d%H%M%S" )"
-	local _be_name="$( _be_get_active )_${_timestamp}"
+	local _be_name="auto-$( _be_get_active )-${_timestamp}"
 
 	_echo ">>> Creating automatic rollback boot environment..."
 
@@ -281,14 +292,14 @@ _be_prep_upgrade() {
 
 		# save a tiny bit of state to ensure we only run this once
 		_be_zfs_set_property ${_active_ds} pfsense:upgrading yes
-		_be_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
 
-		# this wil be displayed in the UI
+		# cache some useful bits for easily scraping for the UI
+		_be_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
 		_be_zfs_set_property ${_ds_name} pfsense:description "Automatically created by system update"
 		_be_zfs_set_property ${_ds_name} pfsense:version "$( _be_get_pkg_version )"
 	fi
 
-	# did we actually create a valid rollback_be?
+	# did we actually create a valid rollback BE? 
 	!(_be_has_valid_rollback_be) && return 1
 
 	# looks good
