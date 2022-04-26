@@ -276,13 +276,13 @@ _be_is_upgrading() {
 # current environment. We also set some useful ZFS user properties
 # here as well for displaying in the UI.
 _be_prep_upgrade() {
+	_echo ">>> Creating automatic rollback boot environment..."
+
 	# short-circuit if we aren't on a BE-ready system or we are already upgrading
 	( !(_be_readiness_check) || _be_is_upgrading ) && return 0
 
 	local _timestamp="$( date "+%Y%m%d%H%M%S" )"
 	local _be_name="auto-$( _be_get_active )-${_timestamp}"
-
-	_echo ">>> Creating automatic rollback boot environment..."
 
 	# create the rollback boot environment
 	/sbin/bectl create -r "${_be_name}" 1>/dev/null 2>&1
