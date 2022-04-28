@@ -3489,6 +3489,13 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	array_init(return_value);
 	for (nr = 0; nr < mnr; ++nr) {
 		zval array;
+		zval labels;
+		char tlabel[64];
+		char scratch_key[12];
+		char *value = NULL;
+		char *key = NULL;
+		char *label = NULL;
+		int i;
 
 		if (pfctl_get_rule(dev, nr, pr.ticket, pr.anchor, pr.action,
 		    &r, pr.anchor_call)) {
@@ -3496,10 +3503,42 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 			break;
 		}
 
+		array_init(&labels);
+		for (i = 0; i < nitems(r.label) && *r.label[i] != 0; i++) {
+			value = tlabel;
+			key = NULL;
+
+			strncpy(tlabel, r.label[i], sizeof(tlabel));
+			key = strsep(&value, ":");
+			if (value == NULL) {
+				key = NULL;
+				value = tlabel;
+			}
+
+			/* Take a non-prefixed label only if another non-prefixed label or user rule isn't already
+			 * found. This hack is to get around the fact that not all rules have predictable prefixes at
+			 * this time and we have to pick the best one available. In the future consumers should pick
+			 * the label they are interested in by key, rather than referring to the singular label */
+			if ((key == NULL && label == NULL) ||
+			    (key != NULL && strcmp("USER_RULE", key) == 0)) {
+				label = r.label[i];
+			}
+
+			/* Generate a key for a non-prefixed label, and build the assoc array */
+			if (key == NULL) {
+				snprintf(scratch_key, sizeof(scratch_key), "label%d", i);
+				key = scratch_key;
+			}
+			add_assoc_string(&labels, key, value);
+		}
+		if (label == NULL) {
+			label = "";
+		}
 		array_init(&array);
 		add_assoc_long(&array, "id", (long)r.nr);
 		add_assoc_long(&array, "tracker", (long)r.ridentifier);
-		add_assoc_string(&array, "label", r.label[0]);
+		add_assoc_string(&array, "label", label);
+		add_assoc_zval(&array, "all_labels", &labels);
 		add_assoc_double(&array, "evaluations", (double)r.evaluations);
 		add_assoc_double(&array, "packets", (double)(r.packets[0] + r.packets[1]));
 		add_assoc_double(&array, "bytes", (double)(r.bytes[0] + r.bytes[1]));
