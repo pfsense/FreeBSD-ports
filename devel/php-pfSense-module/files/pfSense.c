@@ -3489,9 +3489,6 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	array_init(return_value);
 	for (nr = 0; nr < mnr; ++nr) {
 		zval array;
-		zval labels;
-		char *label = NULL;
-		int i;
 
 		if (pfctl_get_rule(dev, nr, pr.ticket, pr.anchor, pr.action,
 		    &r, pr.anchor_call)) {
@@ -3499,30 +3496,10 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 			break;
 		}
 
-		array_init(&labels);
-		for (i = 0; i < nitems(r.label) && r.label[i][0] != 0; i++) {
-			char *key;
-			char *value;
-			value = r.label[i];
-			key = strsep(&value, ": ");
-
-			/* Take a non-prefixed label only if another
-			 * non-prefixed label or user rule isn't already
-			 * found */
-			if ((label == NULL && key == NULL) ||
-			    (strcmp("USER_RULE", key) == 0)) {
-				label = value;
-			}
-			add_assoc_string(&labels, key, value);
-		}
-		if (label == NULL) {
-			label = "";
-		}
 		array_init(&array);
 		add_assoc_long(&array, "id", (long)r.nr);
 		add_assoc_long(&array, "tracker", (long)r.ridentifier);
-		add_assoc_string(&array, "label", label);
-		add_assoc_zval(&array, "all_labels", &labels);
+		add_assoc_string(&array, "label", r.label[0]);
 		add_assoc_double(&array, "evaluations", (double)r.evaluations);
 		add_assoc_double(&array, "packets", (double)(r.packets[0] + r.packets[1]));
 		add_assoc_double(&array, "bytes", (double)(r.bytes[0] + r.bytes[1]));
