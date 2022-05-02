@@ -43,7 +43,7 @@ function close_table() {
 	$rndc_bin = "/usr/local/sbin/rndc";
 
 	if (is_executable($rndc_bin)) {
-		exec("$rndc_bin -c /cf/named/etc/namedb/rndc.conf status", $status);
+		exec("$rndc_bin -c /var/etc/named/etc/namedb/rndc.conf status", $status);
 	}
 
 	open_table();
