@@ -594,7 +594,8 @@ EOD;
 						$zone_is_dynamic = (($zone['enable_updatepolicy'] == "on") || ($zoneallowupdate != "none"));
 						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
 						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
-						if ($zone_is_dynamic) {
+						$named_process = "/usr/local/sbin/named";
+						if ($zone_is_dynamic && is_process_running($named_process)) {
 							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
 							// TODO: diff frozen zone DB with pfSense's stored DB file
 							//       and (optionally?) add dynamic records to customzonerecords
@@ -604,7 +605,7 @@ EOD;
 						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
 
 						// Thaw frozen dynamic zone
-						if ($zone_is_dynamic) {
+						if ($zone_is_dynamic && is_process_running($named_process)) {
 							exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
 						}
 
