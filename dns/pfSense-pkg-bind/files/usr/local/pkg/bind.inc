@@ -615,7 +615,7 @@ EOD;
 							$zone_found = 0;
 							/* move DNSSEC keys from old chroot,
 							 * see https://redmine.pfsense.org/issues/13002 */
-							foreach (glob("/cf/named/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
+							foreach (glob("/var/etc/named/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$newkey = CHROOT_LOCALBASE . "/etc/namedb/keys/" . basename($filename);
 								if (!file_exists($newkey)) {
 									rename($filename, $newkey);
