@@ -594,7 +594,8 @@ EOD;
 						$zone_is_dynamic = (($zone['enable_updatepolicy'] == "on") || ($zoneallowupdate != "none"));
 						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
 						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
-						if ($zone_is_dynamic) {
+						$named_process = "/usr/local/sbin/named";
+						if ($zone_is_dynamic && is_process_running($named_process)) {
 							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
 							// TODO: diff frozen zone DB with pfSense's stored DB file
 							//       and (optionally?) add dynamic records to customzonerecords
@@ -604,7 +605,7 @@ EOD;
 						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
 
 						// Thaw frozen dynamic zone
-						if ($zone_is_dynamic) {
+						if ($zone_is_dynamic && is_process_running($named_process)) {
 							exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
 						}
 
@@ -615,7 +616,7 @@ EOD;
 							$zone_found = 0;
 							/* move DNSSEC keys from old chroot,
 							 * see https://redmine.pfsense.org/issues/13002 */
-							foreach (glob("/cf/named/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
+							foreach (glob("/var/etc/named/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$newkey = CHROOT_LOCALBASE . "/etc/namedb/keys/" . basename($filename);
 								if (!file_exists($newkey)) {
 									rename($filename, $newkey);
@@ -923,28 +924,30 @@ function bind_write_rcfile() {
 	// Curly braces in the following <<<EOD are PHP {$variable}, not named.conf text { value; }
 	$rc['start'] = <<<EOD
 	if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
-			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
-		fi
+		{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
+	fi
 EOD;
 	$rc['stop'] = <<<EOD
-	{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+	if [ -n "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
+		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
 		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
 		sleep 5
 		/usr/bin/killall -TERM named 2>/dev/null
 		sleep 2
+	fi
 EOD;
 	// curly braces in the following <<<EOD are PHP {$variable}, not named.conf text { value; }
 	$rc['restart'] = <<<EOD
-		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
-			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
-		else
-			{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
-			{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
-			sleep 5
-			/usr/bin/killall -TERM named 2>/dev/null
-			sleep 3
-			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
-		fi
+	if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
+		{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
+	else
+		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
+		sleep 5
+		/usr/bin/killall -TERM named 2>/dev/null
+		sleep 3
+		{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
+	fi
 EOD;
 	write_rcfile($rc);
 }
