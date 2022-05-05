@@ -272,11 +272,24 @@ _be_is_upgrading() {
 	[ "${_upgrading}" = "yes" ]
 }
 
+# Cleans up any BEs that might exist on incompatible systems
+_be_prune() {
+	_be_readiness_check && return 1
+	/sbin/bectl list -H |
+	while read _name _status _mp _space _creation; do
+		/sbin/bectl destroy -o "${_name}" 1>/dev/null 2>&1
+	done
+	return 0
+}
+
 # Prepare the system to upgrade by creating a BE before touching the
 # current environment. We also set some useful ZFS user properties
 # here as well for displaying in the UI.
 _be_prep_upgrade() {
 	_echo ">>> Creating automatic rollback boot environment..."
+
+	# cleanup in case there any any BEs that shouldn't exist
+	_be_prune
 
 	# short-circuit if we aren't on a BE-ready system or we are already upgrading
 	( !(_be_readiness_check) || _be_is_upgrading ) && return 0
@@ -309,10 +322,10 @@ _be_prep_upgrade() {
 # Prepare the system to reboot by ensuring that we are rebooting into the
 # BE that is actively being upgraded.
 _be_prep_reboot() {
-	# short-circuit if we aren't on a BE-ready system
-	!(_be_readiness_check) && return 0
-
 	local _name="$( _be_get_active )"
+
+	# short-circuit if we aren't on a BE-ready system
+	( !(_be_readiness_check) ) && return 0
 
 	_echo ">>> Activating boot environment ${_name}..."
 	/sbin/bectl activate "${_name}" 1>/dev/null 2>&1
@@ -425,6 +438,10 @@ is_ce() {
 		return 0
 	fi
 	return 1
+}
+
+is_plus() {
+	!(is_ce)
 }
 
 repo_is_plus_upgrade() {
@@ -818,10 +835,12 @@ pkg_upgrade() {
 
 		# prepare system to upgrade by creating a new BE prior to upgrading
 		# the current BE that is actively being upgraded
-		_be_prep_upgrade
-		if [ $? -ne 0 ]; then
-			_echo "ERROR: Unable to create automatic rollback boot environment."
-			_exit 1
+		if is_plus; then
+			_be_prep_upgrade
+			if [ $? -ne 0 ]; then
+				_echo "ERROR: Unable to create automatic rollback boot environment."
+				_exit 1
+			fi
 		fi
 
 		pkg_update force
@@ -1452,10 +1471,12 @@ do_reboot() {
 	fi
 
 	# Ensure that we are *always* rebooting into the BE that is actively being upgraded
-	_be_prep_reboot
-	if [ $? -ne 0 ]; then
-		_echo "ERROR: Unable to activate the boot environment being upgraded ($( _be_get_active ))."
-		_exit 1
+	if is_plus; then
+		_be_prep_reboot
+		if [ $? -ne 0 ]; then
+			_echo "ERROR: Unable to activate the boot environment being upgraded ($( _be_get_active ))."
+			_exit 1
+		fi
 	fi
 
 	local _complete="System is going to be upgraded"
