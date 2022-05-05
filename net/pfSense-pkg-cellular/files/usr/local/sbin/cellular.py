@@ -309,6 +309,18 @@ class CellularInterface:
         else:
             return str(ret -1)
 
+    def _at_cgmi(self, args):
+        """
+        receive manufacturer information
+        """
+        return self.at_cmd("+CGMI", args)
+
+    def _at_cgmm(self, args):
+        """
+        receive model information
+        """
+        return self.at_cmd("+CGMM", args)        
+        
     def _at_information(self, args):
         """
         receive module information
@@ -347,14 +359,13 @@ class CellularInterface:
 
             return infoex.split(",")[6].strip('"')
 
-    def get_model(self, args, silent=False):
+   def get_model(self, args, silent=False):
         """
         get model of module.
         """
         import re
-        info = self._at_information(args)
-        m = re.search("Model:(?:\W)*(.*)", info[1])
-
+        info = self._at_cgmm(args)
+        m = re.search("\n(?:\W)*(.*)", info[1])
         if m:
             if not silent:
                 print(m.group(1), file=sys.stdout)
@@ -367,14 +378,13 @@ class CellularInterface:
 
         return info
 
-    def get_manufacturer(self, args, silent=False):
+   def get_manufacturer(self, args, silent=False):
         """
-        get manufacturere of module.
+        get manufacturer of module.
         """
         import re
-        # TODO: +GMI 
-        info = self._at_information(args)
-        m = re.search("Manufacturer:(?:\W)*(.*)", info[1])
+        info = self._at_cgmi(args)
+        m = re.search("\n(?:\W)*(.*)", info[1])
 
         if m:
             if not silent:
