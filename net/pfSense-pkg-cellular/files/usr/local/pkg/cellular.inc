@@ -150,7 +150,7 @@ function cellular_before_everything() {
 	// little workaround for dynamic field (content) generation
 	if (isset($pkg) && array_key_exists('fields', $pkg)) {
 
-		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR";
+		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR=1";
 
 		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg($custom_str) . " -v", $sig);
 
