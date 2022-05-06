@@ -32,10 +32,11 @@ import serial
 import configparser
 
 
-__version__ = "1.1.6"
+__version__ = "1.1.7"
 
 huawei = (lambda a: a.startswith("Huawei"))
 simcom = (lambda a: a.startswith("SIMCOM"))
+quectel = (lambda a: a.startswith("Quectel"))
 
 class CellularInterface:
     """
@@ -356,6 +357,8 @@ class CellularInterface:
         else:
             if simcom(self.module):
                 return infoex.split(",")[0].strip('"')
+            if quectel(self.manufacturer):
+                return infoex.split(",")[0].strip('"')     
 
             return infoex.split(",")[6].strip('"')
 
@@ -437,6 +440,9 @@ class CellularInterface:
 
         if huawei(self.manufacturer):
             cmds += (("^SYSINFOEX", self._get_submode_name),)
+            
+        if quectel(self.manufacturer):
+            cmds += (("+QNWINFO", self._get_submode_name),)
 
         num, ret = self.at_cmd("; ".join([cmd[0] for cmd in cmds]), args)
         
