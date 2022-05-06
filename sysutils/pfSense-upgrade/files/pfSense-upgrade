@@ -288,9 +288,6 @@ _be_prune() {
 _be_prep_upgrade() {
 	_echo ">>> Creating automatic rollback boot environment..."
 
-	# cleanup in case there any any BEs that shouldn't exist
-	_be_prune
-
 	# short-circuit if we aren't on a BE-ready system or we are already upgrading
 	( !(_be_readiness_check) || _be_is_upgrading ) && return 0
 
@@ -832,6 +829,9 @@ pkg_upgrade() {
 		if [ -f "${logfile}" ]; then
 			rm -f ${logfile}
 		fi
+
+		# cleanup in case there are any BEs that shouldn't exist
+		_be_prune
 
 		# prepare system to upgrade by creating a new BE prior to upgrading
 		# the current BE that is actively being upgraded
