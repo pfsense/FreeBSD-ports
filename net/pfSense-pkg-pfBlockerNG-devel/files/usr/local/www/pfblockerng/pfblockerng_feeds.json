@@ -501,6 +501,12 @@
 					"website":	"https://github.com/Sekhan/TheGreatWall",
 					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv4",
 					"header":	"TheGreatWall_DoH_IP"
+				},
+				{
+					"feed":		"Dibdot DoH list",
+					"website":	"https://github.com/dibdot/DoH-IP-blocklists",
+					"url":		"https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-ipv4.txt",
+					"header":	"Dibdot_DoH_IP"
 				}
 			]
 		},
@@ -909,6 +915,12 @@
 					"website":	"https://github.com/Sekhan/TheGreatWall",
 					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv6",
 					"header":	"TheGreatWall_DoH_IP6"
+				},
+				{
+					"feed":		"Dibdot DoH list",
+					"website":	"https://github.com/dibdot/DoH-IP-blocklists",
+					"url":		"https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-ipv6.txt",
+					"header":	"Dibdot_DoH_IP6"
 				}
 			]
 		},
@@ -1508,6 +1520,12 @@
 					"website":	"https://github.com/oneoffdallas/dohservers",
 					"url":		"https://raw.githubusercontent.com/oneoffdallas/dohservers/master/list.txt",
 					"header":	"Oneoffdallas_DoH"
+				},
+				{
+					"feed":		"Dibdot DoH list",
+					"website":	"https://github.com/dibdot/DoH-IP-blocklists",
+					"url":		"https://raw.githubusercontent.com/dibdot/DoH-IP-blocklists/master/doh-domains.txt",
+					"header":	"Dibdot_DoH"
 				}
 			]
 		},
