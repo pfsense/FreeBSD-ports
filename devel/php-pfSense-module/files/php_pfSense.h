@@ -126,6 +126,13 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup);
 PHP_FUNCTION(pfSense_etherswitch_setmode);
 #endif
 PHP_FUNCTION(pfSense_ipsec_list_sa);
+#ifdef PF_CP_FUNCTIONS
+PHP_FUNCTION(pfSense_pf_cp_flush);
+PHP_FUNCTION(pfSense_pf_cp_get_eth_pipes);
+PHP_FUNCTION(pfSense_pf_cp_get_eth_rule_counters);
+PHP_FUNCTION(pfSense_pf_cp_get_eth_last_active);
+PHP_FUNCTION(pfSense_pf_cp_zerocnt);
+#endif
 
 extern zend_module_entry pfSense_module_entry;
 #define phpext_pfSense_ptr &pfSense_module_entry

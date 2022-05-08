@@ -667,6 +667,9 @@ function frr_zebra_generate_staticroutes() {
 				/* Gateways */
 				case "gw":
 					$target = lookup_gateway_ip_by_name($target);
+					if (is_subnetv6($redistr['routevalue'])) {
+						$target = str_replace("%", " ", $target);
+					}
 					break;
 				/* BGP Neighbors */
 				case "bgp":

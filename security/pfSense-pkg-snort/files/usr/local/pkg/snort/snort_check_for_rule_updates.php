@@ -392,7 +392,7 @@ function snort_untar($mode, $tarFile, $outputFolder = null, $extra = null){
 	$success = $ret === 0;
 	if(!$success) {
 		$err_msg = gettext("Failed to extract a rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. Tar file:") . $tarFile;
-		error_log('\t' . $err_msg . '\n', 3, SNORT_RULES_UPD_LOGFILE);
+		error_log("\t" . $err_msg . "\n", 3, SNORT_RULES_UPD_LOGFILE);
 		syslog(LOG_ERR, '[Snort] ' . $err_msg);
 	}
 	return $success;
@@ -404,7 +404,7 @@ function snort_copy($srcFilePathPattern, $destPath){
 	$success = $ret === 0;
 	if(!$success) {
 		$err_msg = gettext("Failed to copy some files from the rules-update archive. Some snort rules might still be out-of-date. Make sure there is enough free disk space and try again. File(s):") . $srcFilePathPattern;
-		error_log('\t' . $err_msg . '\n', 3, SNORT_RULES_UPD_LOGFILE);
+		error_log("\t" . $err_msg . "\n", 3, SNORT_RULES_UPD_LOGFILE);
 		syslog(LOG_ERR, '[Snort] ' . $err_msg);
 	}
 	return $success;
@@ -430,7 +430,11 @@ safe_mkdir("{$snortiprepdir}");
 /* See if we need to automatically clear the Update Log based on 1024K size limit */
 if (file_exists(SNORT_RULES_UPD_LOGFILE)) {
 	if (1048576 < filesize(SNORT_RULES_UPD_LOGFILE))
-		unlink_if_exists("{SNORT_RULES_UPD_LOGFILE}");
+		file_put_contents(SNORT_RULES_UPD_LOGFILE, "");
+}
+else {
+	/* Create the file if not already present */
+	file_put_contents(SNORT_RULES_UPD_LOGFILE, "");
 }
 
 /* Sleep for random number of seconds between 0 and 35 to spread load on rules site */
@@ -621,6 +625,7 @@ if ($snortdownload == 'on') {
 		/* extract SO rules */
 		$snort_arch = php_uname("m");
 		$nosorules = true;
+		safe_mkdir("{$tmpfname}/so_rules");
 
 		/****************************************************************************/
 		/* Snort SO rules only exist for Intel/AMD 64-bit architecture on FreeBSD,  */
@@ -628,9 +633,12 @@ if ($snortdownload == 'on') {
 		/****************************************************************************/
 		if ($snort_arch == 'amd64') {
 			error_log(gettext("\tUsing Snort Subscriber precompiled SO rules for {$freebsd_version_so} ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
-			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}", "so_rules/precompiled/{$freebsd_version_so}/x86_64/{$snort_version}/")) {
-				snort_copy("{$tmpfname}/so_rules/precompiled/{$freebsd_version_so}/x86_64/{$snort_version}/*.so", "{$snortlibdir}/snort_dynamicrules/");
+			if(snort_untar("xzf", "{$tmpfname}/{$snort_filename}", "{$tmpfname}/so_rules", "--strip-components 5 so_rules/precompiled/{$freebsd_version_so}*")) {
+				snort_copy("{$tmpfname}/so_rules/*.so", "{$snortlibdir}/snort_dynamicrules/");
 				$nosorules = false;
+			}
+			else {
+				error_log(gettext("\tAn error occurred extracting the Snort Subscriber precompiled SO rules. They have not been updated ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 			}
 		}
 		rmdir_recursive("{$tmpfname}/so_rules/");

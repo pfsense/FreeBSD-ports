@@ -111,7 +111,7 @@ main(int argc, char **argv)
 	struct sbuf *sbtmp2, *sbtmp;
 	struct utsname uts;
 	int ch, ispost = 0, len, result, end_header = 0;
-	char *data = NULL, *script = NULL, *mtype = NULL, *buf, *linebuf;
+	char *data = NULL, *script = NULL, *buf, *linebuf;
 	const char *socketpath;
 
 	tzset();
@@ -137,12 +137,12 @@ main(int argc, char **argv)
 				ispost = 1;
 				printf("POST mode is not yet implemented\n");
 				exit(-2);
-			} else if(!strcasecmp(optarg, "GET"))
+			} else if (!strcasecmp(optarg, "GET")) {
 				ispost = 0;
-			else
+			} else {
 				usage();
+			}
 
-			mtype = optarg;
 			break;
 		}
 	}

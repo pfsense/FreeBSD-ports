@@ -48,6 +48,9 @@ static pthread_cond_t sig_condvar;
 static pthread_mutex_t sig_mtx;
 static pthread_rwlock_t main_lock;
 
+TAILQ_HEAD(thread_list, thread_host) thread_list;
+TAILQ_HEAD(action_list, action) action_list;
+
 static void host_del(struct action *);
 static void action_del(struct action *, struct action_list *);
 static void addr_cleanup(struct addr_list *, const char *);

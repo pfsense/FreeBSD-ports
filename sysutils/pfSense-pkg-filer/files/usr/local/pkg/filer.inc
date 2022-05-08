@@ -84,6 +84,20 @@ function sync_package_filer($post = array()) {
 	filer_sync_on_changes();
 }
 
+function checkUnique($value) {
+	global $config;
+
+	if ($config['installedpackages']['filer']['config'] != "") {
+		foreach ($config['installedpackages']['filer']['config'] as $file) {
+			if ($file['fullfile'] == $value) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 function filer_validate_input($post, &$input_errors) {
 	foreach ($post as $key => $value) {
 		if (empty($value)) {
@@ -95,8 +109,13 @@ function filer_validate_input($post, &$input_errors) {
 		if (substr($key, 0, 11) == "description" && !preg_match("@^[a-zA-Z0-9 _/.-]+$@", $value)) {
 			$input_errors[] = "Do not use special characters in description.";
 		}
-		if (substr($key, 0, 8) == "fullfile" && !preg_match("@^[a-zA-Z0-9_/.-]+$@", $value)) {
-			$input_errors[] = "Do not use special characters in filename.";
+		if (substr($key, 0, 8) == "fullfile") {
+			if (!preg_match("@^[a-zA-Z0-9_/.-]+$@", $value)) {
+				$input_errors[] = "Do not use special characters in filename.";
+			}
+			if (!checkUnique($value)) {
+				$input_errors[] = $value . " is already managed by filer.";
+			}  
 		}
 	}
 }

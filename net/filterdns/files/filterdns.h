@@ -63,7 +63,6 @@ struct thread_host {
 	uint32_t state;
 	TAILQ_HEAD(actions, action) actions;
 };
-TAILQ_HEAD(thread_list, thread_host) thread_list;
 
 struct action {
 	TAILQ_ENTRY(action) next_list;
@@ -83,7 +82,6 @@ struct action {
 	pthread_cond_t cond;
 	pthread_mutex_t mtx;
 };
-TAILQ_HEAD(action_list, action) action_list;
 
 int parse_config(char *);
 const char *action_to_string(int);
