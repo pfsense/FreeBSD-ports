@@ -63,7 +63,7 @@ class CellularInterface:
         # init default Config if not present
         self.init_config(self.defconf)
 
-        self.config.readfp(open(self.defconf))
+        self.config.read_file(open(self.defconf))
         # read custom settings from webinterface
         self.config.read([self.conf])
 
@@ -103,7 +103,7 @@ class CellularInterface:
         tmp = configparser.ConfigParser()
 
         if (os.path.isfile(self.conf)):
-            tmp.readfp(open(self.conf))
+            tmp.read_file(open(self.conf))
 
         # empty or deleted field must not be wrote to config
         if not args.value and tmp.has_option(args.section, args.key):
@@ -127,7 +127,7 @@ class CellularInterface:
         tmp = configparser.ConfigParser()
 
         if (os.path.isfile(self.conf)):
-            tmp.readfp(open(self.conf))
+            tmp.read_file(open(self.conf))
             found = False
 
             # return module when in config
@@ -177,7 +177,7 @@ class CellularInterface:
         # check if config file is from an old version.
         if (os.path.isfile(config_file)):
             tmp = configparser.ConfigParser()
-            tmp.readfp(open(config_file))
+            tmp.read_file(open(config_file))
 
             config_version = tmp.get("Software", "version")
 
