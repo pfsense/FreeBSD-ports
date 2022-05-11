@@ -4547,6 +4547,8 @@ PHP_FUNCTION(pfSense_pf_cp_get_eth_last_active) {
 
 	if (path_len > MAXPATHLEN)
 		goto error_out;
+	if (pfctl_get_eth_rules_info(dev, &info, path))
+		goto error_out;
 
 	array_init(return_value);
 	for (int nr = 0; nr < info.nr; nr++) {
