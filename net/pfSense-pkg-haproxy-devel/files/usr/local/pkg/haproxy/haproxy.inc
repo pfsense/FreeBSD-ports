@@ -2177,11 +2177,6 @@ function haproxy_writeconf($configpath) {
 			}
 
 			fwrite ($fd, $config_actions);
-			// CVE-2021-40346 workaround
-			if ($backend_type == 'http') {
-				fwrite ($fd, "\thttp-request  deny if { req.hdr_cnt(content-length) gt 1 }\n");
-				fwrite ($fd, "\thttp-response deny if { res.hdr_cnt(content-length) gt 1 }\n");
-			}
 			// Write backends after advanced options so custom use_backend rules can be applied first.
 			fwrite ($fd, $config_usebackends);
 			fwrite ($fd, $config_usedefaultbackends);
