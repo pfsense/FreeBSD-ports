@@ -412,6 +412,9 @@ foreach ($config['rrd']['savedviews'] as $key => $view) {
 	$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
 }
 
+if (isset($config['rrd']['rrd_tabs_sort'])) {
+	asort($tab_array);
+}
 display_top_tabs($tab_array);
 
 ?>
