@@ -321,6 +321,9 @@ function wg_restart_extra_services($force = false) {
 	// unbound
 	services_unbound_configure();
 
+	// reconfigure static routes
+	system_staticroutes_configure();
+
 	// TODO: This is where we will add facilities for users to pick what services to restart
 
 	return true;
