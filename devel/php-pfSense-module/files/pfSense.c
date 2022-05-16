@@ -4446,7 +4446,6 @@ PHP_FUNCTION(pfSense_pf_cp_get_eth_pipes) {
 			goto error_out;
 		if (rule.dnflags & PFRULE_DN_IS_PIPE) {
 			add_next_index_long(return_value, (zend_long)rule.dnpipe);
-			add_next_index_long(return_value, (zend_long)rule.dnpipe + 1);
 		}
 	}
 
