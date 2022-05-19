@@ -38,9 +38,6 @@ ZEND_BEGIN_MODULE_GLOBALS(pfSense)
 	int s;
 	int inets;
 	int inets6;
-#ifdef IPFW_FUNCTIONS
-	int ipfw;
-#endif
 	int csock;
 ZEND_END_MODULE_GLOBALS(pfSense)
 
@@ -106,15 +103,6 @@ PHP_FUNCTION(pfSense_register_lease);
 PHP_FUNCTION(pfSense_delete_lease);
 #endif
 
-#ifdef IPFW_FUNCTIONS
-PHP_FUNCTION(pfSense_ipfw_table);
-PHP_FUNCTION(pfSense_ipfw_table_info);
-PHP_FUNCTION(pfSense_ipfw_table_list);
-PHP_FUNCTION(pfSense_ipfw_table_lookup);
-PHP_FUNCTION(pfSense_ipfw_table_zerocnt);
-PHP_FUNCTION(pfSense_ipfw_tables_list);
-PHP_FUNCTION(pfSense_ipfw_pipe);
-#endif
 #ifdef ETHERSWITCH_FUNCTIONS
 PHP_FUNCTION(pfSense_etherswitch_getinfo);
 PHP_FUNCTION(pfSense_etherswitch_getport);
