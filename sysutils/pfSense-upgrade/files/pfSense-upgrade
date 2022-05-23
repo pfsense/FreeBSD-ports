@@ -184,6 +184,11 @@ _be_is_path_on_root() {
 	_be_get_dataset_of_path "${_path}" | grep -q -m 1 "$( _be_get_rootfs )"
 }
 
+# test if the zfs kernel module is loaded
+_be_has_zfs() {
+	/sbin/kldstat -qm zfs 1>/dev/null 2>&1
+}
+
 #
 # test the system for BE-readiness (e.g. fails on UFS systems)
 #
@@ -194,7 +199,8 @@ _be_is_path_on_root() {
 #    4. TODO: add additional sanity checks?
 #
 _be_readiness_check() {
-	/sbin/bectl check \
+	_be_has_zfs \
+		&& /sbin/bectl check \
 		&& _be_is_path_on_root "/cf" \
 		&& _be_is_path_on_root "/var/db/pkg"
 }
@@ -258,7 +264,16 @@ _be_zfs_dataset_exists() {
 _be_zfs_destroy() {
 	local _dataset="${1}"
 	( !(_be_zfs_dataset_exists "${_dataset}") ) && return 0
-	/sbin/zfs destroy -f "${_dataset}" 1>/dev/null 2>&1
+	/sbin/zfs destroy -fr "${_dataset}" 1>/dev/null 2>&1
+}
+
+# Create a ZFS dataset
+_be_zfs_create() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+
+	# create the new target dataset
+	/sbin/zfs create -o mountpoint="${_source_path}" "${_target_dataset}" 1>/dev/null 2>&1	
 }
 
 # Sanity check that we have a valid rollback BE
@@ -335,74 +350,120 @@ _be_prep_reboot() {
 	_echo "done."
 }
 
-_be_migrate_var_db_pkg() {
-	local _source_path="/var/db/pkg"
-
-	# short-circuit if the layout is already compatible and migration can be skipped
-	_be_is_path_on_root ${_source_path} && return 0
-
+# Prepare the system for a dataset migration
+_be_pre_migration() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
 	local _tmp_source_path="/tmp${_source_path}.old"
-	local _root_pool="$( _be_get_root_pool )"
-	local _target_dataset="$( _be_get_active_ds )/var_db_pkg"
 
 	# create a scratch location
-	/bin/mkdir -p "${_tmp_source_path}" && \
+	/bin/mkdir -p "${_tmp_source_path}" 1>/dev/null 2>&1
 
 	# save a copy of the source data to the scratch location
-	/bin/cp -pR "${_source_path}/" "${_tmp_source_path}" && \
+	/bin/cp -pR "${_source_path}/" "${_tmp_source_path}" 1>/dev/null 2>&1
 
-	# create the new target dataset
-	/sbin/zfs create -o mountpoint="${_source_path}" "${_target_dataset}" && \
-
-	# set target dataset properties
-	/sbin/zfs set setuid=off exec=off canmount=noauto "${_target_dataset}" && \
-
-	# move the source data back
-	/bin/cp -pR "${_tmp_source_path}/" "${_source_path}" && \
-
-	# destroy scratch location
-	/bin/rm -fr "${_tmp_source_path}"
+	# destroy source location
+	/bin/rm -fr "${_source_path}" 1>/dev/null 2>&1
 }
 
-_be_migrate_cf() {
-	local _source_path="/cf"
+# Create a dataset with some special properties
+_be_create_dataset() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+	local _tmp_source_path="/tmp${_source_path}.old"
+
+	# ensure we are starting off with a consistent state
+	_be_zfs_destroy "${_target_dataset}"
+
+	# create the new target dataset
+	_be_zfs_create "${_source_path}" "${_target_dataset}"
+
+	# set target dataset properties
+	_be_zfs_set_property "${_target_dataset}" setuid off
+	_be_zfs_set_property "${_target_dataset}" exec off
+	_be_zfs_set_property "${_target_dataset}" canmount noauto
+}
+
+# Force remount a dataset
+_be_remount_ds() {
+	local _dataset="${1}"
+
+	/sbin/zfs list -rH -o mountpoint,name,canmount,mounted -s mountpoint -t filesystem "${_dataset}" | \
+	while read _mp _name _canmount _mounted ; do
+		# skip filesystems that must not be mounted
+		[ "$_canmount" = "off" ] && continue
+		case "$_mp" in
+		"none" | "legacy" | "/" | "/$_be")
+			# do nothing for filesystems with unset or legacy mountpoint
+			# or those that would be mounted over /
+			;;
+		"/$_be/"*)
+			# skip filesystems that are already mounted
+			[ "$_mounted" = "yes" ] && \
+				/sbin/unmount -f -t zfs $_name 1>/dev/null 2>&1
+			# filesystems with mountpoint relative to BE
+			/sbin/mount -t zfs $_name ${_mp#/$_be} 1>/dev/null 2>&1
+			;;
+		*)
+			# skip filesystems that are already mounted
+			[ "$_mounted" = "yes" ] && \
+				/sbin/zfs unmount -f $_name 1>/dev/null 2>&1
+			# filesystems with mountpoint elsewhere
+			/sbin/zfs mount $_name 1>/dev/null 2>&1
+			;;
+		esac
+	done
+}
+
+# Cleanup the migration
+_be_post_migration() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
+	local _tmp_source_path="/tmp${_source_path}.old"
+
+	# relocate data back from scratch location to source location
+	/bin/cp -pR "${_tmp_source_path}/" "${_source_path}" 1>/dev/null 2>&1
+
+	# destroy scratch location
+	/bin/rm -fr "${_tmp_source_path}" 1>/dev/null 2>&1
+
+	# cycle the dataset mount
+	_be_remount_ds "${_target_dataset}"
+}
+
+# Do a complete migration given a source path and a target dataset
+_be_do_migration() {
+	local _source_path="${1}"
+	local _target_dataset="${2}"
 
 	# short-circuit if the layout is already compatible and migration can be skipped
-	_be_is_path_on_root ${_source_path} && return 0
+	_be_is_path_on_root ${_source_path} && !([ -L "${_source_path}" ]) && return 0
 
-	local _tmp_source_path="/tmp${_source_path}.old"
-	local _root_pool="$( _be_get_root_pool )"
-	local _target_dataset="$( _be_get_active_ds )/cf"
+	echo -n "Migrating ${_source_path} to ZFS dataset ${_target_dataset}..."
 
-	# create a scratch location
-	/bin/mkdir -p "${_tmp_source_path}" && \
+	_be_pre_migration "${_source_path}" "${_target_dataset}"
+	_be_create_dataset "${_source_path}" "${_target_dataset}"
+	_be_post_migration "${_source_path}" "${_target_dataset}"
 
-	# save a copy of the source data to the scratch location
-	/bin/cp -pR "${_source_path}/" "${_tmp_source_path}" && \
-
-	# destroy any known superfluous datasets
-	_be_zfs_destroy "${_root_pool}/cf/conf" && \
-	_be_zfs_destroy "${_root_pool}/cf" && \
-
-	# create the new target dataset
-	/sbin/zfs create -o mountpoint="${_source_path}" "${_target_dataset}" && \
-
-	# set target dataset properties
-	/sbin/zfs set setuid=off exec=off canmount=noauto "${_target_dataset}" && \
-
-	# move the source data back
-	/bin/cp -pR "${_tmp_source_path}/" "${_source_path}" && \
-
-	# destroy scratch location
-	/bin/rm -fr "${_tmp_source_path}"
+	echo " done."
 }
 
+# Read a table of migrations and perform each one
 _be_migrate() {
-	# short-circuit if we are on UFS...
-	( !(/sbin/bectl check) ) && return 0
+	local _migration_table="
+	#	PATH		DATASET
+		/cf		$( _be_get_active_ds )/cf
+		/var/db/pkg	$( _be_get_active_ds )/var_db_pkg
+	" # END-QUOTE
 
-	# do the migration if necessary
-	_be_migrate_cf && _be_migrate_var_db_pkg
+	# sanity check to make sure we really need to do this
+	( !(_be_has_zfs) ) && ( !(/sbin/bectl check) ) && return 0
+
+	# now we do the migration
+	echo "${_migration_table}" | while read _path _dataset; do
+		case "$_path" in "#"*|"") continue; esac
+		_be_do_migration "${_path}" "${_dataset}"
+	done
 }
 
 notice() {
