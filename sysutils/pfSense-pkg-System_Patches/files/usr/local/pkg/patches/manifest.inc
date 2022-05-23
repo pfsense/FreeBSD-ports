@@ -53,7 +53,7 @@ $recommended_patches = [
 ],
 [
   'uniqid' => '12827workaround',
-  'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'versions' => ['2.6.0', '22.01'],
   'descr' => 'Disable pf counter data preservation to temporarily work around latency when reloading large rulesets',
   'links' => [
       [ 'text' => 'Redmine #12827',
@@ -65,7 +65,7 @@ $recommended_patches = [
 ],
 [
   'uniqid' => 'fd30b9eda98900eb5f1a0c37d600ef4deaf582ad',
-  'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'versions' => ['2.6.0', '22.01'],
   'descr' => 'Fix Captive Portal handling of non-TCP traffic after login',
   'links' => [
       [ 'text' => 'Redmine #12834',
@@ -113,7 +113,7 @@ $recommended_patches = [
 ],
 [
   'uniqid' => 'b2fce958b8a2e80754b49eb3d17795757df6a76c',
-  'versions' => ['22.01', '22.05'],
+  'versions' => ['22.01'],
   'descr' => 'Fix Netgate 5100 status LED',
   'links' => [
       [ 'text' => 'NG 7538' ],
