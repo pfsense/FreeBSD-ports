@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-System_Patches
 PORTVERSION=	2.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -61,6 +61,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/b2fce958b8a2e80754b49eb3d17795757df6a76c.patch \
 		${STAGEDIR}${PREFIX}/pkg/patches
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/b5360f49fb3c1fdc36ebf13c20b68d4ff1e15fe6.patch \
+		${STAGEDIR}${PREFIX}/pkg/patches
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/bdffb77d1aa21770b23ef408ad9fba79d0825ec5.patch \
 		${STAGEDIR}${PREFIX}/pkg/patches
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/bf21f67bbe2d1694ad1ad72728623dded9ace426.patch \
 		${STAGEDIR}${PREFIX}/pkg/patches

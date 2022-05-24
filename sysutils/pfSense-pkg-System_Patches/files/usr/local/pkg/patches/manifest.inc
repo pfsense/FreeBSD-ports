@@ -76,6 +76,18 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => 'bdffb77d1aa21770b23ef408ad9fba79d0825ec5',
+  'versions' => ['2.6.0', '22.01'],
+  'descr' => 'Fix Dynamic DNS hang on Save and Force Update',
+  'links' => [
+      [ 'text' => 'Redmine #12870',
+         'url' => 'https://redmine.pfsense.org/issues/12870', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '4612721800a1b25bb1fb2d4d7c4ceea6f44f208e',
   'versions' => ['2.6.0', '22.01'],
   'descr' => 'Fix Namecheap Dynamic DNS response processing',
