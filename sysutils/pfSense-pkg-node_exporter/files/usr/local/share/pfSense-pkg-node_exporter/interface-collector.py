@@ -26,7 +26,11 @@ root = ET.parse('/conf/config.xml')
 for elem in root.find("interfaces"):
 	pf_name = elem.tag
 	if_name = elem.find('if').text
-	descr = elem.find('descr').text
+	node = elem.find('descr')
+	if node is not None:
+		descr = elem.find('descr').text
+	else:
+		descr = ""
 	enabled = 1 if elem.find('enable') is not None else 0
 	metrics['up'].add(enabled, name=pf_name)
 	metrics['info'].add(enabled, description=descr, interface=if_name, name=pf_name)
