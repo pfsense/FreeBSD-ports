@@ -453,6 +453,7 @@ _be_migrate() {
 	local _migration_table="
 	#	PATH		DATASET
 		/cf		$( _be_get_active_ds )/cf
+		/var/cache/pkg	$( _be_get_active_ds )/var_cache_pkg
 		/var/db/pkg	$( _be_get_active_ds )/var_db_pkg
 	" # END-QUOTE
 
