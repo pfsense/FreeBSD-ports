@@ -304,12 +304,15 @@ _be_prune() {
 	return 0
 }
 
-# Prepare the system to upgrade by creating a BE before touching the
-# current environment. We also set some useful ZFS user properties
-# here as well for displaying in the UI.
+# Check if automatic update BEs should be created
+_be_is_auto_disabled() {
+	local _disableautobe="$(read_xml_tag.sh boolean system/firmware/disableautobe)"
+	[ "${_disableautobe}" = "true" ] 
+}
+
 _be_prep_upgrade() {
-	# short-circuit if we aren't on a BE-ready system
-	( !(_be_readiness_check) || _be_is_upgrading || is_ce ) && return 0
+	# short-circuit on incompatible systems or circumstances that shouldn't trigger an automatic BE
+	( !(_be_readiness_check) || _be_is_auto_disabled || _be_is_upgrading || is_ce ) && return 0
 
 	local _timestamp="$( date "+%Y%m%d%H%M%S" )"
 	local _be_name="auto-$( _be_get_active )-${_timestamp}"
@@ -322,9 +325,9 @@ _be_prep_upgrade() {
 
 		# save a tiny bit of state to ensure we only run this once
 		_be_zfs_set_property ${_active_ds} pfsense:upgrading yes
-
-		# cache some useful bits for easily scraping for the UI
 		_be_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
+
+		_be_zfs_set_property ${_ds_name} pfsense:automatic yes
 		_be_zfs_set_property ${_ds_name} pfsense:description "Automatically created by system update"
 		_be_zfs_set_property ${_ds_name} pfsense:version "$( _be_get_pkg_version )"
 	fi
