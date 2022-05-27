@@ -156,6 +156,11 @@ _be_get_rootfs() {
 	/sbin/mount | /usr/bin/awk '/ \/ / {print $1}'
 }
 
+# Test if root filesystem is on UFS
+_be_is_root_on_ufs() {
+	echo "$( _be_get_rootfs )" | grep -q -m 1 -E "^/dev/"
+}
+
 # Returns the pool that contains the root filesystem
 _be_get_root_pool() {
 	_be_get_rootfs | /usr/bin/awk -F '/' '{print $1}'
@@ -184,9 +189,10 @@ _be_is_path_on_root() {
 	_be_get_dataset_of_path "${_path}" | grep -q -m 1 "$( _be_get_rootfs )"
 }
 
-# test if the zfs kernel module is loaded
-_be_has_zfs() {
-	/sbin/kldstat -qm zfs 1>/dev/null 2>&1
+# test if root filesystem is on ZFS
+_be_is_root_on_zfs() {
+	# just the opposite...
+	!(_be_is_root_on_ufs)
 }
 
 #
@@ -199,10 +205,16 @@ _be_has_zfs() {
 #    4. TODO: add additional sanity checks?
 #
 _be_readiness_check() {
-	_be_has_zfs \
+	_be_is_root_on_zfs \
 		&& /sbin/bectl check \
 		&& _be_is_path_on_root "/cf" \
 		&& _be_is_path_on_root "/var/db/pkg"
+}
+
+# See _be_readiness_check...
+_be_not_readiness_check() {
+	# just the opposite...
+	!(_be_readiness_check)
 }
 
 # Translates a BE name into a dataset path
@@ -281,7 +293,14 @@ _be_has_valid_rollback_be() {
 	local _active_ds="$( _be_get_active_ds )"
 	local _rollback_be="$( _be_zfs_get_property "${_active_ds}" pfsense:rollbackbe )"
 
+	# Check to see if the active dataset has a rollback be dataset.
 	_be_zfs_dataset_exists "$( _be_name_to_ds "${_rollback_be}" )"
+}
+
+# See _be_has_valid_rollback_be
+_be_has_not_valid_rollback_be() {
+	# Just the opposite...
+	!(_be_has_valid_rollback_be)
 }
 
 # Check if we are in the process of upgrading.
@@ -294,9 +313,15 @@ _be_is_upgrading() {
 	[ "${_upgrading}" = "yes" ]
 }
 
+# Guard for _be_prune
+_be_prune_guard() {
+	# various reasons to bail out early from _be_prune below...
+	_be_is_root_on_ufs || _be_readiness_check
+}
+
 # Cleans up any BEs that might exist on incompatible systems
 _be_prune() {
-	_be_readiness_check && return 1
+	_be_prune_guard && return 1
 	/sbin/bectl list -H |
 	while read _name _status _mp _space _creation; do
 		/sbin/bectl destroy -o "${_name}" 1>/dev/null 2>&1
@@ -304,20 +329,24 @@ _be_prune() {
 	return 0
 }
 
-# Check if automatic update BEs should be created
-_be_is_auto_disabled() {
-	local _disableautobe="$(read_xml_tag.sh boolean system/firmware/disableautobe)"
-	[ "${_disableautobe}" = "true" ] 
+# Guard for _be_pre_upgrade
+_be_pre_upgrade_guard() {
+	# various reasons to bail early from _be_prep_upgrade below...
+	_be_not_readiness_check || _be_is_upgrading || is_ce
 }
 
+# Prepare the system to upgrade by creating a BE before touching the
+# current environment. We also set some useful ZFS user properties
+# here as well for displaying in the UI.
 _be_prep_upgrade() {
-	# short-circuit on incompatible systems or circumstances that shouldn't trigger an automatic BE
-	( !(_be_readiness_check) || _be_is_auto_disabled || _be_is_upgrading || is_ce ) && return 0
+	# short-circuit when applicable, return 0 to proceed with upgrade
+	_be_pre_upgrade_guard && return 0
 
 	local _timestamp="$( date "+%Y%m%d%H%M%S" )"
 	local _be_name="auto-$( _be_get_active )-${_timestamp}"
 
 	_echo -n ">>> Creating automatic rollback boot environment..."
+
 	/sbin/bectl create -r "${_be_name}" 1>/dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		local _active_ds="$( _be_get_active_ds )"
@@ -325,32 +354,42 @@ _be_prep_upgrade() {
 
 		# save a tiny bit of state to ensure we only run this once
 		_be_zfs_set_property ${_active_ds} pfsense:upgrading yes
-		_be_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
 
-		_be_zfs_set_property ${_ds_name} pfsense:automatic yes
+		# cache some useful bits for easily scraping for the UI
+		_be_zfs_set_property ${_active_ds} pfsense:rollbackbe ${_be_name}
 		_be_zfs_set_property ${_ds_name} pfsense:description "Automatically created by system update"
 		_be_zfs_set_property ${_ds_name} pfsense:version "$( _be_get_pkg_version )"
 	fi
-	_echo "done."
 
-	# did we actually create a valid rollback BE? 
-	!(_be_has_valid_rollback_be) && return 1
+	_echo " done."
+
+	# did we actually create a valid rollback BE?
+	# if something went wrong during the above, this will cause the upgrade to terminate immediately... 
+	_be_has_not_valid_rollback_be && return 1
 
 	# looks good
 	return 0
 }
 
+# Guard for _be_prep_reboot
+_be_prep_reboot_guard() {
+	# various reasons to bail early from _be_prep_reboot below...
+	_be_not_readiness_check
+}
+
 # Prepare the system to reboot by ensuring that we are rebooting into the
 # BE that is actively being upgraded.
 _be_prep_reboot() {
-	# short-circuit if we aren't on a BE-ready system
-	( !(_be_readiness_check) ) && return 0
+	# short-circuit when applicable
+	_be_prep_reboot_guard && return 0
 
 	local _name="$( _be_get_active )"
 
 	_echo -n ">>> Activating boot environment ${_name}..."
+
 	/sbin/bectl activate "${_name}" 1>/dev/null 2>&1
-	_echo "done."
+
+	_echo " done."
 }
 
 # Prepare the system for a dataset migration
@@ -442,17 +481,32 @@ _be_do_migration() {
 	# short-circuit if the layout is already compatible and migration can be skipped
 	_be_is_path_on_root ${_source_path} && !([ -L "${_source_path}" ]) && return 0
 
-	echo -n "Migrating ${_source_path} to ZFS dataset ${_target_dataset}..."
+	_echo -n "Migrating ${_source_path} to ZFS dataset ${_target_dataset}..."
 
+	# move source data to a scratch location
 	_be_pre_migration "${_source_path}" "${_target_dataset}"
+
+	# create the target dataset
 	_be_create_dataset "${_source_path}" "${_target_dataset}"
+
+	# move source data from scratch location and cleanup
 	_be_post_migration "${_source_path}" "${_target_dataset}"
 
-	echo " done."
+	_echo " done."
 }
 
-# Read a table of migrations and perform each one
+# Guard for _be_migrate
+_be_migrate_guard() {
+	# various reasons to bail early from _be_migrate below...
+	_be_is_root_on_ufs
+}
+
+# Read a table of migrations and perform each one when on ZFS
 _be_migrate() {
+	# short-circuit if we are on UFS
+	_be_migrate_guard && return 0
+
+	# the actual list of migrations to perform
 	local _migration_table="
 	#	PATH		DATASET
 		/cf		$( _be_get_active_ds )/cf
@@ -460,14 +514,13 @@ _be_migrate() {
 		/var/db/pkg	$( _be_get_active_ds )/var_db_pkg
 	" # END-QUOTE
 
-	# sanity check to make sure we really need to do this
-	( !(_be_has_zfs) ) && ( !(/sbin/bectl check) ) && return 0
-
-	# now we do the migration
+	# now we do the migrations...
 	echo "${_migration_table}" | while read _path _dataset; do
+		# skip rows beginning with # (intended for comments as above)
 		case "$_path" in "#"*|"") continue; esac
 		_be_do_migration "${_path}" "${_dataset}"
 	done
+	return 0
 }
 
 notice() {
@@ -973,18 +1026,15 @@ pkg_upgrade() {
 		fi
 
 		# Cleanup BEs on incompatible systems.
+		# Note: This is a no-op on UFS
 		_be_prune
 
-		# Test and migrate datasets on systems not compatible with BEs.
-		# Note: This always returns 0 on UFS systems.
+		# Migrate datasets on systems not compatible with BEs.
+		# Note: This is a no-op on UFS
 		_be_migrate
-		if [ $? -ne 0 ]; then
-			_echo "ERROR: Unable to prepare system for ZFS Boot Environments."
-			_exit 1
-		fi
 
 		# Prepare system by creating a rollback BE
-		# Note: This always returns 0 on UFS systems (or on CE)
+		# Note: This is a no-op on UFS (or on CE)
 		_be_prep_upgrade
 		if [ $? -ne 0 ]; then
 			_echo "ERROR: Unable to create automatic rollback boot environment."
@@ -1619,6 +1669,7 @@ do_reboot() {
 	fi
 
 	# Ensure that we are *always* rebooting into the BE that is actively being upgraded
+	# Note: This is a no-op on UFS
 	_be_prep_reboot
 	if [ $? -ne 0 ]; then
 		_echo "ERROR: Unable to activate the boot environment being upgraded ($( _be_get_active ))."
