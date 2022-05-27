@@ -1007,7 +1007,6 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "screen_set $name duration $refresh_frequency";
 						$lcd_cmds[] = "widget_add $name title_wdgt string";
 						$lcd_cmds[] = "widget_add $name text_wdgt scroller";
-						$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"+ CPU Temperature\"";
 						break;
 					case "scr_traffic":
 						$lcd_cmds[] = "screen_add $name";
@@ -1228,6 +1227,8 @@ function loop_status($lcd) {
 					break;
 				case "scr_cputemperature":
 					$cputemperature = get_cpu_temperature();
+					$title = ($lcdpanel_width >= 20) ? "+ CPU Temperature" : "+ CPU Temp";
+					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"{$cputemperature}\"";
 					break;
 				case "scr_traffic":
