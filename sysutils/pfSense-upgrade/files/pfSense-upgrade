@@ -329,10 +329,19 @@ _be_prune() {
 	return 0
 }
 
+# Check if automatic update BEs should be created prior to performing a system update
+_be_autobe_disabled() {
+	local _disableautobe="$(read_xml_tag.sh boolean system/firmware/disableautobe)"
+
+	[ "${_disableautobe}" = "true" ] 
+}
+
 # Guard for _be_pre_upgrade
 _be_pre_upgrade_guard() {
+	local _disableautobe="$(read_xml_tag.sh boolean system/firmware/disableautobe)"
+	
 	# various reasons to bail early from _be_prep_upgrade below...
-	_be_not_readiness_check || _be_is_upgrading || is_ce
+	_be_not_readiness_check || _be_autobe_disabled || _be_is_upgrading || is_ce
 }
 
 # Prepare the system to upgrade by creating a BE before touching the
