@@ -1,7 +1,7 @@
 PORTNAME=	dep
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 # https://github.com/golang/dep/pull/2228
@@ -13,6 +13,9 @@ COMMENT=	Prototype dependency management tool for Go
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Use Go modules
+EXPIRATION_DATE=	2022-06-30
 
 USES=		go
 

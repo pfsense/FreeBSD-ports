@@ -1,6 +1,6 @@
 PORTNAME=	simple-dftd3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.1
+DISTVERSION=	0.6.0
 CATEGORIES=	science # chemistry
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +8,8 @@ COMMENT=	Reimplementation of the DFT-D3 program
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_aarch64=	cannot open module file 'ieee_arithmetic.mod' for reading at (1): No such file or directory
 
 BUILD_DEPENDS=	mstore>0:science/mstore
 LIB_DEPENDS=	libmctc-lib.so:science/mctc-lib \

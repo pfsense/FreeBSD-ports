@@ -1,0 +1,28 @@
+@sample etc/wifibox/interfaces.conf.sample
+@sample etc/wifibox/udhcpd.conf.sample
+man/man5/wifibox-alpine.5.gz
+share/wifibox/bhyve.conf
+share/wifibox/disk.img
+share/wifibox/grub.cfg
+share/wifibox/vmlinuz
+/var/run/wifibox/appliance/lock
+/var/run/wifibox/appliance/run
+/var/run/wifibox/appliance/spool/cron/crontabs
+/var/run/wifibox/appliance/spool/mail
+@dir /var/run/wifibox/appliance/cache/apk
+@dir /var/run/wifibox/appliance/cache/misc
+@dir /var/run/wifibox/appliance/cache
+@dir /var/run/wifibox/appliance/empty
+@dir /var/run/wifibox/appliance/lib/iptables
+@dir /var/run/wifibox/appliance/lib/misc
+@dir /var/run/wifibox/appliance/lib/udhcpd
+@dir /var/run/wifibox/appliance/lib
+@dir /var/run/wifibox/appliance/local
+@dir /var/run/wifibox/appliance/log
+@dir /var/run/wifibox/appliance/mail
+@dir /var/run/wifibox/appliance/opt
+@dir /var/run/wifibox/appliance/spool/cron
+@dir /var/run/wifibox/appliance/spool
+@dir /var/run/wifibox/appliance/tmp
+@dir /var/run/wifibox/appliance
+@dir /var/run/wifibox

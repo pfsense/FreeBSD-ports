@@ -23,6 +23,7 @@
     SUBDIR += dolphin-emu
     SUBDIR += dosbox
     SUBDIR += dosbox-staging
+    SUBDIR += dosbox-x
     SUBDIR += dps8m
     SUBDIR += dynamips-community
     SUBDIR += edumips64
@@ -56,7 +57,11 @@
     SUBDIR += lib765
     SUBDIR += libc6-shim
     SUBDIR += libdsk
+    SUBDIR += libretro-flycast
+    SUBDIR += libretro-mame
+    SUBDIR += libretro-pcsx2
     SUBDIR += libretro-ppsspp
+    SUBDIR += libretro-reicast
     SUBDIR += libretro-vice
     SUBDIR += libspectrum
     SUBDIR += linux-c7
@@ -110,8 +115,10 @@
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
     SUBDIR += qemu5
+    SUBDIR += qemu6
     SUBDIR += qmc2
     SUBDIR += quasi88
+    SUBDIR += reicast
     SUBDIR += ripes
     SUBDIR += riscv-isa-sim
     SUBDIR += rpcs3

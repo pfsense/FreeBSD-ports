@@ -1,4 +1,4 @@
---- content/renderer/render_thread_impl.cc.orig	2022-02-28 16:54:41 UTC
+--- content/renderer/render_thread_impl.cc.orig	2022-05-19 14:06:27 UTC
 +++ content/renderer/render_thread_impl.cc
 @@ -189,7 +189,7 @@
  
@@ -9,7 +9,7 @@
  #include <malloc.h>
  #endif
  
-@@ -718,7 +718,7 @@ void RenderThreadImpl::Init() {
+@@ -716,7 +716,7 @@ void RenderThreadImpl::Init() {
    DCHECK(parsed_num_raster_threads) << string_value;
    DCHECK_GT(num_raster_threads, 0);
  
@@ -18,7 +18,7 @@
    categorized_worker_pool_->SetBackgroundingCallback(
        main_thread_scheduler_->DefaultTaskRunner(),
        base::BindOnce(
-@@ -741,7 +741,7 @@ void RenderThreadImpl::Init() {
+@@ -739,7 +739,7 @@ void RenderThreadImpl::Init() {
    base::DiscardableMemoryAllocator::SetInstance(
        discardable_memory_allocator_.get());
  
@@ -27,7 +27,7 @@
    if (base::FeatureList::IsEnabled(
            blink::features::kBlinkCompositorUseDisplayThreadPriority)) {
      render_message_filter()->SetThreadPriority(
-@@ -1075,7 +1075,7 @@ media::GpuVideoAcceleratorFactories* RenderThreadImpl:
+@@ -1098,7 +1098,7 @@ media::GpuVideoAcceleratorFactories* RenderThreadImpl:
  
    const bool enable_video_decode_accelerator =
  
@@ -36,7 +36,7 @@
        base::FeatureList::IsEnabled(media::kVaapiVideoDecodeLinux) &&
  #else
        !cmd_line->HasSwitch(switches::kDisableAcceleratedVideoDecode) &&
-@@ -1086,7 +1086,7 @@ media::GpuVideoAcceleratorFactories* RenderThreadImpl:
+@@ -1109,7 +1109,7 @@ media::GpuVideoAcceleratorFactories* RenderThreadImpl:
  
    const bool enable_video_encode_accelerator =
  

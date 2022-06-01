@@ -2,7 +2,7 @@
 
 PORTNAME=	tumbler
 PORTVERSION=	4.16.0
-PORTREVISION=	12
+PORTREVISION=	17
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE
 PKGNAMEPREFIX=	xfce4-
@@ -55,7 +55,7 @@ FONTS_CONFIGURE_ENABLE=	font-thumbnailer
 FONTS_LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 GSTREAMER_CONFIGURE_ENABLE=	gstreamer-thumbnailer
-GSTREAMER_USE=		gstreamer1=yes
+GSTREAMER_USES=		gstreamer
 
 JPEG_CONFIGURE_ENABLE=	jpeg-thumbnailer
 JPEG_LIB_DEPENDS=	libexif.so:graphics/libexif

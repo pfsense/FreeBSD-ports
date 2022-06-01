@@ -1,7 +1,7 @@
 # Created by: torstenb
 
 PORTNAME=	zsh
-DISTVERSION=	5.8.1
+DISTVERSION=	5.9
 CATEGORIES=	shells
 MASTER_SITES=	https://www.zsh.org/pub/ \
 		SF \
@@ -85,10 +85,6 @@ SUB_FILES=	pkg-message
 
 .if empty(ICONV_LIB)
 CONFIGURE_ENV+=	ac_cv_lib_iconv_libiconv=no
-.endif
-
-.if ${ncurses_ARGS} == port
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-Src_Modules_curses__keys.awk
 .endif
 
 post-patch:

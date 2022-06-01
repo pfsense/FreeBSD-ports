@@ -1,5 +1,5 @@
 PORTNAME=	php81
-DISTVERSION=	8.1.4
+DISTVERSION=	8.1.6
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -127,7 +127,6 @@ CONFIGURE_ENV+=	ac_cv_decimal_fp_supported="no" \
 
 post-patch:
 	@${TOUCH} ${WRKSRC}/ext/php_config.h
-	@${REINPLACE_CMD} "s|^\(extension_dir\)|; \1|" ${WRKSRC}/php.ini-*
 
 post-patch-FPM-on:
 	@${REINPLACE_CMD} -e "s|^;\(pid\)|\1|;s|^;\(pm\.[a-z_]*_servers\)|\1|" \
@@ -326,7 +325,7 @@ OPTIONS_RADIO_CLIENT=	CCLIENT PANDA
 OPTIONS_DEFAULT=	PANDA
 CCLIENT_DESC=		Uses the original but unmaintained cclient
 PANDA_DESC=		Uses the forked panda-cclient instead of the original cclient
-PANDA_LIB_DEPENDS=	libc-client4.so.10:mail/panda-cclient
+PANDA_LIB_DEPENDS=	libc-client.so.2010:mail/panda-cclient
 PANDA_LIB_DEPENDS_OFF=	libc-client4.so.9:mail/cclient
 
 CONFIGURE_ARGS+=	--with-imap-ssl=${OPENSSLBASE} \

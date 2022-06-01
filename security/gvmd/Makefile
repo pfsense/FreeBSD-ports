@@ -1,5 +1,5 @@
 PORTNAME=	gvmd
-DISTVERSION=	21.4.4
+DISTVERSION=	21.4.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -50,6 +50,6 @@ post-patch:
 post-install:
 	@${MKDIR} ${STAGEDIR}/var/lib/gvm/gvmd/gnupg
 	@${MKDIR} ${STAGEDIR}/var/log/gvm
-	@${MKDIR} ${STAGEDIR}/var/run/gvm
+	@${MKDIR} ${STAGEDIR}/var/run/gvmd
 
 .include <bsd.port.mk>

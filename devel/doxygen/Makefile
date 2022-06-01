@@ -1,7 +1,7 @@
 # Created by: Joep Grooten <joep@di.nl>
 
 PORTNAME=	doxygen
-PORTVERSION=	1.9.3
+PORTVERSION=	1.9.4
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/rel-${PORTVERSION} \
@@ -14,13 +14,11 @@ COMMENT=	Documentation system for C, C++, and other languages
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		bison cmake:noninja compiler:c++14-lang cpe dos2unix \
+USES=		bison cmake:noninja compiler:c++17-lang cpe dos2unix \
 		iconv python shebangfix
 
 ALL_TARGET=	all
 CMAKE_ARGS+=	-DDOC_INSTALL_DIR:PATH=${DOCSDIR_REL}
-# Parallel jobs breaks when the DOCS option is on
-MAKE_JOBS_UNSAFE=	yes
 
 EXTRACT_AFTER_ARGS=	--exclude '*/libmd5'
 
@@ -33,6 +31,7 @@ QT5_DESC=	Install Doxywizard GUI with Qt5
 SEARCH_DESC=	Build external search tools (doxysearch and doxyindexer)
 
 DOCS_USES=		ghostscript:build
+DOCS_USE=		TEX=base:build,dvipsk:build,pdftex:build
 DOCS_ALL_TARGET=	docs
 DOCS_BUILD_DEPENDS=	dot:graphics/graphviz
 DOCS_CMAKE_BOOL=	build_doc
@@ -40,7 +39,9 @@ DOCS_PLIST_FILES=	man/man1/doxygen.1.gz \
 			man/man1/doxyindexer.1.gz \
 			man/man1/doxysearch.1.gz \
 			man/man1/doxywizard.1.gz
-DOCS_IMPLIES=		LATEX
+# Parallel jobs break when the DOCS option is on
+DOCS_VARS=		MAKE_JOBS_UNSAFE=yes
+
 PORTDOCS=		*
 
 GRAPHVIZ_RUN_DEPENDS=	dot:graphics/graphviz

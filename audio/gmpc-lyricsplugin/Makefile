@@ -2,7 +2,7 @@
 
 PORTNAME=	gmpc-lyricsplugin
 PORTVERSION=	0.20.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/
 
@@ -10,6 +10,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fetch lyrics gmpc plugin
 
 LICENSE=	GPLv2+
+
+DEPRECATED=	Abandonware, last release in 2011 and upstream is dead
+EXPIRATION_DATE=2022-06-30
 
 LIB_DEPENDS=	libmpd.so:audio/libmpd
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gmpc.pc:audio/gmpc

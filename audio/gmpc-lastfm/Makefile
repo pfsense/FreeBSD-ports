@@ -2,13 +2,16 @@
 
 PORTNAME=	gmpc-lastfm
 PORTVERSION=	0.20.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/
 DISTNAME=	gmpc-last-fm-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Last.FM metadata fetcher plugin for gmpc
+
+DEPRECATED=	Abandonware, last release in 2011 and upstream is dead
+EXPIRATION_DATE=2022-06-30
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

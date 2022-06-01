@@ -1,6 +1,6 @@
 PORTNAME=	spidermonkey
-DISTVERSION=	78.9.0
-PORTREVISION=	7
+DISTVERSION=	78.15.0
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source
 PKGNAMESUFFIX=	${SP_VER}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g} \
 		${RUST_DEFAULT}>=1.35:lang/${RUST_DEFAULT} \
-		autoconf-2.13:devel/autoconf213 \
+		autoconf2.13:devel/autoconf2.13 \
 		rust-cbindgen>=0.8.7:devel/rust-cbindgen
 LIB_DEPENDS=	libffi.so:devel/libffi \
 		libicudata.so:devel/icu \
@@ -56,6 +56,8 @@ PLIST_SUB=	SP_VER=${SP_VER}
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
+.elif ${ARCH} == powerpc
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-config_makefiles_rust.mk
 .endif
 
 # Require newer Clang than what's in base system unless user opted out

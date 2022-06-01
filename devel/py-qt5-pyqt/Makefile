@@ -1,5 +1,6 @@
 PORTNAME=	pyqt
 PORTVERSION=	${PYQT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	${MASTER_SITES_PYQT5}
 PKGNAMEPREFIX=	${PYQT_PY_RELNAME}-
@@ -10,9 +11,12 @@ COMMENT=	Python bindings for the Qt5 toolkit, QtCore module
 
 PYQT_DIST=	yes
 
-LIB_DEPENDS=	libqscintilla2_qt5.so:devel/qscintilla2-qt5
+LIB_DEPENDS=	libqscintilla2_qt5.so:devel/qscintilla2-qt5 \
+		libdbus-1.so:devel/dbus
+BUILD_DEPENDS+=	py${PYTHON_SUFFIX}-dbus>1:devel/py-dbus@${PY_FLAVOR}
+RUN_DEPENDS+=	py${PYTHON_SUFFIX}-dbus>1:devel/py-dbus@${PY_FLAVOR}
 
-USES=		python:3.8+ pyqt:5 qt:5
+USES=		pkgconfig python:3.8+ pyqt:5 qt:5
 USE_PYTHON=	concurrent flavors py3kplist
 USE_PYQT=	qtbuilder sip pysip
 USE_QT=		connectivity core dbus declarative designer gui help imageformats location \

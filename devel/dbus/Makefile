@@ -1,8 +1,8 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	dbus
-DISTVERSION=	1.12.20
-PORTREVISION=	5
+DISTVERSION=	1.14.0
+PORTEPOCH=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	http://dbus.freedesktop.org/releases/dbus/
 
@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		cpe gmake libtool localbase pkgconfig python:build shebangfix
+USES=		cpe gmake libtool localbase pkgconfig python:build shebangfix tar:xz
 CPE_VENDOR=	d-bus_project
 CPE_PRODUCT=	d-bus
 USE_LDCONFIG=	yes
@@ -44,8 +44,8 @@ OPTIONS_SUB=		yes
 X11_DESC=		Support X11 Desktop Environments
 
 MANPAGES_BUILD_DEPENDS=		minixmlto:textproc/minixmlto
-MANPAGES_CONFIGURE_ENABLE=	xml-docs
 MANPAGES_CONFIGURE_ENV=		XMLTO=${LOCALBASE}/bin/minixmlto
+MANPAGES_CONFIGURE_ENABLE=	xml-docs
 X11_USES=			xorg
 X11_USE=			XORG=ice,sm,x11
 X11_CONFIGURE_WITH=		x

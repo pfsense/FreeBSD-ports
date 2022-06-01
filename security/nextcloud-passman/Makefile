@@ -1,12 +1,13 @@
 # Created by: Bernard Spil <brnrd@freebsd.org>
 
 PORTNAME=	passman
-PORTVERSION=	2.4.0
+PORTVERSION=	2.4.1
 CATEGORIES=	security
 MASTER_SITES=	https://releases.passman.cc/
 PKGNAMEPREFIX=	nextcloud-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	${PORTNAME}_${PORTVERSION}
+DIST_SUBDIR=	nextcloud
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Full featured password manager for Nextcloud
@@ -16,12 +17,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=20:www/nextcloud@${PHP_FLAVOR}
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
-
 USES=		php:flavors
 NO_BUILD=	yes
 NO_ARCH=	yes
 
+WRKSRC=		${WRKDIR}/${PORTNAME}
 WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/${PORTNAME}
 
 do-install:

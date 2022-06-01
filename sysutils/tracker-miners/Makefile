@@ -2,7 +2,7 @@
 
 PORTNAME=	tracker-miners
 PORTVERSION=	2.3.5
-PORTREVISION=	19
+PORTREVISION=	25
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 
@@ -45,9 +45,9 @@ OPTIONS_SUB=	yes
 OPTIONS_DEFINE=		GSTREAMER RSS
 OPTIONS_DEFAULT=	GSTREAMER RSS
 
+GSTREAMER_USES=		gstreamer
 GSTREAMER_MESON_ON=	-Dgeneric_media_extractor=gstreamer
 GSTREAMER_MESON_OFF=	-Dgeneric_media_extractor=none
-GSTREAMER_USE=		gstreamer1=yes
 
 RSS_DESC=		Tracker RSS miner
 RSS_MESON_TRUE=		miner_rss

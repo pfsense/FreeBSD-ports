@@ -1,7 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
 
 PORTNAME=	igraph
-DISTVERSION=	0.9.6
+DISTVERSION=	0.9.8
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
@@ -29,8 +29,7 @@ pre-configure:
 	@${ECHO} ${DISTVERSION} > ${WRKSRC}/IGRAPH_VERSION
 
 .include <bsd.port.pre.mk>
-.if (${OSVERSION} >= 1300000 && ${OSVERSION} < 1300523) || \
-	(${OSVERSION} >= 1200000 && ${OSVERSION} < 1203500)
+.if ${OSVERSION} >= 1300000 && ${OSVERSION} < 1300523
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-etc_cmake_compilers.cmake
 .endif
 

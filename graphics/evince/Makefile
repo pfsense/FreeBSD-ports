@@ -1,14 +1,11 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
 
 PORTNAME=	evince
-DISTVERSION=	41.3
-PORTREVISION=	1
+DISTVERSION=	42.2
+PORTREVISION=	4
 CATEGORIES=	graphics print gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
-
-PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
-PATCHFILES+=	1060b24d0516.patch:-p1 # https://gitlab.gnome.org/GNOME/evince/-/merge_requests/398
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME 3 multi-format document viewer
@@ -33,14 +30,14 @@ RUN_DEPENDS=	adwaita-icon-theme>=0:x11-themes/adwaita-icon-theme \
 PORTSCOUT=	limitw:1,even
 SLAVEPORT?=	no
 
-USES=		compiler:c++11-lib cpe desktop-file-utils gettext gnome libarchive \
+USES=		compiler:c++11-lib cpe desktop-file-utils gettext gnome gstreamer libarchive \
 		localbase:ldflags meson pkgconfig tar:xz xorg
 USE_GNOME=	cairo gtk30
-USE_GSTREAMER1=	yes
 USE_LDCONFIG=	yes
 USE_XORG=	ice
 CPE_VENDOR=	gnome
 MESON_ARGS=	-Dgtk_doc=false \
+		-Dpdf=enabled \
 		-Dps=enabled \
 		-Dsystemduserunitdir=no
 
@@ -66,7 +63,7 @@ GLIB_SCHEMAS=	org.gnome.Evince.gschema.xml
 PLIST_SUB=	VERSION=3.0
 
 OPTIONS_SUB=		yes
-OPTIONS_DEFINE=		COMICS DBUS DJVU DVI KEYRING NAUTILUS SPELL T1LIB XPS
+OPTIONS_DEFINE=		COMICS DBUS DJVU DVI KEYRING NAUTILUS SPELL XPS
 OPTIONS_DEFAULT=	COMICS DBUS DJVU KEYRING NAUTILUS SPELL XPS
 
 COMICS_DESC=		Comic book archives support
@@ -94,11 +91,6 @@ NAUTILUS_MESON_TRUE=	nautilus
 SPELL_DESC=		spell checking support
 SPELL_MESON_ENABLED=	gspell
 SPELL_LIB_DEPENDS=	libgspell-1.so:textproc/gspell
-
-T1LIB_DESC=		Support TYPE1 fonts to DVI (Enables DVI)
-T1LIB_LIB_DEPENDS=	libt1.so:devel/t1lib
-T1LIB_MESON_ENABLED=	t1lib
-T1LIB_IMPLIES=		DVI
 
 XPS_DESC=		XPS support
 XPS_LIB_DEPENDS=	libgxps.so:graphics/libgxps

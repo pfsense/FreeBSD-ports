@@ -63,6 +63,7 @@
 %%WWWDIR%%/extras/curves/QuadraticBezierCurve3.js
 %%WWWDIR%%/extras/curves/SplineCurve.js
 %%WWWDIR%%/geometries/BoxGeometry.js
+%%WWWDIR%%/geometries/CapsuleGeometry.js
 %%WWWDIR%%/geometries/CircleGeometry.js
 %%WWWDIR%%/geometries/ConeGeometry.js
 %%WWWDIR%%/geometries/CylinderGeometry.js
@@ -148,6 +149,7 @@
 %%WWWDIR%%/math/Box2.js
 %%WWWDIR%%/math/Box3.js
 %%WWWDIR%%/math/Color.js
+%%WWWDIR%%/math/ColorManagement.js
 %%WWWDIR%%/math/Cylindrical.js
 %%WWWDIR%%/math/Euler.js
 %%WWWDIR%%/math/Frustum.js
@@ -235,6 +237,8 @@
 %%WWWDIR%%/renderers/shaders/ShaderChunk/fog_pars_vertex.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/fog_vertex.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/gradientmap_pars_fragment.glsl.js
+%%WWWDIR%%/renderers/shaders/ShaderChunk/iridescence_fragment.glsl.js
+%%WWWDIR%%/renderers/shaders/ShaderChunk/iridescence_pars_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/lightmap_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/lightmap_pars_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/lights_fragment_begin.glsl.js

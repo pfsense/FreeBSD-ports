@@ -1,17 +1,21 @@
 # Created by: Bernard Spil <brnrd@FreeBSD.org>
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.6.7
-PORTREVISION?=	1
+PORTVERSION=	10.6.8
+PORTREVISION?=	0
 CATEGORIES=	databases
-MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
-		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
-		http://gd.tuwien.ac.at/db/${SITESDIR}/ \
-		http://mirrors.fe.up.pt/pub/${SITESDIR}/ \
-		http://mirror.de.gsnw.de:56431/${SITESDIR}/ \
-		http://mirror.layerjet.com/${SITESDIR}/ \
-		http://mirror.switch.ch/mirror/${SITESDIR}/ \
-		http://ftp.osuosl.org/pub/${SITESDIR}/
+MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
+		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
+		https://mirror.truenetwork.ru/${SITESDIR}/ \
+		https://mirrors.aliyun.com/${SITESDIR}/ \
+		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
+		https://mirror.kku.ac.th/${SITESDIR}/ \
+		https://espejito.fder.edu.uy/${SITESDIR}/ \
+		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
+		https://ftp.osuosl.org/pub/${SITESDIR}/ \
+		https://downloads.mariadb.org/rest-api/mariadb/${PORTVERSION}/
 PKGNAMESUFFIX?=	106-server
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -87,6 +91,7 @@ CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${PREFIX} \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INFODIR="info" \
 		-DINSTALL_LIBDIR="lib/mysql" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="${MARIADB_DBDIR}" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
 		-DINSTALL_MYSQLTESTDIR= \
@@ -199,7 +204,7 @@ CMAKE_ARGS+=		-DPLUGIN_${PLUGIN}=NO
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
+.if ${OPSYS} == FreeBSD
 SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
 .else
 SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
@@ -269,7 +274,7 @@ post-install:
 		${STAGEDIR}${ETCDIR}/logrotate.d \
 		${STAGEDIR}${DOCSDIR}/COPYING
 	${MKDIR} ${STAGEDIR}${MARIADB_LOGDIR}
-	${SED} '/%%/d;/^@comment /d;s/^/@comment /' ../${PORTNAME}${PKGNAMESUFFIX:S/-server/-client/}/pkg-plist \
+	${SED} '/%%/d;/^@comment /d;s/^/@comment /' ${PORTSDIR}/${CATEGORIES:[1]}/${PORTNAME}${PKGNAMESUFFIX:S/-server/-client/}/pkg-plist \
 		>> ${TMPPLIST}
 
 post-install-MROONGA-on:

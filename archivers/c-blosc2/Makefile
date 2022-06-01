@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	c-blosc2
-PORTVERSION=	2.0.4
-PORTREVISION=	1
+PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers
 
@@ -28,7 +27,7 @@ USE_GITHUB=	yes
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64le
+.if ${ARCH:Mpowerpc64*}
 USES+=		compiler:gcc-c++11-lib
 USE_CSTD=	c11
 .endif

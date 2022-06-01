@@ -1,7 +1,7 @@
 # Created by: Shaun Amott <shaun@FreeBSD.org>
 
 PORTNAME=	bitcoin
-PORTVERSION=	22.0
+PORTVERSION=	23.0
 PORTREVISION?=	1
 CATEGORIES=	net-p2p finance
 MASTER_SITES=	https://bitcoincore.org/bin/bitcoin-core-${PORTVERSION}/ \

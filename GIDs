@@ -149,6 +149,7 @@ gnugk:*:205:
 gini:*:206:
 _mixminion:*:207:
 _dnsdist:*:208:
+gotosocial:*:209:
 shoutcast:*:210:
 git:*:211:
 hg:*:212:
@@ -245,9 +246,9 @@ netdata:*:302:
 onlyoffice:*:303:www
 glewlwyd:*:304:
 nats:*:305:
-# free: 306
-# free: 307
-# free: 308
+jitsi:*:306:
+jicofo:*:307:jitsi
+jvb:*:308:jitsi
 # free: 309
 # free: 310
 # free: 311
@@ -809,7 +810,7 @@ opensearch:*:855:
 # free: 866
 # free: 867
 # free: 868
-# free: 869
+keyd:*:869:
 buildbot:*:870:
 # free: 871
 bitmark:*:872:
@@ -906,7 +907,7 @@ fluentd:*:963:
 git_daemon:*:964:
 elasticsearch:*:965:
 ossec:*:966:
-# free: 967
+loki:*:967:
 # free: 968
 kippo:*:969:
 colord:*:970:

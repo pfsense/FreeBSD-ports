@@ -1,7 +1,8 @@
 # Created by: Domas Mituzas <midom@dammit.lt>
 
 PORTNAME=	freetds
-PORTVERSION=	1.3.9
+PORTVERSION=	1.3.10
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://www.freetds.org/files/stable/ \
@@ -40,7 +41,7 @@ OPTIONS_SINGLE=		ODBC SSL
 OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 OPTIONS_SINGLE_SSL=	GNUTLS OPENSSL
 
-MARS_DESC=		Enable MARS code (Experimental)
+MARS_DESC=	Enable MARS code (Experimental)
 
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_ON=	--with-gnutls
@@ -75,7 +76,8 @@ post-patch:
 		 ${WRKSRC}/Makefile.am
 	@${REINPLACE_CMD} -e 's|/pool.conf|/pool.conf.sample|g' \
 		 ${WRKSRC}/src/pool/Makefile.am
-	@${REINPLACE_CMD} -e 's|\($$with_iodbc/include\)|\1/libiodbc|g' \
+	@${REINPLACE_CMD} -e 's|\($$with_iodbc/include\)|\1/libiodbc|g ; \
+		 s| odbcss.h||g' \
 		${WRKSRC}/configure.ac
 
 post-install:

@@ -2,7 +2,7 @@
 
 PORTNAME=	h2o
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.0-dev.20220210
+DISTVERSION=	2.3.0-dev.20220519
 CATEGORIES=	www
 PKGNAMESUFFIX=	-devel
 
@@ -22,8 +22,7 @@ USES=		cmake:noninja compiler:c11 cpe perl5 shebangfix ssl pkgconfig
 CPE_VENDOR=	dena
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-GH_TAGNAME=	dcc7134
-
+GH_TAGNAME=	cf59e67
 CONFLICTS=	h2o
 
 SHEBANG_FILES=	share/h2o/start_server
@@ -57,6 +56,8 @@ MRUBY_CMAKE_BOOL=	WITH_MRUBY
 MRUBY_USES=		bison
 MRUBY_USE=		ruby=yes
 MRUBY_VARS=		RUBY_NO_RUN_DEPENDS=yes
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|exec perl|exec ${LOCALBASE}/bin/perl|' \

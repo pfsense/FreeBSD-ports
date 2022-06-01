@@ -1,5 +1,5 @@
 PORTNAME=	redmine
-PORTVERSION=	4.1.6
+PORTVERSION=	4.1.7
 CATEGORIES=	www
 MASTER_SITES=	https://www.redmine.org/releases/
 PKGNAMESUFFIX=	4
@@ -7,13 +7,16 @@ PKGNAMESUFFIX=	4
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Flexible project management web application
 
+DEPRECATED=	Deprecated by upstream. Please consider using www/redmine42
+EXPIRATION_DATE=2022-06-30
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 PORTSCOUT=	limit:^4\.1\.
 
 RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
-		rubygem-rails52>=5.2.5<5.3:www/rubygem-rails52 \
+		rubygem-rails52>=5.2.6<5.3:www/rubygem-rails52 \
 		rubygem-rouge312>=3.12.0:textproc/rubygem-rouge312 \
 		rubygem-request_store14>=1.0.5:devel/rubygem-request_store14 \
 		rubygem-mini_mime>=1.0.1:mail/rubygem-mini_mime \

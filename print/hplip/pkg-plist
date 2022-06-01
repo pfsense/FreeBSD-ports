@@ -1444,6 +1444,10 @@ share/ppd/HP/hp-laserjet_p4515n.ppd.gz
 share/ppd/HP/hp-laserjet_p4515tn.ppd.gz
 share/ppd/HP/hp-laserjet_p4515x.ppd.gz
 share/ppd/HP/hp-laserjet_p4515xm.ppd.gz
+share/ppd/HP/hp-laserjet_pro_4001-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_4002-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_4003-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_4004-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m118-m119-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m148-m149-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m148f-m149f-ps.ppd.gz
@@ -1459,6 +1463,10 @@ share/ppd/HP/hp-laserjet_pro_m501dn-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m501n-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m701-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m706-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_mfp_4101-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_mfp_4102-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_mfp_4103-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_mfp_4104-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_mfp_m125a.ppd.gz
 share/ppd/HP/hp-laserjet_pro_mfp_m125nr.ppd.gz
 share/ppd/HP/hp-laserjet_pro_mfp_m125nw.ppd.gz
@@ -1898,14 +1906,6 @@ share/ppd/HP/hp-smart_tank_plus_570_series.ppd.gz
 share/ppd/HP/hp-smart_tank_plus_650_series.ppd.gz
 share/ppd/HP/hp-smart_tank_wireless_450_series.ppd.gz
 share/ppd/HP/hp-tango.ppd.gz
-@dir %%DATADIR%%/data/images/128x128
-@dir %%DATADIR%%/data/images/16x16
-@dir %%DATADIR%%/data/images/24x24
-@dir %%DATADIR%%/data/images/256x256
-@dir %%DATADIR%%/data/images/32x32
-@dir %%DATADIR%%/data/images/64x64
-@dir %%DATADIR%%/data/images/devices
-@dir %%DATADIR%%/data/images/other
 %%X11%%@dir %%DATADIR%%/ui5/plugins
 @dir /var/lib/hp
 @dir /var/lib

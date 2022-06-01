@@ -1,7 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
 
 PORTNAME=	redis
-DISTVERSION=	7.0.0.20220301
+DISTVERSION=	7.0.0.20220531
 CATEGORIES=	databases
 PKGNAMESUFFIX=	-devel
 
@@ -14,12 +14,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES+=		compiler:c11 cpe gmake
 CPE_VENDOR=	redislabs
 USE_GITHUB=	yes
-GH_TUPLE=	redis:redis:4a45386
+GH_TUPLE=	redis:redis:42fbf06
 
 MAKE_ENV=	OPTIMIZATION= \
 		V=yo
 
 OPTIONS_DEFINE=		JEMALLOC TESTS TLS TRIB
+OPTIONS_DEFAULT=	TLS
 OPTIONS_RADIO=		EXTLUA
 OPTIONS_RADIO_EXTLUA=	LUA LUAJIT LUAJITOR
 OPTIONS_SUB=		yes
@@ -33,16 +34,19 @@ TLS_DESC=	Use TLS (openssl req.)
 TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
 
 JEMALLOC_MAKE_ENV=	USE_JEMALLOC=yes
+LUAJITOR_BROKEN=	Fails to link
 LUAJITOR_BUILD_DEPENDS=	${LOCALBASE}/include/luajit-2.1/lua.h:lang/luajit-openresty
 LUAJITOR_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 LUAJITOR_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.luajit-or \
 			${PATCHDIR}/extra-patch-src-function_lua.c \
 			${PATCHDIR}/extra-patch-deps_lua_src_lua__cjson.c
 LUAJITOR_VARS=		_ADDFLAGS=true
+LUAJIT_BROKEN=		Fails to link
 LUAJIT_BUILD_DEPENDS=	${LOCALBASE}/include/luajit-2.0/lua.h:lang/luajit
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 LUAJIT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.luajit
 LUAJIT_VARS=		_ADDFLAGS=true
+LUA_BROKEN=		Fails to link
 LUA_USES=		lua:51
 LUA_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.lua
 LUA_VARS=		_ADDFLAGS=true
@@ -68,7 +72,7 @@ LDFLAGS+=	-Wl,-E
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
 
-CONFLICTS?=	redis-6.* redis5-5.* redis6-6.*
+CONFLICTS?=	redis-[1-9].* redis6-* redis62-*
 
 USE_RC_SUBR=	redis sentinel
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb redis-cli \

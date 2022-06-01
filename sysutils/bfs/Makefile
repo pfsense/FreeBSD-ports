@@ -1,5 +1,5 @@
 PORTNAME=	bfs
-DISTVERSION=	2.4.1
+DISTVERSION=	2.6
 CATEGORIES=	sysutils
 
 MAINTAINER=	driesm@FreeBSD.org
@@ -15,7 +15,6 @@ USES=		compiler:c11 gmake shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	tavianator
 
-SHEBANG_FILES=	tests.sh tests/*.sh
 TEST_TARGET=	check
 
 OPTIONS_DEFINE=		ONIGURUMA

@@ -1,8 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
 
 PORTNAME=	bkt
-PORTVERSION=	0.5.3
-PORTREVISION=	1
+PORTVERSION=	0.5.4
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	ehaupt@FreeBSD.org

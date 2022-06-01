@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 PORTVERSION=	${LLVM_MAJOR}.0.d${SNAPDATE}
-PORTREVISION=	0
+PORTREVISION=	2
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
 
@@ -33,6 +33,10 @@ SHEBANG_FILES=	\
 		clang/tools/scan-build-py/bin/analyze-build \
 		clang/tools/scan-build-py/bin/intercept-build \
 		clang/tools/scan-build-py/bin/scan-build \
+		clang/tools/scan-build-py/libexec/analyze-cc \
+		clang/tools/scan-build-py/libexec/analyze-c++ \
+		clang/tools/scan-build-py/libexec/intercept-cc \
+		clang/tools/scan-build-py/libexec/intercept-c++ \
 		clang/tools/scan-view/bin/scan-view \
 		clang/utils/hmaptool/hmaptool \
 		llvm/tools/opt-viewer/optrecord.py \
@@ -41,13 +45,6 @@ SHEBANG_FILES=	\
 		llvm/tools/opt-viewer/opt-viewer.py \
 		llvm/utils/lit/lit.py \
 		llvm/utils/llvm-lit/llvm-lit.in
-.if ${LLVM_SUFFIX} == "-cheri"
-SHEBANG_FILES+=	\
-		clang/tools/scan-build-py/libexec/analyze-cc \
-		clang/tools/scan-build-py/libexec/analyze-c++ \
-		clang/tools/scan-build-py/libexec/intercept-cc \
-		clang/tools/scan-build-py/libexec/intercept-c++
-.endif
 
 SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
@@ -67,7 +64,9 @@ GH_ACCOUNT=	CTSRD-CHERI
 GH_TAGNAME=	${LLVM_COMMIT}
 .endif
 
+.ifndef SNAPDATE
 .sinclude "${.PARSEDIR}/Makefile.snapshot"
+.endif
 
 OPTIONS_DEFINE=	CLANG DOCS LIT LLD
 OPTIONS_DEFAULT=	CLANG LIT LLD
@@ -102,6 +101,8 @@ PLIST_SUB+=	COMMAND_SUFFIX=${COMMAND_SUFFIX} \
 COMMANDS=	${LLVM_COMMANDS}
 FIRST_COMMAND=	${COMMANDS:C/^/XXXX/1:MXXXX*:C/^XXXX//}
 
+MAN1SRCS+=	${LLVM_MAN1SRCS}
+
 STRIP_LIBS=	BugpointPasses.so \
 		LLVMHello.so \
 		${LIBNAME}.0 \
@@ -115,18 +116,12 @@ CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${
 .if ${PORT_OPTIONS:MCLANG}
 LLVM_ENABLE_PROJECTS+=	clang
 COMMANDS+=	${CLANG_COMMANDS}
-MAN1SRCS+=	clang.1 \
-		diagtool.1 \
-		scan-build.1
-.if ${LLVM_SUFFIX} == "-cheri"
-MAN1SRCS+=	clang-tblgen.1
-.endif
-#DOCS_PLIST_FILES+=	man/man1/scan-build${LLVM_SUFFIX}.1.gz
+MAN1SRCS+=	${CLANG_MAN1SRCS}
 USES+=		gnome
 .endif
 
 .if ${PORT_OPTIONS:MLIT}
-MAN1SRCS+=	lit.1 FileCheck.1
+MAN1SRCS+=	${LIT_MAN1SRCS}
 _USES_PYTHON=	python:3.6+
 .endif
 
@@ -138,7 +133,7 @@ COMMANDS+=	${LLD_COMMANDS}
 .if ${PORT_OPTIONS:MLLDB}
 LLVM_ENABLE_PROJECTS+=	lldb
 COMMANDS+=	${LLDB_COMMANDS}
-MAN1SRCS+=	lldb-tblgen.1
+MAN1SRCS+=	${LLDB_MAN1SRCS}
 _USES_PYTHON=	python:3.6+
 .endif
 
@@ -149,58 +144,9 @@ CMAKE_ARGS+=	-DLLVM_ENABLE_PROJECTS="${LLVM_ENABLE_PROJECTS:ts;}"
 _USES_PYTHON?=	python:3.6+,build
 USES+=		${_USES_PYTHON}
 
-MAN1SRCS+=	bugpoint.1 \
-		dsymutil.1 \
-		llc.1 \
-		lli.1 \
-		llvm-addr2line.1 \
-		llvm-ar.1 \
-		llvm-as.1 \
-		llvm-bcanalyzer.1 \
-		llvm-config.1 \
-		llvm-cov.1 \
-		llvm-cxxfilt.1 \
-		llvm-cxxmap.1 \
-		llvm-diff.1 \
-		llvm-dis.1 \
-		llvm-dwarfdump.1 \
-		llvm-exegesis.1 \
-		llvm-extract.1 \
-		llvm-install-name-tool.1 \
-		llvm-lib.1 \
-		llvm-libtool-darwin.1 \
-		llvm-link.1 \
-		llvm-lipo.1 \
-		llvm-locstats.1 \
-		llvm-mca.1 \
-		llvm-nm.1 \
-		llvm-objcopy.1 \
-		llvm-objdump.1 \
-		llvm-pdbutil.1 \
-		llvm-profdata.1 \
-		llvm-profgen.1 \
-		llvm-ranlib.1 \
-		llvm-readelf.1 \
-		llvm-readobj.1 \
-		llvm-size.1 \
-		llvm-stress.1 \
-		llvm-strings.1 \
-		llvm-strip.1 \
-		llvm-symbolizer.1 \
-		opt.1
-
-.if ${LLVM_SUFFIX} == "-cheri"
-MAN1SRCS+= \
-		llvm-otool.1 \
-		llvm-tblgen.1 \
-		tblgen.1
-.else
-MAN1SRCS+= \
-		xxx-tblgen.1
-.endif
-
 .include <bsd.port.pre.mk>
 .include "${.CURDIR}/Makefile.COMMANDS"
+.include "${.CURDIR}/Makefile.MAN1SRCS"
 
 post-patch:
 	${REINPLACE_CMD} -e 's|import lit|import lit${LLVM_SUFFIX}|' \
@@ -222,10 +168,8 @@ post-install:
 	${LN} -f ${STAGEDIR}${PREFIX}/bin/${COMMAND_PREFIX}${FIRST_COMMAND}${COMMAND_SUFFIX} \
 	    ${STAGEDIR}${PREFIX}/bin/${COMMAND_PREFIX}${command}${COMMAND_SUFFIX}
 .endfor
-.if ${LLVM_SUFFIX} == "-cheri"
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/llvm/CHERI/cheri-compressed-cap/.github/workflows
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/llvm/CHERI/cheri-compressed-cap/.github
-.endif
 
 post-install-DOCS-on:
 	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/doc ${STAGEDIR}${DOCSDIR}
@@ -247,6 +191,9 @@ post-install-DOCS-on:
 	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/mlir-tblgen.1
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/
+
+post-install-LLD-on:
+	${LN} -s ld.lld ${STAGEDIR}${LLVM_PREFIX}/bin/ld
 
 post-install-LLDB-on:
 .if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
@@ -309,7 +256,7 @@ build-plist:
 	    | ${SORT} >> ${PLIST}.tmp
 	awk '{ \
 	    if ($$0 ~ /clang/ && $$0 !~ /omp.h/) {printf "%%%%CLANG%%%%"} \
-	    if ($$0 ~ /lld|wasm-ld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
+	    if ($$0 ~ /(bin\/(ld|lld|wasm-ld))|liblld[^b]|\/lld\// && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
 	    if ($$0 ~ /(argdumper|lldb)/) {printf "%%%%LLDB%%%%"} \
 	    print \
 	}' \${PLIST}.tmp >> ${PLIST}

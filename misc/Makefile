@@ -43,6 +43,7 @@
     SUBDIR += clpbar
     SUBDIR += colortail
     SUBDIR += colwide
+    SUBDIR += compat.el
     SUBDIR += compat10x
     SUBDIR += compat11x
     SUBDIR += compat12x
@@ -117,6 +118,7 @@
     SUBDIR += freebsd-doc-es
     SUBDIR += freebsd-doc-fr
     SUBDIR += freebsd-doc-hu
+    SUBDIR += freebsd-doc-id
     SUBDIR += freebsd-doc-it
     SUBDIR += freebsd-doc-ja
     SUBDIR += freebsd-doc-ko
@@ -416,6 +418,7 @@
     SUBDIR += py-spdx-lookup
     SUBDIR += py-spdx-tools
     SUBDIR += py-spinners
+    SUBDIR += py-tes
     SUBDIR += py-tflearn
     SUBDIR += py-tflite
     SUBDIR += py-tflite-support

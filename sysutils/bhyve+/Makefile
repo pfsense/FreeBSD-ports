@@ -18,7 +18,8 @@ SRCS=		${SRC_BASE}/sys/modules/vmm \
 		${SRC_BASE}/usr.sbin/bhyve \
 		${SRC_BASE}/usr.sbin/bhyvectl \
 		${SRC_BASE}/usr.sbin/bhyveload \
-		${SRC_BASE}/share/mk
+		${SRC_BASE}/share/mk \
+		${SRC_BASE}/contrib/bmake/mk
 
 .for _src in ${SRCS}
 .  if !exists(${_src}) && empty(IGNORE)
@@ -34,14 +35,11 @@ GH_TAGNAME=	7ef466772108856ee3e093735033232a6f1a3f04
 USE_LDCONFIG=	yes
 
 .if 1200000 <= ${OSVERSION} && ${OSVERSION} < 1300000
-EXTRA_PATCHES=	${PATCHDIR}/freebsd-12
-.if ${OSVERSION} < 1203000
-EXTRA_PATCHES+= ${PATCHDIR}/freebsd-12/2
-.else
-EXTRA_PATCHES+= ${PATCHDIR}/freebsd-12/3
-.endif
-.elif 1300000 <= ${OSVERSION} && ${OSVERSION} < 1400000
-EXTRA_PATCHES=	${PATCHDIR}/freebsd-13
+EXTRA_PATCHES=	${PATCHDIR}/freebsd-12 ${PATCHDIR}/freebsd-12/3
+.elif 1300000 <= ${OSVERSION} && ${OSVERSION} < 1301000
+EXTRA_PATCHES=	${PATCHDIR}/freebsd-13/0
+.elif 1301000 <= ${OSVERSION} && ${OSVERSION} < 1400000
+EXTRA_PATCHES=	${PATCHDIR}/freebsd-13/1
 .elif 1400000 <= ${OSVERSION} && ${OSVERSION} < 1500000
 EXTRA_PATCHES=	${PATCHDIR}/freebsd-14
 .else

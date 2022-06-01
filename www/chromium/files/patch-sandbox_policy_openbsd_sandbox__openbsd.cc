@@ -1,6 +1,6 @@
---- sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2022-02-07 13:39:41 UTC
+--- sandbox/policy/openbsd/sandbox_openbsd.cc.orig	2022-04-21 18:48:31 UTC
 +++ sandbox/policy/openbsd/sandbox_openbsd.cc
-@@ -0,0 +1,394 @@
+@@ -0,0 +1,407 @@
 +// Copyright (c) 2012 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -60,6 +60,8 @@
 +#include "crypto/nss_util.h"
 +#endif
 +
++#include "third_party/boringssl/src/include/openssl/crypto.h"
++
 +#include "ui/gfx/x/connection.h"
 +#include "ui/gfx/font_util.h"
 +
@@ -80,7 +82,8 @@
 +namespace policy {
 +
 +SandboxLinux::SandboxLinux()
-+    : sandbox_status_flags_(kInvalid),
++    : unveil_initialized_(false),
++      sandbox_status_flags_(kInvalid),
 +      pre_initialized_(false),
 +      initialize_sandbox_ran_(false),
 +      broker_process_(nullptr) {
@@ -112,6 +115,7 @@
 +
 +  base::SysInfo::AmountOfPhysicalMemory();
 +  base::SysInfo::NumberOfProcessors();
++  base::SysInfo::CPUModelName();
 +
 +#if defined(USE_NSS_CERTS)
 +  // The main process has to initialize the ~/.pki dir which won't work
@@ -120,13 +124,16 @@
 +    crypto::EnsureNSSInit();
 +#endif
 +
++  if (process_type.empty())
++    CRYPTO_pre_sandbox_init();
++
 +  // cache the XErrorDB by forcing a read on it
 +  {
 +    auto* connection = x11::Connection::Get();
 +    auto* display = connection->GetXlibDisplay().display();
 +
 +    char buf[1];
-+    XGetErrorDatabaseText(display, "XProtoError", "0", "",  buf, base::size(buf));
++    XGetErrorDatabaseText(display, "XProtoError", "0", "",  buf, std::size(buf));
 +  }
 +
 +  if (process_type.empty()) {
@@ -269,7 +276,13 @@
 +        _exit(1);
 +  }
 +
++  unveil_initialized_ = true;
++
 +  return true;
++}
++
++bool SandboxLinux::unveil_initialized() const {
++  return unveil_initialized_;
 +}
 +
 +bool SandboxLinux::InitializeSandbox(sandbox::mojom::Sandbox sandbox_type,
@@ -309,7 +322,7 @@
 +  } else if (process_type == switches::kRendererProcess) {
 +    // prot_exec needed by v8
 +    // flock needed by sqlite3 locking
-+    SetPledge("stdio flock prot_exec recvfd sendfd ps", NULL);
++    SetPledge("stdio rpath flock prot_exec recvfd sendfd ps", NULL);
 +  } else if (process_type == switches::kGpuProcess) {
 +    SetPledge("stdio rpath cpath wpath getpw drm prot_exec recvfd sendfd tmppath", NULL);
 +  } else if (process_type == switches::kPpapiPluginProcess) {

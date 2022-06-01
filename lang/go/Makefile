@@ -1,7 +1,7 @@
 # Created by: Devon H. O'Dell <devon.odell@gmail.com>
 
 PORTNAME=	go
-PORTVERSION?=	1.18
+PORTVERSION?=	1.18.2
 PORTREVISION?=	0
 PORTEPOCH?=	1
 CATEGORIES=	lang
@@ -54,7 +54,7 @@ SOFTFLOAT_DESC=	Use soft float on non-SSE2 processors (Pentium 4 and older)
 SOFTFLOAT_VARS=	GO386=softfloat
 
 BINARIES=	go gofmt
-BOOTSTRAP_TAG=	go1.14
+BOOTSTRAP_TAG=	go1.17.9
 
 GOARCH_aarch64=	arm64
 GOARCH_amd64=	amd64

@@ -1,7 +1,7 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
 
 PORTNAME=	solidity
-PORTVERSION=	0.8.12
+PORTVERSION=	0.8.14
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/ethereum/solidity/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -13,6 +13,8 @@ LICENSE=	GPLv3
 
 NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe sparc64
 NOT_FOR_ARCHS_REASON=	solidity currently does not support big endian systems
+
+BROKEN=		error: implicit conversion loses integer precision: 'typename std::enable_if<number_category<cpp_int_backend<0, 0, boost::multiprecision::signed_magnitude, boost::multiprecision::unchecked, allocator<unsigned long long>>>::value == number_kind_integer, std::size_t>::type' (aka 'unsigned long') to 'unsigned int'
 
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs \
 		libfmt>=0:devel/libfmt \

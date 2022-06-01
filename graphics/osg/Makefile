@@ -3,7 +3,7 @@
 PORTNAME=	osg
 PORTVERSION=	3.6.5
 DISTVERSIONPREFIX=	OpenSceneGraph-
-PORTREVISION=	33
+PORTREVISION=	40
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -69,8 +69,8 @@ GDAL_VARS_OFF=		FORCE_IGNORE+=GDAL
 GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 GIF_VARS=		FORCE_REQUIRE+=GIFLIB
 GIF_VARS_OFF=		FORCE_IGNORE+=GIFLIB
-GSTREAMER_USES=		gnome
-GSTREAMER_USE=		GNOME=glib20 GSTREAMER1=yes
+GSTREAMER_USES=		gnome gstreamer
+GSTREAMER_USE=		GNOME=glib20
 GSTREAMER_VARS=		FORCE_REQUIRE+="GStreamer GLIB"
 GSTREAMER_VARS_OFF=	FORCE_IGNORE+="GStreamer GLIB"
 GTA_LIB_DEPENDS=	libgta.so:devel/libgta
@@ -132,6 +132,7 @@ COLLADA_VARS_OFF=	FORCE_IGNORE+=COLLADA
 ASIO_BUILD_DEPENDS=	${LOCALBASE}/include/asio.hpp:net/asio
 ASIO_VARS=		FORCE_REQUIRE+=Asio
 ASIO_VARS_OFF=		FORCE_IGNORE+=Asio
+ASIO_BROKEN=		does not build: no member named 'get_io_service' in 'asio::basic_socket_acceptor<asio::ip::tcp, asio::executor>'
 
 # GUI toolkits are only needed for building examples, which are not even installed
 FORCE_IGNORE=	FLTK FOX wxWidgets GtkGl SDL2		# only for examples

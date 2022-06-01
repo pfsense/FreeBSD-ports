@@ -1,7 +1,11 @@
 PORTNAME=	plasma-workspace
 DISTVERSION=	${KDE_PLASMA_VERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11 kde kde-plasma
+
+PATCH_SITES=	https://invent.kde.org/plasma/plasma-workspace/-/commit/
+PATCHFILES=	4d3f99558cff95259590e70dfbf854a479f772ce.diff:-p1 \
+		f77b7284e39b14b0e9a8b4d2b77c0b93b2c9ea59.diff:-p1
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plasma5 Plasma workspace
@@ -10,6 +14,7 @@ LIB_DEPENDS=	libcln.so:math/cln \
 		libdbusmenu-qt5.so:devel/libdbusmenu-qt \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
+		libicui18n.so:devel/icu \
 		libqalculate.so:math/libqalculate \
 		libwayland-client.so:graphics/wayland \
 		libxcb-image.so:x11/xcb-util-image \

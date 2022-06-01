@@ -1,6 +1,6 @@
 PORTNAME=	xbyak
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.03
+DISTVERSION=	6.052
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,7 +9,8 @@ COMMENT=	Header-only JIT assembler for x86/x64 SIMD
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-TEST_DEPENDS=	gmake:devel/gmake
+TEST_DEPENDS=	gmake:devel/gmake \
+		gsed:textproc/gsed
 
 USES=		cmake
 
@@ -26,6 +27,9 @@ PLIST_FILES=	include/xbyak/xbyak.h \
 		lib/cmake/xbyak/xbyak-config-version.cmake \
 		lib/cmake/xbyak/xbyak-config.cmake \
 		lib/cmake/xbyak/xbyak-targets.cmake
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|sed |gsed |g' ${WRKSRC}/gen/Makefile
 
 do-test: install
 	@cd ${WRKSRC}/test && ${SETENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} test

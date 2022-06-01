@@ -1,7 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	gnome
-PORTVERSION=	41
+PORTVERSION=	42
 CATEGORIES?=	x11 gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -29,7 +29,7 @@ RUN_DEPENDS?=	dconf-editor:devel/dconf-editor \
 		zenity>=3.0.0:x11/zenity \
 		seahorse>=3.0.0:security/seahorse \
 		gnome-control-center>=3.0.0:sysutils/gnome-control-center \
-		${LOCALBASE}/share/gnome-background-properties/gnome-backgrounds.xml:x11-themes/gnome-backgrounds \
+		gnome-backgrounds>=0:x11-themes/gnome-backgrounds \
 		caribou>=0:accessibility/caribou \
 		${LOCALBASE}/share/sounds/freedesktop/index.theme:audio/freedesktop-sound-theme
 
@@ -66,7 +66,6 @@ RUN_DEPENDS+=	epiphany>=3.0.0:www/epiphany \
 		gnome-games>=3.0.0:games/gnome-games \
 		totem>=3.0.0:multimedia/totem \
 		gconf-editor>=3.0.0:sysutils/gconf-editor \
-		gnome-color-manager>=0:graphics/gnome-color-manager \
 		evolution>=3.0.0:mail/evolution \
 		cheese>=3.0.0:multimedia/cheese
 

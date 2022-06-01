@@ -1,7 +1,7 @@
 # Created by: Dom Mitchell <dom@happygiraffe.net>
 
 PORTNAME=	XML-LibXSLT
-PORTVERSION=	1.99
+PORTVERSION=	2.002000
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

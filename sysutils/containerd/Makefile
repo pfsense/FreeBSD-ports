@@ -1,6 +1,6 @@
 PORTNAME=	containerd
 DISTVERSIONPREFIX=v
-DISTVERSION=	1.6.1
+DISTVERSION=	1.6.4
 CATEGORIES=	sysutils
 
 MAINTAINER=	decke@FreeBSD.org
@@ -17,6 +17,8 @@ USE_GITHUB=	yes
 GH_SUBDIR=	src/github.com/containerd/containerd
 
 CPE_VENDOR=	linuxfoundation
+
+USE_RC_SUBR=	containerd
 
 MAKE_ENV=	${GO_ENV} \
 		GOFLAGS="${GO_BUILDFLAGS}" \

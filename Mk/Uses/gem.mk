@@ -4,37 +4,37 @@
 # Usage:	USES=gem[:noautoplist]
 # Valid args:	noautoplist	Don't generate the plist automatically
 #
-# MAINTAINER: portmgr@FreeBSD.org
+# MAINTAINER: ruby@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_GEM_MK)
 
 _INCLUDE_USES_GEM_MK=        yes
 
-_valid_ARGS=			noautoplist
+_valid_ARGS=	noautoplist
 
 # Sanity check
-.for arg in ${gem_ARGS}
+.  for arg in ${gem_ARGS}
 .    if empty(_valid_ARGS:M${arg})
 IGNORE= Incorrect 'USES+= gem:${gem_ARGS}' usage: argument [${arg}] is not recognized
 .    endif
-.endfor
-
-BUILD_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
-RUN_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
+.  endfor
 
 PKGNAMEPREFIX?=	rubygem-
 EXTRACT_SUFX=	.gem
 EXTRACT_ONLY=
 DIST_SUBDIR=	rubygem
 
+BUILD_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
 EXTRACT_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
+RUN_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
+
 GEMS_BASE_DIR=	lib/ruby/gems/${RUBY_VER}
-GEMS_DIR=	${GEMS_BASE_DIR}/gems
-DOC_DIR=	${GEMS_BASE_DIR}/doc
 CACHE_DIR=	${GEMS_BASE_DIR}/cache
-SPEC_DIR=	${GEMS_BASE_DIR}/specifications
+DOC_DIR=	${GEMS_BASE_DIR}/doc
 EXT_DIR=	${GEMS_BASE_DIR}/extensions
+GEMS_DIR=	${GEMS_BASE_DIR}/gems
 PLUGINS_DIR=	${GEMS_BASE_DIR}/plugins
+SPEC_DIR=	${GEMS_BASE_DIR}/specifications
 GEM_NAME?=	${DISTNAME}
 GEM_LIB_DIR?=	${GEMS_DIR}/${GEM_NAME}
 GEM_DOC_DIR?=	${DOC_DIR}/${GEM_NAME}
@@ -48,14 +48,13 @@ GEM_ENV+=	LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}" \
 		REV="${RUBY_GEM}" \
-		GEMS_BASE_DIR="lib/ruby/gems/${RUBY_VER}" \
+		GEMS_BASE_DIR="${GEMS_BASE_DIR}" \
 		GEMS_DIR="${GEMS_DIR}" \
 		DOC_DIR="${DOC_DIR}" \
 		CACHE_DIR="${CACHE_DIR}" \
 		SPEC_DIR="${SPEC_DIR}" \
 		EXT_DIR="${EXT_DIR}" \
 		PLUGINS_DIR="${PLUGINS_DIR}" \
-		PORT="${PORTNAME}-${PORTVERSION}" \
 		GEM_NAME="${GEM_NAME}" \
 		GEM_LIB_DIR="${GEM_LIB_DIR}" \
 		GEM_DOC_DIR="${GEM_DOC_DIR}" \
@@ -65,21 +64,21 @@ PLIST_SUB+=	PORTVERSION="${PORTVERSION}" \
 
 RUBYGEMBIN=	${LOCALBASE}/bin/gem
 
-. if defined(DISTFILES)
+.  if defined(DISTFILES)
 GEMFILES=	${DISTFILES:C/:[^:]+$//}
-. else
+.  else
 GEMFILES=	${DISTNAME}${EXTRACT_SUFX}
-. endif
+.  endif
 
 RUBYGEM_ARGS=-l --no-update-sources --install-dir ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER} --ignore-dependencies --bindir=${STAGEDIR}${PREFIX}/bin
 
-.if ${PORT_OPTIONS:MDOCS}
+.  if ${PORT_OPTIONS:MDOCS}
 RUBYGEM_ARGS+=	--document rdoc,ri
-.else
+.  else
 RUBYGEM_ARGS+=	--no-document
-.endif
+.  endif
 
-.if !target(do-extract)
+.  if !target(do-extract)
 do-extract:
 	@${SETENV} ${GEM_ENV} ${RUBYGEMBIN} unpack --target=${WRKDIR} ${DISTDIR}/${DIST_SUBDIR}/${GEMFILES}
 	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} spec --ruby ${DISTDIR}/${DIST_SUBDIR}/${GEMFILES} > ${GEMSPEC} ; then \
@@ -89,9 +88,9 @@ do-extract:
 			fi; \
 		${FALSE}; \
 		fi)
-.endif
+.  endif
 
-.if !target(do-build)
+.  if !target(do-build)
 do-build:
 	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} build --force ${GEMSPEC} ; then \
 		if [ -n "${BUILD_FAIL_MESSAGE}" ] ; then \
@@ -100,9 +99,9 @@ do-build:
 			fi; \
 		${FALSE}; \
 		fi)
-.endif
+.  endif
 
-.if !target(do-install)
+.  if !target(do-install)
 do-install:
 	(cd ${BUILD_WRKSRC}; ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} install ${RUBYGEM_ARGS} ${GEMFILES} -- ${CONFIGURE_ARGS})
 	${RM} -r ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR}/build_info/
@@ -113,19 +112,19 @@ do-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/${CACHE_DIR} 2> /dev/null || ${TRUE}
 	${RMDIR} ${STAGEDIR}${PREFIX}/${EXT_DIR} 2> /dev/null || ${TRUE}
 	${RMDIR} ${STAGEDIR}${PREFIX}/${PLUGINS_DIR} 2> /dev/null || ${TRUE}
-.if !${PORT_OPTIONS:MDOCS}
+.    if !${PORT_OPTIONS:MDOCS}
 	-@${RMDIR} ${STAGEDIR}${PREFIX}/${DOC_DIR}
-.endif
-.endif
+.    endif
+.  endif
 
-.if empty(gem_ARGS:Mnoautoplist)
+.  if empty(gem_ARGS:Mnoautoplist)
 _USES_install+=	820:gem-autoplist
 gem-autoplist:
 	@${ECHO_CMD} ${GEM_SPEC} >> ${TMPPLIST}
-.if ${PORT_OPTIONS:MDOCS}
+.    if ${PORT_OPTIONS:MDOCS}
 	@${FIND} -ds ${STAGEDIR}${PREFIX}/${DOC_DIR} -type f -print | ${SED} -E -e \
 		's,^${STAGEDIR}${PREFIX}/?,,' >> ${TMPPLIST}
-.endif
+.    endif
 	@${FIND} -ds ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR} -type f -print | ${SED} -E -e \
 		's,^${STAGEDIR}${PREFIX}/?,,' >> ${TMPPLIST}
 	@if [ -d ${STAGEDIR}${PREFIX}/${EXT_DIR} ]; then \
@@ -136,6 +135,6 @@ gem-autoplist:
 		${FIND} -ds ${STAGEDIR}${PREFIX}/${PLUGINS_DIR} -type f -print | ${SED} -E -e \
 		's,^${STAGEDIR}${PREFIX}/?,,' >> ${TMPPLIST} ; \
 	fi
-.endif
+.  endif
 
 .endif

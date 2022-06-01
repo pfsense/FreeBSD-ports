@@ -38,14 +38,14 @@ MNG_CMAKE_BOOL=		WITH_MNG
 
 THEORA_LIB_DEPENDS=	libtheora.so:multimedia/libtheora
 THEORA_CMAKE_BOOL=	WITH_THEORA
+# XXX: does not build otherwise, remove after upstream bug is fixed: https://github.com/Wargus/stratagus/issues/396
+THEORA_IMPLIES=		VORBIS
 
 VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 			libogg.so:audio/libogg
 VORBIS_CMAKE_BOOL=	WITH_OGGVORBIS
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc
+.if !exists(/usr/include/omp.h)
 USES+=		compiler:gcc-c++11-lib
 .else
 USES+=		compiler:c++17-lang

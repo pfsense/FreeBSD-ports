@@ -1,16 +1,22 @@
 # Created by: Bernard Spil <brnrd@FreeBSD.org>
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.5.15
-PORTREVISION?=	1
+PORTVERSION=	10.5.16
+PORTREVISION?=	0
 CATEGORIES=	databases
-MASTER_SITES=	http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
-		http://gd.tuwien.ac.at/db/${SITESDIR}/ \
-		http://mirrors.fe.up.pt/pub/${SITESDIR}/ \
-		http://mirror.de.gsnw.de:56431/${SITESDIR}/ \
-		http://mirror.layerjet.com/${SITESDIR}/ \
-		http://mirror.switch.ch/mirror/${SITESDIR}/ \
-		http://ftp.osuosl.org/pub/${SITESDIR}/
+MASTER_SITES=	\
+		https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
+		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
+		https://mirror.truenetwork.ru/${SITESDIR}/ \
+		https://mirrors.aliyun.com/${SITESDIR}/ \
+		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
+		https://mirror.kku.ac.th/${SITESDIR}/ \
+		https://espejito.fder.edu.uy/${SITESDIR}/ \
+		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
+		https://ftp.osuosl.org/pub/${SITESDIR}/ \
+		https://downloads.mariadb.org/rest-api/mariadb/${PORTVERSION}/
 PKGNAMESUFFIX?=	105-server
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -86,6 +92,7 @@ CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${PREFIX} \
 		-DINSTALL_DOCREADMEDIR="share/doc/mysql" \
 		-DINSTALL_INFODIR="info" \
 		-DINSTALL_LIBDIR="lib/mysql" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="${MARIADB_DBDIR}" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
 		-DINSTALL_MYSQLTESTDIR= \

@@ -1,4 +1,4 @@
---- net/dns/BUILD.gn.orig	2022-02-28 16:54:41 UTC
+--- net/dns/BUILD.gn.orig	2022-05-19 14:06:27 UTC
 +++ net/dns/BUILD.gn
 @@ -112,7 +112,7 @@ source_set("dns") {
        "dns_config_service_android.cc",
@@ -9,7 +9,15 @@
      sources += [
        "dns_config_service_linux.cc",
        "dns_config_service_linux.h",
-@@ -415,9 +415,9 @@ source_set("tests") {
+@@ -153,6 +153,7 @@ source_set("dns") {
+     ":host_resolver_manager",
+     ":mdns_client",
+     "//net:net_public_deps",
++    "//printing/buildflags",
+   ]
+ 
+   allow_circular_includes_from = [
+@@ -413,9 +414,9 @@ source_set("tests") {
  
    if (is_android) {
      sources += [ "dns_config_service_android_unittest.cc" ]

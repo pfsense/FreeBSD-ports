@@ -20,13 +20,14 @@ GH_ACCOUNT=	apertium
 USE_LDCONFIG=	yes
 
 APVER=		3.6
-APREV=		1
+APREV=		4
 
 GNU_CONFIGURE=	yes
 
 INSTALL_TARGET=	install-strip
 
 CFLAGS+=	-I${LOCALBASE}/include/utf8cpp
+LDFLAGS+=	-lpthread
 
 PLIST_SUB+=	APVER="${APVER}"
 

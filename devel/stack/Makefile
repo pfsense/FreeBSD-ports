@@ -1,6 +1,7 @@
 PORTNAME=	stack
 PORTVERSION=	2.7.3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -10,7 +11,8 @@ LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss \
 		gmake:devel/gmake \
-		${LOCALBASE}/lib/compat/libffi.so.6:devel/libffi321
+		${LOCALBASE}/lib/compat/libffi.so.6:devel/libffi321 \
+		${LOCALBASE}/lib/compat/libffi.so.7:devel/libffi33
 
 USES=		cabal gmake perl5
 USE_GITHUB=	yes

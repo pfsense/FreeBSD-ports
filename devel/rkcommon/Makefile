@@ -1,6 +1,6 @@
 PORTNAME=	rkcommon
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.0
+DISTVERSION=	1.10.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,5 +22,11 @@ CXXFLAGS_i386=	-msse2 # workaround for error: '_mm_setcsr' needs target feature 
 CMAKE_TESTING_ON=	BUILD_TESTING
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != aarch64 && ${ARCH} != amd64 && !${ARCH:Marmv?} && ${ARCH} != i386
+CMAKE_ARGS+=	-DRKCOMMON_NO_SIMD:BOOL=ON
+.endif
 
 .include <bsd.port.mk>

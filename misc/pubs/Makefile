@@ -1,6 +1,6 @@
 PORTNAME=	pubs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.3
+DISTVERSION=	0.9.0
 CATEGORIES=	misc python
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,5 +22,7 @@ USES=		python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	distutils autoplist noflavors
 NO_ARCH=	yes
+
+POSTSCOUT=	skipv:show_and_search
 
 .include <bsd.port.mk>

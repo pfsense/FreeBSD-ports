@@ -1,7 +1,7 @@
 PORTNAME=	ifcopenshell
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	cad
 
 MAINTAINER=	lbartoletti@FreeBSD.org
@@ -13,6 +13,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 BUILD_DEPENDS=	nlohmann-json>0:devel/nlohmann-json
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libTKernel.so:cad/opencascade740
+
+BROKEN=		error: no viable overloaded '='
 
 USES=		cmake compiler:c++11-lang eigen:3 gnome
 USE_GNOME=	libxml2

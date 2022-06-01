@@ -31,11 +31,13 @@ sbin/haproxy
 %%PORTDOCS%%%%DOCSDIR%%/gpl.txt
 %%PORTDOCS%%%%DOCSDIR%%/haproxy.1
 %%PORTDOCS%%%%DOCSDIR%%/internals/acl.txt
+%%PORTDOCS%%%%DOCSDIR%%/internals/api/appctx.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/buffer-api.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/filters.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/htx-api.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/initcalls.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/ist.txt
+%%PORTDOCS%%%%DOCSDIR%%/internals/api/layers.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/list.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/pools.txt
 %%PORTDOCS%%%%DOCSDIR%%/internals/api/scheduler.txt

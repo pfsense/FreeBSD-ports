@@ -2,7 +2,7 @@
 
 PORTNAME=	murmur
 PORTVERSION=	1.3.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio net
 
 MAINTAINER=	feld@FreeBSD.org
@@ -61,6 +61,7 @@ CONFIG+=	no-pch
 .endif
 
 post-patch:
+	@${REINPLACE_CMD} -e 's|--no-add-needed|--no-copy-dt-needed-entries|' ${WRKSRC}/qmake/compiler.pri
 	@${ECHO_CMD} 'QMAKE_LFLAGS += -fstack-protector' >> ${WRKSRC}/src/murmur/murmur.pro
 
 pre-install:

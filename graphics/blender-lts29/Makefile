@@ -1,5 +1,5 @@
 PORTNAME=	blender
-DISTVERSION=	2.93.6
+DISTVERSION=	2.93.9
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -25,13 +25,13 @@ RUN_DEPENDS=	${PYNUMPY}
 # libraries are used, if either of the most common options in blender
 # are set. We will pull boost in just to be on the safe side.
 
-USES=		cmake compiler:c++14-lang cpe gl jpeg python:3.9 shebangfix \
+USES=		cmake compiler:c++17-lang cpe gl jpeg python:3.9 shebangfix \
 		tar:xz xorg
 USE_XORG=	x11 xext xfixes xmu xrender
 USE_GL=		gl glu glew
 
 INSTALLS_ICONS=	yes
-CMAKE_OFF=	WITH_IMAGE_OPENJPEG WITH_PYTHON_INSTALL \
+CMAKE_OFF=	WITH_PYTHON_INSTALL \
 		WITH_PYTHON_INSTALL_NUMPY WITH_INSTALL_PORTABLE \
 		WITH_CYCLES_LOGGING
 
@@ -63,8 +63,9 @@ ALEMBIC_HDF5_CMAKE_BOOL=	WITH_ALEMBIC_HDF5
 ALEMBIC_HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5
 AVI_CMAKE_BOOL=			WITH_CODEC_AVI
 BULLET_CMAKE_BOOL=		WITH_BULLET
-CAMERATRACK_CMAKE_BOOL=		WITH_LIBMV
-CAMERATRACK_LIB_DEPENDS=	libunwind.so:devel/libunwind
+CAMERATRACK_CMAKE_BOOL=		WITH_LIBMV WITH_SYSTEM_GLOG
+CAMERATRACK_LIB_DEPENDS=	libunwind.so:devel/libunwind \
+				libglog.so:devel/glog
 CAMERATRACK_ONLY_FOR_ARCHS=	i386 amd64 aarch64 powerpc64 powerpc64le
 CAMERATRACK_ONLY_FOR_ARCHS_REASON=	libunwind only supports x86/amd64/aarch64/powerpc64/powerpc64le
 CINEON_CMAKE_BOOL=		WITH_IMAGE_CINEON
@@ -147,6 +148,8 @@ OPENIMAGEDN_CMAKE_BOOL=		WITH_OPENIMAGEDENOISE
 OPENIMAGEDN_LIB_DEPENDS=	libOpenImageDenoise.so:graphics/oidn
 OPENIMAGEDN_ONLY_FOR_ARCHS=	amd64
 OPENIMAGEDN_ONLY_FOR_ARCHS_REASON=	oidn only supports amd64
+OPENJPEG_CMAKE_BOOL=		WITH_IMAGE_OPENJPEG
+OPENJPEG_LIB_DEPENDS=		libopenjp2.so:graphics/openjpeg
 # openmp usually works on amd64
 OPENMP_CMAKE_BOOL=		WITH_OPENMP
 OPENSUBDIV_CMAKE_BOOL=		WITH_OPENSUBDIV
@@ -196,7 +199,7 @@ post-build:
 
 post-install:
 	${INSTALL_MAN} ${INSTALL_WRKSRC}/bin/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1
+		${STAGEDIR}${MAN1PREFIX}/share/man/man1
 	# rename files to prevent conflict with other blender versions
 	${MV} ${STAGEDIR}${PREFIX}/share/blender \
 		${STAGEDIR}${PREFIX}/share/blender${PKGNAMESUFFIX}
@@ -207,8 +210,8 @@ post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/blender ${STAGEDIR}/${PREFIX}/bin/blender${PKGNAMESUFFIX}
 	${MV} ${STAGEDIR}${PREFIX}/bin/blender-thumbnailer.py \
 		${STAGEDIR}${PREFIX}/bin/blender${PKGNAMESUFFIX}-thumbnailer.py
-	${MV} ${STAGEDIR}${PREFIX}/man/man1/blender.1 \
-		${STAGEDIR}${PREFIX}/man/man1/blender${PKGNAMESUFFIX}.1
+	${MV} ${STAGEDIR}${PREFIX}/share/man/man1/blender.1 \
+		${STAGEDIR}${PREFIX}/share/man/man1/blender${PKGNAMESUFFIX}.1
 	${MV} ${STAGEDIR}${PREFIX}/share/applications/blender.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/blender${PKGNAMESUFFIX}.desktop
 	${MV} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps/blender.svg \

@@ -1,6 +1,6 @@
 PORTNAME=	cbc
 DISTVERSIONPREFIX=	releases/
-DISTVERSION=	2.10.7
+DISTVERSION=	2.10.8
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
@@ -31,6 +31,15 @@ GH_PROJECT=	Cbc
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-nauty-lib="-L${LOCALBASE}/lib -lnauty" --with-nauty-incdir=${LOCALBASE}/include/nauty
+
+OPTIONS_DEFINE=			DEBUG PARALLEL
+OPTIONS_DEFAULT=		PARALLEL
+
+DEBUG_DESC=			Compile CBC with debug support
+DEBUG_CONFIGURE_ENABLE=		debug
+
+PARALLEL_DESC=			Compile CBC with parallel (multi-threaded solver) support
+PARALLEL_CONFIGURE_ENABLE=	cbc-parallel
 
 CONFLICTS_INSTALL=	libcouchbase # bin/cbc
 

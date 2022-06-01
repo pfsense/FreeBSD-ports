@@ -2,7 +2,7 @@
 
 PORTNAME=	grass
 PORTVERSION=	7.8.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	databases geography
 MASTER_SITES=	https://grass.osgeo.org/%SUBDIR%/ \
 		http://grass.cict.fr/%SUBDIR%/ \
@@ -131,6 +131,10 @@ SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_F
 ZSTD_CONFIGURE_WITH=	zstd
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
+.if exists(/usr/include/omp.h)
+CONFIGURE_ARGS+=	--with-openmp
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386"
@@ -138,10 +142,6 @@ USE_GCC=	yes
 PLIST_SUB+=	NOTONI386="@comment "
 .else
 PLIST_SUB+=	NOTONI386=""
-.endif
-
-.if ${ARCH} != powerpc
-CONFIGURE_ARGS+=	--with-openmp
 .endif
 
 .if !defined (GRASS_INST_DIR)

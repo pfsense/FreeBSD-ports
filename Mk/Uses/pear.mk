@@ -7,7 +7,7 @@
 #	- env : Only provide the environment variables, no fetch/build/install
 #		targets.
 #
-# MAINTAINER=	portmgr@FreeBSD.org
+# MAINTAINER=	ports@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_PEAR_MK)
 _INCLUDE_USES_PEAR_MK=	yes
@@ -114,6 +114,10 @@ pear-pre-install:
 	@${ECHO_MSG} ""
 	@${FALSE}
 .    endif
+	(if [ -f ${WRKSRC}/package.xml ]	\
+	&& [ ! -f ${WRKDIR}/package.xml ] ; then	\
+		${CP} -p ${WRKSRC}/package.xml ${WRKDIR} ;	\
+	fi)
 
 DIRFILTER=	${SED} -En '\:^.*/[^/]*$$:s:^(.+)/[^/]*$$:\1:p' \
 		    | ( while read r; do \

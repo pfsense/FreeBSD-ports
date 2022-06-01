@@ -1,4 +1,4 @@
-PORTREVISION=	3
+PORTREVISION=	2
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -18,12 +18,13 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		cppunit-config:devel/cppunit \
 		dmake:devel/dmake \
 		gperf>=3.1:devel/gperf \
+		${LOCALBASE}/include/libcuckoo/cuckoohash_map.hh:devel/libcuckoo \
+		libunwind>=20211201_1:devel/libunwind \
 		mdds>=2.0:devel/mdds \
 		ucpp:devel/ucpp \
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends \
 		vigra-config:graphics/vigra \
 		${LOCALBASE}/include/glm/glm.hpp:math/glm \
-		${LOCALBASE}/include/libcuckoo/cuckoohash_map.hh:devel/libcuckoo \
 		bash:shells/bash \
 		gsed:textproc/gsed \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
@@ -125,7 +126,7 @@ USE_XORG=	ice sm x11 xaw xcb xext xinerama xrandr xrender
 
 OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 GTK4 JAVA KF5 LTO MMEDIA PDFIUM PGSQL MARIADB QT5 SDK TEST WEBDAV
 OPTIONS_DEFAULT=	CUPS DOCS JAVA MMEDIA PDFIUM QT5
-OPTIONS_EXCLUDE=	GTK4
+#OPTIONS_EXCLUDE=	GTK4
 
 COINMP_DESC=	Enable CoinMP (deprecated) math solver
 GTK4_DESC=	GTK+ 4 GUI toolkit support (broken)
@@ -209,8 +210,8 @@ KF5_IMPLIES=	QT5
 
 LTO_CONFIGURE_ENABLE=	lto
 
+MMEDIA_USES=		gstreamer
 MMEDIA_CONFIGURE_ENABLE=	gstreamer-1-0
-MMEDIA_USE=	GSTREAMER1=yes
 
 PDFIUM_CONFIGURE_ENABLE=	pdfium
 PDFIUM_DISTFILES=	pdfium-4699.tar.bz2:src
@@ -265,6 +266,7 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-parallelism=${MAKE_JOBS_NUMBER} \
 		--with-system-abseil \
 		--with-system-cppunit \
+		--with-system-cuckoo \
 		--with-system-curl \
 		--with-system-dicts \
 		--with-system-gpgmepp \
@@ -305,6 +307,13 @@ MAKE_ENV+=	verbose=1
 .include <bsd.port.options.mk>
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( \
+    (${OSVERSION} >= 1300525 && ${OSVERSION} < 1301000) || \
+    (${OSVERSION} >= 1301500 && ${OSVERSION} < 1301502) || \
+    (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
+BROKEN= please update FreeBSD base system first to fix an ABI incompatibility
+.endif
 
 .if ${ARCH:Mpowerpc*}
 EXTRA_PATCHES+=	${FILESDIR}/powerpc64

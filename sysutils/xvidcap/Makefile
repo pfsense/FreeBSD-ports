@@ -2,7 +2,7 @@
 
 PORTNAME=		xvidcap
 PORTVERSION=		1.1.7
-PORTREVISION=		13
+PORTREVISION=		15
 PORTEPOCH=		1
 CATEGORIES=		sysutils multimedia
 MASTER_SITES=		SF
@@ -11,6 +11,9 @@ MAINTAINER=		thierry@FreeBSD.org
 COMMENT=		Capture your X display to individual frames or MPEG video
 
 LICENSE=		GPLv3
+
+DEPRECATED=		Abandoned upstream, depends on deprecated GTK2 and only supports legacy video codecs. Please consider using multimedia/obs-studio
+EXPIRATION_DATE=	2022-06-30
 
 LIB_DEPENDS=		libdbus-1.so:devel/dbus			\
 			libfreetype.so:print/freetype2		\

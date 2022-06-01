@@ -1,7 +1,7 @@
 # Created by: Jochen Neumeister <joneum@FreeBSD.org>
 
 PORTNAME=	openresty
-PORTVERSION=	1.21.4.1rc2
+PORTVERSION=	1.21.4.1
 CATEGORIES=	www
 MASTER_SITES=	https://openresty.org/download/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty \
 		libpcre.so:devel/pcre
 
-USES=		gmake perl5 ssl
+USES=		cpe gmake perl5 ssl
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--group=${WWWGRP} \

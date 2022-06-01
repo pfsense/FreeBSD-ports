@@ -1,4 +1,4 @@
---- content/renderer/render_process_impl.cc.orig	2022-02-28 16:54:41 UTC
+--- content/renderer/render_process_impl.cc.orig	2022-05-19 14:06:27 UTC
 +++ content/renderer/render_process_impl.cc
 @@ -47,7 +47,7 @@
  #if BUILDFLAG(IS_WIN)
@@ -18,9 +18,9 @@
    SetV8FlagIfFeature(features::kWebAssemblyCodeProtectionPku,
                       "--wasm-memory-protection-keys");
    SetV8FlagIfNotFeature(features::kWebAssemblyCodeProtectionPku,
-@@ -227,7 +227,7 @@ RenderProcessImpl::RenderProcessImpl()
-   SetV8FlagIfFeature(features::kWebAssemblyDynamicTiering,
-                      "--wasm-dynamic-tiering");
+@@ -229,7 +229,7 @@ RenderProcessImpl::RenderProcessImpl()
+   SetV8FlagIfNotFeature(features::kWebAssemblyDynamicTiering,
+                         "--no-wasm-dynamic-tiering");
  
 -#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && defined(ARCH_CPU_X86_64)
 +#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)) && defined(ARCH_CPU_X86_64)

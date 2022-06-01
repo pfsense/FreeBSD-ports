@@ -1,7 +1,6 @@
 PORTNAME=	cawbird
-PORTVERSION=	1.4.2
+PORTVERSION=	1.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	nc@FreeBSD.org
@@ -33,7 +32,7 @@ OPTIONS_DEFINE=	SPELLCHECK VIDEO
 SPELLCHECK_LIB_DEPENDS=	libgtkspell3-3.so:textproc/gtkspell3
 SPELLCHECK_MESON_OFF=	-Dspellcheck=false
 
-VIDEO_LIB_DEPENDS=	libgstvideo-1.0.so:multimedia/gstreamer1-plugins
+VIDEO_USES=		gstreamer
 VIDEO_MESON_OFF=	-Dvideo=false
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	chrono
-DISTVERSION=	7.0.1
+DISTVERSION=	7.0.3
 PORTREVISION=	1
 CATEGORIES=	science devel
 PKGNAMESUFFIX=	-physics-simulation-engine
@@ -14,13 +14,27 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_i386=	use of overloaded operator '[]' is ambiguous (with operand types 'chrono::quaternion' and 'int'): https://github.com/projectchrono/chrono/issues/158
+BROKEN_aarch64=	cannot find -lFALSE, see https://github.com/projectchrono/chrono/issues/389
 
 BUILD_DEPENDS=	openmpi>0:net/openmpi
+LIB_DEPENDS=	libblas.so:math/blas \
+		libepoll-shim.so:devel/libepoll-shim \
+		libfabric.so:net/libfabric \
+		libhwloc.so:devel/hwloc2 \
+		libjson-c.so:devel/json-c \
+		libmetis.so:math/metis \
+		libpciaccess.so:devel/libpciaccess \
+		libpng16.so:graphics/png \
+		libscotch.so:cad/scotch \
+		libze_loader.so:devel/level-zero
 
-USES=		cmake compiler:c++14-lang eigen:3 fortran
+USES=		cmake compiler:c++14-lang eigen:3 fortran gnome jpeg xorg
+USE_LDCONFIG=	yes
+USE_GNOME=	libxml2
+USE_XORG=	x11 xau xcb xdmcp xext xxf86vm
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	project${PORTNAME}
-USE_LDCONFIG=	yes
 
 ALL_MODULES=		Cascade Cosimulation Distributed FSI Irrlicht Multicore MUMPS OpenGL Pardiso_Project Postprocess Sensor SynChrono Vehicle
 # module names in a human readable case; for the list of available modules: grep -r "option(ENABLE_MODULE" work
@@ -61,7 +75,7 @@ PARDISO_PROJECT_BROKEN=		Not available for FreeBSD; License is restrictive
 SENSOR_BROKEN=			requires CUDA
 
 SYNCHRONO_USES=			localbase
-SYNCHRONO_BUILD_DEPENDS=	flatbuffers>0:devel/flatbuffers
+SYNCHRONO_BUILD_DEPENDS=	flatc:devel/flatbuffers205 # until https://github.com/projectchrono/chrono/issues/391 is fixed
 SYNCHRONO_LIB_DEPENDS=		libmpi.so:net/mpich
 SYNCHRONO_IMPLIES=		VEHICLE
 
@@ -84,10 +98,6 @@ OPTIONS_DEFAULT+=	${module:tu}
 #.include <bsd.port.options.mk>
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MCASCADE} && ${PORT_OPTIONS:MIRRLICHT}
-PLIST_FILES+=	include/chrono_cascade/ChIrrCascadeMeshTools.h
-.endif
-
 .if ${PORT_OPTIONS:MVEHICLE} && ${PORT_OPTIONS:MIRRLICHT}
 PLIST_FILES+=	lib/libChronoEngine_vehicle_irrlicht.so
 .endif
@@ -103,10 +113,6 @@ post-extract:
 
 post-patch:
 	@${FIND} ${WRKSRC} -name CMakeLists.txt -o -name "*.cmake*" | ${XARGS} ${REINPLACE_CMD} -i '' 's|lib64|lib|'
-	@${REINPLACE_CMD} -e 's/ -march=native//' \
-		${WRKSRC}/cmake/FindAVX.cmake \
-		${WRKSRC}/cmake/FindFMA.cmake \
-		${WRKSRC}/cmake/FindSSE.cmake
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \

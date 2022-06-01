@@ -1,7 +1,8 @@
 # Created by: Doug Barton <dougb@FreeBSD.org>
 
 PORTNAME=	qbittorrent
-DISTVERSION=	4.4.1
+DISTVERSION=	4.4.2
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -26,6 +27,8 @@ GNU_CONFIGURE=		yes
 USE_QT=			core network sql xml buildtools_build linguisttools_build qmake_build
 DESTDIRNAME=		INSTALL_ROOT
 CONFIGURE_ENV+=		openssl_CFLAGS="-I${OPENSSLINC}" openssl_LIBS="-L${OPENSSLLIB} -lssl"
+
+USE_CXXSTD=		c++17 # prevent boost-related SEGV, see bug#264278
 
 .if ${FLAVOR} == default
 USES+=			desktop-file-utils gl

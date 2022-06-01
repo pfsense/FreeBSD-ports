@@ -1,8 +1,8 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
 
 PORTNAME=	ffmpeg
-PORTVERSION=	4.4.1
-PORTREVISION=	9
+PORTVERSION=	4.4.2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -19,8 +19,6 @@ BUILD_DEPENDS_amd64=	nasm:devel/nasm
 BUILD_DEPENDS_armv6=	as:devel/binutils
 BUILD_DEPENDS_armv7=	as:devel/binutils
 BUILD_DEPENDS_i386=	nasm:devel/nasm
-BUILD_DEPENDS_powerpc64=as:devel/binutils
-BUILD_DEPENDS_powerpc=	as:devel/binutils
 
 HAS_CONFIGURE=	yes
 CONFIGURE_LOG=	ffbuild/config.log

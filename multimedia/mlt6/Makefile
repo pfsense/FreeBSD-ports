@@ -1,6 +1,6 @@
 PORTNAME=		${_MLT_PORTNAME}
 DISTVERSION=		${_MLT_VERSION}
-PORTREVISION?=		4
+PORTREVISION?=		6
 CATEGORIES?=		multimedia
 # Don't use GitHub "fake" downloads that are auto-generated from a
 # tag; the project uploads tarballs for each release.
@@ -162,7 +162,7 @@ pre-configure:
 		${WRKSRC}/src/modules/jackrack/plugin_mgr.c
 
 common-post-install:
-	${INSTALL_MAN} ${WRKSRC}/docs/melt.1 ${STAGEDIR}${MANPREFIX}/man/man1/melt.1
+	${INSTALL_MAN} ${WRKSRC}/docs/melt.1 ${STAGEDIR}${MANPREFIX}/share/man/man1/melt.1
 	@${RM} ${WRKSRC}/docs/melt.1
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/melt
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmlt.so.${PORTVERSION}

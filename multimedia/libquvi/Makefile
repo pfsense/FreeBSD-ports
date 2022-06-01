@@ -4,7 +4,7 @@ PORTNAME=	libquvi
 PORTVERSION=	0.4.1
 PORTREVISION=	5
 CATEGORIES=	multimedia devel
-MASTER_SITES=	SF/quvi/${PORTVERSION:R}/${PORTNAME}/ \
+MASTER_SITES=	SF/quvi/${PORTVERSION:R}/libquvi/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -13,14 +13,12 @@ COMMENT=	Cross-platform library for parsing flash media stream URLs
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Deprecated upstream, please consider using www/yt-dlp or multimedia/streamlink
+EXPIRATION_DATE=2022-06-30
+
 BUILD_DEPENDS=	${RUN_DEPENDS}
 LIB_DEPENDS=	libcurl.so:ftp/curl
 RUN_DEPENDS=	libquvi-scripts>=0.4.0:multimedia/libquvi-scripts
-
-OPTIONS_DEFINE=	DOCS LUAJIT
-LUAJIT_DESC=	Use LuaJIT instead of Lua
-
-PORTSCOUT=	limit:^0\.4\.
 
 USES=		iconv libtool pathfix pkgconfig tar:xz
 
@@ -29,6 +27,11 @@ INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
+
+PORTSCOUT=	limit:^0\.4\.
+
+OPTIONS_DEFINE=	DOCS LUAJIT
+LUAJIT_DESC=	Use LuaJIT instead of Lua
 
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 LUAJIT_USES_OFF=	lua

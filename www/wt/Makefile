@@ -1,7 +1,8 @@
 # Created by: Mohammad S. Babaei <info@babaei.net>
 
 PORTNAME=	wt
-DISTVERSION=	4.7.0
+DISTVERSION=	4.7.2
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	info@babaei.net

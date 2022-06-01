@@ -1,7 +1,7 @@
 # Created by: Jim Mock <jim@FreeBSD.org>
 
 PORTNAME?=	libpurple
-PORTVERSION=	2.14.8
+PORTVERSION=	2.14.9
 PORTREVISION?=	1
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
@@ -21,7 +21,7 @@ CONFIGURE_ARGS?=--disable-gtkui \
 		--with-dynamic-prpls=${PRPL_MODULES:S/,$//} \
 		--enable-static \
 		--disable-nm \
-		--with-system-ssl-certs=/etc/ssl/certs
+		--with-system-ssl-certs=/usr/share/certs/trusted
 INSTALL_TARGET=	install-strip
 
 .if !defined(PIDGIN_SLAVE)
@@ -129,14 +129,15 @@ PLIST_SUB+=		EVO="@comment not installed: "
 .endif
 
 .if ${PORT_OPTIONS:MGSTREAMER}
-USE_GSTREAMER1+=core good
+USES+=		gstreamer
+USE_GSTREAMER+=core good
 .else
 CONFIGURE_ARGS+=--disable-gstreamer
 .endif
 
 .if ${PORT_OPTIONS:MVV} && ${PORT_OPTIONS:MGSTREAMER}
 LIB_DEPENDS+=	libfarstream-0.2.so:net-im/farstream
-USE_GSTREAMER1+=v4l2
+USE_GSTREAMER+=v4l2
 PLIST_SUB+=	VV=""
 .else
 CONFIGURE_ARGS+=--disable-vv

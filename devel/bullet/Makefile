@@ -1,8 +1,7 @@
 # Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
 
 PORTNAME=	bullet
-PORTVERSION=	3.21
-PORTREVISION=	1
+PORTVERSION=	3.24
 CATEGORIES=	devel
 
 MAINTAINER=	fluffy@FreeBSD.org
@@ -49,11 +48,9 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-PLIST_SUB=	LIB_VERSION=3.20
+PLIST_SUB=	LIB_VERSION=${PORTVERSION}
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc
+.if !exists(/usr/include/omp.h)
 CMAKE_OFF+=	BULLET2_USE_OPEN_MP_MULTITHREADING
 .else
 CMAKE_ON+=	BULLET2_USE_OPEN_MP_MULTITHREADING

@@ -1,8 +1,8 @@
---- lib/libimhex/source/helpers/file.cpp.orig	2022-02-15 12:57:57 UTC
+--- lib/libimhex/source/helpers/file.cpp.orig	2022-04-17 23:53:01 UTC
 +++ lib/libimhex/source/helpers/file.cpp
-@@ -5,12 +5,12 @@ namespace hex {
+@@ -5,12 +5,12 @@ namespace hex::fs {
  
-     File::File(const fs::path &path, Mode mode) noexcept : m_path(path) {
+     File::File(const std::fs::path &path, Mode mode) noexcept : m_path(path) {
          if (mode == File::Mode::Read)
 -            this->m_file = fopen64(path.string().c_str(), "rb");
 +            this->m_file = fopen(path.string().c_str(), "rb");
@@ -16,7 +16,7 @@
      }
  
      File::File() noexcept {
-@@ -37,7 +37,7 @@ namespace hex {
+@@ -37,7 +37,7 @@ namespace hex::fs {
  
  
      void File::seek(u64 offset) {
@@ -25,27 +25,27 @@
      }
  
      void File::close() {
-@@ -96,10 +96,10 @@ namespace hex {
+@@ -101,10 +101,10 @@ namespace hex::fs {
      size_t File::getSize() const {
          if (!isValid()) return 0;
  
 -        auto startPos = ftello64(this->m_file);
 -        fseeko64(this->m_file, 0, SEEK_END);
--        size_t size = ftello64(this->m_file);
+-        auto size = ftello64(this->m_file);
 -        fseeko64(this->m_file, startPos, SEEK_SET);
 +        auto startPos = ftello(this->m_file);
 +        fseeko(this->m_file, 0, SEEK_END);
-+        size_t size = ftello(this->m_file);
++        auto size = ftello(this->m_file);
 +        fseeko(this->m_file, startPos, SEEK_SET);
  
-         return size;
-     }
-@@ -107,7 +107,7 @@ namespace hex {
+         if (size < 0)
+             return 0;
+@@ -115,7 +115,7 @@ namespace hex::fs {
      void File::setSize(u64 size) {
          if (!isValid()) return;
  
--        ftruncate64(fileno(this->m_file), size);
-+        ftruncate(fileno(this->m_file), size);
+-        auto result = ftruncate64(fileno(this->m_file), size);
++        auto result = ftruncate(fileno(this->m_file), size);
+         hex::unused(result);
      }
  
-     void File::flush() {

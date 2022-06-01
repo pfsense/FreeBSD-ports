@@ -128,6 +128,7 @@
     SUBDIR += midpoint
     SUBDIR += mk-livestatus
     SUBDIR += monitoring-plugins
+    SUBDIR += mqtt2prometheus
     SUBDIR += mrtg
     SUBDIR += mrtg-ping-probe
     SUBDIR += mtrace
@@ -188,7 +189,6 @@
     SUBDIR += netmagis-www
     SUBDIR += netmask
     SUBDIR += netspoc
-    SUBDIR += netustad
     SUBDIR += networkmgr
     SUBDIR += netxms
     SUBDIR += nfdump

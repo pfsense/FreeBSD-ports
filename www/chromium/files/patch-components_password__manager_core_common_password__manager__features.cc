@@ -1,6 +1,15 @@
---- components/password_manager/core/common/password_manager_features.cc.orig	2022-02-28 16:54:41 UTC
+--- components/password_manager/core/common/password_manager_features.cc.orig	2022-05-19 14:06:27 UTC
 +++ components/password_manager/core/common/password_manager_features.cc
-@@ -133,7 +133,7 @@ const base::Feature kReparseServerPredictionsFollowing
+@@ -70,7 +70,7 @@ const base::Feature kFillingAcrossAffiliatedWebsites{
+ const base::Feature kFillOnAccountSelect = {"fill-on-account-select",
+                                             base::FEATURE_DISABLED_BY_DEFAULT};
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ // When enabled, initial sync will be forced during startup if the password
+ // store has encryption service failures.
+ const base::Feature kForceInitialSyncWhenDecryptionFails = {
+@@ -148,7 +148,7 @@ const base::Feature kRecoverFromNeverSaveAndroid = {
  const base::Feature kSecondaryServerFieldPredictions = {
      "SecondaryServerFieldPredictions", base::FEATURE_ENABLED_BY_DEFAULT};
  
@@ -9,7 +18,7 @@
  // Displays at least the decryptable and never saved logins in the password
  // manager
  const base::Feature kSkipUndecryptablePasswords = {
-@@ -145,7 +145,7 @@ const base::Feature kSkipUndecryptablePasswords = {
+@@ -160,7 +160,7 @@ const base::Feature kSkipUndecryptablePasswords = {
  const base::Feature kSupportForAddPasswordsInSettings = {
      "SupportForAddPasswordsInSettings", base::FEATURE_DISABLED_BY_DEFAULT};
  

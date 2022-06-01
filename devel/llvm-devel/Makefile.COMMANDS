@@ -77,8 +77,8 @@ CLANG_COMMANDS=	\
 		clang-linker-wrapper \
 		clang-nvlink-wrapper \
 		clang-offload-bundler \
+		clang-offload-packager \
 		clang-offload-wrapper \
-		clang-pseudo \
 		clang-repl \
 		clang-scan-deps \
 		diagtool \
@@ -95,6 +95,7 @@ EXTRAS_COMMANDS= \
 		clang-doc \
 		clang-include-fixer \
 		clang-move \
+		clang-pseudo \
 		clang-query \
 		clang-rename \
 		clang-reorder-fields \
@@ -134,10 +135,11 @@ MLIR_COMMANDS=	\
 		mlir-cpu-runner \
 		mlir-lsp-server \
 		mlir-opt \
-		mlir-pdll \
+		mlir-pdll-lsp-server \
 		mlir-reduce \
 		mlir-tblgen \
-		mlir-translate
+		mlir-translate \
+		tblgen-lsp-server
 
 OPENMP_COMMANDS=	\
 		llvm-omp-device-info
