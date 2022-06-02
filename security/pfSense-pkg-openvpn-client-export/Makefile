@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-openvpn-client-export
 PORTVERSION=	1.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,7 +16,7 @@ LICENSE=	APACHE20
 RUN_DEPENDS=	openvpn>=2.5.2:security/openvpn \
 		openvpn-client-export>=2.5.2:security/openvpn-client-export \
 		zip>0:archivers/zip \
-		p7zip>0:archivers/p7zip
+		7-zip>0:archivers/7-zip
 
 NO_BUILD=	yes
 NO_MTREE=	yes
