@@ -48,7 +48,7 @@ if (!empty($log)) {
 
 // Query DNSBL Alias for Domain List.
 $query = str_replace('.', '\.', htmlspecialchars($_SERVER['HTTP_HOST']));
-exec("/usr/bin/grep -l ' \"{$query} 60 IN A' /var/db/pfblockerng/dnsblalias/*", $match);
+exec("/usr/bin/grep -l " . escapeshellarg("\"{$query} 60 IN A") . " /var/db/pfblockerng/dnsblalias/*", $match);
 $pfb_query = strstr($match[0], 'DNSBL', FALSE);
 
 // Query for a TLD Block
