@@ -1,5 +1,6 @@
 PORTNAME=	fido2
 PORTVERSION=	0.9.3
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,11 +16,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=1.5:security/py-cryptography@$
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
 
 USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils unittest
 
 NO_ARCH=	yes
-
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m unittest discover -v
 
 .include <bsd.port.mk>

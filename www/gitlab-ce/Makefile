@@ -1,7 +1,7 @@
 # Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
 
 PORTNAME=	gitlab-ce
-PORTVERSION=	15.0.0
+PORTVERSION=	15.0.1
 PORTREVISION=	0
 CATEGORIES=	www devel
 
@@ -28,7 +28,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	gtar>0:archivers/gtar \
 	bash>0:shells/bash \
 	rubygem-rails61>=6.1.6.0<6.1.7:www/rubygem-rails61 \
-	rubygem-bootsnap>=1.9.4<1.12:devel/rubygem-bootsnap \
+	rubygem-bootsnap111>=1.9.4<1.12:devel/rubygem-bootsnap111 \
 	rubygem-responders-rails61>=3.0<4.0:www/rubygem-responders-rails61 \
 	rubygem-sprockets3>=3.7<3.8:devel/rubygem-sprockets3 \
 	rubygem-view_component-rails61>=2.50.0<2.51:devel/rubygem-view_component-rails61 \
@@ -36,7 +36,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-pg>=1.2.3<2:databases/rubygem-pg \
 	rubygem-rugged>=1.2<2:devel/rubygem-rugged \
 	rubygem-grape-path-helpers>=1.7.0<1.8:devel/rubygem-grape-path-helpers \
-	rubygem-faraday110>=1.10.0<2:www/rubygem-faraday110 \
+	rubygem-faraday1>=1.10.0<2:www/rubygem-faraday1 \
 	rubygem-marginalia>=1.10.0<1.11:databases/rubygem-marginalia \
 	rubygem-declarative_policy>=1.1.0<1.2:security/rubygem-declarative_policy \
 	rubygem-devise47-rails61>=4.7.2<4.8:devel/rubygem-devise47-rails61 \
@@ -281,7 +281,7 @@ USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 GL_PROJECT=	gitlab-foss
 # Find the here: https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-GL_COMMIT=	8a186dedfc1da12270ea77f2673b59fa08f770c1
+GL_COMMIT=	39b217000ded81fdbd7ff509dd27895d1952ffc1
 
 USERS=	git
 GROUPS=	git

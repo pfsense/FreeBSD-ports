@@ -1,28 +1,22 @@
-PORTVERSION=	1.17.10
-# Always set PORTREVISION and PORTEPOCH explicitly as otherwise they are inherited from lang/go
+# Created by: Devon H. O'Dell <devon.odell@gmail.com>
+
+DISTVERSION=	1.17.11
+# Always set PORTREVISION explicitly as otherwise they are inherited from lang/go-devel
 PORTREVISION=	0
-PORTEPOCH=	0
-MASTER_SITES=	https://github.com/dmgk/go-bootstrap/releases/download/${BOOTSTRAP_TAG}/:bootstrap \
+MASTER_SITES=	https://golang.org/dl/ \
+		https://github.com/dmgk/go-bootstrap/releases/download/${BOOTSTRAP_TAG}/:bootstrap \
 		LOCAL/dmgk:bootstrap
-PKGNAMESUFFIX=	117
-DISTFILES=	go-${OPSYS:tl}-${GOARCH_${ARCH}}${GOARM_${ARCH}}-${BOOTSTRAP_TAG}.tar.xz:bootstrap
+DISTFILES=	go${DISTVERSION}.src.tar.gz \
+		go-${OPSYS:tl}-${GOARCH_${ARCH}}${GOARM_${ARCH}}-${BOOTSTRAP_TAG}.tar.xz:bootstrap
 
 # Avoid conflicting patch files
 PATCHFILES=
 
-COMMENT=	Go programming language (development version)
+COMMENT=	Go programming language
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	golang
-GH_TAGNAME=	7dd10d4ce20e64d96a10cb67794851a58d96a2aa
-
-CONFLICTS_INSTALL=	go
-
-MASTERDIR=	${.CURDIR}/../go
+MASTERDIR=	${.CURDIR}/../go-devel
 PATCHDIR=	${.CURDIR}/files
+WRKSRC=		${WRKDIR}/go
 DISTINFO_FILE=	${.CURDIR}/distinfo
-
-post-extract:
-	@[ -f ${WRKSRC}/VERSION ] || ${ECHO_CMD} "${PORTVERSION} +${GH_TAGNAME}" > ${WRKSRC}/VERSION
 
 .include "${MASTERDIR}/Makefile"

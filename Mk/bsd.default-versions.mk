@@ -45,7 +45,7 @@ FIREBIRD_DEFAULT?=	2.5
 FORTRAN_DEFAULT?=	gfortran
 # Possible values: 3.2.2
 FPC_DEFAULT?=		3.2.2
-# Possible values: 8 (last to support powerpcspe), 9, 10, 11
+# Possible values: 8 (last to support powerpcspe), 9, 10, 11, 12
 # (Any other version is completely unsupported and not meant for general use.)
 .  if ${ARCH} == "powerpcspe"
 GCC_DEFAULT?=		8
@@ -56,6 +56,8 @@ GCC_DEFAULT?=		10
 GL_DEFAULT?=		mesa-libs
 # Possible values: 7, 8, 9, agpl
 GHOSTSCRIPT_DEFAULT?=	agpl
+# Possible values: 1.17, 1.18, 1.19-devel
+GO_DEFAULT?=		1.18
 # Possible values: 6, 6-nox11, 7, 7-nox11
 IMAGEMAGICK_DEFAULT?=	7
 # Possible values: 7, 8, 11, 17, 18
@@ -163,7 +165,7 @@ TCLTK_DEFAULT?=		8.6
 # Possible values: 4, 6
 VARNISH_DEFAULT?=	4
 
-# Possible value: 14, 16, 17, lts, current
+# Possible value: 14, 16, 18, lts, current
 NODEJS_DEFAULT?=    lts
 
 .endif

@@ -1,5 +1,6 @@
 PORTNAME=	edk2
 PORTVERSION=	g202202
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	uboot@FreeBSD.org
@@ -11,7 +12,7 @@ ONLY_FOR_ARCHS=		aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	only provides firmware for aarch64 and amd64
 
 PKGNAMESUFFIX=	-${FLAVOR:C/_/-/g}
-FLAVORS=	macchiatobin fvp rpi3 rpi4 xen_x64 bhyve
+FLAVORS=	macchiatobin fvp rpi3 rpi4 xen_x64 bhyve qemu_x64 qemu_i386
 
 USES=	cpe gmake python:3.7+,build
 CPE_VENDOR=	tianocore
@@ -110,6 +111,36 @@ PLAT_FILENAME_CODE	= BHYVE_UEFI_CODE.fd
 PLAT_FILENAME_VARS	= BHYVE_UEFI_VARS.fd
 .endif
 
+.if ${FLAVOR} == qemu_x64
+ONLY_FOR_ARCHS= amd64
+ONLY_FOR_ARCHS_REASON=  Do not compile on hardware other than amd64
+PLAT=		qemu
+PLAT_ARCH=	X64
+PLAT_TARGET=	RELEASE
+PLATFILE=	OvmfPkg/OvmfPkgX64.dsc
+PLAT_RESULT=	OvmfX64/${PLAT_TARGET}_GCC5/FV/OVMF.fd
+PLAT_RESULT_CODE=	OvmfX64/${PLAT_TARGET}_GCC5/FV/OVMF_CODE.fd
+PLAT_RESULT_VARS=	OvmfX64/${PLAT_TARGET}_GCC5/FV/OVMF_VARS.fd
+PLAT_FILENAME=	QEMU_UEFI-x86_64.fd
+PLAT_FILENAME_CODE	= QEMU_UEFI_CODE-x86_64.fd
+PLAT_FILENAME_VARS	= QEMU_UEFI_VARS-x86_64.fd
+.endif
+
+.if ${FLAVOR} == qemu_i386
+ONLY_FOR_ARCHS= amd64
+ONLY_FOR_ARCHS_REASON=  Do not compile on hardware other than amd64
+PLAT=           qemu
+PLAT_ARCH=      IA32
+PLAT_TARGET=    RELEASE
+PLATFILE=       OvmfPkg/OvmfPkgIa32.dsc
+PLAT_RESULT=    OvmfIa32/${PLAT_TARGET}_GCC5/FV/OVMF.fd
+PLAT_RESULT_CODE=       OvmfIa32/${PLAT_TARGET}_GCC5/FV/OVMF_CODE.fd
+PLAT_RESULT_VARS=       OvmfIa32/${PLAT_TARGET}_GCC5/FV/OVMF_VARS.fd
+PLAT_FILENAME=  QEMU_UEFI-i386.fd
+PLAT_FILENAME_CODE      = QEMU_UEFI_CODE-i386.fd
+PLAT_FILENAME_VARS      = QEMU_UEFI_VARS-i386.fd
+.endif
+
 PLIST_FILES=	${PREFIX}/share/${PORTNAME}-${PLAT}/${PLAT_FILENAME}
 .if defined(PLAT_FILENAME_CODE)
 PLIST_FILES+=	${PREFIX}/share/${PORTNAME}-${PLAT}/${PLAT_FILENAME_CODE}
@@ -137,7 +168,7 @@ BUILD_DEPENDS+=	aarch64-none-elf-gcc:devel/aarch64-none-elf-gcc
 MAKE_ENV+=	GCC5_AARCH64_PREFIX=aarch64-none-elf-
 .endif
 
-.if ${PLAT_ARCH} == X64
+.if ${PLAT_ARCH} == X64 || ${PLAT_ARCH} == IA32
 BUILD_DEPENDS+=	nasm:devel/nasm
 .endif
 
@@ -165,6 +196,7 @@ do-install:
 	${INSTALL_DATA} ${WRKDIR}/Build/${PLAT_RESULT_VARS} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/${PLAT_FILENAME_VARS}
 .endif
 .if ${FLAVOR} == bhyve
+	${INSTALL_DATA} ${WRKDIR}/Build/${PLAT_RESULT_CODE} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/${PLAT_FILENAME}
 	# For backwards compatibility
 	${MKDIR} ${STAGEDIR}/${PREFIX}/share/uefi-firmware/
 	${RLN} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/${PLAT_FILENAME} ${STAGEDIR}/${PREFIX}/share/uefi-firmware/${PLAT_FILENAME}

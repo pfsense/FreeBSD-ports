@@ -10611,7 +10611,6 @@ net/g2ipmsg||2018-12-11|Has expired: GNOME 2 application
 net/grdesktop||2018-12-11|Has expired: GNOME 2 application
 textproc/gnome-spell||2018-12-11|Has expired: GNOME 2 application
 textproc/sagasu||2018-12-11|Has expired: GNOME 2 application
-deskutils/planner||2018-12-11|Has expired: GNOME 2 application
 deskutils/multisync||2018-12-11|Has expired: GNOME 2 application
 deskutils/drivel||2018-12-11|Has expired: GNOME 2 application
 deskutils/notecase||2018-12-11|Has expired: GNOME 2 application
@@ -15700,7 +15699,6 @@ devel/pythk||2020-12-12|Has expired: Uses deprecated version of python
 mail/py-spambayes||2020-12-12|Has expired: Uses deprecated version of python
 math/py-numeric|math/py-numpy|2020-12-12|Has expired: Uses deprecated version of python
 math/py-scientific||2020-12-12|Has expired: Uses deprecated version of python
-net/py-suds||2020-12-12|Has expired: Uses deprecated version of python
 net/pynids||2020-12-12|Has expired: Uses deprecated version of python
 security/py-obfsproxy-tor||2020-12-12|Has expired: Uses deprecated version of python
 sysutils/syslog-ng324||2020-12-12|Has expired: Agreed upon upstream one year deprecation policy
@@ -17192,3 +17190,10 @@ databases/R-cran-RSQLite.extfuns|databases/R-cran-RSQLite|2022-05-31|Has expired
 net/mpich2|net/mpich|2022-05-31|Has been deprecrated for a long time and build fails with GCC 11
 net-im/jabber.el||2022-06-01|Has expired: is marked as broken: fails to build: jabber-chat.el:25:1: Error: Wrong number of arguments: (3 . 3), 2
 x11-fm/Arqiver|x11-fm/arqiver|2022-06-01|Convert PORTNATE to lowercase
+net/py-suds-community|net/py-suds|2022-06-03|Remove obsoleted port. Use net/py-suds instead
+net/py-suds-jurko|net/py-suds|2022-06-03|Remove obsoleted port. Use net/py-suds instead
+www/rubygem-faraday110|www/rubygem-faraday|2022-06-03|Obsolete, please use www/rubygem-faraday instead
+www/npm-node17|www/npm-node18|2022-06-03|Renamed for www/node update to v18
+www/yarn-node17|www/yarn-node18|2022-06-03|Renamed for www/node update to v18
+security/keepassx-devel||2022-06-05|Has expired: KeePassX had been stopped development/maintenance, please consider using security/keepassxc instead
+sysutils/uefi-edk2-qemu|sysutils/edk2@qemu|2022-06-05|No more need for this port: please use sysutils/edk2 FLAVOR qemu instead

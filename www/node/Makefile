@@ -1,7 +1,6 @@
 PORTNAME=	node
 DISTVERSIONPREFIX=	v
-DISTVERSION=	17.0.1
-PORTREVISION=	1
+DISTVERSION=	18.2.0
 CATEGORIES=	www
 MASTER_SITES=	https://nodejs.org/dist/v${DISTVERSION}/
 
@@ -15,7 +14,7 @@ BROKEN_SSL=		libressl libressl-devel
 BROKEN_SSL_REASON=	Node.js 17.x requires OpenSSL 1.1.x or the BUNDLED_SSL option enabled
 ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
-USES=		compiler:c++11-lib gmake python:3.6-3.9,build pkgconfig \
+USES=		compiler:c++11-lib gmake python:3.6-3.10,build pkgconfig \
 		localbase shebangfix
 
 OPTIONS_DEFINE=		BUNDLED_SSL DOCS NLS DTRACE
@@ -34,7 +33,7 @@ OPTIONS_EXCLUDE_armv7=		DTRACE
 OPTIONS_EXCLUDE_powerpc64=	DTRACE
 OPTIONS_EXCLUDE_powerpc64le=	DTRACE
 
-BUNDLED_SSL_DESC=		Use node.js's bundled OpenSSL implementation
+BUNDLED_SSL_DESC=		Use bundled OpenSSL implementation from node.js
 BUNDLED_SSL_USES_OFF=		ssl
 BUNDLED_SSL_CONFIGURE_OFF=	--shared-openssl --openssl-use-def-ca-store
 BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
@@ -47,7 +46,7 @@ DTRACE_CONFIGURE_ON=	--with-dtrace
 
 HAS_CONFIGURE=	yes
 
-CONFLICTS_INSTALL=	node10 node14 node16
+CONFLICTS_INSTALL=	node14 node16
 
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 		--without-npm \

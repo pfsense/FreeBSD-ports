@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	npm
-PORTVERSION=	8.8.0
+PORTVERSION=	8.12.1
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/sunpoet
 
@@ -20,7 +20,7 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 REINPLACE_ARGS=	-i ''
 
-CONFLICTS_INSTALL?=	npm-node14 npm-node16 npm-node17
+CONFLICTS_INSTALL?=	npm-node14 npm-node16 npm-node18
 
 CPE_VENDOR=	npmjs
 

@@ -1,7 +1,7 @@
 # Created by: ijliao
 
 PORTNAME=	nettle
-PORTVERSION=	3.7.3
+PORTVERSION=	3.8
 CATEGORIES=	security
 MASTER_SITES=	GNU \
 		https://www.lysator.liu.se/~nisse/archive/
@@ -24,9 +24,10 @@ CONFIGURE_ENV=	M4="/usr/bin/m4 -g"
 GNU_CONFIGURE=	yes
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
-CPE_VENDOR=	nettle_project
 
 INFO=		nettle
+
+CPE_VENDOR=	nettle_project
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -35,12 +36,12 @@ EXAMPLES_USES=		ssl
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == "sparc64"
-CONFIGURE_ENV+=	CCPIC=-fPIC
+.if ${ARCH} == "aarch64"
+CONFIGURE_ARGS+=--disable-assembler
 .endif
 
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-powerpc64_machine.m4
+.if ${ARCH} == "sparc64"
+CONFIGURE_ENV+=	CCPIC=-fPIC
 .endif
 
 post-patch:

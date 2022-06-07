@@ -344,6 +344,7 @@
     SUBDIR += mediawiki135
     SUBDIR += mediawiki136
     SUBDIR += mediawiki137
+    SUBDIR += mediawiki138
     SUBDIR += mergelog
     SUBDIR += mhonarc
     SUBDIR += micro_httpd
@@ -470,7 +471,7 @@
     SUBDIR += npm
     SUBDIR += npm-node14
     SUBDIR += npm-node16
-    SUBDIR += npm-node17
+    SUBDIR += npm-node18
     SUBDIR += nspluginwrapper
     SUBDIR += oauth2-proxy
     SUBDIR += obhttpd
@@ -1440,6 +1441,7 @@
     SUBDIR += py-bleach
     SUBDIR += py-bokeh
     SUBDIR += py-boto3
+    SUBDIR += py-botocore-stubs
     SUBDIR += py-bottle
     SUBDIR += py-bottle-cork
     SUBDIR += py-branca
@@ -1741,6 +1743,7 @@
     SUBDIR += py-requests
     SUBDIR += py-requests-aws4auth
     SUBDIR += py-requests-cache
+    SUBDIR += py-requests-cache93
     SUBDIR += py-requests-file
     SUBDIR += py-requests-futures
     SUBDIR += py-requests-mock
@@ -1906,14 +1909,19 @@
     SUBDIR += rubygem-faraday-em_synchrony
     SUBDIR += rubygem-faraday-http-cache
     SUBDIR += rubygem-faraday-httpclient
+    SUBDIR += rubygem-faraday-httpclient1
     SUBDIR += rubygem-faraday-multipart
     SUBDIR += rubygem-faraday-net_http
+    SUBDIR += rubygem-faraday-net_http1
     SUBDIR += rubygem-faraday-net_http_persistent
+    SUBDIR += rubygem-faraday-net_http_persistent1
     SUBDIR += rubygem-faraday-patron
+    SUBDIR += rubygem-faraday-patron1
     SUBDIR += rubygem-faraday-rack
+    SUBDIR += rubygem-faraday-rack1
     SUBDIR += rubygem-faraday-retry
     SUBDIR += rubygem-faraday0
-    SUBDIR += rubygem-faraday110
+    SUBDIR += rubygem-faraday1
     SUBDIR += rubygem-faraday14
     SUBDIR += rubygem-faraday_middleware
     SUBDIR += rubygem-faraday_middleware0
@@ -2382,7 +2390,7 @@
     SUBDIR += yarn
     SUBDIR += yarn-node14
     SUBDIR += yarn-node16
-    SUBDIR += yarn-node17
+    SUBDIR += yarn-node18
     SUBDIR += yarr
     SUBDIR += yaws
     SUBDIR += you-get

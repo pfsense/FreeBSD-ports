@@ -1138,8 +1138,7 @@
     SUBDIR += py-sshtunnel
     SUBDIR += py-sshuttle
     SUBDIR += py-stomp.py
-    SUBDIR += py-suds-community
-    SUBDIR += py-suds-jurko
+    SUBDIR += py-suds
     SUBDIR += py-tacacs_plus
     SUBDIR += py-terminado
     SUBDIR += py-tofu
