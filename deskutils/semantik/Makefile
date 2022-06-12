@@ -1,5 +1,5 @@
 PORTNAME=	semantik
-DISTVERSION=	1.2.7
+DISTVERSION=	1.2.8
 CATEGORIES=	deskutils kde
 MASTER_SITES=	https://waf.io/
 
@@ -8,9 +8,6 @@ COMMENT=	Mind mapping tool
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
 
 USES=		kde:5 pkgconfig python:3.6+ qt:5 shebangfix tar:bzip2 waf \
 		desktop-file-utils gettext shared-mime-info
@@ -37,6 +34,21 @@ CONFIGURE_ENV=	PATH="${KDE_PREFIX}/bin:$$PATH" \
 MAKE_ENV=	DESTDIR="${STAGEDIR}"
 CFLAGS+=	-I${LOCALBASE}/include
 CPPFLAGS+=	-I${LOCALBASE}/include
+# Help WAF a bit more by simply adding the locations to the KF5
+# headers ourselves...
+CXXFLAGS+=	-I${LOCALBASE}/include/KF5/KAuthCore \
+		-I${LOCALBASE}/include/KF5/KConfigCore \
+		-I${LOCALBASE}/include/KF5/KConfigGui \
+		-I${LOCALBASE}/include/KF5/KConfigWidgets \
+		-I${LOCALBASE}/include/KF5/KCoreAddons \
+		-I${LOCALBASE}/include/KF5/KDELibs4Support \
+		-I${LOCALBASE}/include/KF5/KI18n \
+		-I${LOCALBASE}/include/KF5/KIOCore \
+		-I${LOCALBASE}/include/KF5/KIOWidgets \
+		-I${LOCALBASE}/include/KF5/KWidgetsAddons \
+		-I${LOCALBASE}/include/KF5/KXmlGui \
+		-I${LOCALBASE}/include/KF5/SonnetUi \
+
 
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 

@@ -2,9 +2,9 @@
 
 PORTNAME=	scilab
 PORTVERSION=	6.1.1
+PORTREVISION=	2
 CATEGORIES=	math cad java
-MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
-DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
+MASTER_SITES=	https://cgit.scilab.org/scilab/snapshot/
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Scientific software package for numerical computations
@@ -40,6 +40,7 @@ LDFLAGS+=	${ICONV_LIB}
 
 CONFIGURE_ENV=	BLAS_LIBS="${BLASLIB}" LAPACK_LIBS="${LAPACKLIB}"
 INSTALL_TARGET=	install-strip
+WRKSRC_SUBDIR=	scilab
 
 PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
@@ -109,7 +110,8 @@ GUI_CONFIGURE_OFF=	--without-gui \
 
 OCAML_IMPLIES=		GUI
 OCAML_CONFIGURE_WITH=	modelica
-OCAML_BUILD_DEPENDS=	ocaml:lang/ocaml
+OCAML_BUILD_DEPENDS=	ocaml:lang/ocaml \
+	${LOCALBASE}/lib/ocaml/site-lib/num/META:math/ocaml-num
 OCAML_RUN_DEPENDS=	ocaml:lang/ocaml
 
 TK_CONFIGURE_OFF=	--without-tk

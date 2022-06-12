@@ -8,7 +8,7 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	SQLObject-${PORTVERSION}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Python object for manipulation with SQL table row
 
 LICENSE=	LGPL21
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}formencode>=1.2.2:www/py-formencode@${PY_F
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
-USES=		python:3.6+
+USES=		dos2unix python:3.6+
 USE_PYTHON=	autoplist distutils
 
 # currently MaxDB(SAP), ADODB are not supported

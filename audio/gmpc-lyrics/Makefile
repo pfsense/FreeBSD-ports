@@ -2,7 +2,7 @@
 
 PORTNAME=	gmpc-lyrics
 PORTVERSION=	11.8.16
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/
 
@@ -11,6 +11,9 @@ COMMENT=	Lyrics Provider plugin for gmpc
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Abandonware, last release in 2011 and upstream is dead
+EXPIRATION_DATE=2022-06-30
 
 LIB_DEPENDS=	libmpd.so:audio/libmpd
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gmpc.pc:audio/gmpc

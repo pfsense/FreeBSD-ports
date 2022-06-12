@@ -1,110 +1,89 @@
 PORTNAME=	spring
-PORTVERSION=	98.0
-PORTREVISION=	21
+PORTVERSION=	106.0.1
 CATEGORIES=	games
-MASTER_SITES=	SF/springrts/springrts/${PORTNAME}-${PORTVERSION} \
-		http://springrts.com/dl/
-DISTNAME=	${PORTNAME}_${PORTVERSION}_src
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Project aiming to create a new and versatile RTS Engine
 
-LICENSE=	GPLv2
-
-BROKEN=		fails to build
+LICENSE=	GPLv2+ BSD3CLAUSE BSD2CLAUSE
+LICENSE_COMB=	multi
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libboost_thread.so:devel/boost-libs \
 		libIL.so:graphics/devil \
 		libogg.so:audio/libogg \
-		libvorbis.so:audio/libvorbis
-BUILD_DEPENDS=	7z:archivers/p7zip
+		libvorbis.so:audio/libvorbis \
+		libminizip.so:archivers/minizip \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libcurl.so:ftp/curl \
+		libunwind.so:devel/libunwind \
+		libjsoncpp.so:devel/jsoncpp
+BUILD_DEPENDS=	7zz:archivers/7-zip
 
-# XXX: it should be possible to build it on i386, investigate
-# (currently link fails on undefined reference to __sync_fetch_and_add_8)
+BROKEN_FreeBSD_12=	ld: error: undefined symbol: streflop_libm::__inline_isnanf(float)
 ONLY_FOR_ARCHS=		amd64
 ONLY_FOR_ARCHS_REASON=	relies on x86 floating-point math and amd64 atomic ops
 
-USE_SDL=	sdl2
+USE_GITHUB=	yes
+GH_TUPLE=	spring:Python:b69a4ea:Python/AI/Interfaces/Python \
+		spring:AAI:fba6d98:AAI/AI/Skirmish/AAI \
+		spring:CircuitAI:307daf7:CircuitAI/AI/Skirmish/CircuitAI \
+		spring:HughAI:2866476:HughAI/AI/Skirmish/HughAI \
+		spring:KAIK:2d9333e:KAIK/AI/Skirmish/KAIK \
+		spring:Shard:c551e5e:Shard/AI/Skirmish/Shard \
+		spring:SpringMapConvNG:0ddd86e:SprintMapConvNG/tools/mapcompile \
+		spring:pr-downloader:68b7dae:pr_downloader/tools/pr-downloader \
+		spring:pyunitsync:8dfe0bc:pyunitsync/tools/unitsync/python
+
+USES=		cmake compiler:c++17-lang desktop-file-utils gl localbase:ldflags \
+		openal:al pkgconfig sdl shared-mime-info xorg
 USE_GL=		gl glu glew
+USE_SDL=	sdl2
 USE_XORG=	x11 xcursor
-USE_LDCONFIG=	yes
-DOS2UNIX_GLOB=	*.h *.hpp *.cpp
-
-USES=		cmake:insource compiler:c++11-lib dos2unix gl openal:al sdl \
-		tar:lzma xorg
-USES+=		desktop-file-utils shared-mime-info
 CMAKE_ARGS=	-DDATADIR:STRING="share/${PORTNAME}" \
-		-DAI_TYPES:STRING="NATIVE" \
 		-DDOCDIR:STRING="share/doc/${PORTNAME}" \
-		-DCREATE_MAN_PAGES:BOOL=false \
-		-DUSE_TCMALLOC:BOOL=false \
-		-DUSE_LIBSQUISH:BOOL=false \
-		-DUNITSYNC_PYTHON_WRAPPER:BOOL=false
-
-WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}
-
-# Do not exctract bundled copies of header files for 3rd-party packages:
-EXTRACT_AFTER_ARGS=--no-same-owner --no-same-permissions --exclude ${WRKSRC:T}/include
-
-# The check-target fails right now: https://springrts.com/mantis/view.php?id=4736
-TEST_TARGET=	check
-
-PORTDOCS=	*
-PORTDATA=	*
-
-OPTIONS_DEFINE=	MANPAGES PR_DOWNLOADER DOCS
-OPTIONS_DEFAULT=MANPAGES PR_DOWNLOADER
-OPTIONS_SUB=	yes
-
-PR_DOWNLOADER_DESC=	Map and game downloader
-
-MANPAGES_CMAKE_ON=	-DCREATE_MAN_PAGES:BOOL=true -DMANDIR:STRING="man"
-MANPAGES_CMAKE_OFF=	-DCREATE_MAN_PAGES:BOOL=false
-MANPAGES_BUILD_DEPENDS=	7z:archivers/p7zip \
-			asciidoc:textproc/asciidoc \
-			xsltproc:textproc/libxslt \
-			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
-			bash:shells/bash
-CXXFLAGS+=	-Wno-deprecated		# Too much noise
-
-PR_DOWNLOADER_LIB_DEPENDS=libcurl.so:ftp/curl
-
-.include <bsd.port.pre.mk>
+		-DAI_TYPES:STRING="NATIVE" \
+		-DCMAKE_DISABLE_FIND_PACKAGE_Git=TRUE \
+		-Wno-dev
 
 .if defined(WITH_SYNC_DEBUG)
 CFLAGS=		# empty
 CXXFLAGS=	# empty
-CMAKE_ARGS+=	-DTRACE_SYNC=true -DSYNCDEBUG=true
-CMAKE_BUILD_TYPE=DEBUG2
+CMAKE_ARGS+=	-DTRACE_SYNC=true -DSYNCDEBUG=true -DSYNCCHECK=true
+CMAKE_BUILD_TYPE=DEBUG
 .endif
 
-.if ! ${PORT_OPTIONS:MPR_DOWNLOADER}
+# The check-target fails right now: https://springrts.com/mantis/view.php?id=4736
+TEST_TARGET=	check
+
+PORTDATA=	*
+
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
+OPTIONS_SUB=	yes
+
+MANPAGES_CMAKE_BOOL=	ENABLE_MANPAGES
+MANPAGES_BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
+			xsltproc:textproc/libxslt \
+			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
+			bash:shells/bash
+
 post-extract:
-	@${RM} ${WRKSRC}/tools/pr-downloader/CMakeLists.txt
-.endif
+	# build system expects 2 digit version
+	@${ECHO_CMD} ${PORTVERSION:R} > ${WRKSRC}/VERSION
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|-O2||' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -i '' -e 's|LEGACY|OPENGL4|' ${WRKSRC}/doc/manpages/spring.6.txt
+.if defined(WITH_OPTIONAL_GS4)
+	# allows minimal runtest with older hardware
+	@${REINPLACE_CMD} -e '/GLEW_ARB_geometry_shader4/ s|CHECK_REQ_EXT|CHECK_OPT_EXT|' ${WRKSRC}/rts/Rendering/GlobalRendering.cpp
+.endif
 	@${REINPLACE_CMD} -e 's|/etc/\(spring/datadir\)|${PREFIX}/\1|g' \
 		${WRKSRC}/rts/System/FileSystem/DataDirLocater.cpp
-	@${REINPLACE_CMD} -e 's|x1F3F|x0F3F|g' \
-		${WRKSRC}/rts/System/Sync/FPUCheck.cpp
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		${WRKSRC}/rts/build/cmake/*.cmake
-	@${REINPLACE_CMD} -e 's|execinfo|/usr/lib/libexecinfo.so|' \
-		${WRKSRC}/rts/CMakeLists.txt \
-		${WRKSRC}/rts/builds/dedicated/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' \
-		${WRKSRC}/rts/System/Platform/Misc.cpp
-	@${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}&|' \
-		${WRKSRC}/doc/manpages/make_manpages.sh
-.if ! ${PORT_OPTIONS:MMANPAGES}
-	@${REINPLACE_CMD} -e '/set(CREATE_MAN_PAGES)/ d' \
-		${WRKSRC}/doc/CMakeLists.txt
-.endif
+	# XXX: recheck if this is still needed
+	@${REINPLACE_CMD} -e 's|x1F3F|x0F3F|g' \
+		${WRKSRC}/rts/System/Sync/FPUCheck.cpp
 
-pre-build:
-	cd ${WRKSRC} && ${MAKE_CMD} generateVersionFiles
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

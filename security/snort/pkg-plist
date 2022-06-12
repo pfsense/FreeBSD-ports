@@ -80,6 +80,7 @@ include/snort/dynamic_preproc/sfrt_flat.h
 include/snort/dynamic_preproc/sfrt_flat_dir.h
 include/snort/dynamic_preproc/sfrt_trie.h
 include/snort/dynamic_preproc/sidechannel_define.h
+include/snort/dynamic_preproc/smtp_api.h
 include/snort/dynamic_preproc/snort_bounds.h
 include/snort/dynamic_preproc/snort_debug.h
 include/snort/dynamic_preproc/ssl.h
@@ -333,3 +334,4 @@ src/snort_dynamicsrc/util_unfold.h
 @dir etc/snort/rules
 @dir etc/snort/preproc_rules
 @dir etc/snort
+@dir /var/log/snort

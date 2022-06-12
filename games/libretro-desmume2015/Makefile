@@ -1,9 +1,9 @@
 PORTNAME=	libretro-desmume2015
-PORTVERSION=	0.20210131
+PORTVERSION=	0.20220405
 PORTREVISION=	1
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Port of Desmume to libretro based on Desmume SVN circa 2015
 
 LICENSE=	GPLv2
@@ -17,7 +17,7 @@ USE_GL=		gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	desmume2015
-GH_TAGNAME=	d6128e6
+GH_TAGNAME=	af397ff
 
 PLIST_FILES=	lib/libretro/desmume2015_libretro.so
 

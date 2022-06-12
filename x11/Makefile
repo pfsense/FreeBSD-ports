@@ -17,6 +17,7 @@
     SUBDIR += arandr
     SUBDIR += arcan-trayicon
     SUBDIR += aterm
+    SUBDIR += autorandr
     SUBDIR += babl
     SUBDIR += bbappconf
     SUBDIR += bbdock
@@ -79,6 +80,7 @@
     SUBDIR += gdm
     SUBDIR += glcapsviewer
     SUBDIR += gmrun
+    SUBDIR += gnome
     SUBDIR += gnome-clipboard-daemon
     SUBDIR += gnome-desktop
     SUBDIR += gnome-menus
@@ -87,7 +89,6 @@
     SUBDIR += gnome-shell
     SUBDIR += gnome-shell-extensions
     SUBDIR += gnome-terminal
-    SUBDIR += gnome3
     SUBDIR += gnustep-app
     SUBDIR += grabc
     SUBDIR += grim
@@ -103,6 +104,7 @@
     SUBDIR += gtkterm2
     SUBDIR += guake
     SUBDIR += gxkb
+    SUBDIR += hamclock
     SUBDIR += havoc
     SUBDIR += hhpc
     SUBDIR += hs-xmobar
@@ -140,6 +142,7 @@
     SUBDIR += kf5-kwayland
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
+    SUBDIR += kickoff
     SUBDIR += kitty
     SUBDIR += konsole
     SUBDIR += lavalauncher
@@ -203,6 +206,7 @@
     SUBDIR += linux-nvidia-libs-304
     SUBDIR += linux-nvidia-libs-340
     SUBDIR += linux-nvidia-libs-390
+    SUBDIR += linux-nvidia-libs-470
     SUBDIR += listres
     SUBDIR += lsw
     SUBDIR += luit
@@ -249,6 +253,7 @@
     SUBDIR += nvidia-driver-304
     SUBDIR += nvidia-driver-340
     SUBDIR += nvidia-driver-390
+    SUBDIR += nvidia-driver-470
     SUBDIR += nvidia-hybrid-graphics
     SUBDIR += nvidia-secondary-driver
     SUBDIR += nvidia-secondary-driver-390
@@ -258,6 +263,7 @@
     SUBDIR += nwg-dock
     SUBDIR += nwg-drawer
     SUBDIR += nwg-launchers
+    SUBDIR += nwg-look
     SUBDIR += nwg-menu
     SUBDIR += nxcomp
     SUBDIR += p5-Clipboard
@@ -295,7 +301,6 @@
     SUBDIR += py-pyscreenshot
     SUBDIR += py-python-xapp
     SUBDIR += py-pyvirtualdisplay
-    SUBDIR += py-qt5-opengl
     SUBDIR += py-xcffib
     SUBDIR += py-xdot
     SUBDIR += qimageblitz
@@ -330,6 +335,7 @@
     SUBDIR += showmethekey
     SUBDIR += simdock
     SUBDIR += simplestroke
+    SUBDIR += sirula
     SUBDIR += slick-greeter
     SUBDIR += slim
     SUBDIR += slock
@@ -345,12 +351,16 @@
     SUBDIR += sterm
     SUBDIR += stjerm
     SUBDIR += swarp
+    SUBDIR += sway-audio-idle-inhibit
     SUBDIR += swaybg
+    SUBDIR += swayfloatingswitcher
     SUBDIR += swayidle
+    SUBDIR += swayimg
     SUBDIR += swaylock
     SUBDIR += swaylock-effects
     SUBDIR += swaync
     SUBDIR += swayr
+    SUBDIR += swaysettings
     SUBDIR += sxhkd
     SUBDIR += sxpc
     SUBDIR += tabbed
@@ -375,8 +385,10 @@
     SUBDIR += virtualgl
     SUBDIR += wallutils
     SUBDIR += wapanel
+    SUBDIR += way-displays
     SUBDIR += waybar
     SUBDIR += wayland-logout
+    SUBDIR += wayout
     SUBDIR += wbar
     SUBDIR += wcm
     SUBDIR += wdisplays
@@ -385,6 +397,7 @@
     SUBDIR += wezterm
     SUBDIR += wf-shell
     SUBDIR += wl-clipboard
+    SUBDIR += wl-mirror
     SUBDIR += wlogout
     SUBDIR += wlr-randr
     SUBDIR += wlrctl
@@ -403,6 +416,7 @@
     SUBDIR += workrave
     SUBDIR += wshowkeys
     SUBDIR += wtype
+    SUBDIR += wvkbd
     SUBDIR += x-on-resize
     SUBDIR += x11perf
     SUBDIR += x3270

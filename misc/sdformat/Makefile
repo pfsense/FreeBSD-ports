@@ -9,8 +9,11 @@ COMMENT=	Simulation Description Format (SDF) parser and description files
 
 LICENSE=	APACHE20
 
+BROKEN=		does not build: src/parser_urdf.cc:30:10: fatal error: 'urdf_model/model.h' file not found
+
 BUILD_DEPENDS=	ignition-cmake==2:devel/ignition-cmake \
-		ignition-tools>0:devel/ignition-tools
+		ignition-tools>0:devel/ignition-tools \
+		rubygem-rexml>0:textproc/rubygem-rexml
 LIB_DEPENDS=	libignition-math6.so:math/ignition-math \
 		libconsole_bridge.so:devel/ros-console_bridge \
 		libtinyxml2.so:textproc/tinyxml2 \

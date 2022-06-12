@@ -1,9 +1,9 @@
 # Created by: Bernard Spil <brnrd@freebsd.org>
 
 PORTNAME=	tasks
-PORTVERSION=	0.14.2
-CATEGORIES=	www
+PORTVERSION=	0.14.4
 DISTVERSIONPREFIX=	v
+CATEGORIES=	www
 MASTER_SITES=	https://github.com/nextcloud/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
 PKGNAMEPREFIX=	nextcloud-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}

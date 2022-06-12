@@ -1,8 +1,8 @@
 PORTNAME=	libretro-hatari
-PORTVERSION=	0.20210127
+PORTVERSION=	0.20220327
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Atari ST/STE/TT/Falcon emulator
 
 LICENSE=	GPLv2
@@ -13,7 +13,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	hatari
-GH_TAGNAME=	561c07e
+GH_TAGNAME=	e5e36a5
 
 PLIST_FILES=	lib/libretro/hatari_libretro.so
 

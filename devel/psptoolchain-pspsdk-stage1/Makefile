@@ -8,8 +8,11 @@ MASTER_SITES=		http://www.potion-studios.com/
 PKGNAMEPREFIX=		psptoolchain-
 PKGNAMESUFFIX?=		-stage1
 
-MAINTAINER=		tphilipp@potion-studios.com
+MAINTAINER=		ports@FreeBSD.org
 COMMENT=		PlayStation Portable development toolchain ${PORTNAME}
+
+DEPRECATED=		Security issues for multiple years
+EXPIRATION_DATE=	2022-06-30
 
 PSP_SDK_STAGE_PREFIX=	psp/stage1
 

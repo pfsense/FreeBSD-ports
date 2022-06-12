@@ -1,6 +1,6 @@
 PORTNAME=	conserver
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.2.4
+DISTVERSION=	8.2.6
 CATEGORIES=	comms
 PKGNAMESUFFIX=	-com
 
@@ -10,7 +10,7 @@ COMMENT=	Application that allows multiple users to watch serial consoles
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf ssl
+USES=		autoreconf:2.69 ssl
 USE_GITHUB=	yes
 USE_RC_SUBR=	conserver
 

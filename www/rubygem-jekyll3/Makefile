@@ -1,7 +1,7 @@
 # Created by: Peter Schuller <peter.schuller@infidyne.com>
 
 PORTNAME=	jekyll
-PORTVERSION=	3.9.1
+PORTVERSION=	3.9.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	3
@@ -27,6 +27,8 @@ RUN_DEPENDS=	rubygem-addressable>=2.4<3:www/rubygem-addressable \
 
 USES=		cpe gem
 USE_RUBY=	yes
+
+CONFLICTS_INSTALL=	rubygem-jekyll
 
 NO_ARCH=	yes
 

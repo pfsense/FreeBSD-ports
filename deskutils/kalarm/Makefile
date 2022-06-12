@@ -5,9 +5,6 @@ CATEGORIES=	deskutils kde kde-applications
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Personal alarm scheduler
 
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-
 LIB_DEPENDS=	libical.so:devel/libical
 
 USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 shebangfix tar:xz xorg
@@ -18,7 +15,7 @@ USE_KDE=	auth bookmarks codecs completion config configwidgets \
 		unitconversion wallet widgetsaddons windowsystem xmlgui \
 		ecm_build
 # pim components
-USE_KDE+=	akonadi akonadicontacts akonadimime alarmcalendar calendarcore \
+USE_KDE+=	akonadi akonadicontacts akonadimime calendarcore \
 		calendarutils contacts globalaccel grantleetheme holidays identitymanagement \
 		idletime libkdepim mailcommon mailtransport mime \
 		pimcommon pimtextedit imap \
@@ -28,8 +25,6 @@ USE_QT=		concurrent core dbus gui network phonon4 printsupport widgets \
 		buildtools_build qmake_build
 USE_XORG=	x11
 USE_LDCONFIG=	yes
-
-SHEBANG_FILES=	src/kconf_update/kalarm*.pl
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
 

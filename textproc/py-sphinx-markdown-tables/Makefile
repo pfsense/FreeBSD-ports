@@ -2,6 +2,7 @@
 
 PORTNAME=	sphinx-markdown-tables
 PORTVERSION=	0.0.15
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,5 +17,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}markdown>=0:textproc/py-markdown@${PY_FLAVOR
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils concurrent
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

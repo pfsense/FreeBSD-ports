@@ -14,8 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libpcre.so:devel/pcre
 
-CONFLICTS_INSTALL=	cyrus-imapd-2.[^4].* cyrus-imapd2[^4]-2.[^4].* \
-			cyrus-imapd3*
+CONFLICTS_INSTALL=	cyrus-imapd2? cyrus-imapd3? cyrus-imapd3?-http
 
 USE_RC_SUBR=	imapd
 
@@ -136,9 +135,7 @@ CONFS=		cmu-backend.conf cmu-frontend.conf normal.conf prefork.conf \
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MBDB}
-INVALID_BDB_VER=2
-.else
+.if empty(${PORT_OPTIONS:MBDB})
 BDB_LIB_NAME=	no
 .endif
 

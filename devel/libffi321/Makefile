@@ -2,12 +2,12 @@
 
 PORTNAME=	libffi
 PORTVERSION=	3.2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/${PORTNAME}
 PKGNAMESUFFIX=	321
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Foreign Function Interface (stripped down compat version)
 
 LICENSE=	MIT

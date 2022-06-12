@@ -1,7 +1,7 @@
 # Created by: Pedro Giffuni
 
 PORTNAME=	ccx
-PORTVERSION=	2.18
+PORTVERSION=	2.19
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
 PKGNAMEPREFIX=	CalculiX-
@@ -9,7 +9,7 @@ DISTFILES=	${DIST_SOURCES}
 DIST_SUBDIR=	calculix
 EXTRACT_ONLY=	${DIST_SOURCES}
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	rsmith@xs4all.nl
 COMMENT=	Three-Dimensional Structural Finite Element Program
 
 LICENSE=	GPLv2

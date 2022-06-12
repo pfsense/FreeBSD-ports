@@ -1,6 +1,5 @@
 PORTNAME=	minetest
-PORTVERSION=	5.4.1
-PORTREVISION=	2
+PORTVERSION=	5.5.1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -10,39 +9,43 @@ LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/doc/lgpl-2.1.txt
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
-		libjsoncpp.so:devel/jsoncpp
+		libjsoncpp.so:devel/jsoncpp \
+		libzstd.so:archivers/zstd
 
-USES=		cmake compiler:c11 iconv:wchar_t sqlite
+USES=		cmake compiler:c++11-lang cpe iconv:wchar_t sqlite
 USE_GITHUB=	yes
+# check https://github.com/minetest/minetest/releases for applicable irrlichmt version
+GH_TUPLE=	minetest:irrlicht:1.9.0mt5:irrlicht/lib/irrlichtmt
 
-CMAKE_ARGS=	-DCUSTOM_MANDIR="${PREFIX}/man" \
-		-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc" \
+CMAKE_ARGS=	-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc" \
 		-DENABLE_SYSTEM_JSONCPP=ON
 
+TEST_ENV=	${MAKE_ENV} LC_ALL=C.UTF-8
+
 LDFLAGS_i386=	-Wl,-znotext
+
+PORTSCOUT=	skipv:5.4.2-android
 
 PORTDATA=	*
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	CURL SOUND FREETYPE NCURSES LUAJIT \
+OPTIONS_DEFINE=	CURL SOUND NCURSES LUAJIT TEST \
 		DOCS EXAMPLES NLS
 OPTIONS_MULTI=	COMP
 OPTIONS_GROUP=	DATABASE
+OPTIONS_MULTI_COMP=	CLIENT SERVER
+OPTIONS_GROUP_DATABASE=	PGSQL LEVELDB REDIS SPATIAL
+OPTIONS_DEFAULT=	CLIENT SERVER \
+			CURL SOUND NCURSES LUAJIT
+OPTIONS_SUB=		yes
 
 COMP_DESC=		Software components
-OPTIONS_MULTI_COMP=	CLIENT SERVER
-
 DATABASE_DESC=		Database support
-OPTIONS_GROUP_DATABASE=	PGSQL LEVELDB REDIS SPATIAL
-
-OPTIONS_DEFAULT=	CLIENT SERVER \
-			CURL SOUND FREETYPE NCURSES LUAJIT
-OPTIONS_SUB=		yes
 
 CLIENT_DESC=		Build client
 CLIENT_CMAKE_BOOL=	BUILD_CLIENT
 CLIENT_LIB_DEPENDS=	libpng.so:graphics/png \
-			libIrrlicht.so:x11-toolkits/irrlicht
+			libfreetype.so:print/freetype2
 CLIENT_USES=		gl jpeg xorg
 CLIENT_USE=		GL=gl XORG=x11,xext,xxf86vm
 SERVER_DESC=		Build server
@@ -53,9 +56,6 @@ CURL_CMAKE_BOOL=	ENABLE_CURL
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 SOUND_DESC=		Enable sound
 SOUND_CMAKE_BOOL=	ENABLE_SOUND
-FREETYPE_DESC=		Support for TrueType fonts with unicode
-FREETYPE_CMAKE_BOOL=	ENABLE_FREETYPE
-FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 NCURSES_DESC=		Enable ncurses console
 NCURSES_CMAKE_BOOL=	ENABLE_CURSES
 NCURSES_USES=		ncurses
@@ -80,6 +80,8 @@ NLS_CMAKE_BOOL=		ENABLE_GETTEXT
 NLS_USES=		gettext
 NLS_LDFLAGS=		-L${LOCALBASE}/lib
 
+TEST_CMAKE_BOOL=	BUILD_UNITTESTS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLIENT} && ${PORT_OPTIONS:MSOUND}
@@ -94,14 +96,6 @@ USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
 .endif
 
-# hacky way to not bring irrlicht and X11 depends for server only
-.if ! ${PORT_OPTIONS:MCLIENT} && ${PORT_OPTIONS:MSERVER}
-BUILD_DEPENDS+=	${NONEXISTENT}:x11-toolkits/irrlicht:patch
-IRRLICHT_INCLUDE_DIR=	`${MAKE} -C ${PORTSDIR}/x11-toolkits/irrlicht -V WRKSRC`/include
-CMAKE_ARGS+=	-DIRRLICHT_INCLUDE_DIR:STRING="${IRRLICHT_INCLUDE_DIR}"
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-irrlichtdepend
-.endif
-
 post-extract:
 # make sure no bundled gmp is used
 	@${RM} -rf ${WRKSRC}/lib/gmp ${WRKSRC}/lib/jsoncpp
@@ -110,5 +104,13 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
 		${WRKSRC}/cmake/Modules/*.cmake
+
+do-test-TEST-on:
+.if ${PORT_OPTIONS:MCLIENT}
+	cd ${WRKDIR} && ${SETENV} ${TEST_ENV} ${STAGEDIR}${PREFIX}/bin/minetest --run-unittests
+.endif
+.if ${PORT_OPTIONS:MSERVER}
+	cd ${WRKDIR} && ${SETENV} ${TEST_ENV} ${STAGEDIR}${PREFIX}/bin/minetestserver --run-unittests
+.endif
 
 .include <bsd.port.mk>

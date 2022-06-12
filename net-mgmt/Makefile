@@ -3,6 +3,7 @@
     SUBDIR += 2ping
     SUBDIR += TkTopNetFlows
     SUBDIR += adcli
+    SUBDIR += adguard-exporter
     SUBDIR += aggregate
     SUBDIR += aircrack-ng
     SUBDIR += alertmanager
@@ -44,6 +45,7 @@
     SUBDIR += check_ups_health
     SUBDIR += chillispot
     SUBDIR += choparp
+    SUBDIR += chronograf
     SUBDIR += cidr
     SUBDIR += ciscoconf
     SUBDIR += clog
@@ -126,6 +128,7 @@
     SUBDIR += midpoint
     SUBDIR += mk-livestatus
     SUBDIR += monitoring-plugins
+    SUBDIR += mqtt2prometheus
     SUBDIR += mrtg
     SUBDIR += mrtg-ping-probe
     SUBDIR += mtrace
@@ -186,7 +189,6 @@
     SUBDIR += netmagis-www
     SUBDIR += netmask
     SUBDIR += netspoc
-    SUBDIR += netustad
     SUBDIR += networkmgr
     SUBDIR += netxms
     SUBDIR += nfdump
@@ -213,7 +215,6 @@
     SUBDIR += openlldp
     SUBDIR += openvmps
     SUBDIR += p0f
-    SUBDIR += p0f2
     SUBDIR += p5-AnyEvent-SNMP
     SUBDIR += p5-BigIP-iControl
     SUBDIR += p5-Cflow
@@ -275,12 +276,12 @@
     SUBDIR += pandorafms_agent
     SUBDIR += pandorafms_console
     SUBDIR += pandorafms_server
-    SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
     SUBDIR += php-fpm_exporter
-    SUBDIR += php73-snmp
     SUBDIR += php74-snmp
     SUBDIR += php80-snmp
+    SUBDIR += php81-snmp
+    SUBDIR += php82-snmp
     SUBDIR += phpfpm_exporter
     SUBDIR += phpipam
     SUBDIR += phpweathermap
@@ -314,6 +315,7 @@
     SUBDIR += py-opn-cli
     SUBDIR += py-pdagent
     SUBDIR += py-pdagent-integrations
+    SUBDIR += py-phonebox-plugin
     SUBDIR += py-prometheus-client
     SUBDIR += py-pyIOSXR
     SUBDIR += py-pyang
@@ -379,8 +381,8 @@
     SUBDIR += torrus
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
-    SUBDIR += unifi-poller
     SUBDIR += unifi6
+    SUBDIR += unifi7
     SUBDIR += victoria-metrics
     SUBDIR += virt-viewer
     SUBDIR += vmutils
@@ -391,11 +393,6 @@
     SUBDIR += xymon-client
     SUBDIR += xymon-server
     SUBDIR += yaf
-    SUBDIR += zabbix3-agent
-    SUBDIR += zabbix3-frontend
-    SUBDIR += zabbix3-java
-    SUBDIR += zabbix3-proxy
-    SUBDIR += zabbix3-server
     SUBDIR += zabbix4-agent
     SUBDIR += zabbix4-frontend
     SUBDIR += zabbix4-java
@@ -411,5 +408,10 @@
     SUBDIR += zabbix54-java
     SUBDIR += zabbix54-proxy
     SUBDIR += zabbix54-server
+    SUBDIR += zabbix6-agent
+    SUBDIR += zabbix6-frontend
+    SUBDIR += zabbix6-java
+    SUBDIR += zabbix6-proxy
+    SUBDIR += zabbix6-server
 
 .include <bsd.port.subdir.mk>

@@ -13,6 +13,9 @@ DIST_SUBDIR=	${PORTNAME}/${DISTVERSION}
 MAINTAINER=	svyatoslav.lempert@gmail.com
 COMMENT=	Loader for ionCube-encoded PHP files
 
+DEPRECATED=	Requires php 7.4 which is set to expire on 2022-11-29
+EXPIRATION_DATE=2022-11-28
+
 LICENSE=	IONCUBE-PHP-LOADER
 LICENSE_NAME=	ionCube PHP Loader
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -22,7 +25,7 @@ IGNORE_DragonFly=	is unsupported on DragonFly
 ONLY_FOR_ARCHS=	amd64 i386
 NO_BUILD=	yes
 USES=		php:flavors
-IGNORE_WITH_PHP=	80
+IGNORE_WITH_PHP=	80 81
 
 SUB_FILES=	pkg-message
 WRKSRC=		${WRKDIR}/${PORTNAME}

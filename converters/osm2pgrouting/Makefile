@@ -1,6 +1,7 @@
 PORTNAME=	osm2pgrouting
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.3.8
+PORTREVISION=	1
 CATEGORIES=	converters databases geography
 
 MAINTAINER=	lbartoletti@FreeBSD.org
@@ -13,11 +14,9 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libexpat.so:textproc/expat2 \
 		libpqxx.so:databases/postgresql-libpqxx
 
-USES=		cmake compiler:c++17-lang pgsql
+USES=		cmake compiler:c++17-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	pgRouting
-
-WANT_PGSQL=	client
 
 OPTIONS_DEFINE=	DOCS
 

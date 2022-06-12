@@ -1,14 +1,14 @@
---- components/sync_device_info/local_device_info_util_linux.cc.orig	2021-04-14 18:41:01 UTC
+--- components/sync_device_info/local_device_info_util_linux.cc.orig	2022-04-21 18:48:31 UTC
 +++ components/sync_device_info/local_device_info_util_linux.cc
-@@ -38,8 +38,9 @@ std::string GetPersonalizableDeviceNameInternal() {
- #if BUILDFLAG(IS_CHROMEOS_ASH)
-   return GetChromeOSDeviceNameFromType();
- #else
--  char hostname[HOST_NAME_MAX];
--  if (gethostname(hostname, HOST_NAME_MAX) == 0)  // Success.
-+  int len = sysconf(_SC_HOST_NAME_MAX);
-+  char hostname[len];
-+  if (gethostname(hostname, _SC_HOST_NAME_MAX) == 0)  // Success.
-     return hostname;
-   return base::GetLinuxDistro();
+@@ -14,6 +14,11 @@
+ #include "chromeos/constants/devicetype.h"  // nogncheck
  #endif
+ 
++#if defined(__FreeBSD__)
++#include <sys/param.h>
++#define HOST_NAME_MAX MAXHOSTNAMELEN
++#endif
++
+ namespace syncer {
+ 
+ #if BUILDFLAG(IS_CHROMEOS_ASH)

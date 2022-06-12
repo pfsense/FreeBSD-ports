@@ -1,12 +1,12 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
 
 PORTNAME=	posix_ipc
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.5
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	POSIX IPC primitives for Python
 
 LICENSE=	BSD3CLAUSE

@@ -1,5 +1,6 @@
 PORTNAME=	tpm2-tss
-DISTVERSION=	3.1.0
+DISTVERSION=	3.2.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/tpm2-software/tpm2-tss/releases/download/${DISTVERSION}/
 
@@ -15,7 +16,7 @@ USES=		compiler:c11 gmake libtool pkgconfig ssl
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	LIBCRYPTO_CFLAGS="-I${OPENSSLINC}" LIBCRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto" \
+CONFIGURE_ENV=	CRYPTO_CFLAGS="-I${OPENSSLINC}" CRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto" \
 		EXTRA_CFLAGS="-I${LOCALBASE}/include"
 
 KEYDIR=		/var/lib/tpm2-tss/system/keystore

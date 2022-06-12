@@ -1,6 +1,6 @@
 PORTNAME=	yaml
 PORTVERSION=	0.11.5.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -9,6 +9,8 @@ COMMENT=	Utilities for converting YAML and JSON documents back and forth
 LICENSE=	BSD3CLAUSE
 
 USES=		cabal
+
+CONFLICTS_INSTALL=	json2yaml # bin/json2yaml
 
 USE_CABAL=	aeson-1.4.7.1_1 \
 		attoparsec-0.13.2.4 \

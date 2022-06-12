@@ -1,5 +1,5 @@
 PORTNAME=	xpdf
-PORTVERSION=	4.03
+PORTVERSION=	4.04
 PORTEPOCH=	1
 CATEGORIES=	graphics print
 MASTER_SITES=	https://dl.xpdfreader.com/
@@ -21,7 +21,8 @@ CONFLICTS_INSTALL+=	xpdf3 xpdf4
 
 USES=		compiler:c++11-lang cmake cpe localbase:ldflags
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libpng.so:graphics/png
+		libpng.so:graphics/png \
+		libfontconfig.so:x11-fonts/fontconfig
 BUILD_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/d050000l.pfb:print/gsfonts
 RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/d050000l.pfb:print/gsfonts
 MANPREFIX=	${PREFIX}/share/xpdf
@@ -70,5 +71,9 @@ post-install:
 		${INSTALL_DATA} ${WRKDIR}/xpdf-man.conf \
 			${STAGEDIR}${PREFIX}/etc/man.d/xpdf.conf
 		${INSTALL_DATA} ${FILESDIR}/xpdf.desktop ${STAGEDIR}${DESKTOPDIR}
+		${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256
+		${INSTALL_DATA} ${WRKSRC}/xpdf-qt/xpdf-icon.ico ${STAGEDIR}${PREFIX}/share/icons/hicolor/256x256/xpdf.png
+		${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable
+		${INSTALL_DATA} ${WRKSRC}/xpdf-qt/xpdf-icon.svg ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/xpdf.svg
 
 .include <bsd.port.mk>

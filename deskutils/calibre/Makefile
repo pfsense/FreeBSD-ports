@@ -1,7 +1,8 @@
 # Created by: stas
 
 PORTNAME=	calibre
-PORTVERSION=	5.33.2
+PORTVERSION=	5.43.0
+PORTREVISION=	1
 CATEGORIES=	deskutils python
 MASTER_SITES=	http://download.calibre-ebook.com/${PORTVERSION}/
 
@@ -9,9 +10,6 @@ MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Ebook management application
 
 LICENSE=	GPLv3
-
-DEPRECATED=	Uses EOL Python 2.7 via www/py-qt5-webengine
-EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpoppler-qt5.so:graphics/poppler-qt5 \
@@ -52,6 +50,8 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cchardet>=0:textproc/py-cchardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}html5-parser>=0.4.3:www/py-html5-parser@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.8:textproc/py-feedparser@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jeepney>=0.6:devel/py-jeepney@${PY_FLAVOR} \
 		${PY_PILLOW} \
 		pdftohtml:graphics/poppler-utils \
 		${PYTHON_PKGNAMEPREFIX}zeroconf>0:net/py-zeroconf
@@ -61,7 +61,7 @@ USES=		desktop-file-utils gettext-runtime gl gnome localbase:ldflags \
 		ssl tar:xz xorg
 USE_RC_SUBR=	calibre
 SUB_LIST+=	PYTHON_VERSION=${PYTHON_VERSION}
-USE_PYQT=	core gui network pysip qtbuilder sip svg webengine widgets xmlpatterns
+USE_PYQT=	pyqt5 pysip qtbuilder sip webengine
 USE_QT=		buildtools_build core dbus gui qmake_build widgets
 USE_GL=		egl gl
 USE_GNOME=	glib20

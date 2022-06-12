@@ -1,6 +1,7 @@
 PORTNAME=	ali
 PORTVERSION=	0.7.5
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	benchmarks
 
 MAINTAINER=	olgeni@FreeBSD.org
@@ -37,6 +38,8 @@ GH_TUPLE=	davecgh:go-spew:v1.1.1:davecgh_go_spew/vendor/github.com/davecgh/go-sp
 		tsenart:vegeta:v12.8.4:tsenart_vegeta_v12/vendor/github.com/tsenart/vegeta/v12 \
 		uber-go:atomic:v1.9.0:uber_go_atomic/vendor/go.uber.org/atomic \
 		uber-go:goleak:v1.1.12:uber_go_goleak/vendor/go.uber.org/goleak
+
+CONFLICTS_INSTALL=	ja-mh mmh nmh
 
 PLIST_FILES=	bin/ali
 

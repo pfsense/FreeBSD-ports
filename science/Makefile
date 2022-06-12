@@ -16,6 +16,7 @@
     SUBDIR += R-cran-etm
     SUBDIR += R-cran-fastICA
     SUBDIR += R-cran-kernlab
+    SUBDIR += R-cran-ks
     SUBDIR += R-cran-snow
     SUBDIR += R-cran-som
     SUBDIR += R-cran-udunits2
@@ -44,9 +45,11 @@
     SUBDIR += cgribex
     SUBDIR += checkmol
     SUBDIR += chemical-mime-data
+    SUBDIR += chemicalfun
     SUBDIR += chemps2
     SUBDIR += chemtool
     SUBDIR += chemtool-devel
+    SUBDIR += chimes-calculator
     SUBDIR += chrono
     SUBDIR += clhep
     SUBDIR += clipper
@@ -63,6 +66,7 @@
     SUBDIR += dcl
     SUBDIR += devisor
     SUBDIR += dftbplus
+    SUBDIR += dftd4
     SUBDIR += dkh
     SUBDIR += dlib-cpp
     SUBDIR += drawxtl
@@ -80,12 +84,14 @@
     SUBDIR += fasthenry
     SUBDIR += fastjet
     SUBDIR += fisicalab
+    SUBDIR += fleur
     SUBDIR += frontistr
     SUBDIR += fsom
     SUBDIR += fvcom
     SUBDIR += fvcom-mpi
     SUBDIR += gabedit
     SUBDIR += gamess-us
+    SUBDIR += gbtolib
     SUBDIR += gchemutils
     SUBDIR += gdma
     SUBDIR += getdp
@@ -133,12 +139,15 @@
     SUBDIR += libint2
     SUBDIR += libkml
     SUBDIR += liblinear
+    SUBDIR += libmbd
     SUBDIR += libmsym
+    SUBDIR += libnegf
     SUBDIR += liboglappth
     SUBDIR += libquantum
     SUBDIR += libssm
     SUBDIR += libsvm
     SUBDIR += libsvm-python
+    SUBDIR += libtensorflow1
     SUBDIR += libvdwxc
     SUBDIR += libxc
     SUBDIR += liggghts
@@ -150,6 +159,7 @@
     SUBDIR += mbdyn
     SUBDIR += mcstas
     SUBDIR += mcstas-comps
+    SUBDIR += mctc-lib
     SUBDIR += mcxtrace
     SUBDIR += mcxtrace-comps
     SUBDIR += mdynamix
@@ -165,6 +175,8 @@
     SUBDIR += mpb
     SUBDIR += mpqc
     SUBDIR += msms
+    SUBDIR += mstore
+    SUBDIR += multicharge
     SUBDIR += multiwfn
     SUBDIR += namd
     SUBDIR += nest
@@ -180,6 +192,7 @@
     SUBDIR += openkim
     SUBDIR += openkim-models
     SUBDIR += openmc
+    SUBDIR += openmolcas
     SUBDIR += openmx
     SUBDIR += opensim-core
     SUBDIR += opensph
@@ -222,6 +235,8 @@
     SUBDIR += packmol
     SUBDIR += pagmo2
     SUBDIR += paje
+    SUBDIR += paraview
+    SUBDIR += pastix
     SUBDIR += pcmsolver
     SUBDIR += phonopy
     SUBDIR += plumed
@@ -241,6 +256,8 @@
     SUBDIR += py-abipy
     SUBDIR += py-access
     SUBDIR += py-asdf
+    SUBDIR += py-asdf-standard
+    SUBDIR += py-asdf-transform-schemas
     SUBDIR += py-ase
     SUBDIR += py-avogadrolibs
     SUBDIR += py-cdo
@@ -257,6 +274,7 @@
     SUBDIR += py-dlib
     SUBDIR += py-eccodes
     SUBDIR += py-esda
+    SUBDIR += py-fresnel
     SUBDIR += py-geolinks
     SUBDIR += py-geomet
     SUBDIR += py-geometer
@@ -266,6 +284,7 @@
     SUBDIR += py-h5json
     SUBDIR += py-h5py
     SUBDIR += py-hiphive
+    SUBDIR += py-hoomd-blue
     SUBDIR += py-inequality
     SUBDIR += py-jupyter_jsmol
     SUBDIR += py-kim-query
@@ -320,20 +339,25 @@
     SUBDIR += py-scoria
     SUBDIR += py-segregation
     SUBDIR += py-segyio
+    SUBDIR += py-sklearn-pandas
     SUBDIR += py-skrebate
     SUBDIR += py-spaghetti
     SUBDIR += py-spglib
     SUBDIR += py-tensorflow
+    SUBDIR += py-thewalrus
     SUBDIR += py-tobler
+    SUBDIR += py-trainstation
     SUBDIR += py-veusz
     SUBDIR += pybrain
     SUBDIR += pynn
+    SUBDIR += q
     SUBDIR += qbox
     SUBDIR += qcl
     SUBDIR += qiskit-aer
     SUBDIR += qmcpack
     SUBDIR += quantum-espresso
     SUBDIR += quantum-espresso-pseudopotentials
+    SUBDIR += quantum-jet
     SUBDIR += qwalk
     SUBDIR += rdkit
     SUBDIR += rmf
@@ -359,6 +383,7 @@
     SUBDIR += simgrid
     SUBDIR += simint
     SUBDIR += simlib
+    SUBDIR += simple-dftd3
     SUBDIR += simsmith
     SUBDIR += smoldyn
     SUBDIR += sparta
@@ -366,12 +391,14 @@
     SUBDIR += step
     SUBDIR += svmlight
     SUBDIR += szip
+    SUBDIR += tblite
     SUBDIR += teem
     SUBDIR += tfel
     SUBDIR += tfel-edf
     SUBDIR += thermofun
     SUBDIR += tinker
     SUBDIR += udunits
+    SUBDIR += ukrmol+
     SUBDIR += v_sim
     SUBDIR += vipster
     SUBDIR += vmd
@@ -385,5 +412,6 @@
     SUBDIR += xdrawchem
     SUBDIR += xtb
     SUBDIR += yoda
+    SUBDIR += zotero
 
 .include <bsd.port.subdir.mk>

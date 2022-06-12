@@ -10,6 +10,7 @@ bin/rpmquery
 bin/rpmsign
 bin/rpmspec
 bin/rpmverify
+%%PLUGINS%%etc/dbus-1/system.d/org.rpm.conf
 include/rpm/argv.h
 include/rpm/header.h
 include/rpm/rpmarchive.h
@@ -48,26 +49,28 @@ include/rpm/rpmutil.h
 include/rpm/rpmver.h
 lib/librpm.so
 lib/librpm.so.9
-lib/librpm.so.9.1.3
+lib/librpm.so.9.2.0
 lib/librpmbuild.so
 lib/librpmbuild.so.9
-lib/librpmbuild.so.9.1.3
+lib/librpmbuild.so.9.2.0
 lib/librpmio.so
 lib/librpmio.so.9
-lib/librpmio.so.9.1.3
+lib/librpmio.so.9.2.0
 lib/librpmsign.so
 lib/librpmsign.so.9
-lib/librpmsign.so.9.1.3
+lib/librpmsign.so.9.2.0
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/rpm/__init__.py
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/rpm/_rpm.so
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/rpm/transaction.py
+%%PLUGINS%%lib/rpm-plugins/dbus_announce.so
+%%PLUGINS%%lib/rpm-plugins/prioreset.so
+%%PLUGINS%%lib/rpm-plugins/syslog.so
+%%PLUGINS%%lib/rpm-plugins/systemd_inhibit.so
+lib/rpm/brp-elfperms
 lib/rpm/brp-compress
-lib/rpm/brp-java-gcjcompile
-lib/rpm/brp-python-bytecompile
-lib/rpm/brp-python-hardlink
+lib/rpm/brp-remove-la-files
 lib/rpm/brp-strip
 lib/rpm/brp-strip-comment-note
-lib/rpm/brp-strip-shared
 lib/rpm/brp-strip-static-archive
 lib/rpm/check-buildroot
 lib/rpm/check-files
@@ -78,20 +81,16 @@ lib/rpm/fileattrs/debuginfo.attr
 lib/rpm/fileattrs/desktop.attr
 lib/rpm/fileattrs/elf.attr
 lib/rpm/fileattrs/font.attr
-lib/rpm/fileattrs/libtool.attr
 lib/rpm/fileattrs/metainfo.attr
 lib/rpm/fileattrs/ocaml.attr
 lib/rpm/fileattrs/perl.attr
 lib/rpm/fileattrs/perllib.attr
 lib/rpm/fileattrs/pkgconfig.attr
-lib/rpm/fileattrs/python.attr
-lib/rpm/fileattrs/pythondist.attr
 lib/rpm/fileattrs/script.attr
 lib/rpm/find-lang.sh
 lib/rpm/find-provides
 lib/rpm/find-requires
 lib/rpm/fontconfig.prov
-lib/rpm/libtooldeps.sh
 lib/rpm/macros
 lib/rpm/mkinstalldirs
 lib/rpm/ocamldeps.sh
@@ -164,7 +163,6 @@ lib/rpm/platform/sparcv8-%%OPSYS%%/macros
 lib/rpm/platform/sparcv9-%%OPSYS%%/macros
 lib/rpm/platform/sparcv9v-%%OPSYS%%/macros
 lib/rpm/platform/x86_64-%%OPSYS%%/macros
-%%PYTHON%%lib/rpm/pythondistdeps.py
 lib/rpm/rpm.daily
 lib/rpm/rpm.log
 lib/rpm/rpm.supp
@@ -186,6 +184,11 @@ man/ko/man8/rpm.8.gz
 man/ko/man8/rpm2cpio.8.gz
 man/man1/gendiff.1.gz
 man/man8/rpm-misc.8.gz
+%%PLUGINS%%man/man8/rpm-plugin-dbus-announce.8.gz
+%%PLUGINS%%man/man8/rpm-plugin-prioreset.8.gz
+%%PLUGINS%%man/man8/rpm-plugin-syslog.8.gz
+%%PLUGINS%%man/man8/rpm-plugin-systemd-inhibit.8.gz
+%%PLUGINS%%man/man8/rpm-plugins.8.gz
 man/man8/rpm.8.gz
 man/man8/rpm2archive.8.gz
 man/man8/rpm2cpio.8.gz
@@ -217,6 +220,8 @@ man/sk/man8/rpm.8.gz
 %%NLS%%share/locale/es/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/fi/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/rpm.mo
+%%NLS%%share/locale/gu/LC_MESSAGES/rpm.mo
+%%NLS%%share/locale/he/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/id/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/is/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/it/LC_MESSAGES/rpm.mo
@@ -225,10 +230,12 @@ man/sk/man8/rpm.8.gz
 %%NLS%%share/locale/ms/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/nb/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/rpm.mo
+%%NLS%%share/locale/pa/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/pt/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/ru/LC_MESSAGES/rpm.mo
+%%NLS%%share/locale/si/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/sl/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/sr/LC_MESSAGES/rpm.mo
@@ -240,5 +247,6 @@ man/sk/man8/rpm.8.gz
 %%NLS%%share/locale/vi/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/rpm.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/rpm.mo
+%%PLUGINS%%@dir lib/rpm-plugins
 @dir lib/rpm/lua
 @dir lib/rpm/macros.d

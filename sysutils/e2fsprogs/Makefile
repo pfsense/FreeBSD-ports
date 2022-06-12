@@ -13,7 +13,7 @@
 # 		  ext2/ext3/ext4 file systems at boot, before PREFIX is mounted
 
 PORTNAME=	e2fsprogs
-PORTVERSION=	1.46.4
+PORTVERSION=	1.46.5
 PORTREVISION?=	1
 CATEGORIES?=	sysutils
 MASTER_SITES=	KERNEL_ORG/linux/kernel/people/tytso/${PORTNAME}/v${PORTVERSION}
@@ -56,9 +56,13 @@ CPPFLAGS+=	-I${WRKSRC}/lib -I${LOCALBASE}/include # -D_EXT2_USE_C_VERSIONS
 MAKE_ARGS+=	pkgconfigdir='${PREFIX}/libdata/pkgconfig'
 MAKE_ENV+=	CHECK_CMD=@true
 
+CONFLICTS_INSTALL=	e2fsprogs e2fsprogs-nobootfsck e2fsprogs-roothardlinks
+
 PORTSCOUT=	ignore:1	# cannot handle the version in the directory
 
 .if !defined(MASTERDIR)
+CPPFLAGS+=	-D__GNUC_PREREQ\(a,b\)=1
+
 INSTALL_TARGET=		install install-libs
 
 OPTIONS_DEFINE=		DOCS NLS FUSEFS PARALLELTESTS SLOWTESTS BASHTESTS LIBUNWIND
@@ -85,7 +89,6 @@ BASHTESTS_BUILD_DEPENDS=	${BASH_CMD}:shells/bash
 BASH_CMD=	${LOCALBASE}/bin/bash
 
 LIB_DEPENDS+=	libblkid.so:misc/e2fsprogs-libblkid
-LIB_DEPENDS+=	libss.so:devel/e2fsprogs-libss
 LIB_DEPENDS+=	libuuid.so:misc/e2fsprogs-libuuid
 
 LIBUNWIND_LIB_DEPENDS=	libunwind.so:devel/libunwind
@@ -229,6 +232,8 @@ BROKEN=	it was not tested on your system by the maintainer; you must run self-te
 pre-build:
 # fix up Makefile ordering for parallel builds
 	cd ${WRKSRC}/lib/et && ${DO_MAKE_BUILD} compile_et
+	cd ${WRKSRC}/lib/ss && _ET_DIR_OVERRIDE=../et ../et/compile_et ss_err.et \
+		&& ${REINPLACE_CMD} -f ${FILESDIR}/fix-ss_err.h.sed ss_err.h
 	cd ${WRKSRC}/lib/support && ${DO_MAKE_BUILD} prof_err.h
 
 .if ${PORT_OPTIONS:MPARALLELTESTS}
@@ -350,13 +355,15 @@ post-install:
 	# remove or relocate files installed by other ports already, or shadowing system files:
 	cd ${STAGEDIR}${PREFIX} && \
 		${XARGS} <${FILESDIR}/unwanted ${RM} && \
-		${RMDIR} include/e2fsprogs/blkid include/e2fsprogs/ss share/ss
+		${RMDIR} include/e2fsprogs/blkid
 	${MV} ${STAGEDIR}${PREFIX}/bin/compile_et ${STAGEDIR}${PREFIX}/bin/e2fsprogs-compile_et
-	${MV} ${STAGEDIR}${PREFIX}/man/man1/compile_et.1 ${STAGEDIR}${PREFIX}/man/man1/e2fsprogs-compile_et.1
+	${MV} ${STAGEDIR}${MANPREFIX}/man/man1/compile_et.1 ${STAGEDIR}${MANPREFIX}/man/man1/e2fsprogs-compile_et.1
 	${MKDIR} ${STAGEDIR}${DATADIR}/et/
 	${MV} ${STAGEDIR}${PREFIX}/share/et/* ${STAGEDIR}${DATADIR}/et/
 	${REINPLACE_CMD} -e 's}^DIR=.*$$}DIR=${DATADIR}/et}' -i '' ${STAGEDIR}${PREFIX}/bin/e2fsprogs-compile_et
 	${RMDIR} ${STAGEDIR}${PREFIX}/share/et
+	${MV} -f ${STAGEDIR}${MANPREFIX}/man/man3/com_err.3 \
+		 ${STAGEDIR}${MANPREFIX}/man/man3/e2fsprogs-com_err.3
 
 #
 # the next line closes .if ${MASTERDIR} == ${.CURDIR}

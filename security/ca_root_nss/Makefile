@@ -28,7 +28,7 @@ ETCSYMLINK_CONFLICTS_INSTALL=	ca-roots-[0-9]*
 CERTDIR?=	share/certs
 PLIST_SUB+=	CERTDIR=${CERTDIR}
 
-VERSION_NSS=	3.71
+VERSION_NSS=	3.78
 CERTDATA_TXT_PATH=	lib/ckfw/builtins/certdata.txt
 BUNDLE_PROCESSOR=	MAca-bundle.pl
 
@@ -52,5 +52,7 @@ do-install:
 do-install-ETCSYMLINK-on:
 	${MKDIR} ${STAGEDIR}/etc/ssl
 	${LN} -sf ../..${PREFIX}/${CERTDIR}/ca-root-nss.crt ${STAGEDIR}/etc/ssl/cert.pem
+	${LN} -sf ../../${CERTDIR}/ca-root-nss.crt ${STAGEDIR}${PREFIX}/etc/ssl/cert.pem
+	${LN} -sf ../${CERTDIR}/ca-root-nss.crt ${STAGEDIR}${PREFIX}/openssl/cert.pem
 
 .include <bsd.port.mk>

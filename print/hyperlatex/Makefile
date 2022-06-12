@@ -2,7 +2,7 @@
 
 PORTNAME=	Hyperlatex
 DISTVERSION=	2.9a
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	print
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/2.9a
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -14,6 +14,8 @@ RUN_DEPENDS=	ppmtogif:graphics/netpbm
 
 USES=		emacs
 USE_TEX=	latex
+
+CONFLICTS_INSTALL=	 Hyperlatex Hyperlatex-emacs_*
 
 LATEX_DIR=	${PREFIX}/share/texmf/tex/latex/hyperlatex
 HYPERLATEX_DIR=	${PREFIX}/share/hyperlatex

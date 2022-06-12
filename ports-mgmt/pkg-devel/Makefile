@@ -1,5 +1,5 @@
 PORTNAME=	pkg
-DISTVERSION=	1.17.99.9
+DISTVERSION=	1.17.99.11
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 PKGNAMESUFFIX=	-devel
@@ -11,7 +11,7 @@ LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	79246a32
+GH_TAGNAME=	63985a71
 
 CFLAGS+=	-O0 -g -Wno-error
 USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
@@ -43,13 +43,6 @@ CONFIGURE_ARGS+=	--with-asan --with-ubsan
 #CONFIGURE_ARGS+=	--default-format=tzst
 #.endif
 
-.if !exists(/usr/libdata/pkgconfig/liblzma.pc)
-LIBLZMA_LIBS=	-llzma
-.else
-LIBLZMA_PC!=	${EGREP} ^Libs /usr/libdata/pkgconfig/liblzma.pc
-LIBLZMA_LIBS=	${LIBLZMA_PC:M-l*}
-.endif
-
 .if defined(WITH_PKG)
 .if ${WITH_PKG} != devel
 .	if !defined(PACKAGE_BUILDING)
@@ -66,10 +59,6 @@ PKG_DEPENDS=
 .if !exists(${LOCALBASE}/sbin/pkg) && !defined(CROSS_TOOLCHAIN)
 PKG_BIN=	${WRKSRC}/src/pkg-static
 .endif
-
-post-patch:
-	${REINPLACE_CMD} -e "s|-llzma|${LIBLZMA_LIBS}|g" ${WRKSRC}/auto.def \
-		${WRKSRC}/src/Makefile.autosetup ${WRKSRC}/tests/Makefile.autosetup
 
 .if ${PORT_OPTIONS:MSAN}
 post-build:

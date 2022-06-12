@@ -1,5 +1,5 @@
 PORTNAME=	xpra
-PORTVERSION=	4.2.3
+PORTVERSION=	4.3
 PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://xpra.org/src/
@@ -37,7 +37,7 @@ USES=		desktop-file-utils gettext-runtime gnome pkgconfig \
 
 USE_GNOME=	cairo gdkpixbuf2 gtk30 pygobject3
 USE_PYTHON=	cython distutils noflavors
-USE_XORG=	x11 xcomposite xdamage xext xfixes xi xkbfile xrandr xtst
+USE_XORG=	x11 xcomposite xdamage xext xfixes xi xkbfile xrandr xres xtst
 PLIST_SUB+=	PORTVERSION=${PORTVERSION} \
 		PYTHON_SUFFIX=${PYTHON_SUFFIX} \
 		PYTHON_VER=${PYTHON_VER}
@@ -45,9 +45,11 @@ SHEBANG_FILES=	fs/lib/cups/xpraforwarder fs/bin/auth_dialog fs/bin/xdg-open \
 		fs/bin/xpra_udev_product_version fs/bin/gnome-open \
 		fs/bin/gvfs-open
 
-OPTIONS_DEFINE=		AVAHI AVCODEC CUPS FFMPEG GSTREAMER LIBYUV SWSCALE VPX \
-			WEBCAM X264 X265
-OPTIONS_DEFAULT=	AVAHI CUPS GSTREAMER
+OPTIONS_DEFINE=		AVAHI AVCODEC CUPS DOCS FFMPEG GSTREAMER LIBYUV SWSCALE \
+			WEBCAM X265
+OPTIONS_DEFAULT=	AVAHI CUPS GSTREAMER X264
+OPTIONS_RADIO=		CODEC
+OPTIONS_RADIO_CODEC=	VPX X264
 OPTIONS_SUB=		yes
 
 AVCODEC_DESC=	Enable avcodec2 (FFmpeg) decoder
@@ -69,10 +71,10 @@ CUPS_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pycups>1:print/py-pycups@${PY_FLAVOR}
 CUPS_VARS=			XPRA_OPTIONS+=printing
 FFMPEG_LIB_DEPENDS=		libavcodec.so:multimedia/ffmpeg
 FFMPEG_VARS=			XPRA_OPTIONS+=enc_ffmpeg
+GSTREAMER_USES=			gstreamer
 GSTREAMER_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gstreamer1>1:multimedia/py-gstreamer1@${PY_FLAVOR}
-GSTREAMER_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gstreamer1>1:multimedia/py-gstreamer1@${PY_FLAVOR} \
-				gstreamer1-plugins-pulse>1:audio/gstreamer1-plugins-pulse
-GSTREAMER_USE=			GSTREAMER1=flac,lame,mpg123,ogg,opus,vorbis,wavpack
+GSTREAMER_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gstreamer1>1:multimedia/py-gstreamer1@${PY_FLAVOR}
+GSTREAMER_USE=			GSTREAMER=flac,lame,mpg123,ogg,opus,pulse,vorbis,wavpack
 GSTREAMER_VARS=			XPRA_OPTIONS+=sound
 LIBYUV_LIB_DEPENDS=		libyuv.so:graphics/libyuv
 LIBYUV_VARS=			XPRA_OPTIONS+=csc_libyuv
@@ -114,6 +116,8 @@ post-patch:
 	    ${WRKSRC}/xpra/platform/pycups_printing.py
 	@${REINPLACE_CMD} -e 's|/usr/sbin|${LOCALBASE}/sbin|' \
 	    ${WRKSRC}/fs/etc/xpra/conf.d/16_printing.conf.in
+	@${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}/bin/bash|' \
+	    ${WRKSRC}/xpra/server/server_util.py
 
 post-install:
 	@${MV} ${STAGEDIR}${ETCDIR}/xorg.conf \

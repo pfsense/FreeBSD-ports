@@ -1,7 +1,7 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
 
 PORTNAME=	Set-CrossProduct
-PORTVERSION=	2.006
+PORTVERSION=	2.008
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BDFOY
@@ -17,5 +17,7 @@ USES=		perl5
 USE_PERL5=	configure
 
 NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	topcom
 
 .include <bsd.port.mk>

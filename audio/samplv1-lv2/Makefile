@@ -1,7 +1,6 @@
 PORTNAME=	samplv1
 DISTVERSIONPREFIX=	${PORTNAME}_
-DISTVERSION=	0_9_23
-PORTREVISION=	1
+DISTVERSION=	0_9_26
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -9,7 +8,7 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Old-school polyphonic sampler
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	lv2>0:audio/lv2
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
@@ -18,10 +17,10 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		liblo.so:audio/liblo \
 		libsndfile.so:audio/libsndfile
 
-USES=		cmake compiler:c++17-lang gl pkgconfig qt:5 \
+USES=		cmake compiler:c++17-lang desktop-file-utils gl pkgconfig qt:5 \
 		shared-mime-info
 USE_GL=		gl
-USE_QT=		core gui widgets xml buildtools_build linguisttools_build qmake_build
+USE_QT=		core gui svg widgets xml buildtools_build linguisttools_build qmake_build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rncbc

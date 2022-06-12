@@ -1,5 +1,6 @@
 PORTNAME=	swaync
-PORTVERSION=	s20211203
+DISTVERSIONPREFIX=	v
+PORTVERSION=	0.5
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -15,18 +16,31 @@ LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 
 USES=		compiler:c11 gnome localbase:ldflags meson pkgconfig
 USE_GITHUB=	yes
-USE_GNOME=	gdkpixbuf2 gtk30 introspection:build
+USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
 GH_ACCOUNT=	ErikReider
 GH_PROJECT=	SwayNotificationCenter
-GH_TAGNAME=	75894f5
-PLIST_FILES=	bin/${PORTNAME} \
-		bin/${PORTNAME}-client \
-		"@sample etc/xdg/${PORTNAME}/config.json.sample" \
-		"@sample etc/xdg/${PORTNAME}/style.css.sample"
+
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
+
+MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
+MANPAGES_MESON_TRUE=	man-pages
+MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
+			man/man1/${PORTNAME}-client.1.gz \
+			man/man5/${PORTNAME}.5.gz
 
 post-patch:
-# Let @sample handle default files under etc/
-	@${REINPLACE_CMD} -e "/inst.*conf/s/'[^']*/&', rename: &.sample/1" \
+# Extract (snapshot) version from the port instead of meson.build
+	@${REINPLACE_CMD} -i .nogit -e 's/git.found()/false/' \
+		-e '/project_version/s/@0@/${DISTVERSIONFULL}/' \
 		${WRKSRC}/src/meson.build
+# Let @sample handle default files under etc/
+	@${REINPLACE_CMD} -e "s,'/',get_option('prefix')," \
+		-e "/output.*json/s/'[^']*/&.sample/" \
+		-e "/inst.*css/s/'[^']*/&', rename: &.sample/1" \
+		${WRKSRC}/src/meson.build
+# Respect PREFIX in manpages
+	@${REINPLACE_CMD} 's,/etc,${PREFIX}&,' \
+		${WRKSRC}/man/${PORTNAME}.1.scd
 
 .include <bsd.port.mk>

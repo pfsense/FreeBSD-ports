@@ -1,5 +1,6 @@
 PORTNAME=	libgcrypt
 DISTVERSION=	1.9.4
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
@@ -12,33 +13,32 @@ LICENSE_COMB=	multi
 BUILD_DEPENDS=	libgpg-error>=1.32:security/libgpg-error
 RUN_DEPENDS=	libgpg-error>=1.32:security/libgpg-error
 
-USES=		cpe libtool makeinfo tar:bzip2
+USES=		cpe libtool tar:bzip2
 
 CPE_VENDOR=	gnupg
 USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-drng-support
-CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
 CONFIGURE_TARGET=${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
 
 DOCS=		AUTHORS ChangeLog ChangeLog-2011 INSTALL NEWS THANKS TODO \
 		doc/HACKING doc/README.apichanges
-INFO=		gcrypt
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		DOCS STATIC
-OPTIONS_DEFAULT=	DOCS STATIC
+OPTIONS_DEFINE=		DOCS INFO STATIC
+OPTIONS_DEFAULT=	DOCS INFO STATIC
 OPTIONS_SUB=	yes
+
+INFO_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-no-info
+INFO_CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
+INFO_INFO=		gcrypt
+INFO_USES=	makeinfo
 
 STATIC_CONFIGURE_ENABLE=	static
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH} == "powerpc"
-CONFIGURE_ARGS+=	--disable-asm
-.endif
 
 .if ${ARCH} == "armv6" || ${ARCH} == "armv7"
 CONFIGURE_ARGS+=	--disable-jent-support

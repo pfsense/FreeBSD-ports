@@ -1,8 +1,8 @@
 # Created by: stb
 
 PORTNAME=	netatalk
-PORTVERSION=	3.1.12
-PORTREVISION=	4
+PORTVERSION=	3.1.13
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF
@@ -75,7 +75,7 @@ LIBWRAP_CONFIGURE_ENABLE=tcp-wrappers
 
 SHEBANG_GLOB=	afpstats
 
-CONFLICTS=	bigloo-2.* cap-6.0.* tct-1.* netatalk-[12]* yudit
+CONFLICTS=	jday yudit # bin/dbd man/man1/uniconv.1.gz
 
 .include <bsd.port.pre.mk>
 

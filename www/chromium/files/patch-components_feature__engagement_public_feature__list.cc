@@ -1,20 +1,21 @@
---- components/feature_engagement/public/feature_list.cc.orig	2021-09-14 01:51:54 UTC
+--- components/feature_engagement/public/feature_list.cc.orig	2022-05-19 14:06:27 UTC
 +++ components/feature_engagement/public/feature_list.cc
-@@ -94,7 +94,7 @@ const base::Feature* const kAllFeatures[] = {
-     &kIPHBadgedTranslateManualTriggerFeature,
-     &kIPHDiscoverFeedHeaderFeature,
- #endif  // defined(OS_IOS)
--#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS)
+@@ -120,7 +120,7 @@ const base::Feature* const kAllFeatures[] = {
+     &kIPHPasswordSuggestionsFeature,
+ #endif  // BUILDFLAG(IS_IOS)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
      &kIPHDesktopTabGroupsNewGroupFeature,
-     &kIPHFocusModeFeature,
-@@ -109,7 +109,7 @@ const base::Feature* const kAllFeatures[] = {
-     &kIPHDesktopPwaInstallFeature,
-     &kIPHProfileSwitchFeature,
-     &kIPHUpdatedConnectionSecurityIndicatorsFeature,
--#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS)
- };
- }  // namespace
+     &kIPHFocusHelpBubbleScreenReaderPromoFeature,
+     &kIPHGMCCastStartStopFeature,
+@@ -143,7 +143,8 @@ const base::Feature* const kAllFeatures[] = {
+         // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
+ 
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || \
++    BUILDFLAG(IS_BSD)
+     &kIPHAutofillVirtualCardSuggestionFeature,
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
+         // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) ||

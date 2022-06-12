@@ -1,4 +1,4 @@
---- services/device/hid/hid_connection_freebsd.h.orig	2021-09-29 12:19:04 UTC
+--- services/device/hid/hid_connection_freebsd.h.orig	2022-02-07 13:39:41 UTC
 +++ services/device/hid/hid_connection_freebsd.h
 @@ -0,0 +1,67 @@
 +// Copyright (c) 2014 The Chromium Authors. All rights reserved.
@@ -12,10 +12,9 @@
 +#include <stdint.h>
 +
 +#include "base/files/scoped_file.h"
-+#include "base/macros.h"
 +#include "base/memory/weak_ptr.h"
 +#include "base/memory/ref_counted_memory.h"
-+#include "base/sequenced_task_runner.h"
++#include "base/task/sequenced_task_runner.h"
 +#include "services/device/hid/hid_connection.h"
 +
 +namespace base {
@@ -41,6 +40,9 @@
 +  friend class base::RefCountedThreadSafe<HidConnectionFreeBSD>;
 +  class BlockingTaskRunnerHelper;
 +
++  HidConnectionFreeBSD(const HidConnectionFreeBSD&) = delete;
++  HidConnectionFreeBSD& operator=(const HidConnectionFreeBSD&) = delete;
++
 +  ~HidConnectionFreeBSD() override;
 +
 +  // HidConnection implementation.
@@ -61,8 +63,6 @@
 +  const scoped_refptr<base::SequencedTaskRunner> task_runner_;
 +
 +  base::WeakPtrFactory<HidConnectionFreeBSD> weak_factory_{this};
-+
-+  DISALLOW_COPY_AND_ASSIGN(HidConnectionFreeBSD);
 +};
 +
 +}  // namespace device

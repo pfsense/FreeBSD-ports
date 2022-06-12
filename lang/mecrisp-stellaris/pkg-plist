@@ -3,7 +3,7 @@ bin/mecrisp-stellaris
 %%DOCSDIR%%/README
 %%DATADIR%%/VIS/VIS-README
 %%DATADIR%%/VIS/vis-0.8.4-disassembler-m3.fs
-%%DATADIR%%/VIS/vis-0.8.4-mecrisp-stellaris.fs
+%%DATADIR%%/VIS/vis-0.8.4.1-mecrisp-stellaris.fs
 %%DATADIR%%/VIS/vis-conditional-200x.txt
 %%DATADIR%%/accept-replacement.txt
 %%DATADIR%%/ansification-tester.txt
@@ -12,6 +12,7 @@ bin/mecrisp-stellaris
 %%DATADIR%%/assembler-m0.txt
 %%DATADIR%%/bitflip.txt
 %%DATADIR%%/bitlog.txt
+%%DATADIR%%/bits.fs
 %%DATADIR%%/blocks.txt
 %%DATADIR%%/calltrace.txt
 %%DATADIR%%/catchthrow.txt
@@ -31,7 +32,9 @@ bin/mecrisp-stellaris
 %%DATADIR%%/dump.txt
 %%DATADIR%%/editor.txt
 %%DATADIR%%/examples.txt
+%%DATADIR%%/experimental/basepri.fs
 %%DATADIR%%/experimental/bignum.txt
+%%DATADIR%%/experimental/bits-example.fs
 %%DATADIR%%/experimental/definitioncount.txt
 %%DATADIR%%/experimental/float.txt
 %%DATADIR%%/experimental/sv.fs

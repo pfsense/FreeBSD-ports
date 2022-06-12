@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	fontbakery
-PORTVERSION=	0.8.3
+PORTVERSION=	0.8.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	print python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,11 +16,12 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}beziers>=0:graphics/py-beziers@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cmarkgfm>=0:textproc/py-cmarkgfm@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}collidoscope>=0:print/py-collidoscope@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}collidoscope>=0.4.1:print/py-collidoscope@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}defcon>=0:x11-fonts/py-defcon@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dehinter>=3.1.0:print/py-dehinter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}font-v>=0:print/py-font-v@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}fonttools>=3.34:print/py-fonttools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}glyphsets>=0:print/py-glyphsets@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}opentype-sanitizer>=7.1.9:x11-fonts/py-opentype-sanitizer@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}opentypespec>=0:x11-fonts/py-opentypespec@${PY_FLAVOR} \
@@ -32,6 +33,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_F
 		${PYTHON_PKGNAMEPREFIX}stringbrewer>=0:devel/py-stringbrewer@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}toml>=0:textproc/py-toml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ufolint>=0:x11-fonts/py-ufolint@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}unicodedata2>=0:devel/py-unicodedata2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}vharfbuzz>=0:print/py-vharfbuzz@${PY_FLAVOR}
 
 USES=		python:3.7+

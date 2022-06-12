@@ -1,28 +1,23 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
 
 PORTNAME=	python-magic
-PORTVERSION=	0.4.15
+PORTVERSION=	0.4.27
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	File type identification using libmagic
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		python:3.6+
-USE_GITHUB=	yes # missing test data files
-USE_PYTHON=	autoplist distutils
-
-GH_ACCOUNT=	ahupp
-
-# both install module as magic.py
-CONFLICTS=	${PYTHON_PKGNAMEPREFIX}magic
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
+TEST_ENV=	LC_ALL=en_US.UTF-8 PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR}
 
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
+USE_GITHUB=	yes
+GH_ACCOUNT=	ahupp
 
 .include <bsd.port.mk>

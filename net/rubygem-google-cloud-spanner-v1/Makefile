@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	google-cloud-spanner-v1
-PORTVERSION=	0.7.3
+PORTVERSION=	0.9.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

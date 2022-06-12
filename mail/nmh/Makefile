@@ -2,7 +2,7 @@
 
 PORTNAME=	nmh
 PORTVERSION=	1.7.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	SAVANNAH
 
@@ -17,7 +17,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--libdir=${PREFIX}/libexec/nmh \
 		--sysconfdir=${PREFIX}/etc \
 		--docdir=${DOCSDIR}
-LIB_DEPENDS=	libcurl.so:ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		liblockfile.so:devel/liblockfile
 
 OPTIONS_DEFINE=	DOCS HASH_BKP SASL2 TLS REPLYFILTER
 OPTIONS_RADIO=	MIME_HTML
@@ -76,7 +77,7 @@ W3M_DESC=	Install dependencies for www/w3m
 W3M_BUILD_DEPENDS=	w3m>=0:www/w3m
 W3M_RUN_DEPENDS=	w3m>=0:www/w3m
 
-OPTIONS_DEFAULT=	SMTP FLOCK W3M
+OPTIONS_DEFAULT=	SENDMAIL_PIPE FLOCK W3M
 
 .include <bsd.port.options.mk>
 
@@ -93,7 +94,7 @@ LDFLAGS+=	-g
 DEBUG_FLAGS+=	-O0 -Wall -Wextra -g
 .endif
 
-CONFLICTS_INSTALL=	ja-mh pixie p5-Dist-Joseki
+CONFLICTS_INSTALL=	ali ja-mh pixie p5-Dist-Joseki nmh-devel
 
 post-install:
 	@${FIND} ${STAGEDIR}${ETCDIR} -type f -exec ${MV} {} {}-dist \;

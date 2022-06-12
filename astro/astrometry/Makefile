@@ -1,8 +1,8 @@
 # Created by: Sébastien Santoro <dereckson@gmail.com>
 
 PORTNAME=	astrometry
-PORTVERSION=	0.85
-PORTREVISION=	2
+PORTVERSION=	0.89
+PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	http://astrometry.net/downloads/
 DISTNAME=	${PORTNAME}.net-${PORTVERSION}
@@ -10,7 +10,7 @@ DISTNAME=	${PORTNAME}.net-${PORTVERSION}
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Astronomic calibration service
 
-LICENSE=	GPLv2
+LICENSE=	GPLv3+
 
 BROKEN_armv6=		fails to link: os-features-test.c:10: undefined symbol 'canonicalize_file_name'
 BROKEN_armv7=		fails to link: os-features-test.c:10: undefined symbol 'canonicalize_file_name'
@@ -27,6 +27,9 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astropy>0:astro/py-astropy@${PY_FLAVOR} \
 
 USES=		gmake jpeg localbase pkgconfig python shebangfix
 USE_LDCONFIG=	yes
+
+CONFLICTS_INSTALL=	afni p5-Text-RecordParser # bin/imstat bin/tabmerge
+
 SHEBANG_FILES=	bin/* sdss/*.py solver/*.py util/[!c]*.py
 
 MAKE_ARGS=	NETPBM_INC="-I${LOCALBASE}/include/netpbm" \

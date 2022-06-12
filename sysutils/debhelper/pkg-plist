@@ -69,6 +69,7 @@ bin/postinst-emacsen
 bin/postinst-icons
 bin/postinst-init
 bin/postinst-init-nostart
+bin/postinst-init-restart
 bin/postinst-init-tmpfiles
 bin/postinst-menu
 bin/postinst-menu-method
@@ -80,6 +81,7 @@ bin/postinst-systemd-restartnostart
 bin/postinst-systemd-start
 bin/postinst-systemd-user-dont-enable
 bin/postinst-systemd-user-enable
+bin/postinst-systemd-user-restart
 bin/postinst-sysusers
 bin/postinst-ucf
 bin/postinst-usrlocal
@@ -96,15 +98,19 @@ bin/postrm-sgmlcatalog
 bin/postrm-systemd
 bin/postrm-systemd-reload-only
 bin/postrm-systemd-user
+bin/postrm-systemd-user-reload-only
 bin/postrm-ucf
 bin/postrm-xfonts
 bin/preinst-emacsen
+bin/preinst-init-stop
+bin/preinst-systemd-stop
 bin/prerm-alternatives
 bin/prerm-emacsen
 bin/prerm-init
 bin/prerm-init-norestart
 bin/prerm-systemd
 bin/prerm-systemd-restart
+bin/prerm-systemd-user-stop
 bin/prerm-usrlocal
 bin/prerm-wm
 %%SITE_PERL%%/DH/AddonAPI.pm

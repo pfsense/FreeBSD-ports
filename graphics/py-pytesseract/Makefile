@@ -1,11 +1,13 @@
 PORTNAME=	pytesseract
-PORTVERSION=	0.3.8
+PORTVERSION=	0.3.10
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	wrapper for Google's Tesseract OCR engine
+
+PATCH_STRIP=	-p1
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,8 +17,9 @@ RUN_DEPENDS=	tesseract:graphics/tesseract \
 TEST_DEPENDS=	${RUN_DEPENDS} \
 		${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR}
+		# if py-tox cannot detect py-filelock, be sure to have version 3.4.2_1 of the latter
 
-USES=		localbase python:3.4+
+USES=		localbase python:3.7+
 USE_GITHUB=	yes
 GH_ACCOUNT=	madmaze
 USE_PYTHON=	autoplist concurrent distutils
@@ -24,7 +27,17 @@ USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 
 do-test:
-		cd ${WRKSRC} && ${SETENV} ${TEST_ENV} tox -e ${PY_FLAVOR} --sitepackages
+		# FIXME hack alert. graphics/leptonica by default does not include
+		# jpeg2000 (openjpeg) support, and the pytesseract self-test is not
+		# smart enough to detect that and skip the test, so let us check
+		# and punch out the jpeg2000 test if it is pointless running it.
+		# https://github.com/madmaze/pytesseract/issues/419
+		@if ${READELF} -d ${LOCALBASE}/lib/liblept.so | ${EGREP} -q '\<NEEDED\>.+\<libopenjp2\.so\.[[:digit:]]' ; then : ; else \
+			if [ $$? -ne 1 ] ; then exit 1 ; fi ; \
+			${ECHO_MSG} >&2 '===>   liblept.so (graphics/leptonica) is linked without libopenjp2, disabling JPEG2000 test' ; \
+			${REINPLACE_CMD} '/jpeg2000/d' ${WRKSRC}/tests/pytesseract_test.py ; \
+		fi
+		cd ${WRKSRC} && ${SETENV} ${TEST_ENV} tox-${PYTHON_VER} -e ${PY_FLAVOR} --sitepackages
 
 .include <bsd.port.pre.mk>
 

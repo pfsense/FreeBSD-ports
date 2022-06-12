@@ -1,7 +1,7 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
 
 PORTNAME=	gupnp-av
-PORTVERSION=	0.14.0
+PORTVERSION=	0.14.1
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 

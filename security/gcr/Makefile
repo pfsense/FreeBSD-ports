@@ -5,6 +5,12 @@ PORTVERSION=	3.40.0
 CATEGORIES=	security gnome
 MASTER_SITES=	GNOME
 
+LICENSE=	LGPL20+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	b3ca1d02bb01.patch:-p1 # https://gitlab.gnome.org/GNOME/gcr/-/merge_requests/81
+
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library for bits of crypto UI and parsing
 

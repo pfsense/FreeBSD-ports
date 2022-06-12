@@ -1,12 +1,11 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
 
 PORTNAME=	beets
-PORTVERSION=	1.4.9
-PORTREVISION=	4
+DISTVERSION=	1.6.0
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 
-MAINTAINER=	stiginge@pvv.org
+MAINTAINER=	rigoletto@FreeBSD.org
 COMMENT=	Media library management system for obsessive-compulsive music geeks
 
 LICENSE=	MIT
@@ -14,9 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}confuse>=1.0.0:devel/py-confuse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jellyfish>=0:devel/py-jellyfish@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}munkres>=0:math/py-munkres@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mediafile>=0.2.0:devel/py-mediafile@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}munkres>=1.0.0:math/py-munkres@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}musicbrainzngs>=0.4:audio/py-musicbrainzngs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mutagen>=1.33:audio/py-mutagen@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mutagen>=1.45:audio/py-mutagen@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyacoustid>=0:audio/py-pyacoustid@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.9:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \

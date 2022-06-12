@@ -1,7 +1,7 @@
 PORTNAME=	etcd
 PORTVERSION=	2.3.8
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	devel
 PKGNAMEPREFIX=	coreos-
 
@@ -18,8 +18,7 @@ GH_ACCOUNT=	coreos
 GO_PKGNAME=	github.com/coreos/etcd
 GO_TARGET=	github.com/coreos/etcd github.com/coreos/etcd/etcdctl
 
-CONFLICTS_INSTALL=	coreos-etcd31-* coreos-etcd32-* coreos-etcd33-* \
-			coreos-etcd34-* coreos-etcdctl-0.*
+CONFLICTS_INSTALL=	coreos-etcd[0-9][0-9]
 
 PORTSCOUT=	limit:^2.*
 

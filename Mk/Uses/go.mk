@@ -3,9 +3,10 @@
 #
 # Feature:	go
 # Usage:	USES=go
-# Valid ARGS:	(none), modules, no_targets, run
+# Valid ARGS:	(none), N.NN, N.NN-devel, modules, no_targets, run
 #
-# (none)	Setup GOPATH and build in GOPATH mode.
+# (none)	Setup GOPATH and build in GOPATH mode using default Go version.
+# N.NN[-devel]	Specify Go version
 # modules	If the upstream uses Go modules, this can be set to build
 #		in modules-aware mode.
 # no_targets	Indicates that Go is needed at build time as a part of
@@ -19,7 +20,7 @@
 #
 # GO_MODULE
 #	The name of the module as specified by "module" directive in go.mod.
-#	In most cases, this is the only requred variable for ports that
+#	In most cases, this is the only required variable for ports that
 #	use Go modules.
 #
 # GO_PKGNAME
@@ -52,102 +53,117 @@
 # GO_TESTFLAGS
 #	Additional build arguments to be passed to the `go test` command
 #
-# GO_PORT
-#	The Go port to use.  By default this is lang/go but can be set
-#	to lang/go-devel in make.conf for testing with future Go versions.
-#
-#	This variable must not be set by individual ports!
-#
-# MAINTAINER: ports@FreeBSD.org
+# MAINTAINER: go@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_GO_MK)
 _INCLUDE_USES_GO_MK=	yes
 
-.if !empty(go_ARGS:Nmodules:Nno_targets:Nrun)
-IGNORE=	USES=go has invalid arguments: ${go_ARGS:Nmodules:Nno_targets:Nrun}
-.endif
+# When adding a version, please keep the comment in
+# Mk/bsd.default-versions.mk in sync.
+GO_VALID_VERSIONS=	1.17 1.18 1.19-devel
+
+# Check arguments sanity
+.  if !empty(go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun)
+IGNORE=	USES=go has invalid arguments: ${go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun}
+.  endif
+
+# Parse Go version
+GO_VERSION=	${go_ARGS:Nmodules:Nno_targets:Nrun:C/^$/${GO_DEFAULT}/}
+.  if empty(GO_VALID_VERSIONS:M${GO_VERSION})
+IGNORE?= USES=go has invalid version number: ${GO_VERSION}
+.  endif
+GO_SUFFIX=	${GO_VERSION:S/.//:C/.*-devel/-devel/}
+GO_PORT=	lang/go${GO_SUFFIX}
 
 # Settable variables
 
-.if empty(GO_PKGNAME)
-.  if !empty(GH_SUBDIR)
+.  if empty(GO_PKGNAME)
+.    if !empty(GH_SUBDIR)
 GO_PKGNAME=	${GH_SUBDIR:S|^src/||}
-.  elif !empty(GL_SUBDIR)
+.    elif !empty(GL_SUBDIR)
 GO_PKGNAME=	${GL_SUBDIR:S|^src/||}
-.  else
+.    else
 GO_PKGNAME=	${PORTNAME}
+.    endif
 .  endif
-.endif
 
 GO_TARGET?=	${GO_PKGNAME}
 GO_TESTTARGET?=	./...
 
 GO_BUILDFLAGS+=	-v -buildmode=exe -trimpath
-.if !defined(WITH_DEBUG) && empty(GO_BUILDFLAGS:M-ldflags*)
+.  if !defined(WITH_DEBUG) && empty(GO_BUILDFLAGS:M-ldflags*)
 GO_BUILDFLAGS+=	-ldflags=-s
-.endif
+.  endif
 GO_TESTFLAGS+=	-v
+.  if ${GO_VERSION} != 1.17
+GO_BUILDFLAGS+=	-buildvcs=false
+GO_TESTFLAGS+=	-buildvcs=false
+.  endif
 
 CGO_ENABLED?=	1
 CGO_CFLAGS+=	-I${LOCALBASE}/include
 CGO_LDFLAGS+=	-L${LOCALBASE}/lib
 
-.if ${ARCH} == armv6 || ${ARCH} == armv7
+.  if ${ARCH} == armv6 || ${ARCH} == armv7
 GOARM?=		${ARCH:C/armv//}
-.endif
+.  endif
 
 GO_GOPROXY?=	https://proxy.golang.org
 GO_GOSUMDB?=	sum.golang.org
 
 # Read-only variables
 
-GO_CMD=		${LOCALBASE}/bin/go
+GO_CMD=		${LOCALBASE}/bin/go${GO_SUFFIX}
 GO_WRKDIR_BIN=	${WRKDIR}/bin
 GO_ENV+=	CGO_ENABLED=${CGO_ENABLED} \
 		CGO_CFLAGS="${CGO_CFLAGS}" \
 		CGO_LDFLAGS="${CGO_LDFLAGS}" \
 		GOARM=${GOARM}
 
-.if ${go_ARGS:Mmodules}
+.  if ${go_ARGS:Mmodules}
 GO_BUILDFLAGS+=	-mod=vendor
 GO_TESTFLAGS+=	-mod=vendor
 GO_GOPATH=	${DISTDIR}/go/${PKGORIGIN:S,/,_,g}
+GO_MODCACHE=	file://${GO_GOPATH}/pkg/mod/cache/download
 GO_WRKSRC=	${WRKSRC}
 GO_ENV+=	GOPATH="${GO_GOPATH}" \
 		GOBIN="${GO_WRKDIR_BIN}" \
 		GO111MODULE=on \
 		GOFLAGS=-modcacherw \
 		GOSUMDB=${GO_GOSUMDB}
-.  if defined(GO_MODULE)
+.    if defined(GO_MODULE)
 GO_MODNAME=	${GO_MODULE:C/^([^@]*)(@([^@]*)?)/\1/}
+.      if empty(DISTFILES:Mgo.mod\:*) && empty(DISTFILES:Mgo.mod)
+# Unless already setup for download by other means,
+# arrange to pull go.mod and distribution archive from GOPROXY.
 GO_MODVERSION=	${GO_MODULE:C/^([^@]*)(@([^@]*)?)/\2/:M@*:S/^@//:S/^$/${DISTVERSIONFULL}/}
 GO_MODFILE=	${GO_MODVERSION}.mod
 GO_DISTFILE=	${GO_MODVERSION}.zip
-DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
 MASTER_SITES+=	${GO_GOPROXY}/${GO_MODNAME:C/([A-Z])/!\1/g:tl}/@v/
 DISTFILES+=	${GO_MODFILE} ${GO_DISTFILE}
-EXTRACT_ONLY+=	${GO_DISTFILE}
 WRKSRC=		${WRKDIR}/${GO_MODNAME}@${GO_MODVERSION}
+.      endif
+EXTRACT_ONLY+=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
+DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
 FETCH_DEPENDS+=	${GO_CMD}:${GO_PORT} \
 		ca_root_nss>0:security/ca_root_nss
 USES+=		zip
-.  else
+.    else
 GO_ENV+=	GO_NO_VENDOR_CHECKS=1
-.  endif
-.else
+.    endif
+.  else
 GO_GOPATH=	${WRKDIR}
 GO_WRKSRC=	${WRKDIR}/src/${GO_PKGNAME}
 GO_ENV+=	GOPATH="${GO_GOPATH}" \
 		GOBIN="" \
 		GO111MODULE=off
-.endif
-
-GO_PORT?=	lang/go
+.  endif
 
 BUILD_DEPENDS+=	${GO_CMD}:${GO_PORT}
-.if ${go_ARGS:Mrun}
+BINARY_ALIAS+=	go=go${GO_SUFFIX} gofmt=gofmt${GO_SUFFIX}
+.  if ${go_ARGS:Mrun}
 RUN_DEPENDS+=	${GO_CMD}:${GO_PORT}
-.endif
+.  endif
 
 _USES_POST+=	go
 .endif # !defined(_INCLUDE_USES_GO_MK)
@@ -155,26 +171,40 @@ _USES_POST+=	go
 .if defined(_POSTMKINCLUDED) && !defined(_INCLUDE_USES_GO_POST_MK)
 _INCLUDE_USES_GO_POST_MK=	yes
 
-.if !target(post-fetch) && ${go_ARGS:Mmodules} && defined(GO_MODULE)
-post-fetch:
+.  if ${go_ARGS:Mmodules} && defined(GO_MODULE)
+_USES_fetch+=	200:go-pre-fetch 800:go-post-fetch
+# Check that pkg can be installed or is already available,
+# otherwise it will be impossible to install go and fetch dependencies.
+go-pre-fetch:
+.    if defined(CLEAN_FETCH_ENV) && !exists(${PKG_BIN})
+	@${ECHO_MSG} "===> CLEAN_FETCH_ENV is defined, cannot download Go modules (pkg and go are required)"; \
+	exit 1
+.    endif
+# Download all required build dependencies to GOMODCACHE.
+go-post-fetch:
 	@${ECHO_MSG} "===> Fetching ${GO_MODNAME} dependencies";
 	@(cd ${DISTDIR}/${DIST_SUBDIR}; \
 		[ -e go.mod ] || ${RLN} ${GO_MODFILE} go.mod; \
-		${SETENV} ${GO_ENV} GOPROXY=${GO_GOPROXY} ${GO_CMD} mod download -x)
-.endif
+		${SETENV} ${GO_ENV} GOPROXY=${GO_GOPROXY} ${GO_CMD} mod download -x all)
+.  endif
 
-.if !target(post-extract)
+_USES_extract+=	800:go-post-extract
 .  if empty(go_ARGS)
-post-extract:
+# Legacy (GOPATH) build mode, setup directory structure expected by Go for the main module.
+go-post-extract:
 	@${MKDIR} ${GO_WRKSRC:H}
 	@${LN} -sf ${WRKSRC} ${GO_WRKSRC}
 .  elif ${go_ARGS:Mmodules} && defined(GO_MODULE)
-post-extract:
-	@(cd ${GO_WRKSRC}; ${SETENV} ${GO_ENV} GOPROXY=off ${GO_CMD} mod vendor)
-.  endif 
-.endif
+# Module-aware build mode. Although not strictly necessary (all build dependencies should be
+# already in MODCACHE), vendor them so we can patch them if needed.
+go-post-extract:
+	@${ECHO_MSG} "===> Tidying ${GO_MODNAME} dependencies";
+	@(cd ${GO_WRKSRC}; ${SETENV} ${GO_ENV} GOPROXY=${GO_MODCACHE} ${GO_CMD} mod tidy -e)
+	@${ECHO_MSG} "===> Vendoring ${GO_MODNAME} dependencies";
+	@(cd ${GO_WRKSRC}; ${SETENV} ${GO_ENV} GOPROXY=${GO_MODCACHE} ${GO_CMD} mod vendor -e)
+.  endif
 
-.if !target(do-build) && empty(go_ARGS:Mno_targets)
+.  if !target(do-build) && empty(go_ARGS:Mno_targets)
 do-build:
 	(cd ${GO_WRKSRC}; \
 	for t in ${GO_TARGET}; do \
@@ -187,9 +217,9 @@ do-build:
 			-o ${GO_WRKDIR_BIN}/$${out} \
 			$${pkg}; \
 	done)
-.endif
+.  endif
 
-.if !target(do-install) && empty(go_ARGS:Mno_targets)
+.  if !target(do-install) && empty(go_ARGS:Mno_targets)
 do-install:
 	for t in ${GO_TARGET}; do \
 		dst=$$(${ECHO_CMD} $${t} | \
@@ -202,36 +232,36 @@ do-install:
 		${ECHO_MSG} "===>  Installing $${src} as $${dst}"; \
 		${INSTALL_PROGRAM} ${GO_WRKDIR_BIN}/$${src} $${dst}; \
 	done
-.endif
+.  endif
 
-.if !target(do-test) && empty(go_ARGS:Mno_targets)
+.  if !target(do-test) && empty(go_ARGS:Mno_targets)
 do-test:
 	(cd ${GO_WRKSRC}; \
 	for t in ${GO_TESTTARGET}; do \
 		${ECHO_MSG} "===>  Testing $${t}"; \
 		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} test ${GO_TESTFLAGS} $${t}; \
 	done)
-.endif
+.  endif
 
-.if ${go_ARGS:Mmodules} && defined(GO_MODULE)
+.  if ${go_ARGS:Mmodules} && defined(GO_MODULE)
 gomod-clean:
-.if exists(${GO_CMD})
+.    if exists(${GO_CMD})
 	@${ECHO_MSG} "===>  Cleaning Go module cache"
 	@${SETENV} ${GO_ENV} ${GO_CMD} clean -modcache
-.else
+.    else
 	@${ECHO_MSG} "===>    Skipping since ${GO_CMD} is not installed"
-.endif
+.    endif
 
 # Hook up to distclean
-.if !target(post-clean) && !make(clean)
+.    if !target(post-clean) && !make(clean)
 post-clean: gomod-clean
 	@${RM} -r ${GO_GOPATH}
-.endif
-.endif
+.    endif
+.  endif
 
 # Helper targets for port maintainers
 
-.if ${go_ARGS:Mmodules} && !defined(GO_MODULE)
+.  if ${go_ARGS:Mmodules} && !defined(GO_MODULE)
 _MODULES2TUPLE_CMD=	modules2tuple
 gomod-vendor-deps:
 	@if ! type ${GO_CMD} > /dev/null 2>&1; then \
@@ -250,6 +280,6 @@ gomod-vendor-diff: gomod-vendor-deps patch
 	[ -r vendor/modules.txt ] && ${_MODULES2TUPLE_CMD} vendor/modules.txt | ${SED} 's|GH_TUPLE=|	|; s| \\$$||' | ${GREP} -v '		\\' > ${WRKDIR}/GH_TUPLE-new.txt && \
 	echo ${GH_TUPLE} | ${TR} -s " " "\n" | ${SED} "s|^|		|" > ${WRKDIR}/GH_TUPLE-old.txt && \
 	${DIFF} ${WRKDIR}/GH_TUPLE-old.txt ${WRKDIR}/GH_TUPLE-new.txt || exit 0
-.endif
+.  endif
 
 .endif # defined(_POSTMKINCLUDED) && !defined(_INCLUDE_USES_GO_POST_MK)

@@ -1,7 +1,7 @@
 # Created by: Xin LI <delphij@FreeBSD.org>
 
 PORTNAME=		openldap
-DISTVERSION=		2.5.9
+DISTVERSION=		2.5.12
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		https://www.openldap.org/software/download/OpenLDAP/%SUBDIR%/ \
@@ -46,9 +46,9 @@ CONFLICTS_INSTALL=	${PORTNAME}2[0-46-9]-server ${PORTNAME}-server
 GNU_CONFIGURE=		yes
 
 PORTREVISION_CLIENT=	0
-PORTREVISION_SERVER=	1
+PORTREVISION_SERVER=	0
 OPENLDAP_SHLIB_MAJOR=	0
-OPENLDAP_SHLIB_MINOR=	1.4
+OPENLDAP_SHLIB_MINOR=	1.7
 OPENLDAP_MAJOR=		${DISTVERSION:R}
 
 OPTIONS_DEFINE=		DEBUG
@@ -376,6 +376,8 @@ CONTRIB_CLEANFILES+=	smbk5pwd.a
 post-patch:
 	@${REINPLACE_CMD} -e 's|%LOCALSTATEDIR%/run/|${LDAP_RUN_DIR}/|g' \
 		${SED_MODULES} ${WRKSRC}/servers/slapd/slapd.conf
+	@${REINPLACE_CMD} -e 's|%LOCALSTATEDIR%/run/|${LDAP_RUN_DIR}/|g' \
+		${SED_MODULES} ${WRKSRC}/servers/slapd/slapd.ldif
 	@${REINPLACE_CMD} -e 's|^OPT =.*|OPT = ${CFLAGS}|g' \
 		-e 's|^CC =.*|CC = ${CC}|g' \
 		${SED_MODULES} ${WRKSRC}/contrib/slapd-modules/*/Makefile \

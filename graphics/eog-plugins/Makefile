@@ -1,7 +1,8 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	eog-plugins
-DISTVERSION=	3.26.7
+DISTVERSION=	3.26.8
+PORTREVISION=	2
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3

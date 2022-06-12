@@ -2,11 +2,12 @@
 
 PORTNAME=	redis6
 PORTVERSION=	6.0.16
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 DISTNAME=	redis-${PORTVERSION}
 
-MAINTAINER=	osa@FreeBSD.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Persistent key-value database with built-in net interface
 
 LICENSE=	BSD3CLAUSE
@@ -15,6 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES+=		compiler:c11 gmake
 
 OPTIONS_DEFINE=	JEMALLOC TESTS TLS TRIB
+OPTIONS_DEFAULT=	TLS
 OPTIONS_RADIO=	EXTLUA
 OPTIONS_RADIO_EXTLUA=	LUA LUAJIT LUAJITOR
 OPTIONS_SUB=	yes
@@ -69,7 +71,7 @@ LDFLAGS=	-Wl,-E
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
 
-CONFLICTS?=	redis5-5.* redis-6.* redis-devel-6.*
+CONFLICTS?=	redis-[1-9].* redis-devel-* redis62-*
 
 USE_RC_SUBR=	redis sentinel
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \

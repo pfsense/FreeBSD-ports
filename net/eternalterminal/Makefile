@@ -1,10 +1,9 @@
 PORTNAME=	eternalterminal
 DISTVERSIONPREFIX=	et-v
-DISTVERSION=	5.1.9
-PORTREVISION=	10
+DISTVERSION=	6.2.1
 CATEGORIES=	net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	willtisdale@gmail.com
 COMMENT=	Remote shell that reconnects without interrupting session
 
 LICENSE=	APACHE20
@@ -13,17 +12,26 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
 		libprotobuf.so:devel/protobuf \
-		libsodium.so:security/libsodium
+		libsodium.so:security/libsodium \
+		libunwind.so:devel/libunwind
 
 USES=		cmake compiler:c++11-lang ncurses
 USE_GITHUB=	yes
 GH_ACCOUNT=	MisterTea
 GH_PROJECT=	EternalTerminal
 
-PLIST_FILES=	bin/et \
-		bin/etserver \
-		bin/etterminal \
-		bin/htm \
-		bin/htmd
+CMAKE_ON=	DISABLE_VCPKG
+
+CONFLICTS_INSTALL=	linux-enemyterritory # bin/et
+
+post-patch:
+	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' ${WRKSRC}/rc.d/etserver
+
+post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/etserver
+	${INSTALL_DATA} ${WRKSRC}/etc/et.cfg \
+		${STAGEDIR}${PREFIX}/etc/etserver/et.cfg.sample
+	${INSTALL_SCRIPT} ${WRKSRC}/rc.d/etserver \
+		${STAGEDIR}${PREFIX}/etc/rc.d
 
 .include <bsd.port.mk>

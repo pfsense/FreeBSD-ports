@@ -1,6 +1,6 @@
---- base/process/process_metrics_freebsd.cc.orig	2021-10-01 01:36:37 UTC
+--- base/process/process_metrics_freebsd.cc.orig	2022-04-21 18:48:31 UTC
 +++ base/process/process_metrics_freebsd.cc
-@@ -3,21 +3,41 @@
+@@ -3,20 +3,39 @@
  // found in the LICENSE file.
  
  #include "base/process/process_metrics.h"
@@ -16,18 +16,16 @@
 +#include <kvm.h>
 +#include <libutil.h>
 +
- #include "base/cxx17_backports.h"
  #include "base/memory/ptr_util.h"
  #include "base/process/process_metrics_iocounters.h"
 +#include "base/values.h"
  
  namespace base {
 +namespace {
- 
 +int GetPageShift() {
 +  int pagesize = getpagesize();
 +  int pageshift = 0;
-+
+ 
 +  while (pagesize > 1) {
 +    pageshift++;
 +    pagesize >>= 1;
@@ -44,7 +42,22 @@
  
  // static
  std::unique_ptr<ProcessMetrics> ProcessMetrics::CreateProcessMetrics(
-@@ -37,7 +57,7 @@ double ProcessMetrics::GetPlatformIndependentCPUUsage(
+@@ -26,17 +45,18 @@ std::unique_ptr<ProcessMetrics> ProcessMetrics::Create
+ 
+ double ProcessMetrics::GetPlatformIndependentCPUUsage() {
+   struct kinfo_proc info;
+-  int mib[] = {CTL_KERN, KERN_PROC, KERN_PROC_PID, process_};
+-  size_t length = sizeof(info);
++  size_t length = sizeof(struct kinfo_proc);
+ 
++  int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, process_ };
++
+   if (sysctl(mib, std::size(mib), &info, &length, NULL, 0) < 0)
+-    return 0;
++    return 0.0;
+ 
+-  return (info.ki_pctcpu / FSCALE) * 100.0;
++  return static_cast<double>((info.ki_pctcpu * 100.0) / FSCALE);
  }
  
  TimeDelta ProcessMetrics::GetCumulativeCPUUsage() {
@@ -53,7 +66,7 @@
    return TimeDelta();
  }
  
-@@ -68,4 +88,221 @@ size_t GetSystemCommitCharge() {
+@@ -67,4 +87,221 @@ size_t GetSystemCommitCharge() {
    return mem_total - (mem_free*pagesize) - (mem_inactive*pagesize);
  }
  
@@ -130,7 +143,7 @@
 +
 +  length = sizeof(total_count);
 +
-+  if (sysctl(mib, base::size(mib), &total_count, &length, NULL, 0) < 0) {
++  if (sysctl(mib, std::size(mib), &total_count, &length, NULL, 0) < 0) {
 +    total_count = -1;
 +  }
 +

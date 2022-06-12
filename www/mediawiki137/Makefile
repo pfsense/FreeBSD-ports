@@ -1,9 +1,9 @@
 # Created by: Gerrit Beine <tux@pinguru.net>
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.37.0
+PORTVERSION=	1.37.2
 CATEGORIES=	www
-MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
+MASTER_SITES=	https://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	137${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	wen@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki13[1-6]
+CONFLICTS=	mediawiki13[5-6] mediawiki138
 
 USES=		cpe php:flavors shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \

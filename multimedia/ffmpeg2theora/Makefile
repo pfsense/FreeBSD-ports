@@ -6,8 +6,11 @@ PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	http://v2v.cc/~j/ffmpeg2theora/downloads/
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Reencode many media file formats to Ogg Theora
+
+DEPRECATED=	Legacy video format, superseded by AV1/H.264/H.265/VP8/VP9
+EXPIRATION_DATE=2022-06-30
 
 LICENSE=	GPLv3
 

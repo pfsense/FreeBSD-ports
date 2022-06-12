@@ -75,18 +75,18 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.23.4
+KDE_PLASMA_VERSION?=		5.24.5
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.88.0
+KDE_FRAMEWORKS_VERSION?=	5.94.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	21.08.3
-KDE_APPLICATIONS_SHLIB_VER?=	5.18.3
+KDE_APPLICATIONS_VERSION?=	22.04.2
+KDE_APPLICATIONS_SHLIB_VER?=	5.20.2
 # G as in KDE Gear, and as in "don't make the variable name longer than required"
-KDE_APPLICATIONS_SHLIB_G_VER?=	21.8.3
+KDE_APPLICATIONS_SHLIB_G_VER?=	22.04.2
 KDE_APPLICATIONS_BRANCH?=	stable
 
 # Extended KDE universe applications.
@@ -156,11 +156,11 @@ MASTER_SITES?=		KDE/${KDE_APPLICATIONS_BRANCH}/release-service/${KDE_APPLICATION
 # defines OPTION DOCS -- the _KDE_OPTIONS here is to
 # avoid make errors when there are no options defined at all.
 _KDE_OPTIONS=		bogus ${OPTIONS_DEFINE}
-.          if ${_KDE_OPTIONS:MDOCS}
+.        if ${_KDE_OPTIONS:MDOCS}
 DOCSDIR=		${PREFIX}/share/doc
 PORTDOCS?=		HTML/*
 USE_KDE+=		doctools_build
-.          endif
+.        endif
 # Further pass along a SHLIB_VER PLIST_SUB
 PLIST_SUB+=		KDE_APPLICATIONS_SHLIB_VER=${KDE_APPLICATIONS_SHLIB_VER} \
 			KDE_APPLICATIONS_VERSION_SHORT="${KDE_APPLICATIONS_VERSION:R:R}"
@@ -274,7 +274,7 @@ _USE_PLASMA_ALL=	activitymanagerd breeze breeze-gtk \
 
 # List of components of the KDE PIM distribution (part of applications).
 _USE_KDEPIM5_ALL=	akonadicontacts akonadiimportwizard akonadimime akonadinotes \
-			akonadicalendar akonadisearch alarmcalendar \
+			akonadicalendar akonadisearch \
 			calendarcore calendarsupport calendarutils \
 			contacts eventviews gapi grantleetheme \
 			gravatar identitymanagement imap \
@@ -301,7 +301,7 @@ kde-activities-stats_PORT=	x11/kf5-kactivities-stats
 kde-activities-stats_LIB=	libKF5ActivitiesStats.so
 
 kde-apidox_PORT=		devel/kf5-kapidox
-kde-apidox_PATH=		${KDE_PREFIX}/bin/kapidox_generate
+kde-apidox_PATH=		${KDE_PREFIX}/bin/kapidox-generate
 kde-apidox_TYPE=		run
 
 kde-archive_PORT=		archivers/kf5-karchive
@@ -431,10 +431,10 @@ kde-kio_PORT=			devel/kf5-kio
 kde-kio_LIB=			libKF5KIOCore.so
 
 kde-kirigami2_PORT=		x11-toolkits/kf5-kirigami2
-kde-kirigami2_PATH=		${QT_QMLDIR}/org/kde/kirigami.2/libkirigamiplugin.so
+kde-kirigami2_PATH=		${QT_QMLDIR}/org/kde/kirigami.2/libKirigamiPlugin.so
 
 kde-kquickcharts_PORT=		graphics/kf5-kquickcharts
-kde-kquickcharts_PATH=		${QT_QMLDIR}/org/kde/quickcharts/controls/libchartscontrolsplugin.so
+kde-kquickcharts_PATH=		${QT_QMLDIR}/org/kde/quickcharts/libQuickCharts.so
 
 kde-kross_PORT=			lang/kf5-kross
 kde-kross_LIB=			libKF5KrossCore.so
@@ -572,10 +572,10 @@ kde-kde-gtk-config_PORT=	x11-themes/plasma5-kde-gtk-config
 kde-kde-gtk-config_PATH=	${KDE_PREFIX}/lib/kconf_update_bin/gtk_theme
 
 kde-kdeplasma-addons_PORT=	x11-toolkits/plasma5-kdeplasma-addons
-kde-kdeplasma-addons_PATH=	${QT_PLUGINDIR}/kcm_krunner_dictionary.so
+kde-kdeplasma-addons_LIB=	libplasmapotdprovidercore.so
 
 kde-kgamma5_PORT=		x11/plasma5-kgamma5
-kde-kgamma5_PATH=		${QT_PLUGINDIR}/kcm_kgamma.so
+kde-kgamma5_PATH=		${QT_PLUGINDIR}/plasma/kcms/systemsettings/kcm_kgamma.so
 
 kde-kmenuedit_PORT=		sysutils/plasma5-kmenuedit
 kde-kmenuedit_PATH=		${KDE_PREFIX}/bin/kmenuedit
@@ -671,9 +671,6 @@ kde-akonadicalendar_LIB=	libKF5AkonadiCalendar.so
 
 kde-akonadisearch_PORT=		net/akonadi-search
 kde-akonadisearch_LIB=		libKF5AkonadiSearchCore.so
-
-kde-alarmcalendar_PORT=		net/kalarmcal
-kde-alarmcalendar_LIB=		libKF5AlarmCalendar.so
 
 kde-calendarsupport_PORT=	net/calendarsupport
 kde-calendarsupport_LIB=	libKF5CalendarSupport.so

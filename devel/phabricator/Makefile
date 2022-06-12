@@ -1,6 +1,5 @@
 PORTNAME=	phabricator
-PORTVERSION=	20201119
-PORTREVISION=	2
+PORTVERSION=	20211218
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -30,8 +29,6 @@ SHEBANG_FILES=	resources/timezones/*.php \
 		scripts/drydock/*.php \
 		scripts/fact/*.php \
 		scripts/files/*.php \
-		scripts/install/install_rhel-derivs.sh \
-		scripts/install/install_ubuntu.sh \
 		scripts/lipsum/*.php \
 		scripts/mail/*.php \
 		scripts/repository/*.php \
@@ -63,7 +60,7 @@ USE_RC_SUBR=	phd
 SUB_FILES=	pkg-message
 PORTSCOUT=	ignore:1
 GH_ACCOUNT=	phacility
-GH_TAGNAME=	b2ab18f
+GH_TAGNAME=	dec9522
 
 PHP_DESTDIR=	lib/php/phabricator
 

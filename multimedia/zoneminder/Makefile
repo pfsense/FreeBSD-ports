@@ -1,5 +1,5 @@
 PORTNAME=	zoneminder
-DISTVERSION=	1.36.5
+DISTVERSION=	1.36.12
 CATEGORIES=	multimedia
 
 MAINTAINER=	bsd@abinet.ru
@@ -35,7 +35,7 @@ RUN_DEPENDS=	${ZM_DEPENDS} \
 
 USES=		cmake:insource,noninja cpe jpeg mysql perl5 php shebangfix ssl
 USE_GITHUB=	yes
-GH_TUPLE=	FriendsOfCake:crud:0bd63fb:crud/web/api/app/Plugin/Crud \
+GH_TUPLE=	FriendsOfCake:crud:1429237:crud/web/api/app/Plugin/Crud \
 		ZoneMinder:CakePHP-Enum-Behavior:ea90c0c:crud_plugin/web/api/app/Plugin/CakePHP-Enum-Behavior \
 		ZoneMinder:RtspServer:cd7fd49:rtsp_server/dep/RtspServer
 USE_RC_SUBR=	zoneminder
@@ -74,7 +74,7 @@ CMAKE_ARGS+=	-DZM_PERL_MM_PARMS=INSTALLDIRS=site \
 		-DZM_WEBDIR=${WWWDIR} \
 		-DZM_CGIDIR=${WWWDIR}/cgi-bin \
 		-DZM_CONTENTDIR=/var/db/zoneminder \
-		-DZM_MANPAGE_DEST_PREFIX=${PREFIX}/man \
+		-DZM_MANPAGE_DEST_PREFIX=${PREFIX}/share/man \
 		-DHAVE_SENDFILE=0 \
 		-DZM_NO_CURL=ON \
 		-DZM_NO_LIBVLC=ON \
@@ -113,6 +113,6 @@ post-install: # zmsystemctl.pl is only for systend-based systems
 	@cd ${STAGEDIR}${PREFIX} && \
 		${RM} \
 			bin/zmsystemctl.pl \
-			man/man8/zmsystemctl.pl.8.gz
+			share/man/man8/zmsystemctl.pl.8.gz
 
 .include <bsd.port.post.mk>

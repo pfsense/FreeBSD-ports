@@ -36,6 +36,7 @@ include/gtk-4.0/gdk/gdkdrag.h
 include/gtk-4.0/gdk/gdkdragsurface.h
 include/gtk-4.0/gdk/gdkdrawcontext.h
 include/gtk-4.0/gdk/gdkdrop.h
+include/gtk-4.0/gdk/gdkenums.h
 include/gtk-4.0/gdk/gdkenumtypes.h
 include/gtk-4.0/gdk/gdkevents.h
 include/gtk-4.0/gdk/gdkframeclock.h
@@ -88,7 +89,6 @@ include/gtk-4.0/gdk/gdkvulkancontext.h
 %%X11%%include/gtk-4.0/gdk/x11/gdkx11utils.h
 %%BROADWAY%%include/gtk-4.0/gsk/broadway/gskbroadwayrenderer.h
 include/gtk-4.0/gsk/gl/gskglrenderer.h
-include/gtk-4.0/gsk/gl/gsknglrenderer.h
 include/gtk-4.0/gsk/gsk-autocleanup.h
 include/gtk-4.0/gsk/gsk.h
 include/gtk-4.0/gsk/gskcairorenderer.h
@@ -328,6 +328,7 @@ include/gtk-4.0/gtk/gtkstringsorter.h
 include/gtk-4.0/gtk/gtkstylecontext.h
 include/gtk-4.0/gtk/gtkstyleprovider.h
 include/gtk-4.0/gtk/gtkswitch.h
+include/gtk-4.0/gtk/gtksymbolicpaintable.h
 include/gtk-4.0/gtk/gtktestatcontext.h
 include/gtk-4.0/gtk/gtktestutils.h
 include/gtk-4.0/gtk/gtktext.h
@@ -399,9 +400,21 @@ share/gir-1.0/Gdk-4.0.gir
 %%X11%%share/gir-1.0/GdkX11-4.0.gir
 share/gir-1.0/Gsk-4.0.gir
 share/gir-1.0/Gtk-4.0.gir
+%%DATADIR%%-4.0/emoji/da.gresource
 %%DATADIR%%-4.0/emoji/de.gresource
 %%DATADIR%%-4.0/emoji/es.gresource
 %%DATADIR%%-4.0/emoji/fr.gresource
+%%DATADIR%%-4.0/emoji/hu.gresource
+%%DATADIR%%-4.0/emoji/it.gresource
+%%DATADIR%%-4.0/emoji/ko.gresource
+%%DATADIR%%-4.0/emoji/lt.gresource
+%%DATADIR%%-4.0/emoji/ms.gresource
+%%DATADIR%%-4.0/emoji/nl.gresource
+%%DATADIR%%-4.0/emoji/pl.gresource
+%%DATADIR%%-4.0/emoji/pt.gresource
+%%DATADIR%%-4.0/emoji/ru.gresource
+%%DATADIR%%-4.0/emoji/sv.gresource
+%%DATADIR%%-4.0/emoji/uk.gresource
 %%DATADIR%%-4.0/emoji/zh.gresource
 %%DATADIR%%-4.0/gtk4builder.rng
 %%DATADIR%%-4.0/valgrind/gtk.supp

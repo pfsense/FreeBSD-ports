@@ -1,5 +1,6 @@
 PORTNAME=	qscintilla2
 PORTVERSION=	${QSCI2_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	${MASTER_SITES_QSCI2}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}qt5-
@@ -15,7 +16,7 @@ DESTDIRNAME=	INSTALL_ROOT
 
 USES=		python:3.5-3.9 pyqt:5 gl qt:5
 USE_GL=		gl
-USE_PYQT=	core gui printsupport widgets sip_build qtbuilder
+USE_PYQT=	pyqt5 sip_build qtbuilder
 USE_PYTHON=	concurrent flavors py3kplist
 USE_QT=		core gui printsupport widgets buildtools_build qmake_build
 

@@ -1,7 +1,7 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
 
 PORTNAME=	hitori
-PORTVERSION=	3.38.3
+PORTVERSION=	3.38.4
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3

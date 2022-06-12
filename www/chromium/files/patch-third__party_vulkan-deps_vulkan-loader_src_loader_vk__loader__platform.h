@@ -1,42 +1,36 @@
---- third_party/vulkan-deps/vulkan-loader/src/loader/vk_loader_platform.h.orig	2021-07-19 18:47:36 UTC
+--- third_party/vulkan-deps/vulkan-loader/src/loader/vk_loader_platform.h.orig	2022-05-19 14:06:27 UTC
 +++ third_party/vulkan-deps/vulkan-loader/src/loader/vk_loader_platform.h
-@@ -35,7 +35,7 @@
- #include "vulkan/vk_platform.h"
- #include "vulkan/vk_sdk_platform.h"
+@@ -43,7 +43,7 @@
+ #include "dlopen_fuchsia.h"
+ #endif  // defined(__Fuchsia__)
  
--#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__)
-+#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__)
+-#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__)
++#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+ #include <unistd.h>
+ // Note: The following file is for dynamic loading:
+ #include <dlfcn.h>
+@@ -106,7 +106,7 @@
+ // Override layer information
+ #define VK_OVERRIDE_LAYER_NAME "VK_LAYER_LUNARG_override"
+ 
+-#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__)
++#if defined(__linux__) || defined(__APPLE__) || defined(__Fuchsia__) || defined(__QNXNTO__) || defined(__FreeBSD__) || defined(__OpenBSD__)
  /* Linux-specific common code: */
  
- // Headers:
-@@ -52,6 +52,12 @@
- #include <stdlib.h>
- #include <libgen.h>
- 
-+#if defined(__FreeBSD__)
-+#include <sys/types.h>
-+#include <sys/user.h>
-+#include <libutil.h>
-+#endif
-+
  // VK Library Filenames, Paths, etc.:
- #define PATH_SEPARATOR ':'
- #define DIRECTORY_SYMBOL '/'
-@@ -120,6 +126,17 @@ static inline char *loader_platform_executable_path(ch
-     int ret = proc_pidpath(pid, buffer, size);
-     if (ret <= 0) return NULL;
-     buffer[ret] = '\0';
+@@ -197,6 +197,15 @@ static inline char *loader_platform_executable_path(ch
+     if (sysctl(mib, sizeof(mib) / sizeof(mib[0]), buffer, &size, NULL, 0) < 0) {
+         return NULL;
+     }
++
 +    return buffer;
 +}
-+#elif defined(__FreeBSD__)
++#elif defined(__OpenBSD__)
 +static inline char *loader_platform_executable_path(char *buffer, size_t size) {
-+    pid_t pid = getpid();
-+    struct kinfo_proc *p = kinfo_getproc(pid);
-+    if (p == NULL) return NULL;
-+    size_t len = strnlen(p->ki_comm, size - 1);
-+    memcpy(buffer, p->ki_comm, len);
-+    buffer[len] = '\0';
-+    free(p);
++    if ((buffer = getenv("CHROME_EXE_PATH")) != NULL)
++        return buffer;
++    else
++        buffer = "/usr/local/chrome/chrome";
+ 
      return buffer;
  }
- #elif defined(__Fuchsia__)

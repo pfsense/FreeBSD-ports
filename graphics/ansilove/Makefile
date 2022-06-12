@@ -1,5 +1,5 @@
 PORTNAME=	ansilove
-PORTVERSION=	4.1.5
+PORTVERSION=	4.1.6
 CATEGORIES=	graphics textproc
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -19,7 +19,7 @@ PORTDOCS=	AUTHORS ChangeLog README.md THANKS
 PORTEXAMPLES=	*
 
 PLIST_FILES=	bin/ansilove \
-		man/man1/ansilove.1.gz
+		share/man/man1/ansilove.1.gz
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

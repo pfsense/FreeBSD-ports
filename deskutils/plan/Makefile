@@ -3,18 +3,24 @@
 # Also update	ports/japanese/plan/ (ja-plan) when this port is updated
 
 PORTNAME=	plan
-PORTVERSION=	1.10.1
+PORTVERSION=	1.12
 CATEGORIES+=	deskutils
-MASTER_SITES=	ftp://plan.ftp.fu-berlin.de/
+MASTER_SITES=	https://cschubert.com/distfiles/plan/ \
+		ftp://ftp.bitrot.de/pub/plan/ \
+		ftp://plan.ftp.fu-berlin.de/
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	X/Motif schedule planner with calendar
 
+FETCH_ARGS=	-Fr --no-passive
 USES=		motif
+USE_XORG=	xt sm ice x11 xext
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 ALL_TARGET=	freebsd
 
 MAKE_ENV+=	DATADIR=${DATADIR} EXAMPLESDIR=${EXAMPLESDIR}
+
+CONFLICTS_INSTALL?=	ja-plan
 
 OPTIONS_DEFINE=	DOCS
 

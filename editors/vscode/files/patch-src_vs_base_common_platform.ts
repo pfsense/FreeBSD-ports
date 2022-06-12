@@ -1,4 +1,4 @@
---- src/vs/base/common/platform.ts.orig	2021-09-22 11:45:58 UTC
+--- src/vs/base/common/platform.ts.orig	2022-05-16 17:42:35 UTC
 +++ src/vs/base/common/platform.ts
 @@ -78,7 +78,7 @@ if (typeof navigator === 'object' && !isElectronRender
  	_isWindows = _userAgent.indexOf('Windows') >= 0;
@@ -16,5 +16,5 @@
 -	_isLinux = (nodeProcess.platform === 'linux');
 +	_isLinux = (nodeProcess.platform === 'linux' || nodeProcess.platform === 'freebsd');
  	_isLinuxSnap = _isLinux && !!nodeProcess.env['SNAP'] && !!nodeProcess.env['SNAP_REVISION'];
- 	_locale = LANGUAGE_DEFAULT;
- 	_language = LANGUAGE_DEFAULT;
+ 	_isElectron = isElectronProcess;
+ 	_isCI = !!nodeProcess.env['CI'] || !!nodeProcess.env['BUILD_ARTIFACTSTAGINGDIRECTORY'];

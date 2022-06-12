@@ -1,5 +1,6 @@
 PORTNAME=		carbonzipper
 DISTVERSION=		0.74
+PORTREVISION=	2
 CATEGORIES=		net-mgmt
 
 MAINTAINER=		a.andersson.thn@gmail.com
@@ -38,6 +39,8 @@ GH_TUPLE=		bradfitz:gomemcache:1952afa:gomemcache/vendor/github.com/bradfitz/gom
 GO_BUILDFLAGS=		-ldflags='-X main.BuildVersion=${DISTVERSION}'
 
 USE_RC_SUBR=		${PORTNAME}
+
+CONFLICTS_INSTALL=	carbonapi # bin/carbonzipper
 
 USERS=			carbon
 GROUPS=			carbon

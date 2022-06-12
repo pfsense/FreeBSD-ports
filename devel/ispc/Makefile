@@ -2,8 +2,7 @@
 
 PORTNAME=	ispc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.16.1
-PORTREVISION=	1
+DISTVERSION=	1.18.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,36 +19,38 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 LIB_DEPENDS=	libLLVM.so:devel/llvm${LLVM_VERSION}
 
 USES=		bison cmake compiler:c++14-lang python:build,test shebangfix
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
+GH_TUPLE=	google:googletest:6a7ed31:googletest/ispcrt/tests/vendor/google/googletest
+
 SHEBANG_FILES=	*.py
 
-#LLVM_VERSION=	-devel # fails with 12: call to non-static member function without an object argument: llvm::DebugLoc::get
-		# Release notes https://github.com/ispc/ispc/blob/master/docs/ReleaseNotes.txt list compatible LLVM versions, but they assume that extra patches are applied to LLVM
-		# LLVM build script: https://github.com/ispc/ispc/blob/master/scripts/build.sh
-LLVM_VERSION=	11 # it fails with -devel (13.0.d20210308), with 12.0.0.r2 it also fails, using 11 that it succeeds with
-
-CONFIGURE_ENV=	PATH=${LOCALBASE}/llvm${LLVM_VERSION}/bin:${PATH}
-CMAKE_OFF=	ISPC_NO_DUMPS ISPC_INCLUDE_EXAMPLES
+CONFIGURE_ENV=	PATH=${LOCALBASE}/llvm${LLVM_VERSION}/bin:${PATH} # see https://github.com/ispc/ispc/issues/2318
+CMAKE_OFF=	ISPC_NO_DUMPS DISPCRT_BUILD_GPU ISPC_INCLUDE_TESTS ISPCRT_BUILD_TESTS ISPC_INCLUDE_EXAMPLES
+CMAKE_ARGS=	-DFREEBSD_LLVM_VERSION=${LLVM_VERSION} # see https://github.com/ispc/ispc/issues/2318
 
 BINARY_ALIAS=	flex=${LOCALBASE}/bin/flex python=${PYTHON_CMD} m4=${LOCALBASE}/bin/gm4
 
-PLIST_FILES=	bin/ispc \
-		bin/check_isa
+OPTIONS_DEFINE_amd64=	ARM XE
+OPTIONS_DEFINE_i386=	ARM
 
-OPTIONS_DEFINE_amd64=	GENX
-OPTIONS_DEFAULT_amd64=	GENX
+ARM_DESC=		Enable ARM support - requires ARM backend in LLVM
+ARM_CMAKE_BOOL=		ARM_ENABLED
 
-GENX_DESC=		Intel GPU 8/16-wide SIMD support
-GENX_BUILD_DEPENDS=	${LOCALBASE}/llvm${LLVM_VERSION}/lib/libLLVMGenXIntrinsics.a:devel/vc-intrinsics@llvm${LLVM_VERSION}
-GENX_LIB_DEPENDS=	libze_loader.so:devel/level-zero \
+XE_DESC=		Enable Intel Xe support
+XE_BUILD_DEPENDS=	${LOCALBASE}/llvm${LLVM_VERSION}/lib/libLLVMGenXIntrinsics.a:devel/vc-intrinsics@llvm${LLVM_VERSION}
+XE_LIB_DEPENDS=		libze_loader.so:devel/level-zero \
 			libLLVMSPIRVLib.so.${LLVM_VERSION}:devel/spirv-llvm-translator@llvm${LLVM_VERSION}
-GENX_CMAKE_BOOL=	GENX_ENABLED
-GENX_CMAKE_BOOL_OFF=	ISPCRT_BUILD_TESTS
-GENX_CMAKE_ON=		-DGENX_DEPS_DIR:PATH="${LOCALBASE}/llvm${LLVM_VERSION}"
-GENX_PLIST_FILES=	include/ispcrt/ispcrt.h \
+XE_CMAKE_BOOL=		XE_ENABLED
+XE_CMAKE_BOOL_OFF=	ISPCRT_BUILD_TESTS
+XE_CMAKE_ON=		-DXE_DEPS_DIR:PATH="${LOCALBASE}/llvm${LLVM_VERSION}" -DISPC_INCLUDE_XE_EXAMPLES=OFF
+XE_PLIST_FILES=		include/ispcrt/ispcrt.h \
 			include/ispcrt/ispcrt.hpp \
 			include/ispcrt/ispcrt.isph \
+			lib/cmake/ispcrt-${PORTVERSION}/Finddpcpp_compiler.cmake \
 			lib/cmake/ispcrt-${PORTVERSION}/Findlevel_zero.cmake \
+			lib/cmake/ispcrt-${PORTVERSION}/interop.cmake \
 			lib/cmake/ispcrt-${PORTVERSION}/ispc.cmake \
 			lib/cmake/ispcrt-${PORTVERSION}/ispcrtConfig.cmake \
 			lib/cmake/ispcrt-${PORTVERSION}/ispcrt_Exports-%%CMAKE_BUILD_TYPE%%.cmake \
@@ -58,8 +59,18 @@ GENX_PLIST_FILES=	include/ispcrt/ispcrt.h \
 			lib/libispcrt.so.1 \
 			lib/libispcrt.so.${PORTVERSION} \
 			lib/libispcrt_static.a
+XE_BROKEN=		Unknown architecture
 
-do-test: # some tests fail: https://github.com/ispc/ispc/issues/1868
+#.include <bsd.port.options.mk>
+#.if ${LLVM_DEFAULT:M[7891]0} || ${LLVM_DEFAULT:M1[12]} # max(LLVM_DEFAULT,13)
+#LLVM_VERSION=	13
+#.else
+#LLVM_VERSION=	${LLVM_DEFAULT}
+#.endif
+
+LLVM_VERSION?=	13
+
+do-test: # all tests pass
 	@cd ${WRKSRC} && ISPC_HOME=${BUILD_WRKSRC}/bin ./run_tests.py
 
 test-check-all: # the upstream claims that some of these checks are broken without using their patched llvm version, hence using llvm-devel

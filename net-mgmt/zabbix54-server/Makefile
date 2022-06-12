@@ -1,5 +1,5 @@
 PORTNAME=	zabbix54
-DISTVERSION=	5.4.7
+DISTVERSION=	5.4.12
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${DISTVERSION:R}/
 PKGNAMESUFFIX?=	-server
@@ -17,7 +17,10 @@ CONFLICTS_INSTALL=	zabbix[0-46-9][0-9]${PKGNAMESUFFIX} \
 		zabbix5[0-35-9]${PKGNAMESUFFIX} \
 		zabbix[0-9]${PKGNAMESUFFIX}
 
-ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
+DEPRECATED=     Unsupported by upstream
+EXPIRATION_DATE=2022-06-29
+
+ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//:S/-$//}
 
 .if ${ZABBIX_BUILD} != "frontend" # frontend only needs the version/distribution settings
 .if ${ZABBIX_BUILD} != "agent"

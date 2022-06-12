@@ -1,11 +1,12 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
 
 PORTNAME=	tarantool
-PORTVERSION=	2.8.2
-PORTREVISION=	1
+PORTVERSION=	2.10.0
+PORTREVISION=	2
 CATEGORIES=	databases
+MASTER_SITES=	https://download.tarantool.org/tarantool/src/
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	balaev@tarantool.org
 COMMENT=	NoSQL database running in a Lua application server
 
 LICENSE=	BSD2CLAUSE
@@ -16,7 +17,8 @@ BROKEN_riscv64=		fails to compile: mmintrin.h:50:12: invalid conversion between 
 NOT_FOR_ARCHS=		armv6 powerpc64 sparc64
 NOT_FOR_ARCHS_REASON=	fails to build: Unsupported architecture
 
-BUILD_DEPENDS=	gsed:textproc/gsed
+BUILD_DEPENDS=	gsed:textproc/gsed \
+		msgpuck>=2.0_4:devel/msgpuck
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libicui18n.so:devel/icu \
 		libmsgpuck.so:devel/msgpuck \
@@ -29,7 +31,7 @@ USE_PERL5=	build
 BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 CMAKE_ARGS=	-DCMAKE_INSTALL_FULL_SYSCONFDIR=${ETCDIR} \
 		-DCMAKE_INSTALL_LOCALSTATEDIR=/var \
-		-DCMAKE_INSTALL_MANDIR=${PREFIX}/man
+		-DCMAKE_INSTALL_MANDIR=${PREFIX}/share/man
 CMAKE_OFF=	ENABLE_BUNDLED_LIBCURL \
 		ENABLE_BUNDLED_LIBYAML \
 		ENABLE_BUNDLED_MSGPUCK \
@@ -45,15 +47,6 @@ GROUPS=		tarantool
 PLIST_SUB=	TT_DATADIR=${TT_DATADIR} \
 		TT_LOGDIR=${TT_LOGDIR}
 SUB_FILES=	pkg-message
-
-GH_TUPLE=	luafun:luafun:e248e00:luafun_luafun/third_party/luafun \
-		tarantool:decNumber:5ddfde1:tarantool_decNumber/third_party/decNumber \
-		tarantool:luajit:814625f:tarantool_luajit/third_party/luajit \
-		tarantool:luarocks:954c2f5:tarantool_luarocks/third_party/luarocks \
-		tarantool:serpent:879580f:tarantool_serpent/third_party/serpent \
-		tarantool:small:781fd38:tarantool_small/src/lib/small \
-		tarantool:test-run:d7eff44:tarantool_test_run/test-run
-USE_GITHUB=	yes
 
 TT_DATADIR?=	/var/db/tarantool
 TT_LOGDIR?=	/var/log/tarantool

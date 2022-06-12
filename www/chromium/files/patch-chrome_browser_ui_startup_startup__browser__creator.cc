@@ -1,38 +1,29 @@
---- chrome/browser/ui/startup/startup_browser_creator.cc.orig	2021-09-24 04:26:00 UTC
+--- chrome/browser/ui/startup/startup_browser_creator.cc.orig	2022-05-19 14:06:27 UTC
 +++ chrome/browser/ui/startup/startup_browser_creator.cc
-@@ -131,7 +131,7 @@
- #include "chrome/browser/ui/startup/web_app_protocol_handling_startup_utils.h"
+@@ -128,7 +128,7 @@
+ #include "chrome/credential_provider/common/gcp_strings.h"
+ #endif  // BUILDFLAG(IS_WIN)
  
- #if defined(OS_WIN) || defined(OS_MAC) || \
--    (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS))
-+    (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD)
- #include "chrome/browser/ui/startup/web_app_url_handling_startup_utils.h"
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+ #include "chrome/browser/ui/startup/web_app_info_recorder_utils.h"
  #endif
  
-@@ -470,7 +470,7 @@ bool MaybeLaunchApplication(
-   return false;
- }
+@@ -1007,7 +1007,7 @@ bool StartupBrowserCreator::ProcessCmdLineImpl(
+     silent_launch = true;
+   }
  
--#if defined(OS_WIN) || (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS))
-+#if defined(OS_WIN) || (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD)
- bool MaybeLaunchUrlHandlerWebAppFromCmd(
-     const base::CommandLine& command_line,
-     const base::FilePath& cur_dir,
-@@ -1103,7 +1103,7 @@ bool StartupBrowserCreator::ProcessCmdLineImpl(
- 
-   if (command_line.HasSwitch(switches::kAppId)) {
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+   // Writes open and installed web apps to the specified file without
+   // launching a new browser window or tab.
+   if (base::FeatureList::IsEnabled(features::kListWebAppsSwitch) &&
+@@ -1197,7 +1197,7 @@ bool StartupBrowserCreator::ProcessCmdLineImpl(
+     CHECK_EQ(profile_info.mode, StartupProfileMode::kBrowserWindow)
+         << "Failed launch with app: couldn't pick a profile";
      std::string app_id = command_line.GetSwitchValueASCII(switches::kAppId);
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD)
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
      // If Chrome Apps are deprecated and |app_id| is a Chrome App, display the
      // deprecation UI instead of launching the app.
      if (apps::OpenDeprecatedApplicationPrompt(privacy_safe_profile, app_id))
-@@ -1175,7 +1175,7 @@ bool StartupBrowserCreator::StartupLaunchAfterProtocol
-   }
- 
-   // Web app URL handling.
--#if defined(OS_WIN) || (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS))
-+#if defined(OS_WIN) || (defined(OS_LINUX) && !BUILDFLAG(IS_CHROMEOS_LACROS)) || defined(OS_BSD)
-   if (MaybeLaunchUrlHandlerWebAppFromCmd(command_line, cur_dir, process_startup,
-                                          last_used_profile,
-                                          last_opened_profiles)) {

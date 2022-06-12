@@ -1,7 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
 
 PORTNAME=	octave-forge-control
-PORTVERSION=	3.3.1
+PORTVERSION=	3.4.0
 PORTREVISION=	1
 CATEGORIES=	math
 

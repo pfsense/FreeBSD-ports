@@ -2,6 +2,7 @@
 
 PORTNAME=	istio
 PORTVERSION=	1.7.4
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	danilo@FreeBSD.org

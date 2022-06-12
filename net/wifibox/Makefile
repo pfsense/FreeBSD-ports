@@ -1,34 +1,25 @@
 PORTNAME=	wifibox
-PORTVERSION=	0.5.0
+PORTVERSION=	1.0.0
 CATEGORIES=	net
 
 MAINTAINER=	pali.gabor@gmail.com
 COMMENT=	Wireless card driver via virtualized Linux
 
 LICENSE=	BSD2CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64
-EXTRACT_ONLY=	${GH_ACCOUNT}-${GH_PROJECT}-${GH_TAGNAME_EXTRACT}_GH0.tar.gz
 
-RUN_DEPENDS=	grub2-bhyve>0:sysutils/grub2-bhyve \
-		bhyve+>0:sysutils/bhyve+
+RUN_DEPENDS=	wifibox-core>0:net/wifibox-core
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	pgj
-GH_PROJECT=	freebsd-wifibox
+USES=	metaport
 
-IMAGE_VERSION=	snapshot-20210905
-IMAGE_FILE=	freebsd-wifibox-appliance.${IMAGE_VERSION}.img.xz
+.include "${.CURDIR}/../wifibox-alpine/flavors.mk"
 
-MASTER_SITES+=	https://github.com/pgj/freebsd-wifibox-image/releases/download/${IMAGE_VERSION}/
-DISTFILES+=	${IMAGE_FILE}
+.for flavor in ${_FLAVORS}
+${flavor}_RUN_DEPENDS=         wifibox-alpine-${flavor}>0:net/wifibox-alpine@${flavor}
+${flavor}_PKGNAMESUFFIX=       -${flavor}
+.endfor
 
-NO_BUILD=	yes
-MAKE_ENV+=	IMGXZ=${DISTDIR}/${IMAGE_FILE} \
-		VERSION=${PORTVERSION} \
-		BHYVE=${LOCALBASE}/sbin/bhyve \
-		BHYVECTL=${LOCALBASE}/sbin/bhyvectl \
-		VMM_KO=${KMODDIR}/vmm.ko
+default_RUN_DEPENDS=           wifibox-alpine>0:net/wifibox-alpine
 
 .include <bsd.port.mk>

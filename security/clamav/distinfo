@@ -1,3 +1,4 @@
-TIMESTAMP = 1635961222
-SHA256 (clamav-0.104.1.tar.gz) = b7e6b709ab6c8a8eddb8c32b04c3e5df38adcae459b4ecd9bc1febaca9be57c0
-SIZE (clamav-0.104.1.tar.gz) = 11953064
+TIMESTAMP = 1652109767
+SHA256 (clamav-0.105.0.tar.gz) = 270203a54c458049db54fcd93683ff5b2db19151f363c48e82cecefdde2b35d4
+SIZE (clamav-0.105.0.tar.gz) = 28765652
+

@@ -1,6 +1,6 @@
 PORTNAME=	fontpreview
 DISTVERSION=	1.0.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fonts graphics
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -10,13 +10,12 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	bash:shells/bash \
-		convert:graphics/ImageMagick7 \
 		fzf:textproc/fzf \
 		getopt>0:misc/getopt \
-		sxiv:graphics/sxiv \
+		nsxiv:graphics/nsxiv \
 		xdotool:x11/xdotool
 
-USES=		shebangfix
+USES=		magick:7,run shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	sdushantha
 SHEBANG_FILES=	${PORTNAME}

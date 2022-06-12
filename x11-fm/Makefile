@@ -1,5 +1,6 @@
     COMMENT = X11 file managers
 
+    SUBDIR += arqiver
     SUBDIR += caja
     SUBDIR += catseye-fm
     SUBDIR += deforaos-browser
@@ -19,6 +20,7 @@
     SUBDIR += nemo
     SUBDIR += pcmanfm
     SUBDIR += pcmanfm-qt
+    SUBDIR += polo
     SUBDIR += qtfm
     SUBDIR += rodent
     SUBDIR += rox-filer

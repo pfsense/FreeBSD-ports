@@ -1,13 +1,13 @@
 # Created by: Bernard Spil <brnrd@freebsd.org>
 
 PORTNAME=	twofactor_nextcloud_notification
-PORTVERSION=	3.3.1
+PORTVERSION=	3.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/nextcloud-releases/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
 PKGNAMEPREFIX=	nextcloud-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
-WRKSRC=		${WRKDIR}/${PORTNAME}
+DIST_SUBDIR=	nextcloud
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Use Nextcloud notification as MFA app for Nextcloud
@@ -15,18 +15,13 @@ COMMENT=	Use Nextcloud notification as MFA app for Nextcloud
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=17:www/nextcloud@${PHP_FLAVOR}
+RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=22:www/nextcloud@${PHP_FLAVOR}
 
 USES=		php:flavors
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-NEXTCLOUD_USERNAME?=	${WWWOWN}
-NEXTCLOUD_GROUPNAME?=	${WWWGRP}
-
-PLIST_SUB=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
-		NEXTCLOUD_GROUPNAME=${NEXTCLOUD_GROUPNAME}
-
+WRKSRC=		${WRKDIR}/${PORTNAME}
 WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/${PORTNAME}
 
 do-install:

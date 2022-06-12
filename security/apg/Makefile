@@ -1,6 +1,7 @@
 PORTNAME=		apg
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.3.2
+DISTVERSION=		0.4.0
+PORTREVISION=	2
 PORTEPOCH=		1
 CATEGORIES=		security sysutils
 
@@ -14,6 +15,10 @@ USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	wneessen
 GH_PROJECT=	apg-go
+GH_TUPLE=	wneessen:go-hibp:v1.0.0:wneessen_go_hibp/vendor/github.com/wneessen/go-hibp
+
+GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+GO_TARGET=	./cmd/${PORTNAME}
 
 PLIST_FILES=	bin/${PORTNAME}
 

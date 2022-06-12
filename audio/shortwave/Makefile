@@ -1,6 +1,6 @@
 PORTNAME=	shortwave
 DISTVERSION=	2.0.1
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	audio
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -9,12 +9,14 @@ COMMENT=	Listen to internet radio
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.md
 
+IGNORE=		crashes with libadwaita >= 1.0
+
 LIB_DEPENDS=	libdbus-1.so:devel/dbus
 
-USES=		cargo gettext gnome meson pkgconfig python:build shebangfix sqlite ssl
+USES=		cargo gettext gnome gstreamer meson pkgconfig python:build shebangfix sqlite ssl
 USE_GITLAB=	yes
 USE_GNOME=	gdkpixbuf2 gtk40 libadwaita
-USE_GSTREAMER1=	good libav soup vorbis
+USE_GSTREAMER=	good libav soup vorbis
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World
 GL_PROJECT=	Shortwave
@@ -282,7 +284,7 @@ CARGO_TEST=	no
 OPTIONS_DEFINE=	PULSEAUDIO
 OPTIONS_DEFAULT=PULSEAUDIO
 
-PULSEAUDIO_USE=	GSTREAMER1=pulse
+PULSEAUDIO_USE=	GSTREAMER=pulse
 
 pre-patch:
 # Chase gtk-rs -> gtk3-rs rename for USES=cargo patching

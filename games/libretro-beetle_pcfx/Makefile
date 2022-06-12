@@ -1,8 +1,8 @@
 PORTNAME=	libretro-beetle_pcfx
-PORTVERSION=	0.20200504
+PORTVERSION=	0.20220307
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Standalone port of Mednafen PCFX to libretro
 
 LICENSE=	GPLv2
@@ -13,7 +13,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	beetle-pcfx-libretro
-GH_TAGNAME=	7bba669
+GH_TAGNAME=	00abc26
 
 PLIST_FILES=	lib/libretro/mednafen_pcfx_libretro.so
 

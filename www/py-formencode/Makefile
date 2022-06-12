@@ -7,15 +7,17 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	FormEncode-${PORTVERSION}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	HTML form validation, generation, and conversion package
 
 LICENSE=	PSFL
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		gettext-runtime:run python:3.6+ zip
+USES=		dos2unix gettext-runtime:run python:3.6+ zip
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 PORTDOCS=	*

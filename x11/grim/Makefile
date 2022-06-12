@@ -1,7 +1,11 @@
 PORTNAME=	grim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.2
+DISTVERSION=	1.4.0
 CATEGORIES=	x11
+MASTER_SITES=	https://git.sr.ht/~emersion/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
+
+PATCH_SITES=	https://git.sr.ht/~emersion/${PORTNAME}/commit/
+PATCHFILES+=	89e02e663fab.patch:-p1 # https://github.com/emersion/grim/pull/121
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Grab images from a Wayland compositor
@@ -13,9 +17,7 @@ BUILD_DEPENDS=	wayland-protocols>=1.14:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 
 USES=		compiler:c11 gnome meson pkgconfig
-USE_GITHUB=	yes
 USE_GNOME=	cairo
-GH_ACCOUNT=	emersion
 PLIST_FILES=	bin/${PORTNAME}
 
 OPTIONS_DEFINE=	JPEG MANPAGES

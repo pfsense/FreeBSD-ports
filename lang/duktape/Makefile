@@ -1,9 +1,10 @@
 PORTNAME=	duktape
-DISTVERSION=	2.6.0
+DISTVERSION=	2.7.0
 CATEGORIES=	lang devel
-MASTER_SITES=	https://duktape.org/
+MASTER_SITES=	https://github.com/svaarala/${PORTNAME}/releases/download/v${DISTVERSION}/ \
+		https://duktape.org/
 
-MAINTAINER=	alfix86@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Embeddable Javascript engine
 
 LICENSE=	MIT

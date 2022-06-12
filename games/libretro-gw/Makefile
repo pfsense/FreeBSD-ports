@@ -1,8 +1,8 @@
 PORTNAME=	libretro-gw
-PORTVERSION=	0.20210129
+PORTVERSION=	0.20220213
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Libretro core for Game & Watch simulators
 
 LICENSE=	GPLv2
@@ -13,7 +13,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	gw-libretro
-GH_TAGNAME=	2be30ba
+GH_TAGNAME=	fc3d8d3
 
 PLIST_FILES=	lib/libretro/gw_libretro.so
 

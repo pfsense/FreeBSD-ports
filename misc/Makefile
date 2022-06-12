@@ -41,9 +41,9 @@
     SUBDIR += clifm
     SUBDIR += cloc
     SUBDIR += clpbar
-    SUBDIR += cmatrix
     SUBDIR += colortail
     SUBDIR += colwide
+    SUBDIR += compat.el
     SUBDIR += compat10x
     SUBDIR += compat11x
     SUBDIR += compat12x
@@ -54,6 +54,7 @@
     SUBDIR += compat8x
     SUBDIR += compat9x
     SUBDIR += concourse
+    SUBDIR += copperspice-examples
     SUBDIR += countrycodes
     SUBDIR += cpuid
     SUBDIR += crosti
@@ -88,7 +89,6 @@
     SUBDIR += erlang-mimerl
     SUBDIR += erlang-mimetypes
     SUBDIR += estic
-    SUBDIR += excel-writer
     SUBDIR += exercism
     SUBDIR += explosions
     SUBDIR += ezc3d
@@ -107,6 +107,7 @@
     SUBDIR += fortune-mod-psalms
     SUBDIR += fortuneit
     SUBDIR += fpc-chm
+    SUBDIR += fq
     SUBDIR += free42
     SUBDIR += freebsd-doc-all
     SUBDIR += freebsd-doc-bn
@@ -117,6 +118,7 @@
     SUBDIR += freebsd-doc-es
     SUBDIR += freebsd-doc-fr
     SUBDIR += freebsd-doc-hu
+    SUBDIR += freebsd-doc-id
     SUBDIR += freebsd-doc-it
     SUBDIR += freebsd-doc-ja
     SUBDIR += freebsd-doc-ko
@@ -144,6 +146,7 @@
     SUBDIR += gkrellmlaunch2
     SUBDIR += gkrellshoot2
     SUBDIR += gkx86info2
+    SUBDIR += global-tz
     SUBDIR += glow
     SUBDIR += gnome-devel-docs
     SUBDIR += gnome-getting-started-docs
@@ -356,9 +359,10 @@
     SUBDIR += pecl-timezonedb
     SUBDIR += perkeep
     SUBDIR += pfm
-    SUBDIR += php73-calendar
     SUBDIR += php74-calendar
     SUBDIR += php80-calendar
+    SUBDIR += php81-calendar
+    SUBDIR += php82-calendar
     SUBDIR += pinfo
     SUBDIR += pipe
     SUBDIR += posixtestsuite
@@ -408,7 +412,6 @@
     SUBDIR += py-pyprind
     SUBDIR += py-python-geohash
     SUBDIR += py-python-utils
-    SUBDIR += py-qt5-demo
     SUBDIR += py-scikit-fusion
     SUBDIR += py-serverfiles
     SUBDIR += py-soapy_power
@@ -416,6 +419,7 @@
     SUBDIR += py-spdx-lookup
     SUBDIR += py-spdx-tools
     SUBDIR += py-spinners
+    SUBDIR += py-tes
     SUBDIR += py-tflearn
     SUBDIR += py-tflite
     SUBDIR += py-tflite-support
@@ -449,7 +453,6 @@
     SUBDIR += rubygem-iesd
     SUBDIR += rubygem-mime-types
     SUBDIR += rubygem-mime-types-data
-    SUBDIR += rubygem-mime-types1
     SUBDIR += rubygem-mimemagic
     SUBDIR += rubygem-octicons
     SUBDIR += rubygem-rabbit
@@ -480,6 +483,7 @@
     SUBDIR += susv2
     SUBDIR += susv3
     SUBDIR += susv4
+    SUBDIR += swissfileknife
     SUBDIR += sword
     SUBDIR += table.el
     SUBDIR += talkfilters

@@ -1,7 +1,0 @@
---- tools/po/Makefile.orig	2012-10-01 06:54:14 UTC
-+++ tools/po/Makefile
-@@ -1,4 +1,3 @@
--#!/bin/bash
- #
- # Makefile Utility to manipulate PO and POT files
- # Copyright (c) 2009 Alessandro De Zorzi - <lota@nonlontano.it>

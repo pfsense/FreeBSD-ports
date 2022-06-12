@@ -2,7 +2,7 @@
 
 PORTNAME=	sage
 PORTVERSION=	9.2
-PORTREVISION=	20
+PORTREVISION=	26
 CATEGORIES=	math
 MASTER_SITES=	https://mirrors.xmission.com/sage/src/		\
 		http://mirrors.xmission.com/sage/src/		\
@@ -18,6 +18,8 @@ COMMENT=	Open source Mathematics software
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
+BROKEN=		hoping to fix it with Python-3.9
 
 BUILD_DEPENDS=	bash:shells/bash		\
 		dash:shells/dash		\
@@ -42,7 +44,7 @@ BUILD_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}entrypoints>0:devel/py-entrypoints@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}fpylll>0:math/py-fpylll@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}gmpy2-devel>0:math/py-gmpy2-devel@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}gmpy2>0:math/py-gmpy2@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}imagesize>0:graphics/py-imagesize@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}importlib-metadata>0:devel/py-importlib-metadata@${PY_FLAVOR}\
@@ -149,7 +151,6 @@ BUILD_DEPENDS=	bash:shells/bash		\
 		three.js>0:www/threejs		\
 		yasm:devel/yasm			\
 		gtar:archivers/gtar		\
-		convert:graphics/ImageMagick6	\
 		ffmpeg:multimedia/ffmpeg	\
 		${LOCALBASE}/lib/libBLT.a:x11-toolkits/blt
 LIB_DEPENDS=	libarb.so:math/arb		\
@@ -239,7 +240,7 @@ RUN_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}entrypoints>0:devel/py-entrypoints@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}fpylll>0:math/py-fpylll@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}gmpy2-devel>0:math/py-gmpy2-devel@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}gmpy2>0:math/py-gmpy2@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}imagesize>0:graphics/py-imagesize@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}importlib-metadata>0:devel/py-importlib-metadata@${PY_FLAVOR}\
@@ -256,7 +257,7 @@ RUN_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}kiwisolver>0:math/py-kiwisolver@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}markupsafe>0:textproc/py-markupsafe@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}mistune>0:textproc/py-mistune@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}mistune0>0:textproc/py-mistune0@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}mpmath>0:math/py-mpmath@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}nbconvert>0:devel/py-nbconvert@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}nbformat>0:devel/py-nbformat@${PY_FLAVOR}\
@@ -338,8 +339,8 @@ RUN_DEPENDS=	bash:shells/bash		\
 		pixz:archivers/pixz
 
 USES=		autoreconf blaslapack:openblas compiler:c++11-lib fortran \
-		gettext gmake gnome iconv jpeg libtool localbase ncurses \
-		ninja:build perl5 pkgconfig python:3.7+ readline shebangfix \
+		gettext gmake gnome iconv jpeg libtool localbase magick:6,build \
+		ncurses ninja:build perl5 pkgconfig python:3.7+ readline shebangfix \
 		sqlite tk xorg
 USE_TEX=	latex:build pdftex:build tex:build
 USE_XORG=	x11 xext xscrnsaver

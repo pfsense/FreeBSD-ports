@@ -61,7 +61,7 @@ include/KF5/KTextEditor/ktexteditor/sessionconfiginterface.h
 include/KF5/KTextEditor/ktexteditor/texthintinterface.h
 include/KF5/KTextEditor/ktexteditor/view.h
 include/KF5/KTextEditor/ktexteditor_export.h
-include/KF5/ktexteditor_version.h
+include/KF5/KTextEditor/ktexteditor_version.h
 lib/cmake/KF5TextEditor/KF5TextEditorConfig.cmake
 lib/cmake/KF5TextEditor/KF5TextEditorConfigVersion.cmake
 lib/cmake/KF5TextEditor/KF5TextEditorTargets-%%CMAKE_BUILD_TYPE%%.cmake
@@ -75,7 +75,7 @@ lib/libexec/kauth/kauth_ktexteditor_helper
 share/dbus-1/system-services/org.kde.ktexteditor.katetextbuffer.service
 share/dbus-1/system.d/org.kde.ktexteditor.katetextbuffer.conf
 share/katepart5/script/README.md
-share/kdevappwizard/templates/ktexteditor-plugin.tar.bz2
+share/kdevfiletemplates/templates/ktexteditor-plugin.tar.bz2
 share/kservices5/katepart.desktop
 share/kservicetypes5/ktexteditor.desktop
 share/kservicetypes5/ktexteditorplugin.desktop

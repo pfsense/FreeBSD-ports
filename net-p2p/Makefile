@@ -2,10 +2,10 @@
 
     SUBDIR += amule
     SUBDIR += amule-devel
+    SUBDIR += arbitrum-avm
     SUBDIR += autoscan
     SUBDIR += awgg
     SUBDIR += bazarr
-    SUBDIR += bazarr-devel
     SUBDIR += bitcoin
     SUBDIR += bitcoin-daemon
     SUBDIR += bitcoin-utils
@@ -31,6 +31,7 @@
     SUBDIR += eiskaltdcpp-data
     SUBDIR += eiskaltdcpp-gtk
     SUBDIR += eiskaltdcpp-lib
+    SUBDIR += ethash
     SUBDIR += frost
     SUBDIR += go-ethereum
     SUBDIR += go-prysm
@@ -69,6 +70,7 @@
     SUBDIR += p5-Net-DirectConnect
     SUBDIR += p5-WWW-BitTorrent
     SUBDIR += phex
+    SUBDIR += prowlarr
     SUBDIR += py-libtorrent-rasterbar
     SUBDIR += py-nicotine-plus
     SUBDIR += py-transmission-rpc
@@ -77,6 +79,7 @@
     SUBDIR += qbittorrent
     SUBDIR += qtum
     SUBDIR += radarr
+    SUBDIR += readarr
     SUBDIR += retroshare
     SUBDIR += rslsync
     SUBDIR += rtorrent

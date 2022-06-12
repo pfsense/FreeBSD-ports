@@ -1,6 +1,5 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	3.2.5
-PORTREVISION=	1
+DISTVERSION=	3.7.3
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
@@ -32,7 +31,6 @@ LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
 		libhunspell-1.7.so:textproc/hunspell \
 		libjpeg.so:graphics/jpeg-turbo \
 		liblz4.so:archivers/liblz4 \
-		libminizip.so:archivers/minizip \
 		librnnoise.so:audio/rnnoise \
 		libopenal.so:audio/openal-soft \
 		libopenh264.so:multimedia/openh264 \
@@ -71,8 +69,6 @@ CXXFLAGS+=	-DNDEBUG
 # see Bugzilla #245452 for details
 NO_CCACHE=	yes
 
-INSTALLS_ICONS=	yes
-
 # Telegram uses OpenAL for its audio, but libtgvoip (for voice calls) can use PulseAudio or ALSA.
 # It dynamically loads PulseAudio, and if this fails, it loads ALSA.
 # If both of them are not installed, then voice calls do not work, but other functionalities still work.
@@ -96,8 +92,8 @@ TELEGRAM_API_ID=	601761
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_VERSION} < 120
-LLVM_VER=	12
+.if ${COMPILER_VERSION} < 130
+LLVM_VER=	13
 BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
 CC=		${LOCALBASE}/bin/clang${LLVM_VER}
 CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}

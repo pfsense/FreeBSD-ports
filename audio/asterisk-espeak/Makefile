@@ -9,6 +9,9 @@ COMMENT=	Espeak dialplan application for Asterisk
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Depends on deprecated audio/espeaak
+EXPIRATION_DATE=2022-06-30
+
 LIB_DEPENDS=	libespeak.so:audio/espeak \
 		libsamplerate.so:audio/libsamplerate
 
@@ -27,6 +30,8 @@ asterisk18_RUN_DEPENDS=		asterisk:net/asterisk18
 
 USES=		compiler:c11 gmake localbase
 INSTALL_TARGET=	install samples
+
+CONFLICTS_INSTALL=	asterisk*-espeak # etc/asterisk/espeak.conf.sample
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	zaf

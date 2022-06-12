@@ -2,7 +2,7 @@
 
 PORTNAME=	florence
 PORTVERSION=	0.6.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11
 MASTER_SITES=	SF/florence/florence/${PORTVERSION}/
 
@@ -13,16 +13,13 @@ LICENSE=	GPLv2+ GFDL
 LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libnotify.so:devel/libnotify
-BUILD_DEPENDS=	rarian-sk-config:textproc/rarian
 
-USES=		gmake gnome iconv libtool pathfix pkgconfig tar:bzip2 xorg
+USES=		gmake gnome gstreamer iconv libtool pathfix pkgconfig tar:bzip2 xorg
 USE_XORG=	xtst xext
 USE_GNOME=	gtk30 cairo intlhack librsvg2
-USE_GSTREAMER1=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --without-docs
 USE_LDCONFIG=	yes
-INSTALLS_OMF=	yes
 GLIB_SCHEMAS=	org.florence.gschema.xml
 INSTALL_TARGET=	install-strip
 

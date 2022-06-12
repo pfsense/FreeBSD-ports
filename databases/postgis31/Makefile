@@ -1,6 +1,6 @@
 PORTNAME=	postgis
-PORTVERSION=	3.1.4
-PORTREVISION=	1
+PORTVERSION=	3.1.5
+PORTREVISION=	2
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	31
@@ -57,7 +57,7 @@ SFCGAL_LIB_DEPENDS=		libSFCGAL.so:databases/sfcgal
 TOPOLOGY_CONFIGURE_WITH=	topology
 WAGYU_CONFIGURE_WITH=		wagyu
 
-CONFLICTS_INSTALL=	postgis20 postgis21 postgis22 postgis23 postgis24 postgis25 postgis30
+CONFLICTS_INSTALL=	postgis20 postgis21 postgis22 postgis23 postgis24 postgis25 postgis30 postgis32
 
 VER=		${PORTVERSION:R}
 

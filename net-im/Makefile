@@ -13,11 +13,9 @@
     SUBDIR += coyim
     SUBDIR += cutegram
     SUBDIR += dendrite
-    SUBDIR += diligent
     SUBDIR += dino
     SUBDIR += echat
     SUBDIR += ejabberd
-    SUBDIR += ekiga
     SUBDIR += farstream
     SUBDIR += finch
     SUBDIR += folks
@@ -26,13 +24,17 @@
     SUBDIR += gajim
     SUBDIR += gitterdone
     SUBDIR += gloox
+    SUBDIR += gomuks
+    SUBDIR += gotktrix
+    SUBDIR += gotosocial
     SUBDIR += icmpchat
     SUBDIR += icqlib
-    SUBDIR += jabber.el
     SUBDIR += jabberd
     SUBDIR += jarl
     SUBDIR += jggtrans
     SUBDIR += jicofo
+    SUBDIR += jitsi-meet-full
+    SUBDIR += jitsi-prosody-plugins
     SUBDIR += jitsi-videobridge
     SUBDIR += kaccounts-integration
     SUBDIR += kaccounts-providers
@@ -98,7 +100,7 @@
     SUBDIR += p5-SOAP-Transport-JABBER
     SUBDIR += pecl-stomp2
     SUBDIR += pidgin
-    SUBDIR += pidgin-bs
+    SUBDIR += pidgin-bot-sentry
     SUBDIR += pidgin-fetion
     SUBDIR += pidgin-hotkeys
     SUBDIR += pidgin-icyque
@@ -115,6 +117,7 @@
     SUBDIR += psi
     SUBDIR += purple-discord
     SUBDIR += purple-facebook
+    SUBDIR += purple-googlechat
     SUBDIR += purple-hangouts
     SUBDIR += purple-mattermost
     SUBDIR += purple-plugin-pack
@@ -125,6 +128,7 @@
     SUBDIR += py-nbxmpp
     SUBDIR += py-punjab
     SUBDIR += py-python-telegram-bot
+    SUBDIR += py-slack-sdk
     SUBDIR += py-slackclient
     SUBDIR += py-slixmpp
     SUBDIR += py-telepot

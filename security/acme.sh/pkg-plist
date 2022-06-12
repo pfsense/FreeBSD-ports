@@ -20,6 +20,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/mydevil.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/mysqld.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/nginx.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/openmediavault.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/opensshd.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/openstack.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/panos.sh
@@ -30,6 +31,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/ssh.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/strongswan.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/synology_dsm.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/truenas.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/unifi.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/vault.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/vault_cli.sh
@@ -54,13 +56,15 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_cn.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_conoha.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_constellix.sh
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_cx.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_cpanel.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_curanet.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_cyon.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_da.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_ddnss.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_desec.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_df.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dgon.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dnshome.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_dnsimple.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_do.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_doapi.sh
@@ -77,11 +81,12 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_edgedns.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_euserv.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_exoscale.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_fornex.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_freedns.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_gandi_livedns.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_gcloud.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_gd.sh
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_gdnsdk.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_geoscaling.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_huaweicloud.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_he.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_hetzner.sh
@@ -112,6 +117,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_myapi.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_mydevil.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_mydnsjp.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_mythic_beasts.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_namecheap.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_namecom.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_namesilo.sh
@@ -147,6 +153,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_servercow.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_simply.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_tele3.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_udr.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_ultra.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_world4you.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_transip.sh
@@ -160,8 +167,12 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_zilore.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_zone.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dnsapi/dns_zonomi.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/bark.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/cqhttp.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/dingtalk.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/discord.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/feishu.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/gotify.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/ifttt.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/mail.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/mailgun.sh
@@ -174,6 +185,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/smtp.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/teams.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/telegram.sh
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/weixin_work.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/notify/xmpp.sh
 @sample(acme,acme,0640) /var/db/acme/.acme.sh/account.conf.sample
 %%PORTEXAMPLES%%/var/db/acme/.acme.sh/deploy

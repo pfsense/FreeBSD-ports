@@ -1,9 +1,14 @@
 PORTNAME=	calligra
 DISTVERSION=	3.2.1
-PORTREVISION=	30
+PORTREVISION=	38
 CATEGORIES=	editors kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/${PORTNAME}
+
+PATCH_SITES=	https://invent.kde.org/office/calligra/-/commit/
+# Poppler 22.03
+PATCHFILES=	236bacbe13739414e919de868283b0caf2df5d8a.diff:-p1 \
+		6b75bec784c9835c78993349845d8c2ef22ec3de.diff:-p1
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE office suite
@@ -22,7 +27,6 @@ LIB_DEPENDS=	libImath.so:math/Imath \
 		liblcms2.so:graphics/lcms2 \
 		libKGantt.so:graphics/kdiagram \
 		libodfgen-0.1.so:textproc/libodfgen01 \
-		libopenjpeg.so:graphics/openjpeg15 \
 		libpng.so:graphics/png \
 		libpoppler-qt5.so:graphics/poppler-qt5 \
 		libpoppler.so:graphics/poppler \
@@ -36,7 +40,7 @@ LIB_DEPENDS=	libImath.so:math/Imath \
 BUILD_DEPENDS=	pstoedit:graphics/pstoedit
 RUN_DEPENDS=	pstoedit:graphics/pstoedit
 
-USES=		cmake cpe compiler:c++11-lib desktop-file-utils eigen:3 \
+USES=		cmake cpe compiler:c++17-lang desktop-file-utils eigen:3 \
 		gettext iconv:translit jpeg kde:5 localbase:ldflags perl5 \
 		pkgconfig qca qt:5 shared-mime-info sqlite tar:xz xorg
 USE_KDE=	akonadicontacts activities archive auth bookmarks codecs completion \

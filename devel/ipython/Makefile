@@ -1,7 +1,7 @@
 # Created by: Dryice Liu
 
 PORTNAME=	ipython
-PORTVERSION=	7.29.0
+PORTVERSION=	7.34.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,6 +25,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}backcall>=0:devel/py-backcall@${PY_FLAVOR} \
 
 USES=		cpe python:3.7+
 USE_PYTHON=	autoplist distutils
+
+CONFLICTS_INSTALL=	py*-ipython5
 
 NO_ARCH=	yes
 

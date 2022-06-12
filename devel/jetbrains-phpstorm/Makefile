@@ -1,9 +1,9 @@
 # Created by: Pedro Giffuni <pfg@FreeBSD.org>
 
 PORTNAME=	phpstorm
-PORTVERSION=	2021.2.3
+PORTVERSION=	2022.1.2
 CATEGORIES=	devel java
-MASTER_SITES=	https://download-cf.jetbrains.com/webide/
+MASTER_SITES=	https://download-cdn.jetbrains.com/webide/
 PKGNAMEPREFIX=	jetbrains-
 DISTNAME=	PhpStorm-${PORTVERSION}
 DIST_SUBDIR=	jetbrains
@@ -19,18 +19,20 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 RUN_DEPENDS=	intellij-fsnotifier>0:java/intellij-fsnotifier \
 		lsof:sysutils/lsof
 
-USES=		python:run shebangfix
+USES=		cpe python:run shebangfix
 
 USE_JAVA=	yes
 JAVA_VERSION=	11+
 
-SHEBANG_FILES=	bin/printenv.py bin/restart.py
+CPE_VENDOR=	jetbrains
+
+SHEBANG_FILES=	bin/restart.py
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	${PORTNAME} ${PORTNAME}.desktop pkg-message
 
-WRKSRC=		${WRKDIR}/PhpStorm-212.5457.49
+WRKSRC=		${WRKDIR}/PhpStorm-221.5787.33
 
 do-install:
 # Linux/Windows/OS X only so remove them
@@ -38,11 +40,14 @@ do-install:
 		${WRKSRC}/bin/fsnotifier \
 		${WRKSRC}/bin/fsnotifier-arm \
 		${WRKSRC}/bin/fsnotifier64 \
+		${WRKSRC}/bin/remote-dev-server.sh \
+		${WRKSRC}/bin/repair \
 		${WRKSRC}/jbr \
 		${WRKSRC}/jre64 \
 		${WRKSRC}/lib/pty4j-native \
-		${WRKSRC}/plugins/cwm-plugin/quiche-native \
-		${WRKSRC}/plugins/performanceTesting/bin
+		${WRKSRC}/plugins/cwm-plugin \
+		${WRKSRC}/plugins/performanceTesting \
+		${WRKSRC}/plugins/remote-dev-server
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR} \
 		"! -name *\.bak ! -name *\.so ! -name *\.dll ! -name *\.dylib ! -name *\.pdb ! -name *\.sh")

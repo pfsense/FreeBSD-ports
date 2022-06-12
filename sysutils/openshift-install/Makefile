@@ -3,6 +3,7 @@
 PORTNAME=	openshift-install
 PORTVERSION=	4.9
 DISTVERSIONPREFIX=	release-
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	jhixson@freebsd.org
@@ -18,7 +19,7 @@ USES=		go:modules
 PLIST_FILES=	bin/${PORTNAME}
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	openshift
+GH_ACCOUNT=	jhixson74	
 GH_PROJECT=	installer
 GH_SUBDIR=	src/github.com/openshift/installer
 GH_TAGNAME=	6fb15ac10a00e762a9934c8b5d9f559b130dd485

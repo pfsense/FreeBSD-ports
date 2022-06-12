@@ -1,7 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
 
 PORTNAME=	mini_magick
-PORTVERSION=	4.10.1
+PORTVERSION=	4.11.0
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
@@ -27,15 +27,15 @@ NO_ARCH=	yes
 
 .if ${PORT_OPTIONS:MX11}
 .if ${PORT_OPTIONS:MIMAGEMAGICK7}
-RUN_DEPENDS+=	convert:graphics/ImageMagick7
+USES+=		magick:7
 .else
-RUN_DEPENDS+=	convert:graphics/ImageMagick6
+USES+=		magick:6
 .endif
 .else
 .if ${PORT_OPTIONS:MIMAGEMAGICK7}
-RUN_DEPENDS+=	convert:graphics/ImageMagick7-nox11
+USES+=		magick:7,nox11
 .else
-RUN_DEPENDS+=	convert:graphics/ImageMagick6-nox11
+USES+=		magick:6,nox11
 .endif
 .endif
 

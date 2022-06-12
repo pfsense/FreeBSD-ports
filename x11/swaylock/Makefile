@@ -1,6 +1,6 @@
 PORTNAME=	swaylock
-DISTVERSION?=	1.5
-PORTREVISION?=	2
+DISTVERSION?=	1.6
+PORTREVISION?=	0
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -9,21 +9,27 @@ COMMENT?=	Screen locker for Wayland
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>=1.14:graphics/wayland-protocols
+BUILD_DEPENDS=	wayland-protocols>=1.25:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
 
 CONFLICTS_INSTALL=	${PORTNAME}-*
 
-USES=		compiler:c11 gnome meson pkgconfig
+USES=		compiler:c11 cpe gnome meson pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT?=	swaywm
+CPE_VENDOR=	swaywm
 USE_GNOME=	cairo pango
-PLIST_FILES=	"@(,,4755) bin/${PORTNAME}" \
+PLIST_FILES=	bin/${PORTNAME} \
 		etc/pam.d/${PORTNAME} \
 		share/bash-completion/completions/${PORTNAME} \
 		share/fish/vendor_completions.d/${PORTNAME}.fish \
 		share/zsh/site-functions/_${PORTNAME}
+
+# https://reviews.freebsd.org/D34321
+.if !exists(/usr/libexec/pam_unix-helper)
+PLIST_FILES:=	"@(,,4755) "${PLIST_FILES}
+.endif
 
 OPTIONS_DEFINE=	MANPAGES PIXBUF
 OPTIONS_DEFAULT=MANPAGES PIXBUF

@@ -42,10 +42,6 @@
 #				add the following to your Makefile:
 #				"GLIB_SCHEMAS=foo.gschema.xml bar.gschema.xml".
 #
-# INSTALLS_OMF		- If set, bsd.gnome.mk will automatically scan pkg-plist
-#				file and add apropriate @postexec/@postunexec directives for
-#				each .omf file found to track OMF registration database.
-#
 # MAINTAINER: gnome@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_GNOME_MK)
@@ -53,14 +49,13 @@ _INCLUDE_USES_GNOME_MK=        yes
 
 _USES_POST+=	gnome
 
-.if !empty(gnome_ARGS)
+.  if !empty(gnome_ARGS)
 IGNORE=	USES=gnome takes no arguments
-.endif
+.  endif
 
 # non-version specific components
 _USE_GNOME_ALL= intlhack intltool introspection \
-		referencehack gnomemimedata \
-		gnomeprefix
+		gnomemimedata gnomeprefix
 
 # GNOME 2 components
 _USE_GNOME_ALL+= atk cairo \
@@ -70,7 +65,7 @@ _USE_GNOME_ALL+= atk cairo \
 		libglade2 libgnomecanvas \
 		libgsf libidl librsvg2 libwnck \
 		libxml2 libxslt \
-		orbit2 pango pangox-compat \
+		pango pangox-compat \
 		vte
 
 # GNOME 3 components
@@ -81,7 +76,7 @@ _USE_GNOME_ALL+=dconf evolutiondataserver3 gnomecontrolcenter3 gnomedesktop3 \
 		pygobject3 vte3
 
 # GNOME 40 components
-_USE_GNOME_ALL+=gtk40 libadwaita
+_USE_GNOME_ALL+=gtk40 libadwaita gtksourceview5
 
 # C++ bindings
 _USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm gtkmm24 \
@@ -91,12 +86,6 @@ _USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm gtkmm24 \
 # glib-mkenums often fails with C locale
 # https://gitlab.gnome.org/GNOME/glib/issues/1430
 USE_LOCALE?=	en_US.UTF-8
-
-GNOME_MAKEFILEIN?=	Makefile.in
-SCROLLKEEPER_DIR=	/var/db/rarian
-
-referencehack_PRE_PATCH=	${FIND} ${WRKSRC} -name "Makefile.in" -type f | ${XARGS} ${FRAMEWORK_REINPLACE_CMD} -e \
-				"s|test \"\$$\$$installfiles\" = '\$$(srcdir)/html/\*'|:|"
 
 GNOME_HTML_DIR?=	${PREFIX}/share/doc
 GCONF_CONFIG_OPTIONS?=	merged
@@ -189,9 +178,6 @@ GTK4_VERSION=		4.0.0
 libidl_LIB_DEPENDS=	libIDL-2.so:devel/libIDL
 libidl_USE_GNOME_IMPL=	glib20
 
-orbit2_LIB_DEPENDS=	libORBit-2.so:devel/ORBit2
-orbit2_USE_GNOME_IMPL=	libidl
-
 libglade2_LIB_DEPENDS=	libglade-2.0.so:devel/libglade2
 libglade2_USE_GNOME_IMPL=libxml2 gtk20
 
@@ -211,7 +197,7 @@ introspection_USE_GNOME_IMPL=	glib20
 introspection_MAKE_ENV=		GI_SCANNER_DISABLE_CACHE=1
 
 gconf2_LIB_DEPENDS=	libgconf-2.so:devel/gconf2
-gconf2_USE_GNOME_IMPL=	orbit2 libxml2 gtk20
+gconf2_USE_GNOME_IMPL=	libxml2
 
 libgnomecanvas_LIB_DEPENDS=	libgnomecanvas-2.so:graphics/libgnomecanvas
 libgnomecanvas_USE_GNOME_IMPL=	libglade2 libartlgpl2
@@ -237,15 +223,15 @@ libadwaita_LIB_DEPENDS=		libadwaita-1.so:x11-toolkits/libadwaita
 libadwaita_USE_GNOME_IMPL=	gtk40
 
 # Use librsvg2-rust where lang/rust is available
-.if ${LIBRSVG2_DEFAULT:Mrust}
+.  if ${LIBRSVG2_DEFAULT:Mrust}
 librsvg2_BUILD_DEPENDS=	librsvg2-rust>=0:graphics/librsvg2-rust
 librsvg2_LIB_DEPENDS=	librsvg-2.so:graphics/librsvg2-rust
 librsvg2_RUN_DEPENDS=	librsvg2-rust>=0:graphics/librsvg2-rust
-.else
+.  else
 librsvg2_BUILD_DEPENDS=	librsvg2>=0:graphics/librsvg2
 librsvg2_LIB_DEPENDS=	librsvg-2.so:graphics/librsvg2
 librsvg2_RUN_DEPENDS=	librsvg2>=0:graphics/librsvg2
-.endif
+.  endif
 librsvg2_USE_GNOME_IMPL=gdkpixbuf2 pango
 
 nautilus3_LIB_DEPENDS=	libnautilus-extension.so:x11-fm/nautilus
@@ -271,6 +257,9 @@ gtksourceview3_USE_GNOME_IMPL=gtk30 libxml2
 
 gtksourceview4_LIB_DEPENDS=	libgtksourceview-4.so:x11-toolkits/gtksourceview4
 gtksourceview4_USE_GNOME_IMPL=gtk30 libxml2
+
+gtksourceview5_LIB_DEPENDS=	libgtksourceview-5.so:x11-toolkits/gtksourceview5
+gtksourceview5_USE_GNOME_IMPL=gtk40 libxml2
 
 libgsf_LIB_DEPENDS=	libgsf-1.so:devel/libgsf
 libgsf_USE_GNOME_IMPL=	glib20 libxml2
@@ -313,24 +302,24 @@ gvfs_USE_GNOME_IMPL=	glib20
 
 # End component definition section
 
-.if defined(USE_GNOME)
+.  if defined(USE_GNOME)
 # First of all expand all USE_GNOME_IMPL recursively
-. for component in ${_USE_GNOME_ALL}
-.  for subcomponent in ${${component}_USE_GNOME_IMPL}
+.    for component in ${_USE_GNOME_ALL}
+.      for subcomponent in ${${component}_USE_GNOME_IMPL}
 ${component}_USE_GNOME_IMPL+=${${subcomponent}_USE_GNOME_IMPL}
-.  endfor
-. endfor
+.      endfor
+.    endfor
 
 # Then use already expanded USE_GNOME_IMPL to expand USE_GNOME.
 # Also, check to see if each component has a desktop requirement.  If it does,
 # and if the user's chosen desktop is not of the same version, mark the
 # port as IGNORE.
-. for component in ${USE_GNOME:C/^([^:]+).*/\1/}
-.  if ${_USE_GNOME_ALL:M${component}}==""
+.    for component in ${USE_GNOME:C/^([^:]+).*/\1/}
+.      if ${_USE_GNOME_ALL:M${component}}==""
 IGNORE=	cannot install: Unknown component ${component}
-.  endif
+.      endif
 _USE_GNOME+=	${${component}_USE_GNOME_IMPL} ${component}
-. endfor
+.    endfor
 
 # Setup the GTK+ API version for pixbuf loaders, input method modules,
 # and theme engines.
@@ -338,68 +327,68 @@ PLIST_SUB+=			GTK2_VERSION="${GTK2_VERSION}" \
 				GTK3_VERSION="${GTK3_VERSION}" \
 				GTK4_VERSION="${GTK4_VERSION}"
 
-.if defined(_USE_GNOME) && empty(_USE_GNOME:Mglib20:u) && defined(GLIB_SCHEMAS)
+.    if defined(_USE_GNOME) && empty(_USE_GNOME:Mglib20:u) && defined(GLIB_SCHEMAS)
 IGNORE=		GLIB_SCHEMAS is set, but needs USE_GNOME=glib20 to work
-.endif
+.    endif
 
-.if defined(_USE_GNOME) && empty(_USE_GNOME:Mgconf2:u) && defined(GCONF_SCHEMAS)
+.    if defined(_USE_GNOME) && empty(_USE_GNOME:Mgconf2:u) && defined(GCONF_SCHEMAS)
 IGNORE=		GCONF_SCHEMAS is set, but needs USE_GNOME=gconf2 to work
-.endif
+.    endif
 
 # Then traverse through all components, check which of them
 # exist in ${_USE_GNOME} and set variables accordingly
-.ifdef _USE_GNOME
+.    ifdef _USE_GNOME
 
-. for component in ${_USE_GNOME:O:u}
-.  if defined(${component}_PATCH_DEPENDS)
+.      for component in ${_USE_GNOME:O:u}
+.        if defined(${component}_PATCH_DEPENDS)
 PATCH_DEPENDS+=	${${component}_PATCH_DEPENDS}
-.  endif
+.        endif
 
-.  if ${USE_GNOME:M${component}\:build} && defined(${component}_BUILD_DEPENDS)
+.        if ${USE_GNOME:M${component}\:build} && defined(${component}_BUILD_DEPENDS)
 BUILD_DEPENDS+=	${${component}_BUILD_DEPENDS}
-.  elif ${USE_GNOME:M${component}\:run} && defined(${component}_RUN_DEPENDS)
+.        elif ${USE_GNOME:M${component}\:run} && defined(${component}_RUN_DEPENDS)
 RUN_DEPENDS+=	${${component}_RUN_DEPENDS}
-.  else
-.   if defined(${component}_LIB_DEPENDS)
+.        else
+.          if defined(${component}_LIB_DEPENDS)
 LIB_DEPENDS+=	${${component}_LIB_DEPENDS}
-.   else
+.          else
 BUILD_DEPENDS+=	${${component}_BUILD_DEPENDS}
 RUN_DEPENDS+=	${${component}_RUN_DEPENDS}
-.   endif
-.  endif
+.          endif
+.        endif
 
-.  if defined(${component}_CONFIGURE_ARGS)
+.        if defined(${component}_CONFIGURE_ARGS)
 CONFIGURE_ARGS+=${${component}_CONFIGURE_ARGS}
-.  endif
+.        endif
 
-.  if defined(${component}_CONFIGURE_ENV)
+.        if defined(${component}_CONFIGURE_ENV)
 CONFIGURE_ENV+=	${${component}_CONFIGURE_ENV}
-.  endif
+.        endif
 
-.  if defined(${component}_MAKE_ENV)
+.        if defined(${component}_MAKE_ENV)
 MAKE_ENV+=	${${component}_MAKE_ENV}
-.  endif
+.        endif
 
-.  if !defined(CONFIGURE_TARGET) && defined(${component}_CONFIGURE_TARGET)
+.        if !defined(CONFIGURE_TARGET) && defined(${component}_CONFIGURE_TARGET)
 CONFIGURE_TARGET=	${${component}_CONFIGURE_TARGET}
-.  endif
+.        endif
 
-.  if defined(${component}_PRE_PATCH)
+.        if defined(${component}_PRE_PATCH)
 GNOME_PRE_PATCH+=	; ${${component}_PRE_PATCH}
-.  endif
-. endfor
-.endif
+.        endif
+.      endfor
+.    endif
 
-. if defined(GCONF_SCHEMAS)
+.    if defined(GCONF_SCHEMAS)
 MAKE_ENV+=	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
-. endif
-.endif
+.    endif
+.  endif
 
-.if defined(USE_GNOME_SUBR)
+.  if defined(USE_GNOME_SUBR)
 GNOME_SUBR=		${LOCALBASE}/etc/gnome.subr
 RUN_DEPENDS+=	${GNOME_SUBR}:sysutils/gnome_subr
 SUB_LIST+=		GNOME_SUBR=${GNOME_SUBR}
-.endif
+.  endif
 
 .endif
 # end of the part
@@ -407,13 +396,13 @@ SUB_LIST+=		GNOME_SUBR=${GNOME_SUBR}
 .if defined(_POSTMKINCLUDED) && !defined(_INCLUDE_USES_GNOME_POST_MK)
 _INCLUDE_USES_GNOME_POST_MK=     yes
 
-.if defined(GNOME_PRE_PATCH)
+.  if defined(GNOME_PRE_PATCH)
 _USES_patch+=	290:gnome-pre-patch
 gnome-pre-patch:
 	@${GNOME_PRE_PATCH:C/^;//1}
-.endif
+.  endif
 
-.if defined(GCONF_SCHEMAS)
+.  if defined(GCONF_SCHEMAS)
 _USES_install+=	690:gnome-post-gconf-schemas
 gnome-post-gconf-schemas:
 	@for i in ${GCONF_SCHEMAS}; do \
@@ -423,29 +412,11 @@ gnome-post-gconf-schemas:
 		${ECHO_CMD} "@postexec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} HOME=${WRKDIR} gconftool-2 --makefile-install-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \
 			>> ${TMPPLIST}; \
 	done
-.endif
+.  endif
 
-# we put the @glib-schemas behind the plist schema entry, because it compiles files 
-# in the directory. So we should remove the port file first before recompiling.
-.if defined(GLIB_SCHEMAS)
-_USES_install+=	690:gnome-post-glib-schemas
-gnome-post-glib-schemas:
-	@for i in ${GLIB_SCHEMAS}; do \
-		${ECHO_CMD} "share/glib-2.0/schemas/$${i}" >> ${TMPPLIST}; \
-	done
-	@${ECHO_CMD} "@glib-schemas" >> ${TMPPLIST};
-.endif
-
-.if defined(INSTALLS_OMF)
-_USES_install+=	690:gnome-post-omf
-gnome-post-omf:
-	@for i in `${GREP} "\.omf$$" ${TMPPLIST}`; do \
-		${ECHO_CMD} "@postexec scrollkeeper-install -q %D/$${i} 2>/dev/null || /usr/bin/true" \
-			>> ${TMPPLIST}; \
-		${ECHO_CMD} "@postunexec scrollkeeper-uninstall -q %D/$${i} 2>/dev/null || /usr/bin/true" \
-			>> ${TMPPLIST}; \
-	done
-.endif
+.  if defined(GLIB_SCHEMAS)
+PLIST_FILES+=	${GLIB_SCHEMAS:C,^,share/glib-2.0/schemas/,}
+.  endif
 
 .endif
 # End of use part.

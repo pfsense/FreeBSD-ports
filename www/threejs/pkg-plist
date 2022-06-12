@@ -63,6 +63,7 @@
 %%WWWDIR%%/extras/curves/QuadraticBezierCurve3.js
 %%WWWDIR%%/extras/curves/SplineCurve.js
 %%WWWDIR%%/geometries/BoxGeometry.js
+%%WWWDIR%%/geometries/CapsuleGeometry.js
 %%WWWDIR%%/geometries/CircleGeometry.js
 %%WWWDIR%%/geometries/ConeGeometry.js
 %%WWWDIR%%/geometries/CylinderGeometry.js
@@ -148,6 +149,7 @@
 %%WWWDIR%%/math/Box2.js
 %%WWWDIR%%/math/Box3.js
 %%WWWDIR%%/math/Color.js
+%%WWWDIR%%/math/ColorManagement.js
 %%WWWDIR%%/math/Cylindrical.js
 %%WWWDIR%%/math/Euler.js
 %%WWWDIR%%/math/Frustum.js
@@ -183,9 +185,10 @@
 %%WWWDIR%%/objects/SkinnedMesh.js
 %%WWWDIR%%/objects/Sprite.js
 %%WWWDIR%%/renderers/WebGL1Renderer.js
+%%WWWDIR%%/renderers/WebGL3DRenderTarget.js
+%%WWWDIR%%/renderers/WebGLArrayRenderTarget.js
 %%WWWDIR%%/renderers/WebGLCubeRenderTarget.js
 %%WWWDIR%%/renderers/WebGLMultipleRenderTargets.js
-%%WWWDIR%%/renderers/WebGLMultisampleRenderTarget.js
 %%WWWDIR%%/renderers/WebGLRenderTarget.js
 %%WWWDIR%%/renderers/WebGLRenderer.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk.js
@@ -234,6 +237,8 @@
 %%WWWDIR%%/renderers/shaders/ShaderChunk/fog_pars_vertex.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/fog_vertex.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/gradientmap_pars_fragment.glsl.js
+%%WWWDIR%%/renderers/shaders/ShaderChunk/iridescence_fragment.glsl.js
+%%WWWDIR%%/renderers/shaders/ShaderChunk/iridescence_pars_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/lightmap_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/lightmap_pars_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/lights_fragment_begin.glsl.js
@@ -257,6 +262,7 @@
 %%WWWDIR%%/renderers/shaders/ShaderChunk/map_particle_pars_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/metalnessmap_fragment.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/metalnessmap_pars_fragment.glsl.js
+%%WWWDIR%%/renderers/shaders/ShaderChunk/morphcolor_vertex.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/morphnormal_vertex.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/morphtarget_pars_vertex.glsl.js
 %%WWWDIR%%/renderers/shaders/ShaderChunk/morphtarget_vertex.glsl.js
@@ -336,6 +342,7 @@
 %%WWWDIR%%/renderers/webgl/WebGLRenderLists.js
 %%WWWDIR%%/renderers/webgl/WebGLRenderStates.js
 %%WWWDIR%%/renderers/webgl/WebGLShader.js
+%%WWWDIR%%/renderers/webgl/WebGLShaderCache.js
 %%WWWDIR%%/renderers/webgl/WebGLShadowMap.js
 %%WWWDIR%%/renderers/webgl/WebGLState.js
 %%WWWDIR%%/renderers/webgl/WebGLTextures.js
@@ -349,10 +356,12 @@
 %%WWWDIR%%/textures/CanvasTexture.js
 %%WWWDIR%%/textures/CompressedTexture.js
 %%WWWDIR%%/textures/CubeTexture.js
+%%WWWDIR%%/textures/Data3DTexture.js
+%%WWWDIR%%/textures/DataArrayTexture.js
 %%WWWDIR%%/textures/DataTexture.js
-%%WWWDIR%%/textures/DataTexture2DArray.js
-%%WWWDIR%%/textures/DataTexture3D.js
 %%WWWDIR%%/textures/DepthTexture.js
+%%WWWDIR%%/textures/FramebufferTexture.js
+%%WWWDIR%%/textures/Source.js
 %%WWWDIR%%/textures/Texture.js
 %%WWWDIR%%/textures/VideoTexture.js
 %%WWWDIR%%/utils.js

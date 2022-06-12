@@ -16,12 +16,12 @@ LICENSE_NAME=	Alliance VLSI Cad System License
 LICENSE_FILE=	${WRKSRC}/LICENCE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BROKEN=	fails to build with latest TeX2021
 BROKEN_aarch64=	fails to link: collect2: error: ld returned 1 exit status
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick${IMAGEMAGICK_DEFAULT} \
-		fig2dev:print/fig2dev
+BUILD_DEPENDS=	fig2dev:print/fig2dev
 
-USES=		autoreconf:build gmake libtool motif tar:bz2 xorg
+USES=		autoreconf:build gmake libtool magick:build motif tar:bz2 xorg
 USE_GCC=	yes
 USE_TEX=	dvipsk:build latex:build
 USE_XORG=	ice sm x11 xext xt
@@ -35,7 +35,7 @@ MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 CFLAGS+=	-fcommon
 
-CONFLICTS_INSTALL=	fspclient
+CONFLICTS_INSTALL=	ocp publib
 
 SUB_FILES=	pkg-message
 WRKSRC=		${WRKDIR}/alliance/src

@@ -1,29 +1,36 @@
 # Created by: Wen Heping <wenheping@gmail.com>
 
 PORTNAME=	igraph
-PORTVERSION=	0.8.5
+DISTVERSION=	0.9.8
 CATEGORIES=	math
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Package For Manipulating Undirected And Directed Graphs
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_mips64=		fails to link: relocation truncated to fit: R_MIPS_TLS_GD against 'igraph_i_interruption_handler'
-BROKEN_sparc64=		fails to compile: uses x86 asm
+LIB_DEPENDS=	libarpack.so:math/arpack-ng \
+		libcxsparse.so:math/suitesparse-cxsparse \
+		libglpk.so:math/glpk \
+		libgmp.so:math/gmp \
+		libopenblas.so:math/openblas
 
-LIB_DEPENDS=	libgmp.so:math/gmp
-
-USES=		autoreconf bison cpe gmake gnome libtool pathfix
-USE_GITHUB=	yes
+USES=		bison cmake cpe gnome pathfix
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
+CMAKE_ON=	BUILD_SHARED_LIBS
 
-INSTALL_TARGET=	install-strip
+BINARY_ALIAS=	git=false
 
 pre-configure:
-	@${ECHO} ${PORTVERSION} > ${WRKSRC}/IGRAPH_VERSION
+	@${ECHO} ${DISTVERSION} > ${WRKSRC}/IGRAPH_VERSION
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+.if ${OSVERSION} >= 1300000 && ${OSVERSION} < 1300523
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-etc_cmake_compilers.cmake
+.endif
+
+.include <bsd.port.post.mk>

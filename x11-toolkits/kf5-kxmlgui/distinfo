@@ -1,3 +1,3 @@
-TIMESTAMP = 1636215890
-SHA256 (KDE/frameworks/5.88.0/kxmlgui-5.88.0.tar.xz) = 623c5a73369c0f1bd7b143de72addae33bfcd03fa4ab5ea5d9b3ac6d9be0a117
-SIZE (KDE/frameworks/5.88.0/kxmlgui-5.88.0.tar.xz) = 885308
+TIMESTAMP = 1652111347
+SHA256 (KDE/frameworks/5.94.0/kxmlgui-5.94.0.tar.xz) = 43a31730ff0ed113320817aa35a04e53b6ec647ab94320cf3b075adc38619dd6
+SIZE (KDE/frameworks/5.94.0/kxmlgui-5.94.0.tar.xz) = 898380

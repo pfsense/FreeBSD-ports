@@ -7,6 +7,7 @@
 PORTNAME=	tauthon
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.3
+PORTREVISION=	1
 CATEGORIES=	lang python
 
 MAINTAINER=	olce.freebsd.ports@certner.fr
@@ -15,7 +16,6 @@ COMMENT=	Backwards-compatible fork of CPython 2.7 with Python 3.x features
 LICENSE=	PSFL
 
 DEPRECATED=	Uses Python 2.7 codebase
-EXPIRATION_DATE=	2021-06-23
 
 USES=		pathfix shebangfix autoreconf ncurses pkgconfig readline ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile.pre.in

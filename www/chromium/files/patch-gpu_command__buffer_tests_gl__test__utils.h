@@ -1,11 +1,11 @@
---- gpu/command_buffer/tests/gl_test_utils.h.orig	2021-04-14 18:41:04 UTC
+--- gpu/command_buffer/tests/gl_test_utils.h.orig	2022-03-25 21:59:56 UTC
 +++ gpu/command_buffer/tests/gl_test_utils.h
 @@ -120,7 +120,7 @@ class GpuCommandBufferTestEGL {
      return gfx::HasExtension(gl_extensions_, extension);
    }
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    // Create GLImageNativePixmap filled in with the given pixels.
    scoped_refptr<gl::GLImageNativePixmap> CreateGLImageNativePixmap(
        gfx::BufferFormat format,

@@ -1,7 +1,7 @@
 # Created by: Hye-Shik Chang <perky@python.or.kr>
 
 PORTNAME=	berkeleydb
-PORTVERSION=	18.1.4
+PORTVERSION=	18.1.5
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Python bindings for Oracle Berkeley DB
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		bdb python:3.6+
+USES=		bdb python:3.7+
 USE_PYTHON=	distutils autoplist
 
 PYDISTUTILS_CONFIGUREARGS=--libs="-l${BDB_LIB_NAME}" --berkeley-db=${LOCALBASE}
@@ -24,12 +24,21 @@ DOCSDIR=	${PREFIX}/share/doc/${PYTHON_PKGNAMEPREFIX}${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.pre.mk>
+
+.if ${BDB_VER} > 5
+MAKE_ENV=	YES_I_HAVE_THE_RIGHT_TO_USE_THIS_BERKELEY_DB_VERSION=yes
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} 's|%%DBVERSION%%|${BDB_LIB_NAME}| ; \
 		s|%%BDB_INCLUDE_DIR%%|${BDB_INCLUDE_DIR}| ; \
 		s|%%BDB_LIB_NAME%%|${BDB_LIB_NAME}|' \
 		${WRKSRC}/setup3.py
 	@${REINPLACE_CMD} 's|<db\.h>|<${BDB_INCLUDE_DIR}/db.h>|' ${WRKSRC}/src/Module/berkeleydb.h
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/_${PORTNAME}.cpython-*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -38,4 +47,4 @@ post-install-DOCS-on:
 do-test:
 	@(cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} ./test.py
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

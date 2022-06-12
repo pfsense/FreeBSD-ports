@@ -1,14 +1,11 @@
 # Created by: Pav Lucistnik <pav@FreeBSD.org>
 
 PORTNAME=	libopenraw
-PORTVERSION=	0.3.0
-PORTREVISION=	8
+PORTVERSION=	0.3.1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://libopenraw.freedesktop.org/download/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	https://gitlab.freedesktop.org/${PORTNAME}/${PORTNAME}/-/commit/
-PATCHFILES=	6d447e3feb6d47f958c786eb8ab40b0a7a535818.patch:-p1 # Include <sys/endian.h>
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Library for camera RAW files decoding

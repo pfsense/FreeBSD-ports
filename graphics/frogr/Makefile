@@ -2,8 +2,12 @@
 
 PORTNAME=	frogr
 PORTVERSION=	1.6
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
+
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	1eeb32b94b9e.patch:-p1 # https://gitlab.gnome.org/GNOME/frogr/-/merge_requests/5
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Flickr upload and management tool

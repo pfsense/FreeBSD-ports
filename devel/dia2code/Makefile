@@ -2,6 +2,7 @@
 
 PORTNAME=	dia2code
 PORTVERSION=	0.8.8
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -19,6 +20,8 @@ GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+CONFLICTS_INSTALL=	dia2code+
 
 PLIST_FILES=	bin/dia2code \
 		man/man1/dia2code.1.gz

@@ -1,5 +1,6 @@
 PORTNAME=	sra-tools
 DISTVERSION=	2.11.0
+PORTREVISION=	2
 CATEGORIES=	biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -44,6 +45,8 @@ FREEBSD_RELEASE=	uname -r | cut -d - -f 1
 
 CFLAGS+=	-I${WRKSRC}/interfaces/os/sun
 CXXFLAGS+=	-I${WRKSRC}/interfaces/os/sun
+
+CONFLICTS_INSTALL=	kget
 
 BINARY_ALIAS=	gcc=${CC} g++=${CXX}
 

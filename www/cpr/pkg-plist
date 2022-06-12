@@ -22,6 +22,7 @@ include/cpr/parameters.h
 include/cpr/payload.h
 include/cpr/proxies.h
 include/cpr/proxyauth.h
+include/cpr/range.h
 include/cpr/redirect.h
 include/cpr/response.h
 include/cpr/session.h
@@ -38,4 +39,4 @@ lib/cmake/cpr/cprTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/cpr/cprTargets.cmake
 lib/libcpr.so
 lib/libcpr.so.1
-lib/libcpr.so.1.7.0
+lib/libcpr.so.%%PORTVERSION%%

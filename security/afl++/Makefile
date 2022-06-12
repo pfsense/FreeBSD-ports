@@ -1,7 +1,7 @@
 # Created by: Fabian Keil <fk@fabiankeil.de>
 
 PORTNAME=	afl
-PORTVERSION=	3.14c
+PORTVERSION=	4.00c
 CATEGORIES=	security
 PKGNAMESUFFIX=	++-${FLAVOR}
 
@@ -11,7 +11,7 @@ COMMENT=	Fast instrumented fuzzer
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc powerpc64 powerpc64le riscv64
 ONLY_FOR_ARCHS_REASON=	uses x86-only instrumentation or requires complete LLVM support
 
 BUILD_DEPENDS=	ginstall:sysutils/coreutils
@@ -23,18 +23,20 @@ _LLVM_VER=		13
 llvm_BUILD_DEPENDS=	clang${_LLVM_VER}:devel/llvm${_LLVM_VER}
 llvm_RUN_DEPENDS=	clang${_LLVM_VER}:devel/llvm${_LLVM_VER}
 
-USES=		gmake tar:tgz
+USES=		gmake shebangfix tar:tgz
 .if ${FLAVOR} == gcc
 USE_GCC=	yes
 .endif
 USE_GITHUB=	yes
 GH_ACCOUNT=	AFLplusplus
 GH_PROJECT=	AFLplusplus
+SHEBANG_FILES=	afl-persistent-config
 
 MAKEFILE=	GNUmakefile
 MAKE_ARGS=	${${ARCH} != amd64 && ${ARCH} != i386:?AFL_NO_X86=1:} \
 		PREFIX="${PREFIX}/${PKGBASE}"
 .if ${FLAVOR} == llvm
+CFLAGS_riscv64=	-mno-relax
 MAKE_ARGS+=	CC=clang${_LLVM_VER} \
 		CXX=clang++${_LLVM_VER} \
 		LLVM_CONFIG=llvm-config${_LLVM_VER}

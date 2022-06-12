@@ -1,6 +1,7 @@
 PORTNAME=	kodi
-DISTVERSION=	19.3
+DISTVERSION=	19.4
 DISTVERSIONSUFFIX=	-${KODI_CODENAME}
+PORTREVISION=	4
 CATEGORIES=	multimedia java
 
 MAINTAINER=	yzrh@noema.org
@@ -76,7 +77,7 @@ OPTIONS_SUB=		yes
 OPTIONS_DEFINE=		AIRPLAY AVAHI LIBBLURAY CEC DBUS DVDCSS LCMS2 \
 			LIRC WEBSERVER NFS DVD SMB TEST UDEV UPNP \
 			VAAPI VDPAU XSLT DOCS
-OPTIONS_DEFAULT=	LIBBLURAY CEC DVDCSS LCMS2 WEBSERVER \
+OPTIONS_DEFAULT=	LIBBLURAY CEC LCMS2 WEBSERVER \
 			DVD UPNP VAAPI VDPAU XSLT WAYLAND X11 GL
 OPTIONS_DEFAULT_amd64=	SSE SSE2 SSE3 SSSE3 SSE4_1 SSE4_2
 OPTIONS_DEFAULT_i386=	SSE SSE2 SSE3
@@ -282,8 +283,8 @@ post-patch:
 		${WRKSRC}/xbmc/platform/linux/input/LibInputSettings.cpp
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/docs/manpages/kodi.bin.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	cd ${STAGEDIR}${MAN1PREFIX}/man/man1 && ${LN} -s kodi.bin.1.gz kodi.1.gz
+	${INSTALL_MAN} ${WRKSRC}/docs/manpages/kodi.bin.1 ${STAGEDIR}${MAN1PREFIX}/share/man/man1
+	cd ${STAGEDIR}${MAN1PREFIX}/share/man/man1 && ${LN} -s kodi.bin.1.gz kodi.1.gz
 	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} TexturePacker JsonSchemaBuilder
 	${FIND} ${STAGEDIR}${PREFIX}/lib/kodi -type f -name '*.so' -print0 | ${XARGS} -0 ${STRIP_CMD}
 	${RM} -rf ${STAGEDIR}${PREFIX}/lib/firewalld

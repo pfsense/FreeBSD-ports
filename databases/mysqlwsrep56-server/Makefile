@@ -53,7 +53,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
 		-DINSTALL_INFODIR="info" \
 		-DINSTALL_LIBDIR="lib/mysql" \
-		-DINSTALL_MANDIR="man" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="${MY_DBDIR}" \
 		-DINSTALL_MYSQLKEYRINGDIR="etc/mysql/keyring" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
@@ -93,9 +93,8 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 		MY_TMPDIR=${MY_TMPDIR}
 
 CONFLICTS_INSTALL=	mariadb*-server \
-			mysql[0-9]*-server \
-			mysqlwsrep57*-server \
-			mysqlwsrep[1-489]*-server \
+			mysql*-server \
+			mysqlwsrep*-server \
 			percona*-server
 
 USE_RC_SUBR=	mysql-server

@@ -1,5 +1,5 @@
 PORTNAME=	PyNE
-DISTVERSION=	0.7.5
+DISTVERSION=	0.7.7
 PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	http://raw.githubusercontent.com/pyne/data/master/:decay \
@@ -52,6 +52,8 @@ PY_EXTRA_ARGS+=	--moab ${LOCALBASE}
 
 PYDISTUTILS_CONFIGUREARGS=	${PY_EXTRA_ARGS}
 PYDISTUTILS_BUILDARGS=		${PY_EXTRA_ARGS}
+
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 post-extract:
 .for f in decay.tar.gz cram.tar.gz decay-linux-clang.tar.gz cram-linux-clang.tar.gz

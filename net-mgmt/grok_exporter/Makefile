@@ -1,6 +1,7 @@
 PORTNAME=	grok_exporter
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.0.0.RC4
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	gasol.wu@gmail.com

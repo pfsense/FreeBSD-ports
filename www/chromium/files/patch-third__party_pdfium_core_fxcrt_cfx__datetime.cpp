@@ -1,11 +1,11 @@
---- third_party/pdfium/core/fxcrt/cfx_datetime.cpp.orig	2021-04-14 18:43:07 UTC
+--- third_party/pdfium/core/fxcrt/cfx_datetime.cpp.orig	2022-02-28 16:54:41 UTC
 +++ third_party/pdfium/core/fxcrt/cfx_datetime.cpp
-@@ -10,7 +10,7 @@
- #include "core/fxcrt/fx_system.h"
+@@ -11,7 +11,7 @@
  #include "third_party/base/check.h"
  
--#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_APPLE) || defined(OS_ASMJS)
+ #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_APPLE) || defined(OS_ASMJS)
++    BUILDFLAG(IS_APPLE) || defined(OS_ASMJS) || BUILDFLAG(IS_BSD)
  #include <sys/time.h>
  #include <time.h>
+ #endif

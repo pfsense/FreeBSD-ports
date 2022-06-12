@@ -1,9 +1,11 @@
 PORTNAME=	zig
-DISTVERSION=	g20210824
+DISTVERSION=	0.9.1
 CATEGORIES=	lang
 MASTER_SITES=	https://ziglang.org/download/${DISTVERSION}/ \
 		https://ziglang.org/builds/
 PKGNAMESUFFIX=	-devel
+# fetch prebuilt platform-independent docs
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} zig-freebsd-x86_64-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Language designed for robustness, optimality, and maintainability
@@ -11,47 +13,42 @@ COMMENT=	Language designed for robustness, optimality, and maintainability
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		aarch64 amd64
+ONLY_FOR_ARCHS=	aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	not yet supported
 
 BUILD_DEPENDS=	llvm${_LLVM_VER}>=0:devel/llvm${_LLVM_VER}
 
-USES=		cmake compiler:c++11-lang localbase:ldflags tar:xz
-USE_GITHUB=	yes
-GH_ACCOUNT=	ziglang
-GH_PROJECT=	zig
-GH_TAGNAME=	9e3ec9893
-
 CONFLICTS=	zig
 
-OPTIONS_DEFINE=		STATIC
-OPTIONS_DEFAULT=	STATIC
+USES=		cmake compiler:c++11-lang localbase:ldflags tar:xz
 
-CMAKE_ARGS+=	-DZIG_VERSION="0.9.0-dev.850+9e3ec9893"
+OPTIONS_DEFINE=		STATIC DOCS
+OPTIONS_DEFAULT=	STATIC DOCS
 
-STATIC_DESC=	sets ZIG_STATIC to avoid 800MiB LLVM dependencies
+STATIC_DESC=	sets ZIG_STATIC to avoid 800MiB LLVM runtime dependency
 
 STATIC_RUN_DEPENDS_OFF=	llvm${_LLVM_VER}>=0:devel/llvm${_LLVM_VER}
 STATIC_CMAKE_BOOL=	CMAKE_SKIP_INSTALL_RPATH ZIG_STATIC
-STATIC_LDFLAGS=		-lz -lm -lmd -llzma -L/usr/lib
+STATIC_LDFLAGS=		-llzma -lm -lmd -lxml2 -lz
 
-_LLVM_VER=	12
+_LLVM_VER=	13
 _ZIG_BIN=	${STAGEDIR}${PREFIX}/bin/zig
 
 post-configure-STATIC-on:
 	@${REINPLACE_CMD} 's/-Wl,-Bdynamic//' ${BUILD_WRKSRC}/build.ninja
 
-post-build:
-	${MKDIR}  ${WRKDIR}/cache ${WRKDIR}/doc
-	${RM} ${WRKSRC}/lib/zig/std/zig-cache
-
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/std
-	# langref cannot be generated until after install target has run
-	(cd ${WRKSRC} && ${_ZIG_BIN} run \
-		./doc/docgen.zig -- ${_ZIG_BIN} \
-		./doc/langref.html.in ${STAGEDIR}${DOCSDIR}/langref.html \
-		&& ${RM} ${STAGEDIR}/lib/zig/std/zig-cache)
-	${REINPLACE_CMD} -i '' -e 's|${STAGEDIR}||' ${STAGEDIR}${DOCSDIR}/langref.html
+.for f in langref.html std/data.js std/main.js std/index.html
+	${INSTALL_MAN} ${WRKDIR}/zig-freebsd-x86_64-${DISTVERSION}/doc/${f} \
+		${STAGEDIR}${DOCSDIR}/${f}
+.endfor
+
+do-test:
+	mkdir ${WRKDIR}/cache
+	(cd ${WRKSRC} && ${_ZIG_BIN} build test-behavior \
+		--cache-dir ${WRKDIR}/cache \
+		--global-cache-dir ${WRKDIR}/cache \
+		--zig-lib-dir ${WRKSRC}/lib)
 
 .include <bsd.port.mk>

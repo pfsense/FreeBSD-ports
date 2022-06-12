@@ -1,6 +1,6 @@
 PORTNAME=	threadscope
 PORTVERSION=	0.2.14
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -33,5 +33,7 @@ USE_CABAL=	alex-3.2.6 \
 		temporary-1.3 \
 		utf8-string-1.0.2 \
 		vector-0.12.2.0
+
+BROKEN_aarch64=	 ld.lld: error: relocation R_AARCH64_PREL64 cannot be used against symbol ... recompile with -fPIC
 
 .include <bsd.port.mk>

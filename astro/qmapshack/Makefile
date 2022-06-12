@@ -1,9 +1,8 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
 
 PORTNAME=	qmapshack
-PORTVERSION=	1.16.0
+PORTVERSION=	1.16.1
 DISTVERSIONPREFIX=	V_
-PORTREVISION=	1
 CATEGORIES=	astro
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -11,9 +10,6 @@ COMMENT=	Ultimate outdoor aficionado's tool
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libproj.so:graphics/proj \

@@ -1,7 +1,7 @@
 # Created by: Mathias Monnerville <mathias@monnerville.com>
 
 PORTNAME=	glpi
-PORTVERSION=	9.5.5
+PORTVERSION=	9.5.7
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/glpi-project/glpi/releases/download/${PORTVERSION}/
@@ -15,21 +15,22 @@ USES=		cpe gettext php tar:tgz
 CPE_VENDOR=	glpi-project
 USE_PHP=	bz2 ctype curl exif fileinfo gd iconv intl json mbstring \
 		mysqli opcache openssl session simplexml sodium xml xmlrpc zip zlib
+IGNORE_WITH_PHP=	81
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_ARCH=	yes
 NO_BUILD=	yes
-GLPIDIR?=	www/${PORTNAME}
-
 SUB_FILES=	pkg-message
 SUB_LIST=	GLPIDIR=${GLPIDIR} PREFIX=${PREFIX}
+GLPIDIR?=	www/${PORTNAME}
+
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	LDAP IMAP
 OPTIONS_DEFAULT=	LDAP IMAP
 
 IMAP_DESC=	IMAP support
-LDAP_USE=	PHP=ldap
 IMAP_USE=	PHP=imap
+LDAP_USE=	PHP=ldap
 
 post-extract:
 	${FIND} ${WRKSRC} \( -name '*~' -o -name '*.orig' -o -name '*.rej' \) -delete

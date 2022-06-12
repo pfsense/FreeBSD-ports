@@ -1,12 +1,12 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
 
 PORTNAME=	django-markwhat
-PORTVERSION=	1.6.1
+PORTVERSION=	1.6.2
 CATEGORIES=	www python textproc
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Collection of template filters that implement common markup languages
 
 LICENSE=	BSD3CLAUSE

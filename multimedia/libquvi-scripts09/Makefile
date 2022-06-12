@@ -4,7 +4,7 @@ PORTNAME=	libquvi-scripts
 PORTVERSION=	0.9.20131130
 PORTREVISION=	1
 CATEGORIES=	multimedia devel
-MASTER_SITES=	SF/quvi/${PORTVERSION}/${PORTNAME}/ \
+MASTER_SITES=	SF/quvi/${PORTVERSION:R}/libquvi-scripts/ \
 		LOCAL/sunpoet
 PKGNAMESUFFIX=	09
 
@@ -14,21 +14,25 @@ COMMENT=	Embedded lua scripts for libquvi and utility scripts
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Deprecated upstream, please consider using www/yt-dlp or multimedia/streamlink
+EXPIRATION_DATE=2022-06-30
+
 RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}bitop>=1.0.1:devel/lua-bitop@${LUA_FLAVOR} \
 		${LUA_PKGNAMEPREFIX}luaexpat>=1.2.0:textproc/luaexpat@${LUA_FLAVOR} \
 		${LUA_PKGNAMEPREFIX}json>=1.1.1:converters/lua-json@${LUA_FLAVOR} \
 		${LUA_PKGNAMEPREFIX}luasocket>=2.0.2:net/luasocket@${LUA_FLAVOR}
 
-OPTIONS_DEFINE=	NSFW
-OPTIONS_SUB=	yes
-NSFW_DESC=	Enable adult website support
+USES=		lua:run pathfix tar:xz
 
 CONFIGURE_ARGS=	--program-suffix=${PKGNAMESUFFIX}
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes
-USES=		lua:run pathfix tar:xz
 
 PLIST_SUB=	PKGNAMESUFFIX=${PKGNAMESUFFIX} PORTVERSION=${PORTVERSION} QUVIVERSION=${PORTVERSION:R}
+
+OPTIONS_DEFINE=	NSFW
+OPTIONS_SUB=	yes
+NSFW_DESC=	Enable adult website support
 
 NSFW_CONFIGURE_WITH=	nsfw
 

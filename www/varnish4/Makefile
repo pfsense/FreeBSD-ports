@@ -14,9 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	rst2man:textproc/py-docutils
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-CONFLICTS=	varnish-2.* varnish-3.*
+CONFLICTS=	varnish6 varnish7
 
-USES=		autoreconf cpe gmake libedit libtool ncurses pathfix \
+USES=		autoreconf:2.69 cpe gmake libedit libtool ncurses pathfix \
 		pkgconfig python:build readline shebangfix
 SHEBANG_FILES=	lib/libvcc/vmodtool.py
 CPE_VENDOR=	varnish-cache

@@ -16,7 +16,7 @@ USE_KDE=	activities archive attica auth bookmarks codecs completion \
 		ecm_build
 USE_QT=		concurrent core dbus declarative graphicaleffects gui location \
 		network printsupport script webchannel widgets x11extras xml \
-		buildtools_build qmake_build
+		buildtools_build qmake_build testlib_build
 
 OPTIONS_DEFINE=	PURPOSE QTWEBENGINE
 OPTIONS_DEFAULT=	PURPOSE
@@ -31,12 +31,5 @@ PURPOSE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5Purpose
 QTWEBENGINE_DESC=	Add dependency on qt5-webengine
 QTWEBENGINE_USE=	qt=webengine
 QTWEBENGINE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngine
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MQTWEBENGINE}
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-.endif
 
 .include <bsd.port.mk>

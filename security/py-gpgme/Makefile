@@ -1,4 +1,4 @@
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,6 +11,6 @@ BINDING_NAME=	python
 PLIST=		${.CURDIR}/pkg-plist
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${PYTHON_VERSION}/site-packages/gpg/_gpgme*.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/gpg/_gpgme*.so
 
 .include "${MASTERDIR}/Makefile"

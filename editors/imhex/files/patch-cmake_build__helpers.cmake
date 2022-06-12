@@ -1,20 +1,22 @@
---- cmake/build_helpers.cmake.orig	2021-09-30 10:52:12 UTC
+--- cmake/build_helpers.cmake.orig	2022-03-03 13:32:30 UTC
 +++ cmake/build_helpers.cmake
-@@ -37,7 +37,7 @@ macro(findLibraries)
-     # Find packages
-     find_package(PkgConfig REQUIRED)
+@@ -284,17 +284,9 @@ endmacro()
  
--    find_package(mbedTLS 2.26.0 REQUIRED)
-+    find_library(mbedTLS mbedtls REQUIRED)
  
-     pkg_search_module(CAPSTONE 4.0.2 REQUIRED capstone)
+ function(downloadImHexPatternsFiles)
+-    FetchContent_Declare(
+-        imhex_patterns
+-        GIT_REPOSITORY https://github.com/WerWolv/ImHex-Patterns.git
+-        GIT_TAG master
+-    )
+-
+-    FetchContent_Populate(imhex_patterns)
+-
+     set(PATTERNS_FOLDERS_TO_INSTALL constants encodings includes patterns magic)
+     foreach (FOLDER ${PATTERNS_FOLDERS_TO_INSTALL})
+-        install(DIRECTORY "${imhex_patterns_SOURCE_DIR}/${FOLDER}" DESTINATION "./")
++        install(DIRECTORY "${CMAKE_BINARY_DIR}/_deps/imhex_patterns_src/${FOLDER}" DESTINATION "share/imhex/")
+     endforeach()
  
-@@ -48,6 +48,8 @@ macro(findLibraries)
-         message(STATUS ${PYTHON_VERSION_MAJOR_MINOR})
-         message(FATAL_ERROR "No valid version of Python 3 was found.")
-     endif()
-+
-+    find_package(CURL REQUIRED)
- 
-     string(REPLACE "." ";" PYTHON_VERSION_MAJOR_MINOR ${Python_VERSION})
- 
+ endfunction()
+\ No newline at end of file

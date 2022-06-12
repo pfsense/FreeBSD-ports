@@ -1,11 +1,11 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 
 PORTNAME=	wine
-DISTVERSION=	6.23
+DISTVERSION=	7.7
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
-		http://mirrors.ibiblio.org/wine/source/6.x/
+		http://mirrors.ibiblio.org/wine/source/7.x/
 PKGNAMESUFFIX=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -18,9 +18,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
-LIB_DEPENDS=	libFAudio.so:audio/faudio \
-		libxml2.so:textproc/libxml2
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex llvm${_LLVM_VERSION}>=0:devel/llvm${_LLVM_VERSION}
 
 USES=		bison cpe desktop-file-utils gmake localbase \
 		pkgconfig sdl shebangfix tar:xz
@@ -35,25 +33,22 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--verbose \
 		--disable-kerberos \
 		--disable-tests \
-		--without-alsa \
 		--without-capi \
 		--without-coreaudio \
 		--without-dbus \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
+		--without-gssapi \
 		--without-gstreamer \
-		--without-hal \
 		--without-inotify \
 		--without-krb5 \
-		--without-mingw \
+		--with-mingw CROSSCC="clang" CROSSCFLAGS="-isystem ${FILESDIR}/clang" \
 		--without-netapi \
 		--without-opencl \
 		--without-osmesa \
-		--with-oss \
 		--with-pcap \
 		--with-pthread \
 		--without-pulse \
-		--without-quicktime \
 		--without-sane \
 		--with-sdl \
 		--without-udev \
@@ -67,12 +62,17 @@ USE_LDCONFIG=	${WINELIBDIR} ${WINELIBDIR}/wine
 SHEBANG_FILES=	tools/make_requests tools/winemaker/winemaker \
 		tools/winedump/function_grep.pl
 
+BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${_LLVM_VERSION} \
+		lld-link=${LOCALBASE}/bin/lld-link${_LLVM_VERSION}
+
 SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
 OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP OPENAL STAGING V4L WINEMAKER X11 GECKO MONO
-OPTIONS_DEFAULT=GNUTLS OPENAL X11
+OPTIONS_DEFAULT=GNUTLS OPENAL OSS X11
+OPTIONS_RADIO=	AUDIO
+OPTIONS_RADIO_AUDIO=	ALSA OSS
 OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
@@ -80,6 +80,9 @@ STAGING_DESC=	Include Wine Staging patchset (experimental&unsupported)
 WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
 MONO_DESC=	Bundle Mono MSI package for Wine
+
+ALSA_CONFIGURE_ON=	--with-alsa --without-oss
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 
 CUPS_CONFIGURE_WITH=	cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
@@ -99,6 +102,8 @@ MONO_RUN_DEPENDS=	wine-mono-devel>0:emulators/wine-mono-devel
 OPENAL_CONFIGURE_WITH=	openal
 OPENAL_USES=		openal
 
+OSS_CONFIGURE_ON=	--without-alsa --with-oss
+
 STAGING_MASTER_SITES=	https://github.com/wine-staging/wine-staging/archive/:staging
 STAGING_DIST=		v${DISTVERSION}.tar.gz
 STAGING_DISTFILES=	${STAGING_DIST}:staging
@@ -114,15 +119,20 @@ V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 WINEMAKER_RUN_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML
 
-X11_CONFIGURE_WITH=	x fontconfig freetype opengl vkd3d xinerama xinput2 xrandr xrender
+X11_CONFIGURE_WITH=	x fontconfig freetype opengl xinerama xinput2 xrandr xrender
 X11_USES=		gl xorg
 X11_USE=		GL=glu XORG=x11,xext,xcomposite,xcursor,xi,xinerama,xrandr,xrender
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2 \
-			libvulkan.so:graphics/vulkan-loader \
-			libvkd3d.so:graphics/vkd3d
+			libvulkan.so:graphics/vulkan-loader
 
 .include <bsd.port.pre.mk>
+
+.if (${LLVM_DEFAULT} == 90 || ${LLVM_DEFAULT} == 10 || ${LLVM_DEFAULT} == 11)
+_LLVM_VERSION=	12
+.else
+_LLVM_VERSION=	${LLVM_DEFAULT}
+.endif
 
 .if ${ARCH} == amd64
 # Wine is composed of three parts:
@@ -147,7 +157,9 @@ PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
 .endif
 
 post-extract-STAGING-on: fix-shebang
-	cd ${WRKSRC} && ${TAR} xf ${DISTDIR}/${STAGING_DIST} --strip-components 1
+	@${LN} -s ${WRKDIR}/${PORTNAME}-staging-${DISTVERSION}/patches ${WRKSRC}/patches
+
+post-patch-STAGING-on:
 	cd ${WRKSRC} && ${PATCH} -p0 < ${PATCHDIR}/extra-gitapply
 	cd ${WRKSRC} && bash ./patches/patchinstall.sh --backend=patch DESTDIR=${WRKSRC} --all
 
@@ -156,14 +168,16 @@ pre-build:
 
 post-install:
 .if ${ARCH} == i386
-	${MV} ${STAGEDIR}${PREFIX}/bin/wineserver   ${STAGEDIR}${PREFIX}/bin/wineserver32
-	${MV} ${STAGEDIR}${PREFIX}/bin/wine         ${STAGEDIR}${PREFIX}/bin/wine.bin
-	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh       ${STAGEDIR}${PREFIX}/bin/wine
+	${MV} ${STAGEDIR}${PREFIX}/bin/wineserver	${STAGEDIR}${PREFIX}/bin/wineserver32
+	${MV} ${STAGEDIR}${PREFIX}/bin/wine		${STAGEDIR}${PREFIX}/bin/wine.bin
+	-${ELFCTL} -e +noaslr				${STAGEDIR}${PREFIX}/bin/wine.bin
+	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh		${STAGEDIR}${PREFIX}/bin/wine
 .else
-	${MV} ${STAGEDIR}${PREFIX}/bin/wine64       ${STAGEDIR}${PREFIX}/bin/wine64.bin
-	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh       ${STAGEDIR}${PREFIX}/bin/wine64
-	${INSTALL_SCRIPT} ${FILESDIR}/wine-wow64.sh ${STAGEDIR}${PREFIX}/bin/wine
-	${INSTALL_SCRIPT} ${FILESDIR}/pkg32.sh      ${STAGEDIR}${DATADIR}/pkg32.sh
+	${MV} ${STAGEDIR}${PREFIX}/bin/wine64		${STAGEDIR}${PREFIX}/bin/wine64.bin
+	-${ELFCTL} -e +noaslr				${STAGEDIR}${PREFIX}/bin/wine64.bin
+	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh		${STAGEDIR}${PREFIX}/bin/wine64
+	${INSTALL_SCRIPT} ${FILESDIR}/wine-wow64.sh	${STAGEDIR}${PREFIX}/bin/wine
+	${INSTALL_SCRIPT} ${FILESDIR}/pkg32.sh		${STAGEDIR}${DATADIR}/pkg32.sh
 .endif
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

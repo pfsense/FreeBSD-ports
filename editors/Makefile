@@ -24,6 +24,7 @@
     SUBDIR += deforaos-editor
     SUBDIR += dhex
     SUBDIR += diakonos
+    SUBDIR += diamond
     SUBDIR += dkns
     SUBDIR += drjava
     SUBDIR += dte
@@ -187,7 +188,6 @@
     SUBDIR += libreoffice-vec
     SUBDIR += libreoffice-xh
     SUBDIR += libreoffice-zu
-    SUBDIR += libreoffice6
     SUBDIR += linux-bcompare
     SUBDIR += linux-sublime
     SUBDIR += linux-sublime-text4
@@ -207,6 +207,7 @@
     SUBDIR += nedit
     SUBDIR += neovim
     SUBDIR += neovim-qt
+    SUBDIR += notepadnext
     SUBDIR += nvi-m17n
     SUBDIR += nvi2
     SUBDIR += o

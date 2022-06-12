@@ -3,6 +3,7 @@
     SUBDIR += GxSwitchlessWah-lv2
     SUBDIR += HVSC-Update
     SUBDIR += Maaate
+    SUBDIR += a2jmidid
     SUBDIR += aacgain
     SUBDIR += aacplusenc
     SUBDIR += abcde
@@ -10,6 +11,7 @@
     SUBDIR += abgate-lv2
     SUBDIR += abx
     SUBDIR += adplay
+    SUBDIR += aeolus
     SUBDIR += afsp
     SUBDIR += aften
     SUBDIR += alac
@@ -73,6 +75,7 @@
     SUBDIR += cantata
     SUBDIR += caps-lv2
     SUBDIR += caps-plugins
+    SUBDIR += cardinal
     SUBDIR += carla
     SUBDIR += cava
     SUBDIR += ccaudio2
@@ -80,12 +83,10 @@
     SUBDIR += cd2mp3
     SUBDIR += cddb-bundle
     SUBDIR += cdparanoia
-    SUBDIR += celt
     SUBDIR += checkmate
     SUBDIR += cheesecutter
     SUBDIR += chordpack
     SUBDIR += chromaprint
-    SUBDIR += clementine-player
     SUBDIR += cli-visualizer
     SUBDIR += clunk
     SUBDIR += cmp3
@@ -115,6 +116,8 @@
     SUBDIR += deadbeef-waveform-seekbar-plugin
     SUBDIR += dekagen
     SUBDIR += denemo
+    SUBDIR += dexed
+    SUBDIR += dgedit
     SUBDIR += din
     SUBDIR += discid
     SUBDIR += dmidiplayer
@@ -152,6 +155,7 @@
     SUBDIR += fabla2-lv2
     SUBDIR += fapg
     SUBDIR += fasttracker2
+    SUBDIR += fatfrog-lv2
     SUBDIR += faudio
     SUBDIR += faust
     SUBDIR += faust-lv2
@@ -186,7 +190,6 @@
     SUBDIR += flac
     SUBDIR += flac123
     SUBDIR += flacon
-    SUBDIR += flake
     SUBDIR += flite
     SUBDIR += fluid-soundfont
     SUBDIR += fluida-lv2
@@ -211,6 +214,7 @@
     SUBDIR += freepats
     SUBDIR += ft2play
     SUBDIR += funktrackergold
+    SUBDIR += furnace
     SUBDIR += ganv
     SUBDIR += gbemol
     SUBDIR += gbsplay
@@ -317,13 +321,13 @@
     SUBDIR += id3ren
     SUBDIR += id3tool
     SUBDIR += id3v2
-    SUBDIR += ifp-line
     SUBDIR += infamous-plugins-lv2
     SUBDIR += inscore
     SUBDIR += intersect-lv2
     SUBDIR += invada-studio-plugins-lv2
     SUBDIR += ir-lv2
     SUBDIR += jack
+    SUBDIR += jack-example-tools
     SUBDIR += jack-keyboard
     SUBDIR += jack-smf-utils
     SUBDIR += jack_ghero
@@ -352,7 +356,6 @@
     SUBDIR += lenticular-lv2
     SUBDIR += lewton
     SUBDIR += liba52
-    SUBDIR += libaacplus
     SUBDIR += libadplug
     SUBDIR += libaiff
     SUBDIR += libamrnb
@@ -363,6 +366,7 @@
     SUBDIR += libbpm
     SUBDIR += libbs2b
     SUBDIR += libcanberra
+    SUBDIR += libcanberra-gtk2
     SUBDIR += libcanberra-gtk3
     SUBDIR += libcdaudio
     SUBDIR += libcddb
@@ -401,7 +405,6 @@
     SUBDIR += libmusicbrainz5
     SUBDIR += libmusicxml
     SUBDIR += libmysofa
-    SUBDIR += libnjb
     SUBDIR += libnoise
     SUBDIR += libogg
     SUBDIR += liboggz
@@ -419,6 +422,7 @@
     SUBDIR += libsndfile
     SUBDIR += libsonic
     SUBDIR += libsoxr
+    SUBDIR += libspecbleach
     SUBDIR += libtremor
     SUBDIR += libumidi
     SUBDIR += libvorbis
@@ -453,7 +457,6 @@
     SUBDIR += logitechmediaserver-sqlplaylist
     SUBDIR += logitechmediaserver-trackstat
     SUBDIR += lollypop
-    SUBDIR += lpac
     SUBDIR += lsp-plugins-lv2
     SUBDIR += lua-mpd
     SUBDIR += luppp
@@ -496,7 +499,6 @@
     SUBDIR += mous
     SUBDIR += mp-player
     SUBDIR += mp3-archive-tools
-    SUBDIR += mp32ogg
     SUBDIR += mp3_check
     SUBDIR += mp3asm
     SUBDIR += mp3blaster
@@ -524,7 +526,6 @@
     SUBDIR += mpg123
     SUBDIR += mpg123.el
     SUBDIR += mpg321
-    SUBDIR += mpiosh
     SUBDIR += mps
     SUBDIR += mpz
     SUBDIR += mumble
@@ -543,7 +544,6 @@
     SUBDIR += ncmpcpp
     SUBDIR += ncpamixer
     SUBDIR += ncspot
-    SUBDIR += nekobi-lv2
     SUBDIR += noise-repellent-lv2
     SUBDIR += noise-suppression-for-voice-lv2
     SUBDIR += normalize
@@ -563,7 +563,6 @@
     SUBDIR += opusfile
     SUBDIR += opustags
     SUBDIR += orbit-lv2
-    SUBDIR += osalp
     SUBDIR += osd-lyrics
     SUBDIR += osdmixer
     SUBDIR += oss
@@ -666,6 +665,7 @@
     SUBDIR += py-pylast
     SUBDIR += py-pyliblo
     SUBDIR += py-pymad
+    SUBDIR += py-pyogg
     SUBDIR += py-pysndfile
     SUBDIR += py-python-mpd2
     SUBDIR += py-soundcloud
@@ -684,6 +684,7 @@
     SUBDIR += qmidinet
     SUBDIR += qsampler
     SUBDIR += qsynth
+    SUBDIR += qtractor
     SUBDIR += quimup
     SUBDIR += qxgedit
     SUBDIR += raul
@@ -703,7 +704,6 @@
     SUBDIR += rnnoise
     SUBDIR += rnnoise-nu
     SUBDIR += rosegarden
-    SUBDIR += rplay
     SUBDIR += rsynth
     SUBDIR += rtaudio
     SUBDIR += rtmidi
@@ -722,6 +722,7 @@
     SUBDIR += schismtracker
     SUBDIR += screcord-lv2
     SUBDIR += sdl2_mixer
+    SUBDIR += sdl2_sound
     SUBDIR += sdl_mixer
     SUBDIR += sdl_sound
     SUBDIR += sfizz
@@ -785,6 +786,7 @@
     SUBDIR += suil
     SUBDIR += supercollider
     SUBDIR += surge-synthesizer-lv2
+    SUBDIR += surge-synthesizer-xt-lv2
     SUBDIR += sweep
     SUBDIR += swh-lv2
     SUBDIR += swhplugins

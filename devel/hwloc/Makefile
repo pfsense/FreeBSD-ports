@@ -1,5 +1,6 @@
 PORTNAME=	hwloc
 PORTVERSION=	1.11.13
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.open-mpi.org/software/hwloc/v${PORTVERSION:R}/downloads/ \
 		http://icl.cs.utk.edu/open-mpi/software/hwloc/v${PORTVERSION:R}/downloads/
@@ -26,6 +27,8 @@ CONFIGURE_ARGS=	--enable-static \
 		--disable-gl
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+
+CONFLICTS_INSTALL=	hwloc2
 
 PORTDOCS=	*
 

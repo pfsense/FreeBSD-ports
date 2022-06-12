@@ -1,4 +1,4 @@
---- third_party/angle/src/gpu_info_util/SystemInfo_libpci.cpp.orig	2021-04-14 18:42:58 UTC
+--- third_party/angle/src/gpu_info_util/SystemInfo_libpci.cpp.orig	2022-02-23 19:25:59 UTC
 +++ third_party/angle/src/gpu_info_util/SystemInfo_libpci.cpp
 @@ -12,6 +12,11 @@
  #include <pci/pci.h>

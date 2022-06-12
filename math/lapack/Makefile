@@ -1,9 +1,9 @@
 # Created by: jmz
 
 PORTNAME?=	lapack
-PORTVERSION=	3.10.0
+PORTVERSION=	3.10.1
 .if !(defined(BLAS_SLAVEPORT) || defined(CBLAS_SLAVEPORT) || defined(XLAPACK_SLAVEPORT) || defined(LAPACKE_SLAVEPORT))
-PORTREVISION=	1
+PORTREVISION=	0
 .else
 PORTREVISION?=	0	# Never remove this line, keep PORTREVISION?=0 in case.
 .endif
@@ -22,11 +22,13 @@ COMMENT?=	Linear Algebra PACKage
 
 LICENSE?=	BSD3CLAUSE
 
-USES=		cmake:testing fortran
+USES=		cmake:testing cpe fortran
 WRKSRC=		${WRKDIR}/lapack-${PORTVERSION}
 # The actual math/scilab needs deprecated functions - to be removed later
 CMAKE_ON=	BUILD_SHARED_LIBS BUILD_DEPRECATED
 USE_LDCONFIG=	yes
+CPE_VENDOR=	lapack_project
+CPE_PRODUCT=	lapack
 
 SVERSION=	${PORTVERSION:R:R}
 PLIST_SUB=	SVERSION="${SVERSION}" VER=${PORTVERSION}

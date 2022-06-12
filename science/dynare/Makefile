@@ -1,5 +1,5 @@
 PORTNAME=	dynare
-DISTVERSION=	4.6.4
+DISTVERSION=	5.1
 CATEGORIES=	science # economics
 MASTER_SITES=	https://www.dynare.org/release/source/
 
@@ -8,6 +8,8 @@ COMMENT=	Software platform for handling a wide class of economic models
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_aarch64=	cannot open module file 'ieee_arithmetic.mod' for reading at (1): No such file or directory
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/tokenizer.hpp:devel/boost-libs
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
@@ -28,6 +30,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-matlab \
 		--disable-doc
 
+FCFLAGS+=	-fPIC # required because configure tests with -shared
+
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=			OCTAVE
@@ -45,6 +49,7 @@ OCTAVE_LIB_DEPENDS=		libfftw3.so:math/fftw3 \
 OCTAVE_RUN_DEPENDS=		octave:math/octave
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/dynare/matlab/preprocessor64/dynare_m
+	# remove empty directories, see https://git.dynare.org/Dynare/dynare/-/issues/1835
+	@${FIND} ${STAGEDIR}${PREFIX} -type d -empty -delete
 
 .include <bsd.port.mk>

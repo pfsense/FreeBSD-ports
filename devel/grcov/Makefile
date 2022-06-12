@@ -1,7 +1,6 @@
 PORTNAME=	grcov
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.2
-PORTREVISION=	4
+DISTVERSION=	0.8.9
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -27,37 +26,40 @@ CARGO_CRATES=	\
 		backtrace-0.3.60 \
 		bitflags-1.2.1 \
 		block-buffer-0.7.3 \
-		block-buffer-0.9.0 \
+		block-buffer-0.10.0 \
 		block-padding-0.1.5 \
 		bstr-0.2.16 \
 		byte-tools-0.3.1 \
 		byteorder-1.4.3 \
-		cargo-binutils-0.3.3 \
+		cargo-binutils-0.3.5 \
 		cargo_metadata-0.11.4 \
 		cc-1.0.68 \
 		cfg-if-1.0.0 \
 		chrono-0.4.19 \
-		chrono-tz-0.5.3 \
+		chrono-tz-0.6.0 \
+		chrono-tz-build-0.0.2 \
 		clap-2.33.3 \
 		cpp_demangle-0.3.2 \
-		crc32fast-1.2.1 \
+		crc32fast-1.3.2 \
 		crossbeam-0.8.1 \
 		crossbeam-channel-0.5.1 \
 		crossbeam-deque-0.8.0 \
 		crossbeam-epoch-0.9.5 \
 		crossbeam-queue-0.3.2 \
 		crossbeam-utils-0.8.5 \
+		crypto-common-0.1.3 \
 		ctor-0.1.20 \
 		debugid-0.7.2 \
 		deunicode-0.4.3 \
 		diff-0.1.12 \
 		digest-0.8.1 \
-		digest-0.9.0 \
+		digest-0.10.3 \
 		either-1.6.1 \
 		failure-0.1.8 \
 		failure_derive-0.1.8 \
 		fake-simd-0.1.2 \
-		flate2-1.0.20 \
+		fastrand-1.7.0 \
+		flate2-1.0.22 \
 		fnv-1.0.7 \
 		fomat-macros-0.3.1 \
 		generic-array-0.12.4 \
@@ -71,26 +73,26 @@ CARGO_CRATES=	\
 		hermit-abi-0.1.19 \
 		humansize-1.1.1 \
 		ignore-0.4.18 \
+		instant-0.1.12 \
 		is_executable-1.0.1 \
-		itoa-0.4.7 \
+		itoa-1.0.1 \
 		lazy_static-1.4.0 \
 		libc-0.2.97 \
 		libz-sys-1.1.3 \
-		log-0.4.14 \
+		log-0.4.16 \
 		maplit-1.0.2 \
-		md-5-0.9.1 \
+		md-5-0.10.1 \
 		memchr-2.4.0 \
-		memmap-0.7.0 \
+		memmap2-0.5.2 \
 		memoffset-0.6.4 \
 		miniz_oxide-0.4.4 \
 		msvc-demangler-0.9.0 \
 		num-integer-0.1.44 \
 		num-traits-0.2.14 \
-		num_cpus-1.13.0 \
+		num_cpus-1.13.1 \
 		object-0.25.3 \
 		once_cell-1.8.0 \
 		opaque-debug-0.2.3 \
-		opaque-debug-0.3.0 \
 		output_vt100-0.1.2 \
 		parse-zoneinfo-0.3.0 \
 		percent-encoding-2.1.0 \
@@ -98,9 +100,13 @@ CARGO_CRATES=	\
 		pest_derive-2.1.0 \
 		pest_generator-2.1.3 \
 		pest_meta-2.1.3 \
+		phf-0.10.0 \
+		phf_codegen-0.10.0 \
+		phf_generator-0.10.0 \
+		phf_shared-0.10.0 \
 		pkg-config-0.3.19 \
 		ppv-lite86-0.2.10 \
-		pretty_assertions-0.7.2 \
+		pretty_assertions-1.2.0 \
 		proc-macro-error-1.0.4 \
 		proc-macro-error-attr-1.0.4 \
 		proc-macro2-1.0.27 \
@@ -113,7 +119,7 @@ CARGO_CRATES=	\
 		rayon-1.5.1 \
 		rayon-core-1.9.1 \
 		redox_syscall-0.2.9 \
-		regex-1.5.4 \
+		regex-1.5.5 \
 		regex-syntax-0.6.25 \
 		remove_dir_all-0.5.3 \
 		rustc-cfg-0.4.0 \
@@ -125,35 +131,35 @@ CARGO_CRATES=	\
 		scopeguard-1.1.0 \
 		semver-0.9.0 \
 		semver-0.10.0 \
-		semver-1.0.3 \
+		semver-1.0.7 \
 		semver-parser-0.7.0 \
-		serde-1.0.126 \
-		serde_derive-1.0.126 \
-		serde_json-1.0.64 \
+		serde-1.0.136 \
+		serde_derive-1.0.136 \
+		serde_json-1.0.79 \
 		sha-1-0.8.2 \
-		simplelog-0.10.0 \
+		simplelog-0.11.2 \
+		siphasher-0.3.7 \
 		slug-0.1.4 \
-		smallvec-1.6.1 \
+		smallvec-1.8.0 \
 		stable_deref_trait-1.2.0 \
 		strsim-0.8.0 \
-		structopt-0.3.22 \
-		structopt-derive-0.4.15 \
-		symbolic-common-8.3.0 \
-		symbolic-demangle-8.3.0 \
+		structopt-0.3.26 \
+		structopt-derive-0.4.18 \
+		symbolic-common-8.6.1 \
+		symbolic-demangle-8.6.1 \
 		syn-1.0.73 \
 		synstructure-0.12.4 \
 		tcmalloc-0.3.0 \
-		tempfile-3.2.0 \
-		tera-1.12.1 \
+		tempfile-3.3.0 \
+		tera-1.15.0 \
 		termcolor-1.1.2 \
 		textwrap-0.11.0 \
-		thiserror-1.0.25 \
-		thiserror-impl-1.0.25 \
 		thread_local-1.1.3 \
 		time-0.1.43 \
 		toml-0.5.8 \
-		typenum-1.13.0 \
+		typenum-1.15.0 \
 		ucd-trie-0.1.3 \
+		uncased-0.9.6 \
 		unic-char-property-0.9.0 \
 		unic-char-range-0.9.0 \
 		unic-common-0.9.0 \
@@ -173,7 +179,7 @@ CARGO_CRATES=	\
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		zip-0.5.13
+		zip-0.6.0
 
 PLIST_FILES=	bin/grcov
 

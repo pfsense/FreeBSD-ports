@@ -23,6 +23,8 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 
+CONFLICTS_INSTALL=	zh-fcitx
+
 WRKSRC=		${WRKDIR}/fcitx
 
 CONFIGURE_ENV+=	SCIM_DATADIR=${PREFIX}/share/scim \

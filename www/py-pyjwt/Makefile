@@ -1,0 +1,30 @@
+# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
+
+PORTNAME=	pyjwt
+PORTVERSION=	2.4.0
+CATEGORIES=	www python
+MASTER_SITES=	CHEESESHOP
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	PyJWT-${PORTVERSION}
+
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	JSON Web Token implementation in Python
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		cpe python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}-pyjwt1
+
+CPE_VENDOR=	pyjwt_project
+
+OPTIONS_DEFINE=	CRYPTO
+OPTIONS_DEFAULT=CRYPTO
+
+CRYPTO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=3.3.1:security/py-cryptography@${PY_FLAVOR}
+
+.include <bsd.port.mk>

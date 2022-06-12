@@ -6,7 +6,7 @@ PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
-MAINTAINER=	trasz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standard MIDI File format library
 
 LICENSE=	BSD2CLAUSE
@@ -16,5 +16,7 @@ USES=		gnome libtool pathfix pkgconfig readline
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	jack-smf-utils # bin/smfsh
 
 .include <bsd.port.mk>

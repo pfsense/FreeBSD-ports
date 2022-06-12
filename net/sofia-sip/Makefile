@@ -1,9 +1,9 @@
 PORTNAME=	sofia-sip
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.13.4
+DISTVERSION=	1.13.8
 CATEGORIES=	net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jailbird@fdf.net
 COMMENT=	Open-source SIP User-Agent library
 
 LICENSE=	LGPL21
@@ -18,8 +18,8 @@ GH_ACCOUNT=	freeswitch
 
 GNU_CONFIGURE=	yes
 
-PLIST_SUB+=	VER=${DISTVERSION:R}
-
 INSTALL_TARGET=	install-strip
+
+PLIST_SUB+=	VER=${DISTVERSION:R}
 
 .include <bsd.port.mk>

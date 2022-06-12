@@ -12,6 +12,7 @@ MASTER_SITES?=	https://pear.horde.org/get/
 HORDE_DIR?=	www/horde
 
 CPE_VENDOR?=	horde
+IGNORE_WITH_PHP=80 81 82
 
 DIST_SUBDIR=	Horde
 PEAR_CHANNEL=	horde
@@ -40,7 +41,7 @@ horde-Horde_Date_Parser-DEPEND=	${PEARDIR}/Horde/Date/Parser.php:devel/pear-Hord
 horde-Horde_Dav-DEPEND=		${PEARDIR}/Horde/Dav/Client.php:www/pear-Horde_Dav
 horde-Horde_Db-DEPEND=		${PEARDIR}/Horde/Db.php:databases/pear-Horde_Db
 horde-Horde_Editor-DEPEND=	${PEARDIR}/Horde/Editor.php:www/pear-Horde_Editor
-horde-Horde_Exception-DEPEND=	${PEARDIR}/Horde/Exception.php:devel/pear-Horde_Exception	
+horde-Horde_Exception-DEPEND=	${PEARDIR}/Horde/Exception.php:devel/pear-Horde_Exception
 horde-Horde_Feed-DEPEND=	${PEARDIR}/Horde/Feed.php:www/pear-Horde_Feed
 horde-Horde_Form-DEPEND=	${PEARDIR}/Horde/Form.php:www/pear-Horde_Form
 horde-Horde_Group-DEPEND=	${PEARDIR}/Horde/Group/Base.php:security/pear-Horde_Group
@@ -101,8 +102,8 @@ horde-Horde_Service_UrlShortener-DEPEND=	${PEARDIR}/Horde/Service/UrlShortener.p
 horde-Horde_Service_Weather-DEPEND=	${PEARDIR}/Horde/Service/Weather.php:www/pear-Horde_Service_Weather
 horde-Horde_Support-DEPEND=	${PEARDIR}/Horde/Support/Array.php:devel/pear-Horde_Support
 horde-Horde_SyncMl-DEPEND=	${PEARDIR}/Horde/SyncMl.php:comms/pear-Horde_SyncMl
-horde-Horde_Url-DEPEND=		${PEARDIR}/Horde/Url.php:net/pear-Horde_Url	
-horde-Horde_Util-DEPEND=	${PEARDIR}/Horde/Util.php:devel/pear-Horde_Util	
+horde-Horde_Url-DEPEND=		${PEARDIR}/Horde/Url.php:net/pear-Horde_Url
+horde-Horde_Util-DEPEND=	${PEARDIR}/Horde/Util.php:devel/pear-Horde_Util
 horde-Horde_Template-DEPEND=	${PEARDIR}/Horde/Template.php:www/pear-Horde_Template
 horde-Horde_Text_Diff-DEPEND=	${PEARDIR}/Horde/Text/Diff.php:textproc/pear-Horde_Text_Diff
 horde-Horde_Text_Filter-DEPEND=	${PEARDIR}/Horde/Text/Filter.php:textproc/pear-Horde_Text_Filter
@@ -129,29 +130,29 @@ horde-timeobjects-DEPEND=	${LOCALBASE}/${HORDE_DIR}/timeobjects/lib/Driver.php:d
 horde-trean-DEPEND=		${LOCALBASE}/${HORDE_DIR}/trean/index.php:www/horde-trean
 horde-turba-DEPEND=		${LOCALBASE}/${HORDE_DIR}/turba/index.php:mail/horde-turba
 
-.if defined(USE_HORDE_RUN)
-. for DEP in ${USE_HORDE_RUN}
-.  if !defined(horde-${DEP}-DEPEND)
+.  if defined(USE_HORDE_RUN)
+.    for DEP in ${USE_HORDE_RUN}
+.      if !defined(horde-${DEP}-DEPEND)
 UNKNOWN_HORDE_PACKAGES+=	${DEP}
-.  else
+.      else
 RUN_DEPENDS+=	${horde-${DEP}-DEPEND}@${PHP_FLAVOR}
+.      endif
+.    endfor
 .  endif
-. endfor
-.endif
 
-.if defined(USE_HORDE_BUILD)
-. for DEP in ${USE_HORDE_BUILD}
-.  if !defined(horde-${DEP}-DEPEND)
+.  if defined(USE_HORDE_BUILD)
+.    for DEP in ${USE_HORDE_BUILD}
+.      if !defined(horde-${DEP}-DEPEND)
 UNKNOWN_HORDE_PACKAGES+=	${DEP}
-.  else
+.      else
 BUILD_DEPENDS+=	${horde-${DEP}-DEPEND}@${PHP_FLAVOR}
+.      endif
+.    endfor
 .  endif
-. endfor
-.endif
 
-.if defined(UNKNOWN_HORDE_PACKAGES)
+.  if defined(UNKNOWN_HORDE_PACKAGES)
 IGNORE=	unknown Horde package(s): ${UNKNOWN_HORDE_PACKAGES}
-.endif
+.  endif
 
 .include "${USESDIR}/pear.mk"
 .endif

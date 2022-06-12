@@ -40,12 +40,14 @@
 # For example:
 #
 # USES=		php:ext
-# USE_PHP=	xml wddx
+# USE_PHP=	xml
 # PHP_MOD_PRIO=	40
 #
 # The port can set these options in its Makefile before bsd.port.pre.mk:
 #
 # IGNORE_WITH_PHP=N - The port doesn't work with PHP version N.
+#
+# BUILD_ONLY_DEFAULT_PHP_FLAVOR - explicitely marks non-default ignored (use in make.conf)
 #
 # You may combine multiple php:* arguments.
 # Don't specify any php:* argument if your port will work with every PHP SAPI.
@@ -62,14 +64,14 @@ _INCLUDE_USES_PHP_MK=	yes
 _PHP_VALID_ARGS=	build cgi cli embed ext flavors mod noflavors pecl \
 			phpize web zend
 _PHP_UNKNOWN_ARGS=
-.for arg in ${php_ARGS}
-.  if empty(_PHP_VALID_ARGS:M${arg})
+.  for arg in ${php_ARGS}
+.    if empty(_PHP_VALID_ARGS:M${arg})
 _PHP_UNKNOWN_ARGS+=	${arg}
-.  endif
-.endfor
-.if !empty(_PHP_UNKNOWN_ARGS)
+.    endif
+.  endfor
+.  if !empty(_PHP_UNKNOWN_ARGS)
 IGNORE=	has unknown USES=php arguments: ${_PHP_UNKNOWN_ARGS}
-.endif
+.  endif
 
 .  if ${php_ARGS:Mbuild} && ( ${php_ARGS:Mphpize} || ${php_ARGS:Mext} || ${php_ARGS:Mzend} )
 DEV_WARNING+=	"USES=php:build is included in USES=php:phpize, USES=php:ext, and USES=php:zend, so it is not needed"
@@ -108,7 +110,7 @@ DIST_SUBDIR=	PECL
 
 PHPBASE?=	${LOCALBASE}
 
-_ALL_PHP_VERSIONS=	73 74 80
+_ALL_PHP_VERSIONS=	74 80 81 82
 
 # Make the already installed PHP the default one.
 .  if exists(${PHPBASE}/etc/php.conf)
@@ -128,9 +130,14 @@ IGNORE=	does not work with PHP versions "${IGNORE_WITH_PHP}" and "${_INSTALLED_P
 PHP_VER?=	${PHP_DEFAULT:S/.//}
 .  endif # .if exists(${PHPBASE}/etc/php.conf)
 
+.  if defined(BUILD_ONLY_DEFAULT_PHP_FLAVOR)
+# Only build php ports of the default flavor
+_ALL_FLAVOR_VERSIONS=	${PHP_VER}
+.  else
 # Use the "default" php version as the first version for flavors, so that it
 # gets to be the default flavor.
 _ALL_FLAVOR_VERSIONS=	${PHP_VER} ${_ALL_PHP_VERSIONS:N${PHP_VER}}
+.  endif
 
 # If we want flavors, fill in FLAVORS with the allowed PHP versions, if some
 # cannot be used, or all of them if they all can.
@@ -157,9 +164,9 @@ FLAVOR=	${FLAVORS:[1]}
 .    endif
 .  endif
 
-.if ${PHP_VER} == 74 && (${ARCH:Mmips*} || (${ARCH:Mpowerpc*} && !exists(/usr/bin/clang)) || ${ARCH} == sparc64)
+.  if ${PHP_VER} == 74 && (${ARCH:Mmips*} || (${ARCH:Mpowerpc*} && !exists(/usr/bin/clang)) || ${ARCH} == sparc64)
 USE_GCC=	yes
-.endif
+.  endif
 
 # This variable is for dependencies lines, so you write:
 # ${PHP_PKGNAMEPREFIX}foo:devel/php-foo@${PHP_FLAVOR}
@@ -176,19 +183,22 @@ PHP_VER=	${FLAVOR:S/^php//}
 	(${FLAVOR:Mphp[0-9][0-9]} && ${FLAVOR} != ${FLAVORS:[1]})
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.    if ${PHP_VER} == 80
+.    if ${PHP_VER} == 82
+PHP_EXT_DIR=   20210903
+PHP_EXT_INC=    hash json openssl pcre spl
+.    elif ${PHP_VER} == 81
+PHP_EXT_DIR=   20210902
+PHP_EXT_INC=    hash json openssl pcre spl
+.    elif ${PHP_VER} == 80
 PHP_EXT_DIR=   20200930
-PHP_EXT_INC=    hash json pcre spl
+PHP_EXT_INC=    hash json openssl pcre spl
 .    elif ${PHP_VER} == 74
 PHP_EXT_DIR=   20190902
 PHP_EXT_INC=    hash pcre spl
-.    elif ${PHP_VER} == 73
-PHP_EXT_DIR=   20180731
-PHP_EXT_INC=    pcre spl
 .    else
 # (rene) default to DEFAULT_VERSIONS
-PHP_EXT_DIR=	20190902
-PHP_EXT_INC=	hash pcre spl
+PHP_EXT_DIR=   20200930
+PHP_EXT_INC=    hash json openssl pcre spl
 .    endif
 
 # Try to figure out what the PHP_EXT_DIR should be WRT the
@@ -272,8 +282,12 @@ RUN_DEPENDS+=	${PHPBASE}/include/php/main/php.h:${PHP_PORT}
 .  if  ${php_ARGS:Mmod} || (${php_ARGS:Mweb} && defined(PHP_VERSION) && ${PHP_SAPI:Mcgi} == "" && ${PHP_SAPI:Mfpm} == "")
 USE_APACHE_RUN=	22+
 .include "${PORTSDIR}/Mk/Uses/apache.mk"
+.    if ${PHP_VER} < 80
 # libphpX.so only has the major version number in it, so remove the last digit of PHP_VER to get it.
 RUN_DEPENDS+=	${PHPBASE}/${APACHEMODDIR}/libphp${PHP_VER:C/.$//}.so:${MOD_PHP_PORT}
+.    else
+RUN_DEPENDS+=	${PHPBASE}/${APACHEMODDIR}/libphp.so:${MOD_PHP_PORT}
+.    endif
 .  endif
 
 PLIST_SUB+=	PHP_EXT_DIR=${PHP_EXT_DIR}
@@ -368,18 +382,19 @@ add-plist-phpext:
 .  if defined(USE_PHP) && ${USE_PHP:tl} != "yes"
 # non-version specific components
 _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
-		enchant exif fileinfo filter ftp gd gettext gmp \
+		enchant exif ffi fileinfo filter ftp gd gettext gmp \
 		hash iconv igbinary imap intl json ldap mbstring mcrypt \
 		memcache memcached mysqli odbc opcache \
 		openssl pcntl pcre pdo pdo_dblib pdo_firebird pdo_mysql \
 		pdo_odbc pdo_pgsql pdo_sqlite phar pgsql posix \
 		pspell radius readline redis session shmop simplexml snmp soap\
-		sockets spl sqlite3 sysvmsg sysvsem sysvshm \
+		sockets sodium spl sqlite3 sysvmsg sysvsem sysvshm \
 		tidy tokenizer xml xmlreader xmlrpc xmlwriter xsl zip zlib
 # version specific components
-_USE_PHP_VER73=	${_USE_PHP_ALL} interbase pdf recode sodium wddx
-_USE_PHP_VER74=	${_USE_PHP_ALL} ffi pdf sodium
-_USE_PHP_VER80=	${_USE_PHP_ALL} ffi sodium
+_USE_PHP_VER74=	${_USE_PHP_ALL} pdf
+_USE_PHP_VER80=	${_USE_PHP_ALL}
+_USE_PHP_VER81=	${_USE_PHP_ALL}
+_USE_PHP_VER82=	${_USE_PHP_ALL}
 
 bcmath_DEPENDS=	math/php${PHP_VER}-bcmath
 bitset_DEPENDS=	math/pecl-bitset@${PHP_FLAVOR}
@@ -388,7 +403,6 @@ calendar_DEPENDS=	misc/php${PHP_VER}-calendar
 ctype_DEPENDS=	textproc/php${PHP_VER}-ctype
 curl_DEPENDS=	ftp/php${PHP_VER}-curl
 dba_DEPENDS=	databases/php${PHP_VER}-dba
-dbase_DEPENDS=	databases/php${PHP_VER}-dbase
 dom_DEPENDS=	textproc/php${PHP_VER}-dom
 enchant_DEPENDS=	textproc/php${PHP_VER}-enchant
 exif_DEPENDS=	graphics/php${PHP_VER}-exif
@@ -399,23 +413,24 @@ ftp_DEPENDS=	ftp/php${PHP_VER}-ftp
 gd_DEPENDS=	graphics/php${PHP_VER}-gd
 gettext_DEPENDS=devel/php${PHP_VER}-gettext
 gmp_DEPENDS=	math/php${PHP_VER}-gmp
-hash_DEPENDS=	security/php${PHP_VER}-hash
 iconv_DEPENDS=	converters/php${PHP_VER}-iconv
 igbinary_DEPENDS=	converters/pecl-igbinary@${PHP_FLAVOR}
 imap_DEPENDS=	mail/php${PHP_VER}-imap
-interbase_DEPENDS=	databases/php${PHP_VER}-interbase
 intl_DEPENDS=	devel/php${PHP_VER}-intl
+.    if ${PHP_VER} < 80
 json_DEPENDS=	devel/php${PHP_VER}-json
+.    endif
 ldap_DEPENDS=	net/php${PHP_VER}-ldap
 mbstring_DEPENDS=	converters/php${PHP_VER}-mbstring
 mcrypt_DEPENDS=	security/pecl-mcrypt@${PHP_FLAVOR}
 memcache_DEPENDS=	databases/pecl-memcache@${PHP_FLAVOR}
 memcached_DEPENDS=	databases/pecl-memcached@${PHP_FLAVOR}
-mssql_DEPENDS=	databases/php${PHP_VER}-mssql
 mysqli_DEPENDS=	databases/php${PHP_VER}-mysqli
 odbc_DEPENDS=	databases/php${PHP_VER}-odbc
 opcache_DEPENDS=	www/php${PHP_VER}-opcache
+.    if ${PHP_VER} < 80
 openssl_DEPENDS=security/php${PHP_VER}-openssl
+.    endif
 pcntl_DEPENDS=	devel/php${PHP_VER}-pcntl
 pdf_DEPENDS=	print/pecl-pdflib@${PHP_FLAVOR}
 pdo_DEPENDS=	databases/php${PHP_VER}-pdo
@@ -431,7 +446,6 @@ posix_DEPENDS=	sysutils/php${PHP_VER}-posix
 pspell_DEPENDS=	textproc/php${PHP_VER}-pspell
 radius_DEPENDS=	net/pecl-radius@${PHP_FLAVOR}
 readline_DEPENDS=	devel/php${PHP_VER}-readline
-recode_DEPENDS=	converters/php${PHP_VER}-recode
 redis_DEPENDS=	databases/pecl-redis@${PHP_FLAVOR}
 session_DEPENDS=www/php${PHP_VER}-session
 shmop_DEPENDS=	devel/php${PHP_VER}-shmop
@@ -441,20 +455,18 @@ soap_DEPENDS=	net/php${PHP_VER}-soap
 sockets_DEPENDS=net/php${PHP_VER}-sockets
 sodium_DEPENDS=	security/php${PHP_VER}-sodium
 sqlite3_DEPENDS=databases/php${PHP_VER}-sqlite3
-sybase_ct_DEPENDS=	databases/php${PHP_VER}-sybase_ct
 sysvmsg_DEPENDS=devel/php${PHP_VER}-sysvmsg
 sysvsem_DEPENDS=devel/php${PHP_VER}-sysvsem
 sysvshm_DEPENDS=devel/php${PHP_VER}-sysvshm
 tidy_DEPENDS=	www/php${PHP_VER}-tidy
 tokenizer_DEPENDS=	devel/php${PHP_VER}-tokenizer
-wddx_DEPENDS=	textproc/php${PHP_VER}-wddx
 xml_DEPENDS=	textproc/php${PHP_VER}-xml
 xmlreader_DEPENDS=	textproc/php${PHP_VER}-xmlreader
-.if ${PHP_VER} >= 80
+.    if ${PHP_VER} >= 80
 xmlrpc_DEPENDS=	net/pecl-xmlrpc@${PHP_FLAVOR}
-.else
+.    else
 xmlrpc_DEPENDS=	net/php${PHP_VER}-xmlrpc
-.endif
+.    endif
 xmlwriter_DEPENDS=	textproc/php${PHP_VER}-xmlwriter
 xsl_DEPENDS=	textproc/php${PHP_VER}-xsl
 zip_DEPENDS=	archivers/php${PHP_VER}-zip

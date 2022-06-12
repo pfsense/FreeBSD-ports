@@ -1,7 +1,8 @@
 # Created by: Wen Heping <wenheping@gmail.com>
 
 PORTNAME=	libdap
-PORTVERSION=	3.20.8
+PORTVERSION=	3.20.9
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.opendap.org/pub/source/ \
 		LOCAL/sunpoet

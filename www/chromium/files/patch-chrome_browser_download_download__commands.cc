@@ -1,29 +1,20 @@
---- chrome/browser/download/download_commands.cc.orig	2021-09-24 04:25:58 UTC
+--- chrome/browser/download/download_commands.cc.orig	2022-05-19 14:06:27 UTC
 +++ chrome/browser/download/download_commands.cc
-@@ -27,7 +27,7 @@
- #include "net/base/url_util.h"
+@@ -26,7 +26,7 @@
  #include "ui/base/clipboard/scoped_clipboard_writer.h"
  
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || \
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD) || \
-     defined(OS_MAC) || defined(OS_FUCHSIA)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
+-    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_MAC) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  #include "chrome/browser/ui/browser.h"
  #include "chrome/browser/ui/browser_finder.h"
-@@ -165,7 +165,7 @@ void DownloadCommands::ExecuteCommand(Command command)
-   model_->ExecuteCommand(this, command);
+ #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
+@@ -167,7 +167,7 @@ void DownloadCommands::ExecuteCommand(Command command)
  }
  
--#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  
  Browser* DownloadCommands::GetBrowser() const {
-@@ -200,7 +200,7 @@ bool DownloadCommands::CanOpenPdfInSystemViewer() cons
- #endif
- }
- 
--#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_MAC) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
- 
- void DownloadCommands::CopyFileAsImageToClipboard() {
+   if (!model_)

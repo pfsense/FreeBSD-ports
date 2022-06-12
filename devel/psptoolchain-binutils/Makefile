@@ -8,11 +8,14 @@ MASTER_SITES=	GNU \
 		SOURCEWARE/${PORTNAME}/releases
 PKGNAMEPREFIX=	psptoolchain-
 
-MAINTAINER=	tphilipp@potion-studios.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PlayStation Portable development toolchain ${PORTNAME}
 
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
+
+DEPRECATED=	Security issues for multiple years
+EXPIRATION_DATE=2022-06-30
 
 BROKEN_mips64=		fails to package: ansidecl.h: No such file or directory
 

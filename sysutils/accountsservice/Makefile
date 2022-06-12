@@ -2,9 +2,12 @@
 
 PORTNAME=	accountsservice
 PORTVERSION=	0.6.55
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils devel
 MASTER_SITES=	http://www.freedesktop.org/software/${PORTNAME}/
+
+PATCH_SITES=	https://gitlab.freedesktop.org/${PORTNAME}/${PORTNAME}/-/commit/
+PATCHFILES+=	ac9b14f1c1bb.patch:-p1 # https://gitlab.freedesktop.org/accountsservice/accountsservice/-/merge_requests/82
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	D-Bus interface for user account query and manipulation

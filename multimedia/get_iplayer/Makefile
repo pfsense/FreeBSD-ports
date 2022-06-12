@@ -1,10 +1,10 @@
 PORTNAME=	get_iplayer
-PORTVERSION=	3.27
+PORTVERSION=	3.30
 DISTVERSIONPREFIX=	v
 CATEGORIES=	multimedia net
 
 MAINTAINER=	jamie@catflap.org
-COMMENT=	Lists and records BBC iPlayer TV and BBC Sounds radio programs
+COMMENT=	Lists and records BBC iPlayer TV and BBC Sounds radio programmes
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -18,11 +18,13 @@ USES=		perl5 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	get-iplayer
 USE_PERL5=	run
-SHEBANG_FILES=	${PORTNAME} ${PORTNAME}.cgi
-NO_BUILD=	yes
-NO_ARCH=	yes
-
 USE_RC_SUBR=	${PORTNAME}
+
+SHEBANG_FILES=	${PORTNAME} ${PORTNAME}.cgi
+
+DATADIR=	${WWWDIR}
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 USERS=		get_iplayer
 GROUPS=		get_iplayer
@@ -31,7 +33,6 @@ SCRIPTS=	${PORTNAME} ${PORTNAME}.cgi
 PLIST_FILES=	bin/${PORTNAME} ${SCRIPTS:S,^,${WWWDIR_REL}/,} \
 		man/man1/${PORTNAME}.1.gz
 
-DATADIR=	${WWWDIR}
 PORTDOCS=	CHANGELOG.md README.md
 
 OPTIONS_DEFINE=	DOCS FFMPEG ATOMICPARSLEY

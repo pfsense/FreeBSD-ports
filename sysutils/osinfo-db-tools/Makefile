@@ -1,7 +1,8 @@
 # Created by: Roman Bogorodskiy <novel@FreeBSD.org>
 
 PORTNAME=	osinfo-db-tools
-PORTVERSION=	1.9.0
+PORTVERSION=	1.10.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://releases.pagure.org/libosinfo/
 

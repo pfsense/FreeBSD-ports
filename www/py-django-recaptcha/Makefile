@@ -1,9 +1,12 @@
 # Created by: Tom Judge <tj@FreeBSD.org>
 
 PORTNAME=	recaptcha
-PORTVERSION=	2.0.6
+PORTVERSION=	3.0.0
+PORTREVISION=	1
 CATEGORIES=	www python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}django-
+DISTNAME=	django-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Django reCAPTCHA form field/widget integration app
@@ -11,12 +14,9 @@ COMMENT=	Django reCAPTCHA form field/widget integration app
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>=1.11<4.0:www/py-django22@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django32>=1.11<4.0:www/py-django32@${PY_FLAVOR}
 
-USES=		python:3.5+
-USE_GITHUB=	yes
-GH_ACCOUNT=	praekelt
-GH_PROJECT=	django-recaptcha
+USES=		python:3.7+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

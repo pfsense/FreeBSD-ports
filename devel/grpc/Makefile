@@ -1,7 +1,7 @@
 # Created by: vanilla@
 
 PORTNAME=	grpc
-PORTVERSION=	1.41.1
+PORTVERSION=	1.46.3
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	2
 CATEGORIES=	devel
@@ -38,11 +38,13 @@ USE_LDCONFIG=	yes
 PLIST_SUB=	SHLIB_MAJOR=${PORTVERSION:R} \
 		SHLIB_MINOR=${PORTVERSION:E}
 
+CONFLICTS_INSTALL=	grpc130 grpc134 grpc142
+
 .include <bsd.port.pre.mk>
 
 # Remove openssl from grpc.pc because we do not ship openssl.pc in base system
 .if ${SSL_DEFAULT} == base
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-CMakeLists.txt
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-openssl
 .endif
 
 post-patch:

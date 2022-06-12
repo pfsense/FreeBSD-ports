@@ -2,6 +2,7 @@
 
 PORTNAME=	grass
 PORTVERSION=	7.8.6
+PORTREVISION=	3
 CATEGORIES=	databases geography
 MASTER_SITES=	https://grass.osgeo.org/%SUBDIR%/ \
 		http://grass.cict.fr/%SUBDIR%/ \
@@ -47,8 +48,8 @@ nviz_CMD=	${PREFIX}/${GRASS_INST_DIR}/bin/nviz
 USE_XORG=	sm ice x11 xext xi xmu xrender xt
 USE_GL=		gl glu
 USE_GNOME=	cairo
-USE_WX=		3.0
-WX_COMPS=	wx:build python:run
+USE_WX=		3.1
+WX_COMPS=	wx python:run
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--with-includes=${LOCALBASE}/include \
@@ -70,7 +71,6 @@ CONFIGURE_ARGS=	--with-includes=${LOCALBASE}/include \
 		--with-geos=${LOCALBASE}/bin/geos-config \
 		--with-gdal=${LOCALBASE}/bin/gdal-config \
 		--with-pthread=yes \
-		--with-openmp \
 		--prefix=${LOCALBASE} \
 		--exec-prefix=${LOCALBASE}
 
@@ -130,6 +130,10 @@ SQLITE_CONFIGURE_WITH=	sqlite
 SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 ZSTD_CONFIGURE_WITH=	zstd
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
+
+.if exists(/usr/include/omp.h)
+CONFIGURE_ARGS+=	--with-openmp
+.endif
 
 .include <bsd.port.pre.mk>
 

@@ -1,9 +1,8 @@
 PORTNAME=	pjsip
-DISTVERSION=	2.11.1
-PORTREVISION=	1
+DISTVERSION=	2.12.1
 CATEGORIES=	net
 
-MAINTAINER=	madpilot@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multimedia communication library written in C language
 
 LICENSE=	GPLv2+

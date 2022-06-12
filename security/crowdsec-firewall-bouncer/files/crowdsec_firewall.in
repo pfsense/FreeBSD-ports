@@ -9,6 +9,10 @@
 #
 # crowdsec_firewall_enable (bool):	Set it to YES to enable crowdsec firewall.
 #					Default is "NO"
+# crowdsec_firewall_config (str):	Set the bouncer config path.
+#					Default is "%%ETCDIR%%/crowdsec-firewall-bouncer.yaml"
+# crowdsec_firewall_flags (str):	extra flags to run bouncer.
+#					Default is ""
 
 . /etc/rc.subr
 
@@ -18,13 +22,38 @@ rcvar=crowdsec_firewall_enable
 
 load_rc_config $name
 
-: ${crowdsec_firewall_enable:="NO"}
-: ${crowdsec_firewall_config:="%%PREFIX%%/etc/crowdsec-firewall-bouncer/crowdsec-firewall-bouncer.yaml"}
+: "${crowdsec_firewall_enable:=NO}"
+: "${crowdsec_firewall_config:=%%ETCDIR%%/crowdsec-firewall-bouncer.yaml}"
+: "${crowdsec_firewall_flags:=}"
 
-pidfile=/var/run/$name.pid
+pidfile=/var/run/${name}.pid
 required_files="$crowdsec_firewall_config"
-procname="%%PREFIX%%/bin/crowdsec-firewall-bouncer"
-command=/usr/sbin/daemon
-command_args="-fp $pidfile -t '$desc' -- '$procname' -c '$crowdsec_firewall_config'"
+command="%%PREFIX%%/bin/crowdsec-firewall-bouncer"
+start_cmd="${name}_start"
+start_precmd="${name}_precmd"
+
+crowdsec_firewall_precmd() {
+    CSCLI=%%PREFIX%%/bin/cscli
+    orig_line="api_key: \${API_KEY}"
+    # IF the bouncer is not configured
+    if grep -q "^${orig_line}" "${crowdsec_firewall_config}"; then
+        SUFFIX=$(LC_CTYPE=C tr -dc A-Za-z0-9 </dev/urandom | head -c 8)
+        BOUNCER="cs-firewall-bouncer-${SUFFIX}"
+        # AND crowdsec is installed..
+        if command -v "$CSCLI" >/dev/null; then
+            # THEN, register it to the local API
+            API_KEY=$($CSCLI bouncers add "${BOUNCER}" -o raw)
+            if [ -n "$API_KEY" ]; then
+                sed -i "" "s/^${orig_line}/api_key: ${API_KEY}     # ${BOUNCER}/" "${crowdsec_firewall_config}"
+                echo "Registered: ${BOUNCER}"
+            fi
+        fi
+    fi
+}
+
+crowdsec_firewall_start() {
+    /usr/sbin/daemon -f -p ${pidfile} -t "${desc}" -- \
+        ${command} -c "${crowdsec_firewall_config}" ${crowdsec_firewall_flags}
+}
 
 run_rc_command "$1"

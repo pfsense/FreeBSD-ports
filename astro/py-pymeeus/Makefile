@@ -1,11 +1,11 @@
 PORTNAME=	pymeeus
-PORTVERSION=	0.3.6
+PORTVERSION=	0.5.11
 CATEGORIES=	astro science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	PyMeeus-${DISTVERSION}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python implementation of Jean Meeus astronomical routines
 
 LICENSE=	LGPL3

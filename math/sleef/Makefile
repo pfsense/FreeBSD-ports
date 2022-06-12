@@ -2,7 +2,7 @@
 
 PORTNAME=	sleef
 DISTVERSION=	3.5.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -17,14 +17,12 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	shibatch
 
-CFLAGS_powerpc64=	-mpower8-vector
-
 .include <bsd.port.options.mk>
 
-.if ${ARCH:Mpowerpc64*}
-PLIST_SUB+=	NO_PPC64="@comment "
+.if ${ARCH:Mpowerpc64*} || ${ARCH:Marmv?}
+PLIST_SUB+=	GNUABI="@comment "
 .else
-PLIST_SUB+=	NO_PPC64=""
+PLIST_SUB+=	GNUABI=""
 .endif
 
 .include <bsd.port.mk>

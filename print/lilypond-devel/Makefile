@@ -1,7 +1,7 @@
 # Created by: patrick, trevor
 
 PORTNAME=	lilypond
-DISTVERSION=	2.23.4
+DISTVERSION=	2.23.9
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -12,7 +12,6 @@ COMMENT=	GNU music typesetter
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	bash:shells/bash \
-		convert:graphics/ImageMagick7 \
 		dblatex:textproc/dblatex \
 		fontforge:print/fontforge \
 		help2man:misc/help2man \
@@ -24,14 +23,16 @@ BUILD_DEPENDS=	bash:shells/bash \
 		zip:archivers/zip
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
+		libgc-threaded.so:devel/boehm-gc-threaded \
 		libgmp.so:math/gmp \
+		libguile-2.2.so:lang/guile2 \
 		libharfbuzz.so:print/harfbuzz \
 		libltdl.so:devel/libltdl
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu \
 		mftrace:print/mftrace
 
-USES=		bison:build compiler:c++11-lib cpe ghostscript gmake gnome perl5 \
-		pkgconfig python:3.5+
+USES=		bison:build compiler:c++11-lib cpe ghostscript gmake gnome \
+		magick:7,build perl5 pkgconfig python:3.5+
 USE_CXXSTD=	c++11
 USE_GNOME=	pango
 USE_PERL5=	build
@@ -41,11 +42,14 @@ GNU_CONFIGURE=		yes
 CONFIGURE_ARGS+=	--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre
 CONFIGURE_ENV+=		ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
 			FLEX=${FLEX} \
+			GUILE_FLAVOR=guile-2.2 \
 			HOME=${WRKDIR} \
 			YACC=${YACC}
 
 MAKEFILE=	GNUmakefile
 ALL_TARGET=	all
+
+CONFLICTS_INSTALL=	lilypond
 
 BINARY_ALIAS=	python=${PYTHON_VERSION}
 
@@ -61,21 +65,15 @@ INFO=		lilypond-changes \
 		music-glossary
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
-OPTIONS_DEFINE=	GUILE2 NLS URW
+OPTIONS_DEFINE=	NLS URW
 OPTIONS_SUB=	yes
 
-GUILE2_DESC=	Use guile2 (will incur some performance penalty)
 URW_DESC=	Use bundled URW fonts
-
-GUILE2_LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
-			libguile-2.2.so:lang/guile2
-GUILE2_LIB_DEPENDS_OFF=	libguile.so:lang/guile1
 
 NLS_USES=	gettext
 
 URW_BUILD_DEPENDS=	urw-base35-fonts>0:x11-fonts/urw-base35-fonts
 URW_RUN_DEPENDS_OFF=	urw-base35-fonts>0:x11-fonts/urw-base35-fonts
-
 URW_CONFIGURE_WITH=	urwotf-dir=${LOCALBASE}/share/fonts/urw-base35-fonts
 
 post-patch:

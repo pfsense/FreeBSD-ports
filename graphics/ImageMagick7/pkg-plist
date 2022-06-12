@@ -203,6 +203,8 @@ lib/ImageMagick-%%PORTVERSION%%/config-%%QBIT%%%%HDRI%%/configure.xml
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/debug.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/dib.la
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/dib.so
+%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/ftxt.la
+%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/ftxt.so
 %%DJVU%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/djvu.la
 %%DJVU%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/djvu.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/dng.la
@@ -259,6 +261,8 @@ lib/ImageMagick-%%PORTVERSION%%/config-%%QBIT%%%%HDRI%%/configure.xml
 %%JPEG2000%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/jp2.so
 %%JPEG%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/jpeg.la
 %%JPEG%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/jpeg.so
+%%JXL%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/jxl.la
+%%JXL%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/jxl.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/json.la
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/json.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/kernel.la
@@ -339,6 +343,8 @@ lib/ImageMagick-%%PORTVERSION%%/config-%%QBIT%%%%HDRI%%/configure.xml
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/psd.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/pwp.la
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/pwp.so
+%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/qoi.la
+%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/qoi.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/raw.la
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/raw.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/rgb.la
@@ -361,6 +367,8 @@ lib/ImageMagick-%%PORTVERSION%%/config-%%QBIT%%%%HDRI%%/configure.xml
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/sixel.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/stegano.la
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/stegano.so
+%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/strimg.la
+%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/strimg.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/sun.la
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/sun.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/svg.la
@@ -417,8 +425,6 @@ lib/ImageMagick-%%PORTVERSION%%/config-%%QBIT%%%%HDRI%%/configure.xml
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/xpm.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/xps.la
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/xps.so
-%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/xtrn.la
-%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/xtrn.so
 %%X11%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/xwd.la
 %%X11%%%%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/xwd.so
 %%MODULES%%lib/ImageMagick-%%PORTVERSION%%/modules-%%QBIT%%%%HDRI%%/coders/yaml.la
@@ -478,7 +484,6 @@ man/man1/stream.1.gz
 %%DATADIR%%-7/english.xml
 %%DATADIR%%-7/francais.xml
 %%DATADIR%%-7/locale.xml
-%%PORTDOCS%%%%DOCSDIR%%-7/ChangeLog
 %%PORTDOCS%%%%DOCSDIR%%-7/LICENSE
 %%PORTDOCS%%%%DOCSDIR%%-7/NEWS.txt
 %%PORTDOCS%%%%DOCSDIR%%-7/images/ImageMagick.ico
@@ -606,7 +611,6 @@ man/man1/stream.1.gz
 %%PORTDOCS%%%%DOCSDIR%%-7/images/wizard.jpg
 %%PORTDOCS%%%%DOCSDIR%%-7/images/wizard.png
 %%PORTDOCS%%%%DOCSDIR%%-7/index.html
-%%PORTDOCS%%%%DOCSDIR%%-7/%%WWWDIR%%Object.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/Magick++/Blob.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/Magick++/Cache.fig
 %%PORTDOCS%%%%DOCSDIR%%-7/www/Magick++/Cache.png
@@ -648,6 +652,7 @@ man/man1/stream.1.gz
 %%PORTDOCS%%%%DOCSDIR%%-7/www/Magick++/thumbnail-anatomy-plain.jpg
 %%PORTDOCS%%%%DOCSDIR%%-7/www/Magick++/thumbnail-sample-framed.jpg
 %%PORTDOCS%%%%DOCSDIR%%-7/www/Magick++/thumbnail-sample-plain.jpg
+%%PORTDOCS%%%%DOCSDIR%%-7/www/advanced-linux-installation.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/advanced-unix-installation.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/advanced-windows-installation.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/animate.html
@@ -712,6 +717,7 @@ man/man1/stream.1.gz
 %%PORTDOCS%%%%DOCSDIR%%-7/www/api/stream.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/api/transform.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/api/version.html
+%%PORTDOCS%%%%DOCSDIR%%-7/www/api/vision.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/api/wand-view.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/architecture.html
 %%PORTDOCS%%%%DOCSDIR%%-7/www/assets/magick.css

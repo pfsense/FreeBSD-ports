@@ -1,17 +1,15 @@
 PORTNAME=	horizon-eda
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
-PORTREVISION=	2
+DISTVERSION=	2.3.1
 CATEGORIES=	cad
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	0d801d4807cbed405998688b361bf0543207f1b1.patch:-p1 # fixes opencascade-7.6.0 compatibility, see https://github.com/horizon-eda/horizon/issues/623
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	EDA package for printed circuit board design
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_14=		fails to compile (error: no matching function for call to '__search') due to this clang regression: https://github.com/llvm/llvm-project/issues/55683
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/optional.hpp:devel/boost-libs \
 		cppzmq>0:net/cppzmq \
@@ -27,7 +25,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libzip.so:archivers/libzip \
 		libzmq.so:net/libzmq4
 
-USES=		gmake gnome localbase pkgconfig python:build sqlite # compiler:c++17-lang
+USES=		gmake gnome libarchive localbase pkgconfig python:build sqlite # compiler:c++17-lang
 USE_GNOME=	atkmm gdkpixbuf2 gtkmm30 librsvg2
 
 USE_GITHUB=	yes
@@ -37,13 +35,13 @@ MAKE_ARGS=	DEBUGFLAGS= OPTIMIZE=
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-LLVM_VER=	12 # workaround for bug#253551
+LLVM_VER=	12 # workaround for bug#263870
 BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
 CPP=		clang-cpp${LLVM_VER}
 CC=		clang${LLVM_VER}
 CXX=		clang++${LLVM_VER}
 
 post-install: # https://github.com/horizon-eda/horizon/issues/558
-	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} horizon-eda
+	@cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} horizon-eda horizon-imp
 
 .include <bsd.port.mk>

@@ -25,6 +25,7 @@
     SUBDIR += pchecker
     SUBDIR += pkg
     SUBDIR += pkg-devel
+    SUBDIR += pkg-graph
     SUBDIR += pkg-provides
     SUBDIR += pkg-rmleaf
     SUBDIR += pkg_cleanup
@@ -69,6 +70,7 @@
     SUBDIR += py-FreeBSD-ports
     SUBDIR += py-pytoport
     SUBDIR += py-skog
+    SUBDIR += reprise
     SUBDIR += sccache-overlay
     SUBDIR += synth
     SUBDIR += wanted-ports

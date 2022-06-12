@@ -1,7 +1,8 @@
 # Created by: Matthew Seaman
 
 PORTNAME=	phpldapadmin
-PORTVERSION=	1.2.6.2
+PORTVERSION=	1.2.6.3
+PORTREVISION=	1
 CATEGORIES=	net www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -12,14 +13,14 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe php:web,flavors tar:tgz
-USE_PHP=	gettext ldap openssl pcre session xml iconv hash
+CPE_VENDOR=	phpldapadmin_project
 USE_GITHUB=	yes
 GH_ACCOUNT=	leenooks
 GH_PROJECT=	phpLDAPadmin
+USE_PHP=	gettext hash iconv ldap openssl pcre session xml
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-CPE_VENDOR=	phpldapadmin_project
 
 OPTIONS_DEFINE=	MCRYPT
 
@@ -44,14 +45,17 @@ SUB_FILES+=	pkg-message
 
 post-patch:
 	cd ${WRKSRC} ;							    \
+	${CP} lib/Attribute.php lib/PLAAttribute.php;			    \
 	${FIND} . ! -type d ! -name ${CFGFILE}.example ! -name .cvsignore   \
-	    ! -name .gitignore ! -name *.orig | ${SORT} |		    \
+	    ! -name .gitignore ! -name *.orig 				    \
+	    ! -name Attribute.php | ${SORT} |				    \
 	    ${SED} -e "s!^\.!${WWWDIR_REL}!"			>${PLIST} ;
 
 do-install:
 	cd ${WRKSRC} ;					 \
 	for src in $$( ${FIND} . ! -name .cvsignore	 \
-		! -name .gitignore ! -name *.orig ) ; do \
+		! -name .gitignore ! -name *.orig	 \
+		! -name Attribute.php) ; do		 \
 	    dst=${STAGEDIR}${WWWDIR}$${src#.} ;		 \
 	    if ${TEST} -d $$src ; then			 \
 		${MKDIR} $$dst ;			 \

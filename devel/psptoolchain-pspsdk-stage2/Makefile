@@ -4,7 +4,7 @@ PORTREVISION=		2
 
 PKGNAMESUFFIX=		-stage2
 
-MAINTAINER=		tphilipp@potion-studios.com
+MAINTAINER=		ports@FreeBSD.org
 COMMENT=		PlayStation Portable development toolchain ${PORTNAME}
 
 BUILD_DEPENDS=		psp-cpp:devel/psptoolchain-gcc-stage2 \
@@ -22,6 +22,8 @@ CONFIGURE_ARGS=		--prefix=${PREFIX} --with-pspdev="${LOCALBASE}"
 SSP_UNSAFE=	yes
 CFLAGS+=	-fno-stack-protector
 LDFLAGS+=	-fno-stack-protector
+
+CONFLICTS_INSTALL=	grx hxtools
 
 PLIST=			${.CURDIR}/pkg-plist
 MASTERDIR=		${.CURDIR}/../psptoolchain-pspsdk-stage1

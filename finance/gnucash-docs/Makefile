@@ -1,15 +1,15 @@
 # Created by: Glenn Johnson <glennpj@charter.net>
-#   $MCom: ports/finance/gnucash-docs/Makefile,v 1.7 2007/08/04 03:51:29 marcus Exp $
 
 PORTNAME=	gnucash-docs
-DISTVERSION=	4.8
+DISTVERSION=	4.10.1
+PORTREVISION=	1
 CATEGORIES=	finance gnome
-MASTER_SITES=	SF/gnucash/gnucash%20%28stable%29/${PORTVERSION}
+MASTER_SITES=	SF/gnucash/gnucash%20%28stable%29/${PORTVERSION:R}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Documentation for gnucash
 
-LIB_DEPENDS=	librarian.so:textproc/rarian
+BUILD_DEPENDS=	xsltproc:textproc/libxslt
 RUN_DEPENDS=	yelp:x11/yelp
 
 USES=		cmake localbase gnome

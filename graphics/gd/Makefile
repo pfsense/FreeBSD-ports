@@ -1,8 +1,8 @@
 # Created by: jeff@cetlink.net
 
 PORTNAME=	libgd
-PORTVERSION=	2.3.1
-PORTREVISION=	0
+PORTVERSION=	2.3.3
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES+=	graphics
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/gd-${PORTVERSION}/
@@ -13,17 +13,20 @@ COMMENT?=	Graphics library for fast creation of images
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	bazaar-1.*
+CONFLICTS_INSTALL=	libgd ??-libgd
 
 USES=		cpe tar:xz pkgconfig pathfix libtool:keepla shebangfix
 SHEBANG_FILES=	${WRKSRC}/src/bdftogd
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-gd-formats
+TMPDIR?=	/tmp
+MAKE_ENV=	TMPDIR=${TMPDIR}
 SUB_FILES=	gdlib-config
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=	PNG JPEG WEBP TIFF FREETYPE FONTCONFIG RAQM XPM ICONV
-OPTIONS_DEFAULT=PNG JPEG WEBP TIFF FREETYPE FONTCONFIG ICONV
+OPTIONS_DEFINE=	PNG JPEG WEBP TIFF XPM HEIF AVIF LIQ FREETYPE FONTCONFIG RAQM ICONV
+OPTIONS_DEFAULT=PNG JPEG WEBP TIFF LIQ FREETYPE FONTCONFIG ICONV
 NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
@@ -38,6 +41,18 @@ WEBP_CPPFLAGS=		-I${LOCALBASE}/include
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 TIFF_CONFIGURE_OFF=	--without-tiff
 TIFF_CPPFLAGS=		-I${LOCALBASE}/include
+HEIF_DESC=	HEIF image format support
+HEIF_LIB_DEPENDS=	libheif.so:graphics/libheif
+HEIF_CONFIGURE_OFF=	--without-heif
+HEIF_CPPFLAGS=		-I${LOCALBASE}/include
+AVIF_LIB_DEPENDS=	libavif.so:graphics/libavif
+AVIF_CONFIGURE_OFF=	--without-avif
+AVIF_CPPFLAGS=		-I${LOCALBASE}/include
+AVIF_USES=		autoreconf
+LIQ_DESC=	libimagequant color conversion support
+LIQ_LIB_DEPENDS=	libimagequant.so:graphics/libimagequant
+LIQ_CONFIGURE_OFF=	--with-liq=no
+LIQ_CPPFLAGS=	-I${LOCALBASE}/include
 FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 FREETYPE_CONFIGURE_OFF=	--without-freetype
 FREETYPE_CPPFLAGS=	-I${LOCALBASE}/include
@@ -56,6 +71,11 @@ ICONV_USES=	iconv
 ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MFREETYPE}
+# bin/annotate
+CONFLICTS_INSTALL+=	mummer
+.endif
 
 # force gdlib-config --ldflags
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -92,7 +112,7 @@ pre-configure:
 	# bump shlib version
 	${REINPLACE_CMD} \
 		-e 's|^GDLIB_LT_CURRENT=3|GDLIB_LT_CURRENT=6|' \
-		${WRKSRC}/configure
+		${WRKSRC}/configure ${WRKSRC}/config/getlib.sh
 
 pre-configure-ICONV-off:
 	${REINPLACE_CMD} \

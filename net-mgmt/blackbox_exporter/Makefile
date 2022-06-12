@@ -2,11 +2,11 @@
 
 PORTNAME=	blackbox_exporter
 PORTVERSION=	0.17.0
-PORTREVISION=	1
+PORTREVISION=	3
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Prometheus exporter for endpoints over HTTP(S), DNS, TCP and ICMP
 
 LICENSE=	APACHE20

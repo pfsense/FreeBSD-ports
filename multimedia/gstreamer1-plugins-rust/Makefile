@@ -1,6 +1,6 @@
 PORTNAME=	gstreamer1-plugins-rust
 DISTVERSION=	0.7.2
-PORTREVISION=	3
+PORTREVISION=	9
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -13,10 +13,9 @@ LICENSE_FILE_LGPL21+ =	${WRKSRC}/LICENSE-LGPLv2
 
 BUILD_DEPENDS=	cargo-cbuild:devel/cargo-c
 
-USES=		cargo gnome meson pkgconfig ssl
+USES=		cargo gnome gstreamer meson pkgconfig ssl
 USE_GITLAB=	yes
 USE_GNOME=	glib20
-USE_GSTREAMER1=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	gstreamer
 GL_PROJECT=	gst-plugins-rs
@@ -401,8 +400,9 @@ CARGO_TEST=	no
 OPTIONS_DEFINE=	CSOUND DAV1D PANGO SODIUM
 OPTIONS_DEFAULT=CSOUND DAV1D PANGO SODIUM
 OPTIONS_EXCLUDE_aarch64=	CSOUND # https://github.com/neithanmo/csound-rs/commit/8962b89d7bda
-OPTIONS_EXCLUDE_powerpc64le=	CSOUND # https://github.com/neithanmo/csound-rs/commit/8962b89d7bda
-OPTIONS_EXCLUDE_powerpc64=	CSOUND # https://github.com/neithanmo/csound-rs/commit/8962b89d7bda
+OPTIONS_EXCLUDE_powerpc64le=	CSOUND
+OPTIONS_EXCLUDE_powerpc64=	CSOUND
+OPTIONS_EXCLUDE_powerpc=	CSOUND DAV1D
 OPTIONS_SUB=	yes
 
 CSOUND_DESC=		Audio filtering via Csound

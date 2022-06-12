@@ -2,6 +2,7 @@
 
 PORTNAME=	ghmm
 DISTVERSION=	0.9-rc3
+PORTREVISION=	2
 CATEGORIES=	science math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${DISTVERSION}
 
@@ -19,5 +20,7 @@ USES=		autoreconf gnome libtool pkgconfig
 CONFIGURE_ARGS+=	--without-python
 
 USE_LDCONFIG=	yes
+
+CONFLICTS_INSTALL=	graphviz # bin/cluster
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	xrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.16
+DISTVERSION=	0.9.80.b20220528
 PORTEPOCH=	1
 CATEGORIES=	net
 PKGNAMESUFFIX=	-devel
@@ -18,8 +18,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/nasm:devel/nasm
 RUN_DEPENDS=	xterm:x11/xterm \
-		${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp \
+		${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp-devel \
 		${LOCALBASE}/lib/pulse-14.2/modules/module-xrdp-sink.so:audio/pulseaudio-module-xrdp
+LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
 USES=		autoreconf:build compiler:c11 cpe jpeg localbase libtool pkgconfig \
 		ssl xorg
@@ -30,13 +31,16 @@ USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
 GH_ACCOUNT=	neutrinolabs
-GH_TUPLE=	neutrinolabs:librfxcodec:v0.1.5:librfxcodec/librfxcodec \
-		neutrinolabs:libpainter:v0.1.1:libpainter/libpainter
+GH_TAGNAME=	55215cf
+GH_TUPLE=	neutrinolabs:librfxcodec:79619b6:librfxcodec/librfxcodec \
+		neutrinolabs:libpainter:v0.1.1:libpainter/libpainter \
+		neutrinolabs:ulalaca-xrdp:f683d17:ulalaca/ulalaca
 
 CONFIGURE_ARGS=	--localstatedir=/var --enable-strict-locations \
 		--with-pkgconfigdir=${LOCALBASE}/libdata/pkgconfig \
 		--enable-pam-config=freebsd \
-		--enable-jpeg --enable-pixman --enable-rfxcodec --enable-painter
+		--enable-jpeg --enable-pixman --enable-rfxcodec --enable-painter \
+		--enable-imlib2
 LDFLAGS+=	-lssl
 CONFLICTS=	xrdp
 INSTALL_TARGET=	install-strip
@@ -52,7 +56,7 @@ FUSE_DESC=	Enable drive redirection via FUSE (experimental)
 MP3LAME_DESC=	Enable MP3 Lame for audio redirection
 OPUS_DESC=	Enable Opus for audio redirection
 
-DEBUG_CONFIGURE_ENABLE=	xrdpdebug
+DEBUG_CONFIGURE_ENABLE=	devel-debug devel-logging
 FDKAAC_CONFIGURE_ENABLE=	fdkaac
 FDKAAC_LIB_DEPENDS=	libfdk-aac.so:audio/fdk-aac
 FUSE_CONFIGURE_ENABLE=	fuse
@@ -74,7 +78,7 @@ CONFIGURE_ENV+=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 .endif
 
 pre-configure:
-	@${REINPLACE_CMD} -e "s|0.9.14|${DISTVERSION}-${GH_TAGNAME}|" ${WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e "s|0.9.80|${DISTVERSION}-${GH_TAGNAME}|" ${WRKSRC}/configure.ac
 	@cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ./bootstrap
 
 post-install:

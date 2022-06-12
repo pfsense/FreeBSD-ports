@@ -11,6 +11,10 @@ COMMENT=	GTK+ Twitch livestream player
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/GPL3
 
+BROKEN=		Doesn't work, multiple bug reports upstream
+DEPRECATED=	Unmaintained, please consider using www/yt-dlp or multimedia/streamlink
+EXPIRATION_DATE=2022-06-30
+
 LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 		libpeas-1.0.so:devel/libpeas \
 		libsoup-2.4.so:devel/libsoup \
@@ -43,13 +47,17 @@ GSTREAMER_OPENGL_DESC=	GStreamer decoding + OpenGL drawing backend
 GSTREAMER_CLUTTER_DESC=	GStreamer decoding + Clutter drawing backend
 MPV_OPENGL_DESC=	MPV decoding + OpenGL drawing backend
 
+GSTREAMER_CAIRO_USES=	gstreamer
+GSTREAMER_OPENGL_USES=	gstreamer
+GSTREAMER_CLUTTER_USES=	gstreamer
+
 GSTREAMER_CLUTTER_LIB_DEPENDS=	libclutter-1.0.so:graphics/clutter \
 				libclutter-gst-3.0.so:multimedia/clutter-gst3 \
 				libclutter-gtk-1.0.so:graphics/clutter-gtk3
-GSTREAMER_CLUTTER_USE=		GSTREAMER1=hls
+GSTREAMER_CLUTTER_USE=		GSTREAMER=hls
 
-GSTREAMER_CAIRO_USE=	GSTREAMER1=cairo,hls
-GSTREAMER_OPENGL_USE=	GSTREAMER1=hls
+GSTREAMER_CAIRO_USE=	GSTREAMER=cairo,hls
+GSTREAMER_OPENGL_USE=	GSTREAMER=hls
 
 MPV_OPENGL_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 			libmpv.so:multimedia/mpv

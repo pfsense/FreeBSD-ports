@@ -1,7 +1,7 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
 
 PORTNAME=	toxcore
-PORTVERSION=	0.2.13
+PORTVERSION=	0.2.18
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	net-im net-p2p
@@ -14,21 +14,23 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	checkmk:devel/check			\
 		gtest:sysutils/coreutils
 LIB_DEPENDS=	libvpx.so:multimedia/libvpx		\
-		libmsgpackc.so:devel/msgpack		\
 		libsndfile.so:audio/libsndfile		\
 		libportaudio.so:audio/portaudio		\
 		libsodium.so:security/libsodium		\
 		libopus.so:audio/opus			\
 		libconfig.so:devel/libconfig
+TEST_DEPENDS=	opencv_visualisation:graphics/opencv
 #TEST_DEPENDS=	libopencv_core.so:graphics/opencv
 
-CONFLICTS=	toxcore-legacy-0.1.*
-
 USE_GITHUB=	yes
-GH_ACCOUNT=	TokTok
-GH_PROJECT=	c-toxcore
+GH_ACCOUNT=	TokTok camgunz:cmp
+GH_PROJECT=	c-toxcore cmp:cmp
+GH_TAGNAME=	4c3737d1a172ee74d2b35b5fd6865d1fe9dac7af:cmp
+GH_SUBDIR=	third_party/cmp:cmp
 
-USES=		cmake compiler:c11 libtool pathfix pkgconfig
+CPE_VENDOR=	toktok
+
+USES=		cmake compiler:c11 cpe libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 PLIST_SUB=	VER=${PORTVERSION:C/0.//}.0 SO=2
 

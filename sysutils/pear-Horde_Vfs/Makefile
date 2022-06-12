@@ -1,5 +1,5 @@
 PORTNAME=	Horde_Vfs
-PORTVERSION=	2.4.0
+PORTVERSION=	2.4.2
 CATEGORIES=	sysutils www pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
@@ -17,5 +17,7 @@ USES=	horde
 
 FTP_USES=	php
 FTP_USE=	PHP=ftp
+
+CONFLICTS_INSTALL=	php*-pear-Horde_Vfs # bin/horde-vfs
 
 .include <bsd.port.mk>

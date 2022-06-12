@@ -5,7 +5,6 @@ NOTE: These scripts need work and are *NOT* safe to use unless you know
 
 MOVEDlint.awk - checks MOVED for common errors
 ardiff	- compare two archives easily
-addport	- replacement for easy-import
 bad-pkgdescrs.sh - locate identical pkg descriptions
 bump_revision.pl - Small script to bump the PORTREVISION variable of ports
                    which are depending on a port with a changed shared lib
@@ -30,6 +29,9 @@ gnomedepends - Analyse pkg/PLIST and give an advice as to which GNOME ports
                should be listes in {RUN,LIB}_DEPENDS for this port
 mark_safe.pl - utility to set subsets of ports to MAKE_JOBS_(UN)SAFE=yes
 neededlibs.sh - Extract direct library dependencies from binaries.
+port_conflicts_check.lua - Verify that files installed by more than 1 port are covered
+               in CONFLICTS or CONFLICTS_INSTALL entries (and generate portedit commands
+	       to fix those issues)x
 portsearch - A utility for searching the ports tree. It allows more detailed
              search criteria than ``make search key=<string>'' and accepts
              all perl(1) regular expressions.

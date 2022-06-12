@@ -2,7 +2,7 @@
 
 PORTNAME=	vinagre
 PORTVERSION=	3.22.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -29,8 +29,8 @@ RUN_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme
 
 PORTSCOUT=	limitw:1,even
 
-USES=		autoreconf desktop-file-utils gettext gmake gnome localbase \
-		pathfix pkgconfig shared-mime-info tar:xz xorg
+USES=		autoreconf:2.69 desktop-file-utils gettext gmake gnome \
+		localbase pathfix pkgconfig shared-mime-info tar:xz xorg
 USE_GNOME=	cairo gtk30 intlhack libxml2 vte3
 USE_XORG=	x11
 GNU_CONFIGURE=	yes

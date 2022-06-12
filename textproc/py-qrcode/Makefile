@@ -1,8 +1,7 @@
 # Created by: Neil Booth
 
 PORTNAME=	qrcode
-PORTVERSION=	6.1
-PORTREVISION=	1
+PORTVERSION=	7.3
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,6 +16,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.8:devel/py-six@${PY_FLAVOR} \
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 post-patch:
 	${REINPLACE_CMD} -e 's|share/\(man/man1\)|\1|' ${WRKSRC}/setup.py

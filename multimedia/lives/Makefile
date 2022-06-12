@@ -2,7 +2,7 @@
 
 PORTNAME=	lives
 DISTVERSION=	3.2.0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	multimedia
 MASTER_SITES=	http://lives-video.com/releases/
 DISTNAME=	LiVES-${PORTVERSION}
@@ -42,7 +42,7 @@ USE_SDL=	sdl sdl2
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=	--disable-ldvgrab --disable-prctl --disable-system-weed
+CONFIGURE_ARGS=	--disable-ldvgrab --disable-prctl --disable-system-weed --disable-dirac
 INSTALL_TARGET=	install-strip
 
 DOC_FILES=	AUTHORS COPYING COPYING.LGPL ChangeLog FEATURES GETTING.STARTED NEWS README \
@@ -53,16 +53,15 @@ DOC_FILES=	AUTHORS COPYING COPYING.LGPL ChangeLog FEATURES GETTING.STARTED NEWS 
 
 OPTIONS_DEFINE=			ALSA DOCS DOXYGEN DV FFTW FREI0R JACK IMAGEMAGICK LIBEXPLAIN \
 				LIBVISUAL OGG OPENCV OPTIMIZED_CFLAGS NLS PROJECTM PULSEAUDIO \
-				SCHROEDINGER THEORA V4L WAYLAND
-OPTIONS_GROUP=			RUNTIME EXT_WIN_CAPTURE MPLAYERS MP3 YOUTUBE_DLX
+				THEORA V4L WAYLAND
+OPTIONS_GROUP=			RUNTIME EXT_WIN_CAPTURE MPLAYERS MP3
 OPTIONS_GROUP_RUNTIME=		CDDA2WAV GHOSTSCRIPT LAME MATROSKA MENCODER OGG123 OGM \
-				SSWF X264 XDG_SCREENSAVER XWININFO
+				SSWF X264 XDG_SCREENSAVER XWININFO YTDLP
 OPTIONS_GROUP_EXT_WIN_CAPTURE=	WMCTRL XDOTOOL
 OPTIONS_GROUP_MP3=		MPG123 MPG321
 OPTIONS_GROUP_MPLAYERS=		MPLAYER MPV
-OPTIONS_RADIO_YOUTUBE_DLX=	YOUTUBE_DL YOUTUBE_DLC YTDLP
 OPTIONS_DEFAULT=		CDDA2WAV DOCS DV FFTW GHOSTSCRIPT IMAGEMAGICK JACK LAME \
-				MPG123 MPLAYER NLS OGG OGG123 OGM OPENCV SCHROEDINGER \
+				MPG123 MPLAYER NLS OGG OGG123 OGM OPENCV \
 				THEORA X264 XDG_SCREENSAVER XDOTOOL XWININFO YTDLP
 OPTIONS_SUB=			yes
 
@@ -82,8 +81,7 @@ FREI0R_BUILD_DEPENDS=		frei0r>0:graphics/frei0r
 FREI0R_CONFIGURE_OFF=		--disable-frei0r
 FREI0R_RUN_DEPENDS=		frei0r>0:graphics/frei0r
 GHOSTSCRIPT_USES=		ghostscript:run
-IMAGEMAGICK_RUN_DEPENDS=	convert:graphics/ImageMagick${IMAGEMAGICK_DEFAULT} \
-				composite:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
+IMAGEMAGICK_USES=		magick:run
 JACK_CONFIGURE_OFF=		--disable-jack
 JACK_LIB_DEPENDS=		libjack.so:audio/jack \
 				libjackserver.so:audio/jack
@@ -114,8 +112,6 @@ OGM_RUN_DEPENDS=		ogmmerge:multimedia/ogmtools
 OPENCV_CONFIGURE_OFF=		--disable-opencv
 OPENCV_LIB_DEPENDS=		libopencv_calib3d.so:graphics/opencv \
 				libopencv_core.so:graphics/opencv
-SCHROEDINGER_CONFIGURE_OFF=	--disable-dirac
-SCHROEDINGER_LIB_DEPENDS=	libschroedinger-1.0.so:multimedia/schroedinger
 SSWF_DESC=			Use sswf for manipulating with Flash movies
 SSWF_RUN_DEPENDS=		sswf:graphics/sswf
 THEORA_CONFIGURE_OFF=		--disable-theora
@@ -138,11 +134,6 @@ WMCTRL_DESC=			Install wmctrl
 WMCTRL_RUN_DEPENDS=		wmctrl:x11/wmctrl
 YTDLP_DESC=			Install yt-dlp (youtube-dl fork) - requires SYMLINK option
 YTDLP_RUN_DEPENDS=		yt-dlp:www/yt-dlp
-YOUTUBE_DL_DESC=		Install youtube-dl
-YOUTUBE_DL_RUN_DEPENDS=		youtube-dl:www/youtube_dl
-YOUTUBE_DLC_DESC=		Install youtube-dlc
-YOUTUBE_DLC_RUN_DEPENDS=	youtube-dlc:www/youtube_dlc
-YOUTUBE_DLX_DESC=		Install youtube-dl (runtime check)
 X264_RUN_DEPENDS=		x264:multimedia/x264
 XDG_SCREENSAVER_DESC=		Used to disable screensaver during playback
 XDG_SCREENSAVER_RUN_DEPENDS=	xdg-screensaver:devel/xdg-utils

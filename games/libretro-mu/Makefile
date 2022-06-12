@@ -1,8 +1,8 @@
 PORTNAME=	libretro-mu
-PORTVERSION=	0.20210214
+PORTVERSION=	0.20220317
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	PalmOS emulator to the libretro API
 
 LICENSE=	GPLv3 MIT
@@ -14,7 +14,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	Mu
-GH_TAGNAME=	ff746b8
+GH_TAGNAME=	1361da0
 
 PLIST_FILES=	lib/libretro/mu_libretro.so
 

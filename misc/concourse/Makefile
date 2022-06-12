@@ -1,6 +1,7 @@
 PORTNAME=	concourse
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.7.2
+PORTREVISION=	2
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,6 +12,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 USES=		cpe go:modules
 USE_GITHUB=	yes
+
+CONFLICTS_INSTALL=	concourse-fly fly # bin/fly
 
 CPE_VENDOR=	pivotal_software
 

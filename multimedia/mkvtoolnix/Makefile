@@ -1,7 +1,7 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
 
 PORTNAME=	mkvtoolnix
-PORTVERSION=	63.0.0
+PORTVERSION=	68.0.0
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://www.bunkus.org/videotools/mkvtoolnix/sources/ \
 		https://mkvtoolnix.download/sources/
@@ -27,14 +27,11 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libgmp.so:math/gmp
 
 USES=		compiler:c++17-lang iconv localbase pkgconfig qmake:no_env qt:5 tar:xz
-USE_QT=		buildtools_build concurrent core linguisttools_build multimedia
+USE_QT=		buildtools_build concurrent core linguisttools_build multimedia svg
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_path_PO4A=no
 CONFIGURE_ARGS=	--with-boost=${LOCALBASE} \
-		--with-boost-filesystem=boost_filesystem \
-		--with-boost-system=boost_system \
-		--with-boost-regex=boost_regex \
 		--with-docbook-xsl-root=${PREFIX}/share/xsl/docbook \
 		--disable-qt6
 MAKE_ENV=	V=1
@@ -74,16 +71,5 @@ MANTRANS_BUILD_DEPENDS=	po4a:textproc/po4a
 .if ${CHOSEN_COMPILER_TYPE} != clang
 USE_CXXSTD=	c++17
 .endif
-
-post-patch:
-	@${REINPLACE_CMD} -e '/LIBS="-lintl/s,-liconv,$$ICONV_LIBS,' \
-		${WRKSRC}/configure
-
-post-configure-NLS-off:
-# https://github.com/mbunkus/mkvtoolnix/issues/1501
-# Fixed in 8.6.0
-	@${REINPLACE_CMD} -e 's|LIBINTL_LIBS =|#LIBINTL_LIBS =|g' ${WRKSRC}/build-config
-	@${REINPLACE_CMD} -e 's|#define HAVE_LIBINTL_H|//#define HAVE_LIBINTL_H|g' ${WRKSRC}/config.h
-	@${REINPLACE_CMD} -e 's|S["LIBINTL_LIBS"]=|#S["LIBINTL_LIBS"]=|g' ${WRKSRC}/config.status
 
 .include <bsd.port.post.mk>

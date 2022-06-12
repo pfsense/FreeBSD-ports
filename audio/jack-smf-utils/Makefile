@@ -6,7 +6,7 @@ PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
-MAINTAINER=	trasz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standard MIDI File file player and recorder for JACK MIDI
 
 LICENSE=	BSD2CLAUSE
@@ -18,5 +18,7 @@ LIB_DEPENDS=	libjack.so:audio/jack \
 USES=		gnome pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
+
+CONFLICTS_INSTALL=	libsmf # bin/smfsh
 
 .include <bsd.port.mk>

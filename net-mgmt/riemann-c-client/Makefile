@@ -1,9 +1,8 @@
 # Created by: Dave Cottlehuber <dch@skunkwerks.at>
 
 PORTNAME=	riemann-c-client
-PORTVERSION=	1.10.4
+PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	dch@FreeBSD.org

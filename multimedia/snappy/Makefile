@@ -12,15 +12,17 @@ PKGNAMESUFFIX=	player
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Open source gstreamer media player
 
+DEPRECATED=	Deprecated upstream, please consider multimedia/mpv or multimedia/vlc
+EXPIRATION_DATE=2022-06-30
+
 LIB_DEPENDS=	libclutter-gst-2.0.so:multimedia/clutter-gst \
 		libclutter-1.0.so:graphics/clutter \
 		libclutter-gtk-1.0.so:graphics/clutter-gtk3
 
-USES=		desktop-file-utils gettext gmake gnome pathfix pkgconfig tar:xz
+USES=		desktop-file-utils gettext gmake gnome gstreamer pathfix pkgconfig tar:xz
 USE_GNOME=	gnomeprefix gtk30 intlhack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USE_GSTREAMER1=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 

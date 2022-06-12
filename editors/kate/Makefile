@@ -1,6 +1,5 @@
 PORTNAME=	kate
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	editors kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,7 +10,7 @@ BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-
 LIB_DEPENDS=	libgit2.so:devel/libgit2
 
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext \
-		pkgconfig kde:5 qt:5 tar:xz
+		pkgconfig kde:5 qt:5 tar:xz cpe
 USE_KDE=	activities attica auth bookmarks codecs completion config \
 		configwidgets coreaddons crash dbusaddons \
 		guiaddons i18n iconthemes init itemmodels itemviews \

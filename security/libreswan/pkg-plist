@@ -8,6 +8,7 @@ etc/ipsec.d/policies/private
 etc/ipsec.d/policies/private-or-clear
 etc/ipsec.secrets
 etc/logrotate.d/libreswan
+etc/rc.d/pluto
 libexec/ipsec/_import_crl
 libexec/ipsec/_plutorun
 libexec/ipsec/_realsetup
@@ -15,9 +16,10 @@ libexec/ipsec/_secretcensor
 libexec/ipsec/_stackmanager
 libexec/ipsec/_unbound-hook
 libexec/ipsec/_updown
-libexec/ipsec/_updown.bsdkame
+libexec/ipsec/_updown.bsd
 libexec/ipsec/addconn
 libexec/ipsec/algparse
+libexec/ipsec/asn1check
 libexec/ipsec/auto
 libexec/ipsec/barf
 libexec/ipsec/cavp
@@ -33,16 +35,19 @@ libexec/ipsec/look
 libexec/ipsec/newhostkey
 libexec/ipsec/pluto
 libexec/ipsec/readwriteconf
+libexec/ipsec/routecheck
 libexec/ipsec/rsasigkey
 libexec/ipsec/setup
 libexec/ipsec/show
 libexec/ipsec/showhostkey
 libexec/ipsec/timecheck
+libexec/ipsec/vendoridcheck
 libexec/ipsec/verify
 libexec/ipsec/whack
 sbin/ipsec
 %%PORTDOCS%%%%DOCSDIR%%/ipsec.conf-sample
 %%PORTDOCS%%%%DOCSDIR%%/ipsec.secrets-sample
+share/examples/rc.d/pluto
 share/man/man5/ipsec.conf.5.gz
 share/man/man5/ipsec.secrets.5.gz
 share/man/man8/ipsec.8.gz
@@ -70,6 +75,7 @@ share/man/man8/ipsec_rsasigkey.8.gz
 share/man/man8/ipsec_setup.8.gz
 share/man/man8/ipsec_show.8.gz
 share/man/man8/ipsec_showhostkey.8.gz
+share/man/man8/ipsec_vendorid.8.gz
 share/man/man8/ipsec_verify.8.gz
 share/man/man8/ipsec_whack.8.gz
 share/man/man8/pluto.8.gz

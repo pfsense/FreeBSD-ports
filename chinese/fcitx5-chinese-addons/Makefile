@@ -2,6 +2,7 @@
 
 PORTNAME=	fcitx5-chinese-addons
 DISTVERSION=	5.0.8
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 MASTER_SITES=	https://download.fcitx-im.org/data/:py_stroke,py_table
 DISTFILES=	${PY_STROKE_TAR}:py_stroke \
@@ -44,6 +45,8 @@ USE_KDE=	ecm
 CMAKE_ON=	ENABLE_OPENCC
 CMAKE_OFF=	ENABLE_TEST
 MAKE_ENV=	FCITX5_DOWNLOAD_DISALLOWED=TRUE
+
+CONFLICTS_INSTALL=	zh-fcitx # share/icons/hicolor/16x16/apps/fcitx-fullwidth-active.png
 
 # These must follow modules/pinyinhelper/CMakeLists.txt
 PY_STROKE_VER=	20121124

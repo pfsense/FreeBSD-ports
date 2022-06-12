@@ -2,7 +2,7 @@
 
 PORTNAME=	racer
 DISTVERSION=	2.1.48
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	CRATESIO
 DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
@@ -12,6 +12,10 @@ COMMENT=	Rust code completion helper
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE-MIT
+
+BROKEN=		fails to build: unknown feature thread_local_const_init
+DEPRECATED=	Racer is not actively developped now. Please consider using newer software such as devel/rust-analyzer.
+EXPIRATION_DATE=2022-06-30
 
 USES=		cargo
 CARGO_CRATES=	aho-corasick-0.7.10 \

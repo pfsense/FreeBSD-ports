@@ -1,11 +1,15 @@
 # Created by: Jacob Atzen <jatzen@gmail.com>
 
 PORTNAME=	passenger
-PORTVERSION=	6.0.11
+PORTVERSION=	6.0.12
+PORTREVISION=	2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
+PATCH_SITES=	https://github.com/phusion/passenger/commit/
+PATCHFILES=	4c8d0a1316000db93eb4484480b2e14188560e14.patch:-p1 \
+		9640816af708867d0994bd2eddb80ac24399f855.patch:-p1
 
-MAINTAINER=	osa@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modules for running Ruby on Rails and Rack applications
 
 LICENSE=	MIT
@@ -85,8 +89,7 @@ post-build:
 .if ${FLAVOR} == nginx
 	(cd ${WRKSRC} && CC=${CC} CXX=${CXX} ${RAKE_BIN} nginx)
 .endif
-	${FIND} ${WRKSRC} -name '*.o' -delete
-	${FIND} ${WRKSRC} -name '*.bak' -delete
+	${FIND} ${WRKSRC} -name '*.o' -o -name '*.bak' -o -name '*.orig' | ${XARGS} ${RM}
 
 post-install:
 	( cd ${WRKSRC} && \
@@ -101,6 +104,8 @@ post-install:
 	${LN} -sf ../../${GEM_LIB_DIR}/buildout/apache2/mod_passenger.so ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_passenger.so
 	@${ECHO} "${APACHEMODDIR}/mod_passenger.so" >> ${TMPPLIST}
 .endif
+	@${RM} ${STAGEDIR}${PREFIX}/bin/passenger-install-apache2-module \
+		${STAGEDIR}${PREFIX}/bin/passenger-install-nginx-module
 	@${RM} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/bin/passenger-install-apache2-module \
 		${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/bin/passenger-install-nginx-module
 

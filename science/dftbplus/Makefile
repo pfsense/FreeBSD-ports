@@ -1,6 +1,5 @@
 PORTNAME=	dftbplus
-DISTVERSION=	19.1
-PORTREVISION=	1
+DISTVERSION=	22.1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,54 +12,89 @@ BROKEN_${arch}=	Lack of IEEE754 support in gcc causes "Cannot find an intrinsic 
 .endfor
 
 LIB_DEPENDS=	libblas.so:math/blas \
-		liblapack.so:math/lapack
+		liblapack.so:math/lapack \
+		libopenblas.so:math/openblas
 RUN_DEPENDS=	${PYNUMPY}
+TEST_DEPENDS=	bash:shells/bash
 
-USES=		compiler:gcc-c++11-lib fortran gmake python shebangfix
+USES=		cmake compiler:gcc-c++11-lib fortran pkgconfig python:build shebangfix
+USE_LDCONFIG=	yes
+
 SHEBANG_FILES=	tools/dptools/bin/* tools/misc/* utils/srcmanip/* utils/build/* external/fypp/bin/* utils/get_opt_externals \
-		external/fypp/bin/fypp utils/test/testlist_to_fypp test/prog/dftb+/bin/tagdiff
-SHEBANG_GLOB=	*.py
+		external/fypp/bin/fypp utils/test/testlist_to_fypp
+SHEBANG_GLOB=	*.py *.sh
+
 USE_GITHUB=	yes
-GH_TUPLE=	dftbplus:mpifx:099ff75:mpifx/external/mpifx/origin \
-		dftbplus:scalapackfx:86cd6e4:scalapackfx/external/scalapackfx/origin \
-		dftbplus:dftd3-lib:00504a9:dftd3/external/dftd3/origin \
-		dftbplus:testparams:1601609:testparams/external/slakos/origin
-MAKEFILE=	makefile
+GH_TUPLE=	\
+		aradi:fytest:94e05ac:aradi_fytest/external/fytest/origin \
+		dftbplus:testparams:cd7536f:testparams/external/slakos/origin \
+		dftd4:dftd4:1189af7:dftd4_dftd4/external/dftd4/origin \
+		grimme-lab:gbsa-parameters:6836c4d:grimme_lab_gbsa/external/gbsa/origin
+
 TEST_TARGET=	test
 
-FFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-llapack -lblas -lgfortran -lm
+BINARY_ALIAS=	git=false
 
-MAKE_ARGS=	PYTHON=${PYTHON_CMD} FC=${FC} FXX=${FC} LN=${CC} \
-		INSTALLDIR=${STAGEDIR}${PREFIX} FREEBSD_PYDISTUTILS_INSTALLARGS="${PYDISTUTILS_INSTALLARGS} --root=${STAGEDIR}"
+CMAKE_ON=	BLAS_DETECTION BUILD_SHARED_LIBS WITH_API ENABLE_DYNAMIC_LOADING
+CMAKE_ARGS=	-DLAPACK_LIBRARY=lapack -DSCALAPACK_LIBRARY=scalapack
 
-BINARY_ALIAS=		python=${PYTHON_CMD}
+BINARY_ALIAS=		python=${PYTHON_CMD} python3=${PYTHON_CMD}
 
-OPTIONS_DEFINE=		DFTD3 MPI SOCKETS ARPACK
-OPTIONS_DEFAULT=	DFTD3 MPI SOCKETS
-
-DFTD3_DESC=		Build with libdft3
-DFTD3_MAKE_ARGS=	WITH_DFTD3=1
-DFTD3_MAKE_ARGS_OFF=	WITH_DFTD3=0
-
-MPI_MAKE_ARGS=		WITH_MPI=1
-MPI_MAKE_ARGS_OFF=	WITH_MPI=0
-MPI_LIB_DEPENDS=	libmpich.so:net/mpich \
-			libscalapack.so:math/scalapack
-MPI_LDFLAGS=		${LOCALBASE}/lib/libmpich.so ${LOCALBASE}/lib/libmpifort.so ${LOCALBASE}/lib/libmpi.so
-
-SOCKETS_DESC=		Build with sockets library
-SOCKETS_MAKE_ARGS=	WITH_SOCKETS=1
-SOCKETS_MAKE_ARGS_OFF=	WITH_SOCKETS=0
-SOCKETS_BINARY_ALIAS=	gcc=${CC}
+OPTIONS_DEFINE=		ARPACK CHIMES DFTD3 MBD MPI PLUMED POISSON PYTHON SOCKETS TBLITE TRANSPORT # see config.cmake for a complete list
+OPTIONS_DEFAULT=	CHIMES DFTD3 MBD MPI PLUMED POISSON TRANSPORT SOCKETS # PYTHON TBLITE
+OPTIONS_SUB=		yes
 
 ARPACK_DESC=		Build with ARPACK for large eigenvalue problems
-ARPACK_MAKE_ARGS=	WITH_ARPACK=1
-ARPACK_MAKE_ARGS_OFF=	WITH_ARPACK=0
+ARPACK_CMAKE_BOOL=	WITH_ARPACK
 ARPACK_LIB_DEPENDS=	libarpack.so:math/arpack-ng
 ARPACK_PREVENTS=	MPI # ARPACK is only used in a single-core application
 
-MAKE_JOBS_UNSAFE=	yes # race conditions when some options are ON
+CHIMES_DESC=		Build with ChIMES
+CHIMES_CMAKE_BOOL=	WITH_CHIMES
+CHIMES_LIB_DEPENDS=	libchimescalc.so:science/chimes-calculator
+
+DFTD3_DESC=		Build with s-dft3
+DFTD3_CMAKE_BOOL=	WITH_SDFTD3
+DFTD3_LIB_DEPENDS=	libs-dftd3.so:science/simple-dftd3 \
+			libmctc-lib.so:science/mctc-lib \
+			libmstore.so:science/mstore \
+			libtoml-f.so:textproc/toml-f # binaries not linked with libtoml-f.so, see https://github.com/dftbplus/dftbplus/issues/1040
+
+MBD_DESC=		Build with many-body-dispersion support
+MBD_CMAKE_BOOL=		WITH_MBD
+MBD_LIB_DEPENDS=	libmbd.so:science/libmbd
+
+MPI_CMAKE_BOOL=		WITH_MPI
+MPI_LIB_DEPENDS=	libmpich.so:net/mpich \
+			libmpifx.so:net/mpifx \
+			libscalapack.so:math/scalapack \
+			libscalapackfx.so:math/scalapackfx
+MPI_LDFLAGS=		${LOCALBASE}/lib/libmpich.so ${LOCALBASE}/lib/libmpifort.so ${LOCALBASE}/lib/libmpi.so
+
+PLUMED_DESC=		Do metadynamics via the PLUMED2 library
+PLUMED_CMAKE_BOOL=	WITH_PLUMED
+PLUMED_LIB_DEPENDS=	libplumed.so:science/plumed
+
+POISSON_DESC=		Include Poisson-solver
+POISSON_CMAKE_BOOL=	WITH_POISSON
+
+PYTHON_USES=		python
+PYTHON_CMAKE_BOOL=	WITH_PYTHON
+PYTHON_BROKEN=		fails to install into stage directory: https://github.com/dftbplus/dftbplus/issues/931
+
+SOCKETS_DESC=		Build with sockets library
+SOCKETS_CMAKE_BOOL=	WITH_SOCKETS
+SOCKETS_BINARY_ALIAS=	gcc=${CC}
+
+TBLITE_DESC=		Include xTB support via tblite
+TBLITE_CMAKE_BOOL=	WITH_TBLITE
+TBLITE_BROKEN=		Fails to build, see https://github.com/dftbplus/dftbplus/issues/1041
+
+TRANSPORT_DESC=		Transport via libNEGF
+TRANSPORT_CMAKE_BOOL=	WITH_TRANSPORT
+TRANSPORT_LIB_DEPENDS=	libnegf.so:science/libnegf \
+			libmpi.so:net/mpich \
+			libmpifx.so:net/mpifx
 
 .include <bsd.port.pre.mk>
 
@@ -69,12 +103,5 @@ MAKE_JOBS_UNSAFE=	yes # race conditions when some options are ON
 # in theory, this should set FCFLAGS, but the port does not conform
 FFLAGS+=	-fallow-argument-mismatch
 .endif
-
-post-extract:
-	@${RM} ${WRKSRC}/external/scalapackfx/origin/test/psyr_result.dat.orig
-	@cd ${WRKSRC} && ${CP} sys/make.x86_64-linux-gnu make.arch
-
-post-install:
-	@cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} dftb+ modes waveplot
 
 .include <bsd.port.post.mk>

@@ -12,8 +12,11 @@ COMMENT?=	Multithreaded SQL database (server)
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Upstream support ended on December 2018
+EXPIRATION_DATE=	2022-06-30
+
 SLAVEDIRS=	databases/mysql55-client
-USES=		cmake:insource,noninja cpe readline shebangfix
+USES=		cmake:insource,noninja compiler:c++11-lang cpe readline shebangfix
 CXXFLAGS+=	${CPPFLAGS}
 NO_OPTIONS_SORT=yes
 
@@ -29,7 +32,7 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
 		-DINSTALL_INFODIR="info" \
 		-DINSTALL_LIBDIR="lib/mysql" \
-		-DINSTALL_MANDIR="man" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="/var/db/mysql" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
 		-DINSTALL_MYSQLTESTDIR="share/mysql/tests" \
@@ -51,14 +54,6 @@ SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 
 .include <bsd.port.options.mk>
 
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
-USES+=		compiler:gcc-c++11-lib
-USE_CXXSTD=	gnu++11
-.else
-USES+=		compiler:c++11-lang
-USE_CXXSTD=	gnu++98
-.endif
-
 .if ${PORT_OPTIONS:MSSL}
 CMAKE_ARGS+=	-DWITH_SSL=bundled
 .endif
@@ -70,7 +65,7 @@ CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
 .if !defined(CLIENT_ONLY)
 USES+=		mysql:55
 
-CONFLICTS_INSTALL=	mysql5[0-46-9]-server \
+CONFLICTS_INSTALL=	mysql*-server \
 			mysqlwsrep*-server \
 			mariadb*-server \
 			percona*-server
@@ -96,7 +91,7 @@ post-patch:
 post-install:
 	# Empty directory, but check-plist complains
 	@${RMDIR} ${STAGEDIR}${PREFIX}/info || ${TRUE}
-	
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == armv6 || ${ARCH} == armv7

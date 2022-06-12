@@ -2,7 +2,7 @@
 
 PORTNAME=	virtualbox-ose
 PORTVERSION=	5.2.44
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX=	-kmod-legacy
@@ -18,6 +18,9 @@ BUILD_DEPENDS=	kmk:devel/kBuild
 
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
+
+SUB_FILES=	pkg-message
+SUB_LIST=	OPSYS=${OPSYS} OSREL=${OSREL}
 
 USES=		cpe kmod tar:bzip2
 PATCHDIR=	${.CURDIR}/../${PORTNAME}-legacy/files
@@ -37,8 +40,7 @@ CONFIGURE_ARGS+=	--disable-alsa \
 			--disable-xpcom
 CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
-CONFLICTS_INSTALL=	virtualbox-ose-kmod-devel \
-			virtualbox-ose-kmod
+CONFLICTS_INSTALL=	virtualbox-ose-kmod
 
 PORTSCOUT=	limit:^5\.
 

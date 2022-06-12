@@ -1,7 +1,8 @@
 # Created by: Frank Gruender <elwood@mc5sys.in-berlin.de>
 
 PORTNAME=	yabasic
-PORTVERSION=	2.90.1
+PORTVERSION=	2.90.2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	lang
 

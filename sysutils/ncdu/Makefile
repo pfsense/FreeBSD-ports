@@ -1,7 +1,7 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
 
 PORTNAME=	ncdu
-PORTVERSION=	1.16
+PORTVERSION=	1.17
 CATEGORIES=	sysutils
 MASTER_SITES=	https://dev.yorhel.nl/download/
 
@@ -17,5 +17,9 @@ GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/ncdu \
 		man/man1/ncdu.1.gz
+
+# ncdu 1.* (LTS) is written in C.
+# ncdu 2.* (stable) is written in Zig which only works with specific version.
+PORTSCOUT=	limit:^1\.
 
 .include <bsd.port.mk>

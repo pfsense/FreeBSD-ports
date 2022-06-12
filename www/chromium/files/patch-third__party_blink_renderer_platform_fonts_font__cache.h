@@ -1,59 +1,47 @@
---- third_party/blink/renderer/platform/fonts/font_cache.h.orig	2021-09-24 04:26:12 UTC
+--- third_party/blink/renderer/platform/fonts/font_cache.h.orig	2022-05-19 14:06:27 UTC
 +++ third_party/blink/renderer/platform/fonts/font_cache.h
-@@ -58,7 +58,7 @@
+@@ -57,7 +57,7 @@
  #include "third_party/skia/include/core/SkFontMgr.h"
  #include "third_party/skia/include/core/SkRefCnt.h"
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include "ui/gfx/font_fallback_linux.h"
  #endif
  
-@@ -177,7 +177,7 @@ class PLATFORM_EXPORT FontCache {
-   sk_sp<SkFontMgr> FontManager() { return font_manager_; }
-   static void SetFontManager(sk_sp<SkFontMgr>);
+@@ -184,7 +184,7 @@ class PLATFORM_EXPORT FontCache final {
+   static void PrewarmFamily(const AtomicString& family_name) {}
+ #endif
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    // These are needed for calling QueryRenderStyleForStrike, since
    // gfx::GetFontRenderParams makes distinctions based on DSF.
    static float DeviceScaleFactor() { return device_scale_factor_; }
-@@ -259,11 +259,11 @@ class PLATFORM_EXPORT FontCache {
+@@ -267,7 +267,7 @@ class PLATFORM_EXPORT FontCache final {
        const char* locale_family_name);
- #endif  // defined(OS_ANDROID)
+ #endif  // BUILDFLAG(IS_ANDROID)
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    static bool GetFontForCharacter(UChar32,
                                    const char* preferred_locale,
                                    gfx::FallbackFontData*);
--#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- 
-   scoped_refptr<SimpleFontData> FontDataFromFontPlatformData(
-       const FontPlatformData*,
-@@ -339,13 +339,13 @@ class PLATFORM_EXPORT FontCache {
+@@ -347,7 +347,7 @@ class PLATFORM_EXPORT FontCache final {
                                     const FontFaceCreationParams&,
                                     std::string& name);
  
--#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    static AtomicString GetFamilyNameForCharacter(SkFontMgr*,
                                                  UChar32,
                                                  const FontDescription&,
-                                                 const char* family_name,
-                                                 FontFallbackPriority);
--#endif  // defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#endif  // defined(OS_ANDROID) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- 
-   scoped_refptr<SimpleFontData> FallbackOnStandardFontStyle(
-       const FontDescription&,
-@@ -385,7 +385,7 @@ class PLATFORM_EXPORT FontCache {
+@@ -389,7 +389,7 @@ class PLATFORM_EXPORT FontCache final {
    std::unique_ptr<FallbackFamilyStyleCache> fallback_params_cache_;
- #endif  // defined(OS_WIN)
+ #endif  // BUILDFLAG(IS_WIN)
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    static float device_scale_factor_;
  #endif
  

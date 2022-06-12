@@ -1,11 +1,11 @@
---- third_party/perfetto/src/base/test/vm_test_utils.cc.orig	2021-07-28 09:44:38 UTC
+--- third_party/perfetto/src/base/test/vm_test_utils.cc.orig	2022-02-28 16:54:41 UTC
 +++ third_party/perfetto/src/base/test/vm_test_utils.cc
-@@ -97,7 +97,7 @@ bool IsMapped(void* start, size_t size) {
+@@ -92,7 +92,7 @@ bool IsMapped(void* start, size_t size) {
+   // Fuchsia doesn't yet support paging (b/119503290).
    ignore_result(page_size);
    return true;
- #else
--#if PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE)
-+#if PERFETTO_BUILDFLAG(PERFETTO_OS_APPLE) || PERFETTO_BUILDFLAG(PERFETTO_OS_FREEBSD)
-   using PageState = char;
-   static constexpr PageState kIncoreMask = MINCORE_INCORE;
- #else
+-#elif PERFETTO_BUILDFLAG(PERFETTO_OS_NACL)
++#elif PERFETTO_BUILDFLAG(PERFETTO_OS_NACL) || PERFETTO_BUILDFLAG(PERFETTO_OS_BSD)
+   // mincore isn't available on NaCL.
+   ignore_result(page_size);
+   return true;

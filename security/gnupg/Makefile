@@ -1,6 +1,6 @@
 PORTNAME=	gnupg
 PORTVERSION=	2.3.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
@@ -21,7 +21,7 @@ RUN_DEPENDS=	pinentry:security/pinentry
 
 USES=		compiler:c11 cpe gmake iconv makeinfo pkgconfig readline sqlite tar:bzip2
 
-CONFLICTS=	gnupg-2.0.* dirmngr
+CONFLICTS=	dirmngr
 CPE_VENDOR=	gnupg
 
 CONFIGURE_ARGS=	--disable-ntbtls --enable-gpg-is-gpg2 --enable-symcryptrun
@@ -29,8 +29,6 @@ GNU_CONFIGURE=	yes
 INFO=		gnupg
 TEST_TARGET=	check
 TEST_ARGS=	TESTARGS=--parallel
-
-SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS GNUTLS LARGE_RSA LDAP NLS SCDAEMON SUID_GPG WKS_SERVER
 OPTIONS_DEFAULT=GNUTLS SCDAEMON WKS_SERVER

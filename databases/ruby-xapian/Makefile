@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	xapian
-PORTVERSION=	1.4.18
+PORTVERSION=	1.4.19
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases ruby
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -14,7 +14,8 @@ COMMENT=	Ruby binding for Xapian
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	xapian-core>=${PORTVERSION}:databases/xapian-core
+BUILD_DEPENDS=	rubygem-rdoc>=0:devel/rubygem-rdoc \
+		xapian-core>=${PORTVERSION}:databases/xapian-core
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
 
 USES=		compiler:c++11-lang libtool tar:xz
@@ -38,8 +39,6 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 
-PORTDOCS=	*
-
 CONFLICTS_INSTALL=	xapian-bindings12
 
 PORTSCOUT=	limitw:1,even
@@ -49,10 +48,4 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lstdc++||g' ${WRKSRC}/configure
 
-.include <bsd.port.pre.mk>
-
-.if ${RUBY_VER} >= 2.6
-BUILD_DEPENDS+=	rubygem-rdoc>=0:devel/rubygem-rdoc
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

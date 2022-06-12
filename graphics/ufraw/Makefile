@@ -2,7 +2,7 @@
 
 PORTNAME=	ufraw
 PORTVERSION=	0.22.20210424
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -26,12 +26,15 @@ USE_GNOME+=	cairo gdkpixbuf2 glib20 gtk20
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-extras \
-		--enable-jasper
+		--enable-jasper \
+		--disable-mime
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=		CONTRAST DST EXIV2 FITS GIMP GNOME GTK2 LENSFUN
+CONFLICTS_INSTALL=	dcraw
+
+OPTIONS_DEFINE=		CONTRAST DST EXIV2 FITS GIMP GTK2 LENSFUN
 OPTIONS_DEFAULT=	CONTRAST EXIV2 GTK2 LENSFUN
 OPTIONS_SUB=		yes
 
@@ -51,10 +54,6 @@ GIMP_LIB_DEPENDS=		libbabl-0.1.so:x11/babl \
 				libgimp-2.0.so:graphics/gimp-app \
 				libjson-glib-1.0.so:devel/json-glib
 GIMP_CONFIGURE_WITH=		gimp
-GNOME_USE=			GNOME=gconf2
-GNOME_CONFIGURE_ENABLE=		mime
-GNOME_VARS=			CATEGORIES+=gnome \
-				GCONF_SCHEMAS=${PORTNAME}.schemas
 GTK2_LIB_DEPENDS=		libgtkimageview.so:x11-toolkits/gtkimageview
 GTK2_CONFIGURE_WITH=		gtk
 LENSFUN_LIB_DEPENDS=		liblensfun.so:graphics/lensfun

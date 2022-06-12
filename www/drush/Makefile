@@ -9,7 +9,7 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	drush
 EXTRACT_SUFX=	.phar
 
-MAINTAINER=	mfechner@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drupal command line and scripting interface
 
 LICENSE=	GPLv2+
@@ -21,6 +21,8 @@ NO_ARCH=	yes
 USES=		php:cli,flavors
 # set php requirements same as drupal itself
 USE_PHP=	gd pcre session mbstring ctype json hash simplexml dom pdo filter phar
+
+CONFLICTS_INSTALL=	drush-php* # bin/drush bin/drush.phar
 
 PLIST_FILES=	bin/drush bin/drush.phar
 

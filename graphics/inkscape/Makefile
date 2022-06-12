@@ -1,10 +1,10 @@
 # Created by: Alexander Nedotsukov <bland@FreeBSD.org>
 
 PORTNAME=	inkscape
-DISTVERSION=	1.1
-PORTREVISION=	6
+DISTVERSION=	1.2
+PORTREVISION=	1
 CATEGORIES=	graphics gnome
-MASTER_SITES=	https://inkscape.org/gallery/item/26932/
+MASTER_SITES=	https://media.inkscape.org/dl/resources/file/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Full featured open source SVG editor
@@ -46,13 +46,15 @@ RUN_DEPENDS=	${PYNUMPY} \
 		fig2dev:print/fig2dev
 
 USES=		compiler:c++11-lib cmake cpe desktop-file-utils gnome \
-		iconv:wchar_t jpeg pathfix pkgconfig python:3.6+ \
+		iconv:wchar_t jpeg pathfix pkgconfig python:3.7+ \
 		shebangfix tar:xz xorg
 USE_GNOME=	gtkmm30 libxml2 libxslt
 USE_XORG=	sm ice x11 xext
 USE_LDCONFIG=	yes
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_2021-05-24_c4e8f9ed74
+DATETAG=	2022-05-15_dc2aedaf03
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_${DATETAG}
 
 SHEBANG_FILES=	share/extensions/*.py share/extensions/genpofiles.sh \
 		share/templates/*.py man/fix-roff-punct
@@ -96,7 +98,7 @@ WPG_LIB_DEPENDS=	libwpg-0.3.so:graphics/libwpg03
 
 IMAGICK_DESC=		Raster image format library
 IMAGICK6_DESC=		Use ImageMagick6
-IMAGICK6_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick6
+IMAGICK6_USES=		magick:6
 IMAGICK6_CMAKE_BOOL=	WITH_IMAGE_MAGICK
 GM_DESC=		Use GraphicsMagick
 GM_LIB_DEPENDS=		libGraphicsMagick.so:graphics/GraphicsMagick

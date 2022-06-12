@@ -1,9 +1,9 @@
 PORTNAME=	mini_portile2
-PORTVERSION=	2.7.0
+PORTVERSION=	2.8.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	wen@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Simple autoconf builder for developers
 
 LICENSE=	MIT

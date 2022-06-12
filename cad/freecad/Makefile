@@ -1,6 +1,6 @@
 PORTNAME=	FreeCAD
-DISTVERSION=	0.19.2
-PORTREVISION=	4
+DISTVERSION=	0.19.4
+PORTREVISION=	1
 # use these for bugfixes/snapshots
 # DISTVERSION=	0.18-16093 # git rev-list --count
 # DISTVERSIONSUFFIX=	-g690774c0e
@@ -11,8 +11,6 @@ COMMENT=	General purpose 3D CAD modeller
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN=		does not build with OpenCascade 7.6 (yet)
 
 BUILD_DEPENDS=	pyside_tool.py:devel/pyside2-tools@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR} \
@@ -36,7 +34,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pivy>0:graphics/py-pivy@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
 
-USES=		dos2unix compiler:c++17-lang cmake gl eigen:3 fortran jpeg \
+USES=		dos2unix compiler:c++17-lang cmake cpe gl eigen:3 fortran jpeg \
 		localbase:ldflags pkgconfig python:3.7+ localbase qt:5 xorg
 USE_GITHUB=	yes
 USE_XORG=	ice sm x11 xext xt
@@ -44,6 +42,8 @@ USE_GL=		gl glu
 USE_QT=		buildtools concurrent core gui network opengl printsupport \
 		qmake_build svg webkit widgets xml xmlpatterns
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	freecad_project
 
 VTK_VER=	9.1
 

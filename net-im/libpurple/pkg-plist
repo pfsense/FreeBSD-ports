@@ -136,11 +136,11 @@ lib/purple-2/statenotify.so
 %%DBUS%%lib/libpurple-client.a
 %%DBUS%%lib/libpurple-client.so
 %%DBUS%%lib/libpurple-client.so.0
-%%DBUS%%lib/libpurple-client.so.0.14.8
+%%DBUS%%lib/libpurple-client.so.0.14.9
 lib/libpurple.a
 lib/libpurple.so
 lib/libpurple.so.0
-lib/libpurple.so.0.14.8
+lib/libpurple.so.0.14.9
 libdata/pkgconfig/purple.pc
 %%CONSOLEUI%%man/man1/finch.1.gz
 %%GTKUI%%man/man1/pidgin.1.gz
@@ -241,9 +241,6 @@ share/locale/xh/LC_MESSAGES/pidgin.mo
 share/locale/zh_CN/LC_MESSAGES/pidgin.mo
 share/locale/zh_HK/LC_MESSAGES/pidgin.mo
 share/locale/zh_TW/LC_MESSAGES/pidgin.mo
-share/purple/ca-certs/CAcert_Class3.pem
-share/purple/ca-certs/CAcert_Root.pem
-share/purple/ca-certs/mozilla.pem
 share/sounds/purple/alert.wav
 share/sounds/purple/login.wav
 share/sounds/purple/logout.wav

@@ -13,16 +13,22 @@ PLIST_FILES=	libexec/unit/modules/${UNIT_MODNAME}.unit.so
 
 USE_RUBY=	yes
 
+CFLAGS+=	-fdeclspec
+
 USE_RC_SUBR?=	# reset to empty
 
 MASTERDIR=	${.CURDIR}/../unit
 
 post-configure:
 	cd ${CONFIGURE_WRKSRC} && \
-	${CONFIGURE_CMD} ruby --module=${UNIT_MODNAME}
+	${SETENV} ${CONFIGURE_ENV} ${CONFIGURE_CMD} ruby \
+		--ruby=ruby${RUBY_VER:S|.||} \
+		--module=${UNIT_MODNAME}
 
 do-build:
-	cd ${CONFIGURE_WRKSRC} && ${MAKE} ${UNIT_MODNAME}
+	cd ${CONFIGURE_WRKSRC} && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
+			${MAKEFILE} ${MAKE_ARGS} ${UNIT_MODNAME}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/unit/modules/

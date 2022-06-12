@@ -2,7 +2,8 @@
 
 PORTNAME=	elixir
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.12.3
+DISTVERSION=	1.13.4
+PORTREVISION=	0
 CATEGORIES=	lang
 MASTER_SITES+=	https://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
 DISTFILES=	Docs.zip:doc
@@ -21,6 +22,8 @@ USES=		gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	elixir-lang
 
+CONFLICTS=	elixir-devel # bin/elixir bin/elixirc bin/iex
+
 USE_LOCALE=	en_US.UTF-8
 ALL_TARGET=	# empty
 
@@ -29,8 +32,7 @@ NO_ARCH=	yes
 MAKE_ENV=	MAN_PREFIX=${PREFIX}/man
 
 OPTIONS_DEFINE=		DOCS SRC
-OPTIONS_DEFAULT=	DOCS SRC
-OPTIONS_DEFAULT=	DOCS
+OPTIONS_DEFAULT=	SRC
 OPTIONS_SUB=		yes
 
 SRC_DESC=	Install source code

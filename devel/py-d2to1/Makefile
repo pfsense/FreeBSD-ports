@@ -5,7 +5,7 @@ DISTVERSION=	0.2.12.post1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Distutils2-like setup.cfg files with setuptools setup.py
 
 LICENSE=	BSD3CLAUSE
@@ -16,6 +16,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 USES=		python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 GH_ACCOUNT=	embray
 

@@ -2,7 +2,7 @@
 
 PORTNAME=	gobject
 PORTVERSION=	3.38.0
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	GNOME/sources/pygobject/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMEPREFIX?=	py
@@ -35,6 +35,7 @@ PORTSCOUT?=	limitw:1,even
 BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR}
 USES+=		gnome python:build
 USE_GNOME=	glib20:build introspection:build
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 do-install:

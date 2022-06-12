@@ -2,8 +2,8 @@
 
 PORTNAME=	mpv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.34.0
-PORTREVISION=	2
+DISTVERSION=	0.34.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://waf.io/:waf
@@ -11,6 +11,13 @@ DISTFILES=	${WAF_RELEASE}${EXTRACT_SUFX}:waf
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	b030cfe05f58.patch:-p1 # https://github.com/mpv-player/mpv/pull/9440
+PATCHFILES+=	edf0039d7621.patch:-p1 # https://github.com/mpv-player/mpv/pull/9298
+PATCHFILES+=	5319731526fb.patch:-p1 # https://github.com/mpv-player/mpv/pull/9298
+PATCHFILES+=	82390d212123.patch:-p1 # https://github.com/mpv-player/mpv/pull/9587
+PATCHFILES+=	22b0bac28e6c.patch:-p1 # https://github.com/mpv-player/mpv/pull/9587
+PATCHFILES+=	b7a71ea70671.patch:-p1 # https://github.com/mpv-player/mpv/pull/9734
+PATCHFILES+=	09343bc86e8b.patch:-p1 # https://github.com/mpv-player/mpv/pull/9734
+PATCHFILES+=	bc9805c71a67.patch:-p1 # https://github.com/mpv-player/mpv/pull/9830
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Free and open-source general-purpose video player
@@ -45,20 +52,24 @@ CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 		--disable-vapoursynth \
 		--enable-libmpv-shared
 
-OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 LUAJIT MANPAGES MUJS TEST UCHARDET EXAMPLES ZIMG
-OPTIONS_DEFAULT=	ARCHIVE DVDNAV MANPAGES OPENGL UCHARDET \
+OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 MANPAGES MUJS TEST UCHARDET EXAMPLES ZIMG
+OPTIONS_DEFAULT=	ARCHIVE DVDNAV LUA MANPAGES OPENGL UCHARDET \
 			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDLP
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDNAV LIBBLURAY V4L
 OPTIONS_GROUP_VO=	CACA OPENGL SIXEL VAAPI VDPAU VULKAN WAYLAND X11
-OPTIONS_GROUP_AO=	ALSA JACK OPENAL PULSEAUDIO SDL
+OPTIONS_GROUP_AO=	ALSA JACK OPENAL PIPEWIRE PULSEAUDIO SDL SNDIO
 OPTIONS_RADIO=		YOUTUBE
 OPTIONS_RADIO_YOUTUBE=	YTDL YTDLP
+OPTIONS_SINGLE=		LUA
+OPTIONS_SINGLE_LUA=	LUA LUAJIT LUA_NONE
 OPTIONS_SUB=		yes
 
 DVDNAV_DESC=		DVD menu navigation
+LUA_NONE_DESC=		Disable Lua scripting language support
 LUAJIT_DESC=		Use LuaJIT instead of Lua scripting language support
 MUJS_DESC=		Use MuJS for Javascript language support
+PIPEWIRE_DESC=		Pipewire sound server support
 SIXEL_DESC=		Sixel graphics support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
 VULKAN_DESC=		Vulkan output support
@@ -98,10 +109,13 @@ LIBBLURAY_LIB_DEPENDS=		libbluray.so:multimedia/libbluray
 LIBBLURAY_CONFIGURE_ON=		--enable-libbluray
 LIBBLURAY_CONFIGURE_OFF=	--disable-libbluray
 
+LUA_USES=			lua:51-52
+LUA_CONFIGURE_ON=		--lua=${LUA_VER_STR}fbsd
+
 LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit
-LUAJIT_USES_OFF=		lua:51-52
 LUAJIT_CONFIGURE_ON=		--lua=luajit
-LUAJIT_CONFIGURE_OFF=		--lua=${LUA_VER_STR}fbsd
+
+LUA_NONE_CONFIGURE_ON=		--disable-lua
 
 MANPAGES_BUILD_DEPENDS=		rst2man:textproc/py-docutils
 MANPAGES_CONFIGURE_OFF=		--disable-manpage
@@ -119,6 +133,9 @@ OPENGL_USES=			gl
 OPENGL_USE=			GL=egl,gbm
 OPENGL_CONFIGURE_OFF=		--disable-gl
 
+PIPEWIRE_LIB_DEPENDS=		libpipewire-0.3.so:multimedia/pipewire
+PIPEWIRE_CONFIGURE_OFF=		--disable-pipewire
+
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 
@@ -128,6 +145,10 @@ SDL_CONFIGURE_ON=		--enable-sdl2
 
 SIXEL_LIB_DEPENDS=		libsixel.so:graphics/libsixel
 SIXEL_CONFIGURE_OFF=		--disable-sixel
+
+SNDIO_LIB_DEPENDS=		libsndio.so:audio/sndio
+SNDIO_CONFIGURE_ON=		--enable-sndio
+SNDIO_CONFIGURE_OFF=		--disable-sndio
 
 TEST_CONFIGURE_ON=		--enable-tests
 

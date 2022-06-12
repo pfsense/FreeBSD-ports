@@ -1,18 +1,25 @@
 @owner %%WWWOWN%%
 @group %%WWWGRP%%
 %%ETCDIRWEBUI%%/apache-bareos-webui.conf
+@(,www,640) %%ETCDIRWEBUI%%/configuration.ini
+@(,www,640) %%ETCDIRWEBUI%%/directors.ini
+%%ETCDIRWEBUI%%/nginx-bareos-webui.conf
 @sample(,www,640) %%ETCDIR%%/bareos-dir.d/console/admin.conf.sample
 @sample(,www,640) %%ETCDIR%%/bareos-dir.d/profile/webui-admin.conf.sample
 @sample(,www,640) %%ETCDIR%%/bareos-dir.d/profile/webui-limited.conf.sample
 @sample(,www,640) %%ETCDIR%%/bareos-dir.d/profile/webui-readonly.conf.sample
-@(,www,640) %%ETCDIRWEBUI%%/configuration.ini
-@(,www,640) %%ETCDIRWEBUI%%/directors.ini
-%%ETCDIRWEBUI%%/nginx-bareos-webui.conf
 %%WWWDIR%%/composer.json
 %%WWWDIR%%/config/application.config.php
 %%WWWDIR%%/config/autoload/README.md
 %%WWWDIR%%/config/autoload/global.php
 %%WWWDIR%%/init_autoloader.php
+%%WWWDIR%%/module/Analytics/Module.php
+%%WWWDIR%%/module/Analytics/autoload_classmap.php
+%%WWWDIR%%/module/Analytics/config/module.config.php
+%%WWWDIR%%/module/Analytics/src/Analytics/Controller/AnalyticsController.php
+%%WWWDIR%%/module/Analytics/src/Analytics/Model/Analytics.php
+%%WWWDIR%%/module/Analytics/src/Analytics/Model/AnalyticsModel.php
+%%WWWDIR%%/module/Analytics/view/analytics/analytics/index.phtml
 %%WWWDIR%%/module/Application/Module.php
 %%WWWDIR%%/module/Application/autoload_classmap.php
 %%WWWDIR%%/module/Application/config/commands.csv
@@ -84,6 +91,7 @@
 %%WWWDIR%%/module/Client/view/client/client/details.phtml
 %%WWWDIR%%/module/Client/view/client/client/index.phtml
 %%WWWDIR%%/module/Client/view/client/client/status.phtml
+%%WWWDIR%%/module/Client/view/client/client/timeline.phtml
 %%WWWDIR%%/module/Console/Module.php
 %%WWWDIR%%/module/Console/autoload_classmap.php
 %%WWWDIR%%/module/Console/config/module.config.php
@@ -132,6 +140,7 @@
 %%WWWDIR%%/module/Job/view/job/job/details.phtml
 %%WWWDIR%%/module/Job/view/job/job/index.phtml
 %%WWWDIR%%/module/Job/view/job/job/run.phtml
+%%WWWDIR%%/module/Job/view/job/job/timeline.phtml
 %%WWWDIR%%/module/Media/Module.php
 %%WWWDIR%%/module/Media/autoload_classmap.php
 %%WWWDIR%%/module/Media/config/module.config.php
@@ -207,6 +216,7 @@
 %%WWWDIR%%/public/css/spinner.gif
 %%WWWDIR%%/public/css/style.css
 %%WWWDIR%%/public/css/throbber.gif
+%%WWWDIR%%/public/css/timeline.css
 %%WWWDIR%%/public/fonts/glyphicons-halflings-regular.eot
 %%WWWDIR%%/public/fonts/glyphicons-halflings-regular.svg
 %%WWWDIR%%/public/fonts/glyphicons-halflings-regular.ttf
@@ -228,6 +238,8 @@
 %%WWWDIR%%/public/img/icons/os/univention.png
 %%WWWDIR%%/public/img/icons/os/windows.png
 %%WWWDIR%%/public/index.php
+%%WWWDIR%%/public/js/apexcharts.js
+%%WWWDIR%%/public/js/apexcharts.min.js
 %%WWWDIR%%/public/js/bootstrap-datetimepicker.min.js
 %%WWWDIR%%/public/js/bootstrap-select.js
 %%WWWDIR%%/public/js/bootstrap-select.js.map
@@ -246,6 +258,8 @@
 %%WWWDIR%%/public/js/bootstrap.js
 %%WWWDIR%%/public/js/bootstrap.min.js
 %%WWWDIR%%/public/js/custom-functions.js
+%%WWWDIR%%/public/js/d3/d3.js
+%%WWWDIR%%/public/js/d3/d3.min.js
 %%WWWDIR%%/public/js/excanvas.js
 %%WWWDIR%%/public/js/excanvas.min.js
 %%WWWDIR%%/public/js/html5shiv.js
@@ -293,6 +307,42 @@
 %%WWWDIR%%/public/js/locale/tr_TR/LC_MESSAGES/tr_TR.po
 %%WWWDIR%%/public/js/locale/uk_UA/LC_MESSAGES/uk_UA.mo
 %%WWWDIR%%/public/js/locale/uk_UA/LC_MESSAGES/uk_UA.po
+%%WWWDIR%%/public/js/locales/ar.json
+%%WWWDIR%%/public/js/locales/ca.json
+%%WWWDIR%%/public/js/locales/cs.json
+%%WWWDIR%%/public/js/locales/de.json
+%%WWWDIR%%/public/js/locales/el.json
+%%WWWDIR%%/public/js/locales/en.json
+%%WWWDIR%%/public/js/locales/es.json
+%%WWWDIR%%/public/js/locales/fi.json
+%%WWWDIR%%/public/js/locales/fr.json
+%%WWWDIR%%/public/js/locales/he.json
+%%WWWDIR%%/public/js/locales/hi.json
+%%WWWDIR%%/public/js/locales/hr.json
+%%WWWDIR%%/public/js/locales/hu.json
+%%WWWDIR%%/public/js/locales/hy.json
+%%WWWDIR%%/public/js/locales/id.json
+%%WWWDIR%%/public/js/locales/it.json
+%%WWWDIR%%/public/js/locales/ja.json
+%%WWWDIR%%/public/js/locales/ka.json
+%%WWWDIR%%/public/js/locales/ko.js
+%%WWWDIR%%/public/js/locales/ko.json
+%%WWWDIR%%/public/js/locales/lt.json
+%%WWWDIR%%/public/js/locales/nb.json
+%%WWWDIR%%/public/js/locales/nl.json
+%%WWWDIR%%/public/js/locales/pl.json
+%%WWWDIR%%/public/js/locales/pt-br.json
+%%WWWDIR%%/public/js/locales/pt.json
+%%WWWDIR%%/public/js/locales/rs.json
+%%WWWDIR%%/public/js/locales/ru.json
+%%WWWDIR%%/public/js/locales/se.json
+%%WWWDIR%%/public/js/locales/sk.json
+%%WWWDIR%%/public/js/locales/sl.json
+%%WWWDIR%%/public/js/locales/sq.json
+%%WWWDIR%%/public/js/locales/th.json
+%%WWWDIR%%/public/js/locales/tr.json
+%%WWWDIR%%/public/js/locales/ua.json
+%%WWWDIR%%/public/js/locales/zh-cn.json
 %%WWWDIR%%/public/js/moment-timezone-with-data.js
 %%WWWDIR%%/public/js/moment-timezone-with-data.min.js
 %%WWWDIR%%/public/js/moment-with-locales.js
@@ -304,6 +354,7 @@
 %%WWWDIR%%/public/js/respond.min.js
 %%WWWDIR%%/public/js/responsive.bootstrap.js
 %%WWWDIR%%/public/js/responsive.bootstrap.min.js
+%%WWWDIR%%/public/js/timeline.js
 %%WWWDIR%%/vendor/Bareos/library/Bareos/BSock/BareosBSock.php
 %%WWWDIR%%/vendor/Bareos/library/Bareos/BSock/BareosBSockAbstractServiceFactory.php
 %%WWWDIR%%/vendor/Bareos/library/Bareos/BSock/BareosBSockInterface.php

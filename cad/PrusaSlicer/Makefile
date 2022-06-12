@@ -1,7 +1,7 @@
 PORTNAME=	PrusaSlicer
 DISTVERSIONPREFIX=version_
 DISTVERSION=	2.3.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	cad
 
 MAINTAINER=	teodorsigaev@gmail.com
@@ -23,6 +23,8 @@ LIB_DEPENDS=	libtbb.so:devel/onetbb \
 		libpng.so:graphics/png
 BUILD_DEPENDS=	cereal>=1.3.0.10:devel/cereal \
 		cgal>=5.0.2:math/cgal
+
+BROKEN=		Fails to compile: implicit instantiation of undefined template 'std::basic_ifstream<char>'
 
 USES=		cmake cpe desktop-file-utils eigen:3 gettext gl iconv pkgconfig
 CPE_VENDOR=	prusa3d

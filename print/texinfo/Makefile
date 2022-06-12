@@ -2,6 +2,7 @@
 
 PORTNAME=	texinfo
 PORTVERSION=	6.8
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	print
 MASTER_SITES=	GNU \
@@ -28,7 +29,7 @@ RUN_DEPENDS=	p5-Locale-libintl>=0:devel/p5-Locale-libintl \
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
-USES=		charsetfix cpe gmake iconv libtool ncurses perl5 tar:xz
+USES=		charsetfix cpe gmake iconv:wchar_t libtool ncurses perl5 tar:xz
 
 CONFIGURE_ARGS=	--with-external-libintl-perl \
 		--with-external-Text-Unidecode \
@@ -42,9 +43,9 @@ USE_TEX=	yes
 INFO=		info-stnd texinfo
 
 # Use the date on https://ftp.gnu.org/gnu/texinfo/
-HTMLXREF_CNF_RELDATE=	20201020
-TEXI2DVI_RELDATE=	20210703
-TEXINFO_TEX_RELDATE=	20210615
+HTMLXREF_CNF_RELDATE=	20220110
+TEXI2DVI_RELDATE=	20220408
+TEXINFO_TEX_RELDATE=	20220409
 
 CPE_VENDOR=	gnu
 CPE_VERSION=	${PORTVERSION:R}

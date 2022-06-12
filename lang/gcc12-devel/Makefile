@@ -1,7 +1,7 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 
 PORTNAME=	gcc
-PORTVERSION=	12.0.0.s20211128
+PORTVERSION=	12.1.1.s20220528
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -28,6 +28,8 @@ USES=		compiler:c++11-lang cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
 
+CONFLICTS=	gcc12
+
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}
 
@@ -41,9 +43,17 @@ SUFFIX=		${PORTVERSION:C/([0-9]+).*/\1/}
 CFLAGS:=	${CFLAGS:N-mretpoline}
 CXXFLAGS:=	${CXXFLAGS:N-mretpoline}
 
-OPTIONS_DEFINE=		BOOTSTRAP GRAPHITE
-OPTIONS_DEFAULT=	BOOTSTRAP
-BOOTSTRAP_DESC=		Build using a full bootstrap
+OPTIONS_DEFINE=		GRAPHITE
+OPTIONS_DEFAULT_aarch64=LTO_BOOTSTRAP
+OPTIONS_DEFAULT_amd64=	LTO_BOOTSTRAP
+OPTIONS_DEFAULT_i386=	LTO_BOOTSTRAP
+OPTIONS_DEFAULT_powerpc=LTO_BOOTSTRAP
+OPTIONS_DEFAULT_powerpc64=LTO_BOOTSTRAP
+OPTIONS_DEFAULT_powerpc64le=LTO_BOOTSTRAP
+OPTIONS_RADIO=	BOOTSTRAP
+OPTIONS_RADIO_BOOTSTRAP=	LTO_BOOTSTRAP STANDARD_BOOTSTRAP
+LTO_BOOTSTRAP_DESC=	Build using a full LTO bootstrap
+STANDARD_BOOTSTRAP_DESC=	Build using a full bootstrap without LTO
 GRAPHITE_DESC=		Support for Graphite loop optimizations
 
 .if exists(/usr/lib32/libc.so)
@@ -62,15 +72,9 @@ CONFIGURE_ARGS+=	--disable-multilib
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 
-.elif ${ARCH} == powerpc64
-CONFIGURE_ENV+=	UNAME_m="powerpc64"
-. if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+.elif defined(PPC_ABI) && ${PPC_ABI} == ELFv2
 CONFIGURE_ARGS+=	--with-abi=elfv2
-. endif
-USE_GCC=	yes
 
-.elif ${ARCH} == powerpc64le || ${ARCH} == powerpc
-USE_GCC=	yes
 .endif
 
 LANGUAGES:=	c,c++,objc,fortran,jit
@@ -79,8 +83,11 @@ TARGLIB32=	${PREFIX}/lib32	# The version information is added later
 LIBEXEC=	${PREFIX}/libexec/gcc${SUFFIX}
 GNU_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
-.if empty(PORT_OPTIONS:MBOOTSTRAP)
+.if empty(PORT_OPTIONS:M*BOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
+.elif ${PORT_OPTIONS:MLTO_BOOTSTRAP}
+CONFIGURE_ARGS+=--with-build-config=bootstrap-lto-noplugin
+ALL_TARGET=	bootstrap-lean
 .else
 CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean

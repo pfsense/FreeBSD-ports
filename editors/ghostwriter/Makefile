@@ -1,16 +1,12 @@
 PORTNAME=	ghostwriter
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.1
+DISTVERSION=	2.1.3
 CATEGORIES=	editors
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Distraction-free Markdown editor
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 
@@ -22,5 +18,11 @@ USE_QT=		core gui svg webchannel webengine widgets buildtools_build \
 
 # cf. PR 224488
 LDFLAGS+=	-Wl,--as-needed
+
+post-configure:
+	@${REINPLACE_CMD} -e 's|^\(build/release/qrc_QtAwesomeFree.cpp:[^\\]*\)\\|\1|' \
+		-e '/3rdparty\/QtAwesome\/fonts\/Font/d' \
+		-e '/\/lib\/qt5\/bin\/rcc \\/d' \
+		${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

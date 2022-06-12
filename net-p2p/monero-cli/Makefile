@@ -2,7 +2,8 @@
 
 PORTNAME=	monero-cli
 # To build from an arbitrary git commit comment PORTVERSION and PORTREVISION (if present)
-PORTVERSION=	0.17.2.3
+PORTVERSION=	0.17.3.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 # and uncomment the following two lines (use for example -git-HEAD or -git-b6420e1)
 #PORTVERSION=	0
@@ -15,6 +16,7 @@ COMMENT=	Private, secure, untraceable, decentralised digital currency (CLI)
 LICENSE=	BSD3CLAUSE
 
 BROKEN_i386=	fails to compile: register r15d is only available in 64-bit mode
+BROKEN_aarch64=	fails to compile: uses unavailable HWCAP_AES and getauxval
 
 LIB_DEPENDS=	\
 		libboost_chrono.so:devel/boost-libs \
@@ -43,7 +45,7 @@ GIT_COMMIT=	${DISTVERSIONPREFIX}${PORTVERSION}
 .endif
 GH_TUPLE=	monero-project:monero:${GIT_COMMIT} \
 		monero-project:supercop:633500ad8c875999:ext1/external/supercop \
-		tevador:RandomX:fe4324e8c0c035fec3affd6e:ext2/external/randomx \
+		tevador:RandomX:9efc398c196ef1c50d8e6f5e:ext2/external/randomx \
 		trezor:trezor-common:bff7fdfe436c727982c:ext3/external/trezor-common
 
 CFLAGS+=	-D_WANT_SEMUN

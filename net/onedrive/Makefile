@@ -1,6 +1,6 @@
 PORTNAME=	onedrive
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.12
+DISTVERSION=	2.4.17
 CATEGORIES=	net
 
 MAINTAINER=	hiroo.ono+freebsd@gmail.com
@@ -22,6 +22,8 @@ GH_ACCOUNT=	abraunegg
 GNU_CONFIGURE=	yes
 PKGCONFIG=		pkgconf
 
+PORTDOCS=	*
+
 OPTIONS_DEFINE=		DOCS NOTIFY COMPLETION
 OPTIONS_DEFAULT=	NOTIFY COMPLETION
 OPTIONS_SUB=		yes
@@ -38,12 +40,18 @@ COMPLETION_RUN_DEPENDS=		bash-completion>0:shells/bash-completion
 
 ONEDRIVE_LOGDIR=	/var/log/${PORTNAME}
 
-PORTDOCS=	*
-
 post-extract:
 	${CP} ${FILESDIR}/freebsd_inotify.d ${WRKSRC}/src
 
 post-install:
 	${INSTALL} -d -m 0775 ${STAGEDIR}${ONEDRIVE_LOGDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# llvm 13.0 and above.
+.if (${OSVERSION} >= 1400042) || \
+	(${OSVERSION} < 1400000 && ${OSVERSION} >= 1300522)
+CONFIGURE_ARGS+=	DCFLAGS=-L=-Wl,-z,nostart-stop-gc
+.endif
+
+.include <bsd.port.post.mk>

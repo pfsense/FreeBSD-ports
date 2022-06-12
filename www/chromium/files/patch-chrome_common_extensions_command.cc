@@ -1,11 +1,11 @@
---- chrome/common/extensions/command.cc.orig	2021-09-24 04:26:00 UTC
+--- chrome/common/extensions/command.cc.orig	2022-05-19 14:06:27 UTC
 +++ chrome/common/extensions/command.cc
-@@ -294,7 +294,7 @@ std::string Command::CommandPlatform() {
+@@ -295,7 +295,7 @@ std::string Command::CommandPlatform() {
    return values::kKeybindingPlatformMac;
  #elif BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_CHROMEOS_LACROS)
    return values::kKeybindingPlatformChromeOs;
--#elif defined(OS_LINUX)
-+#elif defined(OS_LINUX) || defined(OS_BSD)
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    return values::kKeybindingPlatformLinux;
- #else
-   return "";
+ #elif BUILDFLAG(IS_FUCHSIA)
+   // TODO(crbug.com/1312215): Change this once we decide what string should be

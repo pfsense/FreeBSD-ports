@@ -1,6 +1,6 @@
 PORTNAME=	ncbi-entrez-direct
 DISTVERSION=	14.9.20210423
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	biology perl5
 MASTER_SITES=	ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/versions/${PORTVERSION}/
 DISTFILES=	edirect.tar.gz
@@ -19,6 +19,8 @@ RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
 
 USES=		go:modules perl5 shebangfix
 USE_GITHUB=	nodefault
+
+CONFLICTS_INSTALL=	ebook-tools p5-XML-Compile # bin/einfo bin/xml2json
 
 # Dependency versions:
 #	make clean extract
@@ -73,7 +75,7 @@ pre-configure:
 do-build:
 	@${CP} ${FILESDIR}/modules.txt ${WRKSRC}/cmd/vendor
 	@${CP} -R ${WRKSRC}/eutils ${WRKSRC}/cmd/vendor
-	@cd ${WRKSRC}/cmd && ${FILESDIR}/build-cmd
+	@cd ${WRKSRC}/cmd && ${SETENV} ${MAKE_ENV} ${FILESDIR}/build-cmd
 
 do-install:
 	cd ${WRKSRC} && ${INSTALL_SCRIPT} ${SCRIPTS} ${STAGEDIR}${PREFIX}/bin

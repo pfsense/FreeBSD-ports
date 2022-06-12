@@ -1,0 +1,11 @@
+bin/fheroes2
+%%PORTDOCS%%%%DOCSDIR%%/LICENSE
+%%PORTDOCS%%%%DOCSDIR%%/README.txt
+%%PORTDOCS%%%%DOCSDIR%%/changelog.txt
+%%PORTDOCS%%%%DOCSDIR%%/demo/download_demo_version.sh
+%%PORTDOCS%%%%DOCSDIR%%/homm2/extract_homm2_resources.sh
+%%DATADIR%%/files/data/resurrection.h2d
+@dir %%DATADIR%%/files/lang
+share/applications/fheroes2.desktop
+share/icons/hicolor/128x128/apps/fheroes2.png
+share/metainfo/fheroes2.appdata.xml

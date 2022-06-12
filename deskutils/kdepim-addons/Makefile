@@ -7,9 +7,6 @@ COMMENT=	KDE PIM addons
 
 LICENSE=	LGPL21
 
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-
 BUILD_DEPENDS=	markdown:textproc/discount
 RUN_DEPENDS=	markdown:textproc/discount
 LIB_DEPENDS=	libassuan.so:security/libassuan \
@@ -30,7 +27,7 @@ USE_KDE+=	akonadi akonadicalendar akonadicontacts akonadiimportwizard \
 		akonadimime akonadinotes calendarcore calendarsupport \
 		calendarutils contacts eventviews gapi grantleetheme \
 		gravatar identitymanagement imap incidenceeditor \
-		kitinerary kontactinterface kpkpass libkdepim \
+		kaddressbook kitinerary kontactinterface kpkpass libkdepim \
 		libkleo libksieve mailcommon mailimporter mailtransport \
 		messagelib mime pimcommon pimtextedit tnef
 USE_QT=		concurrent core dbus declarative gui location network printsupport testlib \

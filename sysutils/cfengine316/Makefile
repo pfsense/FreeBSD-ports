@@ -2,6 +2,7 @@
 
 PORTNAME=	cfengine
 PORTVERSION=	3.16.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://s3.amazonaws.com/cfengine-package-repos/tarballs/
 
@@ -17,10 +18,9 @@ CPE_VENDOR=	gnu
 DEPRECATED=		Expire one year after cfengine 3.18.0 released
 EXPIRATION_DATE=	2022-07-05
 
-CONFLICTS=	cfengine3[0-9] cfengine31[0-57-9]
+CONFLICTS=	cfengine cfengine3[0-9] cfengine3[0-9][0-9]
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	316
-CONFLICTS+=	cfengine-3.*
 .endif
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}

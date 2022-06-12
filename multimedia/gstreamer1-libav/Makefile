@@ -6,6 +6,9 @@ CATEGORIES=	multimedia
 MASTER_SITES=	http://gstreamer.freedesktop.org/src/gst-libav/
 DISTNAME=	gst-libav-${PORTVERSION}
 
+PATCH_SITES=	https://gitlab.freedesktop.org/gstreamer/gst-libav/-/commit/
+PATCHFILES+=	07b43c727c9a.patch:-p1 # https://gitlab.freedesktop.org/gstreamer/gst-libav/-/merge_requests/127
+
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	GStreamer plug-in with many audio/video decoders/encoders
 
@@ -17,10 +20,9 @@ LIB_DEPENDS=	liborc-0.4.so:devel/orc
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:features gettext-runtime gmake gnome libtool localbase \
+USES=		compiler:features gettext-runtime gmake gnome gstreamer libtool localbase \
 		pkgconfig python:build tar:xz
 USE_LDCONFIG=	yes
-USE_GSTREAMER1=	yes
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

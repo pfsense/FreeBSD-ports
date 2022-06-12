@@ -1,5 +1,6 @@
 PORTNAME=	concourse
 PORTVERSION=	6.7.1
+PORTREVISION=	2
 CATEGORIES=	net sysutils
 MASTER_SITES=	LOCAL/dumbbell/concourse/
 PKGNAMESUFFIX=	-fly
@@ -17,7 +18,7 @@ GO_TARGET=	./cmd/concourse:fly
 GO_BUILDFLAGS=	-ldflags="-s -w -X github.com/concourse/concourse.Version=${PORTVERSION}"
 CGO_CFLAGS=	-I.
 
-CONFLICTS_INSTALL=	fly
+CONFLICTS_INSTALL=	concourse fly # bin/fly
 
 PLIST_FILES=	bin/fly
 

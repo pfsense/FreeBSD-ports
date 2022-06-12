@@ -1,8 +1,8 @@
 PORTNAME=	libretro-genesis_plus_gx
-PORTVERSION=	0.20210214
+PORTVERSION=	0.20220403
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Enhanced port of Genesis Plus
 
 # Commercial users must seek permission from copyright holders.
@@ -17,7 +17,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	Genesis-Plus-GX
-GH_TAGNAME=	7f83bc5
+GH_TAGNAME=	144045b
 
 PLIST_FILES=	lib/libretro/genesis_plus_gx_libretro.so
 

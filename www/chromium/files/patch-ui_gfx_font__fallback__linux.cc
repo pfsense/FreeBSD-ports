@@ -1,12 +1,10 @@
---- ui/gfx/font_fallback_linux.cc.orig	2021-04-14 18:41:39 UTC
+--- ui/gfx/font_fallback_linux.cc.orig	2022-03-25 21:59:56 UTC
 +++ ui/gfx/font_fallback_linux.cc
-@@ -24,6 +24,10 @@
+@@ -25,6 +25,8 @@
  #include "ui/gfx/linux/fontconfig_util.h"
  #include "ui/gfx/platform_font.h"
  
-+#if defined(OS_BSD)
 +#include <unistd.h>
-+#endif
 +
  namespace gfx {
  

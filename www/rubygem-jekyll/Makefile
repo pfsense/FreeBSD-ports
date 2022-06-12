@@ -1,7 +1,7 @@
 # Created by: Peter Schuller <peter.schuller@infidyne.com>
 
 PORTNAME=	jekyll
-PORTVERSION=	4.2.1
+PORTVERSION=	4.2.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -31,8 +31,10 @@ USE_RUBY=	yes
 
 NO_ARCH=	yes
 
-CPE_VENDOR=	jekyllrb
-
 PLIST_FILES=	bin/jekyll
+
+CONFLICTS_INSTALL=	rubygem-jekyll3
+
+CPE_VENDOR=	jekyllrb
 
 .include <bsd.port.mk>

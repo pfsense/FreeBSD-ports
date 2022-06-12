@@ -1,7 +1,8 @@
 # Created by: Craig Leres <leres@FreeBSD.org>
 
 PORTNAME=	arduino-irremote
-PORTVERSION=	2.8.1
+PORTVERSION=	3.5.2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	leres@FreeBSD.org
@@ -13,6 +14,7 @@ USES=		dos2unix
 USE_GITHUB=	yes
 GH_ACCOUNT=	z3t0
 GH_PROJECT=	Arduino-IRremote
+PORTSCOUT=	limit:^[0-9]
 
 NO_BUILD=	yes
 

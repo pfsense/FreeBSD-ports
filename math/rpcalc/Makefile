@@ -2,7 +2,7 @@
 
 PORTNAME=	rpcalc
 PORTVERSION=	0.8.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -13,7 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE
 
 USES=		pyqt:5 python:3.4+ shebangfix
-USE_PYQT=	core gui widgets sip
+USE_PYQT=	pyqt5 sip
 
 SHEBANG_FILES=	source/rpcalc.py
 

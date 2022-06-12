@@ -1,6 +1,7 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.2.17
+DISTVERSION=	4.2.19
+PORTREVISION=	1
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/
@@ -27,15 +28,14 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${LOCALBASE}/bin/ar:devel/binutils
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-		libpcre.so:devel/pcre \
+LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
 		libsnappy.so:archivers/snappy
 
 USES=		compiler:c++17-lang cpe python:3.5+,build scons shebangfix
 USE_RC_SUBR=	mongod
 
-CONFLICTS_INSTALL=	mongodb36 mongodb4[04] mongodb50
+CONFLICTS_INSTALL=	mongodb[0-9][0-9]
 
 OPTIONS_DEFINE=	LTO SASL SSL
 OPTIONS_DEFAULT=LTO SASL SSL
@@ -49,7 +49,6 @@ MAKE_ARGS=	--prefix=${STAGEDIR}${PREFIX} \
 		--use-system-zlib \
 		--use-system-pcre \
 		--use-system-snappy \
-		--use-system-boost \
 		--libc++ \
 		--cxx-std=17 \
 		--runtime-hardening=on \
@@ -70,11 +69,6 @@ SSL_USES=	ssl
 SSL_MAKE_ARGS=	--ssl
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ((${OSREL:R} >= 14 && ${OSVERSION} < 1400033) \
-                        && ${ARCH} == "aarch64")
-BROKEN=	Aarch64 needs LSE atomics which was fixed in https://cgit.freebsd.org/src/commit/?id=efe67f33c322265eb303ec0ab40275100795b22a
-.endif
 
 .if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
 EXTRA_PATCHES=	${FILESDIR}/${ARCH}

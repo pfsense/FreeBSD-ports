@@ -11,6 +11,8 @@ USE_KDE=	kross \
 USE_QT=		core gui script widgets xml \
 		buildtools_build qmake_build
 
+CFLAGS+=	-fdeclspec
+
 OPTIONS_DEFINE=		RUBY DOCS
 OPTIONS_SUB=		yes
 OPTIONS_DEFAULT=	${OPTIONS_DEFINE}

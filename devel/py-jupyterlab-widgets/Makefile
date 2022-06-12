@@ -1,5 +1,5 @@
 PORTNAME=	jupyterlab-widgets
-DISTVERSION=	1.0.2
+DISTVERSION=	1.1.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,6 +16,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jupyterlab>=3.0.0:devel/py-jupyterlab@${PY_F
 
 USES=		python:3.7-3.9
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 PYDISTUTILS_CONFIGUREARGS=	--skip-npm
 PYDISTUTILS_BUILDARGS=		--skip-npm

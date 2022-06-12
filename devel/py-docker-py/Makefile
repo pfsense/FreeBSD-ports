@@ -5,10 +5,13 @@ CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wg@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	API client for docker written in Python
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Use devel/py-docker
+EXPIRATION_DATE=	2022-06-30
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}websocket-client>0:www/py-websocket-client@${PY_FLAVOR}
 

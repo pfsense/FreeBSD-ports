@@ -1,7 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	nghttp2
-PORTVERSION=	1.46.0
+PORTVERSION=	1.47.0
 CATEGORIES=	www net
 MASTER_SITES=	https://github.com/nghttp2/nghttp2/releases/download/v${PORTVERSION}/
 
@@ -48,11 +48,6 @@ EXAMPLES_LIB_DEPENDS=	libevent_openssl.so:devel/libevent
 HPACK_BUILD_DEPENDS=	jansson>=2.5:devel/jansson
 HPACK_CONFIGURE_ENABLE=	hpack-tools
 HPACK_LIB_DEPENDS=	libjansson.so:devel/jansson
-
-post-patch:
-	@${REINPLACE_CMD} -e '/^SUBDIRS = / s| lib||' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e 's|$$[({]top_builddir[})]/lib/libnghttp2.la|-lnghttp2|' ${WRKSRC}/*/Makefile.in
-	@${REINPLACE_CMD} -e '1d' ${WRKSRC}/script/fetch-ocsp-response
 
 # lib/libnghttp2.* are not available until configure phase
 post-configure:

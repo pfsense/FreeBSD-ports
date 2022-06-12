@@ -8,6 +8,7 @@ include/openssl/asn1t.h
 include/openssl/base.h
 include/openssl/base64.h
 include/openssl/bio.h
+include/openssl/blake2.h
 include/openssl/blowfish.h
 include/openssl/bn.h
 include/openssl/buf.h
@@ -34,9 +35,11 @@ include/openssl/ecdsa.h
 include/openssl/engine.h
 include/openssl/err.h
 include/openssl/evp.h
+include/openssl/evp_errors.h
 include/openssl/ex_data.h
 include/openssl/hkdf.h
 include/openssl/hmac.h
+include/openssl/hpke.h
 include/openssl/hrss.h
 include/openssl/is_boringssl.h
 include/openssl/lhash.h

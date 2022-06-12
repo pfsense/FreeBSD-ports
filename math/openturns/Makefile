@@ -1,6 +1,7 @@
 PORTNAME=	openturns
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.18
+DISTVERSION=	1.19
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,6 +16,7 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libblas.so:math/blas \
 		libbonmin.so:math/bonmin \
+		libboost_serialization.so:devel/boost-libs \
 		libcamd.so:math/suitesparse-camd \
 		libceres.so:math/ceres-solver \
 		libCbc.so:math/cbc \
@@ -41,6 +43,7 @@ LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libnauty.so:math/nauty \
 		libnlopt.so:math/nlopt \
 		libOsi.so:math/osi \
+		libpagmo.so:science/pagmo2 \
 		libpng16.so:graphics/png \
 		libprimesieve.so:math/primesieve \
 		libspqr.so:math/suitesparse-spqr \
@@ -49,7 +52,7 @@ LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libtbb.so:devel/onetbb \
 		libunwind.so:devel/libunwind
 
-USES=		bison blaslapack:openblas cmake compiler:c++14-lang eigen:3 gnome jpeg localbase:ldflags pkgconfig sqlite xorg
+USES=		bison blaslapack:openblas cmake eigen:3 gnome jpeg localbase:ldflags pkgconfig sqlite xorg # compiler:c++17-lang
 USE_GITHUB=	yes
 USE_GNOME=	libxml2
 USE_XORG=	ice sm x11 xau xcb xdmcp xext
@@ -81,6 +84,15 @@ PYTHON_BUILD_DEPENDS=	swig:devel/swig \
 PYTHON_RUN_DEPENDS=	${PYTHON_PY_DEPENDS}
 
 PORTEXAMPLES=		*
+
+LLVM_VERSION=	12 # workaround for clang-13 crash: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=261341
+
+# use clang from ports because cmake can't find base llvm for JIT
+BUILD_DEPENDS+=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+RUN_DEPENDS+=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+CPP=		clang-cpp${LLVM_VERSION}
+CC=		clang${LLVM_VERSION}
+CXX=		clang++${LLVM_VERSION}
 
 post-install:
 	@${RM} -r ${STAGEDIR}${DOCSDIR}

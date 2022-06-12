@@ -1,13 +1,13 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
 
 PORTNAME=	gnome-sudoku
-PORTVERSION=	40.2
+PORTVERSION=	42.0
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Sudoku game for gnome
+COMMENT=	Sudoku game for GNOME
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

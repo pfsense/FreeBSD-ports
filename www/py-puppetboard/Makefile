@@ -1,5 +1,5 @@
 PORTNAME=	puppetboard
-PORTVERSION=	3.3.0
+PORTVERSION=	3.6.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,6 +21,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}CommonMark>=0.7.2:textproc/py-CommonMark@${P
 USES=		python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 CONFLICTS_INSTALL=puppetboard02 puppetboard03
 

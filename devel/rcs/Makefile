@@ -3,13 +3,15 @@ PORTVERSION=	5.10.0
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Version control system
 
 LICENSE=	GPLv3
 
 USES=		groff makeinfo tar:xz
 GNU_CONFIGURE=	yes
+
+CONFLICTS_INSTALL=	rcs57
 
 INFO=	rcs
 

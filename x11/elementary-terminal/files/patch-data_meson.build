@@ -1,0 +1,16 @@
+--- data/meson.build.orig	2022-05-18 04:44:45 UTC
++++ data/meson.build
+@@ -40,13 +40,3 @@ test (
+     find_program('desktop-file-validate'),
+     args: join_paths(meson.current_build_dir (), 'open-pantheon-terminal-here.desktop')
+ )
+-
+-install_data(
+-    'pantheon_terminal_process_completion_notifications.fish',
+-    install_dir: join_paths(get_option('datadir'), 'fish', 'vendor_conf.d')
+-)
+-
+-install_data(
+-    'enable-zsh-completion-notifications',
+-    install_dir: join_paths(get_option('datadir'), meson.project_name())
+-)

@@ -1,6 +1,5 @@
 PORTNAME=	luv
-DISTVERSION=	1.41.0-0
-PORTREVISION=	2
+DISTVERSION=	1.43.0-0
 CATEGORIES=	devel
 
 MAINTAINER=	checo1705@secmail.pro
@@ -30,9 +29,9 @@ OPTIONS_DEFAULT_powerpc64le=	LUAJIT
 LUAJIT_DESC=	Use LuaJIT (instead of just Lua; recommended)
 LUAJIT_LIB_DEPENDS=	${LUAJIT_LIB_DEPENDS_${ARCH}}
 LUAJIT_LIB_DEPENDS_aarch64=	libluajit-5.1.so:lang/luajit-openresty
-LUAJIT_LIB_DEPENDS_amd64=	libluajit-5.1.so:lang/luajit
-LUAJIT_LIB_DEPENDS_i386=	libluajit-5.1.so:lang/luajit
-LUAJIT_LIB_DEPENDS_powerpc=	libluajit-5.1.so:lang/luajit
+LUAJIT_LIB_DEPENDS_amd64=	libluajit-5.1.so:lang/luajit-openresty
+LUAJIT_LIB_DEPENDS_i386=	libluajit-5.1.so:lang/luajit-openresty
+LUAJIT_LIB_DEPENDS_powerpc=	libluajit-5.1.so:lang/luajit-openresty
 LUAJIT_LIB_DEPENDS_powerpc64=	libluajit-5.1.so:lang/luajit-openresty
 LUAJIT_LIB_DEPENDS_powerpc64le=	libluajit-5.1.so:lang/luajit-openresty
 LUAJIT_CMAKE_ON=	-DWITH_LUA_ENGINE=LuaJIT
@@ -45,7 +44,7 @@ CMAKE_ARGS=	-DLUA_BUILD_TYPE=System \
 
 PLIST_FILES=	lib/libluv.so \
 		lib/libluv.so.1 \
-		lib/libluv.so.1.41.0 \
+		lib/libluv.so.1.43.0 \
 		libdata/pkgconfig/libluv.pc \
 		include/luv/util.h \
 		include/luv/luv.h \

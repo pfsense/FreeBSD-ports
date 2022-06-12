@@ -1,7 +1,7 @@
 PORTNAME=	amarok
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.9.71
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -86,12 +86,5 @@ post-patch:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/mime/packages
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MQTWEBENGINE}
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-.endif
 
 .include <bsd.port.mk>

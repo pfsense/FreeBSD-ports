@@ -1,6 +1,5 @@
 PORTNAME=	bzflag
-PORTVERSION=	2.4.22
-PORTREVISION=	1
+PORTVERSION=	2.4.24
 CATEGORIES=	games
 MASTER_SITES=	https://download.bzflag.org/bzflag/source/${PORTVERSION}/
 
@@ -22,6 +21,7 @@ USES+=		gl sdl xorg
 USE_GL=		gl glu glew
 USE_SDL=	sdl2
 USE_XORG=	x11 xext xxf86vm sm ice xcb xshmfence xdamage xfixes
+CONFLICTS_INSTALL=	bzflag-server
 .endif
 
 CPPFLAGS+=	-I ${LOCALBASE}/include

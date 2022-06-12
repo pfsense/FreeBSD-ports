@@ -44,7 +44,7 @@ lib/cmake/LAMMPS/LAMMPS_Targets.cmake
 lib/liblammps.so
 lib/liblammps.so.0
 libdata/pkgconfig/liblammps.pc
-man/man1/lmp.1.gz
+share/man/man1/lmp.1.gz
 %%DATADIR%%/potentials/Ag_u3.eam
 %%DATADIR%%/potentials/AlCu.adp
 %%DATADIR%%/potentials/AlCu.bop.table
@@ -77,6 +77,7 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/CH.airebo
 %%DATADIR%%/potentials/CH.airebo-m
 %%DATADIR%%/potentials/CH.rebo
+%%DATADIR%%/potentials/CHAu.ILP
 %%DATADIR%%/potentials/CH_taper.KC
 %%DATADIR%%/potentials/CdTe.bop.table
 %%DATADIR%%/potentials/CdTe.sw
@@ -140,11 +141,12 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/Li_Zuo_JPCA2020.snapcoeff
 %%DATADIR%%/potentials/Li_Zuo_JPCA2020.snapparam
 %%DATADIR%%/potentials/MOH.nb3b.harmonic
-%%DATADIR%%/potentials/Mg_mm.eam.fs
 %%DATADIR%%/potentials/MgAl.rann
+%%DATADIR%%/potentials/Mg_mm.eam.fs
 %%DATADIR%%/potentials/Mo5.2.mgpt.README
 %%DATADIR%%/potentials/Mo5.2.mgpt.parmin
 %%DATADIR%%/potentials/Mo5.2.mgpt.potin
+%%DATADIR%%/potentials/MoS2.ILP
 %%DATADIR%%/potentials/Mo_Chen_PRM2017.snap
 %%DATADIR%%/potentials/Mo_Chen_PRM2017.snapcoeff
 %%DATADIR%%/potentials/Mo_Chen_PRM2017.snapparam
@@ -156,10 +158,10 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/Mo_Zuo_JPCA2020.snapparam
 %%DATADIR%%/potentials/Ni.adp
 %%DATADIR%%/potentials/Ni.meam
-%%DATADIR%%/potentials/Ni_Mo.mliap.descriptor
-%%DATADIR%%/potentials/Ni_Mo.mliap.model
 %%DATADIR%%/potentials/NiAlH_jea.eam.alloy
 %%DATADIR%%/potentials/NiAlH_jea.eam.fs
+%%DATADIR%%/potentials/Ni_Mo.mliap.descriptor
+%%DATADIR%%/potentials/Ni_Mo.mliap.model
 %%DATADIR%%/potentials/Ni_Zuo_JPCA2020.quadratic.snap
 %%DATADIR%%/potentials/Ni_Zuo_JPCA2020.quadratic.snapcoeff
 %%DATADIR%%/potentials/Ni_Zuo_JPCA2020.quadratic.snapparam
@@ -190,11 +192,11 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/SiC.tersoff.zbl
 %%DATADIR%%/potentials/SiC.vashishta
 %%DATADIR%%/potentials/SiCGe.tersoff
-%%DATADIR%%/potentials/SiGeH.sw.quip
 %%DATADIR%%/potentials/SiC_1989.tersoff
 %%DATADIR%%/potentials/SiC_1990.tersoff
 %%DATADIR%%/potentials/SiC_1994.tersoff
 %%DATADIR%%/potentials/SiC_Erhart-Albe.tersoff
+%%DATADIR%%/potentials/SiGeH.sw.quip
 %%DATADIR%%/potentials/SiO.1990.vashishta
 %%DATADIR%%/potentials/SiO.1994.vashishta
 %%DATADIR%%/potentials/SiO.1997.vashishta
@@ -251,6 +253,7 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/Zn.rann
 %%DATADIR%%/potentials/Zr.rann
 %%DATADIR%%/potentials/Zr_mm.eam.fs
+%%DATADIR%%/potentials/acks2_ff.water
 %%DATADIR%%/potentials/charmm22.cmap
 %%DATADIR%%/potentials/charmm36.cmap
 %%DATADIR%%/potentials/ci-reaxFF_ZBL.dat
@@ -274,3 +277,4 @@ man/man1/lmp.1.gz
 %%DATADIR%%/potentials/ffield.smtbq.TiO2
 %%DATADIR%%/potentials/lib.comb3
 %%DATADIR%%/potentials/library.meam
+%%DATADIR%%/potentials/tmd.sw.mod

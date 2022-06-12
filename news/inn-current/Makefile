@@ -6,7 +6,7 @@ MASTER_SITE_SUBDIR=	inn/snapshots
 DISTNAME=		inn-${BRANCH}-${SNAPSHOT}
 
 BRANCH=		2.7
-SNAPSHOT=	20211120
+SNAPSHOT=	20220504
 
 CONFLICTS=	inn-2.[0-9]*
 
@@ -18,5 +18,8 @@ WRKSRC=		${WRKDIR}/${DISTNAME}
 
 CPE_PRODUCT=	inn
 
-.include "${.CURDIR}/../inn/Makefile"
+INNLIB_LONG=		8.0.0
+LIBVER_LONG=		3.0.6
+LIBSTORAGEVER_LONG=	3.1.0
 
+.include "${.CURDIR}/../inn/Makefile"

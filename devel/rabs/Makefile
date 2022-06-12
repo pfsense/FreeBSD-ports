@@ -1,6 +1,6 @@
 PORTNAME=	rabs
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.19.5
+DISTVERSION=	2.25.4
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,12 +18,15 @@ USES=		compiler:c11 gmake localbase:ldflags sqlite
 USE_GITHUB=	yes
 GH_ACCOUNT=	wrapl
 GH_TUPLE=	\
-		wrapl:minilang:3f1cb68:wrapl_minilang/minilang \
-		rajamukherji:radb:398bb52:rajamukherji_radb/radb
+		wrapl:minilang:3c3a9fb:wrapl_minilang/minilang \
+		rajamukherji:radb:c08c67a:rajamukherji_radb/radb
 
 MAKE_ARGS=	PREFIX=${PREFIX}
 BINARY_ALIAS=	make=${GMAKE}
 
 PLIST_FILES=	bin/rabs
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rabs
 
 .include <bsd.port.mk>

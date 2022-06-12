@@ -1,7 +1,7 @@
 # Created by: Yuri Victorovich <yuri@FreeBSD.org>
 
 PORTNAME=	faust
-DISTVERSION=	2.37.3
+DISTVERSION=	2.40.0
 CATEGORIES=	audio devel
 
 MAINTAINER=	yuri@FreeBSD.org

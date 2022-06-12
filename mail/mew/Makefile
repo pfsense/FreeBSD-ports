@@ -2,7 +2,7 @@
 
 PORTNAME=	mew
 PORTVERSION=	6.8
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	mail elisp
 MASTER_SITES=	http://www.mew.org/Release/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -19,6 +19,8 @@ SUB_FILES=	pkg-message
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-elispdir=${LOCALBASE}/${EMACS_SITE_LISPDIR}/mew \
 		--with-etcdir=${LOCALBASE}/${EMACS_SITE_LISPDIR}/mew/etc
+
+CONFLICTS_INSTALL=	mew-emacs_* mew-devel mew-devel-emacs_* # bin/cmew bin/incm
 
 # target name for make build and install
 ALL_TARGET=	all info

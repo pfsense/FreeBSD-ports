@@ -1,8 +1,8 @@
 # Created by: Nicola Vitale <nivit@email.it>
 
 PORTNAME=	asymptote
-PORTVERSION=	2.67
-PORTREVISION=	6
+PORTVERSION=	2.80
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -15,7 +15,8 @@ LICENSE_COMB=	dual
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-LIB_DEPENDS=	libcurl.so:ftp/curl \
+LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
+		libcurl.so:ftp/curl \
 		libsigsegv.so:devel/libsigsegv
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cson>=0.8:devel/py-cson@${PY_FLAVOR} \
 		${PY_PILLOW}
@@ -27,7 +28,7 @@ USE_GL=		gl glu glut
 USE_GNOME=	librsvg2:run
 USE_PERL5=	build
 USE_TEX=	dvipsk formats
-USE_PYQT=	svg_run widgets_run
+USE_PYQT=	pyqt5_run
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes

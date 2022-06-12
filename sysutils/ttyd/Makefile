@@ -15,11 +15,10 @@ LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libwebsockets.so:net/libwebsockets
 
 USES=		cmake pkgconfig ssl
-USE_CSTD=	c99
 USE_GITHUB=	yes
 GH_ACCOUNT=	tsl0922
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/ttyd.1.gz
+		share/man/man1/ttyd.1.gz
 
 .include <bsd.port.mk>

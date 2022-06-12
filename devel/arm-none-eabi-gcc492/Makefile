@@ -6,7 +6,7 @@ MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
 PKGNAMEPREFIX?=	arm-none-eabi-
 PKGNAMESUFFIX=	492
 
-MAINTAINER=	ian@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU Compiler Collection for bare metal arm cross-development
 
 LICENSE=	GPLv3 GPLv3RLE
@@ -43,6 +43,8 @@ CONFIGURE_ARGS=	--target=${GCC_TARGET} --disable-nls --enable-languages=c,c++ \
 		--with-ld=${LOCALBASE}/bin/${BU_PREFIX}-ld \
 		--disable-libstdcxx \
 		--disable-multilib
+
+CONFLICTS_INSTALL=	arm-none-eabi-gcc
 
 PLIST=	${.CURDIR}/pkg-plist
 

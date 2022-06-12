@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 DISTVERSION=	9.0.1
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -67,6 +67,7 @@ OPTIONS_DEFINE_i386=	COMPILER_RT OPENMP
 OPTIONS_DEFINE_powerpc=	GOLD
 OPTIONS_DEFINE_powerpc64=	GOLD OPENMP
 OPTIONS_DEFINE_powerpc64le=	GOLD OPENMP
+OPTIONS_DEFINE_riscv64=	COMPILER_RT
 OPTIONS_DEFAULT=	BE_AMDGPU BE_STANDARD CLANG EXTRAS LIT LLD LLD_LINK LLDB PYCLANG
 OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFAULT_i386=	COMPILER_RT OPENMP
@@ -75,6 +76,7 @@ OPTIONS_DEFAULT_powerpc64=	${PPC_ABI:tu:MELFV2} ${OPTIONS_DEFAULT_powerpc64_${OS
 OPTIONS_DEFAULT_powerpc64_13=	GOLD
 OPTIONS_DEFAULT_powerpc64_14=	GOLD
 OPTIONS_DEFAULT_powerpc64le=	ELFV2 GOLD OPENMP
+OPTIONS_DEFAULT_riscv64=	COMPILER_RT
 OPTIONS_SINGLE=		BACKENDS
 OPTIONS_SINGLE_BACKENDS=BE_FREEBSD BE_NATIVE BE_STANDARD
 OPTIONS_SUB=	yes
@@ -156,43 +158,7 @@ PLIST_SUB+=	LLVM_RELEASE=${LLVM_RELEASE} \
 COMMANDS=	${LLVM_COMMANDS}
 FIRST_COMMAND=	${COMMANDS:C/^/XXXX/1:MXXXX*:C/^XXXX//}
 
-MAN1SRCS+=	bugpoint.1 \
-		dsymutil.1 \
-		llc.1 \
-		lli.1 \
-		llvm-addr2line.1 \
-		llvm-ar.1 \
-		llvm-as.1 \
-		llvm-bcanalyzer.1 \
-		llvm-build.1 \
-		llvm-config.1 \
-		llvm-cov.1 \
-		llvm-cxxfilt.1 \
-		llvm-cxxmap.1 \
-		llvm-diff.1 \
-		llvm-dis.1 \
-		llvm-dwarfdump.1 \
-		llvm-exegesis.1 \
-		llvm-extract.1 \
-		llvm-lib.1 \
-		llvm-lipo.1 \
-		llvm-link.1 \
-		llvm-mca.1 \
-		llvm-nm.1 \
-		llvm-objcopy.1 \
-		llvm-objdump.1 \
-		llvm-pdbutil.1 \
-		llvm-profdata.1 \
-		llvm-ranlib.1 \
-		llvm-readelf.1 \
-		llvm-readobj.1 \
-		llvm-size.1 \
-		llvm-stress.1 \
-		llvm-strings.1 \
-		llvm-strip.1 \
-		llvm-symbolizer.1 \
-		opt.1 \
-		tblgen.1
+MAN1SRCS+=	${LLVM_MAN1SRCS}
 
 STRIP_LIBS=	BugpointPasses.so \
 		LLVMHello.so \
@@ -238,9 +204,7 @@ CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/arm64/aarch64/}-portbld-${OPSYS:tl}${
 
 .if ${PORT_OPTIONS:MCLANG}
 COMMANDS+=	${CLANG_COMMANDS}
-MAN1SRCS+=	clang.1 \
-		diagtool.1 \
-		scan-build.1
+MAN1SRCS+=	${CLANG_MAN1SRCS}
 CLANG_PATTERN=	(c-index-test|clang|diagtool|hmaptool|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer|AnalyzerPlugin.so)
 SHEBANG_FILES+=	tools/clang/tools/scan-view/bin/scan-view \
 		tools/clang/tools/clang-format/clang-format-diff.py \
@@ -255,7 +219,7 @@ COMPILER_RT_PATTERN=	(_blacklist.txt|sanitizer|include.xray)
 
 .if ${PORT_OPTIONS:MEXTRAS}
 COMMANDS+=	${EXTRAS_COMMANDS}
-MAN1SRCS+=	extraclangtools.1
+MAN1SRCS+=	${EXTRAS_MAN1SRCS}
 PORTDOCS+=	clang-tools
 SHEBANG_FILES+=	tools/clang/tools/extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py \
 		tools/clang/tools/extra/clang-tidy/tool/clang-tidy-diff.py \
@@ -263,7 +227,7 @@ SHEBANG_FILES+=	tools/clang/tools/extra/clang-include-fixer/find-all-symbols/too
 .endif
 
 .if ${PORT_OPTIONS:MLIT}
-MAN1SRCS+=	lit.1 FileCheck.1
+MAN1SRCS+=	${LIT_MAN1SRCS}
 .endif
 
 .if ${PORT_OPTIONS:MLLD}
@@ -281,6 +245,7 @@ PYCLANG_PATTERN=	(clang\/(__init__|cindex|enumerations).py)$$
 
 .include <bsd.port.pre.mk>
 .include "${.CURDIR}/Makefile.COMMANDS"
+.include "${.CURDIR}/Makefile.MAN1SRCS"
 
 _FREEBSD_BACKENDS=	AArch64 ARM Mips PowerPC RISCV Sparc X86
 FREEBSD_BACKENDS=	${_FREEBSD_BACKENDS}
@@ -310,7 +275,7 @@ _BE_LIBS_COMMON=	CodeGen Desc Info
 _BE_LIBS_AArch64=	AsmParser Disassembler Utils
 _BE_LIBS_AMDGPU=	AsmParser Disassembler Utils
 _BE_LIBS_ARM=		AsmParser Disassembler Utils
-_BE_LIBS_BPF=		AsmParser Disassembler 
+_BE_LIBS_BPF=		AsmParser Disassembler
 _BE_LIBS_Hexagon=	AsmParser Disassembler
 _BE_LIBS_Lanai=		AsmParser Disassembler
 _BE_LIBS_MSP430=	AsmParser Disassembler
@@ -332,8 +297,8 @@ BE_PATTERN=${_BE_LIBS_STANDARD:O:S/$/.a/:ts|}
 
 _CRTLIBDIR=	${LLVM_DIR}/lib/clang/${LLVM_RELEASE}/lib/freebsd
 _CRTBLDIR=	${LLVM_DIR}/share
-_COMPILER_RT_BLACKLISTS=	cfi_blacklist.txt
 .if ${ARCH} == "amd64"
+_COMPILER_RT_BLACKLISTS=	cfi_blacklist.txt
 _COMPILER_RT_BLACKLISTS+=	asan_blacklist.txt
 _COMPILER_RT_BLACKLISTS+=	msan_blacklist.txt
 _COMPILER_RT_LIBS= \
@@ -374,8 +339,8 @@ _COMPILER_RT_LIBS= \
 	libclang_rt.xray-fdr-x86_64.a \
 	libclang_rt.xray-profiling-x86_64.a \
 	libclang_rt.xray-x86_64.a
-.endif
-.if ${ARCH} == "i386"
+.elif ${ARCH} == "i386"
+_COMPILER_RT_BLACKLISTS=	cfi_blacklist.txt
 _COMPILER_RT_BLACKLISTS+=	asan_blacklist.txt
 _COMPILER_RT_LIBS+= \
 	libclang_rt.asan-i386.a \
@@ -394,6 +359,9 @@ _COMPILER_RT_LIBS+= \
 	libclang_rt.ubsan_standalone-i386.a \
 	libclang_rt.ubsan_standalone-i386.so \
 	libclang_rt.ubsan_standalone_cxx-i386.a
+.elif ${ARCH} == "riscv64"
+_COMPILER_RT_LIBS= \
+	libclang_rt.builtins-riscv64.a
 .endif
 
 .if ${ARCH} == "armv6"

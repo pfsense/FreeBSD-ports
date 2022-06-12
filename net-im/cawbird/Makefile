@@ -1,5 +1,5 @@
 PORTNAME=	cawbird
-PORTVERSION=	1.4.2
+PORTVERSION=	1.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 		librest-0.7.so:devel/librest \
 		libsoup-gnome-2.4.so:devel/libsoup
 
-USES=		gnome meson pkgconfig sqlite:3
+USES=		gettext gnome meson pkgconfig sqlite:3
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	IBBoard
@@ -32,7 +32,7 @@ OPTIONS_DEFINE=	SPELLCHECK VIDEO
 SPELLCHECK_LIB_DEPENDS=	libgtkspell3-3.so:textproc/gtkspell3
 SPELLCHECK_MESON_OFF=	-Dspellcheck=false
 
-VIDEO_LIB_DEPENDS=	libgstvideo-1.0.so:multimedia/gstreamer1-plugins
+VIDEO_USES=		gstreamer
 VIDEO_MESON_OFF=	-Dvideo=false
 
 .include <bsd.port.mk>

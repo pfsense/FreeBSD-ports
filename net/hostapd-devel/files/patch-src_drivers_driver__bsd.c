@@ -21,19 +21,3 @@
 +		    (drv->flags & IFF_RUNNING)  == 0)) {
  			wpa_printf(MSG_DEBUG, "RTM_IFINFO: Interface '%s' UP",
  				   drv->ifname);
- 			wpa_supplicant_event(drv->ctx, EVENT_INTERFACE_ENABLED,
-@@ -1220,7 +1224,14 @@
- 		mode = 0 /* STA */;
- 		break;
- 	case IEEE80211_MODE_IBSS:
-+		/*
-+		 * Ref bin/203086 - FreeBSD's net80211 currently uses
-+		 * IFM_IEEE80211_ADHOC.
-+		 */
-+#if 0
- 		mode = IFM_IEEE80211_IBSS;
-+#endif
-+		mode = IFM_IEEE80211_ADHOC;
- 		break;
- 	case IEEE80211_MODE_AP:
- 		mode = IFM_IEEE80211_HOSTAP;

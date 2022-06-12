@@ -1,7 +1,7 @@
 # Created by: Mahdi Mokhtari <mokhi64@gmail.com>
 
 PORTNAME?=	mysql
-PORTVERSION=	5.7.36
+PORTVERSION=	5.7.38
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/MySQL-5.7
@@ -45,7 +45,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
 		-DINSTALL_INFODIR="${INFO_PATH}" \
 		-DINSTALL_LIBDIR="lib/mysql" \
-		-DINSTALL_MANDIR="man" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="${MY_DBDIR}" \
 		-DINSTALL_MYSQLKEYRINGDIR="etc/mysql/keyring" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
@@ -87,11 +87,10 @@ OPTIONS_SUB=		YES
 .if !defined(CLIENT_ONLY)
 USES+=		mysql:57
 
-CONFLICTS_INSTALL=	mysql5[0-68-9]-server \
-			mysql[0-46-9][0-9]-server \
+CONFLICTS_INSTALL=	mysql*-server \
 			mysqlwsrep*-server \
-			mariadb[0-9][0-9]-server \
-			percona[0-9][0-9]-server
+			mariadb*-server \
+			percona*-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -159,10 +158,6 @@ CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-fpermissive
-.endif
-
-.if ${ARCH} == powerpc
-LLD_UNSAFE=	yes
 .endif
 
 post-extract:

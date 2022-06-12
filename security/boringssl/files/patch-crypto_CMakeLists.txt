@@ -1,0 +1,10 @@
+--- crypto/CMakeLists.txt.orig	2022-01-21 15:36:31 UTC
++++ crypto/CMakeLists.txt
+@@ -462,6 +462,7 @@ if(FIPS_DELOCATE OR FIPS_SHARED)
+ endif()
+ 
+ SET_TARGET_PROPERTIES(crypto PROPERTIES LINKER_LANGUAGE C)
++SET_TARGET_PROPERTIES(crypto PROPERTIES SOVERSION 1)
+ 
+ if(NOT WIN32 AND NOT ANDROID)
+   target_link_libraries(crypto pthread)

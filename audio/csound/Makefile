@@ -23,9 +23,10 @@ USE_LDCONFIG=	yes
 
 CPE_VENDOR=	csounds
 
+CONFLICTS_INSTALL= clearsilver go-cs libextractor outguess
+
 CFLAGS_powerpc=	-maltivec
 CFLAGS_powerpcspe=	-DPFFFT_SIMD_DISABLE
-CFLAGS_powerpc64=	-maltivec
 CMAKE_ARGS=	-DBUILD_CSOUNDVST:BOOL=OFF \
 		-DBUILD_PD_CLASS:BOOL=OFF \
 		-DPYTHON_MODULE_INSTALL_DIR:PATH="${PYTHONPREFIX_SITELIBDIR}" \

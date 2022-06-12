@@ -1,8 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
 
 PORTNAME=	octave-forge-mapping
-PORTVERSION=	1.4.1
-PORTREVISION=	2
+PORTVERSION=	1.4.2
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

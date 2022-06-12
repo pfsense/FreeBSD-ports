@@ -1,8 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@FreeBSD.org>
 
 PORTNAME=	octave-forge-stk
-PORTVERSION=	2.6.1
-PORTREVISION=	2
+PORTVERSION=	2.7.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

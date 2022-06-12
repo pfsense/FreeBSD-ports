@@ -1,8 +1,7 @@
 PORTNAME=	viennarna
-DISTVERSION=	2.4.18
-PORTREVISION=	1
+DISTVERSION=	2.5.0
 CATEGORIES=	biology
-MASTER_SITES=	https://www.tbi.univie.ac.at/RNA/download/sourcecode/2_4_x/
+MASTER_SITES=	https://www.tbi.univie.ac.at/RNA/download/sourcecode/2_5_x/
 DISTNAME=	ViennaRNA-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -25,6 +24,8 @@ USE_XORG=	x11 xext # only for build
 GNU_CONFIGURE=	yes
 CONFIGURE_SHELL=	${PREFIX}/bin/bash
 CONFIGURE_ARGS=	--enable-shared --disable-static --with-gsl --with-cluster --with-kinwalker --enable-mpfr --without-python --without-python3 --without-perl
+
+CONFLICTS_INSTALL=	g2 # include/g2.h
 
 INFO=		RNAlib
 

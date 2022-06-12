@@ -1,7 +1,8 @@
 # Created by: Bartlomiej Rutkowski <r@robakdesign.com>
 
 PORTNAME=	ilias
-PORTVERSION=	6.11
+PORTVERSION=	6.17
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www education
 PKGNAMESUFFIX=	6${PHP_PKGNAMESUFFIX}
@@ -11,10 +12,12 @@ COMMENT=	Powerful, dynamic, PHP and MySQL based e-learning platform
 
 LICENSE=	GPLv2
 
-CONFLICTS=	ilias-5.4.[0-9]*
+CONFLICTS=	ilias-7.[0-9]*
+
+DEPRECATED=	Requires php 7.4 which is set to expire on 2022-11-29
+EXPIRATION_DATE=2022-11-28
 
 RUN_DEPENDS=	composer:devel/php-composer \
-		convert:graphics/ImageMagick6 \
 		zip:archivers/zip \
 		${UNZIP_CMD}:archivers/unzip \
 		${LOCALBASE}/share/pear/PEAR.php:devel/pear@${PHP_FLAVOR} \
@@ -27,11 +30,14 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	ILIAS-eLearning
 GH_PROJECT=	ILIAS
 
-USES=		cpe jpeg php
+USES=		cpe jpeg magick:6,run php
+IGNORE_WITH_PHP=	80 81
+
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
-USE_PHP=	curl ldap pdo_mysql gd pdf dom pcre session simplexml \
-		soap xmlrpc xmlwriter xsl zlib
+USE_PHP=	curl dom fileinfo gd iconv ldap pdo_mysql \
+		pdf pcre session simplexml \
+		soap tokenizer xmlrpc xmlreader xmlwriter xsl zlib
 ILIASDIR=	www/ilias
 ILIASDATADIR=	www/iliasdata
 PLIST_SUB=	ILIASDATADIR=${ILIASDATADIR}
@@ -44,8 +50,7 @@ CHECKER_RUN_DEPENDS=	${LOCALBASE}/share/pear/HTTP/Request.php:www/pear-HTTP_Requ
 MAIL_RUN_DEPENDS=	${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail@${PHP_FLAVOR}
 
 EXTRA_FILES=	%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/mime \
-		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/uuid \
-		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/send/node_modules/.bin/mime
+		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/uuid
 
 pre-install:
 	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${PLIST}

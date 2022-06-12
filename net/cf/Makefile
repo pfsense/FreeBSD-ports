@@ -1,6 +1,7 @@
 PORTNAME=	cf
 PORTVERSION=	6.49.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	dumbbell@FreeBSD.org
@@ -16,6 +17,8 @@ GH_ACCOUNT=	cloudfoundry
 GH_PROJECT=	cli
 
 USES=		go
+
+CONFLICTS_INSTALL=	lbl-cf # bin/cf
 
 GO_BUILDFLAGS=	-ldflags="-X code.cloudfoundry.org/cli/version.binaryVersion=${PORTVERSION}"
 GO_PKGNAME=	code.cloudfoundry.org/cli

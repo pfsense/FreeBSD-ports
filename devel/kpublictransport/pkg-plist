@@ -10,6 +10,7 @@ include/KPublicTransport/DepartureReply
 include/KPublicTransport/DepartureRequest
 include/KPublicTransport/Disruption
 include/KPublicTransport/Equipment
+include/KPublicTransport/IndividualTransport
 include/KPublicTransport/Journey
 include/KPublicTransport/JourneyQueryModel
 include/KPublicTransport/JourneyReply
@@ -17,11 +18,13 @@ include/KPublicTransport/JourneyRequest
 include/KPublicTransport/Line
 include/KPublicTransport/Load
 include/KPublicTransport/Location
+include/KPublicTransport/LocationHistoryModel
 include/KPublicTransport/LocationQueryModel
 include/KPublicTransport/LocationReply
 include/KPublicTransport/LocationRequest
 include/KPublicTransport/Manager
 include/KPublicTransport/Path
+include/KPublicTransport/PathModel
 include/KPublicTransport/Platform
 include/KPublicTransport/RentalVehicle
 include/KPublicTransport/Reply
@@ -45,6 +48,7 @@ include/kpublictransport/departurereply.h
 include/kpublictransport/departurerequest.h
 include/kpublictransport/disruption.h
 include/kpublictransport/equipment.h
+include/kpublictransport/individualtransport.h
 include/kpublictransport/journey.h
 include/kpublictransport/journeyquerymodel.h
 include/kpublictransport/journeyreply.h
@@ -53,11 +57,13 @@ include/kpublictransport/kpublictransport_export.h
 include/kpublictransport/line.h
 include/kpublictransport/load.h
 include/kpublictransport/location.h
+include/kpublictransport/locationhistorymodel.h
 include/kpublictransport/locationquerymodel.h
 include/kpublictransport/locationreply.h
 include/kpublictransport/locationrequest.h
 include/kpublictransport/manager.h
 include/kpublictransport/path.h
+include/kpublictransport/pathmodel.h
 include/kpublictransport/platform.h
 include/kpublictransport/rentalvehicle.h
 include/kpublictransport/reply.h

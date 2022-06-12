@@ -2,6 +2,7 @@
 
 PORTNAME=	libffcall
 PORTVERSION=	2.4
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -22,10 +23,6 @@ CONFIGURE_ARGS=		--enable-shared
 CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
 MAKE_JOBS_UNSAFE=	yes
 CFLAGS+=		-fPIC
-
-EXTRA_PATCHES=		${PATCHES_${ARCH}}
-PATCHES_powerpc64=	${PATCHDIR}/extra-patch-ffcall-abi.h
-PATCHES_powerpc64le=	${PATCHDIR}/extra-patch-ffcall-abi.h
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libavcall.so \

@@ -1,7 +1,8 @@
 # Created by: Jui-Nan Lin <jnlin@csie.nctu.edu.tw>
 
 PORTNAME=	trafficserver
-PORTVERSION=	9.0.1
+PORTVERSION=	9.1.2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	APACHE/${PORTNAME}
 
@@ -49,13 +50,13 @@ CONFIGURE_ARGS=	--with-pcre=${LOCALBASE} \
 		--enable-mime-sanity-check \
 		--enable-experimental-plugins
 
-OPTIONS_DEFINE=	DOCS WCCP MEMCACHED IMAGEMAGICK X11
+OPTIONS_DEFINE=	DOCS GEOIP WCCP MEMCACHED IMAGEMAGICK X11
 OPTIONS_SUB=	yes
 PLIST_SUB+=	ARCH="${ARCH:C/powerpc64.*/powerpc/}"
 
+GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 WCCP_DESC=	Enable WCCPv2 protocol
 WCCP_CONFIGURE_ENABLE=	wccp
-WCCP_USE=	GCC=yes
 
 MEMCACHED_DESC=		Enable memcache & memcached_remap plugin
 MEMCACHED_LIB_DEPENDS=	libmemcached.so:databases/libmemcached
@@ -66,9 +67,9 @@ IMAGEMAGICK_DESC=	Enable ats-magick & webp convert plugin
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6
+USES+=		magick:6
 .else
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6-nox11
+USES+=		magick:6,nox11
 .endif
 .endif
 

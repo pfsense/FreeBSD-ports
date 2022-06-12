@@ -1,7 +1,7 @@
 # Created by: Sylvio Cesar <sylvio@FreeBSD.org>
 
 PORTNAME=	libHX
-PORTVERSION=	4.2
+PORTVERSION=	4.5
 CATEGORIES=	lang
 MASTER_SITES=	https://inai.de/files/libhx/
 

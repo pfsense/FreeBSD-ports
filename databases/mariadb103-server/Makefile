@@ -1,17 +1,21 @@
 # Created by: Bernard Spil <brnrd@FreeBSD.org>
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.3.32
+PORTVERSION=	10.3.35
 PORTREVISION?=	0
 CATEGORIES=	databases
-MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
-		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
-		http://gd.tuwien.ac.at/db/${SITESDIR}/ \
-		http://mirrors.fe.up.pt/pub/${SITESDIR}/ \
-		http://mirror.de.gsnw.de:56431/${SITESDIR}/ \
-		http://mirror.layerjet.com/${SITESDIR}/ \
-		http://mirror.switch.ch/mirror/${SITESDIR}/ \
-		http://ftp.osuosl.org/pub/${SITESDIR}/
+MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
+		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
+		https://mirror.truenetwork.ru/${SITESDIR}/ \
+		https://mirrors.aliyun.com/${SITESDIR}/ \
+		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
+		https://mirror.kku.ac.th/${SITESDIR}/ \
+		https://espejito.fder.edu.uy/${SITESDIR}/ \
+		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
+		https://ftp.osuosl.org/pub/${SITESDIR}/ \
+		https://downloads.mariadb.org/rest-api/mariadb/${PORTVERSION}/
 PKGNAMESUFFIX?=	103-server
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -39,6 +43,9 @@ OPTIONS_DEFAULT+=	CONNECT_EXTRA INNOBASE SPHINX SPIDER WSREP
 OPTIONS_GROUP=		COMPRESSION ENGINES GROONGA
 OPTIONS_DEFINE=		CONNECT_EXTRA DOCS
 OPTIONS_DEFINE_amd64=	WSREP
+OPTIONS_DEFINE_powerpc64le=	WSREP
+OPTIONS_DEFINE_powerpc64=	WSREP
+OPTIONS_DEFINE_riscv64=	WSREP
 OPTIONS_GROUP_COMPRESSION=	LZ4 LZO SNAPPY ZSTD
 OPTIONS_GROUP_ENGINES=	INNOBASE MROONGA OQGRAPH ROCKSDB SPHINX SPIDER TOKUDB
 OPTIONS_GROUP_GROONGA=	ZMQ MSGPACK
@@ -66,7 +73,7 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
 		-DINSTALL_INFODIR="info" \
 		-DINSTALL_LIBDIR="lib/mysql" \
-		-DINSTALL_MANDIR="man" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="/var/db/mysql" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
 		-DINSTALL_MYSQLTESTDIR= \

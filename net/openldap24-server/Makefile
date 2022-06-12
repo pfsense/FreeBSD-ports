@@ -50,7 +50,7 @@ BROKEN=			incompatible OpenLDAP version: ${WANT_OPENLDAP_VER}
 .endif
 
 PORTREVISION_CLIENT=	4
-PORTREVISION_SERVER=	7
+PORTREVISION_SERVER=	9
 OPENLDAP_SHLIB_MAJOR=	2
 OPENLDAP_SHLIB_MINOR=	11.7
 OPENLDAP_MAJOR=		${DISTVERSION:R}
@@ -481,8 +481,7 @@ CONFIGURE_ARGS+=	--localstatedir=${LOCALSTATEDIR} \
 PLIST_SUB+=		BACKEND=${BACKEND_PLIST}
 
 .if ${PORT_OPTIONS:MBDB}
-USES+=			bdb
-INVALID_BDB_VER=	6
+USES+=			bdb:5
 
 CONFIGURE_ARGS+=	--enable-bdb=${BACKEND_ENABLE} \
 			--enable-hdb=${BACKEND_ENABLE}
@@ -573,6 +572,8 @@ CONTRIB_CLEANFILES+=	smbk5pwd.a
 post-patch:
 	@${REINPLACE_CMD} -e 's|%LOCALSTATEDIR%/run/|${LDAP_RUN_DIR}/|g' \
 		${SED_MODULES} ${WRKSRC}/servers/slapd/slapd.conf
+	@${REINPLACE_CMD} -e 's|%LOCALSTATEDIR%/run/|${LDAP_RUN_DIR}/|g' \
+		${SED_MODULES} ${WRKSRC}/servers/slapd/slapd.ldif
 	@${REINPLACE_CMD} -e 's|^OPT =.*|OPT = ${CFLAGS}|g' \
 		-e 's|^CC =.*|CC = ${CC}|g' \
 		${SED_MODULES} ${WRKSRC}/contrib/slapd-modules/*/Makefile \

@@ -1,12 +1,15 @@
 # Created by: nectar@FreeBSD.org
 
 PORTNAME=		krb5
-PORTVERSION=		1.18.4
+PORTVERSION=		1.18.5
 CATEGORIES=		security
 MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-9]*\.[0-9]*/&X/:C/X\.[0-9]*$//:C/X//}/
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=		-118
 .endif
+
+DEPECATED=		Desupported by MIT following 1.20
+EXPIRY=			2023-05-26
 
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
@@ -16,8 +19,7 @@ COMMENT=		MIT implementation of RFC 4120 network authentication service
 
 LICENSE=		MIT
 
-CONFLICTS=		heimdal srp krb5-11[3-6] \
-			krb5-1.[0-9]* krb5-devel
+CONFLICTS=		heimdal krb5 krb5-*
 CONFLICTS_BUILD=	boringssl
 
 KERBEROSV_URL=		http://web.mit.edu/kerberos/

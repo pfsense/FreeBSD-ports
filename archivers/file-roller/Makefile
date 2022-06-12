@@ -1,7 +1,7 @@
 # Created by: Anders Nordby <anders@FreeBSD.org>
 
 PORTNAME=	file-roller
-PORTVERSION=	3.40.0
+PORTVERSION=	3.42.0
 PORTEPOCH=	1
 CATEGORIES=	archivers gnome
 MASTER_SITES=	GNOME
@@ -15,14 +15,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
-		libnotify.so:devel/libnotify
+		libnotify.so:devel/libnotify \
+		libhandy-1.so:x11-toolkits/libhandy
 RUN_DEPENDS=	gtar:archivers/gtar
 
 PORTSCOUT=	limitw:1,even
 
 USES=		cpe desktop-file-utils gettext gnome libarchive localbase \
 		meson pkgconfig python:3.5+,build tar:xz
-USE_GNOME=	cairo gtk30
+USE_GNOME=	cairo gdkpixbuf2 gtk30
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Dpackagekit=false
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
@@ -40,7 +41,7 @@ OPTIONS_GROUP_FORMATS=	7ZIP ARJ LZO RAR ZIP
 FORMATS_DESC=	Additional compression formats support
 
 7ZIP_DESC=	7zip archive support
-7ZIP_RUN_DEPENDS=	7z:archivers/p7zip
+7ZIP_RUN_DEPENDS=	7zz:archivers/7-zip
 
 ARJ_DESC=	ARJ archive support
 ARJ_RUN_DEPENDS=	arj:archivers/arj
@@ -62,5 +63,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/src/fr-command-tar.c \
 		${WRKSRC}/src/fr-command-zip.c
+	@${REINPLACE_CMD} -e 's|"7z"|"7zz"|g' \
+		${WRKSRC}/src/fr-archive-libarchive.c \
+		${WRKSRC}/src/fr-command-7z.c \
+		${WRKSRC}/src/fr-command-tar.c
 
 .include <bsd.port.mk>

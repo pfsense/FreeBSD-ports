@@ -1,6 +1,5 @@
 PORTNAME=	elementary-code
-DISTVERSION=	6.0.0
-PORTREVISION=	1
+DISTVERSION=	6.2.0
 CATEGORIES=	editors
 
 MAINTAINER=	miguel@gocobachi.dev
@@ -10,8 +9,6 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	valac:lang/vala
-RUN_DEPENDS=	droid-fonts-ttf>0:x11-fonts/droid-fonts-ttf \
-		pkcheck:sysutils/polkit
 LIB_DEPENDS=	libatk-1.0.so:accessibility/atk \
 		libeditorconfig.so:editors/editorconfig-core-c \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -26,6 +23,8 @@ LIB_DEPENDS=	libatk-1.0.so:accessibility/atk \
 		libvala-0.48.so:lang/vala \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 		libzeitgeist-2.0.so:sysutils/zeitgeist
+RUN_DEPENDS=	droid-fonts-ttf>0:x11-fonts/droid-fonts-ttf \
+		pkcheck:sysutils/polkit
 
 USES=		compiler:c++11-lang desktop-file-utils gettext gnome meson \
 		ninja pkgconfig python:3.6+,build xorg

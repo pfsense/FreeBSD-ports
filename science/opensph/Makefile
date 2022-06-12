@@ -1,6 +1,6 @@
 PORTNAME=	OpenSPH
 DISTVERSION=	0.3.8
-PORTREVISION=	3 # accounts for the upstream moving 0.3.8 release, including bugfixes
+PORTREVISION=	5 # accounts for the upstream moving 0.3.8 release, including bugfixes
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +8,9 @@ COMMENT=	Library and graphical tools for running SPH and N-body simulations
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS_REASON=	unconditional use of -msse4.1 and inclusion of immintrin.h
 
 TEST_DEPENDS=	catch>0:devel/catch
 

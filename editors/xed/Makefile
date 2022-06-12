@@ -1,7 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	xed
-PORTVERSION=	3.2.0
+PORTVERSION=	3.2.2
+PORTREVISION=	2
 CATEGORIES=	editors gnome
 DIST_SUBDIR=	gnome
 

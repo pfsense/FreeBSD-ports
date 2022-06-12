@@ -2,7 +2,7 @@
 
 PORTNAME=	gmpc-mserver
 PORTVERSION=	0.20.0
-PORTREVISION=	15
+PORTREVISION=	19
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/
 
@@ -17,6 +17,9 @@ LIB_DEPENDS=	libmpd.so:audio/libmpd \
 		libmicrohttpd.so:www/libmicrohttpd
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gmpc.pc:audio/gmpc
 RUN_DEPENDS=	gmpc:audio/gmpc
+
+DEPRECATED=	Abandonware, last release in 2011 and upstream is dead
+EXPIRATION_DATE=2022-06-30
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

@@ -1,7 +1,7 @@
 # Created by: kamikaze@bsdforen.de
 
 PORTNAME=	libbluray
-DISTVERSION=	1.3.0
+DISTVERSION=	1.3.1
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION}/

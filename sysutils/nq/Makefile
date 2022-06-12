@@ -1,6 +1,6 @@
 PORTNAME=	nq
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4
+DISTVERSION=	0.5
 CATEGORIES=	sysutils
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -16,6 +16,9 @@ USE_PERL5=	test
 
 MAKE_ARGS=	CFLAGS="${CFLAGS}" \
 		PREFIX="${PREFIX}"
+
+CONFLICTS_INSTALL=	fq # bin/fq
+
 TEST_TARGET=	check
 
 post-install:

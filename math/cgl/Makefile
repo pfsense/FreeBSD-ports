@@ -1,7 +1,6 @@
 PORTNAME=	cgl
 DISTVERSIONPREFIX=	releases/
-DISTVERSION=	0.60.3
-PORTREVISION=	2
+DISTVERSION=	0.60.6
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
@@ -13,9 +12,9 @@ LICENSE_FILE=	${WRKSRC}/Cgl/LICENSE
 
 LIB_DEPENDS=	libcoinasl.so:math/asl \
 		libblas.so:math/blas \
-		libcoinmetis.so:math/ipopt \
 		libCoinUtils.so:math/coinutils \
 		libClp.so:math/clp \
+		libcoinmumps.so:math/coin-or-mumps \
 		libopenblas.so:math/openblas \
 		libOsi.so:math/osi
 
@@ -27,6 +26,8 @@ GH_ACCOUNT=	coin-or
 GH_PROJECT=	Cgl
 
 GNU_CONFIGURE=	yes
+
+TEST_TARGET=	test
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libCgl.so.*

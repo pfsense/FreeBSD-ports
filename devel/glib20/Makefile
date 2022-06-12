@@ -1,7 +1,8 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
 
 PORTNAME=	glib
-DISTVERSION=	2.70.2
+DISTVERSION=	2.70.4
+PORTREVISION=	6
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
@@ -18,7 +19,8 @@ LIB_DEPENDS=	libffi.so:devel/libffi \
 # iconv:wchar_t - our iconv in base doesn't support utf-8 -> wchar_t (boooo)
 # (wchar_t is used by glibmm, rawtherapee triggered this)
 USES=		compiler:c11 cpe gettext gnome iconv:wchar_t localbase:ldflags \
-		meson perl5 pkgconfig python:3.6+ tar:xz
+		meson perl5 pkgconfig python:3.6+ tar:xz trigger
+TRIGGERS=	gio-modules glib-schemas
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_PYTHON=	py3kplist
@@ -33,12 +35,18 @@ BINARY_ALIAS=	python3=${PYTHON_CMD}
 PORTSCOUT=	limitw:1,even
 CPE_VENDOR=	gnome
 
-_LIBVERSION=	0.7000.2
+CONFLICTS_INSTALL=	p5-Giovanni
+
+_LIBVERSION=	0.7000.4
 PLIST_SUB=	LIBVERSION=${_LIBVERSION}
 
-OPTIONS_DEFINE=	DEBUG FAM_ALTBACKEND MANPAGES NLS TEST
+OPTIONS_DEFINE=		DEBUG DOCS FAM_ALTBACKEND MANPAGES NLS TEST
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=		yes
+
+DOCS_BUILD_DEPENDS=	gtk-doc>0:textproc/gtk-doc
+DOCS_IMPLIES=		TEST
+DOCS_MESON_TRUE=	gtk_doc
 
 FAM_ALTBACKEND_DESC=	Alternate file monitor backend
 
@@ -47,7 +55,7 @@ MANPAGES_BUILD_DEPENDS=	docbook-xml>4.1.2:textproc/docbook-xml \
 MANPAGES_USE=		GNOME=libxslt:build
 MANPAGES_MESON_TRUE=	man
 
-TEST_DEPENDS=		dbus-daemon:devel/dbus
+TEST_BUILD_DEPENDS=	dbus-daemon:devel/dbus
 TEST_MESON_TRUE=	tests
 
 .include <bsd.port.pre.mk>
@@ -70,6 +78,20 @@ pre-configure-FAM_ALTBACKEND-on:
 	@${CP} -f ${FILESDIR}/gkqueuefilemonitor.c ${WRKSRC}/gio/kqueue/gkqueuefilemonitor.c
 	@${CP} ${FILESDIR}/kqueue_fnm.c ${WRKSRC}/gio/kqueue/kqueue_fnm.c
 	@${CP} ${FILESDIR}/kqueue_fnm.h ${WRKSRC}/gio/kqueue/kqueue_fnm.h
+
+# The generation of GIO documentation depends on a types-document
+# generated as part of the dbus-object-manager example. With an
+# embarrassingly parallel build, failures like this can happen:
+#
+# Building documentation for gdbus-object-manager-example
+# ERROR: Error in gtkdoc helper script:
+# FileNotFoundError: [Errno 2] No such file or directory: '_build/docs/reference/gio/gdbus-object-manager-example/gdbus-object-manager-example.types'
+#
+# Meson does not seem to provide a way to express that dependency.
+#
+# Hack it into the generated ninja build instead.
+post-configure-DOCS-on:
+	@${REINPLACE_CMD} -e '\+^build docs/reference/gio/gdbus-object-manager-example/gdbus-object-manager-example-decl.txt:+s+$$+ || gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.so+' ${BUILD_WRKSRC}/build.ninja
 
 post-patch:
 	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g ; \

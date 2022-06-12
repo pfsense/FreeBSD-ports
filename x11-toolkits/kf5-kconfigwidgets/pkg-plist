@@ -15,6 +15,7 @@ include/KF5/KConfigWidgets/KLanguageName
 include/KF5/KConfigWidgets/KPasteTextAction
 include/KF5/KConfigWidgets/KRecentFilesAction
 include/KF5/KConfigWidgets/KStandardAction
+include/KF5/KConfigWidgets/KStatefulBrush
 include/KF5/KConfigWidgets/KTipDialog
 include/KF5/KConfigWidgets/KViewStateMaintainer
 include/KF5/KConfigWidgets/kcmodule.h
@@ -27,6 +28,7 @@ include/KF5/KConfigWidgets/kconfigdialog.h
 include/KF5/KConfigWidgets/kconfigdialogmanager.h
 include/KF5/KConfigWidgets/kconfigviewstatesaver.h
 include/KF5/KConfigWidgets/kconfigwidgets_export.h
+include/KF5/KConfigWidgets/kconfigwidgets_version.h
 include/KF5/KConfigWidgets/khamburgermenu.h
 include/KF5/KConfigWidgets/khelpclient.h
 include/KF5/KConfigWidgets/klanguagebutton.h
@@ -34,10 +36,10 @@ include/KF5/KConfigWidgets/klanguagename.h
 include/KF5/KConfigWidgets/kpastetextaction.h
 include/KF5/KConfigWidgets/krecentfilesaction.h
 include/KF5/KConfigWidgets/kstandardaction.h
+include/KF5/KConfigWidgets/kstatefulbrush.h
 include/KF5/KConfigWidgets/ktip.h
 include/KF5/KConfigWidgets/ktipdialog.h
 include/KF5/KConfigWidgets/kviewstatemaintainer.h
-include/KF5/kconfigwidgets_version.h
 lib/cmake/KF5ConfigWidgets/KF5ConfigWidgetsConfig.cmake
 lib/cmake/KF5ConfigWidgets/KF5ConfigWidgetsConfigVersion.cmake
 lib/cmake/KF5ConfigWidgets/KF5ConfigWidgetsTargets-%%CMAKE_BUILD_TYPE%%.cmake

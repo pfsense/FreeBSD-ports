@@ -5,7 +5,7 @@ DISTVERSION=	0.27.5
 DISTVERSIONSUFFIX=	-Source
 PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	https://www.exiv2.org/builds/
+MASTER_SITES=	https://github.com/Exiv2/exiv2/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Exif, IPTC, and XMP metadata manipulation library and tools
@@ -45,8 +45,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-Source
 
 .include <bsd.port.options.mk>
 
-LDFLAGS_powerpc=	-lintl
-LDFLAGS_powerpc64=	-lintl
 LDFLAGS_mips=		-lintl
 LDFLAGS_mips64=		-lintl
 

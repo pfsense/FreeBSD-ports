@@ -99,7 +99,6 @@
     SUBDIR += ncid
     SUBDIR += nec2c
     SUBDIR += nmealib
-    SUBDIR += o2sms
     SUBDIR += obexapp
     SUBDIR += opencbm
     SUBDIR += opencbm-kmod
@@ -120,8 +119,6 @@
     SUBDIR += p5-SMS-Send-NexmoUnicode
     SUBDIR += p5-SMS-Send-TW-HiAir
     SUBDIR += p5-SMS-Send-TW-PChome
-    SUBDIR += p5-SMS-Send-TW-Qma
-    SUBDIR += p5-SMS-Send-TW-ShareSMS
     SUBDIR += p5-SMS-Send-TW-Socket2Air
     SUBDIR += p5-SMS-Send-TW-chtsns
     SUBDIR += p5-SMS-Send-TW-emome
@@ -136,9 +133,8 @@
     SUBDIR += py-hid
     SUBDIR += py-hidapi
     SUBDIR += py-libimobiledevice
+    SUBDIR += py-libscrc
     SUBDIR += py-pyserial
-    SUBDIR += py-qt5-sensors
-    SUBDIR += py-qt5-serialport
     SUBDIR += py-xmodem
     SUBDIR += pyla
     SUBDIR += qico
@@ -213,8 +209,6 @@
     SUBDIR += xnec2c
     SUBDIR += xnecview
     SUBDIR += yagiuda
-    SUBDIR += yaps
     SUBDIR += yfklog
-    SUBDIR += zssh
 
 .include <bsd.port.subdir.mk>

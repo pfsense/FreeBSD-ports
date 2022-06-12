@@ -1,5 +1,5 @@
 PORTNAME=	aws-sdk-cpp
-PORTVERSION=	1.9.129
+PORTVERSION=	1.9.183
 CATEGORIES=	devel
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -72,6 +72,8 @@ post-patch:
 	${REINPLACE_CMD} -e "s,/pkgconfig,/../libdata/pkgconfig,g" \
 		${WRKSRC}/aws-cpp-sdk-core/CMakeLists.txt \
 		${WRKSRC}/cmake/utilities.cmake
+	${REINPLACE_CMD} -e 's,"-Werror",,g' \
+		${WRKSRC}/cmake/compiler_settings.cmake
 
 post-install:
 	@cd ${STAGEDIR}/${LOCALBASE} && \

@@ -9,7 +9,7 @@ MASTER_SITES=	ftp://ftp.lyx.org/pub/lyx/stable/${MAJOR_VERSION}.x/ \
 		ftp://ftp.ntua.gr/pub/X11/LyX/stable/${MAJOR_VERSION}.x/ \
 		http://sunsite.icm.edu.pl/pub/unix/editors/lyx/stable/${MAJOR_VERSION}.x/
 
-MAINTAINER=	rakuco@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Document processor interfaced with LaTeX (nearly WYSIWYG)
 
 LICENSE=	GPLv2
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libmythes-1.2.so:textproc/mythes
 
 MAJOR_VERSION=	2.3
-MINOR_VERSION=	4.2
+MINOR_VERSION=	6.1
 
 USES=		autoreconf compiler:c++11-lang desktop-file-utils gmake iconv \
 		pkgconfig perl5 python qt:5 shebangfix tar:xz xorg

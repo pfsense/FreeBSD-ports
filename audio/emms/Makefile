@@ -2,7 +2,7 @@
 
 PORTNAME=	emms
 DISTVERSION=	5.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio elisp
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -16,6 +16,8 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	texi2dvi:print/texinfo
 
 USES=		emacs gmake
+
+CONFLICTS_INSTALL=	emms emms-emacs_* # share/emacs/site-lisp/emms/emms-auto.el
 
 INFO=		emms
 NO_ARCH=	yes

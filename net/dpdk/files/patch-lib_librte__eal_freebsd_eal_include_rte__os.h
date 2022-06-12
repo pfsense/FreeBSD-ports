@@ -1,27 +1,41 @@
---- lib/librte_eal/freebsd/eal/include/rte_os.h.orig	2020-01-03 12:22:03 UTC
+--- lib/librte_eal/freebsd/eal/include/rte_os.h.orig	2021-03-08 17:40:08 UTC
 +++ lib/librte_eal/freebsd/eal/include/rte_os.h
-@@ -29,6 +29,9 @@ typedef cpuset_t rte_cpuset_t;
- 	CPU_COPY(&tmp, dst); \
- } while (0)
- #define RTE_CPU_FILL(set) CPU_FILL(set)
+@@ -14,6 +14,28 @@
+ #include <pthread_np.h>
+
+ typedef cpuset_t rte_cpuset_t;
 +
-+/* In FreeBSD 13 CPU_NAND macro is CPU_ANDNOT */
-+#ifdef CPU_NAND
- #define RTE_CPU_NOT(dst, src) do \
- { \
- 	cpuset_t tmp; \
-@@ -36,5 +39,14 @@ typedef cpuset_t rte_cpuset_t;
- 	CPU_NAND(&tmp, src); \
- 	CPU_COPY(&tmp, dst); \
- } while (0)
-+#else
++/* FreeBSD 14 uses GLIBC compatible CPU_AND, CPU_OR, ... */
++#ifdef CPU_ALLOC
++
++#define RTE_CPU_AND(dst, src1, src2) CPU_AND(dst, src1, src2)
++#define RTE_CPU_OR(dst, src1, src2) CPU_OR(dst, src1, src2)
++#define RTE_CPU_FILL(set) do \
++{ \
++	unsigned int i; \
++	CPU_ZERO(set); \
++	for (i = 0; i < CPU_SETSIZE; i++) \
++		CPU_SET(i, set); \
++} while (0)
 +#define RTE_CPU_NOT(dst, src) do \
 +{ \
-+	cpuset_t tmp; \
-+	CPU_FILL(&tmp); \
-+	CPU_ANDNOT(&tmp, src); \
-+	CPU_COPY(&tmp, dst); \
++	cpu_set_t tmp; \
++	RTE_CPU_FILL(&tmp); \
++	CPU_XOR(dst, &tmp, src); \
 +} while (0)
-+#endif
- 
++
++#else
++
+ #define RTE_CPU_AND(dst, src1, src2) do \
+ { \
+ 	cpuset_t tmp; \
+@@ -47,6 +69,8 @@ typedef cpuset_t rte_cpuset_t;
+ 	CPU_ANDNOT(&tmp, src); \
+ 	CPU_COPY(&tmp, dst); \
+ } while (0)
+-#endif
++#endif /* CPU_NAND */
++
++#endif /* CPU_ALLOC */
+
  #endif /* _RTE_OS_H_ */

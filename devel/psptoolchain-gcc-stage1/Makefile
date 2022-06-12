@@ -8,10 +8,13 @@ MASTER_SITES=		GCC
 PKGNAMEPREFIX=		psptoolchain-
 PKGNAMESUFFIX?=		-stage1
 
-MAINTAINER=		tphilipp@potion-studios.com
+MAINTAINER=		ports@FreeBSD.org
 COMMENT=		PlayStation Portable development toolchain ${PORTNAME}
 
 LICENSE=		GPLv3
+
+DEPRECATED=		Security issues for multiple years
+EXPIRATION_DATE=	2022-06-30
 
 ONLY_FOR_ARCHS=		aarch64 amd64 armv7 i386 powerpc powerpc64 powerpc64le
 

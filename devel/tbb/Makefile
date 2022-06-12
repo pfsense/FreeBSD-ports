@@ -3,7 +3,7 @@
 PORTNAME=	tbb
 PORTVERSION=	2020.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -28,6 +28,8 @@ SUB_LIST=	prefix="${PREFIX}" \
 		description="${COMMENT}" \
 		version="${PORTVERSION}"
 
+PLIST=	${WRKDIR}/.PLIST.more
+
 OPTIONS_DEFINE=	DOCS
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen \
 		dot:graphics/graphviz
@@ -35,14 +37,13 @@ DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen \
 USE_LDCONFIG=	yes
 ALL_TARGET=	default
 
-CC_BASENAME=	${CC:C,^.*/,,}
-
 .include <bsd.port.pre.mk>
 
 post-extract:
-.if ${CC_BASENAME} != ${COMPILER_TYPE}
-	@${LN} -sf FreeBSD.${COMPILER_TYPE}.inc ${WRKSRC}/build/FreeBSD.${CC_BASENAME}.inc
-.endif
+	@if [ "${COMPILER_TYPE}" != "${CC:T}" ]; then \
+	   ${LN} -sf FreeBSD.${COMPILER_TYPE}.inc \
+	     ${WRKSRC}/build/FreeBSD.${CC:T}.inc; \
+	 fi
 	@${CP} ${FILESDIR}/version_info_FreeBSD.sh ${WRKSRC}/build/
 
 post-patch:
@@ -54,6 +55,14 @@ post-patch:
 post-build-DOCS-on:
 	cd ${WRKSRC}; \
 		${MAKE_CMD} doxygen
+
+pre-install:
+	@${CAT} ${PKGDIR}/pkg-plist >${PLIST}
+.if ${PORT_OPTIONS:MDOCS}
+	cd ${WRKSRC}/html && \
+		${FIND} . -type f | \
+		${SED} 's|^\.|%%PORTDOCS%%%%DOCSDIR%%|' >>${PLIST}
+.endif
 
 do-install:
 	cd ${WRKSRC}; \

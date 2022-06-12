@@ -15,8 +15,8 @@ LICENSE=	GPLv2
 BROKEN_armv6=	qemu: uncaught target signal 11 (Segmentation fault) - core dumped
 
 SLAVEDIRS=	databases/mysql56-client
-USES=		bison:build cmake:noninja cpe groff:run libedit localbase \
-		perl5 shebangfix ssl
+USES=		bison:build cmake:noninja compiler:c++11-lib cpe groff:run \
+		libedit localbase perl5 shebangfix ssl
 
 CPE_VENDOR=	oracle
 
@@ -39,7 +39,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DINSTALL_INCLUDEDIR="include/mysql" \
 		-DINSTALL_INFODIR="${INFO_PATH}" \
 		-DINSTALL_LIBDIR="lib/mysql" \
-		-DINSTALL_MANDIR="man" \
+		-DINSTALL_MANDIR="share/man" \
 		-DINSTALL_MYSQLDATADIR="${MY_DBDIR}" \
 		-DINSTALL_MYSQLKEYRINGDIR="etc/mysql/keyring" \
 		-DINSTALL_MYSQLSHAREDIR="share/mysql" \
@@ -80,11 +80,10 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 .if !defined(CLIENT_ONLY)
 USES+=		mysql:56
 
-CONFLICTS_INSTALL=	mysql5[0-57-9]-server \
-			mysql[0-46-9][0-9]-server \
+CONFLICTS_INSTALL=	mysql*-server \
 			mysqlwsrep*-server \
-			mariadb[0-9][0-9]-server \
-			percona[0-9][0-9]-server
+			mariadb*-server \
+			percona*-server
 
 USE_RC_SUBR=	mysql-server
 
@@ -134,16 +133,6 @@ PERFSCHM_SUB_LIST+=		PERFSCHEMRC=""
 PERFSCHM_SUB_LIST_OFF+=		PERFSCHEMRC="--skip-performance-schema"
 FEDERATED_SUB_LIST+=		FEDER="--federated"
 FEDERATED_SUB_LIST_OFF+=	FEDER=""
-.endif
-
-.include <bsd.port.options.mk>
-
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
-USES+=		compiler:gcc-c++11-lib
-USE_CXXSTD=	gnu++11
-.else
-USES+=		compiler:c++11-lib
-USE_CXXSTD=	c++11
 .endif
 
 .include <bsd.port.pre.mk>

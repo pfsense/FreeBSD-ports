@@ -1,27 +1,20 @@
 PORTNAME=	s-tui
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0-2
-DISTVERSIONSUFFIX=	-gfb91ef6
+DISTVERSION=	1.1.3
 CATEGORIES=	sysutils python
+MASTER_SITES=	CHEESESHOP
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Stress Terminal UI: stress test and monitoring tool
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Stress Terminal UI, Terminal-based CPU stress and monitoring utility
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>=5.6.0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urwid>=2.0.1:devel/py-urwid@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
 USES=		python
-USE_GITHUB=	yes
-GH_ACCOUNT=	amanusk
-USE_PYTHON=	distutils noflavors autoplist
+USE_PYTHON=	autoplist distutils noflavors
 
 NO_ARCH=	yes
-
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs
 
 .include <bsd.port.mk>

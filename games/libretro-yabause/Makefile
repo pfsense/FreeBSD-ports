@@ -1,8 +1,8 @@
 PORTNAME=	libretro-yabause
-PORTVERSION=	0.20210204
+PORTVERSION=	0.20220218
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Saturn emulator for libretro
 
 LICENSE=	GPLv2
@@ -13,7 +13,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	yabause
-GH_TAGNAME=	ea5b118
+GH_TAGNAME=	17dfcd8
 
 PLIST_FILES=	lib/libretro/yabause_libretro.so
 

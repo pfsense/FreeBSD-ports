@@ -1,7 +1,7 @@
 # Created by: Olivier Duchateau
 
 PORTNAME=	gnome-latex
-PORTVERSION=	3.38.0
+PORTVERSION=	3.40.0
 CATEGORIES=	editors
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	valac:lang/vala \
 LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libfribidi.so:converters/fribidi \
 		libenchant-2.so:textproc/enchant2 \
-		libtepl-5.so:x11-toolkits/tepl \
+		libtepl-6.so:x11-toolkits/tepl6 \
 		libgspell-1.so:textproc/gspell
 
 USES=		compiler:c11 desktop-file-utils gettext gmake gnome \

@@ -1,8 +1,8 @@
 PORTNAME=	libretro-mame2003
-PORTVERSION=	0.20210214
+PORTVERSION=	0.20220206
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	MAME 0.78 for libretro
 
 LICENSE=	GPLv2
@@ -13,7 +13,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	mame2003-libretro
-GH_TAGNAME=	4358db4
+GH_TAGNAME=	3eb27d5
 
 PLIST_FILES=	lib/libretro/mame2003_libretro.so
 

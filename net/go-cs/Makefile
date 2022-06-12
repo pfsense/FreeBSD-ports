@@ -3,7 +3,7 @@
 PORTNAME=	go-cs
 PORTVERSION=	0.9
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	akosela@andykosela.com
@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		go
 USE_GITHUB=	yes
 GH_ACCOUNT=	akosela
+
+CONFLICTS_INSTALL=	clearsilver csound # bin/cs
 
 PLIST_FILES=	bin/cs man/man1/cs.1.gz
 

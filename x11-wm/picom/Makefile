@@ -1,11 +1,7 @@
 PORTNAME=	picom
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.2
-PORTREVISION=	1
+DISTVERSION=	9.1
 CATEGORIES=	x11-wm
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	78223caea3f7.patch:-p1 # https://github.com/yshui/picom/pull/422
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Lightweight X11 compositor
@@ -21,14 +17,16 @@ LIB_DEPENDS=	libev.so:devel/libev \
 RUN_DEPENDS=	xprop:x11/xprop \
 		xwininfo:x11/xwininfo
 
-CONFLICTS_INSTALL=	compton # bin/compton
-
 USES=		compiler:c11 meson localbase pkgconfig xorg
 USE_GITHUB=	yes
 USE_XORG=	x11 xcb xext pixman
 GH_ACCOUNT=	yshui
-MESON_ARGS=	-Dunittest=true
+MESON_ARGS=	-Dcompton=false -Dunittest=true
 TEST_TARGET=	test
+PLIST_FILES=	bin/${PORTNAME} \
+		bin/${PORTNAME}-trans \
+		"@sample etc/xdg/${PORTNAME}.conf.sample" \
+		share/applications/${PORTNAME}.desktop
 
 OPTIONS_DEFINE=	CONFIG DBUS DOCS DRM OPENGL PCRE
 OPTIONS_DEFAULT=CONFIG DBUS OPENGL PCRE
@@ -53,8 +51,8 @@ DBUS_MESON_TRUE=	dbus
 
 DOCS_BUILD_DEPENDS=	a2x:textproc/asciidoc
 DOCS_MESON_TRUE=	with_docs
-DOCS_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
-			share/man/man1/${PORTNAME}-trans.1.gz
+DOCS_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
+			man/man1/${PORTNAME}-trans.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}&,' \

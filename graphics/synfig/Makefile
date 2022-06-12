@@ -1,9 +1,9 @@
 # Created by: Yinghong.Liu <relaxbsd@gmail.com>
 
 PORTNAME=	synfig
-PORTVERSION=	1.2.2
+PORTVERSION=	1.4.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
-PORTREVISION=	17
 CATEGORIES=	graphics devel multimedia
 
 MAINTAINER=	portmaster@BSDforge.com
@@ -15,13 +15,13 @@ BUILD_DEPENDS=	etl>=1.2.2:devel/etl \
 		gsed:textproc/gsed
 LIB_DEPENDS=	libImath.so:math/Imath \
 		libOpenEXR.so:graphics/openexr \
-		libMagickWand-6.so:graphics/ImageMagick6 \
 		libavcodec.so:multimedia/ffmpeg \
 		libboost_program_options.so:devel/boost-libs \
 		libdv.so:multimedia/libdv \
 		libfftw3.so:math/fftw3 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
 		libltdl.so:devel/libltdl \
 		libmng.so:graphics/libmng \
 		libpng.so:graphics/png \
@@ -30,7 +30,7 @@ LIB_DEPENDS=	libImath.so:math/Imath \
 PORTSCOUT=	limitw:1,even
 
 USES=		autoreconf compiler:c++11-lang gmake gnome iconv jpeg \
-		libtool localbase mlt:6 pathfix pkgconfig
+		libtool localbase magick:6 mlt:6 pathfix pkgconfig
 USE_CXXSTD=	c++11
 USE_GITHUB=	yes
 USE_GNOME=	cairo glibmm intltool libxml++26 pango

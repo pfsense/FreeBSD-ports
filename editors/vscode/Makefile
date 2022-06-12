@@ -1,6 +1,5 @@
 PORTNAME=	vscode
-DISTVERSION=	1.62.3
-PORTREVISION=	3
+DISTVERSION=	1.68.0
 CATEGORIES=	editors
 MASTER_SITES=	https://registry.npmjs.org/esbuild-freebsd-64/-/:esbuild_binary \
 		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
@@ -21,10 +20,6 @@ COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
-
-BROKEN_FreeBSD_12=	../src/keymapping.h:40:3: error: unknown type name 'pthread_t'
-DEPRECATED=	Uses EOL Python 2.7 via devel/electron13
-EXPIRATION_DATE=2021-06-23
 
 ONLY_FOR_ARCHS=	amd64
 
@@ -50,7 +45,6 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libdrm.so:graphics/libdrm \
 		libpng.so:graphics/png \
 		libwebp.so:graphics/webp \
-		libavcodec.so:multimedia/ffmpeg \
 		libvpx.so:multimedia/libvpx \
 		libopenh264.so:multimedia/openh264 \
 		libcups.so:print/cups \
@@ -68,13 +62,13 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-pl
 TEST_DEPENDS=	electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		bash:shells/bash
 
-USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
+USES=		desktop-file-utils gl gmake gnome iconv jpeg pkgconfig \
 		python:build shebangfix xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	ccbaa2d27e38e5afa3e5c21c1c7bef4657064247
+SOURCE_COMMIT_HASH=	4af164ea3a06f701fe3e89a2bcbb421d2026b68f
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -86,10 +80,10 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 USE_LDCONFIG=	${DATADIR}
 
 # See ${WRKSRC}/remote/.yarnrc for NODE_VER
-NODE_VER=	14.16.0
+NODE_VER=	16.13.0
 NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
 # See ${WRKSRC}/build/package.json for ESBUILD_VER_BUILD
-ESBUILD_VER_BUILD=	0.12.6
+ESBUILD_VER_BUILD=	0.14.2
 # See ${WRKSRC}/extensions/package.json for ESBUILD_VER_EXTENSIONS
 ESBUILD_VER_EXTENSIONS=	0.11.23
 
@@ -109,7 +103,7 @@ MAKE_ENV+=	PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/pw-browsers \
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
-ELECTRON_DIR=	${.CURDIR}/../../devel/electron13
+ELECTRON_DIR=	${.CURDIR}/../../devel/electron17
 .include	"${ELECTRON_DIR}/Makefile.version"
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}
@@ -190,10 +184,12 @@ pre-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
 		yarn --frozen-lockfile --offline
 	# copy rg binary files to vscode-ripgrep module directory
+	${MKDIR} ${WRKSRC}/node_modules/@vscode/ripgrep/bin
+	${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/node_modules/@vscode/ripgrep/bin
 	${MKDIR} ${WRKSRC}/node_modules/vscode-ripgrep/bin
 	${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/node_modules/vscode-ripgrep/bin
-	${MKDIR} ${WRKSRC}/remote/node_modules/vscode-ripgrep/bin
-	${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/remote/node_modules/vscode-ripgrep/bin
+	${MKDIR} ${WRKSRC}/remote/node_modules/@vscode/ripgrep/bin
+	${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/remote/node_modules/@vscode/ripgrep/bin
 
 do-build:
 	# setup download cache for gulp-atom-electron
@@ -204,6 +200,7 @@ do-build:
 		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt
 	# build and package vscode
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn run tsc -p build/tsconfig.build.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
 	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-linux-x64-min
 	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-web-linux-x64-min

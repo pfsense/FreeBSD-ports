@@ -1,11 +1,10 @@
 PORTNAME=	wayfire
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.2
-PORTREVISION=	1
+DISTVERSION=	0.7.3
 CATEGORIES=	x11-wm
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	7b664f055249.patch:-p1 # https://github.com/WayfireWM/wayfire/pull/1230
+PATCHFILES+=	dd479c06bf84.patch:-p1 # https://github.com/WayfireWM/wayfire/issues/599
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	3D Wayland compositor
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		${LOCALBASE}/include/xf86drmMode.h:graphics/libdrm \
 		wayland-protocols>=1.12:graphics/wayland-protocols \
 		glm>=0.9.8:math/glm \
-		wlroots>=0.14.0<0.15.0:x11-toolkits/wlroots
+		wlroots>=0.15.0<0.16.0:x11-toolkits/wlroots
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libwf-config.so:devel/wf-config \
 		libpng.so:graphics/png \
@@ -30,7 +29,7 @@ LIB_DEPENDS=	libinotify.so:devel/libinotify \
 USES=		compiler:c++17-lang gl gnome jpeg meson pkgconfig xorg
 USE_GITHUB=	yes
 USE_GL=		egl glesv2
-USE_GNOME=	cairo
+USE_GNOME=	cairo pango
 USE_XORG=	pixman
 GH_ACCOUNT=	WayfireWM
 GH_TUPLE=	WayfireWM:wf-touch:8974eb0:wftouch/subprojects/wf-touch \

@@ -1,6 +1,7 @@
 PORTNAME=	certmgr
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0.3
+PORTREVISION=	2
 CATEGORIES=	security net
 
 MAINTAINER=	fuz@fuz.su
@@ -44,6 +45,8 @@ GH_TUPLE=	beorn7:perks:v1.0.0:beorn7_perks/vendor/github.com/beorn7/perks \
 		spf13:jwalterweatherman:v1.1.0:spf13_jwalterweatherman/vendor/github.com/spf13/jwalterweatherman \
 		spf13:pflag:v1.0.3:spf13_pflag/vendor/github.com/spf13/pflag \
 		spf13:viper:v1.4.0:spf13_viper/vendor/github.com/spf13/viper
+
+CONFLICTS_INSTALL=	mono mono[0-9]* # bin/certmgr
 
 GO_TARGET=	./certmgr
 SUB_FILES=	certmgr.yaml.sample pkg-message

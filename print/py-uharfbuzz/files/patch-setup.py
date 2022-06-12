@@ -1,16 +1,15 @@
---- setup.py.orig	2021-07-24 15:45:38 UTC
+--- setup.py.orig	2022-03-22 22:29:38 UTC
 +++ setup.py
-@@ -34,10 +34,10 @@ if platform.system() == 'Darwin':
-     extra_link_args.extend(['-framework', 'ApplicationServices'])
- 
+@@ -39,11 +39,9 @@ if platform.system() == 'Darwin':
  extension = Extension(
--    'uharfbuzz._harfbuzz',
-+    'uharfbuzz',
+     'uharfbuzz._harfbuzz',
      define_macros=define_macros,
 -    include_dirs=['harfbuzz/src'],
--    sources=['src/uharfbuzz/_harfbuzz.pyx', 'harfbuzz/src/harfbuzz.cc'],
 +    include_dirs=['%%LOCALBASE%%/include/harfbuzz'],
-+    sources=['src/uharfbuzz/_harfbuzz.pyx'],
+     sources=[
+         'src/uharfbuzz/_harfbuzz.pyx',
+-        'harfbuzz/src/harfbuzz.cc',
+-        'harfbuzz/src/hb-subset-repacker.cc',
+     ],
      language='c++',
      libraries=libraries,
-     extra_compile_args=extra_compile_args,

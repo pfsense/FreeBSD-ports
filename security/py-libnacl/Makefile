@@ -1,12 +1,12 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
 
 PORTNAME=	libnacl
-PORTVERSION=	1.6.1
+PORTVERSION=	1.8.0
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python bindings for libsodium based on ctypes
 
 LICENSE=	APACHE20
@@ -15,11 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
 USES=		python:3.6+
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist concurrent distutils unittest
 
 NO_ARCH=	yes
-
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m unittest discover --start-directory tests -v
+TEST_ARGS=	discover -s tests
 
 .include <bsd.port.mk>

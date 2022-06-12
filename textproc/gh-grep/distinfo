@@ -1,5 +1,5 @@
-TIMESTAMP = 1636648053
-SHA256 (go/textproc_gh-grep/gh-grep-v0.9.0/v0.9.0.mod) = 3db03e64218cd7b86caddb91039c37a3f789968c5e28547892900e86be414ef8
-SIZE (go/textproc_gh-grep/gh-grep-v0.9.0/v0.9.0.mod) = 346
-SHA256 (go/textproc_gh-grep/gh-grep-v0.9.0/v0.9.0.zip) = 482058a5a446bc0f201462eef18649f2a6826433d791920df3d4534a084b5398
-SIZE (go/textproc_gh-grep/gh-grep-v0.9.0/v0.9.0.zip) = 41458
+TIMESTAMP = 1649364900
+SHA256 (go/textproc_gh-grep/gh-grep-v0.11.0/v0.11.0.mod) = 9620938270c2335e2960b303c20437ba3338bfed7eb825cdee82871a64926218
+SIZE (go/textproc_gh-grep/gh-grep-v0.11.0/v0.11.0.mod) = 692
+SHA256 (go/textproc_gh-grep/gh-grep-v0.11.0/v0.11.0.zip) = c4d44122991e3e87414b6ce8c4e5995a649d9e3e3c1be7e72a659f01b5b86ed1
+SIZE (go/textproc_gh-grep/gh-grep-v0.11.0/v0.11.0.zip) = 41834

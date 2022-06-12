@@ -1,5 +1,5 @@
 PORTNAME=	libarchive
-DISTVERSION=	3.5.2
+DISTVERSION=	3.6.1
 PORTEPOCH=	1
 CATEGORIES=	archivers
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/ \
@@ -38,7 +38,7 @@ PLIST_FILES=	bin/bsdcat \
 		include/archive_entry.h \
 		lib/libarchive.so \
 		lib/libarchive.so.13 \
-		lib/libarchive.so.1${PORTVERSION} \
+		lib/libarchive.so.1${DISTVERSION} \
 		libdata/pkgconfig/libarchive.pc \
 		man/man1/bsdcat.1.gz \
 		man/man1/bsdcpio.1.gz \

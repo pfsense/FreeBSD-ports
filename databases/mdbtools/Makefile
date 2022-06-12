@@ -1,10 +1,10 @@
 # Created by: Anders Nordby <anders@fix.no>
 
 PORTNAME=	mdbtools
-DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0
 PORTREVISION=	1
 CATEGORIES=	databases
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Utilities and libraries to export data from MS Access databases (.mdb)
@@ -17,18 +17,17 @@ BUILD_DEPENDS=	bash-completion>=0:shells/bash-completion \
 LIB_DEPENDS=	libodbcinst.so:databases/unixODBC
 RUN_DEPENDS=	bash-completion>=0:shells/bash-completion
 
-USES=		autoreconf bison gnome iconv:wchar_t libtool pathfix \
+USES=		bison cpe gnome iconv:wchar_t libtool pathfix \
 		pkgconfig readline
-USE_GITHUB=	yes
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} \
 		--with-unixodbc=${LOCALBASE}
 
-INSTALL_TARGET=	install-strip
+CPE_VENDOR=	mdbtools_project
 
-CPPFLAGS+=	-I${WRKSRC}/include
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=		DOCS MANPAGES LIBMSWSTR NLS
 OPTIONS_DEFAULT=	MANPAGES
@@ -41,7 +40,7 @@ LIBMSWSTR_CONFIGURE_ENV_OFF=	ac_cv_lib_mswstr_DBLCMapStringW=no
 MANPAGES_CONFIGURE_OFF=		--disable-man
 NLS_USES=			gettext
 
-DOCS=		AUTHORS HACKING.md NEWS README.md TODO.md
+DOCS=		AUTHORS HACKING.md NEWS README.md
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,10 +1,13 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
 
 PORTNAME=	solidity
-PORTVERSION=	0.8.10
+PORTVERSION=	0.8.14
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/ethereum/solidity/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
+
+PATCH_SITES=	https://github.com/ethereum/solidity/commit/
+PATCHFILES=	026e26af998c10ca4e39ab6b1b8e64dbc2fdd910.patch:-p1 # https://github.com/ethereum/solidity/pull/13090
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Solidity Contract-Oriented Programming Language
@@ -34,7 +37,8 @@ CVC4_CMAKE_OFF=	USE_CVC4
 CMAKE_ARGS+=	-DUSE_LD_GOLD=OFF -DTESTS=OFF \
 		-DRANGE_V3_INCLUDE_DIR="${LOCALBASE}/include" \
 		-DJSONCPP_INCLUDE_DIR:STRING="${LOCALBASE}/include/jsoncpp" \
-		-DJSONCPP_LIB_DIR:STRING="${LOCALBASE}/lib"
+		-DJSONCPP_LIB_DIR:STRING="${LOCALBASE}/lib" \
+		-DSTRICT_Z3_VERSION=OFF
 
 PLIST_FILES=	bin/solc \
 		bin/solidity-upgrade \

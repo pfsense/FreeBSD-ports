@@ -233,6 +233,7 @@ man/man8/rspamd.8.gz
 %%DATADIR%%/lualib/rspamadm/keypair.lua
 %%DATADIR%%/lualib/rspamadm/mime.lua
 %%DATADIR%%/lualib/rspamadm/neural_test.lua
+%%DATADIR%%/lualib/rspamadm/publicsuffix.lua
 %%DATADIR%%/lualib/rspamadm/rescore.lua
 %%DATADIR%%/lualib/rspamadm/stat_convert.lua
 %%DATADIR%%/lualib/rspamadm/statistics_dump.lua
@@ -312,6 +313,7 @@ man/man8/rspamd.8.gz
 %%DATADIR%%/www/css/FooTable.Glyphicons.css
 %%DATADIR%%/www/css/bootstrap.min.css
 %%DATADIR%%/www/css/d3evolution.css
+%%DATADIR%%/www/css/d3pie.css
 %%DATADIR%%/www/css/font-glyphicons.css
 %%DATADIR%%/www/css/footable.standalone.min.css
 %%DATADIR%%/www/css/nprogress.css

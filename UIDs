@@ -154,6 +154,7 @@ gnugk:*:205:205::0:0:GNU GateKeeper pseudo-user:/nonexistent:/usr/sbin/nologin
 gini:*:206:206::0:0:& streaming server:/var/log/gini:/usr/sbin/nologin
 _mixminion:*:207:207::0:0:Mixminion server:/nonexistent:/usr/sbin/nologin
 _dnsdist:*:208:208::0:0:dnsdist user:/nonexistent:/usr/sbin/nologin
+gotosocial:*:209:209::0:0:Gotosocial user:/nonexistent:/usr/sbin/nologin
 shoutcast:*:210:210::0:0:Shoutcast sandbox:/nonexistent:/bin/sh
 git:*:211:211::0:0:git user:/usr/local/git:/bin/sh
 hg:*:212:212::0:0:mercurial-server user:/usr/local/hg:/bin/sh
@@ -247,12 +248,12 @@ owncast:*:299:299::0:0:& daemon:/nonexistent:/usr/sbin/nologin
 backuppc:*:300:300::0:0:BackupPC pseudo-user:/nonexistent:/usr/sbin/nologin
 openvpn:*:301:301::0:0:OpenVPN pseudo-user:/nonexistent:/usr/sbin/nologin
 netdata:*:302:302::0:0:NetData Daemon:/var/cache/netdata:/usr/sbin/nologin
-# free: 303
-# free: 304
-# free: 305
-# free: 306
-# free: 307
-# free: 308
+onlyoffice:*:303:303::0:0:Onlyoffice pseudo-user:/usr/local/www/onlyoffice/documentserver:/usr/sbin/nologin
+glewlwyd:*:304:304::0:0:Glewlwyd SSO server:/nonexistent:/usr/sbin/nologin
+nats:*:305:305::0:0:NATS Daemon:/nonexistent:/usr/sbin/nologin
+jitsi:*:306:306::0:0:Jitsi Meet Owner:/nonexistent:/usr/sbin/nologin
+jicofo:*:307:307::0:0:Jitsi Conference Focus Owner:/nonexistent:/usr/sbin/nologin
+jvb:*:308:308::0:0:Jitsi VideoBridge Owner:/nonexistent:/usr/sbin/nologin
 # free: 309
 # free: 310
 # free: 311
@@ -303,10 +304,10 @@ nzbhydra2:*:355:355::0:0:NZBHydra 2 Daemon:/nonexistent:/usr/sbin/nologin
 lidarr:*:356:356::0:0:Lidarr Daemon:/nonexistent:/usr/sbin/nologin
 bazarr:*:357:357::0:0:Bazarr Daemon:/nonexistent:/usr/sbin/nologin
 autoscan:*:358:358::0:0:Autoscan Daemon:/nonexistent:/usr/sbin/nologin
-# free: 359
+prowlarr:*:359:359::0:0:Prowlarr Daemon:/nonexistent:/usr/sbin/nologin
 v2ray:*:360:360::0:0:V2Ray Daemon:/nonexistent:/usr/sbin/nologin
 httptunnel:*:361:361::0:0:httptunnel Daemon:/nonexistent:/usr/sbin/nologin
-# free: 362
+readarr:*:362:362::0:0:Readarr Daemon:/nonexistent:/usr/sbin/nologin
 # free: 363
 # free: 364
 # free: 365
@@ -814,8 +815,8 @@ opensearch:*:855:855::0:0:opensearch user:/nonexistent:/usr/sbin/nologin
 # free: 866
 # free: 867
 # free: 868
-# free: 869
-# free: 870
+keyd:*:869:869::0:0:Key remapping daemon for evdev:/nonexistent:/usr/sbin/nologin
+buildbot:*:870:870::0:0:Buildbot user:/var/db/buildbot:/usr/sbin/nologin
 archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 bitmark:*:872:872::0:0:Bitmark Property System:/var/lib/bitmarkd:/usr/sbin/nologin
 bitmark-recorder:*:873:873::0:0:Bitmark Property Recorder:/var/lib/recorderd:/usr/sbin/nologin
@@ -861,7 +862,7 @@ _sj3:*:912:912::0:0:SJ3 Daemon:/nonexistent:/usr/sbin/nologin
 _relayd:*:913:913::0:0:Relay Daemon:/var/empty:/usr/sbin/nologin
 bitlbee:*:914:914::0:0:Bitlbee pseudo-user:/var/db/bitlbee:/usr/sbin/nologin
 logcheck:*:915:915::0:0:Logcheck system account:/var/lib/logcheck:/usr/local/bin/bash
-# free: 916
+loki:*:916:967::0:0:Loki:/var/db/loki:/usr/sbin/nologin
 _prayer:*:917:917::0:0:Prayer Account:/nonexistent:/usr/sbin/nologin
 nefu:*:918:918::0:0:Nefu daemon:/var/db/nefu:/usr/sbin/nologin
 couchdb:*:919:919::0:0:CouchDB Account:/var/empty:/usr/sbin/nologin

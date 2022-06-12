@@ -2,7 +2,7 @@
 
 PORTNAME=	guile
 PORTVERSION=	2.2.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang scheme
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	2
@@ -24,7 +24,7 @@ USE_LDCONFIG=	yes
 
 CPE_VENDOR=	gnu
 
-CONFLICTS_INSTALL=	guile
+CONFLICTS_INSTALL=	guile guile1 # bin/guild bin/guile bin/guile-config bin/guile-snarf bin/guile-tools
 
 MAKE_JOBS_UNSAFE=	yes
 

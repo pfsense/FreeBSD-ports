@@ -1,15 +1,15 @@
---- src/base/platform/platform-posix.cc.orig	2021-11-15 18:52:12 UTC
+--- src/base/platform/platform-posix.cc.orig	2022-03-17 10:34:15 UTC
 +++ src/base/platform/platform-posix.cc
-@@ -511,7 +511,7 @@ bool OS::DecommitPages(void* address, size_t size) {
+@@ -612,7 +612,7 @@ void OS::DestroySharedMemoryHandle(PlatformSharedMemor
  
  // static
  bool OS::HasLazyCommits() {
--#if V8_OS_AIX || V8_OS_LINUX || V8_OS_MACOSX
-+#if V8_OS_AIX || V8_OS_LINUX || V8_OS_MACOSX || V8_OS_FREEBSD
+-#if V8_OS_AIX || V8_OS_LINUX || V8_OS_DARWIN
++#if V8_OS_AIX || V8_OS_LINUX || V8_OS_DARWIN || V8_OS_FREEBSD
    return true;
  #else
    // TODO(bbudge) Return true for all POSIX platforms.
-@@ -650,6 +650,12 @@ int OS::GetCurrentThreadId() {
+@@ -751,6 +751,12 @@ int OS::GetCurrentThreadId() {
    return static_cast<int>(syscall(__NR_gettid));
  #elif V8_OS_ANDROID
    return static_cast<int>(gettid());

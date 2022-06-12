@@ -1,5 +1,6 @@
 PORTNAME=	marker
 PORTVERSION=	2020.04.04.2
+PORTREVISION=	2
 CATEGORIES=	editors
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -8,6 +9,7 @@ COMMENT=	Gtk3 markdown editor
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libgtkspell3-3.so:textproc/gtkspell3 \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3
 RUN_DEPENDS=	pandoc:textproc/hs-pandoc

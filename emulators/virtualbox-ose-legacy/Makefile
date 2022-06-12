@@ -2,7 +2,7 @@
 
 PORTNAME=	virtualbox-ose
 PORTVERSION=	5.2.44
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX?=	-legacy
@@ -206,6 +206,20 @@ KMK_FLAGS+=	-j${MAKE_JOBS_NUMBER}
 
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400059
+BROKEN=		Fails to compile with libc++ 14.0.3
+.endif
+
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && ${OSVERSION} > 1400022
+# clang > 11 included in FreeBSD 14 fails to compile this legacy version
+# of virtualbox-ose, force clang 11 on FreeBSD 14 where a newer clang is
+# included.
+BUILD_DEPENDS+=	clang${VBOX_LLVM_VER}:devel/llvm${VBOX_LLVM_VER}
+CC=		clang${VBOX_LLVM_VER}
+CXX=		clang++${VBOX_LLVM_VER}
+VBOX_LLVM_VER?=	11
+.endif
+
 .if ${PYTHON_MAJOR_VER} >= 3
 PLIST_SUB+=	PYTHON_PYCDIR=/__pycache__/ \
 		PYTHON_PYCEXT=.cpython-${PYTHON_SUFFIX}.pyc
@@ -314,7 +328,7 @@ post-patch:
 
 do-build:
 	cd ${WRKSRC} && ${SH} -c '. ${WRKSRC}/env.sh && \
-	    ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
+	    ${SETENV} ${MAKE_ENV} ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
 .if ${PORT_OPTIONS:MPYTHON}
 	${PYTHON_CMD} -mcompileall \
 	    ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom/python/xpcom

@@ -1,8 +1,8 @@
 PORTNAME=	libretro-px68k
-PORTVERSION=	0.20210113
+PORTVERSION=	0.20220311
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	SHARP X68000 libretro core
 
 LICENSE=	GPLv2
@@ -13,7 +13,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	px68k-libretro
-GH_TAGNAME=	8455d9c
+GH_TAGNAME=	0183381
 
 PLIST_FILES=	lib/libretro/px68k_libretro.so
 

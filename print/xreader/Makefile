@@ -1,7 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	xreader
-PORTVERSION=	3.2.1
+PORTVERSION=	3.2.2
+PORTREVISION=	7
 CATEGORIES=	print gnome
 DIST_SUBDIR=	gnome
 

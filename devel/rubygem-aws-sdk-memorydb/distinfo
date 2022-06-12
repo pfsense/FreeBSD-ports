@@ -1,3 +1,3 @@
-TIMESTAMP = 1636145372
-SHA256 (rubygem/aws-sdk-memorydb-1.4.0.gem) = d3c25490119a769411b19c0fddbe57880961390546d1881e6803716f25e9c1ae
-SIZE (rubygem/aws-sdk-memorydb-1.4.0.gem) = 47616
+TIMESTAMP = 1646058576
+SHA256 (rubygem/aws-sdk-memorydb-1.8.0.gem) = 8f5d3767dd5eb90f5628601906100d48cbac250176520b9804a4079f4213c817
+SIZE (rubygem/aws-sdk-memorydb-1.8.0.gem) = 48128

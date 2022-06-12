@@ -1,11 +1,11 @@
---- ui/compositor/compositor.h.orig	2021-09-14 01:52:22 UTC
+--- ui/compositor/compositor.h.orig	2022-05-19 14:06:27 UTC
 +++ ui/compositor/compositor.h
-@@ -378,7 +378,7 @@ class COMPOSITOR_EXPORT Compositor : public cc::LayerT
+@@ -409,7 +409,7 @@ class COMPOSITOR_EXPORT Compositor : public base::Powe
  
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
--#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
    void OnCompleteSwapWithNewSize(const gfx::Size& size);
  #endif
  

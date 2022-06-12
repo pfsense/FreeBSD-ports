@@ -1,11 +1,21 @@
---- third_party/blink/renderer/controller/memory_usage_monitor_posix.cc.orig	2021-04-14 18:41:09 UTC
+--- third_party/blink/renderer/controller/memory_usage_monitor_posix.cc.orig	2022-02-28 16:54:41 UTC
 +++ third_party/blink/renderer/controller/memory_usage_monitor_posix.cc
-@@ -134,7 +134,7 @@ void MemoryUsageMonitorPosix::SetProcFiles(base::File 
+@@ -128,15 +128,17 @@ void MemoryUsageMonitorPosix::ResetFileDescriptors() {
+ 
+ void MemoryUsageMonitorPosix::SetProcFiles(base::File statm_file,
+                                            base::File status_file) {
++#if !BUILDFLAG(IS_BSD)
+   DCHECK(statm_file.IsValid());
+   DCHECK(status_file.IsValid());
+   DCHECK_EQ(-1, statm_fd_.get());
+   DCHECK_EQ(-1, status_fd_.get());
+   statm_fd_.reset(statm_file.TakePlatformFile());
    status_fd_.reset(status_file.TakePlatformFile());
++#endif
  }
  
--#if defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  // static
  void MemoryUsageMonitorPosix::Bind(
      mojo::PendingReceiver<mojom::blink::MemoryUsageMonitorLinux> receiver) {

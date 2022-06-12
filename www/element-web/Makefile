@@ -1,6 +1,6 @@
 PORTNAME=	element
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.6
+DISTVERSION=	1.10.14
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/vector-im/element-web/releases/download/${DISTVERSIONFULL}/
 PKGNAMESUFFIX=	-web
@@ -10,9 +10,14 @@ COMMENT=	Glossy Matrix collaboration client for the web
 
 LICENSE=	APACHE20
 
+USES=		cpe
+
+CPE_VENDOR=	matrix
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
+PLIST_SUB=	COMMITID=d9fcc3c3b96b27cefb1d
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}

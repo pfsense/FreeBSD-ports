@@ -1,8 +1,8 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
 
 PORTNAME=	openssl
-DISTVERSION=	3.0.0
-PORTREVISION=	2
+DISTVERSION=	3.0.3
+PORTREVISION=	1
 CATEGORIES=	security devel
 MASTER_SITES=	https://www.openssl.org/source/ \
 		ftp://ftp.cert.dfn.de/pub/tools/net/openssl/source/
@@ -14,7 +14,7 @@ COMMENT=	TLSv1.3 capable SSL and crypto library
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS_INSTALL=	libressl libressl-devel openssl
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl-quictls
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config
@@ -117,6 +117,7 @@ TLS1_1_IMPLIES=	TLS1_2
 EC_CONFIGURE_ON=	enable-ec_nistp_64_gcc_128
 FIPS_VARS=		shlibs+=lib/ossl-modules/fips.so
 I386_CONFIGURE_ON=	386
+KTLS_EXTRA_PATCHES=	${FILESDIR}/extra-patch-ktls
 LEGACY_VARS=		shlibs+=lib/ossl-modules/legacy.so
 MAN3_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-util_find-doc-nits
 SHARED_MAKE_ENV=	SHLIBVER=${OPENSSL_SHLIBVER}
@@ -132,13 +133,23 @@ ZLIB_CONFIGURE_ON=	zlib-dynamic
 
 SHLIBS=			lib/engines-${OPENSSL_SHLIBVER}/loader_attic.so
 
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+CONFIGURE_ARGS+=	BSD-ppc64
+.elif ${ARCH} == powerpc64le
+CONFIGURE_ARGS+=	BSD-ppc64le
+.elif ${ARCH} == riscv64
+CONFIGURE_ARGS+=	BSD-riscv64
+.endif
+
 .include <bsd.port.pre.mk>
 .if ${PREFIX} == /usr
 IGNORE=	the OpenSSL port can not be installed over the base version
 .endif
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000 && !${PORT_OPTIONS:MCRYPTODEV}
-CONFIGURE_ARGS+=        no-devcryptoeng
+CONFIGURE_ARGS+=	no-devcryptoeng
 .endif
 
 OPENSSLDIR?=	${PREFIX}/openssl

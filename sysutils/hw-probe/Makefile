@@ -1,7 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	hw-probe
-DISTVERSION=	1.6-beta2
+PORTVERSION=	1.6.4
 CATEGORIES=	sysutils perl5
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -12,11 +12,11 @@ LICENSE_COMB=	dual
 
 RUN_DEPENDS=	curl:ftp/curl \
 		hwstat:sysutils/hwstat \
+		lsblk:sysutils/lsblk \
 		smartctl:sysutils/smartmontools
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxhw
-GH_TAGNAME=	d1de28b
 
 USES=		perl5
 USE_PERL5=	run
@@ -34,6 +34,10 @@ PORTDOCS=	NEWS.md README.md
 RUN_DEPENDS+=	dmidecode:sysutils/dmidecode \
 		lscpu:sysutils/lscpu
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's/s x | grep/grep -l/; s/ | grep -v grep//' \
+		${WRKSRC}/${PORTNAME}.pl
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

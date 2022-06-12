@@ -1,6 +1,7 @@
 PORTNAME=	wcm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.0
+PORTREVISION=	2
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -10,6 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
+		wayland-protocols>0:graphics/wayland-protocols \
 		wayfire>0:x11-wm/wayfire
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libwf-config.so:devel/wf-config \

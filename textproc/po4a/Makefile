@@ -2,8 +2,13 @@
 
 PORTNAME=	po4a
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.65
+DISTVERSION=	0.66
+PORTREVISION=	1
 CATEGORIES=	textproc perl5
+
+PATCH_SITES=	https://github.com/mquinson/po4a/commit/
+PATCHFILES=	fa2546f7a0f327603f7e1cffa8415101acce8a90.diff:-p1 \
+		49902aebbab06e3a376d231eb299fcd3c30d1722.diff:-p1
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Brings gettext translation tools to all kinds of docs
@@ -12,7 +17,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${RUN_DEPENDS} \
-		${P5_POD_PARSER}
+		p5-Pod-Parser>=0:textproc/p5-Pod-Parser
 RUN_DEPENDS=	p5-Term-ReadKey>=2.30:devel/p5-Term-ReadKey \
 		p5-Text-WrapI18N>=0.06:textproc/p5-Text-WrapI18N \
 		p5-SGMLSpm>=1.03:textproc/p5-SGMLSpm \

@@ -1,7 +1,7 @@
 # Created by: Gerrit Beine <tux@pinguru.net>
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.35.4
+PORTVERSION=	1.35.6
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	135${PHP_PKGNAMESUFFIX}
@@ -11,7 +11,7 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki131 mediawiki136 mediawiki137
+CONFLICTS=	mediawiki13[6-8]
 
 USES=		cpe php:flavors shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
@@ -23,7 +23,6 @@ hhvm_OLD_CMD=	/usr/bin/hhvm
 hhvm_CMD=	${LOCALBASE}/bin/hhvm # not installed by anything yet
 USE_PHP=	ctype dom fileinfo filter hash iconv intl json mbstring openssl \
 		pcre readline session xml xmlreader zlib
-IGNORE_WITH_PHP=80
 MEDIAWIKIDIR?=	www/mediawiki
 
 NO_BUILD=	yes

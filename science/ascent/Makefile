@@ -1,6 +1,6 @@
 PORTNAME=	ascent
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.1
+DISTVERSION=	0.8.0
 CATEGORIES=	science
 PKGNAMESUFFIX=	-visualizer
 
@@ -11,13 +11,16 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 LIB_DEPENDS=	libconduit.so:science/conduit \
-		libsysinfo.so:devel/libsysinfo
+		libhdf5.so:science/hdf5 \
+		libsiloh5.so:science/silo \
+		libsysinfo.so:devel/libsysinfo \
+		libsz.so:science/szip
 
 USES=		cmake:testing compiler:c++11-lang fortran localbase:ldflags
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Alpine-DAV
-GH_TUPLE=	Alpine-DAV:spack_configs:2ea6c17:spack_configs/../scripts/uberenv_configs/spack_configs \
+GH_TUPLE=	Alpine-DAV:spack_configs:26ea412:spack_configs/../scripts/uberenv_configs/spack_configs \
 		LLNL:blt:86a7d6b:blt/blt \
 		llnl:uberenv:105e384:uberenv/../scripts/uberenv
 

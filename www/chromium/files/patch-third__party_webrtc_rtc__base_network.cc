@@ -1,6 +1,6 @@
---- third_party/webrtc/rtc_base/network.cc.orig	2021-05-12 22:13:48 UTC
+--- third_party/webrtc/rtc_base/network.cc.orig	2022-05-19 14:06:27 UTC
 +++ third_party/webrtc/rtc_base/network.cc
-@@ -245,7 +245,12 @@ AdapterType GetAdapterTypeFromName(const char* network
+@@ -261,7 +261,12 @@ AdapterType GetAdapterTypeFromName(const char* network
    }
  #endif
  

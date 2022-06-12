@@ -7,6 +7,8 @@ include/rofi/mode.h
 include/rofi/rofi-icon-fetcher.h
 include/rofi/rofi-types.h
 libdata/pkgconfig/rofi.pc
+man/man5/rofi-dmenu.5.gz
+man/man5/rofi-keys.5.gz
 man/man1/rofi-sensible-terminal.1.gz
 man/man1/rofi-theme-selector.1.gz
 man/man1/rofi.1.gz
@@ -25,6 +27,7 @@ man/man5/rofi-theme.5.gz
 %%DATADIR%%/themes/blue.rasi
 %%DATADIR%%/themes/c64.rasi
 %%DATADIR%%/themes/dmenu.rasi
+%%DATADIR%%/themes/docu.rasi
 %%DATADIR%%/themes/fancy.rasi
 %%DATADIR%%/themes/glue_pro_blue.rasi
 %%DATADIR%%/themes/gruvbox-common.rasi
@@ -34,6 +37,8 @@ man/man5/rofi-theme.5.gz
 %%DATADIR%%/themes/gruvbox-light-hard.rasi
 %%DATADIR%%/themes/gruvbox-light-soft.rasi
 %%DATADIR%%/themes/gruvbox-light.rasi
+%%DATADIR%%/themes/iggy.jpg
+%%DATADIR%%/themes/iggy.rasi
 %%DATADIR%%/themes/lb.rasi
 %%DATADIR%%/themes/paper-float.rasi
 %%DATADIR%%/themes/purple.rasi

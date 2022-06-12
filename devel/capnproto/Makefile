@@ -1,27 +1,25 @@
 # Created by: Felix Hanley
 
 PORTNAME=	capnproto
-PORTVERSION=	0.9.0
-DISTVERSIONPREFIX=	v
+DISTVERSION=	0.10.1
 CATEGORIES=	devel
+MASTER_SITES=	https://capnproto.org/
+DISTNAME=	${PORTNAME}-c++-${DISTVERSION}
 
 MAINTAINER=	felix@userspace.com.au
 COMMENT=	Serialization/RPC system
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/../LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		autoreconf compiler:c++14-lang cpe gmake libtool ssl
-USE_GITHUB=	yes
+USES=		cmake compiler:c++14-lang cpe pathfix ssl
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	ac_cv_lib_ssl_OPENSSL_init_ssl=yes
 
-INSTALL_TARGET=	install-strip
-TEST_TARGET=	check
+CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	BUILD_TESTING
 
-WRKSRC_SUBDIR=	c++
+CONFLICTS_INSTALL=	capnproto080
 
-PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
+PLIST_SUB=	DISTVERSION="${DISTVERSION}"
 
 .include <bsd.port.mk>

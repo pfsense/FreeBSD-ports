@@ -1,7 +1,7 @@
 # Created by: Rainer Hurling <rhurlin@gwdg.de>
 
 PORTNAME=	saga
-PORTVERSION=	8.0.1
+PORTVERSION=	8.2.1
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]\.[[:digit:]]*$//}/SAGA%20-%20${PORTVERSION}
 
@@ -19,7 +19,6 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libhdf5.so:science/hdf5 \
 		libhpdf.so:print/libharu \
 		libjasper.so:graphics/jasper \
-		liblas12.so:devel/liblas12 \
 		libodbc.so:databases/unixODBC \
 		libopencv_core.so:graphics/opencv \
 		libpdal_base.so:math/pdal \
@@ -36,12 +35,10 @@ DOS2UNIX_GLOB=	*.cpp *.h
 USE_LDCONFIG=	yes
 USE_WX=		3.1+
 
-CMAKE_ARGS+=	-DLAS_INCLUDE:PATH=${LOCALBASE}/include/liblas12/capi/liblas.h \
-		-DLAS_LIBRARY:FILEPATH=${LOCALBASE}/lib/liblas12.so \
-		-DSVM_INCLUDE:PATH=${LOCALBASE}/include/svm.h
-CMAKE_ON=	WITH_DEV_TOOLS WITH_EXCERCISES WITH_SYSTEM_SVM
+CMAKE_ARGS+=	-DSVM_INCLUDE:PATH=${LOCALBASE}/include/svm.h
+CMAKE_ON=	WITH_DEV_TOOLS WITH_EXCERCISES WITH_MRMR WITH_SYSTEM_SVM
 CMAKE_ON+=	CMAKE_VERBOSE_MAKEFILE
-CMAKE_OFF+=	WITH_TRIANGLE
+CMAKE_OFF+=	WITH_TOOLS_LAS WITH_TRIANGLE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/saga-gis
 
@@ -51,9 +48,11 @@ OPTIONS_DEFINE=	PGSQL OPENMP VIGRA
 OPTIONS_DEFAULT=	PGSQL VIGRA
 OPTIONS_DEFAULT_amd64=	OPENMP
 OPTIONS_DEFAULT_i386=	OPENMP
+OPTIONS_DEFAULT_powerpc64=	OPENMP
+OPTIONS_DEFAULT_powerpc64le=	OPENMP
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=	yes
-OPENMP_DESC=	Enable Multiprocessing (only amd64 and i386)
+OPENMP_DESC=	Enable Multiprocessing (only amd64, i386 and powerpc64*)
 VIGRA_DESC=	Enable 'Vision with Generic Algorithms' Library
 
 OPENMP_CONFIGURE_ENABLE=	openmp

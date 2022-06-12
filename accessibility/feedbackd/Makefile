@@ -1,5 +1,5 @@
 PORTNAME=	feedbackd
-PORTVERSION=	s20211019
+PORTVERSION=	s20220208
 CATEGORIES=	accessibility
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,7 +16,7 @@ USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GL_SITE=	https://source.puri.sm
 GL_ACCOUNT=	Librem5
-GL_COMMIT=	8e9bbd9d4ccc092a1f8b37551b7cdf2c32b5f8b8
+GL_COMMIT=	74b178a363f1e0e4b84309f2a1b1c1c41bf97248
 SHEBANG_FILES=	build-aux/post_install.py
 GLIB_SCHEMAS=	org.sigxcpu.feedbackd.gschema.xml
 

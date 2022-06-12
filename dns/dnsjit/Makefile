@@ -1,6 +1,6 @@
 PORTNAME=	dnsjit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.2
+DISTVERSION=	1.2.3
 CATEGORIES=	dns net
 
 MAINTAINER=	freebsd@dns.company
@@ -13,9 +13,10 @@ LIB_DEPENDS=	libck.so:devel/concurrencykit \
 		libgnutls.so:security/gnutls \
 		liblmdb.so:databases/lmdb \
 		libluajit-5.1.so:lang/luajit-openresty \
-		liblz4.so:archivers/liblz4 \
 		libpcap.so:net/libpcap \
+		liblz4.so:archivers/liblz4 \
 		libzstd.so:archivers/zstd
+		# Mind PR 262976 about libpcap
 
 USES=		autoreconf libtool pkgconfig
 USE_GITHUB=	yes

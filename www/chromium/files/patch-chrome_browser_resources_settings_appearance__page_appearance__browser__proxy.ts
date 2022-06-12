@@ -1,11 +1,11 @@
---- chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.ts.orig	2021-09-24 17:29:52 UTC
+--- chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.ts.orig	2022-05-19 14:06:27 UTC
 +++ chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.ts
 @@ -16,7 +16,7 @@ export interface AppearanceBrowserProxy {
  
    useDefaultTheme(): void;
  
--  // <if expr="is_linux and not chromeos">
-+  // <if expr="is_posix and not chromeos">
+-  // <if expr="is_linux and not chromeos_ash">
++  // <if expr="is_bsd and not chromeos_ash">
    useSystemTheme(): void;
    // </if>
  
@@ -13,8 +13,8 @@
      chrome.send('useDefaultTheme');
    }
  
--  // <if expr="is_linux and not chromeos">
-+  // <if expr="is_posix and not chromeos">
+-  // <if expr="is_linux and not chromeos_ash">
++  // <if expr="is_bsd and not chromeos_ash">
    useSystemTheme() {
      chrome.send('useSystemTheme');
    }

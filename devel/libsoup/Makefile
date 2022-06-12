@@ -1,7 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	libsoup
-DISTVERSION=	2.74.0
+DISTVERSION=	2.74.2
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -58,10 +58,10 @@ MESON_ARGS=	-Dvapi=disabled \
 		-Dgnome=true \
 		-Dbrotli=disabled
 
-LIBVERSION=	1.11.1
+LIBVERSION=	1.11.2
 PLIST_SUB=	VERSION="2.4" LIBVERSION=${LIBVERSION}
 
-PORTSCOUT=	limitw:1,even
+PORTSCOUT=	limit:^2\.[0-9]?[02468]\.
 
 post-patch:
 	${REINPLACE_CMD} \

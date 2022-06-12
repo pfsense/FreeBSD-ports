@@ -1,5 +1,5 @@
-TIMESTAMP = 1637866985
-SHA256 (libreoffice/i18n/LibreOffice_7.2.3_Linux_x86-64_deb_langpack_ca-valencia.tar.gz) = b30636f56e85ad7a42a5451783fb681455554612362d840e74416edba2e1a6e7
-SIZE (libreoffice/i18n/LibreOffice_7.2.3_Linux_x86-64_deb_langpack_ca-valencia.tar.gz) = 1475907
-SHA256 (libreoffice/i18n/LibreOffice_7.2.3_Linux_x86-64_deb_helppack_ca-valencia.tar.gz) = 5f2d74b91219ea6594835cd7c26f90bf56382de5c17d17134e7ff974f186e038
-SIZE (libreoffice/i18n/LibreOffice_7.2.3_Linux_x86-64_deb_helppack_ca-valencia.tar.gz) = 3004841
+TIMESTAMP = 1654808437
+SHA256 (libreoffice/i18n/LibreOffice_7.3.4_Linux_x86-64_deb_langpack_ca-valencia.tar.gz) = 583be5ac09e7e3aa8dba836b78c4389964525683f7cd71cd311cdf177c0be0ae
+SIZE (libreoffice/i18n/LibreOffice_7.3.4_Linux_x86-64_deb_langpack_ca-valencia.tar.gz) = 1471403
+SHA256 (libreoffice/i18n/LibreOffice_7.3.4_Linux_x86-64_deb_helppack_ca-valencia.tar.gz) = fa86ce7ca5a5cdbce6575d6e0fe4b7e06bd4c12543d61f30b63ef113dc47fdec
+SIZE (libreoffice/i18n/LibreOffice_7.3.4_Linux_x86-64_deb_helppack_ca-valencia.tar.gz) = 3070751

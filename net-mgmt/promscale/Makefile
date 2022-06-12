@@ -2,6 +2,7 @@
 
 PORTNAME=	promscale
 DISTVERSION=	0.6.2
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	kbowling@FreeBSD.org

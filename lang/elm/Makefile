@@ -1,6 +1,6 @@
 PORTNAME=	elm
 PORTVERSION=	0.19.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	LOCAL/arrowd/:package_list
 DISTFILES=	elm-compiler-bootstrap-${PORTVERSION}${EXTRACT_SUFX}:package_list
@@ -17,6 +17,8 @@ USES=		cabal
 USE_GITHUB=	yes
 GH_ACCOUNT=	elm
 GH_PROJECT=	compiler
+
+CONFLICTS_INSTALL=	elm # bin/elm (from mail/elm)
 
 USE_CABAL=	ansi-terminal-0.8.2 \
 		ansi-wl-pprint-0.6.8.2_2 \

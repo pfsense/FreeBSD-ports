@@ -1,6 +1,7 @@
 PORTNAME=	php-fpm_exporter
 PORTVERSION=	2.0.4
 DISTVERSIONPREFIX=v
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	freebsd.org@neant.ro

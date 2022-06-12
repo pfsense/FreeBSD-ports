@@ -1,5 +1,6 @@
 bin/calc
 %%FULL%%include/calc/alloc.h
+%%FULL%%include/calc/attribute.h
 %%FULL%%include/calc/banned.h
 %%FULL%%include/calc/blkcpy.h
 %%FULL%%include/calc/block.h
@@ -367,6 +368,7 @@ man/man1/calc.1.gz
 %%HELP%%%%DATADIR%%/help/rcpow
 %%HELP%%%%DATADIR%%/help/rcsq
 %%HELP%%%%DATADIR%%/help/re
+%%HELP%%%%DATADIR%%/help/releases
 %%HELP%%%%DATADIR%%/help/remove
 %%HELP%%%%DATADIR%%/help/resource
 %%HELP%%%%DATADIR%%/help/reverse

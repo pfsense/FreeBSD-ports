@@ -1,5 +1,6 @@
 PORTNAME=	gatk
-DISTVERSION=	4.2.0.0
+DISTVERSION=	4.2.6.1
+PORTREVISION=	1
 CATEGORIES=	biology java
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -11,12 +12,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 BROKEN_FreeBSD_12_powerpc64=	fails to build: String index out of range: -1
 
-BUILD_DEPENDS=	gradle62:devel/gradle62
+BUILD_DEPENDS=	gradle:devel/gradle
 
 USES=		gettext-runtime
+USE_JAVA=	yes
+
+JAVA_VERSION=	17 # Java 8 fails on aarch64: Internal Error (assembler_aarch64.hpp:237), pid=76025, tid=0x000000000006e359 guarantee(val < (1U << nbits)) failed: Field too big for insn
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	broadinstitute
-USE_JAVA=	yes
 
 SUB_FILES=	${PORTNAME}.sh
 SUB_LIST=	PORTVERSION=${PORTVERSION} JAVA=${JAVA}
@@ -82,7 +86,7 @@ post-extract: # need a separate extract step because the cache is in /tmp, and n
 .endif
 
 do-build:
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} gradle62 \
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} gradle \
 		--gradle-user-home ${DEPS_CACHE_DIR}/gradle-${PORTNAME} --project-cache-dir ${DEPS_CACHE_DIR}/gradle-${PORTNAME} \
 		${GRADLE_ARGS} --build-cache localJar
 

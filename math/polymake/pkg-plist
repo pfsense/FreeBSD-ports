@@ -61,6 +61,7 @@ include/polymake/common/TOmath_decl.h
 include/polymake/common/bounding_box.h
 include/polymake/common/factorization.h
 include/polymake/common/find_matrix_row_permutation.h
+include/polymake/common/finiteFieldLA.h
 include/polymake/common/hadamard_product.h
 include/polymake/common/incidence_tools.h
 include/polymake/common/labels.h
@@ -77,8 +78,10 @@ include/polymake/fan/face_lattice_tools.h
 include/polymake/fan/hasse_diagram.h
 include/polymake/fan/intersection.h
 include/polymake/fan/next/compactification.h
+include/polymake/fan/prune_polyhedral_complex.h
 include/polymake/fan/reverse_search_chamber_decomposition.h
 include/polymake/fan/stacky_fan.h
+include/polymake/fan/stacky_fundamental_domain.h
 include/polymake/fan/tight_span.h
 include/polymake/graph/BasicLatticeTypes.h
 include/polymake/graph/Closure.h
@@ -101,6 +104,7 @@ include/polymake/graph/bipartite.h
 include/polymake/graph/bipartite.tcc
 include/polymake/graph/compare.h
 include/polymake/graph/connected.h
+include/polymake/graph/conway_impl.h
 include/polymake/graph/diameter.h
 include/polymake/graph/graph_iterators.h
 include/polymake/graph/hungarian_method.h
@@ -113,6 +117,7 @@ include/polymake/graph/max_cliques.h
 include/polymake/graph/max_cliques.tcc
 include/polymake/graph/maximal_chains.h
 include/polymake/graph/next/Decoration.h
+include/polymake/graph/next/DoublyConnectedEdgeList.h
 include/polymake/graph/poset_tools.h
 include/polymake/graph/strong_connected.h
 include/polymake/group/action.h
@@ -328,6 +333,7 @@ include/polymake/tropical/cartesian_product.h
 include/polymake/tropical/codim_one_with_locality.h
 include/polymake/tropical/convex_hull_tools.h
 include/polymake/tropical/covectors.h
+include/polymake/tropical/curve.h
 include/polymake/tropical/cyclic_chains.h
 include/polymake/tropical/divisor.h
 include/polymake/tropical/double_description.h
@@ -350,6 +356,7 @@ include/polymake/tropical/morphism_values.h
 include/polymake/tropical/next/covectors.h
 include/polymake/tropical/patchwork.h
 include/polymake/tropical/polynomial_tools.h
+include/polymake/tropical/polynomial_vanishing.h
 include/polymake/tropical/pruefer.h
 include/polymake/tropical/psi_classes.h
 include/polymake/tropical/pullback.h
@@ -364,13 +371,13 @@ include/polymake/type_utils.h
 include/polymake/vector
 lib/libpolymake-apps-rt.so
 lib/libpolymake-apps-rt.so.4
-lib/libpolymake-apps-rt.so.4.4
+lib/libpolymake-apps-rt.so.4.6
 lib/libpolymake-apps.so
 lib/libpolymake-apps.so.4
-lib/libpolymake-apps.so.4.4
+lib/libpolymake-apps.so.4.6
 lib/libpolymake.so
 lib/libpolymake.so.4
-lib/libpolymake.so.4.4
+lib/libpolymake.so.4.6
 libexec/polymake/config.ninja
 libexec/polymake/lib/common.so
 libexec/polymake/lib/fan.so
@@ -380,10 +387,10 @@ libexec/polymake/lib/group.so
 libexec/polymake/lib/ideal.so
 libexec/polymake/lib/libpolymake-apps-rt.so
 libexec/polymake/lib/libpolymake-apps-rt.so.4
-libexec/polymake/lib/libpolymake-apps-rt.so.4.4
+libexec/polymake/lib/libpolymake-apps-rt.so.4.6
 libexec/polymake/lib/libpolymake-apps.so
 libexec/polymake/lib/libpolymake-apps.so.4
-libexec/polymake/lib/libpolymake-apps.so.4.4
+libexec/polymake/lib/libpolymake-apps.so.4.6
 libexec/polymake/lib/matroid.so
 libexec/polymake/lib/polytope.so
 libexec/polymake/lib/topaz.so
@@ -515,7 +522,6 @@ libexec/polymake/shared
 %%DATADIR%%/apps/fan/src/remove_redundancies.cc
 %%DATADIR%%/apps/fan/src/reverse_search_chamber_decomposition.cc
 %%DATADIR%%/apps/fan/src/secondary_fan.cc
-%%DATADIR%%/apps/fan/src/stacky_fan.cc
 %%DATADIR%%/apps/fan/src/stacky_fundamental_domain.cc
 %%DATADIR%%/apps/fan/src/tight_span.cc
 %%DATADIR%%/apps/fan/src/tiling_quotient.cc
@@ -541,6 +547,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/graph/perllib/Visual/Lattice.pm
 %%DATADIR%%/apps/graph/rules/common.rules
 %%DATADIR%%/apps/graph/rules/compare.rules
+%%DATADIR%%/apps/graph/rules/doubly_connected_edge_list.rules
 %%DATADIR%%/apps/graph/rules/geometric_graph.rules
 %%DATADIR%%/apps/graph/rules/graph_properties.rules
 %%DATADIR%%/apps/graph/rules/graphviz.rules
@@ -598,7 +605,6 @@ libexec/polymake/shared
 %%DATADIR%%/apps/group/rules/help.rules
 %%DATADIR%%/apps/group/rules/main.rules
 %%DATADIR%%/apps/group/rules/permlib.rules
-%%DATADIR%%/apps/group/rules/polytope_group.rules
 %%DATADIR%%/apps/group/rules/switch_table.rules
 %%DATADIR%%/apps/group/src/col_to_row_action.cc
 %%DATADIR%%/apps/group/src/conjugacy_classes.cc
@@ -781,6 +787,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/polytope/src/centroid_volume.cc
 %%DATADIR%%/apps/polytope/src/check_inc.cc
 %%DATADIR%%/apps/polytope/src/check_poly.cc
+%%DATADIR%%/apps/polytope/src/chirotope.cc
 %%DATADIR%%/apps/polytope/src/circuit_completions.cc
 %%DATADIR%%/apps/polytope/src/cocircuit_equations.cc
 %%DATADIR%%/apps/polytope/src/common_refinement.cc
@@ -788,6 +795,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/polytope/src/congruent_polytopes.cc
 %%DATADIR%%/apps/polytope/src/contains.cc
 %%DATADIR%%/apps/polytope/src/conv.cc
+%%DATADIR%%/apps/polytope/src/conway.cc
 %%DATADIR%%/apps/polytope/src/core_point_algo.cc
 %%DATADIR%%/apps/polytope/src/cross.cc
 %%DATADIR%%/apps/polytope/src/crosscut_complex.cc
@@ -854,6 +862,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/polytope/src/lattice_normalization.cc
 %%DATADIR%%/apps/polytope/src/lattice_pyramid.cc
 %%DATADIR%%/apps/polytope/src/lineality_via_lp.cc
+%%DATADIR%%/apps/polytope/src/linear_symmetries_matrix.cc
 %%DATADIR%%/apps/polytope/src/long_and_winding.cc
 %%DATADIR%%/apps/polytope/src/mapping_polytope.cc
 %%DATADIR%%/apps/polytope/src/massive_gkz.cc
@@ -864,6 +873,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/polytope/src/minkowski_sum.cc
 %%DATADIR%%/apps/polytope/src/mixed_integer_hull.cc
 %%DATADIR%%/apps/polytope/src/mixed_volume.cc
+%%DATADIR%%/apps/polytope/src/mps2poly.cc
 %%DATADIR%%/apps/polytope/src/multiplex.cc
 %%DATADIR%%/apps/polytope/src/n_fine_triangulations.cc
 %%DATADIR%%/apps/polytope/src/n_gon.cc
@@ -882,6 +892,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/polytope/src/polarize.cc
 %%DATADIR%%/apps/polytope/src/poly2lp.cc
 %%DATADIR%%/apps/polytope/src/poly2metric.cc
+%%DATADIR%%/apps/polytope/src/poly2mps.cc
 %%DATADIR%%/apps/polytope/src/polynomial_conversion.cc
 %%DATADIR%%/apps/polytope/src/print_constraints.cc
 %%DATADIR%%/apps/polytope/src/prism.cc
@@ -1017,7 +1028,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/topaz/src/k_skeleton.cc
 %%DATADIR%%/apps/topaz/src/klein_bottle.cc
 %%DATADIR%%/apps/topaz/src/lawler.cc
-%%DATADIR%%/apps/topaz/src/link.cc
+%%DATADIR%%/apps/topaz/src/link_subcomplex.cc
 %%DATADIR%%/apps/topaz/src/merge_vertices.cc
 %%DATADIR%%/apps/topaz/src/minimal_non_faces.cc
 %%DATADIR%%/apps/topaz/src/mixed_graph.cc
@@ -1042,9 +1053,9 @@ libexec/polymake/shared
 %%DATADIR%%/apps/topaz/src/sphere.cc
 %%DATADIR%%/apps/topaz/src/stabbing_order.cc
 %%DATADIR%%/apps/topaz/src/stanley_reisner.cc
-%%DATADIR%%/apps/topaz/src/star.cc
 %%DATADIR%%/apps/topaz/src/star_deletion.cc
 %%DATADIR%%/apps/topaz/src/star_shaped_balls.cc
+%%DATADIR%%/apps/topaz/src/star_subcomplex.cc
 %%DATADIR%%/apps/topaz/src/stellar_subd_face.cc
 %%DATADIR%%/apps/topaz/src/stiefel_whitney.cc
 %%DATADIR%%/apps/topaz/src/sum_triangulation.cc
@@ -1059,6 +1070,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/tropical/rules/cone.rules
 %%DATADIR%%/apps/tropical/rules/cone_properties.rules
 %%DATADIR%%/apps/tropical/rules/covector_lattice.rules
+%%DATADIR%%/apps/tropical/rules/curve.rules
 %%DATADIR%%/apps/tropical/rules/cycle.rules
 %%DATADIR%%/apps/tropical/rules/gfan.rules
 %%DATADIR%%/apps/tropical/rules/help.rules
@@ -1079,6 +1091,7 @@ libexec/polymake/shared
 %%DATADIR%%/apps/tropical/src/compute_maximal_covectors.cc
 %%DATADIR%%/apps/tropical/src/covector_decomposition.cc
 %%DATADIR%%/apps/tropical/src/covectors.cc
+%%DATADIR%%/apps/tropical/src/curve.cc
 %%DATADIR%%/apps/tropical/src/cycle_edge_lengths.cc
 %%DATADIR%%/apps/tropical/src/cyclic.cc
 %%DATADIR%%/apps/tropical/src/discard_non_vertices.cc
@@ -1099,9 +1112,12 @@ libexec/polymake/shared
 %%DATADIR%%/apps/tropical/src/map_perm.cc
 %%DATADIR%%/apps/tropical/src/matroid_polytope.cc
 %%DATADIR%%/apps/tropical/src/minkowski_sum.cc
+%%DATADIR%%/apps/tropical/src/moduli_cell_of_curve.cc
+%%DATADIR%%/apps/tropical/src/moduli_space_of_curve.cc
 %%DATADIR%%/apps/tropical/src/nearest_point.cc
 %%DATADIR%%/apps/tropical/src/patchwork.cc
 %%DATADIR%%/apps/tropical/src/points2hypersurface.cc
+%%DATADIR%%/apps/tropical/src/polynomial_vanishing.cc
 %%DATADIR%%/apps/tropical/src/thomog.cc
 %%DATADIR%%/apps/tropical/src/tpluecker.cc
 %%DATADIR%%/apps/tropical/src/tropicalNorm.cc
@@ -1198,6 +1214,8 @@ libexec/polymake/shared
 %%DATADIR%%/bundled/flint/apps/common/src/QuadraticExtension.cc
 %%DATADIR%%/bundled/flint/apps/common/src/factorization.cc
 %%DATADIR%%/bundled/flint/apps/common/src/sum_of_square_roots_naive.cc
+%%DATADIR%%/bundled/flint/apps/matroid/rules/main.rules
+%%DATADIR%%/bundled/flint/apps/matroid/src/bases_from_points_flint.cc
 %%DATADIR%%/bundled/flint/apps/polytope/src/maximal_ball.cc
 %%DATADIR%%/bundled/flint/apps/topaz/rules/main.rules
 %%DATADIR%%/bundled/flint/apps/topaz/src/homology_flint.cc
@@ -1273,6 +1291,7 @@ libexec/polymake/shared
 %%DATADIR%%/demo/files/json_and_polydb/polydb_meta/Polytopes/01Polytopes/schema.2.1.json
 %%DATADIR%%/demo/files/json_and_polydb/polydb_meta/Polytopes/Polytopes.2.1.json
 %%DATADIR%%/demo/files/optimization/c3t.lp
+ %%DATADIR%%/demo/files/optimization/c3t.mps
 %%DATADIR%%/demo/files/optimization/lpclosure.pl
 %%DATADIR%%/demo/files/optimization/mip.lp
 %%DATADIR%%/demo/files/optimization/stab.lp
@@ -1473,6 +1492,8 @@ libexec/polymake/shared
 %%DATADIR%%/upgrades/4.2
 %%DATADIR%%/upgrades/4.3
 %%DATADIR%%/upgrades/4.4
+%%DATADIR%%/upgrades/4.5
+%%DATADIR%%/upgrades/4.6
 %%DATADIR%%/upgrades/big_objects-2.10.1
 %%DATADIR%%/upgrades/big_objects-2.11.1
 %%DATADIR%%/upgrades/big_objects-2.12.1
@@ -1488,6 +1509,8 @@ libexec/polymake/shared
 %%DATADIR%%/upgrades/big_objects-4.2.1
 %%DATADIR%%/upgrades/big_objects-4.3.1
 %%DATADIR%%/upgrades/big_objects-4.3.3
+%%DATADIR%%/upgrades/big_objects-4.4.1
+%%DATADIR%%/upgrades/big_objects-4.5.1
 @dir libexec/polymake/bundled/atint
 %%BLISS%%@dir libexec/polymake/bundled/bliss
 @dir libexec/polymake/bundled/cdd

@@ -2,7 +2,7 @@
 
 PORTNAME=	orpie
 PORTVERSION=	1.5.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES+=	math
 MASTER_SITES=	GENTOO http://pessimization.com/software/orpie/
 
@@ -11,6 +11,7 @@ COMMENT=	Fullscreen RPN calculator for the console
 
 LICENSE=	GPLv2
 
+BUILD_DEPENDS=	${LOCALBASE}/${OCAML_SITELIBDIR}/num/META:math/ocaml-num
 LIB_DEPENDS=	libgsl.so:math/gsl
 
 USES=		gmake ncurses

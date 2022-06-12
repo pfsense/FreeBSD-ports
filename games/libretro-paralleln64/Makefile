@@ -1,9 +1,9 @@
 PORTNAME=	libretro-paralleln64
-PORTVERSION=	0.20210127
+PORTVERSION=	0.20220406
 PORTREVISION=	1
 CATEGORIES=	games
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	dmenelkir@gmail.com
 COMMENT=	Improved Nintendo 64 core for libretro
 
 # Commercial users must seek permission from copyright holders.
@@ -27,7 +27,7 @@ MAKE_ARGS=	WITH_DYNAREC=${DYNAREC}
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	parallel-n64
-GH_TAGNAME=	6e26fbb
+GH_TAGNAME=	b804ab1
 
 PLIST_FILES=	lib/libretro/parallel_n64_libretro.so
 
