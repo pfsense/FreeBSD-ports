@@ -2626,7 +2626,7 @@ sortifaddrs(struct ifaddrs *list,
 		return (list);
 
 	if (list->ifa_next && !list->ifa_next->ifa_next) {
-		if (compare(list, list->ifa_next) < 0) {
+		if (compare(list, list->ifa_next) > 0) {
 			result = list->ifa_next;
 			list->ifa_next = NULL;
 			result->ifa_next = list;
@@ -2653,7 +2653,7 @@ sortifaddrs(struct ifaddrs *list,
 		} else if (!list) {
 			next = right;
 			right = right->ifa_next;
-		} else if (compare(list, right) < 0) {
+		} else if (compare(list, right) < 1) {
 			next = list;
 			list = list->ifa_next;
 		} else {
