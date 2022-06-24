@@ -81,13 +81,13 @@ display_top_tabs($tab_array);
 			foreach ($a_cron as $ent) {
 	?>
 					<tr>
-						<td><?=$ent['minute']?></td>
-						<td><?=$ent['hour']?></td>
-						<td><?=$ent['mday']?></td>
-						<td><?=$ent['month']?></td>
-						<td><?=$ent['wday']?></td>
-						<td><?=$ent['who']?></td>
-						<td><?=$ent['command']?></td>
+						<td><?= htmlspecialchars($ent['minute']) ?></td>
+						<td><?= htmlspecialchars($ent['hour']) ?></td>
+						<td><?= htmlspecialchars($ent['mday']) ?></td>
+						<td><?= htmlspecialchars($ent['month']) ?></td>
+						<td><?= htmlspecialchars($ent['wday']) ?></td>
+						<td><?= htmlspecialchars($ent['who']) ?></td>
+						<td><?= htmlspecialchars($ent['command']) ?></td>
 						<td>
 							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
 							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa fa-clone" alt="copy"></i></a>
