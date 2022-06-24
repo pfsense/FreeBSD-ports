@@ -216,7 +216,7 @@ function sudo_validate_commands(&$input_errors) {
 	$idx = 0;
 	while (isset($_POST["cmdlist{$idx}"])) {
 		$commands = $_POST["cmdlist" . $idx++];
-		if (strtoupper($commands) == "ALL") {
+		if (strtoupper($commands) == "ALL" || empty($commands)) {
 			continue;
 		}
 		$commands = explode(",", $commands);
