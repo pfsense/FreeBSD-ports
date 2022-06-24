@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Cron
-PORTVERSION=	0.3.7
-PORTREVISION=	5
+PORTVERSION=	0.3.8
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

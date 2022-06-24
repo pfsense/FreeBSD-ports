@@ -67,16 +67,36 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
+	$input_errors = array();
+
+	$cron_time_names = array(
+		'minute' => gettext('Minute'),
+		'hour' => gettext('Hour'),
+		'mday' => gettext('Day of the Month'),
+		'month' => gettext('Month of the Year'),
+		'wday' => gettext('Day of the Week'),
+	);
+
+	foreach (array_keys($cron_time_names) as $field) {
+		if (!preg_match('/^(((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*|\*\/\d+) ?)$/', $_POST[$field])) {
+			$input_errors[] = gettext("Invalid cron time specification") . ": {$cron_time_names[$field]}";
+		}
+	}
+
+	if (posix_getpwnam($_POST['who']) === false) {
+		$input_errors[] = gettext("Invalid OS user");
+	}
+
 	if (!$input_errors) {
 
 		$ent = array();
-		$ent['minute'] = $_POST['minute'];
-		$ent['hour'] = $_POST['hour'];
-		$ent['mday'] = $_POST['mday'];
-		$ent['month'] = $_POST['month'];
-		$ent['wday'] = $_POST['wday'];
-		$ent['who'] = $_POST['who'];
-		$ent['command'] = $_POST['command'];
+		$ent['minute'] = trim($_POST['minute']);
+		$ent['hour'] = trim($_POST['hour']);
+		$ent['mday'] = trim($_POST['mday']);
+		$ent['month'] = trim($_POST['month']);
+		$ent['wday'] = trim($_POST['wday']);
+		$ent['who'] = trim($_POST['who']);
+		$ent['command'] = trim($_POST['command']);
 
 		if (isset($id) && $a_cron[$id] && !$dup) {
 			// update
