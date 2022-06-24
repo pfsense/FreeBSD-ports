@@ -6962,7 +6962,6 @@ net/libnet10||2014-09-30|Has expired: Superseded by net/libnet
 net/despoof||2014-09-30|Has expired: Depends on expired net/libnet10
 sysutils/gpkgdep||2014-09-30|Has expired: Requires old pkg_info
 security/vida||2014-09-30|Has expired: Depends on expired net/libnet10
-net/nemesis||2014-09-30|Has expired: Depends on expired net/libnet10
 net-mgmt/sing||2014-09-30|Has expired: Depends on expired net/libnet10
 net-mgmt/gps||2014-09-30|Has expired: Depends on expired net/libnet10
 net/ttlscan||2014-09-30|Has expired: Depends on expired net/libnet10
@@ -17197,3 +17196,29 @@ www/npm-node17|www/npm-node18|2022-06-03|Renamed for www/node update to v18
 www/yarn-node17|www/yarn-node18|2022-06-03|Renamed for www/node update to v18
 security/keepassx-devel||2022-06-05|Has expired: KeePassX had been stopped development/maintenance, please consider using security/keepassxc instead
 sysutils/uefi-edk2-qemu|sysutils/edk2@qemu|2022-06-05|No more need for this port: please use sysutils/edk2 FLAVOR qemu instead
+graphics/gltt||2022-06-08|Abdonware, depends on freetype1
+print/ttftot42||2022-06-08|Abdonware, depends on freetype1
+print/freetype|print/freetype2|2022-06-08|Has been replaced long ago by freetype2
+net/libgnetwork||2022-06-08|Gnome2 library unused anymore
+x11-wm/compizconfig-backend-gconf||2022-06-08|gconf support has been removed from compiz
+devel/android-tools-adb|devel/android-tools|2022-06-09|Port has been updated, unbroken and consolidated into devel/android-tools
+devel/android-tools-fastboot|devel/android-tools|2022-06-09|Port has been updated and consolidated into devel/android-tools
+devel/py-lark-parser|devel/py-lark|2022-06-09|Remove obsoleted port. Use devel/py-lark instead
+deskutils/egroupware|deskutils/egroupware@php74|2022-06-12|Merge into flavorized version
+databases/py-arrow|databases/py-apache-arrow|2022-06-12|Rename to avoid conflict with devel/py-arrow and to match the project name
+science/szip|science/libaec|2022-06-16|Remove obsoleted port. Use science/libaec instead
+net/pfinger||2022-06-17|Has expired: Unmaintained and dead upstream, consider base fingerd
+biology/mopac|science/mopac|2022-06-19|Move to a proper category
+devel/liblas12||2022-06-21|Has expired: Previously only required by math/saga (now superseeded by math/pdal)
+net-im/licq||2022-06-21|Has expired: Abandonware, project is dead
+net-im/licq-icq||2022-06-21|Removed, part of expired net-im/licq
+net-im/licq-jabber||2022-06-21|Removed, part of expired net-im/licq
+net-im/licq-osd||2022-06-21|Removed, part of expired net-im/licq
+net-im/licq-qt-gui||2022-06-21|Removed, part of expired net-im/licq
+x11-toolkits/py-xlib|x11-toolkits/py-python-xlib|2022-06-21|Use registered upstream (PyPI) name (Python ports compliance)
+www/openarc|mail/openarc|2022-06-21|Move to a proper category
+textproc/rubygem-elasticsearch-model6|textproc/rubygem-elasticsearch-model|2022-06-24|Obsolete use textproc/rubygem-elasticsearch-model instead
+textproc/rubygem-elasticsearch6|textproc/rubygem-elasticsearch|2022-06-24|Obsolete use textproc/rubygem-elasticsearch instead
+textproc/rubygem-elasticsearch-transport6|textproc/rubygem-elasticsearch-transport|2022-06-24|Obsolete use textproc/rubygem-elasticsearch-transport instead
+textproc/rubygem-elasticsearch-api6|textproc/rubygem-elasticsearch-api|2022-06-24|Obsolete use textproc/rubygem-elasticsearch-api instead
+textproc/rubygem-elasticsearch-rails6|textproc/rubygem-elasticsearch-rails|2022-06-24|Obsolete use textproc/rubygem-elasticsearch-rails instead

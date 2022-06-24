@@ -1,7 +1,7 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
 
 PORTNAME=	octokit
-PORTVERSION=	4.23.0
+PORTVERSION=	4.25.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

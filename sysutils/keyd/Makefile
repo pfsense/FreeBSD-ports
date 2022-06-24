@@ -1,7 +1,10 @@
 PORTNAME=	keyd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.0
+DISTVERSION=	2.4.1
 CATEGORIES=	sysutils
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	bb49007fb074.patch:-p1 # https://github.com/rvaiya/keyd/pull/239
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Key remapping daemon for evdev
@@ -21,7 +24,8 @@ MAKE_ARGS=	DESTDIR="${DESTDIR}" PREFIX="${PREFIX}" \
 		GIT_HASH="${DISTVERSIONFULL}"
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}-application-mapper \
-		${ETCDIR}/${PORTNAME}.compose
+		${DATADIR}/keyd.compose \
+		"@dir ${ETCDIR}"
 PORTDOCS=	*
 PORTEXAMPLES=	*
 

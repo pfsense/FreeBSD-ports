@@ -13,7 +13,6 @@ COMMENT=	Typo3 content management system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-IGNORE_WITH_PHP=       73
 IGNORE_WITH_MYSQL=     55 56 101m
 
 USES=		cpe php:web,flavors shebangfix
@@ -32,7 +31,7 @@ SUB_LIST+=	PREFIX=${PREFIX} \
 
 PORT_V_MAJOR=	11
 PORT_V_MINOR=	5
-PORT_V_PATCH=	10
+PORT_V_PATCH=	12
 
 TYPO3WWW=	www
 TYPO3SRC=	${PORTNAME}_src-${PORTVERSION}

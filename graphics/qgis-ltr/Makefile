@@ -1,7 +1,7 @@
 # Created by: Laurent Courty
 
 PORTNAME=	qgis
-DISTVERSION=	3.22.7
+DISTVERSION=	3.22.8
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://qgis.org/downloads/
 PKGNAMESUFFIX=	-ltr
@@ -52,7 +52,7 @@ LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libqwt6.so:x11-toolkits/qwt6 \
 		libspatialindex.so:devel/spatialindex \
 		libspatialite.so:databases/spatialite \
-		libsz.so:science/szip \
+		libsz.so:science/libaec \
 		libxerces-c.so:textproc/xerces-c3 \
 		libzip.so:archivers/libzip \
 		libzstd.so:archivers/zstd

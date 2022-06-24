@@ -1,5 +1,5 @@
 PORTNAME=	cloudflared
-DISTVERSION=	2022.4.0
+DISTVERSION=	2022.6.2
 CATEGORIES=	net www
 
 MAINTAINER=	egypcio@FreeBSD.org

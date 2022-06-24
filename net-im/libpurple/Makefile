@@ -1,8 +1,7 @@
 # Created by: Jim Mock <jim@FreeBSD.org>
 
 PORTNAME?=	libpurple
-PORTVERSION=	2.14.9
-PORTREVISION?=	1
+PORTVERSION=	2.14.10
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
 DISTNAME=	pidgin-${PORTVERSION}
@@ -21,7 +20,8 @@ CONFIGURE_ARGS?=--disable-gtkui \
 		--with-dynamic-prpls=${PRPL_MODULES:S/,$//} \
 		--enable-static \
 		--disable-nm \
-		--with-system-ssl-certs=/usr/share/certs/trusted
+		--with-system-ssl-certs=/usr/share/certs/trusted \
+		--disable-schemas-install
 INSTALL_TARGET=	install-strip
 
 .if !defined(PIDGIN_SLAVE)
@@ -66,6 +66,7 @@ QQ_DESC=	The Tencent QQ chat protocol
 SIMPLE_DESC=	The SIMPLE chat protocol
 ZEPHYR_DESC=	The Zephyr chat protocol
 
+PLIST_SUB+=	SHLIB_VERSION=${PORTVERSION:R:E}.${PORTVERSION:E}
 .if defined(WITH_GTKUI)
 OPTIONS_DEFINE+=	GTKSPELL CAP
 OPTIONS_DEFAULT+=	GTKSPELL CAP
@@ -112,11 +113,6 @@ PLIST_SUB+=		PERLMAN:="@comment not installed: "
 CONFIGURE_ARGS+=	--disable-perl
 PLIST_SUB+=		PERL:="@comment not installed: " \
 			PERLMAN:="@comment not installed: "
-.endif
-
-.if defined(WITH_GTKUI) && !defined(PIDGIN_SLAVE)
-USE_GNOME+=	gconf2
-GCONF_SCHEMAS=	purple.schemas
 .endif
 
 .if defined(WITH_GTKUI)
@@ -296,8 +292,6 @@ post-patch:
 .if defined(PIDGIN_SLAVE)
 	@${FIND} ${BUILD_WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} -e \
 		's|$$(top_builddir)/libpurple/libpurple.la|-lpurple|'
-	@${REINPLACE_CMD} -e 's|gconftool-2|gconftool-disabled|g' \
-		${WRKSRC}/configure
 .endif
 
 .if !defined(PIDGIN_SLAVE) && ${PORT_OPTIONS:MPERL}

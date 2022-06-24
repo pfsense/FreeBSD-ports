@@ -1916,16 +1916,6 @@ PKGPOSTINSTALL?=	${PKGDIR}/pkg-post-install
 PKGPREDEINSTALL?=	${PKGDIR}/pkg-pre-deinstall
 PKGPOSTDEINSTALL?=	${PKGDIR}/pkg-post-deinstall
 
-_FORCE_POST_PATTERNS=	rmdir kldxref mkfontscale mkfontdir fc-cache \
-						fonts.dir fonts.scale gtk-update-icon-cache \
-						gtk-query-immodules \
-						ldconfig \
-						load-octave-pkg \
-						ocamlfind \
-						update-desktop-database update-mime-database \
-						catalog.ports \
-						ccache-update-links
-
 .    if defined(USE_LOCAL_MK)
 .include "${PORTSDIR}/Mk/bsd.local.mk"
 .    endif
@@ -2214,11 +2204,11 @@ PKG_SUFX=	.pkg
 .    if defined(PKG_NOCOMPRESS)
 PKG_COMPRESSION_FORMAT?=	tar
 .    else
-.if ${OSVERSION} > 1400000
+.      if ${OSVERSION} > 1400000
 PKG_COMPRESSION_FORMAT?=	tzst
-.else
+.      else
 PKG_COMPRESSION_FORMAT?=	txz
-.endif
+.      endif
 .    endif
 
 # where pkg(8) stores its data
@@ -2619,12 +2609,12 @@ WRKDIR_PKGFILE=	${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX}
 PKGLATESTREPOSITORY?=	${PACKAGES}/Latest
 PKGBASE?=			${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 PKGLATESTFILE=		${PKGLATESTREPOSITORY}/${PKGBASE}${PKG_SUFX}
-.if ${PKG_COMPRESSION_FORMAT} == txz
+.    if ${PKG_COMPRESSION_FORMAT} == txz
 PKGOLDLATESTFILE=		${PKGLATESTREPOSITORY}/${PKGBASE}.${PKG_COMPRESSION_FORMAT}
 # Temporary workaround to be deleted once every supported version of FreeBSD
 # have a bootstrap which handles the pkg extension.
 PKGOLDSIGFILE=			${PKGLATESTREPOSITORY}/${PKGBASE}.${PKG_COMPRESSION_FORMAT}.sig
-.endif
+.    endif
 
 CONFIGURE_SCRIPT?=	configure
 CONFIGURE_CMD?=		./${CONFIGURE_SCRIPT}
@@ -2800,13 +2790,13 @@ IGNORE+=	(reason: ${NOT_FOR_ARCHS_REASON})
 
 # Check the user interaction and legal issues
 .    if !defined(NO_IGNORE)
-.for v in ${OSREL} ${OSREL:R}
-.for f in ${FLAVOR}
-.if defined($f_IGNORE_${OPSYS}_${v})
+.      for v in ${OSREL} ${OSREL:R}
+.        for f in ${FLAVOR}
+.          if defined($f_IGNORE_${OPSYS}_${v})
 IGNORE+= "${${f}_IGNORE_${OPSYS}_${v}}"
-.endif
-.endfor
-.endfor
+.          endif
+.        endfor
+.      endfor
 .      if (defined(IS_INTERACTIVE) && defined(BATCH))
 IGNORE=		is an interactive port
 .      elif (!defined(IS_INTERACTIVE) && defined(INTERACTIVE))
@@ -3418,7 +3408,7 @@ ${PKGOLDSIGFILE}: ${PKGLATESTREPOSITORY}
 
 # from here this will become a loop for subpackages
 ${WRKDIR_PKGFILE}: ${TMPPLIST} create-manifest ${WRKDIR}/pkg
-	@if ! ${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
+	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
 		cd ${.CURDIR} && eval ${MAKE} delete-package >/dev/null; \
 		exit 1; \
 	fi

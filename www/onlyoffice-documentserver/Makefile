@@ -1,6 +1,6 @@
 PORTNAME=	onlyoffice-documentserver
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.1.0.215
+DISTVERSION=	7.1.1.23
 CATEGORIES=	www
 MASTER_SITES+=	LOCAL/mikael/v8/:source1 \
 		LOCAL/mikael/onlyoffice/:source2 \
@@ -44,7 +44,7 @@ USE_QT=		qmake_build
 USE_GITHUB=	yes
 GH_ACCOUNT=	ONLYOFFICE
 GH_PROJECT=	DocumentServer
-GH_TAGNAME=	v7.1.0
+GH_TAGNAME=	v7.1.1
 GH_TUPLE=	ONLYOFFICE:core:v${DISTVERSION}:core/core \
 		ONLYOFFICE:core-fonts:v${DISTVERSION}:corefonts/core-fonts \
 		ONLYOFFICE:dictionaries:v${DISTVERSION}:dictionaries/dictionaries \
@@ -101,7 +101,7 @@ SUB_LIST=	ETCDIR=${ETCDIR} \
 # node version used with "npm install pkg@5.5.1"
 NODE_VERSION_PKGFETCH=	16.13.0
 # node version used in the ports tree
-NODE_VERSION_PORTS=	16.14.2
+NODE_VERSION_PORTS=	16.15.1
 
 MAKE_ENV=	BUILD_NUMBER="1" \
 		PKG_CACHE_PATH=${WRKDIR}/.pkg-cache \
@@ -121,11 +121,6 @@ post-extract:
 	@${MKDIR} ${WRKDIR}/.pkg-cache/node
 	@${CP} ${DISTDIR}/node-v${NODE_VERSION_PKGFETCH}.tar.gz ${DISTDIR}/node-v${NODE_VERSION_PORTS}.tar.gz \
 		${WRKDIR}/.pkg-cache/node
-# Checksum can be verified here: https://nodejs.org/dist/v${NODE_VERSION_PKGFETCH}/SHASUMS256.txt
-	@${ECHO} "9c00e5b6024cfcbc9105f9c58cf160762e78659a345d100c5bd80a7fb38c684f  node-v${NODE_VERSION_PKGFETCH}.tar.gz" > \
-		${WRKDIR}/.pkg-cache/node/node-v${NODE_VERSION_PKGFETCH}.tar.gz.sha256sum
-	@${ECHO} "082170f362c4da0e97f3a1899e3f5e4c998bbc245b803c77c6ab113a2b5cbd5f  node-v${NODE_VERSION_PKGPORTS}.tar.gz" > \
-		${WRKDIR}/.pkg-cache/node/node-v${NODE_VERSION_PORTS}.tar.gz.sha256sum
 
 	@${MKDIR} ${WRKSRC}/sdkjs-plugins/v1
 	@${CP} ${WRKSRC}/onlyoffice.github.io/sdkjs-plugins/v1/* ${WRKSRC}/sdkjs-plugins/v1
@@ -138,7 +133,8 @@ post-patch:
 		${WRKSRC}/core/Common/3dParty/icu/icu.pri \
 		${WRKSRC}/core/Common/3dParty/v8/v8/build/toolchain/gcc_toolchain.gni \
 		${WRKSRC}/core/Common/3dParty/v8/v8/buildtools/third_party/libc++/BUILD.gn \
-		${WRKSRC}/core/DesktopEditor/fontengine/ApplicationFonts.cpp
+		${WRKSRC}/core/DesktopEditor/fontengine/ApplicationFonts.cpp \
+		${WRKSRC}/build_tools/tools/freebsd/automate.py
 	@${REINPLACE_CMD} -e 's|%%CC%%|${CC}|' -e 's|%%CXX%%|${CXX}|' \
 		${WRKSRC}/core/Common/3dParty/v8/v8/build/toolchain/gcc_toolchain.gni \
 		${WRKSRC}/core/Common/base.pri

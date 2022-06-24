@@ -77,9 +77,10 @@ FORMINPUT_IMPLIES=	DEVEL_KIT
 FORMINPUT_GH_TUPLE=	calio:form-input-nginx-module:v0.12:forminput
 FORMINPUT_VARS=		DSO_EXTMODS+=forminput
 
-GRIDFS_GH_TUPLE=	technowledgy:nginx_http_gridfs_module:7970bab:gridfs \
-			10gen-archive:mongo-c-driver-legacy:f06669b:mongo_c
-GRIDFS_VARS=		DSO_EXTMODS+=gridfs
+GRIDFS_GH_TUPLE=	nieoding:nginx-gridfs:059bdc3:gridfs
+GRIDFS_LIB_DEPENDS=	libbson-1.0.so:devel/libbson \
+			libmongoc-1.0.so:devel/mongo-c-driver
+GRIDFS_VARS=		DSO_EXTMODS+=gridfs GRIDFS_SUBDIR=/nginx-gridfs
 
 HEADERS_MORE_GH_TUPLE=		openresty:headers-more-nginx-module:55fbdab:headers_more
 HEADERS_MORE_VARS=		DSO_EXTMODS+=headers_more
@@ -154,7 +155,7 @@ HTTP_NOTICE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_notice_module.c \
 				${PATCHDIR}/extra-patch-nginx-notice-config
 HTTP_NOTICE_VARS=		DSO_EXTMODS+=notice
 
-HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.2.15:push
+HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.3.0:push
 HTTP_PUSH_VARS=			DSO_EXTMODS+=push
 
 HTTP_PUSH_STREAM_GH_TUPLE=	wandenberg:nginx-push-stream-module:0.5.4:pushstream
@@ -176,7 +177,7 @@ HTTP_SUBS_FILTER_VARS=		DSO_EXTMODS+=subs_filter
 
 HTTP_TARANTOOL_LIB_DEPENDS=	libmsgpuck.so:devel/msgpuck \
 				libyajl.so:devel/yajl
-HTTP_TARANTOOL_GH_TUPLE=	tarantool:nginx_upstream_module:daccb2a:nginx_tarantool
+HTTP_TARANTOOL_GH_TUPLE=	tarantool:nginx_upstream_module:aeb8696:nginx_tarantool
 HTTP_TARANTOOL_VARS=		DSO_EXTMODS+=nginx_tarantool
 HTTP_TARANTOOL_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_tarantool-config
 
@@ -246,7 +247,7 @@ NAXSI_NGINX_VER=	1.3
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:0.7.4:njs
+NJS_GH_TUPLE=		nginx:njs:0.7.5:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 NJS_USES=		libedit
 

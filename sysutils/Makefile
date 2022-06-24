@@ -53,6 +53,7 @@
     SUBDIR += apcpwr
     SUBDIR += apcupsd
     SUBDIR += aptly
+    SUBDIR += arc_summary
     SUBDIR += arcconf
     SUBDIR += archey4
     SUBDIR += archivemount
@@ -139,6 +140,7 @@
     SUBDIR += bsdisks
     SUBDIR += bsdstats
     SUBDIR += bstack
+    SUBDIR += btop
     SUBDIR += btsixad
     SUBDIR += bulk_extractor
     SUBDIR += bupstash
@@ -975,6 +977,8 @@
     SUBDIR += php80-posix
     SUBDIR += php81-fileinfo
     SUBDIR += php81-posix
+    SUBDIR += php82-fileinfo
+    SUBDIR += php82-posix
     SUBDIR += phybs
     SUBDIR += pick
     SUBDIR += pidof

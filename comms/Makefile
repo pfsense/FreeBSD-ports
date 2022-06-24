@@ -2,6 +2,7 @@
 
     SUBDIR += acfax
     SUBDIR += airspy
+    SUBDIR += airspyhf
     SUBDIR += aldo
     SUBDIR += amtterm
     SUBDIR += anyremote
@@ -156,6 +157,7 @@
     SUBDIR += rxtx
     SUBDIR += scmxx
     SUBDIR += scrcpy
+    SUBDIR += sdr++
     SUBDIR += sdr-wspr
     SUBDIR += ser2net
     SUBDIR += serialoverip

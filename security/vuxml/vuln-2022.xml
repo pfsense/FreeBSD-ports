@@ -1,3 +1,378 @@
+  <vuln vid="25be46f0-f25d-11ec-b62a-00e081b7aa2d">
+    <topic>jenkins -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.356</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.346.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2022-06-22/">
+	  <h1>Description</h1>
+	  <h5>(High) SECURITY-2781 / CVE-2022-34170 (SECURITY-2779), CVE-2022-34171 (SECURITY-2761), CVE-2022-34172 (SECURITY-2776), CVE-2022-34173 (SECURITY-2780)</h5>
+	  <p>Multiple XSS vulnerabilities</p>
+	  <h5>(Medium) SECURITY-2566 / CVE-2022-34174</h5>
+	  <p>Observable timing discrepancy allows determining username validity</p>
+	  <h5>(Medium) Unauthorized view fragment access</h5>
+	  <p>SECURITY-2777 / CVE-2022-34175</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-34170</cvename>
+      <cvename>CVE-2022-34171</cvename>
+      <cvename>CVE-2022-34172</cvename>
+      <cvename>CVE-2022-34173</cvename>
+      <cvename>CVE-2022-34174</cvename>
+      <cvename>CVE-2022-34175</cvename>
+      <url>https://www.jenkins.io/security/advisory/2022-06-22/</url>
+    </references>
+    <dates>
+      <discovery>2022-06-22</discovery>
+      <entry>2022-06-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4eeb93bf-f204-11ec-8fbd-d4c9ef517024">
+    <topic>OpenSSL -- Command injection vulnerability</topic>
+    <affects>
+      <package>
+	<name>openssl</name>
+	<range><lt>1.1.1p,1</lt></range>
+      </package>
+      <package>
+	<name>openssl-devel</name>
+	<range><lt>3.0.4</lt></range>
+      </package>
+      <package>
+	<name>openssl-quictls</name>
+	<range><lt>3.0.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenSSL project reports:</p>
+	<blockquote cite="https://www.openssl.org/news/secadv/20220621.txt">
+	  <p>Circumstances where the c_rehash script does not properly
+	    sanitise shell metacharacters to prevent command injection were
+	    found by code review.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2068</cvename>
+      <url>https://www.openssl.org/news/secadv/20220621.txt</url>
+    </references>
+    <dates>
+      <discovery>2022-06-21</discovery>
+      <entry>2022-06-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b2a4c5f1-f1fe-11ec-bcd2-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>103.0.5060.53</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2022/06/stable-channel-update-for-desktop_21.html">
+	  <p>This release contains 14 security fixes, including:</p>
+	  <ul>
+	    <li>[1335458] Critical CVE-2022-2156: Use after free in Base. Reported by Mark Brand of Google Project Zero on 2022-06-11</li>
+	    <li>[1327312] High CVE-2022-2157: Use after free in Interest groups. Reported by Nan Wang(@eternalsakura13) and Guang Gong of 360 Alpha Lab on 2022-05-19</li>
+	    <li>[1321078] High CVE-2022-2158: Type Confusion in V8. Reported by Bohan Liu (@P4nda20371774) of Tencent Security Xuanwu Lab on 2022-04-29</li>
+	    <li>[1116450] Medium CVE-2022-2160: Insufficient policy enforcement in DevTools. Reported by David Erceg on 2020-08-14</li>
+	    <li>[1330289] Medium CVE-2022-2161: Use after free in WebApp Provider. Reported by Zhihua Yao of KunLun Lab on 2022-05-30</li>
+	    <li>[1307930] Medium CVE-2022-2162: Insufficient policy enforcement in File System API. Reported by Abdelhamid Naceri (halov) on 2022-03-19</li>
+	    <li>[1308341] Low CVE-2022-2163: Use after free in Cast UI and Toolbar. Reported by Chaoyuan Peng (@ret2happy) on 2022-03-21</li>
+	    <li>[1268445] Low CVE-2022-2164: Inappropriate implementation in Extensions API. Reported by José Miguel Moreno Computer Security Lab (COSEC) at UC3M on 2021-11-10</li>
+	    <li>[1250993] Low CVE-2022-2165: Insufficient data validation in URL formatting. Reported by Rayyan Bijoora on 2021-09-19</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2156</cvename>
+      <cvename>CVE-2022-2157</cvename>
+      <cvename>CVE-2022-2158</cvename>
+      <cvename>CVE-2022-2160</cvename>
+      <cvename>CVE-2022-2161</cvename>
+      <cvename>CVE-2022-2162</cvename>
+      <cvename>CVE-2022-2163</cvename>
+      <cvename>CVE-2022-2164</cvename>
+      <cvename>CVE-2022-2165</cvename>
+      <url>https://chromereleases.googleblog.com/2022/06/stable-channel-update-for-desktop_21.html</url>
+    </references>
+    <dates>
+      <discovery>2022-06-21</discovery>
+      <entry>2022-06-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="482456fb-e9af-11ec-93b6-318d1419ea39">
+    <topic>Security Vulnerability found in ExifTool leading to RCE</topic>
+    <affects>
+      <package>
+	<name>p5-Image-ExifTool</name>
+	<range><lt>12.38</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Debian Security tracker reports:</p>
+	<blockquote cite="https://security-tracker.debian.org/tracker/CVE-2022-23935">
+	  <p>ExifTool.pm in ExifTool before 12.38 mishandles a file special characters check, leading to command injection</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-23935</cvename>
+      <url>https://www.cvedetails.com/cve/CVE-2022-23935</url>
+    </references>
+    <dates>
+      <discovery>2022-01-25</discovery>
+      <entry>2022-06-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ad37a349-ebb7-11ec-b9f7-21427354249d">
+    <topic>mitmproxy -- Insufficient Protection against HTTP Request Smuggling</topic>
+    <affects>
+      <package>
+	<name>mitmproxy</name>
+	<range><lt>8.0.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Zeyu Zhang reports:</p>
+	<blockquote cite="https://github.com/mitmproxy/mitmproxy/commit/b06fb6d157087d526bd02e7aadbe37c56865c71b">
+	  <p>
+	    In mitmproxy 7.0.4 and below, a malicious client or server is able to
+	    perform HTTP request smuggling attacks through mitmproxy. This means
+	    that a malicious client/server could smuggle a request/response through
+	    mitmproxy as part of another request/response's HTTP message body. While
+	    mitmproxy would only see one request, the target server would see
+	    multiple requests. A smuggled request is still captured as part of
+	    another request's body, but it does not appear in the request list and
+	    does not go through the usual mitmproxy event hooks, where users may
+	    have implemented custom access control checks or input sanitization.
+	  </p>
+	  <p>
+	    Unless you use mitmproxy to protect an HTTP/1 service, no action is required.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-24766</cvename>
+      <url>https://github.com/mitmproxy/mitmproxy/commit/b06fb6d157087d526bd02e7aadbe37c56865c71b</url>
+    </references>
+    <dates>
+      <discovery>2022-03-21</discovery>
+      <entry>2022-06-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5d1e4f6a-ee4f-11ec-86c2-485b3931c969">
+    <topic>Tor - Unspecified high severity vulnerability</topic>
+    <affects>
+      <package>
+	<name>tor</name>
+	<range><lt>0.4.7.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tor organization reports:</p>
+	<blockquote cite="https://gitlab.torproject.org/tpo/core/team/-/wikis/NetworkTeam/TROVE">
+	  <p>TROVE-2022-001</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://gitlab.torproject.org/tpo/core/team/-/wikis/NetworkTeam/TROVE</url>
+    </references>
+    <dates>
+      <discovery>2022-06-14</discovery>
+      <entry>2022-06-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="55cff5d2-e95c-11ec-ae20-001999f8d30b">
+    <topic>XFCE -- Allows executing malicious .desktop files pointing to remote code</topic>
+    <affects>
+      <package>
+	<name>libexo</name>
+	<range><lt>4.16.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>XFCE Project reports:</p>
+	<blockquote cite="https://gitlab.xfce.org/xfce/exo/-/commit/cc047717c3b5efded2cc7bd419c41a3d1f1e48b6">
+	  <p>Prevent executing possibly malicious .desktop files
+	  from online sources (ftp://, http:// etc.).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-32278</cvename>
+      <url>https://gitlab.xfce.org/xfce/exo/-/commit/cc047717c3b5efded2cc7bd419c41a3d1f1e48b6</url>
+    </references>
+    <dates>
+      <discovery>2022-06-11</discovery>
+      <entry>2022-06-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b51cfaea-e919-11ec-9fba-080027240888">
+    <topic>py-numpy -- Missing return-value validation of the function PyArray_DescrNew</topic>
+    <affects>
+      <package>
+	<name>py38-numpy</name>
+	<name>py39-numpy</name>
+	<name>py310-numpy</name>
+	<range><lt>1.22.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Numpy reports:</p>
+	<blockquote cite="https://github.com/numpy/numpy/pull/20960">
+	  <p>At most call-sites for PyArray_DescrNew, there are no validations of its return,
+	    but an invalid address may be returned.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-41495</cvename>
+      <url>https://github.com/numpy/numpy/pull/20960</url>
+    </references>
+    <dates>
+      <discovery>2021-05-19</discovery>
+      <entry>2022-06-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c80ce2dd-e831-11ec-bcd2-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>102.0.5005.115</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2022/06/stable-channel-update-for-desktop.html">
+	  <p>This release contains 7 security fixes, including:</p>
+	  <ul>
+	    <li>[1326210] High CVE-2022-2007: Use after free in WebGPU. Reported by David Manouchehri on 2022-05-17</li>
+	    <li>[1317673] High CVE-2022-2008: Out of bounds memory access in WebGL. Reported by khangkito - Tran Van Khang (VinCSS) on 2022-04-19</li>
+	    <li>[1325298] High CVE-2022-2010: Out of bounds read in compositing. Reported by Mark Brand of Google Project Zero on 2022-05-13</li>
+	    <li>[1330379] High CVE-2022-2011: Use after free in ANGLE. Reported by SeongHwan Park (SeHwa) on 2022-05-31</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2007</cvename>
+      <cvename>CVE-2022-2008</cvename>
+      <cvename>CVE-2022-2010</cvename>
+      <cvename>CVE-2022-2011</cvename>
+      <url>https://chromereleases.googleblog.com/2022/06/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2022-06-09</discovery>
+      <entry>2022-06-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="49adfbe5-e7d1-11ec-8fbd-d4c9ef517024">
+    <topic>Apache httpd -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>apache24</name>
+	<range><lt>2.4.54</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Apache httpd project reports:</p>
+	<blockquote cite="http://downloads.apache.org/httpd/CHANGES_2.4.54">
+	  <ul>
+	    <li>CVE-2022-31813: mod_proxy X-Forwarded-For dropped by hop-by-hop
+	      mechanism. Apache HTTP Server 2.4.53 and earlier may not send the
+	      X-Forwarded-* headers to the origin server based on client side
+	      Connection header hop-by-hop mechanism. This may be used to bypass
+	      IP based authentication on the origin server/application.</li>
+	    <li>CVE-2022-30556: Information Disclosure in mod_lua with websockets.
+	      Apache HTTP Server 2.4.53 and earlier may return lengths to
+	      applications calling r:wsread() that point past the end of the
+	      storage allocated for the buffer.</li>
+	    <li>CVE-2022-30522: mod_sed denial of service. If Apache HTTP Server
+	      2.4.53 is configured to do transformations with mod_sed in contexts
+	      where the input to mod_sed may be very large, mod_sed may make
+	      excessively large memory allocations and trigger an abort.</li>
+	    <li>CVE-2022-29404: Denial of service in mod_lua r:parsebody. In Apache
+	      HTTP Server 2.4.53 and earlier, a malicious request to a lua script
+	      that calls r:parsebody(0) may cause a denial of service due to no
+	      default limit on possible input size.</li>
+	    <li>CVE-2022-28615: Read beyond bounds in ap_strcmp_match(). Apache
+	      HTTP Server 2.4.53 and earlier may crash or disclose information due
+	      to a read beyond bounds in ap_strcmp_match() when provided with an
+	      extremely large input buffer.  While no code distributed with the
+	      server can be coerced into such a call, third-party modules or lua
+	      scripts that use ap_strcmp_match() may hypothetically be affected.
+	    </li>
+	    <li>CVE-2022-28614: read beyond bounds via ap_rwrite(). The ap_rwrite()
+	      function in Apache HTTP Server 2.4.53 and earlier may read unintended
+	      memory if an attacker can cause the server to reflect very large
+	      input using ap_rwrite() or ap_rputs(), such as with mod_luas r:puts()
+	      function.</li>
+	    <li>CVE-2022-28330: read beyond bounds in mod_isapi. Apache HTTP Server
+	      2.4.53 and earlier on Windows may read beyond bounds when configured
+	      to process requests with the mod_isapi module.</li>
+	    <li>CVE-2022-26377: mod_proxy_ajp: Possible request smuggling.
+	      Inconsistent Interpretation of HTTP Requests ('HTTP Request
+	      Smuggling') vulnerability in mod_proxy_ajp of Apache HTTP Server
+	      allows an attacker to smuggle requests to the AJP server it forwards
+	      requests to.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-31813</cvename>
+      <cvename>CVE-2022-30556</cvename>
+      <cvename>CVE-2022-30522</cvename>
+      <cvename>CVE-2022-29404</cvename>
+      <cvename>CVE-2022-28615</cvename>
+      <cvename>CVE-2022-28614</cvename>
+      <cvename>CVE-2022-28330</cvename>
+      <cvename>CVE-2022-26377</cvename>
+      <url>http://downloads.apache.org/httpd/CHANGES_2.4.54</url>
+    </references>
+    <dates>
+      <discovery>2022-06-08</discovery>
+      <entry>2022-06-09</entry>
+      <modified>2022-06-10</modified>
+    </dates>
+  </vuln>
+
   <vuln vid="15888c7e-e659-11ec-b7fe-10c37b4ac2ea">
     <topic>go -- multiple vulnerabilities</topic>
     <affects>

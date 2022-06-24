@@ -1,5 +1,6 @@
 PORTNAME=	lammps
 PORTVERSION=	${GH_TAGNAME:C/(stable|patch)_([0-9]{1,2})([A-Z][a-z][a-z])([0-9]{4})/\4.\3.\2/S/Jan/01/S/Feb/02/S/Mar/03/S/Apr/04/S/May/05/S/Jun/06/S/Jul/07/S/Aug/08/S/Sep/09/S/Oct/10/S/Nov/11/S/Dec/12/}
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -25,7 +26,7 @@ USE_LDCONFIG=	yes
 USE_PYTHON=	cython
 
 USE_GITHUB=	yes
-GH_TAGNAME=	patch_2Jun2022
+GH_TAGNAME=	stable_23Jun2022
 
 SHEBANG_GLOB=	*.sh *.bash
 SHEBANG_FILES=	lib/kokkos/bin/nvcc_wrapper
@@ -81,7 +82,7 @@ GZIP_CMAKE_BOOL=	WITH_GZIP
 H5MD_DESC=		USER-H5MD package based on libhdf5
 H5MD_CMAKE_BOOL=	PKG_USER-H5MD
 H5MD_LIB_DEPENDS=	libhdf5.so:science/hdf5 \
-			libsz.so:science/szip
+			libsz.so:science/libaec
 
 KIM_DESC=		KIM package based on the OpenKim library/repository
 KIM_USES=		pkgconfig

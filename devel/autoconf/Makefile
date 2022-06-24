@@ -1,8 +1,7 @@
 # Created by: ade@FreeBSD.org
 
 PORTNAME=	autoconf
-PORTVERSION=	2.69
-PORTREVISION=	4
+PORTVERSION=	2.71
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -22,7 +21,7 @@ BUILD_DEPENDS=	gm4:devel/m4
 RUN_DEPENDS=	autoconf-switch>=0:devel/autoconf-switch \
 		gm4:devel/m4
 
-VERSION=	2.69
+VERSION=	2.71
 USES=		perl5 tar:xz
 
 GNU_CONFIGURE=	yes
@@ -44,21 +43,17 @@ INFO_USES=	makeinfo
 INFO_INFO=	autoconf${VERSION}
 
 post-patch:
-	@${FIND} ${WRKSRC} -name Makefile.in -exec ${REINPLACE_CMD} \
-		'/^pkgdatadir =/s/@PACKAGE@/&@VERSION@/' {} +
+	@${REINPLACE_CMD} '/^pkgdatadir =/s/@PACKAGE@/&@VERSION@/' \
+		${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -E \
 		-e 's/[^-/]auto(conf|header|reconf|scan|update)/&${VERSION}/g' \
-		-e 's/config\.guess|config\.sub|ifnames/&${VERSION}/g' \
+		-e 's/ifnames/&${VERSION}/g' \
+		-e '/config\.(guess|sub)/d' \
 		${WRKSRC}/man/*.1
-# Save timestamps.
-	@${LN} ${WRKSRC}/build-aux/config.guess \
-		${WRKSRC}/build-aux/config.guess.orig
-	@${LN} ${WRKSRC}/build-aux/config.sub \
-		${WRKSRC}/build-aux/config.sub.orig
 
 post-patch-INFO-on:
 	@${REINPLACE_CMD} -E 's/autoconf\.(info|texi)/autoconf${VERSION}.\1/g' \
-		${WRKSRC}/doc/Makefile.in
+		${WRKSRC}/Makefile.in
 	@${CP} ${WRKSRC}/doc/autoconf.texi ${WRKSRC}/doc/autoconf${VERSION}.texi
 	@${REINPLACE_CMD} \
 		-e 's/autoconf\.info/autoconf${VERSION}.info/' \
@@ -68,17 +63,10 @@ post-patch-INFO-on:
 			s/ \{2,9\}/ / ; }' \
 		${WRKSRC}/doc/autoconf${VERSION}.texi
 # Restore timestamp in .info file.
-	@${TOUCH} -r ${WRKSRC}/doc/autoconf.texi.orig \
+	@${TOUCH} -r ${WRKSRC}/doc/autoconf${VERSION}.texi.bak \
 		${WRKSRC}/doc/autoconf${VERSION}.texi
 
 post-patch-INFO-off:
-	@${REINPLACE_CMD} '/^INFO_DEPS =/d' ${WRKSRC}/doc/Makefile.in
-
-post-configure:
-# Restore timestamps to prevent regeneration of man pages.
-	@${TOUCH} -r ${WRKSRC}/build-aux/config.guess.orig \
-		${WRKSRC}/build-aux/config.guess
-	@${TOUCH} -r ${WRKSRC}/build-aux/config.sub.orig \
-		${WRKSRC}/build-aux/config.sub
+	@${REINPLACE_CMD} '/^INFO_DEPS =/d' ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

@@ -1,11 +1,12 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
 
 PORTNAME=	tarantool
-PORTVERSION=	2.8.4
-PORTREVISION=	1
+PORTVERSION=	2.10.0
+PORTREVISION=	2
 CATEGORIES=	databases
+MASTER_SITES=	https://download.tarantool.org/tarantool/src/
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	balaev@tarantool.org
 COMMENT=	NoSQL database running in a Lua application server
 
 LICENSE=	BSD2CLAUSE
@@ -16,7 +17,8 @@ BROKEN_riscv64=		fails to compile: mmintrin.h:50:12: invalid conversion between 
 NOT_FOR_ARCHS=		armv6 powerpc64 sparc64
 NOT_FOR_ARCHS_REASON=	fails to build: Unsupported architecture
 
-BUILD_DEPENDS=	gsed:textproc/gsed
+BUILD_DEPENDS=	gsed:textproc/gsed \
+		msgpuck>=2.0_4:devel/msgpuck
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libicui18n.so:devel/icu \
 		libmsgpuck.so:devel/msgpuck \
@@ -45,14 +47,6 @@ GROUPS=		tarantool
 PLIST_SUB=	TT_DATADIR=${TT_DATADIR} \
 		TT_LOGDIR=${TT_LOGDIR}
 SUB_FILES=	pkg-message
-
-GH_TUPLE=	luafun:luafun:f126f9c:luafun_luafun/third_party/luafun \
-		tarantool:decNumber:5ddfde1:tarantool_decNumber/third_party/decNumber \
-		tarantool:luajit:8304ca9:tarantool_luajit/third_party/luajit \
-		tarantool:luarocks:954c2f5:tarantool_luarocks/third_party/luarocks \
-		tarantool:small:781fd38:tarantool_small/src/lib/small \
-		tarantool:test-run:d16cbdc:tarantool_test_run/test-run
-USE_GITHUB=	yes
 
 TT_DATADIR?=	/var/db/tarantool
 TT_LOGDIR?=	/var/log/tarantool

@@ -5,6 +5,78 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20220623:
+AFFECTS: users of science/gramps
+  AUTHOR: fernape@FreeBSD.org
+
+  databases/py-bsddb3 is deprecated and will be removed in the future. With that
+  gramps will lose the ability to load family trees using Berkeley DB.
+  It is suggested to migrate all family trees using Berkeley DB by exporting
+  them to gramps xml and import that gramps xml into a family tree using sqlite
+  as database.
+
+20220620:
+AFFECTS: users of www/selenium
+  AUTHOR: fernape@FreeBSD.org
+
+  The port has changed startup args so if you are using selenium_args= in
+  rc.conf you need to add the parameter "standalone" manually.
+
+20220616:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  /!\ WARNING /!\
+
+  The NetBox 3.2 release contains major changes, so at least items 1.), 2.)
+  and 3.) must be checked before proceeding with the upgrade!
+
+  /!\ WARNING /!\
+
+  1. This release includes a database migration that will remove the "asn",
+     "contact_name", "contact_phone", and "contact_email" fields from the
+     site model.  (These fields have been superseded by the ASN and contact
+     models introduced in NetBox v3.1.)
+
+     To protect against the accidental destruction of data, the upgrade
+     process will fail if any sites still have data in any of these fields.
+
+     To bypass this safeguard, set the NETBOX_DELETE_LEGACY_DATA environment
+     variable when running the upgrade script, which will permit the
+     destruction of legacy data.
+
+     A set of migration scripts is available to assist with the migration of
+     legacy site data:
+
+     https://github.com/netbox-community/migration-scripts
+
+  2. NetBox v3.2 requires Python 3.8 or later.
+
+  3. If the NetBox Plugin "net-mgmt/py-netbox-plugin-extension" is used,
+     please disable it before the migrations are applied.  This can be done
+     by removing the entry "netbox_plugin_extensions" from the "PLUGINS"
+     section in the NetBox configuration.
+
+     Once the upgrade is done, this port/package can be safely removed as
+     it's no longer required.
+
+  4. Please also check the pkg-message and the changelogs for further info.
+
+20220608:
+  AFFECTS: devel/autoconf-wrapper, devel/autoconf213
+  AUTHOR: tijl@FreeBSD.org
+
+  These ports have been renamed to devel/autoconf-switch and devel/autoconf2.13
+  respectively.  If your favourite port updating tool cannot handle that then
+  just remove the packages with "pkg delete" and then install the new port.
+
+20220607:
+  AFFECTS: security/openssh-portable
+  AUTHOR: bdrewery@FreeBSD.org
+
+  OpenSSH has been updated to 9.0p1 with incompatible changes.
+  See https://www.openssh.com/txt/release-9.0 for details.
+
 20220602:
   AFFECTS: sysutils/graylog
   AUTHOR: dch@FreeBSD.org

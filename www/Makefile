@@ -376,6 +376,7 @@
     SUBDIR += mod_auth_pubtkt
     SUBDIR += mod_auth_tkt
     SUBDIR += mod_auth_xradius
+    SUBDIR += mod_authn_dovecot
     SUBDIR += mod_authnz_external24
     SUBDIR += mod_cfg_ldap
     SUBDIR += mod_cloudflare
@@ -401,6 +402,7 @@
     SUBDIR += mod_php74
     SUBDIR += mod_php80
     SUBDIR += mod_php81
+    SUBDIR += mod_php82
     SUBDIR += mod_proctitle
     SUBDIR += mod_qos
     SUBDIR += mod_realdoc
@@ -479,7 +481,6 @@
     SUBDIR += onionbalance
     SUBDIR += onionshare
     SUBDIR += onlyoffice-documentserver
-    SUBDIR += openarc
     SUBDIR += opencart
     SUBDIR += openresty
     SUBDIR += orangehrm
@@ -1392,6 +1393,9 @@
     SUBDIR += php81-opcache
     SUBDIR += php81-session
     SUBDIR += php81-tidy
+    SUBDIR += php82-opcache
+    SUBDIR += php82-session
+    SUBDIR += php82-tidy
     SUBDIR += phpbb
     SUBDIR += phpbb3
     SUBDIR += phpgroupware
@@ -1474,6 +1478,20 @@
     SUBDIR += py-dj32-django-treebeard
     SUBDIR += py-dj32-djangorestframework
     SUBDIR += py-dj32-drf-yasg
+    SUBDIR += py-dj40-django-auth-ldap
+    SUBDIR += py-dj40-django-cors-headers
+    SUBDIR += py-dj40-django-debug-toolbar
+    SUBDIR += py-dj40-django-filter
+    SUBDIR += py-dj40-django-graphiql-debug-toolbar
+    SUBDIR += py-dj40-django-js-asset
+    SUBDIR += py-dj40-django-mptt
+    SUBDIR += py-dj40-django-prometheus
+    SUBDIR += py-dj40-django-redis
+    SUBDIR += py-dj40-django-tables2
+    SUBDIR += py-dj40-django-taggit
+    SUBDIR += py-dj40-django-timezone-field
+    SUBDIR += py-dj40-djangorestframework
+    SUBDIR += py-dj40-drf-yasg
     SUBDIR += py-django
     SUBDIR += py-django-admin-rangefilter
     SUBDIR += py-django-advanced-filters
@@ -1544,6 +1562,7 @@
     SUBDIR += py-django-object-actions
     SUBDIR += py-django-otp
     SUBDIR += py-django-otp-yubikey
+    SUBDIR += py-django-permissionedforms
     SUBDIR += py-django-pglocks
     SUBDIR += py-django-photologue
     SUBDIR += py-django-picklefield
@@ -1920,6 +1939,7 @@
     SUBDIR += rubygem-faraday-rack
     SUBDIR += rubygem-faraday-rack1
     SUBDIR += rubygem-faraday-retry
+    SUBDIR += rubygem-faraday-retry1
     SUBDIR += rubygem-faraday0
     SUBDIR += rubygem-faraday1
     SUBDIR += rubygem-faraday14
@@ -2232,6 +2252,7 @@
     SUBDIR += suphp
     SUBDIR += surf
     SUBDIR += swiggle
+    SUBDIR += tcexam
     SUBDIR += tclhttpd
     SUBDIR += tclwebtest
     SUBDIR += tdiary

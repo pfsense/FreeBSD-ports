@@ -1,7 +1,8 @@
 # Created by: Rainer Hurling <rhurlin@gwdg.de>
 
 PORTNAME=	saga
-PORTVERSION=	8.2.1
+PORTVERSION=	8.2.2
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]\.[[:digit:]]*$//}/SAGA%20-%20${PORTVERSION}
 
@@ -25,7 +26,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libproj.so:graphics/proj \
 		libqhull_r.so:math/qhull \
 		libsvm.so:science/libsvm \
-		libsz.so:science/szip \
+		libsz.so:science/libaec \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS:=	swig:devel/swig
 
@@ -79,8 +80,6 @@ post-patch:
 		${WRKSRC}/src/saga_core/saga_gui/dlg_about.cpp
 	@${REINPLACE_CMD} -e 's|-lgomp|-lomp|' \
 		${WRKSRC}/src/accessories/templates/template4saga-tools/my_tool_library/Makefile
-	@${REINPLACE_CMD} -e 's|COMMAND python -c|COMMAND python${PYTHON_VER} -c|' \
-		${WRKSRC}/src/saga_core/saga_api/saga_api_python/CMakeLists.txt
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
