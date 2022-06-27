@@ -52,12 +52,15 @@ PKG_REPO_SERVER_RELEASE=${PKG_REPO_SERVER_RELEASE_${ARCH}}
 PKG_REPO_FILENAME_${b}=	${PORTNAME}-${b:tl}
 PKG_REPO_DESCR_${b}=	${b} version (${PKG_REPO_BRANCH_${b}:S/_/./g})
 PKG_REPO_OSVER_${b}=	${PKG_REPO_BRANCH_${b}}
+.  if ${b} != "DEVEL" && ${b} != "RELEASE"
+PKG_REPO_SERVER_${b}=	${PKG_REPO_SERVER_RELEASE}
+.  endif
 .  if ${b} == "RELEASE"
 PKG_REPO_FILENAME_${b}=	${PORTNAME}
 PKG_REPO_DESCR_${b}=	Latest stable version (${PKG_REPO_BRANCH_${b}:S/_/./g})
 .  endif
 .  if ${b} == "DEVEL"
-PKG_REPO_OSVER_${b}=    master
+PKG_REPO_OSVER_${b}=	master
 .  endif
 PLIST_FILES+=		${DATADIR}/pkg/repos/${PKG_REPO_FILENAME_${b}}.conf ${DATADIR}/pkg/repos/${PKG_REPO_FILENAME_${b}}.descr
 . endif
@@ -76,8 +79,7 @@ do-build:
 		-e "s/%%MIRROR_TYPE%%/${MIRROR_TYPE}/" \
 		-e "s,%%PKG_REPO_BRANCH_DEVEL%%,${PKG_REPO_BRANCH_DEVEL},g" \
 		-e "s,%%PKG_REPO_BRANCH_RELEASE%%,${PKG_REPO_BRANCH_RELEASE},g" \
-		-e "s,%%PKG_REPO_SERVER_DEVEL%%,${PKG_REPO_SERVER_DEVEL},g" \
-		-e "s,%%PKG_REPO_SERVER_RELEASE%%,${PKG_REPO_SERVER_RELEASE},g" \
+		-e "s,%%PKG_REPO_SERVER_RELEASE%%,${PKG_REPO_SERVER_${b}},g" \
 		-e "s,%%POUDRIERE_PORTS_NAME%%,${POUDRIERE_PORTS_NAME},g" \
 		-e "s,%%PRODUCT_NAME%%,${PRODUCT_NAME},g" \
 		-e "s,%%REPO_BRANCH_PREFIX%%,${REPO_BRANCH_PREFIX},g" \
