@@ -77,9 +77,22 @@ if ($_POST) {
 		'wday' => gettext('Day of the Week'),
 	);
 
-	foreach (array_keys($cron_time_names) as $field) {
-		if (!preg_match('/^(((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*|\*\/\d+) ?)$/', $_POST[$field])) {
-			$input_errors[] = gettext("Invalid cron time specification") . ": {$cron_time_names[$field]}";
+	$cron_special_strings = array('@reboot', '@yearly', '@annually',
+				'@monthly', '@weekly', '@daily', '@midnight',
+				'@hourly', '@every_minute', '@every_second');
+
+	/* If minute is a special string and other fields are empty, that is
+	 * valid, otherwise validate the contents of all fields. */
+	if (!(in_array($_POST['minute'], $cron_special_strings) &&
+	    empty($_POST['hour']) &&
+	    empty($_POST['mday']) &&
+	    empty($_POST['month']) &&
+	    empty($_POST['wday']))) {
+		/* Ensure each time component field contains a valid value. */
+		foreach (array_keys($cron_time_names) as $field) {
+			if (!preg_match('/^(((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*|\*\/\d+|@\d+) ?)$/', $_POST[$field])) {
+				$input_errors[] = gettext("Invalid cron time specification") . ": {$cron_time_names[$field]}";
+			}
 		}
 	}
 
@@ -143,7 +156,9 @@ $section->addInput(new Form_Input(
 	'Minute',
 	'text',
 	$pconfig['minute']
-))->setHelp("The minute(s) at which the command will be executed. (0-59, ranges, or divided, *=all)");
+))->setHelp('The minute(s) at which the command will be executed or a special @ event string.' .
+		' (0-59, ranges, divided, @ event or delay, *=all)%1$s%1$s' .
+		'When using a special @ event, such as @reboot, the other time fields must be empty.', '<br/>');
 
 $section->addInput(new Form_Input(
 	'hour',
