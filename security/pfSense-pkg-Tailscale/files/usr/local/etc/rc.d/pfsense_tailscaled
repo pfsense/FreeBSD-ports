@@ -1,0 +1,190 @@
+#!/bin/sh
+
+# PROVIDE: pfsense_tailscaled
+# REQUIRE: tailscaled
+#
+
+. /etc/rc.subr 
+
+name="pfsense_tailscaled"
+
+load_rc_config $name
+
+# defaults parameter values
+: ${pfsense_tailscaled_acceptroutes_enable:="NO"}
+: ${pfsense_tailscaled_advertiseroutes:=""}
+: ${pfsense_tailscaled_exitnode_enable:="NO"}
+: ${pfsense_tailscaled_loginserver:="https://controlplane.tailscale.com"}
+
+# handle the --auth-key parameter
+pfsense_tailscaled_up_flags="--auth-key=${pfsense_tailscaled_authkey}"
+
+# handle the --login-server parameter
+pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --login-server=${pfsense_tailscaled_loginserver}"
+
+# handle the --advertise-exit-node parameter
+if checkyesno pfsense_tailscaled_exitnode_enable; then
+	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --advertise-exit-node"
+else
+	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --advertise-exit-node=false"
+fi
+
+# handle the --accept-routes parameter
+if checkyesno pfsense_tailscaled_acceptroutes_enable; then
+	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --accept-routes"
+else
+	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --accept-routes=false"
+fi
+
+# handle the --advertise-routes parameter
+pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --advertise-routes=${pfsense_tailscaled_advertiseroutes}"
+
+extra_commands="clean" 
+
+start_cmd="${name}_start"
+start_postcmd="${name}_poststart"
+stop_cmd="${name}_stop"
+clean_cmd="${name}_clean"
+
+# tailscale interface name
+tailscale_tun_dev="tailscale0"
+
+# tailscale interface group
+tailscale_tun_dev_group="Tailscale"
+
+# tailscale cli binary path
+tailscale_bin="/usr/local/bin/tailscale"
+
+# upstream rcfile for tailscaled
+tailscaled_rcfile="/usr/local/etc/rc.d/tailscaled"
+
+# tailscaled state file
+tailscale_state="/var/db/tailscale/tailscaled.state"
+
+# tailscale_auth configuration base path
+tailscale_auth_config_base="installedpackages/tailscaleauth/config"
+
+# how long to wait for Tailscale tun device to come up
+tailscale_tun_dev_wait=5
+
+# rc command hook
+pfsense_tailscaled_start() {
+	tailscaled_start
+}
+
+# rc command hook
+pfsense_tailscaled_poststart() {
+	# wait for the tun device to come up
+	wait_for_tun_dev ${tailscale_tun_dev_wait} || return 1
+
+	# add the tun device to the interface group
+	tun_dev_add_group
+
+	# bring up Tailscale
+	tailscale_up
+
+	# reload the packet filter
+	pfsense_reload_filter
+}
+
+# rc command hook
+pfsense_tailscaled_stop() {
+	tailscaled_stop
+}
+
+# rc command hook
+pfsense_tailscaled_clean() {
+	# stop tailscaled daemon
+	tailscaled_stop
+
+	# delete the state file
+	rm -f ${tailscale_state} >/dev/null 2>&1
+}
+
+# bring up tailscale using the generated up flags from the configuration
+tailscale_up() {
+	debug "Bringing up ${tailscale_tun_dev} with ${pfsense_tailscaled_up_flags}"
+	${tailscale_bin} up ${pfsense_tailscaled_up_flags} || {
+		debug "Unable to bring up ${tailscale_tun_dev}. Check authentication."
+	}
+}
+
+# determine if the tun device exists
+tun_dev_exists() {
+	/sbin/ifconfig ${tailscale_tun_dev} >/dev/null 2>&1
+}
+
+# determine if the tun device does not exist
+tun_dev_not_exists() {
+	!(tun_dev_exists)
+}
+
+# needed because daemon(8) forks and daemonizes long before the tun device is actually created
+wait_for_tun_dev() {
+	local _maxwaited="${1}"
+
+	debug "Waiting for device ${tailscale_tun_dev}"
+	_waited=0
+	while tun_dev_not_exists || {
+		debug "Found device ${tailscale_tun_dev}"
+		return 0
+	}; do
+		[ ${_waited} -gt ${_maxwaited} ] && break
+		sleep 1
+		_waited=$((_waited+1))
+	done
+
+	debug "Unable to find device ${tailscale_tun_dev}"
+	return 1
+}
+
+# silently check tailscaled status, little sugar
+tailscaled_status() {
+	run_rc_script ${tailscaled_rcfile} status >/dev/null 2>&1
+}
+
+# sugar
+tailscaled_running() {
+	tailscaled_status
+}
+
+# moar sugar
+tailscaled_not_running() {
+	!(tailscaled_running)
+}
+
+# start tailscaled if not running, proxy through to upstream rcfile
+tailscaled_start() {
+	tailscaled_running && return 1;
+	run_rc_script ${tailscaled_rcfile} start
+}
+
+# stop tailscaled if running, proxy through to upstream rcfile
+tailscaled_stop() {
+	tailscaled_not_running && return 1
+	run_rc_script ${tailscaled_rcfile} stop
+}
+
+# restart tailscaled, proxy through to upstream rcfile
+tailscaled_restart() {
+	run_rc_script ${tailscaled_rcfile} restart
+}
+
+# add the tun device to the interface group
+tun_dev_add_group() {
+	/sbin/ifconfig ${tailscale_tun_dev} group ${tailscale_tun_dev_group} >/dev/null 2>&1 && {
+		debug "Added ${tailscale_tun_dev} to interface group ${tailscale_tun_dev_group}"
+		return 0
+	}
+
+	debug "Unable to add ${tailscale_tun_dev} to interface group ${tailscale_tun_dev_group}"
+	return 1
+}
+
+# reload pfsense packet filter rules
+pfsense_reload_filter() {
+	debug "Reloading pfSense packet filter"
+	/etc/rc.filter_configure_sync
+}
+
+run_rc_command "$1"
