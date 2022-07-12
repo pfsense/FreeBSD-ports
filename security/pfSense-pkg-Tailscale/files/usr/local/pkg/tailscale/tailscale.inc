@@ -25,6 +25,24 @@ require_once('tailscale/tailscale_common.inc');
 require_once('tailscale/tailscale_install.inc');
 
 /*
+ * Called to ensure the running state is consistent with the configuration state
+ */
+function tailscale_service_checkpoint()
+{
+	# start the service if enabled and not running
+	if (tailscale_is_enabled() && tailscale_is_not_running()) {
+		tailscale_run_rc_command('start');
+		return;
+	}
+
+	# stop the service if running and not enabled
+	if (tailscale_is_not_enabled() && tailscale_is_running()) {
+		tailscale_run_rc_command('stop');
+		return;
+	}
+}
+
+/*
  * page input validation hook
  * 
  * This is the validation hook for the primary tailscale.xml page. Here we first
@@ -39,6 +57,10 @@ function tailscale_validation_hook(&$post, &$input_errors)
 	$lport = $post['listenport'];
 	if (!empty($lport) && (!ctype_digit($lport) || !is_port($lport)))
 		$input_errors[] = sprintf(gettext('Invalid service listen port (%s)'), $lport);
+
+	$interval = $post['autorefreshinterval'];
+	if (!empty($interval) && !ctype_digit($interval))
+		$input_errors[] = sprintf(gettext('Invalid auto page refresh interval (%s)'), $interval);
 
 	tailscale_input_iter($post, 'advertisedroutevalue', function(&$value, $key, &$input_errors) {
 		if (!empty($value) && !is_subnet($value))
@@ -73,6 +95,7 @@ function tailscale_resync_config_hook()
 	if (tailscale_map_and_write_rcconf(tailscale_pfsense_tailscaled_rcconf_map(), PFSENSE_TAILSCALED_RCCONF))
 		$need_restart = true;
 
+	# we perform this in the background, it can otherwise block for a while
 	if ($need_restart && !$tailscale_is_installing)
 		tailscale_run_rc_command('restart');
 

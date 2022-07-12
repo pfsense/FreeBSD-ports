@@ -30,6 +30,7 @@ use Nette\Utils\Html;
 
 define('PFSENSE_TAILSCALED', 		'pfsense_tailscaled');
 
+define('NOHUP_BIN',					'/usr/bin/nohup');
 define('PKG_BIN',					'/usr/sbin/pkg');
 define('SERVICE_BIN',				'/usr/sbin/service');
 define('SYSRC_BIN',					'/usr/sbin/sysrc');
@@ -207,7 +208,8 @@ function tailscale_get_pkg_info($field_map = NULL, $packages = NULL)
 function tailscale_get_config($package, $key, $default = NULL)
 {
 	global $config;
-	return $config['installedpackages'][trim($package)]['config'][0][trim($key)] ?: $default;
+	$path = $config['installedpackages'][trim($package)]['config'][0];
+	return (is_array($path) && array_key_exists($key, $path)) ? $path[$key] : $default;
 }
 
 /*
@@ -243,6 +245,14 @@ function tailscale_is_not_running()
 }
 
 /*
+ * Just a test if auto refresh pages is enabled
+ */
+function tailscale_has_auto_refresh()
+{
+	return (tailscale_get_config('tailscale', 'autorefresh', 'on') === 'on');
+}
+
+/*
  * Query tailscale status and return as a PHP array, false on failure
  */
 function tailscale_get_status()
@@ -256,23 +266,27 @@ function tailscale_get_status()
 }
 
 /*
- * Utility function for checking if tailscale is running and online (i.e. authenticated)
+ * Utility function for checking if tailscale needs login
  */
-function tailscale_is_authenticated()
+function tailscale_needs_login()
 {
 	if ($status = tailscale_get_status())
-		return (($status['BackendState'] === 'Running') && ($status['Self']['Online']));
+		return ($status['BackendState'] == 'NeedsLogin');
 
-	# fall through to reporting unauthenticated state
 	return false;
 }
 
-/*
- * Sugar, see above
- */
-function tailscale_is_not_authenticated()
+function tailscale_is_online()
 {
-	return !(tailscale_is_authenticated());
+	if ($status = tailscale_get_status())
+		return $status['Self']['Online'];
+
+	return false;
+}
+
+function tailscale_is_not_online()
+{
+	return !(tailscale_is_online());
 }
 
 /*
@@ -291,6 +305,8 @@ function tailscale_gen_health_info_html($topline = NULL, $bottomline = NULL)
 	if (!(($status = tailscale_get_status())
 	    && is_array($health = $status['Health'])))
 		goto bailout;
+
+	$fragment->addHtml(Html::el('p')->addText(gettext('Status')));
 
 	$ul = Html::el('ul');
 
@@ -316,34 +332,32 @@ bailout:
  */
 function tailscale_common_after_head_hook()
 {
-	# alert user if tailscale is not enabled, soft warning
+	# alert user if tailscale is not enabled
 	if (tailscale_is_not_enabled()) {
-		$info = gettext('Tailscale service is not enabled.');
+		$info = gettext('Tailscale is not enabled.');
 		$type = 'warning';
 		goto print_notice;
 	}
 
-	# alert user if tailscale is not running (and enabled), hard warning
+	# alert user if tailscale is not running (and enabled)
 	if (tailscale_is_not_running()) {
-		$info = gettext('Tailscale service is not running.');
+		$info = gettext('Tailscale is not running.');
 		$type = 'danger';
 		goto print_notice;
 	}
 
-	# alert user if tailscale is not authenticated (and enabled and running), hard warning
-	if (tailscale_is_not_authenticated()) {
-		$topline	= gettext('The Tailscale service is not connected to the Tailnet.');
-		$bottomline	= gettext('Refresh this page to query the Tailscale service for the latest information.');
-
-		$info = tailscale_gen_health_info_html($topline, $bottomline);
+	# alert user if tailscale is not online (and enabled and running)
+	if (tailscale_is_not_online()) {
+		$info = gettext('Tailscale is not online. Refresh the page to update service status.');
 		$type = 'warning';
 		goto print_notice;
 	}
 
 	# everything looks good
-	if (tailscale_is_authenticated()) {
-		$info = gettext('Tailscale service is authenticated and running.');
+	if (tailscale_is_online()) {
+		$info = gettext('Tailscale is online.');
 		$type = 'success';
+		$ignoreable = true;
 		goto print_notice;
 	}
 
@@ -351,7 +365,7 @@ function tailscale_common_after_head_hook()
 	return;
 
 print_notice:
-	print_info_box($info, $type, null);
+	print_info_box($info, $type, $ignoreable ? 'close' : false);
 }
 
 /* 
@@ -359,46 +373,14 @@ print_notice:
  * 
  * See rc.d/pfsense_tailscaled for platform semantics
  */
-function tailscale_run_rc_command($command)
+function tailscale_run_rc_command($command, $background = true)
 {
-	exec(implode(' ', [SERVICE_BIN, PFSENSE_TAILSCALED, escapeshellarg($command)]), $out, $rc);
+	$cmd = implode(' ', [SERVICE_BIN, PFSENSE_TAILSCALED, escapeshellarg($command)]);
 
-	return ($rc === 0);
-}
-
-/* 
- * Utility function for cleanly restarting tailscale (e.g. on authkey changes)
- * 
- * See rc.d/pfsense_tailscaled for platform semantics
- */
-function tailscale_clean_restart()
-{
-	$needs_restart = (tailscale_is_enabled() && tailscale_is_running());
-
-	# this purges the stops tailscale and purges the local state cache
-	tailscale_run_rc_command('clean');
-
-	# only restart if tailscale was running before cleaning
-	if ($needs_restart)
-		tailscale_run_rc_command('restart');
-}
-
-/*
- * Called to ensure the running state is consistent with the configuration state
- */
-function tailscale_service_checkpoint()
-{
-	# start the service if enabled and not running
-	if (tailscale_is_enabled() && tailscale_is_not_running()) {
-		tailscale_run_rc_command('start');
-		return;
-	}
-
-	# stop the service if running and not enabled
-	if (tailscale_is_running() && tailscale_is_not_enabled()) {
-		tailscale_run_rc_command('stop');
-		return;
-	}
+	$retval = mwexec($cmd, false, false, $background);
+	
+	# we want pid on background
+	return $background ? $retval : ($retval === 0);
 }
 
 /*
@@ -501,14 +483,10 @@ function tailscale_map_and_write_rcconf($var_map, $output_file)
 
 	$var_string = implode(' ', array_values($formatted_vars));
 
-	exec(implode(' ', [SYSRC_BIN, '-c', '-f', $output_file, $var_string]), $out, $rc);
-
-	if ($rc === 0)
+	if (mwexec(implode(' ', [SYSRC_BIN, '-c', '-f', $output_file, $var_string])) === 0)
 		return false;
 
-	exec(implode(' ', [SYSRC_BIN, '-f', $output_file, $var_string]), $out, $rc);
-
-	return ($rc === 0);
+	return (mwexec(implode(' ', [SYSRC_BIN, '-f', $output_file, $var_string])) === 0);
 }
 
 /*
