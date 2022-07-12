@@ -90,7 +90,7 @@
 			<fielddescr>Logout and Clean</fielddescr>
 			<fieldname>service_clean</fieldname>
 			<type>button</type>
-			<buttonicon>fa-cog</buttonicon>
+			<buttonicon>fa-sign-out</buttonicon>
 			<buttonclass>btn-danger</buttonclass>
 			<description>
 				<![CDATA[
@@ -100,6 +100,11 @@
 			<placeonbottom/>
 		</field>
 	</fields>
+	<note>
+		<![CDATA[
+		Changes to these settings may temporarily disrupt peer connections and access to Tailscale.
+		]]>
+	</note>
 	<custom_php_after_head_command>
 		<![CDATA[tailscale_common_after_head_hook();]]>
 	</custom_php_after_head_command>

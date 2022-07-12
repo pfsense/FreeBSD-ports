@@ -21,6 +21,27 @@
 
 require_once('tailscale/tailscale_common.inc');
 
+/* 
+ * Utility function for cleanly restarting tailscale (e.g. on authkey changes)
+ * 
+ * See rc.d/pfsense_tailscaled for platform semantics
+ */
+function tailscale_clean_restart()
+{
+	# need to save this state before cleaning
+	$needs_start = (tailscale_is_enabled() && tailscale_is_running());
+
+	# this stops tailscale and purges the local state cache
+	tailscale_run_rc_command('clean', false);
+	
+	# definitely not dirty now
+	clear_subsystem_dirty('tailscale');
+
+	# only start if tailscale was running before cleaning
+	if ($needs_start)
+		tailscale_run_rc_command('start', false);
+}
+
 /*
  * page input validation hook
  * 
@@ -45,7 +66,7 @@ function tailscale_auth_validation_hook(&$post, &$input_errors)
 function tailscale_auth_resync_config_hook()
 {
 	if (!empty($_POST['service_clean'])) {
-		tailscale_run_rc_command('clean');
+		tailscale_run_rc_command('clean', false);
 		return;
 	}
 

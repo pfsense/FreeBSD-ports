@@ -90,6 +90,42 @@ function tailscale_ifgroup_deinstall()
 }
 
 /*
+ * Test to see if we are keeping the config on de-install
+ */
+function tailscale_has_keep_config()
+{
+	return (tailscale_get_config('tailscale', 'keepconfig', 'on') === 'on');
+}
+
+/*
+ * Just the opposite as above
+ */
+function tailscale_not_has_keep_config()
+{
+	return !(tailscale_has_keep_config());
+}
+
+/*
+ * Utility function to remove all package settings and state
+ */
+function tailscale_clean()
+{
+	global $config;
+
+	# 1. clean the state cache on the filesystem
+	tailscale_run_rc_command('clean');
+
+	# 2. clean the tailscale config tree
+	unset($config['installedpackages']['tailscale']);
+
+	# 3. clean the tailscale auth config tree
+	unset($config['installedpackages']['tailscaleauth']);
+
+	# 4. save the config
+	write_config(gettext('Removed Tailscale package settings and local state cache.'));
+}
+
+/*
  * package install hook
  * 
  * Here is where do useful PHP things during package installation
@@ -125,6 +161,14 @@ function tailscale_deinstall_hook()
 	update_status(sprintf(" %s.\n  %s...", gettext('done'), gettext('Removing Tailscale interface group')));
 
 	tailscale_ifgroup_deinstall();
+
+	if (tailscale_not_has_keep_config()) {
+
+		update_status(sprintf(" %s.\n  %s...", gettext('done'), gettext('Removing Tailscale package settings and state cache')));
+
+		tailscale_clean();
+
+	}
 
 	update_status(sprintf(" %s.\n", gettext('done')));
 }

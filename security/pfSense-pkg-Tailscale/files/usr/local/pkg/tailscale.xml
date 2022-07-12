@@ -26,7 +26,7 @@
 	]]>
 	</copyright>
 	<name>tailscale</name>
-	<version>%%PKGVERSION%%</version>
+	<version>0.0.8</version>
 	<title>VPN/Tailscale</title>
 	<include_file>/usr/local/pkg/tailscale/tailscale.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=tailscale.xml</aftersaveredirect>
@@ -89,6 +89,23 @@
 			<type>input</type>
 			<default_value>41641</default_value>
 			<required/>
+		</field>
+		<field>
+			<fielddescr>Keep Configuration</fielddescr>
+			<fieldname>keepconfig</fieldname>
+			<description>
+				<![CDATA[
+				Enable
+				]]>
+			</description>
+			<sethelp>
+				<![CDATA[
+				With 'Keep Configuration' enabled (default), all package settings and the local Tailscale state cache
+				will persist on install/de-install.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
 		</field>
 		<field>
 			<name>Routing</name>
@@ -208,6 +225,11 @@
 			<combinefields>end</combinefields>
 		</field>
 	</fields>
+	<note>
+		<![CDATA[
+		Changes to these settings may temporarily disrupt peer connections and access to Tailscale.
+		]]>
+	</note>
 	<custom_php_install_command>
 		<![CDATA[tailscale_install_hook();]]>
 	</custom_php_install_command>
