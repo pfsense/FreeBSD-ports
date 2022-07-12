@@ -33,9 +33,6 @@ function tailscale_clean_restart()
 
 	# this stops tailscale and purges the local state cache
 	tailscale_run_rc_command('clean', false);
-	
-	# definitely not dirty now
-	clear_subsystem_dirty('tailscale');
 
 	# only start if tailscale was running before cleaning
 	if ($needs_start)

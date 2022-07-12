@@ -26,7 +26,7 @@
 	]]>
 	</copyright>
 	<name>tailscale</name>
-	<version>0.0.8</version>
+	<version>%%PKGVERSION%%</version>
 	<title>VPN/Tailscale</title>
 	<include_file>/usr/local/pkg/tailscale/tailscale.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=tailscale.xml</aftersaveredirect>
