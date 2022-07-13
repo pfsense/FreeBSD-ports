@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2021 Bill Meeks
+ * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2458,7 +2458,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 		}
 		// Test the SID token for the PCRE: keyword
 		elseif (preg_match('/(^pcre\:)(.+)/i', $tok, $matches)) {
-			$regex = '/' . preg_quote($matches[2], '/') . '/i';
+			$regex = '/' . $matches[2] . '/i';
 
 			// Now search through the $rule_map in the 'rule'
 			// element for any matches to the regex and get
