@@ -96,7 +96,7 @@ diff -ruN ./suricata-6.0.3.orig/src/runmode-netmap.c ./suricata-6.0.3/src/runmod
 +++ ./src/runmode-netmap.c	2021-09-13 10:58:23.000000000 -0400
 @@ -1,4 +1,4 @@
 -/* Copyright (C) 2014-2018 Open Information Security Foundation
-+/* Copyright (C) 2014-2021 Open Information Security Foundation
++/* Copyright (C) 2014-2022 Open Information Security Foundation
   *
   * You can copy, redistribute or modify this Program under the terms of
   * the GNU General Public License version 2 as published by the Free
@@ -439,7 +439,7 @@ diff -ruN ./suricata-6.0.3.orig/src/source-netmap.c ./suricata-6.0.3/src/source-
 +++ ./src/source-netmap.c	2021-09-27 10:46:23.000000000 -0400
 @@ -1,4 +1,4 @@
 -/* Copyright (C) 2011-2018 Open Information Security Foundation
-+/* Copyright (C) 2011-2021 Open Information Security Foundation
++/* Copyright (C) 2011-2022 Open Information Security Foundation
   *
   * You can copy, redistribute or modify this Program under the terms of
   * the GNU General Public License version 2 as published by the Free
@@ -1247,7 +1247,7 @@ diff -ruN ./suricata-6.0.3.orig/src/source-netmap.h ./suricata-6.0.3/src/source-
 +++ ./src/source-netmap.h	2021-09-13 10:17:30.000000000 -0400
 @@ -1,4 +1,4 @@
 -/* Copyright (C) 2014-2018 Open Information Security Foundation
-+/* Copyright (C) 2014-2021 Open Information Security Foundation
++/* Copyright (C) 2014-2022 Open Information Security Foundation
   *
   * You can copy, redistribute or modify this Program under the terms of
   * the GNU General Public License version 2 as published by the Free
