@@ -85,7 +85,7 @@ do-build:
 		-e "s,%%REPO_BRANCH_PREFIX%%,${REPO_BRANCH_PREFIX},g" \
 		-e "s,%%SIGNATURE_TYPE%%,${SIGNATURE_TYPE},g" \
 		-e "s,%%OSVERSION%%,${PKG_REPO_OSVER_${b}},g" \
-		-e "s,%%VERSION%%,${PKG_REPO_BRANCH_${b}},g" \
+		-e "s,%%VERSION%%,${REPO_BRANCH_PREFIX}${PKG_REPO_BRANCH_${b}},g" \
 		${WRKSRC}/${PKG_REPO_FILENAME_${b}}.conf
 	echo "${PKG_REPO_DESCR_${b}}" > ${WRKSRC}/${PKG_REPO_FILENAME_${b}}.descr
 . endif
