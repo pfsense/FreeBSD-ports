@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -189,7 +189,7 @@ if (isset($_POST["save"])) {
 
 	// Remove all but the default events and files rules
 	$enabled_rulesets_array = array();
-	$enabled_rulesets_array = implode("||", $default_rules);
+	$enabled_rulesets_array = $default_rules;
 
 	$savemsg = gettext("All rule categories have been de-selected.  ");
 	if ($_POST['ips_policy_enable'] == "on")
