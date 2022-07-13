@@ -33,9 +33,7 @@ $suricata_rules_dir = SURICATA_RULES_DIR;
 $flowbit_rules_file = FLOWBITS_FILENAME;
 
 // Array of default events rules for Suricata
-$default_rules = array( "app-layer-events.rules", "decoder-events.rules", "dhcp-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "http2-events.rules", "ipsec-events.rules",
-						"kerberos-events.rules", "modbus-events.rules", "mqtt-events.rules", "nfs-events.rules", "ntp-events.rules", "smb-events.rules", "smtp-events.rules", "ssh-events.rules", "stream-events.rules",
-						"tls-events.rules" );
+$default_rules = SURICATA_DEFAULT_RULES;
 
 if (!is_array($config['installedpackages']['suricata']['rule'])) {
 	$config['installedpackages']['suricata']['rule'] = array();
@@ -677,6 +675,8 @@ else:
 			<table class="table table-striped table-hover table-condensed">
 				<thead>
 					<tr>
+						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Ruleset: Default Rules"); ?></th>
 					<?php if ($emergingdownload == 'on' && !$no_emerging_files): ?>
 						<th><?=gettext("Enabled"); ?></th>
 						<th><?=gettext('Ruleset: ET Open Rules');?></th>
@@ -719,19 +719,65 @@ else:
 					}
 				}
 
+				sort($default_rules);
 				sort($emergingrules);
 				sort($snortrules);
-				$i = count($emergingrules);
 
+				// Find the largest array to determine the max number of rows
+				$i = count($default_rules);
+				if ($i < count($emergingrules))
+					$i = count($emergingrules);
 				if ($i < count($snortrules))
 					$i = count($snortrules);
 
 				// Walk the rules file names arrays and output the
 				// the file names and associated form controls in
 				// an HTML table.
-
 				for ($j = 0; $j < $i; $j++) {
 					echo "<tr>\n";
+				/* Begin DEFAULT RULES */
+					if (!empty($default_rules[$j])) {
+						$file = $default_rules[$j];
+						echo "<td>";
+						if(is_array($enabled_rulesets_array)) {
+							if(in_array($file, $enabled_rulesets_array) && !isset($cat_mods[$file]))
+								$CHECKED = " checked=\"checked\"";
+							else
+								$CHECKED = "";
+						} else
+							$CHECKED = "";
+
+						// If the rule category file is covered by a SID mgmt configuration,
+						// place an appropriate icon beside the category.
+						if (isset($cat_mods[$file])) {
+							// If the category is part of the enabled rulesets array,
+							// make sure we include a hidden field to reference it
+							// so we do not unset it during a post-back.
+							if (in_array($file, $enabled_rulesets_array))
+								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+							if ($cat_mods[$file] == 'enabled') {
+								$CHECKED = "enabled";
+								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
+							}
+							elseif ($cat_mods[$file] == 'disabled') {
+								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
+							}
+						}
+						else {
+							echo "	\n<input type=\"checkbox\" name=\"toenable[]\" value=\"{$file}\" {$CHECKED} />\n";
+						}
+						echo "</td>\n";
+						echo "<td>\n";
+						if (empty($CHECKED))
+							echo "<a href='suricata_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
+						else
+							echo "<a href='suricata_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
+						echo "</td>\n";
+					} else
+						echo "<td colspan='2'><br/></td>\n";
+				/* End DEFAULT RULES */
+
+				/* Begin EMERGING THREATS RULES */
 					if (!empty($emergingrules[$j])) {
 						$file = $emergingrules[$j];
 						echo "<td>";
@@ -771,7 +817,9 @@ else:
 						echo "</td>\n";
 					} else
 						echo "<td colspan='2'><br/></td>\n";
+				/* End EMERGING THREATS RULES */
 
+				/* Begin SNORT VRT RULES */
 					if (!empty($snortrules[$j])) {
 						$file = $snortrules[$j];
 						echo "<td>";
@@ -812,6 +860,7 @@ else:
 						echo "</td>\n";
 					} else
 						echo "<td colspan='2'><br/></td>\n";
+				/* End SNORT VRT RULES */
 
 					echo "</tr>\n";
 				}
