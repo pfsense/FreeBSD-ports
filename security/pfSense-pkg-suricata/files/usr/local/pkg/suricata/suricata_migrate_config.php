@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2021 Bill Meeks
+ * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -711,6 +711,14 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 	if (empty($pconfig['rfb_parser'])) {
 		$pconfig['rfb_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['enip_parser'])) {
+		$pconfig['enip_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['mqtt_parser'])) {
+		$pconfig['mqtt_parser'] = "yes";
 		$updated_cfg = true;
 	}
 
