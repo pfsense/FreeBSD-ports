@@ -683,7 +683,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['libhtp_policy']['item'][] = $default;
 
 			// Enable the basic default rules for the interface
-			$natend['rulesets'] = implode("||", SURICATA_DEFAULT_RULES);
+			$natent['rulesets'] = implode("||", SURICATA_DEFAULT_RULES);
 
 			// Adding a new interface, so set flag to build new rules
 			$rebuild_rules = true;
