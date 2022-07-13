@@ -326,6 +326,14 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 
 	/***********************************************************/
+	/* Add the new 'ssh-events.rules' file to the rulesets.    */
+	/***********************************************************/
+	if (strpos($pconfig['rulesets'], "ssh-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||ssh-events.rules";	
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
 	/* Add new run mode value and default it to 'autofp'.      */
 	/***********************************************************/
 	if (empty($pconfig['runmode'])) {
