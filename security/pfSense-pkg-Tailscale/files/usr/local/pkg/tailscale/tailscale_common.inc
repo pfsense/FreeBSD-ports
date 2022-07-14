@@ -28,7 +28,8 @@ require_once('vendor/autoload.php');
 
 use Nette\Utils\Html;
 
-define('PFSENSE_TAILSCALED', 		'pfsense_tailscaled');
+define('TAILSCALED_RC',				'tailscaled');
+define('PFSENSE_TAILSCALED_RC', 	'pfsense_tailscaled');
 
 define('NOHUP_BIN',					'/usr/bin/nohup');
 define('PKG_BIN',					'/usr/sbin/pkg');
@@ -39,8 +40,6 @@ define('TAILSCALE_BIN',				'/usr/local/bin/tailscale');
 define('PFSENSE_TAILSCALED_RCCONF',	'/usr/local/etc/rc.conf.d/pfsense_tailscaled');
 define('TAILSCALED_RCCONF',			'/usr/local/etc/rc.conf.d/tailscaled');
 
-define('TAILSCALED_RC',				'/usr/local/etc/rc.d/tailscaled');
-define('PFSENSE_TAILSCALED_RC',		'/usr/local/etc/rc.d/pfsense_tailscaled');
 define('TAILSCALED_STATE',			'/var/db/tailscale/tailscaled.state');
 
 define('TAILSCALE_SERVER', 			'https://controlplane.tailscale.com');
@@ -382,7 +381,7 @@ function tailscale_run_rc_command($rc, $command, $background = true)
 	$cmd = implode(' ', [SERVICE_BIN, escapeshellarg($rc), escapeshellarg($command)]);
 
 	$retval = mwexec($cmd, false, false, $background);
-	
+
 	# we want pid on background
 	return $background ? $retval : ($retval === 0);
 }
