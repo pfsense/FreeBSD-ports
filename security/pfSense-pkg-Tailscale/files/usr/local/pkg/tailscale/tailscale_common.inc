@@ -188,8 +188,9 @@ function tailscale_get_pkg_info($field_map = NULL, $packages = NULL)
 {
 	$pkg_delm = "\t";
 
-	exec(implode(' ', [PKG_BIN, 'query',
-		escapeshellarg(implode($pkg_delm, $field_map)), implode(' ', $packages)]), $out, $rc);
+	$cmd = implode(' ', [PKG_BIN, 'query', escapeshellarg(implode($pkg_delm, $field_map)), implode(' ', $packages)]);
+
+	exec($cmd, $out, $rc);
 
 	if ($rc !== 0)
 		return false;
@@ -257,7 +258,9 @@ function tailscale_has_auto_refresh()
  */
 function tailscale_get_status()
 {
-	exec(implode(' ', [TAILSCALE_BIN, 'status', '--json']), $out, $rc);
+	$cmd = implode(' ', [TAILSCALE_BIN, 'status', '--json']);
+
+	exec($cmd, $out, $rc);
 
 	if (($rc === 0) && ($status = json_decode(implode($out), true)))
 		return $status;
@@ -265,14 +268,11 @@ function tailscale_get_status()
 	return false;
 }
 
-/*
- * Utility function for checking if tailscale needs login
- */
-function tailscale_needs_login()
+function tailscale_check_backend_state(...$states)
 {
 	if ($status = tailscale_get_status())
-		return ($status['BackendState'] == 'NeedsLogin');
-
+		return in_array($status['BackendState'], $states);
+	
 	return false;
 }
 
@@ -286,7 +286,7 @@ function tailscale_is_online()
 
 function tailscale_is_not_online()
 {
-	return !(tailscale_is_online());
+	return (!tailscale_is_online());
 }
 
 /*
@@ -348,7 +348,7 @@ function tailscale_common_after_head_hook()
 
 	# alert user if tailscale is not online (and enabled and running)
 	if (tailscale_is_not_online()) {
-		$info = gettext('Tailscale is not online. Refresh the page to update service status.');
+		$info = gettext('Tailscale is not online. Refresh the page to check service status.');
 		$type = 'warning';
 		goto print_notice;
 	}
@@ -483,10 +483,14 @@ function tailscale_map_and_write_rcconf($var_map, $output_file)
 
 	$var_string = implode(' ', array_values($formatted_vars));
 
-	if (mwexec(implode(' ', [SYSRC_BIN, '-c', '-f', $output_file, $var_string])) === 0)
+	# first perform sanity check
+	$cmd = implode(' ', [SYSRC_BIN, '-c', '-f', $output_file, $var_string]);
+	if (mwexec($cmd) === 0)
 		return false;
 
-	return (mwexec(implode(' ', [SYSRC_BIN, '-f', $output_file, $var_string])) === 0);
+	# looks good, changes needed so write them out
+	$cmd = implode(' ', [SYSRC_BIN, '-f', $output_file, $var_string]);
+	return (mwexec($cmd) === 0);
 }
 
 /*

@@ -1,5 +1,6 @@
 PORTNAME=		pfSense-pkg-Tailscale
 PORTVERSION=	0.0.9
+PORTREVISION=	1
 CATEGORIES=		net
 MASTER_SITES=	# empty
 DISTFILES=		# empty
@@ -55,6 +56,7 @@ do-install:
 
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml \
-		${STAGEDIR}${PREFIX}/pkg/tailscale.xml
+		${STAGEDIR}${PREFIX}/pkg/tailscale.xml \
+		${STAGEDIR}${PREFIX}/pkg/tailscale/tailscale_auth.xml
 
 .include <bsd.port.mk>
