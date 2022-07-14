@@ -37,9 +37,10 @@ require_once('tailscale/tailscale_common.inc');
  */
 $cmds = [];
 if ($is_enabled_and_running = (tailscale_is_enabled() && tailscale_is_running())) {
-	tailscale_status_define_cmd($cmds, 'tailscale_ip', gettext('Tailscale IP'), '/usr/local/bin/tailscale ip');
-	tailscale_status_define_cmd($cmds, 'tailscale_netcheck', gettext('Tailscale Netcheck'), '/usr/local/bin/tailscale netcheck');
 	tailscale_status_define_cmd($cmds, 'tailscale_status', gettext('Tailscale Status'), '/usr/local/bin/tailscale status');
+	tailscale_status_define_cmd($cmds, 'tailscale_ip', gettext('Tailscale IP'), '/usr/local/bin/tailscale ip');
+	tailscale_status_define_cmd($cmds, 'tailscale_interface', gettext('Tailscale Interface'), '/sbin/ifconfig tailscale0');
+	tailscale_status_define_cmd($cmds, 'tailscale_netcheck', gettext('Tailscale Netcheck'), '/usr/local/bin/tailscale netcheck');
 }
 
 # here we define what packages to query for the package version section
