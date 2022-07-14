@@ -351,7 +351,7 @@ function tailscale_common_after_head_hook()
 
 	# alert user if tailscale is not online (and enabled and running)
 	if (tailscale_is_not_online()) {
-		$info = gettext('Tailscale is not online. Refresh the page to check service status.');
+		$info = gettext('Tailscale is not online. Refresh or check the Tailscale status page.');
 		$type = 'warning';
 		goto print_notice;
 	}
