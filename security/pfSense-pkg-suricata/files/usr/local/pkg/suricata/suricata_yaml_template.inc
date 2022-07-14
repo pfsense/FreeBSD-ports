@@ -333,6 +333,8 @@ app-layer:
         enabled: {$dns_parser_udp}
         detection-ports:
           dp: {$dns_parser_udp_port}
+    enip:
+      enabled: {$enip_parser}
     ftp:
       enabled: {$ftp_parser}
     ftp-data:
@@ -352,6 +354,8 @@ app-layer:
       detection-ports:
         dp: 502
       stream-depth: 0
+    mqtt:
+      enabled: {$mqtt_parser}
     msn:
       enabled: {$msn_parser}
     nfs:

@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2021 Bill Meeks
+ * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,6 +80,12 @@ if (!defined('SURICATA_SID_MODS_PATH'))
 	define('SURICATA_SID_MODS_PATH', "{$g['vardb_path']}/suricata/sidmods/");
 if (!defined('SURICATA_IPREP_PATH'))
 	define('SURICATA_IPREP_PATH', "{$g['vardb_path']}/suricata/iprep/");
+
+// Define an array consisting of Suricata default events rules
+if (!defined("SURICATA_DEFAULT_RULES"))
+	define("SURICATA_DEFAULT_RULES", array( "app-layer-events.rules", "decoder-events.rules", "dhcp-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "http2-events.rules", "ipsec-events.rules",
+						"kerberos-events.rules", "modbus-events.rules", "mqtt-events.rules", "nfs-events.rules", "ntp-events.rules", "smb-events.rules", "smtp-events.rules", "ssh-events.rules", "stream-events.rules",
+						"tls-events.rules" ));
 
 // Rule set download URLs, filenames and prefixes
 if (!defined("VRT_DNLD_URL"))

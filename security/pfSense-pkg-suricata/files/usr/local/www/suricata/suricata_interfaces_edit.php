@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -548,10 +548,11 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$savemsg1 = gettext("EVE Output to syslog requires Suricata alerts to be copied to the system log, so 'Send Alerts to System Log' has been auto-enabled.");
 		}
 
-		// Check if Inline IPS mode is enabled and display a message about potential
-		// incompatibilities with Netmap and some NIC hardware drivers.
+		// Check if Inline IPS mode is enabled. Auto-enable 'Live Rule Swap' and display a message
+		// about potential incompatibilities with Netmap and some NIC hardware drivers.
 		if ($natent['ips_mode'] == "ips_mode_inline") {
-			$savemsg2 = gettext("Inline IPS Mode is selected.  Not all hardware NIC drivers support Netmap operation which is required for Inline IPS Mode.  If problems are experienced, switch to Legacy Mode instead.");
+			$savemsg2 = gettext("Inline IPS Mode is selected. Live Rule Swap will be automatically enabled to prevent netmap interfaces from cycling offline/online during future rules updates.  Please note that not all hardware NIC drivers support Netmap operation which is required for Inline IPS Mode.  If problems are experienced, switch to Legacy Mode instead.");
+			$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] = "on";
 		}
 
 		$if_real = get_real_interface($natent['interface']);
@@ -682,8 +683,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['libhtp_policy']['item'][] = $default;
 
 			// Enable the basic default rules for the interface
-			$natent['rulesets'] = "app-layer-events.rules||decoder-events.rules||dnp3-events.rules||dns-events.rules||files.rules||http-events.rules||ipsec-events.rules||kerberos-events.rules||" . 
-					      "modbus-events.rules||nfs-events.rules||ntp-events.rules||smb-events.rules||smtp-events.rules||stream-events.rules||tls-events.rules";
+			$natent['rulesets'] = implode("||", SURICATA_DEFAULT_RULES);
 
 			// Adding a new interface, so set flag to build new rules
 			$rebuild_rules = true;

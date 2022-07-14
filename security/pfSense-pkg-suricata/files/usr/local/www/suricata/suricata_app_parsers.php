@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -251,6 +251,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['dns_parser_udp_ports'] = "53";
 	$pconfig['dns_parser_tcp'] = "yes";
 	$pconfig['dns_parser_tcp_ports'] = "53";
+	$pconfig['enip_parser'] = "yes";
 	$pconfig['http_parser'] = "yes";
 	$pconfig['tls_parser'] = "yes";
 	$pconfig['tls_detect_ports'] = "443";
@@ -280,6 +281,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['snmp_parser'] = "yes";
 	$pconfig['http2_parser'] = "yes";
 	$pconfig['rfb_parser'] = "yes";
+	$pconfig['mqtt_parser'] = "yes";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -474,6 +476,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['snmp_parser'] = $_POST['snmp_parser'];
 		$natent['http2_parser'] = $_POST['http2_parser'];
 		$natent['rfb_parser'] = $_POST['rfb_parser'];
+		$natent['enip_parser'] = $_POST['enip_parser'];
+		$natent['mqtt_parser'] = $_POST['mqtt_parser'];
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
@@ -733,6 +737,12 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for DHCP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'enip_parser',
+		'ENIP Parser',
+		$pconfig['enip_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for ENIP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'http2_parser',
 		'HTTP2 Parser',
 		$pconfig['http2_parser'],
@@ -756,6 +766,12 @@ if ($importalias) {
 		$pconfig['krb5_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for Kerberos. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'mqtt_parser',
+		'MQTT Parser',
+		$pconfig['mqtt_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for MQTT. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'msn_parser',
 		'MSN Parser',

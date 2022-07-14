@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2021 Bill Meeks
+ * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -958,6 +958,12 @@ if (!empty($suricatacfg['dns_request_flood_limit']))
 else
 	$dns_request_flood_limit = "500";
 
+/* ENIP Parser */
+if (!empty($suricatacfg['enip_parser']))
+	$enip_parser = $suricatacfg['enip_parser'];
+else
+	$enip_parser = "yes";
+
 /* HTTP Parser */
 if (!empty($suricatacfg['http_parser']))
 	$http_parser = $suricatacfg['http_parser'];
@@ -967,6 +973,12 @@ if (!empty($suricatacfg['http_parser_memcap']))
 	$http_parser_memcap = $suricatacfg['http_parser_memcap'];
 else
 	$http_parser_memcap = "67108864";
+
+/* MQTT Parser */
+if (!empty($suricatacfg['mqtt_parser']))
+	$mqtt_parser = $suricatacfg['mqtt_parser'];
+else
+	$mqtt_parser = "yes";
 
 /* SMTP Parser */
 if (!empty($suricatacfg['smtp_parser'])) {
