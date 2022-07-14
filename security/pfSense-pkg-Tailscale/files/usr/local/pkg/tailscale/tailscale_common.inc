@@ -39,6 +39,10 @@ define('TAILSCALE_BIN',				'/usr/local/bin/tailscale');
 define('PFSENSE_TAILSCALED_RCCONF',	'/usr/local/etc/rc.conf.d/pfsense_tailscaled');
 define('TAILSCALED_RCCONF',			'/usr/local/etc/rc.conf.d/tailscaled');
 
+define('TAILSCALED_RC',				'/usr/local/etc/rc.d/tailscaled');
+define('PFSENSE_TAILSCALED_RC',		'/usr/local/etc/rc.d/pfsense_tailscaled');
+define('TAILSCALED_STATE',			'/var/db/tailscale/tailscaled.state');
+
 define('TAILSCALE_SERVER', 			'https://controlplane.tailscale.com');
 
 define('SYSRC_NO', 					'NO');
@@ -373,9 +377,9 @@ print_notice:
  * 
  * See rc.d/pfsense_tailscaled for platform semantics
  */
-function tailscale_run_rc_command($command, $background = true)
+function tailscale_run_rc_command($rc, $command, $background = true)
 {
-	$cmd = implode(' ', [SERVICE_BIN, PFSENSE_TAILSCALED, escapeshellarg($command)]);
+	$cmd = implode(' ', [SERVICE_BIN, escapeshellarg($rc), escapeshellarg($command)]);
 
 	$retval = mwexec($cmd, false, false, $background);
 	
