@@ -31,13 +31,13 @@ function tailscale_service_checkpoint()
 {
 	# start the service if enabled and not running
 	if (tailscale_is_enabled() && tailscale_is_not_running()) {
-		tailscale_run_rc_command('start');
+		tailscale_run_rc_command(PFSENSE_TAILSCALED_RC, 'start');
 		return;
 	}
 
 	# stop the service if running and not enabled
 	if (tailscale_is_not_enabled() && tailscale_is_running()) {
-		tailscale_run_rc_command('stop');
+		tailscale_run_rc_command(PFSENSE_TAILSCALED_RC, 'stop');
 		return;
 	}
 }
@@ -97,7 +97,7 @@ function tailscale_resync_config_hook()
 
 	# we perform this in the background, it can otherwise block for a while
 	if ($need_restart && !$tailscale_is_installing)
-		tailscale_run_rc_command('restart');
+		tailscale_run_rc_command(PFSENSE_TAILSCALED_RC, 'restart');
 
 	# definitely not installing at this point
 	$tailscale_is_installing = false;

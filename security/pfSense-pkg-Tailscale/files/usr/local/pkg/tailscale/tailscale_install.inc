@@ -112,8 +112,8 @@ function tailscale_clean()
 {
 	global $config;
 
-	# 1. clean the state cache on the filesystem
-	tailscale_run_rc_command('clean');
+	# 1. remove the state cache on the filesystem, we keep logs and transferred files
+	unlink_if_exists(TAILSCALED_STATE);
 
 	# 2. clean the tailscale config tree
 	unset($config['installedpackages']['tailscale']);
@@ -151,12 +151,13 @@ function tailscale_install_hook()
  * package deinstall hook
  * 
  * Here is where do useful PHP things during package deinstallation
+ * Note: We can't call the pfsense_tailscaled script anymore, it has already been deleted
  */
 function tailscale_deinstall_hook()
 {
 	update_status(sprintf(" \n  %s...", gettext('Stopping Tailscale service')));
 
-	tailscale_run_rc_command('stop');
+	tailscale_run_rc_command(TAILSCALED_RC, 'stop');
 
 	update_status(sprintf(" %s.\n  %s...", gettext('done'), gettext('Removing Tailscale interface group')));
 

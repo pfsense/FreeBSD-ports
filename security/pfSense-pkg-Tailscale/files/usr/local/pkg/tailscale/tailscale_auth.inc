@@ -32,11 +32,11 @@ function tailscale_clean_restart()
 	$needs_start = (tailscale_is_enabled() && tailscale_is_running());
 
 	# this stops tailscale and purges the local state cache
-	tailscale_run_rc_command('clean', false);
+	tailscale_run_rc_command(PFSENSE_TAILSCALED_RC, 'clean', false);
 
 	# only start if tailscale was running before cleaning
 	if ($needs_start)
-		tailscale_run_rc_command('start', false);
+		tailscale_run_rc_command(PFSENSE_TAILSCALED_RC, 'start', false);
 }
 
 /*
@@ -63,7 +63,7 @@ function tailscale_auth_validation_hook(&$post, &$input_errors)
 function tailscale_auth_resync_config_hook()
 {
 	if (!empty($_POST['service_clean'])) {
-		tailscale_run_rc_command('clean', false);
+		tailscale_run_rc_command(PFSENSE_TAILSCALED_RC, 'clean', false);
 		return;
 	}
 

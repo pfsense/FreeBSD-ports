@@ -46,25 +46,12 @@ start_postcmd="${name}_poststart"
 stop_cmd="${name}_stop"
 clean_cmd="${name}_clean"
 
-# tailscale interface name
+# some shared configuration
 tailscale_tun_dev="tailscale0"
-
-# tailscale interface group
 tailscale_tun_dev_group="Tailscale"
-
-# tailscale cli binary path
 tailscale_bin="/usr/local/bin/tailscale"
-
-# upstream rcfile for tailscaled
 tailscaled_rcfile="/usr/local/etc/rc.d/tailscaled"
-
-# tailscaled state file
 tailscale_state="/var/db/tailscale/tailscaled.state"
-
-# tailscale_auth configuration base path
-tailscale_auth_config_base="installedpackages/tailscaleauth/config"
-
-# how long to wait for Tailscale tun device to come up
 tailscale_tun_dev_wait=5
 
 # rc command hook
