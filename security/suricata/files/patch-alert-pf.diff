@@ -40,7 +40,7 @@ diff -ruN ./suricata-6.0.6.orig/src/Makefile.in ./suricata-6.0.6/src/Makefile.in
  app-layer.c app-layer.h \
 diff -ruN ./suricata-6.0.6.orig/src/alert-pf.c ./suricata-6.0.6/src/alert-pf.c
 --- ./suricata-6.0.6.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2022-07-12 20:08:35.000000000 -0400
++++ ./src/alert-pf.c	2022-07-12 20:33:44.000000000 -0400
 @@ -0,0 +1,1334 @@
 +/* Copyright (C) 2007-2022 Open Information Security Foundation
 + *
@@ -625,7 +625,7 @@ diff -ruN ./suricata-6.0.6.orig/src/alert-pf.c ./suricata-6.0.6/src/alert-pf.c
 +				if (node == NULL) {
 +					// Not already in list, so add it
 +                    SCRWLockWRLock(&ctx->rwlock_tree);
-+					SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, (NULL);
++					SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, NULL);
 +                    SCRWLockUnlock(&ctx->rwlock_tree);
 +    				PrintInet(AF_INET, (const void *)&ip->addr_data32, tmp, sizeof(tmp));
 +					SCLogInfo("alert-pf -> added address %s to automatic firewall interface IP Pass List.", tmp);
@@ -1339,7 +1339,7 @@ diff -ruN ./suricata-6.0.6.orig/src/alert-pf.c ./suricata-6.0.6/src/alert-pf.c
 +                if (SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_DST_ADDR(p), apft->ctx->tree, NULL)) {
 +                    break;
 +                }
-+                if (node == NULL && user_data == NULL && !AlertPfMatchFQDN(apft, (uint8_t *)GET_IPV6_DST_ADDR(p), AF_INET6)) {
++                if (!AlertPfMatchFQDN(apft, (uint8_t *)GET_IPV6_DST_ADDR(p), AF_INET6)) {
 +                    if (AlertPfBlock(apft, &p->dst) > 0) {
 +                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
 +                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
