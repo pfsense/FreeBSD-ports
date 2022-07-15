@@ -1,7 +1,7 @@
 # Created by: Felix Palmen <felix@palmen-it.de>
 
 PORTNAME=	makemkv
-PORTVERSION=	1.16.4
+PORTVERSION=	1.17.0
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.makemkv.com/download/:makemkv \
 		http://www.makemkv.com/download/old/:makemkv \
@@ -37,13 +37,14 @@ LICENSE_DISTFILES_OpenSSL=	openssl-${OPENSSLFULLVER}.tar.gz
 LICENSE_DISTFILES_MAKEMKV=	makemkv-bin-${PORTVERSION}.tar.gz \
 				makemkv-oss-${PORTVERSION}.tar.gz
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 USES=	gmake linux pkgconfig perl5
 USE_LINUX=	base expat expat:build openssl openssl:build devtools:build
 USE_PERL5=	build
-BUILD_DEPENDS=	nasm>0:devel/nasm \
-		${LOCALBASE}/include/expat.h:textproc/expat2 \
-		patchelf>0:sysutils/patchelf
+BUILD_DEPENDS=	${LOCALBASE}/include/expat.h:textproc/expat2 \
+		patchelf>0:sysutils/patchelf \
+		${BUILD_DEPENDS_${FFMPEGARCH}}
+BUILD_DEPENDS_x86=	nasm>0:devel/nasm
 
 WRKSRC=		${WRKDIR}/makemkv-oss-${PORTVERSION}
 
@@ -54,24 +55,27 @@ SUB_LIST=	LINUXBASE=${LINUXBASE}
 PLIST_SUB=	LINUXBASE=${LINUXBASE}
 
 FDKAACVERSION=	2.0.2
-FFMPEGVERSION=	4.4
+FFMPEGVERSION=	5.0.1
 OPENSSLVERSION=	1.0.2
 OPENSSLPATCHLEVEL=	k
 OPENSSLFULLVER=	${OPENSSLVERSION}${OPENSSLPATCHLEVEL}
 
 LINUXARCH=	${ARCH:S/amd64/x86_64/}
 LINUXTRIPLET=	${LINUXARCH}-redhat-linux
-LINUXLIBDIR=	${LINUXBASE}/${"${LINUXARCH:Mx86_64}" != "":?lib64:lib}
-OPENSSLTARGET=	${"${LINUXARCH:Mx86_64}" != "":?linux-x86_64:linux-elf}
+LINUXLIBDIR=	${LINUXBASE}/${"${LINUXARCH:Mi386}" != "":?lib:lib64}
+OPENSSLTARGET=	linux-${LINUXARCH:S/i386/elf/}
+FFMPEGARCH=	${"${LINUXARCH:Maarch64}" != "":?aarch64:x86}
 
 OPTIONS_DEFINE=	EXAMPLES
 
 PATCHELF_CMD?=	${LOCALBASE}/bin/patchelf
 
-CFLAGS+=	-std=c++11 -std=c11 -DFORCE_OPENSSL_NO_EC \
-		-I${WRKDIR}/gnuroot/include \
-		-I${WRKDIR}/openssl-${OPENSSLFULLVER}/include
-SSP_CFLAGS=
+CPPFLAGS+=	-I${WRKDIR}/gnuroot/include \
+		-I${WRKDIR}/openssl-${OPENSSLFULLVER}/include \
+		-D_linux_ -DFORCE_OPENSSL_NO_EC \
+		${${OSVERSION}<1300000:?-Dcaddr_t=void\* -D__daddr_t_defined:}
+CFLAGS+=	-std=c11
+CXXFLAGS+=	-std=c++11
 LDFLAGS+=	-L${WRKDIR}/gnuroot/lib
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --disable-gui --host=${LINUXTRIPLET} \
@@ -80,6 +84,7 @@ CONFIGURE_ENV=	CC=${LINUXTRIPLET}-gcc CXX=${LINUXTRIPLET}-g++ \
 		PATH=${WRKDIR}/gnuroot/bin:${PATH} \
 		PKG_CONFIG_PATH=${WRKDIR}/gnuroot/lib/pkgconfig
 MAKE_ENV=	PATH=${WRKDIR}/gnuroot/bin:${PATH}
+MAKE_ARGS=	CFLAGS="${CXXFLAGS} ${CPPFLAGS} -std=c11"
 STRIP_CMD=	${WRKDIR}/gnuroot/bin/${LINUXTRIPLET}-strip
 
 post-extract:
@@ -111,13 +116,15 @@ post-patch:
 			-e 's:x86_64:amd64:' \
 			-e 's:i686:i386:' \
 			-e 's:-t \([^ ]*\) \([^ ]*\):\2 \1:' \
+			-e 's:ARCH=:BINARCH=:' \
+			-e 's:bin/$$(ARCH:bin/$$(BINARCH:' \
 			${WRKDIR}/makemkv-bin-${PORTVERSION}/Makefile
 
 pre-configure:
 		# FDK AAC
 		cd ${WRKDIR}/fdk-aac-${FDKAACVERSION}; \
 		export PATH=${WRKDIR}/gnuroot/bin:$$PATH; \
-		export CXXFLAGS="${CFLAGS}"; \
+		export CXXFLAGS="${CXXFLAGS}"; \
 		LDFLAGS=-L${WRKDIR}/gnuroot/lib \
 		./configure --prefix=${WRKDIR}/gnuroot \
 			--disable-shared --enable-static --with-pic \
@@ -127,16 +134,16 @@ pre-configure:
 		cd ${WRKDIR}/ffmpeg-${FFMPEGVERSION}; \
 		export PATH=${WRKDIR}/gnuroot/bin:$$PATH; \
 		export CFLAGS="${CFLAGS}"; \
+		export CPPFLAGS="${CPPFLAGS}"; \
 		PKG_CONFIG_PATH=${WRKDIR}/gnuroot/lib/pkgconfig \
-		CPPFLAGS="-Dcaddr_t=void\* -D__daddr_t_defined" \
 		LDFLAGS=-L${WRKDIR}/gnuroot/lib \
 		./configure --prefix=${WRKDIR}/gnuroot \
 			--disable-shared --enable-static --enable-pic \
 			--enable-libfdk-aac --pkg-config=pkg-config \
 			--cross-prefix=${LINUXTRIPLET}- --arch=${LINUXARCH} \
 			--target-os=linux --host-cc=${CC}; \
-		CFLAGS="${CFLAGS}" \
-		${MAKE_CMD} ${_MAKE_JOBS} V=1 ARCH=x86 all install
+		CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+		${MAKE_CMD} ${_MAKE_JOBS} V=1 ARCH=${FFMPEGARCH} all install
 		# OpenSSL headers
 		cd ${WRKDIR}/openssl-${OPENSSLFULLVER}; \
 		./Configure --openssldir= --prefix=/usr ${OPENSSLTARGET}
@@ -164,10 +171,4 @@ post-install-EXAMPLES-on:
 		${INSTALL_DATA} ${FILESDIR}/update-makemkv-key.sh \
 			${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-MAKE_JOBS_UNSAFE=	yes
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

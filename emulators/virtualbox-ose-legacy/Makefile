@@ -1,5 +1,3 @@
-# Created by: Bernhard Froehlich <decke@bluelife.at>
-
 PORTNAME=	virtualbox-ose
 PORTVERSION=	5.2.44
 PORTREVISION=	11
@@ -206,8 +204,12 @@ KMK_FLAGS+=	-j${MAKE_JOBS_NUMBER}
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400059
+.if ${OPSYS} == FreeBSD
+.if ${OSVERSION} >= 1400059
 BROKEN=		Fails to compile with libc++ 14.0.3
+.elif ${OSVERSION} >= 1301000 && ${OSVERSION} < 1400000
+BROKEN=		Fails to compile: error: ran out of registers during register allocation
+.endif
 .endif
 
 .if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && ${OSVERSION} > 1400022

@@ -5,6 +5,85 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20220711:
+  AFFECTS: users of security/stunnel
+  AUTHOR: zi@FreeBSD.org
+
+  The stunnel port has been updated to drop privileges to the stunnel
+  user by default.
+
+  As a result of this change, the pid file location has changed.  If
+  you have a running copy of stunnel, you should stop the process
+  before performing the upgrade.  Alternatively, you will need to
+  # pkill stunnel;service stunnel start
+  after the upgrade has been completed.
+
+20220628:
+  AFFECTS: users of Erlang and Elixir
+  AUTHOR: dch@FreeBSD.org
+
+  For more than a decade, the Elixir Mix tool and the Erlang rebar
+  or erlang.mk build tools have been the defacto way of installing
+  and managing packages for specific applications.
+
+  All main-stream applications, from Riak, CouchDB, RabbitMQ, Phoenix,
+  and Elixir, expect that packages are fetched and compiled into an OTP
+  Release, with in-built version locking, external package management.
+
+  There is no point in maintaining a large number of libraries, that
+  are used neither for development, nor operations.
+
+  Users are directed to https://rebar3.org/ https://erlang.mk/ or
+  https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
+  to fetch custom packages.
+
+  https://www.freebsd.org/status/report-2021-07-2021-09/#_freebsd_erlang_ecosystem_ports_update
+
+20220626:
+  AFFECTS: users of python
+  AUTHOR: thierry@FreeBSD.org
+
+  The default version of python3 and python was switched to 3.9.
+
+  For ports users wanting to keep version 3.8 as default,
+  add DEFAULT_VERSIONS+= python=3.8 python3=3.8 to make.conf
+
+  Following procedures may ease the upgrade:
+
+  For users of pre-build packages:
+  # sh
+  # for i in $(pkg query -g %n 'py38-*'); do pkg set -yn ${i}:py39-${i#py38-}; done
+  # pkg upgrade
+
+  For portmaster users:
+  # sh
+  # portmaster -o lang/python39 python38
+  # REINSTALL="$(pkg info -o "*py38*" | awk '{printf "%s ", $2}')"
+  # pkg delete -f "*py38*"
+  # portmaster $REINSTALL
+  # REBUILD=$(pkg query -g "%n:%dn" '*' | grep py3 | grep -v py39 | cut -d : -f 1 | sort -u)
+  # portmaster $REBUILD
+  # REBUILD2=$(pkg list | grep python-38 | xargs pkg which | awk '{print $6}' | sort -u)
+  # portmaster $REBUILD2
+
+  Final steps (for pre-built packages & portmaster):
+
+  If no longer required, Python 3.8 can be removed via
+  "pkg remove python38" and the directory /usr/local/lib/python3.8 can
+  then be deleted afterwards, if not empty.
+
+20220625:
+AFFECTS: users of sysutils/fusefs-bindfs
+  AUTHOR: doralitze@chaotikum.org
+
+  Bindfs defaults to use direct I/O since version 1.16. While this results
+  in major performance improvements as well as several bug fixes, this also
+  breaks direct legacy calls to mmap. If your application still uses them
+  consider these two options:
+
+  1. Mount using `--no-direct-io`
+  2. Upgrade your application in order to query mapping guards
+
 20220623:
 AFFECTS: users of science/gramps
   AUTHOR: fernape@FreeBSD.org

@@ -2,7 +2,7 @@
 
 PORTNAME=	efl
 DISTVERSION=	1.26.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 DIST_SUBDIR=	enlightenment
@@ -74,7 +74,6 @@ SCIM_DESC=		Smart Common Input Method
 XIM_DESC=		X Input Method
 SVG_DESC=		Vector graphics support
 XCF_DESC=		Gimp image format support
-HEIF_DESC=		HEIF image format support
 LUAL_DESC=		LUA
 LUALANG_DESC=		Use Lua
 LUAJIT_DESC=		Use Luajit

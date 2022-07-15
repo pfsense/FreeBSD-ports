@@ -1,10 +1,10 @@
 PORTNAME=	sdr++
 DISTVERSION=	1.0.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Cross-Platform SDR Software
+COMMENT=	Cross-platform SDR software
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/license
@@ -28,9 +28,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	AlexandreRouma
 GH_PROJECT=	SDRPlusPlus
 
-# Broken with clang 14
-CMAKE_OFF=	OPT_BUILD_DISCORD_PRESENCE
-
 OPTIONS_MULTI=			AUDIO_BACKEND
 OPTIONS_MULTI_AUDIO_BACKEND=	PORTAUDIO RTAUDIO
 OPTIONS_DEFAULT=		RTAUDIO
@@ -45,4 +42,12 @@ RTAUDIO_DESC=			RtAudio support
 RTAUDIO_CMAKE_BOOL=		OPT_BUILD_AUDIO_SINK
 RTAUDIO_LIB_DEPENDS=		librtaudio.so:audio/rtaudio
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "amd64" || ${ARCH} == "i386"
+PLIST_SUB+=     SSE=""
+.else
+PLIST_SUB+=     SSE="@comment "
+.endif
+
+.include <bsd.port.post.mk>

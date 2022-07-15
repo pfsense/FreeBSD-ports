@@ -275,8 +275,8 @@ _INCLUDE_USES_PYTHON_MK=	yes
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_PYTHON_VERSIONS=		3.8 3.9 3.7 3.10 3.11 2.7 # preferred first
-_PYTHON_PORTBRANCH=		3.8		# ${_PYTHON_VERSIONS:[1]}
+_PYTHON_VERSIONS=		3.9 3.8 3.7 3.10 3.11 2.7 # preferred first
+_PYTHON_PORTBRANCH=		3.9		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
 
@@ -590,8 +590,8 @@ _CURRENTPORT:=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools44>0:devel/py-setuptools44@${PY_FLAVOR}
 RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools44>0:devel/py-setuptools44@${PY_FLAVOR}
 .    else
-BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>=62.1.0:devel/py-setuptools@${PY_FLAVOR}
-RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>=62.1.0:devel/py-setuptools@${PY_FLAVOR}
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>=63.1.0:devel/py-setuptools@${PY_FLAVOR}
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>=63.1.0:devel/py-setuptools@${PY_FLAVOR}
 .    endif
 .  endif
 
@@ -712,7 +712,7 @@ CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
 
 # Python 3rd-party modules
 PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
-PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.23,1:math/py-numpy@${PY_FLAVOR}
+PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.24,1:math/py-numpy@${PY_FLAVOR}
 
 # Common Python modules that can be needed but only for some versions of Python.
 .  if ${PYTHON_REL} < 30500

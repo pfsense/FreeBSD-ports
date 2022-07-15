@@ -1,16 +1,23 @@
 # Created by: Sergey Akifyev <asa@gascom.ru>
 
 PORTNAME=	libmad
-PORTVERSION=	0.16.1
+PORTVERSION=	0.16.2
+PORTREVISION=	1
 CATEGORIES=	audio
+
+PATCH_SITES=	https://github.com/tenacityteam/libmad/commit/
+PATCHFILES=	9ec2efa6ba4bfaed7805867077d3a67daa022331.patch:-p1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Libmad library (part of MAD project)
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cmake cpe pathfix
 
+CMAKE_OFF=	MADD_ASM MADD16_ASM
+CMAKE_ON=	ASO BUILD_SHARED_LIBS
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
@@ -19,5 +26,14 @@ CPE_VENDOR=	underbit
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	tenacityteam
+
+OPTIONS_SINGLE=	OPTIMIZE
+OPTIONS_SINGLE_OPTIMIZE=ACCURACY SPEED
+OPTIONS_DEFAULT=SPEED
+ACCURACY_DESC=	Optimize for accuracy over speed
+SPEED_DESC=	Optimize for speed over accuracy
+
+ACCURACY_CMAKE_ON=	-DOPTIMIZE=ACCURACY
+SPEED_CMAKE_ON=		-DOPTIMIZE=SPEED
 
 .include <bsd.port.mk>

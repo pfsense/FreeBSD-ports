@@ -6,10 +6,13 @@ PORTVERSION=	3.6.0
 PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME 3 file search utilities
+
+DEPRECATED=	Did not survive gnome3
+EXPIRATION_DATE=	2022-08-01
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 

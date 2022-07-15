@@ -1,6 +1,6 @@
 PORTNAME=	authelia
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.35.6
+DISTVERSION=	4.36.2
 PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/authelia/authelia/releases/download/v${DISTVERSION}/:public_html

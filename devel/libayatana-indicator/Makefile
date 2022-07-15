@@ -1,5 +1,6 @@
 PORTNAME=	libayatana-indicator
 PORTVERSION=	0.9.1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	jgh@FreeBSD.org

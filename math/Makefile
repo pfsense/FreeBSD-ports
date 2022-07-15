@@ -187,6 +187,7 @@
     SUBDIR += blahtexml
     SUBDIR += blas
     SUBDIR += blasfeo
+    SUBDIR += blaspp
     SUBDIR += blaze
     SUBDIR += blazeiterative
     SUBDIR += blis
@@ -201,6 +202,7 @@
     SUBDIR += cadical
     SUBDIR += cado-nfs
     SUBDIR += calc
+    SUBDIR += calcium
     SUBDIR += calcoo
     SUBDIR += cantor
     SUBDIR += casadi
@@ -244,6 +246,7 @@
     SUBDIR += concorde
     SUBDIR += convertall
     SUBDIR += coq
+    SUBDIR += cosma
     SUBDIR += couenne
     SUBDIR += coxeter3
     SUBDIR += cppad
@@ -306,6 +309,7 @@
     SUBDIR += fastops
     SUBDIR += fcl
     SUBDIR += fcl05
+    SUBDIR += fenics-basix
     SUBDIR += fflas-ffpack
     SUBDIR += fftw
     SUBDIR += fftw-float
@@ -398,8 +402,10 @@
     SUBDIR += jsmath-fonts
     SUBDIR += jtransforms
     SUBDIR += jts
+    SUBDIR += kahip
     SUBDIR += kalgebra
     SUBDIR += kalker
+    SUBDIR += kamis
     SUBDIR += kbruch
     SUBDIR += kcalc
     SUBDIR += kfr
@@ -412,6 +418,7 @@
     SUBDIR += lapack++
     SUBDIR += lapack95
     SUBDIR += lapacke
+    SUBDIR += lapackpp
     SUBDIR += laspack
     SUBDIR += latte-integrale
     SUBDIR += lcalc
@@ -855,6 +862,7 @@
     SUBDIR += py-faiss
     SUBDIR += py-fastcluster
     SUBDIR += py-fastdtw
+    SUBDIR += py-fenics-basix
     SUBDIR += py-flax
     SUBDIR += py-fpylll
     SUBDIR += py-fraction
@@ -875,6 +883,7 @@
     SUBDIR += py-iohexperimenter
     SUBDIR += py-ipyopt
     SUBDIR += py-jax
+    SUBDIR += py-kahip
     SUBDIR += py-keras
     SUBDIR += py-keras-applications
     SUBDIR += py-keras-preprocessing
@@ -1084,6 +1093,7 @@
     SUBDIR += teyjus
     SUBDIR += timbl
     SUBDIR += tiny-bignum-c
+    SUBDIR += tlapack
     SUBDIR += tmv
     SUBDIR += tomsfastmath
     SUBDIR += topaz
@@ -1092,6 +1102,7 @@
     SUBDIR += triangle
     SUBDIR += trlan
     SUBDIR += trlib
+    SUBDIR += ttmath
     SUBDIR += tvmet
     SUBDIR += ump
     SUBDIR += units

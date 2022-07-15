@@ -64,7 +64,6 @@
     SUBDIR += cstream
     SUBDIR += ctm
     SUBDIR += cuttlefish
-    SUBDIR += cxxmatrix
     SUBDIR += dahdi
     SUBDIR += dahdi-kmod
     SUBDIR += dahdi-kmod26
@@ -85,12 +84,8 @@
     SUBDIR += e2fsprogs-libuuid
     SUBDIR += edfbrowser
     SUBDIR += edflib
-    SUBDIR += elixir-mime
-    SUBDIR += elixir-uuid
     SUBDIR += elki
     SUBDIR += elscreen
-    SUBDIR += erlang-mimerl
-    SUBDIR += erlang-mimetypes
     SUBDIR += estic
     SUBDIR += exercism
     SUBDIR += explosions

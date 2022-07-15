@@ -1,8 +1,8 @@
 # Created by: Sergey A. Osokin <osa@FreeBSD.org>
 
 PORTNAME?=	nginx
-PORTVERSION=	1.22.0
-PORTREVISION=	7
+PORTVERSION=	1.23.0
+PORTREVISION=	15
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa
@@ -223,6 +223,11 @@ IGNORE=		requires at least HTTP or MAIL to \
 .if ${PORT_OPTIONS:MPASSENGER} && empty(PORT_OPTIONS:MDEBUG)
 CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
+.endif
+
+# Fix build failure on clang >= 12
+.if ${PORT_OPTIONS:MHTTP_PERL} && ${OSVERSION} >= 1301000
+CFLAGS+=	-Wno-compound-token-split-by-macro
 .endif
 
 .if empty(PORT_OPTIONS:MPCRE_ONE) && empty(PORT_OPTIONS:MPCRE_TWO)

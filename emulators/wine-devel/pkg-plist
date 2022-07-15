@@ -28,6 +28,8 @@ bin/wmc
 bin/wrc
 include/wine/debug.h
 include/wine/exception.h
+include/wine/iaccessible2.h
+include/wine/iaccessible2.idl
 include/wine/itss.h
 include/wine/itss.idl
 include/wine/svcctl.h
@@ -612,7 +614,9 @@ include/wine/windows/mimeinfo.h
 include/wine/windows/mimeinfo.idl
 include/wine/windows/mimeole.h
 include/wine/windows/mimeole.idl
+include/wine/windows/minidumpapiset.h
 include/wine/windows/minmax.h
+include/wine/windows/minschannel.h
 include/wine/windows/mlang.h
 include/wine/windows/mlang.idl
 include/wine/windows/mmc.h
@@ -624,6 +628,8 @@ include/wine/windows/mmreg.h
 include/wine/windows/mmstream.h
 include/wine/windows/mmstream.idl
 include/wine/windows/mmsystem.h
+include/wine/windows/mpegtype.h
+include/wine/windows/mpegtype.idl
 include/wine/windows/mprapi.h
 include/wine/windows/mprerror.h
 include/wine/windows/msacm.h
@@ -1677,6 +1683,7 @@ lib/wine/%%WINEARCH%%-windows/hnetcfg.dll
 lib/wine/%%WINEARCH%%-windows/hostname.exe
 lib/wine/%%WINEARCH%%-windows/http.sys
 lib/wine/%%WINEARCH%%-windows/httpapi.dll
+lib/wine/%%WINEARCH%%-windows/ia2comproxy.dll
 lib/wine/%%WINEARCH%%-windows/icacls.exe
 lib/wine/%%WINEARCH%%-windows/iccvid.dll
 lib/wine/%%WINEARCH%%-windows/icinfo.exe
@@ -2353,7 +2360,6 @@ lib/wine/%%WINEARCH%%-windows/winver.exe
 lib/wine/%%WINEARCH%%-windows/wlanapi.dll
 lib/wine/%%WINEARCH%%-windows/wlanui.dll
 lib/wine/%%WINEARCH%%-windows/wldap32.dll
-lib/wine/%%WINEARCH%%-windows/wmadmod.dll
 lib/wine/%%WINEARCH%%-windows/wmasf.dll
 lib/wine/%%WINEARCH%%-windows/wmi.dll
 lib/wine/%%WINEARCH%%-windows/wmic.exe

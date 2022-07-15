@@ -117,6 +117,8 @@
     SUBDIR += qflow
     SUBDIR += qmls
     SUBDIR += qrouter
+    SUBDIR += qucs-s
+    SUBDIR += qucsator
     SUBDIR += repsnapper
     SUBDIR += rubygem-gdsii
     SUBDIR += scotch
@@ -136,6 +138,7 @@
     SUBDIR += verilog-mode.el
     SUBDIR += veroroute
     SUBDIR += xcircuit
+    SUBDIR += xyce
     SUBDIR += yosys
     SUBDIR += z88
     SUBDIR += zcad

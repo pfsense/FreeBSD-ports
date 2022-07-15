@@ -1,9 +1,9 @@
 # Created by: Brendan Molloy <brendan+freebsd@bbqsrc.net>
 
 PORTNAME=	matrix-synapse
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.61.0
+DISTVERSION=	1.62.0
 CATEGORIES=	net-im python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@skyforge.at
@@ -12,8 +12,7 @@ COMMENT=	Matrix protocol reference homeserver
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}poetry2setup>=1.0.0:devel/py-poetry2setup@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${PY_FLAVOR}
 
 # Keep the RUN_DEPENDS layout similar to the master/synapse/python_dependencies.py file
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=3.0.0:devel/py-jsonschema@${PY_FLAVOR} \
@@ -44,7 +43,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=3.0.0:devel/py-jsonschema@${PY_F
 		${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ijson>=3.1.4:devel/py-ijson@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=16.1:devel/py-packaging@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}matrix-common>=1.1.0:devel/py-matrix-common@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}matrix-common>=1.2.1:devel/py-matrix-common@${PY_FLAVOR} \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=15.0:devel/py-virtualenv@${PY_FLAVOR} \
@@ -55,9 +54,6 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=15.0:devel/py-virtualenv@${PY_F
 		${PYTHON_PKGNAMEPREFIX}idna>=2.5:dns/py-idna@${PY_FLAVOR}
 
 USES=		python:3.7+
-USE_GITHUB=	yes
-GH_ACCOUNT=	matrix-org
-GH_PROJECT=	synapse
 USE_PYTHON=	autoplist distutils
 USE_RC_SUBR=	synapse
 
@@ -84,7 +80,7 @@ OIDC_DESC=		Add dependencies for OpenID Connect based logins
 REDIS_DESC=		Add support replication over Redis for synapse workers
 URLPREVIEW_DESC=	Add dependencies necessary for URL previews
 
-JWT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyjwt>=1.6.4:www/py-pyjwt@${PY_FLAVOR}
+JWT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}authlib>=0.14.0:security/py-authlib@${PY_FLAVOR}
 LDAP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matrix-synapse-ldap3>=0.1:net/py-matrix-synapse-ldap3@${PY_FLAVOR}
 OIDC_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}authlib>=0.14.0:security/py-authlib@${PY_FLAVOR}
 PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>2.8:databases/py-psycopg2@${PY_FLAVOR}
@@ -99,9 +95,6 @@ URLPREVIEW_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.2.0:devel/py-lxml@${PY_FL
 .if (${PYTHON_REL} < 30800)
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=1.4:devel/py-importlib-metadata@${PY_FLAVOR}
 .endif
-
-pre-configure:
-	cd ${WRKSRC} && poetry2setup > setup.py
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}

@@ -1,5 +1,5 @@
 PORTNAME=	speech-dispatcher
-DISTVERSION=	0.10.2
+DISTVERSION=	0.11.1
 CATEGORIES?=	accessibility audio
 MASTER_SITES=	https://github.com/brailcom/speechd/releases/download/${PORTVERSION}/
 
@@ -30,20 +30,19 @@ INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS+=	--disable-python
 
-ETCFILES=	clients/emacs.conf modules/cicero.conf \
-		modules/dtk-generic.conf modules/epos-generic.conf \
-		modules/espeak-mbrola-generic.conf modules/espeak-ng-mbrola-generic.conf \
+ETCFILES=	clients/emacs.conf modules/cicero.conf modules/dtk-generic.conf \
+		modules/epos-generic.conf modules/espeak-mbrola-generic.conf \
+		modules/espeak-ng-mbrola-generic.conf modules/espeak-ng-mbrola.conf \
 		modules/espeak-ng.conf modules/espeak.conf modules/festival.conf \
-		modules/flite.conf modules/ivona.conf modules/llia_phon-generic.conf \
-		modules/mary-generic-disabled.conf modules/swift-generic.conf \
-		modules/voxin.conf speechd.conf
+		modules/flite.conf modules/llia_phon-generic.conf modules/mary-generic.conf \
+		modules/swift-generic.conf speechd.conf
 
 PORTDOCS=	ANNOUNCE AUTHORS FAQ NEWS README TODO
 
 INFO=		spd-say speech-dispatcher speech-dispatcher-cs ssip
 
-OPTIONS_DEFINE=		ALSA AO DOCS ESPEAK FESTIVAL FLITE NAS PULSEAUDIO
-OPTIONS_DEFAULT=	ESPEAK PULSEAUDIO
+OPTIONS_DEFINE=		ALSA AO DOCS FESTIVAL FLITE NAS PULSEAUDIO VOXIN
+OPTIONS_DEFAULT=	PULSEAUDIO
 OPTIONS_SUB=		yes
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
@@ -51,10 +50,6 @@ ALSA_CONFIGURE_WITH=	alsa
 
 AO_LIB_DEPENDS=		libao.so:audio/libao
 AO_CONFIGURE_WITH=	libao
-
-ESPEAK_DESC=		eSpeak speech synthesizer support
-ESPEAK_LIB_DEPENDS=	libespeak.so:audio/espeak
-ESPEAK_CONFIGURE_WITH=	espeak
 
 FESTIVAL_DESC=		Festival Speech Synthesis System support
 FESTIVAL_RUN_DEPENDS=	${LOCALBASE}/share/festival/lib/${PORTNAME}.scm:audio/festival-freebsoft-utils \
@@ -69,6 +64,17 @@ NAS_CONFIGURE_WITH=	nas
 
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_WITH=	pulse
+
+VOXIN_BROKEN=		libvoxin not yet ported
+VOXIN_DESC=		Voxin speech synthesis engine support (not yet ported)
+#VOXIN_LIB_DEPENDS=	libvoxin.so:accessibility/libvoxin
+VOXIN_CONFIGURE_WITH=	voxin
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MVOXIN}
+ETCFILES+=		modules/voxin.conf
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/usr/share,${PREFIX}/share,g' \

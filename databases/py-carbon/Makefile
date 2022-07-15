@@ -2,6 +2,7 @@
 
 PORTNAME=	carbon
 PORTVERSION=	1.1.10
+PORTREVISION=	2
 CATEGORIES=	databases python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cachetools>=1.1.0:devel/py-cachetools@${PY_F
 		${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}whisper>=0.9.10:databases/py-whisper@${PY_FLAVOR}
 
-USES=		python:3.5-3.8
+USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	graphite-project
 USE_PYTHON=	distutils py3kplist
@@ -29,6 +30,12 @@ MAKE_ENV=	GRAPHITE_NO_PREFIX=yes
 NO_ARCH=	yes
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
 
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} > 30900
+BROKEN=		Python-3.9 is not supported
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/setup.py
 
@@ -36,4 +43,4 @@ post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/examples/init.d
 	${RMDIR} ${STAGEDIR}${PREFIX}/examples
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

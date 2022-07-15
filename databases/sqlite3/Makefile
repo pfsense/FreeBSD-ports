@@ -1,7 +1,7 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
 
 PORTNAME=	sqlite3
-DISTVERSION=	3.38.5
+DISTVERSION=	3.39.0
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://www.sqlite.org/${YEAR}/ https://www2.sqlite.org/${YEAR}/ https://www3.sqlite.org/${YEAR}/
@@ -28,9 +28,7 @@ LICENSE=	PD
 FLAVORS=	default icu tcl
 FLAVOR?=	${FLAVORS:[1]}
 icu_PKGNAMESUFFIX=	-${FLAVOR}	# databases/p5-DBD-SQLite with ICU support
-icu_CONFLICTS_INSTALL=	${PORTNAME} ${PORTNAME}-tcl
 tcl_PKGNAMESUFFIX=	-${FLAVOR}	# lang/tcl* support
-tcl_CONFLICTS_INSTALL=	${PORTNAME} ${PORTNAME}-icu
 .endif
 
 USES=	libtool pathfix zip
@@ -51,6 +49,8 @@ TEST_TARGET=	test
 .ifdef DEFAULT_FILE_PERMISSIONS
 CPPFLAGS+=	-DSQLITE_DEFAULT_FILE_PERMISSIONS=${DEFAULT_FILE_PERMISSIONS}
 .endif
+
+CONFLICTS_INSTALL=	sqlite3 sqlite3-icu sqlite3-tcl tcl-sqlite3 # include/sqlite3.h share/examples/sqlite3/example.tcl
 
 SUB_FILES=	example.tcl
 SUB_LIST=	TCLSH_CMD="${TCLSH}"

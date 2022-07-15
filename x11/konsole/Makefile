@@ -1,7 +1,7 @@
 PORTNAME=	konsole
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
-CATEGORIES=	x11 kde kde-applications # kde kde-applications-applications
+PORTREVISION=	2
+CATEGORIES=	x11 kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE terminal emulator

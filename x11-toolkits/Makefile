@@ -198,7 +198,6 @@
     SUBDIR += skinlf
     SUBDIR += soqt
     SUBDIR += swt
-    SUBDIR += tepl
     SUBDIR += tepl6
     SUBDIR += termit
     SUBDIR += tix
@@ -217,6 +216,7 @@
     SUBDIR += vte
     SUBDIR += vte3
     SUBDIR += wlroots
+    SUBDIR += wlroots-devel
     SUBDIR += wmapp
     SUBDIR += wxgtk28
     SUBDIR += wxgtk28-common

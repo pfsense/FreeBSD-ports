@@ -1,10 +1,11 @@
 # Created by: Olivier Duchateau
 
 PORTNAME=	urllib3
-PORTVERSION=	1.26.9
+PORTVERSION=	1.26.10
 PORTEPOCH=	1
 CATEGORIES=	net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	CHEESESHOP \
+		https://github.com/urllib3/urllib3/releases/download/${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org

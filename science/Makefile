@@ -2,6 +2,7 @@
 
     SUBDIR += 2d-rewriter
     SUBDIR += ALPSCore
+    SUBDIR += ChipmunkPhysics
     SUBDIR += InsightToolkit
     SUBDIR += PETSc
     SUBDIR += R-cran-AMORE
@@ -133,6 +134,7 @@
     SUBDIR += libecpint
     SUBDIR += libefp
     SUBDIR += libgeodecomp
+    SUBDIR += libgetar
     SUBDIR += libghemical
     SUBDIR += libgridxc
     SUBDIR += libint
@@ -272,6 +274,7 @@
     SUBDIR += py-cirq-google
     SUBDIR += py-cirq-ionq
     SUBDIR += py-cirq-pasqal
+    SUBDIR += py-cirq-rigetti
     SUBDIR += py-coards
     SUBDIR += py-dipy
     SUBDIR += py-dlib
@@ -294,6 +297,7 @@
     SUBDIR += py-kinematics
     SUBDIR += py-kliff
     SUBDIR += py-liac-arff
+    SUBDIR += py-libgetar
     SUBDIR += py-libpysal
     SUBDIR += py-lifelines
     SUBDIR += py-mdp
@@ -401,6 +405,7 @@
     SUBDIR += tfel-edf
     SUBDIR += thermofun
     SUBDIR += tinker
+    SUBDIR += trilinos
     SUBDIR += udunits
     SUBDIR += ukrmol+
     SUBDIR += v_sim

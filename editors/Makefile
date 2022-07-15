@@ -51,6 +51,7 @@
     SUBDIR += ghostwriter
     SUBDIR += gmanedit
     SUBDIR += gnome-latex
+    SUBDIR += gnome-text-editor
     SUBDIR += gobby
     SUBDIR += gomate
     SUBDIR += gummi
@@ -193,6 +194,7 @@
     SUBDIR += linux-sublime-text4
     SUBDIR += linux-sublime3
     SUBDIR += linux-wps-office
+    SUBDIR += lite
     SUBDIR += madedit
     SUBDIR += marker
     SUBDIR += mg

@@ -1,5 +1,5 @@
 PORTNAME=	googleapis-common-protos
-PORTVERSION=	1.56.2
+PORTVERSION=	1.56.4
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,9 +9,9 @@ COMMENT=	Common protobufs used in Google APIs
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}protobuf>=3.15.0,1<4.0.0,1:devel/py-protobuf@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}protobuf>=3.15.0,1<5.0.0,1:devel/py-protobuf@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

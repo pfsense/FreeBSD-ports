@@ -1,7 +1,6 @@
 PORTNAME=	jql
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.0.4
-PORTREVISION=	1
+DISTVERSION=	4.0.6
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,7 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	yamafaktory
 
 CARGO_CRATES=	ansi_term-0.12.1 \
-		anyhow-1.0.57 \
+		anyhow-1.0.58 \
 		async-attributes-1.1.2 \
 		async-channel-1.6.1 \
 		async-executor-1.4.1 \
@@ -25,7 +24,7 @@ CARGO_CRATES=	ansi_term-0.12.1 \
 		async-lock-2.5.0 \
 		async-mutex-1.4.0 \
 		async-process-1.3.0 \
-		async-std-1.11.0 \
+		async-std-1.12.0 \
 		async-task-4.2.0 \
 		atomic-waker-1.0.0 \
 		atty-0.2.14 \
@@ -40,14 +39,15 @@ CARGO_CRATES=	ansi_term-0.12.1 \
 		byteorder-1.4.3 \
 		cache-padded-1.2.0 \
 		cast-0.2.7 \
+		cast-0.3.0 \
 		cc-1.0.73 \
 		cfg-if-1.0.0 \
 		clap-2.34.0 \
-		clap-3.1.18 \
-		clap_lex-0.2.0 \
+		clap-3.2.8 \
+		clap_lex-0.2.3 \
 		colored_json-2.1.0 \
 		concurrent-queue-1.2.2 \
-		criterion-0.3.5 \
+		criterion-0.3.6 \
 		criterion-plot-0.4.4 \
 		crossbeam-channel-0.5.4 \
 		crossbeam-deque-0.8.1 \
@@ -85,7 +85,7 @@ CARGO_CRATES=	ansi_term-0.12.1 \
 		memoffset-0.6.5 \
 		num-traits-0.2.14 \
 		num_cpus-1.13.1 \
-		once_cell-1.10.0 \
+		once_cell-1.12.0 \
 		oorandom-11.1.3 \
 		opaque-debug-0.2.3 \
 		os_str_bytes-6.0.0 \
@@ -115,7 +115,7 @@ CARGO_CRATES=	ansi_term-0.12.1 \
 		serde-1.0.136 \
 		serde_cbor-0.11.2 \
 		serde_derive-1.0.136 \
-		serde_json-1.0.81 \
+		serde_json-1.0.82 \
 		sha-1-0.8.2 \
 		signal-hook-0.3.13 \
 		signal-hook-registry-1.4.0 \

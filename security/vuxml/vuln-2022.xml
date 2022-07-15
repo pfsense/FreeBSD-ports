@@ -1,3 +1,549 @@
+  <vuln vid="a4f2416c-02a0-11ed-b817-10c37b4ac2ea">
+    <topic>go -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>go118</name>
+	<range><lt>1.18.4</lt></range>
+      </package>
+      <package>
+	<name>go117</name>
+	<range><lt>1.17.12</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://go.dev/issue/53188">
+	  <p>net/http: improper sanitization of Transfer-Encoding
+	    header</p>
+	  <p>The HTTP/1 client accepted some invalid
+	    Transfer-Encoding headers as indicating a "chunked"
+	    encoding. This could potentially allow for request
+	    smuggling, but only if combined with an intermediate
+	    server that also improperly failed to reject the header
+	    as invalid.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53423">
+	  <p>When httputil.ReverseProxy.ServeHTTP was called with a
+	    Request.Header map containing a nil value for the
+	    X-Forwarded-For header, ReverseProxy would set the client
+	    IP as the value of the X-Forwarded-For header, contrary to
+	    its documentation. In the more usual case where a Director
+	    function set the X-Forwarded-For header value to nil,
+	    ReverseProxy would leave the header unmodified as
+	    expected.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53168">
+	  <p>compress/gzip: stack exhaustion in Reader.Read</p>
+	  <p>Calling Reader.Read on an archive containing a large
+	    number of concatenated 0-length compressed files can
+	    cause a panic due to stack exhaustion.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53611">
+	  <p>encoding/xml: stack exhaustion in Unmarshal</p>
+	  <p>Calling Unmarshal on a XML document into a Go struct
+	    which has a nested field that uses the any field tag can
+	    cause a panic due to stack exhaustion.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53614">
+	  <p>encoding/xml: stack exhaustion in Decoder.Skip</p>
+	  <p>Calling Decoder.Skip when parsing a deeply nested XML
+	    document can cause a panic due to stack exhaustion.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53615">
+	  <p>encoding/gob: stack exhaustion in Decoder.Decode</p>
+	  <p>Calling Decoder.Decode on a message which contains
+	    deeply nested structures can cause a panic due to stack
+	    exhaustion.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53416">
+	  <p>path/filepath: stack exhaustion in Glob</p>
+	  <p>Calling Glob on a path which contains a large number of
+	    path separators can cause a panic due to stack
+	    exhaustion.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53415">
+	  <p>io/fs: stack exhaustion in Glob</p>
+	  <p>Calling Glob on a path which contains a large number of
+	    path separators can cause a panic due to stack
+	    exhaustion.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/53616">
+	  <p>go/parser: stack exhaustion in all Parse* functions</p>
+	  <p>Calling any of the Parse functions on Go source code
+	    which contains deeply nested types or declarations can
+	    cause a panic due to stack exhaustion.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-1705</cvename>
+      <cvename>CVE-2022-32148</cvename>
+      <cvename>CVE-2022-30631</cvename>
+      <cvename>CVE-2022-30633</cvename>
+      <cvename>CVE-2022-28131</cvename>
+      <cvename>CVE-2022-30635</cvename>
+      <cvename>CVE-2022-30632</cvename>
+      <cvename>CVE-2022-30630</cvename>
+      <cvename>CVE-2022-1962</cvename>
+      <url>https://groups.google.com/g/golang-dev/c/frczlF8OFQ0</url>
+    </references>
+    <dates>
+      <discovery>2022-07-12</discovery>
+      <entry>2022-07-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b99f99f6-021e-11ed-8c6f-000c29ffbb6c">
+    <topic>git -- privilege escalation</topic>
+    <affects>
+      <package>
+	<name>git</name>
+	<range><lt>2.37.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The git project reports:</p>
+	<blockquote cite="https://lkml.org/lkml/2022/7/12/1137">
+	  <p>Git is vulnerable to privilege escalation in all platforms.
+	    An unsuspecting user could still be affected by the issue
+	    reported in CVE-2022-24765, for example when navigating as
+	    root into a shared tmp directory that is owned by them, but
+	    where an attacker could create a git repository.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-29187</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-29187</url>
+    </references>
+    <dates>
+      <discovery>2022-07-12</discovery>
+      <entry>2022-07-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="830855f3-ffcc-11ec-9d41-d05099c8b5a7">
+    <topic>mat2 -- directory traversal/arbitrary file read during ZIP file processing</topic>
+    <affects>
+      <package>
+	<name>mat2</name>
+	<range><lt>0.13.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35410">
+	  <p>
+	    mat2 (aka metadata anonymisation toolkit) before 0.13.0 allows ../
+	    directory traversal during the ZIP archive cleaning process. This
+	    primarily affects mat2 web instances, in which clients could obtain
+	    sensitive information via a crafted archive.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-35410</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35410</url>
+    </references>
+    <dates>
+      <discovery>2022-07-08</discovery>
+      <entry>2022-07-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d1b35142-ff4a-11ec-8be3-001b217b3468">
+    <topic>Gitlab -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>15.1.0</ge><lt>15.1.1</lt></range>
+	<range><ge>15.0.0</ge><lt>15.0.4</lt></range>
+	<range><ge>0</ge><lt>14.10.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2022/06/30/critical-security-release-gitlab-15-1-1-released/">
+	  <p>Remote Command Execution via Project Imports</p>
+	  <p>XSS in ZenTao integration affecting self hosted instances without strict CSP</p>
+	  <p>XSS in project settings page</p>
+	  <p>Unallowed users can read unprotected CI variables</p>
+	  <p>IP allow-list bypass to access Container Registries</p>
+	  <p>2FA status is disclosed to unauthenticated users</p>
+	  <p>CI variables provided to runners outside of a group's restricted IP range</p>
+	  <p>IDOR in sentry issues</p>
+	  <p>Reporters can manage issues in error tracking</p>
+	  <p>Regular Expression Denial of Service via malicious web server responses</p>
+	  <p>Unauthorized read for conan repository</p>
+	  <p>Open redirect vulnerability</p>
+	  <p>Group labels are editable through subproject</p>
+	  <p>Release titles visible for any users if group milestones are associated with any project releases</p>
+	  <p>Restrict membership by email domain bypass</p>
+	  <p>Job information is leaked to users who previously were maintainers via the Runner Jobs API endpoint</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2185</cvename>
+      <cvename>CVE-2022-2235</cvename>
+      <cvename>CVE-2022-2230</cvename>
+      <cvename>CVE-2022-2229</cvename>
+      <cvename>CVE-2022-1983</cvename>
+      <cvename>CVE-2022-1963</cvename>
+      <cvename>CVE-2022-2228</cvename>
+      <cvename>CVE-2022-2243</cvename>
+      <cvename>CVE-2022-2244</cvename>
+      <cvename>CVE-2022-1954</cvename>
+      <cvename>CVE-2022-2270</cvename>
+      <cvename>CVE-2022-2250</cvename>
+      <cvename>CVE-2022-1999</cvename>
+      <cvename>CVE-2022-2281</cvename>
+      <cvename>CVE-2022-1981</cvename>
+      <cvename>CVE-2022-2227</cvename>
+      <url>https://about.gitlab.com/releases/2022/06/30/critical-security-release-gitlab-15-1-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2022-06-30</discovery>
+      <entry>2022-07-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b9210706-feb0-11ec-81fa-1c697a616631">
+    <topic>Node.js -- July 7th 2022 Security Releases</topic>
+    <affects>
+      <package>
+	<name>node</name>
+	<range><ge>14.0.0</ge><lt>14.20.0</lt></range>
+	<range><ge>16.0.0</ge><lt>16.16.0</lt></range>
+	<range><ge>18.0.0</ge><lt>18.5.0</lt></range>
+      </package>
+      <package>
+	<name>node16</name>
+	<range><lt>16.16.0</lt></range>
+      </package>
+      <package>
+	<name>node14</name>
+	<range><lt>14.20.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Node.js reports:</p>
+	<blockquote cite="https://nodejs.org/en/blog/vulnerability/july-2022-security-releases/">
+	  <h1>HTTP Request Smuggling - Flawed Parsing of Transfer-Encoding
+	  (Medium)(CVE-2022-32213)</h1>
+	  <p>The llhttp parser in the http module does not correctly parse and
+	  validate Transfer-Encoding headers. This can lead to HTTP Request
+	  Smuggling (HRS).</p>
+	  <h1>HTTP Request Smuggling - Improper Delimiting of Header Fields
+	  (Medium)(CVE-2022-32214)</h1>
+	  <p>The llhttp parser in the http module does not strictly use the CRLF
+	  sequence to delimit HTTP requests. This can lead to HTTP Request
+	  Smuggling (HRS).</p>
+	  <h1>HTTP Request Smuggling - Incorrect Parsing of Multi-line
+	  Transfer-Encoding (Medium)(CVE-2022-32215)</h1>
+	  <p>The llhttp parser in the http module does not correctly handle
+	  multi-line Transfer-Encoding headers. This can lead to HTTP Request
+	  Smuggling (HRS).</p>
+	  <h1>DNS rebinding in --inspect via invalid IP addresses
+	  (High)(CVE-2022-32212)</h1>
+	  <p>The IsAllowedHost check can easily be bypassed because IsIPAddress
+	  does not properly check if an IP address is invalid or not. When an
+	  invalid IPv4 address is provided (for instance 10.0.2.555 is
+	  provided), browsers (such as Firefox) will make DNS requests to the
+	  DNS server, providing a vector for an attacker-controlled DNS server
+	  or a MITM who can spoof DNS responses to perform a rebinding attack
+	  and hence connect to the WebSocket debugger, allowing for arbitrary
+	  code execution. This is a bypass of CVE-2021-22884.</p>
+	  <h1>Attempt to read openssl.cnf from /home/iojs/build/ upon startup
+	  (Medium)(CVE-2022-32222)</h1>
+	  <p>When Node.js starts on linux based systems, it attempts to read
+	  /home/iojs/build/ws/out/Release/obj.target/deps/openssl/openssl.cnf,
+	  which ordinarily doesn't exist. On some shared systems an attacker may
+	  be able create this file and therefore affect the default OpenSSL
+	  configuration for other users.</p>
+	  <h1>OpenSSL - AES OCB fails to encrypt some bytes
+	  (Medium)(CVE-2022-2097)</h1>
+	  <p>AES OCB mode for 32-bit x86 platforms using the AES-NI assembly
+	  optimised implementation will not encrypt the entirety of the data
+	  under some circumstances. This could reveal sixteen bytes of data that
+	  was preexisting in the memory that wasn't written. In the special case
+	  of "in place" encryption, sixteen bytes of the plaintext would be
+	  revealed.  Since OpenSSL does not support OCB based cipher suites for
+	  TLS and DTLS, they are both unaffected.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-32212</cvename>
+      <cvename>CVE-2022-32213</cvename>
+      <cvename>CVE-2022-32214</cvename>
+      <cvename>CVE-2022-32215</cvename>
+      <cvename>CVE-2022-32222</cvename>
+      <cvename>CVE-2022-2097</cvename>
+      <url>https://nodejs.org/en/blog/vulnerability/july-2022-security-releases/</url>
+    </references>
+    <dates>
+      <discovery>2022-07-05</discovery>
+      <entry>2022-07-08</entry>
+      <modified>2022-07-08</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="744ec9d7-fe0f-11ec-bcd2-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>103.0.5060.114</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2022/07/stable-channel-update-for-desktop.html">
+	  <p>This release contains 4 security fixes, including:</p>
+	  <ul>
+	    <li>[1341043] High CVE-2022-2294: Heap buffer overflow in WebRTC. Reported by Jan Vojtesek from the Avast Threat Intelligence team on 2022-07-01</li>
+	    <li>[1336869] High CVE-2022-2295: Type Confusion in V8. Reported by avaue and Buff3tts at S.S.L. on 2022-06-16</li>
+	    <li>[1327087] High CVE-2022-2296: Use after free in Chrome OS Shell. Reported by Khalil Zhani on 2022-05-19</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2294</cvename>
+      <cvename>CVE-2022-2295</cvename>
+      <cvename>CVE-2022-2296</cvename>
+      <url>https://chromereleases.googleblog.com/2022/07/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2022-07-04</discovery>
+      <entry>2022-07-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a28e8b7e-fc70-11ec-856e-d4c9ef517024">
+    <topic>OpenSSL -- AES OCB fails to encrypt some bytes</topic>
+    <affects>
+      <package>
+	<name>openssl</name>
+	<range><lt>1.1.1q,1</lt></range>
+      </package>
+      <package>
+	<name>openssl-devel</name>
+	<range><lt>3.0.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenSSL project reports:</p>
+	<blockquote cite="https://www.openssl.org/news/secadv/20220705.txt">
+	  <p>AES OCB mode for 32-bit x86 platforms using the AES-NI assembly optimised
+	    implementation will not encrypt the entirety of the data under some
+	    circumstances.  This could reveal sixteen bytes of data that was
+	    preexisting in the memory that wasn't written.  In the special case of
+	    "in place" encryption, sixteen bytes of the plaintext would be revealed.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2097</cvename>
+      <url>https://www.openssl.org/news/secadv/20220705.txt</url>
+    </references>
+    <dates>
+      <discovery>2022-07-05</discovery>
+      <entry>2022-07-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5be19b0d-fb85-11ec-95cd-080027b24e86">
+    <topic>Django -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py37-django32</name>
+	<name>py38-django32</name>
+	<name>py39-django32</name>
+	<name>py310-django32</name>
+	<range><lt>3.2.14</lt></range>
+      </package>
+      <package>
+	<name>py38-django40</name>
+	<name>py39-django40</name>
+	<name>py310-django40</name>
+	<range><lt>4.0.6</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>SO-AND-SO reports:</p>
+	<blockquote cite="https://www.djangoproject.com/weblog/2022/jul/04/security-releases/">
+	  <p>CVE-2022-34265: Potential SQL injection via Trunc(kind) and
+	    Extract(lookup_name) arguments.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-34265</cvename>
+      <url>https://www.djangoproject.com/weblog/2022/jul/04/security-releases/</url>
+    </references>
+    <dates>
+      <discovery>2022-06-21</discovery>
+      <entry>2022-07-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f0e45968-faff-11ec-856e-d4c9ef517024">
+    <topic>OpenSSL -- Heap memory corruption with RSA private key operation</topic>
+    <affects>
+      <package>
+	<name>openssl-devel</name>
+	<range><ge>3.0.4</ge><lt>3.0.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenSSL project reports:</p>
+	<blockquote cite="https://mta.openssl.org/pipermail/openssl-announce/2022-July/000229.html">
+	  <p>The OpenSSL 3.0.4 release introduced a serious bug in the RSA
+	    implementation for X86_64 CPUs supporting the AVX512IFMA instructions.
+	    This issue makes the RSA implementation with 2048 bit private keys
+	    incorrect on such machines and memory corruption will happen during
+	    the computation. As a consequence of the memory corruption an attacker
+	    may be able to trigger a remote code execution on the machine performing
+	    the computation.</p>
+	  <p>SSL/TLS servers or other servers using 2048 bit RSA private keys running
+	    on machines supporting AVX512IFMA instructions of the X86_64 architecture
+	    are affected by this issue.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2274</cvename>
+      <url>https://www.openssl.org/news/secadv/20220705.txt</url>
+    </references>
+    <dates>
+      <discovery>2022-07-01</discovery>
+      <entry>2022-07-03</entry>
+      <modified>2022-07-05</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="5ab54ea0-fa94-11ec-996c-080027b24e86">
+    <topic>mediawiki -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mediawiki135</name>
+	<range><lt>1.35.7</lt></range>
+      </package>
+      <package>
+	<name>mediawiki137</name>
+	<range><lt>1.37.3</lt></range>
+      </package>
+      <package>
+	<name>mediawiki138</name>
+	<range><lt>1.38.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mediawiki reports:</p>
+	<blockquote cite="https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/PIPYDRSHXOYW5DB7X755QDNUV5EZWPWB/">
+	  <p>(T308471) Username is not escaped in the "welcomeuser" message.</p>
+	  <p>(T308473) Username not escaped in the contributions-title message.</p>
+	  <p>(T309377, CVE-2022-29248) Update "guzzlehttp/guzzle" to version 6.5.6.</p>
+	  <p>(T311384, CVE-2022-27776) Update "guzzlehttp/guzzle" to 6.5.8/7.4.5.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-29248</cvename>
+      <cvename>CVE-2022-27776</cvename>
+      <url>https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/PIPYDRSHXOYW5DB7X755QDNUV5EZWPWB/</url>
+    </references>
+    <dates>
+      <discovery>2022-05-16</discovery>
+      <entry>2022-07-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="07c0d782-f758-11ec-acaa-901b0e9408dc">
+    <topic>py-matrix-synapse -- unbounded recursion in urlpreview</topic>
+    <affects>
+      <package>
+	<name>py37-matrix-synapse</name>
+	<name>py38-matrix-synapse</name>
+	<name>py39-matrix-synapse</name>
+	<name>py310-matrix-synapse</name>
+	<name>py311-matrix-synapse</name>
+	<range><lt>1.61.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Matrix developers report:</p>
+	<blockquote cite="https://matrix.org/blog/2022/06/28/security-release-synapse-1-61-1">
+	  <p>This release fixes a vulnerability with Synapse's URL preview feature. URL previews
+	  of some web pages can lead to unbounded recursion, causing the request to either fail,
+	  or in some cases crash the running Synapse process.</p>
+	  <p>Note that:</p>
+	  <ul>
+	    <li>Homeservers with the url_preview_enabled configuration option set to false
+	    (the default value) are unaffected.</li>
+	    <li>Instances with the enable_media_repo configuration option set to false are
+	    also unaffected, as this also disables the URL preview functionality.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-31052</cvename>
+      <url>https://matrix.org/blog/2022/06/28/security-release-synapse-1-61-1</url>
+    </references>
+    <dates>
+      <discovery>2022-06-28</discovery>
+      <entry>2022-06-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ae5722a6-f5f0-11ec-856e-d4c9ef517024">
+    <topic>cURL -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><ge>7.16.4</ge><lt>7.84.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The cURL project reports:</p>
+	<blockquote cite="https://curl.se/docs/security.html">
+	  <ul>
+	    <li>CVE-2022-32205: Set-Cookie denial of service</li>
+	    <li>CVE-2022-32206: HTTP compression denial of service</li>
+	    <li>CVE-2022-32207: Unpreserved file permissions</li>
+	    <li>CVE-2022-32208: FTP-KRB bad message verification</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-32205</cvename>
+      <cvename>CVE-2022-32206</cvename>
+      <cvename>CVE-2022-32207</cvename>
+      <cvename>CVE-2022-32208</cvename>
+      <url>https://curl.se/docs/security.html</url>
+    </references>
+    <dates>
+      <discovery>2022-06-27</discovery>
+      <entry>2022-06-27</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="25be46f0-f25d-11ec-b62a-00e081b7aa2d">
     <topic>jenkins -- multiple vulnerabilities</topic>
     <affects>
@@ -1997,7 +2543,7 @@
       <package>
 	<name>py38-django40</name>
 	<name>py39-django40</name>
-	<name>py31-django40</name>
+	<name>py310-django40</name>
 	<range><lt>4.0.4</lt></range>
       </package>
     </affects>

@@ -1,7 +1,8 @@
 # Created by: Alexander Logvinov <ports@logvinov.com>
 
 PORTNAME=	remmina
-DISTVERSION=	1.4.25
+DISTVERSION=	1.4.27
+PORTREVISION=	1
 CATEGORIES=	net gnome
 
 MAINTAINER=	fernape@FreeBSD.org
@@ -27,7 +28,7 @@ USES=		cmake compiler:c11 desktop-file-utils gettext gnome localbase:ldflags pat
 USE_GITLAB=	yes
 GL_ACCOUNT=	Remmina
 GL_PROJECT=	Remmina
-GL_COMMIT=	f7bb20c1b8b0efdcada70f942b9db0b8d14207e7
+GL_COMMIT=	9d409a3556c8c2759a376b4f4ac5149db7aacf4f
 
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
 
@@ -40,7 +41,7 @@ CMAKE_ARGS=	-DWITH_APPINDICATOR:BOOL=false
 
 CONFLICTS_INSTALL=	remmina-plugin*
 
-OPTIONS_DEFINE=		AVAHI CUPS GCRYPT NLS SSH TERM
+OPTIONS_DEFINE=		AVAHI CUPS GCRYPT NLS PYTHON SSH TERM
 OPTIONS_DEFAULT=	AVAHI CUPS GCRYPT NLS SSH TERM \
 			EXEC RDP SECRET SPICE VNC WWW BASH
 OPTIONS_GROUP=		PLUGINS
@@ -50,7 +51,7 @@ OPTIONS_SINGLE_SHELL=	BASH ZSH
 OPTIONS_SUB=		yes
 
 .if ${FLAVOR:U} == lite
-OPTIONS_EXCLUDE=	AVAHI CUPS KWALLET SECRET SPICE SSH TERM WWW
+OPTIONS_EXCLUDE=	AVAHI CUPS KWALLET PYTHON SECRET SPICE SSH TERM WWW
 COMMENT+=		(lite flavor)
 .endif
 
@@ -58,6 +59,7 @@ AVAHI_DESC=		Build with Avahi support
 BASH_DESC=		Use BASH for shell wrapper scripts
 EXEC_DESC=		Plugin to execute a command
 GCRYPT_DESC=		Build with libgcrypt support for password encryption
+PYTHON_DESC=		Build with support for Python plugins
 RDP_DESC=		Remote Desktop Protocol plugin
 SECRET_DESC=		GNOME Keyring plugin
 SHELL_DESC=		Shell Scripts
@@ -86,6 +88,9 @@ KWALLET_USE=		kde=wallet qt=buildtools_build,core,gui,qmake_build
 KWALLET_CMAKE_BOOL=	WITH_KF5WALLET
 
 NLS_CMAKE_BOOL=		WITH_TRANSLATIONS
+
+PYTHON_USES=		python
+PYTHON_CMAKE_BOOL=	WITH_PYTHONLIBS
 
 RDP_LIB_DEPENDS=	libfreerdp2.so:net/freerdp libxkbfile.so:x11/libxkbfile
 

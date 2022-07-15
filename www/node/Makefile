@@ -1,6 +1,6 @@
 PORTNAME=	node
 DISTVERSIONPREFIX=	v
-DISTVERSION=	18.2.0
+DISTVERSION=	18.5.0
 CATEGORIES=	www
 MASTER_SITES=	https://nodejs.org/dist/v${DISTVERSION}/
 
@@ -11,7 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_SSL=		libressl libressl-devel
-BROKEN_SSL_REASON=	Node.js 17.x requires OpenSSL 1.1.x or the BUNDLED_SSL option enabled
+BROKEN_SSL_REASON=	Node.js 18.x requires OpenSSL 1.1.x or the BUNDLED_SSL option enabled
 ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
 USES=		compiler:c++11-lib gmake python:3.6-3.10,build pkgconfig \
@@ -81,10 +81,6 @@ LIB_DEPENDS+=	libbrotlidec.so:archivers/brotli \
 
 .if (defined(PPC_ABI) && ${PPC_ABI} == ELFv2) || ${ARCH} == powerpc64le
 EXTRA_PATCHES=		${PATCHDIR}/extra-patch-common.gypi
-.endif
-
-.if ${ARCH} == armv6 || ${ARCH} == armv7
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-tools_v8__gypfiles_v8.gyp
 .endif
 
 .if ${PORT_OPTIONS:MBUNDLED_SSL} && ${ARCH} != amd64

@@ -131,12 +131,7 @@
     SUBDIR += duo
     SUBDIR += duo_openvpn
     SUBDIR += easy-rsa
-    SUBDIR += elixir-comeonin
-    SUBDIR += elixir-comeonin_i18n
-    SUBDIR += elixir-jose
     SUBDIR += enchive
-    SUBDIR += erlang-fast_tls
-    SUBDIR += erlang-jose
     SUBDIR += eschalot
     SUBDIR += esteidfirefoxplugin
     SUBDIR += expiretable
@@ -197,7 +192,6 @@
     SUBDIR += gsa
     SUBDIR += gsad
     SUBDIR += gsasl
-    SUBDIR += gss
     SUBDIR += gstreamer1-plugins-dtls
     SUBDIR += gtkpasman
     SUBDIR += gvm
@@ -223,6 +217,7 @@
     SUBDIR += i2p
     SUBDIR += i2pd
     SUBDIR += iaikpkcs11wrapper
+    SUBDIR += iddawc
     SUBDIR += idea
     SUBDIR += identify
     SUBDIR += imds-filterd
@@ -278,7 +273,6 @@
     SUBDIR += libgcrypt
     SUBDIR += libgnome-keyring
     SUBDIR += libgpg-error
-    SUBDIR += libgringotts
     SUBDIR += libgsasl
     SUBDIR += libhijack
     SUBDIR += libident
@@ -292,6 +286,7 @@
     SUBDIR += libotr
     SUBDIR += libotr3
     SUBDIR += libp11
+    SUBDIR += libpki
     SUBDIR += libprelude
     SUBDIR += libpreludedb
     SUBDIR += libpwquality
@@ -350,7 +345,6 @@
     SUBDIR += minisign
     SUBDIR += mkp224o
     SUBDIR += modsecurity3
-    SUBDIR += modsecurity3-apache
     SUBDIR += modsecurity3-nginx
     SUBDIR += monkeysphere
     SUBDIR += munge
@@ -805,7 +799,6 @@
     SUBDIR += poly1305aes
     SUBDIR += portsentry
     SUBDIR += proftpd-mod_clamav
-    SUBDIR += protonvpn-cli
     SUBDIR += proxycheck
     SUBDIR += proxytunnel
     SUBDIR += pssh
@@ -907,6 +900,7 @@
     SUBDIR += py-mnemonic
     SUBDIR += py-msoffcrypto-tool
     SUBDIR += py-muacrypt
+    SUBDIR += py-nassl
     SUBDIR += py-netbox-secretstore
     SUBDIR += py-netmiko
     SUBDIR += py-noiseprotocol
@@ -980,6 +974,7 @@
     SUBDIR += py-spake2
     SUBDIR += py-ssh-audit
     SUBDIR += py-sshpubkeys
+    SUBDIR += py-sslyze
     SUBDIR += py-stem
     SUBDIR += py-stix
     SUBDIR += py-stix2
@@ -1016,12 +1011,12 @@
     SUBDIR += rcracki_mt
     SUBDIR += reop
     SUBDIR += rhash
+    SUBDIR += rhonabwy
     SUBDIR += ridl
     SUBDIR += rifiuti2
     SUBDIR += rkhunter
     SUBDIR += rndpassw
     SUBDIR += rnp
-    SUBDIR += ruby-bitwarden
     SUBDIR += rubygem-acme-client
     SUBDIR += rubygem-aes_key_wrap
     SUBDIR += rubygem-airbrussh
@@ -1035,6 +1030,7 @@
     SUBDIR += rubygem-devise-two-factor
     SUBDIR += rubygem-devise-two-factor-rails5
     SUBDIR += rubygem-devise-two-factor-rails61
+    SUBDIR += rubygem-devise-two-factor-rails70
     SUBDIR += rubygem-devise_pam_authenticatable2
     SUBDIR += rubygem-digest
     SUBDIR += rubygem-digest-crc
@@ -1073,6 +1069,7 @@
     SUBDIR += rubygem-net-ssh-krb
     SUBDIR += rubygem-net-ssh-multi
     SUBDIR += rubygem-net-ssh5
+    SUBDIR += rubygem-net-ssh6
     SUBDIR += rubygem-net-telnet
     SUBDIR += rubygem-nexpose
     SUBDIR += rubygem-nmap-parser
@@ -1168,7 +1165,6 @@
     SUBDIR += sha1collisiondetection
     SUBDIR += sha2wordlist
     SUBDIR += shibboleth-sp
-    SUBDIR += shishi
     SUBDIR += sig2dot
     SUBDIR += signify
     SUBDIR += signing-party
@@ -1254,6 +1250,7 @@
     SUBDIR += uacme
     SUBDIR += ubuntu-keyring
     SUBDIR += unhide
+    SUBDIR += unix-selfauth-helper
     SUBDIR += vanguards-tor
     SUBDIR += vault
     SUBDIR += vaultwarden

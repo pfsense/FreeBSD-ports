@@ -52,12 +52,13 @@
     SUBDIR += javatari
     SUBDIR += joytran
     SUBDIR += jzintv
-    SUBDIR += kcemu
     SUBDIR += klh10
     SUBDIR += lib765
     SUBDIR += libc6-shim
     SUBDIR += libdsk
+    SUBDIR += libretro-bsnes
     SUBDIR += libretro-flycast
+    SUBDIR += libretro-kronos
     SUBDIR += libretro-mame
     SUBDIR += libretro-pcsx2
     SUBDIR += libretro-ppsspp
@@ -114,7 +115,6 @@
     SUBDIR += qemu-powernv
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
-    SUBDIR += qemu5
     SUBDIR += qemu6
     SUBDIR += qmc2
     SUBDIR += quasi88

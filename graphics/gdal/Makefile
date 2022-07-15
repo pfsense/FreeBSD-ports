@@ -1,8 +1,7 @@
 # Created by: Randall Hopper
 
 PORTNAME=	gdal
-PORTVERSION=	3.5.0
-PORTREVISION=	1
+PORTVERSION=	3.5.1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -86,7 +85,6 @@ BRUNSLI_DESC=	Brunsli support via libbrunsli library
 CRYPTOPP_DESC=	Cryptopp support
 DEFLATE_DESC=	Faster deflate support via libdeflate library
 EXR_DESC=	EXR support via OpenEXR library
-HEIF_DESC=	HEIF support via libheif library
 LERC_DESC=	LERC (Limited Error Raster Compression) support
 PCRE_DESC=	Regular expression support for SQLite
 PCRE2_DESC=	Regular expression support for SQLite
