@@ -234,7 +234,9 @@ $section = new Form_Section('Address Configuration');
 
 $section->addInput(new Form_StaticText(
 	gettext('Hint'),
-	gettext('Allowed IP entries here will be transformed into proper subnet start boundaries prior to validating and saving.')
+	gettext('Allowed IP entries here will be transformed into proper subnet start boundaries prior to validating and saving. ' .
+	        'These entries must be unique between multiple peers on the same tunnel. Otherwise, traffic to the conflicting ' .
+	        'networks will only be routed to the last peer in the list.')
 ));
 
 // Init the addresses array if necessary
