@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-PORTVERSION=	0.83
+PORTVERSION=	0.84
 CATEGORIES=	devel
 MASTER_SITES=	#
 DISTFILES=	#
@@ -19,7 +19,7 @@ OPTIONS_DEFAULT=ETHERSWITCH PF_CAPTIVEPORTAL
 ETHERSWITCH_DESC=	Enable etherswitch functions
 
 USES=		php:ext
-IGNORE_WITH_PHP=56 70 71
+IGNORE_WITH_PHP=56 70 71 74 80
 
 CFLAGS+=	-I/usr/local/include -I. -DTCPSTATES
 CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline
