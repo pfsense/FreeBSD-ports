@@ -1,7 +1,5 @@
-# Created by: Jov <amutu@amutu.com>
-
 PORTNAME=	plpgsql_check
-PORTVERSION=	2.1.7
+PORTVERSION=	2.1.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER_NODOT}-

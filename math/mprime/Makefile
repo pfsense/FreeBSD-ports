@@ -1,7 +1,6 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-
 PORTNAME=	mprime
 PORTVERSION=	30.7b9
+PORTREVISION=	1
 CATEGORIES=	math benchmarks net
 MASTER_SITES=	http://www.mersenne.org/ftp_root/gimps/ \
 		ftp://mersenne.org/gimps/

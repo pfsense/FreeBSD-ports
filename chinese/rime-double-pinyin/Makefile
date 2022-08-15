@@ -1,7 +1,6 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-
 PORTNAME=	rime-double-pinyin
 DISTVERSION=	g20190120
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com

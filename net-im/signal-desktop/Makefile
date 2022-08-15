@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.49.0
+DISTVERSION=	5.53.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:yarn \
 		LOCAL/mikael/signal-desktop/:electron_gyp \
@@ -79,17 +79,19 @@ MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
+MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
+
 _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	19
 
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.17.0-ffe6763d80f56148b45192bca29deb16f9a0aea8-integrity
-NPM_RINGRTC_DIR=	npm-ringrtc-2.20.10-4450aa43e0f95e09e61cf49e970d864b19fa9d50
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.18.1-6b499cdcc952f1981c6367f68484cf3275be3b31-integrity
+NPM_RINGRTC_DIR=	npm-ringrtc-2.20.12-d2a43fa1e5bf46f4fd2e0bb04c017f0d9e824c7e
 NPM_SQLITE3_DIR=	npm-better-sqlite3-7.5.0-3c4a7eebba3d5f5d8cb88fe83be1c01b8c0dea7d
 NPM_PLAYWRITE_DIR=	npm-playwright-core-1.17.1-a16e0f89284a0ed8ae6d77e1c905c84b8a2ba022-integrity
 NPM_ESBUILD_VERS=	0.14.28
-NPM_ESBUILD_DIR=	npm-esbuild-${NPM_ESBUILD_VERS}-7738635d2ea19e446bd319d83a1802545e6aebb8-integrity
 
+ESBUILD_ARCH=		${ARCH:S/aarch64/arm/:S/amd64//}
 NODE_ARCH=		${ARCH:S/aarch64/arm64/:S/amd64/x64/}
 APP_OUT_DIR=		linux-${ARCH:S/aarch64/arm64-/:S/amd64//}unpacked
 
@@ -132,10 +134,8 @@ do-build:
 	# patch-package can't patch sqlite3 on aarch64, patch the yarn cache instead
 	cd ${WRKDIR}/.cache/yarn/v6 && ${PATCH} -s -N -i ${FILESDIR}/sqlite3.gyp.diff
 
-	${MKDIR} ${WRKDIR}/esbuild-freebsd-64-${NPM_ESBUILD_VERS}
-	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-64-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64-${NPM_ESBUILD_VERS}
-	${CP} ${WRKDIR}/esbuild-freebsd-64-${NPM_ESBUILD_VERS}/package/bin/esbuild \
-		${WRKDIR}/.cache/yarn/v6/${NPM_ESBUILD_DIR}/node_modules/esbuild/lib/downloaded-esbuild-freebsd-64-esbuild
+	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
+	${TAR} -xf ${WRKDIR}/yarn-cache/esbuild-freebsd-${ESBUILD_ARCH}64-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
 # 	# For online build
 #	${RM} ${WRKDIR}/.npmrc

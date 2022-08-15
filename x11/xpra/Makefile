@@ -1,8 +1,7 @@
 PORTNAME=	xpra
-PORTVERSION=	4.3
-PORTREVISION=	1
+PORTVERSION=	4.3.4
 CATEGORIES=	x11
-MASTER_SITES=	http://xpra.org/src/
+MASTER_SITES=	https://xpra.org/src/
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	Persistent remote applications for X
@@ -30,7 +29,7 @@ RUN_DEPENDS=	${PY_PILLOW} \
 		ssh-askpass:security/openssh-askpass \
 		xauth:x11/xauth \
 		xkbcomp:x11/xkbcomp \
-		Xvfb:x11-servers/xorg-vfbserver
+		Xvfb:x11-servers/xorg-server@xvfb
 
 USES=		desktop-file-utils gettext-runtime gnome pkgconfig \
 		python:3.6+ shared-mime-info shebangfix tar:xz xorg

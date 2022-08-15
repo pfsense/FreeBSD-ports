@@ -1,8 +1,6 @@
-# Created by: Jille Timmermans (jille@quis.cx)
-
 PORTNAME=	oggvideotools
 PORTVERSION=	0.9.1
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}
 

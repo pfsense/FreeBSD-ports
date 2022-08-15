@@ -1,10 +1,11 @@
---- CMakeLists.txt.orig	2022-07-04 19:53:18 UTC
+--- CMakeLists.txt.orig	2022-08-05 10:52:34 UTC
 +++ CMakeLists.txt
-@@ -12,7 +12,6 @@ include("${IMHEX_BASE_FOLDER}/cmake/build_helpers.cmak
+@@ -21,8 +21,6 @@ project(imhex VERSION ${IMHEX_VERSION})
  
  # Make sure project is configured correctly
  setDefaultBuiltTypeIfUnset()
 -detectBadClone()
+-verifyCompiler()
  
  # List plugin names here. Project name must match folder name
  set(PLUGINS

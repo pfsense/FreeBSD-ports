@@ -1,8 +1,6 @@
-# Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-
 PORTNAME=	minikube
 PORTVERSION=	1.25.2
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 

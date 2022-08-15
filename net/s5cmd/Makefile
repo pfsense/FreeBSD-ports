@@ -1,9 +1,7 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-
 PORTNAME=	s5cmd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	ehaupt@FreeBSD.org

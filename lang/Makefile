@@ -114,8 +114,8 @@
     SUBDIR += gnustep-base
     SUBDIR += go
     SUBDIR += go-devel
-    SUBDIR += go117
     SUBDIR += go118
+    SUBDIR += go119
     SUBDIR += gomacro
     SUBDIR += gprolog
     SUBDIR += gravity
@@ -293,6 +293,7 @@
     SUBDIR += qmasm
     SUBDIR += qscheme
     SUBDIR += quickjs
+    SUBDIR += quilc
     SUBDIR += racket
     SUBDIR += racket-minimal
     SUBDIR += ratfor

@@ -5,6 +5,16 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20220807:
+  AFFECTS: users of news/inn
+  AUTHOR: kbowling@FreeBSD.org
+
+  The inn port has been updated to 2.7 release.  Users upgrading from
+  prior versions should read through the announcement for any manual
+  upgrading steps that apply to your environment.
+
+  https://lists.isc.org/pipermail/inn-announce/2022-July/000015.html
+
 20220711:
   AFFECTS: users of security/stunnel
   AUTHOR: zi@FreeBSD.org
@@ -17,6 +27,23 @@ you update your ports collection, before attempting any port upgrades.
   before performing the upgrade.  Alternatively, you will need to
   # pkill stunnel;service stunnel start
   after the upgrade has been completed.
+
+202207XYZ:
+  AFFECTS: users of devel/maven-wrapper and devel/maven
+  AUTHOR: michaelo@apache.org
+
+  The environment variable M2_HOME has been replaced with more common
+  MAVEN_HOME which can be used to pass a custom Maven home directory.
+
+20220629:
+  AFFECTS: updating x11-servers/xorg-server from a port
+  AUTHOR: se@FreeBSD.org
+
+  The xorg-server port now has a library dependency on x11/libxcvt,
+  which cannot be installed when the previous version of xorg-server
+  is present.  To be able to update xorg-server from a port, the
+  previous version needs to be manually deinstalled to allow libxcvt
+  to be installed.
 
 20220628:
   AFFECTS: users of Erlang and Elixir

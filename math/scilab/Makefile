@@ -1,8 +1,6 @@
-# Created by: js@jeannot.org
-
 PORTNAME=	scilab
 PORTVERSION=	6.1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math cad java
 MASTER_SITES=	https://cgit.scilab.org/scilab/snapshot/
 
@@ -136,11 +134,6 @@ CONFIGURE_ARGS+=	--enable-debug
 .if ${GCC_DEFAULT} >= 10
 # workaround for Rank mismatch between actual argument at (1) and actual argument at (2) (rank-1 and scalar)
 FFLAGS+=	-fallow-argument-mismatch
-.endif
-
-.if ${PORT_OPTIONS:MGUI}
-DEPRECATED=	Depends on expired devel/avalon-framework
-EXPIRATION_DATE=2022-09-30
 .endif
 
 post-patch:

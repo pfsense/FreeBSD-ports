@@ -78,7 +78,7 @@ BINARY_ALIAS+=	python3=${PYTHON_CMD}
 BUNDLE_LIBS=	yes
 
 BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT} \
-				rust-cbindgen>=0.23.0:devel/rust-cbindgen \
+				rust-cbindgen>=0.24.3:devel/rust-cbindgen \
 				${RUST_DEFAULT}>=1.62.0:lang/${RUST_DEFAULT} \
 				node:www/node
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
@@ -95,11 +95,12 @@ MOZ_OPTIONS+=	--with-libclang-path="${LOCALBASE}/llvm${LLVM_DEFAULT}/lib"
 .    if !exists(/usr/bin/llvm-objdump)
 MOZ_EXPORT+=	LLVM_OBJDUMP="${LOCALBASE}/bin/llvm-objdump${LLVM_DEFAULT}"
 .    endif
-# Ignore Mk/bsd.default-versions.mk but respect make.conf(5) unless LTO is enabled
-.    if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mllvm*} || ${PORT_OPTIONS:MLTO}
+# fix LLVM to version 13, as that's the only reasonable wasi-toolchain
+# we currently have
+#    if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mllvm*} || ${PORT_OPTIONS:MLTO}
 LLVM_DEFAULT=	13 # chase bundled LLVM in lang/rust for LTO
 LLVM_VERSION=	13.0.1 # keep in sync with devel/wasi-compiler-rt${LLVM_DEFAULT}
-.    endif
+#    endif
 # Require newer Clang than what's in base system unless user opted out
 .    if ${CC} == cc && ${CXX} == c++ && exists(/usr/lib/libc++.so)
 BUILD_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}

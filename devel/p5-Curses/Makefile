@@ -1,7 +1,5 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-
 PORTNAME=	Curses
-PORTVERSION=	1.38
+PORTVERSION=	1.39
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

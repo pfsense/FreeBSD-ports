@@ -1,5 +1,3 @@
-# Created by: Anthony Kim
-
 PORTNAME=	spamassassin
 PORTVERSION=	${SA_COMMIT_DATE}
 CATEGORIES?=	mail perl5
@@ -10,8 +8,8 @@ COMMENT?=	Highly efficient mail filter for identifying spam
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	apache
-GH_TAGNAME=	fd567f0ed
-SA_COMMIT_DATE=	2022.07.05
+GH_TAGNAME=	f254a687a
+SA_COMMIT_DATE=	2022.08.02
 
 LICENSE=	APACHE20
 

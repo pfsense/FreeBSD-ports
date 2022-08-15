@@ -1,5 +1,5 @@
 PORTNAME=	dynare
-DISTVERSION=	5.1
+DISTVERSION=	5.2
 PORTREVISION=	1
 CATEGORIES=	science # economics
 MASTER_SITES=	https://www.dynare.org/release/source/
@@ -24,8 +24,6 @@ RUN_DEPENDS=	epstool:graphics/epstool \
 
 USES=		bison compiler:c++17-lang fortran gmake localbase tar:xz
 USE_TEX=	pdftex
-USE_GCC=	yes # clang-11 fails: error: reference to local binding 'ii1' declared in enclosing function 'ss2Iteration_pruning'
-		# Clang still doesn't support this c++20 feature, see https://bugs.llvm.org/show_bug.cgi?id=49238
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-matlab \

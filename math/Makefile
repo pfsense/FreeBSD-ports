@@ -377,7 +377,6 @@
     SUBDIR += hexcalc
     SUBDIR += heyoka
     SUBDIR += highs
-    SUBDIR += hipmcl
     SUBDIR += hmat-oss
     SUBDIR += hpcombi
     SUBDIR += hpipm
@@ -389,7 +388,6 @@
     SUBDIR += ignition-math
     SUBDIR += igraph
     SUBDIR += iml
-    SUBDIR += intervaltree
     SUBDIR += intx
     SUBDIR += ipopt
     SUBDIR += ised
@@ -857,12 +855,15 @@
     SUBDIR += py-cypari2
     SUBDIR += py-deap
     SUBDIR += py-dionysus
+    SUBDIR += py-docplex
     SUBDIR += py-ducc0
     SUBDIR += py-ecos
     SUBDIR += py-faiss
     SUBDIR += py-fastcluster
     SUBDIR += py-fastdtw
     SUBDIR += py-fenics-basix
+    SUBDIR += py-fenics-ffcx
+    SUBDIR += py-fenics-ufl
     SUBDIR += py-flax
     SUBDIR += py-fpylll
     SUBDIR += py-fraction
@@ -890,6 +891,7 @@
     SUBDIR += py-kiwisolver
     SUBDIR += py-levmar
     SUBDIR += py-libpoly
+    SUBDIR += py-lmfit
     SUBDIR += py-luminol
     SUBDIR += py-mathics
     SUBDIR += py-mathics-scanner
@@ -897,6 +899,7 @@
     SUBDIR += py-matplotlib-inline
     SUBDIR += py-matplotlib-scalebar
     SUBDIR += py-matplotlib2
+    SUBDIR += py-minorminer
     SUBDIR += py-mip
     SUBDIR += py-mixsimulator
     SUBDIR += py-moarchiving
@@ -907,6 +910,7 @@
     SUBDIR += py-networkx
     SUBDIR += py-nevergrad
     SUBDIR += py-nlopt
+    SUBDIR += py-numdifftools
     SUBDIR += py-numexpr
     SUBDIR += py-numpoly
     SUBDIR += py-numpy
@@ -957,8 +961,10 @@
     SUBDIR += py-qdldl
     SUBDIR += py-quadprog
     SUBDIR += py-random2
+    SUBDIR += py-rectangle-packer
     SUBDIR += py-roman
     SUBDIR += py-rpy2
+    SUBDIR += py-rustworkx
     SUBDIR += py-rvlib
     SUBDIR += py-scikit-umfpack
     SUBDIR += py-scs
@@ -979,11 +985,13 @@
     SUBDIR += py-statsmodels
     SUBDIR += py-svgmath
     SUBDIR += py-sym
+    SUBDIR += py-symengine
     SUBDIR += py-sympy
     SUBDIR += py-theano
     SUBDIR += py-timple
     SUBDIR += py-topologic
     SUBDIR += py-triangle
+    SUBDIR += py-umap-learn
     SUBDIR += py-uncertainties
     SUBDIR += py-unyt
     SUBDIR += py-vincenty
@@ -1057,6 +1065,7 @@
     SUBDIR += spooles-mpich
     SUBDIR += spot
     SUBDIR += sprng
+    SUBDIR += ssht
     SUBDIR += stan
     SUBDIR += stanmath
     SUBDIR += stp

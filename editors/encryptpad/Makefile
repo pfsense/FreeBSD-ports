@@ -1,8 +1,7 @@
-# Created by: Dmitri Goutnik <dg@syrec.org>
-
 PORTNAME=	encryptpad
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.0.1
+PORTREVISION=	1
 CATEGORIES=	editors security
 
 MAINTAINER=	dmgk@FreeBSD.org

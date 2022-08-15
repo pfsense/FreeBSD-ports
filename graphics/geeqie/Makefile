@@ -1,9 +1,7 @@
-# Created by: Martin Tournoij <carpetsmoker@rwxrwxrwx.net>
-
 PORTNAME=	geeqie
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.7.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org

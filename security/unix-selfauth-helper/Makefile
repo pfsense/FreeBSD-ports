@@ -1,11 +1,9 @@
-# Created by: Felix Palmen <felix@palmen-it.de>
-
 PORTNAME=	unix-selfauth-helper
-PORTVERSION=	1.0
+DISTVERSION=	1.0.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
-MAINTAINER=	felix@palmen-it.de
+MAINTAINER=	zirias@FreeBSD.org
 COMMENT=	Local self-authentication for pam_exec
 
 LICENSE=	BSD2CLAUSE

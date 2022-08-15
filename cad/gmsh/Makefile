@@ -1,8 +1,6 @@
-# Created by: Pedro Giffuni <giffunip@asme.org>
-
 PORTNAME=	gmsh
 DISTVERSION=	4.9.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	http://gmsh.info/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source

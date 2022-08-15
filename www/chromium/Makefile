@@ -1,9 +1,6 @@
-# Created by: Florent Thoumie <flz@FreeBSD.org>
-
 PORTNAME=	chromium
-PORTVERSION=	103.0.5060.114
-PORTREVISION=	2
-CATEGORIES=	www
+PORTVERSION=	104.0.5112.79
+CATEGORIES=	www wayland
 MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/ \
 		https://nerd.hu/distfiles/:external
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -95,10 +92,10 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		enable_hangout_services_extension=true \
 		enable_js_type_check=false \
 		enable_nacl=false \
-		enable_one_click_signin=true \
 		enable_remoting=false \
 		enable_wmax_tokens=false \
 		fatal_linker_warnings=false \
+		icu_use_data_file=false \
 		is_clang=true \
 		optimize_webui=true \
 		toolkit_views=true \
@@ -256,7 +253,7 @@ pre-configure:
 	#./build/linux/unbundle/remove_bundled_libraries.py [list of preserved]
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
 		./build/linux/unbundle/replace_gn_files.py --system-libraries \
-		flac fontconfig freetype harfbuzz-ng libdrm libevent libpng \
+		flac fontconfig freetype harfbuzz-ng icu libdrm libevent libpng \
 		libusb libwebp libxml libxslt openh264 opus snappy || ${FALSE}
 	# Chromium uses an unreleased version of FFmpeg, so configure it
 .for brand in Chrome Chromium
@@ -300,7 +297,7 @@ do-install:
 .for d in protoc mksnapshot
 	${INSTALL_PROGRAM} ${WRKSRC}/out/${BUILDTYPE}/${d} ${STAGEDIR}${DATADIR}
 .endfor
-.for d in icudtl.dat snapshot_blob.bin v8_context_snapshot.bin
+.for d in snapshot_blob.bin v8_context_snapshot.bin
 	${INSTALL_DATA} ${WRKSRC}/out/${BUILDTYPE}/${d} ${STAGEDIR}${DATADIR}
 .endfor
 	${INSTALL_PROGRAM} ${WRKSRC}/out/${BUILDTYPE}/chrome \

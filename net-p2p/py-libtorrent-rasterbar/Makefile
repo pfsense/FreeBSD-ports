@@ -1,8 +1,7 @@
-# Created by: Doug Barton <dougb@FreeBSD.org>
-
 PORTNAME=	libtorrent-rasterbar
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.16
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	net-p2p python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

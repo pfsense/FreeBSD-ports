@@ -1,7 +1,5 @@
-# Created by: tundra
-
 PORTNAME=	ot-recorder
-PORTVERSION=	0.9.0
+PORTVERSION=	0.9.1
 CATEGORIES=	www
 
 MAINTAINER=	dvl@FreeBSD.org

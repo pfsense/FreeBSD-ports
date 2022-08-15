@@ -1,10 +1,7 @@
 PORTNAME=	keyd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.1
+DISTVERSION=	2.4.2
 CATEGORIES=	sysutils
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	bb49007fb074.patch:-p1 # https://github.com/rvaiya/keyd/pull/239
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Key remapping daemon for evdev
@@ -21,11 +18,11 @@ USE_RC_SUBR=	${PORTNAME}
 GH_ACCOUNT=	rvaiya
 SHEBANG_FILES=	scripts/*
 MAKE_ARGS=	DESTDIR="${DESTDIR}" PREFIX="${PREFIX}" \
-		GIT_HASH="${DISTVERSIONFULL}"
+		VERSION="${DISTVERSIONFULL}" COMMIT=""
 PLIST_FILES=	bin/${PORTNAME} \
-		bin/${PORTNAME}-application-mapper \
-		${DATADIR}/keyd.compose \
-		"@dir ${ETCDIR}"
+		bin/${PORTNAME}-application-mapper
+PLIST_DIRS=	${ETCDIR}
+PORTDATA=	*
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
@@ -45,14 +42,19 @@ post-patch:
 		-e 's,/usr/local,${LOCALBASE},' \
 		-e 's,${DOCSDIR_REL}/examples,${EXAMPLESDIR_REL},' \
 		-e 's/ -O3//' \
+		-e 's,v$$(VERSION)\\ \\($$(COMMIT)\\),$$(VERSION),' \
 		${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e 's,/usr,${PREFIX}&,' \
+	@${REINPLACE_CMD} -e 's,/usr,${PREFIX},' \
 		-e 's,/etc,${PREFIX}&,' \
 		${WRKSRC}/docs/*.scdoc \
 		${WRKSRC}/examples/*.conf \
+		${WRKSRC}/src/config.c \
 		${WRKSRC}/src/${PORTNAME}.c
 # https://lists.freebsd.org/pipermail/freebsd-x11/2019-March/023097.html
 	@${REINPLACE_CMD} -e 's,__FreeBSD,&_disabled,' \
 		${WRKSRC}/src/vkbd/uinput.c
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

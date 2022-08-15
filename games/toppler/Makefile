@@ -1,7 +1,6 @@
-# Created by: Dom Mitchell <dom@happygiraffe.net>
-
 PORTNAME=	toppler
 PORTVERSION=	1.3
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org

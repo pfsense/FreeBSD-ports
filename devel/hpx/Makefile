@@ -1,5 +1,6 @@
 PORTNAME=	hpx
 DISTVERSION=	1.8.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -7,6 +8,8 @@ COMMENT=	C++ Standard Library for Parallelism and Concurrency
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
+
+BROKEN_riscv64=	hpx/hardware/timestamp.hpp:43:6: error: Unsupported platform
 
 BUILD_DEPENDS=	asio>0:net/asio
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \

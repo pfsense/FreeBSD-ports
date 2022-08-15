@@ -1,7 +1,5 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	spdep
-DISTVERSION=	1.2-4
+DISTVERSION=	1.2-5
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

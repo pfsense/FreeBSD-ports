@@ -1,8 +1,6 @@
-# Created by: Matthias Sund <m.sund@arcor.de>
-
 PORTNAME=	codeblocks
 PORTVERSION=	20.03
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/Sources/${PORTVERSION}
 

@@ -1,7 +1,5 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	evaluate
-PORTVERSION=	0.15
+PORTVERSION=	0.16
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

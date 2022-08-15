@@ -1,7 +1,7 @@
 PORTNAME=	trilinos
 DISTVERSIONPREFIX=	trilinos-release-
 DISTVERSION=	13-4-0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science # physics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,8 @@ COMMENT=	Solver for multi-physics engineering and scientific problems
 LICENSE=	BSD3CLAUSE LGPL20 # Trilinos is licensed on a per-package basis. Most packages are under a BSD license, some are published under the (L)GPL.
 LICENSE_COMB=	multi
 
+BROKEN_armv6=	kokkos assumes a 64-bit build; i.e., 8-byte pointers, but found 4-byte
+BROKEN_armv7=	kokkos assumes a 64-bit build; i.e., 8-byte pointers, but found 4-byte
 BROKEN_i386=	kokkos assumes a 64-bit build; i.e., 8-byte pointers, but found 4-byte
 
 BUILD_DEPENDS=	bash:shells/bash \

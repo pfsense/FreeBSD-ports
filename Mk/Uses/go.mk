@@ -60,7 +60,7 @@ _INCLUDE_USES_GO_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-GO_VALID_VERSIONS=	1.17 1.18 1.19-devel
+GO_VALID_VERSIONS=	1.18 1.19 1.20-devel
 
 # Check arguments sanity
 .  if !empty(go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun)
@@ -190,19 +190,19 @@ go-post-fetch:
 .  endif
 
 _USES_extract+=	800:go-post-extract
-.  if empty(go_ARGS)
-# Legacy (GOPATH) build mode, setup directory structure expected by Go for the main module.
-go-post-extract:
-	@${MKDIR} ${GO_WRKSRC:H}
-	@${LN} -sf ${WRKSRC} ${GO_WRKSRC}
-.  elif ${go_ARGS:Mmodules} && defined(GO_MODULE)
+.  if ${go_ARGS:Mmodules} && defined(GO_MODULE)
 # Module-aware build mode. Although not strictly necessary (all build dependencies should be
 # already in MODCACHE), vendor them so we can patch them if needed.
 go-post-extract:
 	@${ECHO_MSG} "===> Tidying ${GO_MODNAME} dependencies";
-	@(cd ${GO_WRKSRC}; ${SETENV} ${GO_ENV} GOPROXY=${GO_MODCACHE} ${GO_CMD} mod tidy -e)
+	@(cd ${GO_WRKSRC}; ${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=${GO_MODCACHE} ${GO_CMD} mod tidy -e)
 	@${ECHO_MSG} "===> Vendoring ${GO_MODNAME} dependencies";
-	@(cd ${GO_WRKSRC}; ${SETENV} ${GO_ENV} GOPROXY=${GO_MODCACHE} ${GO_CMD} mod vendor -e)
+	@(cd ${GO_WRKSRC}; ${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=${GO_MODCACHE} ${GO_CMD} mod vendor -e)
+.  else
+# Legacy (GOPATH) build mode, setup directory structure expected by Go for the main module.
+go-post-extract:
+	@${MKDIR} ${GO_WRKSRC:H}
+	@${LN} -sf ${WRKSRC} ${GO_WRKSRC}
 .  endif
 
 .  if !target(do-build) && empty(go_ARGS:Mno_targets)

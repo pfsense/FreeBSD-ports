@@ -1,7 +1,5 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	gmm
-DISTVERSION=	1.6-6
+DISTVERSION=	1.7
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

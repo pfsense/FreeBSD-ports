@@ -353,6 +353,7 @@
     SUBDIR += f2
     SUBDIR += f3
     SUBDIR += facter
+    SUBDIR += fakertc
     SUBDIR += fand
     SUBDIR += fanout
     SUBDIR += fatback
@@ -473,7 +474,6 @@
     SUBDIR += gkrellm-trayicons
     SUBDIR += gkrellm2
     SUBDIR += gkrelltop
-    SUBDIR += gksu
     SUBDIR += glogg
     SUBDIR += glow
     SUBDIR += gnome-control-center
@@ -606,6 +606,7 @@
     SUBDIR += kio-fuse
     SUBDIR += kldfind
     SUBDIR += kldpatch
+    SUBDIR += kopia
     SUBDIR += kops
     SUBDIR += kpmcore
     SUBDIR += krename
@@ -630,7 +631,6 @@
     SUBDIR += libfvde
     SUBDIR += libg15
     SUBDIR += libg15render
-    SUBDIR += libgksu
     SUBDIR += libieee1284
     SUBDIR += libptytty
     SUBDIR += libretto-config
@@ -730,7 +730,6 @@
     SUBDIR += memtester
     SUBDIR += metalog
     SUBDIR += mfid
-    SUBDIR += mgeupsd
     SUBDIR += minikube
     SUBDIR += minimunin
     SUBDIR += minipot
@@ -795,6 +794,7 @@
     SUBDIR += ncdu
     SUBDIR += ndmpd
     SUBDIR += neofetch
+    SUBDIR += nerdctl
     SUBDIR += netevent
     SUBDIR += nfcutils
     SUBDIR += nfs-over-tls
@@ -895,6 +895,7 @@
     SUBDIR += p5-Proclet
     SUBDIR += p5-Quota
     SUBDIR += p5-Rex
+    SUBDIR += p5-RundeckAPI
     SUBDIR += p5-Samba-SIDhelper
     SUBDIR += p5-Schedule-At
     SUBDIR += p5-Schedule-Cron
@@ -1057,6 +1058,7 @@
     SUBDIR += py-dlipower
     SUBDIR += py-docker
     SUBDIR += py-drmaa
+    SUBDIR += py-elf_diff
     SUBDIR += py-execnet
     SUBDIR += py-filelike
     SUBDIR += py-filelock
@@ -1394,6 +1396,7 @@
     SUBDIR += tmux
     SUBDIR += tmux-mem-cpu-load
     SUBDIR += tmux23
+    SUBDIR += topgrade
     SUBDIR += topless
     SUBDIR += torque
     SUBDIR += toshctl

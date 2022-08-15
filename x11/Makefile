@@ -29,6 +29,9 @@
     SUBDIR += bmpanel2
     SUBDIR += brisk-menu
     SUBDIR += cde
+    SUBDIR += cde-24
+    SUBDIR += cde-25
+    SUBDIR += cde-devel
     SUBDIR += cinnamon
     SUBDIR += cinnamon-desktop
     SUBDIR += cinnamon-menus
@@ -115,6 +118,7 @@
     SUBDIR += innerspace
     SUBDIR += inputplug
     SUBDIR += j4-dmenu-desktop
+    SUBDIR += jbxvt
     SUBDIR += jgmenu
     SUBDIR += kanshi
     SUBDIR += kb2mb2
@@ -142,6 +146,7 @@
     SUBDIR += konsole
     SUBDIR += lavalauncher
     SUBDIR += lemonbar
+    SUBDIR += lemonbar-xft
     SUBDIR += libICE
     SUBDIR += libSM
     SUBDIR += libX11

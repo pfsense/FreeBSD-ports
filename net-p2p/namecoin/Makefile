@@ -1,9 +1,7 @@
-# Created by: Chad J. Milios <milios@ccsys.com>
-
 PORTNAME=	namecoin
 PORTVERSION=	0.21.0.1
 DISTVERSIONPREFIX=	nc
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	net-p2p dns
 

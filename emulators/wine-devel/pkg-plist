@@ -591,6 +591,8 @@ include/wine/windows/mcx.h
 include/wine/windows/mediaerr.h
 include/wine/windows/mediaobj.h
 include/wine/windows/mediaobj.idl
+include/wine/windows/medparam.h
+include/wine/windows/medparam.idl
 include/wine/windows/metahost.h
 include/wine/windows/metahost.idl
 include/wine/windows/mfapi.h
@@ -887,6 +889,7 @@ include/wine/windows/sqlucode.h
 include/wine/windows/srcrst.idl
 include/wine/windows/srrestoreptapi.h
 include/wine/windows/sspi.h
+%%STAGING%%include/wine/windows/stdole32.idl
 include/wine/windows/stgprop.h
 include/wine/windows/sti.h
 include/wine/windows/storage.h
@@ -1206,6 +1209,7 @@ lib/wine/%%WINEARCH%%-unix/libadvapi32.a
 lib/wine/%%WINEARCH%%-unix/libadvpack.a
 lib/wine/%%WINEARCH%%-unix/libatl.a
 lib/wine/%%WINEARCH%%-unix/libatl100.a
+lib/wine/%%WINEARCH%%-unix/libatl110.a
 lib/wine/%%WINEARCH%%-unix/libatl80.a
 lib/wine/%%WINEARCH%%-unix/libatlthunk.a
 lib/wine/%%WINEARCH%%-unix/libavicap32.a
@@ -1728,6 +1732,7 @@ lib/wine/%%WINEARCH%%-windows/libadvapi32.a
 lib/wine/%%WINEARCH%%-windows/libadvpack.a
 lib/wine/%%WINEARCH%%-windows/libatl.a
 lib/wine/%%WINEARCH%%-windows/libatl100.a
+lib/wine/%%WINEARCH%%-windows/libatl110.a
 lib/wine/%%WINEARCH%%-windows/libatl80.a
 lib/wine/%%WINEARCH%%-windows/libatlthunk.a
 lib/wine/%%WINEARCH%%-windows/libavicap32.a
@@ -2038,6 +2043,7 @@ lib/wine/%%WINEARCH%%-windows/msvcp120.dll
 lib/wine/%%WINEARCH%%-windows/msvcp120_app.dll
 lib/wine/%%WINEARCH%%-windows/msvcp140.dll
 lib/wine/%%WINEARCH%%-windows/msvcp140_1.dll
+lib/wine/%%WINEARCH%%-windows/msvcp140_2.dll
 lib/wine/%%WINEARCH%%-windows/msvcp140_atomic_wait.dll
 lib/wine/%%WINEARCH%%-windows/msvcp60.dll
 lib/wine/%%WINEARCH%%-windows/msvcp70.dll

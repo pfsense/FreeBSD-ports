@@ -1,8 +1,6 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-
 PORTNAME=	bambootracker
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.5.1
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/BambooTracker/BambooTracker/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
 DISTNAME=	BambooTracker-src-${DISTVERSIONPREFIX}${DISTVERSION}

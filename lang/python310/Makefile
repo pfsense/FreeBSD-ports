@@ -1,8 +1,5 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
-PORTREVISION=	2
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION:C/[a-z].*//}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}

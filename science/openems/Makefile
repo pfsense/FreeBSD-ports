@@ -2,6 +2,7 @@ PORTNAME=	openems
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.0.35-76
 DISTVERSIONSUFFIX=	-gd4448fa
+PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -31,7 +32,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	thliebig
 GH_PROJECT=	openEMS
 
-CMAKE_ARGS=	-DVTK_DIR=${LOCALBASE}/lib/cmake/vtk-9.1
+CMAKE_ARGS=	-DVTK_DIR=${LOCALBASE}/lib/cmake/vtk-9.1 \
+		-DLOCALBASE=${LOCALBASE}
 
 CXXFLAGS+=	-I${LOCALBASE}/include/fparser # fparser.pc probably returns a wrong value
 

@@ -1,7 +1,5 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-
 PORTNAME=	evolution-data-server
-DISTVERSION=	3.44.2
+DISTVERSION=	3.44.4
 CATEGORIES=	databases gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome

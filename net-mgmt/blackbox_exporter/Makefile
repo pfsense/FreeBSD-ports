@@ -1,8 +1,6 @@
-# Created by: Boris Samorodov <bsam@FreeBSDD.org>
-
 PORTNAME=	blackbox_exporter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.21.1
+DISTVERSION=	0.22.0
 PORTREVISION=	1
 CATEGORIES=	net-mgmt
 

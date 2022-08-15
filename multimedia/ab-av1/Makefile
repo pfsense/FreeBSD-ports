@@ -1,7 +1,6 @@
 PORTNAME=	ab-av1
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.4
-PORTREVISION=	1
+DISTVERSION=	0.4.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -21,18 +20,18 @@ PLIST_FILES=	bin/${PORTNAME} \
 		share/fish/vendor_completions.d/${PORTNAME}.fish \
 		share/zsh/site-functions/_${PORTNAME}
 
-CARGO_CRATES=	anyhow-1.0.58 \
+CARGO_CRATES=	anyhow-1.0.61 \
 		atty-0.2.14 \
 		autocfg-1.1.0 \
 		bitflags-1.3.2 \
-		bytes-1.1.0 \
+		bytes-1.2.1 \
 		cc-1.0.73 \
 		cfg-if-1.0.0 \
-		clap-3.2.6 \
-		clap_complete-3.2.2 \
-		clap_derive-3.2.6 \
-		clap_lex-0.2.3 \
-		console-0.15.0 \
+		clap-3.2.17 \
+		clap_complete-3.2.4 \
+		clap_derive-3.2.17 \
+		clap_lex-0.2.4 \
+		console-0.15.1 \
 		encode_unicode-0.3.6 \
 		errno-0.2.8 \
 		errno-dragonfly-0.1.2 \
@@ -47,55 +46,52 @@ CARGO_CRATES=	anyhow-1.0.58 \
 		futures-task-0.3.21 \
 		futures-util-0.3.21 \
 		getrandom-0.2.7 \
-		hashbrown-0.12.1 \
+		hashbrown-0.12.3 \
 		heck-0.4.0 \
 		hermit-abi-0.1.19 \
 		humantime-2.1.0 \
 		indexmap-1.9.1 \
-		indicatif-0.16.2 \
-		itoa-1.0.2 \
-		lazy_static-1.4.0 \
-		libc-0.2.126 \
+		indicatif-0.17.0 \
+		itoa-1.0.3 \
+		libc-0.2.131 \
 		log-0.4.17 \
 		memchr-2.5.0 \
 		mio-0.8.4 \
 		num_cpus-1.13.1 \
 		num_threads-0.1.6 \
 		number_prefix-0.4.0 \
-		once_cell-1.12.0 \
-		os_str_bytes-6.1.0 \
+		once_cell-1.13.0 \
+		os_str_bytes-6.2.0 \
 		pin-project-lite-0.2.9 \
 		pin-utils-0.1.0 \
 		ppv-lite86-0.2.16 \
 		proc-macro-error-1.0.4 \
 		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.40 \
-		quote-1.0.20 \
+		proc-macro2-1.0.43 \
+		quote-1.0.21 \
 		rand-0.8.5 \
 		rand_chacha-0.3.1 \
 		rand_core-0.6.3 \
-		regex-1.5.6 \
-		regex-syntax-0.6.26 \
-		ryu-1.0.10 \
-		serde-1.0.137 \
-		serde_derive-1.0.137 \
-		serde_json-1.0.81 \
+		ryu-1.0.11 \
+		serde-1.0.143 \
+		serde_derive-1.0.143 \
+		serde_json-1.0.83 \
 		shell-escape-0.1.5 \
 		signal-hook-registry-1.4.0 \
-		slab-0.4.6 \
+		slab-0.4.7 \
 		strsim-0.10.0 \
-		syn-1.0.98 \
+		syn-1.0.99 \
 		termcolor-1.1.3 \
 		terminal_size-0.1.17 \
 		textwrap-0.15.0 \
-		time-0.3.11 \
+		time-0.3.13 \
 		time-macros-0.2.4 \
-		tokio-1.19.2 \
+		tokio-1.20.1 \
 		tokio-macros-1.8.0 \
 		tokio-process-stream-0.3.0 \
 		tokio-stream-0.1.9 \
 		tokio-util-0.7.3 \
-		unicode-ident-1.0.1 \
+		unicode-ident-1.0.3 \
 		unicode-width-0.1.9 \
 		unix-named-pipe-0.2.0 \
 		version_check-0.9.4 \

@@ -1,7 +1,6 @@
-# Created by: patrick, trevor
-
 PORTNAME=	lilypond
 DISTVERSION=	2.22.2
+PORTREVISION=	1
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 

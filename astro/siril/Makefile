@@ -1,5 +1,6 @@
 PORTNAME=	siril
 DISTVERSION=	1.0.3
+PORTREVISION=	1
 CATEGORIES=	astro graphics
 MASTER_SITES=	https://free-astro.org/download/
 
@@ -10,6 +11,9 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange' #`
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 BUILD_DEPENDS=	cmake:devel/cmake
 LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \

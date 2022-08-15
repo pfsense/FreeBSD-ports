@@ -1,8 +1,6 @@
-# Created by: bart <lbartoletti@FreeBSD.org>
-
 PORTNAME=	pdal
 DISTVERSION=	2.3.0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	math databases graphics
 MASTER_SITES=	https://github.com/PDAL/PDAL/releases/download/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src

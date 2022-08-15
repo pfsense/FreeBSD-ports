@@ -1,7 +1,5 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-
 PORTNAME=	abseil
-PORTVERSION=	20211102.0
+PORTVERSION=	20220623.0
 CATEGORIES=	devel
 
 MAINTAINER=	danfe@FreeBSD.org

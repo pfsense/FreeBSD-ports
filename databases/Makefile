@@ -577,6 +577,7 @@
     SUBDIR += pglogical
     SUBDIR += pgmetrics
     SUBDIR += pgmodeler
+    SUBDIR += pg-gvm
     SUBDIR += pgpool-II-37
     SUBDIR += pgpool-II-40
     SUBDIR += pgpool-II-41
@@ -832,6 +833,8 @@
     SUBDIR += py-sqlalchemy12
     SUBDIR += py-sqlalchemy13
     SUBDIR += py-sqlalchemy14
+    SUBDIR += py-sqlite-fts4
+    SUBDIR += py-sqlite-utils
     SUBDIR += py-sqlite3
     SUBDIR += py-sqlobject
     SUBDIR += py-sqlparse

@@ -1,8 +1,6 @@
-# Created by: mikael.urankar@gmail.com
-
 PORTNAME=	omxplayer
 PORTVERSION=	20161004
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/

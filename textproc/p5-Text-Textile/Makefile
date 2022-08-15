@@ -1,8 +1,5 @@
-# Created by: Travis Campbell <hcoyote@ghostar.org>
-
 PORTNAME=	Text-Textile
-PORTVERSION=	2.12
-PORTREVISION=	1
+PORTVERSION=	2.13
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

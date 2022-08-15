@@ -1,6 +1,7 @@
 PORTNAME=	tblite
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.1
+PORTREVISION=	1
 CATEGORIES=	science # chemistry
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +9,10 @@ COMMENT=	Light-weight tight-binding framework
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 BUILD_DEPENDS=	mstore>0:science/mstore # unclear if this is really needed
 LIB_DEPENDS=	libdftd4.so:science/dftd4 \

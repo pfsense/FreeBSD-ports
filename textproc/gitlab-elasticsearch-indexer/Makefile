@@ -1,9 +1,7 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-
 PORTNAME=	gitlab-elasticsearch-indexer
 PORTVERSION=	3.0.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 
 MAINTAINER=	mfechner@FreeBSD.org

@@ -1,7 +1,6 @@
-# Created by: J. Giovannangeli
-
 PORTNAME=	opam
 PORTVERSION=	2.1.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/ocaml/opam/releases/download/${DISTVERSION}/
 PKGNAMEPREFIX=	ocaml-
@@ -33,6 +32,8 @@ DARCS_RUN_DEPENDS=	darcs:devel/hs-darcs
 GIT_RUN_DEPENDS=	git:devel/git
 MERCURIAL_RUN_DEPENDS=	${PY_MERCURIAL}
 RSYNC_RUN_DEPENDS=	rsync:net/rsync
+
+NOPRECIOUSMAKEVARS=	yes
 
 pre-configure:
 	cd ${WRKSRC} && ${MAKE_CMD} compiler

@@ -1,9 +1,7 @@
-# Created by: thierry@pompo.net
-
 PORTNAME=	cgnslib
 PORTVERSION=	4.3.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	science
 

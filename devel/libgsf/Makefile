@@ -1,7 +1,5 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-
 PORTNAME=	libgsf
-PORTVERSION=	1.14.49
+PORTVERSION=	1.14.50
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -28,5 +26,8 @@ OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
+
+PLIST_SUB+=	LIBMINORVER=${PORTVERSION:E} \
+		LIBSHORTVER=${PORTVERSION:R:S/.//}
 
 .include <bsd.port.mk>

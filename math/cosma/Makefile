@@ -1,7 +1,6 @@
 PORTNAME=	cosma
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.1-23
-DISTVERSIONSUFFIX=	-ga3101bb
+DISTVERSION=	2.6.1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +8,10 @@ COMMENT=	Distributed communication-optimal matrix multiplication algorithm
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 BUILD_DEPENDS=	openmpi>0:net/openmpi
 LIB_DEPENDS=	libopenblas.so:math/openblas

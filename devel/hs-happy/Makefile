@@ -1,5 +1,3 @@
-# Created by: Simon Marlow <simonmar@microsoft.com>
-
 PORTNAME=	happy
 PORTVERSION=	1.20.0
 PORTREVISION=	2
@@ -11,6 +9,8 @@ COMMENT=	Parser generator for Haskell
 LICENSE=	BSD3CLAUSE
 
 USES=		cabal
+
+CABAL_WRAPPER_SCRIPTS=	${CABAL_EXECUTABLES}
 
 PORTEXAMPLES=	*.ly README glr/* igloo/*
 

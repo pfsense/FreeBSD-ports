@@ -1,8 +1,6 @@
-# Created by: Yinghong.Liu <relaxbsd@gmail.com>
-
 PORTNAME=	synfig
 PORTVERSION=	1.4.2
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=v
 CATEGORIES=	graphics devel multimedia
 

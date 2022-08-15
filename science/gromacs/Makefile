@@ -1,7 +1,6 @@
-# Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-
 PORTNAME=	gromacs
 DISTVERSION=	2022.2
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	ftp://ftp.gromacs.org/pub/gromacs/
 

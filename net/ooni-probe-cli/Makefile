@@ -1,6 +1,6 @@
 PORTNAME=		ooni-probe-cli
 DISTVERSIONPREFIX=	v
-DISTVERSION=		3.15.1
+DISTVERSION=		3.15.3
 PORTREVISION=	1
 CATEGORIES=		net www benchmarks
 
@@ -12,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
-USES=		go:modules
+USES=		go:1.18,modules
 
 GO_MODULE=	github.com/ooni/probe-cli/v3
 GO_TARGET=	./cmd/ooniprobe

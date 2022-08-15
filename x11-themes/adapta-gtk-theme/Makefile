@@ -1,8 +1,6 @@
-# Created by: Nicola Stanislao Vitale <nivit@FreeBSD.org>
-
 PORTNAME=	adapta-gtk-theme
 PORTVERSION=	3.95.0.11
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-themes
 
 MAINTAINER=	nivit@FreeBSD.org

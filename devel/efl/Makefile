@@ -1,8 +1,6 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-
 PORTNAME=	efl
 DISTVERSION=	1.26.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 DIST_SUBDIR=	enlightenment

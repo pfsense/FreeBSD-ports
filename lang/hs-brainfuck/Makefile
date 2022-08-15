@@ -1,5 +1,3 @@
-# Created by: Giuseppe Pilichi aka Jacula Modyun <jacula@gmail.com>
-
 PORTNAME=	brainfuck
 PORTVERSION=	0.1.0.3
 PORTREVISION=	11
@@ -12,6 +10,6 @@ LICENSE=	GPLv2
 
 USES=		cabal
 
-EXECUTABLES=	bf
+CABAL_EXECUTABLES=	bf
 
 .include <bsd.port.mk>

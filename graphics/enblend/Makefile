@@ -1,8 +1,6 @@
-# Created by: cartola@openit.com.br
-
 PORTNAME=	enblend
 PORTVERSION=	4.2
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	graphics
 MASTER_SITES=	SF/enblend/enblend-enfuse/enblend-enfuse-${PORTVERSION}
 DISTNAME=	enblend-enfuse-${PORTVERSION}

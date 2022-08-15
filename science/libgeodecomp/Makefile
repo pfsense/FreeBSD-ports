@@ -1,8 +1,6 @@
-# Created by: Kurt Kanzenbach <kurt@kmk-computers.de>
-
 PORTNAME=		libgeodecomp
 PORTVERSION=		0.4.0
-PORTREVISION=		22
+PORTREVISION=		23
 CATEGORIES=		science devel
 MASTER_SITES=		http://www.libgeodecomp.org/archive/
 

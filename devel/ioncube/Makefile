@@ -1,7 +1,5 @@
-# Created by: Svyatoslav Lempert <svyatoslav.lempert@gmail.com>
-
 PORTNAME=	ioncube
-DISTVERSION=	10.4.1
+DISTVERSION=	11.0.1
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.ioncube.com/loader_downloads/ \
 		http://downloads2.ioncube.com/loader_downloads/ \

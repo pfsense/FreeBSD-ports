@@ -1,8 +1,6 @@
-# Created by: thierry@pompo.net
-
 PORTNAME=	cbang
 PORTVERSION=	1.6.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -34,7 +32,7 @@ DEBUG_LIB_DEPENDS=	libbfd.so:devel/libbfd
 
 MAKE_ARGS+=	cc="${CC}"	\
 		cxx="${CXX}"	\
-		cxxstd="c++14"	\
+		cxxstd="c++17"	\
 		ccflags="${CCFLAGS}"	\
 		cxxflags="${CXXFLAGS}"	\
 		libpath="${LIBPATH}"	\

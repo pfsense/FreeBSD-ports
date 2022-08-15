@@ -1,8 +1,6 @@
-# Created by: TAKATSU Tomonari <tota@rtfm.jp>
-
 PORTNAME=	objectdetect
 PORTVERSION=	0.0.3
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 

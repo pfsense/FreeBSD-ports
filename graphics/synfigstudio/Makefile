@@ -1,7 +1,6 @@
-# Created by: Yinghong.Liu <relaxbsd@gmail.com>
-
 PORTNAME=	synfigstudio
 PORTVERSION=	1.4.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	graphics multimedia
 

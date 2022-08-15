@@ -1,5 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	google-api-core
 PORTVERSION=	2.8.2
 CATEGORIES=	www python
@@ -24,7 +22,6 @@ NO_ARCH=	yes
 
 OPTIONS_DEFINE=	GRPC
 OPTIONS_DEFAULT=GRPC
-GRPC_DESC=	gRPC support
 
 GRPC_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}grpcio>=1.33.2<2.0:devel/py-grpcio@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}grpcio-status>=1.33.2<2.0:devel/py-grpcio-status@${PY_FLAVOR}

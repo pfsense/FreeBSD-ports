@@ -1,8 +1,6 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-
 PORTNAME=	librime
 PORTVERSION=	1.7.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng@FreeBSD.org

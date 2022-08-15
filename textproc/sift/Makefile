@@ -1,9 +1,7 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	sift
 PORTVERSION=	0.9.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	23
+PORTREVISION=	24
 CATEGORIES=	textproc
 
 MAINTAINER=	sunpoet@FreeBSD.org

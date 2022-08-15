@@ -1,9 +1,7 @@
-# Created by: John Hixson <jhixson@FreeBSD.org>
-
 PORTNAME=	lizardfs
 PORTVERSION=	3.12.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	sysutils
 
 MAINTAINER=	jhixson@FreeBSD.org

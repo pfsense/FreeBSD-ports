@@ -1,7 +1,5 @@
-# Created by: Jan Hornyak <pav@oook.cz>
-
 PORTNAME=	luasocket
-PORTVERSION=	3.0.0
+PORTVERSION=	3.1.0
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	net

@@ -1,9 +1,7 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	drive
 PORTVERSION=	0.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	net
 
 MAINTAINER=	sunpoet@FreeBSD.org

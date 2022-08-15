@@ -1,9 +1,7 @@
-# Created by: David Yeske <dyeske@gmail.com>
-
 PORTNAME=	yafaray
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.5.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org

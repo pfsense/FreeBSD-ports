@@ -1,7 +1,6 @@
-# Created by: Tomasz "CeDeROM" CEDRO (http://www.tomek.cedro.info)
-
 PORTNAME=	openocd
 PORTVERSION=	0.11.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF
 

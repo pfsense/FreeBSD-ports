@@ -1,9 +1,7 @@
-# Created by: Daniel Morante <daniel@morante.net>
-
 PORTNAME=	zetacoin
 PORTVERSION=	0.13.2.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	daniel@morante.net

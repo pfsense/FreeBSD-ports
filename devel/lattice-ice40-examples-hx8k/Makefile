@@ -1,7 +1,6 @@
-# Created by: Johnny Sorocil <jsorocil@gmail.com>
-
 PORTNAME=	lattice-ice40-examples-hx8k
 PORTVERSION=	g20180310
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	manu@FreeBSD.org

@@ -1,5 +1,3 @@
-# Created by: ijliao
-
 PORTNAME=	images
 PORTVERSION=	4.0.1
 PORTREVISION=	10
@@ -12,6 +10,8 @@ DIST_SUBDIR=	ocaml-images
 
 MAINTAINER=	michael.grunewald@laposte.net
 COMMENT=	Objective Caml image processing library
+
+BROKEN=		does not build: broken plist
 
 BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/ocaml.m4:lang/ocaml-autoconf
 BUILD_DEPENDS+=	omake:devel/omake

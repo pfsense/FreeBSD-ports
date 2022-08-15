@@ -1,9 +1,6 @@
-# Created by: Richard Gallamore <ultima@FreeBSD.org>
-
 PORTNAME=	django-post_office
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.6.0
-PORTREVISION=	1
+DISTVERSION=	3.6.1
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 

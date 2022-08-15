@@ -1,7 +1,6 @@
-# Created by: Rui Lopes <rgl ruilopes com>
-
 PORTNAME=	tailor
 DISTVERSION=	0.9.37
+PORTREVISION=	1
 CATEGORIES=	devel python
 
 MAINTAINER=	portmaster@BSDforge.com

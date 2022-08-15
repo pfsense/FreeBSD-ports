@@ -1,5 +1,3 @@
-# Created by: Bernard Spil <brnrd@freebsd.org>
-
 PORTNAME=	forms
 PORTVERSION=	2.5.1
 DISTVERSIONPREFIX=	v
@@ -19,6 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=22:www/nextcloud@${PHP_FLAVOR}
 
 USES=		php:flavors
+IGNORE_WITH_PHP=	82
 NO_BUILD=	yes
 NO_ARCH=	yes
 

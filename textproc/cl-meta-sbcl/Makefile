@@ -1,8 +1,6 @@
-# Created by: Henrik Motakef <henrik.motakef@web.de>
-
 PORTNAME=	meta
 PORTVERSION=	0.1
-PORTREVISION=	71
+PORTREVISION=	72
 PORTEPOCH=	1
 CATEGORIES=	textproc lisp
 PKGNAMEPREFIX=	cl-

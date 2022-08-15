@@ -1,7 +1,6 @@
-# Created by: Pedro Giffuni
-
 PORTNAME=	libarea
 PORTVERSION=	20191031
+PORTREVISION=	1
 CATEGORIES=	devel cad
 
 MAINTAINER=	ports@FreeBSD.org

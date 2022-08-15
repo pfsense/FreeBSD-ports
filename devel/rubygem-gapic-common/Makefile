@@ -1,7 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	gapic-common
-PORTVERSION=	0.10.0
+PORTVERSION=	0.11.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

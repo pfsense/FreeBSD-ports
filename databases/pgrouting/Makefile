@@ -1,8 +1,7 @@
-# Created by: lbartoletti <lbartoletti@FreeBSD.org>
-
 PORTNAME=	pgrouting
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.3.1
+PORTREVISION=	1
 CATEGORIES=	databases geography
 
 MAINTAINER=	lbartoletti@FreeBSD.org

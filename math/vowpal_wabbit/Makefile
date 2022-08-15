@@ -1,8 +1,6 @@
-# Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-
 PORTNAME=	vowpal_wabbit
 PORTVERSION=	7.10
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	math
 
 MAINTAINER=	demon@FreeBSD.org

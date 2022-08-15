@@ -1,7 +1,6 @@
-# Created by: Ashish SHUKLA <ashish@FreeBSD.org>
-
 PORTNAME=	git-remote-gcrypt
 PORTVERSION=	1.4
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	ashish@FreeBSD.org

@@ -1,8 +1,6 @@
-# Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
-
 PORTNAME=	gitlab-shell
 PORTVERSION=	14.7.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org

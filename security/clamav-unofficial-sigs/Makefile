@@ -1,7 +1,6 @@
-# Created by: Marko Njezic <sf@maxempire.com>
-
 PORTNAME=	clamav-unofficial-sigs
 PORTVERSION=	7.2.5
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	freebsd@mnd.sc

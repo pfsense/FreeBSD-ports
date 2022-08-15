@@ -20,6 +20,7 @@ LLVM_COMMANDS=	\
 		llvm-dis \
 		llvm-dlltool \
 		llvm-dwarfdump \
+		llvm-dwarfutil \
 		llvm-dwp \
 		llvm-exegesis \
 		llvm-extract \
@@ -63,8 +64,7 @@ LLVM_COMMANDS=	\
 		llvm-windres \
 		llvm-xray \
 		opt \
-		sancov \
-		split-file
+		sancov
 
 CLANG_COMMANDS=	\
 		analyze-build \
@@ -82,6 +82,7 @@ CLANG_COMMANDS=	\
 		clang-offload-wrapper \
 		clang-repl \
 		clang-scan-deps \
+		clang-tblgen \
 		diagtool \
 		hmaptool \
 		intercept-build \
@@ -137,6 +138,7 @@ MLIR_COMMANDS=	\
 		mlir-cpu-runner \
 		mlir-lsp-server \
 		mlir-opt \
+		mlir-pdll \
 		mlir-pdll-lsp-server \
 		mlir-reduce \
 		mlir-tblgen \

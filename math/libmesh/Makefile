@@ -1,8 +1,6 @@
-# Created by: Yuri Victorovich <yuri@FreeBSD.org>
-
 PORTNAME=	libmesh
 DISTVERSION=	1.7.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/libMesh/${PORTNAME}/releases/download/v${DISTVERSION}/
 

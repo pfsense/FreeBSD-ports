@@ -1,8 +1,6 @@
-# Created by: Yuri Victorovich <yuri@rawbw.com>
-
 PORTNAME=	scikit-fuzzy
 DISTVERSION=	0.4.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

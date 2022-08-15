@@ -1,8 +1,6 @@
-# Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-
 PORTNAME=	eksctl
 PORTVERSION=	0.94.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	LOCAL/danilo
 

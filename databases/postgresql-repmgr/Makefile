@@ -1,7 +1,6 @@
-# Created by: alp@sfedu.ru
-
 PORTNAME=	postgresql-repmgr
 PORTVERSION=	5.3.2
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.repmgr.org/download/
 DISTNAME=	repmgr-${PORTVERSION}

@@ -1,7 +1,5 @@
-# Created by: Richard Gallamore <ultima@FreeBSD.org>
-
 PORTNAME=	rjsmin
-PORTVERSION=	1.2.0
+PORTVERSION=	1.2.1
 CATEGORIES=	archivers python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

@@ -1,8 +1,6 @@
-# Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-
 PORTNAME=	abiword
 PORTVERSION=	3.0.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	editors
 MASTER_SITES=	http://www.abisource.com/downloads/abiword/${PORTVERSION}/source/
 DIST_SUBDIR=	AbiWord

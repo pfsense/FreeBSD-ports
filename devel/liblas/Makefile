@@ -1,8 +1,6 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-
 PORTNAME=	liblas
 PORTVERSION=	1.8.1
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	devel
 
 MAINTAINER=	wen@FreeBSD.org

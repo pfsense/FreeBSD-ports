@@ -1,8 +1,6 @@
-# Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-
 PORTNAME=	blobby
 PORTVERSION=	1.0
-PORTREVISION=	15
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Blobby%20Volley%202%20%28Linux%29/${PORTVERSION}

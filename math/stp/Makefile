@@ -1,8 +1,6 @@
-# Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-
 PORTNAME=	stp
 DISTVERSION=	2.3.3
-PORTREVISION=	7
+PORTREVISION=	8
 PORTEPOCH=	1
 CATEGORIES=	math
 

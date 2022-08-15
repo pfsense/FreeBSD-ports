@@ -1,7 +1,5 @@
-# Created by: Pietro Cerutti <gahr@FreeBSD.org>
-
 PORTNAME=	gegl
-PORTVERSION=	0.4.36
+PORTVERSION=	0.4.38
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	GIMP
@@ -35,7 +33,7 @@ MESON_ARGS=	-Ddocs=false \
 		-Dpygobject=disabled \
 		-Dlua=disabled
 
-GEGL_SHLIB=	0.435.1
+GEGL_SHLIB=	0.437.1
 GEGL_VER=	0.4
 PLIST_SUB+=	GEGL_SHLIB=${GEGL_SHLIB} GEGL_VER=${GEGL_VER}
 

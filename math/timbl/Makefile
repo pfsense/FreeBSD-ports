@@ -1,9 +1,7 @@
-# Created by: Yuri Victorovich <yuri@tsoft.com>
-
 PORTNAME=	timbl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.6
-PORTREVISION=	3
+DISTVERSION=	6.7
+PORTREVISION=	1
 CATEGORIES=	math education
 
 MAINTAINER=	yuri@FreeBSD.org

@@ -1,8 +1,6 @@
-# Created by: Doug Barton <dougb@FreeBSD.org>
-
 PORTNAME=	libtorrent-rasterbar
 DISTVERSION=	1.2.16 # 2.x is unusable until memory problems are resolved, see https://github.com/arvidn/libtorrent/issues/6781
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://github.com/arvidn/libtorrent/releases/download/v${DISTVERSION}/
@@ -41,6 +39,8 @@ EXAMPLES_CMAKE_BOOL=	build_examples
 LOGGING_CMAKE_BOOL=	logging
 
 PORTSCOUT=	limit:^1.* # 2.x is WIP and we don't accept it before qBittorrent does
+
+CONFLICTS_INSTALL=	libtorrent-rasterbar2
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|return "python3";|return "${PYTHON_CMD}";|' \

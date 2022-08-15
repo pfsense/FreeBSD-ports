@@ -1,7 +1,6 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-
 PORTNAME=	rime-middle-chinese
 DISTVERSION=	g20210926
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng@FreeBSD.org

@@ -1,7 +1,5 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	caret
-DISTVERSION=	6.0-92
+DISTVERSION=	6.0-93
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

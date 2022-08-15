@@ -1,7 +1,6 @@
-# Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-
 PORTNAME=	grsync
 PORTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.opbyte.it/release/ \
 		LOCAL/martymac

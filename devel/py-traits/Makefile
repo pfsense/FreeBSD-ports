@@ -1,7 +1,5 @@
-# Created by: Wen Heping <wenheping@gmail.com>
-
 PORTNAME=	traits
-PORTVERSION=	6.3.2
+PORTVERSION=	6.4.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

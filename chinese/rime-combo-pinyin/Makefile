@@ -1,7 +1,6 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-
 PORTNAME=	rime-combo-pinyin
 DISTVERSION=	g20211108
+PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng@FreeBSD.org

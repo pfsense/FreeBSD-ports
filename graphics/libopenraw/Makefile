@@ -1,8 +1,6 @@
-# Created by: Pav Lucistnik <pav@FreeBSD.org>
-
 PORTNAME=	libopenraw
 PORTVERSION=	0.3.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	http://libopenraw.freedesktop.org/download/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}

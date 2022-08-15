@@ -1,7 +1,5 @@
-# Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-
 PORTNAME=	contextmenu
-PORTVERSION=	3.3
+PORTVERSION=	3.3.1
 CATEGORIES=	mail
 PKGNAMEPREFIX=	roundcube-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}

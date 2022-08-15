@@ -1,5 +1,3 @@
-# Created by: Bernard Spil <brnrd@freebsd.org>
-
 PORTNAME=	groupfolders
 PORTVERSION=	12.0.1
 DISTVERSIONPREFIX=	v
@@ -17,6 +15,7 @@ LICENSE=	AGPLv3
 RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=24:www/nextcloud@${PHP_FLAVOR}
 
 USES=		php:flavors
+IGNORE_WITH_PHP=	82
 NO_BUILD=	yes
 NO_ARCH=	yes
 

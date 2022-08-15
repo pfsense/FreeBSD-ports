@@ -1,8 +1,6 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-
 PORTNAME=	fcitx-rime
 DISTVERSION=	0.3.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	chinese
 MASTER_SITES=	https://download.fcitx-im.org/${PORTNAME}/
 DIST_SUBDIR=	fcitx

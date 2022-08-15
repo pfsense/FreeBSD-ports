@@ -1,7 +1,5 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	sidekiq-cron
-PORTVERSION=	1.6.0
+PORTVERSION=	1.7.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

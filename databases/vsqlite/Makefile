@@ -1,8 +1,6 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-
 PORTNAME=	vsqlite
 PORTVERSION=	0.3.13
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	databases
 
 MAINTAINER=	kwm@FreeBSD.org

@@ -1,7 +1,6 @@
 PORTNAME=	ringrtc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.20.10
-PORTREVISION=	1
+DISTVERSION=	2.20.12
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/mikael/ringrtc/:base \
 		LOCAL/mikael/ringrtc/:boringssl \
@@ -36,7 +35,8 @@ COMMENT=	Middleware library for Signal-Desktop
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
-BUILD_DEPENDS=	gn:devel/gn
+BUILD_DEPENDS=	gn:devel/gn \
+		protoc:devel/protobuf
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfreetype.so:print/freetype2 \
 		libpulse.so:audio/pulseaudio
@@ -56,7 +56,7 @@ EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
 	|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
 
 # sh net-im/signal-desktop/get_deps.sh
-WEBRTC_REV=	4896d
+WEBRTC_REV=	4896f
 
 # modify webrtc_fetch.sh, then sh webrtc_fetch.sh
 BASE_REV=	bee216d6736d6a471879c5fcd32c8aba863d4755
@@ -100,7 +100,7 @@ MAKE_ARGS=	-C out/${BUILDTYPE}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/rust
 WEBRTCDIR=	${WRKDIR}/${PORTNAME}-${DISTVERSION}/src/webrtc/src
 
-# fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.20.10/src/rust/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile
+# fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v2.20.12/src/rust/Cargo.lock | awk -f /usr/ports/Mk/Scripts/cargo-crates.awk | portedit merge -i Makefile
 CARGO_CRATES=	aes-0.7.5 \
 		aho-corasick-0.7.18 \
 		anyhow-1.0.53 \
@@ -189,7 +189,8 @@ CARGO_CRATES=	aes-0.7.5 \
 		rand_hc-0.2.0 \
 		redox_syscall-0.2.10 \
 		regex-1.5.5 \
-		regex-syntax-0.6.25 \
+		regex-automata-0.1.10 \
+		regex-syntax-0.6.27 \
 		remove_dir_all-0.5.3 \
 		ring-0.16.20 \
 		rustls-0.19.1 \

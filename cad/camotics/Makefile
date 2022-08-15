@@ -1,8 +1,7 @@
-# Created by: thierry@pompo.net
-
 PORTNAME=	CAMotics
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.2-rc1
+PORTREVISION=	2
 CATEGORIES=	cad
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -54,7 +53,7 @@ PORTEXAMPLES=	*
 
 MAKE_ARGS+=	cc="${CC}"	\
 		cxx="${CXX}"	\
-		cxxstd="c++14"	\
+		cxxstd="c++17"	\
 		ccflags="${CCFLAGS}"	\
 		cxxflags="${CXXFLAGS} ${QT5_INC}"	\
 		linkflags="${LDFLAGS} ${QT5_LIBS}"	\

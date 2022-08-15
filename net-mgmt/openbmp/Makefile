@@ -1,9 +1,7 @@
-# Created by: Luca Pizzamiglio <pizzamig@FreeBSD.org>
-
 PORTNAME=	openbmp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.14.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	pizzamig@FreeBSD.org

@@ -1,8 +1,6 @@
-# Created by: Xin LI <delphij@FreeBSD.org>
-
 PORTNAME=	madedit
 PORTVERSION=	0.2.9
-PORTREVISION=	25
+PORTREVISION=	26
 CATEGORIES=	editors
 MASTER_SITES=	SF/${PORTNAME}/MadEdit/MadEdit-${PORTVERSION}
 

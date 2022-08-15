@@ -1,8 +1,6 @@
-# Created by: Anes Mukhametov <anes@anes.su>
-
 PORTNAME=	Image-ObjectDetect
 PORTVERSION=	0.12
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

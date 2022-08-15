@@ -1,7 +1,6 @@
-# Created by: Vasil Dimov <vd@FreeBSD.org>
-
 PORTNAME=	mysqlwsrep
 PORTVERSION?=	5.7.35
+PORTREVISION=	1
 DISTVERSIONPREFIX?=	wsrep_
 DISTVERSIONSUFFIX?=	-25.27
 CATEGORIES=	databases

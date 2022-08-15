@@ -1,5 +1,6 @@
 PORTNAME=	dakota
 DISTVERSION=	6.16.0
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	https://dakota.sandia.gov/sites/default/files/distributions/public/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-public-src-cli
@@ -57,6 +58,7 @@ CMAKE_ARGS=	-DDakota_VERSION_SRC:STRING=${DISTVERSION} -DDakota_GIT_REVL:STRING=
 		-DMUQ_STANMATH_DIR=${WRKSRC}/stanmath \
 		-DPython_EXECUTABLE=${PYTHON_CMD}
 
+CFLAGS+=	-DH5_USE_110_API=1
 FFLAGS+=	-fallow-argument-mismatch
 LDFLAGS+=	-lexecinfo
 

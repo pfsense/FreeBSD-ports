@@ -15,6 +15,7 @@ bin/victoria-metrics
 %%PORTDOCS%%%%DOCSDIR%%/README.md
 %%PORTDOCS%%%%DOCSDIR%%/Release-Guide.md
 %%PORTDOCS%%%%DOCSDIR%%/Single-server-VictoriaMetrics.md
+%%PORTDOCS%%%%DOCSDIR%%/Troubleshooting.md
 %%PORTDOCS%%%%DOCSDIR%%/_config.yml
 %%PORTDOCS%%%%DOCSDIR%%/_includes/extra/head.html
 %%PORTDOCS%%%%DOCSDIR%%/_includes/extra/script.js
@@ -96,5 +97,6 @@ bin/victoria-metrics
 %%PORTDOCS%%%%DOCSDIR%%/operator/security.MD
 %%PORTDOCS%%%%DOCSDIR%%/operator/vars.MD
 %%PORTDOCS%%%%DOCSDIR%%/operator/vmalertmanager-configuration.MD
+%%PORTDOCS%%%%DOCSDIR%%/sd_configs.md
 %%PORTDOCS%%%%DOCSDIR%%/url-examples.md
 @dir(%%VICTORIA_USER%%,%%VICTORIA_GROUP%%,750) %%VICTORIA_DATA%%

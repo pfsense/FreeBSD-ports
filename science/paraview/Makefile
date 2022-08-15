@@ -1,8 +1,6 @@
-# Created by: anholt@FreeBSD.org
-
 PORTNAME=	paraview
 DISTVERSION=	5.10.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.paraview.org/files/v${VERMAJORMINOR}/
 DISTNAME=	ParaView-v${PORTVERSION}

@@ -13644,7 +13644,6 @@ games/xtris||2020-01-10|Has expired: Broken for more than 3 months
 graphics/mapnik||2020-01-10|Has expired: Broken for more than 8 months
 lang/js_of_ocaml||2020-01-10|Has expired: Depends on broken and expiring devel/ocaml-deriving-ocsigen
 lang/rubinius||2020-01-10|Has expired: Broken for more than 7 months
-science/meep||2020-01-10|Has expired: Broken for more than 6 months
 sysutils/hfm||2020-01-10|Has expired: Broken for more than 4 months
 sysutils/u-boot-zedboard||2020-01-10|Has expired: Broken for more than 6 months
 sysutils/u-boot-zybo||2020-01-10|Has expired: Broken for more than 6 months
@@ -17414,7 +17413,6 @@ multimedia/livestreamer||2022-06-30|Has expired: Abandoned upstream, please cons
 net/kissd||2022-06-30|Has expired: Obsolete, target hardware was released 19 years ago
 www/gecko-mediaplayer||2022-06-30|Has expired: Uses incompatible plugin interface NPAPI
 multimedia/snappy||2022-06-30|Has expired: Deprecated upstream, please consider multimedia/mpv or multimedia/vlc
-audio/exaile||2022-06-30|Has expired: Requires py-bsddb3 which requires upstream EOLd db5
 multimedia/gnome-twitch||2022-06-30|Has expired: Unmaintained, please consider using www/yt-dlp or multimedia/streamlink
 multimedia/clive||2022-06-30|Has expired: Last release in 2012, please consider using www/yt-dlp or multimedia/streamlink
 multimedia/imagination||2022-06-30|Has expired: Obsolete, majority of DVD players made in the last 15+ years have been able to do image slideshows
@@ -17457,7 +17455,6 @@ audio/forked-daapd||2022-06-30|Has expired: Deprecated upstream, project is now 
 multimedia/tstools||2022-06-30|Has expired: Obsolete, please consider using multimedia/ffmpeg
 multimedia/sabbu||2022-06-30|Has expired: please consider using multimedia/aegisub
 multimedia/avinfo||2022-06-30|Has expired: Last release in 2008, please consider using multimedia/mediainfo or multimedia/ffmpeg instead
-audio/asterisk-espeak||2022-06-30|Has expired: Depends on deprecated audio/espeaak
 multimedia/mpgtx||2022-06-30|Has expired: Obsolete, please consider using multimedia/ffmpeg
 devel/psptoolchain||2022-06-30|Has expired: Security issues for multiple years
 devel/psptoolchain-binutils||2022-06-30|Has expired: Security issues for multiple years
@@ -17510,3 +17507,40 @@ devel/rubygem-webpacker-rails61-node16|devel/rubygem-webpacker-rails61|2022-07-1
 textproc/rubygem-autoprefixer-rails-node16|textproc/rubygem-autoprefixer-rails|2022-07-13|Remove obsoleted port. Use textproc/rubygem-autoprefixer-rails instead
 www/rubygem-rails61-node16|www/rubygem-rails61|2022-07-13|Remove obsoleted port. Use www/rubygem-rails61 instead
 www/rubygem-uglifier-node16|www/rubygem-uglifier|2022-07-13|Remove obsoleted port. Use www/rubygem-uglifier instead
+audio/espeak|audio/espeak-ng|2022-07-15|Switch to fork of (stale) original repository
+misc/ngraph||2022-07-15|Software is discontinued because its developer Nervana Systems is defunct
+math/hipmcl||2022-07-16|Discontinued: old versions aren't compatible with new combblas-2.0, latest versions require CUDA that is not available on FreeBSD
+security/base-audit|ports-mgmt/pkg|2022-07-17|Merged into ports-mgmt/pkg
+net/py-pyroute2.core|net/py-pyroute2|2022-07-18|Remove obsoleted port. Upstream moves back to single package layout (net/py-pyroute2)
+net/py-pyroute2.ethtool|net/py-pyroute2|2022-07-18|Remove obsoleted port. Upstream moves back to single package layout (net/py-pyroute2)
+net/py-pyroute2.ipset|net/py-pyroute2|2022-07-18|Remove obsoleted port. Upstream moves back to single package layout (net/py-pyroute2)
+net/py-pyroute2.ndb|net/py-pyroute2|2022-07-18|Remove obsoleted port. Upstream moves back to single package layout (net/py-pyroute2)
+net/py-pyroute2.nftables|net/py-pyroute2|2022-07-18|Remove obsoleted port. Upstream moves back to single package layout (net/py-pyroute2)
+net/py-pyroute2.nslink|net/py-pyroute2|2022-07-18|Remove obsoleted port. Upstream moves back to single package layout (net/py-pyroute2)
+math/intervaltree||2022-07-27|Has expired: Dependent ports now use GH_TUPLE
+security/gnomint||2022-07-27|Has expired: Abandonware, depending on gconf2
+japanese/im-ja||2022-07-27|Has expired: Abandonware, depending on gconf2
+sysutils/mgeupsd||2022-07-27|Has expired: Last release is 23 years old. It is not clear what devices are supported.
+x11-wm/lxmed||2022-07-27|Removed, depends on expired sysutils/gksu
+sysutils/gksu||2022-07-27|Has expired: Abandonware, depending on gconf2
+sysutils/libgksu||2022-07-27|Has expired: Abandonware, depending on gconf2
+multimedia/webvfx-qt5||2022-07-29|Abandoned upstream, multimedia/shotcut no longer supports/uses
+textproc/rubygem-rouge312|textproc/rubygem-rouge|2022-07-30|Remove obsoleted port. Use textproc/rubygem-rouge instead
+textproc/rubygem-rouge327|textproc/rubygem-rouge|2022-07-30|Remove obsoleted port. Use textproc/rubygem-rouge instead
+net-mgmt/py-netbox-plugin-extensions||2022-07-31|Has expired: No longer required for net-mgmt/netbox 3.2+
+deskutils/gnome-system-log||2022-08-01|Has expired: Did not survive gnome 3
+deskutils/gnome-documents||2022-08-01|Has expired: Archived upstream
+deskutils/gnome-search-tool||2022-08-01|Has expired: Did not survive gnome3
+security/nextcloud-twofactor_u2f|security/nextcloud-twofactor_webauthn|2022-08-01|Has expired: Upstream deprecated this port in favor of twofactor_webauthn. Check https://github.com/nextcloud/twofactor_webauthn#migration-from-two-factor-u2f for migration instructions
+editors/codelite||2022-08-01|Has expired: Has been broken for over a year.
+x11-servers/xephyr|x11-servers/xorg-server@xephyr|2022-08-02|Merged into flavorized version
+x11-servers/xorg-nestserver|x11-servers/xorg-server@xnest|2022-08-02|Merged into the flavorized version
+x11-servers/xorg-vfbserver|x11-servers/xorg-server@xvfb|2022-08-02|Merged into the flavorized version
+x11-servers/xorg-dmx||2022-08-02|Discontinued upstream
+lang/go117||2022-08-02|Upstream support ended
+games/fishfight|games/jumpy|2022-08-02|Project renamed
+mail/roundcube-mobilecube||2022-08-05|Removed, broken and no upstream updates
+mail/roundcube-mvision2||2022-08-05|Removed, broken and no upstream updates
+mail/roundcube-umich||2022-08-05|Removed, broken and no upstream updates
+games/exult|games/exult-devel|2022-08-06|Follow 1.9.x devel snapshots
+science/openkim|science/openkim-models|2022-08-07|Retire obsolete science/openkim, users should install science/openkim-models instead

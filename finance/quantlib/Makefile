@@ -1,8 +1,6 @@
-# Created by: Mikhail Teterin
-
 PORTNAME=	quantlib
 PORTVERSION=	1.20
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	finance math devel
 MASTER_SITES=	https://dl.bintray.com/${PORTNAME}/releases/
 DISTNAME=	QuantLib-${PORTVERSION}

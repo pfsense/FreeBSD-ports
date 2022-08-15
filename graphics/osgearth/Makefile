@@ -1,8 +1,6 @@
-# Created by: lbartoletti <lbartoletti@FreeBSD.org>
-
 PORTNAME=	osgearth
 PORTVERSION=	3.2
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	graphics geography
 

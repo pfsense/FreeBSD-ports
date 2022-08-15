@@ -1,8 +1,6 @@
-# Created by: Loren M. Lang
-
 PORTNAME=	dirvish
 PORTVERSION=	1.2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils archivers
 MASTER_SITES=	http://www.dirvish.org/
 

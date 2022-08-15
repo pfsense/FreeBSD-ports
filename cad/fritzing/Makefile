@@ -1,9 +1,7 @@
-# Created by: Sergio Lenzi <lenzi.sergio@gmail.com>
-
 PORTNAME=	fritzing
 PORTVERSION=	0.9.2
 DISTVERSIONSUFFIX=	b
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	cad
 
 MAINTAINER=	lenzi.sergio@gmail.com

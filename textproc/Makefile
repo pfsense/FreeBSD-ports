@@ -1212,6 +1212,7 @@
     SUBDIR += pear-YAML
     SUBDIR += pecl-xdiff2
     SUBDIR += pecl-yaml
+    SUBDIR += pecl-zephir_parser
     SUBDIR += peco
     SUBDIR += peg
     SUBDIR += perl2html
@@ -1296,6 +1297,7 @@
     SUBDIR += py-csvkit
     SUBDIR += py-custom_inherit
     SUBDIR += py-dbfread
+    SUBDIR += py-dict2xml
     SUBDIR += py-diff-match-patch
     SUBDIR += py-docrepr
     SUBDIR += py-docstring-parser
@@ -1545,6 +1547,7 @@
     SUBDIR += py-translationstring
     SUBDIR += py-transpopy
     SUBDIR += py-ttp
+    SUBDIR += py-ttp-templates
     SUBDIR += py-typogrify
     SUBDIR += py-ucl
     SUBDIR += py-ufal.udpipe
@@ -1769,8 +1772,7 @@
     SUBDIR += rubygem-rmmseg-cpp
     SUBDIR += rubygem-ronn
     SUBDIR += rubygem-rouge
-    SUBDIR += rubygem-rouge312
-    SUBDIR += rubygem-rouge327
+    SUBDIR += rubygem-rouge329
     SUBDIR += rubygem-rttool
     SUBDIR += rubygem-ruby-augeas
     SUBDIR += rubygem-ruby-xslt
@@ -1963,6 +1965,7 @@
     SUBDIR += urlview
     SUBDIR += utf8proc
     SUBDIR += uz-aspell
+    SUBDIR += vale
     SUBDIR += vbindiff
     SUBDIR += ve-hunspell
     SUBDIR += vgrep

@@ -1,5 +1,3 @@
-# Created by: Bernard Spil <brnrd@freebsd.org>
-
 PORTNAME=	calendar
 PORTVERSION=	3.4.2
 DISTVERSIONPREFIX=	v
@@ -17,6 +15,7 @@ LICENSE=	AGPLv3
 RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=22:www/nextcloud@${PHP_FLAVOR}
 
 USES=		cpe php:flavors
+IGNORE_WITH_PHP=	82
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes

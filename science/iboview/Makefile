@@ -1,8 +1,6 @@
-# Created by: Johannes Dieterich <jmd@FreeBSD.org>
-
 PORTNAME=	iboview
 PORTVERSION=	20150427
-PORTREVISION=	23
+PORTREVISION=	24
 CATEGORIES=	science
 MASTER_SITES=	http://www.iboview.org/bin/
 DISTNAME=	ibo-view.20150427

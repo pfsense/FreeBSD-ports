@@ -1,13 +1,13 @@
 PORTNAME=	cabal-install
 PORTVERSION=	3.6.2.0
+PORTREVISION=	1
 CATEGORIES=	devel haskell
+EXTRACT_ONLY=	${DISTNAME_DEFAULT}${_GITHUB_EXTRACT_SUFX}
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Command-line interface for Cabal and Hackage
 
 LICENSE=	BSD3CLAUSE
-
-BUILD_DEPENDS=	ghc:lang/ghc
 
 USES=		cabal:nodefault compiler:c11 python:build
 
@@ -38,9 +38,8 @@ USE_CABAL=	async-2.2.4 \
 		th-compat-0.1.3 \
 		zlib-0.6.2.3_1
 
-CABAL_BOOTSTRAP=	yes
-
-PLIST_FILES=	bin/cabal
+CABAL_EXECUTABLES=	cabal
+SKIP_CABAL_EXTRACT=	yes
 
 post-extract:
 	${MKDIR} ${WRKSRC}/_build/tarballs/

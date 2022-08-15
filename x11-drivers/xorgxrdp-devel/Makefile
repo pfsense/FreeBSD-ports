@@ -1,7 +1,8 @@
 PORTNAME=	xorgxrdp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.80.b20220601
-#PORTREVISION=	0
+# Be sure to bump PORTREVISION after xorg-server update to force rebuild
+PORTREVISION=	1
 CATEGORIES=	x11-drivers
 PKGNAMESUFFIX=	-devel
 DIST_SUBDIR=	xrdp
@@ -37,6 +38,7 @@ OPTIONS_DEFAULT=
 DRI3_DESC=	DRI3/Glamor OpenGL Support
 DRI3_CONFIGURE_ENABLE=	glamor
 DRI3_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+DRI3_CFLAGS=		-I${LOCALBASE}/include/libdrm
 DRI3_SUB_FILES=		pkg-message
 
 post-patch-DEBUG-on:

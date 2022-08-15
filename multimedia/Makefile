@@ -230,6 +230,7 @@
     SUBDIR += mlt6
     SUBDIR += mlt6-qt5
     SUBDIR += mlt7
+    SUBDIR += mlt7-glaxnimate
     SUBDIR += mlt7-qt5
     SUBDIR += motion
     SUBDIR += mp3cd
@@ -322,6 +323,7 @@
     SUBDIR += py-periscope
     SUBDIR += py-pretty_midi
     SUBDIR += py-pymediainfo
+    SUBDIR += py-pysubs2
     SUBDIR += py-soco
     SUBDIR += py-subliminal
     SUBDIR += py-tvnamer
@@ -417,7 +419,6 @@
     SUBDIR += w_scan2
     SUBDIR += webcamd
     SUBDIR += webcamoid
-    SUBDIR += webvfx-qt5
     SUBDIR += wf-recorder
     SUBDIR += win32-codecs
     SUBDIR += winff

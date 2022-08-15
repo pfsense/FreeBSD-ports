@@ -1,7 +1,5 @@
-# Created by: William Grzybowski <wg@FreeBSD.org>
-
 PORTNAME=	libzfs
-PORTVERSION=	1.1.2022060900
+PORTVERSION=	1.1.2022071900
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -9,11 +7,12 @@ MAINTAINER=	freqlabs@FreeBSD.org
 COMMENT=	Python libzfs bindings
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	truenas
 GH_PROJECT=	py-libzfs
-GH_TAGNAME=	d98f5fe
+GH_TAGNAME=	18fc26c
 
 HAS_CONFIGURE=	yes
 USES=		compiler:c11 python
@@ -25,7 +24,11 @@ MAKE_ENV=	freebsd_src=${SRC_BASE}
 .include <bsd.port.options.mk>
 
 .if !exists(${SRC_BASE}/sys/Makefile)
-IGNORE=	requires kernel source files in ${SRC_BASE}
+IGNORE=		requires kernel source files in ${SRC_BASE}
+.endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1301000
+BROKEN=		does not build on FreeBSD <13.1
 .endif
 
 .include <bsd.port.mk>

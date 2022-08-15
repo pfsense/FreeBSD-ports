@@ -25,6 +25,7 @@
     SUBDIR += cutecom
     SUBDIR += cwdaemon
     SUBDIR += cwstudio
+    SUBDIR += cyclonedds
     SUBDIR += dcf77pi
     SUBDIR += deforaos-phone
     SUBDIR += dfu-programmer
@@ -65,6 +66,7 @@
     SUBDIR += hidapi
     SUBDIR += hylafax
     SUBDIR += ibp
+    SUBDIR += iceoryx
     SUBDIR += inspectrum
     SUBDIR += iwmbt-firmware
     SUBDIR += java-simple-serial-connector

@@ -1,11 +1,12 @@
-# Created by: John MacFarlane <jgm@berkeley.edu>
-
 PORTNAME=	pandoc
 PORTVERSION=	2.18
+PORTREVISION=	1
 CATEGORIES=	textproc haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Conversion between markup formats
+
+BROKEN_aarch64=	Causes compiler to crash
 
 LICENSE=	GPLv2
 
@@ -15,7 +16,6 @@ OPTIONS_DEFINE=		EMBED_DATA TRYPANDOC
 
 EMBED_DATA_DESC=	Embed data files in binary for relocatable executable
 EMBED_DATA_CABAL_FLAGS=	embed_data_files
-EMBED_DATA_USE_CABAL=	file-embed-0.0.15.0
 
 TRYPANDOC_DESC=		Build trypandoc cgi executable
 TRYPANDOC_CABAL_FLAGS=	trypandoc
@@ -27,7 +27,7 @@ TRYPANDOC_USE_CABAL=	HUnit-1.6.2.0 auto-update-0.1.6 byteorder-1.0.4 \
 			time-manager-0.0.0 unix-compat-0.6 unix-time-0.4.7 \
 			unliftio-core-0.2.0.1_2 vault-0.3.1.5_1 void-0.7.3 \
 			wai-3.2.3 wai-extra-3.1.12.1 wai-logger-2.4.0 word8-0.1.3
-TRYPANDOC_EXECUTABLES=	trypandoc
+TRYPANDOC_CABAL_EXECUTABLES=	trypandoc
 
 USE_CABAL=	Glob-0.10.2_3 \
 		HsYAML-0.2.1.1 \
@@ -177,10 +177,18 @@ USE_CABAL=	Glob-0.10.2_3 \
 		zip-archive-0.4.2.1 \
 		zlib-0.6.3.0
 
-CABAL_PROJECT=	remove
-EXECUTABLES=	pandoc
+CABAL_PROJECT=		remove
+CABAL_EXECUTABLES=	pandoc
+CABAL_WRAPPER_SCRIPTS=	${CABAL_EXECUTABLES}
 
 OPTIONS_SUB=	yes
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MEMBED_DATA}
+# No need to use wrapper scripts when all data is compiled into an executable
+.undef CABAL_WRAPPER_SCRIPTS
+.endif
 
 .include <bsd.port.pre.mk>
 

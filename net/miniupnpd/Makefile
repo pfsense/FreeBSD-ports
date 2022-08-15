@@ -1,5 +1,3 @@
-# Created by: Daniel O'Connor <darius@dons.net.au>
-
 PORTNAME=	miniupnpd
 DISTVERSION=	2.2.1
 PORTREVISION=	1

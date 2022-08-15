@@ -1,7 +1,5 @@
-# Created by: Cezary Morga <cm@therek.net>
-
 PORTNAME=	Devel-CheckOS
-PORTVERSION=	1.93
+PORTVERSION=	1.94
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

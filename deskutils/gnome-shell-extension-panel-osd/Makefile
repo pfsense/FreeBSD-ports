@@ -1,5 +1,3 @@
-# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-
 PORTNAME=	gnome-shell-extension-panel-osd
 PORTVERSION=	0.0.0.20171023
 PORTREVISION=	1
@@ -8,6 +6,8 @@ DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	OSD extension for the GNOME shell
+
+BROKEN=		does not fetch
 
 BUILD_DEPENDS=	gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas
 RUN_DEPENDS=	gnome-shell>=0:x11/gnome-shell \

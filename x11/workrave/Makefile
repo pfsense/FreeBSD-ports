@@ -1,8 +1,6 @@
-# Created by: Koop Mast <einekoai@chello.nl>
-
 PORTNAME=	workrave
 PORTVERSION=	1.10.44
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/rcaelers/workrave/releases/download/v${PORTVERSION:S/./_/g}/
 

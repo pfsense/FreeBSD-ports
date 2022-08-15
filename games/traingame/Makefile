@@ -1,8 +1,6 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-
 PORTNAME=	traingame
 PORTVERSION=	0.3
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org

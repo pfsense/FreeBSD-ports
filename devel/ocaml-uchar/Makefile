@@ -1,7 +1,6 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-
 PORTNAME=	uchar
 PORTVERSION=	0.0.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-

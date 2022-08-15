@@ -1,7 +1,6 @@
-# Created by: Rainer Hurling <rhurlin@gwdg.de>
-
 PORTNAME=	saga
-PORTVERSION=	8.2.3
+PORTVERSION=	8.3.0
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]\.[[:digit:]]*$//}/SAGA%20-%20${PORTVERSION}
 
@@ -10,6 +9,10 @@ COMMENT=	System for Automated Geoscientific Analyses
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 BUILD_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		swig:devel/swig

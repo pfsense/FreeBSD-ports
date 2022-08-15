@@ -1,7 +1,6 @@
-# Created by: Stephen Hurd <shurd@FreeBSD.org>
-
 PORTNAME=	cqrlog
 PORTVERSION=	2.5.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	comms hamradio
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}

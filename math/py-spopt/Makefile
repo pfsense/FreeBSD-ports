@@ -1,5 +1,3 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	spopt
 PORTVERSION=	0.4.1
 CATEGORIES=	math python
@@ -22,7 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}geopandas>=0.7:graphics/py-geopandas@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}scipy>=0.11:science/py-scipy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}spaghetti>=0:science/py-spaghetti@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python:3.8+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

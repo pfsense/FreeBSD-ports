@@ -1,7 +1,5 @@
-# Created by: Olivier Duchateau
-
 PORTNAME=	urllib3
-PORTVERSION=	1.26.10
+PORTVERSION=	1.26.11
 PORTEPOCH=	1
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP \

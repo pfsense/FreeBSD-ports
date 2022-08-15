@@ -1,9 +1,7 @@
-# Created by: Mohammad S. Babaei <info@babaei.net>
-
 PORTNAME=	jucipp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.7.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	editors
 
 MAINTAINER=	info@babaei.net

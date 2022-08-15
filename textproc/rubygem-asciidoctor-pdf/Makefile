@@ -1,7 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	asciidoctor-pdf
-PORTVERSION=	2.1.5
+PORTVERSION=	2.2.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

@@ -460,6 +460,7 @@
     SUBDIR += oneshot
     SUBDIR += onionbalance
     SUBDIR += onionshare
+    SUBDIR += onionshare-cli
     SUBDIR += onlyoffice-documentserver
     SUBDIR += opencart
     SUBDIR += openresty
@@ -1535,6 +1536,7 @@
     SUBDIR += py-django-registration-redux
     SUBDIR += py-django-reversion
     SUBDIR += py-django-reversion-compare
+    SUBDIR += py-django-rich
     SUBDIR += py-django-sekizai
     SUBDIR += py-django-simple-captcha
     SUBDIR += py-django-simple-history
@@ -1558,6 +1560,7 @@
     SUBDIR += py-django-widget-tweaks
     SUBDIR += py-django32
     SUBDIR += py-django40
+    SUBDIR += py-django41
     SUBDIR += py-django_compressor
     SUBDIR += py-djangocms-admin-style
     SUBDIR += py-djangoql
@@ -1734,6 +1737,7 @@
     SUBDIR += py-secure-cookie
     SUBDIR += py-selector
     SUBDIR += py-selenium
+    SUBDIR += py-semiphemeral
     SUBDIR += py-sentinelhub
     SUBDIR += py-slimit
     SUBDIR += py-slumber

@@ -1,7 +1,6 @@
-# Created by: Yuri Victorovich <yuri@FreeBSD.org>
-
 PORTNAME=	SCIP
 DISTVERSION=	8.0.0
+PORTREVISION=	1
 CATEGORIES=	math science
 MASTER_SITES=	https://www.scipopt.org/download/release/
 DISTNAME=	${PORTNAME:tl}-${DISTVERSION}

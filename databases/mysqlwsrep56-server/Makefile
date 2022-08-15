@@ -1,10 +1,8 @@
-# Created by: Philip Stoev <philip.stoev@galeracluster.com>
-
 PORTNAME=	mysqlwsrep
 PORTVERSION?=	5.6.51
 DISTVERSIONPREFIX?=	wsrep_
 DISTVERSIONSUFFIX?=	-25.33
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	databases
 PKGNAMESUFFIX=	56-server
 

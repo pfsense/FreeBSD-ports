@@ -10,6 +10,10 @@ COMMENT=	Maximum independent sets and vertex covers of large sparse graphs
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
+
 USES=		cmake
 USE_LDCONFIG=	yes
 

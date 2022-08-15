@@ -1,5 +1,5 @@
 PORTNAME=	cloudflared
-DISTVERSION=	2022.6.2
+DISTVERSION=	2022.7.1
 PORTREVISION=	1
 CATEGORIES=	net www
 
@@ -11,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
-USES=		cpe go:modules
+USES=		cpe go:1.18,modules
 USE_RC_SUBR=	${PORTNAME}
 USE_GITHUB=	yes
 GH_ACCOUNT=	cloudflare

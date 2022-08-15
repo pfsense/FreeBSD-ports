@@ -1,9 +1,7 @@
-# Created by: Loïc BARTOLETTI <lbartoletti@FreeBSD.org>
-
 PORTNAME=	sfcgal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases math graphics
 
 MAINTAINER=	lbartoletti@FreeBSD.org

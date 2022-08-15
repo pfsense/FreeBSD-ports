@@ -1,14 +1,16 @@
 PORTNAME=	xwayland
 DISTVERSIONPREFIX=	xorg-server-
-DISTVERSION=	21.0.99.1-256
-DISTVERSIONSUFFIX=	-g6907b6ea2
+DISTVERSION=	21.0.99.1-265
+DISTVERSIONSUFFIX=	-g2700bc604
+PORTREVISION=	1
 CATEGORIES=	x11-servers
 PKGNAMESUFFIX=	-devel
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	4d0b5797ea05.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	5cf225f23be4.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	ede2ad4556df.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	38be22990fbf.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/960
+PATCHFILES+=	27d3b00b1ffd.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	9e1ea1442d7f.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	74813b4c09ca.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	X11 server as Wayland client (development snapshot)
@@ -34,12 +36,14 @@ USE_GL=		gbm gl
 USE_XORG=	pixman xau xdmcp xfont2 xkbfile xshmfence xtrans
 GH_ACCOUNT=	freedesktop
 GH_PROJECT=	xorg-xserver
+GH_TUPLE=	freedesktop:xorg-xorgproto:xorgproto-2022.2:xorgproto/subprojects/xorgproto
 MESON_ARGS=	-D${PORTNAME}=true \
 		-Dxorg=false \
 		-Dxnest=false \
 		-Dxvfb=false \
 		-Dudev=false \
 		-Dudev_kms=false \
+		-Dxcsecurity=true \
 		-Ddefault_font_path="${DEFAULT_FONTPATH_LIST:ts,}"
 PLIST_FILES=	bin/Xwayland \
 		"@comment lib/xorg/protocol.txt" \
@@ -70,5 +74,14 @@ CSD_MESON_TRUE=		libdecor
 NVIDIA_DESC=		EGLStream support for glamor on Xwayland
 NVIDIA_BUILD_DEPENDS=	egl-wayland>0:graphics/egl-wayland
 NVIDIA_MESON_TRUE=	xwayland_eglstream
+
+.ifdef GH_TUPLE
+post-install:
+# XXX USES=meson invokes ninja directly, so doesn't support --skip-subprojects
+	@${RM} -r ${STAGEDIR}${PREFIX}/include/GL
+	@${RM} -r ${STAGEDIR}${PREFIX}/include/X11
+	@${RM} -r ${STAGEDIR}${PREFIX}/share/doc/xorgproto
+	@${RM} -r ${STAGEDIR}${PREFIX}/share/pkgconfig
+.endif
 
 .include <bsd.port.mk>

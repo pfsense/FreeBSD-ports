@@ -1,5 +1,3 @@
-# Created by: Helmut Ritter <freebsd-ports@charlieroot.de>
-
 PORTNAME=	typo3
 PORTVERSION=	${PORT_V_MAJOR}.${PORT_V_MINOR}.${PORT_V_PATCH}
 CATEGORIES=	www
@@ -31,7 +29,7 @@ SUB_LIST+=	PREFIX=${PREFIX} \
 
 PORT_V_MAJOR=	11
 PORT_V_MINOR=	5
-PORT_V_PATCH=	12
+PORT_V_PATCH=	13
 
 TYPO3WWW=	www
 TYPO3SRC=	${PORTNAME}_src-${PORTVERSION}

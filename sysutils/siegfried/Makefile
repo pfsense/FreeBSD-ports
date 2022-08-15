@@ -1,9 +1,7 @@
-# Created by: Steffen Fritz <steffen@fritz.wtf>
-
 PORTNAME=	siegfried
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.3
-PORTREVISION=	2
+DISTVERSION=	1.9.4
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -15,7 +13,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 USES=		go:modules
 
 GO_MODULE=	github.com/richardlehane/siegfried
-
 GO_TARGET=	./cmd/sf
 
 PLIST_FILES=	bin/sf

@@ -1,8 +1,6 @@
-# Created by: Chris Piazza <cpiazza@FreeBSD.org>
-
 PORTNAME=	ezbounce
 PORTVERSION=	1.99.15
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	irc
 MASTER_SITES=	https://BSDforge.com/projects/source/irc/ezbounce/
 

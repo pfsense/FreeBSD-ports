@@ -1,7 +1,6 @@
-# Created by: Thierry Thomas <thierry@FreeBSD.org>
-
 PORTNAME=	kicad
-PORTVERSION=	6.0.6
+PORTVERSION=	6.0.7
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	cad
 MASTER_SITES=	https://gitlab.com/${PORTNAME}/code/${PORTNAME}/-/archive/${DISTVERSION}/

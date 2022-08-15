@@ -1,7 +1,5 @@
-# Created by: Andreas Kohn
-
 PORTNAME=	mercurial
-PORTVERSION=	6.2
+PORTVERSION=	6.2.1
 CATEGORIES=	devel python
 MASTER_SITES=	https://www.mercurial-scm.org/release/
 
