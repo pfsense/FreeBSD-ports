@@ -1,0 +1,86 @@
+commit a3c1589086ea67d25a28ec14ab95d7fd9ab25fa2
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Aug 17 12:09:36 2022 -0400
+
+    CRL lifetime fixes to avoid rollover. Fixes #13424
+
+diff --git a/src/etc/inc/certs.inc b/src/etc/inc/certs.inc
+index c73a964f3a..16a011d21e 100644
+--- a/src/etc/inc/certs.inc
++++ b/src/etc/inc/certs.inc
+@@ -54,6 +54,9 @@ $cert_altname_types = array(
+ global $cert_max_lifetime;
+ $cert_max_lifetime = 12000;
+ 
++global $crl_max_lifetime;
++$crl_max_lifetime = 9999;
++
+ function & lookup_ca($refid) {
+ 	global $config;
+ 
+@@ -978,9 +981,31 @@ function cert_get_max_lifetime() {
+ 	return min($max, $cert_max_lifetime);
+ }
+ 
++/* Detect a rollover at 2050 with UTCTime
++ * See: https://redmine.pfsense.org/issues/9098 */
++function crl_get_max_lifetime() {
++	global $crl_max_lifetime;
++	$max = $crl_max_lifetime;
++
++	$now = new DateTime("now");
++	$utctime_before_roll = DateTime::createFromFormat('Ymd', '20491231');
++	if ($date !== false) {
++		$interval = $now->diff($utctime_before_roll);
++		$max_days = abs($interval->days);
++		/* Reduce the max well below the rollover time */
++		if ($max_days > 1000) {
++			$max_days -= 1000;
++		}
++		return min($max_days, cert_get_max_lifetime());
++	}
++
++	/* Cannot use date functions, so use a lower default max. */
++	return min(7000, cert_get_max_lifetime());
++}
++
+ function crl_create(& $crl, $caref, $name, $serial = 0, $lifetime = 3650) {
+ 	global $config;
+-	$max_lifetime = cert_get_max_lifetime();
++	$max_lifetime = crl_get_max_lifetime();
+ 	$ca =& lookup_ca($caref);
+ 	if (!$ca) {
+ 		return false;
+@@ -1017,7 +1042,7 @@ function crl_update(& $crl) {
+ 	require_once('X509_CRL.php');
+ 
+ 	global $config;
+-	$max_lifetime = cert_get_max_lifetime();
++	$max_lifetime = crl_get_max_lifetime();
+ 	$ca =& lookup_ca($crl['caref']);
+ 	if (!$ca) {
+ 		return false;
+diff --git a/src/usr/local/www/system_crlmanager.php b/src/usr/local/www/system_crlmanager.php
+index d471209d3e..4b3ed0a6f3 100644
+--- a/src/usr/local/www/system_crlmanager.php
++++ b/src/usr/local/www/system_crlmanager.php
+@@ -34,8 +34,8 @@ require_once("openvpn.inc");
+ require_once("pfsense-utils.inc");
+ require_once("vpn.inc");
+ 
+-$max_lifetime = cert_get_max_lifetime();
+-$default_lifetime = min(9999, $max_lifetime);
++$max_lifetime = crl_get_max_lifetime();
++$default_lifetime = min(730, $max_lifetime);
+ 
+ global $openssl_crl_status;
+ 
+@@ -255,7 +255,7 @@ if ($_POST['save']) {
+ 		}
+ 
+ 		if ($pconfig['method'] == "internal") {
+-			$crl['serial'] = empty($pconfig['serial']) ? 9999 : $pconfig['serial'];
++			$crl['serial'] = empty($pconfig['serial']) ? '0' : $pconfig['serial'];
+ 			$crl['lifetime'] = empty($pconfig['lifetime']) ? $default_lifetime : $pconfig['lifetime'];
+ 			$crl['cert'] = array();
+ 		}

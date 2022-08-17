@@ -26,6 +26,18 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => 'a3c1589086ea67d25a28ec14ab95d7fd9ab25fa2',
+  'versions' => ['2.6.0', '22.01', '22.05'],
+  'descr' => 'Fix for CRL expiration lifetime default and maximum values',
+  'links' => [
+      [ 'text' => 'Redmine #13424',
+         'url' => 'https://redmine.pfsense.org/issues/13424', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '8ddf2b5a999772754080825f07acf9b6326f1f04',
   'versions' => ['2.6.0', '22.01'],
   'descr' => 'Add user preference to choose password hash algorithm',
