@@ -1,7 +1,7 @@
 Avahi is a system which facilitates host and service discovery in local
 networks via mDNS (Multicast DNS) and DNS-SD (DNS Service Discovery).
 This package allows mDNS/DNS-SD protocols to work across multiple LAN
-segments. mDNS/DNS-SD is known in Apple circles as "Bounjour" and is
+segments. mDNS/DNS-SD is known in Apple circles as "Bonjour" and is
 part of the Zeroconf suite of protocols.
 
 WWW: https://forum.netgate.com/topic/134339
