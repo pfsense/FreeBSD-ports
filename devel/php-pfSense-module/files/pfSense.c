@@ -3804,7 +3804,7 @@ PHP_MINFO_FUNCTION(pfsense)
 /* {{{ pfsense_module_entry */
 zend_module_entry pfsense_module_entry = {
 	STANDARD_MODULE_HEADER,
-	"pfsense",						/* Extension name */
+	"pfSense",						/* Extension name */
 	ext_functions,					/* zend_function_entry */
 	PHP_MINIT(pfsense),				/* PHP_MINIT - Module initialization */
 	PHP_MSHUTDOWN(pfsense),			/* PHP_MSHUTDOWN - Module shutdown */
