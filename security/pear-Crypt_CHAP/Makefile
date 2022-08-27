@@ -1,5 +1,5 @@
 PORTNAME=	Crypt_CHAP
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.0_1
 CATEGORIES=	security www pear
 
 MAINTAINER=	sunpoet@FreeBSD.org
