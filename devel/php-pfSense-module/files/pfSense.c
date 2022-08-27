@@ -2966,7 +2966,7 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 		}
 		buf[i + i] = '\0';
 		add_assoc_string(return_value, "pfchecksum", buf);
-		printf("Checksum: 0x%s\n\n", buf);
+		/* printf("Checksum: 0x%s\n\n", buf); */
 
 		switch(status.debug) {
 		case PF_DEBUG_NONE:
