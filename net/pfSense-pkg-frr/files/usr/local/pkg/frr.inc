@@ -109,14 +109,12 @@ function frr_get_interfaces($includedefault = true, $includevips = true, $includ
 	}
 
 	/* Create a list of OpenVPN server and client interfaces. */
-	foreach (array('server', 'client') as $mode) {
-		if (is_array($config['openvpn']["openvpn-{$mode}"])) {
-			foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
-				if (!isset($setting['disable'])) {
-					$tmp["name"] = $nameprefix . gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
-					$tmp["value"] = $valueprefix . 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
-					$ifs[] = $tmp;
-				}
+	foreach (["server", "client"] as $mode) {
+		foreach (config_get_path("openvpn/openvpn-{$mode}", []) as $setting) {
+			if (!isset($setting['disable'])) {
+				$tmp["name"] = $nameprefix . gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
+				$tmp["value"] = $valueprefix . 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
+				$ifs[] = $tmp;
 			}
 		}
 	}
@@ -141,13 +139,14 @@ function frr_get_list_values($arr) {
 function frr_plugin_carp($pluginparams) {
 	global $config;
 	/* If frr is not configured, then stop */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	} else {
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
+	if (empty($frr_conf)) {
 		return null;
 	}
+
 	/* If there is no properly configured CARP status check IP, then stop */
-	if (!isset($frr_conf['carpstatusvid']) || $frr_conf['carpstatusvid'] == "none") {
+	if (!array_key_exists('carpstatusvid', $frr_conf) ||
+	    $frr_conf['carpstatusvid'] == "none") {
 		return null;
 	}
 	/* Locate the VIP and match it against the configured check address */
@@ -171,11 +170,9 @@ function frr_plugin_carp($pluginparams) {
  * interface in FRR status so routing will work again.
  */
 function frr_ipsec_reload() {
-	global $config;
-	init_config_arr(array('installedpackages', 'frr', 'config', 0));
-	if (!empty($config['installedpackages']['frr']['config'][0]['ignoreipsecrestart']) ||
-		empty($config['installedpackages']['frr']['config'][0]['enable']) || !is_process_running('zebra')) {
-		return;
+	if (!empty(config_get_path('installedpackages/frr/config/0/ignoreipsecrestart')) ||
+		empty(config_get_path('installedpackages/frr/config/0/enable')) || !is_process_running('zebra')) {
+		return null;
 	}
 
 	require_once('interfaces.inc');
@@ -277,11 +274,10 @@ function frr_cidr_to_wildcard_bits($cidr) {
 
 /* Create the rc.d service control script for FRR */
 function frr_generate_config_rcfile() {
-	global $config, $frr_config_base, $frr_daemons;
+	global $frr_config_base, $frr_daemons;
 	/* If frr is not configured, then stop */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	} else {
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
+	if (empty($frr_conf)) {
 		return null;
 	}
 
@@ -297,9 +293,9 @@ function frr_generate_config_rcfile() {
 
 	/* Get FRR daemons enabled */
 	$frr_daemons_enabled = array();
-	if (!empty($config['installedpackages']['frr']['config'][0]['enable'])) {
+	if (!empty(config_get_path('installedpackages/frr/config/0/enable'))) {
 		foreach ($config_key_daemons as $config_key => $daemon) {
-			if (!empty($config['installedpackages'][$config_key]['config'][0]['enable'])) {
+			if (!empty(config_get_path("installedpackages/{$config_key}/config/0/enable"))) {
 				$frr_daemons_enabled = array_merge($frr_daemons_enabled, $daemon);
 			}
 		}
@@ -312,13 +308,12 @@ function frr_generate_config_rcfile() {
 	/* SNMP */
 	foreach ($config_key_daemons as $config_key => $daemon) {
 		$frr_daemon_modules[$daemon[0]] = '';
-
-		if ($config['installedpackages'][$config_key]['config'][0]['enablesnmpagentx']) {
+		if (config_get_path("installedpackages/{$config_key}/config/0/enablesnmpagentx")) {
 			$frr_daemon_modules[$daemon[0]] .= ' -M snmp';
 		}
 	}
 	/* BGP RPKI */
-	if ($config['installedpackages']['frrbgp']['config'][0]['enablerpki']) {
+	if (config_get_path("installedpackages/{$config_key}/config/0/enablerpki")) {
 		$frr_daemon_modules['bgpd'] .= ' -M rpki';
 	}
 
@@ -442,15 +437,14 @@ EOF;
 function frr_service_action($restart_needed) {
 	global $config;
 	/* If frr is not configured, then stop */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	} else {
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
+	if (empty($frr_conf)) {
 		return null;
 	}
 
 	if ($frr_conf['enable']) {
 		/* Start/Restart FRR, if a CARP VIP is set, check its status and appropriately. */
-		if (isset($frr_conf['carpstatusvid']) && $frr_conf['carpstatusvid'] != "none") {
+		if (array_key_exists('carpstatusvid', $frr_conf) && $frr_conf['carpstatusvid'] != "none") {
 			$status = get_carp_interface_status($frr_conf['carpstatusvid']);
 			switch (strtoupper($status)) {
 				// Stop the service if the VIP is in BACKUP or INIT state.
@@ -520,8 +514,7 @@ function frr_setkey($restart_needed) {
 	global $config, $frr_config_base;
 	$peers = array();
 
-	if (is_array($config['installedpackages']['frr']['config']) &&
-	    empty($config['installedpackages']['frr']['config'][0]['enable'])) {
+	if (empty(config_get_path('installedpackages/frr/config/0/enable'))) {
 		if (file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
 			mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
 		}
@@ -531,16 +524,14 @@ function frr_setkey($restart_needed) {
 	}
 
 	/* Build md5 password configuration files based on raw tab list */
-	if (is_array($config['installedpackages']['frrglobalraw']['config'][0]['row'])) {
-		foreach ($config['installedpackages']['frrglobalraw']['config'][0]['row'] as $frrtcpsigpw) {
-			if (($frrtcpsigpw['tcpsigsrc'] != "") && ($frrtcpsigpw['tcpsigdst'] != "") && ($frrtcpsigpw['tcpsigpw'])!= "") {
-				$tmp = array();
-				$tmp['src'] = $frrtcpsigpw['tcpsigsrc'];
-				$tmp['dst'] = $frrtcpsigpw['tcpsigdst'];
-				$tmp['pw'] = $frrtcpsigpw['tcpsigpw'];
-				$tmp['bidir'] = !empty($frrtcpsigpw['tcpsigbidir']);
-				$peers[] = $tmp;
-			}
+	foreach (config_get_path('installedpackages/frrglobalraw/config/0/row', []) as $frrtcpsigpw) {
+		if (($frrtcpsigpw['tcpsigsrc'] != "") && ($frrtcpsigpw['tcpsigdst'] != "") && ($frrtcpsigpw['tcpsigpw'])!= "") {
+			$tmp = array();
+			$tmp['src'] = $frrtcpsigpw['tcpsigsrc'];
+			$tmp['dst'] = $frrtcpsigpw['tcpsigdst'];
+			$tmp['pw'] = $frrtcpsigpw['tcpsigpw'];
+			$tmp['bidir'] = !empty($frrtcpsigpw['tcpsigbidir']);
+			$peers[] = $tmp;
 		}
 	}
 
@@ -644,15 +635,11 @@ function frr_setkey($restart_needed) {
 
 /* Write a message to the syslog conditionally on package log level setting*/
 function frr_package_log($string, $priority = LOG_INFO) {
-	global $config;
-
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	}
+	$pkgloglevel = config_get_path('installedpackages/frr/config/0/pkgloglevel');
 
 	/* Check if extended package logging is enabled */
-	if (is_null($frr_conf['pkgloglevel']) || ($frr_conf['pkgloglevel'] < 1)) {
+	if (is_null($pkgloglevel) || ($pkgloglevel < 1)) {
 		// Extended logging is disabled
 		return;
 	}
@@ -719,9 +706,7 @@ function frr_generate_config_vtysh() {
 	unlink_if_exists("{$frr_config_base}/vtysh.conf");
 
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	}
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 
 	/* If there is no raw configuration and no GUI configuration, stop. */
 	if (empty($frr_conf)) {
@@ -776,19 +761,16 @@ function frr_generate_config_integrated() {
 	unlink_if_exists("{$frr_config_base}/frr.conf");
 
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	}
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 
 	if (empty($frr_conf['enable'])) {
 		frr_package_log("FRR: FRR master switch is off.");
 		return;
 	}
 
-	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['frr']) &&
-		!empty($config['installedpackages']['frrglobalraw']['config'][0]['frr'])) {
+	if (!empty(config_get_path('installedpackages/frrglobalraw/config/0/frr'))) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$integratedconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['frr']));
+		$integratedconffile = str_replace("\r", "", base64_decode(config_get_path('installedpackages/frrglobalraw/config/0/frr')));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
@@ -844,7 +826,7 @@ function frr_generate_config_integrated() {
 		frr_flatten_config_interfaces();
 		$conf_keys = array('staticd', 'interfaces', 'bgpd', 'rpki', 'ospfd', 'ospf6d', 'ripd', 'zebra', 'bfdd');
 		foreach ($conf_keys as $key) {
-			if (empty($frr_integrated_config[$key])) {
+			if (!array_key_exists($key, $frr_integrated_config) || empty($frr_integrated_config[$key])) {
 				continue;
 			}
 			$integratedconffile .= $frr_integrated_config[$key];
@@ -867,15 +849,15 @@ function frr_generate_config_integrated() {
 /* Upgrade the FRR configuration to the latest format */
 function frr_config_sort_route_map() {
 	global $config;
-
 	update_status("Sorting route-map configuration items");
 
-	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
-	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
-
-	$need_write = frr_array_name_seq_sort($frr_routemap_conf);
-
-	if ($need_write) {
+	$frr_routemap_conf = config_get_path('installedpackages/frrglobalroutemaps/config', []);
+	if (empty($frr_routemap_conf)) {
+		return null;
+	}
+	$sorted = frr_array_name_seq_sort($frr_routemap_conf);
+	if (!empty($sorted)) {
+		config_set_path('installedpackages/frrglobalroutemaps/config', $sorted);
 		update_status("Saving sorted route-map configuration items");
 		write_config('FRR: Sorted route-map configuration items');
 		update_status("Done.\n");
@@ -888,43 +870,31 @@ function frr_package_config_upgrade() {
 	update_status("Upgrading FRR Settings ... ");
 	$need_write = false;
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	} else {
-		/* If FRR is not configured, stop. */
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
+	if (empty($frr_conf)) {
 		return null;
 	}
 
 	/* Populate FRR OSPF Settings */
-	init_config_arr(array('installedpackages', 'frrospfd', 'config', '0'));
-	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
-	init_config_arr(array('installedpackages', 'frrospf6d', 'config', '0'));
-	$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
-	init_config_arr(array('installedpackages', 'frrglobalacls', 'config'));
-	$frr_acls_conf = &$config['installedpackages']['frrglobalacls']['config'];
-	init_config_arr(array('installedpackages', 'frrglobalprefixes', 'config'));
-	$frr_prefixes_conf = &$config['installedpackages']['frrglobalprefixes']['config'];
-	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
-	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
-	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
-	$frr_ospfinterfaces_conf = &$config['installedpackages']['frrospfdinterfaces']['config'];
-	init_config_arr(array('installedpackages', 'frrospfdareas', 'config'));
-	$frr_areas_conf = &$config['installedpackages']['frrospfdareas']['config'];
-	init_config_arr(array('installedpackages', 'frrbgp', 'config', '0'));
-	$bgp_conf = &$config['installedpackages']['frrbgp']['config'][0];
+	$ospfd_conf              = config_get_path('installedpackages/frrospfd/config/0', []);
+	$ospf6d_conf             = config_get_path('installedpackages/frrospf6d/config/0', []);
+	$frr_acls_conf           = config_get_path('installedpackages/frrglobalacls/config', []);
+	$frr_prefixes_conf       = config_get_path('installedpackages/frrglobalprefixes/config', []);
+	$frr_routemap_conf       = config_get_path('installedpackages/frrglobalroutemaps/config', []);
+	$frr_ospfinterfaces_conf = config_get_path('installedpackages/frrospfdinterfaces/config', []);
+	$frr_areas_conf          = config_get_path('installedpackages/frrospfdareas/config', []);
+	$bgp_conf                = config_get_path('installedpackages/frrbgp/config/0', []);
 
 	/* Iterate old network list looking for items marked to not redistribute */
 	$dnrlist = array();
-	if (is_array($ospfd_conf['row'])) {
-		foreach ($ospfd_conf['row'] as $idx => &$redistr) {
-			if (empty($redistr['routevalue']) ||
-				($redistr['redistribute']) != 'ON') {
-				continue;
-			}
-			$dnrlist[] = $redistr['routevalue'];
-			unset($ospfd_conf['row'][$idx]);
-			$need_write = true;
+	foreach (config_get_path('installedpackages/frrospfd/config/0/row', []) as $idx => &$redistr) {
+		if (empty($redistr['routevalue']) ||
+			($redistr['redistribute']) != 'ON') {
+			continue;
 		}
+		$dnrlist[] = $redistr['routevalue'];
+		unset($ospfd_conf['row'][$idx]);
+		$need_write = true;
 	}
 
 	/* Only import these items if there are values to process.
@@ -972,23 +942,28 @@ function frr_package_config_upgrade() {
 		);
 
 		/* Set redist route-maps to DNR and distribute lists to dnr-list */
-		if ($ospfd_conf['redistributeconnectedsubnets']) {
+		if (array_key_exists('redistributeconnectedsubnets', $ospfd_conf) &&
+		    $ospfd_conf['redistributeconnectedsubnets']) {
 			$ospfd_conf['redistributeconnectedsubnets_routemap'] = "DNR";
 			$ospfd_conf['redistributeconnectedsubnets_distlist'] = "dnr-list";
 		}
-		if ($ospfd_conf['redistributekernel']) {
+		if (array_key_exists('redistributekernel', $ospfd_conf) &&
+		    $ospfd_conf['redistributekernel']) {
 			$ospfd_conf['redistributekernel_routemap'] = "DNR";
 			$ospfd_conf['redistributekernel_distlist'] = "dnr-list";
 		}
-		if ($ospfd_conf['redistributebgp']) {
+		if (array_key_exists('redistributebgp', $ospfd_conf) &&
+		    $ospfd_conf['redistributebgp']) {
 			$ospfd_conf['redistributebgp_routemap'] = "DNR";
 			$ospfd_conf['redistributebgp_distlist'] = "dnr-list";
 		}
-		if ($ospfd_conf['redistributestatic']) {
+		if (array_key_exists('redistributestatic', $ospfd_conf) &&
+		    $ospfd_conf['redistributestatic']) {
 			$ospfd_conf['redistributestatic_routemap'] = "DNR";
 			$ospfd_conf['redistributestatic_distlist'] = "dnr-list";
 		}
-		if ($ospfd_conf['redistributedefaultroute']) {
+		if (array_key_exists('redistributedefaultroute', $ospfd_conf) &&
+		    $ospfd_conf['redistributedefaultroute']) {
 			$ospfd_conf['redistributedefaultroute_routemap'] = "DNR";
 		}
 	}
@@ -1001,7 +976,8 @@ function frr_package_config_upgrade() {
 			isset($conf['authtype'])) {
 			continue;
 		}
-		if ($conf['md5password']) {
+		if (array_key_exists('md5password', $conf) &&
+		    $conf['md5password']) {
 			$conf['authtype'] = "digest";
 			unset($conf['md5password']);
 		} else {
@@ -1011,44 +987,63 @@ function frr_package_config_upgrade() {
 	}
 
 	/* updatefib -> areatype */
-	if (isset($ospfd_conf['updatefib'])) {
+	if (array_key_exists('updatefib', $ospfd_conf)) {
 		$ospfd_conf['areatype'] = $ospfd_conf['updatefib'];
 		unset($ospfd_conf['updatefib']);
 		$need_write = true;
 	}
 
 	/* area->defaultarea */
-	if ((strlen($ospfd_conf['defaultarea']) == 0) && !empty($ospfd_conf['area'])) {
+	if (array_key_exists('defaultarea', $ospfd_conf) &&
+	    array_key_exists('area', $ospfd_conf) &&
+	    (strlen($ospfd_conf['defaultarea']) == 0) &&
+	    !empty($ospfd_conf['area'])) {
 		$ospfd_conf['defaultarea'] = $ospfd_conf['area'];
 		unset($ospfd_conf['area']);
 		$need_write = true;
 	}
-	if ((strlen($ospf6d_conf['defaultarea']) == 0) && !empty($ospf6d_conf['area'])) {
+	if (array_key_exists('defaultarea', $ospf6d_conf) &&
+	    array_key_exists('area', $ospf6d_conf) &&
+	    (strlen($ospf6d_conf['defaultarea']) == 0) &&
+	    !empty($ospf6d_conf['area'])) {
 		$ospf6d_conf['defaultarea'] = $ospf6d_conf['area'];
 		unset($ospf6d_conf['area']);
 		$need_write = true;
 	}
 	/* areatype->defaultareatype */
-	if ((strlen($ospfd_conf['defaultareatype']) == 0) && !empty($ospfd_conf['areatype'])) {
+	if (array_key_exists('defaultareatype', $ospfd_conf) &&
+	    array_key_exists('areatype', $ospfd_conf) &&
+	    (strlen($ospfd_conf['defaultareatype']) == 0) &&
+	    !empty($ospfd_conf['areatype'])) {
 		$ospfd_conf['defaultareatype'] = $ospfd_conf['areatype'];
 		unset($ospfd_conf['areatype']);
 		$need_write = true;
 	}
 
 	/* BGP distribution migrate */
-	if ((strlen($bgp_conf['redistributeconnected']) == 0) && !empty($bgp_conf['redistributeconnectedsubnets'])) {
+	if (array_key_exists('redistributeconnected', $bgp_conf) &&
+	    array_key_exists('redistributeconnectedsubnets', $bgp_conf) &&
+	    (strlen($bgp_conf['redistributeconnected']) == 0) &&
+	    !empty($bgp_conf['redistributeconnectedsubnets'])) {
 		$bgp_conf['redistributeconnected'] = $bgp_conf['redistributeconnectedsubnets'];
 		unset($bgp_conf['redistributeconnectedsubnets']);
 		$need_write = true;
 	}
-	if (($bgp_conf['redistributeospf'] == 'yes') && empty($bgp_conf['redistributeospf6'])) {
+
+	if (array_key_exists('redistributeospf', $bgp_conf) &&
+	    array_key_exists('redistributeospf6', $bgp_conf) &&
+	    ($bgp_conf['redistributeospf'] == 'yes') &&
+	    empty($bgp_conf['redistributeospf6'])) {
 		$bgp_conf['redistributeospf6'] = 'yes';
 		$need_write = true;
 	}
 
 	/* ACL and Prefix List add IP Type*/
 	foreach ($frr_acls_conf as & $aclconf) {
-		if (empty($aclconf['iptype']) && !empty($aclconf['row'])) {
+		if (array_key_exists('iptype', $aclconf) &&
+		    array_key_exists('row', $aclconf) &&
+		    empty($aclconf['iptype']) &&
+		    !empty($aclconf['row'])) {
 			if (is_subnetv4($aclconf['row'][0]['source'])) {
 				$aclconf['iptype'] = 'IPv4';
 			} else {
@@ -1058,7 +1053,10 @@ function frr_package_config_upgrade() {
 		}
 	}
 	foreach ($frr_prefixes_conf as & $prefixconf) {
-		if (empty($prefixconf['iptype']) && !empty($prefixconf['row'])) {
+		if (array_key_exists('iptype', $prefixconf) &&
+		    array_key_exists('row', $prefixconf) &&
+		    empty($prefixconf['iptype']) &&
+		    !empty($prefixconf['row'])) {
 			if (is_subnetv4($prefixconf['row'][0]['source'])) {
 				$prefixconf['iptype'] = 'IPv4';
 			} else {
@@ -1071,6 +1069,15 @@ function frr_package_config_upgrade() {
 
 	/* Save Changes */
 	if ($need_write) {
+		config_set_path('installedpackages/frrospfd/config/0', $ospfd_conf);
+		config_set_path('installedpackages/frrospf6d/config/0', $ospf6d_conf);
+		config_set_path('installedpackages/frrglobalacls/config', $frr_acls_conf);
+		config_set_path('installedpackages/frrglobalprefixes/config', $frr_prefixes_conf);
+		config_set_path('installedpackages/frrglobalroutemaps/config', $frr_routemap_conf);
+		config_set_path('installedpackages/frrospfdinterfaces/config', $frr_ospfinterfaces_conf);
+		config_set_path('installedpackages/frrospfdareas/config', $frr_areas_conf);
+		config_set_path('installedpackages/frrbgp/config/0', $bgp_conf);
+
 		update_status("Saving changes ... ");
 		write_config('FRR: Upgraded Settings.');
 		update_status("Done.\n");
@@ -1082,13 +1089,13 @@ function frr_package_config_upgrade() {
 function frr_set_tunables() {
 	global $config;
 
-	init_config_arr(array('sysctl', 'item'));
-	$sysctl_conf = &$config['sysctl']['item'];
+	$sysctl_conf = config_get_path('sysctl/item', []);
 	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
 
 	if (!in_array($sysctl_maxsockbuff, $sysctl_conf)) {
 		update_status("Installing maxsockbuf tunable ... ");
 		$sysctl_conf[] = $sysctl_maxsockbuff;
+		config_set_path('sysctl/item', $sysctl_conf);
 		write_config('FRR: Installed maxsockbuf tunable.');
 		system_setup_sysctl();
 		update_status("Done.\n");

@@ -40,8 +40,9 @@ function frr_get_lists_list(&$listconfig, $ipv4 = true, $ipv6 = true) {
 function frr_get_accesslist_list($ipv4 = true, $ipv6 = true) {
 	global $config;
 
-	if (is_array($config['installedpackages']['frrglobalacls']['config'])) {
-		return (frr_get_lists_list($config['installedpackages']['frrglobalacls']['config'], $ipv4, $ipv6));
+	$frr_acls_conf = config_get_path('installedpackages/frrglobalacls/config', []);
+	if (!empty($frr_acls_conf)) {
+		return (frr_get_lists_list($frr_acls_conf, $ipv4, $ipv6));
 	} else {
 		return array(PKG_FRR_LIST_NONE_VALUE);
 	}
@@ -51,8 +52,9 @@ function frr_get_accesslist_list($ipv4 = true, $ipv6 = true) {
 function frr_get_prefixlist_list($ipv4 = true, $ipv6 = true) {
 	global $config;
 
-	if (is_array($config['installedpackages']['frrglobalprefixes']['config'])) {
-		return (frr_get_lists_list($config['installedpackages']['frrglobalprefixes']['config'], $ipv4, $ipv6));
+	$frr_prefixes_conf = config_get_path('installedpackages/frrglobalprefixes/config', []);
+	if (!empty($frr_prefixes_conf)) {
+		return (frr_get_lists_list($frr_prefixes_conf, $ipv4, $ipv6));
 	} else {
 		return array(PKG_FRR_LIST_NONE_VALUE);
 	}
@@ -81,15 +83,14 @@ function frr_get_routemap_list($exitaction = false, $yesno = false) {
 
 	/* Build a list of route maps. If this is an exit action, return
 	 * sequence numbers of entries as the value, not names */
-	if (is_array($config['installedpackages']['frrglobalroutemaps']['config'])) {
-		foreach ($config['installedpackages']['frrglobalroutemaps']['config'] as $rm) {
-			if ($exitaction) {
-				$list[] = array("name" => $rm['seq'], "value" => $rm['seq']);
-			} else {
-				$name = empty($rm['descr']) ? $rm['name'] : "{$rm['name']} - {$rm['descr']}";
-				$list[] = array("name" => $name, "value" => $rm['name']);
-				unset($name);
-			}
+	$frr_routemap_conf = config_get_path('installedpackages/frrglobalroutemaps/config', []);
+	foreach ($config['installedpackages']['frrglobalroutemaps']['config'] as $rm) {
+		if ($exitaction) {
+			$list[] = array("name" => $rm['seq'], "value" => $rm['seq']);
+		} else {
+			$name = empty($rm['descr']) ? $rm['name'] : "{$rm['name']} - {$rm['descr']}";
+			$list[] = array("name" => $name, "value" => $rm['name']);
+			unset($name);
 		}
 	}
 
@@ -156,12 +157,12 @@ function frr_generate_acl_hostspec($address, $any, $acl_type) {
 function frr_zebra_generate_accesslists($ipv4 = true, $ipv6 = true) {
 	global $config, $frr_config_base;
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frrglobalacls']['config'])) {
-		$frr_acls_conf = &$config['installedpackages']['frrglobalacls']['config'];
-	} else {
+	$frr_acls_conf = config_get_path('installedpackages/frrglobalacls/config', []);
+	if (empty($frr_acls_conf)) {
 		/* No ACL config, stop. */
 		return null;
 	}
+
 	/* Section header */
 	$aclconf = "";
 	/* Loop through ACLs and process */
@@ -247,18 +248,19 @@ function frr_zebra_generate_accesslists($ipv4 = true, $ipv6 = true) {
 /* Generate BGP AS Path configuration lines */
 function frr_zebra_generate_aspaths() {
 	global $config, $frr_config_base;
+
 	/* Do not generate AS Path if BGP daemon is disabled */
-	if (!is_array($config['installedpackages']['frrbgp']['config']) ||
-	    empty($config['installedpackages']['frrbgp']['config'][0]['enable'])) {
+	if (empty(config_get_path('installedpackages/frrbgp/config/0/enable'))) {
 		return null;
 	}
+
 	/* Populate FRR AS Path Settings */
-	if (is_array($config['installedpackages']['frrbgpaspaths']['config'])) {
-		$frr_asp_conf = &$config['installedpackages']['frrbgpaspaths']['config'];
-	} else {
+	$frr_asp_conf = config_get_path('installedpackages/frrbgpaspaths/config', []);
+	if (empty($frr_asp_conf)) {
 		/* No AS Path config, stop. */
 		return null;
 	}
+
 	/* Section header */
 	$aspconf = "";
 	/* Loop through AS Paths and process */
@@ -276,18 +278,19 @@ function frr_zebra_generate_aspaths() {
 /* Prefix Lists for the zebra configuration based on GUI config */
 function frr_zebra_generate_prefixlists($ipv4 = true, $ipv6 = true) {
 	global $config, $frr_config_base;
+
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frrglobalprefixes']['config'])) {
-		$frr_prefixlists_conf = &$config['installedpackages']['frrglobalprefixes']['config'];
-	} else {
+	$frr_prefixes_conf = config_get_path('installedpackages/frrglobalprefixes/config', []);
+	if (empty($frr_prefixes_conf)) {
 		/* No Prefix List config, stop. */
 		return null;
 	}
+
 	$plconf = "";
 
 	/* Loop through Prefix Lists and process */
-	frr_array_name_seq_sort($frr_prefixlists_conf);
-	foreach ($frr_prefixlists_conf as $pl) {
+	frr_array_name_seq_sort($frr_prefixes_conf);
+	foreach ($frr_prefixes_conf as $pl) {
 		/* Skip if IP version is disabled */
 		if ((!$ipv4 && (strtolower($pl['iptype']) == 'ipv4')) || (!$ipv6 && (strtolower($pl['iptype']) == 'ipv6'))) {
 			continue;
@@ -353,15 +356,15 @@ function frr_zebra_generate_prefixlists($ipv4 = true, $ipv6 = true) {
 /* Generate BGP Community List configuration lines */
 function frr_zebra_generate_communitylists() {
 	global $config, $frr_config_base, $frr_well_known_communities;
+
 	/* Do not generate Community List if BGP daemon is disabled */
-	if (!is_array($config['installedpackages']['frrbgp']['config']) ||
-	    empty($config['installedpackages']['frrbgp']['config'][0]['enable'])) {
+	if (empty(config_get_path('installedpackages/frrbgp/config/0/enable'))) {
 		return null;
 	}
+
 	/* Populate FRR Community List Settings */
-	if (is_array($config['installedpackages']['frrbgpcommunities']['config'])) {
-		$frr_cls_conf = &$config['installedpackages']['frrbgpcommunities']['config'];
-	} else {
+	$frr_cls_conf = config_get_path('installedpackages/frrbgpcommunities/config', []);
+	if (empty($frr_cls_conf)) {
 		/* No CL config, stop. */
 		return null;
 	}
@@ -395,13 +398,14 @@ function frr_zebra_generate_communitylists() {
 /* Route Maps for the zebra configuration based on GUI config */
 function frr_zebra_generate_routemaps() {
 	global $config, $frr_config_base;
+
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frrglobalroutemaps']['config'])) {
-		$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
-	} else {
+	$frr_routemap_conf = config_get_path('installedpackages/frrglobalroutemaps/config', []);
+	if (empty($frr_routemap_conf)) {
 		/* No route map config, stop. */
 		return null;
 	}
+
 	$rmconf = "";
 
 	/* Need to sort by name AND seq */
@@ -626,13 +630,19 @@ function frr_zebra_generate_routemaps() {
 /* Null Routes for the zebra configuration based on GUI config */
 function frr_zebra_generate_nullroutes() {
 	global $config, $frr_config_base;
+
 	/* Populate FRR Global Settings */
-	if (!is_array($config['installedpackages']['frr']['config'][0]['row'])) {
+	$frr_conf = config_get_path('installedpackages/frr/config/0/row', []);
+	if (empty($frr_conf)) {
 		/* If FRR is not configured or the route handling list is empty, stop. */
 		return null;
 	}
+
 	/* Check FRR configuration network list for null route entries */
-	foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
+	foreach ($frr_conf as $redistr) {
+		if (empty($redistr)) {
+			continue;
+		}
 		if (isset($redistr['nullroute']) && is_subnet($redistr['routevalue'])) {
 			$ipproto = is_subnetv4($redistr['routevalue']) ? 'ip' : 'ipv6';
 			$nullroutes .= "{$ipproto} route {$redistr['routevalue']} Null0\n";
@@ -650,12 +660,17 @@ function frr_zebra_generate_staticroutes() {
 	require_once("gwlb.inc");
 	global $config, $frr_config_base;
 	/* Populate FRR Global Settings */
-	if (!is_array($config['installedpackages']['frr']['config'][0]['row'])) {
+	$frr_conf = config_get_path('installedpackages/frr/config/0/row', []);
+	if (empty($frr_conf)) {
 		/* If FRR is not configured or the route handling list is empty, stop. */
 		return null;
 	}
+
 	/* Check FRR configuration network list for null route entries */
-	foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
+	foreach ($frr_conf as $redistr) {
+		if (empty($redistr)) {
+			continue;
+		}
 		if (isset($redistr['nullroute']) || !is_subnet($redistr['routevalue'])) {
 			/* Null routes are handled separately, and we need a valid subnet! */
 			continue;
@@ -709,33 +724,41 @@ function frr_zebra_generate_acceptfilters() {
 	$noaccept6 = '';
 
 	/* Check OSPF Interfaces for automatic accept filters */
-	if (is_array($config['installedpackages']['frrospfdinterfaces']['config'])) {
-		foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $conf) {
-			list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface']);
-			if (empty($interface_ip)) {
-				continue;
-			}
-			if (!empty($conf['acceptfilter']) && is_ipaddrv4($subnet) && is_numericint($interface_subnet)) {
-				$noaccept = $noaccept ?: "";
-				$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$subnet}/{$interface_subnet}\n";
-				$seq += 10;
-				$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$interface_ip}/32\n";
-				$seq += 10;
-			}
+	foreach (config_get_path('installedpackages/frrospfdinterfaces/config', []) as $conf) {
+		if (empty($conf)) {
+			continue;
+		}
+		list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface']);
+		if (empty($interface_ip)) {
+			continue;
+		}
+		if (!empty($conf['acceptfilter']) && is_ipaddrv4($subnet) && is_numericint($interface_subnet)) {
+			$noaccept = $noaccept ?: "";
+			$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$subnet}/{$interface_subnet}\n";
+			$seq += 10;
+			$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$interface_ip}/32\n";
+			$seq += 10;
 		}
 	}
 
 	/* Check FRR configuration network list for accept filter entries */
-	if (is_array($config['installedpackages']['frr']['config'][0]['row'])) {
-		foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
-			if (isset($redistr['acceptfilter'])) {
-				if (is_subnetv4($redistr['routevalue'])) {
-					$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$redistr['routevalue']}\n";
-					$seq += 10;
-				} else {
-					$noaccept6 .= "ipv6 prefix-list ACCEPTFILTER6 seq {$seq6} deny {$redistr['routevalue']}\n";
-					$seq6 += 10;
-				}
+	$frr_conf = config_get_path('installedpackages/frr/config/0/row', []);
+	if (empty($frr_conf)) {
+		/* If FRR is not configured or the route handling list is empty, stop. */
+		return null;
+	}
+
+	foreach (config_get_path('installedpackages/frr/config/0/row', []) as $redistr) {
+		if (empty($redistr)) {
+			continue;
+		}
+		if (isset($redistr['acceptfilter'])) {
+			if (is_subnetv4($redistr['routevalue'])) {
+				$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$redistr['routevalue']}\n";
+				$seq += 10;
+			} else {
+				$noaccept6 .= "ipv6 prefix-list ACCEPTFILTER6 seq {$seq6} deny {$redistr['routevalue']}\n";
+				$seq6 += 10;
 			}
 		}
 	}
@@ -770,15 +793,13 @@ function frr_generate_config_zebra() {
 	global $config, $frr_config_base, $frr_integrated_config;
 
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	}
-
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
 		frr_package_log("FRR Zebra: No config data found.");
 		return;
 	}
-	if (empty($frr_conf['enable'])) {
+	if (!array_key_exists('enable', $frr_conf) ||
+	    empty($frr_conf['enable'])) {
 		/* FRR master switch is off. */
 		return;
 	}
@@ -818,9 +839,11 @@ function read_frr_running_config() {
 	$frrRunningFile = "{$frr_config_base}/frr.conf";
 	if (file_exists($frrRunningFile) && (filesize($frrRunningFile) > 0)) {
 		$moduleRunning = fopen("$frrRunningFile", "r");
-		$config['installedpackages']['frrglobalraw']['config'][0]["frrrunning"] = base64_encode(fread($moduleRunning, filesize($frrRunningFile)));
+		config_set_path('installedpackages/frrglobalraw/config/0/frrrunning',
+				base64_encode(fread($moduleRunning, filesize($frrRunningFile))));
 	} else {
-		$config['installedpackages']['frrglobalraw']['config'][0]["frrrunning"] = base64_encode("# file frr.conf does not exist or is empty.");
+		config_set_path('installedpackages/frrglobalraw/config/0/frrrunning',
+				base64_encode("# file frr.conf does not exist or is empty."));
 	}
 	write_config(gettext("FRR: Saved running configuration into pfSense config file."), false, true);
 }

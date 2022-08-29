@@ -379,21 +379,19 @@ function frr_ospf_neighbors_validate_input() {
 function frr_ospf_interfaces_validate_input() {
 	global $config, $id, $input_errors;
 
-	if ($config['installedpackages']['frrospfdinterfaces']['config']) {
-		foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $index => $conf) {
-			if ($index == 0) {
-				continue;
-			}
-			if ($id != $index && $conf['interface'] == $_POST['interface']) {
-				$input_errors[] = "Interface {$_POST['interface']} is already configured.";
-			}
+	foreach (config_get_path('installedpackages/frrospfdinterfaces/config', []) as $index => $conf) {
+		if ($index == 0) {
+			continue;
+		}
+		if ($id != $index && $conf['interface'] == $_POST['interface']) {
+			$input_errors[] = "Interface {$_POST['interface']} is already configured.";
 		}
 	}
 	frr_validate_intrange_input("Cost", $_POST['metric'], 1, 65535);
 	if ((strlen($_POST['interfacearea']) > 0) && !(is_ipaddr($_POST['interfacearea']) || ctype_digit($_POST['interfacearea']))) {
 		$input_errors[] = "Area must be a valid IP address or integer number.";
 	}
-	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospfd']['config'][0]['defaultarea']) == 0)) {
+	if ((strlen($_POST['interfacearea']) == 0) && (strlen(config_get_path('installedpackages/frrospfd/config/0/defaultarea')) == 0)) {
 		$input_errors[] = "Area must either be set on the interface or a default area set for the OSPF instance.";
 	}
 	if (!empty($_POST['networktype']) && !in_array($_POST['networktype'], array('broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'))) {
@@ -442,15 +440,15 @@ function frr_ospf_validate_input() {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
 	} else {
-		if (is_array($config['installedpackages']['frrospfdinterfaces'])) {
-			$interfaces_no_area = array();
-			foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $interface) {
-				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
+		$interfaces_no_area = array();
+		foreach (config_get_path('installedpackages/frrospfdinterfaces/config', []) as $interface) {
+			if (strlen($interface['interfacearea']) == 0) {
+				$interfaces_no_area[] = $interface['interface'];
 			}
-			if (!empty($interfaces_no_area)) {
-				$interfaces_no_area = implode(" ", $interfaces_no_area);
-				$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
-			}
+		}
+		if (!empty($interfaces_no_area)) {
+			$interfaces_no_area = implode(" ", $interfaces_no_area);
+			$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
 		}
 	}
 
@@ -515,7 +513,7 @@ function frr_ospf6_interfaces_validate_input() {
 		$input_errors[] = "Area must be a valid IP address or integer number.";
 	}
 
-	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospf6d']['config'][0]['defaultarea']) == 0)) {
+	if ((strlen($_POST['interfacearea']) == 0) && (strlen(config_get_path('installedpackages/frrospf6d/config/0/defaultarea')) == 0)) {
 		$input_errors[] = "Area must either be set on the interface or a default given for the OSPFv3 instance.";
 	}
 }
@@ -581,15 +579,15 @@ function frr_ospf6_validate_input() {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
 	} else {
-		if (is_array($config['installedpackages']['frrospf6dinterfaces'])) {
-			$interfaces_no_area = array();
-			foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $interface) {
-				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
+		$interfaces_no_area = array();
+		foreach (config_get_path('installedpackages/frrospf6dinterfaces/config', []) as $interface) {
+			if (strlen($interface['interfacearea']) == 0) {
+				$interfaces_no_area[] = $interface['interface'];
 			}
-			if (!empty($interfaces_no_area)) {
-				$interfaces_no_area = implode(" ", $interfaces_no_area);
-				$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
-			}
+		}
+		if (!empty($interfaces_no_area)) {
+			$interfaces_no_area = implode(" ", $interfaces_no_area);
+			$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
 		}
 	}
 }
@@ -807,14 +805,12 @@ function frr_rip_validate_input() {
 function frr_rip_interfaces_validate_input() {
 	global $config, $id, $input_errors;
 
-	if ($config['installedpackages']['frrripdinterfaces']['config']) {
-		foreach ($config['installedpackages']['frrripdinterfaces']['config'] as $index => $conf) {
-			if ($index == 0) {
-				continue;
-			}
-			if ($id != $index && $conf['interface'] == $_POST['interface']) {
-				$input_errors[] = "Interface {$_POST['interface']} is already configured.";
-			}
+	foreach (config_get_path('installedpackages/frrripdinterfaces/config', []) as $index => $conf) {
+		if ($index == 0) {
+			continue;
+		}
+		if ($id != $index && $conf['interface'] == $_POST['interface']) {
+			$input_errors[] = "Interface {$_POST['interface']} is already configured.";
 		}
 	}
 	if (!empty($_POST['authtype']) && !in_array($_POST['authtype'], array('digest', 'simple', 'null'))) {
