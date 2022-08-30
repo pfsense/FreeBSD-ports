@@ -218,7 +218,6 @@
     SUBDIR += gspoof
     SUBDIR += gssdp
     SUBDIR += gssdp14
-    SUBDIR += gstreamer1-plugins-libmms
     SUBDIR += gstreamer1-plugins-srtp
     SUBDIR += gtk-vnc
     SUBDIR += guacamole-server
@@ -317,6 +316,7 @@
     SUBDIR += kidentitymanagement
     SUBDIR += kimap
     SUBDIR += kio-gdrive
+    SUBDIR += kio-zeroconf
     SUBDIR += kippo
     SUBDIR += kitinerary
     SUBDIR += kldap
@@ -1168,6 +1168,7 @@
     SUBDIR += qoauth-qt5
     SUBDIR += qt5-network
     SUBDIR += qt5-networkauth
+    SUBDIR += qt6-networkauth
     SUBDIR += quagga
     SUBDIR += quiche
     SUBDIR += quiterss
@@ -1604,7 +1605,6 @@
     SUBDIR += yggdrasil
     SUBDIR += yptransitd
     SUBDIR += zebra-server
-    SUBDIR += zeroconf-ioslave
     SUBDIR += zerotier
     SUBDIR += zillion
     SUBDIR += zmap

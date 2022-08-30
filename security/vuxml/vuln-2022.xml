@@ -1,3 +1,147 @@
+  <vuln vid="3110b29e-c82d-4287-9f6c-db82bb883b1e">
+    <topic>zeek -- potential DoS vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>5.0.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tim Wojtulewicz of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v5.0.1">
+	<p> Fix a possible overflow and crash in the ARP analyzer
+	when receiving a specially crafted packet. Due to the
+	possibility of this happening with packets received from
+	the network, this is a potential DoS vulnerability. </p>
+	<p> Fix a possible overflow and crash in the Modbus analyzer
+	when receiving a specially crafted packet. Due to the
+	possibility of this happening with packets received from
+	the network, this is a potential DoS vulnerability. </p>
+	<p> Fix two possible crashes when converting IP headers for
+	output via the raw_packet event. Due to the possibility of
+	this happening with packets received from the network, this
+	is a potential DoS vulnerability. Note that the raw_packet
+	event is not enabled by default so these are likely
+	low-severity issues. </p>
+	<p> Fix an abort related to an error related to the ordering
+	of record fields when processing DNS EDNS headers via events.
+	Due to the possibility of this happening with packets
+	received from the network, this is a potential DoS
+	vulnerability.  Note that the dns_EDNS events are not
+	implemented by default so this is likely a low-severity
+	issue. </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v5.0.1</url>
+    </references>
+    <dates>
+      <discovery>2022-08-23</discovery>
+      <entry>2022-08-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="36d10af7-248d-11ed-856e-d4c9ef517024">
+    <topic>MariaDB -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mariadb103-server</name>
+	<range><lt>10.3.36</lt></range>
+      </package>
+      <package>
+	<name>mariadb104-server</name>
+	<range><lt>10.4.26</lt></range>
+      </package>
+      <package>
+	<name>mariadb105-server</name>
+	<range><lt>10.5.17</lt></range>
+      </package>
+      <package>
+	<name>mariadb106-server</name>
+	<range><lt>10.6.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The MariaDB project reports:</p>
+	<blockquote cite="https://mariadb.com/kb/en/cve/">
+	  <p>Multiple vulnerabilities, mostly segfaults, in
+	    the server component</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-32082</cvename>
+      <cvename>CVE-2022-32089</cvename>
+      <cvename>CVE-2022-32081</cvename>
+      <cvename>CVE-2018-25032</cvename>
+      <cvename>CVE-2022-32091</cvename>
+      <cvename>CVE-2022-32084</cvename>
+      <url>https://mariadb.com/kb/en/cve/</url>
+    </references>
+    <dates>
+      <discovery>2022-08-22</discovery>
+      <entry>2022-08-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8a0cd618-22a0-11ed-b1e7-001b217b3468">
+    <topic>Gitlab -- Remote Code Execution</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>15.3.0</ge><lt>15.3.1</lt></range>
+	<range><ge>15.2.0</ge><lt>15.2.3</lt></range>
+	<range><ge>11.3.4</ge><lt>15.1.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2022/08/22/critical-security-release-gitlab-15-3-1-released/">
+	  <p>Remote Command Execution via Github import</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2884</cvename>
+      <url>https://about.gitlab.com/releases/2022/08/22/critical-security-release-gitlab-15-3-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2022-08-22</discovery>
+      <entry>2022-08-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="03bb8373-2026-11ed-9d70-080027240888">
+    <topic>drupal9 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>drupal9</name>
+	<range><lt>9.4.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Drupal reports:</p>
+	<blockquote cite="https://www.drupal.org/project/drupal/releases/9.4.5">
+	  <p>CVE-2022-31175: Cross-site scripting (XSS) caused by the editor
+	     instance destroying process.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-31175</cvename>
+      <url>https://www.drupal.org/project/drupal/releases/9.4.5</url>
+    </references>
+    <dates>
+      <discovery>2022-08-01</discovery>
+      <entry>2022-08-20</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="f12368a8-1e05-11ed-a1ef-3065ec8fd3ec">
     <topic>chromium -- multiple vulnerabilities</topic>
     <affects>
@@ -65,11 +209,13 @@
       </body>
     </description>
     <references>
+      <cvename>CVE-2022-36009</cvename>
       <url>https://github.com/matrix-org/gomatrixserverlib/security/advisories/GHSA-grvv-h2f9-7v9c</url>
     </references>
     <dates>
       <discovery>2022-08-15</discovery>
       <entry>2022-08-15</entry>
+      <modified>2022-08-25</modified>
     </dates>
   </vuln>
 

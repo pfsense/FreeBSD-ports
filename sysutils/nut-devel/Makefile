@@ -1,5 +1,6 @@
 PORTNAME=	nut
 PORTVERSION=	${NUT_COMMIT_DATE}
+PORTREVISION=	2
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
 # MASTER_SITES=	http://www.networkupstools.org/source/${PORTVERSION:R}/
@@ -17,10 +18,11 @@ CONFLICTS=	nut-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	networkupstools
-GH_TAGNAME=	2083172b9
-NUT_COMMIT_DATE=	2022.08.15
+GH_TAGNAME=	2ce9dfa4a
+NUT_COMMIT_DATE=	2022.08.25
 
 MAKE_JOBS_UNSAFE=	yes
+USE_GCC=	yes
 GNU_CONFIGURE=	yes
 USES=		autoreconf:build compiler:c11 gmake libtool pkgconfig python
 USE_LDCONFIG=	yes
@@ -74,7 +76,8 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/nut \
 		--with-python=${PYTHON_CMD} \
 		--without-python2 \
 		--with-python3=${PYTHON_CMD} \
-		--with-dev
+		--with-dev \
+		--with-ltdl --with-nut-scanner
 
 CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
 LIB_DEPENDS+=	libltdl.so:devel/libltdl
@@ -163,6 +166,7 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${PATCHDIR}/nut.syslog ${STAGEDIR}${EXAMPLESDIR}/syslog.sample
 	${INSTALL_DATA} ${PATCHDIR}/nut.newsyslog ${STAGEDIR}${EXAMPLESDIR}/newsyslog.sample
+	${INSTALL_DATA} ${PATCHDIR}/nut_upslog.sample ${STAGEDIR}${EXAMPLESDIR}/nut_upslog.sample
 	${MKDIR} ${STAGEDIR}/var/log/nut
 
 .include <bsd.port.post.mk>

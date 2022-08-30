@@ -6,7 +6,7 @@ CATEGORIES=	deskutils kde kde-applications
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Mail sieve editor
 
-LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain
+LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain@qt5
 
 USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
 USE_KDE=	auth bookmarks codecs config configwidgets coreaddons crash \

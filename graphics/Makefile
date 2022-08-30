@@ -187,6 +187,7 @@
     SUBDIR += feh
     SUBDIR += fig2sxd
     SUBDIR += figurine
+    SUBDIR += filament
     SUBDIR += filmulator
     SUBDIR += flam3
     SUBDIR += flasm
@@ -276,6 +277,7 @@
     SUBDIR += glosm
     SUBDIR += glpng
     SUBDIR += glslang
+    SUBDIR += glvis
     SUBDIR += glx-utils
     SUBDIR += gmic
     SUBDIR += gmic-qt
@@ -418,6 +420,7 @@
     SUBDIR += kqtquickcharts
     SUBDIR += kquickimageeditor
     SUBDIR += krita
+    SUBDIR += ksanecore
     SUBDIR += kseexpr
     SUBDIR += ksnip
     SUBDIR += kxstitch
@@ -806,6 +809,7 @@
     SUBDIR += poppler-data
     SUBDIR += poppler-glib
     SUBDIR += poppler-qt5
+    SUBDIR += poppler-qt6
     SUBDIR += poppler-utils
     SUBDIR += potrace
     SUBDIR += povray-meta
@@ -855,6 +859,7 @@
     SUBDIR += py-glfw
     SUBDIR += py-glooey
     SUBDIR += py-gphoto2
+    SUBDIR += py-gprof2dot
     SUBDIR += py-graphlib-backport
     SUBDIR += py-graphviz
     SUBDIR += py-graphy
@@ -866,6 +871,7 @@
     SUBDIR += py-imagesize
     SUBDIR += py-img2pdf
     SUBDIR += py-leather
+    SUBDIR += py-lerc
     SUBDIR += py-mapclassify
     SUBDIR += py-mayavi
     SUBDIR += py-mcomix
@@ -956,6 +962,11 @@
     SUBDIR += qt5-pixeltool
     SUBDIR += qt5-svg
     SUBDIR += qt5-wayland
+    SUBDIR += qt6-3d
+    SUBDIR += qt6-imageformats
+    SUBDIR += qt6-lottie
+    SUBDIR += qt6-svg
+    SUBDIR += qt6-wayland
     SUBDIR += qtawesome
     SUBDIR += qtpbfimageplugin
     SUBDIR += qtqr

@@ -9,7 +9,7 @@ COMMENT=	KDE IOSlave for accessing gdrive
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain \
+LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain@qt5 \
 		libaccounts-qt5.so:net-im/libaccounts-qt5 \
 		libkaccounts.so:net-im/kaccounts-integration
 RUN_DEPENDS=	kaccounts-providers>=0:net-im/kaccounts-providers

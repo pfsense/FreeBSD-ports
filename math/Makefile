@@ -248,6 +248,7 @@
     SUBDIR += convertall
     SUBDIR += coq
     SUBDIR += cosma
+    SUBDIR += costa
     SUBDIR += couenne
     SUBDIR += coxeter3
     SUBDIR += cppad
@@ -480,6 +481,7 @@
     SUBDIR += minizinc
     SUBDIR += minizinc-ide
     SUBDIR += minizinc-solvers
+    SUBDIR += minorminer
     SUBDIR += miracl
     SUBDIR += mlpack
     SUBDIR += moab
@@ -1011,6 +1013,7 @@
     SUBDIR += randlib
     SUBDIR += rankwidth
     SUBDIR += rapid
+    SUBDIR += readstat
     SUBDIR += reduce
     SUBDIR += reduce-psl
     SUBDIR += reed-solomon
@@ -1062,6 +1065,8 @@
     SUBDIR += spblas
     SUBDIR += spectra
     SUBDIR += speedcrunch
+    SUBDIR += spfft
+    SUBDIR += spla
     SUBDIR += spooles
     SUBDIR += spooles-mpich
     SUBDIR += spot
@@ -1090,6 +1095,7 @@
     SUBDIR += suitesparse-umfpack
     SUBDIR += sundials
     SUBDIR += superlu
+    SUBDIR += superlu-dist
     SUBDIR += symengine
     SUBDIR += symmetrica
     SUBDIR += symphony

@@ -280,6 +280,7 @@
     SUBDIR += libmcrypt
     SUBDIR += libnitrokey
     SUBDIR += libntlm
+    SUBDIR += libomemo
     SUBDIR += liboqs
     SUBDIR += libotr
     SUBDIR += libotr3
@@ -526,6 +527,7 @@
     SUBDIR += p5-Crypt-OpenSSL-PKCS10
     SUBDIR += p5-Crypt-OpenSSL-RSA
     SUBDIR += p5-Crypt-OpenSSL-Random
+    SUBDIR += p5-Crypt-OpenSSL-Verify
     SUBDIR += p5-Crypt-OpenSSL-X509
     SUBDIR += p5-Crypt-PBKDF2
     SUBDIR += p5-Crypt-PKCS10
@@ -649,6 +651,7 @@
     SUBDIR += p5-Net-OpenID-Server
     SUBDIR += p5-Net-Radius-Server
     SUBDIR += p5-Net-SAML
+    SUBDIR += p5-Net-SAML2
     SUBDIR += p5-Net-SSH-AuthorizedKeysFile
     SUBDIR += p5-Net-SSL-ExpireDate
     SUBDIR += p5-Net-SSLGlue
@@ -681,6 +684,7 @@
     SUBDIR += p5-Text-Password-Pronounceable
     SUBDIR += p5-Tie-EncryptedHash
     SUBDIR += p5-Tree-Authz
+    SUBDIR += p5-URN-OASIS-SAML2
     SUBDIR += p5-Unix-Passwd-File
     SUBDIR += p5-Unix-setuid
     SUBDIR += p5-Yahoo-BBAuth
@@ -1080,6 +1084,7 @@
     SUBDIR += rubygem-omniauth-bitbucket
     SUBDIR += rubygem-omniauth-cas
     SUBDIR += rubygem-omniauth-cas3
+    SUBDIR += rubygem-omniauth-cas3-oauth2
     SUBDIR += rubygem-omniauth-dingtalk-oauth2
     SUBDIR += rubygem-omniauth-gitlab
     SUBDIR += rubygem-omniauth-jwt
@@ -1092,6 +1097,7 @@
     SUBDIR += rubygem-openssl-ccm
     SUBDIR += rubygem-openssl-cmac
     SUBDIR += rubygem-openssl-signature_algorithm
+    SUBDIR += rubygem-openssl2
     SUBDIR += rubygem-openvas-omp
     SUBDIR += rubygem-origami
     SUBDIR += rubygem-pbkdf2-ruby

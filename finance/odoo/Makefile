@@ -1,6 +1,5 @@
 PORTNAME=	odoo
-PORTVERSION=	14.0
-PORTREVISION=	2
+PORTVERSION=	15.0
 CATEGORIES=	finance www
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,7 +9,7 @@ COMMENT=	Suite of web based open source business apps
 LICENSE=	LGPL3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	19d77c2a03335eb95a686bd69a1b56b38e87d609
+GH_TAGNAME=	02b4e98ebb2c45d9a4af10fe1bc732f048708f85
 
 LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libxslt.so:textproc/libxslt \
@@ -48,7 +47,7 @@ RUN_DEPENDS=	wkhtmltopdf>0:converters/wkhtmltopdf \
 		${PYTHON_PKGNAMEPREFIX}xlwt>=0:textproc/py-xlwt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}XlsxWriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}decorator>0:devel/py-decorator@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pdf2>0:print/py-pdf2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pypdf2>0:print/py-pypdf2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
@@ -77,6 +76,8 @@ GROUPS=		${USERS}
 USE_RC_SUBR=	${PORTNAME}
 SUB_FILES=	pkg-message
 
+CONFLICTS=	odoo14
+
 ETCDIR=		${PREFIX}/etc/odoo
 
 post-patch:
@@ -88,10 +89,7 @@ post-patch:
 		${WRKSRC}/odoo/addons/http_routing/models/ir_http.py
 	@${REINPLACE_CMD} -i "" -e 's|from werkzeug import url_encode|from werkzeug.urls import url_encode|g' \
 		${WRKSRC}/odoo/addons/mail/models/mail_thread.py \
-		${WRKSRC}/odoo/addons/mail/controllers/main.py \
 		${WRKSRC}/odoo/addons/hr/models/hr_employee.py
-	@${REINPLACE_CMD} -i "" -e 's|werkzeug|werkzeug.urls|g' \
-		${WRKSRC}/odoo/addons/web_editor/models/ir_attachment.py
 
 post-extract:
 	@cd ${WRKSRC}/addons/ && ${MV} * ${WRKSRC}/odoo/addons/

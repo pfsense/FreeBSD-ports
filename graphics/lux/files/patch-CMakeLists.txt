@@ -1,15 +1,6 @@
---- CMakeLists.txt.orig	2022-03-28 19:04:00 UTC
+--- CMakeLists.txt.orig	2022-08-26 12:57:31 UTC
 +++ CMakeLists.txt
-@@ -106,7 +106,7 @@ message(STATUS "***** SYSTEM PROCESSOR ${CMAKE_SYSTEM_
- # flavours which are on by default:
- 
- option(FLV_FALLBACK "SETS FALLBACK FLAVOUR" ON)
--option(FLV_SSE42    "SETS SSE42 FLAVOUR"    OFF)
-+option(FLV_SSE42    "SETS SSE42 FLAVOUR"    ON)
- option(FLV_AVX      "SETS AVX FLAVOUR"      ON)
- option(FLV_AVX2     "SETS AVX2 FLAVOUR"     ON)
- option(FLV_AVX512f  "SETS AVX512f FLAVOUR"  ON)
-@@ -115,8 +115,8 @@ option(FLV_NATIVE   "SETS NATIVE FLAVOUR"   OFF)
+@@ -96,8 +96,8 @@ message(STATUS "***** SYSTEM PROCESSOR ${CMAKE_SYSTEM_
  set(i86 FALSE)
  
  if(UNIX OR APPLE)
@@ -20,3 +11,38 @@
  	  set(i86 TRUE)
    endif()
  elseif(WIN32)
+@@ -268,7 +268,7 @@ set(AVX2_FLAGS "${RENDERING_FLAGS} \
+ # about it and I don't have an AVX512 machine.
+ 
+ set(AVX512f_FLAGS "${RENDERING_FLAGS} \
+-  -mavx512f -march=skx \
++  -mavx512f -march=skylake-avx512 \
+   -D hn=hn_avx512 -D PV_ARCH=PV_AVX512f \
+   -D PV_ARCHNAME=\\\"avx512f\\\" \
+   -D PV_PRIORITY=0 -D PV_VIABILITY=has_avx512f -D FLV_AVX512f")
+@@ -553,9 +553,6 @@ install(TARGETS ${_project_name} DESTINATION bin)
+ # Copy the NotoSans-Regular font and the readme (as required by the license)
+ # to the platform-specific font directory
+ 
+-install(FILES NotoSans-Regular.ttf noto_font_license.txt DESTINATION
+- "${DataDir}/fonts")
+-
+ # KFJ 2022-08-24 simplified package versioning, only using a.b.c
+ 
+ set(LUX_PACKAGE_RELEASE "${pv_major}.${pv_minor}.${pv_patch}")
+@@ -618,15 +615,6 @@ install(FILES scripts/512X512/lux.png 
+ 
+ install(FILES scripts/1024X1024/lux.png
+         DESTINATION share/icons/hicolor/1024x1024/apps)
+-
+-install(FILES scripts/256X256/lux.png
+-        DESTINATION share/icons/gnome/256x256/apps)
+-
+-install(FILES scripts/512X512/lux.png 
+-        DESTINATION share/icons/gnome/512x512/apps)
+-
+-install(FILES scripts/1024X1024/lux.png
+-        DESTINATION share/icons/gnome/1024x1024/apps)
+ 
+ install(FILES scripts/lux.desktop 
+         DESTINATION share/applications)
