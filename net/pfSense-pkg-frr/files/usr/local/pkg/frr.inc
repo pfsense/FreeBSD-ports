@@ -864,6 +864,25 @@ function frr_config_sort_route_map() {
 	}
 }
 
+function frr_package_config_cleanup($area, $add0 = false) {
+	/* No area, nothing to do. */
+	if (empty($area)) {
+		return false;
+	}
+	$path = "installedpackages/{$area}/config";
+	if ($add0) {
+		$path .= "/0";
+	}
+	$conf = config_get_path($path, []);
+	/* If the path is empty or not an array, wipe out the area as it's
+	 * not valid and may break in various ways. */
+	if (empty($conf) || !is_array($conf)) {
+		config_del_path("installedpackages/{$area}");
+		return true;
+	}
+	return false;
+}
+
 /* Upgrade the FRR configuration to the latest format */
 function frr_package_config_upgrade() {
 	global $config;
@@ -875,39 +894,42 @@ function frr_package_config_upgrade() {
 		return null;
 	}
 
+	/* Clean up potentially broken old settings */
+	/* Areas that have the configuration under entry "0" */
+	$frr_config0_areas = array(
+		'frr', 'frrbfd', 'frrglobalraw', 'frrbgp', 'frrbgpadvanced',
+		'frrospf6d', 'frrospfd', 'frrripd'
+	);
+	/* Areas that do not use "0" */
+	$frr_config_areas = array(
+		'frrbfdpeers', 'frrbfdprofiles', 'frrbgpaspaths',
+		'frrbgpcommunities', 'frrbgpneighbors',
+		'frrbgprpkicacheservers', 'frrglobalroutemaps',
+		'frrospf6dinterfaces', 'frrospfd6areas', 'frrospfdareas',
+		'frrospfdinterfaces', 'frrospfdneighbors', 'frrripdinterfaces',
+		'frrripdneighbors'
+	);
+	/* Cleanup before starting */
+	foreach ($frr_config0_areas as $frr_area) {
+		if (frr_package_config_cleanup($frr_area, true)) {
+			$need_write = true;
+		}
+	}
+	foreach ($frr_config_areas as $frr_area) {
+		if (frr_package_config_cleanup($frr_area, false)) {
+			$need_write = true;
+		}
+	}
+
 	/* Populate FRR OSPF Settings */
 	$ospfd_conf              = config_get_path('installedpackages/frrospfd/config/0', []);
-	if (!is_array($ospfd_conf)) {
-		$ospfd_conf = [];
-	}
 	$ospf6d_conf             = config_get_path('installedpackages/frrospf6d/config/0', []);
-	if (!is_array($ospf6d_conf)) {
-		$ospf6d_conf = [];
-	}
 	$frr_acls_conf           = config_get_path('installedpackages/frrglobalacls/config', []);
-	if (!is_array($frr_acls_conf)) {
-		$frr_acls_conf = [];
-	}
 	$frr_prefixes_conf       = config_get_path('installedpackages/frrglobalprefixes/config', []);
-	if (!is_array($frr_prefixes_conf)) {
-		$frr_prefixes_conf = [];
-	}
 	$frr_routemap_conf       = config_get_path('installedpackages/frrglobalroutemaps/config', []);
-	if (!is_array($frr_routemap_conf)) {
-		$frr_routemap_conf = [];
-	}
 	$frr_ospfinterfaces_conf = config_get_path('installedpackages/frrospfdinterfaces/config', []);
-	if (!is_array($frr_ospfinterfaces_conf)) {
-		$frr_ospfinterfaces_conf = [];
-	}
 	$frr_areas_conf          = config_get_path('installedpackages/frrospfdareas/config', []);
-	if (!is_array($frr_areas_conf)) {
-		$frr_areas_conf = [];
-	}
 	$bgp_conf                = config_get_path('installedpackages/frrbgp/config/0', []);
-	if (!is_array($bgp_conf)) {
-		$bgp_conf = [];
-	}
 
 	/* Iterate old network list looking for items marked to not redistribute */
 	$dnrlist = array();
@@ -1101,6 +1123,18 @@ function frr_package_config_upgrade() {
 		config_set_path('installedpackages/frrospfdinterfaces/config', $frr_ospfinterfaces_conf);
 		config_set_path('installedpackages/frrospfdareas/config', $frr_areas_conf);
 		config_set_path('installedpackages/frrbgp/config/0', $bgp_conf);
+
+		/* Cleanup again before write */
+		foreach ($frr_config0_areas as $frr_area) {
+			if (frr_package_config_cleanup($frr_area, true)) {
+				$need_write = true;
+			}
+		}
+		foreach ($frr_config_areas as $frr_area) {
+			if (frr_package_config_cleanup($frr_area, false)) {
+				$need_write = true;
+			}
+		}
 
 		update_status("Saving changes ... ");
 		write_config('FRR: Upgraded Settings.');
