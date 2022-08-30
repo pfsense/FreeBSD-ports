@@ -4126,51 +4126,63 @@ function pfb_aliastables($mode) {
 function pfb_filterrules() {
 	global $pfb;
 
-	$rule_list		= array();
-	$rule_list['id']	= array();
-	$rule_list['other']	= array();
-	$rule_list['int']	= array();
+	$rule_list          = array();
+	$rule_list['id']    = array();
+	$rule_list['other'] = array();
+	$rule_list['int']   = array();
 
 	exec("{$pfb['pfctl']} -vvsr 2>&1", $results);
 	if (!empty($results)) {
 		foreach ($results as $result) {
 			if (substr($result, 0, 1) == '@') {
-
-				$r = explode(')', $result, 2);
-
-				// pfSense > v2.6 uses an 'ridentifier' string
-				if (strpos($result, 'ridentifier') != FALSE) {
-					$id = trim(strstr(strstr($r[1], 'ridentifier', FALSE), ' ', FALSE));
-				} else {
-					$id = ltrim(strstr($r[0], '(', FALSE), '(');
-				}
-
-				// Find rule descriptions and type for pfBlockerNG Tracker IDs
-				if (strpos($r[1], ' <pfB_') !== FALSE) {
-					$descr	= ltrim(stristr($r[1], '<pfb_', FALSE), '<');
-					$descr	= strstr($descr, ':', TRUE);
-					$type	= strstr(trim($r[1]), ' ', TRUE);
-					if ($type == 'match') {
-						$type = 'unkn(%u)';
+				$type   = strstr(ltrim(strstr($result, ' ', FALSE), ' '), ' ', TRUE);
+				if (in_array($type, array('block', 'pass', 'match'))) {
+					// Since pfSense CE 2.6 and pfSense Plus 22.01, pf rules use an 'ridentifier' string
+					if (strrpos($result, 'ridentifier') !== false) {
+						$id_begin_delim = 'ridentifier ';
+						$id_end_delim = ' ';
+					} elseif (strpos($result, '(') !== false && strpos($result, ')') !== false) {
+						$id_begin_delim = '(';
+						$id_end_delim = ')';
+					} else {
+						continue;
 					}
 
-					if (!is_array($rule_list[$id])) {
-						$rule_list[$id] = array();
+					// Get the rule ID
+					$id_begin_offset = strpos($result, $id_begin_delim) + strlen($id_begin_delim);
+					$id_end_offset = strpos($result, $id_end_delim, $id_begin_offset);
+					if ($id_end_offset !== FALSE) {
+						$id_length = $id_end_offset - $id_begin_offset;
+					} else {
+						$id_length = strlen($result) - $id_begin_offset;
 					}
+					$id = substr($result, $id_begin_offset, $id_length);
 
-					$rule_list['id'][]	= $id;
-					$rule_list[$id]['name']	= $descr;
-					$rule_list[$id]['type'] = $type;
-
-					$int = trim(strstr(trim(strstr(trim(strstr($r[1], ' on ', FALSE)), ' ', FALSE)), ' ', TRUE));
-					if (!empty($int)) {
-						 $rule_list['int'][$int] = '';
+					// Add the rule to the list
+					if (strpos($result, ' <pfB_') !== FALSE) {
+						$descr = ltrim(stristr($result, '<pfb_', FALSE), '<');
+						$descr = strstr($descr, ':', TRUE);
+						$type  = strstr(ltrim(strstr($result, ' ', FALSE), ' '), ' ', TRUE);
+						if ($type == 'match') {
+							$type = 'unkn(%u)';
+						}
+	
+						if (!is_array($rule_list[$id])) {
+							$rule_list[$id] = array();
+						}
+	
+						$rule_list['id'][]      = $id;
+						$rule_list[$id]['name'] = $descr;
+						$rule_list[$id]['type'] = $type;
+	
+						$int = strstr(ltrim(strstr($result, ' on ', FALSE), ' on '), ' ', TRUE);
+						if (!empty($int)) {
+							 $rule_list['int'][$int] = '';
+						}
+					} else {
+						// All other non-pfBlockerNG Tracker IDs
+						$rule_list['other'][$id] = '';
 					}
-				}
-
-				// All other non-pfBlockerNG Tracker IDs
-				else {
-					$rule_list['other'][$id] = '';
 				}
 			}
 		}
