@@ -1,6 +1,6 @@
---- Makefile.in.orig	2020-08-14 21:41:47 UTC
+--- Makefile.in.orig	2021-05-25 22:19:35 UTC
 +++ Makefile.in
-@@ -235,7 +235,7 @@ pythonmodules: subdirs
+@@ -234,7 +234,7 @@ pythoninstall:
          fi
  
  pythoninstall:
