@@ -2,7 +2,7 @@
 
 PORTNAME=	simplepie
 PORTVERSION=	1.5.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -21,6 +21,9 @@ GH_TAGNAME=	52f37fa510746ac988aa77bbf24595e11e07b863
 NO_MTREE=	yes
 NO_ARCH=	yes
 PLIST_FILES=	${WWWDIR}/simplepie.inc
+
+post-patch:
+	${FIND} ${WRKSRC} -name '*.bak' -delete -o -name '*.orig' -delete
 
 do-build:
 	cd ${WRKSRC} && ${PREFIX}/bin/php build/compile.php
