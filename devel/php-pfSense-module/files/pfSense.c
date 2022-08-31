@@ -3636,7 +3636,7 @@ PHP_FUNCTION(pfSense_pf_cp_get_eth_last_active) {
 
 	array_init(return_value);
 	for (int nr = 0; nr < info.nr; nr++) {
-		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, true, anchor_call) != 0)
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, 0, anchor_call) != 0)
 			goto error_out;
 		add_next_index_long(return_value, (zend_long)rule.last_active_timestamp);
 	}
