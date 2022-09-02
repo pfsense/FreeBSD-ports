@@ -3539,6 +3539,7 @@ PHP_FUNCTION(pfSense_pf_cp_get_eth_rule_counters) {
 	struct pfctl_eth_rule rule;
 	char anchor_call[MAXPATHLEN];
 	int dev = 0;
+	zval counter;
 
 	ZEND_PARSE_PARAMETERS_START(1, 1)
 		Z_PARAM_STRING(path, path_len)
@@ -3557,10 +3558,25 @@ PHP_FUNCTION(pfSense_pf_cp_get_eth_rule_counters) {
 		    anchor_call) != 0)
 			goto error_out;
 		if (rule.dnflags&PFRULE_DN_IS_PIPE) {
-			add_next_index_long(return_value, (zend_long)rule.packets[1]);
-			add_next_index_long(return_value, (zend_long)rule.bytes[1]);
-			add_next_index_long(return_value, (zend_long)rule.packets[0]);
-			add_next_index_long(return_value, (zend_long)rule.bytes[0]);
+			array_init(&counter);
+			add_next_index_long(&counter, (zend_long)rule.direction);
+			switch (rule.direction) {
+				case PF_IN:
+					add_next_index_long(&counter, (zend_long)rule.packets[1]);
+					add_next_index_long(&counter, (zend_long)rule.bytes[1]);
+					break;
+				case PF_OUT:
+					add_next_index_long(&counter, (zend_long)rule.packets[0]);
+					add_next_index_long(&counter, (zend_long)rule.bytes[0]);
+					break;
+				default:
+					add_next_index_long(&counter, (zend_long)rule.packets[1]);
+					add_next_index_long(&counter, (zend_long)rule.bytes[1]);
+					add_next_index_long(&counter, (zend_long)rule.packets[0]);
+					add_next_index_long(&counter, (zend_long)rule.bytes[0]);
+					break;
+			}
+			add_next_index_zval(return_value, &counter);
 		}
 	}
 
