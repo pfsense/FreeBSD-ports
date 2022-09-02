@@ -68,6 +68,7 @@ if ($_POST) {
 
 				if (empty($input_errors) && $res['changes']) {
 					wg_toggle_wireguard();
+					mark_subsystem_dirty($wgg['subsystems']['wg']);
 					$save_success = true;
 				}
 
@@ -106,7 +107,7 @@ include('head.inc');
 wg_print_service_warning();
 
 if ($save_success) {
-	print_info_box(gettext('The changes have been applied successfully.'), 'success');
+	//print_info_box(gettext('The changes have been applied successfully.'), 'success');
 }
 
 if (isset($_POST['apply'])) {

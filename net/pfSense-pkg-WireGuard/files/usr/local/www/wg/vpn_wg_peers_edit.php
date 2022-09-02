@@ -240,13 +240,13 @@ $section->addInput(new Form_StaticText(
 ));
 
 // Init the addresses array if necessary
-if (!is_array($pconfig['allowedips']['row']) || empty($pconfig['allowedips']['row'])) {
-
-	wg_init_config_arr($pconfig, array('allowedips', 'row', 0));
+if (!is_array($pconfig['allowedips'])
+    || !is_array($pconfig['allowedips']['row'])
+    || empty($pconfig['allowedips']['row'])) {
+		wg_init_config_arr($pconfig, array('allowedips', 'row', 0));
 	
-	// Hack to ensure empty lists default to /128 mask
-	$pconfig['allowedips']['row'][0]['mask'] = '128';
-	
+		// Hack to ensure empty lists default to /128 mask
+		$pconfig['allowedips']['row'][0]['mask'] = '128';
 }
 
 $last = count($pconfig['allowedips']['row']) - 1;

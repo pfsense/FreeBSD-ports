@@ -1009,6 +1009,10 @@ function wg_get_tunnel_networks($family = 'both') {
 	}
 
 	foreach ((array) $wgg['tunnels'] as $tunnel) {
+		if (!is_array($tunnel['addresses'])
+		    || !is_array($tunnel['addresses']['row']))
+				continue;
+
 		foreach ((array) $tunnel['addresses']['row'] as $address) {
 			$masked_address = "{$address['address']}/{$address['mask']}";
 

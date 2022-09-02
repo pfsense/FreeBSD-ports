@@ -646,6 +646,11 @@ function wg_tunnel_sync($tunnel_names, $restart_services = false, $resolve_endpo
 	// We need to destroy any rogue tunnels not created by pfSense
 	wg_destroy_rogue_tunnels();
 
+	// Handle the "apply to all" case
+	if (is_null($tunnel_names)
+	    || (count($tunnel_names) === 0))
+		    $tunnel_names = wg_get_configured_ifs();
+
 	// This is only necessary if the service is running
 	if (wg_is_service_running()) {
 		// Sync each tunnel
