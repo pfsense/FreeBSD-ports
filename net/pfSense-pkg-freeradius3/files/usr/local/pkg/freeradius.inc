@@ -534,21 +534,17 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersvlanid = $users['varusersvlanid'];
 
 			// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-			$varusersamountoftime = ($users['varusersamountoftime'] ?: '');
-			$varusersamountoftime = (int) $varusersamountoftime * 60;
+			$varusersamountoftime = ($users['varusersamountoftime'] ? (int) $users['varusersamountoftime'] * 60 : '');
 			$varuserspointoftime = $users['varuserspointoftime'];
 
 			// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-			$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets'] ?: '');
-			$varusersmaxtotaloctets = (int) $varusersmaxtotaloctets * 1024 * 1024;
+			$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets'] ? (int) $users['varusersmaxtotaloctets'] * 1024 * 1024 : '');
 			$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
 
 			// GUI uses Kbit but RADIUS needs bits so we do a multiplication
 			// Use 1000 (Kbit) and not 1024 (Kibibit) to match the division used by Captive Portal
-			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ?: '');
-			$varusersmaxbandwidthup = (int) $varusersmaxbandwidthup * 1000;
-			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ?: '');
-			$varusersmaxbandwidthdown = (int) $varusersmaxbandwidthdown * 1000;
+			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ? (int) $users['varusersmaxbandwidthup'] * 1000 : '');
+			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ? (int) $users['varusersmaxbandwidthdown'] * 1000 : '');
 
 			// Accounting-Interim-Interval - Must not be smaller than 60 and should be bigger than 600s
 			if (($users['varusersacctinteriminterval'] >= '0') && ($users['varusersacctinteriminterval'] < '60')) {
@@ -845,20 +841,16 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			$varmacsvlanid = $macs['varmacsvlanid'];
 
 			// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-			$varmacsamountoftime = ($macs['varmacsamountoftime'] ?: '');
-			$varmacsamountoftime = (int) $varmacsamountoftime * 60;
+			$varmacsamountoftime = ($macs['varmacsamountoftime'] ? (int) $macs['varmacsamountoftime'] * 60 : '');
 			$varmacspointoftime = $macs['varmacspointoftime'];
 
 			// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-			$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets'] ?: '');
-			$varmacsmaxtotaloctets = (int) $varmacsmaxtotaloctets * 1024 * 1024;
+			$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets'] ? (int) $macs['varmacsmaxtotaloctets'] * 1024 * 1024 : '');
 			$varmacsmaxtotaloctetstimerange = $macs['varmacsmaxtotaloctetstimerange'];
 
 			// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
-			$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup'] ?: '');
-			$varmacsmaxbandwidthup = (int) $varmacsmaxbandwidthup * 1024;
-			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ?: '');
-			$varmacsmaxbandwidthdown = (int) $varmacsmaxbandwidthdown * 1024;
+			$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup'] ? (int) $macs['varmacsmaxbandwidthup'] * 1024 : '');
+			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ? (int) $macs['varmacsmaxbandwidthdown'] * 1024 : '');
 
 			// Accounting-Interim-Interval
 			if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
