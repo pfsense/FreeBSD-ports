@@ -23,6 +23,8 @@
 require("guiconfig.inc");
 require("/usr/local/pkg/avahi/avahi.inc");
 
+$shortcut_section = 'avahi';
+
 if (!is_array($config['installedpackages']['avahi']['config'])) {
 	$config['installedpackages']['avahi']['config'] = array();
 }

@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Avahi
 PORTVERSION=	2.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -27,7 +27,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/avahi
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/avahi.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -37,6 +37,8 @@ do-install:
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_avahi.inc \
+		${STAGEDIR}${PREFIX}/www/shortcuts
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/avahi_settings.php \
 		${STAGEDIR}${PREFIX}/www
 
