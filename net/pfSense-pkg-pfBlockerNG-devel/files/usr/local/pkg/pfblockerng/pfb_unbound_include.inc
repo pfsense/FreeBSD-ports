@@ -50,7 +50,7 @@ if (isset($config['unbound']['python']) && !empty($config['unbound']['python_scr
 
 	// TO BE REMOVED AT FUTURE DATE:
 
-	// DNSBL Python mode is not compatable with dhcpleases binary code,
+	// DNSBL Python mode is not compatible with dhcpleases binary code,
 	// as it attempts to HUP the Unbound PID and will cause DNSBL Python mode to crash Unbound
 
 	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver DHCP Registration option has been disabled.
