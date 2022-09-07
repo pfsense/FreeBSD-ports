@@ -5,6 +5,7 @@ CATEGORIES=	security www pear
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class for generating CHAP packets
+WWW=		https://pear.php.net/package/Crypt_CHAP
 
 USES=		pear php
 USE_PHP=	mcrypt hash
