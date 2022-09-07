@@ -2596,7 +2596,7 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 		}
 		array_init(&array);
 		add_assoc_long(&array, "id", (long)r.nr);
-		//add_assoc_long(&array, "tracker", (long)r.ridentifier);
+		add_assoc_long(&array, "tracker", (long)r.ridentifier);
 		add_assoc_string(&array, "label", label);
 		add_assoc_zval(&array, "all_labels", &labels);
 		add_assoc_double(&array, "evaluations", (double)r.evaluations);
