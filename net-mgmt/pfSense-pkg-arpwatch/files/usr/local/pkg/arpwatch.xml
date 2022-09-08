@@ -25,13 +25,18 @@
 	]]>
 	</copyright>
 	<name>arpwatch</name>
-	<title>Arpwatch</title>
+	<title>Services/Arpwatch</title>
 	<include_file>/usr/local/pkg/arpwatch.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=arpwatch.xml</aftersaveredirect>
 	<menu>
 		<name>Arpwatch</name>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=arpwatch.xml</url>
+	</menu>
+	<menu>
+		<name>Arpwatch Database</name>
+		<section>Status</section>
+		<url>/arpwatch_database.php</url>
 	</menu>
 	<service>
 		<name>arpwatch</name>
