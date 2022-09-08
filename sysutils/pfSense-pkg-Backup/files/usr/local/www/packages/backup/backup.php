@@ -50,8 +50,8 @@ if ($_GET['act'] == "del") {
 
 if ($_GET['a'] == "download") {
 	if ($_GET['t'] == "backup") {
-
-		$i = 0;
+		/* assume no... */
+		$has_backup = false;
 		if (count($a_backup) > 0) {
 			/* Do NOT remove the trailing space after / from $backup_cmd below!!! */
 			$backup_cmd = "/usr/bin/tar --exclude {$backup_path} --create --verbose --gzip --file {$backup_path} --directory / ";
@@ -59,13 +59,22 @@ if ($_GET['a'] == "download") {
 				if ($ent['enabled'] == "true") {
 					$backup_cmd .= escapeshellarg($ent['path']) . ' ';
 				}
-				$i++;
+				$has_backup = true;
 			}
-			system($backup_cmd);
+			exec($backup_cmd, $out, $rc);
+			$has_backup = ($has_backup && ($rc === 0));
 		}
 
 		session_cache_limiter('public');
-		$fd = fopen("{$backup_path}", "rb");
+
+		/* bailout if there is nothing to download */
+		if ((!$has_backup
+		    && !file_exists($backup_path))
+			|| !($fd = fopen($backup_path, 'rb'))) {
+				header('Location: backup.php');
+				exit(0);
+		}
+
 		header("Content-Type: application/force-download");
 		header("Content-Type: binary/octet-stream");
 		header("Content-Type: application/download");
@@ -74,9 +83,12 @@ if ($_GET['a'] == "download") {
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 		header("Content-Length: " . filesize($backup_path));
+
+		/* read the file and emit to browser */
 		fpassthru($fd);
 
-		exit;
+		fclose($fd);
+		exit(0);
 	}
 }
 
@@ -90,6 +102,13 @@ if ($_GET['a'] == "other") {
 			header("Location: backup.php?savemsg=Restore+failed.+Backup+file+not+found.");
 		}
 		exit;
+	}
+}
+
+if ($_GET['a'] === 'other') {
+	if ($_GET['t'] === 'delete') {
+		unlink_if_exists($backup_path);
+		header('Location: backup.php');
 	}
 }
 
@@ -160,7 +179,7 @@ display_top_tabs($tab_array);
 				<tr>
 					<td>
 					The 'Backup' button compresses the directories that are listed below to /root/backup/pfsense.bak.tgz; after that it presents the file for download.<br />
-					If the backup file does not exist in /root/backup/pfsense.bak.tgz then the 'Restore' button will be hidden.
+					If the backup file does not exist in /root/backup/pfsense.bak.tgz then the 'Restore' and 'Delete' buttons will be hidden.
 					</td>
 				</tr>
 				<tr>
@@ -173,6 +192,10 @@ display_top_tabs($tab_array);
 								<button type="button" class="btn btn-warning" value="Restore" onclick="document.location.href='backup.php?a=other&amp;t=restore';">
 									<i class="fa fa-undo icon-embed-btn"></i>
 									Restore
+								</button>
+								<button type="button" class="btn btn-danger" value="Delete" target="_new" onclick="document.location.href='backup.php?a=other&amp;t=delete';">
+									<i class="fa fa-trash icon-embed-btn"></i>
+									Delete
 								</button>
 						<?php 	} ?>
 					</td>

@@ -21,20 +21,7 @@
  */
 
 function backup_sync_package() {
-	global $config;
-	if ($config['installedpackages']['backup']['config'] != "") {
-		foreach ($config['installedpackages']['backup']['config'] as $rowhelper) {
-			if ($rowhelper['enabled'] != "false") {
-				//$tmp_php = base64_decode($rowhelper['php']);
-				if (strlen($tmp_php) > 0) {
-					$tmp .= "// name: " . $rowhelper['name'] . " \n";
-					$tmp .= "// description: " . $rowhelper['description'] . " \n\n";
-					$tmp .= base64_decode($rowhelper['php']);
-					$tmp .= "\n";
-				}
-			}
-		}
-	}
+	// this was broken code.
 }
 
 function backup_install_command() {
