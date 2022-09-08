@@ -152,6 +152,9 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 }
 
 if (isset($id) && $a_certificates[$id]) {
+	array_init_path($a_certificates[$id], 'a_domainlist/item');
+	array_init_path($a_certificates[$id], 'a_actionlist/item');
+
 	$a_domains = $a_certificates[$id]['a_domainlist']['item'];
 	$a_actions = $a_certificates[$id]['a_actionlist']['item'];
 
