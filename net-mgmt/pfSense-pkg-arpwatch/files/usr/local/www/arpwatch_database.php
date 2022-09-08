@@ -17,23 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 require_once("guiconfig.inc");
 require_once("arpwatch.inc");
-
+$shortcut_section = 'arpwatch';
 $entries = arpwatch_get_database_entries();
-
-$pgtitle = array(gettext("Package"), gettext("Arpwatch"), gettext("Database"));
-
+$pgtitle = array(gettext('Status'), gettext('Arpwatch'), gettext('Database'));
 include("head.inc");
-
 $tab_array = array();
 $tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=arpwatch.xml");
 $tab_array[] = array(gettext("Database"), true, "/arpwatch_database.php");
-
 add_package_tabs("Arpwatch", $tab_array);
 display_top_tabs($tab_array);
-
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><h2 class="panel-title"><?=gettext('Database')?></h2></div>
@@ -69,5 +63,4 @@ display_top_tabs($tab_array);
             </tbody>
         </table>
 </div>
-
 <?php include("foot.inc"); ?>
