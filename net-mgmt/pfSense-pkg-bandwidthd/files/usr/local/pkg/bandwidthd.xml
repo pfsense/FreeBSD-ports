@@ -29,18 +29,18 @@
 	]]>
 	</copyright>
 	<name>bandwidthd</name>
-	<title>Diagnostics: Bandwidthd</title>
+	<title>Services/BandwidthD</title>
 	<include_file>/usr/local/pkg/bandwidthd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=bandwidthd.xml</aftersaveredirect>
 	<menu>
 		<name>BandwidthD</name>
-		<section>Diagnostics</section>
-		<url>/diag_bandwidthd.php</url>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=bandwidthd.xml</url>
 	</menu>
 	<menu>
-		<name>BandwidthD Settings</name>
-		<section>Diagnostics</section>
-		<url>/pkg_edit.php?xml=bandwidthd.xml</url>
+		<name>BandwidthD </name>
+		<section>Status</section>
+		<url>/status_bandwidthd.php</url>
 	</menu>
 	<service>
 		<name>bandwidthd</name>
@@ -50,13 +50,13 @@
 	</service>
 	<tabs>
 		<tab>
-			<text>Access BandwidthD</text>
-			<url>/diag_bandwidthd.php</url>
-		</tab>
-		<tab>
 			<text>Settings</text>
 			<url>/pkg_edit.php?xml=bandwidthd.xml</url>
 			<active/>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_bandwidthd.php</url>
 		</tab>
 	</tabs>
 	<advanced_options>enabled</advanced_options>

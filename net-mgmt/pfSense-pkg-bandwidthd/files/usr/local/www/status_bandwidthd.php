@@ -20,12 +20,14 @@
  */
 
 require_once("guiconfig.inc");
-$pgtitle = array(gettext("Diagnostics"), gettext("BandwidthD"));
+$shortcut_section = 'bandwidthd';
+$pgtitle = array(gettext('Status'), gettext('BandwidthD'));
 include("head.inc");
 
+
 $tab_array = array();
-$tab_array[] = array(gettext("Access BandwidthD"), true, "/diag_bandwidthd.php");
 $tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=bandwidthd.xml");
+$tab_array[] = array(gettext('Status'), true, '/status_bandwidthd.php');
 add_package_tabs("BandwidthD", $tab_array);
 display_top_tabs($tab_array);
 
