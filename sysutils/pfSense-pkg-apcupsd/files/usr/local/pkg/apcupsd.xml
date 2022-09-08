@@ -27,7 +27,8 @@
 	]]>
 	</copyright>
 	<name>Apcupsd</name>
-	<title>Services: Apcupsd</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/Apcupsd</title>
 	<addedit_string>Apcupsd configuration has been created/modified.</addedit_string>
 	<delete_string>Apcupsd configuration has been deleted.</delete_string>
 	<restart_command>/usr/local/etc/rc.d/apcupsd.sh restart</restart_command>
@@ -38,6 +39,11 @@
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=apcupsd.xml</url>
 	</menu>
+	<menu>
+		<name>Apcupsd </name>
+		<section>Status</section>
+		<url>/pkg_edit.php?xml=apcupsd.xml</url>
+	</menu>
 	<service>
 		<name>apcupsd</name>
 		<rcfile>apcupsd.sh</rcfile>
@@ -46,7 +52,7 @@
 	</service>
 	<tabs>
 		<tab>
-			<text>General</text>
+			<text>Settings</text>
 			<url>/pkg_edit.php?xml=apcupsd.xml</url>
 			<active/>
 		</tab>

@@ -23,7 +23,9 @@
 require("guiconfig.inc");
 require_once("/usr/local/pkg/apcupsd.inc");
 
-$pgtitle = array(gettext("Package"), gettext("Services: Apcupsd"), gettext("Status"));
+$shortcut_section = 'apcupsd';
+
+$pgtitle = array(gettext('Status'), gettext('Apcupsd'));
 include("head.inc");
 
 function puts($arg) {
