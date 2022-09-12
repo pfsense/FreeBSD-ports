@@ -29,7 +29,8 @@
 	]]>
 	</copyright>
 	<name>bind</name>
-	<title>BIND: DNS Settings</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/Bind</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<menu>
 		<name>BIND DNS Server</name>
@@ -41,7 +42,7 @@
 		<name>named</name>
 		<rcfile>named.sh</rcfile>
 		<executable>named</executable>
-		<description>Domain Name Service</description>
+		<description>Bind Domain Name Service</description>
 		<starts_on_sync></starts_on_sync>
 	</service>
 	<tabs>

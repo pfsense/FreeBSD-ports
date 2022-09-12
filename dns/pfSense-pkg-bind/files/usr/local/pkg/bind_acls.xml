@@ -27,9 +27,9 @@
  */
 	]]>
 	</copyright>
-	<name>bindacls</name>
-	<version>0.4.3</version>
-	<title>BIND: ACLs Settings</title>
+	<name>bind_acls</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/Bind</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
 		<tab>

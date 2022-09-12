@@ -28,8 +28,9 @@
  */
 	]]>
 	</copyright>
-	<name>bindsync</name>
-	<title>BIND: XMLRPC Sync</title>
+	<name>bind_sync</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/Bind</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
 		<tab>

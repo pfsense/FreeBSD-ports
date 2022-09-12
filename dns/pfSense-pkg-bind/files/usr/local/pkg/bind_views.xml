@@ -27,9 +27,9 @@
  */
 	]]>
 	</copyright>
-	<name>bindviews</name>
-	<version>0.4.3</version>
-	<title>BIND: Views Settings</title>
+	<name>bind_views</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/Bind</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
 		<tab>

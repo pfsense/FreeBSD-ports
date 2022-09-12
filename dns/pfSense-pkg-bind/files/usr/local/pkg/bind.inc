@@ -21,7 +21,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$shortcut_section = "bind";
 require_once("globals.inc");
 require_once("config.inc");
 require_once("util.inc");
