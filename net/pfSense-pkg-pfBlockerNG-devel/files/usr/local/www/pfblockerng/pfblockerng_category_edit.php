@@ -1269,11 +1269,11 @@ if ($gtype == 'ipv4') {
 
 if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 
-	$interfaces_list	= get_interface_list();
+	$interfaces_list	= get_configured_interface_list_by_realif();
 	$src_interfaces		= array('lo0' => 'Localhost');
 
 	foreach ($interfaces_list as $key => $value) {
-		$src_interfaces = array_merge(array($key => strtoupper($interfaces_list[$key]['friendly'])), $src_interfaces);
+		$src_interfaces = array_merge(array($key => convert_friendly_interface_to_friendly_descr($interfaces_list[$key])), $src_interfaces);
 	}
 	$src_interfaces = array_merge(array('' => 'Default'), $src_interfaces);
 	
