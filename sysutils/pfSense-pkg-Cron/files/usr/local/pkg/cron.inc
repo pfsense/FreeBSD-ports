@@ -20,8 +20,8 @@
  * limitations under the License.
  */
 
-require_once("pfsense-utils.inc");
-require_once("services.inc");
+require_once('pfsense-utils.inc');
+require_once('services.inc');
 
 function cron_sync_package() {
 	configure_cron();

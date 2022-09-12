@@ -26,7 +26,8 @@
  */
 	]]>
 	</copyright>
-	<name>cronsettings</name>
+	<name>cron</name>
+	<version>%%PKGVERSION%%</version>
 	<title>Cron Settings</title>
 	<include_file>/usr/local/pkg/cron.inc</include_file>
 	<menu>
@@ -36,9 +37,13 @@
 		<url>/packages/cron/cron.php</url>
 	</menu>
 	<custom_php_resync_config_command>
+	<![CDATA[
 		cron_sync_package();
+	]]>
 	</custom_php_resync_config_command>
 	<custom_delete_php_command>
+	<![CDATA[
 		cron_sync_package();
+	]]>
 	</custom_delete_php_command>
 </packagegui>
