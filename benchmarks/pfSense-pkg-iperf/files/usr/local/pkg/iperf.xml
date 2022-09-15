@@ -26,28 +26,27 @@
 	]]>
 	</copyright>
 	<name>iperf</name>
-	<title>iperf: Client</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Diagnostics/iperf</title>
 	<savetext>Run iperf client</savetext>
 	<saveicon>fa-rss</saveicon>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
-		<name>iperf Client</name>
-		<tooltiptext>Run iperf in client mode.</tooltiptext>
+		<name>iperf</name>
+		<tooltiptext>Access iperf</tooltiptext>
 		<section>Diagnostics</section>
 		<url>/pkg_edit.php?xml=iperf.xml</url>
-	</menu>
-	<menu>
-		<name>iperf Server</name>
-		<tooltiptext>Run iperf in server mode.</tooltiptext>
-		<section>Diagnostics</section>
-		<url>/pkg_edit.php?xml=iperfserver.xml</url>
 	</menu>
 	<service>
 		<name>iperf</name>
 		<executable>iperf3</executable>
-		<description>iperf Network Performance Testing Daemon/Client</description>
-		<stopcmd>mwexec("/usr/bin/killall iperf3");</stopcmd>
+		<description>iperf Network Performance Testing Daemon</description>
+		<stopcmd>
+		<![CDATA[
+			mwexec("/usr/bin/killall iperf3");
+		]]>
+		</stopcmd>
 	</service>
 	<tabs>
 		<tab>

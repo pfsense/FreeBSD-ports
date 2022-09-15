@@ -1,6 +1,7 @@
+/etc/inc/priv/iperf.priv.inc
 pkg/iperf.xml
 pkg/iperfserver.xml
-pkg/shortcuts/iperf.inc
-/etc/inc/priv/iperf.priv.inc
 %%DATADIR%%/info.xml
+www/shortcuts/pkg_iperf.inc
 @dir /etc/inc/priv
+@dir /etc/inc

@@ -26,7 +26,8 @@
 	]]>
 	</copyright>
 	<name>iperfserver</name>
-	<title>iperf: Server</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Diagnostics/iperf</title>
 	<savetext>Run iperf server</savetext>
 	<saveicon>fa-play-circle</saveicon>
 	<savebtnclass>btn-success</savebtnclass>
