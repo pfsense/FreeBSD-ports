@@ -107,8 +107,8 @@ if ($_POST) {
 				if (!empty($value)) {
 					$post					= pfb_filter($_POST['alt_' . $value], 1);
 					$value					= strtolower($value);		// config XML tag needs to be lowercase
-					$feed_alt_{$value}			= $post;
-					$fconfig['feed_alt_' . $value]		= $feed_alt_{$value};
+					$feed_alt_[$value]			= $post;
+					$fconfig['feed_alt_' . $value]		= $feed_alt_[$value];
 				}
 			}
 			$config_mod = TRUE;

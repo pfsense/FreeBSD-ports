@@ -417,7 +417,6 @@ if (isset($pconfig['log_view'])) {
 		clearstatcache(false, $pfb['log']);
 		ob_flush();
 		flush();
-		@fclose("{$pfb['log']}");
 	}
 }
 

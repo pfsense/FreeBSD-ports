@@ -3951,7 +3951,9 @@ if (!$alert_summary):
 				}
 			}
 		}
-		@fclose($handle);
+		if ($handle) {
+			@fclose($handle);
+		}
 		unlink_if_exists("{$pfb_log}.rev");
 
 		// Process DNS Reply log and generate output
