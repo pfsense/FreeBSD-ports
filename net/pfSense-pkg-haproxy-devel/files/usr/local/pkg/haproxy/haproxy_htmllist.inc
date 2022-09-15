@@ -43,7 +43,7 @@ class HaproxyHtmlList
 	public $fields_details = null;
 	public $keyfield = "";
 
-	public function HaproxyHtmlList($tablename, $fields) {
+	public function __construct($tablename, $fields) {
 		$this->tablename = $tablename;
 		$this->fields = $fields;
 	}
