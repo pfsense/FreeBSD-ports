@@ -849,7 +849,7 @@ function squid_validate_general($post, &$input_errors) {
 		$input_errors[] = 'Log location must not end with a / character.';
 	}
 
-	if ($post['log_dir']{0} != '/') {
+	if ($post['log_dir'][0] != '/') {
 		$input_errors[] = 'Log location must start with a / character.';
 	}
 
@@ -1051,7 +1051,7 @@ function squid_validate_cache($post, &$input_errors) {
 		$input_errors[] = 'Log location must not end with a / character.';
 	}
 
-	if ($post['harddisk_cache_location']{0} != '/') {
+	if ($post['harddisk_cache_location'][0] != '/') {
 		$input_errors[] = 'Log location must start with a / character.';
 	}
 
