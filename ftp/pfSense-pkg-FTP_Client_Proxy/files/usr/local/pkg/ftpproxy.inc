@@ -24,7 +24,7 @@ function sync_package_ftpproxy() {
 	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
 
 	/* Proxy is not enabled, kill the daemon and issue a filter reload. */
-	if ($cf["proxy_enable"] != "on") {
+	if ($cf["enable"] != "on") {
 		if (is_process_running("ftp-proxy")) { 
 			mwexec("/usr/bin/killall -9 ftp-proxy");
 		}
@@ -125,7 +125,7 @@ function ftpproxy_generate_rules($type) {
 	}
 
 	/* Proxy is not enabled, therefore, no rules/anchors. */
-	if ($cf["proxy_enable"] != "on") {
+	if ($cf["enable"] != "on") {
 		return;
 	}
 

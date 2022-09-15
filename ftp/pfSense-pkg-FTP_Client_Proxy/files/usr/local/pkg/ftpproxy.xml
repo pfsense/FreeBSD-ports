@@ -25,8 +25,9 @@
  */
 	]]>
 	</copyright>
-	<name>FTP Client Proxy</name>
-	<title>FTP Client Proxy</title>
+	<name>ftpclientproxy</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/FTP Client Proxy</title>
 	<aftersaveredirect>pkg_edit.php?xml=ftpproxy.xml</aftersaveredirect>
 	<include_file>/usr/local/pkg/ftpproxy.inc</include_file>
 	<menu>
@@ -49,7 +50,7 @@
 		</field>
 		<field>
 			<fielddescr>Proxy Enabled</fielddescr>
-			<fieldname>proxy_enable</fieldname>
+			<fieldname>enable</fieldname>
 			<description>Enable the FTP Proxy.</description>
 			<type>checkbox</type>
 			<default_value>off</default_value>
