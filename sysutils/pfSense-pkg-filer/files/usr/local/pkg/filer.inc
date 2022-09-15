@@ -31,67 +31,60 @@ function filer_text_area_decode($text) {
 	return preg_replace('/\r\n/', "\n", base64_decode($text));
 }
 
-function sync_package_filer($post = array()) {
+function filer_sync($post = array()) {
 	global $config, $g;
 	$update_conf = 0;
 
 	/* Loop on configured files. */
-	if ($config['installedpackages']['filer']['config'] != "") {
-		$count = 0;
-		foreach ($config['installedpackages']['filer']['config'] as $file) {
-			if ($file['filedata'] == "" && file_exists($file['fullfile'])) {
-				$config['installedpackages']['filer']['config'][$count]['filedata'] = base64_encode(file_get_contents($file['fullfile']));
-				$file['filedata'] = base64_encode(file_get_contents($file['fullfile']));
-				$update_conf++;
-			}
-			$count++;
-			if (!empty($post) && ($post['id'] != ($count - 1))) {
-				continue;
-			}
-			if (preg_match("/0?[0-7]{3}/", $file['mod'])) {
-				$mod = octdec($file['mod']);
-			} else {
-				$mod = 0644;
-			}
-
-			/* Write file. */
-
-			safe_mkdir(dirname($file['fullfile']));
-			file_put_contents($file['fullfile'], filer_text_area_decode($file['filedata']), LOCK_EX);
-			chmod($file['fullfile'], $mod);
-
-			/* Check if there is a script to run after file save. */
-			if (!empty($file['cmd'])) {
-				switch ($file['background']) {
-					case "background":
-						mwexec_bg($file['cmd']);
-						break;
-					case "foreground":
-						mwexec($file['cmd']);
-						break;
-					default:
-						break;
-				}
-			}
+	$count = 0;
+	foreach (config_get_path('installedpackages/filer/config', []) as $file) {
+		if ($file['filedata'] == "" && file_exists($file['fullfile'])) {
+			$config['installedpackages']['filer']['config'][$count]['filedata'] = base64_encode(file_get_contents($file['fullfile']));
+			$file['filedata'] = base64_encode(file_get_contents($file['fullfile']));
+			$update_conf++;
+		}
+		$count++;
+		if (!empty($post) && ($post['id'] != ($count - 1))) {
+			continue;
+		}
+		if (preg_match("/0?[0-7]{3}/", $file['mod'])) {
+			$mod = octdec($file['mod']);
+		} else {
+			$mod = 0644;
 		}
 
-		/* Write config if any file from filesystem was loaded. */
-		if ($update_conf > 0) {
-			write_config("Filer: Settings saved");
+		/* Write file. */
+		safe_mkdir(dirname($file['fullfile']));
+		file_put_contents($file['fullfile'], filer_text_area_decode($file['filedata']), LOCK_EX);
+		chmod($file['fullfile'], $mod);
+
+		/* Check if there is a script to run after file save. */
+		if (!empty($file['cmd'])) {
+			switch ($file['background']) {
+				case "background":
+					mwexec_bg($file['cmd']);
+					break;
+				case "foreground":
+					mwexec($file['cmd']);
+					break;
+				default:
+					break;
+			}
 		}
+	}
+
+	/* Write config if any file from filesystem was loaded. */
+	if ($update_conf > 0) {
+		write_config("Filer: Settings saved");
 	}
 	
 	filer_sync_on_changes();
 }
 
 function checkUnique($value) {
-	global $config;
-
-	if ($config['installedpackages']['filer']['config'] != "") {
-		foreach ($config['installedpackages']['filer']['config'] as $file) {
-			if ($file['fullfile'] == $value) {
-				return false;
-			}
+	foreach (config_get_path('installedpackages/filer/config', []) as $file) {
+		if ($file['fullfile'] == $value) {
+			return false;
 		}
 	}
 
@@ -113,13 +106,13 @@ function filer_validate_input($post, &$input_errors) {
 			if (!preg_match("@^[a-zA-Z0-9_/.-]+$@", $value)) {
 				$input_errors[] = "Do not use special characters in filename.";
 			}
-			if (!checkUnique($value)) {
-				$input_errors[] = $value . " is already managed by filer.";
+			if (($_REQUEST['act'] !== 'edit')
+			    && (!checkUnique($value))) {
+					$input_errors[] = $value . " is already managed by filer.";
 			}  
 		}
 	}
 }
-
 
 /* Uses XMLRPC to synchronize the changes to a remote node. */
 function filer_sync_on_changes() {
@@ -275,7 +268,6 @@ function filer_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 		/* Tell filer to reload our settings on the destination sync host. */
 		$method = 'pfsense.exec_php';
 
-
 		/* Assemble XMLRPC payload */
 		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
 		log_error("[filer] XMLRPC reload data {$url}:{$port}.");
@@ -298,5 +290,3 @@ function filer_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 		}
 	}
 }
-
-?>

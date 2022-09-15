@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Filer
 PORTVERSION=	0.60.6
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -32,6 +32,9 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/filer.inc ${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/filer.priv.inc ${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml ${STAGEDIR}${DATADIR}
-	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" ${STAGEDIR}${DATADIR}/info.xml
+	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
+		${STAGEDIR}${PREFIX}/pkg/filer.xml \
+		${STAGEDIR}${PREFIX}/pkg/filer_sync.xml \
+		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>

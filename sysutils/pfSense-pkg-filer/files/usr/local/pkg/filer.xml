@@ -26,7 +26,8 @@
 	]]>
 	</copyright>
 	<name>filer</name>
-	<title>Filer</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Diagnostics/Filer</title>
 	<include_file>/usr/local/pkg/filer.inc</include_file>
 	<menu>
 		<name>Filer</name>
@@ -87,10 +88,10 @@
 			<type>input</type>
 			<size>10</size>
 			<description>
-				<![CDATA[
+			<![CDATA[
 				Enter file permission you want on this file<br />
 				If left blank, default file permissions (0644) will be used.
-				]]>
+			]]>
 			</description>
 		</field>
 		<field>
@@ -129,12 +130,18 @@
 		</field>
 	</fields>
 	<custom_php_validation_command>
+	<![CDATA[
 		filer_validate_input($_POST, $input_errors);
+	]]>
 	</custom_php_validation_command>
 	<custom_delete_php_command>
-		sync_package_filer();
+	<![CDATA[
+		filer_sync();
+	]]>
 	</custom_delete_php_command> 
 	<custom_php_resync_config_command>
-		sync_package_filer($_POST);
+	<![CDATA[
+		filer_sync($_POST);
+	]]>
 	</custom_php_resync_config_command>
 </packagegui>

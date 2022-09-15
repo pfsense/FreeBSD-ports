@@ -27,8 +27,9 @@
  */
 	]]>
 	</copyright>
-	<name>filersync</name>
-	<title>Filer: Sync</title>
+	<name>filer_sync</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Diagnostics/Filer</title>
 	<include_file>/usr/local/pkg/filer.inc</include_file>
 	<tabs>
 		<tab>
@@ -50,11 +51,11 @@
 			<fielddescr>Enable Sync</fielddescr>
 			<fieldname>synconchanges</fieldname>
 			<description>
-				<![CDATA[
+			<![CDATA[
 				Select a sync method for Filer.<br/><br/>
 				<strong>Important:</strong> While using "Sync to host(s) defined below", only sync from host A to B, A to C but <strong>do not</strong> enable XMLRPC sync <b>to</b> A.
 				This will result in a loop!
-				]]>
+			]]>
 			</description>
 			<type>select</type>
 			<required/>
@@ -134,6 +135,8 @@
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
+	<![CDATA[
 		filer_sync_on_changes();
+	]]>
 	</custom_php_resync_config_command>
 </packagegui>
