@@ -27,7 +27,8 @@
 ##|-PRIV
 
 require("guiconfig.inc");
-require_once("mail_reports.inc");
+
+require_once('mailreport/mail_report.inc');
 
 $cmdid = $_REQUEST['cmdid'];
 $logid = $_REQUEST['logid'];
@@ -423,7 +424,7 @@ $allcount = 0;
 	</nav>
 </form>
 <?php else: ?>
-<?php print_info_box(gettext("Submit the report first, then items may be added."), 'warning'); ?>
+<?php print_info_box(gettext("Save the report first, then items may be added."), 'warning'); ?>
 <?php endif; ?>
 
 

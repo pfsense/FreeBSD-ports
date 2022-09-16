@@ -81,5 +81,3 @@ foreach ($thisreport['log']['row'] as $log) {
 if ($hascontent > 0 || empty($thisreport['skipifempty'])) {
 	mail_report_send($thisreport['descr'], $cmdtext, $logtext, $attach);
 }
-
-?>

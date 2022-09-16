@@ -25,6 +25,13 @@ require_once("config.inc");
 require_once("filter.inc");
 require_once("syslog.inc");
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require_once('mailreport/phpmailer/Exception.php');
+require_once('mailreport/phpmailer/PHPMailer.php');
+require_once('mailreport/phpmailer/SMTP.php');
+
 $logfile_friendly = array(
 	"auth"            => gettext("Authentication (General)"),
 	"bsdinstall_log"  => gettext("Installation"),
@@ -74,8 +81,6 @@ function set_mail_report_cron_jobs($a_mailreports) {
 		$config['cron']['item'][] = $cron_item;
 	}
 }
-
-include('phpmailer/PHPMailerAutoload.php');
 
 function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 	global $config, $g;
@@ -174,5 +179,3 @@ function get_friendly_log_name($logfile) {
 	}
 	return $friendly;
 }
-
-?>

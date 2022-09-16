@@ -28,7 +28,8 @@
 ##|-PRIV
 
 require("guiconfig.inc");
-require_once("mail_reports.inc");
+
+require_once('mailreport/mail_report.inc');
 
 $reportid = $_REQUEST['reportid'];
 $id = $_REQUEST['id'];

@@ -27,7 +27,8 @@
 ##|-PRIV
 
 require("guiconfig.inc");
-require_once("mail_reports.inc");
+
+require_once('mailreport/mail_report.inc');
 
 init_config_arr(array('mailreports', 'schedule'));
 $a_mailreports = &$config['mailreports']['schedule'];
@@ -106,6 +107,9 @@ include("head.inc");
 			} else {
 				$friendly = "-";
 			}
+
+			array_init_path($mailreport, 'cmd/row');
+			array_init_path($mailreport, 'log/row');
 ?>
 		<tr>
 			<td><input type="checkbox" id="frc<?=$i?>" name="reports[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>

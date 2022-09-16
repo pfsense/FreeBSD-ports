@@ -26,7 +26,8 @@
 		]]>
 	</copyright>
 	<name>mailreport</name>
-	<title>Status: Email Reports</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Status/Email Reports</title>
 	<menu>
 		<name>Email Reports</name>
 		<tooltiptext>Setup periodic email reports.</tooltiptext>
