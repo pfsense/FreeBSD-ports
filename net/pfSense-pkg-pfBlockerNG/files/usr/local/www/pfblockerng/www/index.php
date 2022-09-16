@@ -38,6 +38,9 @@ header("Expires: Sat, 26 Jul 2014 05:00:00 GMT");
 header("Content-Type: image/gif");
 echo base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==');
 
+if (strpos($_SERVER['HTTP_HOST'], ':') !== FALSE) {
+        $_SERVER['HTTP_HOST'] = strstr($_SERVER['HTTP_HOST'], ':', TRUE);
+}
 if (filter_var($_SERVER['HTTP_HOST'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) === FALSE) {
         exit;
 }
