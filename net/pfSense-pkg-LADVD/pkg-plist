@@ -1,6 +1,8 @@
-pkg/ladvd.xml
-pkg/ladvd.inc
 /etc/inc/priv/ladvd.priv.inc
-www/status_ladvd.php
+pkg/ladvd.inc
+pkg/ladvd.xml
 %%DATADIR%%/info.xml
+www/shortcuts/pkg_ladvd.inc
+www/status_ladvd.php
 @dir /etc/inc/priv
+@dir /etc/inc

@@ -26,10 +26,9 @@
  */
 	]]>
 	</copyright>
-	<description>Link Layer Discovery Protocol</description>
-	<name>LADVD</name>
-	<category>Network Management</category>
-	<title>Services: LADVD</title>
+	<name>ladvd</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/LADVD</title>
 	<include_file>/usr/local/pkg/ladvd.inc</include_file>
 	<menu>
 		<name>LADVD</name>
@@ -38,8 +37,8 @@
 		<url>/pkg_edit.php?xml=ladvd.xml</url>
 	</menu>
 	<menu>
-		<name>LADVD Status</name>
-		<tooltiptext></tooltiptext>
+		<name>LADVD </name>
+		<tooltiptext>Viwe LADVD status.</tooltiptext>
 		<section>Status</section>
 		<url>/status_ladvd.php</url>
 	</menu>
@@ -51,7 +50,7 @@
 	</service>
 	<tabs>
 		<tab>
-			<text>General</text>
+			<text>Settings</text>
 			<url>/pkg_edit.php?xml=ladvd.xml</url>
 			<active/>
 		</tab>
@@ -134,5 +133,9 @@
 			<type>checkbox</type>
 		</field>
 	</fields>
-	<custom_php_resync_config_command>ladvd_resync_config();</custom_php_resync_config_command>
+	<custom_php_resync_config_command>
+	<![CDATA[
+		ladvd_resync_config();
+	]]>
+	</custom_php_resync_config_command>
 </packagegui>
