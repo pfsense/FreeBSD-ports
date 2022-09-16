@@ -96,6 +96,7 @@ if ($_POST) {
 	}
 }
 
+$shortcut_section = 'lcdproc';
 
 $pgtitle = array(gettext("Services"), gettext("LCDproc"), gettext("Screens"));
 include("head.inc");

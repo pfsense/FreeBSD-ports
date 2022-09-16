@@ -1392,11 +1392,11 @@ while ($lcdproc_connect_errors <= $lcdproc_max_connect_errors) {
 	lcdproc_warn("Start client procedure. Error counter: ($lcdproc_connect_errors)");
 	sleep(1);
 	$lcd = fsockopen(LCDPROC_HOST, LCDPROC_PORT, $errno, $errstr, 10);
-	stream_set_timeout($lcd, 0 , 25000); // Sets the socket timeout as 25ms
 	if (!$lcd) {
 		lcdproc_warn("Failed to connect to LCDd process $errstr ($errno)");
 		$lcdproc_connect_errors++;
 	} else {
+		stream_set_timeout($lcd, 0 , 25000); // Sets the socket timeout as 25ms
 		/* Allow the script to run forever (0) */
 		set_time_limit(0);
 		build_interface($lcd);

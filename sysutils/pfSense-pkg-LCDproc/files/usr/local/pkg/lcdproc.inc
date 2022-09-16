@@ -567,5 +567,3 @@ function set_lcd_value($fieldname, $max, $default_value) {
 	}
 	return $returnvalue;
 }
-
-?>

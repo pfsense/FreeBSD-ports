@@ -27,9 +27,9 @@
  */
 	]]>
 	</copyright>
-	<title>Services: LCDproc</title>
 	<name>lcdproc</name>
 	<version>%%PKGVERSION%%</version>
+	<title>Services/LCDProc</title>
 	<include_file>/usr/local/pkg/lcdproc.inc</include_file>
 	<menu>
 		<name>LCDproc</name>
@@ -41,12 +41,6 @@
 		<name>lcdproc</name>
 		<rcfile>lcdproc.sh</rcfile>
 		<executable>LCDd</executable>
-		<description>LCD Driver</description>
+		<description>LCDProc Daemon</description>
 	</service>
-	<custom_php_validation_command>
-		validate_form_lcdproc($_POST, $input_errors);
-	</custom_php_validation_command>
-	<custom_php_resync_config_command>
-		sync_package_lcdproc();
-	</custom_php_resync_config_command>
 </packagegui>

@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-LCDproc
 PORTVERSION=	0.10.8
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -28,6 +28,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/packages/lcdproc
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/lcdproc.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -43,12 +44,14 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/packages/lcdproc
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/lcdproc/index.php \
 		${STAGEDIR}${PREFIX}/www/packages/lcdproc
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_lcdproc.inc \
+		${STAGEDIR}${PREFIX}/www/shortcuts
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/lcdproc.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
-		${STAGEDIR}${DATADIR}/info.xml \
-		${STAGEDIR}${PREFIX}/pkg/lcdproc.xml
+		${STAGEDIR}${PREFIX}/pkg/lcdproc.xml \
+		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
