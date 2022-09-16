@@ -27,7 +27,8 @@
 	]]>
 	</copyright>
 	<name>tftpd</name>
-	<title>TFTP server</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/TFTP Server</title>
 	<include_file>/usr/local/pkg/tftpd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=tftpd.xml</aftersaveredirect>
 	<menu>
@@ -39,7 +40,7 @@
 		<name>tftpd</name>
 		<rcfile>tftpd.sh</rcfile>
 		<executable>in.tftpd</executable>
-		<description>TFTP daemon</description>
+		<description>TFTP Daemon</description>
 	</service>
 	<tabs>
 		<tab>
@@ -55,7 +56,7 @@
 	<fields>
 		<field>
 			<fielddescr>Enable TFTP service</fielddescr>
-			<fieldname>tftpd_enable</fieldname>
+			<fieldname>enable</fieldname>
 			<description>Check to enable the TFTP service.</description>
 			<type>checkbox</type>
 		</field>
@@ -108,15 +109,23 @@
 		</field>
 	</fields>
 	<custom_php_install_command>
+	<![CDATA[
 		install_package_tftpd();
+	]]>
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
+	<![CDATA[
 		deinstall_package_tftpd();
+	]]>
 	</custom_php_deinstall_command>
 	<custom_php_resync_config_command>
+	<![CDATA[
 		sync_package_tftpd();
+	]]>
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
+	<![CDATA[
 		validate_form_tftpd($_POST, $input_errors);
+	]]>
 	</custom_php_validation_command>
 </packagegui>

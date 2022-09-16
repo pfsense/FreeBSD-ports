@@ -1,7 +1,8 @@
 /etc/inc/priv/tftpd.priv.inc
 pkg/tftpd.inc
 pkg/tftpd.xml
-www/tftp_files.php
 %%DATADIR%%/info.xml
+www/shortcuts/pkg_tftpd.inc
+www/tftp_files.php
 @dir /etc/inc/priv
 @dir /etc/inc

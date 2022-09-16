@@ -26,6 +26,8 @@ require_once("notices.inc");
 require_once("util.inc");
 require_once("/usr/local/pkg/tftpd.inc");
 
+$shortcut_section = 'tftpd';
+
 /* Trigger full backup creation */
 if ($_GET['a'] == "other" && $_GET['t'] == "backup") {
 	tftp_create_backup();
