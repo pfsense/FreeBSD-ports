@@ -26,7 +26,7 @@
 	]]>
 	</copyright>
 	<name>arping</name>
-	<title>Diagnostics: ARPing</title>
+	<title>Diagnostics/ARPing</title>
 	<savetext>Run ARPing</savetext>
 	<saveicon>fa-rss</saveicon>
 	<savebtnclass>btn-primary</savebtnclass>
@@ -63,6 +63,8 @@
 		</field>
 	</fields>
 	<custom_add_php_command>
+	<![CDATA[]
 		arping_package_php_command();
+	]]>
 	</custom_add_php_command>
 </packagegui>
