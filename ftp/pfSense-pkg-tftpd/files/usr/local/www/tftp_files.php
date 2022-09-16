@@ -104,7 +104,7 @@ if ($_GET['act'] == "del") {
 	}
 }
 
-$pgtitle = array("Package", "TFTP server", "Files");
+$pgtitle = array(gettext('Services'), gettext('TFTP Server'), gettext('Files'));
 require_once("head.inc");
 $savemsg = htmlspecialchars($_GET["savemsg"]);
 $result = htmlspecialchars($_GET["result"]) ?: 'success';
