@@ -26,7 +26,8 @@
 	]]>
 	</copyright>
 	<name>mtr</name>
-	<title>Diagnostics: mtr</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Diagnostics/mtr</title>
 	<savetext>Run mtr</savetext>
 	<saveicon>fa-rss</saveicon>
 	<preoutput>yes</preoutput>

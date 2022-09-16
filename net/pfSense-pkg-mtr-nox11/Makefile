@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-mtr-nox11
 PORTVERSION=	0.85.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -35,6 +35,7 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
+		${STAGEDIR}${PREFIX}/pkg/mtr-nox11.xml \
 		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
