@@ -3859,6 +3859,7 @@ if (!$alert_summary):
 
 	<?php
 		// Create Unified Report
+		$handle = FALSE;
 		if ($logtype == 'Unified' && file_exists("{$pfb_log}")) {
 	?>
 			<thead>

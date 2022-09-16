@@ -3431,7 +3431,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 				}
 
 				// Collect RFC7231 http status code
-				$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				$http_status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 
 				if (isset($pfb['rfc7231'][$http_status])) {
 					if ($logtype < 3) {
@@ -3468,7 +3468,8 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 		return TRUE;
 	}
 
-	if ($http_status == '200 OK' || $http_status == '226') {
+	$status_code = substr($http_status, 0, 3);
+	if ($status_code == '200' || $status_code == '226') {
 		// Collect file mime-type
 		$file_type = exec("/usr/bin/file -b --mime-type {$file_dwn}.raw 2>&1");
 		unset($retval);
