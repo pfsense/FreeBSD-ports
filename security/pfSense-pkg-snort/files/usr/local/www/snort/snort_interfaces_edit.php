@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
@@ -36,10 +36,7 @@ if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	sort($netmapifs);
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_rule = &$config['installedpackages']['snortglobal']['rule'];
+$a_rule = &config_get_path('installedpackages/snortglobal/rule');
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -59,20 +56,25 @@ if ($_REQUEST['ajax']) {
 	$type = $_REQUEST['type'];
 
 	if (isset($id) && isset($wlist)) {
-		$rule = $config['installedpackages']['snortglobal']['rule'][$id];
-		if ($type == "homenet") {
+		$rule = config_get_path("installedpackages/snortglobal/rule/{$id}");
+		if ($rule && $type == "homenet") {
 			$list = snort_build_list($rule, empty($wlist) ? 'default' : $wlist);
 			$contents = implode("\n", $list);
 		}
-		elseif ($type == "passlist") {
+		elseif ($rule && $type == "passlist") {
 			$list = snort_build_list($rule, $wlist, true);
 			$contents = implode("\n", $list);
 		}
-		elseif ($type == "suppress") {
+		elseif ($rule && $type == "suppress") {
 			$list = snort_find_list($wlist, $type);
-			$contents = str_replace("\r", "", base64_decode($list['suppresspassthru']));
+			if (!empty($list)) {
+				$contents = str_replace("\r", "", base64_decode($list['suppresspassthru']));
+			}
+			else {
+				$contents = gettext("The Suppress List is empty.");
+			}
 		}
-		elseif ($type == "externalnet") {
+		elseif ($rule && $type == "externalnet") {
 			if (empty($wlist) || $wlist == "default") {
 				$list = snort_build_list($rule, $rule['homelistname']);
 				$contents = "";
@@ -103,7 +105,7 @@ else
 	$action = "";
 
 $pconfig = array();
-if (empty($config['installedpackages']['snortglobal']['rule'][$id]['uuid'])) {
+if (empty(config_get_path("installedpackages/snortglobal/rule/{$id}/uuid"))) {
 	/* Adding new interface, so generate a UUID and flag the rules to build. */
 	$pconfig['uuid'] = snort_generate_id();
 	$rebuild_rules = true;
@@ -567,15 +569,14 @@ if ($_POST['save'] && !$input_errors) {
 }
 
 function snort_get_config_lists($lists) {
-	global $config;
 
 	// This returns the array of lists identified by $lists
 	// stored in the config file if one exists.  Always
 	// return at least the single entry, "default".
 	$result = array();
 	$result['default'] = 'default';
-	if (is_array($config['installedpackages']['snortglobal'][$lists]['item'])) {
-		foreach ($config['installedpackages']['snortglobal'][$lists]['item'] as $v)
+	if (config_get_path("installedpackages/snortglobal/{$lists}/item")) {
+		foreach (config_get_path("installedpackages/snortglobal/{$lists}/item") as $v)
 		$result[$v['name']] = gettext($v['name']);
 	}
 	return $result;
@@ -600,7 +601,7 @@ if ($savemsg) {
 }
 
 // If using Inline IPS, check that CSO, TSO and LRO are all disabled
-if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
+if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!config_path_enabled('system', 'disablechecksumoffloading') || !config_path_enabled('system', 'disablesegmentationoffloading') || !config_path_enabled('system', 'disablelargereceiveoffloading'))) {
 	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
 				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
 			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));

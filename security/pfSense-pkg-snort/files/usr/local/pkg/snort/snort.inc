@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -125,12 +125,10 @@ function snort_get_blocked_ips() {
 }
 
 function snort_generate_id() {
-	global $config;
 
-	$snortglob = $config['installedpackages']['snortglobal']['rule'];
 	while (true) {
 		$snort_uuid = mt_rand(1, 65535);
-		foreach ($snortglob as $value) {
+		foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
 			if ($value['uuid'] == $snort_uuid)
 				continue 2;
 		}
@@ -163,15 +161,11 @@ function snort_load_suppress_sigs($snortcfg, $track_by=false) {
 
 	$suppress = array();
 
-	if (!is_array($config['installedpackages']['snortglobal']))
+	if (!config_get_path('installedpackages/snortglobal/suppress/item'))
 		return;
-	if (!is_array($config['installedpackages']['snortglobal']['suppress']))
-		return;
-	if (!is_array($config['installedpackages']['snortglobal']['suppress']['item']))
-		return;
-	$a_suppress = $config['installedpackages']['snortglobal']['suppress']['item'];
-
-	foreach ($a_suppress as $a_id => $alist) {
+//	$a_suppress = $config['installedpackages']['snortglobal']['suppress']['item'];
+//	foreach ($a_suppress as $a_id => $alist) {
+	foreach (config_get_path('installedpackages/snortglobal/suppress/item') as $a_id => $alist) {
 		if ($alist['name'] == $snortcfg['suppresslistname']) {
 			if (!empty($alist['suppresspassthru'])) {
 				$tmplist = str_replace("\r", "", base64_decode($alist['suppresspassthru']));
@@ -245,19 +239,14 @@ function snort_load_suppress_sigs($snortcfg, $track_by=false) {
 	return $suppress;
 }
 
-/* func builds custom white lists */
+/* func finds custom lists by name and type (defaults to 'whitelist') */
 function snort_find_list($find_name, $type = 'whitelist') {
-	global $config;
 
-	$snortglob = $config['installedpackages']['snortglobal'];
-	if (!is_array($snortglob[$type]))
-		return "";
-	if (!is_array($snortglob[$type]['item']))
-		return "";
-
-	foreach ($snortglob[$type]['item'] as $value) {
-		if ($value['name'] == $find_name)
-			return $value;
+	if (config_get_path("installedpackages/snortglobal/{$type}/item") ) {
+		foreach (config_get_path("installedpackages/snortglobal/{$type}/item") as $value) {
+			if ($value['name'] == $find_name)
+				return $value;
+		}
 	}
 
 	return array();
@@ -4290,26 +4279,26 @@ function snort_get_vpns_list() {
 		require_once("ipsec.inc");
 	}
 	if (ipsec_enabled()) {
-		if (is_array($config['ipsec']['client']) && isset($config['ipsec']['client']['enable'])) {
+		if (config_get_path('ipsec/client') && config_get_enabled('ipsec/client')) {
 			/* Virtual Address Pool */
-			if (isset($config['ipsec']['client']['pool_address']) &&
-			    isset($config['ipsec']['client']['pool_netbits'])) {
-				$client_subnet = "{$config['ipsec']['client']['pool_address']}/{$config['ipsec']['client']['pool_netbits']}";
+			if (config_get_enabled('ipsec/client', 'pool_address') &&
+			    config_get_enabled('ipsec/client', 'pool_netbits')) {
+				$client_subnet = config_get_path('ipsec/client/pool_address') . '/' . config_get_path('ipsec/client/pool_netbits');
 				if (is_subnetv4($client_subnet)) {
 					 $vpns_arr[] = $client_subnet;
 				}
 			}
 			/* Virtual IPv6 Address Pool */
-			if (isset($config['ipsec']['client']['pool_address_v6']) &&
-			    isset($config['ipsec']['client']['pool_netbits_v6'])) {
-				$client_subnet = "{$config['ipsec']['client']['pool_address_v6']}/{$config['ipsec']['client']['pool_netbits_v6']}";
+			if (config_get_enabled('ipsec/client', 'pool_address_v6') &&
+			    config_get_enabled('ipsec/client', 'pool_netbits_v6')) {
+				$client_subnet = config_get_path('ipsec/client/pool_address_v6') . '/' . config_get_path('ipsec/client/pool_netbits_v6');
 				if (is_subnetv6($client_subnet)) {
 					$vpns_arr[] = text_to_compressed_ip6($client_subnet);
 				}
 			}
 			/* Mobile warriors */
-			if (isset($config['ipsec']['mobilekey'])) {
-				foreach ($config['ipsec']['mobilekey'] as $key) {
+			if (config_path_enabled('ipsec', 'mobilekey')) {
+				foreach (config_get_patch('ipsec/mobilekey') as $key) {
 					if (!empty($key['pool_address']) &&
 					    !empty($key['pool_netbits'])) {
 						$vpns_subnet = "{$key['pool_address']}/{$key['pool_netbits']}";
@@ -4321,8 +4310,8 @@ function snort_get_vpns_list() {
 			}
 		}
 		/* Site-to-Site IPsec */
-		if (is_array($config['ipsec']['phase2'])) {
-			foreach ($config['ipsec']['phase2'] as $ph2ent) {
+		if (config_get_path('ipsec/phase2')) {
+			foreach (config_get_path('ipsec/phase2') as $ph2ent) {
 				if ((!$ph2ent['mobile']) && ($ph2ent['mode'] != 'transport') &&
 				    !isset($ph2ent['disabled'])) {
 					if (!is_array($ph2ent['remoteid'])) {
@@ -4342,10 +4331,10 @@ function snort_get_vpns_list() {
 	}
 	/* OpenVPN */
 	foreach (array('client', 'server') as $type) {
-		if (is_array($config['openvpn']["openvpn-$type"])) {
-			foreach ($config['openvpn']["openvpn-$type"] as $settings) {
+		if (config_get_path("openvpn/openvpn-{$type}")) {
+			foreach (config_get_path("openvpn/openvpn-{$type}") as $settings) {
 				if (is_array($settings)) {
-					if (!isset($settings['disable'])) {
+					if (!config_path_enabled($settings, 'disable')) {
 						$remote_networks = explode(',', $settings['remote_network']);
 						foreach ($remote_networks as $remote_network) {
 							if (function_exists('openvpn_gen_tunnel_network')) {
@@ -4380,9 +4369,8 @@ function snort_get_vpns_list() {
 		}
 	}
 	// OpenVPN CSO
-	init_config_arr(array('openvpn', 'openvpn-csc'));
-	foreach ($config['openvpn']['openvpn-csc'] as $ovpnent) {
-		if (is_array($ovpnent) && !isset($ovpnent['disable'])) {
+	foreach (config_get_path('openvpn/openvpn-csc') as $ovpnent) {
+		if (is_array($ovpnent) && !config_path_enabled($ovpnent, 'disable')) {
 			if (!empty($ovpnent['tunnel_network'])) {
 				if (function_exists('openvpn_gen_tunnel_network')) {
 					$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($ovpnent['tunnel_network']));
@@ -4400,8 +4388,8 @@ function snort_get_vpns_list() {
 		}
 	}
 	/* PPPoE Server */
- 	if (is_array($config['pppoes']['pppoe'])) {
-		foreach ($config['pppoes']['pppoe'] as $pppoe) {
+ 	if (config_get_path('pppoes/pppoe')) {
+		foreach (config_get_path('pppoes/pppoe') as $pppoe) {
 			if ($pppoe['mode'] == "server") {
 				if (is_ipaddrv4($pppoe['remoteip'])) {
 					$pppoesub = gen_subnetv4($pppoe['remoteip'], $pppoe['pppoe_subnet']);
@@ -4413,8 +4401,8 @@ function snort_get_vpns_list() {
 		}
 	}
 	/* L2TP Server */
-	if ($config['l2tp']['mode'] == "server") {
-		$l2tp_net = "{$config['l2tp']['remoteip']}/{$config['l2tp']['l2tp_subnet']}";
+	if (config_get_path('l2tp/mode') == "server") {
+		$l2tp_net = config_get_path('l2tp/remoteip') . '/' . config_get_path('l2tp/l2tp_subnet');
 		if (is_subnetv4($l2tp_net)) {
 			$vpns_arr[] = $l2tp_net;
 		}
