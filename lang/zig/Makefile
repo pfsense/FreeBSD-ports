@@ -1,7 +1,7 @@
 PORTNAME=	zig
 PORTREVISION=	1
 DISTVERSION=	0.9.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	https://ziglang.org/download/${DISTVERSION}/ \
 		https://ziglang.org/builds/
