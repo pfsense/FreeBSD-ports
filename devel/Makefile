@@ -1120,6 +1120,7 @@
     SUBDIR += libcbor
     SUBDIR += libccid
     SUBDIR += libcdb
+    SUBDIR += libcds
     SUBDIR += libcfu
     SUBDIR += libchipcard
     SUBDIR += libcidr
@@ -5135,6 +5136,7 @@
     SUBDIR += py-pytest-mutagen
     SUBDIR += py-pytest-mypy
     SUBDIR += py-pytest-nunit
+    SUBDIR += py-pytest-parallel
     SUBDIR += py-pytest-pep8
     SUBDIR += py-pytest-plus
     SUBDIR += py-pytest-profiling
@@ -7206,6 +7208,7 @@
     SUBDIR += sope
     SUBDIR += sope2
     SUBDIR += sord
+    SUBDIR += spark
     SUBDIR += sparsebitset
     SUBDIR += sparsehash
     SUBDIR += spatialindex

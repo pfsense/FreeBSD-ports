@@ -3567,6 +3567,8 @@ create-users-groups:
 .      endif
 .    endif
 
+_WWW=	${WWW:[1]}
+
 .    if !defined(DISABLE_SECURITY_CHECK)
 .      if !target(security-check)
 security-check: ${TMPPLIST}

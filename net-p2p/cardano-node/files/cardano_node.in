@@ -96,7 +96,7 @@ command=%%PREFIX%%/bin/cardano-node
 
 cardano_deployment_url="https://raw.githubusercontent.com/cardano-bsd-alliance/freebsd-ports-cardano-artifacts/master/cardano-node"
 cardano_config_files="config byron-genesis shelley-genesis alonzo-genesis topology submit-api-config"
-cardano_networks="mainnet testnet"
+cardano_networks="mainnet preview preprod"
 
 start_cmd="cardano_node_start"
 start_precmd="cardano_node_prestart"
@@ -135,7 +135,13 @@ jail_root="${_home}/jail"
 jail_topology="/topology_dir/`basename ${_topology}`"
 jail_config="/config_dir/`basename ${_config}`"
 jail_socket="/socket/`basename ${_socket}`"
-jail_cmd="jail -c name=${name}_jail path=${jail_root} exec.jail_user=cardano exec.system_jail_user ip4=inherit ip6=inherit host=inherit"
+jail_ip6_arg=""
+sysctl -q kern.features.inet6 2> /dev/null
+if [ "$?" = "0" ]
+then
+    jail_ip6_arg="ip6=inherit"
+fi
+jail_cmd="jail -c name=${name}_jail path=${jail_root} exec.jail_user=cardano exec.system_jail_user ip4=inherit ${jail_ip6_arg} host=inherit"
 
 pidfile="/var/run/${name}.pid"
 flags="run +RTS ${_rts_flags} -RTS \

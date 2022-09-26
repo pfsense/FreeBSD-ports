@@ -1,10 +1,6 @@
 PORTNAME=	treesheets
-DISTVERSION=	1.0.20220909
-PORTREVISION=	1
+DISTVERSION=	1.0.20220917
 CATEGORIES=	deskutils
-
-PATCH_SITES=	https://github.com/aardappel/treesheets/commit/
-PATCHFILES=	927f542abcca8000f8019dda6215e54938c8e457.patch:-p1 # https://github.com/aardappel/treesheets/issues/260
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Free form data organizer
@@ -17,8 +13,10 @@ USES=		cmake compiler:c++17-lang desktop-file-utils gettext gnome
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aardappel
-GH_TAGNAME=	3025803779
+GH_TAGNAME=	3074091860
 USE_WX=		3.1
+
+PORTSCOUT=	ignore:1 # upstream uses CI run ids as releases
 
 PORTDATA=	images scripts
 PORTDOCS=	docs readme.html

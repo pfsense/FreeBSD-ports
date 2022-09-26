@@ -1,6 +1,6 @@
 PORTNAME=	gdu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.16.0
+DISTVERSION=	5.18.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -18,14 +18,14 @@ GH_TUPLE=	davecgh:go-spew:v1.1.1:davecgh_go_spew/vendor/github.com/davecgh/go-sp
 		fsnotify:fsnotify:v1.5.4:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
 		gdamore:encoding:v1.0.0:gdamore_encoding/vendor/github.com/gdamore/encoding \
 		gdamore:tcell:v2.5.1:gdamore_tcell_v2/vendor/github.com/gdamore/tcell/v2 \
-		go-ini:ini:v1.67.0:go_ini_ini/vendor/gopkg.in/ini.v1 \
-		go-yaml:yaml:v2.4.0:go_yaml_yaml/vendor/gopkg.in/yaml.v2 \
-		go-yaml:yaml:v3.0.1:go_yaml_yaml_1/vendor/gopkg.in/yaml.v3 \
+		go-check:check:41f04d3bba15:go_check_check/vendor/gopkg.in/check.v1 \
+		go-yaml:yaml:v3.0.1:go_yaml_yaml/vendor/gopkg.in/yaml.v3 \
 		golang:sys:c0bba94af5f8:golang_sys/vendor/golang.org/x/sys \
 		golang:term:065cf7ba2467:golang_term/vendor/golang.org/x/term \
 		golang:text:v0.3.7:golang_text/vendor/golang.org/x/text \
 		hashicorp:hcl:v1.0.0:hashicorp_hcl/vendor/github.com/hashicorp/hcl \
 		inconshreveable:mousetrap:v1.0.0:inconshreveable_mousetrap/vendor/github.com/inconshreveable/mousetrap \
+		kr:pretty:v0.3.0:kr_pretty/vendor/github.com/kr/pretty \
 		lucasb-eyer:go-colorful:v1.2.0:lucasb_eyer_go_colorful/vendor/github.com/lucasb-eyer/go-colorful \
 		magiconair:properties:v1.8.6:magiconair_properties/vendor/github.com/magiconair/properties \
 		maruel:natural:v1.1.0:maruel_natural/vendor/github.com/maruel/natural \
@@ -45,9 +45,8 @@ GH_TUPLE=	davecgh:go-spew:v1.1.1:davecgh_go_spew/vendor/github.com/davecgh/go-sp
 		spf13:cobra:v1.5.0:spf13_cobra/vendor/github.com/spf13/cobra \
 		spf13:jwalterweatherman:v1.1.0:spf13_jwalterweatherman/vendor/github.com/spf13/jwalterweatherman \
 		spf13:pflag:v1.0.5:spf13_pflag/vendor/github.com/spf13/pflag \
-		spf13:viper:v1.13.0:spf13_viper/vendor/github.com/spf13/viper \
-		stretchr:testify:v1.8.0:stretchr_testify/vendor/github.com/stretchr/testify \
-		subosito:gotenv:v1.4.1:subosito_gotenv/vendor/github.com/subosito/gotenv
+		stretchr:testify:v1.7.0:stretchr_testify/vendor/github.com/stretchr/testify
+		stretchr:testify:v1.8.0:stretchr_testify/vendor/github.com/stretchr/testify
 
 _BUILD_VERSION=	${DISTVERSIONFULL}
 _BUILD_MAJOR=	${_BUILD_VERSION:C/\..*$//}

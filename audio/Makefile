@@ -26,6 +26,7 @@
     SUBDIR += alure
     SUBDIR += amarok
     SUBDIR += amb-plugins
+    SUBDIR += amberol
     SUBDIR += ampache
     SUBDIR += ample
     SUBDIR += amsynth
@@ -226,6 +227,7 @@
     SUBDIR += gmtp
     SUBDIR += gmusicbrowser
     SUBDIR += gnaural
+    SUBDIR += gnome-metronome
     SUBDIR += gnome-music
     SUBDIR += gnome-podcasts
     SUBDIR += gnormalize
@@ -758,6 +760,7 @@
     SUBDIR += spiralsynthmodular
     SUBDIR += splay
     SUBDIR += splaytk
+    SUBDIR += spotify-player
     SUBDIR += spotify-qt
     SUBDIR += spotify-tui
     SUBDIR += spotifyd

@@ -22,7 +22,7 @@ IGNORE=	Incorrect 'USES+= pear:${pear_ARGS}' usage: argument [${arg}] is not rec
 .    endif
 .  endfor
 
-_pear_IGNORE_WITH_PHP=	82
+_pear_IGNORE_WITH_PHP=
 IGNORE_WITH_PHP?=	${_pear_IGNORE_WITH_PHP}
 php_ARGS+=	flavors
 .include "${USESDIR}/php.mk"
@@ -39,6 +39,8 @@ MASTER_SITES?=	http://pear.php.net/get/
 
 EXTRACT_SUFX?=	.tgz
 DIST_SUBDIR?=	PEAR
+
+WWW?=		https://pear.php.net/package/${PORTNAME}/
 
 .      if empty(php_ARGS:Mphpize)
 NO_BUILD=	yes
