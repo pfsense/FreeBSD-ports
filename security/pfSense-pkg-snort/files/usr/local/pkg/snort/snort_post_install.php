@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2020 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ require_once("service-utils.inc"); // Need this to get RCFILEPREFIX constant
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
-global $config, $g, $rebuild_rules, $pkg_interface, $snort_gui_include, $static_output;
+global $g, $rebuild_rules, $pkg_interface, $snort_gui_include, $static_output;
 
 $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
@@ -94,7 +94,7 @@ safe_mkdir(SNORT_APPID_ODP_PATH);
 $pkgid = get_package_id("Dashboard Widget: Snort");
 if ($pkgid >= 0) {
 	syslog(LOG_NOTICE, gettext("[Snort] Removing legacy 'Dashboard Widget: Snort' package because the widget is now part of the Snort package."));
-	unset($config['installedpackages']['package'][$pkgid]);
+	config_del_path("installedpackages/package/{$pkgid}");
 	unlink_if_exists("/usr/local/pkg/widget-snort.xml");
 }
 
@@ -123,7 +123,7 @@ if ($cron_count > 0)
 /*********************************************************/
 
 /* remake saved settings */
-if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
+if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') {
 	syslog(LOG_NOTICE, gettext("[Snort] Saved settings detected... rebuilding installation with saved settings."));
 	update_status(gettext("Saved settings detected.") . "\n");
 
@@ -132,10 +132,10 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	/* impacted by the DUP (clone) bug that generated a duplicate   */
 	/* UUID for the cloned interface.                               */
 	/****************************************************************/
-	if (count($config['installedpackages']['snortglobal']['rule']) > 0) {
+	if (count(config_get_path('installedpackages/snortglobal/rule', [])) > 0) {
 		$uuids = array();
 		$fixed_duplicate = FALSE;
-		foreach ($config['installedpackages']['snortglobal']['rule'] as &$snortcfg) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as &$snortcfg) {
 			// Check for and fix a duplicate UUID
 			$if_real = get_real_interface($snortcfg['interface']);
 			if (!isset($uuids[$snortcfg['uuid']])) {
@@ -174,7 +174,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	$rebuild_rules = true;
 
 	/* Create the snort.conf files for each enabled interface */
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $snortcfg) {
 		$if_real = get_real_interface($snortcfg['interface']);
 
 		/* Skip instance if its real interface is missing in pfSense */
@@ -221,13 +221,13 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 
 	/* Set Log Limit, Block Hosts Time and Rules Update Time */
 	snort_snortloglimit_install_cron(true);
-	snort_rm_blocked_install_cron($config['installedpackages']['snortglobal']['rm_blocked'] != "never_b" ? true : false);
-	snort_rules_up_install_cron($config['installedpackages']['snortglobal']['autorulesupdate7'] != "never_up" ? true : false);
+	snort_rm_blocked_install_cron(config_get_path('installedpackages/snortglobal/rm_blocked') != "never_b" ? true : false);
+	snort_rules_up_install_cron(config_get_path('installedpackages/snortglobal/autorulesupdate7') != "never_up" ? true : false);
 
 	/* Restore the last Snort Dashboard Widget setting if none is set */
-	if (!empty($config['installedpackages']['snortglobal']['dashboard_widget']) && 
-	    stristr($config['widgets']['sequence'], "snort_alerts") === FALSE)
-		$config['widgets']['sequence'] .= "," . $config['installedpackages']['snortglobal']['dashboard_widget'];
+	if (!empty(config_get_path('installedpackages/snortglobal/dashboard_widget')) && 
+	    stristr(config_get_path('widgets/sequence'), "snort_alerts") === FALSE)
+		config_set_path('widgets/sequence', config_get_path('widgets/sequence') . "," . config_get_path('installedpackages/snortglobal/dashboard_widget'));
 
 	$rebuild_rules = false;
 	update_status(gettext("Finished rebuilding Snort configuration files.") . "\n");
@@ -236,12 +236,12 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 
 /* If an existing Snort Dashboard Widget container is not found, */
 /* then insert our default Widget Dashboard container.           */
-if (stristr($config['widgets']['sequence'], "snort_alerts") === FALSE)
-	$config['widgets']['sequence'] .= ",{$snort_widget_container}";
+if (stristr(config_get_path('widgets/sequence'), "snort_alerts") === FALSE)
+	config_set_path('widgets/sequence', config_get_path('widgets/sequence') . ",{$snort_widget_container}");
 
 /* Update Snort package version in configuration */
-$config['installedpackages']['snortglobal']['snort_config_ver'] = $config['installedpackages']['package'][get_package_id("snort")]['version'];
-write_config("Snort pkg v{$config['installedpackages']['package'][get_package_id("snort")]['version']}: post-install configuration saved.");
+config_set_path('installedpackages/snortglobal/snort_config_ver', config_get_path('installedpackages/package/' . get_package_id("snort") . '/version'));
+write_config("Snort pkg v" . config_get_path('installedpackages/package/' . get_package_id("snort") . '/version') . ": post-install configuration saved.");
 
 /* Done with post-install, so clear flag */
 unset($g['snort_postinstall']);

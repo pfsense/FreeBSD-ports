@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -28,13 +28,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-$snortglob = $config['installedpackages']['snortglobal'];
-
-if (!is_array($config['installedpackages']['snortglobal']['suppress']))
-	$config['installedpackages']['snortglobal']['suppress'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['suppress']['item']))
-	$config['installedpackages']['snortglobal']['suppress']['item'] = array();
-$a_suppress = &$config['installedpackages']['snortglobal']['suppress']['item'];
+$a_suppress = config_get_path('installedpackages/snortglobal/suppress/item', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -43,7 +37,6 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 
 /* Should never be called without identifying list index, so bail */
 if (is_null($id)) {
-	unset($a_suppress);
 	header("Location: /snort/snort_interfaces_suppress.php");
 	exit;
 }
@@ -60,7 +53,6 @@ function is_validwhitelistname($name) {
 }
 
 if ($_POST['cancel']) {
-	unset($a_suppress);
 	header("Location: /snort/snort_interfaces_suppress.php");
 	exit;
 }
@@ -86,11 +78,7 @@ if ($_POST['save']) {
 	$reqdfields = explode(" ", "name");
 	$reqdfieldsn = array("Name");
 
-	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version < 2.1)
-		$input_errors = eval('do_input_validation($_POST, $reqdfields, $reqdfieldsn, &$input_errors); return $input_errors;');
-	else
-		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if(strtolower($_POST['name']) == "defaultwhitelist")
 		$input_errors[] = "Suppression List files may not be named defaultwhitelist.";
@@ -124,16 +112,13 @@ if ($_POST['save']) {
 		else
 			$a_suppress[] = $s_list;
 
+		config_set_path('installedpackages/snortglobal/suppress/item', $a_suppress);
 		write_config("Snort pkg: modified Suppress List {$s_list['name']}.");
 		sync_snort_package_config();
-		unset($a_suppress);
 		header("Location: /snort/snort_interfaces_suppress.php");
 		exit;
 	}
 }
-
-// Finished with config array reference, so release it
-unset($a_suppress);
 
 $pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_suppress.php", "@self");
 $pgtitle = array("Services", "Snort", "Suppression List", "Edit");

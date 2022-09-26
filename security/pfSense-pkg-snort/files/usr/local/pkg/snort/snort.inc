@@ -34,17 +34,10 @@ require("/usr/local/pkg/snort/snort_defs.inc");
 ini_set("memory_limit", "384M");
 
 // Explicitly declare this as global so it works through function call includes 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 /* Rebuild Rules Flag -- if "true", rebuild enforcing rules and flowbit-rules files */
 $rebuild_rules = false;
-
-if (!is_array($config['installedpackages'])) {
-	$config['installedpackages'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal'])) {
-	$config['installedpackages']['snortglobal'] = array();
-}
 
 function snort_is_single_addr_alias($alias) {
 	/***************************************************/
@@ -140,8 +133,6 @@ function snort_generate_id() {
 
 function snort_load_suppress_sigs($snortcfg, $track_by=false) {
 
-	global $config;
-
 	/**********************************************************/
 	/* This function loads the GEN_ID and SIG_ID for all the  */
 	/* suppressed alert entries from the Suppression List of  */
@@ -163,8 +154,6 @@ function snort_load_suppress_sigs($snortcfg, $track_by=false) {
 
 	if (!config_get_path('installedpackages/snortglobal/suppress/item'))
 		return;
-//	$a_suppress = $config['installedpackages']['snortglobal']['suppress']['item'];
-//	foreach ($a_suppress as $a_id => $alist) {
 	foreach (config_get_path('installedpackages/snortglobal/suppress/item') as $a_id => $alist) {
 		if ($alist['name'] == $snortcfg['suppresslistname']) {
 			if (!empty($alist['suppresspassthru'])) {
@@ -265,7 +254,7 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 	/* is built.                                               */
 	/***********************************************************/
 
-	global $config, $g, $aliastable, $filterdns;
+	global $g, $aliastable, $filterdns;
 	$home_net = array();
 
 	if (!$externallist && ($listname == 'default' || empty($listname))) {
@@ -287,7 +276,7 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 		// List. So for Pass Lists, we test for null strings from
 		// filter_expand_alias() and assume the passed alias is a
 		// FQDN or other dynamically updated alias.
-		if (is_array($list['address']['item']) && count($list['address']['item']) > 0) {
+		if (array_get_path($list, 'address/item')) {
 			foreach ($list['address']['item'] as $addr) {
 				if (!$whitelist) {
 					if (is_alias($addr) && (alias_get_type($addr) == "host" || alias_get_type($addr) == "network")) {
@@ -479,12 +468,10 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 
 	if($vips == 'yes') {
 		/* iterate all vips and add to whitelist */
-		if (is_array($config['virtualip']) && is_array($config['virtualip']['vip'])) {
-			foreach($config['virtualip']['vip'] as $vip) {
-				if ($vip['subnet']) {
-					if (!in_array("{$vip['subnet']}/{$vip['subnet_bits']}", $home_net))
-						$home_net[] = "{$vip['subnet']}/{$vip['subnet_bits']}";
-				}
+		foreach(config_get_path('virtualip/vip') as $vip) {
+			if ($vip['subnet']) {
+				if (!in_array("{$vip['subnet']}/{$vip['subnet_bits']}", $home_net))
+					$home_net[] = "{$vip['subnet']}/{$vip['subnet_bits']}";
 			}
 		}
 	}
@@ -524,13 +511,13 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 
 /* Checks to see if service is running by looking for PID filename matching the UUID */
 function snort_is_running($uuid) {
-	global $config, $g;
+	global $g;
 
 	return isvalidpid("{$g['varrun_path']}/snort_{$uuid}.pid");
 }
 
 function snort_stop($snortcfg, $if_real) {
-	global $config, $g;
+	global $g;
 	$snort_uuid = $snortcfg['uuid'];
 
 	if (isvalidpid("{$g['varrun_path']}/snort_{$snort_uuid}.pid")) {
@@ -550,14 +537,14 @@ function snort_stop($snortcfg, $if_real) {
 }
 
 function snort_start($snortcfg, $if_real, $background=FALSE) {
-	global $config, $g;
+	global $g;
 
 	$snortdir = SNORTDIR;
 	$snortlogdir = SNORTLOGDIR;
 	$snort_uuid = $snortcfg['uuid'];
 	$snortbindir = SNORT_BINDIR;
 
-	if ($config['installedpackages']['snortglobal']['verbose_logging'] == "on")
+	if (config_get_path('installedpackages/snortglobal/verbose_logging') == "on")
 		$quiet = "";
 	else
 		$quiet = "-q --suppress-config-log";
@@ -593,14 +580,7 @@ function snort_start_all_interfaces($background=FALSE) {
 	/* This function starts all configured and enabled Snort     */
 	/* interfaces.                                               */
 	/*************************************************************/
-
-	global $g, $config;
-
-	/* do nothing if no Snort interfaces active */
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return;
-
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
+	foreach (config_get_path('installedpackages/snortglobal/rule') as $snortcfg) {
 		if ($snortcfg['enable'] != 'on' || get_real_interface($snortcfg['interface']) == "")
 			continue;
 		snort_start($snortcfg, get_real_interface($snortcfg['interface']), $background);
@@ -612,14 +592,7 @@ function snort_stop_all_interfaces() {
 	/*************************************************************/
 	/* This function stops all configured Snort interfaces.      */
 	/*************************************************************/
-
-	global $g, $config;
-
-	/* do nothing if no Snort interfaces active */
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return;
-
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
+	foreach (config_get_path('installedpackages/snortglobal/rule') as $snortcfg) {
 		snort_stop($snortcfg, get_real_interface($snortcfg['interface']));
 	}
 }
@@ -630,13 +603,6 @@ function snort_restart_all_interfaces() {
 	/* This function stops all configured Snort interfaces and   */
 	/* restarts enabled Snort interfaces.                        */
 	/*************************************************************/
-
-	global $g, $config;
-
-	/* do nothing if no Snort interfaces active */
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return;
-
 	snort_stop_all_interfaces();
 	sleep(2);
 	snort_start_all_interfaces(TRUE);
@@ -655,7 +621,7 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
 	/*  $signal = SIGHUP (default) parses and reloads config.    */
 	/*            SIGURG updates Host Attribute Table.           */
 	/*************************************************************/
-	global $config, $g;
+	global $g;
 
 	$snortdir = SNORTDIR;
 	$snort_uuid = $snortcfg['uuid'];
@@ -677,13 +643,9 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
  by touch and rm, snort will lose sync and not log.
 */
 function snort_post_delete_logs($snort_uuid = 0) {
-	global $config, $g;
+	global $g;
 
-	/* do nothing if no Snort interfaces active */
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return;
-
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
 		if ($value['uuid'] != $snort_uuid)
 			continue;
 		$if_real = get_real_interface($value['interface']);
@@ -733,14 +695,9 @@ function snort_cron_job_exists($crontask, $match_time=FALSE, $minute="0", $hour=
 	 * the $crontask already exists.                            *
 	 ************************************************************/
 
-	global $config, $g;
+	global $g;
 
-	if (!is_array($config['cron']))
-		$config['cron'] = array();
-	if (!is_array($config['cron']['item']))
-		$config['cron']['item'] = array();
-
-	foreach($config['cron']['item'] as $item) {
+	foreach(config_get_path('cron/item') as $item) {
 		if(strpos($item['command'], $crontask) !== FALSE) {
 			if ($match_time) {
 				if ($item['minute'] != $minute)
@@ -782,7 +739,7 @@ function snort_snortloglimit_install_cron($should_install=TRUE) {
 }
 
 function snort_rm_blocked_install_cron($should_install) {
-	global $config, $g;
+	global $g;
 
 	// See if simply removing existing "expiretable" job for Snort
 	if ($should_install == FALSE) {
@@ -792,7 +749,7 @@ function snort_rm_blocked_install_cron($should_install) {
 	}
 
 	// Grab the configured interval from our configuration
-	$snort_rm_blocked_info_ck = $config['installedpackages']['snortglobal']['rm_blocked'];
+	$snort_rm_blocked_info_ck = config_get_path('installedpackages/snortglobal/rm_blocked');
 
 	if ($snort_rm_blocked_info_ck == "15m_b") {
 		$snort_rm_blocked_min = "*/2";
@@ -892,7 +849,7 @@ function snort_rm_blocked_install_cron($should_install) {
 
 /* func to install snort update */
 function snort_rules_up_install_cron($should_install) {
-	global $config, $g;
+	global $g;
 
 	// If called with FALSE as argument, then we're removing 
 	// the existing job.
@@ -903,11 +860,11 @@ function snort_rules_up_install_cron($should_install) {
 	}
 
 	// Grab the configured update interval from our configuration
-	$snort_rules_up_info_ck = $config['installedpackages']['snortglobal']['autorulesupdate7'];
+	$snort_rules_up_info_ck = config_get_path('installedpackages/snortglobal/autorulesupdate7');
 
 	/* See if a customized start time has been set for rule file updates */
-	if (!empty($config['installedpackages']['snortglobal']['rule_update_starttime']))
-		$snort_rules_upd_time = $config['installedpackages']['snortglobal']['rule_update_starttime'];
+	if (!empty(config_get_path('installedpackages/snortglobal/rule_update_starttime')))
+		$snort_rules_upd_time = config_get_path('installedpackages/snortglobal/rule_update_starttime');
 	else
 		$snort_rules_upd_time = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 
@@ -983,7 +940,7 @@ function snort_rules_up_install_cron($should_install) {
 
 /* Only run when all ifaces needed to sync */
 function sync_snort_package_config() {
-	global $config, $g;
+	global $g;
 	global $rebuild_rules;
 
 	$snortdir = SNORTDIR;
@@ -995,13 +952,8 @@ function sync_snort_package_config() {
 	safe_mkdir(SNORT_SID_MODS_PATH);
 	safe_mkdir(SNORT_APPID_ODP_PATH);
 
-	/* do not start config build if rules is empty or there are no Snort settings */
-	if (!is_array($config['installedpackages']['snortglobal']) || !is_array($config['installedpackages']['snortglobal']['rule'])) {
-		return;
-	}
-
-	$snortconf = $config['installedpackages']['snortglobal']['rule'];
-	foreach ($snortconf as $value) {
+	/* Iterate configured interfaces and generate a snort.conf for each */
+	foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
 		/* Skip configuration of any disabled instance or */
 		/* an instance whose assigned physical interface  */
 		/* has been removed.                              */
@@ -1012,18 +964,16 @@ function sync_snort_package_config() {
 		snort_generate_conf($value);
 	}
 
-	$snortglob = $config['installedpackages']['snortglobal'];
-
 	/* create snort bootup file snort.sh */
 	snort_create_rc();
 
 	snort_snortloglimit_install_cron(true);
 
 	/* set the snort block hosts time IMPORTANT */
-	snort_rm_blocked_install_cron($snortglob['rm_blocked'] != "never_b" ? true : false);
+	snort_rm_blocked_install_cron(config_get_path('installedpackages/snortglobal/rm_blocked') != "never_b" ? true : false);
 
 	/* set the snort rules update time */
-	snort_rules_up_install_cron($snortglob['autorulesupdate7'] != "never_up" ? true : false);
+	snort_rules_up_install_cron(config_get_path('installedpackages/snortglobal/autorulesupdate7') != "never_up" ? true : false);
 
 	/* Do not attempt package sync if reinstalling package or booting */
 	if (!$g['snort_postinstall'] && !$g['booting'])
@@ -1914,19 +1864,12 @@ function snort_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 	/*                    SID modifier tokens     */
 	/**********************************************/
 
-	global $config;
 	$buf = "";
 	$sid_mods = array();
 	$list = array();
 
 	// Find the list we need
-	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists'])) {
-		$config['installedpackages']['snortglobal']['sid_mgmt_lists'] = array();
-	}
-	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
-		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
-	}
-	foreach($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] as $item) {
+	foreach(config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item') as $item) {
 		if ($item['name'] == $sidconf_file) {
 			$list = $item;
 			break;
@@ -1998,16 +1941,7 @@ function snort_sid_mgmt_list_exist($sid_mgmt_list) {
 	/*                                                  */
 	/****************************************************/
 
-	global $config, $g;
-
-	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists'])) {
-		$config['installedpackages']['snortglobal']['sid_mgmt_lists'] = array();
-	}
-	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
-		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
-	}
-
-	foreach($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] as $list) {
+	foreach(config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item') as $list) {
 		if ($list['name'] == $sid_mgmt_list) {
 			return TRUE;
 		}
@@ -2143,13 +2077,12 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 	/*                                                  */
 	/****************************************************/
 
-	global $config;
 	$sid_mods = array();
 	$enables = array();
 	$disables = array();
 
 	// Check if auto-mgmt of SIDs is enabled, exit if not
-	if ($config['installedpackages']['snortglobal']['auto_manage_sids'] != 'on')
+	if (config_get_path('installedpackages/snortglobal/auto_manage_sids') != 'on')
 		return array();
 	if (empty($snortcfg['disable_sid_file']) && empty($snortcfg['enable_sid_file']))
 		return array();
@@ -2864,7 +2797,6 @@ function snort_auto_sid_mgmt(&$rule_map, $snortcfg, $log_results = FALSE) {
 	/*                   otherwise FALSE              */
 	/**************************************************/
 
-	global $config;
 	$result = FALSE;
 
 	// Configure the interface's logging subdirectory if log results is enabled
@@ -2875,7 +2807,7 @@ function snort_auto_sid_mgmt(&$rule_map, $snortcfg, $log_results = FALSE) {
 
 	// Check if auto-mgmt of SIDs is enabled and files are specified
 	// for the interface.
-	if ($config['installedpackages']['snortglobal']['auto_manage_sids'] == 'on' &&
+	if (config_get_path('installedpackages/snortglobal/auto_manage_sids') == 'on' &&
 	    (!empty($snortcfg['disable_sid_file']) || !empty($snortcfg['enable_sid_file']) || 
 	    !empty($snortcfg['modify_sid_file']) || !empty($snortcfg['drop_sid_file']) || !empty($snortcfg['reject_sid_file']))) {
 		if ($log_results == TRUE) {
@@ -3215,7 +3147,7 @@ function snort_create_rc() {
 	/* after any changes to snort.conf saved in the GUI.     */
 	/*********************************************************/
 
-	global $config, $g;
+	global $g;
 
 	$snortdir = SNORTDIR;
 	$snortlogdir = SNORTLOGDIR;
@@ -3223,17 +3155,14 @@ function snort_create_rc() {
 	$rcdir = RCFILEPREFIX;	
 	$no_enabled_interface = TRUE;
 
-	init_config_arr(array('installedpackages', 'snortglobal', 'rule'));
-	$snortconf = $config['installedpackages']['snortglobal']['rule'];
-
 	// If no interfaces are configured for Snort, exit
-	if (!is_array($snortconf) || count($snortconf) < 1) {
+	if (count(config_get_path('installedpackages/snortglobal/rule')) < 1) {
 		unlink_if_exists("{$rcdir}snort.sh");
 		return;
 	}
 
 	// See whether or not to enable detailed startup logging
-	if ($config['installedpackages']['snortglobal']['verbose_logging'] == "on")
+	if (config_get_path('installedpackages/snortglobal/verbose_logging') == "on")
 		$quiet = "";
 	else
 		$quiet = "-q --suppress-config-log";
@@ -3245,7 +3174,7 @@ function snort_create_rc() {
 
 	// Loop thru each configured interface and build
 	// the shell script.
-	foreach ($snortconf as $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
 
 		// Attempt to grab physical interface
 		// for this Snort instance.
@@ -3397,7 +3326,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 	/*                  to be written.                         */
 	/***********************************************************/
 
-	global $g, $config, $rebuild_rules;
+	global $g, $rebuild_rules;
 
 	$snortdir = SNORTDIR;
 	$flowbit_rules_file = FLOWBITS_FILENAME;
@@ -3656,8 +3585,6 @@ function snort_filter_preproc_rules($snortcfg, &$active_rules, $persist_log = fa
 	/*       crucial detection rules.                 */
 	/**************************************************/
 
-	global $config;
-
 	$snortlogdir = SNORTLOGDIR;
 	$disabled_count = 0;
 	$log_msg = array();
@@ -3803,10 +3730,10 @@ function snort_generate_conf($snortcfg) {
 	/* package configuration.                               */
 	/********************************************************/
 
-	global $config, $g, $rebuild_rules;
+	global $g, $rebuild_rules;
 
 	// Exit if there are no configured Snort interfaces
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
+	if (count(config_get_path('installedpackages/snortglobal/rule')) < 1)
 		return;
 
 	$snortdir = SNORTDIR;
@@ -3849,7 +3776,7 @@ function snort_remove_dead_rules() {
 	/* to determine which rules files to remove.            */
 	/********************************************************/
 
-	global $config, $g;
+	global $g;
 	$rulesdir = SNORTDIR . "/rules/";
 	$count = 0;
 	$cats = array();
@@ -3889,8 +3816,8 @@ function snort_remove_dead_rules() {
 	syslog(LOG_NOTICE, gettext("[Snort] Removed {$count} obsoleted rules category files."));
 
 	// Now remove any dead rules files from the interface configurations
-	if (!empty($cats) && is_array($config['installedpackages']['snortglobal']['rule'])) {
-		foreach ($config['installedpackages']['snortglobal']['rule'] as &$iface) {
+	if (!empty($cats)) {
+		foreach (config_get_path('installedpackages/snortglobal/rule') as &$iface) {
 			$enabled_rules = explode("||", $iface['rulesets']);
 			foreach ($enabled_rules as $k => $v) {
 				foreach ($cats as $d) {
@@ -3908,7 +3835,7 @@ function snort_remove_dead_rules() {
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
 function snort_sync_on_changes() {
-	global $config, $g;
+	global $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || $g['snort_postinstall']) {
@@ -3916,8 +3843,8 @@ function snort_sync_on_changes() {
 		return;
 	}
 
-	if (is_array($config['installedpackages']['snortsync']['config'])){
-		$snort_sync = $config['installedpackages']['snortsync']['config'][0];
+	if (config_get_path('installedpackages/snortsync/config')) {
+		$snort_sync = config_get_path('installedpackages/snortsync/config/0');
 		$synconchanges = $snort_sync['varsynconchanges'];
 		$synctimeout = $snort_sync['varsynctimeout'] ?: '150';
 		$syncdownloadrules = $snort_sync['vardownloadrules'];
@@ -3931,20 +3858,20 @@ function snort_sync_on_changes() {
 				}
 				break;
 			case "auto":
-				if (is_array($config['hasync'])) {
-					$system_carp = $config['hasync'];
+				if (config_get_path('hasync')) {
+					$system_carp = config_get_path('hasync');
 					$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
 					$rs[0]['varsyncusername'] = $system_carp['username'];
 					$rs[0]['varsyncpassword'] = $system_carp['password'];
 					$rs[0]['varsyncsnortstart'] = FALSE;
 					$rs[0]['varsyncdestinenable'] = FALSE;
 					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if ($config['system']['webgui']['protocol'] == "http") {
+					if (config_get_path('system/webgui/protocol') == "http") {
 						$rs[0]['varsyncprotocol'] = "http";
-						$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '80';
+						$rs[0]['varsyncport'] = config_get_path('system;webgui;port') ?: '80';
 					} else {
 						$rs[0]['varsyncprotocol'] = "https";
-						$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '443';
+						$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '443';
 					}
 					if ($system_carp['synchronizetoip'] == "") {
 						syslog(LOG_NOTICE, "[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
@@ -4010,7 +3937,7 @@ if(!function_exists('pf_version')) {
 
 /* Do the actual XMLRPC sync */
 function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsnort) {
-	global $config, $g;
+	global $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || isset($g['snort_postinstall'])) {
@@ -4028,7 +3955,7 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 	/* $xml will hold the section to sync.               */
 	/*****************************************************/
 	$xml = array();
-	$xml['snortglobal'] = $config['installedpackages']['snortglobal'];
+	$xml['snortglobal'] = config_get_path('installedpackages/snortglobal');
 	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
@@ -4269,7 +4196,6 @@ EOD;
 }
 
 function snort_get_vpns_list() {
-	global $config;
 
 	$vpns = "";
 	$vpns_arr = array();
@@ -4314,7 +4240,7 @@ function snort_get_vpns_list() {
 			foreach (config_get_path('ipsec/phase2') as $ph2ent) {
 				if ((!$ph2ent['mobile']) && ($ph2ent['mode'] != 'transport') &&
 				    !isset($ph2ent['disabled'])) {
-					if (!is_array($ph2ent['remoteid'])) {
+					if (!array_get_path($ph2ent, 'remoteid')) {
 						continue;
 					}
 					$ph2ent['remoteid']['mode'] = $ph2ent['mode'];

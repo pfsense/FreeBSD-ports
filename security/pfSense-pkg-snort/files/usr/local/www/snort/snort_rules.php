@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,9 +32,7 @@ $rules_map = array();
 $categories = array();
 $pconfig = array();
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
-	$config['installedpackages']['snortglobal']['rule'] = array();
-$a_rule = &$config['installedpackages']['snortglobal']['rule'];
+$a_rule = config_get_path('installedpackages/snortglobal/rule', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -54,7 +52,6 @@ if (is_null($id)) {
 		$_POST['openruleset'] = $response[1];
 	}
 	else {
-		unset($a_rule);
 		header("Location: /snort/snort_interfaces.php");
 		exit;
 	}
@@ -70,11 +67,11 @@ if (isset($id) && isset($a_rule[$id])) {
 $if_real = get_real_interface($pconfig['interface']);
 $snort_uuid = $a_rule[$id]['uuid'];
 $snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}";
-$snortdownload = $config['installedpackages']['snortglobal']['snortdownload'];
-$snortcommunitydownload = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
-$emergingdownload = $config['installedpackages']['snortglobal']['emergingthreats'];
-$etprodownload = $config['installedpackages']['snortglobal']['emergingthreats_pro'];
-$appidownload = $config['installedpackages']['snortglobal']['openappid_rules_detectors'];
+$snortdownload = config_get_path('installedpackages/snortglobal/snortdownload');
+$snortcommunitydownload = config_get_path('installedpackages/snortglobal/snortcommunityrules') == 'on' ? 'on' : 'off';
+$emergingdownload = config_get_path('installedpackages/snortglobal/emergingthreats');
+$etprodownload = config_get_path('installedpackages/snortglobal/emergingthreats_pro');
+$appidownload = config_get_path('installedpackages/snortglobal/openappid_rules_detectors');
 
 function add_title_attribute($tag, $title) {
 
@@ -380,6 +377,7 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 		unset($a_rule[$id]['rule_sid_off']);
 
 	/* Update the config.xml file. */
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: modified state for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
@@ -513,6 +511,7 @@ elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) 
 			unset($a_rule[$id]['rule_sid_force_reject']);
 
 		/* Update the config.xml file. */
+		config_set_path('installedpackages/snortglobal/rule', $a_rule);
 		write_config("Snort pkg: modified action for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
 
 		// We changed a rule action, remind user to apply the changes
@@ -562,6 +561,8 @@ elseif ($_POST['disable_all'] && !empty($rules_map)) {
 	else				
 		unset($a_rule[$id]['rule_sid_off']);
 
+	// Write updated configuration
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: disabled all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
@@ -606,6 +607,8 @@ elseif ($_POST['enable_all'] && !empty($rules_map)) {
 	else				
 		unset($a_rule[$id]['rule_sid_off']);
 
+	//Write updated configuration
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: enable all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
@@ -695,6 +698,8 @@ elseif ($_POST['resetcategory'] && !empty($rules_map)) {
 	else
 		unset($a_rule[$id]['rule_sid_force_reject']);
 
+	// Write updated configuration
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: remove enablesid/disablesid changes for category {$currentruleset} on {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
@@ -775,6 +780,7 @@ elseif ($_POST['resetall'] && !empty($rules_map)) {
 	unset($a_rule[$id]['rule_sid_force_reject']);
 
 	/* Update the config.xml file. */
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: remove all enablesid/disablesid changes for {$a_rule[$id]['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
@@ -854,6 +860,7 @@ elseif (isset($_POST['cancel'])) {
 }
 elseif (isset($_POST['clear'])) {
 	unset($a_rule[$id]['customrules']);
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: clear all custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
 	snort_generate_conf($a_rule[$id]);
@@ -869,6 +876,7 @@ elseif (isset($_POST['save'])) {
 		$a_rule[$id]['customrules'] = base64_encode(str_replace("\r\n", "\n", $_POST['customrules']));
 	else
 		unset($a_rule[$id]['customrules']);
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: save modified custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
 	snort_generate_conf($a_rule[$id]);
@@ -910,6 +918,7 @@ elseif ($_POST['filterrules_clear']) {
 }
 elseif ($_POST['apply']) {
 	/* Save new configuration */
+	config_set_path('installedpackages/snortglobal/rule', $a_rule);
 	write_config("Snort pkg: save new rules configuration for {$a_rule[$id]['interface']}.");
 
 	/*************************************************/
@@ -1688,7 +1697,6 @@ $modal->addInput(new Form_Textarea (
 ))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'soft');
 $form->add($modal);
 print($form);
-unset($a_rule);
 ?>
 
 <script type="text/javascript">

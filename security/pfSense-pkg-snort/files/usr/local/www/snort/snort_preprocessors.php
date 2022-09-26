@@ -6,7 +6,7 @@
  * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,68 +38,15 @@ if (is_null($id)) {
         exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
-	$config['installedpackages']['snortglobal']['rule'] = array();
-
 // Initialize multiple config engine arrays for supported preprocessors if necessary
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['stream5_tcp_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['http_inspect_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_server_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['arp_spoof_engine']['item'] = array();
-}
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'frag3_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'stream5_tcp_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'http_inspect_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_server_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'ftp_client_engine', 'item'));
+init_config_arr(array('installedpackages', 'snortglobal', 'rule', $id, 'arp_spoof_engine', 'item'));
 
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
-
-$vrt_enabled = $config['installedpackages']['snortglobal']['snortdownload'];
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 // Calculate the "next engine ID" to use for the multi-config engine arrays
 $frag3_engine_next_id = count($a_nat[$id]['frag3_engine']['item']);
@@ -114,42 +61,12 @@ if (isset($id) && isset($a_nat[$id])) {
 	$pconfig = $a_nat[$id];
 
 	// Initialize multiple config engine arrays for supported preprocessors if necessary
-	if (!is_array($pconfig['frag3_engine'])) {
-		$pconfig['frag3_engine'] = array();
-	}
-	if (!is_array($pconfig['frag3_engine']['item'])) {
-		$pconfig['frag3_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['stream5_tcp_engine'])) {
-		$pconfig['stream5_tcp_engine'] = array();
-	}
-	if (!is_array($pconfig['stream5_tcp_engine']['item'])) {
-		$pconfig['stream5_tcp_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['http_inspect_engine'])) {
-		$pconfig['http_inspect_engine'] = array();
-	}
-	if (!is_array($pconfig['http_inspect_engine']['item'])) {
-		$pconfig['http_inspect_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['ftp_server_engine'])) {
-		$pconfig['ftp_server_engine'] = array();
-	}
-	if (!is_array($pconfig['ftp_server_engine']['item'])) {
-		$pconfig['ftp_server_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['ftp_client_engine'])) {
-		$pconfig['ftp_client_engine'] = array();
-	}
-	if (!is_array($pconfig['ftp_client_engine']['item'])) {
-		$pconfig['ftp_client_engine']['item'] = array();
-	}
-	if (!is_array($pconfig['arp_spoof_engine'])) {
-		$pconfig['arp_spoof_engine'] = array();
-	}
-	if (!is_array($pconfig['arp_spoof_engine']['item'])) {
-		$pconfig['arp_spoof_engine']['item'] = array();
-	}
+	array_init_path($pconfig, 'frag3_engine/item');
+	array_init_path($pconfig, 'stream5_tcp_engine/item');
+	array_init_path($pconfig, 'http_inspect_engine/item');
+	array_init_path($pconfig, 'ftp_server_engine/item');
+	array_init_path($pconfig, 'ftp_client_engine/item');
+	array_init_path($pconfig, 'arp_spoof_engine/item');
 
 	/************************************************************/
 	/* To keep new users from shooting themselves in the foot   */
@@ -367,9 +284,8 @@ if ($_POST['arp_spoof_save']) {
 			$a_nat[$id]['arp_spoof_engine']['item'][] = $engine;
 		}
 
-		unset($a_nat);
-
 		// Save the updates to the Snort configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: Updated ARP Spoofing engine address pairs for {$a_nat[$id]['interface']}.");
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
 		exit;
@@ -385,8 +301,8 @@ if ($_POST['arp_spoof_save']) {
 if ($_POST['del_http_inspect']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['http_inspect_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted http_inspect engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#httpinspect_row");
 		exit;
 	}
@@ -394,8 +310,8 @@ if ($_POST['del_http_inspect']) {
 elseif ($_POST['del_frag3']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['frag3_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted frag3 engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#frag3_row");
 		exit;
 	}
@@ -403,8 +319,8 @@ elseif ($_POST['del_frag3']) {
 elseif ($_POST['del_stream5_tcp']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['stream5_tcp_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted stream5 engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#stream5_row");
 		exit;
 	}
@@ -412,8 +328,8 @@ elseif ($_POST['del_stream5_tcp']) {
 elseif ($_POST['del_ftp_client']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_client_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted ftp_client engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -421,8 +337,8 @@ elseif ($_POST['del_ftp_client']) {
 elseif ($_POST['del_ftp_server']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['ftp_server_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted ftp_server engine for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#ftp_telnet_row");
 		exit;
 	}
@@ -430,8 +346,8 @@ elseif ($_POST['del_ftp_server']) {
 elseif ($_POST['del_arp_spoof_engine']) {
 	if (isset($_POST['eng_id']) && isset($id) && isset($a_nat[$id])) {
 		unset($a_nat[$id]['arp_spoof_engine']['item'][$_POST['eng_id']]);
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted ARP spoof host address pair for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_preprocessors.php?id=$id#preproc_arp_spoof_row");
 		exit;
 	}
@@ -715,6 +631,7 @@ if ($_POST['save']) {
 
 		if (isset($id) && isset($a_nat[$id])) {
 			$a_nat[$id] = $natent;
+			config_set_path('installedpackages/snortglobal/rule', $a_nat);
 			write_config("Snort pkg: saved modified preprocessor settings for {$a_nat[$id]['interface']}.");
 		}
 
@@ -740,8 +657,6 @@ if ($_POST['save']) {
 			snort_start($a_nat[$id], $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because Preprocessor changes require a restart.");
 		}
-
-		unset($a_nat);
 
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
@@ -775,7 +690,6 @@ if ($_POST['btn_import']) {
 				$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
 				write_config("Snort pkg: imported Host Attribute Table data for {$a_nat[$id]['interface']}.");
 			}
-			unset($a_nat);
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -796,8 +710,8 @@ if ($_POST['btn_edit_hat']) {
 		$a_nat[$id]['host_attribute_table'] = "on";
 		$a_nat[$id]['max_attribute_hosts'] = $pconfig['max_attribute_hosts'];
 		$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: modified Host Attribute Table data for {$a_nat[$id]['interface']}.");
-		unset($a_nat);
 		header("Location: snort_edit_hat_data.php?id=$id");
 		exit;
 	}
@@ -2238,7 +2152,6 @@ print($modal);
 print_callout('<p>' . gettext("Remember to save your changes before you exit this page.  Preprocessor changes will rebuild the rules file.  This ") . 
 		gettext("may take several seconds to complete.  Snort must also be restarted on the interface to activate any changes made on this screen.") . '</p>', 
 		'info', 'NOTE:');
-unset($a_nat);
 ?>
 
 <script type="text/javascript">

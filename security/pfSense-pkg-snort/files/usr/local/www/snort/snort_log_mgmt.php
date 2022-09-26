@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,24 +36,24 @@ $pconfig = array();
 if (isset($_POST['save']))
 	$pconfig = $_POST;
 else {
-	$pconfig['enable_log_mgmt'] = $config['installedpackages']['snortglobal']['enable_log_mgmt'] == "on" ? 'on' : 'off';
-	$pconfig['clearlogs'] = $config['installedpackages']['snortglobal']['clearlogs'] == "on" ? 'on' : 'off';
-	$pconfig['snortloglimit'] = $config['installedpackages']['snortglobal']['snortloglimit'] == "on" ? 'on' : 'off';
-	$pconfig['snortloglimitsize'] = $config['installedpackages']['snortglobal']['snortloglimitsize'];
-	$pconfig['alert_log_limit_size'] = $config['installedpackages']['snortglobal']['alert_log_limit_size'];
-	$pconfig['alert_log_retention'] = $config['installedpackages']['snortglobal']['alert_log_retention'];
-	$pconfig['stats_log_limit_size'] = $config['installedpackages']['snortglobal']['stats_log_limit_size'];
-	$pconfig['stats_log_retention'] = $config['installedpackages']['snortglobal']['stats_log_retention'];
-	$pconfig['sid_changes_log_limit_size'] = $config['installedpackages']['snortglobal']['sid_changes_log_limit_size'];
-	$pconfig['sid_changes_log_retention'] = $config['installedpackages']['snortglobal']['sid_changes_log_retention'];
+	$pconfig['enable_log_mgmt'] = config_get_path('installedpackages/snortglobal/enable_log_mgmt', '') == "on" ? 'on' : 'off';
+	$pconfig['clearlogs'] = config_get_path('installedpackages/snortglobal/clearlogs', 'off') == "on" ? 'on' : 'off';
+	$pconfig['snortloglimit'] = config_get_path('installedpackages/snortglobal/snortloglimit', 'on') == "on" ? 'on' : 'off';
+	$pconfig['snortloglimitsize'] = config_get_path('installedpackages/snortglobal/snortloglimitsize', '');
+	$pconfig['alert_log_limit_size'] = config_get_path('installedpackages/snortglobal/alert_log_limit_size', '500');
+	$pconfig['alert_log_retention'] = config_get_path('installedpackages/snortglobal/alert_log_retention', '336');
+	$pconfig['stats_log_limit_size'] = config_get_path('installedpackages/snortglobal/stats_log_limit_size', '500');
+	$pconfig['stats_log_retention'] = config_get_path('installedpackages/snortglobal/stats_log_retention', 168);
+	$pconfig['sid_changes_log_limit_size'] = config_get_path('installedpackages/snortglobal/sid_changes_log_limit_size', '250');
+	$pconfig['sid_changes_log_retention'] = config_get_path('installedpackages/snortglobal/sid_changes_log_retention', '336');
 	$pconfig['event_pkts_log_limit_size'] = '0';
-	$pconfig['event_pkts_log_retention'] = $config['installedpackages']['snortglobal']['event_pkts_log_retention'];
-	$pconfig['appid_stats_log_limit_size'] = $config['installedpackages']['snortglobal']['appid_stats_log_limit_size'];
-	$pconfig['appid_stats_log_retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
-	$pconfig['appid_alerts_log_retention'] = $config['installedpackages']['snortglobal']['appid_alerts_log_retention'];
-	$pconfig['appid_alerts_log_limit_size'] = $config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'];
-	$pconfig['unified2_log_limit'] = $config['installedpackages']['snortglobal']['unified2_log_limit'];
-	$pconfig['u2_archived_log_retention'] = $config['installedpackages']['snortglobal']['u2_archived_log_retention'];
+	$pconfig['event_pkts_log_retention'] = config_get_path('installedpackages/snortglobal/event_pkts_log_retention', '336');
+	$pconfig['appid_stats_log_limit_size'] = config_get_path('installedpackages/snortglobal/appid_stats_log_limit_size', '1000');
+	$pconfig['appid_stats_log_retention'] = config_get_path('installedpackages/snortglobal/appid_stats_log_retention', '168');
+	$pconfig['appid_alerts_log_retention'] = config_get_path('installedpackages/snortglobal/appid_alerts_log_retention', '336');
+	$pconfig['appid_alerts_log_limit_size'] = config_get_path('installedpackages/snortglobal/appid_alerts_log_limit_size', '500');
+	$pconfig['unified2_log_limit'] = config_get_path('installedpackages/snortglobal/unified2_log_limit', '500');
+	$pconfig['u2_archived_log_retention'] = config_get_path('installedpackages/snortglobal/u2_archived_log_retention', '336');
 }
 // Load up some arrays with selection values (we use these later).
 // The keys in the $retentions array are the retention period
@@ -66,43 +66,11 @@ $log_sizes = array( '0' => gettext('NO LIMIT'), '50' => gettext('50 KB'), '150' 
 		    '500' => gettext('500 KB'), '750' => gettext('750 KB'), '1000' => gettext('1 MB'), '2000' => gettext('2 MB'), 
 		    '5000' => gettext("5 MB"), '10000' => gettext("10 MB") );
 
-// Set sensible defaults for any unset parameters
-if (empty($pconfig['snortloglimit']))
-	$pconfig['snortloglimit'] = 'on';
+// Set sensible default for Snort log directory max size if not already set
 if (empty($pconfig['snortloglimitsize'])) {
 	// Set limit to 20% of slice that is unused */
 	$pconfig['snortloglimitsize'] = round(exec('df -k /var | grep -v "Filesystem" | awk \'{print $4}\'') * .20 / 1024);
 }
-
-// Set default retention periods for rotated logs
-if (!isset($pconfig['alert_log_retention']))
-	$pconfig['alert_log_retention'] = "336";
-if (!isset($pconfig['stats_log_retention']))
-	$pconfig['stats_log_retention'] = "168";
-if (!isset($pconfig['sid_changes_log_retention']))
-	$pconfig['sid_changes_log_retention'] = "336";
-if (!isset($pconfig['event_pkts_log_retention']))
-	$pconfig['event_pkts_log_retention'] = "336";
-if (!isset($pconfig['appid_stats_log_retention']))
-	$pconfig['appid_stats_log_retention'] = "168";
-if (!isset($pconfig['appid_alerts_log_retention']))
-	$pconfig['appid_alerts_log_retention'] = "336";
-if (!isset($pconfig['u2_archived_log_retention']))
-	$pconfig['u2_archived_log_retention'] = "336";
-
-// Set default log file size limits
-if (!isset($pconfig['alert_log_limit_size']))
-	$pconfig['alert_log_limit_size'] = "500";
-if (!isset($pconfig['stats_log_limit_size']))
-	$pconfig['stats_log_limit_size'] = "500";
-if (!isset($pconfig['sid_changes_log_limit_size']))
-	$pconfig['sid_changes_log_limit_size'] = "250";
-if (!isset($pconfig['appid_stats_log_limit_size']))
-	$pconfig['appid_stats_log_limit_size'] = "1000";
-if (!isset($pconfig['appid_alerts_log_limit_size']))
-	$pconfig['appid_alerts_log_limit_size'] = "500";
-if (!isset($pconfig['unified2_log_limit']))
-	$pconfig['unified2_log_limit'] = "500";
 
 if (isset($_POST['ResetAll'])) {
 
@@ -129,7 +97,7 @@ if (isset($_POST['ResetAll'])) {
 
 if (isset($_POST['save']) || isset($_POST['apply'])) {
 	if ($_POST['enable_log_mgmt'] != 'on') {
-		$config['installedpackages']['snortglobal']['enable_log_mgmt'] = 'off';
+		config_set_path('installedpackages/snortglobal/enable_log_mgmt', 'off');
 		write_config("Snort pkg: saved updated configuration for LOGS MGMT.");
 		sync_snort_package_config();
 
@@ -149,24 +117,24 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 	}
 
 	if (!$input_errors) {
-		$config['installedpackages']['snortglobal']['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['clearlogs'] = $_POST['clearlogs'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['snortloglimit'] = $_POST['snortloglimit'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['snortloglimitsize'] = $_POST['snortloglimitsize'];
-		$config['installedpackages']['snortglobal']['alert_log_limit_size'] = $_POST['alert_log_limit_size'];
-		$config['installedpackages']['snortglobal']['alert_log_retention'] = $_POST['alert_log_retention'];
-		$config['installedpackages']['snortglobal']['stats_log_limit_size'] = $_POST['stats_log_limit_size'];
-		$config['installedpackages']['snortglobal']['stats_log_retention'] = $_POST['stats_log_retention'];
-		$config['installedpackages']['snortglobal']['sid_changes_log_limit_size'] = $_POST['sid_changes_log_limit_size'];
-		$config['installedpackages']['snortglobal']['sid_changes_log_retention'] = $_POST['sid_changes_log_retention'];
-		$config['installedpackages']['snortglobal']['event_pkts_log_limit_size'] = $_POST['event_pkts_log_limit_size'];
-		$config['installedpackages']['snortglobal']['event_pkts_log_retention'] = $_POST['event_pkts_log_retention'];
-		$config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] = $_POST['appid_stats_log_limit_size'];
-		$config['installedpackages']['snortglobal']['appid_stats_log_retention'] = $_POST['appid_stats_log_retention'];
-		$config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'] = $_POST['appid_alerts_log_limit_size'];
-		$config['installedpackages']['snortglobal']['appid_alerts_log_retention'] = $_POST['appid_alerts_log_retention'];
-		$config['installedpackages']['snortglobal']['unified2_log_limit'] = $_POST['unified2_log_limit'];
-		$config['installedpackages']['snortglobal']['u2_archived_log_retention'] = $_POST['u2_archived_log_retention'];
+		config_set_path('installedpackages/snortglobal/enable_log_mgmt', $_POST['enable_log_mgmt'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/clearlogs', $_POST['clearlogs'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/snortloglimit', $_POST['snortloglimit'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/snortloglimitsize', $_POST['snortloglimitsize']);
+		config_set_path('installedpackages/snortglobal/alert_log_limit_size', $_POST['alert_log_limit_size']);
+		config_set_path('installedpackages/snortglobal/alert_log_retention', $_POST['alert_log_retention']);
+		config_set_path('installedpackages/snortglobal/stats_log_limit_size', $_POST['stats_log_limit_size']);
+		config_set_path('installedpackages/snortglobal/stats_log_retention', $_POST['stats_log_retention']);
+		config_set_path('installedpackages/snortglobal/sid_changes_log_limit_size', $_POST['sid_changes_log_limit_size']);
+		config_set_path('installedpackages/snortglobal/sid_changes_log_retention', $_POST['sid_changes_log_retention']);
+		config_set_path('installedpackages/snortglobal/event_pkts_log_limit_size', $_POST['event_pkts_log_limit_size']);
+		config_set_path('installedpackages/snortglobal/event_pkts_log_retention', $_POST['event_pkts_log_retention']);
+		config_set_path('installedpackages/snortglobal/appid_stats_log_limit_size', $_POST['appid_stats_log_limit_size']);
+		config_set_path('installedpackages/snortglobal/appid_stats_log_retention', $_POST['appid_stats_log_retention']);
+		config_set_path('installedpackages/snortglobal/appid_alerts_log_limit_size', $_POST['appid_alerts_log_limit_size']);
+		config_set_path('installedpackages/snortglobal/appid_alerts_log_retention', $_POST['appid_alerts_log_retention']);
+		config_set_path('installedpackages/snortglobal/unified2_log_limit', $_POST['unified2_log_limit']);
+		config_set_path('installedpackages/snortglobal/u2_archived_log_retention', $_POST['u2_archived_log_retention']);
 
 		write_config("Snort pkg: saved updated configuration for LOGS MGMT.");
 		sync_snort_package_config();

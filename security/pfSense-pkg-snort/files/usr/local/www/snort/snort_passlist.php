@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -28,17 +28,11 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-if (!is_array($config['installedpackages']['snortglobal']['whitelist'])) {
-	$config['installedpackages']['snortglobal']['whitelist'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['whitelist']['item'])) {
-	$config['installedpackages']['snortglobal']['whitelist']['item'] = array();
-}
-$a_passlist = &$config['installedpackages']['snortglobal']['whitelist']['item'];
+$a_passlist = config_get_path('installedpackages/snortglobal/whitelist/item', []);
 
 // Calculate the next Pass List index ID
-if (isset($config['installedpackages']['snortglobal']['whitelist']['item']))
-	$id_gen = count($config['installedpackages']['snortglobal']['whitelist']['item']);
+if (config_get_path('installedpackages/snortglobal/whitelist/item'))
+	$id_gen = count(config_get_path('installedpackages/snortglobal/whitelist/item', []));
 else
 	$id_gen = '0';
 
@@ -55,12 +49,8 @@ function snort_is_passlist_used($list) {
 	 *          FALSE if not in use               *
 	 **********************************************/
 
-	global $config;
 
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return FALSE;
-
-	foreach($config['installedpackages']['snortglobal']['rule'] as $v) {
+	foreach(config_get_path('installedpackages/snortglobal/rule', []) as $v) {
 		if (isset($v['whitelistname']) && $v['whitelistname'] == $list)
 			return TRUE;
 	}
@@ -69,7 +59,7 @@ function snort_is_passlist_used($list) {
 
 if (isset($_POST['del_btn'])) {
 	$need_save = false;
-	if (is_array($_POST['del']) && count($_POST['del'])) {
+	if (count(array_get_path($_POST, 'del')) > 0) {
 		foreach ($_POST['del'] as $itemi) {
 			/* make sure list is not being referenced by any interface */
 			if (snort_is_passlist_used($a_passlist[$_POST['list_id']]['name'])) {
@@ -80,7 +70,7 @@ if (isset($_POST['del_btn'])) {
 			}
 		}
 		if ($need_save) {
-			unset($a_passlist);
+			config_set_path('installedpackages/snortglobal/whitelist/item', $a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");
@@ -103,7 +93,7 @@ else {
 		}
 		else {
 			unset($a_passlist[$delbtn_list]);
-			unset($a_passlist);
+			config_set_path('installedpackages/snortglobal/whitelist/item', $a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");

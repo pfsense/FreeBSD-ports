@@ -36,7 +36,7 @@ if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	sort($netmapifs);
 }
 
-$a_rule = &config_get_path('installedpackages/snortglobal/rule');
+$a_rule = config_get_path('installedpackages/snortglobal/rule');
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -44,7 +44,6 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 if (is_null($id)) {
-	unset($a_rule);
         header("Location: /snort/snort_interfaces.php");
         exit;
 }
@@ -105,7 +104,7 @@ else
 	$action = "";
 
 $pconfig = array();
-if (empty(config_get_path("installedpackages/snortglobal/rule/{$id}/uuid"))) {
+if (empty(config_get_path("installedpackages/snortglobal/rule/{$id}/uuid", ''))) {
 	/* Adding new interface, so generate a UUID and flag the rules to build. */
 	$pconfig['uuid'] = snort_generate_id();
 	$rebuild_rules = true;
@@ -276,10 +275,10 @@ if ($_POST['save'] && !$input_errors) {
 		$a_rule[$id]['enable'] = $_POST['enable'] ? 'on' : 'off';
 		touch("{$g['varrun_path']}/snort_{$a_rule[$id]['uuid']}.disabled");
 		snort_stop($a_rule[$id], get_real_interface($a_rule[$id]['interface']));
+		config_set_path('installedpackages/snortglobal/rule', $a_rule);
 		write_config("Snort pkg: modified interface configuration for {$a_rule[$id]['interface']}.");
 		$rebuild_rules = false;
 		sync_snort_package_config();
-		unset($a_rule);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -518,6 +517,7 @@ if ($_POST['save'] && !$input_errors) {
 			snort_stop($natent, $if_real);
 
 		/* Save configuration changes */
+		config_set_path('installedpackages/snortglobal/rule', $a_rule);
 		write_config("Snort pkg: modified interface configuration for {$natent['interface']}.");
 
 		/* Update snort.conf and snort.sh files for this interface */
@@ -576,14 +576,12 @@ function snort_get_config_lists($lists) {
 	$result = array();
 	$result['default'] = 'default';
 	if (config_get_path("installedpackages/snortglobal/{$lists}/item")) {
-		foreach (config_get_path("installedpackages/snortglobal/{$lists}/item") as $v)
-		$result[$v['name']] = gettext($v['name']);
+		foreach (config_get_path("installedpackages/snortglobal/{$lists}/item", []) as $v) {
+			$result[$v['name']] = gettext($v['name']);
+		}
 	}
 	return $result;
 }
-
-// Finished with config array reference, so release it
-unset($a_rule);
 
 $pglinks = array("", "/snort/snort_interfaces.php", "@self");
 $pgtitle = array("Services", "Snort", "{$if_friendly} - Interface Settings");

@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2018-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,19 +46,7 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'][$id]['ftp_client_engine']['item'];
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}/ftp_client_engine/item", []);
 
 $pconfig = array();
 if (empty($a_nat[$eng_id])) {
@@ -218,14 +206,16 @@ if ($_POST['save']) {
 		}
 
 		/* Now write the new engine array to conf */
+		config_set_path("installedpackages/snortglobal/rule/{$id}/ftp_client_engine/item", $a_nat);
 		write_config("Snort pkg: modified ftp_telnet_client engine settings.");
 
+		/* Reload the Preprocessors page */
 		header("Location: /snort/snort_preprocessors.php?id={$id}#ftp_telnet_row_ftp_proto_opts");
 		exit;
 	}
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr(config_get_path("installedpackages/snortglobal/rule/{$id}/interface"));
 $pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
 $pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - FTP Preprocessor Client Engine");
 include("head.inc");

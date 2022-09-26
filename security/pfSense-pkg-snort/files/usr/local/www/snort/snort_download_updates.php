@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,13 +39,13 @@ $snort_community_rules_filename = SNORT_GPLV2_DNLD_FILENAME;
 $snort_openappid_filename = SNORT_OPENAPPID_DNLD_FILENAME;
 $snort_openappid_rules_filename = SNORT_OPENAPPID_RULES_FILENAME;
 
-$snortdownload = $config['installedpackages']['snortglobal']['snortdownload'];
-$emergingthreats = $config['installedpackages']['snortglobal']['emergingthreats'];
-$etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'];
-$snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommunityrules'];
-$openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'];
-$openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'];
-$feodotracker_rules = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'];
+$snortdownload = config_get_path('installedpackages/snortglobal/snortdownload');
+$emergingthreats = config_get_path('installedpackages/snortglobal/emergingthreats');
+$etpro = config_get_path('installedpackages/snortglobal/emergingthreats_pro');
+$snortcommunityrules = config_get_path('installedpackages/snortglobal/snortcommunityrules');
+$openappid_detectors = config_get_path('installedpackages/snortglobal/openappid_detectors');
+$openappid_rules_detectors = config_get_path('installedpackages/snortglobal/openappid_rules_detectors');
+$feodotracker_rules = config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules');
 
 /* Get last update information if available */
 if (file_exists(SNORTDIR . "/rulesupd_status")) {

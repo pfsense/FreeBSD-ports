@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,14 +41,10 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
+$a_rule = config_get_path("installedpackage/snortglobal/rule/{$id}", []);
 
-$a_rule = &$config['installedpackages']['snortglobal']['rule'];
-
-$if_real = get_real_interface($a_rule[$id]['interface']);
-$snort_uuid = $a_rule[$id]['uuid'];
+$if_real = get_real_interface($a_rule['interface']);
+$snort_uuid = $a_rule['uuid'];
 $snortlogdir = SNORTLOGDIR;
 $snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}/";
 

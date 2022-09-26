@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -28,10 +28,6 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-
 // Hard-code the path where IP Lists are stored
 // and disregard any user-supplied path element.
 $iprep_path = SNORT_IPREP_PATH;
@@ -50,23 +46,14 @@ function snort_is_iplist_active($iplist) {
 	 *          FALSE if IP List is not in use         *
 	 ***************************************************/
 
-	global $g, $config;
-
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return FALSE;
-
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $rule) {
-		if (is_array($rule['wlist_files']['item'])) {
-			foreach ($rule['wlist_files']['item'] as $file) {
-				if ($file == $iplist)
-					return TRUE;
-			}
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $rule) {
+		foreach (array_get_path($rule, 'wlist_files/item', []) as $file) {
+			if ($file == $iplist)
+				return TRUE;
 		}
-		if (is_array($rule['blist_files']['item'])) {
-			foreach ($rule['blist_files']['item'] as $file) {
-				if ($file == $iplist)
-					return TRUE;
-			}
+		foreach (array_get_path($rule, 'blist_files/item', []) as $file) {
+			if ($file == $iplist)
+				return TRUE;
 		}
 	}
 	return FALSE;

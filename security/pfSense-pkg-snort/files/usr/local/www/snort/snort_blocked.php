@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014-2021 Bill Meeks
+ * Copyright (c) 2014-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,24 +29,10 @@ $snortlogdir = SNORTLOGDIR;
 // Grab pfSense version so we can refer to it later on this page
 $pfs_version=substr(trim(file_get_contents("/etc/version")),0,3);
 
-if (!is_array($config['installedpackages']['snortglobal']['alertsblocks'])) {
-	$config['installedpackages']['snortglobal']['alertsblocks'] = array();
-}
-
-$pconfig['brefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['brefresh'];
-$pconfig['blertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['blertnumber'];
-
-if (empty($pconfig['blertnumber'])) {
-	$pconfig['blertnumber'] = 500;
-	$bnentries = 500;
-}
-else {
-	$bnentries = $pconfig['blertnumber'];
-}
-
-if (empty($pconfig['brefresh'])) {
-	$pconfig['brefresh'] = 'on';
-}
+// Grad settings for auto-refresh boolean and number of displayed blocks
+$pconfig['brefresh'] = config_get_path('installedpackages/snortglobal/alertsblocks/brefresh', 'on');
+$pconfig['blertnumber'] = config_get_path('installedpackages/snortglobal/alertsblocks/blertnumber', '500');
+$bnentries = $pconfig['blertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
@@ -82,7 +68,7 @@ if ($_POST['remove']) {
 /* TODO: build a file with block ip and disc */
 if ($_POST['download'])
 {
-	$blocked_ips_array_save = "";
+	$blocked_ips_array_save = array();
 	exec('/sbin/pfctl -t snort2c -T show', $blocked_ips_array_save);
 	/* build the list */
 	if (is_array($blocked_ips_array_save) && count($blocked_ips_array_save) > 0) {
@@ -130,11 +116,9 @@ if ($_POST['save'])
 {
 	/* no errors */
 	if (!$input_errors) {
-		$config['installedpackages']['snortglobal']['alertsblocks']['brefresh'] = $_POST['brefresh'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['alertsblocks']['blertnumber'] = $_POST['blertnumber'];
-
+		config_set_path('installedpackages/snortglobal/alertsblocks/brefresh', $_POST['brefresh']) ? 'on' : 'off';
+		config_set_path('installedpackages/snortglobal/alertsblocks/blertnumber', $_POST['blertnumber']);
 		write_config("Snort pkg: updated BLOCKED tab settings.");
-
 		header("Location: /snort/snort_blocked.php");
 		exit;
 	}
@@ -210,7 +194,7 @@ $group->add(new Form_Checkbox(
 	'brefresh',
 	null,
 	'Refresh',
-	(($config['installedpackages']['snortglobal']['alertsblocks']['brefresh']=='on') || ($config['installedpackages']['snortglobal']['alertsblocks']['brefresh']=='')),
+	((config_get_path('installedpackages/snortglobal/alertsblocks/brefresh') == 'on') || (config_get_path('installedpackages/snortglobal/alertsblocks/brefresh') == '')),
 	'on'
 ))->setHelp('Default is ON');
 
