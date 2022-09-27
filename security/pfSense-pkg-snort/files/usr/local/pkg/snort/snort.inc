@@ -121,7 +121,7 @@ function snort_generate_id() {
 
 	while (true) {
 		$snort_uuid = mt_rand(1, 65535);
-		foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 			if ($value['uuid'] == $snort_uuid)
 				continue 2;
 		}
@@ -152,9 +152,7 @@ function snort_load_suppress_sigs($snortcfg, $track_by=false) {
 
 	$suppress = array();
 
-	if (!config_get_path('installedpackages/snortglobal/suppress/item'))
-		return;
-	foreach (config_get_path('installedpackages/snortglobal/suppress/item') as $a_id => $alist) {
+	foreach (config_get_path('installedpackages/snortglobal/suppress/item', []) as $a_id => $alist) {
 		if ($alist['name'] == $snortcfg['suppresslistname']) {
 			if (!empty($alist['suppresspassthru'])) {
 				$tmplist = str_replace("\r", "", base64_decode($alist['suppresspassthru']));
@@ -224,18 +222,15 @@ function snort_load_suppress_sigs($snortcfg, $track_by=false) {
 			break;
 		}
 	}
-	unset($alist);
 	return $suppress;
 }
 
 /* func finds custom lists by name and type (defaults to 'whitelist') */
 function snort_find_list($find_name, $type = 'whitelist') {
 
-	if (config_get_path("installedpackages/snortglobal/{$type}/item") ) {
-		foreach (config_get_path("installedpackages/snortglobal/{$type}/item") as $value) {
-			if ($value['name'] == $find_name)
-				return $value;
-		}
+	foreach (config_get_path("installedpackages/snortglobal/{$type}/item", []) as $value) {
+		if ($value['name'] == $find_name)
+			return $value;
 	}
 
 	return array();
@@ -468,7 +463,7 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 
 	if($vips == 'yes') {
 		/* iterate all vips and add to whitelist */
-		foreach(config_get_path('virtualip/vip') as $vip) {
+		foreach(config_get_path('virtualip/vip', []) as $vip) {
 			if ($vip['subnet']) {
 				if (!in_array("{$vip['subnet']}/{$vip['subnet_bits']}", $home_net))
 					$home_net[] = "{$vip['subnet']}/{$vip['subnet_bits']}";
@@ -580,7 +575,7 @@ function snort_start_all_interfaces($background=FALSE) {
 	/* This function starts all configured and enabled Snort     */
 	/* interfaces.                                               */
 	/*************************************************************/
-	foreach (config_get_path('installedpackages/snortglobal/rule') as $snortcfg) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $snortcfg) {
 		if ($snortcfg['enable'] != 'on' || get_real_interface($snortcfg['interface']) == "")
 			continue;
 		snort_start($snortcfg, get_real_interface($snortcfg['interface']), $background);
@@ -592,7 +587,7 @@ function snort_stop_all_interfaces() {
 	/*************************************************************/
 	/* This function stops all configured Snort interfaces.      */
 	/*************************************************************/
-	foreach (config_get_path('installedpackages/snortglobal/rule') as $snortcfg) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $snortcfg) {
 		snort_stop($snortcfg, get_real_interface($snortcfg['interface']));
 	}
 }
@@ -645,7 +640,7 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
 function snort_post_delete_logs($snort_uuid = 0) {
 	global $g;
 
-	foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 		if ($value['uuid'] != $snort_uuid)
 			continue;
 		$if_real = get_real_interface($value['interface']);
@@ -697,7 +692,7 @@ function snort_cron_job_exists($crontask, $match_time=FALSE, $minute="0", $hour=
 
 	global $g;
 
-	foreach(config_get_path('cron/item') as $item) {
+	foreach(config_get_path('cron/item', []) as $item) {
 		if(strpos($item['command'], $crontask) !== FALSE) {
 			if ($match_time) {
 				if ($item['minute'] != $minute)
@@ -953,7 +948,7 @@ function sync_snort_package_config() {
 	safe_mkdir(SNORT_APPID_ODP_PATH);
 
 	/* Iterate configured interfaces and generate a snort.conf for each */
-	foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 		/* Skip configuration of any disabled instance or */
 		/* an instance whose assigned physical interface  */
 		/* has been removed.                              */
@@ -1869,7 +1864,7 @@ function snort_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 	$list = array();
 
 	// Find the list we need
-	foreach(config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item') as $item) {
+	foreach(config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []) as $item) {
 		if ($item['name'] == $sidconf_file) {
 			$list = $item;
 			break;
@@ -1941,7 +1936,7 @@ function snort_sid_mgmt_list_exist($sid_mgmt_list) {
 	/*                                                  */
 	/****************************************************/
 
-	foreach(config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item') as $list) {
+	foreach(config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []) as $list) {
 		if ($list['name'] == $sid_mgmt_list) {
 			return TRUE;
 		}
@@ -3156,7 +3151,7 @@ function snort_create_rc() {
 	$no_enabled_interface = TRUE;
 
 	// If no interfaces are configured for Snort, exit
-	if (count(config_get_path('installedpackages/snortglobal/rule')) < 1) {
+	if (count(config_get_path('installedpackages/snortglobal/rule', [])) < 1) {
 		unlink_if_exists("{$rcdir}snort.sh");
 		return;
 	}
@@ -3174,7 +3169,7 @@ function snort_create_rc() {
 
 	// Loop thru each configured interface and build
 	// the shell script.
-	foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 
 		// Attempt to grab physical interface
 		// for this Snort instance.
@@ -3733,7 +3728,7 @@ function snort_generate_conf($snortcfg) {
 	global $g, $rebuild_rules;
 
 	// Exit if there are no configured Snort interfaces
-	if (count(config_get_path('installedpackages/snortglobal/rule')) < 1)
+	if (count(config_get_path('installedpackages/snortglobal/rule', [])) < 1)
 		return;
 
 	$snortdir = SNORTDIR;
@@ -3817,7 +3812,7 @@ function snort_remove_dead_rules() {
 
 	// Now remove any dead rules files from the interface configurations
 	if (!empty($cats)) {
-		foreach (config_get_path('installedpackages/snortglobal/rule') as &$iface) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as &$iface) {
 			$enabled_rules = explode("||", $iface['rulesets']);
 			foreach ($enabled_rules as $k => $v) {
 				foreach ($cats as $d) {
@@ -4237,7 +4232,7 @@ function snort_get_vpns_list() {
 		}
 		/* Site-to-Site IPsec */
 		if (config_get_path('ipsec/phase2')) {
-			foreach (config_get_path('ipsec/phase2') as $ph2ent) {
+			foreach (config_get_path('ipsec/phase2', []) as $ph2ent) {
 				if ((!$ph2ent['mobile']) && ($ph2ent['mode'] != 'transport') &&
 				    !isset($ph2ent['disabled'])) {
 					if (!array_get_path($ph2ent, 'remoteid')) {
@@ -4257,37 +4252,35 @@ function snort_get_vpns_list() {
 	}
 	/* OpenVPN */
 	foreach (array('client', 'server') as $type) {
-		if (config_get_path("openvpn/openvpn-{$type}")) {
-			foreach (config_get_path("openvpn/openvpn-{$type}") as $settings) {
-				if (is_array($settings)) {
-					if (!config_path_enabled($settings, 'disable')) {
-						$remote_networks = explode(',', $settings['remote_network']);
+		foreach (config_get_path("openvpn/openvpn-{$type}", []) as $settings) {
+			if (is_array($settings)) {
+				if (!config_path_enabled($settings, 'disable')) {
+					$remote_networks = explode(',', $settings['remote_network']);
+					foreach ($remote_networks as $remote_network) {
+						if (function_exists('openvpn_gen_tunnel_network')) {
+							$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($remote_network));
+						} elseif (is_subnetv4($remote_network)) {
+							$vpns_arr[] = $remote_network;
+						}
+					}
+					if (function_exists('openvpn_gen_tunnel_network')) {
+						$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($settings['tunnel_network']));
+					} elseif (is_subnetv4($settings['tunnel_network'])) {
+						$vpns_arr[] = $settings['tunnel_network'];
+					}
+					if (isset($settings['remote_networkv6'])) {
+						$remote_networks = explode(',', $settings['remote_networkv6']);
 						foreach ($remote_networks as $remote_network) {
 							if (function_exists('openvpn_gen_tunnel_network')) {
 								$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($remote_network));
-							} elseif (is_subnetv4($remote_network)) {
-								$vpns_arr[] = $remote_network;
+							} elseif (is_subnetv6($remote_network)) {
+								$vpns_arr[] = text_to_compressed_ip6($remote_network);
 							}
 						}
 						if (function_exists('openvpn_gen_tunnel_network')) {
-							$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($settings['tunnel_network']));
-						} elseif (is_subnetv4($settings['tunnel_network'])) {
-							$vpns_arr[] = $settings['tunnel_network'];
-						}
-						if (isset($settings['remote_networkv6'])) {
-							$remote_networks = explode(',', $settings['remote_networkv6']);
-							foreach ($remote_networks as $remote_network) {
-								if (function_exists('openvpn_gen_tunnel_network')) {
-									$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($remote_network));
-								} elseif (is_subnetv6($remote_network)) {
-									$vpns_arr[] = text_to_compressed_ip6($remote_network);
-								}
-							}
-							if (function_exists('openvpn_gen_tunnel_network')) {
-								$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($settings['tunnel_networkv6']));
-							} elseif (is_subnetv6($settings['tunnel_networkv6'])) {
-								$vpns_arr[] = text_to_compressed_ip6($settings['tunnel_networkv6']);
-							}
+							$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($settings['tunnel_networkv6']));
+						} elseif (is_subnetv6($settings['tunnel_networkv6'])) {
+							$vpns_arr[] = text_to_compressed_ip6($settings['tunnel_networkv6']);
 						}
 					}
 				}
@@ -4295,7 +4288,7 @@ function snort_get_vpns_list() {
 		}
 	}
 	// OpenVPN CSO
-	foreach (config_get_path('openvpn/openvpn-csc') as $ovpnent) {
+	foreach (config_get_path('openvpn/openvpn-csc', []) as $ovpnent) {
 		if (is_array($ovpnent) && !config_path_enabled($ovpnent, 'disable')) {
 			if (!empty($ovpnent['tunnel_network'])) {
 				if (function_exists('openvpn_gen_tunnel_network')) {
@@ -4314,14 +4307,12 @@ function snort_get_vpns_list() {
 		}
 	}
 	/* PPPoE Server */
- 	if (config_get_path('pppoes/pppoe')) {
-		foreach (config_get_path('pppoes/pppoe') as $pppoe) {
-			if ($pppoe['mode'] == "server") {
-				if (is_ipaddrv4($pppoe['remoteip'])) {
-					$pppoesub = gen_subnetv4($pppoe['remoteip'], $pppoe['pppoe_subnet']);
-					if (is_subnetv4($pppoesub)) {
-						$vpns_arr[] = $pppoesub;
-					}
+	foreach (config_get_path('pppoes/pppoe', []) as $pppoe) {
+		if ($pppoe['mode'] == "server") {
+			if (is_ipaddrv4($pppoe['remoteip'])) {
+				$pppoesub = gen_subnetv4($pppoe['remoteip'], $pppoe['pppoe_subnet']);
+				if (is_subnetv4($pppoesub)) {
+					$vpns_arr[] = $pppoesub;
 				}
 			}
 		}

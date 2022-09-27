@@ -70,7 +70,7 @@ function snort_add_supplist_entry($suppress) {
 
 	global $a_instance, $instanceid;
 
-	$a_suppress = config_get_path('installedpackages/snortglobal/suppress/item');
+	$a_suppress = config_get_path('installedpackages/snortglobal/suppress/item', []);
 
 	$found_list = false;
 
@@ -166,7 +166,7 @@ elseif (isset($_POST['id']))
 if (empty($instanceid) || !is_numericint($instanceid))
 	$instanceid = 0;
 
-$a_instance = config_get_path('installedpackages/snortglobal/rule');
+$a_instance = config_get_path('installedpackages/snortglobal/rule', []);
 $snort_uuid = $a_instance[$instanceid]['uuid'];
 $if_real = get_real_interface($a_instance[$instanceid]['interface']);
 

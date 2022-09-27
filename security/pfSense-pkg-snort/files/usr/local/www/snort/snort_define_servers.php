@@ -38,7 +38,7 @@ if (is_null($id)) {
 	exit;
 }
 
-$a_nat = config_get_path('installedpackages/snortglobal/rule');
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 /* NOTE: KEEP IN SYNC WITH SNORT.INC since globals do not work well with package */
 /* define servers and ports snortdefservers */

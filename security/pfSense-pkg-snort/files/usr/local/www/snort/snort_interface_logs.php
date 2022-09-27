@@ -33,7 +33,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 if (empty($id))
 	$id = 0;
 
-$a_instance = config_get_path('installedpackages/snortglobal/rule');
+$a_instance = config_get_path('installedpackages/snortglobal/rule', []);
 $snort_uuid = $a_instance[$id]['uuid'];
 $if_real = get_real_interface($a_instance[$id]['interface']);
 

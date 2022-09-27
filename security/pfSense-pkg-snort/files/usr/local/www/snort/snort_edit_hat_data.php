@@ -27,7 +27,7 @@ global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
 
-$a_nat = config_get_path('installedpackages/snortglobal/rule');
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];

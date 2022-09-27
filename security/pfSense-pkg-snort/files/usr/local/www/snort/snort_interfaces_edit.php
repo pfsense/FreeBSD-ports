@@ -36,7 +36,7 @@ if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	sort($netmapifs);
 }
 
-$a_rule = config_get_path('installedpackages/snortglobal/rule');
+$a_rule = config_get_path('installedpackages/snortglobal/rule', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -55,7 +55,7 @@ if ($_REQUEST['ajax']) {
 	$type = $_REQUEST['type'];
 
 	if (isset($id) && isset($wlist)) {
-		$rule = config_get_path("installedpackages/snortglobal/rule/{$id}");
+		$rule = config_get_path("installedpackages/snortglobal/rule/{$id}", []);
 		if ($rule && $type == "homenet") {
 			$list = snort_build_list($rule, empty($wlist) ? 'default' : $wlist);
 			$contents = implode("\n", $list);
@@ -575,10 +575,8 @@ function snort_get_config_lists($lists) {
 	// return at least the single entry, "default".
 	$result = array();
 	$result['default'] = 'default';
-	if (config_get_path("installedpackages/snortglobal/{$lists}/item")) {
-		foreach (config_get_path("installedpackages/snortglobal/{$lists}/item", []) as $v) {
-			$result[$v['name']] = gettext($v['name']);
-		}
+	foreach (config_get_path("installedpackages/snortglobal/{$lists}/item", []) as $v) {
+		$result[$v['name']] = gettext($v['name']);
 	}
 	return $result;
 }

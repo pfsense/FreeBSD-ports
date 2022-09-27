@@ -447,7 +447,7 @@ $update_errors = false;
 
 /* Save current state (running/not running) for each enabled Snort interface */
 $active_interfaces = array();
-foreach (config_get_path('installedpackages/snortglobal/rule') as $id => $value) {
+foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
 	$if_real = get_real_interface($value['interface']);
 
 	/* Skip processing for instances whose underlying physical        */
@@ -864,7 +864,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		@copy("{$tmpfname}/{$prefix}gen-msg.map", "{$snortdir}/gen-msg.map");
 
 	/* Start the rules rebuild proccess for each configured interface */
-	if (!empty(config_get_path('installedpackages/snortglobal/rule'))) {
+	if (count(config_get_path('installedpackages/snortglobal/rule', [])) > 0) {
 
 		/* Set the flag to force rule rebuilds since we downloaded new rules,    */
 		/* except when in post-install mode.  Post-install does its own rebuild. */
@@ -874,7 +874,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			$rebuild_rules = true;
 
 		/* Create configuration for each active Snort interface */
-		foreach (config_get_path('installedpackages/snortglobal/rule') as $id => $value) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			/* Skip processing for instances whose underlying physical        */
@@ -933,7 +933,7 @@ elseif ($openappid_detectors == 'on') {
 	/* Only updated OpenAppID detectors, so do not need to rebuild all interface rules.   */
 	/* Restart snort if running, and not in post-install, so as to pick up the detectors. */
 	/**************************************************************************************/
-	foreach (config_get_path('installedpackages/snortglobal/rule') as $id => $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
 		$if_real = get_real_interface($value['interface']);
 
 		/* Skip processing for instances whose underlying physical        */

@@ -53,7 +53,7 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 		}
 
 		// Clean-up the logs for each configured Snort instance
-		foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			// Skip instances where pfSense physical interface has been removed
@@ -204,7 +204,7 @@ if (!config_get_path('installedpackages/snortglobal/rule'))
 
 // Check log limits and retention in the interface logging directories if enabled
 if (config_get_path('installedpackages/snortglobal/enable_log_mgmt') == 'on') {
-	foreach (config_get_path('installedpackages/snortglobal/rule') as $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 		$warm_restart = FALSE;
 		$if_real = get_real_interface($value['interface']);
 

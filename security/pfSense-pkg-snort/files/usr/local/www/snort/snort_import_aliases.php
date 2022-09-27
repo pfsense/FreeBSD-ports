@@ -48,11 +48,11 @@ if (is_null($id) || is_null($eng)) {
 // multiple IP alias).
 $selectablealias = false;
 
-$a_aliases = config_get_path('aliases/alias');
+$a_aliases = config_get_path('aliases/alias', []);
 
 // Initialize a pointer to the Snort config section engine we are
 // importing values into.
-$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}/{$eng}/item");
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}/{$eng}/item", []);
 
 // Build a lookup array of currently used engine 'bind_to' Aliases 
 // so we can screen matching Alias names from the list.

@@ -33,7 +33,7 @@ $snort_starting = array();
 $a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 // Calculate the index of the next added Snort interface
-$id_gen = count(config_get_path('installedpackages/snortglobal/rule'));
+$id_gen = count(config_get_path('installedpackages/snortglobal/rule', []));
 
 // Get list of configured firewall interfaces
 $ifaces = get_configured_interface_list();
@@ -189,7 +189,7 @@ else {
 
 /* start/stop snort */
 if ($_POST['toggle'] && is_numericint($_POST['id'])) {
-	$snortcfg = config_get_path("installedpackages/snortglobal/rule/{$_POST['id']}");
+	$snortcfg = config_get_path("installedpackages/snortglobal/rule/{$_POST['id']}", []);
 	$if_real = get_real_interface($snortcfg['interface']);
 	$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
 	$id = $_POST['id'];
@@ -211,7 +211,7 @@ if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 	require_once('/usr/local/pkg/snort/snort.inc');
 	require_once('service-utils.inc');
 	global \$g, \$rebuild_rules, \$config;
-	\$snortcfg = config_get_path('installedpackages/snortglobal/rule/{$id}');
+	\$snortcfg = config_get_path('installedpackages/snortglobal/rule/{$id}', []);
 	\$rebuild_rules = true;
 	touch('{$start_lck_file}');
 	sync_snort_package_config();

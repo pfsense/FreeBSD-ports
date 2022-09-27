@@ -29,7 +29,7 @@
 	</copyright>
 	<description>Snort: XMLRPC Sync</description>
 	<name>snortsync</name>
-	<version>%%PKGVERSION%%</version>
+	<version>4.1.6</version>
 	<title>Snort: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
 	<tabs>

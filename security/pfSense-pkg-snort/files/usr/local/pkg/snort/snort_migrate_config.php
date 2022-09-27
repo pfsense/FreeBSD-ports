@@ -33,7 +33,7 @@ require_once("functions.inc");
 /****************************************************************************/
 
 // Just exit if this is a clean install with no saved settings
-if (empty(config_get_path('installedpackages/snortglobal/rule')))
+if (count(config_get_path('installedpackages/snortglobal/rule', [])) < 1)
 	return;
 
 /****************************************************************************/
@@ -132,7 +132,7 @@ if (empty(config_get_path('installedpackages/snortglobal/hide_deprecated_rules')
 /* strings in SID_MGMT_LIST array in config.xml.          */
 /**********************************************************/
 if (!config_path_enabled('installedpackages/snortglobal', 'sid_list_migration') && count(config_get_path('installedpackages/snortglobal/sid_mgmt_lists', [])) < 1) {
-	$a_list = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item');
+	$a_list = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []);
 	$sidmodfiles = return_dir_as_array("/var/db/snort/sidmods/");
 	foreach ($sidmodfiles as $sidfile) {
 		$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
@@ -160,7 +160,7 @@ elseif (config_get_path('installedpackages/snortglobal/sid_list_migration', "0")
 	// Import dropsid-sample.conf and rejectsid-sample.conf
 	// files if missing from the SID_MGMT_LIST array.
 	$sidmodfiles = array( "dropsid-sample.conf", "rejectsid-sample.conf" );
-	$a_list = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item');
+	$a_list = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []);
 	foreach ($sidmodfiles as $sidfile) {
 		if (!in_array($sidfile, $a_list)) {
 			$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
@@ -217,7 +217,7 @@ if (empty(config_get_path('installedpackages/snortglobal/rule_update_starttime')
 /* any existing <address> to the new array structure.     */
 /**********************************************************/
 if (config_get_path('installedpackages/snortglobal/whitelist/item')) {
-	foreach (config_get_path('installedpackages/snortglobal/whitelist/item') as &$wlisti) {
+	foreach (config_get_path('installedpackages/snortglobal/whitelist/item', []) as &$wlisti) {
 		if (!array_get_path($wlisti, 'address/item') && !empty($wlisti['address'])) {
 			$tmp = $wlisti['address'];
 			$wlisti['address'] = array();
