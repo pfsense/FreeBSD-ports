@@ -62,11 +62,10 @@ function zeek_enabled() {
 	global $config, $zeek_enabled;
 	$zeek_enabled = false;
 
-	init_config_arr(array('installedpackages', 'zeek', 'config'));
-	$settings = &$config['installedpackages']['zeek']['config'][0];
+	$settings = config_get_path('installedpackages/zeek/config/0', []);
 
 	// check whether Zeek is enabled ...
-	if ($settings['enable_zeek'] == "on") {
+	if ($settings['enable'] == "on") {
 		// ... and has at least one interface configured ...
 		if (!empty($settings['active_interface'])) {
 			$zeek_enabled = true;
@@ -80,11 +79,10 @@ function zeek_cluster_enabled() {
 	global $config, $zeek_cluster_enabled;
 	$zeek_cluster_enabled = false;
 
-	init_config_arr(array('installedpackages', 'zeekcluster', 'config'));
-	$settings = &$config['installedpackages']['zeekcluster']['config'][0];
+	$settings = config_get_path('installedpackages/zeekcluster/config/0', []);
 
 	// check whether zeek cluster is enabled
-	if ($settings['enable_cluster'] == "on") {
+	if ($settings['enable'] == "on") {
 		$zeek_cluster_enabled = true;
 	}
 	return $zeek_cluster_enabled;
@@ -146,6 +144,7 @@ function zeek_write_rcfile() {
 	$rcfile = array();
 	$rcfile['file'] = 'zeek.sh';
 	$rcfile['start'] = <<< EOD
+/sbin/mount -t procfs proc /proc
 {$zeekctl_bin_dir}/zeekctl deploy
 
 EOD;
@@ -224,7 +223,7 @@ function zeek_validate_general($post, &$input_errors) {
 	init_config_arr(array('installedpackages', 'zeek', 'config'));
 	$settings = &$config['installedpackages']['zeek']['config'][0];
 
-	if ($post['enable_zeek'] == "on") {
+	if ($post['enable'] == "on") {
 		if (!zeek_cluster_enabled()) {
 			if (empty($post['active_interface'])) {
 				$input_errors[] = "Select at least one interface under 'Zeek Interface(s)' to enable Zeek instance.";
@@ -266,7 +265,7 @@ function zeek_validate_zeekctl($post, &$input_errors) {
 		$input_errors[] = 'Log location must not end with a / character.';
 	}
 
-	if ($post['log_dir']{0} != '/') {
+	if ($post['log_dir'][0] != '/') {
 		$input_errors[] = 'Log location must start with a / character.';
 	}
 
@@ -282,7 +281,7 @@ function zeek_validate_zeekctl($post, &$input_errors) {
 }
 
 function zeek_validate_cluster($post, &$input_errors) {
-	if ($post['enable_cluster'] != 'on') {
+	if ($post['enable'] != 'on') {
 		return;
 	}
 
@@ -329,7 +328,7 @@ function zeek_validate_script($post, &$input_errors) {
 			$input_errors[] = 'Script location must not end with a / character.';
 		}
 
-		if ($post['zeekscriptpath']{0} != '/') {
+		if ($post['zeekscriptpath'][0] != '/') {
 			$input_errors[] = 'Script location must start with a / character.';
 		}
 
@@ -772,8 +771,7 @@ EOD;
 function zeek_sync_on_changes() {
 	global $config;
 
-	init_config_arr(array('installedpackages', 'zeeksync', 'config'));
-	$zeek_sync = &$config['installedpackages']['zeeksync']['config'][0];
+	$zeek_sync = config_get_path('installedpackages/zeeksync/config/0', []);
 	$synconchanges = $zeek_sync['synconchanges'];
 	$synctimeout = $zeek_sync['synctimeout'] ?: '250';
 	switch ($synconchanges) {

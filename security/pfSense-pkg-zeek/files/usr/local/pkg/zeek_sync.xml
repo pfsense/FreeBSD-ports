@@ -29,20 +29,20 @@
 		]]>
 	</copyright>
 	<name>zeeksync</name>
-	<title>Zeek NSM: XMLRPC Sync</title>
+	<title>Services/Zeek NSM</title>
 	<include_file>/usr/local/pkg/zeek.inc</include_file>
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek.xml</url>
 		</tab>
 		<tab>
 			<text>ZeekControl Config</text>
-			<url>/pkg_edit.php?xml=zeek_zeekctl.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek_zeekctl.xml</url>
 		</tab>
 		<tab>
 			<text>Zeek Cluster</text>
-			<url>/pkg_edit.php?xml=zeek_cluster.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek_cluster.xml</url>
 		</tab>
 		<tab>
 			<text>Zeek Scripts</text>
@@ -50,7 +50,7 @@
 		</tab>
 		<tab>
 			<text>Log Mgmt</text>
-			<url>/pkg_edit.php?xml=zeek_log.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zeek_log.xml</url>
 		</tab>
 		<tab>
 			<text>Real Time Inspection</text>
@@ -149,6 +149,8 @@
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
+	<![CDATA[
 		zeek_sync_on_changes();
+	]]>
 	</custom_php_resync_config_command>
 </packagegui>

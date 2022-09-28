@@ -25,7 +25,7 @@ require_once("/etc/inc/pkg-utils.inc");
 require_once("/etc/inc/globals.inc");
 require_once("guiconfig.inc");
 
-$pgtitle = array(gettext("Package"), gettext("Zeek"), gettext("Alerts"));
+$pgtitle = array(gettext("Status"), gettext("Zeek"), gettext("Alerts"));
 $shortcut_section = "zeek";
 include("head.inc");
 
