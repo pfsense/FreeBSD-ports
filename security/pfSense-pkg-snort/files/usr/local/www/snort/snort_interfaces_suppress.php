@@ -60,7 +60,7 @@ if (isset($_POST['del_btn'])) {
 				$need_save = true;
 			}
 		}
-		if ($need_save) {
+		if ($need_save && empty($input_errors)) {
 			config_set_path('installedpackages/snortglobal/suppress/item', $a_suppress);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
