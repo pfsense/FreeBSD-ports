@@ -135,7 +135,8 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 	if (count(config_get_path('installedpackages/snortglobal/rule', [])) > 0) {
 		$uuids = array();
 		$fixed_duplicate = FALSE;
-		foreach (config_get_path('installedpackages/snortglobal/rule', []) as &$snortcfg) {
+		$a_rules = config_get_path('installedpackages/snortglobal/rule', []);
+		foreach ($a_rules as $snortcfg) {
 			// Check for and fix a duplicate UUID
 			$if_real = get_real_interface($snortcfg['interface']);
 			if (!isset($uuids[$snortcfg['uuid']])) {
@@ -155,8 +156,8 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 				$fixed_duplicate = TRUE;
 			}
 		}
-		// Release config array reference and $uuids array
-		unset($snortcfg, $uuids);
+		// Save updated interfaces to configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_rules);
 	}
 	/****************************************************************/
 	/* End of duplicate UUID bug fix.                               */

@@ -112,7 +112,8 @@ if (!$input_errors) {
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
-		foreach (config_get_path('installedpackages/snortglobal/rule', []) as &$iface) {
+		$a_rules = config_get_path('installedpackages/snortglobal/rule', []);
+		foreach ($a_rules as $iface) {
 			// Disable Snort IPS policy if Snort Subscriber rules are disabled
 			if ($disable_ips_policy) {
 				$iface['ips_policy_enable'] = 'off';
@@ -126,6 +127,9 @@ if (!$input_errors) {
 			}
 			$iface['rulesets'] = implode("||", $enabled_rules);
 		}
+
+		// Save the updated interface ruleset to the configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_rules);
 
 		// If deprecated rules should be removed, then do it
 		if (config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on") {

@@ -175,7 +175,7 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 }
 
 if (isset($_POST['save_auto_sid_conf'])) {
-	$config['installedpackages']['snortglobal']['auto_manage_sids'] = $pconfig['auto_manage_sids'] ? "on" : "off";
+	config_set_path('installedpackages/snortglobal/auto_manage_sids', $pconfig['auto_manage_sids'] ? "on" : "off");
 
 	// Grab the SID Mods config for the interfaces from the form's controls array
 	if (is_array($_POST['sid_state_order'])) {
@@ -350,7 +350,7 @@ if (isset($_POST['sidlist_dnload_all'])) {
 // Get all the SID Mods Lists as an array
 // Leave this as the last thing before spewing the page HTML
 // so we can pick up any changes made in code above.
-$sidmodlists = $config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+$sidmodlists = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []);
 $sidmodselections = Array();
 $sidmodselections[] = "None";
 foreach ($sidmodlists as $list) {

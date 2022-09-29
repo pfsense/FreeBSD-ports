@@ -255,19 +255,6 @@ if (is_subsystem_dirty('snort_iprep')) {
 	print '<div class="alert-warning clearfix" role="alert">' . $msg . '<br/></div>';
 }
 
-if (!is_array($pconfig['blist_files'])) {
-	$pconfig['blist_files'] = array();
-}
-if (!is_array($pconfig['blist_files']['item'])) {
-	$pconfig['blist_files']['item'] = array();
-}
-if (!is_array($pconfig['wlist_files'])) {
-	$pconfig['wlist_files'] = array();
-}
-if (!is_array($pconfig['wlist_files']['item'])) {
-	$pconfig['wlist_files']['item'] = array();
-}
-
 $section = new Form_Section('IP Reputation Preprocessor Configuration');
 $section->addInput(new Form_Checkbox(
 	'reputation_preproc',

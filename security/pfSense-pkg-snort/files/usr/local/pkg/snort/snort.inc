@@ -3812,7 +3812,8 @@ function snort_remove_dead_rules() {
 
 	// Now remove any dead rules files from the interface configurations
 	if (!empty($cats)) {
-		foreach (config_get_path('installedpackages/snortglobal/rule', []) as &$iface) {
+		$a_iface = config_get_path('installedpackages/snortglobal/rule', []);
+		foreach ($a_iface as $iface) {
 			$enabled_rules = explode("||", $iface['rulesets']);
 			foreach ($enabled_rules as $k => $v) {
 				foreach ($cats as $d) {
@@ -3822,6 +3823,8 @@ function snort_remove_dead_rules() {
 			}
 			$iface['rulesets'] = implode("||", $enabled_rules);
 		}
+		// Update stored configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_iface);
 	}
 
 	// Clean up
@@ -3863,7 +3866,7 @@ function snort_sync_on_changes() {
 					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
 					if (config_get_path('system/webgui/protocol') == "http") {
 						$rs[0]['varsyncprotocol'] = "http";
-						$rs[0]['varsyncport'] = config_get_path('system;webgui;port') ?: '80';
+						$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '80';
 					} else {
 						$rs[0]['varsyncprotocol'] = "https";
 						$rs[0]['varsyncport'] = config_get_path('system/webgui/port') ?: '443';
@@ -4200,18 +4203,18 @@ function snort_get_vpns_list() {
 		require_once("ipsec.inc");
 	}
 	if (ipsec_enabled()) {
-		if (config_get_path('ipsec/client') && config_get_enabled('ipsec/client')) {
+		if (config_get_path('ipsec/client') && config_path_enabled('ipsec/client')) {
 			/* Virtual Address Pool */
-			if (config_get_enabled('ipsec/client', 'pool_address') &&
-			    config_get_enabled('ipsec/client', 'pool_netbits')) {
+			if (config_path_enabled('ipsec/client', 'pool_address') &&
+			    config_path_enabled('ipsec/client', 'pool_netbits')) {
 				$client_subnet = config_get_path('ipsec/client/pool_address') . '/' . config_get_path('ipsec/client/pool_netbits');
 				if (is_subnetv4($client_subnet)) {
 					 $vpns_arr[] = $client_subnet;
 				}
 			}
 			/* Virtual IPv6 Address Pool */
-			if (config_get_enabled('ipsec/client', 'pool_address_v6') &&
-			    config_get_enabled('ipsec/client', 'pool_netbits_v6')) {
+			if (config_path_enabled('ipsec/client', 'pool_address_v6') &&
+			    config_path_enabled('ipsec/client', 'pool_netbits_v6')) {
 				$client_subnet = config_get_path('ipsec/client/pool_address_v6') . '/' . config_get_path('ipsec/client/pool_netbits_v6');
 				if (is_subnetv6($client_subnet)) {
 					$vpns_arr[] = text_to_compressed_ip6($client_subnet);
@@ -4254,7 +4257,7 @@ function snort_get_vpns_list() {
 	foreach (array('client', 'server') as $type) {
 		foreach (config_get_path("openvpn/openvpn-{$type}", []) as $settings) {
 			if (is_array($settings)) {
-				if (!config_path_enabled($settings, 'disable')) {
+				if (!array_path_enabled($settings, 'disable')) {
 					$remote_networks = explode(',', $settings['remote_network']);
 					foreach ($remote_networks as $remote_network) {
 						if (function_exists('openvpn_gen_tunnel_network')) {
@@ -4289,7 +4292,7 @@ function snort_get_vpns_list() {
 	}
 	// OpenVPN CSO
 	foreach (config_get_path('openvpn/openvpn-csc', []) as $ovpnent) {
-		if (is_array($ovpnent) && !config_path_enabled($ovpnent, 'disable')) {
+		if (is_array($ovpnent) && !array_path_enabled($ovpnent, 'disable')) {
 			if (!empty($ovpnent['tunnel_network'])) {
 				if (function_exists('openvpn_gen_tunnel_network')) {
 					$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($ovpnent['tunnel_network']));
