@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <pthread_np.h>
+#include <semaphore.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,9 +44,8 @@
 int debug = 0;
 static int interval = 30;
 static char *file = NULL;
+static sem_t sig_sem;
 static pthread_attr_t g_attr;
-static pthread_cond_t sig_condvar;
-static pthread_mutex_t sig_mtx;
 static pthread_rwlock_t main_lock;
 
 TAILQ_HEAD(thread_list, thread_host) thread_list;
@@ -84,10 +84,9 @@ check_action(void *arg)
 	struct _addr_entry *ent, *enttmp;
 
 	act = (struct action *)arg;
-	pthread_mutex_lock(&act->mtx);
 	act->state = THR_RUNNING;
 	for (;;) {
-		pthread_cond_wait(&act->cond, &act->mtx);
+		sem_wait(&act->sem);
 		if (debug >= 6)
 			syslog(LOG_WARNING,
 			    "\tAwaking from the sleep for type: %s %s%s%s%s%s%shostname: %s",
@@ -147,10 +146,8 @@ check_action(void *arg)
 		}
 	}
 	act->state = THR_DYING;
-	pthread_mutex_unlock(&act->mtx);
 
-	pthread_mutex_destroy(&act->mtx);
-	pthread_cond_destroy(&act->cond);
+	sem_destroy(&act->sem);
 	action_del(act, &action_list);
 
 	return (NULL);
@@ -176,12 +173,10 @@ action_create(struct action *act, pthread_attr_t *attr)
 		    (act->anchor != NULL ? " " : ""),
 		    act->hostname);
 
-	if (pthread_cond_init(&act->cond, NULL) != 0 ||
-	    pthread_mutex_init(&act->mtx, NULL) != 0)
+	if (sem_init(&act->sem, 0, 0) != 0)
 		return (-1);
 	if (pthread_create(&act->thr_pid, attr, check_action, act) != 0) {
-		pthread_mutex_destroy(&act->mtx);
-		pthread_cond_destroy(&act->cond);
+		sem_destroy(&act->sem);
 		return (-1);
 	}
 #if 0
@@ -380,9 +375,6 @@ host_del(struct action *act)
 		thr->refcnt--;
 		TAILQ_REMOVE(&thr->actions, act, next_actions);
 		act->host = NULL;
-		pthread_mutex_lock(&thr->mtx);
-		pthread_cond_signal(&thr->cond);
-		pthread_mutex_unlock(&thr->mtx);
 	}
 }
 
@@ -542,6 +534,7 @@ check_hostname(void *arg)
 	struct sockaddr_in6 in6;
 	struct action *act;
 	int update;
+	int ret;
 
  	thr = (struct thread_host *)arg;
 	if (!thr->hostname)
@@ -565,12 +558,10 @@ check_hostname(void *arg)
 		addr_add(&thr->rnh, thr->hostname, (struct sockaddr *)&in6,
 		    ADDR_STATIC);
 
-	pthread_mutex_lock(&thr->mtx);
 	thr->state = THR_RUNNING;
 	for (;;) {
 		clock_gettime(CLOCK_MONOTONIC, &ts);
 		ts.tv_sec += interval;
-		ts.tv_sec += (interval % 30);
 		ts.tv_nsec = 0;
 
 		/* It is safe to ignore the locking here. */
@@ -611,28 +602,41 @@ check_hostname(void *arg)
 		TAILQ_FOREACH(act, &thr->actions, next_actions) {
 			if (update == 0 && (act->flags & ACT_FORCE) == 0)
 				continue;
-			pthread_mutex_lock(&act->mtx);
-			pthread_cond_signal(&act->cond);
-			pthread_mutex_unlock(&act->mtx);
+			sem_post(&act->sem);
 		}
 
 		pthread_rwlock_unlock(&main_lock);
 
 again:
-		/* Hack for sleeping a thread */
-		pthread_cond_timedwait(&thr->cond, &thr->mtx, &ts);
-		if (debug >= 6)
+		/*
+		 * Receiving a signal can interrupt sem_clockwait_np(), So we
+		 * loop on error until we get ETIMEDOUT, or drop out if our
+		 * semaphore becomes invalid.
+		 */
+		ret = sem_clockwait_np(&thr->sem, CLOCK_MONOTONIC,
+		    TIMER_ABSTIME, &ts, NULL);
+		while (ret < 0) {
+			if (errno == ETIMEDOUT) {
+				break;
+			} else if (errno == EINVAL) {
+				goto out;
+			}
+			ret = sem_clockwait_np(&thr->sem, CLOCK_MONOTONIC,
+			    TIMER_ABSTIME, &ts, NULL);
+		}
+		if (debug >= 6) {
 			syslog(LOG_WARNING,
 			    "\tAwaking from the sleep for hostname %s (%d)",
 			    thr->hostname, thr->refcnt);
+		}
+
 	}
+out:
 	thr->state = THR_DYING;
-	pthread_mutex_unlock(&thr->mtx);
 
 	if (debug >= 4)
 		syslog(LOG_INFO, "Cleaning up hostname %s", thr->hostname);
-	pthread_mutex_destroy(&thr->mtx);
-	pthread_cond_destroy(&thr->cond);
+	sem_destroy(&thr->sem);
 	TAILQ_REMOVE(&thread_list, thr, next);
 	addr_cleanup(&thr->rnh, thr->hostname);
 	if (thr->hostname != NULL)
@@ -645,26 +649,17 @@ again:
 static int
 check_hostname_create(struct thread_host *thr, pthread_attr_t *attr)
 {
-	pthread_condattr_t condattr;
-
 	if (thr->state != 0)
 		return (-1);
 	thr->state = THR_STARTING;
 	if (debug > 3)
 		syslog(LOG_INFO, "Creating a new thread for host %s",
 		    thr->hostname);
-	if (pthread_mutex_init(&thr->mtx, NULL) != 0)
-		return (-1);
-	if (pthread_condattr_init(&condattr) != 0 ||
-	    pthread_condattr_setclock(&condattr, CLOCK_MONOTONIC) != 0 ||
-	    pthread_cond_init(&thr->cond, &condattr) != 0 ||
-	    pthread_condattr_destroy(&condattr) != 0) {
-		pthread_mutex_destroy(&thr->mtx);
+	if (sem_init(&thr->sem, 0, 0) != 0) {
 		return (-1);
 	}
 	if (pthread_create(&thr->thr_pid, attr, check_hostname, thr) != 0) {
-		pthread_mutex_destroy(&thr->mtx);
-		pthread_cond_destroy(&thr->cond);
+		sem_destroy(&thr->sem);
 		return (-1);
 	}
 	pthread_set_name_np(thr->thr_pid, thr->hostname);
@@ -701,13 +696,11 @@ merge_config(void *arg __unused) {
 	TAILQ_INIT(&new_action_list);
 
 	for (;;) {
-		pthread_mutex_lock(&sig_mtx);
-		if (pthread_cond_wait(&sig_condvar, &sig_mtx) != 0) {
+		if (sem_wait(&sig_sem) != 0) {
 			syslog(LOG_ERR,
 			    "unable to wait on output queue retrying");
 			continue;
 		}
-		pthread_mutex_unlock(&sig_mtx);
 
 		syslog(LOG_INFO, "%s: configuration reload", __func__);
 		pthread_rwlock_wrlock(&main_lock);
@@ -811,9 +804,10 @@ merge_config(void *arg __unused) {
 		}
 		/* Make check_hostname() run. */
 		TAILQ_FOREACH(thr, &thread_list, next) {
-			if (thr->state != THR_RUNNING)
+			/* Don't post for threads that aren't running */
+			if (thr->state != THR_RUNNING && thr->state != THR_STARTING)
 				continue;
-			pthread_cond_signal(&thr->cond);
+			sem_post(&thr->sem);
 		}
 		pthread_rwlock_unlock(&main_lock);
 	}
@@ -829,9 +823,7 @@ handle_signal(int sig)
 		    sig);
 	switch (sig) {
 		case SIGHUP:
-			pthread_mutex_lock(&sig_mtx);
-			pthread_cond_signal(&sig_condvar);
-			pthread_mutex_unlock(&sig_mtx);
+			sem_post(&sig_sem);
 			break;
 		case SIGTERM:
 		case SIGINT:
@@ -950,6 +942,8 @@ main(int argc, char *argv[])
 		}
 	}
 
+	pthread_rwlock_init(&main_lock, NULL);
+
 	/* Catch SIGHUP in order to reload configuration file. */
 	sig_error = signal(SIGHUP, handle_signal);
 	if (sig_error == SIG_ERR)
@@ -961,7 +955,6 @@ main(int argc, char *argv[])
 	if (sig_error == SIG_ERR)
 		err(EX_OSERR, "unable to set signal handler");
 
-	pthread_rwlock_init(&main_lock, NULL);
 	pthread_attr_init(&g_attr);
 	pthread_attr_setdetachstate(&g_attr, PTHREAD_CREATE_DETACHED);
 
@@ -976,8 +969,7 @@ main(int argc, char *argv[])
 	}
 
 	/* Config reload. */
-	pthread_mutex_init(&sig_mtx, NULL);
-	pthread_cond_init(&sig_condvar, NULL);
+	sem_init(&sig_sem, 0, 0);
 	if (pthread_create(&sig_thr, &g_attr, merge_config, NULL) != 0) {
 		if (debug >= 1)
 			syslog(LOG_ERR, "Unable to create signal thread %s",

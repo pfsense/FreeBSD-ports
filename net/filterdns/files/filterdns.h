@@ -24,6 +24,7 @@
 #include <sys/queue.h>
 
 #include <pthread.h>
+#include <semaphore.h>
 
 #define	_BUF_SIZE	4096
 #define	satosin(sa)	((struct sockaddr_in *)(sa))
@@ -57,8 +58,7 @@ struct thread_host {
 	int mask;
 	int mask6;
 	pthread_t thr_pid;
-	pthread_cond_t cond;
-	pthread_mutex_t mtx;
+	sem_t sem;
 	uint32_t refcnt;
 	uint32_t state;
 	TAILQ_HEAD(actions, action) actions;
@@ -79,8 +79,7 @@ struct action {
 	char *hostname;
 	uint32_t state;
 	pthread_t thr_pid;
-	pthread_cond_t cond;
-	pthread_mutex_t mtx;
+	sem_t sem;
 };
 
 int parse_config(char *);
