@@ -62,14 +62,14 @@ if (isset($_POST['del_btn'])) {
 	if (count(array_get_path($_POST, 'del')) > 0) {
 		foreach ($_POST['del'] as $itemi) {
 			/* make sure list is not being referenced by any interface */
-			if (snort_is_passlist_used($a_passlist[$_POST['list_id']]['name'])) {
+			if (snort_is_passlist_used($a_passlist[$itemi]['name'])) {
 				$input_errors[] = gettext("Pass List '{$a_passlist[$itemi]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
 			} else {
 				unset($a_passlist[$itemi]);
 				$need_save = true;
 			}
 		}
-		if ($need_save) {
+		if ($need_save && empty($input_errors)) {
 			config_set_path('installedpackages/snortglobal/whitelist/item', $a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
@@ -88,7 +88,7 @@ else {
 		}
 	}
 	if (is_numeric($delbtn_list) && $a_passlist[$delbtn_list]) {
-		if (snort_is_passlist_used($a_passlist[$_POST['list_id']]['name'])) {
+		if (snort_is_passlist_used($a_passlist[$delbtn_list]['name'])) {
 			$input_errors[] = gettext("This Pass List '{$a_passlist[$delbtn_list]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
 		}
 		else {
