@@ -101,67 +101,10 @@ if ($pkgid >= 0) {
 /* Define a default Dashboard Widget Container for Snort */
 $snort_widget_container = "snort_alerts:col2:open";
 
-/*********************************************************/
-/* START OF BUG FIX CODE                                 */
-/*                                                       */
-/* Remove any Snort cron tasks that may have been left   */
-/* from a previous uninstall due to a bug that saved     */
-/* edited cron tasks as new ones while still leaving     */
-/* the original task.  Correct cron task entries will    */
-/* be recreated below if saved settings are detected.    */
-/*********************************************************/
-$cron_count = 0;
-while (snort_cron_job_exists("snort2c", FALSE)) {
-	install_cron_job("snort2c", false);
-	$cron_count++;
-}
-if ($cron_count > 0)
-	syslog(LOG_NOTICE, gettext("[Snort] Removed {$cron_count} duplicate 'remove_blocked_hosts' cron task(s)."));
-
-/*********************************************************/
-/* END OF BUG FIX CODE                                   */
-/*********************************************************/
-
-/* remake saved settings */
+/* Remake saved settings if detected */
 if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') {
 	syslog(LOG_NOTICE, gettext("[Snort] Saved settings detected... rebuilding installation with saved settings."));
 	update_status(gettext("Saved settings detected.") . "\n");
-
-	/****************************************************************/
-	/* Do test and fix for duplicate UUIDs if this install was      */
-	/* impacted by the DUP (clone) bug that generated a duplicate   */
-	/* UUID for the cloned interface.                               */
-	/****************************************************************/
-	if (count(config_get_path('installedpackages/snortglobal/rule', [])) > 0) {
-		$uuids = array();
-		$fixed_duplicate = FALSE;
-		$a_rules = config_get_path('installedpackages/snortglobal/rule', []);
-		foreach ($a_rules as $snortcfg) {
-			// Check for and fix a duplicate UUID
-			$if_real = get_real_interface($snortcfg['interface']);
-			if (!isset($uuids[$snortcfg['uuid']])) {
-				$uuids[$snortcfg['uuid']] = $if_real;
-				continue;
-			}
-			else {
-				// Found a duplicate UUID, so generate a
-				// new one for the affected interface.
-				$old_uuid = $snortcfg['uuid'];
-				$new_uuid = snort_generate_id();
-				if (file_exists("{$snortlogdir}snort_{$if_real}{$old_uuid}/"))
-					@rename("{$snortlogdir}snort_{$if_real}{$old_uuid}/", "{$snortlogdir}snort_{$if_real}{$new_uuid}/");
-				$snortcfg['uuid'] = $new_uuid;
-				$uuids[$new_uuid] = $if_real;
-				syslog(LOG_NOTICE, gettext("[Snort] updated UUID for interface " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " from {$old_uuid} to {$new_uuid}."));
-				$fixed_duplicate = TRUE;
-			}
-		}
-		// Save updated interfaces to configuration
-		config_set_path('installedpackages/snortglobal/rule', $a_rules);
-	}
-	/****************************************************************/
-	/* End of duplicate UUID bug fix.                               */
-	/****************************************************************/
 
 	/* Do any required settings migration for new configurations */
 	update_status(gettext("Migrating settings to new configuration..."));
