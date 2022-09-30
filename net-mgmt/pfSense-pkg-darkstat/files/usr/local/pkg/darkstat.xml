@@ -26,16 +26,17 @@
 	]]>
 	</copyright>
 	<name>Darkstat</name>
-	<title>Diagnostics: Darkstat</title>
+	<version>%%PKGVERSION%%</version>
+	<title>Services/Darkstat</title>
 	<include_file>/usr/local/pkg/darkstat.inc</include_file>
 	<menu>
-		<name>darkstat Settings</name>
+		<name>darkstat</name>
 		<tooltiptext>Setup darkstat specific settings.</tooltiptext>
-		<section>Diagnostics</section>
+		<section>Services</section>
 		<url>/pkg_edit.php?xml=darkstat.xml</url>
 	</menu>
 	<menu>
-		<name>darkstat</name>
+		<name>darkstat </name>
 		<tooltiptext>Access darkstat</tooltiptext>
 		<section>Diagnostics</section>
 		<url>/darkstat_redirect.php</url>
@@ -48,7 +49,7 @@
 	</service>
 	<tabs>
 		<tab>
-			<text>darkstat Settings</text>
+			<text>Settings</text>
 			<url>/pkg_edit.php?xml=darkstat.xml</url>
 			<active/>
 		</tab>

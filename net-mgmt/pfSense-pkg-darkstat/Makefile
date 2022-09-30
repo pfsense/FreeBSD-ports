@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-darkstat
 PORTVERSION=	3.1.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -26,7 +26,7 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/darkstat.xml \
@@ -35,11 +35,14 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/darkstat_redirect.php \
 		${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_darkstat.inc \
+		${STAGEDIR}${PREFIX}/www/shortcuts
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/darkstat.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
+		${STAGEDIR}${PREFIX}/pkg/darkstat.xml \
 		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
