@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,23 +26,15 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $suricatadir = SURICATADIR;
 $pconfig = array();
 
 // Grab saved settings from configuration
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-$a_nat = &$config['installedpackages']['suricata']['rule'];
-
-if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']))
-	$config['installedpackages']['suricata']['sid_mgmt_lists'] = array();
-if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']['item']))
-	$config['installedpackages']['suricata']['sid_mgmt_lists']['item'] = array();
-$a_list = &$config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
-
-$pconfig['auto_manage_sids'] = $config['installedpackages']['suricata']['config'][0]['auto_manage_sids'];
+$a_nat = config_get_path('installedpackages/suricata/rule', []);
+$a_list = config_get_path('installedpackages/suricata/sid_mgmt_lists/item', []);
+$pconfig['auto_manage_sids'] = config_get_path('installedpackages/suricata/config/0/auto_manage_sids');
 
 // Set default to not show SID modification lists editor controls
 $sidmodlist_edit_style = "display: none;";
@@ -61,12 +53,7 @@ function suricata_is_sidmodslist_active($sidlist) {
 	 *          FALSE if List can be deleted             *
 	 *****************************************************/
 
-	global $g, $config;
-
-	if (!is_array($config['installedpackages']['suricata']['rule']))
-		return FALSE;
-
-	foreach ($config['installedpackages']['suricata']['rule'] as $rule) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $rule) {
 		if ($rule['enable_sid_file'] == $sidlist) {
 			return TRUE;
 		}
@@ -115,6 +102,7 @@ if (isset($_POST['upload'])) {
 			$a_list[] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 			write_config("Suricata pkg: Uploaded new automatic SID management list.");
 		}
 	}
@@ -139,6 +127,8 @@ if (isset($_POST['sidlist_delete']) && isset($a_list[$_POST['sidlist_id']])) {
 		unset($a_list[$_POST['sidlist_id']]);
 
 		// Write the new configuration
+		config_set_path('installedpackages/suricata/rule', $a_nat);
+		config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 		write_config("Suricata pkg: deleted automatic SID management list.");
 	}
 	else {
@@ -167,12 +157,14 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 			$a_list[] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 			write_config("Suricata pkg: added new automatic SID management list.");
 		}
 		else {
 			$a_list[$_POST['listid']] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
 			write_config("Suricata pkg: updated automatic SID management list.");
 		}
 		unset($tmp);
@@ -184,7 +176,7 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 }
 
 if (isset($_POST['save_auto_sid_conf'])) {
-	$config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] = $pconfig['auto_manage_sids'] ? "on" : "off";
+	config_set_path('installedpackages/suricata/config/0/auto_manage_sids', $pconfig['auto_manage_sids'] ? "on" : "off");
 
 	// Grab the SID Mods config for the interfaces from the form's controls array
 	foreach ($_POST['sid_state_order'] as $k => $v) {
@@ -229,6 +221,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 
 	// Write the new configuration
+	config_set_path('installedpackages/suricata/rule', $a_nat);
 	write_config("Suricata pkg: updated automatic SID management settings.");
 
 	$intf_msg = "";
@@ -345,10 +338,7 @@ if (isset($_POST['sidlist_dnload_all'])) {
 // Get all the SID Mods Lists as an array
 // Leave this as the last thing before spewing the page HTML
 // so we can pick up any changes made in code above.
-$sidmodlists = $config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
-if (!is_array($sidmodlists)) {
-	$sidmodlists = array();
-}
+$sidmodlists = config_get_path('installedpackages/suricata/sid_mgmt_lists/item', []);
 $sidmodselections = Array();
 $sidmodselections[] = "None";
 foreach ($sidmodlists as $list) {

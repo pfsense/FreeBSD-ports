@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,10 +26,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $config, $g;
-
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
+global $g;
 
 // Hard-code the path where IP Lists are stored
 // and disregard any user-supplied path element.
@@ -44,22 +41,15 @@ function suricata_is_iplist_active($iplist) {
 	 * This function checks all configured Suricata	   *
 	 * interfaces to see if the passed IP List is used *
 	 * as a whitelist or blacklist by an interface.	   *
-	 *												   *
-	 * Returns: TRUE  if IP List is in use			   *
-	 *		  FALSE if IP List is not in use		   *
+	 *                                                 *
+	 * Returns: TRUE  if IP List is in use             *
+	 *          FALSE if IP List is not in use         *
 	 ***************************************************/
 
-	global $g, $config;
-
-	if (!is_array($config['installedpackages']['suricata']['rule']))
-		return FALSE;
-
-	foreach ($config['installedpackages']['suricata']['rule'] as $rule) {
-		if (is_array($rule['iplist_files']['item'])) {
-			foreach ($rule['iplist_files']['item'] as $file) {
-				if ($file == $iplist)
-					return TRUE;
-			}
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $rule) {
+		foreach (array_get_path($rule, 'iplist_files/item', []) as $file) {
+			if ($file == $iplist)
+				return TRUE;
 		}
 	}
 	return FALSE;
@@ -70,8 +60,8 @@ if (!empty($_POST)) {
 	$pconfig = $_POST;
 }
 else {
-	$pconfig['et_iqrisk_enable'] = $config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'];
-	$pconfig['iqrisk_code'] = $config['installedpackages']['suricata']['config'][0]['iqrisk_code'];
+	$pconfig['et_iqrisk_enable'] = config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable');
+	$pconfig['iqrisk_code'] = htmlentities(config_get_path('installedpackages/suricata/config/0/iqrisk_code'));
 }
 
 // Validate IQRisk settings if enabled and saving them
@@ -80,19 +70,19 @@ if ($_POST['save']) {
 		$input_errors[] = gettext("You must provide a valid IQRisk subscription code when IQRisk downloads are enabled!");
 
 	if (!$input_errors) {
-		$config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] = $_POST['et_iqrisk_enable'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['iqrisk_code'] = $_POST['iqrisk_code'];
+		config_set_path('installedpackages/suricata/config/0/et_iqrisk_enable', $_POST['et_iqrisk_enable'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/iqrisk_code', trim(html_entity_decode($_POST['iqrisk_code'])));
 		write_config("Suricata pkg: modified IP Lists settings.");
 
 		/* Toggle cron task for ET IQRisk updates if setting was changed */
-		if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'on' && !suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php")) {
+		if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on' && !suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php")) {
 			install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
 		}
-		elseif ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'off' && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php"))
+		elseif (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'off' && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_etiqrisk_update.php"))
 			install_cron_job("/usr/local/pkg/suricata/suricata_etiqrisk_update.php", FALSE);
 
 		/* Peform a manual ET IQRisk file check/download */
-		if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == 'on')
+		if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on')
 			include("/usr/local/pkg/suricata/suricata_etiqrisk_update.php");
 	}
 }

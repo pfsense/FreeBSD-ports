@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,9 @@ elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 if (empty($instanceid))
 	$instanceid = 0;
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
-
-$a_instance = $config['installedpackages']['suricata']['rule'];
-$suricata_uuid = $a_instance[$instanceid]['uuid'];
-$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+$a_instance = config_get_path('installedpackages/suricata/rule', []);
+$suricata_uuid = config_get_path("installedpackages/suricata/rule/{$instanceid}/uuid", '');
+$if_real = get_real_interface(config_get_path("installedpackages/suricata/rule/{$instanceid}/interface", ''));
 
 // Construct a pointer to the instance's logging subdirectory
 $suricatalogdir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}/";
@@ -80,11 +76,9 @@ if ($input_errors) {
 }
 
 function build_instance_list() {
-	global $a_instance;
-
 	$list = array();
 
-	foreach ($a_instance as $id => $instance) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $id => $instance) {
 		$list[$id] = '(' . convert_friendly_interface_to_friendly_descr($instance['interface']) . ') ' . $instance['descr'];
 	}
 

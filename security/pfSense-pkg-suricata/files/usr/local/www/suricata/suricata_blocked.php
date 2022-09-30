@@ -26,23 +26,13 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 
 $suricatalogdir = SURICATALOGDIR;
 $suri_pf_table = SURICATA_PF_TABLE;
 
-if (!is_array($config['installedpackages']['suricata']['alertsblocks']))
-	$config['installedpackages']['suricata']['alertsblocks'] = array();
-
-$pconfig['brefresh'] = $config['installedpackages']['suricata']['alertsblocks']['brefresh'];
-$pconfig['blertnumber'] = $config['installedpackages']['suricata']['alertsblocks']['blertnumber'];
-
-if (empty($pconfig['blertnumber'])) {
-	$pconfig['blertnumber'] = 500;
-}
-if (empty($pconfig['brefresh'])) {
-	$pconfig['brefresh'] = 'on';
-}
+$pconfig['brefresh'] = config_get_path('installedpackages/suricata/alertsblocks/brefresh', 'on');
+$pconfig['blertnumber'] = config_get_path('installedpackages/suricata/alertsblocks/blertnumber', 500);
 $bnentries = $pconfig['blertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
@@ -155,15 +145,12 @@ if ($_POST['save'])
 {
 	/* no errors */
 	if (!$input_errors) {
-		$config['installedpackages']['suricata']['alertsblocks']['brefresh'] = $_POST['brefresh'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['alertsblocks']['blertnumber'] = $_POST['blertnumber'];
-
+		config_set_path('installedpackages/suricata/alertsblocks/brefresh', $_POST['brefresh'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/alertsblocks/blertnumber', $_POST['blertnumber']);
 		write_config("Suricata pkg: updated BLOCKED tab settings.");
-
 		header("Location: /suricata/suricata_blocked.php");
 		exit;
 	}
-
 }
 
 $pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
@@ -239,7 +226,7 @@ $group->add(new Form_Checkbox(
 	'brefresh',
 	null,
 	'Refresh',
-	(($config['installedpackages']['suricata']['alertsblocks']['brefresh']=="on") || ($config['installedpackages']['suricata']['alertsblocks']['brefresh']=='')),
+	((config_get_path('installedpackages/suricata/alertsblocks/brefresh')=="on") || (config_get_path('installedpackages/suricata/alertsblocks/brefresh')=='')),
 	'on'
 ))->setHelp('Default is ON');
 

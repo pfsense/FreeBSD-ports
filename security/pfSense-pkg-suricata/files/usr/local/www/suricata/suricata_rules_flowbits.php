@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,6 @@ $flowbit_rules_file = FLOWBITS_FILENAME;
 $rules_map = array();
 $supplist = array();
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
-
-$a_nat = &$config['installedpackages']['suricata']['rule'];
-
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
@@ -48,6 +42,8 @@ if (is_null($id)) {
 	header("Location: /suricata/suricata_interfaces.php");
 	exit;
 }
+
+$a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
 
 // Set who called us so we can return to the correct page with
 // the RETURN ('cancel') button.
@@ -68,11 +64,11 @@ if (isset($_POST['cancel'])) {
 	exit;
 }
 
-$if_real = get_real_interface($a_nat[$id]['interface']);
-$suricata_uuid = $a_nat[$id]['uuid'];
+$if_real = get_real_interface($a_nat['interface']);
+$suricata_uuid = $a_nat['uuid'];
 
 /* We should normally never get to this page if Auto-Flowbits are disabled, but just in case... */
-if ($a_nat[$id]['autoflowbitrules'] == 'on') {
+if ($a_nat['autoflowbitrules'] == 'on') {
 	if (file_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}") &&
 	    filesize("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}") > 0) {
 		$rules_map = suricata_load_rules_map("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}");
@@ -90,26 +86,22 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 		$suppress .= "suppress gen_id {$_POST['gid']}, sig_id {$_POST['sid']}\n";
 	else
 		$suppress .= "# {$descr}\nsuppress gen_id {$_POST['gid']}, sig_id {$_POST['sid']}\n";
-	if (!is_array($config['installedpackages']['suricata']['suppress']))
-		$config['installedpackages']['suricata']['suppress'] = array();
-	if (!is_array($config['installedpackages']['suricata']['suppress']['item']))
-		$config['installedpackages']['suricata']['suppress']['item'] = array();
-	$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
+	$a_suppress = config_get_path('installedpackages/suricata/suppress/item', []);
 	$found_list = false;
 
-	if (empty($a_nat[$id]['suppresslistname']) || $a_nat[$id]['suppresslistname'] == 'default') {
+	if (empty($a_nat['suppresslistname']) || $a_nat['suppresslistname'] == 'default') {
 		$s_list = array();
 		$s_list['uuid'] = uniqid();
-		$s_list['name'] = $a_nat[$id]['interface'] . "suppress" . "_" . $s_list['uuid'];
+		$s_list['name'] = $a_nat['interface'] . "suppress" . "_" . $s_list['uuid'];
 		$s_list['descr']  =  "Auto-generated list for Alert suppression";
 		$s_list['suppresspassthru'] = base64_encode($suppress);
 		$a_suppress[] = $s_list;
-		$a_nat[$id]['suppresslistname'] = $s_list['name'];
+		$a_nat['suppresslistname'] = $s_list['name'];
 		$found_list = true;
 	} else {
 		/* If we get here, a Suppress List is defined for the interface so see if we can find it */
 		foreach ($a_suppress as $a_id => $alist) {
-			if ($alist['name'] == $a_nat[$id]['suppresslistname']) {
+			if ($alist['name'] == $a_nat['suppresslistname']) {
 				$found_list = true;
 				if (!empty($alist['suppresspassthru'])) {
 					$tmplist = base64_decode($alist['suppresspassthru']);
@@ -126,22 +118,23 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 	}
 
 	if ($found_list) {
-		write_config("Suricata pkg: added suppress entry for rule {$_POST['gid']}:{$_POST['sid']} to Suppress List {$a_nat[$id]['suppresslistname']}.");
+		config_set_path('installedpackages/suricata/suppress/item', $a_suppress);
+		write_config("Suricata pkg: added suppress entry for rule {$_POST['gid']}:{$_POST['sid']} to Suppress List {$a_nat['suppresslistname']}.");
 		$rebuild_rules = false;
 		sync_suricata_package_config();
-		suricata_reload_config($a_nat[$id]);
-		$savemsg = gettext("An entry to suppress the Alert for 'gen_id {$_POST['gid']}, sig_id {$_POST['sid']}' has been added to Suppress List '{$a_nat[$id]['suppresslistname']}'.");
+		suricata_reload_config($a_nat);
+		$savemsg = gettext("An entry to suppress the Alert for 'gen_id {$_POST['gid']}, sig_id {$_POST['sid']}' has been added to Suppress List '{$a_nat['suppresslistname']}'.");
 	}
 	else {
 		/* We did not find the defined list, so notify the user with an error */
-		$input_errors[] = gettext("Suppress List '{$a_nat[$id]['suppresslistname']}' is defined for this interface, but it could not be found!");
+		$input_errors[] = gettext("Suppress List '{$a_nat['suppresslistname']}' is defined for this interface, but it could not be found!");
 	}
 }
 
 /* Load up an array with the current Suppression List GID,SID values */
-$supplist = suricata_load_suppress_sigs($a_nat[$id]);
+$supplist = suricata_load_suppress_sigs($a_nat);
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat['interface']);
 
 $pgtitle = array(gettext("Suricata"), $if_friendly, gettext("Flowbit Rules"));
 

@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +26,8 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-if (!is_array($config['installedpackages']['suricata']['suppress']))
-	$config['installedpackages']['suricata']['suppress'] = array();
-if (!is_array($config['installedpackages']['suricata']['suppress']['item']))
-	$config['installedpackages']['suricata']['suppress']['item'] = array();
-$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
-$id_gen = count($config['installedpackages']['suricata']['suppress']['item']);
+$a_suppress = config_get_path('installedpackages/suricata/suppress/item', []);
+$id_gen = count($a_suppress);
 
 function suricata_suppresslist_used($supplist) {
 
@@ -45,12 +39,7 @@ function suricata_suppresslist_used($supplist) {
 	/* Returns:  TRUE if list is in use, else FALSE			*/
 	/****************************************************************/
 
-	global $config;
-
-	$suricataconf = $config['installedpackages']['suricata']['rule'];
-	if (empty($suricataconf))
-		return false;
-	foreach ($suricataconf as $value) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
 		if ($value['suppresslistname'] == $supplist)
 			return true;
 	}
@@ -68,11 +57,7 @@ function suricata_find_suppresslist_interface($supplist) {
 	/*		  FALSE if no interface found.			*/
 	/****************************************************************/
 
-	global $config;
-	$suricataconf = $config['installedpackages']['suricata']['rule'];
-	if (empty($suricataconf))
-		return false;
-	foreach ($suricataconf as $rule => $value) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $rule => $value) {
 		if ($value['suppresslistname'] == $supplist)
 			return $rule;
 	}
@@ -92,6 +77,7 @@ if (isset($_POST['del_btn'])) {
 			}
 		}
 		if ($need_save) {
+			config_set_path('installedpackages/suricata/suppress/item', $a_suppress);
 			write_config("Suricata pkg: deleted SUPPRESSION LIST.");
 			sync_suricata_package_config();
 			header("Location: /suricata/suricata_suppress.php");

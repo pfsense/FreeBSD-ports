@@ -22,15 +22,11 @@
 require('guiconfig.inc');
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $config;
-
 $file_hash = $_REQUEST['filehash'];
 $uuid = $_REQUEST['uuid'];
 $file_name = urldecode($_REQUEST['filename']);
 $file_size = urldecode($_REQUEST['filesize']);
-
-init_config_arr(array('installedpackages', 'suricata', 'rule'));
-$a_instance = &$config['installedpackages']['suricata']['rule'];
+$a_instance = config_get_path('installedpackages/suricata/rule', []);
 
 foreach ($a_instance as $instance) {
 	if (($instance['uuid'] == $uuid) &&

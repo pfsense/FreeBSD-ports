@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@ require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
 global $g, $rebuild_rules;
+$iprep_path = SURICATA_IPREP_PATH;
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -38,32 +39,15 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
-if (!is_array($config['installedpackages']['suricata']['rule'][$id])) {
-	$config['installedpackages']['suricata']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['suricata']['rule'][$id]['iplist_files'])) {
-	$config['installedpackages']['suricata']['rule'][$id]['iplist_files'] = array();
-}
-if (!is_array($config['installedpackages']['suricata']['rule'][$id]['iplist_files']['item'])) {
-	$config['installedpackages']['suricata']['rule'][$id]['iplist_files']['item'] = array();
-}
-
-$a_nat = &$config['installedpackages']['suricata']['rule'];
+$a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
 
 // If doing a postback, used typed values, else load from stored config
 if (!empty($_POST)) {
 	$pconfig = $_POST;
 }
 else {
-	$pconfig = $a_nat[$id];
+	$pconfig = $a_nat;
 }
-
-$iprep_path = SURICATA_IPREP_PATH;
-$if_real = get_real_interface($a_nat[$id]['interface']);
-$suricata_uuid = $config['installedpackages']['suricata']['rule'][$id]['uuid'];
 
 if ($_POST['mode'] == 'iprep_catlist_add' && isset($_POST['iplist'])) {
 	$pconfig = $_POST;
@@ -71,7 +55,8 @@ if ($_POST['mode'] == 'iprep_catlist_add' && isset($_POST['iplist'])) {
 	// Test the supplied IP List file to see if it exists
 	if (file_exists($_POST['iplist'])) {
 		if (!$input_errors) {
-			$a_nat[$id]['iprep_catlist'] = basename($_POST['iplist']);
+			$a_nat['iprep_catlist'] = basename($_POST['iplist']);
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 			write_config("Suricata pkg: added new IP Rep Categories file for IP REPUTATION preprocessor.");
 			mark_subsystem_dirty('suricata_iprep');
 		}
@@ -79,8 +64,8 @@ if ($_POST['mode'] == 'iprep_catlist_add' && isset($_POST['iplist'])) {
 	else
 		$input_errors[] = gettext("The file '{$_POST['iplist']}' could not be found.");
 
-	$pconfig['iprep_catlist'] = $a_nat[$id]['iprep_catlist'];
-	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
+	$pconfig['iprep_catlist'] = $a_nat['iprep_catlist'];
+	$pconfig['iplist_files'] = $a_nat['iplist_files'];
 }
 
 if ($_POST['mode'] == 'iplist_add' && isset($_POST['iplist'])) {
@@ -89,14 +74,15 @@ if ($_POST['mode'] == 'iplist_add' && isset($_POST['iplist'])) {
 	// Test the supplied IP List file to see if it exists
 	if (file_exists($_POST['iplist'])) {
 		// See if the file is already assigned to the interface
-		foreach ($a_nat[$id]['iplist_files']['item'] as $f) {
+		foreach (array_get_path($a_nat, 'iplist_files/item', []) as $f) {
 			if ($f == basename($_POST['iplist'])) {
 				$input_errors[] = gettext("The file {$f} is already assigned as a whitelist file.");
 				break;
 			}
 		}
 		if (!$input_errors) {
-			$a_nat[$id]['iplist_files']['item'][] = basename($_POST['iplist']);
+			$a_nat['iplist_files']['item'][] = basename($_POST['iplist']);
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 			write_config("Suricata pkg: added new whitelist file for IP REPUTATION preprocessor.");
 			mark_subsystem_dirty('suricata_iprep');
 		}
@@ -104,32 +90,34 @@ if ($_POST['mode'] == 'iplist_add' && isset($_POST['iplist'])) {
 	else
 		$input_errors[] = gettext("The file '{$_POST['iplist']}' could not be found.");
 
-	$pconfig['iprep_catlist'] = $a_nat[$id]['iprep_catlist'];
-	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
+	$pconfig['iprep_catlist'] = $a_nat['iprep_catlist'];
+	$pconfig['iplist_files'] = $a_nat['iplist_files'];
 }
 
 if ($_POST['iprep_catlist_del']) {
 	$pconfig = $_POST;
-	unset($a_nat[$id]['iprep_catlist']);
+	unset($a_nat['iprep_catlist']);
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 	write_config("Suricata pkg: deleted blacklist file for IP REPUTATION preprocessor.");
 	mark_subsystem_dirty('suricata_iprep');
-	$pconfig['iprep_catlist'] = $a_nat[$id]['iprep_catlist'];
-	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
+	$pconfig['iprep_catlist'] = $a_nat['iprep_catlist'];
+	$pconfig['iplist_files'] = $a_nat['iplist_files'];
 }
 
 if ($_POST['iplist_del'] && is_numericint($_POST['list_id'])) {
 	$pconfig = $_POST;
-	unset($a_nat[$id]['iplist_files']['item'][$_POST['list_id']]);
+	unset($a_nat['iplist_files']['item'][$_POST['list_id']]);
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 	write_config("Suricata pkg: deleted whitelist file for IP REPUTATION preprocessor.");
 	mark_subsystem_dirty('suricata_iprep');
-	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
-	$pconfig['iprep_catlist'] = $a_nat[$id]['iprep_catlist'];
+	$pconfig['iplist_files'] = $a_nat['iplist_files'];
+	$pconfig['iprep_catlist'] = $a_nat['iprep_catlist'];
 }
 
 if ($_POST['save']) {
 
-	$pconfig['iprep_catlist'] = $a_nat[$id]['iprep_catlist'];
-	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
+	$pconfig['iprep_catlist'] = $a_nat['iprep_catlist'];
+	$pconfig['iplist_files'] = $a_nat['iplist_files'];
 
 	// Validate HOST TABLE values
 	if ($_POST['host_memcap'] < 1000000 || !is_numericint($_POST['host_memcap']))
@@ -141,25 +129,26 @@ if ($_POST['save']) {
 
 	// Validate CATEGORIES FILE
 	if ($_POST['enable_iprep'] == 'on') {
-		if (empty($a_nat[$id]['iprep_catlist']))
+		if (empty($a_nat['iprep_catlist']))
 			$input_errors[] = gettext("Assignment of a 'Categories File' is required when IP Reputation is enabled!");
 	}
 
 	// If no errors write to conf
 	if (!$input_errors) {
-		$a_nat[$id]['enable_iprep'] = $_POST['enable_iprep'] ? 'on' : 'off';
-		$a_nat[$id]['host_memcap'] = str_replace(",", "", $_POST['host_memcap']);
-		$a_nat[$id]['host_hash_size'] = str_replace(",", "", $_POST['host_hash_size']);
-		$a_nat[$id]['host_prealloc'] = str_replace(",", "", $_POST['host_prealloc']);
+		$a_nat['enable_iprep'] = $_POST['enable_iprep'] ? 'on' : 'off';
+		$a_nat['host_memcap'] = str_replace(",", "", $_POST['host_memcap']);
+		$a_nat['host_hash_size'] = str_replace(",", "", $_POST['host_hash_size']);
+		$a_nat['host_prealloc'] = str_replace(",", "", $_POST['host_prealloc']);
 
-		write_config("Suricata pkg: modified IP REPUTATION preprocessor settings for {$a_nat[$id]['interface']}.");
+		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+		write_config("Suricata pkg: modified IP REPUTATION preprocessor settings for {$a_nat['interface']}.");
 
 		// Update the suricata conf file for this interface
 		$rebuild_rules = false;
-		suricata_generate_yaml($a_nat[$id]);
+		suricata_generate_yaml($a_nat);
 
 		// Soft-restart Suricata to live-load new variables
-		suricata_reload_config($a_nat[$id]);
+		suricata_reload_config($a_nat);
 
 		// Sync to configured CARP slaves if any are enabled
 		suricata_sync_on_changes();
@@ -168,7 +157,7 @@ if ($_POST['save']) {
 	}
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat['interface']);
 $pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
 $pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - IP Reputation");
 include_once("head.inc");
@@ -341,7 +330,6 @@ print($form);
 		<?=gettext("Add")?>
 	</button>
 </nav>
-
 
 <script type="text/javascript">
 //<![CDATA[

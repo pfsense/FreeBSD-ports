@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 
 $contents = '';
 
@@ -49,7 +49,7 @@ if ($_REQUEST['ajax'] == 'ajax') {
 $title = "List";
 
 if (isset($id) && isset($wlist)) {
-	$a_rule = $config['installedpackages']['suricata']['rule'][$id];
+	$a_rule = config_get_path("installedpackages/suricata/rule/{$id}", []);
 	if ($type == "homenet") {
 		$list = suricata_build_list($a_rule, $wlist);
 		$contents = implode("\n", $list);

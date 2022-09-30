@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 
 function suricata_escape_filter_regex($filtertext) {
 	/* If the caller (user) has not already put a backslash before a slash, to escape it in the regex, */
@@ -74,22 +74,14 @@ elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 if (is_null($instanceid))
 	$instanceid = 0;
 
-init_config_arr(array('installedpackages', 'suricata', 'rule'));
-$a_instance = &$config['installedpackages']['suricata']['rule'];
-$suricata_uuid = $a_instance[$instanceid]['uuid'];
-$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+$a_instance = config_get_path("installedpackages/suricata/rule/{$id}", []);
+$suricata_uuid = $a_instance['uuid'];
+$if_real = get_real_interface($a_instance['interface']);
 $suricatalogdir = SURICATALOGDIR;
 
 $pconfig = array();
-if (is_array($config['installedpackages']['suricata']['fileblocks'])) {
-	$pconfig['frefresh'] = $config['installedpackages']['suricata']['fileblocks']['frefresh'];
-	$pconfig['filenumber'] = $config['installedpackages']['suricata']['fileblocks']['filenumber'];
-}
-
-if (empty($pconfig['filenumber']))
-	$pconfig['filenumber'] = 250;
-if (empty($pconfig['frefresh']))
-	$pconfig['frefresh'] = 'on';
+$pconfig['frefresh'] = config_get_path('installedpackages/suricata/fileblocks/frefresh', 'on');
+$pconfig['filenumber'] = config_get_path('installedpackages/suricata/fileblocks/filenumber', 250);
 $fnentries = $pconfig['filenumber'];
 if (!is_numeric($fnentries)) {
 	$fnentries = 250;
@@ -188,13 +180,9 @@ if ($_POST['filterlogentries_clear']) {
 }
 
 if ($_POST['save']) {
-	if (!is_array($config['installedpackages']['suricata']['fileblocks']))
-		$config['installedpackages']['suricata']['fileblocks'] = array();
-	$config['installedpackages']['suricata']['fileblocks']['frefresh'] = $_POST['frefresh'] ? 'on' : 'off';
-	$config['installedpackages']['suricata']['fileblocks']['filenumber'] = $_POST['filenumber'];
-
+	config_set_path('installedpackages/suricata/fileblocks/frefresh', $_POST['frefresh'] ? 'on' : 'off');
+	config_set_path('installedpackages/suricata/fileblocks/filenumber', $_POST['filenumber']);
 	write_config("Suricata pkg: saved change to FILES tab configuration.");
-
 	header("Location: /suricata/suricata_files.php?instance={$instanceid}");
 	exit;
 }
@@ -207,11 +195,10 @@ if ($_POST['mode']=='unblock' && $_POST['ip']) {
 }
 
 function build_instance_list() {
-	global $a_instance;
 
 	$list = array();
 
-	foreach ($a_instance as $id => $instance) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $id => $instance) {
 		$list[$id] = '(' . convert_friendly_interface_to_friendly_descr($instance['interface']) . ') ' . $instance['descr'];
 	}
 
