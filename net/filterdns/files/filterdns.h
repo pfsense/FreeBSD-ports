@@ -24,6 +24,7 @@
 #include <sys/queue.h>
 
 #include <pthread.h>
+#include <pthread_np.h>
 #include <semaphore.h>
 
 #define	_BUF_SIZE	4096
@@ -43,6 +44,17 @@
 #define	THR_DYING	4
 
 #define	ACT_FORCE	1
+
+#define STR(tok) #tok
+#define STRINGIFY(mac) STR(mac)
+#define LOG(level, fmt, ...) {							\
+if (debug >=6) {								\
+	syslog((level), "[%d] (%-20s %20s()): " fmt, pthread_getthreadid_np(),	\
+	    STRINGIFY(__FILE__) ":" STRINGIFY(__LINE__), __func__ 		\
+	    __VA_OPT__(,) __VA_ARGS__);						\
+} else {									\
+	syslog((level), fmt __VA_OPT__(,) __VA_ARGS__);				\
+}}
 
 struct _addr_entry {
 	TAILQ_ENTRY(_addr_entry) entry;

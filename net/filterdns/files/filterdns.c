@@ -87,8 +87,8 @@ check_action(void *arg)
 	act->state = THR_RUNNING;
 	for (;;) {
 		sem_wait(&act->sem);
-		if (debug >= 6)
-			syslog(LOG_WARNING,
+		if (debug >= 6) {
+			LOG(LOG_WARNING,
 			    "\tAwaking from the sleep for type: %s %s%s%s%s%s%shostname: %s",
 			    action_to_string(act->type),
 			    (act->tablename != NULL ? "table: " : ""),
@@ -98,7 +98,7 @@ check_action(void *arg)
 			    (act->anchor != NULL ? act->anchor : ""),
 			    (act->anchor != NULL ? " " : ""),
 			    act->hostname);
-
+		}
 		pthread_rwlock_rdlock(&main_lock);
 		if (act->flags & ACT_FORCE)
 			act->flags &= ~ACT_FORCE;
@@ -128,7 +128,7 @@ check_action(void *arg)
 			if (update > 0 && act->tablename != NULL) {
 				error = table_update(act);
 				if (debug >= 4)
-					syslog(LOG_WARNING,
+					LOG(LOG_WARNING,
 					    "\tUpdated %s table %s anchor %s host: %s error: %d",
 					    action_to_string(act->type),
 					    act->tablename, act->anchor, act->hostname,
@@ -140,7 +140,7 @@ check_action(void *arg)
 		if (act->cmd != NULL) {
 			error = system(act->cmd);
 			if (debug >= 2)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "\tRan command '%s' with exit status %d because a dns change on hostname %s was detected.",
 				    act->cmd, error, act->hostname);
 		}
@@ -162,7 +162,7 @@ action_create(struct action *act, pthread_attr_t *attr)
 	act->state = THR_STARTING;
 	act->flags = ACT_FORCE;
 	if (debug > 3)
-		syslog(LOG_INFO,
+		LOG(LOG_INFO,
 		    "Creating a new thread for action type: %s %s%s%s%s%s%shostname: %s",
 		    action_to_string(act->type),
 		    (act->tablename != NULL ? "table: " : ""),
@@ -269,7 +269,7 @@ action_add(int type, const char *hostname, const char *tablename,
 		strlcat(buf, " host: ", _BUF_SIZE);
 		strlcat(buf, hostname, _BUF_SIZE);
 	}
-	syslog(LOG_WARNING, "%s", buf);
+	LOG(LOG_WARNING, "%s", buf);
 	free(buf);
 
 	return (act);
@@ -279,7 +279,7 @@ static void
 action_del(struct action *act, struct action_list *actlist)
 {
 	if (debug >= 4)
-		syslog(LOG_INFO,
+		LOG(LOG_INFO,
 		    "Cleaning up action type: %s %s%s%s%s%s%shostname: %s",
 		    action_to_string(act->type),
 		    (act->tablename != NULL ? "table: " : ""),
@@ -340,7 +340,7 @@ host_add(struct action *act)
 		thr->mask = strtol(p + 1, &q, 0);
 		thr->mask6 = thr->mask;
 		if (!q || *q || thr->mask > 128 || q == (p + 1)) {
-			syslog(LOG_WARNING,
+			LOG(LOG_WARNING,
 			    "invalid netmask '%s' for hostname %s\n", p,
 			    thr->hostname);
 			free(thr);
@@ -356,12 +356,12 @@ host_add(struct action *act)
 	TAILQ_INSERT_TAIL(&thr->actions, act, next_actions);
 	act->host = thr;
 
-	if (thr->mask >= 0)
-		syslog(LOG_WARNING, "\t\tAdding host %s/%d", thr->hostname,
+	if (thr->mask >= 0) {
+		LOG(LOG_WARNING, "\t\tAdding host %s/%d", thr->hostname,
 		    thr->mask);
-	else
-		syslog(LOG_WARNING, "\t\tAdding host %s", thr->hostname);
-
+	} else {
+		LOG(LOG_WARNING, "\t\tAdding host %s", thr->hostname);
+	}
 	return (thr);
 }
 
@@ -411,7 +411,7 @@ addr_add(struct addr_list *head, const char *hostname, struct sockaddr *addr,
 		else if (addr->sa_family == AF_INET6)
 			inet_ntop(addr->sa_family, &satosin6(addr)->sin6_addr.s6_addr,
 			    buffer, sizeof(buffer));
-		syslog(LOG_NOTICE, "\t\t\tadding address %s for host %s",
+		LOG(LOG_NOTICE, "\t\t\tadding address %s for host %s",
 		    buffer, hostname);
 	}
 
@@ -433,7 +433,7 @@ addr_del(struct addr_list *head, const char *hostname, struct _addr_entry *addr)
 			inet_ntop(addr->addr->sa_family,
 			    &satosin6(addr->addr)->sin6_addr.s6_addr,
 			    buffer, sizeof(buffer));
-		syslog(LOG_NOTICE, "\t\t\tremoving address %s from host %s",
+		LOG(LOG_NOTICE, "\t\t\tremoving address %s from host %s",
 		    buffer, hostname);
 	}
 	TAILQ_REMOVE(head, addr, entry);
@@ -463,7 +463,7 @@ host_dns(struct thread_host *thr)
 	res0 = NULL;
 	error = getaddrinfo(thr->hostname, NULL, &hints, &res0);
 	if (error) {
-		syslog(LOG_WARNING,
+		LOG(LOG_WARNING,
 		    "failed to resolve host %s will retry later again.",
 		    thr->hostname);
 		if (res0 != NULL)
@@ -474,21 +474,21 @@ host_dns(struct thread_host *thr)
 	for (res = res0; res; res = res->ai_next) {
 		if (res->ai_addr == NULL) {
 			if (debug >=4)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "Skipping empty address for hostname %s",
 				    thr->hostname);
 			continue;
 		}
 		if (res->ai_family == AF_INET) {
 			if (debug > 9)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "\t\tfound address %s for host %s",
 				    inet_ntop(res->ai_family,
 				    res->ai_addr->sa_data + 2, buffer,
 				    sizeof buffer), thr->hostname);
 		} else if (res->ai_family == AF_INET6) {
 			if (debug > 9)
-				syslog(LOG_WARNING,
+				LOG(LOG_WARNING,
 				    "\t\tfound address %s for host %s",
 				    inet_ntop(res->ai_family,
 					res->ai_addr->sa_data + 6, buffer,
@@ -547,7 +547,7 @@ check_hostname(void *arg)
 		if (thr->mask == -1)
 			thr->mask = 32;
 		if (thr->mask > 32) {
-			syslog(LOG_WARNING,
+			LOG(LOG_WARNING,
 			    "invalid mask for %s/%d",
 			    thr->hostname, thr->mask);
 			thr->mask = 32;
@@ -597,7 +597,7 @@ check_hostname(void *arg)
 		}
 
 		if (update > 0 && debug >= 4)
-			syslog(LOG_WARNING, "Change detected on host: %s",
+			LOG(LOG_WARNING, "Change detected on host: %s",
 			    thr->hostname);
 		TAILQ_FOREACH(act, &thr->actions, next_actions) {
 			if (update == 0 && (act->flags & ACT_FORCE) == 0)
@@ -625,7 +625,7 @@ again:
 			    TIMER_ABSTIME, &ts, NULL);
 		}
 		if (debug >= 6) {
-			syslog(LOG_WARNING,
+			LOG(LOG_WARNING,
 			    "\tAwaking from the sleep for hostname %s (%d)",
 			    thr->hostname, thr->refcnt);
 		}
@@ -635,7 +635,7 @@ out:
 	thr->state = THR_DYING;
 
 	if (debug >= 4)
-		syslog(LOG_INFO, "Cleaning up hostname %s", thr->hostname);
+		LOG(LOG_INFO, "Cleaning up hostname %s", thr->hostname);
 	sem_destroy(&thr->sem);
 	TAILQ_REMOVE(&thread_list, thr, next);
 	addr_cleanup(&thr->rnh, thr->hostname);
@@ -653,7 +653,7 @@ check_hostname_create(struct thread_host *thr, pthread_attr_t *attr)
 		return (-1);
 	thr->state = THR_STARTING;
 	if (debug > 3)
-		syslog(LOG_INFO, "Creating a new thread for host %s",
+		LOG(LOG_INFO, "Creating a new thread for host %s",
 		    thr->hostname);
 	if (sem_init(&thr->sem, 0, 0) != 0) {
 		return (-1);
@@ -697,12 +697,12 @@ merge_config(void *arg __unused) {
 
 	for (;;) {
 		if (sem_wait(&sig_sem) != 0) {
-			syslog(LOG_ERR,
+			LOG(LOG_ERR,
 			    "unable to wait on output queue retrying");
 			continue;
 		}
 
-		syslog(LOG_INFO, "%s: configuration reload", __func__);
+		LOG(LOG_INFO, "%s: configuration reload", __func__);
 		pthread_rwlock_wrlock(&main_lock);
 	 	if (!TAILQ_EMPTY(&action_list)) {
 			count = 0;
@@ -712,12 +712,12 @@ merge_config(void *arg __unused) {
 				count++;
 			}
 			if (debug > 3)
-				syslog(LOG_INFO, "Copied %d actions to old\n",
+				LOG(LOG_INFO, "Copied %d actions to old\n",
 				    count);
 		}
 
 		if (parse_config(file)) {
-			syslog(LOG_ERR,
+			LOG(LOG_ERR,
 			    "could not parse new configuration file, exiting..."
 			    );
 			exit(10);
@@ -730,7 +730,7 @@ merge_config(void *arg __unused) {
 				count++;
 			}
 			if (debug > 3)
-				syslog(LOG_INFO, "Copied %d actions tonew\n",
+				LOG(LOG_INFO, "Copied %d actions to new\n",
 				    count);
 		}
 
@@ -774,14 +774,14 @@ merge_config(void *arg __unused) {
 			}
 		}
 		if (debug > 3) {
-			syslog(LOG_INFO,
+			LOG(LOG_INFO,
 			    "Loaded actions: %d old and %d new = %d total",
 			    count1, count2, count1 + count2);
-			syslog(LOG_INFO, "Cleaning up previous actions");
+			LOG(LOG_INFO, "Cleaning up previous actions");
 		}
 		count = clear_config(&tmp_action_list);
 		if (count > 0 && debug > 3)
-			syslog(LOG_INFO, "Stopped %d old actions\n", count);
+			LOG(LOG_INFO, "Stopped %d old actions\n", count);
 
 		if (!TAILQ_EMPTY(&new_action_list) ||
 		    !TAILQ_EMPTY(&tmp_action_list))
@@ -819,7 +819,7 @@ static void
 handle_signal(int sig)
 {
 	if (debug >= 3)
-		syslog(LOG_WARNING, "Received signal %s(%d).", strsignal(sig),
+		LOG(LOG_WARNING, "Received signal %s(%d).", strsignal(sig),
 		    sig);
 	switch (sig) {
 		case SIGHUP:
@@ -830,13 +830,13 @@ handle_signal(int sig)
 			pthread_rwlock_wrlock(&main_lock);
 			clear_config(&action_list);
 			pthread_rwlock_unlock(&main_lock);
-			syslog(LOG_INFO, "Waiting 2 seconds for threads to finish");
+			LOG(LOG_INFO, "Waiting 2 seconds for threads to finish");
 			sleep(2);
 			exit(0);
 			break;
 		default:
 			if (debug >= 3)
-				syslog(LOG_WARNING, "unhandled signal");
+				LOG(LOG_WARNING, "unhandled signal");
 	}
 }
 
@@ -919,7 +919,7 @@ main(int argc, char *argv[])
 	TAILQ_INIT(&action_list);
 	TAILQ_INIT(&thread_list);
 	if (parse_config(file)) {
-		syslog(LOG_ERR, "unable to open configuration file");
+		LOG(LOG_ERR, "unable to open configuration file");
 		errx(1, "cannot open the configuration file.");
 	}
 
@@ -937,7 +937,7 @@ main(int argc, char *argv[])
 			flock(fileno(pidfd), LOCK_UN);
 			fclose(pidfd);
 		} else {
-			syslog(LOG_WARNING, "could not open pid file");
+			LOG(LOG_WARNING, "could not open pid file");
 			err(2, "could not open pid file: ");
 		}
 	}
@@ -972,7 +972,7 @@ main(int argc, char *argv[])
 	sem_init(&sig_sem, 0, 0);
 	if (pthread_create(&sig_thr, &g_attr, merge_config, NULL) != 0) {
 		if (debug >= 1)
-			syslog(LOG_ERR, "Unable to create signal thread %s",
+			LOG(LOG_ERR, "Unable to create signal thread %s",
 			    thr->hostname);
 	}
 	pthread_set_name_np(sig_thr, "signal-thread");

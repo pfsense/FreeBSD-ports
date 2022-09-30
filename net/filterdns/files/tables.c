@@ -118,24 +118,25 @@ table_update(struct action *act)
 				inet_ntop(ent->addr->sa_family,
 				    &satosin6(ent->addr)->sin6_addr.s6_addr,
 				    buffer, sizeof(buffer));
-			if (add > 0 && error == EEXIST)
-				syslog(LOG_WARNING,
+			if (add > 0 && error == EEXIST) {
+				LOG(LOG_WARNING,
 				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s",
 				    "Already exist",
 				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer);
-			else if (error != 0)
-				syslog(LOG_WARNING,
+			} else if (error != 0) {
+				LOG(LOG_WARNING,
 				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s error: %d",
 				    ((add > 0) ? "FAILED to add" : "FAILED to remove"),
 				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer, error);
-			else
-				syslog(LOG_WARNING,
+			} else {
+				LOG(LOG_WARNING,
 				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s",
 				    ((add > 0) ? "Added" : "Removed"),
 				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer);
+			}
 		}
 	}
 
@@ -354,7 +355,7 @@ pf_table_create(int dev, const char *anchor, const char *tablename)
 	if (strlcpy(table.pfrt_name, tablename,
 	    sizeof(table.pfrt_name)) >= sizeof(table.pfrt_name)) {
 		if (debug >= 1)
-			syslog(LOG_WARNING, "%s: could not set table name: %s",
+			LOG(LOG_WARNING, "%s: could not set table name: %s",
 			    __func__, tablename);
 		return (-1);
 	}
@@ -362,7 +363,7 @@ pf_table_create(int dev, const char *anchor, const char *tablename)
 		if (strlcpy(table.pfrt_anchor, anchor,
 		    sizeof(table.pfrt_anchor)) >= sizeof(table.pfrt_anchor)) {
 			if (debug >= 1)
-				syslog(LOG_WARNING, "%s: could not set anchor: %s",
+				LOG(LOG_WARNING, "%s: could not set anchor: %s",
 				    __func__, anchor);
 			return (-1);
 		}
@@ -397,7 +398,7 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 	if (strlcpy(table.pfrt_name, act->tablename,
 	    sizeof(table.pfrt_name)) >= sizeof(table.pfrt_name)) {
 		if (debug >= 1)
-			syslog(LOG_WARNING, "%s: could not set table name: %s",
+			LOG(LOG_WARNING, "%s: could not set table name: %s",
 			    __func__, act->tablename);
 		return (-1);
 	}
@@ -405,7 +406,7 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 		if (strlcpy(table.pfrt_anchor, act->anchor,
 			sizeof(table.pfrt_anchor)) >= sizeof(table.pfrt_anchor)) {
 			if (debug >= 1)
-				syslog(LOG_WARNING, "%s: could not set anchor: %s",
+				LOG(LOG_WARNING, "%s: could not set anchor: %s",
 					__func__, act->anchor);
 			return (-1);
 		}

@@ -34,7 +34,8 @@ WARNS=          -Wsystem-headers -Werror -Wall -Wno-format-y2k -W \
                 -Wmissing-prototypes -Wpointer-arith -Wreturn-type \
                 -Wcast-qual -Wwrite-strings -Wswitch -Wshadow \
                 -Wunused-parameter -Wchar-subscripts -Winline \
-                -Wnested-externs -Wredundant-decls -Wno-pointer-sign
+                -Wnested-externs -Wredundant-decls -Wno-pointer-sign \
+		-Wno-format
 LDD=            -lpthread
 CFLAGS+= -O2 -pipe ${WARNS}
 
