@@ -1,0 +1,8 @@
+/etc/inc/priv/udpbroadcastrelay.priv.inc
+pkg/udpbroadcastrelay.xml
+pkg/udpbroadcastrelay/udpbroadcastrelay.inc
+%%DATADIR%%/info.xml
+www/udpbroadcastrelay.php
+www/udpbroadcastrelay_edit.php
+@dir /etc/inc/priv
+@dir /etc/inc
