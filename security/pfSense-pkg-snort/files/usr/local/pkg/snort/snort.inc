@@ -252,6 +252,12 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 	global $g, $aliastable, $filterdns;
 	$home_net = array();
 
+	// If passed an empty interface config array, then
+	// exit returning an empty list array. This is an
+	// unexpected condition.
+	if (empty($snortcfg))
+		return $home_net;
+
 	if (!$externallist && ($listname == 'default' || empty($listname))) {
 		$localnet = 'yes'; $wanip = 'yes'; $wangw = 'yes'; $wandns = 'yes'; $vips = 'yes'; $vpns = 'yes';
 	}

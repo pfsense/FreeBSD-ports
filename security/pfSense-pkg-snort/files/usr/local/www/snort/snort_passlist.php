@@ -204,6 +204,5 @@ events.push(function() {
 
 //]]>
 </script>
-<?php unset($a_passlist); ?>
 <?php include("foot.inc"); ?>
 
