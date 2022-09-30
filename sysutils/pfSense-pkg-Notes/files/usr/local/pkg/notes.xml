@@ -28,16 +28,10 @@
 	</copyright>
 	<description>Notes</description>
 	<name>Notes</name>
-	<title>Status: Notes</title>
+	<title>Status/Notes</title>
 	<aftersaveredirect>/pkg.php?xml=notes.xml</aftersaveredirect>
 	<addedit_string>[notes] Successfully created/modified a note.</addedit_string>
 	<delete_string>[notes] Successfully deleted a note.</delete_string>
-	<menu>
-		<name>Notes</name>
-		<section>Status</section>
-		<configfile>notes.xml</configfile>
-		<url>/pkg.php?xml=notes.xml</url>
-	</menu>
 	<tabs>
 		<tab>
 			<text>Notes</text>
