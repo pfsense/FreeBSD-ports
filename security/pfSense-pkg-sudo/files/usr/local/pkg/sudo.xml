@@ -26,7 +26,7 @@
 	]]>
 	</copyright>
 	<name>sudo</name>
-	<title>Sudo - Shell Command Privilege Delegation Utility</title>
+	<title>System/Sudo</title>
 	<include_file>/usr/local/pkg/sudo.inc</include_file>
 	<menu>
 		<name>sudo</name>
