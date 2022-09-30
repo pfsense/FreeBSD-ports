@@ -27,7 +27,7 @@
 ]]>
 	</copyright>
 	<name>nmap</name>
-	<title>Diagnostics: Nmap</title>
+	<title>Diagnostics/Nmap</title>
 	<menu>
 		<name>Nmap</name>
 		<section>Diagnostics</section>

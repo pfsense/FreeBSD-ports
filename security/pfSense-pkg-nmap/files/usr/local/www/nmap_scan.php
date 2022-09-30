@@ -64,7 +64,7 @@ if ($_POST['downloadbtn'] == gettext("Download Results")) {
 	$nocsrf = true;
 }
 
-$pgtitle = array("Package", "Diagnostics: Nmap");
+$pgtitle = array(gettext('Diagnostics'), gettext("Nmap"));
 require_once("guiconfig.inc");
 /* require_once("pfsense-utils.inc"); */
 require_once("ipsec.inc");
@@ -80,12 +80,15 @@ if (ipsec_enabled()) {
 }
 $interfaces['lo0'] = "Localhost";
 
-foreach (array('server' => gettext('OpenVPN Server'), 'client' => gettext('OpenVPN Client')) as $mode => $mode_descr) {
-	if (is_array($config['openvpn']["openvpn-{$mode}"])) {
-		foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
-			if (!isset($setting['disable'])) {
-				$interfaces['ovpn' . substr($mode, 0, 1) . $setting['vpnid']] = $mode_descr . ": ".htmlspecialchars($setting['description']);
-			}
+$opvn_modes = [
+	'server' => gettext('OpenVPN Server'),
+	'client' => gettext('OpenVPN Client')
+];
+
+foreach ($opvn_modes as $mode => $mode_descr) {
+	foreach (config_get_path("openvpn/openvpn-{$mode}", []) as $id => $setting) {
+		if (!isset($setting['disable'])) {
+			$interfaces['ovpn' . substr($mode, 0, 1) . $setting['vpnid']] = $mode_descr . ": ".htmlspecialchars($setting['description']);
 		}
 	}
 }
