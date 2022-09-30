@@ -39,9 +39,11 @@
 #define	ADDR_OLD	2
 #define	ADDR_STATIC	4
 
-#define	THR_STARTING	1
-#define	THR_RUNNING	2
-#define	THR_DYING	4
+#define	THR_STOPPED     0
+#define	THR_DYING	1
+#define	THR_STARTING	2
+#define	THR_RUNNING	3
+
 
 #define	ACT_FORCE	1
 
@@ -92,6 +94,7 @@ struct action {
 	uint32_t state;
 	pthread_t thr_pid;
 	sem_t sem;
+	sem_t exit_sem;
 };
 
 int parse_config(char *);

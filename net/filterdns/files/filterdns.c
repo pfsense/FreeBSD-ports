@@ -44,7 +44,8 @@
 int debug = 0;
 static int interval = 30;
 static char *file = NULL;
-static sem_t sig_sem;
+static sem_t merge_sem;
+static uint32_t merge_state;
 static pthread_attr_t g_attr;
 static pthread_rwlock_t main_lock;
 
@@ -97,9 +98,8 @@ check_action(void *arg)
 			    (act->anchor != NULL ? "anchor: " : ""),
 			    (act->anchor != NULL ? act->anchor : ""),
 			    (act->anchor != NULL ? " " : ""),
-			    act->hostname);
+			    (act->hostname != NULL) ? act->hostname: "");
 		}
-		pthread_rwlock_rdlock(&main_lock);
 		if (act->flags & ACT_FORCE)
 			act->flags &= ~ACT_FORCE;
 		if (act->host != NULL) {
@@ -134,8 +134,9 @@ check_action(void *arg)
 					    act->tablename, act->anchor, act->hostname,
 					    error);
 			}
+		} else {
+			break;
 		}
-		pthread_rwlock_unlock(&main_lock);
 
 		if (act->cmd != NULL) {
 			error = system(act->cmd);
@@ -146,10 +147,8 @@ check_action(void *arg)
 		}
 	}
 	act->state = THR_DYING;
-
-	sem_destroy(&act->sem);
-	action_del(act, &action_list);
-
+	sem_post(&act->exit_sem);
+	act->state = THR_STOPPED;
 	return (NULL);
 }
 
@@ -173,10 +172,16 @@ action_create(struct action *act, pthread_attr_t *attr)
 		    (act->anchor != NULL ? " " : ""),
 		    act->hostname);
 
-	if (sem_init(&act->sem, 0, 0) != 0)
+	if (sem_init(&act->sem, 0, 0) != 0) {
 		return (-1);
+	}
+	if (sem_init(&act->exit_sem, 0, 0) != 0) {
+		sem_destroy(&act->sem);
+		return (-1);
+	}
 	if (pthread_create(&act->thr_pid, attr, check_action, act) != 0) {
 		sem_destroy(&act->sem);
+		sem_destroy(&act->exit_sem);
 		return (-1);
 	}
 #if 0
@@ -285,14 +290,15 @@ action_del(struct action *act, struct action_list *actlist)
 		    (act->tablename != NULL ? "table: " : ""),
 		    (act->tablename != NULL ? act->tablename : ""),
 		    (act->tablename != NULL ? " " : ""),
-			(act->anchor != NULL ? "anchor: " : ""),
-			(act->anchor != NULL ? act->anchor : ""),
-			(act->anchor != NULL ? " " : ""),
-		    act->hostname);
+		    (act->anchor != NULL ? "anchor: " : ""),
+		    (act->anchor != NULL ? act->anchor : ""),
+		    (act->anchor != NULL ? " " : ""),
+		    (act->hostname != NULL ? act->hostname : ""));
 	host_del(act);
 	TAILQ_REMOVE(actlist, act, next_list);
 	addr_cleanup(&act->rnh, NULL);
 	table_cleanup(act);
+
 	if (act->hostname != NULL)
 		free(act->hostname);
 	if (act->tablename != NULL)
@@ -301,6 +307,9 @@ action_del(struct action *act, struct action_list *actlist)
 		free(act->anchor);
 	if (act->cmd != NULL)
 		free(act->cmd);
+	sem_destroy(&act->sem);
+	sem_destroy(&act->exit_sem);
+
 	free(act);
 }
 
@@ -374,7 +383,13 @@ host_del(struct action *act)
 	if (thr != NULL) {
 		thr->refcnt--;
 		TAILQ_REMOVE(&thr->actions, act, next_actions);
-		act->host = NULL;
+		act->host = NULL; /* should cause any associated thread to exit */
+
+		if (act->state > THR_DYING) {
+			sem_post(&act->sem);
+			sem_wait(&act->exit_sem);
+		}
+		sem_post(&thr->sem);
 	}
 }
 
@@ -566,7 +581,7 @@ check_hostname(void *arg)
 
 		/* It is safe to ignore the locking here. */
 		if (thr->refcnt == 0)
-			break;
+			goto out;
 
 		/*
 		 * Avoid deadlocks, retry later when we cannot acquire the main
@@ -643,6 +658,7 @@ out:
 		free(thr->hostname);
 	free(thr);
 
+	thr->state = THR_STOPPED;
 	return (NULL);
 }
 
@@ -694,12 +710,16 @@ merge_config(void *arg __unused) {
 
 	TAILQ_INIT(&tmp_action_list);
 	TAILQ_INIT(&new_action_list);
-
+	merge_state = THR_RUNNING;
 	for (;;) {
-		if (sem_wait(&sig_sem) != 0) {
+		if (sem_wait(&merge_sem) != 0) {
 			LOG(LOG_ERR,
 			    "unable to wait on output queue retrying");
 			continue;
+		}
+
+		if (merge_state == THR_DYING) {
+			break;
 		}
 
 		LOG(LOG_INFO, "%s: configuration reload", __func__);
@@ -786,9 +806,7 @@ merge_config(void *arg __unused) {
 		if (!TAILQ_EMPTY(&new_action_list) ||
 		    !TAILQ_EMPTY(&tmp_action_list))
 			errx(6, "assert: temporary lists are not empty.");
-		pthread_rwlock_unlock(&main_lock);
 
-		pthread_rwlock_rdlock(&main_lock);
 		TAILQ_FOREACH(act, &action_list, next_list) {
 			if (act->state != 0)
 				continue;
@@ -812,7 +830,12 @@ merge_config(void *arg __unused) {
 		pthread_rwlock_unlock(&main_lock);
 	}
 
-	return (NULL);
+	pthread_rwlock_wrlock(&main_lock);
+	clear_config(&action_list);
+	pthread_rwlock_unlock(&main_lock);
+	LOG(LOG_INFO, "Waiting 2 seconds for threads to finish");
+	sleep(2);
+	exit(0);
 }
 
 static void
@@ -822,21 +845,15 @@ handle_signal(int sig)
 		LOG(LOG_WARNING, "Received signal %s(%d).", strsignal(sig),
 		    sig);
 	switch (sig) {
-		case SIGHUP:
-			sem_post(&sig_sem);
-			break;
-		case SIGTERM:
-		case SIGINT:
-			pthread_rwlock_wrlock(&main_lock);
-			clear_config(&action_list);
-			pthread_rwlock_unlock(&main_lock);
-			LOG(LOG_INFO, "Waiting 2 seconds for threads to finish");
-			sleep(2);
-			exit(0);
-			break;
-		default:
-			if (debug >= 3)
-				LOG(LOG_WARNING, "unhandled signal");
+	case SIGTERM: /* fallthrough */
+	case SIGINT:
+		merge_state = THR_DYING;
+	case SIGHUP: /* fallthrough */
+		sem_post(&merge_sem);
+		break;
+	default:
+		if (debug >= 3)
+			LOG(LOG_WARNING, "unhandled signal");
 	}
 }
 
@@ -853,7 +870,7 @@ main(int argc, char *argv[])
 	FILE *pidfd;
 	char *pidfile;
 	int ch, foreground;
-	pthread_t sig_thr;
+	pthread_t merge_thr;
 	sig_t sig_error;
 	struct action *act;
 	struct thread_host *thr;
@@ -942,8 +959,6 @@ main(int argc, char *argv[])
 		}
 	}
 
-	pthread_rwlock_init(&main_lock, NULL);
-
 	/* Catch SIGHUP in order to reload configuration file. */
 	sig_error = signal(SIGHUP, handle_signal);
 	if (sig_error == SIG_ERR)
@@ -968,14 +983,15 @@ main(int argc, char *argv[])
 			    thr->hostname);
 	}
 
-	/* Config reload. */
-	sem_init(&sig_sem, 0, 0);
-	if (pthread_create(&sig_thr, &g_attr, merge_config, NULL) != 0) {
+	/* Config reload, exit. */
+	sem_init(&merge_sem, 0, 0);
+	merge_state = THR_STARTING;
+	if (pthread_create(&merge_thr, &g_attr, merge_config, NULL) != 0) {
 		if (debug >= 1)
-			LOG(LOG_ERR, "Unable to create signal thread %s",
+			LOG(LOG_ERR, "Unable to create configuration  merge thread %s",
 			    thr->hostname);
 	}
-	pthread_set_name_np(sig_thr, "signal-thread");
+	pthread_set_name_np(merge_thr, "merge-thread");
 
 	pthread_exit(NULL);
 }
