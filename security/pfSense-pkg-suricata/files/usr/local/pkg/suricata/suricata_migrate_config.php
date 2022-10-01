@@ -233,7 +233,16 @@ foreach (config_get_path('installedpackages/suricata/passlist/item', []) as &$wl
 	}
 }
 
-// Now process the interface-specific settings
+/***********************************************************/
+/* Add new 'clear blocks' setting to remove blocked hosts  */
+/* from the snort2c pf table that were added by the Legacy */
+/* Blocking custom plugin. Default empty value to 'yes'.   */
+/***********************************************************/
+if (!config_path_enabled('installedpackages/suricata/config/0/clearblocks')) {
+	config_set_path('installedpackages/suricata/config/0/clearblocks', 'on');
+}
+
+// Now process the interface-specific migration settings
 $a_rules = config_get_path('installedpackages/suricata/rule', []);
 foreach ($a_rules as $pconfig) {
 

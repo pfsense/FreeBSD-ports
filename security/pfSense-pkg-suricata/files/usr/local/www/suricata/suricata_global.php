@@ -51,6 +51,7 @@ else {
 	$pconfig['log_to_systemlog_facility'] = config_get_path('installedpackages/suricata/config/0/log_to_systemlog_facility');
 	$pconfig['log_to_systemlog_priority'] = config_get_path('installedpackages/suricata/config/0/log_to_systemlog_priority');
 	$pconfig['forcekeepsettings'] = config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == "on" ? 'on' : 'off';
+	$pconfig['clearblocks'] = config_get_path('installedpackages/suricata/config/0/clearblocks') == "off" ? 'off' : 'on';
 	$pconfig['snortcommunityrules'] = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == "on" ? 'on' : 'off';
 	$pconfig['snort_rules_file'] = htmlentities(config_get_path('installedpackages/suricata/config/0/snort_rules_file'));
 	$pconfig['autogeoipupdate'] = config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == "on" ? 'on' : 'off';
@@ -235,6 +236,7 @@ if (!$input_errors) {
 		config_set_path('installedpackages/suricata/config/0/log_to_systemlog_priority', $_POST['log_to_systemlog_priority']);
 		config_set_path('installedpackages/suricata/config/0/live_swap_updates', $_POST['live_swap_updates'] ? 'on' : 'off');
 		config_set_path('installedpackages/suricata/config/0/forcekeepsettings', $_POST['forcekeepsettings'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/clearblocks', $_POST['clearblocks'] ? 'on' : 'off');
 
 		$retval = 0;
 
@@ -591,6 +593,14 @@ $section->addInput(new Form_Checkbox(
 	'Keep Suricata Settings After Deinstall',
 	'Settings will not be removed during package deinstallation.',
 	$pconfig['forcekeepsettings'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'clearblocks',
+	'Clear Blocked Hosts After Deinstall',
+	'Click to clear all blocked hosts added by Suricata when removing the package.  Default is checked.',
+	$pconfig['clearblocks'] == 'on' ? true:false,
 	'on'
 ));
 $form->add($section);

@@ -118,6 +118,12 @@ if (!empty($widgets)) {
 	write_config("Suricata pkg removed Dashboard Alerts widget.");
 }
 
+// See if we are to clear blocked hosts on uninstall
+if (config_get_path('installedpackages/suricata/config/0/clearblocks') == 'on') {
+	syslog(LOG_NOTICE, gettext("[Suricata] Flushing all blocked hosts from <snort2c> table due to package removal..."));
+	mwexec("/sbin/pfctl -t snort2c -T flush");
+}
+
 /* Keep this as a last step */
 if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') != 'on') {
 	syslog(LOG_NOTICE, gettext("Not saving settings... all Suricata configuration info and logs deleted..."));
