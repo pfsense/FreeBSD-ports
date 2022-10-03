@@ -39,7 +39,7 @@ if (is_null($id)) {
         exit;
 }
 
-$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}", []);;
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}", []);
 
 if (isset($id) && $a_nat) {
 	$pconfig['enable'] = $a_nat['enable'];
@@ -48,8 +48,8 @@ if (isset($id) && $a_nat) {
 	if (empty($a_nat['autoflowbitrules']))
 		$pconfig['autoflowbitrules'] = 'on';
 	else
-		$pconfig['autoflowbitrules'] = $a_nat['autoflowbitrules'] == 'on' ? 'on' : 'off';;
-	$pconfig['ips_policy_enable'] = $a_nat['ips_policy_enable'] == 'on' ? 'on' : 'off';;
+		$pconfig['autoflowbitrules'] = $a_nat['autoflowbitrules'] == 'on' ? 'on' : 'off';
+	$pconfig['ips_policy_enable'] = $a_nat['ips_policy_enable'] == 'on' ? 'on' : 'off';
 	$pconfig['ips_policy'] = $a_nat['ips_policy'];
 	$pconfig['ips_policy_mode'] = $a_nat['ips_policy_mode'];
 } else {

@@ -597,7 +597,12 @@ if ($savemsg) {
 }
 
 // If using Inline IPS, check that CSO, TSO and LRO are all disabled
-if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!config_path_enabled('system', 'disablechecksumoffloading') || !config_path_enabled('system', 'disablesegmentationoffloading') || !config_path_enabled('system', 'disablelargereceiveoffloading'))) {
+if ($pconfig['enable'] == 'on' &&
+    $pconfig['ips_mode'] == 'ips_mode_inline' &
+    (!config_path_enabled('system', 'disablechecksumoffloading') ||
+     !config_path_enabled('system', 'disablesegmentationoffloading') ||
+     !config_path_enabled('system', 'disablelargereceiveoffloading'))
+    ) {
 	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
 				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
 			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));

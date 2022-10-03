@@ -226,7 +226,7 @@ if (config_get_path('installedpackages/snortglobal/enable_log_mgmt') == 'on') {
 			$rotated_files = glob("{$snort_log_dir}/alert.*");
 			$prune_count = 0;
 			foreach ($rotated_files as $file) {
-				if (($now - filemtime($file)) > (config_get_path('installedpackages/snortglobal/alert_log_retention') * 3600)) {
+				if (($now - filemtime($file)) > (int)(config_get_path('installedpackages/snortglobal/alert_log_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($file);
 				}
@@ -242,7 +242,7 @@ if (config_get_path('installedpackages/snortglobal/enable_log_mgmt') == 'on') {
 			$rotated_files = glob("{$snort_log_dir}/snort.log.*");
 			$prune_count = 0;
 			foreach ($rotated_files as $file) {
-				if (($now - filemtime($file)) > (config_get_path('installedpackages/snortglobal/event_pkts_log_retention') * 3600)) {
+				if (($now - filemtime($file)) > (int)(config_get_path('installedpackages/snortglobal/event_pkts_log_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($file);
 				}
@@ -279,7 +279,7 @@ if (config_get_path('installedpackages/snortglobal/enable_log_mgmt') == 'on') {
 			}
 			$prune_count = 0;
 			foreach ($files as $f) {
-				if (($now - filemtime($f)) > (config_get_path('installedpackages/snortglobal/stats_log_retention') * 3600)) {
+				if (($now - filemtime($f)) > (int)(config_get_path('installedpackages/snortglobal/stats_log_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($f);
 				}

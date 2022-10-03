@@ -3818,8 +3818,8 @@ function snort_remove_dead_rules() {
 
 	// Now remove any dead rules files from the interface configurations
 	if (!empty($cats)) {
-		$a_iface = config_get_path('installedpackages/snortglobal/rule', []);
-		foreach ($a_iface as $iface) {
+		$a_ifaces = config_get_path('installedpackages/snortglobal/rule', []);
+		foreach ($a_ifaces as &$iface) {
 			$enabled_rules = explode("||", $iface['rulesets']);
 			foreach ($enabled_rules as $k => $v) {
 				foreach ($cats as $d) {
@@ -3830,7 +3830,7 @@ function snort_remove_dead_rules() {
 			$iface['rulesets'] = implode("||", $enabled_rules);
 		}
 		// Update stored configuration
-		config_set_path('installedpackages/snortglobal/rule', $a_iface);
+		config_set_path('installedpackages/snortglobal/rule', $a_ifaces);
 	}
 
 	// Clean up
@@ -3847,7 +3847,7 @@ function snort_sync_on_changes() {
 		return;
 	}
 
-	if (config_get_path('installedpackages/snortsync/config')) {
+	if (config_get_path('installedpackages/snortsync/config/0')) {
 		$snort_sync = config_get_path('installedpackages/snortsync/config/0');
 		$synconchanges = $snort_sync['varsynconchanges'];
 		$synctimeout = $snort_sync['varsynctimeout'] ?: '150';
@@ -4262,7 +4262,7 @@ function snort_get_vpns_list() {
 	/* OpenVPN */
 	foreach (array('client', 'server') as $type) {
 		foreach (config_get_path("openvpn/openvpn-{$type}", []) as $settings) {
-			if (is_array($settings)) {
+			if (is_array($settings) && !empty($settings)) {
 				if (!array_path_enabled($settings, 'disable')) {
 					$remote_networks = explode(',', $settings['remote_network']);
 					foreach ($remote_networks as $remote_network) {

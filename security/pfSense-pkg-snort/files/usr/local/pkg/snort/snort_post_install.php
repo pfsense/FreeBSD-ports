@@ -169,7 +169,7 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 	snort_rules_up_install_cron(config_get_path('installedpackages/snortglobal/autorulesupdate7') != "never_up" ? true : false);
 
 	/* Restore the last Snort Dashboard Widget setting if none is set */
-	if (!empty(config_get_path('installedpackages/snortglobal/dashboard_widget')) && 
+	if (!empty(config_get_path('installedpackages/snortglobal/dashboard_widget')) &&
 	    stristr(config_get_path('widgets/sequence'), "snort_alerts") === FALSE)
 		config_set_path('widgets/sequence', config_get_path('widgets/sequence') . "," . config_get_path('installedpackages/snortglobal/dashboard_widget'));
 

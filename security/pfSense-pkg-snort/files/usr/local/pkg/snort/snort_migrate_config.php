@@ -46,7 +46,7 @@ syslog(LOG_NOTICE, "[Snort] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should
 // auto-disabled as part of the upgrade due to config format changes.
-if (empty(config_get_path('installedpackages/snortglobal/snort_config_ver')) && 
+if (empty(config_get_path('installedpackages/snortglobal/snort_config_ver')) &&
     (config_get_path('installedpackages/snortsync/config/varsynconchanges') == 'auto' ||
      config_get_path('installedpackages/snortsync/config/varsynconchanges') == 'manual')) {
 	config_set_path('installedpackages/snortsync/config/varsynconchanges',	'disabled');
@@ -203,8 +203,8 @@ if (config_path_enabled('installedpackages/snortglobal', 'last_rule_upd_time')) 
 /* large numbers of pfSense users hitting Snort.org at    */
 /* the same minute past the hour for rules updates.       */
 /**********************************************************/
-if (empty(config_get_path('installedpackages/snortglobal/rule_update_starttime')) || 
-	  config_get_path('installedpackages/snortglobal/rule_update_starttime') == '00:05' || 
+if (empty(config_get_path('installedpackages/snortglobal/rule_update_starttime')) ||
+	  config_get_path('installedpackages/snortglobal/rule_update_starttime') == '00:05' ||
 	  strlen(config_get_path('installedpackages/snortglobal/rule_update_starttime')) < 5 ) {
 	config_set_path('installedpackages/snortglobal/rule_update_starttime', "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT));
 	$updated_cfg = true;
