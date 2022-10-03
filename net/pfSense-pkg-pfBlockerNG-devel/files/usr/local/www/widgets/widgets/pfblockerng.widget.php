@@ -261,52 +261,55 @@ function pfBlockerNG_update_table() {
 	}
 
 	// Determine if firewall rules are defined
-	$pfb_packets = pfSense_get_pf_rules();
 	if (isset($config['filter']['rule'])) {
-		foreach ($config['filter']['rule'] as $rule) {
+		$tracked_rules = array();
 
+		// Get the relevant pfB rules
+		foreach ($config['filter']['rule'] as $rule) {
 			if (strpos($rule['descr'], 'pfB_DNSBL_Ping') !== FALSE || strpos($rule['descr'], 'pfB_DNSBL_Permit') !== FALSE) {
 				continue;
 			}
 
-			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
-				foreach ($pfb_packets as $pkey => $prule) {
-					if ($rule['tracker'] == $prule['tracker']) {
-						if (!isset($pfb_table[$rule['source']['address']]['packets'])) {
-							$pfb_table[$rule['source']['address']]['packets'] = 0;
-						}
-						if (isset($prule['packets']) && $prule['packets'] > 0) {
-							$pfb_table[$rule['source']['address']]['packets'] += $prule['packets'];
-						}
-						unset($pfb_packets[$pkey]);
-						break;
-					}
-				} 
+			$tracked_rules[$rule['tracker']] = array('packets' => 0);
 
+			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
+				$tracked_rules[$rule['tracker']]['source'] = $rule['source']['address'];
 				if (!isset($rule['disabled'])) {
 					$pfb_table[$rule['source']['address']]['img'] = $pfb['up'];
 					$pfb_table[$rule['source']['address']]['rule'] += 1;
+					if (!isset($pfb_table[$rule['source']['address']]['packets'])) {
+						$pfb_table[$rule['source']['address']]['packets'] = 0;
+					}
 					$pfb_table[$rule['source']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
 				}
 			}
+			
 			if (isset($rule['destination']['address']) && stripos($rule['destination']['address'], 'pfb_') !== FALSE) {
-				foreach ($pfb_packets as $pkey => $prule) {
-					if ($rule['tracker'] == $prule['tracker']) {
-						if (!isset($pfb_table[$rule['destination']['address']]['packets'])) {
-							$pfb_table[$rule['destination']['address']]['packets'] = 0;
-						}
-						if (isset($prule['packets']) && $prule['packets'] > 0) {
-							$pfb_table[$rule['destination']['address']]['packets'] += $prule['packets'];
-						}
-						unset($pfb_packets[$pkey]);
-						break;
-					}
-				}
-
+				$tracked_rules[$rule['tracker']]['destination'] = $rule['destination']['address'];
 				if (!isset($rule['disabled'])) {
 					$pfb_table[$rule['destination']['address']]['img'] = $pfb['up'];
 					$pfb_table[$rule['destination']['address']]['rule'] += 1;
+					if (!isset($pfb_table[$rule['destination']['address']]['packets'])) {
+						$pfb_table[$rule['destination']['address']]['packets'] = 0;
+					}
 					$pfb_table[$rule['destination']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
+				}
+			}
+		}
+
+		// Get the packet count for each pfB rule
+		if (!empty($tracked_rules)) {
+			foreach (pfSense_get_pf_rules() as $prule) {
+				$prule_id = $prule['tracker'];
+				if (isset($tracked_rules[$prule_id])) {
+					if (isset($prule['packets']) && $prule['packets'] > 0) {
+						if (isset($tracked_rules[$prule_id]['source'])) {
+							$pfb_table[$tracked_rules[$prule_id]['source']]['packets'] += $prule['packets'];
+						}
+						if (isset($tracked_rules[$prule_id]['destination'])) {
+							$pfb_table[$tracked_rules[$prule_id]['destination']]['packets'] += $prule['packets'];
+						}
+					}
 				}
 			}
 		}
