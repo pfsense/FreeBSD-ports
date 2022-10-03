@@ -44,9 +44,10 @@ syslog(LOG_NOTICE, "[Suricata] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should be
 // auto-disabled as part of the upgrade due to config format changes.
-if (config_get_path('installedpackages/suricata/config/0/suricata_config_ver') < 2 && 
+if (config_get_path('installedpackages/suricata/config/0/suricata_config_ver') < 2 &&
     (config_get_path('installedpackages/suricata/config/0/varsynconchanges') == 'auto' ||
-     config_get_path('installedpackages/suricata/config/0/varsynconchanges') == 'manual')) {
+     config_get_path('installedpackages/suricata/config/0/varsynconchanges') == 'manual')
+   ) {
 	config_set_path('installedpackages/suricata/config/0/varsynconchanges', "disabled");
 	syslog(LOG_NOTICE, "[Suricata] Turning off Suricata Sync on this host due to configuration format changes in this update.  Upgrade all Suricata Sync targets to this same Suricata package version before re-enabling Suricata Sync.");
 	$updated_cfg = true;
@@ -131,8 +132,8 @@ if (config_path_enabled('installedpackages/suricata/config/0', 'last_rule_upd_ti
 /* large numbers of pfSense users hitting Snort.org at    */
 /* the same minute past the hour for rules updates.       */
 /**********************************************************/
-if (empty(config_get_path('installedpackages/suricata/config/0/autoruleupdatetime')) || 
-	config_get_path('installedpackages/suricata/config/0/autoruleupdatetime') == '00:05' || 
+if (empty(config_get_path('installedpackages/suricata/config/0/autoruleupdatetime')) ||
+	config_get_path('installedpackages/suricata/config/0/autoruleupdatetime') == '00:05' ||
 	strlen(config_get_path('installedpackages/suricata/config/0/autoruleupdatetime')) < 5) {
 	config_set_path('installedpackages/suricata/config/0/autoruleupdatetime', "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT));
 	$updated_cfg = true;

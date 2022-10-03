@@ -129,7 +129,7 @@ if ($_POST['save_os_policy']) {
 
 		// if no errors, write new entry to conf
 		if (!$input_errors) {
-			if (isset($eng_id) && $a_nat['host_os_policy']['item'][$eng_id]) {
+			if (isset($eng_id) && array_get_path($a_nat, "host_os_policy/item/{$eng_id}")) {
 				$a_nat['host_os_policy']['item'][$eng_id] = $engine;
 			}
 			else
@@ -138,9 +138,9 @@ if ($_POST['save_os_policy']) {
 			/* Reorder the engine array to ensure the */
 			/* 'bind_to=all' entry is at the bottom   */
 			/* if it contains more than one entry.	*/
-			if (count($a_nat['host_os_policy']['item']) > 1) {
+			if (count(array_get_path($a_nat, 'host_os_policy/item', [])) > 1) {
 				$i = -1;
-				foreach ($a_nat['host_os_policy']['item'] as $f => $v) {
+				foreach (array_get_path($a_nat, 'host_os_policy/item', []) as $f => $v) {
 					if ($v['bind_to'] == "all") {
 						$i = $f;
 						break;
@@ -149,9 +149,9 @@ if ($_POST['save_os_policy']) {
 				/* Only relocate the entry if we  */
 				/* found it, and it's not already */
 				/* at the end.					*/
-				if ($i > -1 && ($i < (count($a_nat['host_os_policy']['item']) - 1))) {
-					$tmp = $a_nat['host_os_policy']['item'][$i];
-					unset($a_nat['host_os_policy']['item'][$i]);
+				if ($i > -1 && ($i < (count(array_get_path($a_nat, 'host_os_policy/item', [])) - 1))) {
+					$tmp = array_get_path($a_nat, "host_os_policy/item/{$i}", []);
+					array_del_path($a_nat, "host_os_policy/item/{$i}");
 					$a_nat['host_os_policy']['item'][] = $tmp;
 				}
 			}
@@ -186,7 +186,7 @@ elseif ($_POST['del_os_policy']) {
 	$natent = $pconfig;
 
 	if ($_POST['eng_id'] != "") {
-		unset($natent['host_os_policy']['item'][$_POST['eng_id']]);
+		array_del_path($natent, "host_os_policy/item/{$_POST['eng_id']}");
 		$pconfig = $natent;
 	}
 	if (isset($id) && !empty($a_nat)) {

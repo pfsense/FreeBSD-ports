@@ -390,17 +390,18 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 		}
 
 		// Check File Store captured files storage limit and prune if necessary
-		if (is_dir("{$suricata_log_dir}/filestore") && 
-		    config_get_path('installedpackages/suricata/config/0/file_store_limit_size') > 0 && 
-		    (intval(suricata_folderSize("{$suricata_log_dir}/filestore")/1000000) >= config_get_path('installedpackages/suricata/config/0/file_store_limit_size'))) {
+		if (is_dir("{$suricata_log_dir}/filestore") &&
+		    config_get_path('installedpackages/suricata/config/0/file_store_limit_size') > 0 &&
+		    (intval(suricata_folderSize("{$suricata_log_dir}/filestore")/1000000) >= config_get_path('installedpackages/suricata/config/0/file_store_limit_size'))
+		   ) {
 			suricata_check_filestore_limit_size("{$suricata_log_dir}/filestore", config_get_path('installedpackages/suricata/config/0/file_store_limit_size'));
 		}
 
 		// If a user-customized file store directory is set, check it, too
 		if (isset($value['file_store_logdir'])) {
-			if (is_dir($value['file_store_logdir']) && 
-			    config_get_path('installedpackages/suricata/config/0/file_store_limit_size') > 0 && 
-			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= config_get_path('installedpackages/suricata/config/0/file_store_limit_size'))) {
+			if (is_dir($value['file_store_logdir']) &&
+			    config_get_path('installedpackages/suricata/config/0/file_store_limit_size') > 0 &&
+			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= (int)_get_path('installedpackages/suricata/config/0/file_store_limit_size'))) {
 				suricata_check_filestore_limit_size($value['file_store_logdir'], config_get_path('installedpackages/suricata/config/0/file_store_limit_size'));
 			}
 		}
@@ -412,7 +413,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 			$files = glob("{$suricata_log_dir}/certs/*.*");
 			$prune_count = 0;
 			foreach ($files as $f) {
-				if (($now - filemtime($f)) > (config_get_path('installedpackages/suricata/config/0/tls_certs_store_retention') * 3600)) {
+				if (($now - filemtime($f)) > (int)(config_get_path('installedpackages/suricata/config/0/tls_certs_store_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($f);
 				}

@@ -3777,7 +3777,7 @@ function suricata_remove_dead_rules() {
 	// Now remove any dead rules files from the interface configurations
 	if (!empty($cats)) {
 		$a_ifaces = config_get_path('installedpackages/suricata/rule', []);
-		foreach ($a_ifaces as $iface) {
+		foreach ($a_ifaces as &$iface) {
 			$enabled_rules = explode("||", $iface['rulesets']);
 			foreach ($enabled_rules as $k => $v) {
 				foreach ($cats as $d) {
@@ -3807,7 +3807,7 @@ function suricata_sync_on_changes() {
 		return;
 	}
 
-	if (config_get_path('installedpackages/suricatasync/config')) {
+	if (config_get_path('installedpackages/suricatasync/config/0')) {
 		$suricata_sync = config_get_path('installedpackages/suricatasync/config/0');
 		$synconchanges = $suricata_sync['varsynconchanges'];
 		$synctimeout = $suricata_sync['varsynctimeout'] ?: '150';

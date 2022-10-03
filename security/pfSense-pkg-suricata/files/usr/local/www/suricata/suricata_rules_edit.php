@@ -41,7 +41,7 @@ if (is_null($id)) {
 	exit;
 }
 
-$a_rule = config_get_path("installedpackages/suricata/rule/"{$id}", []);
+$a_rule = config_get_path("installedpackages/suricata/rule/{$id}", []);
 
 $if_real = get_real_interface($a_rule['interface']);
 $suricata_uuid = $a_rule['uuid'];
