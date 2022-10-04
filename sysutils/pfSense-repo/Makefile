@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-repo
 DISTVERSION=	2.6.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -131,8 +131,6 @@ do-install:
 	else \
 		${ECHO_CMD} ${DEFAULT_ALTABI} > ${STAGEDIR}${DATADIR}/pkg/repos/${f}.altabi; \
 	fi
-	${ECHO_CMD} ${OPSYS}:14:${ARCH} > ${STAGEDIR}${DATADIR}/pkg/repos/pfSense-repo-devel.abi
-	${ECHO_CMD} ${OPSYS}:14:${ARCH} > ${STAGEDIR}${DATADIR}/pkg/repos/pfSense-repo-devel.altabi
 .endfor
 	${ECHO_CMD} ${PFSENSE_PKG_SET_VERSION} \
 		> ${STAGEDIR}${DATADIR}/next_pkg_set_version
