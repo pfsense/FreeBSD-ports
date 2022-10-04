@@ -323,6 +323,7 @@
     SUBDIR += runner
     SUBDIR += rxvt-unicode
     SUBDIR += sakura
+    SUBDIR += salut
     SUBDIR += sbxkb
     SUBDIR += screen-message
     SUBDIR += screengrab
@@ -361,6 +362,7 @@
     SUBDIR += swaylock-effects
     SUBDIR += swaync
     SUBDIR += swayr
+    SUBDIR += swayrbar
     SUBDIR += swaysettings
     SUBDIR += sxhkd
     SUBDIR += sxpc

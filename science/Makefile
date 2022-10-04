@@ -52,6 +52,7 @@
     SUBDIR += chemtool-devel
     SUBDIR += chimes-calculator
     SUBDIR += chrono
+    SUBDIR += cif-tools
     SUBDIR += clhep
     SUBDIR += clipper
     SUBDIR += code_saturne
@@ -73,6 +74,7 @@
     SUBDIR += dkh
     SUBDIR += dlib-cpp
     SUBDIR += drawxtl
+    SUBDIR += dssp
     SUBDIR += dvc
     SUBDIR += dwave-preprocessing
     SUBDIR += dynare
@@ -98,6 +100,7 @@
     SUBDIR += gbtolib
     SUBDIR += gchemutils
     SUBDIR += gdma
+    SUBDIR += gemmi
     SUBDIR += getdp
     SUBDIR += ghemical
     SUBDIR += ghmm
@@ -134,6 +137,7 @@
     SUBDIR += latte
     SUBDIR += libaec
     SUBDIR += libccp4
+    SUBDIR += libcifpp
     SUBDIR += libcint
     SUBDIR += libctl
     SUBDIR += libecpint
@@ -273,6 +277,7 @@
     SUBDIR += py-asdf-standard
     SUBDIR += py-asdf-transform-schemas
     SUBDIR += py-ase
+    SUBDIR += py-atomium
     SUBDIR += py-avogadrolibs
     SUBDIR += py-cdo
     SUBDIR += py-chainer
@@ -303,6 +308,7 @@
     SUBDIR += py-eccodes
     SUBDIR += py-esda
     SUBDIR += py-fresnel
+    SUBDIR += py-gemmi
     SUBDIR += py-geolinks
     SUBDIR += py-geomet
     SUBDIR += py-geometer
@@ -324,6 +330,7 @@
     SUBDIR += py-libpysal
     SUBDIR += py-lifelines
     SUBDIR += py-mdp
+    SUBDIR += py-mmcif
     SUBDIR += py-mmtf-python
     SUBDIR += py-molmod
     SUBDIR += py-moltemplate

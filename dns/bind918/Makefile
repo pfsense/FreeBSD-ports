@@ -7,7 +7,7 @@ PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
 PORTREVISION=	0
 .else
 # dns/bind918 here
-PORTREVISION=	0
+PORTREVISION=	1
 .endif
 CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${ISCVERSION}
@@ -175,6 +175,10 @@ CONFIGURE_ARGS+=	--enable-developer \
 USES+=			perl5
 USE_PERL5=		build
 BUILD_DEPENDS+=		cmocka>0:sysutils/cmocka
+.endif
+
+.if !${PORT_OPTIONS:MMANPAGES} && !${PORT_OPTIONS:MDOCS}
+CONFIGURE_ENV+=	ac_cv_path_SPHINX_BUILD=no
 .endif
 
 .include <bsd.port.pre.mk>

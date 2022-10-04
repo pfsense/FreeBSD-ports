@@ -5,7 +5,6 @@
     SUBDIR += Maaate
     SUBDIR += a2jmidid
     SUBDIR += aacgain
-    SUBDIR += aacplusenc
     SUBDIR += abcde
     SUBDIR += abcselect
     SUBDIR += abgate-lv2
@@ -462,8 +461,6 @@
     SUBDIR += mamba
     SUBDIR += mate-media
     SUBDIR += mclk-lv2
-    SUBDIR += mctoolame-decoder
-    SUBDIR += mctoolame-encoder
     SUBDIR += mda-lv2
     SUBDIR += mhwaveedit
     SUBDIR += midi-matrix-lv2

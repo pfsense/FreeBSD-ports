@@ -1,7 +1,7 @@
 PORTNAME=	caddy
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.6.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
 DIST_SUBDIR=	caddy
 
@@ -17,6 +17,8 @@ CPE_VENDOR=	caddyserver
 
 USE_RC_SUBR=	caddy
 SUB_FILES=	Caddyfile.sample caddy pkg-message
+
+CONFLICTS_INSTALL=	xcaddy
 
 PLIST_FILES=	bin/${PORTNAME} \
 		"@sample ${ETCDIR_REL}/Caddyfile.sample"

@@ -82,26 +82,20 @@ GH_TAGNAME=	${LLVM_PROJECT_COMMIT}
 OPTIONS_DEFINE=		CLANG DOCS LLD STATIC_LIBS
 OPTIONS_DEFAULT=	CLANG LLD
 .if !${FLAVOR:Mlite}
-OPTIONS_DEFINE_aarch64=	COMPILER_RT OPENMP
-OPTIONS_DEFINE+=	EXTRAS FLANG LIT LLDB MLIR
-OPTIONS_DEFINE_amd64=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFINE_i386=	COMPILER_RT
-OPTIONS_DEFINE_powerpc=	COMPILER_RT GOLD
-OPTIONS_DEFINE_powerpc64=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFINE_powerpc64le=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFINE_riscv64=	COMPILER_RT OPENMP
-OPTIONS_DEFAULT+=	EXTRAS FLANG LIT LLDB STATIC_LIBS
-OPTIONS_DEFAULT_aarch64=	COMPILER_RT OPENMP
-OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFAULT_i386=	COMPILER_RT
-OPTIONS_DEFAULT_powerpc=	COMPILER_RT GOLD
-OPTIONS_DEFAULT_powerpc64=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFAULT_powerpc64le=	COMPILER_RT GOLD OPENMP
-OPTIONS_DEFAULT_riscv64=	COMPILER_RT OPENMP
-OPTIONS_EXCLUDE_armv6=	FLANG
-OPTIONS_EXCLUDE_armv7=	FLANG
-OPTIONS_EXCLUDE_i386=	FLANG
-OPTIONS_EXCLUDE_powerpc=	FLANG
+OPTIONS_DEFINE+=	COMPILER_RT EXTRAS FLANG LIT LLDB MLIR OPENMP
+OPTIONS_DEFINE_amd64=	GOLD
+OPTIONS_DEFINE_powerpc=	GOLD
+OPTIONS_DEFINE_powerpc64=	GOLD
+OPTIONS_DEFINE_powerpc64le=	GOLD
+OPTIONS_DEFAULT+=	COMPILER_RT EXTRAS FLANG LIT LLDB STATIC_LIBS OPENMP
+OPTIONS_DEFAULT_amd64=	GOLD
+OPTIONS_DEFAULT_powerpc=	GOLD
+OPTIONS_DEFAULT_powerpc64=	GOLD
+OPTIONS_DEFAULT_powerpc64le=	GOLD
+OPTIONS_EXCLUDE_armv6=	COMPILER_RT FLANG OPENMP
+OPTIONS_EXCLUDE_armv7=	COMPILER_RT FLANG OPENMP
+OPTIONS_EXCLUDE_i386=	FLANG OPENMP
+OPTIONS_EXCLUDE_powerpc=	FLANG OPENMP
 OPTIONS_EXCLUDE_riscv64=	LLDB
 .endif
 OPTIONS_SUB=	yes
@@ -132,7 +126,7 @@ CLANG_USE=		PERL5=run
 COMPILER_RT_DESC=	Sanitizer libraries
 COMPILER_RT_IMPLIES=	CLANG
 COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS} \
-			${COMPILER_RT_IGNORELISTS:S|^|${_CRTBLDIR}/|}
+			${COMPILER_RT_IGNORELISTS:S|^|${_CRTILDIR}/|}
 DOCS_PORTDOCS=		llvm
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
@@ -166,6 +160,7 @@ STATIC_LIBS_DESC=	Install static libraries (does not effect sanitizers)
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
 GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
+GOLD_PLIST_FILES=	${LLVM_DIR}/lib/LLVMgold.so
 
 CONFLICTS_INSTALL=	llvm-devel llvm-devel-lite
 
@@ -187,8 +182,10 @@ EXTRAS_LIBS=	\
 		libclangChangeNamespace \
 		libclangDaemon \
 		libclangDoc \
+		libclangIncludeCleaner \
 		libclangIncludeFixer \
 		libclangMove \
+		libclangPseudo \
 		libclangQuery \
 		libclangRename \
 		libclangReorderFields \
@@ -306,21 +303,13 @@ STRIP=
 
 .if ${ARCH} == "aarch64"
 COMPILER_RT_ARCHS=		aarch64
-COMPILER_RT_IGNORELISTS=	asan_ignorelist.txt
-COMPILER_RT_IGNORELISTS+=	cfi_ignorelist.txt
-COMPILER_RT_IGNORELISTS+=	msan_ignorelist.txt
 .elif ${ARCH} == "amd64"
 COMPILER_RT_ARCHS=		x86_64
-COMPILER_RT_IGNORELISTS=	asan_ignorelist.txt
-COMPILER_RT_IGNORELISTS+=	cfi_ignorelist.txt
-COMPILER_RT_IGNORELISTS+=	msan_ignorelist.txt
 .if exists(/usr/lib32/libc.so.7)
 COMPILER_RT_ARCHS+=		i386
 .endif
 .elif ${ARCH} == "i386"
 COMPILER_RT_ARCHS=		i386
-COMPILER_RT_IGNORELISTS=	asan_ignorelist.txt
-COMPILER_RT_IGNORELISTS+=	cfi_ignorelist.txt
 .elif ${ARCH} == "powerpc"
 COMPILER_RT_ARCHS=		powerpc
 .elif ${ARCH} == "powerpc64"
@@ -328,19 +317,14 @@ COMPILER_RT_ARCHS=		powerpc64
 .if exists(/usr/lib32/libc.so.7)
 COMPILER_RT_ARCHS+=		powerpc
 .endif
-COMPILER_RT_IGNORELISTS=	asan_ignorelist.txt
-COMPILER_RT_IGNORELISTS+=	msan_ignorelist.txt
 .elif ${ARCH} == "powerpc64le"
 COMPILER_RT_ARCHS=		powerpc64le
-COMPILER_RT_IGNORELISTS=	asan_ignorelist.txt
-COMPILER_RT_IGNORELISTS+=	msan_ignorelist.txt
 .elif ${ARCH} == "riscv64"
 COMPILER_RT_ARCHS=		riscv64
-COMPILER_RT_IGNORELISTS=	asan_ignorelist.txt
 .endif
 
 _CRTBASEDIR=	${LLVM_DIR}/lib/clang/${LLVM_RELEASE}
-_CRTBLDIR=	${_CRTBASEDIR}/share
+_CRTILDIR=	${_CRTBASEDIR}/share
 _CRTLIBDIR=	${_CRTBASEDIR}/lib
 
 .include "Makefile.RUNTIMES"
@@ -349,6 +333,15 @@ _COMPILER_RT_LIBS=
 .for CRT_ARCH in ${COMPILER_RT_ARCHS}
 _COMPILER_RT_LIBS:= ${_COMPILER_RT_LIBS} ${COMPILER_RT_LIBS_${CRT_ARCH}:S|^|${_CRTLIBDIR}/${CRT_ARCH}-portbld-${OPSYS:tl}${OSREL}/|}
 .endfor
+
+COMPILER_RT_IGNORELISTS=
+.for RT in asan cfi msan
+.if ${_COMPILER_RT_LIBS:M*/libclang_rt.${RT}.a}
+COMPILER_RT_IGNORELISTS:=	${COMPILER_RT_IGNORELISTS} ${RT}_ignorelist.txt
+.endif
+.endfor
+# Strip empty element
+COMPILER_RT_IGNORELISTS:=${COMPILER_RT_IGNORELISTS:N^$$}
 
 # Comment out plist entries for unsupported options.
 .for opt in ${_ALL_OPTIONS}
@@ -424,7 +417,7 @@ post-install-FLANG-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/Transforms/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/Optimizer/CMakeFiles
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/include/flang/CMakeFiles
-.if ${SNAPDATE} == 20220921
+.if ${SNAPDATE} == 20220928
 	# expected to be temporary
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/flang-new \
 	    ${STAGEDIR}${LLVM_PREFIX}/bin/flang
@@ -501,8 +494,7 @@ build-plist:
 	    if ($$0 ~ /(argdumper|lldb|six.py)/) {printf "%%%%LLDB%%%%"} \
 	    if ($$0 ~ /(${MLIR_PATTERN})/) {printf "%%%%MLIR%%%%"} \
 	    if ($$0 ~ /(${OPENMP_PATTERN})/) {printf "%%%%OPENMP%%%%"} \
-	    if ($$0 ~ /LLVMgold/) {printf "%%%%GOLD%%%%"} \
-	    if ($$0 !~ /lib[a-z]*_rt/) {print} \
+	    if ($$0 !~ /(lib[a-z]*_rt|LLVMgold)/) {print} \
 	}' ${PLIST}.tmp >> ${PLIST}
 	${ECHO_CMD} '@postexec if type ccache-update-links >/dev/null 2>&1; then ccache-update-links -v; fi' >> ${PLIST}
 	${ECHO_CMD} '@postunexec if type ccache-update-links >/dev/null 2>&1; then ccache-update-links -v; fi' >> ${PLIST}

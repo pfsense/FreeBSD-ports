@@ -5,6 +5,36 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20221002:
+  AFFECTS: users of shells/bash
+  AUTHOR: ehaupt@FreeBSD.org
+
+  Bash has been updated to version 5.2. In previous versions, the default port
+  option-set used to link against libreadline from ports. However, the current
+  version of devel/readline is too old for bash 5.2.
+
+  For now, the default option has been switched to use the bundled version of
+  libreadline and the other option is marked broken. Once devel/readline is
+  updated this can be reverted.
+
+  If you're updating bash from source and you've previously explicitly set to
+  use use PORTS_READLINE, you'll have to disable the PORTS_READLINE option
+  before updating:
+
+  # cd /usr/ports/shells/bash
+  # make config
+
+   or flush it entirely:
+
+  # cd /usr/ports/shells/bash
+  # make rmconfig
+
+20220929:
+  AFFECTS: users of graphics/bmeps
+  AUTHOR: takefu@airport.fm
+
+  The executable name has been changed from this edition from bmpp to bitmap2pp
+
 20220925:
   AFFECTS: users of security/libressl
   AUTHOR: brnrd@FreeBSD.org
@@ -21,6 +51,15 @@ you update your ports collection, before attempting any port upgrades.
 
   Then you should rebuild all ports depending on libressl to avoid dangling
   shared library dependencies.
+
+20220919:
+  AFFECTS: users of audio/strawberry
+  AUTHOR: mandree@FreeBSD.org
+
+  strawberry now uses FLAVORs based on the qt version, offering -qt5 and
+  -qt6, with -qt5 the default.
+
+  You may need to explicitly install either of the new flavors.
 
 20220919:
   AFFECTS: users of sysutils/schilyutils
@@ -254,7 +293,7 @@ you update your ports collection, before attempting any port upgrades.
   then be deleted afterwards, if not empty.
 
 20220625:
-AFFECTS: users of sysutils/fusefs-bindfs
+  AFFECTS: users of sysutils/fusefs-bindfs
   AUTHOR: doralitze@chaotikum.org
 
   Bindfs defaults to use direct I/O since version 1.16. While this results
@@ -266,7 +305,7 @@ AFFECTS: users of sysutils/fusefs-bindfs
   2. Upgrade your application in order to query mapping guards
 
 20220623:
-AFFECTS: users of science/gramps
+  AFFECTS: users of science/gramps
   AUTHOR: fernape@FreeBSD.org
 
   databases/py-bsddb3 is deprecated and will be removed in the future. With that
@@ -276,7 +315,7 @@ AFFECTS: users of science/gramps
   as database.
 
 20220620:
-AFFECTS: users of www/selenium
+  AFFECTS: users of www/selenium
   AUTHOR: fernape@FreeBSD.org
 
   The port has changed startup args so if you are using selenium_args= in
@@ -1140,8 +1179,8 @@ AFFECTS: users of www/selenium
     # portupgrade -o security/clamav-lts security/clamav
 
 20211006:
-AFFECTS: users of misc/freebsd-doc-*
-AUTHOR: blackend@FreeBSD.org
+  AFFECTS: users of misc/freebsd-doc-*
+  AUTHOR: blackend@FreeBSD.org
 
 The misc/freebsd-doc-* ports have been updated to the new doc toolchain,
 and use a somewhat different arrangement of directories and symlinks,

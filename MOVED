@@ -15423,7 +15423,6 @@ games/kiki||2020-09-19|Has expired: Uses deprecated version of python
 games/lightyears||2020-09-19|Has expired: Uses deprecated version of python
 games/outerspace||2020-09-19|Has expired: Uses deprecated version of python
 games/pachi-game-engine||2020-09-19|Has expired: Uses deprecated version of python
-graphics/caffe||2020-09-19|Has expired: Uses deprecated version of python
 graphics/kudu||2020-09-19|Has expired: Uses deprecated version of python
 graphics/pecomato||2020-09-19|Has expired: Uses deprecated version of python
 graphics/py-editobj||2020-09-19|Has expired: Uses deprecated version of python
@@ -17566,3 +17565,22 @@ audio/kid3-qt5|audio/kid3@qt5|2022-09-13|Merged into flavorized version
 audio/phaserotate-lv2|audio/x42-plugins-lv2|2022-09-13|phaserotate-lv2 LV2 plugin is included in the x42-plugins-lv2 plugin collection
 graphics/darktable40|graphics/darktable|2022-09-22|Obsolete. Use graphics/darktable, which is the same version
 java/bootstrap-openjdk6|java/bootstrap-openjdk8|2022-09-25|Was only used to bootstrap the now deleted java/openjdk7 port
+graphics/caffe|misc/caffe|2022-09-29|Move to a more appropriate category
+security/pwman3||2022-09-30|Has expired: Depends on expired security/py-pycrypto
+sysutils/py-ansible-base||2022-09-30|Has expired: Depends on expired security/py-pycrypto
+devel/flang||2022-09-30|Has expired: Very outdated and unsupported upstream, current version in tree is several years old and upstream is still active
+devel/flang-clang||2022-09-30|Has expired: Very outdated and unsupported upstream, current version in tree is several years old and upstream is still active
+deskutils/myitcrm||2022-09-30|Has expired: Abandoned project as last update was on 2012-01-15
+lang/spidermonkey17||2022-09-30|Has expired: Obsolete, released in 2007 and since long unsupported upstream
+lang/p5-JavaScript-SpiderMonkey||2022-09-30|Has expired: Depends on deprecated SpiderMonkey 1.7
+devel/electron17||2022-09-30|Has expired: EOLed upstream, switch to newer version
+www/ttf2eot||2022-09-30|Has expired: Obsolete font format that's been superseded by OTF/TTF/WOFF/WOFF2
+audio/aacplusenc||2022-09-30|Has expired: Legacy audio format, superseded by HE-AAC(v1), HE-AACv2 and xHE-AAC/USAC. Please consider using audio/fdk-aac via FFmpeg or audio/exhale
+net/libmms||2022-09-30|Has expired: Obsolete, Microsoft deprecated MMS protocol in favour of RTSP in 2003
+audio/mctoolame-decoder||2022-09-30|Has expired: Legacy and obscure audio format that never gained any traction
+audio/mctoolame-encoder||2022-09-30|Has expired: Legacy and obscure audio format that never gained any traction
+www/py-ws4py||2022-09-30|Has expired: Upstream abandoned
+ftp/axel||2022-09-30|Has expired: Last release in 2009 and dead upstream, please consider using www/aria2
+databases/py-bsddb3|databases/py-berkeleydb|2022-09-30|Has expired: Requires upstream EOLd db5. Use py-berkeleydb
+graphics/megapov|graphics/povray37|2022-10-01|Has expired: Abandoned upstream. graphics/povray37 is the recommended replacement
+x11-toolkits/gstreamer1-plugins-gtk4||2022-10-01|No consumers left and deprecated in favor gtk4 plugin from multimedia/gstreamer1-plugins-rust >= 0.8.0

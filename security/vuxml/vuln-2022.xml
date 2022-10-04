@@ -1,3 +1,331 @@
+  <vuln vid="d487d4fc-43a8-11ed-8b01-b42e991fc52e">
+    <topic>zydis -- heap buffer overflow</topic>
+    <affects>
+      <package>
+	<name>zydis</name>
+	<range><lt>3.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Zyantific reports:</p>
+	<blockquote cite="https://github.com/zyantific/zydis/security/advisories/GHSA-q42v-hv86-3m4g">
+	<p>
+	Zydis users of versions v3.2.0 and older
+	that use the string functions provided in zycore in order to
+	append untrusted user data to the formatter buffer within
+	their custom formatter hooks can run into heap buffer
+	overflows. Older versions of Zydis failed to properly
+	initialize the string object within the formatter buffer,
+	forgetting to initialize a few fields, leaving their value
+	to chance. This could then in turn cause zycore functions
+	like ZyanStringAppend to make incorrect calculations for the
+	new target size, resulting in heap memory corruption.
+	</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-41253</cvename>
+      <url>https://www.cvedetails.com/cve/CVE-2021-41253</url>
+    </references>
+    <dates>
+      <discovery>2021-11-08</discovery>
+      <entry>2022-10-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="67057b48-41f4-11ed-86c3-080027881239">
+    <topic>mediawiki -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mediawiki135</name>
+	<range><lt>1.35.8</lt></range>
+      </package>
+      <package>
+	<name>mediawiki137</name>
+	<range><lt>1.37.6</lt></range>
+      </package>
+      <package>
+	<name>mediawiki138</name>
+	<range><lt>1.38.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mediawiki reports:</p>
+	<blockquote cite="https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/SPYFDCGZE7KJNO73ET7QVSUXMHXVRFTE/">
+	  <p>(T316304, CVE-2022-41767) SECURITY: reassignEdits doesn't update results
+	    in an IP range check on Special:Contributions..</p>
+	  <p>(T309894, CVE-2022-41765) SECURITY: HTMLUserTextField exposes existence
+	    of hidden users.</p>
+	  <p> (T307278, CVE-2022-41766) SECURITY: On action=rollback the message
+	    "alreadyrolled" can leak revision deleted user name.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-41765</cvename>
+      <cvename>CVE-2022-41766</cvename>
+      <cvename>CVE-2022-41767</cvename>
+      <url>https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/SPYFDCGZE7KJNO73ET7QVSUXMHXVRFTE/</url>
+    </references>
+    <dates>
+      <discovery>2022-09-29</discovery>
+      <entry>2022-10-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d459c914-4100-11ed-9bc7-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>106.0.5249.91</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop_30.html">
+	  <p>This release contains 3 security fixes, including:</p>
+	  <ul>
+	    <li>[1366813] High CVE-2022-3370: Use after free in Custom Elements. Reported by Aviv A. on 2022-09-22</li>
+	    <li>[1366399] High CVE-2022-3373: Out of bounds write in V8. Reported by Tibor Klajnscek on 2022-09-21</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-3370</cvename>
+      <cvename>CVE-2022-3373</cvename>
+      <url>https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop_30.html</url>
+    </references>
+    <dates>
+      <discovery>2022-09-30</discovery>
+      <entry>2022-09-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="04422df1-40d8-11ed-9be7-454b1dd82c64">
+    <topic>Gitlab -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>15.4.0</ge><lt>15.4.1</lt></range>
+	<range><ge>15.3.0</ge><lt>15.3.4</lt></range>
+	<range><ge>9.3.0</ge><lt>15.2.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2022/09/29/security-release-gitlab-15-4-1-released/">
+	  <p>Denial of Service via cloning an issue</p>
+	  <p>Arbitrary PUT request as victim user through Sentry error list</p>
+	  <p>Content injection via External Status Checks</p>
+	  <p>Project maintainers can access Datadog API Key from logs</p>
+	  <p>Unsafe serialization of Json data could lead to sensitive data leakage</p>
+	  <p>Import bug allows importing of private local git repos</p>
+	  <p>Maintainer can leak Github access tokens by changing integration URL (even after 15.2.1 patch)</p>
+	  <p>Unauthorized users able to create issues in any project</p>
+	  <p>Bypass group IP restriction on Dependency Proxy</p>
+	  <p>Healthcheck endpoint allow list can be bypassed when accessed over HTTP in an HTTPS enabled system</p>
+	  <p>Disclosure of Todo details to guest users</p>
+	  <p>A user's primary email may be disclosed through group member events webhooks</p>
+	  <p>Content manipulation due to branch/tag name confusion with the default branch name</p>
+	  <p>Leakage of email addresses in WebHook logs</p>
+	  <p>Specially crafted output makes job logs inaccessible</p>
+	  <p>Enforce editing approval rules on project level</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-3283</cvename>
+      <cvename>CVE-2022-3060</cvename>
+      <cvename>CVE-2022-2904</cvename>
+      <cvename>CVE-2022-3018</cvename>
+      <cvename>CVE-2022-3291</cvename>
+      <cvename>CVE-2022-3067</cvename>
+      <cvename>CVE-2022-2882</cvename>
+      <cvename>CVE-2022-3066</cvename>
+      <cvename>CVE-2022-3286</cvename>
+      <cvename>CVE-2022-3285</cvename>
+      <cvename>CVE-2022-3330</cvename>
+      <cvename>CVE-2022-3351</cvename>
+      <cvename>CVE-2022-3288</cvename>
+      <cvename>CVE-2022-3293</cvename>
+      <cvename>CVE-2022-3279</cvename>
+      <cvename>CVE-2022-3325</cvename>
+      <url>https://about.gitlab.com/releases/2022/09/29/security-release-gitlab-15-4-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2022-09-29</discovery>
+      <entry>2022-09-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5a1c2e06-3fb7-11ed-a402-b42e991fc52e">
+    <topic>unbound -- Non-Responsive Delegation Attack</topic>
+    <affects>
+      <package>
+	<name>unbound</name>
+	<range><lt>1.16.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+      <p>
+	A vulnerability named 'Non-Responsive Delegation Attack'
+	(NRDelegation Attack) has been discovered in various DNS
+	resolving software. The NRDelegation Attack works by having
+	a malicious delegation with a considerable number of non
+	responsive nameservers. The attack starts by querying a
+	resolver for a record that relies on those unresponsive
+	nameservers. The attack can cause a resolver to spend a lot
+	of time/resources resolving records under a malicious
+	delegation point where a considerable number of unresponsive
+	NS records reside. It can trigger high CPU usage in some
+	resolver implementations that continually look in the cache
+	for resolved NS records in that delegation.
+      </p>
+	<blockquote cite="https://www.cvedetails.com/cve/CVE-2022-3204">
+	  <p>.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-3204</cvename>
+      <url>https://nlnetlabs.nl/downloads/unbound/CVE-2022-3204.txt</url>
+    </references>
+    <dates>
+      <discovery>2022-09-26</discovery>
+      <entry>2022-09-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cb902a77-3f43-11ed-9402-901b0e9408dc">
+    <topic>Matrix clients -- several vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>cinny</name>
+	<range><lt>2.2.1</lt></range>
+      </package>
+      <package>
+	<name>element-web</name>
+	<range><lt>1.11.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Matrix developers report:</p>
+	<blockquote cite="https://matrix.org/blog/2022/09/28/upgrade-now-to-address-encryption-vulns-in-matrix-sdks-and-clients">
+	  <p>Two critical severity vulnerabilities in end-to-end encryption were
+	  found in the SDKs which power Element, Beeper, Cinny, SchildiChat,
+	  Circuli, Synod.im and any other clients based on matrix-js-sdk,
+	  matrix-ios-sdk or matrix-android-sdk2.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-39249</cvename>
+      <cvename>CVE-2022-39250</cvename>
+      <cvename>CVE-2022-39251</cvename>
+      <cvename>CVE-2022-39236</cvename>
+      <url>https://matrix.org/blog/2022/09/28/upgrade-now-to-address-encryption-vulns-in-matrix-sdks-and-clients</url>
+    </references>
+    <dates>
+      <discovery>2022-09-23</discovery>
+      <entry>2022-09-28</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="18529cb0-3e9c-11ed-9bc7-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>106.0.5249.61</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop_27.html">
+	  <p>This release contains 20 security fixes, including:</p>
+	  <ul>
+	    <li>[1358907] High CVE-2022-3304: Use after free in CSS. Reported by Anonymous on 2022-09-01</li>
+	    <li>[1343104] High CVE-2022-3201: Insufficient validation of untrusted input in Developer Tools. Reported by NDevTK on 2022-07-09</li>
+	    <li>[1319229] High CVE-2022-3305: Use after free in Survey. Reported by Nan Wang(@eternalsakura13) and Guang Gong of 360 Vulnerability Research Institute on 2022-04-24</li>
+	    <li>[1320139] High CVE-2022-3306: Use after free in Survey. Reported by Nan Wang(@eternalsakura13) and Guang Gong of 360 Vulnerability Research Institute on 2022-04-27</li>
+	    <li>[1323488] High CVE-2022-3307: Use after free in Media. Reported by Anonymous Telecommunications Corp. Ltd. on 2022-05-08</li>
+	    <li>[1342722] Medium CVE-2022-3308: Insufficient policy enforcement in Developer Tools. Reported by Andrea Cappa (zi0Black) @ Shielder on 2022-07-08</li>
+	    <li>[1348415] Medium CVE-2022-3309: Use after free in Assistant. Reported by zh1x1an1221 of Ant Group Tianqiong Security Lab on 2022-07-29</li>
+	    <li>[1240065] Medium CVE-2022-3310: Insufficient policy enforcement in Custom Tabs. Reported by Ashwin Agrawal from Optus, Sydney on 2021-08-16</li>
+	    <li>[1302813] Medium CVE-2022-3311: Use after free in Import. Reported by Samet Bekmezci @sametbekmezci on 2022-03-04</li>
+	    <li>[1303306] Medium CVE-2022-3312: Insufficient validation of untrusted input in VPN. Reported by Andr.Ess on 2022-03-06</li>
+	    <li>[1317904] Medium CVE-2022-3313: Incorrect security UI in Full Screen. Reported by Irvan Kurniawan (sourc7) on 2022-04-20</li>
+	    <li>[1328708] Medium CVE-2022-3314: Use after free in Logging. Reported by Anonymous on 2022-05-24</li>
+	    <li>[1322812] Medium CVE-2022-3315: Type confusion in Blink. Reported by Anonymous on 2022-05-05</li>
+	    <li>[1333623] Low CVE-2022-3316: Insufficient validation of untrusted input in Safe Browsing. Reported by Sven Dysthe (@svn_dy) on 2022-06-07</li>
+	    <li>[1300539] Low CVE-2022-3317: Insufficient validation of untrusted input in Intents. Reported by Hafiizh on 2022-02-24</li>
+	    <li>[1318791] Low CVE-2022-3318: Use after free in ChromeOS Notifications. Reported by GraVity0 on 2022-04-22</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-3201</cvename>
+      <cvename>CVE-2022-3304</cvename>
+      <cvename>CVE-2022-3305</cvename>
+      <cvename>CVE-2022-3306</cvename>
+      <cvename>CVE-2022-3307</cvename>
+      <cvename>CVE-2022-3308</cvename>
+      <cvename>CVE-2022-3309</cvename>
+      <cvename>CVE-2022-3310</cvename>
+      <cvename>CVE-2022-3311</cvename>
+      <cvename>CVE-2022-3312</cvename>
+      <cvename>CVE-2022-3313</cvename>
+      <cvename>CVE-2022-3314</cvename>
+      <cvename>CVE-2022-3315</cvename>
+      <cvename>CVE-2022-3316</cvename>
+      <cvename>CVE-2022-3317</cvename>
+      <cvename>CVE-2022-3318</cvename>
+      <url>https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop_27.html</url>
+    </references>
+    <dates>
+      <discovery>2022-09-27</discovery>
+      <entry>2022-09-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0a0670a1-3e1a-11ed-b48b-e0d55e2a8bf9">
+    <topic>expat -- Heap use-after-free vulnerability</topic>
+    <affects>
+      <package>
+	<name>expat</name>
+	<range><lt>2.4.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Debian Security Advisory reports:</p>
+	<blockquote cite="https://www.debian.org/security/2022/dsa-5236">
+	  <p>Rhodri James discovered a heap use-after-free vulnerability in the doContent function in Expat, an XML parsing C library, which could result in denial of service or potentially the execution of arbitrary code, if a malformed XML file is processed.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-40674</cvename>
+      <url>https://www.debian.org/security/2022/dsa-5236</url>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2022-40674</url>
+    </references>
+    <dates>
+      <discovery>2022-09-14</discovery>
+      <entry>2022-09-27</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="f9ada0b5-3d80-11ed-9330-080027f5fec9">
     <topic>squid -- Exposure of sensitive information in cache manager</topic>
     <affects>

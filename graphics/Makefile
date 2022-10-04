@@ -547,7 +547,6 @@
     SUBDIR += mapyrus
     SUBDIR += matplotlib-cpp
     SUBDIR += matplotplusplus
-    SUBDIR += megapov
     SUBDIR += meh
     SUBDIR += mesa-demos
     SUBDIR += mesa-devel
@@ -840,6 +839,7 @@
     SUBDIR += py-cairosvg
     SUBDIR += py-cartopy
     SUBDIR += py-cogdumper
+    SUBDIR += py-colorcet
     SUBDIR += py-colour
     SUBDIR += py-descartes
     SUBDIR += py-django-easy-thumbnails

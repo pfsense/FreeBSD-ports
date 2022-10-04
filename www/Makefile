@@ -114,6 +114,7 @@
     SUBDIR += dolibarr
     SUBDIR += dolibarr13
     SUBDIR += dolibarr14
+    SUBDIR += dolibarr15
     SUBDIR += domoticz
     SUBDIR += dooble
     SUBDIR += drupal7
@@ -1410,6 +1411,7 @@
     SUBDIR += py-aioh2
     SUBDIR += py-aiohttp
     SUBDIR += py-aiohttp-middlewares
+    SUBDIR += py-aiohttp-session
     SUBDIR += py-aiohttp-wsgi
     SUBDIR += py-aiohttp_cors
     SUBDIR += py-aioquic
@@ -1788,7 +1790,6 @@
     SUBDIR += py-wikitools
     SUBDIR += py-woob
     SUBDIR += py-woob-qt
-    SUBDIR += py-ws4py
     SUBDIR += py-wsaccel
     SUBDIR += py-wsgidav
     SUBDIR += py-yarl
@@ -1848,6 +1849,7 @@
     SUBDIR += rubygem-anemone
     SUBDIR += rubygem-asana
     SUBDIR += rubygem-asana0
+    SUBDIR += rubygem-asana1
     SUBDIR += rubygem-async-http
     SUBDIR += rubygem-async-pool
     SUBDIR += rubygem-async-rest
@@ -2059,6 +2061,7 @@
     SUBDIR += rubygem-rack-openid
     SUBDIR += rubygem-rack-protection
     SUBDIR += rubygem-rack-protection1
+    SUBDIR += rubygem-rack-protection2
     SUBDIR += rubygem-rack-proxy
     SUBDIR += rubygem-rack-ssl
     SUBDIR += rubygem-rack-test
@@ -2131,9 +2134,11 @@
     SUBDIR += rubygem-sinatra
     SUBDIR += rubygem-sinatra-contrib
     SUBDIR += rubygem-sinatra-contrib1
+    SUBDIR += rubygem-sinatra-contrib2
     SUBDIR += rubygem-sinatra-r18n
     SUBDIR += rubygem-sinatra-respond_to
     SUBDIR += rubygem-sinatra1
+    SUBDIR += rubygem-sinatra2
     SUBDIR += rubygem-sitemap_generator
     SUBDIR += rubygem-smashing
     SUBDIR += rubygem-socksify
@@ -2246,6 +2251,7 @@
     SUBDIR += tomcat-devel
     SUBDIR += tomcat-native
     SUBDIR += tomcat10
+    SUBDIR += tomcat101
     SUBDIR += tomcat85
     SUBDIR += tomcat9
     SUBDIR += tomee
@@ -2254,7 +2260,6 @@
     SUBDIR += transmission-web
     SUBDIR += transproxy
     SUBDIR += tt-rss
-    SUBDIR += ttf2eot
     SUBDIR += tuifeed
     SUBDIR += tusc
     SUBDIR += tusd

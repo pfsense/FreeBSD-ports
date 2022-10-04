@@ -815,7 +815,6 @@
     SUBDIR += pvk
     SUBDIR += pwauth
     SUBDIR += pwman
-    SUBDIR += pwman3
     SUBDIR += pwned-check
     SUBDIR += py-RestrictedPython
     SUBDIR += py-SecretStorage
@@ -975,6 +974,7 @@
     SUBDIR += py-scp
     SUBDIR += py-scramp
     SUBDIR += py-scrypt
+    SUBDIR += py-secure
     SUBDIR += py-securesystemslib
     SUBDIR += py-sequoia
     SUBDIR += py-service_identity
