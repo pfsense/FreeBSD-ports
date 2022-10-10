@@ -218,7 +218,7 @@ if (empty(config_get_path('installedpackages/snortglobal/rule_update_starttime')
 /**********************************************************/
 if (config_get_path('installedpackages/snortglobal/whitelist/item')) {
 	$a_wlist = config_get_path('installedpackages/snortglobal/whitelist/item', []);
-	foreach ($a_wlist as $wlisti) {
+	foreach ($a_wlist as &$wlisti) {
 		if (!array_get_path($wlisti, 'address/item') && !empty($wlisti['address'])) {
 			$tmp = $wlisti['address'];
 			$wlisti['address'] = array();
@@ -236,7 +236,7 @@ if (config_get_path('installedpackages/snortglobal/whitelist/item')) {
 /* Migrate per interface settings if required.            */
 /**********************************************************/
 $a_rules = config_get_path('installedpackages/snortglobal/rule', []);
-foreach ($a_rules as $rule) {
+foreach ($a_rules as &$rule) {
 
 	// Initialize multiple config engine arrays for supported preprocessors
 	array_init_path($rule, 'frag3_engine/item');
