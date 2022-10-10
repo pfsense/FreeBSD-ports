@@ -124,7 +124,7 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 					"tls-events.rules" );
 
 		$a_ifaces = config_get_path('installedpackages/suricata/rule', []);
-		foreach ($a_ifaces as $suricatacfg) {
+		foreach ($a_ifaces as &$suricatacfg) {
 			$rulesets = explode("||", $suricatacfg['rulesets']);
 			foreach ($builtin_rules as $name) {
 				if (in_array($name, $rulesets)) {

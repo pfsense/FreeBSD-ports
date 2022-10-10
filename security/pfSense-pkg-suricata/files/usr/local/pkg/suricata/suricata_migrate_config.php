@@ -245,7 +245,7 @@ if (!config_path_enabled('installedpackages/suricata/config/0/clearblocks')) {
 
 // Now process the interface-specific migration settings
 $a_rules = config_get_path('installedpackages/suricata/rule', []);
-foreach ($a_rules as $pconfig) {
+foreach ($a_rules as &$pconfig) {
 
 	/***********************************************************/
 	/* Add the new 'dns-events.rules' file to the rulesets.    */
