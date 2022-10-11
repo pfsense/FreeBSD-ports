@@ -24,7 +24,7 @@ PLIST_FILES=	bin/pdfgrep man/man1/pdfgrep.1.gz \
 		share/zsh/site-functions/_pdfgrep
 
 OPTIONS_DEFINE=		LIBPCRE
-LIBPCRE_DESC=		Enable Perl compatible expressions
+LIBPCRE_DESC=		Enable Perl compatable expressions
 LIBPCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 LIBPCRE_CONFIGURE_WITH=	libpcre
 
