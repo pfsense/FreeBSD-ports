@@ -1,6 +1,7 @@
 PORTNAME=	lapce
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.0 # remove openssl-src-* from CARGO-CRATES each update
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -8,6 +9,7 @@ COMMENT=	Lightning-fast and Powerful Code Editor
 WWW=		https://lapce.dev/
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NOT_FOR_ARCHS=	i386
 NOT_FOR_ARCHS_REASON_i386=	doesn't build: [zstd-sys 2.0.1+zstd.1.5.2] AR_i686_unknown_freebsd = None
@@ -18,7 +20,9 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libgit2.so:devel/libgit2 \
 		libssh2.so:security/libssh2
 
-USES=		cargo gmake gnome localbase:ldflags perl5 pkgconfig ssl
+USES=		cargo dos2unix gmake gnome localbase:ldflags perl5 pkgconfig \
+		ssl
+DOS2UNIX_FILES=	cargo-crates/process_path-0.1.4/src/bsd.rs
 USE_GITHUB=	yes
 USE_GNOME=	atk gdkpixbuf2 gtk30 pango
 

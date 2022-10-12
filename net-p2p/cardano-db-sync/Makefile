@@ -1,5 +1,6 @@
 PORTNAME=	cardano-db-sync
-PORTVERSION=	13.0.4
+PORTVERSION=	13.0.5
+PORTREVISION=	2
 CATEGORIES=	net-p2p databases
 
 PATCH_SITES=	https://arrowd.name/:freebsd_compat
@@ -46,7 +47,7 @@ GH_TUPLE=	HeinrichApfelmus:threepenny-gui:e3bb8283fc7d2e8aa374eea29426002e8dcd67
 GH_TUPLE+=	input-output-hk:libsodium:${LIBSODIUM_HASH}:sodium \
 		bitcoin-core:secp256k1:${SECP256K1_HASH}:secp
 
-CARDANO_DB_SYNC_HASH=	b32fb363a738eb0453ed6c84f2dfd7723c0640bd
+CARDANO_DB_SYNC_HASH=	8ad98d48e0068f3768d48e18fdcbe254037cba3b
 LIBSODIUM_HASH=		66f017f16633f2060db25e17c170c2afa0f2a8a1
 # Obtained from https://github.com/input-output-hk/cardano-node/blob/master/.github/workflows/github-page.yml#L21
 SECP256K1_HASH=		ac83be33d0956faf6b7f61a60ab524ef7d6a473a
@@ -96,7 +97,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		base58-bytestring-0.1.0 \
 		base64-bytestring-1.2.1.0 \
 		base64-bytestring-type-1.0.1_14 \
-		basement-0.0.12_1 \
+		basement-0.0.12_2 \
 		bech32-1.1.2 \
 		bifunctors-5.5.11_1 \
 		bimap-0.4.0_1 \
@@ -104,7 +105,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		binary-orphans-1.0.2_1 \
 		blaze-builder-0.4.2.2_1 \
 		blaze-html-0.9.1.2_2 \
-		blaze-markup-0.8.2.8_2 \
+		blaze-markup-0.8.2.8_3 \
 		bsb-http-chunked-0.0.0.4_3 \
 		byteorder-1.0.4 \
 		bytestring-builder-0.10.8.2.0 \
@@ -127,7 +128,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		conduit-extra-1.3.5_1 \
 		connection-0.3.1_1 \
 		constraints-0.13.3 \
-		constraints-extras-0.3.2.1 \
+		constraints-extras-0.3.2.1_1 \
 		contravariant-1.5.5 \
 		cookie-0.4.5 \
 		criterion-1.5.13.0_2 \
@@ -157,7 +158,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		either-5.0.1.1_1 \
 		ekg-0.4.0.15_8 \
 		ekg-core-0.1.1.7_2 \
-		entropy-0.4.1.7 \
+		entropy-0.4.1.7_1 \
 		erf-2.0.0.0 \
 		esqueleto-3.5.3.0 \
 		extra-1.7.10 \
@@ -167,15 +168,15 @@ USE_CABAL=	Glob-0.10.2_3 \
 		fin-0.1.1_2 \
 		fingertree-0.1.5.0 \
 		fmlist-0.9.4 \
-		foldl-1.4.12_4 \
+		foldl-1.4.12_5 \
 		formatting-6.3.7_2 \
 		foundation-0.0.26.1_1 \
 		free-5.1.7_1 \
-		generic-data-0.9.2.1 \
+		generic-data-0.9.2.1_1 \
 		generic-deriving-1.14.1 \
 		generic-monoid-0.1.0.1_1 \
 		generic-random-1.5.0.1 \
-		generics-sop-0.5.1.2 \
+		generics-sop-0.5.1.2_1 \
 		gray-code-0.3.1 \
 		groups-0.5.3 \
 		half-0.3.1 \
@@ -183,7 +184,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		hashable-1.3.5.0_1 \
 		haskell-lexer-1.1 \
 		hedgehog-1.1.1_2 \
-		hedgehog-quickcheck-0.1.1_3 \
+		hedgehog-quickcheck-0.1.1_4 \
 		hostname-1.0 \
 		hourglass-0.2.12 \
 		hsc2hs-0.68.8_1 \
@@ -196,18 +197,18 @@ USE_CABAL=	Glob-0.10.2_3 \
 		http-client-tls-0.3.6.1 \
 		http-conduit-2.3.8 \
 		http-date-0.0.11 \
-		http-media-0.8.0.0_6 \
+		http-media-0.8.0.0_7 \
 		http-types-0.12.3 \
 		http2-3.0.3 \
 		indexed-profunctors-0.1.1 \
 		indexed-traversable-0.1.2_2 \
 		indexed-traversable-instances-0.1.1_1 \
-		insert-ordered-containers-0.2.5.1_2 \
+		insert-ordered-containers-0.2.5.1_3 \
 		int-cast-0.2.0.0_4 \
 		integer-logarithms-1.0.3.1_3 \
 		invariant-0.5.5 \
-		io-streams-1.5.2.1_2 \
-		io-streams-haproxy-1.0.1.0_5 \
+		io-streams-1.5.2.1_3 \
+		io-streams-haproxy-1.0.1.0_6 \
 		iproute-1.7.12 \
 		js-chart-2.9.4.1 \
 		kan-extensions-5.2.3 \
@@ -227,7 +228,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		mersenne-random-pure64-0.2.2.0_1 \
 		microlens-0.4.12.0 \
 		microlens-mtl-0.2.0.1 \
-		microlens-th-0.4.3.10 \
+		microlens-th-0.4.3.10_1 \
 		microstache-1.0.2_3 \
 		mime-types-0.1.0.9 \
 		mmorph-1.1.5_1 \
@@ -262,7 +263,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		persistent-2.13.3.0_2 \
 		persistent-documentation-0.1.0.4 \
 		persistent-postgresql-2.13.4.0 \
-		pipes-4.3.16_3 \
+		pipes-4.3.16_5 \
 		postgresql-libpq-0.9.4.3_2 \
 		postgresql-simple-0.6.4_8 \
 		pretty-show-1.10 \
@@ -282,7 +283,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		random-1.2.1 \
 		random-shuffle-0.0.4 \
 		readable-0.3.1 \
-		recursion-schemes-5.2.2.2 \
+		recursion-schemes-5.2.2.2_1 \
 		reducers-3.12.4_2 \
 		reflection-2.1.6_1 \
 		regex-base-0.94.0.2_1 \
@@ -311,7 +312,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		snap-server-1.1.2.0_1 \
 		socks-0.6.1 \
 		some-1.0.2 \
-		sop-core-0.5.0.2 \
+		sop-core-0.5.0.2_1 \
 		split-0.2.3.4_2 \
 		splitmix-0.1.0.4_1 \
 		statistics-0.16.0.1 \
@@ -339,7 +340,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		temporary-1.3 \
 		terminal-size-0.3.2.1 \
 		testing-type-modifiers-0.1.0.1 \
-		text-ansi-0.1.1_3 \
+		text-ansi-0.1.1_4 \
 		text-short-0.1.5_1 \
 		tf-random-0.5 \
 		th-abstraction-0.4.3.0 \
@@ -366,7 +367,7 @@ USE_CABAL=	Glob-0.10.2_3 \
 		unagi-chan-0.4.1.4 \
 		unbounded-delays-0.1.1.1 \
 		unix-bytestring-0.3.7.6 \
-		unix-compat-0.5.4_1 \
+		unix-compat-0.5.4_2 \
 		unix-time-0.4.7 \
 		unliftio-0.2.21.0 \
 		unliftio-core-0.2.0.1_2 \

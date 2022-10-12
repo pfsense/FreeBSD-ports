@@ -13668,7 +13668,6 @@ audio/py-id3||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 audio/py-shout||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 audio/py-speex||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 audio/pytone||2020-01-27|Has expired: Unmaintained, uses EOLed python27
-audio/solfege||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 audio/trommler||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 benchmarks/pybench||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 biology/pycogent||2020-01-27|Has expired: Unmaintained, uses EOLed python27
@@ -17584,3 +17583,22 @@ ftp/axel||2022-09-30|Has expired: Last release in 2009 and dead upstream, please
 databases/py-bsddb3|databases/py-berkeleydb|2022-09-30|Has expired: Requires upstream EOLd db5. Use py-berkeleydb
 graphics/megapov|graphics/povray37|2022-10-01|Has expired: Abandoned upstream. graphics/povray37 is the recommended replacement
 x11-toolkits/gstreamer1-plugins-gtk4||2022-10-01|No consumers left and deprecated in favor gtk4 plugin from multimedia/gstreamer1-plugins-rust >= 0.8.0
+deskutils/lookbook|deskutils/iconbrowser|2022-10-05|Project was renamed, now it is an official elementary OS application
+devel/p5-Type-Tie|devel/p5-Type-Tiny|2022-10-09|Remove obsoleted port. Use devel/p5-Type-Tiny instead
+databases/py-alembic16|databases/py-alembic|2022-10-09|Remove obsoleted port. Use databases/py-alembic instead
+devel/py-openapi-spec-validator04|devel/py-openapi-spec-validator|2022-10-09|Remove obsoleted port. Use devel/py-openapi-spec-validator instead
+devel/py-openapi-schema-validator02|devel/py-openapi-schema-validator|2022-10-09|Remove obsoleted port. Use devel/py-openapi-schema-validator instead
+databases/rubygem-redis44|databases/rubygem-redis|2022-10-09|Remove obsoleted port. Use databases/rubygem-redis instead
+databases/rubygem-redis-actionpack52-rails61|databases/rubygem-redis-actionpack-rails61|2022-10-09|Remove obsoleted port. Use databases/rubygem-redis-actionpack-rails61 instead
+devel/rubygem-devise47-rails61|devel/rubygem-devise-rails61|2022-10-09|Remove obsoleted port. Use devel/rubygem-devise-rails61 instead
+devel/rubygem-flipper021|devel/rubygem-flipper|2022-10-09|Remove obsoleted port. Use devel/rubygem-flipper instead
+devel/rubygem-fugit12|devel/rubygem-fugit|2022-10-09|Remove obsoleted port. Use devel/rubygem-fugit instead
+devel/rubygem-json25|devel/rubygem-json|2022-10-09|Remove obsoleted port. Use devel/rubygem-json instead
+devel/rubygem-oj310|devel/rubygem-oj|2022-10-09|Remove obsoleted port. Use devel/rubygem-oj instead
+net/rubygem-omniauth-facebook4|net/rubygem-omniauth-facebook|2022-10-09|Remove obsoleted port. Use net/rubygem-omniauth-facebook instead
+www/rubygem-cal-heatmap-rails-rails4|www/rubygem-cal-heatmap-rails|2022-10-09|Remove obsoleted port. Use www/rubygem-cal-heatmap-rails instead
+www/rubygem-d3_rails-rails4|www/rubygem-d3_rails|2022-10-09|Remove obsoleted port. Use www/rubygem-d3_rails instead
+www/rubygem-jwt21|www/rubygem-jwt|2022-10-09|Remove obsoleted port. Use www/rubygem-jwt instead
+www/rubygem-protocol-rack01|www/rubygem-protocol-rack|2022-10-09|Remove obsoleted port. Use www/rubygem-protocol-rack instead
+www/rubygem-rack223|www/rubygem-rack|2022-10-09|Remove obsoleted port. Use www/rubygem-rack instead
+databases/pymongo|databases/py-pymongo|2022-10-09|Add the py- prefix which all Python ports should have

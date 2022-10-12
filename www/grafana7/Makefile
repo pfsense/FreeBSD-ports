@@ -1,7 +1,7 @@
 PORTNAME=	grafana
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.5.15
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES+=	https://dl.grafana.com/oss/release/:public \
 		https://gitea.com/xorm/builder/archive/:builder \
@@ -19,6 +19,9 @@ WWW=		https://github.com/grafana/grafana
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	EOLed upstream, unfixed vulnerabilities
+EXPIRATION_DATE=	2022-11-06
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 

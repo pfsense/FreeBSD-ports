@@ -1,8 +1,8 @@
 PORTNAME=	mgba
-DISTVERSION=	0.9.3
+DISTVERSION=	0.10.0
 CATEGORIES=	emulators
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Game Boy Advance (GBA) emulator/debugger
 WWW=		https://mgba.io
 

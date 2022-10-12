@@ -22,6 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}llvmlite>=0.31.0:devel/py-llvmlite@${PY_FLAV
 USES=		compiler:c++11-lang python:3.6+ fortran localbase
 USE_PYTHON=	distutils concurrent autoplist unittest
 
+MAKE_ENV=	NUMBA_DISABLE_TBB=1 # workaround for: not compatible with onetbb-2021.6.0, see https://github.com/numba/numba/issues/8487
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 TEST_WRKSRC=	${WRKSRC}/numba/tests
 

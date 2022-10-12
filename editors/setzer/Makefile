@@ -1,10 +1,10 @@
 PORTNAME=	setzer
 DISTVERSIONPREFIX=v
 DISTVERSION=	0.4.1
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	editors
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LaTeX editor written in Python with Gtk
 WWW=		https://www.cvfosammmm.org/setzer/
 

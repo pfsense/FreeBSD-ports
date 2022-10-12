@@ -1,21 +1,17 @@
-# Please don't remove commented lines. They will become relevant once
-# the first official patch is released.
-
 PORTNAME=		bash
-#PATCHLEVEL=		0
-#PORTVERSION=		5.2.${PATCHLEVEL:S/^0//g}
-PORTVERSION=		5.2
-PORTREVISION=		3
+PATCHLEVEL=		2
+PORTVERSION=		5.2.${PATCHLEVEL:S/^0//g}
+PORTREVISION=		1
 CATEGORIES=		shells
 MASTER_SITES=		GNU
-#DISTNAME=		${PORTNAME}-${PORTVERSION:R}
+DISTNAME=		${PORTNAME}-${PORTVERSION:R}
 DIST_SUBDIR=		${PORTNAME}
 EXTRACT_ONLY=		${DISTNAME}${EXTRACT_SUFX}
 
-#PATCH_SITES=		GNU/${PORTNAME}/${DISTNAME}-patches/
-#PATCHFILES!=		/usr/bin/jot -s " " -w \
-#			${PORTNAME}${PORTVERSION:R:S/.//g}-%03d \
-#			${PATCHLEVEL} 1 ${PATCHLEVEL}
+PATCH_SITES=		GNU/${PORTNAME}/${DISTNAME}-patches/
+PATCHFILES!=		/usr/bin/jot -s " " -w \
+			${PORTNAME}${PORTVERSION:R:S/.//g}-%03d \
+			${PATCHLEVEL} 1 ${PATCHLEVEL}
 
 MAINTAINER=		ehaupt@FreeBSD.org
 COMMENT=		GNU Project's Bourne Again SHell
@@ -55,7 +51,7 @@ HELP_CONFIGURE_ENABLE=	help-builtin
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 
-PORTS_READLINE_BROKEN=	ld: error: undefined symbol: rl_trim_arg_from_keyseq
+PORTS_READLINE_BROKEN=	needs a newer version of devel/readline, disable PORTS_READLINE and retry
 PORTS_READLINE_USES=	readline
 PORTS_READLINE_CONFIGURE_WITH=	installed-readline
 
@@ -119,15 +115,15 @@ post-install:
 regress: build
 	cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} test
 
-#ckp:
-#	${MAKE} -DPATCH_DEBUG clean patch
+ckp:
+	${MAKE} -DPATCH_DEBUG clean patch
 
 # requires ftp/ncftp3
-#cklatest:
-#	@${ECHO} -n "Currently at: "
-#	@${MAKE} -V PATCHLEVEL
-#	-ncftpls \
-#		${PATCH_SITES:Mftp*:Ox:[1]} \
-#		| fgrep -v .sig | ${SORT} | ${TAIL}
+cklatest:
+	@${ECHO} -n "Currently at: "
+	@${MAKE} -V PATCHLEVEL
+	-ncftpls \
+		${PATCH_SITES:Mftp*:Ox:[1]} \
+		| fgrep -v .sig | ${SORT} | ${TAIL}
 
 .include <bsd.port.mk>

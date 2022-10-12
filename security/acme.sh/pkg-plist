@@ -1,5 +1,6 @@
+%%PORTEXAMPLES%%@sample %%EXAMPLESDIR%%/acme.sh-cron.d etc/cron.d/acme.sh
+%%PORTEXAMPLES%%@sample etc/newsyslog.d/acme.sh.sample
 sbin/acme.sh
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/acme.sh.conf
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/README.md
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/apache.sh
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/deploy/cleverreach.sh
@@ -191,6 +192,7 @@ sbin/acme.sh
 %%PORTEXAMPLES%%/var/db/acme/.acme.sh/deploy
 %%PORTEXAMPLES%%/var/db/acme/.acme.sh/dnsapi
 %%PORTEXAMPLES%%/var/db/acme/.acme.sh/notify
+@dir etc/cron.d
 @dir(acme,acme,0750) /var/db/acme/.acme.sh
 @dir(acme,acme,0750) /var/db/acme/certs
 @dir(acme,acme,0750) /var/db/acme

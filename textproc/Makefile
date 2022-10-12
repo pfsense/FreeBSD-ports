@@ -200,6 +200,7 @@
     SUBDIR += fcitx5-gtk
     SUBDIR += fcitx5-lua
     SUBDIR += fcitx5-qt
+    SUBDIR += fcitx5-qt-common
     SUBDIR += fex
     SUBDIR += ffe
     SUBDIR += fi-aspell
@@ -1739,6 +1740,7 @@
     SUBDIR += rubygem-liquid4
     SUBDIR += rubygem-loggability
     SUBDIR += rubygem-loofah
+    SUBDIR += rubygem-loofah218
     SUBDIR += rubygem-ltsv
     SUBDIR += rubygem-markaby
     SUBDIR += rubygem-mdl

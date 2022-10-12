@@ -1,6 +1,6 @@
 PORTNAME=	yosys
 DISTVERSIONPREFIX=	yosys-
-DISTVERSION=	0.21
+DISTVERSION=	0.22
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -32,7 +32,7 @@ BINARY_ALIAS=	python3=${PYTHON_CMD} tclsh=${TCLSH}
 MAKE_ARGS=	ABCEXTERNAL=abc
 MAKE_ENV=	MAKE=${GMAKE}
 
-TEST_TARGET=	test
+TEST_TARGET=	test # some tests fail, see https://github.com/YosysHQ/yosys/issues/3505
 
 post-patch:
 	${REINPLACE_CMD} -e '/^CXX =/d; s/^LD = .*/LD = $$(CXX)/' \

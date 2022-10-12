@@ -1,3 +1,369 @@
+  <vuln vid="127674c6-4a27-11ed-9f93-002b67dfc673">
+    <topic>roundcube-thunderbird_labels -- RCE with custom label titles</topic>
+    <affects>
+      <package>
+	<name>roundcube-thunderbird_labels</name>
+	<range><le>1.4.12</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>
+	Remote code execution vulnerability in
+	roundcube-thunderbird_labels when tb_label_modify_labels is enabled.
+
+	Workaround:
+
+	If you cannot upgrade to roundcube-thunderbird_labels-1.4.13 disable the
+	tb_label_modify_labels config option.
+	</p>
+	<blockquote cite="https://github.com/mike-kfed/roundcube-thunderbird_labels/security/advisories/GHSA-wp6h-wgxq-v949">
+	  <p>.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>No known CVE</cvename>
+      <url>https://github.com/advisories?query=cwe%3A94</url>
+    </references>
+    <dates>
+      <discovery>2022-10-10</discovery>
+      <entry>2022-10-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7cb12ee0-4a13-11ed-8ad9-3065ec8fd3ec">
+    <topic>chromium -- mulitple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>106.0.5249.119</lt></range>
+      </package>
+      <package>
+	<name>ungoogled-chromium</name>
+	<range><lt>106.0.5249.119</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2022/10/stable-channel-update-for-desktop_11.html">
+	  <p>This release contains 6 security fixes:</p>
+	  <ul>
+	    <li>[1364604] High CVE-2022-3445: Use after free in Skia. Reported by Nan Wang (@eternalsakura13) and Yong Liu of 360 Vulnerability Research Institute on 2022-09-16</li>
+	    <li>[1368076] High CVE-2022-3446: Heap buffer overflow in WebSQL. Reported by Kaijie Xu (@kaijieguigui) on 2022-09-26</li>
+	    <li>[1366582] High CVE-2022-3447: Inappropriate implementation in Custom Tabs. Reported by Narendra Bhati of Suma Soft Pvt. Ltd. Pune (India) on 2022-09-22</li>
+	    <li>[1363040] High CVE-2022-3448: Use after free in Permissions API. Reported by raven at KunLun lab on 2022-09-13</li>
+	    <li>[1364662] High CVE-2022-3449: Use after free in Safe Browsing. Reported by asnine on 2022-09-17</li>
+	    <li>[1369882] High CVE-2022-3450: Use after free in Peer Connection. Reported by Anonymous on 2022-09-30</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-3445</cvename>
+      <cvename>CVE-2022-3446</cvename>
+      <cvename>CVE-2022-3447</cvename>
+      <cvename>CVE-2022-3448</cvename>
+      <cvename>CVE-2022-3449</cvename>
+      <cvename>CVE-2022-3450</cvename>
+      <url>https://chromereleases.googleblog.com/2022/10/stable-channel-update-for-desktop_11.html</url>
+    </references>
+    <dates>
+      <discovery>2022-10-11</discovery>
+      <entry>2022-10-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f9140ad4-4920-11ed-a07e-080027f5fec9">
+    <topic>samba -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>samba412</name>
+	<range><lt>4.12.16</lt></range>
+      </package>
+      <package>
+	<name>samba413</name>
+	<range><lt>4.13.17_2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Samba Team reports:</p>
+	<blockquote cite="https://lists.samba.org/archive/samba-announce/2022/000609.html">
+	  <dl>
+	    <dt>CVE-2022-2031</dt>
+	    <dd>
+	      The KDC and the kpasswd service share a single account
+	      and set of keys, allowing them to decrypt each other's
+	      tickets. A user who has been requested to change their
+	      password can exploit this to obtain and use tickets to
+	      other services.
+	    </dd>
+	    <dt>CVE-2022-32744</dt>
+	    <dd>
+	      The KDC accepts kpasswd requests encrypted with any key
+	      known to it. By encrypting forged kpasswd requests with
+	      its own key, a user can change the passwords of other
+	      users, enabling full domain takeover.
+	    </dd>
+	    <dt>CVE-2022-32745</dt>
+	    <dd>
+	      Samba AD users can cause the server to access
+	      uninitialised data with an LDAP add or modify request,
+	      usually resulting in a segmentation fault.
+	    </dd>
+	    <dt>CVE-2022-32746</dt>
+	    <dd>
+	      The AD DC database audit logging module can be made to
+	      access LDAP message values that have been freed by a
+	      preceding database module, resulting in a
+	      use-after-free. This is only possible when modifying
+	      certain privileged attributes, such as
+	      userAccountControl.
+	    </dd>
+	    <dt>CVE-2022-32742</dt>
+	    <dd>
+	      SMB1 Client with write access to a share can cause
+	      server memory contents to be written into a file or
+	      printer.
+	    </dd>
+	  </dl>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2031</cvename>
+      <cvename>CVE-2022-32744</cvename>
+      <cvename>CVE-2022-32745</cvename>
+      <cvename>CVE-2022-32746</cvename>
+      <cvename>CVE-2022-32742</cvename>
+      <url>https://lists.samba.org/archive/samba-announce/2022/000609.html</url>
+      <url>https://www.samba.org/samba/security/CVE-2022-2031.html</url>
+      <url>https://www.samba.org/samba/security/CVE-2022-32744.html</url>
+      <url>https://www.samba.org/samba/security/CVE-2022-32745.html</url>
+      <url>https://www.samba.org/samba/security/CVE-2022-32746.html</url>
+      <url>https://www.samba.org/samba/security/CVE-2022-32742.html</url>
+    </references>
+    <dates>
+      <discovery>2022-07-27</discovery>
+      <entry>2022-10-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0ae56f3e-488c-11ed-bb31-b42e99a1b9c3">
+    <topic>strongswan -- DOS attack vulnerability</topic>
+    <affects>
+      <package>
+	<name>strongswan</name>
+	<range><lt>5.9.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Lahav Schlesinger reported a bug related to online
+	  certificate revocation checking that can lead to a
+	  denial-of-service attack</p>
+	<blockquote cite="https://www.strongswan.org/blog/2022/10/03/strongswan-vulnerability-(cve-2022-40617).html">
+	  <p>.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-40617</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=2022-40617</url>
+    </references>
+    <dates>
+      <discovery>2022-10-03</discovery>
+      <entry>2022-10-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e4133d8b-ab33-451a-bc68-3719de73d54a">
+    <topic>routinator -- potential DOS attack</topic>
+    <affects>
+      <package>
+	<name>routinator</name>
+	<range><ge>0.9.0</ge><lt>0.11.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>
+	 Due to a mistake in error handling, data in RRDP snapshot and delta files
+	 that isn’t correctly base 64 encoded is treated as a fatal error and causes
+	 Routinator to exit.
+
+	 Worst case impact of this vulnerability is denial of service for the RPKI
+	 data that Routinator provides to routers. This may stop your network from
+	 validating route origins based on RPKI data. This vulnerability does not
+	 allow an attacker to manipulate RPKI data. We are not aware of exploitation
+	 of this vulnerability at this point in time.
+
+	 Starting with release 0.11.3, Routinator handles encoding errors by rejecting
+	 the snapshot or delta file and continuing with validation. In case of an
+	 invalid delta file, it will try using the snapshot instead. If a snapshot file
+	 is invalid, the update of the repository will fail and an update through rsync
+	 is attempted.
+	 </p>
+	<blockquote cite="https://www.cvedetails.com/cve/CVE-2022-3029/">
+	  <p>.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-3029</cvename>
+      <url>https://nlnetlabs.nl/downloads/routinator/CVE-2022-3029.txt</url>
+    </references>
+    <dates>
+      <discovery>2022-10-06</discovery>
+      <entry>2022-10-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f4f15051-4574-11ed-81a1-080027881239">
+    <topic>Django -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py37-django32</name>
+	<name>py38-django32</name>
+	<name>py39-django32</name>
+	<name>py310-django32</name>
+	<range><lt>3.2.16</lt></range>
+      </package>
+      <package>
+	<name>py38-django40</name>
+	<name>py39-django40</name>
+	<name>py310-django40</name>
+	<range><lt>4.0.8</lt></range>
+      </package>
+      <package>
+	<name>py38-django41</name>
+	<name>py39-django41</name>
+	<name>py310-django41</name>
+	<range><lt>4.1.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Django reports:</p>
+	<blockquote cite="https://www.djangoproject.com/weblog/2022/oct/04/security-releases/">
+	  <p>CVE-2022-41323: Potential denial-of-service vulnerability in
+	    internationalized URLs.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-41323</cvename>
+      <url>https://www.djangoproject.com/weblog/2022/oct/04/security-releases/</url>
+    </references>
+    <dates>
+      <discovery>2022-09-23</discovery>
+      <entry>2022-10-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c2a89e8f-44e9-11ed-9215-00e081b7aa2d">
+    <topic>jenkins -- XSS vulnerability</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.370</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2022-09-21/">
+	  <h1>Description</h1>
+	  <h5>(High) SECURITY-2886 / CVE-2022-41224</h5>
+	  <p>Jenkins 2.367 through 2.369 (both inclusive) does not escape
+	    tooltips of the l:helpIcon UI component used for some help icons on
+	    the Jenkins web UI.</p>
+	  <p>This results in a stored cross-site scripting (XSS) vulnerability
+	    exploitable by attackers able to control tooltips for this
+	    component.</p>
+	  <p>Jenkins 2.370 escapes tooltips of the l:helpIcon UI component.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-41224</cvename>
+      <url>https://www.jenkins.io/security/advisory/2022-09-21/</url>
+    </references>
+    <dates>
+      <discovery>2022-09-21</discovery>
+      <entry>2022-10-05</entry>
+      <modified>2022-10-07</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="854c2afb-4424-11ed-af97-adcabf310f9b">
+    <topic>go -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>go118</name>
+	<range><lt>1.18.7</lt></range>
+      </package>
+      <package>
+	<name>go119</name>
+	<range><lt>1.19.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://go.dev/issue/54853">
+	  <p>archive/tar: unbounded memory consumption when reading
+	    headers</p>
+	  <p>Reader.Read did not set a limit on the maximum size of
+	    file headers. A maliciously crafted archive could cause
+	    Read to allocate unbounded amounts of memory, potentially
+	    causing resource exhaustion or panics. Reader.Read now
+	    limits the maximum size of header blocks to 1 MiB.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/54663">
+	  <p>net/http/httputil: ReverseProxy should not forward
+	    unparseable query parameters</p>
+	  <p>Requests forwarded by ReverseProxy included the raw
+	    query parameters from the inbound request, including
+	    unparseable parameters rejected by net/http. This could
+	    permit query parameter smuggling when a Go proxy
+	    forwards a parameter with an unparseable value.</p>
+	  <p>ReverseProxy will now sanitize the query parameters in
+	    the forwarded query when the outbound request's Form
+	    field is set after the ReverseProxy.Director function
+	    returns, indicating that the proxy has parsed the query
+	    parameters. Proxies which do not parse query parameters
+	    continue to forward the original query parameters
+	    unchanged.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/55949">
+	  <p>regexp/syntax: limit memory used by parsing regexps</p>
+	  <p>The parsed regexp representation is linear in the size
+	    of the input, but in some cases the constant factor can be
+	    as high as 40,000, making relatively small regexps consume
+	    much larger amounts of memory.</p>
+	  <p>Each regexp being parsed is now limited to a 256 MB
+	    memory footprint. Regular expressions whose
+	    representation would use more space than that are now
+	    rejected. Normal use of regular expressions is
+	    unaffected.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-2879</cvename>
+      <cvename>CVE-2022-2880</cvename>
+      <cvename>CVE-2022-41715</cvename>
+      <url>https://groups.google.com/g/golang-announce/c/xtuG5faxtaU/m/jEhlI_5WBgAJ</url>
+    </references>
+    <dates>
+      <discovery>2022-10-04</discovery>
+      <entry>2022-10-04</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="d487d4fc-43a8-11ed-8b01-b42e991fc52e">
     <topic>zydis -- heap buffer overflow</topic>
     <affects>

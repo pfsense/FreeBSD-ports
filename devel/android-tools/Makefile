@@ -1,6 +1,6 @@
 PORTNAME=	android-tools
 PORTVERSION=	31.0.3p2.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GH
 
@@ -10,6 +10,8 @@ WWW=		https://github.com/neelchauhan/freebsd-android-tools
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_aarch64=	ld: error: undefined symbol: OPENSSL_cpuid_setup
 
 LIB_DEPENDS=	libbrotlicommon.so:archivers/brotli \
 		libgmock.so:devel/googletest \
