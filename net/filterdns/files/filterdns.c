@@ -80,14 +80,20 @@ action_to_string(int type)
 static void *
 check_action(void *arg)
 {
-	int error, update;
+	int error = 0, update = 0;
 	struct action *act;
 	struct _addr_entry *ent, *enttmp;
 
+	pthread_rwlock_rdlock(&main_lock);
 	act = (struct action *)arg;
 	act->state = THR_RUNNING;
 	for (;;) {
+		pthread_rwlock_unlock(&main_lock);
 		sem_wait(&act->sem);
+		if (act == NULL || act->host == NULL) {
+			break;
+		}
+		pthread_rwlock_rdlock(&main_lock);
 		if (debug >= 6) {
 			LOG(LOG_WARNING,
 			    "\tAwaking from the sleep for type: %s %s%s%s%s%s%shostname: %s",
@@ -102,40 +108,37 @@ check_action(void *arg)
 		}
 		if (act->flags & ACT_FORCE)
 			act->flags &= ~ACT_FORCE;
-		if (act->host != NULL) {
-			TAILQ_FOREACH(ent, &act->rnh, entry) {
-				if (ent->flags & ADDR_STATIC)
-					continue;
-				ent->flags |= ADDR_OLD;
+		TAILQ_FOREACH(ent, &act->rnh, entry) {
+			if (ent->flags & ADDR_STATIC) {
+				continue;
 			}
+			ent->flags |= ADDR_OLD;
+		}
 
-			/* Copy... */
-			TAILQ_FOREACH(ent, &act->host->rnh, entry) {
-				addr_add(&act->rnh, NULL, ent->addr, (ent->flags & ADDR_STATIC));
-			}
+		/* Copy... */
+		TAILQ_FOREACH(ent, &act->host->rnh, entry) {
+			addr_add(&act->rnh, NULL, ent->addr, (ent->flags & ADDR_STATIC));
+		}
 
-			update = 0;
-			TAILQ_FOREACH_SAFE(ent, &act->rnh, entry, enttmp) {
-				if (ent->flags & ADDR_NEW) {
-					ent->flags &= ~ADDR_NEW;
-					update++;
-				}
-				if (ent->flags & ADDR_OLD) {
-					addr_del(&act->rnh, NULL, ent);
-					update++;
-				}
+		update = 0;
+		TAILQ_FOREACH_SAFE(ent, &act->rnh, entry, enttmp) {
+			if (ent->flags & ADDR_NEW) {
+				ent->flags &= ~ADDR_NEW;
+				update++;
 			}
-			if (update > 0 && act->tablename != NULL) {
-				error = table_update(act);
-				if (debug >= 4)
-					LOG(LOG_WARNING,
-					    "\tUpdated %s table %s anchor %s host: %s error: %d",
-					    action_to_string(act->type),
-					    act->tablename, act->anchor, act->hostname,
-					    error);
+			if (ent->flags & ADDR_OLD) {
+				addr_del(&act->rnh, NULL, ent);
+				update++;
 			}
-		} else {
-			break;
+		}
+		if (update > 0 && act->tablename != NULL) {
+			error = table_update(act);
+			if (debug >= 4)
+				LOG(LOG_WARNING,
+				    "\tUpdated %s table %s anchor %s host: %s error: %d",
+				    action_to_string(act->type),
+				    act->tablename, act->anchor, act->hostname,
+				    error);
 		}
 
 		if (act->cmd != NULL) {
@@ -146,6 +149,7 @@ check_action(void *arg)
 				    act->cmd, error, act->hostname);
 		}
 	}
+	pthread_rwlock_unlock(&main_lock);
 	act->state = THR_DYING;
 	sem_post(&act->exit_sem);
 	act->state = THR_STOPPED;
@@ -470,7 +474,7 @@ host_dns(struct thread_host *thr)
 {
 	struct addrinfo hints, *res0, *res;
 	char buffer[INET6_ADDRSTRLEN];
-	int error;
+	int error = 0;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
@@ -656,8 +660,6 @@ out:
 	addr_cleanup(&thr->rnh, thr->hostname);
 	if (thr->hostname != NULL)
 		free(thr->hostname);
-	free(thr);
-
 	thr->state = THR_STOPPED;
 	return (NULL);
 }
@@ -867,14 +869,14 @@ filterdns_usage(void)
 int
 main(int argc, char *argv[])
 {
-	FILE *pidfd;
-	char *pidfile;
-	int ch, foreground;
+	FILE *pidfd = NULL;
+	char *pidfile = NULL;
+	int ch = 0, foreground = 0;
 	pthread_t merge_thr;
-	sig_t sig_error;
-	struct action *act;
-	struct thread_host *thr;
-	uid_t uid;
+	sig_t sig_error = 0;
+	struct action *act = NULL;
+	struct thread_host *thr = NULL;
+	uid_t uid = 0;
 
 	/*
 	 * Check if filterdns is running as root.  root access is needed later
@@ -884,8 +886,6 @@ main(int argc, char *argv[])
 		errx(1, "filterdns can only run as root (uid=%d).", uid);
 
 	file = NULL;
-	pidfile = NULL;
-	foreground = 0;
 	while ((ch = getopt(argc, argv, "c:d:fi:p:v")) != -1) {
 		switch (ch) {
 		case 'c':

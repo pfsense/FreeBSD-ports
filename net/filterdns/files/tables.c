@@ -47,7 +47,7 @@ static int pf_tableentry(struct action *, struct sockaddr *, int);
 static int
 table_entry(struct action *act, struct _addr_entry *addr, int action)
 {
-	int error;
+	int error = 0;
 
 	switch (act->type) {
 	case IPFW_TYPE:
@@ -79,7 +79,7 @@ int
 table_update(struct action *act)
 {
 	char buffer[INET6_ADDRSTRLEN];
-	int add, del, error;
+	int add = 0, del = 0, error = 0;
 	struct _addr_entry *ent, *enttmp;
 
 	TAILQ_FOREACH(ent, &act->tbl_rnh, entry) {
@@ -94,7 +94,6 @@ table_update(struct action *act)
 		    (ent->flags & ADDR_STATIC));
 	}
 
-	error = 0;
 	TAILQ_FOREACH_SAFE(ent, &act->tbl_rnh, entry,
 	    enttmp) {
 		add = del = 0;
@@ -105,7 +104,6 @@ table_update(struct action *act)
 		}
 		if (ent->flags & ADDR_OLD) {
 			error = table_del(act, ent);
-			addr_del(&act->tbl_rnh, NULL, ent);
 			del++;
 		}
 		if (debug >= 4 && (add > 0 || del > 0)) {
@@ -138,6 +136,11 @@ table_update(struct action *act)
 				    act->hostname, buffer);
 			}
 		}
+		/* deletion of addr from tbl_rnh is delayed so ent is still
+		 * valid for logging above */
+		if (del > 0) {
+			addr_del(&act->tbl_rnh, NULL, ent);
+		}
 	}
 
 	return (error);
@@ -146,10 +149,9 @@ table_update(struct action *act)
 int
 table_cleanup(struct action *act)
 {
-	int error;
+	int error = 0;
 	struct _addr_entry *ent, *enttmp;
 
-	error = 0;
 	TAILQ_FOREACH_SAFE(ent, &act->tbl_rnh, entry, enttmp) {
 		error = table_del(act, ent);
 		addr_del(&act->tbl_rnh, NULL, ent);
@@ -163,7 +165,7 @@ table_do_create(int s, ipfw_obj_header *oh, int pipe)
 {
 	char tbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_xtable_info)];
 	ipfw_xtable_info xi;
-	int error;
+	int error = 0;
 
 	memset(&xi, 0, sizeof(xi));
 	xi.type = IPFW_TABLE_ADDR;
@@ -223,7 +225,7 @@ ipfw_tableentry(struct action *act, struct sockaddr *addr, int action)
 {
 	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_ctlv) +
 	    sizeof(ipfw_obj_tentry)];
-	int error, retry;
+	int error = 0, retry = 0;
 	ipfw_obj_ctlv *ctlv;
 	ipfw_obj_header *oh;
 	ipfw_obj_ntlv *ntlv;
@@ -235,9 +237,6 @@ ipfw_tableentry(struct action *act, struct sockaddr *addr, int action)
 
 	retry = 3;
 	while (retry-- > 0) {
-
-		error = 0;
-
 		/* XXX - the socket will remain open between calls. */
 		if (s == -1)
 			s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
@@ -387,7 +386,7 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 	struct pfioc_table io;
 	struct pfr_table table;
 	struct pfr_addr pfaddr;
-	int error, retry;
+	int error = 0, retry = 3;
 	static int dev = -1;
 	unsigned long iocmd;
 
@@ -430,7 +429,6 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 	} else
 		return (-1);
 
-	retry = 3;
 	while (retry-- > 0) {
 
 		/* XXX - the fd will remain open between calls. */
