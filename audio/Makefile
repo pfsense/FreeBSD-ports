@@ -309,6 +309,7 @@
     SUBDIR += id3ren
     SUBDIR += id3tool
     SUBDIR += id3v2
+    SUBDIR += iir1
     SUBDIR += infamous-plugins-lv2
     SUBDIR += inscore
     SUBDIR += intersect-lv2
@@ -411,7 +412,6 @@
     SUBDIR += libsoxr
     SUBDIR += libspecbleach
     SUBDIR += libtremor
-    SUBDIR += libumidi
     SUBDIR += libvorbis
     SUBDIR += libworkman
     SUBDIR += libxmp
@@ -623,8 +623,8 @@
     SUBDIR += praat
     SUBDIR += pragha
     SUBDIR += prelude-lv2
-    SUBDIR += protracker
     SUBDIR += psindustrializer
+    SUBDIR += pt2-clone
     SUBDIR += pulseaudio
     SUBDIR += pulseaudio-module-sndio
     SUBDIR += pulseaudio-module-xrdp
