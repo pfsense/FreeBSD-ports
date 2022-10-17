@@ -482,11 +482,7 @@ function freeradius_users_resync($via_rpc = false) {
 	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradius']['config'])) {
-		$arrusers = $config['installedpackages']['freeradius']['config'];
-	} else {
-		$arrusers = array();
-	}
+	$arrausers = config_get_path('installedpackages/freeradius/config', []);
 
 	if (!empty($arrusers)) {
 		foreach ($arrusers as $users) {
@@ -808,14 +804,9 @@ EOD;
 
 
 function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false) {
-	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiusauthorizedmacs']['config'])) {
-		$arrmacs = $config['installedpackages']['freeradiusauthorizedmacs']['config'];
-	} else {
-		$arrmacs = array();
-	}
+	$arrmacs = config_get_path('installedpackages/freeradiusauthorizedmacs/config', []);
 
 	if (!empty($arrmacs)) {
 		foreach ($arrmacs as $macs) {
@@ -1088,14 +1079,9 @@ EOD;
 }
 
 function freeradius_clients_resync($restart_svc = true) {
-	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiusclients']['config'])) {
-		$arrclients = $config['installedpackages']['freeradiusclients']['config'];
-	} else {
-		$arrclients = array();
-	}
+	$arrclients = config_get_path('installedpackages/freeradiusclients/config', []);
 
 	if (!empty($arrclients)) {
 		foreach ($arrclients as $item) {
@@ -1718,14 +1704,9 @@ function freeradius_get_ca_crl() {
 }
 
 function freeradius_sqlconf_resync() {
-	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
-		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	} else {
-		$sqlconf = array();
-	}
+	$sqlconf = config_get_path('installedpackages/freeradiussqlconf/config', []);
 
 	// Variables: SQL DATABASE 1
 	$varsqlconfdatabase = ($sqlconf['varsqlconfdatabase'] ?: 'mysql');
@@ -1938,15 +1919,9 @@ EOD;
 }
 
 function freeradius_serverdefault_resync() {
-	global $config;
 	$conf = '';
 
-	// Get Variables from freeradiusmodulesldap.xml
-	if (is_array($config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
-		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
-	} else {
-		$arrmodulesldap = array();
-	}
+	$arrmodulesldap = config_get_path('installedpackages/freeradiusmodulesldap/config', []);
 
 	// failover/loadbalancing mode
 	$varmodulesldap2failover = ($arrmodulesldap['varmodulesldap2failover'] ?: 'redundant');
@@ -2008,13 +1983,8 @@ EOD;
 		@unlink_if_exists(FREERADIUS_MODSENABLED . '/ldap');
 	}
 
+	$sqlconf = config_get_path('installedpackages/freeradiussqlconf/config', []);
 
-	// Get Variables from freeradiussqlconf.xml for DATABASE 1
-	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
-		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	} else {
-		$sqlconf = array();
-	}
 	$varsqlconfenableauthorize = ($sqlconf['varsqlconfenableauthorize'] ?: 'Disable');
 	$varsqlconfenableaccounting = ($sqlconf['varsqlconfenableaccounting'] ?: 'Disable');
 	$varsqlconfenablesession = ($sqlconf['varsqlconfenablesession'] ?: 'Disable');
@@ -2138,13 +2108,7 @@ EOD;
 		$varsqlconfpostauthtypereject = '# sql';
 	}
 
-	// Changing authorize section for plain mac auth
-	// Variables: If not using 802.1x, mac address must be known
-	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
-		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	} else {
-		$varsettings = array();
-	}
+	$varsettings = config_get_path('installedpackages/freeradiussettings/config', []);
 
 	// If unchecked we need the normal EAP section.
 	if (!$varsettings['varsettingsenablemacauth']) {
@@ -2193,11 +2157,7 @@ EOD;
 	// Deletes virtual-server coa by default. Will be re-enabled if there is an interface-type "coa"
 	unlink_if_exists(FREERADIUS_SITESENABLED . "/coa");
 
-	if (is_array($config['installedpackages']['freeradiusinterfaces']['config'])) {
-		$arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
-	} else {
-		$arrinterfaces = array();
-	}
+	$arrinterfaces = config_get_path('installedpackages/freeradiusinterfaces/config', []);
 
 	if (!empty($arrinterfaces)) {
 		foreach ($arrinterfaces as $item) {
@@ -2838,11 +2798,7 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	$raddb = FREERADIUS_RADDB;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
-		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
-	} else {
-		$arrmodulesldap = array();
-	}
+	$arrmodulesldap = config_get_path('installedpackages/freeradiusmodulesldap/config', []);
 
 	// Enable and Disable LDAP for "authorize" and "authenticate" will be done in freeradius_serverdefault_resync()
 	// redundatnt-load-balancing will there be done, too
@@ -3351,11 +3307,7 @@ function freeradius_plainmacauth_resync() {
 	$conf = '';
 
 	// Variables: If not using 802.1x, mac address must be known
-	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
-		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	} else {
-		$varsettings = array();
-	}
+	$varsettings = config_get_path('installedpackages/freeradiussettings/config', []);
 
 	// defining variables with filename path
 	$filemodulesfiles = FREERADIUS_MODSENABLED . '/files';
@@ -3440,11 +3392,7 @@ function freeradius_motp_resync() {
 	global $config, $bash_path;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
-		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	} else {
-		$varsettings = array();
-	}
+	$varsettings = config_get_path('installedpackages/freeradiussettings/config', []);
 
 	$varsettingsmotptimespan = ($varsettings['varsettingsmotptimespan'] ?: '2');
 	$varsettingsmotptimespanbeforeafter = $varsettingsmotptimespan + $varsettingsmotptimespan;

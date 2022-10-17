@@ -50,7 +50,7 @@ if ($_REQUEST['file'] != "") {
 	return;
 }
 
-$pgtitle = array(gettext("Package"), gettext("FreeRADIUS"), gettext("View Configuration"));
+$pgtitle = array(gettext("Services"), gettext("FreeRADIUS"), gettext("View Configuration"));
 require("head.inc");
 
 $tab_array = array();
@@ -62,8 +62,8 @@ $tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=freeradiusse
 $tab_array[] = array(gettext("EAP"), false, "/pkg_edit.php?xml=freeradiuseapconf.xml&id=0");
 $tab_array[] = array(gettext("SQL"), false, "/pkg_edit.php?xml=freeradiussqlconf.xml&id=0");
 $tab_array[] = array(gettext("LDAP"), false, "/pkg_edit.php?xml=freeradiusmodulesldap.xml&id=0");
-$tab_array[] = array(gettext("View config"), true, "/freeradius_view_config.php");
-$tab_array[] = array(gettext("XMLRPC Sync"), false, "/pkg_edit.php?xml=freeradiussync.xml&amp;id=0");
+$tab_array[] = array(gettext("View Config"), true, "/freeradius_view_config.php");
+$tab_array[] = array(gettext("XMLRPC Sync"), false, "/pkg_edit.php?xml=freeradiussync.xml");
 display_top_tabs($tab_array);
 
 if ($savemsg) {

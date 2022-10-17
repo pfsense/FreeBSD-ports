@@ -30,7 +30,7 @@
  */
 ]]>	</copyright>
 	<name>freeradiusinterfaces</name>
-	<title>FreeRADIUS: Interfaces</title>
+	<title>Services/FreeRADIUS</title>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<tabs>
 		<tab>
@@ -52,27 +52,27 @@
 		</tab>
 		<tab>
 			<text>Settings</text>
-			<url>/pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussettings.xml</url>
 		</tab>
 		<tab>
 			<text>EAP</text>
-			<url>/pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiuseapconf.xml</url>
 		</tab>
 		<tab>
 			<text>SQL</text>
-			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussqlconf.xml</url>
 		</tab>
 		<tab>
 			<text>LDAP</text>
-			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml</url>
 		</tab>
 		<tab>
-			<text>View config</text>
+			<text>View Config</text>
 			<url>/freeradius_view_config.php</url>
 		</tab>
 		<tab>
 			<text>XMLRPC Sync</text>
-			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=freeradiussync.xml</url>
 		</tab>
 	</tabs>
 	<adddeleteeditpagefields>
