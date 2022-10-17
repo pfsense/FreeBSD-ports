@@ -89,9 +89,9 @@ display_top_tabs($tab_array);
 						<td><?= htmlspecialchars($ent['who']) ?></td>
 						<td><?= htmlspecialchars($ent['command']) ?></td>
 						<td>
-							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
-							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa fa-clone" alt="copy"></i></a>
-							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
+							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit" title="<?=gettext('Edit this job')?>"></i></a>
+							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa fa-clone" alt="copy" title="<?=gettext('Copy this job')?>"></i></a>
+							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete" title="<?=gettext('Delete this job')?>"></i></a>
 						</td>
 					</tr>
 	<?php
