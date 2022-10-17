@@ -453,8 +453,7 @@ $useaddrlist = array(
 	"serverhostname" => "Installation hostname"
 );
 
-if (is_array($config['dyndnses']['dyndns'])) {
-	foreach ($config['dyndnses']['dyndns'] as $ddns) {
+	foreach (config_get_path('dyndnses/dyndns', []) as $ddns) {
 		if (in_array($ddns['type'], $dyndns_split_domain_types)) {
 			$useaddrlist[$ddns["host"] . '.' . $ddns["domainname"]] = $ddns["host"] . '.' . $ddns["domainname"];
 		} else {
