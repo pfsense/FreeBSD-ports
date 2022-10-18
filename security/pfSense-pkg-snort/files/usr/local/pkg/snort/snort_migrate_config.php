@@ -151,11 +151,11 @@ if (!config_path_enabled('installedpackages/snortglobal', 'sid_list_migration') 
 	// Set a flag to show one-time migration is completed.
 	// We can increment this flag in later versions if we
 	// need to import additional files as SID_MGMT_LISTS.
-	config_set_path('installedpackages/snortglobal/sid_list_migration', "2");
+	config_set_path('installedpackages/snortglobal/sid_list_migration', '2');
 	$updated_cfg = true;
 	unset($a_list);
 }
-elseif (config_get_path('installedpackages/snortglobal/sid_list_migration', "0") < "2") {
+elseif (config_get_path('installedpackages/snortglobal/sid_list_migration', '0') < '2') {
 
 	// Import dropsid-sample.conf and rejectsid-sample.conf
 	// files if missing from the SID_MGMT_LIST array.
@@ -178,7 +178,7 @@ elseif (config_get_path('installedpackages/snortglobal/sid_list_migration', "0")
 	config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
 
 	// Set a flag to show this one-time migration is completed
-	config_set_path('installedpackages/snortglobal/sid_list_migration', "2");
+	config_set_path('installedpackages/snortglobal/sid_list_migration', '2');
 	$updated_cfg = true;
 	unset($a_list);
 }
@@ -833,4 +833,5 @@ else {
 	syslog(LOG_NOTICE, "[Snort] Configuration version is current...");
 }
 
+return true;
 ?>

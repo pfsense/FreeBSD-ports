@@ -108,11 +108,11 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 
 	/* Do any required settings migration for new configurations */
 	update_status(gettext("Migrating settings to new configuration..."));
-	include('/usr/local/pkg/snort/snort_migrate_config.php');
+	include '/usr/local/pkg/snort/snort_migrate_config.php';
 	update_status(gettext(" done.") . "\n");
 	syslog(LOG_NOTICE, gettext("[Snort] Downloading and updating configured rule sets."));
 	update_status(gettext("Downloading configured rule sets. This may take some time...") . "\n");
-	include('/usr/local/pkg/snort/snort_check_for_rule_updates.php');
+	include '/usr/local/pkg/snort/snort_check_for_rule_updates.php';
 	update_status(gettext("Finished downloading and installing configured rules.") . "\n");
 	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
@@ -137,13 +137,13 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 
 		// Pull in the PHP code that generates the snort.conf file
 		// variables that will be substituted further down below.
-		include("/usr/local/pkg/snort/snort_generate_conf.php");
+		include '/usr/local/pkg/snort/snort_generate_conf.php';
 
 		// Pull in the boilerplate template for the snort.conf
 		// configuration file.  The contents of the template along
 		// with substituted variables are stored in $snort_conf_text
 		// (which is defined in the included file).
-		include("/usr/local/pkg/snort/snort_conf_template.inc");
+		include '/usr/local/pkg/snort/snort_conf_template.inc';
 
 		// Now write out the conf file using $snort_conf_text contents
 		@file_put_contents("{$snortcfgdir}/snort.conf", $snort_conf_text); 
