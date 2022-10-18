@@ -412,45 +412,27 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 	// action lists.
 	switch ($action) {
 		case "action_default":
-			if (array_get_path($alertsid, "{$gid}/{$sid}")) {
-				array_del_path($alertsid, "{$gid}/{$sid}");
-			}
-			if (array_get_path($dropsid, "{$gid}/{$sid}")) {
-				array_del_path($dropsid, "{$gid}/{$sid}");
-			}
-			if (array_get_path($rejectsid, "{$gid}/{$sid}")) {
-				array_del_path($rejectsid, "{$gid}/{$sid}");
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_alert":
 			array_set_path($alertsid, "{$gid}/{$sid}", "alertsid");
-			if (array_get_path($dropsid, "{$gid}/{$sid}")) {
-				array_del_path($dropsid, "{$gid}/{$sid}");
-			}
-			if (array_get_path($rejectsid, "{$gid}/{$sid}")) {
-				array_del_path($rejectsid, "{$gid}/{$sid}");
-			}
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_drop":
 			array_set_path($dropsid, "{$gid}/{$sid}", "dropsid");
-			if (array_get_path($alertsid, "{$gid}/{$sid}")) {
-				array_del_path($alertsid, "{$gid}/{$sid}");
-			}
-			if (array_get_path($rejectsid, "{$gid}/{$sid}")) {
-				array_del_path($rejectsid, "{$gid}/{$sid}");
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_reject":
 			array_set_path($rejectsid, "{$gid}/{$sid}", "rejectsid");
-			if (array_get_path($alertsid, "{$gid}/{$sid}")) {
-				array_del_path($alertsid, "{$gid}/{$sid}");
-			}
-			if (array_get_path($dropsid, "{$gid}/{$sid}")) {
-				array_del_path($dropsid, "{$gid}/{$sid}");
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
 			break;
 
 		default:

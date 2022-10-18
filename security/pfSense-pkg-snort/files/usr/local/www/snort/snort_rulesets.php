@@ -95,7 +95,7 @@ if (!file_exists("{$snortdir}/rules/feodotracker.rules"))
 $inline_ips_mode = $a_nat['ips_mode'] == 'ips_mode_inline' ? true:false;
 
 // If a Snort Subscriber Rules policy is enabled and selected, remove all Snort
-// Subscriber rules from the configured rule sets to allow automatic selection.
+// Subscriber rules from the configured rule sets to allow automatic selection to control.
 if ($a_nat['ips_policy_enable'] == 'on') {
 	if (isset($a_nat['ips_policy'])) {
 		$disable_vrt_rules = "disabled";
@@ -171,18 +171,6 @@ if (isset($_POST["save"])) {
 
 if (isset($_POST['unselectall'])) {
 	$a_nat['rulesets'] = "";
-
-	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat['ips_policy_enable'] = 'on';
-		$a_nat['ips_policy'] = $_POST['ips_policy'];
-		$a_nat['ips_policy_mode'] = $_POST['ips_policy_mode'];
-	}
-	else {
-		$a_nat['ips_policy_enable'] = 'off';
-		unset($a_nat['ips_policy']);
-		unset($a_nat['ips_policy_mode']);
-	}
-
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
@@ -197,17 +185,6 @@ if (isset($_POST['unselectall'])) {
 }
 
 if (isset($_POST['selectall'])) {
-	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat['ips_policy_enable'] = 'on';
-		$a_nat['ips_policy'] = $_POST['ips_policy'];
-		$a_nat['ips_policy_mode'] = $_POST['ips_policy_mode'];
-	}
-	else {
-		$a_nat['ips_policy_enable'] = 'off';
-		unset($a_nat['ips_policy']);
-		unset($a_nat['ips_policy_mode']);
-	}
-
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];

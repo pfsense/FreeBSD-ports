@@ -33,7 +33,7 @@ $snort_starting = array();
 $a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 // Calculate the index of the next added Snort interface
-$id_gen = count(config_get_path('installedpackages/snortglobal/rule', []));
+$id_gen = count($a_nat);
 
 // Get list of configured firewall interfaces
 $ifaces = get_configured_interface_list();

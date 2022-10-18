@@ -212,7 +212,7 @@ function snort_download_file_url($url, $file_out) {
 
 		// Use the system proxy server setttings if configured
 		if (!empty(config_get_path('system/proxyurl'))) {
-			curl_setopt($ch, CURLOPT_PROXY, config_get_path('system;proxyurl'));
+			curl_setopt($ch, CURLOPT_PROXY, config_get_path('system/proxyurl'));
 			if (!empty(config_get_path('system/proxyport')))
 				curl_setopt($ch, CURLOPT_PROXYPORT, config_get_path('system/proxyport'));
 			if (!empty(config_get_path('system/proxyuser')) && !empty(config_get_path('system/proxypass'))) {
