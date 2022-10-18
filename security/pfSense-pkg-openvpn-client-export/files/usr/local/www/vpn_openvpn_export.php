@@ -453,18 +453,16 @@ $useaddrlist = array(
 	"serverhostname" => "Installation hostname"
 );
 
-	foreach (config_get_path('dyndnses/dyndns', []) as $ddns) {
-		if (in_array($ddns['type'], $dyndns_split_domain_types)) {
-			$useaddrlist[$ddns["host"] . '.' . $ddns["domainname"]] = $ddns["host"] . '.' . $ddns["domainname"];
-		} else {
-			$useaddrlist[$ddns["host"]] = $ddns["host"];
-		}
-	}
-}
-if (is_array($config['dnsupdates']['dnsupdate'])) {
-	foreach ($config['dnsupdates']['dnsupdate'] as $ddns) {
+foreach (config_get_path('dyndnses/dyndns', []) as $ddns) {
+	if (in_array($ddns['type'], $dyndns_split_domain_types)) {
+		$useaddrlist[$ddns["host"] . '.' . $ddns["domainname"]] = $ddns["host"] . '.' . $ddns["domainname"];
+	} else {
 		$useaddrlist[$ddns["host"]] = $ddns["host"];
 	}
+}
+
+foreach (config_get_path('dnsupdates/dnsupdate', []) as $ddns) {
+	$useaddrlist[$ddns["host"]] = $ddns["host"];
 }
 
 $useaddrlist["other"] = "Other";
