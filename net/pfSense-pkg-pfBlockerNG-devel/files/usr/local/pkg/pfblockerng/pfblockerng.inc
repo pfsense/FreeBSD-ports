@@ -8369,7 +8369,7 @@ function sync_package_pfblockerng($cron='') {
 				}
 
 				if (!empty($list['custom'])) {
-					array_init_path($list, ['row']);
+					array_init_path($list, 'row');
 					$list['row'][] = array(	'header'	=> "{$list['aliasname']}_custom",
 											'custom'	=> $list['custom'],
 											'state'		=> 'Enabled',
