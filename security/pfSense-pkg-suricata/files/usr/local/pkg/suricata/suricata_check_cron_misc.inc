@@ -401,7 +401,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 		if (isset($value['file_store_logdir'])) {
 			if (is_dir($value['file_store_logdir']) &&
 			    config_get_path('installedpackages/suricata/config/0/file_store_limit_size') > 0 &&
-			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= (int)_get_path('installedpackages/suricata/config/0/file_store_limit_size'))) {
+			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= (int)config_get_path('installedpackages/suricata/config/0/file_store_limit_size'))) {
 				suricata_check_filestore_limit_size($value['file_store_logdir'], config_get_path('installedpackages/suricata/config/0/file_store_limit_size'));
 			}
 		}
