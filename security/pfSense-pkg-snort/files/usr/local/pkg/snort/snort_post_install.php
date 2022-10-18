@@ -178,6 +178,11 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 	syslog(LOG_NOTICE, gettext("[Snort] Finished rebuilding installation from saved settings."));
 }
 
+/* Default the 'Save settings on deinstall' option to 'on' if not set (as in a green field install) */
+if (!config_get_path('installedpackages/snortglobal/forcekeepsettings')) {
+	config_set_path('installedpackages/snortglobal/forcekeepsettings', 'on');
+}
+
 /* If an existing Snort Dashboard Widget container is not found, */
 /* then insert our default Widget Dashboard container.           */
 if (stristr(config_get_path('widgets/sequence'), "snort_alerts") === FALSE)

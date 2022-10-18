@@ -181,7 +181,6 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') != 'on') 
 	config_del_path('installedpackages/snortsync');
 	unlink_if_exists("{$snort_rules_upd_log}");
 	rmdir_recursive("{$snortlogdir}");
-	rmdir_recursive("{$g['vardb_path']}/snort");
 	write_config("Removing Snort configuration");
 	syslog(LOG_NOTICE, gettext("[Snort] The package and its configuration has been completely removed from this system."));
 }
