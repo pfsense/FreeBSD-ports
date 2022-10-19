@@ -21,6 +21,7 @@ pkg/acme/dnsapi/dns_autodns.sh
 pkg/acme/dnsapi/dns_aws.sh
 pkg/acme/dnsapi/dns_azion.sh
 pkg/acme/dnsapi/dns_azure.sh
+pkg/acme/dnsapi/dns_bunny.sh
 pkg/acme/dnsapi/dns_cf.sh
 pkg/acme/dnsapi/dns_clouddns.sh
 pkg/acme/dnsapi/dns_cloudns.sh
@@ -29,7 +30,6 @@ pkg/acme/dnsapi/dns_conoha.sh
 pkg/acme/dnsapi/dns_constellix.sh
 pkg/acme/dnsapi/dns_cpanel.sh
 pkg/acme/dnsapi/dns_curanet.sh
-pkg/acme/dnsapi/dns_cx.sh
 pkg/acme/dnsapi/dns_cyon.sh
 pkg/acme/dnsapi/dns_da.sh
 pkg/acme/dnsapi/dns_ddnss.sh
@@ -38,6 +38,7 @@ pkg/acme/dnsapi/dns_df.sh
 pkg/acme/dnsapi/dns_dgon.sh
 pkg/acme/dnsapi/dns_dnshome.sh
 pkg/acme/dnsapi/dns_dnsimple.sh
+pkg/acme/dnsapi/dns_dnsservices.sh
 pkg/acme/dnsapi/dns_doapi.sh
 pkg/acme/dnsapi/dns_domeneshop.sh
 pkg/acme/dnsapi/dns_do.sh
@@ -52,10 +53,10 @@ pkg/acme/dnsapi/dns_easydns.sh
 pkg/acme/dnsapi/dns_edgedns.sh
 pkg/acme/dnsapi/dns_euserv.sh
 pkg/acme/dnsapi/dns_exoscale.sh
+pkg/acme/dnsapi/dns_fornex.sh
 pkg/acme/dnsapi/dns_freedns.sh
 pkg/acme/dnsapi/dns_gandi_livedns.sh
 pkg/acme/dnsapi/dns_gcloud.sh
-pkg/acme/dnsapi/dns_gdnsdk.sh
 pkg/acme/dnsapi/dns_gd.sh
 pkg/acme/dnsapi/dns_geoscaling.sh
 pkg/acme/dnsapi/dns_he.sh
@@ -75,6 +76,7 @@ pkg/acme/dnsapi/dns_kappernet.sh
 pkg/acme/dnsapi/dns_kas.sh
 pkg/acme/dnsapi/dns_kinghost.sh
 pkg/acme/dnsapi/dns_knot.sh
+pkg/acme/dnsapi/dns_la.sh
 pkg/acme/dnsapi/dns_leaseweb.sh
 pkg/acme/dnsapi/dns_lexicon.sh
 pkg/acme/dnsapi/dns_linode.sh
@@ -111,11 +113,13 @@ pkg/acme/dnsapi/dns_pointhq.sh
 pkg/acme/dnsapi/dns_porkbun.sh
 pkg/acme/dnsapi/dns_rackcorp.sh
 pkg/acme/dnsapi/dns_rackspace.sh
+pkg/acme/dnsapi/dns_rage4.sh
 pkg/acme/dnsapi/dns_rcode0.sh
 pkg/acme/dnsapi/dns_regru.sh
 pkg/acme/dnsapi/dns_scaleway.sh
 pkg/acme/dnsapi/dns_schlundtech.sh
 pkg/acme/dnsapi/dns_selectel.sh
+pkg/acme/dnsapi/dns_selfhost.sh
 pkg/acme/dnsapi/dns_servercow.sh
 pkg/acme/dnsapi/dns_simply.sh
 pkg/acme/dnsapi/dns_tele3.sh
@@ -124,11 +128,13 @@ pkg/acme/dnsapi/dns_ultra.sh
 pkg/acme/dnsapi/dns_unoeuro.sh
 pkg/acme/dnsapi/dns_variomedia.sh
 pkg/acme/dnsapi/dns_veesp.sh
+pkg/acme/dnsapi/dns_vercel.sh
 pkg/acme/dnsapi/dns_vscale.sh
 pkg/acme/dnsapi/dns_vultr.sh
 pkg/acme/dnsapi/dns_websupport.sh
 pkg/acme/dnsapi/dns_world4you.sh
 pkg/acme/dnsapi/dns_yandex.sh
+pkg/acme/dnsapi/dns_yc.sh
 pkg/acme/dnsapi/dns_zilore.sh
 pkg/acme/dnsapi/dns_zone.sh
 pkg/acme/dnsapi/dns_zonomi.sh

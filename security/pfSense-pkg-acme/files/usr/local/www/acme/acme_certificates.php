@@ -221,6 +221,7 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 		foreach ($a_certificates as $certificate) {
 			$certificatename = $certificate['name'];
 			$disabled = $certificate['status'] != 'active';
+			$issuedcert = lookup_cert_by_name($certificate['name']);
 			?>
 			<tr id="fr<?=$certificatename;?>" <?=$display?> onClick="fr_toggle('<?=$certificatename;?>')" ondblclick="document.location='acme_certificates_edit.php?id=<?=$certificatename;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 				<td>
@@ -248,7 +249,11 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<?=htmlspecialchars($certificate['acmeaccount']);?>
 			  </td>
 			  <td style="white-space: nowrap">
-				<?=date('r', $certificate['lastrenewal']);?>
+				<?=cert_format_date('', $certificate['lastrenewal'], true);?>
+				<?php if ($issuedcert): ?>
+				<br/><?=gettext("Issued Certificate Dates:")?>
+				<?=cert_print_dates($issuedcert);?>
+				<?php endif; ?>
 			  </td>
 			  <td>
 				  <?php

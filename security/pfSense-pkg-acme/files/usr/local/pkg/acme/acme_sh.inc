@@ -58,6 +58,7 @@ class acme_sh {
 	private $debug = true;
 	public $dnssleep;
 	public $ocspstaple;
+	public $preferredchain;
 	
 	private function execacmesh($command, $envvariables = null) {
 		global $config;
@@ -184,7 +185,10 @@ class acme_sh {
 		if ($this->ocspstaple == "yes") {
 			$cmdparameters .= " --ocsp-must-staple ";
 		}
-		
+		if (!empty($this->preferredchain)) {
+			$cmdparameters .= " --preferred-chain " . escapeshellarg($this->preferredchain);
+		}
+
 		$Le_Domain = $domainstosign[0]->domainname;
 		$certpath = "{$this->acmeconf}{$Le_Domain}/";
 		safe_mkdir($certpath);
