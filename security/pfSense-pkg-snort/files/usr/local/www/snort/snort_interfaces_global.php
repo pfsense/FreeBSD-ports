@@ -6,7 +6,7 @@
  * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-global $g, $config;
+global $g;
 
 $snortdir = SNORTDIR;
 $snort_openappdir = SNORT_APPID_ODP_PATH;
@@ -34,34 +34,24 @@ $snort_openappdir = SNORT_APPID_ODP_PATH;
 if ($_POST['save'])
 	$pconfig = $_POST;
 else {
-	$pconfig['snortdownload'] = $config['installedpackages']['snortglobal']['snortdownload'] == "on" ? 'on' : 'off';
-	$pconfig['oinkmastercode'] = htmlentities($config['installedpackages']['snortglobal']['oinkmastercode']);
-	$pconfig['etpro_code'] = htmlentities($config['installedpackages']['snortglobal']['etpro_code']);
-	$pconfig['emergingthreats'] = $config['installedpackages']['snortglobal']['emergingthreats'] == "on" ? 'on' : 'off';
-	$pconfig['emergingthreats_pro'] = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == "on" ? 'on' : 'off';
-	$pconfig['rm_blocked'] = $config['installedpackages']['snortglobal']['rm_blocked'];
-	$pconfig['autorulesupdate7'] = $config['installedpackages']['snortglobal']['autorulesupdate7'];
-	$pconfig['rule_update_starttime'] = htmlentities($config['installedpackages']['snortglobal']['rule_update_starttime']);
-	$pconfig['forcekeepsettings'] = $config['installedpackages']['snortglobal']['forcekeepsettings'] == "on" ? 'on' : 'off';
-	$pconfig['snortcommunityrules'] = $config['installedpackages']['snortglobal']['snortcommunityrules'] == "on" ? 'on' : 'off';
-	$pconfig['clearblocks'] = $config['installedpackages']['snortglobal']['clearblocks'] == "on" ? 'on' : 'off';
-	$pconfig['verbose_logging'] = $config['installedpackages']['snortglobal']['verbose_logging'] == "on" ? 'on' : 'off';
-	$pconfig['openappid_detectors'] = $config['installedpackages']['snortglobal']['openappid_detectors'] == "on" ? 'on' : 'off';
-	$pconfig['openappid_rules_detectors'] = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == "on" ? 'on' : 'off';
-	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on" ? 'on' : 'off';
-	$pconfig['curl_no_verify_ssl_peer'] = $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? 'on' : 'off';
-	$pconfig['enable_feodo_botnet_c2_rules'] = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == "on" ? 'on' : 'off';
+	$pconfig['snortdownload'] = config_get_path('installedpackages/snortglobal/snortdownload') == "on" ? 'on' : 'off';
+	$pconfig['oinkmastercode'] = htmlentities(config_get_path('installedpackages/snortglobal/oinkmastercode'));
+	$pconfig['etpro_code'] = htmlentities(config_get_path('installedpackages/snortglobal/etpro_code'));
+	$pconfig['emergingthreats'] = config_get_path('installedpackages/snortglobal/emergingthreats') == "on" ? 'on' : 'off';
+	$pconfig['emergingthreats_pro'] = config_get_path('installedpackages/snortglobal/emergingthreats_pro') == "on" ? 'on' : 'off';
+	$pconfig['rm_blocked'] = config_get_path('installedpackages/snortglobal/rm_blocked');
+	$pconfig['autorulesupdate7'] = config_get_path('installedpackages/snortglobal/autorulesupdate7');
+	$pconfig['rule_update_starttime'] = htmlentities(config_get_path('installedpackages/snortglobal/rule_update_starttime', '00:' . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT)));
+	$pconfig['forcekeepsettings'] = config_get_path('installedpackages/snortglobal/forcekeepsettings') == "on" ? 'on' : 'off';
+	$pconfig['snortcommunityrules'] = config_get_path('installedpackages/snortglobal/snortcommunityrules') == "on" ? 'on' : 'off';
+	$pconfig['clearblocks'] = config_get_path('installedpackages/snortglobal/clearblocks') == "on" ? 'on' : 'off';
+	$pconfig['verbose_logging'] = config_get_path('installedpackages/snortglobal/verbose_logging') == "on" ? 'on' : 'off';
+	$pconfig['openappid_detectors'] = config_get_path('installedpackages/snortglobal/openappid_detectors') == "on" ? 'on' : 'off';
+	$pconfig['openappid_rules_detectors'] = config_get_path('installedpackages/snortglobal/openappid_rules_detectors') == "on" ? 'on' : 'off';
+	$pconfig['hide_deprecated_rules'] = config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on" ? 'on' : 'off';
+	$pconfig['curl_no_verify_ssl_peer'] = config_get_path('installedpackages/snortglobal/curl_no_verify_ssl_peer') == "on" ? 'on' : 'off';
+	$pconfig['enable_feodo_botnet_c2_rules'] = config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules') == "on" ? 'on' : 'off';
 }
-
-/* Set sensible values for any empty default params */
-if (!isset($pconfig['rule_update_starttime']))
-	$pconfig['rule_update_starttime'] = '00:' . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
-if (!isset($config['installedpackages']['snortglobal']['forcekeepsettings']))
-	$pconfig['forcekeepsettings'] = 'on';
-if (!isset($config['installedpackages']['snortglobal']['clearblocks']))
-	$pconfig['clearblocks'] = 'on';
-if (!isset($config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer']))
-	$pconfig['curl_no_verify_ssl_peer'] = 'off';
 
 /* Grab OpenAppID version info if enabled and downloaded */
 if ($pconfig['openappid_detectors'] == "on") {
@@ -88,68 +78,69 @@ if ($_POST['emergingthreats_pro'] == "on" && empty($_POST['etpro_code']))
 if (!$input_errors) {
 	if ($_POST["save"]) {
 
-		$config['installedpackages']['snortglobal']['snortdownload'] = $_POST['snortdownload'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['snortcommunityrules'] = $_POST['snortcommunityrules'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['emergingthreats'] = $_POST['emergingthreats'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['emergingthreats_pro'] = $_POST['emergingthreats_pro'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] = $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['clearblocks'] = $_POST['clearblocks'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['verbose_logging'] = $_POST['verbose_logging'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['openappid_detectors'] = $_POST['openappid_detectors'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['openappid_rules_detectors'] = $_POST['openappid_rules_detectors'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['hide_deprecated_rules'] = $_POST['hide_deprecated_rules'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] = $_POST['curl_no_verify_ssl_peer'] ? 'on' : 'off';
+		config_set_path('installedpackages/snortglobal/snortdownload', $_POST['snortdownload'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/snortcommunityrules', $_POST['snortcommunityrules'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/emergingthreats', $_POST['emergingthreats'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/emergingthreats_pro', $_POST['emergingthreats_pro'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules', $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/clearblocks', $_POST['clearblocks'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/verbose_logging', $_POST['verbose_logging'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/openappid_detectors', $_POST['openappid_detectors'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/openappid_rules_detectors',  $_POST['openappid_rules_detectors'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/hide_deprecated_rules', $_POST['hide_deprecated_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/snortglobal/curl_no_verify_ssl_peer', $_POST['curl_no_verify_ssl_peer'] ? 'on' : 'off');
 
 		// If any rule sets are being turned off, then remove them
 		// from the active rules section of each interface.  Start
 		// by building an arry of prefixes for the disabled rules.
 		$disabled_rules = array();
 		$disable_ips_policy = false;
-		if ($config['installedpackages']['snortglobal']['snortdownload'] == 'off') {
+		if (config_get_path('installedpackages/snortglobal/snortdownload') == 'off') {
 			$disabled_rules[] = VRT_FILE_PREFIX;
 			$disable_ips_policy = true;
 		}
-		if ($config['installedpackages']['snortglobal']['snortcommunityrules'] == 'off')
+		if (config_get_path('installedpackages/snortglobal/snortcommunityrules') == 'off')
 			$disabled_rules[] = GPL_FILE_PREFIX;
-		if ($config['installedpackages']['snortglobal']['emergingthreats'] == 'off')
+		if (config_get_path('installedpackages/snortglobal/emergingthreats') == 'off')
 			$disabled_rules[] = ET_OPEN_FILE_PREFIX;
-		if ($config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'off')
+		if (config_get_path('installedpackages/snortglobal/emergingthreats_pro') == 'off')
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
-		if ($config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'off')
+		if (config_get_path('installedpackages/snortglobal/openappid_rules_detectors') == 'off')
 			$disabled_rules[] = OPENAPPID_FILE_PREFIX;
-		if ($config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == 'off')
+		if (config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules') == 'off')
 			$disabled_rules[] = "feodotracker";
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
-		if (is_array($config['installedpackages']['snortglobal']['rule'])) {
-			foreach ($config['installedpackages']['snortglobal']['rule'] as &$iface) {
-				// Disable Snort IPS policy if Snort Subscriber rules are disabled
-				if ($disable_ips_policy) {
-					$iface['ips_policy_enable'] = 'off';
-					unset($iface['ips_policy']);
-				}
-				$enabled_rules = explode("||", $iface['rulesets']);
-				foreach ($enabled_rules as $k => $v) {
-					foreach ($disabled_rules as $d)
-						if (strpos(trim($v), $d) !== false)
-							unset($enabled_rules[$k]);
-				}
-				$iface['rulesets'] = implode("||", $enabled_rules);
+		$a_rules = config_get_path('installedpackages/snortglobal/rule', []);
+		foreach ($a_rules as &$iface) {
+			// Disable Snort IPS policy if Snort Subscriber rules are disabled
+			if ($disable_ips_policy) {
+				$iface['ips_policy_enable'] = 'off';
+				unset($iface['ips_policy']);
 			}
+			$enabled_rules = explode("||", $iface['rulesets']);
+			foreach ($enabled_rules as $k => $v) {
+				foreach ($disabled_rules as $d)
+					if (strpos(trim($v), $d) !== false)
+						unset($enabled_rules[$k]);
+			}
+			$iface['rulesets'] = implode("||", $enabled_rules);
 		}
 
+		// Save the updated interface ruleset to the configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_rules);
+
 		// If deprecated rules should be removed, then do it
-		if ($config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on") {
+		if (config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on") {
 			syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 			snort_remove_dead_rules();
 		}
 
-		$config['installedpackages']['snortglobal']['oinkmastercode'] = trim(html_entity_decode($_POST['oinkmastercode']));
-		$config['installedpackages']['snortglobal']['etpro_code'] = trim(html_entity_decode($_POST['etpro_code']));
-
-		$config['installedpackages']['snortglobal']['rm_blocked'] = $_POST['rm_blocked'];
-		$config['installedpackages']['snortglobal']['autorulesupdate7'] = $_POST['autorulesupdate7'];
+		config_set_path('installedpackages/snortglobal/oinkmastercode', trim(html_entity_decode($_POST['oinkmastercode'])));
+		config_set_path('installedpackages/snortglobal/etpro_code', trim(html_entity_decode($_POST['etpro_code'])));
+		config_set_path('installedpackages/snortglobal/rm_blocked', $_POST['rm_blocked']);
+		config_set_path('installedpackages/snortglobal/autorulesupdate7', $_POST['autorulesupdate7']);
 
 		/* Check and adjust format of Rule Update Starttime string to add colon and leading zero if necessary */
 		if ($_POST['rule_update_starttime']) {
@@ -158,13 +149,11 @@ if (!$input_errors) {
 				$tmp = str_pad($_POST['rule_update_starttime'], 4, "0", STR_PAD_LEFT);
 				$_POST['rule_update_starttime'] = substr($tmp, 0, 2) . ":" . substr($tmp, -2);
 			}
-			$config['installedpackages']['snortglobal']['rule_update_starttime'] = str_pad(html_entity_decode($_POST['rule_update_starttime']), 4, "0", STR_PAD_LEFT);
+			config_set_path('installedpackages/snortglobal/rule_update_starttime', str_pad(html_entity_decode($_POST['rule_update_starttime']), 4, "0", STR_PAD_LEFT));
 		}
 
-		$config['installedpackages']['snortglobal']['forcekeepsettings'] = $_POST['forcekeepsettings'] ? 'on' : 'off';
-
+		config_set_path('installedpackages/snortglobal/forcekeepsettings', $_POST['forcekeepsettings'] ? 'on' : 'off');
 		$retval = 0;
-
 		write_config("Snort pkg: modified global settings.");
 
 		/* create whitelist and homenet file, then sync files */

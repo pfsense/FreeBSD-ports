@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,13 +30,10 @@ $snortlogdir = SNORTLOGDIR;
 $rcdir = RCFILEPREFIX;
 $snort_starting = array();
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 // Calculate the index of the next added Snort interface
-$id_gen = count($config['installedpackages']['snortglobal']['rule']);
+$id_gen = count($a_nat);
 
 // Get list of configured firewall interfaces
 $ifaces = get_configured_interface_list();
@@ -99,7 +96,7 @@ if ($_POST['status'] == 'check') {
 
 if (isset($_POST['del_x'])) {
 	/* Delete selected Snort interfaces */
-	if (is_array($_POST['rule']) && count($_POST['rule'])) {
+	if (count(array_get_path($_POST, 'rule', [])) > 0) {
 		foreach ($_POST['rule'] as $rulei) {
 			$snort_uuid = $a_nat[$rulei]['uuid'];
 			$if_real = get_real_interface($a_nat[$rulei]['interface']);
@@ -127,13 +124,13 @@ if (isset($_POST['del_x'])) {
 	  
 		/* If all the Snort interfaces are removed, then unset the interfaces config array. */
 		if (empty($a_nat))
-			unset($config['installedpackages']['snortglobal']['rule']);
+			config_del_path('installedpackages/snortglobal/rule');
 
 		// Save updated configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
 		sync_snort_package_config();
-		unset($a_nat);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -175,10 +172,10 @@ else {
 		unset($a_nat[$delbtn_list]);
 
 		// Save updated configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
 		sync_snort_package_config();
-		unset($a_nat);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -191,7 +188,7 @@ else {
 
 /* start/stop snort */
 if ($_POST['toggle'] && is_numericint($_POST['id'])) {
-	$snortcfg = $config['installedpackages']['snortglobal']['rule'][$_POST['id']];
+	$snortcfg = config_get_path("installedpackages/snortglobal/rule/{$_POST['id']}", []);
 	$if_real = get_real_interface($snortcfg['interface']);
 	$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
 	$id = $_POST['id'];
@@ -213,7 +210,7 @@ if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 	require_once('/usr/local/pkg/snort/snort.inc');
 	require_once('service-utils.inc');
 	global \$g, \$rebuild_rules, \$config;
-	\$snortcfg = \$config['installedpackages']['snortglobal']['rule'][{$id}];
+	\$snortcfg = config_get_path('installedpackages/snortglobal/rule/{$id}', []);
 	\$rebuild_rules = true;
 	touch('{$start_lck_file}');
 	sync_snort_package_config();
@@ -390,9 +387,9 @@ if ($savemsg)
 						<?php endif; ?>
 					</td>
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
-						<?php if ($natent['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_legacy') : ?>
+						<?php if ($natent['blockoffenders7'] == 'on' && config_get_path("installedpackages/snortglobal/rule/{$i}/ips_mode") == 'ips_mode_legacy') : ?>
 							<?=gettext('LEGACY MODE');?>
-						<?php elseif ($natent['blockoffenders7'] == 'on' && $config['installedpackages']['snortglobal']['rule'][$i]['ips_mode'] == 'ips_mode_inline') : ?>
+						<?php elseif ($natent['blockoffenders7'] == 'on' && config_get_path("installedpackages/snortglobal/rule/{$i}/ips_mode") == 'ips_mode_inline') : ?>
 							<?=gettext('INLINE IPS');?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>
@@ -595,8 +592,6 @@ if ($savemsg)
 </script>
 
 <?php
-// Finished with config array reference, so release it
-unset($a_nat);
 
 include("foot.inc");
 ?>

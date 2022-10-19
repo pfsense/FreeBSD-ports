@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,10 +27,7 @@ global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -50,6 +47,7 @@ else
 if ($_POST['clear']) {
 	unset($a_nat[$id]['host_attribute_data']);
 	$a_nat[$id]['host_attribute_table'] = 'off';
+	config_set_path('installedpackages/snortglobal/rule', $a_nat);
 	write_config("Snort pkg: cleared Host Attribute Table data for {$a_nat[$id]['interface']}.");
 	$rebuild_rules = false;
 	snort_generate_conf($a_nat[$id]);
@@ -62,6 +60,7 @@ if ($_POST['save']) {
 		$a_nat[$id]['host_attribute_table'] = 'on';
 	else
 		$a_nat[$id]['host_attribute_table'] = 'off';
+	config_set_path('installedpackages/snortglobal/rule', $a_nat);
 	write_config("Snort pkg: modified Host Attribute Table data for {$a_nat[$id]['interface']}.");
 	$rebuild_rules = false;
 	snort_generate_conf($a_nat[$id]);

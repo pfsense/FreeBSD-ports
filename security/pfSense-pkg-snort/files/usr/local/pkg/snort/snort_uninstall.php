@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -94,30 +94,30 @@ if (snort_cron_job_exists("snort_check_cron_misc.inc", FALSE)) {
 /* "save settings" is enabled, then save old widget       */
 /* container settings so we can restore them later.       */
 /**********************************************************/
-$widgets = $config['widgets']['sequence'];
+$widgets = config_get_path('widgets/sequence');
 if (!empty($widgets)) {
 	$widgetlist = explode(",", $widgets);
 	foreach ($widgetlist as $key => $widget) {
 		if (strstr($widget, "snort_alerts")) {
-			if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
-				$config['installedpackages']['snortglobal']['dashboard_widget'] = $widget;
+			if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') {
+				config_set_path('installedpackages/snortglobal/dashboard_widget', $widget);
 			}
 			unset($widgetlist[$key]);
 			break;
 		}
 	}
-	$config['widgets']['sequence'] = implode(",", $widgetlist);
+	config_set_path('widgets/sequence', implode(",", $widgetlist));
 	write_config("Snort pkg uninstall removed Dashboard widget.");
 }
 
 // See if we are to clear blocked hosts on uninstall
-if ($config['installedpackages']['snortglobal']['clearblocks'] == 'on') {
+if (config_get_path('installedpackages/snortglobal/clearblocks') == 'on') {
 	syslog(LOG_NOTICE, gettext("[Snort] Removing all blocked hosts from <snort2c> table..."));
 	mwexec("/sbin/pfctl -t snort2c -T flush");
 }
 
 // See if we are to clear Snort log files on uninstall
-if ($config['installedpackages']['snortglobal']['clearlogs'] == 'on') {
+if (config_get_path('installedpackages/snortglobal/clearlogs') == 'on') {
 	syslog(LOG_NOTICE, gettext("[Snort] Clearing all Snort-related log files..."));
 	unlink_if_exists("{$snort_rules_upd_log}");
 	rmdir_recursive($snortlogdir);
@@ -151,13 +151,11 @@ unlink_if_exists(SNORTDIR . "/rules/" . GPL_FILE_PREFIX . "*.rules");
 unlink_if_exists(SNORTDIR . "/rules/" . "appid.rules");
 unlink_if_exists(SNORT_APPID_RULES_PATH . OPENAPPID_FILE_PREFIX . "*.rules");
 
-if (is_array($config['installedpackages']['snortglobal']['rule']) && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
-		$if_real = get_real_interface($snortcfg['interface']);
-		$snort_uuid = $snortcfg['uuid'];
-		if (is_dir("{$snortdir}/snort_{$snort_uuid}_{$if_real}")) {
-			rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
-		}
+foreach (config_get_path('installedpackages/snortglobal/rule', []) as $snortcfg) {
+	$if_real = get_real_interface($snortcfg['interface']);
+	$snort_uuid = $snortcfg['uuid'];
+	if (is_dir("{$snortdir}/snort_{$snort_uuid}_{$if_real}")) {
+		rmdir_recursive("{$snortdir}/snort_{$snort_uuid}_{$if_real}");
 	}
 }
 
@@ -166,8 +164,8 @@ if (is_array($config['installedpackages']['snortglobal']['rule']) && count($conf
 /* that option is enabled on GLOBAL SETTINGS tab or if    */
 /* the package and its configuration are being removed.   */
 /**********************************************************/
-if (($config['installedpackages']['snortglobal']['clearblocks'] != 'off') ||
-    ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on')) {
+if ((config_get_path('installedpackages/snortglobal/clearblocks') != 'off') ||
+    (config_get_path('installedpackages/snortglobal/forcekeepsettings') != 'on')) {
 	syslog(LOG_NOTICE, gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
 	mwexec("/sbin/pfctl -t snort2c -T flush");
 }
@@ -177,13 +175,12 @@ if (($config['installedpackages']['snortglobal']['clearblocks'] != 'off') ||
 /* removal of the configuration settings when the user    */
 /* has elected to not retain the package configuration.   */
 /**********************************************************/
-if ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on') {
+if (config_get_path('installedpackages/snortglobal/forcekeepsettings') != 'on') {
 	syslog(LOG_NOTICE, gettext("[Snort] Not saving settings... all Snort configuration info and logs will be deleted..."));
-	unset($config['installedpackages']['snortglobal']);
-	unset($config['installedpackages']['snortsync']);
+	config_del_path('installedpackages/snortglobal');
+	config_del_path('installedpackages/snortsync');
 	unlink_if_exists("{$snort_rules_upd_log}");
 	rmdir_recursive("{$snortlogdir}");
-	rmdir_recursive("{$g['vardb_path']}/snort");
 	write_config("Removing Snort configuration");
 	syslog(LOG_NOTICE, gettext("[Snort] The package and its configuration has been completely removed from this system."));
 }

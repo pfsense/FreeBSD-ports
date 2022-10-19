@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,26 +35,16 @@ if (is_null($id)) {
 	exit;
 }
 
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}", []);
 
-$pconfig = $a_nat[$id];
+// Init 'blist_files' and 'wlist_files' arrays for the interface
+array_init_path($a_nat, 'blist_files/item');
+array_init_path($a_nat, 'wlist_files/item');
+
+$pconfig = $a_nat;
 $iprep_path = SNORT_IPREP_PATH;
-$if_real = get_real_interface($a_nat[$id]['interface']);
-$snort_uuid = $config['installedpackages']['snortglobal']['rule'][$id]['uuid'];
-
-// Init 'blist_files' and 'wlist_files' arrays if necessary
-if (!is_array($a_nat[$id]['blist_files'])) {
-	$a_nat[$id]['blist_files'] = array();
-}
-if (!is_array($a_nat[$id]['blist_files']['item'])) {
-	$a_nat[$id]['blist_files']['item'] = array();
-}
-if (!is_array($a_nat[$id]['wlist_files'])) {
-	$a_nat[$id]['wlist_files'] = array();
-}
-if (!is_array($a_nat[$id]['wlist_files']['item'])) {
-	$a_nat[$id]['wlist_files']['item'] = array();
-}
+$if_real = get_real_interface($a_nat['interface']);
+$snort_uuid = config_get_path("installedpackages/snortglobal/rule/{$id}/uuid");
 
 // Set sensible defaults for any empty parameters
 if (empty($pconfig['iprep_memcap']))
@@ -72,14 +62,15 @@ if ($_POST['mode'] == 'blist_add' && isset($_POST['iplist'])) {
 	// Test the supplied IP List file to see if it exists
 	if (file_exists($_POST['iplist'])) {
 		// See if the file is already assigned to the interface
-		foreach ($a_nat[$id]['blist_files']['item'] as $f) {
+		foreach ($a_nat['blist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {
 				$input_errors[] = gettext("The file {$f} is already assigned as a blacklist file.");
 				break;
 			}
 		}
 		if (!$input_errors) {
-			$a_nat[$id]['blist_files']['item'][] = basename($_POST['iplist']);
+			$a_nat['blist_files']['item'][] = basename($_POST['iplist']);
+			config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
 			write_config("Snort pkg: added new blacklist file for IP REPUTATION preprocessor.");
 			mark_subsystem_dirty('snort_iprep');
 		}
@@ -87,8 +78,8 @@ if ($_POST['mode'] == 'blist_add' && isset($_POST['iplist'])) {
 	else
 		$input_errors[] = gettext("The file '{$_POST['iplist']}' could not be found.");
 
-	$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
-	$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
+	$pconfig['blist_files'] = $a_nat['blist_files'];
+	$pconfig['wlist_files'] = $a_nat['wlist_files'];
 }
 
 if ($_POST['mode'] == 'wlist_add' && isset($_POST['iplist'])) {
@@ -97,14 +88,15 @@ if ($_POST['mode'] == 'wlist_add' && isset($_POST['iplist'])) {
 	// Test the supplied IP List file to see if it exists
 	if (file_exists($_POST['iplist'])) {
 		// See if the file is already assigned to the interface
-		foreach ($a_nat[$id]['wlist_files']['item'] as $f) {
+		foreach ($a_nat['wlist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {
 				$input_errors[] = gettext("The file {$f} is already assigned as a whitelist file.");
 				break;
 			}
 		}
 		if (!$input_errors) {
-			$a_nat[$id]['wlist_files']['item'][] = basename($_POST['iplist']);
+			$a_nat['wlist_files']['item'][] = basename($_POST['iplist']);
+			config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
 			write_config("Snort pkg: added new whitelist file for IP REPUTATION preprocessor.");
 			mark_subsystem_dirty('snort_iprep');
 		}
@@ -112,38 +104,40 @@ if ($_POST['mode'] == 'wlist_add' && isset($_POST['iplist'])) {
 	else
 		$input_errors[] = gettext("The file '{$_POST['iplist']}' could not be found.");
 
-	$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
-	$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
+	$pconfig['blist_files'] = $a_nat['blist_files'];
+	$pconfig['wlist_files'] = $a_nat['wlist_files'];
 }
 
 if ($_POST['mode'] == 'blist_del' && is_numericint($_POST['list_id'])) {
 	$pconfig = $_POST;
-	unset($a_nat[$id]['blist_files']['item'][$_POST['list_id']]);
+	unset($a_nat['blist_files']['item'][$_POST['list_id']]);
+	config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
 	write_config("Snort pkg: deleted blacklist file for IP REPUTATION preprocessor.");
 	mark_subsystem_dirty('snort_iprep');
-	$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
-	$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
+	$pconfig['blist_files'] = $a_nat['blist_files'];
+	$pconfig['wlist_files'] = $a_nat['wlist_files'];
 }
 
 if ($_POST['mode'] == 'wlist_del' && is_numericint($_POST['list_id'])) {
 	$pconfig = $_POST;
-	unset($a_nat[$id]['wlist_files']['item'][$_POST['list_id']]);
+	unset($a_nat['wlist_files']['item'][$_POST['list_id']]);
+	config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
 	write_config("Snort pkg: deleted whitelist file for IP REPUTATION preprocessor.");
 	mark_subsystem_dirty('snort_iprep');
-	$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
-	$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
+	$pconfig['wlist_files'] = $a_nat['wlist_files'];
+	$pconfig['blist_files'] = $a_nat['blist_files'];
 }
 
 if ($_POST['apply']) {
 	// Apply changes to IP Reputation lists for the interface
 	$rebuild_rules = false;
-	snort_generate_conf($a_nat[$id]);
+	snort_generate_conf($a_nat);
 
 	// If Snort is already running, must restart to change IP REP preprocessor configuration.
-	if (snort_is_running($a_nat[$id]['uuid'])) {
+	if (snort_is_running($a_nat['uuid'])) {
 		syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
-		snort_stop($a_nat[$id], $if_real);
-		snort_start($a_nat[$id], $if_real, TRUE);
+		snort_stop($a_nat, $if_real);
+		snort_start($a_nat, $if_real, TRUE);
 	}
 
 	// Sync to configured CARP slaves if any are enabled
@@ -152,8 +146,8 @@ if ($_POST['apply']) {
 	// We have saved changes and done a soft restart, so clear "dirty" flag
 	clear_subsystem_dirty('snort_iprep');
 
-	$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
-	$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
+	$pconfig['blist_files'] = $a_nat['blist_files'];
+	$pconfig['wlist_files'] = $a_nat['wlist_files'];
 }
 
 if ($_POST['save']) {
@@ -174,19 +168,19 @@ if ($_POST['save']) {
 		$natent['iprep_nested_ip'] = $_POST['iprep_nested_ip'];
 		$natent['iprep_white'] = $_POST['iprep_white'];
 
-		$a_nat[$id] = $natent;
-
-		write_config("Snort pkg: modified IP REPUTATION preprocessor settings for {$a_nat[$id]['interface']}.");
+		$a_nat = $natent;
+		config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
+		write_config("Snort pkg: modified IP REPUTATION preprocessor settings for {$a_nat['interface']}.");
 
 		// Update the snort conf file for this interface
 		$rebuild_rules = false;
-		snort_generate_conf($a_nat[$id]);
+		snort_generate_conf($a_nat);
 
 		// If Snort is already running, must restart to change IP REP preprocessor configuration.
-		if (snort_is_running($a_nat[$id]['uuid'])) {
+		if (snort_is_running($a_nat['uuid'])) {
 			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
-			snort_stop($a_nat[$id], $if_real);
-			snort_start($a_nat[$id], $if_real, TRUE);
+			snort_stop($a_nat, $if_real);
+			snort_start($a_nat, $if_real, TRUE);
 			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because IP Reputation preprocessor changes require a restart.");
 		}
 
@@ -196,17 +190,17 @@ if ($_POST['save']) {
 		// We have saved changes and done a soft restart, so clear "dirty" flag
 		clear_subsystem_dirty('snort_iprep');
 		$pconfig = $natent;
-		$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
-		$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
+		$pconfig['blist_files'] = $a_nat['blist_files'];
+		$pconfig['wlist_files'] = $a_nat['wlist_files'];
 	}
 	else {
 		$pconfig = $_POST;
-		$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
-		$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
+		$pconfig['blist_files'] = $a_nat['blist_files'];
+		$pconfig['wlist_files'] = $a_nat['wlist_files'];
 	}
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
 }
@@ -219,9 +213,6 @@ if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
-
-// Finished with config array reference, so release it
-unset($a_nat);
 
 $tab_array = array();
 $tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
@@ -262,19 +253,6 @@ if (is_subsystem_dirty('snort_iprep')) {
 	$msg .= '</div>';
 	$msg .= '<div class="pull-right"><button type="submit" class="btn btn-default btn-warning" name="apply" value="Apply Changes">Apply Changes</button></div>';
 	print '<div class="alert-warning clearfix" role="alert">' . $msg . '<br/></div>';
-}
-
-if (!is_array($pconfig['blist_files'])) {
-	$pconfig['blist_files'] = array();
-}
-if (!is_array($pconfig['blist_files']['item'])) {
-	$pconfig['blist_files']['item'] = array();
-}
-if (!is_array($pconfig['wlist_files'])) {
-	$pconfig['wlist_files'] = array();
-}
-if (!is_array($pconfig['wlist_files']['item'])) {
-	$pconfig['wlist_files']['item'] = array();
 }
 
 $section = new Form_Section('IP Reputation Preprocessor Configuration');

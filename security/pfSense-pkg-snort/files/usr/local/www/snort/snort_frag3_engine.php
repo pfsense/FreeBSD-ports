@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2018-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,19 +43,7 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'][$id]['frag3_engine']['item'];
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}/frag3_engine/item", []);
 
 $pconfig = array();
 if (empty($a_nat[$eng_id])) {
@@ -187,14 +175,16 @@ if ($_POST['save']) {
 		}
 
 		/* Now write the new engine array to conf */
+		config_set_path("installedpackages/snortglobal/rule/{$id}/frag3_engine/item", $a_nat);
 		write_config("Snort pkg: modified frag3 engine settings.");
 
+		/* Reload the Preprocessors page */
 		header("Location: /snort/snort_preprocessors.php?id={$id}#frag3_row");
 		exit;
 	}
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr(config_get_path("installedpackages/snortglobal/rule/{$id}/interface"));
 $pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
 $pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Frag3 Preprocessor Engine");
 include("head.inc");

@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -33,12 +33,7 @@ $pconfig = array();
 // Arbitrary limit for IP or Alias entries per Pass List.
 $max_addresses = 1000;
 
-if (!is_array($config['installedpackages']['snortglobal']['whitelist']))
-	$config['installedpackages']['snortglobal']['whitelist'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['whitelist']['item']))
-	$config['installedpackages']['snortglobal']['whitelist']['item'] = array();
-
-$a_passlist = &$config['installedpackages']['snortglobal']['whitelist']['item'];
+$a_passlist = config_get_path('installedpackages/snortglobal/whitelist/item', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -153,7 +148,7 @@ if ($_POST['save']) {
 		}
 
 		$pconfig = $p_list;
-
+		config_set_path('installedpackages/snortglobal/whitelist/item', $a_passlist);
 		write_config("Snort pkg: modified PASS LIST {$p_list['name']}.");
 
 		/* create pass list file, then sync file with configured partners */

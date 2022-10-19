@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -28,17 +28,8 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['suppress'])) {
-	$config['installedpackages']['snortglobal']['suppress'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['suppress']['item'])) {
-	$config['installedpackages']['snortglobal']['suppress']['item'] = array();
-}
-$a_suppress = &$config['installedpackages']['snortglobal']['suppress']['item'];
-$id_gen = count($config['installedpackages']['snortglobal']['suppress']['item']);
+$a_suppress = config_get_path('installedpackages/snortglobal/suppress/item', []);
+$id_gen = count(config_get_path('installedpackages/snortglobal/suppress/item', []));
 
 function snort_suppresslist_used($supplist) {
 
@@ -50,12 +41,7 @@ function snort_suppresslist_used($supplist) {
 	/* Returns:  TRUE if list is in use, else FALSE                 */
 	/****************************************************************/
 
-	global $config;
-
-	$snortconf = $config['installedpackages']['snortglobal']['rule'];
-	if (empty($snortconf))
-		return false;
-	foreach ($snortconf as $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 		if ($value['suppresslistname'] == $supplist)
 			return true;
 	}
@@ -64,7 +50,7 @@ function snort_suppresslist_used($supplist) {
 
 if (isset($_POST['del_btn'])) {
 	$need_save = false;
-	if (is_array($_POST['del']) && count($_POST['del'])) {
+	if (count(array_get_path($_POST, 'del', [])) > 0) {
 		foreach ($_POST['del'] as $itemi) {
 			/* make sure list is not being referenced by any interface */
 			if (snort_suppresslist_used($a_suppress[$itemi]['name'])) {
@@ -74,10 +60,10 @@ if (isset($_POST['del_btn'])) {
 				$need_save = true;
 			}
 		}
-		if ($need_save) {
+		if ($need_save && empty($input_errors)) {
+			config_set_path('installedpackages/snortglobal/suppress/item', $a_suppress);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
-			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -98,9 +84,9 @@ else {
 		}
 		else {
 			unset($a_suppress[$delbtn_list]);
+			config_set_path('installedpackages/snortglobal/suppress/item', $a_suppress);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
-			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -187,8 +173,6 @@ display_top_tabs($tab_array, true);
 		</div>
 	</div>
 </div>
-
-<?php unset($a_suppress); ?>
 
 <script type="text/javascript">
 //<![CDATA[

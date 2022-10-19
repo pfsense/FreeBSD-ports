@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,6 @@ global $g, $rebuild_rules;
 $snortdir = SNORTDIR;
 $flowbit_rules_file = FLOWBITS_FILENAME;
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
-
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
@@ -44,29 +39,31 @@ if (is_null($id)) {
         exit;
 }
 
-if (isset($id) && $a_nat[$id]) {
-	$pconfig['enable'] = $a_nat[$id]['enable'];
-	$pconfig['interface'] = $a_nat[$id]['interface'];
-	$pconfig['rulesets'] = $a_nat[$id]['rulesets'];
-	if (empty($a_nat[$id]['autoflowbitrules']))
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}", []);
+
+if (isset($id) && $a_nat) {
+	$pconfig['enable'] = $a_nat['enable'];
+	$pconfig['interface'] = $a_nat['interface'];
+	$pconfig['rulesets'] = $a_nat['rulesets'];
+	if (empty($a_nat['autoflowbitrules']))
 		$pconfig['autoflowbitrules'] = 'on';
 	else
-		$pconfig['autoflowbitrules'] = $a_nat[$id]['autoflowbitrules'] == 'on' ? 'on' : 'off';;
-	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'] == 'on' ? 'on' : 'off';;
-	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
-	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
+		$pconfig['autoflowbitrules'] = $a_nat['autoflowbitrules'] == 'on' ? 'on' : 'off';
+	$pconfig['ips_policy_enable'] = $a_nat['ips_policy_enable'] == 'on' ? 'on' : 'off';
+	$pconfig['ips_policy'] = $a_nat['ips_policy'];
+	$pconfig['ips_policy_mode'] = $a_nat['ips_policy_mode'];
 } else {
 	$pconfig['autoflowbitrules'] = 'on';
 }
 
 $if_real = get_real_interface($pconfig['interface']);
-$snort_uuid = $a_nat[$id]['uuid'];
-$snortdownload = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
-$emergingdownload = $config['installedpackages']['snortglobal']['emergingthreats'] == 'on' ? 'on' : 'off';
-$etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'on' ? 'on' : 'off';
-$snortcommunitydownload = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
-$openappid_rulesdownload = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
-$feodotrackerdownload = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == 'on' ? 'on' : 'off';
+$snort_uuid = $a_nat['uuid'];
+$snortdownload = config_get_path('installedpackages/snortglobal/snortdownload') == 'on' ? 'on' : 'off';
+$emergingdownload = config_get_path('installedpackages/snortglobal/emergingthreats') == 'on' ? 'on' : 'off';
+$etpro = config_get_path('installedpackages/snortglobal/emergingthreats_pro') == 'on' ? 'on' : 'off';
+$snortcommunitydownload = config_get_path('installedpackages/snortglobal/snortcommunityrules') == 'on' ? 'on' : 'off';
+$openappid_rulesdownload = config_get_path('installedpackages/snortglobal/openappid_rules_detectors') == 'on' ? 'on' : 'off';
+$feodotrackerdownload = config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
 
 $no_emerging_files = false;
 $no_snort_files = false;
@@ -95,41 +92,41 @@ if (!file_exists("{$snortdir}/rules/" . GPL_FILE_PREFIX . "community.rules"))
 if (!file_exists("{$snortdir}/rules/feodotracker.rules"))
 	$no_feodotracker_files = true;
 
-$inline_ips_mode = $a_nat[$id]['ips_mode'] == 'ips_mode_inline' ? true:false;
+$inline_ips_mode = $a_nat['ips_mode'] == 'ips_mode_inline' ? true:false;
 
 // If a Snort Subscriber Rules policy is enabled and selected, remove all Snort
-// Subscriber rules from the configured rule sets to allow automatic selection.
-if ($a_nat[$id]['ips_policy_enable'] == 'on') {
-	if (isset($a_nat[$id]['ips_policy'])) {
+// Subscriber rules from the configured rule sets to allow automatic selection to control.
+if ($a_nat['ips_policy_enable'] == 'on') {
+	if (isset($a_nat['ips_policy'])) {
 		$disable_vrt_rules = "disabled";
-		$enabled_sets = explode("||", $a_nat[$id]['rulesets']);
+		$enabled_sets = explode("||", $a_nat['rulesets']);
 
 		foreach ($enabled_sets as $k => $v) {
 			if (substr($v, 0, 6) == "snort_")
 				unset($enabled_sets[$k]);
 		}
-		$a_nat[$id]['rulesets'] = implode("||", $enabled_sets);
+		$a_nat['rulesets'] = implode("||", $enabled_sets);
 	}
 }
 else
 	$disable_vrt_rules = "";
 
-if (!empty($a_nat[$id]['rulesets']))
-	$enabled_rulesets_array = explode("||", $a_nat[$id]['rulesets']);
+if (!empty($a_nat['rulesets']))
+	$enabled_rulesets_array = explode("||", $a_nat['rulesets']);
 else
 	$enabled_rulesets_array = array();
 
 if (isset($_POST["save"])) {
 
 	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
+		$a_nat['ips_policy_enable'] = 'on';
+		$a_nat['ips_policy'] = $_POST['ips_policy'];
+		$a_nat['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
+		$a_nat['ips_policy_enable'] = 'off';
+		unset($a_nat['ips_policy']);
+		unset($a_nat['ips_policy_mode']);
 	}
 
 	$enabled_items = "";
@@ -138,32 +135,34 @@ if (isset($_POST["save"])) {
 	else
 		$enabled_items = $_POST['toenable'];
 
-	$a_nat[$id]['rulesets'] = $enabled_items;
+	$a_nat['rulesets'] = $enabled_items;
 
 	if ($_POST['autoflowbitrules'] == "on")
-		$a_nat[$id]['autoflowbitrules'] = 'on';
+		$a_nat['autoflowbitrules'] = 'on';
 	else {
-		$a_nat[$id]['autoflowbitrules'] = 'off';
+		$a_nat['autoflowbitrules'] = 'off';
 		if (file_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}"))
 			unlink_if_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}");
 	}
 
-	write_config("Snort pkg: save enabled rule categories for {$a_nat[$id]['interface']}.");
+	// Write updated configuration
+	config_set_path("installedpackages/snortglobal/rule/{$id}", $a_nat);
+	write_config("Snort pkg: save enabled rule categories for {$a_nat['interface']}.");
 
 	/*************************************************/
 	/* Update the snort conf file and rebuild the    */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	snort_generate_conf($a_nat[$id]);
+	snort_generate_conf($a_nat);
 	$rebuild_rules = false;
 
 	/* Soft-restart Snort to live-load new rules */
-	snort_reload_config($a_nat[$id]);
+	snort_reload_config($a_nat);
 
 	$pconfig = $_POST;
 	$enabled_rulesets_array = explode("||", $enabled_items);
-	if (snort_is_running($a_nat[$id]['uuid']))
+	if (snort_is_running($a_nat['uuid']))
 		$savemsg = gettext("Snort is 'live-reloading' the new rule set.");
 
 	// Sync to configured CARP slaves if any are enabled
@@ -171,19 +170,7 @@ if (isset($_POST["save"])) {
 }
 
 if (isset($_POST['unselectall'])) {
-	$a_nat[$id]['rulesets'] = "";
-
-	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
-	}
-	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
-	}
-
+	$a_nat['rulesets'] = "";
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
@@ -198,17 +185,6 @@ if (isset($_POST['unselectall'])) {
 }
 
 if (isset($_POST['selectall'])) {
-	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
-	}
-	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
-	}
-
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
@@ -243,7 +219,7 @@ if (isset($_POST['selectall'])) {
 	}
 
 	/* Include the Snort Subscriber rules only if enabled and no IPS policy is set */
-	if ($snortdownload == 'on' && $a_nat[$id]['ips_policy_enable'] == 'off') {
+	if ($snortdownload == 'on' && $a_nat['ips_policy_enable'] == 'off') {
 		$files = glob("{$snortdir}/rules/" . VRT_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
@@ -252,11 +228,11 @@ if (isset($_POST['selectall'])) {
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled.
-$cat_mods = snort_sid_mgmt_auto_categories($a_nat[$id], FALSE);
+$cat_mods = snort_sid_mgmt_auto_categories($a_nat, FALSE);
 
 // Enable the VIEW button for auto-flowbits file if we have a valid flowbits file 
 // and the Auto-Flowbits option is enabled.
-if ($a_nat[$id]['autoflowbitrules'] == 'on') {
+if ($a_nat['autoflowbitrules'] == 'on') {
 	if (file_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}") &&
 	    filesize("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/{$flowbit_rules_file}") > 0) {
 		$btn_view_flowb_rules = TRUE;
@@ -265,7 +241,7 @@ if ($a_nat[$id]['autoflowbitrules'] == 'on') {
 		$btn_view_flowb_rules = FALSE;
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
 }
@@ -281,9 +257,6 @@ if ($input_errors) {
 if ($savemsg) {
 	print_info_box($savemsg);
 }
-
-// Finished with config array reference, so release it
-unset($a_nat);
 
 $tab_array = array();
 	$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");

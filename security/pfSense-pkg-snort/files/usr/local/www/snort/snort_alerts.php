@@ -6,8 +6,8 @@
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2021 Bill Meeks
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,9 @@ require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
 $supplist = array();
+$alertsid = array();
+$dropsid = array();
+$rejectsid = array();
 $snortlogdir = SNORTLOGDIR;
 $filterlogentries = FALSE;
 
@@ -43,9 +46,7 @@ function snort_is_alert_globally_suppressed($list, $gid, $sid) {
 	/* If entry has a child array, then it's by src or dst ip. */
 	/* So if there is a child array or the keys are not set,   */
 	/* then this gid:sid is not globally suppressed.           */
-	if (is_array($list[$gid][$sid]))
-		return false;
-	elseif (!isset($list[$gid][$sid]))
+	if (array_get_path($list, "{$gid}/{$sid}"))
 		return false;
 	else
 		return true;
@@ -67,18 +68,14 @@ function snort_add_supplist_entry($suppress) {
 	/*   TRUE if successful or FALSE on failure     */
 	/************************************************/
 
-	global $config, $a_instance, $instanceid;
+	global $a_instance, $instanceid;
 
-	if (!is_array($config['installedpackages']['snortglobal']['suppress']))
-		$config['installedpackages']['snortglobal']['suppress'] = array();
-	if (!is_array($config['installedpackages']['snortglobal']['suppress']['item']))
-		$config['installedpackages']['snortglobal']['suppress']['item'] = array();
-	$a_suppress = &$config['installedpackages']['snortglobal']['suppress']['item'];
+	$a_suppress = config_get_path('installedpackages/snortglobal/suppress/item', []);
 
 	$found_list = false;
 
 	/* If no Suppress List is set for the interface, then create one with the interface name */
-	if (empty($a_instance[$instanceid]['suppresslistname']) || $a_instance[$instanceid]['suppresslistname'] == 'default') {
+	if (empty(array_get_path($a_instance, "{$instanceid}/suppresslistname", '')) || array_get_path($a_instance, "{$instanceid}/suppresslistname", '') == 'default') {
 		$s_list = array();
 		$s_list['uuid'] = uniqid();
 		$s_list['name'] = $a_instance[$instanceid]['interface'] . "suppress" . "_" . $s_list['uuid'];
@@ -108,12 +105,10 @@ function snort_add_supplist_entry($suppress) {
 		}
 	}
 
-	// Release config array reference
-	unset($a_suppress);
-
 	/* If we created a new list or updated an existing one, save the change, */
 	/* tell Snort to load it, and return true; otherwise return false.       */
 	if ($found_list) {
+		config_set_path('installedpackages/snortglobal/suppress/item', $a_suppress);
 		write_config("Snort pkg: modified Suppress List {$list_name}.");
 		sync_snort_package_config();
 		snort_reload_config($a_instance[$instanceid]);
@@ -171,10 +166,7 @@ elseif (isset($_POST['id']))
 if (empty($instanceid) || !is_numericint($instanceid))
 	$instanceid = 0;
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_instance = &$config['installedpackages']['snortglobal']['rule'];
+$a_instance = config_get_path('installedpackages/snortglobal/rule', []);
 $snort_uuid = $a_instance[$instanceid]['uuid'];
 $if_real = get_real_interface($a_instance[$instanceid]['interface']);
 
@@ -196,9 +188,9 @@ if ($a_instance[$instanceid]['blockoffenders7'] == 'on' && $a_instance[$instance
 
 $pconfig = array();
 $pconfig['instance'] = $instanceid;
-if (is_array($config['installedpackages']['snortglobal']['alertsblocks'])) {
-	$pconfig['arefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['arefresh'];
-	$pconfig['alertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'];
+if (config_get_path('installedpackages/snortglobal/alertsblocks')) {
+	$pconfig['arefresh'] = config_get_path('installedpackages/snortglobal/alertsblocks/arefresh');
+	$pconfig['alertnumber'] = config_get_path('installedpackages/snortglobal/alertsblocks/alertnumber');
 }
 
 if (empty($pconfig['alertnumber']))
@@ -278,13 +270,10 @@ if ($_POST['filterlogentries_clear']) {
 }
 
 if ($_POST['save']) {
-	if (!is_array($config['installedpackages']['snortglobal']['alertsblocks']))
-		$config['installedpackages']['snortglobal']['alertsblocks'] = array();
-	$config['installedpackages']['snortglobal']['alertsblocks']['arefresh'] = $_POST['arefresh'] ? 'on' : 'off';
-	$config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
-
+	config_set_path('installedpackages/snortglobal/alertsblocks/arefresh', $_POST['arefresh'] ? 'on' : 'off');
+	config_set_path('installedpackages/snortglobal/alertsblocks/alertnumber', $_POST['alertnumber']);
+	config_set_path('installedpackages/snortglobal/rule', $a_instance);
 	write_config("Snort pkg: updated ALERTS tab settings.");
-	unset($a_instance);
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;
 }
@@ -423,63 +412,27 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 	// action lists.
 	switch ($action) {
 		case "action_default":
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_alert":
-			if (!is_array($alertsid[$gid])) {
-				$alertsid[$gid] = array();
-			}
-			if (!is_array($alertsid[$gid][$sid])) {
-				$alertsid[$gid][$sid] = array();
-			}
-			$alertsid[$gid][$sid] = "alertsid";
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($alertsid, "{$gid}/{$sid}", "alertsid");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_drop":
-			if (!is_array($dropsid[$gid])) {
-				$dropsid[$gid] = array();
-			}
-			if (!is_array($dropsid[$gid][$sid])) {
-				$dropsid[$gid][$sid] = array();
-			}
-			$dropsid[$gid][$sid] = "dropsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($dropsid, "{$gid}/{$sid}", "dropsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_reject":
-			if (!is_array($rejectsid[$gid])) {
-				$rejectsid[$gid] = array();
-			}
-			if (!is_array($rejectsid[$gid][$sid])) {
-				$rejectsid[$gid][$sid] = array();
-			}
-			$rejectsid[$gid][$sid] = "rejectsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
+			array_set_path($rejectsid, "{$gid}/{$sid}", "rejectsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
 			break;
 
 		default:

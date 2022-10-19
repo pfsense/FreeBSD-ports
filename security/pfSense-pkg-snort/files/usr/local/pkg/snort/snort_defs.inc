@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-global $g, $config;
+global $g;
 
 /* Define some useful constants for Snort */
 if (!defined("SNORT_BASEDIR")) {

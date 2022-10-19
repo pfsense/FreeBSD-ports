@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,23 +26,15 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
 $pconfig = array();
 
 // Grab saved settings from configuration
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
-	$config['installedpackages']['snortglobal']['rule'] = array();
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
-
-if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']))
-	$config['installedpackages']['snortglobal']['sid_mgmt_lists'] = array();
-if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item']))
-	$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
-$a_list = &$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
-
-$pconfig['auto_manage_sids'] = $config['installedpackages']['snortglobal']['auto_manage_sids'];
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
+$a_list = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []);
+$pconfig['auto_manage_sids'] = config_get_path('installedpackages/snortglobal/auto_manage_sids');
 
 // Set default to not show SID modification lists editor controls
 $sidmodlist_edit_style = "display: none;";
@@ -61,12 +53,7 @@ function snort_is_sidmodslist_active($sidlist) {
 	 *          FALSE if List is not in use              *
 	 *****************************************************/
 
-	global $g, $config;
-
-	if (!is_array($config['installedpackages']['snortglobal']['rule']))
-		return FALSE;
-
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $rule) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $rule) {
 		if ($rule['enable_sid_file'] == $sidlist) {
 			return TRUE;
 		}
@@ -113,6 +100,8 @@ if (isset($_POST['upload'])) {
 			$a_list[] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/snortglobal/rule', $a_nat);
+			config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
 			write_config("Snort pkg: Uploaded new automatic SID management list.");
 		}
 	}
@@ -135,6 +124,8 @@ if (isset($_POST['sidlist_delete']) && isset($a_list[$_POST['sidlist_id']])) {
 		unset($a_list[$_POST['sidlist_id']]);
 
 		// Write the new configuration
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
+		config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
 		write_config("Snort pkg: deleted automatic SID management list.");
 	}
 	else {
@@ -163,12 +154,16 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 			$a_list[] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/snortglobal/rule', $a_nat);
+			config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
 			write_config("Snort pkg: added new automatic SID management list.");
 		}
 		else {
 			$a_list[$_POST['listid']] = $tmp;
 
 			// Write the new configuration
+			config_set_path('installedpackages/snortglobal/rule', $a_nat);
+			config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
 			write_config("Snort pkg: updated automatic SID management list.");
 		}
 		unset($tmp);
@@ -180,7 +175,7 @@ if (isset($_POST['save']) && isset($_POST['sidlist_data']) && isset($_POST['list
 }
 
 if (isset($_POST['save_auto_sid_conf'])) {
-	$config['installedpackages']['snortglobal']['auto_manage_sids'] = $pconfig['auto_manage_sids'] ? "on" : "off";
+	config_set_path('installedpackages/snortglobal/auto_manage_sids', $pconfig['auto_manage_sids'] ? "on" : "off");
 
 	// Grab the SID Mods config for the interfaces from the form's controls array
 	if (is_array($_POST['sid_state_order'])) {
@@ -237,6 +232,8 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 
 	// Write the new configuration
+	config_set_path('installedpackages/snortglobal/rule', $a_nat);
+	config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
 	write_config("Snort pkg: updated automatic SID management settings.");
 
 	$intf_msg = "";
@@ -353,7 +350,7 @@ if (isset($_POST['sidlist_dnload_all'])) {
 // Get all the SID Mods Lists as an array
 // Leave this as the last thing before spewing the page HTML
 // so we can pick up any changes made in code above.
-$sidmodlists = $config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+$sidmodlists = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []);
 $sidmodselections = Array();
 $sidmodselections[] = "None";
 foreach ($sidmodlists as $list) {
@@ -689,8 +686,6 @@ print($section);
 					"Setting all list controls for an interface to 'None' disables automatic SID state management for the interface.") .
 			'</p>', 'info', false);
 
-		// Finished with config array reference, so release it
-		unset($a_nat);
 	?>
 	</div>
 

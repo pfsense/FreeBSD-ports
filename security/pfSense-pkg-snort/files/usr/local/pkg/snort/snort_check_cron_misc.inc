@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@
 require_once("/usr/local/pkg/snort/snort.inc");
 
 $snortlogdir = SNORTLOGDIR;
-global $g, $config;
+global $g;
 
 function snort_check_dir_size_limit($snortloglimitsize) {
 
@@ -38,7 +38,7 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 	 *                                in megabytes          *
 	 ********************************************************/
 
-	global $g, $config;
+	global $g;
 
 	// Convert Log Limit Size setting from MB to KB
 	$snortloglimitsizeKB = round($snortloglimitsize * 1024);
@@ -53,7 +53,7 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 		}
 
 		// Clean-up the logs for each configured Snort instance
-		foreach ($config['installedpackages']['snortglobal']['rule'] as $value) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			// Skip instances where pfSense physical interface has been removed
@@ -189,22 +189,22 @@ $logs = array ();
 
 // Build an array of files to check and limits to check them against from our saved configuration
 $logs['alert'] = array();
-$logs['alert']['limit'] = $config['installedpackages']['snortglobal']['alert_log_limit_size'];
-$logs['alert']['retention'] = $config['installedpackages']['snortglobal']['alert_log_retention'];
+$logs['alert']['limit'] = config_get_path('installedpackages/snortglobal/alert_log_limit_size');
+$logs['alert']['retention'] = config_get_path('installedpackages/snortglobal/alert_log_retention');
 $logs['sid_changes.log'] = array();
-$logs['sid_changes.log']['limit'] = $config['installedpackages']['snortglobal']['sid_changes_log_limit_size'];
-$logs['sid_changes.log']['retention'] = $config['installedpackages']['snortglobal']['sid_changes_log_retention'];
+$logs['sid_changes.log']['limit'] = config_get_path('installedpackages/snortglobal/sid_changes_log_limit_size');
+$logs['sid_changes.log']['retention'] = config_get_path('installedpackages/snortglobal/sid_changes_log_retention');
 $logs['app-stats.log'] = array();
-$logs['app-stats.log']['limit'] = $config['installedpackages']['snortglobal']['appid_stats_log_limit_size'];
-$logs['app-stats.log']['retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
+$logs['app-stats.log']['limit'] = config_get_path('installedpackages/snortglobal/appid_stats_log_limit_size');
+$logs['app-stats.log']['retention'] = config_get_path('installedpackages/snortglobal/appid_stats_log_retention');
 
 // If no interfaces defined, there is nothing to clean up
-if (!is_array($config['installedpackages']['snortglobal']['rule']))
+if (!config_get_path('installedpackages/snortglobal/rule'))
 	return;
 
 // Check log limits and retention in the interface logging directories if enabled
-if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $value) {
+if (config_get_path('installedpackages/snortglobal/enable_log_mgmt') == 'on') {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $value) {
 		$warm_restart = FALSE;
 		$if_real = get_real_interface($value['interface']);
 
@@ -221,12 +221,12 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 		}
 
 		// Prune aged-out rotated alert log files if any exist
-		if ($config['installedpackages']['snortglobal']['alert_log_retention'] > 0) {
+		if (config_get_path('installedpackages/snortglobal/alert_log_retention') > 0) {
 			$now = time();
 			$rotated_files = glob("{$snort_log_dir}/alert.*");
 			$prune_count = 0;
 			foreach ($rotated_files as $file) {
-				if (($now - filemtime($file)) > ($config['installedpackages']['snortglobal']['alert_log_retention'] * 3600)) {
+				if (($now - filemtime($file)) > (int)(config_get_path('installedpackages/snortglobal/alert_log_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($file);
 				}
@@ -237,12 +237,12 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 		}
 
 		// Prune aged-out event packet capture files if any exist
-		if ($config['installedpackages']['snortglobal']['event_pkts_log_retention'] > 0) {
+		if (config_get_path('installedpackages/snortglobal/event_pkts_log_retention') > 0) {
 			$now = time();
 			$rotated_files = glob("{$snort_log_dir}/snort.log.*");
 			$prune_count = 0;
 			foreach ($rotated_files as $file) {
-				if (($now - filemtime($file)) > ($config['installedpackages']['snortglobal']['event_pkts_log_retention'] * 3600)) {
+				if (($now - filemtime($file)) > (int)(config_get_path('installedpackages/snortglobal/event_pkts_log_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($file);
 				}
@@ -269,7 +269,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 		}
 
 		// Prune aged-out perfmon stats logs if any exist
-		if ($config['installedpackages']['snortglobal']['stats_log_retention'] > 0) {
+		if (config_get_path('installedpackages/snortglobal/stats_log_retention') > 0) {
 			$now = time();
 			$files = array();
 			$list = glob("{$snort_log_dir}/*");
@@ -279,7 +279,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			$prune_count = 0;
 			foreach ($files as $f) {
-				if (($now - filemtime($f)) > ($config['installedpackages']['snortglobal']['stats_log_retention'] * 3600)) {
+				if (($now - filemtime($f)) > (int)(config_get_path('installedpackages/snortglobal/stats_log_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($f);
 				}
@@ -333,8 +333,8 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 }
 
 // Check the overall log directory limit (if enabled) and prune if necessary
-if ($config['installedpackages']['snortglobal']['snortloglimit'] == 'on')
-	snort_check_dir_size_limit($config['installedpackages']['snortglobal']['snortloglimitsize']);
+if (config_get_path('installedpackages/snortglobal/snortloglimit') == 'on')
+	snort_check_dir_size_limit(config_get_path('installedpackages/snortglobal/snortloglimitsize'));
 
 return;
 

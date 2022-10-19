@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2020 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,8 +92,8 @@ else {
 }
 
 /* define alert log limit */
-if (!empty($config['installedpackages']['snortglobal']['alert_log_limit_size']) && $config['installedpackages']['snortglobal']['alert_log_limit_size'] != "0")
-	$alert_log_limit_size = $config['installedpackages']['snortglobal']['alert_log_limit_size'] . "K";
+if (config_get_path('installedpackages/snortglobal/alert_log_limit_size', '0') != '0')
+	$alert_log_limit_size = config_get_path('installedpackages/snortglobal/alert_log_limit_size') . "K";
 else
 	$alert_log_limit_size = "";
 
@@ -186,8 +186,8 @@ if(!empty($snortcfg['performance']))
 	$snort_performance = $snortcfg['performance'];
 
 /* if user has defined a custom ssh port, use it */
-if(is_array($config['system']['ssh']) && isset($config['system']['ssh']['port']))
-	$ssh_port = $config['system']['ssh']['port'];
+if(config_path_enabled('system/ssh/port'))
+	$ssh_port = config_get_path('system/ssh/port');
 else
 	$ssh_port = "22";
 
@@ -250,8 +250,8 @@ $stream5_ports_both .= "\t           55555 56712";
 
 /* def perform_stat */
 
-if (!empty($config['installedpackages']['snortglobal']['stats_log_limit_size']) && $config['installedpackages']['snortglobal']['stats_log_limit_size'] != "0")
-	$stats_log_limit = "max_file_size " . $config['installedpackages']['snortglobal']['stats_log_limit_size'] * 1000;
+if (config_get_path('installedpackages/snortglobal/stats_log_limit_size'. '0') != '0')
+	$stats_log_limit = "max_file_size " . config_get_path('installedpackages/snortglobal/stats_log_limit_size') * 1000;
 else
 	$stats_log_limit = "";
 $perform_stat = <<<EOD
@@ -338,10 +338,7 @@ $ftp_default_client_engine = array( "name" => "default", "bind_to" => "all", "ma
 				    "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				    "bounce" => "yes", "bounce_to_net" => "", "bounce_to_port" => "" );
 
-if (!is_array($snortcfg['ftp_client_engine']['item'])) {
-	$snortcfg['ftp_client_engine'] = array();
-	$snortcfg['ftp_client_engine']['item'] = array();
-}
+array_init_path($snortcfg, 'ftp_client_engine/item');
 
 // If no FTP client engine is configured, use the default
 // to keep from breaking Snort.
@@ -418,10 +415,7 @@ $ftp_default_server_engine = array( "name" => "default", "bind_to" => "all", "po
 				    "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 
 				    "ignore_data_chan" => "no", "def_max_param_len" => 100 );
 
-if (!is_array($snortcfg['ftp_server_engine']['item'])) {
-	$snortcfg['ftp_server_engine'] = array();
-	$snortcfg['ftp_server_engine']['item'] = array();
-}
+array_init_path($snortcfg, 'ftp_server_engine/item');
 
 // If no FTP server engine is configured, use the default
 // to keep from breaking Snort.
@@ -953,7 +947,7 @@ EOD;
 
 /* define IP Reputation preprocessor */
 
-if (is_array($snortcfg['blist_files']['item'])) {
+if (array_get_path($snortcfg, 'blist_files/item')) {
 	$blist_files = "";
 	$bIsFirst = TRUE;
 	foreach ($snortcfg['blist_files']['item'] as $blist) {
@@ -965,7 +959,7 @@ if (is_array($snortcfg['blist_files']['item'])) {
 			$blist_files .= ", \\ \n\tblacklist " . SNORT_IPREP_PATH . $blist;    
 	}
 }
-if (is_array($snortcfg['wlist_files']['item'])) {
+if (array_get_path($snortcfg, 'wlist_files/item')) {
 	$wlist_files = "";
 	$bIsFirst = TRUE;
 	foreach ($snortcfg['wlist_files']['item'] as $wlist) {
@@ -1003,7 +997,7 @@ if ($snortcfg['sf_appid_statslog'] == "on") {
 	}
 	$appid_params .= ", \\\n\tapp_stats_filename app-stats.log";
 	$appid_params .= ", \\\n\tapp_stats_period {$snortcfg['sf_appid_stats_period']}";
-	$appid_params .= ", \\\n\tapp_stats_rollover_size " . strval($config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] * 1024);
+	$appid_params .= ", \\\n\tapp_stats_rollover_size " . strval(config_get_path('installedpackages/snortglobal/appid_stats_log_limit_size') * 1024);
 	$appid_params .= ", \\\n\tapp_stats_rollover_time 86400";
 }
 
@@ -1022,11 +1016,9 @@ if ($snortcfg['arp_unicast_detection'] == 'on') {
 else {
 	$arpspoof_preproc .= "preprocessor arpspoof\n";
 }
-if (is_array($snortcfg['arp_spoof_engine']['item']) && count($snortcfg['arp_spoof_engine']['item']) > 0) {
-	foreach ($snortcfg['arp_spoof_engine']['item'] as $f => $v) {
-		$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
-		$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
-	}
+foreach (array_get_path($snortcfg, 'arp_spoof_engine/item', []) as $f => $v) {
+	$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
+	$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
 }
 
 /***************************************/
@@ -1188,10 +1180,7 @@ $frag3_engine = "";
 
 // Now iterate configured Frag3 engines and write them to a string if enabled
 if ($snortcfg['frag3_detection'] == "on") {
-	if (!is_array($snortcfg['frag3_engine']['item'])) {
-		$snortcfg['frag3_engine'] = array();
-		$snortcfg['frag3_engine']['item'] = array();
-}
+	array_init_path($snortcfg, 'frag3_engine/item');
 
 	// If no frag3 tcp engine is configured, use the default
 	if (empty($snortcfg['frag3_engine']['item']))
@@ -1287,10 +1276,7 @@ $stream5_tcp_engine = "";
 
 // Now iterate configured Stream5 TCP engines and write them to a string if enabled
 if ($snortcfg['stream5_reassembly'] == "on") {
-	if (!is_array($snortcfg['stream5_tcp_engine']['item'])) {
-		$snortcfg['stream5_tcp_engine'] = array();
-		$snortcfg['stream5_tcp_engine']['item'] = array();
-}
+	array_init_path($snortcfg, 'stream5_tcp_engine/item');
 
 	// If no stream5 tcp engine is configured, use the default
 	if (empty($snortcfg['stream5_tcp_engine']['item']))
@@ -1456,10 +1442,7 @@ $http_inspect_servers = "";
 
 // Iterate configured HTTP_INSPECT servers and write them to string if HTTP_INSPECT enabled
 if ($snortcfg['http_inspect'] <> "off") {
-	if (!is_array($snortcfg['http_inspect_engine']['item'])) {
-		$snortcfg['http_inspect_engine'] = array();
-		$snortcfg['http_inspect_engine']['item'] = array();
-}
+	array_init_path($snortcfg, 'http_inspect_engine/item');
 
 	// If no http_inspect_engine is configured, use the default
 	if (empty($snortcfg['http_inspect_engine']['item']))
@@ -1557,5 +1540,5 @@ if ($snortcfg['http_inspect'] <> "off") {
 	/* Trim off the final trailing newline */
 	$http_inspect_server = rtrim($http_inspect_server);
 }
-
+return true;
 ?>

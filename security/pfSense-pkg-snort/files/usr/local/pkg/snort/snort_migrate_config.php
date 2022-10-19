@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,20 +32,8 @@ require_once("functions.inc");
 /* array values within the "config.xml" file in the [snortglobals] section. */
 /****************************************************************************/
 
-global $config;
-
-if (!is_array($config['installedpackages'])) {
-	$config['installedpackages'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal'])) {
-	$config['installedpackages']['snortglobal'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-
 // Just exit if this is a clean install with no saved settings
-if (empty($config['installedpackages']['snortglobal']['rule']))
+if (count(config_get_path('installedpackages/snortglobal/rule', [])) < 1)
 	return;
 
 /****************************************************************************/
@@ -58,10 +46,10 @@ syslog(LOG_NOTICE, "[Snort] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should
 // auto-disabled as part of the upgrade due to config format changes.
-if (empty($config['installedpackages']['snortglobal']['snort_config_ver']) && 
-    ($config['installedpackages']['snortsync']['config']['varsynconchanges'] == 'auto' ||
-     $config['installedpackages']['snortsync']['config']['varsynconchanges'] == 'manual')) {
-	$config['installedpackages']['snortsync']['config']['varsynconchanges']	= "disabled";
+if (empty(config_get_path('installedpackages/snortglobal/snort_config_ver')) &&
+    (config_get_path('installedpackages/snortsync/config/varsynconchanges') == 'auto' ||
+     config_get_path('installedpackages/snortsync/config/varsynconchanges') == 'manual')) {
+	config_set_path('installedpackages/snortsync/config/varsynconchanges',	'disabled');
 	syslog(LOG_NOTICE, "[Snort] Turning off Snort Sync on this host due to configuration format changes in this update.  Upgrade all Snort Sync targets to this same Snort package version before re-enabling Snort Sync.");
 	$updated_cfg = true;
 }
@@ -69,73 +57,72 @@ if (empty($config['installedpackages']['snortglobal']['snort_config_ver']) &&
 /**********************************************************/
 /* Create new Auto SID Mgmt settings if not set           */
 /**********************************************************/
-if (empty($config['installedpackages']['snortglobal']['auto_manage_sids'])) {
-	$config['installedpackages']['snortglobal']['auto_manage_sids'] = "off";
+if (empty(config_get_path('installedpackages/snortglobal/auto_manage_sids'))) {
+	config_set_path('installedpackages/snortglobal/auto_manage_sids', 'off');
 	$updated_cfg = true;
 }
 
 /**********************************************************/
 /* Create new LOG MGMT settings if not set                */
 /**********************************************************/
-if (empty($config['installedpackages']['snortglobal']['enable_log_mgmt'])) {
-	$config['installedpackages']['snortglobal']['enable_log_mgmt'] = "on";
-	$config['installedpackages']['snortglobal']['alert_log_limit_size'] = "500";
-	$config['installedpackages']['snortglobal']['alert_log_retention'] = "336";
-	$config['installedpackages']['snortglobal']['appid_alerts_log_retention'] = "336";
-	$config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'] = "500";
-	$config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] = "1000";
-	$config['installedpackages']['snortglobal']['appid_stats_log_retention'] = "168";
-	$config['installedpackages']['snortglobal']['event_pkts_log_limit_size'] = "0";
-	$config['installedpackages']['snortglobal']['event_pkts_log_retention'] = "336";
-	$config['installedpackages']['snortglobal']['sid_changes_log_limit_size'] = "250";
-	$config['installedpackages']['snortglobal']['sid_changes_log_retention'] = "336";
-	$config['installedpackages']['snortglobal']['stats_log_limit_size'] = "500";
-	$config['installedpackages']['snortglobal']['stats_log_retention'] = "168";
+if (empty(config_get_path('installedpackages/snortglobal/enable_log_mgmt'))) {
+	config_set_path('installedpackages/snortglobal/enable_log_mgmt', 'on');
+	config_set_path('installedpackages/snortglobal/alert_log_limit_size', "500");
+	config_set_path('installedpackages/snortglobal/alert_log_retention', "336");
+	config_set_path('installedpackages/snortglobal/appid_alerts_log_retention', "336");
+	config_set_path('installedpackages/snortglobal/appid_alerts_log_limit_size', "500");
+	config_set_path('installedpackages/snortglobal/appid_stats_log_limit_size', "1000");
+	config_set_path('installedpackages/snortglobal/appid_stats_log_retention', "168");
+	config_set_path('installedpackages/snortglobal/event_pkts_log_limit_size', "0");
+	config_set_path('installedpackages/snortglobal/event_pkts_log_retention', "336");
+	config_set_path('installedpackages/snortglobal/sid_changes_log_limit_size', "250");
+	config_set_path('installedpackages/snortglobal/sid_changes_log_retention', "336");
+	config_set_path('installedpackages/snortglobal/stats_log_limit_size', "500");
+	config_set_path('installedpackages/snortglobal/stats_log_retention', "168");
 	$updated_cfg = true;
 }
-if (empty($config['installedpackages']['snortglobal']['appid_stats_log_limit_size'])) {
-	$config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] = "1000";
+if (empty(config_get_path('installedpackages/snortglobal/appid_stats_log_limit_size'))) {
+	config_set_path('installedpackages/snortglobal/appid_stats_log_limit_size', '1000');
 	$updated_cfg = true;
 }
-if (empty($config['installedpackages']['snortglobal']['appid_stats_log_retention'])) {
-	$config['installedpackages']['snortglobal']['appid_stats_log_retention'] = "168";
+if (empty(config_get_path('installedpackages/snortglobal/appid_stats_log_retention'))) {
+	config_set_path('installedpackages/snortglobal/appid_stats_log_retention', '168');
 	$updated_cfg = true;
 }
-if (empty($config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'])) {
-	$config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'] = "500";
+if (empty(config_get_path('installedpackages/snortglobal/appid_alerts_log_limit_size'))) {
+	config_set_path('installedpackages/snortglobal/appid_alerts_log_limit_size', '500');
 	$updated_cfg = true;
 }
-if (empty($config['installedpackages']['snortglobal']['appid_alerts_log_retention'])) {
-	$config['installedpackages']['snortglobal']['appid_alerts_log_retention'] = "336";
+if (empty(config_get_path('installedpackages/snortglobal/appid_alerts_log_retention'))) {
+	config_set_path('installedpackages/snortglobal/appid_alerts_log_retention', '336');
 	$updated_cfg = true;
 }
 
 /**********************************************************/
 /* Create new VERBOSE_LOGGING setting if not set          */
 /**********************************************************/
-if (empty($config['installedpackages']['snortglobal']['verbose_logging'])) {
-	$config['installedpackages']['snortglobal']['verbose_logging'] = "off";
+if (empty(config_get_path('installedpackages/snortglobal/verbose_logging'))) {
+	config_set_path('installedpackages/snortglobal/verbose_logging', 'off');
 	$updated_cfg = true;
 }
 
 /**********************************************************/
 /* Create new OpenAppID settings if not set               */
 /**********************************************************/
-if (empty($config['installedpackages']['snortglobal']['openappid_detectors'])) {
-	$config['installedpackages']['snortglobal']['openappid_detectors'] = "off";
+if (empty(config_get_path('installedpackages/snortglobal/openappid_detectors'))) {
+	config_set_path('installedpackages/snortglobal/openappid_detectors', 'off');
 	$updated_cfg = true;
 }
-if (empty($config['installedpackages']['snortglobal']['openappid_rules_detectors'])) {
-        $config['installedpackages']['snortglobal']['openappid_rules_detectors'] = "off";
+if (empty(config_get_path('installedpackages/snortglobal/openappid_rules_detectors'))) {
+        config_set_path('installedpackages/snortglobal/openappid_rules_detectors', 'off');
         $updated_cfg = true;
 }
-
 
 /**********************************************************/
 /* Create new HIDE_DEPRECATED_RULES setting if not set    */
 /**********************************************************/
-if (empty($config['installedpackages']['snortglobal']['hide_deprecated_rules'])) {
-	$config['installedpackages']['snortglobal']['hide_deprecated_rules'] = "off";
+if (empty(config_get_path('installedpackages/snortglobal/hide_deprecated_rules'))) {
+	config_set_path('installedpackages/snortglobal/hide_deprecated_rules', 'off');
 	$updated_cfg = true;
 }
 
@@ -144,14 +131,8 @@ if (empty($config['installedpackages']['snortglobal']['hide_deprecated_rules']))
 /* /var/db/snort/sidmods directory to Base64 encoded      */
 /* strings in SID_MGMT_LIST array in config.xml.          */
 /**********************************************************/
-if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists'])) {
-	$config['installedpackages']['snortglobal']['sid_mgmt_lists'] = array();
-}
-if (empty($config['installedpackages']['snortglobal']['sid_list_migration']) && count($config['installedpackages']['snortglobal']['sid_mgmt_lists']) < 1) {
-	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
-		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
-	}
-	$a_list = &$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+if (!config_path_enabled('installedpackages/snortglobal', 'sid_list_migration') && count(config_get_path('installedpackages/snortglobal/sid_mgmt_lists', [])) < 1) {
+	$a_list = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []);
 	$sidmodfiles = return_dir_as_array("/var/db/snort/sidmods/");
 	foreach ($sidmodfiles as $sidfile) {
 		$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
@@ -164,22 +145,22 @@ if (empty($config['installedpackages']['snortglobal']['sid_list_migration']) && 
 		}
 	}
 
+	// Write back original array plus any additions from above
+	config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
+
 	// Set a flag to show one-time migration is completed.
 	// We can increment this flag in later versions if we
 	// need to import additional files as SID_MGMT_LISTS.
-	$config['installedpackages']['snortglobal']['sid_list_migration'] = "2";
+	config_set_path('installedpackages/snortglobal/sid_list_migration', '2');
 	$updated_cfg = true;
 	unset($a_list);
 }
-elseif ($config['installedpackages']['snortglobal']['sid_list_migration'] < "2") {
+elseif (config_get_path('installedpackages/snortglobal/sid_list_migration', '0') < '2') {
 
 	// Import dropsid-sample.conf and rejectsid-sample.conf
 	// files if missing from the SID_MGMT_LIST array.
-	if (!is_array($config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'])) {
-		$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'] = array();
-	}
 	$sidmodfiles = array( "dropsid-sample.conf", "rejectsid-sample.conf" );
-	$a_list = &$config['installedpackages']['snortglobal']['sid_mgmt_lists']['item'];
+	$a_list = config_get_path('installedpackages/snortglobal/sid_mgmt_lists/item', []);
 	foreach ($sidmodfiles as $sidfile) {
 		if (!in_array($sidfile, $a_list)) {
 			$data = file_get_contents("/var/db/snort/sidmods/" . $sidfile);
@@ -193,8 +174,11 @@ elseif ($config['installedpackages']['snortglobal']['sid_list_migration'] < "2")
 		}		
 	}
 
+	// Write back original array plus any additions from above
+	config_set_path('installedpackages/snortglobal/sid_mgmt_lists/item', $a_list);
+
 	// Set a flag to show this one-time migration is completed
-	$config['installedpackages']['snortglobal']['sid_list_migration'] = "2";
+	config_set_path('installedpackages/snortglobal/sid_list_migration', '2');
 	$updated_cfg = true;
 	unset($a_list);
 }
@@ -204,12 +188,12 @@ elseif ($config['installedpackages']['snortglobal']['sid_list_migration'] < "2")
 /* from the package configuration. The status is now      */
 /* stored in a local file.                                */
 /**********************************************************/
-if (isset($config['installedpackages']['snortglobal']['last_rule_upd_status'])) {
-	unset($config['installedpackages']['snortglobal']['last_rule_upd_status']);
+if (config_path_enabled('installedpackages/snortglobal', 'last_rule_upd_status')) {
+	config_del_path('installedpackages/snortglobal/last_rule_upd_status');
 	$updated_cfg = true;
 }
-if (isset($config['installedpackages']['snortglobal']['last_rule_upd_time'])) {
-	unset($config['installedpackages']['snortglobal']['last_rule_upd_time']);
+if (config_path_enabled('installedpackages/snortglobal', 'last_rule_upd_time')) {
+	config_del_path('installedpackages/snortglobal/last_rule_upd_time');
 	$updated_cfg = true;
 }
 
@@ -219,10 +203,9 @@ if (isset($config['installedpackages']['snortglobal']['last_rule_upd_time'])) {
 /* large numbers of pfSense users hitting Snort.org at    */
 /* the same minute past the hour for rules updates.       */
 /**********************************************************/
-if (empty($config['installedpackages']['snortglobal']['rule_update_starttime']) || 
-	  $config['installedpackages']['snortglobal']['rule_update_starttime'] == '00:05' || 
-	  strlen($config['installedpackages']['snortglobal']['rule_update_starttime']) < 5 ) {
-	$config['installedpackages']['snortglobal']['rule_update_starttime'] = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
+if (config_get_path('installedpackages/snortglobal/rule_update_starttime', '00:05') == '00:05' ||
+    strlen(config_get_path('installedpackages/snortglobal/rule_update_starttime')) < 5 ) {
+	config_set_path('installedpackages/snortglobal/rule_update_starttime', "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT));
 	$updated_cfg = true;
 }
 
@@ -232,9 +215,10 @@ if (empty($config['installedpackages']['snortglobal']['rule_update_starttime']) 
 /* element for existing entries into an array. Migrate    */
 /* any existing <address> to the new array structure.     */
 /**********************************************************/
-if (is_array($config['installedpackages']['snortglobal']['whitelist']['item'])) {
-	foreach ($config['installedpackages']['snortglobal']['whitelist']['item'] as &$wlisti) {
-		if (!is_array($wlisti['address']) && !is_array($wlisti['address']['item']) && !empty($wlisti['address'])) {
+if (config_get_path('installedpackages/snortglobal/whitelist/item')) {
+	$a_wlist = config_get_path('installedpackages/snortglobal/whitelist/item', []);
+	foreach ($a_wlist as &$wlisti) {
+		if (!array_get_path($wlisti, 'address/item') && !empty($wlisti['address'])) {
 			$tmp = $wlisti['address'];
 			$wlisti['address'] = array();
 			$wlisti['address']['item'] = array();
@@ -243,45 +227,23 @@ if (is_array($config['installedpackages']['snortglobal']['whitelist']['item'])) 
 		}
 	}
 
-	// Release reference to whitelist array
-	unset($wlisti);
+	// Store updated whitelist array in configuration
+	config_set_path('installedpackages/snortglobal/whitelist/item', $a_wlist);
 }
 
 /**********************************************************/
 /* Migrate per interface settings if required.            */
 /**********************************************************/
-foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
-	// Initialize arrays for supported preprocessors if necessary
-	if (!is_array($rule['frag3_engine'])) {
-		$rule['frag3_engine'] = array();
-	}
-	if (!is_array($rule['frag3_engine']['item'])) {
-		$rule['frag3_engine']['item'] = array();
-	}
-	if (!is_array($rule['stream5_tcp_engine'])) {
-		$rule['stream5_tcp_engine'] = array();
-	}
-	if (!is_array($rule['stream5_tcp_engine']['item'])) {
-		$rule['stream5_tcp_engine']['item'] = array();
-	}
-	if (!is_array($rule['http_inspect_engine'])) {
-		$rule['http_inspect_engine'] = array();
-	}
-	if (!is_array($rule['http_inspect_engine']['item'])) {
-		$rule['http_inspect_engine']['item'] = array();
-	}
-	if (!is_array($rule['ftp_client_engine'])) {
-		$rule['ftp_client_engine'] = array();
-	}
-	if (!is_array($rule['ftp_client_engine']['item'])) {
-		$rule['ftp_client_engine']['item'] = array();
-	}
-	if (!is_array($rule['ftp_server_engine'])) {
-		$rule['ftp_server_engine'] = array();
-	}
-	if (!is_array($rule['ftp_server_engine']['item'])) {
-		$rule['ftp_server_engine']['item'] = array();
-	}
+$a_rules = config_get_path('installedpackages/snortglobal/rule', []);
+foreach ($a_rules as &$rule) {
+
+	// Initialize multiple config engine arrays for supported preprocessors
+	array_init_path($rule, 'frag3_engine/item');
+	array_init_path($rule, 'ftp_client_engine/item');
+	array_init_path($rule, 'ftp_server_engine/item');
+	array_init_path($rule, 'http_inspect_engine/item');
+	array_init_path($rule, 'stream5_tcp_engine/item');
+	array_init_path($rule, 'arp_spoof_engine/item');
 
 	// Create a default "frag3_engine" if none are configured
 	if (empty($rule['frag3_engine']['item'])) {
@@ -860,8 +822,8 @@ foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
 	/* End Barnyard2 parameter removal                        */
 	/**********************************************************/
 }
-// Release reference to config array
-unset($rule);
+// Store updated interface info to configuration
+config_set_path('installedpackages/snortglobal/rule', $a_rules);
 
 // Log a message if we changed anything
 if ($updated_cfg) {
@@ -871,4 +833,5 @@ else {
 	syslog(LOG_NOTICE, "[Snort] Configuration version is current...");
 }
 
+return true;
 ?>

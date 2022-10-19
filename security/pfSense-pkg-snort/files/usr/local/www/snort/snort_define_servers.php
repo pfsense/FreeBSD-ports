@@ -6,7 +6,7 @@
  * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya.
- * Copyright (c) 2014-2021 Bill Meeks
+ * Copyright (c) 2014-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,7 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_nat = &$config['installedpackages']['snortglobal']['rule'];
+$a_nat = config_get_path('installedpackages/snortglobal/rule', []);
 
 /* NOTE: KEEP IN SYNC WITH SNORT.INC since globals do not work well with package */
 /* define servers and ports snortdefservers */
@@ -56,11 +53,8 @@ $snort_servers = array (
 	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24"
 );
 
-/* if user has defined a custom ssh port, use it */
-if(is_array($config['system']['ssh']) && isset($config['system']['ssh']['port']))
-        $ssh_port = $config['system']['ssh']['port'];
-else
-        $ssh_port = "22";
+/* if user has defined a custom ssh port, use it, else default to '22' */
+$ssh_port = config_get_path('system/ssh/port', '22');
 $snort_ports = array(
 	"dns_ports" => "53", "smtp_ports" => "25", "mail_ports" => "25,465,587,691",
 	"http_ports" => "36,80,81,82,83,84,85,86,87,88,89,90,311,383,591,593,631,901,1220,1414,1533,1741,1830,2301,2381,2809,3037,3057,3128,3443,3702,4343,4848,5250,6080,6988,7000,7001,7144,7145,7510,7777,7779,8000,8008,8014,8028,8080,8081,8082,8085,8088,8090,8118,8123,8180,8181,8222,8243,8280,8300,8500,8800,8888,8899,9000,9060,9080,9090,9091,9443,9999,10000,11371,15489,29991,33300,34412,34443,34444,41080,44440,50000,50002,51423,55555,56712", 
@@ -90,7 +84,7 @@ $pconfig = $a_nat[$id];
 
 /* convert fake interfaces to real */
 $if_real = get_real_interface($pconfig['interface']);
-$snort_uuid = $config['installedpackages']['snortglobal']['rule'][$id]['uuid'];
+$snort_uuid = config_get_path("installedpackages/snortglobal/rule/{$id}/uuid");
 
 if ($_POST['save']) {
 
@@ -126,7 +120,7 @@ if ($_POST['save']) {
 		}
 
 		$a_nat[$id] = $natent;
-
+		config_set_path('installedpackages/snortglobal/rule', $a_nat);
 		write_config("Snort pkg: modified settings for VARIABLES tab.");
 
 		/* Update the snort conf file for this interface. */
@@ -138,9 +132,6 @@ if ($_POST['save']) {
 
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
-
-		/* Release config array reference */
-		unset($a_nat);
 
 		/* after click go to this page */
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -168,9 +159,6 @@ if ($input_errors)
 	print_input_errors($input_errors); // TODO: add checks
 if ($savemsg)
 	print_info_box($savemsg);
-
-// Finished with config array reference, so release it
-unset($a_nat);
 
 $tab_array = array();
 $tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");

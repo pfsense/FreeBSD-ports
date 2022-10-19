@@ -26,7 +26,7 @@ require_once("service-utils.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
 $snortlibdir = SNORT_BASEDIR . "lib";
@@ -35,16 +35,16 @@ $snortiprepdir = SNORT_IPREP_PATH;
 $snortbindir = SNORT_BINDIR;
 
 /* define checks */
-$oinkid = $config['installedpackages']['snortglobal']['oinkmastercode'];
-$etproid = $config['installedpackages']['snortglobal']['etpro_code'];
-$snortdownload = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
-$emergingthreats = $config['installedpackages']['snortglobal']['emergingthreats'] == 'on' ? 'on' : 'off';
-$etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'on' ? 'on' : 'off';
-$snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
-$vrt_enabled = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
-$openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'] == 'on' ? 'on' : 'off';
-$openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
-$feodotracker_rules = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == 'on' ? 'on' : 'off';
+$oinkid = config_get_path('installedpackages/snortglobal/oinkmastercode');
+$etproid = config_get_path('installedpackages/snortglobal/etpro_code');
+$snortdownload = config_get_path('installedpackages/snortglobal/snortdownload') == 'on' ? 'on' : 'off';
+$emergingthreats = config_get_path('installedpackages/snortglobal/emergingthreats') == 'on' ? 'on' : 'off';
+$etpro = config_get_path('installedpackages/snortglobal/emergingthreats_pro') == 'on' ? 'on' : 'off';
+$snortcommunityrules = config_get_path('installedpackages/snortglobal/snortcommunityrules') == 'on' ? 'on' : 'off';
+$vrt_enabled = config_get_path('installedpackages/snortglobal/snortdownload') == 'on' ? 'on' : 'off';
+$openappid_detectors = config_get_path('installedpackages/snortglobal/openappid_detectors') == 'on' ? 'on' : 'off';
+$openappid_rules_detectors = config_get_path('installedpackages/snortglobal/openappid_rules_detectors') == 'on' ? 'on' : 'off';
+$feodotracker_rules = config_get_path('installedpackages/snortglobal/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
 
 /* Working directory for downloaded rules tarballs and extraction */
 $tmpfname = "{$g['tmp_path']}/snort_rules_up";
@@ -198,12 +198,12 @@ function snort_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? false : true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, config_get_path('installedpackages/snortglobal/curl_no_verify_ssl_peer') == "on" ? false : true);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
 
 		// Honor any system restrictions on sending USERAGENT info
-		if (!isset($config['system']['do_not_send_host_uuid'])) {
+		if (!config_path_enabled('system', 'do_not_send_host_uuid')) {
 			curl_setopt($ch, CURLOPT_USERAGENT, $g['product_name'] . '/' . $g['product_version'] . ' : ' . get_single_sysctl('kern.hostuuid'));
 		}
 		else {
@@ -211,13 +211,13 @@ function snort_download_file_url($url, $file_out) {
 		}
 
 		// Use the system proxy server setttings if configured
-		if (!empty($config['system']['proxyurl'])) {
-			curl_setopt($ch, CURLOPT_PROXY, $config['system']['proxyurl']);
-			if (!empty($config['system']['proxyport']))
-				curl_setopt($ch, CURLOPT_PROXYPORT, $config['system']['proxyport']);
-			if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
+		if (!empty(config_get_path('system/proxyurl'))) {
+			curl_setopt($ch, CURLOPT_PROXY, config_get_path('system/proxyurl'));
+			if (!empty(config_get_path('system/proxyport')))
+				curl_setopt($ch, CURLOPT_PROXYPORT, config_get_path('system/proxyport'));
+			if (!empty(config_get_path('system/proxyuser')) && !empty(config_get_path('system/proxypass'))) {
 				@curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_ANY | CURLAUTH_ANYSAFE);
-				curl_setopt($ch, CURLOPT_PROXYUSERPWD, "{$config['system']['proxyuser']}:{$config['system']['proxypass']}");
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, config_get_path('system/proxyuser') . ":" . config_get_path('system/proxypass'));
 			}
 		}
 
@@ -447,8 +447,7 @@ $update_errors = false;
 
 /* Save current state (running/not running) for each enabled Snort interface */
 $active_interfaces = array();
-init_config_arr(array('installedpackages', 'snortglobal', 'rule'));
-foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
+foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
 	$if_real = get_real_interface($value['interface']);
 
 	/* Skip processing for instances whose underlying physical        */
@@ -802,7 +801,7 @@ if ($emergingthreats == 'on') {
 }
 
 // If removing deprecated rules categories, then do it
-if ($config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on") {
+if (config_get_path('installedpackages/snortglobal/hide_deprecated_rules') == "on") {
 	syslog(LOG_NOTICE, gettext("[Snort] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 	snort_remove_dead_rules();
 }
@@ -865,8 +864,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		@copy("{$tmpfname}/{$prefix}gen-msg.map", "{$snortdir}/gen-msg.map");
 
 	/* Start the rules rebuild proccess for each configured interface */
-	if (is_array($config['installedpackages']['snortglobal']['rule']) &&
-	    !empty($config['installedpackages']['snortglobal']['rule'])) {
+	if (count(config_get_path('installedpackages/snortglobal/rule', [])) > 0) {
 
 		/* Set the flag to force rule rebuilds since we downloaded new rules,    */
 		/* except when in post-install mode.  Post-install does its own rebuild. */
@@ -876,7 +874,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			$rebuild_rules = true;
 
 		/* Create configuration for each active Snort interface */
-		foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
+		foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			/* Skip processing for instances whose underlying physical        */
@@ -935,7 +933,7 @@ elseif ($openappid_detectors == 'on') {
 	/* Only updated OpenAppID detectors, so do not need to rebuild all interface rules.   */
 	/* Restart snort if running, and not in post-install, so as to pick up the detectors. */
 	/**************************************************************************************/
-	foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
+	foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $value) {
 		$if_real = get_real_interface($value['interface']);
 
 		/* Skip processing for instances whose underlying physical        */
@@ -975,4 +973,6 @@ else {
 	$status .= gettext("success");
 }
 @file_put_contents(SNORTDIR . "/rulesupd_status", $status);
+
+return true;
 ?>

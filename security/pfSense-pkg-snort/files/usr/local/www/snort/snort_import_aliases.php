@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2018-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2021 Bill Meeks
+ * Copyright (c) 2013-2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,34 +48,11 @@ if (is_null($id) || is_null($eng)) {
 // multiple IP alias).
 $selectablealias = false;
 
-// Initialize required array variables as necessary
-if (!is_array($config['aliases'])) {
-	$config['aliases'] = array();
-}
-if (!is_array($config['aliases']['alias'])) {
-	$config['aliases']['alias'] = array();
-}
-$a_aliases = $config['aliases']['alias'];
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-
-// The $eng variable points to the specific Snort config section
-// engine we are importing values into.  Initialize the config.xml
-// array if necessary.
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id][$eng])) {
-	$config['installedpackages']['snortglobal']['rule'][$id][$eng] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id][$eng]['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id][$eng]['item'] = array();
-}
+$a_aliases = config_get_path('aliases/alias', []);
 
 // Initialize a pointer to the Snort config section engine we are
 // importing values into.
-$a_nat = &$config['installedpackages']['snortglobal']['rule'][$id][$eng]['item'];
+$a_nat = config_get_path("installedpackages/snortglobal/rule/{$id}/{$eng}/item", []);
 
 // Build a lookup array of currently used engine 'bind_to' Aliases 
 // so we can screen matching Alias names from the list.
@@ -211,8 +188,10 @@ if ($_POST['save']) {
 		}
 
 		// Now write the new engine array to conf and return
+		config_set_path("installedpackages/snortglobal/rule/{$id}/{$eng}/item", $a_nat);
 		write_config("Snort pkg: imported new host or network alias.");
 
+		// Return to the Preprocessors page
 		header("Location: /snort/snort_preprocessors.php?id={$id}{$anchor}");
 		exit;
 	}

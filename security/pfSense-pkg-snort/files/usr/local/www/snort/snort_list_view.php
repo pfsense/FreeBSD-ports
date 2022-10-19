@@ -4,9 +4,9 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2014 Bill Meeks
  * Copyright (c) 2006-2009 Volker Theile
  * Copyright (c) 2008-2009 Robert Zelaya
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-global $g, $config;
+global $g;
 
 $contents = '';
 
@@ -37,7 +37,7 @@ $type = htmlspecialchars($_GET['type']);
 $title = "List";
 
 if (isset($id) && isset($wlist)) {
-	$a_rule = $config['installedpackages']['snortglobal']['rule'][$id];
+	$a_rule = config_get_path("installedpackage/snortglobal/rule/{$id}", []);
 	if ($type == "homenet") {
 		$list = snort_build_list($a_rule, $wlist);
 		$contents = implode("\n", $list);
