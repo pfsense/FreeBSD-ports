@@ -973,4 +973,6 @@ else {
 	$status .= gettext("success");
 }
 @file_put_contents(SNORTDIR . "/rulesupd_status", $status);
+
+return true;
 ?>

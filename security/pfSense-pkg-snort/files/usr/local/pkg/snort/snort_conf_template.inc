@@ -114,6 +114,5 @@ output alert_csv: alert timestamp,sig_generator,sig_id,sig_rev,msg,proto,src,src
 EOD;
 
 // End of snort.conf template code
-
+return true;
 ?>
-

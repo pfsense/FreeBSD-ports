@@ -1540,5 +1540,5 @@ if ($snortcfg['http_inspect'] <> "off") {
 	/* Trim off the final trailing newline */
 	$http_inspect_server = rtrim($http_inspect_server);
 }
-
+return true;
 ?>

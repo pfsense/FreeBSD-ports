@@ -113,7 +113,6 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 	syslog(LOG_NOTICE, gettext("[Snort] Downloading and updating configured rule sets."));
 	update_status(gettext("Downloading configured rule sets. This may take some time...") . "\n");
 	include '/usr/local/pkg/snort/snort_check_for_rule_updates.php';
-	update_status(gettext("Finished downloading and installing configured rules.") . "\n");
 	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
 
@@ -153,7 +152,7 @@ if (config_get_path('installedpackages/snortglobal/forcekeepsettings') == 'on') 
 		snort_prepare_rule_files($snortcfg, $snortcfgdir);
 
 		// Clean up variables we no longer need and free memory
-		unset($snort_conf_text, $selected_rules_sections, $suppress_file_name, $snort_misc_include_rules, $spoink_type, $snortunifiedlog_type, $alertsystemlog_type);
+		unset($selected_rules_sections, $suppress_file_name, $snort_misc_include_rules, $spoink_type, $snortunifiedlog_type, $alertsystemlog_type);
 		unset($home_net, $external_net, $ipvardef, $portvardef);
 		update_status(gettext(" done.") . "\n");
 	}
