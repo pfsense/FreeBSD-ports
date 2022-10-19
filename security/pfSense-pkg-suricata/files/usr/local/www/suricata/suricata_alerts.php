@@ -186,19 +186,9 @@ if ($a_instance['blockoffenders'] == 'on' && ($a_instance['ips_mode'] == 'ips_mo
 }
 
 $pconfig = array();
-if (config_get_path('installedpackages/suricata/alertsblocks')) {
-	$pconfig['arefresh'] = config_get_path('installedpackages/suricata/alertsblocks/arefresh');
-	$pconfig['alertnumber'] = config_get_path('installedpackages/suricata/alertsblocks/alertnumber');
-}
-
-if (empty($pconfig['alertnumber']))
-	$pconfig['alertnumber'] = 250;
-if (empty($pconfig['arefresh']))
-	$pconfig['arefresh'] = 'on';
-$anentries = $pconfig['alertnumber'];
-if (!is_numeric($anentries)) {
-	$anentries = 250;
-}	
+$pconfig['arefresh'] = config_get_path('installedpackages/suricata/alertsblocks/arefresh', 'on');
+$pconfig['alertnumber'] = config_get_path('installedpackages/suricata/alertsblocks/alertnumber', '250');
+$anentries = (int)$pconfig['alertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
@@ -391,63 +381,27 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 	// action lists.
 	switch ($action) {
 		case "action_default":
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_alert":
-			if (!is_array($alertsid[$gid])) {
-				$alertsid[$gid] = array();
-			}
-			if (!is_array($alertsid[$gid][$sid])) {
-				$alertsid[$gid][$sid] = array();
-			}
-			$alertsid[$gid][$sid] = "alertsid";
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($alertsid, "{$gid}/{$sid}", "alertsid");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_drop":
-			if (!is_array($dropsid[$gid])) {
-				$dropsid[$gid] = array();
-			}
-			if (!is_array($dropsid[$gid][$sid])) {
-				$dropsid[$gid][$sid] = array();
-			}
-			$dropsid[$gid][$sid] = "dropsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($dropsid, "{$gid}/{$sid}", "dropsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_reject":
-			if (!is_array($rejectsid[$gid])) {
-				$rejectsid[$gid] = array();
-			}
-			if (!is_array($rejectsid[$gid][$sid])) {
-				$rejectsid[$gid][$sid] = array();
-			}
-			$rejectsid[$gid][$sid] = "rejectsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
+			array_set_path($rejectsid, "{$gid}/{$sid}", "rejectsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
 			break;
 
 		default:

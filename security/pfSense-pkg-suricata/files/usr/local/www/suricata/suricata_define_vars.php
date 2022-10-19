@@ -50,11 +50,8 @@ $suricata_servers = array (
 	"sip_servers" => "\$HOME_NET"
 );
 
-/* if user has defined a custom ssh port, use it */
-if(config_get_path('system/ssh/port'))
-		$ssh_port = config_get_path('system/ssh/port');
-else
-		$ssh_port = "22";
+/* if user has defined a custom ssh port, use it, else default to '22' */
+$ssh_port = config_get_path('system/ssh/port', '22');
 $suricata_ports = array(
 	"ftp_ports" => "21",
 	"http_ports" => "80",

@@ -39,7 +39,7 @@ else
 	$id = 0;
 
 $a_nat = config_get_path('installedpackages/suricata/rule', []);
-$id_gen = count(config_get_path('installedpackages/suricata/rule', []));
+$id_gen = count($a_nat);
 
 // Get list of configured firewall interfaces
 $ifaces = get_configured_interface_list();
