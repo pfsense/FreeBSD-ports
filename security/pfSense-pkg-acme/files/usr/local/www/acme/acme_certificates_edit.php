@@ -55,7 +55,7 @@ global $simplefields;
 $simplefields = array(
 	"name","descr","status",
 	"acmeaccount","keylength","ocspstaple",
-	"dnssleep","renewafter"
+	"preferredchain", "dnssleep","renewafter"
 );
 
 
@@ -388,6 +388,14 @@ $section->addInput(new \Form_Checkbox(
 	$pconfig['ocspstaple']
 ))->setHelp('Do not enable this option unless the software using the certificate also supports OCSP stapling.');
 
+$section->addInput(new \Form_Input(
+	'preferredchain',
+	'Preferred Chain',
+	'text',
+	$pconfig['preferredchain']
+))->setHelp('If the ACME CA provides multiple trust chains, this field chooses an alternate %1$spreferred chain%2$s (uses a case-insensitive substring match).',
+	'<a href="https://github.com/acmesh-official/acme.sh/wiki/Preferred-Chain">', '</a>');
+
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 
 	"List all domain names that should be included in the certificate here, and how to validate ownership by use of a webroot or dns challenge<br/>"
@@ -404,7 +412,10 @@ $section->addInput(new \Form_Input(
 	'number',
 	$pconfig['dnssleep'],
 	['min' => '1', 'max' => '3600']
-))->setHelp('When using a DNS validation method configure how much time to wait before attempting verification after the txt records are added. Defaults to 120 seconds.');
+))->setHelp('When using a DNS validation method this option disables automatic DNS polling and configures ' .
+	'a specific amount of time, in seconds, to wait before attempting verification after adding TXT records. ' .
+	'%1$sThe default behavior is to automatically poll public DNS servers for the records until ' .
+	'they are found, rather than waiting a set amount of time.', '<br/><br/>');
 
 $section->addInput(new \Form_StaticText(
 	'Actions list', 
