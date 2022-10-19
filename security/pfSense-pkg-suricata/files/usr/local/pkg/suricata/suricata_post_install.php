@@ -94,14 +94,14 @@ foreach ($map_files as $f) {
 // Download the latest GeoIP DB updates and create cron task if the feature is enabled
 if (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == 'on' && !empty(config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key'))) {
 	syslog(LOG_NOTICE, gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
-	include("/usr/local/pkg/suricata/suricata_geoipupdate.php");
+	include '/usr/local/pkg/suricata/suricata_geoipupdate.php';
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 6, "*", "*", "*", "root");
 }
 
 // Download the latest ET IQRisk updates and create cron task if the feature is not disabled
 if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on') {
 	syslog(LOG_NOTICE, gettext("[Suricata] Installing Emerging Threats IQRisk IP List..."));
-	include("/usr/local/pkg/suricata/suricata_etiqrisk_update.php");
+	include '/usr/local/pkg/suricata/suricata_etiqrisk_update.php';
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
 }
 
@@ -146,10 +146,10 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 
 	/* Do one-time settings migration for new version configuration */
 	update_status(gettext("Migrating settings to new configuration..."));
-	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
+	include '/usr/local/pkg/suricata/suricata_migrate_config.php';
 	update_status(gettext(" done.") . "\n");
 	syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
-	include('/usr/local/pkg/suricata/suricata_check_for_rule_updates.php');
+	include '/usr/local/pkg/suricata/suricata_check_for_rule_updates.php';
 	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
 
@@ -167,13 +167,13 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 
 		// Pull in the PHP code that generates the suricata.yaml file
 		// variables that will be substituted further down below.
-		include("/usr/local/pkg/suricata/suricata_generate_yaml.php");
+		include '/usr/local/pkg/suricata/suricata_generate_yaml.php';
 
 		// Pull in the boilerplate template for the suricata.yaml
 		// configuration file.  The contents of the template along
 		// with substituted variables are stored in $suricata_conf_text
 		// (which is defined in the included file).
-		include("/usr/local/pkg/suricata/suricata_yaml_template.inc");
+		include '/usr/local/pkg/suricata/suricata_yaml_template.inc';
 
 		// Now write out the conf YAML file using $suricata_conf_text contents
 		@file_put_contents("{$suricatacfgdir}/suricata.yaml", $suricata_conf_text);
