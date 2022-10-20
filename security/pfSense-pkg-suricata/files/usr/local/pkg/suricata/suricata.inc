@@ -4169,7 +4169,7 @@ function suricata_get_vpns_list() {
 		require_once("ipsec.inc");
 	}
 	if (ipsec_enabled()) {
-		if (config_get_path('ipsec/client') && config_path_enabled('ipsec/client')) {
+		if (config_path_enabled('ipsec/client')) {
 			/* Virtual Address Pool */
 			if (config_path_enabled('ipsec/client', 'pool_address') &&
 			    config_path_enabled('ipsec/client', 'pool_netbits')) {
