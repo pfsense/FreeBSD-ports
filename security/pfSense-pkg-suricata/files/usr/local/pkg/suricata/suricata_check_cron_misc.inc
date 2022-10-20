@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2020 Bill Meeks
+ * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@
 
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 
 function suricata_folderSize($dir) {
 
@@ -56,7 +56,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 	 *                                   in megabytes       *
 	 ********************************************************/
 
-	global $g, $config;
+	global $g;
 
 	// Convert Log Limit Size setting from MB to KB
 	$suricataloglimitsizeKB = round($suricataloglimitsize * 1024);
@@ -69,7 +69,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "sid_changes.log", "stats.log", "tls.log" );
 
 		// Clean-up the rotated logs for each configured Suricata instance
-		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			// Skip instances where pfSense physical interface
@@ -129,7 +129,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 
 		// Clean-up active logs for each configured Suricata instance
 		// until we get below the configured Directory Size Limit.
-		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
 			$if_real = get_real_interface($value['interface']);
 
 			// Skip instances where pfSense physical interface
@@ -337,30 +337,30 @@ if ($g['booting'] == true)
 	return;
 
 // If no interfaces defined, there is nothing to clean up
-if (!is_array($config['installedpackages']['suricata']['rule']))
+if (!config_get_path('installedpackages/suricata/rule'))
 	return;
 
 $logs = array ();
 
 // Build an arry of files to check and limits to check them against from our saved configuration
-$logs['alerts.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['alert_log_limit_size'];
-$logs['alerts.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['alert_log_retention'];
-$logs['block.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['block_log_limit_size'];
-$logs['block.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['block_log_retention'];
-$logs['eve.json']['limit'] = $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'];
-$logs['eve.json']['retention'] = $config['installedpackages']['suricata']['config'][0]['eve_log_retention'];
-$logs['http.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['http_log_limit_size'];
-$logs['http.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['http_log_retention'];
-$logs['sid_changes.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'];
-$logs['sid_changes.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['sid_changes_log_retention'];
-$logs['stats.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['stats_log_limit_size'];
-$logs['stats.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['stats_log_retention'];
-$logs['tls.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['tls_log_limit_size'];
-$logs['tls.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['tls_log_retention'];
+$logs['alerts.log']['limit'] = config_get_path('installedpackages/suricata/config/0/alert_log_limit_size');
+$logs['alerts.log']['retention'] = config_get_path('installedpackages/suricata/config/0/alert_log_retention');
+$logs['block.log']['limit'] = config_get_path('installedpackages/suricata/config/0/block_log_limit_size');
+$logs['block.log']['retention'] = config_get_path('installedpackages/suricata/config/0/block_log_retention');
+$logs['eve.json']['limit'] = config_get_path('installedpackages/suricata/config/0/eve_log_limit_size');
+$logs['eve.json']['retention'] = config_get_path('installedpackages/suricata/config/0/eve_log_retention');
+$logs['http.log']['limit'] = config_get_path('installedpackages/suricata/config/0/http_log_limit_size');
+$logs['http.log']['retention'] = config_get_path('installedpackages/suricata/config/0/http_log_retention');
+$logs['sid_changes.log']['limit'] = config_get_path('installedpackages/suricata/config/0/sid_changes_log_limit_size');
+$logs['sid_changes.log']['retention'] = config_get_path('installedpackages/suricata/config/0/sid_changes_log_retention');
+$logs['stats.log']['limit'] = config_get_path('installedpackages/suricata/config/0/stats_log_limit_size');
+$logs['stats.log']['retention'] = config_get_path('installedpackages/suricata/config/0/stats_log_retention');
+$logs['tls.log']['limit'] = config_get_path('installedpackages/suricata/config/0/tls_log_limit_size');
+$logs['tls.log']['retention'] = config_get_path('installedpackages/suricata/config/0/tls_log_retention');
 
 // Check log limits and retention in the interface logging directories if enabled
-if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'on') {
-	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
+if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'on') {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
 		$if_real = get_real_interface($value['interface']);
 
 		// Skip instances where pfSense physical interface
@@ -382,37 +382,38 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 
 		// Prune aged-out File Store captured files if any exist
 		if (is_dir("{$suricata_log_dir}/filestore") &&
-		    $config['installedpackages']['suricata']['config'][0]['file_store_retention'] > 0) {
+		    config_get_path('installedpackages/suricata/config/0/file_store_retention') > 0) {
 
-			$prune_count = suricata_check_prune_filestore_files("{$suricata_log_dir}/filestore", $config['installedpackages']['suricata']['config'][0]['file_store_retention']);
+			$prune_count = suricata_check_prune_filestore_files("{$suricata_log_dir}/filestore", config_get_path('installedpackages/suricata/config/0/file_store_retention'));
 			if ($prune_count > 0)
 				syslog(LOG_NOTICE, gettext("[Suricata] File Store captured files cleanup job removed {$prune_count} file(s) from '{$suricata_log_dir}/filestore/' path..."));
 		}
 
 		// Check File Store captured files storage limit and prune if necessary
-		if (is_dir("{$suricata_log_dir}/filestore") && 
-		    $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] > 0 && 
-		    (intval(suricata_folderSize("{$suricata_log_dir}/filestore")/1000000) >= $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'])) {
-			suricata_check_filestore_limit_size("{$suricata_log_dir}/filestore", $config['installedpackages']['suricata']['config'][0]['file_store_limit_size']);
+		if (is_dir("{$suricata_log_dir}/filestore") &&
+		    config_get_path('installedpackages/suricata/config/0/file_store_limit_size') > 0 &&
+		    (intval(suricata_folderSize("{$suricata_log_dir}/filestore")/1000000) >= config_get_path('installedpackages/suricata/config/0/file_store_limit_size'))
+		   ) {
+			suricata_check_filestore_limit_size("{$suricata_log_dir}/filestore", config_get_path('installedpackages/suricata/config/0/file_store_limit_size'));
 		}
 
 		// If a user-customized file store directory is set, check it, too
 		if (isset($value['file_store_logdir'])) {
-			if (is_dir($value['file_store_logdir']) && 
-			    $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] > 0 && 
-			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'])) {
-				suricata_check_filestore_limit_size($value['file_store_logdir'], $config['installedpackages']['suricata']['config'][0]['file_store_limit_size']);
+			if (is_dir($value['file_store_logdir']) &&
+			    config_get_path('installedpackages/suricata/config/0/file_store_limit_size') > 0 &&
+			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= (int)config_get_path('installedpackages/suricata/config/0/file_store_limit_size'))) {
+				suricata_check_filestore_limit_size($value['file_store_logdir'], config_get_path('installedpackages/suricata/config/0/file_store_limit_size'));
 			}
 		}
 
 		// Prune aged-out TLS Certs Store files if any exist
 		if (is_dir("{$suricata_log_dir}/certs") &&
-		    $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] > 0) {
+		    config_get_path('installedpackages/suricata/config/0/tls_certs_store_retention') > 0) {
 			$now = time();
 			$files = glob("{$suricata_log_dir}/certs/*.*");
 			$prune_count = 0;
 			foreach ($files as $f) {
-				if (($now - filemtime($f)) > ($config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] * 3600)) {
+				if (($now - filemtime($f)) > (int)(config_get_path('installedpackages/suricata/config/0/tls_certs_store_retention') * 3600)) {
 					$prune_count++;
 					unlink_if_exists($f);
 				}
@@ -444,8 +445,8 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 }
 
 // Check the overall log directory limit (if enabled) and prune if necessary
-if ($config['installedpackages']['suricata']['config'][0]['suricataloglimit'] == 'on') {
-	suricata_check_dir_size_limit($config['installedpackages']['suricata']['config'][0]['suricataloglimitsize']);
+if (config_get_path('installedpackages/suricata/config/0/suricataloglimit') == 'on') {
+	suricata_check_dir_size_limit(config_get_path('installedpackages/suricata/config/0/suricataloglimitsize'));
 }
 
 ?>

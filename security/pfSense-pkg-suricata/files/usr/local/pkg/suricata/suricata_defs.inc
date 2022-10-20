@@ -31,13 +31,10 @@ require_once("pkg-utils.inc");
 /* the "suricata.inc" and "suricata_post_install.php" files.             */
 /*************************************************************************/
 
-global $g, $config;
-
-if (!is_array($config['installedpackages']['suricata']))
-	$config['installedpackages']['suricata'] = array();
+global $g;
 
 /* Get installed package version for display */
-$suricata_package_version = "{$config['installedpackages']['package'][get_package_id("suricata")]['version']}";
+$suricata_package_version = config_get_path('installedpackages/package/' . get_package_id("suricata") . '/version');
 
 // Define the installed package version
 if (!defined('SURICATA_PKG_VER'))

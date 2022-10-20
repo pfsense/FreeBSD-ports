@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,27 +33,27 @@ $suricatadir = SURICATADIR;
 $pconfig = array();
 
 // Grab saved settings from configuration
-$pconfig['enable_log_mgmt'] = $config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'off' ? 'off' : 'on';
-$pconfig['clearlogs'] = $config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on' ? 'on' : 'off';
-$pconfig['suricataloglimit'] = $config['installedpackages']['suricata']['config'][0]['suricataloglimit'] == 'on' ? 'on' : 'off';
-$pconfig['suricataloglimitsize'] = $config['installedpackages']['suricata']['config'][0]['suricataloglimitsize'];
-$pconfig['alert_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['alert_log_limit_size'];
-$pconfig['alert_log_retention'] = $config['installedpackages']['suricata']['config'][0]['alert_log_retention'];
-$pconfig['block_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['block_log_limit_size'];
-$pconfig['block_log_retention'] = $config['installedpackages']['suricata']['config'][0]['block_log_retention'];
-$pconfig['http_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['http_log_limit_size'];
-$pconfig['http_log_retention'] = $config['installedpackages']['suricata']['config'][0]['http_log_retention'];
-$pconfig['stats_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['stats_log_limit_size'];
-$pconfig['stats_log_retention'] = $config['installedpackages']['suricata']['config'][0]['stats_log_retention'];
-$pconfig['tls_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['tls_log_limit_size'];
-$pconfig['tls_log_retention'] = $config['installedpackages']['suricata']['config'][0]['tls_log_retention'];
-$pconfig['file_store_retention'] = $config['installedpackages']['suricata']['config'][0]['file_store_retention'];
-$pconfig['file_store_limit_size'] = $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'];
-$pconfig['tls_certs_store_retention'] = $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'];
-$pconfig['eve_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'];
-$pconfig['eve_log_retention'] = $config['installedpackages']['suricata']['config'][0]['eve_log_retention'];
-$pconfig['sid_changes_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'];
-$pconfig['sid_changes_log_retention'] = $config['installedpackages']['suricata']['config'][0]['sid_changes_log_retention'];
+$pconfig['enable_log_mgmt'] = config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'off' ? 'off' : 'on';
+$pconfig['clearlogs'] = config_get_path('installedpackages/suricata/config/0/clearlogs') == 'on' ? 'on' : 'off';
+$pconfig['suricataloglimit'] = config_get_path('installedpackages/suricata/config/0/suricataloglimit') == 'on' ? 'on' : 'off';
+$pconfig['suricataloglimitsize'] = htmlentities(config_get_path('installedpackages/suricata/config/0/suricataloglimitsize'));
+$pconfig['alert_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/alert_log_limit_size', 500);
+$pconfig['alert_log_retention'] = config_get_path('installedpackages/suricata/config/0/alert_log_retention', 336);
+$pconfig['block_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/block_log_limit_size', 500);
+$pconfig['block_log_retention'] = config_get_path('installedpackages/suricata/config/0/block_log_retention', 336);
+$pconfig['http_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/http_log_limit_size', 1000);
+$pconfig['http_log_retention'] = config_get_path('installedpackages/suricata/config/0/http_log_retention', 168);
+$pconfig['stats_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/stats_log_limit_size', 500);
+$pconfig['stats_log_retention'] = config_get_path('installedpackages/suricata/config/0/stats_log_retention', 168);
+$pconfig['tls_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/tls_log_limit_size', 500);
+$pconfig['tls_log_retention'] = config_get_path('installedpackages/suricata/config/0/tls_log_retention', 336);
+$pconfig['file_store_retention'] = config_get_path('installedpackages/suricata/config/0/file_store_retention', 168);
+$pconfig['file_store_limit_size'] = config_get_path('installedpackages/suricata/config/0/file_store_limit_size');
+$pconfig['tls_certs_store_retention'] = config_get_path('installedpackages/suricata/config/0/tls_certs_store_retention', 168);
+$pconfig['eve_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/eve_log_limit_size', 5000);
+$pconfig['eve_log_retention'] = config_get_path('installedpackages/suricata/config/0/eve_log_retention', 168);
+$pconfig['sid_changes_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/sid_changes_log_limit_size', 250);
+$pconfig['sid_changes_log_retention'] = config_get_path('installedpackages/suricata/config/0/sid_changes_log_retention', 336);
 
 // Load up some arrays with selection values (we use these later).
 // The keys in the $retentions array are the retention period
@@ -66,51 +66,13 @@ $log_sizes = array( '0' => gettext('NO LIMIT'), '50' => gettext('50 KB'), '150' 
 			'500' => gettext('500 KB'), '750' => gettext('750 KB'), '1000' => gettext('1 MB'), '2000' => gettext('2 MB'),
 			'5000' => gettext("5 MB"), '10000' => gettext("10 MB") );
 
-// Set sensible defaults for any unset parameters
-if (empty($pconfig['enable_log_mgmt']))
-	$pconfig['enable_log_mgmt'] = 'on';
-if (empty($pconfig['suricataloglimit']))
-	$pconfig['suricataloglimit'] = 'on';
+// Set sensible default for Suricata logging directory size limit
 if (empty($pconfig['suricataloglimitsize'])) {
 	// Set limit to 20% of slice that is unused */
 	$pconfig['suricataloglimitsize'] = round(exec('df -k /var | grep -v "Filesystem" | awk \'{print $4}\'') * .20 / 1024);
 }
 
-// Set default retention periods for rotated logs
-if (!isset($pconfig['alert_log_retention']))
-	$pconfig['alert_log_retention'] = "336";
-if (!isset($pconfig['block_log_retention']))
-	$pconfig['block_log_retention'] = "336";
-if (!isset($pconfig['http_log_retention']))
-	$pconfig['http_log_retention'] = "168";
-if (!isset($pconfig['stats_log_retention']))
-	$pconfig['stats_log_retention'] = "168";
-if (!isset($pconfig['tls_log_retention']))
-	$pconfig['tls_log_retention'] = "336";
-if (!isset($pconfig['file_store_retention']))
-	$pconfig['file_store_retention'] = "168";
-if (!isset($pconfig['tls_certs_store_retention']))
-	$pconfig['tls_certs_store_retention'] = "168";
-if (!isset($pconfig['eve_log_retention']))
-	$pconfig['eve_log_retention'] = "168";
-if (!isset($pconfig['sid_changes_log_retention']))
-	$pconfig['sid_changes_log_retention'] = "336";
-
-// Set default log file size limits
-if (!isset($pconfig['alert_log_limit_size']))
-	$pconfig['alert_log_limit_size'] = "500";
-if (!isset($pconfig['block_log_limit_size']))
-	$pconfig['block_log_limit_size'] = "500";
-if (!isset($pconfig['http_log_limit_size']))
-	$pconfig['http_log_limit_size'] = "1000";
-if (!isset($pconfig['stats_log_limit_size']))
-	$pconfig['stats_log_limit_size'] = "500";
-if (!isset($pconfig['tls_log_limit_size']))
-	$pconfig['tls_log_limit_size'] = "500";
-if (!isset($pconfig['eve_log_limit_size']))
-	$pconfig['eve_log_limit_size'] = "5000";
-if (!isset($pconfig['sid_changes_log_limit_size']))
-	$pconfig['sid_changes_log_limit_size'] = "250";
+// Set a default file store size limit
 if (!isset($pconfig['file_store_limit_size']))
 	$pconfig['file_store_limit_size'] = intval($pconfig['suricataloglimitsize'] * 0.60);
 
@@ -142,7 +104,7 @@ if (isset($_POST['ResetAll'])) {
 
 if (isset($_POST['save']) || isset($_POST['apply'])) {
 	if ($_POST['enable_log_mgmt'] != 'on') {
-		$config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' :'off';
+		config_set_path('installedpackages/suricata/config/0/enable_log_mgmt', $_POST['enable_log_mgmt'] ? 'on' :'off');
 		write_config("Suricata pkg: saved updated configuration for LOGS MGMT.");
 		sync_suricata_package_config();
 
@@ -162,27 +124,27 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 	}
 
 	if (!$input_errors) {
-		$config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' :'off';
-		$config['installedpackages']['suricata']['config'][0]['clearlogs'] = $_POST['clearlogs'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['suricataloglimit'] = $_POST['suricataloglimit'] ? 'on' :'off';
-		$config['installedpackages']['suricata']['config'][0]['suricataloglimitsize'] = $_POST['suricataloglimitsize'];
-		$config['installedpackages']['suricata']['config'][0]['alert_log_limit_size'] = $_POST['alert_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['alert_log_retention'] = $_POST['alert_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['block_log_limit_size'] = $_POST['block_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['block_log_retention'] = $_POST['block_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['http_log_limit_size'] = $_POST['http_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['http_log_retention'] = $_POST['http_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['stats_log_limit_size'] = $_POST['stats_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['stats_log_retention'] = $_POST['stats_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['tls_log_limit_size'] = $_POST['tls_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['tls_log_retention'] = $_POST['tls_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['file_store_retention'] = $_POST['file_store_retention'];
-		$config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] = $_POST['file_store_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] = $_POST['tls_certs_store_retention'];
-		$config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'] = $_POST['eve_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['eve_log_retention'] = $_POST['eve_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'] = $_POST['sid_changes_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['sid_changes_log_retention'] = $_POST['sid_changes_log_retention'];
+		config_set_path('installedpackages/suricata/config/0/enable_log_mgmt', $_POST['enable_log_mgmt'] ? 'on' :'off');
+		config_set_path('installedpackages/suricata/config/0/clearlogs', $_POST['clearlogs'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/suricataloglimit', $_POST['suricataloglimit'] ? 'on' :'off');
+		config_set_path('installedpackages/suricata/config/0/suricataloglimitsize', html_entity_decode($_POST['suricataloglimitsize']));
+		config_set_path('installedpackages/suricata/config/0/alert_log_limit_size', $_POST['alert_log_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/alert_log_retention', $_POST['alert_log_retention']);
+		config_set_path('installedpackages/suricata/config/0/block_log_limit_size', $_POST['block_log_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/block_log_retention', $_POST['block_log_retention']);
+		config_set_path('installedpackages/suricata/config/0/http_log_limit_size', $_POST['http_log_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/http_log_retention', $_POST['http_log_retention']);
+		config_set_path('installedpackages/suricata/config/0/stats_log_limit_size', $_POST['stats_log_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/stats_log_retention', $_POST['stats_log_retention']);
+		config_set_path('installedpackages/suricata/config/0/tls_log_limit_size', $_POST['tls_log_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/tls_log_retention', $_POST['tls_log_retention']);
+		config_set_path('installedpackages/suricata/config/0/file_store_retention', $_POST['file_store_retention']);
+		config_set_path('installedpackages/suricata/config/0/file_store_limit_size', $_POST['file_store_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/tls_certs_store_retention', $_POST['tls_certs_store_retention']);
+		config_set_path('installedpackages/suricata/config/0/eve_log_limit_size', $_POST['eve_log_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/eve_log_retention', $_POST['eve_log_retention']);
+		config_set_path('installedpackages/suricata/config/0/sid_changes_log_limit_size', $_POST['sid_changes_log_limit_size']);
+		config_set_path('installedpackages/suricata/config/0/sid_changes_log_retention', $_POST['sid_changes_log_retention']);
 
 		write_config("Suricata pkg: saved updated configuration for LOGS MGMT.");
 		sync_suricata_package_config();
@@ -231,17 +193,17 @@ $form = new Form;
 
 $section = new Form_Section('General Settings');
 $section->addInput(new Form_Checkbox(
-	'clearlogs',
-	'Remove Suricata Logs On Package Uninstall',
-	'Suricata log files will be removed when the Suricata package is uninstalled.  Default is not checked.',
-	$pconfig['clearlogs'] == 'on' ? true:false,
-	'on'
-));
-$section->addInput(new Form_Checkbox(
 	'enable_log_mgmt',
 	'Auto Log Management',
 	'Enable automatic unattended management of Suricata logs using parameters specified below.  Default is checked.',
 	$pconfig['enable_log_mgmt'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'clearlogs',
+	'Remove Suricata Logs On Package Uninstall',
+	'Suricata log files will be removed when the Suricata package is uninstalled.  Default is not checked.',
+	$pconfig['clearlogs'] == 'on' ? true:false,
 	'on'
 ));
 $form->add($section);

@@ -30,15 +30,8 @@ require_once("functions.inc");
 /* latest package version.                                                  */
 /****************************************************************************/
 
-global $config;
-
-if (!is_array($config['installedpackages']['suricata']))
-	$config['installedpackages']['suricata'] = array();
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-
 // Just exit if this is a clean install with no saved settings
-if (empty($config['installedpackages']['suricata']['rule']))
+if (count(config_get_path('installedpackages/suricata/rule', [])) < 1)
 	return;
 
 /****************************************************************************/
@@ -51,10 +44,11 @@ syslog(LOG_NOTICE, "[Suricata] Checking configuration settings version...");
 
 // Check the configuration version to see if XMLRPC Sync should be
 // auto-disabled as part of the upgrade due to config format changes.
-if ($config['installedpackages']['suricata']['config'][0]['suricata_config_ver'] < 2 && 
-    ($config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'auto' ||
-     $config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'manual')) {
-	$config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] = "disabled";
+if (config_get_path('installedpackages/suricata/config/0/suricata_config_ver') < 2 &&
+    (config_get_path('installedpackages/suricata/config/0/varsynconchanges') == 'auto' ||
+     config_get_path('installedpackages/suricata/config/0/varsynconchanges') == 'manual')
+   ) {
+	config_set_path('installedpackages/suricata/config/0/varsynconchanges', "disabled");
 	syslog(LOG_NOTICE, "[Suricata] Turning off Suricata Sync on this host due to configuration format changes in this update.  Upgrade all Suricata Sync targets to this same Suricata package version before re-enabling Suricata Sync.");
 	$updated_cfg = true;
 }
@@ -62,10 +56,10 @@ if ($config['installedpackages']['suricata']['config'][0]['suricata_config_ver']
 /**********************************************************/
 /* Create new Auto SID Mgmt settings if not set           */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['auto_manage_sids'])) {
-	$config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] = "off";
-	$config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'] = "250";
-	$config['installedpackages']['suricata']['config'][0]['sid_changes_log_retention'] = "336";
+if (empty(config_get_path('installedpackages/suricata/config/0/auto_manage_sids'))) {
+	config_set_path('installedpackages/suricata/config/0/auto_manage_sids', "off");
+	config_set_path('installedpackages/suricata/config/0/sid_changes_log_limit_size', "250");
+	config_set_path('installedpackages/suricata/config/0/sid_changes_log_retention', "336");
 	$updated_cfg = true;
 }
 
@@ -74,14 +68,8 @@ if (empty($config['installedpackages']['suricata']['config'][0]['auto_manage_sid
 /* /var/db/suricata/sidmods directory to Base64 encoded   */
 /* strings in SID_MGMT_LIST array in config.xml.          */
 /**********************************************************/
-if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists'])) {
-	$config['installedpackages']['suricata']['sid_mgmt_lists'] = array();
-}
-if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migration']) && count($config['installedpackages']['suricata']['sid_mgmt_lists']) < 1) {
-	if (!is_array($config['installedpackages']['suricata']['sid_mgmt_lists']['item'])) {
-		$config['installedpackages']['suricata']['sid_mgmt_lists']['item'] = array();
-	}
-	$a_list = &$config['installedpackages']['suricata']['sid_mgmt_lists']['item'];
+if (empty(config_get_path('installedpackages/suricata/config/0/sid_list_migration')) && count(config_get_path('installedpackages/suricata/sid_mgmt_lists', [])) < 1) {
+	$a_list = config_get_path('installedpackages/suricata/sid_mgmt_lists/item', []);
 	$sidmodfiles = return_dir_as_array("/var/db/suricata/sidmods/");
 	foreach ($sidmodfiles as $sidfile) {
 		$data = file_get_contents("/var/db/suricata/sidmods/" . $sidfile);
@@ -93,9 +81,9 @@ if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migrat
 			$a_list[] = $tmp;
 		}
 	}
-	$config['installedpackages']['suricata']['config'][0]['sid_list_migration'] = "1";
+	config_set_path('installedpackages/suricata/sid_mgmt_lists/item', $a_list);
+	config_set_path('installedpackages/suricata/config/0/sid_list_migration', "1");
 	$updated_cfg = true;
-	unset($a_list);
 }
 
 /**********************************************************/
@@ -103,24 +91,24 @@ if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migrat
 /* to recent MaxMind changes to the GeoLite2 database     */
 /* download permissions.                                  */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['autogeoipupdate']) || empty($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'])) {
-	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = "off";
+if (empty(config_get_path('installedpackages/suricata/config/0/autogeoipupdate')) || empty(config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key'))) {
+	config_set_path('installedpackages/suricata/config/0/autogeoipupdate', "off");
 	$updated_cfg = true;
 }
 
 /**********************************************************/
 /* Create new ET IQRisk IP Reputation setting if not set  */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'])) {
-	$config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] = "off";
+if (empty(config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable'))) {
+	config_set_path('installedpackages/suricata/config/0/et_iqrisk_enable', "off");
 	$updated_cfg = true;
 }
 
 /**********************************************************/
 /* Create new HIDE_DEPRECATED_RULES setting if not set    */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'])) {
-	$config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] = "off";
+if (empty(config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules'))) {
+	config_set_path('installedpackages/suricata/config/0/hide_deprecated_rules', "off");
 	$updated_cfg = true;
 }
 
@@ -129,12 +117,12 @@ if (empty($config['installedpackages']['suricata']['config'][0]['hide_deprecated
 /* from the package configuration. The status is now      */
 /* stored in a local file.                                */
 /**********************************************************/
-if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status'])) {
-	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_status']);
+if (config_path_enabled('installedpackages/suricata/config/0', 'last_rule_upd_status')) {
+	config_del_path('installedpackages/suricata/config/0/last_rule_upd_status');
 	$updated_cfg = true;
 }
-if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time'])) {
-	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']);
+if (config_path_enabled('installedpackages/suricata/config/0', 'last_rule_upd_time')) {
+	config_del_path('installedpackages/suricata/config/0/last_rule_upd_time');
 	$updated_cfg = true;
 }
 
@@ -144,89 +132,89 @@ if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_t
 /* large numbers of pfSense users hitting Snort.org at    */
 /* the same minute past the hour for rules updates.       */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) || 
-	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] == '00:05' || 
-	strlen($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) < 5) {
-	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
+if (empty(config_get_path('installedpackages/suricata/config/0/autoruleupdatetime')) ||
+	config_get_path('installedpackages/suricata/config/0/autoruleupdatetime') == '00:05' ||
+	strlen(config_get_path('installedpackages/suricata/config/0/autoruleupdatetime')) < 5) {
+	config_set_path('installedpackages/suricata/config/0/autoruleupdatetime', "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT));
 	$updated_cfg = true;
 }
 
 /**********************************************************/
 /* Set default log size and retention limits if not set   */
 /**********************************************************/
-if (!isset($config['installedpackages']['suricata']['config'][0]['alert_log_retention']) && $config['installedpackages']['suricata']['config'][0]['alert_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['alert_log_retention'] = "336";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'alert_log_retention')) {
+	config_set_path('installedpackages/suricata/config/0/alert_log_retention', "336");
 	$updated_cfg = true;
 }
-if (!isset($config['installedpackages']['suricata']['config'][0]['alert_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['alert_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['alert_log_limit_size'] = "500";
-	$updated_cfg = true;
-}
-
-if (!isset($config['installedpackages']['suricata']['config'][0]['block_log_retention']) && $config['installedpackages']['suricata']['config'][0]['block_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['block_log_retention'] = "336";
-	$updated_cfg = true;
-}
-if (!isset($config['installedpackages']['suricata']['config'][0]['block_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['block_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['block_log_limit_size'] = "500";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'alert_log_limit_size')) {
+	config_set_path('installedpackages/suricata/config/0/alert_log_limit_size', "500");
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['eve_log_retention']) && $config['installedpackages']['suricata']['config'][0]['eve_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['eve_log_retention'] = "168";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'block_log_retention')) {
+	config_set_path('installedpackages/suricata/config/0/block_log_retention', "336");
 	$updated_cfg = true;
 }
-if (!isset($config['installedpackages']['suricata']['config'][0]['eve_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'] = "5000";
-	$updated_cfg = true;
-}
-
-if (!isset($config['installedpackages']['suricata']['config'][0]['http_log_retention']) && $config['installedpackages']['suricata']['config'][0]['http_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['http_log_retention'] = "168";
-	$updated_cfg = true;
-}
-if (!isset($config['installedpackages']['suricata']['config'][0]['http_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['http_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['http_log_limit_size'] = "1000";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'block_log_limit_size')) {
+	config_set_path('installedpackages/suricata/config/0/block_log_limit_size', "500");
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['stats_log_retention']) && $config['installedpackages']['suricata']['config'][0]['stats_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['stats_log_retention'] = "168";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'eve_log_retention')) {
+	config_set_path('installedpackages/suricata/config/0/eve_log_retention', "168");
 	$updated_cfg = true;
 }
-if (!isset($config['installedpackages']['suricata']['config'][0]['stats_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['stats_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['stats_log_limit_size'] = "500";
-	$updated_cfg = true;
-}
-
-if (!isset($config['installedpackages']['suricata']['config'][0]['tls_log_retention']) && $config['installedpackages']['suricata']['config'][0]['tls_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['tls_log_retention'] = "336";
-	$updated_cfg = true;
-}
-if (!isset($config['installedpackages']['suricata']['config'][0]['tls_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['tls_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['tls_log_limit_size'] = "500";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'eve_log_limit_size')) {
+	config_set_path('installedpackages/suricata/config/0/eve_log_limit_size', "5000");
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['file_store_retention']) && $config['installedpackages']['suricata']['config'][0]['file_store_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['file_store_retention'] = "168";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'http_log_retention')) {
+	config_set_path('installedpackages/suricata/config/0/http_log_retention', "168");
+	$updated_cfg = true;
+}
+if (!config_path_enabled('installedpackages/suricata/config/0', 'http_log_limit_size')) {
+	config_set_path('installedpackages/suricata/config/0/http_log_limit_size', "1000");
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention']) && $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] = "168";
+if (!config_path_enabled('installedpackages/suricata/config/0', 'stats_log_retention')) {
+	config_set_path('installedpackages/suricata/config/0/stats_log_retention', "168");
+	$updated_cfg = true;
+}
+if (!config_path_enabled('installedpackages/suricata/config/0', 'stats_log_limit_size')) {
+	config_set_path('installedpackages/suricata/config/0/stats_log_limit_size', "500");
+	$updated_cfg = true;
+}
+
+if (!config_path_enabled('installedpackages/suricata/config/0', 'tls_log_retention')) {
+	config_set_path('installedpackages/suricata/config/0/tls_log_retention', "336");
+	$updated_cfg = true;
+}
+if (!config_path_enabled('installedpackages/suricata/config/0', 'tls_log_limit_size')) {
+	config_set_path('installedpackages/suricata/config/0/tls_log_limit_size', "500");
+	$updated_cfg = true;
+}
+
+if (!config_path_enabled('installedpackages/suricata/config/0', 'file_store_retention')) {
+	config_set_path('installedpackages/suricata/config/0/file_store_retention', "168");
+	$updated_cfg = true;
+}
+
+if (!config_path_enabled('installedpackages/suricata/config/0', 'tls_certs_store_retention')) {
+	config_set_path('installedpackages/suricata/config/0/tls_certs_store_retention', "168");
 	$updated_cfg = true;
 }
 
 /**********************************************************/
 /* Remove deprecated file-log settings from LOGS MGMT     */
 /**********************************************************/
-if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention'])) {
-	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention']);
+if (config_path_enabled('installedpackages/suricata/config/0', 'files_json_log_retention')) {
+	config_del_path('installedpackages/suricata/config/0/files_json_log_retention');
 	$updated_cfg = true;
 }
-if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'])) {
-	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size']);
+if (config_path_enabled('installedpackages/suricata/config/0', 'files_json_log_limit_size')) {
+	config_del_path('installedpackages/suricata/config/0/files_json_log_limit_size');
 	$updated_cfg = true;
 }
 
@@ -236,100 +224,66 @@ if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_
 /* element for existing entries into an array. Migrate    */
 /* any existing <address> to the new array structure.     */
 /**********************************************************/
-if (is_array($config['installedpackages']['suricata']['passlist']['item'])) {
-	foreach ($config['installedpackages']['suricata']['passlist']['item'] as &$wlisti) {
-		if (!is_array($wlisti['address']) && !is_array($wlisti['address']['item']) && !empty($wlisti['address'])) {
-			$tmp = $wlisti['address'];
-			$wlisti['address'] = array();
-			$wlisti['address']['item'] = array();
-			$wlisti['address']['item'][] = $tmp;
-			$updated_cfg = true;
-		}
-	}
-
-	// Release reference to whitelist array
-	unset($wlisti);
-}
-
-// Now process the interface-specific settings
-foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
-
-	// Initialize arrays for supported preprocessors if necessary
-	if (!is_array($r['libhtp_policy']))
-		$r['libhtp_policy'] = array();
-	if (!is_array($r['libhtp_policy']['item']))
-		$r['libhtp_policy']['item'] = array();
-
-	$pconfig = array();
-	$pconfig = $r;
-
-	/***********************************************************/
-	/* This setting is deprecated in Suricata 2.0 and higher,  */
-	/* so remove it from the configuration.                    */
-	/***********************************************************/
-	if (isset($pconfig['stream_max_sessions'])) {
-		unset($pconfig['stream_max_sessions']);
+foreach (config_get_path('installedpackages/suricata/passlist/item', []) as &$wlisti) {
+	if (!is_array($wlisti['address']) && !empty($wlisti['address']) && !is_array($wlisti['address']['item'])) {
+		$tmp = $wlisti['address'];
+		$wlisti['address'] = array();
+		$wlisti['address']['item'] = array();
+		$wlisti['address']['item'][] = $tmp;
 		$updated_cfg = true;
 	}
+}
 
-	/***********************************************************/
-	/* HTTP server personalities for "Apache" and "Apache_2_2" */
-	/* are deprecated and replaced with "Apache_2" in Suricata */
-	/* versions greater than 2.0.                              */
-	/***********************************************************/
-	$http_serv = &$pconfig['libhtp_policy']['item'];
-	foreach ($http_serv as &$policy) {
-		if ($policy['personality'] == "Apache" || $policy['personality'] == "Apache_2_2") {
-			$policy['personality'] = "Apache_2";
-			$updated_cfg = true;
-		}
-		// Set new URI inspect option for Suricata 2.0 and higher
-		if (!isset($policy['uri-include-all'])) {
-			$policy['uri-include-all'] = "no";
-			$updated_cfg = true;
-		}
-	}
+/***********************************************************/
+/* Add new 'clear blocks' setting to remove blocked hosts  */
+/* from the snort2c pf table that were added by the Legacy */
+/* Blocking custom plugin. Default empty value to 'yes'.   */
+/***********************************************************/
+if (!config_path_enabled('installedpackages/suricata/config/0/clearblocks')) {
+	config_set_path('installedpackages/suricata/config/0/clearblocks', 'on');
+}
 
-	// Release config array references used immediately above
-	unset($http_serv, $policy);
+// Now process the interface-specific migration settings
+$a_rules = config_get_path('installedpackages/suricata/rule', []);
+foreach ($a_rules as &$pconfig) {
 
 	/***********************************************************/
 	/* Add the new 'dns-events.rules' file to the rulesets.    */
 	/***********************************************************/
-	if (strpos($pconfig['rulesets'], "dns-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||dns-events.rules";	
+	if (strpos(array_get_path($pconfig, 'rulesets', ''), "dns-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||dns-events.rules";	
 		$updated_cfg = true;
 	}
 
 	/***********************************************************/
-	/* Add the new 'dhcp-events.rules' file to the rulesets.    */
+	/* Add the new 'dhcp-events.rules' file to the rulesets.   */
 	/***********************************************************/
-	if (strpos($pconfig['rulesets'], "dhcp-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||dhcp-events.rules";	
+	if (strpos(array_get_path($pconfig, 'rulesets', ''), "dhcp-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||dhcp-events.rules";	
 		$updated_cfg = true;
 	}
 
 	/***********************************************************/
-	/* Add the new 'http2-events.rules' file to the rulesets.    */
+	/* Add the new 'http2-events.rules' file to the rulesets.  */
 	/***********************************************************/
-	if (strpos($pconfig['rulesets'], "http2-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||http2-events.rules";	
+	if (strpos(array_get_path($pconfig, 'rulesets', ''), "http2-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||http2-events.rules";	
 		$updated_cfg = true;
 	}
 
 	/***********************************************************/
-	/* Add the new 'mqtt-events.rules' file to the rulesets.    */
+	/* Add the new 'mqtt-events.rules' file to the rulesets.   */
 	/***********************************************************/
-	if (strpos($pconfig['rulesets'], "mqtt-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||mqtt-events.rules";	
+	if (strpos(array_get_path($pconfig, 'rulesets', ''), "mqtt-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||mqtt-events.rules";	
 		$updated_cfg = true;
 	}
 
 	/***********************************************************/
 	/* Add the new 'ssh-events.rules' file to the rulesets.    */
 	/***********************************************************/
-	if (strpos($pconfig['rulesets'], "ssh-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||ssh-events.rules";	
+	if (strpos(array_get_path($pconfig, 'rulesets', ''), "ssh-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||ssh-events.rules";	
 		$updated_cfg = true;
 	}
 
@@ -480,105 +434,6 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 
 	if (!isset($pconfig['eve_log_smtp_extended_fields'])) {
 		$pconfig['eve_log_smtp_extended_fields'] = "received, x-mailer, x-originating-ip, relays, reply-to, bcc";
-		$updated_cfg = true;
-	}
-
-	/******************************************************************/
-	/* SHA1 and SHA256 were added as additional hashing options in    */
-	/* Suricata 3.x, so the old binary on/off MD5 hashing parameter   */
-	/* is now one of three string values: NONE, MD5, SHA1 or SHA256.  */
-	/* It has been moved to a new parameter name and the old one is   */
-	/* now deprecated and removed from the config.                    */
-	/******************************************************************/
-	if (!isset($pconfig['tracked_files_hash'])) {
-		if ($pconfig['enabled_tracked_files_md5'] == "on") {
-			$pconfig['tracked_files_hash'] = "md5";
-		}
-		else {
-			$pconfig['tracked_files_hash'] = "none";
-		}
-		unset($pconfig['enabled_tracked_files_md5']);
-		$updated_cfg = true;
-	}
-
-	/******************************************************************/
-	/* Remove per interface default log size and retention limits     */ 
-	/* if they were set by early bug.                                 */
-	/******************************************************************/
-	if (isset($pconfig['alert_log_retention'])) {
-		unset($pconfig['alert_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['alert_log_limit_size'])) {
-		unset($pconfig['alert_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['block_log_retention'])) {
-		unset($pconfig['block_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['block_log_limit_size'])) {
-		unset($pconfig['block_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['dns_log_retention'])) {
-		unset($pconfig['dns_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['dns_log_limit_size'])) {
-		unset($pconfig['dns_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['eve_log_retention'])) {
-		unset($pconfig['eve_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['eve_log_limit_size'])) {
-		unset($pconfig['eve_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['files_json_log_retention'])) {
-		unset($pconfig['files_json_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['files_json_log_limit_size'])) {
-		unset($pconfig['files_json_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['http_log_retention'])) {
-		unset($pconfig['http_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['http_log_limit_size'])) {
-		unset($pconfig['http_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['stats_log_retention'])) {
-		unset($pconfig['stats_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['stats_log_limit_size'])) {
-		unset($pconfig['stats_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['tls_log_retention'])) {
-		unset($pconfig['tls_log_retention']);
-		$updated_cfg = true;
-	}
-	if (isset($pconfig['tls_log_limit_size'])) {
-		unset($pconfig['tls_log_limit_size']);
-		$updated_cfg = true;
-	}
-
-	if (isset($pconfig['file_store_retention'])) {
-		unset($pconfig['file_store_retention']);
 		$updated_cfg = true;
 	}
 
@@ -784,17 +639,6 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 
 	/**********************************************************/
-	/* Suricata 3.2.1 introduced support for hyperscan as an  */
-	/* option for the multi pattern matcher (MPM) algorithm.  */
-	/* Several older MPM algorithms were also deprecated.     */
-	/**********************************************************/
-	$old_mpm_algos = array('ac-gfbs', 'b2g', 'b2gc', 'b2gm', 'b3g', 'wumanber');
-	if (in_array($pconfig['mpm_algo'], $old_mpm_algos)) {
-		$pconfig['mpm_algo'] = "auto";
-		$updated_cfg = true;
-	}
-
-	/**********************************************************/
 	/* Set default value for new interface snaplen parameter  */
 	/* if one has not been previously configured.             */
 	/**********************************************************/
@@ -987,12 +831,9 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$updated_cfg = true;
 		$pconfig['autofp_scheduler'] = 'hash';
 	}
-
-	// Save the new configuration data into the $config array pointer
-	$r = $pconfig;
 }
-// Release reference to final array element
-unset($r);
+// Save the updated interfaces configuration
+config_set_path('installedpackages/suricata/rule', $a_rules);
 
 // Log a message indicating what we did
 if ($updated_cfg) {

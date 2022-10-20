@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,12 +38,8 @@ if ($_POST['id'])
 else
 	$id = 0;
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
-
-$a_nat = &$config['installedpackages']['suricata']['rule'];
-$id_gen = count($config['installedpackages']['suricata']['rule']);
+$a_nat = config_get_path('installedpackages/suricata/rule', []);
+$id_gen = count($a_nat);
 
 // Get list of configured firewall interfaces
 $ifaces = get_configured_interface_list();
@@ -82,6 +78,7 @@ if (isset($_POST['del_x'])) {
 		if (empty($a_nat))
 			unset($a_nat);
 
+		config_set_path('installedpackages/suricata/rule', $a_nat);
 		write_config("Suricata pkg: deleted one or more Suricata interfaces.");
 		sleep(2);
 
@@ -130,6 +127,7 @@ if (isset($_POST['del_x'])) {
 		unset($a_nat[$delbtn_list]);
 
 		// Save updated configuration
+		config_set_path('installedpackages/suricata/rule', $a_nat);
 		write_config("Suricata pkg: deleted one or more Suricata interfaces.");
 		sleep(2);
 		sync_suricata_package_config();
@@ -145,7 +143,7 @@ if (isset($_POST['del_x'])) {
 
 /* start/stop Suricata */
 if ($_POST['toggle']) {
-	$suricatacfg = $config['installedpackages']['suricata']['rule'][$_POST['id']];
+	$suricatacfg = config_get_path("installedpackages/suricata/rule/{$_POST['id']}");
 	$if_real = get_real_interface($suricatacfg['interface']);
 	$if_friendly = convert_friendly_interface_to_friendly_descr($suricatacfg['interface']);
 	$id = $_POST['id'];
@@ -165,8 +163,8 @@ if ($_POST['toggle']) {
 	<?php
 	require_once('/usr/local/pkg/suricata/suricata.inc');
 	require_once('service-utils.inc');
-	global \$g, \$rebuild_rules, \$config;
-	\$suricatacfg = \$config['installedpackages']['suricata']['rule'][{$id}];
+	global \$g, \$rebuild_rules;
+	\$suricatacfg = \config_get_path("installedpackages/suricata/rule/{$id}", []);
 	\$rebuild_rules = true;
 	touch('{$start_lck_file}');
 	sync_suricata_package_config();
@@ -372,7 +370,7 @@ include_once("head.inc"); ?>
 					</td>
 
 					<td id="frd<?=$nnats?>" ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
-					<?php if ($config['installedpackages']['suricata']['rule'][$nnats]['enable'] == "on") : ?>
+					<?php if (config_get_path("installedpackages/suricata/rule/{$nnats}/enable") == "on") : ?>
 						<?php if (suricata_is_running($suricata_uuid, $if_real)) : ?>
 							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('suricata is running on this interface');?>"></i>
 							&nbsp;
@@ -399,17 +397,17 @@ include_once("head.inc"); ?>
 					</td>
 
 					<td id="frd<?=$nnats?>" ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
-						<?php if ($config['installedpackages']['suricata']['rule'][$nnats]['mpm_algo'] != "") : ?>
-							<?=gettext(strtoupper($config['installedpackages']['suricata']['rule'][$nnats]['mpm_algo']));?>
+						<?php if (config_get_path("installedpackages/suricata/rule/{$nnats}/mpm_algo") != "") : ?>
+							<?=gettext(strtoupper(config_get_path("installedpackages/suricata/rule/{$nnats}/mpm_algo")));?>
 						<?php else : ?>
 							<?=gettext('UNKNOWN');?>
 						<?php endif; ?>
 					</td>
 
 					<td id="frd<?=$nnats?>" ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
-						<?php if ($config['installedpackages']['suricata']['rule'][$nnats]['blockoffenders'] == 'on' && $config['installedpackages']['suricata']['rule'][$nnats]['ips_mode'] == 'ips_mode_legacy') : ?>
+						<?php if (config_get_path("installedpackages/suricata/rule/{$nnats}/blockoffenders") == 'on' && config_get_path("installedpackages/suricata/rule/{$nnats}/ips_mode") == 'ips_mode_legacy') : ?>
 							<?=gettext('LEGACY MODE');?>
-						<?php elseif ($config['installedpackages']['suricata']['rule'][$nnats]['blockoffenders'] == 'on' && $config['installedpackages']['suricata']['rule'][$nnats]['ips_mode'] == 'ips_mode_inline') : ?>
+						<?php elseif (config_get_path("installedpackages/suricata/rule/{$nnats}/blockoffenders") == 'on' && config_get_path("installedpackages/suricata/rule/{$nnats}/ips_mode") == 'ips_mode_inline') : ?>
 							<?=gettext('INLINE IPS');?>
 						<?php else : ?>
 							<?=gettext('DISABLED');?>

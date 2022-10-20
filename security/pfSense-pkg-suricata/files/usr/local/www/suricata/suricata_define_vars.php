@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,7 @@ if (is_null($id)) {
 		exit;
 }
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
-$a_nat = &$config['installedpackages']['suricata']['rule'];
+$a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
 
 /* define servers and ports */
 $suricata_servers = array (
@@ -53,11 +50,8 @@ $suricata_servers = array (
 	"sip_servers" => "\$HOME_NET"
 );
 
-/* if user has defined a custom ssh port, use it */
-if(is_array($config['system']['ssh']) && isset($config['system']['ssh']['port']))
-		$ssh_port = $config['system']['ssh']['port'];
-else
-		$ssh_port = "22";
+/* if user has defined a custom ssh port, use it, else default to '22' */
+$ssh_port = config_get_path('system/ssh/port', '22');
 $suricata_ports = array(
 	"ftp_ports" => "21",
 	"http_ports" => "80",
@@ -74,11 +68,11 @@ $suricata_ports = array(
 ksort($suricata_servers);
 ksort($suricata_ports);
 
-$pconfig = $a_nat[$id];
+$pconfig = $a_nat;
 
 /* convert fake interfaces to real */
 $if_real = get_real_interface($pconfig['interface']);
-$suricata_uuid = $config['installedpackages']['suricata']['rule'][$id]['uuid'];
+$suricata_uuid = config_get_path("installedpackages/suricata/rule/{$id}/uuid");
 
 if ($_POST) {
 
@@ -113,16 +107,17 @@ if ($_POST) {
 				unset($natent["def_{$key}"]);
 		}
 
-		$a_nat[$id] = $natent;
-
+		// Save the updated interface configuration
+		$a_nat = $natent;
+		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 		write_config("Suricata pkg: saved changes for PORT or IP variables.");
 
 		/* Update the suricata.yaml file for this interface. */
 		$rebuild_rules = false;
-		suricata_generate_yaml($a_nat[$id]);
+		suricata_generate_yaml($a_nat);
 
 		/* Soft-restart Suricaa to live-load new variables. */
-		suricata_reload_config($a_nat[$id]);
+		suricata_reload_config($a_nat);
 
 		/* Sync to configured CARP slaves if any are enabled */
 		suricata_sync_on_changes();

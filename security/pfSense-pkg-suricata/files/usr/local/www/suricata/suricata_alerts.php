@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config;
+global $g;
 $supplist = array();
 $suri_pf_table = SURICATA_PF_TABLE;
 
@@ -67,34 +67,25 @@ function suricata_add_supplist_entry($suppress) {
 	/*   TRUE if successful or FALSE on failure     */
 	/************************************************/
 
-	global $config, $a_instance, $instanceid;
+	global $a_instance, $instanceid;
 
-	if (!is_array($config['installedpackages']['suricata']['suppress'])) {
-		$config['installedpackages']['suricata']['suppress'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['suricata']['suppress']['item'])) {
-		$config['installedpackages']['suricata']['suppress']['item'] = array();
-	}
-
-	$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
-
+	$a_suppress = config_get_path('installedpackages/suricata/suppress/item', []);
 	$found_list = false;
 
 	/* If no Suppress List is set for the interface, then create one with the interface name */
-	if (empty($a_instance[$instanceid]['suppresslistname']) || $a_instance[$instanceid]['suppresslistname'] == 'default') {
+	if (empty($a_instance['suppresslistname']) || $a_instance['suppresslistname'] == 'default') {
 		$s_list = array();
 		$s_list['uuid'] = uniqid();
-		$s_list['name'] = $a_instance[$instanceid]['interface'] . "suppress" . "_" . $s_list['uuid'];
+		$s_list['name'] = $a_instance['interface'] . "suppress" . "_" . $s_list['uuid'];
 		$s_list['descr']  =  "Auto-generated list for Alert suppression";
 		$s_list['suppresspassthru'] = base64_encode($suppress);
 		$a_suppress[] = $s_list;
-		$a_instance[$instanceid]['suppresslistname'] = $s_list['name'];
+		$a_instance['suppresslistname'] = $s_list['name'];
 		$found_list = true;
 	} else {
 		/* If we get here, a Suppress List is defined for the interface so see if we can find it */
 		foreach ($a_suppress as $a_id => $alist) {
-			if ($alist['name'] == $a_instance[$instanceid]['suppresslistname']) {
+			if ($alist['name'] == $a_instance['suppresslistname']) {
 				$found_list = true;
 				if (!empty($alist['suppresspassthru'])) {
 					$tmplist = base64_decode($alist['suppresspassthru']);
@@ -113,6 +104,8 @@ function suricata_add_supplist_entry($suppress) {
 	/* If we created a new list or updated an existing one, save the change */
 	/* and return true; otherwise return false.                             */
 	if ($found_list) {
+		config_set_path("installedpackages/suricata/rule/{$instanceid}", $a_instance);
+		config_set_path('installedpackages/suricata/suppress/item', $a_suppress);
 		write_config("Suricata pkg: saved change to Suppress List " . $s_list['name'] . " from ALERTS tab.");
 		sync_suricata_package_config();
 		return true;
@@ -167,27 +160,25 @@ elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 if (is_null($instanceid))
 	$instanceid = 0;
 
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-$a_instance = &$config['installedpackages']['suricata']['rule'];
-$suricata_uuid = $a_instance[$instanceid]['uuid'];
-$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+$a_instance = config_get_path("installedpackages/suricata/rule/{$instanceid}", []);
+$suricata_uuid = $a_instance['uuid'];
+$if_real = get_real_interface($a_instance['interface']);
 $suricatalogdir = SURICATALOGDIR;
 $suricatadir = SURICATADIR;
 
 // Load up the arrays of force-enabled and force-disabled SIDs
-$enablesid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
-$disablesid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_off']);
+$enablesid = suricata_load_sid_mods($a_instance['rule_sid_on']);
+$disablesid = suricata_load_sid_mods($a_instance['rule_sid_off']);
 
 // Load up the arrays of forced-alert, forced-drop or forced-reject
 // rules as applicable to the current IPS mode.
-if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
-	$alertsid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_force_alert']);
-	$dropsid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_force_drop']);
+if ($a_instance['blockoffenders'] == 'on' && ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on')) {
+	$alertsid = suricata_load_sid_mods($a_instance['rule_sid_force_alert']);
+	$dropsid = suricata_load_sid_mods($a_instance['rule_sid_force_drop']);
 
 	// REJECT forcing is only applicable to Inline IPS Mode
-	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' ) {
-		$rejectsid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_force_reject']);
+	if ($a_instance['ips_mode'] == 'ips_mode_inline' ) {
+		$rejectsid = suricata_load_sid_mods($a_instance['rule_sid_force_reject']);
 	}
 	else {
 		$rejectsid = array();
@@ -195,19 +186,9 @@ if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instance
 }
 
 $pconfig = array();
-if (is_array($config['installedpackages']['suricata']['alertsblocks'])) {
-	$pconfig['arefresh'] = $config['installedpackages']['suricata']['alertsblocks']['arefresh'];
-	$pconfig['alertnumber'] = $config['installedpackages']['suricata']['alertsblocks']['alertnumber'];
-}
-
-if (empty($pconfig['alertnumber']))
-	$pconfig['alertnumber'] = 250;
-if (empty($pconfig['arefresh']))
-	$pconfig['arefresh'] = 'on';
-$anentries = $pconfig['alertnumber'];
-if (!is_numeric($anentries)) {
-	$anentries = 250;
-}	
+$pconfig['arefresh'] = config_get_path('installedpackages/suricata/alertsblocks/arefresh', 'on');
+$pconfig['alertnumber'] = config_get_path('installedpackages/suricata/alertsblocks/alertnumber', '250');
+$anentries = (int)$pconfig['alertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
@@ -343,7 +324,7 @@ if ($_POST['filterlogentries_submit']) {
 	// Note the order of these fields must match the order decoded from the alerts log
 	$filterfieldsarray = array();
 	$filterfieldsarray['time'] = $_POST['filterlogentries_time'] ? $_POST['filterlogentries_time'] : null;
-	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+	if ($a_instance['ips_mode'] == 'ips_mode_inline') {
 		if ($_POST['filterlogentries_action_drop']) {
 			$filterfieldsarray['action'] = $_POST['filterlogentries_action_drop'] ? $_POST['filterlogentries_action_drop'] : null;
 		}
@@ -376,10 +357,8 @@ if ($_POST['filterlogentries_clear']) {
 }
 
 if ($_POST['save']) {
-	if (!is_array($config['installedpackages']['suricata']['alertsblocks']))
-		$config['installedpackages']['suricata']['alertsblocks'] = array();
-	$config['installedpackages']['suricata']['alertsblocks']['arefresh'] = $_POST['arefresh'] ? 'on' : 'off';
-	$config['installedpackages']['suricata']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
+	config_set_path('installedpackages/suricata/alertsblocks/arefresh', $_POST['arefresh'] ? 'on' : 'off');
+	config_set_path('installedpackages/suricata/alertsblocks/alertnumber', $_POST['alertnumber']);
 
 	write_config("Suricata pkg: saved change to ALERTS tab configuration.");
 
@@ -402,63 +381,27 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 	// action lists.
 	switch ($action) {
 		case "action_default":
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_alert":
-			if (!is_array($alertsid[$gid])) {
-				$alertsid[$gid] = array();
-			}
-			if (!is_array($alertsid[$gid][$sid])) {
-				$alertsid[$gid][$sid] = array();
-			}
-			$alertsid[$gid][$sid] = "alertsid";
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($alertsid, "{$gid}/{$sid}", "alertsid");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_drop":
-			if (!is_array($dropsid[$gid])) {
-				$dropsid[$gid] = array();
-			}
-			if (!is_array($dropsid[$gid][$sid])) {
-				$dropsid[$gid][$sid] = array();
-			}
-			$dropsid[$gid][$sid] = "dropsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($dropsid, "{$gid}/{$sid}", "dropsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_reject":
-			if (!is_array($rejectsid[$gid])) {
-				$rejectsid[$gid] = array();
-			}
-			if (!is_array($rejectsid[$gid][$sid])) {
-				$rejectsid[$gid][$sid] = array();
-			}
-			$rejectsid[$gid][$sid] = "rejectsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
+			array_set_path($rejectsid, "{$gid}/{$sid}", "rejectsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
 			break;
 
 		default:
@@ -475,9 +418,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_alert'] = $tmp;
+			$a_instance['rule_sid_force_alert'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_alert']);
+			unset($a_instance['rule_sid_force_alert']);
 
 		$tmp = "";
 		foreach (array_keys($dropsid) as $k1) {
@@ -487,9 +430,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_drop'] = $tmp;
+			$a_instance['rule_sid_force_drop'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_drop']);
+			unset($a_instance['rule_sid_force_drop']);
 
 		$tmp = "";
 		foreach (array_keys($rejectsid) as $k1) {
@@ -499,23 +442,24 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_reject'] = $tmp;
+			$a_instance['rule_sid_force_reject'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_reject']);
+			unset($a_instance['rule_sid_force_reject']);
 
 		/* Update the config.xml file. */
-		write_config("Suricata pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
+		config_set_path("installedpackages/suricata/rule/{$instanceid}", $a_instance);
+		write_config("Suricata pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 		/*************************************************/
 		/* Update the suricata.yaml file and rebuild the */
 		/* rules for this interface.                     */
 		/*************************************************/
 		$rebuild_rules = true;
-		suricata_generate_yaml($a_instance[$instanceid]);
+		suricata_generate_yaml($a_instance);
 		$rebuild_rules = false;
 
 		/* Signal Suricata to live-load the new rules */
-		suricata_reload_config($a_instance[$instanceid]);
+		suricata_reload_config($a_instance);
 
 		// Sync to configured CARP slaves if any are enabled
 		suricata_sync_on_changes();
@@ -570,11 +514,14 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 
 	/* Add the new entry to the Suppress List and signal Suricata to reload config */
 	if (suricata_add_supplist_entry($suppress)) {
-		suricata_reload_config($a_instance[$instanceid]);
-		foreach ($a_instance as $insid => $insconf) {
+		suricata_reload_config($a_instance);
+
+		// See if this Suppress List is assigned to any other interface
+		// and signal that interface to reload its configuration if true.
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $insid => $insconf) {
 			if (($insid != $instanceid) &&
-			    ($a_instance[$instanceid]['suppresslistname'] == $insconf['suppresslistname'])) {
-				suricata_reload_config($a_instance[$insid]);
+			    ($a_instance['suppresslistname'] == $insconf['suppresslistname'])) {
+				suricata_reload_config($insconf);
 			}
 		}
 		$savemsg = $success;
@@ -584,7 +531,7 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 		sleep(2);
 	}
 	else
-		$input_errors[] = gettext("Suppress List '{$a_instance[$instanceid]['suppresslistname']}' is defined for this interface, but it could not be found!");
+		$input_errors[] = gettext("Suppress List '{$a_instance['suppresslistname']}' is defined for this interface, but it could not be found!");
 }
 
 if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
@@ -594,12 +541,12 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 
 	// See if the target SID is in our list of modified SIDs,
 	// and toggle it if present.
-	if (isset($enablesid[$gid][$sid]))
-		unset($enablesid[$gid][$sid]);
-	if (isset($disablesid[$gid][$sid]))
-		unset($disablesid[$gid][$sid]);
-	elseif (!isset($disablesid[$gid][$sid]))
-		$disablesid[$gid][$sid] = "disablesid";
+	array_del_path($enablesid, "{$gid}/{$sid}");
+	if (array_get_path($disablesid, "{$gid}/{$sid}") {
+		array_del_path($disablesid, "{$gid}/{$sid}");
+	} else {
+		array_set_path($disablesid, "{$gid}/{$sid}", 'disablesid');
+	}
 
 	// Write the updated enablesid and disablesid values to the config file.
 	$tmp = "";
@@ -610,9 +557,9 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_on'] = $tmp;
+		$a_instance['rule_sid_on'] = $tmp;
 	else
-		unset($a_instance[$instanceid]['rule_sid_on']);
+		unset($a_instance['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -622,23 +569,24 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_off'] = $tmp;
+		$a_instance['rule_sid_off'] = $tmp;
 	else
-		unset($a_instance[$instanceid]['rule_sid_off']);
+		unset($a_instance['rule_sid_off']);
 
 	/* Update the config.xml file. */
-	write_config("Suricata pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$instanceid}", $a_instance);
+	write_config("Suricata pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 	/*************************************************/
 	/* Update the suricata.yaml file and rebuild the */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	suricata_generate_yaml($a_instance[$instanceid]);
+	suricata_generate_yaml($a_instance);
 	$rebuild_rules = false;
 
 	/* Signal Suricata to live-load the new rules */
-	suricata_reload_config($a_instance[$instanceid]);
+	suricata_reload_config($a_instance);
 
 	// Sync to configured CARP slaves if any are enabled
 	suricata_sync_on_changes();
@@ -657,7 +605,7 @@ if ($_POST['clear']) {
 	}
 
 	// Signal the Suricata instance that logs have been rotated
-	suricata_reload_config($a_instance[$instanceid], "SIGHUP");
+	suricata_reload_config($a_instance, "SIGHUP");
 
 	/* XXX: This is needed if suricata is run as suricata user */
 	mwexec('/bin/chmod 660 {$suricatalogdir}*', true);
@@ -693,14 +641,12 @@ if ($_POST['download']) {
 }
 
 /* Load up an array with the current Suppression List GID,SID values */
-$supplist = suricata_load_suppress_sigs($a_instance[$instanceid], true);
+$supplist = suricata_load_suppress_sigs($a_instance, true);
 
 function build_instance_list() {
-	global $a_instance;
-
 	$list = array();
 
-	foreach ($a_instance as $id => $instance) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $id => $instance) {
 		$list[$id] = '(' . convert_friendly_interface_to_friendly_descr($instance['interface']) . ') ' . $instance['descr'];
 	}
 
@@ -909,7 +855,7 @@ $group->add(new Form_Input(
 	$filterfieldsarray['proto']
 ))->setHelp("Protocol");
 
-if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+if ($a_instance['ips_mode'] == 'ips_mode_inline') {
 	$group->add(new Form_Checkbox(
 		'filterlogentries_action_drop',
 		'Dropped',
@@ -1030,7 +976,7 @@ if ($filterlogentries && count($filterfieldsarray)) {
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=sprintf($sectitle)?></h2></div>
 	<div class="panel-body table-responsive">
-	<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on') : ?>
+	<?php if ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on') : ?>
 		<div class="content table-responsive">
 			<span class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Alerts triggered by DROP rules that resulted in dropped (blocked) packets are shown with ');?>
 			<span class="text-danger"><?=gettext('highlighted ');?></span><?=gettext('rows below.');?><span>
@@ -1087,7 +1033,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$fields['time'] = substr($buf, 0, strpos($buf, '  '));
 
 			// Field 1 is the rule action (value is '**' when mode is not inline IPS or 'block-drops-only')
-			if (($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline'  || $a_instance[$instanceid]['block_drops_only'] == 'on') && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
+			if (($a_instance['ips_mode'] == 'ips_mode_inline'  || $a_instance['block_drops_only'] == 'on') && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
 				$fields['action'] = trim($tmp[1]);
 			}
 			else {
@@ -1165,7 +1111,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$alert_proto = $fields['proto'];
 
 			/* Action */
-			if (isset($fields['action']) && $a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
+			if (isset($fields['action']) && $a_instance['blockoffenders'] == 'on' && ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on')) {
 
 				switch ($fields['action']) {
 
@@ -1175,7 +1121,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 							$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
 							$alert_action .= gettext("Rule action is User-Forced to DROP. Click to force a different action for this rule.");
 						}
-						elseif ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && isset($rejectsid[$fields['gid']][$fields['sid']])) {
+						elseif ($a_instance['ips_mode'] == 'ips_mode_inline' && isset($rejectsid[$fields['gid']][$fields['sid']])) {
 							$alert_action = '<i class="fa fa-hand-stop-o icon-pointer text-warning text-center" title="';
 							$alert_action .= gettext("Rule action is User-Forced to REJECT. Click to force a different action for this rule.");
 						}
@@ -1191,7 +1137,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				$alert_action .= '" onClick="toggleAction(\'' . $fields['gid'] . '\', \'' . $fields['sid'] . '\');"</i>';
 			}
 			else {
-				if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
+				if ($a_instance['blockoffenders'] == 'on' && ($a_instance['ips_mode'] == 'ips_mode_inline' || $a_instance['block_drops_only'] == 'on')) {
 					$alert_action = '<i class="fa fa-exclamation-triangle icon-pointer text-warning text-center" title="' . gettext("Rule action is ALERT.");
 					$alert_action .= '" onClick="toggleAction(\'' . $fields['gid'] . '\', \'' . $fields['sid'] . '\');"</i>';
 				}
@@ -1306,8 +1252,8 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			}
 
 			/* Add icon for toggling rule action if applicable to current mode */
-			if ($a_instance[$instanceid]['blockoffenders'] == 'on') {
-				if ($a_instance[$instanceid]['block_drops_only'] == 'on' || $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+			if ($a_instance['blockoffenders'] == 'on') {
+				if ($a_instance['block_drops_only'] == 'on' || $a_instance['ips_mode'] == 'ips_mode_inline') {
 					$sid_action_link = "<i class=\"fa fa-pencil-square-o icon-pointer text-info\" onClick=\"toggleAction('{$fields['gid']}', '{$fields['sid']}');\"";
 					$sid_action_link .= ' title="' . gettext("Click to force a different action for this rule.") . '"></i>';
 					if (isset($alertsid[$fields['gid']][$fields['sid']])) {
@@ -1362,7 +1308,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 	</div>
 </div>
 
-<?php if ($a_instance[$instanceid]['blockoffenders'] == 'on') : ?>
+<?php if ($a_instance['blockoffenders'] == 'on') : ?>
 	<!-- Modal Rule SID action selector window -->
 	<div class="modal fade" role="dialog" id="sid_action_selector">
 		<div class="modal-dialog">
@@ -1385,7 +1331,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_drop" value="action_drop"> <span class = "label label-danger">DROP</span>
 					</label>
 
-			<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders'] == 'on') : ?>
+			<?php if ($a_instance['ips_mode'] == 'ips_mode_inline' && $a_instance['blockoffenders'] == 'on') : ?>
 					<label class="radio-inline">
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_reject" value="action_reject"> <span class = "label label-warning">REJECT</span>
 					</label>

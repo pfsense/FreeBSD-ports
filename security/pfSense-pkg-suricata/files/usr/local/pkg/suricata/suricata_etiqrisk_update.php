@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,9 +48,9 @@ function suricata_check_iprep_md5($filename) {
 	/*           error occurred.                              */
 	/**********************************************************/
 
-	global $config, $iqRisk_tmppath, $iprep_path, $notify_message;
+	global $iqRisk_tmppath, $iprep_path, $notify_message;
 	$new_md5 = $old_md5 = "";
-	$et_iqrisk_url = str_replace("_xxx_", $config['installedpackages']['suricata']['config'][0]['iqrisk_code'], ET_IQRISK_DNLD_URL);
+	$et_iqrisk_url = str_replace("_xxx_", config_get_path('installedpackages/suricata/config/0/iqrisk_code'), ET_IQRISK_DNLD_URL);
 
 	if (download_file("{$et_iqrisk_url}{$filename}.md5sum", "{$iqRisk_tmppath}{$filename}.md5", true, 10, 30) == true) {
 		if (file_exists("{$iqRisk_tmppath}{$filename}.md5"))
@@ -73,28 +73,21 @@ function suricata_check_iprep_md5($filename) {
 /**********************************************************************
  * Start of main code                                                 *
  **********************************************************************/
-global $g, $config;
+global $g;
 $iprep_path = SURICATA_IPREP_PATH;
 $iqRisk_tmppath = "{$g['tmp_path']}/IQRisk/";
 $success = FALSE;
 
-if (!is_array($config['installedpackages']['suricata']))
-	$config['installedpackages']['suricata'] = array();
-if (!is_array($config['installedpackages']['suricata']['config']))
-	$config['installedpackages']['suricata']['config'] = array();
-if (!is_array($config['installedpackages']['suricata']['config'][0]))
-	$config['installedpackages']['suricata']['config'][0] = array();
-
 // If auto-updates of ET IQRisk are disabled, then exit
-if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] == "off")
+if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == "off")
 	return(0);
 else
 	syslog(LOG_NOTICE, gettext("[Suricata] Updating the Emerging Threats IQRisk IP List..."));
 	$notify_message = gettext("Suricata Emerging Threats IQRisk IP List update started: " . date("Y-m-d H:i:s") . "\n");
 
 // Construct the download URL using the saved ET IQRisk Subscriber Code
-if (!empty($config['installedpackages']['suricata']['config'][0]['iqrisk_code'])) {
-	$et_iqrisk_url = str_replace("_xxx_", $config['installedpackages']['suricata']['config'][0]['iqrisk_code'], ET_IQRISK_DNLD_URL);
+if (!empty(config_get_path('installedpackages/suricata/config/0/iqrisk_code'))) {
+	$et_iqrisk_url = str_replace("_xxx_", config_get_path('installedpackages/suricata/config/0/iqrisk_code'), ET_IQRISK_DNLD_URL);
 }
 else {
 	syslog(gettext(LOG_ALERT, "[Suricata] ALERT: No IQRisk subscriber code found!  Aborting scheduled update of Emerging Threats IQRisk IP List."));
@@ -165,7 +158,7 @@ $notify_message .= gettext("Suricata Emerging Threats IQRisk IP List update fini
 
 // If successful, signal any running Suricata process to live reload the rules and IP lists
 if ($success == TRUE && is_process_running("suricata")) {
-	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $value) {
 		if ($value['enable_iprep'] == "on") {
 			suricata_reload_config($value);
 			sleep(2);
@@ -173,7 +166,7 @@ if ($success == TRUE && is_process_running("suricata")) {
 	}
 }
 
-if ($config['installedpackages']['suricata']['config'][0]['update_notify'] == 'on') {
+if (config_get_path('installedpackages/suricata/config/0/update_notify') == 'on') {
 	notify_all_remote($notify_message);
 }
 

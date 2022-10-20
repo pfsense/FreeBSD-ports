@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2020 Bill Meeks
+ * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ require("/usr/local/pkg/suricata/suricata_defs.inc");
 /***************************************************************/
 function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 
-	global $config, $g;
+	global $g;
 
 	// Get a file handle for CURL and then start the CURL
 	// transfer.
@@ -65,7 +65,7 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 	curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1);
 
 	// Honor any system restrictions on sending USERAGENT info
-	if (!isset($config['system']['do_not_send_host_uuid'])) {
+	if (config_get_path('system/do_not_send_host_uuid')) {
 		curl_setopt($ch, CURLOPT_USERAGENT, $g['product_name'] . '/' . $g['product_version'] . ' : ' . get_single_sysctl('kern.hostuuid'));
 	}
 	else {
@@ -73,14 +73,14 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 	}
 
 	// Use the system proxy server setttings if configured
-	if (!empty($config['system']['proxyurl'])) {
-		curl_setopt($ch, CURLOPT_PROXY, $config['system']['proxyurl']);
-		if (!empty($config['system']['proxyport'])) {
-			curl_setopt($ch, CURLOPT_PROXYPORT, $config['system']['proxyport']);
+	if (!empty(config_get_path('system/proxyurl'))) {
+		curl_setopt($ch, CURLOPT_PROXY, config_get_path('system/proxyurl'));
+		if (!empty(config_get_path('system/proxyport'))) {
+			curl_setopt($ch, CURLOPT_PROXYPORT, config_get_path('system/proxyport'));
 		}
-		if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
+		if (config_get_path('system/proxyuser') && config_get_path('system/proxypass')) {
 			@curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_ANY | CURLAUTH_ANYSAFE);
-			curl_setopt($ch, CURLOPT_PROXYUSERPWD, "{$config['system']['proxyuser']}:{$config['system']['proxypass']}");
+			curl_setopt($ch, CURLOPT_PROXYUSERPWD, config_get_path('system/proxyuser') . ":" . config_get_path('system/proxypass'));
 		}
 	}
 	$rc = curl_exec($ch);
@@ -112,12 +112,12 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 /**********************************************************************
  * Start of main code                                                 *
  **********************************************************************/
-global $g, $config;
+global $g;
 $suricata_geoip_dbdir = SURICATA_PBI_BASEDIR . "share/suricata/GeoLite2/";
 $geoip_tmppath = "{$g['tmp_path']}/geoipup/";
 
 // If auto-updates of GeoIP are disabled, then exit
-if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "off")
+if (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == "off")
 	return;
 else
 	syslog(LOG_NOTICE, gettext("[Suricata] Checking for updated MaxMind GeoLite2 IP database file..."));
@@ -143,8 +143,8 @@ $dbfile = $geoip_tmppath . "GeoLite2-Country.mmdb";
 $md5file = $geoip_tmppath . "GeoLite2-Country.mmdb.tar.gz.md5";
 
 // Set the URL strings with the user's license key.
-$dbfile_url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=" . $config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'] . "&suffix=tar.gz";
-$md5file_url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=" . $config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'] . "&suffix=tar.gz.md5";
+$dbfile_url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=" . config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key') . "&suffix=tar.gz";
+$md5file_url = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=" . config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key') . "&suffix=tar.gz.md5";
 
 // First check the MD5 of the DB we have (if any) against the latest on the 
 // MaxMind site to see if we already have the most current DB file version.
@@ -198,7 +198,7 @@ syslog(LOG_NOTICE, "[Suricata] Cleaning up temp files after GeoLite2-Country dat
 rmdir_recursive("$geoip_tmppath");
 $notify_message .= gettext("Suricata MaxMind GeoLite2 IP database update finished: " . date("Y-m-d H:i:s") . "\n");
 
-if ($config['installedpackages']['suricata']['config'][0]['update_notify'] == 'on') {
+if (config_get_path('installedpackages/suricata/config/0/update_notify') == 'on') {
 	notify_all_remote($notify_message);
 }
 

@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,16 +26,12 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $suricatadir = SURICATADIR;
 $rules_map = array();
 $pconfig = array();
 $filterrules = FALSE;
-
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-$a_rule = &$config['installedpackages']['suricata']['rule'];
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -59,10 +55,12 @@ if (is_null($id)) {
 	}
 }
 
-if (isset($id) && $a_rule[$id]) {
-	$pconfig['interface'] = $a_rule[$id]['interface'];
-	$pconfig['rulesets'] = $a_rule[$id]['rulesets'];
-	$pconfig['customrules'] = base64_decode($a_rule[$id]['customrules']);
+$a_rule = config_get_path("installedpackages/suricata/rule/{$id}", []);
+
+if (!empty($a_rule)) {
+	$pconfig['interface'] = $a_rule['interface'];
+	$pconfig['rulesets'] = $a_rule['rulesets'];
+	$pconfig['customrules'] = base64_decode($a_rule['customrules']);
 }
 
 function add_title_attribute($tag, $title) {
@@ -99,19 +97,19 @@ function add_title_attribute($tag, $title) {
 
 /* convert fake interfaces to real */
 $if_real = get_real_interface($pconfig['interface']);
-$suricata_uuid = $a_rule[$id]['uuid'];
+$suricata_uuid = $a_rule['uuid'];
 $suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}";
 $suricata_rules_dir = SURICATA_RULES_DIR;
-$snortdownload = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'];
-$emergingdownload = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'];
-$etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'];
+$snortdownload = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules');
+$emergingdownload = config_get_path('installedpackages/suricata/config/0/enable_etopen_rules');
+$etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules');
 $categories = explode("||", $pconfig['rulesets']);
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled, and adjust the available rulesets
 // in the CATEGORY drop-down box as necessary by removing disabled
 // categories and adding enabled ones.
-$cat_mods = suricata_sid_mgmt_auto_categories($a_rule[$id], FALSE);
+$cat_mods = suricata_sid_mgmt_auto_categories($a_rule, FALSE);
 foreach ($cat_mods as $k => $v) {
 	switch ($v) {
 		case 'disabled':
@@ -135,18 +133,18 @@ $categories[] = "User Forced Disabled Rules";
 
 // Only add custom ALERT or DROP Action Rules
 // option if blocking is enabled.
-if ($a_rule[$id]['blockoffenders'] == 'on') {
+if ($a_rule['blockoffenders'] == 'on') {
 	$categories[] = "User Forced ALERT Action Rules";
 
 	// Show custom DROP rules only if using Inline IPS
 	// mode or "Block Drops Only" option.
-	if ($a_rule[$id]['block_drops_only'] == 'on' || $a_rule[$id]['ips_mode'] == 'ips_mode_inline') {
+	if ($a_rule['block_drops_only'] == 'on' || $a_rule['ips_mode'] == 'ips_mode_inline') {
 		$categories[] = "User Forced DROP Action Rules";
 	}
 }
 
 // Only add custom REJECT option if using IPS Inline Mode with blocking enabled
-if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+if ($a_rule['ips_mode'] == 'ips_mode_inline' && $a_rule['blockoffenders'] == 'on') {
 	$categories[] = "User Forced REJECT Action Rules";
 }
 
@@ -168,8 +166,8 @@ else
 // If we don't have any Category to display, then
 // default to showing the Custom Rules text control.
 if (empty($categories[0]) && ($currentruleset != "custom.rules") && ($currentruleset != "Auto-Flowbit Rules")) {
-	if (!empty($a_rule[$id]['ips_policy']))
-		$currentruleset = "IPS Policy - " . ucfirst($a_rule[$id]['ips_policy']);
+	if (!empty($a_rule['ips_policy']))
+		$currentruleset = "IPS Policy - " . ucfirst($a_rule['ips_policy']);
 	else
 		$currentruleset = "custom.rules";
 }
@@ -193,7 +191,7 @@ if ($currentruleset != 'custom.rules') {
 	// Test for the special case of an IPS Policy file
 	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
-		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
+		$rules_map = suricata_load_vrt_policy($a_rule['ips_policy'], $a_rule['ips_policy_mode']);
 	}
 	// Test for the special case of "Active Rules".  This
 	// displays all currently active rules for the
@@ -214,7 +212,7 @@ if ($currentruleset != 'custom.rules') {
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
-		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule['rule_sid_on']));
 	}
 	elseif ($currentruleset == "User Forced Disabled Rules") {
 		// Search and display forced disabled rules only from
@@ -227,16 +225,16 @@ if ($currentruleset != 'custom.rules') {
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
-		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule['rule_sid_off']));
 	}
 	elseif ($currentruleset == "User Forced ALERT Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_alert']));
 	}
 	elseif ($currentruleset == "User Forced DROP Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_drop']));
 	}
 	elseif ($currentruleset == "User Forced REJECT Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_reject']));
 	}
 	// If it's not a special case, and we can't find
 	// the given rule file, then notify the user.
@@ -251,18 +249,18 @@ if ($currentruleset != 'custom.rules') {
 }
 
 /* Process the current category rules through any auto SID MGMT changes if enabled */
-suricata_auto_sid_mgmt($rules_map, $a_rule[$id], FALSE);
+suricata_auto_sid_mgmt($rules_map, $a_rule, FALSE);
 
 /* Load up our enablesid and disablesid arrays with manually enabled or disabled SIDs */
-$enablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_on']);
-$disablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_off']);
-suricata_modify_sids($rules_map, $a_rule[$id]);
+$enablesid = suricata_load_sid_mods($a_rule['rule_sid_on']);
+$disablesid = suricata_load_sid_mods($a_rule['rule_sid_off']);
+suricata_modify_sids($rules_map, $a_rule);
 
 /* Load up our rule action arrays with manually changed SID actions */
-$alertsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']);
-$dropsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']);
-$rejectsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']);
-suricata_modify_sids_action($rules_map, $a_rule[$id]);
+$alertsid = suricata_load_sid_mods($a_rule['rule_sid_force_alert']);
+$dropsid = suricata_load_sid_mods($a_rule['rule_sid_force_drop']);
+$rejectsid = suricata_load_sid_mods($a_rule['rule_sid_force_reject']);
+suricata_modify_sids_action($rules_map, $a_rule);
 
 /* Process AJAX request to view content of a specific rule */
 if ($_POST['action'] == 'loadRule') {
@@ -301,33 +299,26 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 		case "state_default":
 			// Return the rule to it's default state
 			// by removing all state override entries.
-			if (isset($enablesid[$gid][$sid])) {
-				unset($enablesid[$gid][$sid]);
-			}
-			if (isset($disablesid[$gid][$sid])) {
-				unset($disablesid[$gid][$sid]);
-			}
+			array_del_path($enablesid, "{$gid}/{$sid}");
+			array_del_path($disablesid, "{$gid}/{$sid}");
+
 			// Restore the default state flag so we
 			// can display state properly on RULES
 			// page without needing to reload the
 			// entire set of rules.
-			if (isset($rules_map[$gid][$sid])) {
+			if (array_get_path($rules_map, "{$gid}/{$sid}")) {
 				$rules_map[$gid][$sid]['disabled'] = !$rules_map[$gid][$sid]['default_state'];
 			}
 			break;
 
 		case "state_enabled":
-			if (isset($disablesid[$gid][$sid])) {
-				unset($disablesid[$gid][$sid]);
-			}
-			$enablesid[$gid][$sid] = "enablesid";
+			array_del_path($disablesid, "{$gid}/{$sid}");
+			array_set_path($enablesid, "{$gid}/{$sid}", 'enablesid');
 			break;
 
 		case "state_disabled":
-			if (isset($enablesid[$gid][$sid])) {
-				unset($enablesid[$gid][$sid]);
-			}
-			$disablesid[$gid][$sid] = "disablesid";
+			array_del_path($enablesid, "{$gid}/{$sid}");
+			array_set_path($disablesid, "{$gid}/{$sid}", 'disablesid');
 			break;
 
 		default:
@@ -343,9 +334,9 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_on'] = $tmp;
+		$a_rule['rule_sid_on'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_on']);
+		unset($a_rule['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -355,19 +346,20 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_off'] = $tmp;
+		$a_rule['rule_sid_off'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_off']);
+		unset($a_rule['rule_sid_off']);
 
 	/* Update the config.xml file. */
-	write_config("Suricata pkg: modified state for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: modified state for rule {$gid}:{$sid} on {$a_rule['interface']}.");
 
 	// We changed a rule state, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
 
 	// Update our in-memory rules map with the changes just saved
 	// to the Suricata configuration file.
-	suricata_modify_sids($rules_map, $a_rule[$id]);
+	suricata_modify_sids($rules_map, $a_rule);
 
 	// Set a scroll-to anchor location
 	$anchor = "rule_{$gid}_{$sid}";
@@ -388,66 +380,30 @@ elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) 
 	switch ($action) {
 		case "action_default":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['default_action'];
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_alert":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['alert'];
-			if (!is_array($alertsid[$gid])) {
-				$alertsid[$gid] = array();
-			}
-			if (!is_array($alertsid[$gid][$sid])) {
-				$alertsid[$gid][$sid] = array();
-			}
-			$alertsid[$gid][$sid] = "alertsid";
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($alertsid, "{$gid}/{$sid}", "alertsid");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_drop":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['drop'];
-			if (!is_array($dropsid[$gid])) {
-				$dropsid[$gid] = array();
-			}
-			if (!is_array($dropsid[$gid][$sid])) {
-				$dropsid[$gid][$sid] = array();
-			}
-			$dropsid[$gid][$sid] = "dropsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($dropsid, "{$gid}/{$sid}", "dropsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_reject":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['reject'];
-			if (!is_array($rejectsid[$gid])) {
-				$rejectsid[$gid] = array();
-			}
-			if (!is_array($rejectsid[$gid][$sid])) {
-				$rejectsid[$gid][$sid] = array();
-			}
-			$rejectsid[$gid][$sid] = "rejectsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
+			array_set_path($rejectsid, "{$gid}/{$sid}", "rejectsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
 			break;
 
 		default:
@@ -464,9 +420,9 @@ elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) 
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_rule[$id]['rule_sid_force_alert'] = $tmp;
+			$a_rule['rule_sid_force_alert'] = $tmp;
 		else
-			unset($a_rule[$id]['rule_sid_force_alert']);
+			unset($a_rule['rule_sid_force_alert']);
 
 		$tmp = "";
 		foreach (array_keys($dropsid) as $k1) {
@@ -476,9 +432,9 @@ elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) 
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_rule[$id]['rule_sid_force_drop'] = $tmp;
+			$a_rule['rule_sid_force_drop'] = $tmp;
 		else
-			unset($a_rule[$id]['rule_sid_force_drop']);
+			unset($a_rule['rule_sid_force_drop']);
 
 		$tmp = "";
 		foreach (array_keys($rejectsid) as $k1) {
@@ -488,19 +444,20 @@ elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) 
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_rule[$id]['rule_sid_force_reject'] = $tmp;
+			$a_rule['rule_sid_force_reject'] = $tmp;
 		else
-			unset($a_rule[$id]['rule_sid_force_reject']);
+			unset($a_rule['rule_sid_force_reject']);
 
 		/* Update the config.xml file. */
-		write_config("Suricata pkg: modified action for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
+		config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+		write_config("Suricata pkg: modified action for rule {$gid}:{$sid} on {$a_rule['interface']}.");
 
 		// We changed a rule action, remind user to apply the changes
 		mark_subsystem_dirty('suricata_rules');
 
 		// Update our in-memory rules map with the changes just saved
 		// to the Suricata configuration file.
-		suricata_modify_sids_action($rules_map, $a_rule[$id]);
+		suricata_modify_sids_action($rules_map, $a_rule);
 
 		// Set a scroll-to anchor location
 		$anchor = "rule_{$gid}_{$sid}";
@@ -510,9 +467,8 @@ elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
 	// Mark all rules in the currently selected category "disabled".
 	foreach (array_keys($rules_map) as $k1) {
 		foreach (array_keys($rules_map[$k1]) as $k2) {
-			if (isset($enablesid[$k1][$k2]))
-				unset($enablesid[$k1][$k2]);
-			$disablesid[$k1][$k2] = "disablesid";
+			array_del_path($enablesid, "{$k1}/{$k2}");
+			array_set_path($disablesid, "{$k1}/{$k2}", 'disablesid');
 		}
 	}
 
@@ -525,9 +481,9 @@ elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_on'] = $tmp;
+		$a_rule['rule_sid_on'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_on']);
+		unset($a_rule['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -537,27 +493,26 @@ elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_off'] = $tmp;
+		$a_rule['rule_sid_off'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_off']);
+		unset($a_rule['rule_sid_off']);
 
 	// We changed a rule state, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
-
-	write_config("Suricata pkg: disabled all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: disabled all rules in category {$currentruleset} for {$a_rule['interface']}.");
 
 	// Update our in-memory rules map with the changes just saved
 	// to the Suricata configuration file.
-	suricata_modify_sids($rules_map, $a_rule[$id]);
+	suricata_modify_sids($rules_map, $a_rule);
 }
 elseif (isset($_POST['enable_all']) && !empty($rules_map)) {
 
 	// Mark all rules in the currently selected category "enabled".
 	foreach (array_keys($rules_map) as $k1) {
 		foreach (array_keys($rules_map[$k1]) as $k2) {
-			if (isset($disablesid[$k1][$k2]))
-				unset($disablesid[$k1][$k2]);
-			$enablesid[$k1][$k2] = "enablesid";
+			array_del_path($disablesid, "{$k1}/{$k2}");
+			array_set_path($enablesid, "{$k1}/{$k2}", 'enablesid');
 		}
 	}
 	// Write the updated enablesid and disablesid values to the config file.
@@ -569,9 +524,9 @@ elseif (isset($_POST['enable_all']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_on'] = $tmp;
+		$a_rule['rule_sid_on'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_on']);
+		unset($a_rule['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -581,34 +536,29 @@ elseif (isset($_POST['enable_all']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_off'] = $tmp;
+		$a_rule['rule_sid_off'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_off']);
+		unset($a_rule['rule_sid_off']);
 
 	// We changed a rule state, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
-
-	write_config("Suricata pkg: enable all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: enable all rules in category {$currentruleset} for {$a_rule['interface']}.");
 
 	// Update our in-memory rules map with the changes just saved
 	// to the Suricata configuration file.
-	suricata_modify_sids($rules_map, $a_rule[$id]);
+	suricata_modify_sids($rules_map, $a_rule);
 }
 elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
 	// Reset any modified SIDs in the current rule category to their defaults.
 	foreach (array_keys($rules_map) as $k1) {
 		foreach (array_keys($rules_map[$k1]) as $k2) {
-			if (isset($enablesid[$k1][$k2]))
-				unset($enablesid[$k1][$k2]);
-			if (isset($disablesid[$k1][$k2]))
-				unset($disablesid[$k1][$k2]);
-			if (isset($alertsid[$k1][$k2]))
-				unset($alertsid[$k1][$k2]);
-			if (isset($dropsid[$k1][$k2]))
-				unset($dropsid[$k1][$k2]);
-			if (isset($rejectsid[$k1][$k2]))
-				unset($rejectsid[$k1][$k2]);
+			array_del_path($enablesid, "{$k1}/{$k2}");
+			array_del_path($disablesid, "{$k1}/{$k2}");
+			array_del_path($alertsid, "{$k1}/{$k2}");
+			array_del_path($dropsid, "{$k1}/{$k2}");
+			array_del_path($rejectsid, "{$k1}/{$k2}");
 		}
 	}
 
@@ -621,9 +571,9 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_on'] = $tmp;
+		$a_rule['rule_sid_on'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_on']);
+		unset($a_rule['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -633,9 +583,9 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_off'] = $tmp;
+		$a_rule['rule_sid_off'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_off']);
+		unset($a_rule['rule_sid_off']);
 
 	// Write the updated alertsid, dropsid and rejectsid values to the config file.
 	$tmp = "";
@@ -646,9 +596,9 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_force_alert'] = $tmp;
+		$a_rule['rule_sid_force_alert'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_force_alert']);
+		unset($a_rule['rule_sid_force_alert']);
 
 	$tmp = "";
 	foreach (array_keys($dropsid) as $k1) {
@@ -658,9 +608,9 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_force_drop'] = $tmp;
+		$a_rule['rule_sid_force_drop'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_force_drop']);
+		unset($a_rule['rule_sid_force_drop']);
 
 	$tmp = "";
 	foreach (array_keys($rejectsid) as $k1) {
@@ -670,14 +620,14 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_rule[$id]['rule_sid_force_reject'] = $tmp;
+		$a_rule['rule_sid_force_reject'] = $tmp;
 	else
-		unset($a_rule[$id]['rule_sid_force_reject']);
+		unset($a_rule['rule_sid_force_reject']);
 
 	// We changed a rule state or action, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
-
-	write_config("Suricata pkg: remove rule state/action changes for category {$currentruleset} on {$a_rule[$id]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: remove rule state/action changes for category {$currentruleset} on {$a_rule['interface']}.");
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
@@ -689,7 +639,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	// Test for the special case of an IPS Policy file
 	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
-		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
+		$rules_map = suricata_load_vrt_policy($a_rule['ips_policy'], $a_rule['ips_policy_mode']);
 	}
 	// Test for the special case of "Active Rules".  This
 	// displays all currently active rules for the
@@ -710,7 +660,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
-		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule['rule_sid_on']));
 	}
 	elseif ($currentruleset == "User Forced Disabled Rules") {
 		// Search and display forced disabled rules only from
@@ -723,16 +673,16 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
-		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule['rule_sid_off']));
 	}
 	elseif ($currentruleset == "User Forced ALERT Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_alert']));
 	}
 	elseif ($currentruleset == "User Forced DROP Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_drop']));
 	}
 	elseif ($currentruleset == "User Forced REJECT Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_reject']));
 	}
 	// If it's not a special case, and we can't find
 	// the given rule file, then notify the user.
@@ -748,17 +698,19 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 
 	// Remove all modified SIDs from config.xml and save the changes.
-	unset($a_rule[$id]['rule_sid_on']);
-	unset($a_rule[$id]['rule_sid_off']);
-	unset($a_rule[$id]['rule_sid_force_alert']);
-	unset($a_rule[$id]['rule_sid_force_drop']);
-	unset($a_rule[$id]['rule_sid_force_reject']);
+	unset($a_rule['rule_sid_on']);
+	unset($a_rule['rule_sid_off']);
+	unset($a_rule['rule_sid_force_alert']);
+	unset($a_rule['rule_sid_force_drop']);
+	unset($a_rule['rule_sid_force_reject']);
 
 	// We changed a rule state or action, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
 
 	/* Update the config.xml file. */
-	write_config("Suricata pkg: remove all rule state/action changes for {$a_rule[$id]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: remove all rule state/action changes for {$a_rule['interface']}.");
 
 	// Reload the rules so we can accurately show content after
 	// resetting any user overrides.
@@ -769,7 +721,7 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 	// Test for the special case of an IPS Policy file
 	// and load the selected policy's rules.
 	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
-		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
+		$rules_map = suricata_load_vrt_policy($a_rule['ips_policy'], $a_rule['ips_policy_mode']);
 	}
 	// Test for the special case of "Active Rules".  This
 	// displays all currently active rules for the
@@ -790,7 +742,7 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 		}
 		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
-		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_on']));
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule['rule_sid_on']));
 	}
 	elseif ($currentruleset == "User Forced Disabled Rules") {
 		// Search and display forced disabled rules only from
@@ -803,16 +755,16 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 		}
 		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
-		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule[$id]['rule_sid_off']));
+		$rules_map = suricata_get_filtered_rules($rule_files, suricata_load_sid_mods($a_rule['rule_sid_off']));
 	}
 	elseif ($currentruleset == "User Forced ALERT Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_alert']));
 	}
 	elseif ($currentruleset == "User Forced DROP Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_drop']));
 	}
 	elseif ($currentruleset == "User Forced REJECT Action Rules") {
-		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule[$id]['rule_sid_force_reject']));
+		$rules_map = suricata_get_filtered_rules("{$suricatacfgdir}/rules/", suricata_load_sid_mods($a_rule['rule_sid_force_reject']));
 	}
 	// If it's not a special case, and we can't find
 	// the given rule file, then notify the user.
@@ -826,10 +778,11 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 	}
 }
 elseif (isset($_POST['clear'])) {
-	unset($a_rule[$id]['customrules']);
-	write_config("Suricata pkg: clear all custom rules for {$a_rule[$id]['interface']}.");
+	unset($a_rule['customrules']);
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: clear all custom rules for {$a_rule['interface']}.");
 	$rebuild_rules = true;
-	suricata_generate_yaml($a_rule[$id]);
+	suricata_generate_yaml($a_rule);
 	$rebuild_rules = false;
 	$pconfig['customrules'] = '';
 
@@ -837,21 +790,22 @@ elseif (isset($_POST['clear'])) {
 	suricata_sync_on_changes();
 }
 elseif (isset($_POST['cancel'])) {
-	$pconfig['customrules'] = base64_decode($a_rule[$id]['customrules']);
+	$pconfig['customrules'] = base64_decode($a_rule['customrules']);
 	clear_subsystem_dirty('suricata_rules');
 }
 elseif (isset($_POST['save'])) {
 	$pconfig['customrules'] = $_POST['customrules'];
 	if ($_POST['customrules'])
-		$a_rule[$id]['customrules'] = base64_encode(str_replace("\r\n", "\n", $_POST['customrules']));
+		$a_rule['customrules'] = base64_encode(str_replace("\r\n", "\n", $_POST['customrules']));
 	else
-		unset($a_rule[$id]['customrules']);
-	write_config("Suricata pkg: save modified custom rules for {$a_rule[$id]['interface']}.");
+		unset($a_rule['customrules']);
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: save modified custom rules for {$a_rule['interface']}.");
 	$rebuild_rules = true;
-	suricata_generate_yaml($a_rule[$id]);
+	suricata_generate_yaml($a_rule);
 	$rebuild_rules = false;
 	/* Signal Suricata to "live reload" the rules */
-	suricata_reload_config($a_rule[$id]);
+	suricata_reload_config($a_rule);
 	clear_subsystem_dirty('suricata_rules');
 
 	// Sync to configured CARP slaves if any are enabled
@@ -863,10 +817,10 @@ elseif ($_POST['filterrules_submit']) {
 	$filterfieldsarray = array();
 	$filterfieldsarray['show_enabled'] = $_POST['filterrules_enabled'] ? $_POST['filterrules_enabled'] : null;
 	$filterfieldsarray['show_disabled'] = $_POST['filterrules_disabled'] ? $_POST['filterrules_disabled'] : null;
-	if ($a_rule[$id]['blockoffenders'] == 'on'){
+	if ($a_rule['blockoffenders'] == 'on'){
 		$filterfieldsarray['show_drop'] = $_POST['filterrules_drop'] ? $_POST['filterrules_drop'] : null;
 	}
-	if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+	if ($a_rule['ips_mode'] == 'ips_mode_inline' && $a_rule['blockoffenders'] == 'on') {
 		$filterfieldsarray['show_reject'] = $_POST['filterrules_reject'] ? $_POST['filterrules_reject'] : null;
 	}
 }
@@ -877,18 +831,19 @@ elseif ($_POST['filterrules_clear']) {
 elseif (isset($_POST['apply'])) {
 
 	/* Save new configuration */
-	write_config("Suricata pkg: new rules configuration for {$a_rule[$id]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_rule);
+	write_config("Suricata pkg: new rules configuration for {$a_rule['interface']}.");
 
 	/*************************************************/
 	/* Update the suricata.yaml file and rebuild the */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	suricata_generate_yaml($a_rule[$id]);
+	suricata_generate_yaml($a_rule);
 	$rebuild_rules = false;
 
 	/* Signal Suricata to "live reload" the rules */
-	suricata_reload_config($a_rule[$id]);
+	suricata_reload_config($a_rule);
 
 	// We have saved changes and done a soft restart, so clear "dirty" flag
 	clear_subsystem_dirty('suricata_rules');
@@ -898,16 +853,16 @@ elseif (isset($_POST['apply'])) {
 }
 
 function build_cat_list() {
-	global $categories, $a_rule, $id, $snortdownload, $emergingdownload, $etpro;
+	global $categories, $a_rule, $snortdownload, $emergingdownload, $etpro;
 
 	$list = array();
 
 	$files = $categories;
 
-	if ($a_rule[$id]['ips_policy_enable'] == 'on')
-		$files[] = "IPS Policy - " . ucfirst($a_rule[$id]['ips_policy']);
+	if ($a_rule['ips_policy_enable'] == 'on')
+		$files[] = "IPS Policy - " . ucfirst($a_rule['ips_policy']);
 
-	if ($a_rule[$id]['autoflowbitrules'] == 'on')
+	if ($a_rule['autoflowbitrules'] == 'on')
 		$files[] = "Auto-Flowbit Rules";
 
 	natcasesort($files);
@@ -1009,7 +964,7 @@ if ($currentruleset == 'custom.rules') :
 		$section->addInput(new Form_Textarea(
 			'customrules',
 			'',
-			base64_decode($a_rule[$id]['customrules'])
+			base64_decode($a_rule['customrules'])
 		))->addClass('row-fluid')->setRows('18')->setAttribute('wrap', 'off')->setAttribute('style', 'max-width: 100%; width: 100%;');
 		print($section);
 ?>
@@ -1098,7 +1053,7 @@ $group->add(new Form_Checkbox(
 ));
 
 // Show DROP and REJECT filters for Inline IPS Mode operation
-if ($a_rule[$id]['blockoffenders'] == 'on') {
+if ($a_rule['blockoffenders'] == 'on') {
 	$group->add(new Form_Checkbox(
 		'filterrules_drop',
 		'Drop Rules',
@@ -1107,7 +1062,7 @@ if ($a_rule[$id]['blockoffenders'] == 'on') {
 		'on'
 	));
 }
-if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+if ($a_rule['ips_mode'] == 'ips_mode_inline' && $a_rule['blockoffenders'] == 'on') {
 	$group->add(new Form_Checkbox(
 		'filterrules_reject',
 		'Reject Rules',
@@ -1162,9 +1117,9 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
 						<td></td><td></td>
-				<?php if ($a_rule[$id]['blockoffenders'] == 'on') : ?>
+				<?php if ($a_rule['blockoffenders'] == 'on') : ?>
 						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
-					<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline') : ?>
+					<?php if ($a_rule['ips_mode'] == 'ips_mode_inline') : ?>
 						<td style="padding-left: 8px;"><i class="fa fa-hand-stop-o text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is reject');?></small></td>
 					<?php else : ?>
 						<td></td><td></td>
@@ -1294,15 +1249,15 @@ print($section);
 								$textss = $textse = "";
 								$iconact_class = 'class="fa fa-exclamation-triangle text-warning text-center"';
 								$title_act = gettext("Rule will alert on traffic when triggered.");
-								if ($v['action'] == 'drop' && $a_rule[$id]['blockoffenders'] == 'on') {
+								if ($v['action'] == 'drop' && $a_rule['blockoffenders'] == 'on') {
 									$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
 									$title_act = gettext("Rule will drop traffic when triggered.");
 								}
-								elseif ($v['action'] == 'reject' && $a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+								elseif ($v['action'] == 'reject' && $a_rule['ips_mode'] == 'ips_mode_inline' && $a_rule['blockoffenders'] == 'on') {
 									$iconact_class = 'class="fa fa-hand-stop-o text-warning text-center"';
 									$title_act = gettext("Rule will reject traffic when triggered.");
 								}
-								if ($a_rule[$id]['blockoffenders'] == 'on') {
+								if ($a_rule['blockoffenders'] == 'on') {
 									$title_act .= gettext("  Click to change rule action.");
 								}
 
@@ -1349,7 +1304,7 @@ print($section);
 						<?php endif; ?>
 									</td>
 
-						<?php if ($a_rule[$id]['blockoffenders'] == 'on' && $v['noalert'] == 0) : ?>
+						<?php if ($a_rule['blockoffenders'] == 'on' && $v['noalert'] == 0) : ?>
 								       <td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
 										<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
 								       </td>
@@ -1434,7 +1389,7 @@ print($section);
 					<input type="radio" name="ruleActionOptions" id="action_drop" value="action_drop"> <span class = "label label-danger">DROP</span>
 				</label>
 
-		<?php if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') : ?>
+		<?php if ($a_rule['ips_mode'] == 'ips_mode_inline' && $a_rule['blockoffenders'] == 'on') : ?>
 				<label class="radio-inline">
 					<input type="radio" name="ruleActionOptions" id="action_reject" value="action_reject"> <span class = "label label-warning">REJECT</span>
 				</label>

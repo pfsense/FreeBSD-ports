@@ -39,9 +39,7 @@ if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	sort($netmapifs);
 }
 
-init_config_arr(array('installedpackages', 'suricata', 'rule'));
-$suricataglob = $config['installedpackages']['suricata'];
-$a_rule = &$config['installedpackages']['suricata']['rule'];
+$a_rule = config_get_path('installedpackages/suricata/rule', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -61,7 +59,7 @@ else
 	$action = "";
 
 $pconfig = array();
-if (empty($suricataglob['rule'][$id]['uuid'])) {
+if (empty(array_get_path($a_rule[$id], 'uuid'))) {
 	/* Adding new interface, so generate a new UUID and flag rules to build. */
 	$pconfig['uuid'] = suricata_generate_id();
 	$rebuild_rules = true;
@@ -111,7 +109,7 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 	$ifrules = array();
 
 	// Populate the $ifrules array with all existing configured Suricata interfaces
-	foreach($a_rule as $r)
+	foreach(config_get_path('installedpackages/suricata/rule', []) as $r)
 		$ifrules[] = $r['interface'];
 
 	// Walk pfSense-configured interfaces, and take first one not already in our Suricata list
@@ -323,7 +321,7 @@ if (strcasecmp($action, 'dup') == 0) {
 	// Try to pick the next available physical interface to use
 	$ifaces = get_configured_interface_list();
 	$ifrules = array();
-	foreach($a_rule as $r)
+	foreach(config_get_path('installedpackages/suricata/rule', []) as $r)
 		$ifrules[] = $r['interface'];
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
@@ -359,7 +357,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 
 	/* See if assigned interface is already in use */
 	if (isset($_POST['interface'])) {
-		foreach ($a_rule as $k => $v) {
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $k => $v) {
 			if (($v['interface'] == $_POST['interface']) && ($id != $k)) {
 				$input_errors[] = gettext("The '{$_POST['interface']}' interface is already assigned to another Suricata instance.");
 				break;
@@ -385,6 +383,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 	// save the change and exit.
 	if ($_POST['enable'] != 'on') {
 		$a_rule[$id]['enable'] = $_POST['enable'] ? 'on' : 'off';
+		config_set_path('installedpackages/suricata/rule', $a_rule);
 		suricata_stop($a_rule[$id], get_real_interface($a_rule[$id]['interface']));
 		write_config("Suricata pkg: disabled Suricata on " . convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']));
 		$rebuild_rules = false;
@@ -552,7 +551,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		// about potential incompatibilities with Netmap and some NIC hardware drivers.
 		if ($natent['ips_mode'] == "ips_mode_inline") {
 			$savemsg2 = gettext("Inline IPS Mode is selected. Live Rule Swap will be automatically enabled to prevent netmap interfaces from cycling offline/online during future rules updates.  Please note that not all hardware NIC drivers support Netmap operation which is required for Inline IPS Mode.  If problems are experienced, switch to Legacy Mode instead.");
-			$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] = "on";
+			config_set_path('installedpackages/suricata/config/0/live_swap_updates', "on");
 		}
 
 		$if_real = get_real_interface($natent['interface']);
@@ -697,6 +696,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			suricata_stop($natent, $if_real);
 
 		// Save configuration changes
+		config_set_path('installedpackages/suricata/rule', $a_rule);
 		write_config("Suricata pkg: modified interface configuration for " . convert_friendly_interface_to_friendly_descr($natent['interface']));
 
 		// Update suricata.conf and suricata.sh files for this interface
@@ -709,17 +709,19 @@ if (isset($_POST["save"]) && !$input_errors) {
 		$pconfig = $_POST;
 }
 
+/**************************************************************/
+/* This function builds an array of lists based on the $lists */
+/* parameter. Valid list types are 'suppress' and 'passlist'  */
+/*                                                            */
+/* Returns: array of list names matching specified type       */
+/**************************************************************/
 function suricata_get_config_lists($lists) {
-	global $suricataglob;
 
 	$list = array();
 
-	if (is_array($suricataglob[$lists]['item'])) {
-		$slist_select = $suricataglob[$lists]['item'];
-		foreach ($slist_select as $value) {
-			$ilistname = $value['name'];
-			$list[$ilistname] = htmlspecialchars($ilistname);
-		}
+	foreach (config_get_path("installedpackages/suricata/{$lists}/item", []) as $value) {
+		$ilistname = $value['name'];
+		$list[$ilistname] = htmlspecialchars($ilistname);
 	}
 
 	return(['default' => 'default'] + $list);
@@ -741,7 +743,7 @@ if ($savemsg2) {
 }
 
 // If using Inline IPS, check that CSO, TSO and LRO are all disabled
-if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
+if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!config_path_enabled('system','disablechecksumoffloading') || !config_path_enabled('system', 'disablesegmentationoffloading') || !config_path_enabled('system', 'disablelargereceiveoffloading'))) {
 	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
 				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
 			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));

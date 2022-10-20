@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,21 +26,12 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-
-if (!is_array($config['installedpackages']['suricata']))
-	$config['installedpackages']['suricata'] = array();
-$suricataglob = $config['installedpackages']['suricata'];
-
-if (!is_array($config['installedpackages']['suricata']['suppress']))
-	$config['installedpackages']['suricata']['suppress'] = array();
-if (!is_array($config['installedpackages']['suricata']['suppress']['item']))
-	$config['installedpackages']['suricata']['suppress']['item'] = array();
-$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
-
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
+
+$a_suppress = config_get_path('installedpackages/suricata/suppress/item', []);
 
 /* returns true if $name is a valid name for a whitelist file name or ip */
 function is_validwhitelistname($name) {
@@ -112,6 +103,7 @@ if ($_POST['save']) {
 		else
 			$a_suppress[] = $s_list;
 
+		config_set_path('installedpackages/suricata/suppress/item', $a_suppress);
 		write_config("Suricata pkg: saved changes to Suppress List {$s_list['name']}.");
 		sync_suricata_package_config();
 

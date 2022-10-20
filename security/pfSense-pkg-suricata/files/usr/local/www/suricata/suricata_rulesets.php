@@ -35,12 +35,6 @@ $flowbit_rules_file = FLOWBITS_FILENAME;
 // Array of default events rules for Suricata
 $default_rules = SURICATA_DEFAULT_RULES;
 
-if (!is_array($config['installedpackages']['suricata']['rule'])) {
-	$config['installedpackages']['suricata']['rule'] = array();
-}
-
-$a_nat = &$config['installedpackages']['suricata']['rule'];
-
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
@@ -48,30 +42,31 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 if (is_null($id))
 	$id = 0;
 
-if (isset($id) && $a_nat[$id]) {
-	$pconfig['autoflowbits'] = $a_nat[$id]['autoflowbitrules'];
-	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'];
-	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
-	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
+$a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
+
+if (!empty($a_nat)) {
+	$pconfig['autoflowbits'] = $a_nat['autoflowbitrules'];
+	$pconfig['ips_policy_enable'] = $a_nat['ips_policy_enable'];
+	$pconfig['ips_policy'] = $a_nat['ips_policy'];
+	$pconfig['ips_policy_mode'] = $a_nat['ips_policy_mode'];
 }
 
-$if_real = get_real_interface($a_nat[$id]['interface']);
-$suricata_uuid = $a_nat[$id]['uuid'];
-$snortdownload = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] == 'on' ? 'on' : 'off';
-$emergingdownload = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == 'on' ? 'on' : 'off';
-$etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == 'on' ? 'on' : 'off';
-$snortcommunitydownload = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == 'on' ? 'on' : 'off';
-$feodotrackerdownload = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == 'on' ? 'on' : 'off';
-$sslbldownload = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == 'on' ? 'on' : 'off';
-$enable_extra_rules = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
-init_config_arr(array('installedpackages', 'suricata' ,'config', 0, 'extra_rules', 'rule'));
-$extra_rules = $config['installedpackages']['suricata']['config'][0]['extra_rules']['rule'];
+$if_real = get_real_interface($a_nat['interface']);
+$suricata_uuid = $a_nat['uuid'];
+$snortdownload = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules') == 'on' ? 'on' : 'off';
+$emergingdownload = config_get_path('installedpackages/suricata/config/0/enable_etopen_rules') == 'on' ? 'on' : 'off';
+$etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules') == 'on' ? 'on' : 'off';
+$snortcommunitydownload = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == 'on' ? 'on' : 'off';
+$feodotrackerdownload = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == 'on' ? 'on' : 'off';
+$sslbldownload = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == 'on' ? 'on' : 'off';
+$enable_extra_rules = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
+$extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/rule', []);
 
 $no_emerging_files = false;
 $no_snort_files = false;
-$inline_ips_mode = $a_nat[$id]['ips_mode'] == 'ips_mode_inline' ? true:false;
+$inline_ips_mode = $a_nat['ips_mode'] == 'ips_mode_inline' ? true:false;
 
-$enabled_rulesets_array = explode("||", $a_nat[$id]['rulesets']);
+$enabled_rulesets_array = explode("||", $a_nat['rulesets']);
 
 /* Test rule categories currently downloaded to SURICATA_RULES_DIR and set appropriate flags */
 if ($emergingdownload == 'on') {
@@ -103,16 +98,16 @@ if (!file_exists("{$suricata_rules_dir}" . "sslblacklist_tls_cert.rules"))
 
 // If a Snort rules policy is enabled and selected, remove all Snort
 // rules from the configured rule sets to allow automatic selection.
-if ($a_nat[$id]['ips_policy_enable'] == 'on') {
-	if (isset($a_nat[$id]['ips_policy'])) {
+if ($a_nat['ips_policy_enable'] == 'on') {
+	if (isset($a_nat['ips_policy'])) {
 		$disable_vrt_rules = "disabled";
-		$enabled_sets = explode("||", $a_nat[$id]['rulesets']);
+		$enabled_sets = explode("||", $a_nat['rulesets']);
 
 		foreach ($enabled_sets as $k => $v) {
 			if (substr($v, 0, 6) == "suricata_")
 				unset($enabled_sets[$k]);
 		}
-		$a_nat[$id]['rulesets'] = implode("||", $enabled_sets);
+		$a_nat['rulesets'] = implode("||", $enabled_sets);
 	}
 }
 else
@@ -120,14 +115,14 @@ else
 
 if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
+		$a_nat['ips_policy_enable'] = 'on';
+		$a_nat['ips_policy'] = $_POST['ips_policy'];
+		$a_nat['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
+		$a_nat['ips_policy_enable'] = 'off';
+		unset($a_nat['ips_policy']);
+		unset($a_nat['ips_policy_mode']);
 	}
 
 	// Always start with the default events and files rules
@@ -137,30 +132,31 @@ if (isset($_POST["save"])) {
 	else
 		$enabled_items .=  "||{$_POST['toenable']}";
 
-	$a_nat[$id]['rulesets'] = $enabled_items;
+	$a_nat['rulesets'] = $enabled_items;
 
 	if ($_POST['autoflowbits'] == "on") {
-		$a_nat[$id]['autoflowbitrules'] = 'on';
+		$a_nat['autoflowbitrules'] = 'on';
 	}
 	else {
-		$a_nat[$id]['autoflowbitrules'] = 'off';
+		$a_nat['autoflowbitrules'] = 'off';
 		// Need this here so the GUI renders correctly after saving
 		$_POST['autoflowbits'] = "off";
 		unlink_if_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}");
 	}
 
-	write_config("Suricata pkg: save enabled rule categories for {$a_nat[$id]['interface']}.");
+	config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+	write_config("Suricata pkg: save enabled rule categories for {$a_nat['interface']}.");
 
 	/*************************************************/
 	/* Update the suricata.yaml file and rebuild the */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	suricata_generate_yaml($a_nat[$id]);
+	suricata_generate_yaml($a_nat);
 	$rebuild_rules = false;
 
 	/* Signal Suricata to "live reload" the rules */
-	suricata_reload_config($a_nat[$id]);
+	suricata_reload_config($a_nat);
 
 	$pconfig = $_POST;
 	$enabled_rulesets_array = explode("||", $enabled_items);
@@ -171,14 +167,14 @@ if (isset($_POST["save"])) {
 	suricata_sync_on_changes();
 } elseif (isset($_POST['unselectall'])) {
 	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
+		$a_nat['ips_policy_enable'] = 'on';
+		$a_nat['ips_policy'] = $_POST['ips_policy'];
+		$a_nat['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
+		$a_nat['ips_policy_enable'] = 'off';
+		unset($a_nat['ips_policy']);
+		unset($a_nat['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
@@ -197,14 +193,14 @@ if (isset($_POST["save"])) {
 		$savemsg .= gettext("There currently are no inspection rules enabled for this Suricata instance!");
 } elseif (isset($_POST['selectall'])) {
 	if ($_POST['ips_policy_enable'] == "on") {
-		$a_nat[$id]['ips_policy_enable'] = 'on';
-		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
-		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
+		$a_nat['ips_policy_enable'] = 'on';
+		$a_nat['ips_policy'] = $_POST['ips_policy'];
+		$a_nat['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
-		$a_nat[$id]['ips_policy_enable'] = 'off';
-		unset($a_nat[$id]['ips_policy']);
-		unset($a_nat[$id]['ips_policy_mode']);
+		$a_nat['ips_policy_enable'] = 'off';
+		unset($a_nat['ips_policy']);
+		unset($a_nat['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
@@ -256,9 +252,9 @@ if (isset($_POST["save"])) {
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled.
-$cat_mods = suricata_sid_mgmt_auto_categories($a_nat[$id], FALSE);
+$cat_mods = suricata_sid_mgmt_auto_categories($a_nat, FALSE);
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat['interface']);
 $pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
 $pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - Categories");
 
@@ -370,7 +366,7 @@ else:
 			'ips_policy_enable',
 			'Use IPS Policy',
 			'Use rules from one of three pre-defined Snort IPS policies',
-			($a_nat[$id]['ips_policy_enable'] == "on"),
+			($a_nat['ips_policy_enable'] == "on"),
 			'on'
 		);
 		$chkips->setHelp('<span class="text-danger"><strong>' . gettext("Note:  ") . '</strong></span>' . gettext('You must be using the Snort rules to use this option.' . '<br />' .

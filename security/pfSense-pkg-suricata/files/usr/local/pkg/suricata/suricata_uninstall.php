@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@
 
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $config, $g;
+global $g;
 
 $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
@@ -68,7 +68,7 @@ install_cron_job("suricata_geoipupdate.php" , false);
 install_cron_job("suricata_etiqrisk_update.php", false);
 
 /* See if we are to keep Suricata log files on uninstall */
-if ($config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on') {
+if (config_get_path('installedpackages/suricata/config/0/clearlogs') == 'on') {
 	syslog(LOG_NOTICE, gettext("[Suricata] Clearing all Suricata-related log files..."));
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
@@ -92,42 +92,45 @@ unlink_if_exists(SURICATA_RULES_DIR . EXTRARULE_FILE_PREFIX . "*.rules");
 unlink_if_exists("/usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb");
 rmdir_recursive("/usr/local/share/suricata/GeoLite2");
 
-if (is_array($config['installedpackages']['suricata']['rule'])) {
-	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
-		rmdir_recursive("{$suricatadir}suricata_" . $suricatacfg['uuid'] . "_" . get_real_interface($suricatacfg['interface']));
-	}
+foreach (config_get_path('installedpackages/suricata/rule', []) as $suricatacfg) {
+	rmdir_recursive("{$suricatadir}suricata_" . $suricatacfg['uuid'] . "_" . get_real_interface($suricatacfg['interface']));
 }
 
 /* Remove our associated Dashboard widget config and files. */
 /* If "save settings" is enabled, then save old widget      */
 /* container settings so we can restore them later.         */
-$widgets = $config['widgets']['sequence'];
+$widgets = config_get_path('widgets/sequence');
 if (!empty($widgets)) {
 	$widgetlist = explode(",", $widgets);
 	foreach ($widgetlist as $key => $widget) {
 		if (strstr($widget, "suricata_alerts")) {
-			if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
-				$config['installedpackages']['suricata']['config'][0]['dashboard_widget'] = $widget;
-				if ($config['widgets']['widget_suricata_display_lines']) {
-					$config['installedpackages']['suricata']['config'][0]['dashboard_widget_rows'] = $config['widgets']['widget_suricata_display_lines'];
-					unset($config['widgets']['widget_suricata_display_lines']);
+			if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 'on') {
+				config_set_path('installedpackages/suricata/config/0/dashboard_widget', $widget);
+				if (config_get_path('widgets/widget_suricata_display_lines')) {
+					cpnfig_set_path('installedpackages/suricata/config/0/dashboard_widget_rows', config_get_path('widgets/widget_suricata_display_lines'));
+					config_del_path('widgets/widget_suricata_display_lines');
 				}
 			}
 			unset($widgetlist[$key]);
 		}
 	}
-	$config['widgets']['sequence'] = implode(",", $widgetlist);
+	config_set_path('widgets/sequence', implode(",", $widgetlist));
 	write_config("Suricata pkg removed Dashboard Alerts widget.");
 }
 
+// See if we are to clear blocked hosts on uninstall
+if (config_get_path('installedpackages/suricata/config/0/clearblocks') == 'on') {
+	syslog(LOG_NOTICE, gettext("[Suricata] Flushing all blocked hosts from <snort2c> table due to package removal..."));
+	mwexec("/sbin/pfctl -t snort2c -T flush");
+}
+
 /* Keep this as a last step */
-if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] != 'on') {
+if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') != 'on') {
 	syslog(LOG_NOTICE, gettext("Not saving settings... all Suricata configuration info and logs deleted..."));
-	unset($config['installedpackages']['suricata']);
-	unset($config['installedpackages']['suricatasync']);
+	config_del_path('installedpackages/suricata');
+	config_del_path('installedpackages/suricatasync');
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
-	rmdir_recursive("{$g['vardb_path']}/suricata");
 	write_config("Removing Suricata configuration");
 	syslog(LOG_NOTICE, gettext("[Suricata] The package has been removed from this system..."));
 }

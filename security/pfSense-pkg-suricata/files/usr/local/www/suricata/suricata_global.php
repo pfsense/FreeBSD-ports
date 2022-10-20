@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,38 +36,39 @@ if (!empty($_POST)) {
 	$pconfig = $_POST;
 }
 else {
-	$pconfig['enable_vrt_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] == "on" ? 'on' : 'off';
-	$pconfig['oinkcode'] = htmlentities($config['installedpackages']['suricata']['config'][0]['oinkcode']);
-	$pconfig['etprocode'] = htmlentities($config['installedpackages']['suricata']['config'][0]['etprocode']);
-	$pconfig['enable_etopen_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == "on" ? 'on' : 'off';
-	$pconfig['enable_etpro_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == "on" ? 'on' : 'off';
-	$pconfig['rm_blocked'] = $config['installedpackages']['suricata']['config'][0]['rm_blocked'];
-	$pconfig['autoruleupdate'] = $config['installedpackages']['suricata']['config'][0]['autoruleupdate'];
-	$pconfig['autoruleupdatetime'] = htmlentities($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']);
-	$pconfig['live_swap_updates'] = $config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == "on" ? 'on' : 'off';
-	$pconfig['log_to_systemlog'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == "on" ? 'on' : 'off';
-	$pconfig['update_notify'] = $config['installedpackages']['suricata']['config'][0]['update_notify'] == "on" ? 'on' : 'off';
-	$pconfig['rule_categories_notify'] = $config['installedpackages']['suricata']['config'][0]['rule_categories_notify'] == "on" ? 'on' : 'off';
-	$pconfig['log_to_systemlog_facility'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
-	$pconfig['log_to_systemlog_priority'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'];
-	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == "on" ? 'on' : 'off';
-	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == "on" ? 'on' : 'off';
-	$pconfig['snort_rules_file'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_rules_file']);
-	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "on" ? 'on' : 'off';
-	$pconfig['maxmind_geoipdb_key'] = htmlentities($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key']);
-	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on" ? 'on' : 'off';
-	$pconfig['enable_etopen_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == "on" ? 'on' : 'off';
-	$pconfig['enable_etpro_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] == "on" ? 'on' : 'off';
-	$pconfig['enable_snort_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == "on" ? 'on' : 'off';
-	$pconfig['enable_gplv2_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] == "on" ? 'on' : 'off';
-	$pconfig['etopen_custom_rule_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url']);
-	$pconfig['etpro_custom_rule_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url']);
-	$pconfig['snort_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_custom_url']);
-	$pconfig['gplv2_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url']);
-	$pconfig['enable_feodo_botnet_c2_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == "on" ? 'on' : 'off';
-	$pconfig['enable_abuse_ssl_blacklist_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == "on" ? 'on' : 'off';
-	$pconfig['enable_extra_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
-	$pconfig['extra_rules'] = $config['installedpackages']['suricata']['config'][0]['extra_rules'];
+	$pconfig['enable_vrt_rules'] = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules') == "on" ? 'on' : 'off';
+	$pconfig['oinkcode'] = htmlentities(config_get_path('installedpackages/suricata/config/0/oinkcode'));
+	$pconfig['etprocode'] = htmlentities(config_get_path('installedpackages/suricata/config/0/etprocode'));
+	$pconfig['enable_etopen_rules'] = config_get_path('installedpackages/suricata/config/0/enable_etopen_rules') == "on" ? 'on' : 'off';
+	$pconfig['enable_etpro_rules'] = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules') == "on" ? 'on' : 'off';
+	$pconfig['rm_blocked'] = config_get_path('installedpackages/suricata/config/0/rm_blocked');
+	$pconfig['autoruleupdate'] = config_get_path('installedpackages/suricata/config/0/autoruleupdate');
+	$pconfig['autoruleupdatetime'] = htmlentities(config_get_path('installedpackages/suricata/config/0/autoruleupdatetime'));
+	$pconfig['live_swap_updates'] = config_get_path('installedpackages/suricata/config/0/live_swap_updates') == "on" ? 'on' : 'off';
+	$pconfig['log_to_systemlog'] = config_get_path('installedpackages/suricata/config/0/log_to_systemlog') == "on" ? 'on' : 'off';
+	$pconfig['update_notify'] = config_get_path('installedpackages/suricata/config/0/update_notify') == "on" ? 'on' : 'off';
+	$pconfig['rule_categories_notify'] = config_get_path('installedpackages/suricata/config/0/rule_categories_notify') == "on" ? 'on' : 'off';
+	$pconfig['log_to_systemlog_facility'] = config_get_path('installedpackages/suricata/config/0/log_to_systemlog_facility');
+	$pconfig['log_to_systemlog_priority'] = config_get_path('installedpackages/suricata/config/0/log_to_systemlog_priority');
+	$pconfig['forcekeepsettings'] = config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == "on" ? 'on' : 'off';
+	$pconfig['clearblocks'] = config_get_path('installedpackages/suricata/config/0/clearblocks') == "off" ? 'off' : 'on';
+	$pconfig['snortcommunityrules'] = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == "on" ? 'on' : 'off';
+	$pconfig['snort_rules_file'] = htmlentities(config_get_path('installedpackages/suricata/config/0/snort_rules_file'));
+	$pconfig['autogeoipupdate'] = config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == "on" ? 'on' : 'off';
+	$pconfig['maxmind_geoipdb_key'] = htmlentities(config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key'));
+	$pconfig['hide_deprecated_rules'] = config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules') == "on" ? 'on' : 'off';
+	$pconfig['enable_etopen_custom_url'] = config_get_path('installedpackages/suricata/config/0/enable_etopen_custom_url') == "on" ? 'on' : 'off';
+	$pconfig['enable_etpro_custom_url'] = config_get_path('installedpackages/suricata/config/0/enable_etpro_custom_url') == "on" ? 'on' : 'off';
+	$pconfig['enable_snort_custom_url'] = config_get_path('installedpackages/suricata/config/0/enable_snort_custom_url') == "on" ? 'on' : 'off';
+	$pconfig['enable_gplv2_custom_url'] = config_get_path('installedpackages/suricata/config/0/enable_gplv2_custom_url') == "on" ? 'on' : 'off';
+	$pconfig['etopen_custom_rule_url'] = htmlentities(config_get_path('installedpackages/suricata/config/0/etopen_custom_rule_url'));
+	$pconfig['etpro_custom_rule_url'] = htmlentities(config_get_path('installedpackages/suricata/config/0/etpro_custom_rule_url'));
+	$pconfig['snort_custom_url'] = htmlentities(config_get_path('installedpackages/suricata/config/0/snort_custom_url'));
+	$pconfig['gplv2_custom_url'] = htmlentities(config_get_path('installedpackages/suricata/config/0/gplv2_custom_url'));
+	$pconfig['enable_feodo_botnet_c2_rules'] = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == "on" ? 'on' : 'off';
+	$pconfig['enable_abuse_ssl_blacklist_rules'] = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == "on" ? 'on' : 'off';
+	$pconfig['enable_extra_rules'] = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
+	$pconfig['extra_rules'] = config_get_path('installedpackages/suricata/config/0/extra_rules', []);
 }
 
 // Do input validation on parameters
@@ -134,40 +135,40 @@ if ($_POST['enable_extra_rules']) {
 if (!$input_errors) {
 	if ($_POST["save"]) {
 
-		$config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] = $_POST['enable_vrt_rules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] = $_POST['snortcommunityrules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] = $_POST['enable_etopen_rules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] = $_POST['enable_etpro_rules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = $_POST['autogeoipupdate'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] = $_POST['hide_deprecated_rules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] = $_POST['enable_etopen_custom_url'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] = $_POST['enable_etpro_custom_url'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] = $_POST['enable_snort_custom_url'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] = $_POST['enable_gplv2_custom_url'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] = $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] = $_POST['enable_abuse_ssl_blacklist_rules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] = $_POST['enable_extra_rules'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['extra_rules'] = $extra_rules;
+		config_set_path('installedpackages/suricata/config/0/enable_vrt_rules', $_POST['enable_vrt_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/snortcommunityrules', $_POST['snortcommunityrules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_etopen_rules', $_POST['enable_etopen_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_etpro_rules', $_POST['enable_etpro_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/autogeoipupdate', $_POST['autogeoipupdate'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/hide_deprecated_rules', $_POST['hide_deprecated_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_etopen_custom_url', $_POST['enable_etopen_custom_url'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_etpro_custom_url', $_POST['enable_etpro_custom_url'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_snort_custom_url', $_POST['enable_snort_custom_url'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_gplv2_custom_url', $_POST['enable_gplv2_custom_url'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules', $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules', $_POST['enable_abuse_ssl_blacklist_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/enable_extra_rules', $_POST['enable_extra_rules'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/extra_rules', $extra_rules);
 
 		// If any rule sets are being turned off, then remove them
 		// from the active rules section of each interface.  Start
 		// by building an arry of prefixes for the disabled rules.
 		$disabled_rules = array();
 		$disable_ips_policy = false;
-		if ($config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] == 'off') {
+		if (config_get_path('installedpackages/suricata/config/0/enable_vrt_rules') == 'off') {
 			$disabled_rules[] = VRT_FILE_PREFIX;
 			$disable_ips_policy = true;
 		}
-		if ($config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == 'off')
+		if (config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == 'off')
 			$disabled_rules[] = GPL_FILE_PREFIX;
-		if ($config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == 'off')
+		if (config_get_path('installedpackages/suricata/config/0/enable_etopen_rules') == 'off')
 			$disabled_rules[] = ET_OPEN_FILE_PREFIX;
-		if ($config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == 'off')
+		if (config_get_path('installedpackages/suricata/config/0/enable_etpro_rules') == 'off')
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
 
-		if ($config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == 'off')
+		if (config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == 'off')
 			$disabled_rules[] = "feodotracker";
-		if ($config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == 'off')
+		if (config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == 'off')
 			$disabled_rules[] = "sslblacklist_tls_cert";
 
 		if (empty($enabled_extra_rules))
@@ -175,49 +176,49 @@ if (!$input_errors) {
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
-		if (is_array($config['installedpackages']['suricata']['rule'])) {
-			foreach ($config['installedpackages']['suricata']['rule'] as &$iface) {
-				// Disable Snort IPS policy if Snort rules are disabled
-				if ($disable_ips_policy) {
-					$iface['ips_policy_enable'] = 'off';
-					unset($iface['ips_policy']);
-				}
-				$enabled_rules = explode("||", $iface['rulesets']);
-				foreach ($enabled_rules as $k => $v) {
-					foreach ($disabled_rules as $d) {
-						if (strpos(trim($v), $d) !== false) { 
-							unset($enabled_rules[$k]);
-							continue;
-						} elseif (!empty($enabled_extra_rules)) {
-							foreach ($enabled_extra_rules as $exrule) {
-								if (strpos(trim($v), EXTRARULE_FILE_PREFIX . $exrule)) {
-									unset($enabled_rules[$k]);
-									continue 2;
-								}
+		$a_ifaces = config_get_path('installedpackages/suricata/rule', []);
+		foreach ($a_ifaces as &$iface) {
+			// Disable Snort IPS policy if Snort rules are disabled
+			if ($disable_ips_policy) {
+				$iface['ips_policy_enable'] = 'off';
+				unset($iface['ips_policy']);
+			}
+			$enabled_rules = explode("||", $iface['rulesets']);
+			foreach ($enabled_rules as $k => $v) {
+				foreach ($disabled_rules as $d) {
+					if (strpos(trim($v), $d) !== false) { 
+						unset($enabled_rules[$k]);
+						continue;
+					} elseif (!empty($enabled_extra_rules)) {
+						foreach ($enabled_extra_rules as $exrule) {
+							if (strpos(trim($v), EXTRARULE_FILE_PREFIX . $exrule)) {
+								unset($enabled_rules[$k]);
+								continue 2;
 							}
 						}
 					}
 				}
-				$iface['rulesets'] = implode("||", $enabled_rules);
 			}
+			$iface['rulesets'] = implode("||", $enabled_rules);
 		}
+		config_set_path('installedpackages/suricata/rule', $a_ifaces);
 
 		// If deprecated rules should be removed, then do it
-		if ($config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on") {
+		if (config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules') == "on") {
 			syslog(LOG_NOTICE, gettext("[Suricata] Hide Deprecated Rules is enabled.  Removing obsoleted rules categories."));
 			suricata_remove_dead_rules();
 		}
 
-		$config['installedpackages']['suricata']['config'][0]['snort_rules_file'] = html_entity_decode($_POST['snort_rules_file']);
-		$config['installedpackages']['suricata']['config'][0]['oinkcode'] = trim(html_entity_decode($_POST['oinkcode']));
-		$config['installedpackages']['suricata']['config'][0]['etprocode'] = trim(html_entity_decode($_POST['etprocode']));
-		$config['installedpackages']['suricata']['config'][0]['rm_blocked'] = $_POST['rm_blocked'];
-		$config['installedpackages']['suricata']['config'][0]['autoruleupdate'] = $_POST['autoruleupdate'];
-		$config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'] = trim(html_entity_decode($_POST['etopen_custom_rule_url']));
-		$config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'] = trim(html_entity_decode($_POST['etpro_custom_rule_url']));
-		$config['installedpackages']['suricata']['config'][0]['snort_custom_url'] = trim(html_entity_decode($_POST['snort_custom_url']));
-		$config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'] = trim(html_entity_decode($_POST['gplv2_custom_url']));
-		$config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'] = trim(html_entity_decode($_POST['maxmind_geoipdb_key']));
+		config_set_path('installedpackages/suricata/config/0/snort_rules_file', html_entity_decode($_POST['snort_rules_file']));
+		config_set_path('installedpackages/suricata/config/0/oinkcode', trim(html_entity_decode($_POST['oinkcode'])));
+		config_set_path('installedpackages/suricata/config/0/etprocode', trim(html_entity_decode($_POST['etprocode'])));
+		config_set_path('installedpackages/suricata/config/0/rm_blocked', $_POST['rm_blocked']);
+		config_set_path('installedpackages/suricata/config/0/autoruleupdate', $_POST['autoruleupdate']);
+		config_set_path('installedpackages/suricata/config/0/etopen_custom_rule_url', trim(html_entity_decode($_POST['etopen_custom_rule_url'])));
+		config_set_path('installedpackages/suricata/config/0/etpro_custom_rule_url', trim(html_entity_decode($_POST['etpro_custom_rule_url'])));
+		config_set_path('installedpackages/suricata/config/0/snort_custom_url', trim(html_entity_decode($_POST['snort_custom_url'])));
+		config_set_path('installedpackages/suricata/config/0/gplv2_custom_url', trim(html_entity_decode($_POST['gplv2_custom_url'])));
+		config_set_path('installedpackages/suricata/config/0/maxmind_geoipdb_key', trim(html_entity_decode($_POST['maxmind_geoipdb_key'])));
 
 		/* Check and adjust format of Rule Update Starttime string to add colon and leading zero if necessary */
 		if ($_POST['autoruleupdatetime']) {
@@ -226,26 +227,27 @@ if (!$input_errors) {
 				$tmp = str_pad($_POST['autoruleupdatetime'], 4, "0", STR_PAD_LEFT);
 				$_POST['autoruleupdatetime'] = substr($tmp, 0, 2) . ":" . substr($tmp, -2);
 			}
-			$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = str_pad(html_entity_decode($_POST['autoruleupdatetime']), 4, "0", STR_PAD_LEFT);
+			config_set_path('installedpackages/suricata/config/0/autoruleupdatetime', str_pad(html_entity_decode($_POST['autoruleupdatetime']), 4, "0", STR_PAD_LEFT));
 		}
-		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] = $_POST['log_to_systemlog'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['update_notify'] = $_POST['update_notify'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['rule_categories_notify'] = $_POST['rule_categories_notify'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'] = $_POST['log_to_systemlog_facility'];
-		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'] = $_POST['log_to_systemlog_priority'];
-		$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] = $_POST['live_swap_updates'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = $_POST['forcekeepsettings'] ? 'on' : 'off';
+		config_set_path('installedpackages/suricata/config/0/log_to_systemlog', $_POST['log_to_systemlog'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/update_notify', $_POST['update_notify'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/rule_categories_notify', $_POST['rule_categories_notify'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/log_to_systemlog_facility', $_POST['log_to_systemlog_facility']);
+		config_set_path('installedpackages/suricata/config/0/log_to_systemlog_priority', $_POST['log_to_systemlog_priority']);
+		config_set_path('installedpackages/suricata/config/0/live_swap_updates', $_POST['live_swap_updates'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/forcekeepsettings', $_POST['forcekeepsettings'] ? 'on' : 'off');
+		config_set_path('installedpackages/suricata/config/0/clearblocks', $_POST['clearblocks'] ? 'on' : 'off');
 
 		$retval = 0;
 
 		write_config("Suricata pkg: modified global settings.");
 
 		/* Toggle cron task for GeoIP database updates if setting was changed */
-		if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == 'on' && !suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_geoipupdate.php")) {
+		if (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == 'on' && !suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_geoipupdate.php")) {
 			include("/usr/local/pkg/suricata/suricata_geoipupdate.php");
 			install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 0, 8, "*", "*", "root");
 		}
-		elseif ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == 'off' && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_geoipupdate.php"))
+		elseif (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == 'off' && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_geoipupdate.php"))
 			install_cron_job("/usr/local/pkg/suricata/suricata_geoipupdate.php", FALSE);
 
 		/* create passlist and homenet file, then sync files */
@@ -591,6 +593,14 @@ $section->addInput(new Form_Checkbox(
 	'Keep Suricata Settings After Deinstall',
 	'Settings will not be removed during package deinstallation.',
 	$pconfig['forcekeepsettings'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'clearblocks',
+	'Clear Blocked Hosts After Deinstall',
+	'Click to clear all blocked hosts added by Suricata when removing the package.  Default is checked.',
+	$pconfig['clearblocks'] == 'on' ? true:false,
 	'on'
 ));
 $form->add($section);

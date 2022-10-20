@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,12 +31,7 @@ $pconfig = array();
 // Arbitrary limit for IP or Alias entries per Pass List.
 $max_addresses = 1000;
 
-if (!is_array($config['installedpackages']['suricata']['passlist']))
-	$config['installedpackages']['suricata']['passlist'] = array();
-if (!is_array($config['installedpackages']['suricata']['passlist']['item']))
-	$config['installedpackages']['suricata']['passlist']['item'] = array();
-
-$a_passlist = &$config['installedpackages']['suricata']['passlist']['item'];
+$a_passlist = config_get_path('installedpackages/suricata/passlist/item', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -155,7 +150,7 @@ if ($_POST['save']) {
 		}
 
 		$pconfig = $p_list;
-
+		config_set_path('installedpackages/suricata/passlist/item', $a_passlist);
 		write_config("Suricata pkg: modified PASS LIST {$p_list['name']}.");
 
 		/* create pass list file, then sync file with configured partners */

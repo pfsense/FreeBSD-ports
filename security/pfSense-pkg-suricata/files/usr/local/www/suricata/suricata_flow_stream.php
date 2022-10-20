@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,37 +35,20 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 if (is_null($id))
 	$id=0;
 
-if (!is_array($config['installedpackages']['suricata']))
-	$config['installedpackages']['suricata'] = array();
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-
-// Initialize required array variables as necessary
-if (!is_array($config['aliases'])) {
-	$config['aliases'] = array();
-}
-if (!is_array($config['aliases']['alias']))
-	$config['aliases']['alias'] = array();
-$a_aliases = $config['aliases']['alias'];
-
-// Initialize Host-OS Policy engine arrays if necessary
-if (!is_array($config['installedpackages']['suricata']['rule'][$id]['host_os_policy']['item']))
-	$config['installedpackages']['suricata']['rule'][$id]['host_os_policy']['item'] = array();
-
-$a_nat = &$config['installedpackages']['suricata']['rule'];
-
-$host_os_policy_engine_next_id = count($a_nat[$id]['host_os_policy']['item']);
+$a_aliases = config_get_path('aliases/alias', []);
+$a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
+$host_os_policy_engine_next_id = count(array_get_path($a_nat, 'host_os_policy/item', []));
 
 // Build a lookup array of currently used engine 'bind_to' Aliases
 // so we can screen matching Alias names from the list.
 $used = array();
-foreach ($a_nat[$id]['host_os_policy']['item'] as $v)
+foreach (array_get_path($a_nat, 'host_os_policy/item', []) as $v)
 	$used[$v['bind_to']] = true;
 
 $pconfig = array();
-if (isset($id) && $a_nat[$id]) {
+if (isset($id) && !empty($a_nat)) {
 	/* Get current values from config for page form fields */
-	$pconfig = $a_nat[$id];
+	$pconfig = $a_nat;
 
 	// See if Host-OS policy engine array is configured and use
 	// it; otherwise create a default engine configuration.
@@ -73,14 +56,15 @@ if (isset($id) && $a_nat[$id]) {
 		$default = array( "name" => "default", "bind_to" => "all", "policy" => "bsd" );
 		$pconfig['host_os_policy']['item'] = array();
 		$pconfig['host_os_policy']['item'][] = $default;
-		if (!is_array($a_nat[$id]['host_os_policy']['item']))
-			$a_nat[$id]['host_os_policy']['item'] = array();
-		$a_nat[$id]['host_os_policy']['item'][] = $default;
+		if (!is_array($a_nat['host_os_policy']['item']))
+			$a_nat['host_os_policy']['item'] = array();
+		$a_nat['host_os_policy']['item'][] = $default;
+		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 		write_config("Suricata pkg: saved new default Host_OS_Policy engine.");
 		$host_os_policy_engine_next_id++;
 	}
 	else
-		$pconfig['host_os_policy'] = $a_nat[$id]['host_os_policy'];
+		$pconfig['host_os_policy'] = $a_nat['host_os_policy'];
 }
 
 // Check for "import or select alias mode" and set flags if TRUE.
@@ -145,18 +129,18 @@ if ($_POST['save_os_policy']) {
 
 		// if no errors, write new entry to conf
 		if (!$input_errors) {
-			if (isset($eng_id) && $a_nat[$id]['host_os_policy']['item'][$eng_id]) {
-				$a_nat[$id]['host_os_policy']['item'][$eng_id] = $engine;
+			if (isset($eng_id) && array_get_path($a_nat, "host_os_policy/item/{$eng_id}")) {
+				$a_nat['host_os_policy']['item'][$eng_id] = $engine;
 			}
 			else
-				$a_nat[$id]['host_os_policy']['item'][] = $engine;
+				$a_nat['host_os_policy']['item'][] = $engine;
 
 			/* Reorder the engine array to ensure the */
 			/* 'bind_to=all' entry is at the bottom   */
 			/* if it contains more than one entry.	*/
-			if (count($a_nat[$id]['host_os_policy']['item']) > 1) {
+			if (count(array_get_path($a_nat, 'host_os_policy/item', [])) > 1) {
 				$i = -1;
-				foreach ($a_nat[$id]['host_os_policy']['item'] as $f => $v) {
+				foreach (array_get_path($a_nat, 'host_os_policy/item', []) as $f => $v) {
 					if ($v['bind_to'] == "all") {
 						$i = $f;
 						break;
@@ -165,14 +149,15 @@ if ($_POST['save_os_policy']) {
 				/* Only relocate the entry if we  */
 				/* found it, and it's not already */
 				/* at the end.					*/
-				if ($i > -1 && ($i < (count($a_nat[$id]['host_os_policy']['item']) - 1))) {
-					$tmp = $a_nat[$id]['host_os_policy']['item'][$i];
-					unset($a_nat[$id]['host_os_policy']['item'][$i]);
-					$a_nat[$id]['host_os_policy']['item'][] = $tmp;
+				if ($i > -1 && ($i < (count(array_get_path($a_nat, 'host_os_policy/item', [])) - 1))) {
+					$tmp = array_get_path($a_nat, "host_os_policy/item/{$i}", []);
+					array_del_path($a_nat, "host_os_policy/item/{$i}");
+					$a_nat['host_os_policy']['item'][] = $tmp;
 				}
 			}
 
 			// Now write the new engine array to conf
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 			write_config("Suricata pkg: saved new Host_OS_Policy engine.");
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -193,7 +178,7 @@ elseif ($_POST['edit_os_policy']) {
 	if ($_POST['eng_id'] != "") {
 		$add_edit_os_policy = true;
 		$eng_id = $_POST['eng_id'];
-		$pengcfg = $a_nat[$id]['host_os_policy']['item'][$eng_id];
+		$pengcfg = $a_nat['host_os_policy']['item'][$eng_id];
 	}
 }
 elseif ($_POST['del_os_policy']) {
@@ -201,11 +186,12 @@ elseif ($_POST['del_os_policy']) {
 	$natent = $pconfig;
 
 	if ($_POST['eng_id'] != "") {
-		unset($natent['host_os_policy']['item'][$_POST['eng_id']]);
+		array_del_path($natent, "host_os_policy/item/{$_POST['eng_id']}");
 		$pconfig = $natent;
 	}
-	if (isset($id) && $a_nat[$id]) {
-		$a_nat[$id] = $natent;
+	if (isset($id) && !empty($a_nat)) {
+		$a_nat = $natent;
+		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 		write_config("Suricata pkg: deleted a Host_OS_Policy engine.");
 	}
 	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -322,8 +308,9 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		/* then update the suricata.conf file for this	*/
 		/* interface.									 */
 		/**************************************************/
-		if (isset($id) && $a_nat[$id]) {
-			$a_nat[$id] = $natent;
+		if (isset($id) && !empty($a_nat)) {
+			$a_nat = $natent;
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 			write_config("Suricata pkg: saved flow or stream configuration changes.");
 			$rebuild_rules = false;
 			suricata_generate_yaml($natent);
@@ -379,7 +366,7 @@ elseif ($_POST['save_import_alias']) {
 			foreach ($_POST['aliastoimport'] as $item) {
 				$engine['name'] = strtolower($item);
 				$engine['bind_to'] = $item;
-				$a_nat[$id]['host_os_policy']['item'][] = $engine;
+				$a_nat['host_os_policy']['item'][] = $engine;
 			}
 		}
 		else {
@@ -392,9 +379,9 @@ elseif ($_POST['save_import_alias']) {
 			// Reorder the engine array to ensure the
 			// 'bind_to=all' entry is at the bottom if
 			// the array contains more than one entry.
-			if (count($a_nat[$id]['host_os_policy']['item']) > 1) {
+			if (count($a_nat['host_os_policy']['item']) > 1) {
 				$i = -1;
-				foreach ($a_nat[$id]['host_os_policy']['item'] as $f => $v) {
+				foreach ($a_nat['host_os_policy']['item'] as $f => $v) {
 					if ($v['bind_to'] == "all") {
 						$i = $f;
 						break;
@@ -403,15 +390,16 @@ elseif ($_POST['save_import_alias']) {
 				// Only relocate the entry if we
 				// found it, and it's not already
 				// at the end.
-				if ($i > -1 && ($i < (count($a_nat[$id]['host_os_policy']['item']) - 1))) {
-					$tmp = $a_nat[$id]['host_os_policy']['item'][$i];
-					unset($a_nat[$id]['host_os_policy']['item'][$i]);
-					$a_nat[$id]['host_os_policy']['item'][] = $tmp;
+				if ($i > -1 && ($i < (count($a_nat['host_os_policy']['item']) - 1))) {
+					$tmp = $a_nat['host_os_policy']['item'][$i];
+					unset($a_nat['host_os_policy']['item'][$i]);
+					$a_nat['host_os_policy']['item'][] = $tmp;
 				}
-				$pconfig['host_os_policy']['item'] = $a_nat[$id]['host_os_policy']['item'];
+				$pconfig['host_os_policy']['item'] = $a_nat['host_os_policy']['item'];
 			}
 
 			// Write the new engine array to config file
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 			write_config("Suricata pkg: saved Host_OS_Policy engine created from a defined firewall alias.");
 			$importalias = false;
 			$selectalias = false;
