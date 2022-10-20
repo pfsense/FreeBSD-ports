@@ -541,12 +541,12 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 
 	// See if the target SID is in our list of modified SIDs,
 	// and toggle it if present.
-	if (isset($enablesid[$gid][$sid]))
-		unset($enablesid[$gid][$sid]);
-	if (isset($disablesid[$gid][$sid]))
-		unset($disablesid[$gid][$sid]);
-	elseif (!isset($disablesid[$gid][$sid]))
-		$disablesid[$gid][$sid] = "disablesid";
+	array_del_path($enablesid, "{$gid}/{$sid}");
+	if (array_get_path($disablesid, "{$gid}/{$sid}") {
+		array_del_path($disablesid, "{$gid}/{$sid}");
+	} else {
+		array_set_path($disablesid, "{$gid}/{$sid}", 'disablesid');
+	}
 
 	// Write the updated enablesid and disablesid values to the config file.
 	$tmp = "";

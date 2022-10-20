@@ -299,33 +299,26 @@ if (isset($_POST['rule_state_save']) && isset($_POST['ruleStateOptions']) && is_
 		case "state_default":
 			// Return the rule to it's default state
 			// by removing all state override entries.
-			if (isset($enablesid[$gid][$sid])) {
-				unset($enablesid[$gid][$sid]);
-			}
-			if (isset($disablesid[$gid][$sid])) {
-				unset($disablesid[$gid][$sid]);
-			}
+			array_del_path($enablesid, "{$gid}/{$sid}");
+			array_del_path($disablesid, "{$gid}/{$sid}");
+
 			// Restore the default state flag so we
 			// can display state properly on RULES
 			// page without needing to reload the
 			// entire set of rules.
-			if (isset($rules_map[$gid][$sid])) {
+			if (array_get_path($rules_map, "{$gid}/{$sid}")) {
 				$rules_map[$gid][$sid]['disabled'] = !$rules_map[$gid][$sid]['default_state'];
 			}
 			break;
 
 		case "state_enabled":
-			if (isset($disablesid[$gid][$sid])) {
-				unset($disablesid[$gid][$sid]);
-			}
-			$enablesid[$gid][$sid] = "enablesid";
+			array_del_path($disablesid, "{$gid}/{$sid}");
+			array_set_path($enablesid, "{$gid}/{$sid}", 'enablesid');
 			break;
 
 		case "state_disabled":
-			if (isset($enablesid[$gid][$sid])) {
-				unset($enablesid[$gid][$sid]);
-			}
-			$disablesid[$gid][$sid] = "disablesid";
+			array_del_path($enablesid, "{$gid}/{$sid}");
+			array_set_path($disablesid, "{$gid}/{$sid}", 'disablesid');
 			break;
 
 		default:
@@ -387,66 +380,30 @@ elseif (isset($_POST['rule_action_save']) && isset($_POST['ruleActionOptions']) 
 	switch ($action) {
 		case "action_default":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['default_action'];
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_alert":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['alert'];
-			if (!is_array($alertsid[$gid])) {
-				$alertsid[$gid] = array();
-			}
-			if (!is_array($alertsid[$gid][$sid])) {
-				$alertsid[$gid][$sid] = array();
-			}
-			$alertsid[$gid][$sid] = "alertsid";
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($alertsid, "{$gid}/{$sid}", "alertsid");
+			array_del_path($dropsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_drop":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['drop'];
-			if (!is_array($dropsid[$gid])) {
-				$dropsid[$gid] = array();
-			}
-			if (!is_array($dropsid[$gid][$sid])) {
-				$dropsid[$gid][$sid] = array();
-			}
-			$dropsid[$gid][$sid] = "dropsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($rejectsid[$gid][$sid])) {
-				unset($rejectsid[$gid][$sid]);
-			}
+			array_set_path($dropsid, "{$gid}/{$sid}", "dropsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($rejectsid, "{$gid}/{$sid}");
 			break;
 
 		case "action_reject":
 			$rules_map[$gid][$sid]['action'] = $rules_map[$gid][$sid]['reject'];
-			if (!is_array($rejectsid[$gid])) {
-				$rejectsid[$gid] = array();
-			}
-			if (!is_array($rejectsid[$gid][$sid])) {
-				$rejectsid[$gid][$sid] = array();
-			}
-			$rejectsid[$gid][$sid] = "rejectsid";
-			if (isset($alertsid[$gid][$sid])) {
-				unset($alertsid[$gid][$sid]);
-			}
-			if (isset($dropsid[$gid][$sid])) {
-				unset($dropsid[$gid][$sid]);
-			}
+			array_set_path($rejectsid, "{$gid}/{$sid}", "rejectsid");
+			array_del_path($alertsid, "{$gid}/{$sid}");
+			array_del_path($dropsid, "{$gid}/{$sid}");
 			break;
 
 		default:
@@ -510,9 +467,8 @@ elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
 	// Mark all rules in the currently selected category "disabled".
 	foreach (array_keys($rules_map) as $k1) {
 		foreach (array_keys($rules_map[$k1]) as $k2) {
-			if (isset($enablesid[$k1][$k2]))
-				unset($enablesid[$k1][$k2]);
-			$disablesid[$k1][$k2] = "disablesid";
+			array_del_path($enablesid, "{$k1}/{$k2}");
+			array_set_path($disablesid, "{$k1}/{$k2}", 'disablesid');
 		}
 	}
 
@@ -555,9 +511,8 @@ elseif (isset($_POST['enable_all']) && !empty($rules_map)) {
 	// Mark all rules in the currently selected category "enabled".
 	foreach (array_keys($rules_map) as $k1) {
 		foreach (array_keys($rules_map[$k1]) as $k2) {
-			if (isset($disablesid[$k1][$k2]))
-				unset($disablesid[$k1][$k2]);
-			$enablesid[$k1][$k2] = "enablesid";
+			array_del_path($disablesid, "{$k1}/{$k2}");
+			array_set_path($enablesid, "{$k1}/{$k2}", 'enablesid');
 		}
 	}
 	// Write the updated enablesid and disablesid values to the config file.
@@ -599,16 +554,11 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	// Reset any modified SIDs in the current rule category to their defaults.
 	foreach (array_keys($rules_map) as $k1) {
 		foreach (array_keys($rules_map[$k1]) as $k2) {
-			if (isset($enablesid[$k1][$k2]))
-				unset($enablesid[$k1][$k2]);
-			if (isset($disablesid[$k1][$k2]))
-				unset($disablesid[$k1][$k2]);
-			if (isset($alertsid[$k1][$k2]))
-				unset($alertsid[$k1][$k2]);
-			if (isset($dropsid[$k1][$k2]))
-				unset($dropsid[$k1][$k2]);
-			if (isset($rejectsid[$k1][$k2]))
-				unset($rejectsid[$k1][$k2]);
+			array_del_path($enablesid, "{$k1}/{$k2}");
+			array_del_path($disablesid, "{$k1}/{$k2}");
+			array_del_path($alertsid, "{$k1}/{$k2}");
+			array_del_path($dropsid, "{$k1}/{$k2}");
+			array_del_path($rejectsid, "{$k1}/{$k2}");
 		}
 	}
 
