@@ -63,7 +63,7 @@
 		</field>
 	</fields>
 	<custom_add_php_command>
-	<![CDATA[]
+	<![CDATA[
 		arping_package_php_command();
 	]]>
 	</custom_add_php_command>
