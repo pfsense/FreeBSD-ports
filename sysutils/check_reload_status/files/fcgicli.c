@@ -81,10 +81,10 @@ read_packet(FCGI_Header *header, int sockfd)
 		len += header->paddingLength;
 		//printf("LEN: %d, %d, %d: %s\n", len, header->type, (header->requestIdB1 << 8) + header->requestIdB0, (char *)header);
 		if (len > 0) {
-			buf = calloc(1, len);
+			buf = calloc(1, len + 1);
 			if (buf == NULL)
 				return (NULL);
-
+			buf[len+1] = 0;
 			err = recv(sockfd, buf, len, 0);
 			if (err < 0) {
 				free(buf);
