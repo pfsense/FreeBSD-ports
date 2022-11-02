@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-openvpn-client-export
 PORTVERSION=	1.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
