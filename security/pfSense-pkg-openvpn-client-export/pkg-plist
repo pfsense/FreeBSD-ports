@@ -1,7 +1,6 @@
 pkg/openvpn-client-export.xml
 pkg/openvpn-client-export.inc
 www/vpn_openvpn_export.php
-www/vpn_openvpn_export_shared.php
 /etc/inc/priv/openvpnexport.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv

@@ -255,7 +255,7 @@ if (!empty($act)) {
 			$password = $cfg['pass'];
 		}
 	}
-	if (($srvcfg['mode'] == "server_tls_user") && ($settings['authmode'] == "Local Database")) {
+	if (($srvcfg['mode'] == "server_tls_user") && ($srvcfg['authmode'] == "Local Database")) {
 		$cert = $user['cert'][$crtid];
 	} else {
 		$cert = $config['cert'][$crtid];
