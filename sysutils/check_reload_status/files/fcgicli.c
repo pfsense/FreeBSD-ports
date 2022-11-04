@@ -15,11 +15,13 @@
 #include <strings.h>
 #include <unistd.h>
 #include <libgen.h>
-#include <sys/utsname.h>
 #include <time.h>
 
 #include "fastcgi.h"
 #include "common.h"
+
+#define FCGI_NV_SLEN (1<<7)
+#define FCGI_NV_LLEN (1UL<<31)
 
 static int fcgisock = -1;
 static struct sockaddr_un sun;
@@ -29,20 +31,29 @@ static int keepalive = 0;
 static int
 build_nvpair(struct sbuf *sb, const char *key, const char *svalue)
 {
-	int lkey, lvalue;
+	uint32_t lkey, lvalue, ntmp;
 
 	lkey = strlen(key);
 	lvalue = strlen(svalue);
 
-	if (lkey < 128)
-		sbuf_putc(sb, lkey);
-	else
-		sbuf_printf(sb, "%c%c%c%c", (u_char)((lkey >> 24) | 0x80), (u_char)((lkey >> 16) & 0xFF), (u_char)((lkey >> 16) & 0xFF), (u_char)(lkey & 0xFF));
+	/* FastCGI nvpair key/value cannot encode a length in more than 31 bits */
+	if (!(lkey < FCGI_NV_LLEN && lvalue < FCGI_NV_LLEN)) {
+		return (-1);
+	}
 
-	if (lvalue < 128 || lvalue > 65535)
+	/* Encode name and value lengths in single or four byte fields */
+	if (lkey < FCGI_NV_SLEN) {
+		sbuf_putc(sb, lkey);
+	} else {
+		ntmp = htonl(FCGI_NV_LLEN | lkey);
+		sbuf_bcat(sb, &ntmp, sizeof(ntmp));
+	}
+	if (lvalue < FCGI_NV_SLEN) {
 		sbuf_putc(sb, lvalue);
-	else
-		sbuf_printf(sb, "%c%c%c%c", (u_char)((lvalue >> 24) | 0x80), (u_char)((lvalue >> 16) & 0xFF), (u_char)((lvalue >> 16) & 0xFF), (u_char)(lvalue & 0xFF));
+	} else {
+		ntmp = htonl(FCGI_NV_LLEN | lvalue);
+		sbuf_bcat(sb, &ntmp, sizeof(ntmp));
+	}
 
 	if (lkey > 0)
 		sbuf_printf(sb, "%s", key);
@@ -65,34 +76,61 @@ prepare_packet(FCGI_Header *header, int type, int lcontent, int requestId)
 	return (0);
 }
 
-static char * 
+static char *
 read_packet(FCGI_Header *header, int sockfd)
 {
-	char *buf = NULL;
-	int len, err;
+	uint16_t req = 0;
+	uint16_t len = 0;
+	ssize_t read = 0;
 
-	memset(header, 0, sizeof(*header));
-	if (recv(sockfd, header, sizeof(*header), 0) > 0) {
-		len = (header->requestIdB1 << 8) + header->requestIdB0;
-		if (len != 1) {
-			return (NULL);
-		}
-		len = (header->contentLengthB1 << 8) + header->contentLengthB0;
-		len += header->paddingLength;
-		//printf("LEN: %d, %d, %d: %s\n", len, header->type, (header->requestIdB1 << 8) + header->requestIdB0, (char *)header);
-		if (len > 0) {
-			buf = calloc(1, len + 1);
-			if (buf == NULL)
-				return (NULL);
-			buf[len+1] = 0;
-			err = recv(sockfd, buf, len, 0);
-			if (err < 0) {
-				free(buf);
-				return (NULL);
-			}
+	char *buf = NULL;
+
+	/* Read the header */
+	len = (ssize_t)sizeof(*header);
+
+	while (read < len) {
+		ssize_t r_read = recv(sockfd, header + read, len - read, 0);
+		if (r_read >= 0) {
+			read += r_read;
+		} else if (errno != EINTR){
+			printf("Failed to read %ld header bytes: %s\n",
+			    len - read,
+			    strerror(errno));
+			goto out;
 		}
 	}
 
+	/* We only manage one req per fcgicli proc */
+	req = (header->requestIdB1 << 8) + header->requestIdB0;
+	if (req != 1) {
+		printf("Invalid requestId %u\n", req);
+		goto out;
+	}
+
+	len = (header->contentLengthB1 << 8) + header->contentLengthB0;
+	len += header->paddingLength;
+	buf = calloc(sizeof(*buf), len+1);
+	if (buf == NULL) {
+		printf("Could not allocate buffer of size %ul: %s\n", len,
+		    strerror(errno));
+		goto out;
+	}
+
+	/* Read the content of the packet */
+	read = 0;
+	while (read < len) {
+		ssize_t r_read = recv(sockfd, buf + read, len - read, 0);
+		if (r_read >= 0) {
+			read += r_read;
+		} else if (errno != EINTR){
+			printf("Failed to read %ld payload bytes: %s\n",
+			    len - read, strerror(errno));
+			free(buf);
+			buf = NULL;
+			break;
+		}
+	}
+out:
 	return (buf);
 }
 
@@ -109,9 +147,8 @@ main(int argc, char **argv)
 	FCGI_BeginRequestRecord *bHeader;
 	FCGI_Header *tmpl, rHeader;
 	struct sbuf *sbtmp2, *sbtmp;
-	struct utsname uts;
 	int ch, ispost = 0, len, result, end_header = 0;
-	char *data = NULL, *script = NULL, *buf, *linebuf;
+	char *data = NULL, *script = NULL, *buf, *w_buf, *linebuf, *n_linebuf;
 	const char *socketpath;
 
 	tzset();
@@ -199,8 +236,6 @@ main(int argc, char **argv)
 			errx(errno, "Could not connect to server(%s:%s).", host, port);
 	}
 
-	uname(&uts);
-
 	sbtmp2 = sbuf_new_auto();
 	if (sbtmp2 == NULL)
 		errx(-3, "Could not allocate memory\n");
@@ -210,19 +245,32 @@ main(int argc, char **argv)
 	sbtmp = sbuf_new_auto();
 	sbuf_printf(sbtmp, "/%s", basename(script));
 	sbuf_finish(sbtmp);
-	build_nvpair(sbtmp2, "SCRIPT_FILENAME", script);
-	build_nvpair(sbtmp2, "SCRIPT_NAME", sbuf_data(sbtmp));
-	if (data == NULL) {
-		build_nvpair(sbtmp2, "REQUEST_URI", sbuf_data(sbtmp));
+	if (build_nvpair(sbtmp2, "SCRIPT_FILENAME", script) < 0) {
+		errx(-5, "SCRIPT_FILENAME is too large\n");
 	}
-	build_nvpair(sbtmp2, "DOCUMENT_URI", sbuf_data(sbtmp));
+	if (build_nvpair(sbtmp2, "SCRIPT_NAME", sbuf_data(sbtmp)) < 0) {
+		errx(-5, "SCRIPT_NAME is too large\n");
+	}
+	if (data == NULL) {
+		if (build_nvpair(sbtmp2, "REQUEST_URI", sbuf_data(sbtmp)) < 0) {
+			errx(-5, "REQUEST_URI is too large\n");
+		}
+	}
+	if (build_nvpair(sbtmp2, "DOCUMENT_URI", sbuf_data(sbtmp)) < 0) {
+		errx(-5, "DOCUMENT_URI is too large\n");
+	}
 	sbuf_delete(sbtmp);
+
 	if (data) {
-		build_nvpair(sbtmp2, "QUERY_STRING", data); 
+		if (build_nvpair(sbtmp2, "QUERY_STRING", data) < 0) {
+			errx(-5, "QUERY_STRING is too large\n");
+		}
 		sbtmp = sbuf_new_auto();
 		sbuf_printf(sbtmp, "/%s?%s", basename(script), data);
 		sbuf_finish(sbtmp);
-		build_nvpair(sbtmp2, "REQUEST_URI", sbuf_data(sbtmp));
+		if (build_nvpair(sbtmp2, "REQUEST_URI", sbuf_data(sbtmp)) < 0) {
+			errx(-5, "REQUEST_URI is too large\n");
+		}
 		sbuf_delete(sbtmp);
 	}
 	sbuf_finish(sbtmp2);
@@ -231,7 +279,7 @@ main(int argc, char **argv)
 	buf = calloc(1, len);
 	if (buf == NULL)
 		errx(-4, "Cannot allocate memory");
-
+	w_buf = buf;
 	bHeader = (FCGI_BeginRequestRecord *)buf;
 	prepare_packet(&bHeader->header, FCGI_BEGIN_REQUEST, sizeof(bHeader->body), 1);
 	bHeader->body.roleB0 = (unsigned char)FCGI_RESPONDER;
@@ -247,7 +295,7 @@ main(int argc, char **argv)
 	tmpl++;
 	prepare_packet(tmpl, FCGI_STDIN, 0, 1);
 	while (len > 0) {
-		result = write(fcgisock, buf, len);
+		result = write(fcgisock, w_buf, len);
 		if (result < 0) {
 			printf("Something wrong happened while sending request\n");
 			free(buf);
@@ -255,14 +303,13 @@ main(int argc, char **argv)
 			exit(-2);
 		}
 		len -= result;
-		buf += result;
+		w_buf += result;
 	}
-	free(buf);
 
 	do {
+		free(buf);
 		buf = read_packet(&rHeader, fcgisock);
 		if (buf == NULL) {
-			printf("Something wrong happened while reading request\n");
 			close(fcgisock);
 			exit(-1);
 		}
@@ -271,7 +318,8 @@ main(int argc, char **argv)
 		case FCGI_STDOUT:
 		case FCGI_STDERR:
 			if (end_header == 0) {
-				while ((linebuf = strsep(&buf, "\n")) != NULL) {
+				n_linebuf = buf;
+				while ((linebuf = strsep(&n_linebuf, "\n")) != NULL) {
 					if (end_header == 0) {
 						if (strlen(linebuf) == 1)
 							end_header = 1;
@@ -282,17 +330,16 @@ main(int argc, char **argv)
 						continue;
 
 					printf("%s", linebuf);
-					if (buf != NULL)
+					if (n_linebuf != NULL)
 						printf("\n");
 					break;
 				}
-			} else if (buf != NULL)
+			} else {
 				printf("%s", buf);
-			free(buf);
+			}
 			break;
 		case FCGI_ABORT_REQUEST:
 			printf("Request aborted\n");
-			free(buf);
 			goto endprog;
 			break;
 		case FCGI_END_REQUEST:
@@ -309,13 +356,15 @@ main(int argc, char **argv)
 			case FCGI_REQUEST_COMPLETE:
 				break;
 			}
-			free(buf);
 			goto endprog;
 			break;
+		default:
+			; /*nop*/
 		}
 	} while (rHeader.type != FCGI_END_REQUEST);
 
 endprog:
+	free(buf);
 	close(fcgisock);
 
 	return (0);
