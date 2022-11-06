@@ -30,7 +30,7 @@ require_once("config.inc");
 class haproxy_utils {
 	public static $pf_version;
 
-	public function query_dns($host, $querytype="A,AAAA") {
+	public static function query_dns($host, $querytype="A,AAAA") {
 		$result = array();
 		$types = explode(',',$querytype);
 		$recordtype = 0;
