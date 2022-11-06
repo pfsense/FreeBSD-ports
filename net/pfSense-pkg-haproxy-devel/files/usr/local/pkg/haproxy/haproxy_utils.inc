@@ -30,7 +30,7 @@ require_once("config.inc");
 class haproxy_utils {
 	public static $pf_version;
 
-	public function is_valid_haproxy_hostname($hostname){
+	public static function is_valid_haproxy_hostname($hostname){
 		global $input_errors;
 		$parts = explode('@', $hostname);
 		if (count($parts) > 2) {
@@ -53,21 +53,21 @@ class haproxy_utils {
 		}
 		return is_hostname($hostnamename);
 	}
-	public function haproxy_hostname_strip_prefix($hostname){
+	public static function haproxy_hostname_strip_prefix($hostname){
 		$i = stripos($hostname, '@');
 		if ($i !== false) {
 			$hostname = substr($hostname, $i + 1);
 		}
 		return $hostname;
 	}
-	public function haproxy_hostname_get_prefix($hostname){
+	public static function haproxy_hostname_get_prefix($hostname){
 		$i = stripos($hostname, '@');
 		if ($i !== false) {
 			return substr($hostname, 0, $i + 1);
 		}
 		return false;
 	}
-	public function query_dns($host, $querytype="A,AAAA") {
+	public static function query_dns($host, $querytype="A,AAAA") {
 		$result = array();
 		$types = explode(',',$querytype);
 		$recordtype = 0;
