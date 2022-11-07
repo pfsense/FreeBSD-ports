@@ -255,21 +255,31 @@ if (!empty($act)) {
 			$password = $cfg['pass'];
 		}
 	}
+
+	$want_cert = false;
 	if (($srvcfg['mode'] == "server_tls_user") && ($srvcfg['authmode'] == "Local Database")) {
 		if (array_key_exists($usrid, $a_user) &&
 		    array_key_exists('cert', $a_user[$usrid]) &&
 		    array_key_exists($crtid, $a_user[$usrid]['cert'])) {
+			$want_cert = true;
 			$cert = lookup_cert($a_user[$usrid]['cert'][$crtid]);
 		} else {
 			$input_errors[] = "Invalid user/certificate index value.";
 		}
-	} else {
+	} elseif ($srvcfg['mode'] != "server_user") {
+		$want_cert = true;
 		$cert = $config['cert'][$crtid];
 	}
-	if (empty($cert)) {
-		$input_errors[] = "Unable to locate the requested certificate.";
-	} elseif (($srvcfg['mode'] != "server_user") && !$usepkcs11 && !$usetoken && empty($cert['prv'])) {
-		$input_errors[] = "A private key cannot be empty if PKCS#11 or Microsoft Certificate Storage is not used.";
+
+	if ($want_cert) {
+		if (empty($cert)) {
+			$input_errors[] = "Unable to locate the requested certificate.";
+		} elseif (($srvcfg['mode'] != "server_user") &&
+			  !$usepkcs11 &&
+			  !$usetoken &&
+			  empty($cert['prv'])) {
+			$input_errors[] = "A private key cannot be empty if PKCS#11 or Microsoft Certificate Storage is not used.";
+		}
 	}
 
 	$proxy = "";
