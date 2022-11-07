@@ -147,8 +147,10 @@ $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','bl
 	'useproxy','useproxytype','proxyaddr','proxyport', 'silent','useproxypass','proxyuser');
 	//'pass','proxypass','advancedoptions'
 
+init_config_arr(['installedpackages', 'vpn_openvpn_export', 'serverconfig', 'item']);
 $openvpnexportcfg = &$config['installedpackages']['vpn_openvpn_export'];
 $ovpnserverdefaults = &$openvpnexportcfg['serverconfig']['item'];
+init_config_arr(['installedpackages', 'vpn_openvpn_export', 'defaultsettings']);
 $cfg = &$config['installedpackages']['vpn_openvpn_export']['defaultsettings'];
 if (!is_array($ovpnserverdefaults)) {
 	$ovpnserverdefaults = array();
