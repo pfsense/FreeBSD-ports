@@ -93,9 +93,8 @@ read_packet(FCGI_Header *header, int sockfd)
 		if (r_read >= 0) {
 			read += r_read;
 		} else if (errno != EINTR){
-			printf("Failed to read %ld header bytes: %s\n",
-			    len - read,
-			    strerror(errno));
+			printf("Failed to read %zd header bytes: %s\n",
+			    (ssize_t)len - read, strerror(errno));
 			goto out;
 		}
 	}
@@ -111,8 +110,8 @@ read_packet(FCGI_Header *header, int sockfd)
 	len += header->paddingLength;
 	buf = calloc(sizeof(*buf), len+1);
 	if (buf == NULL) {
-		printf("Could not allocate buffer of size %ul: %s\n", len,
-		    strerror(errno));
+		printf("Could not allocate buffer of size %zu: %s\n",
+		    (size_t)len, strerror(errno));
 		goto out;
 	}
 
@@ -123,8 +122,8 @@ read_packet(FCGI_Header *header, int sockfd)
 		if (r_read >= 0) {
 			read += r_read;
 		} else if (errno != EINTR){
-			printf("Failed to read %ld payload bytes: %s\n",
-			    len - read, strerror(errno));
+			printf("Failed to read %zd payload bytes: %s\n",
+			    (ssize_t)len - read, strerror(errno));
 			free(buf);
 			buf = NULL;
 			break;
