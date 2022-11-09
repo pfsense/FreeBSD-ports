@@ -25,6 +25,7 @@
  */
 
 require_once('config.inc');
+require_once('config.lib.inc');
 require_once('globals.inc');
 require_once('notices.inc');
 require_once('pfsense-utils.inc');
@@ -153,14 +154,14 @@ function squid_chown_recursive($dir, $user, $group) {
 
 /* Check whether Squid is enabled */
 function squid_enabled() {
-	global $config, $proxy_enabled;
+	global $proxy_enabled;
 	$proxy_enabled = false;
 
-	if (is_array($config['installedpackages']['squid']['config'])) {
+	if (is_array(config_get_path('installedpackages/squid/config'))) {
 		// check whether Squid is enabled ...
-		if ($config['installedpackages']['squid']['config'][0]['enable_squid'] == "on") {
+		if (config_get_path('installedpackages/squid/config/0/enable_squid') == "on") {
 			// ... and has at least one interface configured ...
-			if (!empty($config['installedpackages']['squid']['config'][0]['active_interface'])) {
+			if (!empty(config_get_path('installedpackages/squid/config/0/active_interface'))) {
 				$proxy_enabled = true;
 			// ... or whether Squid reverse proxy is enabled
 			} elseif (squid_reverse_enabled()) {
@@ -173,10 +174,9 @@ function squid_enabled() {
 
 /* Get list of certificates for SSL proxy */
 function squid_get_server_certs() {
-	global $config;
 	$cert_arr = array();
 	$cert_arr[] = array('refid' => 'none', 'descr' => 'none');
-	foreach ($config['cert'] as $cert) {
+	foreach (config_get_path('cert', []) as $cert) {
 		$cert_arr[] = array('refid' => $cert['refid'], 'descr' => $cert['descr']);
 	}
 	return $cert_arr;
@@ -184,14 +184,12 @@ function squid_get_server_certs() {
 
 /* Handle extra CA certificates, see https://redmine.pfsense.org/issues/10605 */
 function squid_gen_extra_ca() {
-	global $config;
 	$capath = SQUID_LOCALBASE . '/share/certs';
 
 	unlink_if_exists("{$capath}/*.0");
 
 	/* add Trust Store CAs, see https://redmine.pfsense.org/issues/12738 */
-	init_config_arr(array('ca'));
-	foreach ($config['ca'] as $ca) {
+	foreach (config_get_path('ca', []) as $ca) {
 		/* If the entry is invalid or is not trusted, skip it. */
 		if (!is_array($ca) ||
 		    empty($ca['crt']) ||
@@ -202,9 +200,8 @@ function squid_gen_extra_ca() {
 		ca_setup_capath($ca, $capath);
 	}
 
-	if (is_array($config['installedpackages']['squid']['config']) &&
-	    !empty($config['installedpackages']['squid']['config'][0]['extraca'])) {
-		$extraca = $config['installedpackages']['squid']['config'][0]['extraca'];
+	if (!empty(config_get_path('installedpackages/squid/config/0/extraca'))) {
+		$extraca = config_get_path('installedpackages/squid/config/0/extraca');
 		if ($extraca != 'none') {
 			$param = array('caref' => $extraca);
 			$cas = ca_chain_array($param);
@@ -221,17 +218,15 @@ function squid_gen_extra_ca() {
 
  /* Create Squid disk cache directories */
 function squid_dash_z($cache_action = 'none') {
-	global $config;
-
 	// We need cache configured after initial package install
-	if (!is_array($config['installedpackages']['squidcache']['config'])) {
+	if (!is_array(config_get_path('installedpackages/squidcache/config'))) {
 		log_error("[squid] 'Local Cache' not configured, disk cache will be disabled.");
 		log_error("[squid] Please, configure and save 'Local Cache' settings before enabling Squid proxy.");
 		return;
 	}
 
-	if (is_array($config['installedpackages']['squidcache'])) {
-		$cachesettings = $config['installedpackages']['squidcache']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidcache'))) {
+		$cachesettings = config_get_path('installedpackages/squidcache/config/0');
 	} else {
 		$cachesettings = array();
 	}
@@ -288,9 +283,8 @@ function squid_dash_z($cache_action = 'none') {
 
 /* Helper function for squid_dash_z() */
 function squid_create_cachedir() {
-	global $config;
-	if (is_array($config['installedpackages']['squidcache'])) {
-		$cachesettings = $config['installedpackages']['squidcache']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidcache'))) {
+		$cachesettings = config_get_path('installedpackages/squidcache/config/0');
 	} else {
 		$cachesettings = array();
 	}
@@ -413,15 +407,13 @@ function squid_stop_monitor() {
 
 /* Start and/or stop services according to Squid configuration */
 function squid_restart_services() {
-	global $config;
-
 	// do not (re)start squid services on boot
 	if (platform_booting()) {
 		return;
 	}
 
-	if (is_array($config['installedpackages']['squid']['config'])) {
-		$squid_config = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid/config'))) {
+		$squid_config = config_get_path('installedpackages/squid/config/0');
 	} else {
 		return null;
 	}
@@ -504,12 +496,8 @@ function squid_fixup_user() {
  */
 
 function squid_install_command() {
-	global $config, $g;
-
 	/* Set storage system for ramdisk */
-	if (!is_array($config['installedpackages']['squidcache'])) {
-		$config['installedpackages']['squidcache'] = array();
-	}
+	config_init_path('installedpackages/squidcache');
 
 	// Fix user/group entry permissions
 	squid_fixup_user();
@@ -558,7 +546,7 @@ function squid_install_command() {
 }
 
 function squid_deinstall_command() {
-	global $config, $g, $keep;
+	global $keep;
 
 	/* remove cronjobs */
 	squid_install_cron(false);
@@ -575,14 +563,14 @@ function squid_deinstall_command() {
 	unlink_if_exists('/usr/local/etc/rc.d/squid.sh');
 
 	/* clean up created directories if 'Keep Settings/Data' is disabled */
-	if (is_array($config['installedpackages']['squidcache'])) {
-		$cachesettings = $config['installedpackages']['squidcache']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidcache'))) {
+		$cachesettings = config_get_path('installedpackages/squidcache/config/0');
 	} else {
 		$cachesettings = array();
 	}
 	$cachedir = ($cachesettings['harddisk_cache_location'] ? $cachesettings['harddisk_cache_location'] : '/var/squid/cache');
-	if (is_array($config['installedpackages']['squid'])) {
-		$squidsettings = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid'))) {
+		$squidsettings = config_get_path('installedpackages/squid/config/0');
 	} else {
 		$squidsettings = array();
 	}
@@ -620,47 +608,25 @@ function squid_deinstall_command() {
 	/* Remove package settings from config if 'Keep Settings/Data' is disabled */
 	if (!$keep) {
 		log_error("[squid] Removing all Squid settings since 'Keep Settings/Data' is disabled...");
-		if (is_array($config['installedpackages']['squid'])) {
-			unset($config['installedpackages']['squid']);
-		}
-		if (is_array($config['installedpackages']['squidantivirus'])) {
-			unset($config['installedpackages']['squidantivirus']);
-		}
-		if (is_array($config['installedpackages']['squidauth'])) {
-			unset($config['installedpackages']['squidauth']);
-		}
-		if (is_array($config['installedpackages']['squidcache'])) {
-			unset($config['installedpackages']['squidcache']);
-		}
-		if (is_array($config['installedpackages']['squidnac'])) {
-			unset($config['installedpackages']['squidnac']);
-		}
-		if (is_array($config['installedpackages']['squidreverse'])) {
-			unset($config['installedpackages']['squidreverse']);
-		}
-		if (is_array($config['installedpackages']['squidreversegeneral'])) {
-			unset($config['installedpackages']['squidreversegeneral']);
-		}
-		if (is_array($config['installedpackages']['squidreversepeer'])) {
-			unset($config['installedpackages']['squidreversepeer']);
-		}
-		if (is_array($config['installedpackages']['squidreverseredir'])) {
-			unset($config['installedpackages']['squidreverseredir']);
-		}
-		if (is_array($config['installedpackages']['squidreverseuri'])) {
-			unset($config['installedpackages']['squidreverseuri']);
-		}
-		if (is_array($config['installedpackages']['squidsync'])) {
-			unset($config['installedpackages']['squidsync']);
-		}
-		if (is_array($config['installedpackages']['squidtraffic'])) {
-			unset($config['installedpackages']['squidtraffic']);
-		}
-		if (is_array($config['installedpackages']['squidremote'])) {
-			unset($config['installedpackages']['squidremote']);
-		}
-		if (is_array($config['installedpackages']['squidusers'])) {
-			unset($config['installedpackages']['squidusers']);
+		$pkgs = [
+			'squid',
+			'squidantivirus',
+			'squidantivirus',
+			'squidauth',
+			'squidcache',
+			'squidnac',
+			'squidreverse',
+			'squidreversegeneral',
+			'squidreversepeer',
+			'squidreverseredir',
+			'squidreverseuri',
+			'squidsync',
+			'squidtraffic',
+			'squidremote',
+			'squidusers'
+		];
+		foreach ($pkgs as $pkg) {
+			config_del_path("installedpackages/{$pkg}");
 		}
 	}
 }
@@ -668,25 +634,24 @@ function squid_deinstall_command() {
 /* Migrate configuration from god knows which Squid package versions */
 /* None of these ever existed with Squid 3.4 package and this cruft should be most likely just removed */
 function squid_upgrade_config() {
-	global $config;
 	/* migrate existing csv config fields */
-	if (is_array($config['installedpackages']['squidauth']['config'])) {
-		$settingsauth = $config['installedpackages']['squidauth']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidauth/config'))) {
+		$settingsauth = config_get_path('installedpackages/squidauth/config/0');
 	}
-	if (is_array($config['installedpackages']['squidcache']['config'])) {
-		$settingscache = $config['installedpackages']['squidcache']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidcache/config'))) {
+		$settingscache = config_get_path('installedpackages/squidcache/config/0');
 	}
-	if (is_array($config['installedpackages']['squidnac']['config'])) {
-		$settingsnac = $config['installedpackages']['squidnac']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidnac/config'))) {
+		$settingsnac = config_get_path('installedpackages/squidnac/config/0');
 	}
-	if (is_array($config['installedpackages']['squid']['config'])) {
-		$settingsgen = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid/config'))) {
+		$settingsgen = config_get_path('installedpackages/squid/config/0');
 	}
 
 	/* migrate auth settings */
 	if (!empty($settingsauth['no_auth_hosts']) && strstr($settingsauth['no_auth_hosts'], ",")) {
 		$settingsauth['no_auth_hosts'] = base64_encode(implode("\n", explode(",", $settingsauth['no_auth_hosts'])));
-		$config['installedpackages']['squidauth']['config'][0]['no_auth_hosts'] = $settingsauth['no_auth_hosts'];
+		config_set_path('installedpackages/squidauth/config/0/no_auth_hosts', $settingsauth['no_auth_hosts']);
 	}
 	/* NT Domain authentication has been removed - Bug #7017 */
 	if (!empty($settingsauth['auth_method'])) {
@@ -700,59 +665,57 @@ function squid_upgrade_config() {
 	/* migrate cache settings */
 	if (!empty($settingscache['donotcache']) && strstr($settingscache['donotcache'], ",")) {
 		$settingscache['donotcache'] = base64_encode(implode("\n", explode(",", $settingscache['donotcache'])));
-		$config['installedpackages']['squidcache']['config'][0]['donotcache'] = $settingscache['donotcache'];
+		config_set_path('installedpackages/squidcache/config/0/donotcache', $settingscache['donotcache']);
 	}
 	/* unset broken dynamic caching patterns removed since Squid3 package v0.4.3 */
-	if (!empty($config['installedpackages']['squidcache']['config']['refresh_patterns'])) {
-		unset($config['installedpackages']['squidcache']['config']['refresh_patterns']);
-	}
+	config_del_path('installedpackages/squidcache/config/refresh_patterns');
 
 	/* migrate nac settings */
 	if (!empty($settingsnac['allowed_subnets']) && strstr($settingsnac['allowed_subnets'], ",")) {
 		$settingsnac['allowed_subnets'] = base64_encode(implode("\n", explode(",", $settingsnac['allowed_subnets'])));
-		$config['installedpackages']['squidnac']['config'][0]['allowed_subnets'] = $settingsnac['allowed_subnets'];
+		config_set_path('installedpackages/squidnac/config/0/allowed_subnets', $settingsnac['allowed_subnets']);
 	}
 
 	if (!empty($settingsnac['banned_hosts']) && strstr($settingsnac['banned_hosts'], ",")) {
 		$settingsnac['banned_hosts'] = base64_encode(implode("\n", explode(",", $settingsnac['banned_hosts'])));
-		$config['installedpackages']['squidnac']['config'][0]['banned_hosts'] = $settingsnac['banned_hosts'];
+		config_set_path('installedpackages/squidnac/config/0/banned_hosts', $settingsnac['banned_hosts']);
 	}
 
 	if (!empty($settingsnac['unrestricted_hosts']) && strstr($settingsnac['unrestricted_hosts'], ",")) {
 		$settingsnac['unrestricted_hosts'] = base64_encode(implode("\n", explode(",", $settingsnac['unrestricted_hosts'])));
-		$config['installedpackages']['squidnac']['config'][0]['unrestricted_hosts'] = $settingsnac['unrestricted_hosts'];
+		config_set_path('installedpackages/squidnac/config/0/unrestricted_hosts', $settingsnac['unrestricted_hosts']);
 	}
 
 	if (!empty($settingsnac['whitelist']) && strstr($settingsnac['whitelist'], ",")) {
 		$settingsnac['whitelist'] = base64_encode(implode("\n", explode(",", $settingsnac['whitelist'])));
-		$config['installedpackages']['squidnac']['config'][0]['whitelist'] = $settingsnac['whitelist'];
+		config_set_path('installedpackages/squidnac/config/0/whitelist', $settingsnac['whitelist']);
 	}
 
 	if (!empty($settingsnac['blacklist']) && strstr($settingsnac['blacklist'], ",")) {
 		$settingsnac['blacklist'] = base64_encode(implode("\n", explode(",", $settingsnac['blacklist'])));
-		$config['installedpackages']['squidnac']['config'][0]['blacklist'] = $settingsnac['blacklist'];
+		config_set_path('installedpackages/squidnac/config/0/blacklist', $settingsnac['blacklist']);
 	}
 
 	if (!empty($settingsnac['block_user_agent']) && strstr($settingsnac['block_user_agent'], ",")) {
 		$settingsnac['block_user_agent'] = base64_encode(implode("\n", explode(",", $settingsnac['block_user_agent'])));
-		$config['installedpackages']['squidnac']['config'][0]['block_user_agent'] = $settingsnac['block_user_agent'];
+		config_set_path('installedpackages/squidnac/config/0/block_user_agent', $settingsnac['block_user_agent']);
 	}
 
 	if (!empty($settingsnac['block_reply_mime_type']) && strstr($settingsnac['block_reply_mime_type'], ",")) {
 		$settingsnac['block_reply_mime_type'] = base64_encode(implode("\n", explode(",", $settingsnac['block_reply_mime_type'])));
-		$config['installedpackages']['squidnac']['config'][0]['block_reply_mime_type'] = $settingsnac['block_reply_mime_type'];
+		config_set_path('installedpackages/squidnac/config/0/block_reply_mime_type', $settingsnac['block_reply_mime_type']);
 	}
 
 	/* XXX: broken Captive Portal patch (Bug #5594) */
-	if (isset($config['installedpackages']['squid']['config'][0]['patch_cp'])) {
-		if ($config['installedpackages']['squid']['config'][0]['patch_cp'] == "on") {
+	if (config_get_path('installedpackages/squid/config/0/patch_cp')) {
+		if (config_get_path('installedpackages/squid/config/0/patch_cp') == "on") {
 			$cp_msg = "Patch Captive Portal feature was removed - see Bug #5594!";
 			$cp_msg .= "Double-check '/etc/inc/captiveportal.inc' contents for sanity! Get a sane copy of the file from pfSense GitHub repository if needed.";
 			file_notice("squid", $cp_msg, "Packages", "");
 			log_error("[squid] {$cp_msg}");
 			unset($cp_msg);
 		}
-		unset($config['installedpackages']['squid']['config'][0]['patch_cp']);
+		config_del_path('installedpackages/squid/config/0/patch_cp');
 	}
 
 	/* migrate reverse proxy settings */
@@ -771,16 +734,14 @@ function squid_upgrade_config() {
 
 /* Proxy Server: General Settings input validation */
 function squid_validate_general($post, &$input_errors) {
-	global $config;
-
-	if (is_array($config['installedpackages']['squid'])) {
-		$settings = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid'))) {
+		$settings = config_get_path('installedpackages/squid/config/0');
 	} else {
 		$settings = array();
 	}
 
 	// force users to configure cache
-	if (!is_array($config['installedpackages']['squidcache']['config'])) {
+	if (!is_array(config_get_path('installedpackages/squidcache/config'))) {
 		$input_errors[] = "Please, configure and save 'Local Cache' settings first.";
 	}
 
@@ -866,11 +827,11 @@ function squid_validate_general($post, &$input_errors) {
 	// check that the proxy port does not clash with WebGUI
 	$port = ($settings['proxy_port'] ? $settings['proxy_port'] : 3128);
 	$port = $post['proxy_port'] ? $post['proxy_port'] : $port;
-	$webgui_port = $config['system']['webgui']['port'];
-	if (($config['system']['webgui']['port'] == "") && ($config['system']['webgui']['protocol'] == "http")) {
+	$webgui_port = config_get_path('system/webgui/port');
+	if ((config_get_path('system/webgui/port') == "") && (config_get_path('system/webgui/protocol') == "http")) {
 		$webgui_port = 80;
 	}
-	if (($config['system']['webgui']['port'] == "") && ($config['system']['webgui']['protocol'] == "https")) {
+	if ((config_get_path('system/webgui/port') == "") && (config_get_path('system/webgui/protocol') == "https")) {
 		$webgui_port = 443;
 	}
 	if (($post['transparent_proxy'] != 'on') && ($port == $webgui_port)) {
@@ -879,7 +840,7 @@ function squid_validate_general($post, &$input_errors) {
 	unset($port, $webgui_port);
 
 	if ($post['transparent_proxy'] == 'on') {
-		if (preg_match("/(local|ldap|radius|ntlm)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
+		if (preg_match("/(local|ldap|radius|ntlm)/", config_get_path('installedpackages/squidauth/config/0/auth_method'))) {
 			$input_errors[] = "Transparent mode cannot be enabled while proxy authentication is enabled";
 		}
 		if (empty($post['transparent_active_interface'])) {
@@ -1231,10 +1192,10 @@ function squid_validate_auth($post, &$input_errors) {
 
 /* Proxy Server: General Settings configuration handler */
 function squid_resync_general() {
-	global $g, $config, $valid_acls;
+	global $g, $valid_acls;
 
-	if (is_array($config['installedpackages']['squid'])) {
-		$settings = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid'))) {
+		$settings = config_get_path('installedpackages/squid/config/0');
 	} else {
 		$settings = array();
 	}
@@ -1471,19 +1432,8 @@ function squid_resync_general() {
 	 * This avoids periods when Squid is unresponsive due to digest generation.
 	 */
 	$digest_generation = "off";
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
 
-	if (!is_array($config['installedpackages']['squidremote'])) {
-		$config['installedpackages']['squidremote'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['squidremote']['config'])) {
-		$config['installedpackages']['squidremote']['config'] = array();
-	}
-
-	foreach ($config['installedpackages']['squidremote']['config'] as $settings) {
+	foreach (config_get_path('installedpackages/squid/config/squidremote/config', []) as $settings) {
 		if ($settings['enable'] == 'on' && $settings['hierarchy'] == 'sibling') {
 			$digest_generation = "on";
 			break;
@@ -1586,10 +1536,8 @@ EOD;
 
 /* Proxy Server: Cache Management configuration handler */
 function squid_resync_cache() {
-	global $config, $g;
-
-	if (is_array($config['installedpackages']['squidcache'])) {
-		$settings = $config['installedpackages']['squidcache']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidcache'))) {
+		$settings = config_get_path('installedpackages/squidcache/config/0');
 	} else {
 		$settings = array();
 	}
@@ -1607,7 +1555,7 @@ function squid_resync_cache() {
 	$offline_mode = ($settings['enable_offline'] == 'on' ? 'on' : 'off');
 	$conf = '';
 	if (!isset($settings['harddisk_cache_system'])) {
-		if (!is_array($config['installedpackages']['squidcache']['config'])) {
+		if (!is_array(config_get_path('installedpackages/squidcache/config'))) {
 			log_error("[squid] 'Local Cache' not configured, disk cache will be disabled.");
 			log_error("[squid] Please, configure and save 'Local Cache' settings before enabling Squid proxy.");
 		} else {
@@ -1678,22 +1626,8 @@ EOD;
 
 /* Proxy Server: Remote Proxy Settings configuration handler */
 function squid_resync_upstream() {
-	global $config;
-
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['squidremote'])) {
-		$config['installedpackages']['squidremote'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['squidremote']['config'])) {
-		$config['installedpackages']['squidremote']['config'] = array();
-	}
-
 	$conf = "\n#Remote proxies\n";
-	foreach ($config['installedpackages']['squidremote']['config'] as $settings) {
+	foreach (config_get_path('installedpackages/squidremote/config') as $settings) {
 		if ($settings['enable'] == 'on') {
 			$conf .= "cache_peer {$settings['proxyaddr']} {$settings['hierarchy']} {$settings['proxyport']} ";
 			if ($settings['icpport'] == '7') {
@@ -1728,20 +1662,20 @@ function squid_resync_upstream() {
 
 /* Proxy Server: Access Control configuration handler */
 function squid_resync_nac() {
-	global $config, $valid_acls;
+	global $valid_acls;
 
-	if (is_array($config['installedpackages']['squidnac'])) {
-		$settings = $config['installedpackages']['squidnac']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidnac'))) {
+		$settings = config_get_path('installedpackages/squidnac/config/0');
 	} else {
 		$settings = array();
 	}
-	if (is_array($config['installedpackages']['squid'])) {
-		$squidsettings = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid'))) {
+		$squidsettings = config_get_path('installedpackages/squid/config/0');
 	} else {
 		$squidsettings = array();
 	}
 
-	$webgui_port = $config['system']['webgui']['port'];
+	$webgui_port = config_get_path('system/webgui/port');
 	$addtl_ports = $settings['addtl_ports'];
 	$addtl_sslports = $settings['addtl_sslports'];
 	// do not add (default) proxy ports when using Squid as reverse proxy only
@@ -1825,8 +1759,8 @@ http_access allow manager localhost
 
 EOD;
 
-	if (is_array($config['installedpackages']['squidcache'])) {
-		$settings_ch = $config['installedpackages']['squidcache']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidcache'))) {
+		$settings_ch = config_get_path('installedpackages/squidcache/config/0');
 		if (!empty($settings_ch['ext_cachemanager'])) {
 			$extmgr = explode(";", ($settings_ch['ext_cachemanager']));
 			$conf .= "\n# Allow external cache managers\n";
@@ -1855,18 +1789,18 @@ EOD;
 
 /* Proxy server: Traffic Management configuration handler */
 function squid_resync_traffic() {
-	global $config, $valid_acls;
+	global $valid_acls;
 
 	if (!is_array($valid_acls)) {
 		return;
 	}
-	if (is_array($config['installedpackages']['squidtraffic'])) {
-		$settings = $config['installedpackages']['squidtraffic']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidtraffic'))) {
+		$settings = config_get_path('installedpackages/squidtraffic/config/0');
 	} else {
 		$settings = array();
 	}
-	if (is_array($config['installedpackages']['squidnac']['config'])) {
-		$settingsnac = $config['installedpackages']['squidnac']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidnac/config'))) {
+		$settingsnac = config_get_path('installedpackages/squidnac/config/0');
 	} else {
 		$settingsnac = array();
 	}
@@ -1959,22 +1893,22 @@ EOD;
 
 /* Proxy Server: Authentication configuration handler */
 function squid_resync_auth() {
-	global $config, $valid_acls;
+	global $valid_acls;
 	$write_config = 0;
-	if (!is_array($config['installedpackages']['squidauth']['config'])) {
+	if (!is_array(config_get_path('installedpackages/squidauth/config'))) {
 		init_config_arr(array('installedpackages', 'squidauth', 'config'));
-		$config['installedpackages']['squidauth']['config'][] = array('auth_method' => "none");
+		config_set_path('installedpackages/squidauth/config', [['auth_method' => "none"]]);
 		$write_config++;
 	}
-	$settings = $config['installedpackages']['squidauth']['config'][0];
-	if (is_array($config['installedpackages']['squidnac']['config'])) {
-		$settingsnac = $config['installedpackages']['squidnac']['config'][0];
+	$settings = config_get_path('installedpackages/squidauth/config/0');
+	if (is_array(config_get_path('installedpackages/squidnac/config'))) {
+		$settingsnac = config_get_path('installedpackages/squidnac/config/0');
 	} else {
 		$settingsnac = array();
 	}
 
-	if (is_array($config['installedpackages']['squid']['config'])) {
-		$settingsconfig = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid/config'))) {
+		$settingsconfig = config_get_path('installedpackages/squid/config/0');
 	} else {
 		$settingsconfig = array();
 	}
@@ -2227,9 +2161,7 @@ EOD;
 
 /* Proxy server: Local users configuration handler */
 function squid_resync_users() {
-	global $config;
-
-	$users = $config['installedpackages']['squidusers']['config'];
+	$users = config_get_path('installedpackages/squidusers/config');
 	$contents = '';
 	if (is_array($users)) {
 		foreach ($users as $user) {
@@ -2244,8 +2176,6 @@ function squid_resync_users() {
 
 /* Wrapper function to sync whole Squid configuration */
 function squid_resync($via_rpc = "no") {
-	global $config;
-
 	// detect boot process
 	if (is_array($_POST)) {
 		if (!platform_booting()) {
@@ -2306,9 +2236,7 @@ function squid_resync($via_rpc = "no") {
  */
 
 function squid_generate_rules($type) {
-	global $config;
-
-	$squid_conf = $config['installedpackages']['squid']['config'][0];
+	$squid_conf = config_get_path('installedpackages/squid/config/0');
 
 	// Do not install any firewall rules if Squid is disabled or used as reverse proxy only
 	if (!squid_enabled()) {
@@ -2380,7 +2308,7 @@ function squid_generate_rules($type) {
 					}
 				}
 				/* Handle PPPOE case */
-				if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+				if (((config_get_path('pppoe/mode') == "server" && config_get_path('pppoe/localip')) ||
 				    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
 				    ($listenproto != 'inet6')) {
 					$rules .= "no rdr on \$pppoe proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_nat_ports}\n";
@@ -2405,7 +2333,7 @@ function squid_generate_rules($type) {
 					$rules .= "no rdr on $iface proto tcp from { $exempt_ip } to any port {$pf_transparent_rule_port}\n";
 				}
 				/* Handle PPPOE case */
-				if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+				if (((config_get_path('pppoe/mode') == "server" && config_get_path('pppoe/localip')) ||
 				    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
 				    ($listenproto != 'inet6')) {
 					$rules .= "no rdr on \$pppoe proto tcp from { $exempt_ip } to any port {$pf_nat_ports}\n";
@@ -2430,7 +2358,7 @@ function squid_generate_rules($type) {
 					$rules .= "no rdr on $iface proto tcp from any to { $exempt_dest } port {$pf_transparent_rule_port}\n";
 				}
 				/* Handle PPPOE case */
-				if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+				if (((config_get_path('pppoe/mode') == "server" && config_get_path('pppoe/localip')) ||
 				    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
 				    ($listenproto != 'inet6')) {
 					$rules .= "no rdr on \$pppoe proto tcp from any to { $exempt_dest } port {$pf_nat_ports}\n";
@@ -2462,7 +2390,7 @@ function squid_generate_rules($type) {
 			 * For PPPoE server, mpd uses a group of different _local_ interfaces
 			 * The rules below are needed so that the clients can be transparently proxied
 			 */
-			if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+			if (((config_get_path('pppoe/mode') == "server" && config_get_path('pppoe/localip')) ||
 			    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
 			    ($listenproto != 'inet6')) {
 				$rules .= "rdr pass on \$pppoe proto tcp from any to !127.0.0.1 port 80 -> 127.0.0.1 port {$port}\n";
@@ -2486,8 +2414,8 @@ function squid_generate_rules($type) {
 					$rules .= "\n";
 				}
 				/* Handle PPPOE case */
-				if ($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) {
-					$rules .= "pass in quick on \$pppoe proto tcp from any to {$config['pppoe']['localip']} port {$pf_rule_ports} flags S/SA keep state\n";
+				if (config_get_path('pppoe/mode') == "server" && config_get_path('pppoe/localip')) {
+					$rules .= "pass in quick on \$pppoe proto tcp from any to " . config_get_path('pppoe/localip') . " port {$pf_rule_ports} flags S/SA keep state\n";
 				}
 			}
 			break;
@@ -2504,10 +2432,8 @@ function squid_generate_rules($type) {
 
 /* XMLRPC sync configuration */
 function squid_sync_on_changes() {
-	global $config;
-
-	if (is_array($config['installedpackages']['squidsync']['config'])) {
-		$squid_sync = $config['installedpackages']['squidsync']['config'][0];
+	if (is_array(config_get_path('installedpackages/squidsync/config'))) {
+		$squid_sync = config_get_path('installedpackages/squidsync/config/0');
 		$synconchanges = $squid_sync['synconchanges'];
 		$synctimeout = $squid_sync['synctimeout'] ?: '250';
 		switch ($synconchanges) {
@@ -2520,20 +2446,20 @@ function squid_sync_on_changes() {
 				}
 				break;
 			case "auto":
-				if (is_array($config['hasync'])) {
-					$system_carp = $config['hasync'];
+				if (is_array(config_get_path('hasync'))) {
+					$system_carp = config_get_path('hasync');
 					$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
 					$rs[0]['username'] = $system_carp['username'];
 					$rs[0]['password'] = $system_carp['password'];
 					$rs[0]['syncdestinenable'] = FALSE;
 
 					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if ($config['system']['webgui']['protocol'] == "http") {
+					if (config_get_path('system/webgui/protocol') == "http") {
 						$rs[0]['syncprotocol'] = "http";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
+						$rs[0]['syncport'] = config_get_path('system/webgui/port', '80');
 					} else {
 						$rs[0]['syncprotocol'] = "https";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
+						$rs[0]['syncport'] = config_get_path('system/webgui/port', '443');
 					}
 					if ($system_carp['synchronizetoip'] == "") {
 						log_error("[squid] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
@@ -2596,7 +2522,7 @@ if (!function_exists('pf_version')) {
 
 /* Perform the actual XMLRPC sync */
 function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
-	global $config, $g;
+	global $g;
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
 		log_error("[squid] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
@@ -2605,17 +2531,23 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 
 	/* XML will hold the sections to sync */
 	$xml = array();
-	$xml['squid'] = $config['installedpackages']['squid'];
-	$xml['squidremote'] = $config['installedpackages']['squidremote'];
-	$xml['squidcache'] = $config['installedpackages']['squidcache'];
-	$xml['squidantivirus'] = $config['installedpackages']['squidantivirus'];
-	$xml['squidnac'] = $config['installedpackages']['squidnac'];
-	$xml['squidtraffic'] = $config['installedpackages']['squidtraffic'];
-	$xml['squidreversegeneral'] = $config['installedpackages']['squidreversegeneral'];
-	$xml['squidreversepeer'] = $config['installedpackages']['squidreversepeer'];
-	$xml['squidreverseuri'] = $config['installedpackages']['squidreverseuri'];
-	$xml['squidauth'] = $config['installedpackages']['squidauth'];
-	$xml['squidusers'] = $config['installedpackages']['squidusers'];
+	$pkgs = [
+		'squid',
+		'squidremote',
+		'squidcache',
+		'squidantivirus',
+		'squidnac',
+		'squidtraffic',
+		'squidreversegeneral',
+		'squidreversepeer',
+		'squidreverseuri',
+		'squidauth',
+		'squidusers'
+	];
+
+	foreach ($pkgs as $pkg) {
+		$xml[$pkg] = config_get_path("installedpackages/{$pkg}");
+	}
 
 	/* Commands to reload Squid settings on the destination sync host. */
 	$execcmd = "require_once('/usr/local/pkg/squid.inc');\n";
@@ -2700,21 +2632,24 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
  * They MUST have a private key present!
  */
 function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false, $addnone = true) {
-	global $config;
 	$c_arr = array();
+	if (!in_array($type, ['cert', 'ca'])) {
+		return $c_arr;
+	}
+
 	if (function_exists('cert_build_list')) {
 		$list_arr = cert_build_list($type, $consumer, true, false);
 	}
-	if (isset($config[$type]) && is_array($config[$type])) {
+	if (is_array(config_get_path("{$type}"))) {
 		if (is_array($list_arr)) {
-			foreach ($config[$type] as $c) {
+			foreach (config_get_path("{$type}") as $c) {
 				if (in_array($c['refid'],array_column($list_arr, 'refid')) && 
 				 (!empty($c['prv']) || $noprv)) {
 					$c_arr[] = $c;
 				}
 			}
 		} else {
-			foreach ($config[$type] as $c) {
+			foreach (config_get_path("{$type}") as $c) {
 				if (!empty($c['prv']) || $noprv) {
 					$c_arr[] = $c;
 				}
@@ -2764,10 +2699,9 @@ function squid_get_carp_list() {
 }
 
 function squid_plugin_carp($pluginparams) {
-	global $config;
 	/* If squid is not configured, then stop */
-	if (is_array($config['installedpackages']['squid']['config'])) {
-		$squid_config = $config['installedpackages']['squid']['config'][0];
+	if (is_array(config_get_path('installedpackages/squid/config'))) {
+		$squid_config = config_get_path('installedpackages/squid/config/0');
 	} else {
 		return null;
 	}
@@ -2800,12 +2734,11 @@ function squid_plugin_carp($pluginparams) {
 }
 
 function squid_plugin_certificates($pluginparams) {
-	global $config;
 	$result = array('pkgname' => 'Squid', 'certificatelist' => array());
 	init_config_arr(array('installedpackages', 'squid', 'config'));
-	$squidconf = $config['installedpackages']['squid']['config'][0];
+	$squidconf = config_get_path('installedpackages/squid/config/0');
 	init_config_arr(array('installedpackages', 'squidreversegeneral', 'config'));
-	$squidrevconf = $config['installedpackages']['squidreversegeneral']['config'][0];
+	$squidrevconf = config_get_path('installedpackages/squidreversegeneral/config/0');
 
 	if (($pluginparams['type'] == 'certificates') && !empty($squidconf) &&
 	    ($squidconf['enable_squid'] == 'on')) {
