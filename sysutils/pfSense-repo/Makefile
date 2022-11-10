@@ -89,6 +89,11 @@ do-build:
 		-e "s,%%VERSION%%,${REPO_BRANCH_PREFIX}${PKG_REPO_BRANCH_${b}},g" \
 		${WRKSRC}/${PKG_REPO_FILENAME_${b}}.conf
 	echo "${PKG_REPO_DESCR_${b}}" > ${WRKSRC}/${PKG_REPO_FILENAME_${b}}.descr
+. endif
+. if defined(PKG_REPO_MAJORVER_${b}) && !empty(PKG_REPO_MAJORVER_${b})
+	echo "${OPSYS}:${PKG_REPO_MAJORVER_${b}}:${ARCH}" > ${WRKSRC}/${PKG_REPO_FILENAME_${b}}.abi
+	echo "${OPSYS}:${PKG_REPO_MAJORVER_${b}}:${ARCH}" > ${WRKSRC}/${PKG_REPO_FILENAME_${b}}.altabi
+. else
 	echo "${OPSYS}:${OSREL:C/\..*//}:${ARCH}" > ${WRKSRC}/${PKG_REPO_FILENAME_${b}}.abi
 	echo "${OPSYS}:${OSREL:C/\..*//}:${ARCH}" > ${WRKSRC}/${PKG_REPO_FILENAME_${b}}.altabi
 . endif
