@@ -300,6 +300,9 @@ function pfBlockerNG_update_table() {
 		// Get the packet count for each pfB rule
 		if (!empty($tracked_rules)) {
 			foreach (pfSense_get_pf_rules() as $prule) {
+				if (!is_array($prule)) { // prule may be an error string if pftcl_get_rule() returned an error
+					continue;
+				}
 				$prule_id = $prule['tracker'];
 				if (isset($tracked_rules[$prule_id])) {
 					if (isset($prule['packets']) && $prule['packets'] > 0) {
