@@ -855,13 +855,11 @@ function frr_config_sort_route_map() {
 	if (empty($frr_routemap_conf)) {
 		return null;
 	}
-	$sorted = frr_array_name_seq_sort($frr_routemap_conf);
-	if (!empty($sorted)) {
-		config_set_path('installedpackages/frrglobalroutemaps/config', $sorted);
-		update_status("Saving sorted route-map configuration items");
-		write_config('FRR: Sorted route-map configuration items');
-		update_status("Done.\n");
-	}
+	frr_array_name_seq_sort($frr_routemap_conf);
+	config_set_path('installedpackages/frrglobalroutemaps/config', $frr_routemap_conf);
+	update_status("Saving sorted route-map configuration items");
+	write_config('FRR: Sorted route-map configuration items');
+	update_status("Done.\n");
 }
 
 function frr_package_config_cleanup($area, $add0 = false) {
