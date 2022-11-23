@@ -574,7 +574,7 @@ function snort_get_config_lists($lists) {
 	// stored in the config file if one exists.  Always
 	// return at least the single entry, "default".
 	$result = array();
-	$result['default'] = 'default';
+	$result['default'] = gettext("default");
 	foreach (config_get_path("installedpackages/snortglobal/{$lists}/item", []) as $v) {
 		$result[$v['name']] = gettext($v['name']);
 	}
