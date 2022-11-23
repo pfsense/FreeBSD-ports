@@ -1,6 +1,6 @@
 PORTNAME=	snort
 PORTVERSION=	2.9.20
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		https://snort.org/downloads/archive/snort/
@@ -78,7 +78,7 @@ FILEINSPECT_CONFIGURE_ENABLE=	file-inspect
 
 BARNYARD_RUN_DEPENDS=	barnyard2:security/barnyard2
 PULLEDPORK_RUN_DEPENDS=	pulledpork.pl:security/pulledpork
-APPID_USES=		luajit
+APPID_USES=		luajit:luajit-openresty
 APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LUAJIT_INCDIR}" \
 			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
 
