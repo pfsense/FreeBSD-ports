@@ -14,7 +14,7 @@ CONFLICTS+=	pfSense-pkg-zabbix-agent6
 
 RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix62-agent
 
-ZABBIXINTERNALNAME=	zabbix-agent6
+ZABBIXINTERNALNAME=	zabbix-agent62
 ZABBIXTITLE=	Zabbix Agent 6.2
 ZABBIXVERSION=	62
 
