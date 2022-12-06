@@ -53,11 +53,15 @@ if (!defined('SURICATA_PBI_BINDIR'))
 if (!defined("SURICATA_BIN_VERSION")) {
 	// Grab the Suricata binary version programmatically
 	$suricatabindir = SURICATA_PBI_BINDIR;
-	$suricataver = exec_command("{$suricatabindir}suricata -V 2>&1 |/usr/bin/cut -c26-");
+
+	// Since upstream now includes extra text after the version number, we cut by fields instead
+	// of grabbing up to the EOL. Field 5 currently has the version string we need.
+	$suricataver = exec_command("{$suricatabindir}suricata -V 2>&1 |/usr/bin/cut -d \" \" -f5");
 	if (!empty($suricataver))
 		define("SURICATA_BIN_VERSION", $suricataver);
 	else
-		define("SURICATA_BIN_VERSION", "");
+		// If we could not find a version, set a safe default
+		define("SURICATA_BIN_VERSION", "5.0.0");
 }
 
 // Define the name of the pf table used for IP blocks
