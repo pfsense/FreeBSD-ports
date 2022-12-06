@@ -59,8 +59,8 @@ else
 	$action = "";
 
 $pconfig = array();
-if (empty(array_get_path($a_rule[$id], 'uuid'))) {
-	/* Adding new interface, so generate a new UUID and flag rules to build. */
+if (!config_path_enabled('installedpackages/suricata/rule', $id)) {
+	/* Adding a new interface, so generate new UUID and flag rules to rebuild. */
 	$pconfig['uuid'] = suricata_generate_id();
 	$rebuild_rules = true;
 	$new_interface = true;
@@ -380,8 +380,8 @@ if (isset($_POST["save"]) && !$input_errors) {
 	}
 
 	// If Suricata is disabled on this interface, stop any running instance,
-	// save the change and exit.
-	if ($_POST['enable'] != 'on') {
+	// on an active interface, save the change, and exit.
+	if ($_POST['enable'] != 'on' && config_path_enabled('installedpackages/suricata/rule', $id)) {
 		$a_rule[$id]['enable'] = $_POST['enable'] ? 'on' : 'off';
 		config_set_path('installedpackages/suricata/rule', $a_rule);
 		suricata_stop($a_rule[$id], get_real_interface($a_rule[$id]['interface']));
@@ -428,9 +428,14 @@ if (isset($_POST["save"]) && !$input_errors) {
 	if ($_POST['enable_telegraf_stats'] == "on" && empty($_POST['suricata_telegraf_unix_socket_name']))
 		$input_errors[] = gettext("You must specify the Unix Socket name when enabling Telegraf stats output!");
 
-	// if no errors write to suricata.yaml
+	// if no errors, generate and save the interface configuration
 	if (!$input_errors) {
-		$natent = $a_rule[$id];
+		$natent = array();
+
+		// Grab the existing configuration for modifications if it exists
+		if (config_path_enabled('installedpackages/suricata/rule', $id)) {
+			$natent = $a_rule[$id];
+		}
 		$natent['interface'] = $_POST['interface'];
 		$natent['enable'] = $_POST['enable'] ? 'on' : 'off';
 		$natent['uuid'] = $pconfig['uuid'];
