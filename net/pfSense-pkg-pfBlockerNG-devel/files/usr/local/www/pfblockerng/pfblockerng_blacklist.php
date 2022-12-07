@@ -35,6 +35,7 @@ if (!empty($blacklist_types)) {
 		$validate		= 0;
 		$list			= array();
 		$list['CONTENTS']	= file($type, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES);
+		$list['CATEGORIES']	= array();
 
 		if (is_array($list['CONTENTS'])) {
 			foreach ($list['CONTENTS'] as $line => $data) {
@@ -48,6 +49,11 @@ if (!empty($blacklist_types)) {
 				foreach (array('TITLE', 'DESCR', 'XML', 'FEED', 'SIZE', 'WEBSITE', 'LICENSE', 'REG') as $setting) {
 					if (isset($list[$setting])) {
 						continue;
+					}
+
+					// Collect Categories for Save validation
+					if (strpos($data, 'NAME:') !== FALSE) {
+						$list['CATEGORIES'][] = trim(strstr($data, '	', FALSE));
 					}
 
 					if (strpos($data, "{$setting}:") !== FALSE) {
@@ -113,6 +119,13 @@ if (isset($blacklist_types)) {
 	}
 }
 
+// Select field options
+$options_blacklist_enable	= ['Disable' => 'Disable', 'Enable' => 'Enable'];
+$options_blacklist_lang		= ['EN' => 'English', 'DE' => 'German', 'FR' => 'French', 'IT' => 'Italian',
+					'NL' => 'Dutch', 'PT' => 'Portuguese', 'ES' => 'Spanish', 'RU' => 'Russian'];
+$options_blacklist_freq		= ['Never' => 'Never', 'EveryDay' => 'Once a day (Random hour)', 'Weekly' => 'Weekly (Sunday)'];
+$options_blacklist_logging	= ['enabled' => 'Enabled', 'disabled' => 'Disabled'];
+
 if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 
 	$rowid		= 0;
@@ -126,27 +139,62 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 	}
 
 	if (isset($_POST['blacklist_enable'])) {
-		$pfb['bconfig']['blacklist_enable']	= $_POST['blacklist_enable'];
+		if (!array_key_exists($_POST['blacklist_enable'], $options_blacklist_enable)) {
+			$_POST['blacklist_enable'] = 'Disable';
+		}
+		$pfb['bconfig']['blacklist_enable'] = $_POST['blacklist_enable'];
 		$config_mod = TRUE;
 	}
 
 	if (isset($_POST['blacklist_lang'])) {
-		$pfb['bconfig']['blacklist_lang']	= $_POST['blacklist_lang'];
+		if (!array_key_exists($_POST['blacklist_lang'], $options_blacklist_lang)) {
+			$_POST['blacklist_lang'] = 'EN';
+		}
+		$pfb['bconfig']['blacklist_lang'] = $_POST['blacklist_lang'];
 		$config_mod = TRUE;
 	}
 
 	if (isset($_POST['save'])) {
 
+		// Validate Select field options
+		$select_options = array (	'blacklist_enable'	=> 'Disable',
+						'blacklist_lang'	=> 'EN',
+						'blacklist_freq'	=> 'Never',
+						'blacklist_logging'	=> 'enabled',
+						);
+
+		foreach ($select_options as $s_option => $s_default) {
+			if (is_array($_POST[$s_option])) {
+				$_POST[$s_option] = $s_default;
+			}
+			elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+				$_POST[$s_option] = $s_default;
+			}
+		}
+
+		// Validate Select field (array) options
+		if (is_array($_POST['blacklist_selected'])) {
+			foreach ($_POST['blacklist_selected'] as $post_option) {
+				if (!array_key_exists($post_option, $blacklist_options)) {
+					$_POST['blacklist_selected'] = '';
+					break;
+				}
+			}
+		}
+		elseif (!array_key_exists($_POST['blacklist_selected'], $blacklist_options)) {
+			$_POST['blacklist_selected'] = '';
+		}
+
 		if (isset($_POST['blacklist_selected'])) {
-			$pfb['bconfig']['blacklist_selected']	= implode(',', (array)$_POST['blacklist_selected']);
+			$pfb['bconfig']['blacklist_selected']	= implode(',', (array)$_POST['blacklist_selected'])	?: '';
 		} else {
 			$pfb['bconfig']['blacklist_selected']	= '';
 		}
 		if (isset($_POST['blacklist_freq'])) {
-			$pfb['bconfig']['blacklist_freq']	= $_POST['blacklist_freq'];
+			$pfb['bconfig']['blacklist_freq']	= $_POST['blacklist_freq']				?: '';
 		}
 		if (isset($_POST['blacklist_logging'])) {
-			$pfb['bconfig']['blacklist_logging']	= $_POST['blacklist_logging'];
+			$pfb['bconfig']['blacklist_logging']	= $_POST['blacklist_logging']				?: '';
 		}
 
 		$config_mod = TRUE;
@@ -156,20 +204,36 @@ if ($_POST && !$_POST['enableall'] && !$_POST['disableall']) {
 			foreach (array('TITLE', 'XML', 'FEED', 'SIZE') as $value) {
 				$lvalue = strtolower($value);	// Config variables must be in lowercase
 				if (isset($blacklist_types[$type][$value])) {
-					$list[$lvalue] = pfb_filter($blacklist_types[$type][$value], 1);
+					$list[$lvalue] = pfb_filter($blacklist_types[$type][$value], PFB_FILTER_HTML, 'Blacklist category');
 				}
 			}
 
+			// Validate List Category selections
+			$validate_categories =  array_flip($blacklist_types[$type]['CATEGORIES']);
+			if (is_array($_POST['blacklist_' . $type])) {
+				if (!empty($_POST['blacklist_' . $type])) {
+					foreach ($_POST['blacklist_' . $type] as $validate) {
+						if (!array_key_exists($validate, $validate_categories)) {
+							$input_errors[] = "[ {$validate} ] is not a valid Selection!";
+						}
+					}
+				}
+			}
+			else {
+				if (!empty($_POST['blacklist_' . $type]) && !array_key_exists($_POST['blacklist_' . $type], $validate_categories)) {
+					$input_errors[] = "[ {$_POST['blacklist_' . $type]} ] is not a valid Selection!";
+				}
+			}
 			$list['selected'] = implode(',', (array)$_POST['blacklist_' . $type]) ?: '';
 
 			if (isset($_POST['blacklist_' . $type . '_username'])) {
-				$list['username'] = pfb_filter($_POST['blacklist_' . $type . '_username'], 1);
+				$list['username'] = pfb_filter($_POST['blacklist_' . $type . '_username'], PFB_FILTER_HTML, 'Blacklist category');
 			}
 
 			if (isset($_POST['blacklist_' . $type . '_password'])) {
 				if ($_POST['blacklist_' . $type . '_password'] == $_POST['blacklist_' . $type . '_password_confirm']) {
 					if ($_POST['blacklist_' . $type . '_password'] != DMYPWD) {
-						$list['password'] = pfb_filter($_POST['blacklist_' . $type . '_password'], 1);
+						$list['password'] = pfb_filter($_POST['blacklist_' . $type . '_password'], PFB_FILTER_HTML, 'Blacklist category');
 					}
 				} else {
 					$input_errors[] = "[ {$setting['TITLE']} ] The password does not match the confirm password!";
@@ -255,7 +319,7 @@ $section->addInput(new Form_Select(
 	'blacklist_enable',
 	gettext('Blacklist Category'),
 	$pconfig['blacklist_enable'],
-	['Disable' => 'Disable', 'Enable' => 'Enable']
+	$options_blacklist_enable
 ))->setHelp('Select to enable DNSBL category based Blacklist(s)<br />'
 		. '<span class="text-danger">Note: </span> Save changes prior to enable/disable'
 		. '<br /><span class="text-danger">Note: </span>To achieve the full potential of Category blocking,'
@@ -322,7 +386,7 @@ foreach ($blacklist_types as $type => $setting) {
 	$section = new Form_Section($setting['TITLE'], $setting['XML'], COLLAPSIBLE|$sec_status);
 
 	$lic_txt = 'Licence';
-	if ($setting['REG']) {
+	if (isset($setting['REG'])) {
 		$lic_txt = '- Subscription required';
 	}
 
@@ -333,7 +397,7 @@ foreach ($blacklist_types as $type => $setting) {
 	));
 
 	// Add username/password fields if required
-	if ($setting['REG']) {
+	if (isset($setting['REG'])) {
 		$section->addInput(new Form_Input(
 			'blacklist_' . $type . '_username',
 			NULL,
@@ -383,10 +447,10 @@ foreach ($blacklist_types as $type => $setting) {
 		$category_lang = $info[$pconfig['blacklist_lang']][1] ?: $info['EN'][1];
 
 		$selected = FALSE;
-		if ($_POST['enableall'][$type]) {
+		if (isset($_POST['enableall'][$type])) {
 			$selected = TRUE; 
 		}
-		elseif ($_POST['disableall'][$type]) {
+		elseif (isset($_POST['disableall'][$type])) {
 			$selected = FALSE;
 		}
 		elseif (in_array($category, $pconfig['blacklist_' . $type])) {

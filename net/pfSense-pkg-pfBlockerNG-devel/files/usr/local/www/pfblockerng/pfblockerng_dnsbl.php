@@ -46,10 +46,12 @@ $pconfig['pfb_control']		= $pfb['dconfig']['pfb_control']			?: '';
 $pconfig['pfb_dnsvip']		= $pfb['dconfig']['pfb_dnsvip']				?: '10.10.10.1';
 $pconfig['pfb_dnsblv6']		= $pfb['dconfig']['pfb_dnsblv6']			?: '';
 $pconfig['pfb_dnsvip_type']	= $pfb['dconfig']['pfb_dnsvip_type']			?: 'ipalias';
-$pconfig['pfb_dnsvip_vhid']	= $pfb['dconfig']['pfb_dnsvip_vhid']			?: '1';
-$pconfig['pfb_dnsvip_base']	= $pfb['dconfig']['pfb_dnsvip_base']			?: '1';
-$pconfig['pfb_dnsvip_skew']	= $pfb['dconfig']['pfb_dnsvip_skew']			?: '0';
-$pconfig['pfb_dnsvip_pass']	= $pfb['dconfig']['pfb_dnsvip_pass']			?: '';
+
+$pconfig['pfb_dnsvip_vhid']	= isset($pfb['dconfig']['pfb_dnsvip_vhid']) ? $pfb['dconfig']['pfb_dnsvip_vhid'] : '1';
+$pconfig['pfb_dnsvip_base']	= isset($pfb['dconfig']['pfb_dnsvip_base']) ? $pfb['dconfig']['pfb_dnsvip_base'] : '1';
+$pconfig['pfb_dnsvip_skew']	= isset($pfb['dconfig']['pfb_dnsvip_skew']) ? $pfb['dconfig']['pfb_dnsvip_skew'] : '0';
+$pconfig['pfb_dnsvip_pass']	= isset($pfb['dconfig']['pfb_dnsvip_pass']) ? $pfb['dconfig']['pfb_dnsvip_pass'] : '';
+
 $pconfig['pfb_dnsport']		= $pfb['dconfig']['pfb_dnsport']			?: '8081';
 $pconfig['pfb_dnsport_ssl']	= $pfb['dconfig']['pfb_dnsport_ssl']			?: '8443';
 $pconfig['dnsbl_interface']	= $pfb['dconfig']['dnsbl_interface']			?: 'lo0';
@@ -119,31 +121,318 @@ $pconfig['tldexclusion']	= base64_decode($pfb['dconfig']['tldexclusion'])	?: '';
 $pconfig['tldblacklist']	= base64_decode($pfb['dconfig']['tldblacklist'])	?: '';
 $pconfig['tldwhitelist']	= base64_decode($pfb['dconfig']['tldwhitelist'])	?: '';
 
+// Select field options
+
+$options_dnsbl_mode		= [ 'dnsbl_unbound' => 'Unbound mode', 'dnsbl_python' => 'Unbound python mode' ];
+$options_pfb_dnsvip_type	= [ 'ipalias' => 'IP Alias', 'carp' => 'CARP' ];
+$options_pfb_dnsvip_vhid	= array_combine(range(1, 255, 1), range(1, 255, 1));
+$options_pfb_dnsvip_base	= array_combine(range(1, 254, 1), range(1, 254, 1));
+$options_pfb_dnsvip_skew	= array_combine(range(0, 254, 1), range(0, 254, 1));
+$options_dnsbl_interface	= pfb_build_if_list(FALSE, FALSE);
+$options_dnsbl_interface_all	= array_merge(array('lo0' => 'Localhost'), $options_dnsbl_interface);
+$options_dnsbl_interface_cnt	= count($options_dnsbl_interface) ?: '1';
+
+$options_dnsbl_allow_int	= $options_dnsbl_interface;
+
+if ($pfb['dnsbl_py_blacklist']) {
+	$options_global_log_txt = 'Default: <strong>No Global mode</strong><br />'
+				. 'Enabling this option will overide the individual DNSBL Group "Logging/Blocking" settings!<br /><br />'
+				. '&#8226 <strong>Null Block (logging)</strong>, Utilize \'0.0.0.0\' with logging.<br />'
+				. '&#8226 <strong>DNSBL WebServer/VIP</strong>, Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+				. '&#8226 <strong>Null Block (no logging)</strong>, Utilize \'0.0.0.0\' with no logging.<br />'
+				. 'Blocked domains will be reported to the Alert/Python Block Table.<br /><br />'
+				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+	$options_global_log	= [	''		=> 'No Global mode',
+					'disabled_log'	=> 'Null Block (logging)',
+					'enabled'	=> 'DNSBL WebServer/VIP',
+					'disabled'	=> 'Null Block (no logging)'];
+} else {
+	$options_global_log_txt = 'Default: <strong>No Global mode</strong><br />'
+					. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+					. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
+					. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+	$options_global_log	= [	''		=> 'No Global mode',
+					'enabled'	=> 'DNSBL WebServer/VIP',
+					'disabled'	=> 'Null Block (no logging)'];
+}
+
+$options_dnsbl_webpage = array();
+$indexdir = '/usr/local/www/pfblockerng/www';
+if (is_dir("{$indexdir}")) {
+	$list = glob("{$indexdir}/*.{php,html}", GLOB_BRACE);
+	if (!empty($list)) {
+		foreach ($list as $line) {
+			if (strpos($line, 'index.php') !== FALSE || strpos($line, 'dnsbl_active.php') !== FALSE) {
+				continue;
+			} else {
+				$file = basename($line);
+				if (@filesize("/usr/local/www/pfblockerng/www/{$file}") > 0) {
+					$options_dnsbl_webpage = array_merge($options_dnsbl_webpage, array($file => $file));
+				}
+			}
+		}
+	}
+}
+$options_dnsbl_webpage_cnt = count($options_dnsbl_webpage) ?: '1';
+
+$options_alexa_type		= [ 'tranco' => 'Tranco TOP1M', 'cisco' => 'Cisco Umbrella TOP1M', 'alexa' => 'Alexa TOP1M' ];
+
+$options_alexa_count		= [	'500' => 'Top 500', '1000' => 'Top 1k', '2000' => 'Top 2k', '5000' => 'Top 5k', '10000' => 'Top 10k',
+					'25000' => 'Top 25k', '50000' => 'Top 50k', '75000' => 'Top 75k', '100000' => 'Top 100k', '250000' => 'Top 250k',
+					'500000' => 'Top 500k', '750000' => 'Top 750k', '1000000' => 'Top 1M' ];
+
+$options_alexa_inclusion	= [	'ae' => 'AE',
+					'aero' => 'AERO',
+					'ag' => 'AG',
+					'al' => 'AL',
+					'am' => 'AM',
+					'ar' => 'AR',
+					'asia' => 'ASIA',
+					'at' => 'AT',
+					'au' => 'AU (16)',
+					'az' => 'AZ',
+					'ba' => 'BA',
+					'bd' => 'BD',
+					'be' => 'BE',
+					'bg' => 'BG',
+					'biz' => 'BIZ',
+					'bo' => 'BO',
+					'br' => 'BR (7)',
+					'by' => 'BY',
+					'bz' => 'BZ',
+					'ca' => 'CA (21)',
+					'cat' => 'CAT',
+					'cc' => 'CC',
+					'cf' => 'CF',
+					'ch' => 'CH',
+					'cl' => 'CL',
+					'club' => 'CLUB',
+					'cn' => 'CN (14)',
+					'co' => 'CO (22)',
+					'com' => 'COM (1)',
+					'coop' => 'COOP',
+					'cr' => 'CR',
+					'cu' => 'CU',
+					'cy' => 'CY',
+					'cz' => 'CZ (23)',
+					'de' => 'DE (5)',
+					'dev' => 'DEV',
+					'dk' => 'DK',
+					'do' => 'DO',
+					'dz' => 'DZ',
+					'ec' => 'EC',
+					'edu' => 'EDU',
+					'ee' => 'EE',
+					'eg' => 'EG',
+					'es' => 'ES (18)',
+					'eu' => 'EU (25)',
+					'fi' => 'FI',
+					'fm' => 'FM',
+					'fr' => 'FR (12)',
+					'ga' => 'GA',
+					'ge' => 'GE',
+					'gov' => 'GOV',
+					'gr' => 'GR (20)',
+					'gt' => 'GT',
+					'guru' => 'GURU',
+					'hk' => 'HK',
+					'hr' => 'HR',
+					'hu' => 'HU',
+					'id' => 'ID',
+					'ie' => 'IE',
+					'il' => 'IL',
+					'im' => 'IM',
+					'in' => 'IN (9)',
+					'info' => 'INFO (15)',
+					'int' => 'INT',
+					'io' => 'IO',
+					'ir' => 'IR (13)',
+					'is' => 'IS',
+					'it' => 'IT (11)',
+					'jo' => 'JO',
+					'jobs' => 'JOBS',
+					'jp' => 'JP (6)',
+					'ke' => 'KE',
+					'kg' => 'KG',
+					'kr' => 'KR (19)',
+					'kw' => 'KW',
+					'kz' => 'KZ',
+					'la' => 'LA',
+					'li' => 'LI',
+					'link' => 'LINK',
+					'lk' => 'LK',
+					'lt' => 'LT',
+					'lu' => 'LU',
+					'lv' => 'LV',
+					'ly' => 'LY',
+					'ma' => 'MA',
+					'md' => 'MD',
+					'me' => 'ME',
+					'mk' => 'MK',
+					'ml' => 'ML',
+					'mn' => 'MN',
+					'mobi' => 'MOBI',
+					'mx' => 'MX',
+					'my' => 'MY',
+					'name' => 'NAME',
+					'net' => 'NET (2)',
+					'ng' => 'NG',
+					'ninja' => 'NINJA',
+					'nl' => 'NL (17)',
+					'no' => 'NO',
+					'np' => 'NP',
+					'nu' => 'NU',
+					'nz' => 'NZ',
+					'om' => 'OM',
+					'org' => 'ORG (4)',
+					'pa' => 'PA',
+					'pe' => 'PE',
+					'ph' => 'PH',
+					'pk' => 'PK',
+					'pl' => 'PL (10)',
+					'pro' => 'PRO',
+					'pt' => 'PT',
+					'pw' => 'PW',
+					'py' => 'PY',
+					'qa' => 'QA',
+					'ro' => 'RO',
+					'rs' => 'RS',
+					'ru' => 'RU (3)',
+					'sa' => 'SA',
+					'se' => 'SE',
+					'sg' => 'SG',
+					'si' => 'SI',
+					'sk' => 'SK',
+					'so' => 'SO',
+					'space' => 'SPACE',
+					'su' => 'SU',
+					'th' => 'TH',
+					'tk' => 'TK',
+					'tn' => 'TN',
+					'to' => 'TO',
+					'today' => 'TODAY',
+					'top' => 'TOP',
+					'tr' => 'TR',
+					'travel' => 'TRAVEL',
+					'tv' => 'TV',
+					'tw' => 'TW (24)',
+					'tz' => 'TZ',
+					'ua' => 'UA',
+					'uk' => 'UK (8)',
+					'us' => 'US',
+					'uy' => 'UY',
+					'uz' => 'UZ',
+					'vc' => 'VC',
+					've' => 'VE',
+					'vn' => 'VN',
+					'website' => 'WEBSITE',
+					'ws' => 'WS',
+					'xn--p1ai' => 'XN--P1AI',
+					'xxx' => 'XXX',
+					'xyz' => 'XYZ',
+					'za' => 'ZA'
+				];
+
+$options_action			= [ 'Disabled' => 'Disabled', 'Deny_Inbound' => 'Deny Inbound', 'Deny_Outbound' => 'Deny Outbound', 'Deny_Both' => 'Deny Both', 'Alias_Deny' => 'Alias Deny' ];
+
+$options_aliaslog		= [ 'enabled' => 'Enable', 'disabled' => 'Disable' ];
+
+// Collect all pfSense 'Port' Aliases
+$ports_list = $networks_list = '';
+if (!empty($config['aliases']['alias'])) {
+	foreach ($config['aliases']['alias'] as $alias) {
+		if ($alias['type'] == 'port') {
+			$ports_list .= "{$alias['name']},";
+		} elseif ($alias['type'] == 'network') {
+			$networks_list .= "{$alias['name']},";
+		}
+	}
+}
+$ports_list			= trim($ports_list, ',');
+$networks_list			= trim($networks_list, ',');
+$options_aliasports_in		= $options_aliasports_out	= explode(',', $ports_list);
+$options_aliasaddr_in		= $options_aliasaddr_out	= explode(',', $networks_list);
+
+$options_autoproto_in		= $options_autoproto_out	= ['' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP'];
+$options_agateway_in		= $options_agateway_out		= pfb_get_gateways();
+
+
 // Validate input fields and save
 if ($_POST) {
-
 	if (isset($_POST['save'])) {
 
 		if (isset($input_errors)) {
 			unset($input_errors);
 		}
 
-		// Check if DNSBL Webpage has been changed.
-		$dnsbl_webpage = FALSE;
-		if ($_POST['dnsbl_webpage'] != $pfb['dconfig']['dnsbl_webpage']) {
-			$dnsbl_webpage = TRUE;
+		// Validate Select field options
+		$select_options = array(	'dnsbl_mode'		=> 'dnsbl_unbound',
+						'pfb_dnsvip_type'	=> 'ipalias',
+						'pfb_dnsvip_vhid'	=> '1',
+						'pfb_dnsvip_base'	=> '1',
+						'pfb_dnsvip_skew'	=> '0',
+						'dnsbl_interface'	=> 'lo0',
+						'global_log'		=> '',
+						'dnsbl_webpage'		=> 'dnsbl_default.php',
+						'alexa_type'		=> 'tranco',
+						'alexa_count'		=> '1000',
+						'action'		=> 'Disabled',
+						'aliaslog'		=> 'enabled',
+						'aliasports_in'		=> '',
+						'aliasports_out'	=> '',
+						'aliasaddr_in'		=> '',
+						'aliasaddr_out'		=> '',
+						'autoproto_in'		=> '',
+						'autoproto_out'		=> '',
+						'agateway_in'		=> 'default',
+						'agateway_out'		=> 'default'
+						);
+
+		foreach ($select_options as $s_option => $s_default) {
+			if (is_array($_POST[$s_option])) {
+				$_POST[$s_option] = $s_default;
+			}
+			elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+				$_POST[$s_option] = $s_default;
+			}
 		}
 
-		// Reset TOP1M Database/Whitelist on user changes
-		if ($pfb['dconfig']['alexa_type'] != $_POST['alexa_type']) {
-			unlink_if_exists("{$pfb['dbdir']}/top-1m.csv");
-			unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
+		// Validate Select field (array) options
+		$select_options = array(	'dnsbl_allow_int'	=> '',
+						'alexa_inclusion'	=> $default_tlds
+						);
+
+		foreach ($select_options as $s_option => $s_default) {
+			if (is_array($_POST[$s_option])) {
+				foreach ($_POST[$s_option] as $post_option) {
+					if (!array_key_exists($post_option, ${"options_$s_option"})) {
+						$_POST[$s_option] = $s_default;
+						break;
+					}
+				}
+			}
+			elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+				$_POST[$s_option] = $s_default;
+			}
 		}
 
-		// Reset TOP1M Whitelist on user changes
-		if ($pfb['dconfig']['alexa_count'] != $_POST['alexa_count'] ||
-		    explode(',', $pfb['dconfig']['alexa_inclusion']) != $_POST['alexa_inclusion']) {
-			unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
+		// Validate DNSBL webserver block page
+		$dnsbl_webpage		= FALSE;
+		$dnsbl_webpage_file	= pfb_filter(basename($_POST['dnsbl_webpage']), PFB_FILTER_WORD_DOT, 'dnsbl', 'dnsbl_default.php');
+		if (file_exists("/usr/local/www/pfblockerng/www/{$dnsbl_webpage_file}") &&
+		    @filesize("/usr/local/www/pfblockerng/www/{$dnsbl_webpage_file}") > 0 &&
+		    pfb_filter(array("/usr/local/www/pfblockerng/www/{$dnsbl_webpage_file}", 'text/html'), PFB_FILTER_FILE_MIME_COMPARE, 'dnsbl')) {
+
+			// Check if DNSBL Webpage has been changed.
+			if ($dnsbl_webpage_file != $pfb['dconfig']['dnsbl_webpage']) {
+				$dnsbl_webpage = TRUE;
+			}
+			$pfb['dconfig']['dnsbl_webpage'] = $dnsbl_webpage_file;
+		}
+		else {
+			$input_errors[] = 'DNSBL Web Server page is invalid!';
 		}
 
 		foreach (array('aliasports_in', 'aliasaddr_in', 'aliasports_out', 'aliasaddr_out') as $value) {
@@ -152,118 +441,75 @@ if ($_POST) {
 			}
 		}
 
-		$pfb['dconfig']['pfb_dnsbl']		= $_POST['pfb_dnsbl']				?: '';
-		$pfb['dconfig']['pfb_tld']		= $_POST['pfb_tld']				?: '';
-		$pfb['dconfig']['pfb_control']		= $_POST['pfb_control']				?: '';
-		$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']				?: '10.10.10.1';
-		$pfb['dconfig']['pfb_dnsblv6']		= $_POST['pfb_dnsblv6']				?: '';
-		$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']			?: 'ipalias';
-
-		if ($pfb['dconfig']['pfb_dnsvip_type'] == 'carp') {
-			$pfb['dconfig']['pfb_dnsvip_vhid']	= $_POST['pfb_dnsvip_vhid']		?: '1';
-			$pfb['dconfig']['pfb_dnsvip_base']	= $_POST['pfb_dnsvip_base']		?: '1';
-			$pfb['dconfig']['pfb_dnsvip_skew']	= $_POST['pfb_dnsvip_skew']		?: '0';
+		if (!is_port($_POST['pfb_dnsport'])) {
+			$input_errors[] = 'DNSBL Port is invalid!';
 		}
-		else {
-			foreach (array('vhid', 'base', 'skew') as $carp) {
-				if (isset($pfb['dconfig']['pfb_dnsvip_' . $carp])) {
-					unset($pfb['dconfig']['pfb_dnsvip_' . $carp]);
-				}
-			}
+		if (!is_port($_POST['pfb_dnsport_ssl'])) {
+			$input_errors[] = 'DNSBL SSL Port is invalid!';
 		}
-
-		// Remove DNSBL blocking files, when user changes blocking mode
-		if (($pfb['dconfig']['pfb_py_block'] != $_POST['pfb_py_block']) ||
-		    ($pfb['dconfig']['dnsbl_mode'] !== $_POST['dnsbl_mode'] && $_POST['pfb_py_block'] == 'on')) {
-
-			unlink_if_exists("{$pfb['dnsbl_file']}.conf");
-			unlink_if_exists($pfb['unbound_py_data']);
-			unlink_if_exists($pfb['unbound_py_zone']);
-			unlink_if_exists($pfb['unbound_py_wh']);
-			unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
-			$savemsg = "A Force Reload DNSBL must be run to complete the blocking mode changes! The previous DNSBL database has been deleted!";
-		}
-
-		$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']				?: '8081';
-		$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']			?: '8443';
-		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lo0';
-		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']			?: '';
-		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])?: '';
-		$pfb['dconfig']['global_log']		= $_POST['global_log']				?: '';
-		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']			?: 'dnsbl_default.php';
-		$pfb['dconfig']['pfb_cache']		= $_POST['pfb_cache']				?: '';
-		$pfb['dconfig']['pfb_dnsbl_sync']	= $_POST['pfb_dnsbl_sync']			?: '';
-
-		$pfb['dconfig']['dnsbl_mode']		= $_POST['dnsbl_mode']				?: 'dnsbl_unbound';
-
-		$pfb['dconfig']['pfb_py_reply']		= $_POST['pfb_py_reply']			?: '';
-		$pfb['dconfig']['pfb_py_block']		= $_POST['pfb_py_block']			?: '';
-		$pfb['dconfig']['pfb_hsts']		= $_POST['pfb_hsts']				?: '';
-		$pfb['dconfig']['pfb_idn']		= $_POST['pfb_idn']				?: '';
-		$pfb['dconfig']['pfb_regex']		= $_POST['pfb_regex']				?: '';
-		$pfb['dconfig']['pfb_cname']		= $_POST['pfb_cname']				?: '';
-		$pfb['dconfig']['pfb_noaaaa']		= $_POST['pfb_noaaaa']				?: '';
-		$pfb['dconfig']['pfb_gp']		= $_POST['pfb_gp']				?: '';
 
 		// Non-ascii characters are not allowed for DNSBL Regex
 		if (!mb_detect_encoding($_POST['pfb_regex_list'], 'ASCII', TRUE)) {
 			$input_errors[] = 'DNSBL Regex list contains non-ascii characters';
 		}
 
-		$pfb['dconfig']['pfb_regex_list']	= base64_encode($_POST['pfb_regex_list'])	?: '';
-		$pfb['dconfig']['pfb_noaaaa_list']	= base64_encode($_POST['pfb_noaaaa_list'])	?: '';
-		$pfb['dconfig']['pfb_pytld']		= $_POST['pfb_pytld']				?: '';
-		$pfb['dconfig']['pfb_pytld_sort']	= $_POST['pfb_pytld_sort']			?: '';
-		$pfb['dconfig']['pfb_py_nolog']		= $_POST['pfb_py_nolog']			?: '';
+		// Validate customlists
+		foreach (array(	'pfb_regex_list'	=> 'regex',
+				'pfb_noaaaa_list'	=> 'domain',
+				'pfb_gp_bypass_list'	=> 'ip',
+				'suppression'		=> 'domain',
+				'tldexclusion'		=> 'domain',
+				'tldblacklist'		=> 'tld',
+				'tldwhitelist'		=> 'tldwhite' ) as $custom_type => $custom_format) {
 
-		// Python TLD Allow (Add default TLD Allows + ARPA + pfSense TLD
-		if (!empty($_POST['pfb_pytlds_gtld'])) {
-			$pfb['dconfig']['pfb_pytlds_gtld']	= "arpa,{$local_tld}," . implode(',', (array)$_POST['pfb_pytlds_gtld']); 
-		} else {
-			$pfb['dconfig']['pfb_pytlds_gtld']	= implode(',', $default_tlds);
+				if (!empty($_POST[$custom_type])) {
+					$customlist = explode("\r\n", $_POST[$custom_type]);
+					if (!empty($customlist)) {
+						foreach ($customlist as $line) {
+
+							if (substr($line, 0, 1) == '#' || empty($line)) {
+								continue;
+							}
+							$value = array_map('trim', preg_split('/(?=#)/', $line));
+
+							switch ($custom_format) {
+								case 'regex':
+									// TODO (See non-ascii validation above)
+									break;
+								case 'domain':
+									$value[0] = trim($value[0], '.');
+									if (empty(pfb_filter($value[0], PFB_FILTER_DOMAIN, 'dnsbl'))) {
+										$input_errors[] = "Customlist {$custom_type}: Invalid Domain name entry: [ " . htmlspecialchars($line) . " ]";
+									}
+									break;
+								case 'ip':
+									if (empty(pfb_filter($value[0], PFB_FILTER_IP, 'dnsbl'))) {
+										$input_errors[] = "Customlist {$custom_type}: Invalid IP entry: [ " . htmlspecialchars($line) . " ]";
+									}
+									break;
+								case 'tld':
+									if (empty(pfb_filter($value[0], PFB_FILTER_TLD, 'dnsbl'))) {
+										$input_errors[] = "Customlist {$custom_type}: Invalid TLD entry: [ " . htmlspecialchars($line) . " ]";
+									}
+									break;
+								case 'tldwhite':
+									if (strpos($value[0], '|') !== FALSE) {
+										list($value[0], $host) = array_map('trim', explode('|', $value[0]));
+										if (empty(pfb_filter($host, PFB_FILTER_IP, 'dnsbl'))) {
+											$input_errors[] = "Customlist {$custom_type}: Invalid TLD IP entry: [ " . htmlspecialchars($line) . " ]"; 
+										}
+									}
+									if (empty(pfb_filter($value[0], PFB_FILTER_TLD, 'dnsbl'))) {
+										$input_errors[] = "Customlist {$custom_type}: Invalid TLD entry: [ " . htmlspecialchars($line) . " ]";
+									}
+									break;
+								default:
+									break;
+							}
+						}
+					}
+				}
 		}
-
-		// Python TLD Allow
-		$pfb['dconfig']['pfb_pytlds_cctld']	= implode(',', (array)$_POST['pfb_pytlds_cctld']);
-		$pfb['dconfig']['pfb_pytlds_itld']	= implode(',', (array)$_POST['pfb_pytlds_itld']);
-		$pfb['dconfig']['pfb_pytlds_bgtld']	= implode(',', (array)$_POST['pfb_pytlds_bgtld']);
-
-		// Group Policy
-		$pfb['dconfig']['pfb_gp_bypass_list']	= base64_encode($_POST['pfb_gp_bypass_list'])	?: '';
-
-		$pfb['dconfig']['action']		= $_POST['action']				?: 'Disabled';
-		$pfb['dconfig']['aliaslog']		= $_POST['aliaslog']				?: 'enabled';
-
-		$pfb['dconfig']['autoaddrnot_in']	= $_POST['autoaddrnot_in']			?: '';
-		$pfb['dconfig']['autoports_in']		= $_POST['autoports_in']			?: '';
-		$pfb['dconfig']['aliasports_in']	= $_POST['aliasports_in']			?: '';
-		$pfb['dconfig']['autoaddr_in']		= $_POST['autoaddr_in']				?: '';
-		$pfb['dconfig']['autonot_in']		= $_POST['autonot_in']				?: '';
-		$pfb['dconfig']['aliasaddr_in']		= $_POST['aliasaddr_in']			?: '';
-		$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']			?: '';
-		$pfb['dconfig']['agateway_in']		= $_POST['agateway_in']				?: 'default';
-
-		$pfb['dconfig']['autoaddrnot_out']	= $_POST['autoaddrnot_out']			?: '';
-		$pfb['dconfig']['autoports_out']	= $_POST['autoports_out']			?: '';
-		$pfb['dconfig']['aliasports_out']	= $_POST['aliasports_out']			?: '';
-		$pfb['dconfig']['autoaddr_out']		= $_POST['autoaddr_out']			?: '';
-		$pfb['dconfig']['autonot_out']		= $_POST['autonot_out']				?: '';
-		$pfb['dconfig']['aliasaddr_out']	= $_POST['aliasaddr_out']			?: '';
-		$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']			?: '';
-		$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']			?: 'default';
-
-		$pfb['dconfig']['suppression']		= base64_encode($_POST['suppression'])		?: '';
-
-		$pfb['dconfig']['alexa_enable']		= $_POST['alexa_enable']			?: '';
-		$pfb['dconfig']['alexa_type']		= $_POST['alexa_type']				?: 'tranco';
-		$pfb['dconfig']['alexa_count']		= $_POST['alexa_count']				?: '1000';
-		$pfb['dconfig']['alexa_inclusion']	= implode(',', (array)$_POST['alexa_inclusion'])?: 'com,net,org,ca,co,io';
-
-		$pfb['dconfig']['tldexclusion']		= base64_encode($_POST['tldexclusion'])		?: '';
-		$pfb['dconfig']['tldblacklist']		= base64_encode($_POST['tldblacklist'])		?: '';
-		$pfb['dconfig']['tldwhitelist']		= base64_encode($_POST['tldwhitelist'])		?: '';
-
-		$pfb['dconfig']['pfb_gp_bypass_list']	= base64_encode($_POST['pfb_gp_bypass_list'])	?: '';
 
 		// Validate DNSBL VIP address
 		if (!is_ipaddrv4($_POST['pfb_dnsvip'])) {
@@ -288,52 +534,165 @@ if ($_POST) {
 			}
 		}
 
-		// Clear any existing DNSBL VIP address on user modification
-		if ($_POST['pfb_dnsvip'] != $pconfig['pfb_dnsvip'] || $_POST['dnsbl_interface'] != $pconfig['dnsbl_interface']) {
-			$iface = escapeshellarg(get_real_interface($pconfig['dnsbl_interface']));
-			foreach (array("{$pconfig['pfb_dnsvip']}" => 'inet', "::{$pconfig['pfb_dnsvip']}" => 'inet6') as $vip => $inet) {
-				$vip = escapeshellarg($vip);
-				exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$vip} 2>&1", $result, $return);
-				if (!empty($result)) {
-					exec("/sbin/ifconfig {$iface} {$inet} {$vip} -alias");
-				}
-			}
-		}
-
-		if (isset($_POST['pfb_dnsvip_pass'])) {
+		if (isset($_POST['pfb_dnsvip_pass']) && !empty($_POST['pfb_dnsvip_pass'])) {
 			if ($_POST['pfb_dnsvip_pass'] == $_POST['pfb_dnsvip_pass_confirm']) {
 				if ($_POST['pfb_dnsvip_pass'] != DMYPWD) {
-					$pfb['dconfig']['pfb_dnsvip_pass'] = pfb_filter($_POST['pfb_dnsvip_pass'], 1);
+					$pfb['dconfig']['pfb_dnsvip_pass'] = pfb_filter($_POST['pfb_dnsvip_pass'], PFB_FILTER_HTML, 'dnsbl password');
 				}
 			} else {
-				$input_errors[] = '[ DNSBL VIP CARP password does not match the confirm password!';
+				$input_errors[] = 'DNSBL VIP CARP password does not match the confirm password!';
 			}
 		}
-
 
 
 		// TO BE REMOVED AT FUTURE DATE:
 
-		// DNSBL Python mode is not compatable with dhcpleases binary code,
+		// DNSBL Python mode is not compatible with dhcpleases binary code,
 		// as it attempts to HUP the Unbound PID and will cause DNSBL Python mode to crash Unbound
 		if ($_POST['dnsbl_mode'] == 'dnsbl_python' && isset($config['unbound']['regdhcp'])) {
-			$input_errors[] = 'DNSBL Python mode is not compatable with the DNS Resolver \'DHCP Registration option\'!';
+			$input_errors[] = 'DNSBL Python mode is not compatible with the DNS Resolver \'DHCP Registration option\'!';
 			$input_errors[] = 'In order to utilize the DNSBL Python feature, first disable the DNS Resolver DHCP Registration option.';
 		}
 
-		// DNSBL Python mode is not compatable with the DNS Resolver OpenVPN Client Registration option (pfSense < 2.5)
+		// DNSBL Python mode is not compatible with the DNS Resolver OpenVPN Client Registration option (pfSense < 2.5)
 		if ($_POST['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' &&
 		    isset($config['unbound']['regovpnclients'])) {
-			$input_errors[] = 'DNSBL Python mode is not compatable with the DNS Resolver \'OpenVPN Client Registration option\'!';
+			$input_errors[] = 'DNSBL Python mode is not compatible with the DNS Resolver \'OpenVPN Client Registration option\'!';
 			$input_errors[] = 'In order to utilize the DNSBL Python feature, first disable the DNS Resolver OpenVPN Client Registration option.';
 		}
 
 		// DNSBL Python mode is only available for pfSense 2.4.5 and above
 		if ($_POST['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 5) < '2.4.5') {
-			$input_errors[] = 'DNSBL Python mode is compatable with pfSense versions 2.4.5 and above.';
+			$input_errors[] = 'DNSBL Python mode is compatible with pfSense versions 2.4.5 and above.';
 		}
 
+
 		if (!$input_errors) {
+
+			$pfb['dconfig']['pfb_dnsbl']		= pfb_filter($_POST['pfb_dnsbl'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_tld']		= pfb_filter($_POST['pfb_tld'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_control']		= pfb_filter($_POST['pfb_control'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_dnsblv6']		= pfb_filter($_POST['pfb_dnsblv6'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']						?: 'ipalias';
+
+			if ($pfb['dconfig']['pfb_dnsvip_type'] == 'carp') {
+				$pfb['dconfig']['pfb_dnsvip_vhid']	= $_POST['pfb_dnsvip_vhid']					?: '1';
+				$pfb['dconfig']['pfb_dnsvip_base']	= $_POST['pfb_dnsvip_base']					?: '1';
+				$pfb['dconfig']['pfb_dnsvip_skew']	= $_POST['pfb_dnsvip_skew']					?: '0';
+			}
+			else {
+				foreach (array('vhid', 'base', 'skew') as $carp) {
+					if (isset($pfb['dconfig']['pfb_dnsvip_' . $carp])) {
+						unset($pfb['dconfig']['pfb_dnsvip_' . $carp]);
+					}
+				}
+			}
+
+			$pfb['dconfig']['pfb_dnsport']		= $_POST['pfb_dnsport']							?: '8081';
+			$pfb['dconfig']['pfb_dnsport_ssl']	= $_POST['pfb_dnsport_ssl']						?: '8443';
+			$pfb['dconfig']['pfb_dnsbl_rule']	= pfb_filter($_POST['pfb_dnsbl_rule'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])			?: '';
+			$pfb['dconfig']['global_log']		= $_POST['global_log']							?: '';
+			$pfb['dconfig']['pfb_cache']		= pfb_filter($_POST['pfb_cache'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_dnsbl_sync']	= pfb_filter($_POST['pfb_dnsbl_sync'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+
+			$pfb['dconfig']['pfb_py_reply']		= pfb_filter($_POST['pfb_py_reply'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['pfb_hsts']		= pfb_filter($_POST['pfb_hsts'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_idn']		= pfb_filter($_POST['pfb_idn'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_regex']		= pfb_filter($_POST['pfb_regex'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_cname']		= pfb_filter($_POST['pfb_cname'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_noaaaa']		= pfb_filter($_POST['pfb_noaaaa'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_gp']		= pfb_filter($_POST['pfb_gp'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+
+			$pfb['dconfig']['pfb_pytld']		= pfb_filter($_POST['pfb_pytld'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_pytld_sort']	= pfb_filter($_POST['pfb_pytld_sort'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['pfb_py_nolog']		= pfb_filter($_POST['pfb_py_nolog'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+
+			// Python TLD Allow (Add default TLD Allows + ARPA + pfSense TLD
+			if (!empty($_POST['pfb_pytlds_gtld'])) {
+				$pfb['dconfig']['pfb_pytlds_gtld']	= "arpa,{$local_tld}," . implode(',', (array)$_POST['pfb_pytlds_gtld']); 
+			} else {
+				$pfb['dconfig']['pfb_pytlds_gtld']	= implode(',', $default_tlds);
+			}
+
+			// Python TLD Allow
+			$pfb['dconfig']['pfb_pytlds_cctld']	= implode(',', (array)$_POST['pfb_pytlds_cctld']);
+			$pfb['dconfig']['pfb_pytlds_itld']	= implode(',', (array)$_POST['pfb_pytlds_itld']);
+			$pfb['dconfig']['pfb_pytlds_bgtld']	= implode(',', (array)$_POST['pfb_pytlds_bgtld']);
+
+			$pfb['dconfig']['action']		= $_POST['action']							?: 'Disabled';
+			$pfb['dconfig']['aliaslog']		= $_POST['aliaslog']							?: 'enabled';
+
+			$pfb['dconfig']['autoaddrnot_in']	= pfb_filter($_POST['autoaddrnot_in'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['autoports_in']		= pfb_filter($_POST['autoports_in'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['aliasports_in']	= $_POST['aliasports_in']						?: '';
+			$pfb['dconfig']['autoaddr_in']		= pfb_filter($_POST['autoaddr_in'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['autonot_in']		= pfb_filter($_POST['autonot_in'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['aliasaddr_in']		= $_POST['aliasaddr_in']						?: '';
+			$pfb['dconfig']['autoproto_in']		= $_POST['autoproto_in']						?: '';
+			$pfb['dconfig']['agateway_in']		= $_POST['agateway_in']							?: 'default';
+
+			$pfb['dconfig']['autoaddrnot_out']	= pfb_filter($_POST['autoaddrnot_out'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['autoports_out']	= pfb_filter($_POST['autoports_out'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['aliasports_out']	= $_POST['aliasports_out']						?: '';
+			$pfb['dconfig']['autoaddr_out']		= pfb_filter($_POST['autoaddr_out'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['autonot_out']		= pfb_filter($_POST['autonot_out'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['aliasaddr_out']	= $_POST['aliasaddr_out']						?: '';
+			$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']						?: '';
+			$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']						?: 'default';
+
+			$pfb['dconfig']['alexa_enable']		= pfb_filter($_POST['alexa_enable'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['alexa_inclusion']	= implode(',', (array)$_POST['alexa_inclusion'])			?: 'com,net,org,ca,co,io';
+
+			$pfb['dconfig']['pfb_regex_list']	= base64_encode($_POST['pfb_regex_list'])				?: '';
+			$pfb['dconfig']['pfb_noaaaa_list']	= base64_encode($_POST['pfb_noaaaa_list'])				?: '';
+			$pfb['dconfig']['pfb_gp_bypass_list']	= base64_encode($_POST['pfb_gp_bypass_list'])				?: '';
+			$pfb['dconfig']['suppression']		= base64_encode($_POST['suppression'])					?: '';
+			$pfb['dconfig']['tldexclusion']		= base64_encode($_POST['tldexclusion'])					?: '';
+			$pfb['dconfig']['tldblacklist']		= base64_encode($_POST['tldblacklist'])					?: '';
+			$pfb['dconfig']['tldwhitelist']		= base64_encode($_POST['tldwhitelist'])					?: '';
+
+			// Reset TOP1M Database/Whitelist on user changes
+			if ($pfb['dconfig']['alexa_type'] != $_POST['alexa_type']) {
+				unlink_if_exists("{$pfb['dbdir']}/top-1m.csv");
+				unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
+			}
+			$pfb['dconfig']['alexa_type']		= $_POST['alexa_type']							?: 'tranco';
+
+			// Reset TOP1M Whitelist on user changes
+			if ($pfb['dconfig']['alexa_count'] != $_POST['alexa_count'] ||
+				explode(',', $pfb['dconfig']['alexa_inclusion']) != $_POST['alexa_inclusion']) {
+				unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
+			}
+			$pfb['dconfig']['alexa_count']		= $_POST['alexa_count']							?: '1000';
+
+			// Remove DNSBL blocking files, when user changes blocking mode
+			if (($pfb['dconfig']['pfb_py_block'] != $_POST['pfb_py_block']) ||
+			    ($pfb['dconfig']['dnsbl_mode'] !== $_POST['dnsbl_mode'] && $_POST['pfb_py_block'] == 'on')) {
+
+				unlink_if_exists("{$pfb['dnsbl_file']}.conf");
+				unlink_if_exists($pfb['unbound_py_data']);
+				unlink_if_exists($pfb['unbound_py_zone']);
+				unlink_if_exists($pfb['unbound_py_wh']);
+				unlink_if_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt");
+				$savemsg = "A Force Reload DNSBL must be run to complete the blocking mode changes! The previous DNSBL database has been deleted!";
+			}
+			$pfb['dconfig']['pfb_py_block']		= pfb_filter($_POST['pfb_py_block'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
+			$pfb['dconfig']['dnsbl_mode']		= $_POST['dnsbl_mode']							?: 'dnsbl_unbound';
+
+			// Clear any existing DNSBL VIP address on user modification
+			if ($_POST['pfb_dnsvip'] != $pconfig['pfb_dnsvip'] || $_POST['dnsbl_interface'] != $pconfig['dnsbl_interface']) {
+				$iface = escapeshellarg(get_real_interface($pconfig['dnsbl_interface']));
+				foreach (array("{$pconfig['pfb_dnsvip']}" => 'inet', "::{$pconfig['pfb_dnsvip']}" => 'inet6') as $vip => $inet) {
+					$vip = escapeshellarg($vip);
+					exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$vip} 2>&1", $result, $return);
+					if (!empty($result)) {
+						exec("/sbin/ifconfig {$iface} {$inet} {$vip} -alias");
+					}
+				}
+			}
+			$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']							?: '10.10.10.1';
+			$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']						?: 'lo0';
 
 			// Replace DNSBL active blocked webpage with user selection
 			if ($dnsbl_webpage || !file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php')) {
@@ -346,10 +705,11 @@ if ($_POST) {
 			} else {
 				header('Location: /pfblockerng/pfblockerng_dnsbl.php');
 			}
+			exit;
 		}
 		else {
-			// Restore $_POST data on input errors
-			$pconfig = $_POST;
+			print_input_errors($input_errors);
+			$pconfig = $_POST;	// Restore $_POST data on input errors
 		}
 	}
 }
@@ -377,10 +737,6 @@ $tab_array[]	= array(gettext('DNSBL Groups'),	false,		'/pfblockerng/pfblockerng_
 $tab_array[]	= array(gettext('DNSBL Category'),	false,		'/pfblockerng/pfblockerng_blacklist.php');
 $tab_array[]	= array(gettext('DNSBL SafeSearch'),	false,		'/pfblockerng/pfblockerng_safesearch.php');
 display_top_tabs($tab_array, true);
-
-if (isset($input_errors)) {
-	print_input_errors($input_errors);
-}
 
 if (isset($_REQUEST['savemsg'])) {
 	$savemsg = htmlspecialchars($_REQUEST['savemsg']);
@@ -476,20 +832,19 @@ $dnsbl_text = 'This is an <strong>Advanced process</strong> to determine if all 
 		</ul></span>
 	</div>';
 
-$dnsbl_modes = array('dnsbl_unbound' => 'Unbound mode', 'dnsbl_python' => 'Unbound python mode');
 $section->addInput(new Form_Select(
 	'dnsbl_mode',
 	gettext('DNSBL Mode'),
 	$pconfig['dnsbl_mode'],
-	$dnsbl_modes
+	$options_dnsbl_mode
 ))->setHelp('Select the DNSBL mode.&emsp;'
 		. '<div class="infoblock">'
 		. '<strong>Unbound Mode</strong>:<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will utilize Unbound local-zone/local-data entries for DNSBL (requires more memory).<br />'
 		. '<strong>Unbound Python Mode</strong>:<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode is only available for pfSense version 2.4.5 and above.<br />'
-		. '&emsp;&emsp;&emsp;&emsp;Python DNSBL mode is <strong>not</strong> compatable with the DNS Resolver DHCP Registration option (Unbound will Crash)!<br />'
-		. '&emsp;&emsp;&emsp;&emsp;Python DNSBL mode is <strong>not</strong> compatable with the DNS Resolver OpenVPN Client Registration (pfSense < 2.5)!<br />'
+		. '&emsp;&emsp;&emsp;&emsp;Python DNSBL mode is <strong>not</strong> compatible with the DNS Resolver DHCP Registration option (Unbound will Crash)!<br />'
+		. '&emsp;&emsp;&emsp;&emsp;Python DNSBL mode is <strong>not</strong> compatible with the DNS Resolver OpenVPN Client Registration (pfSense < 2.5)!<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will utilize the python integration of Unbound for DNSBL.<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will allow logging of DNS Replies, and more advanced DNSBL Blocking features.<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode requires substantially less memory </div>'
@@ -2257,7 +2612,7 @@ $form->add($section);
 $section = new Form_Section('Python Group Policy', 'Python_Group_Policy', COLLAPSIBLE|SEC_CLOSED);
 $section->addInput(new Form_StaticText(
 	NULL,
-	'This is a preliminary DNSBL Group Policy configuration that will bypass DNSBL for the defined LAN IPs.'));
+	'This is a preliminary DNSBL Group Policy configuration that will bypass DNSBL for the defined LAN IPs. (No Subnets allowed)'));
 
 $section->addInput(new Form_Textarea(
 	'pfb_gp_bypass_list',
@@ -2347,7 +2702,7 @@ $section->addInput(new Form_Select(
 	'pfb_dnsvip_type',
 	gettext('DNSBL VIP Type'),
 	$pconfig['pfb_dnsvip_type'],
-	[ 'ipalias' => 'IP Alias', 'carp' => 'CARP' ]
+	$options_pfb_dnsvip_type
 ))->setWidth(4)->setHelp('Select the DNSBL VIP type.<br />'
 			. 'Default: <strong>IP Alias</strong><br />'
 			. 'CARP: For High Availability (CARP Cluster Networks) only'
@@ -2358,7 +2713,7 @@ $group->add(new Form_Select(
 	'pfb_dnsvip_vhid',
 	gettext('DNSBL VIP VHID'),
 	$pconfig['pfb_dnsvip_vhid'],
-	array_combine(range(1, 255, 1), range(1, 255, 1))
+	$options_pfb_dnsvip_vhid
 ))->setHelp('VHID group')
   ->addClass('dnsvip_carp')
   ->setWidth(3);
@@ -2367,7 +2722,7 @@ $group->add(new Form_Select(
 	'pfb_dnsvip_base',
 	gettext('DNSBL VIP Base'),
 	$pconfig['pfb_dnsvip_base'],
-	array_combine(range(1, 254, 1), range(1, 254, 1))
+	$options_pfb_dnsvip_base
 ))->setHelp('Advertising Base')
   ->addClass('dnsvip_carp')
   ->setWidth(3);
@@ -2376,7 +2731,7 @@ $group->add(new Form_Select(
 	'pfb_dnsvip_skew',
 	'Skew',
 	$pconfig['pfb_dnsvip_skew'],
-	array_combine(range(0, 254, 1), range(0, 254, 1))
+	$options_pfb_dnsvip_skew
 ))->setHelp('Skew')
   ->addClass('dnsvip_carp')
   ->setWidth(3);
@@ -2390,15 +2745,11 @@ $section->addPassword(new Form_Input(
 	[ 'placeholder' => 'Enter Carp password' ]
 ))->setHelp('Password')->addClass('dnsvip_carp');
 
-$interface_list		= pfb_build_if_list(FALSE, FALSE);
-$interface_list_all	= array_merge(array('lo0' => 'Localhost'), $interface_list);
-$int_size		= count($interface_list) ?: '1';
-
 $section->addInput(new Form_Select(
 	'dnsbl_interface',
 	gettext('Web Server Interface'),
 	$pconfig['dnsbl_interface'],
-	$interface_list_all
+	$options_dnsbl_interface_all
 ))->setHelp('Select the interface which DNSBL Web Server will Listen on.<br />'
 	. 'Default: <strong>Localhost (ports 80/443)</strong> - Selected Interface should be a Local Interface only.');
 
@@ -2454,71 +2805,29 @@ $group->add(new Form_Select(
 	'dnsbl_allow_int',
 	NULL,
 	$pconfig['dnsbl_allow_int'],
-	$interface_list,
+	$options_dnsbl_interface,
 	TRUE
 ))->setAttribute('style', 'width: auto')
-  ->setAttribute('size', $int_size);
+  ->setAttribute('size', $options_dnsbl_interface_cnt);
 $section->add($group);
-
-$lista = array();
-$indexdir = '/usr/local/www/pfblockerng/www';
-if (is_dir("{$indexdir}")) {
-	$list = glob("{$indexdir}/*.{php,html}", GLOB_BRACE);
-	if (!empty($list)) {
-		foreach ($list as $line) {
-			if (strpos($line, 'index.php') !== FALSE || strpos($line, 'dnsbl_active.php') !== FALSE) {
-				continue;
-			} else {
-				$file = pathinfo($line, PATHINFO_BASENAME);
-				$l = array($file => $file);
-				$lista = array_merge($lista, $l);
-			}
-		}
-	}
-}
-$list_size = count($lista) ?: '1';
-
-if ($pfb['dnsbl_py_blacklist']) {
-	$log_text = 'Default: <strong>No Global mode</strong><br />'
-			. 'Enabling this option will overide the individual DNSBL Group "Logging/Blocking" settings!<br /><br />'
-			. '&#8226 <strong>Null Block (logging)</strong>, Utilize \'0.0.0.0\' with logging.<br />'
-			. '&#8226 <strong>DNSBL WebServer/VIP</strong>, Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
-			. '&#8226 <strong>Null Block (no logging)</strong>, Utilize \'0.0.0.0\' with no logging.<br />'
-			. 'Blocked domains will be reported to the Alert/Python Block Table.<br /><br />'
-			. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
-
-	$log_options = [''		=> 'No Global mode',
-			'disabled_log'	=> 'Null Block (logging)',
-			'enabled'	=> 'DNSBL WebServer/VIP',
-			'disabled'	=> 'Null Block (no logging)'];
-} else {
-	$log_text = 'Default: <strong>No Global mode</strong><br />'
-			. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
-			. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
-			. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
-
-	$log_options = [''		=> 'No Global mode',
-			'enabled'	=> 'DNSBL WebServer/VIP',
-			'disabled'	=> 'Null Block (no logging)'];
-}
 
 $section->addInput(new Form_Select(
 	'global_log',
 	'Global Logging/Blocking Mode',
 	$pconfig['global_log'],
-	$log_options
-))->setHelp($log_text)
+	$options_global_log
+))->setHelp($options_global_log_txt)
   ->setAttribute('style', 'width: auto');
 
 $section->addInput(new Form_Select(
 	'dnsbl_webpage',
 	'Blocked Webpage',
 	$pconfig['dnsbl_webpage'],
-	$lista
+	$options_dnsbl_webpage
 ))->sethelp('Default: <strong>dnsbl_default.php</strong><br />Select the DNSBL Blocked Webpage.<br /><br />'
 	. 'Custom block web pages can be added to: <strong>/usr/local/www/pfblockerng/www/</strong> folder.')
   ->setAttribute('style', 'width: auto')
-  ->setAttribute('size', $list_size);
+  ->setAttribute('size', $options_dnsbl_webpage_cnt);
 
 $section->addInput(new Form_Checkbox(
 	'pfb_cache',
@@ -2599,176 +2908,21 @@ $section->addInput(new Form_Select(
 	'alexa_type',
 	gettext('Type'),
 	$pconfig['alexa_type'],
-	[ 'tranco' => 'Tranco TOP1M', 'cisco' => 'Cisco Umbrella TOP1M', 'alexa' => 'Alexa TOP1M' ]
+	$options_alexa_type
 ))->setHelp('Default: Tranco TOP1M. To change the TOP1M type, select type and Save, followed by a \'Force Reload - DNSBL\'');
 
 $section->addInput(new Form_Select(
 	'alexa_count',
 	gettext('Domain count'),
 	$pconfig['alexa_count'],
-	[	'500' => 'Top 500', '1000' => 'Top 1k', '2000' => 'Top 2k', '5000' => 'Top 5k', '10000' => 'Top 10k',
-		'25000' => 'Top 25k', '50000' => 'Top 50k', '75000' => 'Top 75k', '100000' => 'Top 100k', '250000' => 'Top 250k',
-		'500000' => 'Top 500k', '750000' => 'Top 750k', '1000000' => 'Top 1M'
-	]
+	$options_alexa_count
 ))->sethelp('<strong>Default: Top 1k</strong><br />Select the <strong>number</strong> of TOP1M \'Top Domain global ranking\' to whitelist.');
-
-$tld_list = [	'ae' => 'AE',
-		'aero' => 'AERO',
-		'ag' => 'AG',
-		'al' => 'AL',
-		'am' => 'AM',
-		'ar' => 'AR',
-		'asia' => 'ASIA',
-		'at' => 'AT',
-		'au' => 'AU (16)',
-		'az' => 'AZ',
-		'ba' => 'BA',
-		'bd' => 'BD',
-		'be' => 'BE',
-		'bg' => 'BG',
-		'biz' => 'BIZ',
-		'bo' => 'BO',
-		'br' => 'BR (7)',
-		'by' => 'BY',
-		'bz' => 'BZ',
-		'ca' => 'CA (21)',
-		'cat' => 'CAT',
-		'cc' => 'CC',
-		'cf' => 'CF',
-		'ch' => 'CH',
-		'cl' => 'CL',
-		'club' => 'CLUB',
-		'cn' => 'CN (14)',
-		'co' => 'CO (22)',
-		'com' => 'COM (1)',
-		'coop' => 'COOP',
-		'cr' => 'CR',
-		'cu' => 'CU',
-		'cy' => 'CY',
-		'cz' => 'CZ (23)',
-		'de' => 'DE (5)',
-		'dev' => 'DEV',
-		'dk' => 'DK',
-		'do' => 'DO',
-		'dz' => 'DZ',
-		'ec' => 'EC',
-		'edu' => 'EDU',
-		'ee' => 'EE',
-		'eg' => 'EG',
-		'es' => 'ES (18)',
-		'eu' => 'EU (25)',
-		'fi' => 'FI',
-		'fm' => 'FM',
-		'fr' => 'FR (12)',
-		'ga' => 'GA',
-		'ge' => 'GE',
-		'gov' => 'GOV',
-		'gr' => 'GR (20)',
-		'gt' => 'GT',
-		'guru' => 'GURU',
-		'hk' => 'HK',
-		'hr' => 'HR',
-		'hu' => 'HU',
-		'id' => 'ID',
-		'ie' => 'IE',
-		'il' => 'IL',
-		'im' => 'IM',
-		'in' => 'IN (9)',
-		'info' => 'INFO (15)',
-		'int' => 'INT',
-		'io' => 'IO',
-		'ir' => 'IR (13)',
-		'is' => 'IS',
-		'it' => 'IT (11)',
-		'jo' => 'JO',
-		'jobs' => 'JOBS',
-		'jp' => 'JP (6)',
-		'ke' => 'KE',
-		'kg' => 'KG',
-		'kr' => 'KR (19)',
-		'kw' => 'KW',
-		'kz' => 'KZ',
-		'la' => 'LA',
-		'li' => 'LI',
-		'link' => 'LINK',
-		'lk' => 'LK',
-		'lt' => 'LT',
-		'lu' => 'LU',
-		'lv' => 'LV',
-		'ly' => 'LY',
-		'ma' => 'MA',
-		'md' => 'MD',
-		'me' => 'ME',
-		'mk' => 'MK',
-		'ml' => 'ML',
-		'mn' => 'MN',
-		'mobi' => 'MOBI',
-		'mx' => 'MX',
-		'my' => 'MY',
-		'name' => 'NAME',
-		'net' => 'NET (2)',
-		'ng' => 'NG',
-		'ninja' => 'NINJA',
-		'nl' => 'NL (17)',
-		'no' => 'NO',
-		'np' => 'NP',
-		'nu' => 'NU',
-		'nz' => 'NZ',
-		'om' => 'OM',
-		'org' => 'ORG (4)',
-		'pa' => 'PA',
-		'pe' => 'PE',
-		'ph' => 'PH',
-		'pk' => 'PK',
-		'pl' => 'PL (10)',
-		'pro' => 'PRO',
-		'pt' => 'PT',
-		'pw' => 'PW',
-		'py' => 'PY',
-		'qa' => 'QA',
-		'ro' => 'RO',
-		'rs' => 'RS',
-		'ru' => 'RU (3)',
-		'sa' => 'SA',
-		'se' => 'SE',
-		'sg' => 'SG',
-		'si' => 'SI',
-		'sk' => 'SK',
-		'so' => 'SO',
-		'space' => 'SPACE',
-		'su' => 'SU',
-		'th' => 'TH',
-		'tk' => 'TK',
-		'tn' => 'TN',
-		'to' => 'TO',
-		'today' => 'TODAY',
-		'top' => 'TOP',
-		'tr' => 'TR',
-		'travel' => 'TRAVEL',
-		'tv' => 'TV',
-		'tw' => 'TW (24)',
-		'tz' => 'TZ',
-		'ua' => 'UA',
-		'uk' => 'UK (8)',
-		'us' => 'US',
-		'uy' => 'UY',
-		'uz' => 'UZ',
-		'vc' => 'VC',
-		've' => 'VE',
-		'vn' => 'VN',
-		'website' => 'WEBSITE',
-		'ws' => 'WS',
-		'xn--p1ai' => 'XN--P1AI',
-		'xxx' => 'XXX',
-		'xyz' => 'XYZ',
-		'za' => 'ZA'
-	];
 
 $section->addInput(new Form_Select(
 	'alexa_inclusion',
 	gettext('TLD Inclusion'),
 	$pconfig['alexa_inclusion'],
-	$tld_list,
+	$options_alexa_inclusion,
 	TRUE
 ))->setHelp('Select the TLDs for Whitelist. (Only showing the Top 150 TLDs)<br />'
 		. '<strong>Default: COM, NET, ORG, CA, CO, IO</strong><br /><br />'
@@ -2904,14 +3058,14 @@ $section->addInput(new Form_Select(
 	'action',
 	gettext('List Action'),
 	$pconfig['action'],
-	[ 'Disabled' => 'Disabled', 'Deny_Inbound' => 'Deny Inbound', 'Deny_Outbound' => 'Deny Outbound', 'Deny_Both' => 'Deny Both', 'Alias_Deny' => 'Alias Deny' ]
+	$options_action
 ))->setHelp($list_action_text);
 
 $section->addInput(new Form_Select(
 	'aliaslog',
 	gettext('Enable Logging'),
 	$pconfig['aliaslog'],
-	[ 'enabled' => 'Enable', 'disabled' => 'Disable' ]
+	$options_aliaslog
 ))->sethelp('Default: <strong>Enable</strong><br />Select - Logging to Status: System Logs: FIREWALL ( Log )<br />'
 		. 'This can be overriden by the \'Global Logging\' Option in the General Tab.'
 );
@@ -2919,22 +3073,7 @@ $form->add($section);
 
 // Print Advanced Firewall Rule Settings (Inbound and Outbound) section
 foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_type) {
-
 	$advmode = strtolower($adv_mode);
-
-	// Collect all pfSense 'Port' Aliases
-	$portslist = $networkslist = '';
-	if (!empty($config['aliases']['alias'])) {
-		foreach ($config['aliases']['alias'] as $alias) {
-			if ($alias['type'] == 'port') {
-				$portslist .= "{$alias['name']},";
-			} elseif ($alias['type'] == 'network') {
-				$networkslist .= "{$alias['name']},";
-			}
-		}
-	}
-	$ports_list	= trim($portslist, ',');
-	$networks_list	= trim($networkslist, ',');
 
 	$section = new Form_Section("DNSBL IPs - Advanced {$adv_mode}bound Firewall Rule Settings", "adv{$advmode}boundsettings", COLLAPSIBLE|SEC_CLOSED);
 	$section->addInput(new Form_StaticText(
@@ -3019,7 +3158,7 @@ foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_t
 		'autoproto_' . $advmode,
 		NULL,
 		$pconfig['autoproto_' . $advmode],
-		['' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP']
+		$options_autoproto_in
 	))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />
 		<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!")
 	  ->addClass('dnsbl_ip');
@@ -3030,7 +3169,7 @@ foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_t
 		'agateway_' . $advmode,
 		NULL,
 		$pconfig['agateway_' . $advmode],
-		pfb_get_gateways()
+		$options_agateway_in
 	))->setHelp("Select alternate Gateway or keep 'default' setting.")
 	  ->addClass('dnsbl_ip');
 

@@ -396,6 +396,7 @@
 					"header":	"Krisk_Intel_Mal"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Malc0de",
 					"website":	"https://malc0de.com/",
 					"url":		"https://malc0de.com/bl/IP_Blacklist.txt",
@@ -664,6 +665,10 @@
 					"feed":		"SpamCop",
 					"website":	"https://www.spamcop.net/spamstats.shtml",
 					"url":		"https://www.spamcop.net/w3m?action=map;net=cmaxratio;mask=65535;sort=spamcnt;format=text",
+					"past_urls": [
+								"https://www.spamcop.net/w3m?action=map;net=cmaxratio;mask=65535;sort=spamcnt",
+								"https://www.spamcop.net/w3m?action=map;net=cmaxratio;mask=65535;sort=spam"
+					],
 					"header":	"SpamCop_SC",
 					"alternate": [
 						{
@@ -983,6 +988,7 @@
 			]
 		},
 		"VPN_6": {
+			"status":	"discontinued",
 			"info":		"A list of common VPN providers",
 			"description":	"List of common VPN providers.",
 			"action":	"block",
@@ -1245,6 +1251,7 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
+					"status":	"discontinued",
 					"feed":		"COVID-19 Cyber Threat Coalition",
 					"website":	"https://www.cyberthreatcoalition.org/",
 					"url":		"https://blocklist.cyberthreatcoalition.org/vetted/domain.txt",
@@ -1381,6 +1388,7 @@
 						]
 				},
 				{
+					"status":	"Suspended",
 					"feed":		"Internet Storm Center",
 					"website":	"https://isc.sans.edu/suspicious_domains.html",
 					"url":		"https://isc.sans.edu/feeds/suspiciousdomains_High.txt",
@@ -1725,6 +1733,7 @@
 					"header":	"yHosts"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Elad Karako",
 					"website":	"https://github.com/eladkarako/hosts",
 					"url":		"https://raw.githubusercontent.com/eladkarako/hosts/master/_raw__hosts.txt",
@@ -2030,6 +2039,7 @@
 					"header":	"Phishing_Army"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Shalla Malicious",
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Shalla-mal.txt",

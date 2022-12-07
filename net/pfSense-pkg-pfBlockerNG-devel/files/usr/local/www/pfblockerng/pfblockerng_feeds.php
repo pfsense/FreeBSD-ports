@@ -105,24 +105,36 @@ if ($_POST) {
 			foreach ($selected as $value) {
 
 				if (!empty($value)) {
-					$post					= pfb_filter($_POST['alt_' . $value], 1);
-					$value					= strtolower($value);		// config XML tag needs to be lowercase
-					$feed_alt_{$value}			= $post;
-					$fconfig['feed_alt_' . $value]		= $feed_alt_{$value};
+					// Save Alternative Aliasnames to pfblockerngglobal in config.xml
+					$post = pfb_filter($_POST['alt_' . $value], PFB_FILTER_WORD, 'feeds');
+					if (!empty($post)) {
+						$value					= strtolower($value);		// config XML tag needs to be lowercase
+						${"feed_alt_$value"}			= $post;
+						$fconfig['feed_alt_' . $value]		= ${"feed_alt_$value"};
+					}
+					else {
+						$input_errors[] = 'Invalid Alternative Alias Name';
+					}
 				}
 			}
 			$config_mod = TRUE;
 		}
 
-		if ($config_mod && !$input_errors) {
-			write_config('[pfBlockerNG] save Feed settings');
-			header('Location: /pfblockerng/pfblockerng_feeds.php');
+		if ($config_mod) {
+			if (!$input_errors) {
+				write_config('[pfBlockerNG] save Feed settings');
+				header('Location: /pfblockerng/pfblockerng_feeds.php');
+				exit;
+			}
+			else {
+				print_input_errors($input_errors);
+			}
 		}
 	}
 }
 
 function url_compare($ftype, $key, $rowid, $aliasname, $row_aliasname, $row_url, $feed_url, $row_state,
-	    $feed_header, $alternate=FALSE, $alt_header, $alt_info, $alt_register, $a_key) {
+	    $feed_header, $alternate=FALSE, $alt_header='', $alt_info='', $alt_register='', $a_key) {
 
 	global $ex_feeds, $alt_feeds, $icon;
 	$x_icon = '';
@@ -186,20 +198,22 @@ function url_compare($ftype, $key, $rowid, $aliasname, $row_aliasname, $row_url,
 			$icon	= $x_icon;
 		}
 		else {
-			if (!$alt_feeds[$ftype][$aliasname][$alt_header]) {
-				$alt_feeds[$ftype][$aliasname][$feed_header][$a_key] = array(	'icon' => $x_icon, 'url' => $feed_url, 'header' => $alt_header,
-												'info' => $alt_info, 'register' => $alt_register );
+			if (!isset($alt_feeds[$ftype][$aliasname][$alt_header])) {
+				$slt_feeds[$ftype][$aliasname][$feed_header][$a_key] = array(	'icon' => $x_icon, 'url' => $feed_url, 'header' => $alt_header,
+												'info' => $alt_info, 'register' => !empty($alt_register) ? TRUE : FALSE);
 				$alt_feeds[$ftype][$aliasname][$alt_header] = TRUE;
 			} else {
-				$a_icon = $alt_feeds[$ftype][$aliasname][$feed_header][$a_key]['icon'];
-				$alt_feeds[$ftype][$aliasname][$feed_header][$a_key]['icon'] = $a_icon . $x_icon;
+				if (isset($alt_feeds[$ftype][$aliasname][$feed_header])) {
+					$a_icon = $alt_feeds[$ftype][$aliasname][$feed_header][$a_key]['icon'];
+					$alt_feeds[$ftype][$aliasname][$feed_header][$a_key]['icon'] = $a_icon . $x_icon;
+				}
 			}
 		}
 	}
 	else {
-		if ($alternate && !$alt_feeds[$ftype][$aliasname][$alt_header]) {
+		if ($alternate && isset($alt_feeds[$ftype]) && isset($alt_feeds[$ftype][$aliasname]) && !$alt_feeds[$ftype][$aliasname][$alt_header]) {
 			$alt_feeds[$ftype][$aliasname][$feed_header][$a_key] = array(	'icon' => $x_icon, 'url' => $feed_url, 'header' => $alt_header,
-											'info' => $alt_info, 'register' => $alt_register );
+											'info' => $alt_info, 'register' => !empty($alt_register) ? TRUE : FALSE );
 		}
 	}
 }
@@ -221,10 +235,6 @@ $tab_array[]	= array(gettext('Feeds'),	true,	'/pfblockerng/pfblockerng_feeds.php
 $tab_array[]	= array(gettext('Logs'),	false,	'/pfblockerng/pfblockerng_log.php');
 $tab_array[]	= array(gettext('Sync'),	false,	'/pfblockerng/pfblockerng_sync.php');
 display_top_tabs($tab_array, true);
-
-if (isset($input_errors)) {
-	print_input_errors($input_errors);
-}
 
 ?>
 <form action="/pfblockerng/pfblockerng_feeds.php" method="post" name="iform" id="iform" class="form-horizontal">
@@ -313,7 +323,7 @@ print ($section);
 				if (is_array($feed_count)) {
 					print ("&emsp;<strong><u>Number of Feeds per Category Type:</strong></u><dl class=\"dl-horizontal\">");
 					foreach ($feed_count as $type => $count) {
-						print ("<dt>" . strtoupper($type) . ":</dt><dd>{$count}</dd>");
+						print ("<dt>" . strtoupper(htmlspecialchars($type)) . ":</dt><dd>" . htmlspecialchars($count) . "</dd>");
 					}
 					print ("</dl>");
 				}
@@ -413,6 +423,7 @@ print ($section);
 					continue;
 				}
 
+				$p_type = '';
 				foreach ($info as $aliasname => $data):
 					$p_aliasname = '';
 					if (!isset($data['feeds'])) {
@@ -425,7 +436,11 @@ print ($section);
 						if (!empty($ex_feeds[$ftype])) {
 							foreach ($ex_feeds[$ftype] as $key => $row) {
 
-								if ($aliasname == $row['aliasname'] && !isset($aliasname_found[$aliasname])) {
+								if (empty($row)) {
+									continue;
+								}
+
+								if (isset($row['aliasname']) && $aliasname == $row['aliasname'] && !isset($aliasname_found[$aliasname])) {
 									$aliasname_found[$aliasname] = $aliasname;
 
 									if ($row['action'] == 'Disabled') {
@@ -454,7 +469,7 @@ print ($section);
 									foreach ($feed['alternate'] as $a_key => $alt) {
 										url_compare($ftype, $key, $row['rowid'], $aliasname, $row['aliasname'], $row['url'],
 											$alt['url'], $row['state'], $feed['header'], TRUE, $alt['header'],
-											$alt['info'], $alt['register'], $a_key);
+											isset($alt['info']) ? $alt['info'] : '', isset($alt['register']) ? 'register' : '', $a_key); 
 									}
 								}
 							}
@@ -648,13 +663,19 @@ print ($section);
 							<?php
 								// Add any Alternate Feed icons
 								if (!empty($feed_alternate)) {
-									$feed['status'] 	= $alt_feed['status'];
-									$feed['info']		= $alt_feed['info'];
-									$feed['register']	= $alt_feed['register'];
+									if (isset($alt_feed['status'])) {
+										$feed['status']		= $alt_feed['status'];
+									}
+									if (isset($alt_feed['info'])) {
+										$feed['info']		= $alt_feed['info'];
+									}
+									if (isset($alt_feed['register'])) {
+										$feed['register']	= $alt_feed['register'];
+									}
 								}
 
 								// Print info about Feed if available
-								if (isset($feed['info'])) {
+								if (isset($feed['info']) && !empty($feed['info'])) {
 									print ("&emsp;<i class=\"fa fa-info-circle icon-primary\" title=\"{$feed['info']}\"></i>");
 								}
 
@@ -670,7 +691,7 @@ print ($section);
 								}
 
 								// Add link to Feed registration
-								if (isset($feed['register'])) {
+								if ($feed['register']) {
 									print ("&emsp;<a target=\"_blank\" href=\"{$feed['register']}\" title=\"Click to register\">
 										<i class=\"fa fa-sign-in\"></i></a>");
 								}
