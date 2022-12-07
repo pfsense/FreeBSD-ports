@@ -3950,10 +3950,8 @@ if (!$alert_summary):
 					}
 					$dup['DNSBL'] = 0;
 				}
+				@fclose($handle);
 			}
-		}
-		if ($handle) {
-			@fclose($handle);
 		}
 		unlink_if_exists("{$pfb_log}.rev");
 
@@ -3994,8 +3992,8 @@ if (!$alert_summary):
 						break;
 					}
 				}
+				@fclose($handle);
 			}
-			@fclose($handle);
 			unlink_if_exists("{$pfb_log}.rev");
 		}
 
@@ -4039,8 +4037,8 @@ if (!$alert_summary):
 						$p_query_port	= $convert_ip[1];
 					}
 				}
+				@fclose($handle);
 			}
-			@fclose($handle);
 			unlink_if_exists("{$pfb_log}.rev");
 		}
 	?>
