@@ -53,9 +53,31 @@ $pconfig['autorule_suffix']	= $pfb['iconfig']['autorule_suffix']			?: 'autorule'
 $pconfig['killstates']		= $pfb['iconfig']['killstates']				?: '';
 $pconfig['v4suppression']	= base64_decode($pfb['iconfig']['v4suppression'])	?: '';
 
+// Select array options
+$options_asn_reporting 		= [	'disabled'	=> 'Disabled',
+					'week'		=> 'Enabled - ASN entries cached for 1 week',
+					'24hour'	=> 'Enabled - ASN entries cached for 24 hours',
+					'12hour'	=> 'Enabled - ASN entries cached for 12 hours',
+					'4hour'		=> 'Enabled - ASN entries cached for 4 hours',
+					'1hour'		=> 'Enabled - ASN entries cached for 1 hour' ];
+
+$options_maxmind_locale		= [	'en' => 'English', 'fr' => 'French', 'pt-BR' => 'Brazilian Portuguese', 'de' => 'German',
+					'ja' => 'Japanese', 'zh-CN' => 'Simplified Chinese', 'es' => 'Spanish' ];
+
+$options_inbound_interface	= $options_outbound_interface		= pfb_build_if_list(TRUE, FALSE);
+$options_inbound_deny_action	= $options_outbound_deny_action		= [ 'block' => 'Block', 'reject' => 'Reject' ];
+$options_interface_cnt		= count($options_inbound_interface) ?: '1';
+
+$options_pass_order		= [	'order_0' => '| pfB_Pass/Match/Block/Reject | All other Rules | (Default format)',
+					'order_1' => '| pfSense Pass/Match | pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject |',
+					'order_2' => '| pfB_Pass/Match | pfSense Pass/Match | pfB_Block/Reject | pfSense Block/Reject |',
+					'order_3' => '| pfB_Pass/Match | pfB_Block/Reject | pfSense Pass/Match | pfSense Block/Reject |',
+					'order_4' => '| pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject | pfSense Pass/Match |' ];
+
+$options_autorule_suffix = [ 'autorule' => 'auto rule', 'standard' => 'Null (no suffix)', 'ar' => 'AR' ];
+
 // Validate input fields and save
 if ($_POST) {
-
 	if (isset($_POST['save'])) {
 
 		if (isset($input_errors)) {
@@ -63,6 +85,24 @@ if ($_POST) {
 		}
 		if (isset($savemsg)) {
 			unset($savemsg);
+		}
+
+		// Validate Select field options
+		$select_options = array(	'asn_reporting'		=> 'disabled',
+						'maxmind_locale'	=> 'en',
+						'inbound_deny_action'	=> 'block',
+						'outbound_deny_action'	=> 'reject',
+						'pass_order'		=> 'order_0', 
+						'autorule_suffix'	=> 'autorule'
+						);
+
+		foreach ($select_options as $s_option => $s_default) {
+			if (is_array($_POST[$s_option])) {
+				$_POST[$s_option] = $s_default;
+			}
+			elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+				$_POST[$s_option] = $s_default;
+			}
 		}
 
 		// Validate Placeholder IP address
@@ -76,27 +116,7 @@ if ($_POST) {
 			}
 		}
 
-		$maxmind	= $pconfig['maxmind_locale'];
-		$p_maxmind	= in_array($_POST['maxmind_locale'], array('en', 'fr', 'de', 'pt-BR', 'ja', 'zh-CN', 'es')) ? $_POST['maxmind_locale'] : 'en';
-
-		// Apply MaxMind locale changes if required
-		if ($maxmind != $p_maxmind) {
-
-			exec('/bin/ps -wx', $result_cron);
-			if (!preg_grep("/pfblockerng[.]php\s+?(uc|gc|ugc)/", $result_cron)) {
-
-				// Execute MaxMind update and generate pfSense Notice message on completion
-				mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php ugc {$maxmind} {$p_maxmind} >> {$pfb['extraslog']} 2>&1");
-
-				$savemsg = "The MaxMind language locale is being changed from [ {$maxmind} to {$p_maxmind} ]. "
-					. "A pfSense Notice message will be submitted on completion.";
-			} else {
-				$input_errors[] = 'MaxMind GeoIP conversion already in process!';
-				$input_errors[] = 'Cannot change Language Locale at this time!';
-			}
-		}
-
-		if (!empty($_POST['maxmind_key']) && !ctype_alnum($_POST['maxmind_key'])) {
+		if (!empty($_POST['maxmind_key']) && empty(pfb_filter($_POST['maxmind_key'], PFB_FILTER_ALNUM, 'ip'))) {
 			$input_errors[] = 'MaxMind License key Invalid';
 		}
 
@@ -121,38 +141,72 @@ if ($_POST) {
 			}
 		}
 
-		$pfb['iconfig']['enable_dup']		= $_POST['enable_dup']					?: '';
-		$pfb['iconfig']['enable_agg']		= $_POST['enable_agg']					?: '';
-		$pfb['iconfig']['suppression']		= $_POST['suppression']					?: '';
-		$pfb['iconfig']['enable_log']		= $_POST['enable_log']					?: '';
-		$pfb['iconfig']['ip_placeholder']	= $_POST['ip_placeholder']				?: '127.1.7.7';
-		$pfb['iconfig']['maxmind_locale']	= $_POST['maxmind_locale']				?: '';
-		$pfb['iconfig']['database_cc']		= $_POST['database_cc']					?: '';
-		$pfb['iconfig']['maxmind_key']		= pfb_filter($_POST['maxmind_key'], 1)			?: '';
-		$pfb['iconfig']['asn_reporting']	= $_POST['asn_reporting']				?: 'disabled';
-		$pfb['iconfig']['inbound_interface']	= implode(',', (array)$_POST['inbound_interface'])	?: '';
-		$pfb['iconfig']['inbound_deny_action']	= $_POST['inbound_deny_action']				?: '';
-		$pfb['iconfig']['outbound_interface']	= implode(',', (array)$_POST['outbound_interface'])	?: '';
-		$pfb['iconfig']['outbound_deny_action']	= $_POST['outbound_deny_action']			?: '';
-		$pfb['iconfig']['enable_float']		= $_POST['enable_float']				?: '';
-		$pfb['iconfig']['pass_order']		= $_POST['pass_order']					?: '';
-		$pfb['iconfig']['autorule_suffix']	= $_POST['autorule_suffix']				?: '';
-		$pfb['iconfig']['killstates']		= $_POST['killstates']					?: '';
-		$pfb['iconfig']['v4suppression']	= base64_encode($_POST['v4suppression'])		?: '';
+		// Apply MaxMind locale changes if required
+		if (in_array($_POST['maxmind_locale'], array('en', 'fr', 'de', 'pt-BR', 'ja', 'zh-CN', 'es')) &&
+		    in_array($pconfig['maxmind_locale'], array('en', 'fr', 'de', 'pt-BR', 'ja', 'zh-CN', 'es'))) {
+
+			$maxmind	= $pconfig['maxmind_locale'];
+			$p_maxmind	= $_POST['maxmind_locale'];
+
+			if ($maxmind != $p_maxmind) {
+				exec('/bin/ps -wx', $result_cron);
+				if (!preg_grep("/pfblockerng[.]php\s+?(uc|gc|ugc)/", $result_cron)) {
+					if (!$input_errors) {
+						// Execute MaxMind update and generate pfSense Notice message on completion
+						$maxmind_esc    = escapeshellarg($maxmind);
+						$p_maxmind_esc  = escapeshellarg($p_maxmind);
+						mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php ugc {$maxmind_esc} {$p_maxmind_esc} >> {$pfb['extraslog']} 2>&1");
+
+						$savemsg = "The MaxMind language locale is being changed from [ {$maxmind_esc} to {$p_maxmind_esc} ]. "
+							. "A pfSense Notice message will be submitted on completion.";
+					}
+				} else {
+					$input_errors[] = 'MaxMind GeoIP conversion already in process!';
+					$input_errors[] = 'Cannot change Language Locale at this time!';
+				}
+			}
+		}
+		else {
+			$input_errors[] = 'MaxMind Locale is not valid!';
+		}
 
 		if (!$input_errors) {
-			write_config('[pfBlockerNG] save IP settings');
 
+			$pfb['iconfig']['enable_dup']		= pfb_filter($_POST['enable_dup'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['enable_agg']		= pfb_filter($_POST['enable_agg'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['suppression']		= pfb_filter($_POST['suppression'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['enable_log']		= pfb_filter($_POST['enable_log'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['ip_placeholder']	= $_POST['ip_placeholder']					?: '127.1.7.7';
+			$pfb['iconfig']['maxmind_locale']	= $_POST['maxmind_locale']					?: 'en';
+			$pfb['iconfig']['database_cc']		= pfb_filter($_POST['database_cc'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['maxmind_key']		= pfb_filter($_POST['maxmind_key'], PFB_FILTER_ALNUM, 'ip')	?: '';
+			$pfb['iconfig']['asn_reporting']	= $_POST['asn_reporting']					?: 'disabled';
+			$pfb['iconfig']['inbound_interface']	= implode(',', (array)$_POST['inbound_interface'])		?: '';
+			$pfb['iconfig']['inbound_deny_action']	= $_POST['inbound_deny_action']					?: '';
+			$pfb['iconfig']['outbound_interface']	= implode(',', (array)$_POST['outbound_interface'])		?: '';
+			$pfb['iconfig']['outbound_deny_action']	= $_POST['outbound_deny_action']				?: '';
+			$pfb['iconfig']['enable_float']		= pfb_filter($_POST['enable_float'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['pass_order']		= $_POST['pass_order']						?: 'order_0';
+			$pfb['iconfig']['autorule_suffix']	= $_POST['autorule_suffix']					?: 'autorule';
+			$pfb['iconfig']['killstates']		= pfb_filter($_POST['killstates'], PFB_FILTER_ON_OFF, 'ip')	?: '';
+			$pfb['iconfig']['v4suppression']	= base64_encode($_POST['v4suppression'])			?: '';
+
+			write_config('[pfBlockerNG] save IP settings');
 			if (!empty($savemsg)) {
 				header("Location: /pfblockerng/pfblockerng_ip.php?savemsg={$savemsg}");
 			} else {
 				header('Location: /pfblockerng/pfblockerng_ip.php');
 			}
+			exit;
 		}
 		else {
+			print_input_errors($input_errors);
 			$pconfig = $_POST;
 		}
 	}
+}
+else {
+	$input_errors = '';
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('IP'));
@@ -179,10 +233,6 @@ $tab_array[]	= array(gettext('IPv6'),	false,	'/pfblockerng/pfblockerng_category.
 $tab_array[]	= array(gettext('GeoIP'),	false,	'/pfblockerng/pfblockerng_category.php?type=geoip');
 $tab_array[]	= array(gettext('Reputation'),	false,	'/pfblockerng/pfblockerng_reputation.php');
 display_top_tabs($tab_array, true);
-
-if (isset($input_errors)) {
-	print_input_errors($input_errors);
-}
 
 if (!$input_errors && isset($_REQUEST['savemsg'])) {
 	$savemsg = htmlspecialchars($_REQUEST['savemsg']);
@@ -257,12 +307,7 @@ $section->addInput(new Form_Select(
 	'asn_reporting',
 	'ASN Reporting',
 	$pconfig['asn_reporting'],
-	[	'disabled'	=> 'Disabled',
-		'week'		=> 'Enabled - ASN entries cached for 1 week',
-		'24hour'	=> 'Enabled - ASN entries cached for 24 hours',
-		'12hour'	=> 'Enabled - ASN entries cached for 12 hours',
-		'4hour'		=> 'Enabled - ASN entries cached for 4 hours',
-		'1hour'		=> 'Enabled - ASN entries cached for 1 hour' ]
+	$options_asn_reporting
 ))->setHelp('Query for the ASN (BGPview.io API) for each block/reject/permit/match IP entry. ASN values are cached as per the defined selection.')
   ->setAttribute('style', 'width: auto');
 
@@ -284,8 +329,7 @@ $section->addInput(new Form_Select(
 	'maxmind_locale',
 	'MaxMind Localized Language',
 	$pconfig['maxmind_locale'],
-	[	'en' => 'English', 'fr' => 'French', 'pt-BR' => 'Brazilian Portuguese', 'de' => 'German',
-		'ja' => 'Japanese', 'zh-CN' => 'Simplified Chinese', 'es' => 'Spanish' ]
+	$options_maxmind_locale
 ))->setHelp('Select the localized name data from the Language options available.<br />'
 		. 'Changes to the Locale will be executed in the background, and will take a few minutes to complete.<br />'
 		. 'Upon completion, a pfSense Notice will be generated.')
@@ -338,24 +382,21 @@ $form->add($section);
 
 $section = new Form_Section('IP Interface/Rules Configuration');
 
-$interface_list	= pfb_build_if_list(TRUE, FALSE);
-$int_size	= count($interface_list) ?: '1';
-
 $group = new Form_Group('Inbound Firewall Rules');
 $group->add(new Form_Select(
 	'inbound_interface',
 	'Interface(s)',
 	$pconfig['inbound_interface'],
-	$interface_list,
+	$options_inbound_interface,
 	TRUE
 ))->setHelp('Select the Inbound interface(s) you want to apply auto rules to:')
-  ->setAttribute('size', $int_size);
+  ->setAttribute('size', $options_interface_cnt);
 
 $group->add(new Form_Select(
 	'inbound_deny_action',
 	'Rule Action',
 	$pconfig['inbound_deny_action'],
-	[ 'block' => 'Block', 'reject' => 'Reject' ]
+	$options_inbound_deny_action
 ))->setHelp('Default: <strong>Block</strong><br />Select \'Rule action\' for Inbound rules:')
   ->setAttribute('style', 'width: auto');
 $section->add($group);
@@ -365,16 +406,16 @@ $group->add(new Form_Select(
 	'outbound_interface',
 	'Interface(s)',
 	$pconfig['outbound_interface'],
-	$interface_list,
+	$options_outbound_interface,
 	TRUE
 ))->setHelp('Select the Outbound interface(s) you want to apply auto rules to:')
-  ->setAttribute('size', $int_size);
+  ->setAttribute('size', $options_interface_cnt);
 
 $group->add(new Form_Select(
 	'outbound_deny_action',
 	'Rule Action',
 	$pconfig['outbound_deny_action'],
-	[ 'reject' => 'Reject', 'block' => 'Block' ]
+	$options_outbound_deny_action
 ))->setHelp('Default: <strong>Reject</strong><br />Select \'Rule action\' for Outbound rules:')
   ->setAttribute('style', 'width: auto');
 $section->add($group);
@@ -393,12 +434,7 @@ $section->addInput(new Form_Select(
 	'pass_order',
 	'Firewall \'Auto\' Rule Order',
 	$pconfig['pass_order'],
-	[	'order_0' => '| pfB_Pass/Match/Block/Reject | All other Rules | (Default format)',
-		'order_1' => '| pfSense Pass/Match | pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject |',
-		'order_2' => '| pfB_Pass/Match | pfSense Pass/Match | pfB_Block/Reject | pfSense Block/Reject |',
-		'order_3' => '| pfB_Pass/Match | pfB_Block/Reject | pfSense Pass/Match | pfSense Block/Reject |',
-		'order_4' => '| pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject | pfSense Pass/Match |'
-	]
+	$options_pass_order
 ))->setHelp('Default Order:<strong> | pfB_Block/Reject | All other Rules | (original format)</strong><br />'
 		. '<span class="text-danger"><strong>Note: \'Auto type\' Firewall Rules will be \'ordered\' by this selection.</strong></span>'
 		. '<div class="infoblock">'
@@ -413,7 +449,7 @@ $section->addInput(new Form_Select(
 	'autorule_suffix',
 	'Firewall \'Auto\' Rule Suffix',
 	$pconfig['autorule_suffix'],
-	[ 'autorule' => 'auto rule', 'standard' => 'Null (no suffix)', 'ar' => 'AR' ]
+	$options_autorule_suffix
 ))->setHelp('Default: <strong>auto rule</strong><br />Select \'Auto Rule\' description suffix for auto defined rules. pfBlockerNG must be disabled to modify suffix.')
   ->setAttribute('style', 'width: auto');
 
