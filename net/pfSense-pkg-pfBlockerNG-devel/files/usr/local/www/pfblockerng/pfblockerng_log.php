@@ -227,10 +227,17 @@ function pfb_validate_filepath($validate, $pfb_logtypes) {
 $pconfig = array();
 if ($_POST) {
 	$pconfig = $_POST;
-}	
+}
+
+if (!isset($pconfig['logtype'])) {
+	$pconfig['logtype'] = '';
+}
+if (!isset($pconfig['logFile'])) {
+	$pconfig['logFile'] = '';
+}
 
 // Send logfile to screen
-if ($_REQUEST['ajax']) {
+if (isset($_REQUEST) && isset($_REQUEST['ajax'])) {
 
 	clearstatcache();
 	$pfb_logfilename = htmlspecialchars($_REQUEST['file']);
@@ -246,7 +253,8 @@ if ($_REQUEST['ajax']) {
 		}
 		elseif (($fhandle = @fopen("{$pfb_logfilename}", 'r')) !== FALSE) {
 
-			$linecnt = exec("{$pfb['grep']} -c ^ {$pfb_logfilename} 2>&1");
+			$pfb_logfilename_esc = escapeshellarg($pfb_logfilename);
+			$linecnt = exec("{$pfb['grep']} -c ^ {$pfb_logfilename_esc} 2>&1");
 			$maxcnt = 10000; // Max line limit
 
 			$validate = FALSE;
@@ -288,7 +296,7 @@ if ($_REQUEST['ajax']) {
 }
 
 // Download/Clear logfile
-if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
+if (isset($pconfig['logFile']) && !empty($pconfig['logFile']) && (isset($pconfig['download']) || isset($pconfig['clear']))) {
 	
 	$s_logfile = htmlspecialchars($pconfig['logFile']);
 	if (!pfb_validate_filepath($s_logfile, $pfb_logtypes)) {
@@ -369,8 +377,8 @@ $section = new Form_Section('Log/File Browser selections');
 
 // Collect main logtypes
 $options = array();
-foreach ($pfb_logtypes as $type => $logtype) {
-	$options[$type] = $logtype['name'];
+foreach ($pfb_logtypes as $type => $log_type) {
+	$options[$type] = $log_type['name'];
 }
 
 $section->addInput(new Form_Select(
@@ -383,7 +391,7 @@ $section->addInput(new Form_Select(
 // Collect selected logs
 $logs = array();
 $clearable = $downloadable = FALSE;
-$selected = $pconfig['logtype'] ?: 'defaultlogs';
+$selected = !empty($pconfig['logtype']) ? $pconfig['logtype'] : 'defaultlogs';
 $pfb_sel = $pfb_logtypes[$selected];
 
 if (isset($pfb_sel['logs'])) {
@@ -398,6 +406,7 @@ $downloadable	= $pfb_sel['download'] ?: FALSE;
 
 // Add filepath to selected logs
 $options = array();
+$options[''] = 'Select Log/File to load';
 foreach ($logs as $id => $log) {
 	if ($id == 'logs' && is_array($log)) {
 		foreach ($log as $opt) {
@@ -531,14 +540,9 @@ events.push(function() {
 		$('form').submit();
 	});
 
-	$('#logFile').prepend("<option value='dummy' selected='selected'>Click to select log file</option>");
-	$('#logFile').on('click', function() {
-		$('#logFile').on('change', function(e) {
-			e.stopImmediatePropagation();
-			if ($("#logFile").val() != 'dummy' && $("#logFile").val() != '') {
-				loadFile()
-			}
-		});
+	$('#logFile').on('change', function() {
+		$("option[value='']").remove();
+		loadFile();
 	});
 
 	// Download selected logfile 

@@ -20,7 +20,6 @@ now=$(/bin/date +%m/%d/%y' '%T)
 # Application Locations
 pathgrepcidr="/usr/local/bin/grepcidr"
 pathaggregate="/usr/local/bin/iprange"
-pathmwhois="/usr/local/bin/mwhois"
 pathgeoip="/usr/local/bin/mmdblookup"
 pathcurl="/usr/local/bin/curl"
 pathjq="/usr/local/bin/jq"
@@ -198,22 +197,21 @@ suppress() {
 	if [ ! -x "${pathgrepcidr}" ]; then
 		log="Application [ grepcidr ] Not found. Cannot proceed."
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	if [ -e "${pfbsuppression}" ] && [ -s "${pfbsuppression}" ]; then
 		data="$(cat ${pfbsuppression} | sort | uniq)"
 
-		if [ ! -z "${data}" ] && [ ! -z "${cc}" ]; then
-			if [ "${cc}" == 'suppressheader' ]; then
+		if [ ! -z "${data}" ] && [ ! -z "${alias}" ]; then
+			if [ "${alias}" == 'suppressheader' ]; then
 				echo; echo '===[ Suppression Stats ]==================================='; echo
 				printf "%-20s %-10s %-10s %-10s\n" 'List' 'Pre' 'Suppress' 'Master'
 				echo '-----------------------------------------------------------'
-				exitnow
+				return
 			fi
 
-			alias="$(echo ${cc%|*})"
-			pfbfolder="$(echo ${cc#*|})"
+			pfbfolder="${max}/"
 			counter=0; > "${dupfile}"
 
 			if [ ! -z "${alias}" ]; then
@@ -257,7 +255,7 @@ suppress() {
 				"${pathgrepcidr}" -vf "${pfbsuppression}" "${tempfile}" > "${pfbfolder}${alias}.txt"
 
 				# Update masterfiles. Don't execute if duplication process is disabled
-				if [ "${dedup}" == 'x' ]; then
+				if [ "${dedup}" == 'on' ]; then
 					# Don't execute if alias doesn't exist in masterfile
 					lcheck="$(grep -m1 ${alias} ${masterfile})"
 
@@ -316,7 +314,7 @@ duplicate() {
 	if [ ! -x "${pathgrepcidr}" ]; then
 		log="Application [ grepcidr ] Not found. Cannot proceed."
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	dupcheck=1
@@ -724,11 +722,6 @@ dnsbl_livesync() {
 
 # Function to convert Domains/ASs to its respective IP addresses
 whoisconvert() {
-	if [ ! -x "${pathmwhois}" ]; then
-		log="Application [ mwhois ] Not found. Cannot proceed."
-		echo "${log}" | tee -a "${errorlog}"
-		exitnow
-	fi
 
 	vtype="${max}"
 	custom_list="$(echo ${dedup} | tr ',' ' ')"
@@ -777,7 +770,7 @@ whoisconvert() {
 
 				if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
 					printf "."
-					unavailable="$(grep 'Service Temporarily Unavailable' ${asntemp})"
+					unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
 					if [ -z "${unavailable}" ]; then
 						found=true
 						echo ". completed"
@@ -817,6 +810,42 @@ whoisconvert() {
 }
 
 
+# Function to convert IP to ASN
+iptoasn() {
+	host="${alias}"
+
+	ua="pfSense/pfBlockerNG cURL download agent-"
+	guid="$(/usr/sbin/gnid)"
+	ua_final="${ua}${guid}"
+
+	bgp_url="https://api.bgpview.io/ip/${host}"
+
+	unavailable=''
+	found=false
+	for i in 1 2 3 4 5; do
+		"${pathcurl}" -H "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+
+		if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
+			unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
+			if [ -z "${unavailable}" ]; then
+				found=true
+				break
+			else
+				sleep_val="$((i * 2))"
+				sleep "${sleep_val}"
+			fi
+		fi
+	done
+
+	if [ "${found}" == false ]; then
+		echo ""
+	else
+		asn_final="$(cat ${asntemp} | ${pathjq} -r '.data.prefixes[0] | {ASN: .asn.asn, Name: .name, Desc: .description, Prefix: .prefix} | tostring' | tr ',' '|' | tr -d '"{}')"
+		echo "${asn_final}"
+	fi
+}
+
+
 # Function to check for Reputation application dependencies.
 reputation_depends() {
 	if [ ! -x "${pathgeoip}" ]; then
@@ -839,7 +868,6 @@ reputation_depends() {
 	fi
 
 	# Clear variables and tempfiles
-	exitnow
 	count=0; countb=0; countm=0; counts=0; countr=0
 }
 
@@ -1161,7 +1189,7 @@ processxlsx() {
 	if [ ! -x "${pathtar}" ]; then
 		log='Application [ TAR ] Not found, cannot proceed.'
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	if [ -s "${pfborig}${alias}.raw" ]; then
@@ -1184,7 +1212,7 @@ closingprocess() {
 	counto=0
 	echo; echo '===[ FINAL Processing ]====================================='; echo
 	if [ -d "${pfborig}" ] && [ "$(ls -A ${pfborig})" ]; then
-		counto="$(find ${pfborig}*.orig 2>/dev/null | xargs cat | grep -cv '^#\|^$')"
+		counto="$(find ${pfborig}*_v4.orig 2>/dev/null | xargs cat | grep -cv '^#\|^$')"
 	fi
 
 	# Execute when 'de-duplication' is enabled
@@ -1301,6 +1329,9 @@ case "${1}" in
 		;;
 	whoisconvert)
 		whoisconvert
+		;;
+	iptoasn)
+		iptoasn
 		;;
 	suppress)
 		suppress

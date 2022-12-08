@@ -74,7 +74,7 @@ except Exception as e:
 
 
 def init_standard(id, env):
-    global pfb, rcodeDB, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB, maxmindReader
+    global pfb, rcodeDB, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB, maxmindReader
 
     if not register_inplace_cb_reply(inplace_cb_reply, env, id):
         log_info('[pfBlockerNG]: Failed register_inplace_cb_reply')
@@ -214,6 +214,7 @@ def init_standard(id, env):
     feedGroupDB = defaultdict(str)
     excludeDB = []
     excludeAAAADB = []
+    excludeSS = []
 
     # Read pfb_unbound.ini settings
     if os.path.isfile(pfb['pfb_unbound.ini']):
@@ -981,8 +982,11 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
 
     ttl = get_rep_ttl(rep)
     # Cached TTLs are in unix timestamp (time remaining)
-    if m_type == 'cache' and ttl.isdigit():
-        ttl = int(ttl) - int(time.time())
+    if m_type == 'cache':
+        if ttl.isdigit() and len(ttl) == 10:
+            ttl = int(ttl) - int(time.time())
+        else:
+            ttl = ''
 
     for i in range(2):
         try:
@@ -1003,16 +1007,15 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
 def python_control_duration(duration):
 
     try:
-        if duration.isnumeric():
+        if duration.isnumeric() and 0 < duration <= 3600:
             duration = int(duration)
-            if (0 < duration <= 3600):
-                return duration
+            return duration
+        else:
             return False
     except Exception as e:
         sys.stderr.write("[pfBlockerNG] python_control_duration: {}" .format(e))
         pass
     return False
-
 
 # Is thread still active
 def python_control_thread(tname):
@@ -1098,7 +1101,7 @@ def inform_super(id, qstate, superqstate, qdata):
     return True
 
 def operate(id, event, qstate, qdata):
-    global pfb, threads, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB
+    global pfb, threads, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB
 
     qstate_valid = False
     try:
@@ -1147,74 +1150,104 @@ def operate(id, event, qstate, qdata):
 
             # Create FQDN Reply Message (AAAA -> A)
             if isin_noAAAA:
-                msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+                msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA)
                 if msg is None or not msg.set_return_msg(qstate):
                     qstate.ext_state[id] = MODULE_ERROR
                     return True
+
+                if qstate.return_msg.qinfo:
+                    invalidateQueryInCache(qstate, qstate.return_msg.qinfo)
+                    storeQueryInCache(qstate, qstate.return_msg.qinfo, qstate.return_msg.rep, 0)
 
                 qstate.return_rcode = RCODE_NOERROR
                 qstate.return_msg.rep.security = 2
                 qstate.ext_state[id] = MODULE_FINISHED
                 return True
 
-            # Add domain to excludeAAAADB to skip subsequent validation
+            # Add domain to excludeAAAADB to skip subsequent no AAAA validation 
             else:
                 excludeAAAADB.append(q_name_original)
 
+
         # SafeSearch Redirection validation
         if qstate_valid and pfb['safeSearchDB']:
-            isSafeSearch = safeSearchDB.get(q_name_original)
 
-            # Validate 'www.' Domains
-            if isSafeSearch is None and not q_name_original.startswith('www.'):
-                isSafeSearch = safeSearchDB.get('www.' + q_name_original)
+            # Determine if domain has been previously validated
+            if q_name_original not in excludeSS:
+                isSafeSearch = safeSearchDB.get(q_name_original)
 
-            if isSafeSearch is not None:
+                # Validate 'www.' Domains
+                if isSafeSearch is None and not q_name_original.startswith('www.'):
+                    isSafeSearch = safeSearchDB.get('www.' + q_name_original)
 
-                ss_found = False
-                if isSafeSearch['A'] == 'nxdomain':
-                    qstate.return_rcode = RCODE_NXDOMAIN
-                    qstate.ext_state[id] = MODULE_FINISHED
-                    return True
+                # TODO: See CNAME message below
+                #if isSafeSearch is None and q_name_original != 'safe.duckduckgo.com' and q_name_original.endswith('duckduckgo.com'):
+                #    isSafeSearch = safeSearchDB.get('duckduckgo.com') 
+                #if isSafeSearch is None and q_name_original != 'safesearch.pixabay.com' and q_name_original.endswith('pixabay.com'):
+                #    isSafeSearch = safeSearchDB.get('pixabay.com')
 
-                elif isSafeSearch['A'] == 'cname':
-                    if isSafeSearch['AAAA'] is not None:
+                if isSafeSearch is not None:
 
-                        if q_type == RR_TYPE_A:
-                            cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA)
-                            cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
-                            ss_found = True
-                        elif q_type == RR_TYPE_AAAA:
-                            cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA | PKT_AA)
-                            cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
-                            ss_found = True
-
-                        if ss_found:
-                            if cname_msg is None or not cname_msg.set_return_msg(qstate):
-                                qstate.ext_state[id] = MODULE_ERROR
-                                return True
-
-                            qstate.ext_state[id] = MODULE_WAIT_MODULE
-                            return True
-                else:
-                    if q_type == RR_TYPE_A or (q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] == ''):
-                        msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
-                        msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'A', isSafeSearch['A']))
-                        ss_found = True
-                    elif q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] != '':
-                        msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
-                        msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'AAAA', isSafeSearch['AAAA']))
-                        ss_found = True
-
-                if ss_found:
-                    if msg is None or not msg.set_return_msg(qstate):
-                        qstate.ext_state[id] = MODULE_ERROR
+                    ss_found = False
+                    if isSafeSearch['A'] == 'nxdomain':
+                        qstate.return_rcode = RCODE_NXDOMAIN
+                        qstate.ext_state[id] = MODULE_FINISHED
                         return True
+
+                    # TODO: Wait for Unbound code changes to allow for this functionality, using local-zone/local-data entries for CNAMES for now
+                    elif isSafeSearch['A'] == 'cname':
+                        if isSafeSearch['AAAA'] is not None and isSafeSearch['AAAA'] != '':
+                            if q_type == RR_TYPE_A:
+                                cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA)
+                                cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
+                                ss_found = True
+                            elif q_type == RR_TYPE_AAAA:
+                                cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA)
+                                cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
+                                ss_found = True
+
+                            if ss_found:
+                                cname_msg.set_return_msg(qstate)
+                                if cname_msg is None or not cname_msg.set_return_msg(qstate):
+                                    qstate.ext_state[id] = MODULE_ERROR
+                                    return True
+
+                                if qstate.return_msg.qinfo:
+                                    invalidateQueryInCache(qstate, qstate.return_msg.qinfo)
+                                    storeQueryInCache(qstate, qstate.return_msg.qinfo, qstate.return_msg.rep, 0)
+
+                                MODULE_RESTART_NEXT = 3
+                                qstate.no_cache_store = 1
+                                qstate.ext_state[id] = MODULE_RESTART_NEXT
+                                return True
+                    else:
+                        if (q_type == RR_TYPE_A and isSafeSearch['A'] != '') or (q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] == ''):
+                            msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA)
+                            msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'A', isSafeSearch['A']))
+                            ss_found = True
+                        elif q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] != '':
+                            msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RA)
+                            msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'AAAA', isSafeSearch['AAAA']))
+                            ss_found = True
+
+                    if ss_found:
+                        msg.set_return_msg(qstate)
+                        if msg is None or not msg.set_return_msg(qstate):
+                            qstate.ext_state[id] = MODULE_ERROR
+                            return True
+
+                        if qstate.return_msg.qinfo:
+                            invalidateQueryInCache(qstate, qstate.return_msg.qinfo)
+                            storeQueryInCache(qstate, qstate.return_msg.qinfo, qstate.return_msg.rep, 0)
  
-                    qstate.return_rcode = RCODE_NOERROR
-                    qstate.return_msg.rep.security = 2
-                    qstate.ext_state[id] = MODULE_FINISHED
-                    return True
+                        qstate.return_rcode = RCODE_NOERROR
+                        qstate.return_msg.rep.security = 2
+                        qstate.ext_state[id] = MODULE_FINISHED
+                        return True
+
+            # Add domain to excludeSS to skip subsequent SafeSearch validation
+            else:
+                excludeSS.append(q_name_original)
 
         # Python_control - Receive TXT commands from pfSense local IP
         if qstate_valid and q_type == RR_TYPE_TXT and q_name_original.startswith('python_control.'):
@@ -1314,7 +1347,7 @@ def operate(id, event, qstate, qdata):
                         control_msg = "Python_control: Command not authorized! [ {} ]" .format(q_name_original)
                     q_reply = 'python_control_fail'
 
-                txt_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_TXT, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+                txt_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_TXT, RR_CLASS_IN, PKT_QR | PKT_RA)
                 txt_msg.answer.append("{}. 0 IN TXT \"{}\"" .format(q_reply, control_msg))
 
                 if txt_msg is None or not txt_msg.set_return_msg(qstate):
@@ -1593,9 +1626,10 @@ def operate(id, event, qstate, qdata):
                     # print q_name + ' Blocked ' + b_ip + ' ' + q_type_str
 
                     # Create FQDN Reply Message
-                    msg = DNSMessage(qstate.qinfo.qname_str, q_type, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+                    msg = DNSMessage(qstate.qinfo.qname_str, q_type, RR_CLASS_IN, PKT_QR | PKT_RA)
                     msg.answer.append("{}. 60 IN {} {}" .format(q_name, q_type_str, b_ip))
 
+                    msg.set_return_msg(qstate)
                     if msg is None or not msg.set_return_msg(qstate):
                         qstate.ext_state[id] = MODULE_ERROR
                         return True

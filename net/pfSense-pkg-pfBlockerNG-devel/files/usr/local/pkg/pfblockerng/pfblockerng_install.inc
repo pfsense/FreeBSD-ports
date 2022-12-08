@@ -30,7 +30,15 @@ pfb_global();
 $g['pfblockerng_install'] = TRUE;
 
 // MaxMind Database is no longer pre-installed during package installation
-update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
+if (empty($pfb['maxmind_key'])) {
+ update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
+}
+
+// Create Reputation tab
+if (!file_exists('/usr/local/www/pfblockerng/pfblockerng_reputation.php') || empty($pfb['maxmind_key'])) {
+	require_once('/usr/local/www/pfblockerng/pfblockerng.php');
+	pfb_build_reputation_tab();
+}
 
 $pfb['widgets'] = $config['widgets']['sequence'];
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
@@ -73,6 +81,11 @@ if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' && file_exists
 } else {
 	link('/usr/bin/tail', '/usr/bin/tail_pfb');
 }
+
+// Remove cache databases
+unlink_if_exists("{$pfb['asn_cache']}");
+unlink_if_exists("{$pfb['ip_cache']}");
+unlink_if_exists("{$pfb['dnsbl_cache']}");
 
 update_status(" done.\nStarting Firewall filter Service...");
 start_service('pfb_filter');

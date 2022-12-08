@@ -63,40 +63,102 @@ $pconfig['log_max_dnsbl_parse_err']	= $pfb['gconfig']['log_max_dnsbl_parse_err']
 $pconfig['log_max_dnsreplylog']		= $pfb['gconfig']['log_max_dnsreplylog']		?: 20000;
 $pconfig['log_max_unilog']		= $pfb['gconfig']['log_max_unilog']			?: 20000;
 
+// Select field options
+$options_pfb_interval	= [	'1' => 'Every hour',
+				'2' => 'Every 2 hours',
+				'3' => 'Every 3 hours',
+				'4' => 'Every 4 hours',
+				'6' => 'Every 6 hours',
+				'8' => 'Every 8 hours',
+				'12' => 'Every 12 hours',
+				'24' => 'Once a day',
+				'Disabled' => 'Disabled' ];
+$options_pfb_min	= [ '0' => '00', '15' => '15', '30' => '30', '45' => '45' ];
+$options_pfb_hour	= range(0, 23, 1);
+$options_pfb_dailystart	= range(0, 23, 1);
+$options_skipfeed	= [ '0' => 'No Limit', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6' ];
+$options_log_types	= [	'100' => '100', '1000' => '1,000', '2000' => '2,000', '4000' => '4,000', '6000' => '6,000',
+				'8000' => '8,000', '10000' => '10,000', '20000' => '20,000', '40000' => '40,000', '60000' => '60,000',
+				'80000' => '80,000', '100000' => '100,000', '200000' => '200,000 - Memory intensive...', '400000' => '400,000',
+				'600000' => '600,000', '800000' => '800,000', '1000000' => '1,000,000', '1500000' => '1,500,000',
+				'2000000' => '2,000,000', '2500000' => '2,500,000', '3000000' => '3,000,000',
+				'nolimit' => 'No Limit - Not recommended' ];
+
+
 // Validate input fields and save
 if ($_POST) {
 	if (isset($_POST['save'])) {
 
-		$pfb['gconfig']['enable_cb']			= $_POST['enable_cb']		?: '';
-		$pfb['gconfig']['pfb_keep']			= $_POST['pfb_keep']		?: '';
-		$pfb['gconfig']['pfb_interval']			= $_POST['pfb_interval']	?: '';
-		$pfb['gconfig']['pfb_min']			= $_POST['pfb_min']		?: '';
-		$pfb['gconfig']['pfb_hour']			= $_POST['pfb_hour']		?: '';
-		$pfb['gconfig']['pfb_dailystart']		= $_POST['pfb_dailystart']	?: '';
-		$pfb['gconfig']['skipfeed']			= $_POST['skipfeed']		?: '';
+		// Validate Select field options
+		$select_options = array(	'pfb_interval'			=> 1,
+						'pfb_min'			=> 0,
+						'pfb_hour'			=> 0,
+						'pfb_dailystart'		=> 0,
+						'skipfeed'			=> 0,
+						'log_max_log'			=> 20000,
+						'log_max_errlog'		=> 20000,
+						'log_max_extraslog'		=> 20000,
+						'log_max_ip_blocklog'		=> 20000,
+						'log_max_ip_permitlog'		=> 20000,
+						'log_max_ip_matchlog'		=> 20000,
+						'log_max_dnslog'		=> 20000,
+						'log_max_dnsbl_parse_err'	=> 20000,
+						'log_max_dnsreplylog'		=> 20000,
+						'log_max_unilog'		=> 20000
+						);
 
-		// Remove old Line Limit setting
-		if (isset($pfb['gconfig']['log_maxlines'])) {
-			unset($pfb['gconfig']['log_maxlines']);
+		foreach ($select_options as $s_option => $s_default) {
+
+			// Array to validate against
+			if (strpos($s_option, 'log_max_') !== FALSE) {
+				$query = $options_log_types;
+			} else {
+				$query = ${"options_$s_option"};
+			}
+
+			if (is_array($_POST[$s_option])) {
+				$_POST[$s_option] = $s_default;
+			}
+			elseif (!array_key_exists($_POST[$s_option], $query)) {
+				$_POST[$s_option] = $s_default;
+			}
 		}
 
-		$pfb['gconfig']['log_max_log']			= $_POST['log_max_log']			?: '';
-		$pfb['gconfig']['log_max_errlog']		= $_POST['log_max_errlog']		?: '';
-		$pfb['gconfig']['log_max_extraslog']		= $_POST['log_max_extraslog']		?: '';
-		$pfb['gconfig']['log_max_ip_blocklog']		= $_POST['log_max_ip_blocklog']		?: '';
-		$pfb['gconfig']['log_max_ip_permitlog']		= $_POST['log_max_ip_permitlog']	?: '';
-		$pfb['gconfig']['log_max_ip_matchlog']		= $_POST['log_max_ip_matchlog']		?: '';
-		$pfb['gconfig']['log_max_dnslog']		= $_POST['log_max_dnslog']		?: '';
-		$pfb['gconfig']['log_max_dnsbl_parse_err']	= $_POST['log_max_dnsbl_parse_err']	?: '';
-		$pfb['gconfig']['log_max_dnsreplylog']		= $_POST['log_max_dnsreplylog']		?: '';
-		$pfb['gconfig']['log_max_unilog']		= $_POST['log_max_unilog']		?: '';
-
 		if (!$input_errors) {
+
+			$pfb['gconfig']['enable_cb']			= pfb_filter($_POST['enable_cb'], PFB_FILTER_ON_OFF, 'general', '');
+			$pfb['gconfig']['pfb_keep']			= pfb_filter($_POST['pfb_keep'], PFB_FILTER_ON_OFF, 'general', '');
+			$pfb['gconfig']['pfb_interval']			= $_POST['pfb_interval']			?: 1;
+			$pfb['gconfig']['pfb_min']			= $_POST['pfb_min']				?: 0;
+			$pfb['gconfig']['pfb_hour']			= $_POST['pfb_hour']				?: 0;
+			$pfb['gconfig']['pfb_dailystart']		= $_POST['pfb_dailystart']			?: 0;
+			$pfb['gconfig']['skipfeed']			= $_POST['skipfeed']				?: 0;
+
+			// Remove old Line Limit setting
+			if (isset($pfb['gconfig']['log_maxlines'])) {
+				unset($pfb['gconfig']['log_maxlines']);
+			}
+
+			$pfb['gconfig']['log_max_log']			= $_POST['log_max_log']				?: 20000;
+			$pfb['gconfig']['log_max_errlog']		= $_POST['log_max_errlog']			?: 20000;
+			$pfb['gconfig']['log_max_extraslog']		= $_POST['log_max_extraslog']			?: 20000;
+			$pfb['gconfig']['log_max_ip_blocklog']		= $_POST['log_max_ip_blocklog']			?: 20000;
+			$pfb['gconfig']['log_max_ip_permitlog']		= $_POST['log_max_ip_permitlog']		?: 20000;
+			$pfb['gconfig']['log_max_ip_matchlog']		= $_POST['log_max_ip_matchlog']			?: 20000;
+			$pfb['gconfig']['log_max_dnslog']		= $_POST['log_max_dnslog']			?: 20000;
+			$pfb['gconfig']['log_max_dnsbl_parse_err']	= $_POST['log_max_dnsbl_parse_err']		?: 20000; 
+			$pfb['gconfig']['log_max_dnsreplylog']		= $_POST['log_max_dnsreplylog']			?: 20000;
+			$pfb['gconfig']['log_max_unilog']		= $_POST['log_max_unilog']			?: 20000;
+
 			write_config('[pfBlockerNG] save General settings');
 
 			$pfb['save'] = TRUE;
 			sync_package_pfblockerng();
 			header('Location: /pfblockerng/pfblockerng_general.php');
+			exit;
+		}
+		else {
+			print_input_errors($input_errors);
 		}
 	}
 }
@@ -125,10 +187,6 @@ else {
 	$tab_array[]	= array(gettext('Sync'),	false,	'/pfblockerng/pfblockerng_sync.php');
 	$tab_array[]	= array(gettext('Wizard'),	false,	'/wizard.php?xml=pfblockerng_wizard.xml');
 	display_top_tabs($tab_array, true);
-}
-
-if (isset($input_errors)) {
-	print_input_errors($input_errors);
 }
 
 $form = new Form('Save');
@@ -171,29 +229,28 @@ $group->add(new Form_Select(
 	'pfb_interval',
 	'Hour Interval',
 	$pconfig['pfb_interval'],
-	[	'1' => 'Every hour', '2' => 'Every 2 hours', '3' => 'Every 3 hours', '4' => 'Every 4 hours', '6' => 'Every 6 hours',
-		'8' => 'Every 8 hours', '12' => 'Every 12 hours', '24' => 'Once a day', 'Disabled' => 'Disabled' ]
+	$options_pfb_interval
 ))->setHelp('Default: <strong>Every hour</strong><br />Select the Cron hour interval.');
 
 $group->add(new Form_Select(
 	'pfb_min',
 	'Start Min',
 	$pconfig['pfb_min'],
-	[ '0' => '00', '15' => '15', '30' => '30', '45' => '45' ]
+	$options_pfb_min
 ))->setHelp('Default: <strong>:00</strong><br />Select the Cron update minute.');
 
 $group->add(new Form_Select(
 	'pfb_hour',
 	'Start Hour',
 	$pconfig['pfb_hour'],
-	range(0, 23, 1)
+	$options_pfb_hour
 ))->setHelp('Default: <strong>0</strong><br />Select the Cron start hour.');
 
 $group->add(new Form_Select(
 	'pfb_dailystart',
 	'Daily/Weekly Start Hour',
 	$pconfig['pfb_dailystart'],
-	range(0, 23, 1)
+	$options_pfb_dailystart
 ))->setHelp('Default: <strong>0</strong><br />Select the \'Daily/Weekly\' start hour.');
 $section->add($group);
 
@@ -201,7 +258,7 @@ $section->addInput(new Form_Select(
 	'skipfeed',
 	'Download Failure Threshold',
 	$pconfig['skipfeed'],
-	[ '0' => 'No Limit', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6' ]
+	$options_skipfeed
 ))->setHelp('Default: <strong>No limit</strong><br />'
 		. 'Select max daily download failure threshold via CRON. Clear widget \'failed downloads\' to reset.<br />'
 		. 'On a download failure, the previously downloaded list is reloaded.')
@@ -222,12 +279,7 @@ foreach ($log_types as $logdescr => $logtype) {
 			'log_max_' . $type,
 			$descr,
 			$pconfig['log_max_' . $type],
- 			[	'100' => '100', '1000' => '1,000', '2000' => '2,000', '4000' => '4,000', '6000' => '6,000',
-				'8000' => '8,000', '10000' => '10,000', '20000' => '20,000', '40000' => '40,000', '60000' => '60,000',
-				'80000' => '80,000', '100000' => '100,000', '200000' => '200,000 - Memory intensive...', '400000' => '400,000',
-				'600000' => '600,000', '800000' => '800,000', '1000000' => '1,000,000', '1500000' => '1,500,000',
-				'2000000' => '2,000,000', '2500000' => '2,500,000', '3000000' => '3,000,000',
-				'nolimit' => 'No Limit - Not recommended' ]
+			$options_log_types
 		))->setHelp("Default: <strong>20000<br />{$descr}</strong> Log")
 		  ->setWidth(2);
 	}
@@ -251,6 +303,8 @@ $section->addInput(new Form_StaticText(
 			<span style="color: #8B181B;" class="fa fa-twitter"></span> Follow on Twitter</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/r/pfBlockerNG/new/">
 			<span style="color: #8B181B;" class="fa fa-reddit"></span> Reddit</a></li>
+		<li class="list-inline-item"><a target="_blank" href="https://infosec.exchange/@BBcan177#">
+			<span style="color: #8B181B;" class="fa fa-globe"></span> Mastodon</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://github.com/BBcan177">
 			<span style="color: #8B181B;" class="fa fa-github"></span> GitHub</a></li>
 		<li class="list-inline-item"><a target="_blank" href="mailto:bbcan177@gmail.com?Subject=pfBlockerNG%20Support">
