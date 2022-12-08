@@ -6456,7 +6456,7 @@ function sync_package_pfblockerng($cron='') {
 
 	// TO BE REMOVED AT FUTURE DATE:
 
-	// DNSBL Python mode is not compatable with dhcpleases binary code,
+	// DNSBL Python mode is not compatible with dhcpleases binary code,
 	// as it attempts to HUP the Unbound PID and will cause DNSBL Python mode to crash Unbound
 
 	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver DHCP Registration option has been disabled.
@@ -6465,7 +6465,7 @@ function sync_package_pfblockerng($cron='') {
 		$pfb['dnsbl_py_blacklist']	= FALSE;
 
 		$log = "\n [ ALERT ]\n"
-			. " DNSBL Python mode is not compatable with the DNS Resolver DHCP Registration option!\n"
+			. " DNSBL Python mode is not compatible with the DNS Resolver DHCP Registration option!\n"
 			. " The DNS Resolver DHCP Registration option must be disabled to utilize the DNSBL Python feature!\n"
 			. " DNSBL has been automatically downgraded to the DNSBL Unbound mode!\n\n";
 		pfb_logger("{$log}", 1);
@@ -6482,7 +6482,7 @@ function sync_package_pfblockerng($cron='') {
 		$pfb['dnsbl_py_blacklist']	= FALSE;
 
 		$log = "\n [ ALERT ]\n"
-			. " DNSBL Python mode is not compatable with the DNS Resolver OpenVPN Client Registration option enabled!\n"
+			. " DNSBL Python mode is not compatible with the DNS Resolver OpenVPN Client Registration option enabled!\n"
 			. " The DNS Resolver DHCP Registration option must be disabled to utilize the DNSBL Python feature!\n"
 			. " DNSBL has been automatically downgraded to the DNSBL Unbound mode!\n\n";
 		pfb_logger("{$log}", 1);
