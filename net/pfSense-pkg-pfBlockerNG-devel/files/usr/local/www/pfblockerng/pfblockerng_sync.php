@@ -35,20 +35,33 @@ $pconfig['varsynconchanges']	= $pfb['sconfig']['varsynconchanges']	?: '';
 $pconfig['varsynctimeout']	= $pfb['sconfig']['varsynctimeout']	?: 150;
 $pconfig['syncinterfaces']	= $pfb['sconfig']['syncinterfaces']	?: '';
 
+// Select field options
+$options_varsynconchanges	= [ 'disabled' => 'Do not sync this package configuration', 'auto' => 'Sync to configured system backup server', 'manual' => 'Sync to host(s) defined below' ];
+$options_varsynctimeout		= range(0, 5000, 50);
+
 // Validate input fields and save
 if ($_POST) {
-
 	if (isset($_POST['save'])) {
 
 		if (isset($input_errors)) {
 			unset($input_errors);
 		}
+
+		// Validate Select field options
+		$select_options = array(	'varsynconchanges'	=> '',
+						'varsynctimeout'	=> '',
+						);
+
+		foreach ($select_options as $s_option => $s_default) {
+			if (is_array($_POST[$s_option])) {
+				$_POST[$s_option] = $s_default;
+			}
+			elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+				$_POST[$s_option] = $s_default;
+			}
+		}
+
 		$rowhelper_exist = array();
-
-		$pfb['sconfig']['varsynconchanges']	= $_POST['varsynconchanges'];
-		$pfb['sconfig']['varsynctimeout']	= $_POST['varsynctimeout'];
-		$pfb['sconfig']['syncinterfaces']	= $_POST['syncinterfaces']	?: '';
-
 		foreach ($_POST as $key => $value) {
 
 			// Parse 'rowhelper' fields and save new values
@@ -58,14 +71,48 @@ if ($_POST) {
 				// Collect all rowhelper keys
 				$rowhelper_exist[$k_field[1]] = '';
 
-				// Validate Username field
-				if ($k_field[0] == 'varsyncusername') {
-					if (preg_match("/[^a-zA-Z0-9\.\-_]/", $value)) {
-						$input_errors[] = gettext('The username contains invalid characters.');
-					}
-					if (strlen($value) > 16) {
-						$input_errors[] = gettext('The username is longer than 16 characters.');
-					}
+				switch ($k_field[0]) {
+					case 'syncinterfaces':
+						if ($value == 'on' || $value == '') {
+							//
+						} else {
+							$input_errors[] = gettext('Invalid XMLRPC Replication target enabled');
+						}
+						break;
+					case 'varsyncusername':
+						// Validate Username field
+						if (preg_match("/[^a-zA-Z0-9\._-]/", $value)) {
+							$input_errors[] = gettext('The username contains invalid characters.');
+						}
+						if (strlen($value) > 16) {
+							$input_errors[] = gettext('The username is longer than 16 characters.');
+						}
+						break;
+					case 'varsyncpassword':
+						$value = htmlspecialchars($value);
+						break;
+					case 'varsyncipaddress':
+						// Validate IP Address
+						$value = pfb_filter($value, PFB_FILTER_IP, 'Sync');
+						if (empty($value)) {
+							$input_errors[] = gettext('The Target IP Address is invalid.');
+						}
+						break;
+					case 'varsyncprotocol':
+						// Validate Protocol
+						if (!in_array($value, array('http', 'https'))) {
+							$input_errors[] = gettext('The Protocol is invalid.');
+						}
+						break;
+					case 'varsyncport':
+						// Validate Port
+						if (!is_port($value)) {
+							$input_errors[] = gettext('The Port is invalid.');
+						}
+						break;
+					default:
+						continue;
+						break;
 				}
 				$pfb['sconfig']['row'][$k_field[1]][$k_field[0]] = $value;
 
@@ -85,8 +132,17 @@ if ($_POST) {
 		}
 
 		if (!$input_errors) {
+
+			$pfb['sconfig']['varsynconchanges']	= $_POST['varsynconchanges']						?: '';
+			$pfb['sconfig']['varsynctimeout']	= $_POST['varsynctimeout']						?: '';
+			$pfb['sconfig']['syncinterfaces']	= pfb_filter($_POST['syncinterfaces'], PFB_FILTER_ON_OFF, 'Sync')	?: '';
+
 			write_config('[pfBlockerNG] save XMLRPC sync settings');
 			header('Location: /pfblockerng/pfblockerng_sync.php');
+			exit;
+		}
+		else {
+			print_input_errors($input_errors);
 		}
 	}
 }
@@ -109,10 +165,6 @@ $tab_array[]	= array(gettext('Logs'),	false,	'/pfblockerng/pfblockerng_log.php')
 $tab_array[]	= array(gettext('Sync'),	true,	'/pfblockerng/pfblockerng_sync.php');
 display_top_tabs($tab_array, true);
 
-if (isset($input_errors)) {
-	print_input_errors($input_errors);
-}
-
 $form = new Form('Save XMLRPC sync settings');
 
 $section = new Form_Section('XMLRPC Sync Settings');
@@ -128,7 +180,7 @@ $section->addInput(new Form_Select(
 	'varsynconchanges',
 	'Enable Sync',
 	$pconfig['varsynconchanges'],
-	[ 'disabled' => 'Do not sync this package configuration', 'auto' => 'Sync to configured system backup server', 'manual' => 'Sync to host(s) defined below' ]
+	$options_varsynconchanges
 ))->setHelp('When enabled, this will sync all configuration settings to the Replication Targets.<br /><br />'
 		. '<b>Important:</b> While using "Sync to hosts defined below", only sync from host A to B, A to C'
 		. '<br /> but <b>do not</b> enable XMLRPC sync <b>to</b> A. This will result in a loop!');
@@ -177,7 +229,7 @@ foreach ($rowdata as $r_id => $row) {
 		'varsyncdestinenable-' . $r_id,
 		NULL,
 		NULL,
-		$row['varsyncdestinenable'] === 'on' ? true:false,
+		isset($row['varsyncdestinenable']) ? ($row['varsyncdestinenable'] === 'on' ? true:false) : false,
 		'on'
 	))->setHelp(($numrows == $rowcounter) ? 'Enable' : NULL)
 	  ->setWidth(1);
