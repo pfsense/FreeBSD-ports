@@ -3962,7 +3962,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 				pfb_logger("{$log}", "{$logtype}");
 				return FALSE;
 			} else {
-				// Save orignal downloaded file
+				// Save original downloaded file
 				@file_put_contents("{$file_download}", $file_data, LOCK_EX);
 				$http_status = '200 OK';
 			}
