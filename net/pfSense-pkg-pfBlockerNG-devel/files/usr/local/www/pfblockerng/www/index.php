@@ -20,6 +20,17 @@
  * limitations under the License.
  */
 
+if (strpos($_SERVER['HTTP_HOST'], ':') !== FALSE) {
+	$_SERVER['HTTP_HOST'] = strstr($_SERVER['HTTP_HOST'], ':', TRUE);
+}
+if (filter_var($_SERVER['HTTP_HOST'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) === FALSE) {
+	exit;
+}
+
+if (strlen($_SERVER['REQUEST_TIME']) != 10 || !preg_match("/^[0-9]+$/", $_SERVER['REQUEST_TIME'])) {
+	exit;
+}
+
 $ptype = array();
 $ptype['REQUEST_URI'] = htmlspecialchars(str_replace('|', '--', $_SERVER['REQUEST_URI']));
 foreach (array('HTTP_HOST', 'HTTP_REFERER', 'HTTP_USER_AGENT', 'REMOTE_ADDR') as $server_type) {
@@ -32,9 +43,17 @@ if (file_exists('/var/log/pfblockerng/dnsbl.log')) {
 
 		// Search for blocked domain within last minutes
 		$timestamp = date('M j H:i', htmlspecialchars($_SERVER['REQUEST_TIME']));
+		if (!preg_match("/^[a-zA-Z0-9: ]+$/", $timestamp)) {
+			exit;
+		}
+
 		foreach (array( $timestamp,
 				date('M j H:i', strtotime('-1 minute', strtotime($timestamp))),
 				date('M j', strtotime($timestamp))) as $ts) {
+
+			if (!preg_match("/^[a-zA-Z0-9: ]+$/", $ts)) {
+				exit;
+			}
 
 			$data = array();
 			$now = escapeshellarg($ts);
@@ -82,6 +101,7 @@ else {
 		$type = 'DNSBL-1x1';
 		header("Content-Type: image/gif");
 		echo base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==');
+		exit;
 	}
 	else {
 		$type = 'DNSBL-Full';

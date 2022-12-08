@@ -30,47 +30,69 @@ pfb_global();
 
 $rowdata	= array();
 $rowid		= 0;
-$action		= $chg_state = '';
+$id		= 0;
+$action		= $gtype = $atype = $chg_state = '';
 $disable_move	= FALSE;
 
-if ($_GET) {
-	if (isset($_GET['rowid']) && ctype_digit($_GET['rowid'])) {
-		$rowid = $_GET['rowid'];
+if (isset($_GET)) {
+	if (isset($_GET['rowid']) && !empty($_GET['rowid'])) {
+		$temp_value = pfb_filter($_GET['rowid'], PFB_FILTER_NUM);
+		if (!empty($temp_value)) {
+			$rowid = $temp_value ?: 0;
+		}
 	}
-	if (isset($_GET['type'])) {
-		$gtype = $_GET['type'];
+	if (isset($_GET['type']) && !empty($_GET['type'])) {
+		$temp_value = pfb_filter($_GET['type'], PFB_FILTER_ALNUM, 'Category_edit');
+		if (!empty($temp_value)) {
+			$gtype = $temp_value;
+		}
 	}
-	if (isset($_GET['act'])) {
+	if (isset($_GET['act']) && !empty($_GET['act'])) {
 		if ($_GET['act'] == 'add') {
 			$action = 'add';
 		} elseif ($_GET['act'] == 'addgroup') {
 			$action = 'addgroup';
 		}
 	}
-	if (isset($_GET['atype'])) {
-		$atype = htmlspecialchars($_GET['atype']);
+	if (isset($_GET['atype']) && !empty($_GET['atype'])) {
+		$temp_value = pfb_filter($_GET['atype'], PFB_FILTER_ATYPE, 'Category_edit');
+		if (!empty($temp_value)) {
+			$atype = $temp_value;
+		}
 	}
 }
 
-if ($_POST) {
-	if (isset($_POST['id']) && ctype_digit($_POST['id'])) {
-		$id = $_POST['id'];
+if (isset($_POST)) {
+	if (isset($_POST['id']) && !empty($_POST['id'])) {
+		$temp_value = pfb_filter($_POST['id'], PFB_FILTER_NUM, 'Category_edit');
+		if (!empty($temp_value)) {
+			$id = $temp_value ?: 0;
+		}
 	}
-	if (isset($_POST['rowid']) && ctype_digit($_POST['rowid'])) {
-		$rowid = $_POST['rowid'];
+	if (isset($_POST['rowid']) && !empty($_POST['rowid'])) {
+		$temp_value = pfb_filter($_POST['rowid'], PFB_FILTER_NUM, 'Category_edit');
+		if (!empty($temp_value)) {
+			$rowid = $temp_value ?: 0;
+		}
 	}
-	if (isset($_POST['type'])) {
-		$gtype = $_POST['type'];
+	if (isset($_POST['type']) && !empty($_POST['type'])) {
+		$temp_value = pfb_filter($_POST['type'], PFB_FILTER_ALNUM, 'Category_edit');
+		if (!empty($temp_value)) {
+			$gtype = $temp_value;
+		}
 	}
-	if (isset($_POST['act'])) {
+	if (isset($_POST['act']) && !empty($_POST['act'])) {
 		if ($_POST['act'] == 'add') {
 			$action = 'add';
 		} elseif ($_POST['act'] == 'addgroup') {
 			$action = 'addgroup';
 		}
 	}
-	if (isset($_POST['atype'])) {
-		$atype = htmlspecialchars($_POST['atype']);
+	if (isset($_POST['atype']) && !empty($_POST['atype'])) {
+		$temp_value = pfb_filter($_POST['atype'], PFB_FILTER_ATYPE, 'Category_edit');
+		if (!empty($temp_value)) {
+			$atype = $temp_value;
+		}
 	}
 	if (isset($_POST['chgstate']) && $_POST['chgstate'] == 'Enable All') {
 		$chg_state = TRUE;
@@ -93,19 +115,21 @@ if (!empty($gtype)) {
 			$type		= 'IPv4';
 			$conf_type	= 'pfblockernglistsv4';
 			$suffix		= '_v4';
-			$active		= array('ip' => TRUE, 'ipv4' => TRUE);
+			$active		= array('ip' => TRUE, 'ipv4' => TRUE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'feeds' => FALSE);
 			break;
 		case 'ipv6':
 			$type		= 'IPv6';
 			$conf_type	= 'pfblockernglistsv6';
 			$suffix		= '_v6';
-			$active		= array('ip' => TRUE, 'ipv6' => TRUE);
+			$active		= array('ip' => TRUE, 'ipv4' => FALSE, 'ipv6' => TRUE, 'dnsbl' => FALSE, 'feeds' => FALSE);
 			break;
 		case 'dnsbl':
+		default:
+			$gtype		= 'dnsbl';
 			$type		= 'DNSBL';
 			$conf_type	= 'pfblockerngdnsbl';
 			$suffix		= '';
-			$active		= array('dnsbl' => TRUE, 'feeds' => TRUE);
+			$active		= array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' =>FALSE, 'dnsbl' => TRUE, 'feeds' => FALSE);
 			break;
 	}
 }
@@ -114,9 +138,10 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 
 	$pfb_found	= FALSE;
 	$disable_move	= TRUE;
+	$all_group	= $new_group = array();
+
 	init_config_arr(array('installedpackages', $conf_type, 'config'));
 	$rowdata	= $config['installedpackages'][$conf_type]['config'];
-	$all_group = $new_group = array();
 
 	$feed_info = convert_feeds_json();			// Load/convert Feeds (w/alternative aliasname(s), if user-configured
 	if (is_array($feed_info) &&
@@ -219,12 +244,26 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 
 			// Extract Whitelisted IP and Description
 			$data = explode('|', $atype);
+
+			if (isset($data[2]) && !empty($data[2])) {
+				$data[2] = pfb_filter($data[2], PFB_FILTER_HTML, 'Category_edit addgroup');
+			} else {
+				$data[2] = '';
+			}
+
+			if (empty(pfb_filter($data[0], PFB_FILTER_DOMAIN, 'Category_edit addgroup')) ||
+			    empty(pfb_filter($data[1], PFB_FILTER_IP, 'Category_edit addgroup'))) {
+				$savemsg = 'Cannot create new IP Whitelist! Invalid data!';
+				header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
+				exit;
+			}
+
 			if (!empty($data[2])) {
 				$custom_line = "{$data[1]} # {$data[2]}";
 			} else {
 				$custom_line = "{$data[1]}";
 			}
-			$rowdata[$rowid]['custom']	= base64_encode("{$custom_line}");
+			$rowdata[$rowid]['custom'] = base64_encode("{$custom_line}");
 		}
 
 		// Create new Alias via Feeds Tab
@@ -251,6 +290,111 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', "{$pg_url}", '@self
 include_once('head.inc');
 init_config_arr(array('installedpackages', $conf_type, 'config', 0));
 
+
+// Select field options
+
+// Collect pre/post processing scripts
+$options_script_pre = $options_script_post = array();
+$indexdir = '/usr/local/pkg/pfblockerng/';
+if (is_dir("{$indexdir}")) {
+
+	if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+		$list_prefix = 'ip';
+	} else {
+		$list_prefix = 'dnsbl';
+	}
+
+	$list = glob("{$indexdir}/{$list_prefix}_pre_*.{sh,py}", GLOB_BRACE);
+	if (!empty($list)) {
+		foreach ($list as $line) {
+			$file = pathinfo($line, PATHINFO_BASENAME);
+			$options_script_pre = array_merge($options_script_pre, array($file => $file));
+		}
+	}
+
+	$list = glob("{$indexdir}/{$list_prefix}_post_*.{sh,py}", GLOB_BRACE);
+	if (!empty($list)) {
+		foreach ($list as $line) {
+			$file = pathinfo($line, PATHINFO_BASENAME);
+			$options_script_post = array_merge($options_script_post, array($file => $file));
+		}
+	}
+}
+$options_script_pre		= array_merge(array('' => 'None'), $options_script_pre);
+$options_script_pre_cnt		= count($options_script_pre) ?: '1';
+
+$options_script_post		= array_merge(array('' => 'None'), $options_script_post);
+$options_script_post_cnt	= count($options_script_post) ?: '1';
+
+$options_format			= '';
+if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+	$options_format		= [	'auto' => 'Auto', 'geoip' => 'GeoIP', 'regex' => 'Regex', 'whois' => 'Whois', 'asn' => 'ASN', 'rsync' => 'RSync' ];
+} elseif ($gtype == 'dnsbl') {
+	$options_format		= [	'auto' => 'Auto', 'rsync' => 'RSync' ];
+}
+
+$options_state			= [	'Enabled' => 'ON', 'Disabled' => 'OFF', 'Hold' => 'HOLD', 'Flex' => 'FLEX' ];
+
+if ($gtype == 'ipv4' || $gtype == 'ipv6') {
+	$options_action		= [	'Disabled' => 'Disabled', 'Deny_Inbound' => 'Deny Inbound', 'Deny_Outbound' => 'Deny Outbound',
+					'Deny_Both' => 'Deny Both', 'Permit_Inbound' => 'Permit Inbound', 'Permit_Outbound' => 'Permit Outbound',
+					'Permit_Both' => 'Permit Both', 'Match_Inbound' => 'Match Inbound', 'Match_Outbound' => 'Match Outbound',
+					'Match_Both' => 'Match Both', 'Alias_Deny' => 'Alias Deny', 'Alias_Permit' => 'Alias Permit',
+					'Alias_Match' => 'Alias Match', 'Alias_Native' => 'Alias Native' ];
+} else {
+	$options_action		= [	'Disabled' => 'Disabled', 'unbound' => 'Unbound' ];
+}
+
+$options_cron			= [	'Never' => 'Never', '01hour' => 'Every hour', '02hours' => 'Every 2 hours', '03hours' => 'Every 3 hours',
+					'04hours' => 'Every 4 hours', '06hours' => 'Every 6 hours', '08hours' => 'Every 8 hours',
+					'12hours' => 'Every 12 hours', 'EveryDay' => 'Once a day', 'Weekly' => 'Weekly' ];
+
+$options_dow			= [	'1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday' ];
+$options_sort			= [	'sort' => 'Enable auto-sort', 'no-sort' => 'Disable auto-sort' ];
+$options_aliaslog		= [	'enabled' => 'Enabled', 'disabled' => 'Disabled' ];
+$options_stateremoval		= [	'enabled' => 'Enabled', 'disabled' => 'Disabled' ];
+
+// Collect all pfSense 'Port' Aliases
+$portslist = $networkslist = '';
+if (!empty($config['aliases']['alias'])) {
+	foreach ($config['aliases']['alias'] as $alias) {
+		if ($alias['type'] == 'port') {
+			$portslist .= "{$alias['name']},";
+		} elseif ($alias['type'] == 'network') {
+			$networkslist .= "{$alias['name']},";
+		}
+	}
+}
+$ports_list			= trim($portslist, ',');
+$networks_list			= trim($networkslist, ',');
+$options_aliasports_in		= $options_aliasports_out	= explode(',', $ports_list);
+$options_aliasaddr_in		= $options_aliasaddr_out	= explode(',', $networks_list);
+
+$options_autoproto_in		= $options_autoproto_out	= [ '' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP' ];
+$options_agateway_in		= $options_agateway_out		= pfb_get_gateways();
+
+$options_order			= [ 'default' => 'Default', 'primary' => 'Primary' ];
+
+if ($pfb['dnsbl_py_blacklist']) {
+	$options_logging	= [	'enabled'	=> 'DNSBL WebServer/VIP',
+					'disabled'	=> 'Null Blocking (no logging)',
+					'disabled_log'	=> 'Null Blocking (logging)' ];
+} else {
+	$options_logging	= [	'enabled'	=> 'DNSBL WebServer/VIP',
+					'disabled'	=> 'Null Blocking (no logging)' ];
+}
+
+$options_suppression_cidr	= [ 'Disabled' => 'Disabled' ] + array_combine(range(1, 17, -1), range(1, 17, -1));
+
+$interfaces_list		= get_configured_interface_list_by_realif();
+$src_interfaces			= array('lo0' => 'Localhost');
+
+foreach ($interfaces_list as $key => $value) {
+	$src_interfaces		= array_merge(array($key => convert_friendly_interface_to_friendly_descr($interfaces_list[$key])), $src_interfaces);
+}
+$options_srcint			= array_merge(array('' => 'Default'), $src_interfaces);
+
+
 // Validate input fields
 if ($_POST && isset($_POST['save'])) {
 
@@ -262,9 +406,43 @@ if ($_POST && isset($_POST['save'])) {
 	if (isset($savemsg)) {
 		unset($savemsg);
 	}
-
 	if (isset($_REQUEST['savemsg'])) {
 		unset($_REQUEST['savemsg']);
+	}
+
+	// Validate Select field options
+	$select_options = array(	'action'		=> 'Disabled',
+					'cron'			=> 'Never',
+					'dow'			=> '',
+					'sort'			=> 'sort',
+					'aliaslog'		=> 'enabled',
+					'stateremoval'		=> 'enabled',
+					'aliasports_in'		=> '',
+					'aliasports_out'	=> '',
+					'aliasaddr_in'		=> '',
+					'aliasaddr_out'		=> '',
+					'autoproto_in'		=> '',
+					'autoproto_out'		=> '',
+					'agateway_in'		=> 'default',
+					'agateway_out'		=> 'default',
+					'order'			=> 'default',
+					'logging'		=> 'Enabled',
+					'suppression_cidr'	=> 'Disabled',
+					'srcint'		=> '',
+					'script_pre'		=> '',
+					'script_post'		=> ''
+					);
+
+	foreach ($select_options as $s_option => $s_default) {
+		if (!isset($_POST[$s_option])) {
+			// do nothing
+		}
+		elseif (is_array($_POST[$s_option])) {
+			$_POST[$s_option] = $s_default;
+		}
+		elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
+			$_POST[$s_option] = $s_default;
+		}
 	}
 
 	if (empty($_POST['aliasname'])) {
@@ -280,6 +458,13 @@ if ($_POST && isset($_POST['save'])) {
 		$len_post = strlen($_POST['aliasname']);
 		if ($len_post > 24) {
 			$input_errors[] = "Info: Name field cannot exceed 24 characters. [ {$len_post} characters submitted. ]";
+		}
+	}
+
+	// Validate CIDR Limit
+	if ($gtype == 'ipv4') {
+		if ($_POST['suppression_cidr'] != 'Disabled' && !ctype_digit($_POST['suppression_cidr'])) {
+			$input_errors[] = 'Advanced Tunable - Suppression CIDR Limit invalid';
 		}
 	}
 
@@ -307,6 +492,38 @@ if ($_POST && isset($_POST['save'])) {
 				$input_errors[] = "{$type} Source Definitions, Line {$line}: "
 							. "API key not defined! Add your subscripton API Key to the Source field URL or disable/remove feed.";
 			}
+
+			// Validate URL
+			if ($value != 'Disabled' && in_array($_POST["format-{$key_1}"], array( 'auto', 'regex', 'rsync' ))) {
+				if (!pfb_filter($_POST["url-{$key_1}"], PFB_FILTER_URL, 'Category_edit')) {
+					$input_errors[] = "{$type} Source Definitions, Line {$line}: "
+							. "Invalid URL or Hostname not resolvable!";
+				}
+			}
+
+			if ($value != 'Disabled' && $_POST["format-{$key_1}"] == 'geoip') {
+				$k_validate = str_replace('_', '', strstr($_POST["url-{$key_1}"], ' ', TRUE)); 
+				if (empty(pfb_filter($k_validate, PFB_FILTER_ALNUM, 'Category_edit'))) {
+					$input_errors[] = "{$type} Source Definitions, Line {$line}: "
+							. "Invalid GeoIP entry!";
+				}
+			}
+
+			if ($value != 'Disabled' && $_POST["format-{$key_1}"] == 'asn') {
+				$k_validate = strstr($_POST["url-{$key_1}"], ' ', TRUE); 
+				if (empty(pfb_filter($k_validate, PFB_FILTER_ALNUM, 'Category_edit'))) {
+					$input_errors[] = "{$type} Source Definitions, Line {$line}: "
+							. "Invalid ASN entry!";
+				}
+			}
+
+			if ($value != 'Disabled' && $_POST["format-{$key_1}"] == 'whois') {
+				if (empty(pfb_filter($_POST["format-{$key_1}"], PFB_FILTER_DOMAIN, 'Category_edit'))) {
+					$input_errors[] = "{$type} Source Definitions, Line {$line}: "
+							. "Invalid Domain Name (Whois format)";
+				}
+			}
+
 			$line++;
 		}
 
@@ -316,6 +533,7 @@ if ($_POST && isset($_POST['save'])) {
 				. 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.';
 		}
 	}
+
 
 	// Validate Adv. firewall rule settings
 	foreach (array(	'aliasports_in' => 'Port In', 'aliasaddr_in' => 'Destination In',
@@ -371,53 +589,139 @@ if ($_POST && isset($_POST['save'])) {
 		}
 	}
 
+	// Validate Pre/Post-process Scripts
+	if (!empty($_POST['script_pre']) && !in_array($_POST['script_pre'], $listpre)) {
+		$input_errors[] = 'The Pre-process Script is invalid';
+	}
+	if (!empty($_POST['script_post']) && !in_array($_POST['script_post'], $listpost)) {
+		$input_errors[] = 'The Post-process Script is invalid';
+	}
+
+	// Validate Custom List
+	if (!empty($_POST['custom'])) {
+		$customlist = explode("\r\n", $_POST['custom']);
+		if (!empty($customlist)) {
+			foreach ($customlist as $line) {
+
+				if (substr($line, 0, 1) == '#' || empty($line)) {
+					continue;
+				}
+				$value = array_map('trim', preg_split('/(?=#)/', $line));
+
+				switch ($gtype) {
+					case 'ipv4':
+						// Validate Domain/AS
+						if ($_POST['whois_convert'] == 'on') {
+							if (strpos($value[0], '.') !== FALSE) {
+
+								// Validate IDN
+								if (!ctype_print($value[0])) {
+									$value[0] = mb_convert_encoding($value[0], 'UTF-8',
+										mb_detect_encoding($value[0], 'UTF-8, ASCII, ISO-8859-1'));
+									$value[0] = idn_to_ascii($value[0]);
+								}
+
+								if (empty(pfb_filter($value[0], PFB_FILTER_DOMAIN, 'Category_edit'))) {
+									$input_errors[] = "Customlist: Invalid Domain name entry: [ " . htmlspecialchars($line) . " ]";
+								}
+							}
+							elseif (empty(pfb_filter($value[0], PFB_FILTER_ALNUM, 'Category_edit'))) {
+								$input_errors[] = "Customlist: Invalid AS entry: [ " . htmlspecialchars($line) . " ]";
+							}
+						}
+						else {
+							if (!validate_ipv4($value[0])) {
+								$input_errors[] = "Customlist: Invalid IPv4 entry: [ " . htmlspecialchars($line) . " ]";
+							}
+						}
+						break;
+					case 'ipv6':
+						// Validate Domain/AS
+						if ($_POST['whois_convert'] == 'on') {
+							if (strpos($value[0], '.') !== FALSE) {
+								if (empty(pfb_filter($value[0], PFB_FILTER_DOMAIN, 'Category_edit whois_convert'))) {
+									$input_errors[] = "Customlist: Invalid Domain name entry: [ " . htmlspecialchars($line) . " ]";
+								}
+							}
+							elseif (empty(pfb_filter($value[0], PFB_FILTER_ALNUM, 'Category_edit whois_convert'))) {
+								$input_errors[] = "Customlist: Invalid AS entry: [ " . htmlspecialchars($line) . " ]";
+							}
+						}
+						else {
+							if (!validate_ipv6($value[0])) {
+								$input_errors[] = "Customlist: Invalid IPv6 entry: [ " . htmlspecialchars($line) . " ]";
+							}
+						}
+						break;
+					case 'dnsbl':
+						// Validate IDN
+						if (!ctype_print($value[0])) {
+							$value[0] = mb_convert_encoding($value[0], 'UTF-8',
+								mb_detect_encoding($value[0], 'UTF-8, ASCII, ISO-8859-1'));
+							$value[0] = idn_to_ascii($value[0]);
+						}
+
+						if (empty(pfb_filter($value[0], PFB_FILTER_DOMAIN, 'Category_edit'))) {
+							$input_errors[] = "Customlist: Invalid Domain name entry: [ " . htmlspecialchars($line) . " ]";
+						}
+						break;
+				}
+			}
+		}
+	}
+
 	if (!$input_errors) {
 
 		if (!is_array($config['installedpackages'][$conf_type]['config'][$rowid])) {
 			$config['installedpackages'][$conf_type]['config'][$rowid] = array();
 		}
 
-		$config['installedpackages'][$conf_type]['config'][$rowid]['aliasname']		= $_POST['aliasname']			?: '';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= pfb_filter($_POST['description'], 1)	?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['aliasname']			= $_POST['aliasname']					?: '';
 
-		$config['installedpackages'][$conf_type]['config'][$rowid]['action']		= $_POST['action']			?: 'Disabled';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['cron']		= $_POST['cron']			?: 'Never';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['dow']		= $_POST['dow']				?: '';
-		$config['installedpackages'][$conf_type]['config'][$rowid]['sort']		= $_POST['sort']			?: 'sort';
+		if (isset($_POST['description']) && !empty($_POST['description'])) {
+			$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= pfb_filter($_POST['description'], PFB_FILTER_HTML, 'Category_edit')   ?: '';
+		} else {
+			$config['installedpackages'][$conf_type]['config'][$rowid]['description']	= '';
+		}
+
+		$config['installedpackages'][$conf_type]['config'][$rowid]['action']			= $_POST['action']					?: 'Disabled';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['cron']			= $_POST['cron']					?: 'Never';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['dow']			= $_POST['dow']						?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['sort']			= $_POST['sort']					?: 'sort';
+
+		$config['installedpackages'][$conf_type]['config'][$rowid]['srcint']			= $_POST['srcint']					?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['script_pre']		= $_POST['script_pre']					?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['script_post']		= $_POST['script_post']					?: '';
 
 		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliaslog']		= $_POST['aliaslog']		?: 'enabled';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['stateremoval']	= $_POST['stateremoval']	?: 'enabled';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliaslog']		= $_POST['aliaslog']					?: 'enabled';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['stateremoval']	= $_POST['stateremoval']				?: 'enabled';
 
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_in']	= $_POST['autoaddrnot_in']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_in']	= $_POST['autoports_in']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_in']	= $_POST['aliasports_in']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_in']	= $_POST['autoaddr_in']		?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_in']	= $_POST['autonot_in']		?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_in']	= $_POST['aliasaddr_in']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_in']	= $_POST['autoproto_in']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_in']	= $_POST['agateway_in']		?: 'default';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_in']	= pfb_filter($_POST['autoaddrnot_in'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_in']	= pfb_filter($_POST['autoports_in'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_in']	= $_POST['aliasports_in']				?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_in']	= pfb_filter($_POST['autoaddr_in'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_in']	= pfb_filter($_POST['autonot_in'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_in']	= $_POST['aliasaddr_in']				?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_in']	= $_POST['autoproto_in']				?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_in']	= $_POST['agateway_in']					?: 'default';
 
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_out']	= $_POST['autoaddrnot_out']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_out']	= $_POST['autoports_out']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_out']	= $_POST['aliasports_out']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_out']	= $_POST['autoaddr_out']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_out']	= $_POST['autonot_out']		?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_out']	= $_POST['aliasaddr_out']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_out']	= $_POST['autoproto_out']	?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']	?: 'default';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddrnot_out']	= pfb_filter($_POST['autoaddrnot_out'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoports_out']	= pfb_filter($_POST['autoports_out'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasports_out']	= $_POST['aliasports_out']				?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoaddr_out']	= pfb_filter($_POST['autoaddr_out'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autonot_out']	= pfb_filter($_POST['autonot_out'], PFB_FILTER_ON_OFF, 'Category_edit');
+			$config['installedpackages'][$conf_type]['config'][$rowid]['aliasaddr_out']	= $_POST['aliasaddr_out']				?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['autoproto_out']	= $_POST['autoproto_out']				?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']				?: 'default';
 
-			$config['installedpackages'][$conf_type]['config'][$rowid]['suppression_cidr']	= $_POST['suppression_cidr']	?: 'Disabled';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['srcint']		= $_POST['srcint']		?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['script_pre']	= $_POST['script_pre']		?: '';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['script_post']	= $_POST['script_post']		?: '';
-
-			$config['installedpackages'][$conf_type]['config'][$rowid]['whois_convert']	= $_POST['whois_convert']	?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['suppression_cidr']	= $_POST['suppression_cidr']				?: 'Disabled';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['whois_convert']	= pfb_filter($_POST['whois_convert'], PFB_FILTER_ON_OFF, 'Category_edit');
 		}
 		else {
-			$config['installedpackages'][$conf_type]['config'][$rowid]['logging']		= $_POST['logging']		?: 'Enabled';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['order']		= $_POST['order']		?: 'default';
-			$config['installedpackages'][$conf_type]['config'][$rowid]['filter_alexa']	= $_POST['filter_alexa']	?: '';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['logging']		= $_POST['logging']					?: 'Enabled';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['order']		= $_POST['order']					?: 'default';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['filter_alexa']	= pfb_filter($_POST['filter_alexa'], PFB_FILTER_ON_OFF, 'Category_edit');
 		}
 
 		// Set flag to update CustomList on next Cron|Force update|Force reload
@@ -430,10 +734,9 @@ if ($_POST && isset($_POST['save'])) {
 		}
 
 		init_config_arr(array('installedpackages', $conf_type, 'config', $rowid));
-		$config['installedpackages'][$conf_type]['config'][$rowid]['custom']			= base64_encode($_POST['custom']) ?: '';
+		$config['installedpackages'][$conf_type]['config'][$rowid]['custom']			= base64_encode($_POST['custom']) 			?: '';
 
 		$rowhelper_exist = array();
-
 		foreach ($_POST as $key => $value) {
 
 			// Parse 'rowhelper' tables and save new values
@@ -443,14 +746,9 @@ if ($_POST && isset($_POST['save'])) {
 				// Collect all rowhelper keys
 				$rowhelper_exist[$k_field[1]] = '';
 
-				if ($k_field[0] == 'url' && in_array($_POST["format-{$k_field[1]}"], array( 'whois', 'asn', 'geoip' ))) {
-					$value = pfb_filter($value, 1);
-				} elseif ($k_field[0] == 'url') {
-					$value = pfb_filter($value, 2);
-				} else {
-					$value = htmlspecialchars($value);
+				if (!empty($value)) {
+					$value = pfb_filter($value, PFB_FILTER_HTML, 'Category_edit save');
 				}
-
 				init_config_arr(array('installedpackages', $conf_type, 'config', $rowid, 'row', $k_field[1]));
 				$config['installedpackages'][$conf_type]['config'][$rowid]['row'][$k_field[1]][$k_field[0]] = $value;
 			}
@@ -501,14 +799,18 @@ else {
 		$rowdata = &$config['installedpackages'][$conf_type]['config'];
 	}
 
-	$pconfig = array();
+	$pconfig				= array();
 
-	$pconfig['aliasname']		= $rowdata[$rowid]['aliasname'];
-	$pconfig['description']		= $rowdata[$rowid]['description'];
-	$pconfig['action']		= $rowdata[$rowid]['action'];
-	$pconfig['cron']		= $rowdata[$rowid]['cron'];
-	$pconfig['dow']			= $rowdata[$rowid]['dow'];
-	$pconfig['sort']		= $rowdata[$rowid]['sort'];
+	$pconfig['aliasname']			= $rowdata[$rowid]['aliasname'];
+	$pconfig['description']			= $rowdata[$rowid]['description'];
+	$pconfig['action']			= $rowdata[$rowid]['action'];
+	$pconfig['cron']			= $rowdata[$rowid]['cron'];
+	$pconfig['dow']				= $rowdata[$rowid]['dow'];
+	$pconfig['sort']			= $rowdata[$rowid]['sort'];
+
+	$pconfig['srcint']			= $rowdata[$rowid]['srcint'];
+	$pconfig['script_pre']			= $rowdata[$rowid]['script_pre'];
+	$pconfig['script_post']			= $rowdata[$rowid]['script_post'];
 
 	if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		$pconfig['aliaslog']		= $rowdata[$rowid]['aliaslog'];
@@ -533,10 +835,6 @@ else {
 		$pconfig['agateway_out']	= $rowdata[$rowid]['agateway_out'];
 
 		$pconfig['suppression_cidr']	= $rowdata[$rowid]['suppression_cidr'];
-		$pconfig['srcint']		= $rowdata[$rowid]['srcint'];
-		$pconfig['script_pre']		= $rowdata[$rowid]['script_pre'];
-		$pconfig['script_post']		= $rowdata[$rowid]['script_post'];
-
 		$pconfig['whois_convert']	= $rowdata[$rowid]['whois_convert'];
 	}
 	else {
@@ -545,7 +843,7 @@ else {
 		$pconfig['filter_alexa']	= $rowdata[$rowid]['filter_alexa'];
 	}
 
-	$pconfig['custom']		= base64_decode($rowdata[$rowid]['custom']);
+	$pconfig['custom']			= base64_decode($rowdata[$rowid]['custom']);
 }
 
 
@@ -591,6 +889,7 @@ if (isset($Lmove) and isset($Xmove) && isset($rowdata[$rowid]['row'])) {
 	$savemsg = 'The selected row(s) have been moved.';
 	write_config("pfBlockerNG: {$gtype} - Rows(s) moved");
 	header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
+	exit;
 }
 
 // Define default Alerts Tab href link (Top row)
@@ -698,7 +997,7 @@ if (empty($rowdata[$rowid]['row'])) {
 }
 
 // Sort row by Header/Label field followed by Enabled/Disabled State settings
-if (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid]['sort'] == 'sort') {
+if (isset($input_errors) && !empty($input_errors) && (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid]['sort'] == 'sort')) {
 	$new_disabled = $new_enabled = array();
 	foreach ($rowdata[$rowid]['row'] as $key => $data) {
 		if ($data['state'] == 'Disabled') {
@@ -746,19 +1045,12 @@ foreach ($rowdata[$rowid] as $tags) {
 			))->setWidth(1);
 		}
 
-		$formats = '';
-		if ($gtype == 'ipv4' || $gtype == 'ipv6') {
-			$formats = array( 'auto' => 'Auto', 'geoip' => 'GeoIP', 'regex' => 'Regex', 'whois' => 'Whois', 'asn' => 'ASN', 'rsync' => 'RSync' );
-		} elseif ($gtype == 'dnsbl') {
-			$formats = array( 'auto' => 'Auto', 'rsync' => 'RSync' );
-		}
-
-		if (!empty($formats)) {
+		if (!empty($options_format)) {
 			$group->add(new Form_Select(
 					'format-' . $r_id,
 					'',
 					$row['format'],
-					$formats
+					$options_format
 			))->setHelp(($numrows == $rowcounter) ? 'Format' : NULL)
 			  ->setAttribute('size', 1)
 			  ->setAttribute('style', 'width: auto')
@@ -775,7 +1067,7 @@ foreach ($rowdata[$rowid] as $tags) {
 			'state-' . $r_id,
 			'',
 			$row['state'],
-			['Enabled' => 'ON', 'Disabled' => 'OFF', 'Hold' => 'HOLD', 'Flex' => 'FLEX']
+			$options_state
 		))->setHelp(($numrows == $rowcounter) ? 'State' : NULL)
 		  ->setAttribute('style', 'width: auto')
 		  ->setAttribute('size', 1)
@@ -953,13 +1245,6 @@ $section->add($group);
 
 // Print Customization section
 if ($gtype == 'ipv4' || $gtype == 'ipv6') {
-	$list_array = array(	'Disabled' => 'Disabled', 'Deny_Inbound' => 'Deny Inbound', 'Deny_Outbound' => 'Deny Outbound',
-				'Deny_Both' => 'Deny Both', 'Permit_Inbound' => 'Permit Inbound', 'Permit_Outbound' => 'Permit Outbound',
-				'Permit_Both' => 'Permit Both', 'Match_Inbound' => 'Match Inbound', 'Match_Outbound' => 'Match Outbound',
-				'Match_Both' => 'Match Both', 'Alias_Deny' => 'Alias Deny', 'Alias_Permit' => 'Alias Permit',
-				'Alias_Match' => 'Alias Match', 'Alias_Native' => 'Alias Native'
-				);
-
 	$action_txt = "Default: <strong>Disabled</strong>
 			<br />For Non-Alias type rules you must define the appropriate <strong>Firewall 'Auto' Rule Order</strong> option.
 			<br />Click here for more info -->
@@ -1017,7 +1302,6 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 			</div>";
 }
 else {
-	$list_array = array(	'Disabled' => 'Disabled', 'unbound' => 'Unbound' );
 	$action_txt = "Default: <strong>Disabled</strong><br />Select <strong>Unbound</strong> to enable 'Domain Name' blocking for this Alias.";
 }
 
@@ -1028,7 +1312,7 @@ $section->addInput(new Form_Select(
 	'action',
 	'Action',
 	$pconfig['action'],
-	$list_array
+	$options_action
 ))->setHelp($action_txt)
   ->setAttribute('style', 'width: auto');
 
@@ -1036,10 +1320,7 @@ $section->addInput(new Form_Select(
 	'cron',
 	'Update Frequency',
 	$pconfig['cron'],
-	[	'Never' => 'Never', '01hour' => 'Every hour', '02hours' => 'Every 2 hours', '03hours' => 'Every 3 hours',
-		'04hours' => 'Every 4 hours', '06hours' => 'Every 6 hours', '08hours' => 'Every 8 hours',
-		'12hours' => 'Every 12 hours', 'EveryDay' => 'Once a day', 'Weekly' => 'Weekly'
-	]
+	$options_cron
 ))->setHelp('Default: <strong>Never</strong><br />'
 		. 'Select how often List files will be downloaded. <strong>This must be within the Cron Interval/Start Hour settings.</strong>')
   ->setAttribute('style', 'width: auto');
@@ -1048,7 +1329,7 @@ $section->addInput(new Form_Select(
 	'dow',
 	'Weekly (Day of Week)',
 	$pconfig['dow'],
-	['1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday']
+	$options_dow
 ))->setHelp('Default: <strong>Monday</strong><br />Select the \'Weekly\' ( Day of the Week ) to Update <br />'
 		. 'This is only required for the \'Weekly\' Frequency Selection. The 24 Hour Download \'Time\' will be used.')
   ->setAttribute('style', 'width: auto');
@@ -1057,7 +1338,7 @@ $section->addInput(new Form_Select(
 	'sort',
 	'Auto-Sort Header field',
 	$pconfig['sort'],
-	['sort' => 'Enable auto-sort', 'no-sort' => 'Disable auto-sort']
+	$options_sort
 ))->setHelp('Automatic sorting of the Header/Label field grouped by the Enabled/Disabled State field setting.')
   ->setAttribute('style', 'width: auto');
 
@@ -1067,7 +1348,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		'aliaslog',
 		'Enable Logging',
 		$pconfig['aliaslog'],
-		['enabled' => 'Enabled', 'disabled' => 'Disabled']
+		$options_aliaslog
 	))->setHelp('Default: <strong>Enable</strong><br />Select - Logging to Status: System Logs: FIREWALL ( Log )<br />'
 		. 'This can be overriden by the \'Global Logging\' Option in the General Tab.')
 	  ->setAttribute('style', 'width: auto');
@@ -1076,7 +1357,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 		'stateremoval',
 		'States Removal',
 		$pconfig['stateremoval'],
-		['enabled' => 'Enabled', 'disabled' => 'Disabled']
+		$options_stateremoval
 	))->setHelp('With the \'Kill States\' option (General Tab), you can disable States removal for this Alias.');
 
 	$form->add($section);
@@ -1085,20 +1366,6 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 	foreach (array( 'In' => 'Source', 'Out' => 'Destination') as $adv_mode => $adv_type) {
 
 		$advmode = strtolower($adv_mode);
-
-		// Collect all pfSense 'Port' Aliases
-		$portslist = $networkslist = '';
-		if (!empty($config['aliases']['alias'])) {
-			foreach ($config['aliases']['alias'] as $alias) {
-				if ($alias['type'] == 'port') {
-					$portslist .= "{$alias['name']},";
-				} elseif ($alias['type'] == 'network') {
-					$networkslist .= "{$alias['name']},";
-				}
-			}
-		}
-		$ports_list	= trim($portslist, ',');
-		$networks_list	= trim($networkslist, ',');
 
 		$section = new Form_Section("Advanced {$adv_mode}bound Firewall Rule Settings", "adv{$advmode}boundsettings", COLLAPSIBLE|SEC_CLOSED);
 		$section->addInput(new Form_StaticText(
@@ -1176,7 +1443,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 			'autoproto_' . $advmode,
 			NULL,
 			$pconfig['autoproto_' . $advmode],
-			['' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP']
+			$options_autoproto_in
 		))->setHelp("<strong>Default: any</strong><br />Select the Protocol used for {$adv_mode}bound Firewall Rule(s).<br />"
 				. "<span class=\"text-danger\">Note:</span>&nbsp;Do not use 'any' with Adv. {$adv_mode}bound Rules as it will bypass these settings!");
 		$section->add($group);
@@ -1186,7 +1453,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 			'agateway_' . $advmode,
 			NULL,
 			$pconfig['agateway_' . $advmode],
-			pfb_get_gateways()
+			$options_agateway_in
 		))->setHelp('Select alternate Gateway or keep \'default\' setting.');
 
 		$section->add($group);
@@ -1200,7 +1467,7 @@ if ($gtype == 'dnsbl') {
 		'order',
 		'Group Order',
 		$pconfig['order'],
-		['default' => 'Default', 'primary' => 'Primary']
+		$options_order
 	))->setHelp('Default: <strong>Default</strong><br />'
 			. 'When set as \'Primary\', this DNSBL Group will be processed before all other DNSBL Groups/Category(s)')
 	  ->setAttribute('style', 'width: auto');
@@ -1213,26 +1480,19 @@ if ($gtype == 'dnsbl') {
 				. 'Blocked domains will be reported to the Alert/Python Block Table.<br />'
 				. 'Enabling the "Global Logging/Blocking mode" in the DNSBL Tab will override this setting!<br />'
 				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
-
-		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
-				'disabled'	=> 'Null Blocking (no logging)',
-				'disabled_log'	=> 'Null Blocking (logging)'];
 	} else {
 		$log_text = 'Default: <strong>Enabled</strong><br />'
 				. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
 				. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
 				. 'Enabling the "Global Logging/Blocking mode" in the DNSBL Tab will override this setting!<br />'
 				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
-
-		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
-				'disabled'	=> 'Null Blocking (no logging)'];
 	}
 
 	$section->addInput(new Form_Select(
 		'logging',
 		'Logging / Blocking Mode',
 		$pconfig['logging'],
-		$log_options
+		$options_logging
 	))->setHelp($log_text)
 	  ->setAttribute('style', 'width: auto');
 
@@ -1261,87 +1521,40 @@ if ($gtype == 'ipv4') {
 		'suppression_cidr',
 		'Suppression CIDR Limit',
 		$pconfig['suppression_cidr'],
-		$list
+		$options_suppression_cidr
 	))->setHelp('When suppression is enabled, this option will limit the CIDR block for this entire IPv4 Alias'
 		. '(Excluding the Custom List IP addresses)<br />Default: <strong>Disabled</strong> (No CIDR limit)')
 	  ->setAttribute('style', 'width: auto');
 }
 
-if ($gtype == 'ipv4' || $gtype == 'ipv6') {
-
-	$interfaces_list	= get_configured_interface_list_by_realif();
-	$src_interfaces		= array('lo0' => 'Localhost');
-
-	foreach ($interfaces_list as $key => $value) {
-		$src_interfaces = array_merge(array($key => convert_friendly_interface_to_friendly_descr($interfaces_list[$key])), $src_interfaces);
-	}
-	$src_interfaces = array_merge(array('' => 'Default'), $src_interfaces);
-	
-	$section->addInput(new Form_Select(
-		'srcint',
-		'cURL Interface',
-		$pconfig['srcint'],
-		$src_interfaces
-	))->setHelp('Use this interface when downloadling lists. This option sets <code>CURLOPT_INTERFACE</code>'
-		. ' to the value selected above for all Feeds in this Alias.')
-	  ->setAttribute('style', 'width: auto');
-}
-
-// Collect pre/post processing scripts
-$listpre = $listpost = array();
-$indexdir = '/usr/local/pkg/pfblockerng/';
-if (is_dir("{$indexdir}")) {
-
-	if ($gtype == 'ipv4' || $gtype == 'ipv6') {
-		$list_prefix = 'ip';
-	} else {
-		$list_prefix = 'dnsbl';
-	}
-
-	$list = glob("{$indexdir}/{$list_prefix}_pre_*.{sh,py}", GLOB_BRACE);
-	if (!empty($list)) {
-		foreach ($list as $line) {
-			$file = pathinfo($line, PATHINFO_BASENAME);
-			$l = array($file => $file);
-			$listpre = array_merge($listpre, $l);
-		}
-	}
-
-	$list = glob("{$indexdir}/{$list_prefix}_post_*.{sh,py}", GLOB_BRACE);
-	if (!empty($list)) {
-		foreach ($list as $line) {
-			$file = pathinfo($line, PATHINFO_BASENAME);
-			$l = array($file => $file);
-			$listpost = array_merge($listpost, $l);
-		}
-	}
-}
-
-$listpre = array_merge(array('' => 'None'), $listpre);
-$listpre_size = count($listpre) ?: '1';
-
-$listpost = array_merge(array('' => 'None'), $listpost);
-$listpost_size = count($listpost) ?: '1';
+$section->addInput(new Form_Select(
+	'srcint',
+	'cURL Interface',
+	$pconfig['srcint'],
+	$options_srcint
+))->setHelp('Use this interface when downloadling lists. This option sets <code>CURLOPT_INTERFACE</code>'
+	. ' to the value selected above for all Feeds in this Alias.')
+  ->setAttribute('style', 'width: auto');
 
 $section->addInput(new Form_Select(
 	'script_pre',
 	'Pre-process Script',
 	$pconfig['script_pre'],
-	$listpre
+	$options_script_pre
 ))->sethelp("Pre-processing Shell script after download.<br />"
 	. "Script location: /usr/local/pkg/pfblockerng/<strong>ip_pre_SCRIPT NAME.sh|py</strong> or <strong>dnsbl_pre_SCRIPT NAME.sh|py</strong>")
   ->setAttribute('style', 'width: auto')
-  ->setAttribute('size', $listpre_size);
+  ->setAttribute('size', $options_script_pre_cnt);
 
 $section->addInput(new Form_Select(
 	'script_post',
 	'Post-process Script',
 	$pconfig['script_post'],
-	$listpost
+	$options_script_post
 ))->sethelp("Post-processing Shell script after download.<br />"
 	. "Script location: /usr/local/pkg/pfblockerng/<strong>ip_post_SCRIPT NAME.sh|py</strong> or <strong>dnsbl_post_SCRIPT name.sh|py</strong>")
   ->setAttribute('style', 'width: auto')
-  ->setAttribute('size', $listpost_size);
+  ->setAttribute('size', $options_script_post_cnt);
 
 $form->add($section);
 

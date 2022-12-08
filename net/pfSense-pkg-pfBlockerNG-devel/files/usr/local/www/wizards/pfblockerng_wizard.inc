@@ -25,28 +25,31 @@ require_once('util.inc');
 require_once('services.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
+global $pfb_wizard;
+
+$pfb_wizard['interface_list']		= pfb_build_if_list(TRUE, FALSE);
+$pfb_wizard['interface_list_cnt']	= count($pfb_wizard['interface_list']) ?: '1';
+
 function step2_stepbeforeformdisplay() {
-	global $config, $pkg, $stepid;
+	global $config, $pkg, $stepid, $pfb_wizard;
 
 	if (isset($config['pfblockerng_wizard'])) {
 		unset($config['pfblockerng_wizard']);
 	}
 
-	$fields		= &$pkg['step'][2]['fields']['field'];
-	$interface_list = pfb_build_if_list(TRUE, FALSE);
-	$int_size	= count($interface_list) ?: '1';
+	$fields	= &$pkg['step'][2]['fields']['field'];
 
 	for ($key = 0; $key < 2; $key++) {
 		$fields[$key]['options']['option'] = array();
-		foreach ($interface_list as $value => $name) {
+		foreach ($pfb_wizard['interface_list'] as $value => $name) {
 			$fields[$key]['options']['option'][]	= array('name' => $name, 'value' => $value);
-			$fields[$key]['size']			= $int_size;
+			$fields[$key]['size']			= $pfb_wizard['interface_list_cnt'];
 		}
 	}
 }
 
 function step2_submitphpaction() {
-	global $config, $stepid, $input_errors;
+	global $config, $stepid, $input_errors, $pfb_wizard;
 
 	if ($_POST) {
 		if ($_POST['back'] == 'Back') {
@@ -54,8 +57,23 @@ function step2_submitphpaction() {
 			return;
 		}
 
-		if (empty($_POST['inbound_interface']) || empty($_POST['outbound_interface'])) {
-			$input_errors[] = 'pfBlockerNG IP Category configuration | Atleast one Inbound and one Outbound interfaces must be selected.';
+		foreach (array($_POST['inbound_interface'], $_POST['outbound_interface']) as $wizard_interface) {
+			if (empty($wizard_interface)) {
+				$input_errors[] = 'pfBlockerNG IP Category configuration | Atleast one Inbound and one Outbound interfaces must be selected.';
+			}
+			if (is_array($wizard_interface)) {
+				foreach ($wizard_interface as $w_interface) {
+					if (!array_key_exists($w_interface, $pfb_wizard['interface_list'])) {
+						$input_errors[] = 'pfBlockerNG IP Category configuration | Invalid Interface selection';
+					}
+				}
+			}
+			elseif (!array_key_exists($wizard_interface, $pfb_wizard['interface_list'])) {
+				$input_errors[] = 'pfBlockerNG IP Category configuration | Invalid Interface selection';
+			}
+		}
+
+		if ($input_errors) {
 			step2_stepbeforeformdisplay(); // Reload interface options
 			$stepid = 1;
 			return;
@@ -129,13 +147,18 @@ function step4_submitphpaction() {
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip']		= $config['pfblockerng_wizard']['step3']['pfb_dnsvip'];
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport'];
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport_ssl']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport_ssl'];
-	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']		= $config['pfblockerng_wizard']['step3']['pfb_dnsblv6'] ? 'on' : '';
-	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsbl'] 		= 'on';
+
+	if ($config['pfblockerng_wizard']['step3']['pfb_dnsblv6'] == 'on') {
+		$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']	= 'on';
+	} else {
+		$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']	= '';
+	}
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsbl']		= 'on';
 
 	// Default DNSBL Whitelist
 	if ($config['pfblockerng_wizard']['step3']['suppression'] == 'on') {
 
-		$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']		= 
+		$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']	= 
 
 "czMuYW1hem9uYXdzLmNvbQ0KczMtMS5hbWF6b25hd3MuY29tICMgQ05BTUUgZm9yIChzMy5hbWF6
 b25hd3MuY29tKQ0KLmdpdGh1Yi5jb20NCi5naXRodWJ1c2VyY29udGVudC5jb20gDQpnaXRodWIu

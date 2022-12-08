@@ -27,43 +27,58 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 global $config, $pfb;
 pfb_global();
 
-$action = '';
+$action = $gtype = '';
 $rowdata = array();
+$rowid = 0;
 
 // Called via AJAX (Save page order format/settings)
-if (($_REQUEST) && ($_REQUEST['act'] == 'update')) {
+if (isset($_REQUEST) && isset($_REQUEST['act']) && ($_REQUEST['act'] == 'update')) {
 	$_POST = $_REQUEST;
 }
 
-if ($_GET) {
+if (isset($_GET)) {
 	if (isset($_GET['savemsg']) && !empty($_GET['savemsg'])) {
 		$savemsg = htmlspecialchars($_GET['savemsg']);
 	}
-	if (isset($_GET['rowid']) && ctype_digit($_GET['rowid'])) {
-		$rowid = $_GET['rowid'];
+	if (isset($_GET['rowid']) && !empty($_GET['rowid'])) {
+		$temp_value = pfb_filter($_GET['rowid'], PFB_FILTER_NUM, 'Category');
+                if (!empty($temp_value)) {
+			$rowid = $temp_value ?: 0;
+		}
 	}
-	if (isset($_GET['type'])) {
-		$gtype = $_GET['type'];
+	if (isset($_GET['type']) && !empty($_GET['type'])) {
+		$temp_value = pfb_filter($_GET['type'], PFB_FILTER_HTML, 'Category');
+		if (in_array($temp_value, array('ipv4', 'ipv6', 'geoip', 'dnsbl'))) {
+			$gtype = $temp_value;
+		}
 	}
 }
 
-if ($_POST) {
+if (isset($_POST)) {
 	if (isset($_POST['savemsg']) && !empty($_POST['savemsg'])) {
 		$savemsg = htmlspecialchars($_POST['savemsg']);
 	}
-	if (isset($_POST['rowid']) && ctype_digit($_POST['rowid'])) {
-		$rowid = $_POST['rowid'];
+	if (isset($_POST['rowid']) && !empty($_POST['rowid'])) {
+		$temp_value = pfb_filter($_POST['rowid'], PFB_FILTER_NUM, 'Category');
+		if (!empty($temp_value)) {
+			$rowid = $temp_value ?: 0;
+		}
 	}
-	if (isset($_POST['type'])) {
-		$gtype = $_POST['type'];
+	if (isset($_POST['type']) && !empty($_POST['type'])) {
+		$temp_value = pfb_filter($_POST['type'], PFB_FILTER_HTML, 'Category');
+		if (in_array($temp_value, array('ipv4', 'ipv6', 'geoip', 'dnsbl'))) {
+			$gtype = $temp_value;
+		}
 	}
-	if (isset($_POST['postdata'])) {
+
+	// AJAX request
+	if (isset($_POST['postdata']) && !empty($_POST['postdata'])) {
 		parse_str($_POST['postdata'], $post_data);
 	}
-	if (isset($_POST['ids'])) {
+	if (isset($_POST['ids']) && !empty($_POST['ids'])) {
 		parse_str($_POST['ids'], $post_ids);
 	}
-	if (isset($_POST['act'])) {
+	if (isset($_POST['act']) && !empty($_POST['act'])) {
 		if ($_POST['act'] == 'del') {
 			$action = 'del';
 		} elseif ($_POST['act'] == 'update') {
@@ -73,28 +88,29 @@ if ($_POST) {
 }
 
 // Set 'active' GUI Tabs
-$active = array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'feeds' => FALSE);
+$active = array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'geoip' => FALSE);
 
 switch ($gtype) {
 	case 'ipv4':
 		$type		= 'IPv4';
 		$conf_type	= 'pfblockernglistsv4';
-		$active		= array('ip' => TRUE, 'ipv4' => TRUE);
+		$active		= array('ip' => TRUE, 'ipv4' => TRUE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'geoip' => FALSE);
 		break;
 	case 'ipv6':
 		$type		= 'IPv6';
 		$conf_type	= 'pfblockernglistsv6';
-		$active		= array('ip' => TRUE, 'ipv6' => TRUE);
+		$active		= array('ip' => TRUE, 'ipv4' => FALSE, 'ipv6' => TRUE, 'dnsbl' => FALSE, 'geoip' => FALSE);
 		break;
 	case 'geoip':
 		$type		= 'GeoIP';
-		$active		= array('ip' => TRUE, 'geoip' => TRUE);
+		$active		= array('ip' => TRUE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => FALSE, 'geoip' => TRUE);
 		break;
 	case 'dnsbl':
 	default:
+		$gtype		= 'dnsbl';
 		$type		= 'DNSBL Groups';
 		$conf_type	= 'pfblockerngdnsbl';
-		$active		= array('dnsbl' => TRUE);
+		$active		= array('ip' => FALSE, 'ipv4' => FALSE, 'ipv6' => FALSE, 'dnsbl' => TRUE, 'geoip' => FALSE);
 		break;
 }
 
@@ -138,48 +154,155 @@ if (!empty($action) && isset($gtype) && isset($rowid)) {
 	switch ($action) {
 		case 'del':
 			// Delete Table row (via POST)
-			$name = $rowdata[$rowid]['aliasname'];
-			unset($rowdata[$rowid]);
-			write_config("pfBlockerNG: Removed [ {$type} | {$removed} ]");
-			$savemsg = "Removed [ Type: {$type}, Name: {$name} ]";
+			$name = pfb_filter($rowdata[$rowid]['aliasname'], PFB_FILTER_WORD, 'Category');
+			if (!empty($name) && isset($rowdata[$rowid])) {
+				unset($rowdata[$rowid]);
+				write_config("pfBlockerNG: Removed [ {$type} | {$name} ]");
+				$savemsg = "Removed [ Type: {$type}, Name: {$name} ]";
+			} else {
+				$savemsg = "Could not delete [ Type: {$type}, Name: {$name} ], not found";
+			}
 			header("Location: /pfblockerng/pfblockerng_category.php?type={$gtype}&savemsg={$savemsg}");
 			exit;
 
 		case 'update':
+			if (isset($input_errors)) {
+				unset($input_errors);
+			}
 			if (is_array($rowdata)) {
+				$action_values = array(	'Disabled',
+							'Deny_Inbound', 
+							'Deny_Outbound',
+							'Deny_Both',
+							'Permit_Inbound',
+							'Permit_Outbound',
+							'Permit_Both',
+							'Match_Inbound',
+							'Match_Outbound',
+							'Match_Both',
+							'Alias_Deny',
+							'Alias_Permit',
+							'Alias_Match',
+							'Alias_Native',
+							'unbound'
+							);	
+
+				$cron_values = array(	'Never',
+							'01hour',
+							'02hours',
+							'03hours',
+							'04hours',
+							'06hours',
+							'08hours',
+							'12hours',
+							'EveryDay',
+							'Weekly'
+							);
+
+				$aliaslog_values = array('enabled',
+							'disabled',
+							'disabled_log'
+							);
 
 				// Parse POST and save new values
-				if (!empty($post_data)) {
+				if (!empty($post_data) && is_array($post_data)) {
 					foreach ($post_data as $key => $value) {
 						if (strpos($key, '-') !== FALSE) {
 							$k_field = explode('-', $key);
 
-							if ($gtype != 'geoip') {
-								$rowdata[$k_field[1]][$k_field[0]] = $value;
-							} else {
-								$continent = strtolower(str_replace(' ', '', $rowdata[$k_field[1]]['aliasname']));
+							if (count($k_field) != 2) {
+								$input_errors[] = "Failed too many fields: " . htmlspecialchars($key);
+							}
 
-								init_config_arr(array('installedpackages', 'pfblockerng' . $continent, 'config', 0));
-								$config['installedpackages']['pfblockerng' . $continent]['config'][0][$k_field[0]] = $value;
+							// Validate Variable names
+							if (in_array($k_field[0], array('action', 'cron', 'aliaslog', 'logging'))) {
+								$variable = $k_field[0];
+							} else {
+								$input_errors[] = "Failed Variable: " . htmlspecialchars($k_field[0]);
+							}
+
+							// Validate Rowid
+							$temp_value = pfb_filter($k_field[1], PFB_FILTER_NUM, 'Category');
+							if (!empty($temp_value) || $k_field[1] == 0) {
+								$rowid = $temp_value ?: 0;
+							} else {
+								$input_errors[] = "Failed Rowid: " . htmlspecialchars($k_field[1]);
+							}
+
+							switch ($variable) {
+								case 'action':
+									if (!in_array($value, $action_values)) {
+										$input_errors[] = "Failed Action: " . htmlspecialchars($value);
+									}
+									break;
+								case 'cron':
+									if (!in_array($value, $cron_values)) {
+										$input_errors[] = "Failed Cron: " . htmlspecialchars($value);
+									}
+									break;
+								case 'aliaslog':
+								case 'logging':
+									if (!in_array($value, $aliaslog_values)) {
+										$input_errors[] = "Failed Aliaslog: " . htmlspecialchars($value);
+									}
+									break;
+								default:
+									$input_errors[] = "Failed variable name: " . htmlspecialchars($variable);
+							}
+
+							if (!$input_errors) {
+								if ($gtype != 'geoip') {
+									$rowdata[$rowid][$variable] = pfb_filter($value, PFB_FILTER_HTML, 'Category');
+								} else {
+									$continent = pfb_filter(strtolower(str_replace(' ', '', $rowdata[$rowid]['aliasname'])), PFB_FILTER_HTML, 'Category');
+
+									init_config_arr(array('installedpackages', 'pfblockerng' . $continent, 'config', 0));
+									$config['installedpackages']['pfblockerng' . $continent]['config'][0][$variable] = pfb_filter($value, PFB_FILTER_HTML, 'Category');
+								}
 							}
 						}
 					}
 				}
 
 				// Save new Table order format (via AJAX)
-				if (!empty($post_ids['ids'])) {
+				if (!empty($post_ids['ids']) && is_array($post_ids['ids'])) {
 					$new_rows = array();
 					foreach ($post_ids['ids'] as $key => $value) {
-						$row = str_replace('r', '', $value);
-						$new_rows[$key] = $rowdata[$row];
+
+						$temp_value = pfb_filter($key, PFB_FILTER_NUM, 'Category');
+						if (!empty($temp_value) || $key == 0) {
+							$key = $temp_value ?: 0;
+						} else {
+							$input_errors[] = "IDS Failed " . htmlspecialchars($key);
+						}
+
+						$temp_value = pfb_filter(str_replace('r', '', $value), PFB_FILTER_NUM, 'Category');
+						if (!empty($temp_value) || $value == 'r0') {
+							$rowid = $temp_value ?: 0;
+						} else {
+							$input_errors[] = "IDS Failed Rowid: " . htmlspecialchars($value);
+						}
+
+						if (!$input_errors) {
+							$new_rows[$key] = $rowdata[$rowid];
+						}
 					}
-					$rowdata = $new_rows;
+
+					if (!$input_errors) {
+						$rowdata = $new_rows;
+					}
 				}
 
-				write_config("pfBlockerNG: Saved page order format/settings for [ {$type} ]");
+				// Save postdata and Table re-ordering
+				if (!$input_errors) {
+					write_config("pfBlockerNG: Saved page order format/settings for [ {$type} ]");
+				} else {
+					// return errors to AJAX request
+					print(json_encode($input_errors));
+				}
 			}
-			exit;
 	}
+	exit;
 }
 
 $pgtype = 'IP'; $l_pgtype = 'ip';
@@ -209,7 +332,7 @@ $tab_array[]	= array(gettext('Logs'),	false,			'/pfblockerng/pfblockerng_log.php
 $tab_array[]	= array(gettext('Sync'),	false,			'/pfblockerng/pfblockerng_sync.php');
 display_top_tabs($tab_array, true);
 
-$tab_array	= array();
+$tab_array = array();
 
 if ($gtype == 'ipv4' || $gtype == 'ipv6' || $gtype == 'geoip') {
 	$tab_array[]	= array(gettext('IPv4'),	$active['ipv4'],	'/pfblockerng/pfblockerng_category.php?type=ipv4');
@@ -230,6 +353,7 @@ if (isset($savemsg)) {
 
 ?>
 <form action="pfblockerng_category.php" method="post" name="iform" id="iform">
+<div id="savemsg_json" class="alert" role="alert"></div>
 <input id="type" name="type" type="hidden" value="<?=$gtype?>"/>
 <input type="hidden" name="rowid" id="rowid" value="">
 <input type="hidden" name="act" id="act" value="">
@@ -425,7 +549,7 @@ if (isset($savemsg)) {
 							<?php endif; ?>
 
 						<?php
-							if ($gtype == 'dnsbl' && $row['order'] == 'primary'):
+							if ($gtype == 'dnsbl' && isset($row['order']) && $row['order'] == 'primary'):
 						?>
 							<i class="fa fa-check-square-o" style="cursor: default" title="DNSBL Primary Group order defined"></i>
 							<?php endif; ?>
@@ -515,30 +639,41 @@ events.push(function() {
 		} else {
 			var ids = $('#pfb_table table tbody').sortable('serialize', {key:"ids[]"});
 		}
-		var strloading = "<?=gettext('Saving changes...')?>";
 		var postdata = $('#iform').serialize();
 
 		if (confirm("<?=gettext("Save settings and/or page 'Order' changes?")?>")) {
-			$.ajax({
-				type: 'post',
-				url: '/pfblockerng/pfblockerng_category.php',
-				data: {
-					rowid: '0',
-					act: 'update',
-					type: gtype,
-					ids: ids,
-					postdata: postdata
-				},
-				beforeSend: function() {
-					$('#savemsg').empty().html(strloading);
-				},
-				error: function(data) {
-					$('#savemsg').empty().html('Error:' + data);
-				},
-				success: function(data) {
-					$('#savemsg').empty().html(data);
+
+			ajaxRequest = $.ajax(
+				{
+					type: 'post',
+					url: '/pfblockerng/pfblockerng_category.php',
+					data: {
+						rowid: '0',
+						act: 'update',
+						type: gtype,
+						ids: ids,
+						postdata: postdata
+					}
+				}
+			);
+
+			// Deal with the results of the above ajax call
+			ajaxRequest.done(function (response, textStatus, jqXHR) {
+				if (response == '') {
 					$('form').submit();
-				},
+				} else {
+					$('#savemsg_json').show();
+					$('#savemsg_json').addClass("alert-danger")
+					var json = new Object;
+					json = jQuery.parseJSON(response)
+					output = 'Could not save, Errors Found:<br />';
+					$.each(json, function(key, value) {
+						output += value + "<br />"  
+					});
+					$('#savemsg_json').html(output);
+					var scrollToEl = document.getElementById('topmenu');
+					scrollToEl.scrollIntoView(true);
+				}
 			});
 		}
 	}
@@ -557,8 +692,10 @@ events.push(function() {
 			},
 	});
 
+	$('#savemsg_json').hide();
 	$('#btnsave').click(function() {
 		save_new_changes();
+		$('#savemsg_json').hide();
 	});
 });
 

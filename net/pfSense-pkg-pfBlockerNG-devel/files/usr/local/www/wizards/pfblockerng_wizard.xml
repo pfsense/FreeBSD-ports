@@ -32,9 +32,28 @@
 			<p><h4>Welcome to pfBlockerNG!</h4></p>
 			<p>This wizard will configure an entry level configuration of pfBlockerNG for IP and DNSBL.</p>
 			<p>You can opt-out of this wizard and manually configure pfBlockerNG as required!</p>
-			<p><strong>pfBlockerNG</strong> is developed and maintained by <strong>BBcan177</strong></p>
-		</div>
+			<p><strong>pfBlockerNG</strong> is developed and maintained by 
+				<a target="_blank" href="https://forum.netgate.com/user/bbcan177">BBcan177</a><br />
 
+			<ul class="list-inline" style="margin-top: 4px; margin-bottom: -2px; border-style: outset; border-bottom-color: #8B181B; border-right-color: #8B181B; border-width: 2px;">
+				<li class="list-inline-item"><a target="_blank" href="http://pfblockerng.com">
+					<span style="color: #8B181B;" class="fa fa-globe"></span> HomePage</a></li>
+				<li class="list-inline-item"><a target="_blank" href="https://twitter.com/intent/follow?screen_name=BBcan177">
+					<span style="color: #8B181B;" class="fa fa-twitter"></span> Follow on Twitter</a></li>
+				<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/r/pfBlockerNG/new/">
+					<span style="color: #8B181B;" class="fa fa-reddit"></span> Reddit</a></li>
+				<li class="list-inline-item"><a target="_blank" href="https://infosec.exchange/@BBcan177#">
+					<span style="color: #8B181B;" class="fa fa-globe"></span> Mastodon</a></li>
+				<li class="list-inline-item"><a target="_blank" href="https://github.com/BBcan177">
+					<span style="color: #8B181B;" class="fa fa-github"></span> GitHub</a></li>
+				<li class="list-inline-item"><a target="_blank" href="mailto:bbcan177@gmail.com?Subject=pfBlockerNG%20Support">
+					<span style="color: #8B181B;" class="fa fa-envelope-o"></span> Contact us</a></li>
+				<li class="list-inline-item"><a target="_blank" href="https://www.youtube.com/@LAWRENCESYSTEMS/search?query=pfblockerng">
+					<span style="color: #8B181B;" class="fa fa-globe"></span> Tom Lawrence Youtube channel</a></li>
+				<li class="list-inline-item"><a target="_blank" href="https://www.vikash.nl/setup-pfblockerng-python-mode-with-pfsense/">
+					<span style="color: #8B181B;" class="fa fa-globe"></span> Vikash.nl - Advanced Python mode tutorial</a></li>
+			</ul>
+		</div>
 		<div style="width: 25%; height: 170px; float: right;">
 			<a target="_blank" href="http://pfblockerng.com">
 		<svg width="180.0pt" height="180.0pt" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="120 225 560 470" style="enable-background:new 120 225 560 470;" xml:space="preserve">
@@ -97,7 +116,7 @@
 		</div>
 
 		<div style="width: 100%; float: left;">
-			<p>Click&emsp;<a href="/pfblockerng/pfblockerng_general.php?wizard=skip">
+			<br /><p>Click&emsp;<a href="/pfblockerng/pfblockerng_general.php?wizard=skip">
 				<span style="color: red;">Here</span></a>&emsp;to exit this Wizard!</p>
 		</div>
 		]]>
