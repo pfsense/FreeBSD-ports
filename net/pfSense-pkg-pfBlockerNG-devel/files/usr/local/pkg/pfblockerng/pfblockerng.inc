@@ -4217,10 +4217,11 @@ function pfb_download_failure($alias, $header, $pfbfolder, $list_url, $format, $
 	$pfbfound = FALSE;
 
 	// Re-evaluate URL
-	if ($format == 'whois' || $format == 'asn') {
-		if (empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download_failure'))) {
-			pfb_logger("\n Invalid ASN. Terminating Download! [ {$list_url} ]\n", 1);
-		}
+	if ($format == 'whois' && empty(pfb_filter($list_url, PFB_FILTER_DOMAIN, 'pfb_download_failure'))) {
+		pfb_logger("\n Invalid WHOIS. Terminating Download! [ {$list_url} ]\n", 1);
+	}
+	elseif ($format == 'asn' && empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download_failure'))) {
+		pfb_logger("\n Invalid ASN. Terminating Download! [ {$list_url} ]\n", 1);
 	}
 	elseif (!pfb_filter($list_url, PFB_FILTER_URL, 'pfb_download_failure')) {
 		pfb_logger("\n Invalid URL. Terminating Download! [ {$list_url} ]\n", 1);

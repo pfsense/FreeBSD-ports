@@ -518,7 +518,7 @@ if ($_POST && isset($_POST['save'])) {
 			}
 
 			if ($value != 'Disabled' && $_POST["format-{$key_1}"] == 'whois') {
-				if (empty(pfb_filter($_POST["format-{$key_1}"], PFB_FILTER_DOMAIN, 'Category_edit'))) {
+				if (empty(pfb_filter($_POST["url-{$key_1}"], PFB_FILTER_DOMAIN, 'Category_edit'))) {
 					$input_errors[] = "{$type} Source Definitions, Line {$line}: "
 							. "Invalid Domain Name (Whois format)";
 				}
@@ -746,7 +746,7 @@ if ($_POST && isset($_POST['save'])) {
 				// Collect all rowhelper keys
 				$rowhelper_exist[$k_field[1]] = '';
 
-				if (!empty($value)) {
+				if (!empty($value) && $k_field[0] != 'url') {
 					$value = pfb_filter($value, PFB_FILTER_HTML, 'Category_edit save');
 				}
 				init_config_arr(array('installedpackages', $conf_type, 'config', $rowid, 'row', $k_field[1]));

@@ -265,8 +265,16 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 		if (strpos($list_url, ' ') !== FALSE) {
 			$list_url = strstr($list_url, ' ', TRUE);
 		}
-		if (empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'php'))) {
-                        pfb_logger("\n Invalid ASN. Terminating Download! [ {$list_url} ]\n", 1);
+
+		$pfb_filter_type = PFB_FILTER_ALNUM;
+		$pfb_filter_text = 'ASN';
+		if ($format == 'whois') {
+			$pfb_filter_type = PFB_FILTER_DOMAIN;
+			$pfb_filter_text = 'WHOIS';
+		}
+
+		if (empty(pfb_filter($list_url, $pfb_filter_type, 'php'))) {
+                        pfb_logger("\n Invalid {$pfb_filter_text}. Terminating Download! [ {$list_url} ]\n", 1);
 			return;
 		}
 
