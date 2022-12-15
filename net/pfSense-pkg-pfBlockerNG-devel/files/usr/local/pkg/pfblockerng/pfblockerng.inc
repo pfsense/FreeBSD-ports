@@ -4233,10 +4233,11 @@ function pfb_download_failure($alias, $header, $pfbfolder, $list_url, $format, $
 	$pfbfound = FALSE;
 
 	// Re-evaluate URL
-	if ($format == 'whois' || $format == 'asn') {
-		if (empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download_failure'))) {
-			pfb_logger("\n Invalid ASN. Terminating Download! [ {$list_url} ]\n", 1);
-		}
+	if ($format == 'whois' && empty(pfb_filter($list_url, PFB_FILTER_DOMAIN, 'pfb_download_failure'))) {
+		pfb_logger("\n Invalid WHOIS. Terminating Download! [ {$list_url} ]\n", 1);
+	} 
+	elseif ($format == 'asn' && empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download_failure'))) {
+		pfb_logger("\n Invalid ASN. Terminating Download! [ {$list_url} ]\n", 1);
 	}
 	elseif (!pfb_filter($list_url, PFB_FILTER_URL, 'pfb_download_failure')) {
 		pfb_logger("\n Invalid URL. Terminating Download! [ {$list_url} ]\n", 1);
@@ -7835,7 +7836,7 @@ function sync_package_pfblockerng($cron='') {
 								} elseif (strpos($line, ' AAAA ') !== FALSE) {
 									$safesearch_hosts[$domain]['AAAA'] = $host_ip;
 
-								# CNAME SafeSearch is not compatable in Python Mode, use Unbound mode for now
+								# CNAME SafeSearch is not compatible in Python Mode, use Unbound mode for now
 								} elseif (strpos($line, ' CNAME ') !== FALSE) {
 									$ss_cname = TRUE;
 									if (!$DDG && strpos($line, 'duckduckgo.com') !== FALSE) {
