@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-require_once("mail_reports.inc");
+require_once("mailreport/mail_report.inc");
 require_once("notices.inc");
 
 $id = $_REQUEST['id'];

@@ -1,6 +1,6 @@
 <?
 /*
- * mail_reports.inc
+ * mail_report.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
