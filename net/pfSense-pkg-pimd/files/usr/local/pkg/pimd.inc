@@ -83,13 +83,11 @@ function pimd_get_interfaces($includedefault = true, $includevips = true, $inclu
 
 	/* Create a list of OpenVPN server and client interfaces. */
 	foreach (array('server', 'client') as $mode) {
-		if (is_array($config['openvpn']["openvpn-{$mode}"])) {
-			foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
-				if (!isset($setting['disable'])) {
-					$tmp["name"] = $nameprefix . gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
-					$tmp["value"] = $valueprefix . 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
-					$ifs[] = $tmp;
-				}
+		foreach (config_get_path("openvpn/openvpn-{$mode}", []) as $setting) {
+			if (!isset($setting['disable'])) {
+				$tmp["name"] = $nameprefix . gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
+				$tmp["value"] = $valueprefix . 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
+				$ifs[] = $tmp;
 			}
 		}
 	}
@@ -108,10 +106,9 @@ function pimd_get_list_values($arr) {
 
 function pimd_generate_rcfile() {
 	global $config, $pimd_config_base;
-	init_config_arr(array('installedpackages', 'pimd', 'config', 0));
-	if (!empty($config['installedpackages']['pimd']['config'][0])) {
-		$pimd_conf = &$config['installedpackages']['pimd']['config'][0];
-	} else {
+
+	$pimd_conf = config_get_path('installedpackages/pimd/config/0', []);
+	if (empty($pimd_conf)) {
 		return null;
 	}
 
@@ -188,10 +185,9 @@ EOF;
 
 function pimd_generate_config_general() {
 	global $config, $pimd_config_base;
-	init_config_arr(array('installedpackages', 'pimd', 'config', 0));
-	if (!empty($config['installedpackages']['pimd']['config'][0])) {
-		$pimd_conf = &$config['installedpackages']['pimd']['config'][0];
-	} else {
+
+	$pimd_conf = config_get_path('installedpackages/pimd/config/0', []);
+	if (empty($pimd_conf)) {
 		return null;
 	}
 
@@ -256,12 +252,12 @@ function pimd_get_source($source, $returnaddress = false) {
 
 function pimd_generate_config_interfaces() {
 	global $config;
-	init_config_arr(array('installedpackages', 'pimdinterfaces', 'config'));
-	if (!empty($config['installedpackages']['pimdinterfaces']['config'])) {
-		$pimd_conf = &$config['installedpackages']['pimdinterfaces']['config'];
-	} else {
+
+	$pimd_conf = config_get_path('installedpackages/pimdinterfaces/config', []);
+	if (empty($pimd_conf)) {
 		return null;
 	}
+
 	$conf = "";
 	foreach ($pimd_conf as $pif) {
 		$opts = "";
@@ -309,12 +305,12 @@ function pimd_generate_config_interfaces() {
 
 function pimd_generate_config_bsrcandidate() {
 	global $config;
-	init_config_arr(array('installedpackages', 'pimdbsrcandidate', 'config'));
-	if (!empty($config['installedpackages']['pimdbsrcandidate']['config'])) {
-		$pimd_conf = &$config['installedpackages']['pimdbsrcandidate']['config'];
-	} else {
+
+	$pimd_conf = config_get_path('installedpackages/pimdbsrcandidate/config', []);
+	if (empty($pimd_conf)) {
 		return null;
 	}
+
 	$conf = "";
 	foreach ($pimd_conf as $pif) {
 		$conf .= "bsr-candidate";
@@ -334,12 +330,12 @@ function pimd_generate_config_bsrcandidate() {
 
 function pimd_generate_config_rpcandidate() {
 	global $config;
-	init_config_arr(array('installedpackages', 'pimdrpcandidate', 'config'));
-	if (!empty($config['installedpackages']['pimdrpcandidate']['config'])) {
-		$pimd_conf = &$config['installedpackages']['pimdrpcandidate']['config'];
-	} else {
+
+	$pimd_conf = config_get_path('installedpackages/pimdrpcandidate/config', []);
+	if (empty($pimd_conf)) {
 		return null;
 	}
+
 	$conf = "";
 	foreach ($pimd_conf as $pif) {
 		$conf .= "rp-candidate";
@@ -370,12 +366,12 @@ function pimd_generate_config_rpcandidate() {
 
 function pimd_generate_config_rpaddress() {
 	global $config;
-	init_config_arr(array('installedpackages', 'pimdrpaddress', 'config'));
-	if (!empty($config['installedpackages']['pimdrpaddress']['config'])) {
-		$pimd_conf = &$config['installedpackages']['pimdrpaddress']['config'];
-	} else {
+
+	$pimd_conf = config_get_path('installedpackages/pimdrpaddress/config', []);
+	if (empty($pimd_conf)) {
 		return null;
 	}
+
 	$conf = "";
 	foreach ($pimd_conf as $pif) {
 		if (!empty($pif['address'])) {
@@ -396,9 +392,7 @@ function pimd_generate_config() {
 	safe_mkdir(PKG_PIMD_CONFIG_BASE);
 	unlink_if_exists("{$pimd_config_base}/pimd.conf");
 
-	init_config_arr(array('installedpackages', 'pimd', 'config', 0));
-	if (!empty($config['installedpackages']['pimd']['config'][0]) &&
-	    ($config['installedpackages']['pimd']['config'][0]['enable'] == 'on')) {
+	if (config_get_path('installedpackages/pimd/config/0/enable') == 'on') {
 		$conffile = $pimd_auto_config_warning;
 
 		/* General Settings */
@@ -452,12 +446,12 @@ function pimd_get_carp_list() {
 function pimd_plugin_carp($pluginparams) {
 	global $config;
 	/* If pimd is not configured, then stop */
-	init_config_arr(array('installedpackages', 'pimd', 'config', 0));
-	if (!empty($config['installedpackages']['pimd']['config'][0])) {
-		$pimd_conf = &$config['installedpackages']['pimd']['config'][0];
-	} else {
+
+	$pimd_conf = config_get_path('installedpackages/pimd/config/0', []);
+	if (empty($pimd_conf)) {
 		return null;
 	}
+
 	/* If there is no properly configured CARP status check IP, then stop */
 	if (!isset($pimd_conf['carpstatusvid']) || $pimd_conf['carpstatusvid'] == "none") {
 		return null;
