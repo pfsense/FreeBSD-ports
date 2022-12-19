@@ -47,9 +47,8 @@ chdir($home);
 print_r($databases);
 */
 global $config;
-init_config_arr(array('installedpackages', 'traffictotals', 'config', 0));
-$vnscfg =& $config['installedpackages']['traffictotals']['config'][0];
 
+$vnscfg = config_get_path('installedpackages/traffictotals/config/0', []);
 $portlist = vnstat_portlist();
 
 if (isset($_POST['enable']) && !empty($_POST['enable'])) {
@@ -63,6 +62,7 @@ if (isset($_POST['enable']) && !empty($_POST['enable'])) {
 		// Bad data
 		exit;
 	}
+	config_set_path('installedpackages/traffictotals/config/0', $vnscfg);
 	write_config(sprintf(gettext('%s Graphing for Status > Traffic Totals'), $state));
 	vnstat_sync();
 	// Give the service time to start/stop
@@ -90,6 +90,7 @@ if ($_POST['defaults']) {
 	$vnscfg['cumulative'] = $cumulative;
 	$vnscfg['startday'] = $startDay;
 
+	config_set_path('installedpackages/traffictotals/config/0', $vnscfg);
 	write_config('Save default settings for Status > Traffic Totals');
 	vnstat_sync();
 	$savemsg = "The changes have been applied successfully.";

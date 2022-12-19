@@ -32,8 +32,7 @@ $vnstat_config = '/usr/local/etc/vnstat.conf';
 
 function vnstat_write_conf() {
 	global $config, $vnstat_dbdir, $vnstat_config;
-	init_config_arr(array('installedpackages', 'traffictotals', 'config', 0));
-	$vnscfg =& $config['installedpackages']['traffictotals']['config'][0];
+	$vnscfg = config_get_path('installedpackages/traffictotals/config/0', []);
 	$startDay = isset($vnscfg['startday']) ? $vnscfg['startday'] : 1;
 
 	$vnstat_conf_file = <<<EOF
@@ -127,14 +126,12 @@ function vnstat_install() {
 	install_cron_job("/usr/local/bin/vnstat -u", false);
 
 	// Detect if enabled
-	init_config_arr(array('installedpackages', 'traffictotals', 'config', 0));
-	$vnscfg =& $config['installedpackages']['traffictotals']['config'][0];
 	try {
 		$data = vnstat_read();
 		// Enabled
-		$vnscfg['enabled'] = true;
+		config_set_path('installedpackages/traffictotals/config/0/enabled', true);
 	} catch (Exception $e) {
-		if (isset($vnscfg['enabled'])) {
+		if (config_path_enabled('installedpackages/traffictotals/config/0/enabled')) {
 			// Enabled but missing data, so reinitialize
 			vnstat_write_conf();
 			vnstat_create_nic_dbs();
@@ -186,12 +183,10 @@ function vnstat_portlist() {
 	}
 
 	foreach (array('server', 'client') as $mode) {
-		if (is_array($config['openvpn']["openvpn-{$mode}"])) {
-			foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
-				if (!isset($setting['disable'])) {
-					$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['if'] = 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
-					$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['descr'] = gettext("OpenVPN") . " " . $mode . ": ".htmlspecialchars($setting['description']);
-				}
+		foreach (config_get_path("openvpn/openvpn-{$mode}", []) as $setting) {
+			if (!isset($setting['disable'])) {
+				$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['if'] = 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
+				$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['descr'] = gettext("OpenVPN") . " " . $mode . ": ".htmlspecialchars($setting['description']);
 			}
 		}
 	}
@@ -211,10 +206,8 @@ function vnstat_portlist() {
 
 function vnstat_sync() {
 	global $config;
-	init_config_arr(array('installedpackages', 'traffictotals', 'config', 0));
-	$vnscfg =& $config['installedpackages']['traffictotals']['config'][0];
 
-	if (isset($vnscfg['enabled'])) { // Enabled
+	if (config_path_enabled('installedpackages/traffictotals/config/0/', 'enabled')) { // Enabled
 		//make the directory for the interface databases
 		safe_mkdir('/var/db/vnstat');
 		//overwrite vnstat conf
