@@ -25,17 +25,14 @@ require("/usr/local/pkg/avahi/avahi.inc");
 
 $shortcut_section = 'avahi';
 
-if (!is_array($config['installedpackages']['avahi']['config'])) {
-	$config['installedpackages']['avahi']['config'] = array();
-}
-$a_avahi = &$config['installedpackages']['avahi']['config'][0];
+$a_avahi = config_get_path('installedpackages/avahi/config/0', []);
 
 $actions = array(
 	"allow" => gettext("Allow Interfaces"),
 	"deny" => gettext("Deny Interfaces"),
 );
 
-if (isset($a_avahi)) {
+if (!empty($a_avahi)) {
 	if (isset($a_avahi['interfaces'])) {
 		$pconfig = $a_avahi;
 	} elseif (isset($a_avahi['denyinterfaces'])) {
@@ -138,7 +135,7 @@ if ($_POST) {
 
 		$avahi['filtering'] = $filtering;
 
-		$a_avahi = $avahi;
+		config_set_path('installedpackages/avahi/config/0', $avahi);
 		write_config("Updated Avahi settings");
 
 		avahi_sync_config();

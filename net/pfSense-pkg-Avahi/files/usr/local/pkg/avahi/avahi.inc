@@ -115,7 +115,7 @@ function avahi_sync_config() {
 		stop_service('avahi');
 	}
 
-	$avahi_config = &$config['installedpackages']['avahi']['config'][0];
+	$avahi_config = config_get_path('installedpackages/avahi/config/0', []);
 	if (isset($avahi_config['enable'])) {
 		$enable = $avahi_config['enable'];
 	} else {
@@ -193,9 +193,8 @@ function avahi_get_carp_list() {
 function avahi_plugin_carp($pluginparams) {
 	global $config;
 	/* If avahi is not configured, then stop */
-	if (is_array($config['installedpackages']['avahi']['config'])) {
-		$avahi_config = &$config['installedpackages']['avahi']['config'][0];
-	} else {
+	$avahi_config = config_get_path('installedpackages/avahi/config/0', []);
+	if (empty($avahi_config)) {
 		return null;
 	}
 	/* If there is no properly configured CARP status check IP, then stop */
