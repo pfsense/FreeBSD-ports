@@ -32,13 +32,11 @@ define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
 
 function cellular_sync() {
-
 	global $config;
 
-	if (is_array($config['installedpackages']['cellular']['config'][0])) {
-		$cellular = $config['installedpackages']['cellular']['config'][0];
-	} else {
-		return;
+	$cellular = config_get_path('installedpackages/cellular/config/0', []);
+	if (empty($cellular)) {
+		return null;
 	}
 
 	$device = "";
@@ -83,26 +81,22 @@ function cellular_sync() {
 		} else if ($check_interval == 60) {
 			$check_interval = '0';
 		} else {
-			$check_interval = "*/$check_interval";
+			$check_interval = "*/{$check_interval}";
 		}
 
 		$command = '/usr/local/bin/php /usr/local/sbin/cellular_check.php ' . $check_interface . ' ' . $enable_reset_modem;
 
 		#Check if the script changed so we need to remove any entry before adding it
-		if (is_array($config['cron']) && is_array($config['cron']['item'])) {
-
-			$is_installed = false;
-
-			foreach ($config['cron']['item'] as $item) {
-					if (strstr($item['command'], $command)) {
-							$is_installed = true;
-							break;
-					}
+		$is_installed = false;
+		foreach (config_get_path('cron/item', []) as $item) {
+			if (strstr($item['command'], $command)) {
+					$is_installed = true;
+					break;
 			}
+		}
 
-			if (!$is_installed) {
-				install_cron_job('cellular_check.php', false);
-			}
+		if (!$is_installed) {
+			install_cron_job('cellular_check.php', false);
 		}
 
 		install_cron_job($command, true, $check_interval, "*", "*", "*", "*", "root");
@@ -141,14 +135,11 @@ function cellular_before_everything() {
 	global $pkg;
 	global $config;
 
-	if (is_array($config['installedpackages']['cellular']['config'][0])) {
-		$cellular = $config['installedpackages']['cellular']['config'][0];
-	} else {
-		$cellular = array();
-	}
+	$cellular = config_get_path('installedpackages/cellular/config/0', []);
 
 	// little workaround for dynamic field (content) generation
-	if (isset($pkg) && array_key_exists('fields', $pkg)) {
+	array_init_path($pkg, 'fields');
+	if (!empty($pkg['fields'])) {
 
 		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR";
 
@@ -162,14 +153,14 @@ function cellular_before_everything() {
 				$fld_descr_html = array_reduce($sig,
 				function($c, $i) {
 					if ($c != "") {
-						return "$c<br>$i";
+						return "{$c}<br>{$i}";
 					} else {
-						return "$i";
+						return "{$i}";
 					}
 				});
 
 				if (strpos($fld_descr_html, "ERROR") === FALSE) {
-					$fld['description'] = "$fld_descr_html";
+					$fld['description'] = "{$fld_descr_html}";
 				} else {
 					$fld['description'] = "Error";
 				}
@@ -181,6 +172,10 @@ function cellular_before_everything() {
 function cellular_validate_input($post, &$input_errors) {
 
 	global $_POST;
+
+	if (!is_array($_POST) || empty($_POST)) {
+		return null;
+	}
 
 	// Reset
 	if (isset($post['reset'])) {
