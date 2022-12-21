@@ -1222,31 +1222,6 @@ pkg_upgrade() {
 			unlock_pkg=1
 		fi
 
-		if upgrade_available ${product}-boot; then
-			_exec "pkg-static upgrade -U ${product}-boot" \
-			    "Upgrading ${product}-boot"
-			if [ ! -d /boot/efi ]; then
-				mkdir /boot/efi
-			fi
-			LOADER_UPDATE=1
-			if [ -c /dev/msdosfs/EFISYS ]; then
-				mount_msdosfs /dev/msdosfs/EFISYS /boot/efi
-			elif [ -c /dev/gpt/EFISYS ]; then
-				mount_msdosfs /dev/gpt/EFISYS /boot/efi
-			else
-				unset LOADER_UPDATE
-			fi
-			if [ -n "${LOADER_UPDATE}" ]; then
-				_echo "Updating the EFI loader"
-				if [ "${arch}" = "aarch64" ]; then
-					cp /boot/loader.efi /boot/efi/efi/boot/BOOTaa64.efi
-				elif [ "${arch}" = "amd64" ]; then
-					cp /boot/loader.efi /boot/efi/efi/boot/BOOTx64.efi
-				fi
-				umount /boot/efi
-			fi
-		fi
-
 		if upgrade_available ${kernel_pkg}; then
 			# pfSense-SG-3100 is obsolete and must be removed
 			# before upgrade kernel / rc and preserve
