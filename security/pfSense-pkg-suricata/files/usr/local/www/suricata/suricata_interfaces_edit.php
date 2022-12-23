@@ -640,6 +640,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['dns_parser_tcp'] = "yes";
 			$natent['dns_parser_udp_ports'] = "53";
 			$natent['dns_parser_tcp_ports'] = "53";
+			$natent['enip_parser'] = "yes";
 			$natent['http_parser'] = "yes";
 			$natent['tls_parser'] = "yes";
 			$natent['tls_detect_ports'] = "443";
@@ -654,6 +655,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['imap_parser'] = "detection-only";
 			$natent['ssh_parser'] = "yes";
 			$natent['ftp_parser'] = "yes";
+			$natent['ftp_data_parser'] = "on";
 			$natent['dcerpc_parser'] = "yes";
 			$natent['smb_parser'] = "yes";
 			$natent['msn_parser'] = "detection-only";
@@ -663,6 +665,12 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['tftp_parser'] = "yes";
 			$natent['ntp_parser'] = "yes";
 			$natent['dhcp_parser'] = "yes";
+			$natent['rdp_parser'] = "yes";
+			$natent['sip_parser'] = "yes";
+			$natent['snmp_parser'] = "yes";
+			$natent['http2_parser'] = "yes";
+			$natent['rfb_parser'] = "yes";
+			$natent['mqtt_parser'] = "yes";
 
 			$natent['enable_iprep'] = "off";
 			$natent['host_memcap'] = "33554432";
