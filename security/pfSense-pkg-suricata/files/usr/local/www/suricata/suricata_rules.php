@@ -113,7 +113,7 @@ $cat_mods = suricata_sid_mgmt_auto_categories($a_rule, FALSE);
 foreach ($cat_mods as $k => $v) {
 	switch ($v) {
 		case 'disabled':
-			if (($key = array_search($k, $categories)) !== FALSE)
+			if (($key = array_search($k, $categories, true)) !== FALSE)
 				unset($categories[$key]);
 			break;
 
@@ -161,11 +161,11 @@ elseif ($_POST['selectbox'])
 elseif ($_POST['openruleset'])
 	$currentruleset = $_POST['openruleset'];
 else
-	$currentruleset = $categories[0];
+	$currentruleset = $categories[array_key_first($categories)];
 
 // If we don't have any Category to display, then
 // default to showing the Custom Rules text control.
-if (empty($categories[0]) && ($currentruleset != "custom.rules") && ($currentruleset != "Auto-Flowbit Rules")) {
+if (empty($categories) && ($currentruleset != "custom.rules") && ($currentruleset != "Auto-Flowbit Rules")) {
 	if (!empty($a_rule['ips_policy']))
 		$currentruleset = "IPS Policy - " . ucfirst($a_rule['ips_policy']);
 	else
@@ -178,7 +178,8 @@ if (empty($tmp))
 	$currentruleset = "custom.rules";
 
 $ruledir = SURICATA_RULES_DIR;
-$rulefile = "{$ruledir}/{$currentruleset}";
+$rulefile = "{$ruledir}{$currentruleset}";
+
 if ($currentruleset != 'custom.rules') {
 	// Read the currently selected rules file into our rules map array.
 	// There are a few special cases possible, so test and adjust as
@@ -208,7 +209,7 @@ if ($currentruleset != 'custom.rules') {
 
 		// Prepend the Suricata rules path to each entry.
 		foreach ($rule_files as $k => $v) {
-			$rule_files[$k] = $ruledir . "/" . $v;
+			$rule_files[$k] = $ruledir . $v;
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
@@ -221,7 +222,7 @@ if ($currentruleset != 'custom.rules') {
 
 		// Prepend the Suricata rules path to each entry.
 		foreach ($rule_files as $k => $v) {
-			$rule_files[$k] = $ruledir . "/" . $v;
+			$rule_files[$k] = $ruledir . $v;
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
@@ -656,7 +657,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
 		// Prepend the Suricata rules path to each entry.
 		foreach ($rule_files as $k => $v) {
-			$rule_files[$k] = $ruledir . "/" . $v;
+			$rule_files[$k] = $ruledir . $v;
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
@@ -669,7 +670,7 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
 		// Prepend the Suricata rules path to each entry.
 		foreach ($rule_files as $k => $v) {
-			$rule_files[$k] = $ruledir . "/" . $v;
+			$rule_files[$k] = $ruledir . $v;
 		}
 		$rule_files[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rule_files[] = "{$suricatacfgdir}/rules/custom.rules";
@@ -738,7 +739,7 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 
 		// Prepend the Suricata rules path to each entry.
 		foreach ($rule_files as $k => $v) {
-			$rule_files[$k] = $ruledir . "/" . $v;
+			$rule_files[$k] = $ruledir . $v;
 		}
 		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
@@ -751,7 +752,7 @@ elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 
 		// Prepend the Suricata rules path to each entry.
 		foreach ($rule_files as $k => $v) {
-			$rule_files[$k] = $ruledir . "/" . $v;
+			$rule_files[$k] = $ruledir . $v;
 		}
 		$rules_file[] = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 		$rules_file[] = "{$suricatacfgdir}/rules/custom.rules";
