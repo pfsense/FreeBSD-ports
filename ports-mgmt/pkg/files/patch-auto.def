@@ -1,0 +1,11 @@
+--- auto.def.orig	2022-12-28 14:34:43 UTC
++++ auto.def
+@@ -216,7 +216,7 @@ cc-check-includes link.h machine/endian.h osreldate.h 
+ }
+ 
+ cc-check-includes link.h machine/endian.h osreldate.h readpassphrase.h \
+-	sys/procctl.h sys/statfs.h sys/statvfs.h libutil.h
++	sys/statfs.h sys/statvfs.h libutil.h
+ 
+ # for compat
+ cc-check-includes dirent.h
