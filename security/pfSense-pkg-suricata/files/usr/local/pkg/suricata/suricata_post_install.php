@@ -119,9 +119,7 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 		// Array of default events rules for Suricata. This array
 		// must be kept in sync with the content of the "/rules"
 		// directory in the Suricata binary source tarball.
-		$builtin_rules = array( "app-layer-events.rules", "decoder-events.rules", "dhcp-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "http2-events.rules", "ipsec-events.rules", 
-					"kerberos-events.rules", "modbus-events.rules", "mqtt-events.rules", "nfs-events.rules", "ntp-events.rules", "ssh-events.rules", "smb-events.rules", "smtp-events.rules", "stream-events.rules", 
-					"tls-events.rules" );
+		$builtin_rules = SURICATA_DEFAULT_RULES;
 
 		$a_ifaces = config_get_path('installedpackages/suricata/rule', []);
 		foreach ($a_ifaces as &$suricatacfg) {
