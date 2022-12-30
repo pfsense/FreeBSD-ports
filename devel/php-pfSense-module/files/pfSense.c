@@ -3559,22 +3559,22 @@ PHP_FUNCTION(pfSense_pf_cp_get_eth_rule_counters) {
 			goto error_out;
 		if (rule.dnflags&PFRULE_DN_IS_PIPE) {
 			array_init(&counter);
-			add_next_index_long(&counter, (zend_long)rule.direction);
+			add_assoc_long(&counter, "direction", (zend_ulong)rule.direction);
+			add_assoc_long(&counter, "evaluations", (zend_ulong)rule.evaluations);
 			switch (rule.direction) {
 				case PF_IN:
-					add_next_index_long(&counter, (zend_long)rule.packets[1]);
-					add_next_index_long(&counter, (zend_long)rule.bytes[1]);
+					add_assoc_long(&counter, "input_pkts", (zend_ulong)rule.packets[0]);
+					add_assoc_long(&counter, "input_bytes", (zend_ulong)rule.bytes[0]);
 					break;
 				case PF_OUT:
-					add_next_index_long(&counter, (zend_long)rule.packets[0]);
-					add_next_index_long(&counter, (zend_long)rule.bytes[0]);
+					add_assoc_long(&counter, "output_pkts", (zend_ulong)rule.packets[1]);
+					add_assoc_long(&counter, "output_bytes", (zend_ulong)rule.bytes[1]);
 					break;
 				default:
-					add_next_index_long(&counter, (zend_long)rule.packets[1]);
-					add_next_index_long(&counter, (zend_long)rule.bytes[1]);
-					add_next_index_long(&counter, (zend_long)rule.packets[0]);
-					add_next_index_long(&counter, (zend_long)rule.bytes[0]);
-					break;
+					add_assoc_long(&counter, "input_pkts", (zend_ulong)rule.packets[0]);
+					add_assoc_long(&counter, "input_bytes", (zend_ulong)rule.bytes[0]);
+					add_assoc_long(&counter, "output_pkts", (zend_ulong)rule.packets[1]);
+					add_assoc_long(&counter, "output_bytes", (zend_ulong)rule.bytes[1]);
 			}
 			add_next_index_zval(return_value, &counter);
 		}
