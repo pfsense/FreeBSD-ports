@@ -718,8 +718,25 @@ if (isset($_POST["save"]) && !$input_errors) {
 		// Refresh page fields with just-saved values
 		$pconfig = $natent;
 		$new_interface = false;
-	} else
+	} else {
+		// Restore the existing parameters so the user can fix the detected error
 		$pconfig = $_POST;
+		if ($_POST['eve_log_http_extended_headers']) {
+			$pconfig['eve_log_http_extended_headers'] = implode(", ",$_POST['eve_log_http_extended_headers']);
+		} else {
+			$pconfig['eve_log_http_extended_headers'] = "";
+		}
+		if ($_POST['eve_log_smtp_extended_fields']) {
+			$pconfig['eve_log_smtp_extended_fields'] = implode(", ",$_POST['eve_log_smtp_extended_fields']);
+		} else {
+			$pconfig['eve_log_smtp_extended_fields'] = "";
+		}
+		if ($_POST['eve_log_tls_extended_fields']) {
+			$pconfig['eve_log_tls_extended_fields'] = implode(", ",$_POST['eve_log_tls_extended_fields']);
+		} else {
+			$pconfig['eve_log_tls_extended_fields'] = "";
+		}
+	}
 }
 
 /**************************************************************/
