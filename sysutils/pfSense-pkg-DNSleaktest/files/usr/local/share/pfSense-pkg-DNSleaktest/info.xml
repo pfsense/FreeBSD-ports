@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+    <package>
+        <name>DNSleaktest</name>
+        <descr><![CDATA[The DNSleaktest utility is used to test whether or not there is a dns leak on any outgoing interface.]]></descr>
+        <version>%%PKGVERSION%%</version>
+        <configurationfile>dnsleaktest.xml</configurationfile>
+        <category>Diagnostics</category>
+    </package>
+</pfsensepkgs>

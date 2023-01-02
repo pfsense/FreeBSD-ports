@@ -1,0 +1,8 @@
+/etc/inc/priv/dnsleaktest.priv.inc
+pkg/dnsleaktest.inc
+pkg/dnsleaktest.sh
+pkg/dnsleaktest.xml
+%%DATADIR%%/info.xml
+www/packages/dnsleaktest/dnsleaktest.php
+www/packages/dnsleaktest/index.php
+@dir /etc/inc/priv
