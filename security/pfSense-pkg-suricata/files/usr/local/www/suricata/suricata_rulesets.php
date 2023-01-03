@@ -125,12 +125,10 @@ if (isset($_POST["save"])) {
 		unset($a_nat['ips_policy_mode']);
 	}
 
-	// Always start with the default events and files rules
-	$enabled_items = implode("||", $default_rules);
 	if (is_array($_POST['toenable']))
-		$enabled_items .= "||" . implode("||", $_POST['toenable']);
+		$enabled_items = implode("||", $_POST['toenable']);
 	else
-		$enabled_items .=  "||{$_POST['toenable']}";
+		$enabled_items =  "{$_POST['toenable']}";
 
 	$a_nat['rulesets'] = $enabled_items;
 
@@ -182,11 +180,10 @@ if (isset($_POST["save"])) {
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
 	$pconfig['ips_policy_mode'] = $_POST['ips_policy_mode'];
 
-	// Remove all but the default events and files rules
+	// Remove all the rules
 	$enabled_rulesets_array = array();
-	$enabled_rulesets_array = $default_rules;
 
-	$savemsg = gettext("All rule categories have been de-selected.  ");
+	$savemsg = gettext("All rule categories, including default events rules, have been de-selected.  ");
 	if ($_POST['ips_policy_enable'] == "on")
 		$savemsg .= gettext("Only the rules included in the selected IPS Policy will be used.");
 	else
