@@ -25,11 +25,9 @@ require_once("interfaces.inc");
 require_once("/usr/local/pkg/lldpd/lldpd.inc");
 
 
-if (!is_array($config['installedpackages']['lldpd']['config'])) {
-	$config['installedpackages']['lldpd']['config'] = array();
-}
-$a_lldpd = &$config['installedpackages']['lldpd']['config'][0];
-if (isset($a_lldpd['interfaces'])) {
+$a_lldpd = config_get_path('installedpackages/lldpd/config/0', []);
+
+if (!empty($a_lldpd) && isset($a_lldpd['interfaces'])) {
 	$pconfig = $a_lldpd;
 } else {
 	$pconfig['interfaces'] = 'lan';
@@ -82,7 +80,7 @@ if ($_POST) {
 			$lldpd['ndp_proto'] = $pconfig['ndp_proto_ro'];
 		}
 
-		$a_lldpd = $lldpd;
+		config_set_path('installedpackages/lldpd/config/0', $lldpd);
 		write_config("Updated LLDP settings");
 
 		lldpd_sync_config();

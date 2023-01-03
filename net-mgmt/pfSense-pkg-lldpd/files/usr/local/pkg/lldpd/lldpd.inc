@@ -40,8 +40,8 @@ function lldpd_sync_config() {
 		stop_service('lldpd');
 	}
 
-	$lldpd_config = &$config['installedpackages']['lldpd']['config'][0];
-	if (isset($lldpd_config['enable'])) {
+	$lldpd_config = config_get_path('installedpackages/lldpd/config/0', []);
+	if (!empty($lldpd_config) && isset($lldpd_config['enable'])) {
 		$enable = $lldpd_config['enable'];
 	} else {
 		$enable = 'no';
