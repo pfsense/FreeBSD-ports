@@ -24,12 +24,9 @@
 require("guiconfig.inc");
 require("/usr/local/pkg/nut/nut.inc");
 
-if (!is_array($config['installedpackages']['nut']['config'])) {
-	$config['installedpackages']['nut']['config'] = array();
-}
-$a_nut = &$config['installedpackages']['nut']['config'][0];
+$a_nut = config_get_path('installedpackages/nut/config/0', []);
 
-if (isset($a_nut)) {
+if (!empty($a_nut)) {
 	if (isset($a_nut['type'])) {
 		$pconfig = $a_nut;
 		$pconfig['extra_args'] = base64_decode($pconfig['extra_args']);
@@ -251,7 +248,7 @@ if ($_POST) {
 			$nut['upsd_users'] = base64_encode(trim(str_replace("\r\n", "\n", $pconfig['upsd_users'])));
 		}
 
-		$a_nut = $nut;
+		config_set_path('installedpackages/nut/config/0', $nut);
 		write_config("Updated UPS settings");
 
 		nut_sync_config();
