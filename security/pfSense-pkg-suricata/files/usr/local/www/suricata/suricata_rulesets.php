@@ -65,6 +65,7 @@ $extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/
 $no_emerging_files = false;
 $no_snort_files = false;
 $inline_ips_mode = $a_nat['ips_mode'] == 'ips_mode_inline' ? true:false;
+$ips_policy_mode_enable = $a_nat['block_drops_only'] == 'on' ? true:false;
 
 $enabled_rulesets_array = explode("||", $a_nat['rulesets']);
 
@@ -981,7 +982,7 @@ events.push(function() {
 		var endis = !($('#ips_policy_enable').prop('checked'));
 
 		hideInput('ips_policy', endis);
-	<?php if ($inline_ips_mode): ?>
+	<?php if ($inline_ips_mode || $ips_policy_mode_enable): ?>
 			hideInput('ips_policy_mode', endis);
 	<?php else: ?>
 			hideInput('ips_policy_mode', true);

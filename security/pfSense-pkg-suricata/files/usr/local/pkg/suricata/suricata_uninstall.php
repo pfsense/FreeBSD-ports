@@ -32,8 +32,6 @@ $suricatalogdir = SURICATALOGDIR;
 $sidmodspath = SURICATA_SID_MODS_PATH;
 $iprep_path = SURICATA_IPREP_PATH;
 $rcdir = RCFILEPREFIX;
-$suricata_rules_upd_log = SURICATA_RULES_UPD_LOGFILE;
-$suri_pf_table = SURICATA_PF_TABLE;
 
 syslog(LOG_NOTICE, gettext("[Suricata] Suricata package uninstall in progress..."));
 
@@ -61,16 +59,16 @@ sleep(1);
 unlink_if_exists("{$g['varrun_path']}/barnyard2_*.pid");
 
 /* Remove the Suricata cron jobs. */
-install_cron_job("suricata_check_for_rule_updates.php", false);
-install_cron_job("suricata_check_cron_misc.inc", false);
-install_cron_job("{$suri_pf_table}" , false);
-install_cron_job("suricata_geoipupdate.php" , false);
-install_cron_job("suricata_etiqrisk_update.php", false);
+install_cron_job("/usr/local/pkg/suricata/suricata_check_for_rule_updates.php", false);
+install_cron_job("/usr/local/pkg/suricata/suricata_check_cron_misc.inc", false);
+install_cron_job(SURICATA_PF_TABLE, false);
+install_cron_job("/usr/local/pkg/suricata/suricata_geoipupdate.php" , false);
+install_cron_job("/usr/local/pkg/suricata/suricata_etiqrisk_update.php", false);
 
 /* See if we are to keep Suricata log files on uninstall */
 if (config_get_path('installedpackages/suricata/config/0/clearlogs') == 'on') {
 	syslog(LOG_NOTICE, gettext("[Suricata] Clearing all Suricata-related log files..."));
-	unlink_if_exists("{$suricata_rules_upd_log}");
+	unlink_if_exists(SURICATA_RULES_UPD_LOGFILE);
 	rmdir_recursive("{$suricatalogdir}");
 }
 
@@ -124,15 +122,18 @@ if (config_get_path('installedpackages/suricata/config/0/clearblocks') == 'on') 
 	mwexec("/sbin/pfctl -t snort2c -T flush");
 }
 
-/* Keep this as a last step */
+/* Keep this as the last step of the uninstall procedure */
 if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') != 'on') {
-	syslog(LOG_NOTICE, gettext("Not saving settings... all Suricata configuration info and logs deleted..."));
+	syslog(LOG_NOTICE, gettext("Not saving Suricata settings... all Suricata configuration info and logs deleted..."));
 	config_del_path('installedpackages/suricata');
 	config_del_path('installedpackages/suricatasync');
-	unlink_if_exists("{$suricata_rules_upd_log}");
+	unlink_if_exists(SURICATA_RULES_UPD_LOGFILE);
 	rmdir_recursive("{$suricatalogdir}");
-	write_config("Removing Suricata configuration");
-	syslog(LOG_NOTICE, gettext("[Suricata] The package has been removed from this system..."));
+	write_config("Deleted the Suricata package and its configuration settings.");
+	syslog(LOG_NOTICE, gettext("[Suricata] The package and its configuration settings have been deleted from this system..."));
+} else {
+	write_config("Removed the Suricata package.");
+	syslog(LOG_NOTICE, gettext("[Suricata] The package has been removed from this system, but the configuration settings were retained..."));
 }
 
 ?>
