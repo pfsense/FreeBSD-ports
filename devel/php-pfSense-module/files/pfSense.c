@@ -3593,8 +3593,7 @@ PHP_FUNCTION(pfSense_pf_cp_zerocnt) {
 	struct pfctl_eth_rule erule;
 
 	char anchor_call[MAXPATHLEN];
-	uint32_t if_rulesets[] = {PF_RULESET_SCRUB, PF_RULESET_FILTER, PF_RULESET_NAT,PF_RULESET_BINAT, PF_RULESET_RDR,
-				  PF_RULESET_MAX};
+	uint32_t if_rulesets[] = { PF_SCRUB, PF_PASS };
 
 	int dev = 0;
 
@@ -3611,8 +3610,8 @@ PHP_FUNCTION(pfSense_pf_cp_zerocnt) {
 	/* Zero eth rule counters */
 	if (pfctl_get_eth_rules_info(dev, &einfo, path))
 		goto error_out;
-	for (int nr = 0; nr < info.nr; nr++) {
-		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &erule, true, anchor_call) != 0)
+	for (int nr = 0; nr < einfo.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, einfo.ticket, path, &erule, true, anchor_call) != 0)
 			goto error_out;
 	}
 
@@ -3621,7 +3620,7 @@ PHP_FUNCTION(pfSense_pf_cp_zerocnt) {
 		if (pfctl_get_rules_info(dev, &info, if_rulesets[nrs], path))
 			goto error_out;
 		for (int nr = 0; nr < info.nr; nr++) {
-			if (pfctl_get_clear_rule(dev, nr, info.ticket, path, if_rulesets[nr], &rule, anchor_call,
+			if (pfctl_get_clear_rule(dev, nr, info.ticket, path, if_rulesets[nrs], &rule, anchor_call,
 			    true) != 0)
 				goto error_out;
 		}
