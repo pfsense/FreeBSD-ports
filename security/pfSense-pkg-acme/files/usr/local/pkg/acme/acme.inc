@@ -1524,7 +1524,8 @@ function acme_custom_php_deinstall_command() {
 	update_output_window($static_output);
 	$static_output .= "Acme, uninstalling cron job\n";
 	update_output_window($static_output);
-	install_cron_job("/etc/rc.acme_renew.sh", false);
+	/* Remove cron job (if present), see #13828 */
+	install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall"', false);
 	$static_output .= "Acme, running acme_custom_php_deinstall_command() DONE\n";
 	update_output_window($static_output);
 }
