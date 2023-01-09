@@ -2,6 +2,7 @@ PORTNAME=	maxminddb
 PORTVERSION=	2.2.0
 PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	net python geography
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,6 +19,7 @@ USES=		compiler:c11 localbase python:3.7+
 USE_GITHUB=	yes
 GH_ACCOUNT=	maxmind
 GH_PROJECT=	MaxMind-DB-Reader-python
+GH_TAGNAME=	d8accfe
 
 USE_PYTHON=	allflavors autoplist concurrent distutils
 
