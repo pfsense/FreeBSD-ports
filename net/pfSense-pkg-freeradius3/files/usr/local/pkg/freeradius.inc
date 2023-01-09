@@ -3858,18 +3858,39 @@ function freeradius_validate_users($post, &$input_errors) {
 	}
 
 	// Amount of Download and Upload Traffic
-	if ($post['varusersmaxtotaloctets'] != '' && !is_numericint($post['varusersmaxtotaloctets'])) {
-		$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
-	}
+	if ($post['varusersmaxtotaloctets'] != '') {
+		switch (freeradius_validate_int($post['varusersmaxtotaloctets'], 0, 4095)) {
+		case Validation::BadType:
+			$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
+			break;
+		case Validation::BadValue:
+			$input_errors[] = "The 'Amount of Download and Upload Traffic' field must be less than 4096 and greater than or equal to 0.";
+			break;
+		}
+	} 
 
 	// Maximum Bandwidth Down
-	if ($post['varusersmaxbandwidthdown'] != '' && !is_numericint($post['varusersmaxbandwidthdown'])) {
-		$input_errors[] = "The 'Maximum Bandwidth Down' field must contain an integer value.";
+	if ($post['varusersmaxbandwidthdown'] != '') {
+		switch (freeradius_validate_int($post['varusersmaxbandwidthdown'], 0, 4294967)) {
+		case Validation::BadType:
+			$input_errors[] = "The 'Maximum Bandwidth Down' field must contain an integer value.";
+			break;
+		case Validation::BadValue:
+			$input_errors[] = "The 'Maximum Bandwidth Down' field must be less than 4294968 and greater than or equal to 0.";
+			break;
+		}
 	}
 
 	// Maximum Bandwidth Up
-	if ($post['varusersmaxbandwidthup'] != '' && !is_numericint($post['varusersmaxbandwidthup'])) {
-		$input_errors[] = "The 'Maximum Bandwidth Up' field must contain an integer value.";
+	if ($post['varusersmaxbandwidthup'] != '') {
+		switch (freeradius_validate_int($post['varusersmaxbandwidthup'], 0, 4294967)) {
+		case Validation::BadType:
+			$input_errors[] = "The 'Maximum Bandwidth Up' field must contain an integer value.";
+			break;
+		case Validation::BadValue:
+			$input_errors[] = "The 'Maximum Bandwidth Up' field must be less than 4294968 and greater than or equal to 0.";
+			break;
+		}
 	}
 
 	// Accounting Interim Interval
@@ -4551,5 +4572,28 @@ function freeradius_plugin_certificates($pluginparams) {
 
 	return $result;
 }
+
+enum Validation {
+	case Valid;
+	case BadType;
+	case BadValue;
+}
+/**
+ * Validate an int value with a minimum and maximum range
+ * @param string $val Value to validate.
+ * @param int $min Minimum valid value, inclusive.
+ * @param int $max Maximum valid value, inclusive.
+ * @return Validation Indicates whether $val is valid or, if not, why.
+ */
+function freeradius_validate_int(string $val, int $min, int $max) {
+	if (!is_numericint($val)) {
+		return Validation::BadType;
+	}
+	if ($val < $min || $val > $max) {
+		return Validation::BadValue;
+	}
+	return Validation::Valid;
+}
+
 
 ?>
