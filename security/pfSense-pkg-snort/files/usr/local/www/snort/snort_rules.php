@@ -127,7 +127,7 @@ $cat_mods = snort_sid_mgmt_auto_categories($a_rule[$id], FALSE);
 foreach ($cat_mods as $k => $v) {
 	switch ($v) {
 		case 'disabled':
-			if (($key = array_search($k, $categories)) !== FALSE)
+			if (($key = array_search($k, $categories, true)) !== FALSE)
 				unset($categories[$key]);
 			break;
 
@@ -173,7 +173,7 @@ if (isset($_POST['openruleset']))
 elseif (isset($_GET['openruleset']))
 	$currentruleset = htmlspecialchars($_GET['openruleset']);
 else
-	$currentruleset = $categories[key($categories)];
+	$currentruleset = $categories[array_key_first($categories)];
 
 // One last sanity check -- if the rules directory is empty, default to loading custom rules
 $tmp = glob("{$snortdir}/rules/*.rules");
