@@ -690,7 +690,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	$procchain .= ';!@InstallEnd@!' . "\n";
 	file_put_contents("{$tempdir}/7zipConfig",$procchain);
 
-	exec("/usr/local/libexec/p7zip/7z -y a archive.7z {$files}");
+	exec("/usr/local/bin/7z -y a archive.7z {$files}");
 	// create the final installer
 	$outfile = "{$tempdir}-install.exe";
 	chdir($g['tmp_path']);
