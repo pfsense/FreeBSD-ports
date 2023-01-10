@@ -185,7 +185,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 	if (is_array($_POST['enable_sid_file'])) {
 		foreach ($_POST['enable_sid_file'] as $k => $v) {
-			if ($v == "None") {
+			if (strcasecmp($v, "None") == 0) {
 				unset($a_nat[$k]['enable_sid_file']);
 				continue;
 			}
@@ -194,7 +194,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 	if (is_array($_POST['disable_sid_file'])) {
 		foreach ($_POST['disable_sid_file'] as $k => $v) {
-			if ($v == "None") {
+			if (strcasecmp($v, "None") == 0) {
 				unset($a_nat[$k]['disable_sid_file']);
 				continue;
 			}
@@ -203,7 +203,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 	if (is_array($_POST['modify_sid_file'])) {
 		foreach ($_POST['modify_sid_file'] as $k => $v) {
-			if ($v == "None") {
+			if (strcasecmp($v, "None") == 0) {
 				unset($a_nat[$k]['modify_sid_file']);
 				continue;
 			}
@@ -213,7 +213,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 
 	if (is_array($_POST['drop_sid_file'])) {
 		foreach ($_POST['drop_sid_file'] as $k => $v) {
-			if ($v == "None") {
+			if (strcasecmp($v, "None") == 0) {
 				unset($a_nat[$k]['drop_sid_file']);
 				continue;
 			}
@@ -223,7 +223,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 
 	if (is_array($_POST['reject_sid_file'])) {
 		foreach ($_POST['reject_sid_file'] as $k => $v) {
-			if ($v == "None") {
+			if (strcasecmp($v, "None") == 0) {
 				unset($a_nat[$k]['reject_sid_file']);
 				continue;
 			}
@@ -629,7 +629,7 @@ print($section);
 								?>
 							</select>
 						<?php else : ?>
-							<input type="hidden" name="drop_sid_file[<?=$k?>]" id="drop_sid_file[<?=$k?>]" value="<?=isset($natent['drop_sid_file']) ? $natent['drop_sid_file'] : 'none';?>">
+							<input type="hidden" name="drop_sid_file[<?=$k?>]" id="drop_sid_file[<?=$k?>]" value="<?=isset($natent['drop_sid_file']) ? $natent['drop_sid_file'] : 'None';?>">
 							<span class="text-center"><?=gettext("N/A")?></span>
 						<?php endif; ?>
 					</td>
@@ -648,7 +648,7 @@ print($section);
 								?>
 							</select>
 						<?php else : ?>
-							<input type="hidden" name="reject_sid_file[<?=$k?>]" id="reject_sid_file[<?=$k?>]" value="<?=isset($natent['reject_sid_file']) ? $natent['reject_sid_file'] : 'none';?>">
+							<input type="hidden" name="reject_sid_file[<?=$k?>]" id="reject_sid_file[<?=$k?>]" value="<?=isset($natent['reject_sid_file']) ? $natent['reject_sid_file'] : 'None';?>">
 							<span class="text-center"><?=gettext("N/A")?></span>
 						<?php endif; ?>
 					</td>
