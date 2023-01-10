@@ -1260,7 +1260,7 @@ print($section);
 									$disable_cnt++;
 									$user_disable_cnt++;
 									$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
-									$title = gettext("Forec-Disabled by user. Click to change rule state");
+									$title = gettext("Force-Disabled by user. Click to change rule state");
 								}
 								// See if the rule is in our list of user-enabled overrides
 								elseif (isset($enablesid[$gid][$sid])) {
