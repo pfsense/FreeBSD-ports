@@ -1,6 +1,5 @@
 PORTNAME=	maxminddb
 PORTVERSION=	2.2.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	net python geography
@@ -21,9 +20,9 @@ GH_ACCOUNT=	maxmind
 GH_PROJECT=	MaxMind-DB-Reader-python
 GH_TAGNAME=	d8accfe
 
-USE_PYTHON=	allflavors autoplist concurrent distutils
+USE_PYTHON=	autoplist distutils
 
 post-install:
-	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' | ${XARGS} ${STRIP_CMD}
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/maxminddb/extension*.so
 
 .include <bsd.port.mk>
