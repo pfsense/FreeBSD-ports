@@ -104,8 +104,8 @@ else
 	$action = "";
 
 $pconfig = array();
-if (empty(config_get_path("installedpackages/snortglobal/rule/{$id}/uuid", ''))) {
-	/* Adding new interface, so generate a UUID and flag the rules to build. */
+if (!config_path_enabled('installedpackages/snortglobal/rule', $id)) {
+	/* Adding a new interface, so generate new UUID and flag rules to rebuild. */
 	$pconfig['uuid'] = snort_generate_id();
 	$rebuild_rules = true;
 	$new_interface = true;
@@ -269,9 +269,9 @@ if ($_POST['save'] && !$input_errors) {
 		}
 	}
 
-	// If Snort is disabled on this interface, stop any running instance,
-	// save the change, and exit.
-	if ($_POST['enable'] != 'on') {
+	// If Snort is now disabled on this interface, stop any running instance
+	// on an active interface, save the change, and exit.
+	if ($_POST['enable'] != 'on' && config_path_enabled('installedpackages/snortglobal/rule', $id)) {
 		$a_rule[$id]['enable'] = $_POST['enable'] ? 'on' : 'off';
 		touch("{$g['varrun_path']}/snort_{$a_rule[$id]['uuid']}.disabled");
 		snort_stop($a_rule[$id], get_real_interface($a_rule[$id]['interface']));
@@ -288,12 +288,17 @@ if ($_POST['save'] && !$input_errors) {
 		exit;
 	}
 
-	/* if no errors write to conf */
+	/* if no errors, generate and save the interface configuration */
 	if (!$input_errors) {
 		/* Most changes don't require a rules rebuild, so default to "off" */
 		$rebuild_rules = FALSE;
+		$natent = array();
 
-		$natent = $a_rule[$id];
+		// Grab the existing configuration for modifications if it exists
+		if (config_path_enabled('installedpackages/snortglobal/rule', $id)) {
+			$natent = $a_rule[$id];
+		}
+
 		$natent['interface'] = $_POST['interface'];
 		$natent['enable'] = $_POST['enable'] ? 'on' : 'off';
 		$natent['uuid'] = $pconfig['uuid'];
