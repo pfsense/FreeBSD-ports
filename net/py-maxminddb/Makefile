@@ -20,7 +20,7 @@ GH_ACCOUNT=	maxmind
 GH_PROJECT=	MaxMind-DB-Reader-python
 GH_TAGNAME=	d8accfe
 
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils flavors
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/maxminddb/extension*.so
