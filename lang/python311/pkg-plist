@@ -2205,8 +2205,8 @@ lib/python%%XYDOT%%/ensurepip/__pycache__/__main__.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/ensurepip/__pycache__/_uninstall.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/ensurepip/__pycache__/_uninstall.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/ensurepip/__pycache__/_uninstall.cpython-%%XY%%.pyc
-lib/python%%XYDOT%%/ensurepip/_bundled/pip-22.2.2-py3-none-any.whl
-lib/python%%XYDOT%%/ensurepip/_bundled/setuptools-63.2.0-py3-none-any.whl
+lib/python%%XYDOT%%/ensurepip/_bundled/pip-22.3.1-py3-none-any.whl
+lib/python%%XYDOT%%/ensurepip/_bundled/setuptools-65.5.0-py3-none-any.whl
 lib/python%%XYDOT%%/ensurepip/_uninstall.py
 lib/python%%XYDOT%%/enum.py
 lib/python%%XYDOT%%/filecmp.py
@@ -2974,7 +2974,7 @@ lib/python%%XYDOT%%/lib-dynload/fcntl.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/grp.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/math.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/mmap.cpython-%%XY%%%%ABI%%.so
-lib/python%%XYDOT%%/lib-dynload/nis.cpython-%%XY%%.so
+%%NO_NIS%%lib/python%%XYDOT%%/lib-dynload/nis.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/ossaudiodev.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/pyexpat.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/readline.cpython-%%XY%%%%ABI%%.so
@@ -2987,9 +2987,9 @@ lib/python%%XYDOT%%/lib-dynload/xxlimited.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/xxlimited_35.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib-dynload/zlib.cpython-%%XY%%%%ABI%%.so
 lib/python%%XYDOT%%/lib2to3/Grammar.txt
-lib/python%%XYDOT%%/lib2to3/Grammar%%XYZDOT%%.candidate.2.pickle
+lib/python%%XYDOT%%/lib2to3/Grammar%%XYZDOT%%.final.0.pickle
 lib/python%%XYDOT%%/lib2to3/PatternGrammar.txt
-lib/python%%XYDOT%%/lib2to3/PatternGrammar%%XYZDOT%%.candidate.2.pickle
+lib/python%%XYDOT%%/lib2to3/PatternGrammar%%XYZDOT%%.final.0.pickle
 lib/python%%XYDOT%%/lib2to3/__init__.py
 lib/python%%XYDOT%%/lib2to3/__main__.py
 lib/python%%XYDOT%%/lib2to3/__pycache__/__init__.cpython-%%XY%%.opt-1.pyc
@@ -3582,6 +3582,9 @@ lib/python%%XYDOT%%/test/__pycache__/_test_embed_structseq.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/_test_multiprocessing.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/_test_multiprocessing.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/_test_multiprocessing.cpython-%%XY%%.pyc
+lib/python%%XYDOT%%/test/__pycache__/_test_venv_multiprocessing.cpython-%%XY%%.opt-1.pyc
+lib/python%%XYDOT%%/test/__pycache__/_test_venv_multiprocessing.cpython-%%XY%%.opt-2.pyc
+lib/python%%XYDOT%%/test/__pycache__/_test_venv_multiprocessing.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/_typed_dict_helper.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/_typed_dict_helper.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/_typed_dict_helper.cpython-%%XY%%.pyc
@@ -3906,9 +3909,6 @@ lib/python%%XYDOT%%/test/__pycache__/test_calendar.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_call.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_call.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_call.cpython-%%XY%%.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_capi.cpython-%%XY%%.opt-1.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_capi.cpython-%%XY%%.opt-2.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_capi.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_cgi.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_cgi.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_cgi.cpython-%%XY%%.pyc
@@ -4272,9 +4272,6 @@ lib/python%%XYDOT%%/test/__pycache__/test_genericpath.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_genexps.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_genexps.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_genexps.cpython-%%XY%%.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_getargs2.cpython-%%XY%%.opt-1.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_getargs2.cpython-%%XY%%.opt-2.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_getargs2.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_getopt.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_getopt.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_getopt.cpython-%%XY%%.pyc
@@ -4776,9 +4773,6 @@ lib/python%%XYDOT%%/test/__pycache__/test_strtod.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_struct.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_struct.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_struct.cpython-%%XY%%.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_structmembers.cpython-%%XY%%.opt-1.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_structmembers.cpython-%%XY%%.opt-2.pyc
-lib/python%%XYDOT%%/test/__pycache__/test_structmembers.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_structseq.cpython-%%XY%%.opt-1.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_structseq.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/__pycache__/test_structseq.cpython-%%XY%%.pyc
@@ -5090,6 +5084,7 @@ lib/python%%XYDOT%%/test/_test_eintr.py
 lib/python%%XYDOT%%/test/_test_embed_set_config.py
 lib/python%%XYDOT%%/test/_test_embed_structseq.py
 lib/python%%XYDOT%%/test/_test_multiprocessing.py
+lib/python%%XYDOT%%/test/_test_venv_multiprocessing.py
 lib/python%%XYDOT%%/test/_testcppext.cpp
 lib/python%%XYDOT%%/test/_typed_dict_helper.py
 lib/python%%XYDOT%%/test/allsans.pem
@@ -5769,7 +5764,6 @@ lib/python%%XYDOT%%/test/test_bz2.py
 lib/python%%XYDOT%%/test/test_c_locale_coercion.py
 lib/python%%XYDOT%%/test/test_calendar.py
 lib/python%%XYDOT%%/test/test_call.py
-lib/python%%XYDOT%%/test/test_capi.py
 lib/python%%XYDOT%%/test/test_cgi.py
 lib/python%%XYDOT%%/test/test_cgitb.py
 lib/python%%XYDOT%%/test/test_charmapcodec.py
@@ -6028,7 +6022,6 @@ lib/python%%XYDOT%%/test/test_genericalias.py
 lib/python%%XYDOT%%/test/test_genericclass.py
 lib/python%%XYDOT%%/test/test_genericpath.py
 lib/python%%XYDOT%%/test/test_genexps.py
-lib/python%%XYDOT%%/test/test_getargs2.py
 lib/python%%XYDOT%%/test/test_getopt.py
 lib/python%%XYDOT%%/test/test_getpass.py
 lib/python%%XYDOT%%/test/test_getpath.py
@@ -6763,7 +6756,6 @@ lib/python%%XYDOT%%/test/test_stringprep.py
 lib/python%%XYDOT%%/test/test_strptime.py
 lib/python%%XYDOT%%/test/test_strtod.py
 lib/python%%XYDOT%%/test/test_struct.py
-lib/python%%XYDOT%%/test/test_structmembers.py
 lib/python%%XYDOT%%/test/test_structseq.py
 lib/python%%XYDOT%%/test/test_subclassinit.py
 lib/python%%XYDOT%%/test/test_subprocess.py
@@ -6968,6 +6960,14 @@ lib/python%%XYDOT%%/test/tracedmodules/__pycache__/testmod.cpython-%%XY%%.opt-1.
 lib/python%%XYDOT%%/test/tracedmodules/__pycache__/testmod.cpython-%%XY%%.opt-2.pyc
 lib/python%%XYDOT%%/test/tracedmodules/__pycache__/testmod.cpython-%%XY%%.pyc
 lib/python%%XYDOT%%/test/tracedmodules/testmod.py
+lib/python%%XYDOT%%/test/typinganndata/__init__.py
+lib/python%%XYDOT%%/test/typinganndata/__pycache__/__init__.cpython-%%XY%%.opt-1.pyc
+lib/python%%XYDOT%%/test/typinganndata/__pycache__/__init__.cpython-%%XY%%.opt-2.pyc
+lib/python%%XYDOT%%/test/typinganndata/__pycache__/__init__.cpython-%%XY%%.pyc
+lib/python%%XYDOT%%/test/typinganndata/__pycache__/ann_module9.cpython-%%XY%%.opt-1.pyc
+lib/python%%XYDOT%%/test/typinganndata/__pycache__/ann_module9.cpython-%%XY%%.opt-2.pyc
+lib/python%%XYDOT%%/test/typinganndata/__pycache__/ann_module9.cpython-%%XY%%.pyc
+lib/python%%XYDOT%%/test/typinganndata/ann_module9.py
 lib/python%%XYDOT%%/test/win_console_handler.py
 lib/python%%XYDOT%%/test/xmltestdata/c14n-20/README
 lib/python%%XYDOT%%/test/xmltestdata/c14n-20/c14nComment.xml
