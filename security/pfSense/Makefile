@@ -2,16 +2,18 @@
 
 PORTNAME=	pfSense
 DISTVERSION=	2.7.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	renato@pfsense.com
+MAINTAINER=	coreteam@pfsense.org
 COMMENT?=	Meta package to install pfSense required ports
 
 LICENSE=	APACHE20
+
+PY_FLAVOR=	py311
 
 RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		bsnmp-regex>=0:net-mgmt/bsnmp-regex \
@@ -64,7 +66,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		sshguard>=0:security/sshguard \
 		strongswan>=0:security/strongswan \
 		uclcmd>=0:devel/uclcmd \
-		unbound>=0:dns/unbound \
+		unbound>=0:dns/unbound@${PY_FLAVOR} \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
@@ -81,7 +83,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		kmod php:flavors
 
-IGNORE_WITH_PHP=	72 73
+IGNORE_WITH_PHP=	72 73 74 80
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext intl json mbstring \
 		mcrypt opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
