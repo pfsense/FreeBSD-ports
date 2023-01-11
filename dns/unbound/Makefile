@@ -83,8 +83,7 @@ PYTHON_CONFIGURE_ON=		--with-pythonmodule=yes \
 				--with-pyunbound=yes \
 				ac_cv_path_SWIG=${LOCALBASE}/bin/swig \
 				LDFLAGS="-L${LOCALBASE}/lib"
-PYTHON_VARS=			STRIP_FILES+=.libs/_unbound.so \
-				USE_PYTHON=flavors
+PYTHON_VARS=			STRIP_FILES+=.libs/_unbound.so
 SUBNET_CONFIGURE_ENABLE=	subnet
 TFOCL_CONFIGURE_ENABLE=		tfo-client
 TFOSE_CONFIGURE_ENABLE=		tfo-server

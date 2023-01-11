@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense
 DISTVERSION=	2.7.0
 PORTREVISION=	3
@@ -12,8 +10,6 @@ MAINTAINER=	coreteam@pfsense.org
 COMMENT?=	Meta package to install pfSense required ports
 
 LICENSE=	APACHE20
-
-PY_FLAVOR=	py311
 
 RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		bsnmp-regex>=0:net-mgmt/bsnmp-regex \
@@ -66,7 +62,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		sshguard>=0:security/sshguard \
 		strongswan>=0:security/strongswan \
 		uclcmd>=0:devel/uclcmd \
-		unbound>=0:dns/unbound@${PY_FLAVOR} \
+		unbound>=0:dns/unbound \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \

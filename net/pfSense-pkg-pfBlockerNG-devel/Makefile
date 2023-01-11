@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense-pkg-pfBlockerNG-devel
 PORTVERSION=	3.1.0
 PORTREVISION=	17
@@ -12,8 +10,6 @@ MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package pfBlockerNG
 
 LICENSE=	APACHE20
-
-PY_FLAVOR=	py311
 
 RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
