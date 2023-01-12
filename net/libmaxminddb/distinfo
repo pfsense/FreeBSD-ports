@@ -1,3 +1,7 @@
-TIMESTAMP = 1620405351
-SHA256 (libmaxminddb-1.6.0.tar.gz) = 7620ac187c591ce21bcd7bf352376a3c56a933e684558a1f6bef4bd4f3f98267
-SIZE (libmaxminddb-1.6.0.tar.gz) = 605099
+TIMESTAMP = 1673538969
+SHA256 (maxmind-libmaxminddb-1.7.1_GH0.tar.gz) = 4ed9c409667f0adeb3eca653780785ad04713b8a87f2fcfbb31967b213826322
+SIZE (maxmind-libmaxminddb-1.7.1_GH0.tar.gz) = 85425
+SHA256 (zorgnax-libtap-56e3123_GH0.tar.gz) = 7ca11bf3566b5a4b6dff01d04412a8b3dab6ef135252e9c522bda27ee9b54b32
+SIZE (zorgnax-libtap-56e3123_GH0.tar.gz) = 12470
+SHA256 (maxmind-MaxMind-DB-31a33b3_GH0.tar.gz) = b675bf4aba24754bb9b660614ab34eb18bd4c71de3b808012304085999459b5b
+SIZE (maxmind-MaxMind-DB-31a33b3_GH0.tar.gz) = 153348
