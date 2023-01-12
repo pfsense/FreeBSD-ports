@@ -1,6 +1,5 @@
 PORTNAME=	unbound
-DISTVERSION=	1.17.0
-PORTREVISION=	1
+DISTVERSION=	1.17.1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/unbound/
 
@@ -78,7 +77,7 @@ LIBEVENT_CPPFLAGS+=		$$(pkg-config libevent --cflags-only-I)
 LIBEVENT_LDFLAGS+=		$$(pkg-config libevent --libs-only-L)
 MUNIN_PLUGIN_SUB_FILES=		pkg-message
 PYTHON_BUILD_DEPENDS=		swig:devel/swig
-PYTHON_USES=			python:3.9+
+PYTHON_USES=			python
 PYTHON_CONFIGURE_ON=		--with-pythonmodule=yes \
 				--with-pyunbound=yes \
 				ac_cv_path_SWIG=${LOCALBASE}/bin/swig \
@@ -91,8 +90,8 @@ THREADS_CONFIGURE_WITH=		pthreads
 
 post-patch:
 	@${RM} ${WRKSRC}/util/configlexer.c
-	@${REINPLACE_CMD} -e 's|if test ! -e $$(DESTDIR)$$(configfile); then || ; \
-		s|$$(configfile); fi|$$(configfile).sample|' \
+	@${REINPLACE_CMD} -e 's|if test ! -e "$$(DESTDIR)$$(configfile)"; then || ; \
+		s|$$(configfile)"; fi|$$(configfile).sample"|' \
 		${WRKSRC}/Makefile.in
 
 post-patch-FILTER_AAAA-on:
