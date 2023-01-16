@@ -98,6 +98,24 @@ if($_POST['enable']) {
 	}
 }
 
+if($_POST['enable_tab_sorting']) {
+	if ($read_only) {
+		$savemsg = "Insufficient privileges to make the requested change (read only).";
+		$saveclass = 'danger';
+	} else {
+		if(($_POST['enable_tab_sorting'] === 'false')) {
+			unset($config['rrd']['enable_tab_sorting']);
+			$savemsg = gettext("Graph view sorting has been disabled.");
+			$changedesc .= gettext("Monitoring graph view sorting has been disabled.");
+		} else {
+			$config['rrd']['enable_tab_sorting'] = true;
+			$savemsg = gettext("Graph view sorting has been enabled.");
+			$changedesc .= gettext("Monitoring graph view sorting has been enabled.");
+		}
+		write_config($changedesc);
+	}
+}
+
 if ($_POST['ResetRRD']) {
 	if ($read_only) {
 		$savemsg = "Insufficient privileges to make the requested change (read only).";
@@ -197,6 +215,7 @@ if ($_POST['remove-view']) {
 }
 
 $pconfig['enable'] = isset($config['rrd']['enable']);
+$pconfig['enable_tab_sorting'] = isset($config['rrd']['enable_tab_sorting']);
 
 //grab settings for the active view
 init_config_arr(array('rrd', 'savedviews'));
@@ -412,6 +431,9 @@ foreach ($config['rrd']['savedviews'] as $key => $view) {
 	$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
 }
 
+if ($pconfig['enable_tab_sorting']) {
+	asort($tab_array);
+}
 display_top_tabs($tab_array);
 
 ?>
@@ -632,6 +654,11 @@ display_top_tabs($tab_array);
 				</div>
 				<div class="col-sm-4">
 					<?php
+					if ($pconfig['enable_tab_sorting']) {
+						echo '<button class="btn btn-sm btn-primary" type="submit" value="false" name="enable_tab_sorting" id="enable_tab_sorting" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Sorting</button>';
+					} else {
+						echo '<button class="btn btn-sm btn-primary" type="submit" value="true" name="enable_tab_sorting" id="enable_tab_sorting" style="display:none;"><i class="fa fa-sort-alpha-down fa-lg"></i> Enable Sorting</button>';
+					}
 					if ($pconfig['enable']) {
 						echo '<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Graphing</button>';
 					} else {
@@ -1176,6 +1203,7 @@ events.push(function() {
 		$("#save-view").toggle();
 		$("#add-view").toggle();
 		$("#remove-view").toggle();
+		$("#enable_tab_sorting").toggle();
 		$("#enable").toggle();
 		$("#ResetRRD").toggle();
 	});
