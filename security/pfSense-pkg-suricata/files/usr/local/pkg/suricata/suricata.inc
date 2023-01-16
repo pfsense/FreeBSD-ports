@@ -4258,7 +4258,7 @@ function suricata_get_vpns_list() {
 	}
 	// OpenVPN CSO
 	foreach (config_get_path('openvpn/openvpn-csc', []) as $ovpnent) {
-		if (is_array($ovpnent) && !config_path_enabled($ovpnent, 'disable')) {
+		if (is_array($ovpnent) && !array_path_enabled($ovpnent, 'disable')) {
 			if (!empty($ovpnent['tunnel_network'])) {
 				if (function_exists('openvpn_gen_tunnel_network')) {
 					$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($ovpnent['tunnel_network']));
