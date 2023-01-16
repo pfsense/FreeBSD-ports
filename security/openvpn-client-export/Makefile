@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openvpn-client-export
-PORTVERSION=	2.5.2
+PORTVERSION=	2.5.8
 CATEGORIES=	security
 MASTER_SITES=	https://files.netgate.com/packages/openvpn-client-export/
 
