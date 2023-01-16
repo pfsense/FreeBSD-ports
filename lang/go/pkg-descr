@@ -1,4 +1,5 @@
 Go is an open source programming environment that makes it easy to build
 simple, reliable, and efficient software.
 
-WWW: https://golang.org
+This is a meta port for the default version of Go, it provides symbolic links
+called go and gofmt.
