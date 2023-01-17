@@ -1,5 +1,3 @@
-# Created by: Eric Anholt
-
 PORTNAME=	git
 DISTVERSION=	2.39.1
 CATEGORIES=	devel
@@ -12,6 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT?=	Distributed source code management tool ${COMMENT_${FLAVOR}}
+WWW=		https://git-scm.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -108,6 +107,7 @@ PERL_MAKE_ARGS_OFF=	NO_PERL=1
 
 GITWEB_IMPLIES=		PERL
 GITWEB_RUN_DEPENDS=	p5-CGI>=0:www/p5-CGI
+GITWEB_MAKE_ARGS_OFF=	NO_GITWEB=1
 
 PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 PCRE2_CONFIGURE_WITH=	libpcre
@@ -208,7 +208,6 @@ post-patch:
 	@${REINPLACE_CMD} -e '/git-cvsexportcommit.perl/d; \
 		/git-cvsimport.perl/d; \
 		/git-cvsserver.perl/d; \
-		/documented,gitcvs-migration/d; \
 		s/git-cvsserver//' \
 		${WRKSRC}/Makefile
 .endif
@@ -229,9 +228,7 @@ post-patch-CONTRIB-on:
 	@${REINPLACE_CMD} -e "s,/usr/bin/perl,${PERL}," \
 		${WRKSRC}/contrib/diff-highlight/Makefile
 
-post-patch-GITWEB-off:
-	@${REINPLACE_CMD} -e '/$$(MAKE) -C gitweb install/d' \
-		${WRKSRC}/Makefile
+post-patch-GITWEB-on:
 	@${REINPLACE_CMD} -e "s,/usr/bin/perl,${PERL}," \
 		${WRKSRC}/t/lib-gitweb.sh
 
