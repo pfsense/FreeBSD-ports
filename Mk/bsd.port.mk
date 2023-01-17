@@ -339,6 +339,11 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  can be used in Makefiles by port maintainers
 #				  if a port breaks with it (it should be
 #				  extremely rare).
+# PIE_CFLAGS	- Defaults to -fPIE -fPIC. This value
+#				  is added to CFLAGS and the necessary flags
+#				  are added to LDFLAGS. Note that PIE_UNSAFE
+#				  can be used in Makefiles by port maintainers
+#				  if a port breaks with it.
 ##
 # USE_LOCALE	- LANG and LC_ALL are set to the value of this variable in
 #				  CONFIGURE_ENV and MAKE_ENV.  Example: USE_LOCALE=en_US.UTF-8
@@ -366,9 +371,6 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # USE_OCAML		- If set, this port relies on the OCaml language.
 #				  Implies inclusion of bsd.ocaml.mk.  (Also see
 #				  that file for more information on USE_OCAML*).
-# USE_RUBY		- If set, this port relies on the Ruby language.
-#				  Implies inclusion of bsd.ruby.mk.  (Also see
-#				  that file for more information on USE_RUBY_*).
 ##
 # USE_GECKO		- If set, this port uses the Gecko/Mozilla product.
 #				  See bsd.gecko.mk for more details.
@@ -1012,7 +1014,7 @@ LC_ALL=		C
 # These need to be absolute since we don't know how deep in the ports
 # tree we are and thus can't go relative.  They can, of course, be overridden
 # by individual Makefiles or local system make configuration.
-_LIST_OF_WITH_FEATURES=	debug lto ssp
+_LIST_OF_WITH_FEATURES=	debug lto ssp pie relro bind_now
 _DEFAULT_WITH_FEATURES=	ssp
 PORTSDIR?=		/usr/ports
 LOCALBASE?=		/usr/local
@@ -1052,6 +1054,11 @@ _PORTS_DIRECTORIES+=	${PKG_DBDIR} ${PREFIX} ${WRKDIR} ${EXTRACT_WRKDIR} \
 # builds can occur when PORTSDIR is a symbolic link, or with something like
 # make -C /usr/ports/category/port/.
 .CURDIR:=		${.CURDIR:tA}
+
+# Ensure .CURDIR doesn't contain a colon, which breaks makefile targets
+.if ${.CURDIR:S/:/\:/g} != ${.CURDIR}
+.error The current directory path contains ':', this is not supported
+.endif
 
 # make sure bmake treats -V as expected
 .MAKE.EXPAND_VARIABLES= yes
@@ -1381,10 +1388,6 @@ PKGCOMPATDIR?=		${LOCALBASE}/lib/compat/pkg
 .include "${PORTSDIR}/Mk/bsd.java.mk"
 .    endif
 
-.    if defined(USE_RUBY)
-.include "${PORTSDIR}/Mk/bsd.ruby.mk"
-.    endif
-
 .    if defined(USE_OCAML)
 .include "${PORTSDIR}/Mk/bsd.ocaml.mk"
 .    endif
@@ -1396,10 +1399,6 @@ USES+=	apache:run,${USE_APACHE_RUN:C/2([0-9])/2.\1/g}
 .    elif defined(USE_APACHE)
 USE_APACHE:=	${USE_APACHE:S/common/server,/}
 USES+=	apache:${USE_APACHE:C/2([0-9])/2.\1/g}
-.    endif
-
-.    if defined(USE_TEX)
-.include "${PORTSDIR}/Mk/bsd.tex.mk"
 .    endif
 
 .    if defined(USE_GECKO)
@@ -1634,8 +1633,7 @@ QA_ENV+=		STAGEDIR=${STAGEDIR} \
 				DISABLE_LICENSES="${DISABLE_LICENSES:Dyes}" \
 				PORTNAME=${PORTNAME} \
 				NO_ARCH=${NO_ARCH} \
-				"NO_ARCH_IGNORE=${NO_ARCH_IGNORE}" \
-				USE_RUBY=${USE_RUBY}
+				"NO_ARCH_IGNORE=${NO_ARCH_IGNORE}"
 .    if !empty(USES:Mssl)
 QA_ENV+=		USESSSL=yes
 .    endif
@@ -1776,8 +1774,6 @@ CFLAGS:=	${CFLAGS:C/${_CPUCFLAGS}//}
 .      endif
 .    endfor
 
-# XXX PIE support to be added here
-MAKE_ENV+=	NO_PIE=yes
 # We will control debug files.  Don't let builds that use /usr/share/mk
 # split out debug symbols since the plist won't know to expect it.
 MAKE_ENV+=	MK_DEBUG_FILES=no
@@ -1962,7 +1958,10 @@ ERROR+=	"Unknown USES=${f:C/\:.*//}"
 .    endfor
 
 .    if defined(PORTNAME)
+.      if !defined(PACKAGE_BUILDING) || empty(.TARGETS) || make(all) || \
+	      make(check-sanity) || make(show*-errors) || make(show*-warnings)
 .include "${PORTSDIR}/Mk/bsd.sanity.mk"
+.      endif
 .    endif
 
 .    if defined(USE_LOCALE)
@@ -3882,6 +3881,7 @@ makesum: check-sanity
 	@cd ${.CURDIR} && ${MAKE} fetch NO_CHECKSUM=yes \
 			DISABLE_SIZE=yes DISTFILES="${DISTFILES}" \
 			MASTER_SITES="${MASTER_SITES}" \
+			MASTER_SITE_SUBDIR="${MASTER_SITE_SUBDIR}" \
 			PATCH_SITES="${PATCH_SITES}"
 	@${SETENV} \
 			${_CHECKSUM_INIT_ENV} \
@@ -4280,7 +4280,7 @@ create-manifest:
 			dp_PORT_OPTIONS='${PORT_OPTIONS}'                     \
 			dp_PREFIX='${PREFIX}'                                 \
 			dp_USERS='${USERS:u:S/$/,/}'                          \
-			dp_WWW='${_WWW}'                                      \
+			dp_WWW='${WWW}'                                       \
 			${PKG_NOTES_ENV}                                      \
 			${SH} ${SCRIPTSDIR}/create-manifest.sh
 
@@ -4344,7 +4344,6 @@ _FETCH_DEPENDS=${FETCH_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C
 _LIB_DEPENDS=${LIB_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,}
 _BUILD_DEPENDS=${BUILD_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,} ${_LIB_DEPENDS}
 _RUN_DEPENDS=${RUN_DEPENDS:C/^[^ :]+:([^ :@]+)(@[^ :]+)?(:[^ :]+)?/\1/:O:u:C,(^[^/]),${PORTSDIR}/\1,} ${_LIB_DEPENDS}
-_WWW=${WWW}
 .      if exists(${DESCR})
 _DESCR=${DESCR}
 .      else
