@@ -22,6 +22,7 @@
 
 require_once('pfsense-utils.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
+require_once('/usr/local/www/pfblockerng/pfblockerng.php');
 
 global $g, $pfb;
 pfb_global();
@@ -33,14 +34,20 @@ $g['pfblockerng_install'] = TRUE;
 if (empty($pfb['maxmind_key'])) {
 	update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
 }
+else {
+	// Update any PHP changes to GeoIP Tabs
+	update_status("\nRebuilding GeoIP tabs...");
+	pfblockerng_get_countries();
+	update_status(" done.");
+}
 
 // Create Reputation tab
 if (!file_exists('/usr/local/www/pfblockerng/pfblockerng_reputation.php') || empty($pfb['maxmind_key'])) {
-	require_once('/usr/local/www/pfblockerng/pfblockerng.php');
+	update_status("\nRebuild Reputation tab...");
 	pfb_build_reputation_tab();
+	update_status(" done.");
 }
 
-$pfb['widgets'] = config_get_path('widgets/sequence');
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("\nRestoring previous pfBlockerNG Widget settings...");
 
@@ -52,20 +59,23 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 
 	config_set_path('widgets/sequence', $pfb['widgets']);
 	write_config('pfBlockerNG: Save widget');
+	update_status(" done.");
 } else {
-	update_status("\nAdding pfBlockerNG Widget to the Dashboard...");
-	if (strpos($pfb['widgets'], 'pfblockerng') === FALSE) {
-		if (empty($pfb['widgets'])) {
+	$widgets = config_get_path('widgets/sequence');
+	if (strpos($widgets, 'pfblockerng') === FALSE) {
+		update_status("\nAdding pfBlockerNG Widget to the Dashboard...");
+		if (empty($widgets)) {
 			config_set_path('widgets/sequence', 'pfblockerng:col2:open:0');
 		} else {
-			config_set_path('widgets/sequence', $pfb['widgets'] . ',pfblockerng:col2:open:0');
+			config_set_path('widgets/sequence', $widgets . ',pfblockerng:col2:open:0');
 		}
 		write_config('pfBlockerNG: Save widget');
+		update_status(" done.");
 	}
 }
 
 // Create Firewall filter service and link required executables
-update_status(" done.\n\nCreating Firewall filter service...");
+update_status("\nCreating Firewall filter service...");
 pfb_filter_service();
 stop_service('pfb_filter');
 update_status(" done.\nRenew Firewall filter executables...");
@@ -115,7 +125,6 @@ update_status("Starting DNSBL Service...");
 start_service('pfb_dnsbl');
 update_status(" done.\n\n");
 
-// Replace 'default' DNSBL active blocked webpage
 // Replace 'default' DNSBL active blocked webpage
 if (!file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php') ||
     config_get_path('installedpackages/pfblockerngdnsblsettings/config/0/dnsblwebpage', '') == 'dnsbl_default.php') {
@@ -546,6 +555,47 @@ if (config_get_path('installedpackages/pfblockerng/config/0') != null &&
 			$ufound = TRUE;
 			config_set_path("installedpackages/pfblockerngipsettings/config/0/{$m_setting}", $maxmind_config[$m_setting]);
 			config_del_path("installedpackages/pfblockerng/config/0/{$m_setting}");
+		}
+	}
+}
+
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
+}
+
+// Validate widget pfBlockerNG clear [ dnsbl/IP ] counter CRON jobs
+update_status(" Validating Widget cron settings...");
+$ufound = FALSE;
+
+foreach (array('clearip', 'cleardnsbl') as $type) {
+	if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") != null) {
+
+		// Remove incorrect cron entries
+		$pfb_cmd_esc = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php '{$type}' >/dev/null 2>&1";
+		if (pfblockerng_cron_exists($pfb_cmd_esc, '0', '0', '*', '*')) {
+			$ufound = TRUE;
+			install_cron_job("pfblockerng.php '{$type}'", false);
+		}
+		if (pfblockerng_cron_exists($pfb_cmd_esc, '0', '0', '*', '7')) {
+			$ufound = TRUE;
+			install_cron_job("pfblockerng.php '{$type}'", false);
+		}
+
+		// Add correct cron entry, if enabled
+		if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") != 'never') {
+
+			$pfb_day = '*';
+			if (config_get_path("installedpackages/pfblockerngglobal/widget-{$type}") == 'weekly') {
+				$pfb_day = '7';
+			}
+
+			$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
+			if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
+				$ufound = TRUE;
+				install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+			}
 		}
 	}
 }
