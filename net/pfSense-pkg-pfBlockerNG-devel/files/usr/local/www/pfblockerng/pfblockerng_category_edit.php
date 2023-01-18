@@ -356,19 +356,24 @@ $options_stateremoval		= [	'enabled' => 'Enabled', 'disabled' => 'Disabled' ];
 
 // Collect all pfSense 'Port' Aliases
 $portslist = $networkslist = '';
+$options_aliasports_in = $options_aliasports_out = array();
+
 if (!empty($config['aliases']['alias'])) {
 	foreach ($config['aliases']['alias'] as $alias) {
 		if ($alias['type'] == 'port') {
 			$portslist .= "{$alias['name']},";
-		} elseif ($alias['type'] == 'network') {
+			$options_aliasports_in[$alias['name']] = $alias['name'];
+			$options_aliasports_out[$alias['name']] = $alias['name'];
+		}
+		elseif ($alias['type'] == 'network') {
 			$networkslist .= "{$alias['name']},";
+			$options_aliasaddr_in[$alias['name']] = $alias['name'];
+			$options_aliasaddr_out[$alias['name']] = $alias['name'];
 		}
 	}
 }
 $ports_list			= trim($portslist, ',');
 $networks_list			= trim($networkslist, ',');
-$options_aliasports_in		= $options_aliasports_out	= explode(',', $ports_list);
-$options_aliasaddr_in		= $options_aliasaddr_out	= explode(',', $networks_list);
 
 $options_autoproto_in		= $options_autoproto_out	= [ '' => 'any', 'tcp' => 'TCP', 'udp' => 'UDP', 'tcp/udp' => 'TCP/UDP' ];
 $options_agateway_in		= $options_agateway_out		= pfb_get_gateways();

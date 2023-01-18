@@ -458,7 +458,7 @@ if ($_POST) {
 				'pfb_noaaaa_list'	=> 'domain',
 				'pfb_gp_bypass_list'	=> 'ip',
 				'suppression'		=> 'domain',
-				'tldexclusion'		=> 'domain',
+				'tldexclusion'		=> 'hostname',
 				'tldblacklist'		=> 'tld',
 				'tldwhitelist'		=> 'tldwhite' ) as $custom_type => $custom_format) {
 
@@ -475,6 +475,12 @@ if ($_POST) {
 							switch ($custom_format) {
 								case 'regex':
 									// TODO (See non-ascii validation above)
+									break;
+								case 'hostname':
+									$value[0] = trim($value[0], '.');
+									if (empty(pfb_filter($value[0], PFB_FILTER_HOSTNAME, 'dnsbl'))) {
+										$input_errors[] = "Customlist {$custom_type}: Invalid  Hostname entry: [ " . htmlspecialchars($line) . " ]";
+									}
 									break;
 								case 'domain':
 									$value[0] = trim($value[0], '.');
