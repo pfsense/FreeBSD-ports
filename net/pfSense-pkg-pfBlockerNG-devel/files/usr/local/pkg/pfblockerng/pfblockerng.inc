@@ -2157,7 +2157,7 @@ function pfb_unbound_dnsbl($mode) {
 	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*conf";
 
 	// Collect Unbound custom option pfSense conf line
-	init_config_arr(array('unbound', 'custom_options'));
+	init_config_arr(array('unbound'));
 	$pfb['unboundconfig']	= config_get_path('unbound/custom_options');
 
 	if (!empty($pfb['unboundconfig'])) {
