@@ -22,6 +22,7 @@
 
 require_once('pfsense-utils.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
+require_once('/usr/local/www/pfblockerng/pfblockerng.php');
 
 global $config, $g, $pfb;
 pfb_global();
@@ -31,16 +32,22 @@ $g['pfblockerng_install'] = TRUE;
 
 // MaxMind Database is no longer pre-installed during package installation
 if (empty($pfb['maxmind_key'])) {
- update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
+	update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
+}
+else {
+	// Update any PHP changes to GeoIP Tabs
+	update_status("\nRebuilding GeoIP tabs...");
+	pfblockerng_get_countries();
+	update_status(" done.");
 }
 
 // Create Reputation tab
 if (!file_exists('/usr/local/www/pfblockerng/pfblockerng_reputation.php') || empty($pfb['maxmind_key'])) {
-	require_once('/usr/local/www/pfblockerng/pfblockerng.php');
+	update_status("\nRebuild Reputation tab...");
 	pfb_build_reputation_tab();
+	update_status(" done.");
 }
 
-$pfb['widgets'] = $config['widgets']['sequence'];
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("\nRestoring previous pfBlockerNG Widget settings...");
 
@@ -52,21 +59,23 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 
 	$config['widgets']['sequence'] = $pfb['widgets'];
 	write_config('pfBlockerNG: Save widget');
+	update_status(" done.");
 } else {
-	update_status("\nAdding pfBlockerNG Widget to the Dashboard...");
 	$widgets = $config['widgets']['sequence'];
 	if (strpos($widgets, 'pfblockerng') === FALSE) {
+		update_status("\nAdding pfBlockerNG Widget to the Dashboard...");
 		if (empty($widgets)) {
 			$config['widgets']['sequence'] = 'pfblockerng:col2:open:0';
 		} else {
 			$config['widgets']['sequence'] .= ',pfblockerng:col2:open:0';
 		}
 		write_config('pfBlockerNG: Save widget');
+		update_status(" done.");
 	}
 }
 
 // Create Firewall filter service and link required executables
-update_status(" done.\n\nCreating Firewall filter service...");
+update_status("\nCreating Firewall filter service...");
 pfb_filter_service();
 stop_service('pfb_filter');
 update_status(" done.\nRenew Firewall filter executables...");
@@ -561,6 +570,47 @@ if (is_array($config['installedpackages']['pfblockerng']['config'][0]) &&
 			$ufound = TRUE;
 			$config['installedpackages']['pfblockerngipsettings']['config'][0][$m_setting] = $maxmind_config[$m_setting];
 			unset($maxmind_config[$m_setting]);
+		}
+	}
+}
+
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
+}
+
+// Validate widget pfBlockerNG clear [ dnsbl/IP ] counter CRON jobs
+update_status(" Validating Widget cron settings...");
+$ufound = FALSE;
+
+foreach (array('clearip', 'cleardnsbl') as $type) {
+	if (isset($config['installedpackages']['pfblockerngglobal']['widget-' . $type])) {
+
+		// Remove incorrect cron entries
+		$pfb_cmd_esc = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php '{$type}' >/dev/null 2>&1";
+		if (pfblockerng_cron_exists($pfb_cmd_esc, '0', '0', '*', '*')) {
+			$ufound = TRUE;
+			install_cron_job("pfblockerng.php '{$type}'", false);
+		}
+		if (pfblockerng_cron_exists($pfb_cmd_esc, '0', '0', '*', '7')) {
+			$ufound = TRUE;
+			install_cron_job("pfblockerng.php '{$type}'", false);
+		}
+
+		// Add correct cron entry, if enabled
+		if ($config['installedpackages']['pfblockerngglobal']['widget-' . $type] != 'never') {
+
+			$pfb_day = '*';
+			if ($config['installedpackages']['pfblockerngglobal']['widget-' . $type] == 'weekly') {
+				$pfb_day = '7';
+			}
+
+			$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
+			if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
+				$ufound = TRUE;
+				install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+			}
 		}
 	}
 }

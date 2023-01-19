@@ -39,7 +39,7 @@ $aglobal_array = array(	'pfbunicnt' => 200, 'pfbdenycnt' => 25, 'pfbpermitcnt' =
 init_config_arr(array('installedpackages', 'pfblockerngglobal'));
 $pfb['aglobal'] = &$config['installedpackages']['pfblockerngglobal'];
 
-$alertrefresh	= $pfb['aglobal']['alertrefresh']	!= ''	? $pfb['aglobal']['alertrefresh']	: 'on';
+$alertrefresh	= isset($pfb['aglobal']['alertrefresh'])	? $pfb['aglobal']['alertrefresh']	: 'on';
 $pfbpageload	= $pfb['aglobal']['pfbpageload']	!= ''	? $pfb['aglobal']['pfbpageload']	: 'unified';
 $pfbmaxtable	= $pfb['aglobal']['pfbmaxtable']	!= ''	? $pfb['aglobal']['pfbmaxtable']	: '1000';
 $pfbreplytypes	= explode(',', $pfb['aglobal']['pfbreplytypes'])?: array();
@@ -3476,33 +3476,35 @@ if ($pfb['dnsbl'] == 'on') {
 	))->setHelp('DNS Reply Event color')
 	  ->setAttribute('style', "background: {$pfb['unireply2']}; color: white;")
 	  ->setWidth(2);
-
-	if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
-		$group = new Form_Group('DNS Reply Log Options');
-		$group->add(new Form_Select(
-			'pfbreplytypes',
-			'',
-			$pfbreplytypes,
-			$options_pfbreplytypes,
-			TRUE
-		))->setHelp('DNS Reply Type Suppress')
-		  ->setAttribute('title', 'Select the DNS Types to suppress from the DNS Reply Log')
-		  ->setWidth(2)
-		  ->setAttribute('size', 6);
-
-		$group->add(new Form_Select(
-			'pfbreplyrec',
-			'',
-			$pfbreplyrec,
-			$options_pfbreplyrec,
-			TRUE
-		))->setHelp('DNS Reply Record Suppress')
-		  ->setWidth(2)
-		  ->setAttribute('title', 'Select the DNS Record Types to suppress from the DNS Reply Log')
-		  ->setAttribute('size', 16);
-	}
 }
 $section->add($group);
+
+if ($pfb['dnsbl'] == 'on' && $pfb['dnsbl_mode'] == 'dnsbl_python') {
+	$group = new Form_Group('DNS Reply Log Options');
+	$group->add(new Form_Select(
+		'pfbreplytypes',
+		'',
+		$pfbreplytypes,
+		$options_pfbreplytypes,
+		TRUE
+	))->setHelp('DNS Reply Type Suppress')
+	  ->setAttribute('title', 'Select the DNS Types to suppress from the DNS Reply Log')
+	  ->setWidth(2)
+	  ->setAttribute('size', 6);
+
+	$group->add(new Form_Select(
+		'pfbreplyrec',
+		'',
+		$pfbreplyrec,
+		$options_pfbreplyrec,
+		TRUE
+	))->setHelp('DNS Reply Record Suppress')
+	  ->setWidth(2)
+	  ->setAttribute('title', 'Select the DNS Record Types to suppress from the DNS Reply Log')
+	  ->setAttribute('size', 16);
+
+	$section->add($group);
+}
 
 $group = new Form_Group('Event Timeline Options');
 $group->add(new Form_Select(
