@@ -255,6 +255,7 @@ $pfb['mime_types'] = array_flip(array(	'inode/x-empty',
 					'text/xml',
 					'text/csv',
 					'application/csv',
+					'application/json',
 					'application/x-tar',
 					'application/gzip',
 					'application/x-gzip',
@@ -344,11 +345,11 @@ function pfb_filter($input, $type, $reference='Unknown', $default='', $escape=FA
 				}
 
 				$validate_list = '';
-				if (!$data || !is_array($data) || !isset($data['path']) || empty($data['path'])) {
+				if (!$data || !is_array($data)) {
 					pfb_logger("{$header} Invalid URL (missing data) [ " . htmlspecialchars($input) . " ]", 6);
 					return FALSE;
 				} elseif (!isset($data['host']) || empty($data['host'])) {
-					pfb_logger("{$header} Invalid URL (missing data2) [ " . htmlspecialchars($input) . " ]", 6);
+					pfb_logger("{$header} Invalid URL (missing hostname) [ " . htmlspecialchars($input) . " ]", 6);
 					return FALSE;
 				} elseif (is_ipaddr($data['host'])) {
 					$validate_list = array(array('type' => 'IP', 'data' => $data['host']));
@@ -518,7 +519,7 @@ function pfb_filter($input, $type, $reference='Unknown', $default='', $escape=FA
 			break;
 		case PFB_FILTER_CSV_WHOIS:
 			// Validate Whoisconvert string
-			if (preg_match("/^[a-zA-Z0-9,\._]+$/", $input)) {
+			if (preg_match("/^[a-zA-Z0-9,\._\-]+$/", $input)) {
 				$result = htmlspecialchars($input);
 			}
 			break;
@@ -566,9 +567,9 @@ function pfb_filter($input, $type, $reference='Unknown', $default='', $escape=FA
 			if ($retval != 0 || empty($output[0]) || !isset($pfb['mime_types'][$output[0]])) {
 
 				// Exceptions
+				$hostname = parse_url($input[2], PHP_URL_HOST);
 				if ($output[0] == 'text/x-asm' &&
-				    ($input[2] == 'https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt' ||
-				    $input[2] == 'https://easylist.to/easylist/easyprivacy.txt')) {
+				    ($hostname == 'easylist-downloads.adblockplus.org' || $hostname == 'easylist.to' )) {
 					$output[0] = 'text/plain';
 				}
 				else {
@@ -594,17 +595,9 @@ function pfb_filter($input, $type, $reference='Unknown', $default='', $escape=FA
 			}
 			exec("/usr/bin/file -bZ --mime-type {$input[0]} 2>&1", $output, $retval);
 			if ($retval != 0 || empty($output[0]) || !isset($pfb['mime_types'][$output[0]])) {
-
-				// Exception for Stop Forum Spam
-				if ($output[0] == 'application/x-decompression-error-gzip-Unknown-compression-format' &&
-				    parse_url($input[2], PHP_URL_HOST) == 'www.stopforumspam.com') {
-					$output[0] = 'text/plain';
-				}
-				else {
-					pfb_logger("{$header} Failed or invalid Mime Type Compressed: [" .  htmlspecialchars($output[0]) . "|" . htmlspecialchars($retval) . "]", 2);
-					unlink_if_exists($input[1]);
-					return FALSE;
-				}
+				pfb_logger("{$header} Failed or invalid Mime Type Compressed: [" .  htmlspecialchars($output[0]) . "|" . htmlspecialchars($retval) . "]", 2);
+				unlink_if_exists($input[1]);
+				return FALSE;
 			}
 			$result = htmlspecialchars($output[0]);
 			break;
@@ -2164,7 +2157,7 @@ function pfb_unbound_dnsbl($mode) {
 	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*conf";
 
 	// Collect Unbound custom option pfSense conf line
-	init_config_arr(array('unbound', 'custom_options'));
+	init_config_arr(array('unbound'));
 	$pfb['unboundconfig']	= config_get_path('unbound/custom_options');
 
 	if (!empty($pfb['unboundconfig'])) {
@@ -3881,12 +3874,15 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 	$list_url = trim($list_url);
 
 	// Re-evaluate URL
-	if ($format == 'whois' || $format == 'asn') {
-		if (empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download'))) {
-			pfb_logger("\n Failed", 2);
-			return FALSE;
-		}
-	} elseif (!pfb_filter($list_url, PFB_FILTER_URL, 'pfb_download')) {
+	if ($format == 'whois' && empty(pfb_filter($list_url, PFB_FILTER_DOMAIN, 'pfb_download'))) {
+		pfb_logger("\n Failed", 2);
+		return FALSE;
+	}
+	elseif ($format == 'asn' && empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download'))) {
+		pfb_logger("\n Failed", 2);
+		return FALSE;
+	}
+	elseif (!pfb_filter($list_url, PFB_FILTER_URL, 'pfb_download_failure')) {
 		pfb_logger("\n Failed", 2);
 		return FALSE;
 	}
@@ -4085,7 +4081,7 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 			if ($type == 'geoip') {
 				// Extras - MaxMind downloads
 				@rename("{$file_download}", strstr("{$file_download}", '.raw', TRUE));
-				exec("/usr/bin/tar -xzf {$file_dwn_esc} --strip=1 -C {$pfb['geoipshare']} >/dev/null 2>&1");
+				exec("/usr/bin/tar -xzf {$file_download} --strip=1 -C {$pfb['geoipshare']} >/dev/null 2>&1");
 				return TRUE;
 			}
 			elseif ($type == 'blacklist') {
@@ -4145,10 +4141,12 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 
 			pfb_logger('.', 1);
 
+			/* TODO: FIX - Bypass ZIP Compression file mime type validation due to incompatability with ZIP files
 			if (!pfb_filter(array("{$file_dwn_esc}", "{$file_download}", "{$list_download}"), PFB_FILTER_FILE_MIME_COMPRESSED, 'pfb_download')) {
 				return FALSE;
 			}
-
+			*/
+	
 			// Check if ZIP archive contains xlsx files
 			$xlsxtest = exec("/usr/bin/tar -tf {$file_dwn_esc}");
 			if (strpos($xlsxtest, '.xlsx') !== FALSE) {
@@ -4161,6 +4159,12 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 				pfb_logger('.', 1);
 				// Process ZIP file (SFS and hpHosts workaround)
 				exec("/usr/bin/tar -xOf {$file_dwn_esc} | /usr/bin/sed 's/,[[:space:]]/; /g' | /usr/bin/tr ',' '\n' > {$file_org_esc}", $output, $retval);
+			}
+
+			// TODO: Validate file contents after extraction (to be removed once ZIP compression file mime type is fixed above)
+			if (!pfb_filter(array("{$file_org_esc}", "{$file_download}", "{$list_download}"), PFB_FILTER_FILE_MIME, 'pfb_download')) {
+				unlink_if_exists("{$file_org_esc}");
+				return FALSE;
 			}
 		}
 		elseif ($file_type == 'application/x-7z-compressed') {
@@ -7274,11 +7278,11 @@ function sync_package_pfblockerng($cron='') {
 	if (!$pfb['dnsbl_py_blacklist']) {
 		$pfb['pfs_mem'] = array(   '0' => '100000', '1500' =>  '150000', '2000' =>  '200000', '2500' =>  '250000', '3000' =>  '400000',
 					'4000' => '600000', '5000' => '1000000', '6000' => '1500000', '7000' => '2000000', '8000' => '2500000',
-					'12000' => '3000000', '16000' => '4000000');
+					'12000' => '3000000', '16000' => '4000000', '32000' => '8000000');
 	} else {
 		$pfb['pfs_mem'] = array(   '0' => '200000', '1500' =>  '300000', '2000' =>  '400000', '2500' =>  '500000', '3000' =>  '800000',
 					'4000' => '1200000', '5000' => '2000000', '6000' => '3000000', '7000' => '4000000', '8000' => '5000000',
-					'12000' => '6000000', '16000' => '8000000');
+					'12000' => '6000000', '16000' => '8000000', '32000' => '16000000');
 	}
 
 	foreach ($pfb['pfs_mem'] as $pfb_mem => $domain_max) {
@@ -10755,6 +10759,12 @@ function pfblockerng_php_pre_deinstall_command() {
 		unlink_if_exists("{$pfb['dnsbl_conf']}");
 		unlink_if_exists("{$pfb['dnsbl_cert']}");
 		unlink_if_exists("{$pfb['aliasarchive']}");
+		unlink_if_exists("{$pfb['dnsbl_info']}");
+		unlink_if_exists("{$pfb['dnsbl_resolver']}");
+
+		unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound.py");
+		unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
+		unlink_if_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
 	}
 	else {
 		update_status(" All customizations/data will be retained...");
@@ -10767,15 +10777,9 @@ function pfblockerng_php_pre_deinstall_command() {
 	unlink_if_exists('/usr/local/etc/rc.d/pfb_filter.sh');
 	unlink_if_exists('/usr/local/etc/rc.d/pfb_dnsbl.sh');
 
-	unlink_if_exists("{$pfb['dnsbl_info']}");
-	unlink_if_exists("{$pfb['dnsbl_resolver']}");
 	unlink_if_exists("{$pfb['dnsbl_cache']}");
 	unlink_if_exists("/var/tmp/unbound_cache_*");
 	unlink_if_exists("{$pfb['ip_cache']}");
-
-	unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound.py");
-	unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
-	unlink_if_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
 
 	// Remove incorrect xml setting
 	config_del_path('installedpackages/pfblockerngantartica');
