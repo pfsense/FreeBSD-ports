@@ -48,30 +48,16 @@ if (!file_exists('/usr/local/www/pfblockerng/pfblockerng_reputation.php') || emp
 	update_status(" done.");
 }
 
-if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
-	update_status("\nRestoring previous pfBlockerNG Widget settings...");
-
-	// Fix incorrect Dashboard widget sequence
-	if (strpos($pfb['widgets'], ':show') !== FALSE) {
-		$pfb['widgets'] = str_replace(':show', ':open:0', $pfb['widgets']);
-		update_status("Fix incorrect Dashboard widget sequence...");
+$widgets = $config['widgets']['sequence'];
+if (strpos($widgets, 'pfblockerng') === FALSE) {
+	update_status("\nAdding pfBlockerNG Widget to the Dashboard...");
+	if (empty($widgets)) {
+		$config['widgets']['sequence'] = 'pfblockerng:col2:open:0';
+	} else {
+		$config['widgets']['sequence'] .= ',pfblockerng:col2:open:0';
 	}
-
-	$config['widgets']['sequence'] = $pfb['widgets'];
 	write_config('pfBlockerNG: Save widget');
 	update_status(" done.");
-} else {
-	$widgets = $config['widgets']['sequence'];
-	if (strpos($widgets, 'pfblockerng') === FALSE) {
-		update_status("\nAdding pfBlockerNG Widget to the Dashboard...");
-		if (empty($widgets)) {
-			$config['widgets']['sequence'] = 'pfblockerng:col2:open:0';
-		} else {
-			$config['widgets']['sequence'] .= ',pfblockerng:col2:open:0';
-		}
-		write_config('pfBlockerNG: Save widget');
-		update_status(" done.");
-	}
 }
 
 // Create Firewall filter service and link required executables
