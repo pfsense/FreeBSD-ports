@@ -608,7 +608,7 @@ function pfb_filter($input, $type, $reference='Unknown', $default='', $escape=FA
 			break;
 		case PFB_FILTER_HEX_COLOR:
 			// Alerts Tab - Hex code validation
-			if (preg_match("/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/", $input)) {
+			if ($input == 'none' || preg_match("/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/", $input)) {
 				$result = htmlspecialchars($input);
 			}
 			break;
@@ -3890,13 +3890,17 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 	$list_url = trim($list_url);
 
 	// Re-evaluate URL
-	if ($format == 'whois' && empty(pfb_filter($list_url, PFB_FILTER_DOMAIN, 'pfb_download'))) {
-		pfb_logger("\n Failed", 2);
-		return FALSE;
+	if ($format == 'whois') {
+		if (empty(pfb_filter($list_url, PFB_FILTER_DOMAIN, 'pfb_download'))) {
+			pfb_logger("\n Failed", 2);
+			return FALSE;
+		}
 	}
-	elseif ($format == 'asn' && empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download'))) {
-		pfb_logger("\n Failed", 2);
-		return FALSE;
+	elseif ($format == 'asn') {
+		if (empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download'))) {
+			pfb_logger("\n Failed", 2);
+			return FALSE;
+		}
 	}
 	elseif (!pfb_filter($list_url, PFB_FILTER_URL, 'pfb_download_failure')) {
 		pfb_logger("\n Failed", 2);
@@ -4237,11 +4241,15 @@ function pfb_download_failure($alias, $header, $pfbfolder, $list_url, $format, $
 	$pfbfound = FALSE;
 
 	// Re-evaluate URL
-	if ($format == 'whois' && empty(pfb_filter($list_url, PFB_FILTER_DOMAIN, 'pfb_download_failure'))) {
-		pfb_logger("\n Invalid WHOIS. Terminating Download! [ {$list_url} ]\n", 1);
+	if ($format == 'whois') {
+		if (empty(pfb_filter($list_url, PFB_FILTER_DOMAIN, 'pfb_download_failure'))) {
+			pfb_logger("\n Invalid WHOIS. Terminating Download! [ {$list_url} ]\n", 1);
+		}
 	}
-	elseif ($format == 'asn' && empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download_failure'))) {
-		pfb_logger("\n Invalid ASN. Terminating Download! [ {$list_url} ]\n", 1);
+	elseif ($format == 'asn') {
+		if (empty(pfb_filter($list_url, PFB_FILTER_ALNUM, 'pfb_download_failure'))) {
+			pfb_logger("\n Invalid ASN. Terminating Download! [ {$list_url} ]\n", 1);
+		}
 	}
 	elseif (!pfb_filter($list_url, PFB_FILTER_URL, 'pfb_download_failure')) {
 		pfb_logger("\n Invalid URL. Terminating Download! [ {$list_url} ]\n", 1);
@@ -10826,6 +10834,19 @@ function pfblockerng_php_pre_deinstall_command() {
 		unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound.py");
 		unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
 		unlink_if_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
+
+		// Remove widget (code from Snort deinstall)
+		$pfb['widgets'] = $config['widgets']['sequence'];
+		if (!empty($pfb['widgets'])) {
+			$widgetlist = explode(',', $pfb['widgets']);
+			foreach ($widgetlist as $key => $widget) {
+				if (strpos($widget, 'pfblockerng') !== FALSE) {
+					unset($widgetlist[$key]);
+				}
+			}
+			$config['widgets']['sequence'] = implode(',', $widgetlist);
+			write_config('pfBlockerNG: Remove widget');
+		}
 	}
 	else {
 		update_status(" All customizations/data will be retained...");
@@ -10845,19 +10866,6 @@ function pfblockerng_php_pre_deinstall_command() {
 	// Remove incorrect xml setting
 	if (isset($config['installedpackages']['pfblockerngantartica'])) {
 		unset($config['installedpackages']['pfblockerngantartica']);
-	}
-
-	// Remove widget (code from Snort deinstall)
-	$pfb['widgets'] = $config['widgets']['sequence'];
-	if (!empty($pfb['widgets'])) {
-		$widgetlist = explode(',', $pfb['widgets']);
-		foreach ($widgetlist as $key => $widget) {
-			if (strpos($widget, 'pfblockerng') !== FALSE) {
-				unset($widgetlist[$key]);
-			}
-		}
-		$config['widgets']['sequence'] = implode(',', $widgetlist);
-		write_config('pfBlockerNG: Remove widget');
 	}
 
 	update_status(" done.\n");
