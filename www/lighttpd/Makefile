@@ -1,6 +1,9 @@
+# Created by: k@123.org
+
 PORTNAME?=	lighttpd
 PORTVERSION=	1.4.63
 CATEGORIES?=	www
+MASTER_SITES?=	https://download.lighttpd.net/lighttpd/releases-1.4.x/
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT?=	Secure, fast, compliant, and flexible Web Server
@@ -14,11 +17,6 @@ LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2
 
 USES=		autoreconf compiler:c11 gmake libtool localbase pkgconfig tar:xz
 USE_CSTD=	gnu99
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	lighttpd
-GH_PROJECT=	lighttpd1.4
-GH_TAGNAME=	lighttpd-${PORTVERSION}
 
 .if !defined(_BUILDING_LIGHTTPD_MODULE)
 USES+=	cpe
