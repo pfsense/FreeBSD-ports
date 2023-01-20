@@ -105,6 +105,7 @@ if ($_POST) {
 
 		// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
 		foreach (array( 'clearip', 'cleardnsbl') as $type) {
+			$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
 			if (isset($pfb['wglobal']['widget-' . $type])) {
 				if ($pfb['wglobal']['widget-' . $type] != 'never') {
 
@@ -112,8 +113,6 @@ if ($_POST) {
 					if ($pfb['wglobal']['widget-' . $type] == 'weekly') {
 						$pfb_day = '7';
 					}
-
-					$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
 
 					// Remove unreferenced 'daily' or 'weekly' cron job
 					$pfb_other = ($pfb_day == '*') ? '7' : '*';
