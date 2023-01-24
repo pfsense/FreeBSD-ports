@@ -2,7 +2,7 @@
 # script_AWS_AP_NORTHEAST.sh - By BBcan177@gmail.com - 03-20-2022
 # Pre-Script to collect Amazon AWS Region AP (Asia Pacific - North East)
 # (ap-northeast-1,ap-northeast-2,ap-northeast-3)
-# Copyright (c) 2015-2022 BBcan177@gmail.com
+# Copyright (c) 2015-2023 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
