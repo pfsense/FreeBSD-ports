@@ -547,13 +547,14 @@ function tailscale_pfsense_tailscaled_rcconf_map()
 		return tailscale_format_sysrc_variable($key, $value);
 	};
 
+	# This is currently only available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
 	# pfsense_tailscaled_snat_subnet_routes (bool)
-	$rcconf_map['pfsense_tailscaled_snat_subnet_routes'] = function($key) {
+	/** $rcconf_map['pfsense_tailscaled_snat_subnet_routes'] = function($key) {
 		$value = SYSRC_NO;
 		if (tailscale_get_config('tailscale', 'snatsubnetroutes', 'off') === 'on')
 			$value = SYSRC_YES;
 		return tailscale_format_sysrc_variable($key, $value);
-	};
+	}; */
 
 	return $rcconf_map;
 }

@@ -131,6 +131,7 @@
 			</description>
 			<type>checkbox</type>
 		</field>
+<!-- This is currently only available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
 		<field>
 			<fielddescr>SNAT Subnet Routes</fielddescr>
 			<fieldname>snatsubnetroutes</fieldname>
@@ -141,6 +142,7 @@
 			</description>
 			<type>checkbox</type>
 		</field>
+-->
 		<field>
 			<fielddescr>Notice</fielddescr>
 			<description>
