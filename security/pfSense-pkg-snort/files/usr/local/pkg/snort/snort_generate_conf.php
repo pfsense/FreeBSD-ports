@@ -250,7 +250,7 @@ $stream5_ports_both .= "\t           55555 56712";
 
 /* def perform_stat */
 
-if (config_get_path('installedpackages/snortglobal/stats_log_limit_size'. '0') != '0')
+if (config_get_path('installedpackages/snortglobal/stats_log_limit_size', '0') != '0')
 	$stats_log_limit = "max_file_size " . config_get_path('installedpackages/snortglobal/stats_log_limit_size') * 1000;
 else
 	$stats_log_limit = "";
