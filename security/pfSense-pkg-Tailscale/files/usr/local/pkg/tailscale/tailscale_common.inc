@@ -4,7 +4,7 @@
  * tailscale_common.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,29 +23,28 @@
 global $config;
 
 require_once('service-utils.inc');
-
 require_once('vendor/autoload.php');
 
 use Nette\Utils\Html;
 
-define('TAILSCALED_RC',				'tailscaled');
-define('PFSENSE_TAILSCALED_RC', 	'pfsense_tailscaled');
+define('TAILSCALED_RC', 'tailscaled');
+define('PFSENSE_TAILSCALED_RC', 'pfsense_tailscaled');
 
-define('NOHUP_BIN',					'/usr/bin/nohup');
-define('PKG_BIN',					'/usr/sbin/pkg');
-define('SERVICE_BIN',				'/usr/sbin/service');
-define('SYSRC_BIN',					'/usr/sbin/sysrc');
-define('TAILSCALE_BIN',				'/usr/local/bin/tailscale');
+define('NOHUP_BIN', '/usr/bin/nohup');
+define('PKG_BIN', '/usr/sbin/pkg');
+define('SERVICE_BIN', '/usr/sbin/service');
+define('SYSRC_BIN', '/usr/sbin/sysrc');
+define('TAILSCALE_BIN', '/usr/local/bin/tailscale');
 
-define('PFSENSE_TAILSCALED_RCCONF',	'/usr/local/etc/rc.conf.d/pfsense_tailscaled');
-define('TAILSCALED_RCCONF',			'/usr/local/etc/rc.conf.d/tailscaled');
+define('PFSENSE_TAILSCALED_RCCONF', '/usr/local/etc/rc.conf.d/pfsense_tailscaled');
+define('TAILSCALED_RCCONF', '/usr/local/etc/rc.conf.d/tailscaled');
 
-define('TAILSCALED_STATE',			'/var/db/tailscale/tailscaled.state');
+define('TAILSCALED_STATE', '/var/db/tailscale/tailscaled.state');
 
-define('TAILSCALE_SERVER', 			'https://controlplane.tailscale.com');
+define('TAILSCALE_SERVER', 'https://controlplane.tailscale.com');
 
-define('SYSRC_NO', 					'NO');
-define('SYSRC_YES', 				'YES');
+define('SYSRC_NO', 'NO');
+define('SYSRC_YES', 'YES');
 
 /*
  * Utility function to format an array of status commands as an HTML
@@ -544,9 +543,18 @@ function tailscale_pfsense_tailscaled_rcconf_map()
 	$rcconf_map['pfsense_tailscaled_exitnode_enable'] = function($key) {
 		$value = SYSRC_NO;
 		if (tailscale_get_config('tailscale', 'exitnode', 'off') === 'on')
-			$value = SYSRC_YES;		
+			$value = SYSRC_YES;
 		return tailscale_format_sysrc_variable($key, $value);
 	};
+
+	# This is currently only available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
+	# pfsense_tailscaled_snat_subnet_routes (bool)
+	/** $rcconf_map['pfsense_tailscaled_snat_subnet_routes'] = function($key) {
+		$value = SYSRC_NO;
+		if (tailscale_get_config('tailscale', 'snatsubnetroutes', 'off') === 'on')
+			$value = SYSRC_YES;
+		return tailscale_format_sysrc_variable($key, $value);
+	}; */
 
 	return $rcconf_map;
 }

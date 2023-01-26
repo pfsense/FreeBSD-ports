@@ -8,7 +8,7 @@
  * tailscale.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -131,6 +131,18 @@
 			</description>
 			<type>checkbox</type>
 		</field>
+<!-- This is currently only available on Linux (see https://github.com/tailscale/tailscale/issues/5573)
+		<field>
+			<fielddescr>SNAT Subnet Routes</fielddescr>
+			<fieldname>snatsubnetroutes</fieldname>
+			<description>
+				<![CDATA[
+				By disabling source NAT (SNAT), the end machine sees the LAN IP address of the originating machine as the source.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+-->
 		<field>
 			<fielddescr>Notice</fielddescr>
 			<description>
