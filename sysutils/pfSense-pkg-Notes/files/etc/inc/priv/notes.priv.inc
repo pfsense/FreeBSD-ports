@@ -3,7 +3,7 @@
  * notes.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,5 +27,3 @@ $priv_list['page-status-notes']['descr'] = "Allow access to Notes package GUI";
 $priv_list['page-status-notes']['match'] = array();
 $priv_list['page-status-notes']['match'][] = "pkg.php?xml=notes.xml*";
 $priv_list['page-status-notes']['match'][] = "pkg_edit.php?xml=notes.xml*";
-
-?>

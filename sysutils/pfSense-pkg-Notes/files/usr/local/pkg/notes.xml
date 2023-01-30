@@ -8,7 +8,7 @@
  * notes.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -32,6 +32,12 @@
 	<aftersaveredirect>/pkg.php?xml=notes.xml</aftersaveredirect>
 	<addedit_string>[notes] Successfully created/modified a note.</addedit_string>
 	<delete_string>[notes] Successfully deleted a note.</delete_string>
+	<menu>
+		<name>Notes</name>
+		<section>Status</section>
+		<configfile>notes.xml</configfile>
+		<url>/pkg.php?xml=notes.xml</url>
+	</menu>
 	<tabs>
 		<tab>
 			<text>Notes</text>
