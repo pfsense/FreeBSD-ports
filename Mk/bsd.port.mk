@@ -1401,6 +1401,10 @@ USE_APACHE:=	${USE_APACHE:S/common/server,/}
 USES+=	apache:${USE_APACHE:C/2([0-9])/2.\1/g}
 .    endif
 
+.    if defined(USE_TEX)
+.include "${PORTSDIR}/Mk/bsd.tex.mk"
+.    endif
+
 .    if defined(USE_GECKO)
 .include "${PORTSDIR}/Mk/bsd.gecko.mk"
 .    endif
