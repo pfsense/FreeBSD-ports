@@ -163,7 +163,7 @@ function suricata_download_file_url($url, $file_out) {
 	/* It provides logging of returned CURL errors. */
 	/************************************************/
 
-	global $g, $last_curl_error, $fout, $ch;
+	global $g, $last_curl_error;
 
 	$rfc2616 = array(
 			100 => "100 Continue",
@@ -211,16 +211,18 @@ function suricata_download_file_url($url, $file_out) {
 
 	$last_curl_error = "";
 
-	$fout = fopen($file_out, "wb");
+	$fout = fopen($file_out, 'wb');
 	if ($fout) {
 		$ch = curl_init($url);
 		if (!$ch)
 			return false;
 		curl_setopt($ch, CURLOPT_FILE, $fout);
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_NOPROGRESS, '1');
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_NONE);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_ALPN, true);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_NPN, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
@@ -1017,4 +1019,6 @@ if ((config_get_path('installedpackages/suricata/config/0/rule_categories_notify
 	notify_all_remote("Suricata new rule categories are available:\n" . $notify_new_message);
 }
 
+// Returns true when no errors occurred
+return !$update_errors;
 ?>
