@@ -117,6 +117,7 @@
     SUBDIR += go-devel
     SUBDIR += go118
     SUBDIR += go119
+    SUBDIR += go120
     SUBDIR += gomacro
     SUBDIR += gprolog
     SUBDIR += gravity
