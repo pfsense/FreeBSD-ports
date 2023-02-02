@@ -843,5 +843,5 @@ if ($updated_cfg) {
 else {
 	syslog(LOG_NOTICE, "[Suricata] Configuration version is current.");
 }
-
+return true;
 ?>

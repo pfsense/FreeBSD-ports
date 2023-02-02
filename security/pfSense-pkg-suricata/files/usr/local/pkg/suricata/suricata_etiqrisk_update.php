@@ -169,5 +169,5 @@ if ($success == TRUE && is_process_running("suricata")) {
 if (config_get_path('installedpackages/suricata/config/0/update_notify') == 'on') {
 	notify_all_remote($notify_message);
 }
-
+return true;
 ?>

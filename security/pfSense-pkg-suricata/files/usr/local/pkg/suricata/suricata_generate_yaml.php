@@ -1196,5 +1196,5 @@ EOD;
 }
 
 $suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
-
+return true;
 ?>

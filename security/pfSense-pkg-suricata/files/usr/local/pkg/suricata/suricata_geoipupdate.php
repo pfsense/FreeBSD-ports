@@ -201,5 +201,5 @@ $notify_message .= gettext("Suricata MaxMind GeoLite2 IP database update finishe
 if (config_get_path('installedpackages/suricata/config/0/update_notify') == 'on') {
 	notify_all_remote($notify_message);
 }
-
+return true;
 ?>
