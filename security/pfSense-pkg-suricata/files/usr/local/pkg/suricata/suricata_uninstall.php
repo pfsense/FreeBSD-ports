@@ -105,7 +105,7 @@ if (!empty($widgets)) {
 			if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 'on') {
 				config_set_path('installedpackages/suricata/config/0/dashboard_widget', $widget);
 				if (config_get_path('widgets/widget_suricata_display_lines')) {
-					cpnfig_set_path('installedpackages/suricata/config/0/dashboard_widget_rows', config_get_path('widgets/widget_suricata_display_lines'));
+					config_set_path('installedpackages/suricata/config/0/dashboard_widget_rows', config_get_path('widgets/widget_suricata_display_lines'));
 					config_del_path('widgets/widget_suricata_display_lines');
 				}
 			}
