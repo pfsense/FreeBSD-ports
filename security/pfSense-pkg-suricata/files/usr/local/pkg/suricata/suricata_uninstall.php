@@ -77,7 +77,9 @@ if (config_get_path('installedpackages/suricata/config/0/clearlogs') == 'on') {
 /* pkg will clean up the base install files.             */
 /*********************************************************/
 unlink_if_exists("{$suricatadir}*.gz.md5");
+unlink_if_exists("{$suricatadir}*.ruleslist");
 unlink_if_exists("{$suricatadir}gen-msg.map");
+unlink_if_exists("{$suricatadir}unicode.map");
 unlink_if_exists("{$suricatadir}classification.config");
 unlink_if_exists("{$suricatadir}reference.config");
 unlink_if_exists("{$suricatadir}rulesupd_status");
@@ -135,5 +137,5 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') != 
 	write_config("Removed the Suricata package.");
 	syslog(LOG_NOTICE, gettext("[Suricata] The package has been removed from this system, but the configuration settings were retained..."));
 }
-
+return true;
 ?>
