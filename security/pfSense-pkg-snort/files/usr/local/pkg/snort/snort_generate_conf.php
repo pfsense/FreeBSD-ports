@@ -52,7 +52,6 @@ $snort_config_pass_thru = rtrim($snort_config_pass_thru);
 /* create a few directories and ensure the sample files are in place */
 $snort_dirs = array( $snortdir, $snortcfgdir, "{$snortcfgdir}/rules",
 	"{$snortlogdir}/snort_{$if_real}{$snort_uuid}",
-	"{$snortlogdir}/snort_{$if_real}{$snort_uuid}/barnyard2", 
 	"{$snortcfgdir}/preproc_rules", 
 	"dynamicrules" => "{$snortlibdir}/snort_dynamicrules",
 	"dynamicengine" => "{$snortlibdir}/snort_dynamicengine",
