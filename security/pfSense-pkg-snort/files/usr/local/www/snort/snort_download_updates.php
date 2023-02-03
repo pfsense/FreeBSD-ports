@@ -155,12 +155,12 @@ if ($_REQUEST['ajax'] == 'status') {
 		// Check for the PID launched as the rules update task
 		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
 		if (!empty($rc)) {
-			print("RUNNING");
+			print "RUNNING";
 		} else {
-			print("DONE");
+			print "DONE";
 		}
 	} else {
-		print("DONE");
+		print "DONE";
 	}
 	exit;
 }
@@ -173,7 +173,7 @@ if ($_REQUEST['ajax'] == 'getlog') {
 	else {
 		$contents = gettext("*** Rules Update logfile is empty! ***");
 	}
-	print($contents);
+	print $contents;
 	exit;
 }
 
@@ -195,8 +195,8 @@ if (isset($_POST['mode'])) {
 	
 	// Launch a background process to download the updates
 	$upd_pid = 0;
-	$upd_pid = mwexec_bg("/usr/local/bin/php-cgi -f /usr/local/pkg/snort/snort_check_for_rule_updates.php");
-	print($upd_pid);
+	$upd_pid = mwexec_bg("/usr/local/bin/php -f /usr/local/pkg/snort/snort_check_for_rule_updates.php");
+	print $upd_pid;
 
 	// If we failed to launch our background process, throw up an error for the user.
 	if ($upd_pid == 0) {
@@ -370,7 +370,7 @@ $modal->addInput(new Form_StaticText (
 ));
 $form->add($modal);
 
-print($form);
+print $form;
 ?>
 
 <script type="text/javascript">
