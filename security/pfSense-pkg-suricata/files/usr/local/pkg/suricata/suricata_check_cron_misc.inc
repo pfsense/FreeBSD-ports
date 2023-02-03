@@ -448,5 +448,5 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 if (config_get_path('installedpackages/suricata/config/0/suricataloglimit') == 'on') {
 	suricata_check_dir_size_limit(config_get_path('installedpackages/suricata/config/0/suricataloglimitsize'));
 }
-
+return true;
 ?>

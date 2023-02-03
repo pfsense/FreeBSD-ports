@@ -173,8 +173,8 @@ if ($_REQUEST['updatemode']) {
 
 	// Launch a background process to download the updates
 	$upd_pid = 0;
-	$upd_pid = mwexec_bg("/usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
-	print($upd_pid);
+	$upd_pid = mwexec_bg("/usr/local/bin/php -f /usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
+	print $upd_pid;
 
 	// If we failed to launch our background process, throw up an error for the user.
 	if ($upd_pid == 0) {
@@ -188,13 +188,14 @@ if ($_REQUEST['ajax'] == 'status') {
 	if (is_numeric($_REQUEST['pid'])) {
 		// Check for the PID launched as the rules update task
 		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
+
 		if (!empty($rc)) {
-			print("RUNNING");
+			print "RUNNING";
 		} else {
-			print("DONE");
+			print "DONE";
 		}
 	} else {
-		print("DONE");
+		print "DONE";
 	}
 	exit;
 }
@@ -437,7 +438,7 @@ $modal->addInput(new Form_StaticText (
 	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
-print($form);
+print $form;
 ?>
 
 <div class="infoblock">

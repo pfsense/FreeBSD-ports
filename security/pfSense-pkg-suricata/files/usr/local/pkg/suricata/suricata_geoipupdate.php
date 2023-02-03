@@ -53,9 +53,13 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 	curl_setopt($ch, CURLOPT_FILE, $fout);
 	curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
 	curl_setopt($ch, CURLOPT_HEADER, false);
-	curl_setopt($ch, CURLOPT_NOPROGRESS, '1');
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.3, TLSv1.2, TLSv1.1, TLSv1, SSLv3");
+	curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+	curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+	curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_NONE);
+	curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+	curl_setopt($ch, CURLOPT_SSL_ENABLE_ALPN, true);
+	curl_setopt($ch, CURLOPT_SSL_ENABLE_NPN, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
@@ -102,7 +106,6 @@ function suricata_download_geoip_file($url, $tmpfile, &$result = NULL) {
 		syslog(LOG_ERR, "[Suricata] ERROR: GeoLite2-Country IP database download failed.  The HTTP Response Code was " . $response . ".");
 	}
 	fclose($fout);
-	curl_close($ch);
 	if (isset($result) && $rc === TRUE) {
 		$result = $response;
 	}
@@ -201,5 +204,5 @@ $notify_message .= gettext("Suricata MaxMind GeoLite2 IP database update finishe
 if (config_get_path('installedpackages/suricata/config/0/update_notify') == 'on') {
 	notify_all_remote($notify_message);
 }
-
+return true;
 ?>
