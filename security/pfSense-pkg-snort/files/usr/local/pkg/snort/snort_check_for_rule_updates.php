@@ -141,7 +141,7 @@ function snort_download_file_url($url, $file_out) {
 	/* It provides logging of returned CURL errors. */
 	/************************************************/
 
-	global $g, $config, $last_curl_error, $fout, $ch;
+	global $g, $config, $last_curl_error;
 
 	$rfc2616 = array(
 			100 => "100 Continue",
@@ -197,10 +197,19 @@ function snort_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_FILE, $fout);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_NONE);
+		curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_ALPN, true);
+		curl_setopt($ch, CURLOPT_SSL_ENABLE_NPN, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, config_get_path('installedpackages/snortglobal/curl_no_verify_ssl_peer') == "on" ? false : true);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+
+		// detect broken connection so it disconnects after +-10 minutes (with default TCP_KEEPIDLE and TCP_KEEPINTVL) to avoid waiting forever.
+		curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1);
 
 		// Honor any system restrictions on sending USERAGENT info
 		if (!config_path_enabled('system', 'do_not_send_host_uuid')) {
@@ -238,7 +247,6 @@ function snort_download_file_url($url, $file_out) {
 		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if (isset($rfc2616[$http_code]))
 			$last_curl_error = $rfc2616[$http_code];
-		curl_close($ch);
 		fclose($fout);
 
 		// If we had to try more than once, log it
@@ -974,5 +982,6 @@ else {
 }
 @file_put_contents(SNORTDIR . "/rulesupd_status", $status);
 
-return true;
+// Return true if no errors occurred
+return !$update_errors;
 ?>
