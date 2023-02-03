@@ -1,4 +1,3 @@
-
 <?php
 /*
  * tailscale_common.inc
