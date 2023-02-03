@@ -171,7 +171,13 @@ $pfb['curl_defaults'] = array(  CURLOPT_USERAGENT	=> 'pfSense/pfBlockerNG cURL d
 				CURLOPT_FRESH_CONNECT	=> true,
 				CURLOPT_FILETIME	=> true,
 				CURLOPT_TCP_NODELAY	=> true,
-				CURLOPT_CONNECTTIMEOUT	=> 15
+				CURLOPT_CONNECTTIMEOUT	=> 15,
+				CURLOPT_AUTOREFERER	=> true,
+				CURLOPT_MAXREDIRS	=> 10,
+				CURLOPT_HTTP_VERSION	=> CURL_HTTP_VERSION_NONE,
+				CURLOPT_FORBID_REUSE	=> true,
+				CURLOPT_SSL_ENABLE_ALPN	=> true,
+				CURLOPT_SSL_ENABLE_NPN	=> true,
 				);
 
 // RFC7231 HTTP response codes
