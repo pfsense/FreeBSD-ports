@@ -221,6 +221,7 @@ function suricata_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_NONE);
+		curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
 		curl_setopt($ch, CURLOPT_SSL_ENABLE_ALPN, true);
 		curl_setopt($ch, CURLOPT_SSL_ENABLE_NPN, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
@@ -268,7 +269,6 @@ function suricata_download_file_url($url, $file_out) {
 		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if (isset($rfc2616[$http_code]))
 			$last_curl_error = $rfc2616[$http_code];
-		curl_close($ch);
 		fclose($fout);
 
 		// If we had to try more than once, log it
