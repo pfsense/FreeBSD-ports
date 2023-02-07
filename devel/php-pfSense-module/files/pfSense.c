@@ -1671,8 +1671,8 @@ fill_interface_params(zval *val, struct ifaddrs *mb)
 
 /**
  * Alternate hybrid of pfSense_getall_interface_addresses and
- * pfSense_get_ifaddrs. Return iface information and array of v4 and v6
- * address 
+ * pfSense_get_interface_addresses. Return iface information and array of v4 and
+ * v6 address
  */
 PHP_FUNCTION(pfSense_get_ifaddrs)
 {
@@ -1703,7 +1703,7 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 
 	/* We didn't find our iface */
 	if (mb == NULL)
-		return;
+		goto out;
 	
 	array_init(return_value);
 	array_init(&addrs4);
@@ -1816,6 +1816,9 @@ PHP_FUNCTION(pfSense_get_ifaddrs)
 	}
 	add_assoc_zval(return_value, "addrs", &addrs4);
 	add_assoc_zval(return_value, "addrs6", &addrs6);
+
+out:
+	freeifaddrs(ifdata);
 }
 
 PHP_FUNCTION(pfSense_get_interface_addresses)
