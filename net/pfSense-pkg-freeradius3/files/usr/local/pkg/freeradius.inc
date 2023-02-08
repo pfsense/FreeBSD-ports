@@ -3859,12 +3859,12 @@ function freeradius_validate_users($post, &$input_errors) {
 
 	// Amount of Download and Upload Traffic
 	if ($post['varusersmaxtotaloctets'] != '') {
-		switch (freeradius_validate_int($post['varusersmaxtotaloctets'], 0, 4095)) {
+		switch (freeradius_validate_int($post['varusersmaxtotaloctets'], 0, NULL)) {
 		case Validation::BadType:
 			$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
 			break;
 		case Validation::BadValue:
-			$input_errors[] = "The 'Amount of Download and Upload Traffic' field must be less than 4096 and greater than or equal to 0.";
+			$input_errors[] = "The 'Amount of Download and Upload Traffic' field must be greater than or equal to 0.";
 			break;
 		}
 	} 
@@ -4581,15 +4581,17 @@ enum Validation {
 /**
  * Validate an int value with a minimum and maximum range
  * @param string $val Value to validate.
- * @param int $min Minimum valid value, inclusive.
- * @param int $max Maximum valid value, inclusive.
+ * @param mixed $min Minimum valid value, inclusive. NULL indicates no minimum value.
+ * @param mixed $max Maximum valid value, inclusive. NULL indicates no maximum value.
  * @return Validation Indicates whether $val is valid or, if not, why.
  */
-function freeradius_validate_int(string $val, int $min, int $max) {
+function freeradius_validate_int(string $val, mixed $min, mixed $max) {
 	if (!is_numericint($val)) {
 		return Validation::BadType;
 	}
-	if ($val < $min || $val > $max) {
+
+	if (($min !== null && $val < $min) ||
+		($max !== null && $val > $max)) {
 		return Validation::BadValue;
 	}
 	return Validation::Valid;

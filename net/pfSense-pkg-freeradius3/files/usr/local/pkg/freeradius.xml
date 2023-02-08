@@ -543,7 +543,8 @@
 			<fieldname>varusersmaxtotaloctets</fieldname>
 			<description>
 				<![CDATA[
-				Enter the amount of download and upload traffic (summarized) <span class="text-info">in megabytes (MB)</span> for this user.
+				Enter the amount of download and upload traffic (summarized) <span class="text-info">in megabytes (MB)</span> for this user.<br/>
+				<strong><span class="text-danger">IMPORTANT: </span></strong>If using captive portal without periodic reauthentication enabled, this value must not exceed 4095 due to protocol limitations communicating this value to the captive portal via the 32 bit unsigned <b>pfSense-Max-Total-Octets</b> attribute.
 				]]>
 			</description>
 			<type>input</type>
