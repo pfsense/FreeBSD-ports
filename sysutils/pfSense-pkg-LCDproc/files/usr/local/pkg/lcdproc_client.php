@@ -1254,7 +1254,7 @@ function loop_status($lcd) {
 					$title = ($lcdpanel_width >= 20) ? "Interface bps IN/OUT" : "Intf. bps IN/OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
-					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
+					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
 					}
@@ -1267,7 +1267,7 @@ function loop_status($lcd) {
 					$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
-					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
+					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
 					}
@@ -1280,7 +1280,7 @@ function loop_status($lcd) {
 					$title = ($lcdpanel_width >= 20) ? "Total         IN/OUT" : "Total   IN / OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
-					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
+					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
 					}
