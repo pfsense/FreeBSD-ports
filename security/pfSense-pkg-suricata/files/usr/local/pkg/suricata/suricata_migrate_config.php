@@ -3,7 +3,7 @@
  * suricata_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2022 Bill Meeks
  * All rights reserved.
  *

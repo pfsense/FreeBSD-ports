@@ -3,7 +3,7 @@
  * pfblockerng.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -1428,7 +1428,7 @@ $php_data = <<<EOF
  * pfblockerng_{$continent_en}.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -2020,7 +2020,7 @@ function pfb_build_reputation_tab($et_options='') {
  * pfblockerng_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *

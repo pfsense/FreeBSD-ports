@@ -3,7 +3,7 @@
  * snort_download_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
