@@ -1,0 +1,41 @@
+diff --git a/src/etc/inc/pfsense-utils.inc b/src/etc/inc/pfsense-utils.inc
+index 081bd9d387..eada3dc909 100644
+--- a/src/etc/inc/pfsense-utils.inc
++++ b/src/etc/inc/pfsense-utils.inc
+@@ -2599,8 +2599,12 @@ function pfs_version_compare($cur_time, $cur_text, $remote) {
+ function process_alias_urltable($name, $type, $url, $freq, $forceupdate=false, $validateonly=false) {
+ 	global $g, $config;
+ 
++	if (!is_validaliasname($name) || !filter_var($url, FILTER_VALIDATE_URL)) {
++		return false;
++	}
++
+ 	$urltable_prefix = "/var/db/aliastables/";
+-	$urltable_filename = $urltable_prefix . $name . ".txt";
++	$urltable_filename = $urltable_prefix . basename($name) . ".txt";
+ 	$tmp_urltable_filename = $urltable_filename . ".tmp";
+ 
+ 	// Make the aliases directory if it doesn't exist
+diff --git a/src/usr/local/pfSense/include/www/alias-utils.inc b/src/usr/local/pfSense/include/www/alias-utils.inc
+index 2f47cdca68..a0898d14bc 100644
+--- a/src/usr/local/pfSense/include/www/alias-utils.inc
++++ b/src/usr/local/pfSense/include/www/alias-utils.inc
+@@ -305,6 +305,9 @@ function saveAlias($post, $id) {
+ 			}
+ 	}
+ 
++	if ($data_errors) {
++		$data_errors[] = gettext("There may be additional errors. Fix the noted problems and try again.");
++	}
+ 	$alias = array();
+ 	$address = array();
+ 	$final_address_details = array();
+@@ -315,7 +318,7 @@ function saveAlias($post, $id) {
+ 		$address = array();
+ 
+ 		/* item is a url table type */
+-		if ($post['address0']) {
++		if ($post['address0'] && empty($data_errors)) {
+ 			/* fetch down and add in */
+ 			$address[] = $post['address0'];
+ 			$alias['url'] = $post['address0'];
