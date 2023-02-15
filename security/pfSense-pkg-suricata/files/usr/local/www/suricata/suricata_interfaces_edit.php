@@ -555,7 +555,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 		// Check if Inline IPS mode is enabled. Auto-enable 'Live Rule Swap' and display a message
 		// about potential incompatibilities with Netmap and some NIC hardware drivers.
 		if ($natent['ips_mode'] == "ips_mode_inline") {
-			$savemsg2 = gettext("Inline IPS Mode is selected. Live Rule Swap will be automatically enabled to prevent netmap interfaces from cycling offline/online during future rules updates.  Please note that not all hardware NIC drivers support Netmap operation which is required for Inline IPS Mode.  If problems are experienced, switch to Legacy Mode instead.");
+			$savemsg2 = gettext("Inline IPS Mode is selected. Live Rule Swap will be automatically enabled to prevent netmap interfaces from cycling offline/online during future rules updates. " .
+								"For better performance with Inline IPS Mode operation, consider changing the runmode setting to workers. " .
+								"Please note that not all hardware NIC drivers support Netmap operation- which is required for Inline IPS Mode. If problems are experienced, switch to Legacy Mode instead.");
 			config_set_path('installedpackages/suricata/config/0/live_swap_updates', "on");
 		}
 
