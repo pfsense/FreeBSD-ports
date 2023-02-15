@@ -5,11 +5,18 @@ bin/apply_patches.php
 pkg/patches.inc
 pkg/patches/manifest.inc
 pkg/patches/12827workaround.patch
+pkg/patches/208134113d92d809d4f0e686f3817274854ff264.patch
+pkg/patches/22f7276c167210f644cf586704ec21da22002bb2.patch
 pkg/patches/3ade222beb2cae2c0681ed69d4e5a0c82c6303f9.patch
 pkg/patches/3b50f7656967fbb4daa869a7ae6d18bc5ab6eec3.patch
 pkg/patches/4612721800a1b25bb1fb2d4d7c4ceea6f44f208e.patch
+pkg/patches/528e53e8bb86642e38aa098226f5b74951d6a7bb.patch
+pkg/patches/611de84ae2d1e65217dbccb7e9db32a019bd8d97.patch
+pkg/patches/6dc0750874b69373f8adbae9b0af223af13f5f4a.patch
+pkg/patches/70bfd0fda18012a01547a4eeff17c22c0adf8503.patch
 pkg/patches/72ea2b69cc111d4bc8ebf1ccf1e1529923c5b88a.patch
 pkg/patches/78ce96a9af3b2ab5159ef6623078bfc4b15f8a89.patch
+pkg/patches/7c54d26e60fe524df63277da77c07e995bc3b351.patch
 pkg/patches/8ddf2b5a999772754080825f07acf9b6326f1f04.patch
 pkg/patches/a3c1589086ea67d25a28ec14ab95d7fd9ab25fa2.patch
 pkg/patches/a9bdbd97984ff2ddefbceb2fe062fbe3a1c42d88.patch
@@ -19,5 +26,6 @@ pkg/patches/b5360f49fb3c1fdc36ebf13c20b68d4ff1e15fe6.patch
 pkg/patches/bdffb77d1aa21770b23ef408ad9fba79d0825ec5.patch
 pkg/patches/bf21f67bbe2d1694ad1ad72728623dded9ace426.patch
 pkg/patches/c416f6fab10f149b15a352dfb609f86a98f6103d.patch
+pkg/patches/e9c53ad9b35ff152d2b76b8fcbb0a94adc809124.patch
 pkg/patches/fd30b9eda98900eb5f1a0c37d600ef4deaf582ad.patch
 %%DATADIR%%/info.xml

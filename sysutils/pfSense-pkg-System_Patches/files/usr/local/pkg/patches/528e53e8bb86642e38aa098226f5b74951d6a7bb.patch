@@ -1,0 +1,40 @@
+diff --git a/src/usr/local/www/firewall_aliases.php b/src/usr/local/www/firewall_aliases.php
+index 74d839177d..842ddf60b1 100644
+--- a/src/usr/local/www/firewall_aliases.php
++++ b/src/usr/local/www/firewall_aliases.php
+@@ -148,11 +148,11 @@ display_top_tabs($tab_array);
+ 			<td ondblclick="document.location='firewall_aliases_edit.php?id=<?=$i;?>';">
+ <?php
+ 	if ($alias["url"]) {
+-		echo $alias["url"] . "<br />";
++		echo htmlspecialchars($alias["url"]) . "<br />";
+ 	} else {
+ 		if (is_array($alias["aliasurl"])) {
+ 			$aliasurls = implode(", ", array_slice($alias["aliasurl"], 0, 10));
+-			echo $aliasurls;
++			echo htmlspecialchars($aliasurls);
+ 			if (is_array($aliasurls) && (count($aliasurls) > 10)) {
+ 				echo "&hellip;<br />";
+ 			}
+@@ -163,7 +163,7 @@ display_top_tabs($tab_array);
+ 			$tmpaddr = array_map('alias_idn_to_utf8', $tmpaddr);
+ 		}
+ 		$addresses = implode(", ", array_slice($tmpaddr, 0, 10));
+-		echo $addresses;
++		echo htmlspecialchars($addresses);
+ 		if (count($tmpaddr) > 10) {
+ 			echo '&hellip;';
+ 		}
+diff --git a/src/usr/local/www/guiconfig.inc b/src/usr/local/www/guiconfig.inc
+index 176f228bec..8ca98fced2 100644
+--- a/src/usr/local/www/guiconfig.inc
++++ b/src/usr/local/www/guiconfig.inc
+@@ -959,7 +959,7 @@ function alias_info_popup($alias_id) {
+ 			$counter = count($alias_addresses);
+ 		}
+ 
+-		$content .= '<h5>'. $alias['url'] .'</h5><ul><li>'. implode('</li><li>', $alias_addresses) .'</li></ul>';
++		$content .= '<h5>'. htmlspecialchars($alias['url']) .'</h5><ul><li>'. implode('</li><li>', $alias_addresses) .'</li></ul>';
+ 		if ($counter > 10002) {
+ 			$content .= '<i>'. gettext("listing only first 10k items") .'</i>';
+ 		}

@@ -1,0 +1,13 @@
+diff --git a/src/usr/local/www/vendor/filebrowser/browser.php b/src/usr/local/www/vendor/filebrowser/browser.php
+index 96f924f1d3..3ac13ee43f 100644
+--- a/src/usr/local/www/vendor/filebrowser/browser.php
++++ b/src/usr/local/www/vendor/filebrowser/browser.php
+@@ -148,7 +148,7 @@ foreach ($files as $file):
+ ?>
+ 	<tr>
+ 		<td></td>
+-		<td class="fbFile vexpl text-left" id="<?=$fqpn;?>">
++		<td class="fbFile vexpl text-left" id="<?=htmlspecialchars($fqpn);?>">
+ 			<?php $filename = htmlspecialchars(addslashes(str_replace("//","/", "{$path}/{$file}"))); ?>
+ 			<div onClick="$('#fbTarget').val('<?=$filename?>'); loadFile(); $('#fbBrowser').fadeOut();">
+ 				<img src="/vendor/filebrowser/images/file_<?=$type;?>.gif" alt="" title="">
