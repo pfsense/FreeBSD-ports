@@ -226,7 +226,8 @@ foreach ($side as $settings) {
 				$ds = "state changes";
 				break;
 			case "pfnat":
-				$ignore = true;
+				$unit_acronym = "";
+				$ds = "NAT states";
 				break;
 			case "inpass":
 				$ninetyfifth = true;
