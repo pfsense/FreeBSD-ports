@@ -1,6 +1,6 @@
 diff -ruN ./suricata-6.0.10.orig/src/runmode-netmap.c ./suricata-6.0.10/src/runmode-netmap.c
 --- ./suricata-6.0.10.orig/src/runmode-netmap.c	2023-01-31 01:26:24.000000000 -0500
-+++ ./src/runmode-netmap.c	2023-02-14 15:39:27.000000000 -0500
++++ ./src/runmode-netmap.c	2023-02-15 08:24:42.000000000 -0500
 @@ -105,6 +105,7 @@
  static int ParseNetmapSettings(NetmapIfaceSettings *ns, const char *iface,
          ConfNode *if_root, ConfNode *if_default)
@@ -28,7 +28,26 @@ diff -ruN ./suricata-6.0.10.orig/src/runmode-netmap.c ./suricata-6.0.10/src/runm
  
      /* prefixed with netmap or vale means it's not a real interface
       * and we don't check offloading. */
-@@ -242,9 +238,8 @@
+@@ -158,7 +154,9 @@
+                 iface);
+         goto finalize;
+ 
+-    /* If there is no setting for current interface use default one as main iface */
++    /* If there is no setting for current interface, use default
++     * one as main iface
++     */
+     } else if (if_root == NULL) {
+         if_root = if_default;
+         if_default = NULL;
+@@ -230,7 +228,6 @@
+     }
+ 
+ finalize:
+-
+     ns->ips = (ns->copy_mode != NETMAP_COPY_MODE_NONE);
+ 
+ #if !USE_NEW_NETMAP_API
+@@ -242,9 +239,8 @@
          if (ns->threads_auto) {
              /* As NetmapGetRSSCount used to be broken on Linux,
               * fall back to GetIfaceRSSQueuesNum if needed. */
@@ -39,7 +58,22 @@ diff -ruN ./suricata-6.0.10.orig/src/runmode-netmap.c ./suricata-6.0.10/src/runm
                  ns->threads = GetIfaceRSSQueuesNum(base_name);
              }
          }
-@@ -342,19 +337,12 @@
+@@ -310,10 +306,10 @@
+             if_root = ConfFindDeviceConfig(netmap_node, out_iface);
+             ParseNetmapSettings(&aconf->out, out_iface, if_root, if_default);
+ #if !USE_NEW_NETMAP_API
+-            /* if one side of the IPS peering uses a sw_ring, we will default
+-             * to using a single ring/thread on the other side as well. Only
+-             * if thread variable is set to 'auto'. So the user can override
+-             * this. */
++            /* If one side of the IPS peering uses a sw_ring, we will default
++             * to using a single ring/thread on the other side as well, but
++             * only if the thread variable is set to 'auto'. So, the user can
++             * override this behavior if desired. */
+             if (aconf->out.sw_ring && aconf->in.threads_auto) {
+                 aconf->out.threads = aconf->in.threads = 1;
+             } else if (aconf->in.sw_ring && aconf->out.threads_auto) {
+@@ -342,19 +338,12 @@
      }
  
  #endif
@@ -65,7 +99,7 @@ diff -ruN ./suricata-6.0.10.orig/src/runmode-netmap.c ./suricata-6.0.10/src/runm
  
 diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/source-netmap.c
 --- ./suricata-6.0.10.orig/src/source-netmap.c	2023-01-31 01:26:24.000000000 -0500
-+++ ./src/source-netmap.c	2023-02-14 17:35:14.000000000 -0500
++++ ./src/source-netmap.c	2023-02-17 09:05:55.000000000 -0500
 @@ -131,6 +131,7 @@
  {
  #if USE_NEW_NETMAP_API
@@ -366,7 +400,38 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
  
      return 0;
  error:
-@@ -669,11 +685,13 @@
+@@ -597,8 +613,12 @@
+         ntv->flags |= NETMAP_FLAG_EXCL_RING_ACCESS;
+     }
+ 
+-    /* Need to insure open of ring 0 conveys requested ring count for open */
++    /* flag if one endpoint is a host stack ring to insure the open
++     * of ring 0 conveys the requested host stack ring count
++     */
+     bool soft = aconf->in.sw_ring || aconf->out.sw_ring;
++
++    /* open the source netmap port */
+     if (NetmapOpen(&aconf->in, &ntv->ifsrc, 1, 1, (ntv->flags & NETMAP_FLAG_ZERO_COPY) != 0,
+                 soft) != 0) {
+         goto error_ntv;
+@@ -614,6 +634,7 @@
+     }
+ #endif
+ 
++    /* open the destination netmap port if not using IDS-only mode */
+     if (aconf->in.copy_mode != NETMAP_COPY_MODE_NONE) {
+         if (NetmapOpen(&aconf->out, &ntv->ifdst, 1, 0, (ntv->flags & NETMAP_FLAG_ZERO_COPY) != 0,
+                     soft) != 0) {
+@@ -652,6 +673,8 @@
+     *data = (void *)ntv;
+     aconf->DerefFunc(aconf);
+     SCReturnInt(TM_ECODE_OK);
++
++    /* error handling code below */
+ error_dst:
+     if (aconf->in.copy_mode != NETMAP_COPY_MODE_NONE) {
+         NetmapClose(ntv->ifdst);
+@@ -669,11 +692,13 @@
  
  /**
   * \brief Output packet to destination interface or drop.
@@ -382,12 +447,22 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
      if (ntv->copy_mode == NETMAP_COPY_MODE_IPS) {
          if (PACKET_TEST_ACTION(p, ACTION_DROP)) {
              return TM_ECODE_OK;
-@@ -686,15 +704,32 @@
+@@ -681,20 +706,38 @@
+     }
+     DEBUG_VALIDATE_BUG_ON(ntv->ifdst == NULL);
+ 
+-    /* Lock the destination netmap ring while writing to it */
++    /* Lock the destination netmap ring while writing to it if required */
+     if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
          SCMutexLock(&ntv->ifdst->netmap_dev_lock);
      }
  
 -    /* attempt to write the packet into the netmap ring buffer(s) */
-+    /* attempt to write packet's data into the netmap TX ring buffer(s) */
++    /* Attempt to write packet's data into the netmap TX ring buffer(s).
++     * A return value of zero from the port inject call indicates the
++     * write failed, but this may be because the ring buffers are full
++     * awaiting processing by the kernel.
++     */
 +try_write:
  #if USE_NEW_NETMAP_API
      if (nmport_inject(ntv->ifdst->nmd, GET_PKT_DATA(p), GET_PKT_LEN(p)) == 0) {
@@ -396,14 +471,11 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
  #endif
 -        if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
 +        /* writing the packet failed, but ask kernel to sync TX rings
-+         * for us as the buffers may simply be full
++         * for us as the ring buffers may simply be full
 +         */
 +        ioctl(ntv->ifdst->nmd->fd, NIOCTXSYNC, 0);
 +
-+        /* sleep a bit for kernel to work, then try
-+         * write up to 2 more times before giving up
-+         */
-+        usleep(1000);
++        /* Try write up to 2 more times before giving up */
 +        if (write_tries < 3) {
 +            write_tries++;
 +            goto try_write;
@@ -417,17 +489,18 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
          SCLogDebug("failed to send %s -> %s", ntv->ifsrc->ifname, ntv->ifdst->ifname);
          ntv->drops++;
          return TM_ECODE_FAILED;
-@@ -703,7 +738,9 @@
+@@ -703,7 +746,10 @@
      SCLogDebug("sent successfully: %s(%d)->%s(%d) (%u)", ntv->ifsrc->ifname, ntv->ifsrc->ring,
              ntv->ifdst->ifname, ntv->ifdst->ring, GET_PKT_LEN(p));
  
 +    /* packet data write succeeded, so ask kernel to sync the TX ring */
      ioctl(ntv->ifdst->nmd->fd, NIOCTXSYNC, 0);
 +
++    /* unlock the netmap device if we needed to lock it */
      if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
          SCMutexUnlock(&ntv->ifdst->netmap_dev_lock);
      }
-@@ -712,7 +749,7 @@
+@@ -712,7 +758,7 @@
  
  /**
   * \brief Packet release routine.
@@ -436,7 +509,7 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
   */
  static void NetmapReleasePacket(Packet *p)
  {
-@@ -726,14 +763,14 @@
+@@ -726,14 +772,14 @@
  }
  
  #if USE_NEW_NETMAP_API
@@ -454,7 +527,7 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
  #else
      NetmapThreadVars *ntv = (NetmapThreadVars *)user;
  #endif
-@@ -779,23 +816,23 @@
+@@ -779,23 +825,25 @@
  
  /**
   * \brief Copy netmap rings data into Packet structures.
@@ -479,11 +552,13 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
      if (cnt == 0)
          cnt = -1;
  
-+    /* iterate the available rings and their slots to pull out the data for processing */
++    /* iterate the available rings and their slots to pull out
++     * the data for processing by the Decode and Detect modules
++     */
      for (cur_ring = 0; cur_ring < last_ring && cnt != got; cur_ring++, cur_rx_ring++) {
          struct netmap_ring *ring;
  
-@@ -804,23 +841,23 @@
+@@ -804,53 +852,55 @@
  
          ring = NETMAP_RXRING(d->nifp, cur_rx_ring);
  
@@ -511,9 +586,18 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
 +            oldbuf = ntv->ifsrc->pkthdr.buf = (u_char *)NETMAP_BUF(ring, idx);
 +            ntv->ifsrc->pkthdr.len = ntv->ifsrc->pkthdr.caplen = slot->len;
  
-             /* loop through the ring slots to get packet data */
+-            /* loop through the ring slots to get packet data */
++            /* Check the ring slots for more packet data.
++             * A packet can be fragmented across multiple
++             * slots, so check and loop until we find the
++             * slot with the NS_MOREFRAG flag cleared,
++             * signaling the end of the packet's data.
++             */
              while (slot->flags & NS_MOREFRAG) {
-@@ -831,26 +868,26 @@
+-                /* packet can be fragmented across multiple slots, */
+-                /* so loop until we find the slot with the flag    */
+-                /* cleared, signalling the end of the packet data. */
+                 u_char *nbuf;
                  u_int oldlen = slot->len;
                  i = nm_ring_next(ring, i);
                  slot = &ring->slot[i];
@@ -546,12 +630,12 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
      }
      return got;
  }
-@@ -871,14 +908,19 @@
+@@ -871,14 +921,19 @@
      fds.fd = ntv->ifsrc->nmd->fd;
      fds.events = POLLIN;
  
 -    SCLogDebug("thread %s polling on %d", tv->name, fds.fd);
-+    SCLogInfo("thread %s polling using fd %d for ring %d", tv->name, fds.fd, ntv->ifsrc->ring);
++    SCLogDebug("thread %s - RX polling using fd %d for ring %d", tv->name, fds.fd, ntv->ifsrc->ring);
 +
 +    /* loop waiting for packets to arrive on the netmap source RX ring */
      for(;;) {
@@ -561,14 +645,15 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
              break;
          }
  
-         /* make sure we have at least one packet in the packet pool,
+-        /* make sure we have at least one packet in the packet pool,
 -         * to prevent us from alloc'ing packets at line rate */
++        /* make sure we have at least one packet in the packet pool
 +         * to prevent us from alloc'ing packets at line rate
 +         */
          PacketPoolWait();
  
          int r = poll(&fds, 1, POLL_TIMEOUT);
-@@ -892,8 +934,6 @@
+@@ -892,8 +947,6 @@
  
          } else if (r == 0) {
              /* no events, timeout */
@@ -577,7 +662,7 @@ diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/sourc
  
              /* sync counters */
              NetmapDumpCounters(ntv);
-@@ -909,9 +949,6 @@
+@@ -909,9 +962,6 @@
                  SCLogError(SC_ERR_NETMAP_READ,
                          "Error reading netmap data via polling from iface '%s': (%d" PRIu32 ") %s",
                          ntv->ifsrc->ifname, errno, strerror(errno));
