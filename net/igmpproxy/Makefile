@@ -1,6 +1,6 @@
 PORTNAME=	igmpproxy
 DISTVERSION=	0.3
-PORTEPOCH=	1
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	franco@opnsense.org
