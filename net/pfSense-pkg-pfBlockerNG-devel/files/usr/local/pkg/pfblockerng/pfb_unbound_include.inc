@@ -47,37 +47,7 @@ foreach (array('dnsbl.log', 'dns_reply.log', 'unified.log') as $logfile) {
 
 $python_mode = FALSE;
 if (isset($config['unbound']['python']) && !empty($config['unbound']['python_script'])) {
-
-	// TO BE REMOVED AT FUTURE DATE:
-
-	// DNSBL Python mode is not compatible with dhcpleases binary code,
-	// as it attempts to HUP the Unbound PID and will cause DNSBL Python mode to crash Unbound
-
-	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver DHCP Registration option has been disabled.
-	if (isset($config['unbound']['regdhcp'])) {
-		$python_mode = FALSE;
-
-		unset($config['unbound']['python']);
-		write_config('pfBlockerNG: Disable DNSBL python due to DNS Resolver DHCP Registration enabled (include)');
-		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due to DNS Resolver DHCP Registration option enabled! (include)\n";
-		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND); 
-	} else {
-		$python_mode = TRUE;		// This variable to remain in future
-	}
-
-	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver OpenVPN Client Registration option has been disabled.
-	if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' && isset($config['unbound']['regovpnclients'])) {
-		$python_mode = FALSE;
-
-		if (isset($config['unbound']['python'])) {
-			unset($config['unbound']['python']);
-			write_config('pfBlockerNG: Disable DNSBL python due to DNS Resolver OpenVPN Client Registration option enabled');
-		}
-		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due to DNS Resolver OpenVPN Client Registration option enabled!\n";
-		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND);
-	} else {
-		$python_mode = TRUE;		// This variable to remain in future
-	}
+	$python_mode = TRUE;
 }
 
 // Function to mount/unmount required folders into Unbound chroot
