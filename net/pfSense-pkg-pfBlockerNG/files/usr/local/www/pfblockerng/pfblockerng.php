@@ -1271,6 +1271,7 @@ function pfblockerng_get_countries() {
 	pfb_logger("{$log}", 4);
 
 	$continent = $continent_en = '';
+	$roptions4 = array();
 
 	foreach ($geoip_files as $cont => $file) {
 
@@ -1554,7 +1555,10 @@ if ($_POST) {
 						);
 
 		foreach ($select_options as $s_option => $s_default) {
-			if (is_array($_POST[$s_option])) {
+			if (!isset($_POST[$s_option])) {
+				// do nothing
+			}
+			elseif (is_array($_POST[$s_option])) {
 				$_POST[$s_option] = $s_default;
 			}
 			elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
@@ -1568,7 +1572,10 @@ if ($_POST) {
 						);
 
 		foreach ($select_options as $s_option => $s_default) {
-			if (is_array($_POST[$s_option])) {
+			if (!isset($_POST[$s_option])) {
+				// do nothing
+			}
+			elseif (is_array($_POST[$s_option])) {
 				foreach ($_POST[$s_option] as $post_option) {
 					if (!array_key_exists($post_option, ${"options_$s_option"})) {
 						$_POST[$s_option] = $s_default;
@@ -2007,7 +2014,7 @@ EOF;
 	pfb_logger("{$log}", 4);
 
 	// Unset arrays
-	unset($roptions4, $et_options, $php_rep);
+	unset($roptions4, $et_options);
 }
 
 
@@ -2137,7 +2144,10 @@ if ($_POST) {
 					);
 
 		foreach ($select_options as $s_option => $s_default) {
-			if (is_array($_POST[$s_option])) {
+			if (!isset($_POST[$s_option])) {
+				// do nothing
+			}
+			elseif (is_array($_POST[$s_option])) {
 				$_POST[$s_option] = $s_default;
 			}
 			elseif (!array_key_exists($_POST[$s_option], ${"options_$s_option"})) {
@@ -2435,5 +2445,6 @@ EOF;
 
 	// Save pfBlockerng_reputation.php file
 	@file_put_contents('/usr/local/www/pfblockerng/pfblockerng_reputation.php', $php_rep, LOCK_EX);
+	unset($php_rep);
 }
 ?>
