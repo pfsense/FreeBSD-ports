@@ -1,644 +1,129 @@
-diff -ruN ./suricata-6.0.3.orig/configure.ac ./suricata-6.0.3/configure.ac
---- ./suricata-6.0.3.orig/configure.ac	2021-06-30 12:24:47.000000000 -0400
-+++ ./configure.ac	2021-09-13 10:44:50.000000000 -0400
-@@ -1520,73 +1520,38 @@
- 
-     AS_IF([test "x$enable_netmap" = "xyes"], [
-         AC_DEFINE([HAVE_NETMAP],[1],(NETMAP support enabled))
--
-         if test "$with_netmap_includes" != "no"; then
-             CPPFLAGS="${CPPFLAGS} -I${with_netmap_includes}"
-         fi
--
-         AC_CHECK_HEADER(net/netmap_user.h,,[AC_MSG_ERROR(net/netmap_user.h not found ...)],)
--
-         have_recent_netmap="no"
-         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
-         #include <net/netmap_user.h>
-         ],[
-         #ifndef NETMAP_API
--        #error "outdated netmap, need one with NETMAP_API"
-+        #error "Outdated netmap, need one with NETMAP_API"
-         #endif
--        #if NETMAP_API < 11
--        #error "outdated netmap, need at least api version 11"
-+        #if NETMAP_API < 14
-+        #error "Outdated netmap, need at least API version 14"
-         #endif
-         ])], [have_recent_netmap="yes"])
-         if test "x$have_recent_netmap" != "xyes"; then
--            echo "ERROR: outdated netmap"
-+            echo "ERROR: outdated netmap; need at least v14"
-             exit 1
-         fi
--        have_netmap_version="unknown"
--        have_v11_netmap="no"
--        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
--        #include <net/netmap_user.h>
--        ],[
--        #if NETMAP_API != 11
--        #error "not 11"
--        #endif
--        ])], [have_v11_netmap="yes"])
--        if test "x$have_v11_netmap" = "xyes"; then
--            have_netmap_version="v11"
-+        have_netmap_version="v14+"
-+        AC_CHECK_HEADER(libnetmap.h,,[AC_MSG_ERROR(libnetmap.h not found ...)],)
-+        LIBNETMAP=""
-+        AC_SEARCH_LIBS([nmport_open],[netmap],,[LIBNETMAP="no"])
-+        if test "$LIBNETMAP" = "no"; then
-+            echo
-+            echo "   ERROR!  libnetmap library not found!"
-+            echo "   Go get it from https://github.com/luigirizzo/netmap"
-+            echo "   or your distribution."
-+            echo
-+            exit 1
-         fi
--        have_v12_netmap="no"
--        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
--        #include <net/netmap_user.h>
--        ],[
--        #if NETMAP_API != 12
--        #error "not 12"
--        #endif
--        ])], [have_v12_netmap="yes"])
--        if test "x$have_v12_netmap" = "xyes"; then
--            have_netmap_version="v12"
--        fi
--        have_v13_netmap="no"
--        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
--        #include <net/netmap_user.h>
--        ],[
--        #if NETMAP_API != 13
--        #error "not 13"
--        #endif
--        ])], [have_v13_netmap="yes"])
--        if test "x$have_v13_netmap" = "xyes"; then
--            have_netmap_version="v13"
--        fi
--        have_gtv13_netmap="no"
--        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
--        #include <net/netmap_user.h>
--        ],[
--        #if NETMAP_API <= 13
--        #error "not gt 13"
--        #endif
--        ])], [have_gtv13_netmap="yes"])
--        if test "x$have_gtv13_netmap" = "xyes"; then
--            have_netmap_version="> v13"
--        fi
-+        AC_DEFINE([HAVE_NETMAP_V14],[1],(NETMAP API v14 support enabled))
-   ])
- 
-   # Suricata-Update.
-diff -ruN ./suricata-6.0.3.orig/src/runmode-netmap.c ./suricata-6.0.3/src/runmode-netmap.c
---- ./suricata-6.0.3.orig/src/runmode-netmap.c	2021-06-30 12:19:54.000000000 -0400
-+++ ./src/runmode-netmap.c	2021-09-13 10:58:23.000000000 -0400
-@@ -1,4 +1,4 @@
--/* Copyright (C) 2014-2018 Open Information Security Foundation
-+/* Copyright (C) 2014-2022 Open Information Security Foundation
-  *
-  * You can copy, redistribute or modify this Program under the terms of
-  * the GNU General Public License version 2 as published by the Free
-@@ -22,36 +22,28 @@
- */
- 
- /**
--* \file
--*
--* \author Aleksey Katargin <gureedo@gmail.com>
--*
--* Netmap runmode
--*
--*/
-+ * \file
-+ *
-+ * \author Aleksey Katargin <gureedo@gmail.com>
-+ * \author Bill Meeks <billmeeks8@gmail.com>
-+ *
-+ * Netmap runmode
-+ *
-+ */
- 
- #include "suricata-common.h"
--#include "tm-threads.h"
--#include "conf.h"
- #include "runmodes.h"
- #include "runmode-netmap.h"
--#include "output.h"
--#include "log-httplog.h"
--#include "detect-engine-mpm.h"
- 
--#include "alert-fastlog.h"
--#include "alert-prelude.h"
--#include "alert-debuglog.h"
--
--#include "util-debug.h"
--#include "util-time.h"
--#include "util-cpu.h"
--#include "util-affinity.h"
--#include "util-device.h"
- #include "util-runmodes.h"
- #include "util-ioctl.h"
- #include "util-byte.h"
- 
-+#ifdef HAVE_NETMAP
-+#define NETMAP_WITH_LIBS
-+#include <net/netmap_user.h>
-+#endif /* HAVE_NETMAP */
-+
- #include "source-netmap.h"
- 
- extern int max_pending_packets;
-@@ -71,7 +63,7 @@
-             " tasks from acquisition to logging",
-             RunModeIdsNetmapWorkers);
-     RunModeRegisterNewRunMode(RUNMODE_NETMAP, "autofp",
--            "Multi threaded netmap mode.  Packets from "
-+            "Multi-threaded netmap mode.  Packets from "
-             "each flow are assigned to a single detect "
-             "thread.",
-             RunModeIdsNetmapAutoFp);
-@@ -111,6 +103,14 @@
+diff -ruN ./suricata-6.0.10.orig/src/runmode-netmap.c ./suricata-6.0.10/src/runmode-netmap.c
+--- ./suricata-6.0.10.orig/src/runmode-netmap.c	2023-01-31 01:26:24.000000000 -0500
++++ ./src/runmode-netmap.c	2023-02-15 08:24:42.000000000 -0500
+@@ -105,6 +105,7 @@
+ static int ParseNetmapSettings(NetmapIfaceSettings *ns, const char *iface,
+         ConfNode *if_root, ConfNode *if_default)
+ {
++    char base_name[IFNAMSIZ];
+     ns->threads = 0;
+     ns->promisc = true;
+     ns->checksum_mode = CHECKSUM_VALIDATION_AUTO;
+@@ -124,17 +125,12 @@
          }
      }
  
-+    /* we will need the base interface name for later */
-+    char base_name[IFNAMSIZ];
-+    strlcpy(base_name, ns->iface, sizeof(base_name));
-+    if (strlen(base_name) > 0 &&
-+            (base_name[strlen(base_name) - 1] == '^' || base_name[strlen(base_name) - 1] == '*')) {
-+        base_name[strlen(base_name) - 1] = '\0';
-+    }
-+
+-#ifdef USE_NEW_NETMAP_API
+-    /* we will need the base interface name for later */
+-    char base_name[IFNAMSIZ];
++    /* we need the base interface name for later */
+     strlcpy(base_name, ns->iface, sizeof(base_name));
+     if (strlen(base_name) > 0 &&
+             (base_name[strlen(base_name) - 1] == '^' || base_name[strlen(base_name) - 1] == '*')) {
+         base_name[strlen(base_name) - 1] = '\0';
+     }
+-#else
+-    char *base_name = ns->iface;
+-#endif
+ 
      /* prefixed with netmap or vale means it's not a real interface
       * and we don't check offloading. */
-     if (strncmp(ns->iface, "netmap:", 7) != 0 &&
-@@ -208,15 +208,13 @@
+@@ -158,7 +154,9 @@
+                 iface);
+         goto finalize;
  
+-    /* If there is no setting for current interface use default one as main iface */
++    /* If there is no setting for current interface, use default
++     * one as main iface
++     */
+     } else if (if_root == NULL) {
+         if_root = if_default;
+         if_default = NULL;
+@@ -230,7 +228,6 @@
+     }
+ 
+ finalize:
+-
      ns->ips = (ns->copy_mode != NETMAP_COPY_MODE_NONE);
  
--    if (ns->sw_ring) {
--        /* just one thread per interface supported */
--        ns->threads = 1;
--    } else if (ns->threads_auto) {
-+    if (ns->threads_auto) {
-         /* As NetmapGetRSSCount used to be broken on Linux,
-          * fall back to GetIfaceRSSQueuesNum if needed. */
-         ns->threads = NetmapGetRSSCount(ns->iface);
-         if (ns->threads == 0) {
--            ns->threads = GetIfaceRSSQueuesNum(ns->iface);
-+            /* need to use base_name of interface here */
-+            ns->threads = GetIfaceRSSQueuesNum(base_name);
+ #if !USE_NEW_NETMAP_API
+@@ -242,9 +239,8 @@
+         if (ns->threads_auto) {
+             /* As NetmapGetRSSCount used to be broken on Linux,
+              * fall back to GetIfaceRSSQueuesNum if needed. */
+-            ns->threads = NetmapGetRSSCount(ns->iface);
++            ns->threads = NetmapGetRSSCount(base_name);
+             if (ns->threads == 0) {
+-                /* need to use base_name of interface here */
+                 ns->threads = GetIfaceRSSQueuesNum(base_name);
+             }
          }
-     }
-     if (ns->threads <= 0) {
-@@ -227,15 +225,15 @@
- }
- 
- /**
--* \brief extract information from config file
--*
--* The returned structure will be freed by the thread init function.
--* This is thus necessary to or copy the structure before giving it
--* to thread or to reparse the file for each thread (and thus have
--* new structure.
--*
--* \return a NetmapIfaceConfig corresponding to the interface name
--*/
-+ * \brief extract information from config file
-+ *
-+ * The returned structure will be freed by the thread init function.
-+ * This is thus necessary to copy the structure before giving it
-+ * to thread or to reparse the file for each thread (and thus have
-+ * new structure.
-+ *
-+ * \return a NetmapIfaceConfig corresponding to the interface name
-+ */
- static void *ParseNetmapConfig(const char *iface_name)
- {
-     ConfNode *if_root = NULL;
-@@ -246,11 +244,10 @@
-         return NULL;
-     }
- 
--    NetmapIfaceConfig *aconf = SCMalloc(sizeof(*aconf));
-+    NetmapIfaceConfig *aconf = SCCalloc(1, sizeof(*aconf));
-     if (unlikely(aconf == NULL)) {
-         return NULL;
-     }
--    memset(aconf, 0, sizeof(*aconf));
- 
-     aconf->DerefFunc = NetmapDerefConfig;
-     strlcpy(aconf->iface_name, iface_name, sizeof(aconf->iface_name));
-@@ -276,19 +273,26 @@
-         if (strlen(out_iface) > 0) {
+@@ -310,10 +306,10 @@
              if_root = ConfFindDeviceConfig(netmap_node, out_iface);
              ParseNetmapSettings(&aconf->out, out_iface, if_root, if_default);
--
+ #if !USE_NEW_NETMAP_API
 -            /* if one side of the IPS peering uses a sw_ring, we will default
 -             * to using a single ring/thread on the other side as well. Only
 -             * if thread variable is set to 'auto'. So the user can override
 -             * this. */
--            if (aconf->out.sw_ring && aconf->in.threads_auto) {
--                aconf->out.threads = aconf->in.threads = 1;
--            } else if (aconf->in.sw_ring && aconf->out.threads_auto) {
--                aconf->out.threads = aconf->in.threads = 1;
--            }
++            /* If one side of the IPS peering uses a sw_ring, we will default
++             * to using a single ring/thread on the other side as well, but
++             * only if the thread variable is set to 'auto'. So, the user can
++             * override this behavior if desired. */
+             if (aconf->out.sw_ring && aconf->in.threads_auto) {
+                 aconf->out.threads = aconf->in.threads = 1;
+             } else if (aconf->in.sw_ring && aconf->out.threads_auto) {
+@@ -342,19 +338,12 @@
+     }
+ 
+ #endif
+-    /* netmap needs all offloading to be disabled */
+-    if (aconf->in.real) {
+-        char base_name[sizeof(aconf->in.iface)];
+-        strlcpy(base_name, aconf->in.iface, sizeof(base_name));
+-        /* for a sw_ring enabled device name, strip the trailing char */
+-        if (aconf->in.sw_ring) {
+-            base_name[strlen(base_name) - 1] = '\0';
+-        }
+-
++    /* netmap needs all hardware offloading to be disabled */
++    if (aconf->in.real && !aconf->in.sw_ring) {
+         if (LiveGetOffload() == 0) {
+-            (void)GetIfaceOffloading(base_name, 1, 1);
++            (void)GetIfaceOffloading(aconf->in.iface, 1, 1);
+         } else {
+-            DisableIfaceOffloading(LiveGetDevice(base_name), 1, 1);
++            DisableIfaceOffloading(LiveGetDevice(aconf->in.iface), 1, 1);
          }
      }
  
-+    int ring_count = NetmapGetRSSCount(aconf->iface_name);
-+    if (strlen(aconf->iface_name) > 0 &&
-+            (aconf->iface_name[strlen(aconf->iface_name) - 1] == '^' ||
-+                    aconf->iface_name[strlen(aconf->iface_name) - 1] == '*')) {
-+        SCLogDebug("%s -- using %d netmap host ring pair%s", aconf->iface_name, ring_count,
-+                ring_count == 1 ? "" : "s");
-+    } else {
-+        SCLogDebug("%s -- using %d netmap ring pair%s", aconf->iface_name, ring_count,
-+                ring_count == 1 ? "" : "s");
-+    }
-+
-+    for (int i = 0; i < ring_count; i++) {
-+        char live_buf[32] = { 0 };
-+        snprintf(live_buf, sizeof(live_buf), "netmap%d", i);
-+        LiveRegisterDevice(live_buf);
-+    }
-+
-     /* netmap needs all offloading to be disabled */
-     if (aconf->in.real) {
-         char base_name[sizeof(aconf->in.iface)];
-@@ -310,6 +314,7 @@
-     SCLogPerf("Using %d threads for interface %s", aconf->in.threads,
-             aconf->iface_name);
- 
-+    LiveDeviceHasNoStats();
-     return aconf;
- }
- 
-@@ -397,69 +402,83 @@
-     return has_ips;
- }
- 
--#endif // #ifdef HAVE_NETMAP
-+typedef enum { NETMAP_AUTOFP, NETMAP_WORKERS, NETMAP_SINGLE } NetmapRunMode_t;
- 
--int RunModeIdsNetmapAutoFp(void)
-+static int NetmapRunModeInit(NetmapRunMode_t runmode)
+diff -ruN ./suricata-6.0.10.orig/src/source-netmap.c ./suricata-6.0.10/src/source-netmap.c
+--- ./suricata-6.0.10.orig/src/source-netmap.c	2023-01-31 01:26:24.000000000 -0500
++++ ./src/source-netmap.c	2023-02-17 09:05:55.000000000 -0500
+@@ -131,6 +131,7 @@
  {
-     SCEnter();
- 
--#ifdef HAVE_NETMAP
--    int ret;
--    const char *live_dev = NULL;
--
-     RunModeInitialize();
--
-     TimeModeSetLive();
- 
-+    const char *live_dev = NULL;
-     (void)ConfGet("netmap.live-interface", &live_dev);
- 
--    SCLogDebug("live_dev %s", live_dev);
--
--    ret = RunModeSetLiveCaptureAutoFp(
--                              ParseNetmapConfig,
--                              NetmapConfigGeThreadsCount,
--                              "ReceiveNetmap",
--                              "DecodeNetmap", thread_name_autofp,
--                              live_dev);
-+    int ret;
-+    switch (runmode) {
-+        case NETMAP_AUTOFP:
-+            ret = RunModeSetLiveCaptureAutoFp(ParseNetmapConfig, NetmapConfigGeThreadsCount,
-+                    "ReceiveNetmap", "DecodeNetmap", thread_name_autofp, live_dev);
-+            break;
-+        case NETMAP_WORKERS:
-+            ret = RunModeSetLiveCaptureWorkers(ParseNetmapConfig, NetmapConfigGeThreadsCount,
-+                    "ReceiveNetmap", "DecodeNetmap", thread_name_workers, live_dev);
-+            break;
-+        case NETMAP_SINGLE:
-+            ret = RunModeSetLiveCaptureSingle(ParseNetmapConfig, NetmapConfigGeThreadsCount,
-+                    "ReceiveNetmap", "DecodeNetmap", thread_name_single, live_dev);
-+            break;
-+    }
-     if (ret != 0) {
--        FatalError(SC_ERR_FATAL, "Unable to start runmode");
-+        FatalError(SC_ERR_FATAL, "Unable to start runmode %s",
-+                runmode == NETMAP_AUTOFP ? "autofp"
-+                                         : runmode == NETMAP_WORKERS ? "workers" : "single");
-     }
- 
--    SCLogDebug("RunModeIdsNetmapAutoFp initialised");
--#endif /* HAVE_NETMAP */
-+    SCLogDebug("%s initialized",
-+            runmode == NETMAP_AUTOFP ? "autofp" : runmode == NETMAP_WORKERS ? "workers" : "single");
- 
-     SCReturnInt(0);
- }
- 
-+int RunModeIdsNetmapAutoFp(void)
-+{
-+    return NetmapRunModeInit(NETMAP_AUTOFP);
-+}
-+
- /**
- * \brief Single thread version of the netmap processing.
- */
- int RunModeIdsNetmapSingle(void)
- {
-+    return NetmapRunModeInit(NETMAP_SINGLE);
-+}
-+
-+/**
-+ * \brief Workers version of the netmap processing.
-+ *
-+ * Start N threads with each thread doing all the work.
-+ *
-+ */
-+int RunModeIdsNetmapWorkers(void)
-+{
-+    return NetmapRunModeInit(NETMAP_WORKERS);
-+}
-+#else
-+int RunModeIdsNetmapAutoFp(void)
-+{
-     SCEnter();
-+    FatalError(SC_ERR_FATAL, "Netmap not configured");
-+    SCReturnInt(0);
-+}
- 
--#ifdef HAVE_NETMAP
--    int ret;
--    const char *live_dev = NULL;
--
--    RunModeInitialize();
--    TimeModeSetLive();
--
--    (void)ConfGet("netmap.live-interface", &live_dev);
--
--    ret = RunModeSetLiveCaptureSingle(
--                                    ParseNetmapConfig,
--                                    NetmapConfigGeThreadsCount,
--                                    "ReceiveNetmap",
--                                    "DecodeNetmap", thread_name_single,
--                                    live_dev);
--    if (ret != 0) {
--        FatalError(SC_ERR_FATAL, "Unable to start runmode");
--    }
--
--    SCLogDebug("RunModeIdsNetmapSingle initialised");
--
--#endif /* HAVE_NETMAP */
-+/**
-+ * \brief Single thread version of the netmap processing.
-+ */
-+int RunModeIdsNetmapSingle(void)
-+{
-+    SCEnter();
-+    FatalError(SC_ERR_FATAL, "Netmap not configured");
-     SCReturnInt(0);
- }
- 
-@@ -472,31 +491,10 @@
- int RunModeIdsNetmapWorkers(void)
- {
-     SCEnter();
--
--#ifdef HAVE_NETMAP
--    int ret;
--    const char *live_dev = NULL;
--
--    RunModeInitialize();
--    TimeModeSetLive();
--
--    (void)ConfGet("netmap.live-interface", &live_dev);
--
--    ret = RunModeSetLiveCaptureWorkers(
--                                    ParseNetmapConfig,
--                                    NetmapConfigGeThreadsCount,
--                                    "ReceiveNetmap",
--                                    "DecodeNetmap", thread_name_workers,
--                                    live_dev);
--    if (ret != 0) {
--        FatalError(SC_ERR_FATAL, "Unable to start runmode");
--    }
--
--    SCLogDebug("RunModeIdsNetmapWorkers initialised");
--
--#endif /* HAVE_NETMAP */
-+    FatalError(SC_ERR_FATAL, "Netmap not configured");
-     SCReturnInt(0);
- }
-+#endif // #ifdef HAVE_NETMAP
- 
- /**
- * @}
-diff -ruN ./suricata-6.0.3.orig/src/source-netmap.c ./suricata-6.0.3/src/source-netmap.c
---- ./suricata-6.0.3.orig/src/source-netmap.c	2021-06-30 12:19:54.000000000 -0400
-+++ ./src/source-netmap.c	2021-09-27 10:46:23.000000000 -0400
-@@ -1,4 +1,4 @@
--/* Copyright (C) 2011-2018 Open Information Security Foundation
-+/* Copyright (C) 2011-2022 Open Information Security Foundation
-  *
-  * You can copy, redistribute or modify this Program under the terms of
-  * the GNU General Public License version 2 as published by the Free
-@@ -22,53 +22,36 @@
- */
- 
- /**
--* \file
--*
--* \author Aleksey Katargin <gureedo@gmail.com>
--* \author Victor Julien <victor@inliniac.net>
--*
--* Netmap socket acquisition support
--*
--* Many thanks to Luigi Rizzo for guidance and support.
--*
--*/
-+ * \file
-+ *
-+ * \author Aleksey Katargin <gureedo@gmail.com>
-+ * \author Victor Julien <victor@inliniac.net>
-+ * \author Bill Meeks <billmeeks8@gmail.com>
-+ *
-+ * Netmap socket acquisition support
-+ *
-+ * Many thanks to Luigi Rizzo for guidance and support.
-+ *
-+ */
- 
--
--#include "suricata-common.h"
- #include "suricata.h"
--#include "decode.h"
--#include "threads.h"
--#include "threadvars.h"
-+#include "suricata-common.h"
- #include "tm-threads.h"
--#include "conf.h"
- #include "util-bpf.h"
--#include "util-debug.h"
--#include "util-device.h"
--#include "util-error.h"
- #include "util-privs.h"
--#include "util-optimize.h"
--#include "util-checksum.h"
- #include "util-validate.h"
- 
--#include "tmqh-packetpool.h"
- #include "source-netmap.h"
--#include "runmodes.h"
- 
- #ifdef HAVE_NETMAP
- 
--#if HAVE_SYS_IOCTL_H
--#include <sys/ioctl.h>
--#endif
--
--#if HAVE_SYS_MMAN_H
--#include <sys/mman.h>
--#endif
--
- #define NETMAP_WITH_LIBS
- #ifdef DEBUG
- #define DEBUG_NETMAP_USER
+ #if USE_NEW_NETMAP_API
+     struct nmport_d *nmd;
++    struct nm_pkthdr pkthdr;
+ #else
+     struct nm_desc *nmd;
  #endif
-+
- #include <net/netmap_user.h>
-+#include <libnetmap.h>
- 
- #endif /* HAVE_NETMAP */
- 
-@@ -81,10 +64,10 @@
- */
- static TmEcode NoNetmapSupportExit(ThreadVars *tv, const void *initdata, void **data)
- {
--    SCLogError(SC_ERR_NO_NETMAP,"Error creating thread %s: you do not have "
--            "support for netmap enabled, please recompile "
--            "with --enable-netmap", tv->name);
--    exit(EXIT_FAILURE);
-+    FatalError(SC_ERR_NO_NETMAP,
-+            "Error creating thread %s: Netmap is not enabled. "
-+            "Make sure to pass --enable-netmap to configure when building.",
-+            tv->name);
- }
- 
- void TmModuleReceiveNetmapRegister (void)
-@@ -119,22 +102,15 @@
- #define POLL_EVENTS (POLLHUP|POLLERR|POLLNVAL)
- #endif
- 
--enum {
--    NETMAP_OK,
--    NETMAP_FAILURE,
--};
-+enum { NETMAP_FLAG_ZERO_COPY = 1, NETMAP_FLAG_EXCL_RING_ACCESS = 2 };
- 
--enum {
--    NETMAP_FLAG_ZERO_COPY = 1,
--};
--
- /**
-  * \brief Netmap device instance. Each ring for each device gets its own
-  *        device.
-  */
- typedef struct NetmapDevice_
- {
--    struct nm_desc *nmd;
-+    struct nmport_d *nmd;
-     unsigned int ref;
-     SC_ATOMIC_DECLARE(unsigned int, threads_run);
-     TAILQ_ENTRY(NetmapDevice_) next;
-@@ -143,6 +119,9 @@
-     char ifname[32];
-     int ring;
-     int direction; // 0 rx, 1 tx
-+
-+    // autofp: Used to lock a destination ring while we are sending data.
-+    SCMutex netmap_dev_lock;
- } NetmapDevice;
- 
- /**
-@@ -150,7 +129,7 @@
-  */
- typedef struct NetmapThreadVars_
- {
--    /* receive inteface */
-+    /* receive interface */
-     NetmapDevice *ifsrc;
-     /* dst interface for IPS mode */
-     NetmapDevice *ifdst;
-@@ -185,12 +164,21 @@
-  */
- int NetmapGetRSSCount(const char *ifname)
- {
--    struct nmreq nm_req;
-+    struct nmreq_port_info_get req;
-+    struct nmreq_header hdr;
-     int rx_rings = 0;
- 
-+    /* we need the base interface name to query queues */
-+    char base_name[IFNAMSIZ];
-+    strlcpy(base_name, ifname, sizeof(base_name));
-+    if (strlen(base_name) > 0 &&
-+            (base_name[strlen(base_name) - 1] == '^' || base_name[strlen(base_name) - 1] == '*')) {
-+        base_name[strlen(base_name) - 1] = '\0';
-+    }
-+
-     SCMutexLock(&netmap_devlist_lock);
- 
--    /* open netmap */
-+    /* open netmap device */
-     int fd = open("/dev/netmap", O_RDWR);
-     if (fd == -1) {
-         SCLogError(SC_ERR_NETMAP_CREATE,
-@@ -199,19 +187,24 @@
-         goto error_open;
-     }
- 
--    /* query netmap info */
--    memset(&nm_req, 0, sizeof(nm_req));
--    strlcpy(nm_req.nr_name, ifname, sizeof(nm_req.nr_name));
--    nm_req.nr_version = NETMAP_API;
-+    /* query netmap interface info */
-+    memset(&req, 0, sizeof(req));
-+    memset(&hdr, 0, sizeof(hdr));
-+    hdr.nr_version = NETMAP_API;
-+    hdr.nr_reqtype = NETMAP_REQ_PORT_INFO_GET;
-+    hdr.nr_body = (uintptr_t)&req;
-+    strlcpy(hdr.nr_name, base_name, sizeof(hdr.nr_name));
- 
--    if (ioctl(fd, NIOCGINFO, &nm_req) != 0) {
--        SCLogError(SC_ERR_NETMAP_CREATE,
--                "Couldn't query netmap for %s, error %s",
-+    if (ioctl(fd, NIOCCTRL, &hdr) != 0) {
-+        SCLogError(SC_ERR_NETMAP_CREATE, "Couldn't query netmap for info about %s, error %s",
-                 ifname, strerror(errno));
-         goto error_fd;
-     };
- 
--    rx_rings = nm_req.nr_rx_rings;
-+    /* return RX rings count if it equals TX rings count */
-+    if (req.nr_rx_rings == req.nr_tx_rings) {
-+        rx_rings = req.nr_rx_rings;
-+    }
- 
- error_fd:
-     close(fd);
-@@ -220,20 +213,73 @@
-     return rx_rings;
- }
+@@ -182,7 +183,57 @@
+ static NetmapDeviceList netmap_devlist = TAILQ_HEAD_INITIALIZER(netmap_devlist);
+ static SCMutex netmap_devlist_lock = SCMUTEX_INITIALIZER;
  
 +static void NetmapDestroyDevice(NetmapDevice *pdev)
 +{
++#if USE_NEW_NETMAP_API
 +    nmport_close(pdev->nmd);
++#else
++    nm_close(pdev->nmd);
++#endif
 +    SCMutexDestroy(&pdev->netmap_dev_lock);
 +    SCFree(pdev);
 +}
 +
- /**
++/**
 + * \brief Close or dereference netmap device instance.
 + * \param dev Netmap device instance.
 + * \return Zero on success.
@@ -671,241 +156,108 @@ diff -ruN ./suricata-6.0.3.orig/src/source-netmap.c ./suricata-6.0.3/src/source-
 +{
 +    NetmapDevice *pdev, *tmp;
 +
-+    SCMutexLock(&netmap_devlist_lock);
-+
 +    TAILQ_FOREACH_SAFE (pdev, &netmap_devlist, next, tmp) {
 +        NetmapDestroyDevice(pdev);
 +    }
-+
-+    SCMutexUnlock(&netmap_devlist_lock);
 +}
 +
-+/**
-  * \brief Open interface in netmap mode.
-  * \param ifname Interface name.
-  * \param promisc Enable promiscuous mode.
-  * \param dev Pointer to requested netmap device instance.
-  * \param verbose Verbose error logging.
-+ * \param read Indicates direction: RX or TX
-+ * \param zerocopy 1 if zerocopy access requested
-+ * \param soft One endpoint of interface pair is host stack (software)
-  * \return Zero on success.
+ /** \brief get RSS RX-queue count
++ *  \ifname Pointer to base interface name (without any host stack suffix)
+  *  \retval rx_rings RSS RX queue count or 0 on error
   */
--static int NetmapOpen(NetmapIfaceSettings *ns,
--    NetmapDevice **pdevice, int verbose, int read, bool zerocopy)
-+static int NetmapOpen(NetmapIfaceSettings *ns, NetmapDevice **pdevice, int verbose, int read,
-+        bool zerocopy, bool soft)
- {
-     SCEnter();
-     SCLogDebug("ifname %s", ns->iface);
- 
-+    // Extract the base interface name from a host stack interface
+ int NetmapGetRSSCount(const char *ifname)
+@@ -194,16 +245,17 @@
+     struct nmreq nm_req;
+ #endif
+     int rx_rings = 0;
+-
+-#if USE_NEW_NETMAP_API
+-    /* we need the base interface name to query queues */
      char base_name[IFNAMSIZ];
-     strlcpy(base_name, ns->iface, sizeof(base_name));
++
++    /* we need the base interface name for querying queue count,
++     * so strip any trailing suffix indicating a software ring
++     */
+     strlcpy(base_name, ifname, sizeof(base_name));
      if (strlen(base_name) > 0 &&
-@@ -248,8 +294,7 @@
-         int if_flags = GetIfaceFlags(base_name);
-         if (if_flags == -1) {
-             if (verbose) {
--                SCLogError(SC_ERR_NETMAP_CREATE,
--                        "Can not access to interface '%s' (%s)",
-+                SCLogError(SC_ERR_NETMAP_CREATE, "Cannot access network interface '%s' (%s)",
-                         base_name, ns->iface);
-             }
-             goto error;
-@@ -268,19 +313,21 @@
-         }
+             (base_name[strlen(base_name) - 1] == '^' || base_name[strlen(base_name) - 1] == '*')) {
+         base_name[strlen(base_name) - 1] = '\0';
      }
-     NetmapDevice *pdev = NULL, *spdev = NULL;
--    pdev = SCMalloc(sizeof(*pdev));
-+    pdev = SCCalloc(1, sizeof(*pdev));
-     if (unlikely(pdev == NULL)) {
-         SCLogError(SC_ERR_MEM_ALLOC, "Memory allocation failed");
-         goto error;
-     }
--    memset(pdev, 0, sizeof(*pdev));
-     SC_ATOMIC_INIT(pdev->threads_run);
- 
+-#endif
++
      SCMutexLock(&netmap_devlist_lock);
  
-     const int direction = (read != 1);
-     int ring = 0;
--    /* search interface in our already opened list */
-+    /* Search for interface in our already opened list.
-+     * We will find it when opening multiple rings on
-+     * the device when it exposes multiple RSS queues.
+     /* open netmap device */
+@@ -225,7 +277,7 @@
+     strlcpy(hdr.nr_name, base_name, sizeof(hdr.nr_name));
+ #else
+     memset(&nm_req, 0, sizeof(nm_req));
+-    strlcpy(nm_req.nr_name, ifname, sizeof(nm_req.nr_name));
++    strlcpy(nm_req.nr_name, base_name, sizeof(nm_req.nr_name));
+     nm_req.nr_version = NETMAP_API;
+ #endif
+ 
+@@ -234,17 +286,37 @@
+ #else
+     if (ioctl(fd, NIOCGINFO, &nm_req) != 0) {
+ #endif
+-        SCLogError(SC_ERR_NETMAP_CREATE, "Couldn't query netmap for info about %s, error %s",
+-                ifname, strerror(errno));
++        SCLogError(SC_ERR_NETMAP_CREATE, "Couldn't query netmap for HW rings count of %s, error %s",
++                base_name, strerror(errno));
+         goto error_fd;
+     };
+ 
++    /* check for asymmetrical TX/RX queue counts on interface
++     * and error out if true as that feature is incompatible
++     * with the way Suricata utilizes netmap.
 +     */
-     TAILQ_FOREACH(spdev, &netmap_devlist, next) {
-         SCLogDebug("spdev %s", spdev->ifname);
-         if (direction == spdev->direction && strcmp(ns->iface, spdev->ifname) == 0) {
-@@ -294,19 +341,40 @@
-     const char *opt_x = "x"; // not for IPS
-     const char *opt_z = "z"; // zero copy, not for IPS
- 
--    // FreeBSD 11 doesn't have R and T.
--#if NETMAP_API<=11
--    opt_R = "";
--    opt_T = "";
--#endif
-     /* assemble options string */
-     char optstr[16];
-     if (ns->ips)
-         opt_x = "";
--// z seems to not play well with multiple opens of a real dev on linux
--//    if (!zerocopy || ips)
-+    // z seems to not play well with multiple opens of a real dev on linux
-     opt_z = "";
- 
-+    /*
-+     * How netmap endpoint names are selected:
-+     *
-+     * The following logic within the "retry" loop builds endpoint names.
-+     *
-+     * IPS Mode:
-+     * There are two endpoints: one hardware NIC and either a hardware NIC or host stack "NIC".
-+     *
-+     * IDS Mode:
-+     * One endpoint -- usually a hardware NIC.
-+     *
-+     * IPS mode -- with one endpoint a host stack "NIC":
-+     * When using multiple rings/threads, then the open of the initial Ring 0 MUST
-+     * instruct netmap to open multiple Host Stack rings (as the default is to open only a single
-+     * pair). This is also critical for the HW NIC endpoint. This is done by adding
-+     * �@conf:host-rings=x� suffix option (where �x� is the number of host rings desired)
-+     * to BOTH endpoint nmport_open_desc() calls for ring 0 (hardware and host stack).
-+     * For subsequent additional ring open calls, omit the suffix option specifying host ring count.
-+     *
-+     * IPS mode -- both endpoints are hardware NICs:
-+     * Do NOT pass any suffix option (even for Ring 0). You do not need to tell netmap how many
-+     * rings, because it already knows the correct value from the NIC driver itself. Specifying a
-+     * desired ring count when both ends are Hardware NICs confuses netmap, and it seems to default
-+     * to using only a single hardware ring. In this scenario, specify only the specific ring number
-+     * being opened.
-+     */
-+
-     // loop to retry opening if unsupported options are used
- retry:
-     snprintf(optstr, sizeof(optstr), "%s%s%s", opt_z, opt_x, direction == 0 ? opt_R : opt_T);
-@@ -317,44 +385,91 @@
-                 ns->iface, ring, strlen(optstr) ? "/" : "", optstr);
-     } else if (strlen(ns->iface) > 5 && strncmp(ns->iface, "vale", 4) == 0 && isdigit(ns->iface[4])) {
-         snprintf(devname, sizeof(devname), "%s", ns->iface);
--    } else if (ns->iface[strlen(ns->iface)-1] == '*' ||
--            ns->iface[strlen(ns->iface)-1] == '^') {
--        SCLogDebug("device with SW-ring enabled (ns->iface): %s",ns->iface);
--        snprintf(devname, sizeof(devname), "netmap:%s", ns->iface);
--        SCLogDebug("device with SW-ring enabled (devname): %s",devname);
--        /* just a single ring, so don't use ring param */
-     } else if (ring == 0 && ns->threads == 1) {
-+        /* just a single thread and ring, so don't use ring param */
-         snprintf(devname, sizeof(devname), "netmap:%s%s%s",
-                 ns->iface, strlen(optstr) ? "/" : "", optstr);
-+        SCLogDebug("device with %s-ring enabled (devname): %s", soft ? "SW" : "HW", devname);
-     } else {
--        snprintf(devname, sizeof(devname), "netmap:%s-%d%s%s",
--                ns->iface, ring, strlen(optstr) ? "/" : "", optstr);
-+        /* Going to be using multiple threads and rings */
-+        if (ns->sw_ring) {
-+            /* Opening a host stack interface */
-+            if (ring == 0) {
-+                /* Ring 0, so tell netmap how many host rings we want created */
-+                snprintf(devname, sizeof(devname), "netmap:%s%d%s%s@conf:host-rings=%d", ns->iface,
-+                        ring, strlen(optstr) ? "/" : "", optstr, ns->threads);
-+            } else {
-+                /* Software (host) ring, but not initial open of ring 0 */
-+                snprintf(devname, sizeof(devname), "netmap:%s%d%s%s", ns->iface, ring,
-+                        strlen(optstr) ? "/" : "", optstr);
-+            }
-+            SCLogDebug("device with SW-ring enabled (devname): %s", devname);
-+        } else if (ring == 0 && soft) {
-+            /* Ring 0 of HW endpoint, and other endpoint is SW stack,
-+             * so request SW host stack rings to match HW rings count.
-+             */
-+            snprintf(devname, sizeof(devname), "netmap:%s-%d%s%s@conf:host-rings=%d", ns->iface,
-+                    ring, strlen(optstr) ? "/" : "", optstr, ns->threads);
-+            SCLogDebug("device with HW-ring enabled (devname): %s", devname);
-+        } else {
-+            /* Hardware ring other than ring 0, or both endpoints are HW
-+             * and there is no host stack (SW) endpoint */
-+            snprintf(devname, sizeof(devname), "netmap:%s-%d%s%s", ns->iface, ring,
-+                    strlen(optstr) ? "/" : "", optstr);
-+            SCLogDebug("device with HW-ring enabled (devname): %s", devname);
-+        }
-     }
-+
-     strlcpy(pdev->ifname, ns->iface, sizeof(pdev->ifname));
- 
--    pdev->nmd = nm_open(devname, NULL, 0, NULL);
-+    /* have the netmap API parse device name and prepare the port descriptor for us */
-+    pdev->nmd = nmport_prepare(devname);
-+
-+    if (pdev->nmd != NULL) {
-+        /* For RX devices, set the nr_mode flag we need on the netmap port TX rings prior to opening
-+         */
-+        if (read) {
-+            pdev->nmd->reg.nr_flags |= NR_NO_TX_POLL;
-+        }
-+
-+        /* Now attempt to actually open the netmap port descriptor */
-+        if (nmport_open_desc(pdev->nmd) < 0) {
-+            /* the open failed, so clean-up the descriptor and fall through to error handler */
-+            nmport_close(pdev->nmd);
-+            pdev->nmd = NULL;
-+        }
-+    }
-+
-     if (pdev->nmd == NULL) {
--        if (errno == EINVAL && opt_z[0] == 'z') {
--            SCLogNotice("got '%s' EINVAL: going to retry without 'z'", devname);
--            opt_z = "";
--            goto retry;
--        } else if (errno == EINVAL && opt_x[0] == 'x') {
--            SCLogNotice("dev '%s' got EINVAL: going to retry without 'x'", devname);
--            opt_x = "";
--            goto retry;
-+        if (errno == EINVAL) {
-+            if (opt_z[0] == 'z') {
-+                SCLogNotice("got '%s' EINVAL: going to retry without 'z'", devname);
-+                opt_z = "";
-+                goto retry;
-+            } else if (opt_x[0] == 'x') {
-+                SCLogNotice("dev '%s' got EINVAL: going to retry without 'x'", devname);
-+                opt_x = "";
-+                goto retry;
-+            }
-         }
- 
--        SCLogError(SC_ERR_NETMAP_CREATE, "opening devname %s failed: %s",
--                devname, strerror(errno));
--        exit(EXIT_FAILURE);
+ #if USE_NEW_NETMAP_API
+-    /* return RX rings count if it equals TX rings count */
+-    if (req.nr_rx_rings == req.nr_tx_rings)
++    if (req.nr_rx_rings != req.nr_tx_rings) {
++        close(fd);
++        SCMutexUnlock(&netmap_devlist_lock);
 +        NetmapCloseAll();
-+        FatalError(SC_ERR_FATAL, "opening devname %s failed: %s", devname, strerror(errno));
-     }
--    SCLogDebug("devname %s %s opened", devname, ns->iface);
++        FatalError(SC_ERR_FATAL,
++               "HW device %s has an unequal number of RX and TX rings and is incompatible with Suricata!",
++               base_name);
++    } else {
+         rx_rings = req.nr_rx_rings;
++    }
+ #else
+-    rx_rings = nm_req.nr_rx_rings;
++    if (nm_req.nr_rx_rings != nm_req.nr_tx_rings) {
++        close(fd);
++        SCMutexUnlock(&netmap_devlist_lock);
++        NetmapCloseAll();
++        FatalError(SC_ERR_FATAL,
++               "HW device %s has an unequal number of RX and TX rings and is incompatible with Suricata!",
++               base_name);
++    } else {
++        rx_rings = nm_req.nr_rx_rings;
++    }
+ #endif
  
-+    /* Work around bug in libnetmap library where "cur_{r,t}x_ring" values not initialized */
-+    SCLogDebug("%s -- cur rings: [%d, %d] first rings: [%d, %d]", devname, pdev->nmd->cur_rx_ring,
-+            pdev->nmd->cur_tx_ring, pdev->nmd->first_rx_ring, pdev->nmd->first_tx_ring);
-+    pdev->nmd->cur_rx_ring = pdev->nmd->first_rx_ring;
-+    pdev->nmd->cur_tx_ring = pdev->nmd->first_tx_ring;
-+
-+    SCLogInfo("devname [fd: %d] %s %s opened", pdev->nmd->fd, devname, ns->iface);
-+
-     pdev->direction = direction;
-     pdev->ring = ring;
-+    SCMutexInit(&pdev->netmap_dev_lock, NULL);
-     TAILQ_INSERT_TAIL(&netmap_devlist, pdev, next);
- 
--    SCLogNotice("opened %s from %s: %p", devname, ns->iface, pdev->nmd);
-     SCMutexUnlock(&netmap_devlist_lock);
-     *pdevice = pdev;
- 
-@@ -364,33 +479,6 @@
+ error_fd:
+@@ -254,60 +326,10 @@
+     return rx_rings;
  }
  
+-static void NetmapDestroyDevice(NetmapDevice *pdev)
+-{
+-#if USE_NEW_NETMAP_API
+-    nmport_close(pdev->nmd);
+-#else
+-    nm_close(pdev->nmd);
+-#endif
+-    SCMutexDestroy(&pdev->netmap_dev_lock);
+-    SCFree(pdev);
+-}
+-
  /**
 - * \brief Close or dereference netmap device instance.
-- * \param pdev Netmap device instance.
+- * \param dev Netmap device instance.
 - * \return Zero on success.
 - */
 -static int NetmapClose(NetmapDevice *dev)
@@ -914,12 +266,11 @@ diff -ruN ./suricata-6.0.3.orig/src/source-netmap.c ./suricata-6.0.3/src/source-
 -
 -    SCMutexLock(&netmap_devlist_lock);
 -
--    TAILQ_FOREACH_SAFE(pdev, &netmap_devlist, next, tmp) {
+-    TAILQ_FOREACH_SAFE (pdev, &netmap_devlist, next, tmp) {
 -        if (pdev == dev) {
 -            pdev->ref--;
 -            if (!pdev->ref) {
--                nm_close(pdev->nmd);
--                SCFree(pdev);
+-                NetmapDestroyDevice(pdev);
 -            }
 -            SCMutexUnlock(&netmap_devlist_lock);
 -            return 0;
@@ -931,358 +282,393 @@ diff -ruN ./suricata-6.0.3.orig/src/source-netmap.c ./suricata-6.0.3/src/source-
 -}
 -
 -/**
-  * \brief PcapDumpCounters
-  * \param ntv
-  */
-@@ -413,54 +501,48 @@
- static TmEcode ReceiveNetmapThreadInit(ThreadVars *tv, const void *initdata, void **data)
- {
-     SCEnter();
--    NetmapIfaceConfig *aconf = (NetmapIfaceConfig *)initdata;
- 
-+    NetmapIfaceConfig *aconf = (NetmapIfaceConfig *)initdata;
-     if (initdata == NULL) {
-         SCLogError(SC_ERR_INVALID_ARGUMENT, "initdata == NULL");
-         SCReturnInt(TM_ECODE_FAILED);
-     }
- 
--    NetmapThreadVars *ntv = SCMalloc(sizeof(*ntv));
-+    NetmapThreadVars *ntv = SCCalloc(1, sizeof(*ntv));
-     if (unlikely(ntv == NULL)) {
-         SCLogError(SC_ERR_MEM_ALLOC, "Memory allocation failed");
-         goto error;
-     }
--    memset(ntv, 0, sizeof(*ntv));
- 
--    ntv->tv = tv;
--    ntv->checksum_mode = aconf->in.checksum_mode;
--    ntv->copy_mode = aconf->in.copy_mode;
+- * \brief Close all open netmap device instances.
+- */
+-static void NetmapCloseAll(void)
+-{
+-    NetmapDevice *pdev, *tmp;
 -
-     ntv->livedev = LiveGetDevice(aconf->iface_name);
-     if (ntv->livedev == NULL) {
-         SCLogError(SC_ERR_INVALID_VALUE, "Unable to find Live device");
-         goto error_ntv;
-     }
- 
-+    ntv->tv = tv;
-+    ntv->checksum_mode = aconf->in.checksum_mode;
-+    ntv->copy_mode = aconf->in.copy_mode;
-+
-     /* enable zero-copy mode for workers runmode */
-     char const *active_runmode = RunmodeGetActive();
-     if (strcmp("workers", active_runmode) == 0) {
-         ntv->flags |= NETMAP_FLAG_ZERO_COPY;
-         SCLogDebug("Enabling zero copy mode for %s", aconf->in.iface);
-+    } else if (strcmp("autofp", active_runmode) == 0) {
-+        ntv->flags |= NETMAP_FLAG_EXCL_RING_ACCESS;
-     }
- 
--    if (NetmapOpen(&aconf->in, &ntv->ifsrc, 1, 1,
--                (ntv->flags & NETMAP_FLAG_ZERO_COPY) != 0) != 0) {
-+    /* Need to insure open of ring 0 conveys requested ring count for open */
-+    bool soft = aconf->in.sw_ring || aconf->out.sw_ring;
-+    if (NetmapOpen(&aconf->in, &ntv->ifsrc, 1, 1, (ntv->flags & NETMAP_FLAG_ZERO_COPY) != 0,
-+                soft) != 0) {
-         goto error_ntv;
-     }
- 
--    if (unlikely(aconf->in.sw_ring && aconf->in.threads > 1)) {
--        SCLogError(SC_ERR_INVALID_VALUE,
--                   "Interface '%s+'. "
--                   "Thread count can't be greater than 1 for SW ring.",
--                   aconf->iface_name);
--        goto error_src;
+-    TAILQ_FOREACH_SAFE (pdev, &netmap_devlist, next, tmp) {
+-        NetmapDestroyDevice(pdev);
 -    }
+-}
 -
-     if (aconf->in.copy_mode != NETMAP_COPY_MODE_NONE) {
--        SCLogDebug("IPS: opening out iface %s", aconf->out.iface);
--        if (NetmapOpen(&aconf->out, &ntv->ifdst,
--                    1, 0, false) != 0) {
-+        if (NetmapOpen(&aconf->out, &ntv->ifdst, 1, 0, (ntv->flags & NETMAP_FLAG_ZERO_COPY) != 0,
-+                    soft) != 0) {
-             goto error_src;
+-/**
+  * \brief Open interface in netmap mode.
+- * \param ifname Interface name.
+- * \param promisc Enable promiscuous mode.
+- * \param dev Pointer to requested netmap device instance.
++ * \param ns Pointer to Netmap interface settings structure.
++ * \param pdevice Pointer to requested netmap device instance pointer.
+  * \param verbose Verbose error logging.
+  * \param read Indicates direction: RX or TX
+  * \param zerocopy 1 if zerocopy access requested
+@@ -399,23 +421,23 @@
+      * The following logic within the "retry" loop builds endpoint names.
+      *
+      * IPS Mode:
+-     * There are two endpoints: one hardware NIC and either a hardware NIC or host stack "NIC".
++     * Has two endpoints: one hardware NIC and either another hardware NIC or the host stack.
+      *
+      * IDS Mode:
+      * One endpoint -- usually a hardware NIC.
+      *
+-     * IPS mode -- with one endpoint a host stack "NIC":
++     * IPS mode -- with one endpoint the host stack:
+      * When using multiple rings/threads, then the open of the initial Ring 0 MUST
+      * instruct netmap to open multiple Host Stack rings (as the default is to open only a single
+-     * pair). This is also critical for the HW NIC endpoint. This is done by adding
+-     * “@conf:host-rings=x” suffix option (where “x” is the number of host rings desired)
+-     * to BOTH endpoint nmport_open_desc() calls for ring 0 (hardware and host stack).
++     * pair). This is also critical for the HW NIC endpoint. This is done by adding the
++     * “@conf:host-rings=x” suffix option (where “x” is the number of TX and RX host rings desired)
++     * to BOTH endpoint nmport_open calls for ring 0 (for hardware and host stack).
+      * For subsequent additional ring open calls, omit the suffix option specifying host ring count.
+      *
+      * IPS mode -- both endpoints are hardware NICs:
+      * Do NOT pass any suffix option (even for Ring 0). You do not need to tell netmap how many
+      * rings, because it already knows the correct value from the NIC driver itself. Specifying a
+-     * desired ring count when both ends are Hardware NICs confuses netmap, and it seems to default
++     * desired ring count when both ends are Hardware NICs seems to confuse netmap, and it defaults
+      * to using only a single hardware ring. In this scenario, specify only the specific ring number
+      * being opened.
+      */
+@@ -469,7 +491,8 @@
+             SCLogDebug("device with HW-ring enabled (devname): %s", devname);
+         } else {
+             /* Hardware ring other than ring 0, or both endpoints are HW
+-             * and there is no host stack (SW) endpoint */
++             * and there is no host stack (SW) endpoint.
++             */
+             snprintf(devname, sizeof(devname), "netmap:%s-%d%s%s", ns->iface, ring,
+                     strlen(optstr) ? "/" : "", optstr);
+             SCLogDebug("device with HW-ring enabled (devname): %s", devname);
+@@ -479,28 +502,16 @@
+ 
+     strlcpy(pdev->ifname, ns->iface, sizeof(pdev->ifname));
+ 
++    /* attempt to open the port with netmap */
+ #if USE_NEW_NETMAP_API
+-    /* have the netmap API parse device name and prepare the port descriptor for us */
+-    pdev->nmd = nmport_prepare(devname);
+-
+-    if (pdev->nmd != NULL) {
+-        /* For RX devices, set the nr_mode flag we need on the netmap port TX rings prior to opening
+-         */
+-        if (read) {
+-            pdev->nmd->reg.nr_flags |= NR_NO_TX_POLL;
+-        }
+-
+-        /* Now attempt to actually open the netmap port descriptor */
+-        if (nmport_open_desc(pdev->nmd) < 0) {
+-            /* the open failed, so clean-up the descriptor and fall through to error handler */
+-            nmport_close(pdev->nmd);
+-            pdev->nmd = NULL;
+-        }
+-    }
++    pdev->nmd = nmport_open(devname);
+ #else
+     pdev->nmd = nm_open(devname, NULL, 0, NULL);
+ #endif
+ 
++    /* if failed to open the port on first try, make
++     * some parameter adjustments and try once more.
++     */
+     if (pdev->nmd == NULL) {
+         if (errno == EINVAL) {
+             if (opt_z[0] == 'z') {
+@@ -514,6 +525,11 @@
+             }
          }
+ 
++        /* if we get here, attempted port open failed, so
++         * close any previously opened ports and exit with
++         * a Fatal Error.
++         */
++        SCMutexUnlock(&netmap_devlist_lock);
+         NetmapCloseAll();
+         FatalError(SC_ERR_FATAL, "opening devname %s failed: %s", devname, strerror(errno));
      }
-@@ -491,17 +573,23 @@
-         }
+@@ -532,9 +548,9 @@
+     pdev->ring = ring;
+     SCMutexInit(&pdev->netmap_dev_lock, NULL);
+     TAILQ_INSERT_TAIL(&netmap_devlist, pdev, next);
++    *pdevice = pdev;
+ 
+     SCMutexUnlock(&netmap_devlist_lock);
+-    *pdevice = pdev;
+ 
+     return 0;
+ error:
+@@ -597,8 +613,12 @@
+         ntv->flags |= NETMAP_FLAG_EXCL_RING_ACCESS;
      }
  
-+    SCLogDebug("thread: %s polling on fd: %d", tv->name, ntv->ifsrc->nmd->fd);
+-    /* Need to insure open of ring 0 conveys requested ring count for open */
++    /* flag if one endpoint is a host stack ring to insure the open
++     * of ring 0 conveys the requested host stack ring count
++     */
+     bool soft = aconf->in.sw_ring || aconf->out.sw_ring;
 +
++    /* open the source netmap port */
+     if (NetmapOpen(&aconf->in, &ntv->ifsrc, 1, 1, (ntv->flags & NETMAP_FLAG_ZERO_COPY) != 0,
+                 soft) != 0) {
+         goto error_ntv;
+@@ -614,6 +634,7 @@
+     }
+ #endif
+ 
++    /* open the destination netmap port if not using IDS-only mode */
+     if (aconf->in.copy_mode != NETMAP_COPY_MODE_NONE) {
+         if (NetmapOpen(&aconf->out, &ntv->ifdst, 1, 0, (ntv->flags & NETMAP_FLAG_ZERO_COPY) != 0,
+                     soft) != 0) {
+@@ -652,6 +673,8 @@
      *data = (void *)ntv;
      aconf->DerefFunc(aconf);
      SCReturnInt(TM_ECODE_OK);
 +
++    /* error handling code below */
  error_dst:
      if (aconf->in.copy_mode != NETMAP_COPY_MODE_NONE) {
          NetmapClose(ntv->ifdst);
-     }
+@@ -669,11 +692,13 @@
+ 
+ /**
+  * \brief Output packet to destination interface or drop.
+- * \param ntv Thread local variables.
+- * \param p Source packet.
++ * \param ntv Pointer to Thread local variables.
++ * \param p Pointer to Packet structure data.
+  */
+ static TmEcode NetmapWritePacket(NetmapThreadVars *ntv, Packet *p)
+ {
++    int write_tries = 0;
 +
- error_src:
-     NetmapClose(ntv->ifsrc);
-+
- error_ntv:
-     SCFree(ntv);
-+
- error:
-     aconf->DerefFunc(aconf);
-     SCReturnInt(TM_ECODE_FAILED);
-@@ -521,16 +609,29 @@
+     if (ntv->copy_mode == NETMAP_COPY_MODE_IPS) {
+         if (PACKET_TEST_ACTION(p, ACTION_DROP)) {
+             return TM_ECODE_OK;
+@@ -681,20 +706,38 @@
      }
      DEBUG_VALIDATE_BUG_ON(ntv->ifdst == NULL);
  
--    if (nm_inject(ntv->ifdst->nmd, GET_PKT_DATA(p), GET_PKT_LEN(p)) == 0) {
--        SCLogDebug("failed to send %s -> %s",
--                ntv->ifsrc->ifname, ntv->ifdst->ifname);
-+    /* Lock the destination netmap ring while writing to it */
-+    if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
-+        SCMutexLock(&ntv->ifdst->netmap_dev_lock);
-+    }
-+
-+    /* attempt to write the packet into the netmap ring buffer(s) */
-+    if (nmport_inject(ntv->ifdst->nmd, GET_PKT_DATA(p), GET_PKT_LEN(p)) == 0) {
-+        if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
-+            SCMutexUnlock(&ntv->ifdst->netmap_dev_lock);
-+        }
-+        SCLogDebug("failed to send %s -> %s", ntv->ifsrc->ifname, ntv->ifdst->ifname);
-         ntv->drops++;
-+        return TM_ECODE_FAILED;
+-    /* Lock the destination netmap ring while writing to it */
++    /* Lock the destination netmap ring while writing to it if required */
+     if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
+         SCMutexLock(&ntv->ifdst->netmap_dev_lock);
      }
--    SCLogDebug("sent succesfully: %s(%d)->%s(%d) (%u)",
--		    ntv->ifsrc->ifname, ntv->ifsrc->ring,
+ 
+-    /* attempt to write the packet into the netmap ring buffer(s) */
++    /* Attempt to write packet's data into the netmap TX ring buffer(s).
++     * A return value of zero from the port inject call indicates the
++     * write failed, but this may be because the ring buffers are full
++     * awaiting processing by the kernel.
++     */
++try_write:
+ #if USE_NEW_NETMAP_API
+     if (nmport_inject(ntv->ifdst->nmd, GET_PKT_DATA(p), GET_PKT_LEN(p)) == 0) {
+ #else
+     if (nm_inject(ntv->ifdst->nmd, GET_PKT_DATA(p), GET_PKT_LEN(p)) == 0) {
+ #endif
+-        if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
++        /* writing the packet failed, but ask kernel to sync TX rings
++         * for us as the ring buffers may simply be full
++         */
++        ioctl(ntv->ifdst->nmd->fd, NIOCTXSYNC, 0);
 +
-+    SCLogDebug("sent successfully: %s(%d)->%s(%d) (%u)", ntv->ifsrc->ifname, ntv->ifsrc->ring,
++        /* Try write up to 2 more times before giving up */
++        if (write_tries < 3) {
++            write_tries++;
++            goto try_write;
++        }
++
++        /* if we get here, all write attempts failed, so bail out */
++       if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
+             SCMutexUnlock(&ntv->ifdst->netmap_dev_lock);
+         }
++
+         SCLogDebug("failed to send %s -> %s", ntv->ifsrc->ifname, ntv->ifdst->ifname);
+         ntv->drops++;
+         return TM_ECODE_FAILED;
+@@ -703,7 +746,10 @@
+     SCLogDebug("sent successfully: %s(%d)->%s(%d) (%u)", ntv->ifsrc->ifname, ntv->ifsrc->ring,
              ntv->ifdst->ifname, ntv->ifdst->ring, GET_PKT_LEN(p));
  
-+    /* Instruct netmap to push the data on the TX ring on the destination port */
++    /* packet data write succeeded, so ask kernel to sync the TX ring */
      ioctl(ntv->ifdst->nmd->fd, NIOCTXSYNC, 0);
-+    if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
-+        SCMutexUnlock(&ntv->ifdst->netmap_dev_lock);
-+    }
-     return TM_ECODE_OK;
- }
- 
-@@ -549,13 +650,11 @@
-     PacketFreeOrRelease(p);
- }
- 
--static void NetmapCallback(u_char *user, const struct nm_pkthdr *ph, const u_char *d)
-+static void NetmapProcessPacket(NetmapThreadVars *ntv, const struct nm_pkthdr *ph)
- {
--    NetmapThreadVars *ntv = (NetmapThreadVars *)user;
--
-     if (ntv->bpf_prog.bf_len) {
-         struct pcap_pkthdr pkthdr = { {0, 0}, ph->len, ph->len };
--        if (pcap_offline_filter(&ntv->bpf_prog, &pkthdr, d) == 0) {
-+        if (pcap_offline_filter(&ntv->bpf_prog, &pkthdr, ph->buf) == 0) {
-             return;
-         }
++
++    /* unlock the netmap device if we needed to lock it */
+     if (ntv->flags & NETMAP_FLAG_EXCL_RING_ACCESS) {
+         SCMutexUnlock(&ntv->ifdst->netmap_dev_lock);
      }
-@@ -573,12 +672,12 @@
-     ntv->bytes += ph->len;
- 
-     if (ntv->flags & NETMAP_FLAG_ZERO_COPY) {
--        if (PacketSetData(p, (uint8_t *)d, ph->len) == -1) {
-+        if (PacketSetData(p, (uint8_t *)ph->buf, ph->len) == -1) {
-             TmqhOutputPacketpool(ntv->tv, p);
-             return;
-         }
-     } else {
--        if (PacketCopyData(p, (uint8_t *)d, ph->len) == -1) {
-+        if (PacketCopyData(p, (uint8_t *)ph->buf, ph->len) == -1) {
-             TmqhOutputPacketpool(ntv->tv, p);
-             return;
-         }
-@@ -594,6 +693,83 @@
- }
+@@ -712,7 +758,7 @@
  
  /**
-+ * \brief Copy netmap rings data into Packet structures.
-+ * \param *d nmport_d (or nm_desc) netmap if structure.
-+ * \param cnt int count of packets to read (-1 = all).
-+ * \param *ntv NetmapThreadVars.
-+ */
-+static TmEcode NetmapReadPackets(struct nmport_d *d, int cnt, NetmapThreadVars *ntv)
-+{
-+    struct nm_pkthdr hdr;
-+    int last_ring = d->last_rx_ring - d->first_rx_ring + 1;
-+    int cur_ring, got = 0, cur_rx_ring = d->cur_rx_ring;
-+
-+    memset(&hdr, 0, sizeof(hdr));
-+    hdr.flags = NM_MORE_PKTS;
-+
-+    if (cnt == 0)
-+        cnt = -1;
-+
-+    for (cur_ring = 0; cur_ring < last_ring && cnt != got; cur_ring++, cur_rx_ring++) {
-+        struct netmap_ring *ring;
-+
-+        if (cur_rx_ring > d->last_rx_ring)
-+            cur_rx_ring = d->first_rx_ring;
-+
-+        ring = NETMAP_RXRING(d->nifp, cur_rx_ring);
-+
-+        /* cycle through the non-empty ring slots to fetch their data */
-+        for (; !nm_ring_empty(ring) && cnt != got; got++) {
-+            u_int idx, i;
-+            u_char *oldbuf;
-+            struct netmap_slot *slot;
-+
-+            if (hdr.buf) { /* from previous round */
-+                NetmapProcessPacket(ntv, &hdr);
-+            }
-+
-+            i = ring->cur;
-+            slot = &ring->slot[i];
-+            idx = slot->buf_idx;
-+            d->cur_rx_ring = cur_rx_ring;
-+            hdr.slot = slot;
-+            oldbuf = hdr.buf = (u_char *)NETMAP_BUF(ring, idx);
-+            hdr.len = hdr.caplen = slot->len;
-+
-+            /* loop through the ring slots to get packet data */
-+            while (slot->flags & NS_MOREFRAG) {
-+                /* packet can be fragmented across multiple slots, */
-+                /* so loop until we find the slot with the flag    */
-+                /* cleared, signalling the end of the packet data. */
-+                u_char *nbuf;
-+                u_int oldlen = slot->len;
-+                i = nm_ring_next(ring, i);
-+                slot = &ring->slot[i];
-+                hdr.len += slot->len;
-+                nbuf = (u_char *)NETMAP_BUF(ring, slot->buf_idx);
-+
-+                if (oldbuf != NULL && nbuf - oldbuf == ring->nr_buf_size &&
-+                        oldlen == ring->nr_buf_size) {
-+                    hdr.caplen += slot->len;
-+                    oldbuf = nbuf;
-+                } else {
-+                    oldbuf = NULL;
-+                }
-+            }
-+
-+            hdr.ts = ring->ts;
-+            ring->head = ring->cur = nm_ring_next(ring, i);
-+        }
-+    }
-+
-+    if (hdr.buf) { /* from previous round */
-+        hdr.flags = 0;
-+        NetmapProcessPacket(ntv, &hdr);
-+    }
-+    return got;
-+}
-+
-+/**
-  *  \brief Main netmap reading loop function
+  * \brief Packet release routine.
+- * \param p Packet.
++ * \param p Pointer to Packet struct.
   */
- static TmEcode ReceiveNetmapLoop(ThreadVars *tv, void *data, void *slot)
-@@ -608,6 +784,7 @@
+ static void NetmapReleasePacket(Packet *p)
+ {
+@@ -726,14 +772,14 @@
+ }
+ 
+ #if USE_NEW_NETMAP_API
+-static void NetmapProcessPacket(NetmapThreadVars *ntv, const struct nm_pkthdr *ph)
++static void NetmapDispatchPacket(NetmapThreadVars *ntv)
+ #else
+ static void NetmapCallback(u_char *user, const struct nm_pkthdr *ph, const u_char *d)
+ #endif
+ {
+-
+ #if USE_NEW_NETMAP_API
+-    const u_char *d = ph->buf;
++    const u_char *d = ntv->ifsrc->pkthdr.buf;
++    const struct nm_pkthdr *ph = &(ntv->ifsrc->pkthdr);
+ #else
+     NetmapThreadVars *ntv = (NetmapThreadVars *)user;
+ #endif
+@@ -779,23 +825,25 @@
+ 
+ /**
+  * \brief Copy netmap rings data into Packet structures.
+- * \param *d nmport_d (or nm_desc) netmap if structure.
++ * \param *d nmport_d Pointer to netmap port descriptor structure.
+  * \param cnt int count of packets to read (-1 = all).
+- * \param *ntv NetmapThreadVars.
++ * \param *ntv Pointer to NetmapThreadVars structure.
+  */
+ #if USE_NEW_NETMAP_API
+ static TmEcode NetmapReadPackets(struct nmport_d *d, int cnt, NetmapThreadVars *ntv)
+ {
+-    struct nm_pkthdr hdr;
+     int last_ring = d->last_rx_ring - d->first_rx_ring + 1;
+     int cur_ring, got = 0, cur_rx_ring = d->cur_rx_ring;
+ 
+-    memset(&hdr, 0, sizeof(hdr));
+-    hdr.flags = NM_MORE_PKTS;
++    memset(&ntv->ifsrc->pkthdr, 0, sizeof(ntv->ifsrc->pkthdr));
++    ntv->ifsrc->pkthdr.flags = NM_MORE_PKTS;
+ 
+     if (cnt == 0)
+         cnt = -1;
+ 
++    /* iterate the available rings and their slots to pull out
++     * the data for processing by the Decode and Detect modules
++     */
+     for (cur_ring = 0; cur_ring < last_ring && cnt != got; cur_ring++, cur_rx_ring++) {
+         struct netmap_ring *ring;
+ 
+@@ -804,53 +852,55 @@
+ 
+         ring = NETMAP_RXRING(d->nifp, cur_rx_ring);
+ 
+-        /* cycle through the non-empty ring slots to fetch their data */
++        /* cycle through the non-empty ring slots to fetch all the data */
+         for (; !nm_ring_empty(ring) && cnt != got; got++) {
+             u_int idx, i;
+             u_char *oldbuf;
+             struct netmap_slot *slot;
+ 
+-            if (hdr.buf) { /* from previous round */
+-                NetmapProcessPacket(ntv, &hdr);
++            if (ntv->ifsrc->pkthdr.buf) { /* from previous round */
++                NetmapDispatchPacket(ntv);
+             }
+ 
+             i = ring->cur;
+             slot = &ring->slot[i];
+             idx = slot->buf_idx;
+             d->cur_rx_ring = cur_rx_ring;
+-            hdr.slot = slot;
+-            oldbuf = hdr.buf = (u_char *)NETMAP_BUF(ring, idx);
+-            hdr.len = hdr.caplen = slot->len;
++            ntv->ifsrc->pkthdr.slot = slot;
++            oldbuf = ntv->ifsrc->pkthdr.buf = (u_char *)NETMAP_BUF(ring, idx);
++            ntv->ifsrc->pkthdr.len = ntv->ifsrc->pkthdr.caplen = slot->len;
+ 
+-            /* loop through the ring slots to get packet data */
++            /* Check the ring slots for more packet data.
++             * A packet can be fragmented across multiple
++             * slots, so check and loop until we find the
++             * slot with the NS_MOREFRAG flag cleared,
++             * signaling the end of the packet's data.
++             */
+             while (slot->flags & NS_MOREFRAG) {
+-                /* packet can be fragmented across multiple slots, */
+-                /* so loop until we find the slot with the flag    */
+-                /* cleared, signalling the end of the packet data. */
+                 u_char *nbuf;
+                 u_int oldlen = slot->len;
+                 i = nm_ring_next(ring, i);
+                 slot = &ring->slot[i];
+-                hdr.len += slot->len;
++                ntv->ifsrc->pkthdr.len += slot->len;
+                 nbuf = (u_char *)NETMAP_BUF(ring, slot->buf_idx);
+ 
+                 if (oldbuf != NULL && nbuf - oldbuf == ring->nr_buf_size &&
+                         oldlen == ring->nr_buf_size) {
+-                    hdr.caplen += slot->len;
++                    ntv->ifsrc->pkthdr.caplen += slot->len;
+                     oldbuf = nbuf;
+                 } else {
+                     oldbuf = NULL;
+                 }
+             }
+ 
+-            hdr.ts = ring->ts;
++            ntv->ifsrc->pkthdr.ts = ring->ts;
+             ring->head = ring->cur = nm_ring_next(ring, i);
+         }
+     }
+ 
+-    if (hdr.buf) { /* from previous round */
+-        hdr.flags = 0;
+-        NetmapProcessPacket(ntv, &hdr);
++    if (ntv->ifsrc->pkthdr.buf) { /* from previous round */
++        ntv->ifsrc->pkthdr.flags = 0;
++        NetmapDispatchPacket(ntv);
+     }
+     return got;
+ }
+@@ -871,14 +921,19 @@
      fds.fd = ntv->ifsrc->nmd->fd;
      fds.events = POLLIN;
  
-+    SCLogDebug("thread %s polling on %d", tv->name, fds.fd);
+-    SCLogDebug("thread %s polling on %d", tv->name, fds.fd);
++    SCLogDebug("thread %s - RX polling using fd %d for ring %d", tv->name, fds.fd, ntv->ifsrc->ring);
++
++    /* loop waiting for packets to arrive on the netmap source RX ring */
      for(;;) {
++
++        /* exit the read poll() loop if Suricata is shutting down */
          if (unlikely(suricata_ctl_flags != 0)) {
              break;
-@@ -618,19 +795,17 @@
+         }
+ 
+-        /* make sure we have at least one packet in the packet pool,
+-         * to prevent us from alloc'ing packets at line rate */
++        /* make sure we have at least one packet in the packet pool
++         * to prevent us from alloc'ing packets at line rate
++         */
          PacketPoolWait();
  
          int r = poll(&fds, 1, POLL_TIMEOUT);
-+
-         if (r < 0) {
-             /* error */
-             if (errno != EINTR)
-                 SCLogError(SC_ERR_NETMAP_READ,
--                           "Error polling netmap from iface '%s': (%d" PRIu32 ") %s",
--                           ntv->ifsrc->ifname, errno, strerror(errno));
-+                        "Error polling netmap from iface '%s': (%d" PRIu32 ") %s",
-+                        ntv->ifsrc->ifname, errno, strerror(errno));
-             continue;
+@@ -892,8 +947,6 @@
  
          } else if (r == 0) {
              /* no events, timeout */
--            //SCLogDebug("(%s:%d-%d) Poll timeout", ntv->ifsrc->ifname,
+-            // SCLogDebug("(%s:%d-%d) Poll timeout", ntv->ifsrc->ifname,
 -            //           ntv->src_ring_from, ntv->src_ring_to);
--
+ 
              /* sync counters */
              NetmapDumpCounters(ntv);
-             StatsSyncCountersIfSignalled(tv);
-@@ -642,18 +817,18 @@
- 
-         if (unlikely(fds.revents & POLL_EVENTS)) {
-             if (fds.revents & POLLERR) {
--                //SCLogError(SC_ERR_NETMAP_READ,
+@@ -909,9 +962,6 @@
+                 SCLogError(SC_ERR_NETMAP_READ,
+                         "Error reading netmap data via polling from iface '%s': (%d" PRIu32 ") %s",
+                         ntv->ifsrc->ifname, errno, strerror(errno));
+-                // SCLogError(SC_ERR_NETMAP_READ,
 -                //        "Error reading data from iface '%s': (%d" PRIu32 ") %s",
 -                //        ntv->ifsrc->ifname, errno, strerror(errno));
--            } else if (fds.revents & POLLNVAL) {
-                 SCLogError(SC_ERR_NETMAP_READ,
--                        "Invalid polling request");
-+                        "Error reading netmap data via polling from iface '%s': (%d" PRIu32 ") %s",
-+                        ntv->ifsrc->ifname, errno, strerror(errno));
-+            } else if (fds.revents & POLLNVAL) {
-+                SCLogError(SC_ERR_NETMAP_READ, "Invalid polling request");
+             } else if (fds.revents & POLLNVAL) {
+                 SCLogError(SC_ERR_NETMAP_READ, "Invalid polling request");
              }
-             continue;
-         }
- 
-         if (likely(fds.revents & POLLIN)) {
--            nm_dispatch(ntv->ifsrc->nmd, -1, NetmapCallback, (void *)ntv);
-+            /* have data on RX ring, so copy to Packet for processing */
-+            NetmapReadPackets(ntv->ifsrc->nmd, -1, ntv);
-         }
- 
-         NetmapDumpCounters(ntv);
-@@ -713,7 +888,7 @@
- 
- /**
-  * \brief Prepare netmap decode thread.
-- * \param tv Thread local avariables.
-+ * \param tv Thread local variables.
-  * \param initdata Thread config.
-  * \param data Pointer to DecodeThreadVars placed here.
-  */
-diff -ruN ./suricata-6.0.3.orig/src/source-netmap.h ./suricata-6.0.3/src/source-netmap.h
---- ./suricata-6.0.3.orig/src/source-netmap.h	2021-06-30 12:19:54.000000000 -0400
-+++ ./src/source-netmap.h	2021-09-13 10:17:30.000000000 -0400
-@@ -1,4 +1,4 @@
--/* Copyright (C) 2014-2018 Open Information Security Foundation
-+/* Copyright (C) 2014-2022 Open Information Security Foundation
-  *
-  * You can copy, redistribute or modify this Program under the terms of
-  * the GNU General Public License version 2 as published by the Free
-@@ -24,8 +24,6 @@
- 
- #ifndef __SOURCE_NETMAP_H__
- #define __SOURCE_NETMAP_H__
--
--#include "queue.h"
- 
- /* copy modes */
- enum {
-diff -ruN ./suricata-6.0.3.orig/src/suricata-common.h ./suricata-6.0.3/src/suricata-common.h
---- ./suricata-6.0.3.orig/src/suricata-common.h	2021-06-30 12:24:47.000000000 -0400
-+++ ./src/suricata-common.h	2021-09-13 10:51:27.000000000 -0400
-@@ -177,6 +177,10 @@
- #include <sys/stat.h>
- #endif
- 
-+#if HAVE_SYS_IOCTL_H
-+#include <sys/ioctl.h>
-+#endif
-+
- #if HAVE_SYS_MMAN_H
- #include <sys/mman.h>
- #endif
-diff -ruN ./suricata-6.0.3.orig/src/util-runmodes.c ./suricata-6.0.3/src/util-runmodes.c
---- ./suricata-6.0.3.orig/src/util-runmodes.c	2021-06-30 12:19:54.000000000 -0400
-+++ ./src/util-runmodes.c	2021-09-13 10:56:13.000000000 -0400
-@@ -261,7 +261,7 @@
-         threads_count = 1;
-     } else {
-         threads_count = MIN(ModThreadsCount(aconf), thread_max);
--        SCLogInfo("Going to use %" PRId32 " thread(s)", threads_count);
-+        SCLogInfo("Going to use %" PRId32 " thread(s) for device %s", threads_count, live_dev);
-     }
- 
-     /* create the threads */

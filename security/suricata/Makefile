@@ -1,6 +1,6 @@
 PORTNAME=	suricata
-DISTVERSION=	6.0.8
-PORTREVISION=	2
+DISTVERSION=	6.0.10
+PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -40,10 +40,10 @@ CONFLICTS_INSTALL=	libhtp
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=		GEOIP IPFW NETMAP NSS PORTS_PCAP PRELUDE PYTHON REDIS \
+OPTIONS_DEFINE=		GEOIP IPFW NETMAP NETMAP_V14 NSS PORTS_PCAP PRELUDE PYTHON REDIS \
 			TESTS
 OPTIONS_DEFINE_amd64=	HYPERSCAN
-OPTIONS_DEFAULT=	IPFW NETMAP PYTHON
+OPTIONS_DEFAULT=	IPFW NETMAP NETMAP_V14 PYTHON
 
 OPTIONS_RADIO=		SCRIPTS
 OPTIONS_RADIO_SCRIPTS=	LUA LUAJIT
@@ -58,6 +58,7 @@ IPFW_DESC=		IPFW and IP Divert support for inline IDP
 LUAJIT_DESC=		LuaJIT scripting support
 LUA_DESC=		LUA scripting support
 NETMAP_DESC=		Netmap support for inline IDP
+NETMAP_V14_DESC=	Use v14 Multi-Host Rings API for netmap
 NSS_DESC=		File checksums and SSL/TLS fingerprinting
 PORTS_PCAP_DESC=	Use libpcap from ports
 PRELUDE_DESC=		Prelude support for NIDS alerts
@@ -80,6 +81,7 @@ LUA_USES=		lua:51
 LUA_CONFIGURE_ON=	--enable-lua
 
 NETMAP_CONFIGURE_ENABLE=	netmap
+NETMAP_V14_CONFIGURE_ENABLE=	netmap_v14
 
 NSS_LIB_DEPENDS=	libnspr4.so:devel/nspr \
 			libnss3.so:security/nss
