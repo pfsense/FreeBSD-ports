@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,13 +28,7 @@ $nocsrf = true;
 require_once("guiconfig.inc");
 require_once("/usr/local/www/widgets/include/widget-suricata.inc");
 
-global $config, $g;
-
-/* Retrieve Suricata configuration */
-if (!is_array($config['installedpackages']['suricata']['rule']))
-	$config['installedpackages']['suricata']['rule'] = array();
-
-$a_instance = &$config['installedpackages']['suricata']['rule'];
+global $g;
 
 /* array sorting */
 function suricata_sksort(&$array, $subkey="id", $sort_ascending=false) {
@@ -73,7 +67,7 @@ function suricata_sksort(&$array, $subkey="id", $sort_ascending=false) {
 }
 
 /* check if suricata widget variable is set */
-$suri_nentries = $config['widgets']['widget_suricata_display_lines'];
+$suri_nentries = config_get_path('widgets/widget_suricata_display_lines', '5');
 if (empty($suri_nentries) || $suri_nentries < 0) {
 	$suri_nentries = 5;
 }
@@ -97,7 +91,7 @@ if (isset($_GET['getNewAlerts'])) {
 }
 
 if(isset($_POST['widget_suricata_display_lines'])) {
-	$config['widgets']['widget_suricata_display_lines'] = $_POST['widget_suricata_display_lines'];
+	config_set_path('widgets/widget_suricata_display_lines', $_POST['widget_suricata_display_lines']);
 	write_config("Saved Suricata Alerts Widget Displayed Lines Parameter via Dashboard");
 	header("Location: ../../index.php");
 }
@@ -105,15 +99,15 @@ if(isset($_POST['widget_suricata_display_lines'])) {
 // Read "$suri_nentries" worth of alerts from the top of the alerts.log file
 function suricata_widget_get_alerts() {
 
-	global $g, $config, $a_instance, $suri_nentries;
+	global $g, $suri_nentries;
 	$suricata_alerts = array();
 
 	/* read log file(s) */
 	$counter=0;
 
-	foreach ($a_instance as $instanceid => $instance) {
-		$suricata_uuid = $a_instance[$instanceid]['uuid'];
-		$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+	foreach (config_get_path('installedpackages/suricata/rule', []) as $instanceid => $instance) {
+		$suricata_uuid = $instance['uuid'];
+		$if_real = get_real_interface($instance['interface']);
 
 		// make sure alert file exists, then grab the most recent {$suri_nentries} from it
 		// and write them to a temp file.
@@ -205,7 +199,7 @@ function suricata_widget_get_alerts() {
 						$fields['class'] = "No classtype assigned";
 					}
 
-					$suricata_alerts[$counter]['instanceid'] = strtoupper(convert_friendly_interface_to_friendly_descr($a_instance[$instanceid]['interface']));
+					$suricata_alerts[$counter]['instanceid'] = strtoupper(convert_friendly_interface_to_friendly_descr($instance['interface']));
 					$suricata_alerts[$counter]['msg'] = $fields['msg'];
 
 					// Add square brackets around any IPv6 address
@@ -301,7 +295,7 @@ function suricata_widget_get_alerts() {
 				<label for="widget_suricata_display_lines" class="col-sm-4 control-label"><?=gettext('Alerts to Display:')?></label>
 				<div class="col-sm-3">
 					<input type="number" name="widget_suricata_display_lines" class="form-control" id="widget_suricata_display_lines" 
-					value="<?= $config['widgets']['widget_suricata_display_lines'] ?>" placeholder="5" min="1" max="20" />
+					value="<?= config_get_path('widgets/widget_suricata_display_lines') ?>" placeholder="5" min="1" max="20" />
 				</div>
 				<div class="col-sm-3">
 					<button id="submitd" name="submitd" type="submit" class="btn btn-sm btn-primary"><?=gettext('Save')?></button>

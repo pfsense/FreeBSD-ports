@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2022 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -555,7 +555,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 		// Check if Inline IPS mode is enabled. Auto-enable 'Live Rule Swap' and display a message
 		// about potential incompatibilities with Netmap and some NIC hardware drivers.
 		if ($natent['ips_mode'] == "ips_mode_inline") {
-			$savemsg2 = gettext("Inline IPS Mode is selected. Live Rule Swap will be automatically enabled to prevent netmap interfaces from cycling offline/online during future rules updates.  Please note that not all hardware NIC drivers support Netmap operation which is required for Inline IPS Mode.  If problems are experienced, switch to Legacy Mode instead.");
+			$savemsg2 = gettext("Inline IPS Mode is selected. Live Rule Swap will be automatically enabled to prevent netmap interfaces from cycling offline/online during future rules updates. " .
+								"For better performance with Inline IPS Mode operation, consider changing the runmode setting to workers. " .
+								"Please note that not all hardware NIC drivers support Netmap operation- which is required for Inline IPS Mode. If problems are experienced, switch to Legacy Mode instead.");
 			config_set_path('installedpackages/suricata/config/0/live_swap_updates', "on");
 		}
 
@@ -1534,11 +1536,11 @@ $group->add(new Form_Select(
 	array( "ips_mode_legacy" => "Legacy Mode", "ips_mode_inline" => "Inline Mode" )
 ))->setHelp('Select blocking mode operation.  Legacy Mode inspects copies of packets while Inline Mode inserts the Suricata inspection engine ' . 
 		'into the network stack between the NIC and the OS. Default is Legacy Mode.');
-$group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' . 
-		'Suricata can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' . 
-		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' . 
+$group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' .
+		'Suricata can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' .
+		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' .
 		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap! ' .
-		'Supported drivers: ' . implode(', ', $netmapifs) . '. If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
+		'Supported drivers include: ' . implode(', ', $netmapifs) . '. If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
 $section->add($group);
 
 $section->addInput(new Form_Input(
@@ -1602,8 +1604,10 @@ $section->addInput(new Form_Select(
 	'Run Mode',
 	$pconfig['runmode'],
 	array('autofp' => 'AutoFP', 'workers' => 'Workers', 'single' => 'Single')
-))->setHelp('Choose a Suricata run mode setting. Default is "AutoFP" and is the recommended setting for most cases.  "Workers" uses multiple worker threads, each of which single-handedly processes the packets it acquires (i.e., each thread runs all thread modules). ' . 
-	    '"Single" uses only a single thread for all operations on a packet and is intended for use only in testing or development instances.');
+))->setHelp('Choose a Suricata run mode setting. Default is "AutoFP" and is the recommended setting for IDS-only and Legacy Blocking Mode. ' .
+		'"Workers" uses multiple worker threads, each of which processes the packets it acquires through all the decode and detect modules. ' .
+		'"Workers" runmode is preferred for Inline IPS Mode blocking because it offers superior performance in that configuration. ' .
+	    '"Single" uses only a single thread for all operations, and is intended for use only in testing or development instances.');
 $section->addInput(new Form_Select(
 	'autofp_scheduler',
 	'AutoFP Scheduler Type',
@@ -1616,7 +1620,7 @@ $section->addInput(new Form_Input(
 	'Max Pending Packets',
 	'text',
 	$pconfig['max_pending_packets']
-))->setHelp('Enter number of simultaneous packets to process. Default is 1024.<br/>This controls the number simultaneous packets the engine can handle. ' .
+))->setHelp('Enter number of simultaneous packets to process. Default is 1024.<br/>This controls the number of simultaneous packets the engine can handle. ' .
 			'Setting this higher generally keeps the threads more busy. The minimum value is 1 and the maximum value is 65,000.<br />' .
 			'Warning: Setting this too high can lead to degradation and a possible system crash by exhausting available memory.');
 

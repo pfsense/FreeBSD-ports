@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2022 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,6 +81,10 @@ if ($_POST['mode'] == 'iplist_add' && isset($_POST['iplist'])) {
 			}
 		}
 		if (!$input_errors) {
+			if (!is_array($a_nat['iplist_files'])){
+				$a_nat['iplist_files'] = array( "item" => array() );
+			}
+
 			$a_nat['iplist_files']['item'][] = basename($_POST['iplist']);
 			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 			write_config("Suricata pkg: added new whitelist file for IP REPUTATION preprocessor.");
@@ -240,7 +244,7 @@ $form->addGlobal(new Form_Input('mode', null, 'hidden'));
 $form->addGlobal(new Form_Input('iplist', null, 'hidden'));
 $form->addGlobal(new Form_Input('list_id', null, 'hidden'));
 
-print($form);
+print $form;
 ?>
 
 <div class="panel panel-default">
@@ -300,14 +304,13 @@ print($form);
 				</thead>
 				<tbody>
 <?php
-				if (is_array($pconfig['iplist_files']['item'])) :
-					foreach($pconfig['iplist_files']['item'] as $k => $f) :
-						if (!file_exists("{$iprep_path}{$f}")) {
-							$filedate = gettext("Unknown -- file missing");
-						}
-						else
-							$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
-				 ?>
+				foreach(array_get_path($pconfig, 'iplist_files/item', []) as $k => $f) :
+					if (!file_exists("{$iprep_path}{$f}")) {
+						$filedate = gettext("Unknown -- file missing");
+					} else {
+						$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
+					}
+?>
 					<tr>
 						<td><?=htmlspecialchars($f);?></td>
 						<td><?=$filedate;?></td>
@@ -316,8 +319,7 @@ print($form);
 							<i class="fa fa-times icon-embed-btn"></i><?=gettext("Delete")?></button>
 						</td>
 					</tr>
-<?php 					endforeach;
-				endif;
+<?php 			endforeach;
 ?>
 				</tbody>
 		</table>
