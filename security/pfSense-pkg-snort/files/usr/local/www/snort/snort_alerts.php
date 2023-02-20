@@ -808,7 +808,7 @@ $tab_array = array();
 	$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
 display_top_tabs($tab_array, true);
 
-print ($form);
+print $form;
 
 ?>
 
@@ -819,7 +819,7 @@ print ($form);
 				if (!$filterfieldsarray)
 					printf(gettext("Last %s Alert Log Entries"), $pconfig['alertnumber']);
 				else
-					print($anentries. ' ' . gettext('Matched Log Entries') . ' ');
+					print $anentries. ' ' . gettext('Matched Log Entries') . ' ';
 			?>
 		</h2>
 	</div>
