@@ -70,27 +70,27 @@ function snort_add_supplist_entry($suppress) {
 	/*   TRUE if successful or FALSE on failure     */
 	/************************************************/
 
-	global $a_instance, $instanceid;
+	global $instanceid;
 
 	$a_suppress = config_get_path('installedpackages/snortglobal/suppress/item', []);
 
 	$found_list = false;
 
 	/* If no Suppress List is set for the interface, then create one with the interface name */
-	if (empty(array_get_path($a_instance, "{$instanceid}/suppresslistname", '')) || array_get_path($a_instance, "{$instanceid}/suppresslistname", '') == 'default') {
+	if (empty(config_get_path("installedpackages/snortglobal/rule/{$instanceid}/suppresslistname", '')) || config_get_path("installedpackages/snortglobal/rule/{$instanceid}/suppresslistname", '') == 'default') {
 		$s_list = array();
 		$s_list['uuid'] = uniqid();
-		$s_list['name'] = $a_instance[$instanceid]['interface'] . "suppress" . "_" . $s_list['uuid'];
+		$s_list['name'] = config_get_path("installedpackages/snortglobal/rule/{$instanceid}/interface") . "suppress" . "_" . $s_list['uuid'];
 		$s_list['descr']  =  "Auto-generated list for Alert suppression";
 		$s_list['suppresspassthru'] = base64_encode($suppress);
 		$a_suppress[] = $s_list;
-		$a_instance[$instanceid]['suppresslistname'] = $s_list['name'];
+		config_set_path("installedpackages/snortglobal/rule/{$instanceid}/suppresslistname", $s_list['name']);
 		$found_list = true;
 		$list_name = $s_list['name'];
 	} else {
 		/* If we get here, a Suppress List is defined for the interface so see if we can find it */
 		foreach ($a_suppress as $a_id => $alist) {
-			if ($alist['name'] == $a_instance[$instanceid]['suppresslistname']) {
+			if ($alist['name'] == config_get_path("installedpackages/snortglobal/rule/{$instanceid}/suppresslistname", '')) {
 				$found_list = true;
 				$list_name = $alist['name'];
 				if (!empty($alist['suppresspassthru'])) {
@@ -113,7 +113,7 @@ function snort_add_supplist_entry($suppress) {
 		config_set_path('installedpackages/snortglobal/suppress/item', $a_suppress);
 		write_config("Snort pkg: modified Suppress List {$list_name}.");
 		sync_snort_package_config();
-		snort_reload_config($a_instance[$instanceid]);
+		snort_reload_config(config_get_path("installedpackages/snortglobal/rule/{$instanceid}", ''));
 		return true;
 	}
 	else
