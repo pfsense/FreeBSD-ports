@@ -25,15 +25,10 @@ $nocsrf = true;
 require_once("guiconfig.inc");
 require_once("/usr/local/www/widgets/include/widget-snort.inc");
 
-global $config, $g;
+global $g;
 
 /* retrieve snort variables */
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages'] = array();
-	$config['installedpackages']['snortglobal'] = array();
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_instance = &$config['installedpackages']['snortglobal']['rule'];
+$a_instance = config_get_path('installedpackages/snortglobal/rule', []);
 
 // Set some CSS class variables
 $alertRowEvenClass = "listMReven";
@@ -41,8 +36,8 @@ $alertRowOddClass = "listMRodd";
 $alertColClass = "listMRr";
 
 /* check if Snort widget alert display lines value is set */
-$snort_nentries = $config['widgets']['widget_snort_display_lines'];
-if (!isset($snort_nentries) || $snort_nentries <= 0)
+$snort_nentries = intval(config_get_path('widgets/widget_snort_display_lines', '5'));
+if ($snort_nentries <= 0)
 	$snort_nentries = 5;
 
 /* array sorting of the alerts */
@@ -92,9 +87,9 @@ if (isset($_GET['getNewAlerts'])) {
 // See if saving new display line count value
 if(isset($_POST['widget_snort_display_lines'])) {
 	if($_POST['widget_snort_display_lines'] == "") {
-		unset($config['widgets']['widget_snort_display_lines']);
+		config_set_path('widgets/widget_snort_display_lines', '5');
 	} else {
-		$config['widgets']['widget_snort_display_lines'] = max(intval($_POST['widget_snort_display_lines']), 1);
+		config_set_path('widgets/widget_snort_display_lines', max(intval($_POST['widget_snort_display_lines']), 1));
 	}
 	write_config("Saved Snort Alerts Widget Displayed Lines Parameter via Dashboard");
 	header("Location: ../../index.php");
@@ -105,7 +100,7 @@ if(isset($_POST['widget_snort_display_lines'])) {
 // alerts in a sorted array (most recent alert first).
 function snort_widget_get_alerts() {
 
-	global $config, $a_instance, $snort_nentries;
+	global $a_instance, $snort_nentries;
 	$snort_alerts = array();
 	/* read log file(s) */
 	$counter=0;
@@ -227,7 +222,7 @@ function snort_widget_get_alerts() {
 				<label for="widget_snort_display_lines" class="col-sm-4 control-label"><?=gettext('Alerts to Display:')?></label>
 				<div class="col-sm-3">
 					<input type="number" name="widget_snort_display_lines" class="form-control" id="widget_snort_display_lines" 
-					value="<?= $config['widgets']['widget_snort_display_lines'] ?>" placeholder="5" min="1" max="20" />
+					value="<?= config_get_path('widgets/widget_snort_display_lines') ?>" placeholder="5" min="1" max="20" />
 				</div>
 				<div class="col-sm-3">
 					<button id="submitd" name="submitd" type="submit" class="btn btn-sm btn-primary"><?=gettext('Save')?></button>
