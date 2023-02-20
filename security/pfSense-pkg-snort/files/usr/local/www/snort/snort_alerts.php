@@ -46,7 +46,9 @@ function snort_is_alert_globally_suppressed($list, $gid, $sid) {
 	/* If entry has a child array, then it's by src or dst ip. */
 	/* So if there is a child array or the keys are not set,   */
 	/* then this gid:sid is not globally suppressed.           */
-	if (array_get_path($list, "{$gid}/{$sid}"))
+	if (is_array($list[$gid][$sid]))
+		return false;
+	elseif (!isset($list[$gid][$sid]))
 		return false;
 	else
 		return true;
