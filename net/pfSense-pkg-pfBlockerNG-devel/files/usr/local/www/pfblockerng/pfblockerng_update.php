@@ -42,7 +42,7 @@ pfb_global();
 
 // Collect pfBlockerNG log file and post live output to terminal window.
 function pfbupdate_output($text) {
-	$text = htmlspecialchars(str_replace("\n", "\\n", $text));
+	$text = htmlspecialchars(str_replace("\n", "\\n", $text), ENT_COMPAT);
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";");
@@ -56,7 +56,7 @@ function pfbupdate_output($text) {
 
 // Post status message to terminal window.
 function pfbupdate_status($status) {
-	$status = htmlspecialchars(str_replace("\n", "\\n", $status));
+	$status = htmlspecialchars(str_replace("\n", "\\n", $status), ENT_COMPAT);
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";");
