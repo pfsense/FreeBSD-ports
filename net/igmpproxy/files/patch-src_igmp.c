@@ -6,6 +6,6 @@
      igmp->igmp_cksum        = inetChksum((unsigned short *)igmp,
 -                                         IP_HEADER_RAOPT_LEN + datalen);
 +                                         IGMP_MINLEN + datalen);
- 
+
  }
- 
+
