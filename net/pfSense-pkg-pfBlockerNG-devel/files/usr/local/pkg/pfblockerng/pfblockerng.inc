@@ -58,6 +58,7 @@ $pfb['dnsbl_tmpdir']	= '/tmp/DNSBL_TMP';
 
 // Application Paths
 $pfb['grep']	= '/usr/bin/grep';
+$pfb['ggrep']	= '/usr/local/bin/ggrep';	// textproc/gnugrep
 $pfb['awk']	= '/usr/bin/awk';
 $pfb['cut']	= '/usr/bin/cut';
 $pfb['sed']	= '/usr/bin/sed';
@@ -1382,24 +1383,31 @@ function pfb_cron_base_hour($freq) {
 	switch($freq) {
 		case 'Disabled':
 		case 1:
+		case '01hour':
 			$j = 23; $k = 1;
 			break;
 		case 2:
+		case '02hours':
 			$j = 11; $k = 2;
 			break;
 		case 3:
+		case '03hours':
 			$j = 7; $k = 3;
 			break;
 		case 4:
+		case '04hours':
 			$j = 5; $k = 4;
 			break;
 		case 6:
+		case '06hours':
 			$j = 3; $k = 6;
 			break;
 		case 8:
+		case '08hours':
 			$j = 2; $k = 8;
 			break;
 		case 12:
+		case '12hours':
 			$j = 1; $k = 12;
 			break;
 		case 24:
@@ -5171,12 +5179,20 @@ function pfb_collect_localip() {
 
 	// Collect virtual IP aliases for inbound/outbound list matching
 	foreach (config_get_path('virtualip/vip', []) as $list) {
-		if (!empty($list['subnet']) && !empty($list['subnet_bits'])) {
-			if ($list['subnet_bits'] >= 24 && is_ipaddrv4($list['subnet'])) {
-				$pfb_local	= array_merge(subnetv4_expand("{$list['subnet']}/{$list['subnet_bits']}"), $pfb_local);
-			} else {
-				$pfb_localsub[] = "{$list['subnet']}/{$list['subnet_bits']}";
+		if (!empty($list['subnet']) && !empty($list['subnet_bits']) && is_subnet("{$list['subnet']}/{$list['subnet_bits']}")) {
+			if (is_ipaddrv4($list['subnet'])) {
+				if ($list['subnet_bits'] >= 24) {
+					$pfb_local	= array_merge(subnetv4_expand("{$list['subnet']}/{$list['subnet_bits']}"), $pfb_local);
+				} else {
+					$pfb_localsub[]	= "{$list['subnet']}/{$list['subnet_bits']}";
+				}
 			}
+			elseif (is_ipaddrv6($list['subnet'])) {
+				$pfb_localsub[] = gen_subnetv6("{$list['subnet']}", "{$list['subnet_bits']}");
+			}
+		}
+		elseif (is_ipaddr($list['subnet'])) {
+			$pfb_local[] = "{$list['subnet']}";
 		}
 	}
 
@@ -5207,12 +5223,20 @@ function pfb_collect_localip() {
 	// Collect all interface addresses for inbound/outbound list matching
 	foreach (config_get_path('interfaces', []) as $int) {
 		if ($int['ipaddr'] != 'dhcp') {
-			if (!empty($int['ipaddr']) && !empty($int['subnet'])) {
-				if ($int['subnet'] >= 24 && is_ipaddrv4($int['ipaddr'])) {
-					$pfb_local	= array_merge(subnetv4_expand("{$int['ipaddr']}/{$int['subnet']}"), $pfb_local);
-				} else {
-					$pfb_localsub[]	= "{$int['ipaddr']}/{$int['subnet']}";
+			if (!empty($int['ipaddr']) && !empty($int['subnet']) && is_subnet("{$int['ipaddr']}/{$int['subnet']}")) {
+				if (is_ipaddrv4($int['ipaddr'])) {
+					if ($int['subnet'] >= 24) {
+						$pfb_local	= array_merge(subnetv4_expand("{$int['ipaddr']}/{$int['subnet']}"), $pfb_local);
+					} else {
+						$pfb_localsub[]	= "{$int['ipaddr']}/{$int['subnet']}";
+					}
 				}
+				elseif (is_ipaddrv6($int['ipaddr'])) {
+					$pfb_localsub[] = gen_subnetv6("{$int['ipaddr']}", "{$int['subnet']}");
+				}
+			}
+			elseif (is_ipaddr($int['ipaddr'])) {
+				$pfb_local[] = "{$int['ipaddr']}";
 			}
 		}
 	}
@@ -7422,6 +7446,7 @@ function sync_package_pfblockerng($cron='') {
 					$categories = explode(',', $item['selected']) ?: array();
 					foreach ($categories as $category) {
 						if (!empty($category)) {
+							$category = str_replace('-', '_', $category);
 							$pfb['existing']['dnsbl'][] = "{$item['title']}_{$category}";
 						}
 					}
@@ -9974,8 +9999,6 @@ function sync_package_pfblockerng($cron='') {
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
 
-	pfb_logger("\nUpdating pfBlockerNG URL Aliases...", 1);
-
 	init_config_arr(['aliases']);
 	$exist_aliases = config_get_path('aliases/alias', []);
 	foreach ($exist_aliases as $cbalias) {
@@ -9995,10 +10018,6 @@ function sync_package_pfblockerng($cron='') {
 	if ($exist_aliases !== $new_aliases) {
 		config_set_path('aliases/alias', $new_aliases);
 		write_config('pfBlockerNG: saving Aliases');
-		pfb_logger(" Done", 1);
-	}
-	else {
-		pfb_logger(" Not Required", 1);
 	}
 	unset($new_aliases, $exist_aliases);
 
@@ -10625,11 +10644,11 @@ function sync_package_pfblockerng($cron='') {
 	// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
 	foreach (array( 'clearip', 'cleardnsbl') as $type) {
 		$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
-		if (isset($pfb['wglobal']['widget-' . $type])) {
-			if ($pfb['wglobal']['widget-' . $type] != 'never') {
+		if (isset($config['installedpackages']['pfblockerngglobal']['widget-' . $type])) {
+			if ($config['installedpackages']['pfblockerngglobal']['widget-' . $type] != 'never') {
 
 				$pfb_day = '*';
-				if ($pfb['wglobal']['widget-' . $type] == 'weekly') {
+				if ($config['installedpackages']['pfblockerngglobal']['widget-' . $type] == 'weekly') {
 					$pfb_day = '7';
 				}
 
