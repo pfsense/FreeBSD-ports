@@ -179,7 +179,8 @@ $options_safesearch_doh_list	= [
 					'doh.mullvad.net' => 'Mullvad [doh.mullvad.net]',
 					'adblock.doh.mullvad.net' => 'Mullvad [adblock.doh.mullvad.net]',
 					'dns.arapurayil.com' => 'Arapurayil [dns.arapurayil.com]',
-					'dandelionsprout.asuscomm.com' => 'Dandelion Sprout DoH/DoT/DoQ [dandelionsprout.asuscomm.com]'
+					'dandelionsprout.asuscomm.com' => 'Dandelion Sprout DoH/DoT/DoQ [dandelionsprout.asuscomm.com]',
+					'zero.dns0.eu' => 'European public DNS DoH/DoT/DoQ [zero.dns0.eu]'
 					];
 
 if (isset($_POST['save'])) {
@@ -325,7 +326,7 @@ $section->addInput(new Form_Select(
 	TRUE
 ))->setHelp('Select the DoH/DoT/DoQ blocking DNS Servers')
   ->setAttribute('style', 'width: auto')
-  ->setAttribute('size', 139);
+  ->setAttribute('size', 140);
 
 $form->add($section);
 print($form);

@@ -1,6 +1,6 @@
 PORTNAME=	pfSense-pkg-pfBlockerNG
 PORTVERSION=	3.2.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,6 +12,7 @@ COMMENT=	pfSense package pfBlockerNG
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
+		${LOCALBASE}/bin/ggrep:textproc/gnugrep \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
 		${LOCALBASE}/bin/iprange:net-mgmt/iprange \
 		${LOCALBASE}/bin/jq:textproc/jq \

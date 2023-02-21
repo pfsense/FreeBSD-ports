@@ -1033,23 +1033,23 @@ if (isset($_POST) && !empty($_POST)) {
 
 			if (file_exists("{$tmp}.adup") && filesize("{$tmp}.adup") > 0) {
 				if ($pfb['dnsbl_py_blacklist']) {
-					exec("{$pfb['grep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['unbound_py_data']} > "
+					exec("{$pfb['ggrep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['unbound_py_data']} > "
 						. escapeshellarg("{$tmp}.tmp") . "; mv -f " . escapeshellarg("{$tmp}.tmp") . " {$pfb['unbound_py_data']}"); 
-					exec("{$pfb['grep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['unbound_py_zone']} > " . escapeshellarg("{$tmp}.tmp")
+					exec("{$pfb['ggrep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['unbound_py_zone']} > " . escapeshellarg("{$tmp}.tmp")
 						. "; mv -f " . escapeshellarg("{$tmp}.tmp") . " {$pfb['unbound_py_zone']}");
 					pfb_unbound_python_whitelist('alerts');
 					pfb_reload_unbound('enabled', FALSE);
 				} else {
 					// Collect all matching whitelisted Domain/CNAME(s)
-					exec("{$pfb['grep']} -F -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['dnsbl_file']}.conf > " . escapeshellarg("{$tmp}.supp") . " 2>&1");
+					exec("{$pfb['ggrep']} -F -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['dnsbl_file']}.conf > " . escapeshellarg("{$tmp}.supp") . " 2>&1");
 
 					// Remove Whitelisted Domain from Unbound database
-					exec("{$pfb['grep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['dnsbl_file']}.conf > " . escapeshellarg("{$tmp}.tmp")
+					exec("{$pfb['ggrep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$pfb['dnsbl_file']}.conf > " . escapeshellarg("{$tmp}.tmp")
 						. "; mv -f " . escapeshellarg("{$tmp}.tmp") . " {$pfb['dnsbl_file']}.conf");
 
 					// Remove Whitelisted Domain from DNSBL Feed
 					$table_esc = escapeshellarg("{$pfb['dnsdir']}/{$table}.txt");
-					exec("{$pfb['grep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$table_esc} > " . escapeshellarg("{$tmp}.tmp")
+					exec("{$pfb['ggrep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$table_esc} > " . escapeshellarg("{$tmp}.tmp")
 						. "; mv -f " . escapeshellarg("{$tmp}.tmp") . " {$table_esc}");
 				}
 			}
@@ -1379,8 +1379,8 @@ if (isset($_POST) && !empty($_POST)) {
 				else {
 					$tmp = tempnam('/tmp', 'dnsbl_alert_');
 					@file_put_contents("{$tmp}.adup", ",{$domain},,\n", LOCK_EX);
-					exec("{$pfb['grep']} -F -f " . escapeshellarg("{$tmp}.adup") . " {$py_file} >> {$pfb['dnsbl_unlock']}.data"); // Store DNSBL Feed/Group Data
-					exec("{$pfb['grep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$py_file} > " . escapeshellarg("{$tmp}.tmp") . "; mv -f "
+					exec("{$pfb['ggrep']} -F -f " . escapeshellarg("{$tmp}.adup") . " {$py_file} >> {$pfb['dnsbl_unlock']}.data"); // Store DNSBL Feed/Group Data
+					exec("{$pfb['ggrep']} -vF -f " . escapeshellarg("{$tmp}.adup") . " {$py_file} > " . escapeshellarg("{$tmp}.tmp") . "; mv -f "
 						. escapeshellarg("{$tmp}.tmp") . " {$py_file}");
 					unlink_if_exists("{$tmp}*");
 				}
