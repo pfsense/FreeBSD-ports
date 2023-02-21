@@ -401,7 +401,7 @@ dnsbl_scrub() {
 
 	# Remove Whitelisted Domains and Sub-Domains, if configured
 	if [ -s "${pfbdnsblsuppression}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
-		grep -vF -f "${pfbdnsblsuppression}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		/usr/local/bin/ggrep -vF -f "${pfbdnsblsuppression}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
 		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 		countw="$((countf - countx))"
 
@@ -432,7 +432,7 @@ dnsbl_scrub() {
 	# Process TOP1M Whitelist
 	if [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
 		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
-		grep -vF -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		/usr/local/bin/ggrep -vF -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
 		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 		counta="$((countf - countx))"
 
@@ -515,7 +515,7 @@ domaintld() {
 				cp "${dupfile}" "${dnsbl_file}.dup"
 			fi
 
-			grep -vF -f "${dnsbl_tld_remove}" "${dupfile}" > "${tempfile}"
+			/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}" "${dupfile}" > "${tempfile}"
 		else
 			mv -f "${dupfile}" "${tempfile}"
 		fi
@@ -524,7 +524,7 @@ domaintld() {
 	# 'Transparent zone'
 	# Remove redundant Domains (in 'transparent zone')
 	if [ -s "${dnsbl_tld_remove}.tsp" ] && [ -s "${dnsbl_file}.tsp" ]; then
-		grep -vF -f "${dnsbl_tld_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
+		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
 	else
 		echo "XXX"
 		# XXXX to be confirmed!
@@ -560,7 +560,7 @@ domaintld() {
 
 			# Remove redundant TLD Domains
 			if [ -s "${pfbdomain}${alias}.txt" ]; then
-				grep -vF -f "${dnsbl_tld_remove}.tsp" "${pfbdomain}${alias}.txt" > "${tempfile}"
+				/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}.tsp" "${pfbdomain}${alias}.txt" > "${tempfile}"
 				mv -f "${tempfile}" "${pfbdomain}${alias}.txt"
 			fi
 		done
@@ -612,7 +612,7 @@ domaintldpy() {
 
 	# Remove redundant Domains (in data)
 	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_data}.raw" ]; then
-		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_data}.raw" > "${dnsbl_python_data}"
+		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_data}.raw" > "${dnsbl_python_data}"
 	elif [ -e "${dnsbl_python_data}.raw" ]; then
 		mv "${dnsbl_python_data}.raw" "${dnsbl_python_data}"
 	fi
@@ -621,7 +621,7 @@ domaintldpy() {
 
 	# Remove redundant Domains (in zone)
 	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_zone}.raw" ]; then
-		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_zone}.raw" > "${dnsbl_python_zone}"
+		/usr/local/bin/ggrep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_zone}.raw" > "${dnsbl_python_zone}"
 	elif [ -e "${dnsbl_python_zone}.raw" ]; then
 		mv "${dnsbl_python_zone}.raw" "${dnsbl_python_zone}"
 	fi
