@@ -236,7 +236,7 @@ function pfbsort(&$array, $subkey, $sort_ascending) {
 
 // Collect all pfBlockerNG statistics
 function pfBlockerNG_update_table() {
-	global $config, $pfb;
+	global $pfb;
 	$pfb_table = $pfb_dtable = array();
 	$pfb['pfctlerr'] = FALSE;
 
@@ -292,11 +292,13 @@ function pfBlockerNG_update_table() {
 	}
 
 	// Determine if firewall rules are defined
-	if (isset($config['filter']['rule'])) {
+	$pfb_filter_rules = config_get_path('filter/rule', []);
+
+	if (!empty($pfb_filter_rules)) {
 		$tracked_rules = array();
 
 		// Get the relevant pfB rules
-		foreach ($config['filter']['rule'] as $rule) {
+		foreach ($pfb_filter_rules as $rule) {
 			if (strpos($rule['descr'], 'pfB_DNSBL_Ping') !== FALSE || strpos($rule['descr'], 'pfB_DNSBL_Permit') !== FALSE) {
 				continue;
 			}
@@ -355,11 +357,9 @@ function pfBlockerNG_update_table() {
 	}
 
 	// Collect pfB Alias ID for popup
-	if (isset($config['aliases']['alias'])) {
-		foreach ($config['aliases']['alias'] as $key => $alias) {
-			if (isset($pfb_table[$alias['name']])) {
-				$pfb_table[$alias['name']]['id'] = $key;
-			}
+	foreach (config_get_path('aliases/alias', []) as $key => $alias) {
+		if (isset($pfb_table[$alias['name']])) {
+			$pfb_table[$alias['name']]['id'] = $key;
 		}
 	}
 
@@ -429,7 +429,7 @@ function pfBlockerNG_update_table() {
 
 // Called on initial load and Ajax to update Failed download contents (Create href to Alias/Group editor)
 function pfBlockerNG_get_failed() {
-	global $config, $pfb;
+	global $pfb;
 	$response = '';
 
 	// Collect any failed downloads
@@ -470,12 +470,10 @@ function pfBlockerNG_get_failed() {
 			if (!empty(pfb_filter($f_alias, PFB_FILTER_WORD, 'widget')) && $f_alias != $p_alias) {
 				$pfb_found = FALSE;
 				foreach ($list_type as $conf_type => $type) {
-					if (is_array($config['installedpackages'][$conf_type]['config'])) {
-						foreach ($config['installedpackages'][$conf_type]['config'] as $key => $alias) {
-							if ($alias['aliasname'] == $f_alias) {
-								$pfb_found = TRUE;
-								break 2;
-							}
+					foreach (config_get_path("installedpackages/{$conf_type}/config", []) as $key => $alias) {
+						if ($alias['aliasname'] == $f_alias) {
+							$pfb_found = TRUE;
+							break 2;
 						}
 					}
 				}
@@ -516,7 +514,7 @@ function pfBlockerNG_get_failed() {
 
 // Called on initial load and Ajax to update header contents
 function pfBlockerNG_get_header($mode='') {
-	global $config, $pfb;
+	global $pfb;
 	$response = '';
 
 	$pfb_table = pfBlockerNG_update_table();
