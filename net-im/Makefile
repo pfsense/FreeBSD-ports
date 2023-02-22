@@ -38,6 +38,7 @@
     SUBDIR += jitsi-prosody-plugins
     SUBDIR += jitsi-srtp-native
     SUBDIR += jitsi-videobridge
+    SUBDIR += jsxc
     SUBDIR += kaccounts-integration
     SUBDIR += kaccounts-providers
     SUBDIR += kaidan
@@ -69,6 +70,7 @@
     SUBDIR += libstrophe
     SUBDIR += loudmouth
     SUBDIR += lurch
+    SUBDIR += mastodon
     SUBDIR += matterbridge
     SUBDIR += matterhorn
     SUBDIR += matterircd
@@ -175,6 +177,7 @@
     SUBDIR += tg_owt
     SUBDIR += tkabber
     SUBDIR += tkabber-plugins
+    SUBDIR += tokodon
     SUBDIR += toot
     SUBDIR += tox
     SUBDIR += tox_extension_messages

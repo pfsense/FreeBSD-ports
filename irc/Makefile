@@ -15,7 +15,6 @@
     SUBDIR += catgirl
     SUBDIR += cgiirc
     SUBDIR += ctrlproxy
-    SUBDIR += cwirc
     SUBDIR += dancer
     SUBDIR += darkbot
     SUBDIR += dircproxy
@@ -110,6 +109,7 @@
     SUBDIR += weechat
     SUBDIR += weechat-otr
     SUBDIR += znc
+    SUBDIR += znc-clientbuffer
     SUBDIR += znc-push
 
 .include <bsd.port.subdir.mk>

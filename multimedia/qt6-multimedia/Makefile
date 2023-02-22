@@ -17,4 +17,7 @@ USE_GNOME=	glib20
 USE_GSTREAMER=	bad gl good ugly
 USE_QT=		base declarative shadertools svg
 
+CXXFLAGS_powerpc64=	-mvsx
+CFLAGS_powerpc=	-DPFFFT_SIMD_DISABLE
+
 .include <bsd.port.mk>

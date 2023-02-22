@@ -1,3 +1,3 @@
-TIMESTAMP = 1663672922
-SHA256 (rubygem/aws-sdk-codestarnotifications-1.20.0.gem) = 302ef9fc6145a54f2ad4ef8c2acf12763277f2599caaddb6b85d5cc6a378b385
-SIZE (rubygem/aws-sdk-codestarnotifications-1.20.0.gem) = 25600
+TIMESTAMP = 1675191285
+SHA256 (rubygem/aws-sdk-codestarnotifications-1.22.0.gem) = ff2f326f2c7eceaa9643dc215bed67ec55824c7e66a8306989fe7f03e34efeff
+SIZE (rubygem/aws-sdk-codestarnotifications-1.22.0.gem) = 27136

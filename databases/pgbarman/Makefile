@@ -1,6 +1,6 @@
 PORTNAME=		barman
 DISTVERSIONPREFIX=	release/
-DISTVERSION=		3.2.0
+DISTVERSION=		3.4.0
 CATEGORIES=		databases
 PKGNAMEPREFIX=		pg
 PKGNAMESUFFIX=		${PYTHON_PKGNAMESUFFIX}
@@ -16,7 +16,7 @@ RUN_DEPENDS=	rsync:net/rsync									\
 		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR}		\
 		${PYTHON_PKGNAMEPREFIX}argcomplete>0:devel/py-argcomplete@${PY_FLAVOR}
 
-USES=		pgsql python:3.7+
+USES=		python:3.7+
 USE_PYTHON=	autoplist distutils
 
 USE_GITHUB=	yes
@@ -38,11 +38,7 @@ DOCS_VARS=	PORTDOCS=barman-${DISTVERSION}-manual.pdf \
 
 .include <bsd.port.pre.mk>
 
-.if ${PGSQL_VER:M9\.[12345]}
 PGUSER=		pgsql
-.else
-PGUSER=		postgres
-.endif
 
 post-extract-DOCS-on:
 	${CP} ${DISTDIR}/${PORTDOCS} ${WRKDIR}/

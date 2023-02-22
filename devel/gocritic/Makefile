@@ -1,10 +1,10 @@
 PORTNAME=	gocritic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.3
-PORTREVISION=	5
+DISTVERSION=	0.6.5
+PORTREVISION=	4
 CATEGORIES=	devel
 
-MAINTAINER=	fuz@fuz.su
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Opinionated Go source code linter for code audit
 WWW=		https://go-critic.com/
 

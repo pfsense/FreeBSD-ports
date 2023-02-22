@@ -16,7 +16,7 @@ DISTFILES=	lucene-core-7.7.1.jar:core \
 		lucene-sandbox-7.7.1.jar:sandbox \
 		antlr4-4.7.2-complete.jar:antlr
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JavaFX SDK overlay for OpenJDK 11
 WWW=		https://openjdk.java.net/projects/openjfx/
 
@@ -46,7 +46,8 @@ JAVA_VERSION=	11
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xtst xxf86vm
 
-CFLAGS+=	-Wno-unused-command-line-argument
+CFLAGS+=	-Wno-unused-command-line-argument \
+		-Wno-int-conversion
 
 PLIST_SUB=	INSTALLDIR=${_INSTALLDIR}
 
@@ -73,12 +74,11 @@ TEST_VARS=	AWT_TEST=true FULL_TEST=true
 WEBKIT_IMPLIES=	MEDIA
 WEBKIT_BUILD_DEPENDS=	cmake:devel/cmake-core
 WEBKIT_LIB_DEPENDS=	libicui18n.so:devel/icu
-WEBKIT_USES=	bison gmake gperf perl5 python:3.5+,build
+WEBKIT_USES=	bison gmake gperf perl5 python:3.5+,build ruby:build
 WEBKIT_USE=	GNOME=libxslt,libxml2 \
 		PERL5=build \
-		RUBY=yes \
 		XORG=xcomposite,xdamage,xfixes,xrender,xt
-WEBKIT_VARS=	RUBY_NO_RUN_DEPENDS=yes COMPILE_WEBKIT=true
+WEBKIT_VARS=	COMPILE_WEBKIT=true
 
 # Move Gradle's home below ${WRKDIR} instead of using ${HOME}/.gradle
 _GRADLE_ENV=	CC=${WRKDIR}/bin/ccwrapper \

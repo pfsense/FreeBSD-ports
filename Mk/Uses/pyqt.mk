@@ -2,12 +2,12 @@
 #
 # Feature:	pyqt
 # Usage:	USES=pyqt:ARGS
-# Valid ARGS:	5
+# Valid ARGS:	5, 6
 #
 # MAINTAINER:	kde@FreeBSD.org
 #
 # Internal Port variables for PyQt ports:
-# PYQT_DIST	- This port is part of PyQt5 itself. Variables and
+# PYQT_DIST	- This port is part of PyQt5/6 itself. Variables and
 #		targets are then set assuming a certain tarball and
 #		port layout.
 # USE_PYQT	- List of PyQt components to depend on
@@ -23,15 +23,15 @@
 .if !defined(_INCLUDE_USES_PYQT_MK)
 _INCLUDE_USES_PYQT_MK=	yes
 
-# At the moment we support PyQt bindings versions 5, sip
+# At the moment we support PyQt bindings versions 5 and 6
 # option is for internal use by the py-sip ports.
-_PYQT_SUPPORTED=        5 sip
+_PYQT_SUPPORTED=        5 6 sip
 
 .  if empty(pyqt_ARGS)
 IGNORE=	pyqt needs a qt-version (${_PYQT_SUPPORTED})
 .  endif
 
-# At the moment we support PyQt bindings versions 5
+# At the moment we support PyQt bindings versions 5 and 6
 .  for ver in ${_PYQT_SUPPORTED:O:u}
 .    if ${pyqt_ARGS:M${ver}}
 .      if empty(_PYQT_VERSION)
@@ -53,11 +53,21 @@ MASTER_SITE_RIVERBANK=	https://www.riverbankcomputing.com/static/Downloads/%SUBD
 
 MASTER_SITES_SIP=	https://pypi.python.org/packages/source/s/sip/
 MASTER_SITES_PYQT5=	https://pypi.python.org/packages/source/P/PyQt5/
-MASTER_SITES_PYQTSIP=	https://pypi.python.org/packages/source/P/PyQt5-sip/
-MASTER_SITES_PYQTCHART=	https://pypi.python.org/packages/source/P/PyQtChart/
-MASTER_SITES_PYQTNETWORKAUTH=	https://pypi.python.org/packages/source/P/PyQtNetworkAuth/
+MASTER_SITES_PYQT6=	https://pypi.python.org/packages/source/P/PyQt6/
+MASTER_SITES_PYQT=	${MASTER_SITES_PYQT${_PYQT_VERSION}}
+MASTER_SITES_PYQT5SIP=	https://pypi.python.org/packages/source/P/PyQt5-sip/
+MASTER_SITES_PYQT6SIP=	https://pypi.python.org/packages/source/P/PyQt6-sip/
+MASTER_SITES_PYQTSIP=	${MASTER_SITES_PYQT${_PYQT_VERSION}SIP}
+MASTER_SITES_PYQT5CHART=	https://pypi.python.org/packages/source/P/PyQtChart/
+MASTER_SITES_PYQT6CHART=	https://pypi.python.org/packages/source/P/PyQt6-Charts/
+MASTER_SITES_PYQTCHART=		${MASTER_SITES_PYQT${_PYQT_VERSION}CHART}
+MASTER_SITES_PYQT5NETWORKAUTH=	https://pypi.python.org/packages/source/P/PyQtNetworkAuth/
+MASTER_SITES_PYQT6NETWORKAUTH=	https://pypi.python.org/packages/source/P/PyQt6-NetworkAuth/
+MASTER_SITES_PYQTNETWORKAUTH=		${MASTER_SITES_PYQT${_PYQT_VERSION}NETWORKAUTH}
 MASTER_SITES_PYQTBUILDER=	https://pypi.io/packages/source/P/PyQt-builder/
-MASTER_SITES_PYQTWEBENGINE=	https://pypi.python.org/packages/source/P/PyQtWebEngine/
+MASTER_SITES_PYQT5WEBENGINE=	https://pypi.python.org/packages/source/P/PyQtWebEngine/
+MASTER_SITES_PYQT6WEBENGINE=	https://pypi.python.org/packages/source/P/PyQt6-WebEngine/
+MASTER_SITES_PYQTWEBENGINE=		${MASTER_SITES_PYQT${_PYQT_VERSION}WEBENGINE}
 #https://www.riverbankcomputing.com/static/Downloads/QScintilla/2.12.0/QScintilla_src-2.12.0.tar.gz
 MASTER_SITES_QSCI2=	RIVERBANK/QScintilla/${PORTVERSION} \
 			SF/pyqt/QScintilla2/QScintilla-${PORTVERSION} \
@@ -71,39 +81,57 @@ MASTER_SITES_QSCI2=	RIVERBANK/QScintilla/${PORTVERSION} \
 #
 # Where noted, the ports are epoched and the py-${comp}-PATH variables,
 # below, should have a suitable epoch appended to the version.
-SIP_VERSION=		6.5.1	# ,1
+SIP_VERSION=		6.7.2	# ,1
 SIP4_VERSION=		4.19.25
-QSCI2_VERSION=		2.13.2
-PYQT5_VERSION=		5.15.6
-PYQTCHART_VERSION=	5.15.5
-PYQTNETWORKAUTH_VERSION=5.15.5
-PYQTWEBENGINE_VERSION=	5.15.5
-PYQTSIP_VERSION=	12.9.1
-PYQTBUILDER_VERSION=	1.12.2
+QSCI2_VERSION=		2.13.3
+PYQT5_VERSION=		5.15.7
+PYQT6_VERSION=		6.4.0
+PYQT5CHART_VERSION=	5.15.6
+PYQT6CHART_VERSION=	6.4.0
+PYQT5NETWORKAUTH_VERSION=5.15.5
+PYQT6NETWORKAUTH_VERSION=6.4.0
+PYQT5WEBENGINE_VERSION=	5.15.6
+PYQT6WEBENGINE_VERSION=	6.4.0
+PYQT5SIP_VERSION=	12.11.0
+PYQT6SIP_VERSION=	13.4.0
+PYQTBUILDER_VERSION=	1.14.0
 
 SIP_DISTNAME=		sip-${SIP_VERSION}
 SIP4_DISTNAME=		sip-${SIP4_VERSION}
 PYQT5_DISTNAME=		PyQt5-${PYQT5_VERSION}
-PYQTSIP_DISTNAME=	PyQt5_sip-${PYQTSIP_VERSION}
-PYQTCHART_DISTNAME=	PyQtChart-${PYQTCHART_VERSION}
-PYQTNETWORKAUTH_DISTNAME=	PyQtNetworkAuth-${PYQTNETWORKAUTH_VERSION}
+PYQT6_DISTNAME=		PyQt6-${PYQT6_VERSION}
+PYQT5SIP_DISTNAME=	PyQt5_sip-${PYQT5SIP_VERSION}
+PYQT6SIP_DISTNAME=	PyQt6_sip-${PYQT6SIP_VERSION}
+PYQT5CHART_DISTNAME=	PyQtChart-${PYQT5CHART_VERSION}
+PYQT6CHART_DISTNAME=	PyQt6_Charts-${PYQT6CHART_VERSION}
+PYQT5NETWORKAUTH_DISTNAME=	PyQtNetworkAuth-${PYQT5NETWORKAUTH_VERSION}
+PYQT6NETWORKAUTH_DISTNAME=	PyQt6_NetworkAuth-${PYQT6NETWORKAUTH_VERSION}
 PYQTBUILDER_DISTNAME=	PyQt-builder-${PYQTBUILDER_VERSION}
-PYQTWEBENGINE_DISTNAME=	PyQtWebEngine-${PYQTWEBENGINE_VERSION}
+PYQT5WEBENGINE_DISTNAME=	PyQtWebEngine-${PYQT5WEBENGINE_VERSION}
+PYQT6WEBENGINE_DISTNAME=	PyQt6_WebEngine-${PYQT6WEBENGINE_VERSION}
 PYQT5_DISTINFO_FILE=	${.CURDIR:H:H}/devel/${PYQT_RELNAME}/distinfo
+PYQT6_DISTINFO_FILE=	${.CURDIR:H:H}/devel/${PYQT_RELNAME}/distinfo
 QSCI2_DISTNAME=		QScintilla_src-${QSCI2_VERSION}
 PYQT5_LICENSE=		GPLv3
+PYQT6_LICENSE=		GPLv3
 
-_USE_PYQT_ALL=		pyqt5 chart networkauth webengine
+_USE_PYQT_ALL=		pyqt5 pyqt6 chart networkauth webengine
 _USE_SIP_ALL=		sip pysip
 _USE_QSCINTILLA=	qscintilla2
 _USE_PYQTBUILDER=	qtbuilder
 
 # Unversioned variables for the rest of the file
 PYQT_VERSION=		${PYQT${_PYQT_VERSION}_VERSION}
+PYQTCHART_VERSION=	${PYQT${_PYQT_VERSION}CHART_VERSION}
+PYQTNETWORKAUTH_VERSION=${PYQT${_PYQT_VERSION}NETWORKAUTH_VERSION}
+PYQTWEBENGINE_VERSION=${PYQT${_PYQT_VERSION}WEBENGINE_VERSION}
 PYQT_RELNAME=		py-qt${_PYQT_VERSION}
 PYQT_PY_RELNAME=	${PYTHON_PKGNAMEPREFIX}qt${_PYQT_VERSION}
 PYQT_MASTERSITES=	${MASTER_SITES_PYQT${_PYQT_VERSION}}
 PYQT_DISTNAME=		${PYQT${_PYQT_VERSION}_DISTNAME}
+PYQTCHART_DISTNAME=	${PYQT${_PYQT_VERSION}CHART_DISTNAME}
+PYQTNETWORKAUTH_DISTNAME=${PYQT${_PYQT_VERSION}NETWORKAUTH_DISTNAME}
+PYQTWEBENGINE_DISTNAME=${PYQT${_PYQT_VERSION}WEBENGINE_DISTNAME}
 PYQT_DISTINFO_FILE=	${PYQT${_PYQT_VERSION}_DISTINFO_FILE}
 PYQT_LICENSE=		${PYQT${_PYQT_VERSION}_LICENSE}
 
@@ -112,7 +140,8 @@ py-sip_PATH=			${PYTHON_PKGNAMEPREFIX}sip>=${SIP_VERSION},1
 py-pysip_PATH=			${PYQT_PY_RELNAME}-sip>=${PYQTSIP_VERSION}
 py-qscintilla2_PATH=		${PYQT_PY_RELNAME}-qscintilla2>=${QSCI2_VERSION}
 py-qtbuilder_PATH=		${PYTHON_PKGNAMEPREFIX}qtbuilder>=${PYQTBUILDER_VERSION}
-py-pyqt5_PATH=			${PYQT_PY_RELNAME}-pyqt>=${PYQT5_VERSION}
+py-pyqt5_PATH=			${PYQT_PY_RELNAME}-pyqt>=${PYQT_VERSION}
+py-pyqt6_PATH=			${PYQT_PY_RELNAME}-pyqt>=${PYQT_VERSION}
 py-chart_PATH=			${PYQT_PY_RELNAME}-chart>=${PYQTCHART_VERSION}
 py-networkauth_PATH=		${PYQT_PY_RELNAME}-networkauth>=${PYQTNETWORKAUTH_VERSION}
 py-webengine_PATH=		${PYQT_PY_RELNAME}-webengine>=${PYQTWEBENGINE_VERSION}
@@ -124,6 +153,7 @@ py-pysip_PORT=			devel/${PYQT_RELNAME}-sip
 py-qscintilla2_PORT=		devel/${PYQT_RELNAME}-qscintilla2
 py-positioning_PORT=		devel/${PYQT_RELNAME}-positioning
 py-pyqt5_PORT=			devel/${PYQT_RELNAME}-pyqt
+py-pyqt6_PORT=			devel/${PYQT_RELNAME}-pyqt
 py-chart_PORT=			x11-toolkits/${PYQT_RELNAME}-chart
 py-networkauth_PORT=		net/${PYQT_RELNAME}-networkauth
 py-webengine_PORT=		www/${PYQT_RELNAME}-webengine

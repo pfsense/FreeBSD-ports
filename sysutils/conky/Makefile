@@ -1,5 +1,5 @@
 PORTNAME=	conky
-PORTVERSION=	1.15.0
+PORTVERSION=	1.18.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -10,8 +10,8 @@ WWW=		https://github.com/brndnmtthws/conky
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 BUILD_DEPENDS=	gsed:textproc/gsed
 
-USES=		cpe cmake:noninja compiler:c++11-lib gettext-runtime iconv \
-		localbase lua:52-53 pkgconfig tar:bzip2
+USES=		cpe cmake compiler:c++11-lib gettext-runtime iconv \
+		localbase:ldflags lua:52-53 pkgconfig tar:bzip2
 
 CMAKE_ARGS=	-DBUILD_PORT_MONITORS:BOOL=false \
 		-DBUILD_IBM:BOOL=false \
@@ -30,11 +30,12 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	brndnmtthws
 
 OPTIONS_DEFINE=	APCUPSD CURL DOCS EXAMPLES IPV6 MANPAGES METAR MOC MPD \
-		NCURSES RSS X11 XOAP
+		NCURSES RSS WAYLAND X11 XOAP
 
 OPTIONS_GROUP?=	X11
-OPTIONS_GROUP_X11=	ARGB DOUBLE_BUFFER IMLIB2 XFT XINERAMA LUA_CAIRO LUA_IMLIB2 LUA_RSVG
-OPTIONS_DEFAULT?=	X11 ARGB DOUBLE_BUFFER MANPAGES XFT LUA_CAIRO
+OPTIONS_GROUP_X11=	ARGB DOUBLE_BUFFER IMLIB2 MOUSE_EVENTS XFT XINERAMA \
+			LUA_CAIRO LUA_IMLIB2 LUA_RSVG
+OPTIONS_DEFAULT?=	X11 ARGB DOUBLE_BUFFER MANPAGES WAYLAND XFT LUA_CAIRO MOUSE_EVENTS
 
 APCUPSD_DESC=		Monitor APCUPSD
 APCUPSD_CMAKE_BOOL=	BUILD_APCUPSD
@@ -90,6 +91,10 @@ MANPAGES_PLIST_FILES=	man/man1/conky.1.gz
 MOC_DESC=		Control MOC (Music On Console)
 MOC_CMAKE_BOOL=		BUILD_MOC
 
+MOUSE_EVENTS_DESC=	Support generating mouse events
+MOUSE_EVENTS_CMAKE_BOOL=	BUILD_MOUSE_EVENTS
+MOUSE_EVENTS_IMPLIES=	X11
+
 MPD_DESC=		Control MPD (Music Player Daemon)
 MPD_CMAKE_BOOL=		BUILD_MPD
 
@@ -102,6 +107,16 @@ RSS_CMAKE_BOOL=		BUILD_RSS
 RSS_USES=		gnome
 RSS_USE=		gnome=glib20,libxml2
 RSS_IMPLIES=		CURL
+
+WAYLAND_CATEGORIES=	wayland
+WAYLAND_BUILD_DEPENDS=	wayland-protocols>=1.13:graphics/wayland-protocols
+WAYLAND_LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
+			libwayland-client.so:graphics/wayland \
+			libfontconfig.so:x11-fonts/fontconfig
+WAYLAND_USES=		gnome
+WAYLAND_USE=		gnome=cairo,pango
+WAYLAND_CMAKE_BOOL=	BUILD_WAYLAND
+WAYLAND_LDFLAGS=	-Wl,--as-needed # pangoft2 deps: glib20, freetype2, harfbuzz
 
 X11_USES=		xorg
 X11_USE=		xorg=x11,xext,xdamage,xfixes
@@ -137,15 +152,6 @@ EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-src_CMakeLists.txt
 post-patch:
 	@${REINPLACE_CMD} -e 's,^set(INCLUDE_SEARCH_PATH \(.*\)),set(INCLUDE_SEARCH_PATH \1 ${LUA_INCDIR}),' \
 		${WRKSRC}/cmake/ConkyPlatformChecks.cmake
-.if ${LUA_DEFAULT} == 5.2
-	# Force using lua 5.2
-	@${REINPLACE_CMD} -e 's/lua.*5\.*3//' \
-		${WRKSRC}/cmake/ConkyPlatformChecks.cmake
-.elif ${LUA_DEFAULT} == 5.3
-	# Force using lua 5.3
-	@${REINPLACE_CMD} -e 's/lua.*5\.*2//' \
-		${WRKSRC}/cmake/ConkyPlatformChecks.cmake
-.endif
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

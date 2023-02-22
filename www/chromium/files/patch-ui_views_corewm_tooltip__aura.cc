@@ -1,4 +1,4 @@
---- ui/views/corewm/tooltip_aura.cc.orig	2022-02-28 16:54:41 UTC
+--- ui/views/corewm/tooltip_aura.cc.orig	2023-02-08 09:03:45 UTC
 +++ ui/views/corewm/tooltip_aura.cc
 @@ -50,7 +50,7 @@ constexpr int kVerticalPaddingBottom = 5;
  bool CanUseTranslucentTooltipWidget() {

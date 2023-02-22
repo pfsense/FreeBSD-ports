@@ -141,9 +141,9 @@
  
  *********************************************************************************/
  
- int zfind(cchar *pattern, char **&flist, int &NF)
+ int zfind(ch *pattern, ch **&flist, int &NF)
  {
-    char     **zfind_filelist = 0;                                                //  list of filespecs returned
+    ch       **zfind_filelist = 0;                                                //  list of filespecs returned
 +#ifdef GLOB_PERIOD
     int      globflags = GLOB_PERIOD;                                             //  include dotfiles
 +#else
@@ -151,20 +151,20 @@
 +#endif
     int      ii, jj, err, cc;
     glob_t   globdata;
-    char     *pp;
+    ch       *pp;
 @@ -5805,9 +5850,16 @@ int zinitapp(cchar *appvers, int argc, char *argv[])  
     if (argc > 1 && strmatchV(argv[1],"-ver","-v",0)) exit(0);                    //  exit if nothing else wanted
  
     progexe = 0;   
 +#if defined(__linux__)
     cc = readlink("/proc/self/exe",buff,300);                                     //  get my executable program path
-    if (cc <= 0) zexit("readlink() /proc/self/exe) failed");
+    if (cc <= 0) zexit(1,"readlink() /proc/self/exe) failed");
     buff[cc] = 0;                                                                 //  readlink() quirk
 +#elif defined(__FreeBSD__)
 +   const int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
 +   size_t len = sizeof(buff);
 +   cc = sysctl(mib, 4, buff, &len, 0x0, 0);
-+   if (cc == -1) zexit("sysctl(KERN_PROC_PATHNAME) failed");
++   if (cc == -1) zexit(1,"sysctl(KERN_PROC_PATHNAME) failed");
 +#endif
     progexe = zstrdup(buff,"zinitapp");
  

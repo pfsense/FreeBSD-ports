@@ -1,7 +1,7 @@
 PORTNAME=	psycopg-c
-PORTVERSION=	3.0.18
+PORTVERSION=	3.1.8
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://www.psycopg.org/
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		pgsql python:3.6+
+USES=		pgsql python:3.7+
 USE_PYTHON=	autoplist concurrent cython distutils
 
 post-install:

@@ -1,11 +1,11 @@
 PORTNAME=	remind
-DISTVERSION=	04.02.00
+DISTVERSION=	04.02.03
 CATEGORIES=	deskutils
 # upstream moves distfiles to OLD once a new release appears
 MASTER_SITES=	https://dianne.skoll.ca/projects/remind/download/ \
 		https://dianne.skoll.ca/projects/remind/download/OLD/
 
-MAINTAINER=	fuz@fuz.su
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Sophisticated calendar and alarm program
 WWW=		https://dianne.skoll.ca/projects/remind/
 

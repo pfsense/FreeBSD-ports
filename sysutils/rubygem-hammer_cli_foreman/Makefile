@@ -1,5 +1,5 @@
 PORTNAME=	hammer_cli_foreman
-PORTVERSION=	3.4.0
+PORTVERSION=	3.5.0
 CATEGORIES=	sysutils ruby
 MASTER_SITES=	RG
 
@@ -15,7 +15,6 @@ RUN_DEPENDS=	rubygem-apipie-bindings>=0.5.0:devel/rubygem-apipie-bindings \
 		rubygem-rest-client>=1.8.0<3.0.0:www/rubygem-rest-client
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

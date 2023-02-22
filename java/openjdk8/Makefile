@@ -53,8 +53,8 @@ INSTALLDIR=	${PREFIX}/${PKGBASE}
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	342
-JDK_BUILD_NUMBER=	07
+JDK_UPDATE_VERSION=	362
+JDK_BUILD_NUMBER=	09
 BSD_JDK_VERSION=	1
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -76,7 +76,6 @@ CONFIGURE_ARGS+=	--disable-ccache
 .endif
 CONFIGURE_ARGS+=	--disable-freetype-bundling \
 			--disable-zip-debug-info \
-			--with-cacerts-file=${FILESDIR}/cacerts \
 			--with-cups=${LOCALBASE} \
 			--with-debug-level=${JDK_BUILD_TYPE} \
 			--with-freetype=${LOCALBASE} \

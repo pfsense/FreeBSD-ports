@@ -2,10 +2,10 @@ PORTNAME=	django-annoying
 PORTVERSION=	0.10.6
 PORTREVISION=	1
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Eliminate annoying things in the Django framework
 WWW=		https://github.com/skorokithakis/django-annoying
 

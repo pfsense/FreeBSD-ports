@@ -1,5 +1,6 @@
 PORTNAME=	vtk
 DISTVERSION=	9.2.2
+PORTREVISION=	1
 CATEGORIES=	math graphics
 MASTER_SITES=	https://vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	9
@@ -23,6 +24,7 @@ USES=		alias cmake compiler:c++11-lang gl jpeg localbase xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	ice x11 xt xext sm xcursor xfixes xrender
 
+CFLAGS_powerpc64le=	-DSQLITE_BYTEORDER=1234
 CMAKE_ON=	BUILD_SHARED_LIBS \
 		VTK_INSTALL_NO_DOCUMENTATION \
 		Module_vtkTestingCore Module_vtkTestingRendering
@@ -71,7 +73,7 @@ PYTHON_CMAKE_ON=	-DVTK_PYTHON_VERSION=${PYTHON_MAJOR_VER} -DPython3_EXECUTABLE=$
 PYTHON_VARS=		SUB_FILES=PKG-INFO SUB_LIST=PORTVERSION=${PORTVERSION}
 
 QT5_USES=		qt:5
-QT5_USE=		QT=core,declarative,gui,network,opengl,sql,uiplugin,widgets,x11extras,qmake:build,buildtools:build
+QT5_USE=		QT=core,declarative,gui,network,opengl,sql,uiplugin,widgets,x11extras,qmake,buildtools # qmake and buildtools should be with :build, but see https://gitlab.kitware.com/vtk/vtk/-/issues/18705
 QT5_CMAKE_ON=		-DVTK_GROUP_ENABLE_Qt:STRING=YES \
 			-DCMAKE_PREFIX_PATH:STRING=${LOCALBASE}/lib/qt5
 

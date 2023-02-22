@@ -1,11 +1,9 @@
-PORTNAME=	${GH_ACCOUNT:tl}
-PORTVERSION=	1.0
-DISTVERSIONPREFIX=	v
+PORTNAME=	stellarium
+PORTVERSION=	1.2
 CATEGORIES=	astro
+MASTER_SITES=	https://github.com/Stellarium/stellarium/releases/download/v${PORTVERSION}/
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${_DISTFILES:Nstars_*.cat:N*.pdf}
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	3f927f555fd4f0f0043fbceddcf7023d5dd22bb2.patch:-p1
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	3D photo-realistic sky renderer (planetarium)
@@ -13,15 +11,12 @@ WWW=		https://www.stellarium.org/
 
 LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libQXlsx.so:devel/qxlsx
-
 USES=		cmake compiler:c++11-lang desktop-file-utils \
-		qt:5 shared-mime-info
+		qt:5 shared-mime-info tar:xz
 USE_QT=		qmake:build buildtools:build \
 		charts concurrent core gui network opengl \
 		printsupport widgets
-USE_GITHUB=	yes
-GH_ACCOUNT=	Stellarium
+CMAKE_OFF=	ENABLE_QT6
 
 GUIDE_VERSION=	${PORTVERSION}
 
@@ -29,19 +24,20 @@ PORTDOCS=	CREDITS.md ChangeLog README.md \
 		stellarium_user_guide-${GUIDE_VERSION}-1.pdf
 
 OPTIONS_DEFINE=		DOCS GPS MORE_STARS MULTIMEDIA NLS SCRIPTS \
-			SHOWMYSKY TELESCOPE TEST TEXTURES WEBENGINE
+			SHOWMYSKY TELESCOPE TEST TEXTURES WEBENGINE XLSX
 OPTIONS_DEFAULT=	GPS MULTIMEDIA SCRIPTS SHOWMYSKY TELESCOPE \
-			WEBENGINE
+			WEBENGINE XLSX
 OPTIONS_SUB=		yes
 
 GPS_DESC=		GPS (NMEA handling) support
 MORE_STARS_DESC=	Install additional star catalogs (1.0GB)
 MULTIMEDIA_DESC=	Sound and video support
 SCRIPTS_DESC=		Remote control and scripting support
-SHOWMYSKY_DESC=		ShowMySky atmosphere light scattering model
+SHOWMYSKY_DESC=		Realistic atmosphere light scattering
 TELESCOPE_DESC=		Build telescope control plugin
 TEXTURES_DESC=		Install better quality textures
 WEBENGINE_DESC=		Get and show extra object information
+XLSX_DESC=		Data export to Excel files support
 
 DOCS_MASTER_SITES=	https://github.com/Stellarium/stellarium/releases/download/v${GUIDE_VERSION}/:ug
 DOCS_DISTFILES=		stellarium_user_guide-${GUIDE_VERSION}-1.pdf:ug
@@ -60,7 +56,7 @@ SCRIPTS_USE=		QT=script
 SCRIPTS_CMAKE_OFF=	-DENABLE_SCRIPTING:BOOL=OFF
 
 SHOWMYSKY_BUILD_DEPENDS=	${LOCALBASE}/include/ShowMySky/AtmosphereRenderer.hpp:astro/calcmysky
-SHOWMYSKY_RUN_DEPENDS=	${LOCALBASE}/lib/libShowMySky.so:astro/calcmysky
+SHOWMYSKY_RUN_DEPENDS=	${LOCALBASE}/lib/libShowMySky-Qt5.so:astro/calcmysky
 SHOWMYSKY_CMAKE_OFF=	-DENABLE_SHOWMYSKY:BOOL=OFF
 
 TELESCOPE_BUILD_DEPENDS=	${LOCALBASE}/lib/libindiclient.a:devel/indi
@@ -76,6 +72,9 @@ TEXTURES_DISTFILES=	textures-1K.zip:gfx
 WEBENGINE_USE=		QT=declarative,webchannel,webengine
 WEBENGINE_CMAKE_OFF=	-DENABLE_QTWEBENGINE:BOOL=OFF
 
+XLSX_LIB_DEPENDS=	libQXlsx.so:devel/qxlsx
+XLSX_CMAKE_OFF=		-DENABLE_XLSX:BOOL=OFF
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMORE_STARS}
@@ -86,10 +85,6 @@ DISTFILES+=	stars_4_1v0_2.cat:stars4 stars_5_2v0_1.cat:stars5 \
 		stars_6_2v0_1.cat:stars6 stars_7_2v0_1.cat:stars7 \
 		stars_8_2v0_1.cat:stars8
 .endif
-
-post-patch:
-	@${REINPLACE_CMD} -e '/TARGET_LINK_LIBRARIES/s,QXlsx ,,' \
-		${WRKSRC}/plugins/Satellites/src/CMakeLists.txt
 
 post-extract-DOCS-on:
 	@${LN} -sf ${_DISTDIR}/stellarium_user_guide-${GUIDE_VERSION}-1.pdf \

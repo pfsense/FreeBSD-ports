@@ -1,6 +1,6 @@
 PORTNAME=	blender
 DISTVERSION=	2.93.11
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -15,6 +15,7 @@ WWW=		https://www.blender.org/
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/doc/license/GPL3-license.txt
 
+BROKEN=		fails to build
 NOT_FOR_ARCHS=	i386
 NOT_FOR_ARCHS_REASON=	uses 64bit atomic functions
 
@@ -88,11 +89,11 @@ CYCLESEMBR_ONLY_FOR_ARCHS_REASON=	embree only supports amd64
 CYCLESOSL_IMPLIES=		CYCLES
 CYCLESOSL_CMAKE_BOOL=		WITH_CYCLES_OSL WITH_LLVM
 CYCLESOSL_CMAKE_ON=		-DLLVM_STATIC:BOOL=OFF \
-				-DLLVM_CONFIG:STRING="${LOCALBASE}/bin/llvm-config${LLVM_VER}" \
+				-DLLVM_CONFIG:STRING="${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT}" \
 				-DOSL_SHADER_DIR:STRING="${LOCALBASE}/share/openshadinglanguage/shaders"
-CYCLESOSL_BUILD_DEPENDS=	llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
+CYCLESOSL_BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 CYCLESOSL_LIB_DEPENDS=		liboslcomp.so:graphics/openshadinglanguage
-CYCLESOSL_RUN_DEPENDS=		llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
+CYCLESOSL_RUN_DEPENDS=		llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 DDS_CMAKE_BOOL=			WITH_IMAGE_DDS
 DRACO_CMAKE_BOOL=		WITH_DRACO
 DRACO_USE=			LDCONFIG=${PYTHON_SITELIBDIR}
@@ -160,6 +161,7 @@ OPENVDB_IMPLIES=		TBB
 OPENVDB_CMAKE_BOOL=		WITH_OPENVDB WITH_OPENVDB_BLOSC
 OPENVDB_LIB_DEPENDS=		libblosc.so:archivers/c-blosc \
 				libopenvdb.so:misc/openvdb
+OPENVDB_BROKEN=			not compatible with OpenVDB-10
 RAYOPTIMIZATION_CMAKE_BOOL=	WITH_RAYOPTIMIZATION
 SDL_CMAKE_BOOL=			WITH_SDL
 SDL_USE=			SDL=sdl2
@@ -185,12 +187,6 @@ CMAKE_ARGS+=		-DWITH_GHOST_DEBUG:BOOL=ON
 
 .if ${ARCH:Mpowerpc*} || ${ARCH:Mriscv64*}
 CMAKE_ARGS+=	-DWITH_CPU_SIMD:BOOL=OFF
-.endif
-
-.if ${LLVM_DEFAULT:M[678]0}
-LLVM_VER=	90
-.else
-LLVM_VER=	${LLVM_DEFAULT}
 .endif
 
 post-build:

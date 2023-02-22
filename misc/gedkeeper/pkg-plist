@@ -313,6 +313,7 @@ bin/gedkeeper
 %%DATADIR%%/locales/russian.lng
 %%DATADIR%%/locales/special/GKFlowInputPlugin_manual_ru.docx
 %%DATADIR%%/locales/special/GKPedigreeImporterPlugin_manual_ru.docx
+%%DATADIR%%/locales/tips_rus.yaml
 %%DATADIR%%/locales/ukrainian.lng
 %%DATADIR%%/nVLC.dll
 %%DATADIR%%/plugins/BSLib.DataViz.Model.dll
@@ -326,6 +327,9 @@ bin/gedkeeper
 %%DATADIR%%/plugins/GEDmillPlugin.dll
 %%DATADIR%%/plugins/GEDmillPlugin.enu
 %%DATADIR%%/plugins/GEDmillPlugin.rus
+%%DATADIR%%/plugins/GKBackupPlugin.dll
+%%DATADIR%%/plugins/GKBackupPlugin.enu
+%%DATADIR%%/plugins/GKBackupPlugin.rus
 %%DATADIR%%/plugins/GKCalculatorPlugin.dll
 %%DATADIR%%/plugins/GKCalculatorPlugin.enu
 %%DATADIR%%/plugins/GKCalculatorPlugin.pol
@@ -356,6 +360,11 @@ bin/gedkeeper
 %%DATADIR%%/plugins/GKFlowInputPlugin.ukr
 %%DATADIR%%/plugins/GKFoldersPlugin.dll
 %%DATADIR%%/plugins/GKFoldersPlugin.enu
+%%DATADIR%%/plugins/GKGenetix.Core.dll
+%%DATADIR%%/plugins/GKGenetix.UI.WinForms.dll
+%%DATADIR%%/plugins/GKGenetixPlugin.dll
+%%DATADIR%%/plugins/GKGenetixPlugin.enu
+%%DATADIR%%/plugins/GKGenetixPlugin.rus
 %%DATADIR%%/plugins/GKHistoryDataPlugin.dll
 %%DATADIR%%/plugins/GKHistoryDataPlugin.enu
 %%DATADIR%%/plugins/GKHistoryDataPlugin.rus
@@ -414,7 +423,6 @@ bin/gedkeeper
 %%DATADIR%%/plugins/GKWordsCloudPlugin.pol
 %%DATADIR%%/plugins/GKWordsCloudPlugin.rus
 %%DATADIR%%/plugins/GKWordsCloudPlugin.ukr
-%%DATADIR%%/plugins/GWTreePlugin.dll
 %%DATADIR%%/plugins/KopiLua.dll
 %%DATADIR%%/plugins/Mono.Nat.dll
 %%DATADIR%%/plugins/NLog.dll
@@ -428,6 +436,7 @@ bin/gedkeeper
 %%DATADIR%%/plugins/_XapianSharp.dll
 %%DATADIR%%/plugins/csgl.dll
 %%DATADIR%%/plugins/csgl.native.dll
+%%DATADIR%%/plugins/gedmill-bg.png
 %%DATADIR%%/plugins/itextsharp.dll
 %%DATADIR%%/plugins/log4net.dll
 %%DATADIR%%/plugins/nVLC.dll
@@ -462,6 +471,7 @@ bin/gedkeeper
 %%DATADIR%%/scripts/csv_import2.lua
 %%DATADIR%%/scripts/delete_filtered.lua
 %%DATADIR%%/scripts/groups2places.lua
+%%DATADIR%%/scripts/set_media_prim.lua
 %%DATADIR%%/scripts/sofonov_import.lua
 %%DATADIR%%/scripts/test.lua
 %%DATADIR%%/scripts/test_def_pat.lua

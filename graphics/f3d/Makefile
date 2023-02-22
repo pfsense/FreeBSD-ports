@@ -1,8 +1,11 @@
 PORTNAME=	f3d
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
+
+PATCH_SITES=	https://github.com/f3d-app/f3d/commit/
+PATCHFILES=	cc108300b44981b530aa3ad72c971c889e6bf3e2.diff:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast and minimalist 3D viewer
@@ -26,6 +29,8 @@ USE_XORG=	ice sm x11 xt
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	f3d-app
+
+CMAKE_OFF=	F3D_STRICT_BUILD # disable -Werror
 
 OPTIONS_GROUP=			MODULES
 OPTIONS_GROUP_MODULES=		ALEMBIC ASSIMP EXODUS EXTERNAL_RENDERING OCCT RAYTRACING
@@ -51,7 +56,8 @@ EXTERNAL_RENDERING_BROKEN=	Requires VTK::RenderingExternal enabled in VTK
 OCCT_DESC=			OpenCASCADE module (STEP and IGES files)
 OCCT_USES=			localbase:ldflags
 OCCT_CMAKE_BOOL=		F3D_MODULE_OCCT
-OCCT_LIB_DEPENDS=		libTKBRep.so:cad/opencascade
+OCCT_LIB_DEPENDS=		libTKBRep.so:cad/opencascade \
+				libdraco.so:archivers/draco
 OCCT_CMAKE_ON=			-DOpenCASCADE_DIR=${LOCALBASE}/lib/cmake
 
 RAYTRACING_DESC=		Raytracing module

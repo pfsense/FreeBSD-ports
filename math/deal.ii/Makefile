@@ -1,7 +1,6 @@
 PORTNAME=	deal.II
 DISTVERSIONPREFIX=	v
-DISTVERSION=	9.4.0
-PORTREVISION=	2
+DISTVERSION=	9.4.2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,6 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BROKEN_FreeBSD_14=	clang crashes: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=257876
 BROKEN_aarch64=		error: use of undeclared identifier '__TBB_machine_fetchadd4'
+BROKEN_armv7=		clang runs out of memory
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/config.hpp:devel/boost-libs
 LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs \

@@ -1,6 +1,6 @@
 PORTNAME=	postfix
-DISTVERSION=	3.7.3
-PORTREVISION?=	1
+DISTVERSION=	3.7.4
+PORTREVISION?=	0
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://ftp.porcupine.org/mirrors/postfix-release/ \
@@ -22,18 +22,48 @@ LICENSE_NAME_IPL10=	IBM PUBLIC LICENSE VERSION 1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS_IPL10=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-FLAVORS=			default ldap sasl
+FLAVORS=			default ldap mysql pgsql sasl sqlite
 default_CONFLICTS_INSTALL=	postfix-base-ldap postfix-base-sasl \
-				postfix-ldap postfix-sasl
+				postfix-ldap postfix-sasl \
+				postfix-mysql postfix-base-mysql \
+				postfix-pgsql postfix-base-pgsql \
+				postfix-sqlite postfix-base-sqlite
 ldap_PKGNAMESUFFIX=		-ldap
 ldap_CONFLICTS_INSTALL=		postfix postfix-base \
-				postfix-base-sasl postfix-sasl
+				postfix-base-sasl postfix-sasl \
+				postfix-mysql postfix-base-mysql \
+				postfix-pgsql postfix-base-pgsql \
+				postfix-sqlite postfix-base-sqlite
+mysql_PKGNAMESUFFIX=		-mysql
+mysql_CONFLICTS_INSTALL=	postfix postfix-base \
+				postfix-ldap postfix-base-ldap \
+				postfix-pgsql postfix-base-pgsql \
+				postfix-sasl postfix-base-sasl \
+				postfix-sqlite postfix-base-sqlite
+pgsql_PKGNAMESUFFIX=		-pgsql
+pgsql_CONFLICTS_INSTALL=	postfix postfix-base \
+				postfix-ldap postfix-base-ldap \
+				postfix-mysql postfix-base-mysql \
+				postfix-sasl postfix-base-sasl \
+				postfix-sqlite postfix-base-sqlite
 sasl_PKGNAMESUFFIX=		-sasl
 sasl_CONFLICTS_INSTALL=		postfix postfix-base \
-				postfix-base-ldap postfix-ldap
+				postfix-base-ldap postfix-ldap \
+				postfix-mysql postfix-base-mysql \
+				postfix-pgsql postfix-base-pgsql \
+				postfix-sqlite postfix-base-sqlite
+sqlite_PKGNAMESUFFIX=		-sqlite
+sqlite_CONFLICTS_INSTALL=	postfix postfix-base \
+				postfix-ldap postfix-base-ldap \
+				postfix-mysql postfix-base-mysql \
+				postfix-pgsql postfix-base-pgsql \
+				postfix-sasl postfix-base-sasl
 
-COMMENT_ldap=	(with OpenLDAP and Cyrus SASL support)
+COMMENT_ldap=	(with OpenLDAP support)
+COMMENT_mysql=	(with MySQL support)
+COMMENT_pgsql=	(with PostgreSQL support)
 COMMENT_sasl=	(with Cyrus SASL support)
+COMMENT_sqlite=	(with SQLite support)
 
 USES=		cpe shebangfix ssl
 USE_RC_SUBR=	postfix
@@ -58,8 +88,14 @@ OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKMIT SASLKRB5
 .if ${FLAVOR:U} == ldap
 OPTIONS_SLAVE=		LDAP
+.elif ${FLAVOR:U} == mysql
+OPTIONS_SLAVE=		MYSQL
+.elif ${FLAVOR:U} == pgsql
+OPTIONS_SLAVE=		PGSQL
 .elif ${FLAVOR:U} == sasl
 OPTIONS_SLAVE=		SASL
+.elif ${FLAVOR:U} == sqlite
+OPTIONS_SLAVE=		SQLITE
 .endif
 .if !empty(FLAVOR) && ${FLAVOR:U} != default
 OPTIONS_FILE=	${PORT_DBDIR}/${OPTIONS_NAME}/${FLAVOR}-options
@@ -70,7 +106,7 @@ BLACKLISTD_DESC=	Enable blacklistd support
 CDB_DESC=		CDB maps lookups
 EAI_DESC=		Email Address Internationalization (SMTPUTF8) support
 INST_BASE_DESC=		Install into /usr and /etc/postfix
-LDAP_DESC=		LDAP maps (uses WITH_OPENLDAP_VER)
+LDAP_DESC=		LDAP maps
 LMDB_DESC=		LMDB maps
 PCRE2_DESC=		Use Perl Compatible Regular Expressions, version 2
 RG1_DESC=		Kerberos network authentication protocol type
@@ -83,7 +119,7 @@ BDB_USES=			bdb
 BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
 CDB_LIB_DEPENDS=		libcdb.so:databases/tinycdb
 EAI_LIB_DEPENDS=		libicuuc.so:devel/icu
-LDAP_USE=			OPENLDAP=yes
+LDAP_USES=			ldap
 LMDB_LIB_DEPENDS=		liblmdb.so:databases/lmdb
 MYSQL_USES?=			mysql
 PCRE2_LIB_DEPENDS=		libpcre2-8.so:devel/pcre2
@@ -115,8 +151,14 @@ BROKEN=		error: OpenSSL-1.1.1 is the minimum supported version. LibreSSL is not 
 .if ${PORT_OPTIONS:MINST_BASE}
 .if ${FLAVOR:U} == ldap
 PKGNAMESUFFIX=	-base-ldap
+.elif ${FLAVOR:U} == mysql
+PKGNAMESUFFIX=	-base-mysql
+.elif ${FLAVOR:U} == pgsql
+PKGNAMESUFFIX=	-base-pgsql
 .elif ${FLAVOR:U} == sasl
 PKGNAMESUFFIX=	-base-sasl
+.elif ${FLAVOR:U} == sqlite
+PKGNAMESUFFIX=	-base-sqlite
 .else
 PKGNAMESUFFIX=	-base
 .endif
@@ -258,12 +300,9 @@ POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_SQLITE=-L${LOCALBASE}/lib -lsqlite3 -lpthread"
 
 .if ${PORT_OPTIONS:MLDAP}
 DYN_EXT+=		ldap
-. if defined(WITH_OPENLDAP_VER)
-WANT_OPENLDAP_VER=	${WITH_OPENLDAP_VER}
-. endif
 POSTFIX_CCARGS+=	-DHAS_LDAP -I${LOCALBASE}/include \
 			-I${LOCALBASE}/include/sasl -DUSE_LDAP_SASL
-POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_LDAP=-L${LOCALBASE}/lib -lldap -L${LOCALBASE}/lib -llber"
+POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_LDAP=-L${LOCALBASE}/lib -lldap -llber"
 _REQUIRE+=		slapd
 .endif
 

@@ -14,7 +14,7 @@
 
 PORTNAME=	ksh93
 DISTVERSION=	93u
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	shells
 DIST_SUBDIR=	ksh93
@@ -24,9 +24,6 @@ COMMENT=	AT&T KornShell 93
 WWW=		http://www.kornshell.com/
 
 LICENSE=	EPL
-
-BROKEN_aarch64=	Fails to compile: needs sbrk
-BROKEN_riscv64=	Fails to compile: needs sbrk
 
 USES=		compiler:c11
 
@@ -47,7 +44,7 @@ KSH93L_DESC=		Install to ${PREFIX}/bin/ksh93l (legacy)
 
 CFLAGS+=	-DMAP_TYPE
 LDFLAGS+=	-lm
-MAKE_ENV=	CCFLAGS="-Wno-unused-value -Wno-parentheses -Wno-logical-op-parentheses" CFLAGS="${CFLAGS}"
+MAKE_ENV=	CCFLAGS="-Wno-unused-value -Wno-parentheses -Wno-logical-op-parentheses -Wno-int-conversion" CFLAGS="${CFLAGS}"
 
 STATIC_MAKE_ENV=	LDFLAGS+=-static
 

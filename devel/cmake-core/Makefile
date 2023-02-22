@@ -1,9 +1,7 @@
 PORTNAME=	cmake
 # Remember to update devel/cmake-doc and devel/cmake-gui as well.
-DISTVERSION=	3.24.0
+DISTVERSION=	${_CMAKE_VERSION}
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/Kitware/CMake/releases/download/v${DISTVERSION}/ \
-		https://www.cmake.org/files/v${PORTVERSION}/
 PKGNAMESUFFIX=	-core
 
 MAINTAINER=	kde@FreeBSD.org
@@ -13,13 +11,12 @@ WWW=		https://www.cmake.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/Copyright.txt
 
-LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libexpat.so:textproc/expat2 \
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libjsoncpp.so:devel/jsoncpp \
 		libuv.so:devel/libuv \
 		librhash.so:security/rhash
 
-USES=		compiler:c++11-lang cpe ncurses
+USES=		cmake:_internal compiler:c++11-lang cpe localbase ncurses ssl
 
 CPE_VENDOR=	cmake_project
 HAS_CONFIGURE=	yes
@@ -27,17 +24,26 @@ CONFIGURE_ENV=	MAKE=make
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--datadir="/${DATADIR_REL}" \
 		--docdir="/${DOCSDIR_REL}" \
-		--system-libs \
+		--system-expat \
+		--system-jsoncpp \
+		--system-zlib \
+		--system-zstd \
+		--system-bzip2 \
+		--system-liblzma \
+		--system-libarchive \
+		--system-librhash \
+		--system-libuv \
+		--no-system-curl \
+		--no-system-nghttp2 \
 		--parallel=${MAKE_JOBS_NUMBER} \
 		--init="${WRKSRC}/InitialCache.cmake"
 
 OPTIONS_DEFINE=	DOCS CPACK
+OPTIONS_DEFAULT=	CPACK
 OPTIONS_SUB=	yes
 
 CPACK_DESC=		Enable FreeBSD generator in CPack (experimental)
 CPACK_LIB_DEPENDS=	libpkg.so:${PKG_ORIGIN}
-CPACK_USES_OFF=		libarchive
-# When CPACK is on, uses base libarchive and won't pass stage-qa
 
 CXXFLAGS+=	-D__BSD_VISIBLE
 

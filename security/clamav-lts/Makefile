@@ -1,5 +1,5 @@
 PORTNAME=	clamav
-DISTVERSION=	0.103.7
+DISTVERSION=	0.103.8
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.clamav.net/downloads/production/
@@ -93,7 +93,7 @@ ICONV_CONFIGURE_WITH=		iconv
 IPV6_CONFIGURE_ENABLE=		ipv6
 JSON_LIB_DEPENDS=		libjson-c.so:devel/json-c
 JSON_CONFIGURE_WITH=		libjson=${LOCALBASE}
-LDAP_USE=			OPENLDAP=yes
+LDAP_USES=			ldap
 LDAP_LDFLAGS=			-lldap -L${LOCALBASE}/lib
 LHA_RUN_DEPENDS=		lha:archivers/lha
 .if !exists(/usr/lib/libmilter.so)

@@ -1,5 +1,5 @@
 PORTNAME=	console
-PORTVERSION=	1.15.3
+PORTVERSION=	1.16.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,7 +12,6 @@ LICENSE=	MIT
 RUN_DEPENDS=	rubygem-fiber-local>=0:devel/rubygem-fiber-local
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

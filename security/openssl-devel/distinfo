@@ -1,3 +1,3 @@
-TIMESTAMP = 1657032912
-SHA256 (openssl-3.0.5.tar.gz) = aa7d8d9bef71ad6525c55ba11e5f4397889ce49c2c9349dcea6d3e4f0b024a7a
-SIZE (openssl-3.0.5.tar.gz) = 15074407
+TIMESTAMP = 1675795566
+SHA256 (openssl-3.0.8.tar.gz) = 6c13d2bf38fdf31eac3ce2a347073673f5d63263398f1f69d0df4a41253e4b3e
+SIZE (openssl-3.0.8.tar.gz) = 15151328

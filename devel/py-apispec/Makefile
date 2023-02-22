@@ -1,7 +1,7 @@
 PORTNAME=	apispec
-DISTVERSION=	5.2.2
+DISTVERSION=	6.0.2
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	meka@tilda.center
@@ -24,6 +24,9 @@ USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils pytest
 
 TEST_ENV=	PYTHONPATH=${WRKSRC}/src
+
+PYTEST_BROKEN_TESTS=	test_openapi_tools_validate_v2 \
+			test_openapi_tools_validate_v3
 
 NO_ARCH=	yes
 

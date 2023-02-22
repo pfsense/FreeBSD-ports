@@ -1,6 +1,15 @@
---- chrome/browser/enterprise/connectors/reporting/browser_crash_event_router.h.orig	2022-10-05 07:34:01 UTC
+--- chrome/browser/enterprise/connectors/reporting/browser_crash_event_router.h.orig	2023-01-17 19:19:00 UTC
 +++ chrome/browser/enterprise/connectors/reporting/browser_crash_event_router.h
-@@ -22,7 +22,7 @@ class BrowserCrashEventRouter
+@@ -9,7 +9,7 @@
+ #include "chrome/browser/enterprise/connectors/reporting/realtime_reporting_client.h"
+ #include "components/enterprise/browser/controller/chrome_browser_cloud_management_controller.h"
+ 
+-#if !BUILDFLAG(IS_FUCHSIA)
++#if !BUILDFLAG(IS_FUCHSIA) && !BUILDFLAG(IS_BSD)
+ #include "third_party/crashpad/crashpad/client/crash_report_database.h"
+ #endif  // !BUILDFLAG(IS_FUCHSIA)
+ namespace enterprise_connectors {
+@@ -27,7 +27,7 @@ class BrowserCrashEventRouter
    BrowserCrashEventRouter& operator=(const BrowserCrashEventRouter&) = delete;
    ~BrowserCrashEventRouter() override;
  
@@ -8,10 +17,10 @@
 +#if !BUILDFLAG(IS_FUCHSIA) && !BUILDFLAG(IS_BSD)
    void OnCloudReportingLaunched(
        enterprise_reporting::ReportScheduler* report_scheduler) override;
- #endif  // !BUILDFLAG(IS_FUCHSIA)
-@@ -32,7 +32,7 @@ class BrowserCrashEventRouter
-       nullptr;
-   raw_ptr<policy::ChromeBrowserCloudManagementController> controller_ = nullptr;
+   void UploadToReportingServer(
+@@ -42,7 +42,7 @@ class BrowserCrashEventRouter
+   raw_ptr<policy::ChromeBrowserCloudManagementController, DanglingUntriaged>
+       controller_ = nullptr;
  
 -#if !BUILDFLAG(IS_FUCHSIA)
 +#if !BUILDFLAG(IS_FUCHSIA) && !BUILDFLAG(IS_BSD)

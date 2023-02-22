@@ -162,13 +162,13 @@ RUBY_PORTREVISION=	0
 # Ruby 3.1
 #
 RUBY_DISTVERSION=	3.1.3
-RUBY_PORTREVISION=	0
+RUBY_PORTREVISION=	1
 
 .      elif ${RUBY_VER} == 3.2
 #
 # Ruby 3.2
 #
-RUBY_DISTVERSION=	3.2.0
+RUBY_DISTVERSION=	3.2.1
 RUBY_PORTREVISION=	0
 
 # When adding a version, please keep the comment in

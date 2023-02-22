@@ -1,4 +1,4 @@
---- components/password_manager/core/browser/login_database_unittest.cc.orig	2022-10-05 07:34:01 UTC
+--- components/password_manager/core/browser/login_database_unittest.cc.orig	2023-01-17 19:19:00 UTC
 +++ components/password_manager/core/browser/login_database_unittest.cc
 @@ -2092,7 +2092,7 @@ TEST_F(LoginDatabaseUndecryptableLoginsTest, DeleteUnd
    base::HistogramTester histogram_tester;
@@ -15,10 +15,10 @@
  // Check histograms.
 -#if BUILDFLAG(IS_MAC) || (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CASTOS))
 +#if BUILDFLAG(IS_MAC) || (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CASTOS)) || BUILDFLAG(IS_BSD)
-   histogram_tester.ExpectUniqueSample("PasswordManager.CleanedUpPasswords", 2,
-                                       1);
    histogram_tester.ExpectUniqueSample(
-@@ -2170,7 +2170,7 @@ TEST_F(LoginDatabaseUndecryptableLoginsTest, KeychainL
+       "PasswordManager.DeleteUndecryptableLoginsReturnValue",
+       metrics_util::DeleteCorruptedPasswordsResult::kSuccessPasswordsDeleted,
+@@ -2161,7 +2161,7 @@ TEST_F(LoginDatabaseUndecryptableLoginsTest, KeychainL
  }
  #endif  // BUILDFLAG(IS_MAC)
  

@@ -1,8 +1,7 @@
 PORTNAME=	rpy2
-PORTVERSION=	3.5.4
-PORTREVISION=	1
+PORTVERSION=	3.5.7
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -25,10 +24,6 @@ USES=		compiler:c11 fortran python:3.7+ readline
 USE_PYTHON=	autoplist concurrent distutils
 
 MAKE_ENV=	RPY2_CFFI_MODE=BOTH
-
-PLIST_FILES=	${PYTHON_SITELIBDIR}/__pycache__/_rinterface_cffi_abi.cpython-${PYTHON_SUFFIX}.opt-1.pyc \
-		${PYTHON_SITELIBDIR}/__pycache__/_rinterface_cffi_abi.cpython-${PYTHON_SUFFIX}.pyc \
-		${PYTHON_SITELIBDIR}/_rinterface_cffi_abi.py
 
 OPTIONS_DEFINE=	NUMPY PANDAS
 OPTIONS_DEFAULT=NUMPY PANDAS

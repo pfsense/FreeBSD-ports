@@ -1,7 +1,7 @@
 PORTNAME=	cantera
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.6.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science # chemistry physics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -47,7 +47,7 @@ OCTAVE_MAKE_ARGS=	matlab_toolbox=y matlab_path=${LOCALBASE}
 OCTAVE_CXXFLAGS=	-I${LOCALBASE}/include/octave-${OCTAVE_VERSION}/octave
 OCTAVE_LIB_DEPENDS=	liboctave.so:math/octave
 OCTAVE_SUB_FILES=	pkg-message-octave
-.include "../../math/octave/Makefile.version" # for OCTAVE_VERSION
+OCTAVE_USES=		octave:env
 
 PYTHON_USES=		python:3.6+
 PYTHON_USE=		PYTHON=cython

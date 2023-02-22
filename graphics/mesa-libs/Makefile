@@ -5,6 +5,9 @@ CATEGORIES=	graphics
 COMMENT=	OpenGL libraries that support GLX and EGL clients
 WWW=		https://www.mesa3d.org/
 
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/docs/license.rst
+
 LIB_DEPENDS=	libOpenGL.so:graphics/libglvnd
 
 OPTIONS_GROUP=			PLATFORM
@@ -26,11 +29,12 @@ ZSTD_DESC=		Use ZSTD for shader cache
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 ZSTD_MESON_ENABLED=	zstd
 
+USE_LDCONFIG=		yes
+
 .include <bsd.port.options.mk>
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
 
 MESON_ARGS+=	-Dgallium-vdpau=disabled \
-		-Dgallium-xvmc=disabled \
 		-Dgallium-omx=disabled \
 		-Dgallium-va=disabled \
 		-Dgallium-xa=disabled \

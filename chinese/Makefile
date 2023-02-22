@@ -18,6 +18,7 @@
     SUBDIR += cconv
     SUBDIR += celvis
     SUBDIR += chiconv
+    SUBDIR += chinese-calendar
     SUBDIR += cless
     SUBDIR += cnprint
     SUBDIR += dictd-database
@@ -34,6 +35,7 @@
     SUBDIR += fcitx-ui-light
     SUBDIR += fcitx5-chewing
     SUBDIR += fcitx5-chinese-addons
+    SUBDIR += fcitx5-mcbopomofo
     SUBDIR += fcitx5-rime
     SUBDIR += fcitx5-table-extra
     SUBDIR += fcitx5-table-other

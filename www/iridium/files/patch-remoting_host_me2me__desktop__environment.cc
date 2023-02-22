@@ -1,6 +1,15 @@
---- remoting/host/me2me_desktop_environment.cc.orig	2022-10-05 07:34:01 UTC
+--- remoting/host/me2me_desktop_environment.cc.orig	2023-01-17 19:19:00 UTC
 +++ remoting/host/me2me_desktop_environment.cc
-@@ -148,7 +148,7 @@ bool Me2MeDesktopEnvironment::InitializeSecurity(
+@@ -124,7 +124,7 @@ std::string Me2MeDesktopEnvironment::GetCapabilities()
+     capabilities += protocol::kRemoteWebAuthnCapability;
+   }
+ 
+-#if BUILDFLAG(IS_LINUX) && defined(REMOTING_USE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && defined(REMOTING_USE_X11)
+   capabilities += " ";
+   capabilities += protocol::kMultiStreamCapability;
+ 
+@@ -180,7 +180,7 @@ bool Me2MeDesktopEnvironment::InitializeSecurity(
  
    // Otherwise, if the session is shared with the local user start monitoring
    // the local input and create the in-session UI.

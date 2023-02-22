@@ -1,11 +1,11 @@
 PORTNAME=	tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.0
+DISTVERSION=	0.6.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	fuz@fuz.su
+MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Go Tools
 WWW=		https://godoc.org/golang.org/x/tools
 
@@ -20,7 +20,6 @@ GO_TARGET=	./cmd/auth/cookieauth \
 		./cmd/bundle \
 		./cmd/callgraph \
 		./cmd/compilebench \
-		./cmd/cover \
 		./cmd/digraph \
 		./cmd/eg \
 		./cmd/file2fuzz \
@@ -44,7 +43,7 @@ GO_TARGET=	./cmd/auth/cookieauth \
 		./cmd/stringer \
 		./cmd/toolstash
 
-CONFLICTS_INSTALL=	easygit p5-Devel-Cover rubygem-bundler
+CONFLICTS_INSTALL=	easygit rubygem-bundler
 
 PLIST_FILES=	${GO_TARGET:T:S,^,bin/,}
 

@@ -1,6 +1,6 @@
 PORTNAME=	ocp
 DISTVERSION=	7.4-RC2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	cad
 # Direct access to github is needed because the release added an extra archive which
 # we need to build from, rather than the initial release.
@@ -13,6 +13,8 @@ COMMENT=	Python wrapper for OCCT generated using pywrap
 WWW=		https://github.com/CadQuery/OCP
 
 BROKEN=		Mismatch between OpenCascase (7.5) and py-ocp (7.4)
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 LICENSE=	APACHE20
 

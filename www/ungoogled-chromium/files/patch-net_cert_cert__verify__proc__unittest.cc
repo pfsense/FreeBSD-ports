@@ -1,6 +1,6 @@
---- net/cert/cert_verify_proc_unittest.cc.orig	2022-10-01 07:40:07 UTC
+--- net/cert/cert_verify_proc_unittest.cc.orig	2023-02-11 09:11:04 UTC
 +++ net/cert/cert_verify_proc_unittest.cc
-@@ -239,7 +239,7 @@ const std::vector<CertVerifyProcType> kAllCertVerifier
+@@ -269,7 +269,7 @@ const std::vector<CertVerifyProcType> kAllCertVerifier
  #if BUILDFLAG(CHROME_ROOT_STORE_SUPPORTED)
      CERT_VERIFY_PROC_BUILTIN_CHROME_ROOTS
  #endif

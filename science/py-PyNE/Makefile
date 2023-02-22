@@ -1,12 +1,12 @@
 PORTNAME=	PyNE
 DISTVERSION=	0.7.7
 PORTREVISION=	3
-CATEGORIES=	science
-MASTER_SITES=	http://raw.githubusercontent.com/pyne/data/master/:decay \
-		http://raw.githubusercontent.com/pyne/data/master/:cram \
-		http://raw.githubusercontent.com/pyne/data/master/:dlc \
-		http://raw.githubusercontent.com/pyne/data/master/:clc \
-		https://github.com/pyne/data/raw/master/:nuc_data
+CATEGORIES=	science # physics
+MASTER_SITES=	https://raw.githubusercontent.com/pyne/data/master/:decay \
+		https://raw.githubusercontent.com/pyne/data/master/:cram \
+		https://raw.githubusercontent.com/pyne/data/master/:dlc \
+		https://raw.githubusercontent.com/pyne/data/master/:clc \
+		https://github.com/pyne/data/master/:nuc_data
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	decay.tar.gz:decay \
 		cram.tar.gz:cram \
@@ -22,6 +22,8 @@ WWW=		https://pyne.io/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
+
+BROKEN_armv7=	clang runs out of memory
 
 PY_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}tables>0:devel/py-tables@${PY_FLAVOR} \

@@ -1,7 +1,7 @@
 PORTNAME=	lapce
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.1	# remove openssl-src-* from CARGO-CRATES each update \
-			  remove patch-lapce-data_src_config.rs rust >= 1.64.0
+DISTVERSION=	0.2.5	# remove openssl-src-* from CARGO-CRATES each update
+PORTREVISION=	4
 CATEGORIES=	editors
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -29,7 +29,7 @@ PLIST_FILES=	bin/lapce \
 
 #patch druid manually since it's not yet patched upstream
 post-patch:
-	@${FIND} ${WRKSRC}/../druid-281fe4bc56a198c7b5da90f65d4047a88153170e \
+	@${FIND} ${WRKSRC}/../druid-0b9c00fcda238e392e758382f25166cd748fd305 \
 		 -name "*.toml" -o -name "*.rs" | ${XARGS} ${REINPLACE_CMD} -i '' -e 's|openbsd|freebsd|g'
 
 post-install:

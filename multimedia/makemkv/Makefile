@@ -1,6 +1,5 @@
 PORTNAME=	makemkv
-DISTVERSION=	1.17.1
-PORTREVISION=	1
+DISTVERSION=	1.17.3
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.makemkv.com/download/:makemkv \
 		http://www.makemkv.com/download/old/:makemkv \
@@ -8,7 +7,6 @@ MASTER_SITES=	http://www.makemkv.com/download/:makemkv \
 		https://ffmpeg.org/releases/:ffmpeg
 DISTFILES=	${DISTFL_MAKEMKV:S/$/:makemkv/} \
 		${DISTFL_FFMPEG:S/$/:ffmpeg/}
-DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	zirias@FreeBSD.org
 COMMENT=	Video converter reading from DVD and Bluray
@@ -51,12 +49,12 @@ SUB_LIST=	LINUXBASE=${LINUXBASE}
 PLIST_SUB=	LINUXBASE=${LINUXBASE}
 
 FDKAACVERSION=	2.0.2
-FFMPEGVERSION=	5.1
+FFMPEGVERSION=	5.1.2
 
 DISTFL_MAKEMKV=	makemkv-oss-${DISTVERSION}.tar.gz \
 		makemkv-bin-${DISTVERSION}.tar.gz
 DISTFL_FDKAAC=	fdk-aac-${FDKAACVERSION}.tar.gz
-DISTFL_FFMPEG=	ffmpeg-${FFMPEGVERSION}.tar.bz2
+DISTFL_FFMPEG=	ffmpeg-${FFMPEGVERSION}.tar.xz
 
 OPTIONS_DEFINE=		EXAMPLES FDK_AAC
 OPTIONS_DEFAULT=	EXAMPLES

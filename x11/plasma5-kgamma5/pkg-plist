@@ -38,7 +38,6 @@ share/kgamma/pics/lightgrey.png
 share/kgamma/pics/midgrey.png
 share/kgamma/pics/rgbscale.png
 share/locale/ar/LC_MESSAGES/kcmkgamma.mo
-share/locale/ast/LC_MESSAGES/kcmkgamma.mo
 share/locale/az/LC_MESSAGES/kcmkgamma.mo
 share/locale/be/LC_MESSAGES/kcmkgamma.mo
 share/locale/bg/LC_MESSAGES/kcmkgamma.mo
@@ -72,6 +71,7 @@ share/locale/id/LC_MESSAGES/kcmkgamma.mo
 share/locale/is/LC_MESSAGES/kcmkgamma.mo
 share/locale/it/LC_MESSAGES/kcmkgamma.mo
 share/locale/ja/LC_MESSAGES/kcmkgamma.mo
+share/locale/ka/LC_MESSAGES/kcmkgamma.mo
 share/locale/kk/LC_MESSAGES/kcmkgamma.mo
 share/locale/km/LC_MESSAGES/kcmkgamma.mo
 share/locale/ko/LC_MESSAGES/kcmkgamma.mo
@@ -108,6 +108,7 @@ share/locale/th/LC_MESSAGES/kcmkgamma.mo
 share/locale/tr/LC_MESSAGES/kcmkgamma.mo
 share/locale/ug/LC_MESSAGES/kcmkgamma.mo
 share/locale/uk/LC_MESSAGES/kcmkgamma.mo
+share/locale/vi/LC_MESSAGES/kcmkgamma.mo
 share/locale/zh_CN/LC_MESSAGES/kcmkgamma.mo
 share/locale/zh_HK/LC_MESSAGES/kcmkgamma.mo
 share/locale/zh_TW/LC_MESSAGES/kcmkgamma.mo

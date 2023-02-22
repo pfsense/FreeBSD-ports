@@ -1,7 +1,7 @@
 PORTNAME=	pebble
-PORTVERSION=	5.0.1
+PORTVERSION=	5.0.3
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Pebble-${PORTVERSION}
 
@@ -16,8 +16,5 @@ USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|"{}".format(package_version())|"${PORTVERSION}"|' ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

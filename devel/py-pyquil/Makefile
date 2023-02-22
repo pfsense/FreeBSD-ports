@@ -1,7 +1,7 @@
 PORTNAME=	pyquil
 DISTVERSION=	3.3.1
 CATEGORIES=	devel python # quantum-computing
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,9 +10,6 @@ WWW=		https://github.com/rigetti/pyquil
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Depends on expired www/py-pyjwt1 (via devel/py-qcs-api-client)
-EXPIRATION_DATE=2022-12-31
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lark>=0.11.1:devel/py-lark@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}networkx>=2.5:math/py-networkx@${PY_FLAVOR} \

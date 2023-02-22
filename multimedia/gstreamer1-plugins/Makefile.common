@@ -38,6 +38,7 @@ BASE_GST_ALL_PLUGINS+= \
 		tests \
 		theora \
 		tools \
+		tremor \
 		typefind \
 		video \
 		videoconvert \
@@ -122,7 +123,6 @@ BAD_GST_ALL_PLUGINS+= \
 		ivtc \
 		jp2kdecimator \
 		jpegformat \
-		kate \
 		kms \
 		ladspa \
 		libde265 \
@@ -178,8 +178,10 @@ BAD_GST_ALL_PLUGINS+= \
 		soundtouch \
 		spandsp \
 		speed \
+		srt \
 		srtp \
 		subenc \
+		svthevcenc \
 		switchbin \
 		tests \
 		timecode \
@@ -190,6 +192,7 @@ BAD_GST_ALL_PLUGINS+= \
 		ttml \
 		uridownloader \
 		uvch264 \
+		v4l2codecs \
 		videofilters \
 		videoframe_audiolevel \
 		videoparsers \
@@ -201,11 +204,13 @@ BAD_GST_ALL_PLUGINS+= \
 		webp \
 		webrtc \
 		webrtcdsp \
+		wildmidi \
 		winks \
 		winscreencap \
 		x265 \
 		y4m \
-		zbar
+		zbar \
+		zxing
 
 BAD_GST_ENABLED_PLUGINS?=
 

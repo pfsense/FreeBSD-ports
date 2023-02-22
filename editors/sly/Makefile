@@ -1,6 +1,6 @@
 PORTNAME=	sly
 DISTVERSION=	1.0.43
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	editors elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -36,7 +36,8 @@ GENERATED_DOCS_FILES=	sly.html
 DOCS_BUILD_DEPENDS=	texinfo>=5.2:print/texinfo
 
 DOCS_PDF_IMPLIES=	DOCS
-DOCS_PDF_USE=	tex=latex:build tex=pdftex:build tex=dvipsk:build
+DOCS_PDF_USES=	tex
+DOCS_PDF_USE=	TEX=latex:build,pdftex:build,dvipsk:build
 
 .include <bsd.port.options.mk>
 

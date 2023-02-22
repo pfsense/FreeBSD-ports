@@ -1,7 +1,7 @@
 PORTNAME=	watchfiles
-PORTVERSION=	0.17.0
+PORTVERSION=	0.18.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/samuelcolvin/watchfiles
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio>=3.0.0<4:devel/py-anyio@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio>=3.0.0:devel/py-anyio@${PY_FLAVOR}
 
 USES=		dos2unix python:3.7+
 USE_PYTHON=	autoplist concurrent distutils

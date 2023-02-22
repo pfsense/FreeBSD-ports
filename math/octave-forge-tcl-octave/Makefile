@@ -7,11 +7,12 @@ DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
-WWW=		http://octave.sourceforge.net/
+WWW=		https://packages.octave.org/
+
+USES=		octave tcl:wrapper
 
 GNU_CONFIGURE=	yes
 
-USES+=		tcl:wrapper
+WRKSRC=	${WRKDIR}/${OCTAVE_SRC}
 
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
 .include <bsd.port.mk>

@@ -18,7 +18,6 @@
     SUBDIR += fxscintilla
     SUBDIR += gdl
     SUBDIR += girara
-    SUBDIR += gnocl
     SUBDIR += gnome-pty-helper
     SUBDIR += gnustep-back
     SUBDIR += gnustep-gui
@@ -40,7 +39,6 @@
     SUBDIR += gtkglext
     SUBDIR += gtkglextmm
     SUBDIR += gtkimageview
-    SUBDIR += gtkmathview
     SUBDIR += gtkmm24
     SUBDIR += gtkmm30
     SUBDIR += gtksourceview2
@@ -49,9 +47,11 @@
     SUBDIR += gtksourceview5
     SUBDIR += gtksourceviewmm3
     SUBDIR += guile-gnome-platform
+    SUBDIR += imgui
     SUBDIR += irrlicht
     SUBDIR += itk
     SUBDIR += iwidgets
+    SUBDIR += kddockwidgets
     SUBDIR += kf5-attica
     SUBDIR += kf5-kcompletion
     SUBDIR += kf5-kconfigwidgets
@@ -63,6 +63,7 @@
     SUBDIR += kf5-ktextwidgets
     SUBDIR += kf5-kwidgetsaddons
     SUBDIR += kf5-kxmlgui
+    SUBDIR += kirigami-addons
     SUBDIR += kproperty
     SUBDIR += lesstif
     SUBDIR += libXaw
@@ -74,7 +75,6 @@
     SUBDIR += libgdiplus
     SUBDIR += libhandy
     SUBDIR += libhandy0
-    SUBDIR += libsexy
     SUBDIR += libshumate
     SUBDIR += libunique3
     SUBDIR += libwnck
@@ -97,6 +97,7 @@
     SUBDIR += ntk
     SUBDIR += nuklear
     SUBDIR += ocaml-lablgtk2
+    SUBDIR += ocaml-lablgtk3
     SUBDIR += ocaml-labltk
     SUBDIR += open-motif
     SUBDIR += open-motif-devel
@@ -158,9 +159,11 @@
     SUBDIR += py-guietta
     SUBDIR += py-python-xlib
     SUBDIR += py-qt5-chart
+    SUBDIR += py-qt6-chart
     SUBDIR += py-tkinter
     SUBDIR += py-tktreectrl
     SUBDIR += py-wxPython4
+    SUBDIR += pythonqt
     SUBDIR += qml-box2d
     SUBDIR += qt5-charts
     SUBDIR += qt5-datavis3d
@@ -219,22 +222,18 @@
     SUBDIR += tktray
     SUBDIR += tktreectrl
     SUBDIR += unique
-    SUBDIR += vdk
     SUBDIR += viewklass
     SUBDIR += vte
     SUBDIR += vte3
     SUBDIR += wlroots
-    SUBDIR += wlroots-devel
+    SUBDIR += wlroots015
     SUBDIR += wmapp
-    SUBDIR += wxgtk28
-    SUBDIR += wxgtk28-common
-    SUBDIR += wxgtk28-contrib
-    SUBDIR += wxgtk28-contrib-common
     SUBDIR += wxgtk30
     SUBDIR += wxgtk32
     SUBDIR += xbae
     SUBDIR += xforms
     SUBDIR += xmhtml
+    SUBDIR += xwallpaper
     SUBDIR += ztoolkit
 
 .include <bsd.port.subdir.mk>

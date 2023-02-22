@@ -5,6 +5,9 @@ CATEGORIES=	graphics
 COMMENT=	OpenGL hardware acceleration drivers for DRI2+
 WWW=		https://www.mesa3d.org/
 
+LIB_DEPENDS+=	libLLVM-${LLVM_DEFAULT}.so:devel/llvm${LLVM_DEFAULT} \
+		libglapi.so:graphics/mesa-libs
+
 OPTIONS_GROUP=			PLATFORM
 OPTIONS_GROUP_PLATFORM=		PLATFORM_X11 PLATFORM_WAYLAND
 PLATFORM_X11_DESC=		Enable X11 support for GBM/EGL
@@ -43,10 +46,6 @@ GALLIUM_DRIVERS+=	PANFROST
 GALLIUM_DRIVERS+=	R300 R600 RADEONSI
 VULKAN_DRIVERS+=	AMD
 BUILD_DEPENDS+=		glslangValidator:graphics/glslang
-. if ${PORT_OPTIONS:MPLATFORM_X11}
-USE_XORG+=		xv xvmc
-MESON_ARGS+=		-Dgallium-xvmc=enabled
-. endif
 .endif
 .if ${ARCH} == amd64 || ${ARCH} == i386
 GALLIUM_DRIVERS+=	CROCUS IRIS SVGA

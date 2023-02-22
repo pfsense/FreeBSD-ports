@@ -1,7 +1,8 @@
 PORTNAME=	twisted
-PORTVERSION=	22.4.0
+PORTVERSION=	22.10.0
+PORTREVISION=	1
 CATEGORIES=	devel net python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Twisted-${PORTVERSION}
 
@@ -49,6 +50,10 @@ TLS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}idna>=2.4:dns/py-idna@${PY_FLAVOR} \
 # We need twisted.trial in PYTHONPATH
 # twisted.conch tests depend on finding certain scripts in PATH
 TEST_ENV=	PYTHONPATH=${WRKSRC}/src PATH=${STAGEDIR}/${PREFIX}/bin:$$PATH
+
+post-patch:
+	${GREP} -F -Rl TLS_METHOD ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
+		-e 's,TLS_METHOD,TLSv1_2_METHOD,'
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/ -name '*.so' -exec ${STRIP_CMD} {} +

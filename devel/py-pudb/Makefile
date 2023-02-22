@@ -1,7 +1,7 @@
 PORTNAME=	pudb
-PORTVERSION=	2022.1.2
+PORTVERSION=	2022.1.3
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -22,5 +22,10 @@ USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
+
+OPTIONS_DEFINE=	COMPLETION
+COMPLETION_DESC=Tab completion in debugger
+
+COMPLETION_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}shtab>=0:devel/py-shtab@${PY_FLAVOR}
 
 .include <bsd.port.mk>

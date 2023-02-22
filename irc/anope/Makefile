@@ -1,5 +1,5 @@
 PORTNAME=	anope
-PORTVERSION=	2.0.11
+PORTVERSION=	2.0.12
 CATEGORIES=	irc
 
 MAINTAINER=	egypcio@FreeBSD.org
@@ -27,7 +27,7 @@ TRE_DESC=	Tre Regex Module
 
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 
-LDAP_USE=	OPENLDAP=yes
+LDAP_USES=	ldap
 
 MYSQL_USES=	mysql
 

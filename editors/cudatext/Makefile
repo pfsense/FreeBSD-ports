@@ -1,5 +1,5 @@
 PORTNAME=	cudatext
-PORTVERSION=	1.171.0
+PORTVERSION=	1.182.2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -17,15 +17,15 @@ GH_ACCOUNT=	Alexey-T
 GH_PROJECT=	CudaText
 GH_TUPLE=	bgrabitmap:bgrabitmap:ace7e0e:bgrabitmap/bgrabitmap \
 		Alexey-T:Python-for-Lazarus:24d15bb:python4lazarus/python4lazarus \
-		Alexey-T:ATFlatControls:df43eda:atflatcontrols/atflatcontrols  \
-		Alexey-T:ATSynEdit:28df13f:atsynedit/atsynedit \
+		Alexey-T:ATFlatControls:457261d:atflatcontrols/atflatcontrols  \
+		Alexey-T:ATSynEdit:9e03821:atsynedit/atsynedit \
 		Alexey-T:Emmet-Pascal:6143720:emmet/emmet \
-		Alexey-T:EControl:72dccb1:econtrol/econtrol \
-		Alexey-T:ATSynEdit_Ex:cde4e8b:atsyneditex/atsyneditex \
-		Alexey-T:ATSynEdit_Cmp:6c29139:atsyneditcmp/atsyneditcmp \
+		Alexey-T:EControl:1e1212a:econtrol/econtrol \
+		Alexey-T:ATSynEdit_Ex:e3dcd1c:atsyneditex/atsyneditex \
+		Alexey-T:ATSynEdit_Cmp:5e879d9:atsyneditcmp/atsyneditcmp \
 		Alexey-T:ATBinHex-Lazarus:c63346b:atbinhex/atbinhex \
 		Alexey-T:UniqueInstance:753f823:uniqueinstance/uniqueinstance \
-		Alexey-T:EncConv:061e871:encconv/encconv
+		Alexey-T:EncConv:401cdb6:encconv/encconv
 
 DOS2UNIX_FILES=	app/settings_default/default.json setup/debfiles/cudatext.desktop
 
@@ -58,6 +58,7 @@ post-patch:
 	${REINPLACE_CMD} 's|-512||g' ${WRKSRC}/setup/debfiles/${PORTNAME}.desktop
 	${REINPLACE_CMD} 's|%%DATADIR%%|${DATADIR}|g' ${WRKSRC}/app/proc_globdata.pas
 	${REINPLACE_CMD} 's|TEncoding.UTF8|True|g' ${WRKSRC}/app/formmain_py_pluginwork.inc
+	${REINPLACE_CMD} 's|ifdef GTK2_IME_CODE|if defined(GTK2_IME_CODE) and not defined(freebsd)|g' ${WRKSRC}/atsynedit/atsynedit/atsynedit.pas
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/app/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

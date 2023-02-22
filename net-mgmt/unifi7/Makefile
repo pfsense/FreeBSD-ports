@@ -1,5 +1,5 @@
 PORTNAME=	unifi7
-PORTVERSION=	7.2.94
+PORTVERSION=	7.3.83
 CATEGORIES=	net-mgmt java
 MASTER_SITES=	http://dl.ubnt.com/unifi/%SUBDIR%/:unifi \
 		https://repo1.maven.org/maven2/%SUBDIR%/:jax
@@ -16,12 +16,15 @@ WWW=		https://help.ui.com/hc/en-us/categories/200320654-UniFi-Wireless
 
 RUN_DEPENDS=	snappyjava>0:archivers/snappy-java
 
+DEPRECATED=    Depends on upstream EOLed mongodb36
+EXPIRATION_DATE=       2023-03-31
+
 USES=		cpe
 
 CPE_VENDOR=	ui
 CPE_PRODUCT=	unifi_controller
 USE_JAVA=	yes
-JAVA_VERSION=	8+
+JAVA_VERSION=	11
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk bsdjava
 JAVA_RUN=	yes

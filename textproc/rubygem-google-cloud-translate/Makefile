@@ -5,7 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby Client for the Cloud Translation API
-WWW=		https://github.com/googleapis/google-cloud-ruby/tree/master/google-cloud-translate
+WWW=		https://github.com/googleapis/google-cloud-ruby/tree/main/google-cloud-translate
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -15,7 +15,6 @@ RUN_DEPENDS=	rubygem-google-cloud-core>=1.6<2:net/rubygem-google-cloud-core \
 		rubygem-google-cloud-translate-v3>=0.0<2.0:textproc/rubygem-google-cloud-translate-v3
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

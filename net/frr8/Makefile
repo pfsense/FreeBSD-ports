@@ -1,7 +1,6 @@
 PORTNAME=	frr
-PORTVERSION=	8.3.1
+PORTVERSION=	8.4.2
 DISTVERSIONPREFIX=	frr-
-PORTREVISION=	1
 CATEGORIES=	net
 .if defined(PYTHONTOOLS)
 PKGNAMESUFFIX=	8-pythontools
@@ -37,7 +36,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/tools/etc/frr/support_bundle_commands.conf ${STAGEDIR}${ETCDIR}/
 .else
 
-BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libyang.so.2:net/libyang2 \
 		libcares.so:dns/c-ares \

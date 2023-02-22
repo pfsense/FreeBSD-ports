@@ -1,5 +1,5 @@
 PORTNAME=	opennebula
-PORTVERSION=	6.4.1
+PORTVERSION=	6.4.2
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -19,7 +19,6 @@ RUN_DEPENDS=	rubygem-ipaddress>=0:net/rubygem-ipaddress \
 		rubygem-xmlrpc>=0:net/rubygem-xmlrpc
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

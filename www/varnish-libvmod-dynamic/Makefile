@@ -1,5 +1,5 @@
 PORTNAME=	libvmod-dynamic
-PORTVERSION=	20220202
+PORTVERSION=	20221117
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
@@ -9,9 +9,6 @@ WWW=		https://github.com/nigoroll/libvmod-dynamic
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_13=	ld: error: duplicate symbol: objects
-BROKEN_FreeBSD_14=	ld: error: duplicate symbol: objects
 
 LIB_DEPENDS=	libgetdns.so:dns/getdns
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}
@@ -30,7 +27,7 @@ CFLAGS+=	-I${WRKSRC}/src
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nigoroll
-GH_TAGNAME=	9666973
+GH_TAGNAME=	5c702fa
 
 OPTIONS_DEFINE=	DOCS
 

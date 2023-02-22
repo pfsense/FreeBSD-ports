@@ -1,6 +1,6 @@
 PORTNAME=	cirq-rigetti
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
+DISTVERSION=	1.1.0
 CATEGORIES=	science python # quantum-computing
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,9 +10,6 @@ WWW=		https://github.com/quantumlib/cirq
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Depends on expired www/py-pyjwt1 (via devel/py-pyquil)
-EXPIRATION_DATE=2022-12-31
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cirq-core>0:science/py-cirq-core@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyquil>=3.0.0:devel/py-pyquil@${PY_FLAVOR}

@@ -32,6 +32,7 @@
     SUBDIR += alfio
     SUBDIR += am-utils
     SUBDIR += amazon-ssm-agent
+    SUBDIR += amazon-ssm-plugin
     SUBDIR += amdmsrtweaker
     SUBDIR += amrstat
     SUBDIR += amtc
@@ -45,13 +46,13 @@
     SUBDIR += ansible-kld
     SUBDIR += ansible-sshjail
     SUBDIR += ansible-sysrc
-    SUBDIR += ansible4
     SUBDIR += anvil
     SUBDIR += apache-mesos
     SUBDIR += apachetop
     SUBDIR += apcctrl
     SUBDIR += apcpwr
     SUBDIR += apcupsd
+    SUBDIR += apt-mirror-devel
     SUBDIR += aptly
     SUBDIR += arc_summary
     SUBDIR += arcconf
@@ -62,6 +63,7 @@
     SUBDIR += asmctl
     SUBDIR += asmem
     SUBDIR += asusoled
+    SUBDIR += async
     SUBDIR += atf-fvp
     SUBDIR += atf-master
     SUBDIR += atf-rk3328
@@ -88,6 +90,7 @@
     SUBDIR += bacula11-docs
     SUBDIR += bacula11-server
     SUBDIR += bacula13-client
+    SUBDIR += bacula13-client-static
     SUBDIR += bacula13-docs
     SUBDIR += bacula13-server
     SUBDIR += bacula9-client
@@ -118,8 +121,8 @@
     SUBDIR += bchunk
     SUBDIR += beadm
     SUBDIR += beadm-devel
-    SUBDIR += beats6
     SUBDIR += beats7
+    SUBDIR += beats8
     SUBDIR += bfs
     SUBDIR += bhyve+
     SUBDIR += bhyve-firmware
@@ -147,6 +150,7 @@
     SUBDIR += bstack
     SUBDIR += btop
     SUBDIR += btsixad
+    SUBDIR += buildah
     SUBDIR += bulk_extractor
     SUBDIR += bupstash
     SUBDIR += burp
@@ -174,14 +178,14 @@
     SUBDIR += cfengine-devel
     SUBDIR += cfengine-masterfiles
     SUBDIR += cfengine-masterfiles-devel
-    SUBDIR += cfengine-masterfiles317
     SUBDIR += cfengine-masterfiles318
     SUBDIR += cfengine-masterfiles319
     SUBDIR += cfengine-masterfiles320
-    SUBDIR += cfengine317
+    SUBDIR += cfengine-masterfiles321
     SUBDIR += cfengine318
     SUBDIR += cfengine319
     SUBDIR += cfengine320
+    SUBDIR += cfengine321
     SUBDIR += chaoskube
     SUBDIR += checkrestart
     SUBDIR += chezmoi
@@ -211,6 +215,7 @@
     SUBDIR += conky
     SUBDIR += conky-awesome
     SUBDIR += conman
+    SUBDIR += conmon
     SUBDIR += consolehm
     SUBDIR += consolekit2
     SUBDIR += consul
@@ -219,6 +224,7 @@
     SUBDIR += consul_exporter
     SUBDIR += container-diff
     SUBDIR += containerd
+    SUBDIR += containers-common
     SUBDIR += contractor
     SUBDIR += copytape
     SUBDIR += coreos-ct
@@ -256,6 +262,7 @@
     SUBDIR += dc3dd
     SUBDIR += dcfldd
     SUBDIR += dd_rescue
+    SUBDIR += ddh
     SUBDIR += ddpt
     SUBDIR += ddrescue
     SUBDIR += debhelper
@@ -335,6 +342,7 @@
     SUBDIR += eclat
     SUBDIR += edid-decode
     SUBDIR += edk2
+    SUBDIR += egress-monitor
     SUBDIR += eject
     SUBDIR += eksctl
     SUBDIR += endian
@@ -359,6 +367,7 @@
     SUBDIR += f3
     SUBDIR += facter
     SUBDIR += fakertc
+    SUBDIR += faketty
     SUBDIR += fand
     SUBDIR += fanout
     SUBDIR += fatback
@@ -458,7 +467,6 @@
     SUBDIR += g15daemon
     SUBDIR += gaffitter
     SUBDIR += ganglia-monitor-core
-    SUBDIR += ganglia-webfrontend
     SUBDIR += gapcmon
     SUBDIR += garcon
     SUBDIR += gather
@@ -467,6 +475,7 @@
     SUBDIR += gdisk
     SUBDIR += gdmap
     SUBDIR += gdu
+    SUBDIR += genimage
     SUBDIR += genisoimage
     SUBDIR += geomWatch
     SUBDIR += getdelta
@@ -509,6 +518,7 @@
     SUBDIR += gstopd
     SUBDIR += gstreamer1-plugins-cdio
     SUBDIR += gtk-imonc
+    SUBDIR += hammer2
     SUBDIR += handlr
     SUBDIR += hardlink
     SUBDIR += hare
@@ -538,6 +548,7 @@
     SUBDIR += hs-cputype
     SUBDIR += hstr
     SUBDIR += htop
+    SUBDIR += httm
     SUBDIR += httplog
     SUBDIR += hw-probe
     SUBDIR += hwstat
@@ -566,6 +577,7 @@
     SUBDIR += ipfs-go
     SUBDIR += ipfs-go-fs-repo-migrations
     SUBDIR += ipget
+    SUBDIR += ipmi_exporter
     SUBDIR += ipmitool
     SUBDIR += ipsc
     SUBDIR += isc-cron
@@ -596,6 +608,7 @@
     SUBDIR += k4dirstat
     SUBDIR += k8temp
     SUBDIR += k9s
+    SUBDIR += kapp
     SUBDIR += kbackup
     SUBDIR += kcron
     SUBDIR += kdeadmin
@@ -633,6 +646,7 @@
     SUBDIR += libcdio-paranoia
     SUBDIR += libchk
     SUBDIR += libcpuid
+    SUBDIR += libdisplay-info
     SUBDIR += libdnf
     SUBDIR += libfvde
     SUBDIR += libg15
@@ -665,7 +679,6 @@
     SUBDIR += logrotate
     SUBDIR += logstalgia
     SUBDIR += logstash-forwarder
-    SUBDIR += logstash6
     SUBDIR += logstash7
     SUBDIR += logstash8
     SUBDIR += logtool
@@ -683,6 +696,7 @@
     SUBDIR += ltrace
     SUBDIR += lttng-tools
     SUBDIR += lttng-ust
+    SUBDIR += lua-puremagic
     SUBDIR += luckybackup
     SUBDIR += lxinput
     SUBDIR += lxqt-admin
@@ -822,6 +836,7 @@
     SUBDIR += ntpstat
     SUBDIR += nut
     SUBDIR += nut-devel
+    SUBDIR += nut_exporter
     SUBDIR += nvclock
     SUBDIR += nvimpager
     SUBDIR += nvme-cli
@@ -829,6 +844,7 @@
     SUBDIR += oak
     SUBDIR += obliterate
     SUBDIR += oc
+    SUBDIR += ocijail
     SUBDIR += odo
     SUBDIR += ods2
     SUBDIR += ohmu
@@ -957,6 +973,7 @@
     SUBDIR += pc-networkmanager
     SUBDIR += pcapfix
     SUBDIR += pciutils
+    SUBDIR += pcns
     SUBDIR += pcpustat
     SUBDIR += pdixtract
     SUBDIR += pdsh
@@ -981,8 +998,6 @@
     SUBDIR += pfstat
     SUBDIR += pftables
     SUBDIR += pftop
-    SUBDIR += php74-fileinfo
-    SUBDIR += php74-posix
     SUBDIR += php80-fileinfo
     SUBDIR += php80-posix
     SUBDIR += php81-fileinfo
@@ -1011,11 +1026,14 @@
     SUBDIR += plconfig
     SUBDIR += pmt
     SUBDIR += pnscan
+    SUBDIR += podman
+    SUBDIR += podman-suite
     SUBDIR += polkit
     SUBDIR += polkit-gnome
     SUBDIR += polkit-qt
     SUBDIR += pot
     SUBDIR += potnet
+    SUBDIR += poweralertd
     SUBDIR += powerdxx
     SUBDIR += powerman
     SUBDIR += powermon
@@ -1023,6 +1041,7 @@
     SUBDIR += pprotectd
     SUBDIR += prips
     SUBDIR += procenv
+    SUBDIR += process-viewer
     SUBDIR += procmap
     SUBDIR += progsreiserfs
     SUBDIR += pslist
@@ -1045,7 +1064,6 @@
     SUBDIR += pxp-agent
     SUBDIR += py-ansible-compat
     SUBDIR += py-ansible-core
-    SUBDIR += py-ansible-core211
     SUBDIR += py-ansible-lint
     SUBDIR += py-ansible-runner
     SUBDIR += py-azure-cli
@@ -1127,6 +1145,7 @@
     SUBDIR += pydf
     SUBDIR += qchroot
     SUBDIR += qdirstat
+    SUBDIR += qflipper
     SUBDIR += qjail
     SUBDIR += qjail54
     SUBDIR += qlogtools
@@ -1135,6 +1154,7 @@
     SUBDIR += qt5-qtpaths
     SUBDIR += qt5-qtplugininfo
     SUBDIR += qtpass
+    SUBDIR += qtxdg-tools
     SUBDIR += quickjail
     SUBDIR += quicksynergy
     SUBDIR += racktables
@@ -1270,6 +1290,7 @@
     SUBDIR += rubygem-yell
     SUBDIR += rundeck2
     SUBDIR += rundeck3
+    SUBDIR += runiq
     SUBDIR += runit
     SUBDIR += runit-faster
     SUBDIR += runj
@@ -1321,6 +1342,7 @@
     SUBDIR += signon-plugin-oauth2
     SUBDIR += signon-qt5
     SUBDIR += signon-ui
+    SUBDIR += skopeo
     SUBDIR += slack
     SUBDIR += sleuthkit
     SUBDIR += slst
@@ -1332,6 +1354,7 @@
     SUBDIR += smug
     SUBDIR += snap
     SUBDIR += snapraid
+    SUBDIR += sndy
     SUBDIR += snmp_exporter
     SUBDIR += snooze
     SUBDIR += sockaddr
@@ -1372,6 +1395,7 @@
     SUBDIR += syslogger
     SUBDIR += sysrc
     SUBDIR += sysvbanner
+    SUBDIR += szyszka
     SUBDIR += tai64nfrac
     SUBDIR += tarsnap
     SUBDIR += tarsnap-gui
@@ -1383,6 +1407,7 @@
     SUBDIR += tdir
     SUBDIR += tealdeer
     SUBDIR += tenshi
+    SUBDIR += tere
     SUBDIR += terraform
     SUBDIR += terraform-docs
     SUBDIR += terraform-provider-gridscale
@@ -1410,6 +1435,7 @@
     SUBDIR += topless
     SUBDIR += torque
     SUBDIR += toshctl
+    SUBDIR += touchegg
     SUBDIR += toybox
     SUBDIR += tracker
     SUBDIR += tracker-miners
@@ -1519,6 +1545,7 @@
     SUBDIR += userneu-devel
     SUBDIR += usrinfo
     SUBDIR += utcount
+    SUBDIR += uutils
     SUBDIR += vagrant
     SUBDIR += vbetool
     SUBDIR += vchanger

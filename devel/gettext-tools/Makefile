@@ -3,7 +3,7 @@
 # discretion.
 
 PORTNAME=	gettext-tools
-PORTREVISION=	1
+PORTREVISION=	0
 
 COMMENT=	GNU gettext development and translation tools
 WWW=		https://www.gnu.org/software/gettext/
@@ -25,7 +25,7 @@ CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-csharp --disable-java --with-included-glib \
 		--with-included-libcroco --with-included-libunistring \
-		--with-included-libxml --without-emacs --without-git \
+		--with-included-libxml --with-xz --without-emacs \
 		ac_cv_lib_rt_sched_yield=no
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check

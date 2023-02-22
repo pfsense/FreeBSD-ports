@@ -1,5 +1,6 @@
 PORTNAME=	gocheese
-DISTVERSION=	3.5.0
+DISTVERSION=	3.7.0
+PORTREVISION=	3
 CATEGORIES=	devel python
 MASTER_SITES=	http://www.gocheese.cypherpunks.ru/download/
 

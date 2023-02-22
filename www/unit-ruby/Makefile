@@ -1,15 +1,16 @@
+PORTREVISION=	1
 PKGNAMESUFFIX=	-${UNIT_MODNAME}
 
 UNIT_MODNAME=	ruby${RUBY_VER}
 
 COMMENT=	Ruby module for NGINX Unit
 
-RUN_DEPENDS=	rackup:www/rubygem-rack \
+RUN_DEPENDS=	rackup:www/rubygem-rack22 \
 		unitd:www/unit
 
 PLIST_FILES=	libexec/unit/modules/${UNIT_MODNAME}.unit.so
 
-USE_RUBY=	yes
+USES=	ruby
 
 CFLAGS+=	-fdeclspec
 

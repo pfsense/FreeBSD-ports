@@ -1,7 +1,7 @@
 PORTNAME=	orange3-bioinformatics
 DISTVERSION=	4.3.1
 CATEGORIES=	biology python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Orange3-Bioinformatics-${DISTVERSION}
 
@@ -11,9 +11,6 @@ WWW=		https://github.com/biolab/orange3-bioinformatics
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Depends on expired security/py-keyrings.alt (via msic/orange3)
-EXPIRATION_DATE=2022-12-31
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
 RUN_DEPENDS=	orange3>0:misc/orange3 \

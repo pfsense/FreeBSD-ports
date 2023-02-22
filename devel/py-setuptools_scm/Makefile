@@ -1,10 +1,10 @@
 PORTNAME=	setuptools_scm
 PORTVERSION=	6.4.2
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	kai@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Setuptools plugin to manage your versions by scm tags
 WWW=		https://github.com/pypa/setuptools_scm
 

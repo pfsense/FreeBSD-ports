@@ -1,8 +1,8 @@
 PORTNAME=	php82
-DISTVERSION=	8.2.0RC4
+DISTVERSION=	8.2.3
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
-MASTER_SITES=	https://downloads.php.net/~sergey/
+MASTER_SITES=	PHP/distributions
 DISTNAME=	php-${DISTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -89,25 +89,19 @@ PHPDBG_VARS=		PHP_SAPI+=phpdbg
 ZTS_CONFIGURE_ON=	--enable-zts
 ZTS_CONFIGURE_ENV=	pthreads_working="yes"
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == riscv64
-CONFIGURE_ARGS+=	--without-pcre-jit
-.endif
-
 .if defined(PKGNAMEPREFIX)
-USES+=			apache:2.2+
-.include "${PORTSDIR}/Mk/Uses/apache.mk"
-.if ${PORT_OPTIONS:MAP2FILTER}
-CONFIGURE_ARGS+=	--with-apxs2filter=${APXS}
-.else
-CONFIGURE_ARGS+=	--with-apxs2=${APXS}
-.endif
+USES+=			apache
 PLIST=			${PKGDIR}/pkg-plist.mod
 PKGMESSAGE=		${PKGDIR}/pkg-message.mod
 MODULENAME=		libphp
 SHORTMODNAME=		php
 WARNING=		"!!! If you have a threaded Apache, you must build ${PHP_PORT} with ZTS support to enable thread-safety in extensions !!!"
+.endif
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == riscv64
+CONFIGURE_ARGS+=	--without-pcre-jit
 .endif
 
 .if ${PORT_OPTIONS:MPHPDBG} && ${PORT_OPTIONS:MDEBUG}
@@ -180,7 +174,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	82
-IGNORE_WITH_PHP=	74 80 81
+IGNORE_WITH_PHP=	80 81
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -370,8 +364,7 @@ BUILD_DEPENDS=		re2c:devel/re2c
 .if ${PHP_MODNAME} == "ldap"
 CONFIGURE_ARGS+=	--with-ldap-sasl=${LOCALBASE} \
 			--with-ldap=${LOCALBASE}
-
-USE_OPENLDAP=	yes
+USES+=	ldap
 .endif
 
 .if ${PHP_MODNAME} == "mbstring"

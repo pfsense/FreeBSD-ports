@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 PORTVERSION=	5.2.44
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX?=	-legacy
@@ -141,6 +141,7 @@ LICENSE_DISTFILES_Additions=	${GUESTADDITIONS}
 .if ${PORT_OPTIONS:MMANUAL}
 DBKXMLDIR=	${LOCALBASE}/share/xml/docbook/4.4
 DBKXSLDIR=	${LOCALBASE}/share/xsl/docbook
+USES+=		tex
 USE_TEX=	dvipsk:build formats:build
 .endif
 

@@ -1,10 +1,10 @@
 PORTNAME=	mongodb42-tools
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.2.19
-PORTREVISION=	6
+DISTVERSION=	4.2.23
+PORTREVISION=	4
 CATEGORIES=	databases
 
-MAINTAINER=	ronald-lists@klop.ws
+MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	Tools for MongoDB 4.2.x
 WWW=		https://github.com/mongodb/mongo-tools
 

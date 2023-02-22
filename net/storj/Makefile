@@ -1,5 +1,6 @@
 PORTNAME=	storj
-PORTVERSION=	1.65.1
+PORTVERSION=	1.71.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -9,7 +10,7 @@ WWW=		https://storj.io/
 
 LICENSE=	AGPLv3
 
-USES=		go:modules
+USES=		go:1.19,modules
 USE_GITHUB=	yes
 
 .include "${.CURDIR}/Makefile.deps"

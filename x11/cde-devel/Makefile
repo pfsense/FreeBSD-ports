@@ -12,8 +12,8 @@ WWW=		https://sourceforge.net/p/cdesktopenv/wiki/Home/
 USE_GITHUB=	yes
 GH_ACCOUNT=	cschuber
 GH_PROJECT=	cdesktopenv-code
-GH_TAGNAME=	503d09172
-COMMIT_DATE=	2022.10.01
+GH_TAGNAME=	1f101d22f
+COMMIT_DATE=	2023.02.18
 
 LICENSE=	LGPL21
 
@@ -30,7 +30,7 @@ DT_ID=
 .endif
 PLIST_SUB=	DT_ID=${DT_ID}
 
-BUILD_DEPENDS=	ksh93:shells/ksh93			\
+BUILD_DEPENDS=	ksh93:shells/ksh			\
 		bdftopcf:x11-fonts/bdftopcf		\
 		mkfontscale>=0:x11-fonts/mkfontscale	\
 		biconv:converters/iconv			\
@@ -38,7 +38,7 @@ BUILD_DEPENDS=	ksh93:shells/ksh93			\
 		${LOCALBASE}/libdata/pkgconfig/freetype2.pc:print/freetype2 \
 		onsgmls:textproc/opensp \
 		xrdb:x11/xrdb
-RUN_DEPENDS=	ksh93:shells/ksh93			\
+RUN_DEPENDS=	ksh93:shells/ksh			\
 		${LOCALBASE}/bin/fc-cache:x11-fonts/fontconfig \
 		${LOCALBASE}/libdata/pkgconfig/freetype2.pc:print/freetype2 \
 		xrdb:x11/xrdb \
@@ -117,6 +117,7 @@ post-install:
 		${STAGEDIR}${PREFIX}/etc/pam.d/cde${DT_ID}.conf
 	@${ECHO_CMD} MANPATH /usr/local/dt/share/man >  ${STAGEDIR}/${PREFIX}/etc/man.d/cde${DT_ID}.conf
 	@${FIND} ${STAGEDIR}/${DT_PREFIX} -type f -exec ${SH} -c '${STRIP_CMD} {} > /dev/null 2>&1' \;
+	@${FIND} ${STAGEDIR}/${DT_PREFIX} -type f -name '*.bak' -delete
 	@cd ${WRKSRC}/examples && @${FIND} . | ${CPIO} -pd ${STAGEDIR}/${DT_PREFIX}/share
 	@cd ${STAGEDIR}/${DT_PREFIX}; ${LN} -sf share/examples
 	# Only a problem on armv7 so far

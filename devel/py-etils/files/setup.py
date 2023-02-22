@@ -6,19 +6,23 @@ from distutils.core import setup
 packages = \
 ['etils',
  'etils.array_types',
+ 'etils.eapp',
  'etils.ecolab',
  'etils.edc',
  'etils.enp',
+ 'etils.enp.array_types',
  'etils.epath',
  'etils.epy',
  'etils.etqdm',
- 'etils.etree']
+ 'etils.etree',
+ 'etils.lazy_imports']
 
 package_data = \
 {'': ['*'], 'etils.epath': ['docs/*']}
 
 extras_require = \
 {'all': ['etils[array-types]',
+         'etils[eapp]',
          'etils[ecolab]',
          'etils[edc]',
          'etils[enp]',
@@ -27,7 +31,8 @@ extras_require = \
          'etils[etqdm]',
          'etils[etree]',
          'etils[etree-dm]',
-         'etils[etree-jax]'],
+         'etils[etree-jax]',
+         'etils[etree-tf]'],
  'array-types': ['etils[enp]'],
  'dev': ['pytest',
          'pytest-subtests',
@@ -35,8 +40,9 @@ extras_require = \
          'pylint>=2.6.0',
          'yapf',
          'chex'],
+ 'eapp': ['absl-py', 'simple_parsing', 'etils[epy]'],
  'ecolab': ['jupyter', 'numpy', 'mediapy', 'etils[enp]', 'etils[epy]'],
- 'edc': ['etils[epy]'],
+ 'edc': ['typing_extensions', 'etils[epy]'],
  'enp': ['numpy', 'etils[epy]'],
  'epath': ['importlib_resources', 'typing_extensions', 'zipp', 'etils[epy]'],
  'epy': ['typing_extensions'],
@@ -44,7 +50,7 @@ extras_require = \
  'etree': ['etils[array_types]', 'etils[epy]', 'etils[enp]', 'etils[etqdm]'],
  'etree-dm': ['dm-tree', 'etils[etree]'],
  'etree-jax': ['jax[cpu]', 'etils[etree]'],
- 'etree-tf': ['tf-nightly', 'etils[etree]'],
+ 'etree-tf': ['tensorflow', 'etils[etree]'],
  'lazy-imports': ['etils[ecolab]']}
 
 setup(name='etils',
@@ -56,5 +62,5 @@ setup(name='etils',
       packages=packages,
       package_data=package_data,
       extras_require=extras_require,
-      python_requires='>=3.7',
+      python_requires='>=3.8',
      )

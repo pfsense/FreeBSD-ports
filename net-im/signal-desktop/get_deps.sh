@@ -1,14 +1,28 @@
 #!/bin/sh
-SIGNAL_VERS=v5.56.0
+SIGNAL_VERS=v6.6.0
 
-ringrtc_hash=$(fetch -qo - https://raw.githubusercontent.com/signalapp/Signal-Desktop/${SIGNAL_VERS}/package.json | grep '"ringrtc": "https' | awk -F "#" '{print $2}' | sed 's#",##')
-# echo "RINGRTC_HASH= ${ringrtc_hash} ; https://raw.githubusercontent.com/signalapp/Signal-Desktop/${SIGNAL_VERS}/package.json"
+fetch -qo /tmp/package.json https://raw.githubusercontent.com/signalapp/Signal-Desktop/${SIGNAL_VERS}/package.json
+ringrtc_version=$(grep '@signalapp/ringrtc"' /tmp/package.json | awk -F ":" '{print $2}' | sed -E 's#("|,| )##g')
+echo "RINGRTC_VERSION= ${ringrtc_version}"
 
-ringrtc_version=$(fetch -qo - https://raw.githubusercontent.com/signalapp/signal-ringrtc-node/${ringrtc_hash}/package.json | grep '"version":' | awk -F ":" '{print $2}' | sed -e 's# "##' -e 's#",##')
-echo "RINGRTC_VERSION= ${ringrtc_version} ; https://raw.githubusercontent.com/signalapp/signal-ringrtc-node/${ringrtc_hash}/package.json"
+webrtc_version=$(fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v${ringrtc_version}/config/version.properties | grep 'webrtc.version' | awk -F '=' '{print $2}')
+echo "WEBRTC_REV= ${webrtc_version}"
 
-webrtc_version=$(fetch -qo - https://raw.githubusercontent.com/signalapp/ringrtc/v${ringrtc_version}/config/version.sh | awk -F '=' /WEBRTC_VERSION/'{print $2}')
-echo "WEBRTC_REV= ${webrtc_version} ; https://raw.githubusercontent.com/signalapp/ringrtc/v${ringrtc_version}/config/version.sh"
-
-libsignalclient_version=$(fetch -qo - https://raw.githubusercontent.com/signalapp/Signal-Desktop/${SIGNAL_VERS}/yarn.lock | grep 'signalapp/libsignal-client@' | awk -F '@' '{print $3}' | sed 's#", "##')
+libsignalclient_version=$(grep '@signalapp/libsignal-client' /tmp/package.json | awk -F ":" '{print $2}' | sed -E 's#("|,| )##g')
 echo "LIBSIGNAL_VERSION= ${libsignalclient_version}"
+
+electron_version=$(grep '"electron":' /tmp/package.json | awk -F ":" '{print $2}' | sed -E 's#("|,| )##g')
+echo "ELECTRON_VERSION= ${electron_version}"
+
+bsqlite3_version=$(grep '@signalapp/better-sqlite3' /tmp/package.json | awk -F ":" '{print $2}' | sed -E 's#("|,| )##g')
+
+fetch -qo /tmp/download.js https://raw.githubusercontent.com/signalapp/better-sqlite3/v${bsqlite3_version}/deps/download.js
+
+BASE_URI=https://build-artifacts.signal.org/desktop
+HASH=$(awk /"HASH ="/'{print $4}' /tmp/download.js | sed -e 's#;##g' -e "s#'##g")
+SQLCIPHER_VERSION=$(awk /"SQLCIPHER_VERSION ="/'{print $4}' /tmp/download.js | sed -e 's#;##g' -e "s#'##g")
+OPENSSL_VERSION=$(awk /"OPENSSL_VERSION ="/'{print $4}' /tmp/download.js | sed -e 's#;##g' -e "s#'##g")
+TOKENIZER_VERSION=$(awk /"TOKENIZER_VERSION ="/'{print $4}' /tmp/download.js | sed -e 's#;##g' -e "s#'##g")
+TAG="${SQLCIPHER_VERSION}--${OPENSSL_VERSION}--${TOKENIZER_VERSION}"
+echo "Signal-FTS5-Extension= ${TOKENIZER_VERSION}"
+echo "SQLCIPHER= sqlcipher-${TAG}-${HASH}"

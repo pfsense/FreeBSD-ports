@@ -188,7 +188,17 @@
     SUBDIR += noto-hk
     SUBDIR += noto-jp
     SUBDIR += noto-kr
+    SUBDIR += noto-sans-hk
+    SUBDIR += noto-sans-jp
+    SUBDIR += noto-sans-kr
+    SUBDIR += noto-sans-sc
+    SUBDIR += noto-sans-tc
     SUBDIR += noto-sc
+    SUBDIR += noto-serif-hk
+    SUBDIR += noto-serif-jp
+    SUBDIR += noto-serif-kr
+    SUBDIR += noto-serif-sc
+    SUBDIR += noto-serif-tc
     SUBDIR += noto-tc
     SUBDIR += nucleus
     SUBDIR += office-code-pro
@@ -225,6 +235,7 @@
     SUBDIR += py-cu2qu
     SUBDIR += py-defcon
     SUBDIR += py-fontMath
+    SUBDIR += py-fontfeatures
     SUBDIR += py-fontmake
     SUBDIR += py-gflanguages
     SUBDIR += py-glyphsLib

@@ -1,5 +1,5 @@
 PORTNAME=	wayout
-DISTVERSION=	0.1.3
+DISTVERSION=	0.1.4
 CATEGORIES=	x11 wayland
 MASTER_SITES=	https://git.sr.ht/~proycon/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
@@ -15,6 +15,7 @@ LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 
 USES=		compiler:c11 gnome meson pkgconfig
 USE_GNOME=	cairo pango
+CFLAGS+=	-Wno-error=strict-prototypes # Clang 15, similar to wlclock
 PLIST_FILES=	bin/${PORTNAME}
 
 OPTIONS_DEFINE=	EPOLL MANPAGES

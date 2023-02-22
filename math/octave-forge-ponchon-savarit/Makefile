@@ -1,32 +1,23 @@
 PORTNAME=	octave-forge-ponchon-savarit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.1
+DISTVERSION=	0.1.3
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
-WWW=		http://octave.sourceforge.net/
+WWW=		https://packages.octave.org/
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
+LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
+USES=		octave
 USE_GITHUB=	yes
 GH_ACCOUNT=	aumpierre-unb
 GH_PROJECT=	Ponchon-Savarit-for-GNU-Octave
 
-# OCTSRC is the name of the directory of the package.
-# It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${GH_PROJECT}-${DISTVERSION}
+OCTAVE_SRC=		${GH_PROJECT}-${DISTVERSION}
 
-WRKSRC=		${WRKDIR}/${OCTSRC}/src
-
-do-build:
-	@${DO_NADA}
-
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
-
-post-build:
-	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
-	cd ${WRKDIR} && ${TAR} cfz ${OCTAVE_DISTNAME}.tar.gz ${OCTSRC}
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 .include <bsd.port.mk>

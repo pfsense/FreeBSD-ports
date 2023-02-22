@@ -1,13 +1,13 @@
 PORTNAME=	nagios
-PORTVERSION=	4.4.6
-PORTREVISION=	1
+PORTVERSION=	4.4.10
+PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://assets.nagios.com/downloads/nagioscore/releases/ \
 		SF/${PORTNAME}/${PORTNAME}-4.x/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	4
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Powerful network monitoring system
 WWW=		https://www.nagios.org/
 

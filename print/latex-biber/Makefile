@@ -1,7 +1,9 @@
 PORTNAME=	biber
-PORTVERSION=	2.17
+# https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/development/documentation/biber.pdf/download
+# Keep this in-sync with biblatex.sty (currently at 3.16).
+PORTVERSION=	2.16
+PORTEPOCH=	1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	print perl5
 PKGNAMEPREFIX=	latex-
 DIST_SUBDIR=	TeX
@@ -52,7 +54,7 @@ __DEPENDS=	ja-p5-Encode-EUCJPASCII>0:japanese/p5-Encode-EUCJPASCII \
 BUILD_DEPENDS=	${__DEPENDS}
 RUN_DEPENDS=	${__DEPENDS}
 
-USES=		perl5
+USES=		perl5 tex
 USE_GITHUB=	yes
 GH_ACCOUNT=	plk
 USE_PERL5=	modbuild

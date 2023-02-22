@@ -1,5 +1,5 @@
 PORTNAME=	ping_exporter
-DISTVERSION=	1.0.0
+DISTVERSION=	1.0.1
 PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://raw.githubusercontent.com/czerwonk/ping_exporter/${DISTVERSIONFULL}/:gomod

@@ -40,8 +40,7 @@ OPTIONS_SUB=	yes
 ESPEAK_LIB_DEPENDS=	libespeak-ng.so:audio/espeak-ng
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 
-MANPAGES_USE=		RUBY=yes
-MANPAGES_VARS=		RUBY_NO_RUN_DEPENDS=yes
+MANPAGES_USES=		ruby:build
 
 LUAJIT_DESC=		Use LuaJIT instead of standard Lua
 LUAJIT_USES=		luajit
@@ -69,6 +68,7 @@ UVC_CMAKE_BOOL=		FSRV_DECODE_UVC
 VNC_DESC=		VNC client/server support
 VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
 
+WAYLAND_CATEGORIES=	wayland
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 			libxcb-icccm.so:x11/xcb-util-wm \

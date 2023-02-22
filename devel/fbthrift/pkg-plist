@@ -241,6 +241,7 @@ include/thrift/lib/cpp2/async/RetryingRequestChannel.h
 include/thrift/lib/cpp2/async/RocketClientChannel.h
 include/thrift/lib/cpp2/async/RpcOptions.h
 include/thrift/lib/cpp2/async/RpcTypes.h
+include/thrift/lib/cpp2/async/SchemaV1.h
 include/thrift/lib/cpp2/async/ServerChannel.h
 include/thrift/lib/cpp2/async/ServerGeneratorStream-inl.h
 include/thrift/lib/cpp2/async/ServerGeneratorStream.h
@@ -320,8 +321,8 @@ include/thrift/lib/cpp2/op/detail/BasePatch.h
 include/thrift/lib/cpp2/op/detail/Clear.h
 include/thrift/lib/cpp2/op/detail/Compare.h
 include/thrift/lib/cpp2/op/detail/ContainerOp.h
-include/thrift/lib/cpp2/op/detail/Copy.h
 include/thrift/lib/cpp2/op/detail/ContainerPatch.h
+include/thrift/lib/cpp2/op/detail/Copy.h
 include/thrift/lib/cpp2/op/detail/Create.h
 include/thrift/lib/cpp2/op/detail/Encode.h
 include/thrift/lib/cpp2/op/detail/Get.h
@@ -426,6 +427,7 @@ include/thrift/lib/cpp2/server/PerturbSource.h
 include/thrift/lib/cpp2/server/PolledServiceHealth.h
 include/thrift/lib/cpp2/server/PreprocessParams.h
 include/thrift/lib/cpp2/server/ReactiveToggle.h
+include/thrift/lib/cpp2/server/RequestCompletionCallback.h
 include/thrift/lib/cpp2/server/RequestDebugLog.h
 include/thrift/lib/cpp2/server/RequestPileBase.h
 include/thrift/lib/cpp2/server/RequestPileInterface.h
@@ -448,7 +450,6 @@ include/thrift/lib/cpp2/server/WeightedRequestPileQueue-inl.h
 include/thrift/lib/cpp2/server/WeightedRequestPileQueue.h
 include/thrift/lib/cpp2/server/peeking/PeekingManager.h
 include/thrift/lib/cpp2/server/peeking/TLSHelper.h
-include/thrift/lib/cpp2/test/Matcher-inl.h
 include/thrift/lib/cpp2/test/Matcher.h
 include/thrift/lib/cpp2/test/MockCpp2ConnContext.h
 include/thrift/lib/cpp2/test/ProtoBufStructs-inl.h
@@ -462,6 +463,7 @@ include/thrift/lib/cpp2/transport/core/ClientConnectionIf.h
 include/thrift/lib/cpp2/transport/core/EnvelopeUtil.h
 include/thrift/lib/cpp2/transport/core/ManagedConnectionIf.h
 include/thrift/lib/cpp2/transport/core/RequestStateMachine.h
+include/thrift/lib/cpp2/transport/core/RpcMetadataPlugins.h
 include/thrift/lib/cpp2/transport/core/RpcMetadataUtil.h
 include/thrift/lib/cpp2/transport/core/ThriftChannelIf.h
 include/thrift/lib/cpp2/transport/core/ThriftClient.h
@@ -560,6 +562,9 @@ include/thrift/lib/cpp2/util/MethodMetadata.h
 include/thrift/lib/cpp2/util/ScopedServerInterfaceThread-inl.h
 include/thrift/lib/cpp2/util/ScopedServerInterfaceThread.h
 include/thrift/lib/cpp2/util/ScopedServerThread.h
+include/thrift/lib/cpp2/util/gtest/Matcher-inl.h
+include/thrift/lib/cpp2/util/gtest/Matcher.h
+include/thrift/lib/cpp2/util/gtest/Printer.h
 include/thrift/lib/cpp2/visitation/ShrinkToFit.h
 include/thrift/lib/cpp2/visitation/for_each.h
 include/thrift/lib/cpp2/visitation/metadata.h

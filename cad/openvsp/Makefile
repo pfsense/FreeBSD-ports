@@ -1,6 +1,6 @@
 PORTNAME=	openvsp
 DISTVERSIONPREFIX=	${GH_PROJECT}_
-DISTVERSION=	3.30.0
+DISTVERSION=	3.31.1
 CATEGORIES=	cad
 
 MAINTAINER=	fernape@FreeBSD.org
@@ -15,8 +15,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BROKEN_aarch64=		fails to compile: invokes x86 asm
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libopenNURBS.a:graphics/opennurbs \
-		${LOCALBASE}/include/glm/glm.hpp:math/glm \
-		${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
+		${LOCALBASE}/include/glm/glm.hpp:math/glm
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \

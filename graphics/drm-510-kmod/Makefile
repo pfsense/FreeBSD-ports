@@ -1,6 +1,6 @@
 PORTNAME=	drm-510-kmod
-PORTVERSION=	5.10.113
-PORTREVISION=	7
+PORTVERSION=	5.10.163
+PORTREVISION=	2
 CATEGORIES=	graphics kld
 
 MAINTAINER=	x11@FreeBSD.org
@@ -13,14 +13,14 @@ LICENSE_COMB=	multi
 ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	the new KMS components are only supported on amd64, i386, aarch64, and powerpc64
 
-CONFLICTS_INSTALL=	drm-devel-kmod drm-current-kmod drm-54-kmod
+CONFLICTS_INSTALL=	drm-515-kmod
 
 USES=		kmod uidfix compiler:c++11-lang
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	drm-kmod
-GH_TAGNAME=	drm_v5.10.113_8
+GH_TAGNAME=	drm_v5.10.163_2
 
 .include <bsd.port.options.mk>
 

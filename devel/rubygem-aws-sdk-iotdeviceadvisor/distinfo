@@ -1,3 +1,3 @@
-TIMESTAMP = 1659161239
-SHA256 (rubygem/aws-sdk-iotdeviceadvisor-1.15.0.gem) = 498cdf3b1ca51adf966a33af6869e49b2696ccb01ef2f466fe386b60551576ba
-SIZE (rubygem/aws-sdk-iotdeviceadvisor-1.15.0.gem) = 25088
+TIMESTAMP = 1675191459
+SHA256 (rubygem/aws-sdk-iotdeviceadvisor-1.18.0.gem) = c6ab4495845e0e6fdb7c8fccd599945ee92f5f44066a51342f04ea6e0607d462
+SIZE (rubygem/aws-sdk-iotdeviceadvisor-1.18.0.gem) = 26624

@@ -1,6 +1,6 @@
 PORTNAME?=		mysql
-PORTVERSION=		8.0.30
-PORTREVISION?=		2
+PORTVERSION=		8.0.32
+PORTREVISION?=		0
 CATEGORIES=		databases
 MASTER_SITES=		MYSQL/MySQL-8.0
 PKGNAMESUFFIX?=		80-server
@@ -11,8 +11,6 @@ COMMENT?=		Multithreaded SQL database (server)
 WWW=		https://www.mysql.com/
 
 LICENSE=		GPLv2
-
-BROKEN_i386=	--yplg_out: protoc-gen-yplg: Plugin killed by signal 11.
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 
@@ -55,7 +53,7 @@ BUILD_DEPENDS_powerpc64=	libunwind>0:devel/libunwind
 BUILD_DEPENDS_powerpc64le=	libunwind>0:devel/libunwind
 
 CMAKE_BUILD_TYPE=	Release
-CFLAGS+=		-fPIC -DNDEBUG -malign-double
+CFLAGS+=		-fPIC -malign-double
 CFLAGS_aarch64?=	-march=armv8-a+crc+crypto
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
@@ -86,7 +84,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DWITH_ICU=system \
 		-DWITH_CURL=system \
 		-DWITH_ZSTD=system \
-		-DWITH_PROTOBUF=system \
+		-DWITH_PROTOBUF=bundled \
 		-DWITH_SSL=system \
 		-DWITH_AUTHENTICATION_FIDO=1 \
 		-DBUILD_BUNDLED_ZLIB=0 \

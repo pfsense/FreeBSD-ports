@@ -1,6 +1,6 @@
---- plugins/builtin/source/content/settings_entries.cpp.orig	2022-10-08 08:03:47 UTC
+--- plugins/builtin/source/content/settings_entries.cpp.orig	2023-02-12 18:24:04 UTC
 +++ plugins/builtin/source/content/settings_entries.cpp
-@@ -21,8 +21,7 @@ namespace {
+@@ -24,8 +24,7 @@ namespace {
          userFolders.clear();
          std::vector<std::string> paths = setting;
          for (const auto &path : paths) {

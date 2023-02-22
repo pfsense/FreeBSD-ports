@@ -1,12 +1,8 @@
 PORTNAME=	ocp
-PORTVERSION=	0.2.100
-PORTREVISION=	1
+PORTVERSION=	0.2.103
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://stian.cubic.org/ocp/
-
-PATCH_SITES=	https://github.com/mywave82/opencubicplayer/commit/
-PATCHFILES+=	b57f0279fb952db99b11006edb44ed7cb4658bed.patch:-p1
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Legendary Open Cubic Player
@@ -18,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
 BUILD_DEPENDS=	xa65:devel/xa65
-LIB_DEPENDS=	libcjson.so:devel/libcjson \
+LIB_DEPENDS=	libancient.so:archivers/ancient \
+		libcjson.so:devel/libcjson \
 		libdiscid.so:audio/libdiscid \
 		libid3tag.so:audio/libid3tag \
 		libmad.so:audio/libmad \
@@ -27,7 +24,7 @@ LIB_DEPENDS=	libcjson.so:devel/libcjson \
 		libvorbis.so:audio/libvorbis
 
 USES=		compiler:c11 dos2unix gmake gnome iconv jpeg localbase:ldflags \
-		makeinfo ncurses pkgconfig tar:xz
+		makeinfo ncurses pkgconfig shared-mime-info tar:xz
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--libdir=${PREFIX}/lib \

@@ -1,12 +1,12 @@
 PORTNAME=	malloy
-DISTVERSION=	0.5.1
+DISTVERSION=	0.6.0
 CATEGORIES=	devel
 
 MAINTAINER=	jbo@insane.engineer
 COMMENT=	Embeddable HTTP(S) and WS(S) client/server components for C++
 WWW=		https://github.com/tectu/malloy
 
-LICENSE=	MIT
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
 BROKEN_FreeBSD_12=	some C++20 STL headers are missing on 12.3,\

@@ -1,5 +1,5 @@
 PORTNAME=	sway
-DISTVERSION=	1.7
+DISTVERSION=	1.8.1
 CATEGORIES=	x11-wm wayland
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -15,18 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>=1.24:graphics/wayland-protocols \
-		wlroots>=0.15.0<0.16.0:x11-toolkits/wlroots
+		wlroots>=0.16.0<0.17.0:x11-toolkits/wlroots
 LIB_DEPENDS=	libjson-c.so:devel/json-c \
 		libevdev.so:devel/libevdev \
 		libudev.so:devel/libudev-devd \
-		libpcre.so:devel/pcre \
+		libpcre2-8.so:devel/pcre2 \
 		libwayland-egl.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
-RUN_DEPENDS=	swaybg:x11/swaybg
-
-CONFLICTS_INSTALL=	${PORTNAME}-devel
 
 USES=		compiler:c11 gl gnome meson pkgconfig xorg
 USE_GITHUB=	yes
@@ -36,8 +33,8 @@ USE_XORG=	pixman
 GH_ACCOUNT=	swaywm
 MESON_ARGS=	-Dsd-bus-provider=basu
 
-OPTIONS_DEFINE=	BASU MANPAGES PIXBUF X11
-OPTIONS_DEFAULT=BASU MANPAGES PIXBUF X11
+OPTIONS_DEFINE=	BASU MANPAGES PIXBUF SWAYBG X11
+OPTIONS_DEFAULT=BASU MANPAGES PIXBUF SWAYBG X11
 OPTIONS_SUB=	yes
 
 BASU_DESC=		Tray in swaybar via basu
@@ -50,7 +47,11 @@ MANPAGES_MESON_ENABLED=	man-pages
 PIXBUF_USE=		GNOME=gdkpixbuf2
 PIXBUF_MESON_ENABLED=	gdk-pixbuf
 
+SWAYBG_DESC=		Default command to set background
+SWAYBG_RUN_DEPENDS=	swaybg:x11/swaybg
+
 X11_USE=		XORG=xcb
+X11_LIB_DEPENDS=	libxcb-icccm.so:x11/xcb-util-wm
 X11_MESON_ENABLED=	xwayland
 
 post-patch:

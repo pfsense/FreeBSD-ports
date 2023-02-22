@@ -24,10 +24,13 @@ steam-utils/lxbin/curl-config
 steam-utils/lxbin/dbus-launch
 steam-utils/lxbin/file
 steam-utils/lxbin/file.rb
+steam-utils/lxbin/lspci
 steam-utils/lxbin/lsu-proton
 steam-utils/lxbin/tar
 steam-utils/lxbin/zenity
 @comment steam-utils/lxbin/python3
+steam-utils/lxbin/patch-steam
+steam-utils/lxbin/patch-steam.rb
 steam-utils/lxbin/upgrade-steam-runtime
 steam-utils/lxbin/upgrade-steam-runtime.rb
 steam-utils/lxbin/xrandr

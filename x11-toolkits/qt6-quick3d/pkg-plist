@@ -575,10 +575,17 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/DebugViewSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/GridGeometrySection.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/GridGeometrySpecifics.qml
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/HeightFieldGeometrySection.qml
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/HeightFieldGeometrySpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/IdComboBox.qml
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/InstanceModelSection.qml
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/InstanceModelSpecifics.qml
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/InstanceRepeaterSection.qml
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/InstanceRepeaterSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/LookAtNodeSection.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/LookAtNodeSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/NodeSection.qml
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/Repeater3DSection.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/WasdControllerSection.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/WasdControllerSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/helpers.metainfo
@@ -594,6 +601,15 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/gridgeometry.png
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/gridgeometry16.png
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/gridgeometry@2x.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/heightfieldgeometry.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/heightfieldgeometry16.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/heightfieldgeometry@2x.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/instancemodel.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/instancemodel16.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/instancemodel@2x.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/instancerepeater.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/instancerepeater16.png
+%%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/instancerepeater@2x.png
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/lookatnode.png
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/lookatnode16.png
 %%QT_QMLDIR%%/QtQuick3D/Helpers/designer/images/lookatnode@2x.png
@@ -654,6 +670,8 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/NodeSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/Particle3DSection.qml
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/Particle3DSpecifics.qml
+%%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/ParticleCustomShape3DSection.qml
+%%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/ParticleCustomShape3DSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/ParticleEmitter3DSection.qml
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/ParticleEmitter3DSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/ParticleModelShape3DSection.qml
@@ -707,6 +725,9 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/model-shape-16px.png
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/model-shape-24px.png
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/model-shape-24px@2x.png
+%%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/particle-custom-shape-16px.png
+%%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/particle-custom-shape-24px.png
+%%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/particle-custom-shape-24px@2x.png
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/particle-shape-16px.png
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/particle-shape-24px.png
 %%QT_QMLDIR%%/QtQuick3D/Particles3D/designer/images/particle-shape-24px@2x.png
@@ -759,6 +780,7 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/designer/BufferSection.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/BufferSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/CameraSection.qml
+%%QT_QMLDIR%%/QtQuick3D/designer/CubeMapTextureSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/CustomCameraSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/CustomMaterialSection.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/CustomMaterialSpecifics.qml
@@ -810,6 +832,8 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/designer/ShaderSection.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/ShaderSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/ShadowSection.qml
+%%QT_QMLDIR%%/QtQuick3D/designer/SpecularGlossyMaterialSection.qml
+%%QT_QMLDIR%%/QtQuick3D/designer/SpecularGlossyMaterialSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/SpotLightSection.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/SpotLightSpecifics.qml
 %%QT_QMLDIR%%/QtQuick3D/designer/TextureInputSection.qml
@@ -827,6 +851,9 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/designer/images/cube.png
 %%QT_QMLDIR%%/QtQuick3D/designer/images/cube16.png
 %%QT_QMLDIR%%/QtQuick3D/designer/images/cube@2x.png
+%%QT_QMLDIR%%/QtQuick3D/designer/images/cubemaptexture.png
+%%QT_QMLDIR%%/QtQuick3D/designer/images/cubemaptexture16.png
+%%QT_QMLDIR%%/QtQuick3D/designer/images/cubemaptexture@2x.png
 %%QT_QMLDIR%%/QtQuick3D/designer/images/custommaterial.png
 %%QT_QMLDIR%%/QtQuick3D/designer/images/custommaterial16.png
 %%QT_QMLDIR%%/QtQuick3D/designer/images/custommaterial@2x.png
@@ -903,6 +930,7 @@ lib/cmake/Qt6Quick3DUtils/Qt6Quick3DUtilsVersionlessTargets.cmake
 %%QT_QMLDIR%%/QtQuick3D/designer/images/view3D.png
 %%QT_QMLDIR%%/QtQuick3D/designer/images/view3D16.png
 %%QT_QMLDIR%%/QtQuick3D/designer/images/view3D@2x.png
+%%QT_QMLDIR%%/QtQuick3D/designer/propertyGroups.json
 %%QT_QMLDIR%%/QtQuick3D/designer/quick3d.metainfo
 %%QT_QMLDIR%%/QtQuick3D/designer/source/custom_material_default_shader.frag
 %%QT_QMLDIR%%/QtQuick3D/designer/source/effect_default_shader.frag

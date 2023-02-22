@@ -1,5 +1,5 @@
 PORTNAME=	zim
-DISTVERSION=	0.75.0
+DISTVERSION=	0.75.1
 CATEGORIES=	deskutils python
 MASTER_SITES=	https://www.zim-wiki.org/downloads/
 
@@ -34,7 +34,8 @@ GNUPLOT_RUN_DEPENDS=	gnuplot:math/gnuplot
 GNUR_DESC=		Support of plot editor based on GNU R
 GNUR_RUN_DEPENDS=	R:math/R
 GRAPHVIZ_RUN_DEPENDS=	fdp:graphics/graphviz
-LATEX_USE=		tex=latex:run
+LATEX_USES=		tex
+LATEX_USE=		TEX=latex:run
 MERCURIAL_DESC=		Version control for notebooks using hg
 MERCURIAL_RUN_DEPENDS=	${PY_MERCURIAL}
 SCROT_DESC=		Screenshot taking and inserting support

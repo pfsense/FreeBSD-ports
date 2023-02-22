@@ -254,11 +254,11 @@ cardano:*:310:
 _arti:*:311:
 _sphinx:*:312:
 _fastdfs:*:313:
-# free: 314
-# free: 315
-# free: 316
-# free: 317
-# free: 318
+promscale:*:314:
+lavinmq:*:315:
+nut:*:316:
+hedgedoc:*:317:
+# free: 318, UID used by icingadirector
 # free: 319
 # free: 320
 # free: 321
@@ -929,7 +929,7 @@ tvheadend:*:984:
 puppetdb:*:985:
 kamailio:*:986:
 spark:*:987:
-# free: 988
+pot:*:988:
 emby:*:989:
 oozie:*:990:
 sguil:*:991:

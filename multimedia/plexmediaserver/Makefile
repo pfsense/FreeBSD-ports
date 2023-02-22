@@ -1,11 +1,11 @@
 PORTNAME=	plexmediaserver
-PORTVERSION?=	1.29.1.6316
-DISTVERSIONSUFFIX?=f4cdfea9c
+PORTVERSION?=	1.31.0.6654
+DISTVERSIONSUFFIX?=02189b09f
 CATEGORIES=	multimedia
 MASTER_SITES?=	https://downloads.plex.tv/plex-media-server-new/${DISTVERSION}-${DISTVERSIONSUFFIX}/freebsd/
 DISTNAME?=	PlexMediaServer-${DISTVERSION}-${DISTVERSIONSUFFIX}-FreeBSD-${ARCH}
 
-MAINTAINER?=	b.shertenlieb@yahoo.com
+MAINTAINER=	b.shertenlieb@yahoo.com
 COMMENT=	Plex Media Server component
 WWW=		https://plex.tv
 

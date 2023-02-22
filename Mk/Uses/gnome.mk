@@ -63,7 +63,7 @@ _USE_GNOME_ALL+= atk cairo \
 		gtk-update-icon-cache gtk20 \
 		gtksharp20 gtksourceview2 gvfs libartlgpl2 \
 		libglade2 libgnomecanvas \
-		libgsf libidl librsvg2 libwnck \
+		libgsf libidl librsvg2 \
 		libxml2 libxslt \
 		pango pangox-compat \
 		vte
@@ -79,9 +79,9 @@ _USE_GNOME_ALL+=dconf evolutiondataserver3 gnomecontrolcenter3 gnomedesktop3 \
 _USE_GNOME_ALL+=gtk40 libadwaita gtksourceview5
 
 # C++ bindings
-_USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm gtkmm24 \
+_USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm glibmm26 gtkmm24 \
 		gtkmm30 gtksourceviewmm3 libgdamm5 libxml++26 libsigc++20 \
-		pangomm
+		libsigc++30 pangomm
 
 # glib-mkenums often fails with C locale
 # https://gitlab.gnome.org/GNOME/glib/issues/1430
@@ -115,6 +115,9 @@ gconfmm26_USE_GNOME_IMPL=	glibmm gconf2
 glibmm_LIB_DEPENDS=	libglibmm-2.4.so:devel/glibmm
 glibmm_USE_GNOME_IMPL=	libsigc++20 glib20
 
+glibmm26_LIB_DEPENDS=	libglibmm-2.68.so:devel/glibmm26
+glibmm26_USE_GNOME_IMPL=	libsigc++30 glib20
+
 gsound_BUILD_DEPENDS=	gsound-play:audio/gsound
 gsound_LIB_DEPENDS=	libgsound.so:audio/gsound
 gsound_RUN_DEPENDS=	gsound-play:audio/gsound
@@ -133,6 +136,8 @@ libgdamm5_LIB_DEPENDS=		libgdamm-5.0.so:databases/libgdamm5
 libgdamm5_USE_GNOME_IMPL=	libgda5 glibmm
 
 libsigc++20_LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20
+
+libsigc++30_LIB_DEPENDS=	libsigc-3.0.so:devel/libsigc++30
 
 pangomm_LIB_DEPENDS=	libpangomm-1.4.so:x11-toolkits/pangomm
 pangomm_USE_GNOME_IMPL=	pango glibmm cairomm
@@ -209,9 +214,6 @@ libartlgpl2_LIB_DEPENDS=	libart_lgpl_2.so:graphics/libart_lgpl
 
 gnomedesktop3_LIB_DEPENDS=	libgnome-desktop-3.so:x11/gnome-desktop
 gnomedesktop3_USE_GNOME_IMPL=	gtk30
-
-libwnck_LIB_DEPENDS=	libwnck-1.so:x11-toolkits/libwnck
-libwnck_USE_GNOME_IMPL=	gtk20
 
 libwnck3_LIB_DEPENDS=	libwnck-3.so:x11-toolkits/libwnck3
 libwnck3_USE_GNOME_IMPL=gtk30

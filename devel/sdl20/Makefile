@@ -1,12 +1,8 @@
 PORTNAME=	sdl2
-DISTVERSION=	2.24.0
-PORTREVISION=	1
+DISTVERSION=	2.26.3
 CATEGORIES=	devel
 MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${PORTVERSION}
-
-PATCH_SITES=	https://github.com/libsdl-org/SDL/commit/
-PATCHFILES=	a204ef50bbf20b77083c0a14124e673efc3a53c6.patch:-p1
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Cross-platform multimedia development API
@@ -53,7 +49,7 @@ MAKE_ENV=	V=1
 
 PORTSCOUT=	limitw:1,even
 
-OPTIONS_DEFINE=		ASM DBUS FCITX IBUS JOYSTICK HIDAPI PTHREADS \
+OPTIONS_DEFINE=		ASM CSD DBUS FCITX IBUS JOYSTICK HIDAPI PTHREADS \
 			SAMPLERATE UDEV
 OPTIONS_GROUP=		AUDIO VIDEO
 OPTIONS_GROUP_AUDIO=	ALSA JACK NAS OSS PIPEWIRE PULSEAUDIO SNDIO
@@ -69,6 +65,7 @@ OPTIONS_DEFAULT_powerpc64=	ALTIVEC
 AUDIO_DESC=		Audio drivers
 VIDEO_DESC=		Video drivers
 
+CSD_DESC=		Client-side decorations for Wayland via libdecor
 JOYSTICK_DESC=		Joystick and haptic support
 HIDAPI_DESC=		Use HIDAPI for low level joystick drivers
 PIPEWIRE_DESC=		Pipewire sound server support
@@ -88,6 +85,9 @@ ALTIVEC_CONFIGURE_ENABLE=	altivec
 ALSA_CONFIGURE_ENABLE=		alsa alsa-shared
 ALSA_LIB_DEPENDS=		libasound.so:audio/alsa-lib
 ASM_CONFIGURE_ENABLE=		assembly
+CSD_CONFIGURE_ENABLE=		libdecor libdecor-shared
+CSD_LIB_DEPENDS=		libdecor-0.so:x11-toolkits/libdecor
+CSD_IMPLIES=			WAYLAND
 HIDAPI_CONFIGURE_ENABLE=	hidapi
 HIDAPI_IMPLIES=			JOYSTICK
 JACK_CONFIGURE_ENABLE=		jack jack-shared
@@ -125,6 +125,7 @@ OPENGLES2_USES=			gl
 OPENGLES2_USE=			GL=egl,glesv2
 OPENGLES2_IMPLIES=		OPENGLES
 VULKAN_CONFIGURE_ENABLE=	video-vulkan
+VULKAN_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader
 WAYLAND_CONFIGURE_ENABLE=	video-wayland wayland-shared video-wayland-qt-touch
 WAYLAND_BUILD_DEPENDS=		wayland-protocols>0:graphics/wayland-protocols \
 				${LOCALBASE}/include/linux/input.h:devel/evdev-proto

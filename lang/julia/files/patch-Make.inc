@@ -1,6 +1,6 @@
---- Make.inc.orig	2021-12-23 01:12:50 UTC
+--- Make.inc.orig	2022-12-23 22:14:27 UTC
 +++ Make.inc
-@@ -243,7 +243,7 @@ libdir := $(prefix)/$(framework_currver)
+@@ -251,7 +251,7 @@ libdir := $(prefix)/$(framework_currver)
  libexecdir := $(prefix)/$(framework_helpers)
  datarootdir := $(prefix)/$(framework_resources)
  docdir := $(prefix)/$(framework_documentation)
@@ -9,7 +9,7 @@
  man1dir := $(mandir)/man1
  includedir := $(prefix)/$(framework_headers)
  sysconfdir := $(prefix)/$(framework_resources)
-@@ -271,7 +271,7 @@ build_depsbindir := $(build_prefix)/tools
+@@ -279,7 +279,7 @@ build_depsbindir := $(build_prefix)/tools
  build_libdir := $(build_prefix)/lib
  build_libexecdir := $(build_prefix)/libexec
  build_datarootdir := $(build_prefix)/share
@@ -18,7 +18,7 @@
  build_man1dir := $(build_mandir)/man1
  build_includedir := $(build_prefix)/include
  build_sysconfdir := $(build_prefix)/etc
-@@ -510,8 +510,8 @@ SHIPFLAGS := -O3 -ggdb2 -falign-functions
+@@ -500,8 +500,8 @@ SHIPFLAGS := -O3 -ggdb2 -falign-functions
  endif
  
  ifeq ($(USECLANG),1)

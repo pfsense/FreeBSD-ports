@@ -7,14 +7,17 @@ DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
-WWW=		http://octave.sourceforge.net/
+WWW=		https://packages.octave.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+RUN_DEPENDS=	${OCTAVE_TARBALLS_DIR}/io.tar.gz:math/octave-forge-io
+
+USES=			octave
+
 GNU_CONFIGURE=	yes
 
-RUN_DEPENDS+=	${TARBALLS_DIR}/io.tar.gz:math/octave-forge-io
+WRKSRC=        ${WRKDIR}/${OCTAVE_SRC}
 
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
 .include <bsd.port.mk>

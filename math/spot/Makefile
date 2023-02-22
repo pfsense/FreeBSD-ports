@@ -1,5 +1,5 @@
 PORTNAME=	spot
-DISTVERSION=	2.11.1
+DISTVERSION=	2.11.4
 CATEGORIES=	math
 MASTER_SITES=	http://www.lrde.epita.fr/dload/${PORTNAME}/
 
@@ -10,7 +10,11 @@ WWW=		https://spot.lrde.epita.fr
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		charsetfix compiler:c++17-lang gmake libtool
+TEST_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas@${PY_FLAVOR} \
+		syfco:math/hs-syfco
+
+USES=		charsetfix compiler:c++17-lang gmake libtool python:test
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -26,7 +30,7 @@ OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	tl.pdf
 
-TEST_TARGET=	check # at least one test fails to run, see https://gitlab.lre.epita.fr/spot/spot/-/issues/517
+TEST_TARGET=	check
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so

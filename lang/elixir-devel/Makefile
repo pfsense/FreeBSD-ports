@@ -1,6 +1,6 @@
 PORTNAME=	elixir
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.14.1
+DISTVERSION=	1.14.3
 PORTREVISION=	0
 CATEGORIES=	lang
 MASTER_SITES+=	https://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
@@ -34,7 +34,7 @@ MAKE_ENV+=	MAN_PREFIX=${PREFIX}/man \
 OPTIONS_DEFINE=		DOCS
 OPTIONS_SUB=		yes
 
-ERLANG_VER=	24
+ERLANG_VER?=	24
 
 .include <bsd.port.options.mk>
 

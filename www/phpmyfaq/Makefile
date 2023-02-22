@@ -1,5 +1,5 @@
 PORTNAME=	phpmyfaq
-PORTVERSION=	3.1.7
+PORTVERSION=	3.1.11
 CATEGORIES=	www
 MASTER_SITES=	https://download.phpmyfaq.de/files/
 
@@ -24,10 +24,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/${i}
 .endfor
 
-.include <bsd.port.pre.mk>
-
-.if ${PHP_VER} < 80
-USE_PHP+=	pdf
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

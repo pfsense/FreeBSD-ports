@@ -1,5 +1,5 @@
 PORTNAME=	bolt
-PORTVERSION=	3.26.1
+PORTVERSION=	3.26.2
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -31,7 +31,6 @@ RUN_DEPENDS=	r10k:sysutils/rubygem-r10k \
 		rubygem-winrm>=2.0:sysutils/rubygem-winrm
 
 USES=		gem shebangfix
-USE_RUBY=	yes
 
 ruby_OLD_CMD+=	/opt/puppetlabs/puppet/bin/ruby
 SHEBANG_FILES=	libexec/*

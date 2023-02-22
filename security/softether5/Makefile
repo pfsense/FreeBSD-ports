@@ -1,5 +1,6 @@
 PORTNAME=	softether
 DISTVERSION=	5.02.5180
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	security net-vpn
 PKGNAMESUFFIX=	5
@@ -7,8 +8,9 @@ DIST_SUBDIR=	${PORTNAME}
 
 # Some patches are managed in my GitHub fork
 PATCH_SITES=	https://github.com/metalefty/${GH_PROJECT}/commit/
-PATCHFILES=	f4baf91.patch:-p1 5890ce9.patch:-p1 ddaffd5.patch:-p1 \
-		57aa471.patch:-p1
+PATCHFILES=	c710f2e3.patch:-p1 91b61327.patch:-p1 45192989.patch:-p1 \
+		a88ddbbc.patch:-p1 97f3ac01.patch:-p1 ddda9d09.patch:-p1
+
 MAINTAINER=	meta@FreeBSD.org
 COMMENT=	SoftEther VPN 5 (Developer Edition)
 WWW=		https://www.softether.org
@@ -55,7 +57,7 @@ SUB_FILES=	pkg-message
 # devel/cpu_features not available on these archs, see devel/cpu_features/Makefile
 .if (${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == mips || ${ARCH} == mips64)
 # skip cpu_features when devel/cpu_features is not available
-CMAKE_BOOL_ON+=	SKIP_CPU_FEATURES
+CMAKE_ARGS+=	-DSKIP_CPU_FEATURES=1
 .else
 BUILD_DEPENDS+=	${LOCALBASE}/include/cpu_features/cpu_features_macros.h:devel/cpu_features
 LIB_DEPENDS+=	libcpu_features.so:devel/cpu_features

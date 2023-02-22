@@ -24,6 +24,7 @@
     SUBDIR += R-cran-gridExtra
     SUBDIR += R-cran-jpeg
     SUBDIR += R-cran-latticeExtra
+    SUBDIR += R-cran-magick
     SUBDIR += R-cran-munsell
     SUBDIR += R-cran-pROC
     SUBDIR += R-cran-pixmap
@@ -47,6 +48,7 @@
     SUBDIR += airsaned
     SUBDIR += akira
     SUBDIR += alembic
+    SUBDIR += alizams
     SUBDIR += aloadimage
     SUBDIR += alpng
     SUBDIR += ampasACES-container
@@ -72,6 +74,7 @@
     SUBDIR += azpainterb
     SUBDIR += barcode
     SUBDIR += batik
+    SUBDIR += bgfx
     SUBDIR += birdfont
     SUBDIR += bitmap
     SUBDIR += blend2d
@@ -107,7 +110,6 @@
     SUBDIR += colmap
     SUBDIR += colord
     SUBDIR += colord-gtk
-    SUBDIR += comical
     SUBDIR += compupic
     SUBDIR += converseen
     SUBDIR += corrupter
@@ -117,6 +119,7 @@
     SUBDIR += curator
     SUBDIR += curtail
     SUBDIR += cuttlefish
+    SUBDIR += cxxplot
     SUBDIR += darktable
     SUBDIR += dataplot
     SUBDIR += dbow2
@@ -131,6 +134,7 @@
     SUBDIR += dia
     SUBDIR += diff-pdf
     SUBDIR += diffpdf
+    SUBDIR += dify
     SUBDIR += digikam
     SUBDIR += dilay
     SUBDIR += diplib
@@ -141,6 +145,7 @@
     SUBDIR += drawing
     SUBDIR += drawpile
     SUBDIR += drm-510-kmod
+    SUBDIR += drm-515-kmod
     SUBDIR += drm-fbsd12.0-kmod
     SUBDIR += drm-kmod
     SUBDIR += drm_info
@@ -153,6 +158,7 @@
     SUBDIR += edje_viewer
     SUBDIR += egl-wayland
     SUBDIR += eglexternalplatform
+    SUBDIR += elastix
     SUBDIR += electricsheep
     SUBDIR += elementary-photos
     SUBDIR += embree
@@ -230,6 +236,7 @@
     SUBDIR += gcolor3
     SUBDIR += gd
     SUBDIR += gdal
+    SUBDIR += gdal-grass
     SUBDIR += gdchart
     SUBDIR += gdk-pixbuf2
     SUBDIR += gdk-pixbuf2-xlib
@@ -242,7 +249,6 @@
     SUBDIR += geos
     SUBDIR += geoserver
     SUBDIR += gexiv2
-    SUBDIR += giblib
     SUBDIR += giflib
     SUBDIR += gifmerge
     SUBDIR += gifsicle
@@ -291,6 +297,7 @@
     SUBDIR += goocanvasmm2
     SUBDIR += goom
     SUBDIR += gource
+    SUBDIR += goxel
     SUBDIR += gpaint
     SUBDIR += gphoto2
     SUBDIR += gpicview
@@ -540,6 +547,8 @@
     SUBDIR += luminance-qt5
     SUBDIR += lux
     SUBDIR += lximage-qt
+    SUBDIR += magnum
+    SUBDIR += magnum-plugins
     SUBDIR += mahotas
     SUBDIR += maim
     SUBDIR += mandelbulber
@@ -583,6 +592,7 @@
     SUBDIR += nsxiv
     SUBDIR += nurbs++
     SUBDIR += nvidia-texture-tools
+    SUBDIR += ocaml-cairo
     SUBDIR += ocaml-images
     SUBDIR += ocaml-lablgl
     SUBDIR += ocrad
@@ -594,7 +604,6 @@
     SUBDIR += opencollada
     SUBDIR += opencolorio
     SUBDIR += opencolorio-tools
-    SUBDIR += opencoloriov1
     SUBDIR += opencsg
     SUBDIR += opencv
     SUBDIR += opendx
@@ -605,7 +614,6 @@
     SUBDIR += opengv
     SUBDIR += openicc-config
     SUBDIR += openimageio
-    SUBDIR += openimageio-ociov1
     SUBDIR += openjpeg
     SUBDIR += openjpeg15
     SUBDIR += openjph
@@ -613,8 +621,10 @@
     SUBDIR += openmvs
     SUBDIR += opennurbs
     SUBDIR += openorienteering-mapper
+    SUBDIR += openpgl
     SUBDIR += openrm
     SUBDIR += openshadinglanguage
+    SUBDIR += openslide
     SUBDIR += opensubdiv
     SUBDIR += openvkl
     SUBDIR += optar
@@ -625,6 +635,7 @@
     SUBDIR += ospray
     SUBDIR += ospray-studio
     SUBDIR += ossim
+    SUBDIR += oxipng
     SUBDIR += oyranos
     SUBDIR += p5-Acme-Steganography-Image-Png
     SUBDIR += p5-Algorithm-Line-Bresenham
@@ -768,8 +779,6 @@
     SUBDIR += phototonic
     SUBDIR += php-facedetect
     SUBDIR += php-geos
-    SUBDIR += php74-exif
-    SUBDIR += php74-gd
     SUBDIR += php80-exif
     SUBDIR += php80-gd
     SUBDIR += php81-exif
@@ -825,6 +834,7 @@
     SUBDIR += proj-data
     SUBDIR += pstoedit
     SUBDIR += ptex
+    SUBDIR += py-ManimPango
     SUBDIR += py-OWSLib
     SUBDIR += py-PyOpenGL
     SUBDIR += py-PyOpenGL-accelerate
@@ -856,6 +866,7 @@
     SUBDIR += py-geopandas
     SUBDIR += py-giddy
     SUBDIR += py-gizeh
+    SUBDIR += py-glcontext
     SUBDIR += py-glfw
     SUBDIR += py-glooey
     SUBDIR += py-gphoto2
@@ -877,6 +888,8 @@
     SUBDIR += py-mcomix
     SUBDIR += py-mgwr
     SUBDIR += py-ming
+    SUBDIR += py-moderngl
+    SUBDIR += py-moderngl-window
     SUBDIR += py-momepy
     SUBDIR += py-mpl-interactions
     SUBDIR += py-mpl-scatter-density
@@ -885,6 +898,7 @@
     SUBDIR += py-opencolorio
     SUBDIR += py-openimageio
     SUBDIR += py-openshadinglanguage
+    SUBDIR += py-openslide-python
     SUBDIR += py-optimize-images
     SUBDIR += py-osmnet
     SUBDIR += py-pandana
@@ -906,6 +920,7 @@
     SUBDIR += py-pygeoapi
     SUBDIR += py-pygeos
     SUBDIR += py-pyglet
+    SUBDIR += py-pyglet1
     SUBDIR += py-pygraph
     SUBDIR += py-pygraphviz
     SUBDIR += py-pyinsane2
@@ -984,18 +999,22 @@
     SUBDIR += rawtherapee
     SUBDIR += rayshade
     SUBDIR += reactphysics3d
+    SUBDIR += realesrgan-ncnn-vulkan
     SUBDIR += reallyslick
     SUBDIR += realsr-ncnn-vulkan
     SUBDIR += recastnavigation
     SUBDIR += recoverjpeg
     SUBDIR += renrot
     SUBDIR += repng2jpeg
+    SUBDIR += resvg
+    SUBDIR += resvg-capi
     SUBDIR += rgbpaint
     SUBDIR += rigsofrods-caelum
     SUBDIR += rigsofrods-pagedgeometry
     SUBDIR += ristretto
     SUBDIR += rlottie
     SUBDIR += ruby-gd
+    SUBDIR += rubygem-blurhash
     SUBDIR += rubygem-cairo
     SUBDIR += rubygem-captcha
     SUBDIR += rubygem-chunky_png
@@ -1070,6 +1089,7 @@
     SUBDIR += silgraphite
     SUBDIR += simage
     SUBDIR += simple-scan
+    SUBDIR += simpleitk
     SUBDIR += simpleviewer
     SUBDIR += skanlite
     SUBDIR += skanpage
@@ -1114,6 +1134,7 @@
     SUBDIR += tweeny
     SUBDIR += ufraw
     SUBDIR += unpaper
+    SUBDIR += upscaler
     SUBDIR += urho3d
     SUBDIR += urt
     SUBDIR += vapoursynth-fmtconv

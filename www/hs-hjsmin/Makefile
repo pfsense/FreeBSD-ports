@@ -1,6 +1,6 @@
 PORTNAME=	hjsmin
 PORTVERSION=	0.2.0.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -13,6 +13,7 @@ USES=		cabal
 
 USE_LOCALE=	en_US.UTF-8
 
+CABAL_REVISION=	2
 USE_CABAL=	alex-3.2.7.1 \
 		ansi-terminal-0.11.3 \
 		ansi-wl-pprint-0.6.9_3 \
@@ -21,7 +22,7 @@ USE_CABAL=	alex-3.2.7.1 \
 		happy-1.20.0_1 \
 		language-javascript-0.7.1.0 \
 		optparse-applicative-0.17.0.0 \
-		transformers-compat-0.7.1_1 \
+		transformers-compat-0.7.2 \
 		utf8-string-1.0.2
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	hypnotix
-DISTVERSION=	1.4
+DISTVERSION=	2.9
 PORTREVISION=	1
 CATEGORIES=	multimedia
 
@@ -15,7 +15,8 @@ LIB_DEPENDS=	libmpv.so:multimedia/mpv \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}imdbpy>0:www/py-imdbpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setproctitle>0:devel/py-setproctitle@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}setproctitle>0:devel/py-setproctitle@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}unidecode>0:converters/py-unidecode@${PY_FLAVOR}
 
 USES=		python:3.6+ shebangfix gnome
 USE_GNOME=	gtk30 glib20 gdkpixbuf2 pango

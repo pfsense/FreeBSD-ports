@@ -1,9 +1,9 @@
 PORTNAME=	riemann-tools
-DISTVERSION=	1.5.0
+DISTVERSION=	1.7.1
 CATEGORIES=	net-mgmt rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	dch@FreeBSD.org
+MAINTAINER=	romain@FreeBSD.org
 COMMENT=	Collection of utilities which submit events to Riemann
 WWW=		https://github.com/riemann/riemann-tools
 
@@ -15,7 +15,6 @@ RUN_DEPENDS=	rubygem-json>=1.8:devel/rubygem-json \
 		rubygem-riemann-client>=1.0:net-mgmt/rubygem-riemann-client
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

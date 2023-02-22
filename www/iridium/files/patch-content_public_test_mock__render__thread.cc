@@ -1,6 +1,6 @@
---- content/public/test/mock_render_thread.cc.orig	2022-10-05 07:34:01 UTC
+--- content/public/test/mock_render_thread.cc.orig	2023-01-17 19:19:00 UTC
 +++ content/public/test/mock_render_thread.cc
-@@ -62,7 +62,7 @@ class MockRenderMessageFilterImpl : public mojom::Rend
+@@ -65,7 +65,7 @@ class MockRenderMessageFilterImpl : public mojom::Rend
      std::move(callback).Run(false);
    }
  

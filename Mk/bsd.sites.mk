@@ -91,12 +91,6 @@ MASTER_SITE_BERLIOS+= \
 	${MASTER_SITE_SOURCEFORGE}
 .endif
 
-.if !defined(IGNORE_MASTER_SITE_CHEESESHOP)
-MASTER_SITE_CHEESESHOP+= \
-	https://files.pythonhosted.org/packages/%SUBDIR%/ \
-	https://pypi.org/packages/%SUBDIR%/
-.endif
-
 .if !defined(IGNORE_MASTER_SITE_COMP_SOURCES)
 MASTER_SITE_COMP_SOURCES+= \
 	http://ftp.isc.org/pub/usenet/comp.sources.%SUBDIR%/ \
@@ -147,22 +141,17 @@ MASTER_SITE_ECLIPSE+= \
 	http://eclipse.stu.edu.tw/%SUBDIR%/
 .endif
 
+# List: https://www.exim.org/mirmon/ftp_mirrors.html
 .if !defined(IGNORE_MASTER_SITE_EXIM)
 MASTER_SITE_EXIM+= \
-	ftp://ftp.exim.org/pub/exim/%SUBDIR%/ \
-	ftp://mirror.easyname.at/exim-ftp/%SUBDIR%/ \
-	http://dl.ambiweb.de/mirrors/ftp.exim.org/exim/%SUBDIR%/ \
-	ftp://exim.noris.de/exim/%SUBDIR%/ \
-	https://ftp.heanet.ie/pub/exim/%SUBDIR%/ \
-	http://washitake.com/mail/exim/mirror/exim/%SUBDIR%/ \
-	ftp://ftp.kaist.ac.kr/exim/%SUBDIR%/ \
-	http://ftp.kaist.ac.kr/exim/%SUBDIR%/ \
-	ftp://sunsite.uio.no/pub/mail/exim/exim/%SUBDIR%/ \
-	ftp://sunsite.icm.edu.pl/pub/unix/mail/exim/exim/%SUBDIR%/ \
-	https://sunsite.icm.edu.pl/pub/unix/mail/exim/exim/%SUBDIR%/ \
-	http://mirror.switch.ch/ftp/mirror/exim/exim/%SUBDIR%/ \
-	ftp://ftp.mirrorservice.org/sites/ftp.exim.org/pub/%SUBDIR%/ \
-	http://exim.telcom.net.ua/ftp/%SUBDIR/
+	https://exim.mirror.globo.tech/exim/%SUBDIR%/ \
+	https://mirror.easyname.at/exim-ftp/exim/%SUBDIR%/ \
+	https://www.mirrorservice.org/sites/ftp.exim.org/pub/exim/%SUBDIR%/ \
+	https://exim.mirror.iphh.net/ftp/exim/%SUBDIR%/ \
+	http://ftp.carnet.hr/misc/exim/exim/%SUBDIR%/ \
+	http://ftp.kaist.ac.kr/exim/exim/%SUBDIR%/ \
+	http://sunsite.icm.edu.pl/pub/unix/mail/exim/exim/%SUBDIR%/ \
+	https://ftp.exim.org/pub/exim/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_CENTOS_LINUX)
@@ -603,19 +592,14 @@ MASTER_SITE_GNU+= \
 	https://ftp.gnu.org/gnu/%SUBDIR%/
 .endif
 
+# List: https://gnupg.org/download/mirrors.html (contains stale information)
 .if !defined(IGNORE_MASTER_SITE_GNUPG)
 MASTER_SITE_GNUPG+= \
-	https://gnupg.org/ftp/gcrypt/%SUBDIR%/ \
-	https://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	ftp://ftp.franken.de/pub/crypt/mirror/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	ftp://mirror.switch.ch/mirror/gnupg/%SUBDIR%/ \
 	https://mirrors.dotsrc.org/gcrypt/%SUBDIR%/ \
-	ftp://ftp.freenet.de/pub/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	ftp://ftp.crysys.hu/pub/gnupg/%SUBDIR%/ \
+	https://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
 	https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	https://artfiles.org/gnupg.org/%SUBDIR%/ \
-	ftp://ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	http://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/%SUBDIR%/
+	http://www.ring.gr.jp/pub/net/gnupg/%SUBDIR%/ \
+	https://gnupg.org/ftp/gcrypt/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_GNUSTEP)
@@ -856,6 +840,12 @@ MASTER_SITE_PHP+= \
 	https://raw.githubusercontent.com/php/web-php-distributions/master/
 .endif
 
+.if !defined(IGNORE_MASTER_SITE_PYPI)
+MASTER_SITE_PYPI+= \
+	https://files.pythonhosted.org/packages/%SUBDIR%/ \
+	https://pypi.org/packages/%SUBDIR%/
+.endif
+
 .if !defined(IGNORE_MASTER_SITE_PYTHON)
 MASTER_SITE_PYTHON+= \
 	https://www.python.org/%SUBDIR%/
@@ -917,12 +907,14 @@ MASTER_SITE_SAVANNAH+= \
 .endif
 
 # List:		https://sourceforge.net/p/forge/documentation/Mirrors/
-# Updated:	2017-03-13
+# Updated:	2022-11-26
 .if !defined(IGNORE_MASTER_SITE_SOURCEFORGE)
 .  for p in https http
 MASTER_SITE_SOURCEFORGE+= ${p}://downloads.sourceforge.net/project/%SUBDIR%/
-.    for m in excellmedia freefr jaist nchc \
-	netcologne netix superb-dca2 superb-sea2 ufpr vorboss
+.    for m in cfhcable cytranet deac-ams deac-fra deac-riga excellmedia \
+	freefr gigenet ixpeering jaist jztkft kumisystems liquidtelecom \
+	nchc netactuate netcologne netix onboardcloud phoenixnap \
+	razaoinfo sinalbr sitsa sonik tenet udomain ufpr versaweb
 MASTER_SITE_SOURCEFORGE+= ${p}://${m}.dl.sourceforge.net/project/%SUBDIR%/
 .    endfor
 .  endfor
@@ -1101,12 +1093,12 @@ MASTER_SITES_ABBREVS=	CPAN:PERL_CPAN \
 			LODEV:LIBREOFFICE_DEV \
 			NL:NETLIB \
 			RG:RUBYGEMS \
-			SF:SOURCEFORGE
+			SF:SOURCEFORGE \
+			CHEESESHOP:PYPI
 MASTER_SITES_SUBDIRS=	APACHE_COMMONS_BINARIES:${PORTNAME:S,commons-,,} \
 			APACHE_COMMONS_SOURCE:${PORTNAME:S,commons-,,} \
 			APACHE_JAKARTA:${PORTNAME:S,-,/,}/source \
 			BERLIOS:${PORTNAME:tl}.berlios \
-			CHEESESHOP:source/${DISTNAME:C/(.).*/\1/}/${DISTNAME:S/-${DISTVERSIONFULL}$//} \
 			CRATESIO:${PORTNAME}/${DISTVERSIONFULL} \
 			DEBIAN:pool/main/${PORTNAME:C/^((lib)?.).*$/\1/}/${PORTNAME} \
 			FARSIGHT:${PORTNAME} \
@@ -1126,6 +1118,7 @@ MASTER_SITES_SUBDIRS=	APACHE_COMMONS_BINARIES:${PORTNAME:S,commons-,,} \
 			MOZDEV:${PORTNAME:tl} \
 			NETLIB:${PORTNAME} \
 			PERL_CPAN:${PORTNAME:C/-.*//} \
+			PYPI:source/${DISTNAME:C/(.).*/\1/}/${DISTNAME:S/-${DISTVERSIONFULL}$//} \
 			QT:archive/qt/${PORTVERSION:R} \
 			SAMBA:${PORTNAME} \
 			SAVANNAH:${PORTNAME:tl} \

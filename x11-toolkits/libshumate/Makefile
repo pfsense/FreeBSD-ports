@@ -1,5 +1,6 @@
 PORTNAME=	libshumate
-DISTVERSION=	1.0.1
+DISTVERSION=	1.0.3
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits geography
 MASTER_SITES=	GNOME
 
@@ -16,7 +17,6 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 USES=		gettext gnome meson pkgconfig sqlite tar:xz vala:build
 USE_GNOME=	cairo gdkpixbuf2 gtk40 introspection:build
 USE_LDCONFIG=	yes
-MESON_ARGS=	-Dlibsoup3=false # Required by shortwave via gstreamer1-plugins-soup
 
 OPTIONS_DEFINE=	DOCS
 

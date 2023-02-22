@@ -1,4 +1,4 @@
---- chrome/browser/web_applications/extensions/extension_status_utils.cc.orig	2022-10-01 07:40:07 UTC
+--- chrome/browser/web_applications/extensions/extension_status_utils.cc.orig	2023-02-11 09:11:04 UTC
 +++ chrome/browser/web_applications/extensions/extension_status_utils.cc
 @@ -26,7 +26,7 @@ namespace {
  const char* g_preinstalled_app_for_testing = nullptr;
@@ -6,10 +6,10 @@
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
- base::Feature kChromeAppsDeprecationExcludeForceInstalls(
-     "ChromeAppsDeprecationExcludeForceInstalls",
-     base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -100,7 +100,7 @@ bool IsExternalExtensionUninstalled(content::BrowserCo
+ const char kMobilityPrintAndDirectPrintIoExtensionIds[] =
+     "alhngdkjgnedakdlnamimgfihgkmenbh,gnddkmpjjjcimefninepfmmddpgaaado";
+ 
+@@ -110,7 +110,7 @@ bool ClearExternalExtensionUninstalled(content::Browse
  }
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \

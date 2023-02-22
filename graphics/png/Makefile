@@ -1,5 +1,5 @@
 PORTNAME=	png
-DISTVERSION=	1.6.38
+DISTVERSION=	1.6.39
 CATEGORIES=	graphics
 MASTER_SITES=	SF/lib${PORTNAME}/lib${PORTNAME}16/${DISTVERSION}/
 PATCH_SITES=	SF/lib${PORTNAME}-apng/lib${PORTNAME}16/${DISTVERSION}/
@@ -27,6 +27,11 @@ OPTIONS_DEFAULT=APNG
 OPTIONS_DEFAULT_aarch64=	SIMD
 OPTIONS_DEFAULT_amd64=	SIMD
 OPTIONS_DEFAULT_powerpc64le=	SIMD
+# arm/arm_init.c:43:6: error: "No support for run-time ARM Neon checking; use compile-time options"
+.ifdef QEMU_EMULATING
+OPTIONS_EXCLUDE_armv6=	SIMD
+OPTIONS_EXCLUDE_armv7=	SIMD
+.endif
 
 APNG_DESC=Enable Animated PNG support
 
@@ -42,5 +47,9 @@ CFLAGS+=	-maltivec -mvsx
 .if ${PORT_OPTIONS:MAPNG} || make(makesum)
 PATCHFILES=	${DISTNAME}-apng.patch.gz:-p1
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|CMAKE_DEBUG_POSTFIX "d"|CMAKE_DEBUG_POSTFIX ""|g' \
+		${PATCH_WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

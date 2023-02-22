@@ -1,5 +1,5 @@
 PORTNAME=	octave-forge-base
-PORTVERSION=	1.7
+PORTVERSION=	1.9
 CATEGORIES=	math
 MASTER_SITES=	#none
 DISTFILES=	#none
@@ -7,7 +7,7 @@ EXTRACT_ONLY=	#none
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge baseport for all packages
-WWW=		http://octave.sourceforge.net/
+WWW=		https://packages.octave.org/
 
 LICENSE=	BSD2CLAUSE
 

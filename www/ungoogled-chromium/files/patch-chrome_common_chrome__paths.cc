@@ -1,4 +1,4 @@
---- chrome/common/chrome_paths.cc.orig	2022-10-01 07:40:07 UTC
+--- chrome/common/chrome_paths.cc.orig	2022-12-02 17:56:32 UTC
 +++ chrome/common/chrome_paths.cc
 @@ -49,14 +49,14 @@
  

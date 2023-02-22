@@ -1,5 +1,5 @@
 PORTNAME=	redmine
-PORTVERSION=	4.2.8
+PORTVERSION=	4.2.9
 CATEGORIES=	www
 MASTER_SITES=	https://www.redmine.org/releases/
 PKGNAMESUFFIX=	42
@@ -30,8 +30,7 @@ RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-rotp>0:devel/rubygem-rotp \
 		rubygem-rqrcode>0:www/rubygem-rqrcode
 
-USES=		cpe
-USE_RUBY=	yes
+USES=		cpe ruby
 BROKEN_RUBY30=	yes
 BROKEN_RUBY31=	yes
 

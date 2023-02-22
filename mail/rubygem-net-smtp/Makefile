@@ -1,5 +1,5 @@
 PORTNAME=	net-smtp
-PORTVERSION=	0.3.2
+PORTVERSION=	0.3.3
 CATEGORIES=	mail rubygems
 MASTER_SITES=	RG
 
@@ -14,7 +14,6 @@ LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/LICENSE.txt
 RUN_DEPENDS=	rubygem-net-protocol>=0:net/rubygem-net-protocol
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

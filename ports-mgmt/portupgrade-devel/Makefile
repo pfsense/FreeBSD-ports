@@ -16,14 +16,13 @@ LICENSE=	BSD3CLAUSE
 
 CONFLICTS_INSTALL=	portupgrade
 
-USES=		uidfix
+USES=		ruby uidfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_TAGNAME=	2.4.16
 
 DIST_SUBDIR=	${PORTNAME}
-USE_RUBY=	yes
 USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
 MAKE_ARGS=	PREFIX="${PREFIX}" RUBY="${RUBY}" \
 		RUBY_SITELIBDIR="${RUBY_SITELIBDIR}" MKDIR="${MKDIR}"
@@ -40,8 +39,13 @@ INSTALL_TARGET=		install
 INSTALL_TARGET+=	install-doc
 .endif
 
+.if ${RUBY_VER} >= 3.2
+# databases/ruby-bdb is BROKEN with Ruby 3.2
+RUN_DEPENDS+=	rubygem-dbm>0:databases/rubygem-dbm
+.else
 # For PKG_DBDRIVER={bdb_btree,bdb_hash}
 RUN_DEPENDS+=	${RUBY_SITEARCHLIBDIR}/bdb.so:databases/ruby-bdb
+.endif
 
 regression-test: patch
 	cd ${WRKSRC} && ${MAKE} test

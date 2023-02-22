@@ -1,6 +1,6 @@
---- ui/views/controls/textfield/textfield.cc.orig	2022-09-24 10:57:32 UTC
+--- ui/views/controls/textfield/textfield.cc.orig	2023-02-08 09:03:45 UTC
 +++ ui/views/controls/textfield/textfield.cc
-@@ -70,7 +70,7 @@
+@@ -72,7 +72,7 @@
  #include "base/win/win_util.h"
  #endif
  
@@ -9,7 +9,7 @@
  #include "ui/base/ime/linux/text_edit_command_auralinux.h"
  #include "ui/linux/linux_ui.h"
  #endif
-@@ -163,7 +163,7 @@ bool IsControlKeyModifier(int flags) {
+@@ -164,7 +164,7 @@ bool IsControlKeyModifier(int flags) {
  // Control-modified key combination, but we cannot extend it to other platforms
  // as Control has different meanings and behaviors.
  // https://crrev.com/2580483002/#msg46
@@ -45,7 +45,7 @@
  // TODO(https://crbug.com/952355): Implement this method to support Korean IME
  // reconversion feature on native text fields (e.g. find bar).
  bool Textfield::SetCompositionFromExistingText(
-@@ -2219,14 +2219,14 @@ ui::TextEditCommand Textfield::GetCommandForKeyEvent(
+@@ -2231,14 +2231,14 @@ ui::TextEditCommand Textfield::GetCommandForKeyEvent(
  #endif
          return ui::TextEditCommand::DELETE_BACKWARD;
        }

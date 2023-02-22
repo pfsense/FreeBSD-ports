@@ -1,5 +1,5 @@
 PORTNAME=	qtcreator
-DISTVERSION=	8.0.1
+DISTVERSION=	8.0.2
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/qtcreator/${DISTVERSION:R}/${DISTVERSION}
 DISTNAME=	qt-creator-opensource-src-${DISTVERSION}
@@ -15,12 +15,10 @@ LICENSE_NAME=	GPLv3 with Qt Company GPL Exception 1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE.GPL3-EXCEPT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
 LIB_DEPENDS=	libKF5SyntaxHighlighting.so:textproc/kf5-syntax-highlighting \
 		libzstd.so:archivers/zstd
-RUN_DEPENDS=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
 
-USES=		compiler:c++17-lang pkgconfig cmake gl python qt:5 shebangfix tar:xz \
+USES=		compiler:c++17-lang pkgconfig cmake gl llvm:build,run python qt:5 shebangfix tar:xz \
 		desktop-file-utils
 USE_GL=		gl
 USE_LDCONFIG=	${LOCALBASE}/lib/${PORTNAME}
@@ -54,11 +52,15 @@ SHEBANG_FILES=		bin/qtcreator.sh \
 			tests/system/tools/objectsToTable.py
 
 # Provide library paths, default llvm first as a hint to the clang code model.
-CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH:STRING="${PREFIX}/llvm${LLVM_DEFAULT};${PREFIX}"
-# Prevent accidental pickup of devel/elfutils libraries.
-CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_elfutils
-# Disable precompiled headers for now, they are missing compile flags.
-CMAKE_OFF=	BUILD_WITH_PCH
+CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH:STRING="${LLVM_PREFIX};${PREFIX}"
+# - Prevent accidental pickup of devel/elfutils libraries.
+# - Prevent accidental use of devel/googletest headers, use bundled.
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_elfutils \
+		CMAKE_DISABLE_FIND_PACKAGE_Googletest
+# - Disable precompiled headers for now, they are missing compile flags.
+# - Suppress installed yaml-cpp, use bundled.
+CMAKE_OFF=	BUILD_WITH_PCH \
+		yaml-cpp_FOUND
 # Disable Qt6 suport for now
 CMAKE_ON+=	CMAKE_DISABLE_FIND_PACKAGE_Qt6
 

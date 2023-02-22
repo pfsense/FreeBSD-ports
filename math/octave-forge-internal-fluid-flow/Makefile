@@ -1,30 +1,23 @@
 PORTNAME=	octave-forge-internal-fluid-flow
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.2
+DISTVERSION=	0.3.2
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
-WWW=		http://octave.sourceforge.net/
+WWW=		https://packages.octave.org/
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
+LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
+USES=	octave
 USE_GITHUB=	yes
 GH_ACCOUNT=	aumpierre-unb
 GH_PROJECT=	internal-Fluid-Flow-for-GNU-Octave
 
-# OCTSRC is the name of the directory of the package.
-# It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		Internal-Fluid-Flow-for-GNU-Octave-${DISTVERSION}
+OCTAVE_SRC=		Internal-Fluid-Flow-for-GNU-Octave-${DISTVERSION}
 
-.include "${.CURDIR}/../../Mk/bsd.octave.mk"
-
-do-build:
-	@${DO_NADA}
-
-post-build:
-	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
-	cd ${WRKDIR} && ${TAR} cfz ${OCTAVE_DISTNAME}.tar.gz ${OCTSRC}
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 .include <bsd.port.mk>

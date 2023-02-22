@@ -1,11 +1,8 @@
 PORTNAME=	inkscape
-DISTVERSION=	1.2.1
-PORTREVISION=	7
+DISTVERSION=	1.2.2
+PORTREVISION=	2
 CATEGORIES=	graphics gnome
 MASTER_SITES=	https://media.inkscape.org/dl/resources/file/
-
-PATCH_SITES=	https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/inkscape/trunk/
-PATCHFILES=	inkscape-1.2.1-poppler-22.09.0.patch:-p1
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Full featured open source SVG editor
@@ -27,25 +24,25 @@ LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		libgc.so:devel/boehm-gc \
 		libgdl-3.so:x11-toolkits/gdl \
 		libgsl.so:math/gsl \
-		libgtkspell3-3.so:textproc/gtkspell3 \
 		liblcms2.so:graphics/lcms2 \
 		libfribidi.so:converters/fribidi \
-		libaspell.so:textproc/aspell \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libpotrace.so:graphics/libpotrace \
 		libpng.so:graphics/png \
 		libsoup-2.4.so:devel/libsoup \
-		libenchant-2.so:textproc/enchant2 \
 		libyaml.so:textproc/libyaml \
 		libdouble-conversion.so:devel/double-conversion \
 		lib2geom.so:math/lib2geom
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}appdirs>0:devel/py-appdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}filelock>=3.7.1:sysutils/py-filelock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scour>0:textproc/py-scour@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}CacheControl>0:www/py-cachecontrol@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cssselect>0:www/py-cssselect@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		ps2pdf:print/ghostscript9-agpl-base \
 		fig2dev:print/fig2dev
 
@@ -58,15 +55,15 @@ USE_LDCONFIG=	yes
 
 CXXSTD=		gnu++17
 
-DATETAG=	2022-07-14_9c6d41e410
+DATETAG=	2022-12-01_b0a8486541
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_${DATETAG}
 
 SHEBANG_FILES=	share/extensions/*.py share/extensions/genpofiles.sh \
 		share/templates/*.py man/fix-roff-punct
 
-OPTIONS_DEFINE=		OPENMP POPPLER SCRIBUS VISIO CDR DBUS WPG GVFS NLS
-OPTIONS_DEFAULT=	POPPLER VISIO CDR WPG GM
+OPTIONS_DEFINE=		OPENMP POPPLER SCRIBUS VISIO CDR DBUS WPG GVFS NLS GSPELL
+OPTIONS_DEFAULT=	POPPLER VISIO CDR WPG GM GSPELL
 OPTIONS_DEFAULT_amd64=	OPENMP
 OPTIONS_RADIO=		IMAGICK
 OPTIONS_RADIO_IMAGICK=	IMAGICK6 GM
@@ -112,6 +109,10 @@ GM_CMAKE_BOOL=		WITH_GRAPHICS_MAGICK
 
 NLS_CMAKE_BOOL=		WITH_NLS
 NLS_USES=		gettext
+
+GSPELL_DESC=		Support for spell checking through gspell
+GSPELL_CMAKE_BOOL= 	WITH_GSPELL
+GSPELL_LIB_DEPENDS=	libgspell-1.so:textproc/gspell
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|COMMAND python3|COMMAND ${PYTHON_VERSION}|g' \

@@ -1,6 +1,6 @@
 PORTNAME=	xine
 DISTVERSION=	1.2.12
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-lib/${PORTVERSION}
 PKGNAMEPREFIX=	lib
@@ -170,6 +170,8 @@ pre-configure-GNUTLS-off:
 		${WRKSRC}/configure
 
 post-patch:
+	@${REINPLACE_CMD} -e '/xine_set_flags/s/XINE_PROTECTED//' \
+		${WRKSRC}/include/xine.h
 .if ${COMPILER_TYPE} == "clang"
 	@${REINPLACE_CMD} -e 's|-fno-rename-registers||' \
 		${WRKSRC}/src/libw32dll/Makefile.in

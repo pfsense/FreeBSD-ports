@@ -1,7 +1,7 @@
 PORTNAME=	pytest-env
 PORTVERSION=	0.6.2
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	swills@FreeBSD.org
@@ -12,5 +12,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=2.6:devel/py-pytest@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

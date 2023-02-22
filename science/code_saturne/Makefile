@@ -1,7 +1,7 @@
 PORTNAME=	code_saturne
 PORTVERSION=	7.1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science parallel
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -100,6 +100,7 @@ CONFIGURE_ARGS+=	--disable-openmp
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
+USES+=		tex
 USE_TEX=	tex:build
 BUILD_DEPENDS+=	fig2dev:print/fig2dev		\
 		doxygen:devel/doxygen		\

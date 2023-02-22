@@ -1,6 +1,5 @@
 PORTNAME=	fvwm3
-DISTVERSION=	1.0.5
-PORTREVISION=	1
+PORTVERSION=	1.0.6a
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/fvwmorg/fvwm3/releases/download/${DISTVERSION}/ \
 		http://fvwm.sourceforge.net/generated/icon_download/:icons
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libevent.so:devel/libevent \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		compiler:c11 cpe pkgconfig python:3.7+ readline xorg
+USES=		autoreconf compiler:c11 cpe pkgconfig python:3.7+ readline xorg
 USE_XORG=	ice sm x11 xext xft xrandr xrender xt
 
 CONFLICTS_INSTALL=	fvwm

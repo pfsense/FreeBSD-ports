@@ -1,7 +1,7 @@
 PORTNAME=	vulkan-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.231
-CATEGORIES=	graphics wayland
+DISTVERSION=	1.3.241
+CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Tools and demos for the Vulkan graphics API
@@ -25,6 +25,7 @@ OPTIONS_DEFAULT=	WAYLAND XCB XLIB
 OPTIONS_SLAVE=		DISPLAY
 OPTIONS_SUB=		yes
 
+WAYLAND_CATEGORIES=	wayland
 WAYLAND_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 			wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
@@ -37,7 +38,7 @@ XCB_CMAKE_BOOL=		BUILD_WSI_XCB_SUPPORT
 
 XLIB_DESC=		${X11_DESC} via libX11
 XLIB_USES=		xorg
-XLIB_USE=		XORG=x11,xext,ice,sm
+XLIB_USE=		XORG=x11
 XLIB_CMAKE_BOOL=	BUILD_WSI_XLIB_SUPPORT
 
 # https://github.com/KhronosGroup/Vulkan-Tools/issues/307

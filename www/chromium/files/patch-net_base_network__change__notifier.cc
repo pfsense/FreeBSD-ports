@@ -1,4 +1,4 @@
---- net/base/network_change_notifier.cc.orig	2022-09-24 10:57:32 UTC
+--- net/base/network_change_notifier.cc.orig	2023-01-11 09:17:16 UTC
 +++ net/base/network_change_notifier.cc
 @@ -37,7 +37,7 @@
  #include "net/base/network_change_notifier_linux.h"

@@ -1,5 +1,5 @@
 PORTNAME=	universal-ctags
-PORTVERSION=	p5.9.20221023.0
+PORTVERSION=	p6.0.20230122.0
 CATEGORIES=	devel
 
 MAINTAINER=	dereks@lifeofadishwasher.com
@@ -46,4 +46,5 @@ PCRE2_CONFIGURE_ENABLE=	pcre2
 YAML_LIB_DEPENDS=	libyaml.so:textproc/libyaml
 YAML_CONFIGURE_ENABLE=	yaml
 
+PORTSCOUT=	skipv:v6.0.0
 .include <bsd.port.mk>

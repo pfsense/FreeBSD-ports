@@ -1,7 +1,7 @@
 PORTNAME=	pywikibot
-DISTVERSION=	7.3.0
+DISTVERSION=	7.7.2
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +9,7 @@ COMMENT=	Wikipedia bot for Python
 WWW=		https://www.mediawiki.org/wiki/Pywikibot
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.20.1:www/py-requests@${PY_FLAVOR}
 

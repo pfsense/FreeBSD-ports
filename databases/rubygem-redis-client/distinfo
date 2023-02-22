@@ -1,3 +1,3 @@
-TIMESTAMP = 1664768022
-SHA256 (rubygem/redis-client-0.9.0.gem) = 28a413e9ddcba62a39b503bfd65f5f58989a49476a52784b07c8dad23c92a927
-SIZE (rubygem/redis-client-0.9.0.gem) = 23040
+TIMESTAMP = 1674590088
+SHA256 (rubygem/redis-client-0.12.1.gem) = 387935d407c250c9b9794161293ca22422202c43c78d5c0ca3ddda915f3530e1
+SIZE (rubygem/redis-client-0.12.1.gem) = 25600

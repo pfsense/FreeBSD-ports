@@ -1,7 +1,7 @@
 PORTNAME=	django
-PORTVERSION=	4.0.8
+PORTVERSION=	4.0.10
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP \
+MASTER_SITES=	PYPI \
 		https://media.djangoproject.com/releases/${PORTVERSION:R}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	40
@@ -14,6 +14,9 @@ WWW=		https://www.djangoproject.com/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Extended support of Django 4.0 ends April 2023, upgrade to a newer version of Django. See https://www.djangoproject.com/download/
+EXPIRATION_DATE=	2023-05-20
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}backports.zoneinfo>0:devel/py-backports.zoneinfo@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}asgiref>0:www/py-asgiref@${PY_FLAVOR} \
@@ -31,8 +34,7 @@ PORTDOCS=	*
 
 SHEBANG_FILES=	django/conf/project_template/manage.py-tpl
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django32 \
-			${PYTHON_PKGNAMEPREFIX}django41
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django[0-9][0-9]
 
 CPE_VENDOR=	djangoproject
 

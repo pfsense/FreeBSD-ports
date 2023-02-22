@@ -1,5 +1,5 @@
 PORTNAME=	ntopng
-PORTVERSION=	5.4.d20220812
+PORTVERSION=	5.6.d20230216
 PORTEPOCH=	1
 CATEGORIES=	net
 
@@ -24,9 +24,8 @@ LIB_DEPENDS=	librrd.so:databases/rrdtool \
 		libhiredis.so:databases/hiredis
 BUILD_DEPENDS=	bash:shells/bash
 
-USES=		autoreconf compiler:c++11-lang cpe gmake libtool localbase \
+USES=		autoreconf compiler:c++11-lang cpe gmake ldap libtool localbase \
 		lua:54 mysql pathfix pkgconfig shebangfix sqlite ssl
-USE_OPENLDAP=	yes
 
 SUB_FILES=	ntopng-geoip2update.sh pkg-deinstall
 SHEBANG_FILES=	httpdocs/misc/ntopng-add-user.sh \
@@ -39,9 +38,9 @@ GROUPS=		ntopng
 PLIST_SUB=	NTOPNGUSER="${USERS}" NTOPNGROUP="${GROUPS}"
 
 USE_GITHUB=	yes
-GH_TUPLE=	ntop:ntopng-dist:604aa39:dist/httpdocs/dist
+GH_TUPLE=	ntop:ntopng-dist:6f66796:dist/httpdocs/dist
 GH_ACCOUNT=	ntop
-GH_TAGNAME=	8ade112
+GH_TAGNAME=	39ce2fd
 
 CPE_VENDOR=	ntop
 

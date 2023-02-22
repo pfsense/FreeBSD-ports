@@ -1,12 +1,13 @@
 PORTNAME=	flake8-quotes
-PORTVERSION=	3.3.1
+PORTVERSION=	3.3.2
 CATEGORIES=	devel
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Flake8 lint for quotes
-WWW=		https://pypi.org/project/flake8-quotes/
+WWW=		https://pypi.org/project/flake8-quotes/ \
+		https://github.com/zheller/flake8-quotes/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

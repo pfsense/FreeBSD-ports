@@ -1,9 +1,9 @@
 PORTNAME=	intx
-PORTVERSION=	0.8.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.1
 CATEGORIES=	math
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Extended precision integer library
 WWW=		https://github.com/chfast/intx
 
@@ -17,4 +17,3 @@ GH_ACCOUNT=	chfast
 CMAKE_OFF=	INTX_TESTING
 
 .include <bsd.port.mk>
-

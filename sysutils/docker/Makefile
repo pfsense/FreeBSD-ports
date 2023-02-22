@@ -1,10 +1,10 @@
 PORTNAME=		docker
 PORTVERSION=		18.09.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=		6
+PORTREVISION=		10
 CATEGORIES=		sysutils
 
-MAINTAINER=		ports@FreeBSD.org
+MAINTAINER=		joneum@FreeBSD.org
 COMMENT=		Open-source application container engine
 WWW=		https://www.docker.com/
 

@@ -176,7 +176,6 @@ lib/emby-server/system/Microsoft.Win32.Registry.dll
 lib/emby-server/system/Microsoft.Win32.SystemEvents.dll
 lib/emby-server/system/NetVips.dll
 lib/emby-server/system/Newtonsoft.Json.dll
-lib/emby-server/system/PlaylistsNET.dll
 lib/emby-server/system/RSSDP.dll
 lib/emby-server/system/SMBLibrary.dll
 lib/emby-server/system/SQLitePCL.pretty.dll
@@ -551,6 +550,7 @@ lib/emby-server/system/dashboard-ui/modules/common/strings/ro.json
 lib/emby-server/system/dashboard-ui/modules/common/strings/ru.json
 lib/emby-server/system/dashboard-ui/modules/common/strings/sk.json
 lib/emby-server/system/dashboard-ui/modules/common/strings/sl-SI.json
+lib/emby-server/system/dashboard-ui/modules/common/strings/sq.json
 lib/emby-server/system/dashboard-ui/modules/common/strings/sv.json
 lib/emby-server/system/dashboard-ui/modules/common/strings/tr.json
 lib/emby-server/system/dashboard-ui/modules/common/strings/uk.json
@@ -909,6 +909,7 @@ lib/emby-server/system/dashboard-ui/modules/toast/toast.css
 lib/emby-server/system/dashboard-ui/modules/toast/toast.js
 lib/emby-server/system/dashboard-ui/modules/transparencymanagement.js
 lib/emby-server/system/dashboard-ui/modules/viewmanager/baseview.js
+lib/emby-server/system/dashboard-ui/modules/viewmanager/basewidget.js
 lib/emby-server/system/dashboard-ui/modules/viewmanager/viewmanager.js
 lib/emby-server/system/dashboard-ui/modules/viewsettings/viewsettings.js
 lib/emby-server/system/dashboard-ui/modules/viewsettings/viewsettings.template.html
@@ -967,6 +968,10 @@ lib/emby-server/system/dashboard-ui/settings/keyboard.html
 lib/emby-server/system/dashboard-ui/settings/keyboard.js
 lib/emby-server/system/dashboard-ui/settings/managedownloads.html
 lib/emby-server/system/dashboard-ui/settings/managedownloads.js
+lib/emby-server/system/dashboard-ui/settings/notificationeditor.js
+lib/emby-server/system/dashboard-ui/settings/notificationeditor.template.html
+lib/emby-server/system/dashboard-ui/settings/notifications.html
+lib/emby-server/system/dashboard-ui/settings/notifications.js
 lib/emby-server/system/dashboard-ui/settings/password.html
 lib/emby-server/system/dashboard-ui/settings/password.js
 lib/emby-server/system/dashboard-ui/settings/playback.html
@@ -1040,6 +1045,7 @@ lib/emby-server/system/dashboard-ui/strings/ro.json
 lib/emby-server/system/dashboard-ui/strings/ru.json
 lib/emby-server/system/dashboard-ui/strings/sk.json
 lib/emby-server/system/dashboard-ui/strings/sl-SI.json
+lib/emby-server/system/dashboard-ui/strings/sq.json
 lib/emby-server/system/dashboard-ui/strings/sv.json
 lib/emby-server/system/dashboard-ui/strings/th.json
 lib/emby-server/system/dashboard-ui/strings/tr.json
@@ -1168,6 +1174,7 @@ lib/emby-server/system/traystrings/pt-BR.json
 lib/emby-server/system/traystrings/pt-PT.json
 lib/emby-server/system/traystrings/ru.json
 lib/emby-server/system/traystrings/sk.json
+lib/emby-server/system/traystrings/sq.json
 lib/emby-server/system/traystrings/sv.json
 lib/emby-server/system/traystrings/tr.json
 lib/emby-server/system/traystrings/uk.json

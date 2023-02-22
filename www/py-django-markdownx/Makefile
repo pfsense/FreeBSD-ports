@@ -2,10 +2,10 @@ PORTNAME=	django-markdownx
 PORTVERSION=	3.0.1
 PORTREVISION=	1
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Django Markdown editor with image uploads and live preview
 WWW=		https://github.com/neutronX/django-markdownx
 

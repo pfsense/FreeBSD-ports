@@ -1,7 +1,10 @@
 PORTNAME=	swaync
 DISTVERSIONPREFIX=	v
-PORTVERSION=	0.7.2
+PORTVERSION=	0.7.3
 CATEGORIES=	x11 wayland
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	a9db8b7fcb19.patch:-p1 # https://github.com/ErikReider/SwayNotificationCenter/issues/209
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Simple Wayland notification daemon with GTK panel

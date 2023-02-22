@@ -12,7 +12,7 @@
 MESAVERSION=	${MESABASEVERSION}${MESASUBVERSION:C/^(.)/.\1/}
 MESADISTVERSION=${MESABASEVERSION}${MESASUBVERSION:C/^(.)/-\1/}
 
-MESABASEVERSION=	22.2.2
+MESABASEVERSION=	22.3.5
 # if there is a subversion, don't include the '-' between 7.11-rc2.
 MESASUBVERSION=
 
@@ -30,8 +30,7 @@ LICENSE_FILE=	${WRKSRC}/docs/license.rst
 
 COMPONENT=	${PORTNAME:tl:C/^lib//:C/mesa-//}
 
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs \
-		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
 .if ${COMPONENT} != clover
 .if ${PORT_OPTIONS:MPLATFORM_X11}
@@ -40,9 +39,6 @@ USES+=	xorg
 .endif
 .if ${COMPONENT} != osmesa
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
-.endif
-.if ${COMPONENT} != libs
-LIB_DEPENDS+=	libglapi.so:graphics/mesa-libs
 .endif
 .if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
@@ -53,8 +49,6 @@ LIB_DEPENDS+=	libelf.so:devel/libelf
 
 USES+=		compiler:c++11-lib bison meson pathfix pkgconfig \
 		python:3.6+,build shebangfix tar:xz
-
-USE_LDCONFIG=	yes
 
 .if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
 # --build-id isn't supported by old GNU ld.bfd in base
@@ -88,12 +82,9 @@ PKGDEINSTALL=	${.CURDIR}/pkg-deinstall
 
 BINARY_ALIAS+=	python3=${PYTHON_VERSION}
 
-LLVM_DEFAULT=	13
+LLVM_DEFAULT=	15
 BUILD_DEPENDS+=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-.if ${COMPONENT} != libs
-RUN_DEPENDS+=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-.endif
+CONFIGURE_ENV+=	LLVM_CONFIG=llvm-config${LLVM_DEFAULT}
 
-MESON_ARGS+=	--native-file="${WRKSRC}/llvm.ini"
 LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/llvm${LLVM_DEFAULT}/lib
 MESON_ARGS+=	-Dllvm=enabled

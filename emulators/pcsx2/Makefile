@@ -1,5 +1,5 @@
 PORTNAME=	pcsx2
-PORTVERSION=	1.7.3344
+PORTVERSION=	1.7.4097
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -15,19 +15,25 @@ ONLY_FOR_ARCHS=	amd64
 # - rapidyaml (and c4core) come from 3rdparty/ (0.4.0 is needed)
 # - glad comes from 3rdparty/ (conflicts with libglvnd)
 # - zstd comes from 3rdparty/ (not detected yet)
-# - cubeb comes from 3rdparty/ (not available from ports yet)
+# - zydis comes from 3rdparty/
 LIB_DEPENDS=	libpng.so:graphics/png \
-		libpulse.so:audio/pulseaudio \
+		libavcodec.so:multimedia/ffmpeg \
+		libavformat.so:multimedia/ffmpeg \
+		libavutil.so:multimedia/ffmpeg \
+		libswresample.so:multimedia/ffmpeg \
+		libswscale.so:multimedia/ffmpeg \
 		libSoundTouch.so:audio/soundtouch \
-		libsamplerate.so:audio/libsamplerate \
-		libharfbuzz.so:print/harfbuzz \
 		libfmt.so:devel/libfmt \
-		libzip.so:archivers/libzip
+		libzip.so:archivers/libzip \
+		libcurl.so:ftp/curl \
+		libpulse.so:audio/pulseaudio \
+		libjack.so:audio/jack \
+		libsndio.so:audio/sndio
 #		libryml.so:devel/rapidyaml \
 #		libglad.so:graphics/glad \
 #		libzstd.so:archivers/zstd
 
-USES=		cmake desktop-file-utils gl gnome pkgconfig sdl xorg
+USES=		cmake desktop-file-utils gl pkgconfig qt:6 sdl xorg
 
 USE_GITHUB=	yes
 GH_PROJECT=	pcsx2
@@ -35,26 +41,39 @@ GH_TAGNAME=	v${PORTVERSION}
 .include "${.CURDIR}/Makefile.tuples"
 
 USE_GL=		egl
-USE_GNOME=	glib20 gtk30
 USE_SDL=	sdl2
 USE_XORG=	ice x11 xcb xext xpm xrandr
-USE_WX=		3.0+
+USE_QT=		base tools
 
 # See: cmake/BuildParameters.cmake
-CMAKE_ARGS+=	-DCMAKE_INSTALL_DOCDIR=${DOCSDIR} \
-		-DPACKAGE_MODE:BOOL=ON \
+CMAKE_ARGS+=	\
+		-DCMAKE_REQUIRED_INCLUDES:STRING=${LOCALBASE}/include/ \
+		-DQT_BUILD:BOOL=ON \
 		-DUSE_VTUNE:BOOL=OFF \
 		-DUSE_VULKAN:BOOL=OFF \
-		-DQT_BUILD:BOOL=OFF \
 		-DENABLE_TESTS:BOOL=OFF \
-		-DDISABLE_PCSX2_WRAPPER:BOOL=ON
-DATADIR=	${PREFIX}/share/PCSX2
+		-DPCSX2_RESOURCES_PATH:STRING=${DATADIR}/resources
 
-OPTIONS_DEFINE=	DOCS NLS
-OPTIONS_SUB=	yes
-NLS_USES=	gettext
-NLS_CMAKE_ON=	-DNO_TRANSLATION:BOOL=OFF
-NLS_CMAKE_OFF=	-DNO_TRANSLATION:BOOL=ON
+OPTIONS_DEFINE=	DOCS
+PORTDOCS=	Debugger.pdf GameIndex.pdf PCSX2_FAQ.pdf
+
+# - Program and resources are copied from target dir ${CONFIGURE_WRKSRC}/bin
+#   because only necessary resources are installed there (e.g. no dx11 stuff)
+do-install:
+	cd ${CONFIGURE_WRKSRC}/bin && \
+		${COPYTREE_SHARE} resources/ ${STAGEDIR}${DATADIR}/
+	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/bin/pcsx2-qt \
+		${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_DATA} ${WRKSRC}/pcsx2/Resources/AppIcon64.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/PCSX2.png
+	${INSTALL_DATA} ${WRKSRC}/.github/workflows/scripts/linux/pcsx2-qt.desktop \
+		${STAGEDIR}${PREFIX}/share/applications/PCSX2.desktop
+	${INSTALL_MAN} ${WRKSRC}/bin/docs/PCSX2.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR} && \
+		${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/bin/docs/|} \
+			${STAGEDIR}${DOCSDIR}
 
 # For maintainer (do not forget to clean up Makefile.tuples afterwards to
 # remove useless submodules)

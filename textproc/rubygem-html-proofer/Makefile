@@ -19,10 +19,13 @@ RUN_DEPENDS=	rubygem-addressable>=2.3<3:www/rubygem-addressable \
 		rubygem-zeitwerk>=2.5<3:devel/rubygem-zeitwerk
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 
 PLIST_FILES=	bin/htmlproofer
+
+# html-proofer 5+ requires async 2.1.0+ which requires Ruby 3.1+
+# Update to 5.* after Ruby 3.1 becomes the default version
+PORTSCOUT=	limit:^4\.
 
 .include <bsd.port.mk>

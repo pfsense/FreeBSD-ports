@@ -1,47 +1,45 @@
---- chrome/common/chrome_features.h.orig	2022-10-01 07:40:07 UTC
+--- chrome/common/chrome_features.h.orig	2023-02-11 09:11:04 UTC
 +++ chrome/common/chrome_features.h
-@@ -81,7 +81,7 @@ extern const base::Feature kAppShimNewCloseBehavior;
- COMPONENT_EXPORT(CHROME_FEATURES) extern const base::Feature kAsyncDns;
+@@ -73,13 +73,13 @@ BASE_DECLARE_FEATURE(kAppShimNewCloseBehavior);
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kAsyncDns);
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
- COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kAutofillAddressSurvey;
- COMPONENT_EXPORT(CHROME_FEATURES)
-@@ -90,7 +90,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kAutofillPasswordSurvey;
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kAutofillAddressSurvey);
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kAutofillCardSurvey);
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kAutofillPasswordSurvey);
  #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kBackgroundModeAllowRestart;
+ BASE_DECLARE_FEATURE(kBackgroundModeAllowRestart);
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-@@ -204,7 +204,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kDesktopPWAsWebBundles;
+@@ -186,7 +186,7 @@ BASE_DECLARE_FEATURE(kDesktopPWAsTabStripSettings);
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kDesktopPWAsWebBundles);
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kChromeAppsDeprecation);
  COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kChromeAppsDeprecation;
+ BASE_DECLARE_FEATURE(kKeepForceInstalledPreinstalledApps);
+@@ -429,7 +429,7 @@ BASE_DECLARE_FEATURE(kKAnonymityServiceOHTTPRequests);
  COMPONENT_EXPORT(CHROME_FEATURES)
-@@ -429,7 +429,7 @@ extern const base::Feature kKioskEnableAppService;
- COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kUpdateHistoryEntryPointsInIncognito;
+ BASE_DECLARE_FEATURE(kUpdateHistoryEntryPointsInIncognito);
  
 -#if BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
-+#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && !BUILDFLAG(IS_CHROMEOS)
++#if (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)) || BUILDFLAG(IS_BSD)
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kLinuxLowMemoryMonitor);
  COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kLinuxLowMemoryMonitor;
- COMPONENT_EXPORT(CHROME_FEATURES)
-@@ -438,7 +438,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::FeatureParam<int> kLinuxLowMemoryMonitorModerateLevel;
+@@ -437,7 +437,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::FeatureParam<int> kLinuxLowMemoryMonitorCriticalLevel;
  #endif  // BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
- COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kListWebAppsSwitch;
+ COMPONENT_EXPORT(CHROME_FEATURES) BASE_DECLARE_FEATURE(kListWebAppsSwitch);
  #endif
+ 

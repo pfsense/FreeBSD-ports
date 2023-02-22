@@ -1,5 +1,6 @@
 PORTNAME=	virtualbox-ose
 PORTVERSION=	6.1.36
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 DISTFILES=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX} ${GUESTADDITIONS}
@@ -145,6 +146,7 @@ LICENSE_DISTFILES_Additions=	${GUESTADDITIONS}
 .if ${PORT_OPTIONS:MMANUAL}
 DBKXMLDIR=	${LOCALBASE}/share/xml/docbook/4.4
 DBKXSLDIR=	${LOCALBASE}/share/xsl/docbook
+USES+=		tex
 USE_TEX=	dvipsk:build formats:build
 .endif
 

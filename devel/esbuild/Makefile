@@ -1,7 +1,7 @@
 PORTNAME=	esbuild
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.23
-PORTREVISION=	6
+DISTVERSION=	0.16.17
+PORTREVISION=	3
 CATEGORIES=	devel www
 
 MAINTAINER=	dch@FreeBSD.org
@@ -12,11 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 USES=		go:modules
-USE_GITHUB=	yes
-GH_ACCOUNT=	evanw
-
-.include "${.CURDIR}/Makefile.deps"
-
+GO_MODULE=	github.com/evanw/${PORTNAME}
 GO_TARGET=	./cmd/esbuild:esbuild
 
 PLIST_FILES=	bin/${PORTNAME}

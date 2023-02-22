@@ -2,7 +2,6 @@
 
     SUBDIR += bsdadminscripts2
     SUBDIR += caronade
-    SUBDIR += chucky
     SUBDIR += create-rb-port
     SUBDIR += dialog4ports
     SUBDIR += dialog4ports-static
@@ -57,6 +56,7 @@
     SUBDIR += portrac
     SUBDIR += ports-tools
     SUBDIR += portscout
+    SUBDIR += portsdb
     SUBDIR += portsearch
     SUBDIR += portshaker
     SUBDIR += portshaker-config
@@ -72,6 +72,7 @@
     SUBDIR += py-FreeBSD-ports
     SUBDIR += py-pytoport
     SUBDIR += py-skog
+    SUBDIR += rc-subr-jail
     SUBDIR += reprise
     SUBDIR += sccache-overlay
     SUBDIR += synth

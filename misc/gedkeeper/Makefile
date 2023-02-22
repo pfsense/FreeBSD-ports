@@ -1,5 +1,5 @@
 PORTNAME=	gedkeeper
-PORTVERSION=	2.21.0
+PORTVERSION=	2.23.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc
 
@@ -15,16 +15,12 @@ LIB_DEPENDS=	libgdiplus.so:x11-toolkits/libgdiplus
 USES=		desktop-file-utils mono shared-mime-info
 USE_GITHUB=	yes
 GH_ACCOUNT=	Serg-Norseman
-GH_PROJECT=	GEDKeeper GKCommunicator:gkc
-GH_TAGNAME=	4757bf3:gkc
-GH_SUBDIR=	projects/GKCommunicator:gkc
+GH_PROJECT=	GEDKeeper GKCommunicator:gkc GKGenetix:gkg
+GH_TAGNAME=	9ae0059:gkc d40f6b0:gkg
+GH_SUBDIR=	projects/GKCommunicator:gkc projects/GKGenetix:gkg
 
 _BUILD_TYPE=	Release
 DATADIR=	${PREFIX}/lib/${PORTNAME}
-
-post-patch:
-	@${REINPLACE_CMD} -e '/Reference Include/s,System\.XML,System.Xml,' \
-		${WRKSRC}/projects/GKCommunicator/GKNetCore/GKNetCore.csproj
 
 do-build:
 	cd ${BUILD_WRKSRC} && msbuild projects/GEDKeeper2.linux.sln \

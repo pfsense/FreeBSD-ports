@@ -1,5 +1,6 @@
 PORTNAME=	execline
-PORTVERSION=	2.9.0.0
+PORTVERSION=	2.9.1.0
+PORTREVISION=	1
 CATEGORIES=	lang shells
 MASTER_SITES=	https://www.skarnet.org/software/${PORTNAME}/
 
@@ -10,7 +11,7 @@ WWW=		https://www.skarnet.org/software/execline/
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	skalibs>=2.12.0.0:devel/skalibs
+BUILD_DEPENDS=	skalibs>=2.13.0.0:devel/skalibs
 LIB_DEPENDS=	libskarnet.so:devel/skalibs
 
 USES=		gmake

@@ -12,6 +12,7 @@
     SUBDIR += bee-host
     SUBDIR += biew
     SUBDIR += bitedit
+    SUBDIR += bless
     SUBDIR += boiling-egg
     SUBDIR += bpatch
     SUBDIR += bvi
@@ -78,6 +79,7 @@
     SUBDIR += kibi
     SUBDIR += kile
     SUBDIR += komodo-edit
+    SUBDIR += languageclient-neovim
     SUBDIR += lapce
     SUBDIR += lazarus
     SUBDIR += lazarus-devel
@@ -197,7 +199,7 @@
     SUBDIR += linux-sublime3
     SUBDIR += linux-wps-office
     SUBDIR += lite
-    SUBDIR += madedit
+    SUBDIR += lite-xl
     SUBDIR += marker
     SUBDIR += mg
     SUBDIR += micro
@@ -218,6 +220,7 @@
     SUBDIR += o
     SUBDIR += openoffice-4
     SUBDIR += openoffice-devel
+    SUBDIR += ox
     SUBDIR += p5-Proc-InvokeEditor
     SUBDIR += p5-Vimana
     SUBDIR += paredit-mode.el
@@ -237,6 +240,7 @@
     SUBDIR += py-vim-bridge
     SUBDIR += quilter
     SUBDIR += rehex
+    SUBDIR += retext
     SUBDIR += rubygem-neovim
     SUBDIR += scite
     SUBDIR += se
@@ -262,6 +266,7 @@
     SUBDIR += texworks
     SUBDIR += the
     SUBDIR += treeform
+    SUBDIR += turbo
     SUBDIR += tweak
     SUBDIR += uemacs
     SUBDIR += uzap

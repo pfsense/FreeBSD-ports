@@ -1,5 +1,5 @@
 PORTNAME=	wine
-DISTVERSION=	7.17
+DISTVERSION=	7.22
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://dl.winehq.org/wine/source/7.x/
@@ -67,8 +67,8 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP OPENAL STAGING V4L WINEMAKER X11 GECKO MONO
-OPTIONS_DEFAULT=GNUTLS OPENAL OSS X11
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS STAGING V4L WINEMAKER X11 GECKO MONO
+OPTIONS_DEFAULT=GNUTLS OSS X11
 OPTIONS_RADIO=	AUDIO
 OPTIONS_RADIO_AUDIO=	ALSA OSS
 OPTIONS_SUB=	yes
@@ -92,13 +92,7 @@ GECKO_RUN_DEPENDS=	wine-gecko-devel>0:emulators/wine-gecko-devel
 GNUTLS_CONFIGURE_WITH=	gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 
-LDAP_CONFIGURE_WITH=	ldap
-LDAP_USE=		OPENLDAP=yes
-
 MONO_RUN_DEPENDS=	wine-mono-devel>0:emulators/wine-mono-devel
-
-OPENAL_CONFIGURE_WITH=	openal
-OPENAL_USES=		openal
 
 OSS_CONFIGURE_ON=	--without-alsa --with-oss
 
@@ -126,7 +120,11 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 .include <bsd.port.pre.mk>
 
-.if (${LLVM_DEFAULT} == 90 || ${LLVM_DEFAULT} == 10 || ${LLVM_DEFAULT} == 11)
+.if ${PORT_OPTIONS:MSTAGING} && ${OSVERSION} < 1300000
+BROKEN=		build failure
+.endif
+
+.if (${LLVM_DEFAULT} == 10 || ${LLVM_DEFAULT} == 11)
 _LLVM_VERSION=	12
 .else
 _LLVM_VERSION=	${LLVM_DEFAULT}

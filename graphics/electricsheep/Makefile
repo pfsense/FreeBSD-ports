@@ -1,6 +1,6 @@
 PORTNAME=	electricsheep
 DISTVERSION=	3.0.2.20191005 # configure.ac though says that the version is 2.7b33
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	graphics
 
@@ -10,6 +10,8 @@ WWW=		https://electricsheep.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	flam3-animate:graphics/flam3
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \

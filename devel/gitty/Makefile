@@ -1,7 +1,7 @@
 PORTNAME=	gitty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.1
-PORTREVISION=	6
+DISTVERSION=	0.7.0
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	dch@FreeBSD.org
@@ -12,8 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
-USE_GITHUB=	yes
-GH_ACCOUNT=	muesli
+GO_MODULE=	github.com/muesli/${PORTNAME}
 
 .include "${.CURDIR}/Makefile.deps"
 

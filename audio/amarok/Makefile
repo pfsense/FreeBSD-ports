@@ -11,6 +11,9 @@ WWW=		https://amarok.kde.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	No longer actively maintained upstream.
+EXPIRATION_DATE=	2023-03-31
+
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libfftw3.so:math/fftw3 \
 		liblastfm5.so:audio/liblastfm-qt5 \
@@ -21,6 +24,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 
 USES=		cmake compiler:c++11-lang cpe desktop-file-utils \
 		kde:5 mysql:client,embedded pkgconfig qca qt:5 shebangfix ssl xorg
+IGNORE_WITH_MYSQL=80
 
 USE_QT=		core concurrent declarative dbus gui location network phonon4 \
 		quickcontrols2 script scripttools sql svg webchannel \

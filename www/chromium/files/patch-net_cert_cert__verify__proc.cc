@@ -1,6 +1,6 @@
---- net/cert/cert_verify_proc.cc.orig	2022-09-24 10:57:32 UTC
+--- net/cert/cert_verify_proc.cc.orig	2023-02-08 09:03:45 UTC
 +++ net/cert/cert_verify_proc.cc
-@@ -510,7 +510,7 @@ base::Value CertVerifyParams(X509Certificate* cert,
+@@ -507,7 +507,7 @@ base::Value CertVerifyParams(X509Certificate* cert,
  
  }  // namespace
  

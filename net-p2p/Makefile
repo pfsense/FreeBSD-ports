@@ -1,7 +1,6 @@
     COMMENT = Peer-to-peer network applications
 
     SUBDIR += amule
-    SUBDIR += amule-devel
     SUBDIR += arbitrum-avm
     SUBDIR += autoscan
     SUBDIR += awgg
@@ -50,6 +49,7 @@
     SUBDIR += libtorrent
     SUBDIR += libtorrent-rasterbar
     SUBDIR += libtorrent-rasterbar2
+    SUBDIR += libutp
     SUBDIR += lidarr
     SUBDIR += linuxdcpp
     SUBDIR += litecoin
@@ -91,6 +91,7 @@
     SUBDIR += rtorrent
     SUBDIR += shx
     SUBDIR += sonarr
+    SUBDIR += tooth
     SUBDIR += torrent-file-editor
     SUBDIR += torrentcheck
     SUBDIR += torrentsniff
@@ -104,6 +105,7 @@
     SUBDIR += udpt
     SUBDIR += uhub
     SUBDIR += vuze
+    SUBDIR += xbt
     SUBDIR += xmrig
     SUBDIR += zetacoin
     SUBDIR += zetacoin-daemon

@@ -1,6 +1,5 @@
 PORTNAME=	guile
-PORTVERSION=	3.0.8
-PORTREVISION=	1
+PORTVERSION=	3.0.9
 CATEGORIES=	lang scheme
 MASTER_SITES=	GNU
 
@@ -23,12 +22,11 @@ LIB_DEPENDS=	libffi.so:devel/libffi \
 USES=		charsetfix compiler:gcc-c++11-lib cpe gmake iconv libtool \
 		makeinfo pathfix pkgconfig readline tar:lz
 CPE_VENDOR=	gnu
-USE_GCC=	12
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 
-MAKE_JOBS_UNSAFE=	yes
+#MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 
 CONFLICTS_INSTALL=	guile1 guile2
@@ -55,8 +53,6 @@ EXTRA_PATCHES=	${FILESDIR}/extra-patch-bootstrap_Makefile.in
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|sys/time.h sys/timeb.h|sys/time.h |g' \
-		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|-i -e|-i.bak -e|' \
 		${WRKSRC}/libguile/Makefile.in
 	@${RM} -r ${WRKSRC}/prebuilt/32-bit-big-endian
@@ -64,7 +60,9 @@ post-patch:
 post-patch-THREADS-on:
 	@${REINPLACE_CMD} -e 's|bdw-gc|bdw-gc-threaded|g' ${WRKSRC}/configure
 
-post-install:
-	@${FIND} ${STAGEDIR}${PREFIX}/lib -name "*.go" | ${XARGS} ${STRIP_CMD}
+# Currently guile fails to run if libs are stripped. Will need to debug
+# the case.
+#post-install:
+#	@${FIND} ${STAGEDIR}${PREFIX}/lib -name "*.go" | ${XARGS} ${STRIP_CMD}
 
 .include <bsd.port.mk>

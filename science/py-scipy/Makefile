@@ -1,8 +1,8 @@
 PORTNAME=	scipy
-DISTVERSION=	1.9.2
+DISTVERSION=	1.10.0
 CATEGORIES=	science python
 MASTER_SITES=	https://docs.scipy.org/doc/${PORTNAME}-${DISTVERSION}/:doc \
-		CHEESESHOP:source \
+		PYPI:source \
 		SF:source
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source \
@@ -43,9 +43,9 @@ post-install:
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${UNZIP_CMD} -d ${STAGEDIR}${DOCSDIR} ${DISTDIR}/scipy-html-${DISTVERSION}.zip
-	@${RM} ${STAGEDIR}${PREFIX}/share/doc/py39-scipy/.buildinfo
+	@${RM} ${STAGEDIR}${PREFIX}/share/doc/${PYTHON_PKGNAMEPREFIX}${PORTNAME}/.buildinfo
 
 do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} runtests.py
+	@cd ${WRKSRC} && ${TOUCH} .coveragerc && ${PYTHON_CMD} runtests.py
 
 .include <bsd.port.mk>

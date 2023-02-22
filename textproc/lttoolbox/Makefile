@@ -1,5 +1,5 @@
 PORTNAME=	lttoolbox
-PORTVERSION=	${APVER}.${APREV}
+PORTVERSION=	3.7.1
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	textproc
@@ -19,16 +19,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	apertium
 USE_LDCONFIG=	yes
 
-APVER=		3.6
-APREV=		6
-
 GNU_CONFIGURE=	yes
 
 INSTALL_TARGET=	install-strip
 
 CFLAGS+=	-I${LOCALBASE}/include/utf8cpp
 LDFLAGS+=	-lpthread
-
-PLIST_SUB+=	APVER="${APVER}"
 
 .include <bsd.port.mk>

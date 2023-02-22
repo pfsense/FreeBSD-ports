@@ -1,5 +1,5 @@
 PORTNAME=	varnish
-DISTVERSION=	7.2.0
+DISTVERSION=	7.2.1
 CATEGORIES=	www
 MASTER_SITES=	https://varnish-cache.org/downloads/
 PKGNAMESUFFIX=	7
@@ -35,6 +35,8 @@ TEST_TARGET=	check
 TEST_ARGS=	TESTS_PARALLELISM=1
 
 CONFIGURE_ARGS=	--localstatedir=${PREFIX} --without-dot
+# Needed for clang 15 (#268814)
+CONFIGURE_ENV+=	ax_cv_check_cflags___Werror=no
 
 .if defined(NO_INET6) || defined(WITHOUT_INET6)
 BAD_TESTS=	r00832

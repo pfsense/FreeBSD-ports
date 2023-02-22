@@ -1,6 +1,6 @@
 PORTNAME=	sage
 PORTVERSION=	9.2
-PORTREVISION=	34
+PORTREVISION=	35
 CATEGORIES=	math
 MASTER_SITES=	https://mirrors.xmission.com/sage/src/		\
 		http://mirrors.xmission.com/sage/src/		\
@@ -197,7 +197,6 @@ LIB_DEPENDS=	libarb.so:math/arb		\
 		libplanarity.so:math/planarity	\
 		libpng.so:graphics/png		\
 		libppl.so:devel/ppl		\
-		libpynac.so:math/pynac		\
 		libR.so:math/R			\
 		librw.so:math/rankwidth		\
 		libSingular.so:math/singular	\
@@ -340,7 +339,7 @@ RUN_DEPENDS=	bash:shells/bash		\
 USES=		autoreconf blaslapack:openblas compiler:c++11-lib fortran \
 		gettext gmake gnome iconv jpeg libtool localbase magick:6,build \
 		ncurses ninja:build perl5 pkgconfig python:3.7+ readline shebangfix \
-		sqlite tk xorg
+		sqlite tex tk xorg
 USE_TEX=	latex:build pdftex:build tex:build
 USE_XORG=	x11 xext xscrnsaver
 USE_GNOME=	cairo glib20 pango

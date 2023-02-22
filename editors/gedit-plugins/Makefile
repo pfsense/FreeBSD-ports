@@ -1,5 +1,5 @@
 PORTNAME=	gedit-plugins
-PORTVERSION=	42.1
+PORTVERSION=	43.1
 CATEGORIES=	editors gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -35,7 +35,6 @@ BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 GLIB_SCHEMAS=	org.gnome.gedit.plugins.drawspaces.gschema.xml \
 		org.gnome.gedit.plugins.wordcompletion.gschema.xml \
-		org.gnome.gedit.plugins.terminal.gschema.xml \
-		org.gnome.gedit.plugins.translate.gschema.xml
+		org.gnome.gedit.plugins.terminal.gschema.xml
 
 .include <bsd.port.mk>

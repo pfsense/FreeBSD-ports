@@ -1,11 +1,11 @@
 PORTNAME=	activemq
-PORTVERSION=	5.17.1
+PORTVERSION=	5.17.2
 CATEGORIES=	net java
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTVERSION}
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}
 EXTRACT_SUFX=	-bin.tar.gz
 
-MAINTAINER=	nc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Messaging and Integration Patterns provider
 WWW=		https://activemq.apache.org
 

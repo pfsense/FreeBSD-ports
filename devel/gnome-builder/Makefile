@@ -1,6 +1,6 @@
 PORTNAME=	gnome-builder
 PORTVERSION=	42.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -27,6 +27,7 @@ LIB_DEPENDS=	libcmark.so:textproc/cmark \
 		libpcre.so:devel/pcre \
 		libpeas-1.0.so:devel/libpeas \
 		libportal.so:deskutils/libportal \
+		libportal-gtk3.so:deskutils/libportal-gtk3 \
 		libsoup-2.4.so:devel/libsoup \
 		libtemplate_glib-1.0.so:devel/template-glib \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3
@@ -77,11 +78,10 @@ OPTIONS_DEFINE=		CLANG DOCS
 OPTIONS_DEFAULT=	CLANG
 
 # track the latest llvm/clang version, the config script picks the newest available
-LLVM_VER=		${LLVM_DEFAULT}
 CLANG_DESC=		Build the clang plugin
 CLANG_MESON_TRUE=	plugin_clang
-CLANG_BUILD_DEPENDS=	llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
-CLANG_RUN_DEPENDS=	llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
+CLANG_USES=		llvm:build,run
+CLANG_CONFIGURE_ENV=	LLVM_CONFIG=${LLVM_CONFIG}
 
 # 11.1 and older has issues with vala generated code.
 post-patch:

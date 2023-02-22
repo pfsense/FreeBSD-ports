@@ -1,6 +1,6 @@
 PORTNAME?=	mariadb
-PORTVERSION=	10.3.36
-PORTREVISION?=	1
+PORTVERSION=	10.3.38
+PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
 		https://mirror.one.com/${SITESDIR}/ \
@@ -19,6 +19,9 @@ PKGNAMESUFFIX?=	103-server
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 WWW=		https://mariadb.org/
+
+DEPRECATED=		Use databases/mariadb106-server
+EXPIRATION_DATE=	2023-05-25
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -214,7 +217,8 @@ post-install-GSSAPI_NONE-off:
 post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/share/mysql/policy \
 		${STAGEDIR}${PREFIX}/include/mysql/server/private \
-		${STAGEDIR}${PREFIX}/lib/mysql/pkgconfig
+		${STAGEDIR}${PREFIX}/lib/mysql/pkgconfig \
+		${STAGEDIR}${PREFIX}/libexec/rcmysql
 	${MV} ${STAGEDIR}${PREFIX}/etc/mysql/user_map.conf \
 		${STAGEDIR}${PREFIX}/etc/mysql/user_map.conf.sample
 .endif # ${PKGNAMESUFFIX:M*-client}

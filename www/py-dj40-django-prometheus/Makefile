@@ -1,7 +1,7 @@
 PORTNAME=	django-prometheus
 PORTVERSION=	2.2.0
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}dj40-
 
 MAINTAINER=	kai@FreeBSD.org
@@ -9,6 +9,9 @@ COMMENT=	Export Django monitoring metrics for Prometheus.io
 WWW=		https://github.com/korfuri/django-prometheus
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+EXPIRATION_DATE=	2023-05-20
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django40>=2.2:www/py-django40@${PY_FLAVOR} \
