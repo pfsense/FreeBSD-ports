@@ -12,7 +12,6 @@ COMMENT=	pfSense package pfBlockerNG
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
-		${LOCALBASE}/bin/ggrep:textproc/gnugrep \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
 		${LOCALBASE}/bin/iprange:net-mgmt/iprange \
 		${LOCALBASE}/bin/jq:textproc/jq \
