@@ -3,8 +3,8 @@
  * pfblockerng_update.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for
@@ -71,9 +71,13 @@ function pfbupdate_status($status) {
 function pfb_cron_update($type) {
 	global $pfb, $pconfig;
 
+	if (!in_array($type, array('update', 'cron', 'reload'))) {
+		exit;
+	}
+
 	// Query for any active pfBlockerNG CRON jobs
 	exec('/bin/ps -wx', $result_cron);
-	if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron)) {
+	if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
 		pfbupdate_status(gettext("Force {$type} Terminated - Failed due to Active Running Task. Click 'View' for running process"));
 		exit;
 	}
@@ -108,13 +112,17 @@ function pfb_cron_update($type) {
 	install_cron_job('pfblockerng.php cron', false);
 
 	// Execute PHP process in the background
-	mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >> {$pfb['log']} 2>&1");
+	pfb_logger("\n [ Force Reload Task - {$pconfig['pfb_reload_option']} ]\n", 1);
+
+	$type_esc = escapeshellarg($type);
+	mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type_esc} >> {$pfb['log']} 2>&1");
 
 	// Execute Live Tail function
 	pfb_livetail($pfb['log'], 'force');
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Update'));
+$pglinks = array('', '/pfblockerng/pfblockerng_general.php', '@self');
 include_once('head.inc');
 
 $pconfig = array();
@@ -122,17 +130,27 @@ if ($_POST) {
 	$pconfig = $_POST;
 }
 
+// Load Wizard settings and reload pfBlockerNG
+$pfb_wizard = FALSE;
+if (isset($_GET) && isset($_GET['wizard']) && $_GET['wizard'] == 'reload') {
+	$pconfig['run']			= '';
+	$pconfig['pfb_force']		= 'reload';
+	$pconfig['pfb_reload_option']	= 'All';
+	$pfb_wizard			= TRUE;
+}
+
+// Define default Alerts Tab href link (Top row)
+$get_req = pfb_alerts_default_page();
+
 $tab_array	= array();
-$tab_array[]	= array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
-$tab_array[]	= array(gettext("Update"), true, "/pfblockerng/pfblockerng_update.php");
-$tab_array[]	= array(gettext("Alerts"), false, "/pfblockerng/pfblockerng_alerts.php");
-$tab_array[]	= array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
-$tab_array[]	= array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
-$tab_array[]	= array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
-$tab_array[]	= array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-$tab_array[]	= array(gettext("GeoIP"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml");
-$tab_array[]	= array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
-$tab_array[]	= array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
+$tab_array[]	= array(gettext('General'),	false,	'/pfblockerng/pfblockerng_general.php');
+$tab_array[]	= array(gettext('IP'),		false,	'/pfblockerng/pfblockerng_ip.php');
+$tab_array[]	= array(gettext('DNSBL'),	false,	'/pfblockerng/pfblockerng_dnsbl.php');
+$tab_array[]	= array(gettext('Update'),	true,	'/pfblockerng/pfblockerng_update.php');
+$tab_array[]	= array(gettext('Reports'),	false,	"/pfblockerng/pfblockerng_alerts.php{$get_req}");
+$tab_array[]	= array(gettext('Feeds'),	false,	'/pfblockerng/pfblockerng_feeds.php');
+$tab_array[]	= array(gettext('Logs'),	false,	'/pfblockerng/pfblockerng_log.php');
+$tab_array[]	= array(gettext('Sync'),	false,	'/pfblockerng/pfblockerng_sync.php');
 display_top_tabs($tab_array, true);
 
 if ($pfb['enable'] == 'on') {
@@ -158,6 +176,10 @@ if ($pfb['enable'] == 'on') {
 	$currentsec	= date('s');
 	$currentdaysec	= ($currenthour * 3600) + ($currentmin * 60) + $currentsec;
 
+	if (!is_numeric($pfb['min'])) {
+		$pfb['min'] = 0;
+	}
+
 	if ($pfb['interval'] == 1) {
 		if ($currentmin < $pfb['min']) {
 			$cron_hour_next = $currenthour;
@@ -166,11 +188,11 @@ if ($pfb['enable'] == 'on') {
 		}
 	}
 	elseif ($pfb['interval'] == 24) {
-		$cron_hour_next = $cron_hour_begin = !empty($pfb['24hour']) ?: '00';
+		$cron_hour_next = $cron_hour_begin = $pfb['24hour'] ?: '00';
 	}
 	else {
 		// Find next cron hour schedule
-		$crondata = pfb_cron_base_hour();
+		$crondata = pfb_cron_base_hour($pfb['interval']);
 		$cron_hour_begin = 0;
 		$cron_hour_next  = '';
 		if (!empty($crondata)) {
@@ -211,40 +233,56 @@ if ($pfb['enable'] == 'on') {
 	$nextcron = "{$hour_final}:{$min_final}:{$sec_final}";
 }
 
-if (empty($pfb['enable']) || empty($cron_hour_next) || $pfb['interval'] == 'Disabled') {
+$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php cron >> {$pfb['log']} 2>&1";
+if ($pfb['interval'] == 1) {
+	$pfb_hour = '*';
+} elseif ($pfb['interval'] == 24) {
+	$pfb_hour = $pfb['24hour'];
+} else {
+	$pfb_hour = implode(',', pfb_cron_base_hour($pfb['interval']));
+}
+
+// Determine if CRON job is missing
+if ($pfb['enable'] == 'on' && $pfb['interval'] != 'Disabled' &&
+    !pfblockerng_cron_exists($pfb_cmd, $pfb['min'], $pfb_hour, '*', '*')) {
+	$cronreal = ' [ Missing cron task ]';
+	$nextcron = '--';
+}
+
+// Determine if CRON job is disabled
+elseif (empty($pfb['enable']) || empty($cron_hour_next) || $pfb['interval'] == 'Disabled') {
 	$cronreal = ' [ Disabled ]';
 	$nextcron = '--';
 }
 
-$status  = 'NEXT Scheduled CRON Event will run at';
-$status .= "&emsp;<strong>{$cronreal}</strong>&emsp;with<strong><font color=\"red\">&emsp;{$nextcron}";
-$status .= '&emsp;</font></strong> time remaining.</font>';
+$status = 'NEXT Scheduled CRON Event will run at'
+	. "&emsp;<strong>{$cronreal}</strong>&emsp;with<strong><span style=\"color: red;\">&emsp;{$nextcron}"
+	. '&emsp;</span></strong> time remaining.';
 
 // Query for any active pfBlockerNG CRON jobs
 exec('/bin/ps -wax', $result_cron);
-if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron)) {
-	$status .= '<font color="red">&emsp;&emsp;';
-	$status .= 'Active pfBlockerNG CRON JOB';
-	$status .= '</font>&emsp;<i class="fa fa-spinner fa-pulse fa-lg"></i>';
+if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
+	$status = '<span style="color: red;">&emsp;&emsp;'
+		. 'Active pfBlockerNG CRON JOB'
+		. '</span>&emsp;<i class="fa fa-spinner fa-pulse fa-lg"></i>';
 }
-$status .= '<br />&emsp;<small><font color="red">Refresh to update current status and time remaining.</font></small>';
+$status .= '<br />&emsp;<small><span style="color: red;">Refresh to update current status and time remaining.</span></small>';
 
-$options  = '<div class="infoblock"><dl class="dl-horizontal">';
-$options .= '	<dt>Update:</dt><dd>will download any new Alias/Lists.</dd>';
-$options .= '	<dt>Cron:</dt><dd>will download any Alias/Lists that are within the Frequency Setting (due for Update).</dd>';
-$options .= '	<dt>Reload:</dt><dd>will reload all Lists using the existing Downloaded files.<br />';
-$options .= '	This is useful when Lists are out of <q>sync</q> or Reputation changes were made.</dd>';
-$options .= '</dl></div>';
+$options = '<div class="infoblock"><dl class="dl-horizontal">'
+	. '	<dt>Update:</dt><dd>will process new changes and download new Alias/Lists.</dd>'
+	. '	<dt>Cron:</dt><dd>will download any Alias/Lists that are within the Frequency Setting (due for Update).</dd>'
+	. '	<dt>Reload:</dt><dd>will reload all Lists using the existing Downloaded files.<br />'
+	. '	This is useful when Lists are out of <q>sync</q>, Whitelisting, Blacklisting, Suppression, TLD or Reputation changes were made.</dd>'
+	. '</dl></div>';
 
 // Create Form
 $form = new Form(false);
-$form->setAction('/pfblockerng/pfblockerng_update.php');
 
 $section = new Form_Section('Update Settings');
 $section->addInput(new Form_StaticText(
-	NULL,
+	'Links',
 	'<small>'
-	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
+	. '<a href="/firewall_aliases.php" target="_blank">Firewall Aliases</a>&emsp;'
 	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
 	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
 ));
@@ -260,7 +298,7 @@ $form->add($section);
 $group = new Form_Group('Force Options');
 $group->add(new Form_StaticText(
 	NULL,
-	'<font color="red">** AVOID ** </font>&nbsp;Running these <q>Force</q> options - when CRON is expected to RUN!&emsp;'
+	'<span style="color: red;">** AVOID ** </span>&nbsp;Running these <q>Force</q> options - when CRON is expected to RUN!&emsp;'
 	. $options
 ));
 
@@ -291,7 +329,6 @@ $group->add(new Form_Checkbox(
 	'reload'
 ))->displayAsRadio('pfb_force_reload')->setAttribute('title', 'Force Reload: IP & DNSBL.')->setWidth(1);
 $section->add($group);
-
 
 // Build 'Force Options' group section
 $group = new Form_Group('Select \'Reload\' option');
@@ -367,14 +404,14 @@ $section->addInput(new Form_Textarea(
 	NULL,
 	'Log Viewer Standby'
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '1')->setAttribute('wrap', 'off')
-  ->setAttribute('style', 'background:#fafafa;');
+  ->setAttribute('style', 'background:#fafafa; width: 100%');
 
 $section->addInput(new Form_Textarea(
 	'pfb_output',
 	NULL,
 	NULL
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
-  ->setAttribute('style', 'background:#fafafa;');
+  ->setAttribute('style', 'background:#fafafa; width: 100%');
 
 $form->add($section);
 print($form);
@@ -389,29 +426,63 @@ if (isset($pconfig['log_view'])) {
 		clearstatcache(false, $pfb['log']);
 		ob_flush();
 		flush();
-		@fclose("{$pfb['log']}");
 	}
 }
 
 if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_force'])) {
-	// Execute appropriate 'Force command'
+	// Run appropriate 'Force command'
 	if ($pconfig['pfb_force'] == 'update') {
 		pfb_cron_update('update');
 	} elseif ($pconfig['pfb_force'] == 'cron') {
 		pfb_cron_update('cron');
 	} elseif ($pconfig['pfb_force'] == 'reload') {
 		$config['installedpackages']['pfblockerng']['config'][0]['pfb_reuse'] = 'on';
-		write_config('pfBlockerNG: Executing Force Reload');
+		write_config('pfBlockerNG: Running Force Reload');
 		pfb_cron_update('reload');
 	}
-}
 
+	if ($pfb_wizard) {
+
+		$wizard_log =
+'<div class="pull-left alert alert-info clearfix" style="width: 100%;" role="alert">
+	<p>pfBlockerNG has been successfully configured and updated. This installation will now block IPs based on some recommended
+		Feed source providers. It will also block most ADverts based on Feed sources including EasyList/EasyPrivacy. Some additional
+		Feed source providers include some malicious domain blocking.</p>
+	<p>Please note that this is an entry level configuration for pfBlockerNG IP and DNSBL components. It is designed to allow new
+		users to get running quickly to learn how effective pfBlockerNG can be for their networks.</p>
+	<p>The Feeds tab includes many different types of IP and DNSBL feed sources. Careful review should be completed to select which feeds are
+		appropriate for your needs.</p><br />
+	<p><u>NOTE</u>:</p><br />
+	<ul>
+		<li>Please review the update log above for any errors.</li>
+		<li>For DNSBL, ensure that all of your LAN devices are pointed at pfSense ONLY for DNS resolution.</li>
+		<li>For users who have VLANS, please enable the DNSBL permit firewall rule option to allow all subnets to access the
+			DNSBL Webserver, or there may be some browser timeouts.</li>
+		<li>All IP/DNSBL events will be reported to the Reports/Alerts Tab. You can whitelist from the Alerts tab directly.</li>
+		<li>Review the Reports/Statistics tabs for an in-depth summary of all IP and DNSBL events</li>
+	</ul><br />
+	<p>The Wizard is now finalized!</p>
+	<p><small>A copy of this message has been saved to the wizard.log file</small></p>
+</div>';
+		print ("{$wizard_log}");
+
+		$wizard_log = str_replace(array("\x09", '</p><br />'), array('', '<br />'), $wizard_log);
+		$wizard_log = str_replace(array('</p>', '<br />'), "\n", $wizard_log);
+		$wizard_log = str_replace('<li>', ' - ', $wizard_log);
+		$wizard_log = strip_tags($wizard_log);
+		@file_put_contents('/var/log/pfblockerng/wizard.log', "{$wizard_log}", LOCK_EX);
+	}
+}
 ?>
 
 <script type="text/javascript">
 //<![CDATA[
 
 events.push(function(){
+
+	// Expand textarea to full width
+	$('label[class="col-sm-2 control-label"]:eq(6)').remove();
+	$('div[class="col-sm-10"]:eq(4), div[class="col-sm-10"]:eq(5)').removeClass('col-sm-10').addClass('col-sm-12');
 
 	// Hide/Show 'Force Reload' radios
 	function mode_change(mode) {
@@ -454,11 +525,17 @@ events.push(function(){
 		$('#pfb_reload_option_ip').prop('checked', false);
 	});
 
+	// Scroll to the bottom of the page
+	var pfb_wizard = "<?=$pfb_wizard;?>";
+	if (pfb_wizard) {
+		$("html, body").animate({ scrollTop: $(document).height() }, 2000);
+	}
+
+	// Scroll to the bottom of the page
 	$('#run').click(function() {
-		// Scroll to the bottom of the page
 		$("html, body").animate({ scrollTop: $(document).height() }, 2000);
 	});
 });
 //]]>
 </script>
-<?php include("foot.inc"); ?>
+<?php include('foot.inc'); ?>

@@ -1,6 +1,6 @@
 #!/bin/sh
-# pfBlockerNG IP Reputation Script - By BBcan177@gmail.com - 04-12-14
-# Copyright (c) 2015-2019 BBcan177@gmail.com
+# pfBlockerNG Shell Function Script - By BBcan177@gmail.com - 04-12-14
+# Copyright (c) 2015-2023 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
@@ -19,9 +19,10 @@ now=$(/bin/date +%m/%d/%y' '%T)
 
 # Application Locations
 pathgrepcidr="/usr/local/bin/grepcidr"
-pathaggregate="/usr/local/bin/aggregate"
-pathmwhois="/usr/local/bin/mwhois"
+pathaggregate="/usr/local/bin/iprange"
 pathgeoip="/usr/local/bin/mmdblookup"
+pathcurl="/usr/local/bin/curl"
+pathjq="/usr/local/bin/jq"
 pathgunzip=/usr/bin/gunzip
 pathhost=/usr/bin/host
 pathtar=/usr/bin/tar
@@ -41,6 +42,7 @@ etmatch="$(echo ${9} | sed 's/,/, /g')"
 aliasarchive="/usr/local/etc/aliastables.tar.bz2"
 pathgeoipdat="/usr/local/share/GeoIP/GeoLite2-Country.mmdb"
 pfbsuppression=/var/db/pfblockerng/pfbsuppression.txt
+pfbdnsblsuppression=/var/db/pfblockerng/pfbdnsblsuppression.txt
 pfbalexa=/var/db/pfblockerng/pfbalexawhitelist.txt
 masterfile=/var/db/pfblockerng/masterfile
 mastercat=/var/db/pfblockerng/mastercat
@@ -60,9 +62,10 @@ pfbpermit=/var/db/pfblockerng/permit/
 pfbnative=/var/db/pfblockerng/native/
 pfsensealias=/var/db/aliastables/
 pfbdomain=/var/db/pfblockerng/dnsbl/
+pfbdomainorig=/var/db/pfblockerng/dnsblorig/
 
 # Store 'Match' d-dedups in matchdedup.txt file
-matchdedup=matchdedup.txt
+matchdedup=matchdedup_v4.txt
 
 # Randomize temporary variables
 rvar="$(/usr/bin/jot -r 1 1000 100000)"
@@ -76,11 +79,28 @@ syncfile=/tmp/pfbtemp6_$rvar
 matchfile=/tmp/pfbtemp7_$rvar
 tempmatchfile=/tmp/pfbtemp8_$rvar
 domainmaster=/tmp/pfbtemp9_$rvar
+asntemp=/tmp/pfbtemp10_$rvar
 
+dnsbl_tld_remove=/tmp/dnsbl_tld_remove
+
+dnsbl_add=/tmp/dnsbl_add
+dnsbl_add_zone=/tmp/dnsbl_add_zone
+dnsbl_add_data=/tmp/dnsbl_add_data
 dnsbl_remove=/tmp/dnsbl_remove
-dnsbl_whitelist=/tmp/dnsbl_tmp.sup
+dnsbl_remove_zone=/tmp/dnsbl_remove_zone
+dnsbl_remove_data=/tmp/dnsbl_remove_data
 
-PLATFORM="$(cat /etc/platform)"
+dnsbl_python_data=/var/unbound/pfb_py_data.txt
+dnsbl_python_zone=/var/unbound/pfb_py_zone.txt
+dnsbl_python_count=/var/unbound/pfb_py_count
+
+ip_placeholder="$(/usr/local/sbin/read_xml_tag.sh string installedpackages/pfblockerngipsettings/config/ip_placeholder)"
+if [ -z "${ip_placeholder}" ]; then
+	ip_placeholder=127.1.7.7
+fi
+ip_placeholder2="$(echo ${ip_placeholder} | sed 's/\./\\\./g')"
+ip_placeholder3="$(echo ${ip_placeholder} | cut -d '.' -f 1-3)"
+
 USE_MFS_TMPVAR="$(/usr/bin/grep -c use_mfs_tmpvar /cf/conf/config.xml)"
 DISK_NAME="$(/bin/df /var/db/rrd | /usr/bin/tail -1 | /usr/bin/awk '{print $1;}')"
 DISK_TYPE="$(/usr/bin/basename ${DISK_NAME} | /usr/bin/cut -c1-2)"
@@ -97,7 +117,7 @@ if [ ! -f "${mastercat}" ]; then touch "${mastercat}"; fi
 
 # Remove temp files before exiting.
 exitnow() {
-	rm -f /tmp/pfbtemp?_"${rvar}"
+	rm -f /tmp/pfbtemp*_"${rvar}"
 	exit
 }
 
@@ -115,23 +135,24 @@ aliastables() {
 }
 
 
-# Function to write '1.1.1.1' to 'empty' final blocklist files.
+# Function to write IP Placeholder IP to 'empty' final blocklist files.
 emptyfiles() {
 	emptyfiles="$(find ${pfbdeny}*.txt -size 0 2>/dev/null)"
 	for i in ${emptyfiles}; do
-		echo '1.1.1.1' > "${i}";
+		echo "${ip_placeholder}" > "${i}";
 	done
 }
 
 
 # Function to remove lists from masterfiles and delete associated files.
 remove() {
-	echo
+	echo; echo
 	for i in ${cc}; do
 		header="$(echo ${i%*,})"
 		if [ ! -z "${header}" ]; then
 			# Make sure that alias exists in masterfile before removal.
-			masterchk="$(grep -m1 '${header}[[:space:]]' ${masterfile})"
+			query="${header} "
+			masterchk="$(grep -m1 ${query} ${masterfile})"
 
 			if [ ! -z "${masterchk}" ]; then
 				# Grep header with a trailing space character
@@ -139,9 +160,9 @@ remove() {
 				awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${masterfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${masterfile}"
 			fi
 
-			rm -f "${pfborig}${header}"*; rm -f "${pfbdeny}${header}"*; rm -f "${pfbmatch}${header}"*;
+			rm -f "${pfborig}${header}"*; rm -f "${pfbdeny}${header}"*; rm -f "${pfbmatch}${header}"*
 			rm -f "${pfbpermit}${header}"*; rm -f "${pfbnative}${header}"*
-			echo "The Following list has been REMOVED [ ${header} ]"
+			echo "The Following List has been REMOVED [ ${header} ]"
 		fi
 	done
 	cut -d ' ' -f2 "${masterfile}" > "${mastercat}"
@@ -176,22 +197,21 @@ suppress() {
 	if [ ! -x "${pathgrepcidr}" ]; then
 		log="Application [ grepcidr ] Not found. Cannot proceed."
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	if [ -e "${pfbsuppression}" ] && [ -s "${pfbsuppression}" ]; then
 		data="$(cat ${pfbsuppression} | sort | uniq)"
 
-		if [ ! -z "${data}" ] && [ ! -z "${cc}" ]; then
-			if [ "${cc}" == 'suppressheader' ]; then
+		if [ ! -z "${data}" ] && [ ! -z "${alias}" ]; then
+			if [ "${alias}" == 'suppressheader' ]; then
 				echo; echo '===[ Suppression Stats ]==================================='; echo
 				printf "%-20s %-10s %-10s %-10s\n" 'List' 'Pre' 'Suppress' 'Master'
 				echo '-----------------------------------------------------------'
-				exitnow
+				return
 			fi
 
-			alias="$(echo ${cc%|*})"
-			pfbfolder="$(echo ${cc#*|})"
+			pfbfolder="${max}/"
 			counter=0; > "${dupfile}"
 
 			if [ ! -z "${alias}" ]; then
@@ -207,7 +227,7 @@ suppress() {
 
 					# If a suppression is '/32' and a blocklist has a full '/24' block, execute the following.
 					if [ ! -z "${found}" ] && [ "${mask}" -eq 32 ]; then
-						echo " Suppression ${alias}: ${iptrim}.0/24"
+						echo " Suppression ${alias}: ${iptrim}.0/24 (Excluding: ${ip}/32)"
 						octet4="$(echo ${ip##*.})"
 						dcheck="$(grep ${iptrim}.0/24 ${dupfile})"
 
@@ -235,7 +255,7 @@ suppress() {
 				"${pathgrepcidr}" -vf "${pfbsuppression}" "${tempfile}" > "${pfbfolder}${alias}.txt"
 
 				# Update masterfiles. Don't execute if duplication process is disabled
-				if [ "${dedup}" == 'x' ]; then
+				if [ "${dedup}" == 'on' ]; then
 					# Don't execute if alias doesn't exist in masterfile
 					lcheck="$(grep -m1 ${alias} ${masterfile})"
 
@@ -262,12 +282,12 @@ suppress() {
 # Function to optimise CIDRs
 cidr_aggregate() {
 	if [ ! -x "${pathaggregate}" ]; then
-		log="Application [ aggregate ] Not found. Cannot proceed."
+		log="Application [ iprange ] Not found. Cannot proceed."
 		echo "${log}" | tee -a "${errorlog}"
 		return
 	fi
 
-	if [ "${agg_folder}" = true ]; then
+	if [ "${agg_folder}" == true ]; then
 		# Use $3 folder path
 		pfbfolder="${max}/"
 	else
@@ -275,17 +295,9 @@ cidr_aggregate() {
 	fi
 
 	counto="$(grep -c ^ ${pfbfolder}${alias}.txt)"
-	retval="$(cat "${pfbfolder}${alias}.txt" | "${pathaggregate}" -t -p 32 -m 32 -o 32  2>&1 > ${tempfile})"
-	sed 's/\/32//' "${tempfile}" > "${pfbfolder}${alias}.txt"
+	"${pathaggregate}" "${pfbfolder}${alias}.txt" > "${tempfile}" && mv -f "${tempfile}" "${pfbfolder}${alias}.txt"
+
 	countf="$(grep -c ^ ${pfbfolder}${alias}.txt)"
-
-	# Report errors (First two lines are informational only)
-	aggstring='aggregate: maximum prefix length permitted will be 32aggregate: prefix length of 32 bits will be used where none specified'
-	retval2=$(echo "${retval}" | tr -d '\n\r' | sed "s/${aggstring}//g")
-	if [ ! -z "${retval2}" ]; then
-		echo "${retval2}"
-	fi
-
 	if [ "${counto}" != "${countf}" ]; then
 		echo; echo '  Aggregation Stats:'
 		echo '  ------------------'
@@ -302,7 +314,7 @@ duplicate() {
 	if [ ! -x "${pathgrepcidr}" ]; then
 		log="Application [ grepcidr ] Not found. Cannot proceed."
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	dupcheck=1
@@ -362,12 +374,20 @@ dnsbl_scrub() {
 	countu="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 
 	if [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
-		find "${pfbdomain}"*.txt ! -name "${pfbdomain}${alias}.txt" | xargs cat > "${domainmaster}"
+		find "${pfbdomain}"*.txt ! -name "${alias}.txt" | xargs cat > "${domainmaster}"
 
 		# Only execute awk command, if master domain file contains data.
 		query_size="$(grep -c ^ ${domainmaster})"
 		if [ "${query_size}" -gt 0 ]; then
-			awk 'FNR==NR{a[$0];next}!($0 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+
+			# Unbound blocking mode dedup
+			if [ "${dedup}" == '' ]; then
+				awk 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+
+			# Unbound python blocking mode dedup
+			else
+				awk -F',' 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+			fi
 		fi
 
 		rm -f "${domainmaster}"
@@ -380,14 +400,28 @@ dnsbl_scrub() {
 	rm -f "${pfbdomain}${alias}.bk2"
 
 	# Remove Whitelisted Domains and Sub-Domains, if configured
-	if [ -s "${dnsbl_whitelist}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
-		grep -vF -f "${dnsbl_whitelist}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+	if [ -s "${pfbdnsblsuppression}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
+		grep -vF -f "${pfbdnsblsuppression}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
 		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 		countw="$((countf - countx))"
 
 		if [ "${countw}" -gt 0 ]; then
-			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			if [ "${dedup}" == '' ]; then
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			else
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
+			fi
+
+			if [ -z "${data}" ]; then
+				if [ "${dedup}" == '' ]; then
+					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+				else
+					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
+				fi
+			fi
+
 			echo "  Whitelist: ${data}"
 			mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
 		fi
@@ -395,7 +429,7 @@ dnsbl_scrub() {
 		countw=0
 	fi
 
-	# Process Alexa Whitelist
+	# Process TOP1M Whitelist
 	if [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
 		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
 		grep -vF -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
@@ -403,9 +437,23 @@ dnsbl_scrub() {
 		counta="$((countf - countx))"
 
 		if [ "${counta}" -gt 0 ]; then
-			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
-			echo "  Alexa Whitelist: ${data}"
+			if [ "${dedup}" == '' ]; then
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			else
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
+			fi
+
+			if [ -z "${data}" ]; then
+				if [ "${dedup}" == '' ]; then
+					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+				else
+					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
+				fi
+			fi
+
+			echo "  TOP1M Whitelist: ${data}"
 			mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
 		fi
 	else
@@ -416,7 +464,7 @@ dnsbl_scrub() {
 	rm -f "${pfbdomain}${alias}.bk2"
 
 	echo '  ----------------------------------------------------------------------'
-	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" '  Orig.' 'Unique' '# Dups' '# White' '# Alexa' 'Final'
+	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" '  Orig.' 'Unique' '# Dups' '# White' '# TOP1M' 'Final'
 	echo '  ----------------------------------------------------------------------'
 	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" "  ${counto}" "${countu}" "${countd}" "${countw}" "${counta}" "${countf}"
 	echo '  ----------------------------------------------------------------------'
@@ -430,25 +478,30 @@ domaintld() {
 
 	> "${tempfile}"; > "${tempfile2}"; > "${dupfile}"
 
-	sort "${dnsbl_file}.conf" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_file}.conf"
-	countto="$(grep -v '"transparent"\|\"static\"' ${dnsbl_file}.conf | grep -c ^)"
+	if [ -s "${dnsbl_file}.raw" ]; then
+		sort "${dnsbl_file}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_file}.raw"
+		countto="$(grep -v '"transparent"\|\"static\"' ${dnsbl_file}.raw | grep -c ^)"
+	else
+		countto=0
+	fi
 
-	if [ -s "${dnsbl_remove}" ]; then
-		sort "${dnsbl_remove}" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_remove}"
-		counttm="$(grep -c '^\.' ${dnsbl_remove})"
+	if [ -s "${dnsbl_tld_remove}" ]; then
+		sort "${dnsbl_tld_remove}" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}"
+		counttm="$(grep -c '^\.' ${dnsbl_tld_remove})"
 	else
 		counttm=0
 	fi
 
-	if [ "${DEBUG}" == 1 ]; then
-		cp "${dnsbl_file}.conf" "${dnsbl_file}.conf.orig"
+	if [ "${DEBUG}" == 1 ] && [ -e "${dnsbl_file}.raw" ]; then
+		cp "${dnsbl_file}.raw" "${dnsbl_file}.raw.orig"
 	fi
+
+	printf "."
 
 	# 'Redirect zone'
 	# Collect DNSBL TLD files (by smallest line count first) and merge
 	dnsbl_tmp_files="$(grep -Hc ^ ${dnsbl_tmp}DNSBL_*.txt | sort -t : -k 2,2n | cut -d':' -f1)"
 	if [ ! -z "${dnsbl_tmp_files}" ]; then
-
 		for file in ${dnsbl_tmp_files}; do
 			# For each file, place 'local-zone' before 'local-data'
 			head -1 "${file}" >> "${dupfile}"
@@ -456,13 +509,13 @@ domaintld() {
 		done
 
 		# Remove redundant Domains (in 'redirect zone')
-		if [ -s "${dnsbl_remove}" ] && [ -s "${dupfile}" ]; then
+		if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dupfile}" ]; then
 
 			if [ "${DEBUG}" == 1 ]; then
 				cp "${dupfile}" "${dnsbl_file}.dup"
 			fi
 
-			grep -vF -f "${dnsbl_remove}" "${dupfile}" > "${tempfile}"
+			grep -vF -f "${dnsbl_tld_remove}" "${dupfile}" > "${tempfile}"
 		else
 			mv -f "${dupfile}" "${tempfile}"
 		fi
@@ -470,32 +523,36 @@ domaintld() {
 
 	# 'Transparent zone'
 	# Remove redundant Domains (in 'transparent zone')
-	if [ -s "${dnsbl_remove}.tsp" ] && [ -s "${dnsbl_file}.tsp" ]; then
-		grep -vF -f "${dnsbl_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
+	if [ -s "${dnsbl_tld_remove}.tsp" ] && [ -s "${dnsbl_file}.tsp" ]; then
+		grep -vF -f "${dnsbl_tld_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
 	else
-		mv -f "${dnsbl_remove}.tsp" "${tempfile2}"
+		echo "XXX"
+		# XXXX to be confirmed!
+		# mv -f "${dnsbl_tld_remove}.tsp" "${tempfile2}"
+
 	fi
 
 	# Merge all TLD files
 	if [ -f "${tempfile}" ] || [ -f "${tempfile2}" ]; then
-		> "${dnsbl_file}.conf"
-		cat "${tempfile}" "${tempfile2}" >> "${dnsbl_file}.conf"
+		> "${dnsbl_file}.raw"
+		cat "${tempfile}" "${tempfile2}" >> "${dnsbl_file}.raw"
 	fi
 
-	if [ "${DEBUG}" == 1 ]; then
-		cp "${dnsbl_file}.conf" "${dnsbl_file}.conf.final"
+	if [ "${DEBUG}" == 1 ] && [ -e "${dnsbl_file}.raw" ]; then
+		cp "${dnsbl_file}.raw" "${dnsbl_file}.raw.final"
 	fi
 
 	# Sort 'Transparent zone' remove file
-	if [ -s "${dnsbl_remove}.tsp" ]; then
-		sort "${dnsbl_remove}.tsp" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_remove}.tsp"
+	if [ -s "${dnsbl_tld_remove}.tsp" ]; then
+		sort "${dnsbl_tld_remove}.tsp" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}.tsp"
 	fi
 
 	# Remove redundant Domains in DNSBL files
 	# Need to re-process all Feeds for TLD (Remove any recently added TLD Domains)
-	if [ -s "${dnsbl_remove}.tsp" ]; then
+	if [ -s "${dnsbl_tld_remove}.tsp" ]; then
 		for i in ${dnsbl_files}; do
 			alias="$(echo ${i%*,})"
+			printf "."
 
 			if [ "${DEBUG}" == 1 ] && [ -f "${pfbdomain}${alias}.txt" ]; then
 				cp "${pfbdomain}${alias}.txt" "${pfbdomain}${alias}.xxx"
@@ -503,60 +560,289 @@ domaintld() {
 
 			# Remove redundant TLD Domains
 			if [ -s "${pfbdomain}${alias}.txt" ]; then
-				grep -vF -f "${dnsbl_remove}.tsp" "${pfbdomain}${alias}.txt" > "${tempfile}"
+				grep -vF -f "${dnsbl_tld_remove}.tsp" "${pfbdomain}${alias}.txt" > "${tempfile}"
 				mv -f "${tempfile}" "${pfbdomain}${alias}.txt"
 			fi
 		done
 	fi
 
-	counttf="$(grep -v '"transparent"\|\"static\"' ${dnsbl_file}.conf | grep -c ^)"
+	counttf="$(grep -v '"transparent"\|\"static\"' ${dnsbl_file}.raw | grep -c ^)"
 	counttr="$((countto - counttf))"
 
-	echo ' completed'
+	echo
 	echo ' ----------------------------------------'
 	printf "%-12s %-10s %-10s %-10s\n" ' Original' 'Matches' 'Removed' 'Final'
 	echo ' ----------------------------------------'
 	printf "%-12s %-10s %-10s %-10s\n" " ${countto}" "${counttm}" "${counttr}" "${counttf}"
-	echo ' -----------------------------------------'
+	printf ' -----------------------------------------'
+}
+
+
+# Function to process TLD python
+domaintldpy() {
+	# List of Feeds
+	dnsbl_files="${cc}";
+
+	if [ -s "${dnsbl_python_data}.raw" ]; then
+		sort "${dnsbl_python_data}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_data}.raw"
+		countd="$(grep -c ^ ${dnsbl_python_data}.raw)"
+	else
+		countd=0
+	fi
+
+	if [ -s "${dnsbl_python_zone}.raw" ]; then
+		sort "${dnsbl_python_zone}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_zone}.raw"
+		countz="$(grep -c ^ ${dnsbl_python_zone}.raw)"
+	else
+		countz=0
+	fi
+
+	printf "."
+
+	countto="$((countd + countz))"
+
+	if [ -s "${dnsbl_tld_remove}" ]; then
+		sort "${dnsbl_tld_remove}" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}"
+		counttm="$(grep -c '^\.' ${dnsbl_tld_remove})"
+	else
+		counttm=0
+	fi
+
+	printf "."
+
+	# Remove redundant Domains (in data)
+	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_data}.raw" ]; then
+		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_data}.raw" > "${dnsbl_python_data}"
+	elif [ -e "${dnsbl_python_data}.raw" ]; then
+		mv "${dnsbl_python_data}.raw" "${dnsbl_python_data}"
+	fi
+
+	printf "."
+
+	# Remove redundant Domains (in zone)
+	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_zone}.raw" ]; then
+		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_zone}.raw" > "${dnsbl_python_zone}"
+	elif [ -e "${dnsbl_python_zone}.raw" ]; then
+		mv "${dnsbl_python_zone}.raw" "${dnsbl_python_zone}"
+	fi
+
+	counttf="$(cat ${dnsbl_python_data} ${dnsbl_python_zone} | grep -c ^)"
+	counttr="$((countto - counttf))"
+
+	echo
+	echo ' ----------------------------------------'
+	printf "%-12s %-10s %-10s %-10s\n" ' Original' 'Matches' 'Removed' 'Final'
+	echo ' ----------------------------------------'
+	printf "%-12s %-10s %-10s %-10s\n" " ${countto}" "${counttm}" "${counttr}" "${counttf}"
+	printf ' -----------------------------------------'
+
+	echo "${counttr}" > "${dnsbl_python_count}"
+}
+
+
+# Function to compare previous and current DNSBL Unbound conf file, and create Add/Remove files for unbound-control cmds
+dnsbl_livesync() {
+
+	if [ "${DEBUG}" == 1 ]; then
+		if [ -e "${dnsbl_file}.conf" ]; then
+			cp "${dnsbl_file}.conf" "${dnsbl_file}.bkr"
+		fi
+		if [ -e "${dnsbl_file}.raw" ]; then
+			cp "${dnsbl_file}.raw" "${dnsbl_file}.bkraw"
+		fi
+	fi
+
+	rm -f "${dnsbl_add}"*
+	rm -f "${dnsbl_remove}"*
+
+	> "${dnsbl_add}"
+	> "${dnsbl_add_zone}"
+	> "${dnsbl_add_data}"
+	> "${dnsbl_remove}"
+	> "${dnsbl_remove_zone}"
+	> "${dnsbl_remove_data}"
+
+	if [ -s "${dnsbl_file}.conf" ] && [ -s "${dnsbl_file}.raw" ]; then
+		# Collect all changes to DNSBL (add/remove)
+		printf "."
+		awk 'FNR==NR{a[$0];next}!($0 in a)' "${dnsbl_file}.conf" "${dnsbl_file}.raw" > "${dnsbl_add}"
+		printf "."
+		awk 'FNR==NR{a[$0];next}!($0 in a)' "${dnsbl_file}.raw" "${dnsbl_file}.conf" > "${dnsbl_remove}"
+		printf "."
+	elif [ -s "${dnsbl_file}.raw" ]; then
+		printf "."
+		cp "${dnsbl_file}.raw" "${dnsbl_add}"
+
+		# Add a file marker to instruct Unbound to do a reload
+		> "${dnsbl_file}.reload"
+	else
+		printf "."
+		# Add a file marker to instruct Unbound to do a reload
+		> "${dnsbl_file}.reload"
+	fi
+
+	# Example Unbound sinkhole lines:
+	# local-zone: "example.com" redirect local-data: "example.com 60 IN A 10.10.10.1"
+	# local-data: "example.com 60 IN A 10.10.10.1"
+	# local-zone: "com" "transparent"
+	# local-zone: "ru" "static"
+
+	# Read 'Remove' file and format local-zone/local-data removal files
+	if [ -s "${dnsbl_remove}" ]; then
+
+		# Collect any local-zone removals
+		grep "local-zone:" "${dnsbl_remove}" | cut -d '"' -f2 > "${dnsbl_remove_zone}"
+
+		# Collect any local-data removals
+		grep "^local-data:" "${dnsbl_remove}" | cut -d ' ' -f2 | tr -d '"' > "${dnsbl_remove_data}"
+	fi
+
+	# Read 'Add' file and format local-zone/local-data addition files
+	if [ -s "${dnsbl_add}" ]; then
+
+		# Collect local-zone additions
+		grep '"transparent"\|\"static\"' "${dnsbl_add}" | cut -d '"' -f2,4 | tr '"', ' ' > "${dnsbl_add_zone}"
+		grep "^local-zone:" "${dnsbl_add}" | cut -d ' ' -f2-3 | tr -d '"' >> "${dnsbl_add_zone}"
+
+		# Collect local-data additions
+		grep -v '"transparent"\|\"static\"' "${dnsbl_add}" | grep "^local-zone:" | cut -d ' ' -f5-9 | tr -d '"' >> "${dnsbl_add_data}"
+		grep "^local-data:" "${dnsbl_add}" | awk '{gsub (/" local/,"\nlocal")}1' | cut -d ' ' -f2-6 | tr -d '"' >> "${dnsbl_add_data}"
+
+		# Create 'transparent' TLD zone for any local-data
+		if [ -s "${dnsbl_add_data}" ]; then
+			cat "${dnsbl_add_data}" | cut -d ' ' -f1 | rev | cut -d '.' -f1 | rev | sed 's/$/ transparent/' >> "${dnsbl_add_zone}"
+		fi
+	fi
+
+	if [ -e "${dnsbl_file}.raw" ]; then
+		mv -f "${dnsbl_file}.raw" "${dnsbl_file}.conf"
+	fi
 }
 
 
 # Function to convert Domains/ASs to its respective IP addresses
 whoisconvert() {
-	if [ ! -x "${pathmwhois}" ]; then
-		log="Application [ mwhois ] Not found. Cannot proceed."
-		echo "${log}" | tee -a "${errorlog}"
-		exitnow
-	fi
 
 	vtype="${max}"
 	custom_list="$(echo ${dedup} | tr ',' ' ')"
-	rm -f "${pfborig}${alias}.orig"
+	multiple="$(echo ${dedup} | tr -cd , | wc -c | tr -d ' ')"
 
 	if [ "${vtype}" == '_v4' ]; then
 		_type=A
-		_route=route
-		_opt=gAS
+		_bgp_type=4
+		_ip_type='\.'
 	else
 		_type=AAAA
-		_route=route6
-		_opt=6AS
+		_bgp_type=6
+		_ip_type=':'
 	fi
+
+	# Backup previous orig file
+	if [ -e "${pfborig}${alias}.orig" ]; then
+		mv "${pfborig}${alias}.orig" "${pfborig}${alias}.bk"
+	fi
+
+	echo
+	found=false
 
 	for host in ${custom_list}; do
 		# Determine if host is a Domain or an AS
 		host_check="$(echo ${host} | grep '\.')"
 		if [ ! -z "${host_check}" ]; then
+			found=true
+			printf "  Collecting host IP: ${host}"
 			echo "### Domain: ${host} ###" >> "${pfborig}${alias}.orig"
-			${pathhost} -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
+			"${pathhost}" -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
+			echo "... completed"
 		else
 			asn="$(echo ${host} | tr -d 'AaSs')"
-			echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
-			"${pathmwhois}" -h whois.radb.net \!"${_opt}${asn}" | tail -n +2 | tr -d '\nC' | tr ' ' '\n' >> "${pfborig}${alias}.orig"
-		fi
+			printf "  Downloading ASN: ${asn}"
 
-		echo >> "${pfborig}${alias}.orig"
+			ua="pfSense/pfBlockerNG cURL download agent-"
+			guid="$(/usr/sbin/gnid)"
+			ua_final="${ua}${guid}"
+
+			bgp_url="https://api.bgpview.io/asn/${asn}/prefixes"
+			unavailable=''
+			for i in 1 2 3 4 5; do
+				printf "."
+				"${pathcurl}" -H "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+
+				if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
+					printf "."
+					unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
+					if [ -z "${unavailable}" ]; then
+						found=true
+						echo ". completed"
+						echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
+						cat "${asntemp}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+						break
+					else
+						sleep_val="$((i * 2))"
+						sleep "${sleep_val}"
+					fi
+				fi
+			done
+
+			if [ ! -z "${unavailable}" ]; then
+				echo ". Failed to download ASN"
+				touch "${pfborig}${alias}.fail"
+			fi
+
+			if [ "${multiple}" -gt 0 ]; then
+				sleep 1
+			fi
+		fi
 	done
+
+	# Restore previous orig file
+	if [ "${found}" == false ]; then
+		if [ -e "${pfborig}${alias}.bk" ]; then
+			mv "${pfborig}${alias}.bk" "${pfborig}${alias}.orig"
+		else
+			echo > "${pfborig}${alias}.orig"
+		fi
+	else
+		if [ -e "${pfborig}${alias}.bk" ]; then
+			rm -f "${pfborig}${alias}.bk"
+		fi
+	fi
+}
+
+
+# Function to convert IP to ASN
+iptoasn() {
+	host="${alias}"
+
+	ua="pfSense/pfBlockerNG cURL download agent-"
+	guid="$(/usr/sbin/gnid)"
+	ua_final="${ua}${guid}"
+
+	bgp_url="https://api.bgpview.io/ip/${host}"
+
+	unavailable=''
+	found=false
+	for i in 1 2 3 4 5; do
+		"${pathcurl}" -H "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+
+		if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
+			unavailable="$(grep 'Service Temporarily Unavailable\|Server Error' ${asntemp})"
+			if [ -z "${unavailable}" ]; then
+				found=true
+				break
+			else
+				sleep_val="$((i * 2))"
+				sleep "${sleep_val}"
+			fi
+		fi
+	done
+
+	if [ "${found}" == false ]; then
+		echo ""
+	else
+		asn_final="$(cat ${asntemp} | ${pathjq} -r '.data.prefixes[0] | {ASN: .asn.asn, Name: .name, Desc: .description, Prefix: .prefix} | tostring' | tr ',' '|' | tr -d '"{}')"
+		echo "${asn_final}"
+	fi
 }
 
 
@@ -582,7 +868,6 @@ reputation_depends() {
 	fi
 
 	# Clear variables and tempfiles
-	rm -f /tmp/pfbtemp?_"${rvar}"
 	count=0; countb=0; countm=0; counts=0; countr=0
 }
 
@@ -675,7 +960,7 @@ reputation_dmax() {
 	echo; echo '===[ Reputation - dMax ]======================================'
 	echo; echo "  Querying for repeat offenders ( dMax=${max} ) [ ${now} ]"
 	data="$(find ${pfbdeny}*.txt ! -name pfB*.txt ! -name *_v6.txt -type f | xargs cut -d '.' -f 1-3 | \
-		awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v '^1\.1\.1')"
+		awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v ^${ip_placeholder3}$)"
 
 	# Classify repeat offenders by Country code
 	if [ ! -z "${data}" ]; then
@@ -784,7 +1069,7 @@ reputation_pmax(){
 	echo; echo; echo '===[ Reputation - pMax ]======================================'
 	echo; echo "  Querying for repeat offenders ( pMax=${max} ) [ ${now} ]"
 	data="$(find ${pfbdeny}*.txt ! -name pfB*.txt ! -name *_v6.txt -type f | xargs cut -d '.' -f 1-3 |
-		awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v '^1\.1\.1')"
+		awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v ^${ip_placeholder3}$)"
 
 	if [ ! -z "${data}" ]; then
 		# Find repeat offenders in each individual blocklist outfile
@@ -847,53 +1132,28 @@ processet() {
 
 		# ET CSV format (IP, Category, Score)
 		echo; echo; echo 'Compiling ET IPREP IQRisk based upon user selected categories'
-		while IFS=',' read i j k; do
-			# Some ET categories are not in use (For future use)
-			case "${j}" in
-				1)  echo "${i}" >> "${etdir}/ET_Cnc.txt";;
-				2)  echo "${i}" >> "${etdir}/ET_Bot.txt";;
-				3)  echo "${i}" >> "${etdir}/ET_Spam.txt";;
-				4)  echo "${i}" >> "${etdir}/ET_Drop.txt";;
-				5)  echo "${i}" >> "${etdir}/ET_Spywarecnc.txt";;
-				6)  echo "${i}" >> "${etdir}/ET_Onlinegaming.txt";;
-				7)  echo "${i}" >> "${etdir}/ET_Drivebysrc.txt";;
-				8)  echo "${i}" >> "${etdir}/ET_Cat8.txt";;
-				9)  echo "${i}" >> "${etdir}/ET_Chatserver.txt";;
-				10) echo "${i}" >> "${etdir}/ET_Tornode.txt";;
-				11) echo "${i}" >> "${etdir}/ET_Cat11.txt";;
-				12) echo "${i}" >> "${etdir}/ET_Cat12.txt";;
-				13) echo "${i}" >> "${etdir}/ET_Compromised.txt";;
-				14) echo "${i}" >> "${etdir}/ET_Cat14.txt";;
-				15) echo "${i}" >> "${etdir}/ET_P2P.txt";;
-				16) echo "${i}" >> "${etdir}/ET_Proxy.txt";;
-				17) echo "${i}" >> "${etdir}/ET_Ipcheck.txt";;
-				18) echo "${i}" >> "${etdir}/ET_Cat18.txt";;
-				19) echo "${i}" >> "${etdir}/ET_Utility.txt";;
-				20) echo "${i}" >> "${etdir}/ET_DDos.txt";;
-				21) echo "${i}" >> "${etdir}/ET_Scanner.txt";;
-				22) echo "${i}" >> "${etdir}/ET_Cat22.txt";;
-				23) echo "${i}" >> "${etdir}/ET_Brute.txt";;
-				24) echo "${i}" >> "${etdir}/ET_Fakeav.txt";;
-				25) echo "${i}" >> "${etdir}/ET_Dyndns.txt";;
-				26) echo "${i}" >> "${etdir}/ET_Undesireable.txt";;
-				27) echo "${i}" >> "${etdir}/ET_Abusedtld.txt";;
-				28) echo "${i}" >> "${etdir}/ET_Selfsignedssl.txt";;
-				29) echo "${i}" >> "${etdir}/ET_Blackhole.txt";;
-				30) echo "${i}" >> "${etdir}/ET_RAS.txt";;
-				31) echo "${i}" >> "${etdir}/ET_P2Pcnc.txt";;
-				32) echo "${i}" >> "${etdir}/ET_Sharedhosting.txt";;
-				33) echo "${i}" >> "${etdir}/ET_Parking.txt";;
-				34) echo "${i}" >> "${etdir}/ET_VPN.txt";;
-				35) echo "${i}" >> "${etdir}/ET_Exesource.txt";;
-				36) echo "${i}" >> "${etdir}/ET_Cat36.txt";;
-				37) echo "${i}" >> "${etdir}/ET_Mobilecnc.txt";;
-				38) echo "${i}" >> "${etdir}/ET_Mobilespyware.txt";;
-				39) echo "${i}" >> "${etdir}/ET_Skypenode.txt";;
-				40) echo "${i}" >> "${etdir}/ET_Bitcoin.txt";;
-				41) echo "${i}" >> "${etdir}/ET_DDosattack.txt";;
-				*)  echo "${i}" >> "${etdir}/ET_Unknown.txt";;
+
+		category=1
+		etcat='ET_Cnc ET_Bot ET_Spam ET_Drop ET_Spywarecnc ET_Onlinegaming ET_Drivebysrc ET_Cat8 ET_Chatserver ET_Tornode
+			ET_Cat11 ET_Cat12 ET_Compromised ET_Cat14 ET_P2P ET_Proxy ET_Ipcheck ET_Cat18 ET_Utility ET_DDostarget
+			ET_Scanner ET_Cat22 ET_Brute ET_Fakeav ET_Dyndns ET_Undesireable ET_Abusedtld ET_Selfsignedssl ET_Blackhole ET_RAS
+			ET_P2Pcnc ET_Cat32 ET_Parking ET_VPN ET_Exesource ET_Cat36 ET_Mobilecnc ET_Mobilespyware ET_Skypenode
+			ET_Bitcoin ET_DDosattack'
+
+		for file in ${etcat}; do
+
+			case "${category}" in
+
+				8|11|12|14|18|22|32|36)
+					# Some ET categories are not in use (For future use)
+					;;
+				*)
+					grep ",${category}," "${pfborig}${alias}.orig" | cut -d',' -f1 > "${etdir}/${file}.txt"
+					;;
 			esac
-		done < "${pfborig}${alias}.orig"
+			category="$((category + 1))"
+		done
+
 		data="$(ls ${etdir} | sed 's/\.txt//')"
 		printf "%-10s %-25s\n" '  Action' 'Category'
 		echo '-------------------------------------------'
@@ -916,7 +1176,7 @@ processet() {
 
 		if [ -f "${tempfile}" ]; then mv -f "${tempfile}" "${pfborig}${alias}.orig"; fi
 		if [ "${etmatch}" != 'x' ]; then mv -f "${tempfile2}" "${pfbmatch}/ETMatch.txt"; fi
-		counto="$(cat ${etdir}/ET_* | grep -cv '^#\|^$')"; countf="$(grep -cv '^1\.1\.1\.1$' ${pfborig}${alias}.orig)"
+		counto="$(cat ${etdir}/ET_* | grep -cv '^#\|^$')"; countf="$(grep -cv ^${ip_placeholder2}$ ${pfborig}${alias}.orig)"
 		echo; echo "All ET Folder count [ ${counto} ]  Final count [ ${countf} ]"
 	else
 		echo; echo 'No ET .orig File Found!'
@@ -929,7 +1189,7 @@ processxlsx() {
 	if [ ! -x "${pathtar}" ]; then
 		log='Application [ TAR ] Not found, cannot proceed.'
 		echo "${log}" | tee -a "${errorlog}"
-		exitnow
+		return
 	fi
 
 	if [ -s "${pfborig}${alias}.raw" ]; then
@@ -938,7 +1198,7 @@ processxlsx() {
 			grep -aoEw "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" | sort | uniq > "${pfborig}${alias}.orig"
 		rm -r "${tmpxlsx}"*
 
-		countf="$(grep -cv '^1\.1\.1\.1$' ${pfborig}${alias}.orig)"
+		countf="$(grep -cv ^${ip_placeholder2}$ ${pfborig}${alias}.orig)"
 		echo; echo "Final count [ ${countf} ]"
 	else
 		echo 'XLSX download file missing'
@@ -952,7 +1212,7 @@ closingprocess() {
 	counto=0
 	echo; echo '===[ FINAL Processing ]====================================='; echo
 	if [ -d "${pfborig}" ] && [ "$(ls -A ${pfborig})" ]; then
-		counto="$(find ${pfborig}*.orig 2>/dev/null | xargs cat | grep -cv '^#\|^$')"
+		counto="$(find ${pfborig}*_v4.orig 2>/dev/null | xargs cat | grep -cv '^#\|^$')"
 	fi
 
 	# Execute when 'de-duplication' is enabled
@@ -964,10 +1224,10 @@ closingprocess() {
 		countm="$(grep -c ^ ${masterfile})"
 		echo; echo "   [ Final IP Count  ]  [ ${countm} ]"; echo
 
-		s1="$(grep -cv '1\.1\.1\.1$' ${masterfile})"
-		s2="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | grep -cv '^1\.1\.1\.1$')"
+		s1="$(grep -cv ^${ip_placeholder2}$ ${masterfile})"
+		s2="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | grep -cv ^${ip_placeholder2}$)"
 		s3="$(sort ${mastercat} | uniq -d | tail -30)"
-		s4="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | sort | uniq -d | tail -30 | grep -v '^1\.1\.1\.1$')"
+		s4="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | sort | uniq -d | tail -30 | grep -v ^${ip_placeholder2}$)"
 	else
 		echo "   [ Original IP count   ]  [ ${counto} ]"
 	fi
@@ -989,9 +1249,9 @@ closingprocess() {
 		wc -l "${pfbnative}"*.txt 2>/dev/null | sort -n -r
 	fi
 	if [ -d "${pfbdeny}" ] && [ "$(ls -A ${pfbdeny})" ]; then
-		emptylists="$(grep '^1\.1\.1\.1$' ${pfbdeny}*.txt | sed -e 's/^.*[a-zA-Z]\///' -e 's/\.txt:1.1.1.1/ /')"
+		emptylists="$(grep ^${ip_placeholder2}$ ${pfbdeny}*.txt | cut -d ':' -f1 | sed -e 's/^.*[a-zA-Z]\///')"
 		if [ ! -z "${emptylists}" ]; then
-			echo; echo '====================[ Empty Lists w/1.1.1.1 ]=================='; echo
+			echo; echo "====================[ Empty Lists w/${ip_placeholder} ]=================="; echo
 			for list in ${emptylists}; do
 				echo "${list}"
 			done
@@ -1002,8 +1262,12 @@ closingprocess() {
 		wc -l "${pfbdomain}"* 2>/dev/null | sort -n -r
 	fi
 	if [ -d "${pfborig}" ] && [ "$(ls -A ${pfborig})" ]; then
-		echo; echo '====================[ Last Updated List Summary ]=============='; echo
+		echo; echo '====================[ IPv4/6 Last Updated List Summary ]=============='; echo
 		ls -lahtr "${pfborig}"*.orig | sed -e 's/\/.*\// /' -e 's/.orig//' | awk -v OFS='\t' '{print $6" "$7,$8,$9}'
+	fi
+	if [ -d "${pfbdomainorig}" ] && [ "$(ls -A ${pfbdomainorig})" ]; then
+		echo; echo '====================[ DNSBL Last Updated List Summary ]=============='; echo
+		ls -lahtr "${pfbdomainorig}"*.orig | sed -e 's/\/.*\// /' -e 's/.orig//' | awk -v OFS='\t' '{print $6" "$7,$8,$9}'
 	fi
 
 	# Execute when 'de-duplication' is enabled
@@ -1026,12 +1290,6 @@ closingprocess() {
 		echo; echo 'Sync check (Pass=No IPs reported)'
 		echo '----------'
 	fi
-
-	echo; echo 'IPv4 alias tables IP count'; echo '-----------------------------'
-	find "${pfsensealias}"pfB_*.txt ! -name "*_v6.txt" -type f 2>/dev/null | xargs cat | grep -c ^
-
-	echo; echo 'IPv6 alias tables IP count'; echo '-----------------------------'
-	find "${pfsensealias}"pfB_*.txt -name "*_v6.txt" -type f 2>/dev/null | xargs cat | grep -c ^
 
 	echo; echo 'Alias table IP Counts'; echo '-----------------------------'
 	wc -l "${pfsensealias}"pfB_*.txt 2>/dev/null | sort -n -r
@@ -1059,12 +1317,21 @@ case "${1}" in
 	domaintld)
 		domaintld
 		;;
+	domaintldpy)
+		domaintldpy
+		;;
+	dnsbl_livesync)
+		dnsbl_livesync
+		;;
 	cidr_aggregate)
 		agg_folder=true
 		cidr_aggregate
 		;;
 	whoisconvert)
 		whoisconvert
+		;;
+	iptoasn)
+		iptoasn
 		;;
 	suppress)
 		suppress

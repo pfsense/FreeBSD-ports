@@ -3,8 +3,8 @@
  * widget-pfblockerng.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2014 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@
  */
 
 //set variables for custom title and link
-$pfblockerng_title = '<span title="Click to open Alerts tab">pfBlockerNG</span>';
-$pfblockerng_title_link = 'pfblockerng/pfblockerng_alerts.php';
+$pfblockerng_title = '<span title="Click to open Unified Log tab">pfBlockerNG</span>';
+$pfblockerng_title_link = 'pfblockerng/pfblockerng_alerts.php?view=unified';
 
 ?>
