@@ -3,8 +3,8 @@
  * pfblockerng_category_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -594,14 +594,6 @@ if ($_POST && isset($_POST['save'])) {
 		}
 	}
 
-	// Validate Pre/Post-process Scripts
-	if (!empty($_POST['script_pre']) && !in_array($_POST['script_pre'], $listpre)) {
-		$input_errors[] = 'The Pre-process Script is invalid';
-	}
-	if (!empty($_POST['script_post']) && !in_array($_POST['script_post'], $listpost)) {
-		$input_errors[] = 'The Post-process Script is invalid';
-	}
-
 	// Validate Custom List
 	if (!empty($_POST['custom'])) {
 		$customlist = explode("\r\n", $_POST['custom']);
@@ -1002,7 +994,7 @@ if (empty($rowdata[$rowid]['row'])) {
 }
 
 // Sort row by Header/Label field followed by Enabled/Disabled State settings
-if (isset($input_errors) && !empty($input_errors) && (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid]['sort'] == 'sort')) {
+if (!isset($input_errors) && (empty($rowdata[$rowid]['sort']) || $rowdata[$rowid]['sort'] == 'sort')) {
 	$new_disabled = $new_enabled = array();
 	foreach ($rowdata[$rowid]['row'] as $key => $data) {
 		if ($data['state'] == 'Disabled') {

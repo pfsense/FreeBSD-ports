@@ -3,8 +3,8 @@
  * pfblockerng_sync.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2022 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -92,8 +92,8 @@ if ($_POST) {
 						$value = htmlspecialchars($value);
 						break;
 					case 'varsyncipaddress':
-						// Validate IP Address
-						$value = pfb_filter($value, PFB_FILTER_IP, 'Sync');
+						// Validate IP Address/Hostname
+						$value = pfb_filter($value, PFB_FILTER_HOSTNAME, 'Sync');
 						if (empty($value)) {
 							$input_errors[] = gettext('The Target IP Address is invalid.');
 						}
