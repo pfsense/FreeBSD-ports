@@ -1,0 +1,2109 @@
+{
+	"description": "pfBlockerNG IPv4/IPv6/DNSBL Feeds",
+	"copyright": [
+			"*",
+			"* pfblockerng_feeds.json",
+			"*",
+			"* part of pfSense (https://www.pfsense.org)",
+			"* Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)",
+			"* Copyright (c) 2015-2023 BBcan177@gmail.com",
+			"* All rights reserved.",
+			"*",
+			"* Licensed under the Apache License, Version 2.0 (the \"License\")",
+			"* you may not use this file except in compliance with the License.",
+			"* You may obtain a copy of the License at",
+			"*",
+			"* https://www.apache.org/licenses/LICENSE-2.0",
+			"*",
+			"* Unless required by applicable law or agreed to in writing, software",
+			"* distributed under the License is distributed on an \"AS IS\" BASIS,",
+			"* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.",
+			"* See the License for the specific language governing permissions and",
+			"* limitations under the License.",
+			"*"
+			],
+	"ipv4": {
+		"PRI1": {
+			"info":		"PRI1 alias is a Primary Tier collection of Feeds from the most reputable blocklist providers.-LB-False positives should be minimal due to feed maintainers responsiveness.-LB-The frequency of updates is set to once per hour.",
+			"description":	"PRI1 - Collection of Feeds from the most reputable blocklist providers. (Primary tier)",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Abuse Feodo Tracker",
+					"website":	"https://feodotracker.abuse.ch/",
+					"url":		"https://feodotracker.abuse.ch/downloads/ipblocklist_recommended.txt",
+					"header":	"Abuse_Feodo_C2",
+					"alternate": [
+							{
+							"url":		"https://feodotracker.abuse.ch/downloads/ipblocklist.txt",
+							"header":	"Abuse_Feodo_C2_med",
+							"info":		"Medium - Indicator of compromise"
+							},
+							{
+							"url":		"https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.txt",
+							"header":	"Abuse_Feodo_C2_Agr",
+							"info":		"May cause False positives!"
+							}
+						]
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Abuse Ransomware Tracker",
+					"website":	"https://ransomwaretracker.abuse.ch/",
+					"url":		"https://ransomwaretracker.abuse.ch/downloads/RW_IPBL.txt",
+					"header":	"Abuse_IPBL"
+				},
+				{
+					"feed":		"Abuse SSL Blacklist",
+					"website":	"https://sslbl.abuse.ch/",
+					"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist.txt",
+					"header":	"Abuse_SSLBL",
+					"alternate": [
+							{
+							"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist_aggressive.txt",
+							"header":	"Abuse_SSLBL_Agr"
+							}
+						]
+				},
+				{
+					"feed":		"CINS Army",
+					"website":	"https://cinsarmy.com",
+					"contact":	"https://cinsarmy.com/contact-us/",
+					"url":		"https://cinsarmy.com/list/ci-badguys.txt",
+					"header":	"CINS_army"
+				},
+				{
+					"feed":		"Emerging Threats",
+					"website":	"http://doc.emergingthreats.net/bin/view/Main/AllRulesets",
+					"contact":	"https://www.proofpoint.com/us/contact-us",
+					"url":		"https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt",
+					"header":	"ET_Block"
+				},
+				{
+					"feed":		"Emerging Threats",
+					"website":	"http://doc.emergingthreats.net/bin/view/Main/CompromisedHost",
+					"url":		"https://rules.emergingthreats.net/blockrules/compromised-ips.txt",
+					"header":	"ET_Comp"
+				},
+				{
+					"feed":		"Internet Storm Center",
+					"website":	"https://isc.sans.edu/",
+					"url":		"https://isc.sans.edu/block.txt",
+					"past_urls": [
+							"https://isc.sans.edu/api/sources/attacks/1000/1?text",
+							"https://isc.sans.edu/api/sources/attacks/1000/7?text",
+							"https://isc.sans.edu/api/sources/attacks/1000/14?text",
+							"https://isc.sans.edu/api/sources/attacks/1000/30?text",
+							"https://isc.sans.edu/api/sources/attacks/1000/60?text",
+							"https://isc.sans.edu/api/sources/attacks/1000/90?text",
+							"https://isc.sans.edu/api/sources/attacks/1000/120?text"
+						],
+					"header":	"ISC_Block"
+				},
+				{
+					"feed":		"Pulsedive",
+					"website":	"https://pulsedive.com/products/feed.php",
+					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=ip",
+					"register":	"https://pulsedive.com/premium/purchase.php",
+					"info":		"Subscription based feed only!",
+					"header":	"Pulsedive"
+				},
+				{
+					"feed":		"Spamhaus",
+					"website":	"https://www.spamhaus.org/drop/",
+					"contact":	"https://www.spamhaus.org/organization/contacts/",
+					"url":		"https://www.spamhaus.org/drop/drop.txt",
+					"delist":	"https://www.spamhaus.org/lookup/",
+					"header":	"Spamhaus_Drop"
+				},
+				{
+					"feed":		"Spamhaus",
+					"website":	"https://www.spamhaus.org/drop/",
+					"url":		"https://www.spamhaus.org/drop/edrop.txt",
+					"delist":	"https://www.spamhaus.org/lookup/",
+					"header":	"Spamhaus_eDrop"
+				},
+				{
+					"feed":		"Talos-Snort",
+					"website":	"https://www.talosintelligence.com/",
+					"contact":	"https://www.talosintelligence.com/contact/",
+					"url":		"https://talosintelligence.com/documents/ip-blacklist",
+					"header":	"Talos_BL"
+				}
+			]
+		},
+		"PRI2": {
+			"info":		"PRI2 alias is a collection of Feeds from Secondary Tier providers.-LB-Low False positives.-LB-The frequency of updates is set to once per hour.",
+			"description":	"PRI2 - Collection of Feeds from Secondary Tier providers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Alienvault",
+					"website":	"https://www.alienvault.com/",
+					"contact":	"https://www.alienvault.com/support",
+					"url":		"https://reputation.alienvault.com/reputation.snort.gz",
+					"header":	"Alienvault"
+				}
+			]
+		},
+		"PRI3": {
+			"info":		"PRI3 alias is a collection of Feeds from Tertiary Tier providers.-LB-May contain some False positives.-LB-The frequency of updates is set to once per hour.",
+			"description":	"PRI3 - Collection of Feeds from Tertiary Tier providers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"status":	"discontinued",
+					"feed":		"Autoshun",
+					"website":	"https://www.autoshun.org",
+					"contact":	"https://www.autoshun.org/contact/",
+					"register":	"https://www.autoshun.org/register/",
+					"url":		"https://www.autoshun.org/download/?api_key=_API_KEY_&format=csv",
+					"header":	"Shunlist"
+				},
+				{
+					"feed":		"Bambenek Consulting",
+					"website":	"https://faf.bambenekconsulting.com/feeds/",
+					"contact":	"https://www.bambenekconsulting.com/contact/",
+					"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-ipmasterlist-high.txt",
+					"header":	"BBC_C2",
+					"info":		"Replace '_API_KEY_' with 'USER:PASS' in the URL after Registration (Replace @ to %40). https://faf.bambenekconsulting.com/feeds/license.txt",
+					"register":	"mailto:sales@bambenekconsulting.com?Subject=Access%20Request%20(pfBlockerNG)",
+					"alternate": [
+							{
+							"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-ipmasterlist.txt",
+							"header":	"BBC_C2_Agr"
+							}
+						]
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"contact":	"https://www.blocklist.de/en/contact.html",
+					"url":		"https://lists.blocklist.de/lists/all.txt",
+					"info":		"An alternative Alias exists below for individual BlockList DE Feeds",
+					"delist":	"https://www.blocklist.de/en/delist.html?ip=",
+					"header":	"BlockListDE_All"
+				},
+				{
+					"feed":		"BotScout",
+					"website":	"https://botscout.com/",
+					"contact":	"https://botscout.com/contact.htm",
+					"donate":	"https://botscout.com/donate.htm",
+					"url":		"https://botscout.com/last_caught_cache.txt",
+					"header":	"BotScout"
+				},
+				{
+					"feed":		"Daniel Gerzo",
+					"website":	"http://danger.rulez.sk/index.php/bruteforceblocker/",
+					"contact":	"http://danger.rulez.sk/index.php/about/",
+					"url":		"http://danger.rulez.sk/projects/bruteforceblocker/blist.php",
+					"header":	"DangerRulez"
+				},
+				{
+					"feed":		"Green Snow",
+					"website":	"https://greensnow.co/",
+					"contact":	"https://greensnow.co/contact",
+					"url":		"https://blocklist.greensnow.co/greensnow.txt",
+					"header":	"GreenSnow"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Malware Domain List",
+					"website":	"https://www.malwaredomainlist.com/",
+					"contact":	"https://www.malwaredomainlist.com/contact.php",
+					"url":		"https://www.malwaredomainlist.com/hostslist/ip.txt",
+					"delist":	"https://www.malwaredomainlist.com/forums/index.php?board=16.0",
+					"header":	"MDL"
+				},
+				{
+					"feed":		"MaxMind",
+					"website":	"https://www.maxmind.com/en/high-risk-ip-sample-list",
+					"contact":	"https://www.maxmind.com/en/contact",
+					"url":		"https://www.maxmind.com/en/high-risk-ip-sample-list",
+					"header":	"MaxMind_BD_Proxy"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"NoThink",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_ssh_week.txt",
+					"header":	"NoThink_SSH_7d",
+					"alternate": [
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_day.txt",
+							"header":	"NoThink_SSH_1d"
+							},
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_year.txt",
+							"header":	"NoThink_SSH_365d"
+							}
+						]
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"NoThink",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_snmp_week.txt",
+					"header":	"NoThink_SNMP_7d",
+					"alternate": [
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_day.txt",
+							"header":	"NoThink_SNMP_1d"
+							},
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_year.txt",
+							"header":	"NoThink_SNMP_365d"
+							}
+						]
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"NoThink",
+					"website":	"https://www.nothink.org/",
+					"url":		"https://www.nothink.org/blacklist/blacklist_telnet_week.txt",
+					"header":	"NoThink_Telnet_7d",
+					"alternate": [
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_telnet_day.txt",
+							"header":	"NoThink_Telnet_1d"
+							},
+							{
+							"url":		"https://www.nothink.org/blacklist/blacklist_telnet_year.txt",
+							"header":	"NoThink_Telnet_365d"
+							}
+						]
+				},
+				{
+					"feed":		"Stop Forum Spam",
+					"website":	"https://www.stopforumspam.com/",
+					"contact":	"https://www.stopforumspam.com/contact",
+					"url":		"https://www.stopforumspam.com/downloads/toxic_ip_cidr.txt",
+					"delist":	"https://www.stopforumspam.com/removal",
+					"header":	"SFS_Toxic"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"WatchGuard",
+					"website":	"https://www.reputationauthority.org/",
+					"contact":	"https://www.watchguard.com/wgrd-about/contact",
+					"url":		"http://www.reputationauthority.org/toptens.php",
+					"header":	"WatchGuard"
+				}
+			]
+		},
+		"PRI4": {
+			"info":		"PRI4 alias is a collection of Feeds from Fourth Tier providers.-LB-May contain some False positives.-LB-The frequency of updates is set to once per hour.",
+			"description":	"PRI4 - Collection of Feeds from Fourth Tier providers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"AZORult Tracker",
+					"website":	"https://azorult-tracker.net/about",
+					"url":		"https://azorult-tracker.net/api/list/ip?format=plain",
+					"header":	"AZORult"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"BadIPS",
+					"website":	"https://www.badips.com/documentation",
+					"contact":	"https://www.badips.com/about",
+					"url":		"https://www.badips.com/get/list/any/2?age=30d",
+					"delist":	"https://www.badips.com/forum",
+					"header":	"BadIPs_30d",
+					"alternate": [
+							{
+							"url":	"https://www.badips.com/get/list/any/2?age=1d",
+							"header":	"BadIPs_1d"
+							},
+							{
+							"url":		"https://www.badips.com/get/list/any/2?age=7d",
+							"header":	"BadIPs_7d"
+							},
+							{
+							"url":		"https://www.badips.com/get/list/any/2?age=14d",
+							"header":	"BadIPs_14d"
+							},
+							{
+							"url":		"https://www.badips.com/get/list/any/2?age=60d",
+							"header":	"BadIPs_60d"
+							},
+							{
+							"url":		"https://www.badips.com/get/list/any/2?age=180d",
+							"header":	"BadIPs_180d"
+							},
+							{
+							"url":		"https://www.badips.com/get/list/any/2?age=365d",
+							"header":	"BadIPs_365d"
+							}
+						]
+				},
+				{
+					"feed":		"Binary Defense",
+					"website":	"https://www.binarydefense.com",
+					"url":		"https://www.binarydefense.com/banlist.txt",
+					"header":	"BDS_Ban"
+				},
+				{
+					"feed":		"Botvrij",
+					"website":	"https://www.botvrij.eu/",
+					"url":		"https://www.botvrij.eu/data/ioclist.ip-dst.raw",
+					"header":	"Botvrij_IP"
+				},
+				{
+					"feed":		"CoinBlocker",
+					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/MiningServerIPList.txt",
+					"register":	"https://pulsedive.com/feed/?fid=60",
+					"info":		"The final URL for this feed will be provided upon registration.",
+					"donate":	"https://bit.ly/2NU3STB",
+					"header":	"CoinBlocker"
+				},
+				{
+					"feed":		"Cyber Crime WHQ",
+					"website":	"https://cybercrime-tracker.net/about.php",
+					"url":		"https://cybercrime-tracker.net/fuckerz.php",
+					"header":	"CCT_IP"
+				},
+				{
+					"feed":		"Darklist.de",
+					"website":	"https://www.darklist.de/",
+					"url":		"https://www.darklist.de/raw.php",
+					"delist":	"https://www.darklist.de/removal.php",
+					"header":	"Darklist"
+				},
+				{
+					"feed":		"Internet Storm Center",
+					"website":	"https://isc.sans.edu/",
+					"url":		"https://isc.sans.edu/api/threatlist/miner",
+					"header":	"ISC_Miner"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Krisk Intel",
+					"website":	"https://kriskintel.com/",
+					"url":		"https://kriskintel.com/feeds/ktip_malicious_Ips.txt",
+					"header":	"Krisk_Intel"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Krisk Intel",
+					"website":	"https://kriskintel.com/",
+					"url":		"https://kriskintel.com/feeds/ktip_ransomware_feeds.txt",
+					"header":	"Krisk_Intel_Mal"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Malc0de",
+					"website":	"https://malc0de.com/",
+					"url":		"https://malc0de.com/bl/IP_Blacklist.txt",
+					"header":	"Malc0de"
+				},
+				{
+					"feed":		"Myip.ms",
+					"website":	"https://myip.ms/browse/blacklist/",
+					"contact":	"https://myip.ms/view/contact/Contact_Us.html",
+					"url":		"https://www.myip.ms/files/blacklist/csf/latest_blacklist.txt",
+					"header":	"Myip_BL",
+					"alternate": [
+							{
+							"url":		"https://www.myip.ms/files/blacklist/general/full_blacklist_database.zip",
+							"header":	"Myip_BL_ALL"
+							}
+						]
+				},
+				{
+					"feed":		"NoVirusThanks",
+					"website":	"http://www.ipspamlist.com/",
+					"url":		"http://www.ipspamlist.com/public_feeds.csv",
+					"header":	"NVT_BL"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php",
+					"header":	"HoneyPot_IPs"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=b",
+					"header":	"HoneyPot_Bad"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=p",
+					"header":	"HoneyPot_Com"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=d",
+					"header":	"HoneyPot_Dict"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=h",
+					"header":	"HoneyPot_Harv"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=w",
+					"header":	"HoneyPot_Mal"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=r",
+					"header":	"HoneyPot_Rule"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=se",
+					"header":	"HoneyPot_Search"
+				},
+				{
+					"feed":		"Project HoneyPot",
+					"website":	"https://www.projecthoneypot.org/",
+					"url":		"https://www.projecthoneypot.org/list_of_ips.php?t=s",
+					"header":	"HoneyPot_Spam"
+				}
+			]
+		},
+		"PRI5": {
+			"info":		"PRI5 alias is a collection of Feeds from Fifth Tier providers.-LB-May contain some False positives.-LB-The frequency of updates is set to once per day.",
+			"description":	"PRI5 - Collection of Feeds from Fifth Tier providers.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"BBcan177",
+					"website":	"https://forum.netgate.com/user/bbcan177",
+					"url":		"https://gist.githubusercontent.com/BBcan177/bf29d47ea04391cb3eb0/raw",
+					"header":	"MS_1"
+				}
+			]
+		},
+		"DoH_IP": {
+			"info":		"A list of DNS-over-HTTPS servers.",
+			"description":	"List of DNS-over-HTTPS servers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"The Great Wall",
+					"website":	"https://github.com/Sekhan/TheGreatWall",
+					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv4",
+					"header":	"TheGreatWall_DoH_IP"
+				}
+			]
+		},
+		"SCANNERS": {
+			"info":		"These are feeds that scan the Internet for exposed services",
+			"description":	"Scanners - Searching for exposted services",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Internet Storm Center - Errata Security Masscan",
+					"website":	"https://blog.erratasec.com/",
+					"url":		"https://isc.sans.edu/api/threatlist/erratasec",
+					"header":	"ISC_Errata"
+				},
+				{
+					"feed":		"Internet Storm Center - Shodan",
+					"website":	"https://isc.sans.edu/",
+					"url":		"https://isc.sans.edu/api/threatlist/shodan/",
+					"header":	"ISC_Shodan"
+				},
+				{
+					"feed":		"Internet Storm Center - Rapid7 Sonar",
+					"website":	"https://www.rapid7.com/research/project-sonar/",
+					"url":		"https://isc.sans.edu/api/threatlist/rapid7sonar",
+					"header":	"ISC_Rapid7Sonar"
+				},
+				{
+					"feed":		"Internet Storm Center - ShadowServer",
+					"website":	"https://www.shadowserver.org/",
+					"url":		"https://isc.sans.edu/api/threatlist/shadowserver",
+					"header":	"ISC_Shadowserver"
+				},
+				{
+					"feed":		"Internet Storm Center - Onyphe",
+					"website":	"https://isc.sans.edu/",
+					"url":		"https://isc.sans.edu/api/threatlist/onyphe",
+					"header":	"ISC_Onyphe"
+				},
+				{
+					"feed":		"Maltrail",
+					"website":	"https://github.com/stamparm/maltrail",
+					"url":		"https://raw.githubusercontent.com/stamparm/maltrail/master/trails/static/mass_scanner.txt",
+					"header":	"Maltrail_Scanners_All"
+				}
+			]
+		},
+		"SFS": {
+			"info":		"SFS alias is a feed from Stop Forum Spam.-LB-This is an aggressive feed which is typically used to protect webservers etc.-LB-The frequency of updates is set to once every 8 hours. (3x / Day)",
+			"description":	"SFS - Stop Forum Spam",
+			"action":	"block",
+			"cron":		"08hours",
+			"feeds": [
+				{
+					"feed":		"Stop Forum Spam",
+					"website":	"https://www.stopforumspam.com/downloads",
+					"url":		"https://www.stopforumspam.com/downloads/bannedips.zip",
+					"header":	"SFS_IPs",
+					"alternate": [
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_1.zip",
+							"header":	"SFS_1h"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_7.zip",
+							"header":	"SFS_7d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_30.zip",
+							"header":	"SFS_30d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_90.zip",
+							"header":	"SFS_90d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_180.zip",
+							"header":	"SFS_180d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_365.zip",
+							"header":	"SFS_365d"
+							}
+						]
+				}
+			]
+		},
+		"TOR": {
+			"info":		"TOR is a collection of Feeds for the TOR network (EN = exit nodes, All = exit nodes + relays).-LB-Do not enable this feed if you utilize the TOR service as it will break connectivity.-LB-The frequency of updates is set to once per hour.",
+			"description":	"TOR - Collection of Feeds for the TOR network.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Binary Defense",
+					"website":	"https://www.binarydefense.com",
+					"url":		"https://www.binarydefense.com/tor.txt",
+					"header":	"BDS_TOR"
+				},
+				{
+					"feed":		"Dan.me",
+					"website":	"https://www.dan.me.uk/",
+					"url":		"https://www.dan.me.uk/torlist/?exit",
+					"header":	"DMe_TOR_EN",
+					"alternate": [
+							{
+							"url":		"https://www.dan.me.uk/torlist/",
+							"header":	"DMe_TOR_All"
+							}
+						]
+				},
+				{
+					"feed":		"Rueckgr Tor",
+					"website":	"https://torstatus.rueckgr.at/",
+					"url":		"https://torstatus.rueckgr.at/ip_list_all.php/Tor_ip_list_ALL.csv",
+					"header":	"RUECKGR_TOR_All"
+				},
+				{
+					"feed":		"Emerging Threats",
+					"website":	"http://doc.emergingthreats.net/bin/view/Main/TorRules",
+					"url":		"https://rules.emergingthreats.net/blockrules/emerging-tor.rules",
+					"header":	"ET_TOR_All"
+				},
+				{
+					"feed":		"Tor Project Bulk Exit List",
+					"website":	"https://www.torproject.org/",
+					"url":		"https://check.torproject.org/torbulkexitlist",
+					"header":	"PROJECT_TOR_EN"
+				},
+				{
+					"feed":		"Internet Storm Center",
+					"website":	"https://isc.sans.edu/",
+					"url":		"https://isc.sans.edu/api/threatlist/torexit",
+					"header":	"ISC_TOR"
+				}
+			]
+		},
+		"MAIL": {
+			"info":		"MAIL is a collection of Feeds for Mail Server specific blocklists.-LB-The frequency of updates is set to once per hour.",
+			"description":	"MAIL - Collection of Feeds for Mail Server specific blocklists.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Lashback",
+					"website":	"https://blacklist.lashback.com/",
+					"url":		"http://www.unsubscore.com/blacklist.txt",
+					"info":		"This is a very large Feed (~1.3M lines). To utilize, increase the pfSense 'Firewall Maximum Table entries' limit to 3-4M.",
+					"header":	"LB_BL"
+				},
+				{
+					"feed":		"Nix Spam",
+					"website":	"https://www.heise.de/ix/NiX-Spam-DNSBL-and-blacklist-for-download-499637.html",
+					"url":		"https://www.nixspam.net/download/nixspam-ip.dump.gz",
+					"past_urls": [
+								"http://www.dnsbl.manitu.net/download/nixspam-ip.dump.gz"
+					],
+					"header":	"Nix_Spam"
+				},
+				{
+					"feed":		"SpamCop",
+					"website":	"https://www.spamcop.net/spamstats.shtml",
+					"url":		"https://www.spamcop.net/w3m?action=map;net=cmaxratio;mask=65535;sort=spamcnt;format=text",
+					"past_urls": [
+								"https://www.spamcop.net/w3m?action=map;net=cmaxratio;mask=65535;sort=spamcnt",
+								"https://www.spamcop.net/w3m?action=map;net=cmaxratio;mask=65535;sort=spam"
+					],
+					"header":	"SpamCop_SC",
+					"alternate": [
+						{
+							"url":		"https://www.spamcop.net/w3m?action=map;net=cmaxratio;mask=65535;sort=spam;format=text",
+							"header":	"SpamCop_SR"
+						}
+					]
+				},
+				{
+					"feed":		"Toasted Spam",
+					"website":	"http://toastedspam.com/",
+					"url":		"http://toastedspam.com/deny",
+					"header":	"Toastedspam"
+				}
+			]
+		},
+		"DNS_4": {
+			"info":		"A list of Public DNS servers.",
+			"description":	"List of Public DNS Servers.",
+			"action":	"permit",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Public DNS",
+					"website":	"https://public-dns.info/",
+					"url":		"https://public-dns.info/nameservers.txt",
+					"header":	"Public_DNS4",
+					"alternate": [
+						{
+							"url":		"https://public-dns.info/nameservers-all.txt",
+							"header":	"Public_DNS4_all"
+						}
+					]
+				}
+			]
+		},
+		"Internic_4": {
+			"info":		"Internic is a list of the 13 IPv4 Root DNS servers via Internic Domain Registration service.-LB-Typically used for a Permit Outbound usage.-LB-The frequency of updates is set to once per week.",
+			"description":	"Internic - List of the 13 IPv4 Root DNS servers via Internic Domain Registration service.",
+			"action":	"permit",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Internic",
+					"website":	"https://www.internic.net/",
+					"url":		"https://www.internic.net/domain/named.root",
+					"header":	"Resolver4"
+				}
+			]
+		},
+		"Proxy_IP": {
+			"info":		"A list of free, public, forward proxy servers.",
+			"description":	"List of public Proxy servers.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Clarketm",
+					"website":	"https://github.com/clarketm/proxy-list",
+					"url":		"https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
+					"header":	"Clarketm_Proxy_IP"
+				}
+			]
+		},
+		"Torrent_IP": {
+			"info":		"A list of Torrent trackers.",
+			"description":	"List of Torrent trackers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Ngosang",
+					"website":	"https://github.com/ngosang/trackerslist",
+					"url":		"https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt",
+					"header":	"NGOSANG_TORRENT_IP"
+				}
+			]
+		},
+		"VPN_4": {
+			"info":		"A list of common VPN providers",
+			"description":	"List of common VPN providers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Ejrv VPN",
+					"website":	"https://github.com/ejrv/VPNs",
+					"url":		"https://raw.githubusercontent.com/ejrv/VPNs/master/vpn-ipv4.txt",
+					"header":	"Ejrv_VPNv4"
+				}
+			]
+		},
+		"BlockListDE": {
+			"info":		"BlockList.DE is a fail2ban reporting service.-LB-The 'PRI3 Alias' contains a single URL for all BlockList.DE feeds.-LB-This BlockList.DE Alias can be utilized to enable specific BlockList.DE Feeds, as desired.-LB-The frequency of updates is set to once per hour.",
+			"description":	"Collection of specific fail2ban reporting service Feeds.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"contact":	"https://www.blocklist.de/en/contact.html",
+					"url":		"https://lists.blocklist.de/lists/apache.txt",
+					"delist":	"https://www.blocklist.de/en/delist.html?ip=",
+					"header":	"BlockListDE_Apache"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://www.blocklist.de/lists/asterisk.txt",
+					"header":	"BlockListDE_Asterisk"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/bots.txt",
+					"header":	"BlockListDE_Bots"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/bruteforcelogin.txt",
+					"header":	"BlockListDE_Brute"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://www.blocklist.de/lists/email.txt",
+					"header":	"BlockListDE_Email"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/ftp.txt",
+					"header":	"BlockListDE_FTP"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://www.blocklist.de/lists/proftpd.txt",
+					"header":	"BlockListDE_FTPD"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://www.blocklist.de/lists/ircbot.txt",
+					"header":	"BlockListDE_IRC"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/imap.txt",
+					"header":	"BlockListDE_IMAP"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/mail.txt",
+					"header":	"BlockListDE_Mail"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://www.blocklist.de/lists/pop3.txt",
+					"header":	"BlockListDE_POP3"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://www.blocklist.de/lists/postfix.txt",
+					"header":	"BlockListDE_Postfix"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/sip.txt",
+					"header":	"BlockListDE_SIP"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/ssh.txt",
+					"header":	"BlockListDE_SSH"
+				},
+				{
+					"feed":		"BlockList DE",
+					"website":	"https://www.blocklist.de/",
+					"url":		"https://lists.blocklist.de/lists/strongips.txt",
+					"header":	"BlockListDE_Strong"
+				}
+			]
+		},
+		"AWS_4": {
+			"info":		"IP ranges for Amazon AWS. Use the IPv4 Advanced Tunable to configure a Pre-Script to collect the AWS Region IPs",
+			"description":	"IP ranges for Amazon AWS.",
+			"action":	"permit",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"AWS",
+					"website":	"https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html",
+					"url":		"https://ip-ranges.amazonaws.com/ip-ranges.json",
+					"header":	"AWS"
+				}
+			]
+		}
+	},
+	"ipv6": {
+		"PRI1_6": {
+			"info":		"PRI1_6 alias is a Primary Tier collection of IPv6 Feeds.-LB-May contain some False positives.-LB-The frequency of updates is set to once per hour.",
+			"description":	"PRI1_6 - collection of IPv6 Feeds from the most reputable blocklist providers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Myip.ms",
+					"website":	"https://myip.ms/browse/blacklist/",
+					"url":		"https://www.myip.ms/files/blacklist/csf/latest_blacklist.txt",
+					"header":	"Myip_BL6",
+					"alternate": [
+							{
+							"url":		"https://www.myip.ms/files/blacklist/general/full_blacklist_database.zip",
+							"header":	"Myip_BL6_ALL"
+							}
+						]
+				},
+				{
+					"feed":		"Spamhaus",
+					"website":	"https://www.spamhaus.org/drop/",
+					"url":		"https://www.spamhaus.org/drop/dropv6.txt",
+					"header":	"Spamhaus_Drop6"
+				}
+			]
+		},
+		"DoH_6": {
+			"info":		"A list of DNS-over-HTTPS servers.",
+			"description":	"List of DNS-over-HTTPS servers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"The Great Wall",
+					"website":	"https://github.com/Sekhan/TheGreatWall",
+					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv6",
+					"header":	"TheGreatWall_DoH_IP6"
+				}
+			]
+		},
+		"SFS_6": {
+			"info":		"SFS alias is a feed from Stop Forum Spam.-LB-This is an aggressive feed which is typically used to protect webservers etc.-LB-The frequency of updates is set to once every 12 hours. (2x / Day)",
+			"description":	"SFS - Stop Forum Spam",
+			"action":	"block",
+			"cron":		"12hours",
+			"feeds": [
+				{
+					"feed":		"Stop Forum Spam",
+					"website":	"https://www.stopforumspam.com/downloads",
+					"url":		"https://www.stopforumspam.com/downloads/listed_ip_30_ipv6.zip",
+					"header":	"SFS6_30d",
+					"alternate": [
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_1_ipv6.zip",
+							"header":	"SFS6_1d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_7_ipv6.zip",
+							"header":	"SFS6_7d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_90_ipv6.zip",
+							"header":	"SFS6_90d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_180_ipv6.zip",
+							"header":	"SFS6_180d"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/listed_ip_365_ipv6.zip",
+							"header":	"SFS6_365d"
+							}
+						]
+				}
+			]
+		},
+		"DNS_6": {
+			"info":		"A list of Public DNS servers.",
+			"description":	"List of Public DNS Servers.",
+			"action":	"permit",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Public DNS",
+					"website":	"https://public-dns.info/",
+					"url":		"https://public-dns.info/nameservers.txt",
+					"header":	"Public_DNS6",
+					"alternate": [
+						{
+							"url":		"https://public-dns.info/nameservers-all.txt",
+							"header":	"Public_DNS6_all"
+						}
+					]
+				}
+			]
+		},
+		"Internic_6": {
+			"info":		"Internic is a list of the 13 IPv6 Root DNS servers via Internic Domain Registration service.-LB-Typically used for a Permit Outbound usage.-LB-The frequency of updates is set to once per week.",
+			"description":	"Internic - List of the 13 IPv6 Root DNS servers via Internic Domain Registration service.",
+			"action":	"permit",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Internic",
+					"Internic6":	"https://www.internic.net/",
+					"url":		"https://www.internic.net/domain/named.root",
+					"header":	"Resolver6"
+				}
+			]
+		},
+		"VPN_6": {
+			"status":	"discontinued",
+			"info":		"A list of common VPN providers",
+			"description":	"List of common VPN providers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Ejrv VPN",
+					"website":	"https://github.com/ejrv/VPNs",
+					"url":		"https://raw.githubusercontent.com/ejrv/VPNs/master/vpn-ipv6.txt",
+					"header":	"Ejrv_VPNv6"
+				}
+			]
+		},
+		"AWS_6": {
+			"info":		"IP ranges for Amazon AWS. Use the IPv6 Advanced Tunable to configure a Pre-Script to collect the AWS Region IPs",
+			"description":	"IP ranges for Amazon AWS.",
+			"action":	"permit",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"AWS",
+					"website":	"https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html",
+					"url":		"https://ip-ranges.amazonaws.com/ip-ranges.json",
+					"header":	"AWS6"
+				}
+			]
+		}
+	},
+	"dnsbl": {
+		"EasyList": {
+			"info":		"EasyList are Feeds originaly designed for filering on browser based extensions. The DNSBL parser will only utilize those domains which are listed to be blocked in full",
+			"description":	"EasyList Feeds - Utilizing only the domains which are listed to be blocked in full.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"EasyList",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylist_noelemhide.txt",
+					"header":	"EasyList"
+				},
+				{
+					"feed":		"EasyPrivacy",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist.to/easylist/easyprivacy.txt",
+					"header":	"EasyPrivacy"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"EasyList Adware Filter",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/adwarefilters.tpl",
+					"header":	"EasyList_Adware"
+				},
+				{
+					"feed":		"EasyList Arabic",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/Liste_AR.txt",
+					"header":	"EasyList_Arabic"
+				},
+				{
+					"feed":		"EasyList Bulgarian",
+					"website":	"https://easylist.to/",
+					"url":		"https://stanev.org/abp/adblock_bg.txt",
+					"header":	"EasyList_Bulgarian"
+				},
+				{
+					"feed":		"EasyList Chinese",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistchina.txt",
+					"header":	"EasyList_Chinese"
+				},
+				{
+					"Feed":		"EasyList CJX Annoyance List",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt",
+					"header":	"EasyList_CJX"
+				},
+				{
+					"feed":		"EasyList Czech/Slovak",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt",
+					"header":	"EasyList_Czech_Slovak"
+				},
+				{
+					"feed":		"EasyList Dutch",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistdutch.txt",
+					"header":	"EasyList_Dutch"
+				},
+				{
+					"feed":		"EasyList Finland",
+					"website":	"https://github.com/finnish-easylist-addition/finnish-easylist-addition",
+					"url":		"https://raw.githubusercontent.com/finnish-easylist-addition/finnish-easylist-addition/master/Finland_adb.txt",
+					"header":	"EasyList_Finland"
+				},
+				{
+					"feed":		"EasyList French",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/liste_fr.txt",
+					"header":	"EasyList_French"
+				},
+				{
+					"feed":		"EasyList German",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist.to/easylistgermany/easylistgermany.txt",
+					"header":	"EasyList_German"
+				},
+				{
+					"feed":		"EasyList Greek",
+					"website":	"https://easylist.to/",
+					"url":		"https://www.void.gr/kargig/void-gr-filters.txt",
+					"header":	"EasyList_Greek"
+				},
+				{
+					"feed":		"EasyList Hebrew",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt",
+					"header":	"EasyList_Hebrew"
+				},
+				{
+					"feed":		"EasyList Indonesian",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/heradhis/indonesianadblockrules/master/subscriptions/abpindo.txt",
+					"header":	"EasyList_Indonesian"
+				},
+				{
+					"feed":		"EasyList Italian",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistitaly.txt",
+					"header":	"EasyList_Italian"
+				},
+				{
+					"feed":		"EasyList Japanese",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/k2jp/abp-japanese-filters/master/abp_jp.txt",
+					"header":	"EasyList_Japanese"
+				},
+				{
+					"feed":		"EasyList Latvian",
+					"website":	"https://easylist.to/",
+					"url":		"https://notabug.org/latvian-list/adblock-latvian/raw/master/lists/latvian-list.txt",
+					"header":	"EasyList_Latvian"
+				},
+				{
+					"feed":		"EasyList Lithuanian",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/EasyList-Lithuania/easylist_lithuania/master/easylistlithuania.txt",
+					"header":	"EasyList_Lithuanian"
+				},
+				{
+					"feed":		"EasyList Norwegian/Danish/Icelandic",
+					"website":	"https://github.com/DandelionSprout/adfilt",
+					"url":		"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/NorwegianExperimentalList%20alternate%20versions/AdawayHosts",
+					"donate":	"https://sproutsluckycorner.wordpress.com/2017/11/14/my-work-and-contact-resume/#donations",
+					"header":	"EasyList_Norwegian_Danish_Icelandic"
+				},
+				{
+					"feed":		"EasyList Polish",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt",
+					"header":	"EasyList_Polish"
+				},
+				{
+					"feed":		"EasyList Portuguese",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistportuguese.txt",
+					"header":	"EasyList_Portuguese"
+				},
+				{
+					"feed":		"EasyList Russian",
+					"website":	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/advblock.txt",
+					"header":	"EasyList_Russian"
+				},
+				{
+					"feed":		"EasyList Spanish",
+					"website": 	"https://easylist.to/",
+					"url":		"https://easylist-downloads.adblockplus.org/easylistspanish.txt",
+					"header":	"EasyList_Spanish"
+				},
+				{
+					"feed":		"EasyList Turkish",
+					"website":	"https://easylist.to/",
+					"url":		"https://adguard.com/en/filter-rules.html?id=13",
+					"header":	"EasyList_Turkish"
+				},
+				{
+					"feed":		"EasyList Vietnamese",
+					"website":	"https://easylist.to/",
+					"url":		"https://raw.githubusercontent.com/abpvn/abpvn/master/filter/abpvn.txt",
+					"header":	"EasyList_Vietnamese"
+				}
+			]
+		},
+		"ADs": {
+			"info":		"ADs group is a collection of ADvertisement Domain Feeds.-LB-Some sites may become slow or unresponsive. Whitelist Domains as required.-LB-The frequency of updates is set to once per day.",
+			"description":	"ADs - Collection of ADvertisement Domain Feeds.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Adaway",
+					"website":	"https://adaway.org/",
+					"url":		"https://adaway.org/hosts.txt",
+					"header":	"Adaway"
+				},
+				{
+					"feed":		"Disconnect.Me",
+					"website":	"https://disconnect.me/disconnect",
+					"url":		"https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt",
+					"header":	"D_Me_ADs"
+				},
+				{
+					"feed":		"Disconnect.Me",
+					"website":	"https://disconnect.me/disconnect",
+					"url":		"https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt",
+					"header":	"D_Me_Tracking"
+				},
+				{
+					"feed":		"Yoyo",
+					"website":	"https://pgl.yoyo.org/adservers/",
+					"url":		"https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml",
+					"header":	"Yoyo"
+				}
+			]
+		},
+		"ADs_Basic": {
+			"info":		"ADs Basic is a minimal collection of ADvertisement Domain Feeds.",
+			"description":	"ADs Basic - Collection of ADvertisement Domain Feeds.", 
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Steven Black",
+					"website":	"https://github.com/StevenBlack/hosts",
+					"url":		"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+					"header":	"StevenBlack_ADs"
+				}
+			]
+		},
+		"Email": {
+			"info":		"List of email providers. If not filtered by 'TOP1M Whitelist' may block many websites.",
+			"description":	"Email - List of email providers domains.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Edwin-zvs",
+					"website":	"https://github.com/edwin-zvs/email-providers",
+					"url":		"https://raw.githubusercontent.com/edwin-zvs/email-providers/master/email-providers.csv",
+					"header":	"Edwin_Email"
+				}
+			]
+		},
+		"Malicious": {
+			"info":		"Malicious group is a collection of Malicious Domain Feeds.-LB-May contain false positives.-LB-The frequency of updates is set to once per day.",
+			"description":	"Malicious - Collection of Malicious Domain Feeds.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"status":	"discontinued",
+					"feed":		"COVID-19 Cyber Threat Coalition",
+					"website":	"https://www.cyberthreatcoalition.org/",
+					"url":		"https://blocklist.cyberthreatcoalition.org/vetted/domain.txt",
+					"header":	"C19_CTC"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Krisk Intel",
+					"website":	"https://kriskintel.com/",
+					"url":		"https://kriskintel.com/feeds/ktip_covid_domains.txt",
+					"header":	"Krisk_C19"
+				},
+				{
+					"feed":		"Dan Pollock",
+					"website":	"https://someonewhocares.org/",
+					"url":		"https://someonewhocares.org/hosts/hosts",
+					"header":	"SWC"
+				},
+				{
+					"feed":		"Disconnect.Me",
+					"website":	"https://disconnect.me/disconnect",
+					"url":		"https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt",
+					"header":	"D_Me_Malv"
+				},
+				{
+					"feed":		"Disconnect.Me",
+					"website":	"https://disconnect.me/disconnect",
+					"url":		"https://s3.amazonaws.com/lists.disconnect.me/simple_malware.txt",
+					"header":	"D_Me_Malw"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Juniper",
+					"website":	"https://www.juniper.net/",
+					"contact":	"https://www.juniper.net/us/en/contact-us/",
+					"url":		"https://www.juniper.net/security/auto/spam",
+					"header":	"Juniper"
+				},
+				{
+					"feed":		"Maltrail",
+					"website":	"https://github.com/stamparm/maltrail",
+					"url":		"https://raw.githubusercontent.com/stamparm/aux/master/maltrail-malware-domains.txt",
+					"header":	"Maltrail_BD"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Malware Domains",
+					"website":	"https://www.malwaredomains.com/",
+					"url":		"https://mirror1.malwaredomains.com/files/justdomains",
+					"header":	"MDS"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Malware Domains",
+					"website":	"https://www.malwaredomains.com/",
+					"url":		"https://mirror1.malwaredomains.com/files/immortal_domains.txt",
+					"header":	"MDS_Immortal"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Malware Domain List",
+					"website":	"https://www.malwaredomainlist.com/",
+					"url":		"https://www.malwaredomainlist.com/hostslist/hosts.txt",
+					"header":	"MDL"
+				},
+				{
+					"feed":		"MVPS Hosts",
+					"website":	"https://winhelp2002.mvps.org/",
+					"url":		"https://winhelp2002.mvps.org/hosts.txt",
+					"header":	"MVPS"
+				},
+				{
+					"feed":		"Spam404",
+					"website":	"http://www.spam404.com/blog/category/Blacklist",
+					"url":		"https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt",
+					"header":	"Spam404"
+				},
+				{
+					"feed":		"Stop Forum Spam",
+					"website":	"https://www.stopforumspam.com/downloads",
+					"url":		"https://www.stopforumspam.com/downloads/toxic_domains_whole.txt",
+					"header":	"SFS_Toxic_BD",
+					"alternate": [
+							{
+							"url":		"https://www.stopforumspam.com/downloads/toxic_domains_whole_filtered_1000.txt",
+							"header":	"SFS_Toxic_BD_F1"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/toxic_domains_whole_filtered_10000.txt",
+							"header":	"SFS_Toxic_BD_F2"
+							},
+							{
+							"url":		"https://www.stopforumspam.com/downloads/toxic_domains_whole_filtered_50000.txt",
+							"header":	"SFS_Toxic_BD_F3"
+							}
+						]
+				}
+			]
+		},
+		"Phishing": {
+			"info":		"Phishing group is a collection of Phishing Domain Feeds.-LB-These phising domains are based on full URLs, so there may be some False Positives.-LB-Its recommended to use the TOP1M whitelist.-LB-The frequency of updates is set to once per day.",
+			"description":	"Phishing - Collection of Phishing Domain Feeds.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Abuse URLhaus",
+					"website":	"https://urlhaus.abuse.ch/",
+					"url":		"https://urlhaus.abuse.ch/downloads/hostfile/",
+					"header":	"Abuse_urlhaus",
+					"alternate": [
+							{
+							"url":		"https://urlhaus.abuse.ch/downloads/text_recent/",
+							"header":	"Abuse_urlhaus_30d"
+							},
+							{
+							"url":		"https://urlhaus.abuse.ch/downloads/text_online/",
+							"header":	"Abuse_urlhaus_online"
+							}
+					]
+				},
+				{
+					"feed":		"Bambenek Consulting",
+					"website":	"https://faf.bambenekconsulting.com/feeds/",
+					"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-dommasterlist-high.txt",
+					"header":	"BBC_DC2",
+					"info":		"Replace '_API_KEY_' with 'USER:PASS' in the URL after Registration (Replace @ to %40). https://faf.bambenekconsulting.com/feeds/license.txt",
+					"register":	"mailto:sales@bambenekconsulting.com?Subject=Access%20Request%20(pfBlockerNG)",
+					"alternate": [
+							{
+							"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-dommasterlist.txt",
+							"header":	"BBC_DC2_Agr"
+							}
+						]
+				},
+				{
+					"status":	"Suspended",
+					"feed":		"Internet Storm Center",
+					"website":	"https://isc.sans.edu/suspicious_domains.html",
+					"url":		"https://isc.sans.edu/feeds/suspiciousdomains_High.txt",
+					"info":		"Currently suspended: (06-2020) - https://isc.sans.edu/suspicious_domains.html",
+					"header":	"ISC_SDH",
+					"alternate": [
+							{
+							"url":		"https://isc.sans.edu/feeds/suspiciousdomains_Low.txt",
+							"header":	"ISC_SDL"
+							},
+							{
+							"url":		"https://isc.sans.edu/feeds/suspiciousdomains_Medium.txt",
+							"header":	"ISC_SDM"
+							}
+						]
+				},
+				{
+					"feed":		"Malware Patrol",
+					"website":	"https://lists.malwarepatrol.net/",
+					"register":	"https://malwareblocklist.org/",
+					"url":		"https://lists.malwarepatrol.net/cgi/getfile?receipt=_API_KEY_&product=37&list=pfblockerng",
+					"header":	"MPatrol"
+				},
+				{
+					"feed":		"OpenPhish",
+					"website":	"https://openphish.com/phishing_feeds.html",
+					"url":		"https://openphish.com/feed.txt",
+					"header":	"OpenPhish"
+				},
+				{
+					"feed":		"PhishTank",
+					"website":	"https://www.phishtank.com/",
+					"url":		"https://data.phishtank.com/data/online-valid.csv.bz2",
+					"header":	"PhishTank",
+					"alternate": [
+							{
+							"url":		"https://data.phishtank.com/data/_API_KEY_/online-valid.csv.bz2",
+							"header":	"PhishTank_R",
+							"info":		"Register for an API key to download more frequently.",
+							"register":	"https://www.phishtank.com/register.php"
+							}
+					]
+				}
+			]
+		},
+		"BBcan177": {
+			"info":		"BBcan177 is a Domain feed as provided by BBcan177.-LB-The frequency of updates is set to once per day.",
+			"description":	"BBcan177 - Feed as provided by BBcan177.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"BBcan177",
+					"website":	"https://forum.netgate.com/user/bbcan177",
+					"url":		"https://gist.githubusercontent.com/BBcan177/4a8bf37c131be4803cb2/raw",
+					"header":	"MS_2"
+				}
+			]
+		},
+		"URL_Shorteners": {
+			"info":		"A list of URL Shorteners",
+			"description":	"List of URL Shorteners",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"status":	"discontinued",
+					"feed":		"Malware Domains",
+					"website":	"https://www.malwaredomains.com/",
+					"url":		"https://mirror1.malwaredomains.com/files/url_shorteners.txt",
+					"header":	"URL_shorteners"
+				}
+			]
+		},
+		"Skype_Resolvers": {
+			"info":		"A list of Skype Resolvers",
+			"description":	"List of Skype Resolvers",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"status":	"discontinued",
+					"feed":		"Malware Domains",
+					"website":	"https://www.malwaredomains.com/",
+					"url":		"https://mirror1.malwaredomains.com/files/Skype-resolvers.txt",
+					"header":	"Skype_Res"
+				}
+			]
+		},
+		"STUN": {
+			"info":		"A list of public STUN servers.",
+			"description":	"List of STUN servers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Enumer",
+					"website":	"http://enumer.org/",
+					"url":		"http://enumer.org/public-stun.txt",
+					"header":	"ENUMER_STUN"
+				}
+			]
+		},
+		"DoH": {
+			"info":		"A list of DNS-over-HTTPS servers.",
+			"description":	"List of DNS-over-HTTPS servers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"The Great Wall",
+					"website":	"https://github.com/Sekhan/TheGreatWall",
+					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall.txt",
+					"header":	"TheGreatWall_DoH"
+				},
+				{
+					"feed":		"Bambenek Consulting",
+					"website":	"https://github.com/bambenek/block-doh",
+					"url":		"https://raw.githubusercontent.com/bambenek/block-doh/master/doh-hosts.txt",
+					"header":	"Bambenek_DoH",
+					"info":		"https://osint.bambenekconsulting.com/feeds/license.txt"
+				},
+				{
+					"feed":		"Dallas Haselhorst",
+					"website":	"https://github.com/oneoffdallas/dohservers",
+					"url":		"https://raw.githubusercontent.com/oneoffdallas/dohservers/master/list.txt",
+					"header":	"Oneoffdallas_DoH"
+				}
+			]
+		},
+		"Torrent": {
+			"info":		"A list of Torrent trackers.",
+			"description":	"List of Torrent trackers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Ngosang",
+					"website":	"https://github.com/ngosang/trackerslist",
+					"url":		"https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt",
+					"header":	"NGOSANG_TORRENT"
+				}
+			]
+		},
+		"BBC": {
+			"info":		"BBC is a DGA type feed of malicious domains (3 day window).-LB-This is a large feed (~400k Domains / [Agr: ~800k] ).",
+			"description":	"BBC - DGA type feed of malicious domains (3 day window).",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Bambenek Consulting",
+					"website":	"https://faf.bambenekconsulting.com/feeds/",
+					"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga-feed-high.gz",
+					"header":	"BBC_DGA",
+					"info":		"Replace '_API_KEY_' with 'USER:PASS' in the URL after Registration (Replace @ to %40). https://faf.bambenekconsulting.com/feeds/license.txt",
+					"register":	"mailto:sales@bambenekconsulting.com?Subject=Access%20Request%20(pfBlockerNG)",
+					"alternate": [
+							{
+							"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga-feed.gz",
+							"header":	"BBC_DGA_Agr"
+							}
+						]
+				}
+			]
+		},
+		"Malicious2": {
+			"info":		"Malicious2 group is a second tier collection of Malicious Domain Feeds.-LB-May contain false positives.-LB-The frequency of updates is set to once per day.",
+			"description":	"Malicious2 - Collection of Feeds from Secondary Tier providers.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Abuse",
+					"website":	"https://threatfox.abuse.ch/",
+					"url":		"https://threatfox.abuse.ch/downloads/hostfile/",
+					"info":		"Feed of shared IOCs from the infosec community, may contain FPs",
+					"header":	"Abuse_ThreatFox"
+				},
+				{
+					"feed":		"The AntiSocial Engineer",
+					"website":	"https://theantisocialengineer.com/blacklist/",
+					"url":		"https://theantisocialengineer.com/AntiSocial_Blacklist_Community_V1.txt",
+					"info":		"Note: This feed is United Kingdom centric, and can cause False Positives for other Country users!",
+					"header":	"AntiSocial_UK_BD"
+				},
+				{
+					"feed":		"AZORult Tracker",
+					"website":	"https://azorult-tracker.net/about",
+					"url":		"https://azorult-tracker.net/api/list/domain?format=plain",
+					"header":	"AZORult_BD"
+				},
+				{
+					"feed":		"Botvrij",
+					"website":	"https://www.botvrij.eu/",
+					"url":		"https://www.botvrij.eu/data/ioclist.domain.raw",
+					"header":	"Botvrij_Dom"
+				},
+				{
+					"feed":		"c-APT-ure",
+					"website":	"https://c-apt-ure.blogspot.com/",
+					"url":		"http://security-research.dyndns.org/pub/malware-feeds/ponmocup-infected-domains-shadowserver.csv",
+					"header":	"Ponmocup"
+				},
+				{
+					"feed":		"Cyber Crime WHQ",
+					"website":	"https://cybercrime-tracker.net/about.php",
+					"url":		"https://cybercrime-tracker.net/all.php",
+					"header":	"CCT_BD"
+				},
+				{
+					"feed":		"Gwillem",
+					"website":	"https://github.com/gwillem/magento-malware-scanner/tree/master/rules",
+					"url":		"https://raw.githubusercontent.com/gwillem/magento-malware-scanner/master/rules/burner-domains.txt",
+					"header":	"Magento"
+				},
+				{
+					"feed":		"H3X",
+					"website":	"https://tracker.h3x.eu/about/",
+					"url":		"https://tracker.h3x.eu/api/sites_1month.php",
+					"header":	"H3X_1M",
+					"alternate": [
+							{
+							"url":		"https://tracker.h3x.eu/api/sites_1hour.php",
+							"header":	"H3X_1h"
+							},
+							{
+							"url":		"https://tracker.h3x.eu/api/sites_1day.php",
+							"header":	"H3X_1d"
+							},
+							{
+							"url":		"https://tracker.h3x.eu/api/sites_1week.php",
+							"header":	"H3X_1w"
+							}
+					]
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Krisk Intel",
+					"website":	"https://kriskintel.com/",
+					"url":		"https://kriskintel.com/feeds/ktip_malicious_domains.txt",
+					"header":	"Krisk_Intel_BD"
+				},
+				{
+					"feed":		"Malc0de",
+					"website":	"https://malc0de.com",
+					"url":		"https://malc0de.com/bl/BOOT",
+					"header":	"Malc0de"
+				},
+				{
+					"feed":		"Maltrail",
+					"website":	"https://github.com/stamparm/blackbook",
+					"url":		"https://raw.githubusercontent.com/stamparm/blackbook/master/blackbook.txt",
+					"header":	"Maltrail_Blackbook"
+				},
+				{
+					"feed":		"Pulsedive",
+					"website":	"https://pulsedive.com/products/feed.php",
+					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=domain",
+					"register":	"https://pulsedive.com/premium/purchase.php",
+					"info":		"Subscription based feed only!",
+					"header":	"Pulsedive_BD"
+				},
+				{
+					"feed":		"Steven Black",
+					"website":	"https://github.com/StevenBlack/hosts",
+					"url":		"https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts",
+					"header":	"StevenBlack_BD"
+				},
+				{
+					"feed":		"VXVault",
+					"website":	"http://vxvault.net/ViriList.php",
+					"url":		"http://vxvault.net/URL_List.php",
+					"header":	"VXVault"
+				},
+				{
+					"feed":		"Mitchell Krog",
+					"website":	"https://github.com/mitchellkrogza/Badd-Boyz-Hosts",
+					"url":		"https://raw.githubusercontent.com/mitchellkrogza/Badd-Boyz-Hosts/master/hosts",
+					"header":	"Krog_BD"
+				},
+				{
+					"feed":		"KAD",
+					"website":	"https://github.com/azet12/KAD",
+					"url":		"https://raw.githubusercontent.com/azet12/KADhosts/master/KADhosts.txt",
+					"header":	"KAD_BD"
+				},
+				{
+					"feed":		"Kowabit",
+					"website":	"https://www.kowabit.de/blcklst/",
+					"url":		"https://list.kwbt.de/fritzboxliste.txt",
+					"info":		"Contains false positives!",
+					"header":	"Kowabit"
+				},
+				{
+					"feed":		"Joewein",
+					"website":	"https://www.joewein.de/sw/bl-text.htm",
+					"url":		"https://www.joewein.net/dl/bl/dom-bl-base.txt",
+					"header":	"Joewein_base"
+				},
+				{
+					"feed":		"Joewein",
+					"website":	"https://www.joewein.de/sw/bl-text.htm",
+					"url":		"https://www.joewein.net/dl/bl/dom-bl.txt",
+					"header":	"Joewein_new"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Joey Lane",
+					"website":	"https://github.com/joeylane/hosts",
+					"url":		"https://raw.githubusercontent.com/joeylane/hosts/master/hosts",
+					"header":	"JL_BD"
+				},
+				{
+					"feed":		"Piwik",
+					"website":	"https://github.com/piwik/referrer-spam-blacklist",
+					"url":		"https://raw.githubusercontent.com/piwik/referrer-spam-blacklist/master/spammers.txt",
+					"header":	"Piwik_Spam"
+				},
+				{
+					"feed":		"Quidsup",
+					"website":	"https://quidsup.net/notrack/blocklist.php",
+					"url":		"https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt",
+					"header":	"Quidsup_Trackers"
+				},
+				{
+					"feed":		"Quidsup",
+					"website":	"https://quidsup.net/notrack/blocklist.php",
+					"url":		"https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt",
+					"header":	"Quidsup_Mal"
+				},
+				{
+					"feed":		"Yhonay",
+					"website":	"https://github.com/Yhonay/antipopads",
+					"url":		"https://raw.githubusercontent.com/Yhonay/antipopads/master/hosts",
+					"header":	"Yhonay_BD"
+				},
+				{
+					"feed":		"yHosts",
+					"website":	"https://github.com/vokins/yhosts",
+					"url":		"https://raw.githubusercontent.com/vokins/yhosts/master/hosts.txt",
+					"header":	"yHosts"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Elad Karako",
+					"website":	"https://github.com/eladkarako/hosts",
+					"url":		"https://raw.githubusercontent.com/eladkarako/hosts/master/_raw__hosts.txt",
+					"info":		"This is a large feed ~480k lines",
+					"header":	"EladKarako_BD"
+				}
+			]
+		},
+		"Cryptojackers": {
+			"info":		"Cryptojackers group is a collection of Malicious Domain crypto mining Feeds.-LB-May contain false positives.-LB-The frequency of updates is set to once per day.",
+			"description":	"Cryptojackers - Collection of Malicious Domain crypto mining Feeds",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"CoinBlocker",
+					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list.txt",
+					"header":	"CoinBlocker_All",
+					"alternate": [
+							{
+							"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list_browser.txt",
+							"header":	"CoinBlocker_Browser"
+							}
+						]
+				},
+				{	"feed":		"CoinBlocker",
+					"website":	"https://zerodot1.gitlab.io/CoinBlockerListsWeb/index.html",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/list_optional.txt",
+					"header":	"CoinBlocker_Opt"
+				},
+				{
+					"feed":		"Monero Miner",
+					"website":	"https://laskowski-tech.com/2017/12/15/crypto-miners-on-webservers-part-2/",
+					"url":		"https://raw.githubusercontent.com/Hestat/minerchk/master/hostslist.txt",
+					"info":		"This feed is also contained in the CoinbBlocker Feed",
+					"header":	"MoneroMiner"
+				},
+				{
+					"feed":		"NoCoin",
+					"website":	"https://github.com/hoshsadiq/adblock-nocoin-list",
+					"url":		"https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt",
+					"header":	"NoCoin"
+				}
+			]
+		},
+		"Compilation": {
+			"info":		"Compilation group is a collection of feeds containing data from a group of other feeds.",
+			"description":	"Compilation - feeds that aggregate other feeds",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"OISD",
+					"website":	"https://oisd.nl/",
+					"url":		"https://dbl.oisd.nl/",
+					"header":	"OISD",
+					"info":		"Ads, (Mobile) App Ads, Phishing, Malvertising, Malware, Spyware, Ransomware, CryptoJacking, Scam, Telemetry, Analytics, Tracking (Where not needed for proper functionality)."
+				},
+				{
+					"feed":		"Phishing Army",
+					"website":	"https://phishing.army/",
+					"url":		"https://phishing.army/download/phishing_army_blocklist.txt",
+					"header":	"PhishingArmy",
+					"alternate": [
+							{
+							"url":		"https://phishing.army/download/phishing_army_blocklist_extended.txt",
+							"header":	"PhishingArmy_agr"
+							}
+						],
+					"info":		"Generated every 6 hours from PhishTank, OpenPhish, Cert.pl and PhishFindR reports. Each domain is analyzed to eliminate false positives, through the Whitelist of Anudeep and the Alexa Rank."
+				}
+			]
+		},
+		"Firebog_Suspicious": {
+			"info":		"Something's fishy here.",
+			"description":	"Something's fishy here.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"PolishFiltersTeam KADhosts",
+					"website":	"https://github.com/PolishFiltersTeam/KADhosts",
+					"url":		"https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt",
+					"header":	"KADhosts"
+				},
+				{
+					"feed":		"Fademind's Spammers",
+					"website":	"https://github.com/FadeMind/hosts.extras/",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts",
+					"header":	"FM_Spam"
+				},
+				{
+					"feed":		"WaLLy3K's Blacklist",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/static/w3kbl.txt",
+					"header":	"WaLLy3Ks",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"Matomo Referrer Spam",
+					"website":	"https://github.com/matomo-org/referrer-spam-blacklist",
+					"url":		"https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt",
+					"header":	"Matomo_Spam"
+				},
+				{
+					"feed":		"Someone Who Cares",
+					"website":	"https://someonewhocares.org/",
+					"url":		"https://someonewhocares.org/hosts/zero/hosts",
+					"header":	"SWC"
+				},
+				{
+					"feed":		"neoFelhz's neoHosts",
+					"website":	"https://github.com/neofelhz/neohosts",
+					"url":		"https://cdn.jsdelivr.net/gh/neoFelhz/neohosts@gh-pages/basic/hosts",
+					"header":	"neoHosts"
+				},
+				{
+					"feed":		"RooneyMcNibNug's SNAFU list",
+					"website":	"https://github.com/RooneyMcNibNug/pihole-stuff/",
+					"url":		"https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt",
+					"header":	"SNAFU_List"
+				},
+				{
+					"feed":		"paulgb's BarbBlock",
+					"website":	"https://github.com/paulgb/BarbBlock",
+					"url":		"https://paulgb.github.io/BarbBlock/blacklists/hosts-file.txt",
+					"header":	"BarbBlock"
+				}
+			]
+		},
+		"Firebog_Advertising": {
+			"info":		"Waste of bandwith trying to sell stuff.",
+			"description":	"Waste of bandwith trying to sell stuff.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Adguard DNS",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/AdguardDNS.txt",
+					"header":	"Adguard_DNS",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"LanikSJ's Admiral Anti-Adblock",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Admiral.txt",
+					"header":	"LanikSJ",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"Anudeep ND's Blacklist",
+					"website":	"https://github.com/anudeepND/blacklist",
+					"url":		"https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt",
+					"header":	"Anudeep_BL"
+				},
+				{
+					"feed":		"Easylist",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Easylist.txt",
+					"header":	"Easylist",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"Peter Lowe's Adservers",
+					"website":	"https://pgl.yoyo.org/adservers/",
+					"url":		"https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext",
+					"header":	"PL_Adservers"
+				},
+				{
+					"feed":		"Fademind's Unchecky Ads",
+					"website":	"https://github.com/FadeMind/hosts.extras",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts",
+					"header":	"Fademinds"
+				},
+				{
+					"feed":		"hostsVN",
+					"website":	"https://github.com/bigdargon/hostsVN",
+					"url":		"https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts",
+					"header":	"hostsVN"
+				},
+				{
+					"feed":		"Jdlingyu's Ad-wars",
+					"website":	"https://github.com/jdlingyu/ad-wars",
+					"url":		"https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts",
+					"header":	"Ad_Wars"
+				}
+			]
+		},
+		"Firebog_Trackers": {
+			"info":		"Places that track you.",
+			"description":	"Places that track you.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Easyprivacy",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Easyprivacy.txt",
+					"header":	"Easyprivacy",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"Fabrice Prigent's Ads",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Prigent-Ads.txt",
+					"header":	"Prigent_Ads",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"Fademind's 2o7 Network Trackers",
+					"website":	"https://github.com/Fademind/hosts.extras",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts",
+					"header":	"Fademind_2o7"
+				},
+				{
+					"feed":		"Crazy Max's Microsoft Telemetry",
+					"website":	"https://github.com/crazy-max/WindowsSpyBlocker",
+					"url":		"https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt",
+					"header":	"Max_MS"
+				},
+				{
+					"feed":		"Geoffrey Frogeye's First-Party Trackers",
+					"website":	"https://hostfiles.frogeye.fr/",
+					"url":		"https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt",
+					"header":	"Frogeye_First"
+				},
+				{
+					"feed":		"Geoffrey Frogeye's Multi-Party Trackers",
+					"website":	"https://hostfiles.frogeye.fr/",
+					"url":		"https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt",
+					"header":	"Frogeye_Multi"
+				},
+				{
+					"feed":		"Lightswitch05's Ads & Tracking",
+					"website":	"https://www.github.developerdan.com/hosts/",
+					"url":		"https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt",
+					"header":	"Lightswitch05"
+				},
+				{
+					"feed":		"Perflyst's Android Trackers",
+					"website":	"https://github.com/Perflyst/PiHoleBlocklist",
+					"url":		"https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt",
+					"header":	"Perflyst_Android"
+				},
+				{
+					"feed":		"Perflyst's SmartTV Domains",
+					"website":	"https://github.com/Perflyst/PiHoleBlocklist",
+					"url":		"https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt",
+					"header":	"Perflyst_TV"
+				},
+				{
+					"feed":		"Perflyst's Amazon FireTV Domains",
+					"website":	"https://github.com/Perflyst/PiHoleBlocklist",
+					"url":		"https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt",
+					"header":	"Perflyst_FireTV"
+				}
+			]
+		},
+		"Firebog_Malicious": {
+			"info":		"Bad places.",
+			"description":	"Bad places.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"DandelionSprout's Anti Malware Filter",
+					"website":	"https://github.com/DandelionSprout/adfilt",
+					"url":		"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt",
+					"header":	"DandelionSprouts"
+				},
+				{
+					"feed":		"DigitalSide Threat-Intel",
+					"website":	"https://osint.digitalside.it/",
+					"url":		"https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt",
+					"header":	"DigitalSide"
+				},
+				{
+					"feed":		"Fabrice Prigent's Cryptojacking",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Prigent-Crypto.txt",
+					"header":	"Prigent_Crypto",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Immortal' Malware Domains",
+					"website":	"https://www.malwaredomains.com/wordpress/?p=1282",
+					"url":		"https://mirror.cedia.org.ec/malwaredomains/immortal_domains.txt",
+					"header":	"Immortal"
+				},
+				{
+					"feed":		"Mandiant APT1 Report",
+					"website":	"https://bitbucket.org/ethanr/dns-blacklists",
+					"url":		"https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt",
+					"header":	"APT1_Report"
+				},
+				{
+					"feed":		"Phishing Army's Extended Blocklist",
+					"website":	"https://www.phishing.army/",
+					"url":		"https://phishing.army/download/phishing_army_blocklist_extended.txt",
+					"header":	"Phishing_Army"
+				},
+				{
+					"status":	"discontinued",
+					"feed":		"Shalla Malicious",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Shalla-mal.txt",
+					"header":	"Shalla_Malicious",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"Fademind's Risky Hosts",
+					"website":	"https://github.com/FadeMind/hosts.extras",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts",
+					"header":	"Risky_Hosts"
+				},
+				{
+					"feed":		"URLhaus Malicious URL blocklist",
+					"website":	"https://urlhaus.abuse.ch/api/",
+					"url":		"https://urlhaus.abuse.ch/downloads/hostfile/",
+					"header":	"URLhaus_Mal"
+				},
+				{
+					"feed":		"Fabrice Prigent's Malware",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Prigent-Malware.txt",
+					"header":	"Prigent_Malware",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
+				},
+				{
+					"feed":		"Turkey High Risk Phishing Blacklist",
+					"website":	"https://github.com/HorusTeknoloji/TR-PhishingList",
+					"url":		"https://raw.githubusercontent.com/HorusTeknoloji/TR-PhishingList/master/url-lists.txt",
+					"header":	"Turkey_High_Risk"
+				}
+			]
+		},
+		"Firebog_Other": {
+			"info":		"Other random lists.",
+			"description":	"Other random lists.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"ZeroDot1 CoinBlockerLists",
+					"website":	"https://gitlab.com/ZeroDot1/CoinBlockerLists",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser",
+					"header":	"ZeroDot1"
+				},
+				{
+					"feed":		"Chad Mayfield (All)",
+					"website":	"https://github.com/chadmayfield/my-pihole-blocklists",
+					"url":		"https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_all.list",
+					"header":	"Chad_Mayfield"
+				},
+				{
+					"feed":		"Chad Mayfield (Top 1M)",
+					"website":	"https://github.com/chadmayfield/my-pihole-blocklists",
+					"url":		"https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list",
+					"header":	"Chad_Mayfield_1M"
+				},
+				{
+					"feed":		"Anudeep ND's Facebook Blacklist",
+					"website":	"https://github.com/anudeepND/blacklist",
+					"url":		"https://raw.githubusercontent.com/anudeepND/blacklist/master/facebook.txt",
+					"header":	"Anudeep_Facebook"
+				}
+			]
+		}
+	}
+}

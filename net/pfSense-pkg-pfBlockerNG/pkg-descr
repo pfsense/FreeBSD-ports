@@ -1,4 +1,3 @@
-pfBlockerNG is the Next Generation of pfBlocker.<br />
 Manage IPv4/v6 List Sources into 'Deny, Permit or Match' formats.<br />
 GeoIP database by MaxMind Inc. (GeoLite2 Free version).<br />
 De-Duplication, Suppression, and Reputation enhancements.<br />
@@ -6,4 +5,4 @@ Provision to download from diverse List formats.<br />
 Advanced Integration for Proofpoint ET IQRisk IP Reputation Threat Sources.<br />
 Domain Name (DNSBL) blocking via Unbound DNS Resolver.
 
-WWW: https://forum.netgate.com/topic/91736/pfblockerng-v2-0-w-dnsbl
+WWW: https://docs.netgate.com/pfsense/en/latest/packages/pfblocker.html 
