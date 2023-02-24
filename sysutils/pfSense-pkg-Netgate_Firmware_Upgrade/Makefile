@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Firmware_Upgrade
-PORTVERSION=	0.46
+PORTVERSION=	0.47
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
@@ -53,7 +53,7 @@ post-extract:
 	${REINPLACE_CMD} -e "s,%%COREBOOT_PLCCB_ROM%%,${COREBOOT_PLCCB_ROM},g" \
 		${WRKSRC}/adi_smbios_util/config.h
 	${LN} -sf ${WRKSRC_coreboot} ${WRKSRC}/coreboot
-	${PATCH} -p0 -d ${WRKSRC_coreboot} < ${FILESDIR}/fix-build-clang10
+	${PATCH} -p1 -d ${WRKSRC_coreboot} < ${FILESDIR}/fix-coreboot47
 
 do-build:
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_flash_util \
