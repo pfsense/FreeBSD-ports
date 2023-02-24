@@ -16870,7 +16870,6 @@ net-mgmt/zabbix3-frontend||2022-02-28|Has expired: Upstream EOL reached on 2021-
 net-mgmt/zabbix3-agent||2022-02-28|Has expired: Upstream EOL reached on 2021-02-28
 net-mgmt/zabbix3-server||2022-02-28|Has expired: Upstream EOL reached on 2021-02-28
 archivers/zip-ada||2022-02-28|Removed, depends on expired lang/gcc6-aux
-cad/ghdl||2022-02-28|Removed, depends on expired lang/gcc6-aux
 databases/adabase||2022-02-28|Removed, depends on expired lang/gcc6-aux
 databases/apq||2022-02-28|Removed, depends on expired lang/gcc6-aux
 databases/apq-mysql||2022-02-28|Removed, depends on expired lang/gcc6-aux
@@ -17773,3 +17772,4 @@ databases/mysql-connector-odbc|databases/mysql-connector-odbc-80|2023-02-18|Has 
 devel/yaml-cpp03|devel/yaml-cpp|2023-02-21|Used by blender-lts28 which is EOL'd
 sysutils/uutils|sysutils/rust-coreutils|2023-02-22|Request by upstream
 print/harfbuzz-hb-view|print/harfbuzz-cairo|2023-02-23|Match feature and library name
+sysutils/screenfetch-nox11|sysutils/screenfetch@nox11|2023-02-23|Converted to flavor
