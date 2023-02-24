@@ -43,7 +43,8 @@ SUB_LIST=	PORTNAME=${PORTNAME}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 CBFSTOOL_PATH=	${WRKSRC}/coreboot/util/cbfstool
 
-CBFSTOOL_CFLAGS= -Wno-strict-prototypes -Wno-misleading-indentation
+CBFSTOOL_HOSTCFLAGS= -Wno-misleading-indentation \
+		     -Wno-strict-prototypes
 
 .include <bsd.port.options.mk>
 
@@ -65,8 +66,8 @@ do-build:
 		-I${LOCALBASE}/include -L${LOCALBASE}/lib \
 		-include ${WRKSRC}/adi_smbios_util/config.h \
 		${WRKSRC}/adi_smbios_util/adi_smbios_util.c
-	${GMAKE} ${CBFSTOOL_CFLAGS} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
-		VBOOT_SOURCE=${WRKSRC_vboot}
+	${GMAKE} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
+		VBOOT_SOURCE=${WRKSRC_vboot} HOSTCFLAGS='${CBFSTOOL_HOSTCFLAGS}'
 	${CC} ${CFLAGS} -o ${WRKSRC}/dmistore ${FILESDIR}/dmistore/dmistore.c
 
 do-install:
