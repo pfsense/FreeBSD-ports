@@ -43,6 +43,8 @@ SUB_LIST=	PORTNAME=${PORTNAME}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 CBFSTOOL_PATH=	${WRKSRC}/coreboot/util/cbfstool
 
+CBFSTOOL_CFLAGS= -Wno-strict-prototypes -Wno-misleading-indentation
+
 .include <bsd.port.options.mk>
 
 pre-extract:
@@ -53,7 +55,6 @@ post-extract:
 	${REINPLACE_CMD} -e "s,%%COREBOOT_PLCCB_ROM%%,${COREBOOT_PLCCB_ROM},g" \
 		${WRKSRC}/adi_smbios_util/config.h
 	${LN} -sf ${WRKSRC_coreboot} ${WRKSRC}/coreboot
-	${PATCH} -p1 -d ${WRKSRC_coreboot} < ${FILESDIR}/fix-coreboot47
 
 do-build:
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_flash_util \
@@ -64,7 +65,7 @@ do-build:
 		-I${LOCALBASE}/include -L${LOCALBASE}/lib \
 		-include ${WRKSRC}/adi_smbios_util/config.h \
 		${WRKSRC}/adi_smbios_util/adi_smbios_util.c
-	${GMAKE} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
+	${GMAKE} ${CBFSTOOL_CFLAGS} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
 		VBOOT_SOURCE=${WRKSRC_vboot}
 	${CC} ${CFLAGS} -o ${WRKSRC}/dmistore ${FILESDIR}/dmistore/dmistore.c
 
