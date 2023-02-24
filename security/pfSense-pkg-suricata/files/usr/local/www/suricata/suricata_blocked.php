@@ -292,6 +292,9 @@ print($form);
 				$ip = inet_pton($ip);
 			}
 
+			// Unset $blocked_ips_array reference as we are done with it
+			unset($ip);
+
 			$tmpblocked = array_flip($blocked_ips_array);
 			$src_ip_list = array();
 
