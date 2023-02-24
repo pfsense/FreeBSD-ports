@@ -134,7 +134,7 @@ out:
 }
 
 static void
-usage()
+usage(void)
 {
 	printf("Usage: fcgicli [-d key=value] -f phpfiletocall -s phpfcgisocket -o [POST|GET]\n");
 	exit(-10);
