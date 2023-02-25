@@ -556,21 +556,21 @@ diff -ruN ./suricata-6.0.10.orig/src/alert-pf.c ./suricata-6.0.10/src/alert-pf.c
 +                continue;
 +            }
 +            else {
-+                /* not a valid IPv4 or IPv6 string, so test as FQDN Alias */
++                /* not a valid IPv4 or IPv6 string, so test as FQDN or URL Table Alias */
 +                if (AlertPfTableExists(buf) == 1) {
-+                    /* Allocate and add a new FQDN alias pass list item */
++                    /* Allocate and add a new FQDN or URL Table alias pass list item */
 +                    fqdnwl = SCCalloc(1, sizeof(struct fqdn_wlist));
 +                    if (fqdnwl == NULL) {
-+                        SCLogWarning(SC_WARN_UNCOMMON, "Could not allocate memory for FQDN Alias entry '%s' in Pass List, skipping this line.", buf);
++                        SCLogWarning(SC_WARN_UNCOMMON, "Could not allocate memory for pf table alias entry '%s' in Pass List, skipping this line.", buf);
 +                        continue;
 +                    }
 +                    strlcpy(fqdnwl->apf_alias_tblname, buf, PF_TABLE_NAME_SIZE); 
 +                    LIST_INSERT_HEAD(&ctx->head, fqdnwl, elem);
-+                    SCLogInfo("alert-pf -> Added FQDN alias '%s' from assigned Pass List.", buf);
++                    SCLogInfo("alert-pf -> Added pf table alias '%s' from assigned Pass List.", buf);
 +                    count++;
 +                }
 +                else {
-+                    SCLogWarning(SC_WARN_UNCOMMON, "Parameter '%s' supplied in the Pass List is neither a valid IP address nor an existing pf FQDN alias table name, skipping this entry.", buf);
++                    SCLogWarning(SC_WARN_UNCOMMON, "Parameter '%s' supplied in the Pass List is neither a valid IP address nor an existing pf alias table name, skipping this entry.", buf);
 +                }
 +            }
 +        } else if (ret == -1)
@@ -1141,12 +1141,12 @@ diff -ruN ./suricata-6.0.10.orig/src/alert-pf.c ./suricata-6.0.10/src/alert-pf.c
 +    SCFree(output_ctx);
 +}
 +
-+/** \brief This searches any FQDN Aliases loaded from the Pass
-+ * List for a match to the passed IP address.
++/** \brief This searches any pf Table Aliases loaded from the
++ * Pass List for a match to the passed IP address.
 + *  \param *apft pointer to AlertPf thread data
 + *  \param *ip uint8_t pointer to IP address to match
 + *  \paran family is IP address type (AF_INET or AF_INET6)
-+ *  \return true if IP match found in FQDN alias list
++ *  \return true if IP match found in FQDN/table alias list
 + */
 +static bool AlertPfMatchFQDN(AlertPfThread *apft, uint8_t *ip, char family) {
 +
@@ -1155,7 +1155,7 @@ diff -ruN ./suricata-6.0.10.orig/src/alert-pf.c ./suricata-6.0.10/src/alert-pf.c
 +    struct pfr_table table; 
 +    struct pfr_addr addr; 
 +
-+    /* Iterate the FQDN aliases in our list searching for IP match */
++    /* Iterate the pf table aliases in our list searching for IP match */
 +    LIST_FOREACH(p1, &apft->ctx->head, elem) {
 +        /* Initialize parameters for system ioctl() call */
 +        memset(&io,    0x00, sizeof(struct pfioc_table)); 
