@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-acme
 PORTVERSION=	0.7.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,7 +16,7 @@ LICENSE=	APACHE20
 RUN_DEPENDS=	${LOCALBASE}/bin/socat:net/socat \
 		${PHP_PKGNAMEPREFIX}pecl-ssh2>=0:security/pecl-ssh2@${PHP_FLAVOR}
 
-IGNORE_WITH_PHP=	56 70 71
+IGNORE_WITH_PHP=	56 70 71 74 81
 USES=		php:flavors
 USE_PHP=	ftp
 
