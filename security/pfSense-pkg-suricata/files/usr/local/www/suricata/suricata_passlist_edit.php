@@ -119,8 +119,8 @@ if ($_POST['save']) {
 			if (is_ipaddroralias($_POST["address{$x}"]) || is_subnet($_POST["address{$x}"])) {
 				$addrs[] = $_POST["address{$x}"];
 				if (is_alias($_POST["address{$x}"])) {
-					if (alias_get_type($_POST["address{$x}"]) != "host" && alias_get_type($_POST["address{$x}"]) != "network") {
-						$input_errors[] = gettext("Custom Address entry '" . $_POST["address{$x}"] . "' is not a Host or Network Alias!");
+					if (alias_get_type($_POST["address{$x}"]) != "host" && alias_get_type($_POST["address{$x}"]) != "network" && alias_get_type($_POST["address{$x}"]) != "urltable") {
+						$input_errors[] = gettext("Custom Address entry '" . $_POST["address{$x}"] . "' is not a Host, Network, or URL Table Alias!");
 					}
 				}
 			} else {
@@ -333,7 +333,7 @@ print($form);
 <script type="text/javascript">
 //<![CDATA[
 // ---------- Autocomplete --------------------------------------------------------------------
-var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
+var addressarray = <?= json_encode(get_alias_list(array("host", "network", "urltable"))) ?>;
 
 events.push(function() {
 

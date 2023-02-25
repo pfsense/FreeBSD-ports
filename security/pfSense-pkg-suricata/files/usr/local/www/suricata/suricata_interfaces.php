@@ -33,7 +33,7 @@ $suricatalogdir = SURICATALOGDIR;
 $rcdir = RCFILEPREFIX;
 $suri_starting = array();
 
-if ($_POST['id'])
+if (is_numeric($_POST['id']))
 	$id = $_POST['id'];
 else
 	$id = 0;
@@ -143,6 +143,16 @@ if (isset($_POST['del_x'])) {
 
 /* start/stop Suricata */
 if ($_POST['toggle']) {
+	// Ensure the interface index is legit, else bail and redisplay this page
+	if (!is_numeric($_POST['id']) || intval($_POST['id']) >= $id_gen) {
+		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+		header( 'Cache-Control: post-check=0, pre-check=0', false );
+		header( 'Pragma: no-cache' );
+		header("Location: /suricata/suricata_interfaces.php");
+		exit;
+	}
 	$suricatacfg = config_get_path("installedpackages/suricata/rule/{$_POST['id']}");
 	$if_real = get_real_interface($suricatacfg['interface']);
 	$if_friendly = convert_friendly_interface_to_friendly_descr($suricatacfg['interface']);
@@ -161,16 +171,16 @@ if ($_POST['toggle']) {
 	$start_lck_file = "{$g['varrun_path']}/suricata_{$if_real}{$suricatacfg['uuid']}_starting.lck";
 	$suricata_start_cmd = <<<EOD
 	<?php
-	require_once('/usr/local/pkg/suricata/suricata.inc');
-	require_once('service-utils.inc');
+	require_once("/usr/local/pkg/suricata/suricata.inc");
+	require_once("service-utils.inc");
 	global \$g, \$rebuild_rules;
-	\$suricatacfg = \config_get_path("installedpackages/suricata/rule/{$id}", []);
+	\$suricatacfg = config_get_path("installedpackages/suricata/rule/{$id}", []);
 	\$rebuild_rules = true;
-	touch('{$start_lck_file}');
+	touch("{$start_lck_file}");
 	sync_suricata_package_config();
 	\$rebuild_rules = false;
-	suricata_start(\$suricatacfg, '{$if_real}');
-	unlink_if_exists('{$start_lck_file}');
+	suricata_start(\$suricatacfg, "{$if_real}");
+	unlink_if_exists("{$start_lck_file}");
 	unlink(__FILE__);
 	?>
 EOD;
