@@ -127,7 +127,10 @@ if (!function_exists('compose_apc_contents')) {
 					}
 
 					//Apcupsd doesn't have a charging output, this is a concept to get around that... not sure if the logic pans out
-					if (($bchrg != null) && (in_array("ONLINE", $statusarray)) && ($bchrg < 100) && (strrpos($statstr, $mainstatarray) === false)) {
+					if (($bchrg != null) &&
+					    (in_array("ONLINE", $statusarray)) &&
+					    ($bchrg < 100) &&
+					    !in_array($statstr, $mainstatarray)) {
 						$statstr = str_replace("ONLINE", "CHARGING", $statstr);
 						$brot = "45deg";
 						$bicn = "fa fa-plug";
@@ -192,9 +195,8 @@ if (!function_exists('compose_apc_contents')) {
 
 				if ($results['ITEMP'] != "") {
 					$rtnstr .= "<tr><td>Temp</td><td colspan=\"3\">\n";
-					$degf = ((substr(($results['ITEMP']), -1, 1) === "C") ? (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))*(9/5))+(32)) : (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))) . "°F";
-					$degc = ((substr(($results['ITEMP']), -1, 1) === "C") ? (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2))) : (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))-32)*(5/9))) . "°C";
-
+					$degf = ((substr(($results['ITEMP']), -1, 1) === "C") ? (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))*(9/5))+(32)) : (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))) . " F";
+					$degc = ((substr(($results['ITEMP']), -1, 1) === "C") ? (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2))) : (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))-32)*(5/9))) . " C";
 					$rtnstr .= "<div class=\"progress\">\n";
 					$tempmax = 60;
 					if (substr(($degc), 0, (strlen($degc)-2)) >= $user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"]) {
