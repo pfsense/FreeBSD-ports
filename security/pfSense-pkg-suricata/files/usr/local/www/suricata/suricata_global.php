@@ -176,8 +176,7 @@ if (!$input_errors) {
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
-		$a_ifaces = config_get_path('installedpackages/suricata/rule', []);
-		foreach ($a_ifaces as &$iface) {
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$iface) {
 			// Disable Snort IPS policy if Snort rules are disabled
 			if ($disable_ips_policy) {
 				$iface['ips_policy_enable'] = 'off';
@@ -200,8 +199,10 @@ if (!$input_errors) {
 				}
 			}
 			$iface['rulesets'] = implode("||", $enabled_rules);
+			config_set_path("installedpackages/suricata/rule/{$idx}", $iface);
 		}
-		config_set_path('installedpackages/suricata/rule', $a_ifaces);
+		// Release the config array reference we used
+		unset($iface);
 
 		// If deprecated rules should be removed, then do it
 		if (config_get_path('installedpackages/suricata/config/0/hide_deprecated_rules') == "on") {

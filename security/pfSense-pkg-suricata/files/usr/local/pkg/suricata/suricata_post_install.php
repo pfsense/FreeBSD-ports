@@ -91,15 +91,15 @@ foreach ($map_files as $f) {
 	}
 }
 
-// Download the latest GeoIP DB updates and create cron task if the feature is enabled
-if (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == 'on' && !empty(config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key'))) {
+// Download latest GeoIP DB updates and create cron task if feature is enabled and have a user key
+if (config_get_path('installedpackages/suricata/config/0/autogeoipupdate') == 'on' && config_get_path('installedpackages/suricata/config/0/maxmind_geoipdb_key') !== null) {
 	syslog(LOG_NOTICE, gettext("[Suricata] Installing free GeoLite2 country IP database file in /usr/local/share/suricata/GeoLite2/..."));
 	include '/usr/local/pkg/suricata/suricata_geoipupdate.php';
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_geoipupdate.php", TRUE, 0, 6, "*", "*", "*", "root");
 }
 
-// Download the latest ET IQRisk updates and create cron task if the feature is not disabled
-if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on') {
+// Download latest ET IQRisk updates and create cron task if feature is enabled and have user key
+if (config_get_path('installedpackages/suricata/config/0/et_iqrisk_enable') == 'on' && config_get_path('installedpackages/suricata/config/0/iqrisk_code') !== null) {
 	syslog(LOG_NOTICE, gettext("[Suricata] Installing Emerging Threats IQRisk IP List..."));
 	include '/usr/local/pkg/suricata/suricata_etiqrisk_update.php';
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
@@ -116,36 +116,44 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 	/****************************************************************/
 	if (count(config_get_path('installedpackages/suricata/rule', [])) > 0) {
 
-		// Array of default events rules for Suricata. This array
-		// must be kept in sync with the content of the "/rules"
-		// directory in the Suricata binary source tarball.
+		// Add default events rules for Suricata. This array constant
+		// is defined in 'suricata_defs.inc' and must be kept in sync
+		// with the content of the '/rules' directory in the Suricata
+		// binary source tarball.
 		$builtin_rules = SURICATA_DEFAULT_RULES;
+		foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$suricatacfg) {
+			$iface_rules_upd = false;
 
-		$a_ifaces = config_get_path('installedpackages/suricata/rule', []);
-		foreach ($a_ifaces as &$suricatacfg) {
-			$rulesets = explode("||", $suricatacfg['rulesets']);
+			// Convert delimited string into array and remove any
+			// duplicate ruleset names from earlier bug.
+			$rulesets = array_keys(array_flip(explode("||", $suricatacfg['rulesets'])));
 			foreach ($builtin_rules as $name) {
 				if (in_array($name, $rulesets)) {
 					continue;
-				}
-				else {
+				} else {
 					$rulesets[] = $name;
+					$iface_rules_upd = true;
 				}
 			}
-			// Remove any duplicate ruleset names from earlier bug
-			$suricatacfg['rulesets'] = implode("||", array_keys(array_flip($rulesets)));
+			// If we updated the rules list, save the change
+			if ($iface_rules_upd) {
+				$suricatacfg['rulesets'] = implode("||", $rulesets);
+				config_set_path("installedpackages/suricata/rule/{$idx}", $suricatacfg);
+			}
 		}
-		// Write updates to configuration
-		config_set_path('installedpackages/suricata/rule', $a_ifaces);
+		// Done with the config array reference, so release it
+		unset($suricatacfg);
 	}
 	/****************************************************************/
 	/* End of built-in events rules fix.                            */
 	/****************************************************************/
 
-	/* Do one-time settings migration for new version configuration */
+	// Do one-time settings migration for new version configuration
 	update_status(gettext("Migrating settings to new configuration..."));
 	include '/usr/local/pkg/suricata/suricata_migrate_config.php';
 	update_status(gettext(" done.") . "\n");
+
+	// Update configured rules archives with a fresh download
 	syslog(LOG_NOTICE, gettext("[Suricata] Downloading and updating configured rule types."));
 	include '/usr/local/pkg/suricata/suricata_check_for_rule_updates.php';
 	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
@@ -182,7 +190,7 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 	// create Suricata bootup shell script file suricata.sh
 	suricata_create_rc();
 
-	// Set Log Limit, Block Hosts Time and Rules Update Time
+	// Set Log Limit, Block Hosts Removal Interval, and Rules Update Time cron jobs
 	suricata_loglimit_install_cron(true);
 	suricata_rm_blocked_install_cron(config_get_path('installedpackages/suricata/config/0/rm_blocked') != "never_b" ? true : false);
 	suricata_rules_up_install_cron(config_get_path('installedpackages/suricata/config/0/autoruleupdate') != "never_up" ? true : false);
@@ -204,7 +212,7 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 
 // If this is first install and "forcekeepsettings" is empty,
 // then default it to 'on'.
-if (empty(config_get_path('installedpackages/suricata/config/0/forcekeepsettings'))) {
+if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') === null) {
 	update_status("   " . gettext("\n  Setting up initial configuration.") . "\n");
 	config_set_path('installedpackages/suricata/config/0/forcekeepsettings', 'on');
 }
@@ -215,7 +223,7 @@ if (empty(config_get_path('installedpackages/suricata/config/0/forcekeepsettings
 /* strings in SID_MGMT_LIST array in config.xml if this   */
 /* is a first-time green field install of Suricata.       */
 /**********************************************************/
-if (empty(config_get_path('installedpackages/suricata/config/0/sid_list_migration')) && count(config_get_path('installedpackages/suricata/sid_mgmt_lists', [])) < 1) {
+if (config_get_path('installedpackages/suricata/config/0/sid_list_migration') === null && count(config_get_path('installedpackages/suricata/sid_mgmt_lists', [])) < 1) {
 	$a_list = config_get_path('installedpackages/suricata/sid_mgmt_lists/item', []);
 	foreach (array("disablesid-sample.conf", "dropsid-sample.conf", "enablesid-sample.conf", "modifysid-sample.conf") as $sidfile) {
 		if (file_exists(SURICATA_SID_MODS_PATH . $sidfile)) {
