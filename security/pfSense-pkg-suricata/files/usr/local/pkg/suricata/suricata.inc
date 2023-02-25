@@ -338,9 +338,13 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 					$home_net[] = $addr;
 				}
 			} elseif ($passlist) {
-				if (is_alias($addr) && (alias_get_type($addr) == "host" || alias_get_type($addr) == "network")) {
+				// Only accept "host", "network", or "urltable" aliases, otherwise treat as direct IP
+				if (is_alias($addr) &&
+					(alias_get_type($addr) == "host" ||
+					 alias_get_type($addr) == "network" ||
+					 alias_get_type($addr) == "urltable")) {
 					$tmp = trim(filter_expand_alias($addr));
-					if (strlen($tmp) > 0) {
+					if (strlen($tmp) > 0 && alias_get_type($addr) !== "urltable") {
 						$home_net = array_merge($home_net, explode(" ", $tmp));
 					} elseif (!in_array($addr, $home_net)) {
 						$home_net[] = $addr;
