@@ -1,6 +1,6 @@
-PORTNAME=	flexget
+PORTNAME=	FlexGet
 DISTVERSIONPREFIX=	v
-PORTVERSION=	3.4.2
+DISTVERSION=	3.5.27
 CATEGORIES=	www
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -10,6 +10,7 @@ WWW=		https://flexget.com/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy13>=1.3.10:databases/py-sqlalchemy13@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rebulk>=2.0.0:devel/py-rebulk@${PY_FLAVOR} \
@@ -19,7 +20,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy13>=1.3.10:databases/py-sqlalchemy
 		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>=2.0:devel/py-jsonschema@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}loguru>=0.4.1:devel/py-loguru@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}more-itertools>0:devel/py-more-itertools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=21.3:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.4.7:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=4.2:devel/py-yaml@${PY_FLAVOR} \
@@ -42,16 +42,13 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy13>=1.3.10:databases/py-sqlalchemy
 		${PYTHON_PKGNAMEPREFIX}html5lib>=0.11:www/py-html5lib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.20.0:www/py-requests@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}vcrpy>0:devel/py-vcrpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pysftp>0:ftp/py-sftp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}boto3>0:www/py-boto3@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_GITHUB=	yes
-USE_PYTHON=	autoplist distutils pytest
+USE_PYTHON=	autoplist pep517 pytest
 GH_PROJECT=	Flexget
 NO_ARCH=	yes
-
-post-extract:
-# Unlock dependencies' versions
-	@${MV} ${WRKSRC}/requirements.in ${WRKSRC}/requirements.txt
 
 .include <bsd.port.mk>

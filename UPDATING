@@ -5,6 +5,27 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20230227:
+  AFFECTS: users of databases/sqlite3
+  AUTHOR: fuz@FreeBSD.org
+
+  Option DQS is now disabled by default.  This option controls the "double
+  quoted string literals are accepted" quirk, permitting the use of double
+  quotes around string literals if enabled.  Users who rely on this quirk
+  need to manually build databases/sqlite3 with the DQS option enabled.
+
+  See also: https://sqlite.org/quirks.html#dblquote  
+
+20230227:
+  AFFECTS: users of mail/py-spf-engine
+  AUTHOR: yasu@FreeBSD.org
+
+  Default configuration file path of pyspf-milter has changed. Since
+  it looks for ${PREFIX}/etc/etc/pyspf-milter/pyspf-milter.conf now,
+  you should edit the file if you run pyspf-milter. Alternatively you
+  can specify other configuration file path by setting
+  pyspf_milter_conffile variable in /etc/rc.conf.
+
 20230222:
   AFFECTS: users of net-mgmt/netbox
   AUTHOR: kai@FreeBSD.org
@@ -37,23 +58,6 @@ you update your ports collection, before attempting any port upgrades.
   # pkg set -o databases/mysql57-client:databases/mysql80-client
   # pkg set -o databases/mysql57-server:databases/mysql80-server
   # pkg upgrade
-
-20230215:
-  AFFECTS: users of python
-  AUTHOR: vishwin@FreeBSD.org
-
-  A trigger has been added to the lang/python3* ports to compile,
-  write and remove bytecode files (.pyc) in site-packages after all
-  pkg transactions have been completed. pkg will no longer manage
-  such files directly, as they are meant to be generated after
-  installation.
-
-  For those ports/packages that still package bytecode, some package
-  checksum mismatches on those files may occur. This is harmless
-  and will be rectified.
-
-  Technical details available at:
-        https://wiki.freebsd.org/Python/CompiledPackages
 
 20230213:
   Affects: users of sysutils/nut*

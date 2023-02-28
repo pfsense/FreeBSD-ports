@@ -55,6 +55,7 @@
     SUBDIR += litecoin
     SUBDIR += litecoin-daemon
     SUBDIR += litecoin-utils
+    SUBDIR += lxmf
     SUBDIR += microdc2
     SUBDIR += minder
     SUBDIR += mktorrent
@@ -66,6 +67,7 @@
     SUBDIR += namecoin-daemon
     SUBDIR += namecoin-utils
     SUBDIR += ncdc
+    SUBDIR += nomadnet
     SUBDIR += ogmios
     SUBDIR += opendchub
     SUBDIR += openethereum
@@ -86,6 +88,7 @@
     SUBDIR += qtum
     SUBDIR += radarr
     SUBDIR += readarr
+    SUBDIR += reticulum
     SUBDIR += retroshare
     SUBDIR += rslsync
     SUBDIR += rtorrent

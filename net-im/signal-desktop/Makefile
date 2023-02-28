@@ -1,6 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.6.0
+DISTVERSION=	6.7.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -85,7 +85,7 @@ _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	22
 # keep NODE_VERSION in sync with www/node16 DISTVERSION
-NODE_VERSION=		16.19.0
+NODE_VERSION=		16.19.1
 # bump ELECTRON_GYP_VERSION when ELECTRON_VER_MAJOR is changed
 ELECTRON_GYP_VERSION=	22.2.0
 

@@ -24,6 +24,7 @@
     SUBDIR += biblesync
     SUBDIR += bibletime
     SUBDIR += biblical-curse
+    SUBDIR += binbloom
     SUBDIR += binclock
     SUBDIR += binocle
     SUBDIR += biosfont-demos
@@ -421,6 +422,7 @@
     SUBDIR += py-numcodecs
     SUBDIR += py-onnx
     SUBDIR += py-onnx-tf
+    SUBDIR += py-openai
     SUBDIR += py-openpaperwork-core
     SUBDIR += py-openpaperwork-gtk
     SUBDIR += py-openvdb
@@ -461,6 +463,7 @@
     SUBDIR += py-tqdm
     SUBDIR += py-tvm
     SUBDIR += py-uhi
+    SUBDIR += py-wandb
     SUBDIR += py-wurlitzer
     SUBDIR += py-xgboost
     SUBDIR += pyobd

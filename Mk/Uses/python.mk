@@ -185,7 +185,7 @@
 #			  default: ${PYTHON_PKGNAMEPREFIX}build>0:devel/py-build@${PY_FLAVOR}
 #
 # PEP517_INSTALL_CMD	- Command sequence for a PEP-517 install frontend that installs a wheel.
-#			  default: ${PYTHON_CMD} -m installer -d ${STAGEDIR} --no-compile-bytecode ${BUILD_WRKSRC}/dist/${PORTNAME:C/[-_]+/_/g}-${PORTVERSION}-*.whl
+#			  default: ${PYTHON_CMD} -m installer -d ${STAGEDIR} -p ${PREFIX} --no-compile-bytecode ${BUILD_WRKSRC}/dist/${PORTNAME:C/[-_]+/_/g}-${PORTVERSION}-*.whl
 #
 # PEP517_INSTALL_DEPEND	- Port needed to execute ${PEP517_INSTALL_CMD}.
 #			  default: ${PYTHON_PKGNAMEPREFIX}installer>0:devel/py-installer@${PY_FLAVOR}
@@ -661,7 +661,7 @@ PYDISTUTILS_EGGINFODIR?=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 # PEP-517 support
 PEP517_BUILD_CMD?=	${PYTHON_CMD} -m build -n -w
 PEP517_BUILD_DEPEND?=	${PYTHON_PKGNAMEPREFIX}build>0:devel/py-build@${PY_FLAVOR}
-PEP517_INSTALL_CMD?=	${PYTHON_CMD} -m installer -d ${STAGEDIR} --no-compile-bytecode ${BUILD_WRKSRC}/dist/${PORTNAME:C/[-_]+/_/g}-${PORTVERSION}-*.whl
+PEP517_INSTALL_CMD?=	${PYTHON_CMD} -m installer -d ${STAGEDIR} -p ${PREFIX} --no-compile-bytecode ${BUILD_WRKSRC}/dist/${PORTNAME:C/[-_]+/_/g}-${PORTVERSION}-*.whl
 PEP517_INSTALL_DEPEND?=	${PYTHON_PKGNAMEPREFIX}installer>0:devel/py-installer@${PY_FLAVOR}
 
 # nose support
@@ -871,7 +871,14 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 	@cd ${INSTALL_WRKSRC} && ${SETENV} ${MAKE_ENV} ${PEP517_INSTALL_CMD}
 	@${SED} -e 's|^|${PYTHONPREFIX_SITELIBDIR}/|' \
+		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../etc/|etc/|' \
 		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../bin/|bin/|' \
+		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../include/|include/|' \
+		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../lib/|lib/|' \
+		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../libdata/|libdata/|' \
+		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../libexec/|libexec/|' \
+		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../sbin/|sbin/|' \
+		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../share/|share/|' \
 		-e 's|\,.*$$||' \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME:C/[-_]+/_/g}-${PORTVERSION}.dist-info/RECORD >> ${_PYTHONPKGLIST}
 .    endif

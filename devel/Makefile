@@ -1155,6 +1155,7 @@
     SUBDIR += libburn
     SUBDIR += libcbor
     SUBDIR += libccid
+    SUBDIR += libcdada
     SUBDIR += libcdb
     SUBDIR += libcds
     SUBDIR += libcfu
@@ -1419,6 +1420,7 @@
     SUBDIR += libvanessa_socket
     SUBDIR += libvc
     SUBDIR += libversion
+    SUBDIR += libvex
     SUBDIR += libvhdi
     SUBDIR += libvirt
     SUBDIR += libvirt-dbus
@@ -6696,14 +6698,22 @@
     SUBDIR += rubygem-glib2
     SUBDIR += rubygem-gobject-introspection
     SUBDIR += rubygem-google-api-client
+    SUBDIR += rubygem-google-apis-cloudbilling_v1
+    SUBDIR += rubygem-google-apis-cloudresourcemanager_v1
     SUBDIR += rubygem-google-apis-compute_v1
+    SUBDIR += rubygem-google-apis-compute_v1_057
+    SUBDIR += rubygem-google-apis-container_v1
+    SUBDIR += rubygem-google-apis-container_v1beta1
     SUBDIR += rubygem-google-apis-core
     SUBDIR += rubygem-google-apis-discovery_v1
     SUBDIR += rubygem-google-apis-generator
+    SUBDIR += rubygem-google-apis-iam_v1
     SUBDIR += rubygem-google-apis-iamcredentials_v1
     SUBDIR += rubygem-google-apis-monitoring_v3
     SUBDIR += rubygem-google-apis-pubsub_v1
+    SUBDIR += rubygem-google-apis-serviceusage_v1
     SUBDIR += rubygem-google-apis-sqladmin_v1beta4
+    SUBDIR += rubygem-google-apis-sqladmin_v1beta4_041
     SUBDIR += rubygem-google-apis-storage_v1
     SUBDIR += rubygem-google-gax
     SUBDIR += rubygem-google-iam-v1
@@ -7630,6 +7640,7 @@
     SUBDIR += zpu-binutils
     SUBDIR += zpu-gcc
     SUBDIR += zthread
+    SUBDIR += zycore-c
     SUBDIR += zydis
     SUBDIR += zziplib
 

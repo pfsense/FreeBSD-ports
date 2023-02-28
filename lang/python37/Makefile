@@ -1,6 +1,6 @@
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -20,13 +20,12 @@ LIB_DEPENDS=	libffi.so:devel/libffi \
 		libmpdec.so:math/mpdecimal
 
 USES=		cpe ncurses pathfix pkgconfig python:${PYTHON_DISTVERSION:R},env readline \
-		shebangfix ssl tar:xz trigger
+		shebangfix ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 python_CMD=	${PREFIX}/bin/python${PYTHON_DISTVERSION:R}
 SHEBANG_FILES=	Lib/*.py Lib/*/*.py Lib/*/*/*.py Lib/*/*/*/*.py
-TRIGGERS=	${PYTHON_VERSION}
 
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
 CONFIGURE_ARGS+=	--enable-shared --with-system-ffi --with-system-libmpdec --without-ensurepip
