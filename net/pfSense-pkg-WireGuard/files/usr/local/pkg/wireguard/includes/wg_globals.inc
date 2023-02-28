@@ -3,7 +3,8 @@
  * wg_globals.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
+ * Copyright (c) 2021 R. Christian McDonald (https://github.com/rcmcdonald91)
+ * Copyright (c) 2022-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License');
@@ -51,7 +52,7 @@ define('WG_ERROR_SVC_STOP',		8);
 define('WG_ERROR_SVC_CREATE',		16);
 
 $wgg = array(
-	'wg'			=> '/usr/local/bin/wg',
+	'wg'			=> '/usr/bin/wg',
 	'ifconfig'		=> '/sbin/ifconfig',
 	'pkg'			=> '/usr/sbin/pkg',
 	'kldload'		=> '/sbin/kldload',
