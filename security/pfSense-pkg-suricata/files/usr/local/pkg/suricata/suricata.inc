@@ -962,12 +962,6 @@ function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
 						$genid = $matches[1];
 						$sigid = $matches[2];
 						if (!empty($genid) && !empty($sigid)) {
-							if (!is_array($suppress[$genid])) {
-								$suppress[$genid] = array();
-							}
-							if (!is_array($suppress[$genid][$sigid])) {
-								$suppress[$genid][$sigid] = array();
-							}
 							array_set_path($suppress, "{$genid}/{$sigid}", "suppress");
 						}
 					}
@@ -1377,12 +1371,7 @@ function suricata_load_rules_map($rules_path) {
 			}
 
 			$gid = suricata_get_gid($rule);
-			if (!is_array($map_ref[$gid])) {
-				$map_ref[$gid] = array();
-			}
-			if (!is_array($map_ref[$gid][$sid])) {
-				$map_ref[$gid][$sid] = array();
-			}			
+			array_init_path($map_ref, "{$gid}/{$sid}");
 			$map_ref[$gid][$sid]['rule'] = $rule;
 			$map_ref[$gid][$sid]['category'] = basename($file, ".rules");
 			$map_ref[$gid][$sid]['state_toggled'] = 0;
@@ -1543,9 +1532,7 @@ function suricata_get_checked_flowbits($rules_map) {
 					$target = preg_split('/[&|]/', substr($flowbit, $pos + 1));
 					foreach ($target as $t) {
 						if (!empty($t) && !isset($checked_flowbits[$t])) {
-							if (!is_array($checked_flowbits[$t])) {
-								$checked_flowbits[$t] = array();
-							}
+							array_init_path($checked_flowbits, $t);
 							$checked_flowbits[$t] = $action;
 						}
 					}
@@ -1594,9 +1581,7 @@ function suricata_get_set_flowbits($rules_map) {
 					$target = preg_split('/[&|]/', substr($flowbit, $pos + 1));
 					foreach ($target as $t) {
 						if (!empty($t) && !isset($set_flowbits[$t])) {
-							if (!is_array($set_flowbits[$t])) {
-								$set_flowbits[$t] = array();
-							}
+							array_init_path($set_flowbits, $t);
 							$set_flowbits[$t] = $action;
 						}
 					}
@@ -1648,13 +1633,7 @@ function suricata_find_flowbit_required_rules($rules, $active_rules, $unchecked_
 				if (!strcasecmp(substr($action, 0, 3), "set")) {
 					$tmp = substr($flowbit, strpos($flowbit, ",") +1 );
 					if (!empty($tmp) && isset($unchecked_flowbits[$tmp])) {
-						if (!is_array($required_flowbits_rules[$k1])) {
-							$required_flowbits_rules[$k1] = array();
-						}
-						if (!is_array($required_flowbits_rules[$k1][$k2])) {
-							$required_flowbits_rules[$k1][$k2] = array();
-						}
-
+						array_init_path($required_flowbits_rules, "{$k1}/{$k2}");
 						$required_flowbits_rules[$k1][$k2]['noalert'] = $rule2['noalert'];
 						if ($rule2['disabled'] == 0) {
 							// If not disabled, just return the rule text "as is"
@@ -1837,12 +1816,7 @@ function suricata_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 		foreach ($arulem as $k2 => $arulem2) {
 			if (strripos($arulem2['rule'], "policy {$policy}-ips") !== false) {
 				if (!preg_match('/flowbits\s*:\s*noalert/i', $arulem2['rule'])) {
-					if (!is_array($vrt_policy_rules[$k1])) {
-						$vrt_policy_rules[$k1] = array();
-					}
-					if (!is_array($vrt_policy_rules[$k1][$k2])) {
-						$vrt_policy_rules[$k1][$k2] = array();
-					}
+					array_init_path($vrt_policy_rules, "{$k1}/{$k2}");
 					$vrt_policy_rules[$k1][$k2] = $arulem2;
 
 					// Enable the policy rule if disabled
@@ -3006,9 +2980,7 @@ function suricata_load_sid_mods($sids) {
 	$tmp = explode("||", $sids);
 	foreach ($tmp as $v) {
 		if (preg_match('/(\d+)\s*:\s*(\d+)/', $v, $match)) {
-			if (!is_array($result[$match[1]])) {
-				$result[$match[1]] = array();
-			}
+			array_init_path($result, "{$match[1]}/{$match[2]}");
 			$result[$match[1]][$match[2]] = "{$match[1]}:{$match[2]}";
 		}
 	}
@@ -3201,13 +3173,8 @@ function suricata_get_filtered_rules($rules, $filter) {
 	// over to the filtered array.
 	foreach ($filter as $k1 => $rulem) {
 		foreach($rulem as $k2 => $v) {
-			if (isset($tmp_map[$k1][$k2])) {
-				if (!is_array($filtered_map[$k1])) {
-					$filtered_map[$k1] = array();
-				}
-				if (!is_array($filtered_map[$k1][$k2])) {
-					$filtered_map[$k1][$k2] = array();
-				}
+			if (array_get_path($tmp_map, "{$k1}/{$k2}") !== null) {
+				array_init_path($filtered_map, "{$k1}/{$k2}");
 				$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
 				$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
 				$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];
@@ -3278,9 +3245,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			if (!empty($suricatacfg['rulesets'])) {
 				foreach (explode("||", $suricatacfg['rulesets']) as $file){
 						$category = basename($file, ".rules");
-						if (!is_array($enabled_files[$category])) {
-							$enabled_files[$category] = array();
-						}
+						array_init_path($enabled_files, $category);
 						$enabled_files[$category] = $file;
 				}
 			}
@@ -3317,12 +3282,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			foreach ($all_rules as $k1 => $rulem) {
 				foreach ($rulem as $k2 => $v) {
 					if (isset($enabled_files[$v['category']])) {
-						if (!is_array($enabled_rules[$k1])) {
-							$enabled_rules[$k1] = array();
-						}
-						if (!is_array($enabled_rules[$k1][$k2])) {
-							$enabled_rules[$k1][$k2] = array();
-						}
+						array_init_path($enabled_rules, "{$k1}/{$k2}");
 						$enabled_rules[$k1][$k2]['rule'] = $v['rule'];
 						$enabled_rules[$k1][$k2]['category'] = $v['category'];
 						$enabled_rules[$k1][$k2]['disabled'] = $v['disabled'];
@@ -3354,12 +3314,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			$policy_rules = suricata_load_vrt_policy($suricatacfg['ips_policy'], $policy_mode, $all_rules);
 			foreach ($policy_rules as $k1 => $policy) {
 				foreach ($policy as $k2 => $p) {
-					if (!is_array($enabled_rules[$k1])) {
-						$enabled_rules[$k1] = array();
-					}
-					if (!is_array($enabled_rules[$k1][$k2])) {
-						$enabled_rules[$k1][$k2] = array();
-					}
+					array_init_path($enabled_rules, "{$k1}/{$k2}");
 					$enabled_rules[$k1][$k2]['rule'] = $p['rule'];
 					$enabled_rules[$k1][$k2]['category'] = $p['category'];
 					$enabled_rules[$k1][$k2]['disabled'] = $p['disabled'];

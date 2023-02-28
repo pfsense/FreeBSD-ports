@@ -680,20 +680,14 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['host_prealloc'] = "1000";
 
 			$default = array( "name" => "default", "bind_to" => "all", "policy" => "bsd" );
-			if (!is_array($natent['host_os_policy']))
-				$natent['host_os_policy'] = array();
-			if (!is_array($natent['host_os_policy']['item']))
-				$natent['host_os_policy']['item'] = array();
+			array_init_path($natent, 'host_os_policy/item');
 			$natent['host_os_policy']['item'][] = $default;
 
 			$default = array( "name" => "default", "bind_to" => "all", "personality" => "IDS",
 					  "request-body-limit" => 4096, "response-body-limit" => 4096,
 					  "double-decode-path" => "no", "double-decode-query" => "no",
 					  "uri-include-all" => "no", "meta-field-limit" => 18432 );
-			if (!is_array($natent['libhtp_policy']))
-				$natent['libhtp_policy'] = array();
-			if (!is_array($natent['libhtp_policy']['item']))
-				$natent['libhtp_policy']['item'] = array();
+			array_init_path($natent, 'libhtp_policy/item');
 			$natent['libhtp_policy']['item'][] = $default;
 
 			// Enable the basic default rules for the interface
