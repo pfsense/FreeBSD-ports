@@ -1,6 +1,21 @@
---- third_party/wayland/include/config.h.orig	2023-02-11 09:11:04 UTC
+--- third_party/wayland/include/config.h.orig	2023-03-01 05:42:12 UTC
 +++ third_party/wayland/include/config.h
-@@ -25,7 +25,11 @@
+@@ -9,7 +9,14 @@
+ 
+ #define HAVE_BROKEN_MSG_CMSG_CLOEXEC 0
+ 
++#if defined(__FreeBSD__)
++#include <osreldate.h>
++#if defined(__FreeBSD_version) && __FreeBSD_version < 1300048
++#undef HAVE_MEMFD_CREATE
++#else
+ #define HAVE_MEMFD_CREATE
++#endif
++#endif
+ 
+ #define HAVE_MKOSTEMP
+ 
+@@ -25,7 +32,11 @@
  
  #undef HAVE_SYS_PROCCTL_H
  
