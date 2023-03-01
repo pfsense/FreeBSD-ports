@@ -40,15 +40,15 @@ function suricata_is_alert_globally_suppressed($list, $gid, $sid) {
 	/* global suppression of the $gid:$sid.         */
 	/************************************************/
 
-	/* If entry has a child array, then it's by src or dst ip. */
-	/* So if there is a child array or the keys are not set,   */
-	/* then this gid:sid is not globally suppressed.           */
-	if (is_array($list[$gid][$sid]))
-		return false;
-	elseif (!isset($list[$gid][$sid]))
-		return false;
-	else
+	/* If entry at array key [GID][SID] is set to the
+	 * string "suppress", then the rule is globally
+	 * suppressed, otherwise it will  have a child
+	 * array for track "by_src" or "by_dst".
+     */
+	if (array_get_path($list, "{$gid}/{$sid}", "") == "suppress")
 		return true;
+	else
+		return false;
 }
 
 function suricata_add_supplist_entry($suppress) {

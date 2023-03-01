@@ -66,10 +66,9 @@ if (isset($id) && !empty($a_nat)) {
 				  "request-body-limit" => 4096, "response-body-limit" => 4096,
 				  "double-decode-path" => "no", "double-decode-query" => "no",
 				  "uri-include-all" => "no", "meta-field-limit" => 18432 );
-		$pconfig['libhtp_policy']['item'] = array();
+		array_init_path($pconfig, 'libhtp_policy/item');
 		$pconfig['libhtp_policy']['item'][] = $default;
-		if (!is_array($a_nat['libhtp_policy']['item']))
-			$a_nat['libhtp_policy']['item'] = array();
+		array_init_path($a_nat, 'libhtp_policy/item');
 		$a_nat['libhtp_policy']['item'][] = $default;
 		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 		write_config("Suricata pkg: created a new default HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat['interface']));

@@ -226,7 +226,7 @@ if (config_get_path('installedpackages/suricata/config/0/files_json_log_limit_si
 /* any existing <address> to the new array structure.     */
 /**********************************************************/
 foreach (config_get_path('installedpackages/suricata/passlist/item', []) as $idx => $wlisti) {
-	if (!is_array($wlisti['address']) && !empty($wlisti['address']) && !is_array($wlisti['address']['item'])) {
+	if (!is_array($wlisti['address']) && !empty($wlisti['address'])) {
 		$tmp = $wlisti['address'];
 		$wlisti['address'] = array();
 		$wlisti['address']['item'] = array();

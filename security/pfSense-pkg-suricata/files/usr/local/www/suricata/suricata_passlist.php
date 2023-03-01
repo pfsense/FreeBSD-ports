@@ -47,6 +47,10 @@ function suricata_is_passlist_used($list) {
 	foreach(config_get_path('installedpackages/suricata/rule', []) as $v) {
 		if (isset($v['passlistname']) && $v['passlistname'] == $list)
 			return TRUE;
+		if (isset($v['homelistname']) && $v['homelistname'] == $list)
+			return TRUE;
+		if (isset($v['externallistname']) && $v['externallistname'] == $list)
+			return TRUE;
 	}
 	return FALSE;
 }

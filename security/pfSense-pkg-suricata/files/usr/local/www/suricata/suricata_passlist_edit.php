@@ -65,10 +65,7 @@ if (!isset($pconfig['vips'])) {
 if (!isset($pconfig['vpnips'])) {
 	$pconfig['vpnips'] = "yes";
 }
-if (!is_array($pconfig['address'])) {
-	$pconfig['address'] = array();
-	$pconfig['address']['item'] = array();
-}
+array_init_path($pconfig, 'address/item');
 
 /* If no entry for this passlist, then create a UUID and treat it like a new list */
 if (!isset($a_passlist[$id]['uuid']) && empty($pconfig['uuid'])) {

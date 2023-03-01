@@ -56,8 +56,7 @@ if (isset($id) && !empty($a_nat)) {
 		$default = array( "name" => "default", "bind_to" => "all", "policy" => "bsd" );
 		$pconfig['host_os_policy']['item'] = array();
 		$pconfig['host_os_policy']['item'][] = $default;
-		if (!is_array($a_nat['host_os_policy']['item']))
-			$a_nat['host_os_policy']['item'] = array();
+		array_init_path($a_nat, 'host_os_policy/item');
 		$a_nat['host_os_policy']['item'][] = $default;
 		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
 		write_config("Suricata pkg: saved new default Host_OS_Policy engine.");
