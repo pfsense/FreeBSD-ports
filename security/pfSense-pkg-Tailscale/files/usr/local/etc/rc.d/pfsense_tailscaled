@@ -80,6 +80,10 @@ tailscale_tun_dev_wait=5
 
 # rc command hook
 pfsense_tailscaled_start() {
+	# ensure if_tuntap is loaded
+	check_load_if_tuntap || return 1
+
+	# now we can safely start tailscaled
 	tailscaled_start
 }
 
@@ -118,6 +122,17 @@ tailscale_up() {
 	${tailscale_bin} up ${pfsense_tailscaled_up_flags} || {
 		debug "Unable to bring up ${tailscale_tun_dev}. Check authentication."
 	}
+}
+
+# utility function to check if a kernel module is loaded and load it if not loaded
+check_load_kmod() {
+	local _mod="${1}"
+	/sbin/kldstat -q -m ${_mod} || /sbin/kldload ${_mod} >/dev/null 2>&1
+}
+
+# wrapper specific for if_tuntap module
+check_load_if_tuntap() {
+	check_load_kmod if_tuntap
 }
 
 # determine if the tun device exists
