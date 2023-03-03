@@ -73,15 +73,14 @@ function avahi_write_config($avahi_config) {
 	$txt .= "\n[reflector]\n";
 	$txt .= "enable-reflector=" . ($avahi_config['reflection'] ? "yes" : "no") . "\n";
 
-	if (($avahi_config['reflection'] == 'yes')
-	    && is_array($avahi_config['filtering'])
-	    && is_array($avahi_config['filtering']['rule']) &&
-	    !empty($avahi_config['filtering']['rule'])) {
+	if ($avahi_config['reflection'] == 'yes') {
 		$filtering = array();
-		foreach ($avahi_config['filtering']['rule'] as $rule) {
+		foreach (array_get_path($avahi_config, 'filtering/rule', []) as $rule) {
 			$filtering[] = $rule['destination'];
 		}
-		$txt .= "reflect-filters=" . implode(',', $filtering) . "\n";
+		if (!empty($filtering)) {
+			$txt .= "reflect-filters=" . implode(',', $filtering) . "\n";
+		}
 	}
 
 	if ($avahi_config['publishing'] == "yes") {
