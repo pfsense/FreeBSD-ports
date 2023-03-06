@@ -1,3 +1,319 @@
+  <vuln vid="f0798a6a-bbdb-11ed-ba99-080027f5fec9">
+    <topic>rack -- possible DoS vulnerability in multipart MIME parsing</topic>
+    <affects>
+      <package>
+	<name>rubygem-rack</name>
+	<range><lt>3.0.4.2,3</lt></range>
+      </package>
+      <package>
+	<name>rubygem-rack22</name>
+	<range><lt>2.2.6.6,3</lt></range>
+      </package>
+      <package>
+	<name>rubygem-rack16</name>
+	<range><lt>1.6.14</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Aaron Patterson reports:</p>
+	<blockquote cite="https://discuss.rubyonrails.org/t/cve-2023-27530-possible-dos-vulnerability-in-multipart-mime-parsing/82388">
+	  <p>
+	    The Multipart MIME parsing code in Rack limits the number
+	    of file parts, but does not limit the total number of
+	    parts that can be uploaded. Carefully crafted requests can
+	    abuse this and cause multipart parsing to take longer than
+	    expected.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-27530</cvename>
+      <url>https://discuss.rubyonrails.org/t/cve-2023-27530-possible-dos-vulnerability-in-multipart-mime-parsing/82388</url>
+    </references>
+    <dates>
+      <discovery>2023-03-03</discovery>
+      <entry>2023-03-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="be233fc6-bae7-11ed-a4fb-080027f5fec9">
+    <topic>curl -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><lt>7.88.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Harry Sintonen and Patrick Monnerat report:</p>
+	<blockquote cite="https://curl.se/docs/security.html">
+	  <dl>
+	    <dt>CVE-2023-23914</dt>
+	    <dd>
+	      A cleartext transmission of sensitive information
+	      vulnerability exists in curl &lt; v7.88.0 that could
+	      cause HSTS functionality fail when multiple URLs are
+	      requested serially. Using its HSTS support, curl can be
+	      instructed to use HTTPS instead of using an insecure
+	      clear-text HTTP step even when HTTP is provided in the
+	      URL. This HSTS mechanism would however surprisingly be
+	      ignored by subsequent transfers when done on the same
+	      command line because the state would not be properly
+	      carried on.
+	    </dd>
+	    <dt>CVE-2023-23915</dt>
+	    <dd>
+	      A cleartext transmission of sensitive information
+	      vulnerability exists in curl &lt; v7.88.0 that could
+	      cause HSTS functionality to behave incorrectly when
+	      multiple URLs are requested in parallel. Using its HSTS
+	      support, curl can be instructed to use HTTPS instead of
+	      using an insecure clear-text HTTP step even when HTTP is
+	      provided in the URL. This HSTS mechanism would however
+	      surprisingly fail when multiple transfers are done in
+	      parallel as the HSTS cache file gets overwritten by the
+	      most recently completed transfer. A later HTTP-only
+	      transfer to the earlier host name would then *not* get
+	      upgraded properly to HSTS.
+	    </dd>
+	    <dt>CVE-2023-23916</dt>
+	    <dd>
+	      An allocation of resources without limits or throttling
+	      vulnerability exists in curl &lt; v7.88.0 based on the
+	      &quot;chained&quot; HTTP compression algorithms, meaning
+	      that a server response can be compressed multiple times
+	      and potentially with different algorithms. The number of
+	      acceptable &quot;links&quot; in this &quot;decompression
+	      chain&quot; was capped, but the cap was implemented on a
+	      per-header basis allowing a malicious server to insert a
+	      virtually unlimited number of compression steps simply
+	      by using many headers. The use of such a decompression
+	      chain could result in a &quot;malloc bomb&quot;, making
+	      curl end up spending enormous amounts of allocated heap
+	      memory, or trying to and returning out of memory errors.
+	    </dd>
+	  </dl>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-23914</cvename>
+      <cvename>CVE-2023-23915</cvename>
+      <cvename>CVE-2023-23916</cvename>
+      <url>https://curl.se/docs/security.html</url>
+    </references>
+    <dates>
+      <discovery>2023-02-15</discovery>
+      <entry>2023-03-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3f9b6943-ba58-11ed-bbbd-00e0670f2660">
+    <topic>strongSwan -- certificate verification vulnerability</topic>
+    <affects>
+      <package>
+	<name>strongswan</name>
+	<range><ge>5.9.8</ge><lt>5.9.9_2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>strongSwan reports:</p>
+	<blockquote cite="https://www.strongswan.org/blog/2023/03/02/strongswan-vulnerability-(cve-2023-26463).html">
+	  <p>A vulnerability related to certificate verification in TLS-based EAP methods
+	     was discovered in strongSwan that results in a denial of service
+	     but possibly even remote code execution. Versions 5.9.8 and 5.9.9
+	     may be affected. </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-26463</cvename>
+      <url>https://www.strongswan.org/blog/2023/03/02/strongswan-vulnerability-(cve-2023-26463).html</url>
+    </references>
+    <dates>
+      <discovery>2023-03-02</discovery>
+      <entry>2023-03-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f7c5b3a9-b9fb-11ed-99c6-001b217b3468">
+    <topic>Gitlab -- Multiple Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>15.9.0</ge><lt>15.9.2</lt></range>
+	<range><ge>15.8.0</ge><lt>15.8.4</lt></range>
+	<range><ge>9.0.0</ge><lt>15.7.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2023/03/02/security-release-gitlab-15-9-2-released/">
+	  <p>Stored XSS via Kroki diagram</p>
+	  <p>Prometheus integration Google IAP details are not hidden, may leak account details from instance/group/project settings</p>
+	  <p>Improper validation of SSO and SCIM tokens while managing groups</p>
+	  <p>Maintainer can leak Datadog API key by changing Datadog site</p>
+	  <p>Clipboard based XSS in the title field of work items</p>
+	  <p>Improper user right checks for personal snippets</p>
+	  <p>Release Description visible in public projects despite release set as project members only</p>
+	  <p>Group integration settings sensitive information exposed to project maintainers</p>
+	  <p>Improve pagination limits for commits</p>
+	  <p>Gitlab Open Redirect Vulnerability</p>
+	  <p>Maintainer may become an Owner of a project</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-0050</cvename>
+      <cvename>CVE-2022-4289</cvename>
+      <cvename>CVE-2022-4331</cvename>
+      <cvename>CVE-2023-0483</cvename>
+      <cvename>CVE-2022-4007</cvename>
+      <cvename>CVE-2022-3758</cvename>
+      <cvename>CVE-2023-0223</cvename>
+      <cvename>CVE-2022-4462</cvename>
+      <cvename>CVE-2023-1072</cvename>
+      <cvename>CVE-2022-3381</cvename>
+      <cvename>CVE-2023-1084</cvename>
+      <url>https://about.gitlab.com/releases/2023/03/02/security-release-gitlab-15-9-2-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-02</discovery>
+      <entry>2023-03-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6dccc186-b824-11ed-b695-6c3be5272acd">
+    <topic>Grafana -- Stored XSS in text panel plugin</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<range><ge>9.2.0</ge><lt>9.2.10</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.4</lt></range>
+      </package>
+      <package>
+	<name>grafana9</name>
+	<range><ge>9.2.0</ge><lt>9.2.10</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2023/02/28/grafana-security-release-new-versions-with-security-fixes-for-cve-2023-0594-cve-2023-0507-and-cve-2023-22462/">
+	  <p>During an internal audit of Grafana on January 1, a member of the security
+	  team found a stored XSS vulnerability affecting the core text plugin.</p>
+	  <p>The stored XSS vulnerability requires several user interactions in order
+	  to be fully exploited. The vulnerability was possible due to React’s render
+	  cycle that will pass through the unsanitized HTML code, but in the next cycle,
+	  the HTML is cleaned up and saved in Grafana’s database.</p>
+	  <p>The CVSS score for this vulnerability is 6.4 Medium
+	  (CVSS:6.4/AV:N/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:N).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-22462</cvename>
+      <url>https://github.com/grafana/grafana/security/advisories/GHSA-7rqg-hjwc-6mjf</url>
+    </references>
+    <dates>
+      <discovery>2023-01-01</discovery>
+      <entry>2023-03-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e7841611-b808-11ed-b695-6c3be5272acd">
+    <topic>Grafana -- Stored XSS in TraceView panel</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<range><lt>8.5.21</lt></range>
+	<range><ge>9.0.0</ge><lt>9.2.13</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.8</lt></range>
+      </package>
+      <package>
+	<name>grafana8</name>
+	<range><lt>8.5.21</lt></range>
+      </package>
+      <package>
+	<name>grafana9</name>
+	<range><ge>9.0.0</ge><lt>9.2.13</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2023/02/28/grafana-security-release-new-versions-with-security-fixes-for-cve-2023-0594-cve-2023-0507-and-cve-2023-22462/">
+	  <p>During an internal audit of Grafana on January 30, a member
+	  of the engineering team found a stored XSS vulnerability affecting
+	  the <code>TraceView</code> panel.</p>
+	  <p>The stored XSS vulnerability was possible because the value of a span’s
+	  attributes/resources were not properly sanitized, and this will be rendered
+	  when the span’s attributes/resources are expanded.</p>
+	  <p>The CVSS score for this vulnerability is 7.3 High
+	  (CVSS:7.3/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-0594</cvename>
+      <url>https://grafana.com/blog/2023/02/28/grafana-security-release-new-versions-with-security-fixes-for-cve-2023-0594-cve-2023-0507-and-cve-2023-22462/</url>
+    </references>
+    <dates>
+      <discovery>2023-01-30</discovery>
+      <entry>2023-03-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e2a8e2bd-b808-11ed-b695-6c3be5272acd">
+    <topic>Grafana -- Stored XSS in geomap panel plugin via attribution</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<range><lt>8.5.21</lt></range>
+	<range><ge>9.0.0</ge><lt>9.2.13</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.8</lt></range>
+      </package>
+      <package>
+	<name>grafana8</name>
+	<range><lt>8.5.21</lt></range>
+      </package>
+      <package>
+	<name>grafana9</name>
+	<range><ge>9.0.0</ge><lt>9.2.13</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2023/02/28/grafana-security-release-new-versions-with-security-fixes-for-cve-2023-0594-cve-2023-0507-and-cve-2023-22462/">
+	  <p>During an internal audit of Grafana on January 25, a member of the security
+	  team found a stored XSS vulnerability affecting the core geomap plugin.</p>
+	  <p>The stored XSS vulnerability was possible because map attributions weren’t
+	  properly sanitized, allowing arbitrary JavaScript to be executed in the context
+	  of the currently authorized user of the Grafana instance.</p>
+	  <p>The CVSS score for this vulnerability is 7.3 High
+	  (CVSS:7.3/AV:N/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-0507</cvename>
+      <url>https://grafana.com/blog/2023/02/28/grafana-security-release-new-versions-with-security-fixes-for-cve-2023-0594-cve-2023-0507-and-cve-2023-22462/</url>
+    </references>
+    <dates>
+      <discovery>2023-01-25</discovery>
+      <entry>2023-03-01</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="b17bce48-b7c6-11ed-b304-080027f5fec9">
     <topic>redis -- multiple vulnerabilities</topic>
     <affects>

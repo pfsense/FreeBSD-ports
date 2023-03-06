@@ -1,5 +1,6 @@
 PORTNAME=	openexr
 PORTVERSION=	3.1.5
+PORTREVISION=	1
 CATEGORIES=	graphics devel
 
 MAINTAINER=	mandree@FreeBSD.org
@@ -9,7 +10,7 @@ WWW=		https://www.openexr.com/
 LICENSE=	BSD3CLAUSE
 
 # exact version required to avoid hard-to-debug issues
-LIB_DEPENDS=	libImath-3_1.so.29:math/Imath
+LIB_DEPENDS=	libImath-3_1.so.30:math/Imath
 
 USES=		cmake compiler:c++14-lang cpe pathfix pkgconfig
 

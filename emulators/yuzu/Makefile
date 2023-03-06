@@ -1,6 +1,5 @@
 PORTNAME=	yuzu
-PORTVERSION=	s20230226
-PORTREVISION=	1
+PORTVERSION=	s20230303
 CATEGORIES=	emulators wayland
 .if make(makesum)
 MASTER_SITES=	https://api.yuzu-emu.org/gamedb/?dummy=/:gamedb
@@ -54,7 +53,7 @@ qt6_OPTIONS_EXCLUDE=	QT5
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	yuzu-emu
-GH_TAGNAME=	a78a47581
+GH_TAGNAME=	ce8f4da63
 GH_TUPLE=	yuzu-emu:mbedtls:v2.16.9-115-g8c88150ca:mbedtls/externals/mbedtls \
 		yuzu-emu:sirit:ab75463:sirit/externals/sirit \
 		KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-201-gc214f6f:SPIRV_Headers/externals/sirit/externals/SPIRV-Headers \
@@ -70,6 +69,7 @@ USE_SDL=	sdl2
 CMAKE_ON=	Boost_USE_STATIC_LIBS
 CMAKE_ON+=	BUNDLE_SPEEX # only used by cubeb tests
 CMAKE_OFF=	YUZU_CHECK_SUBMODULES YUZU_USE_EXTERNAL_SDL2 YUZU_USE_EXTERNAL_VULKAN_HEADERS
+CMAKE_OFF+=	${ARCH:Maarch64:C/.+/YUZU_USE_PRECOMPILED_HEADERS DYNARMIC_USE_PRECOMPILED_HEADERS/}
 CMAKE_OFF+=	${CMAKE_TESTING_ON}
 CMAKE_TESTING_ON=	YUZU_TESTS
 LDFLAGS+=	-Wl,--as-needed # Qt5Network

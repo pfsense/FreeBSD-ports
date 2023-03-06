@@ -102,7 +102,7 @@ HTTP_AUTH_LDAP_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_auth_ldap_module.
 HTTP_AUTH_LDAP_VARS=		DSO_EXTMODS+=http_auth_ldap
 HTTP_AUTH_LDAP_USE=		openldap=yes
 
-HTTP_AUTH_PAM_GH_TUPLE=		sto:ngx_http_auth_pam_module:v1.5.1:auth_pam
+HTTP_AUTH_PAM_GH_TUPLE=		sto:ngx_http_auth_pam_module:v1.5.3:auth_pam
 HTTP_AUTH_PAM_VARS=		DSO_EXTMODS+=auth_pam
 
 HTTP_DAV_EXT_IMPLIES=		HTTP_DAV
@@ -157,7 +157,7 @@ HTTP_NOTICE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_notice_module.c \
 				${PATCHDIR}/extra-patch-nginx-notice-config
 HTTP_NOTICE_VARS=		DSO_EXTMODS+=notice
 
-HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.3.1:push
+HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.3.6:push
 HTTP_PUSH_VARS=			DSO_EXTMODS+=push
 
 HTTP_PUSH_STREAM_GH_TUPLE=	wandenberg:nginx-push-stream-module:8c02220:pushstream
@@ -226,7 +226,7 @@ LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 LUA_RUN_DEPENDS=	lua-resty-core>0:www/lua-resty-core
 LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 			LUAJIT_LIB=${LOCALBASE}/lib
-LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.23rc1:lua
+LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.23:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
 LINK_GH_TUPLE=		Taymindis:nginx-link-function:3.2.4:link
@@ -259,7 +259,7 @@ OPENTRACING_LIB_DEPENDS=	libopentracing.so:devel/libopentracing
 OPENTRACING_VARS=		DSO_EXTMODS+=opentracing OPENTRACING_SUBDIR=/opentracing
 OPENTRACING_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-opentracing-opentracing-config
 
-PASSENGER_NGINX_VER=	6.0.16
+PASSENGER_NGINX_VER=	6.0.17
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USES=		ruby
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake
@@ -306,7 +306,6 @@ SLOWFS_CACHE_GH_TUPLE=	baysao:ngx_slowfs_cache:d011a18:slowfs_cache
 SLOWFS_CACHE_VARS=	DSO_EXTMODS+=slowfs_cache
 
 SMALL_LIGHT_USES=		magick:6
-SMALL_LIGHT_LIB_DEPENDS=	libpcre.so:devel/pcre
 SMALL_LIGHT_GH_TUPLE=		kawakibi:ngx_small_light:2f5e1d0:small_light
 SMALL_LIGHT_VARS=		DSO_EXTMODS+=small_light
 
@@ -317,7 +316,7 @@ STS_IMPLIES=		STREAM
 STS_GH_TUPLE=		vozlt:nginx-module-sts:3c10d42:sts
 STS_VARS=		DSO_EXTMODS+=sts
 
-VOD_GH_TUPLE=		kaltura:nginx-vod-module:1.30:vod
+VOD_GH_TUPLE=		kaltura:nginx-vod-module:1.31:vod
 VOD_LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 			libavutil.so:multimedia/ffmpeg
 VOD_USES=		iconv
