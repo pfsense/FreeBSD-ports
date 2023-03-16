@@ -1,0 +1,14 @@
+diff --git a/src/usr/local/www/firewall_aliases.php b/src/usr/local/www/firewall_aliases.php
+index cec1362b74..52c2c28503 100644
+--- a/src/usr/local/www/firewall_aliases.php
++++ b/src/usr/local/www/firewall_aliases.php
+@@ -114,8 +114,7 @@ display_top_tabs($tab_array);
+ 	</thead>
+ 	<tbody>
+ <?php
+-	asort($a_aliases);
+-	foreach ($a_aliases as $i => $alias):
++	foreach (msort($a_aliases, 'name') as $i => $alias):
+ 		unset ($show_alias);
+ 		switch ($tab) {
+ 		case "all":

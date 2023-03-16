@@ -1,0 +1,13 @@
+diff --git a/src/etc/inc/system.inc b/src/etc/inc/system.inc
+index d6c18cee08..016f3b7386 100644
+--- a/src/etc/inc/system.inc
++++ b/src/etc/inc/system.inc
+@@ -1386,7 +1386,7 @@ http {
+ 	add_header X-Frame-Options SAMEORIGIN;
+ 	server_tokens off;
+ 
+-	sendfile        on;
++	sendfile        off;
+ 
+ 	access_log      syslog:server=unix:/var/run/log,facility=local5 combined;
+ 
