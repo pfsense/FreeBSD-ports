@@ -1,0 +1,13 @@
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index b1d630378a..30f402de1a 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -1538,7 +1538,7 @@ function get_configured_interface_with_descr(bool $with_disabled = false) : arra
+ 	$iflist = [];
+ 	foreach (config_get_path('interfaces', []) as $if => $if_detail) {
+ 		if ($with_disabled || isset($if_detail['enable'])) {
+-			$iflist[$if] = array_get_path($if_detail, 'descr', strtoupper($if));
++			$iflist[$if] = strtoupper(array_get_path($if_detail, 'descr', $if));
+ 		}
+ 	}
+ 

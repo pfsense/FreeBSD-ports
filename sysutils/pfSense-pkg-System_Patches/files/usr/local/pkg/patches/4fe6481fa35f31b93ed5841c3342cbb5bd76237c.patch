@@ -1,0 +1,86 @@
+diff --git a/src/etc/inc/system.inc b/src/etc/inc/system.inc
+index 016f3b7386..3a230ea740 100644
+--- a/src/etc/inc/system.inc
++++ b/src/etc/inc/system.inc
+@@ -108,6 +108,12 @@ function activate_sysctls() {
+ 	$ipsec_filtermode = config_get_path('ipsec/filtermode', 'enc');
+ 	$sysctls = array_merge($sysctls, $ipsec_filter_sysctl[$ipsec_filtermode]);
+ 
++	if (config_get_path('system/consolebell', 'enabled') == 'enabled') {
++		$sysctls['kern.vt.enable_bell'] = '1';
++	} else {
++		$sysctls['kern.vt.enable_bell'] = '0';
++	}
++
+ 	foreach (config_get_path('sysctl/item', []) as $tunable) {
+ 		if ($tunable['value'] == "default") {
+ 			$value = get_default_sysctl_value($tunable['tunable']);
+diff --git a/src/usr/local/pfSense/include/www/system_advanced_notifications.inc b/src/usr/local/pfSense/include/www/system_advanced_notifications.inc
+index 4a748f70de..973c237c16 100644
+--- a/src/usr/local/pfSense/include/www/system_advanced_notifications.inc
++++ b/src/usr/local/pfSense/include/www/system_advanced_notifications.inc
+@@ -89,6 +89,7 @@ function getAdvancedNotifications($json = false) {
+ 	}
+ 
+ 	// System Sounds
++	$nconfig['consolebell'] = config_get_path('system/consolebell', 'enabled');
+ 	$nconfig['disablebeep'] = isset($config['system']['disablebeep']);
+ 
+ 	// Telegram
+@@ -230,11 +231,19 @@ function saveAdvancedNotifications($post, $json = false) {
+ 		}
+ 
+ 		// System Sounds
++		if ($post['consolebell'] == "yes") {
++			config_set_path('system/consolebell', 'enabled');
++			set_single_sysctl('kern.vt.enable_bell', '1');
++		} else {
++			config_set_path('system/consolebell', 'disabled');
++			set_single_sysctl('kern.vt.enable_bell', '0');
++		}
+ 		if ($post['disablebeep'] == "yes") {
+ 			$config['system']['disablebeep'] = true;
+ 		} else {
+ 			config_del_path('system/disablebeep');
+ 		}
++
+ 		// Telegram
+ 		$config['notifications']['telegram']['enabled'] = ($post['enable_telegram'] == "yes") ? true : false;
+ 		$config['notifications']['telegram']['api'] = $post['api'];
+diff --git a/src/usr/local/www/system_advanced_notifications.php b/src/usr/local/www/system_advanced_notifications.php
+index 2c5e5c45e0..14ff3fa22c 100644
+--- a/src/usr/local/www/system_advanced_notifications.php
++++ b/src/usr/local/www/system_advanced_notifications.php
+@@ -97,7 +97,6 @@ $section->addInput(new Form_Input(
+ 
+ $form->add($section);
+ 
+-
+ $section = new Form_Section('E-Mail');
+ 
+ $section->addInput(new Form_Checkbox(
+@@ -200,13 +199,23 @@ $form->add($section);
+ 
+ $section = new Form_Section('Sounds');
+ 
++$section->addInput(new Form_Checkbox(
++	'consolebell',
++	'Console Bell',
++	'Enable the console bell',
++	($pconfig['consolebell'] == 'enabled')
++))->setHelp('When checked, emergency console messages, such as from a GUI login, '.
++	'will trigger a bell in connected consoles including serial terminals. ' .
++	'On devices with a speaker, such messages can trigger an audible beep.');
++
+ $section->addInput(new Form_Checkbox(
+ 	'disablebeep',
+ 	'Startup/Shutdown Sound',
+ 	'Disable the startup/shutdown beep',
+ 	$pconfig['disablebeep']
+ ))->setHelp('When this is checked, startup and shutdown sounds will no longer '.
+-	'play.');
++	'play through the built-in PC speaker. Has no effect on devices without ' .
++	'a speaker.');
+ 
+ $form->add($section);
+ 

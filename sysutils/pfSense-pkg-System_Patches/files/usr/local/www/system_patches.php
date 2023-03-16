@@ -48,6 +48,44 @@ if ($_POST && $_POST['apply']) {
 	write_config(gettext("System: Patches: applied a patch."));
 }
 
+if (in_array($_POST['all'], ['apply', 'revert']) &&
+    in_array($_POST['type'], ['custom', 'recommended'])) {
+	$typestr = "";
+	if ($_POST['type'] == 'custom') {
+		$patchlist =& $a_patches;
+		$typestr = gettext('custom');
+	} elseif ($_POST['type'] == 'recommended') {
+		$patchlist =& $recommended_patches;
+		$typestr = gettext('recommended');
+	}
+
+	foreach ($patchlist as $thispatch) {
+		if (($_POST['type'] == 'recommended') &&
+		    !in_array($thisversion, $thispatch['versions'])) {
+			/* This patch is not relevant to the running version, skip it */
+			continue;
+		}
+
+		if ($_POST['all'] == 'apply') {
+			if (patch_test_apply($thispatch)) {
+				patch_apply($thispatch);
+			}
+		} elseif ($_POST['all'] == 'revert') {
+			if (patch_test_revert($thispatch)) {
+				patch_revert($thispatch);
+			}
+		}
+	}
+
+	if ($_POST['all'] == 'apply') {
+		$savemsg = sprintf(gettext('Applied all %s patches'), $typestr);
+	} elseif ($_POST['all'] == 'revert') {
+		$savemsg = sprintf(gettext('Reverted all %s patches'), $typestr);
+	}
+	patchlog($savemsg);
+	$savemsg .= '<br/><br/>' . gettext('Changes may not fully activate until the next reboot or restart of patched functions.');
+}
+
 if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
     (($_POST['type'] == 'recommended') && !empty(get_recommended_patch($_POST['id'])))) {
 	$savemsg = "";
@@ -272,6 +310,8 @@ if ($savemsg) {
 				<tbody class="patchentries">
 <?php
 $i = 0;
+$cus_can_apply=0;
+$cus_can_revert=0;
 foreach ($a_patches as $thispatch):
 	$can_apply = patch_test_apply($thispatch);
 	$can_revert = patch_test_revert($thispatch);
@@ -296,13 +336,15 @@ foreach ($a_patches as $thispatch):
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
-		<?php if ($can_apply): ?>
+		<?php if ($can_apply):
+			$cus_can_apply += 1; ?>
 			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
-		<?php if ($can_revert): ?>
+		<?php if ($can_revert):
+			$cus_can_revert += 1; ?>
 			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
 		<?php endif; ?>
 		</td>
@@ -339,12 +381,24 @@ endforeach;
 		</div>
 	</div>
 	<nav class="action-buttons">
+<?php if ($cus_can_apply > 0): ?>
+		<a href="system_patches.php?all=apply&type=custom" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Apply all custom patches")?>" usepost>
+			<i class="fa fa-plus-circle icon-embed-btn"></i>
+			<?=gettext("Apply All Custom")?>
+		</a>
+<?php endif; ?>
+<?php if ($cus_can_revert > 0): ?>
+		<a href="system_patches.php?all=revert&type=custom" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Revert all custom patches")?>" usepost>
+			<i class="fa fa-minus-circle icon-embed-btn"></i>
+			<?=gettext("Revert All Custom")?>
+		</a>
+<?php endif; ?>
 		<a href="system_patches_edit.php" class="btn btn-success btn-sm">
 			<i class="fa fa-plus icon-embed-btn"></i>
 			<?=gettext("Add New Patch")?>
 		</a>
 <?php if ($i !== 0): ?>
-		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected P1s")?>">
+		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected patches")?>">
 			<i class="fa fa-trash icon-embed-btn"></i>
 			<?=gettext("Delete Patches")?>
 		</button>
@@ -372,6 +426,8 @@ endforeach;
 				<tbody class="rpatchentries">
 <?php
 $num_rpatches=0;
+$rec_can_apply=0;
+$rec_can_revert=0;
 foreach ($recommended_patches as $rpatch):
 	if (!in_array($thisversion, $rpatch['versions'])) {
 		/* This patch is not relevant to the running version, skip it */
@@ -403,13 +459,15 @@ foreach ($recommended_patches as $rpatch):
 		</td>
 
 		<td>
-		<?php if ($can_apply): ?>
+		<?php if ($can_apply):
+			$rec_can_apply += 1; ?>
 			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td>
-		<?php if ($can_revert): ?>
+		<?php if ($can_revert):
+			$rec_can_revert += 1; ?>
 			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
 		<?php endif; ?>
 		</td>
@@ -436,6 +494,20 @@ endforeach;
 			</table>
 		</div>
 	</div>
+	<nav class="action-buttons">
+<?php if ($rec_can_apply > 0): ?>
+		<a href="system_patches.php?all=apply&type=recommended" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Apply all recommended patches")?>" usepost>
+			<i class="fa fa-plus-circle icon-embed-btn"></i>
+			<?=gettext("Apply All Recommended")?>
+		</a>
+<?php endif; ?>
+<?php if ($rec_can_revert > 0): ?>
+		<a href="system_patches.php?all=revert&type=recommended" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Revert all recommended patches")?>" usepost>
+			<i class="fa fa-minus-circle icon-embed-btn"></i>
+			<?=gettext("Revert All Recommended")?>
+		</a>
+<?php endif; ?>
+	</nav>
 </form>
 
 <div id="infoblock">
