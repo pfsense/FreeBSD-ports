@@ -52,11 +52,16 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
     in_array($_POST['type'], ['custom', 'recommended'])) {
 	$typestr = "";
 	if ($_POST['type'] == 'custom') {
-		$patchlist =& $a_patches;
+		$patchlist = $a_patches;
 		$typestr = gettext('custom');
 	} elseif ($_POST['type'] == 'recommended') {
-		$patchlist =& $recommended_patches;
+		$patchlist = $recommended_patches;
 		$typestr = gettext('recommended');
+	}
+
+	/* Revert in reverse order since patch order is significant! */
+	if ($_POST['all'] == 'revert') {
+		$patchlist = array_reverse($patchlist);
 	}
 
 	foreach ($patchlist as $thispatch) {

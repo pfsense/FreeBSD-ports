@@ -1,0 +1,14 @@
+diff --git a/src/usr/local/www/firewall_aliases.php b/src/usr/local/www/firewall_aliases.php
+index 52c2c28503..8c2c2a832d 100644
+--- a/src/usr/local/www/firewall_aliases.php
++++ b/src/usr/local/www/firewall_aliases.php
+@@ -114,7 +114,8 @@ display_top_tabs($tab_array);
+ 	</thead>
+ 	<tbody>
+ <?php
+-	foreach (msort($a_aliases, 'name') as $i => $alias):
++	uasort($a_aliases, function ($a, $b) { return strnatcasecmp($a['name'], $b['name']); });
++	foreach ($a_aliases as $i => $alias):
+ 		unset ($show_alias);
+ 		switch ($tab) {
+ 		case "all":

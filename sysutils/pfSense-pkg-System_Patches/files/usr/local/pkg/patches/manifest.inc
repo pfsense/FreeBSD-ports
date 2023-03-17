@@ -263,6 +263,18 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '4342d179afe732baf3a73e2db4381b57b1aa7703.p2',
+  'versions' => ['23.01'],
+  'descr' => 'Fix default sorting of Aliases in lists (part 2)',
+  'links' => [
+      [ 'text' => 'Redmine #14015',
+         'url' => 'https://redmine.pfsense.org/issues/14015', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '9bfd89747eba77091ab6e2df5639a33a185342f8',
   'versions' => ['23.01'],
   'descr' => 'Fix PHP error during XMLRPC HA Sync with empty VIP section',
