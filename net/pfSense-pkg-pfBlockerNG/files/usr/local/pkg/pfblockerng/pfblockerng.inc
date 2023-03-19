@@ -58,6 +58,7 @@ $pfb['dnsbl_tmpdir']	= '/tmp/DNSBL_TMP';
 
 // Application Paths
 $pfb['grep']	= '/usr/bin/grep';
+$pfb['ggrep']	= '/usr/local/bin/ggrep';	// textproc/gnugrep
 $pfb['awk']	= '/usr/bin/awk';
 $pfb['cut']	= '/usr/bin/cut';
 $pfb['sed']	= '/usr/bin/sed';
@@ -3726,7 +3727,7 @@ function sanitize_ipaddr($ipaddr, $custom, $pfbcidr) {
 	$ip_final = implode('.', $ip);
 
 	// Exclude private/reserved IPs (bypass exclusion for custom lists)
-	if (!$custom) {
+	if ($pfb['supp'] == 'on' && !$custom) {
 
 		// Remove 'loopback' and '0.0.0.0' IPs
 		if ($ip[0] == 127 || $ip[0] == 0 || empty($ip[0])) {
