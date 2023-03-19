@@ -116,7 +116,7 @@ if ($_POST) {
 			}
 		}
 
-		if (!empty($_POST['maxmind_key']) && empty(pfb_filter($_POST['maxmind_key'], PFB_FILTER_ALNUM, 'ip'))) {
+		if (!empty($_POST['maxmind_key']) && empty(pfb_filter($_POST['maxmind_key'], PFB_FILTER_WORD, 'ip'))) {
 			$input_errors[] = 'MaxMind License key Invalid';
 		}
 
@@ -179,7 +179,7 @@ if ($_POST) {
 			$pfb['iconfig']['ip_placeholder']	= $_POST['ip_placeholder']					?: '127.1.7.7';
 			$pfb['iconfig']['maxmind_locale']	= $_POST['maxmind_locale']					?: 'en';
 			$pfb['iconfig']['database_cc']		= pfb_filter($_POST['database_cc'], PFB_FILTER_ON_OFF, 'ip')	?: '';
-			$pfb['iconfig']['maxmind_key']		= pfb_filter($_POST['maxmind_key'], PFB_FILTER_ALNUM, 'ip')	?: '';
+			$pfb['iconfig']['maxmind_key']		= pfb_filter($_POST['maxmind_key'], PFB_FILTER_WORD, 'ip')	?: '';
 			$pfb['iconfig']['asn_reporting']	= $_POST['asn_reporting']					?: 'disabled';
 			$pfb['iconfig']['inbound_interface']	= implode(',', (array)$_POST['inbound_interface'])		?: '';
 			$pfb['iconfig']['inbound_deny_action']	= $_POST['inbound_deny_action']					?: '';
