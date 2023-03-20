@@ -251,8 +251,7 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 				$data[2] = '';
 			}
 
-			if (empty(pfb_filter($data[0], PFB_FILTER_DOMAIN, 'Category_edit addgroup')) ||
-			    empty(pfb_filter($data[1], PFB_FILTER_IP, 'Category_edit addgroup'))) {
+			if (empty(pfb_filter($data[1], PFB_FILTER_IP, 'Category_edit addgroup'))) {
 				$savemsg = 'Cannot create new IP Whitelist! Invalid data!';
 				header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
 				exit;
