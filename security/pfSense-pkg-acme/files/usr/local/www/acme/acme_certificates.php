@@ -30,7 +30,7 @@ require_once("acme/acme_gui.inc");
 require_once("acme/acme_utils.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
-$changedesc = "Services: Acme: Certificates";
+$changedesc = "Services: ACME: Certificates";
 
 $a_certificates = &getarraybyref($config, 'installedpackages', 'acme', 'certificates', 'item');
 
@@ -87,7 +87,7 @@ if ($_POST) {
 				$deleted = true;
 			}
 			if ($deleted) {
-				if (write_config("Acme, deleting certificate(s)")) {
+				if (write_config("ACME, deleting certificate(s)")) {
 					//mark_subsystem_dirty('filter');
 					touch($d_acmeconfdirty_path);
 				}
@@ -96,7 +96,6 @@ if ($_POST) {
 			exit;
 		}
 	} else {	
-
 		// from '\src\usr\local\www\vpn_ipsec.php'
 		/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
 		// TODO: this. is. nasty.
@@ -137,7 +136,7 @@ if ($_GET['act'] == "del") {
 	}
 }
 
-$pgtitle = array("Services", "Acme", "Certificates");
+$pgtitle = array("Services", "ACME", "Certificates");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -382,6 +381,7 @@ function renewcertificate($id) {
 		}
 	});
 }
+
 function togglerow($id) {
 	ajaxRequest = $.ajax({
 		url: "",
@@ -394,7 +394,6 @@ function togglerow($id) {
 }
 
 events.push(function() {
-	
 	$('#clearallnotices').click(function() {
 		ajaxRequest = $.ajax({
 			url: "/index.php",

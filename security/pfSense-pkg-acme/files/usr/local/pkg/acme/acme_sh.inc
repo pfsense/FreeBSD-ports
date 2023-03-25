@@ -31,16 +31,20 @@ class acme_sh_domain {
 	public $NSUPDATE_KEYALGO;
 	public $NSUPDATE_KEY;
 	public $NSUPDATE_ZONE;
+
 	function __construct($domainname, $method) {
 		$this->domainname = $domainname;
 		$this->method = $method;
 	}
+
 	function setchallengealias($challengealias) {
 		$this->challengealias = $challengealias;
 	}
+
 	function setchallengedomain($challengedomain) {
 		$this->challengedomain = $challengedomain;
 	}
+
 	function setnsupdateparameters($server, $keyname, $keyalgo, $key, $zone = "") {
 		$this->NSUPDATE_SERVER = $server;
 		$this->NSUPDATE_KEYNAME = $keyname;
@@ -51,7 +55,6 @@ class acme_sh_domain {
 }
 	
 class acme_sh {
-
 	private $accountconfig;
 	private $path_account;
 	private $name;
@@ -66,6 +69,7 @@ class acme_sh {
 		if ($this->debug) {
 			echo "\n{$command}\n";
 		}
+
 		// add to cron environment path: /usr/local/bin/
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
@@ -261,7 +265,7 @@ EOF;
 				$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_ZONE'] = $domain->NSUPDATE_ZONE;
 				if (strpos($domain->NSUPDATE_SERVER, ":") !== false) {
-					$parts = explode(":" ,$domain->NSUPDATE_SERVER);
+					$parts = explode(":", $domain->NSUPDATE_SERVER);
 					$domain->NSUPDATE_SERVER = $parts[0];
 					$envvariables['NSUPDATE_SERVER_PORT'] = $parts[1];
 				}
