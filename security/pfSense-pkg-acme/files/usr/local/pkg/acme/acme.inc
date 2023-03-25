@@ -759,6 +759,15 @@ $acme_domain_validation_method['dns_gd'] = array('name' => "DNS-GoDaddy",
 			'description' => "GoDaddy API Secret"
 		)
 	));
+$acme_domain_validation_method['dns_googledomains'] = array('name' => "DNS-Google Domains",
+	'fields' => array(
+		'GOOGLEDOMAINS_ACCESS_TOKEN' => array('name' => "googledomains_access_token", 'columnheader' => "Key", 'type' => "textbox",
+			'description' => "Google Domain API Key"
+		),
+		'GOOGLEDOMAINS_ZONE' => array('name' => "googledomains_zone", 'columnheader' => "Zone", 'type' => "textbox",
+			'description' => "Google Domain Zone"
+		)
+	));
 $acme_domain_validation_method['dns_hetzner'] = array('name' => "DNS-Hetzner",
 	'fields' => array(
 		'HETZNER_Token' => array('name' => "hetzner_token", 'columnheader' => "API Token", 'type' => "password",
