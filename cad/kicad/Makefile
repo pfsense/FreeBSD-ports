@@ -1,5 +1,5 @@
 PORTNAME=	kicad
-PORTVERSION=	7.0.0
+PORTVERSION=	7.0.1
 PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	cad
@@ -25,7 +25,7 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs	\
 		libfontconfig.so:x11-fonts/fontconfig	\
 		libodbc.so:databases/unixODBC
 
-USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gl \
+USES=		cmake:noninja compiler:c++17-lang desktop-file-utils gl \
 		gnome pkgconfig python:3.5+ shared-mime-info shebangfix \
 		tar:bz2 xorg
 SHEBANG_FILES=	pcbnew/python/plugins/touch_slider_wizard.py
@@ -36,6 +36,7 @@ USE_WX=		3.2
 WX_COMPS=	python:lib wx
 USE_GNOME=	atk cairo gdkpixbuf2 gtk30 pango
 CXXFLAGS+=	-std=c++11 -I${WRKSRC}/include -I${LOCALBASE}/include
+CXXFLAGS_powerpc=	-O0
 # not using "bundled glew" breaks the 3d viewer
 CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE=${WX_CONFIG}	\
 		-DwxWidgets_USE_UNICODE=ON			\

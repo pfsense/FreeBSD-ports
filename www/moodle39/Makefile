@@ -1,5 +1,5 @@
 PORTNAME=	moodle
-PORTVERSION=	3.9.19
+PORTVERSION=	3.9.20
 CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable39/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
@@ -9,6 +9,9 @@ COMMENT=	Course management system based on social constructionism
 WWW=		https://www.moodle.org/
 
 LICENSE=	GPLv3
+
+DEPRECATED=	Requires php74 which has been removed from the tree
+EXPIRATION_DATE=	2023-04-30
 
 CONFLICTS=	moodle311-3.11.[0-9]* moodle40-4.0.[0-9]* moodle41-4.1.[0-9]*
 

@@ -1,6 +1,6 @@
 PORTNAME=	puppet
 PORTVERSION=	6.28.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=   https://forge.puppet.com/v3/files/:forge
 PKGNAMESUFFIX=	6
@@ -16,8 +16,9 @@ DEPRECATED=	Puppet 6 has reached EOL
 EXPIRATION_DATE=2023-06-01
 BROKEN_RUBY30=	yes
 BROKEN_RUBY31=	yes
+BROKEN_RUBY32=	yes
 
-RUN_DEPENDS=	rubygem-concurrent-ruby>=1.0:devel/rubygem-concurrent-ruby \
+RUN_DEPENDS=	rubygem-concurrent-ruby11>=1.0:devel/rubygem-concurrent-ruby11 \
 		rubygem-deep_merge>=1.0:devel/rubygem-deep_merge \
 		rubygem-fast_gettext1>=1.1:devel/rubygem-fast_gettext1 \
 		rubygem-ffi>=1.9.24:devel/rubygem-ffi \

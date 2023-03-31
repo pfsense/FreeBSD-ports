@@ -1,7 +1,5 @@
-TIMESTAMP = 1676599353
-SHA256 (go/sysutils_terraform/hashicorp-terraform-v1.3.9_GH0/v1.3.9.mod) = 4f06e568ab0a3119918b8d65b390d04cc372a750db53e424a67e346c365e0b46
-SIZE (go/sysutils_terraform/hashicorp-terraform-v1.3.9_GH0/v1.3.9.mod) = 9119
-SHA256 (go/sysutils_terraform/hashicorp-terraform-v1.3.9_GH0/v1.3.9.zip) = 8380348a5ebe7c7166f068086983d1b136012428824d1ea34f3ab2c1f58b25d7
-SIZE (go/sysutils_terraform/hashicorp-terraform-v1.3.9_GH0/v1.3.9.zip) = 6615848
-SHA256 (go/sysutils_terraform/hashicorp-terraform-v1.3.9_GH0/hashicorp-terraform-v1.3.9_GH0.tar.gz) = 243fcc54910a41b58a1c7a9be1d0f875100a68f51fb64fbe499d9003c44fbf73
-SIZE (go/sysutils_terraform/hashicorp-terraform-v1.3.9_GH0/hashicorp-terraform-v1.3.9_GH0.tar.gz) = 4964672
+TIMESTAMP = 1679202169
+SHA256 (go/sysutils_terraform/terraform-v1.4.2/v1.4.2.mod) = 326cb6e13b521fa6f210788984e6d90a717330d32d126494ce8b678bcd8f03d4
+SIZE (go/sysutils_terraform/terraform-v1.4.2/v1.4.2.mod) = 9282
+SHA256 (go/sysutils_terraform/terraform-v1.4.2/v1.4.2.zip) = 294267a3aad0cfaebc0edb26783a71e060620ee9dd1c7804bc2948c8988d1b4a
+SIZE (go/sysutils_terraform/terraform-v1.4.2/v1.4.2.zip) = 6841099

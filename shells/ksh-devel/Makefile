@@ -10,21 +10,20 @@
 
 PORTNAME=	ksh
 PORTVERSION=	${AST_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES=	shells
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	cy@FreeBSD.org
-COMMENT=	Development branch of AT&T KornShell 93
+COMMENT=	ksh93u+m is the development branch ksh93 based on AT&T ksh93u+ (stable)
 WWW=		http://www.kornshell.com/
 
 LICENSE=	EPL
 
-BROKEN_aarch64=		Fails to link: missing sbrk
-BROKEN_riscv64=		Fails to link: missing sbrk
 BROKEN_FreeBSD_12=	exit code 139 making lib/libcmd
 
-HASH=		27c4f014
-AST_COMMIT_DATE=	2023.02.19
+HASH=		72d895d8
+AST_COMMIT_DATE=	2023.03.17
 
 USES=		compiler:c11
 
@@ -37,8 +36,8 @@ GH_TAGNAME=	${HASH}
 #		arcane build failures due to already installed ksh/ksh93 in
 #		$PATH.
 KSH_CONFLICTS=		pdksh
-KSH93_CONFLICTS=	ksh2020 ksh93 ast-ksh
-KSH93D_CONFLICTS=	ksh2020 ksh93 ast-ksh
+KSH93_CONFLICTS=	ksh93 ast-ksh
+KSH93D_CONFLICTS=	ksh93 ast-ksh
 
 OPTIONS_DEFAULT=	KSH93 EXAMPLES
 OPTIONS_DEFINE=		EXAMPLES STATIC

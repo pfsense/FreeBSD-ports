@@ -1,6 +1,5 @@
 PORTNAME=	chromium
-PORTVERSION=	110.0.5481.177
-PORTREVISION=	1
+PORTVERSION=	111.0.5563.147
 CATEGORIES=	www wayland
 MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/ \
 		https://nerd.hu/distfiles/:external
@@ -210,11 +209,7 @@ TEST_DISTFILES=		${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX} \
 TEST_ALL_TARGET=	${TEST_TARGETS}
 
 .include <bsd.port.options.mk>
-.include <bsd.port.pre.mk>
-
-.if ${OSREL} == "12.3"
-IGNORE=		does not compile, libc++ too old
-.endif
+.include <bsd.port.pre.mk> # for COMPILER_VERSION
 
 .if ${PORT_OPTIONS:MHEIMDAL_BASE} && !exists(/usr/lib/libkrb5.so)
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base

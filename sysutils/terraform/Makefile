@@ -1,6 +1,6 @@
 PORTNAME=	terraform
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.9
+DISTVERSION=	1.4.2
 CATEGORIES=	sysutils
 
 MAINTAINER=	0xdutra@gmail.com
@@ -12,8 +12,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe go:modules
 CPE_VENDOR=	hashicorp
-USE_GITHUB=	yes
-GH_ACCOUNT=	hashicorp
 GO_MODULE=	github.com/hashicorp/terraform
 
 PLIST_FILES=	bin/${PORTNAME}

@@ -1,6 +1,6 @@
 PORTNAME=	cq-editor
 DISTVERSION=	0.1.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	cad
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -9,6 +9,9 @@ COMMENT=	CadQuery GUI editor based on PyQT
 WWW=		https://github.com/CadQuery/CQ-editor/
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Depends on expiring cad/py-cadquery
+EXPIRATION_DATE=2023-06-21
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cadquery>=0:cad/py-cadquery@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/spyder/__init__.py:devel/spyder

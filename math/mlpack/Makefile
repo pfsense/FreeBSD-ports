@@ -1,6 +1,6 @@
 PORTNAME=	mlpack
 DISTVERSION=	4.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math # machine-learning
 MASTER_SITES=	https://mlpack.org/files/
 
@@ -9,19 +9,18 @@ COMMENT=	Fast, flexible machine learning library
 WWW=		https://www.mlpack.org/
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BROKEN_i386=	undefined symbol: __atomic_load
 
-BUILD_DEPENDS=	cereal>0:devel/cereal \
+HPP_DEPENDS=	armadillo>0:math/armadillo \
+		cereal>0:devel/cereal \
 		ensmallen>0:math/ensmallen \
 		${LOCALBASE}/include/stb/stb_image.h:devel/stb
-LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs \
-		libboost_unit_test_framework.so:devel/boost-libs \
-		libboost_serialization.so:devel/boost-libs \
-		libarmadillo.so:math/armadillo
+BUILD_DEPENDS=	${HPP_DEPENDS}
+RUN_DEPENDS=	${HPP_DEPENDS}
 
 USES=		cmake:testing compiler:c++14-lang pkgconfig
-USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DSTB_IMAGE_INCLUDE_DIR=${LOCALBASE}/include/stb
 CMAKE_OFF=	BUILD_PYTHON_BINDINGS BUILD_TESTS

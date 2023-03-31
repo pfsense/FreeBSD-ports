@@ -1,5 +1,6 @@
 PORTNAME=	binutils
 DISTVERSION=	2.40
+PORTREVISION=	2
 PORTEPOCH?=	1
 CATEGORIES?=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
@@ -81,9 +82,17 @@ BUTARGET=	x86_64-unknown-${OPSYS:tl}${OSREL}
 USES+=		iconv
 .endif
 
-CONFIGURE_ARGS+=	--disable-shared \
-			--target=${BUTARGET}
+CONFIGURE_ARGS+=	--target=${BUTARGET}
 .endif
+
+.if ${FLAVOR} == native
+CONFIGURE_ARGS+=	--enable-shared
+PLIST_SUB+=		SHARED=''
+.else
+CONFIGURE_ARGS+=	--disable-shared
+PLIST_SUB+=		SHARED='@comment'
+.endif
+
 
 .if ${FLAVOR} == native
 BUREMOVE=	coffdump \
@@ -145,11 +154,12 @@ post-patch:
 
 post-install:
 .if ${FLAVOR} == native
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/lib/lib*.so* \
+		${STAGEDIR}${PREFIX}/lib/bfd-plugins/libdep.so
 	${INSTALL_DATA} ${WRKSRC}/include/plugin-api.h ${STAGEDIR}${PREFIX}/include/
 	@${FIND} -ds ${STAGEDIR}${PREFIX}/${CONFIGURE_TARGET} ! -type d | \
 		${SED} -e 's,^${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
-	${RM} ${STAGEDIR}${PREFIX}/include/ansidecl.h
-	${REINPLACE_CMD} '/#include "ansidecl.h"/d' ${STAGEDIR}${PREFIX}/include/bfd.h
 .else
 .if ${PKGNAMEPREFIX:S/-$//} != ${BUTARGET}
 	${RM} -r ${STAGEDIR}${PREFIX}/${PKGNAMEPREFIX:S/-$//}

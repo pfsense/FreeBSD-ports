@@ -1,6 +1,5 @@
 PORTNAME=	girara
-PORTVERSION=	0.3.9
-PORTREVISION=	1
+PORTVERSION=	0.4.0
 CATEGORIES=	x11-toolkits graphics
 MASTER_SITES=	https://git.pwmt.org/pwmt/${PORTNAME}/-/archive/${DISTVERSION}/ \
 		https://pwmt.org/projects/girara/download/
@@ -12,6 +11,7 @@ WWW=		https://pwmt.org/projects/girara/
 USES=		compiler:c11 gnome meson pathfix pkgconfig tar:xz
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
 USE_LDCONFIG=	yes
+MESON_ARGS=	-Ddocs=disabled -Dtests=disabled
 
 PATHFIX_MAKEFILEIN=	Makefile
 LIBDIR=			${PREFIX}/lib

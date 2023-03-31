@@ -56,6 +56,7 @@
     SUBDIR += fpdf
     SUBDIR += freetype2
     SUBDIR += ft2demos
+    SUBDIR += ghostscript10
     SUBDIR += ghostscript7-base
     SUBDIR += ghostscript7-commfont
     SUBDIR += ghostscript7-jpnfont
@@ -65,8 +66,6 @@
     SUBDIR += ghostscript8-x11
     SUBDIR += ghostscript9-agpl-base
     SUBDIR += ghostscript9-agpl-x11
-    SUBDIR += ghostscript9-base
-    SUBDIR += ghostscript9-x11
     SUBDIR += gimp-gutenprint
     SUBDIR += gl2ps
     SUBDIR += gsfonts
@@ -232,6 +231,7 @@
     SUBDIR += sgf2tex
     SUBDIR += shrinkpdf
     SUBDIR += simple-fb2-reader
+    SUBDIR += sioyek
     SUBDIR += splix
     SUBDIR += system-config-printer
     SUBDIR += t1utils

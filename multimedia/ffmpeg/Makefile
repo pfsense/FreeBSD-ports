@@ -1,6 +1,6 @@
 PORTNAME=	ffmpeg
 PORTVERSION=	4.4.3
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -611,6 +611,7 @@ LDFLAGS_i386=	-Wl,-z,notext
 CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 		--mandir="${PREFIX}/man" \
 		--datadir="${DATADIR}" \
+		--docdir="${DOCSDIR}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
 		--disable-static \
 		--disable-libcelt \

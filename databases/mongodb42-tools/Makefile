@@ -1,7 +1,7 @@
 PORTNAME=	mongodb42-tools
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.2.23
-PORTREVISION=	4
+DISTVERSION=	4.2.24
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	ronald@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/mongodb/mongo-tools
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 riscv64
 ONLY_FOR_ARCHS_REASON=	not yet ported to other architectures
 
 USES=		compiler:c++14-lang go localbase

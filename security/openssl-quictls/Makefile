@@ -1,5 +1,6 @@
 PORTNAME=	openssl
 PORTVERSION=	3.0.8
+PORTREVISION=	2
 CATEGORIES=	security devel
 PKGNAMESUFFIX=	-quictls
 
@@ -10,7 +11,7 @@ WWW=		https://www.github.com/quictls/openssl
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl-devel
+CONFLICTS_INSTALL=	boringssl libressl libressl-devel openssl openssl3[01]
 
 BROKEN_i386=	ld: error: undefined symbol: __atomic_is_lock_free
 

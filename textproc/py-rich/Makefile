@@ -1,7 +1,8 @@
 PORTNAME=	rich
-PORTVERSION=	13.3.2
+PORTVERSION=	13.3.3
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc python
-MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	matthew@FreeBSD.org
@@ -11,12 +12,22 @@ WWW=		https://github.com/Textualize/rich
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry-core>=1.0.0:devel/py-poetry-core@${PY_FLAVOR}
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}markdown-it-py>=2.1.0<3.0.0:textproc/py-markdown-it-py@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pygments>=2.14.0<3.0.0:textproc/py-pygments@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}pygments>=2.13.0<3.0.0:textproc/py-pygments@${PY_FLAVOR}
 
 NO_ARCH=	yes
 USES=		python:3.7+
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist pep517 pytest
+USE_GITHUB=	yes
+
+GH_ACCOUNT=	Textualize
+
+# poetry-core will process .gitignore when git is present, and fail to
+# create a wheel because the 'work' directory is listed there.
+
+BINARY_ALIAS=	git=false
 
 .include <bsd.port.pre.mk>
 

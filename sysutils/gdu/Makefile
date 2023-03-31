@@ -1,7 +1,6 @@
 PORTNAME=	gdu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	5.20.0
-PORTREVISION=	3
+DISTVERSION=	5.22.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -11,7 +10,7 @@ WWW=		https://github.com/dundee/gdu
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		go:modules
+USES=		go:modules,1.19
 USE_GITHUB=	yes
 GH_ACCOUNT=	dundee
 GH_TUPLE=	davecgh:go-spew:v1.1.1:davecgh_go_spew/vendor/github.com/davecgh/go-spew \

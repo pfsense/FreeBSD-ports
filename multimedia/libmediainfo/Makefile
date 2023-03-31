@@ -1,6 +1,6 @@
 PORTNAME=	libmediainfo
 PORTVERSION=	22.12
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2 \
 
 USES=		compiler:c++11-lang dos2unix libtool localbase pathfix pkgconfig tar:xz
 
-CONFIGURE_ARGS=	--enable-shared --enable-static --disable-dll
+CONFIGURE_ARGS=	--enable-shared --enable-static
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 PATHFIX_MAKEFILEIN+=	configure

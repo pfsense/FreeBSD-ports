@@ -1,6 +1,6 @@
 PORTNAME=	gitlab-ce
 PORTVERSION=	15.8.4
-PORTREVISION=	0
+PORTREVISION=	4
 CATEGORIES=	www devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -14,6 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 # which makes maintaining this long list much easier!
 # devel/rubygem-parser is required for database upgrade process
 # see https://gitlab.com/gitlab-org/gitlab/-/issues/350866
+# mail/rubygem-net-smtp is required as ruby 3.1 removed it
+# textproc/rubygem-psych3 is required as ruby 3.1 applied an update to psych 4.0 which has breaking changes
+# mail/rubygem-net-pop is required as ruby 3.1 removed it
 MY_DEPENDS=	git>=2.39.2:devel/git \
 	gitaly>=${PORTVERSION}:devel/gitaly \
 	gitlab-elasticsearch-indexer>=3.2.0:textproc/gitlab-elasticsearch-indexer \
@@ -26,6 +29,9 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	yarn>=1.10.0:www/yarn \
 	gtar>0:archivers/gtar \
 	bash>0:shells/bash \
+	rubygem-net-smtp>=0:mail/rubygem-net-smtp \
+	rubygem-net-pop>=0:mail/rubygem-net-pop \
+	rubygem-psych3>=3.1<4:textproc/rubygem-psych3 \
 	rubygem-rails61>=6.1.6.1<6.1.8:www/rubygem-rails61 \
 	rubygem-bootsnap115>=1.15.0<1.16:devel/rubygem-bootsnap115 \
 	rubygem-openssl2>=2.2.2<2.3:security/rubygem-openssl2 \
@@ -42,7 +48,7 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-declarative_policy>=1.1.0<1.2:security/rubygem-declarative_policy \
 	rubygem-devise-rails61>=4.8.1<4.9:devel/rubygem-devise-rails61 \
 	rubygem-bcrypt>=3.1.14<3.2:security/rubygem-bcrypt \
-	rubygem-doorkeeper>=5.5.4<6:security/rubygem-doorkeeper \
+	rubygem-doorkeeper562>=5.5.4<5.6.3:security/rubygem-doorkeeper562 \
 	rubygem-doorkeeper-openid_connect>=1.8.3<2:security/rubygem-doorkeeper-openid_connect \
 	rubygem-rexml>=3.2.5<3.3:textproc/rubygem-rexml \
 	rubygem-ruby-saml>=1.13.0<1.14:security/rubygem-ruby-saml \
@@ -62,7 +68,7 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-omniauth-authentiq>=0.3.3<0.4.0:net/rubygem-omniauth-authentiq \
 	rubygem-gitlab-omniauth-openid-connect>=0.10.0<0.11.0:net/rubygem-gitlab-omniauth-openid-connect \
 	rubygem-omniauth-atlassian-oauth2>=0.2.0<0.3:security/rubygem-omniauth-atlassian-oauth2 \
-	rubygem-rack-oauth2>=1.21.3<1.22.0:security/rubygem-rack-oauth2 \
+	rubygem-rack-oauth21>=1.21.3<1.22.0:security/rubygem-rack-oauth21 \
 	rubygem-jwt25>=2.5.0<2.6:www/rubygem-jwt25 \
 	rubygem-gssapi>0:security/rubygem-gssapi \
 	rubygem-recaptcha>=5.12<6.0:devel/rubygem-recaptcha \
@@ -292,6 +298,15 @@ KERBEROS_BUILD_DEPENDS=		rubygem-timfel-krb5-auth>=0.8<1:security/rubygem-timfel
 KERBEROS_RUN_DEPENDS=		rubygem-timfel-krb5-auth>=0.8<1:security/rubygem-timfel-krb5
 KERBEROS_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-Gemfile-kerberos-off
 
+SHEBANG_FILES=	scripts/build_qa_image \
+		scripts/db_tasks \
+		scripts/rails-update-bisect \
+		scripts/generate-e2e-pipeline \
+		scripts/frontend/execute-on-staged-files.sh \
+		scripts/frontend/start_storybook.sh \
+		.lefthook/pre-push/merge_conflicts \
+		qa/bin/test
+
 post-patch:
 	${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|" ${WRKSRC}/config/gitlab.yml.example \
 		${WRKSRC}/config/puma.rb.example \
@@ -335,7 +350,10 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/${PORTNAME}/shared/artifacts/tmp/work
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/${PORTNAME}/vendor/assets/stylesheets
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/${PORTNAME}/workhorse/changelogs/unreleased
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/www/${PORTNAME})
+	# Skip file having an executable bit
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/www/${PORTNAME} "-not ( -type f -perm -a=x )")
+	# now copy all files having an execution bit and preserve to x bit (this fixes some issues we saw)
+	(cd ${WRKSRC} && ${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/www/${PORTNAME} "-type f -perm -a=x")
 
 post-install:
 	${FIND} -s ${STAGEDIR}${WWWDIR} -not -type d | ${SORT} | \

@@ -52,6 +52,7 @@
     SUBDIR += apcctrl
     SUBDIR += apcpwr
     SUBDIR += apcupsd
+    SUBDIR += appjail
     SUBDIR += apt-mirror-devel
     SUBDIR += aptly
     SUBDIR += arc_summary
@@ -131,6 +132,7 @@
     SUBDIR += bkpupsd
     SUBDIR += bksh
     SUBDIR += bkt
+    SUBDIR += blisp
     SUBDIR += boot-extract
     SUBDIR += bottom
     SUBDIR += boxbackup-devel
@@ -290,7 +292,6 @@
     SUBDIR += diskimage-tools
     SUBDIR += diskonaut
     SUBDIR += diskscrub
-    SUBDIR += disktype
     SUBDIR += diskus
     SUBDIR += dmg2img
     SUBDIR += dmidecode
@@ -355,7 +356,6 @@
     SUBDIR += equinix-metal-cli
     SUBDIR += etc_os-release
     SUBDIR += etcmerge
-    SUBDIR += etcupdate
     SUBDIR += ethname
     SUBDIR += evhz
     SUBDIR += evisum
@@ -478,7 +478,6 @@
     SUBDIR += gdu
     SUBDIR += genimage
     SUBDIR += genisoimage
-    SUBDIR += geomWatch
     SUBDIR += getdelta
     SUBDIR += geteltorito
     SUBDIR += getssl
@@ -565,7 +564,6 @@
     SUBDIR += intel-pcm
     SUBDIR += intel-undervolt
     SUBDIR += inxi
-    SUBDIR += ioc
     SUBDIR += iocage
     SUBDIR += iocage-devel
     SUBDIR += iocell
@@ -598,7 +596,6 @@
     SUBDIR += jdupes
     SUBDIR += jest
     SUBDIR += jkill
-    SUBDIR += jobd
     SUBDIR += jps
     SUBDIR += jruls
     SUBDIR += jstest-gtk
@@ -1175,7 +1172,6 @@
     SUBDIR += reed
     SUBDIR += reggae
     SUBDIR += rej
-    SUBDIR += relaxconf
     SUBDIR += rename
     SUBDIR += renameutils
     SUBDIR += reoback
@@ -1203,6 +1199,7 @@
     SUBDIR += rsyslog8
     SUBDIR += rtsx-kmod
     SUBDIR += rtty
+    SUBDIR += rtx
     SUBDIR += rubygem-backup
     SUBDIR += rubygem-bolt
     SUBDIR += rubygem-bosh-gen
@@ -1449,6 +1446,7 @@
     SUBDIR += tty-clock
     SUBDIR += ttyd
     SUBDIR += ttyload
+    SUBDIR += tuckr
     SUBDIR += tuptime
     SUBDIR += turbostat
     SUBDIR += tw_cli
@@ -1630,6 +1628,7 @@
     SUBDIR += xpipe
     SUBDIR += xstow
     SUBDIR += xsysstats
+    SUBDIR += xxd
     SUBDIR += yadf
     SUBDIR += yadm
     SUBDIR += yank

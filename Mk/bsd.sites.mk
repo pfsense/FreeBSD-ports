@@ -224,26 +224,14 @@ MASTER_SITE_GCC+= \
 
 .if !defined(IGNORE_MASTER_SITE_GENTOO)
 MASTER_SITE_GENTOO+= \
-	http://gentoo.mirrors.pair.com/%SUBDIR%/ \
-	http://mirrors.tds.net/pub/gentoo/%SUBDIR%/ \
-	ftp://ftp.mirrorservice.org/sites/www.ibiblio.org/gentoo/%SUBDIR%/ \
-	http://ftp.snt.utwente.nl/pub/os/linux/gentoo/%SUBDIR%/ \
-	http://trumpetti.atm.tut.fi/gentoo/%SUBDIR%/ \
-	https://ftp.uni-erlangen.de/pub/mirrors/gentoo/%SUBDIR%/ \
-	http://gentoo.inode.at/%SUBDIR%/ \
-	http://gentoo.gg3.net/%SUBDIR%/ \
-	http://mirrors.163.com/gentoo/%SUBDIR%/ \
-	ftp://ftp.gtlib.gatech.edu/pub/gentoo/%SUBDIR%/ \
-	ftp://ftp.ussg.iu.edu/pub/linux/gentoo/%SUBDIR%/ \
-	ftp://mirrors.tds.net/pub/gentoo/%SUBDIR%/ \
-	ftp://ftp.belnet.be/mirror/rsync.gentoo.org/gentoo/%SUBDIR%/ \
-	ftp://ftp.snt.utwente.nl/pub/os/linux/gentoo/%SUBDIR%/ \
-	ftp://trumpetti.atm.tut.fi/gentoo/%SUBDIR%/ \
-	ftp://ftp.tu-clausthal.de/pub/linux/gentoo/%SUBDIR%/ \
-	ftp://sunsite.informatik.rwth-aachen.de/pub/Linux/gentoo/%SUBDIR%/ \
-	ftp://linux.rz.ruhr-uni-bochum.de/gentoo-mirror/%SUBDIR%/ \
-	ftp://ftp.uni-erlangen.de/pub/mirrors/gentoo/%SUBDIR%/ \
-	ftp://gentoo.inode.at/source/%SUBDIR%/
+	https://mirror.leaseweb.com/gentoo/%SUBDIR%/ \
+	https://mirror.rackspace.com/gentoo/%SUBDIR%/ \
+	https://mirror.init7.net/gentoo/%SUBDIR%/ \
+	https://mirrors.rit.edu/gentoo/%SUBDIR%/ \
+	http://ftp.iij.ad.jp/pub/linux/gentoo/%SUBDIR%/ \
+	http://ftp.belnet.be/pub/rsync.gentoo.org/gentoo/%SUBDIR%/ \
+	http://ftp.uni-hannover.de/gentoo/%SUBDIR%/ \
+	http://gentoo-mirror.flux.utah.edu/%SUBDIR%/
 .endif
 
 # Keep this before USE_GITHUB
@@ -624,6 +612,12 @@ MASTER_SITE_GNU_ALPHA+= \
 	https://alpha-gnu-org.ip-connect.vn.ua/%SUBDIR%/
 .endif
 
+.if !defined(IGNORE_MASTER_SITE_HACKAGE)
+MASTER_SITE_HACKAGE+= \
+	https://hackage.haskell.org/package/ \
+	http://hackage.haskell.org/package/
+.endif
+
 .if !defined(IGNORE_MASTER_SITE_HORDE)
 MASTER_SITE_HORDE+= \
 	https://ftp.horde.org/pub/%SUBDIR%/ \
@@ -781,7 +775,7 @@ FETCH_ARGS+=	--user-agent=curl/7.68.0
 
 .if !defined(IGNORE_MASTER_SITE_OSSP)
 MASTER_SITE_OSSP+= \
-	ftp://ftp.ossp.org/pkg/%SUBDIR%/ \
+	http://ftp.ntua.gr/pub/utils/ossp/%SUBDIR%/ \
 	ftp://ftp.ntua.gr/pub/utils/ossp/%SUBDIR%/
 .endif
 

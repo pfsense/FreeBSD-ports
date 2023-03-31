@@ -75,11 +75,11 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.27.2
+KDE_PLASMA_VERSION?=		5.27.3
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.103.0
+KDE_FRAMEWORKS_VERSION?=	5.104.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
@@ -189,6 +189,8 @@ IGNORE?=		unknown CATEGORY value '${_KDE_CATEGORY}' #'
 .    endif #defined(_KDE_CATEGORY)
 
 # ==============================================================================
+# === SET UP LOCALE ENVIRONMENT =================================================
+USE_LOCALE?=	en_US.UTF-8
 
 # === SET UP CMAKE ENVIRONMENT =================================================
 # Help cmake to find files when testing ports with non-default PREFIX.

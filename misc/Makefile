@@ -71,7 +71,6 @@
     SUBDIR += ctm
     SUBDIR += cuttlefish
     SUBDIR += dahdi
-    SUBDIR += dahdi-kmod
     SUBDIR += dahdi-kmod26
     SUBDIR += darknet
     SUBDIR += dartsim
@@ -107,6 +106,7 @@
     SUBDIR += findutils
     SUBDIR += firestring
     SUBDIR += flag
+    SUBDIR += flashlight
     SUBDIR += fortune-mod-bible
     SUBDIR += fortune-mod-bofh
     SUBDIR += fortune-mod-epictetus
@@ -155,7 +155,6 @@
     SUBDIR += gkrellshoot2
     SUBDIR += gkx86info2
     SUBDIR += global-tz
-    SUBDIR += glow
     SUBDIR += gnome-devel-docs
     SUBDIR += gnome-getting-started-docs
     SUBDIR += gnome-icon-theme
@@ -413,6 +412,7 @@
     SUBDIR += py-halo
     SUBDIR += py-histoprint
     SUBDIR += py-huepy
+    SUBDIR += py-icoextract
     SUBDIR += py-ipyfastscape
     SUBDIR += py-kartograph
     SUBDIR += py-lightgbm
@@ -451,6 +451,7 @@
     SUBDIR += py-scikit-fusion
     SUBDIR += py-serverfiles
     SUBDIR += py-shap2
+    SUBDIR += py-shell-gpt
     SUBDIR += py-soapy_power
     SUBDIR += py-spdx
     SUBDIR += py-spdx-lookup
@@ -593,6 +594,7 @@
     SUBDIR += wmtunlo
     SUBDIR += wmweather+
     SUBDIR += wmwork
+    SUBDIR += wthrr
     SUBDIR += xd-rust
     SUBDIR += xdelta
     SUBDIR += xdelta3

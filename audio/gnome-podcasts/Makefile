@@ -1,6 +1,6 @@
 PORTNAME=	podcasts
 DISTVERSION=	0.5.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	audio
 PKGNAMEPREFIX=	gnome-
 
@@ -31,6 +31,12 @@ CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
 GLIB_SCHEMAS=	org.gnome.Podcasts.gschema.xml
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+LTO_UNSAFE=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/dependency.*openssl/d' \

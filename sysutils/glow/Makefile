@@ -1,7 +1,6 @@
 PORTNAME=	glow
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.1
-PORTREVISION=	11
+DISTVERSION=	1.5.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -11,10 +10,10 @@ WWW=		https://github.com/charmbracelet/glow
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.19,modules
 
 _BUILD_VERSION=	${DISTVERSION}
-_BUILD_SHA=	4863f57
+_BUILD_SHA=	19732a6
 
 GO_MODULE=	github.com/charmbracelet/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "\

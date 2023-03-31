@@ -117,6 +117,7 @@
     SUBDIR += dolibarr13
     SUBDIR += dolibarr14
     SUBDIR += dolibarr15
+    SUBDIR += dolibarr16
     SUBDIR += domoticz
     SUBDIR += dooble
     SUBDIR += dot-http
@@ -221,11 +222,6 @@
     SUBDIR += hedgedoc
     SUBDIR += hiawatha
     SUBDIR += hiawatha-monitor
-    SUBDIR += horde-ansel
-    SUBDIR += horde-base
-    SUBDIR += horde-passwd
-    SUBDIR += horde-trean
-    SUBDIR += horde-wicked
     SUBDIR += hotcrp
     SUBDIR += hs-DAV
     SUBDIR += hs-hjsmin
@@ -1810,6 +1806,12 @@
     SUBDIR += py-uvicorn
     SUBDIR += py-w3lib
     SUBDIR += py-wagtail
+    SUBDIR += py-wagtail-2fa
+    SUBDIR += py-wagtail-airtable
+    SUBDIR += py-wagtail-bakery
+    SUBDIR += py-wagtail-factories
+    SUBDIR += py-wagtail-localize
+    SUBDIR += py-wagtail-transfer
     SUBDIR += py-waitress
     SUBDIR += py-webargs
     SUBDIR += py-webassets
@@ -2103,6 +2105,7 @@
     SUBDIR += rubygem-rack-protection1
     SUBDIR += rubygem-rack-protection2
     SUBDIR += rubygem-rack-proxy
+    SUBDIR += rubygem-rack-session
     SUBDIR += rubygem-rack-ssl
     SUBDIR += rubygem-rack-test
     SUBDIR += rubygem-rack-timeout
@@ -2258,6 +2261,7 @@
     SUBDIR += sqstat
     SUBDIR += squid
     SUBDIR += squid-devel
+    SUBDIR += squid-langpack
     SUBDIR += squid_radius_auth
     SUBDIR += squidanalyzer
     SUBDIR += squidclamav
@@ -2358,6 +2362,7 @@
     SUBDIR += unit-php
     SUBDIR += unit-python
     SUBDIR += unit-ruby
+    SUBDIR += unitc
     SUBDIR += uwebsockets
     SUBDIR += uwsgi
     SUBDIR += uwsgitop

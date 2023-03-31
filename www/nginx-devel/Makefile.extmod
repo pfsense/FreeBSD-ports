@@ -4,7 +4,7 @@ OPTIONS_GROUP+=	THIRDPARTYGRP
 # External modules (arrayvar MUST appear after devel_kit for build-dep)
 OPTIONS_GROUP_THIRDPARTYGRP=	AJP AWS_AUTH BROTLI CACHE_PURGE CLOJURE COOKIE_FLAG CT \
 	DEVEL_KIT ARRAYVAR DRIZZLE DYNAMIC_HC DYNAMIC_UPSTREAM ECHO ENCRYPTSESSION \
-	FORMINPUT GRIDFS HEADERS_MORE HTTP_ACCEPT_LANGUAGE HTTP_AUTH_DIGEST \
+	FIPS_CHECK FORMINPUT GRIDFS HEADERS_MORE HTTP_ACCEPT_LANGUAGE HTTP_AUTH_DIGEST \
 	HTTP_AUTH_KRB5 HTTP_AUTH_LDAP HTTP_AUTH_PAM HTTP_DAV_EXT HTTP_EVAL \
 	HTTP_FANCYINDEX HTTP_FOOTER HTTP_GEOIP2 HTTP_IP2LOCATION HTTP_IP2PROXY \
 	HTTP_JSON_STATUS HTTP_MOGILEFS HTTP_MP4_H264 HTTP_NOTICE HTTP_PUSH \
@@ -73,6 +73,9 @@ ENCRYPTSESSION_IMPLIES=		DEVEL_KIT
 ENCRYPTSESSION_GH_TUPLE=	openresty:encrypted-session-nginx-module:v0.09:encryptsession
 ENCRYPTSESSION_VARS=		DSO_EXTMODS+=encryptsession
 
+FIPS_CHECK_GH_TUPLE=	ogarrett:nginx-fips-check-module:6cb4270:fipscheck
+FIPS_CHECK_VARS=	DSO_EXTMODS+=fipscheck
+
 FORMINPUT_IMPLIES=	DEVEL_KIT
 FORMINPUT_GH_TUPLE=	calio:form-input-nginx-module:v0.12:forminput
 FORMINPUT_VARS=		DSO_EXTMODS+=forminput
@@ -82,7 +85,7 @@ GRIDFS_LIB_DEPENDS=	libbson-1.0.so:devel/libbson \
 			libmongoc-1.0.so:devel/mongo-c-driver
 GRIDFS_VARS=		DSO_EXTMODS+=gridfs GRIDFS_SUBDIR=/nginx-gridfs
 
-HEADERS_MORE_GH_TUPLE=		openresty:headers-more-nginx-module:d502e41:headers_more
+HEADERS_MORE_GH_TUPLE=		openresty:headers-more-nginx-module:33b646d:headers_more
 HEADERS_MORE_VARS=		DSO_EXTMODS+=headers_more
 
 HTTP_ACCEPT_LANGUAGE_GH_TUPLE=	dvershinin:nginx_accept_language_module:5683967:accept_language
@@ -247,7 +250,7 @@ NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 NAXSI_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-naxsi_runtime.c
 
-NJS_GH_TUPLE=		nginx:njs:0.7.10:njs
+NJS_GH_TUPLE=		nginx:njs:0.7.11:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 NJS_USES=		libedit
 
@@ -299,7 +302,7 @@ SFLOW_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_sflow_config.c \
 			${PATCHDIR}/extra-patch-ngx_http_sflow_config.h \
 			${PATCHDIR}/extra-patch-ngx_http_sflow_module.c
 
-SHIBBOLETH_GH_TUPLE=	nginx-shib:nginx-http-shibboleth:86489a3:shibboleth
+SHIBBOLETH_GH_TUPLE=	nginx-shib:nginx-http-shibboleth:be12df5:shibboleth
 SHIBBOLETH_VARS=	DSO_EXTMODS+=shibboleth
 
 SLOWFS_CACHE_GH_TUPLE=	baysao:ngx_slowfs_cache:d011a18:slowfs_cache

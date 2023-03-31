@@ -1,6 +1,6 @@
 PORTNAME=	openvsp
 DISTVERSIONPREFIX=	${GH_PROJECT}_
-DISTVERSION=	3.32.1
+DISTVERSION=	3.32.2
 CATEGORIES=	cad
 
 MAINTAINER=	fernape@FreeBSD.org
@@ -24,8 +24,14 @@ LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libfltk.so:x11-toolkits/fltk \
 		libcpptest.so:devel/cpptest
 
-USES=		compiler:c++11-lang cmake:noninja localbase\
+USES=		cmake:noninja localbase\
 		gl gnome jpeg xorg
+.if !exists(/usr/include/omp.h)
+CXXFLAGS+=	-fpermissive
+USES+=		compiler:gcc-c++11-lib
+.else
+USES+=		compiler:c++11-lang 
+.endif
 USE_GITHUB=	yes
 GH_ACCOUNT=	${GH_PROJECT}
 GH_PROJECT=	OpenVSP

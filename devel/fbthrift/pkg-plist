@@ -246,6 +246,7 @@ include/thrift/lib/cpp2/async/ServerChannel.h
 include/thrift/lib/cpp2/async/ServerGeneratorStream-inl.h
 include/thrift/lib/cpp2/async/ServerGeneratorStream.h
 include/thrift/lib/cpp2/async/ServerPublisherStream.h
+include/thrift/lib/cpp2/async/ServerRequestData.h
 include/thrift/lib/cpp2/async/ServerSinkBridge.h
 include/thrift/lib/cpp2/async/ServerStream-inl.h
 include/thrift/lib/cpp2/async/ServerStream.h
@@ -260,7 +261,6 @@ include/thrift/lib/cpp2/async/TwoWayBridge.h
 include/thrift/lib/cpp2/async/tests/util/TestSinkService.h
 include/thrift/lib/cpp2/async/tests/util/TestStreamService.h
 include/thrift/lib/cpp2/async/tests/util/Util.h
-include/thrift/lib/cpp2/detail/BoxedIfLarge.h
 include/thrift/lib/cpp2/detail/meta.h
 include/thrift/lib/cpp2/frozen/FixedSizeStringHash.h
 include/thrift/lib/cpp2/frozen/Frozen.h
@@ -450,6 +450,7 @@ include/thrift/lib/cpp2/server/WeightedRequestPileQueue-inl.h
 include/thrift/lib/cpp2/server/WeightedRequestPileQueue.h
 include/thrift/lib/cpp2/server/peeking/PeekingManager.h
 include/thrift/lib/cpp2/server/peeking/TLSHelper.h
+include/thrift/lib/cpp2/server/test/util/MockServerConfigs.h
 include/thrift/lib/cpp2/test/Matcher.h
 include/thrift/lib/cpp2/test/MockCpp2ConnContext.h
 include/thrift/lib/cpp2/test/ProtoBufStructs-inl.h
@@ -546,6 +547,7 @@ include/thrift/lib/cpp2/type/detail/Name.h
 include/thrift/lib/cpp2/type/detail/NativeType.h
 include/thrift/lib/cpp2/type/detail/Runtime.h
 include/thrift/lib/cpp2/type/detail/Traits.h
+include/thrift/lib/cpp2/type/detail/TypeClassFromTypeTag.h
 include/thrift/lib/cpp2/type/detail/TypeInfo.h
 include/thrift/lib/cpp2/type/detail/TypeRegistry.h
 include/thrift/lib/cpp2/type/detail/Wrap.h

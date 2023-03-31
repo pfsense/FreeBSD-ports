@@ -1,6 +1,6 @@
 PORTNAME=	llvm
-DISTVERSION=	16.0.0rc3
-PORTREVISION=	0
+DISTVERSION=	16.0.0
+PORTREVISION=	1
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}${RCDIR}/
@@ -91,7 +91,7 @@ OPTIONS_DEFINE_amd64=	GOLD
 OPTIONS_DEFINE_powerpc=	GOLD
 OPTIONS_DEFINE_powerpc64=	GOLD
 OPTIONS_DEFINE_powerpc64le=	GOLD
-OPTIONS_DEFAULT=	BE_AMDGPU BE_STANDARD BE_WASM CLANG COMPILER_RT EXTRAS LIT LLD LLDB OPENMP PYCLANG
+OPTIONS_DEFAULT=	BE_AMDGPU BE_STANDARD BE_WASM CLANG COMPILER_RT EXTRAS LIT LLD LLDB MLIR OPENMP PYCLANG
 OPTIONS_DEFAULT_amd64=	GOLD
 OPTIONS_DEFAULT_powerpc=	GOLD
 OPTIONS_DEFAULT_powerpc64=	GOLD
@@ -117,7 +117,7 @@ BE_STANDARD_DESC=	All non-experimental backends
 BE_WASM_DESC=		WebAssembly backend (required by firefox via wasi)
 .for BE in FREEBSD NATIVE STANDARD
 BE_${BE}_PLIST_FILES=	${_BE_LIBS_${BE}:O:S/$/.a/:S|^|${LLVM_DIR}/lib/libLLVM|} \
-			${_BE_INCS_${BE}:S|^|${LLVM_DIR}/lib/clang/${LLVM_MAJOR}/include/|:N${LLVM_DIR}/lib/clang/${LLVM_RELEASE}/include/$}
+			${_BE_INCS_${BE}:S|^|${LLVM_DIR}/lib/clang/${LLVM_MAJOR}/include/|:N${LLVM_DIR}/lib/clang/${LLVM_MAJOR}/include/$}
 .endfor
 CLANG_DESC=	Build clang
 CLANG_CMAKE_ON=		-DCLANG_DEFAULT_OPENMP_RUNTIME=libomp
@@ -132,8 +132,7 @@ CLANG_SUB_LIST=		XCC=clang${LLVM_SUFFIX} \
 CLANG_USE=		GNOME=libxml2
 COMPILER_RT_DESC=	Sanitizer libraries
 COMPILER_RT_CMAKE_ON=	-DCOMPILER_RT_INSTALL_PATH=${LLVM_PREFIX}/lib/clang/${LLVM_RELEASE}
-COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS} \
-			${COMPILER_RT_IGNORELISTS:S|^|${_CRTILDIR}/|}
+COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS}
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
 DOCS_CONFLICTS_BUILD=	cmark
@@ -225,10 +224,6 @@ FLANG_PATTERN=	${FLANG_COMMANDS:S/^/bin./:tW:C/  */|/g}|flang|libFIR|libFortran|
 MLIR_PATTERN=	${MLIR_COMMANDS:S/^/bin./:tW:C/  */|/g}|mlir|libMLIR|obj.MLIRCAP
 
 .include <bsd.port.options.mk>
-
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-clang_lib_Driver_ToolChains_Clang.cpp
-.endif
 
 # keep in sync with /usr/src/lib/clang/clang.build.mk
 # ----------- start of sync block ------------------
@@ -324,7 +319,7 @@ FREEBSD_BACKENDS=	${_FREEBSD_BACKENDS}
 .if ${ARCH} == amd64
 _NATIVE_BACKENDS=	X86
 .elif ${ARCH} == aarch64
-_NATIVE_BACKENDS=	AArch64
+_NATIVE_BACKENDS=	AArch64 ARM
 .elif ${ARCH:Marmv*}
 _NATIVE_BACKENDS=	ARM
 .elif ${ARCH} == i386
@@ -406,6 +401,9 @@ COMPILER_RT_ARCHS=	riscv64
 
 _CRTBASEDIR=	${LLVM_DIR}/lib/clang/${LLVM_MAJOR}
 _CRTILDIR=	${_CRTBASEDIR}/share
+.if ${ARCH} != powerpc
+COMPILER_RT_PLIST_FILES+=	${COMPILER_RT_IGNORELISTS:S|^|${_CRTILDIR}/|}
+.endif
 _CRTLIBDIR=	${_CRTBASEDIR}/lib
 
 .include "Makefile.RUNTIMES"

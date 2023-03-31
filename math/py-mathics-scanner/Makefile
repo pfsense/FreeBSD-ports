@@ -1,5 +1,5 @@
 PORTNAME=	Mathics_Scanner
-PORTVERSION=	1.2.4
+PORTVERSION=	1.3.0
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -31,9 +31,6 @@ MAKE_ENV+=	PYTHON=${PYTHON_CMD}
 PLIST_SUB+=	VER=${PORTVERSION}
 TEST_TARGET=	check
 TEST_ENV=	${MAKE_ENV}
-
-pre-configure:
-	${CP} ${FILESDIR}/named-characters.yml ${WRKSRC}/mathics_scanner/data/
 
 do-test: install
 	(cd ${TEST_WRKSRC} &&	\

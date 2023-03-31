@@ -12,6 +12,7 @@
     SUBDIR += berry
     SUBDIR += blackbox
     SUBDIR += bspwm
+    SUBDIR += bspwm-devel
     SUBDIR += cage
     SUBDIR += cagebreak
     SUBDIR += chamfer
@@ -47,7 +48,6 @@
     SUBDIR += hs-xmonad
     SUBDIR += hyprland
     SUBDIR += i3
-    SUBDIR += i3-gaps
     SUBDIR += icewm
     SUBDIR += ittywm
     SUBDIR += jewel
@@ -101,6 +101,7 @@
     SUBDIR += stumpwm
     SUBDIR += subtle
     SUBDIR += sway
+    SUBDIR += swayfx
     SUBDIR += tinywm
     SUBDIR += transset
     SUBDIR += treewm

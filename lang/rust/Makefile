@@ -1,5 +1,5 @@
 PORTNAME=	rust
-PORTVERSION?=	1.67.1
+PORTVERSION?=	1.68.2
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
@@ -69,8 +69,8 @@ WASM_VARS=		_COMPONENTS+="rust-analysis-${_PACKAGE_VERS}-wasm32-unknown-unknown 
 WASM_VARS_OFF=		_RUST_BUILD_WASM=false
 
 # See WRKSRC/src/stage0.json for the date and version values
-BOOTSTRAPS_DATE?=		2023-01-10
-RUST_BOOTSTRAP_VERSION?=	1.66.0
+BOOTSTRAPS_DATE?=		2023-02-09
+RUST_BOOTSTRAP_VERSION?=	1.67.1
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 
@@ -137,9 +137,7 @@ _COMPONENTS+=	rustc-dev-${_PACKAGE_VERS}-${_RUST_TARGET}
 # anyway...
 .if exists(${PATCHDIR}/no-hardlinks)
 _KERN_OSRELDATE!=	${SYSCTL} -n kern.osreldate 2>/dev/null || echo 0
-.  if ${_KERN_OSRELDATE} >= 1400040
-.  elif ${_KERN_OSRELDATE} >= 1300521
-.  else
+.  if ${_KERN_OSRELDATE} < 1300521
 EXTRA_PATCHES+=		${PATCHDIR}/no-hardlinks
 .  endif
 .endif

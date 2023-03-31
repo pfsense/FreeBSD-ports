@@ -56,7 +56,6 @@
     SUBDIR += apache-xmlbeans
     SUBDIR += apertium
     SUBDIR += apertium-eng
-    SUBDIR += artha
     SUBDIR += asciidoc
     SUBDIR += asm-xml
     SUBDIR += asm2html
@@ -104,6 +103,7 @@
     SUBDIR += clucene
     SUBDIR += cmark
     SUBDIR += coccigrep
+    SUBDIR += code-minimap
     SUBDIR += code2html
     SUBDIR += codesearch
     SUBDIR += codespell
@@ -204,6 +204,7 @@
     SUBDIR += fcitx5
     SUBDIR += fcitx5-configtool
     SUBDIR += fcitx5-gtk
+    SUBDIR += fcitx5-gtk-common
     SUBDIR += fcitx5-lua
     SUBDIR += fcitx5-m17n
     SUBDIR += fcitx5-qt
@@ -1309,6 +1310,7 @@
     SUBDIR += py-csvkit
     SUBDIR += py-custom_inherit
     SUBDIR += py-dbfread
+    SUBDIR += py-dialect
     SUBDIR += py-dict2xml
     SUBDIR += py-diff-match-patch
     SUBDIR += py-docrepr
@@ -1500,7 +1502,6 @@
     SUBDIR += py-rss2gen
     SUBDIR += py-rst2ansi
     SUBDIR += py-rst2html5
-    SUBDIR += py-rstfmt
     SUBDIR += py-scour
     SUBDIR += py-sentencepiece
     SUBDIR += py-simplebayes
@@ -1781,6 +1782,7 @@
     SUBDIR += rubygem-phone
     SUBDIR += rubygem-pretty-xml
     SUBDIR += rubygem-psych
+    SUBDIR += rubygem-psych3
     SUBDIR += rubygem-puppet-strings
     SUBDIR += rubygem-raabro
     SUBDIR += rubygem-rails-dom-testing

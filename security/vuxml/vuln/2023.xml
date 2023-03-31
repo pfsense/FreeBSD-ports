@@ -1,3 +1,1100 @@
+  <vuln vid="54006796-cf7b-11ed-a5d5-001b217b3468">
+    <topic>Gitlab -- Multiple Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>15.10.0</ge><lt>15.10.1</lt></range>
+	<range><ge>15.9.0</ge><lt>15.9.4</lt></range>
+	<range><ge>8.1</ge><lt>15.8.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2023/03/30/security-release-gitlab-15-10-1-released/">
+	  <p>Cross-site scripting in "Maximum page reached" page</p>
+	  <p>Private project guests can read new changes using a fork</p>
+	  <p>Mirror repository error reveals password in Settings UI</p>
+	  <p>DOS and high resource consumption of Prometheus server through abuse of Prometheus integration proxy endpoint</p>
+	  <p>Unauthenticated users can view Environment names from public projects limited to project members only</p>
+	  <p>Copying information to the clipboard could lead to the execution of unexpected commands</p>
+	  <p>Maintainer can leak masked webhook secrets by adding a new parameter to the webhook URL</p>
+	  <p>Arbitrary HTML injection possible when :soft_email_confirmation feature flag is enabled in the latest release</p>
+	  <p>Framing of arbitrary content (leading to open redirects) on any page allowing user controlled markdown</p>
+	  <p>MR for security reports are available to everyone</p>
+	  <p>API timeout when searching for group issues</p>
+	  <p>Unauthorised user can add child epics linked to victim's epic in an unrelated group</p>
+	  <p>GitLab search allows to leak internal notes</p>
+	  <p>Ambiguous branch name exploitation in GitLab</p>
+	  <p>Improper permissions checks for moving an issue</p>
+	  <p>Private project branches names can be leaked through a fork</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-3513</cvename>
+      <cvename>CVE-2023-0485</cvename>
+      <cvename>CVE-2023-1098</cvename>
+      <cvename>CVE-2023-1733</cvename>
+      <cvename>CVE-2023-0319</cvename>
+      <cvename>CVE-2023-1708</cvename>
+      <cvename>CVE-2023-0838</cvename>
+      <cvename>CVE-2023-0523</cvename>
+      <cvename>CVE-2023-0155</cvename>
+      <cvename>CVE-2023-1167</cvename>
+      <cvename>CVE-2023-1417</cvename>
+      <cvename>CVE-2023-1710</cvename>
+      <cvename>CVE-2023-0450</cvename>
+      <cvename>CVE-2023-1071</cvename>
+      <cvename>CVE-2022-3375</cvename>
+      <url>https://about.gitlab.com/releases/2023/03/30/security-release-gitlab-15-10-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-30</discovery>
+      <entry>2023-03-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6bd2773c-cf1a-11ed-bd44-080027f5fec9">
+    <topic>rubygem-time -- ReDoS vulnerability</topic>
+    <affects>
+      <package>
+	<name>ruby</name>
+	<range><ge>2.7.0,1</ge><lt>2.7.8,1</lt></range>
+	<range><ge>3.0.0,1</ge><lt>3.0.6,1</lt></range>
+	<range><ge>3.1.0,1</ge><lt>3.1.4,1</lt></range>
+	<range><ge>3.2.0.p1,1</ge><lt>3.2.2,1</lt></range>
+      </package>
+      <package>
+	<name>ruby27</name>
+	<range><ge>2.7.0,1</ge><lt>2.7.8,1</lt></range>
+      </package>
+      <package>
+	<name>ruby30</name>
+	<range><ge>3.0.0,1</ge><lt>3.0.6,1</lt></range>
+      </package>
+      <package>
+	<name>ruby31</name>
+	<range><ge>3.1.0,1</ge><lt>3.1.4,1</lt></range>
+      </package>
+      <package>
+	<name>ruby32</name>
+	<range><ge>3.2.0.p1,1</ge><lt>3.2.2,1</lt></range>
+      </package>
+      <package>
+	<name>rubygem-time</name>
+	<range><lt>0.2.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>ooooooo_q reports:</p>
+	<blockquote cite="https://www.ruby-lang.org/en/news/2023/03/30/redos-in-time-cve-2023-28756/">
+	  <p>
+	    The Time parser mishandles invalid strings that have
+	    specific characters. It causes an increase in execution
+	    time for parsing strings to Time objects.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28756</cvename>
+      <url>https://www.ruby-lang.org/en/news/2023/03/30/redos-in-time-cve-2023-28756/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-30</discovery>
+      <entry>2023-03-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9b60bba1-cf18-11ed-bd44-080027f5fec9">
+    <topic>rubygem-uri -- ReDoS vulnerability</topic>
+    <affects>
+      <package>
+	<name>ruby</name>
+	<range><ge>2.7.0,1</ge><lt>2.7.8,1</lt></range>
+	<range><ge>3.0.0,1</ge><lt>3.0.6,1</lt></range>
+	<range><ge>3.1.0,1</ge><lt>3.1.4,1</lt></range>
+	<range><ge>3.2.0.p1,1</ge><lt>3.2.2,1</lt></range>
+      </package>
+      <package>
+	<name>ruby27</name>
+	<range><ge>2.7.0,1</ge><lt>2.7.8,1</lt></range>
+      </package>
+      <package>
+	<name>ruby30</name>
+	<range><ge>3.0.0,1</ge><lt>3.0.6,1</lt></range>
+      </package>
+      <package>
+	<name>ruby31</name>
+	<range><ge>3.1.0,1</ge><lt>3.1.4,1</lt></range>
+      </package>
+      <package>
+	<name>ruby32</name>
+	<range><ge>3.2.0.p1,1</ge><lt>3.2.2,1</lt></range>
+      </package>
+      <package>
+	<name>rubygem-uri</name>
+	<range><lt>0.12.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Dominic Couture reports:</p>
+	<blockquote cite="https://www.ruby-lang.org/en/news/2023/03/28/redos-in-uri-cve-2023-28755/">
+	  <p>
+	    A ReDoS issue was discovered in the URI component. The URI
+	    parser mishandles invalid URLs that have specific
+	    characters. It causes an increase in execution time for
+	    parsing strings to URI objects.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28755</cvename>
+      <url>https://www.ruby-lang.org/en/news/2023/03/28/redos-in-uri-cve-2023-28755/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-28</discovery>
+      <entry>2023-03-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="dc33795f-ced7-11ed-b1fe-6805ca2fa271">
+    <topic>powerdns-recursor -- denial of service</topic>
+    <affects>
+      <package>
+	<name>powerdns-recursor</name>
+	<range><lt>4.8.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>PowerDNS Team reports:</p>
+	<blockquote cite="https://blog.powerdns.com/2023/03/29/security-advisory-2023-02-for-powerdns-recursor-up-to-and-including-4-6-5-4-7-4-and-4-8-3/">
+	  <p>PowerDNS Security Advisory 2023-02: Deterred spoofing attempts
+	    can lead to authoritative servers being marked unavailable</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-26437</cvename>
+      <url>https://doc.powerdns.com/recursor/security-advisories/powerdns-advisory-2023-02.html</url>
+    </references>
+    <dates>
+      <discovery>2023-03-29</discovery>
+      <entry>2023-03-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="96d84238-b500-490b-b6aa-2b77090a0410">
+    <topic>xorg-server -- Overlay Window Use-After-Free</topic>
+    <affects>
+      <package>
+	<name>xorg-server</name>
+	<name>xephyr</name>
+	<name>xorg-vfbserver</name>
+	<range><lt>21.1.8,1</lt></range>
+      </package>
+      <package>
+	<name>xorg-nestserver</name>
+	<range><lt>21.1.8,2</lt></range>
+      </package>
+      <package>
+	<name>xwayland</name>
+	<range><ge>23.0.0,1</ge><lt>23.1.1,1</lt></range>
+	<range><lt>22.1.9,1</lt></range>
+      </package>
+      <package>
+	<name>xwayland-devel</name>
+	<range><lt>21.0.99.1.439</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.Org project reports:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg-announce/2023-March/003374.html">
+	  <ul>
+	    <li>ZDI-CAN-19866/CVE-2023-1393: X.Org Server Overlay Window Use-After-Free
+	    Local Privilege Escalation Vulnerability
+
+	    <p>If a client explicitly destroys the compositor overlay window (aka COW),
+	    the Xserver would leave a dangling pointer to that window in the CompScreen
+	    structure, which will trigger a use-after-free later.</p></li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://lists.x.org/archives/xorg-announce/2023-March/003374.html</url>
+      <cvename>CVE-2023-1393</cvename>
+    </references>
+    <dates>
+      <discovery>2023-03-29</discovery>
+      <entry>2023-03-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="425b9538-ce5f-11ed-ade3-d4c9ef517024">
+    <topic>OpenSSL -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>openssl</name>
+	<range><lt>1.1.1t,1_2</lt></range>
+      </package>
+      <package>
+	<name>openssl30</name>
+	<range><lt>3.0.8_2</lt></range>
+      </package>
+      <package>
+	<name>openssl31</name>
+	<range><lt>3.1.0_2</lt></range>
+      </package>
+      <package>
+	<name>openssl-quic</name>
+	<range><lt>3.0.8_2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenSSL project reports:</p>
+	<blockquote cite="https://www.openssl.org/news/secadv/20230328.txt">
+	  <p>Severity: low</p>
+	  <p>Applications that use a non-default option when verifying certificates may be
+	    vulnerable to an attack from a malicious CA to circumvent certain checks.</p>
+	  <p>The function X509_VERIFY_PARAM_add0_policy() is documented to
+	    implicitly enable the certificate policy check when doing certificate
+	    verification. However the implementation of the function does not
+	    enable the check which allows certificates with invalid or incorrect
+	    policies to pass the certificate verification.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-0465</cvename>
+      <cvename>CVE-2023-0466</cvename>
+      <url>https://www.openssl.org/news/secadv/20230328.txt</url>
+    </references>
+    <dates>
+      <discovery>2023-03-28</discovery>
+      <entry>2023-03-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5b0ae405-cdc7-11ed-bb39-901b0e9408dc">
+    <topic>Matrix clients -- Prototype pollution in matrix-js-sdk</topic>
+    <affects>
+      <package>
+	<name>element-web</name>
+	<range><lt>1.11.26</lt></range>
+      </package>
+      <package>
+	<name>cinny</name>
+	<range><le>2.2.4</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Matrix developers report:</p>
+	<blockquote cite="https://matrix.org/blog/2023/03/28/security-releases-matrix-js-sdk-24-0-0-and-matrix-react-sdk-3-69-0">
+	  <p>Today we are issuing security releases of matrix-js-sdk and matrix-react-sdk
+	  to patch a pair of High severity vulnerabilities (CVE-2023-28427 /
+	  GHSA-mwq8-fjpf-c2gr for matrix-js-sdk and CVE-2023-28103 / GHSA-6g43-88cp-w5gv
+	  for matrix-react-sdk).</p>
+	  <p>The issues involve prototype pollution via events containing special strings
+	  in key locations, which can temporarily disrupt normal functioning of matrix-js-sdk
+	  and matrix-react-sdk, potentially impacting the consumer's ability to process data
+	  safely.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28103</cvename>
+      <cvename>CVE-2023-28427</cvename>
+      <url>https://matrix.org/blog/2023/03/28/security-releases-matrix-js-sdk-24-0-0-and-matrix-react-sdk-3-69-0</url>
+    </references>
+    <dates>
+      <discovery>2023-03-28</discovery>
+      <entry>2023-03-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6bacd9fd-ca56-11ed-bc52-589cfc0f81b0">
+    <topic>phpmyfaq -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>phpmyfaq</name>
+	<range><lt>3.1.12</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>phpmyfaq developers report:</p>
+	<blockquote cite="https://www.phpmyfaq.de/security/advisory-2023-03-20">
+	  <p>XSS</p>
+	  <p>weak passwords</p>
+	  <p>privilege escalation</p>
+	  <p>Captcha bypass</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://huntr.dev/bounties/e8109aed-d364-4c0c-9545-4de0347b10e1/</url>
+      <url>https://huntr.dev/bounties/39715aaf-e798-4c60-97c4-45f4f2cd5c61/</url>
+      <url>https://huntr.dev/bounties/01d6ae23-3a8f-42a8-99f4-10246187d71b/</url>
+      <url>https://huntr.dev/bounties/dda73cb6-9344-4822-97a1-2e31efb6a73e/</url>
+      <url>https://huntr.dev/bounties/529f2361-eb2e-476f-b7ef-4e561a712e28/</url>
+      <url>https://huntr.dev/bounties/1dc7f818-c8ea-4f80-b000-31b48a426334/</url>
+      <url>https://huntr.dev/bounties/e495b443-b328-42f5-aed5-d68b929b4cb9/</url>
+      <url>https://huntr.dev/bounties/ece5f051-674e-4919-b998-594714910f9e/</url>
+      <url>https://huntr.dev/bounties/93f981a3-231d-460d-a239-bb960e8c2fdc/</url>
+      <url>https://huntr.dev/bounties/e4a58835-96b5-412c-a17e-3ceed30231e1/</url>
+      <url>https://huntr.dev/bounties/b7d244b7-5ac3-4964-81ee-8dbb5bb5e33a/</url>
+      <url>https://huntr.dev/bounties/24c0a65f-0751-4ff8-af63-4b325ac8879f/</url>
+      <url>https://huntr.dev/bounties/3c2374cc-7082-44b7-a6a6-ccff7a650a3a/</url>
+      <url>https://huntr.dev/bounties/0854328e-eb00-41a3-9573-8da8f00e369c/</url>
+      <url>https://huntr.dev/bounties/2f1e417d-cf64-4cfb-954b-3a9cb2f38191/</url>
+      <url>https://huntr.dev/bounties/584a200a-6ff8-4d53-a3c0-e7893edff60c/</url>
+      <url>https://huntr.dev/bounties/bce84c02-abb2-474f-a67b-1468c9dcabb8/</url>
+      <url>https://huntr.dev/bounties/882ffa07-5397-4dbb-886f-4626859d711a/</url>
+      <url>https://huntr.dev/bounties/8ab09a1c-cfd5-4ce0-aae3-d33c93318957/</url>
+      <url>https://huntr.dev/bounties/2d0ac48a-490d-4548-8d98-7447042dd1b5/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-20</discovery>
+      <entry>2023-03-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1ba034fb-ca38-11ed-b242-d4c9ef517024">
+    <topic>OpenSSL -- Excessive Resource Usage Verifying X.509 Policy Constraints</topic>
+    <affects>
+      <package>
+	<name>openssl</name>
+	<range><lt>1.1.1t,1_1</lt></range>
+      </package>
+      <package>
+	<name>openssl30</name>
+	<range><lt>3.0.8_1</lt></range>
+      </package>
+      <package>
+	<name>openssl31</name>
+	<range><lt>3.1.0_1</lt></range>
+      </package>
+      <package>
+	<name>openssl-quic</name>
+	<range><lt>3.0.8_1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenSSL project reports:</p>
+	<blockquote cite="https://www.openssl.org/news/secadv/20230322.txt">
+	  <p>Severity: Low</p>
+	  <p>A security vulnerability has been identified in all supported versions
+	    of OpenSSL related to the verification of X.509 certificate chains
+	    that include policy constraints.  Attackers may be able to exploit this
+	    vulnerability by creating a malicious certificate chain that triggers
+	    exponential use of computational resources, leading to a denial-of-service
+	    (DoS) attack on affected systems.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-0464</cvename>
+      <url>https://www.openssl.org/news/secadv/20230322.txt</url>
+    </references>
+    <dates>
+      <discovery>2023-03-23</discovery>
+      <entry>2023-03-24</entry>
+      <modified>2023-03-24</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="2fdb053c-ca25-11ed-9d7e-080027f5fec9">
+    <topic>rack -- possible denial of service vulnerability in header parsing</topic>
+    <affects>
+      <package>
+	<name>rubygem-rack</name>
+	<range><lt>3.0.6.1,3</lt></range>
+      </package>
+      <package>
+	<name>rubygem-rack22</name>
+	<range><lt>2.2.6.6,3</lt></range>
+      </package>
+      <package>
+	<name>rubygem-rack16</name>
+	<range><lt>1.6.14</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>ooooooo_q reports:</p>
+	<blockquote cite="https://discuss.rubyonrails.org/t/cve-2023-27539-possible-denial-of-service-vulnerability-in-racks-header-parsing/82466">
+	  <p>
+	    Carefully crafted input can cause header parsing in Rack
+	    to take an unexpected amount of time, possibly resulting
+	    in a denial of service attack vector. Any applications
+	    that parse headers using Rack (virtually all Rails
+	    applications) are impacted.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-27539</cvename>
+      <url>https://discuss.rubyonrails.org/t/cve-2023-27539-possible-denial-of-service-vulnerability-in-racks-header-parsing/82466</url>
+    </references>
+    <dates>
+      <discovery>2023-03-13</discovery>
+      <entry>2023-03-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="dec6b8e9-c9fe-11ed-bb39-901b0e9408dc">
+    <topic>dino -- Insufficient message sender validation in Dino</topic>
+    <affects>
+      <package>
+	<name>dino</name>
+	<range><lt>0.4.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Dino team reports:</p>
+	<blockquote cite="https://dino.im/security/cve-2023-28686/">
+	  <p>Dino before 0.2.3, 0.3.x before 0.3.2, and 0.4.x before 0.4.2 allows
+	attackers to modify the personal bookmark store via a crafted
+	message.  The attacker can change the display of group chats or
+	force a victim to join a group chat; the victim may then be tricked
+	into disclosing sensitive information.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28686</cvename>
+      <url>https://dino.im/security/cve-2023-28686/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-23</discovery>
+      <entry>2023-03-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="38f213b6-8f3d-4067-91ef-bf14de7ba518">
+    <topic>libXpm -- Issues handling XPM files</topic>
+    <affects>
+      <package>
+	<name>libXpm</name>
+	<range><lt>3.5.15</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.Org project reports:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg-announce/2023-January/003312.html">
+	  <ol>
+	    <li>CVE-2022-46285: Infinite loop on unclosed comments
+
+	    <p>When reading XPM images from a file with libXpm 3.5.14 or older, if a
+	    comment in the file is not closed (i.e. a C-style comment starts with
+	    "/*" and is missing the closing "*/"), the ParseComment() function will
+	    loop forever calling getc() to try to read the rest of the comment,
+	    failing to notice that it has returned EOF, which may cause a denial of
+	    service to the calling program.</p>
+
+	    <p>This issue was found by Marco Ivaldi of the Humanativa Group's HN Security team.</p>
+
+	    <p>The fix is provided in
+	    https://gitlab.freedesktop.org/xorg/lib/libxpm/-/commit/a3a7c6dcc3b629d7650148</p></li>
+
+	    <li>CVE-2022-44617: Runaway loop on width of 0 and enormous height
+
+	    <p>When reading XPM images from a file with libXpm 3.5.14 or older, if a
+	    image has a width of 0 and a very large height, the ParsePixels() function
+	    will loop over the entire height calling getc() and ungetc() repeatedly,
+	    or in some circumstances, may loop seemingly forever, which may cause a denial
+	    of service to the calling program when given a small crafted XPM file to parse.</p>
+
+	    <p>This issue was found by Martin Ettl.</p>
+
+	    <p>The fix is provided in
+	    https://gitlab.freedesktop.org/xorg/lib/libxpm/-/commit/f80fa6ae47ad4a5beacb28
+	    and
+	    https://gitlab.freedesktop.org/xorg/lib/libxpm/-/commit/c5ab17bcc34914c0b0707d</p></li>
+
+	    <li>CVE-2022-4883: compression commands depend on $PATH
+
+	    <p>By default, on all platforms except MinGW, libXpm will detect if a filename
+	    ends in .Z or .gz, and will when reading such a file fork off an uncompress
+	    or gunzip command to read from via a pipe, and when writing such a file will
+	    fork off a compress or gzip command to write to via a pipe.</p>
+
+	    <p>In libXpm 3.5.14 or older these are run via execlp(), relying on $PATH
+	    to find the commands.  If libXpm is called from a program running with
+	    raised privileges, such as via setuid, then a malicious user could set
+	    $PATH to include programs of their choosing to be run with those privileges.</p>
+
+	    <p>This issue was found by Alan Coopersmith of the Oracle Solaris team.</p></li>
+	  </ol>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://lists.x.org/archives/xorg-announce/2023-January/003312.html</url>
+      <cvename>CVE-2022-46285</cvename>
+      <cvename>CVE-2022-44617</cvename>
+      <cvename>CVE-2022-4883</cvename>
+    </references>
+    <dates>
+      <discovery>2023-01-17</discovery>
+      <entry>2023-03-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1b15a554-c981-11ed-bb39-901b0e9408dc">
+    <topic>tailscale -- security vulnerability in Tailscale SSH</topic>
+    <affects>
+      <package>
+	<name>tailscale</name>
+	<range><lt>1.38.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tailscale team reports:</p>
+	<blockquote cite="https://tailscale.com/security-bulletins/#ts-2023-003">
+	  <p>A vulnerability identified in the implementation of Tailscale SSH in FreeBSD
+	  allowed commands to be run with a higher privilege group ID than that specified
+	  by Tailscale SSH access rules.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28436</cvename>
+      <url>https://tailscale.com/security-bulletins/#ts-2023-003</url>
+    </references>
+    <dates>
+      <discovery>2023-03-22</discovery>
+      <entry>2023-03-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c8b334e0-6e83-4575-81d1-f9d5803ceb07">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>111.0.5563.110</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>111.0.5563.110</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/03/stable-channel-update-for-desktop_21.html">
+	 <p>This update includes 8 security fixes:</p>
+	 <ul>
+	   <li>[1421773] High CVE-2023-1528: Use after free in Passwords. Reported by Wan Choi of Seoul National University on 2023-03-07</li>
+	   <li>[1419718] High CVE-2023-1529: Out of bounds memory access in WebHID. Reported by anonymous on 2023-02-27</li>
+	   <li>[1419831] High CVE-2023-1530: Use after free in PDF. Reported by The UK's National Cyber Security Centre (NCSC) on 2023-02-27</li>
+	   <li>[1415330] High CVE-2023-1531: Use after free in ANGLE. Reported by Piotr Bania of Cisco Talos on 2023-02-13</li>
+	   <li>[1421268] High CVE-2023-1532: Out of bounds read in GPU Video. Reported by Mark Brand of Google Project Zero on 2023-03-03</li>
+	   <li>[1422183] High CVE-2023-1533: Use after free in WebProtect. Reported by Weipeng Jiang (@Krace) of VRI on 2023-03-07</li>
+	   <li>[1422594] High CVE-2023-1534: Out of bounds read in ANGLE. Reported by Jann Horn and Mark Brand of Google Project Zero on 2023-03-08</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-1528</cvename>
+      <cvename>CVE-2023-1529</cvename>
+      <cvename>CVE-2023-1530</cvename>
+      <cvename>CVE-2023-1531</cvename>
+      <cvename>CVE-2023-1532</cvename>
+      <cvename>CVE-2023-1533</cvename>
+      <cvename>CVE-2023-1534</cvename>
+      <url>https://chromereleases.googleblog.com/2023/03/stable-channel-update-for-desktop_21.html</url>
+    </references>
+    <dates>
+      <discovery>2023-03-21</discovery>
+      <entry>2023-03-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a60cc0e4-c7aa-11ed-8a4b-080027f5fec9">
+    <topic>redis -- specially crafted MSETNX command can lead to denial-of-service</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><lt>7.0.10</lt></range>
+      </package>
+      <package>
+	<name>redis-devel</name>
+	<range><lt>7.0.10.20230320</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Yupeng Yang reports:</p>
+	<blockquote cite="https://github.com/redis/redis/security/advisories/GHSA-mvmm-4vq6-vw8c">
+	  <p>
+	    Authenticated users can use the MSETNX command to trigger
+	    a runtime assertion and termination of the Redis server
+	    process.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28425</cvename>
+      <url>https://github.com/redis/redis/security/advisories/GHSA-mvmm-4vq6-vw8c</url>
+    </references>
+    <dates>
+      <discovery>2023-03-20</discovery>
+      <entry>2023-03-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0d7d104c-c6fb-11ed-8a4b-080027f5fec9">
+    <topic>curl -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><lt>8.0.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Harry Sintonen reports:</p>
+	<blockquote cite="https://curl.se/docs/security.html">
+	  <dl>
+	    <dt>CVE-2023-27533</dt>
+	    <dd>
+	      curl supports communicating using the TELNET protocol
+	      and as a part of this it offers users to pass on user
+	      name and &quot;telnet options&quot; for the server
+	      negotiation.
+
+	      Due to lack of proper input scrubbing and without it
+	      being the documented functionality, curl would pass on
+	      user name and telnet options to the server as
+	      provided. This could allow users to pass in carefully
+	      crafted content that pass on content or do option
+	      negotiation without the application intending to do
+	      so. In particular if an application for example allows
+	      users to provide the data or parts of the data.
+	    </dd>
+	    <dt>CVE-2023-27534</dt>
+	    <dd>
+	      curl supports SFTP transfers. curl's SFTP implementation
+	      offers a special feature in the path component of URLs:
+	      a tilde (~) character as the first path element in the
+	      path to denotes a path relative to the user's home
+	      directory. This is supported because of wording in the
+	      once proposed to-become RFC draft that was to dictate
+	      how SFTP URLs work.
+
+	      Due to a bug, the handling of the tilde in SFTP path did
+	      however not only replace it when it is used stand-alone
+	      as the first path element but also wrongly when used as
+	      a mere prefix in the first element.
+
+	      Using a path like /~2/foo when accessing a server using
+	      the user dan (with home directory /home/dan) would then
+	      quite surprisingly access the file /home/dan2/foo.
+
+	      This can be taken advantage of to circumvent filtering
+	      or worse.
+	    </dd>
+	    <dt>CVE-2023-27535</dt>
+	    <dd>
+	      libcurl would reuse a previously created FTP connection
+	      even when one or more options had been changed that
+	      could have made the effective user a very different one,
+	      thus leading to the doing the second transfer with wrong
+	      credentials.
+
+	      libcurl keeps previously used connections in a
+	      connection pool for subsequent transfers to reuse if one
+	      of them matches the setup. However, several FTP settings
+	      were left out from the configuration match checks,
+	      making them match too easily. The settings in questions
+	      are CURLOPT_FTP_ACCOUNT,
+	      CURLOPT_FTP_ALTERNATIVE_TO_USER, CURLOPT_FTP_SSL_CCC and
+	      CURLOPT_USE_SSL level.
+	    </dd>
+	    <dt>CVE-2023-27536</dt>
+	    <dd>
+	      ibcurl would reuse a previously created connection even
+	      when the GSS delegation (CURLOPT_GSSAPI_DELEGATION)
+	      option had been changed that could have changed the
+	      user's permissions in a second transfer.
+
+	      libcurl keeps previously used connections in a
+	      connection pool for subsequent transfers to reuse if one
+	      of them matches the setup. However, this GSS delegation
+	      setting was left out from the configuration match
+	      checks, making them match too easily, affecting
+	      krb5/kerberos/negotiate/GSSAPI transfers.
+	    </dd>
+	    <dt>CVE-2023-27537</dt>
+	    <dd>
+	      libcurl supports sharing HSTS data between separate
+	      "handles". This sharing was introduced without
+	      considerations for do this sharing across separate
+	      threads but there was no indication of this fact in the
+	      documentation.
+
+	      Due to missing mutexes or thread locks, two threads
+	      sharing the same HSTS data could end up doing a
+	      double-free or use-after-free.
+	    </dd>
+	    <dt>CVE-2023-27538</dt>
+	    <dd>
+	      libcurl would reuse a previously created connection even
+	      when an SSH related option had been changed that should
+	      have prohibited reuse.
+
+	      libcurl keeps previously used connections in a
+	      connection pool for subsequent transfers to reuse if one
+	      of them matches the setup. However, two SSH settings
+	      were left out from the configuration match checks,
+	      making them match too easily.
+	    </dd>
+	  </dl>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-27533</cvename>
+      <cvename>CVE-2023-27534</cvename>
+      <cvename>CVE-2023-27535</cvename>
+      <cvename>CVE-2023-27536</cvename>
+      <cvename>CVE-2023-27537</cvename>
+      <cvename>CVE-2023-27538</cvename>
+      <url>https://curl.se/docs/security.html</url>
+    </references>
+    <dates>
+      <discovery>2023-03-20</discovery>
+      <entry>2023-03-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="72583cb3-a7f9-11ed-bd9e-589cfc0f81b0">
+    <topic>phpMyAdmin -- XSS vulnerability in drag-and-drop upload</topic>
+    <affects>
+      <package>
+	<name>phpMyAdmin</name>
+	<name>phpMyAdmin-php80</name>
+	<name>phpMyAdmin-php81</name>
+	<name>phpMyAdmin-php82</name>
+	<name>phpMyAdmin5</name>
+	<name>phpMyAdmin5-php80</name>
+	<name>phpMyAdmin5-php81</name>
+	<name>phpMyAdmin5-php82</name>
+	<range><lt>4.9.11</lt></range>
+	<range><ge>5.0</ge><lt>5.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>phpMyAdmin Team reports:</p>
+	<blockquote cite="https://www.phpmyadmin.net/news/2023/2/8/phpmyadmin-4911-and-521-are-released/">
+	  <p>PMASA-2023-1 XSS vulnerability in drag-and-drop upload</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.phpmyadmin.net/security/PMASA-2023-1/</url>
+    </references>
+    <dates>
+      <discovery>2023-02-07</discovery>
+      <entry>2023-03-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8edeb3c1-bfe7-11ed-96f5-3497f65b111b">
+    <topic>Apache httpd -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>apache24</name>
+	<range><lt>2.4.56</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Apache httpd project reports:</p>
+	<blockquote cite="https://downloads.apache.org/httpd/CHANGES_2.4.56">
+	  <ul>
+	    <li>CVE-2023-27522: Apache HTTP Server: mod_proxy_uwsgi
+	      HTTP response splitting (cve.mitre.org).
+	      HTTP Response Smuggling vulnerability in Apache HTTP Server
+	      via mod_proxy_uwsgi. This issue affects Apache HTTP Server:
+	      from 2.4.30 through 2.4.55.
+	      Special characters in the origin response header can
+	      truncate/split the response forwarded to the client.</li>
+	    <li>CVE-2023-25690: HTTP request splitting with mod_rewrite
+	      and mod_proxy (cve.mitre.org).
+	      Some mod_proxy configurations on Apache HTTP Server versions
+	      2.4.0 through 2.4.55 allow a HTTP Request Smuggling attack.
+	      Configurations are affected when mod_proxy is enabled along
+	      with some form of RewriteRule or ProxyPassMatch in which a
+	      non-specific pattern matches some portion of the user-supplied
+	      request-target (URL) data and is then re-inserted into the
+	      proxied request-target using variable substitution.
+	    </li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-25690</cvename>
+      <cvename>CVE-2023-27522</cvename>
+      <url>https://downloads.apache.org/httpd/CHANGES_2.4.56</url>
+    </references>
+    <dates>
+      <discovery>2023-03-08</discovery>
+      <entry>2023-03-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d357f6bb-0af4-4ac9-b096-eeec183ad829">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>111.0.5563.64</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>111.0.5563.64</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/03/stable-channel-update-for-desktop.html">
+	 <p>This update includes 40 security fixes:</p>
+	 <ul>
+	   <li>[1411210] High CVE-2023-1213: Use after free in Swiftshader. Reported by Jaehun Jeong(@n3sk) of Theori on 2023-01-30</li>
+	   <li>[1412487] High CVE-2023-1214: Type Confusion in V8. Reported by Man Yue Mo of GitHub Security Lab on 2023-02-03</li>
+	   <li>[1417176] High CVE-2023-1215: Type Confusion in CSS. Reported by Anonymous on 2023-02-17</li>
+	   <li>[1417649] High CVE-2023-1216: Use after free in DevTools. Reported by Ganjiang Zhou(@refrain_areu) of ChaMd5-H1 team on 2023-02-21</li>
+	   <li>[1412658] High CVE-2023-1217: Stack buffer overflow in Crash reporting. Reported by sunburst of Ant Group Tianqiong Security Lab on 2023-02-03</li>
+	   <li>[1413628] High CVE-2023-1218: Use after free in WebRTC. Reported by Anonymous on 2023-02-07</li>
+	   <li>[1415328] High CVE-2023-1219: Heap buffer overflow in Metrics. Reported by Sergei Glazunov of Google Project Zero on 2023-02-13</li>
+	   <li>[1417185] High CVE-2023-1220: Heap buffer overflow in UMA. Reported by Sergei Glazunov of Google Project Zero on 2023-02-17</li>
+	   <li>[1385343] Medium CVE-2023-1221: Insufficient policy enforcement in Extensions API. Reported by Ahmed ElMasry on 2022-11-16</li>
+	   <li>[1403515] Medium CVE-2023-1222: Heap buffer overflow in Web Audio API. Reported by Cassidy Kim(@cassidy6564) on 2022-12-24</li>
+	   <li>[1398579] Medium CVE-2023-1223: Insufficient policy enforcement in Autofill. Reported by Ahmed ElMasry on 2022-12-07</li>
+	   <li>[1403539] Medium CVE-2023-1224: Insufficient policy enforcement in Web Payments API. Reported by Thomas Orlita on 2022-12-25</li>
+	   <li>[1408799] Medium CVE-2023-1225: Insufficient policy enforcement in Navigation. Reported by Roberto Ffrench-Davis @Lihaft on 2023-01-20</li>
+	   <li>[1013080] Medium CVE-2023-1226: Insufficient policy enforcement in Web Payments API. Reported by Anonymous on 2019-10-10</li>
+	   <li>[1348791] Medium CVE-2023-1227: Use after free in Core. Reported by @ginggilBesel on 2022-07-31</li>
+	   <li>[1365100] Medium CVE-2023-1228: Insufficient policy enforcement in Intents. Reported by Axel Chong on 2022-09-18</li>
+	   <li>[1160485] Medium CVE-2023-1229: Inappropriate implementation in Permission prompts. Reported by Thomas Orlita on 2020-12-20</li>
+	   <li>[1404230] Medium CVE-2023-1230: Inappropriate implementation in WebApp Installs. Reported by Axel Chong on 2022-12-30</li>
+	   <li>[1274887] Medium CVE-2023-1231: Inappropriate implementation in Autofill. Reported by Yan Zhu, Brave on 2021-11-30</li>
+	   <li>[1346924] Low CVE-2023-1232: Insufficient policy enforcement in Resource Timing. Reported by Sohom Datta on 2022-07-24</li>
+	   <li>[1045681] Low CVE-2023-1233: Insufficient policy enforcement in Resource Timing. Reported by Soroush Karami on 2020-01-25</li>
+	   <li>[1404621] Low CVE-2023-1234: Inappropriate implementation in Intents. Reported by Axel Chong on 2023-01-03</li>
+	   <li>[1404704] Low CVE-2023-1235: Type Confusion in DevTools. Reported by raven at KunLun lab on 2023-01-03</li>
+	   <li>[1374518] Low CVE-2023-1236: Inappropriate implementation in Internals. Reported by Alesandro Ortiz on 2022-10-14</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-1213</cvename>
+      <cvename>CVE-2023-1214</cvename>
+      <cvename>CVE-2023-1215</cvename>
+      <cvename>CVE-2023-1216</cvename>
+      <cvename>CVE-2023-1217</cvename>
+      <cvename>CVE-2023-1218</cvename>
+      <cvename>CVE-2023-1219</cvename>
+      <cvename>CVE-2023-1220</cvename>
+      <cvename>CVE-2023-1221</cvename>
+      <cvename>CVE-2023-1222</cvename>
+      <cvename>CVE-2023-1223</cvename>
+      <cvename>CVE-2023-1224</cvename>
+      <cvename>CVE-2023-1225</cvename>
+      <cvename>CVE-2023-1226</cvename>
+      <cvename>CVE-2023-1227</cvename>
+      <cvename>CVE-2023-1228</cvename>
+      <cvename>CVE-2023-1229</cvename>
+      <cvename>CVE-2023-1230</cvename>
+      <cvename>CVE-2023-1231</cvename>
+      <cvename>CVE-2023-1232</cvename>
+      <cvename>CVE-2023-1233</cvename>
+      <cvename>CVE-2023-1234</cvename>
+      <cvename>CVE-2023-1235</cvename>
+      <cvename>CVE-2023-1236</cvename>
+      <url>https://chromereleases.googleblog.com/2023/03/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2023-03-08</discovery>
+      <entry>2023-03-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f68bb358-be8e-11ed-9215-00e081b7aa2d">
+    <topic>jenkins -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.394</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.387.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2023-03-08/">
+	  <h1>Description</h1>
+	  <h5>(High) SECURITY-3037 / CVE-2023-27898</h5>
+	  <p>XSS vulnerability in plugin manager</p>
+	  <h5>(Medium) SECURITY-3030 / CVE-2023-24998 (upstream issue), CVE-2023-27900 (MultipartFormDataParser), CVE-2023-27901 (StaplerRequest)</h5>
+	  <p>DoS vulnerability in bundled Apache Commons FileUpload library</p>
+	  <h5></h5>
+	  <h5>(Medium) SECURITY-1807 / CVE-2023-27902</h5>
+	  <p>Workspace temporary directories accessible through directory browser</p>
+	  <h5>(Low) SECURITY-3058 / CVE-2023-27903</h5>
+	  <p>Temporary file parameter created with insecure permissions</p>
+	  <h5>(Low) SECURITY-2120 / CVE-2023-27904</h5>
+	  <p>Information disclosure through error stack traces related to agents</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-27898</cvename>
+      <cvename>CVE-2023-24998</cvename>
+      <cvename>CVE-2023-27900</cvename>
+      <cvename>CVE-2023-27901</cvename>
+      <cvename>CVE-2023-27902</cvename>
+      <cvename>CVE-2023-27903</cvename>
+      <cvename>CVE-2023-27904</cvename>
+      <url>https://www.jenkins.io/security/advisory/2023-03-08/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-08</discovery>
+      <entry>2023-03-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="742279d6-bdbe-11ed-a179-2b68e9d12706">
+    <topic>go -- crypto/elliptic: incorrect P-256 ScalarMult and ScalarBaseMult results</topic>
+    <affects>
+      <package>
+	<name>go119</name>
+	<range><lt>1.19.7</lt></range>
+      </package>
+      <package>
+	<name>go120</name>
+	<range><lt>1.20.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://go.dev/issue/58647">
+	  <p>crypto/elliptic: incorrect P-256 ScalarMult and
+	    ScalarBaseMult results</p>
+	  <p>The ScalarMult and ScalarBaseMult methods of the P256
+	    Curve may return an incorrect result if called with some
+	    specific unreduced scalars (a scalar larger than the
+	    order of the curve).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-24532</cvename>
+      <url>https://groups.google.com/g/golang-dev/c/3wmx8i5WvNY/m/AEOlccrGAwAJ</url>
+    </references>
+    <dates>
+      <discovery>2023-02-22</discovery>
+      <entry>2023-03-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bed545c6-bdb8-11ed-bca8-a33124f1beb1">
+    <topic>mantis -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mantis-php74</name>
+	<name>mantis-php80</name>
+	<name>mantis-php81</name>
+	<name>mantis-php82</name>
+	<range><lt>2.25.6,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mantis 2.25.6 release reports:</p>
+	<blockquote cite="https://mantisbt.org/bugs/changelog_page.php?project=mantisbt&amp;version=2.25.6">
+	  <p>Security and maintenance release</p>
+	  <ul>
+	    <li>0031086: Private issue summary disclosure (CVE-2023-22476)</li>
+	    <li>0030772: Update (bundled) moment.js to 2.29.4 (CVE-2022-31129)</li>
+	    <li>0030791: Allow adding relation type noopener/noreferrer to outgoing links</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-22476</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=2023-22476</url>
+      <cvename>CVE-2022-31129</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=2022-31129</url>
+    </references>
+    <dates>
+      <discovery>2023-01-06</discovery>
+      <entry>2023-03-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6678211c-bd47-11ed-beb0-1c1b0d9ea7e6">
+    <topic>Apache OpenOffice -- master password vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>apache-openoffice</name>
+	<range><lt>4.1.13</lt></range>
+      </package>
+      <package>
+	<name>apache-openoffice-devel</name>
+	<range><lt>4.2.1678061694,4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Apache Openoffice project reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=2022-37400">
+	  <p>Apache OpenOffice supports the storage of passwords for web connections in the user's configuration database. The stored passwords are encrypted with a single master key provided by the user. A flaw in OpenOffice existed where the required initialization vector for encryption was always the same which weakens the security of the encryption making them vulnerable if an attacker has access to the user's configuration data. This issue affects: Apache OpenOffice versions prior to 4.1.13. Reference: CVE-2022-26306 - LibreOffice</p>
+	</blockquote>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=2022-37401">
+	  <p>Apache OpenOffice supports the storage of passwords for web connections in the user's configuration database. The stored passwords are encrypted with a single master key provided by the user. A flaw in OpenOffice existed where master key was poorly encoded resulting in weakening its entropy from 128 to 43 bits making the stored passwords vulnerable to a brute force attack if an attacker has access to the users stored config. This issue affects: Apache OpenOffice versions prior to 4.1.13. Reference: CVE-2022-26307 - LibreOffice</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-37400</cvename>
+      <cvename>CVE-2022-37401</cvename>
+      <url>https://cwiki.apache.org/confluence/display/OOOUSERS/AOO+4.1.13+Release+Notes</url>
+    </references>
+    <dates>
+      <discovery>2022-02-25</discovery>
+      <entry>2023-03-08</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="f0798a6a-bbdb-11ed-ba99-080027f5fec9">
     <topic>rack -- possible DoS vulnerability in multipart MIME parsing</topic>
     <affects>
@@ -7,7 +1104,7 @@
       </package>
       <package>
 	<name>rubygem-rack22</name>
-	<range><lt>2.2.6.6,3</lt></range>
+	<range><lt>2.2.6.3,3</lt></range>
       </package>
       <package>
 	<name>rubygem-rack16</name>

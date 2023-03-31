@@ -1,6 +1,6 @@
 PORTNAME=	libzen
 PORTVERSION=	0.4.40
-PORTREVISION=	1
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${MEDIAINFO_PORTVERSION}/ \

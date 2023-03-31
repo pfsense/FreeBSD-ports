@@ -292,6 +292,7 @@
     SUBDIR += libnitrokey
     SUBDIR += libntlm
     SUBDIR += libomemo
+    SUBDIR += libomemo-c
     SUBDIR += liboqs
     SUBDIR += libotr
     SUBDIR += libotr3
@@ -321,6 +322,7 @@
     SUBDIR += libzrtpcppcore
     SUBDIR += lime
     SUBDIR += linux-bitwarden-cli
+    SUBDIR += linux-c7-ca-certificates
     SUBDIR += linux-c7-cyrus-sasl2
     SUBDIR += linux-c7-gnutls
     SUBDIR += linux-c7-libgcrypt
@@ -404,14 +406,14 @@
     SUBDIR += openiked-portable
     SUBDIR += opensaml
     SUBDIR += opensc
-    SUBDIR += openscep
     SUBDIR += openssh-askpass
     SUBDIR += openssh-portable
     SUBDIR += openssl
     SUBDIR += openssl-agent
-    SUBDIR += openssl-devel
     SUBDIR += openssl-quictls
     SUBDIR += openssl-unsafe
+    SUBDIR += openssl30
+    SUBDIR += openssl31
     SUBDIR += openssl_tpm_engine
     SUBDIR += openvas
     SUBDIR += openvpn
@@ -420,7 +422,6 @@
     SUBDIR += openvpn-auth-radius
     SUBDIR += openvpn-auth-script
     SUBDIR += openvpn-devel
-    SUBDIR += openvpn25
     SUBDIR += ophcrack
     SUBDIR += opie
     SUBDIR += ossec-hids
@@ -718,6 +719,7 @@
     SUBDIR += pam_fprint
     SUBDIR += pam_google_authenticator
     SUBDIR += pam_helper
+    SUBDIR += pam_howdy
     SUBDIR += pam_jail
     SUBDIR += pam_kde
     SUBDIR += pam_krb5
@@ -729,6 +731,7 @@
     SUBDIR += pam_pkcs11
     SUBDIR += pam_pwdfile
     SUBDIR += pam_require
+    SUBDIR += pam_rssh
     SUBDIR += pam_script
     SUBDIR += pam_search_list
     SUBDIR += pam_ssh_agent_auth
@@ -817,7 +820,6 @@
     SUBDIR += plasma5-kwallet-pam
     SUBDIR += please
     SUBDIR += poly1305aes
-    SUBDIR += portsentry
     SUBDIR += proftpd-mod_clamav
     SUBDIR += proxycheck
     SUBDIR += proxytunnel
@@ -1062,6 +1064,7 @@
     SUBDIR += rubygem-digest
     SUBDIR += rubygem-digest-crc
     SUBDIR += rubygem-doorkeeper
+    SUBDIR += rubygem-doorkeeper562
     SUBDIR += rubygem-doorkeeper-openid_connect
     SUBDIR += rubygem-doorkeeper-rails5
     SUBDIR += rubygem-doorkeeper-rails50
@@ -1131,6 +1134,7 @@
     SUBDIR += rubygem-pundit61
     SUBDIR += rubygem-pyu-ruby-sasl
     SUBDIR += rubygem-rack-oauth2
+    SUBDIR += rubygem-rack-oauth21
     SUBDIR += rubygem-razorback-scriptNugget
     SUBDIR += rubygem-rbnacl
     SUBDIR += rubygem-rbnacl-libsodium
@@ -1264,7 +1268,6 @@
     SUBDIR += tclsasl
     SUBDIR += tcpcrypt
     SUBDIR += teleport
-    SUBDIR += teleport5
     SUBDIR += testssl.sh
     SUBDIR += tfhe
     SUBDIR += tfsec

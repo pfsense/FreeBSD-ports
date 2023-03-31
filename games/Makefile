@@ -28,7 +28,6 @@
     SUBDIR += abstreet
     SUBDIR += abuse_sdl
     SUBDIR += ace-of-penguins
-    SUBDIR += acm
     SUBDIR += adonthell
     SUBDIR += adonthell-wastesedge
     SUBDIR += aestats
@@ -273,7 +272,6 @@
     SUBDIR += flightgear-aircraft
     SUBDIR += flightgear-data
     SUBDIR += flightgear-mb339-pan
-    SUBDIR += flightgear-terragear
     SUBDIR += flobopuyo
     SUBDIR += flyhard
     SUBDIR += flying

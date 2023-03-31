@@ -1,6 +1,6 @@
 PORTNAME=	librewolf
 DISTVERSION=	109.0.1.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www wayland
 MASTER_SITES=	https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/${DISTVERSION:R}-2/
 DISTNAME=	${PORTNAME}-${DISTVERSION:R}-2.source.
@@ -92,10 +92,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/browser/app/nsBrowserApp.cpp
 	@${RM} ${WRKSRC}/mozconfig
-.if ${ARCH} == powerpc64
-	@${CP} ${PATCHDIR}/RustTabs.jsm ${WRKSRC}/toolkit/components/uniffi-bindgen-gecko-js/components/generated/RustTabs.jsm
-	@${CP} ${PATCHDIR}/UniFFIGeneratedScaffolding.cpp ${WRKSRC}/toolkit/components/uniffi-js/UniFFIGeneratedScaffolding.cpp
-.endif
 
 post-install:
 	${CP} ${FIREFOX_DESKTOP} ${STAGEDIR}${PREFIX}/share/applications/librewolf.desktop

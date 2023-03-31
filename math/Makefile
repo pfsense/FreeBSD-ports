@@ -389,7 +389,6 @@
     SUBDIR += hpipm
     SUBDIR += hptt
     SUBDIR += hs-Agda
-    SUBDIR += hs-penrose
     SUBDIR += hs-syfco
     SUBDIR += hsl
     SUBDIR += hydrogen
@@ -649,6 +648,7 @@
     SUBDIR += oink
     SUBDIR += oleo
     SUBDIR += onednn
+    SUBDIR += onednn252
     SUBDIR += openblas
     SUBDIR += openfst
     SUBDIR += openlibm

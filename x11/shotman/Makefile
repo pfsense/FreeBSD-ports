@@ -1,7 +1,7 @@
 PORTNAME=	shotman
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11 wayland
 MASTER_SITES=	https://git.sr.ht/~whynothugo/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 # XXX Teach USES=cargo to not override default DISTFILES
@@ -26,6 +26,9 @@ PLIST_FILES=	bin/${PORTNAME} \
 		share/bash-completion/completions/${PORTNAME} \
 		share/fish/vendor_completions.d/${PORTNAME}.fish \
 		share/zsh/site-functions/_${PORTNAME}
+
+# XXX https://github.com/rust-lang/cargo/issues/4101
+CARGO_INSTALL_PATH=	. ${PORTNAME}_completions
 
 OPTIONS_DEFINE=	MANPAGES SLURP
 OPTIONS_DEFAULT=MANPAGES SLURP

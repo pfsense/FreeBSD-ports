@@ -5,6 +5,116 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20230318:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 3.6 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
+20230315:
+  AFFECTS: users of lang/ruby30
+  AUTHOR: yasu@FreeBSD.org
+
+  The default ruby version has been updated from 3.0 to 3.1.
+
+  If you compile your own ports you may keep 3.0 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep ruby 3.0 as default version
+  #
+  DEFAULT_VERSIONS+=ruby=3.0
+
+  If you wish to update to the new default version, you need to first stop any
+  software that uses ruby. Then, you will need to follow these steps, depending
+  upon how you manage your system.
+
+  If you use pkg, simply upgrade:
+  # pkg upgrade
+
+  If you do not use pkg, please check entry 20190420.
+  The description there should also work for this version.
+
+20230314:
+  AFFECTS: users of security/openssl-devel
+  AUTHOR: brnrd@FreeBSD.org
+
+  Users using DEFAULT_VERSIONS=ssl=openssl-devel must update their
+  configuration to DEFAULT_VERSIUONS=ssl=openssl30 or openssl31.
+
+20230313:
+  AFFECTS: users of databases/sqlite3
+  AUTHOR: fuz@FreeBSD.org
+
+  Due to various ports not being prepared for this change (see 20230227
+  entry), the DQS option of databases/sqlite3 has been reenabled as a
+  stop gap measure.  It is scheduled to be disabled again for good no
+  earlier than 20240101, giving downstream software authors more time
+  to fix their queries.
+
+  See also: https://sqlite.org/quirks.html#dblquote
+
+20230311:
+  AFFECTS: users of net/dshell
+  AUTHOR: nobutaka@FreeBSD.org
+
+  net/dshell now depends on net/py-pcapy-ng instead of net/py-pcapy.
+  Because net/py-pcapy-ng conflicts with net/py-pcapy, please uninstall
+  py39-pcapy with the following command before upgrading:
+  # pkg delete -f py39-pcapy
+
+20230310:
+  AFFECTS: users of net-mgmt/unifi7
+  AUTHOR: otis@FreeBSD.org
+
+  The mongodb dependency has been changed from 36 to 44, as MongoDB 3.6
+  is long out out support and end of life.
+
+  The upgrade path should be as following:
+
+  1. Take a backup from within the unifi7 application PRIOR to
+     updating!
+
+  2. Stop the unifi7 service (if running)
+
+  3. Copy the "backup" directory from LOCALBASE/share/java/unifi/data
+     to a safe location. Also copy keystore and system.properties if
+     you have made any modifications to those files
+
+  4. Remove files and directories under LOCALBASE/share/java/unifi/data
+
+  5. Upgrade the package
+
+  6. Copy the "backup" directory from a safe location back to
+     LOCALBASE/share/java/unifi/data
+
+  7. Start the service
+
+  8. Restore the configuration from backup
+
+  As an optional step, review system.properties and keystore to merge any
+  manual modifications you have made (this has to be done with the application
+  stopped)
+
+20230310:
+  AFFECTS: user of benchmarks/ddosify
+  AUTHOR: fernape@FreeBSD.org
+
+  keep-alive is removed from config file. In default mode, the engine will use
+  keep-alive for all requests. If you want to disable keep-alive for a step, you
+  can add Connection: close header to the step.
+
 20230306:
   AFFECTS: users of www/qt5-webengine
   AUTHOR: kai@FreeBSD.org

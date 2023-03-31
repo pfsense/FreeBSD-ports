@@ -1,6 +1,6 @@
 PORTNAME=	mongodb-tools
-DISTVERSION=	100.6.1
-PORTREVISION=	4
+DISTVERSION=	100.7.0
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	ronald@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://docs.mongodb.com/database-tools/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 riscv64
 ONLY_FOR_ARCHS_REASON=	not yet ported to other architectures
 
 USES=		compiler:c++14-lang go localbase

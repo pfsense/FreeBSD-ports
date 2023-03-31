@@ -1,6 +1,7 @@
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.22.0
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	https://nodejs.org/download/release/v${NODE_VERSION}/:node
 PKGNAMESUFFIX=	-node
@@ -245,9 +246,7 @@ CARGO_CRATES=	addr2line-0.17.0 \
 		boring,boring-sys@git+https://github.com/signalapp/boring?branch=libsignal\#25e1dd8fa519ae90772008fbd4a284582096fece \
 		curve25519-dalek@git+https://github.com/signalapp/curve25519-dalek?branch=lizard2\#4f0aa6653c51598daa0a2f53b8ba54ce0eedfbdd
 
-MAKE_ENV=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron21 \
-		ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
-		HOME=${WRKDIR} \
+MAKE_ENV=	HOME=${WRKDIR} \
 		PYTHON=${PYTHON_CMD} \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
 

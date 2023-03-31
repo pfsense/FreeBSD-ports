@@ -31,6 +31,10 @@
 #			out possible values for this variable.
 #					default: ${PORTNAME}
 #
+#  HACKAGE_DISTNAME	Use this knob if PORTNAME or PORTVERSION doesn't match
+#			with package name and version on Hackage.
+#					default: ${PORTNAME}-${PORTVERSION}
+#
 #  opt_USE_CABAL	Variant of USE_CABAL to be used with options framework.
 #  opt_CABAL_FLAGS	Variant of CABAL_FLAGS to be used with options framework.
 #			Note that it works a bit differently from CABAL_FLAGS:
@@ -77,6 +81,12 @@ IGNORE=		CABAL_PROJECT: invalid value: ${CABAL_PROJECT}
 BROKEN=		${USE_CABAL:Mbasement-0.0.1[4-5]} package doesn't compile on i386
 .  endif
 
+.  if ${OSVERSION} >= 1301000 && ${OSVERSION} < 1302000 && defined(USE_CABAL) && ${USE_CABAL:Mtext-2.*}
+# Band-aids for a Clang bug that is shipped with FreeBSD 13.1
+BUILD_DEPENDS+=	clang15:devel/llvm15
+BUILD_ARGS+=	--ghc-options='-pgmc clang++15'
+.  endif
+
 PKGNAMEPREFIX?=	hs-
 
 CABAL_EXECUTABLES?=	${PORTNAME}
@@ -84,6 +94,7 @@ CABAL_EXECUTABLES?=	${PORTNAME}
 CABAL_CMD?=	cabal
 CABAL_PORT=	devel/hs-cabal-install
 CABAL_HOME=	${WRKDIR}/cabal-home
+CABAL_HOME_ENV=XDG_DATA_HOME=${CABAL_HOME} XDG_CONFIG_HOME=${CABAL_HOME} XDG_CACHE_HOME=${CABAL_HOME} HOME=${CABAL_HOME}
 CABAL_LIBEXEC=	libexec/cabal
 CABAL_EXTRACT_SUFX=	.tar.gz
 CABAL_ARCH=	${ARCH:S/amd64/x86_64/:C/armv.*/arm/:S/powerpc64/ppc64/}
@@ -123,13 +134,20 @@ _hackage_is_default=	yes
 _hackage_is_default=	no
 .  endif
 
-MASTER_SITES+=	https://hackage.haskell.org/package/${_hackage_group} \
-		http://hackage.haskell.org/package/${_hackage_group}
+.  if defined(HACKAGE_DISTNAME) && ${_hackage_is_default} == no
+IGNORE=		HACKAGE_DISTNAME is set, but it makes no sense if the default MASTER_SITES isn't HACKAGE
+.  endif
+
+MASTER_SITES+=		HACKAGE/${_hackage_group}
+.  if defined(HACKAGE_DISTNAME)
+WRKSRC?=		${WRKDIR}/${HACKAGE_DISTNAME}
+.  endif
+HACKAGE_DISTNAME?=	${PORTNAME}-${PORTVERSION}
 
 .  if ${_hackage_is_default} == yes
-DISTFILES+=	${PORTNAME}-${PORTVERSION}/${PORTNAME}-${PORTVERSION}${CABAL_EXTRACT_SUFX}
+DISTFILES+=	${HACKAGE_DISTNAME}/${HACKAGE_DISTNAME}${CABAL_EXTRACT_SUFX}
 .    ifdef CABAL_REVISION
-DISTFILES+=	${PORTNAME}-${PORTVERSION}/revision/${CABAL_REVISION}.cabal
+DISTFILES+=	${HACKAGE_DISTNAME}/revision/${CABAL_REVISION}.cabal
 .    endif
 .  else
 _hackage_group=	:cabal_mk_hackage
@@ -173,7 +191,7 @@ EXTRACT_ONLY+= ${_CABAL_EXTRACT_ONLY}
 
 .  if defined(CABAL_REPOSITORIES) && !empty(CABAL_REPOSITORIES)
 .    for r in ${CABAL_REPOSITORIES}
-CABAL2TUPLE_ARGS+=	--group=${r} --master-site=${MASTER_SITES:M*\:${r}:[1]:S/:${r}//}
+CABAL2TUPLE_ARGS+=	--group=${r} --master-site=${MASTER_SITES:M*\:${r}:[1]:S/:${r}//:S|/package/||}
 .    endfor
 .  endif
 
@@ -187,17 +205,17 @@ cabal-extract: check-cabal
 .  if ${_hackage_is_default} == no
 	@${ECHO_MSG} "===> Recursing down to make extract"
 	@${MAKE} -C ${.CURDIR} extract SKIP_CABAL_EXTRACT=yes USE_CABAL=
-	${RM} -rf ${CABAL_HOME}
+	${RM} -r ${CABAL_HOME}
 .  endif
 	@${ECHO_MSG} "===> Fetching Hackage index into ${CABAL_HOME}/.cabal"
-	@${SETENV} HOME=${CABAL_HOME} ${CABAL_CMD} update
+	${SETENV} ${CABAL_HOME_ENV} ${CABAL_CMD} update
 .  if ${_hackage_is_default} == yes
-	@cd ${WRKDIR} && \
-		${SETENV} ${MAKE_ENV} HOME=${CABAL_HOME} ${CABAL_CMD} get ${PORTNAME}-${PORTVERSION}
+	cd ${WRKDIR} && \
+		${SETENV} ${MAKE_ENV} ${CABAL_HOME_ENV} ${CABAL_CMD} get ${HACKAGE_DISTNAME}
 .  else
 .    if ${cabal_ARGS:Mhpack}
 	@${ECHO_MSG} "===> Running ${HPACK_CMD} to generate .cabal file"
-	@cd ${WRKSRC} && ${SETENV} HOME=${CABAL_HOME} ${HPACK_CMD}
+	cd ${WRKSRC} && ${SETENV} ${CABAL_HOME_ENV} ${HPACK_CMD}
 .    endif
 .  endif
 # Remove Haskell dependencies that come from GH_TUPLE
@@ -205,7 +223,7 @@ cabal-extract: check-cabal
 .  ifdef CABAL_REPOSITORIES
 	@${ECHO_MSG} "===> Fetching additional Cabal repositories index into ${CABAL_HOME}/.cabal"
 	@cd ${WRKSRC} && \
-		${SETENV} HOME=${CABAL_HOME} ${CABAL_CMD} update
+		${SETENV} ${CABAL_HOME_ENV} ${CABAL_CMD} update
 .  endif
 # Create a cookie for cabal-post-patch
 	@${TOUCH} ${EXTRACT_COOKIE} ${CABAL_COOKIE}
@@ -215,12 +233,12 @@ cabal-extract: check-cabal
 # This pulls in all source dependencies, resolves them and generates build plan
 cabal-configure: check-cabal
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} HOME=${CABAL_HOME} ${CABAL_CMD} build --dry-run --disable-benchmarks --disable-tests --flags="${CABAL_FLAGS}" ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} ${BUILD_ARGS} ${BUILD_TARGET}
+		${SETENV} ${MAKE_ENV} ${CABAL_HOME_ENV} ${CABAL_CMD} build --dry-run --disable-benchmarks --disable-tests --flags="${CABAL_FLAGS}" ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} ${BUILD_ARGS} ${BUILD_TARGET}
 
 # Calls cabal build on the Haskell package located in ${WRKSRC}
 cabal-build: check-cabal
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} HOME=${CABAL_HOME} ${CABAL_CMD} build --disable-benchmarks --disable-tests ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} ${BUILD_ARGS} ${BUILD_TARGET}
+		${SETENV} ${MAKE_ENV} ${CABAL_HOME_ENV} ${CABAL_CMD} build --disable-benchmarks --disable-tests ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} ${BUILD_ARGS} ${BUILD_TARGET}
 
 # Generates USE_CABAL= ... line ready to be pasted into the port based on the plan.json file generated by cabal configure.
 make-use-cabal: check-cabal2tuple
@@ -257,7 +275,7 @@ cabal-post-extract:
 .    endif
 # Copy revised .cabal file if present
 .    if defined(CABAL_REVISION) && ${_hackage_is_default} == yes
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-${PORTVERSION}/revision/${CABAL_REVISION}.cabal `find ${WRKSRC} -name '*.cabal' -depth 1`
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${HACKAGE_DISTNAME}/revision/${CABAL_REVISION}.cabal `find ${WRKSRC} -name '*.cabal' -depth 1`
 .    endif
 
 # Move extracted dependencies into ${CABAL_DEPSDIR} directory
@@ -300,13 +318,13 @@ cabal-post-patch:
 cabal-pre-configure:
 # Generate .cabal file with hpack if requested
 .  if ${cabal_ARGS:Mhpack}
-	cd ${WRKSRC} && ${SETENV} HOME=${CABAL_HOME} hpack
+	cd ${WRKSRC} && ${SETENV} ${CABAL_HOME_ENV} hpack
 .  endif
 
 .  if !target(do-build)
 do-build:
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} HOME=${CABAL_HOME} ${CABAL_CMD} build --offline --disable-benchmarks --disable-tests ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} --flags "${CABAL_FLAGS}" ${BUILD_ARGS} ${BUILD_TARGET}
+		${SETENV} ${MAKE_ENV} ${CABAL_HOME_ENV} ${CABAL_CMD} build --offline --disable-benchmarks --disable-tests ${CABAL_WITH_ARGS} ${CABAL_LTO_ARGS} --flags "${CABAL_FLAGS}" ${BUILD_ARGS} ${BUILD_TARGET}
 .  endif
 
 .  if !target(do-install)
@@ -338,11 +356,11 @@ do-install:
 
 .  if !defined(SKIP_CABAL_PLIST)
 cabal-post-install-script:
-.      for exe in ${CABAL_EXECUTABLES}
+.    for exe in ${CABAL_EXECUTABLES}
 		${ECHO_CMD} 'bin/${exe}' >> ${TMPPLIST}
-.        if defined(CABAL_WRAPPER_SCRIPTS) && ${CABAL_WRAPPER_SCRIPTS:M${exe}}
+.      if defined(CABAL_WRAPPER_SCRIPTS) && ${CABAL_WRAPPER_SCRIPTS:M${exe}}
 		${ECHO_CMD} '${CABAL_LIBEXEC}/${exe}' >> ${TMPPLIST}
-.        endif
+.      endif
 .    endfor
 .  endif
 

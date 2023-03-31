@@ -133,7 +133,6 @@
     SUBDIR += libgda5
     SUBDIR += libgda5-jdbc
     SUBDIR += libgda5-ldap
-    SUBDIR += libgda5-mdb
     SUBDIR += libgda5-mysql
     SUBDIR += libgda5-postgresql
     SUBDIR += libgda5-ui
@@ -143,6 +142,7 @@
     SUBDIR += libmemcache
     SUBDIR += libmemcached
     SUBDIR += libmongo-client
+    SUBDIR += libmongocrypt
     SUBDIR += libmswstr
     SUBDIR += libnvpair
     SUBDIR += libodbc++
@@ -185,8 +185,6 @@
     SUBDIR += memcached
     SUBDIR += metabase
     SUBDIR += mongodb-tools
-    SUBDIR += mongodb36
-    SUBDIR += mongodb36-tools
     SUBDIR += mongodb40
     SUBDIR += mongodb40-tools
     SUBDIR += mongodb42
@@ -200,7 +198,6 @@
     SUBDIR += mydumper
     SUBDIR += mysac
     SUBDIR += mysql++
-    SUBDIR += mysql-connector-c
     SUBDIR += mysql-connector-c++
     SUBDIR += mysql-connector-java
     SUBDIR += mysql-connector-java51
@@ -666,14 +663,6 @@
     SUBDIR += postgresql-semver
     SUBDIR += postgresql-tds_fdw
     SUBDIR += postgresql-zhparser
-    SUBDIR += postgresql10-client
-    SUBDIR += postgresql10-contrib
-    SUBDIR += postgresql10-docs
-    SUBDIR += postgresql10-pgtcl
-    SUBDIR += postgresql10-plperl
-    SUBDIR += postgresql10-plpython
-    SUBDIR += postgresql10-pltcl
-    SUBDIR += postgresql10-server
     SUBDIR += postgresql11-client
     SUBDIR += postgresql11-contrib
     SUBDIR += postgresql11-docs
@@ -829,6 +818,7 @@
     SUBDIR += py-sqlalchemy12
     SUBDIR += py-sqlalchemy13
     SUBDIR += py-sqlalchemy14
+    SUBDIR += py-sqlalchemy20
     SUBDIR += py-sqlglot
     SUBDIR += py-sqlite-fts4
     SUBDIR += py-sqlite-utils

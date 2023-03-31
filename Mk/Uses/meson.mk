@@ -14,7 +14,7 @@
 # MESON_BUILD_DIR	- Path to the build directory relative to ${WRKSRC}
 #			Default: _build
 #
-# MAINTAINER: gnome@FreeBSD.org
+# MAINTAINER: desktop@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_MESON_MK)
 _INCLUDE_USES_MESON_MK=	yes
@@ -24,7 +24,7 @@ _INCLUDE_USES_MESON_MK=	yes
 IGNORE=	Incorrect 'USES+= meson:${meson_ARGS}'. meson takes no arguments
 .  endif
 
-BUILD_DEPENDS+=		meson>=0.57.1_1:devel/meson
+BUILD_DEPENDS+=		meson:devel/meson
 
 # meson uses ninja
 .include "${USESDIR}/ninja.mk"

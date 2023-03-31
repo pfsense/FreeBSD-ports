@@ -1,8 +1,11 @@
 PORTNAME=	inkscape
 DISTVERSION=	1.2.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics gnome
 MASTER_SITES=	https://media.inkscape.org/dl/resources/file/
+
+PATCH_SITES=	https://gitlab.com/${PORTNAME}/${PORTNAME}/-/commit/
+PATCHFILES+=	781e29cd3538.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/merge_requests/5111
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Full featured open source SVG editor
@@ -65,6 +68,8 @@ SHEBANG_FILES=	share/extensions/*.py share/extensions/genpofiles.sh \
 OPTIONS_DEFINE=		OPENMP POPPLER SCRIBUS VISIO CDR DBUS WPG GVFS NLS GSPELL
 OPTIONS_DEFAULT=	POPPLER VISIO CDR WPG GM GSPELL
 OPTIONS_DEFAULT_amd64=	OPENMP
+OPTIONS_DEFAULT_powerpc64=	OPENMP
+OPTIONS_DEFAULT_powerpc64le=	OPENMP
 OPTIONS_RADIO=		IMAGICK
 OPTIONS_RADIO_IMAGICK=	IMAGICK6 GM
 OPTIONS_SUB=		yes

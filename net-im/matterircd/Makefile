@@ -1,7 +1,6 @@
 PORTNAME=	matterircd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.26.1
-PORTREVISION=	4
+DISTVERSION=	0.27.0
 CATEGORIES=	net-im irc
 
 MAINTAINER=	chalpin@cs.wisc.edu
@@ -11,7 +10,7 @@ WWW=		https://github.com/42wim/matterircd
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 riscv64
 
 USES=		go:modules
 USE_GITHUB=	yes

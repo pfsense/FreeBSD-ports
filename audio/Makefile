@@ -23,7 +23,6 @@
     SUBDIR += alsa-sndio
     SUBDIR += alsa-utils
     SUBDIR += alure
-    SUBDIR += amarok
     SUBDIR += amb-plugins
     SUBDIR += amberol
     SUBDIR += ampache
@@ -82,7 +81,6 @@
     SUBDIR += cava
     SUBDIR += ccaudio2
     SUBDIR += cd-discid
-    SUBDIR += cd2mp3
     SUBDIR += cddb-bundle
     SUBDIR += cdparanoia
     SUBDIR += checkmate
@@ -91,21 +89,16 @@
     SUBDIR += chromaprint
     SUBDIR += cli-visualizer
     SUBDIR += clunk
-    SUBDIR += cmp3
     SUBDIR += cmt
     SUBDIR += cmus
     SUBDIR += codec2
-    SUBDIR += cpige
-    SUBDIR += crip
     SUBDIR += csound
     SUBDIR += csoundqt
     SUBDIR += ctronome
-    SUBDIR += cue2toc
     SUBDIR += cuetools
     SUBDIR += cutmp3
     SUBDIR += cyanrip
     SUBDIR += d11amp
-    SUBDIR += dagrab
     SUBDIR += darkice
     SUBDIR += dcd
     SUBDIR += deadbeef
@@ -117,7 +110,6 @@
     SUBDIR += deadbeef-spectrogram-plugin
     SUBDIR += deadbeef-vu-meter-plugin
     SUBDIR += deadbeef-waveform-seekbar-plugin
-    SUBDIR += dekagen
     SUBDIR += denemo
     SUBDIR += dexed
     SUBDIR += dgedit
@@ -222,7 +214,6 @@
     SUBDIR += gbemol
     SUBDIR += gbsplay
     SUBDIR += geonkick-lv2
-    SUBDIR += gervill
     SUBDIR += ggwave
     SUBDIR += giada
     SUBDIR += glurp
@@ -307,11 +298,9 @@
     SUBDIR += icecast-kh
     SUBDIR += icegenerator
     SUBDIR += ices
-    SUBDIR += id3ed
     SUBDIR += id3el
     SUBDIR += id3lib
     SUBDIR += id3mtag
-    SUBDIR += id3ren
     SUBDIR += id3tool
     SUBDIR += id3v2
     SUBDIR += iir1
@@ -338,7 +327,6 @@
     SUBDIR += juke
     SUBDIR += julius
     SUBDIR += kapitonov-plugins-pack-lv2
-    SUBDIR += kexis
     SUBDIR += kid3
     SUBDIR += klystrack
     SUBDIR += kmix
@@ -418,7 +406,6 @@
     SUBDIR += libspecbleach
     SUBDIR += libtremor
     SUBDIR += libvorbis
-    SUBDIR += libworkman
     SUBDIR += libxmp
     SUBDIR += lilv
     SUBDIR += lingot
@@ -496,7 +483,6 @@
     SUBDIR += mp3asm
     SUBDIR += mp3blaster
     SUBDIR += mp3burn
-    SUBDIR += mp3c
     SUBDIR += mp3check
     SUBDIR += mp3ck
     SUBDIR += mp3gain
@@ -762,7 +748,6 @@
     SUBDIR += sorcer-lv2
     SUBDIR += sound-juicer
     SUBDIR += soundgrab
-    SUBDIR += soundkonverter
     SUBDIR += soundtouch
     SUBDIR += soundtracker
     SUBDIR += sox
@@ -780,8 +765,6 @@
     SUBDIR += spiralloops
     SUBDIR += spiralsynth
     SUBDIR += spiralsynthmodular
-    SUBDIR += splay
-    SUBDIR += splaytk
     SUBDIR += spotify-player
     SUBDIR += spotify-qt
     SUBDIR += spotify-tui
@@ -811,7 +794,6 @@
     SUBDIR += taglib
     SUBDIR += taglib-extras
     SUBDIR += taglookup
-    SUBDIR += tagtool
     SUBDIR += tagutil
     SUBDIR += tamgamp-lv2
     SUBDIR += tap-plugins
@@ -856,7 +838,6 @@
     SUBDIR += vitunes
     SUBDIR += vm-lv2
     SUBDIR += vmpk
-    SUBDIR += vo-aacenc
     SUBDIR += vo-amrwbenc
     SUBDIR += voipong
     SUBDIR += volumeicon
@@ -865,7 +846,6 @@
     SUBDIR += vsound
     SUBDIR += vst3sdk
     SUBDIR += waon
-    SUBDIR += wav2cdr
     SUBDIR += wavbreaker
     SUBDIR += wavegain
     SUBDIR += waveplay
@@ -889,7 +869,6 @@
     SUBDIR += xfce4-mpc-plugin
     SUBDIR += xfce4-pulseaudio-plugin
     SUBDIR += xfmpc
-    SUBDIR += ximp3
     SUBDIR += xmcd
     SUBDIR += xmix
     SUBDIR += xmixer

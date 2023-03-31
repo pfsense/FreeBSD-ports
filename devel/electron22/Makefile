@@ -221,14 +221,10 @@ REACTIVEOBJC_VER=		74ab5baccc6f7202c8ac69a8d1e152c29dc1ea76
 # See ${WRKSRC}/electron/DEPS for MANTLE_VER
 MANTLE_VER=			78d3966b3c331292ea29ec38661b25df0a245948
 
-YARN_TIMESTAMP=	1678001755
+YARN_TIMESTAMP=	1680156343
 
 .include "Makefile.version"
-.include <bsd.port.pre.mk>
-
-.if ${OSREL} == "12.3"
-IGNORE=		does not compile, libc++ too old
-.endif
+.include <bsd.port.pre.mk> # required for COMPILER_VERSION
 
 .if ${PORT_OPTIONS:MHEIMDAL_BASE} && !exists(/usr/lib/libkrb5.so)
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base

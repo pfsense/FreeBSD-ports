@@ -1,6 +1,7 @@
 PORTNAME=	vale
-PORTVERSION=	2.23.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.24.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -14,6 +15,7 @@ USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	errata-ai
 GH_TUPLE=	\
+		adrg:strutil:v0.3.0:adrg_strutil/vendor/github.com/adrg/strutil \
 		antonmedv:expr:v1.12.0:antonmedv_expr/vendor/github.com/antonmedv/expr \
 		atomicgo:cursor:v0.0.1:atomicgo_cursor/vendor/github.com/atomicgo/cursor \
 		d5:tengo:v2.10.0:d5_tengo_v2/vendor/github.com/d5/tengo/v2 \
@@ -26,7 +28,7 @@ GH_TUPLE=	\
 		gobwas:glob:v0.2.3:gobwas_glob/vendor/github.com/gobwas/glob \
 		golang:net:4f30a5c0130f:golang_net/vendor/golang.org/x/net \
 		golang:snappy:v0.0.4:golang_snappy/vendor/github.com/golang/snappy \
-		golang:sys:a9b59b0215f8:golang_sys/vendor/golang.org/x/sys \
+		golang:sys:v0.6.0:golang_sys/vendor/golang.org/x/sys \
 		golang:term:03fcf44c2211:golang_term/vendor/golang.org/x/term \
 		golang:xerrors:5ec99f83aff1:golang_xerrors/vendor/golang.org/x/xerrors \
 		gookit:color:v1.4.2:gookit_color/vendor/github.com/gookit/color \

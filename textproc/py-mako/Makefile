@@ -1,6 +1,5 @@
 PORTNAME=	mako
-PORTVERSION=	1.0.14
-PORTREVISION=	1
+PORTVERSION=	1.2.4
 CATEGORIES=	textproc www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,5 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beaker>=1.1:www/py-beaker@${PY_FLAVOR} \
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

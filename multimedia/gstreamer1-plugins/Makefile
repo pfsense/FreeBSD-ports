@@ -23,16 +23,16 @@ RUN_DEPENDS+=	iso-codes>=0:misc/iso-codes
 
 PORTSCOUT=	limitw:1,even
 
-BASE_PORTVERSION=	1.20.6
+BASE_PORTVERSION=	1.22.0
 BASE_DISTNAME=		gst-plugins-base-${BASE_PORTVERSION}
 BASE_DISTFILE=		${BASE_DISTNAME}${EXTRACT_SUFX}
-BAD_PORTVERSION=	1.20.6
+BAD_PORTVERSION=	1.22.0
 BAD_DISTNAME=		gst-plugins-bad-${BAD_PORTVERSION}
 BAD_DISTFILE=		${BAD_DISTNAME}${EXTRACT_SUFX}
-GOOD_PORTVERSION=	1.20.6
+GOOD_PORTVERSION=	1.22.0
 GOOD_DISTNAME=		gst-plugins-good-${GOOD_PORTVERSION}
 GOOD_DISTFILE=		${GOOD_DISTNAME}${EXTRACT_SUFX}
-UGLY_PORTVERSION=	1.20.6
+UGLY_PORTVERSION=	1.22.0
 UGLY_DISTNAME=		gst-plugins-ugly-${UGLY_PORTVERSION}
 UGLY_DISTFILE=		${UGLY_DISTNAME}${EXTRACT_SUFX}
 DIST?=		base
@@ -41,6 +41,7 @@ USES+=		meson cpe gettext gnome gstreamer libtool pathfix pkgconfig python:3.8+,
 USE_GNOME+=	glib20 introspection:build libxml2
 GST_PLUGIN?=	base
 USE_LDCONFIG=	yes
+MESON_ARGS+=	--auto-features=auto # XXX bug 270361 workaround
 
 CPE_VENDOR=	gstreamer_project
 CPE_PRODUCT=	gstreamer
@@ -57,7 +58,7 @@ IGNORE=		DIST not specified
 .endif
 
 VERSION=	1.0
-SOVERSION=	0.2006.0
+SOVERSION=	0.2200.0
 PLIST_SUB+=	VERSION="${VERSION}" \
 		SOVERSION="${SOVERSION}"
 
@@ -98,9 +99,8 @@ BASE_GST_ENABLED_PLUGINS=	adder \
 				tools \
 				typefind \
 				video \
-				videoconvert \
+				videoconvertscale \
 				videorate \
-				videoscale \
 				videotestsrc \
 				volume
 .endif
