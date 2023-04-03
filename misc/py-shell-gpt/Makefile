@@ -1,5 +1,6 @@
 PORTNAME=	shell-gpt
 DISTVERSION=	0.8.1
+PORTREVISION=	2
 CATEGORIES=	misc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,7 +26,7 @@ BINARY_ALIAS=	python=${PYTHON_CMD}
 NO_ARCH=	yes
 
 do-test:
-	cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} tests/unittests.py
+	cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m unittest tests/unittests.py
 	cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest tests/integrational_tests.py
 
 .include <bsd.port.mk>

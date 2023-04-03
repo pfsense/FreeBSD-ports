@@ -1,3 +1,44 @@
+  <vuln vid="466ba8bd-d033-11ed-addf-080027eda32c">
+    <topic>mediawiki -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mediawiki135</name>
+	<range><lt>1.35.10</lt></range>
+      </package>
+    <package>
+	<name>mediawiki138</name>
+	<range><lt>1.38.6</lt></range>
+      </package>
+      <package>
+	<name>mediawiki139</name>
+	<range><lt>1.39.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mediawikwi reports:</p>
+	<blockquote cite="https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/6UQBHI5FWLATD7QO7DI4YS54U7XSSLAN/">
+	  <p>(T285159, CVE-2023-PENDING) SECURITY: X-Forwarded-For header allows
+	    brute-forcing autoblocked IP addresses.</p>
+	  <p>(T326946, CVE-2020-36649) SECURITY: Bundled PapaParse copy in
+	    VisualEditor has known ReDos.</p>
+	  <p>(T330086, CVE-2023-PENDING) SECURITY: OATHAuth allows replay attacks when
+	    MediaWiki is configured without ObjectCache; Insecure Default Configuration.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-PENDING</cvename>
+      <cvename>CVE-2020-36649</cvename>
+      <cvename>CVE-2023-PENDING</cvename>
+      <url>https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/6UQBHI5FWLATD7QO7DI4YS54U7XSSLAN/</url>
+    </references>
+    <dates>
+      <discovery>2020-04-02</discovery>
+      <entry>2023-04-01</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="54006796-cf7b-11ed-a5d5-001b217b3468">
     <topic>Gitlab -- Multiple Vulnerabilities</topic>
     <affects>
@@ -279,6 +320,57 @@
     </references>
     <dates>
       <discovery>2023-03-28</discovery>
+      <entry>2023-03-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="955eb3cc-ce0b-11ed-825f-6c3be5272acd">
+    <topic>Grafana -- Stored XSS in Graphite FunctionDescription tooltip</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<range><lt>8.5.22</lt></range>
+	<range><ge>9.0.0</ge><lt>9.2.15</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.11</lt></range>
+	<range><ge>9.4.0</ge><lt>9.4.7</lt></range>
+      </package>
+      <package>
+	<name>grafana8</name>
+	<range><lt>8.5.22</lt></range>
+      </package>
+      <package>
+	<name>grafana9</name>
+	<range><lt>9.2.15</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.11</lt></range>
+	<range><ge>9.4.0</ge><lt>9.4.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2023/03/22/grafana-security-release-new-versions-with-security-fixes-for-cve-2023-1410/">
+	  <p>When a user adds a Graphite data source, they can then use the data source
+	  in a dashboard. This capability contains a feature to use Functions. Once
+	  a function is selected, a small tooltip appears when hovering over the name
+	  of the function. This tooltip allows you to delete the selected Function
+	  from your query or show the Function Description. However, no sanitization
+	  is done when adding this description to the DOM.</p>
+	  <p>Since it is not uncommon to connect to public data sources, an attacker
+	  could host a Graphite instance with modified Function Descriptions containing
+	  XSS payloads. When the victim uses it in a query and accidentally hovers
+	  over the Function Description, an attacker-controlled XSS payload
+	  will be executed.</p>
+	  <p>The severity of this vulnerability is of CVSSv3.1 5.7 Medium
+	  (CVSS: AV:N/AC:H/PR:H/UI:R/S:U/C:H/I:H/A:N (5.7)).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-1410</cvename>
+      <url>https://grafana.com/security/security-advisories/cve-2023-1410/</url>
+    </references>
+    <dates>
+      <discovery>2023-03-14</discovery>
       <entry>2023-03-29</entry>
     </dates>
   </vuln>
