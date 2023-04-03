@@ -428,9 +428,15 @@ foreach ($side as $settings) {
 		$entry['unit_desc'] = $settings['unit_desc'];
 		$entry['invert'] = false;
 		$entry['ninetyfifth'] = true;
-		$entry['min'] = min($inpass_stats);
-		$entry['max'] = max($inpass_stats);
-		$entry['avg'] = array_sum($inpass_stats) / count($inpass_stats);
+		if ( is_array($inpass_stats) && !empty($inpass_stats) ) {
+			$entry['min'] = min($inpass_stats);
+			$entry['max'] = max($inpass_stats);
+			$entry['avg'] = array_sum($inpass_stats) / count($inpass_stats);
+		} else {
+			$entry['min'] = 0;
+			$entry['max'] = 0;
+			$entry['avg'] = 0;
+		}
 		$entry['values'] = $inpass_total;
 		$obj[] = $entry;
 
@@ -443,9 +449,15 @@ foreach ($side as $settings) {
 		$entry['unit_desc'] = $settings['unit_desc'];
 		$entry['invert'] = $invert_graph;
 		$entry['ninetyfifth'] = true;
-		$entry['min'] = min($outpass_stats);
-		$entry['max'] = max($outpass_stats);
-		$entry['avg'] = array_sum($outpass_stats) / count($outpass_stats);
+		if ( is_array($outpass_stats) && !empty($outpass_stats) ) {
+			$entry['min'] = min($outpass_stats);
+			$entry['max'] = max($outpass_stats);
+			$entry['avg'] = array_sum($outpass_stats) / count($outpass_stats);
+		} else {
+			$entry['min'] = 0;
+			$entry['max'] = 0;
+			$entry['avg'] = 0;
+		}
 		$entry['values'] = $outpass_total;
 		$obj[] = $entry;
 	}
