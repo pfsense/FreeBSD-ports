@@ -1895,7 +1895,7 @@
 					"feed":		"Easylist",
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Easylist.txt",
-					"header":	"Easylist",
+					"header":	"Easylist_FB",
 					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
