@@ -1,6 +1,5 @@
 PORTNAME=	bindgen-cli
-DISTVERSION=	0.63.0
-PORTREVISION=	2
+DISTVERSION=	0.64.0
 CATEGORIES=	devel
 MASTER_SITES=	CRATESIO
 PKGNAMEPREFIX=	rust-
@@ -19,7 +18,7 @@ PLIST_FILES=	bin/${PORTNAME:S/-cli//}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,"llvm-config,"${LLVM_CONFIG},' \
-		${WRKSRC}/cargo-crates/clang-sys-*/build/common.rs \
-		${WRKSRC}/cargo-crates/clang-sys-*/src/support.rs
+		${WRKSRC_crate_clang-sys}/build/common.rs \
+		${WRKSRC_crate_clang-sys}/src/support.rs
 
 .include <bsd.port.mk>

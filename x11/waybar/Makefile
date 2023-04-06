@@ -2,6 +2,7 @@ PORTNAME=	waybar
 DISTVERSION=	0.9.17
 PORTREVISION=	1
 CATEGORIES=	x11 wayland
+PKGNAMESUFFIX=	${FLAVOR:N${FLAVORS:[1]}:C/.+/-${FLAVOR}/}
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Highly customizable Wayland bar for Sway and wlroots-based compositors
@@ -19,10 +20,8 @@ LIB_DEPENDS=	libdate-tz.so:devel/date \
 		libxkbregistry.so:x11/libxkbcommon
 TEST_DEPENDS=	catch>0:devel/catch
 
-FLAVORS=	default nopulse
-default_CONFLICTS_INSTALL=	${PORTNAME}-nopulse
-nopulse_CONFLICTS_INSTALL=	${PORTNAME}
-nopulse_PKGNAMESUFFIX=		-nopulse
+FLAVORS=	default hyprland nopulse
+CONFLICTS_INSTALL=	${PORTNAME}*
 
 USES=		compiler:c++17-lang gnome meson pkgconfig
 USE_GITHUB=	yes
@@ -33,6 +32,11 @@ MESON_ARGS=	${libnl systemd wireplumber tests:L:C/.*/-D&=disabled/}
 PLIST_FILES=	bin/${PORTNAME} \
 		etc/xdg/${PORTNAME}/config \
 		etc/xdg/${PORTNAME}/style.css
+
+.if ${FLAVOR:U} == hyprland
+# https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests/40
+MESON_ARGS+=	-Dexperimental=true
+.endif
 
 # XXX Add pkg-config support to devel/date
 .if exists(${.CURDIR}/files/date.pc.in)
@@ -140,6 +144,11 @@ post-patch:
 # Respect PREFIX for icons
 	@${REINPLACE_CMD} 's,/usr/share,${DATADIR:H},' \
 		${WRKSRC}/src/modules/wlr/taskbar.cpp
+.if ${FLAVOR:U} == hyprland
+# Use hyprctl to switch workspaces
+	@${REINPLACE_CMD} 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' \
+		${WRKSRC}/src/modules/wlr/workspace_manager.cpp
+.endif
 
 pre-test:
 	@if [ ! -e ${WRKDIR}/.meson_build_tests ]; then \

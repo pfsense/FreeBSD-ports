@@ -127,6 +127,7 @@
     SUBDIR += dhcprelya
     SUBDIR += dictd
     SUBDIR += dimes
+    SUBDIR += downzemall
     SUBDIR += dpdk
     SUBDIR += dpdk-20.11
     SUBDIR += dpinger
@@ -1307,6 +1308,7 @@
     SUBDIR += rubygem-http-parser
     SUBDIR += rubygem-http_parser.rb
     SUBDIR += rubygem-httpauth
+    SUBDIR += rubygem-interfacez
     SUBDIR += rubygem-ipaddr
     SUBDIR += rubygem-ipaddr122
     SUBDIR += rubygem-ipaddress
@@ -1354,6 +1356,7 @@
     SUBDIR += rubygem-orchestrator_client
     SUBDIR += rubygem-ovirt-engine-sdk
     SUBDIR += rubygem-packetfu
+    SUBDIR += rubygem-packetgen
     SUBDIR += rubygem-pcaprub
     SUBDIR += rubygem-private_address_check
     SUBDIR += rubygem-proxifier

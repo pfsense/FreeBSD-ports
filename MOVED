@@ -7775,7 +7775,6 @@ devel/py-experimental.cssselect||2015-11-15|The only consumer of this port switc
 databases/mariadb-client||2015-11-18|Vulnerable, no updates expected, use mariadb55 or mariadb100 instead
 databases/mariadb-server||2015-11-18|Vulnerable, no updates expected, use mariadb55 or mariadb100 instead
 databases/mariadb-scripts||2015-11-18|Vulnerable, no updates expected, use mariadb55 or mariadb100 instead
-devel/py-asn1|devel/py-pyasn1|2015-11-18|Renamed to match upstream naming
 devel/py-pytz3|devel/py3-pytz|2015-11-19|Port Renamed
 devel/ocaml-typeconv|devel/ocaml-type_conv|2015-11-20|Renamed to match upstream naming
 www/py3-aiohttp|www/py-aiohttp|2015-11-21|Duplicate port
@@ -17894,3 +17893,4 @@ www/horde-base||2023-03-31|Has expired: Requires php74
 multimedia/transcode||2023-03-31|Has expired: abandoned by upstream and does not build
 security/teleport5|security/teleport|2023-03-31|More recent version than expired teleport port
 www/anyterm||2023-04-01|Has expired: upstream is dead
+audio/mousai-devel|audio/mousai|2023-04-06|Updated to the latest stable version

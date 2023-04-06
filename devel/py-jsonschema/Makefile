@@ -1,6 +1,6 @@
 PORTNAME=	jsonschema
 PORTVERSION=	4.17.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -31,13 +31,13 @@ NO_ARCH=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 30900
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-resources>=0:devel/py-importlib-resources@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pkgutil-resolve-name>=0:devel/py-pkgutil-resolve-name@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-resources>=1.4.0:devel/py-importlib-resources@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pkgutil-resolve-name>=1.3.10:devel/py-pkgutil-resolve-name@${PY_FLAVOR}
 .endif
 
 .if ${PYTHON_REL} < 30800
 RUN_DEPEDNS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=0:devel/py-importlib-metadata@${PY_FLAVOR} \
-	${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}typing-extensions>=0:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	pam_howdy
-PORTVERSION=	3.0.0.b
+PORTVERSION=	3.0.0.b.20230306
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -14,20 +15,27 @@ LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libinih.so:devel/inih \
 		libINIReader.so:devel/inih \
 		libepoll-shim.so:devel/libepoll-shim
+RUN_DEPENDS=	${HOWDY_CMD}:security/howdy
 
-USES=		gettext-runtime localbase:ldflags pkgconfig meson ninja
+USES=		gettext-runtime localbase:ldflags pkgconfig python:env meson ninja
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	boltgolt
 GH_PROJECT=	howdy
-GH_TAGNAME=	30728a6d3634479c24ffd4e094c34a30bbb43058
+GH_TAGNAME=	30728a6d36
 
 WRKSRC_SUBDIR=	howdy/src/pam
 PLIST_FILES=	lib/pam_howdy.so
+
+HOWDY_CMD=	${LOCALBASE}/libexec/howdy/compare.py
 
 post-patch:
 	${REINPLACE_CMD} \
 		-e 's|/lib/security|${LOCALBASE}/lib|' \
 		${WRKSRC}/meson.build
+	${REINPLACE_CMD} \
+		-e 's|"python3"|"${PYTHON_CMD}"|' \
+		-e 's|"/lib/security/howdy/compare.py"|"${HOWDY_CMD}"|' \
+		${WRKSRC}/main.cc
 
 .include <bsd.port.mk>

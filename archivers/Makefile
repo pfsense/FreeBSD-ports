@@ -142,6 +142,7 @@
     SUBDIR += paq
     SUBDIR += par
     SUBDIR += par2cmdline
+    SUBDIR += par2cmdline-turbo
     SUBDIR += parchive
     SUBDIR += pbzip2
     SUBDIR += pear-File_Archive
@@ -184,6 +185,7 @@
     SUBDIR += py-bup
     SUBDIR += py-bz2file
     SUBDIR += py-compressed-rtf
+    SUBDIR += py-cramjam
     SUBDIR += py-libarchive-c
     SUBDIR += py-lz4
     SUBDIR += py-lzma
@@ -195,6 +197,7 @@
     SUBDIR += py-rarfile
     SUBDIR += py-rcssmin
     SUBDIR += py-rjsmin
+    SUBDIR += py-sozipfile
     SUBDIR += py-warctools
     SUBDIR += py-xopen
     SUBDIR += py-zopfli

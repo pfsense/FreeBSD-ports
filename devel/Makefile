@@ -1183,6 +1183,7 @@
     SUBDIR += libdbusmenu
     SUBDIR += libdbusmenu-qt
     SUBDIR += libddoc
+    SUBDIR += libddwaf
     SUBDIR += libdevq
     SUBDIR += libdfui
     SUBDIR += libdill
@@ -4199,6 +4200,7 @@
     SUBDIR += py-arrow
     SUBDIR += py-asciimatics
     SUBDIR += py-asgi-lifespan
+    SUBDIR += py-asn1
     SUBDIR += py-asn1crypto
     SUBDIR += py-aspy.yaml
     SUBDIR += py-asteval
@@ -4527,6 +4529,7 @@
     SUBDIR += py-dockerpty
     SUBDIR += py-docopt
     SUBDIR += py-doctest-ignore-unicode
+    SUBDIR += py-dodgy
     SUBDIR += py-dogpile.cache
     SUBDIR += py-doit
     SUBDIR += py-dotted
@@ -4618,6 +4621,7 @@
     SUBDIR += py-freenas.utils
     SUBDIR += py-freezegun
     SUBDIR += py-frictionless
+    SUBDIR += py-frictionless-ckan-mapper
     SUBDIR += py-frozendict
     SUBDIR += py-frozenlist
     SUBDIR += py-fs
@@ -4805,6 +4809,7 @@
     SUBDIR += py-jupyter-server
     SUBDIR += py-jupyter-server-fileid
     SUBDIR += py-jupyter-server-mathjax
+    SUBDIR += py-jupyter-server-terminals
     SUBDIR += py-jupyter-server-ydoc
     SUBDIR += py-jupyter-telemetry
     SUBDIR += py-jupyter-ydoc
@@ -5031,6 +5036,7 @@
     SUBDIR += py-pbr
     SUBDIR += py-pcodedmp
     SUBDIR += py-pdm
+    SUBDIR += py-pdm-backend
     SUBDIR += py-pdm-pep517
     SUBDIR += py-pebble
     SUBDIR += py-pefile
@@ -5086,6 +5092,7 @@
     SUBDIR += py-poetry-core
     SUBDIR += py-poetry-dynamic-versioning
     SUBDIR += py-poetry-plugin-export
+    SUBDIR += py-poetry-semver
     SUBDIR += py-poetry2setup
     SUBDIR += py-polib
     SUBDIR += py-pooch
@@ -5369,6 +5376,7 @@
     SUBDIR += py-repoze.xmliter
     SUBDIR += py-represent
     SUBDIR += py-requestsexceptions
+    SUBDIR += py-requirements-detector
     SUBDIR += py-requirementslib
     SUBDIR += py-resolvelib
     SUBDIR += py-resolvelib05
@@ -5611,6 +5619,7 @@
     SUBDIR += py-virtualenv-api
     SUBDIR += py-virtualenv-clone
     SUBDIR += py-virtualenvwrapper
+    SUBDIR += py-visidata
     SUBDIR += py-visitor
     SUBDIR += py-vistir
     SUBDIR += py-voluptuous
@@ -5749,6 +5758,7 @@
     SUBDIR += pycount
     SUBDIR += pydbus-common
     SUBDIR += pydeps
+    SUBDIR += pyderasn
     SUBDIR += pyenv
     SUBDIR += pygobject3-common
     SUBDIR += pylint
@@ -6101,6 +6111,7 @@
     SUBDIR += rubygem-aws-sdk-importexport
     SUBDIR += rubygem-aws-sdk-inspector
     SUBDIR += rubygem-aws-sdk-inspector2
+    SUBDIR += rubygem-aws-sdk-internetmonitor
     SUBDIR += rubygem-aws-sdk-iot
     SUBDIR += rubygem-aws-sdk-iot1clickdevicesservice
     SUBDIR += rubygem-aws-sdk-iot1clickprojects

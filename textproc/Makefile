@@ -1394,6 +1394,7 @@
     SUBDIR += py-mdurl
     SUBDIR += py-mike
     SUBDIR += py-misaka
+    SUBDIR += py-mistletoe
     SUBDIR += py-mistune
     SUBDIR += py-mistune0
     SUBDIR += py-mkdocs
@@ -1809,6 +1810,7 @@
     SUBDIR += rubygem-rmmseg-cpp
     SUBDIR += rubygem-ronn
     SUBDIR += rubygem-rouge
+    SUBDIR += rubygem-rouge3
     SUBDIR += rubygem-rouge329
     SUBDIR += rubygem-rttool
     SUBDIR += rubygem-ruby-augeas

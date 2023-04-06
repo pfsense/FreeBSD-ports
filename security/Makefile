@@ -99,6 +99,7 @@
     SUBDIR += courierpasswd
     SUBDIR += courieruserinfo
     SUBDIR += cowrie
+    SUBDIR += cpfx
     SUBDIR += cracklib
     SUBDIR += crackpkcs12
     SUBDIR += create-cert
@@ -883,6 +884,7 @@
     SUBDIR += py-cryptography-vectors
     SUBDIR += py-ctypescrypto
     SUBDIR += py-cybox
+    SUBDIR += py-detect-secrets
     SUBDIR += py-dfdatetime
     SUBDIR += py-dfvfs
     SUBDIR += py-dfwinreg
@@ -1030,6 +1032,7 @@
     SUBDIR += py-zkg
     SUBDIR += py-zope.password
     SUBDIR += py-zxcvbn
+    SUBDIR += pygost
     SUBDIR += qtkeychain
     SUBDIR += quantis-kmod
     SUBDIR += racoon2
@@ -1065,11 +1068,11 @@
     SUBDIR += rubygem-digest
     SUBDIR += rubygem-digest-crc
     SUBDIR += rubygem-doorkeeper
-    SUBDIR += rubygem-doorkeeper562
     SUBDIR += rubygem-doorkeeper-openid_connect
     SUBDIR += rubygem-doorkeeper-rails5
     SUBDIR += rubygem-doorkeeper-rails50
     SUBDIR += rubygem-doorkeeper-rails61
+    SUBDIR += rubygem-doorkeeper562
     SUBDIR += rubygem-ed25519
     SUBDIR += rubygem-ed2551912
     SUBDIR += rubygem-encryptor
@@ -1136,6 +1139,7 @@
     SUBDIR += rubygem-pyu-ruby-sasl
     SUBDIR += rubygem-rack-oauth2
     SUBDIR += rubygem-rack-oauth21
+    SUBDIR += rubygem-rasn1
     SUBDIR += rubygem-razorback-scriptNugget
     SUBDIR += rubygem-rbnacl
     SUBDIR += rubygem-rbnacl-libsodium
