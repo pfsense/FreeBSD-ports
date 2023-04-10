@@ -50,7 +50,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}phpseclib>=0:security/phpseclib@${PHP_FLAVOR} \
-		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
+		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pfSense-upgrade>=0:sysutils/pfSense-upgrade \
 		pftop>=0:sysutils/pftop \
