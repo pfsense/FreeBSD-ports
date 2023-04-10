@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense-Status_Monitoring
 PORTVERSION=	1.8
 PORTREVISION=	3
@@ -7,6 +5,7 @@ CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense Status Monitoring
