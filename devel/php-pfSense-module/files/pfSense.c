@@ -439,11 +439,11 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 
 PHP_FUNCTION(pfSense_kill_states)
 {
-	struct pfioc_state_kill psk;
+	struct pfctl_kill k;
 	struct addrinfo *res[2], *resp[2];
 	struct sockaddr last_src, last_dst;
-	int killed, sources;
 	int ret_ga;
+	unsigned int kcount;
 
 	int dev;
 	char *ip1 = NULL, *ip2 = NULL, *proto = NULL, *iface = NULL;
@@ -460,30 +460,28 @@ PHP_FUNCTION(pfSense_kill_states)
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 
-	killed = sources = 0;
-
-	memset(&psk, 0, sizeof(psk));
-	memset(&psk.psk_src.addr.v.a.mask, 0xff,
-	    sizeof(psk.psk_src.addr.v.a.mask));
+	memset(&k, 0, sizeof(k));
+	memset(&k.src.addr.v.a.mask, 0xff,
+	    sizeof(k.src.addr.v.a.mask));
 	memset(&last_src, 0xff, sizeof(last_src));
 	memset(&last_dst, 0xff, sizeof(last_dst));
 
-	if (iface != NULL && iface_len > 0 && strlcpy(psk.psk_ifname, iface,
-	    sizeof(psk.psk_ifname)) >= sizeof(psk.psk_ifname))
+	if (iface != NULL && iface_len > 0 && strlcpy(k.ifname, iface,
+	    sizeof(k.ifname)) >= sizeof(k.ifname))
 		php_printf("invalid interface: %s", iface);
 
 	if (proto != NULL && proto_len > 0) {
 		if (!strncmp(proto, "tcp", strlen("tcp")))
-			psk.psk_proto = IPPROTO_TCP;
+			k.proto = IPPROTO_TCP;
 		else if (!strncmp(proto, "udp", strlen("udp")))
-			psk.psk_proto = IPPROTO_UDP;
+			k.proto = IPPROTO_UDP;
 		else if (!strncmp(proto, "icmpv6", strlen("icmpv6")))
-			psk.psk_proto = IPPROTO_ICMPV6;
+			k.proto = IPPROTO_ICMPV6;
 		else if (!strncmp(proto, "icmp", strlen("icmp")))
-			psk.psk_proto = IPPROTO_ICMP;
+			k.proto = IPPROTO_ICMP;
 	}
 
-	if (pfctl_addrprefix(ip1, &psk.psk_src.addr.v.a.mask) < 0)
+	if (pfctl_addrprefix(ip1, &k.src.addr.v.a.mask) < 0)
 		RETURN_NULL();
 
 	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
@@ -499,27 +497,26 @@ PHP_FUNCTION(pfSense_kill_states)
 			continue;
 		last_src = *(struct sockaddr *)resp[0]->ai_addr;
 
-		psk.psk_af = resp[0]->ai_family;
-		sources++;
+		k.af = resp[0]->ai_family;
 
-		if (psk.psk_af == AF_INET)
-			psk.psk_src.addr.v.a.addr.v4 =
+		if (k.af == AF_INET)
+			k.src.addr.v.a.addr.v4 =
 			    ((struct sockaddr_in *)resp[0]->ai_addr)->sin_addr;
-		else if (psk.psk_af == AF_INET6)
-			psk.psk_src.addr.v.a.addr.v6 =
+		else if (k.af == AF_INET6)
+			k.src.addr.v.a.addr.v6 =
 			    ((struct sockaddr_in6 *)resp[0]->ai_addr)->
 			    sin6_addr;
 		else {
-			php_printf("Unknown address family %d", psk.psk_af);
+			php_printf("Unknown address family %d", k.af);
 			continue;
 		}
 
 		if (ip2 != NULL && ip2_len > 0) {
-			memset(&psk.psk_dst.addr.v.a.mask, 0xff,
-			    sizeof(psk.psk_dst.addr.v.a.mask));
+			memset(&k.dst.addr.v.a.mask, 0xff,
+			    sizeof(k.dst.addr.v.a.mask));
 			memset(&last_dst, 0xff, sizeof(last_dst));
 			pfctl_addrprefix(ip2,
-			    &psk.psk_dst.addr.v.a.mask);
+			    &k.dst.addr.v.a.mask);
 			if ((ret_ga = getaddrinfo(ip2, NULL, NULL,
 			    &res[1]))) {
 				php_printf("getaddrinfo: %s",
@@ -531,7 +528,7 @@ PHP_FUNCTION(pfSense_kill_states)
 			    resp[1] = resp[1]->ai_next) {
 				if (resp[1]->ai_addr == NULL)
 					continue;
-				if (psk.psk_af != resp[1]->ai_family)
+				if (k.af != resp[1]->ai_family)
 					continue;
 
 				if (memcmp(&last_dst, resp[1]->ai_addr,
@@ -539,34 +536,28 @@ PHP_FUNCTION(pfSense_kill_states)
 					continue;
 				last_dst = *(struct sockaddr *)resp[1]->ai_addr;
 
-				if (psk.psk_af == AF_INET)
-					psk.psk_dst.addr.v.a.addr.v4 =
+				if (k.af == AF_INET)
+					k.dst.addr.v.a.addr.v4 =
 					    ((struct sockaddr_in *)resp[1]->
 					    ai_addr)->sin_addr;
-				else if (psk.psk_af == AF_INET6)
-					psk.psk_dst.addr.v.a.addr.v6 =
+				else if (k.af == AF_INET6)
+					k.dst.addr.v.a.addr.v6 =
 					    ((struct sockaddr_in6 *)resp[1]->
 					    ai_addr)->sin6_addr;
 				else {
-					php_printf("Unknown address family %d", psk.psk_af);
+					php_printf("Unknown address family %d", k.af);
 					continue;
 				}
 
-				if (ioctl(dev, DIOCKILLSTATES, &psk))
+				if (pfctl_kill_states(dev, &k, &kcount))
 					php_printf("Could not kill states\n");
-				killed += psk.psk_af;
-				/* fixup psk.psk_af */
-				psk.psk_af = resp[1]->ai_family;
 			}
 			freeaddrinfo(res[1]);
 		} else {
-			if (ioctl(dev, DIOCKILLSTATES, &psk)) {
+			if (pfctl_kill_states(dev, &k, &kcount)) {
 				php_printf("Could not kill states\n");
 				break;
 			}
-			killed += psk.psk_af;
-			/* fixup psk.psk_af */
-			psk.psk_af = res[0]->ai_family;
 		}
 	}
 
