@@ -21,30 +21,20 @@
  */
 
 function shellcmd_install_command() {
-	global $config;
-
 	shellcmd_import_config();
 	shellcmd_sync_package();
-
 }
 
 
 function shellcmd_delete_php_command() {
-	global $config;
-
 	/* When 'Delete item' is clicked in Shellcmd Settings */
 	if ($_GET['act'] == "del") {
 
 		/* System earlyshellcmd commands */
-		$a_earlyshellcmd = $config['system']['earlyshellcmd'];
-		if (!is_array($a_earlyshellcmd)) {
-			$a_earlyshellcmd = array();
-		}
+		$a_earlyshellcmd = config_get_path('system/earlyshellcmd', []);
+
 		/* Shellcmd package commands */
-		$a_shellcmd_config = $config['installedpackages']['shellcmdsettings']['config'];
-		if (!is_array($a_shellcmd_config)) {
-			$a_shellcmd_config = array();
-		}
+		$a_shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config', []);
 
 		/* First check for a couple of special cases that we do NOT want deleted */
 		$pkg = '';
@@ -100,8 +90,6 @@ function shellcmd_forced_restore($pkg) {
 
 
 function shellcmd_sync_package() {
-	global $config;
-
 	$cmd = '';
 	$cmdtype = '';
 	$a_shellcmd = array();
@@ -111,11 +99,7 @@ function shellcmd_sync_package() {
 	 * See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc
 	 */
 	$afterfilterchangeshellcmd = '';
-	init_config_arr(array('installedpackages', 'shellcmdsettings', 'config'));
-	$a_shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
-	if (!is_array($a_shellcmd_config)) {
-		$a_shellcmd_config = array();
-	}
+	$a_shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config', []);
 	$i = 0;
 	/*
 	 * When an item is added to shellcmd package configuration, make sure
@@ -143,27 +127,21 @@ function shellcmd_sync_package() {
 			$i++;
 		}
 	}
-	if (($config['system']['shellcmd'] != $a_shellcmd) ||
-	    ($config['system']['earlyshellcmd'] != $a_earlyshellcmd) ||
-	    ($config['system']['afterfilterchangeshellcmd'] != $afterfilterchangeshellcmd)) {
+	if ((config_get_path('system/shellcmd') != $a_shellcmd) ||
+	    (config_get_path('system/earlyshellcmd') != $a_earlyshellcmd) ||
+	    (config_get_path('system/afterfilterchangeshellcmd') != $afterfilterchangeshellcmd)) {
 		/* Write the new system configuration to config.xml from scratch when done
 		   but only if something changed */
-		unset($config['system']['shellcmd']);
-		$config['system']['shellcmd'] = $a_shellcmd;
-		unset($config['system']['earlyshellcmd']);
-		$config['system']['earlyshellcmd'] = $a_earlyshellcmd;
-		unset($config['system']['afterfilterchangeshellcmd']);
-		$config['system']['afterfilterchangeshellcmd'] = $afterfilterchangeshellcmd;
+		config_set_path('system/shellcmd', $a_shellcmd);
+		config_set_path('system/earlyshellcmd', $a_earlyshellcmd);
+		config_set_path('system/afterfilterchangeshellcmd', $afterfilterchangeshellcmd);
 		write_config("[shellcmd] Successfully (re)synced shellcmd configuration.");
 	}
 }
 
 
 function shellcmd_import_config() {
-	global $config;
-
-	init_config_arr(array('installedpackages', 'shellcmdsettings', 'config'));
-	$shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
+	$shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config');
 
 	$i = 0;
 
@@ -186,42 +164,38 @@ function shellcmd_import_config() {
 	 * or manually, or added by some other package(s) (if there are any in config.xml)
 	 * Two currently known special cases are handled here - System Patches and pfBlockerNG
 	 */
-	if (is_array($config['system']['earlyshellcmd'])) {
-		$earlyshellcmds = &$config['system']['earlyshellcmd'];
-		$pfbcmd = "/usr/local/pkg/pfblockerng/pfblockerng.sh";
-		$spcmd = "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php";
-		foreach ($earlyshellcmds as $earlyshellcmd) {
-			/* pfBlockerNG - function to restore archived aliastables on on systems with /var ramdisk (see pfblockerng.inc) */
-			if (stristr($earlyshellcmd, "{$pfbcmd}")) {
-				$shellcmd_config[$i]['cmd'] = $earlyshellcmd;
-				$shellcmd_config[$i]['cmdtype'] = "earlyshellcmd";
-				$shellcmd_config[$i]['description'] = "pfBlockerNG default earlyshellcmd. DO NOT EDIT/DELETE!";
-				$i++;
-			/* System Patches auto-apply patch feature (see patches.inc) */
-			} elseif (stristr($earlyshellcmd, "{$spcmd}")) {
-				$shellcmd_config[$i]['cmd'] = $earlyshellcmd;
-				$shellcmd_config[$i]['cmdtype'] = "earlyshellcmd";
-				$shellcmd_config[$i]['description'] = "System Patches default earlyshellcmd. DO NOT EDIT/DELETE!";
-				$i++;
-			/* Other manually added earlyshellcmd entries */
-			} else {
-				$shellcmd_config[$i]['cmd'] = $earlyshellcmd;
-				$shellcmd_config[$i]['cmdtype'] = "earlyshellcmd";
-				$shellcmd_config[$i]['description'] = $shellcmd_config[$i]['description'] ?: "Imported earlyshellcmd ({$i})";
-				$i++;
-			}
-
-		}
-	}
-	/* Import shellcmd entries which were created manually (if there are any in config.xml) */
-	if (is_array($config['system']['shellcmd'])) {
-		$shellcmds = &$config['system']['shellcmd'];
-		foreach ($shellcmds as $shellcmd) {
-			$shellcmd_config[$i]['cmd'] = $shellcmd;
-			$shellcmd_config[$i]['cmdtype'] = "shellcmd";
-			$shellcmd_config[$i]['description'] = $shellcmd_config[$i]['description'] ?: "Imported shellcmd ({$i})";
+	$earlyshellcmds = config_get_path('system/earlyshellcmd', []);
+	$pfbcmd = "/usr/local/pkg/pfblockerng/pfblockerng.sh";
+	$spcmd = "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php";
+	foreach ($earlyshellcmds as $earlyshellcmd) {
+		/* pfBlockerNG - function to restore archived aliastables on on systems with /var ramdisk (see pfblockerng.inc) */
+		if (stristr($earlyshellcmd, "{$pfbcmd}")) {
+			$shellcmd_config[$i]['cmd'] = $earlyshellcmd;
+			$shellcmd_config[$i]['cmdtype'] = "earlyshellcmd";
+			$shellcmd_config[$i]['description'] = "pfBlockerNG default earlyshellcmd. DO NOT EDIT/DELETE!";
+			$i++;
+		/* System Patches auto-apply patch feature (see patches.inc) */
+		} elseif (stristr($earlyshellcmd, "{$spcmd}")) {
+			$shellcmd_config[$i]['cmd'] = $earlyshellcmd;
+			$shellcmd_config[$i]['cmdtype'] = "earlyshellcmd";
+			$shellcmd_config[$i]['description'] = "System Patches default earlyshellcmd. DO NOT EDIT/DELETE!";
+			$i++;
+		/* Other manually added earlyshellcmd entries */
+		} else {
+			$shellcmd_config[$i]['cmd'] = $earlyshellcmd;
+			$shellcmd_config[$i]['cmdtype'] = "earlyshellcmd";
+			$shellcmd_config[$i]['description'] = $shellcmd_config[$i]['description'] ?: "Imported earlyshellcmd ({$i})";
 			$i++;
 		}
+
+	}
+	/* Import shellcmd entries which were created manually (if there are any in config.xml) */
+	$shellcmds = config_get_path('system/shellcmd', []);
+	foreach ($shellcmds as $shellcmd) {
+		$shellcmd_config[$i]['cmd'] = $shellcmd;
+		$shellcmd_config[$i]['cmdtype'] = "shellcmd";
+		$shellcmd_config[$i]['description'] = $shellcmd_config[$i]['description'] ?: "Imported shellcmd ({$i})";
+		$i++;
 	}
 
 	/*
@@ -229,34 +203,27 @@ function shellcmd_import_config() {
 	 * afterfilterchangeshellcmd is NOT treated as an array, it's a string!
 	 * See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc
 	 */
-	if ($config['system']['afterfilterchangeshellcmd'] != '') {
-		$shellcmd_config[$i]['cmd'] = $config['system']['afterfilterchangeshellcmd'];
+	$afterfilterchangeshellcmd = config_get_path('system/afterfilterchangeshellcmd');
+	if ($afterfilterchangeshellcmd != '') {
+		$shellcmd_config[$i]['cmd'] = $afterfilterchangeshellcmd;
 		$shellcmd_config[$i]['cmdtype'] = "afterfilterchangeshellcmd";
 		$shellcmd_config[$i]['description'] = $shellcmd_config[$i]['description'] ?: "Imported afterfilterchangeshellcmd";
 		$i++;
 	}
 
 	/* Write the new config.xml when import is finished */
+	config_set_path('installedpackages/shellcmdsettings/config', $shellcmd_config);
 	write_config("[shellcmd] Successfully imported package configuration from config.xml.");
 
 }
 
 function shellcmd_validate_input($post, &$input_errors) {
-	global $config;
-	$a_shellcmd = &$config['system']['shellcmd'];
-	if (!is_array($a_shellcmd)) {
-		$a_shellcmd = array();
-	}
-	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
-	if (!is_array($a_earlyshellcmd)) {
-		$a_earlyshellcmd = array();
-	}
-	$a_shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
-	if (!is_array($a_shellcmd_config)) {
-		$a_shellcmd_config = array();
-	}
+	$a_shellcmd = config_get_path('system/shellcmd', []);
+	$a_earlyshellcmd = config_get_path('system/earlyshellcmd', []);
+	$a_shellcmd_config = config_get_path('installedpackages/shellcmdsettings/config', []);
+
 	/* afterfilterchangeshellcmd is NOT an array */
-	$afterfilterchangeshellcmd = $config['system']['afterfilterchangeshellcmd'];
+	$afterfilterchangeshellcmd = config_get_path('system/afterfilterchangeshellcmd');
 
 	/* Make sure we don't add the same command twice as it's just pointless */
 	if (($post['cmd']) != '') {
@@ -298,3 +265,4 @@ function shellcmd_validate_input($post, &$input_errors) {
 }
 
 ?>
+
