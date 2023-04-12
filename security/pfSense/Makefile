@@ -20,7 +20,6 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		cpdup>=0:sysutils/cpdup \
 		cpustats>=0:sysutils/cpustats \
 		dhcp6>=0:net/dhcp6 \
-		dhcpleases6>=0:sysutils/dhcpleases6 \
 		dhcpleases>=0:sysutils/dhcpleases \
 		dnsmasq>=0:dns/dnsmasq \
 		dpinger>=0:net/dpinger \
