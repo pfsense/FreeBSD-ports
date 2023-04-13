@@ -110,6 +110,7 @@ if (!function_exists('pf_version')) {
 function bind_sync() {
 
 	global $config;
+	$named_process = "named";
 	$bind = $config['installedpackages']['bind']['config'][0];
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
@@ -334,9 +335,8 @@ EOD;
 		$bindview = array();
 	}
 
-	//is_process_running didn't work
-	exec("pgrep named", $pids);
-	$process_running = (empty($pids) == false);
+
+	
 
 	for ($i = 0; $i < sizeof($bindview); $i++) {
 		$views = $config['installedpackages']['bindviews']['config'][$i];
@@ -594,54 +594,55 @@ EOD;
 						}
 
 						//Detect Zone changes
-						$skipZone = false;
-						$zoneRows = explode("\n", $zone_conf);
-						$zoneCacheFile = CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.json";
-						
-						if (file_exists($zoneCacheFile)){
-							$zoneRows_cache =json_decode( file_get_contents($zoneCacheFile, true));
+						$zone_is_dynamic = ((
+							($zone['enable_updatepolicy'] == "on") || 
+							($zoneallowupdate != "none") || 
+							file_exists(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.jnl"))
+						);
+
+						$skipZoneUpdate = false;
+						if ($zone_is_dynamic){
+							$zoneRows = explode("\n", $zone_conf);
 							
-							$diff_add = array_diff($zoneRows, $zoneRows_cache);
-							$diff_remove = array_diff($zoneRows_cache,$zoneRows);
-
-							if (sizeof($diff_add) == 1 && str_contains($diff_add[0],"serial")){
-								unset($diff_add[0]);
-							}
-							if (sizeof($diff_remove) == 1 && str_contains($diff_remove[0],"serial")){
-								unset($diff_remove[0]);
-							}
-
+							if (file_exists(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache")){
+								$zoneCache = file_get_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache");
+								$zoneCache_rows = explode("\n", $zoneCache);
+							} else {
+								$zoneCache_rows = [];								
+							}													
+							$diff_add = array_diff($zoneRows, $zoneCache_rows);
+							$diff_remove = array_diff($zoneCache_rows,$zoneRows);
+	
 							if (empty($diff_add) and empty($diff_remove)){
-								// no change in zone config.... skip update...
-								$skipZone = true;
-							}else{
-								// TODO: Merge Changes...
-								// Dynamic Zones are overwritten until merge is implemented. But at least, if there are no changes, the zone isn't reset any more.
+								// no change in zone config.... skip entire zone update...
+								$skipZoneUpdate = true;
 							}
 						}
-						//Store zone_conf for change detection
-						file_put_contents($zoneCacheFile, json_encode( $zoneRows));
-
-						$zone_is_dynamic = (($zone['enable_updatepolicy'] == "on") || ($zoneallowupdate != "none") || file_exists(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.jnl"));
+						
 						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
 						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
 
-					if ($skipZone == false){
+					if ($skipZoneUpdate == false){
 						// Freeze dynamic zones to prevent journal corruption
-
-						if ($zone_is_dynamic && $process_running) {
+						if ($zone_is_dynamic && is_process_running($named_process)) {
 							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
 							// TODO: diff frozen zone DB with pfSense's stored DB file
 							//       and (optionally?) add dynamic records to customzonerecords
+							
 						}
 
 						// Save zone configuration DB file
 						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
-
-						// Thaw frozen dynamic zone
-						if ($zone_is_dynamic && $process_running) {
+						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache", $zone_conf);
+						
+						if (is_process_running($named_proces)){
+							// Reload changed Zone
 							exec("{$rndc} reload " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
-							exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+							
+							// Thaw frozen dynamic zone
+							if ($zone_is_dynamic) {							
+								exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+							}
 						}
 					}
 					
@@ -824,14 +825,10 @@ EOD;
 	if ($bind_enable == "on") {
 		chmod($bind_sh, 0755);
 
-		//is_process_running didn't work. Replaced with pgrep....
-		exec("pgrep named", $pids);
-		$process_running = (empty($pids) == false);
-
-        if ($process_running) {
-		    exec("{$rndc} reconfig ");				
+        if (is_process_running($named_process)) {
+		    exec("{$rndc} reconfig");				
 		}else {
-                restart_service("named");
+            restart_service("named");
             }
 	} else {
 		stop_service("named");
