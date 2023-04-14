@@ -7,6 +7,7 @@
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2013 Marcello Coutinho
+ * Modified by AWP (Styletronix.net) 2023
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +37,8 @@ require_once("xmlrpc_client.inc");
 define('BIND_LOCALBASE', '/usr/local');
 define('CHROOT_LOCALBASE', '/var/etc/named');
 
-function bind_zone_validate($post, &$input_errors) {
+function bind_zone_validate($post, &$input_errors)
+{
 
 	if (array_key_exists("mail", $_POST)) {
 		$_POST['mail'] = preg_replace("/@/", ".", $post['mail']);
@@ -58,7 +60,7 @@ function bind_zone_validate($post, &$input_errors) {
 			if ($_POST['mail'] == '') {
 				$input_errors[] = "The field 'Mail Admin Zone' is required for {$_POST['type']} zones.";
 			}
-			// Intentionally fall through to 'master' zone case
+		// Intentionally fall through to 'master' zone case
 		case 'master':
 			if ($_POST['nameserver'] == '') {
 				$input_errors[] = "The field 'Name server' is required for {$_POST['type']} zones.";
@@ -72,7 +74,7 @@ function bind_zone_validate($post, &$input_errors) {
 						}
 					}
 					if (!preg_match("/(MX|NS)/", $_POST["hosttype$i"]) && ($_POST["hostname$i"] == "")) {
-						$input_errors[] = 'Record cannot be empty for '.$_POST["hosttype$i"].' type ';
+						$input_errors[] = 'Record cannot be empty for ' . $_POST["hosttype$i"] . ' type ';
 					}
 					if ($_POST["hosttype$i"] == "MX" && ($_POST["hostvalue$i"] == "")) {
 						$_POST["hostvalue$i"] = "10";
@@ -102,12 +104,58 @@ function bind_zone_validate($post, &$input_errors) {
 }
 
 if (!function_exists('pf_version')) {
-        function pf_version() {
-                return substr(trim(file_get_contents("/etc/version")), 0, 5);
-        }
+	function pf_version()
+	{
+		return substr(trim(file_get_contents("/etc/version")), 0, 5);
+	}
 }
 
-function bind_sync() {
+function bind_get_zonerecords($value, $zone)
+{
+	$zone_data_parsed = [];
+
+	if ($value) {
+		$zone_rows = explode("\n", $value);
+		$reg = '{(?<host>.+?)(?:\s+?(?<ttl>\d*))?\s+(?<scope>IN)\s+(?<type>\w+)\s+(?<value>.*)}';
+		foreach ($zone_rows as $line) {
+			if (preg_match($reg, $line, $matches)) {
+				if(strtolower($matches['host']) == strtolower("{$zone}.")){
+					$matches['host'] = '@';
+				}
+				if(str_ends_with(strtolower($matches['host']), strtolower(".{$zone}."))){
+					$matches['host'] = substr($matches['host'] , 0,strripos($matches['host'] ,".{$zone}."));;
+				}
+				if(str_ends_with(strtolower($matches['value']), strtolower(".{$zone}."))){
+					$matches['value'] = substr($matches['value'] , 0,strripos($matches['value'] ,".{$zone}."));;
+				}
+				array_push($zone_data_parsed, $matches);
+			}
+		}
+	}
+
+	return $zone_data_parsed;
+}
+function bind_diff_zonerecords($zone1, $zone2){
+	$diff = [];
+	foreach($zone1 as $a){
+		$match = false;
+		foreach($zone2 as $b){
+			if (strtolower($a['host']) == strtolower($b['host']) && 
+					strtolower($a['value']) == strtolower($b['value']) && 
+					strtolower($a['type']) == strtolower($b['type'])){
+				$match = true;
+				break;
+			}
+		}
+		if (!$match){
+			array_push($diff,$a);
+		}
+	}
+	return $diff;
+}
+
+function bind_sync()
+{
 
 	global $config;
 	$named_process = "named";
@@ -116,13 +164,13 @@ function bind_sync() {
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
 	$rndc_port = $bind['controlport'] == "" ? "8953" : $bind['controlport'];
 	$rndc_confgen_opts = "-p " . escapeshellarg($rndc_port);
-	if (!file_exists(BIND_LOCALBASE."/etc/rndc-confgen.pfsense") && file_exists($rndc_confgen)) {
+	if (!file_exists(BIND_LOCALBASE . "/etc/rndc-confgen.pfsense") && file_exists($rndc_confgen)) {
 		exec("$rndc_confgen $rndc_confgen_opts ", $rndc_conf);
 		$confgen_file = "";
 		foreach ($rndc_conf as $line) {
 			$confgen_file .= "{$line}\n";
 		}
-		file_put_contents(BIND_LOCALBASE."/etc/rndc-confgen.pfsense", $confgen_file);
+		file_put_contents(BIND_LOCALBASE . "/etc/rndc-confgen.pfsense", $confgen_file);
 	}
 	$rndc_bindconf = "";
 	$rndc_file = "";
@@ -214,16 +262,16 @@ EOD;
 		$bind_listenon = "";
 		foreach (explode(',', $bind['listenon']) as $listenon) {
 			if (is_ipaddrv6($listenon)) {
-				$bind_listenonv6 .= $listenon."; ";
+				$bind_listenonv6 .= $listenon . "; ";
 			} elseif (is_ipaddr($listenon)) {
-				$bind_listenon .= $listenon."; ";
+				$bind_listenon .= $listenon . "; ";
 			} else {
 				$listenon = pfSense_get_interface_addresses(convert_friendly_interface_to_real_interface_name($listenon));
 				if (is_ipaddr($listenon['ipaddr'])) {
-					$bind_listenon .= $listenon['ipaddr']."; ";
+					$bind_listenon .= $listenon['ipaddr'] . "; ";
 				}
 				if (is_ipaddrv6($listenon['ipaddr6'])) {
-					$bind_listenonv6 .= $listenon['ipaddr6']."; ";
+					$bind_listenonv6 .= $listenon['ipaddr6'] . "; ";
 				}
 			}
 		}
@@ -336,7 +384,7 @@ EOD;
 	}
 
 
-	
+
 
 	for ($i = 0; $i < sizeof($bindview); $i++) {
 		$views = $config['installedpackages']['bindviews']['config'][$i];
@@ -361,9 +409,11 @@ EOD;
 
 		$rpz_zones = array();
 		foreach ($bindzone as $zone) {
-			if (isset($zone['rpz']) && ($zone['rpz'] == "on") &&
-			    ($zone['disabled'] != "on") && ($zone['view'] == $viewname)) {
-			    $rpz_zones[] = reverse_zonename($zone['name'], $zone['reverso'], $zone['reversv6o']);
+			if (
+				isset($zone['rpz']) && ($zone['rpz'] == "on") &&
+				($zone['disabled'] != "on") && ($zone['view'] == $viewname)
+			) {
+				$rpz_zones[] = reverse_zonename($zone['name'], $zone['reverso'], $zone['reversv6o']);
 			}
 		}
 		if (!empty($rpz_zones)) {
@@ -375,7 +425,7 @@ EOD;
 		}
 
 		if (!empty($viewcustomoptions)) {
-			$bind_conf .= preg_replace("/^/m", "\t", $viewcustomoptions)."\n";
+			$bind_conf .= preg_replace("/^/m", "\t", $viewcustomoptions) . "\n";
 		}
 		$bind_conf .= "\n";
 
@@ -590,62 +640,98 @@ EOD;
 
 						// Add custom zone records
 						if ($zone['customzonerecords'] != "") {
-							$zone_conf .= "\n\n;\n;custom zone records\n;\n".base64_decode($zone['customzonerecords'])."\n";
+							$zone_conf .= "\n\n;\n;custom zone records\n;\n" . base64_decode($zone['customzonerecords']) . "\n";
 						}
 
 						//Detect Zone changes
 						$zone_is_dynamic = ((
-							($zone['enable_updatepolicy'] == "on") || 
-							($zoneallowupdate != "none") || 
-							file_exists(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.jnl"))
+							($zone['enable_updatepolicy'] == "on") ||
+							($zoneallowupdate != "none") ||
+							file_exists(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.jnl"))
 						);
 
 						$skipZoneUpdate = false;
-						if ($zone_is_dynamic){
-							$zoneRows = explode("\n", $zone_conf);
-							
-							if (file_exists(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache")){
-								$zoneCache = file_get_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache");
-								$zoneCache_rows = explode("\n", $zoneCache);
+						$zone_cache_file = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache";
+						$zoneReg = "{(?<host>.+?)\s+.*?(?<ttl>\d+)\s+(?<scope>IN)\s+(?<type>\w+)\s+(?<value>.*)}";
+						if ($zone_is_dynamic) {
+							$zoneRows_new_config = bind_get_zonerecords($zone_conf, $zonename);
+
+							if (file_exists($zone_cache_file)) {
+								$zoneCache_rows = bind_get_zonerecords(file_get_contents($zone_cache_file), $zonename);
 							} else {
-								$zoneCache_rows = [];								
-							}													
-							$diff_add = array_diff($zoneRows, $zoneCache_rows);
-							$diff_remove = array_diff($zoneCache_rows,$zoneRows);
-	
-							if (empty($diff_add) and empty($diff_remove)){
-								// no change in zone config.... skip entire zone update...
+								$zoneCache_rows = [];
+							}
+							$diff = bind_diff_zonerecords($zoneRows_new_config,$zoneCache_rows);
+							$diff = array_merge($diff , bind_diff_zonerecords($zoneCache_rows,$zoneRows_new_config));
+							
+							if (empty($diff)) {
+								// no change in zone config. skip entire zone update.
 								$skipZoneUpdate = true;
 							}
 						}
-						
+
 						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
 						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
+						$process_running = is_process_running($named_process);
+						if ($skipZoneUpdate == false) {
+							$zone_conf_dynamic = "";
+							// Freeze dynamic zones to prevent journal corruption
+							if ($zone_is_dynamic) {
+								if ($process_running) {
+									exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+								}
 
-					if ($skipZoneUpdate == false){
-						// Freeze dynamic zones to prevent journal corruption
-						if ($zone_is_dynamic && is_process_running($named_process)) {
-							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
-							// TODO: diff frozen zone DB with pfSense's stored DB file
-							//       and (optionally?) add dynamic records to customzonerecords
-							
-						}
+								// read current zone data
+								if (file_exists(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB")){
+									exec("/usr/local/sbin/named-compilezone -F text -q -i none -s full -o " . escapeshellarg("/tmp/nameddump_{$zonetype}_{$zoneview}_{$zonename}.txt") . " " . escapeshellarg($zonename) . " " . escapeshellarg(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB"));
+									$current_zone_data = file_get_contents("/tmp/nameddump_{$zonetype}_{$zoneview}_{$zonename}.txt");
+									unlink("/tmp/nameddump_{$zonetype}_{$zoneview}_{$zonename}.txt");
+								}else{
+									$current_zone_data ="";
+								}
+															
+								//compare zone data
+								$current_zone_data_parsed = bind_get_zonerecords($current_zone_data, $zonename);
+								$dynamic_count = 0;								
+								$_zonedata_to_merge = bind_diff_zonerecords($current_zone_data_parsed,$diff);
 
-						// Save zone configuration DB file
-						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
-						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache", $zone_conf);
-						
-						if (is_process_running($named_proces)){
-							// Reload changed Zone
-							exec("{$rndc} reload " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+								foreach ($_zonedata_to_merge as $a) {
+									if (strtolower($a["type"]) !== "soa") {
+											$zone_conf_dynamic .= "{$a['host']} \t {$a['ttl']} IN {$a["type"]}\t{$a['value']}\n";
+											$dynamic_count ++;
+										}
+									}
+
+								if ($dynamic_count > 0){
+									$zone_conf_dynamic = "\n;\n; Merged Dynamic Zone Records\n;\n" . $zone_conf_dynamic;
+									log_error("[bind] merged {$dynamic_count} dynamic records to zone {$zonename}");
+								}							
+							}
 							
-							// Thaw frozen dynamic zone
-							if ($zone_is_dynamic) {							
-								exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+							// save zone configuration DB file including dynamic zone data
+							file_put_contents(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf . $zone_conf_dynamic);
+
+							// save static zone for comparison on next update
+							// Maybe using resultconfig instead? But what is on syncing of firewalls?
+							file_put_contents($zone_cache_file, $zone_conf);
+
+							if ($process_running) {		
+								if ($zone_is_dynamic) {
+									// Thaw frozen dynamic zone
+									exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview), $output, $retval);
+									if ($retval !== 0){
+										log_error("[bind] RNDC THAW throwed an exception. Zone {$zonename} may be still frozen. Code {$retval}: {$output}");
+									};
+								}else{
+									// Reload static zone
+									exec("{$rndc} reload " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview), $output, $retval);
+									if ($retval !== 0){
+										log_error("[bind] RNDC RELOAD throwed an exception. Zone {$zonename}. Code {$retval}: {$output}");
+									};
+								}
 							}
 						}
-					}
-					
+
 						$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($zone_conf);
 						$write_config++;
 						// Check DNSSEC keys creation for master zones
@@ -691,11 +777,11 @@ EOD;
 							}
 							// Get DS keys
 							$dsfromkey = "/usr/local/sbin/dnssec-dsfromkey";
-							foreach (glob(CHROOT_LOCALBASE."/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
+							foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$zone_key = file_get_contents($filename);
 								if (preg_match("/IN DNSKEY 257 /", $zone_key) && file_exists($dsfromkey)) {
 									exec("$dsfromkey $filename", $dsset);
-									$config['installedpackages']['bindzone']['config'][$x]['dsset'] = base64_encode(array_pop($dsset)."\n".array_pop($dsset));
+									$config['installedpackages']['bindzone']['config'][$x]['dsset'] = base64_encode(array_pop($dsset) . "\n" . array_pop($dsset));
 									$write_config++;
 								}
 							}
@@ -713,9 +799,11 @@ EOD;
 										}
 									}
 									if ($file_found == 0) {
-										$config['installedpackages']['dnsseckeys']['config'][] = array('fullfile' => $filename,
+										$config['installedpackages']['dnsseckeys']['config'][] = array(
+											'fullfile' => $filename,
 											'description' => "bind {$zonename} DNSSEC backup file",
-											'filedata' => base64_encode(file_get_contents($filename)));
+											'filedata' => base64_encode(file_get_contents($filename))
+										);
 										$write_config++;
 										$dnssec_keys++;
 									}
@@ -811,7 +899,7 @@ EOD;
 		curl_close($curl_session);
 		file_put_contents(CHROOT_LOCALBASE . "/etc/namedb/named.root", $named_root, LOCK_EX);
 	}
-	if (!file_exists(CHROOT_LOCALBASE."/etc/localtime")) {
+	if (!file_exists(CHROOT_LOCALBASE . "/etc/localtime")) {
 		copy("/etc/localtime", CHROOT_LOCALBASE . "/etc/localtime");
 	}
 
@@ -824,12 +912,18 @@ EOD;
 	$bind_sh = "/usr/local/etc/rc.d/named.sh";
 	if ($bind_enable == "on") {
 		chmod($bind_sh, 0755);
-
-        if (is_process_running($named_process)) {
-		    exec("{$rndc} reconfig");				
-		}else {
-            restart_service("named");
-            }
+		if (is_process_running($named_process)) {
+			// Thaw all zones in case one missed.
+			exec("{$rndc} thaw ");
+			exec("{$rndc} reconfig", $output, $retval);
+				if ($retval !== 0){
+						log_error("[bind] RNDC RECONFIG throwed an exception. Zone {$zonename} may be still frozen. Code {$retval}: {$output}");
+						restart_service("named");
+						log_error("[bind] service restarted because reconfig throwed an exception.");
+				};
+		} else {
+			restart_service("named");
+		}
 	} else {
 		stop_service("named");
 		chmod($bind_sh, 0644);
@@ -838,7 +932,8 @@ EOD;
 	bind_sync_on_changes();
 }
 
-function bind_print_javascript_type_zone() {
+function bind_print_javascript_type_zone()
+{
 	$js = <<<'JS'
 	<script>
 	events.push(function(){
@@ -956,7 +1051,8 @@ JS;
 	echo $js;
 }
 
-function bind_write_rcfile() {
+function bind_write_rcfile()
+{
 	global $config;
 	$bind = $config['installedpackages']['bind']['config'][0];
 	$ip_version = ($bind['bind_ip_version'] ? $bind['bind_ip_version'] : "");
@@ -995,13 +1091,14 @@ EOD;
 }
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
-function bind_sync_on_changes() {
+function bind_sync_on_changes()
+{
 	global $config, $g;
 
 	if (is_array($config['installedpackages']['bindsync']['config'])) {
 		$bind_sync = $config['installedpackages']['bindsync']['config'][0];
 		$synconchanges = $bind_sync['synconchanges'];
-		$synctimeout = (int)$bind_sync['synctimeout'] ?: 30;
+		$synctimeout = (int) $bind_sync['synctimeout'] ?: 30;
 		$master_zone_ip = $bind_sync['masterip'];
 		switch ($synconchanges) {
 			case 'manual':
@@ -1105,20 +1202,22 @@ function bind_sync_on_changes() {
 }
 
 if (!function_exists('pf_version')) {
-	function pf_version() {
+	function pf_version()
+	{
 		return substr(trim(file_get_contents("/etc/version")), 0, 3);
 	}
 }
 
 /* Do the actual XMLRPC sync */
-function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $master_zone_ip) {
+function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $master_zone_ip)
+{
 	global $config, $g;
 
-	if (($username == "") || ($password == "") || ($sync_to_ip == "") || ($port == "") || ($protocol == "") || ($master_zone_ip =="")) {
+	if (($username == "") || ($password == "") || ($sync_to_ip == "") || ($port == "") || ($protocol == "") || ($master_zone_ip == "")) {
 		log_error("[bind] A required XMLRPC sync parameter (username, password, replication target, port, protocol or zone master IP) is empty ... aborting pkg sync");
 		return;
 	}
-	
+
 	/* XML will hold the sections to sync */
 	$xml = array();
 	$xml['bind'] = $config['installedpackages']['bind'];
@@ -1138,14 +1237,14 @@ function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 
 		}
 	}
-	
+
 	/* Commands to reload BIND settings on the destination sync host. */
 	$execcmd = "require_once('/usr/local/pkg/bind.inc');\n";
 	$execcmd .= "bind_sync('yes');";
-	
+
 	if (pf_version() >= "2.4") {
 		// xmlrpc cannot encode NULL objects/arrays..
-		foreach($xml as $xmlkey => $xmlvalue) {
+		foreach ($xml as $xmlkey => $xmlvalue) {
 			if (gettype($xmlvalue) == "NULL") {
 				$xml[$xmlkey] = array();
 			}
@@ -1189,7 +1288,7 @@ function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 		} elseif ($resp->faultCode()) {
 			$cli->setDebug(1);
 			$resp = $cli->send($msg, $synctimeout);
-			$error = "An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
+			$error = "An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
 			log_error($error);
 			file_notice("sync_settings", $error, "BIND Settings Sync", "");
 		} else {
@@ -1216,7 +1315,7 @@ function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 		} elseif ($resp->faultCode()) {
 			$cli->setDebug(1);
 			$resp = $cli->send($msg, $synctimeout);
-			$error = "[bind] An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
+			$error = "[bind] An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
 			log_error($error);
 			file_notice("sync_settings", $error, "BIND Settings Sync", "");
 		} else {
@@ -1225,7 +1324,8 @@ function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 	}
 }
 
-function reverse_zonename($zonename, $zonereverso=false, $zonereversv6o=false) {
+function reverse_zonename($zonename, $zonereverso = false, $zonereversv6o = false)
+{
 	if ($zonereverso == "on") {
 		if ($zonereversv6o == "on") {
 			return $zonename . ".ip6.arpa";
