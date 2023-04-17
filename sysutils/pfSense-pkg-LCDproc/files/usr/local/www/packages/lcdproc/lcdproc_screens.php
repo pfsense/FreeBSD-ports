@@ -242,7 +242,7 @@ $group->add(
 		array (
 			'c'	=> gettext('Celsius'),
 			'f'	=> gettext('Fahrenheit')
-	)
+		)
 ))->setHelp('Unit of temperature');
 $section->add($group);
 
