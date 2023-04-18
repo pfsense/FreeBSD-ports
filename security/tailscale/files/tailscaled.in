@@ -62,8 +62,8 @@ else
 fi
 
 pidfile=/var/run/${name}.pid
-procname="/usr/local/bin/${name}"
-ctlname="/usr/local/bin/tailscale"
+procname="%%PREFIX%%/bin/${name}"
+ctlname="%%PREFIX%%/bin/tailscale"
 
 start_cmd="${name}_start"
 start_postcmd="${name}_poststart"
