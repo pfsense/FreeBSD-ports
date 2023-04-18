@@ -54,3 +54,5 @@ function pfSense_pf_cp_zerocnt(string $path): null {}
 function pfSense_pf_cp_get_eth_last_active(string $path): array|null {}
 function pfSense_kenv_dump(): array|null {}
 #endif
+
+function pfSense_interface_setpcp(string $ifname, int $pcp): bool {}
