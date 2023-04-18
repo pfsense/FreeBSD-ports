@@ -80,6 +80,10 @@ tailscale_bin="/usr/local/bin/tailscale"
 tailscaled_rcfile="/usr/local/etc/rc.d/tailscaled"
 tailscale_tun_dev_wait=5
 
+# useful bits
+tailscaled_state_file="tailscaled.state"
+tailscaled_vendor_state_dir="/var/db/tailscale"
+
 # rc command hook
 pfsense_tailscaled_start() {
 	# ensure if_tuntap is loaded
@@ -118,7 +122,7 @@ pfsense_tailscaled_clean() {
 	tailscaled_stop
 
 	# delete the state file
-	/bin/rm -f ${tailscaled_state_dir}/*.state >/dev/null 2>&1
+	/bin/rm -f ${tailscaled_state_dir}/${tailscaled_state_file} >/dev/null 2>&1
 }
 
 # bring up tailscale using the generated up flags from the configuration
@@ -142,16 +146,13 @@ check_load_if_tuntap() {
 
 # migrate state cache to configuration defined location
 tailscaled_migrate_state() {
-	local _state_file=tailscaled.state
-	local _vendor_state_dir=/var/db/tailscale
+	local _src_state_file=${tailscaled_vendor_state_dir}/${tailscaled_state_file}
+	local _dst_state_file=${tailscaled_state_dir}/${tailscaled_state_file}
 
-	local _src_state_file=${_vendor_state_dir}/${_state_file}
-	local _dst_state_file=${tailscaled_state_dir}/${_state_file}
+	# nothing to do if these are equal, so bail out
+	[ "${tailscaled_vendor_state_dir}" = "${tailscaled_state_dir}" ] && return 0
 
-	# nothing to do if the these are equal, so bail out
-	[ "${_vendor_state_dir}" = "${tailscaled_state_dir}" ] && return 0
-
-	# no state file to migrate, so bailout
+	# no state file to migrate, so bail out
 	[ ! -f ${_src_state_file} ] && return 0
 
 	# create new state directory
