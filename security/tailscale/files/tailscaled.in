@@ -9,7 +9,7 @@
 #
 # tailscaled_enable (bool):	Set it to YES to enable tailscaled.
 #				Default is "NO".
-# tailscaled_cache_dir (str):	Set the path to use for the state cache.
+# tailscaled_state_dir (str):	Set the path to use for the state directory.
 # 				Default is "/var/db/tailscale"
 # tailscaled_port (number):	Set the port to listen on for incoming VPN packets.
 #				Default is "41641".
@@ -34,7 +34,7 @@ rcvar=tailscaled_enable
 load_rc_config $name
 
 : ${tailscaled_enable:="NO"}
-: ${tailscaled_cache_dir:="/var/db/tailscale"}
+: ${tailscaled_state_dir:="/var/db/tailscale"}
 : ${tailscaled_port:="41641"}
 : ${tailscaled_exitnode_enable:="NO"}
 : ${tailscaled_up_args:=""}
@@ -62,8 +62,8 @@ else
 fi
 
 pidfile=/var/run/${name}.pid
-procname="%%PREFIX%%/bin/${name}"
-ctlname="%%PREFIX%%/bin/tailscale"
+procname="/usr/local/bin/${name}"
+ctlname="/usr/local/bin/tailscale"
 
 start_cmd="${name}_start"
 start_postcmd="${name}_poststart"
@@ -77,7 +77,8 @@ tailscaled_start()
 		/sbin/ifconfig ${tailscaled_tun_dev} | fgrep -qw PID ||
 		/sbin/ifconfig ${tailscaled_tun_dev} destroy
 	)
-	env CACHE_DIRECTORY=${tailscaled_cache_dir} /usr/sbin/daemon -f ${tailscaled_syslog_output_flags} -p ${pidfile} ${procname} -port ${tailscaled_port} -tun ${tailscaled_tun_dev}
+
+	/usr/sbin/daemon -f ${tailscaled_syslog_output_flags} -p ${pidfile} ${procname} -port ${tailscaled_port} -tun ${tailscaled_tun_dev} -statedir ${tailscaled_state_dir}
 }
 
 tailscaled_poststart()
