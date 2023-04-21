@@ -8194,6 +8194,9 @@ function sync_package_pfblockerng($cron='') {
 				$pfb['domain_clear']	= FALSE;		// Flag to signal no Aliases defined or all Aliases disabled.
 				$alias_cnt		= 0;
 
+				// cURL Source Interface (sets CURLOPT_INTERFACE)
+				$srcint = $list['srcint'] ?: FALSE;
+
 				if ($list['action'] != 'Disabled' && isset($list['row'])) {
 					$alias				= "DNSBL_{$list['aliasname']}";
 					if (empty(pfb_filter($alias, PFB_FILTER_WORD, 'DNSBL - Processes'))) {
