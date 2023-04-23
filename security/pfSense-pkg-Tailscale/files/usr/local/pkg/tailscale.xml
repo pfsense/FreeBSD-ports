@@ -91,6 +91,20 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>State Directory</fielddescr>
+			<fieldname>statedir</fieldname>
+			<description>
+				<![CDATA[
+				Path to directory for storage of config state, certificates, and incoming files.
+				WARNING: Changing this value will not move an existing configuration and will require
+				reauthentication with the control server.
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>/usr/local/pkg/tailscale/state</default_value>
+			<required/>
+		</field>
+		<field>
 			<fielddescr>Keep Configuration</fielddescr>
 			<fieldname>keepconfig</fieldname>
 			<description>

@@ -92,7 +92,7 @@ function tailscale_ifgroup_deinstall()
 /*
  * Test to see if we are keeping the config on de-install
  */
-function tailscale_has_keep_config()
+function tailscale_has_keep_config(): bool
 {
 	return (tailscale_get_config('tailscale', 'keepconfig', 'on') === 'on');
 }
@@ -100,7 +100,7 @@ function tailscale_has_keep_config()
 /*
  * Just the opposite as above
  */
-function tailscale_not_has_keep_config()
+function tailscale_not_has_keep_config(): bool
 {
 	return !(tailscale_has_keep_config());
 }
@@ -108,12 +108,12 @@ function tailscale_not_has_keep_config()
 /*
  * Utility function to remove all package settings and state
  */
-function tailscale_clean()
+function tailscale_clean(): void
 {
 	global $config;
 
 	# 1. remove the state cache on the filesystem, we keep logs and transferred files
-	unlink_if_exists(TAILSCALED_STATE);
+	unlink_if_exists(tailscale_state_directory() . '/' . TAILSCALED_STATE);
 
 	# 2. clean the tailscale config tree
 	unset($config['installedpackages']['tailscale']);

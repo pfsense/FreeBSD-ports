@@ -9,3 +9,4 @@ Makefile.local
 *.rej
 *.orig
 *.sw[p-z]
+.vscode/

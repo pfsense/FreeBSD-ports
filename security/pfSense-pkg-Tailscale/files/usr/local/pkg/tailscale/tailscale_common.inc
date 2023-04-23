@@ -38,7 +38,8 @@ define('TAILSCALE_BIN', '/usr/local/bin/tailscale');
 define('PFSENSE_TAILSCALED_RCCONF', '/usr/local/etc/rc.conf.d/pfsense_tailscaled');
 define('TAILSCALED_RCCONF', '/usr/local/etc/rc.conf.d/tailscaled');
 
-define('TAILSCALED_STATE', '/var/db/tailscale/tailscaled.state');
+define('TAILSCALED_STATE', 'tailscaled.state');
+define('TAILSCALED_STATE_DIR', '/usr/local/pkg/tailscale/state');
 
 define('TAILSCALE_SERVER', 'https://controlplane.tailscale.com');
 
@@ -212,6 +213,14 @@ function tailscale_get_config($package, $key, $default = NULL)
 	global $config;
 	$path = $config['installedpackages'][trim($package)]['config'][0];
 	return (is_array($path) && array_key_exists($key, $path)) ? $path[$key] : $default;
+}
+
+/*
+ * Utility function for obtaining the state directory
+ */
+function tailscale_state_directory(): string
+{
+	return (tailscale_get_config('tailscale', 'statedir', TAILSCALED_STATE_DIR));
 }
 
 /*
@@ -569,6 +578,11 @@ function tailscale_tailscaled_rcconf_map()
 		if (tailscale_get_config('tailscale', 'enable', 'off') === 'on')
 			$value = SYSRC_YES;
 		return tailscale_format_sysrc_variable($key, $value);
+	};
+
+	# tailscaled_state_dir (str)
+	$rcconf_map['tailscaled_state_dir'] = function($key) {
+		return tailscale_format_sysrc_variable($key, tailscale_state_directory());
 	};
 
 	# tailscaled_exitnode_enable (bool), handled above

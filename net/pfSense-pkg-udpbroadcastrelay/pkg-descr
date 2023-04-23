@@ -1,0 +1,3 @@
+A GUI for UDP Broadcast Relay. This program listens for UDP broadcast packets and retransmits on additional interfaces.
+
+WWW: https://www.freshports.org/net/udpbroadcastrelay/

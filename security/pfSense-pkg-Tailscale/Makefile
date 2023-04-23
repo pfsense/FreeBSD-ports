@@ -1,5 +1,5 @@
 PORTNAME=	pfSense-pkg-Tailscale
-PORTVERSION=	0.1.2
+PORTVERSION=	0.1.3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -26,7 +26,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.conf.d/
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d/
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/tailscale/
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/tailscale/state
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \

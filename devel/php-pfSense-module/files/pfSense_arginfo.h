@@ -1,12 +1,12 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: c5bc435f958432e3b98566b276db8789001ced98 */
+ * Stub hash: 0b7c1cc947a10c9b6f910acb2372c97ba159d9af */
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pfSense_kill_srcstates, 0, 1, true, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_kill_srcstates, 0, 1, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ip1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, ip2, IS_STRING, 1, "null")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pfSense_kill_states, 0, 1, true, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_kill_states, 0, 1, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ip1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, ip2, IS_STRING, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, iface, IS_STRING, 1, "null")
@@ -118,7 +118,7 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_pfSense_interface_create2 arginfo_pfSense_interface_create
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_pfSense_interface_destroy, 0, 1, true, MAY_BE_ARRAY)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_pfSense_interface_destroy, 0, 1, MAY_BE_ARRAY|MAY_BE_TRUE)
 	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
@@ -129,17 +129,17 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_pfSense_interface_deladdress arginfo_pfSense_interface_setaddress
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_pfSense_interface_rename, 0, 2, true, MAY_BE_ARRAY)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_pfSense_interface_rename, 0, 2, MAY_BE_ARRAY|MAY_BE_TRUE)
 	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, newifname, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pfSense_ngctl_name, 0, 2, true, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_ngctl_name, 0, 2, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, newifname, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pfSense_vlan_create, 0, 4, true, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_vlan_create, 0, 4, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, parentifname, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, tag, IS_LONG, 0)
@@ -148,17 +148,17 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_pfSense_interface_getmtu arginfo_pfSense_getall_interface_addresses
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pfSense_interface_mtu, 0, 2, true, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_interface_mtu, 0, 2, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, mtu, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pfSense_interface_flags, 0, 2, true, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_interface_flags, 0, 2, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pfSense_interface_capabilities, 0, 2, true, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_interface_capabilities, 0, 2, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, caps, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -213,7 +213,7 @@ ZEND_END_ARG_INFO()
 #endif
 
 #if defined(PF_CP_FUNCTIONS)
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_pfSense_pf_cp_zerocnt, 0, 1, MAY_BE_NULL)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_pf_cp_zerocnt, 0, 1, IS_NULL, 1)
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 #endif
@@ -226,6 +226,11 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_kenv_dump, 0, 0, IS_ARRAY, 1)
 ZEND_END_ARG_INFO()
 #endif
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_interface_setpcp, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, ifname, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, pcp, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 
 ZEND_FUNCTION(pfSense_kill_srcstates);
@@ -306,6 +311,7 @@ ZEND_FUNCTION(pfSense_pf_cp_get_eth_last_active);
 #if defined(PF_CP_FUNCTIONS)
 ZEND_FUNCTION(pfSense_kenv_dump);
 #endif
+ZEND_FUNCTION(pfSense_interface_setpcp);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -387,5 +393,6 @@ static const zend_function_entry ext_functions[] = {
 #if defined(PF_CP_FUNCTIONS)
 	ZEND_FE(pfSense_kenv_dump, arginfo_pfSense_kenv_dump)
 #endif
+	ZEND_FE(pfSense_interface_setpcp, arginfo_pfSense_interface_setpcp)
 	ZEND_FE_END
 };

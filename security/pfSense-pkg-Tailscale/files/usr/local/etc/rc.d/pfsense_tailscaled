@@ -32,6 +32,9 @@ load_rc_config $name
 : ${pfsense_tailscaled_loginserver:="https://controlplane.tailscale.com"}
 : ${pfsense_tailscaled_snat_subnet_routes:="NO"}
 
+# source the tailscaled rc configuration too
+load_rc_config tailscaled
+
 # handle the --auth-key parameter
 pfsense_tailscaled_up_flags="--auth-key=${pfsense_tailscaled_authkey}"
 
@@ -75,13 +78,19 @@ tailscale_tun_dev="tailscale0"
 tailscale_tun_dev_group="Tailscale"
 tailscale_bin="/usr/local/bin/tailscale"
 tailscaled_rcfile="/usr/local/etc/rc.d/tailscaled"
-tailscale_state="/var/db/tailscale/tailscaled.state"
 tailscale_tun_dev_wait=5
+
+# useful bits
+tailscaled_state_file="tailscaled.state"
+tailscaled_vendor_state_dir="/var/db/tailscale"
 
 # rc command hook
 pfsense_tailscaled_start() {
 	# ensure if_tuntap is loaded
 	check_load_if_tuntap || return 1
+
+	# ensure tailscaled state exists on persistent storage
+	tailscaled_migrate_state
 
 	# now we can safely start tailscaled
 	tailscaled_start
@@ -113,14 +122,14 @@ pfsense_tailscaled_clean() {
 	tailscaled_stop
 
 	# delete the state file
-	rm -f ${tailscale_state} >/dev/null 2>&1
+	/bin/rm -f ${tailscaled_state_dir}/${tailscaled_state_file} >/dev/null 2>&1
 }
 
 # bring up tailscale using the generated up flags from the configuration
 tailscale_up() {
-	debug "Bringing up ${tailscale_tun_dev} with ${pfsense_tailscaled_up_flags}"
+	logger -s -t tailscale "Bringing up ${tailscale_tun_dev} with ${pfsense_tailscaled_up_flags}"
 	${tailscale_bin} up ${pfsense_tailscaled_up_flags} || {
-		debug "Unable to bring up ${tailscale_tun_dev}. Check authentication."
+		logger -s -t "Unable to bring up ${tailscale_tun_dev}. Check authentication."
 	}
 }
 
@@ -133,6 +142,38 @@ check_load_kmod() {
 # wrapper specific for if_tuntap module
 check_load_if_tuntap() {
 	check_load_kmod if_tuntap
+}
+
+# migrate state cache to configuration defined location
+tailscaled_migrate_state() {
+	local _src_state_file=${tailscaled_vendor_state_dir}/${tailscaled_state_file}
+	local _dst_state_file=${tailscaled_state_dir}/${tailscaled_state_file}
+
+	# nothing to do if these are equal, so bail out
+	[ "${tailscaled_vendor_state_dir}" = "${tailscaled_state_dir}" ] && return 0
+
+	# no state file to migrate, so bail out
+	[ ! -f ${_src_state_file} ] && return 0
+
+	# create new state directory
+	if [ ! -d ${tailscaled_state_dir} ]; then
+		/bin/mkdir -p ${tailscaled_state_dir} || (
+			logger -s -t tailscale "Unable to initialize state directory ${tailscaled_state_dir}"
+			return 1
+		)
+	fi
+
+	# migrate the src state file to the new location
+	/bin/cp ${_src_state_file} ${_dst_state_file} || (
+		logger -s -t tailscale "Unable to migrate state file ${_src_state_file} to ${_dst_state_file}"
+		return 1
+	)
+
+	# delete the src state file
+	/bin/rm -f ${_src_state_file} >/dev/null 2>&1
+
+	# all done
+	logger -s -t tailscale "Migrated state file ${_src_state_file} to ${_dst_state_file}"
 }
 
 # determine if the tun device exists
@@ -149,10 +190,10 @@ tun_dev_not_exists() {
 wait_for_tun_dev() {
 	local _maxwaited="${1}"
 
-	debug "Waiting for device ${tailscale_tun_dev}"
+	logger -s -t tailscale "Waiting for device ${tailscale_tun_dev}"
 	_waited=0
 	while tun_dev_not_exists || {
-		debug "Found device ${tailscale_tun_dev}"
+		logger -s -t tailscale "Found device ${tailscale_tun_dev}"
 		return 0
 	}; do
 		[ ${_waited} -gt ${_maxwaited} ] && break
@@ -160,7 +201,7 @@ wait_for_tun_dev() {
 		_waited=$((_waited+1))
 	done
 
-	debug "Unable to find device ${tailscale_tun_dev}"
+	logger -s -t tailscale "Unable to find device ${tailscale_tun_dev}"
 	return 1
 }
 
@@ -199,11 +240,11 @@ tailscaled_restart() {
 # add the tun device to the interface group
 tun_dev_add_group() {
 	/sbin/ifconfig ${tailscale_tun_dev} group ${tailscale_tun_dev_group} >/dev/null 2>&1 && {
-		debug "Added ${tailscale_tun_dev} to interface group ${tailscale_tun_dev_group}"
+		logger -s -t tailscale "Added ${tailscale_tun_dev} to interface group ${tailscale_tun_dev_group}"
 		return 0
 	}
 
-	debug "Unable to add ${tailscale_tun_dev} to interface group ${tailscale_tun_dev_group}"
+	logger -s -t tailscale "Unable to add ${tailscale_tun_dev} to interface group ${tailscale_tun_dev_group}"
 	return 1
 }
 
