@@ -3,7 +3,7 @@
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-<![CDATA[
+		<![CDATA[
 /*
  * bind_zones.xml
  *
@@ -28,7 +28,7 @@
 	]]>
 	</copyright>
 	<name>bind_zone</name>
-	<version>%%PKGVERSION%%</version>
+	<version>9.17</version>
 	<title>Services/Bind</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<tabs>
@@ -121,10 +121,26 @@
 			<description>Select zone type.</description>
 			<type>select</type>
 			<options>
-				<option><name>Master</name><value>master</value><enablefields>description</enablefields></option>
-				<option><name>Slave</name><value>slave</value><enablefields>tll</enablefields></option>
-				<option><name>Forward</name><value>forward</value><enablefields>forward</enablefields></option>
-				<option><name>Redirect</name><value>redirect</value><enablefields>redirect</enablefields></option>
+				<option>
+					<name>Master</name>
+					<value>master</value>
+					<enablefields>description</enablefields>
+				</option>
+				<option>
+					<name>Slave</name>
+					<value>slave</value>
+					<enablefields>tll</enablefields>
+				</option>
+				<option>
+					<name>Forward</name>
+					<value>forward</value>
+					<enablefields>forward</enablefields>
+				</option>
+				<option>
+					<name>Redirect</name>
+					<value>redirect</value>
+					<enablefields>redirect</enablefields>
+				</option>
 			</options>
 			<required/>
 		</field>
@@ -177,11 +193,11 @@
 			<fieldname>dnssec</fieldname>
 			<enablefields>backupkeys</enablefields>
 			<description>Enable inline DNSSEC signing</description>
-                        <sethelp>
-                                <![CDATA[
+			<sethelp>
+				<![CDATA[
                                 See <a href="https://kb.isc.org/article/AA-00626/109/Inline-Signing-in-ISC-BIND-9.9.0-Examples.html">Inline DNSSEC signing</a>.
                                 ]]>
-                        </sethelp>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -315,10 +331,10 @@
 			<fielddescr>Enable update-policy</fielddescr>
 			<fieldname>enable_updatepolicy</fieldname>
 			<description>
-			  Enable update-policy which overrides allow-update.
+				Enable update-policy which overrides allow-update.
 			</description>
 			<sethelp>
-			  The update-policy statement replaces the allow-update statement.
+				The update-policy statement replaces the allow-update statement.
 			</sethelp>
 			<type>checkbox</type>
 			<enablefields>updatepolicy</enablefields>
@@ -405,17 +421,50 @@
 					<description>Select record type for this host.</description>
 					<type>select</type>
 					<options>
-						<option><name>A</name><value>A</value></option>
-						<option><name>AAAA</name><value>AAAA</value></option>
-						<option><name>DNAME</name><value>DNAME</value></option>
-						<option><name>MX</name><value>MX</value></option>
-						<option><name>CNAME</name><value>CNAME</value></option>
-						<option><name>NS</name><value>NS</value></option>
-						<option><name>LOC</name><value>LOC</value></option>
-						<option><name>SRV</name><value>SRV</value></option>
-						<option><name>PTR</name><value>PTR</value></option>
-						<option><name>TXT</name><value>TXT</value></option>
-						<option><name>SPF</name><value>SPF</value></option>
+						<option>
+							<name>A</name>
+							<value>A</value>
+						</option>
+						<option>
+							<name>AAAA</name>
+							<value>AAAA</value>
+						</option>
+						<option>
+							<name>DNAME</name>
+							<value>DNAME</value>
+						</option>
+						<option>
+							<name>MX</name>
+							<value>MX</value>
+						</option>
+						<option>
+							<name>CNAME</name>
+							<value>CNAME</value>
+						</option>
+						<option>
+							<name>NS</name>
+							<value>NS</value>
+						</option>
+						<option>
+							<name>LOC</name>
+							<value>LOC</value>
+						</option>
+						<option>
+							<name>SRV</name>
+							<value>SRV</value>
+						</option>
+						<option>
+							<name>PTR</name>
+							<value>PTR</value>
+						</option>
+						<option>
+							<name>TXT</name>
+							<value>TXT</value>
+						</option>
+						<option>
+							<name>SPF</name>
+							<value>SPF</value>
+						</option>
 					</options>
 				</rowhelperfield>
 				<rowhelperfield>
@@ -476,6 +525,27 @@
 			<encoding>base64</encoding>
 			<dontdisplayname/>
 			<usecolspan2/>
+		</field>
+		<field>
+			<name>On config change</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Validate Zone</fielddescr>
+			<fieldname>validate_zone</fieldname>
+			<description>
+				If enabled, NAMED-CHECKZONE is used to validate zone file bevor overwriting existing zone data to prevent downtime of BIND if the zone file is invalid.
+				BIND will use previous zone data until the exception is resolved. Only used for master zones.
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Keep DDNS entries</fielddescr>
+			<fieldname>ddns_merging</fieldname>
+			<description>
+				Master zone with enabled DDNS will be merged into the BIND config file if this option is enabled, otherwise existing zone data will be overwritten with the new config.
+			</description>
+			<type>checkbox</type>
 		</field>
 	</fields>
 	<custom_php_after_head_command>
