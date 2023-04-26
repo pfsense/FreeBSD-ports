@@ -106,10 +106,439 @@ if (!function_exists('pf_version')) {
                 return substr(trim(file_get_contents("/etc/version")), 0, 5);
         }
 }
+	
+// parse the zone file which was exported with "named-compilezone -F text" or "RNDC dumpdb -zones"
+function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = false) {
+	$reg_host = "{(?<name>.+?)?(?:\s+?(?<ttl>\d*))?\s+(?<class>IN)?\s+(?<type>\p{L}+)\s+(?<rdata>.*)}";
+	$regzone = "{;.+?\'(?<zone>.+?)\/.+/(?<view>.*)\'}";
+	$zone_data_parsed = [];
 
-function bind_sync() {
+	if ($value) {
+		if ($zone !== '' && !str_ends_with($zone,'.')){
+			$zone .=  '.';
+		}
 
+		$view = '';
+		$origin = $zone;
+		$defaultTTL = '8700';
+		$last_name = '';
+		$data_rows = [];
+		$item_continue = false;
+		$index = 0;
+
+		// normalize multi row values
+		foreach (explode("\n", $value) as $line) {
+			if (preg_match($regzone, $line)) {
+				// pass new zone marker.
+				array_push($data_rows, ['raw' => $line]);
+				continue;
+			}
+
+			// split comments and values
+			$split_comment = bind_mb_explode_escaped(';', $line);
+			$line_without_comment = trim($split_comment[0]);
+			
+			// everything after the first ; will be used as comment
+			unset($split_comment[0]);
+			$line_comment = implode(';', $split_comment);
+
+				if (!$item_continue) {
+					// detect multiline start
+					$split_multiline = bind_mb_explode_escaped('(', $line);
+					if (count($split_multiline) > 1){
+						$item_continue = [
+							'comment' => $line_comment, 
+							'raw' => implode('', $split_multiline), 
+							'index' => $index
+						];
+						continue;
+					} else {
+						$item = [
+							'comment' => $line_comment, 
+							'raw' => $line_without_comment, 
+							'index' => $index
+						];
+					}
+				} else {
+					// detect multiline end
+					$split_multiline = bind_mb_explode_escaped(')', $line);
+					if (count($split_multiline) > 1){
+						$item_continue['raw'] .= implode('', $split_multiline);
+						$item = $item_continue;
+						$item_continue = false;
+					}else{
+						$item_continue['comment'] .= ' ' . $line_comment;
+						$item_continue['raw'] .= ' ' . $line_without_comment;
+						continue;
+					}
+				}
+
+				$item['raw'] = trim($item['raw']);
+				$item['comment'] = trim($item['comment']);
+				array_push($data_rows, $item);
+			$index++;
+		}
+
+		// process zone records
+		foreach ($data_rows as $data_row) {
+			if ((empty($data_row['raw']) || trim($data_row['raw']) == '') && (empty($data_row['comment']) || trim($data_row['comment']) == '')) {
+				// empty row
+			} elseif ($include_comment_only && (empty($data_row['raw']) || trim($data_row['raw']) == '')) {
+				// comment only
+				$record = [
+					'zone' => $zone,
+					'view' => $view,
+					'index' => $data_row['index'],
+					'comment' => $data_row['comment'],
+					'name' => '',
+					'ttl' => '',
+					'type' => ';',
+					'rdata' => $data_row['comment'],
+					'class' => ''
+				];
+				array_push($zone_data_parsed, $record);
+
+			} elseif (preg_match('{\$TTL\s+(?<ttl>\d+\w?)\s*}', $data_row['raw'], $matches)) {
+				// find @TTL
+				$defaultTTL = $matches['ttl'];
+				$last_name = '';
+
+			} elseif (preg_match('{\$ORIGIN\s+(?<origin>\S+)\s*}', $data_row['raw'], $matches)) {
+				// find @ORIGIN
+				$origin = $matches['origin'];
+				$last_name = '';
+
+			} elseif (preg_match($regzone, $data_row['raw'], $matches)) {
+				// find ZONE NAME in BIND Dump
+				$zone = $matches['zone'] . '.';
+				$view = $matches['view'];
+				$origin = $zone;
+				$last_name = '';
+
+			} elseif (preg_match($reg_host, $data_row['raw'], $matches)) {
+				// regular zone record
+				$record = [
+					'zone' => $zone,
+					'view' => $view,
+					'index' => $data_row['index'],
+					'comment' => $data_row['comment'],
+					'name' => $matches['name'],
+					'ttl' => $matches['ttl'],
+					'type' => strtoupper($matches['type']),
+					'rdata' => $matches['rdata'],
+					'class' => strtoupper($matches['class'])
+				];
+
+				if (!$record['name']) { $record['name'] = $last_name; }
+				if (!$record['ttl']) { $record['ttl'] = $defaultTTL; }
+
+				// convert name to FQDN
+				if ($record['name'] == '@' || $record['name'] == '.') {
+					$record['name'] = $origin;
+				} elseif (!str_ends_with($record['name'], '.')) {
+					$record['name'] = $record['name'] . ".{$origin}";
+				}
+
+				// split host. only for display
+				$record['name_part1'] = $record['name'];
+				$a = strripos($record['name'], ".{$origin}.");
+				if (strtolower($record['name']) == strtolower("{$origin}.")) {
+					$record['name_part1'] = $record['name'];
+					$record['name_part2'] = '';
+				} elseif ($a > 0) {
+					$record['name_part1'] = substr($record['name'], 0, $a);
+					$record['name_part2'] = ".{$origin}.";
+				}
+
+				bind_expand_zone_record($record);
+				// remember name if next record has no name
+				$last_name = $record['name'];
+				array_push($zone_data_parsed, $record);
+			}
+		}
+	}
+
+	return $zone_data_parsed;
+}
+
+// unescape zone record. 
+// TODO: Maybe there are additional escape rules?
+function bind_escape_dns_string($val)
+{
+	$search = ['\\', '"', ';'];
+	$replace = ['\\\\', '\\"', '\\;'];
+	return '"' . str_replace($search, $replace, $val) . '"';
+}
+// similar to php explode() but the delimiter can be escaped. Additionally quoted text can be extracted.
+function bind_mb_explode_escaped($delimiter, $str, $trim_outer_quote_whitespace = true,  $escapeChar = '\\', $quoteChar = '"', $encoding = 'UTF-8') {
+	$split = [];
+	$index = 0;
+	$in_quotes = false;
+	$is_escaped = false;
+	$was_in_quotes = false;
+	$split[$index] = '';
+	$whitespaces = [' ', "\n", "\r", "\t"];
+
+	$length = mb_strlen($str, $encoding);
+	for ($x = 0; $x < $length; $x++) {
+		$char = mb_substr($str, $x, 1, $encoding);
+
+		// Detect escape char
+		if ($char === $escapeChar && !$is_escaped){
+			$is_escaped = true;
+			continue;
+		}
+
+		// detect if in quotes
+		if ($char === $quoteChar && !$is_escaped){
+			$in_quotes = ($in_quotes === false);
+			if ($in_quotes){
+				$was_in_quotes = true;
+			}
+		}
+
+		// detect delimiter
+		if ($char === $delimiter  && !$is_escaped && (!$in_quotes  || $delimiter === $quoteChar)){
+			$index ++;
+			$split[$index] = '';
+			continue;
+		}
+
+		// whitespace handling outside quotes.
+		if ($trim_outer_quote_whitespace && !$in_quotes && $was_in_quotes && in_array($char , $whitespaces)){
+			if (in_array($char , $whitespaces)){
+				continue;
+			}else{
+				$was_in_quotes = false;
+			}
+		}
+
+		$split[$index] = $split[$index] . $char;
+		$is_escaped = false;
+	}
+
+    return $split;
+}
+// unescape zone record. 
+// TODO: Maybe there are additional escape rules?
+function bind_unescape_dns_string($val)
+{
+	$search = ['\\;', '\\"', '\\\\'];
+	$replace = [';', '"', '\\'];
+
+	$ret = str_replace($search, $replace, $val);
+	return $ret;
+}
+// expand rdata to individual fields
+function bind_expand_zone_record(&$record)
+{
+	// parse rdata
+	$val = preg_split("/[\s,]*\\\"([^\\\"]+)\\\"[\s,]*|" .
+		"[\s,]*'([^']+)'[\s,]*|" .
+		"[\s,]+/", $record['rdata'], 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+	switch ($record['type']) {
+		case 'MX':
+			if (count($val) == 2) {
+				$record['priority'] = $val[0];
+				$record['host'] = $val[1];
+			}
+			break;
+
+		case 'SRV':
+			if (count($val) == 4) {
+				$record['priority'] = $val[0];
+				$record['weight'] = $val[1];
+				$record['port'] = $val[2];
+				$record['host'] = $val[3];
+			}
+			break;
+
+		case 'NS':
+			if (count($val) == 1) {
+				$record['nameserver'] = $val[0];
+			}
+			break;
+
+		case 'PTR':
+			if (count($val) == 1) {
+				$record['ip'] = bind_ptr_to_ip($record['name']);
+				$record['host'] = $val[0];
+			}
+			break;
+
+		case 'A':
+		case 'AAAA':
+			if (count($val) == 1) {
+				$record['ip'] = $val[0];
+				$record['ptr'] = bind_ip_to_ptr($record['ip']);
+				$record['host'] = $record['name'];
+			}
+			break;
+
+		case 'TXT':
+		case 'SPF': //SPF does not realy exist but BIND threats it like TXT
+			$record['txt'] = bind_unescape_dns_string(implode('', bind_mb_explode_escaped('"',$record['rdata'])));
+			break;
+
+		case 'CNAME':
+			if (count($val) == 1) {
+				$record['host'] = $val[0];
+			}
+			break;
+
+		case 'SOA':
+			if (count($val) == 7) {
+				$record['mname'] = $val[0];
+				$record['rname'] = $val[1];
+				$record['serial'] = $val[2];
+				$record['refresh'] = $val[3];
+				$record['retry'] = $val[4];
+				$record['expire'] = $val[5];
+				$record['minimum'] = $val[6];
+			}
+			break;
+	}
+}
+// merge individual values to rdata
+function bind_collapse_zone_record(&$record)
+{
+	switch ($record['type']) {
+		case 'MX':
+			$record['rdata'] = $record['priority'] . ' ' . $record['host'];
+			break;
+
+		case 'SRV':
+			$record['rdata'] = $record['priority'] . ' ' . $record['weight'] . ' ' . $record['port'] . ' ' . $record['host'];
+			break;
+
+		case 'NS':
+			$record['rdata'] = $record['nameserver'];
+			break;
+
+		case 'PTR':
+			$record['rdata'] = $record['host'];
+			break;
+
+		case 'A':
+		case 'AAAA':
+			$record['rdata'] = $record['ip'];
+			break;
+
+		case 'TXT':
+        case 'SPF':
+			// escape string and split by 127 chars... aprox 255 byte.
+			$str = mb_str_split(bind_escape_dns_string($record['txt']), 127, 'UTF-8');
+			$record['rdata'] = implode('" "', array_filter($str, 'strlen'));
+			break;
+
+		case 'CNAME':
+			$record['rdata'] = $record['host'];
+			break;
+
+		case 'SOA':
+			$record['rdata'] = $record['mname'] .
+				' ' . $record['rname'] .
+				' ' . $record['serial'] .
+				' ' . $record['refresh'] .
+				' ' . $record['retry'] .
+				' ' . $record['expire'] .
+				' ' . $record['minimum'];
+			break;
+	}
+}
+
+// read and parse current zone db
+function bind_get_zone_dump_parsed($zonetype, $zoneview, $zonename, $zonename_reverse){
+	$temp_zone_file = "/tmp/nameddump_{$zonetype}_{$zoneview}_{$zonename}.txt";
+	$zonefile = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB";
+	$current_zone_data_parsed = null;
+	
+	exec('/usr/local/sbin/named-compilezone -F text -i none -s full ' .
+		' -o ' . escapeshellarg($temp_zone_file) . ' ' .
+		escapeshellarg($zonename_reverse) . ' ' .
+		escapeshellarg($zonefile) . ' 2>&1', $output, $resultCode);
+
+	if ($resultCode == 0) {
+		$current_zone_data = file_get_contents($temp_zone_file);
+		$current_zone_data_parsed = bind_parse_rndc_zone_dump($current_zone_data, $zonename_reverse);
+		unlink($temp_zone_file);
+	} else {
+		$error = "[bind] READ FAILED - Zone {$zonename_reverse} has lost dynamic entries.\n" . implode("\n", $output);
+		file_notice("named_config", $error, "BIND DNS", "", 2);
+		log_error($error);
+	}
+
+	return $current_zone_data_parsed;
+}
+
+// convert single zone record to string. Use bind_collapse_zone_record() to update rdata first.
+function bind_zone_record_to_string($record)
+{
+	return ($record['name'] ?: ' ') . "\t" .
+			($record['ttl'] ?: ' ') .
+			' IN ' .
+			($record['type'] ?: ' ') . "\t" .
+			($record['rdata'] ?: ' ');
+}
+// convert IPv4 or IPv6 to it's PTR string
+function bind_ip_to_ptr($ip)
+{
+	$ipstring = trim($ip);
+
+	if (str_contains($ipstring, ':')) {
+		$unpack = unpack('H*hex', inet_pton($ipstring));
+		$hex = $unpack['hex'];
+		return implode('.', array_reverse(str_split($hex))) . '.ip6.arpa';
+	} else {
+		$addr = implode('.', array_reverse(explode(".", $ipstring)));
+		return $addr . '.in-addr.arpa';
+	}
+}
+// convert IPv4 or IPv6 from PTR string to am IP address
+function bind_ptr_to_ip($ptr)
+{
+	$ptr = rtrim(trim($ptr), ".");
+
+	if (str_ends_with($ptr, '.in-addr.arpa')) {
+		$addr = explode(".", substr($ptr, 0, -13));
+		return implode('.', array_reverse($addr));
+
+	} elseif (str_ends_with($ptr, '.ip6.arpa')) {
+		$mainptr = substr($ptr, 0, -9);
+		$pieces = array_reverse(explode(".", $mainptr));
+		$hex = implode("", $pieces);
+		$ipbin = pack('H*', $hex);
+		return inet_ntop($ipbin);
+	}
+}
+// compares two parsed zones and shows the difference
+function bind_diff_zonerecords($zone1, $zone2)
+{
+	$diff = [];
+	foreach ($zone1 as $a) {
+		$match = false;
+		foreach ($zone2 as $b) {
+			if (
+				strtolower($a['name']) == strtolower($b['name']) &&
+				strtolower($a['rdata']) == strtolower($b['rdata']) &&
+				strtolower($a['type']) == strtolower($b['type'])
+			) {
+				$match = true;
+				break;
+			}
+		}
+		if (!$match) {
+			array_push($diff, $a);
+		}
+	}
+	return $diff;
+}
+
+function bind_sync()
+{
 	global $config;
+	$named_process = "named";
 	$bind = $config['installedpackages']['bind']['config'][0];
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
@@ -334,6 +763,9 @@ EOD;
 		$bindview = array();
 	}
 
+
+	
+
 	for ($i = 0; $i < sizeof($bindview); $i++) {
 		$views = $config['installedpackages']['bindviews']['config'][$i];
 		$viewname = $views['name'];
@@ -398,7 +830,6 @@ EOD;
 			$zonereverso = $zone['reverso'];
 			$zonereversv6o = $zone['reversv6o'];
 			$zonerpz = (isset($zone["rpz"]) && ($zone["rpz"] === "on"));
-
 			// Ensure zone view folder exists
 			if ($zonetype != "forward") {
 				foreach ($zoneviewlist as $zoneview) {
@@ -515,8 +946,7 @@ EOD;
 						} else {
 							$zone_conf .= "{$zonename}.\t IN  SOA {$zonenameserver}. \t {$zonemail}. (\n";
 						}
-
-						$zone_conf .= "\t\t{$zoneserial} ; serial\n";
+						$zone_conf .= "\t\t{$zoneserial} ; serial\n"; // this line is used 1:1 to increment serial. if changing this line, change the reference too.
 						$zone_conf .= "\t\t{$zonerefresh} ; refresh\n";
 						$zone_conf .= "\t\t{$zoneretry} ; retry\n";
 						$zone_conf .= "\t\t{$zoneexpire} ; expire\n";
@@ -532,17 +962,22 @@ EOD;
 							}
 						}
 						for ($y = 0; $y < sizeof($zone['row']); $y++) {
+							$hosttype = $zone['row'][$y]['hosttype'];
 							$hostname = $zone['row'][$y]['hostname'];
 							if (preg_match("/(MX|NS)/", $zone['row'][$y]['hosttype']) && ($hostname == "")) {
 								$hostname = "@";
 							}
-							$hosttype = $zone['row'][$y]['hosttype'];
 							$hostdst = $zone['row'][$y]['hostdst'];
 							if (preg_match("/[a-zA-Z]/", $hostdst) && !preg_match("/(TXT|SPF|AAAA)/", $hosttype)) {
 								$hostdst .= ".";
 							}
+							if (preg_match("/(TXT|SPF)/", $hosttype)) {
+								if (!str_starts_with(trim($hostdst), '"')) {
+									$str = mb_str_split(bind_escape_dns_string($hostdst), 127, 'UTF-8');
+									$hostdst = implode('" "', array_filter($str, 'strlen'));
+								}
+							}
 							$hostvalue = $zone['row'][$y]['hostvalue'];
-
 							$zone_conf .= "{$hostname} \t IN {$hosttype} {$hostvalue} \t{$hostdst}\n";
 						}
 
@@ -586,30 +1021,166 @@ EOD;
 
 						// Add custom zone records
 						if ($zone['customzonerecords'] != "") {
-							$zone_conf .= "\n\n;\n;custom zone records\n;\n".base64_decode($zone['customzonerecords'])."\n";
+							$zone_conf .= "\n\n;\n;custom zone records\n;\n" . base64_decode($zone['customzonerecords']) . "\n";
 						}
 
-						// Freeze dynamic zones to prevent journal corruption
-						$zone_is_dynamic = (($zone['enable_updatepolicy'] == "on") || ($zoneallowupdate != "none"));
+						// Detect Zone changes
+						$zone_is_dynamic = ((
+							($zone['enable_updatepolicy'] == "on") ||
+							($zoneallowupdate != "none") ||
+							file_exists(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.jnl"))
+						);
+						$skipZoneUpdate = false;
+						$diff = [];
+						$zone_cache_file = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache";
+						$zonename_reverse = reverse_zonename($zonename, $zonereverso, $zonereversv6o);
 						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
 						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
-						$named_process = "/usr/local/sbin/named";
-						if ($zone_is_dynamic && is_process_running($named_process)) {
-							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
-							// TODO: diff frozen zone DB with pfSense's stored DB file
-							//       and (optionally?) add dynamic records to customzonerecords
+						$zonefile = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB";
+
+						// read new and last zonedata to build diff
+						if ($zone_is_dynamic) {
+							if (file_exists($zone_cache_file)) {
+								$zoneCacheString = file_get_contents($zone_cache_file);
+								$zoneRows_cached_config = bind_parse_rndc_zone_dump($zoneCacheString, $zonename_reverse);
+								// TODO: REMOVE:
+								file_put_contents('/tmp/XX_zoneRows_cached_config', json_encode($zoneRows_cached_config));
+							} else {
+								$zoneRows_cached_config = [];
+							}
+
+							// new records
+							$zoneRows_new_config = bind_parse_rndc_zone_dump($zone_conf, $zonename_reverse);
+							// removed records
+							$diff = bind_diff_zonerecords($zoneRows_cached_config, $zoneRows_new_config);
+							// TODO: REMOVE:
+							file_put_contents('/tmp/XX_diff_cached_new', json_encode($diff));
+							// all records which should not be in the dynamic section
+							$diff = array_merge($zoneRows_new_config, $diff);
+							// TODO: REMOVE:
+							file_put_contents('/tmp/XX_diff_merged', json_encode($diff));
+
+							if ($zoneCacheString == $zone_conf) {
+								// no change in zone config. skip entire zone update.
+								$skipZoneUpdate = true;
+							}
 						}
 
-						// Save zone configuration DB file
-						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
+						if (!$skipZoneUpdate) {
+							$process_running = is_process_running($named_process);
+							$zone_conf_orig = $zone_conf;
+							$zone_conf_dynamic = '';
+							$current_zone_data_parsed = null;
 
-						// Thaw frozen dynamic zone
-						if ($zone_is_dynamic && is_process_running($named_process)) {
-							exec("{$rndc} thaw " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
+							if ($zone_is_dynamic || $zone['increment_serial'] == "on") {
+								// Freeze dynamic zones to prevent journal corruption.
+								if ($process_running && file_exists($zonefile)) {
+									exec("{$rndc} freeze " . escapeshellarg($zonename_reverse) . " IN " . escapeshellarg($zoneview));
+								}
+
+								// read current zone data
+								if (($zone['ddns_merging'] == "on" || $zone['increment_serial'] == "on") && file_exists($zonefile)) {
+									$current_zone_data_parsed = bind_get_zone_dump_parsed($zonetype, $zoneview, $zonename, $zonename_reverse);
+								}
+
+								// compare and merge zone data by adding existing records in db to zone_conf_dynamic
+								if ($zone_is_dynamic && $current_zone_data_parsed && $zone['ddns_merging'] == "on"){
+									$zonedata_to_merge = bind_diff_zonerecords($current_zone_data_parsed, $diff);
+									$zone_conf_dynamic = "\n;\n; Merged Dynamic Zone Records\n;\n";
+									foreach ($zonedata_to_merge as $row) {
+										if ($row['type'] !== 'SOA') {
+											// skip SOA record as this is already added to zone_conf.
+											$zone_conf_dynamic .=  bind_zone_record_to_string($row) . "\n";
+										}
+									}
+								}
+							}
+
+							//Increment serial 
+							if($zone['increment_serial'] == "on"){
+								$new_zoneserial = null;
+								// get current serial from zone db
+								if ($current_zone_data_parsed){
+									foreach ($current_zone_data_parsed as $row) {
+										if ($row["type"] == 'SOA') {
+											$new_zoneserial = $row['serial'] + 1;
+											break;
+										}
+									}							
+								}
+
+								// write new serial to zone_conf.
+								if ($new_zoneserial){
+									$zone_conf_rows = explode("\n" , $zone_conf);
+									$zone_conf_new = '';
+									$serialfound = false;
+									foreach(explode("\n" , $zone_conf) as $zone_conf_row){
+										if ($serialfound == false && str_ends_with(trim($zone_conf_row), "; serial")){
+											$zone_conf_new .= "\t\t{$new_zoneserial} ; serial\n";
+											$serialfound = true;
+										}else{
+											$zone_conf_new .= $zone_conf_row . "\n";
+										}
+									}
+									if ($serialfound){
+										$zone_conf = $zone_conf_new;
+									} else {
+										log_error('[BIND Config] Serial in zone_conf not found!');
+									}
+								}
+							}
+
+							if ($zone['validate_zone'] == "on") {
+								// Save temporary file and perform content chek before overwriting any existing zone DB to prevent service downtime.
+								// TODO: serial number is not checked. If it is out of range, bind won't load zone. A way to ckeck valid serial is required.
+								$tempDB = tempnam("/tmp", "validate_zone");
+								file_put_contents($tempDB, $zone_conf . $zone_conf_dynamic);
+
+								// validate and save to DB if successfull.
+								exec('/usr/local/sbin/named-checkzone -F text ' .
+									'-o ' . escapeshellarg($zonefile) . ' ' .
+									escapeshellarg($zonename_reverse) . ' ' . 
+									escapeshellarg($tempDB) . ' 2>&1', $output, $resultCode);
+
+								unlink($tempDB);
+							} else {
+								file_put_contents($zonefile, $zone_conf . $zone_conf_dynamic);
+								$resultCode = 0;
+							}
+
+							if ($resultCode == 0) {
+								// Validation successfull or disabled
+								// Save zone_conf to cache file for comparison on next update.
+								file_put_contents($zone_cache_file, $zone_conf_orig);
+								$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($zone_conf . $zone_conf_dynamic);
+								$write_config++;
+							} else {
+								// Validation failed. Keep old zone DB and send error notice.
+								$error = "[bind] VALIDATION FAILED - Zone {$zonename_reverse} not saved. Code {$resultCode}\n\n" . implode("\n", $output);
+								file_notice("named_config", $error, "BIND DNS", "", 2);
+								log_error($error);
+							}
+
+							if ($process_running) {
+								if ($zone_is_dynamic) {
+									// Thaw frozen dynamic zone
+										exec("{$rndc} thaw " . escapeshellarg($zonename_reverse) . " IN " . escapeshellarg($zoneview) . ' 2>&1', $output, $retval);
+										if ($retval !== 0) {
+											$error = "[bind] RNDC THAW throwed an exception. Zone {$zonename_reverse} may still be frozen. Code {$retval} \n " . implode("\n", $output);
+											log_error($error);
+											file_notice("named_config", $error, "BIND DNS", "", 1);
+										}
+								} else {
+									// Reload static zone
+									exec("{$rndc} reload " . escapeshellarg($zonename_reverse) . " IN " . escapeshellarg($zoneview) . ' 2>&1', $output, $retval);
+									if ($retval !== 0) {
+										log_error("[bind] RNDC RELOAD throwed an exception. Zone {$zonename_reverse}. Code {$retval} \n " . implode("\n", $output));
+									}
+								}
+							}
 						}
 
-						$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($zone_conf);
-						$write_config++;
+
 						// Check DNSSEC keys creation for master zones
 						if ($zone['dnssec'] == "on") {
 							$zone_found = 0;
@@ -786,7 +1357,19 @@ EOD;
 	$bind_sh = "/usr/local/etc/rc.d/named.sh";
 	if ($bind_enable == "on") {
 		chmod($bind_sh, 0755);
-		restart_service("named");
+		if (is_process_running($named_process)) {
+			// Thaw all zones in case one missed.
+			exec("{$rndc} thaw ");
+			exec("{$rndc} reconfig" . ' 2>&1', $output, $retval);
+			if ($retval !== 0) {
+				log_error("[bind] RNDC RECONFIG throwed an exception. Code {$retval}: " . implode("\n", $output));
+				restart_service("named");
+				log_error("[bind] service restarted because reconfig throwed an exception.");
+			}
+			;
+		} else {
+			restart_service("named");
+		}
 	} else {
 		stop_service("named");
 		chmod($bind_sh, 0644);
@@ -830,6 +1413,9 @@ function bind_print_javascript_type_zone() {
 					$("input#enable_updatepolicy").attr("disabled", false);
 					$("input#updatepolicy").attr("disabled", true);
 					$("input#rpz").attr("disabled", false);
+					$("input#validate_zone").attr("disabled", false);
+					$("input#ddns_merging").attr("disabled", false);
+					$("input#increment_serial").attr("disabled", false);
 					break;
 				case 'slave':
 					$("input#slaveip").attr("disabled", false);
@@ -854,6 +1440,9 @@ function bind_print_javascript_type_zone() {
 					$("input#enable_updatepolicy").attr("disabled", true);
 					$("input#updatepolicy").attr("disabled", true);
 					$("input#rpz").attr("disabled", false);
+					$("input#validate_zone").attr("disabled", true);
+					$("input#ddns_merging").attr("disabled", true);
+					$("input#increment_serial").attr("disabled", true);
 					break;
 				case 'forward':
 					$("input#slaveip").attr("disabled", true);
@@ -878,6 +1467,9 @@ function bind_print_javascript_type_zone() {
 					$("input#enable_updatepolicy").attr("disabled", true);
 					$("input#updatepolicy").attr("disabled", true);
 					$("input#rpz").attr("disabled", true);
+					$("input#validate_zone").attr("disabled", true);
+					$("input#ddns_merging").attr("disabled", true);
+					$("input#increment_serial").attr("disabled", false);
 					break;
 				case 'redirect':
 					$("input#slaveip").attr("disabled", true);
@@ -902,6 +1494,9 @@ function bind_print_javascript_type_zone() {
 					$("input#enable_updatepolicy").attr("disabled", true);
 					$("input#updatepolicy").attr("disabled", true);
 					$("input#rpz").attr("disabled", true);
+					$("input#validate_zone").attr("disabled", true);
+					$("input#ddns_merging").attr("disabled", true);
+					$("input#increment_serial").attr("disabled", false);
 					break;
 				default:
 					break;
@@ -998,7 +1593,6 @@ function bind_sync_on_changes() {
 				break;
 			default:
 				return;
-				break;
 		}
 		if (is_array($rs)) {
 			log_error("[bind] XMLRPC sync is starting.");
