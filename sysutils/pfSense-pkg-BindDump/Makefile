@@ -33,10 +33,14 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/binddump.xml ${STAGEDIR}${PREFIX}/pkg
 =======
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/binddump.xml ${STAGEDIR}${PREFIX}/pkg
 >>>>>>> cb7c404ba (pfSense-pkg-BindDump: Show all Zone Records which are currently served by BIND inkluding DDNS entries and the ability to delete DDNS records from master zones without bind restart. Initial release.)
+=======
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/binddump.xml ${STAGEDIR}${PREFIX}/pkg
+>>>>>>> c4a744170 (﻿pfSense-pkg-BindDump: Show all Zone Records which are currently served by BIND inkluding DDNS entries and the ability to delete DDNS records from master zones without bind restart. Initial release.)
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/binddump.xml ${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/binddump.inc ${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/binddump.priv.inc ${STAGEDIR}/etc/inc/priv
