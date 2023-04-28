@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 0b7c1cc947a10c9b6f910acb2372c97ba159d9af */
+ * Stub hash: a3e53d6342fe34a79b8d8eb7f789e9e4ce26dfd5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_kill_srcstates, 0, 1, IS_TRUE, 1)
 	ZEND_ARG_TYPE_INFO(0, ip1, IS_STRING, 0)
@@ -167,7 +167,9 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_pfSense_get_interface_stats arginfo_pfSense_get_interface_addresses
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_get_pf_rules, 0, 0, IS_ARRAY, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_pfSense_get_pf_rules, 0, 0, MAY_BE_ARRAY|MAY_BE_FALSE)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, ethrules, _IS_BOOL, 0, "false")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, path, IS_STRING, 0, "\"\"")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_get_pf_states, 0, 0, IS_ARRAY, 1)
@@ -189,11 +191,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_get_modem_devices, 0, 0,
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, poll_timeout, IS_LONG, 0, "700")
 ZEND_END_ARG_INFO()
 
-#define arginfo_pfSense_get_os_hw_data arginfo_pfSense_get_pf_rules
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_get_os_hw_data, 0, 0, IS_ARRAY, 1)
+ZEND_END_ARG_INFO()
 
-#define arginfo_pfSense_get_os_kern_data arginfo_pfSense_get_pf_rules
+#define arginfo_pfSense_get_os_kern_data arginfo_pfSense_get_os_hw_data
 
-#define arginfo_pfSense_ipsec_list_sa arginfo_pfSense_get_pf_rules
+#define arginfo_pfSense_ipsec_list_sa arginfo_pfSense_get_os_hw_data
 
 #if defined(PF_CP_FUNCTIONS)
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pfSense_pf_cp_flush, 0, 2, _IS_BOOL, 1)
