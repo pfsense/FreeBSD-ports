@@ -1,9 +1,6 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-BindDump
-<<<<<<< HEAD
-PORTVERSION=	1.0.14
-=======
 PORTVERSION=	1.0.15
 PORTREVISION=	1
 CATEGORIES=	sysutils
