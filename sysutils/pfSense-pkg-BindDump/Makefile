@@ -5,7 +5,6 @@ PORTNAME=	pfSense-pkg-BindDump
 PORTVERSION=	1.0.14
 =======
 PORTVERSION=	1.0.15
->>>>>>> cb7c404ba (pfSense-pkg-BindDump: Show all Zone Records which are currently served by BIND inkluding DDNS entries and the ability to delete DDNS records from master zones without bind restart. Initial release.)
 PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
