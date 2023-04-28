@@ -1,0 +1,45 @@
+commit 0ba1a7ec7871f8f6bd240a08f238a2fb1ecba16b
+Author: jim-p <jimp@netgate.com>
+Date:   Fri Apr 14 10:32:04 2023 -0400
+
+    Fix handling of OpenVPN client TN. Fixes #13350
+    
+    * ifconfig format was incorrect for certain mode combinations, leading
+      to OpenVPN failing to start.
+    * Changed wording on GUI TN field descr so it's more clear that the TN
+      shouldn't be set in most cases, also mention that the user should be
+      careful to match Topology with the server.
+
+diff --git a/src/etc/inc/openvpn.inc b/src/etc/inc/openvpn.inc
+index beba0c6254..0281a094cb 100644
+--- a/src/etc/inc/openvpn.inc
++++ b/src/etc/inc/openvpn.inc
+@@ -1242,7 +1242,9 @@ function openvpn_reconfigure($mode, $settings) {
+ 			list($ip, $cidr) = openvpn_gen_tunnel_network($settings['tunnel_network']);
+ 			$mask = gen_subnet_mask($cidr);
+ 			list($ip1, $ip2) = openvpn_get_interface_ip($ip, $cidr);
+-			if ($settings['dev_mode'] == 'tun') {
++			if (($settings['dev_mode'] == 'tun') &&
++			    (($settings['topology'] == 'net30') ||
++			    ($cidr >= 30))) {
+ 				$conf .= "ifconfig {$ip2} {$ip1}\n";
+ 			} else {
+ 				$conf .= "ifconfig {$ip2} {$mask}\n";
+diff --git a/src/usr/local/www/vpn_openvpn_client.php b/src/usr/local/www/vpn_openvpn_client.php
+index 6c57e3a2ad..92181db3a4 100644
+--- a/src/usr/local/www/vpn_openvpn_client.php
++++ b/src/usr/local/www/vpn_openvpn_client.php
+@@ -1011,9 +1011,10 @@ if ($act=="new" || $act=="edit"):
+ 		'text',
+ 		$pconfig['tunnel_network']
+ 	))->setHelp('This is the IPv4 virtual network or network type alias with a single entry used for private ' .
+-			'communications between this client and the server expressed using CIDR notation (e.g. 10.0.8.0/24). ' .
+-			'The second usable address in the network will be assigned to the client virtual interface. ' .
+-			'Leave blank if the server is capable of providing addresses to clients.%1$s%1$s' .
++			'communications between this client and the server expressed using CIDR notation (e.g. 10.0.8.0/24).%1$s%1$s' .
++			'This should be left blank in most cases as servers typically provide addresses to clients dynamically.%1$s%1$s' .
++			'The second usable address in this network will be assigned to the client virtual interface. ' .
++			'Ensure the Topology setting matches the server when using SSL/TLS and TUN modes or the interface address may not be configured properly. ' .
+ 			'A tunnel network of /30 or smaller puts OpenVPN into a special peer-to-peer mode which ' .
+ 			'cannot receive settings from the server dynamically. This mode is not compatible with several options, ' .
+ 			'including Exit Notify, and Inactive.',
