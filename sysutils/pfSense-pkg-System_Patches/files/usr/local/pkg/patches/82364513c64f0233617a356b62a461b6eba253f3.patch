@@ -1,0 +1,24 @@
+commit 82364513c64f0233617a356b62a461b6eba253f3
+Author: jim-p <jimp@netgate.com>
+Date:   Fri Mar 3 09:42:06 2023 -0500
+
+    Fix PHP error from migrating old NTP settings. Fixes #14033
+
+diff --git a/src/usr/local/www/services_ntpd.php b/src/usr/local/www/services_ntpd.php
+index 226bd7a49b..8f5d896302 100644
+--- a/src/usr/local/www/services_ntpd.php
++++ b/src/usr/local/www/services_ntpd.php
+@@ -45,9 +45,10 @@ if (!is_array($config['ntpd'])) {
+ }
+ 
+ if (empty($config['ntpd']['interface'])) {
+-	if (is_array($config['installedpackages']['openntpd']) && is_array($config['installedpackages']['openntpd']['config']) &&
+-	    is_array($config['installedpackages']['openntpd']['config'][0]) && !empty($config['installedpackages']['openntpd']['config'][0]['interface'])) {
+-		$pconfig['interface'] = explode(",", $config['installedpackages']['openntpd']['config'][0]['interface']);
++	$old_ifs = config_get_path('installedpackages/openntpd/config/0/interface');
++	if (!empty($old_ifs)) {
++		config_set_path('ntpd/interface', $old_ifs);
++		$pconfig['interface'] = explode(",", $old_ifs);
+ 		config_del_path('installedpackages/openntpd');
+ 		write_config(gettext("Upgraded settings from openntpd"));
+ 	} else {
