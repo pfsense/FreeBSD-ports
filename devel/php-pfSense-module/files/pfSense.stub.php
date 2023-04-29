@@ -37,7 +37,7 @@ function pfSense_interface_flags(string $ifname, int $flags): true|null {}
 function pfSense_interface_capabilities(string $ifname, int $caps): true|null {}
 function pfSense_get_interface_info(string $interface): array|null {}
 function pfSense_get_interface_stats(string $interface): array|null {}
-function pfSense_get_pf_rules(): array|null {}
+function pfSense_get_pf_rules(bool $ethrules = false, string $path = ""): array|false {}
 function pfSense_get_pf_states(array $arr = null): array|null {}
 function pfSense_get_pf_stats(): array {}
 function pfSense_sync(): void {}

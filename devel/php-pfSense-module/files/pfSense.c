@@ -2544,86 +2544,104 @@ PHP_FUNCTION(pfSense_get_interface_stats)
 	add_assoc_long(return_value, "mtu", (long)tmpd->ifi_mtu);
 }
 
-PHP_FUNCTION(pfSense_get_pf_rules) {
-	int dev;
-	struct pfioc_rule pr;
-	struct pfctl_rule r;
-	uint32_t mnr, nr;
+PHP_FUNCTION(pfSense_get_pf_rules)
+{
+	bool ethrules = 0;
+	char *path = "";
+	size_t path_len;
+	int dev, i;
+	struct pfctl_rules_info info;
+	struct pfctl_eth_rules_info einfo;
+	struct pfctl_rule rule;
+	struct pfctl_eth_rule erule;
+	uint32_t nr;
+	zval zrule, zlabels;
+	char anchor_call[MAXPATHLEN];
 
-	ZEND_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_START(0, 2)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_BOOL(ethrules)
+		Z_PARAM_STRING(path, path_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
-		RETURN_NULL();
-	memset(&pr, 0, sizeof(pr));
-	pr.rule.action = PF_PASS;
-	if (ioctl(dev, DIOCGETRULES, &pr)) {
-		close(dev);
-		RETURN_NULL();
+		RETURN_FALSE;
+
+	if (ethrules)
+		goto eth_rules;
+
+	if (pfctl_get_rules_info(dev, &info, PF_PASS, path) != 0) {
+		RETVAL_FALSE;
+		goto cleanup;
 	}
 
-	mnr = pr.nr;
 	array_init(return_value);
-	for (nr = 0; nr < mnr; ++nr) {
-		zval array;
-		zval labels;
-		char tlabel[64];
-		char scratch_key[12];
-		char *value = NULL;
-		char *key = NULL;
-		char *label = NULL;
-		int i;
-
-		if (pfctl_get_rule(dev, nr, pr.ticket, pr.anchor, pr.action,
-		    &r, pr.anchor_call)) {
-			add_assoc_string(return_value, "error", strerror(errno));
-			break;
+	for (nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_rule(dev, nr, info.ticket, path, PF_PASS,
+		    &rule, anchor_call) != 0) {
+			RETVAL_FALSE;
+			goto cleanup;
 		}
 
-		array_init(&labels);
-		for (i = 0; i < nitems(r.label) && *r.label[i] != 0; i++) {
-			value = tlabel;
-			key = NULL;
+		array_init(&zrule);
+		add_assoc_long(&zrule, "id", (zend_ulong) rule.nr);
+		add_assoc_long(&zrule, "tracker", (zend_ulong) rule.ridentifier);
+		add_assoc_long(&zrule, "ridentifier", (zend_ulong) rule.ridentifier);
+		add_assoc_long(&zrule, "evaluations", (zend_ulong) rule.evaluations);
+		add_assoc_long(&zrule, "packets", (zend_ulong) (rule.packets[0] + rule.packets[1]));
+		add_assoc_long(&zrule, "bytes", (zend_ulong) (rule.bytes[0] + rule.bytes[1]));
+		add_assoc_long(&zrule, "states", (zend_ulong) rule.states_cur);
+		add_assoc_long(&zrule, "states_cur", (zend_ulong) rule.states_cur);
+		add_assoc_long(&zrule, "pid", (zend_ulong) rule.cpid);
+		add_assoc_long(&zrule, "cpid", (zend_ulong) rule.cpid);
+		add_assoc_long(&zrule, "state creations", (zend_ulong) rule.states_tot);
+		add_assoc_long(&zrule, "states_tot", (zend_ulong) rule.states_tot);
 
-			strncpy(tlabel, r.label[i], sizeof(tlabel));
-			key = strsep(&value, ":");
-			if (value == NULL) {
-				key = NULL;
-				value = tlabel;
-			}
+		array_init(&zlabels);
+		i = 0;
+		while (rule.label[i][0])
+			add_next_index_string(&zlabels, rule.label[i++]);
+		add_assoc_zval(&zrule, "labels", &zlabels);
 
-			/* Take a non-prefixed label only if another non-prefixed label or user rule isn't already
-			 * found. This hack is to get around the fact that not all rules have predictable prefixes at
-			 * this time and we have to pick the best one available. In the future consumers should pick
-			 * the label they are interested in by key, rather than referring to the singular label */
-			if ((key == NULL && label == NULL) ||
-			    (key != NULL && strcmp("USER_RULE", key) == 0)) {
-				label = r.label[i];
-			}
-
-			/* Generate a key for a non-prefixed label, and build the assoc array */
-			if (key == NULL) {
-				snprintf(scratch_key, sizeof(scratch_key), "label%d", i);
-				key = scratch_key;
-			}
-			add_assoc_string(&labels, key, value);
-		}
-		if (label == NULL) {
-			label = "";
-		}
-		array_init(&array);
-		add_assoc_long(&array, "id", (long)r.nr);
-		add_assoc_long(&array, "tracker", (long)r.ridentifier);
-		add_assoc_string(&array, "label", label);
-		add_assoc_zval(&array, "all_labels", &labels);
-		add_assoc_double(&array, "evaluations", (double)r.evaluations);
-		add_assoc_double(&array, "packets", (double)(r.packets[0] + r.packets[1]));
-		add_assoc_double(&array, "bytes", (double)(r.bytes[0] + r.bytes[1]));
-		add_assoc_double(&array, "states", (double)r.states_cur);
-		add_assoc_long(&array, "pid", (long)r.cpid);
-		add_assoc_double(&array, "state creations", (double)r.states_tot);
-		add_index_zval(return_value, r.nr, &array);
+		add_next_index_zval(return_value, &zrule);
 	}
+
+	goto cleanup;
+
+eth_rules:
+	if (pfctl_get_eth_rules_info(dev, &einfo, path) != 0) {
+		RETVAL_FALSE;
+		goto cleanup;
+	}
+
+	array_init(return_value);
+	for (nr = 0; nr < einfo.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, einfo.ticket, path,
+		    &erule, false, anchor_call) != 0) {
+			RETVAL_FALSE;
+			goto cleanup;
+		}
+
+		array_init(&zrule);
+		add_assoc_long(&zrule, "id", (zend_ulong) erule.nr);
+		add_assoc_long(&zrule, "tracker", (zend_ulong) erule.ridentifier);
+		add_assoc_long(&zrule, "ridentifier", (zend_ulong) erule.ridentifier);
+		add_assoc_long(&zrule, "evaluations", (zend_ulong) erule.evaluations);
+		add_assoc_long(&zrule, "packets", (zend_ulong) (erule.packets[0] + erule.packets[1]));
+		add_assoc_long(&zrule, "bytes", (zend_ulong) (erule.bytes[0] + erule.bytes[1]));
+
+		array_init(&zlabels);
+		i = 0;
+		while (erule.label[i][0])
+			add_next_index_string(&zlabels, erule.label[i++]);
+		add_assoc_zval(&zrule, "labels", &zlabels);
+
+		add_next_index_zval(return_value, &zrule);
+	}
+
+cleanup:
 	close(dev);
+
 }
 
 PHP_FUNCTION(pfSense_get_pf_states) {
