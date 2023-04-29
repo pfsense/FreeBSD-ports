@@ -169,14 +169,12 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 					}else{
 						$item_continue['comment'] .= ' ' . $line_comment;
 						$item_continue['raw'] .= ' ' . $line_without_comment;
-						print_r($item_continue);
 						continue;
 					}
 				}
 
 				$item['raw'] = trim($item['raw']);
 				$item['comment'] = trim($item['comment']);
-
 				array_push($data_rows, $item);
 			$index++;
 		}
@@ -239,6 +237,17 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 					$record['name'] = $origin;
 				} elseif (!str_ends_with($record['name'], '.')) {
 					$record['name'] = $record['name'] . ".{$origin}";
+				}
+
+				// split host. only for display
+				$record['name_part1'] = $record['name'];
+				$a = strripos($record['name'], ".{$origin}.");
+				if (strtolower($record['name']) == strtolower("{$origin}.")) {
+					$record['name_part1'] = $record['name'];
+					$record['name_part2'] = '';
+				} elseif ($a > 0) {
+					$record['name_part1'] = substr($record['name'], 0, $a);
+					$record['name_part2'] = ".{$origin}.";
 				}
 
 				bind_expand_zone_record($record);
@@ -953,17 +962,22 @@ EOD;
 							}
 						}
 						for ($y = 0; $y < sizeof($zone['row']); $y++) {
+							$hosttype = $zone['row'][$y]['hosttype'];
 							$hostname = $zone['row'][$y]['hostname'];
 							if (preg_match("/(MX|NS)/", $zone['row'][$y]['hosttype']) && ($hostname == "")) {
 								$hostname = "@";
 							}
-							$hosttype = $zone['row'][$y]['hosttype'];
 							$hostdst = $zone['row'][$y]['hostdst'];
 							if (preg_match("/[a-zA-Z]/", $hostdst) && !preg_match("/(TXT|SPF|AAAA)/", $hosttype)) {
 								$hostdst .= ".";
 							}
+							if (preg_match("/(TXT|SPF)/", $hosttype)) {
+								if (!str_starts_with(trim($hostdst), '"')) {
+									$str = mb_str_split(bind_escape_dns_string($hostdst), 127, 'UTF-8');
+									$hostdst = implode('" "', array_filter($str, 'strlen'));
+								}
+							}
 							$hostvalue = $zone['row'][$y]['hostvalue'];
-
 							$zone_conf .= "{$hostname} \t IN {$hosttype} {$hostvalue} \t{$hostdst}\n";
 						}
 
@@ -1029,15 +1043,24 @@ EOD;
 							if (file_exists($zone_cache_file)) {
 								$zoneCacheString = file_get_contents($zone_cache_file);
 								$zoneRows_cached_config = bind_parse_rndc_zone_dump($zoneCacheString, $zonename_reverse);
+								// TODO: REMOVE:
+								file_put_contents('/tmp/XX_zoneRows_cached_config', json_encode($zoneRows_cached_config));
 							} else {
 								$zoneRows_cached_config = [];
 							}
 
+							// new records
 							$zoneRows_new_config = bind_parse_rndc_zone_dump($zone_conf, $zonename_reverse);
-							$diff = bind_diff_zonerecords($zoneRows_new_config, $zoneRows_cached_config);
-							$diff = array_merge($diff, bind_diff_zonerecords($zoneRows_cached_config, $zoneRows_new_config));
+							// removed records
+							$diff = bind_diff_zonerecords($zoneRows_cached_config, $zoneRows_new_config);
+							// TODO: REMOVE:
+							file_put_contents('/tmp/XX_diff_cached_new', json_encode($diff));
+							// all records which should not be in the dynamic section
+							$diff = array_merge($zoneRows_new_config, $diff);
+							// TODO: REMOVE:
+							file_put_contents('/tmp/XX_diff_merged', json_encode($diff));
+
 							if ($zoneCacheString == $zone_conf) {
-								// TODO: maybe $diff should be used for change detection? diff is used later in code
 								// no change in zone config. skip entire zone update.
 								$skipZoneUpdate = true;
 							}
