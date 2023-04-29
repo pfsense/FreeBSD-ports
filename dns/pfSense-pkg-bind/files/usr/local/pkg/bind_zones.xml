@@ -498,6 +498,14 @@
 			</description>
 			<type>checkbox</type>
 		</field>
+		<field>
+			<fielddescr>Increment Serial</fielddescr>
+			<fieldname>increment_serial</fieldname>
+			<description>
+				If enabled and config has changed, the serial of the zone will automatically incremented by 1, based on the actual serial of the zone DB.
+			</description>
+			<type>checkbox</type>
+		</field>
 	</fields>
 	<custom_php_after_head_command>
 		bind_print_javascript_type_zone();
