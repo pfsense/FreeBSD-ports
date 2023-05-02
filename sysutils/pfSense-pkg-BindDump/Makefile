@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-BindDump
-PORTVERSION=	1.0.15
+PORTVERSION=	1.0.16
 PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
@@ -28,11 +28,14 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/packages/binddump
 	${MKDIR} ${STAGEDIR}${DATADIR}
 
-
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/binddump.xml ${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/binddump.xml ${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/binddump.inc ${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/binddump.priv.inc ${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/binddump/binddump.php ${STAGEDIR}${PREFIX}/www/packages/binddump
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/binddump/binddump.js ${STAGEDIR}${PREFIX}/www/packages/binddump
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/binddump/zoneEdit.php ${STAGEDIR}${PREFIX}/www/packages/binddump
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/binddump/zoneEdit.js ${STAGEDIR}${PREFIX}/www/packages/binddump
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/binddump/index.php ${STAGEDIR}${PREFIX}/www/packages/binddump
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml ${STAGEDIR}${DATADIR}
 	

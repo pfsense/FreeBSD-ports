@@ -6,9 +6,10 @@ require_once("guiconfig.inc");
 require_once("config.inc");
 require_once("/usr/local/pkg/binddump.inc");
 
-function exists_record_by_Name($entries, $name, $types = ['A', 'AAAA', 'PTR']){
-    foreach ($entries as $entry) { 
-        if (trim($entry['name'],'.') == trim($name,'.') && in_array($entry['type'], $types)){
+function exists_record_by_Name($entries, $name, $types = ['A', 'AAAA', 'PTR'])
+{
+    foreach ($entries as $entry) {
+        if (trim($entry['name'], '.') == trim($name, '.') && in_array($entry['type'], $types)) {
             return true;
         }
     }
@@ -33,33 +34,34 @@ if ($_REQUEST['loadData']) {
                 <?= htmlspecialchars(gettext("No entries to display")) ?>
             </td>
         </tr>
-        <?
+    <?
 
     } else {
         foreach ($entries as $entry) { ?>
             <tr data-item="<?= base64_encode(json_encode($entry)) ?>" data-zone="<?= htmlspecialchars($entry['zone']) ?>"
-                data-name="<?= htmlspecialchars($entry['name']) ?>"
-                data-rdata="<?= htmlspecialchars($entry['rdata']) ?>" data-type="<?= htmlspecialchars($entry['type']) ?>">
+                data-name="<?= htmlspecialchars($entry['name']) ?>" data-rdata="<?= htmlspecialchars($entry['rdata']) ?>"
+                data-type="<?= htmlspecialchars($entry['type']) ?>">
                 <td>
-                    <?=insert_word_breaks_in_domain_name(htmlspecialchars($entry["name_part1"]))?><span class="text-muted"><?=htmlspecialchars($entry["name_part2"])?>
+                    <?= insert_word_breaks_in_domain_name(htmlspecialchars($entry["name_part1"])) ?><span class="text-muted">
+                        <?= htmlspecialchars($entry["name_part2"]) ?>
                     </span>
                 </td>
                 <td>
                     <?= htmlspecialchars($entry["type"]) ?>
                 </td>
                 <td>
-                    <? 
+                    <?
                     $skip = ['name_part1', 'name_part2', 'index', 'class', 'name', 'type', '_extended'];
-                    foreach ($entry as $key => $val){
-                        if (!in_array($key, $skip) && !empty($val) && is_string($val)){
+                    foreach ($entry as $key => $val) {
+                        if (!in_array($key, $skip) && !empty($val) && is_string($val)) {
                             $icon = '';
                             $textclass = 'text-success';
 
-                            if (!empty($entry['_extended']) && in_array($key, $entry['_extended'])){
+                            if (!empty($entry['_extended']) && in_array($key, $entry['_extended'])) {
                                 $textclass = 'text-warning';
                             }
-                            
-                            if (exists_record_by_Name($entries, $val)){
+
+                            if (exists_record_by_Name($entries, $val)) {
                                 $icon = '<i class="fa fa-check"></i>';
                             }
 
@@ -77,7 +79,45 @@ if ($_REQUEST['loadData']) {
     }
     exit;
 }
+if ($_REQUEST['download']) {
+    $file = null;
 
+    switch ($_REQUEST['download']) {
+        case 'zoneDump':
+            $rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
+            $rndc = "/usr/local/sbin/rndc -q -c " . $rndc_conf_path;
+            $output = null;
+            $retval = null;
+
+            exec("{$rndc} dumpdb -zones", $output, $retval);
+            if ($retval !== 0) {
+                die('Exception during zone compiling. Code:' . $retval . " \n Message: " . $output);
+            }
+            $file = CHROOT_LOCALBASE . '/etc/namedb/named_dump.db';
+
+            if (!binddump_waitfor_string_in_file($file, "; Dump complete", 30)) {
+                die('Timeout during zone dump');
+            }
+            break;
+
+        default:
+            die('Invalid Request');
+    }
+
+    if ($file && file_exists($file)) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    } else {
+        die('File not found');
+    }
+}
 if ($_REQUEST['action'] == "delete_host") {
     $item = json_decode(base64_decode($_REQUEST['item']), true);
     $result = false;
@@ -102,7 +142,6 @@ if ($_REQUEST['action'] == "delete_host") {
     }
     return;
 }
-
 if ($_REQUEST['action'] == "add_host") {
     $item = [];
     $item['name'] = $_REQUEST['name'];
@@ -134,6 +173,8 @@ if ($_REQUEST['action'] == "add_host") {
     return;
 }
 
+
+
 $pgtitle = array(gettext("Status"), gettext("BIND DNS Dump"));
 $shortcut_section = "bind";
 
@@ -142,6 +183,10 @@ if ($input_errors) {
     print_input_errors($input_errors);
 }
 
+$tab_array = array();
+$tab_array[] = array(gettext("Database"), true, "/packages/binddump/binddump.php");
+$tab_array[] = array(gettext("Edit RAW Zone File"), false, "/packages/binddump/zoneEdit.php");
+display_top_tabs($tab_array);
 ?>
 
 <div class="panel panel-default" id="search-panel">
@@ -177,7 +222,7 @@ if ($input_errors) {
                     </option>
                 </select>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <a id="btnsearch" title="<?= gettext("Search") ?>" class="btn btn-primary btn-sm"><i
                         class="fa fa-search icon-embed-btn"></i>
                     <?= gettext("Search") ?>
@@ -201,17 +246,16 @@ if ($input_errors) {
             <label class="col-sm-2 control-label">
                 <?= gettext("Zone") ?>
             </label>
-            <div class="col-sm-2">
+            <div class="col-sm-4">
                 <select id="zoneselect" class="form-control">
                     <option value="all" selected>
                         <?= gettext("All Zones") ?>
                     </option>
-                    <?php foreach ($zones as $zone): ?>
-                        <option value="<?= htmlspecialchars($zone) ?>"><?= htmlspecialchars($zone) ?></option>
+                    <?php foreach (binddump_get_zonelist() as $zone): ?>
+                        <option value="<?= htmlspecialchars(binddump_reverse_zonename($zone) . '.') ?>"><?= $zone['type'] . ': ' . htmlspecialchars(binddump_reverse_zonename($zone) . '.') ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
-
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">
@@ -237,6 +281,17 @@ if ($input_errors) {
             <?= gettext('Database') ?>
         </h2>
     </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <div class="col-sm-5">
+                <a id="btndownloadFullZone" title="<?= gettext("Download Full Zone Dump") ?>"
+                    class="btn btn-info btn-sm"><i class="fa fa-download icon-embed-btn"></i>
+                    <?= gettext("Full Zone Dump") ?>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="panel-body table-responsive">
         <table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
             <thead>
@@ -267,167 +322,6 @@ if ($input_errors) {
 </div>
 
 
-
-
-<script type="text/javascript">
-    function reloadData() {
-        // #dlg_wait$('#dlg_wait').modal('show');
-        leaselist.innerHTML = "<tr><td colspan=5><?= gettext("Loading...") ?></td></tr>";
-
-        $.ajax(
-            {
-                type: 'post',
-                data: {
-                    loadData: 'true'
-                },
-                success: function (data) {
-                    // $('#dlg_wait').modal('hide');
-                    leaselist.innerHTML = data;
-                    doSearch();
-                    refreshDropDown();
-                },
-                error: function (data) {
-                    // $('#dlg_wait').modal('hide');
-                    $('#dlg_updatestatus_text').text(data.responseText);
-                    $('#dlg_updatestatus_text').attr('readonly', true);
-                    $('#dlg_updatestatus').modal('show');
-                }
-            });
-    }
-
-    function deleteHost(item) {
-        if (confirm("Delete Host?")) {
-            $('#dlg_wait').modal('show');
-            var dataitem = item;
-
-            $.ajax(
-                {
-                    type: 'post',
-                    data: {
-                        action: "delete_host",
-                        item: item
-                    },
-                    success: function (data) {
-                        $('#dlg_wait').modal('hide');
-
-                        if (data == "[OK]") {
-                            $("#leaselist tr[data-item='" + dataitem + "']").remove();
-
-                            $('#dlg_updatestatus_text').text("Host deleted");
-                            $('#dlg_updatestatus_text').attr('readonly', true);
-                            $('#dlg_updatestatus').modal('show');
-
-                        } else {
-                            $('#dlg_updatestatus_text').text(data);
-                            $('#dlg_updatestatus_text').attr('readonly', true);
-                            $('#dlg_updatestatus').modal('show');
-                        }
-                    },
-                    error: function (data) {
-                        $('#dlg_wait').modal('hide');
-
-                        $('#dlg_updatestatus_text').text(data.responseText);
-                        $('#dlg_updatestatus_text').attr('readonly', true);
-                        $('#dlg_updatestatus').modal('show');
-                    }
-                });
-        }
-    }
-
-    function refreshDropDown() {
-        $("#leaselist").find('tr').each(function (i) {
-            var $tds = $(this).find('td'),
-                zone = $(this).attr('data-zone'),
-                type = $(this).attr('data-type');
-
-            if ($('#zoneselect option[value="' + zone + '"]').length <= 0) {
-                $("#zoneselect").append("<option value='" + zone + "'>" + zone + "</option>");
-            }
-            if ($('#typeselect option[value="' + type + '"]').length <= 0) {
-                $("#typeselect").append("<option value='" + type + "'>" + type + "</option>");
-            }
-        });
-    }
-
-    function doSearch() {
-        var searchstr = $('#searchstr').val().toLowerCase(),
-            table = $("#leaselist"),
-            where = $('#where').val(),
-            zoneselect = $('#zoneselect').val(),
-            typeselect = $('#typeselect').val();
-
-        table.find('tr').each(function (i) {
-            var $tds = $(this).find('td'),
-                zone = $(this).attr('data-zone'),
-                name = $(this).attr('data-name').toLowerCase(),
-                type = $(this).attr('data-type'),
-                rdata = $(this).attr('data-rdata').toLowerCase(),
-                regexp = new RegExp(searchstr);
-
-            if (searchstr.length > 0) {
-                if ((!(regexp.test(zone.toLowerCase()) && ((where == 1) || (where == 0))) &&
-                    !(regexp.test(name) && ((where == 2) || (where == 0))) &&
-                    !(regexp.test(rdata) && ((where == 3) || (where == 0)))) ||
-                    !((type == typeselect) || (typeselect == "all")) ||
-                    !((zone == zoneselect) || (zoneselect == "all"))
-                ) {
-                    $(this).hide();
-                } else {
-                    $(this).show();
-                }
-            } else {
-                if (!((zone == zoneselect) || (zoneselect == "all")) ||
-                    !((type == typeselect) || (typeselect == "all"))
-                ) {
-                    $(this).hide();
-                } else {
-                    $(this).show();
-                }
-            }
-        });
-    }
-
-    events.push(function () {
-        // Make these controls plain buttons
-        $("#btnsearch").prop('type', 'button');
-        $("#btnclear").prop('type', 'button');
-        $("#btnreload").prop('type', 'button');
-
-        $('#dlg_updatestatus').on('shown.bs.modal', function () {
-            //getRuleUpdateLog();
-        });
-
-        $("#btnreload").click(reloadData);
-
-        // Search for a term in the entry name and/or dn
-        $("#btnsearch").click(doSearch);
-
-        // Clear the search term and unhide all rows (that were hidden during a previous search)
-        $("#btnclear").click(function () {
-            $('#searchstr').val("");
-            doSearch();
-        });
-
-        // Hitting the enter key will do the same as clicking the search button
-        $("#searchstr").on("keyup", function (event) {
-            if (event.keyCode == 13) {
-                doSearch();
-            }
-        });
-
-        $("#zoneselect").on("change", function (event) {
-            doSearch();
-        });
-
-        $("#typeselect").on("change", function (event) {
-            doSearch();
-        });
-
-
-        reloadData();
-    });
-</script>
-
 <?php
 
 $form = new Form(false);
@@ -445,7 +339,7 @@ $form->add($modal);
 $modal = new Modal(gettext('Please wait'), 'dlg_wait', false, 'Close');
 $modal->addInput(
     new Form_StaticText(
-        null,
+        'dlg_wait_text',
         'Please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' .
         '<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
     )
@@ -455,4 +349,8 @@ $form->add($modal);
 print $form;
 
 include('foot.inc');
+
+print '<script type="text/javascript">';
+print (file_get_contents('binddump.js', true));
+print '</script>';
 ?>

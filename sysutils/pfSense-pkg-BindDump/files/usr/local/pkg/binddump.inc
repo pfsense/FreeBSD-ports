@@ -157,12 +157,11 @@ function binddump_mb_explode_escaped($delimiter, $str, $trim_outer_quote_whitesp
 	$in_quotes = false;
 	$is_escaped = false;
 	$was_in_quotes = false;
+	$split[$index] = '';
+	$whitespaces = [' ', "\n", "\r", "\t"];
 
 	$length = mb_strlen($str, $encoding);
 	for ($x = 0; $x < $length; $x++) {
-		if ($split[$index] == null){
-			$split[$index] = '';
-		}
 		$char = mb_substr($str, $x, 1, $encoding);
 
 		// Detect escape char
@@ -182,12 +181,13 @@ function binddump_mb_explode_escaped($delimiter, $str, $trim_outer_quote_whitesp
 		// detect delimiter
 		if ($char === $delimiter  && !$is_escaped && (!$in_quotes  || $delimiter === $quoteChar)){
 			$index ++;
+			$split[$index] = '';
 			continue;
 		}
 
 		// whitespace handling outside quotes.
-		if ($trim_outer_quote_whitespace && !$in_quotes && $was_in_quotes && $char == ' '){
-			if ($char == ' '){
+		if ($trim_outer_quote_whitespace && !$in_quotes && $was_in_quotes && in_array($char , $whitespaces)){
+			if (in_array($char , $whitespaces)){
 				continue;
 			}else{
 				$was_in_quotes = false;
@@ -202,16 +202,19 @@ function binddump_mb_explode_escaped($delimiter, $str, $trim_outer_quote_whitesp
 }
 
 // Parse files created with RNDC dumpdb -zones
-function binddump_parse_rndc_zone_dump($value)
-{
+// parse the zone file which was exported with "named-compilezone -F text" or "RNDC dumpdb -zones"
+function binddump_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = false) {
 	$reg_host = "{(?<name>.+?)?(?:\s+?(?<ttl>\d*))?\s+(?<class>IN)?\s+(?<type>\p{L}+)\s+(?<rdata>.*)}";
 	$regzone = "{;.+?\'(?<zone>.+?)\/.+/(?<view>.*)\'}";
 	$zone_data_parsed = [];
 
 	if ($value) {
-		$zone = '';
+		if ($zone !== '' && !str_ends_with($zone,'.')){
+			$zone .=  '.';
+		}
+
 		$view = '';
-		$origin = '';
+		$origin = $zone;
 		$defaultTTL = '8700';
 		$last_name = '';
 		$data_rows = [];
@@ -234,51 +237,81 @@ function binddump_parse_rndc_zone_dump($value)
 			unset($split_comment[0]);
 			$line_comment = implode(';', $split_comment);
 
-			if (!empty($line_without_comment)) {
 				if (!$item_continue) {
-					$item = ['comment' => $line_comment, 'raw' => $line_without_comment, 'index' => $index];
+					// detect multiline start
+					$split_multiline = binddump_mb_explode_escaped('(', $line);
+					if (count($split_multiline) > 1){
+						$item_continue = [
+							'comment' => $line_comment, 
+							'raw' => implode('', $split_multiline), 
+							'index' => $index
+						];
+						continue;
+					} else {
+						$item = [
+							'comment' => $line_comment, 
+							'raw' => $line_without_comment, 
+							'index' => $index
+						];
+					}
 				} else {
-					$item = $item_continue;
-					$item['comment'] .= ' ' . $line_comment;
-					$item['raw'] .= ' ' . $line_without_comment;
+					// detect multiline end
+					$split_multiline = binddump_mb_explode_escaped(')', $line);
+					if (count($split_multiline) > 1){
+						$item_continue['raw'] .= implode('', $split_multiline);
+						$item = $item_continue;
+						$item_continue = false;
+					}else{
+						$item_continue['comment'] .= ' ' . $line_comment;
+						$item_continue['raw'] .= ' ' . $line_without_comment;
+						continue;
+					}
 				}
 
 				$item['raw'] = trim($item['raw']);
 				$item['comment'] = trim($item['comment']);
-
-				// detect multiline
-				if (str_starts_with($item['raw'], '(')) {
-					$item['raw'] = ltrim($item['raw'], '(');
-					$item_continue = $item;
-				}
-				if (str_ends_with($item['raw'], ')')) {
-					$item['raw'] = rtrim($item['raw'], ')');
-					$item_continue = false;
-				}
-
-				if (!$item_continue) {
-					$split_raw = binddump_mb_explode_escaped('"', $line);
-					$item['raw']  = implode('', $split_raw);
-					array_push($data_rows, $item);
-				}
-			}
+				array_push($data_rows, $item);
 			$index++;
 		}
 
 		// process zone records
 		foreach ($data_rows as $data_row) {
-			if (preg_match('{\$TTL\s+(?<ttl>\d+)\s*}', $data_row['raw'], $matches)) {
+			if ((empty($data_row['raw']) || trim($data_row['raw']) == '') && (empty($data_row['comment']) || trim($data_row['comment']) == '')) {
+				// empty row
+			} elseif ($include_comment_only && (empty($data_row['raw']) || trim($data_row['raw']) == '')) {
+				// comment only
+				$record = [
+					'zone' => $zone,
+					'view' => $view,
+					'index' => $data_row['index'],
+					'comment' => $data_row['comment'],
+					'name' => '',
+					'ttl' => '',
+					'type' => ';',
+					'rdata' => $data_row['comment'],
+					'class' => ''
+				];
+				array_push($zone_data_parsed, $record);
+
+			} elseif (preg_match('{\$TTL\s+(?<ttl>\d+\w?)\s*}', $data_row['raw'], $matches)) {
+				// find @TTL
 				$defaultTTL = $matches['ttl'];
+				$last_name = '';
 
 			} elseif (preg_match('{\$ORIGIN\s+(?<origin>\S+)\s*}', $data_row['raw'], $matches)) {
+				// find @ORIGIN
 				$origin = $matches['origin'];
+				$last_name = '';
 
 			} elseif (preg_match($regzone, $data_row['raw'], $matches)) {
-				$zone = $matches['zone'];
+				// find ZONE NAME in BIND Dump
+				$zone = $matches['zone'] . '.';
 				$view = $matches['view'];
 				$origin = $zone;
+				$last_name = '';
 
 			} elseif (preg_match($reg_host, $data_row['raw'], $matches)) {
+				// regular zone record
 				$record = [
 					'zone' => $zone,
 					'view' => $view,
@@ -286,30 +319,23 @@ function binddump_parse_rndc_zone_dump($value)
 					'comment' => $data_row['comment'],
 					'name' => $matches['name'],
 					'ttl' => $matches['ttl'],
-					'type' => $matches['type'],
+					'type' => strtoupper($matches['type']),
 					'rdata' => $matches['rdata'],
-					'class' => $matches['class']
+					'class' => strtoupper($matches['class'])
 				];
 
-				if (!$record['name']) {
-					$record['name'] = $last_name;
-				}
-
-				if (!$record['ttl']) {
-					$record['ttl'] = $defaultTTL;
-				}
+				if (!$record['name']) { $record['name'] = $last_name; }
+				if (!$record['ttl']) { $record['ttl'] = $defaultTTL; }
 
 				// convert name to FQDN
-				if ($record['name'] == '@') {
+				if ($record['name'] == '@' || $record['name'] == '.') {
 					$record['name'] = $origin;
-
 				} elseif (!str_ends_with($record['name'], '.')) {
-					$record['name'] = $record['name'] . ".{$origin}.";
+					$record['name'] = $record['name'] . ".{$origin}";
 				}
 
 				// split host. only for display
 				$record['name_part1'] = $record['name'];
-
 				$a = strripos($record['name'], ".{$origin}.");
 				if (strtolower($record['name']) == strtolower("{$origin}.")) {
 					$record['name_part1'] = $record['name'];
@@ -320,7 +346,7 @@ function binddump_parse_rndc_zone_dump($value)
 				}
 
 				binddump_expand_zone_record($record);
-
+				// remember name if next record has no name
 				$last_name = $record['name'];
 				array_push($zone_data_parsed, $record);
 			}
@@ -397,7 +423,8 @@ function binddump_expand_zone_record(&$record)
 			break;
 
 		case 'TXT':
-			$record['txt'] = binddump_unescape_dns_string($record['rdata']);
+		case 'SPF': //SPF does not realy exist but BIND threats it like TXT
+			$record['txt'] = binddump_unescape_dns_string(implode('', binddump_mb_explode_escaped('"',$record['rdata'])));
 			break;
 
 		case 'CNAME':
@@ -445,9 +472,10 @@ function binddump_collapse_zone_record(&$record)
 			break;
 
 		case 'TXT':
+        case 'SPF':
 			// escape string and split by 127 chars... aprox 255 byte.
 			$str = mb_str_split(binddump_escape_dns_string($record['txt']), 127, 'UTF-8');
-			$record['rdata'] = '"' . implode(' " ', $str) . '"';
+			$record['rdata'] = implode('" "', array_filter($str, 'strlen'));
 			break;
 
 		case 'CNAME':
@@ -529,5 +557,28 @@ function binddump_waitfor_string_in_file($filename, $string, $timeout)
 		$now = time();
 	}
 	throw new Exception('Timeout while waiting for end of file');
+}
+
+function binddump_get_zonelist(){
+	global $config;
+
+	if (is_array($config['installedpackages']['bindzone'])) {
+		$bindzone = $config['installedpackages']['bindzone']['config'];
+	} else {
+		$bindzone = array();
+	}
+	return $bindzone;
+}
+
+function binddump_reverse_zonename($zone) {
+	if ($zone['reverso'] == "on") {
+		if ($zone['reversv6o'] == "on") {
+			return $zone['name'] . ".ip6.arpa";
+		} else {
+			return $zone['name'] . ".in-addr.arpa";
+		}
+	} else {
+		return $zone['name'];
+	}
 }
 ?>

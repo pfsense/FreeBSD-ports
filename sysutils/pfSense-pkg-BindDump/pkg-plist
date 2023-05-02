@@ -2,10 +2,10 @@ pkg/binddump.xml
 pkg/binddump.inc
 /etc/inc/priv/binddump.priv.inc
 www/packages/binddump/binddump.php
+www/packages/binddump/binddump.js
+www/packages/binddump/zoneEdit.php
+www/packages/binddump/zoneEdit.js
 www/packages/binddump/index.php
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
-<<<<<<< HEAD
-=======
 @dir www/packages/binddump
->>>>>>> cb7c404ba (pfSense-pkg-BindDump: Show all Zone Records which are currently served by BIND inkluding DDNS entries and the ability to delete DDNS records from master zones without bind restart. Initial release.)

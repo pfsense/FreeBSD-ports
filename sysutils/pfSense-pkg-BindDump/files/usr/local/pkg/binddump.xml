@@ -23,9 +23,9 @@
  */
 	]]>
 	</copyright>
-	<name>cron</name>
+	<name>BindDump</name>
 	<version>%%PKGVERSION%%</version>
-	<title>binddump Settings</title>
+	<title>BindDump</title>
 	<include_file>/usr/local/pkg/binddump.inc</include_file>
 	<menu>
 		<name>BIND DNS Dump</name>
@@ -33,6 +33,19 @@
 		<configfile>binddump.xml</configfile>
 		<url>/packages/binddump/binddump.php</url>
 	</menu>
+	<tabs>
+		<tab>
+			<text>Database</text>
+			<url>/packages/binddump/binddump.php</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Zone EDIT</text>
+			<url>/packages/binddump/zoneEdit.php</url>
+			<active/>
+		</tab>
+	</tabs>
+	<configpath>installedpackages->package->$packagename->configuration</configpath>
 	<custom_php_resync_config_command>
 	<![CDATA[
 		binddump_sync_package();
