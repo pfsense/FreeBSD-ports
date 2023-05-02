@@ -327,13 +327,15 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 	int ret_ga;
 
 	int dev;
-	char *ip1 = NULL, *ip2 = NULL;
+	char *php_ip1 = NULL, *php_ip2 = NULL;
 	size_t ip1_len = 0, ip2_len = 0;
 
+	char *ip1 = NULL, *ip2 = NULL;
+
 	ZEND_PARSE_PARAMETERS_START(1, 2)
-		Z_PARAM_STRING(ip1, ip1_len)
+		Z_PARAM_STRING(php_ip1, ip1_len)
 		Z_PARAM_OPTIONAL
-		Z_PARAM_STRING(ip2, ip2_len)
+		Z_PARAM_STRING(php_ip2, ip2_len)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
@@ -347,12 +349,22 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 	memset(&last_src, 0xff, sizeof(last_src));
 	memset(&last_dst, 0xff, sizeof(last_dst));
 
-	pfctl_addrprefix(ip1, &psnk.psnk_src.addr.v.a.mask);
+	/* make copies to avoid scribbling over PHP */
+	ip1 = strdup(php_ip1);
+
+	/* optional param, could be null */
+	if (php_ip2)
+		ip2 = strdup(php_ip2);
+
+	if (pfctl_addrprefix(ip1, &psnk.psnk_src.addr.v.a.mask) < 0) {
+		RETVAL_NULL();
+		goto cleanup1;
+	}
 
 	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
-		RETURN_NULL();
-		/* NOTREACHED */
+		RETVAL_NULL();
+		goto cleanup1;
 	}
 	for (resp[0] = res[0]; resp[0]; resp[0] = resp[0]->ai_next) {
 		if (resp[0]->ai_addr == NULL)
@@ -381,12 +393,15 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 			memset(&psnk.psnk_dst.addr.v.a.mask, 0xff,
 			    sizeof(psnk.psnk_dst.addr.v.a.mask));
 			memset(&last_dst, 0xff, sizeof(last_dst));
-			pfctl_addrprefix(ip2,
-			    &psnk.psnk_dst.addr.v.a.mask);
+			if (pfctl_addrprefix(ip2,&psnk.psnk_dst.addr.v.a.mask) < 0 ) {
+				RETVAL_NULL();
+				goto cleanup2;
+			}
 			if ((ret_ga = getaddrinfo(ip2, NULL, NULL,
 			    &res[1]))) {
 				php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
-				break;
+				RETVAL_NULL();
+				goto cleanup2;
 			}
 			for (resp[1] = res[1]; resp[1];
 			    resp[1] = resp[1]->ai_next) {
@@ -432,9 +447,15 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 		}
 	}
 
-	freeaddrinfo(res[0]);
+	RETVAL_TRUE;
 
-	RETURN_TRUE;
+cleanup2:
+	freeaddrinfo(res[0]);
+cleanup1:
+	if (ip2)
+		free(ip2);
+	free(ip1);
+	close(dev);
 }
 
 PHP_FUNCTION(pfSense_kill_states)
@@ -446,13 +467,16 @@ PHP_FUNCTION(pfSense_kill_states)
 	unsigned int kcount;
 
 	int dev;
-	char *ip1 = NULL, *ip2 = NULL, *proto = NULL, *iface = NULL;
+	char *php_ip1 = NULL, *php_ip2 = NULL, *proto = NULL, *iface = NULL;
 	size_t ip1_len = 0, ip2_len = 0, proto_len = 0, iface_len = 0;
 
+	char *ip1 = NULL;
+	char *ip2 = NULL;
+
 	ZEND_PARSE_PARAMETERS_START(1, 4)
-		Z_PARAM_STRING(ip1, ip1_len)
+		Z_PARAM_STRING(php_ip1, ip1_len)
 		Z_PARAM_OPTIONAL
-		Z_PARAM_STRING(ip2, ip2_len)
+		Z_PARAM_STRING(php_ip2, ip2_len)
 		Z_PARAM_STRING(iface, iface_len)
 		Z_PARAM_STRING(proto, proto_len)
 	ZEND_PARSE_PARAMETERS_END();
@@ -465,6 +489,13 @@ PHP_FUNCTION(pfSense_kill_states)
 	    sizeof(k.src.addr.v.a.mask));
 	memset(&last_src, 0xff, sizeof(last_src));
 	memset(&last_dst, 0xff, sizeof(last_dst));
+
+	/* make copies to avoid scribbling over PHP: Redmine #9270 */
+	ip1 = strdup(php_ip1);
+
+	/* optional param, could be null. Redmine #9270 */
+	if (php_ip2)
+		ip2 = strdup(php_ip2);
 
 	if (iface != NULL && iface_len > 0 && strlcpy(k.ifname, iface,
 	    sizeof(k.ifname)) >= sizeof(k.ifname))
@@ -481,14 +512,17 @@ PHP_FUNCTION(pfSense_kill_states)
 			k.proto = IPPROTO_ICMP;
 	}
 
-	if (pfctl_addrprefix(ip1, &k.src.addr.v.a.mask) < 0)
-		RETURN_NULL();
+	if (pfctl_addrprefix(ip1, &k.src.addr.v.a.mask) < 0) {
+		RETVAL_NULL();
+		goto cleanup1;
+	}
 
 	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
-		RETURN_NULL();
-		/* NOTREACHED */
+		RETVAL_NULL();
+		goto cleanup1;
 	}
+
 	for (resp[0] = res[0]; resp[0]; resp[0] = resp[0]->ai_next) {
 		if (resp[0]->ai_addr == NULL)
 			continue;
@@ -515,14 +549,16 @@ PHP_FUNCTION(pfSense_kill_states)
 			memset(&k.dst.addr.v.a.mask, 0xff,
 			    sizeof(k.dst.addr.v.a.mask));
 			memset(&last_dst, 0xff, sizeof(last_dst));
-			pfctl_addrprefix(ip2,
-			    &k.dst.addr.v.a.mask);
+			if (pfctl_addrprefix(ip2,&k.dst.addr.v.a.mask) < 0) {
+				RETVAL_NULL();
+				goto cleanup2;
+			}
 			if ((ret_ga = getaddrinfo(ip2, NULL, NULL,
 			    &res[1]))) {
 				php_printf("getaddrinfo: %s",
 				    gai_strerror(ret_ga));
-				break;
-				/* NOTREACHED */
+				RETVAL_NULL();
+				goto cleanup2;
 			}
 			for (resp[1] = res[1]; resp[1];
 			    resp[1] = resp[1]->ai_next) {
@@ -561,9 +597,15 @@ PHP_FUNCTION(pfSense_kill_states)
 		}
 	}
 
-	freeaddrinfo(res[0]);
+	RETVAL_TRUE;
 
-	RETURN_TRUE;
+cleanup2:
+	freeaddrinfo(res[0]);
+cleanup1:
+	if (ip2)
+		free(ip2);
+	free(ip1);
+	close(dev);
 }
 
 #ifdef ETHERSWITCH_FUNCTIONS
