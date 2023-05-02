@@ -1,0 +1,11 @@
+pkg/binddump.xml
+pkg/binddump.inc
+/etc/inc/priv/binddump.priv.inc
+www/packages/binddump/binddump.php
+www/packages/binddump/binddump.js
+www/packages/binddump/zoneEdit.php
+www/packages/binddump/zoneEdit.js
+www/packages/binddump/index.php
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir www/packages/binddump

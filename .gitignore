@@ -10,3 +10,42 @@ Makefile.local
 *.orig
 *.sw[p-z]
 .vscode/
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/Makefile
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/pkg-descr
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/pkg-plist
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/pkg-deinstall.in
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/pkg-install.in
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/etc/inc/priv/binddump.priv.inc
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/usr/local/pkg/binddump.inc
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/usr/local/pkg/binddump.xml
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/usr/local/share/pfSense-pkg-BindDump/info.xml
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/usr/local/www/packages/binddump/binddump.php
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/files/usr/local/www/packages/binddump/index.php
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.build_done.pfSense-pkg-BindDump._usr_local
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.configure_done.pfSense-pkg-BindDump._usr_local
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.extract_done.pfSense-pkg-BindDump._usr_local
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.license_done.pfSense-pkg-BindDump._usr_local
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.license-catalog.mk
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.license-report
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.package_done.pfSense-pkg-BindDump._usr_local
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.patch_done.pfSense-pkg-BindDump._usr_local
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.PLIST.mktmp
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.stage_done.pfSense-pkg-BindDump._usr_local
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/pkg-deinstall
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/pkg-install
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.metadir/+DEINSTALL
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.metadir/+DESC
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.metadir/+DISPLAY
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.metadir/+INSTALL
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/.metadir/+MANIFEST
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/pkg/pfSense-pkg-BindDump-1.0.15_1.pkg
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/etc/inc/priv/binddump.priv.inc
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/pkg/binddump.inc
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/pkg/binddump.xml
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/share/licenses/pfSense-pkg-BindDump-1.0.15_1/APACHE20
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/share/licenses/pfSense-pkg-BindDump-1.0.15_1/catalog.mk
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/share/licenses/pfSense-pkg-BindDump-1.0.15_1/LICENSE
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/share/pfSense-pkg-BindDump/info.xml
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/www/packages/binddump/binddump.php
+sysutils/pfSense-pkg-BindDump/Neuer Ordner/work/stage/usr/local/www/packages/binddump/index.php
+.gitignore

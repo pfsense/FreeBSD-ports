@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>BindDump</name>
+		<descr><![CDATA[The BIND DNS Dump utility is used to show all Zonedata from BIND DNS.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>binddump.xml</configurationfile>
+	</package>
+</pfsensepkgs>

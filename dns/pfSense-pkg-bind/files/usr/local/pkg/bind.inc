@@ -105,6 +105,34 @@ if (!function_exists('pf_version')) {
         function pf_version() {
                 return substr(trim(file_get_contents("/etc/version")), 0, 5);
         }
+	}
+	
+// parse the zone file which was exported with named-compilezone -F text
+function bind_get_zonerecords($zone_text, $zone)
+{
+	$zone_data_parsed = [];
+	$reg = '{(?<host>.+?)(?:\s+?(?<ttl>\d*))?\s+(?<scope>IN)\s+(?<type>\w+)\s+(?<value>.*)}';
+	if ($zone_text) {
+		$zone_rows = explode("\n", $zone_text);
+		foreach ($zone_rows as $line) {
+			if (preg_match($reg, $line, $matches)) {
+				// change host FQDN to relative.
+				if (strtolower($matches['host']) == strtolower("{$zone}.")) {
+					$matches['host'] = '@';
+				}
+				if (str_ends_with(strtolower($matches['host']), strtolower(".{$zone}."))) {
+					$matches['host'] = substr($matches['host'], 0, strripos($matches['host'], ".{$zone}."));
+				}
+				if (str_ends_with(strtolower($matches['value']), strtolower(".{$zone}."))) {
+					$matches['value'] = substr($matches['value'], 0, strripos($matches['value'], ".{$zone}."));
+				}
+				if (!empty($matches)) {
+					array_push($zone_data_parsed, $matches);
+				}
+			}
+		}
+	}
+	return $zone_data_parsed;
 }
 	
 // parse the zone file which was exported with "named-compilezone -F text" or "RNDC dumpdb -zones"
@@ -133,7 +161,6 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 				array_push($data_rows, ['raw' => $line]);
 				continue;
 			}
-
 			// split comments and values
 			$split_comment = bind_mb_explode_escaped(';', $line);
 			$line_without_comment = trim($split_comment[0]);

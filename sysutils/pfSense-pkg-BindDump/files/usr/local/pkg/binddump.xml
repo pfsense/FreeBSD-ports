@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * binddump.xml
+ *
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>BindDump</name>
+	<version>%%PKGVERSION%%</version>
+	<title>BindDump</title>
+	<include_file>/usr/local/pkg/binddump.inc</include_file>
+	<menu>
+		<name>BIND DNS Dump</name>
+		<section>Status</section>
+		<configfile>binddump.xml</configfile>
+		<url>/packages/binddump/binddump.php</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Database</text>
+			<url>/packages/binddump/binddump.php</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Zone EDIT</text>
+			<url>/packages/binddump/zoneEdit.php</url>
+			<active/>
+		</tab>
+	</tabs>
+	<configpath>installedpackages->package->$packagename->configuration</configpath>
+	<custom_php_resync_config_command>
+	<![CDATA[
+		binddump_sync_package();
+	]]>
+	</custom_php_resync_config_command>
+	<custom_delete_php_command>
+	<![CDATA[
+		binddump_sync_package();
+	]]>
+	</custom_delete_php_command>
+</packagegui>
