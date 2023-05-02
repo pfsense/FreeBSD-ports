@@ -1,6 +1,6 @@
 PORTNAME=	snort
 PORTVERSION=	2.9.20
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		https://snort.org/downloads/archive/snort/
@@ -81,14 +81,6 @@ PULLEDPORK_RUN_DEPENDS=	pulledpork.pl:security/pulledpork
 APPID_USES=		luajit:luajit-openresty
 APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LUAJIT_INCDIR}" \
 			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
-
-# Disable SIMD on 32-bit arm. Snort has numerous arbitrarily misaligned memory
-# accesses and some of them cause faults. The kludge below combined with
-# patch-configure seems to work around it well enough.
-#
-# Note the change is more aggressive than it possibly needs to be reduce surprises.
-CFLAGS_armv6=	-mfpu=vfpv3
-CFLAGS_armv7=	-mfpu=vfpv3
 
 CONFIG_FILES=	classification.config gen-msg.map reference.config \
 		snort.conf threshold.conf unicode.map file_magic.conf attribute_table.dtd
