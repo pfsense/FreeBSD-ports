@@ -62,68 +62,69 @@ if ($_POST) {
 		}
 
 		$rowhelper_exist = array();
-		foreach ($_POST as $key => $value) {
+		if ($_POST['varsynconchanges'] == 'manual') {
+			foreach ($_POST as $key => $value) {
 
-			// Parse 'rowhelper' fields and save new values
-			if (strpos($key, '-') !== FALSE) {
-				$k_field = explode('-', $key);
+				// Parse 'rowhelper' fields and save new values
+				if (strpos($key, '-') !== FALSE) {
+					$k_field = explode('-', $key);
 
-				// Collect all rowhelper keys
-				$rowhelper_exist[$k_field[1]] = '';
+					// Collect all rowhelper keys
+					$rowhelper_exist[$k_field[1]] = '';
 
-				switch ($k_field[0]) {
-					case 'syncinterfaces':
-						if ($value == 'on' || $value == '') {
-							//
-						} else {
-							$input_errors[] = gettext('Invalid XMLRPC Replication target enabled');
-						}
-						break;
-					case 'varsyncusername':
-						// Validate Username field
-						if (preg_match("/[^a-zA-Z0-9\._-]/", $value)) {
-							$input_errors[] = gettext('The username contains invalid characters.');
-						}
-						if (strlen($value) > 16) {
-							$input_errors[] = gettext('The username is longer than 16 characters.');
-						}
-						break;
-					case 'varsyncpassword':
-						$value = htmlspecialchars($value);
-						break;
-					case 'varsyncipaddress':
-						// Validate IP Address/Hostname
-						$value = pfb_filter($value, PFB_FILTER_HOSTNAME, 'Sync');
-						if (empty($value)) {
-							$input_errors[] = gettext('The Target IP Address is invalid.');
-						}
-						break;
-					case 'varsyncprotocol':
-						// Validate Protocol
-						if (!in_array($value, array('http', 'https'))) {
-							$input_errors[] = gettext('The Protocol is invalid.');
-						}
-						break;
-					case 'varsyncport':
-						// Validate Port
-						if (!is_port($value)) {
-							$input_errors[] = gettext('The Port is invalid.');
-						}
-						break;
-					default:
-						continue;
-						break;
-				}
-				$pfb['sconfig']['row'][$k_field[1]][$k_field[0]] = $value;
+					switch ($k_field[0]) {
+						case 'syncinterfaces':
+							if ($value == 'on' || $value == '') {
+								//
+							} else {
+								$input_errors[] = gettext('Invalid XMLRPC Replication target enabled');
+							}
+							break;
+						case 'varsyncusername':
+							// Validate Username field
+							if (preg_match("/[^a-zA-Z0-9\._-]/", $value)) {
+								$input_errors[] = gettext('The username contains invalid characters.');
+							}
+							if (strlen($value) > 16) {
+								$input_errors[] = gettext('The username is longer than 16 characters.');
+							}
+							break;
+						case 'varsyncpassword':
+							$value = htmlspecialchars($value);
+							break;
+						case 'varsyncipaddress':
+							// Validate IP Address/Hostname
+							$value = pfb_filter($value, PFB_FILTER_HOSTNAME, 'Sync');
+							if (empty($value)) {
+								$input_errors[] = gettext('The Target IP Address is invalid.');
+							}
+							break;
+						case 'varsyncprotocol':
+							// Validate Protocol
+							if (!in_array($value, array('http', 'https'))) {
+								$input_errors[] = gettext('The Protocol is invalid.');
+							}
+							break;
+						case 'varsyncport':
+							// Validate Port
+							if (!is_port($value)) {
+								$input_errors[] = gettext('The Port is invalid.');
+							}
+							break;
+						default:
+							continue;
+							break;
+					}
+					$pfb['sconfig']['row'][$k_field[1]][$k_field[0]] = $value;
 
-				// Clear checkbox field when POST is empty
-				if ($pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] == 'on' &&
-				    !isset($_POST["varsyncdestinenable-{$k_field[1]}"])) {
-					$pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] = '';
+					// Clear checkbox field when POST is empty
+					if ($pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] == 'on' &&
+						!isset($_POST["varsyncdestinenable-{$k_field[1]}"])) {
+						$pfb['sconfig']['row'][$k_field[1]]['varsyncdestinenable'] = '';
+					}
 				}
 			}
 		}
-
 		// Remove all undefined rowhelpers
 		foreach ($pfb['sconfig']['row'] as $r_key => $row) {
 			if (!isset($rowhelper_exist[$r_key])) {
