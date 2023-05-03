@@ -1,0 +1,13 @@
+diff --git a/src/etc/inc/syslog.inc b/src/etc/inc/syslog.inc
+index feced73bd3..dd875cfd6d 100644
+--- a/src/etc/inc/syslog.inc
++++ b/src/etc/inc/syslog.inc
+@@ -217,7 +217,7 @@ EOD;
+        safe_mkdir("{$g['varetc_path']}/syslog.d");
+
+        $syslogd_extra = "";
+-       if (!empty($syslogcfg)) {
++       if (true) {
+                $separatelogfacilities = array('ntp', 'ntpd', 'ntpdate', 'charon', 'ipsec_starter', 'openvpn', 'poes', 'l2tps', 'hostapd', 'dnsmasq', 'named', 'filterdns', 'unbound', 'dhcpd', 'dhcrelay', 'dhclient', 'dhcp6c', 'dpinger', 'radvd', 'routed', 'zebra', 'ospfd', 'ospf6d', 'bgpd', 'watchfrr', 'miniupnpd', 'igmpproxy', 'filterlog');
+                if (watchdogd_enabled()) {
+                        array_push($separatelogfacilities, 'watchdogd');
