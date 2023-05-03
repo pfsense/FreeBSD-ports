@@ -46,8 +46,6 @@ require_once('pkg-utils.inc');
 require_once('filter.inc');
 require_once('service-utils.inc');
 
-global $config;
-
 # squid package must exists by default system path (for v.2.0/2.1)
 # todo: move include string to the squid-function call string position
 if (file_exists('/usr/local/pkg/squid.inc')) {
@@ -129,7 +127,7 @@ define('SQUIDGUARD_STATE',              '/squidGuard.state');
 define('SQUIDGUARD_REBUILD',            '/squidGuard.rebuild');
 define('SQUIDGUARD_CONFXML',            '/squidguard_conf.xml');
 
-if (isset($config['system']['use_mfs_tmpvar'])) {
+if (config_path_enabled('system', 'use_mfs_tmpvar')) {
 	define('SQUIDGUARD_DBHOME',     '/usr/local/share/squidGuard');
 } else {
 	define('SQUIDGUARD_DBHOME',     '/var/db/squidGuard');
@@ -416,10 +414,10 @@ function sg_reconfigure()
 
 function squid_reconfigure($remove_only = '')
 {
-    global $config;
     global $squidguard_config;
     $conf = '';
-    $cust_opt = $config['installedpackages']['squid']['config'][0]['custom_options'];
+    $conf_path_cust_opt = 'installedpackages/squid/config/0/custom_options';
+    $cust_opt = config_get_path($conf_path_cust_opt);
     # remove old options
     if (!empty($cust_opt)) {
         $conf = explode(";", $cust_opt);
@@ -456,7 +454,7 @@ function squid_reconfigure($remove_only = '')
 
 	/* Only update squid options if we have something to do, otherwise this can interfere with squid's default options in a new install. */
 	if ($conf != $cust_opt) {
-		$config['installedpackages']['squid']['config'][0]['custom_options'] = $conf;
+		config_set_path($conf_path_cust_opt, $conf);
 		write_config('Update redirector options to squid config.');
 	}
 
@@ -520,7 +518,7 @@ function sg_check_system()
 # sg_reconfigure_user_db - reconfigure(update) db user entries
 # ------------------------------------------------------------------------------
 function sg_reconfigure_user_db() {
-	global $squidguard_config, $config;
+	global $squidguard_config;
 	$dbhome = $squidguard_config[F_DBHOME];
 
 	sg_addlog("sg_reconfigure_user_db", "Begin with '$dbhome'", SQUIDGUARD_INFO);
@@ -538,7 +536,7 @@ function sg_reconfigure_user_db() {
 	/* bypass local IPs for squid_status.php, see https://redmine.pfsense.org/issues/11711 */
 	if ($squidguard_config[F_DEFAULT][F_NOTALLOWINGIP]) {
 		init_config_arr(array('installedpackages', 'squidcache','config'));
-		$proxy_ifaces = explode(",", $config['installedpackages']['squid']['config'][0]['active_interface']);
+		$proxy_ifaces = explode(",", config_get_path('installedpackages/squid/config/0/active_interface'));
 		$sgips = '';
 		foreach ($proxy_ifaces as $iface) {
 			if (get_interface_ip($iface)) {
