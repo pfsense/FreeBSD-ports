@@ -157,15 +157,16 @@ if ($_POST) {
 			header('Location: /pfblockerng/pfblockerng_general.php');
 			exit;
 		}
-		else {
-			print_input_errors($input_errors);
-		}
 	}
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'));
 $pglinks = array('', '@self');
 include_once('head.inc');
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 // Load Wizard on new installations only
 if ($pfb_wizard) {

@@ -126,9 +126,6 @@ if ($_POST) {
 				header('Location: /pfblockerng/pfblockerng_feeds.php');
 				exit;
 			}
-			else {
-				print_input_errors($input_errors);
-			}
 		}
 	}
 }
@@ -221,6 +218,10 @@ function url_compare($ftype, $key, $rowid, $aliasname, $row_aliasname, $row_url,
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Feeds'));
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_feeds.php', '@self');
 include_once('head.inc');
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();

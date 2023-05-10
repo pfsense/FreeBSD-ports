@@ -274,6 +274,10 @@ $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('DNSBL'), 
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_dnsbl.php', '@self');
 include_once('head.inc');
 
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();
 
@@ -297,10 +301,6 @@ display_top_tabs($tab_array, true);
 if (isset($_REQUEST['savemsg'])) {
 	$savemsg = str_replace('BR', '<br />', htmlspecialchars($_REQUEST['savemsg']));
 	print_info_box($savemsg, 'info');
-}
-
-if (isset($input_errors)) {
-	print_input_errors($input_errors);
 }
 
 // Create Form

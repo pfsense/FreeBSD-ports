@@ -772,8 +772,6 @@ if ($_POST && isset($_POST['save'])) {
 		exit;
 	}
 	else {
-		print_input_errors($input_errors);
-
 		// Restore $_POST data on input errors
 		foreach ($_POST as $key => $value) {
 			if (strpos($key, '-') !== FALSE) {
@@ -886,6 +884,10 @@ if (isset($Lmove) and isset($Xmove) && isset($rowdata[$rowid]['row'])) {
 	write_config("pfBlockerNG: {$gtype} - Rows(s) moved");
 	header("Location: /pfblockerng/pfblockerng_category_edit.php?type={$gtype}&rowid={$rowid}&savemsg={$savemsg}");
 	exit;
+}
+
+if ($input_errors) {
+	print_input_errors($input_errors);
 }
 
 // Define default Alerts Tab href link (Top row)

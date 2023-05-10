@@ -691,7 +691,6 @@ if ($_POST) {
 			exit;
 		}
 		else {
-			print_input_errors($input_errors);
 			$pconfig = $_POST;	// Restore $_POST data on input errors
 		}
 	}
@@ -700,6 +699,10 @@ if ($_POST) {
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('DNSBL'));
 $pglinks = array('', '/pfblockerng/pfblockerng_dnsbl.php', '@self');
 include_once('head.inc');
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();

@@ -237,14 +237,15 @@ if (isset($_POST['save'])) {
 		$savemsg = "{$msg}. A Force Update|Reload is required to apply changes!";
 		header("Location: /pfblockerng/pfblockerng_safesearch.php?savemsg={$savemsg}");
 	}
-	else {
-		print_input_errors($input_errors);
-	}
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('DNSBL'), gettext('DNSBL SafeSearch'));
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblockerng_dnsbl.php', '@self');
 include_once('head.inc');
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();
