@@ -1,11 +1,11 @@
 PORTNAME=	tomcat
-DISTVERSION=	10.1.4
+DISTVERSION=	10.1.8
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${DISTVERSION:C/([0-9]+)(.*)/\1/}/v${DISTVERSION}/bin
 PKGNAMESUFFIX=	101
 DISTNAME=	apache-${PORTNAME}-${DISTVERSION}
 
-MAINTAINER=	vvd@unislabs.com
+MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Open-source Java web server by Apache, 10.1.x branch
 WWW=		https://tomcat.apache.org/
 

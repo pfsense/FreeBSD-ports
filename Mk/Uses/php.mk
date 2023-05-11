@@ -273,14 +273,9 @@ BUILD_DEPENDS+=	${PHPBASE}/include/php/main/php.h:${PHP_PORT}
 .  endif
 RUN_DEPENDS+=	${PHPBASE}/include/php/main/php.h:${PHP_PORT}
 .  if  ${php_ARGS:Mmod} || (${php_ARGS:Mweb} && defined(PHP_VERSION) && ${PHP_SAPI:Mcgi} == "" && ${PHP_SAPI:Mfpm} == "")
-USE_APACHE_RUN=	22+
-.include "${PORTSDIR}/Mk/Uses/apache.mk"
-.    if ${PHP_VER} < 80
-# libphpX.so only has the major version number in it, so remove the last digit of PHP_VER to get it.
-RUN_DEPENDS+=	${PHPBASE}/${APACHEMODDIR}/libphp${PHP_VER:C/.$//}.so:${MOD_PHP_PORT}
-.    else
+apache_ARGS?=run
+.include "${USESDIR}/apache.mk"
 RUN_DEPENDS+=	${PHPBASE}/${APACHEMODDIR}/libphp.so:${MOD_PHP_PORT}
-.    endif
 .  endif
 
 PLIST_SUB+=	PHP_EXT_DIR=${PHP_EXT_DIR}
@@ -382,10 +377,11 @@ _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
 		pdo_odbc pdo_pgsql pdo_sqlite phar pgsql posix \
 		pspell radius random readline redis session shmop simplexml snmp \
 		soap sockets sodium spl sqlite3 sysvmsg sysvsem sysvshm \
-		tidy tokenizer xml xmlreader xmlrpc xmlwriter xsl zip zlib
+		tidy tokenizer xml xmlreader xmlrpc xmlwriter xsl zephir_parser \
+		zip zlib
 # version specific components
-_USE_PHP_VER80=	${_USE_PHP_ALL} zephir_parser
-_USE_PHP_VER81=	${_USE_PHP_ALL} zephir_parser
+_USE_PHP_VER80=	${_USE_PHP_ALL}
+_USE_PHP_VER81=	${_USE_PHP_ALL}
 _USE_PHP_VER82=	${_USE_PHP_ALL}
 
 bcmath_DEPENDS=	math/php${PHP_VER}-bcmath

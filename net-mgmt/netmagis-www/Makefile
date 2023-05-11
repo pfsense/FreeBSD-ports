@@ -1,13 +1,10 @@
 PORTNAME=	netmagis
-PORTREVISION=	1
+PORTREVISION=	2
 PKGNAMESUFFIX=	-www
 
 COMMENT=	Netmagis web module
 
 LICENSE=	CECILL-B
-
-BROKEN_FreeBSD_13=	ld: error: duplicate symbol: mobjlist
-BROKEN_FreeBSD_14=	ld: error: duplicate symbol: mobjlist
 
 RUN_DEPENDS=	netmagis-config:net-mgmt/netmagis-common \
 		dot:graphics/graphviz \
@@ -18,7 +15,7 @@ RUN_DEPENDS=	netmagis-config:net-mgmt/netmagis-common \
 
 NO_ARCH=	# no
 USES=	tex
-USE_TEX=	full
+#USE_TEX=	full
 
 MASTERDIR=	${.CURDIR}/../netmagis-common
 

@@ -1,5 +1,6 @@
 PORTNAME=	kodi
 DISTVERSION=	20.1
+PORTREVISION=	2
 CATEGORIES=	multimedia java
 # do not forget to fix devel/kodi-platform when updating kodi
 

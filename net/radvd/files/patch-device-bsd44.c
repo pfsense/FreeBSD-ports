@@ -20,11 +20,9 @@
 +	}
 +
 +	if (setsockopt(sock, IPPROTO_IPV6, IPV6_JOIN_GROUP,
-+			&mreq, sizeof(mreq)) < 0 && !iface->state_info.ready) {
-+		if (errno != EADDRINUSE) {
-+			flog(LOG_ERR, "can't join ipv6-allrouters on %s", iface->props.name);
-+			return (-1);
-+		}
++			&mreq, sizeof(mreq)) < 0 && errno != EADDRINUSE) {
++		flog(LOG_ERR, "can't join ipv6-allrouters on %s", iface->props.name);
++		return (-1);
 +	}
 +
 +	return 0; 

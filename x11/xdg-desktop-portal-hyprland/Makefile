@@ -1,6 +1,6 @@
 PORTNAME=	xdg-desktop-portal-hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.0
+DISTVERSION=	0.3.1
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,6 +16,7 @@ LIB_DEPENDS=	libbasu.so:devel/basu \
 		libepoll-shim.so:devel/libepoll-shim \
 		libdrm.so:graphics/libdrm \
 		libwayland-client.so:graphics/wayland \
+		libuuid.so:misc/e2fsprogs-libuuid \
 		libpipewire-0.3.so:multimedia/pipewire
 RUN_DEPENDS=	grim:x11/grim \
 		hyprland-share-picker:x11/hyprland-share-picker@${FLAVOR}
@@ -29,7 +30,7 @@ USES=		compiler:c11 gl meson pkgconfig
 USE_GITHUB=	yes
 USE_GL=		gbm
 GH_ACCOUNT=	hyprwm
-GH_TUPLE=	hyprwm:hyprland-protocols:b8f55e0:hyprland_protocols/subprojects/hyprland-protocols
+GH_TUPLE=	hyprwm:hyprland-protocols:4d29e48:hyprland_protocols/subprojects/hyprland-protocols
 MESON_ARGS=	-Dsd-bus-provider=basu -Dsystemd=disabled
 PLIST_FILES=	libexec/${PORTNAME} \
 		share/dbus-1/services/org.freedesktop.impl.portal.desktop.hyprland.service \
@@ -42,10 +43,9 @@ SLURP_DESC=		Simple output chooser
 SLURP_RUN_DEPENDS=	slurp:x11/slurp
 
 .ifdef GH_TUPLE
-post-install:
-# XXX USES=meson invokes ninja directly, so doesn't support --skip-subprojects
-	@${RM} -r ${STAGEDIR}${PREFIX}/share/pkgconfig
-	@${RM} -r ${STAGEDIR}${PREFIX}/share/protocols
+post-configure:
+	@${REINPLACE_CMD} 's/meson install/& \
+		--skip-subprojects/' ${BUILD_WRKSRC}/build.ninja
 .endif
 
 .include <bsd.port.mk>

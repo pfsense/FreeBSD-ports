@@ -1,5 +1,5 @@
 PORTNAME=	botocore
-PORTVERSION=	1.29.95
+PORTVERSION=	1.29.127
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,5 +21,10 @@ USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
+
+OPTION_DEFINE=	CRT
+CRT_DESC=	Common runtime support
+
+CRT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}awscrt>=0.16.9:devel/py-awscrt@${PY_FLAVOR}
 
 .include <bsd.port.mk>

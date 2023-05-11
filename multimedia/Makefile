@@ -137,6 +137,7 @@
     SUBDIR += jmref
     SUBDIR += kaffeine
     SUBDIR += kamoso
+    SUBDIR += kasts
     SUBDIR += kdemultimedia
     SUBDIR += kdemultimedia-ffmpegthumbs
     SUBDIR += kdenlive
@@ -248,7 +249,6 @@
     SUBDIR += musique
     SUBDIR += mxflib
     SUBDIR += mythtv
-    SUBDIR += mythtv-frontend
     SUBDIR += naludump
     SUBDIR += navidrome
     SUBDIR += neolink
@@ -282,7 +282,6 @@
     SUBDIR += p5-MP4-Info
     SUBDIR += p5-Net-UPnP
     SUBDIR += p5-Subtitles
-    SUBDIR += pHash
     SUBDIR += peek
     SUBDIR += phonon
     SUBDIR += phonon-designerplugin

@@ -1,10 +1,10 @@
 PORTNAME=	bloaty
 PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	devel
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Size profiler for binaries
 WWW=		https://github.com/google/bloaty
 

@@ -130,6 +130,7 @@
     SUBDIR += libsmi
     SUBDIR += lldpd
     SUBDIR += mac-telnet
+    SUBDIR += makenl
     SUBDIR += mbrowse
     SUBDIR += mdata-client
     SUBDIR += metronome
@@ -205,6 +206,7 @@
     SUBDIR += nfsen
     SUBDIR += ng_ipacct
     SUBDIR += nitpicker
+    SUBDIR += nrpe
     SUBDIR += nrpe3
     SUBDIR += nsca
     SUBDIR += nsca-client

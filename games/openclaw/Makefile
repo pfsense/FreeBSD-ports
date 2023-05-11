@@ -1,6 +1,7 @@
 PORTNAME=	OpenClaw
 DISTVERSION=	0.3-98
 DISTVERSIONSUFFIX=	-g3586dfa
+PORTREVISION=	2
 CATEGORIES=	games
 
 PATCH_SITES=	https://github.com/valpackett/${GH_PROJECT}/commit/

@@ -62,6 +62,7 @@
     SUBDIR += bzrtp
     SUBDIR += ca_root_nss
     SUBDIR += caesarcipher
+    SUBDIR += caldera
     SUBDIR += calife
     SUBDIR += cardpeek
     SUBDIR += cargo-audit
@@ -195,7 +196,7 @@
     SUBDIR += gpgdir
     SUBDIR += gpgme
     SUBDIR += gpgme-cpp
-    SUBDIR += gpgme-qt5
+    SUBDIR += gpgme-qt
     SUBDIR += gsa
     SUBDIR += gsad
     SUBDIR += gsasl
@@ -840,6 +841,7 @@
     SUBDIR += py-acme
     SUBDIR += py-acme-tiny
     SUBDIR += py-ailment
+    SUBDIR += py-aiohttp-security
     SUBDIR += py-angr
     SUBDIR += py-argon2-cffi
     SUBDIR += py-argon2-cffi-bindings
@@ -888,6 +890,7 @@
     SUBDIR += py-dfdatetime
     SUBDIR += py-dfvfs
     SUBDIR += py-dfwinreg
+    SUBDIR += py-dirhash
     SUBDIR += py-django-auth-kerberos
     SUBDIR += py-docker-pycreds
     SUBDIR += py-ecdsa
@@ -896,6 +899,7 @@
     SUBDIR += py-fail2ban
     SUBDIR += py-fido2
     SUBDIR += py-first-server
+    SUBDIR += py-flask-bcrypt
     SUBDIR += py-flask-httpauth
     SUBDIR += py-flask-kerberos
     SUBDIR += py-flask-saml
@@ -911,6 +915,14 @@
     SUBDIR += py-gvm-tools
     SUBDIR += py-hkdf
     SUBDIR += py-htpasswd
+    SUBDIR += py-iris-check-module
+    SUBDIR += py-iris-client
+    SUBDIR += py-iris-evtx-module
+    SUBDIR += py-iris-intelowl-module
+    SUBDIR += py-iris-misp-module
+    SUBDIR += py-iris-module-interface
+    SUBDIR += py-iris-vt-module
+    SUBDIR += py-iris-webhooks-module
     SUBDIR += py-itsdangerous
     SUBDIR += py-josepy
     SUBDIR += py-keepkey
@@ -958,6 +970,7 @@
     SUBDIR += py-pycryptodome-test-vectors
     SUBDIR += py-pycryptodomex
     SUBDIR += py-pyelliptic
+    SUBDIR += py-pyhanko
     SUBDIR += py-pyhanko-certvalidator
     SUBDIR += py-pylibacl
     SUBDIR += py-pymacaroons
@@ -1073,6 +1086,7 @@
     SUBDIR += rubygem-doorkeeper-rails50
     SUBDIR += rubygem-doorkeeper-rails61
     SUBDIR += rubygem-doorkeeper562
+    SUBDIR += rubygem-duo_api
     SUBDIR += rubygem-ed25519
     SUBDIR += rubygem-ed2551912
     SUBDIR += rubygem-encryptor
@@ -1130,7 +1144,6 @@
     SUBDIR += rubygem-openssl-cmac
     SUBDIR += rubygem-openssl-signature_algorithm
     SUBDIR += rubygem-openssl2
-    SUBDIR += rubygem-openssl221
     SUBDIR += rubygem-openvas-omp
     SUBDIR += rubygem-origami
     SUBDIR += rubygem-pbkdf2-ruby
@@ -1281,6 +1294,7 @@
     SUBDIR += tinc-devel
     SUBDIR += tinyca
     SUBDIR += tls-check
+    SUBDIR += tlsc
     SUBDIR += tor
     SUBDIR += tor-devel
     SUBDIR += totp-cli

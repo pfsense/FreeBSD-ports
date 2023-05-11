@@ -1,10 +1,9 @@
 PORTNAME=	neochat
-DISTVERSION=	22.11
-PORTREVISION=	2
-CATEGORIES=	net-im
-MASTER_SITES=	KDE/stable/plasma-mobile/${DISTVERSION}
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
+CATEGORIES=	net-im deskutils kde kde-applications
 
-MAINTAINER=	adridg@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Glossy Matrix IM client based on KDE technologies
 WWW=		https://invent.kde.org/network/neochat
 
@@ -32,5 +31,6 @@ USE_KDE=	auth codecs completion config configwidgets coreaddons dbusaddons \
 		syntaxhighlighting notifications qqc2-desktop-style \
 		widgetsaddons windowsystem \
 		ecm:build
+USE_XORG=	x11
 
 .include <bsd.port.mk>

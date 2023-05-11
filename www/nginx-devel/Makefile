@@ -1,6 +1,6 @@
 PORTNAME?=	nginx
-PORTVERSION=	1.23.4
-PORTREVISION=	2
+PORTVERSION=	1.24.0
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa
@@ -16,7 +16,7 @@ LICENSE_FILE?=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	nginx
 
-PORTSCOUT=	limit:^1\.23\.[0-9]*
+PORTSCOUT=	limit:^1\.2[4-5]\.[0-9]*
 
 USES=		cpe
 
@@ -87,6 +87,11 @@ OPTIONS_DEFAULT?=	DSO FILE_AIO HTTP HTTP_ADDITION HTTP_AUTH_REQ HTTP_CACHE \
 
 LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2
 
+OPTIONS_RADIO+=		GSSAPI
+OPTIONS_RADIO_GSSAPI=	GSSAPI_HEIMDAL GSSAPI_MIT
+GSSAPI_HEIMDAL_USES=	gssapi:heimdal,flags
+GSSAPI_MIT_USES=	gssapi:mit
+
 OPTIONS_SUB=	yes
 
 .include "Makefile.options.desc"
@@ -102,6 +107,9 @@ ${opt}_IMPLIES=	HTTP
 .for opt in ${OPTIONS_GROUP_STREAMGRP:NSTREAM}
 ${opt}_IMPLIES=	STREAM
 .endfor
+
+GSSAPI_HEIMDAL_IMPLIES=	HTTP_AUTH_KRB5
+GSSAPI_MIT_IMPLIES=	HTTP_AUTH_KRB5
 
 # If the target is makesum, make sure that every distfile is fetched.
 .if ${.TARGETS:Mmakesum}
@@ -220,6 +228,12 @@ IGNORE=		requires at least HTTP or MAIL to \
 		be defined.  Please do 'make config' again
 .endif
 
+.if ${PORT_OPTIONS:MHTTP_AUTH_KRB5} && (empty(PORT_OPTIONS:MGSSAPI_HEIMDAL) && empty(PORT_OPTIONS:MGSSAPI_MIT))
+IGNORE=		required at least GSSAPI_HEIMDAL or \
+		GSSAPI_MIT to be defined. Please do \
+		'make config' again
+.endif
+
 .if ${PORT_OPTIONS:MPASSENGER} && empty(PORT_OPTIONS:MDEBUG)
 CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
@@ -230,9 +244,8 @@ CFLAGS+=	-DNDEBUG
 CFLAGS+=	-Wno-compound-token-split-by-macro
 .endif
 
-.if empty(PORT_OPTIONS:MDYNAMIC_HC) && empty(PORT_OPTIONS:MLUA) && \
-    empty(PORT_OPTIONS:MMODSECURITY3) && empty(PORT_OPTIONS:MPASSENGER) && \
-    empty(PORT_OPTIONS:MSMALL_LIGHT)
+.if empty(PORT_OPTIONS:MLUA) && empty(PORT_OPTIONS:MMODSECURITY3) && \
+    empty(PORT_OPTIONS:MPASSENGER)
 CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib"
 .else
 CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib -lpcre"

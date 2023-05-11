@@ -1,10 +1,10 @@
 PORTNAME=	envconsul
 PORTVERSION=	0.11.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	sysutils
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Populate values from Consul into a process environment
 WWW=		https://github.com/hashicorp/envconsul
 

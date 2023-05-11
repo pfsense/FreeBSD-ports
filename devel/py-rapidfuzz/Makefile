@@ -1,5 +1,6 @@
 PORTNAME=	rapidfuzz
-DISTVERSION=	2.0.15
+DISTVERSION=	3.0.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,7 +24,9 @@ BUILD_DEPENDS=	cmake:devel/cmake-core \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jarowinkler>=1.0.3:textproc/py-jarowinkler@${PY_FLAVOR}
 
 USES=		compiler:c++14-lang python:3.6+
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	distutils autoplist pytest
+
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
 	@cd ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME} && \

@@ -93,7 +93,9 @@
     SUBDIR += gcc11-devel
     SUBDIR += gcc12
     SUBDIR += gcc12-devel
+    SUBDIR += gcc13
     SUBDIR += gcc13-devel
+    SUBDIR += gcc14-devel
     SUBDIR += gcc48
     SUBDIR += gcc6-aux
     SUBDIR += gcc8
@@ -307,7 +309,6 @@
     SUBDIR += rexx-regutil
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
-    SUBDIR += ruby27
     SUBDIR += ruby30
     SUBDIR += ruby31
     SUBDIR += ruby32
@@ -323,6 +324,7 @@
     SUBDIR += scala
     SUBDIR += scheme48
     SUBDIR += scm
+    SUBDIR += scratch
     SUBDIR += sdcc
     SUBDIR += see
     SUBDIR += seed7

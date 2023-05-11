@@ -1,12 +1,12 @@
 PORTNAME=	pyscreenshot
 PORTVERSION=	0.5.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11 python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 #DISTNAME=	PyVirtualDisplay-${PORTVERSION}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python module for taking screenshots
 WWW=		https://github.com/ponty/pyscreenshot
 

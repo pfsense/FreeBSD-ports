@@ -16,12 +16,17 @@ LICENSE_COMB=	dual
 LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/BSDL
 LICENSE_FILE_RUBY=	${WRKSRC}/COPYING
 
+DEPRECATED=	Please migrate to newer versions. Ruby 3.0 will reach its EoL on March 30, 2024
+EXPIRATION_DATE=2024-04-30
+
 # Using LIB_DEPENDS finds the libffi from gcc which causes problems
 BUILD_DEPENDS=	libffi>=0:devel/libffi
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 RUN_DEPENDS=	libffi>=0:devel/libffi
 
 USES=		autoreconf cpe ruby:none ssl tar:xz
+BROKEN_SSL=	openssl30 openssl31
+BROKEN_SSL_REASON=	Do not build openssl module
 
 CONFIGURE_ARGS=	${RUBY_CONFIGURE_ARGS} \
 		--disable-rpath \
@@ -88,7 +93,7 @@ _SUF2=	,${PORTEPOCH}
 #.endif
 
 # keep in sync with all platforms where libunwind is available
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
@@ -187,7 +192,7 @@ post-install-DEBUG-off:
 .endif
 
 post-install-DOCS-on:
-	# Create all dirs required (":u" isn't avaiable in STABLE yet :-()
+	# Create all dirs required (":u" isn't available in STABLE yet :-()
 	${MKDIR} ${EXTDOCS:C|^([^/]+)/.*|\1|:S|^|${STAGEDIR}${RUBY_DOCDIR}/|}
 .for FILE in ${EXTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/ext/${FILE} \
@@ -201,7 +206,7 @@ post-install-DOCS-on:
 			${STAGEDIR}${RUBY_DOCDIR}/
 
 post-install-EXAMPLES-on:
-	# Create all dirs required (":u" isn't avaiable in STABLE yet :-()
+	# Create all dirs required (":u" isn't available in STABLE yet :-()
 	${MKDIR} ${EXTSAMPLES:C|^([^/]+)/.*|\1|:S|^|${STAGEDIR}${RUBY_EXAMPLESDIR}/|}
 .for FILE in ${EXTSAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/ext/${FILE} \

@@ -10,9 +10,13 @@ WWW=		http://esmtp.sourceforge.net
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Upstream announced that this project is no longer being maintained. See https://esmtp.sourceforge.net/links.html for alternatives
+EXPIRATION_DATE=2023-05-31
+
 LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 
-USES=		tar:bzip2 bison ssl
+USES=		bison pkgconfig ssl tar:bzip2
+
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	README

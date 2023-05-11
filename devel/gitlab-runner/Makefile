@@ -1,12 +1,13 @@
 PORTNAME=	gitlab-runner
 DISTVERSION=	15.10.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://gitlab-runner-downloads.s3.amazonaws.com/master/docker/:dockerx64 \
 		https://gitlab-runner-downloads.s3.amazonaws.com/master/docker/:dockerarm
 DISTFILES=	prebuilt-x86_64.tar.xz:dockerx64 \
 		prebuilt-arm.tar.xz:dockerarm
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Official GitLab Runner written in Go
 WWW=		https://gitlab.com/gitlab-org/gitlab-runner
 

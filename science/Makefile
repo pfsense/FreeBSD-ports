@@ -42,7 +42,6 @@
     SUBDIR += buddy
     SUBDIR += cantera
     SUBDIR += cardioid
-    SUBDIR += cdcl
     SUBDIR += cdf
     SUBDIR += cdk
     SUBDIR += cdo
@@ -277,6 +276,7 @@
     SUBDIR += py-DendroPy
     SUBDIR += py-GPy
     SUBDIR += py-GPyOpt
+    SUBDIR += py-HepMC3
     SUBDIR += py-MDAnalysis
     SUBDIR += py-MDAnalysisTests
     SUBDIR += py-OpenFermion
@@ -423,6 +423,7 @@
     SUBDIR += py-sdf
     SUBDIR += py-segregation
     SUBDIR += py-segyio
+    SUBDIR += py-signac
     SUBDIR += py-sklearn-pandas
     SUBDIR += py-skrebate
     SUBDIR += py-spaghetti
@@ -454,7 +455,6 @@
     SUBDIR += rubygem-rgeo-geojson
     SUBDIR += rubygem-rgeo-proj4
     SUBDIR += rubygem-rgeo-shapefile
-    SUBDIR += rubygem-ruby-dcl
     SUBDIR += rubygem-ruby-netcdf
     SUBDIR += scidavis
     SUBDIR += sciplot

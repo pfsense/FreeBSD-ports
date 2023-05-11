@@ -1,11 +1,10 @@
 PORTNAME=	gtk-layer-shell
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.0
-PORTREVISION=	1
+DISTVERSION=	0.8.1
 CATEGORIES=	x11-toolkits
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	GTK+ library for the Wayland layer-shell protocol
+COMMENT=	GTK3 library for the Wayland layer-shell protocol
 WWW=		https://github.com/wmww/gtk-layer-shell
 
 LICENSE=	LGPL3+ MIT

@@ -1,5 +1,5 @@
 PORTNAME=	phpunit
-PORTVERSION=	9.6.5
+PORTVERSION=	9.6.7
 CATEGORIES=	devel www
 MASTER_SITES=	https://phar.phpunit.de/
 PKGNAMESUFFIX=	9${PHP_PKGNAMESUFFIX}
@@ -13,7 +13,7 @@ WWW=		https://phpunit.de/ \
 LICENSE=	BSD3CLAUSE
 
 USES=		cpe php:flavors
-USE_PHP=	dom json pcre phar spl
+USE_PHP=	dom phar
 
 NO_ARCH=	yes
 NO_BUILD=	yes

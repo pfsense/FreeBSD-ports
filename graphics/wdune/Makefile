@@ -1,5 +1,6 @@
 PORTNAME=	wdune
 PORTVERSION=	1.956
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.ourproject.org/pub/wdune/
 
@@ -17,19 +18,19 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libmpfr.so:math/mpfr \
 		libosdCPU.so:graphics/opensubdiv \
 		libpng.so:graphics/png \
-		libswresample.so:multimedia/ffmpeg
+		libswresample.so.3:multimedia/ffmpeg4
 
 USES=		compiler:c++11-lang gl jpeg motif sdl tar:bzip2 xorg
 USE_XORG=	x11 xft xi xmu xext xt
 USE_GL=		gl glu glut
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--with-optimization \
+CONFIGURE_ARGS=	--with-optimization \
 		--without-devil \
 		--with-cgalheaders \
 		--with-helpurl="${DOCSDIR}/index.html"
-CPPFLAGS+=	-I${LOCALBASE}/include/freetype2 -D__FREEBSD__
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/ffmpeg4/include -I${LOCALBASE}/include/freetype2 -D__FREEBSD__
+LDFLAGS+=	-L${LOCALBASE}/ffmpeg4/lib -L${LOCALBASE}/lib
 
 CONFLICTS_INSTALL=	ocaml-dune
 

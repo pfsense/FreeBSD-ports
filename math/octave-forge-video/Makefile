@@ -1,6 +1,6 @@
 PORTNAME=	octave-forge-video
 PORTVERSION=	2.0.2
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
 DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
@@ -12,11 +12,12 @@ WWW=		https://packages.octave.org/
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
 
-LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4
 
 USES=		octave pkgconfig
-
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV+=	HOME=${WRKSRC}
+
+CPPFLAGS+=	-I${LOCALBASE}/ffmpeg4/include
+CONFIGURE_ENV+=	HOME=${WRKSRC} PKG_CONFIG_PATH="${LOCALBASE}/ffmpeg4/libdata/pkgconfig"
 
 .include <bsd.port.mk>

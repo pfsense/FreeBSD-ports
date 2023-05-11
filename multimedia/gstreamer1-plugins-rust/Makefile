@@ -1,9 +1,10 @@
 PORTNAME=	gstreamer1-plugins-rust
-DISTVERSION=	0.10.5
+DISTVERSION=	0.10.6
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
-PATCHFILES+=	6da4192fe62c.patch:-p1 # https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/merge_requests/910
+PATCHFILES+=	7915189a1599.patch:-p1 # https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/merge_requests/1191
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Various GStreamer plugins written in Rust
@@ -23,7 +24,7 @@ USE_GSTREAMER=	bad gl # webrtc
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	gstreamer
 GL_PROJECT=	gst-plugins-rs
-GL_COMMIT=	67de191be26f613621fae90fd013bbb065a651e3
+GL_COMMIT=	88548f41b661c26e6e15035e83884542968f67be
 SHEBANG_FILES=	dependencies.py
 MESON_ARGS=	-Ddoc=disabled
 MAKE_ENV=	${CARGO_ENV}

@@ -1,6 +1,6 @@
 PORTNAME=	rust
-PORTVERSION?=	1.68.2
-PORTREVISION?=	0
+PORTVERSION?=	1.69.0
+PORTREVISION?=	2
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
 		https://dev-static.rust-lang.org/dist/:src \
@@ -69,8 +69,8 @@ WASM_VARS=		_COMPONENTS+="rust-analysis-${_PACKAGE_VERS}-wasm32-unknown-unknown 
 WASM_VARS_OFF=		_RUST_BUILD_WASM=false
 
 # See WRKSRC/src/stage0.json for the date and version values
-BOOTSTRAPS_DATE?=		2023-02-09
-RUST_BOOTSTRAP_VERSION?=	1.67.1
+BOOTSTRAPS_DATE?=		2023-03-28
+RUST_BOOTSTRAP_VERSION?=	1.68.0
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 
@@ -80,7 +80,7 @@ _RUST_ARCH_i386=	i686
 _RUST_ARCH_riscv64=	riscv64gc
 _RUST_TARGET=		${_RUST_ARCH_${ARCH}:U${ARCH}}-unknown-${OPSYS:tl}
 _RUST_TARGETS=		${_RUST_TARGET}
-_RUST_TOOLS=		analysis cargo clippy rustfmt
+_RUST_TOOLS=		analysis cargo clippy rust-analyzer rustdoc rustfmt
 
 _RUSTC_BOOTSTRAP=	${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rustc-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${_RUST_TARGET}
 _RUST_STD_BOOTSTRAP=	${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rust-std-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${_RUST_TARGET}
@@ -106,8 +106,6 @@ IGNORE=		is only for FreeBSD
 .endif
 
 .if ${ARCH} == powerpc
-# bfd to link rustc_driver; lld currently can't
-BUILD_DEPENDS+=	ld.bfd:devel/binutils
 LIB_DEPENDS+=	libatomic.so:lang/gcc${GCC_DEFAULT}
 MAKE_ENV+=	RUSTFLAGS="-L/usr/local/lib/gcc${GCC_DEFAULT}"
 .else

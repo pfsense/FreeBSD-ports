@@ -1,6 +1,6 @@
 PORTNAME=	blender
-DISTVERSION=	2.93.11
-PORTREVISION=	6
+DISTVERSION=	2.93.17
+PORTREVISION=	1
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -15,7 +15,7 @@ WWW=		https://www.blender.org/
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/doc/license/GPL3-license.txt
 
-BROKEN=		fails to build
+#BROKEN=		fails to build
 NOT_FOR_ARCHS=	i386
 NOT_FOR_ARCHS_REASON=	uses 64bit atomic functions
 

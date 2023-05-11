@@ -34,6 +34,8 @@ MAKE_ARGS+=	${MAKE_ARGS_${CHOSEN_COMPILER_TYPE}}
 MAKE_ARGS_gcc=	xdll-path=${_GCC_RUNTIME}
 ALL_TARGET=	stage
 
+.include <bsd.port.options.mk>
+
 do-install:
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 		${MAKE_ARGS:NDESTDIR=*:S,^--prefix=,&${STAGEDIR},} ${INSTALL_TARGET}

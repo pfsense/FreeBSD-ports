@@ -1,7 +1,7 @@
 PORTNAME=	phd2
 DISTVERSIONPREFIX=v
 DISTVERSION=	2.6.10
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	astro
 
 MAINTAINER=	acm@FreeBSD.org
@@ -21,6 +21,7 @@ USES=		cmake eigen:3 gettext ninja pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenPHDGuiding
 
+USE_CXXSTD=	c++14 # googletest 1.13
 USE_WX=		3.2+
 USE_XORG=	x11
 

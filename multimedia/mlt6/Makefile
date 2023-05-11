@@ -1,6 +1,6 @@
 PORTNAME=		${_MLT_PORTNAME}
 DISTVERSION=		${_MLT_VERSION}
-PORTREVISION?=		7
+PORTREVISION?=	10
 CATEGORIES?=		multimedia
 # Don't use GitHub "fake" downloads that are auto-generated from a
 # tag; the project uploads tarballs for each release.
@@ -15,6 +15,8 @@ WWW=		https://www.mltframework.org/
 
 LICENSE?=		GPLv2 GPLv3 LGPL21
 LICENSE_COMB?=		multi
+
+BROKEN=			fails to build with FFmpeg 6 (PR 270293)
 
 USES+=			alias cmake compiler:c++11-lang eigen:3 localbase pkgconfig
 

@@ -1,6 +1,5 @@
 PORTNAME=	gitlab-ce
-PORTVERSION=	15.9.4
-PORTREVISION=	1
+PORTVERSION=	15.10.6
 CATEGORIES=	www devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -20,10 +19,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 MY_DEPENDS=	git>=2.39.2:devel/git \
 	gitaly>=${PORTVERSION}:devel/gitaly \
 	gitlab-elasticsearch-indexer>=4.1.0:textproc/gitlab-elasticsearch-indexer \
-	gitlab-agent>=15.9.0:net/gitlab-agent \
+	gitlab-agent>=15.10.0:net/gitlab-agent \
 	gitlab-metrics-exporter>0:devel/gitlab-metrics-exporter \
 	gitlab-pages>=${PORTVERSION}:www/gitlab-pages \
-	gitlab-shell>=14.17.0:devel/gitlab-shell \
+	gitlab-shell>=14.18.0:devel/gitlab-shell \
 	gitlab-workhorse>=${PORTVERSION}:www/gitlab-workhorse \
 	redis>=6.2.11:databases/redis \
 	yarn${NODEJS_SUFFIX}>=1.10.0:www/yarn${NODEJS_SUFFIX} \
@@ -39,8 +38,7 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-responders-rails61>=3.0<4.0:www/rubygem-responders-rails61 \
 	rubygem-sprockets3>=3.7<3.8:devel/rubygem-sprockets3 \
 	rubygem-view_component-rails61>=2.74.1<2.75:devel/rubygem-view_component-rails61 \
-	rubygem-default_value_for>=3.4.0<3.5.0:devel/rubygem-default_value_for \
-	rubygem-pg>=1.4.5<1.5:databases/rubygem-pg \
+	rubygem-pg14>=1.4.5<1.5:databases/rubygem-pg14 \
 	rubygem-rugged>=1.5<2:devel/rubygem-rugged \
 	rubygem-grape-path-helpers>=1.7.1<1.8:devel/rubygem-grape-path-helpers \
 	rubygem-faraday1>=1.10.0<2:www/rubygem-faraday1 \
@@ -83,7 +81,7 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-ohai>=16.10<17:sysutils/rubygem-ohai \
 	rubygem-gpgme>=2.0.22<2.1.0:security/rubygem-gpgme \
 	rubygem-gitlab_omniauth-ldap>=2.2.0<2.3.0:net/rubygem-gitlab_omniauth-ldap \
-	rubygem-net-ldap>=0.17.1<0.18:net/rubygem-net-ldap \
+	rubygem-net-ldap017>=0.17.1<0.18:net/rubygem-net-ldap017 \
 	rubygem-grape15>=1.5.2<1.6:devel/rubygem-grape15 \
 	rubygem-grape-entity>=0.10.0<0.11.0,1:devel/rubygem-grape-entity \
 	rubygem-rack-cors>=1.1.1<1.2.0:www/rubygem-rack-cors \
@@ -99,12 +97,10 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-hamlit>=2.15.0<2.16:www/rubygem-hamlit \
 	rubygem-carrierwave>=1.3.2<2.0:www/rubygem-carrierwave \
 	rubygem-mini_magick410>=4.10.1<4.11:graphics/rubygem-mini_magick410 \
-	rubygem-fog-aws>=3.15<4:net/rubygem-fog-aws \
+	rubygem-fog-aws>=3.18<4:net/rubygem-fog-aws \
 	rubygem-fog-core210>=2.1.0<2.1.1:devel/rubygem-fog-core210 \
 	rubygem-fog-google>=1.19<2:net/rubygem-fog-google \
 	rubygem-fog-local>=0.8<1.0:net/rubygem-fog-local \
-	rubygem-fog-openstack>=1.0<2.0:net/rubygem-fog-openstack \
-	rubygem-fog-rackspace>=0.1.1<1.2.0:net/rubygem-fog-rackspace \
 	rubygem-fog-aliyun>=0.4<1.0:net/rubygem-fog-aliyun \
 	rubygem-gitlab-fog-azure-rm>=1.7.0<1.8:net/rubygem-gitlab-fog-azure-rm \
 	rubygem-google-cloud-storage>=1.44.0<1.45:net/rubygem-google-cloud-storage \
@@ -122,9 +118,9 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-elasticsearch-model713>=7.2<8:textproc/rubygem-elasticsearch-model713 \
 	rubygem-elasticsearch-rails>=7.2<8:textproc/rubygem-elasticsearch-rails \
 	rubygem-elasticsearch-api713>=7.13.3<7.13.4:textproc/rubygem-elasticsearch-api713 \
-	rubygem-aws-sdk-core>=3.170.0<3.171:devel/rubygem-aws-sdk-core \
+	rubygem-aws-sdk-core3170>=3.170.0<3.171:devel/rubygem-aws-sdk-core3170 \
 	rubygem-aws-sdk-cloudformation>=1<2:devel/rubygem-aws-sdk-cloudformation \
-	rubygem-aws-sdk-s3>=1.119.1<1.120:devel/rubygem-aws-sdk-s3 \
+	rubygem-aws-sdk-s31119>=1.119.1<1.120:devel/rubygem-aws-sdk-s31119 \
 	rubygem-faraday_middleware-aws-sigv403>=0.3.0<0.4:devel/rubygem-faraday_middleware-aws-sigv403 \
 	rubygem-typhoeus>=1.4.0<1.5:www/rubygem-typhoeus \
 	rubygem-html-pipeline>=2.14.3<2.15:textproc/rubygem-html-pipeline \
@@ -137,13 +133,13 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-org-ruby>=0.9.12<0.10.0:textproc/rubygem-org-ruby \
 	rubygem-creole>=0.5.0<0.6.0:textproc/rubygem-creole \
 	rubygem-wikicloth081>=0.8.1<0.8.2:textproc/rubygem-wikicloth081 \
-	rubygem-asciidoctor>=2.0.17<2.1.0:textproc/rubygem-asciidoctor \
+	rubygem-asciidoctor>=2.0.18<2.1.0:textproc/rubygem-asciidoctor \
 	rubygem-asciidoctor-include-ext>=0.4.0<0.5.0:textproc/rubygem-asciidoctor-include-ext \
 	rubygem-asciidoctor-plantuml00>=0.0.16<0.1:textproc/rubygem-asciidoctor-plantuml00 \
-	rubygem-asciidoctor-kroki>=0.7.0<0.8:textproc/rubygem-asciidoctor-kroki \
-	rubygem-rouge3>=3.30.0<3.31:textproc/rubygem-rouge3 \
+	rubygem-asciidoctor-kroki>=0.8.0<0.9:textproc/rubygem-asciidoctor-kroki \
+	rubygem-rouge>=4.1.0<4.2:textproc/rubygem-rouge \
 	rubygem-truncato>=0.7.11<0.8.0:textproc/rubygem-truncato \
-	rubygem-nokogiri>=1.14.1<1.15:textproc/rubygem-nokogiri \
+	rubygem-nokogiri>=1.14.2<1.15:textproc/rubygem-nokogiri \
 	rubygem-icalendar>=0:devel/rubygem-icalendar \
 	rubygem-diffy>=3.4<4:textproc/rubygem-diffy \
 	rubygem-diff_match_patch>=0.1.0<0.2.0:textproc/rubygem-diff_match_patch \
@@ -159,7 +155,7 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-redis-namespace19>=1.9.0<1.10.0:databases/rubygem-redis-namespace19 \
 	rubygem-gitlab-sidekiq-fetcher>=0.9.0<0.10:devel/rubygem-gitlab-sidekiq-fetcher \
 	rubygem-fugit>=1.8.1<1.9:devel/rubygem-fugit \
-	rubygem-httparty>=0.20.0<0.21:www/rubygem-httparty \
+	rubygem-httparty020>=0.20.0<0.21:www/rubygem-httparty020 \
 	rubygem-rainbow>=3.1.1<4.0:devel/rubygem-rainbow \
 	rubygem-ruby-progressbar>=1.11<2:devel/rubygem-ruby-progressbar \
 	rubygem-settingslogic>=2.0.9<2.1.0:devel/rubygem-settingslogic \
@@ -177,12 +173,13 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-hangouts-chat>=0.0.5<0.1.0:net/rubygem-hangouts-chat \
 	rubygem-asana0>=0.10.13<0.11:www/rubygem-asana0 \
 	rubygem-ruby-fogbugz>=0.3.0<0.4.0:devel/rubygem-ruby-fogbugz \
+	rubygem-kubeclient>=4.11.0<4.12.0:www/rubygem-kubeclient \
 	rubygem-sanitize>=6.0<7:textproc/rubygem-sanitize \
 	rubygem-babosa>=1.0.4<1.1.0:textproc/rubygem-babosa \
-	rubygem-loofah>=2.19.1<2.20:textproc/rubygem-loofah \
+	rubygem-loofah219>=2.19.1<2.20:textproc/rubygem-loofah219 \
 	rubygem-licensee>=9.15<10:devel/rubygem-licensee \
 	rubygem-charlock_holmes>=0.7.7<0.8.0:textproc/rubygem-charlock_holmes \
-	rubygem-ruby-magic>=0.5.4<1:devel/rubygem-ruby-magic \
+	rubygem-ruby-magic>=0.6<1:devel/rubygem-ruby-magic \
 	rubygem-fast_blank>=0:devel/rubygem-fast_blank \
 	rubygem-gitlab-chronic>=0.10.5<0.11.0:devel/rubygem-gitlab-chronic \
 	rubygem-gitlab_chronic_duration>=0.10.6.2<0.10.7:devel/rubygem-gitlab_chronic_duration \
@@ -203,7 +200,7 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-sentry-sidekiq>=5.1.1<5.2:devel/rubygem-sentry-sidekiq \
 	rubygem-pg_query>=2.2.1<3:databases/rubygem-pg_query \
 	rubygem-premailer-rails-rails61>=1.10.3<1.11:mail/rubygem-premailer-rails-rails61 \
-	rubygem-gitlab-labkit>=0.31.0<0.32:devel/rubygem-gitlab-labkit \
+	rubygem-gitlab-labkit>=0.31.1<0.32:devel/rubygem-gitlab-labkit \
 	rubygem-thrift>=0.16.0:devel/rubygem-thrift \
 	rubygem-ruby_parser>=3.19<4.0:devel/rubygem-ruby_parser \
 	rubygem-rails-i18n-rails61>=7.0<8:devel/rubygem-rails-i18n-rails61 \
@@ -214,15 +211,15 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-peek-rails61>=1.1.0<2.0:devel/rubygem-peek-rails61 \
 	rubygem-snowplow-tracker>=0.8.0<1:devel/rubygem-snowplow-tracker \
 	rubygem-webrick17>=1.7.0<1.8:www/rubygem-webrick17 \
-	rubygem-prometheus-client-mmap>=0.17<1:devel/rubygem-prometheus-client-mmap \
+	rubygem-prometheus-client-mmap>=0.19<1:devel/rubygem-prometheus-client-mmap \
 	rubygem-warning>=1.3.0<1.4:devel/rubygem-warning \
 	rubygem-license_finder>=7.0.0<8:devel/rubygem-license_finder \
-	rubygem-gitlab-dangerfiles>=3.7.0<3.8:devel/rubygem-gitlab-dangerfiles \
+	rubygem-gitlab-dangerfiles>=3.8.0<3.9:devel/rubygem-gitlab-dangerfiles \
 	rubygem-octokit>=4.20<5.0:net/rubygem-octokit \
 	rubygem-gitlab-mail_room>=0.0.9<0.1.0:mail/rubygem-gitlab-mail_room \
 	rubygem-email_reply_trimmer>=0.1<1.0:mail/rubygem-email_reply_trimmer \
 	rubygem-html2text>=0:textproc/rubygem-html2text \
-	rubygem-stackprof>=0.2.21<0.3:devel/rubygem-stackprof \
+	rubygem-stackprof>=0.2.23<0.3:devel/rubygem-stackprof \
 	rubygem-rbtrace>=0.4.14<1.0:devel/rubygem-rbtrace \
 	rubygem-memory_profiler>=1.0<2.0:devel/rubygem-memory_profiler \
 	rubygem-benchmark-memory>=0.1<1.0:benchmarks/rubygem-benchmark-memory \
@@ -236,8 +233,8 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-spamcheck>=1.0.0<1.1:net/rubygem-spamcheck \
 	rubygem-gitaly>=15.9.0.pre.rc3<15.10.0:net/rubygem-gitaly \
 	rubygem-kas-grpc>=0.0.2,1<0.0.3,1:net/rubygem-kas-grpc \
-	rubygem-grpc142>=1.42.0<1.43:net/rubygem-grpc142 \
-	rubygem-google-protobuf>=3.21.12<4:devel/rubygem-google-protobuf \
+	rubygem-grpc>=1.42.0<2:net/rubygem-grpc \
+	rubygem-google-protobuf>=3.22.2<4:devel/rubygem-google-protobuf \
 	rubygem-toml-rb>=2.2.0<3:www/rubygem-toml-rb \
 	rubygem-flipper025>=0.25.0<0.26:devel/rubygem-flipper025 \
 	rubygem-flipper-active_record-rails61>=0.25.0<0.26:databases/rubygem-flipper-active_record-rails61 \
@@ -250,7 +247,7 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-countries>=4.1.3<4.2.0:devel/rubygem-countries \
 	rubygem-retriable>=3.1.2<3.2.0:devel/rubygem-retriable \
 	rubygem-lru_redux>0:devel/rubygem-lru_redux \
-	rubygem-mail27>=2.7.1<2.7.2,2:mail/rubygem-mail27 \
+	rubygem-mail>=2.8.1<2.8.2,2:mail/rubygem-mail \
 	rubygem-lockbox>=1.1.1<1.2:security/rubygem-lockbox \
 	rubygem-valid_email>=0.1<1:mail/rubygem-valid_email \
 	rubygem-json>=2.6.3<3:devel/rubygem-json \
@@ -259,17 +256,19 @@ MY_DEPENDS=	git>=2.39.2:devel/git \
 	rubygem-oj-introspect>=0.7<1:devel/rubygem-oj-introspect \
 	rubygem-multi_json114>=1.14.1<1.15:devel/rubygem-multi_json114 \
 	rubygem-yajl-ruby>=1.4.3<1.5:devel/rubygem-yajl-ruby \
-	rubygem-webauthn>=2.3<3:security/rubygem-webauthn \
+	rubygem-webauthn>=3.0<4:security/rubygem-webauthn \
 	rubygem-ipaddress>=0.8.3<0.9:net/rubygem-ipaddress \
 	rubygem-parslet1>=1.8<2:textproc/rubygem-parslet1 \
 	rubygem-ed25519>=1.3.0<1.4:security/rubygem-ed25519 \
 	rubygem-parser>=0:devel/rubygem-parser \
 	rubygem-cvss-suite>=3.0.1<3.1:security/rubygem-cvss-suite \
 	rubygem-arr-pm>=0.0.12<0.1:devel/rubygem-arr-pm \
-	rubygem-CFPropertyList>=0:devel/rubygem-CFPropertyList \
+	rubygem-CFPropertyList>=3.0.0<3.1:devel/rubygem-CFPropertyList \
 	rubygem-app_store_connect>=0:net/rubygem-app_store_connect \
 	rubygem-telesignenterprise>=2.2<3:devel/rubygem-telesignenterprise \
-	rubygem-kubeclient>=4.9.3<4.10.0:www/rubygem-kubeclient
+	rubygem-net-protocol01>=0.1.3<0.2:net/rubygem-net-protocol01 \
+	rubygem-duo_api>=1.3<2:security/rubygem-duo_api \
+	rubygem-google-cloud-profiler-v2>=0.3<1:textproc/rubygem-google-cloud-profiler-v2
 
 BUILD_DEPENDS=	gem:devel/ruby-gems \
 	${MY_DEPENDS}
@@ -289,7 +288,7 @@ USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 GL_PROJECT=	gitlab-foss
 # Find the here: https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-GL_COMMIT=	d6192c2ab77ab814b9bd66103663047556fd67e4
+GL_COMMIT=	402db7bb72f2b4fbaf269ddd95652213e0f3a343
 
 USERS=	git
 GROUPS=	git

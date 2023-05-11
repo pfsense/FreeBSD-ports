@@ -1,5 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	13.0.1.s20230402
+PORTVERSION=	13.1.1.s20230506
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -26,6 +26,8 @@ BUILD_DEPENDS+=	runtest:misc/dejagnu
 USES=		compiler:c++11-lang cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
+
+CONFLICTS=	gcc13
 
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}
@@ -128,8 +130,10 @@ INFO=		gcc${SUFFIX}/cpp \
 		gcc${SUFFIX}/libgccjit \
 		gcc${SUFFIX}/libgomp
 .if ${ARCH} == amd64 || ${ARCH} == i386
-INFO+=		gcc${SUFFIX}/libquadmath \
-		gcc${SUFFIX}/libitm
+INFO+=		gcc${SUFFIX}/libquadmath
+.endif
+.if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == aarch64
+INFO+=		gcc${SUFFIX}/libitm
 .endif
 SUB_FILES=	pkg-message
 SUB_LIST+=	TARGLIB=${TARGLIB}

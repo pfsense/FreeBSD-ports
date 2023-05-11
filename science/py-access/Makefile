@@ -1,5 +1,5 @@
 PORTNAME=	access
-PORTVERSION=	1.1.8
+PORTVERSION=	1.1.9
 PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
@@ -7,7 +7,9 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Calculate spatial accessibility metrics
-WWW=		https://access.readthedocs.io/en/latest/
+WWW=		https://pysal.org/access/ \
+		https://access.readthedocs.io/en/latest/ \
+		https://github.com/pysal/access
 
 LICENSE=	BSD3CLAUSE
 

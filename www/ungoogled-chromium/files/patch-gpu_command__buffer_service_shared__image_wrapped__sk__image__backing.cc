@@ -1,11 +1,11 @@
---- gpu/command_buffer/service/shared_image/wrapped_sk_image_backing.cc.orig	2023-03-10 11:01:21 UTC
+--- gpu/command_buffer/service/shared_image/wrapped_sk_image_backing.cc.orig	2023-05-05 12:12:41 UTC
 +++ gpu/command_buffer/service/shared_image/wrapped_sk_image_backing.cc
-@@ -186,7 +186,7 @@ bool WrappedSkImageBacking::Initialize() {
-                                                     : GrMipMapped::kNo;
-   const std::string label = "WrappedSkImageBackingFactory_Initialize" +
-                             CreateLabelForSharedImageUsage(usage());
+@@ -198,7 +198,7 @@ bool WrappedSkImageBacking::Initialize() {
+ 
+     constexpr GrRenderable is_renderable = GrRenderable::kYes;
+     constexpr GrProtected is_protected = GrProtected::kNo;
 -#if DCHECK_IS_ON() && !BUILDFLAG(IS_LINUX)
 +#if DCHECK_IS_ON() && !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_BSD)
-   // Initializing to bright green makes it obvious if the pixels are not
-   // properly set before they are displayed (e.g. https://crbug.com/956555).
-   // We don't do this on release builds because there is a slight overhead.
+     // Blue for single-planar and magenta-ish for multi-planar.
+     SkColor4f fallback_color =
+         format().is_single_plane() ? SkColors::kBlue : SkColors::kWhite;

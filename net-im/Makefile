@@ -164,6 +164,7 @@
     SUBDIR += telegram-desktop
     SUBDIR += telegram-purple
     SUBDIR += telegramqml
+    SUBDIR += teleirc
     SUBDIR += telepathy-accounts-signon
     SUBDIR += telepathy-farstream
     SUBDIR += telepathy-gabble
@@ -190,7 +191,6 @@
     SUBDIR += twirssi
     SUBDIR += uTox
     SUBDIR += vqcc-gtk
-    SUBDIR += webinar
     SUBDIR += xmpp-client
     SUBDIR += yume
     SUBDIR += zkgroup

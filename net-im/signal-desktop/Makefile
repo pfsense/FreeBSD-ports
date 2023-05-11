@@ -1,17 +1,13 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.12.0
+DISTVERSION=	6.16.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
 		LOCAL/mikael/signal-desktop/:yarn \
-		https://nodejs.org/download/release/v${NODE_VERSION}/:node \
-		https://electronjs.org/headers/v${ELECTRON_GYP_VERSION}/:electron_gyp \
 		https://build-artifacts.signal.org/desktop/:sqlcipher
 DISTFILES=	signal-desktop-${DISTVERSION}-yarn-cache.tar.gz:yarn \
 		signal-desktop-6.4.1-npm-cache.tar.gz:npm \
-		node-v${NODE_VERSION}-headers.tar.gz:node \
-		node-v${ELECTRON_GYP_VERSION}-headers.tar.gz:electron_gyp \
 		${SQLCIPHER}.tar.gz:sqlcipher
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -25,14 +21,14 @@ ONLY_FOR_ARCHS=	aarch64 amd64
 
 EXTRACT_DEPENDS=jq:textproc/jq \
 		yarn-node16>0:www/yarn-node16
-BUILD_DEPENDS=	${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
+BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl30 \
+		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
 		${LOCALBASE}/lib/libsignal_tokenizer.a:devel/signal-fts5-extension \
 		app-builder>0:devel/app-builder \
-		jq:textproc/jq \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
+		jq:textproc/jq \
 		npm:www/npm-node16 \
-		${LOCALBASE}/lib/libcrypto.a:security/openssl30 \
 		vips>0:graphics/vips \
 		yarn:www/yarn-node16
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
@@ -41,10 +37,13 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libcups.so:print/cups \
 		libdbus-1.so:devel/dbus \
 		libdrm.so:graphics/libdrm \
+		libevent.so:devel/libevent \
 		libexpat.so:textproc/expat2 \
 		libFLAC.so:audio/flac \
 		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
+		libicuuc.so:devel/icu \
 		libnspr4.so:devel/nspr \
 		libnss3.so:security/nss \
 		libopenh264.so:multimedia/openh264 \
@@ -52,6 +51,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libpci.so:devel/libpci \
 		libpng16.so:graphics/png \
 		libsnappy.so:archivers/snappy \
+		libwayland-client.so:graphics/wayland \
 		libwebp.so:graphics/webp \
 		libxkbcommon.so:x11/libxkbcommon \
 		libxshmfence.so:x11/libxshmfence
@@ -83,24 +83,20 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 _BUILD_DATE=	$$(date +'%s')
 
 ELECTRON_VER_MAJOR=	22
-# keep NODE_VERSION in sync with www/node16 DISTVERSION
-NODE_VERSION=		16.20.0
-# bump ELECTRON_GYP_VERSION when ELECTRON_VER_MAJOR is changed
-ELECTRON_GYP_VERSION=	22.3.3
 
 # sh get_deps.sh
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.22.0-d57441612df46f90df68fc5d9ad45b857b9d2c44-integrity
-NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.25.2-6e6e32fe3e507f1ead7cd287d53eb35d1f9b5ef9-integrity
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.26.2-6ca91cd4b2d3ed545eb87c4aaddcb3f8735ad85a-integrity
 NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.4.3-7ffa8d03d2a12543247936bfb7b9f74cdbc6fe9b-integrity
 NPM_ESBUILD_VERS=	0.17.11
 SQLCIPHER=		sqlcipher-4.5.3-fts--3.0.7--0.2.1-b633825cf7e0fdd39a6cdf128f2bd76552a88d325f2b9cd07bb87a457cefb986
 
-ESBUILD_ARCH=		${ARCH:S/aarch64/arm64/:S/amd64/x64/}
-NODE_ARCH=		${ARCH:S/aarch64/arm64/:S/amd64/x64/}
-APP_OUT_DIR=		linux-${ARCH:S/aarch64/arm64-/:S/amd64//}unpacked
+ESBUILD_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
+NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
+APP_OUT_DIR=	linux-${ARCH:S/aarch64/arm64-/:S/amd64//}unpacked
 
-PLIST_SUB=		NODE_ARCH=${NODE_ARCH} \
-			SHARP_ARCH=${ARCH:S/aarch64/arm64v8/:S/amd64/x64/}
+PLIST_SUB=	NODE_ARCH=${NODE_ARCH} \
+		SHARP_ARCH=${ARCH:S/aarch64/arm64v8/:S/amd64/x64/}
 
 YARN_TIMESTAMP=	1661146515
 
@@ -131,15 +127,9 @@ post-patch:
 		${WRKSRC}/ts/scripts/get-expire-time.ts
 
 post-extract:
-	${MKDIR} ${WRKDIR}/.cache/node-gyp/${NODE_VERSION} \
-		 ${WRKDIR}/.electron-gyp/${ELECTRON_GYP_VERSION}
-	${MV} ${WRKDIR}/node-v${NODE_VERSION}/include ${WRKDIR}/.cache/node-gyp/${NODE_VERSION}
-	${MV} ${WRKDIR}/node_headers/include ${WRKDIR}/.electron-gyp/${ELECTRON_GYP_VERSION}
-	${ECHO_CMD} '9' > ${WRKDIR}/.cache/node-gyp/${NODE_VERSION}/installVersion
-	${ECHO_CMD} '9' > ${WRKDIR}/.electron-gyp/${ELECTRON_GYP_VERSION}/installVersion
-
 	# install yarn modules and fail silently
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
+	${ECHO_CMD} 'nodedir "${LOCALBASE}"' >> ${WRKSRC}/.yarnrc
 	# Update node engine
 	${PREFIX}/bin/jq '.engines.node = "${NODE_VERSION}"' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
 	${MV} ${WRKSRC}/package.json.tmp ${WRKSRC}/package.json
@@ -151,6 +141,7 @@ post-extract:
 
 do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
+	${ECHO_CMD} 'nodedir "/usr/local/share/electron22/node_headers"' >> ${WRKSRC}/.yarnrc
 
 # electron-builder is stupid and tries to open ${LOCALBASE}/share/electron22/electron with WRITE priv
 # copy ${LOCALBASE}/share/electron22 in WRKDIR

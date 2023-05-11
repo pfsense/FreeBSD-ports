@@ -1,6 +1,6 @@
 PORTNAME=	openjfx
 DISTVERSION=	14.0.2.1+1
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	java x11-toolkits devel
 MASTER_SITES=	https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-core/7.7.1/:core \
 		https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-grouping/7.7.1/:grouping \
@@ -58,7 +58,7 @@ OPTIONS_SUB=	yes
 MEDIA_DESC=	Media module
 SWT_DESC=	SWT support
 
-MEDIA_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+MEDIA_LIB_DEPENDS=	libavcodec.so.58:multimedia/ffmpeg4 \
 			libsndio.so:audio/sndio
 MEDIA_USES=	gmake
 MEDIA_VARS=	COMPILE_MEDIA=true
@@ -133,6 +133,9 @@ post-patch:
 	@${RM} -r ${WRKSRC}/modules/javafx.web/src/main/native/Source/WTF/icu
 	@cd ${WRKSRC}/modules/javafx.media/src/main/native/gstreamer/3rd_party && \
 		${RM} -r glib libffi
+# Environment variables gets lost so hardcode where we can find FFmpeg 4.x
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${PATCH_WRKSRC}/modules/javafx.media/src/main/native/gstreamer/projects/linux/avplugin/Makefile
 
 do-configure:
 	@${MKDIR} ${WRKDIR}/gradle-home

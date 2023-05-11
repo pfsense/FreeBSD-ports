@@ -1,11 +1,14 @@
 PORTNAME=	cdogs-sdl
-PORTVERSION=	1.4.0
+PORTVERSION=	1.4.1
 PORTREVISION=	1
 CATEGORIES=	games
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Classic overhead run-and-gun game
 WWW=		https://github.com/cxong/cdogs-sdl
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}protobuf>=3,1:devel/py-protobuf@${PY_FLAVOR} \
 		protoc:devel/protobuf

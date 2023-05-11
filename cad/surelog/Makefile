@@ -1,7 +1,6 @@
 PORTNAME=	surelog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.51
-PORTREVISION=	1
+DISTVERSION=	1.58
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -25,21 +24,24 @@ USES=		cmake:testing compiler:c++17-lang localbase:ldflags tcl:86,build
 USE_JAVA=	17 # Java selection fails in cmake when Java 11 is also installed, see https://gitlab.kitware.com/cmake/cmake/-/issues/24674
 USE_LDCONFIG=	${PREFIX}/lib ${PREFIX}/lib/surelog
 
+JAVA_BUILD=	yes
+JAVA_RUN=	no
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	chipsalliance
 GH_PROJECT=	Surelog
-GH_TUPLE=	alainmarcel:antlr4:3143e88:antlr4/third_party/antlr4 \
-		google:googletest:e1ee0fa:googletest/third_party/googletest \
-		google:flatbuffers:32a6744:flatbuffers/third_party/flatbuffers
+GH_TUPLE=	alainmarcel:antlr4:2406774:antlr4/third_party/antlr4 \
+		google:googletest:dea0484:googletest/third_party/googletest \
+		google:flatbuffers:6eae49a:flatbuffers/third_party/flatbuffers
 
 CMAKE_ON=	BUILD_SHARED_LIBS SURELOG_USE_HOST_UHDM
 CMAKE_OFF=	SURELOG_BUILD_TESTS
 CMAKE_ARGS=	-DFREEBSD_JAVA_VERSION=${USE_JAVA} \
 		-DPython3_EXECUTABLE=${PYTHON_CMD}
-CMAKE_TESTING_ON=	SURELOG_BUILD_TESTS # unclear how to run tests, see https://github.com/chipsalliance/Surelog/issues/3545
+CMAKE_TESTING_ON=	SURELOG_BUILD_TESTS # 2 tests fail, see https://github.com/chipsalliance/Surelog/issues/3545
 CMAKE_TESTING_TARGET=	UnitTests
 
-CONFLICTS_INSTALL=	capnproto capnproto080 uhdm # bin/uhdm-dump lib/libcapnp.so
+CONFLICTS_INSTALL=	capnproto capnproto080
 
 BINARY_ALIAS=	python3=${PYTHON_CMD} tclsh=${TCLSH}
 
@@ -53,10 +55,11 @@ PYTHON_CMAKE_ON=	-DFREEBSD_PYTHON_DISTVERSION=${PYTHON_DISTVERSION}
 
 PORTSCOUT=	limit:^.*[0-9]\.[0-9] # prevent tags like 'show'
 
-post-install:
+post-install: # workaound for https://github.com/chipsalliance/Surelog/issues/3596
 	@${RMDIR} \
-		${STAGEDIR}${PREFIX}/bin/pkg/work \
-		${STAGEDIR}${PREFIX}/bin/pkg
+		${STAGEDIR}${DATADIR}/pkg/work \
+		${STAGEDIR}${DATADIR}/pkg \
+		${STAGEDIR}${DATADIR}
 
 post-test:
 	cd ${BUILD_WRKSRC} && ctest

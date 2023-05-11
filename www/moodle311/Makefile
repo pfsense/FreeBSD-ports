@@ -1,6 +1,5 @@
 PORTNAME=	moodle
-PORTVERSION=	3.11.13
-PORTREVISION=	1
+PORTVERSION=	3.11.14
 CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable311/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
@@ -12,27 +11,27 @@ WWW=		https://www.moodle.org/
 LICENSE=	GPLv3
 
 DEPRECATED=	Requires php80 which is set to expire on 2023-11-26
-EXPIRATION_DATE=	2023-12-31
+EXPIRATION_DATE=	2023-06-30
 
-CONFLICTS=	moodle39-3.9.[0-9]* moodle40-4.0.[0-9]* moodle41-4.1.[0-9]*
+CONFLICTS=	moodle39-3.9.[0-9]* moodle40-4.0.[0-9]* moodle41-4.1.[0-9]* \
+		moodle42-4.2
 
 USES=		cpe php:flavors tar:tgz
-USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json mbstring \
-		opcache openssl pcre session simplexml soap sodium spl tokenizer \
+USE_PHP=	ctype curl dom fileinfo filter gd iconv intl mbstring \
+		opcache session simplexml soap sodium tokenizer \
 		xml xmlreader xmlrpc zip zlib
 IGNORE_WITH_PHP=	81 82
 
 WRKSRC=		${WRKDIR}/moodle
 
 OPTIONS_SINGLE=		BACKEND
-OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL MSSQL
+OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL
 OPTIONS_DEFINE=		LDAP
 OPTIONS_DEFAULT=	MYSQL
 
 MYSQL_USES=	mysql
 MYSQL_USE=	php=mysqli
 PGSQL_USE=	php=pgsql
-MSSQL_USE=	php=mssql
 LDAP_USE=	php=ldap
 
 NO_BUILD=	yes

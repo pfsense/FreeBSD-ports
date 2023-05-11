@@ -1,6 +1,7 @@
 PORTNAME=	ilias
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.0
+DISTVERSION=	8.1
+PORTREVISION=	1
 CATEGORIES=	www education
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -30,7 +31,7 @@ USES=		cpe jpeg magick:6,run php:flavors
 USE_GITHUB=	yes
 GH_ACCOUNT=	ILIAS-eLearning
 GH_PROJECT=	ILIAS
-USE_PHP=	curl dom gd ldap fileinfo pcre \
+USE_PHP=	curl dom gd ldap fileinfo \
 		pdo_mysql session simplexml soap \
 		tokenizer xmlrpc xmlwriter xsl zlib
 
@@ -45,11 +46,10 @@ SUB_LIST=	ILIASFILESDIR=${ILIASFILESDIR}
 PLIST=		${WRKDIR}/plist
 PLIST_SUB=	ILIASFILESDIR=${ILIASFILESDIR}
 
-OPTIONS_DEFINE=	CHECKER MAIL SCORM2004
+OPTIONS_DEFINE=	CHECKER MAIL
 
 CHECKER_RUN_DEPENDS=	${LOCALBASE}/share/pear/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
 MAIL_RUN_DEPENDS=	${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail@${PHP_FLAVOR}
-SCORM2004_USE=		PHP=json
 
 ILIASDIR=	www/ilias
 ILIASFILESDIR=	www/iliasfiles

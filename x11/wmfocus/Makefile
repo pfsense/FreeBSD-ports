@@ -1,13 +1,13 @@
 PORTNAME=	wmfocus
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	x11
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	c646aa39614b.patch:-p1 # https://github.com/svenstaro/wmfocus/pull/72
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Visually focus windows by label
 WWW=		https://github.com/svenstaro/wmfocus
 
