@@ -14,7 +14,7 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	crowdsec>=1.4.6:security/crowdsec \
 		crowdsec-blocklist-mirror>=0.0.1:security/crowdsec-blocklist-mirror \
-		crowdsec-firewall-bouncer>=0.0.27:security/crowdsec-firewall-bouncer
+		crowdsec-firewall-bouncer:security/crowdsec-firewall-bouncer
 
 NO_BUILD=	yes
 NO_MTREE=	yes
