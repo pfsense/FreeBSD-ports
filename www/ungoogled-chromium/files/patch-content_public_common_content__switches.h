@@ -1,7 +1,7 @@
---- content/public/common/content_switches.h.orig	2023-03-10 11:01:21 UTC
+--- content/public/common/content_switches.h.orig	2023-05-05 12:12:41 UTC
 +++ content/public/common/content_switches.h
-@@ -116,6 +116,7 @@ CONTENT_EXPORT extern const char kEnableBlinkTestFeatu
- CONTENT_EXPORT extern const char kEnableGpuMemoryBufferVideoFrames[];
+@@ -117,6 +117,7 @@ CONTENT_EXPORT extern const char kEnableGpuMemoryBuffe
+ CONTENT_EXPORT extern const char kEnableIsolatedWebAppsInRenderer[];
  CONTENT_EXPORT extern const char kEnableLCDText[];
  CONTENT_EXPORT extern const char kEnableLogging[];
 +CONTENT_EXPORT extern const char kDisableUnveil[];
@@ -15,5 +15,5 @@
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
  CONTENT_EXPORT extern const char kEnableSpeechDispatcher[];
+ CONTENT_EXPORT extern const char kLLVMProfileFile[];
  #endif
- 

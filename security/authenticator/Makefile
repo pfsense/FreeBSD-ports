@@ -1,6 +1,6 @@
 PORTNAME=	authenticator
-DISTVERSION=	4.2.0
-PORTREVISION=	4
+DISTVERSION=	4.3.1
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -9,6 +9,8 @@ WWW=		https://gitlab.gnome.org/World/Authenticator
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_i386=	fails to build in aes crate
 
 LIB_DEPENDS=	libgraphene-1.0.so:graphics/graphene \
 		libzbar.so:graphics/zbar \
@@ -22,7 +24,7 @@ USE_GSTREAMER=	gl zbar
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World
 GL_PROJECT=	Authenticator
-GL_COMMIT=	f7634a38883d055e40449383f04bc38289caf132
+GL_COMMIT=	77963b4714065939a86b329fe611d57d182a573e
 CARGO_ENV=	ZBAR_INCLUDE_DIRS="${LOCALBASE}/include" ZBAR_LIB_DIRS="${LOCALBASE}/lib"
 MAKE_ENV=	${CARGO_ENV}
 CARGO_BUILD=	no

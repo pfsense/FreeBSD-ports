@@ -1,7 +1,7 @@
 PORTNAME=	sccache
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.15
-PORTREVISION=	21
+PORTREVISION=	22
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -14,6 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 ONLY_FOR_ARCHS_REASON=	ring crate not ported to other architectures
+BROKEN_SSL=	openssl30 openssl31
+BROKEN_SSL_REASON=	Fails to detect OpenSSL 3.0.0 and later
 
 USES=		cargo ssl
 

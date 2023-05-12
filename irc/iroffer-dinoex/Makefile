@@ -1,6 +1,6 @@
 PORTNAME=	iroffer
 PORTVERSION=	3.32
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	irc
 MASTER_SITES=	https://iroffer.net/
 PKGNAMESUFFIX=	-dinoex${PKGNAMESUFFIX2}
@@ -11,6 +11,9 @@ COMMENT=	IRC "bot" that makes sharing files via DCC extremely easy
 WWW=		https://iroffer.net/
 
 LICENSE=	GPLv2
+
+BROKEN_SSL=	openssl30 openssl31
+BROKEN_SSL_REASON=	Fails to detect crypt.h from OpenSSL 3.0.0 and later
 
 CONFLICTS=	iroffer-1* iroffer-lamm-1.*
 
@@ -59,7 +62,7 @@ GEOIP_CONFIGURE_ON=	-geoip
 .if ${PORT_OPTIONS:MRUBY}
 # make stage-qa happy
 # keep in sync with all platforms where libunwind is available
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 .endif

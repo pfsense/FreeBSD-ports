@@ -1,11 +1,10 @@
 PORTNAME=	consul-template
 PORTVERSION=	0.29.4
-PORTREVISION=	7
+PORTREVISION=	8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
-MAINTAINER=	swills@FreeBSD.org
-# co-maintainer: brd
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Generic template rendering and notifications with Consul
 WWW=		https://github.com/hashicorp/consul-template
 

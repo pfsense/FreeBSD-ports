@@ -1,6 +1,6 @@
 PORTNAME=	caterva
 PORTVERSION=	0.7.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,6 +11,9 @@ WWW=		https://github.com/Blosc/python-caterva
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Use archivers/py-blosc2 instead. All the features of Python-Caterva have been included in the Python-Blosc2 NDArray object
+EXPIRATION_DATE=2023-06-30
 
 BUILD_DEPENDS=	caterva>=0.5.0_3:databases/caterva \
 		cmake:devel/cmake-core \

@@ -1,11 +1,11 @@
---- net/cert/cert_verify_proc.h.orig	2022-11-30 08:12:58 UTC
+--- net/cert/cert_verify_proc.h.orig	2023-04-28 17:01:32 UTC
 +++ net/cert/cert_verify_proc.h
-@@ -81,7 +81,7 @@ class NET_EXPORT CertVerifyProc
-     kMaxValue = kOther
+@@ -68,7 +68,7 @@ class NET_EXPORT CertVerifyProc
+     kMaxValue = kChainLengthOne
    };
  
--#if !(BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS))
-+#if !(BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD))
+-#if !(BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || \
++#if !(BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || \
+       BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(CHROME_ROOT_STORE_ONLY))
    // Creates and returns a CertVerifyProc that uses the system verifier.
    // |cert_net_fetcher| may not be used, depending on the implementation.
-   static scoped_refptr<CertVerifyProc> CreateSystemVerifyProc(

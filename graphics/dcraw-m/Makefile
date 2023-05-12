@@ -1,6 +1,6 @@
 PORTNAME=	dcraw-m
 PORTVERSION=	9.22
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics
 
 MAINTAINER=	waitman@waitman.net

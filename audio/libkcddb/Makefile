@@ -1,5 +1,6 @@
 PORTNAME=	libkcddb
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	audio kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -10,7 +11,7 @@ LIB_DEPENDS=	libmusicbrainz5.so:audio/libmusicbrainz5
 
 USES=		cmake compiler:c++11-lang gettext kde:5 qt:5 tar:xz xorg
 USE_KDE=	auth codecs completion config configwidgets \
-		coreaddons i18n jobwidgets kio service solid \
+		coreaddons i18n jobwidgets kcmutils kio service solid \
 		widgetsaddons windowsystem \
 		ecm:build
 USE_QT=		concurrent core dbus gui network widgets xml \

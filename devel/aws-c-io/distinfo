@@ -1,3 +1,5 @@
-TIMESTAMP = 1678609478
-SHA256 (awslabs-aws-c-io-v0.13.19_GH0.tar.gz) = 0d54be16b10b60064e28cb2ab3f34383afcbf933c434cad3a28159e75a4c7d74
-SIZE (awslabs-aws-c-io-v0.13.19_GH0.tar.gz) = 656488
+TIMESTAMP = 1682671191
+SHA256 (awslabs-aws-c-io-v0.13.21_GH0.tar.gz) = f7811e2dc9ce2875410cf5eee45d1d4a3304d597a6df866384cbd98ed6341bd5
+SIZE (awslabs-aws-c-io-v0.13.21_GH0.tar.gz) = 647300
+SHA256 (4dc663c0c3f7cf1e3aebb1d8e28dd48f012e3db8.patch) = 0492daa0d7ce0b6c8252275588650932f6188e5c9033805a0b59211fee2b19d9
+SIZE (4dc663c0c3f7cf1e3aebb1d8e28dd48f012e3db8.patch) = 1197

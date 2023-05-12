@@ -1,9 +1,6 @@
 PORTNAME=	veloren
-PORTVERSION=	s20230405
+PORTVERSION=	s20230510
 CATEGORIES=	games wayland
-.if !make(makesum)
-MASTER_SITES=	LOCAL/jbeich
-.endif
 PKGNAMESUFFIX=	-weekly
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -13,7 +10,8 @@ WWW=		https://veloren.net/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64
+BROKEN_aarch64=	https://github.com/rust-lang/libc/issues/3217
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 # https://gitlab.com/veloren/veloren/-/issues/1006
 ONLY_FOR_ARCHS_REASON=	unsupported platform by https://github.com/wasmerio/wasmer
 
@@ -26,7 +24,7 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-pl
 USES=		cargo xorg
 USE_XORG=	xcb
 USE_GITLAB=	yes
-GL_COMMIT=	41e551f32db52147c80ed26aae0484a5ee5c8803
+GL_COMMIT=	db860de51760d94e1f501390c5e1f472d89a8db7
 CARGO_ENV=	VELOREN_USERDATA_STRATEGY=system SHADERC_LIB_DIR="${LOCALBASE}/lib"
 PLIST_FILES=	bin/${PORTNAME}-server-cli \
 		bin/${PORTNAME}-voxygen \
@@ -37,6 +35,10 @@ PORTDATA=	*
 
 CONFLICTS_INSTALL=	${PORTNAME}
 
+.if ${MACHINE_ARCH} == i386
+# Fixes error "Rust cannot catch foreign exceptions"
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 # Fixes error "Instruction does not dominate all uses!"
 LTO_UNSAFE=	yes
 
@@ -51,12 +53,19 @@ post-patch:
 		${WRKSRC}/common/build.rs
 # Extract (snapshot) version from the port instead of empty file
 	@${REINPLACE_CMD} -e '/GIT_HASH/s/=.*/= "${GL_COMMIT:C/(.{8}).*/\1/}";/' \
-		-e "/GIT_DATE.*static/s/=.*/= \"$$(date -r $$(${AWK} '/TIMESTAMP/ { print $$3 }' \
+		-e "/GIT_DATE.*static/s/=.*/= \"$$(date -ur $$(${AWK} '/TIMESTAMP/ { print $$3 }' \
 			${DISTINFO_FILE}) +'%Y-%m-%d-%H:%M')\";/" \
 		${WRKSRC}/common/src/util/mod.rs
 # Respect PREFIX != /usr/local for system assets
 	@${REINPLACE_CMD} -e 's,/usr/share,${DATADIR:H},' \
 		${WRKSRC}/common/assets/src/lib.rs
+
+do-install:
+# XXX [workspace.dependencies] breaks rebuild in subdirs
+.for f in ${CARGO_INSTALL_PATH}
+	${INSTALL_PROGRAM} ${CARGO_TARGET_DIR}/*/*/${PORTNAME}-$f \
+		${STAGEDIR}${PREFIX}/bin
+.endfor
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*

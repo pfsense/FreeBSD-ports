@@ -1,9 +1,9 @@
 PORTNAME=	vapoursynth
 DISTVERSION=	R54
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	multimedia
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video processing framework with simplicity in mind
 WWW=		https://www.vapoursynth.com/
 

@@ -5,6 +5,7 @@
     SUBDIR += aclgen
     SUBDIR += actiona
     SUBDIR += adios2
+    SUBDIR += aichat
     SUBDIR += amanda-client
     SUBDIR += amanda-perl-wrapper
     SUBDIR += amanda-server
@@ -37,6 +38,7 @@
     SUBDIR += bsod
     SUBDIR += buffer
     SUBDIR += caffe
+    SUBDIR += chatgpt-shell-cli
     SUBDIR += cheat
     SUBDIR += chef
     SUBDIR += chmlib
@@ -448,6 +450,7 @@
     SUBDIR += py-pyprind
     SUBDIR += py-python-geohash
     SUBDIR += py-python-utils
+    SUBDIR += py-pytorch
     SUBDIR += py-qiskit-machine-learning
     SUBDIR += py-scikit-fusion
     SUBDIR += py-serverfiles
@@ -463,6 +466,7 @@
     SUBDIR += py-tflite
     SUBDIR += py-tflite-support
     SUBDIR += py-toil
+    SUBDIR += py-torchvision
     SUBDIR += py-tqdm
     SUBDIR += py-tvm
     SUBDIR += py-uhi
@@ -554,6 +558,7 @@
     SUBDIR += tlci
     SUBDIR += toilet
     SUBDIR += translate
+    SUBDIR += trurl
     SUBDIR += ttyrec
     SUBDIR += tudu
     SUBDIR += tvbrowser

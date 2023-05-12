@@ -1,5 +1,6 @@
 PORTNAME=	scikit-bio
 DISTVERSION=	0.5.8
+PORTREVISION=	1
 CATEGORIES=	biology education python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,7 @@ BROKEN_aarch64=	fails to build: invalid conversion between vector type '__m64' (
 
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}CacheControl>=0.11.5:www/py-cachecontrol@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cachecontrol>=0.11.5:www/py-cachecontrol@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}decorator>=3.4.2:devel/py-decorator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}h5py>=2.9.0:science/py-h5py@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}hdmedians>=0.14.1:math/py-hdmedians@${PY_FLAVOR} \

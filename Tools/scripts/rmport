@@ -4,7 +4,7 @@
 #
 # Copyright 2006-2007 Vasil Dimov
 # Copyright 2012-2018 Chris Rees
-# Copyright 2016-2021 René Ladan
+# Copyright 2016-2023 René Ladan
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -316,7 +316,7 @@ commit()
 	answer=$(ask "Do you want to tweak the commit message")
 	if [ "${answer}" = "y" ] ; then
 		${GIT} pull --ff-only --rebase 2>&1
-		${GIT} commit 2>&1 # modify final commit message
+		${GIT} commit --amend # modify final commit message
 		echo "All done, check the result and push when everything is OK."
 	fi
 }
@@ -351,6 +351,8 @@ usage()
 }
 
 # main
+
+trap cleanup 1 2 3 15
 
 if [ ! -r ${INDEX} ] ; then
 	echo "${INDEX} not readable, exiting" >&2
@@ -411,7 +413,7 @@ gitlog=$(mktemp -t gitlog)
 gitrmlist=$(mktemp -t gitrmlist)
 
 if [ $# -eq 1 ] ; then
-	topic="$1"
+	topic="${1%/}"
 	plural=""
 else
 	log "/!\\ Removing multiple ports at once, commit topic will be generic /!\\"
@@ -471,7 +473,3 @@ while [ "${answer}" = "y" ] ; do
 done
 
 commit
-
-cleanup
-
-# EOF

@@ -1,12 +1,12 @@
 PORTNAME=	CoinUtils
 DISTVERSIONPREFIX=	releases/
-DISTVERSION=	2.11.6
+DISTVERSION=	2.11.9
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Utilities for COIN-OR project
-WWW=		https://projects.coin-or.org/CoinUtils
+WWW=		https://github.com/coin-or/CoinUtils
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/CoinUtils/LICENSE

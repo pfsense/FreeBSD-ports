@@ -1,5 +1,6 @@
 PORTNAME=	kamera
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -10,7 +11,7 @@ LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2
 
 USES=		cmake compiler:c++11-lang gettext kde:5 localbase qt:5 tar:xz
 USE_KDE=	auth codecs config configwidgets coreaddons doctools i18n \
-		kio service widgetsaddons xmlgui \
+		kcmutils kio service widgetsaddons xmlgui \
 		ecm:build
 USE_QT=		concurrent core dbus gui network widgets xml \
 		buildtools:build qmake:build

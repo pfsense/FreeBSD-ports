@@ -1,15 +1,15 @@
---- components/feature_engagement/public/feature_list.h.orig	2023-03-09 06:31:50 UTC
+--- components/feature_engagement/public/feature_list.h.orig	2023-04-28 17:01:32 UTC
 +++ components/feature_engagement/public/feature_list.h
-@@ -232,7 +232,7 @@ DEFINE_VARIATION_PARAM(kIPHiOSDefaultBrowserSettingsBa
+@@ -244,7 +244,7 @@ DEFINE_VARIATION_PARAM(kIPHiOSPromoCredentialProviderE
  #endif  // BUILDFLAG(IS_IOS)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  DEFINE_VARIATION_PARAM(kIPHBatterySaverModeFeature, "IPH_BatterySaverMode");
- DEFINE_VARIATION_PARAM(kIPHDesktopTabGroupsNewGroupFeature,
-                        "IPH_DesktopTabGroupsNewGroup");
-@@ -278,7 +278,8 @@ DEFINE_VARIATION_PARAM(kIPHPriceTrackingInSidePanelFea
+ DEFINE_VARIATION_PARAM(kIPHDesktopCustomizeChromeFeature,
+                        "IPH_DesktopCustomizeChrome");
+@@ -302,7 +302,8 @@ DEFINE_VARIATION_PARAM(kIPHPriceTrackingInSidePanelFea
          // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
@@ -19,16 +19,16 @@
  DEFINE_VARIATION_PARAM(kIPHAutofillVirtualCardSuggestionFeature,
                         "IPH_AutofillVirtualCardSuggestion");
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
-@@ -396,7 +397,7 @@ constexpr flags_ui::FeatureEntry::FeatureVariation
-         VARIATION_ENTRY(kIPHiOSDefaultBrowserOverflowMenuBadgeFeature),
-         VARIATION_ENTRY(kIPHiOSDefaultBrowserSettingsBadgeFeature),
+@@ -428,7 +429,7 @@ constexpr flags_ui::FeatureEntry::FeatureVariation
+         VARIATION_ENTRY(kIPHiOSPromoPostRestoreFeature),
+         VARIATION_ENTRY(kIPHiOSPromoCredentialProviderExtensionFeature),
  #elif BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
          VARIATION_ENTRY(kIPHBatterySaverModeFeature),
+         VARIATION_ENTRY(kIPHDesktopCustomizeChromeFeature),
          VARIATION_ENTRY(kIPHDesktopTabGroupsNewGroupFeature),
-         VARIATION_ENTRY(kIPHExtensionsMenuFeature),
-@@ -429,7 +430,8 @@ constexpr flags_ui::FeatureEntry::FeatureVariation
+@@ -467,7 +468,8 @@ constexpr flags_ui::FeatureEntry::FeatureVariation
          // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \

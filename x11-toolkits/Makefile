@@ -31,6 +31,7 @@
     SUBDIR += gtk-sharp30
     SUBDIR += gtk20
     SUBDIR += gtk30
+    SUBDIR += gtk4-layer-shell
     SUBDIR += gtk40
     SUBDIR += gtkd
     SUBDIR += gtkdatabox
@@ -226,6 +227,7 @@
     SUBDIR += vte
     SUBDIR += vte3
     SUBDIR += wlroots
+    SUBDIR += wlroots-devel
     SUBDIR += wlroots015
     SUBDIR += wmapp
     SUBDIR += wxgtk30

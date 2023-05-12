@@ -1,10 +1,10 @@
 PORTNAME=	goreplay
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Tool for capturing and replaying live HTTP traffic
 WWW=		https://goreplay.org/
 

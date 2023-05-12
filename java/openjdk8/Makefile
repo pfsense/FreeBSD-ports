@@ -53,8 +53,8 @@ INSTALLDIR=	${PREFIX}/${PKGBASE}
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	362
-JDK_BUILD_NUMBER=	09
+JDK_UPDATE_VERSION=	372
+JDK_BUILD_NUMBER=	07
 BSD_JDK_VERSION=	1
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -213,6 +213,13 @@ LLVM_VER=	12
 BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
 CC=		${LOCALBASE}/bin/clang${LLVM_VER}
 CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
+.endif
+.if ${COMPILER_VERSION} >= 160
+# clang 16 defaults to C++17, which no longer allows the 'register' keyword.
+# There is an upstream commit that removes all the individual 'register'
+# keywords, but it has not yet been backported to OpenJDK 8.
+# NOTE: passing this option via --with-extra-cflags does not work.
+CFLAGS+=		-Dregister=
 .endif
 .endif
 

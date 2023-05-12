@@ -1,10 +1,10 @@
 PORTNAME=	lab
 PORTVERSION=	${MODVERSION:S/-/./g:R}
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Lab makes it simple to work with repositories on GitLab
 WWW=		https://zaquestion.github.io/lab
 

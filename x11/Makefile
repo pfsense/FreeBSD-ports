@@ -112,6 +112,7 @@
     SUBDIR += gtkterm2
     SUBDIR += guake
     SUBDIR += gxkb
+    SUBDIR += habak
     SUBDIR += hamclock
     SUBDIR += hhpc
     SUBDIR += hs-xmobar
@@ -183,7 +184,6 @@
     SUBDIR += libXxf86dga
     SUBDIR += libXxf86vm
     SUBDIR += libclipboard
-    SUBDIR += libdmx
     SUBDIR += libexo
     SUBDIR += libfakekey
     SUBDIR += libfm
@@ -312,8 +312,11 @@
     SUBDIR += py-caffeine-ng
     SUBDIR += py-i3-quickterm
     SUBDIR += py-i3ipc
+    SUBDIR += py-mouseinfo
+    SUBDIR += py-pyautogui
     SUBDIR += py-pynput
     SUBDIR += py-pyscreenshot
+    SUBDIR += py-pyscreeze
     SUBDIR += py-python-xapp
     SUBDIR += py-pyvirtualdisplay
     SUBDIR += py-screeninfo

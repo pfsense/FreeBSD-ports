@@ -1,5 +1,6 @@
 PORTNAME=	kalzium
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	2
 CATEGORIES=	science education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org

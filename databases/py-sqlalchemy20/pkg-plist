@@ -70,7 +70,6 @@
 %%PORTDOCS%%%%DOCSDIR%%/_static/dragons_original.png
 %%PORTDOCS%%%%DOCSDIR%%/_static/file.png
 %%PORTDOCS%%%%DOCSDIR%%/_static/init.js
-%%PORTDOCS%%%%DOCSDIR%%/_static/jquery-3.6.0.js
 %%PORTDOCS%%%%DOCSDIR%%/_static/jquery.js
 %%PORTDOCS%%%%DOCSDIR%%/_static/language_data.js
 %%PORTDOCS%%%%DOCSDIR%%/_static/minus.png
@@ -80,8 +79,6 @@
 %%PORTDOCS%%%%DOCSDIR%%/_static/searchtools.js
 %%PORTDOCS%%%%DOCSDIR%%/_static/sphinx_highlight.js
 %%PORTDOCS%%%%DOCSDIR%%/_static/sphinx_paramlinks.css
-%%PORTDOCS%%%%DOCSDIR%%/_static/underscore-1.13.1.js
-%%PORTDOCS%%%%DOCSDIR%%/_static/underscore.js
 %%PORTDOCS%%%%DOCSDIR%%/build/Makefile
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/README.txt
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/changelog_01.rst
@@ -120,15 +117,7 @@
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_13/6589.rst
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_13/7115.rst
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_13/README.txt
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/5047.rst
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/7664.rst
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/9047.rst
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/9048.rst
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/9075.rst
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/9133.rst
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/9506.rst
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/README.txt
-%%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_14/mypy_fix.rst
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/unreleased_20/README.txt
 %%PORTDOCS%%%%DOCSDIR%%/build/changelog/whatsnew_20.rst
 %%PORTDOCS%%%%DOCSDIR%%/build/conf.py

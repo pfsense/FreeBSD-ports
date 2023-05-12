@@ -141,15 +141,16 @@ if ($_POST) {
 			header('Location: /pfblockerng/pfblockerng_sync.php');
 			exit;
 		}
-		else {
-			print_input_errors($input_errors);
-		}
 	}
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Sync'));
 $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '@self');
 include_once('head.inc');
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();

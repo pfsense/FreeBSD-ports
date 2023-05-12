@@ -1,6 +1,6 @@
---- media/capture/video/linux/v4l2_capture_delegate.h.orig	2023-03-09 06:31:50 UTC
+--- media/capture/video/linux/v4l2_capture_delegate.h.orig	2023-04-28 17:01:32 UTC
 +++ media/capture/video/linux/v4l2_capture_delegate.h
-@@ -87,10 +87,10 @@ class CAPTURE_EXPORT V4L2CaptureDelegate final {
+@@ -90,10 +90,10 @@ class CAPTURE_EXPORT V4L2CaptureDelegate final {
    // device file descriptor or (re)starting streaming, can fail but works after
    // retrying (https://crbug.com/670262). Returns false if the |request| ioctl
    // fails too many times.
@@ -11,5 +11,5 @@
 -  int DoIoctl(int request, void* argp);
 +  int DoIoctl(unsigned int request, void* argp);
  
-   // Creates a mojom::RangePtr with the (min, max, current, step) values of the
-   // control associated with |control_id|. Returns an empty Range otherwise.
+   // Check whether the control is controllable (and not changed automatically).
+   bool IsControllableControl(int control_id);

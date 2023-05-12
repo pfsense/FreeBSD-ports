@@ -25,8 +25,7 @@ COMMAND_SUFFIX=	${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 
-USES=		cmake compiler:c++11-lib cpe libedit perl5 \
-		shebangfix
+USES=		cmake compiler:c++17-lang cpe shebangfix
 USE_LDCONFIG=	${LLVM_PREFIX}/lib
 SHEBANG_FILES=	\
 		clang/tools/clang-format/git-clang-format \
@@ -56,6 +55,8 @@ CMAKE_ARGS+=	-DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_LINK_LLVM_DYLIB=ON
 CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH="share/man"
 CMAKE_ARGS+=	-DLLVM_PARALLEL_LINK_JOBS=1
 CMAKE_ARGS+=	-DLLVM_ENABLE_Z3_SOLVER=OFF
+CMAKE_ARGS+=	-DLLVM_ENABLE_LIBXML2=OFF
+CMAKE_ARGS+=	-DLLVM_ENABLE_LIBEDIT=OFF
 CMAKE_ARGS+=	-DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS}"
 
 .ifndef MASTERDIR
@@ -69,15 +70,17 @@ GH_TAGNAME=	${LLVM_COMMIT}
 .sinclude "${.PARSEDIR}/Makefile.snapshot"
 .endif
 
-OPTIONS_DEFINE=	CLANG DOCS LIT LLD
+OPTIONS_DEFINE=	CLANG DOCS LIT LLD STATIC_LIBS
 OPTIONS_DEFAULT=	CLANG LIT LLD
 OPTIONS_SUB=	yes
 
 CLANG_DESC=		Build clang
 CLANG_PORTDOCS=		clang
+CLANG_USES=		perl5
+# scan-build does require, but users can install it manually.
+CLANG_USE=		PERL5=build
 PLIST_FILES+=		share/toolchains/llvm${LLVM_SUFFIX}.mk
 SUB_FILES+=		xtoolchain.mk
-CLANG_USE=		GNOME=libxml2
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
 DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
@@ -87,10 +90,13 @@ DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 DOCS_PORTDOCS=		llvm
 LIT_DESC=		Install lit and FileCheck test tools
+LIT_MOD_NAME=		lit${LLVM_SUFFIX:S/-/_/g}
+LIT_PLIST_SUB=		LIT_MOD_NAME=${LIT_MOD_NAME}
 LLD_DESC=		Install lld linker
 LLD_PORTDOCS=		lld
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_BUILD_DEPENDS=	swig:devel/swig
+STATIC_LIBS_DESC=	Install static libraries (does not effect sanitizers)
 
 LLVM_TARGETS?=		AArch64;ARM;PowerPC;RISCV;X86
 
@@ -123,7 +129,8 @@ USES+=		gnome
 
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=	${LIT_MAN1SRCS}
-_USES_PYTHON=	python:3.6+
+# lit requires python, but don't install it by default.  Users can install.
+#_USES_PYTHON=	python:3.7+
 .endif
 
 .if ${PORT_OPTIONS:MLLD}
@@ -135,14 +142,14 @@ COMMANDS+=	${LLD_COMMANDS}
 LLVM_ENABLE_PROJECTS+=	lldb
 COMMANDS+=	${LLDB_COMMANDS}
 MAN1SRCS+=	${LLDB_MAN1SRCS}
-_USES_PYTHON=	python:3.6+
+_USES_PYTHON=	python:3.7+
 .endif
 
 .if defined(LLVM_ENABLE_PROJECTS)
 CMAKE_ARGS+=	-DLLVM_ENABLE_PROJECTS="${LLVM_ENABLE_PROJECTS:ts;}"
 .endif
 
-_USES_PYTHON?=	python:3.6+,build
+_USES_PYTHON?=	python:3.7+,build
 USES+=		${_USES_PYTHON}
 
 .include <bsd.port.pre.mk>
@@ -150,9 +157,9 @@ USES+=		${_USES_PYTHON}
 .include "${.CURDIR}/Makefile.MAN1SRCS"
 
 post-patch:
-	${REINPLACE_CMD} -e 's|import lit|import lit${LLVM_SUFFIX}|' \
-	    -e 's|from lit|from lit${LLVM_SUFFIX}|' \
-	    -e 's|lit\.|lit${LLVM_SUFFIX}.|' \
+	${REINPLACE_CMD} -e 's|import lit|import ${LIT_MOD_NAME}|' \
+	    -e 's|from lit|from ${LIT_MOD_NAME}|' \
+	    -e 's|lit\.|${LIT_MOD_NAME}.|' \
 	    ${WRKSRC}/llvm/utils/lit/lit.py ${WRKSRC}/llvm/utils/lit/lit/*.py
 
 post-patch-LLD-on:
@@ -219,16 +226,19 @@ post-install-LIT-on:
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/lit \
 	    ${STAGEDIR}${LLVM_PREFIX}/bin/llvm-lit
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/lit \
-	    ${STAGEDIR}${PREFIX}/bin/${COMMAND_PREFIX}lit${COMMAND_SUFFIX}
+	    ${STAGEDIR}${PREFIX}/bin/${COMMAND_PREFIX}lit${LLVM_SUFFIX}
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/lit \
-	    ${STAGEDIR}${PREFIX}/bin/${COMMAND_PREFIX}llvm-lit${COMMAND_SUFFIX}
-	${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/lit${LLVM_SUFFIX}
+	    ${STAGEDIR}${PREFIX}/bin/${COMMAND_PREFIX}llvm-lit${LLVM_SUFFIX}
+	${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${LIT_MOD_NAME}
 	${INSTALL_DATA} ${WRKSRC}/llvm/utils/lit/lit/*.py \
-	    ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/lit${LLVM_SUFFIX}
+	    ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${LIT_MOD_NAME}
 	${INSTALL_PROGRAM} ${WRKDIR}/.build/bin/FileCheck \
 	    ${STAGEDIR}${LLVM_PREFIX}/bin/
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/FileCheck \
 	    ${STAGEDIR}${PREFIX}/bin/${COMMAND_PREFIX}FileCheck${COMMAND_SUFFIX}
+
+post-install-STATIC_LIBS-off:
+	${RM} ${STAGEDIR}${LLVM_PREFIX}/lib/lib*.a
 
 TEST_CMD=	'(cd ${WRKSRC}/llvm/test; ${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/Release/lib ${MAKE_CMD} check-local-lit)'
 do-test:
@@ -257,13 +267,15 @@ build-plist:
 	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' \
 	    -e 's|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|' \
 	    | ${SORT} >> ${PLIST}.tmp
-	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX} -type f | \
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/${LIT_MOD_NAME} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' \
+	    -e 's|${LIT_MOD_NAME}|%%LIT_MOD_NAME%%|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \
 	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' \
 	    -e 's|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|' \
 	    | ${SORT} >> ${PLIST}.tmp
 	awk '{ \
+	    if ($$0 ~ /lib.lib[a-zA-Z].*\.a$$/) {printf "%%%%STATIC_LIBS%%%%"} \
 	    if ($$0 ~ /clang/ && $$0 !~ /omp.h/) {printf "%%%%CLANG%%%%"} \
 	    if ($$0 ~ /(bin\/(ld|lld|wasm-ld))|liblld[^b]|\/lld\// && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
 	    if ($$0 ~ /(argdumper|lldb)/) {printf "%%%%LLDB%%%%"} \

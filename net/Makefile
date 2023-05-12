@@ -234,6 +234,7 @@
     SUBDIR += gupnp-av
     SUBDIR += gupnp-dlna
     SUBDIR += gupnp-igd
+    SUBDIR += gupnp-igd12
     SUBDIR += gupnp-tools
     SUBDIR += gupnp-ui
     SUBDIR += gupnp14
@@ -1141,6 +1142,7 @@
     SUBDIR += py-socketio-client
     SUBDIR += py-socksio
     SUBDIR += py-softlayer
+    SUBDIR += py-speedometer
     SUBDIR += py-speedtest-cli
     SUBDIR += py-sshtunnel
     SUBDIR += py-sshuttle
@@ -1320,10 +1322,12 @@
     SUBDIR += rubygem-mqtt
     SUBDIR += rubygem-nats-pure
     SUBDIR += rubygem-net-ldap
+    SUBDIR += rubygem-net-ldap017
     SUBDIR += rubygem-net-netrc
     SUBDIR += rubygem-net-ntp
     SUBDIR += rubygem-net-ping
     SUBDIR += rubygem-net-protocol
+    SUBDIR += rubygem-net-protocol01
     SUBDIR += rubygem-netrc
     SUBDIR += rubygem-network_interface
     SUBDIR += rubygem-nkf
@@ -1515,6 +1519,7 @@
     SUBDIR += tigervnc-server
     SUBDIR += tigervnc-viewer
     SUBDIR += tigervnc-viewer-java
+    SUBDIR += tightvnc
     SUBDIR += timed
     SUBDIR += tintin++
     SUBDIR += tiny-network-utilities
@@ -1529,6 +1534,7 @@
     SUBDIR += trafshow
     SUBDIR += trafshow3
     SUBDIR += trickle
+    SUBDIR += trippy
     SUBDIR += tsclient
     SUBDIR += tsctp
     SUBDIR += tsocks
@@ -1576,6 +1582,12 @@
     SUBDIR += webalizer-geodb
     SUBDIR += whois
     SUBDIR += widentd
+    SUBDIR += wifi-firmware-ath10k-kmod
+    SUBDIR += wifi-firmware-ath11k-kmod
+    SUBDIR += wifi-firmware-base
+    SUBDIR += wifi-firmware-mt76-kmod
+    SUBDIR += wifi-firmware-rtw88-kmod
+    SUBDIR += wifi-firmware-rtw89-kmod
     SUBDIR += wifibox
     SUBDIR += wifibox-alpine
     SUBDIR += wifibox-core

@@ -1,12 +1,11 @@
 PORTNAME=	libsignal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.22.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im
 MASTER_SITES=	https://nodejs.org/download/release/v${NODE_VERSION}/:node
 PKGNAMESUFFIX=	-node
-DISTFILES=	libsignal-node-${DISTVERSION}-yarn-cache.tar.gz \
-		node-v${NODE_VERSION}-headers.tar.gz:node
+DISTFILES=	libsignal-node-${DISTVERSION}-yarn-cache.tar.gz
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Platform-agnostic APIs used by the official Signal clients and servers
@@ -294,14 +293,11 @@ post-extract:
 	${MV} ${WRKDIR}/boringssl-f1c75347daa2ea81a941e953f2263e0a4d970c8d/* ${WRKDIR}/boring-25e1dd8fa519ae90772008fbd4a284582096fece/boring-sys/deps/boringssl
 	${MV} ${WRKDIR}/boringssl-ae223d6138807a13006342edfeef32e813246b39/* ${WRKDIR}/boring-25e1dd8fa519ae90772008fbd4a284582096fece/boring-sys/deps/boringssl-fips
 
-	${MKDIR} ${WRKDIR}/.cache/node-gyp/${NODE_VERSION}
-	${MV} ${WRKDIR}/node-v${NODE_VERSION}/include ${WRKDIR}/.cache/node-gyp/${NODE_VERSION}
-	${ECHO_CMD} '9' > ${WRKDIR}/.cache/node-gyp/${NODE_VERSION}/installVersion
-
 	${CP} ${FILESDIR}/node/package.json ${WRKSRC}/node
 
 do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
+	${ECHO_CMD} 'nodedir "${LOCALBASE}"' >> ${WRKSRC}/.yarnrc
 	cd ${WRKSRC}/node && \
 		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional --offline
 	cd ${WRKSRC}/node && \
@@ -310,13 +306,5 @@ do-build:
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/node/build/Release/obj.target/libsignal_client_freebsd_${NODE_ARCH}.node/geni/rust/${RUST_ARCH}-unknown-freebsd/release/libsignal_node.so \
 		${STAGEDIR}${PREFIX}/lib/
-
-create-caches-tarball:
-	# do some cleanup first
-	${RM} -r  ${WRKDIR}/.cache/yarn/v6/.tmp
-	${FIND} ${WRKDIR}/.cache -type f -perm 755 -exec file {} \; | ${EGREP} "ELF|PE32+|Mach-O" | ${AWK} -F ':' '{print $$1}' | ${XARGS} ${RM}
-
-	cd ${WRKDIR} && \
-		${TAR} czf libsignal-node-${DISTVERSION}-yarn-cache.tar.gz .cache yarn-cache
 
 .include <bsd.port.mk>

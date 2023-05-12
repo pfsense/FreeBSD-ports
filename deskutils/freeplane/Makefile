@@ -1,10 +1,10 @@
 PORTNAME=	freeplane
-DISTVERSION=	1.10.6
+DISTVERSION=	1.11.2
 CATEGORIES=	deskutils editors java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20stable
 DISTNAME=	${PORTNAME}_bin-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Free mind mapping and knowledge management software
 WWW=		https://www.freeplane.org/
 
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		cpe zip shebangfix
+USES=		cpe shebangfix zip
 USE_JAVA=	yes
 
 SHEBANG_FILES=	${WRKSRC}/freeplane.sh

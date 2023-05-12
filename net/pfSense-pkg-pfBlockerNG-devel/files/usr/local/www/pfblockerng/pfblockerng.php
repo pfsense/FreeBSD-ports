@@ -1663,7 +1663,6 @@ if ($_POST) {
 			exit;
 		}
 		else {
-			print_input_errors($input_errors);
 			$pconfig = $_POST;	// Restore failed user-entered data
 		}
 	}
@@ -1674,6 +1673,10 @@ $pglinks = array( '', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfbl
 		'/pfblockerng/pfblockerng_category.php?type=geoip', '@self');
 
 include_once('head.inc');
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 // Define default Alerts Tab href link (Top row)
 $get_req = pfb_alerts_default_page();

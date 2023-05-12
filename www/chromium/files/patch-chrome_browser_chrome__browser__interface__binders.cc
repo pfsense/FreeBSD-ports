@@ -1,4 +1,4 @@
---- chrome/browser/chrome_browser_interface_binders.cc.orig	2023-03-09 06:31:50 UTC
+--- chrome/browser/chrome_browser_interface_binders.cc.orig	2023-04-28 17:01:32 UTC
 +++ chrome/browser/chrome_browser_interface_binders.cc
 @@ -113,13 +113,13 @@
  #endif  // BUILDFLAG(FULL_SAFE_BROWSING)
@@ -16,7 +16,7 @@
  #include "chrome/browser/ui/webui/app_settings/web_app_settings_ui.h"
  #include "ui/webui/resources/cr_components/app_management/app_management.mojom.h"
  #endif
-@@ -192,7 +192,7 @@
+@@ -193,7 +193,7 @@
  #endif  // BUILDFLAG(IS_ANDROID)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -60,7 +60,7 @@
    RegisterWebUIControllerInterfaceBinder<
        app_management::mojom::PageHandlerFactory, WebAppSettingsUI>(map);
  #endif
-@@ -1332,7 +1332,7 @@ void PopulateChromeWebUIFrameBinders(
+@@ -1377,7 +1377,7 @@ void PopulateChromeWebUIFrameBinders(
  #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \

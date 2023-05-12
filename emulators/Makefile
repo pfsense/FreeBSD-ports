@@ -74,7 +74,6 @@
     SUBDIR += mastergear
     SUBDIR += mednafen
     SUBDIR += mesen
-    SUBDIR += mess
     SUBDIR += mgba
     SUBDIR += mtools
     SUBDIR += mupen64plus
@@ -115,7 +114,7 @@
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
     SUBDIR += qemu6
-    SUBDIR += qemu70
+    SUBDIR += qemu7
     SUBDIR += qmc2
     SUBDIR += quasi88
     SUBDIR += reicast

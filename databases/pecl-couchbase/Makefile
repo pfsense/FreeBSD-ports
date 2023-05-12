@@ -1,5 +1,5 @@
 PORTNAME=	couchbase
-PORTVERSION=	4.1.2
+PORTVERSION=	4.1.3
 CATEGORIES=	databases
 MASTER_SITES=	https://github.com/couchbase/couchbase-php-client/releases/download/${PORTVERSION}/
 
@@ -13,6 +13,5 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	cmake:devel/cmake-core
 
 USES=		compiler:c++17-lang php:build,pecl
-USE_PHP=	json:build
 
 .include <bsd.port.mk>

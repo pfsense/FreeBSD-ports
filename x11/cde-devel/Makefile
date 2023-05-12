@@ -12,8 +12,8 @@ WWW=		https://sourceforge.net/p/cdesktopenv/wiki/Home/
 USE_GITHUB=	yes
 GH_ACCOUNT=	cschuber
 GH_PROJECT=	cdesktopenv-code
-GH_TAGNAME=	28277ce88
-COMMIT_DATE=	2023.02.26
+GH_TAGNAME=	ece21debb
+COMMIT_DATE=	2023.04.01
 
 LICENSE=	LGPL21
 
@@ -37,12 +37,14 @@ BUILD_DEPENDS=	ksh93:shells/ksh			\
 		${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:x11-fonts/fontconfig \
 		${LOCALBASE}/libdata/pkgconfig/freetype2.pc:print/freetype2 \
 		onsgmls:textproc/opensp \
-		xrdb:x11/xrdb
+		xrdb:x11/xrdb \
+		sessreg:x11/sessreg
 RUN_DEPENDS=	ksh93:shells/ksh			\
 		${LOCALBASE}/bin/fc-cache:x11-fonts/fontconfig \
 		${LOCALBASE}/libdata/pkgconfig/freetype2.pc:print/freetype2 \
 		xrdb:x11/xrdb \
-		xset:x11/xset
+		xset:x11/xset \
+		sessreg:x11/sessreg
 
 USES=		autoreconf:build iconv:wchar_t gmake jpeg libtool motif perl5 \
 		shebangfix tcl:86 xorg

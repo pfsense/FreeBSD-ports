@@ -1,6 +1,7 @@
 PORTNAME=	ocean
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0.0
+PORTREVISION=	1
 CATEGORIES=	science
 PKGNAMESUFFIX=	-spectroscopy-code
 
@@ -17,7 +18,7 @@ RUN_DEPENDS=	abinit>0:science/abinit \
 		quantum-espresso>0:science/quantum-espresso
 
 USES=		fortran gmake localbase perl5 shebangfix
-USE_PERL5=	run
+USE_PERL5=	build run
 
 SHEBANG_GLOB=	*.pl
 

@@ -1,6 +1,6 @@
 PORTNAME=	FlexGet
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.5.35
+DISTVERSION=	3.6.9
 CATEGORIES=	www
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -45,10 +45,16 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}vcrpy>0:devel/py-vcrpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pysftp>0:ftp/py-sftp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}boto3>0:www/py-boto3@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.7+
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist pep517 pytest
 GH_PROJECT=	Flexget
 NO_ARCH=	yes
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 30800
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>0:devel/py-importlib-metadata@${PY_FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

@@ -1,10 +1,10 @@
 PORTNAME=	ytfzf
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Find and watch YouTube videos from the terminal
 WWW=		https://github.com/pystardust/ytfzf
 

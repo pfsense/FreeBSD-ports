@@ -14,6 +14,7 @@
     SUBDIR += bspwm
     SUBDIR += bspwm-devel
     SUBDIR += cage
+    SUBDIR += cage-devel
     SUBDIR += cagebreak
     SUBDIR += chamfer
     SUBDIR += compiz
@@ -101,6 +102,7 @@
     SUBDIR += stumpwm
     SUBDIR += subtle
     SUBDIR += sway
+    SUBDIR += sway-devel
     SUBDIR += swayfx
     SUBDIR += tinywm
     SUBDIR += transset
@@ -122,6 +124,7 @@
     SUBDIR += wmname
     SUBDIR += wmx
     SUBDIR += xcompmgr
+    SUBDIR += xdgmenumaker
     SUBDIR += xfce4
     SUBDIR += xfce4-desktop
     SUBDIR += xfce4-panel

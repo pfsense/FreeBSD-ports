@@ -1,11 +1,11 @@
 PORTNAME=	mattermost-server
-PORTVERSION=	7.9.1
+PORTVERSION=	7.10.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://raw.githubusercontent.com/${GH_ACCOUNT}/${GH_PROJECT}/${DISTVERSIONFULL}/:gomod
 DISTFILES=	go.mod:gomod
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Open source Slack-alternative in Golang and React
 WWW=		https://mattermost.org/
 

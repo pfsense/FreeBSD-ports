@@ -1,5 +1,5 @@
 PORTNAME=	aws-sdk-resources
-PORTVERSION=	3.160.0
+PORTVERSION=	3.163.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -181,6 +181,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-iotwireless>=1<2:devel/rubygem-aws-sdk-iotwireless \
 		rubygem-aws-sdk-ivs>=1<2:devel/rubygem-aws-sdk-ivs \
 		rubygem-aws-sdk-ivschat>=1<2:devel/rubygem-aws-sdk-ivschat \
+		rubygem-aws-sdk-ivsrealtime>=1<2:devel/rubygem-aws-sdk-ivsrealtime \
 		rubygem-aws-sdk-kafka>=1<2:devel/rubygem-aws-sdk-kafka \
 		rubygem-aws-sdk-kafkaconnect>=1<2:devel/rubygem-aws-sdk-kafkaconnect \
 		rubygem-aws-sdk-kendra>=1<2:devel/rubygem-aws-sdk-kendra \
@@ -250,6 +251,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-opsworks>=1<2:devel/rubygem-aws-sdk-opsworks \
 		rubygem-aws-sdk-opsworkscm>=1<2:devel/rubygem-aws-sdk-opsworkscm \
 		rubygem-aws-sdk-organizations>=1<2:devel/rubygem-aws-sdk-organizations \
+		rubygem-aws-sdk-osis>=1<2:devel/rubygem-aws-sdk-osis \
 		rubygem-aws-sdk-outposts>=1<2:devel/rubygem-aws-sdk-outposts \
 		rubygem-aws-sdk-panorama>=1<2:devel/rubygem-aws-sdk-panorama \
 		rubygem-aws-sdk-personalize>=1<2:devel/rubygem-aws-sdk-personalize \
@@ -339,6 +341,7 @@ RUN_DEPENDS=	rubygem-aws-sdk-accessanalyzer>=1<2:devel/rubygem-aws-sdk-accessana
 		rubygem-aws-sdk-transfer>=1<2:devel/rubygem-aws-sdk-transfer \
 		rubygem-aws-sdk-translate>=1<2:devel/rubygem-aws-sdk-translate \
 		rubygem-aws-sdk-voiceid>=1<2:devel/rubygem-aws-sdk-voiceid \
+		rubygem-aws-sdk-vpclattice>=1<2:devel/rubygem-aws-sdk-vpclattice \
 		rubygem-aws-sdk-waf>=1<2:devel/rubygem-aws-sdk-waf \
 		rubygem-aws-sdk-wafregional>=1<2:devel/rubygem-aws-sdk-wafregional \
 		rubygem-aws-sdk-wafv2>=1<2:devel/rubygem-aws-sdk-wafv2 \

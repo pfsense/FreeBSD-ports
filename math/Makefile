@@ -268,6 +268,7 @@
     SUBDIR += cvc5
     SUBDIR += dbcsr
     SUBDIR += deal.ii
+    SUBDIR += dgl
     SUBDIR += dieharder
     SUBDIR += dihydrogen
     SUBDIR += dionysus
@@ -561,6 +562,7 @@
     SUBDIR += octave-forge-fda
     SUBDIR += octave-forge-femoctave
     SUBDIR += octave-forge-fenv
+    SUBDIR += octave-forge-fileio
     SUBDIR += octave-forge-financial
     SUBDIR += octave-forge-fits
     SUBDIR += octave-forge-fpl
@@ -602,6 +604,7 @@
     SUBDIR += octave-forge-nnet
     SUBDIR += octave-forge-nurbs
     SUBDIR += octave-forge-oct2mat
+    SUBDIR += octave-forge-octave-pool
     SUBDIR += octave-forge-octclip
     SUBDIR += octave-forge-octproj
     SUBDIR += octave-forge-odebvp
@@ -612,6 +615,7 @@
     SUBDIR += octave-forge-outliers
     SUBDIR += octave-forge-parallel
     SUBDIR += octave-forge-pde1dm
+    SUBDIR += octave-forge-pkg-octave-doc
     SUBDIR += octave-forge-plot
     SUBDIR += octave-forge-ponchon-savarit
     SUBDIR += octave-forge-psychrometrics
@@ -639,6 +643,7 @@
     SUBDIR += octave-forge-symbolic
     SUBDIR += octave-forge-tcl-octave
     SUBDIR += octave-forge-tsa
+    SUBDIR += octave-forge-velas
     SUBDIR += octave-forge-video
     SUBDIR += octave-forge-websockets
     SUBDIR += octave-forge-zenity
@@ -900,6 +905,7 @@
     SUBDIR += py-cyipopt
     SUBDIR += py-cypari2
     SUBDIR += py-deap
+    SUBDIR += py-dgl
     SUBDIR += py-dionysus
     SUBDIR += py-disjoint-set
     SUBDIR += py-docplex
@@ -916,6 +922,7 @@
     SUBDIR += py-formulaic
     SUBDIR += py-fpylll
     SUBDIR += py-fraction
+    SUBDIR += py-fsph
     SUBDIR += py-fvcore
     SUBDIR += py-gau2grid
     SUBDIR += py-gimmik
@@ -943,6 +950,7 @@
     SUBDIR += py-libpoly
     SUBDIR += py-linearmodels
     SUBDIR += py-lmfit
+    SUBDIR += py-lrcalc
     SUBDIR += py-luminol
     SUBDIR += py-mapbox-earcut
     SUBDIR += py-mathics
@@ -954,6 +962,8 @@
     SUBDIR += py-minorminer
     SUBDIR += py-mip
     SUBDIR += py-mixsimulator
+    SUBDIR += py-ml-dtypes
+    SUBDIR += py-mnnpy
     SUBDIR += py-moarchiving
     SUBDIR += py-mpmath
     SUBDIR += py-munkres

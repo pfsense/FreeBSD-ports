@@ -1,5 +1,5 @@
 PORTNAME=	puppetdb-terminus
-PORTVERSION=	7.12.1
+PORTVERSION=	7.13.0
 CATEGORIES=	databases ruby
 MASTER_SITES=	https://downloads.puppetlabs.com/puppetdb/
 PKGNAMESUFFIX=	7
@@ -11,9 +11,7 @@ WWW=		https://docs.puppetlabs.com/puppetdb/latest/
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	puppet7>=0:sysutils/puppet7
-
-CONFLICTS_INSTALL=	puppetdb-terminus5 puppetdb-terminus6
+CONFLICTS_INSTALL=	puppetdb-terminus[0-9]
 NO_BUILD=	yes
 USES=		gmake ruby
 

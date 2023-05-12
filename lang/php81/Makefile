@@ -1,5 +1,5 @@
 PORTNAME=	php81
-DISTVERSION=	8.1.17
+DISTVERSION=	8.1.18
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -615,6 +615,10 @@ USES+=			pkgconfig
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${ARCH} == aarch64 && ${PHP_MODNAME} == "opcache"
+CONFIGURE_ARGS+=--disable-opcache-jit
+.endif
 
 .if ${PHP_MODNAME} == "sqlite3" || ${PHP_MODNAME} == "zlib"
 post-extract:

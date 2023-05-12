@@ -1,5 +1,5 @@
 PORTNAME=	nbclassic
-PORTVERSION=	0.5.3
+PORTVERSION=	1.0.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI \
 		https://github.com/jupyter/nbclassic/releases/download/v${PORTVERSION}/
@@ -22,7 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}argon2-cffi>=0:security/py-argon2-cffi@${PY_
 		${PYTHON_PKGNAMEPREFIX}nbconvert>=5:devel/py-nbconvert@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}nbformat>=0:devel/py-nbformat@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}nest-asyncio>=1.5:devel/py-nest-asyncio@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}notebook-shim>=0.1.0:devel/py-notebook-shim@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}notebook-shim>=0.2.3:devel/py-notebook-shim@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}prometheus-client>=0:net-mgmt/py-prometheus-client@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyzmq>=17:net/py-pyzmq@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}send2trash>=1.8.0:deskutils/py-send2trash@${PY_FLAVOR} \
@@ -30,9 +30,15 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}argon2-cffi>=0:security/py-argon2-cffi@${PY_
 		${PYTHON_PKGNAMEPREFIX}tornado>=6.1:www/py-tornado@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitlets>=4.2.1:devel/py-traitlets@${PY_FLAVOR}
 
-USES=		desktop-file-utils python:3.7+
+USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+OPTIONS_DEFINE=	DESKTOP
+DESKTOP_DESC=	Install desktop entry file
+
+DESKTOP_USES=		desktop-file-utils
+DESKTOP_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-setup.cfg
 
 .include <bsd.port.mk>

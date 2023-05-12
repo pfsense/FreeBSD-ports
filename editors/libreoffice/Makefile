@@ -125,6 +125,9 @@ USE_GNOME=	cairo glib20 libxml2 libxslt
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xaw xcb xext xinerama xrandr xrender
 
+USES+=		elfctl
+ELF_FEATURES=	+wxneeded:instdir/program/soffice.bin
+
 OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 GTK4 JAVA KF5 LTO MMEDIA PDFIUM PGSQL MARIADB SDK TEST WEBDAV
 OPTIONS_RADIO=	QT
 OPTIONS_RADIO_QT=	QT5 QT6

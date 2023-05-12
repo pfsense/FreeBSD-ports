@@ -171,6 +171,8 @@
     SUBDIR += mantis
     SUBDIR += mariadb-connector-c
     SUBDIR += mariadb-connector-odbc
+    SUBDIR += mariadb1011-client
+    SUBDIR += mariadb1011-server
     SUBDIR += mariadb103-client
     SUBDIR += mariadb103-server
     SUBDIR += mariadb104-client
@@ -192,6 +194,7 @@
     SUBDIR += mongodb44
     SUBDIR += mongodb50
     SUBDIR += mongodb60
+    SUBDIR += mongodb70
     SUBDIR += movine
     SUBDIR += mroonga
     SUBDIR += mtop
@@ -653,6 +656,7 @@
     SUBDIR += postgresql-odbc
     SUBDIR += postgresql-ogr_fdw
     SUBDIR += postgresql-orafce
+    SUBDIR += postgresql-pgaudit
     SUBDIR += postgresql-plproxy
     SUBDIR += postgresql-plv8js
     SUBDIR += postgresql-prefix
@@ -715,8 +719,10 @@
     SUBDIR += pspg
     SUBDIR += puppetdb-terminus6
     SUBDIR += puppetdb-terminus7
+    SUBDIR += puppetdb-terminus8
     SUBDIR += puppetdb6
     SUBDIR += puppetdb7
+    SUBDIR += puppetdb8
     SUBDIR += puredb
     SUBDIR += pxlib
     SUBDIR += pxtools
@@ -808,6 +814,7 @@
     SUBDIR += py-rb
     SUBDIR += py-redis
     SUBDIR += py-redis2
+    SUBDIR += py-redis3
     SUBDIR += py-rrdtool
     SUBDIR += py-sispy
     SUBDIR += py-south
@@ -860,7 +867,6 @@
     SUBDIR += replibyte
     SUBDIR += retcl
     SUBDIR += rocksdb
-    SUBDIR += rocksdb-lite
     SUBDIR += rrdman
     SUBDIR += rrdmerge
     SUBDIR += rrdtool
@@ -961,6 +967,7 @@
     SUBDIR += rubygem-paranoia
     SUBDIR += rubygem-pg
     SUBDIR += rubygem-pg13
+    SUBDIR += rubygem-pg14
     SUBDIR += rubygem-pg_array_parser
     SUBDIR += rubygem-pg_query
     SUBDIR += rubygem-pghero

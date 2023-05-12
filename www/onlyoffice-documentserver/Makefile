@@ -1,7 +1,7 @@
 PORTNAME=	onlyoffice-documentserver
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.3.3.49
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES+=	LOCAL/mikael/v8/:source1 \
 		LOCAL/mikael/onlyoffice/:source2 \
@@ -119,9 +119,8 @@ post-extract:
 		  ${WRKDIR}/.cache/node-gyp/${NODE_VERSION_PORTS}
 	@${CP} ${DISTDIR}/node-v${NODE_VERSION_PKGFETCH}.tar.gz ${DISTDIR}/node-v${NODE_VERSION_PORTS}.tar.gz \
 		${WRKDIR}/.pkg-cache/node
-	${MV} ${WRKDIR}/node-v${NODE_VERSION_PORTS}/include ${WRKDIR}/.cache/node-gyp/${NODE_VERSION}
+	${MV} ${WRKDIR}/node-v${NODE_VERSION_PORTS}/include ${WRKDIR}/.cache/node-gyp/${NODE_VERSION_PORTS}
 	${ECHO_CMD} '9' > ${WRKDIR}/.cache/node-gyp/${NODE_VERSION_PORTS}/installVersion
-
 
 	@${MKDIR} ${WRKSRC}/sdkjs-plugins/v1
 	@${CP} ${WRKSRC}/onlyoffice.github.io/sdkjs-plugins/v1/* ${WRKSRC}/sdkjs-plugins/v1
@@ -156,14 +155,16 @@ post-patch:
 		${WRKSRC}/document-server-package/common/documentserver/supervisor/ds-docservice.conf \
 		${WRKSRC}/document-server-package/common/documentserver/supervisor/ds-converter.conf \
 		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-static-gzip.sh.m4 \
-		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-update-securelink.sh.m4
+		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-update-securelink.sh.m4 \
+		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-jwt-status.sh.m4
 	@${REINPLACE_CMD} 's|/var/www|${LOCALBASE}/www|' \
 		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-generate-allfonts.sh.m4 \
 		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-update-securelink.sh.m4 \
 		${WRKSRC}/document-server-package/common/documentserver/supervisor/ds-converter.conf \
 		${WRKSRC}/document-server-package/common/documentserver/supervisor/ds-docservice.conf \
 		${WRKSRC}/document-server-package/common/documentserver/supervisor/ds-metrics.conf \
-		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-static-gzip.sh.m4
+		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-static-gzip.sh.m4 \
+		${WRKSRC}/document-server-package/common/documentserver/bin/documentserver-jwt-status.sh.m4
 	@${REINPLACE_CMD} -e 's|/var/lib|/var/db|' -e 's|/var/www|${LOCALBASE}/www|' \
 			  -e 's|/usr/share|${LOCALBASE}/share|' -e 's|/etc|${LOCALBASE}/etc|' \
 		${WRKSRC}/server/Common/config/production-freebsd.json \

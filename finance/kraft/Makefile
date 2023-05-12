@@ -1,6 +1,7 @@
 PORTNAME=	kraft
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	finance kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -21,6 +22,7 @@ USE_KDE=	akonadi akonadicontacts \
 		grantleetheme i18n itemmodels widgetsaddons
 USE_QT=		core dbus gui sql widgets xml \
 		buildtools:build qmake:build
+CFLAGS+=	-I${LOCALBASE}/include/KPim5
 
 SHEBANG_FILES=	manual/makeman.sh
 

@@ -1,9 +1,9 @@
 PORTNAME=	obs-qtwebkit
 PORTVERSION=	g2018090201
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Browser source plugin for obs-studio
 WWW=		https://github.com/swills/obs-qtwebkit
 

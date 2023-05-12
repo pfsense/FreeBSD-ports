@@ -1,9 +1,10 @@
 PORTNAME=	smplayer
 DISTVERSION=	22.7.0
+PORTREVISION=	1
 CATEGORIES=	multimedia audio kde
 MASTER_SITES=	SF/${PORTNAME}/SMPlayer/${PORTVERSION}
 
-MAINTAINER=	vvd@unislabs.com
+MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Complete front-end based on Qt for mplayer
 WWW=		https://www.smplayer.info/
 

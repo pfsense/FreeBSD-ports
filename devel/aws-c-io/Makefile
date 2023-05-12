@@ -1,7 +1,10 @@
 PORTNAME=	aws-c-io
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.19
+DISTVERSION=	0.13.21
+PORTREVISION=	1
 CATEGORIES=	devel
+PATCH_SITES=	https://github.com/awslabs/aws-c-io/commit/
+PATCHFILES=	4dc663c0c3f7cf1e3aebb1d8e28dd48f012e3db8.patch:-p1
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Event driven framework for implementing application protocols
@@ -15,10 +18,8 @@ LIB_DEPENDS=	libaws-c-cal.so:security/aws-c-cal \
 		libs2n.so:security/s2n-tls
 
 USES=		cmake:testing compiler:c11 ssl
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	awslabs
-
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DCMAKE_INSTALL_LIBDIR=${LOCALBASE}/lib

@@ -1,10 +1,10 @@
 PORTNAME=	chatterino2
 PORTVERSION=	2.3.4
-PORTREVISION=	4
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Twitch chat client
 WWW=		https://chatterino.com/
 

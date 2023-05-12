@@ -1,5 +1,6 @@
 PORTNAME=	librenms
-PORTVERSION=	23.1.0
+PORTVERSION=	23.4.0
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -26,8 +27,8 @@ RUN_DEPENDS+=	${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4@${PHP_FLAVO
 
 USES=		cpe php python shebangfix
 USE_GITHUB=	yes
-USE_PHP=	ctype curl dom fileinfo filter gd hash json ldap mbstring \
-		mysqli openssl pdo pdo_mysql phar posix session simplexml snmp \
+USE_PHP=	ctype curl dom fileinfo filter gd ldap mbstring \
+		mysqli pdo pdo_mysql phar posix session simplexml snmp \
 		sockets tokenizer xml xmlwriter zip
 USE_RC_SUBR=	librenms
 
@@ -98,7 +99,7 @@ _SCRIPT_FILES=		daily.sh lnms
 # _RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-_RELEASE_TIMESTAMP=	1674578610
+_RELEASE_TIMESTAMP=	1680825172
 _ROOT_DIRS=		LibreNMS app bootstrap config database doc html \
 			includes licenses mibs misc resources routes scripts \
 			sql-schema tests

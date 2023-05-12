@@ -1,5 +1,6 @@
 PORTNAME=	stellarium
 PORTVERSION=	1.2
+PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	https://github.com/Stellarium/stellarium/releases/download/v${PORTVERSION}/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -12,7 +13,8 @@ WWW=		https://stellarium.org/
 LICENSE=	GPLv2+
 
 USES=		cmake compiler:c++11-lang desktop-file-utils \
-		qt:5 shared-mime-info tar:xz
+		perl5 qt:5 shared-mime-info tar:xz
+USE_PERL5=	build
 USE_QT=		qmake:build buildtools:build \
 		charts concurrent core gui network opengl \
 		printsupport widgets

@@ -1,7 +1,7 @@
 PORTNAME=	send
 PORTVERSION=	0.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -10,12 +10,14 @@ COMMENT=	Secure Neighbor Discovery implementation for IPv6
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_13=	ld: error: duplicate symbol: params_linecnt
-BROKEN_FreeBSD_14=	ld: error: duplicate symbol: params_linecnt
+DEPRECATED=	Implementation is based on older obsolete RFC
+EXPIRATION_DATE=	2023-06-03
 
 LIB_DEPENDS=	libdnet.so:net/libdnet
 
-USES=		gmake readline ssl
+USES=		gmake ncurses readline ssl
+BROKEN_SSL=	openssl30 openssl31
+BROKEN_SSL_REASON=	error: unknown type name 'IPAddressRange'
 USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd
 USE_RC_SUBR=	sendd
@@ -25,6 +27,12 @@ PORTDOCS=	README UserGuide.pdf
 MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400079
+CFLAGS+=       -Wno-error=int-conversion
+.endif
 
 post-extract:
 	${INSTALL_DATA} ${WRKSRC}/examples/ipext/ipext_verify.conf \
@@ -44,4 +52,4 @@ post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

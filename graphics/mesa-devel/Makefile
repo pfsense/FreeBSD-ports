@@ -1,6 +1,6 @@
 PORTNAME=	mesa
-DISTVERSION=	23.0-branchpoint-4192
-DISTVERSIONSUFFIX=	-ge6c84b8a00f
+DISTVERSION=	23.1-branchpoint-1212
+DISTVERSIONSUFFIX=	-ge169a402a8c
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
@@ -56,7 +56,8 @@ OPTIONS_EXCLUDE_DragonFly=	LIBUNWIND anv hasvk
 OPTIONS_EXCLUDE_i386=	LTO # anv: vkcube fails on vkCreateSwapchainKHR
 OPTIONS_EXCLUDE_powerpc64=	${"${/usr/bin/ld:L:tA}"==/usr/bin/ld.lld:?LTO:} # https://github.com/llvm/llvm-project/issues/46697
 OPTIONS_EXCLUDE+=	${ARCH:Naarch64:C/.+/panfrost/}
-OPTIONS_EXCLUDE+=	${ARCH:Namd64:Ni386:Nx86_64:C/.+/anv crocus hasvk iris/}
+OPTIONS_EXCLUDE+=	${ARCH:Namd64:Ni386:Nx86_64:C/.+/crocus hasvk/}
+OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:Nx86_64:C/.+/anv iris/}
 OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:Npowerpc64:Npowerpc64le:Nx86_64:C/.+/LIBUNWIND/}
 OPTIONS_EXCLUDE+=	${"${GL_DEFAULT:S/,/ /g:[-1]}"==${.CURDIR:T}:?COINST:}
 OPTIONS_SLAVE+=		${"${GL_DEFAULT:S/,/ /g:[-1]}"!=${.CURDIR:T}:?COINST:}
@@ -174,6 +175,6 @@ post-patch-COINST-on:
 
 post-install-COINST-on:
 	@${INSTALL_DATA} ${WRKDIR}/libmap.conf \
-		${STAGEDIR}${PREFIX}/etc/libmap.d/${PKGBASE}.conf.sample
+		${STAGEDIR}${PREFIX}/etc/libmap.d/${PKGBASE}.conf
 
 .include <bsd.port.mk>

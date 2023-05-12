@@ -1,11 +1,11 @@
 PORTNAME=	tomcat
-DISTVERSION=	11.0.0-M1
+DISTVERSION=	11.0.0-M5
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${DISTVERSION:C/([0-9]+)(.*)/\1/}/v${DISTVERSION}/bin
 PKGNAMESUFFIX=	-devel
 DISTNAME=	apache-${PORTNAME}-${DISTVERSION}
 
-MAINTAINER=	vvd@unislabs.com
+MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Open-source Java web server by Apache, 10.1.x branch
 WWW=		https://tomcat.apache.org/
 
@@ -16,7 +16,7 @@ RUN_DEPENDS=	jsvc:devel/apache-commons-daemon
 USES=		cpe
 CPE_VENDOR=	apache
 USE_JAVA=	yes
-JAVA_VERSION=	11+
+JAVA_VERSION=	17+
 USE_RC_SUBR=	${PKGBASE:C/-/_/}
 
 NO_ARCH=	yes

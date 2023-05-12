@@ -10,6 +10,7 @@ include/proxygen/httpserver/HTTPServer.h
 include/proxygen/httpserver/HTTPServerAcceptor.h
 include/proxygen/httpserver/HTTPServerOptions.h
 include/proxygen/httpserver/HTTPTransactionHandlerAdaptor.h
+include/proxygen/httpserver/Mocks.h
 include/proxygen/httpserver/PushHandler.h
 include/proxygen/httpserver/RequestHandler.h
 include/proxygen/httpserver/RequestHandlerAdaptor.h
@@ -178,6 +179,8 @@ include/proxygen/lib/http/structuredheaders/StructuredHeadersConstants.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersDecoder.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersEncoder.h
 include/proxygen/lib/http/structuredheaders/StructuredHeadersUtilities.h
+include/proxygen/lib/http/observer/HTTPSessionObserverContainer.h
+include/proxygen/lib/http/observer/HTTPSessionObserverInterface.h
 include/proxygen/lib/pools/generators/FileServerListGenerator.h
 include/proxygen/lib/pools/generators/MemberGroupConfig.h
 include/proxygen/lib/pools/generators/ServerListGenerator.h
@@ -188,6 +191,7 @@ include/proxygen/lib/sampling/SamplingFunctions.h
 include/proxygen/lib/services/AcceptorConfiguration.h
 include/proxygen/lib/services/HTTPAcceptor.h
 include/proxygen/lib/services/RequestWorkerThread.h
+include/proxygen/lib/services/RequestWorkerThreadNoExecutor.h
 include/proxygen/lib/services/Service.h
 include/proxygen/lib/services/ServiceConfiguration.h
 include/proxygen/lib/services/ServiceWorker.h
