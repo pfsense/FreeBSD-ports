@@ -1,6 +1,6 @@
 PORTNAME=	unbound
 DISTVERSION=	1.17.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/unbound/
 
@@ -13,8 +13,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		autoreconf cpe libtool pkgconfig ssl
+USES=		autoreconf cpe elfctl libtool pkgconfig ssl
 CPE_VENDOR=	nlnetlabs
+ELF_FEATURES=	+noaslr:${PORTNAME}
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	unbound
 
