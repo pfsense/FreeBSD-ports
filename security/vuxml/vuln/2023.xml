@@ -1,3 +1,177 @@
+  <vuln vid="bea52545-f4a7-11ed-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>113.0.5672.126</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>113.0.5672.126</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/05/stable-channel-update-for-desktop_16.html">
+	 <p>This update includes 12 security fixes:</p>
+	 <ul>
+	    <li>[1444360] Critical CVE-2023-2721: Use after free in Navigation. Reported by Guang Gong of Alpha Lab, Qihoo 360 on 2023-05-10</li>
+	    <li>[1400905] High CVE-2023-2722: Use after free in Autofill UI. Reported by Rong Jian of VRI on 2022-12-14</li>
+	    <li>[1435166] High CVE-2023-2723: Use after free in DevTools. Reported by asnine on 2023-04-21</li>
+	    <li>[1433211] High CVE-2023-2724: Type Confusion in V8. Reported by Sergei Glazunov of Google Project Zero on 2023-04-14</li>
+	    <li>[1442516] High CVE-2023-2725: Use after free in Guest View. Reported by asnine on 2023-05-04</li>
+	    <li>[1442018] Medium CVE-2023-2726: Inappropriate implementation in WebApp Installs. Reported by Ahmed ElMasry on 2023-05-03</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-2721</cvename>
+      <cvename>CVE-2023-2722</cvename>
+      <cvename>CVE-2023-2723</cvename>
+      <cvename>CVE-2023-2724</cvename>
+      <cvename>CVE-2023-2725</cvename>
+      <cvename>CVE-2023-2726</cvename>
+      <url>https://chromereleases.googleblog.com/2023/05/stable-channel-update-for-desktop_16.html</url>
+    </references>
+    <dates>
+      <discovery>2023-05-16</discovery>
+      <entry>2023-05-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4a08a4fb-f152-11ed-9c88-001b217b3468">
+    <topic>Gitlab -- Vulnerability</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>15.11.0</ge><lt>15.11.3</lt></range>
+	<range><ge>15.10.0</ge><lt>15.10.7</lt></range>
+	<range><ge>9.0</ge><lt>15.9.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2023/05/10/security-release-gitlab-15-11-3-released/">
+	  <p>Smuggling code changes via merge requests with refs/replace</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-2181</cvename>
+      <url>https://about.gitlab.com/releases/2023/05/10/security-release-gitlab-15-11-3-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-05-10</discovery>
+      <entry>2023-05-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ec63bc8e-f092-11ed-85ca-001517a2e1a4">
+    <topic>piwigo -- SQL injection</topic>
+    <affects>
+      <package>
+	<name>piwigo</name>
+	<range><lt>13.7.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Piwigo reports:</p>
+	<blockquote cite="https://www.piwigo.org/release-13.7.0">
+	  <p>Piwigo is affected by multiple SQL injection issues.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.piwigo.org/release-13.7.0</url>
+    </references>
+    <dates>
+      <discovery>2023-03-01</discovery>
+      <entry>2023-05-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4b636f50-f011-11ed-bbae-6cc21735f730">
+    <topic>postgresql-server -- Row security policies disregard user ID changes after inlining</topic>
+    <affects>
+      <package>
+	<name>postgresql-server</name>
+	<range><lt>15.3</lt></range>
+	<range><lt>14.8</lt></range>
+	<range><lt>13.11</lt></range>
+	<range><lt>12.15</lt></range>
+	<range><lt>11.20</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>PostgreSQL Project reports</p>
+	<blockquote cite="https://www.postgresql.org/support/security/CVE-2023-2455/">
+	  <p>
+	    While CVE-2016-2193 fixed most interaction between row security and
+	    user ID changes, it missed a scenario involving function
+	    inlining. This leads to potentially incorrect policies being
+	    applied in cases where role-specific policies are used and a
+	    given query is planned under one role and then executed under
+	    other roles. This scenario can happen under security definer
+	    functions or when a common user and query is planned
+	    initially and then re-used across multiple SET ROLEs.
+	    Applying an incorrect policy may permit a user to complete
+	    otherwise-forbidden reads and modifications. This affects
+	    only databases that have used CREATE POLICY to define a row
+	    security policy.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-2455</cvename>
+      <url>https://www.postgresql.org/support/security/CVE-2023-2455/</url>
+    </references>
+    <dates>
+      <discovery>2023-05-11</discovery>
+      <entry>2023-05-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fbb5a260-f00f-11ed-bbae-6cc21735f730">
+    <topic>postgresql-server -- CREATE SCHEMA ... schema elements defeats protective search_path changes</topic>
+    <affects>
+      <package>
+	<name>postgresql-server</name>
+	<range><lt>15.3</lt></range>
+	<range><lt>14.8</lt></range>
+	<range><lt>13.11</lt></range>
+	<range><lt>12.15</lt></range>
+	<range><lt>11.20</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>PostgreSQL Project reports</p>
+	<blockquote cite="https://www.postgresql.org/support/security/CVE-2023-2454/">
+	  <p>
+	    This enabled an attacker having database-level CREATE
+	    privilege to execute arbitrary code as the bootstrap
+	    superuser. Database owners have that right by default,
+	    and explicit grants may extend it to other users.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-2454</cvename>
+      <url>https://www.postgresql.org/support/security/CVE-2023-2454/</url>
+    </references>
+    <dates>
+      <discovery>2023-05-11</discovery>
+      <entry>2023-05-11</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="7913fe6d-2c6e-40ba-a7d7-35696f3db2b6">
     <topic>vscode -- Visual Studio Code Information Disclosure Vulnerability</topic>
     <affects>
@@ -53,8 +227,6 @@
       </body>
     </description>
     <references>
-      <cvename></cvename>
-      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=</url>
       <cvename>CVE-2023-28849</cvename>
       <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-28849</url>
       <cvename>CVE-2023-28632</cvename>
@@ -4460,7 +4632,7 @@
       </package>
     </affects>
     <description>
-      <body>
+      <body xmlns="http://www.w3.org/1999/xhtml">
 	<p>MinIO reports:</p>
 	<blockquote cite="https://github.com/minio/minio/security/advisories/GHSA-2j69-jjmg-534q">
 	  <p>
