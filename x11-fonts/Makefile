@@ -31,6 +31,7 @@
     SUBDIR += cascadia-code
     SUBDIR += charis
     SUBDIR += charis-compact
+    SUBDIR += chomsky
     SUBDIR += clearsans
     SUBDIR += code2000
     SUBDIR += comfortaa-ttf
@@ -267,6 +268,7 @@
     SUBDIR += tkfont
     SUBDIR += tlwg-ttf
     SUBDIR += tmu
+    SUBDIR += tt2020
     SUBDIR += tv-fonts
     SUBDIR += twemoji-color-font-ttf
     SUBDIR += ubuntu-font

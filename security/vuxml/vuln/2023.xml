@@ -1,3 +1,110 @@
+  <vuln vid="a4f8bb03-f52f-11ed-9859-080027083a05">
+    <topic>curl -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><lt>8.1.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Wei Chong Tan, Harry Sintonen, and Hiroki Kurosawa reports:</p>
+	<blockquote cite="https://curl.se/docs/security.html">
+	  <p>This update fixes 4 security vulnerabilities:</p>
+	    <ul>
+	      <li>Medium CVE-2023-28319: UAF in SSH sha256 fingerprint check. Reported by Wei Chong Tan on 2023-03-21</li>
+	      <li>Low CVE-2023-28320: siglongjmp race condition. Reported by Harry Sintonen on 2023-04-02</li>
+	      <li>Low CVE-2023-28321: IDN wildcard match. Reported by Hiroki Kurosawa on 2023-04-17</li>
+	      <li>Low CVE-2023-28322: more POST-after-PUT confusion. Reported by Hiroki Kurosawa on 2023-04-19</li>
+	    </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28319</cvename>
+	<url>https://curl.se/docs/CVE-2023-28319.html</url>
+	<cvename>CVE-2023-28320</cvename>
+	<url>https://curl.se/docs/CVE-2023-28320.html</url>
+	<cvename>CVE-2023-28321</cvename>
+	<url>https://curl.se/docs/CVE-2023-28321.html</url>
+	<cvename>CVE-2023-28322</cvename>
+	<url>https://curl.se/docs/CVE-2023-28322.html</url>
+    </references>
+    <dates>
+      <discovery>2023-03-21</discovery>
+      <entry>2023-05-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1ab7357f-a3c2-406a-89fb-fd00e49a71b5">
+    <topic>zeek -- potential DoS vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>5.0.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tim Wojtulewicz of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v5.0.9">
+	  <p> A specially-crafted series of FTP packets with a CMD
+	  command with a large path followed by a very large number
+	  of replies could cause Zeek to spend a long time processing
+	  the data. </p>
+	  <p> A specially-crafted with a truncated header can cause
+	  Zeek to overflow memory and potentially crash. </p>
+	  <p> A specially-crafted series of SMTP packets can cause
+	  Zeek to generate a very large number of events and take
+	  a long time to process them. </p>
+	  <p> A specially-crafted series of POP3 packets containing
+	  MIME data can cause Zeek to spend a long time dealing
+	  with each individual file ID. </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v5.0.9</url>
+    </references>
+    <dates>
+      <discovery>2023-05-19</discovery>
+      <entry>2023-05-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b09d77d0-b27c-48ae-b69b-9641bb68b39e">
+    <topic>electron -- vulnerability</topic>
+    <affects>
+      <package>
+	<name>electron22</name>
+	<range><lt>22.3.10</lt></range>
+      </package>
+      <package>
+	<name>electron23</name>
+	<range><lt>23.3.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v22.3.10">
+	  <p>This update fixes the following vulnerability:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-29469</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-29469</cvename>
+      <url>https://github.com/advisories/GHSA-7jv7-hr35-fwjr</url>
+    </references>
+    <dates>
+      <discovery>2023-05-17</discovery>
+      <entry>2023-05-18</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="bea52545-f4a7-11ed-8290-a8a1599412c6">
     <topic>chromium -- multiple vulnerabilities</topic>
     <affects>
