@@ -33,6 +33,7 @@
     SUBDIR += cegobridge
     SUBDIR += clickhouse
     SUBDIR += closql
+    SUBDIR += closql-devel
     SUBDIR += cockroach
     SUBDIR += couchdb3
     SUBDIR += courier-authlib-mysql
@@ -57,7 +58,9 @@
     SUBDIR += diesel
     SUBDIR += duckdb
     SUBDIR += ejdb
+    SUBDIR += emacs-sqlite3-api
     SUBDIR += emacsql
+    SUBDIR += emacsql-devel
     SUBDIR += erlfdb
     SUBDIR += evolution-data-server
     SUBDIR += fastdb
@@ -855,6 +858,7 @@
     SUBDIR += qt5-sqldrivers-sqlite2
     SUBDIR += qt5-sqldrivers-sqlite3
     SUBDIR += qt5-sqldrivers-tds
+    SUBDIR += qt6-base_sqldriver
     SUBDIR += quake
     SUBDIR += recutils
     SUBDIR += redis
@@ -963,6 +967,7 @@
     SUBDIR += rubygem-memcache-client
     SUBDIR += rubygem-mysql
     SUBDIR += rubygem-mysql2
+    SUBDIR += rubygem-neighbor
     SUBDIR += rubygem-openid-redis-store
     SUBDIR += rubygem-paranoia
     SUBDIR += rubygem-pg

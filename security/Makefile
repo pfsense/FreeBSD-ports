@@ -238,6 +238,7 @@
     SUBDIR += ipsec-tools
     SUBDIR += ipv6toolkit
     SUBDIR += isal-kmod
+    SUBDIR += ismtp
     SUBDIR += isnprober
     SUBDIR += john
     SUBDIR += kbfsd
@@ -939,6 +940,7 @@
     SUBDIR += py-msoffcrypto-tool
     SUBDIR += py-muacrypt
     SUBDIR += py-nassl
+    SUBDIR += py-netbox-secrets
     SUBDIR += py-netbox-secretstore
     SUBDIR += py-netmiko
     SUBDIR += py-noiseprotocol

@@ -261,8 +261,8 @@ hedgedoc:*:317:
 # free: 318, UID used by icingadirector
 rustdesk:*:319:
 teleirc:*:320:
-# free: 321
-# free: 322
+caldera:*:321:
+tlsc:*:322:
 # free: 323
 # free: 324
 dkfilter:*:325:
@@ -801,7 +801,7 @@ opensearch:*:855:
 # free: 857
 # free: 858
 # free: 859
-# free: 860
+plocate:*:860:
 # free: 861
 # free: 862
 # free: 863
