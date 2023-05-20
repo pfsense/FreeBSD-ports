@@ -25,11 +25,11 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${FILESDIR}/crowdsec.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/crowdsec.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}/crowdsec.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/crowdsec.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${WRKSRC}${DATADIR}/info.xml \
+	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>
