@@ -1,5 +1,5 @@
 PORTNAME=	solidity
-PORTVERSION=	0.8.19
+PORTVERSION=	0.8.20
 CATEGORIES=	lang
 MASTER_SITES=	https://github.com/ethereum/solidity/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -43,7 +43,7 @@ PLIST_FILES=	bin/solc \
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400079
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 CXXFLAGS+=	-Wno-unqualified-std-cast-call
 .endif
 

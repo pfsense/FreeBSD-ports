@@ -59,6 +59,7 @@
     SUBDIR += erlang-runtime23
     SUBDIR += erlang-runtime24
     SUBDIR += erlang-runtime25
+    SUBDIR += erlang-runtime26
     SUBDIR += erlang-wx
     SUBDIR += execline
     SUBDIR += expect
@@ -312,6 +313,8 @@
     SUBDIR += ruby30
     SUBDIR += ruby31
     SUBDIR += ruby32
+    SUBDIR += ruby33
+    SUBDIR += rubygem-rb_sys
     SUBDIR += rubygem-ruby_language_server
     SUBDIR += runawk
     SUBDIR += rust

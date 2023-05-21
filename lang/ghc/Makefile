@@ -1,6 +1,6 @@
 PORTNAME=	ghc
 PORTVERSION=	${GHC_VERSION}
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES=	lang haskell
 MASTER_SITES=	https://www.haskell.org/ghc/dist/${PORTVERSION}/:source \
 		LOCAL/arrowd/:boot
@@ -15,8 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386
 
-USES=			autoreconf compiler:c11 gmake iconv:patch,translit \
-			localbase:ldflags ncurses perl5 python:build shebangfix \
+USES=			autoreconf compiler:c11 gmake \
+			ncurses perl5 python:build shebangfix \
 			tar:xz
 
 GNU_CONFIGURE=		yes
@@ -104,7 +104,7 @@ BUILD_MK=		DYNAMIC_GHC_PROGRAMS=${ENABLE_DYNAMIC} \
 
 .include <bsd.port.pre.mk>
 
-.if ${GHC_VERSION:C/\..*//g} >= 9 && ${ARCH} != i386
+.if ${GHC_VERSION:C/\..*//g} >= 9 && ${ARCH} != i386 && ${ARCH} != aarch64
 # hadrian build on i386 fails due to https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=269570
 # relocation R_386_TLS_LE cannot be used with -shared
 USE_HADRIAN=		yes

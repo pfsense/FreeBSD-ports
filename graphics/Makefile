@@ -852,6 +852,7 @@
     SUBDIR += py-cogdumper
     SUBDIR += py-colorcet
     SUBDIR += py-colorthief
+    SUBDIR += py-colorz
     SUBDIR += py-colour
     SUBDIR += py-descartes
     SUBDIR += py-django-easy-thumbnails
@@ -1075,6 +1076,7 @@
     SUBDIR += scrot
     SUBDIR += scwm-icons
     SUBDIR += sdl2_gfx
+    SUBDIR += sdl2_gpu
     SUBDIR += sdl2_image
     SUBDIR += sdl2_ttf
     SUBDIR += sdl_gfx
