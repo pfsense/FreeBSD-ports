@@ -106,7 +106,7 @@ if (!function_exists('pf_version')) {
                 return substr(trim(file_get_contents("/etc/version")), 0, 5);
         }
 }
-	
+
 // parse the zone file which was exported with "named-compilezone -F text" or "RNDC dumpdb -zones"
 function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = false) {
 	$reg_host = "{(?<name>.+?)?(?:\s+?(?<ttl>\d*))?\s+(?<class>IN)?\s+(?<type>\p{L}+)\s+(?<rdata>.*)}";
@@ -141,7 +141,6 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 			// everything after the first ; will be used as comment
 			unset($split_comment[0]);
 			$line_comment = implode(';', $split_comment);
-
 				if (!$item_continue) {
 					// detect multiline start
 					$split_multiline = bind_mb_explode_escaped('(', $line);
@@ -149,14 +148,16 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 						$item_continue = [
 							'comment' => $line_comment, 
 							'raw' => implode('', $split_multiline), 
-							'index' => $index
+							'index' => $index,
+							'rowcount' => 1
 						];
 						continue;
 					} else {
 						$item = [
 							'comment' => $line_comment, 
 							'raw' => $line_without_comment, 
-							'index' => $index
+							'index' => $index,
+							'rowcount' => 1
 						];
 					}
 				} else {
@@ -164,6 +165,7 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 					$split_multiline = bind_mb_explode_escaped(')', $line);
 					if (count($split_multiline) > 1){
 						$item_continue['raw'] .= implode('', $split_multiline);
+						$item_continue['rowcount'] = $index - $item_continue['index'] + 1;
 						$item = $item_continue;
 						$item_continue = false;
 					}else{
@@ -189,6 +191,7 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 					'zone' => $zone,
 					'view' => $view,
 					'index' => $data_row['index'],
+					'rowcount' => $data_row['rowcount'],
 					'comment' => $data_row['comment'],
 					'name' => '',
 					'ttl' => '',
@@ -221,6 +224,7 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 					'zone' => $zone,
 					'view' => $view,
 					'index' => $data_row['index'],
+					'rowcount' => $data_row['rowcount'],
 					'comment' => $data_row['comment'],
 					'name' => $matches['name'],
 					'ttl' => $matches['ttl'],
@@ -261,14 +265,15 @@ function bind_parse_rndc_zone_dump($value, $zone = '', $include_comment_only = f
 	return $zone_data_parsed;
 }
 
-// unescape zone record. 
-// TODO: Maybe there are additional escape rules?
+/* unescape zone record. 
+TODO: Maybe there are additional escape rules? */
 function bind_escape_dns_string($val)
 {
 	$search = ['\\', '"', ';'];
 	$replace = ['\\\\', '\\"', '\\;'];
 	return '"' . str_replace($search, $replace, $val) . '"';
 }
+
 // similar to php explode() but the delimiter can be escaped. Additionally quoted text can be extracted.
 function bind_mb_explode_escaped($delimiter, $str, $trim_outer_quote_whitespace = true,  $escapeChar = '\\', $quoteChar = '"', $encoding = 'UTF-8') {
 	$split = [];
@@ -319,6 +324,7 @@ function bind_mb_explode_escaped($delimiter, $str, $trim_outer_quote_whitespace 
 
     return $split;
 }
+
 // unescape zone record. 
 // TODO: Maybe there are additional escape rules?
 function bind_unescape_dns_string($val)
@@ -329,6 +335,7 @@ function bind_unescape_dns_string($val)
 	$ret = str_replace($search, $replace, $val);
 	return $ret;
 }
+
 // expand rdata to individual fields
 function bind_expand_zone_record(&$record)
 {
@@ -342,6 +349,7 @@ function bind_expand_zone_record(&$record)
 			if (count($val) == 2) {
 				$record['priority'] = $val[0];
 				$record['host'] = $val[1];
+				$record['_expanded'] = true;
 			}
 			break;
 
@@ -351,12 +359,14 @@ function bind_expand_zone_record(&$record)
 				$record['weight'] = $val[1];
 				$record['port'] = $val[2];
 				$record['host'] = $val[3];
+				$record['_expanded'] = true;
 			}
 			break;
 
 		case 'NS':
 			if (count($val) == 1) {
 				$record['nameserver'] = $val[0];
+				$record['_expanded'] = true;
 			}
 			break;
 
@@ -364,6 +374,7 @@ function bind_expand_zone_record(&$record)
 			if (count($val) == 1) {
 				$record['ip'] = bind_ptr_to_ip($record['name']);
 				$record['host'] = $val[0];
+				$record['_expanded'] = true;
 			}
 			break;
 
@@ -373,17 +384,20 @@ function bind_expand_zone_record(&$record)
 				$record['ip'] = $val[0];
 				$record['ptr'] = bind_ip_to_ptr($record['ip']);
 				$record['host'] = $record['name'];
+				$record['_expanded'] = true;
 			}
 			break;
 
 		case 'TXT':
-		case 'SPF': //SPF does not realy exist but BIND threats it like TXT
+		case 'SPF':
 			$record['txt'] = bind_unescape_dns_string(implode('', bind_mb_explode_escaped('"',$record['rdata'])));
+			$record['_expanded'] = true;
 			break;
 
 		case 'CNAME':
 			if (count($val) == 1) {
 				$record['host'] = $val[0];
+				$record['_expanded'] = true;
 			}
 			break;
 
@@ -396,10 +410,12 @@ function bind_expand_zone_record(&$record)
 				$record['retry'] = $val[4];
 				$record['expire'] = $val[5];
 				$record['minimum'] = $val[6];
+				$record['_expanded'] = true;
 			}
 			break;
 	}
 }
+
 // merge individual values to rdata
 function bind_collapse_zone_record(&$record)
 {
@@ -481,6 +497,7 @@ function bind_zone_record_to_string($record)
 			($record['type'] ?: ' ') . "\t" .
 			($record['rdata'] ?: ' ');
 }
+
 // convert IPv4 or IPv6 to it's PTR string
 function bind_ip_to_ptr($ip)
 {
@@ -495,7 +512,8 @@ function bind_ip_to_ptr($ip)
 		return $addr . '.in-addr.arpa';
 	}
 }
-// convert IPv4 or IPv6 from PTR string to am IP address
+
+// convert IPv4 or IPv6 from PTR string to it's IP address
 function bind_ptr_to_ip($ptr)
 {
 	$ptr = rtrim(trim($ptr), ".");
@@ -512,7 +530,8 @@ function bind_ptr_to_ip($ptr)
 		return inet_ntop($ipbin);
 	}
 }
-// compares two parsed zones and shows the difference
+
+// compares two parsed zones and returns the difference
 function bind_diff_zonerecords($zone1, $zone2)
 {
 	$diff = [];
@@ -533,6 +552,26 @@ function bind_diff_zonerecords($zone1, $zone2)
 		}
 	}
 	return $diff;
+}
+
+function bind_set_serial_zoneconf($zone_conf, $new_zoneserial){
+	// write new serial to zone_conf.
+		$zone_conf_new = '';
+		$serialfound = false;
+		foreach(explode("\n" , $zone_conf) as $zone_conf_row){
+			if ($serialfound == false && str_ends_with(trim($zone_conf_row), "; serial")){
+				$zone_conf_new .= "\t\t{$new_zoneserial} ; serial\n";
+				$serialfound = true;
+			}else{
+				$zone_conf_new .= $zone_conf_row . "\n";
+			}
+		}
+		if ($serialfound){
+			$zone_conf = $zone_conf_new;
+		} else {
+			log_error('[bind] Serial in zone_conf not found!');
+		}
+	return $zone_conf;
 }
 
 function bind_sync()
@@ -1025,44 +1064,37 @@ EOD;
 						}
 
 						// Detect Zone changes
+						$skipZoneUpdate = false;
+						$diff = [];
+						$zone_cache_file = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache";
+						$zonename_reverse = reverse_zonename($zonename, $zonereverso, $zonereversv6o);
+						$rndc = "/usr/local/sbin/rndc -q -r -c " . BIND_LOCALBASE . "/etc/rndc.conf";
+						$zonefile = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB";
+
+						
 						$zone_is_dynamic = ((
 							($zone['enable_updatepolicy'] == "on") ||
 							($zoneallowupdate != "none") ||
 							file_exists(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.jnl"))
 						);
-						$skipZoneUpdate = false;
-						$diff = [];
-						$zone_cache_file = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.confcache";
-						$zonename_reverse = reverse_zonename($zonename, $zonereverso, $zonereversv6o);
-						$rndc_conf_path = BIND_LOCALBASE . "/etc/rndc.conf";
-						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
-						$zonefile = CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB";
-
-						// read new and last zonedata to build diff
 						if ($zone_is_dynamic) {
+							// read new and last zonedata to build diff
 							if (file_exists($zone_cache_file)) {
 								$zoneCacheString = file_get_contents($zone_cache_file);
 								$zoneRows_cached_config = bind_parse_rndc_zone_dump($zoneCacheString, $zonename_reverse);
-								// TODO: REMOVE:
-								file_put_contents('/tmp/XX_zoneRows_cached_config', json_encode($zoneRows_cached_config));
 							} else {
 								$zoneRows_cached_config = [];
 							}
-
 							// new records
 							$zoneRows_new_config = bind_parse_rndc_zone_dump($zone_conf, $zonename_reverse);
 							// removed records
 							$diff = bind_diff_zonerecords($zoneRows_cached_config, $zoneRows_new_config);
-							// TODO: REMOVE:
-							file_put_contents('/tmp/XX_diff_cached_new', json_encode($diff));
 							// all records which should not be in the dynamic section
 							$diff = array_merge($zoneRows_new_config, $diff);
-							// TODO: REMOVE:
-							file_put_contents('/tmp/XX_diff_merged', json_encode($diff));
-
 							if ($zoneCacheString == $zone_conf) {
 								// no change in zone config. skip entire zone update.
 								$skipZoneUpdate = true;
+								log_error("[bind] INFO - Config file for zone {$zonename} skipped cause nothing changed.");
 							}
 						}
 
@@ -1089,7 +1121,7 @@ EOD;
 									$zone_conf_dynamic = "\n;\n; Merged Dynamic Zone Records\n;\n";
 									foreach ($zonedata_to_merge as $row) {
 										if ($row['type'] !== 'SOA') {
-											// skip SOA record as this is already added to zone_conf.
+											// Add all records except SOA as this is already added to zone_conf.
 											$zone_conf_dynamic .=  bind_zone_record_to_string($row) . "\n";
 										}
 									}
@@ -1098,48 +1130,31 @@ EOD;
 
 							//Increment serial 
 							if($zone['increment_serial'] == "on"){
-								$new_zoneserial = null;
+								$current_zoneserial = null;
 								// get current serial from zone db
 								if ($current_zone_data_parsed){
 									foreach ($current_zone_data_parsed as $row) {
 										if ($row["type"] == 'SOA') {
-											$new_zoneserial = $row['serial'] + 1;
+											$current_zoneserial = $row['serial'];
 											break;
 										}
-									}							
+									}
 								}
-
-								// write new serial to zone_conf.
-								if ($new_zoneserial){
-									$zone_conf_rows = explode("\n" , $zone_conf);
-									$zone_conf_new = '';
-									$serialfound = false;
-									foreach(explode("\n" , $zone_conf) as $zone_conf_row){
-										if ($serialfound == false && str_ends_with(trim($zone_conf_row), "; serial")){
-											$zone_conf_new .= "\t\t{$new_zoneserial} ; serial\n";
-											$serialfound = true;
-										}else{
-											$zone_conf_new .= $zone_conf_row . "\n";
-										}
-									}
-									if ($serialfound){
-										$zone_conf = $zone_conf_new;
-									} else {
-										log_error('[BIND Config] Serial in zone_conf not found!');
-									}
+								if ($current_zoneserial) {
+									$zone_conf = bind_set_serial_zoneconf($zone_conf, $current_zoneserial + 1);
 								}
 							}
 
 							if ($zone['validate_zone'] == "on") {
 								// Save temporary file and perform content chek before overwriting any existing zone DB to prevent service downtime.
-								// TODO: serial number is not checked. If it is out of range, bind won't load zone. A way to ckeck valid serial is required.
+								// TODO: Serial number check. If it is out of range, bind won't load zone. A way to ckeck valid serial which takes care of secondary master is required.
 								$tempDB = tempnam("/tmp", "validate_zone");
 								file_put_contents($tempDB, $zone_conf . $zone_conf_dynamic);
 
 								// validate and save to DB if successfull.
-								exec('/usr/local/sbin/named-checkzone -F text ' .
-									'-o ' . escapeshellarg($zonefile) . ' ' .
-									escapeshellarg($zonename_reverse) . ' ' . 
+								exec('/usr/local/sbin/named-checkzone -F text '.
+									'-o ' . escapeshellarg($zonefile) . ' '.
+									escapeshellarg($zonename_reverse) . ' '.
 									escapeshellarg($tempDB) . ' 2>&1', $output, $resultCode);
 
 								unlink($tempDB);
@@ -1149,8 +1164,8 @@ EOD;
 							}
 
 							if ($resultCode == 0) {
-								// Validation successfull or disabled
-								// Save zone_conf to cache file for comparison on next update.
+								/* Validation successfull or disabled
+								Save zone_conf to cache file for comparison on next update. */
 								file_put_contents($zone_cache_file, $zone_conf_orig);
 								$config['installedpackages']['bindzone']['config'][$x]['resultconfig'] = base64_encode($zone_conf . $zone_conf_dynamic);
 								$write_config++;
@@ -1174,7 +1189,7 @@ EOD;
 									// Reload static zone
 									exec("{$rndc} reload " . escapeshellarg($zonename_reverse) . " IN " . escapeshellarg($zoneview) . ' 2>&1', $output, $retval);
 									if ($retval !== 0) {
-										log_error("[bind] RNDC RELOAD throwed an exception. Zone {$zonename_reverse}. Code {$retval} \n " . implode("\n", $output));
+										log_error("[bind] RNDC RELOAD throwed an exception. Zone {$zonename_reverse}. Code {$retval}\n" . implode("\n", $output));
 									}
 								}
 							}
@@ -1355,18 +1370,19 @@ EOD;
 	chown(CHROOT_LOCALBASE . "/var/run/named", "bind");
 	chgrp(CHROOT_LOCALBASE . "/var/log", "bind");
 	$bind_sh = "/usr/local/etc/rc.d/named.sh";
+	
 	if ($bind_enable == "on") {
 		chmod($bind_sh, 0755);
 		if (is_process_running($named_process)) {
 			// Thaw all zones in case one missed.
-			exec("{$rndc} thaw ");
+			exec("{$rndc} thaw");
 			exec("{$rndc} reconfig" . ' 2>&1', $output, $retval);
 			if ($retval !== 0) {
-				log_error("[bind] RNDC RECONFIG throwed an exception. Code {$retval}: " . implode("\n", $output));
+				// restart service as Fallback to rndc reload
+				log_error("[bind] WARNING \"RNDC reconfig\" CODE {$retval}:\n" . implode("\n", $output));
 				restart_service("named");
 				log_error("[bind] service restarted because reconfig throwed an exception.");
 			}
-			;
 		} else {
 			restart_service("named");
 		}
@@ -1377,6 +1393,7 @@ EOD;
 	// Sync to backup servers
 	bind_sync_on_changes();
 }
+
 
 function bind_print_javascript_type_zone() {
 	$js = <<<'JS'
@@ -1523,9 +1540,9 @@ function bind_write_rcfile() {
 EOD;
 	$rc['stop'] = <<<EOD
 	if [ -n "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
-		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
-		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
-		sleep 5
+		{$BIND_LOCALBASE}/sbin/rndc -q -r -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+		{$BIND_LOCALBASE}/sbin/rndc -q -r -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
+		sleep 1
 		/usr/bin/killall -TERM named 2>/dev/null
 		sleep 2
 	fi
@@ -1535,9 +1552,9 @@ EOD;
 	if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
 		{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
 	else
-		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
-		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
-		sleep 5
+		{$BIND_LOCALBASE}/sbin/rndc -q -r -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+		{$BIND_LOCALBASE}/sbin/rndc -q -r -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
+		sleep 1
 		/usr/bin/killall -TERM named 2>/dev/null
 		sleep 3
 		{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /var/etc/named/
@@ -1787,5 +1804,4 @@ function reverse_zonename($zonename, $zonereverso=false, $zonereversv6o=false) {
 		return $zonename;
 	}
 }
-
 ?>
