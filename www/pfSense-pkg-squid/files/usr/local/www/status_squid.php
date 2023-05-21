@@ -51,11 +51,9 @@ if ($_REQUEST["menu"] == "reverse") {
 display_top_tabs($tab_array);
 
 function squid_status() {
-	global $config;
-
 	if (is_service_running('squid')) {
 		init_config_arr(array('installedpackages', 'squidcache','config'));
-		$proxy_ifaces = explode(",", $config['installedpackages']['squid']['config'][0]['active_interface']);
+		$proxy_ifaces = explode(",", config_get_path('installedpackages/squid/config/0/active_interface', ''));
 		foreach ($proxy_ifaces as $iface) {
 			if (get_interface_ip($iface)) {
 				$ip = get_interface_ip($iface);

@@ -28,13 +28,13 @@ require_once('util.inc');
 /* This file is currently only being included in squid.inc and not used separately */
 // require_once('squid.inc');
 
-global $clamav_uid, $clamav_gid, $config;
+global $clamav_uid, $clamav_gid;
 $clamav_uid = "clamav";
 $clamav_gid = "clamav";
 
 /* If /var is in RAM, the AV database will not be persistent there and space is
 	limited, so relocate it. */
-if (isset($config['system']['use_mfs_tmpvar'])) {
+if (config_path_enabled('system', 'use_mfs_tmpvar')) {
 	define('CLAMAV_DBDIR', '/usr/local/share/clamav-db/');
 } else {
 	define('CLAMAV_DBDIR', '/var/db/clamav/');
@@ -62,19 +62,13 @@ function squid_check_antivirus_dirs() {
 
 /* Antivirus definitions updates via cron */
 function squid_install_freshclam_cron($should_install) {
-	global $config;
-
 	if (platform_booting()) {
 		return;
 	}
 
 	$freshclam_cmd = (SQUID_BASE . "/bin/freshclam --config-file=" . SQUID_BASE . "/etc/freshclam.conf");
 	if (($should_install) && (squid_enabled())) {
-		if (is_array($config['installedpackages']['squidantivirus'])) {
-			$antivirus_config = $config['installedpackages']['squidantivirus']['config'][0];
-		} else {
-			$antivirus_config = array();
-		}
+		$antivirus_config = config_get_path('installedpackages/squidantivirus/config/0', []);
 		if ($antivirus_config['clamav_update'] != "") {
 			log_error("[squid] Adding freshclam cronjob.");
 			// Randomize minutes to mitigate mirrors overload issues
@@ -134,17 +128,13 @@ function squid_antivirus_install_command() {
 
 /* Run on Squid package uninstall */
 function squid_antivirus_deinstall_command() {
-	global $config, $keep;
+	global $keep;
 	/* Stop all running services, remove rc scripts and cronjobs */
 	squid_stop_antivirus();
 	mwexec("/bin/ps awux | /usr/bin/grep '[f]reshclam' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
 
 	/* clean up created directories if 'Keep Settings/Data' is disabled */
-	if (is_array($config['installedpackages']['squid'])) {
-		$squidsettings = $config['installedpackages']['squid']['config'][0];
-	} else {
-		$squidsettings = array();
-	}
+	$squidsettings = config_get_path('installedpackages/squid/config/0', []);
 	$keep = ($squidsettings['keep_squid_data'] ? true : false);
 
 	if (!$keep) {
@@ -159,14 +149,11 @@ function squid_antivirus_deinstall_command() {
 
 /* Migrate configuration from old Squid package versions */
 function squid_antivirus_upgrade_config() {
-	global $config;
 	/* unset broken antivirus settings */
-	if (is_array($config['installedpackages']['squidantivirus'])) {
-		unset($config['installedpackages']['squidantivirus']['config'][0]['squidclamav']);
-		unset($config['installedpackages']['squidantivirus']['config'][0]['c-icap_conf']);
-		unset($config['installedpackages']['squidantivirus']['config'][0]['c-icap_magic']);
-		unset($config['installedpackages']['squidantivirus']['config'][0]['freshclam_conf']);
-	}
+	config_del_path('installedpackages/squidantivirus/config/0/squidclamav');
+	config_del_path('installedpackages/squidantivirus/config/0/icap_conf');
+	config_del_path('installedpackages/squidantivirus/config/0/icap_magic');
+	config_del_path('installedpackages/squidantivirus/config/0/freshclam_conf');
 }
 
 /*
@@ -192,19 +179,15 @@ function squid_antivirus_upgrade_config() {
 
 /* Proxy Server: Antivirus configuration handler */
 function squid_resync_antivirus() {
-	global $config, $antivirus_config;
+	global $antivirus_config;
+	$conf_path = 'installedpackages/squidantivirus/config/0';
 
 	$interserver_dbs = array('interserver256.hdb', 'interservertopline.db', 'shell.ldb', 'whitelist.fp');
 	$securiteinfo_dbs = array('securiteinfo.hdb', 'securiteinfo.ign2', 'javascript.ndb', 'spam_marketing.ndb',
 		'securiteinfohtml.hdb', 'securiteinfoascii.hdb', 'securiteinfoandroid.hdb', 'securiteinfoold.hdb',
 		'securiteinfopdf.hdb');
 	$securiteinfo_prem_dbs = array('securiteinfo.mdb', 'securiteinfo0hour.hdb');
-
-	if (is_array($config['installedpackages']['squidantivirus'])) {
-		$antivirus_config = $config['installedpackages']['squidantivirus']['config'][0];
-	} else {
-		$antivirus_config = array();
-	}
+	$antivirus_config = config_get_path($conf_path, []);
 
 	// squid.conf antivirus integration
 	if (squid_enabled() && ($antivirus_config['enable'] == "on")) {
@@ -258,7 +241,7 @@ EOF;
 				}
 			}
 			// Create configuration files
-			squid_antivirus_put_raw_config($config['installedpackages']['squidantivirus']['config'][0]);
+			squid_antivirus_put_raw_config(config_get_path($conf_path));
 		} else {
 			// unset raw configuration options
 			squid_antivirus_toggle_raw_config(false);
@@ -564,12 +547,8 @@ EOF;
 
 /* Patch paths and settings in configuration files template for pfSense-specific values on install */
 function squid_antivirus_install_config_files() {
-	global $config, $clamav_uid, $clamav_gid;
-	if (is_array($config['installedpackages']['squid'])) {
-		$squidsettings = $config['installedpackages']['squid']['config'][0];
-	} else {
-		$squidsettings = array();
-	}
+	global $clamav_uid, $clamav_gid;
+
 	// squidclamav.conf
 	// make a backup of default squidclamav.conf.sample first
 	$cf = SQUID_LOCALBASE . "/etc/c-icap/squidclamav.conf";
@@ -585,12 +564,10 @@ function squid_antivirus_install_config_files() {
 		$squidclamav_m[1] = "@/var/run/clamav/clamd.ctl@";
 		$squidclamav_r[1] = "/var/run/clamav/clamd.sock";
 		$squidclamav_m[2] = "@http\://proxy.domain.dom/cgi-bin/clwarn.cgi@";
-		$port = $config['system']['webgui']['port'];
-		if ($port == "") {
-			$squidclamav_r[2] = "{$config['system']['webgui']['protocol']}://{$config['system']['hostname']}.{$config['system']['domain']}/squid_clwarn.php";
-		} else {
-			$squidclamav_r[2] = "{$config['system']['webgui']['protocol']}://{$config['system']['hostname']}.{$config['system']['domain']}:{$port}/squid_clwarn.php";
-		}
+		$port = config_get_path('system/webgui/port');
+		$squidclamav_r[2] = config_get_path('system/webgui/protocol') . '://' .
+		    config_get_path('system/hostname') . '.' . config_get_path('system/domain') .
+		    (empty($port) ? '' : ":{$port}") . '/squid_clwarn.php';
 		$squidclamav_m[3] = "@dnslookup\s1@";
 		$squidclamav_r[3] = "dnslookup 0";
 		// This should match StreamMaxLength in clamd.conf
@@ -700,7 +677,6 @@ function squid_antivirus_install_config_files() {
 
 /* Get the raw pfSense template files for manual configuration and serialize them to config.xml */
 function squid_antivirus_get_raw_config() {
-	global $config;
 	$loaded = false;
 	$rawfiles = array("squidclamav.conf", "c-icap.conf", "c-icap.magic", "freshclam.conf", "clamd.conf");
 
@@ -733,10 +709,11 @@ function squid_antivirus_get_raw_config() {
 		}
 		// get the config from the files if not set (yet) in config.xml
 		if ($confopt) {
+			$conf_path = 'installedpackages/squidantivirus/config/0';
 			$conffile = SQUID_LOCALBASE . "/etc" . "{$confdir}" . "/{$rawfile}.pfsense";
 			if (file_exists($conffile)) {
-				if ($config['installedpackages']['squidantivirus']['config'][0][$confopt] == "") {
-					$config['installedpackages']['squidantivirus']['config'][0][$confopt] =  base64_encode(str_replace("\r", "", file_get_contents("{$conffile}")));
+				if (empty(config_get_path($conf_path . "/{$confopt}"))) {
+					config_set_path($conf_path . "/{$confopt}", base64_encode(str_replace("\r", "", file_get_contents("{$conffile}"))));
 					log_error("[squid] Successfully loaded '{$conffile}' configuration file");
 					$loaded = true;
 				}
@@ -744,7 +721,7 @@ function squid_antivirus_get_raw_config() {
 			} else {
 				squid_antivirus_install_config_files();
 				if (file_exists($conffile)) {
-					$config['installedpackages']['squidantivirus']['config'][0][$confopt] =  base64_encode(str_replace("\r", "", file_get_contents("{$conffile}")));
+					config_set_path($conf_path . "/{$confopt}", base64_encode(str_replace("\r", "", file_get_contents("{$conffile}"))));
 					log_error("[squid] Successfully loaded '{$conffile}' configuration file");
 					$loaded = true;
 				} else {
@@ -761,13 +738,13 @@ function squid_antivirus_get_raw_config() {
 
 /* Toggle the raw config state */
 function squid_antivirus_toggle_raw_config($state) {
-	global $config;
+	$conf_path = 'installedpackages/squidantivirus/config/0';
 	if ($state) {
 		// manual configuration enabled
 		$opts = array("clamav_url", "clamav_dbregion", "clamav_dbservers");
 		foreach ($opts as $opt) {
-			if (isset($config['installedpackages']['squidantivirus']['config'][0][$opt])) {
-				unset($config['installedpackages']['squidantivirus']['config'][0][$opt]);
+			if (config_path_enabled($conf_path, $opt)) {
+				config_del_path($conf_path . "/{$opt}");
 				log_error("[squid] Loaded '{$opt}' raw configuration file...");
 			}
 		}
@@ -777,12 +754,12 @@ function squid_antivirus_toggle_raw_config($state) {
 		// manual configuration disabled
 		$opts = array("raw_squidclamav_conf", "raw_cicap_conf", "raw_cicap_magic", "raw_freshclam_conf", "raw_clamd_conf");
 		foreach ($opts as $opt) {
-			if (isset($config['installedpackages']['squidantivirus']['config'][0][$opt])) {
-				unset($config['installedpackages']['squidantivirus']['config'][0][$opt]);
+			if (config_path_enabled($conf_path, $opt)) {
+				config_del_path($conf_path . "/{$opt}");
 				log_error("[squid] Unloaded '{$opt}' raw configuration.");
 			}
 		}
-		$config['installedpackages']['squidantivirus']['config'][0]['enable_advanced'] = "disabled";
+		config_set_path($conf_path . '/enable_advanced', 'disabled');
 	}
 }
 
@@ -899,12 +876,7 @@ EOF;
 
 /* (Re)start antivirus services if AV features are enabled */
 function squid_restart_antivirus() {
-	global $config;
-	if (is_array($config['installedpackages']['squidantivirus'])) {
-		$antivirus_config = $config['installedpackages']['squidantivirus']['config'][0];
-	} else {
-		$antivirus_config = array();
-	}
+	$antivirus_config = config_get_path('installedpackages/squidantivirus/config/0', []);
 
 	// reconfigure and (re)start service as needed if enabled, otherwise stop them
 	// do not (re)start antivirus services on boot
@@ -1011,13 +983,6 @@ function squid_stop_antivirus() {
 /* Proxy server: Antivirus input validation */
 /* Also handles manual AV updates and switching 'Manual Configuration' on/off */
 function squid_validate_antivirus($post, &$input_errors) {
-	global $config;
-	if (is_array($config['installedpackages']['squidantivirus'])) {
-		$antivirus_config = $config['installedpackages']['squidantivirus']['config'][0];
-	} else {
-		$antivirus_config = array();
-	}
-
 	/* Manual ClamAV database update */
 	if ($post['update_av'] == 'Update AV') {
 		squid_update_clamav();
@@ -1026,7 +991,7 @@ function squid_validate_antivirus($post, &$input_errors) {
 
 	/* Load the raw config files if manual configuration is enabled */
 	if ($post['load_advanced'] == 'Load Advanced') {
-		$config['installedpackages']['squidantivirus']['config'][0]['enable_advanced'] = "enabled";
+		config_set_path('installedpackages/squidantivirus/config/0/enable_advanced', 'enabled');
 		squid_antivirus_toggle_raw_config(true);
 		return;
 	}

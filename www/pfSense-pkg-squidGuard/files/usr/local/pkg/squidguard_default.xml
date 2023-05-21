@@ -64,7 +64,7 @@
 		<field>
 			<fielddescr>Proxy Denied Error</fielddescr>
 			<fieldname>deniedmessage</fieldname>
-			<description><![CDATA[The first part of the error message displayed to clients when access was denied. Defaults to <b>"Request denied by $g['product_name'] proxy"</b>]]></description>
+			<description><![CDATA[The first part of the error message displayed to clients when access was denied. Defaults to <b>Request denied by g_get('product_name') proxy</b>.]]></description>
 			<type>textarea</type>
 			<cols>65</cols>
 			<rows>2</rows>

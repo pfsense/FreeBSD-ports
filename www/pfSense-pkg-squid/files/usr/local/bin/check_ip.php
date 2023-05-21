@@ -24,7 +24,6 @@
 require_once("config.inc");
 require_once("globals.inc");
 error_reporting(0);
-global $config, $g;
 // stdin loop
 if (!defined(STDIN)) {
 	define("STDIN", fopen("php://stdin", "r"));
@@ -36,20 +35,18 @@ while (!feof(STDIN)) {
 	$check_ip = preg_replace('/[^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}]/', '', fgets(STDIN));
 	$status = '';
 
-	if (is_array($config['captiveportal'])) {
-		foreach ($config['captiveportal'] as $cpzone => $cp) {
-			if (isset($cp['enable'])) {
-				$db = "{$g['vardb_path']}/captiveportal{$cpzone}.db";
-				$status = squid_check_ip($db, $check_ip);
-				if ($status) {
-					break;
-				} elseif (is_array($cp['allowedip'])) {
-					foreach ($cp['allowedip'] as $ipent) {
-						if (ip_in_subnet($check_ip, "{$ipent['ip']}/{$ipent['sn']}") &&
-						    (($ipent['dir'] == 'from') || ($ipent['dir'] == 'both'))) {
-							$status = $check_ip;
-							break 2;
-						}
+	foreach (config_get_path('captiveportal', []) as $cpzone => $cp) {
+		if (isset($cp['enable'])) {
+			$db = g_get('vardb_path') . "/captiveportal{$cpzone}.db";
+			$status = squid_check_ip($db, $check_ip);
+			if ($status) {
+				break;
+			} elseif (is_array($cp['allowedip'])) {
+				foreach ($cp['allowedip'] as $ipent) {
+					if (ip_in_subnet($check_ip, "{$ipent['ip']}/{$ipent['sn']}") &&
+						(($ipent['dir'] == 'from') || ($ipent['dir'] == 'both'))) {
+						$status = $check_ip;
+						break 2;
 					}
 				}
 			}

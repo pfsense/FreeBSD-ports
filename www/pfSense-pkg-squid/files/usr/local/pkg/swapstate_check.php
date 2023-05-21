@@ -22,9 +22,8 @@
 require_once('config.inc');
 require_once('util.inc');
 require_once('squid.inc');
-global $config;
 
-$settings = $config['installedpackages']['squidcache']['config'][0];
+$settings = config_get_path('installedpackages/squidcache/config/0', []);
 // Only check the cache if Squid is actually caching.
 // If there is no cache then quietly do nothing.
 // If cache dir is located outside of /var/squid hierarchy, log some instructions.

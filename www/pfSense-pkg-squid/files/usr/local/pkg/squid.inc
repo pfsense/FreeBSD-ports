@@ -1192,7 +1192,7 @@ function squid_validate_auth($post, &$input_errors) {
 
 /* Proxy Server: General Settings configuration handler */
 function squid_resync_general() {
-	global $g, $valid_acls;
+	global $valid_acls;
 
 	if (is_array(config_get_path('installedpackages/squid'))) {
 		$settings = config_get_path('installedpackages/squid/config/0');
@@ -1402,7 +1402,7 @@ function squid_resync_general() {
 	}
 	$icp_port = ($settings['icp_port'] ? $settings['icp_port'] : 0);
 	$dns_v4_first = ($settings['dns_v4_first'] == "on" ? "on" : "off");
-	$piddir = "{$g['varrun_path']}/squid";
+	$piddir = g_get('varrun_path') . '/squid';
 	$pidfile = "{$piddir}/squid.pid";
 	if (!is_dir($piddir)) {
 		safe_mkdir($piddir, 0755);
@@ -2522,8 +2522,6 @@ if (!function_exists('pf_version')) {
 
 /* Perform the actual XMLRPC sync */
 function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
-	global $g;
-
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
 		log_error("[squid] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
@@ -2584,7 +2582,7 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
-		if ($g['debug']) {
+		if (g_get('debug')) {
 			$cli->setDebug(1);
 		}
 		/* Send our XMLRPC message and timeout after defined sync timeout value*/

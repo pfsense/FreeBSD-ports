@@ -115,7 +115,7 @@
 				]]>
 			</description>
 			<type>select_source</type>
-			<source>$config['installedpackages']['squidreversepeer']['config']</source>
+			<source>config_get_path('installedpackages/squidreversepeer/config', [])</source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>
