@@ -52,6 +52,7 @@ pkg/patches/bdffb77d1aa21770b23ef408ad9fba79d0825ec5.patch
 pkg/patches/be6d44179f8a82b7adbdf95336d68ee491963ae0.patch
 pkg/patches/bf21f67bbe2d1694ad1ad72728623dded9ace426.patch
 pkg/patches/c416f6fab10f149b15a352dfb609f86a98f6103d.patch
+pkg/patches/c5b8e57aa51ff82b45bd6cb925ba512f4c01dcba.patch
 pkg/patches/c5faa351c1ef6d4555478a7f50b3a16ece7e0b2a.patch
 pkg/patches/cf2a2f82c2aa551b26a6d9606d5e6da1e760ff6b.patch
 pkg/patches/d015b45a395045a56b9190f284459a6a4cc57568.patch
