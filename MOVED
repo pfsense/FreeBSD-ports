@@ -5120,7 +5120,6 @@ sysutils/syslog-ng323|sysutils/syslog-ng|2020-10-12|Has expired: Agreed upon ups
 devel/libsoup-gnome|devel/libsoup|2020-10-12|Reunited into on package they have the same dependencies
 sysutils/plasma5-user-manager|x11/plasma5-plasma-desktop|2020-10-13|Reintegrated into other plasma5 components
 devel/geany-plugin-geanypy||2020-10-15|Has expired: Uses deprecated version of python
-comms/chirp||2020-10-16|Use deprecated version of python
 x11-toolkits/py-gtk2||2020-10-16|Remove deprecated binding replace by py-gobject
 www/py-unit|www/unit-python|2020-10-21|Rename to be more consistent with the naming convention
 sysutils/phpfpm_exporter|net-mgmt/phpfpm_exporter|2020-10-24|Move to net-mgmt category
@@ -7545,3 +7544,21 @@ devel/rubygem-ruby-openai|www/rubygem-ruby-openai37|2023-05-16|Moved to match ww
 sysutils/rundeck2|sysutils/rundeck3|2023-05-17|Has expired: unmaintained and newer version available in sysutils/rundeck3
 devel/gitklient|devel/kommit|2023-05-17|Renamed upstream
 math/py-python-igraph|math/py-igraph|2023-05-18|Rename to match upstream renaming
+www/py-dj40-django-auth-ldap|www/py-dj41-django-auth-ldap|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-rich|www/py-dj41-django-rich|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-filter|www/py-dj41-django-filter|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-debug-toolbar|www/py-dj41-django-debug-toolbar|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-graphiql-debug-toolbar|www/py-dj41-django-graphiql-debug-toolbar|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-redis|www/py-dj41-django-redis|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+devel/py-dj40-django-rq|devel/py-dj41-django-rq|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-cors-headers|www/py-dj41-django-cors-headers|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-drf-yasg|www/py-dj41-drf-yasg|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-tables2|www/py-dj41-django-tables2|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-taggit|www/py-dj41-django-taggit|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+devel/py-dj40-graphene-django|devel/py-dj41-graphene-django|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-mptt|www/py-dj41-django-mptt|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-js-asset|www/py-dj41-django-js-asset|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-prometheus|www/py-dj41-django-prometheus|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-django-timezone-field|www/py-dj41-django-timezone-field|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-dj40-djangorestframework|www/py-dj41-djangorestframework|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to the Django 4.1+ version of this port. See https://www.djangoproject.com/download/
+www/py-django40|www/py-django41|2023-05-20|Has expired: Extended support of Django 4.0 ends April 2023, upgrade to a newer version of Django. See https://www.djangoproject.com/download/
