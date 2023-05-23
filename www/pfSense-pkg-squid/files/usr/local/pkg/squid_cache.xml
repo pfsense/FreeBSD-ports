@@ -418,8 +418,8 @@
 	<![CDATA[
 		global $oldcachedir;
 		// do not leave orphaned cachedirs if harddisk_cache_location changed
-		if ($_POST['harddisk_cache_location'] != $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location']) {
-			$oldcachedir = $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location'];
+		if ($_POST['harddisk_cache_location'] != config_get_path('installedpackages/squidcache/config/0/harddisk_cache_location')) {
+			$oldcachedir = config_get_path('installedpackages/squidcache/config/0/harddisk_cache_location');
 			if ($oldcachedir != "") {
 				$cachedir_changed = true;
 			}

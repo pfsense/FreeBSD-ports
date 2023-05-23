@@ -4263,6 +4263,7 @@
     SUBDIR += py-azure-mgmt-advisor
     SUBDIR += py-azure-mgmt-apimanagement
     SUBDIR += py-azure-mgmt-appconfiguration
+    SUBDIR += py-azure-mgmt-appcontainers
     SUBDIR += py-azure-mgmt-applicationinsights
     SUBDIR += py-azure-mgmt-authorization
     SUBDIR += py-azure-mgmt-batch
@@ -4543,8 +4544,6 @@
     SUBDIR += py-diskcache
     SUBDIR += py-distlib
     SUBDIR += py-distributed
-    SUBDIR += py-dj40-django-rq
-    SUBDIR += py-dj40-graphene-django
     SUBDIR += py-dj41-django-rq
     SUBDIR += py-dj41-graphene-django
     SUBDIR += py-django-rq

@@ -30,29 +30,11 @@ require_once('util.inc');
 
 /* Reverse Proxy Server configuration handler */
 function squid_resync_reverse() {
-	global $config;
-
 	// config file
-	if (is_array($config['installedpackages']['squidreversegeneral'])) {
-		$settings = $config['installedpackages']['squidreversegeneral']['config'][0];
-	} else {
-		$settings = array();
-	}
-	if (is_array($config['installedpackages']['squidreversepeer'])) {
-		$reverse_peers = $config['installedpackages']['squidreversepeer']['config'];
-	} else {
-		$reverse_peers = array();
-	}
-	if (is_array($config['installedpackages']['squidreverseuri'])) {
-		$reverse_maps = $config['installedpackages']['squidreverseuri']['config'];
-	} else {
-		$reverse_maps = array();
-	}
-	if (is_array($config['installedpackages']['squidreverseredir'])) {
-		$reverse_redir = $config['installedpackages']['squidreverseredir']['config'];
-	} else {
-		$reverse_redir = array();
-	}
+	$settings = config_get_path('installedpackages/squidreversegeneral/config/0', []);
+	$reverse_peers = config_get_path('installedpackages/squidreversepeer/config', []);
+	$reverse_maps = config_get_path('installedpackages/squidreverseuri/config', []);
+	$reverse_redir = config_get_path('installedpackages/squidreverseredir/config', []);
 
 	$conf = "# Reverse Proxy settings\n";
 
@@ -387,13 +369,7 @@ function squid_resync_reverse() {
 
 /* Refresh Client Certificate Revocation List */
 function squid_refresh_crl() {
-	global $config;
-
-	if (is_array($config['installedpackages']['squidreversegeneral'])) {
-		$settings = $config['installedpackages']['squidreversegeneral']['config'][0];
-	} else {
-		$settings = array();
-	}
+	$settings = config_get_path('installedpackages/squidreversegeneral/config/0', []);
 
 	if (isset($settings['reverse_check_clientca']) && $settings['reverse_check_clientca'] == "on" && isset($settings['reverse_ssl_clientcrl']) && $settings['reverse_ssl_clientcrl'] != 'none') {
 		$crl = lookup_crl($settings['reverse_ssl_clientcrl']);
@@ -408,18 +384,14 @@ function squid_refresh_crl() {
 
 /* Check whether Squid reverse proxy is enabled */
 function squid_reverse_enabled() {
-	global $config, $reverse_proxy_enabled;
+	global $reverse_proxy_enabled;
 	$reverse_proxy_enabled = false;
+	$conf_path = 'installedpackages/squidreversegeneral/config/0';
 
-	if (is_array($config['installedpackages']['squidreversegeneral']['config'])) {
-		// check whether HTTP or HTTPS reverse proxy is enabled ...
-		if ($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_http'] == "on" ||
-		    $config['installedpackages']['squidreversegeneral']['config'][0]['reverse_https'] == "on") {
-			// ... and has at least one reverse interface configured
-			if (!empty($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_interface'])) {
-				$reverse_proxy_enabled = true;
-			}
-		}
+	// check whether HTTP or HTTPS reverse proxy is enabled and has at least one reverse interface configured
+	if ((config_get_path($conf_path . '/reverse_http') == 'on' || config_get_path($conf_path . '/reverse_https') == 'on') &&
+	    !empty(config_get_path($conf_path . '/reverse_interface'))) {
+		$reverse_proxy_enabled = true;
 	}
 
 	return $reverse_proxy_enabled;
@@ -427,37 +399,40 @@ function squid_reverse_enabled() {
 
 /* Migrate reverse proxy configuration from old Squid package versions */
 function squid_reverse_upgrade_config() {
-	global $config;
-	if (is_array($config['installedpackages']['squidreverse'])) {
-		$old_reverse_settings = $config['installedpackages']['squidreverse']['config'][0];
+	$conf_path_settings = 'installedpackages/squidreversegeneral/config/0';
+	$conf_path_reverse_peers = 'installedpackages/squidreversepeer/config';
+	$conf_path_reverse_maps = 'installedpackages/squidreverseuri/config';
+	$reverse_peers = config_get_path($conf_path_reverse_peers, []);
+	$reverse_maps = config_get_path($conf_path_reverse_maps, []);
+	$old_reverse_settings = config_get_path('installedpackages/squidreverse/config/0');
 
+	if (is_array(config_get_path('installedpackages/squidreverse'))) {
 		// settings
-		if (!is_array($config['installedpackages']['squidreversegeneral'])) {
-			init_config_arr(array('installedpackages', 'squidreversegeneral', 'config'));
-			$config['installedpackages']['squidreversegeneral']['config'][0] = $old_reverse_settings;
-			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_cache_peer']);
-			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_uri']);
-			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_acl']);
+		if (!is_array(config_get_path('installedpackages/squidreversegeneral'))) {
+			config_set_path($conf_path_settings, $old_reverse_settings);
+			config_del_path($conf_path_settings . '/reverse_cache_peer');
+			config_del_path($conf_path_settings . '/reverse_uri');
+			config_del_path($conf_path_settings . '/reverse_acl');
 		}
 
 		// peers
-		if (!is_array($config['installedpackages']['squidreversepeer'])) {
+		if (!is_array(config_get_path('installedpackages/squidreversepeer'))) {
 			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_cache_peer'])) as $cache_peers) {
 				foreach (explode(";", $cache_peers) as $cache_peer) {
-					init_config_arr(array('installedpackages', 'squidreversepeer', 'config'));
-					$config['installedpackages']['squidreversepeer']['config'][] = array(
+					$reverse_peers[] = array(
 						'description' => 'migrated',
 						'enable' => 'on',
 						'name' => $cache_peer[0],
 						'port' => $cache_peer[1],
 						'protocol' => $cache_peer[2]
 					);
+					config_set_path($conf_path_reverse_peers, $reverse_peers);
 				}
 			}
 		}
 
 		// mappings
-		if (!is_array($config['installedpackages']['squidreverseuri'])) {
+		if (!is_array(config_get_path('installedpackages/squidreverseuri'))) {
 			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_acl'])) as $acls) {
 				foreach (explode(";", $acls) as $acl) {
 					array_push(${'peer_'.$acl[0]}, $acl[1]);
@@ -466,8 +441,7 @@ function squid_reverse_upgrade_config() {
 			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_uri'])) as $uris) {
 				foreach (explode(";", $uris) as $uri) {
 					$peer_list = (is_array(${'peer_' . $uri[0]}) ? implode(",", ${'peer_' . $uri[0]}) : "");
-					init_config_arr(array('installedpackages', 'squidreverseuri', 'config'));
-					$config['installedpackages']['squidreverseuri']['config'][] = array(
+					$reverse_maps[] = array(
 						'description' => 'migrated',
 						'enable' => 'on',
 						'name' => $uri[0],
@@ -475,6 +449,7 @@ function squid_reverse_upgrade_config() {
 						'vhost' => $uri[2],
 						'peers' => $peer_list
 					);
+					config_set_path($conf_path_reverse_maps, $reverse_maps);
 				}
 			}
 		}
@@ -483,8 +458,6 @@ function squid_reverse_upgrade_config() {
 
 /* Reverse Proxy Server input validation */
 function squid_validate_reverse($post, &$input_errors) {
-	global $config;
-
 	/* Manually refresh client CRL */
 	if ($post['refresh_crl'] == 'Refresh CRL') {
 		log_error("[squid] Client Certificate Revocation List refresh forced via GUI. Refreshing now...");

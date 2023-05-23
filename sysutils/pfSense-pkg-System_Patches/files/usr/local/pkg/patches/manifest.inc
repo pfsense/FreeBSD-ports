@@ -26,6 +26,20 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => 'c5b8e57aa51ff82b45bd6cb925ba512f4c01dcba',
+  'versions' => ['23.01', '22.05.1', '22.05', '2.6.0'],
+  'descr' => 'Fix potential arbitrary command execution in interfaces_bridge_edit.php from bridge interface names',
+  'links' => [
+      [ 'text' => 'pfSense-SA-23_06.webgui',
+         'url' => 'https://docs.netgate.com/downloads/pfSense-SA-23_06.webgui', ],
+      [ 'text' => 'Redmine #14281',
+         'url' => 'https://redmine.pfsense.org/issues/14281', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '66b989e824042c0cf5e75b1cb245b0ae13548949',
   'versions' => ['23.01'],
   'descr' => 'Fix interface name / dynamic gateway names not using upper case',

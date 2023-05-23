@@ -97,7 +97,6 @@ sg_init(convert_pfxml_to_sgxml());
 # ==============================================================================
 function squidguard_validate(&$post, &$input_errors)
 {
-    global $config, $g;
     $submit = isset($_GET['submit']) ? $_GET['submit'] : $_POST['submit'];
 
     # check config if 'Apply'
@@ -340,9 +339,7 @@ function squidguard_resync() {
 # -----------------------------------------------------------------------------
 
 function squidguard_resync_acl() {
-    global $config; # !!! ORDER !!!
-
-    $conf = $config['installedpackages'][MODULE_ACL]['config'];
+    $conf = config_get_path('installedpackages/' . MODULE_ACL . '/config');
     $id = isset($_POST['id']) ? $_POST['id'] : $_GET['id'];
 
     # --- sources part ---
@@ -364,8 +361,8 @@ function squidguard_resync_acl() {
         $src_new = array_values($src_new); # make keys '0, 1, 2, ...'
 
         # renew config
-        unset ($config['installedpackages'][MODULE_ACL]['config']);
-        $config['installedpackages'][MODULE_ACL]['config'] = $src_new;
+        config_del_path('installedpackages/' . MODULE_ACL . '/config');
+        config_set_path('installedpackages/' . MODULE_ACL . '/config', $src_new);
         write_config('Update squidguardacl config');
 
         # renew global $squidguard_config
@@ -378,9 +375,7 @@ function squidguard_resync_acl() {
 # -----------------------------------------------------------------------------
 
 function squidguard_resync_dest() {
-	global $config; # !!! ORDER !!!
-
-	$conf = $config['installedpackages'][MODULE_DESTINATION]['config'];
+	$conf = config_get_path('installedpackages/' . MODULE_DESTINATION . '/config');
 	$id = isset($_POST['id']) ? $_POST['id'] : $_GET['id'];
 
 	# --- sources part ---
@@ -402,8 +397,8 @@ function squidguard_resync_dest() {
 		$src_new = array_values($src_new); # make keys '0, 1, 2, ...'
 
 		# renew config
-		unset ($config['installedpackages'][MODULE_DESTINATION]['config']);
-		$config['installedpackages'][MODULE_DESTINATION]['config'] = $src_new;
+		config_del_path('installedpackages/' . MODULE_DESTINATION . '/config');
+		config_set_path('installedpackages/' . MODULE_DESTINATION . '/config', $src_new);
 		write_config('Update squidguarddest config');
 
 		# renew global $squidguard_config
@@ -419,10 +414,9 @@ function squidguard_resync_dest() {
 # get_pkgconf/sgconf_items_list
 # -----------------------------------------------------------------------------
 function get_pkgconf_items_list($pkg_gui_name, $fieldname) {
-    global $config;
     $res = array();
 
-    $conf = $config['installedpackages'][$pkg_gui_name]['config'];
+    $conf = config_get_path("installedpackages/{$pkg_gui_name}/config");
     if (is_array($conf)) {
         foreach($conf as $cf) {
         	$res[] = $cf[$fieldname];
@@ -476,7 +470,6 @@ function squidguard_before_form(&$pkg) {
 # squidguard_before_form_acl
 # -----------------------------------------------------------------------------
 function squidguard_before_form_acl(&$pkg, $is_acl=true) {
-    global $g;
     global $squidguard_config;
 
     $current_id   = '';
@@ -673,7 +666,7 @@ function squidguard_before_form_acl(&$pkg, $is_acl=true) {
 # squidguard_before_form_dest
 # -----------------------------------------------------------------------------
 function squidguard_before_form_dest(&$pkg) {
-	global $g, $squidguard_config;
+	global $squidguard_config;
 	$destination_items = get_sgconf_items_list(F_DESTINATIONS, 'name');
 //var_dump($squidguard_config);
 	$i=0;
@@ -738,8 +731,6 @@ function make_grid_blacklist() {
 # make_grid_controls
 # -----------------------------------------------------------------------------
 function make_grid_controls($type, $items, $enable_overtime = true) {
-    global $g;
-
     $res = '';
     $tbl = '';
     $color = '';
@@ -1022,9 +1013,9 @@ EOF;
 function convert_pfxml_to_sgxml() {
 	capability_update_source();
 
-	global $config;
+	$conf = config_get_path('/');
 	$sgxml = array();
-	$pfxml = $config['installedpackages'][MODULE_GENERAL]['config'][0];
+	$pfxml = config_get_path('installedpackages/' . MODULE_GENERAL . '/config/0');
 
 	$sgxml[F_LOGDIR]           = SQUIDGUARD_LOGDIR;
 	$sgxml[F_DBHOME]           = SQUIDGUARD_DBHOME;
@@ -1041,12 +1032,12 @@ function convert_pfxml_to_sgxml() {
 	$sgxml[F_ENABLED]          = $pfxml[F_SQUIDGUARDENABLE];
 	$sgxml[F_BLACKLISTENABLED] = $pfxml[F_BLACKLIST];
 	$sgxml[F_BLACKLISTURL]     = $pfxml[F_BLACKLISTURL];
-	$sgxml[F_SOURCES]          = convert_pfxml_to_sgxml_source($config);
-	$sgxml[F_DESTINATIONS]     = convert_pfxml_to_sgxml_destination($config);
-	$sgxml[F_REWRITES]         = convert_pfxml_to_sgxml_rewrite($config);
-	$sgxml[F_TIMES]            = convert_pfxml_to_sgxml_time($config);
-	$sgxml[F_ACLS]             = convert_pfxml_to_sgxml_acl($config);
-	$sgxml[F_DEFAULT]          = convert_pfxml_to_sgxml_default($config);
+	$sgxml[F_SOURCES]          = convert_pfxml_to_sgxml_source($conf);
+	$sgxml[F_DESTINATIONS]     = convert_pfxml_to_sgxml_destination($conf);
+	$sgxml[F_REWRITES]         = convert_pfxml_to_sgxml_rewrite($conf);
+	$sgxml[F_TIMES]            = convert_pfxml_to_sgxml_time($conf);
+	$sgxml[F_ACLS]             = convert_pfxml_to_sgxml_acl($conf);
+	$sgxml[F_DEFAULT]          = convert_pfxml_to_sgxml_default($conf);
 
 	# url_rewrite_children options
 	$sgxml[F_REWRITE_CH]		= $pfxml['rewrite_children'];
@@ -1062,11 +1053,11 @@ function convert_pfxml_to_sgxml() {
 	$sgxml[F_ADV_BLANKIMG] = $pfxml['adv_blankimg']  == 'on' ? 'on' : 'off';
 
 	# other
-	$lanip = $config['interfaces']['lan']['ipaddr'];
+	$lanip = config_get_path('interfaces/lan/ipaddr');
 	$sgxml[F_CURRENT_LAN_IP] = $lanip;
 
 	# transparent
-	$squidxml = $config['installedpackages']['squid']['config'][0];
+	$squidxml = config_get_path('installedpackages/squid/config/0');
 	if($squidxml['transparent_proxy'] == 'on') {
 		$sgxml[F_SQUID_TRANSPARENT_MODE] = 'on';
 	} else {
@@ -1074,8 +1065,8 @@ function convert_pfxml_to_sgxml() {
 	}
 
 	# WebGUI
-	$sgxml[F_CURRENT_GUI_PORT]  = $config['system']['webgui']['port'];
-	$sgxml[F_CURRENT_GUI_PROTO] = $config['system']['webgui']['protocol'];
+	$sgxml[F_CURRENT_GUI_PORT]  = config_get_path('system/webgui/port');
+	$sgxml[F_CURRENT_GUI_PROTO] = config_get_path('system/webgui/protocol');
 
 	# store cfg cache
 	$cfg_xml = dump_xml_config($sgxml, F_SQUIDGUARD);
@@ -1098,7 +1089,7 @@ function convert_pfxml_to_sgxml() {
 function convert_pfxml_to_sgxml_source($pfconfig) {
     $sgxml = array();
     $sgxml[F_ITEM] = array();
-    $pfxml = $pfconfig['installedpackages'][MODULE_ACL]['config'];
+    $pfxml = array_get_path($pfconfig, 'installedpackages/' . MODULE_ACL . '/config');
 
 	if (is_array($pfxml)) {
 		foreach($pfxml as $pfx) {
@@ -1121,7 +1112,7 @@ function convert_pfxml_to_sgxml_source($pfconfig) {
 function convert_pfxml_to_sgxml_destination($pfconfig) {
     $sgxml = array();
     $sgxml[F_ITEM] = array();
-    $pfxml = $pfconfig['installedpackages'][MODULE_DESTINATION]['config'];
+    $pfxml = array_get_path($pfconfig, 'installedpackages/' . MODULE_DESTINATION . '/config');
 
     if (is_array($pfxml)) {
         foreach($pfxml as $pfx) {
@@ -1147,7 +1138,7 @@ function convert_pfxml_to_sgxml_destination($pfconfig) {
 function convert_pfxml_to_sgxml_rewrite($pfconfig) {
     $sgxml = array();
 
-    $pfxml = $pfconfig['installedpackages'][MODULE_REWRITE]['config'];
+    $pfxml = array_get_path($pfconfig, 'installedpackages/' . MODULE_REWRITE . '/config');
     if (!is_array($pfxml)) {
     	$pfxml = array();
     }
@@ -1190,7 +1181,7 @@ function convert_pfxml_to_sgxml_rewrite($pfconfig) {
 function convert_pfxml_to_sgxml_time($pfconfig) {
     $sgxml = array();
 
-    $pfxml = $pfconfig['installedpackages'][MODULE_TIME]['config'];
+    $pfxml = array_get_path($pfconfig, 'installedpackages/' . MODULE_TIME . '/config');
     if (!is_array($pfxml)) {
     	$pfxml = array();
     }
@@ -1227,7 +1218,7 @@ function convert_pfxml_to_sgxml_time($pfconfig) {
 function convert_pfxml_to_sgxml_acl($pfconfig) {
     $sgxml = array();
 
-    $pfxml = $pfconfig['installedpackages'][MODULE_ACL]['config'];
+    $pfxml = array_get_path($pfconfig, 'installedpackages/' . MODULE_ACL . '/config');
     if (!is_array($pfxml)) {
     	$pfxml = array();
     }
@@ -1287,7 +1278,7 @@ function convert_pfxml_to_sgxml_acl($pfconfig) {
 # sgxml_acl: [name][desc][disabled][timename][destname][redirect][rewritename][over_redirect][over_rewritename]
 # -----------------------------------------------------------------
 function convert_pfxml_to_sgxml_default($pfconfig) {
-    $pfxml = $pfconfig['installedpackages'][MODULE_DEFAULT]['config'];
+    $pfxml = array_get_path($pfconfig, 'installedpackages/' . MODULE_DEFAULT . '/config');
 
     if (!is_array($pfxml)) {
     	$pfxml = array();
@@ -1330,27 +1321,24 @@ function convert_pfxml_to_sgxml_default($pfconfig) {
 # =================================================================
 # convert old ver. squidguard config.
 function capability_update_source() {
-	# ! use global var $config ONLY !
-    global $config;
     $conf_changed = false;
 
-    if (isset($config['installedpackages'][MODULE_ACL]['config'])) {
-        $tconf = &$config['installedpackages'][MODULE_ACL]['config'];
-        foreach($tconf as $key => $cfg) {
-            if (isset($cfg['iplist'])) {
-                $tconf[$key][F_SOURCE] .= " " . $cfg['iplist'];
-                unset($tconf[$key]['iplist']);
-                $conf_changed = true;
-            }
-            if (isset($cfg[F_DOMAINS])) {
-                $tconf[$key][F_SOURCE] .= " " . $cfg[F_DOMAINS];
-                unset($tconf[$key][F_DOMAINS]);
-                $conf_changed = true;
-            }
-        }
+	$conf_path = 'installedpackages/' . MODULE_ACL . '/config';
+	foreach(config_get_path($conf_path, []) as $key => $cfg) {
+		$aclconf = "{$conf_path}/{$key}/";
+		if (isset($cfg[F_IPLIST])) {
+			config_set_path($aclconf . F_SOURCE, config_get_path($aclconf . F_SOURCE, '') . ' ' . $cfg[F_IPLIST]);
+			config_del_path($aclconf . F_IPLIST);
+			$conf_changed = true;
+		}
+		if (isset($cfg[F_DOMAINS])) {
+			config_set_path($aclconf . F_SOURCE, config_get_path($aclconf . F_SOURCE, '') . ' ' . $cfg[F_DOMAINS]);
+			config_del_path($aclconf . F_DOMAINS);
+			$conf_changed = true;
+		}
+	}
 
-        if ($conf_changed) write_config('Convert old ver. squidguard config.');
-    }
+	if ($conf_changed) write_config('Convert old ver. squidguard config.');
 }
 # ------------------------------------------------------------------
 # get_item_id - get item 'id' from get/post
@@ -1553,39 +1541,39 @@ function squidguard_blacklist_list()
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
 function squidguard_sync_on_changes() {
-	global $config, $g;
+	$conf_path = 'installedpackages/squidguardsync/config/0';
 
-	if (is_array($config['installedpackages']['squidguardsync'])) {
-		$synconchanges = $config['installedpackages']['squidguardsync']['config'][0]['varsyncenablexmlrpc'];
-		$varsynctimeout = $config['installedpackages']['squidguardsync']['config'][0]['varsynctimeout'] ?: '150';
+	if (is_array(config_get_path('installedpackages/squidguardsync'))) {
+		$synconchanges = config_get_path("{$conf_path}/varsyncenablexmlrpc");
+		$varsynctimeout = config_get_path("{$conf_path}/varsynctimeout", '150');
 	} else {
 		return;
 	}
 
 	switch ($synconchanges) {
 		case "manual":
-			if (is_array($config['installedpackages']['squidguardsync']['config'][0]['row'])) {
-				$rs = $config['installedpackages']['squidguardsync']['config'][0]['row'];
+			if (is_array(config_get_path("{$conf_path}/row"))) {
+				$rs = config_get_path("{$conf_path}/row");
 			} else {
 				log_error("[Squidguard]  XMLRPC sync is enabled but there are no hosts configured as replication targets.");
 				return;
 			}
 			break;
 		case "auto":
-			if (is_array($config['hasync'])) {
-				$system_carp = $config['hasync'];
+			if (is_array(config_get_path('hasync'))) {
+				$system_carp = config_get_path('hasync');
 				$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
 				$rs[0]['varsyncusername'] = $system_carp['username'];
 				$rs[0]['varsyncpassword'] = $system_carp['password'];
 				$rs[0]['varsyncdestinenable'] = FALSE;
 
 				// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-				if ($config['system']['webgui']['protocol'] == 'http') {
+				if (config_get_path('system/webgui/protocol') == 'http') {
 					$rs[0]['varsyncprotocol'] = 'http';
-					$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '80';
+					$rs[0]['varsyncport'] = config_get_path('system/webgui/port', '80');
 				} else {
 					$rs[0]['varsyncprotocol'] = 'https';
-					$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '443';
+					$rs[0]['varsyncport'] = config_get_path('system/webgui/port', '443');
 				}
 				if ($system_carp['synchronizetoip'] == "") {
 					log_error("[Squidguard] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
@@ -1649,8 +1637,6 @@ if(!function_exists('pf_version')) {
 
 /* Do the actual XMLRPC sync */
 function squidguard_do_xmlrpc_sync($sync_to_ip, $varsyncport, $varsyncprotocol, $username, $password, $varsynctimeout) {
-	global $config, $g;
-
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
 		log_error("[SquidGuard] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
@@ -1658,12 +1644,12 @@ function squidguard_do_xmlrpc_sync($sync_to_ip, $varsyncport, $varsyncprotocol, 
 
 	/* XML will hold the sections to sync. */
 	$xml = array();
-	$xml['squidguardgeneral'] = $config['installedpackages']['squidguardgeneral'];
-	$xml['squidguardacl'] = $config['installedpackages']['squidguardacl'];
-	$xml['squidguarddefault'] = $config['installedpackages']['squidguarddefault'];
-	$xml['squidguarddest'] = $config['installedpackages']['squidguarddest'];
-	$xml['squidguardrewrite'] = $config['installedpackages']['squidguardrewrite'];
-	$xml['squidguardtime'] = $config['installedpackages']['squidguardtime'];
+	$xml['squidguardgeneral'] = config_get_path('installedpackages/squidguardgeneral');
+	$xml['squidguardacl'] = config_get_path('installedpackages/squidguardacl');
+	$xml['squidguarddefault'] = config_get_path('installedpackages/squidguarddefault');
+	$xml['squidguarddest'] = config_get_path('installedpackages/squidguarddest');
+	$xml['squidguardrewrite'] = config_get_path('installedpackages/squidguardrewrite');
+	$xml['squidguardtime'] = config_get_path('installedpackages/squidguardtime');
 
 	$execcmd  = "require_once('/usr/local/pkg/squidguard.inc');\n";
 	$execcmd .= "squidguard_all_after_XMLRPC_resync();";
@@ -1700,7 +1686,7 @@ function squidguard_do_xmlrpc_sync($sync_to_ip, $varsyncport, $varsyncprotocol, 
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
-		if ($g['debug']) {
+		if (g_get('debug')) {
 			$cli->setDebug(1);
 		}
 		/* Send our XMLRPC message and timeout after $varsynctimeout seconds */

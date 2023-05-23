@@ -281,8 +281,8 @@
 	</custom_php_before_form_command>
 	<custom_php_after_head_command>
 		<![CDATA[
-		$transparent_proxy = ($config['installedpackages']['squid']['config'][0]['transparent_proxy'] == 'on');
-		if ($transparent_proxy and preg_match("/(local|ldap|radius|ntlm)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
+		$transparent_proxy = (config_get_path('installedpackages/squid/config/0/transparent_proxy') == 'on');
+		if ($transparent_proxy and preg_match("/(local|ldap|radius|ntlm)/", config_get_path('installedpackages/squidauth/config/0/auth_method'))) {
 			$input_errors[] = "Authentication cannot be enabled while transparent proxy mode is enabled";
 		}
 		squid_print_javascript_auth();

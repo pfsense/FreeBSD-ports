@@ -135,7 +135,7 @@ function get_page($body) { ?>
  * Generate an error page for the user
  */
 function get_error_page($er_code_id, $err_msg='') {
-	global $g, $config, $err_code, $cl;
+	global $err_code, $cl;
 	header("HTTP/1.1 " . $err_code[$er_code_id]);
 
 ?>
@@ -144,10 +144,10 @@ function get_error_page($er_code_id, $err_msg='') {
 		<title>squidGuard Error page</title>
 	</head>
 	<body>
-	<?php if ($config['installedpackages']['squidguarddefault']['config'][0]['deniedmessage']): ?>
-		<h3><?= $config['installedpackages']['squidguarddefault']['config'][0]['deniedmessage'] ?>: <?= htmlspecialchars($err_code[$er_code_id]) ?></h3>;
+	<?php if (config_get_path('installedpackages/squidguarddefault/config/0/deniedmessage')): ?>
+		<h3><?= config_get_path('installedpackages/squidguarddefault/config/0/deniedmessage') ?>: <?= htmlspecialchars($err_code[$er_code_id]) ?></h3>;
 	<?php else: ?>
-		<h3>Request denied by <?= $g['product_name'] ?> proxy: <?= htmlspecialchars($err_code[$er_code_id]) ?></h3>
+		<h3>Request denied by <?= g_get('product_name') ?> proxy: <?= htmlspecialchars($err_code[$er_code_id]) ?></h3>
 	<?php endif; ?>
 
 	<?php if ($err_msg): ?>
