@@ -86,11 +86,15 @@ function print_rrd_summary($rrd, $units, $startyear, $startday) {
 		if ($startyear > 0 && $startyear != $year) continue;
 		foreach (range(12, 1, -1) as $month) {
 			$start = strtotime(date("{$month}/{$startday}/{$year}"));
-			$end = strtotime("-1 second", strtotime("+1 month", $start));
+			$end = strtotime("+1 month", $start);
+			/* End time should be one second less than the start of the
+			 * next month otherwise RRDtool will include the first day
+			 * of the next month in the summary. */
+			$end = strtotime("-1 second", $end);
 			if ($start > $last || $end < $first) continue;
 			if ($start < $first) $start = $first;
-			if ($end > $last) $end = $last;
-			$data = fetch_rrd_summary($rrd, "epoch+{$start}s", "epoch+{$end}s", $units, 24*60*60);
+			/* Use at-time format as unix timestamps can be problematic in various ways. */
+			$data = fetch_rrd_summary($rrd, date('m/d/Y H:i', $start), date('m/d/Y H:i', $end), $units, 24*60*60);
 			?>
 				<tr>
 					<td><?=date("Y-m-d", $start); ?> to <?=date("Y-m-d", $end); ?></td>
