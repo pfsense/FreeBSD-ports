@@ -47,32 +47,49 @@ $units = filter_input(INPUT_POST, "units", FILTER_VALIDATE_INT,
 	array("options" => array("min_range" => min(array_values($unitlist)), "max_range" => max(array_values($unitlist)) )) );
 $units = in_array($units, $unitlist) ? $units : $unitlist["GiB"];
 
-// 1:timestamp 2:inpass 3:outpass 4:inblock 5:outblock 6:inpass6 7:outpass6 8:inblock6 9:outblock6
-// total_in = $2 + $4 + $6 + $8; total_out = $3 + $7 (blocked outbound traffic is excluded)
+/* rrd_fetch() outputs a multi-level array first by DS name, then timestamp */
 function fetch_rrd_summary($rrd, $start, $end, $units=2, $resolution=24*60*60) {
-	$traffic = array();
-	$rrd = escapeshellarg("/var/db/rrd/{$rrd}");
-	$start = escapeshellarg($start);
-	$end = escapeshellarg($end);
-	exec("/usr/local/bin/rrdtool fetch {$rrd} AVERAGE -r {$resolution} -s {$start} -e {$end}", $traffic);
+	$rrd = "/var/db/rrd/{$rrd}";
 	$divisor = 1024 ** $units;
-	$t_keys = preg_split("/\s+/", $traffic[0]);	// grab keys
-	//print "time=$t_first st=$start end=$end div=$divisor res=$resolution";
-	$traffic = preg_grep("/^[0-9]+:/", $traffic);	// select data rows
-	$traffic = preg_grep("/nan/", $traffic, PREG_GREP_INVERT);	// filter nan rows
-	$data = array( "first" => time() );
-	foreach ( $traffic as $t ) {
-		$t = preg_split("/[\s:]+/", $t);
-		if (count($t) != count($t_keys)) continue;	// error: field mismatch
-		$data["first"] = min($t[0], $data["first"]);
-		$data["last"] = max($t[0], $data["last"]);
-		foreach ($t_keys as $i => $k) { $data[$k] += ($t[$i] / $divisor) * $resolution; }
+
+	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
+	$traffic = rrd_fetch($rrd, $rrd_options);
+
+	if (!is_array($traffic) ||
+	    empty($traffic) ||
+	    !is_array($traffic["data"])) {
+		return [];
 	}
-	// Adjust for resolution
-	foreach ($t_keys as $k) {
-		if (preg_match("/^outblock/", $k)) continue;
-		$data["total_in"] += preg_match("/^in/", $k) ? $data[$k] : 0;
-		$data["total_out"] += preg_match("/^out/", $k) ? $data[$k] : 0;
+
+	$data = [
+		"first"     => time(),
+		"last"      => 0,
+		"total_in"  => 0,
+		"total_out" => 0
+	];
+
+	foreach ($traffic["data"] as $dsname => $dsdata) {
+		$dstotal = 0;
+		foreach ($dsdata as $timestamp => $d) {
+			if (is_nan($d)) {
+				continue;
+			}
+			$data["first"] = min((int) $timestamp, (int) $data["first"]);
+			$data["last"] = max((int) $timestamp, (int) $data["last"]);
+			$dstotal += ($d / $divisor) * $resolution;
+		}
+		$data[$dsname] = $dstotal;
+	}
+
+	foreach (array_keys($traffic["data"]) as $ds) {
+		if ($ds != 'outblock' ||
+		    $ds != 'outblock6') {
+			if (substr($ds, 0, 2) == 'in') {
+				$data["total_in"] += $data[$ds];
+			} elseif (substr($ds, 0, 3) == 'out') {
+				$data["total_out"] += $data[$ds];
+			}
+		}
 	}
 	return $data;
 }
@@ -103,7 +120,7 @@ function print_rrd_summary($rrd, $units, $startyear, $startday) {
 					<td><?=sprintf("%0.2f %s", $data["total_in"] + $data["total_out"], $u[$units]); ?></td>
 				</tr>
 			<?php
-	  }
+		}
 	}
 }
 
