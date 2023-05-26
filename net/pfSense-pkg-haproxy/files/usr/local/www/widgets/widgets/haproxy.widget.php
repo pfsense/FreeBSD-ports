@@ -109,8 +109,8 @@ $frontends = $statistics['frontends'];
 $backends = $statistics['backends'];
 $servers = $statistics['servers'];
 
-if ($show_clients == "YES") {
-	$clients = haproxy_get_clients($show_clients_traffic == "YES");
+if ($show_clients) {
+	$clients = haproxy_get_clients($show_clients_traffic);
 }
 if (!$getupdatestatus) {
 ?>
@@ -120,7 +120,7 @@ if (!$getupdatestatus) {
 
 echo "<table style=\"padding-top:0px; padding-bottom:0px; padding-left:0px; padding-right:0px\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
 #Frontends
-if ($show_frontends == "YES") {
+if ($show_frontends) {
 	print "<tr><td class=\"widgetsubheader\" colspan=\"4\"><strong>FrontEnd(s)</strong></td></tr>";
 		print "<tr><td class=\"listlr\"><strong>Name</strong></td>";
 		print "<td class=\"listlr\"><strong>Sessions</strong><br>(cur/max)</td>";
@@ -143,14 +143,14 @@ if ($show_frontends == "YES") {
 #Backends/Servers w/o clients
 print "<tr><td class=\"widgetsubheader\" colspan=\"4\"><strong>Backend(s)/Server(s)</strong></td></tr>";
 print "<tr><td class=\"listlr\"><strong>Backend(s)</strong><br>&nbsp;Server(s)";
-if ($show_clients == "YES") {
+if ($show_clients) {
 	print "<br><div class='text-success'>&nbsp;&nbsp;<i>Client(s) addr:port</i></div>";
 }
 print "</td>";
 print "<td class=\"listlr\"><strong>Sessions</strong><br>(cur/max)<br>";
-if ($show_clients == "YES" and $show_clients_traffic != "YES") {
+if ($show_clients and !$show_clients_traffic) {
 	print "<div class='text-success'>age/id</div>";
-} elseif ($show_clients == "YES" and $show_clients_traffic == "YES") {
+} elseif ($show_clients and $show_clients_traffic) {
 	print "<div class='text-success'>age/traffic i/o</div>";
 }
 print "</td>";
@@ -209,13 +209,13 @@ foreach ($backends as $be => $bedata) {
 			if ($show_controls) {
 				print "<td class=\"listlr\"><center><a  onclick=\"control_haproxy('".$nextaction."','".$bedata['pxname']."','".$srvdata['svname']."');\">".$acticon."</a></center></td></tr>";
 			}
-			if ($show_clients == "YES") {
+			if ($show_clients) {
 				foreach ($clients as $cli => $clidata) {
 					if ($clidata['be'] == $bedata['pxname'] && $clidata['srv'] == $srvdata['svname']) {
 						print "<tr><td class=\"listlr\"><div class='text-success'>&nbsp;&nbsp;<i>".$clidata['src']."</i>&nbsp;<a href=\"diag_dns.php?host=".$clidata['srcip']."\" title=\"Reverse Resolve with DNS\">".$log."</a></div></td>";
-						if ($show_clients_traffic == "YES") {
-							$clientstraffic[0] = format_bytes($clidata['session_datareq']);
-							$clientstraffic[1] = format_bytes($clidata['session_datares']);
+						if ($show_clients_traffic) {
+							$clientstraffic[0] = format_bytes((int) $clidata['session_datareq']);
+							$clientstraffic[1] = format_bytes((int) $clidata['session_datares']);
 							print "<td class=\"listlr\" colspan=\"3\"><div class='text-success'>".$clidata['age']." / ".$clientstraffic[0]." / ".$clientstraffic[1]."</div></td></tr>";
 						} else {
 							print "<td class=\"listlr\" colspan=\"3\"><div class='text-success'>".$clidata['age']." / ".$clidata['sessid']."</div></td></tr>";

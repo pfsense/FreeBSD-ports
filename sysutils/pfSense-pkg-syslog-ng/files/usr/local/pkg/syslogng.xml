@@ -85,33 +85,33 @@
 			<required/>
 		</field>
 		<field>
-                        <fielddescr>CA</fielddescr>
-                        <fieldname>dca</fieldname>
+			<fielddescr>CA</fielddescr>
+			<fieldname>dca</fieldname>
 			<description>
 				<![CDATA[
 				Select Certificate Authority for TLS protocol.<br />
 				You can use it in your object definition as ca-dir('/var/etc/syslog-ng/ca.d') option of tls( ).
 				]]>
 			</description>
-                        <type>select_source</type>
-                        <source><![CDATA[syslogng_get_ca_or_certs('ca')]]></source>
-                        <source_name>descr</source_name>
-                        <source_value>refid</source_value>
-                </field>
+			<type>select_source</type>
+			<source><![CDATA[syslogng_get_ca_or_certs('ca')]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
 		<field>
-                        <fielddescr>Certificate</fielddescr>
-                        <fieldname>certificate</fieldname>
+			<fielddescr>Certificate</fielddescr>
+			<fieldname>certificate</fieldname>
 			<description>
 				<![CDATA[
 				Select server certificate for TLS protocol.<br />
-			       	You can use it in your object definition as key-file('/var/etc/syslog-ng/syslog-ng.key') and cert-file('/var/etc/syslog-ng/syslog-ng.cert') options of tls( ).
+				You can use it in your object definition as key-file('/var/etc/syslog-ng/syslog-ng.key') and cert-file('/var/etc/syslog-ng/syslog-ng.cert') options of tls( ).
 				]]>
 			</description>
-                        <type>select_source</type>
-                        <source><![CDATA[syslogng_get_ca_or_certs('cert')]]></source>
-                        <source_name>descr</source_name>
-                        <source_value>refid</source_value>
-                </field>
+			<type>select_source</type>
+			<source><![CDATA[syslogng_get_ca_or_certs('cert')]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
 		<field>
 			<fielddescr>Default Port</fielddescr>
 			<fieldname>default_port</fieldname>
@@ -173,6 +173,12 @@
 			<description>Enter the number of max archived log files</description>
 			<default_value>30</default_value>
 			<required/>
+		</field>
+		<field>
+			<fielddescr>Include SCL</fielddescr>
+			<fieldname>include_scl</fieldname>
+			<type>checkbox</type>
+			<description>Include syslog-ng standard configuration library (SCL)</description>
 		</field>
 	</fields>
 	<custom_php_validation_command>
