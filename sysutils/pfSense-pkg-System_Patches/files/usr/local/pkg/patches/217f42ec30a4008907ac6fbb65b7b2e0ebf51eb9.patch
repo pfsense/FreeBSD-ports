@@ -1,0 +1,36 @@
+commit 217f42ec30a4008907ac6fbb65b7b2e0ebf51eb9
+Author: jim-p <jimp@netgate.com>
+Date:   Wed May 24 09:05:13 2023 -0400
+
+    Correct alias bulk import regression. Fixes #14412
+    
+    While here, ensure that a broken alias configuration does not cause PHP
+    errors which prevent users from using the GUI or console.
+
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index a0f8622d91..b2ee5e8ebd 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -1980,6 +1980,9 @@ function alias_make_table() {
+ 	$aliastable = array();
+ 
+ 	foreach (config_get_path('aliases/alias', []) as $alias) {
++		if (!is_array($alias) || empty($alias)) {
++			continue;
++		}
+ 		if ($alias['name']) {
+ 			$aliastable[$alias['name']] = $alias['address'];
+ 		}
+diff --git a/src/usr/local/www/firewall_aliases_import.php b/src/usr/local/www/firewall_aliases_import.php
+index 39137662ab..f8ae86d26a 100644
+--- a/src/usr/local/www/firewall_aliases_import.php
++++ b/src/usr/local/www/firewall_aliases_import.php
+@@ -171,7 +171,7 @@ if ($_POST) {
+ 		while (config_get_path('aliases/alias/' . $alias_count)) {
+ 			$alias_count++;
+ 		}
+-		config_set_path('aliases/alias', $alias_count, $alias);
++		config_set_path('aliases/alias/' . $alias_count, $alias);
+ 
+ 		if (write_config(gettext("Imported a firewall alias."))) {
+ 			mark_subsystem_dirty('aliases');
