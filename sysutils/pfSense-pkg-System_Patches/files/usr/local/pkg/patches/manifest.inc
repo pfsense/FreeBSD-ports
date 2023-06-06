@@ -26,6 +26,78 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '217f42ec30a4008907ac6fbb65b7b2e0ebf51eb9',
+  'versions' => ['23.05'],
+  'descr' => 'Fix alias bulk import breaking configuration',
+  'links' => [
+      [ 'text' => 'Redmine #14412',
+         'url' => 'https://redmine.pfsense.org/issues/14412', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'a99c03dde3df7053747ec61607c0fb2e2c0a7d22',
+  'versions' => ['23.05', '23.01'],
+  'descr' => 'Fix Outbound NAT &quot;Other Subnet&quot; Translation address input validation',
+  'links' => [
+      [ 'text' => 'Redmine #14354',
+         'url' => 'https://redmine.pfsense.org/issues/14354', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'ea79a4fe5707898fff89e80d7252e5c84fca7dd4',
+  'versions' => ['23.05', '23.01'],
+  'descr' => 'Fix IPv6 over IPv4 tunneling PF ruleset error',
+  'links' => [
+      [ 'text' => 'Redmine #14415',
+         'url' => 'https://redmine.pfsense.org/issues/14415', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '073a6baceffc4a363eac9369cc036fc7b19b919e',
+  'versions' => ['23.05'],
+  'descr' => 'Fix GUI Max Processes value not saving',
+  'links' => [
+      [ 'text' => 'Redmine #14425',
+         'url' => 'https://redmine.pfsense.org/issues/14425', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'c13bf6d4d174d77768d9090e97b3379835495356',
+  'versions' => ['23.05'],
+  'descr' => 'Fix missing ngeth interfaces triggering reassignment',
+  'links' => [
+      [ 'text' => 'Redmine #14410',
+         'url' => 'https://redmine.pfsense.org/issues/14410', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '87d2b7464311c1f94b827a38502260e2e5a23e08',
+  'versions' => ['23.05'],
+  'descr' => 'Fix Captive Portal PHP error when processing used MACs',
+  'links' => [
+      [ 'text' => 'Redmine #14446',
+         'url' => 'https://redmine.pfsense.org/issues/14446', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'c5b8e57aa51ff82b45bd6cb925ba512f4c01dcba',
   'versions' => ['23.01', '22.05.1', '22.05', '2.6.0'],
   'descr' => 'Fix potential arbitrary command execution in interfaces_bridge_edit.php from bridge interface names',

@@ -1,0 +1,21 @@
+commit a99c03dde3df7053747ec61607c0fb2e2c0a7d22
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Jun 5 09:31:48 2023 -0400
+
+    Correct Outbound NAT 'other' type selector. Fixes #14354
+
+diff --git a/src/usr/local/pfSense/include/www/firewall_nat_out.inc b/src/usr/local/pfSense/include/www/firewall_nat_out.inc
+index b8ff028e78..a471551099 100644
+--- a/src/usr/local/pfSense/include/www/firewall_nat_out.inc
++++ b/src/usr/local/pfSense/include/www/firewall_nat_out.inc
+@@ -661,7 +661,9 @@ function build_target_list() {
+ 		$list['H' . $alias['name']] = gettext('Host Alias: ') . $alias['name'] . ' (' . $alias['descr'] . ')';
+ 	}
+ 
+-	$list['Other-subnet'] = gettext('Other Subnet (Enter Below)');
++	/* First character is the type code, remainder is the internal name.
++	 * See https://redmine.pfsense.org/issues/14354 */
++	$list['Oother-subnet'] = gettext('Other Subnet (Enter Below)');
+ 
+ 	return($list);
+ }
