@@ -258,7 +258,9 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 			  <td>
 				  <?php
 					$method = "";
-					if (is_array($certificate['a_domainlist']['item'])) {
+					if (is_array($certificate) &&
+					    is_array($certificate['a_domainlist']) &&
+					    is_array($certificate['a_domainlist']['item'])) {
 						foreach($certificate['a_domainlist']['item'] as $domain) {
 							if ($domain['status'] == 'disable') {
 								continue;
