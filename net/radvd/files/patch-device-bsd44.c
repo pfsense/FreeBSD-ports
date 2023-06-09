@@ -1,6 +1,6 @@
 --- device-bsd44.c.orig	2019-07-20 03:58:19 UTC
 +++ device-bsd44.c
-@@ -126,8 +126,31 @@ ret:
+@@ -126,8 +126,29 @@ ret:
  	return -1;
  }
  
@@ -31,7 +31,7 @@
  int set_interface_linkmtu(const char *iface, uint32_t mtu)
  {
  	dlog(LOG_DEBUG, 4, "setting LinkMTU (%u) for %s is not supported", mtu, iface);
-@@ -161,5 +184,5 @@ int check_ip6_forwarding(void)
+@@ -161,5 +182,5 @@ int check_ip6_forwarding(void)
  int check_ip6_iface_forwarding(const char *iface)
  {
  	dlog(LOG_DEBUG, 4, "checking ipv6 forwarding of interface not supported");
