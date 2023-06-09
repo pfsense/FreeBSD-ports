@@ -57,8 +57,10 @@ pkg/acme/dnsapi/dns_fornex.sh
 pkg/acme/dnsapi/dns_freedns.sh
 pkg/acme/dnsapi/dns_gandi_livedns.sh
 pkg/acme/dnsapi/dns_gcloud.sh
+pkg/acme/dnsapi/dns_gcore.sh
 pkg/acme/dnsapi/dns_gd.sh
 pkg/acme/dnsapi/dns_geoscaling.sh
+pkg/acme/dnsapi/dns_googledomains.sh
 pkg/acme/dnsapi/dns_he.sh
 pkg/acme/dnsapi/dns_hetzner.sh
 pkg/acme/dnsapi/dns_hexonet.sh
@@ -69,6 +71,7 @@ pkg/acme/dnsapi/dns_infomaniak.sh
 pkg/acme/dnsapi/dns_internetbs.sh
 pkg/acme/dnsapi/dns_inwx.sh
 pkg/acme/dnsapi/dns_ionos.sh
+pkg/acme/dnsapi/dns_ipv64.sh
 pkg/acme/dnsapi/dns_ispconfig.sh
 pkg/acme/dnsapi/dns_jd.sh
 pkg/acme/dnsapi/dns_joker.sh
@@ -92,6 +95,7 @@ pkg/acme/dnsapi/dns_mythic_beasts.sh
 pkg/acme/dnsapi/dns_namecheap.sh
 pkg/acme/dnsapi/dns_namecom.sh
 pkg/acme/dnsapi/dns_namesilo.sh
+pkg/acme/dnsapi/dns_nanelo.sh
 pkg/acme/dnsapi/dns_nederhost.sh
 pkg/acme/dnsapi/dns_neodigit.sh
 pkg/acme/dnsapi/dns_netcup.sh
