@@ -60,7 +60,8 @@ PKG_REPO_FILENAME_${b}=	${PORTNAME}
 PKG_REPO_DESCR_${b}=	Latest stable version (${PKG_REPO_BRANCH_${b}:S/_/./g})
 .  endif
 .  if ${b} == "DEVEL"
-#PKG_REPO_OSVER_${b}=	master
+PKG_REPO_OSVER_${b}=	master
+PKG_REPO_BRANCH_${b}=	devel
 .  endif
 PLIST_FILES+=		${DATADIR}/pkg/repos/${PKG_REPO_FILENAME_${b}}.conf ${DATADIR}/pkg/repos/${PKG_REPO_FILENAME_${b}}.descr
 PLIST_FILES+=		${DATADIR}/pkg/repos/${PKG_REPO_FILENAME_${b}}.abi ${DATADIR}/pkg/repos/${PKG_REPO_FILENAME_${b}}.altabi
