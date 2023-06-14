@@ -1146,14 +1146,20 @@ pkg_upgrade() {
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-netgate-1100.dtb /boot/msdos
+				cp /boot/dtb/netgate/armada-3720-netgate-1100.dtb \
+				    /boot/msdos/armada-3720-sg1100.dtb
+				cp /boot/dtb/netgate/armada-3720-netgate-1100.dtb \
+				    /boot/msdos
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 			if [ "${SYSTEM}" = "2100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-netgate-2100.dtb /boot/msdos
+				cp /boot/dtb/netgate/armada-3720-netgate-2100.dtb \
+				    /boot/msdos/armada-3720-sg2100.dtb
+				cp /boot/dtb/netgate/armada-3720-netgate-2100.dtb \
+				    /boot/msdos
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 		fi
