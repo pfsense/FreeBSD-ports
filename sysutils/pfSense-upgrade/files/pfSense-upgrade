@@ -676,6 +676,29 @@ custom_repo_cleanup() {
 	/bin/rm -f ${_custom_repo_files}
 }
 
+copy_dtb() {
+	local _dtb_src="${1}"
+	local _dtb_src_old="${2}"
+	local _dtb_dst_old="${3}"
+
+	dtb_drc=""
+	if [ -f "${_dtb_src}" ]; then
+		dtb_src="${_dtb_src}"
+	elif [ -f "${_dtb_src_old}" ]; then
+		dtb_src="${_dtb_src_old}"
+	fi
+	if [ -z "${dtb_src}" ]; then
+		return 1
+	fi
+
+	if [ -n "${_dtb_dst_old}" ]; then
+		cp "${dtb_src}" "/boot/msdos/${_dtb_dst_old}"
+	fi
+	cp "${dtb_src}" "/boot/msdos"
+
+	return 0
+}
+
 get_pkg_repo_url() {
 	local _url=$(_pkg -vv 2>&1 | \
 	    sed -e "/^ *${product}: *{/,/^ *}/!d" \
@@ -1146,20 +1169,20 @@ pkg_upgrade() {
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/netgate/armada-3720-netgate-1100.dtb \
-				    /boot/msdos/armada-3720-sg1100.dtb
-				cp /boot/dtb/netgate/armada-3720-netgate-1100.dtb \
-				    /boot/msdos
+				DTB_SRC="/boot/dtb/netgate/armada-3720-netgate-1100.dtb"
+				DTB_SRC_OLD="/boot/dtb/armada-3720-netgate-1100.dtb"
+				DTB_DST_OLD="armada-3720-sg1100.dtb"
+				copy_dtb "${DTB_SRC}" "${DTB_SRC_OLD}" "${DTB_DST_OLD}"
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 			if [ "${SYSTEM}" = "2100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/netgate/armada-3720-netgate-2100.dtb \
-				    /boot/msdos/armada-3720-sg2100.dtb
-				cp /boot/dtb/netgate/armada-3720-netgate-2100.dtb \
-				    /boot/msdos
+				DTB_SRC="/boot/dtb/netgate/armada-3720-netgate-2100.dtb"
+				DTB_SRC_OLD="/boot/dtb/armada-3720-netgate-2100.dtb"
+				DTB_DST_OLD="armada-3720-sg2100.dtb"
+				copy_dtb "${DTB_SRC}" "${DTB_SRC_OLD}" "${DTB_DST_OLD}"
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 		fi
