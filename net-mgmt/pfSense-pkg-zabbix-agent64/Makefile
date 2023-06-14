@@ -2,7 +2,7 @@
 
 MASTERDIR=	${.CURDIR}/../pfSense-pkg-zabbix-agent
 
-PORTNAME=	pfSense-pkg-zabbix-agent62
+PORTNAME=	pfSense-pkg-zabbix-agent64
 
 CONFLICTS=
 CONFLICTS+=	pfSense-pkg-zabbix-agent
@@ -12,10 +12,10 @@ CONFLICTS+=	pfSense-pkg-zabbix-agent5
 CONFLICTS+=	pfSense-pkg-zabbix-agent54
 CONFLICTS+=	pfSense-pkg-zabbix-agent6
 
-RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix62-agent
+RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix64-agent
 
-ZABBIXINTERNALNAME=	zabbix-agent62
-ZABBIXTITLE=	Zabbix Agent 6.2
-ZABBIXVERSION=	62
+ZABBIXINTERNALNAME=	zabbix-agent64
+ZABBIXTITLE=	Zabbix Agent 6.4
+ZABBIXVERSION=	64
 
 .include "${MASTERDIR}/Makefile"
