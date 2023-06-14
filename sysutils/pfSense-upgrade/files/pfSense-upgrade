@@ -930,14 +930,6 @@ pkg_upgrade() {
 		# Note: This is a no-op on UFS
 		_be_migrate
 
-		# Prepare system by creating a rollback BE
-		# Note: This is a no-op on UFS (or on CE)
-		_be_prep_upgrade
-		if [ $? -ne 0 ]; then
-			_echo "ERROR: Unable to create automatic rollback boot environment."
-			_exit 1
-		fi
-
 		pkg_update force
 
 		# Lock pkg to avoid having pkg binary for version N+1 installed
@@ -1066,6 +1058,14 @@ pkg_upgrade() {
 				_echo "Aborting..."
 				_exit 0
 			fi
+		fi
+
+		# Prepare system by creating a rollback BE
+		# Note: This is a no-op on UFS (or on CE)
+		_be_prep_upgrade
+		if [ $? -ne 0 ]; then
+			_echo "ERROR: Unable to create automatic rollback boot environment."
+			_exit 1
 		fi
 
 		# Detect the move from suricata to suricata4
