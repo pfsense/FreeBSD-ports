@@ -1273,9 +1273,6 @@ pkg_upgrade() {
 						${uboot_update}
 					fi
 				fi
-
-				# Make sure PHP setup is fine
-				/etc/rc.php_ini_setup >/dev/null 2>&1
 			else
 				# Upgrade core packages
 				_exec "pkg-static upgrade -r ${product}-core" \
@@ -1288,6 +1285,11 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update}${_force} -r ${product}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
+
+			# Make sure PHP setup is fine
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+			/etc/rc.php_ini_setup >/dev/null 2>&1
 
 			# Always make sure important packages are set as vital
 			set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
@@ -1324,6 +1326,10 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
+			# Make sure PHP setup is fine
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+			/etc/rc.php_ini_setup >/dev/null 2>&1
 		fi
 
 		# Cleanup a possible crash report created during PHP upgrade
