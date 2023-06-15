@@ -32,13 +32,6 @@ _pkg() {
 	return $?
 }
 
-is_plus() {
-	if [ "${PRODUCT_LABEL}" == "Netgate pfSense Plus" ]; then
-		return 0
-	fi
-	return 1
-}
-
 repo_is_plus_upgrade() {
 	if [ -n "$(echo $PKG_REPO_CONF_PATH | grep ${PRODUCT}-repo-custom)" ]; then
 		return 0
@@ -231,7 +224,6 @@ PHP="/usr/local/bin/php"
 READ_XML_TAG="/usr/local/sbin/read_xml_tag.sh"
 export PLUS_CERT_BASE="$("${PHP}" -n /usr/local/sbin/read_global_var pkg_repos_path pfSense)"
 export PRODUCT="$("${PHP}" -n /usr/local/sbin/read_global_var product_name pfSense)"
-export PRODUCT_LABEL="$("${PHP}" -n /usr/local/sbin/read_global_var product_label pfSense)"
 export PFSENSE_REPO_CONF="/usr/local/etc/pkg/repos/${PRODUCT}.conf"
 export PKG_CONF="/usr/local/etc/pkg.conf"
 export PKG_REPO_CONF_PATH="$("${READ_XML_TAG}" string system/pkg_repo_conf_path)"
@@ -263,11 +255,6 @@ done
 # Make sure it points to a valid file or fallback to the default.
 #
 validate_repo_conf
-
-# If the system does not have the dynamic repos support, exit.
-if ! is_plus ; then
-	exit 0
-fi
 
 # Fetch the repository data and setup the repository access.
 pfSense_repo_setup
