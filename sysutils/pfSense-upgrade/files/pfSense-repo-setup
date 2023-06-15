@@ -32,13 +32,6 @@ _pkg() {
 	return $?
 }
 
-repo_is_plus_upgrade() {
-	if [ -n "$(echo $PKG_REPO_CONF_PATH | grep ${PRODUCT}-repo-custom)" ]; then
-		return 0
-	fi
-	return 1
-}
-
 get_default_repo() {
 	local _pkg_repo_files="${PLUS_CERT_BASE}/${PRODUCT}-repo-*.name"
 	for file in ${_pkg_repo_files}; do
@@ -132,19 +125,6 @@ ALTABI=${ALTABI}
 EOF
 
 	AUTH_CA="/etc/ssl/netgate-ca.pem"
-	AUTH_CERT="/etc/ssl/pfSense-repo-custom.cert"
-	AUTH_KEY="/etc/ssl/pfSense-repo-custom.key"
-	if repo_is_plus_upgrade -a -f "${AUTH_CA}" -a -f "${AUTH_CERT}" -a \
-	     -f "${AUTH_KEY}" ; then
-		cat << EOF >> "${PKG_CONF}"
-PKG_ENV {
-	SSL_CA_CERT_FILE=${AUTH_CA}
-	SSL_CLIENT_CERT_FILE=${AUTH_CERT}
-	SSL_CLIENT_KEY_FILE=${AUTH_KEY}
-}
-EOF
-	fi
-
 	REPO_NAME=$(get_repo_name "${PKG_REPO_CONF_PATH}")
 	PLUS_REPO_CONF="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}.conf"
 	PLUS_CERT="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}-cert.pem"
