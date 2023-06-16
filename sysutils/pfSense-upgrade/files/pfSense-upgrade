@@ -1144,6 +1144,18 @@ pkg_upgrade() {
 				[ -f /tmp/loader.rc.local ] \
 				    && cp /tmp/loader.rc.local /boot 2>/dev/null
 			fi
+
+			# Attempt to force update boot package and install efi
+			# loader first, bail if it fails
+			_echo -n ">>> Upgrading ${product}-boot..."
+			_exec "umount -f /boot/efi" "Unmounting /boot/efi" mute ignore_result
+			local _output=$(_exec "pkg-static upgrade -f ${product}-boot")
+			if [ $(expr "'${_output}'" : '.*POST-INSTALL script failed.*') != "0" ]; then
+				_echo " failed."
+				_exit 1
+			fi
+			echo " done."
+
 			# Force upgrade pfSense-rc together with kernel. It's
 			# failing for some reason on armv[67] even with the
 			# proper dependency version registered
