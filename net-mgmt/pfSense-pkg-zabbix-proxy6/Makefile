@@ -9,7 +9,8 @@ CONFLICTS=	pfSense-pkg-zabbix-proxy \
 		pfSense-pkg-zabbix-proxy44 \
 		pfSense-pkg-zabbix-proxy5 \
 		pfSense-pkg-zabbix-proxy54 \
-		pfSense-pkg-zabbix-proxy62
+		pfSense-pkg-zabbix-proxy62 \
+		pfSense-pkg-zabbix-proxy64
 
 RUN_DEPENDS=	zabbix_proxy:net-mgmt/zabbix6-proxy
 
