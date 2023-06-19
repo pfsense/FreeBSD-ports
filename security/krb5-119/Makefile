@@ -6,6 +6,9 @@ MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-
 PKGNAMESUFFIX=		-119
 .endif
 
+DEPECATED=		Desupported by MIT following 1.21
+EXPIRY=			2024-06-06
+
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
 
@@ -15,7 +18,7 @@ WWW=			https://web.mit.edu/kerberos/
 
 LICENSE=		MIT
 
-CONFLICTS=		heimdal krb5 krb5-118 krb5-120
+CONFLICTS=		heimdal krb5 krb5-118 krb5-12*
 CONFLICTS_BUILD=	boringssl
 
 KERBEROSV_URL=		http://web.mit.edu/kerberos/

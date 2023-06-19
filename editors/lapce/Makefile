@@ -1,6 +1,6 @@
 PORTNAME=	lapce
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.7	# remove openssl-src-* from CARGO-CRATES each update
+DISTVERSION=	0.2.8	# remove openssl-src-* from CARGO-CRATES each update
 PORTREVISION=	1
 CATEGORIES=	editors
 

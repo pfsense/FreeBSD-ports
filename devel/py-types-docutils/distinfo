@@ -1,3 +1,3 @@
-TIMESTAMP = 1663672866
-SHA256 (types-docutils-0.19.1.tar.gz) = 7df133b87105af410fc6a992030a70ee9f5a2c2636c5afe7e0de285eb9fdb015
-SIZE (types-docutils-0.19.1.tar.gz) = 8843
+TIMESTAMP = 1685792302
+SHA256 (types-docutils-0.20.0.1.tar.gz) = f682b5459a1e6e28208742adb0be8573d1ecbddd442f00d202b0278c1c4418a2
+SIZE (types-docutils-0.20.0.1.tar.gz) = 9796

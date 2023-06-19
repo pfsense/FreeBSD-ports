@@ -27,7 +27,7 @@
     SUBDIR += deluge
     SUBDIR += deluge-cli
     SUBDIR += ed2k
-    SUBDIR += edonkey-tool-hash
+    SUBDIR += ed2k-hash
     SUBDIR += eiskaltdcpp-cli
     SUBDIR += eiskaltdcpp-daemon
     SUBDIR += eiskaltdcpp-data
@@ -85,7 +85,6 @@
     SUBDIR += py-tremc
     SUBDIR += py-vertex
     SUBDIR += qbittorrent
-    SUBDIR += qtum
     SUBDIR += radarr
     SUBDIR += readarr
     SUBDIR += reticulum
@@ -110,8 +109,5 @@
     SUBDIR += vuze
     SUBDIR += xbt
     SUBDIR += xmrig
-    SUBDIR += zetacoin
-    SUBDIR += zetacoin-daemon
-    SUBDIR += zetacoin-utils
 
 .include <bsd.port.subdir.mk>

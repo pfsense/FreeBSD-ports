@@ -1,12 +1,13 @@
 PORTNAME=	tooz
-PORTVERSION=	2.11.1
+PORTVERSION=	4.1.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Coordination library for distributed systems
-WWW=		https://docs.openstack.org/tooz/latest/
+WWW=		https://docs.openstack.org/tooz/latest/ \
+		https://github.com/openstack/tooz
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

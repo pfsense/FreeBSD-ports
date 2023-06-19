@@ -38,6 +38,7 @@
     SUBDIR += comic-neue
     SUBDIR += consolamono-ttf
     SUBDIR += courier-prime
+    SUBDIR += cozette
     SUBDIR += croscorefonts-fonts-ttf
     SUBDIR += crosextrafonts-caladea-ttf
     SUBDIR += crosextrafonts-carlito-ttf
@@ -137,6 +138,7 @@
     SUBDIR += iansui
     SUBDIR += inconsolata-lgc-ttf
     SUBDIR += inconsolata-ttf
+    SUBDIR += intel-one-mono
     SUBDIR += intlfonts
     SUBDIR += iosevka
     SUBDIR += isabella

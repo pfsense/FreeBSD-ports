@@ -1,4 +1,4 @@
---- electron/shell/browser/native_window_views.cc.orig	2023-05-17 12:49:10 UTC
+--- electron/shell/browser/native_window_views.cc.orig	2023-06-12 21:36:35 UTC
 +++ electron/shell/browser/native_window_views.cc
 @@ -42,7 +42,7 @@
  #include "ui/wm/core/shadow_types.h"
@@ -54,7 +54,7 @@
  void NativeWindowViews::Maximize() {
    if (IsVisible()) {
      widget()->Maximize();
-@@ -736,7 +736,7 @@ void NativeWindowViews::SetBounds(const gfx::Rect& bou
+@@ -740,7 +740,7 @@ void NativeWindowViews::SetBounds(const gfx::Rect& bou
    }
  #endif
  
@@ -63,7 +63,7 @@
    // On Linux and Windows the minimum and maximum size should be updated with
    // window size when window is not resizable.
    if (!resizable_) {
-@@ -968,7 +968,7 @@ bool NativeWindowViews::IsClosable() {
+@@ -976,7 +976,7 @@ bool NativeWindowViews::IsClosable() {
      return false;
    }
    return !(info.fState & MFS_DISABLED);
@@ -72,7 +72,7 @@
    return true;
  #endif
  }
-@@ -1356,7 +1356,7 @@ void NativeWindowViews::SetProgressBar(double progress
+@@ -1364,7 +1364,7 @@ void NativeWindowViews::SetProgressBar(double progress
                                         NativeWindow::ProgressState state) {
  #if BUILDFLAG(IS_WIN)
    taskbar_host_.SetProgressBar(GetAcceleratedWidget(), progress, state);
@@ -81,7 +81,7 @@
    if (unity::IsRunning()) {
      unity::SetProgressFraction(progress);
    }
-@@ -1418,7 +1418,7 @@ content::DesktopMediaID NativeWindowViews::GetDesktopM
+@@ -1426,7 +1426,7 @@ content::DesktopMediaID NativeWindowViews::GetDesktopM
  #if BUILDFLAG(IS_WIN)
    window_handle =
        reinterpret_cast<content::DesktopMediaID::Id>(accelerated_widget);
@@ -90,7 +90,7 @@
    window_handle = static_cast<uint32_t>(accelerated_widget);
  #endif
    aura::WindowTreeHost* const host =
-@@ -1516,7 +1516,7 @@ void NativeWindowViews::SetIcon(HICON window_icon, HIC
+@@ -1524,7 +1524,7 @@ void NativeWindowViews::SetIcon(HICON window_icon, HIC
    SendMessage(hwnd, WM_SETICON, ICON_BIG,
                reinterpret_cast<LPARAM>(app_icon_.get()));
  }
@@ -99,7 +99,7 @@
  void NativeWindowViews::SetIcon(const gfx::ImageSkia& icon) {
    auto* tree_host = views::DesktopWindowTreeHostLinux::GetHostForWidget(
        GetAcceleratedWidget());
-@@ -1586,7 +1586,7 @@ bool NativeWindowViews::CanMaximize() const {
+@@ -1594,7 +1594,7 @@ bool NativeWindowViews::CanMaximize() const {
  bool NativeWindowViews::CanMinimize() const {
  #if BUILDFLAG(IS_WIN)
    return minimizable_;
@@ -108,7 +108,7 @@
    return true;
  #endif
  }
-@@ -1638,7 +1638,7 @@ void NativeWindowViews::HandleKeyboardEvent(
+@@ -1646,7 +1646,7 @@ void NativeWindowViews::HandleKeyboardEvent(
    if (widget_destroyed_)
      return;
  
@@ -117,7 +117,7 @@
    if (event.windows_key_code == ui::VKEY_BROWSER_BACK)
      NotifyWindowExecuteAppCommand(kBrowserBackward);
    else if (event.windows_key_code == ui::VKEY_BROWSER_FORWARD)
-@@ -1657,7 +1657,7 @@ void NativeWindowViews::OnMouseEvent(ui::MouseEvent* e
+@@ -1665,7 +1665,7 @@ void NativeWindowViews::OnMouseEvent(ui::MouseEvent* e
    // Alt+Click should not toggle menu bar.
    root_view_->ResetAltState();
  

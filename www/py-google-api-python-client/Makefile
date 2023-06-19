@@ -1,5 +1,5 @@
 PORTNAME=	google-api-python-client
-DISTVERSION=	2.86.0
+DISTVERSION=	2.89.0
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -33,6 +33,6 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=		WEBTEST
 WEBTEST_DESC=		Use WebTest helper to test WSGI apps
 WEBTEST_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}WebTest>0:www/py-WebTest@${PY_FLAVOR}
+			${PYTHON_PKGNAMEPREFIX}webtest>0:www/py-WebTest@${PY_FLAVOR}
 
 .include <bsd.port.mk>

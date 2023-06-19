@@ -109,7 +109,6 @@ MASTER_SITE_CRAN+= \
 	http://camoruco.ing.uc.edu.ve/cran/%SUBDIR%/ \
 	https://mirror.las.iastate.edu/CRAN/%SUBDIR%/ \
 	https://cran.ma.imperial.ac.uk/%SUBDIR%/ \
-	https://cran.gis-lab.info/%SUBDIR%/ \
 	https://cran.ism.ac.jp/%SUBDIR%/
 .endif
 
@@ -572,7 +571,6 @@ MASTER_SITE_GNU+= \
 	https://www.nic.funet.fi/pub/gnu/gnu/%SUBDIR%/ \
 	http://mirror.navercorp.com/gnu/%SUBDIR%/ \
 	http://ftp.halifax.rwth-aachen.de/gnu/%SUBDIR%/ \
-	http://download.xs4all.nl/gnu/%SUBDIR%/ \
 	http://ftp.kddilabs.jp/GNU/gnu/%SUBDIR%/ \
 	ftp://mirrors.rit.edu/gnu/%SUBDIR%/ \
 	ftp://ftp.fu-berlin.de/unix/gnu/%SUBDIR%/ \
@@ -742,11 +740,11 @@ MASTER_SITE_NVIDIA+= \
 .if !defined(IGNORE_MASTER_SITE_OPENBSD)
 MASTER_SITE_OPENBSD+= \
 	https://cdn.openbsd.org/pub/OpenBSD/%SUBDIR%/ \
+	https://cloudflare.cdn.openbsd.org/pub/OpenBSD/%SUBDIR%/ \
 	https://ftp.OpenBSD.org/pub/OpenBSD/%SUBDIR%/ \
 	https://ftp.eu.openbsd.org/pub/OpenBSD/%SUBDIR%/ \
-	https://ftp3.usa.openbsd.org/pub/OpenBSD/%SUBDIR%/ \
+	https://ftp.usa.openbsd.org/pub/OpenBSD/%SUBDIR%/ \
 	https://mirror.leaseweb.com/pub/OpenBSD/%SUBDIR%/ \
-	https://openbsd.hk/pub/OpenBSD/%SUBDIR%/ \
 	https://mirror.aarnet.edu.au/pub/OpenBSD/%SUBDIR%/
 .endif
 
@@ -1062,7 +1060,6 @@ MASTER_SITE_XORG+= \
 MASTER_SITE_KERNEL_ORG+= \
 	https://cdn.kernel.org/pub/%SUBDIR%/ \
 	https://www.kernel.org/pub/%SUBDIR%/ \
-	https://download.xs4all.nl/ftp.kernel.org/pub/%SUBDIR%/ \
 	https://mirrors.mit.edu/kernel/%SUBDIR%/ \
 	http://ftp.nara.wide.ad.jp/pub/kernel.org/%SUBDIR%/ \
 	http://ftp.yandex.ru/pub/%SUBDIR%/ \
