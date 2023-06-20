@@ -1,5 +1,5 @@
 PORTNAME=	wlroots
-DISTVERSION=	0.16.0-415
+DISTVERSION=	0.16.0-556
 DISTVERSIONSUFFIX=	-g${GL_COMMIT:C/(.{12}).*/\1/}
 CATEGORIES=	x11-toolkits
 PKGNAMESUFFIX=	-devel
@@ -19,7 +19,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	wayland-protocols>=1.31:graphics/wayland-protocols
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libwayland-server.so:graphics/wayland \
-		libseat.so:sysutils/seatd \
 		libxkbcommon.so:x11/libxkbcommon
 
 USES=		compiler:c11 gl meson pkgconfig xorg
@@ -28,7 +27,7 @@ USE_GL=		gbm
 USE_XORG=	pixman
 USE_LDCONFIG=	yes
 GL_SITE=	https://gitlab.freedesktop.org
-GL_COMMIT=	a0ebc401d0b529ccede2f895566d4ab8f47986e5
+GL_COMMIT=	220402b717951d3bdcce79783319eef6bbee9da4
 MESON_ARGS=	-Dexamples=false -Dbackends=${BACKENDS:ts,} -Drenderers=${RENDERERS:ts,}
 
 .ifdef PKGNAMESUFFIX
@@ -46,6 +45,7 @@ DRM_BUILD_DEPENDS=	hwdata>0:misc/hwdata
 DRM_LIB_DEPENDS=	libudev.so:devel/libudev-devd \
 			libliftoff.so:graphics/libliftoff \
 			libdisplay-info.so:sysutils/libdisplay-info \
+			libseat.so:sysutils/seatd \
 			libinput.so:x11/libinput
 DRM_MESON_ENABLED=	session
 DRM_VARS=		BACKENDS+="drm libinput"
@@ -75,5 +75,12 @@ post-patch:
 # Extract (snapshot) version from the port instead of meson.build
 	@${REINPLACE_CMD} "/STR/s/meson.project_version()/'${DISTVERSIONFULL}'/" \
 		${WRKSRC}/include/wlr/meson.build
+# XXX Drop after FreeBSD 12.4 EOL around 2023-12-31
+# https://cgit.freebsd.org/src/commit/?id=d7535fb3e3cb
+	@if [ ${OPSYS} = FreeBSD -a ${OSVERSION} -lt 1300515 ]; then \
+		${REINPLACE_CMD} -e '/POSIX/s/199309/200112/' \
+		${WRKSRC}/render/gles2/pass.c \
+		${WRKSRC}/render/gles2/renderer.c; \
+	fi
 
 .include <bsd.port.mk>

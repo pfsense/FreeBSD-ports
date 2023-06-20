@@ -1,6 +1,7 @@
 PORTNAME=	xplr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.21.1
+DISTVERSION=	0.21.2
+PORTREVISION=	2
 CATEGORIES=	misc
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -10,7 +11,7 @@ WWW=		https://xplr.dev
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cargo compiler desktop-file-utils gmake
+USES=		cargo compiler desktop-file-utils gmake luajit
 USE_GITHUB=	yes
 GH_ACCOUNT=	sayanarijit
 
@@ -24,13 +25,6 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 _ASSETS=	${WRKSRC}/assets
 _ICONS=		${STAGEDIR}${PREFIX}/share/icons/hicolor
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH:Mpowerpc64*}
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-Cargo.toml
-LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
-.endif
 
 .include <bsd.port.pre.mk>
 

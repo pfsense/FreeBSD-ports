@@ -1,7 +1,7 @@
 libexec/dhcpcd-hooks/01-test
 libexec/dhcpcd-hooks/20-resolv.conf
 libexec/dhcpcd-hooks/30-hostname
-libexec/dhcpcd-hooks/50-ntp.conf
+@comment libexec/dhcpcd-hooks/50-ntp.conf
 libexec/dhcpcd-run-hooks
 sbin/dhcpcd
 %%EXAMPLESDIR%%/hooks/10-wpa_supplicant

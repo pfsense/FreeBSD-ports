@@ -1,16 +1,6 @@
 PORTNAME=	libei
-DISTVERSION=	0.99.1
+DISTVERSION=	1.0.0
 CATEGORIES=	x11
-
-PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
-PATCHFILES+=	e01ce3480e9a.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/202
-PATCHFILES+=	dd817c8ddec6.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/202
-PATCHFILES+=	2a2c4cdd49f4.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/202
-PATCHFILES+=	143bfd52603f.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/202
-PATCHFILES+=	57a9059d644c.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/202
-PATCHFILES+=	7015fa6ad0ac.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/203
-PATCHFILES+=	3b8ce3dca19e.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/203
-PATCHFILES+=	0387bf23aa80.patch:-p1 # https://gitlab.freedesktop.org/libinput/libei/-/merge_requests/205
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Library for Emulated Input
@@ -26,7 +16,8 @@ LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 		libevdev.so:devel/libevdev
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-dbusmock>0:devel/py-python-dbusmock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}structlog>0:devel/py-structlog@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}structlog>0:devel/py-structlog@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
 
 USES=		compiler:c11 localbase meson pkgconfig python:build
 USE_GITHUB=	nodefault
@@ -35,7 +26,7 @@ USE_LDCONFIG=	yes
 GH_TUPLE=	nemequ:munit:v0.2.0-38-gfbbdf14:munit/subprojects/munit
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	libinput
-GL_COMMIT=	df268d618a199ca5c71f47b1e17cd6cd3d87fc0e
+GL_COMMIT=	661f7665d793e389a644d9082540554d0f861137
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 MESON_ARGS=	-Dsd-bus-provider=basu -Dtests=disabled
 

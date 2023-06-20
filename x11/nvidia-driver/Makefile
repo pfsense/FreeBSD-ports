@@ -139,7 +139,8 @@ PLIST_SUB+=	LIBGLDIR=${LIBGLDIR} LIBGLMAP="@comment "
 PLIST_SUB+=	LIBGLDIR="@comment " LIBGLMAP=""
 .endif
 
-.if ${NVVERSION} >= 515.08601
+# Not part of the pkg-plist because DISTVERSION is not on PLIST_SUB
+.if ${NVVERSION} >= 515.04304
 PLIST_FILES+=	lib/libnvidia-wayland-client.so.${DISTVERSION}
 .endif
 
@@ -265,6 +266,11 @@ post-patch: .SILENT
 		${WRKSRC}/src/${NVSRC}/nv-freebsd.h
 	${REINPLACE_CMD} -e '/vm_offset_t address;/s,vm_offset_t ,void *,' \
 		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
+.endif
+# Fix a K&R prototype
+.if ${NVVERSION:R} >= 390
+	${REINPLACE_CMD} -e '/nvlink_allocLock/s,(),(void),' \
+		${WRKSRC}/src/${NVSRC}/nvlink_freebsd.c
 .endif
 # Finally, process OPTIONS
 .if ${PORT_OPTIONS:MFREEBSD_AGP}

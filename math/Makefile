@@ -315,6 +315,7 @@
     SUBDIR += facile
     SUBDIR += faiss
     SUBDIR += fann
+    SUBDIR += fast_float
     SUBDIR += fastops
     SUBDIR += fcl
     SUBDIR += fcl05
@@ -842,6 +843,8 @@
     SUBDIR += php81-gmp
     SUBDIR += php82-bcmath
     SUBDIR += php82-gmp
+    SUBDIR += php83-bcmath
+    SUBDIR += php83-gmp
     SUBDIR += physcalc
     SUBDIR += picosat
     SUBDIR += piranha

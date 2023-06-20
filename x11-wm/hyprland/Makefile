@@ -1,8 +1,14 @@
 PORTNAME=	hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.25.0
+DISTVERSION=	0.26.0
 PORTREVISION=	3
 CATEGORIES=	x11-wm wayland
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	147e96237006.patch:-p1 # wlroots 0.17
+PATCHFILES+=	c5a7202cd9a4.patch:-p1 # wlroots 0.17
+PATCHFILES+=	10db5a4fdbb0.patch:-p1 # wlroots 0.17
+PATCHFILES+=	fbabb105c342.patch:-p1 # wlroots 0.17
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Dynamic tiling Wayland compositor that doesn't sacrifice on its looks #'
@@ -14,7 +20,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	cmake:devel/cmake-core \
 		evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>=1.25:graphics/wayland-protocols \
-		wlroots>=0.16.0.346<0.17.0:x11-toolkits/wlroots
+		wlroots>=0.16.0.529<0.17.0:x11-toolkits/wlroots
 LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
 		libinput.so:x11/libinput \
@@ -36,6 +42,14 @@ OPTIONS_DEFAULT=X11
 
 X11_USE=		XORG=xcb
 X11_MESON_ENABLED=	xwayland
+
+post-extract:
+.if defined(PATCHFILES) && ${PATCHFILES:M147e96237006*}
+# Pretend to be a regular file for vendor patch to apply as is
+	@${RMDIR} ${WRKSRC}/subprojects/wlroots
+	@${ECHO_CMD} "Subproject commit 6668c822b3bf58ca5af5d370ef03b075be3e4d27" \
+		>${WRKSRC}/subprojects/wlroots
+.endif
 
 post-patch:
 # Extract (snapshot) version from the port instead of meson.build

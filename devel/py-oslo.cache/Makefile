@@ -1,12 +1,13 @@
 PORTNAME=	oslo.cache
-PORTVERSION=	3.3.1
+PORTVERSION=	3.4.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cache storage for OpenStack projects
-WWW=		https://docs.openstack.org/oslo.cache/latest/
+WWW=		https://docs.openstack.org/oslo.cache/latest/ \
+		https://github.com/openstack/oslo.cache
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

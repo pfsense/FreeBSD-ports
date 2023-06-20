@@ -1,6 +1,6 @@
 PORTNAME=	virtualbox-ose
 PORTVERSION=	6.1.44
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 DISTFILES=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX} ${GUESTADDITIONS}
@@ -108,6 +108,7 @@ PLIST_SUB=	GUEST_VER=${PORTVERSION} \
 		PYTHON_VERU=${PYTHON_VER:S/./_/}${PYTHON_ABIVER} \
 		VBOXGROUP=${VBOXGROUP}
 SUB_LIST=	VBOXDIR=${VBOX_DIR} \
+		VBOX_ETC=${VBOX_ETC} \
 		VBOXGROUP=${VBOXGROUP} \
 		VBOXUSER=${VBOXUSER} \
 		VBOXWSUSER=${VBOXWSUSER}
@@ -120,10 +121,6 @@ CONFLICTS_INSTALL+=	virtualbox-ose-nox11
 OPTIONS_DEFAULT+=	PYTHON
 .else
 CONFLICTS_INSTALL+=	virtualbox-ose
-.endif
-
-.if ${ARCH} == "amd64"
-_ELF32!=	kldstat -q -m elf32 && echo yes || echo no
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}
@@ -195,14 +192,7 @@ PLIST_SUB+=	SDK=""
 PLIST_SUB+=	SDK="@comment "
 .endif
 
-.if ${ARCH} == i386
-KMK_ARCH=	freebsd.x86
-PLIST_SUB+=	I386=""
-.else
 KMK_ARCH=	freebsd.${ARCH}
-PLIST_SUB+=	I386="@comment "
-.endif
-
 PLIST_SUB+=	ARCH="${KMK_ARCH}"
 
 KMK_BUILDDIR=	${WRKSRC}/out/${KMK_ARCH}/${KMK_BUILDTYPE}
@@ -211,14 +201,31 @@ KMK_FLAGS+=	-j${MAKE_JOBS_NUMBER}
 
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == FreeBSD && \
+    (${OSVERSION} < 1300513 || ${OSVERSION} >= 1400000 && ${OSVERSION} < 1400026)
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src_VBox_Devices_PC_DevFwCommon.cpp
+.endif
+
 .if ${CHOSEN_COMPILER_TYPE} == clang
-# llvm10 in FreeBSD before r364284 miscompiles virtualbox 6.1 causing errors.
-# force llvm11 from ports
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300109
+# 1) llvm10 in FreeBSD before r364284 miscompiles virtualbox 6.1 causing errors.
+# 2) llvm15 in FreeBSD miscompiles virtualbox 6.1 causing errors: PR#270189.
+# Force llvm from ports.
+.if ${OPSYS} == FreeBSD && \
+    (${OSVERSION} < 1203502 || ${OSVERSION} >= 1300000 && ${OSVERSION} < 1300109 || \
+    ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 || ${OSVERSION} >= 1400079)
+# USES must be before .include <bsd.port.pre.mk>, but CHOSEN_COMPILER_TYPE must be after.
+# This is a workaround with possibility to define different llvm via VBOX_LLVM_VER in make.conf.
+#USES+=		llvm:min=11,max=14
+#CC=		clang${LLVM_VERSION}
+#CXX=		clang++${LLVM_VERSION}
 BUILD_DEPENDS+=	clang${VBOX_LLVM_VER}:devel/llvm${VBOX_LLVM_VER}
 CC=		clang${VBOX_LLVM_VER}
 CXX=		clang++${VBOX_LLVM_VER}
-VBOX_LLVM_VER?=	11
+.if ${LLVM_DEFAULT} < 11 || ${LLVM_DEFAULT} > 14
+VBOX_LLVM_VER?=	14
+.else
+VBOX_LLVM_VER?=	${LLVM_DEFAULT}
+.endif
 .endif
 PATCH_DEPENDS+=	${LOCALBASE}/share/kBuild/tools/GXX3.kmk:devel/kBuild
 EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Devices-PC-ipxe-Makefile.kmk
@@ -234,19 +241,6 @@ PLIST_SUB+=	PYTHON_PYCDIR=/ \
 
 .if ${SSL_DEFAULT} != base
 CONFIGURE_ARGS+=	--with-openssl-dir="${OPENSSLBASE}"
-.endif
-
-pre-everything::
-.if ${ARCH} == "amd64"
-.if ${_ELF32} != yes
-	@${ECHO_MSG} 'Requires 32-bit runtime support in kernel.'
-	@${ECHO_MSG} 'Rebuild kernel with "options COMPAT_FREEBSD32" and reboot.'
-	@${FALSE}
-.elif !exists(/usr/lib32/libc.so)
-	@${ECHO_MSG} 'Requires 32-bit libraries installed under /usr/lib32.'
-	@${ECHO_MSG} 'Do: cd /usr/src; make build32 install32; service ldconfig restart'
-	@${FALSE}
-.endif
 .endif
 
 post-patch:

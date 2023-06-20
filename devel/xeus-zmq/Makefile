@@ -1,5 +1,5 @@
 PORTNAME=	xeus-zmq
-DISTVERSION=	1.0.2
+DISTVERSION=	1.1.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -23,6 +23,6 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	jupyter-xeus
 
-CMAKE_TESTING_ON=	XEUS_ZMQ_BUILD_TESTS
+CMAKE_TESTING_ON=	XEUS_ZMQ_BUILD_TESTS # tests fail, see https://github.com/jupyter-xeus/xeus-zmq/issues/29
 
 .include <bsd.port.mk>

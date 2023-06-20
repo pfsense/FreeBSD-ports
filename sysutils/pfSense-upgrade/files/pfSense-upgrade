@@ -45,16 +45,27 @@ EOD
 
 _echo() {
 	local _n=""
-	if [ "${1}" = "-n" ]; then
-		shift
-		_n="-n"
-	fi
+	local _out="/dev/stdout"
+	while getopts no: opt; do
+		case ${opt} in
+		n)
+			_n="-n"
+			shift
+			;;
+		o)
+			if [ "${OPTARG}" = "stderr" ]; then
+				_out="/dev/${OPTARG}"
+			fi
+			shift; shift
+			;;
+		esac
+	done
 
 	if [ -z "${logfile}" ]; then
 		logfile=/dev/null
 	fi
 
-	echo ${_n} "${@}" | tee -a ${logfile}
+	echo ${_n} "${@}" | tee -a ${logfile} > ${_out}
 }
 
 _exec() {
@@ -654,86 +665,38 @@ repo_is_plus_upgrade() {
 	return 1
 }
 
-abi_setup() {
-	local _freebsd_version=$(uname -r)
-	local _pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
+custom_repo_cleanup() {
+	local _custom_repo_files="/usr/local/share/${product}/pkg/repos/${product}-repo-custom.*"
 
-	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${arch}"
-	CUR_ALTABI="freebsd:${_freebsd_version%%.*}"
-
-	if [ "${arch}" = "armv6" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:hardfp"
-	elif [ "${arch}" = "armv7" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:softfp"
-	elif [ "${arch}" = "aarch64" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${arch}:64"
-	elif [ "${arch}" = "i386" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:x86:32"
-	else
-		CUR_ALTABI="${CUR_ALTABI}:x86:64"
-	fi
-
-	if [ ! -e ${_pkg_repo_conf} ]; then
-		validate_repo_conf
-	fi
-
-	local _repo_abi_file=$(readlink ${_pkg_repo_conf})
-
-	if [ -f ${_repo_abi_file%%.conf}.abi ]; then
-		ABI=$(cat ${_repo_abi_file%%.conf}.abi)
-	else
-		ABI=${CUR_ABI}
-	fi
-
-	if [ -f ${_repo_abi_file%%.conf}.altabi ]; then
-		ALTABI=$(cat ${_repo_abi_file%%.conf}.altabi)
-	else
-		ALTABI=${CUR_ALTABI}
-	fi
-
-	# Make sure pkg.conf is set properly so GUI can work
-	echo "ABI=${ABI}" > /usr/local/etc/pkg.conf
-	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
-
-	AUTH_CA="/etc/ssl/netgate-ca.pem"
-	AUTH_CERT="/etc/ssl/pfSense-repo-custom.cert"
-	AUTH_KEY="/etc/ssl/pfSense-repo-custom.key"
-	if repo_is_plus_upgrade -a -f "${AUTH_CA}" -a -f "${AUTH_CERT}" -a \
-	     -f "${AUTH_KEY}" ; then
-		cat << EOF >> /usr/local/etc/pkg.conf
-PKG_ENV {
-	SSL_CA_CERT_FILE=${AUTH_CA}
-	SSL_CLIENT_CERT_FILE=${AUTH_CERT}
-	SSL_CLIENT_KEY_FILE=${AUTH_KEY}
+	/usr/local/bin/php -r \
+	    "require_once('config.inc'); \
+	     require_once('config.lib.inc'); \
+	     config_del_path('system/pkg_repo_conf_path'); \
+	     write_config('Remove the pfSense Plus upgrade repo');"
+	/bin/rm -f ${_custom_repo_files}
 }
-EOF
+
+copy_dtb() {
+	local _dtb_src="${1}"
+	local _dtb_src_old="${2}"
+	local _dtb_dst_old="${3}"
+
+	dtb_drc=""
+	if [ -f "${_dtb_src}" ]; then
+		dtb_src="${_dtb_src}"
+	elif [ -f "${_dtb_src_old}" ]; then
+		dtb_src="${_dtb_src_old}"
+	fi
+	if [ -z "${dtb_src}" ]; then
+		return 1
 	fi
 
-	# XXX Replace it by a function that detect thoth hardware
-	if [ "${arch}" = "aarch64" ]; then
-		cat << EOF >> /usr/local/etc/pkg.conf
-PKG_ENV {
-	OPENSSL_CONF=/etc/thoth/openssl.cnf
-	SSL_CA_CERT_FILE=/etc/thoth/ca.pem
-	SSL_CLIENT_CERT_FILE=/etc/thoth/device.pem
-	SSL_CLIENT_KEY_FILE=/etc/thoth/key.pem
-}
-EOF
+	if [ -n "${_dtb_dst_old}" ]; then
+		cp "${dtb_src}" "/boot/msdos/${_dtb_dst_old}"
 	fi
+	cp "${dtb_src}" "/boot/msdos"
 
-	local _pkg_abi=$(_pkg query %q pkg)
-	if [ "${CUR_ABI}" != "${_pkg_abi}" -a "${_pkg_abi}" != "${ABI}" ]; then
-		reinstall_pkg=1
-	fi
-
-	if [ "${CUR_ABI}" = "${ABI}" -o "${CUR_ABI}" = "${ALTABI}" ] ; then
-		NEW_MAJOR=""
-	else
-		NEW_MAJOR=1
-		export IGNORE_OSVERSION=yes
-	fi
-
-	export CUR_ABI CUR_ALTABI ABI ALTABI NEW_MAJOR
+	return 0
 }
 
 get_pkg_repo_url() {
@@ -778,15 +741,21 @@ pkg_update() {
 	[ "${1}" = "force" ] \
 	    && _force=" -f"
 
+	if [ -n "${reinstall_pkg}" ] \
+	    || [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
+		pkg_unlock pkg
+		_exec "pkg-static upgrade${dont_update} pkg" "Upgrading pkg" \
+		    mute
+		reinstall_pkg=""
+		_force=" -f"
+	fi
+
 	if [ -z "${_force}" -a -n "${dont_update}" ]; then
 		return 0
 	fi
 
 	[ "${2}" = "mute" ] \
 	    && _mute="mute"
-
-	/usr/local/bin/php -r 'require_once("pkg-utils.inc");update_repos();'
-	abi_setup
 
 	_exec "pkg-static update${_force}" "Updating repositories metadata" \
 	    ${_mute} "" do_not_exit
@@ -804,17 +773,6 @@ pkg_update() {
 			return
 		fi
 
-		# Make fetch to work with thoth
-		local _fetch_env=""
-		local _fetch_args=""
-		if [ "${arch}" = "aarch64" ]; then
-			_fetch_env="env OPENSSL_CONF=/etc/thoth/openssl.cnf"
-			_fetch_args="--cert=/etc/thoth/device.pem"
-			_fetch_args="${_fetch_args} --key=/etc/thoth/key.pem"
-			_fetch_args="${_fetch_args} --ca-cert=/etc/thoth/ca.pem"
-			_pkg_binary="/usr/local/sbin/pkg-static"
-		fi
-
 		local _url=$(get_pkg_repo_url)
 		if [ $? -ne 0 ]; then
 			return
@@ -828,54 +786,6 @@ pkg_update() {
 			pkg_update "${force}" "${_mute}" _do_not_bootstrap
 		fi
 	fi
-}
-
-pkg_upgrade_repo() {
-	if [ -n "${reinstall_pkg}" ] \
-	    || [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-		pkg_unlock pkg
-		_exec "pkg-static upgrade${dont_update} pkg" "Upgrading pkg" \
-		    mute
-		reinstall_pkg=""
-		pkg_update force
-	fi
-
-	local _repo_pkg="${product}-repo"
-
-	case "$(compare_pkg_version ${_repo_pkg})" in
-		"<")
-			local _force=""
-			;;
-		">")
-			local _force=" -f"
-			;;
-		"=")
-			return
-			;;
-		*)
-			_echo "ERROR: Unable to compare version of ${_repo_pkg}"
-			_exit 1
-	esac
-
-	cp /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy
-	if !(is_ce && repo_is_plus_upgrade) ; then
-		_exec "pkg-static upgrade${dont_update}${_force} ${_repo_pkg}" \
-		    "Upgrading ${_repo_pkg}" mute
-	fi
-	abi_setup
-	# If conf differs, for an update
-	if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf \
-	    /tmp/${product}.conf.copy; then
-		pkg_update force
-
-		# New repo may contain newer pkg
-		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]
-		then
-			_exec "pkg-static upgrade pkg" "Upgrading pkg" mute
-			pkg_update force
-		fi
-	fi
-	rm -f /tmp/${product}.conf.copy
 }
 
 upgrade_available() {
@@ -1043,14 +953,6 @@ pkg_upgrade() {
 		# Note: This is a no-op on UFS
 		_be_migrate
 
-		# Prepare system by creating a rollback BE
-		# Note: This is a no-op on UFS (or on CE)
-		_be_prep_upgrade
-		if [ $? -ne 0 ]; then
-			_echo "ERROR: Unable to create automatic rollback boot environment."
-			_exit 1
-		fi
-
 		pkg_update force
 
 		# Lock pkg to avoid having pkg binary for version N+1 installed
@@ -1068,8 +970,6 @@ pkg_upgrade() {
 		if [ "$(compare_pkg_version ${product}-upgrade)" != "=" ]; then
 			_new_pfsense_upgrade=1
 		fi
-
-		pkg_upgrade_repo
 
 		# If a new version of pfSense-upgrade is available, upgrade it
 		# and return a special code 99 used by wrapper to run newer
@@ -1183,6 +1083,14 @@ pkg_upgrade() {
 			fi
 		fi
 
+		# Prepare system by creating a rollback BE
+		# Note: This is a no-op on UFS (or on CE)
+		_be_prep_upgrade
+		if [ $? -ne 0 ]; then
+			_echo "ERROR: Unable to create automatic rollback boot environment."
+			_exit 1
+		fi
+
 		# Detect the move from suricata to suricata4
 		if is_pkg_installed ${product}-pkg-suricata \
 		    && _pkg rquery -U %n ${product}-pkg-suricata4 \
@@ -1236,6 +1144,18 @@ pkg_upgrade() {
 				[ -f /tmp/loader.rc.local ] \
 				    && cp /tmp/loader.rc.local /boot 2>/dev/null
 			fi
+
+			# Attempt to force update boot package and install efi
+			# loader first, bail if it fails
+			_echo -n ">>> Upgrading ${product}-boot..."
+			_exec "umount -f /boot/efi" "Unmounting /boot/efi" mute ignore_result
+			local _output=$(_exec "pkg-static upgrade -f ${product}-boot")
+			if [ $(expr "'${_output}'" : '.*POST-INSTALL script failed.*') != "0" ]; then
+				_echo " failed."
+				_exit 1
+			fi
+			echo " done."
+
 			# Force upgrade pfSense-rc together with kernel. It's
 			# failing for some reason on armv[67] even with the
 			# proper dependency version registered
@@ -1261,14 +1181,20 @@ pkg_upgrade() {
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-netgate-1100.dtb /boot/msdos
+				DTB_SRC="/boot/dtb/netgate/armada-3720-netgate-1100.dtb"
+				DTB_SRC_OLD="/boot/dtb/armada-3720-netgate-1100.dtb"
+				DTB_DST_OLD="armada-3720-sg1100.dtb"
+				copy_dtb "${DTB_SRC}" "${DTB_SRC_OLD}" "${DTB_DST_OLD}"
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 			if [ "${SYSTEM}" = "2100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-netgate-2100.dtb /boot/msdos
+				DTB_SRC="/boot/dtb/netgate/armada-3720-netgate-2100.dtb"
+				DTB_SRC_OLD="/boot/dtb/armada-3720-netgate-2100.dtb"
+				DTB_DST_OLD="armada-3720-sg2100.dtb"
+				copy_dtb "${DTB_SRC}" "${DTB_SRC_OLD}" "${DTB_DST_OLD}"
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 		fi
@@ -1359,9 +1285,6 @@ pkg_upgrade() {
 						${uboot_update}
 					fi
 				fi
-
-				# Make sure PHP setup is fine
-				/etc/rc.php_ini_setup >/dev/null 2>&1
 			else
 				# Upgrade core packages
 				_exec "pkg-static upgrade -r ${product}-core" \
@@ -1374,6 +1297,11 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update}${_force} -r ${product}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
+
+			# Make sure PHP setup is fine
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+			/etc/rc.php_ini_setup >/dev/null 2>&1
 
 			# Always make sure important packages are set as vital
 			set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
@@ -1410,10 +1338,19 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
+			# Make sure PHP setup is fine
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+			/etc/rc.php_ini_setup >/dev/null 2>&1
 		fi
 
 		# Cleanup a possible crash report created during PHP upgrade
 		rm -f /tmp/PHP_errors.log
+
+		# Remove the pfSense Plus upgrade repository.
+		if is_plus -a repo_is_plus_upgrade ; then
+			custom_repo_cleanup
+		fi
 
 		_pkg annotate -q -D ${kernel_pkg} next_stage
 
@@ -1477,7 +1414,7 @@ get_meta_pkg_name() {
 	elif is_pkg_installed ${product}; then
 		echo "${product}"
 	else
-		_echo "ERROR: It was not possible to identify which" \
+		_echo -o stderr "ERROR: It was not possible to identify which" \
 		    "${product} meta package is installed"
 		_exit 1
 	fi
@@ -1507,13 +1444,11 @@ check_upgrade() {
 	[ -z "${_skip_update}" ] \
 	    && pkg_update "" mute
 
-	pkg_upgrade_repo
-
 	local _version_compare=""
 	for _package in ${_meta_pkg} ${_core_pkgs}; do
 		_version_compare=$(compare_pkg_version ${_package})
 		case "${_version_compare}" in
-			=)
+			!|=)
 				continue
 				;;
 			'>')
@@ -1558,9 +1493,10 @@ compare_pkg_version() {
 	local _lver=$(_pkg query %v ${_pkg_name})
 
 	if [ -z "${_lver}" ]; then
-		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
+		_echo -o stderr "ERROR: It was not possible to determine ${_pkg_name}" \
 		    "local version"
-		_exit 1
+		echo '!'
+		return 1
 	fi
 
 	local _rver=$(_pkg rquery -U %v ${_pkg_name})
@@ -1572,17 +1508,19 @@ compare_pkg_version() {
 	fi
 
 	if [ -z "${_rver}" ]; then
-		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
+		_echo -o stderr "ERROR: It was not possible to determine ${_pkg_name}" \
 		    "remote version"
-		_exit 1
+		echo '!'
+		return 1
 	fi
 
 	local _version=$(_pkg version -t ${_lver} ${_rver})
 
 	if [ $? -ne 0 ]; then
-		_echo "ERROR: Error comparing ${_pkg_name} local and remote" \
+		_echo -o stderr "ERROR: Error comparing ${_pkg_name} local and remote" \
 		    "versions"
-		_exit 1
+		echo '!'
+		return 1
 	fi
 
 	echo ${_version}
@@ -1706,39 +1644,6 @@ do_reboot() {
 	fi
 }
 
-validate_repo_conf() {
-	# Make sure to use default repo conf when it doesn't exist
-	pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
-
-	default_path="/usr/local/share/${product}/pkg/repos"
-	default_file=$(ls -1 ${default_path}/*.default 2>/dev/null | tail -n 1)
-
-	if [ -n "${default_file}" -a -f "${default_file}" ]; then
-		default="${default_file%%.default}"
-	else
-		default="${default_path}/${product}-repo.conf"
-	fi
-
-	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
-
-	if [ -z "${pkg_repo_conf_path}" -o ! -f "${pkg_repo_conf_path}" ]; then
-		pkg_repo_conf_path=${default}
-	fi
-
-	if [ -f "${pkg_repo_conf_path}" ]; then
-		if [ -e "${pkg_repo_conf}" -a ! -L "${pkg_repo_conf}" ]; then
-			rm -f ${pkg_repo_conf}
-			ln -sf ${pkg_repo_conf_path} ${pkg_repo_conf}
-		fi
-
-		if [ "$(readlink ${pkg_repo_conf})" != \
-		    "${pkg_repo_conf_path}" ]; then
-			mkdir -p /usr/local/etc/pkg/repos
-			ln -sf ${pkg_repo_conf_path} ${pkg_repo_conf}
-		fi
-	fi
-}
-
 export LANG=C
 
 pid_file="/var/run/$(basename $0).pid"
@@ -1792,8 +1697,6 @@ if [ "${do_not_send_uniqueid}" != "true" ]; then
 else
 	export HTTP_USER_AGENT="${product}/${product_version}"
 fi
-
-validate_repo_conf
 
 # Flags used in _exit
 export delete_annotation=""
@@ -1970,14 +1873,34 @@ if [ -e "${progress_file}" ]; then
 	rm -f ${progress_file}
 fi
 
-arch=$(uname -p)
+unset NEW_MAJOR
 
-# Initialize the Thoth certificates on ARM64
-if [ "${arch}" = "aarch64" ]; then
-	/usr/local/bin/ping-auth.sh > /dev/null
-fi
-
-abi_setup
+# Fetch the latest settings.
+/usr/local/sbin/${product}-repo-setup ${dont_update}
+case "$?" in
+1)
+	echo "failed to update the repository settings!!!"
+	exit 1
+	;;
+11)
+	reinstall_pkg=1
+	;;
+12)
+	NEW_MAJOR=1
+	export IGNORE_OSVERSION=yes
+	;;
+13)
+	reinstall_pkg=1
+	NEW_MAJOR=1
+	export IGNORE_OSVERSION=yes
+	;;
+14)
+	# New repo may contain newer pkg
+	if [ "$(compare_pkg_version pkg)" = "<" ]; then
+		_exec "pkg-static upgrade pkg" "Upgrading pkg" mute
+	fi
+	;;
+esac
 
 # Set itself as vital to prevent users ending up without upgrade script
 set_vital_flag ${product}-upgrade
@@ -1991,8 +1914,6 @@ else
 fi
 
 if [ "${action}" = "install" ]; then
-	pkg_upgrade_repo
-
 	new_php_pkg=$(_pkg rquery -U %dn $(get_meta_pkg_name) \
 	    | egrep '^php[0-9]{2}$')
 

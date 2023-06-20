@@ -263,7 +263,7 @@ rustdesk:*:319:
 teleirc:*:320:
 caldera:*:321:
 tlsc:*:322:
-# free: 323
+soju:*:323:
 # free: 324
 dkfilter:*:325:
 smfs:*:326:
@@ -717,7 +717,7 @@ postgrest:*:772:
 # free: 773
 # free: 774
 # free: 775
-# free: 776
+namecoin:*:776:
 openxpki:*:777:
 litecoin:*:778:
 bitcoin:*:779:

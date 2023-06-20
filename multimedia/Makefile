@@ -252,12 +252,10 @@
     SUBDIR += naludump
     SUBDIR += navidrome
     SUBDIR += neolink
-    SUBDIR += nordlicht
     SUBDIR += nostt
     SUBDIR += nymphcast
     SUBDIR += nymphcastlib
     SUBDIR += nymphrpc
-    SUBDIR += obs-qtwebkit
     SUBDIR += obs-recursion-effect
     SUBDIR += obs-scrab
     SUBDIR += obs-streamfx

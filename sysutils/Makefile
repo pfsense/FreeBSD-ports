@@ -104,9 +104,6 @@
     SUBDIR += bareos-client
     SUBDIR += bareos-server
     SUBDIR += bareos-traymonitor
-    SUBDIR += bareos18-client
-    SUBDIR += bareos18-server
-    SUBDIR += bareos18-traymonitor
     SUBDIR += bareos19-client
     SUBDIR += bareos19-server
     SUBDIR += bareos19-traymonitor
@@ -139,7 +136,6 @@
     SUBDIR += blisp
     SUBDIR += boot-extract
     SUBDIR += bottom
-    SUBDIR += boxbackup-devel
     SUBDIR += bpytop
     SUBDIR += brasero
     SUBDIR += brename
@@ -187,13 +183,13 @@
     SUBDIR += cfengine-masterfiles
     SUBDIR += cfengine-masterfiles-devel
     SUBDIR += cfengine-masterfiles318
-    SUBDIR += cfengine-masterfiles319
     SUBDIR += cfengine-masterfiles320
     SUBDIR += cfengine-masterfiles321
+    SUBDIR += cfengine-masterfiles322
     SUBDIR += cfengine318
-    SUBDIR += cfengine319
     SUBDIR += cfengine320
     SUBDIR += cfengine321
+    SUBDIR += cfengine322
     SUBDIR += chaoskube
     SUBDIR += checkrestart
     SUBDIR += chezmoi
@@ -283,6 +279,7 @@
     SUBDIR += devcpu-data-amd
     SUBDIR += devcpu-data-intel
     SUBDIR += devctl-jail-kmod
+    SUBDIR += devedeng
     SUBDIR += devstat
     SUBDIR += dfc
     SUBDIR += di
@@ -331,6 +328,7 @@
     SUBDIR += duply
     SUBDIR += dupmerge
     SUBDIR += dust
+    SUBDIR += dutree
     SUBDIR += dvd+rw-tools
     SUBDIR += dvdbackup
     SUBDIR += dvdimagecmp
@@ -568,7 +566,10 @@
     SUBDIR += incron
     SUBDIR += inotify-tools
     SUBDIR += installwatch
-    SUBDIR += intel-nvmupdate
+    SUBDIR += intel-epct
+    SUBDIR += intel-nvmupdate-10g
+    SUBDIR += intel-nvmupdate-40g
+    SUBDIR += intel-nvmupdate-100g
     SUBDIR += intel-pcm
     SUBDIR += intel-undervolt
     SUBDIR += inxi
@@ -821,6 +822,7 @@
     SUBDIR += namefix
     SUBDIR += nbosd
     SUBDIR += ncdu
+    SUBDIR += ncdu2
     SUBDIR += ndmpd
     SUBDIR += neofetch
     SUBDIR += nerdctl
@@ -835,6 +837,7 @@
     SUBDIR += nomad
     SUBDIR += nomad-pot-driver
     SUBDIR += npadmin
+    SUBDIR += npmount
     SUBDIR += nq
     SUBDIR += nrg2iso
     SUBDIR += nss_ndb
@@ -964,7 +967,6 @@
     SUBDIR += pacman
     SUBDIR += paicc
     SUBDIR += paladin
-    SUBDIR += pam_mount
     SUBDIR += pam_xdg
     SUBDIR += panicmail
     SUBDIR += parafly
@@ -1012,6 +1014,8 @@
     SUBDIR += php81-posix
     SUBDIR += php82-fileinfo
     SUBDIR += php82-posix
+    SUBDIR += php83-fileinfo
+    SUBDIR += php83-posix
     SUBDIR += phybs
     SUBDIR += pick
     SUBDIR += pidof
@@ -1060,10 +1064,8 @@
     SUBDIR += pstree
     SUBDIR += puppet-lint
     SUBDIR += puppet-mode.el
-    SUBDIR += puppet6
     SUBDIR += puppet7
     SUBDIR += puppet8
-    SUBDIR += puppetserver6
     SUBDIR += puppetserver7
     SUBDIR += puppetserver8
     SUBDIR += pv
@@ -1222,7 +1224,6 @@
     SUBDIR += rubygem-capistrano-ext
     SUBDIR += rubygem-capistrano-harrow
     SUBDIR += rubygem-chef
-    SUBDIR += rubygem-chef16
     SUBDIR += rubygem-chef-bin
     SUBDIR += rubygem-chef-bin17
     SUBDIR += rubygem-chef-cleanroom
@@ -1233,6 +1234,7 @@
     SUBDIR += rubygem-chef-utils17
     SUBDIR += rubygem-chef-vault
     SUBDIR += rubygem-chef-zero
+    SUBDIR += rubygem-chef17
     SUBDIR += rubygem-choria-mcorpc-support
     SUBDIR += rubygem-facter
     SUBDIR += rubygem-fluent-mixin-plaintextformatter
@@ -1268,7 +1270,7 @@
     SUBDIR += rubygem-mothra
     SUBDIR += rubygem-murder
     SUBDIR += rubygem-ohai
-    SUBDIR += rubygem-ohai16
+    SUBDIR += rubygem-ohai17
     SUBDIR += rubygem-parallel
     SUBDIR += rubygem-puppet_forge
     SUBDIR += rubygem-puppetfile-resolver
@@ -1319,6 +1321,7 @@
     SUBDIR += safe-rm
     SUBDIR += safecat
     SUBDIR += safecopy
+    SUBDIR += sake
     SUBDIR += samdruckerclientshell
     SUBDIR += samefile
     SUBDIR += samesame
@@ -1329,6 +1332,7 @@
     SUBDIR += savelogs
     SUBDIR += scalpel
     SUBDIR += scan_ffs
+    SUBDIR += scanbd
     SUBDIR += scanbuttond
     SUBDIR += scanmem
     SUBDIR += scct

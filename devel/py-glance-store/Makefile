@@ -1,5 +1,5 @@
 PORTNAME=	glance-store
-PORTVERSION=	4.3.0
+PORTVERSION=	4.5.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -7,7 +7,8 @@ DISTNAME=	glance_store-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	OpenStack Image Service Store Library
-WWW=		https://docs.openstack.org/glance_store/latest/
+WWW=		https://docs.openstack.org/glance_store/latest/ \
+		https://github.com/openstack/glance_store
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -39,7 +40,7 @@ S3_DESC=	Storage backend for Amazon S3
 SWIFT_DESC=	Storage backend for OpenStack Swift
 VMWARE_DESC=	Storage backend for VMware Datastore
 
-CINDER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}os-brick>=2.6.0:devel/py-os-brick@${PY_FLAVOR} \
+CINDER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}os-brick>=6.3.0:devel/py-os-brick@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}oslo.rootwrap>=5.8.0:devel/py-oslo.rootwrap@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}python-cinderclient>=4.1.0:net/py-python-cinderclient@${PY_FLAVOR}
 S3_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}boto3>=1.9.199:www/py-boto3@${PY_FLAVOR}

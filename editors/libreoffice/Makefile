@@ -338,10 +338,6 @@ BINARY_ALIAS=	sed=gsed
 BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
 .endif
 
-.if ${ARCH:Mpowerpc*}
-EXTRA_PATCHES+=	${FILESDIR}/powerpc64
-.endif
-
 .if ${ARCH} == powerpc || ${ARCH} == powerpcspe || ${ARCH} == powerpc64
 CONFIGURE_ARGS+=	--disable-skia
 .endif

@@ -1,0 +1,19 @@
+commit c13bf6d4d174d77768d9090e97b3379835495356
+Author: Christian McDonald <cmcdonald@netgate.com>
+Date:   Mon May 29 21:40:52 2023 -0400
+
+    Ignore ngeth and wg interfaces when performing interface mismatch detection. For #14410
+
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index b2ee5e8ebd..ff922fe835 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -2474,7 +2474,7 @@ function is_interface_mismatch() {
+ 		foreach ($config['interfaces'] as $ifcfg) {
+ 			if (interface_is_vlan($ifcfg['if']) != NULL ||
+ 			    interface_is_qinq($ifcfg['if']) != NULL ||
+-			    preg_match("/^enc|^cua|^tun|^tap|^l2tp|^pptp|^ppp|^ovpn|^ipsec|^gif|^gre|^lagg|^bridge|^ue|vlan|_wlan|_\d{0,4}_\d{0,4}$/i", $ifcfg['if'])) {
++			    preg_match("/^bridge|^cua|^enc|^gif|^gre|^ipsec|^l2tp|^lagg|^ngeth|^ovpn|^ppp|^pptp|^tap|^tun|^ue|vlan|^wg|_wlan|_\d{0,4}_\d{0,4}$/i", $ifcfg['if'])) {
+ 				// Do not check these interfaces.
+ 				$i++;
+ 				continue;

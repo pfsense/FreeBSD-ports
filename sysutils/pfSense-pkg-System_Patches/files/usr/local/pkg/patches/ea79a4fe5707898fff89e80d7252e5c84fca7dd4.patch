@@ -1,0 +1,19 @@
+commit ea79a4fe5707898fff89e80d7252e5c84fca7dd4
+Author: jim-p <jimp@netgate.com>
+Date:   Thu May 25 10:18:37 2023 -0400
+
+    Correct 6o4 addr variable name. Fixes #14415
+
+diff --git a/src/etc/inc/filter.inc b/src/etc/inc/filter.inc
+index 7063798529..255af0903c 100644
+--- a/src/etc/inc/filter.inc
++++ b/src/etc/inc/filter.inc
+@@ -2490,7 +2490,7 @@ function filter_nat_rules_generate() {
+ 	    (is_ipaddr($ipv6nataddr)) &&
+ 	    (is_array($FilterIflist['wan']))) {
+ 		/* XXX: FIX ME!	 IPV6 */
+-		$natrules .= "rdr on \${$FilterIflist['wan']['descr']} proto ipv6 from any to any -> {$pv6nataddr}\n";
++		$natrules .= "rdr on \${$FilterIflist['wan']['descr']} proto ipv6 from any to any -> {$ipv6nataddr}\n";
+ 	}
+ 
+ 	unlink_if_exists("{$g['varetc_path']}/xinetd.conf");
