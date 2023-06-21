@@ -955,6 +955,7 @@
     SUBDIR += py-libpoly
     SUBDIR += py-linearmodels
     SUBDIR += py-lmfit
+    SUBDIR += py-logical-unification
     SUBDIR += py-lrcalc
     SUBDIR += py-luminol
     SUBDIR += py-mapbox-earcut
@@ -1023,6 +1024,7 @@
     SUBDIR += py-pystan
     SUBDIR += py-pysym
     SUBDIR += py-pytanque
+    SUBDIR += py-pytensor
     SUBDIR += py-python-fcl
     SUBDIR += py-python-louvain
     SUBDIR += py-python-picard
