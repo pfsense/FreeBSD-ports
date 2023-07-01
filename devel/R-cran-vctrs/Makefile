@@ -1,9 +1,9 @@
 PORTNAME=	vctrs
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.3
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	Vector Helpers
 WWW=		https://cran.r-project.org/web/packages/vctrs/
 

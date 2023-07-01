@@ -140,7 +140,6 @@
     SUBDIR += easy-rsa
     SUBDIR += enchive
     SUBDIR += eschalot
-    SUBDIR += esteidfirefoxplugin
     SUBDIR += expiretable
     SUBDIR += f-prot
     SUBDIR += fakebo
@@ -170,6 +169,7 @@
     SUBDIR += gcr
     SUBDIR += gef
     SUBDIR += git-credential-gopass
+    SUBDIR += git-credential-oauth
     SUBDIR += git-crypt
     SUBDIR += git-remote-gcrypt
     SUBDIR += git-secret
@@ -249,7 +249,6 @@
     SUBDIR += keepassxc
     SUBDIR += keybase
     SUBDIR += keychain
-    SUBDIR += keynote
     SUBDIR += keyprint
     SUBDIR += keysmith
     SUBDIR += kf5-kdesu
@@ -266,6 +265,7 @@
     SUBDIR += krb5-118
     SUBDIR += krb5-119
     SUBDIR += krb5-120
+    SUBDIR += krb5-121
     SUBDIR += krb5-appl
     SUBDIR += krb5-devel
     SUBDIR += kstart
@@ -674,7 +674,6 @@
     SUBDIR += p5-Net-OpenID-JanRain
     SUBDIR += p5-Net-OpenID-Server
     SUBDIR += p5-Net-Radius-Server
-    SUBDIR += p5-Net-SAML
     SUBDIR += p5-Net-SAML2
     SUBDIR += p5-Net-SSH-AuthorizedKeysFile
     SUBDIR += p5-Net-SSL-ExpireDate
@@ -799,6 +798,8 @@
     SUBDIR += php81-sodium
     SUBDIR += php82-filter
     SUBDIR += php82-sodium
+    SUBDIR += php83-filter
+    SUBDIR += php83-sodium
     SUBDIR += picocrypt
     SUBDIR += picosha2
     SUBDIR += pidgin-encryption
@@ -877,6 +878,7 @@
     SUBDIR += py-certbot-dns-rfc2136
     SUBDIR += py-certbot-dns-route53
     SUBDIR += py-certbot-dns-sakuracloud
+    SUBDIR += py-certbot-dns-standalone
     SUBDIR += py-certbot-nginx
     SUBDIR += py-certifi
     SUBDIR += py-certstream
@@ -1011,7 +1013,6 @@
     SUBDIR += py-scrypt
     SUBDIR += py-secure
     SUBDIR += py-securesystemslib
-    SUBDIR += py-sequoia
     SUBDIR += py-service_identity
     SUBDIR += py-signedjson
     SUBDIR += py-social-auth-core
@@ -1087,10 +1088,8 @@
     SUBDIR += rubygem-doorkeeper-rails5
     SUBDIR += rubygem-doorkeeper-rails50
     SUBDIR += rubygem-doorkeeper-rails61
-    SUBDIR += rubygem-doorkeeper562
     SUBDIR += rubygem-duo_api
     SUBDIR += rubygem-ed25519
-    SUBDIR += rubygem-ed2551912
     SUBDIR += rubygem-encryptor
     SUBDIR += rubygem-ezcrypto
     SUBDIR += rubygem-googleauth
@@ -1130,7 +1129,6 @@
     SUBDIR += rubygem-omniauth-bitbucket
     SUBDIR += rubygem-omniauth-cas
     SUBDIR += rubygem-omniauth-cas3
-    SUBDIR += rubygem-omniauth-cas3-oauth2
     SUBDIR += rubygem-omniauth-dingtalk-oauth2
     SUBDIR += rubygem-omniauth-gitlab
     SUBDIR += rubygem-omniauth-jwt
@@ -1219,6 +1217,7 @@
     SUBDIR += secure_delete
     SUBDIR += sedutil
     SUBDIR += sequoia
+    SUBDIR += sequoia-sq
     SUBDIR += setaudit
     SUBDIR += sha1collisiondetection
     SUBDIR += sha2wordlist
@@ -1305,6 +1304,7 @@
     SUBDIR += tpm2-abrmd
     SUBDIR += tpm2-tools
     SUBDIR += tpm2-tss
+    SUBDIR += transcrypt
     SUBDIR += trezord
     SUBDIR += tripwire
     SUBDIR += trousers
@@ -1362,7 +1362,6 @@
     SUBDIR += zaproxy
     SUBDIR += zeek
     SUBDIR += zeronet
-    SUBDIR += zxid
     SUBDIR += zzuf
 
 .include <bsd.port.subdir.mk>

@@ -1,7 +1,7 @@
 PORTNAME=	code_saturne
 PORTVERSION=	7.1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	science parallel
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -115,6 +115,7 @@ DOCS=		AUTHORS ChangeLog README
 pre-configure:
 	${REINPLACE_CMD} -e 's|/usr/bin/env python|${PYTHON_CMD}|'	\
 		${WRKSRC}/Makefile.am
+	${REINPLACE_CMD} -e 's|make -s|${GMAKE} -s|' ${WRKSRC}/m4/cs_petsc.m4
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/code_saturne/cs_solver

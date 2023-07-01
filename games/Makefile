@@ -138,6 +138,7 @@
     SUBDIR += bzflag
     SUBDIR += bzflag-server
     SUBDIR += cake
+    SUBDIR += candycrisis
     SUBDIR += caph
     SUBDIR += cardpics
     SUBDIR += cataclysm-dda
@@ -774,7 +775,6 @@
     SUBDIR += pipewalker
     SUBDIR += pmars
     SUBDIR += pmars-sdl
-    SUBDIR += poker-eval
     SUBDIR += pokerth
     SUBDIR += polyglot
     SUBDIR += pongix
@@ -927,7 +927,6 @@
     SUBDIR += solarus-quest-editor
     SUBDIR += solver
     SUBDIR += spacejunk
-    SUBDIR += spacezero
     SUBDIR += speak
     SUBDIR += species
     SUBDIR += spellcast
@@ -996,7 +995,6 @@
     SUBDIR += tty-solitaire
     SUBDIR += tux-aqfh
     SUBDIR += tuxkart
-    SUBDIR += tuxmath
     SUBDIR += tuxpaint
     SUBDIR += tuxpaint-config
     SUBDIR += tuxpaint-fonts

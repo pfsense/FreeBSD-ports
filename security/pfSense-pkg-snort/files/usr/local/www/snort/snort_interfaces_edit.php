@@ -134,8 +134,6 @@ if (isset($id) && $a_rule[$id]) {
 	/* old options */
 	$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 	$pconfig = $a_rule[$id];
-	if (!empty($pconfig['configpassthru']))
-		$pconfig['configpassthru'] = base64_decode($pconfig['configpassthru']);
 	if (empty($pconfig['uuid']))
 		$pconfig['uuid'] = $snort_uuid;
 	if (get_real_interface($pconfig['interface']) == "") {
@@ -922,7 +920,7 @@ $section = new Form_Section('Custom Configuration Options');
 $section->addInput(new Form_Textarea (
 	'configpassthru',
 	'Advanced Configuration Pass-Through',
-	$pconfig['configpassthru']
+	base64_decode($pconfig['configpassthru'])
 ))->setHelp('Enter any additional configuration parameters to add to the Snort configuration here, separated by a newline');
 
 $form->add($section);

@@ -1,6 +1,6 @@
 PORTNAME=	aws-ec2-imdsv2-get
 DISTVERSION=	1.0.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net
 
 MAINTAINER=	cperciva@FreeBSD.org
@@ -17,6 +17,8 @@ GH_ACCOUNT=	aws
 PORTDOCS=	NOTICE README.md
 
 OPTIONS_DEFINE=	DOCS
+
+PLIST_FILES=	bin/aws-ec2-imdsv2-get
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

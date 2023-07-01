@@ -113,7 +113,6 @@
     SUBDIR += enma
     SUBDIR += eps
     SUBDIR += epstools
-    SUBDIR += esmtp
     SUBDIR += evolution
     SUBDIR += evolution-ews
     SUBDIR += exilog
@@ -459,6 +458,7 @@
     SUBDIR += php80-imap
     SUBDIR += php81-imap
     SUBDIR += php82-imap
+    SUBDIR += php83-imap
     SUBDIR += phplist
     SUBDIR += phpmailer
     SUBDIR += phpmailer6
@@ -654,7 +654,6 @@
     SUBDIR += spambnc
     SUBDIR += spamcup
     SUBDIR += spamd
-    SUBDIR += spamdyke
     SUBDIR += spamguard
     SUBDIR += spamilter
     SUBDIR += spampd

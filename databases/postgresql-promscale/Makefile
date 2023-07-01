@@ -1,6 +1,6 @@
 PORTNAME=	promscale
 PORTVERSION=	0.8.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
@@ -20,7 +20,6 @@ USES=		cargo gmake pgsql:12+
 USE_GITHUB=	yes
 GH_ACCOUNT=	timescale
 GH_PROJECT=	promscale_extension
-GH_TAGNAME=	${PORTVERSION}
 
 WANT_PGSQL=	server
 

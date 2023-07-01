@@ -1,0 +1,250 @@
+#!/bin/sh
+#
+# pfSense-repo-setup
+#
+# part of pfSense (https://www.pfsense.org)
+# Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
+# All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+usage() {
+	me=$(basename $0)
+        cat << EOD >&2
+Usage: $(basename "$0") [-hU]
+	-h		- this help text
+	-U		- do not update the repository settings
+EOD
+}
+
+_pkg() {
+	/usr/local/sbin/pkg-static "$@" 2>/dev/null
+	return $?
+}
+
+get_default_repo() {
+	local _pkg_repo_files="${PLUS_CERT_BASE}/${PRODUCT}-repo-*.name"
+	for file in ${_pkg_repo_files}; do
+
+		repo_path="${file%.name}"
+		if [ -f "${repo_path}.default" ]; then
+			echo "${repo_path}.conf"
+			return
+		fi
+	done
+	echo ""
+}
+
+get_repo_name() {
+	local _repo_conf="${1}"
+	repo_path="${_repo_conf%.conf}"
+	repo_name="${repo_path}.name"
+	if [ ! -f "${repo_name}" ]; then
+		echo -n ""
+		return
+	fi
+	/bin/cat "${repo_name}"
+}
+
+validate_repo_conf() {
+	local default_file=$(ls -1 ${PLUS_CERT_BASE}/*.default 2>/dev/null | tail -n 1)
+	local default="${PLUS_CERT_BASE}/${PRODUCT}-repo-stable.conf"
+	local repo_name=$(get_repo_name "${PKG_REPO_CONF_PATH}")
+	local pkg_repo_conf="${PLUS_CERT_BASE}/${PRODUCT}-repo-${repo_name}.conf"
+
+	if [ -n "${default_file}" ] && [ -f "${default_file}" ]; then
+		default="${default_file%%.default}.conf"
+	fi
+
+	# Use the default if the XML points to an invalid file.
+	if [ -z "${pkg_repo_conf}" -o ! -f "${pkg_repo_conf}" ]; then
+		pkg_repo_conf=${default}
+	fi
+
+	if [ -f "${pkg_repo_conf}" ]; then
+		if [ -e "${PFSENSE_REPO_CONF}" -a ! -L "${PFSENSE_REPO_CONF}" ]; then
+			rm -f ${PFSENSE_REPO_CONF}
+			ln -sf ${pkg_repo_conf} ${PFSENSE_REPO_CONF}
+		fi
+
+		if [ "$(readlink ${PFSENSE_REPO_CONF})" != \
+		    "${pkg_repo_conf}" ]; then
+			mkdir -p $(dirname "${PFSENSE_REPO_CONF}")
+			ln -sf ${pkg_repo_conf} ${PFSENSE_REPO_CONF}
+		fi
+		export PKG_REPO_CONF_PATH="${pkg_repo_conf}"
+	fi
+}
+
+abi_setup() {
+	local _arch="$(uname -p)"
+	local _freebsd_version="$(uname -r)"
+	local _repo_conf_file="$(readlink ${PFSENSE_REPO_CONF})"
+
+	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${_arch}"
+	CUR_ALTABI="freebsd:${_freebsd_version%%.*}"
+
+	if [ "${_arch}" = "armv6" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:hardfp"
+	elif [ "${_arch}" = "armv7" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:softfp"
+	elif [ "${_arch}" = "aarch64" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${_arch}:64"
+	elif [ "${_arch}" = "i386" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:x86:32"
+	else
+		CUR_ALTABI="${CUR_ALTABI}:x86:64"
+	fi
+
+	if [ -f ${_repo_conf_file%%.conf}.abi ]; then
+		ABI=$(cat ${_repo_conf_file%%.conf}.abi)
+	else
+		ABI=${CUR_ABI}
+	fi
+
+	if [ -f ${_repo_conf_file%%.conf}.altabi ]; then
+		ALTABI=$(cat ${_repo_conf_file%%.conf}.altabi)
+	else
+		ALTABI=${CUR_ALTABI}
+	fi
+
+	# Make sure pkg.conf is set properly so GUI can work
+	cat << EOF > "${PKG_CONF}"
+ABI=${ABI}
+ALTABI=${ALTABI}
+EOF
+
+	AUTH_CA="/etc/ssl/netgate-ca.pem"
+	REPO_NAME=$(get_repo_name "${PKG_REPO_CONF_PATH}")
+	PLUS_REPO_CONF="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}.conf"
+	PLUS_CERT="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}-cert.pem"
+	PLUS_KEY="${PLUS_CERT_BASE}/${PRODUCT}-repo-${REPO_NAME}-key.pem"
+	if [ -f "${PLUS_REPO_CONF}" ] && \
+	   [ "${PLUS_REPO_CONF}" != "$(realpath "${PFSENSE_REPO_CONF}")" ]; then
+		rm -f "${PFSENSE_REPO_CONF}"
+		ln -s "${PLUS_REPO_CONF}" "${PFSENSE_REPO_CONF}"
+	fi
+	if [ -f "${AUTH_CA}" -a -f "${PLUS_CERT}" -a -f "${PLUS_KEY}" ]; then
+		cat << EOF >> "${PKG_CONF}"
+PKG_ENV {
+	SSL_CA_CERT_FILE=${AUTH_CA}
+	SSL_CLIENT_CERT_FILE=${PLUS_CERT}
+	SSL_CLIENT_KEY_FILE=${PLUS_KEY}
+}
+EOF
+	fi
+
+	err=0
+
+	local _pkg_abi=$(_pkg query %q pkg)
+	if [ "${CUR_ABI}" != "${_pkg_abi}" ] && [ "${_pkg_abi}" != "${ABI}" ]; then
+		# Upgrade pkg
+		err=11
+	fi
+
+	if [ "${CUR_ABI}" != "${ABI}" ] && [ "${CUR_ABI}" != "${ALTABI}" ]; then
+		# Set NEW_MAJOR
+		if [ "${err}" -eq 11 ]; then
+			err=13
+		else
+			err=12
+		fi
+	fi
+
+	return $err
+}
+
+
+pfSense_repo_setup() {
+
+	cp "${PFSENSE_REPO_CONF}" "/tmp/${PRODUCT}.conf.copy"
+
+	if [ -z "${NOUPDATE}" ]; then
+		# Fetch the repository settings.
+		if ! /usr/local/sbin/${PRODUCT}-repoc-static; then
+			echo "failed to update the repository settings!!!"
+			rm -f "/tmp/${PRODUCT}.conf.copy"
+			exit 1
+		fi
+	fi
+
+	# Validate the new settings
+	validate_repo_conf
+
+	# Setup the repository.
+	abi_setup
+	err=$?
+
+	# If conf differs, may need force a pkg update
+	if ! cmp -s "${PFSENSE_REPO_CONF}" "/tmp/${PRODUCT}.conf.copy" && \
+	    [ "${err}" -eq 0 ]; then
+		err=14
+	fi
+	rm -f "/tmp/${PRODUCT}.conf.copy"
+
+	return $err
+}
+
+
+#
+# main()
+#
+
+PHP="/usr/local/bin/php"
+READ_XML_TAG="/usr/local/sbin/read_xml_tag.sh"
+export PLUS_CERT_BASE="$("${PHP}" -n /usr/local/sbin/read_global_var pkg_repos_path pfSense)"
+export PRODUCT="$("${PHP}" -n /usr/local/sbin/read_global_var product_name pfSense)"
+export PFSENSE_REPO_CONF="/usr/local/etc/pkg/repos/${PRODUCT}.conf"
+export PKG_CONF="/usr/local/etc/pkg.conf"
+export PKG_REPO_CONF_PATH="$("${READ_XML_TAG}" string system/pkg_repo_conf_path)"
+
+# If no branch is saved on the XML configuration, use the default repo.
+if [ -z "${PKG_REPO_CONF_PATH}" ]; then
+	export PKG_REPO_CONF_PATH="$(get_default_repo)"
+fi
+
+unset NOUPDATE
+while getopts hU opt; do
+	case ${opt} in
+	h)
+		usage
+		exit 0
+		;;
+	U)
+		NOUPDATE=1
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+
+#
+# Validate the actual repo setup.
+# Make sure it points to a valid file or fallback to the default.
+#
+validate_repo_conf
+
+# Fetch the repository data and setup the repository access.
+pfSense_repo_setup
+err=$?
+
+# Exit codes:
+# 0 = okay
+# 1 = error
+# 11 = update pkg
+# 12 = new major
+# 13 = update pkg + new major
+# 14 = conf changed, check pkg version
+exit $err

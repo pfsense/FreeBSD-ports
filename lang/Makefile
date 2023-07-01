@@ -104,6 +104,7 @@
     SUBDIR += gforth
     SUBDIR += ghc
     SUBDIR += ghc810
+    SUBDIR += ghc92
     SUBDIR += gir-to-d
     SUBDIR += gjs
     SUBDIR += gleam
@@ -189,6 +190,7 @@
     SUBDIR += micropython
     SUBDIR += mit-scheme
     SUBDIR += mixal
+    SUBDIR += mlkit
     SUBDIR += mlton
     SUBDIR += mmix
     SUBDIR += mono
@@ -271,6 +273,8 @@
     SUBDIR += php81-extensions
     SUBDIR += php82
     SUBDIR += php82-extensions
+    SUBDIR += php83
+    SUBDIR += php83-extensions
     SUBDIR += picoc
     SUBDIR += plexil
     SUBDIR += pocl

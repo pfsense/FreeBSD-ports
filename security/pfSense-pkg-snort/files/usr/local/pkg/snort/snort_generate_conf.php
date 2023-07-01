@@ -1008,16 +1008,22 @@ preprocessor appid: \
 EOD;
 
 /* def ARP Spoof preprocessor */
-$arpspoof_preproc = "# ARP Spoof preprocessor #\n";
+$arpspoof_preproc = "";
 if ($snortcfg['arp_unicast_detection'] == 'on') {
+	$arpspoof_preproc = "# ARP Spoof preprocessor (detect unicast ARP requests) #\n";
 	$arpspoof_preproc .= "preprocessor arpspoof: -unicast\n";
+	foreach (array_get_path($snortcfg, 'arp_spoof_engine/item', []) as $f => $v) {
+		$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
+		$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	}
 }
-else {
+elseif ($snortcfg['arpspoof_preproc'] == 'on') {
+	$arpspoof_preproc = "# ARP Spoof preprocessor #\n";
 	$arpspoof_preproc .= "preprocessor arpspoof\n";
-}
-foreach (array_get_path($snortcfg, 'arp_spoof_engine/item', []) as $f => $v) {
-	$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
-	$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	foreach (array_get_path($snortcfg, 'arp_spoof_engine/item', []) as $f => $v) {
+		$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
+		$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	}
 }
 
 /***************************************/

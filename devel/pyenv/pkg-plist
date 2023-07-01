@@ -91,6 +91,7 @@ libexec/pyenv-plugins/python-build/share/python-build/3.10.0
 libexec/pyenv-plugins/python-build/share/python-build/3.10.1
 libexec/pyenv-plugins/python-build/share/python-build/3.10.10
 libexec/pyenv-plugins/python-build/share/python-build/3.10.11
+libexec/pyenv-plugins/python-build/share/python-build/3.10.12
 libexec/pyenv-plugins/python-build/share/python-build/3.10.2
 libexec/pyenv-plugins/python-build/share/python-build/3.10.3
 libexec/pyenv-plugins/python-build/share/python-build/3.10.4
@@ -104,8 +105,10 @@ libexec/pyenv-plugins/python-build/share/python-build/3.11.0
 libexec/pyenv-plugins/python-build/share/python-build/3.11.1
 libexec/pyenv-plugins/python-build/share/python-build/3.11.2
 libexec/pyenv-plugins/python-build/share/python-build/3.11.3
+libexec/pyenv-plugins/python-build/share/python-build/3.11.4
 libexec/pyenv-plugins/python-build/share/python-build/3.12-dev
-libexec/pyenv-plugins/python-build/share/python-build/3.12.0a7
+libexec/pyenv-plugins/python-build/share/python-build/3.12.0b2
+libexec/pyenv-plugins/python-build/share/python-build/3.13-dev
 libexec/pyenv-plugins/python-build/share/python-build/3.2.0
 libexec/pyenv-plugins/python-build/share/python-build/3.2.1
 libexec/pyenv-plugins/python-build/share/python-build/3.2.2
@@ -172,6 +175,7 @@ libexec/pyenv-plugins/python-build/share/python-build/3.7.13
 libexec/pyenv-plugins/python-build/share/python-build/3.7.14
 libexec/pyenv-plugins/python-build/share/python-build/3.7.15
 libexec/pyenv-plugins/python-build/share/python-build/3.7.16
+libexec/pyenv-plugins/python-build/share/python-build/3.7.17
 libexec/pyenv-plugins/python-build/share/python-build/3.7.2
 libexec/pyenv-plugins/python-build/share/python-build/3.7.3
 libexec/pyenv-plugins/python-build/share/python-build/3.7.4
@@ -190,6 +194,7 @@ libexec/pyenv-plugins/python-build/share/python-build/3.8.13
 libexec/pyenv-plugins/python-build/share/python-build/3.8.14
 libexec/pyenv-plugins/python-build/share/python-build/3.8.15
 libexec/pyenv-plugins/python-build/share/python-build/3.8.16
+libexec/pyenv-plugins/python-build/share/python-build/3.8.17
 libexec/pyenv-plugins/python-build/share/python-build/3.8.2
 libexec/pyenv-plugins/python-build/share/python-build/3.8.3
 libexec/pyenv-plugins/python-build/share/python-build/3.8.4
@@ -208,6 +213,7 @@ libexec/pyenv-plugins/python-build/share/python-build/3.9.13
 libexec/pyenv-plugins/python-build/share/python-build/3.9.14
 libexec/pyenv-plugins/python-build/share/python-build/3.9.15
 libexec/pyenv-plugins/python-build/share/python-build/3.9.16
+libexec/pyenv-plugins/python-build/share/python-build/3.9.17
 libexec/pyenv-plugins/python-build/share/python-build/3.9.2
 libexec/pyenv-plugins/python-build/share/python-build/3.9.4
 libexec/pyenv-plugins/python-build/share/python-build/3.9.5
@@ -291,6 +297,7 @@ libexec/pyenv-plugins/python-build/share/python-build/anaconda3-5.3.0
 libexec/pyenv-plugins/python-build/share/python-build/anaconda3-5.3.1
 libexec/pyenv-plugins/python-build/share/python-build/cinder-3.8-dev
 libexec/pyenv-plugins/python-build/share/python-build/graalpy-22.3.0
+libexec/pyenv-plugins/python-build/share/python-build/graalpy-23.0.0
 libexec/pyenv-plugins/python-build/share/python-build/graalpython-20.1.0
 libexec/pyenv-plugins/python-build/share/python-build/graalpython-20.2.0
 libexec/pyenv-plugins/python-build/share/python-build/graalpython-20.3.0
@@ -394,7 +401,6 @@ libexec/pyenv-plugins/python-build/share/python-build/miniconda2-4.6.14
 libexec/pyenv-plugins/python-build/share/python-build/miniconda2-4.7.10
 libexec/pyenv-plugins/python-build/share/python-build/miniconda2-4.7.12
 libexec/pyenv-plugins/python-build/share/python-build/miniconda2-latest
-libexec/pyenv-plugins/python-build/share/python-build/miniconda3-%%PYTHON_VER%%-23.1.0-1
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-2.2.2
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.0.0
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.0.4
@@ -428,6 +434,7 @@ libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.8-4.8.3
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.8-4.9.2
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.8.3
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.9-22.11.1-1
+libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.9-23.1.0-1
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.9-4.10.1
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.9-4.10.3
 libexec/pyenv-plugins/python-build/share/python-build/miniconda3-3.9-4.11.0
@@ -692,6 +699,7 @@ libexec/pyenv-plugins/python-build/share/python-build/patches/3.5.10/Python-3.5.
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.5.10/Python-3.5.10/0006-bpo-41100-fix-_decimal-for-arm64-Mac-OS-GH-21228.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.5.10/Python-3.5.10/0007-Port-ctypes-and-system-libffi-patch-for-arm64-macOS-.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.5.10/Python-3.5.10/0008-bpo-36231-Support-building-on-macOS-without-usr-incl.patch
+libexec/pyenv-plugins/python-build/share/python-build/patches/3.5.10/Python-3.5.10/0009-bpo-42351-Avoid-error-when-opening-header-with-non-U.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.5.2/Python-3.5.2/venv.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.6.15/Python-3.6.15/0001-Detect-arm64-in-configure.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.6.15/Python-3.6.15/0002-bpo-36231-Support-building-on-macOS-without-usr-incl.patch
@@ -723,6 +731,9 @@ libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.16/openssl-1.1
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.16/Python-3.7.16/0001-Port-ctypes-and-system-libffi-patches-for-arm64-macO.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.16/Python-3.7.16/0002-bpo-41100-fix-_decimal-for-arm64-Mac-OS-GH-21228.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.16/Python-3.7.16/0003-bpo-42351-Avoid-error-when-opening-header-with-non-U.patch
+libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.17/Python-3.7.17/0001-Port-ctypes-and-system-libffi-patches-for-arm64-macO.patch
+libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.17/Python-3.7.17/0002-bpo-41100-fix-_decimal-for-arm64-Mac-OS-GH-21228.patch
+libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.17/Python-3.7.17/0003-bpo-42351-Avoid-error-when-opening-header-with-non-U.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.8/Python-3.7.8/0001-bpo-45405-Prevent-internal-configure-error-when-runn.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.7.9/Python-3.7.9/0001-bpo-45405-Prevent-internal-configure-error-when-runn.patch
 libexec/pyenv-plugins/python-build/share/python-build/patches/3.8.10/Python-3.8.10/0001-bpo-45405-Prevent-internal-configure-error-when-runn.patch
@@ -848,6 +859,8 @@ libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.10
 libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.10-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.11
 libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.11-src
+libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.12
+libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.12-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.2
 libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.2-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy2.7-7.3.3
@@ -866,6 +879,8 @@ libexec/pyenv-plugins/python-build/share/python-build/pypy3-2.3.1
 libexec/pyenv-plugins/python-build/share/python-build/pypy3-2.3.1-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy3-2.4.0
 libexec/pyenv-plugins/python-build/share/python-build/pypy3-2.4.0-src
+libexec/pyenv-plugins/python-build/share/python-build/pypy3.10-7.3.12
+libexec/pyenv-plugins/python-build/share/python-build/pypy3.10-7.3.12-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.3-5.2-alpha1
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.3-5.2-alpha1-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.3-5.5-alpha
@@ -936,6 +951,8 @@ libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.10
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.10-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.11
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.11-src
+libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.12
+libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.12-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.8
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.8-src
 libexec/pyenv-plugins/python-build/share/python-build/pypy3.9-7.3.9

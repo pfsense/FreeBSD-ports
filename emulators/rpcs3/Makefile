@@ -1,7 +1,7 @@
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.27-15035 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g73dba6d6e0
+DISTVERSION=	0.0.28-15215 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-g073b723c09
 CATEGORIES=	emulators wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -27,7 +27,7 @@ ONLY_FOR_ARCHS_REASON=	requires int128 and SSE2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	RPCS3
-GH_TUPLE=	RPCS3:hidapi:hidapi-0.13.1-2-gecf1b62:hidapi/3rdparty/hidapi/hidapi \
+GH_TUPLE=	RPCS3:hidapi:hidapi-0.14.0-2-g8b43a97:hidapi/3rdparty/hidapi/hidapi \
 		RPCS3:soundtouch:2.3.1-16-g83cfba6:soundtouch/3rdparty/SoundTouch/soundtouch \
 		asmjit:asmjit:c598476:asmjit/3rdparty/asmjit/asmjit \
 		jbeder:yaml-cpp:yaml-cpp-0.7.0-1-g0b67821:yamlcpp/3rdparty/yaml-cpp/yaml-cpp \
@@ -51,7 +51,7 @@ ELF_FEATURES=	+noaslr,wxneeded:bin/${PORTNAME}
 
 .if ${FLAVOR:U} == qt6 || make(makesum) || make(fetch)
 PATCH_SITES+=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/:qt6
-PATCHFILES+=	0ace2c316444.patch:-p1:qt6 # https://github.com/RPCS3/rpcs3/pull/12471
+PATCHFILES+=	b1f76399f65b.patch:-p1:qt6 # https://github.com/RPCS3/rpcs3/pull/12471
 PKGNAMESUFFIX=	-${FLAVOR}
 USES:=		${USES:S/qt:5/qt:6/}
 USE_QT=		base multimedia svg
@@ -60,9 +60,9 @@ CONFLICTS_INSTALL=	${PORTNAME}
 
 post-patch:	${FLAVOR}-post-patch
 ${FLAVOR}-post-patch:
-# XXX Drop after devel/qt6-base >= 6.5 update
-	@${REINPLACE_CMD} -e '/QT_MIN_VER/s/6\.5\.0/6.4.2/' \
-		${WRKSRC}/3rdparty/qt6.cmake
+# XXX Drop after upstream fixes "undefined symbol: fmt_class_string<QByteArray, void>::..."
+	@${REINPLACE_CMD} -E '/camera_log/s/\.(id|description)\(\)/&.toStdString()/g' \
+		${WRKSRC}/rpcs3/rpcs3qt/qt_camera_handler.cpp
 # patch(1) doesn't support renames unlike git-apply(1)
 	@${MV}  ${WRKSRC}/rpcs3/rpcs3qt/qt_camera_video_surface.cpp \
 		${WRKSRC}/rpcs3/rpcs3qt/qt_camera_video_sink.cpp

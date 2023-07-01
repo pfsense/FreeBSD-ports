@@ -1,10 +1,10 @@
 PORTNAME=	kanboard
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.28
+DISTVERSION=	1.2.30
 CATEGORIES=	www
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
-MAINTAINER=	daniel.tihanyi@tetragir.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple visual task board software
 WWW=		https://kanboard.net/
 

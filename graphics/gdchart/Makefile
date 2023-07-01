@@ -6,7 +6,7 @@ MASTER_SITES=	http://www.fred.net/brv/chart/ \
 		ftp://ftp.nuug.no/pub/anders/distfiles/
 DISTNAME=	${PORTNAME}${PORTVERSION}dev
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Easy to use fast C API for creating charts and graphs
 WWW=		http://www.fred.net/brv/chart/
 
@@ -14,20 +14,23 @@ LIB_DEPENDS=	libgd.so:graphics/gd \
 		libfreetype.so:print/freetype2
 
 USES=		jpeg uidfix
+USE_LDCONFIG=	yes
+
 MAKEFILE=	${FILESDIR}/Makefile
 MAKE_ARGS=	PREFIX="${PREFIX}" LOCALBASE="${LOCALBASE}"
-USE_LDCONFIG=	yes
 
 PORTDOCS=	README.txt
 PORTEXAMPLES=	ft_samp.c gdc_pie_samp.c gdc_samp1.c gdc_samp2.c
 
-.if defined(NO_PROFILE)
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
+
+.if defined(NO_PROFILE) || ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400079 )
 PLIST_SUB+=	PROFILE="@comment "
 .else
 PLIST_SUB+=	PROFILE=""
 .endif
-
-OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} \

@@ -69,6 +69,8 @@ BDB_LDFLAGS=		-L${BDB_LIB_DIR}
 BDB_CONFIGURE_ON=	--with-bdb=yes
 BDB_CONFIGURE_OFF=	--with-bdb=no
 
+.include <bsd.port.pre.mk>
+
 post-patch:
 	@${REINPLACE_CMD} \
 		-e 's|@prefix@/var/log|/var/log/c-icap|g' \
@@ -86,4 +88,4 @@ post-patch-POSIXSEM-on:
 post-install:
 	@${MKDIR} ${STAGEDIR}/${LOG_DIR} ${STAGEDIR}/${RUN_DIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

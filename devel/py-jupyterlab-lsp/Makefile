@@ -1,5 +1,5 @@
 PORTNAME=	jupyterlab-lsp
-PORTVERSION=	4.1.0
+PORTVERSION=	4.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,5 +18,8 @@ USES=		python:3.8+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+post-extract:
+	@${RM} ${WRKSRC}/jupyterlab_lsp/labextensions/@jupyter-lsp/jupyterlab-lsp/schemas/@jupyter-lsp/jupyterlab-lsp/package.json.orig
 
 .include <bsd.port.mk>

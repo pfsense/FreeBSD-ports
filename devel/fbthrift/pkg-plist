@@ -11,6 +11,7 @@ include/thrift/annotation/gen-cpp2/cpp_metadata.h
 include/thrift/annotation/gen-cpp2/cpp_types.h
 include/thrift/annotation/gen-cpp2/cpp_types.tcc
 include/thrift/annotation/gen-cpp2/cpp_types_custom_protocol.h
+include/thrift/annotation/gen-cpp2/cpp_types_fwd.h
 include/thrift/annotation/gen-cpp2/cpp_visit_by_thrift_field_metadata.h
 include/thrift/annotation/gen-cpp2/cpp_visit_union.h
 include/thrift/annotation/gen-cpp2/cpp_visitation.h
@@ -23,6 +24,7 @@ include/thrift/annotation/gen-cpp2/hack_metadata.h
 include/thrift/annotation/gen-cpp2/hack_types.h
 include/thrift/annotation/gen-cpp2/hack_types.tcc
 include/thrift/annotation/gen-cpp2/hack_types_custom_protocol.h
+include/thrift/annotation/gen-cpp2/hack_types_fwd.h
 include/thrift/annotation/gen-cpp2/hack_visit_by_thrift_field_metadata.h
 include/thrift/annotation/gen-cpp2/hack_visit_union.h
 include/thrift/annotation/gen-cpp2/hack_visitation.h
@@ -35,6 +37,7 @@ include/thrift/annotation/gen-cpp2/java_metadata.h
 include/thrift/annotation/gen-cpp2/java_types.h
 include/thrift/annotation/gen-cpp2/java_types.tcc
 include/thrift/annotation/gen-cpp2/java_types_custom_protocol.h
+include/thrift/annotation/gen-cpp2/java_types_fwd.h
 include/thrift/annotation/gen-cpp2/java_visit_by_thrift_field_metadata.h
 include/thrift/annotation/gen-cpp2/java_visit_union.h
 include/thrift/annotation/gen-cpp2/java_visitation.h
@@ -47,6 +50,7 @@ include/thrift/annotation/gen-cpp2/python_metadata.h
 include/thrift/annotation/gen-cpp2/python_types.h
 include/thrift/annotation/gen-cpp2/python_types.tcc
 include/thrift/annotation/gen-cpp2/python_types_custom_protocol.h
+include/thrift/annotation/gen-cpp2/python_types_fwd.h
 include/thrift/annotation/gen-cpp2/python_visit_by_thrift_field_metadata.h
 include/thrift/annotation/gen-cpp2/python_visit_union.h
 include/thrift/annotation/gen-cpp2/python_visitation.h
@@ -59,6 +63,7 @@ include/thrift/annotation/gen-cpp2/scope_metadata.h
 include/thrift/annotation/gen-cpp2/scope_types.h
 include/thrift/annotation/gen-cpp2/scope_types.tcc
 include/thrift/annotation/gen-cpp2/scope_types_custom_protocol.h
+include/thrift/annotation/gen-cpp2/scope_types_fwd.h
 include/thrift/annotation/gen-cpp2/scope_visit_by_thrift_field_metadata.h
 include/thrift/annotation/gen-cpp2/scope_visit_union.h
 include/thrift/annotation/gen-cpp2/scope_visitation.h
@@ -71,6 +76,7 @@ include/thrift/annotation/gen-cpp2/thrift_metadata.h
 include/thrift/annotation/gen-cpp2/thrift_types.h
 include/thrift/annotation/gen-cpp2/thrift_types.tcc
 include/thrift/annotation/gen-cpp2/thrift_types_custom_protocol.h
+include/thrift/annotation/gen-cpp2/thrift_types_fwd.h
 include/thrift/annotation/gen-cpp2/thrift_visit_by_thrift_field_metadata.h
 include/thrift/annotation/gen-cpp2/thrift_visit_union.h
 include/thrift/annotation/gen-cpp2/thrift_visitation.h
@@ -190,7 +196,6 @@ include/thrift/lib/cpp2/FieldRefTraits.h
 include/thrift/lib/cpp2/Flags.h
 include/thrift/lib/cpp2/GeneratedCodeHelper.h
 include/thrift/lib/cpp2/PluggableFunction.h
-include/thrift/lib/cpp2/server/ResourcePoolSet.h
 include/thrift/lib/cpp2/SerializationSwitch.h
 include/thrift/lib/cpp2/Thrift.h
 include/thrift/lib/cpp2/TrustedServerException.h
@@ -425,17 +430,21 @@ include/thrift/lib/cpp2/server/RequestPileInterface.h
 include/thrift/lib/cpp2/server/RequestsRegistry.h
 include/thrift/lib/cpp2/server/ResourcePool.h
 include/thrift/lib/cpp2/server/ResourcePoolHandle.h
+include/thrift/lib/cpp2/server/ResourcePoolSet.h
 include/thrift/lib/cpp2/server/RoundRobinRequestPile.h
 include/thrift/lib/cpp2/server/ServerAttribute.h
 include/thrift/lib/cpp2/server/ServerConfigs.h
 include/thrift/lib/cpp2/server/ServerFlags.h
 include/thrift/lib/cpp2/server/ServerInstrumentation.h
 include/thrift/lib/cpp2/server/ServiceHealthPoller.h
+include/thrift/lib/cpp2/server/StandardConcurrencyController.h
 include/thrift/lib/cpp2/server/StatusServerInterface.h
+include/thrift/lib/cpp2/server/TMConcurrencyController.h
 include/thrift/lib/cpp2/server/ThreadManagerLoggingWrapper.h
 include/thrift/lib/cpp2/server/ThriftProcessor.h
 include/thrift/lib/cpp2/server/ThriftServer.h
 include/thrift/lib/cpp2/server/ThriftServerConfig.h
+include/thrift/lib/cpp2/server/TokenBucketConcurrencyController.h
 include/thrift/lib/cpp2/server/TransportRoutingHandler.h
 include/thrift/lib/cpp2/server/WeightedRequestPileQueue-inl.h
 include/thrift/lib/cpp2/server/WeightedRequestPileQueue.h
@@ -480,6 +489,7 @@ include/thrift/lib/cpp2/transport/http2/common/testutil/ChannelTestFixture.h
 include/thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h
 include/thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h
 include/thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h
+include/thrift/lib/cpp2/transport/rocket/Compression.h
 include/thrift/lib/cpp2/transport/rocket/FdSocketMetadata.h
 include/thrift/lib/cpp2/transport/rocket/PayloadUtils.h
 include/thrift/lib/cpp2/transport/rocket/RocketException.h
@@ -496,6 +506,9 @@ include/thrift/lib/cpp2/transport/rocket/framing/Parser-inl.h
 include/thrift/lib/cpp2/transport/rocket/framing/Parser.h
 include/thrift/lib/cpp2/transport/rocket/framing/Serializer.h
 include/thrift/lib/cpp2/transport/rocket/framing/Util.h
+include/thrift/lib/cpp2/transport/rocket/framing/parser/FrameLengthParserStrategy-inl.h
+include/thrift/lib/cpp2/transport/rocket/framing/parser/FrameLengthParserStrategy.h
+include/thrift/lib/cpp2/transport/rocket/framing/parser/ParserStrategy.h
 include/thrift/lib/cpp2/transport/rocket/framing/test/Util.h
 include/thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h
 include/thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h
@@ -583,6 +596,7 @@ include/thrift/lib/py3/test/is_overload/func.h
 include/thrift/lib/py3/types.h
 include/thrift/lib/thrift/RpcMetadata_extra.h
 include/thrift/lib/thrift/SerializableDynamic.h
+include/thrift/lib/thrift/detail/id.h
 include/thrift/lib/thrift/detail/protocol.h
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade.h
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade.tcc
@@ -597,6 +611,7 @@ include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_metadata.h
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_types.h
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_types.tcc
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_visitation.h
@@ -609,6 +624,7 @@ include/thrift/lib/thrift/gen-cpp2/RpcMetadata_metadata.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_types.tcc
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/RpcMetadata_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_visitation.h
@@ -625,6 +641,7 @@ include/thrift/lib/thrift/gen-cpp2/any_rep_metadata.h
 include/thrift/lib/thrift/gen-cpp2/any_rep_types.h
 include/thrift/lib/thrift/gen-cpp2/any_rep_types.tcc
 include/thrift/lib/thrift/gen-cpp2/any_rep_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/any_rep_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/any_rep_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/any_rep_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/any_rep_visitation.h
@@ -637,6 +654,7 @@ include/thrift/lib/thrift/gen-cpp2/frozen_metadata.h
 include/thrift/lib/thrift/gen-cpp2/frozen_types.h
 include/thrift/lib/thrift/gen-cpp2/frozen_types.tcc
 include/thrift/lib/thrift/gen-cpp2/frozen_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/frozen_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/frozen_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/frozen_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/frozen_visitation.h
@@ -649,6 +667,7 @@ include/thrift/lib/thrift/gen-cpp2/id_metadata.h
 include/thrift/lib/thrift/gen-cpp2/id_types.h
 include/thrift/lib/thrift/gen-cpp2/id_types.tcc
 include/thrift/lib/thrift/gen-cpp2/id_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/id_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/id_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/id_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/id_visitation.h
@@ -661,6 +680,7 @@ include/thrift/lib/thrift/gen-cpp2/metadata_metadata.h
 include/thrift/lib/thrift/gen-cpp2/metadata_types.h
 include/thrift/lib/thrift/gen-cpp2/metadata_types.tcc
 include/thrift/lib/thrift/gen-cpp2/metadata_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/metadata_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/metadata_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/metadata_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/metadata_visitation.h
@@ -673,6 +693,7 @@ include/thrift/lib/thrift/gen-cpp2/reflection_metadata.h
 include/thrift/lib/thrift/gen-cpp2/reflection_types.h
 include/thrift/lib/thrift/gen-cpp2/reflection_types.tcc
 include/thrift/lib/thrift/gen-cpp2/reflection_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/reflection_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/reflection_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/reflection_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/reflection_visitation.h
@@ -685,6 +706,7 @@ include/thrift/lib/thrift/gen-cpp2/standard_metadata.h
 include/thrift/lib/thrift/gen-cpp2/standard_types.h
 include/thrift/lib/thrift/gen-cpp2/standard_types.tcc
 include/thrift/lib/thrift/gen-cpp2/standard_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/standard_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/standard_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/standard_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/standard_visitation.h
@@ -703,12 +725,14 @@ include/thrift/lib/thrift/gen-cpp2/type_rep_metadata.h
 include/thrift/lib/thrift/gen-cpp2/type_rep_types.h
 include/thrift/lib/thrift/gen-cpp2/type_rep_types.tcc
 include/thrift/lib/thrift/gen-cpp2/type_rep_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/type_rep_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/type_rep_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/type_rep_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/type_rep_visitation.h
 include/thrift/lib/thrift/gen-cpp2/type_types.h
 include/thrift/lib/thrift/gen-cpp2/type_types.tcc
 include/thrift/lib/thrift/gen-cpp2/type_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/type_types_fwd.h
 include/thrift/lib/thrift/gen-cpp2/type_visit_by_thrift_field_metadata.h
 include/thrift/lib/thrift/gen-cpp2/type_visit_union.h
 include/thrift/lib/thrift/gen-cpp2/type_visitation.h

@@ -97,7 +97,7 @@ MONO_DEFAULT?=		5.10
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
-# Possible value: 14, 16, 18, 19, 20, current, lts (Note: current = 20 and lts = 18)
+# Possible value: 16, 18, 19, 20, current, lts (Note: current = 20 and lts = 18)
 NODEJS_DEFAULT?=	lts
 # Possible value: 24, 25, 26
 OPENLDAP_DEFAULT?=	26
@@ -118,7 +118,7 @@ PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .  endif
 # Possible values: 11, 12, 13, 14, 15
 PGSQL_DEFAULT?=		13
-# Possible values: 8.0, 8.1, 8.2
+# Possible values: 8.0, 8.1, 8.2 8.3
 PHP_DEFAULT?=		8.1
 # Possible values: 2.7, 3.7, 3.8, 3.9, 3.10, 3.11
 PYTHON_DEFAULT?=	3.9

@@ -1,0 +1,20 @@
+commit 87d2b7464311c1f94b827a38502260e2e5a23e08
+Author: Christopher <ccope@netgate.com>
+Date:   Sat Jun 3 16:56:32 2023 +0000
+
+    CP fix check for used mac db content. Fixes #14446
+
+diff --git a/src/etc/inc/captiveportal.inc b/src/etc/inc/captiveportal.inc
+index a98f91b29a..4f710d467b 100644
+--- a/src/etc/inc/captiveportal.inc
++++ b/src/etc/inc/captiveportal.inc
+@@ -2350,8 +2350,7 @@ function captiveportal_read_usedmacs_db() {
+ function captiveportal_write_usedmacs_db($usedmacs) {
+ 	global $g, $cpzone;
+ 
+-	if (!is_array($usedmacs) ||
+-	    empty(trim($usedmacs))) {
++	if (!is_array($usedmacs)) {
+ 		$usedmacs = [];
+ 	}
+ 	$cpumaclck = lock("captiveusedmacs{$cpzone}", LOCK_EX);

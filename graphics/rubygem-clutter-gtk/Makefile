@@ -1,5 +1,5 @@
 PORTNAME=	clutter-gtk
-PORTVERSION=	4.1.4
+PORTVERSION=	4.1.7
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
