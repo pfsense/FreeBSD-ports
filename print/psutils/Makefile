@@ -3,7 +3,7 @@ PORTVERSION=	1.17
 PORTREVISION=	5
 CATEGORIES=	print
 MASTER_SITES=	ftp://ftp.dcs.ed.ac.uk/pub/ajcd/ \
-		ftp://ftp.knackered.org/pub/psutils/ \
+		http://knackered.org/angus/download/psutils/ \
 		TEX_CTAN/support/psutils
 DISTNAME=	psutils-p17
 
