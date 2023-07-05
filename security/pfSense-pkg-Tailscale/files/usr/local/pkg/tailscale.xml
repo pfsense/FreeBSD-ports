@@ -122,6 +122,21 @@
 			<default_value>on</default_value>
 		</field>
 		<field>
+			<name>DNS</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Accept DNS</fielddescr>
+			<fieldname>acceptdns</fieldname>
+			<description>
+				<![CDATA[
+				Accept DNS configuration from the control server.
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
 			<name>Routing</name>
 			<type>listtopic</type>
 		</field>

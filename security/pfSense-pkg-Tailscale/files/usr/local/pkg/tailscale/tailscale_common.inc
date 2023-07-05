@@ -29,7 +29,6 @@ use Nette\Utils\Html;
 define('TAILSCALED_RC', 'tailscaled');
 define('PFSENSE_TAILSCALED_RC', 'pfsense_tailscaled');
 
-define('NOHUP_BIN', '/usr/bin/nohup');
 define('PKG_BIN', '/usr/sbin/pkg');
 define('SERVICE_BIN', '/usr/sbin/service');
 define('SYSRC_BIN', '/usr/sbin/sysrc');
@@ -517,6 +516,14 @@ function tailscale_format_sysrc_variable($key, $value)
  */
 function tailscale_pfsense_tailscaled_rcconf_map()
 {
+	# pfsense_tailscaled_acceptdns_enable (bool)
+	$rcconf_map['pfsense_tailscaled_acceptdns_enable'] = function($key) {
+		$value= SYSRC_NO;
+		if (tailscale_get_config('tailscale', 'acceptdns', 'on') === 'on')
+			$value = SYSRC_YES;
+		return tailscale_format_sysrc_variable($key, $value);
+	};
+
 	# pfsense_tailscaled_acceptroutes_enable (bool)
 	$rcconf_map['pfsense_tailscaled_acceptroutes_enable'] = function($key) {
 		$value = SYSRC_NO;
