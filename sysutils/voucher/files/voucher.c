@@ -132,14 +132,12 @@
 voucher [-d] [-c cfg_file] -k public_key voucher\n\
 voucher [-d] [-c cfg_file] -p private_key roll count\n\
 voucher [-d] -s -k private_key\n\
-voucher [-d] -g keylen\n\
 \n"
 #else
 #define HELP "\n\
 voucher [-c cfg_file] -k public_key voucher\n\
 voucher [-c cfg_file] -p private_key roll count\n\
 voucher -s -k private_key\n\
-voucher -g keylen\n\
 \n"
 #endif
 
@@ -238,7 +236,7 @@ static void buf2ll(unsigned char *buf,u_int64_t *ll, int len)
 /*  ================================================================ */
 int main(int argc, char *argv[]) {
 
-    enum        {UNDEFINED, PRINT, CHECK, KEYSIZE, GENRSA} action = UNDEFINED;
+    enum        {UNDEFINED, PRINT, CHECK, KEYSIZE} action = UNDEFINED;
 
     char        *keyFile = NULL;
     char        *cfgFile = DEFAULT_CFG_FILE;
@@ -255,7 +253,7 @@ int main(int argc, char *argv[]) {
     u_int32_t   checksum;
     u_int32_t   ticketcount = 0;
 
-    int         roll_bits, ticket_bits, checksum_bits, magic_bits, exponent;
+    int         roll_bits, ticket_bits, checksum_bits, magic_bits;
     int         voucher_len, avail_len, crypt_len;
     int         num;
 
@@ -265,11 +263,8 @@ int main(int argc, char *argv[]) {
     int         base;
     int         ch;
     int         report_keysize = 0; 
-    int			genkey_size = 0;
 
-    exponent = 65537;
-
-    while ((ch = getopt(argc, argv, "e:sdp:k:c:g:")) != -1)
+    while ((ch = getopt(argc, argv, "sdp:k:c:")) != -1)
     {
         switch(ch)
         {
@@ -296,13 +291,6 @@ int main(int argc, char *argv[]) {
                 cfgFile = optarg;
                 break;
             
-            case 'g':     // generate RSA key pair
-                action = GENRSA;
-                genkey_size = atoi(optarg);
-                break;
-
-	    case 'e':
-		exponent = atoi(optarg);
 		break;
 
             case '?':
@@ -333,31 +321,9 @@ int main(int argc, char *argv[]) {
     {
         // report key size. All we need is a key
     }
-    else if (GENRSA == action && (genkey_size >= 32 && genkey_size <= (MAX_RSA_KEY_LEN*8)))
-    {
-        // generate RSA key
-    }
     else
         usage();
     
-    if (GENRSA == action)
-    {
-        // generate RSA key pair with the specified number of bits
-        RSA *k = RSA_generate_key(genkey_size, exponent, NULL, NULL);
-        
-        if (k == NULL)
-        {
-        	fprintf(stderr, "can't generate RSA key\n");
-        	exit(1);
-        }
-        
-        PEM_write_RSAPrivateKey(stdout, k, NULL, NULL, 0, NULL, NULL);
-        putchar(0);
-        PEM_write_RSA_PUBKEY(stdout, k);
-        
-        exit(0);
-    }
-
     /* load key ------------------------------------------------- */
 #ifdef DEBUG
     ERR_load_crypto_strings();
