@@ -121,6 +121,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <sys/types.h>
+#include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
 #ifdef DEBUG
@@ -240,8 +241,8 @@ int main(int argc, char *argv[]) {
 
     char        *keyFile = NULL;
     char        *cfgFile = DEFAULT_CFG_FILE;
-    FILE		*fkey, *fcfg;
-    RSA     	*key = NULL;
+    FILE	*fkey, *fcfg;
+    EVP_PKEY	*key = NULL;
 
     unsigned char   clearbuf[MAX_RSA_KEY_LEN];
     unsigned char   cryptbuf[MAX_RSA_KEY_LEN];
@@ -338,11 +339,11 @@ int main(int argc, char *argv[]) {
     switch (action)
     {
         case PRINT:
-            key = PEM_read_RSAPrivateKey(fkey, NULL, NULL, NULL);
+            key = PEM_read_PrivateKey(fkey, NULL, NULL, NULL);
             break;
 
         case CHECK:
-            key = PEM_read_RSA_PUBKEY(fkey, NULL, NULL, NULL);
+            key = PEM_read_PUBKEY(fkey, NULL, NULL, NULL);
             break;
 
         default:
@@ -360,16 +361,16 @@ int main(int argc, char *argv[]) {
     // Currently only keys up to 64 bits are supported. Supporting
     // larger keys requires u_int128_t support or different code
     // to pretty print the encrypted code.
-    if (RSA_size(key) > MAX_RSA_KEY_LEN)
+    if ((EVP_PKEY_get_bits(key) / 8) > MAX_RSA_KEY_LEN)
     {
         printf(ERR_CRYPT " RSA Key size (%d) too large. Max %d Bits\n", 
-                RSA_size(key) * 8,MAX_RSA_KEY_LEN * 8);
+                EVP_PKEY_get_bits(key) * 8,MAX_RSA_KEY_LEN * 8);
         exit(1);
     }
 
     if (report_keysize)  // just report public/private key size
     {
-        printf("%d BITS\n", 8*RSA_size(key));
+        printf("%d BITS\n", EVP_PKEY_get_bits(key));
         exit(0);
     }
 
@@ -420,8 +421,8 @@ int main(int argc, char *argv[]) {
 
     // make sure the configured size for roll and voucher plus checksum
     // is smaller than the the key and that it fits into clearcode/cryptcode
-    avail_len = RSA_size(key) < sizeof(clearcode) ? 
-        RSA_size(key) : sizeof(clearcode);
+    avail_len = (EVP_PKEY_get_bits(key) / 8) < sizeof(clearcode) ?
+        (EVP_PKEY_get_bits(key) / 8) : sizeof(clearcode);
 
     if (voucher_len > avail_len)
     {
@@ -429,7 +430,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    crypt_len = RSA_size(key);
+    crypt_len = EVP_PKEY_get_bits(key) / 8;
 
     // reduce magic number given down to the number of bits we have left
     magic_bits = avail_len * 8 - (roll_bits + ticket_bits + checksum_bits + 1);
@@ -472,10 +473,24 @@ int main(int argc, char *argv[]) {
             /* move cryptcode into cryptbuf in network order */
             ll2buf(cryptcode, cryptbuf, crypt_len);
 
-            num = RSA_public_decrypt(crypt_len,
-                    cryptbuf, clearbuf, key, RSA_NO_PADDING);
-
-            if (num < 0)
+            EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new(key, NULL);
+            if (pctx == NULL)
+            {
+                printf(ERR_TYPO "Failed to create context\n");
+                exit (1);
+            }
+            if (EVP_PKEY_verify_recover_init(pctx) <= 0)
+            {
+                printf(ERR_TYPO "Failed to init verify context\n");
+                exit(1);
+            }
+            if (EVP_PKEY_CTX_set_rsa_padding(pctx, RSA_NO_PADDING) <= 0)
+            {
+                printf("Failed to set padding option\n");
+                exit(4);
+            }
+            size_t outsize = crypt_len;
+            if (EVP_PKEY_verify_recover(pctx, clearbuf, &outsize, cryptbuf, crypt_len) <= 0)
             {
                 printf(ERR_TYPO " Invalid code <%s>\n", argv[0]);
                 exit(1);
@@ -569,15 +584,30 @@ int main(int argc, char *argv[]) {
             ll2buf(clearcode, clearbuf, crypt_len);
 
             /* encrypt code */
-            if ((num = RSA_private_encrypt(crypt_len,
-                            clearbuf, cryptbuf, key, RSA_NO_PADDING)) < 0)
+            EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new(key, NULL);
+            if (pctx == NULL)
             {
-                printf("# FATAL encryption error! ticket=%d crypt_len=%d\n",
-                        ticketid, crypt_len);
+                printf("Failed to allocate context\n");
+                exit(4);
+            }
+            if (EVP_PKEY_sign_init(pctx) <= 0)
+            {
+                printf("Failed to initialise signing context\n");
+                exit(4);
+            }
+            if (EVP_PKEY_CTX_set_rsa_padding(pctx, RSA_NO_PADDING) <= 0)
+            {
+                printf("Failed to set padding option\n");
+                exit(4);
+            }
+            size_t outsize = crypt_len;
+            if (EVP_PKEY_sign(pctx, cryptbuf, &outsize, clearbuf, crypt_len) <= 0)
+            {
+                printf("Failed to sign\n");
 #ifdef DEBUG
                 ERR_print_errors_fp(stderr);
 #endif
-                exit (4);
+                exit(4);
             }
 
             /* move cryptbuf into cryptcode in network order */
