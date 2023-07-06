@@ -803,7 +803,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		}
 
 		if ($pool["cookie_attribute_secure"] == 'yes'){
-			fwrite ($fd, "\trspirep ^(Set-Cookie:((?!;\\ secure).)*)$ \\1;\ secure if { ssl_fc }\n");
+			fwrite ($fd, "\thttp-response replace-header Set-Cookie \"^((?:(?!; [Ss]ecure\b).)*)\\$\" \"\\1; secure\" if { ssl_fc }\n");
 		}
 
 		if ($pool['stats_enabled'] == 'yes') {
