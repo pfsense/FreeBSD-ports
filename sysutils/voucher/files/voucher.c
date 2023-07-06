@@ -128,6 +128,13 @@
 #include <openssl/err.h>
 #endif
 
+#if OPENSSL_VERSION_NUMBER < 0x30000000L
+int EVP_PKEY_get_bits(EVP_PKEY *key)
+{
+    return EVP_PKEY_bits(key);
+}
+#endif
+
 #ifdef DEBUG
 #define HELP "\n\
 voucher [-d] [-c cfg_file] -k public_key voucher\n\
