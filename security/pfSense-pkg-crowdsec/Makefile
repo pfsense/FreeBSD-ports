@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-crowdsec
 PORTVERSION=	0.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
