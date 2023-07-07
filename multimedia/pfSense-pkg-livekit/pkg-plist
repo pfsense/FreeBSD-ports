@@ -1,0 +1,7 @@
+pkg/livekit.xml
+pkg/livekit.inc
+etc/livekit.yml
+%%DATADIR%%/info.xml
+bin/livekit-server
+bin/livekit-cli
+www/livekit_token_gen.php

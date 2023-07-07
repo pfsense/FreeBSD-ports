@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * livekit.xml
+ */
+	]]>
+	</copyright>
+	<name>livekit</name>
+	<version>%%PKGVERSION%%</version>
+	<title>LiveKit</title>
+	<include_file>/usr/local/pkg/livekit.inc</include_file>
+	<menu>
+		<name>LiveKit</name>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=livekit.xml</url>
+	</menu>
+	<service>
+		<name>livekit</name>
+		<rcfile>livekit.sh</rcfile>
+		<executable>livekit-server</executable>
+		<description>LiveKit server</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=livekit.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Token generation</text>
+			<url>/livekit_token_gen.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<fielddescr>Enable LiveKit server</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Select to enable the LiveKit server</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>livekit_port</fieldname>
+			<description>Main TCP port for RoomService and RTC endpoint. Default 7880</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>API Key</fielddescr>
+			<fieldname>livekit_apikey</fieldname>
+			<description>API key to validate tokens</description>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>API Secret</fielddescr>
+			<fieldname>livekit_secret</fieldname>
+			<description>API secret to validate tokens</description>
+			<type>password</type>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		sync_package_livekit();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		validate_form_livekit($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

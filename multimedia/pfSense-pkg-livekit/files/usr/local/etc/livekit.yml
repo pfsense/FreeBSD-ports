@@ -1,0 +1,4 @@
+# LiveKit configuration generated with pfSense UI
+port: 7880
+keys:
+  apikey: secret
