@@ -1,4 +1,2 @@
-Allows a pre-configured OpenVPN Windows Client or Mac OSX's Viscosity
-configuration bundle to be exported directly from pfSense.
-
-WWW: https://docs.netgate.com/pfsense/en/latest/packages/openvpn-client-export.html
+Windows client binary files for exporting pre-configured OpenVPN Client
+configurations directly from pfSense software.
