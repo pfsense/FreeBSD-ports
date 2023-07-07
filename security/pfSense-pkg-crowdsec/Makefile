@@ -13,12 +13,15 @@ COMMENT=	Crowdsec package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	crowdsec>=1.4.6:security/crowdsec \
+RUN_DEPENDS=	crowdsec>=1.5.2:security/crowdsec \
 		crowdsec-blocklist-mirror>=0.0.1:security/crowdsec-blocklist-mirror \
 		crowdsec-firewall-bouncer:security/crowdsec-firewall-bouncer
 
 NO_BUILD=	yes
 NO_MTREE=	yes
+
+SUB_FILES=	pkg-install pkg-deinstall
+SUB_LIST=	PORTNAME=${PORTNAME}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -36,4 +39,3 @@ do-install:
 		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
-
