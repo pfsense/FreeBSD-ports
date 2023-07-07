@@ -29,4 +29,18 @@ function crowdsec_install() {
 function crowdsec_write_config() {
 }
 
+function crowdsec_generate_rules($type) {
+    log_warn("crowdsec_generate_rules: $type");
+    $rules = "";
+    switch ($type) {
+        case 'filter':
+            $rules .= "block in log quick on wan from crowdsec_blacklist to any keep state label\n";
+            $rules .= "block in log quick on wan from crowdsec6_blacklist to any keep state label\n";
+            break;
+    }
+    log.warn("crowdsec_generate_rules: $rules");
+
+    return $rules;
+}
+
 ?>

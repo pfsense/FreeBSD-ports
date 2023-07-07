@@ -33,7 +33,23 @@
 		<section>System</section>
 		<url>/pkg_edit.php?xml=crowdsec.xml</url>
 	</menu>
+	<service>
+		<name>crowdsec</name>
+		<rcfile>crowdsec.sh</rcfile>
+		<description>Crowdsec service></description>
+	</service>
 	<fields>
+                <field>
+                        <fielddescr>Enable Crowdsec</fielddescr>
+                        <fieldname>enable</fieldname>
+                        <type>checkbox</type>
+                </field>
+		<field>
+			<fielddescr>Listen port</fielddescr>
+			<fieldname>listen_port</fieldname>
+			<type>input</type>
+			<description>Pick the port for the LAPI endpoint.</description>
+		</field>
 		<field>
 			<type>listtopic</type>
 			<name>Crowdsec Options</name>
@@ -59,6 +75,10 @@
 		crowdsec_write_config();
 		]]>
 	</custom_php_resync_config_command>
+
+        <filter_rules_needed>
+            crowdsec_generate_rules
+        </filter_rules_needed>
 
         <!--
         <custom_php_global_functions></custom_php_global_functions>
