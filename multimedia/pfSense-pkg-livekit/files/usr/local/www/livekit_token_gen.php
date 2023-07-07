@@ -88,7 +88,7 @@ $section->addInput(new Form_Input(
 	'Identity',
 	'text',
 	$cached_identity
-))->setHelp('Room associated with the token.');
+))->setHelp('Identity associated with the token.');
 
 $section->addInput(new Form_Input(
 	'token_validity',
