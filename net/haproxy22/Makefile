@@ -15,6 +15,7 @@ CONFLICTS_INSTALL=	haproxy-devel haproxy17 haproxy18 haproxy20
 
 USES=		compiler:c++11-lang cpe gmake
 USE_RC_SUBR=	haproxy
+USE_GCC=	yes
 
 MAKE_ARGS=	TARGET=freebsd DEFINE=-DFREEBSD_PORTS USE_GETADDRINFO=1 \
 		USE_ZLIB=1 USE_CPU_AFFINITY=1 USE_ACCEPT4=1 \
