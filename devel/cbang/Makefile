@@ -25,6 +25,7 @@ GH_ACCOUNT=	CauldronDevelopmentLLC
 
 USES=		compiler:c++17-lang localbase mysql:client python:test scons	\
 		sqlite ssl
+USE_CXXSTD=	gnu++17
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=		DEBUG DOCS
@@ -33,9 +34,9 @@ DEBUG_LIB_DEPENDS=	libbfd.so:devel/libbfd
 
 MAKE_ARGS+=	cc="${CC}"	\
 		cxx="${CXX}"	\
-		cxxstd="c++17"	\
 		ccflags="${CCFLAGS}"	\
 		cxxflags="${CXXFLAGS}"	\
+		cxxstd="c++17"	\
 		libpath="/lib"	\
 		sharedlib=1	\
 		prefix="${STAGEDIR}${PREFIX}"	\

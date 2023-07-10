@@ -1,6 +1,5 @@
 PORTNAME=	bleach
-PORTVERSION=	5.0.1
-PORTREVISION=	1
+PORTVERSION=	6.0.0
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +13,7 @@ LICENSE=	APACHE20
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}webencodings>=0:converters/py-webencodings@${PY_FLAVOR}
 
-USES=		cpe python:3.7+ shebangfix
+USES=		cpe python shebangfix
 USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes

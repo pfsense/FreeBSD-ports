@@ -5,7 +5,6 @@
     SUBDIR += Coin
     SUBDIR += GraphicsMagick
     SUBDIR += Hermes
-    SUBDIR += IPA
     SUBDIR += ImageMagick6
     SUBDIR += ImageMagick7
     SUBDIR += O2-tools
@@ -201,7 +200,6 @@
     SUBDIR += flphoto
     SUBDIR += fly
     SUBDIR += fortytwo
-    SUBDIR += fotofix
     SUBDIR += fotoxx
     SUBDIR += founts
     SUBDIR += fpc-cairo
@@ -363,7 +361,6 @@
     SUBDIR += iec16022
     SUBDIR += igt-gpu-tools
     SUBDIR += iiview
-    SUBDIR += ikona
     SUBDIR += imageindex
     SUBDIR += imageviewer
     SUBDIR += imageworsener
@@ -855,6 +852,7 @@
     SUBDIR += py-cairocffi
     SUBDIR += py-cairosvg
     SUBDIR += py-cartopy
+    SUBDIR += py-chart-studio
     SUBDIR += py-cogdumper
     SUBDIR += py-colorcet
     SUBDIR += py-colorthief

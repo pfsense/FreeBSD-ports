@@ -1,7 +1,7 @@
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.28-15215 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g073b723c09
+DISTVERSION=	0.0.28-15318 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-g1219e5c244
 CATEGORIES=	emulators wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -36,10 +36,10 @@ GH_TUPLE=	RPCS3:hidapi:hidapi-0.14.0-2-g8b43a97:hidapi/3rdparty/hidapi/hidapi \
 		KhronosGroup:glslang:11.11.0-2-g10423ec6:glslang/3rdparty/glslang/glslang \
 		kinetiknz:cubeb:cubeb-0.2-1425-g88585b6:cubeb/3rdparty/cubeb/cubeb \
 		miniupnp:miniupnp:miniupnpd_2_3_3:miniupnp/3rdparty/miniupnp/miniupnp \
-		wolfSSL:wolfssl:v5.6.0-stable:wolfssl/3rdparty/wolfssl/wolfssl
+		wolfSSL:wolfssl:v5.6.3-stable:wolfssl/3rdparty/wolfssl/wolfssl
 
 USES=		cmake elfctl gl iconv:wchar_t llvm:min=16,lib localbase:ldflags \
-		openal:soft pkgconfig python:3.4+,build qt:5 xorg
+		openal:soft pkgconfig python:build qt:5 xorg
 USE_GL=		gl glew
 USE_QT=		qmake:build buildtools:build core concurrent dbus gui multimedia svg widgets
 USE_XORG=	x11
@@ -47,11 +47,11 @@ CMAKE_ON=	CMAKE_SKIP_RPATH ${CURL FFMPEG FLATBUFFERS LIBPNG PUGIXML XXHASH:L:S/^
 CMAKE_ON+=	BUNDLE_SPEEX # only used by cubeb tests
 CMAKE_OFF=	USE_NATIVE_INSTRUCTIONS USE_PRECOMPILED_HEADERS
 LDFLAGS+=	-Wl,--as-needed # GLU
-ELF_FEATURES=	+noaslr,wxneeded:bin/${PORTNAME}
+ELF_FEATURES=	+wxneeded:bin/${PORTNAME}
 
 .if ${FLAVOR:U} == qt6 || make(makesum) || make(fetch)
 PATCH_SITES+=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/:qt6
-PATCHFILES+=	b1f76399f65b.patch:-p1:qt6 # https://github.com/RPCS3/rpcs3/pull/12471
+PATCHFILES+=	6e33e09de8bf.patch:-p1:qt6 # https://github.com/RPCS3/rpcs3/pull/12471
 PKGNAMESUFFIX=	-${FLAVOR}
 USES:=		${USES:S/qt:5/qt:6/}
 USE_QT=		base multimedia svg
@@ -60,9 +60,6 @@ CONFLICTS_INSTALL=	${PORTNAME}
 
 post-patch:	${FLAVOR}-post-patch
 ${FLAVOR}-post-patch:
-# XXX Drop after upstream fixes "undefined symbol: fmt_class_string<QByteArray, void>::..."
-	@${REINPLACE_CMD} -E '/camera_log/s/\.(id|description)\(\)/&.toStdString()/g' \
-		${WRKSRC}/rpcs3/rpcs3qt/qt_camera_handler.cpp
 # patch(1) doesn't support renames unlike git-apply(1)
 	@${MV}  ${WRKSRC}/rpcs3/rpcs3qt/qt_camera_video_surface.cpp \
 		${WRKSRC}/rpcs3/rpcs3qt/qt_camera_video_sink.cpp

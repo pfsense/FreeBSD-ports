@@ -1,5 +1,5 @@
 PORTNAME=	pdm-backend
-PORTVERSION=	2.0.7
+PORTVERSION=	2.1.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ WWW=		https://github.com/pdm-project/pdm-backend
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517
 
 MAKE_ENV=	PYTHONPATH=${WRKSRC}/src

@@ -1,5 +1,5 @@
 PORTNAME=	tome4
-DISTVERSION?=	1.7.5
+DISTVERSION?=	1.7.6
 PORTREVISION?=	0
 CATEGORIES=	games
 MASTER_SITES=	https://te4.org/dl/t-engine/ \
@@ -32,6 +32,7 @@ DESKTOP_ENTRIES="ToME 4" "" "${PORTNAME}" \
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 WRKSRC=		${WRKDIR}/t-engine4-src-${DISTVERSION}
 MAKE_ARGS+=	config=release verbose=yes ARCH="" CC=${CC} CXX=${CXX}
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 LDFLAGS_i386=	-Wl,-znotext
 
 .include <bsd.port.pre.mk>

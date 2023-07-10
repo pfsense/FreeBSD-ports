@@ -1,8 +1,12 @@
 PORTNAME=	kitty
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.28.1
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
+
+PATCH_SITES=	https://github.com/kovidgoyal/${PORTNAME}/commit/
+PATCHFILES+=	95d15648fa37.patch:-p1 # https://github.com/kovidgoyal/kitty/issues/6422
+PATCHFILES+=	7d2dc252f149.patch:-p1 # https://github.com/kovidgoyal/kitty/issues/6422
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Cross-platform, fast, featureful, GPU-based terminal emulator
@@ -31,7 +35,7 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libxkbcommon.so:x11/libxkbcommon
 
 USES=		compiler:c11 cpe desktop-file-utils gettext-runtime gl gmake \
-		go:modules pkgconfig python:3.5+ shebangfix ssl tar:xz terminfo \
+		go:modules pkgconfig python shebangfix ssl tar:xz terminfo \
 		xorg
 CPE_VENDOR=	kitty_project
 GH_TUPLE=	ALTree:bigfloat:38c8b72a9924:altree_bigfloat/vendor/github.com/ALTree/bigfloat \

@@ -1,7 +1,7 @@
 PORTNAME=	cvc5
 DISTVERSIONPREFIX=	cvc5-
 DISTVERSION=	1.0.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math java
 MASTER_SITES+=	http://www.antlr3.org/download/:antlr3
 DISTFILES+=	antlr-3.4-complete.jar:antlr3
@@ -23,7 +23,7 @@ LIB_DEPENDS=	libantlr3c.so:devel/libantlr3c \
 		libboost_system.so:devel/boost-libs
 
 USES=		cmake:testing ncurses compiler:c++17-lang \
-		localbase:ldflags pkgconfig python:3.5+,build
+		localbase:ldflags pkgconfig python:build
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 

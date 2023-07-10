@@ -1,5 +1,5 @@
 PORTNAME=	npm
-PORTVERSION=	9.6.7
+PORTVERSION=	9.7.2
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/sunpoet
 PKGNAMESUFFIX=	${NODEJS_SUFFIX}
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/lib/node_modules/npm/LICENSE
 RUN_DEPENDS=	gmake:devel/gmake
 
 USES?=		nodejs:18,run
-USES+=		cpe python:3.7+ shebangfix tar:xz
+USES+=		cpe python shebangfix tar:xz
 
 NO_ARCH=	yes
 NO_BUILD=	yes

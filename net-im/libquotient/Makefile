@@ -11,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain@qt5
 
-USES=		cmake compiler:c++14-lang qt:5 tar:xz
+USES=		cmake qt:5 tar:xz
 USE_QT=		concurrent core gui multimedia network \
 		buildtools:build qmake:build testlib:build
 
@@ -22,6 +22,13 @@ GH_ACCOUNT=	quotient-im
 GH_PROJECT=	libQuotient
 
 CMAKE_ARGS=	-DQuotient_INSTALL_TESTS=OFF
+
+# Work around compiler bug, see pr: 272285
+USES+=		llvm
+CC=		${LLVM_PREFIX}/bin/clang
+CPP=		${LLVM_PREFIX}/bin/clang-cpp
+CXX=		${LLVM_PREFIX}/bin/clang++
+
 
 .include <bsd.port.pre.mk>
 

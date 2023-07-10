@@ -1,5 +1,6 @@
 PORTNAME=	calibre
-PORTVERSION=	6.21.0
+PORTVERSION=	6.22.0
+PORTREVISION=	1
 CATEGORIES=	deskutils python
 MASTER_SITES=	http://download.calibre-ebook.com/${PORTVERSION}/ \
 		https://curl.haxx.se/ca/:cacert
@@ -70,7 +71,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		MathJax3>0:www/mathjax3
 
 USES=		desktop-file-utils gettext-runtime gl gnome localbase:ldflags \
-		pkgconfig pyqt:6 python:3.8+ qt:6 shared-mime-info shebangfix \
+		pkgconfig pyqt:6 python qt:6 shared-mime-info shebangfix \
 		ssl tar:xz xorg
 USE_RC_SUBR=	calibre
 SUB_LIST+=	PYTHON_VERSION=${PYTHON_VERSION}
@@ -81,8 +82,8 @@ USE_GNOME=	glib20
 USE_XORG=	xrender xext x11
 
 USE_GITHUB=	nodefault
-GH_TUPLE=	kovidgoyal:calibre-translations:bd464ab:translations \
-		LibreOffice:dictionaries:1698414:hypenation
+GH_TUPLE=	kovidgoyal:calibre-translations:d911cab:translations \
+		LibreOffice:dictionaries:8b6fc85:hypenation
 
 SHEBANG_GLOB=	*.sh *.py *.recipe
 python_OLD_CMD=	"/usr/bin/env  python" ${LOCALBASE}/bin/python3

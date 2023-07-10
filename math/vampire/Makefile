@@ -1,5 +1,7 @@
 PORTNAME=	vampire
-DISTVERSION=	4.5.1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	4.7-423
+DISTVERSIONSUFFIX=	-gc1643839b
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -8,6 +10,8 @@ WWW=		https://vprover.github.io/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
+
+BROKEN_i386=	error: static_assert failed due to requirement 'sizeof(void *) == 8'
 
 USES=		compiler:c++11-lang gmake
 USE_GITHUB=	yes

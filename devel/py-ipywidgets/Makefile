@@ -1,5 +1,5 @@
 PORTNAME=	ipywidgets
-PORTVERSION=	8.0.6
+PORTVERSION=	8.0.7
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipykernel>=4.5.1:devel/py-ipykernel@${PY_FLA
 		${PYTHON_PKGNAMEPREFIX}widgetsnbextension>=4.0.0:devel/py-widgetsnbextension@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jupyterlab-widgets>=3.0.0:devel/py-jupyterlab-widgets@${PY_FLAVOR} \
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 

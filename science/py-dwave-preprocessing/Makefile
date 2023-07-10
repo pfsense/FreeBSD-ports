@@ -1,6 +1,5 @@
 PORTNAME=	dwave-preprocessing
-DISTVERSION=	0.5.4
-PORTREVISION=	1
+DISTVERSION=	0.6.0
 CATEGORIES=	science python # quantum-computing
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	${PY_DEPENDS} \
 LIB_DEPENDS=	libspdlog.so:devel/spdlog
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		localbase:ldflags python:3.7+
+USES=		localbase:ldflags python
 USE_PYTHON=	distutils cython unittest # 1 test fails, see https://github.com/dwavesystems/dwave-preprocessing/issues/74
 
 USE_GITHUB=	yes

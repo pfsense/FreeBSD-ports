@@ -262,7 +262,6 @@
     SUBDIR += kpkpass
     SUBDIR += kpmenu
     SUBDIR += krb5
-    SUBDIR += krb5-118
     SUBDIR += krb5-119
     SUBDIR += krb5-120
     SUBDIR += krb5-121
@@ -418,7 +417,6 @@
     SUBDIR += openssl-unsafe
     SUBDIR += openssl30
     SUBDIR += openssl31
-    SUBDIR += openssl_tpm_engine
     SUBDIR += openvas
     SUBDIR += openvpn
     SUBDIR += openvpn-admin
@@ -685,8 +683,6 @@
     SUBDIR += p5-Nmap-Scanner
     SUBDIR += p5-OpenCA-CRL
     SUBDIR += p5-OpenCA-CRR
-    SUBDIR += p5-OpenCA-OpenSSL
-    SUBDIR += p5-OpenCA-PKCS7
     SUBDIR += p5-OpenCA-REQ
     SUBDIR += p5-OpenCA-X509
     SUBDIR += p5-PBKDF2-Tiny
@@ -881,6 +877,7 @@
     SUBDIR += py-certbot-dns-standalone
     SUBDIR += py-certbot-nginx
     SUBDIR += py-certifi
+    SUBDIR += py-certomancer
     SUBDIR += py-certstream
     SUBDIR += py-ckcc-protocol
     SUBDIR += py-coincurve
@@ -918,6 +915,7 @@
     SUBDIR += py-gvm-tools
     SUBDIR += py-hkdf
     SUBDIR += py-htpasswd
+    SUBDIR += py-httpx-auth
     SUBDIR += py-iris-check-module
     SUBDIR += py-iris-client
     SUBDIR += py-iris-evtx-module
@@ -1128,7 +1126,6 @@
     SUBDIR += rubygem-omniauth-atlassian-oauth2
     SUBDIR += rubygem-omniauth-bitbucket
     SUBDIR += rubygem-omniauth-cas
-    SUBDIR += rubygem-omniauth-cas3
     SUBDIR += rubygem-omniauth-dingtalk-oauth2
     SUBDIR += rubygem-omniauth-gitlab
     SUBDIR += rubygem-omniauth-jwt
@@ -1138,6 +1135,7 @@
     SUBDIR += rubygem-omniauth-saml
     SUBDIR += rubygem-omniauth-saml1
     SUBDIR += rubygem-omniauth-shibboleth
+    SUBDIR += rubygem-omniauth-shibboleth-redux
     SUBDIR += rubygem-omniauth1
     SUBDIR += rubygem-openssl
     SUBDIR += rubygem-openssl-ccm
@@ -1266,6 +1264,7 @@
     SUBDIR += sslscan
     SUBDIR += sslsplit
     SUBDIR += sssd
+    SUBDIR += sssd-devel
     SUBDIR += ssss
     SUBDIR += sst
     SUBDIR += starttls
@@ -1333,6 +1332,7 @@
     SUBDIR += wazuh-manager
     SUBDIR += wazuh-server
     SUBDIR += webfwlog
+    SUBDIR += webtunnel-tor
     SUBDIR += weggli
     SUBDIR += whatweb
     SUBDIR += wipe
@@ -1362,6 +1362,7 @@
     SUBDIR += zaproxy
     SUBDIR += zeek
     SUBDIR += zeronet
+    SUBDIR += zlint
     SUBDIR += zzuf
 
 .include <bsd.port.subdir.mk>

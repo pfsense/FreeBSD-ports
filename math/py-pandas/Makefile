@@ -1,5 +1,5 @@
 PORTNAME=	pandas
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.3
 PORTEPOCH=	1
 CATEGORIES=	math devel python
 MASTER_SITES=	PYPI
@@ -24,7 +24,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.33<3:lang/cython@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tzdata>=2022.1:devel/py-tzdata@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}arrow>=0:devel/py-arrow@${PY_FLAVOR}
 
-USES=		cpe python:3.8+
+USES=		cpe python
 CPE_VENDOR=	numfocus
 USE_PYTHON=	autoplist cython pep517
 

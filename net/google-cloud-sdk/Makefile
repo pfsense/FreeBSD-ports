@@ -1,5 +1,5 @@
 PORTNAME=	google-cloud-sdk
-PORTVERSION=	434.0.0
+PORTVERSION=	437.0.0
 CATEGORIES=	net
 MASTER_SITES=	https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/
 DISTNAME=	google-cloud-sdk-${PORTVERSION}-linux-x86_64
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 
 WRKSRC=		${WRKDIR}/google-cloud-sdk
 NO_ARCH=	yes

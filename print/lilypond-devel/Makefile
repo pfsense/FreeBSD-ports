@@ -1,5 +1,5 @@
 PORTNAME=	lilypond
-DISTVERSION=	2.25.5
+DISTVERSION=	2.25.6
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -32,7 +32,7 @@ RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejav
 		mftrace:print/mftrace
 
 USES=		bison:build compiler:c++11-lib cpe ghostscript gmake gnome \
-		magick:7,build perl5 pkgconfig python:3.5+
+		magick:7,build perl5 pkgconfig python
 USE_CXXSTD=	c++14
 USE_GNOME=	cairo pango
 USE_PERL5=	build

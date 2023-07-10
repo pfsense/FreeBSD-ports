@@ -1,6 +1,5 @@
 PORTNAME=	neochat
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	net-im deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -20,7 +19,7 @@ BUILD_DEPENDS=	libquotient>=0.6.11:net-im/libquotient \
 RUN_DEPENDS=	kquickimageeditor>=0.2.0:graphics/kquickimageeditor \
 		kirigami-addons>=0.6.1:x11-toolkits/kirigami-addons
 
-USES=		cmake compiler:c++17-lang desktop-file-utils gl kde:5 pkgconfig qt:5 tar:xz
+USES=		cmake desktop-file-utils gl kde:5 pkgconfig qt:5 tar:xz
 USE_GL=		gl
 USE_QT=		concurrent core dbus declarative graphicaleffects gui imageformats \
 		multimedia network quickcontrols quickcontrols2 \
@@ -38,6 +37,12 @@ USE_XORG=	x11
 .if ${ARCH:Mpowerpc*}
 CXX=		clang++${LLVM_VERSION}
 USES+=		llvm:min=16
+.else
+# Work around compiler bug, see pr: 272285
+USES+=		llvm
+CC=		${LLVM_PREFIX}/bin/clang
+CPP=		${LLVM_PREFIX}/bin/clang-cpp
+CXX=		${LLVM_PREFIX}/bin/clang++
 .endif
 
 .include <bsd.port.mk>

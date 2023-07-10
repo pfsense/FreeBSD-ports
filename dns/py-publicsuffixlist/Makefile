@@ -1,6 +1,6 @@
 PORTNAME=	publicsuffixlist
 PORTVERSION=	0.10.0.20230506
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	dns python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 PATCH_DEPENDS=	public_suffix_list>=0:dns/public_suffix_list
 
-USES=		python:3.6+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

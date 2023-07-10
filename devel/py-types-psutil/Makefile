@@ -1,5 +1,5 @@
 PORTNAME=	types-psutil
-PORTVERSION=	5.9.5.13
+PORTVERSION=	5.9.5.15
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,7 +10,7 @@ WWW=		https://github.com/python/typeshed/tree/main/stubs/psutil
 
 LICENSE=	APACHE20
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

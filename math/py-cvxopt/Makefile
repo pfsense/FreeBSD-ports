@@ -1,5 +1,6 @@
 PORTNAME=	cvxopt
 DISTVERSION=	1.3.1
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,7 +24,7 @@ LIB_DEPENDS=	libamd.so:math/suitesparse-amd \
 		libumfpack.so:math/suitesparse-umfpack
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python:3.6+ localbase:ldflags cpe
+USES=		python localbase:ldflags cpe
 #USE_GITHUB=	yes
 USE_PYTHON=	pep517 autoplist
 

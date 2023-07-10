@@ -1,5 +1,5 @@
 PORTNAME=	pyrodigal
-DISTVERSION=	2.1.0
+DISTVERSION=	2.2.0
 CATEGORIES=	biology python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,9 @@ WWW=		https://github.com/althonos/pyrodigal
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3.7+
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}archspec>0:devel/py-archspec@${PY_FLAVOR}
+
+USES=		python
 USE_PYTHON=	distutils cython concurrent autoplist pytest
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}

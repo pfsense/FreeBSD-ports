@@ -74,7 +74,7 @@ TEST_VARS=	AWT_TEST=true FULL_TEST=true
 WEBKIT_IMPLIES=	MEDIA
 WEBKIT_BUILD_DEPENDS=	cmake:devel/cmake-core
 WEBKIT_LIB_DEPENDS=	libicui18n.so:devel/icu
-WEBKIT_USES=	bison gmake gperf perl5 python:3.5+,build ruby:build
+WEBKIT_USES=	bison gmake gperf perl5 python:build ruby:build
 WEBKIT_USE=	GNOME=libxslt,libxml2 \
 		PERL5=build \
 		XORG=xcomposite,xdamage,xfixes,xrender,xt
@@ -88,6 +88,12 @@ _GRADLE_ENV=	CC=${WRKDIR}/bin/ccwrapper \
 _GRADLE_RUN=	${SETENV} ${_GRADLE_ENV} gradle62 --no-daemon
 
 _INSTALLDIR=	${PREFIX}/${PKGBASE}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-extract:
 	${MKDIR} ${WRKDIR}/jars

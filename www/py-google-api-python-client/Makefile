@@ -1,5 +1,6 @@
 PORTNAME=	google-api-python-client
-DISTVERSION=	2.90.0
+DISTVERSION=	2.92.0
+PORTREVISION=	0
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,7 +26,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-api-core>=1.31.5:www/py-google-api-c
 		${PYTHON_PKGNAMEPREFIX}parameterized>=0.8.1:devel/py-parameterized@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}uritemplate>=3.0.1:net/py-uritemplate@${PY_FLAVOR}
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils unittest
 
 NO_ARCH=	yes
@@ -33,6 +34,6 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=		WEBTEST
 WEBTEST_DESC=		Use WebTest helper to test WSGI apps
 WEBTEST_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}webtest>0:www/py-WebTest@${PY_FLAVOR}
+			${PYTHON_PKGNAMEPREFIX}webtest>0:www/py-webtest@${PY_FLAVOR}
 
 .include <bsd.port.mk>

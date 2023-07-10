@@ -20,7 +20,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>1.11,1:math/py-numpy@${PY_FLAVOR}
 LIB_DEPENDS=	libtbb.so:devel/onetbb
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}llvmlite>=0.31.0:devel/py-llvmlite@${PY_FLAVOR}
 
-USES=		compiler:c++11-lang python:3.6+ fortran localbase
+USES=		compiler:c++11-lang python fortran localbase
 USE_PYTHON=	distutils concurrent autoplist unittest
 
 MAKE_ENV=	NUMBA_DISABLE_TBB=1 # workaround for: not compatible with onetbb-2021.6.0, see https://github.com/numba/numba/issues/8487
@@ -28,7 +28,7 @@ TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 TEST_WRKSRC=	${WRKSRC}/numba/tests
 
 post-patch:
-	@${SED} -i.bak 's#1\.24#1\.25#g' ${WRKSRC}/setup.py
+	@${SED} -i.bak 's#1\.24#1\.26#g' ${WRKSRC}/setup.py
 
 post-install:
 	@${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name "*.so" | ${XARGS} ${STRIP_CMD}

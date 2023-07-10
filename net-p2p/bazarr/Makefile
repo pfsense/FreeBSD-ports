@@ -1,6 +1,6 @@
 PORTNAME=	bazarr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.1
+DISTVERSION=	1.2.2
 CATEGORIES=	net-p2p python
 MASTER_SITES=	https://github.com/morpheus65535/bazarr/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
 DISTNAME=	bazarr
@@ -19,7 +19,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		ffprobe:multimedia/ffmpeg \
 		unrar:archivers/unrar
 
-USES=		python:3.7+ zip
+USES=		python zip
 
 USE_RC_SUBR=	bazarr
 

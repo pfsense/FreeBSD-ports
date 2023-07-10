@@ -1,5 +1,5 @@
 PORTNAME=	podofo
-PORTVERSION=	0.10.0
+PORTVERSION=	0.10.1
 CATEGORIES=	graphics print
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -29,6 +29,8 @@ CMAKE_OFF=	PODOFO_BUILD_EXAMPLES PODOFO_BUILD_LIB_ONLY PODOFO_BUILD_STATIC PODOF
 CMAKE_TESTING_ON=	PODOFO_BUILD_TEST
 USE_LDCONFIG=	yes
 
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
 USE_GITHUB=	yes
 
 CPE_VENDOR=	podofo_project
@@ -48,6 +50,6 @@ post-patch:
 	@${RM} ${WRKSRC}/3rdparty/fast_float.h
 	@${RM} -r ${WRKSRC}/3rdparty/date/
 	@${RM} -r ${WRKSRC}/3rdparty/fmt/
-	@${RM} -r ${WRKSRC}/3rdparty/utfcpp/
+	@${RM} -r ${WRKSRC}/3rdparty/utf8cpp/
 
 .include <bsd.port.mk>
