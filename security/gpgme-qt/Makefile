@@ -14,5 +14,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 MASTERDIR=	${.CURDIR}/../../security/gpgme
 SLAVEPORT=	qt
 BINDING_NAME=	qt
+PLIST=		${.CURDIR}/pkg-plist
 
 .include "${MASTERDIR}/Makefile"
