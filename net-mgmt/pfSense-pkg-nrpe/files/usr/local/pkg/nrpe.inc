@@ -26,9 +26,9 @@ require_once("util.inc");
 require_once("xmlrpc_client.inc");
 
 define('NRPE_BASE', '/usr/local');
-define('NRPE_BINARY', "/usr/local/sbin/nrpe3");
+define('NRPE_BINARY', "/usr/local/sbin/nrpe");
 define('NRPE_CONFIG_DIR', NRPE_BASE . '/etc');
-define('NRPE_RCFILE', '/usr/local/etc/rc.d/nrpe3.sh');
+define('NRPE_RCFILE', '/usr/local/etc/rc.d/nrpe.sh');
 
 function nrpe_upgrade_config() {
 	global $config;
@@ -112,23 +112,23 @@ function nrpe_write_rc_file() {
 #!/bin/sh
 #
 
-# PROVIDE: nrpe3
+# PROVIDE: nrpe
 # REQUIRE: NETWORKING
 # KEYWORD: shutdown
 
 #
-# Add the following lines to /etc/rc.conf to enable nrpe3:
-# nrpe3_enable (bool):    Set to "NO" by default.
-#                         Set it to "YES" to enable nrpe3.
-# nrpe3_flags (str):      Set to "" by default.
-# nrpe3_configfile (str): Set to "{$NRPE_CONFIG_DIR}/nrpe.cfg" by default.
-# nrpe3_pidfile (str):    Set to "/var/spool/nagios/nrpe3.pid" by default.
+# Add the following lines to /etc/rc.conf to enable nrpe:
+# nrpe_enable (bool):    Set to "NO" by default.
+#                        Set it to "YES" to enable nrpe.
+# nrpe_flags (str):      Set to "" by default.
+# nrpe_configfile (str): Set to "{$NRPE_CONFIG_DIR}/nrpe.cfg" by default.
+# nrpe_pidfile (str):    Set to "/var/spool/nagios/nrpe.pid" by default.
 #
 
 . /etc/rc.subr
 
-nrpe3_enable=\${nrpe3_enable-"YES"}
-name="nrpe3"
+nrpe_enable=\${nrpe_enable-"YES"}
+name="nrpe"
 rcvar="\${name}_enable"
 
 command="{$NRPE_BINARY}"
@@ -137,16 +137,16 @@ extra_commands="reload"
 
 sig_reload=HUP
 
-[ -z "\${nrpe3_flags}" ] && nrpe3_flags=""
-[ -z "\${nrpe3_configfile}" ] && nrpe3_configfile="{$NRPE_CONFIG_DIR}/nrpe.cfg"
-[ -z "\${nrpe3_pidfile}" ] && nrpe3_pidfile="/var/run/nrpe3.pid"
+[ -z "\${nrpe_flags}" ] && nrpe_flags=""
+[ -z "\${nrpe_configfile}" ] && nrpe_configfile="{$NRPE_CONFIG_DIR}/nrpe.cfg"
+[ -z "\${nrpe_pidfile}" ] && nrpe_pidfile="/var/run/nrpe.pid"
 
 load_rc_config "\${name}"
 
-pidfile="\${nrpe3_pidfile}"
+pidfile="\${nrpe_pidfile}"
 
-required_files="\${nrpe3_configfile}"
-command_args="\${command_args} -c \${nrpe3_configfile}"
+required_files="\${nrpe_configfile}"
+command_args="\${command_args} -c \${nrpe_configfile}"
 
 run_rc_command "$1"
 EOD;
@@ -196,7 +196,7 @@ function nrpe_custom_php_write_config() {
 	$fd = fopen(NRPE_CONFIG_DIR . '/nrpe.cfg', 'w');
 	$nrpe_cfg = <<<EOD
 log_facility=daemon
-pid_file=/var/run/nrpe3.pid
+pid_file=/var/run/nrpe.pid
 server_port={$server_port}
 nrpe_user=nagios
 nrpe_group=nagios
