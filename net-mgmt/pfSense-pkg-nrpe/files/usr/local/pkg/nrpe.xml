@@ -39,8 +39,8 @@
 	</menu>
 	<service>
 		<name>nrpe</name>
-		<rcfile>nrpe3.sh</rcfile>
-		<executable>nrpe3</executable>
+		<rcfile>nrpe.sh</rcfile>
+		<executable>nrpe</executable>
 		<description>Nagios NRPE Daemon</description>
 	</service>
 	<fields>

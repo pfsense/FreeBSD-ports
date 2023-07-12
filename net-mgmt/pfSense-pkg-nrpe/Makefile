@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-nrpe
-PORTVERSION=	3.1
-PORTREVISION=	6
+PORTVERSION=	4.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -43,4 +42,3 @@ do-install:
 		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
-
