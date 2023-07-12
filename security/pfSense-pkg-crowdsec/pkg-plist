@@ -1,3 +1,5 @@
 pkg/crowdsec.xml
 pkg/crowdsec.inc
+etc/rc.conf.d/pfsense_crowdsec
+etc/rc.d/pfsense_crowdsec
 %%DATADIR%%/info.xml

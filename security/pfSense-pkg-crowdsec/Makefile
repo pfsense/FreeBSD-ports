@@ -29,12 +29,21 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${DATADIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.conf.d/
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d/
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/crowdsec.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/crowdsec.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+
+	${INSTALL_DATA} -m 0744 ${FILESDIR}${PREFIX}/etc/rc.conf.d/* \
+		${STAGEDIR}${PREFIX}/etc/rc.conf.d/
+
+	${INSTALL_DATA} -m 0744 ${FILESDIR}${PREFIX}/etc/rc.d/* \
+		${STAGEDIR}${PREFIX}/etc/rc.d/
+
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 

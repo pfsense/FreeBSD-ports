@@ -1,0 +1,101 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: pfsense_crowdsec
+# REQUIRE: NETWORKING syslogd
+# BEFORE:  DAEMON
+# KEYWORD: shutdown
+
+# shellcheck disable=SC1091
+. /etc/rc.subr
+
+name="pfsense_crowdsec"
+rcvar="pfsense_crowdsec_enable"
+
+load_rc_config $name
+
+: "${pfsense_crowdsec_enable="NO"}"
+
+
+pfsense_crowdsec_start () {
+    #
+    # Start, or stop the services according to the plugin's configuration.
+    # When starting -> error if the services are already running
+    # When stopping -> no error
+    #
+
+    if service crowdsec enabled; then
+        service crowdsec start
+    else
+        service crowdsec stop || :
+    fi
+
+    if service crowdsec_firewall enabled; then
+        service crowdsec_firewall start
+    else
+        service crowdsec_firewall stop || :
+    fi
+}
+
+pfsense_crowdsec_stop () {
+    # Always stop the services, enabled or not, running or not. No errors.
+
+    service crowdsec stop || :
+    service crowdsec_firewall stop || :
+}
+
+pfsense_crowdsec_restart () {
+    pfsense_crowdsec_stop || :
+    pfsense_crowdsec_start
+}
+
+pfsense_crowdsec_status () {
+    # return error if at least one program is not running
+    service crowdsec status
+    ret=$?
+
+    if ! service crowdsec_firewall status; then
+        ret=1
+    fi
+    return $ret
+}
+
+pfsense_crowdsec_reload () {
+    if service crowdsec enabled; then
+      if service crowdsec status >/dev/null 2>&1; then
+          service crowdsec reload
+      else
+          service crowdsec restart
+      fi
+    fi
+
+    if service crowdsec_firewall enabled; then
+      # the bouncer does not support reload
+      service crowdsec_firewall restart
+    fi
+}
+
+case $1 in
+   start)
+      pfsense_crowdsec_start
+      exit $?
+      ;;
+   stop)
+      pfsense_crowdsec_stop
+      exit $?
+      ;;
+   restart)
+      pfsense_crowdsec_restart
+      exit $?
+      ;;
+   status)
+      pfsense_crowdsec_status
+      exit $?
+      ;;
+   reload)
+      pfsense_crowdsec_reload
+      exit $?
+      ;;
+esac
