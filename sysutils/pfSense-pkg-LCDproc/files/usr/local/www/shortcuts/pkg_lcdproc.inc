@@ -21,6 +21,6 @@
 
 global $shortcuts;
 
-$shortcuts['lcdproc']				= [];
+$shortcuts['lcdproc']			= [];
 $shortcuts['lcdproc']['main']		= '/packages/lcdproc/lcdproc.php';
 $shortcuts['lcdproc']['service']	= 'lcdproc';
