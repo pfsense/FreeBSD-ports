@@ -24,8 +24,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/lcdproc.inc");
 
-$lcdproc_config         = &$config['installedpackages']['lcdproc']['config'][0];
-$lcdproc_screens_config = &$config['installedpackages']['lcdprocscreens']['config'][0];
+$lcdproc_config         = config_get_path('installedpackages/lcdproc/config/0', []);
 
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_config;
@@ -71,6 +70,7 @@ if ($_POST) {
 		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
 		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
 
+		config_set_path('installedpackages/lcdproc/config/0', $lcdproc_config);
 		write_config("lcdproc: Settings saved");
 		sync_package_lcdproc();
 	}

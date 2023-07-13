@@ -21,12 +21,12 @@
 
 /*
  * This file is copied from bandwidth_by_ip.php
- * This file must not be placed in the www directory, because unlike 
+ * This file must not be placed in the www directory, because unlike
  * bandwidth_by_ip.php it does not check for an authenticated user
- * session. 
+ * session.
  *
- * It is used locally by lcdproc_client.php 
- */ 
+ * It is used locally by lcdproc_client.php
+ */
 require_once('interfaces.inc');
 require_once('pfsense-utils.inc');
 require_once('util.inc');
@@ -44,7 +44,7 @@ if (!does_interface_exist($real_interface)) {
 $intip = find_interface_ip($real_interface);
 //get interface subnet
 $netmask = find_interface_subnet($real_interface);
-$intsubnet = gen_subnet($intip, $netmask) . "/$netmask";
+$intsubnet = gen_subnet($intip, $netmask) . "/{$netmask}";
 
 // see if they want local, remote or all IPs returned
 $filter = $_GET['filter'];
@@ -54,7 +54,7 @@ if ($filter == "") {
 }
 
 if ($filter == "local") {
-	$ratesubnet = "-c " . $intsubnet;
+	$ratesubnet = "-c " . escapeshellarg($intsubnet);
 } else {
 	// Tell the rate utility to consider the whole internet (0.0.0.0/0)
 	// and to consider local "l" traffic - i.e. traffic within the whole internet
@@ -75,38 +75,42 @@ $hostipformat = $_GET['hostipformat'];
 $iplookup = array();
 // If hostname, description or FQDN is requested then load the locally-known IP address - host/description mappings into an array keyed by IP address.
 if ($hostipformat != "") {
-	if (is_array($config['dhcpd'])) {
-		// Build an array of static-mapped DHCP entries keyed by IP address.
-		foreach ($config['dhcpd'] as $ifdata) {
-			if (is_array($ifdata['staticmap'])) {
-				foreach ($ifdata['staticmap'] as $hostent) {
-					if (($hostent['ipaddr'] != "") && ($hostent['hostname'] != "")) {
-						if ($hostipformat == "descr" && $hostent['descr'] != "") {
-							$iplookup[$hostent['ipaddr']] = $hostent['descr'];
-						} else {
-							$iplookup[$hostent['ipaddr']] = $hostent['hostname'];
-							if ($hostipformat == "fqdn") {
-								$iplookup[$hostent['ipaddr']] .= "." . $config['system']['domain'];
-							}
-						}
+	// Build an array of static-mapped DHCP entries keyed by IP address.
+	foreach (config_get_path('dhcpd', []) as $ifdata) {
+		if (!is_array($ifdata) || empty($ifdata)) {
+			continue;
+		}
+		foreach (array_get_path($ifdata, 'staticmap', []) as $hostent) {
+			if (!is_array($hostent) || empty($hostent)) {
+				continue;
+			}
+			if (($hostent['ipaddr'] != "") && ($hostent['hostname'] != "")) {
+				if ($hostipformat == "descr" && $hostent['descr'] != "") {
+					$iplookup[$hostent['ipaddr']] = $hostent['descr'];
+				} else {
+					$iplookup[$hostent['ipaddr']] = $hostent['hostname'];
+					if ($hostipformat == "fqdn") {
+						$iplookup[$hostent['ipaddr']] .= "." . $config['system']['domain'];
 					}
 				}
 			}
 		}
 	}
+
 	// Add any DNS host override data keyed by IP address.
 	foreach (array('dnsmasq', 'unbound') as $dns_type) {
-		if (isset($config[$dns_type]['enable'])) {
-			if (is_array($config[$dns_type]['hosts'])) {
-				foreach ($config[$dns_type]['hosts'] as $hostent) {
-					if (($hostent['ip'] != "") && ($hostent['host'] != "")) {
-						if ($hostipformat == "descr" && $hostent['descr'] != "") {
-							$iplookup[$hostent['ip']] = $hostent['descr'];
-						} else {
-							$iplookup[$hostent['ip']] = $hostent['host'];
-							if ($hostipformat == "fqdn") {
-								$iplookup[$hostent['ip']] .= "." . $hostent['domain'];
-							}
+		if (config_path_enabled($dns_type)) {
+			foreach (config_get_path("{$dns_type}/hosts", []) as $hostent) {
+				if (!is_array($hostent) || empty($hostent)) {
+					continue;
+				}
+				if (($hostent['ip'] != "") && ($hostent['host'] != "")) {
+					if ($hostipformat == "descr" && $hostent['descr'] != "") {
+						$iplookup[$hostent['ip']] = $hostent['descr'];
+					} else {
+						$iplookup[$hostent['ip']] = $hostent['host'];
+						if ($hostipformat == "fqdn") {
+							$iplookup[$hostent['ip']] .= "." . $hostent['domain'];
 						}
 					}
 				}
@@ -115,11 +119,10 @@ if ($hostipformat != "") {
 	}
 }
 
-$_grb = exec("/usr/local/bin/rate -i {$real_interface} -nlq 1 -Aba 20 {$sort_method} {$ratesubnet} | tr \"|\" \" \" | awk '{ printf \"%s:%s:%s:%s:%s\\n\", $1,  $2,  $4,  $6,  $8 }'", $listedIPs);
+$_grb = exec("/usr/local/bin/rate -i {$real_interface} -nlq 1 -Aba 20 {$sort_method} {$ratesubnet} | /usr/bin/tr \"|\" \" \" | /usr/bin/awk '{ printf \"%s:%s:%s:%s:%s\\n\", $1,  $2,  $4,  $6,  $8 }'", $listedIPs);
 
 $someinfo = false;
 for ($x=2; $x<12; $x++) {
-
 	$bandwidthinfo = $listedIPs[$x];
 
 	// echo $bandwidthinfo;
