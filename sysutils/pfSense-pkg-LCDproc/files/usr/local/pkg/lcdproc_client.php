@@ -26,53 +26,12 @@ require_once("functions.inc");
 require_once("interfaces.inc");
 require_once("pfsense-utils.inc");
 require_once("ipsec.inc");
+require_once("includes/functions.inc.php");
 require_once("/usr/local/pkg/lcdproc.inc");
 require_once("system.inc");
 
-function get_pfstate() {
-	$matches = "";
-	$maxstates = '/';
-	if ((int) config_get_path('system/maximumstates', 0) > 0) {
-		$maxstates .= config_get_path('system/maximumstates');
-	} else {
-		$maxstates .= pfsense_default_state_size();
-	}
-	$curentries = shell_exec('/sbin/pfctl -si | /usr/bin/grep current');
-	if (preg_match("/([0-9]+)/", $curentries, $matches)) {
-		$curentries = $matches[1];
-	}
-	return $curentries . $maxstates;
-}
-
-function disk_usage() {
-	$dfout = "";
-	exec("/bin/df -h | /usr/bin/grep -w '/' | /usr/bin/awk '{ print $5 }' | /usr/bin/cut -d '%' -f 1", $dfout);
-	$diskusage = trim($dfout[0]);
-
-	return $diskusage;
-}
-
-function mem_usage() {
-	$memUsage = "NA";
-	$totalMem = (int) get_single_sysctl("vm.stats.vm.v_page_count");
-	if (is_numeric($totalMem)) {
-		/* Include inactive and laundry with free memory since they
-		 * could be freed under pressure. */
-		$inactiveMem = (int) get_single_sysctl("vm.stats.vm.v_inactive_count");
-		$laundryMem = (int) get_single_sysctl("vm.stats.vm.v_laundry_count");
-		$freeMem = (int) get_single_sysctl("vm.stats.vm.v_free_count");
-		if (is_numeric($inactiveMem) &&
-		    is_numeric($laundryMem) &&
-		    is_numeric($freeMem)) {
-			$usedMem = $totalMem - ($inactiveMem + $laundryMem + $freeMem);
-			$memUsage = round(($usedMem * 100) / $totalMem, 0);
-		}
-	}
-	return $memUsage;
-}
-
 /* Calculates non-idle CPU time and returns as a percentage */
-function cpu_usage() {
+function lcdproc_cpu_usage() {
 	$duration = 250000;
 	$diff = array('user', 'nice', 'sys', 'intr', 'idle');
 	$cpuTicks = array_combine($diff, explode(" ", get_single_sysctl("kern.cp_time")));
@@ -118,11 +77,11 @@ function get_loadavg_stats() {
 	return ($count >= 3) ? "{$temp[$count - 3]} {$temp[$count - 2]} {$temp[$count - 1]}" : "Not available";
 }
 
-function get_mbuf_stats() {
-	exec("/usr/bin/netstat -mb | /usr/bin/grep \"mbufs in use\" | /usr/bin/awk '{ print $1 }' | /usr/bin/cut -d\"/\" -f1", $mbufs_inuse);
-	exec("/usr/bin/netstat -mb | /usr/bin/grep \"mbufs in use\" | /usr/bin/awk '{ print $1 }' | /usr/bin/cut -d\"/\" -f3", $mbufs_total);
-	$status = "{$mbufs_inuse[0]} \/ {$mbufs_total[0]}";
-	return($status);
+function lcdproc_get_mbuf_stats() {
+	$mbuf = "";
+	$mbufpercent = "";
+	get_mbuf($mbuf, $mbufpercent);
+	return($mbuf);
 }
 
 function get_version() {
@@ -1045,7 +1004,7 @@ function loop_status($lcd) {
 		/* prepare the summary data */
 		if ($lcdpanel_height >= "4") {
 			$summary_states = explode("/", get_pfstate());
-			$lcd_summary_data = sprintf("%02d%% %02d%% %6d", cpu_usage(), mem_usage(), $summary_states[0]);
+			$lcd_summary_data = sprintf("%02d%% %02d%% %6d", lcdproc_cpu_usage(), mem_usage(), $summary_states[0]);
 			if ($lcdpanel_width > "16") {
 				/* Include the CPU frequency as a percentage */
 				$maxfreq = get_cpu_maxfrequency();
@@ -1089,7 +1048,7 @@ function loop_status($lcd) {
 					$led_output_value = $led_output_value + pow(2, 5);
 			}
 			/* LED 3: CPU Usage */
-			if (cpu_usage() > 50) {
+			if (lcdproc_cpu_usage() > 50) {
 				$led_output_value = $led_output_value + pow(2, 6);
 			} else {
 				$led_output_value = $led_output_value + pow(2, 2);
@@ -1138,7 +1097,7 @@ function loop_status($lcd) {
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$hostname}\"";
 					break;
 				case "scr_system":
-					$processor = cpu_usage();
+					$processor = lcdproc_cpu_usage();
 					$memory = mem_usage();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"CPU {$processor}%, Mem {$memory}%\"";
 					break;
@@ -1167,7 +1126,7 @@ function loop_status($lcd) {
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$interfaces}\"";
 					break;
 				case "scr_mbuf":
-					$mbufstats = get_mbuf_stats();
+					$mbufstats = lcdproc_get_mbuf_stats();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$mbufstats}\"";
 					break;
 				case "scr_cpufrequency":

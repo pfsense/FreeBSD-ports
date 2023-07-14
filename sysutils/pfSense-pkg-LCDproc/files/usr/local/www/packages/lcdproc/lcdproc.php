@@ -175,7 +175,7 @@ $section->addInput(
 			'MD8800'       => 'MD8800',
 			'ms6931'       => 'ms6931',
 			'mtc_s16209x'  => 'mtc_s16209x',
-			'MtxOrb'       => 'Matrix Orbital',
+			'MtxOrb'       => 'Matrix Orbital and Compatible',
 			'nexcom'       => 'nexcom (x86 only)',
 			'NoritakeVFD'  => 'NoritakeVFD',
 			'picolcd'      => 'picolcd',
@@ -256,7 +256,8 @@ $subsection->setHelp(
 	'Select the Matrix Orbital display type.%1$s' .
 	'Some old firmware versions of Matrix Orbital modules do not support an adjustable backlight' .
 	'but only can switch the backlight on/off. If you own such a module and experience randomly' .
-	'appearing block characters and backlight cannot be switched on or off, uncheck the adjustable backlight option.'
+	'appearing block characters and backlight cannot be switched on or off, uncheck the adjustable backlight option.',
+	'<br/>'
 );
 $section->add($subsection);
 ?>
