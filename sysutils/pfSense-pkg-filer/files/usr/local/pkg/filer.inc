@@ -218,7 +218,7 @@ function filer_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 	$xml['filer'] = $config['installedpackages']['filer'];
 
 	$execcmd = "require_once('/usr/local/pkg/filer.inc');\n";
-	$execcmd .= "sync_package_filer();";	
+	$execcmd .= "filer_sync();";
 	
 	if (pf_version() >= "2.4") {
 		// xmlrpc cannot encode NULL objects/arrays..
