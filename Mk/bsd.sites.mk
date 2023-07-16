@@ -194,7 +194,7 @@ MASTER_SITE_FESTIVAL_OGI+= \
 #
 .if !defined(IGNORE_MASTER_SITE_FREEBSD_ORG)
 MASTER_SITE_FREEBSD_ORG+= \
-	https://download.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
+	https://download.FreeBSD.org/%SUBDIR%/ \
 	ftp://ftp.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
 	ftp://ftp.se.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
 	ftp://ftp.jp.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
@@ -656,8 +656,6 @@ MASTER_SITE_ISC+= \
 	ftp://ftp.funet.fi/pub/mirrors/ftp.isc.org/isc/%SUBDIR%/
 .endif
 
-# List:		http://download.kde.org/extra/mirrors.html
-# Updated:	2012-10-26
 .if !defined(IGNORE_MASTER_SITE_KDE)
 MASTER_SITE_KDE+= \
 	https://download.kde.org/%SUBDIR%/
@@ -702,7 +700,6 @@ MASTER_SITE_MOZILLA_ADDONS+= \
 MASTER_SITE_MYSQL+= \
 	ftp://ftp.fi.muni.cz/pub/mysql/Downloads/%SUBDIR%/ \
 	ftp://ftp.gwdg.de/pub/misc/mysql/Downloads/%SUBDIR%/ \
-	ftp://ftp.ntua.gr/pub/databases/mysql/Downloads/%SUBDIR%/ \
 	https://dev.mysql.com/get/Downloads/%SUBDIR%/
 .endif
 

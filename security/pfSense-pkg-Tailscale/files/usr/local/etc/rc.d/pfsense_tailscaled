@@ -26,6 +26,7 @@ name="pfsense_tailscaled"
 load_rc_config $name
 
 # defaults parameter values
+: ${pfsense_tailscaled_acceptdns_enable:="YES"}
 : ${pfsense_tailscaled_acceptroutes_enable:="NO"}
 : ${pfsense_tailscaled_advertiseroutes:=""}
 : ${pfsense_tailscaled_exitnode_enable:="NO"}
@@ -53,6 +54,13 @@ if checkyesno pfsense_tailscaled_acceptroutes_enable; then
 	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --accept-routes"
 else
 	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --accept-routes=false"
+fi
+
+# handle the --acept-dns parameter
+if checkyesno pfsense_tailscaled_acceptdns_enable; then
+	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --accept-dns"
+else
+	pfsense_tailscaled_up_flags="${pfsense_tailscaled_up_flags} --accept-dns=false"
 fi
 
 # handle the --advertise-routes parameter

@@ -1,6 +1,5 @@
 PORTNAME=	pysdl2
-PORTVERSION=	0.9.15
-PORTREVISION=	1
+PORTVERSION=	0.9.16
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +13,7 @@ LICENSE=	PD CC0-1.0 ZLIB
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/doc/copying.rst
 
-USES=		dos2unix python:3.7+ sdl
+USES=		dos2unix python sdl
 USE_PYTHON=	autoplist concurrent distutils
 USE_SDL=	gfx2 image2 mixer2 sdl2 ttf2
 

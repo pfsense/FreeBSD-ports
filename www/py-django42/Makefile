@@ -1,5 +1,5 @@
 PORTNAME=	django
-PORTVERSION=	4.2.2
+PORTVERSION=	4.2.3
 CATEGORIES=	www python
 MASTER_SITES=	PYPI \
 		https://media.djangoproject.com/releases/${PORTVERSION:R}/
@@ -19,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asgiref>=3.6.0:www/py-asgiref@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlparse>=0.3.1:databases/py-sqlparse@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tblib>0:devel/py-tblib@${PY_FLAVOR}
 
-USES=		cpe python:3.8+ shebangfix
+USES=		cpe python shebangfix
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

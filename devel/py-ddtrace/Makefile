@@ -1,5 +1,5 @@
 PORTNAME=	ddtrace
-PORTVERSION=	1.14.0
+PORTVERSION=	1.15.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,11 +25,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}attrs>=20:devel/py-attrs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}opentelemetry-api>=1:devel/py-opentelemetry-api@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}protobuf>=3,1:devel/py-protobuf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tenacity>=5:devel/py-tenacity@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>=0:devel/py-typing-extensions@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xmltodict>=0.12:devel/py-xmltodict@${PY_FLAVOR}
 
-USES=		compiler:c++17-lang python:3.8+
+USES=		compiler:c++17-lang python
 USE_PYTHON=	autoplist concurrent cython pep517
 
 OPTIONS_DEFINE=	OPENTRACING
@@ -37,12 +36,6 @@ OPTIONS_DEFAULT=OPENTRACING
 OPENTRACING_DESC=	OpenTracing support
 
 OPENTRACING_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}opentracing>=2.0.0:devel/py-opentracing@${PY_FLAVOR}
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ((${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000) || ${OSVERSION} >= 1400079)
-CFLAGS+=	-Wno-error=int-conversion
-.endif
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +

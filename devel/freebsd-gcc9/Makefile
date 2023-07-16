@@ -26,6 +26,8 @@ TARGETARCH=	${FLAVOR}
 USES=		compiler:c++11-lang cpe gmake iconv libtool makeinfo tar:xz
 CPE_VENDOR=	gnu
 
+USE_CXXSTD=	c++11
+
 PLIST_SUB=	OPSYS=${OPSYS:tl} \
 		SUFFIX=${SUFFIX} \
 		TARGETARCH=${TARGETARCH} \
@@ -86,12 +88,6 @@ post-patch:
 CONFIGURE_TARGET=	x86_64-unknown-${OPSYS:tl}${OSREL}
 .else
 CONFIGURE_TARGET=	${ARCH}-unknown-${OPSYS:tl}${OSREL}
-.endif
-
-.if ${TARGETARCH:Marm*} || ${TARGETARCH} == "aarch64"
-. if ${CHOSEN_COMPILER_TYPE} == clang
-MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
-. endif
 .endif
 
 .if ${TARGETARCH} == "amd64" || ${TARGETARCH} == "powerpc64"

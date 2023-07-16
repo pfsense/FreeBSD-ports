@@ -7,7 +7,7 @@ DISTNAME=	pyside-setup-opensource-src-${DISTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Pyside6 development tools
-WWW:		https://wiki.qt.io/Qt_for_Python
+WWW=		https://wiki.qt.io/Qt_for_Python
 
 LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	multi
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libshiboken6.abi${PYTHON_MAJOR_VER}.so:devel/shiboken6@${PY_FLAVOR}
 		libzstd.so:archivers/zstd \
 		libLLVM-${LLVM_DEFAULT}.so:devel/llvm${LLVM_DEFAULT}
 
-USES=		cmake gl python:3.5+ qt:6 shebangfix tar:xz xorg
+USES=		cmake gl python qt:6 shebangfix tar:xz xorg
 USE_GL=		gl
 USE_PYTHON=	flavors
 USE_QT=		base tools languageserver declarative

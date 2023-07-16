@@ -1,6 +1,6 @@
 PORTNAME=	ubelt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
+DISTVERSION=	1.3.3
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -21,8 +21,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}codecov>=2.0.15:devel/py-codecov@${PY_FLAVO
 		${PYTHON_PKGNAMEPREFIX}xdoctest>=0.14.0:devel/py-xdoctest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xxhash>0:devel/py-xxhash@${PY_FLAVOR}
 
-USES=		python:3.6+
-USE_PYTHON=	distutils autoplist pytest # 1 test fails, see https://github.com/Erotemic/ubelt/issues/149
+USES=		python
+USE_PYTHON=	distutils autoplist pytest
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Erotemic

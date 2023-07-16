@@ -15,6 +15,7 @@
     SUBDIR += bcftools
     SUBDIR += bedtools
     SUBDIR += bfc
+    SUBDIR += bifrost
     SUBDIR += bio-mocha
     SUBDIR += bioawk
     SUBDIR += biococoa
@@ -96,6 +97,7 @@
     SUBDIR += linux-foldingathome
     SUBDIR += mafft
     SUBDIR += mapm3
+    SUBDIR += mashmap
     SUBDIR += megahit
     SUBDIR += metaeuk
     SUBDIR += migrate

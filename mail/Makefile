@@ -97,6 +97,7 @@
     SUBDIR += dkfilter
     SUBDIR += dkimproxy
     SUBDIR += dma
+    SUBDIR += dmarcts-report-parser
     SUBDIR += dot-forward
     SUBDIR += dovecot
     SUBDIR += dovecot-coi
@@ -518,6 +519,7 @@
     SUBDIR += py-offlineimap3
     SUBDIR += py-postfix-mta-sts-resolver
     SUBDIR += py-premailer
+    SUBDIR += py-pyisemail
     SUBDIR += py-pymailq
     SUBDIR += py-pysasl
     SUBDIR += py-pyspf

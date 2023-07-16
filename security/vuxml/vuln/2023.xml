@@ -1,3 +1,607 @@
+  <vuln vid="b67d768c-1f53-11ee-82ed-4ccc6adda413">
+    <topic>librecad -- out-of-bounds read in importshp plugin</topic>
+    <affects>
+      <package>
+	<name>librecad</name>
+	<range><lt>2.2.0.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Albin Eldstål-Ahrens reports:</p>
+	<blockquote cite="https://github.com/LibreCAD/LibreCAD/issues/1481">
+	  <p>An out-of-bounds read on a heap buffer in the importshp plugin may
+      allow an attacker to read sensitive data via a crafted DBF file.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-30259</cvename>
+      <url>https://github.com/LibreCAD/LibreCAD/issues/1481</url>
+    </references>
+    <dates>
+      <discovery>2021-12-28</discovery>
+      <entry>2023-07-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6fae2d6c-1f38-11ee-a475-080027f5fec9">
+    <topic>redis -- heap overflow in COMMAND GETKEYS and ACL evaluation</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><lt>7.0.12</lt></range>
+      </package>
+      <package>
+	<name>redis-devel</name>
+	<range><lt>7.0.12.20230710</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Redis core team reports:</p>
+	<blockquote cite="https://groups.google.com/g/redis-db/c/JDjKS0GubsQ">
+	  <p>
+	    Extracting key names from a command and a list of
+	    arguments may, in some cases, trigger a heap overflow and
+	    result in reading random heap memory, heap corruption and
+	    potentially remote code execution. Specifically: using
+	    COMMAND GETKEYS* and validation of key names in ACL rules.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-36824</cvename>
+      <url>https://groups.google.com/g/redis-db/c/JDjKS0GubsQ</url>
+      <url>https://github.com/redis/redis/security/advisories/GHSA-4cfx-h9gq-xpx3</url>
+    </references>
+    <dates>
+      <discovery>2023-07-10</discovery>
+      <entry>2023-07-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0e254b4a-1f37-11ee-a475-080027f5fec9">
+    <topic>redis -- Heap overflow in the cjson and cmsgpack libraries</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><lt>7.0.12</lt></range>
+      </package>
+      <package>
+	<name>redis-devel</name>
+	<range><lt>7.0.12.20230710</lt></range>
+      </package>
+      <package>
+	<name>redis62</name>
+	<range><lt>6.2.13</lt></range>
+      </package>
+      <package>
+	<name>redis60</name>
+	<range><lt>6.0.20</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Redis core team reports:</p>
+	<blockquote cite="https://groups.google.com/g/redis-db/c/JDjKS0GubsQ">
+	  <p>
+	     A specially crafted Lua script executing in Redis can
+	     trigger a heap overflow in the cjson and cmsgpack
+	     libraries, and result in heap corruption and potentially
+	     remote code execution.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-24834</cvename>
+      <url>https://groups.google.com/g/redis-db/c/JDjKS0GubsQ</url>
+    </references>
+    <dates>
+      <discovery>2023-07-10</discovery>
+      <entry>2023-07-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8ea24413-1b15-11ee-9331-570525adb7f1">
+    <topic>gitea -- avoid open HTTP redirects</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.19.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea team reports:</p>
+	<blockquote cite="https://github.com/go-gitea/gitea/pull/25143">
+	  <p>If redirect_to parameter has set value starting with
+	    \\example.com redirect will be created with header Location:
+	    /\\example.com that will redirect to example.com domain.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://blog.gitea.io/2023/07/gitea-1.19.4-is-released/</url>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.19.4</url>
+    </references>
+    <dates>
+      <discovery>2023-06-08</discovery>
+      <entry>2023-07-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d1681df3-421e-4a63-95b4-a3d6e29d395d">
+    <topic>electron{23,24} -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron23</name>
+	<range><lt>23.3.10</lt></range>
+      </package>
+      <package>
+	<name>electron24</name>
+	<range><lt>24.6.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v23.3.10">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-3422.</li>
+	    <li>Security: backported fix for CVE-2023-3421.</li>
+	    <li>Security: backported fix for CVE-2023-3420.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3422</cvename>
+      <url>https://github.com/advisories/GHSA-gqjh-f545-vcx3</url>
+      <cvename>CVE-2023-3421</cvename>
+      <url>https://github.com/advisories/GHSA-943x-93ff-jr62</url>
+      <cvename>CVE-2023-3420</cvename>
+      <url>https://github.com/advisories/GHSA-4297-fx5c-x987</url>
+    </references>
+    <dates>
+      <discovery>2023-07-05</discovery>
+      <entry>2023-07-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d8972bcd-1b64-11ee-9cd6-001b217b3468">
+    <topic>Gitlab -- Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>16.1.0</ge><lt>16.1.2</lt></range>
+	<range><ge>16.0.0</ge><lt>16.0.7</lt></range>
+	<range><ge>15.11.0</ge><lt>15.11.11</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2023/07/05/security-release-gitlab-16-1-2-released/">
+	  <p>A user can change the name and path of some public GitLab groups</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3484</cvename>
+      <url>https://about.gitlab.com/releases/2023/07/05/security-release-gitlab-16-1-2-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-07-05</discovery>
+      <entry>2023-07-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="01eeea33-1afa-11ee-8a9b-b42e991fc52e">
+    <topic>phpldapadmin -- XSS vulnerability</topic>
+    <affects>
+      <package>
+	<name>phpldapadmin-php80</name>
+	<name>phpldapadmin-php81</name>
+	<range><lt>1.2.6.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cve@mitre.org reports:</p>
+	<blockquote cite="https://bugs.launchpad.net/ubuntu/+source/phpldapadmin/+bug/1906474">
+	  <p>An XSS issue has been discovered in phpLDAPadmin before 1.2.6.2
+	that allows users to store malicious values that may be executed
+	by other users at a later time via get_request in lib/function.php.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-35132</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2020-35132</url>
+    </references>
+    <dates>
+      <discovery>2020-12-11</discovery>
+      <entry>2023-07-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4ee7fa77-19a6-11ee-8a05-080027eda32c">
+    <topic>Django -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py38-django32</name>
+	<name>py39-django32</name>
+	<name>py310-django32</name>
+	<name>py311-django32</name>
+	<range><lt>3.2.20</lt></range>
+      </package>
+      <package>
+	<name>py38-django41</name>
+	<name>py39-django41</name>
+	<name>py310-django41</name>
+	<name>py311-django41</name>
+	<range><lt>4.0.10</lt></range>
+      </package>
+      <package>
+	<name>py38-django42</name>
+	<name>py39-django42</name>
+	<name>py310-django42</name>
+	<name>py311-django42</name>
+	<range><lt>4.2.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Django reports:</p>
+	<blockquote cite="https://www.djangoproject.com/weblog/2023/jul/03/security-releases/">
+	  <p>CVE-2023-36053: Potential regular expression denial of service
+	    vulnerability in EmailValidator/URLValidator.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-36053</cvename>
+      <url>https://www.djangoproject.com/weblog/2023/jul/03/security-releases/</url>
+    </references>
+    <dates>
+      <discovery>2023-07-01</discovery>
+      <entry>2023-07-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="95dad123-180e-11ee-86ba-080027eda32c">
+    <topic>mediawiki -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mediawiki135</name>
+	<range><lt>1.35.11</lt></range>
+      </package>
+      <package>
+	<name>mediawiki138</name>
+	<range><lt>1.38.7</lt></range>
+      </package>
+      <package>
+	<name>mediawiki139</name>
+	<range><lt>1.39.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mediawiki reports:</p>
+	<blockquote cite="https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/HVT3U3XYY35PSCIQPHMY4VQNF3Q6MHUO/">
+	  <p>(T335203, CVE-2023-29197) Upgrade guzzlehttp/psr7 to >= 1.9.1/2.4.5.</p>
+	  <p>(T335612, CVE-2023-36674) Manualthumb bypasses badFile lookup.</p>
+	  <p>(T332889, CVE-2023-36675) XSS in BlockLogFormatter due to unsafe message
+	    use.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-29197</cvename>
+      <cvename>CVE-2023-36674</cvename>
+      <cvename>CVE-2023-36675</cvename>
+      <url>https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/HVT3U3XYY35PSCIQPHMY4VQNF3Q6MHUO/</url>
+    </references>
+    <dates>
+      <discovery>2023-04-21</discovery>
+      <entry>2023-07-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3117e6cd-1772-11ee-9cd6-001b217b3468">
+    <topic>Gitlab -- Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>16.1.0</ge><lt>16.1.1</lt></range>
+	<range><ge>16.0.0</ge><lt>16.0.6</lt></range>
+	<range><ge>15.11.0</ge><lt>15.11.10</lt></range>
+	<range><ge>7.14.0</ge><lt>15.10.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2023/06/29/security-release-gitlab-16-1-1-released/">
+	  <p>ReDoS via EpicReferenceFilter in any Markdown fields</p>
+	  <p>New commits to private projects visible in forks created while project was public</p>
+	  <p>New commits to private projects visible in forks created while project was public</p>
+	  <p>Maintainer can leak masked webhook secrets by manipulating URL masking</p>
+	  <p>Information disclosure of project import errors</p>
+	  <p>Sensitive information disclosure via value stream analytics controller</p>
+	  <p>Bypassing Code Owners branch protection rule in GitLab</p>
+	  <p>HTML injection in email address</p>
+	  <p>Webhook token leaked in Sidekiq logs if log format is 'default'</p>
+	  <p>Private email address of service desk issue creator disclosed via issues API</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3424</cvename>
+      <cvename>CVE-2023-2190</cvename>
+      <cvename>CVE-2023-3444</cvename>
+      <cvename>CVE-2023-2620</cvename>
+      <cvename>CVE-2023-3362</cvename>
+      <cvename>CVE-2023-3102</cvename>
+      <cvename>CVE-2023-2576</cvename>
+      <cvename>CVE-2023-2200</cvename>
+      <cvename>CVE-2023-3363</cvename>
+      <cvename>CVE-2023-1936</cvename>
+      <url>https://about.gitlab.com/releases/2023/06/29/security-release-gitlab-16-1-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-06-29</discovery>
+      <entry>2023-06-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d821956f-1753-11ee-ad66-1c61b4739ac9">
+    <topic>SoftEtherVPN -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>softether</name>
+	<range><lt>4.42.9798</lt></range>
+      </package>
+      <package>
+	<name>softether-devel</name>
+	<range><lt>4.42.9798</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Daiyuu Nobori reports:</p>
+	<blockquote cite="https://www.softether.org/9-about/News/904-SEVPN202301">
+	  <p>The SoftEther VPN project received a high level code review and technical assistance from Cisco Systems, Inc. of the United States from April to June 2023 to fix several vulnerabilities in the SoftEther VPN code.</p>
+	  <p>The risk of exploitation of any of the fixed vulnerabilities is low under normal usage and environment, and actual attacks are very difficult. However, SoftEther VPN is now an open source VPN software used by 7.4 million unique users worldwide, and is used daily by many users to defend against the risk of blocking attacks by national censorship firewalls and attempts to eavesdrop on communications. Therefore, as long as the slightest attack possibility exists, there is great value in preventing vulnerabilities as much as possible in anticipation of the most sophisticated cyber attackers in the world, such as malicious ISPs and man-in-the-middle attackers on national Internet communication channels. These fixes are important and useful patches for users who use SoftEther VPN and the Internet for secure communications to prevent advanced attacks that can theoretically be triggered by malicious ISPs and man-in-the-middle attackers on national Internet communication pathways.</p>
+	  <p>The fixed vulnerabilities are CVE-2023-27395, CVE-2023-22325, CVE-2023-32275, CVE-2023-27516, CVE-2023-32634, and CVE-2023-31192. All of these were discovered in an outstanding code review of SoftEther VPN by Cisco Systems, Inc.</p>
+	  <ol>
+	    <li>CVE-2023-27395: Heap overflow in SoftEther VPN DDNS client functionality at risk of crashing and theoretically arbitrary code execution caused by a malicious man-in-the-middle attacker such like ISP-level or on national Internet communication channels</li>
+	    <li>CVE-2023-22325: Integer overflow in the SoftEther VPN DDNS client functionality could result in crashing caused by a malicious man-in-the-middle attacker such like ISP-level or on national Internet communication channels</li>
+	    <li>CVE-2023-32275: Vulnerability that allows the administrator himself of a 32-bit version of VPN Client or VPN Server to see the 32-bit value heap address of each of trusted CA's certificates in the VPN process</li>
+	    <li>CVE-2023-27516: If the user forget to set the administrator password of SoftEther VPN Client and enable remote administration with blank password, the administrator password of VPN Client can be changed remotely or VPN client can be used remotely by anonymouse third person</li>
+	    <li>CVE-2023-32634: If an attacker succeeds in launching a TCP relay program on the same port as the VPN Client on a local computer running the SoftEther VPN Client before the VPN Client process is launched, the TCP relay program can conduct a man-in-the-middle attack on communication between the administrator and the VPN Client process</li>
+	    <li>CVE-2023-31192: When SoftEther VPN Client connects to an untrusted VPN Server, an invalid redirection response for the clustering (load balancing) feature causes 20 bytes of uninitialized stack space to be read</li>
+	  </ol>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-27395</cvename>
+      <cvename>CVE-2023-22325</cvename>
+      <cvename>CVE-2023-32275</cvename>
+      <cvename>CVE-2023-27516</cvename>
+      <cvename>CVE-2023-32634</cvename>
+      <cvename>CVE-2023-31192</cvename>
+      <url>https://www.softether.org/9-about/News/904-SEVPN202301</url>
+    </references>
+    <dates>
+      <discovery>2023-06-30</discovery>
+      <entry>2023-06-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="06428d91-152e-11ee-8b14-dbdd62da85fb">
+    <topic>OpenEXR -- heap buffer overflow in internal_huf_decompress</topic>
+    <affects>
+      <package>
+	<name>openexr</name>
+	<range><lt>3.1.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>oss-fuzz reports:</p>
+	<blockquote cite="https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=59382">
+	  <p>heap buffer overflow in internal_huf_decompress.</p>
+	</blockquote>
+	<p>Cary Phillips reports:</p>
+	<blockquote cite="https://github.com/AcademySoftwareFoundation/openexr/releases/tag/v3.1.9">
+	  <p>v3.1.9 - Patch release that addresses [...] also OSS-fuzz 59382 Heap-buffer-overflow in internal_huf_decompress</p>
+	</blockquote>
+	<p>Kimball Thurston reports:</p>
+	<blockquote cite="https://github.com/AcademySoftwareFoundation/openexr/pull/1439">
+	  <p>Fix scenario where malformed dwa file could read past end of buffer - fixes OSS-Fuzz 59382</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=59382</url>
+      <url>https://github.com/AcademySoftwareFoundation/openexr/releases/tag/v3.1.9</url>
+      <url>https://github.com/AcademySoftwareFoundation/openexr/commit/e431f7e189d0785bb84a5bfb83391e9e58590c49</url>
+      <url>https://github.com/AcademySoftwareFoundation/openexr/pull/1439</url>
+    </references>
+    <dates>
+      <discovery>2023-05-28</discovery>
+      <entry>2023-06-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ad05a737-14bd-11ee-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>114.0.5735.198</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>114.0.5735.198</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/06/stable-channel-update-for-desktop_26.html">
+	 <p>This update includes 4 security fixes:</p>
+	 <ul>
+	    <li>[1452137] High CVE-2023-3420: Type Confusion in V8. Reported by Man Yue Mo of GitHub Security Lab on 2023-06-07</li>
+	    <li>[1447568] High CVE-2023-3421: Use after free in Media. Reported by Piotr Bania of Cisco Talos on 2023-05-22</li>
+	    <li>[1450397] High CVE-2023-3422: Use after free in Guest View. Reported by asnine on 2023-06-01</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3420</cvename>
+      <cvename>CVE-2023-3421</cvename>
+      <cvename>CVE-2023-3422</cvename>
+      <url>https://chromereleases.googleblog.com/2023/06/stable-channel-update-for-desktop_26.html</url>
+    </references>
+    <dates>
+      <discovery>2023-06-26</discovery>
+      <entry>2023-06-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fdbe9aec-118b-11ee-908a-6c3be5272acd">
+    <topic>Grafana -- Account takeover / authentication bypass</topic>
+    <affects>
+      <package>
+	<name>grafana</name>
+	<range><ge>6.7.0</ge><lt>8.5.27</lt></range>
+	<range><ge>9.0.0</ge><lt>9.2.20</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.16</lt></range>
+	<range><ge>9.4.0</ge><lt>9.4.13</lt></range>
+	<range><ge>9.5.0</ge><lt>9.5.5</lt></range>
+	<range><ge>10.0.0</ge><lt>10.0.1</lt></range>
+      </package>
+      <package>
+	<name>grafana8</name>
+	<range><lt>8.5.27</lt></range>
+      </package>
+      <package>
+	<name>grafana9</name>
+	<range><lt>9.2.20</lt></range>
+	<range><ge>9.3.0</ge><lt>9.3.16</lt></range>
+	<range><ge>9.4.0</ge><lt>9.4.13</lt></range>
+	<range><ge>9.5.0</ge><lt>9.5.5</lt></range>
+      </package>
+      <package>
+	<name>grafana10</name>
+	<range><lt>10.0.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Grafana Labs reports:</p>
+	<blockquote cite="https://grafana.com/blog/2023/06/22/grafana-security-release-for-cve-2023-3128/">
+	  <p>Grafana validates Azure Active Directory accounts based on the email claim.
+	  On Azure AD, the profile email field is not unique across Azure AD tenants.
+	  This can enable a Grafana account takeover and authentication bypass when
+	  Azure AD OAuth is configured with a multi-tenant Azure AD OAuth application.
+	  </p>
+	  <p>The CVSS score for this vulnerability is 9.4 Critical.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3128</cvename>
+      <url>https://grafana.com/security/security-advisories/cve-2023-3128</url>
+    </references>
+    <dates>
+      <discovery>2023-06-22</discovery>
+      <entry>2023-06-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a03b2d9e-b3f2-428c-8f66-21092ed2ba94">
+    <topic>electron{23,24} -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron23</name>
+	<range><lt>23.3.8</lt></range>
+      </package>
+      <package>
+	<name>electron24</name>
+	<range><lt>24.6.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v23.3.8">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-3215.</li>
+	    <li>Security: backported fix for CVE-2023-3216.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3215</cvename>
+      <url>https://github.com/advisories/GHSA-5rw6-vf4w-p4j3</url>
+      <cvename>CVE-2023-3216</cvename>
+      <url>https://github.com/advisories/GHSA-f35r-mcw4-gg3w</url>
+    </references>
+    <dates>
+      <discovery>2023-06-22</discovery>
+      <entry>2023-06-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="770d88cc-f6dc-4385-bdfe-497f8080c3fb">
+    <topic>electron22 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron22</name>
+	<range><lt>22.3.14</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v22.3.14">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-3215.</li>
+	    <li>Security: backported fix for CVE-2023-3216.</li>
+	    <li>Security: backported fix for CVE-2023-0698.</li>
+	    <li>Security: backported fix for CVE-2023-0932.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3215</cvename>
+      <url>https://github.com/advisories/GHSA-5rw6-vf4w-p4j3</url>
+      <cvename>CVE-2023-3216</cvename>
+      <url>https://github.com/advisories/GHSA-f35r-mcw4-gg3w</url>
+      <cvename>CVE-2023-0698</cvename>
+      <url>https://github.com/advisories/GHSA-q6xx-4pmr-m3m4</url>
+      <cvename>CVE-2023-0932</cvename>
+      <url>https://github.com/advisories/GHSA-hh2g-39pc-2575</url>
+    </references>
+    <dates>
+      <discovery>2023-06-22</discovery>
+      <entry>2023-06-22</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="734b8f46-773d-4fef-bed3-61114fe8e4c5">
     <topic>libX11 -- Sub-object overflows</topic>
     <affects>
@@ -2408,7 +3012,7 @@
     <name>py39-suds</name>
     <name>py310-suds</name>
     <name>py311-suds</name>
-    <range><le>1.1.2</le></range>
+    <range><lt>1.0.0</lt></range>
       </package>
     </affects>
     <description>
@@ -2426,6 +3030,7 @@
     <dates>
       <discovery>2013-09-23</discovery>
       <entry>2023-04-09</entry>
+      <modified>2023-07-08</modified>
     </dates>
   </vuln>
 
@@ -2759,7 +3364,9 @@
     <affects>
       <package>
     <name>py39-setuptools</name>
-    <range><lt>65.5.1</lt></range>
+    <range><lt>44.1.1_1</lt></range>
+    <range><ge>57.0.0</ge><lt>58.5.3_3</lt></range>
+    <range><ge>62.1.0</ge><lt>63.1.0_1</lt></range>
       </package>
     </affects>
     <description>
@@ -2768,7 +3375,7 @@
     <blockquote cite="https://osv.dev/vulnerability/GHSA-r9hx-vwmv-q579">
       <p>Python Packaging Authority (PyPA)'s setuptools is a library designed to facilitate packaging Python projects.</p>
       <p>Setuptools version 65.5.0 and earlier could allow remote attackers to cause a denial of service by fetching malicious HTML from a PyPI package or custom PackageIndex page due to a vulnerable Regular Expression in `package_index`.</p>
-      <p>This has been patched in version 65.5.1.</p>
+      <p>This has been patched in version 65.5.1. The patch backported to the revision 63.1.0_1.</p>
     </blockquote>
       </body>
     </description>
@@ -2787,7 +3394,9 @@
     <affects>
       <package>
     <name>py27-setuptools44</name>
-    <range><lt>65.5.1</lt></range>
+    <range><lt>44.1.1_1</lt></range>
+    <range><ge>57.0.0</ge><lt>58.5.3_3</lt></range>
+    <range><ge>62.1.0</ge><lt>63.1.0_1</lt></range>
       </package>
     </affects>
     <description>
@@ -2796,7 +3405,7 @@
     <blockquote cite="https://osv.dev/vulnerability/GHSA-r9hx-vwmv-q579">
       <p>Python Packaging Authority (PyPA)'s setuptools is a library designed to facilitate packaging Python projects.</p>
       <p>Setuptools version 65.5.0 and earlier could allow remote attackers to cause a denial of service by fetching malicious HTML from a PyPI package or custom PackageIndex page due to a vulnerable Regular Expression in `package_index`.</p>
-      <p>This has been patched in version 65.5.1.</p>
+      <p>This has been patched in version 65.5.1. The patch backported to the revision 44.1.1_1.</p>
     </blockquote>
       </body>
     </description>
@@ -2815,7 +3424,9 @@
     <affects>
       <package>
     <name>py39-setuptools58</name>
-    <range><lt>65.5.1</lt></range>
+    <range><lt>44.1.1_1</lt></range>
+    <range><ge>57.0.0</ge><lt>58.5.3_3</lt></range>
+    <range><ge>62.1.0</ge><lt>63.1.0_1</lt></range>
       </package>
     </affects>
     <description>
@@ -2824,7 +3435,7 @@
     <blockquote cite="https://osv.dev/vulnerability/GHSA-r9hx-vwmv-q579">
       <p>Python Packaging Authority (PyPA)'s setuptools is a library designed to facilitate packaging Python projects.</p>
       <p>Setuptools version 65.5.0 and earlier could allow remote attackers to cause a denial of service by fetching malicious HTML from a PyPI package or custom PackageIndex page due to a vulnerable Regular Expression in `package_index`.</p>
-      <p>This has been patched in version 65.5.1.</p>
+      <p>This has been patched in version 65.5.1. The patch backported to the revision 58.5.3_3.</p>
     </blockquote>
       </body>
     </description>

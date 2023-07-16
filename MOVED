@@ -7514,6 +7514,7 @@ science/cdcl||2023-04-21|Has expired: Broken since 2021
 science/rubygem-ruby-dcl||2023-04-21|Has expired: requires deprecated science/cdcl
 net-im/webinar||2023-04-24|Has expired: Requires EOLed electron18
 devel/electron18||2023-04-24|Has expired: EOLed upstream, switch to newer version
+x11/libdmx||2023-04-25|Upstream removed support for Xdmx server
 devel/datovka|mail/datovka|2023-04-25|Move port to proper category
 benchmarks/super-smack||2023-04-30|Has expired: Unfetchable
 www/moodle39||2023-04-30|Has expired: Requires php74 which has been removed from the tree
@@ -7638,6 +7639,7 @@ databases/rubygem-pg13|databases/rubygem-pg|2023-06-05|Remove obsoleted port. Us
 devel/rubygem-fast_gettext1|devel/rubygem-fast_gettext|2023-06-05|Remove obsoleted port. Use devel/rubygem-fast_gettext instead
 devel/rubygem-gettext-setup0|devel/rubygem-gettext-setup|2023-06-05|Remove obsoleted port. Use devel/rubygem-gettext-setup instead
 x11/radare-cutter||2023-06-07|Has expired: Cutter for radare has been discontinued as Cutter has moved to use rizin as their backend framework
+www/py-WebTest|www/py-webtest|2023-06-08|Use lowercase PORTNAME and path
 security/py-sequoia||2023-06-09|Deprecated upstream, broken as based on older dependency
 audio/hvl2wav|audio/ocp|2023-06-10|Has expired: Abandoned upstream, use audio/ocp instead
 x11/thinglaunch|x11/thingylaunch|2023-06-10|Has expired: Abandonware, please use x11/thingylaunch instead
@@ -7654,3 +7656,125 @@ textproc/apache-solr9|textproc/apache-solr|2023-06-18|New stable release
 games/poker-eval||2023-06-20|Upstream vanished
 graphics/3d-ascii-viewer-c|graphics/3d-ascii-viewer|2023-06-21|Project was renamed
 archivers/libunrar6|archivers/libunrar|2023-06-21|Moved to unversioned origin. Use archivers/libunrar instead
+pfSense-pkg-zabbix-agent62|pfSense-pkg-zabbix-agent64|2023-07-07|Zabbix 6.2 is EoL, switch to 6.4
+pfSense-pkg-zabbix-proxy62|pfSense-pkg-zabbix-proxy64|2023-07-07|Zabbix 6.2 is EoL, switch to 6.4
+japanese/font-plemoljp-nfj||2023-06-22|Removed by upstream
+graphics/fotofix||2023-06-23|Has expired: Depends on expired graphics/IPA
+graphics/IPA||2023-06-23|Has expired: Broken since 2021
+security/p5-OpenCA-PKCS7||2023-06-23|Has expired: Depends on expired security/p5-OpenCA-OpenSSL
+security/p5-OpenCA-OpenSSL||2023-06-23|Has expired: Broken since 2021
+security/krb5-118|security/krb5|2023-06-25|Has expired: EOL one year after the release of krb5 1.19
+x11-wm/pager|x11-wm/sawfish-pager|2023-06-27|Renamed to match upstream naming
+lang/python37|lang/python38|2023-06-27|Has expired: Upgrade to a newer Python version. 3.7 is in maintenance status and gets security fixes only. End-of-Life: 2023-06-27. See https://devguide.python.org/versions/
+databases/mysql-q4m||2023-06-30|Has expired: Requires upstream EOL MySQL 5.6
+databases/mysqlbigram||2023-06-30|Has expired: Requires upstream EOL MySQL 5.6
+databases/ateam_mysql_ldap_auth||2023-06-30|Has expired: Requires upstream EOL MySQL 5.6
+databases/mysqlwsrep56-server||2023-06-30|Has expired: Requires upstream EOL MySQL 5.6
+databases/mysql56-server||2023-06-30|Has expired: Upstream support ended in February 2021
+databases/mysql56-client||2023-06-30|Has expired: Upstream support ended in February 2021
+databases/mysac||2023-06-30|Has expired: Requires upstream EOL MySQL 5.6
+www/moodle311||2023-06-30|Has expired: Requires php80 which is set to expire on 2023-11-26
+www/moodle40||2023-06-30|Has expired: Requires php80 which is set to expire on 2023-11-26
+www/yarn-node19||2023-06-30|Has expired: This port depends on deprecated www/node19. Migrate to www/yarn-node18 or www/yarn-node20 instead
+www/npm-node19||2023-06-30|Has expired: This port depends on deprecated www/node19. Migrate to www/npm-node18 or www/npm-node20 instead
+www/node19||2023-06-30|Has expired: Nodejs 19.* will reach its EoL on 2023-06-01. Use Node.js 18.* (www/node18) or 20.* (www/node20) instead
+emulators/qemu6||2023-06-30|Has expired: Version 8 is on the horizon while version 7 is stable
+audio/gbemol||2023-06-30|Has expired: Unmaintained for years and depends on deprecated GTK2
+audio/glurp||2023-06-30|Has expired: Unmaintained for years and depends on deprecated GTK2
+finance/R-cran-ccgarch||2023-06-30|Has expired: Fails to build with R 4.3.0+ and abandoned upstream
+www/redmine42||2023-06-30|Has expired: Broken with all supported Ruby versions
+www/tomcat10||2023-06-30|Has expired: EOLd, potential security issues (https://tomcat.apache.org/tomcat-10.0-eol.html), use www/tomcat101 instead
+databases/mongodb40-tools||2023-06-30|Has expired: Upstream EOL reached on 2022-04-30
+databases/mongodb40||2023-06-30|Has expired: Upstream EOL reached on 2022-04-30
+dns/djbdns-tools||2023-06-30|Has expired: No longer compliant with current DNS standards and source code hasn't been centrally managed for over 20 years
+dns/djbdns||2023-06-30|Has expired: No longer compliant with current DNS standards and source code hasn't been centrally managed for over 20 years
+dns/libdjbdns||2023-06-30|Has expired: No longer compliant with current DNS standards and source code hasn't been centrally managed for over 20 years
+sysutils/mcollective-actionpolicy-auth||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-nrpe-client||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-puppet-agent||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-puppet-client||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-nettest-client||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-nettest-agent||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-service-agent||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-service-client||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-shell-client||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-shell-agent||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-nrpe-agent||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-nrpe-common||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-service-common||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-puppet-common||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective-nettest-common||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mnrpes||2023-06-30|Has expired: Depends on broken sysutils/mcollective
+sysutils/mcollective||2023-06-30|Has expired: Broken with all supported Ruby versions
+databases/mariadb104-server||2023-06-30|Has expired: Use databases/mariadb106-server
+databases/mariadb104-client||2023-06-30|Has expired: Use databases/mariadb106-client
+dns/mydns-ng||2023-06-30|Has expired: Abandonware, last release in 2010. Consider migrating to dns/powerdns
+dns/mydns||2023-06-30|Has expired: Abandonware, last release in 2006. Consider migrating to dns/powerdns
+net/opal||2023-06-30|Has expired: Very outdated, current version in tree was released back in 2013 and upstream is still active
+math/R-cran-RHmm||2023-06-30|Has expired: Fails to build with R 4.3.0+ and abandoned upstream
+databases/py-caterva||2023-06-30|Has expired: Use archivers/py-blosc2 instead. All the features of Python-Caterva have been included in the Python-Blosc2 NDArray object
+net-im/purple-hangouts||2023-06-30|Has expired: Google Hangouts discontinued 2022-11-01, data deleted 2023-01-01
+dns/ares||2023-06-30|Has expired: Deprecated upstream as of March 12, 2023
+security/rubygem-omniauth-cas3||2023-06-30|Has expired: Deprecated by upstream. The repository has been archived by the owner on Aug 23, 2022
+graphics/ikona||2023-06-30|Has expired: abandoned upstream, broken
+multimedia/vdr-plugin-osdteletext||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-wirbelscan||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-control||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-markad||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-iptv||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-femon||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-sleeptimer||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-remote||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-infosatepg||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-reelchannelscan||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-extrecmenu||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-vdrmanager||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-vnsiserver||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-xvdr||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugins||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-eepg||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-xineliboutput||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr||2023-06-30|Has expired: Abandoned "work in progress" fork in 2015
+multimedia/vdr-plugin-osdpip||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-epgsearch||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-streamdev||2023-06-30|Has expired: Depends on abandoned fork of VDR
+www/vdr-plugin-live||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-skinenigmang||2023-06-30|Has expired: Depends on abandoned fork of VDR
+multimedia/vdr-plugin-ttxtsubs||2023-06-30|Has expired: Depends on abandoned fork of VDR
+audio/pulseeffects||2023-06-30|Has expired: Broken for almost a year and abandoned upstream
+audio/libgroove||2023-06-30|Has expired: Fails to build with FFmpeg 6 and very little activity upstream
+multimedia/py-mlt6||2023-06-30|Has expired: Deprecated and unsupported upstream, please consider using multimedia/mlt7 instead
+multimedia/mlt6-qt5|multimedia/mlt7-qt|2023-06-30|Has expired: Deprecated and unsupported upstream, please consider using multimedia/mlt7 instead
+multimedia/mlt6|multimedia/mlt7|2023-06-30|Has expired: Deprecated and unsupported upstream, please consider using multimedia/mlt7 instead
+devel/electron19||2023-06-30|Has expired: EOLed upstream, switch to newer version
+devel/electron21||2023-06-30|Has expired: EOLed upstream, switch to newer version
+devel/ccache-memcached||2023-06-30|Has expired: Unmaintained fork that targets a very old version of ccache
+devel/ccache-memcached-static||2023-06-30|Has expired: Unmaintained fork that targets a very old version of ccache
+devel/libdlna||2023-06-30|Has expired: Abandonware, development discontinued
+textproc/rubygem-ferret||2023-06-30|Has expired: Broken with all supported Ruby versions
+databases/py-pg8000-112|databases/py-pg8000|2023-06-30|Has expired: EOLd, use www/py-pg8000 instead
+databases/caterva|archivers/c-blosc2|2023-06-30|Has expired: Use archivers/c-blosc2 instead. All the features of Caterva have been included in the C-Blosc2 NDim object
+print/ghostscript7-base||2023-06-30|Has expired: Obsolete and unsupported upstream, consider using a more recent version
+print/ghostscript7-commfont||2023-06-30|Has expired: Obsolete and unsupported upstream
+print/ghostscript7-korfont||2023-06-30|Has expired: Obsolete and unsupported upstream
+print/ghostscript7-x11||2023-06-30|Has expired: Obsolete and unsupported upstream
+print/ghostscript7-jpnfont||2023-06-30|Has expired: Obsolete and unsupported upstream
+print/ghostscript8-base||2023-06-30|Has expired: Obsolete and unsupported upstream, consider using a more recent version
+print/ghostscript8-x11||2023-06-30|Has expired: Obsolete and unsupported upstream
+textproc/py-transifex-client|textproc/go-transifex-client|2023-06-30|Has expired: Upstream switched to go based api client (textproc/go-transifex-client)
+devel/google-cloud-cpp117|devel/google-cloud-cpp|2023-07-01|Has expired: Newer version is in the tree
+math/py-gmpy|math/py-gmpy2|2023-07-01|Has expired: EOLd, use math/py-gmpy2 instead
+security/openssl_tpm_engine||2023-07-02|Has expired: Requires older openssl and upstream unmaintained since 2017
+www/kristall||2023-07-02|Has expired: Requires older openssl
+sysutils/cfengine-masterfiles318||2023-07-02|Has expired: Expire one year after cfengine-masterfiles 3.19.0 released
+sysutils/cfengine318||2023-07-02|Has expired: Expire one year after cfengine 3.19.0 released
+devel/linux-c7-dbus-glib||2023-07-02|Merged into devel/linux-c7-dbus-libs
+devel/ocaml-sexplib|devel/ocaml-sexplib0|2023-07-05|Project renamed
+net/nuster||2023-07-08|Has expired: Does not support OpenSSL 3 and upstream last release was in 2020
+devel/godot2-tools|devel/godot-tools|2023-07-08|Has expired: Requires legacy OpenSSL 1.1.1 so use devel/godot
+devel/rubygem-aws-sdk-core3172|devel/rubygem-aws-sdk-core|2023-07-09|Remove obsoleted port. Use devel/rubygem-aws-sdk-core instead
+devel/rubygem-aws-sdk-s31122|devel/rubygem-aws-sdk-s3|2023-07-09|Remove obsoleted port. Use devel/rubygem-aws-sdk-s3 instead
+devel/rubygem-google-protobuf322|devel/rubygem-google-protobuf|2023-07-09|Remove obsoleted port. Use devel/rubygem-google-protobuf instead
+devel/rubygem-grape15|devel/rubygem-grape|2023-07-09|Remove obsoleted port. Use devel/rubygem-grape instead
+net/rubygem-net-ldap017|net/rubygem-net-ldap|2023-07-09|Remove obsoleted port. Use net/rubygem-net-ldap instead
+textproc/rubygem-nokogiri114|textproc/rubygem-nokogiri|2023-07-09|Remove obsoleted port. Use textproc/rubygem-nokogiri instead

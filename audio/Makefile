@@ -213,12 +213,10 @@
     SUBDIR += funktrackergold
     SUBDIR += furnace
     SUBDIR += ganv
-    SUBDIR += gbemol
     SUBDIR += gbsplay
     SUBDIR += geonkick-lv2
     SUBDIR += ggwave
     SUBDIR += giada
-    SUBDIR += glurp
     SUBDIR += gmsynth-lv2
     SUBDIR += gmtp
     SUBDIR += gmusicbrowser
@@ -366,7 +364,6 @@
     SUBDIR += libgig
     SUBDIR += libgme
     SUBDIR += libgpod
-    SUBDIR += libgroove
     SUBDIR += libid3tag
     SUBDIR += libinstpatch
     SUBDIR += libkcddb
@@ -394,6 +391,7 @@
     SUBDIR += libopenshot-audio
     SUBDIR += libopenspc
     SUBDIR += libopusenc
+    SUBDIR += libremidi
     SUBDIR += libsamplerate
     SUBDIR += libshairport
     SUBDIR += libshout
@@ -627,7 +625,6 @@
     SUBDIR += pulseaudio-module-sndio
     SUBDIR += pulseaudio-module-xrdp
     SUBDIR += pulseaudio-qt
-    SUBDIR += pulseeffects
     SUBDIR += py-SoundFile
     SUBDIR += py-al
     SUBDIR += py-apetag
@@ -646,6 +643,7 @@
     SUBDIR += py-musicbrainzngs
     SUBDIR += py-mutagen
     SUBDIR += py-opuslib
+    SUBDIR += py-playsound
     SUBDIR += py-pocketsphinx
     SUBDIR += py-pulsectl
     SUBDIR += py-pyacoustid
@@ -735,6 +733,7 @@
     SUBDIR += sidplay
     SUBDIR += sidplay2
     SUBDIR += sidplayer
+    SUBDIR += sidplayfp
     SUBDIR += simplemod
     SUBDIR += siren
     SUBDIR += snack

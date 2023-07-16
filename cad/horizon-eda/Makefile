@@ -3,6 +3,9 @@ DISTVERSIONPREFIX=	v
 DISTVERSION=	2.5.0
 CATEGORIES=	cad
 
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	1efad3028a1953af2cf62b518a54ffeb309977bc.patch:-p1 # https://github.com/horizon-eda/horizon/issues/727
+
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	EDA package for printed circuit board design
 WWW=		https://horizon-eda.org/
@@ -24,7 +27,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libzip.so:archivers/libzip \
 		libzmq.so:net/libzmq4
 
-USES=		gmake gnome libarchive localbase pkgconfig python:build sqlite # compiler:c++17-lang
+USES=		desktop-file-utils gmake gnome libarchive localbase pkgconfig python:build sqlite # compiler:c++17-lang
 USE_GNOME=	atkmm gdkpixbuf2 gtkmm30 librsvg2
 
 USE_GITHUB=	yes

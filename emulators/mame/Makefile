@@ -1,5 +1,5 @@
 PORTNAME=	mame
-DISTVERSION=	0.255
+DISTVERSION=	0.256
 CATEGORIES=	emulators games
 
 MAINTAINER=	agh@riseup.net
@@ -67,11 +67,13 @@ MAKE_ENV=	LDOPTS="${LDFLAGS}" \
 		USE_SYSTEM_LIB_ZLIB=1 \
 		USE_TAPTUN=1
 
-SUB_FILES=	pkg-message mame.ini plugin.ini ui.ini
+CFLAGS_aarch64=	-march=armv8-a+crc+crypto
+
+SUB_FILES=	mame.ini pkg-message plugin.ini ui.ini
 
 PORTDOCS=	html/*
 
-OPTIONS_DEFINE=	DEBUG DOCS QTDEBUGGER TOOLS
+OPTIONS_DEFINE=	DEBUG DOCS NLS QTDEBUGGER TOOLS
 OPTIONS_SUB=	yes
 
 DEBUG_DESC=		Build with debug profiling and symbols
@@ -88,6 +90,7 @@ DEBUG_MAKE_ENV_OFF=		OPTIMIZE=2 \
 # Attempt to avoid address space exhaustion during linking, specifically
 # on armv7, and possibly other architectures:
 DEBUG_LDFLAGS_OFF=		-s
+NLS_USES=			gettext-runtime
 QTDEBUGGER_USES=		qt:5
 QTDEBUGGER_USE=			QT=core,gui,widgets,buildtools:build,qmake:build
 QTDEBUGGER_MAKE_ENV=		USE_QTDEBUG=1
@@ -150,8 +153,10 @@ post-build:
 	(cd ${WRKSRC}/docs && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} man SPHINXBUILD=sphinx-build-${PYTHON_VER})
 
+	@${FIND} ${WRKSRC}/language -type f -name "*.po" -delete
+
 do-install:
-.for DATA in artwork bgfx ctrlr ini hash language plugins samples
+.for DATA in artwork bgfx ctrlr ini hash plugins samples
 	(cd ${WRKSRC} && \
 		${COPYTREE_SHARE} ${DATA} ${STAGEDIR}${DATADIR})
 .endfor
@@ -180,6 +185,10 @@ do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/docs/build && \
 		${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR})
+
+do-install-NLS-on:
+	(cd ${WRKSRC} && \
+		${COPYTREE_SHARE} language ${STAGEDIR}${DATADIR})
 
 do-install-TOOLS-on:
 .for PROGRAM in castool chdman floptool imgtool jedutil ldresample ldverify \

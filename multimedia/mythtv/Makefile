@@ -1,7 +1,7 @@
 PORTNAME=	mythtv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	33.1
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 
@@ -44,7 +44,7 @@ BUILD_DEPENDS=	yasm:devel/yasm \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
 USES=		compiler:c++17-lang gmake gl iconv libtool pkgconfig pathfix \
-		perl5 python:3.5+ qmake:no_env qt:5 shebangfix ssl xorg
+		perl5 python qmake:no_env qt:5 shebangfix ssl xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV

@@ -1,6 +1,6 @@
 PORTNAME=	pyEDFlib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.32
+DISTVERSION=	0.1.33
 CATEGORIES=	misc
 #MASTER_SITES=	PYPI # PyPI version fails: https://github.com/holgern/pyedflib/issues/168
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		fortran python:3.6+
+USES=		fortran python
 USE_PYTHON=	distutils cython autoplist
 
 USE_GITHUB=	yes

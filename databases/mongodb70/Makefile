@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	7.0.0-rc4
+DISTVERSION=	7.0.0-rc6
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -85,6 +85,8 @@ SASL_MAKE_ARGS=		--use-sasl-client
 
 SSL_USES=	ssl
 SSL_MAKE_ARGS=	--ssl
+
+CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
 
 .include <bsd.port.pre.mk>
 

@@ -53,7 +53,7 @@ GCC_DEFAULT?=		8
 .  else
 GCC_DEFAULT?=		12
 .  endif
-# Possible values: 7, 8, 9, agpl
+# Possible values: 9, agpl, 10
 GHOSTSCRIPT_DEFAULT?=	agpl
 # Possible values: mesa-libs, mesa-devel
 GL_DEFAULT?=		mesa-libs
@@ -93,15 +93,15 @@ LUAJIT_DEFAULT?=	luajit-devel
 .  endif
 # Possible values: 5.10, 5.20, 6.8
 MONO_DEFAULT?=		5.10
-# Possible values: 5.6, 5.7, 8.0, 10.3m, 10.4m, 10.5m, 5.7p, 5.7w
+# Possible values: 5.7, 8.0, 10.5m, 10.6m, 10.11m, 5.7p, 5.7w
 MYSQL_DEFAULT?=		8.0
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
-# Possible value: 16, 18, 19, 20, current, lts (Note: current = 20 and lts = 18)
+# Possible value: 16, 18, 20, current, lts (Note: current = 20 and lts = 18)
 NODEJS_DEFAULT?=	lts
 # Possible value: 24, 25, 26
 OPENLDAP_DEFAULT?=	26
-# Possible values: 5.32, 5.34, 5.36, devel
+# Possible values: 5.32, 5.34, 5.36, 5.38, devel
 .  if !exists(${LOCALBASE}/bin/perl) || (!defined(_PORTS_ENV_CHECK) && \
     defined(PACKAGE_BUILDING))
 PERL5_DEFAULT?=		5.32
@@ -118,13 +118,13 @@ PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .  endif
 # Possible values: 11, 12, 13, 14, 15
 PGSQL_DEFAULT?=		13
-# Possible values: 8.0, 8.1, 8.2 8.3
+# Possible values: 8.0, 8.1, 8.2, 8.3
 PHP_DEFAULT?=		8.1
-# Possible values: 2.7, 3.7, 3.8, 3.9, 3.10, 3.11
+# Possible values: 2.7, 3.8, 3.9, 3.10, 3.11
 PYTHON_DEFAULT?=	3.9
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
-# Possible values: 3.7, 3.8, 3.9, 3.10, 3.11
+# Possible values: 3.8, 3.9, 3.10, 3.11
 PYTHON3_DEFAULT?=	3.9
 # Possible values: 3.0, 3.1, 3.2, 3.3
 RUBY_DEFAULT?=		3.1

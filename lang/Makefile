@@ -14,6 +14,7 @@
     SUBDIR += bsh
     SUBDIR += bwbasic
     SUBDIR += c
+    SUBDIR += cairo
     SUBDIR += cbmbasic
     SUBDIR += ccl
     SUBDIR += ceylon
@@ -263,6 +264,7 @@
     SUBDIR += perl5.32
     SUBDIR += perl5.34
     SUBDIR += perl5.36
+    SUBDIR += perl5.38
     SUBDIR += petite-chez
     SUBDIR += pfe
     SUBDIR += pharo
@@ -280,6 +282,7 @@
     SUBDIR += pocl
     SUBDIR += polyml
     SUBDIR += pomsky
+    SUBDIR += prql
     SUBDIR += ptoc
     SUBDIR += purescript
     SUBDIR += py-hy
@@ -297,7 +300,6 @@
     SUBDIR += python3
     SUBDIR += python310
     SUBDIR += python311
-    SUBDIR += python37
     SUBDIR += python38
     SUBDIR += python39
     SUBDIR += qmasm

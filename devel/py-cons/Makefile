@@ -1,6 +1,6 @@
 PORTNAME=	cons
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.5
+DISTVERSION=	0.4.6
 #MASTER_SITES=	PYPI # no tests
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,8 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}versioneer>=0:devel/py-versioneer@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}logical-unification>=0.4.0:math/py-logical-unification@${PY_FLAVOR}
 
-USES=		python:3.7+
-USE_PYTHON=	distutils autoplist pytest
+USES=		python
+USE_PYTHON=	distutils autoplist pytest # tests fail intermittently, see https://github.com/pythological/python-cons/issues/15
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	pythological

@@ -1,6 +1,5 @@
 PORTNAME=	scikit-learn
-DISTVERSION=	1.2.2
-PORTREVISION=	1
+DISTVERSION=	1.3.0
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +17,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}joblib>0:devel/py-joblib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}threadpoolctl>=0:devel/py-threadpoolctl@${PY_FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		fortran python:3.8+ localbase
+USES=		fortran python localbase
 USE_PYTHON=	distutils autoplist cython
 
 POST_PLIST=	fix-plist

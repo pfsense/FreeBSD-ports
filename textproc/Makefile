@@ -37,6 +37,7 @@
     SUBDIR += UCD
     SUBDIR += add-css-links
     SUBDIR += addts
+    SUBDIR += adoc-mode.el
     SUBDIR += af-aspell
     SUBDIR += aft
     SUBDIR += agrep
@@ -1322,6 +1323,7 @@
     SUBDIR += py-cssselect2
     SUBDIR += py-csvkit
     SUBDIR += py-custom_inherit
+    SUBDIR += py-cyclonedx-python-lib
     SUBDIR += py-dbfread
     SUBDIR += py-dialect
     SUBDIR += py-dict2xml
@@ -1370,6 +1372,7 @@
     SUBDIR += py-hexdump
     SUBDIR += py-hieroglyph
     SUBDIR += py-hjson
+    SUBDIR += py-html2json
     SUBDIR += py-html2text
     SUBDIR += py-html2text2018
     SUBDIR += py-humanfriendly
@@ -1397,6 +1400,7 @@
     SUBDIR += py-libxml2
     SUBDIR += py-license-expression
     SUBDIR += py-line-protocol-parser
+    SUBDIR += py-linkify-it-py
     SUBDIR += py-m2r
     SUBDIR += py-mako
     SUBDIR += py-markdown
@@ -1416,6 +1420,7 @@
     SUBDIR += py-mistletoe
     SUBDIR += py-mistune
     SUBDIR += py-mistune0
+    SUBDIR += py-mistune2
     SUBDIR += py-mkdocs
     SUBDIR += py-mkdocs-autorefs
     SUBDIR += py-mkdocs-material
@@ -1593,14 +1598,15 @@
     SUBDIR += py-toronado
     SUBDIR += py-towncrier
     SUBDIR += py-trans
-    SUBDIR += py-transifex-client
     SUBDIR += py-translationstring
     SUBDIR += py-transpopy
     SUBDIR += py-ttp
     SUBDIR += py-ttp-templates
     SUBDIR += py-typogrify
+    SUBDIR += py-uc-micro-py
     SUBDIR += py-ucl
     SUBDIR += py-ufal.udpipe
+    SUBDIR += py-unicodeitplus
     SUBDIR += py-untangle
     SUBDIR += py-wcmatch
     SUBDIR += py-whatthepatch
@@ -1738,7 +1744,6 @@
     SUBDIR += rubygem-extended-markdown-filter
     SUBDIR += rubygem-ezamar
     SUBDIR += rubygem-fast_xs
-    SUBDIR += rubygem-ferret
     SUBDIR += rubygem-fog-xml
     SUBDIR += rubygem-gemoji
     SUBDIR += rubygem-gemoji3
@@ -1796,7 +1801,6 @@
     SUBDIR += rubygem-nokogiri
     SUBDIR += rubygem-nokogiri-diff
     SUBDIR += rubygem-nokogiri111
-    SUBDIR += rubygem-nokogiri114
     SUBDIR += rubygem-nokogumbo
     SUBDIR += rubygem-octopress-escape-code
     SUBDIR += rubygem-opml

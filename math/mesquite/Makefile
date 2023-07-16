@@ -1,18 +1,19 @@
 PORTNAME=	mesquite
 DISTVERSION=	2.3.0
 CATEGORIES=	math
-MASTER_SITES=	https://software.sandia.gov/mesquite/
+MASTER_SITES=	https://github.com/sandialabs/mesquite/raw/main/mesquite/
 PKGNAMESUFFIX=	-mesh-toolkit
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Mesh Quality Improvement Toolkit is a suite of mesh algorithms
-WWW=		https://software.sandia.gov/mesquite
+WWW=		https://www.sandia.gov/ccr/project/mesquite/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/lgpl.txt
 
 USES=		gmake libtool
 USE_LDCONFIG=	yes
+USE_CXXSTD=	c++11 # attempt to fix build failing due to the use of std::unary_function that was removed in c++17
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared --disable-static

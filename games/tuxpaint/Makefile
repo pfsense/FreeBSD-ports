@@ -22,7 +22,7 @@ RUN_DEPENDS=	anytopnm:graphics/netpbm \
 		bash:shells/bash
 
 USES=		gettext gmake gnome gperf magick:7,build pkgconfig \
-		python:3.7+ sdl shebangfix
+		python sdl shebangfix
 SHEBANG_FILES=	src/tuxpaint-import.sh \
 		fonts/locale/zh_tw_docs/maketuxfont.py
 
@@ -52,6 +52,12 @@ PORTDOCS=	*
 PORTDATA=	*
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-extract:
 	@${RM} -r ${WRKSRC}/fonts/locale/vi_docs

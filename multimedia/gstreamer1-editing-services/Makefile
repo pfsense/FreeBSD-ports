@@ -10,7 +10,7 @@ WWW=		http://gstreamer.freedeskop.org
 
 LICENSE=	LGPL20
 
-USES=		bison compiler:c11 gnome gstreamer meson ninja python:3.8+ pkgconfig tar:xz
+USES=		bison compiler:c11 gnome gstreamer meson ninja python pkgconfig tar:xz
 USE_LDCONFIG=	yes
 USE_GNOME=	glib20 introspection:build libxml2 pygobject3:build
 USE_GSTREAMER=	good bad
@@ -19,7 +19,7 @@ PORTSCOUT=	limitw:1,even
 CONFIGURE_ARGS=	-Ddoc=disabled \
 		-Dvalidate=disabled \
 		-Dpygi-overrides-dir=${PYTHON_SITELIBDIR}/gstreamer-editing-services
-PLIST_SUB=	VERSION=1.0 SOVERSION=0.2202.0
+PLIST_SUB=	VERSION=1.0 SOVERSION=0.2204.0
 
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 

@@ -1,11 +1,7 @@
 PORTNAME=	kodi
-DISTVERSION=	20.1
-PORTREVISION=	4
+DISTVERSION=	20.2
 CATEGORIES=	multimedia java
 # do not forget to fix devel/kodi-platform when updating kodi
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	351184d7e4e3edc447d04a297769eb41a477ba68.patch:-p1 # flatbuffers-23.5.26 compatibility patch: https://github.com/xbmc/xbmc/pull/23332
 
 MAINTAINER=	yzrh@noema.org
 COMMENT=	Award winning media center application
@@ -46,7 +42,7 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 
 USES=		autoreconf:build cmake:noninja compiler:c++17-lang cpe \
 		desktop-file-utils gettext gmake gnome iconv jpeg libtool \
-		pkgconfig python:3.7+ sqlite ssl
+		pkgconfig python sqlite ssl
 
 KODI_CODENAME=		Nexus
 LIBDVDCSS_VERSION=	1.4.3-Next-Nexus-Alpha2-2

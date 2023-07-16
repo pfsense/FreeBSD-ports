@@ -1,5 +1,5 @@
 PORTNAME=	lightning-utilities
-DISTVERSION=	0.8.0
+DISTVERSION=	0.9.0
 CATEGORIES=	misc python # machine-learning
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,8 +19,8 @@ BUILD_DEPENDS=	${PY_DEPENDS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		python:3.7+
-USE_PYTHON=	pep517 autoplist pytest
+USES=		python
+USE_PYTHON=	pep517 autoplist
 
 NO_ARCH=	yes
 

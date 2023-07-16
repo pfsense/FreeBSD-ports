@@ -1,5 +1,5 @@
 PORTNAME=	jupyter-client
-PORTVERSION=	8.2.0
+PORTVERSION=	8.3.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -26,7 +26,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>=0:devel/py-coverage@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}pytest-jupyter>=0.4.1:devel/py-pytest-jupyter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-timeout>=0:devel/py-pytest-timeout@${PY_FLAVOR}
 
-USES=		python:3.8+
+USES=		python
 USE_PYTHON=	autoplist concurrent pep517 pytest # 1 test fails, see https://github.com/jupyter/jupyter_client/issues/855
 
 NO_ARCH=	yes

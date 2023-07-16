@@ -1,5 +1,5 @@
 PORTNAME=	gnucash
-PORTVERSION=	5.1
+PORTVERSION=	5.3
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -86,7 +86,7 @@ OFX_CMAKE_BOOL=		WITH_OFX
 OFX_LIB_DEPENDS=	libofx.so:finance/libofx
 OFX_VARS=		GLIB_SCHEMAS+=org.gnucash.GnuCash.dialogs.import.ofx.gschema.xml
 PYTHON_CMAKE_BOOL=	WITH_PYTHON
-PYTHON_USES=		python:3.6+
+PYTHON_USES=		python
 
 post-install-PYTHON-on:
 	@(cd ${STAGEDIR}${PREFIX} \

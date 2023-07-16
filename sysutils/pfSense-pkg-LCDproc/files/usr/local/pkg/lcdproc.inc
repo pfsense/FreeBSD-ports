@@ -50,17 +50,6 @@ function lcdproc_write_config($file, $text) {
 	fclose($handle);
 }
 
-function lcdproc_write_script($file, $text) {
-	$handle = fopen($file, 'wx');
-	if (!$handle) {
-		lcdproc_warn("Could not open {$file} for writing.");
-		exit;
-	}
-	fwrite($handle, $text);
-	fclose($handle);
-	chmod($file, 0755);
-}
-
 function validate_form_lcdproc($post, &$input_errors) {
 	if ($post['comport']) {
 		switch($post['comport']) {
@@ -84,8 +73,8 @@ function validate_form_lcdproc($post, &$input_errors) {
 			default:
 				$input_errors[] = "The chosen COM port is not valid";
 				break;
-			}
 		}
+	}
 	if ($post['size']) {
 		switch($post['size']) {
 			case "12x1":
@@ -126,7 +115,7 @@ function sync_package_lcdproc_screens() {
 }
 
 function sync_package_lcdproc() {
-	global $g, $config, $input_errors;
+	global $g, $input_errors;
 
 	# Detect boot process
 	if (function_exists("platform_booting")) {
@@ -139,8 +128,8 @@ function sync_package_lcdproc() {
 
 	# Continue sync package
 	lcdproc_notice("Sync: Begin package sync");
-	$lcdproc_config = $config['installedpackages']['lcdproc']['config'][0];
-	$lcdproc_screens_config = $config['installedpackages']['lcdprocscreens']['config'][0];
+	$lcdproc_config         = config_get_path('installedpackages/lcdproc/config/0', []);
+	$lcdproc_screens_config = config_get_path('installedpackages/lcdprocscreens/config/0', []);
 
 	/* Since config is written before this file invoked, we don't need to read post data */
 	if ($lcdproc_config['enable'] && ($lcdproc_config['comport'] != "none")) {
@@ -524,6 +513,8 @@ EOD;
 		if (is_service_running(LCDPROC_SERVICE_NAME)) {
 			lcdproc_notice("Sync: Restarting the service");
 			restart_service(LCDPROC_SERVICE_NAME);
+		} else {
+			start_service(LCDPROC_SERVICE_NAME);
 		}
 	}
 
@@ -546,8 +537,7 @@ EOD;
 
 function set_lcd_value($fieldname, $max, $default_value) {
 	global $config;
-	$lcdproc_config = $config['installedpackages']['lcdproc']['config'][0];
-	$value = $lcdproc_config[$fieldname];
+	$value = config_get_path("installedpackages/lcdproc/config/0/{$fieldname}");
 	$returnvalue = "";
 	if ($value != '' && $value != '-1') {
 		$realvalue = (int)($max * $value / 100);

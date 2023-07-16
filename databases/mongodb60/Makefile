@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	6.0.6
+DISTVERSION=	6.0.7
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -46,6 +46,8 @@ GH_ACCOUNT=	mongodb mongodb-forks:mozjs
 GH_PROJECT=	mongo spidermonkey:mozjs
 GH_TAGNAME=	${MOZJS_TAG}:mozjs
 USE_RC_SUBR=	mongod
+
+CFLAGS+=	-DBOOST_NO_CXX98_FUNCTION_BASE
 
 SHEBANG_FILES=	buildscripts/scons.py
 python_OLD_CMD=	@python_interpreter@

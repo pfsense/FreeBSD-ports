@@ -20,7 +20,9 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		cpdup>=0:sysutils/cpdup \
 		cpustats>=0:sysutils/cpustats \
 		dhcp6>=0:net/dhcp6 \
+		dhcpcd>0:net/dhcpcd \
 		dhcpleases>=0:sysutils/dhcpleases \
+		dhcpleases6>=0:sysutils/dhcpleases6 \
 		dnsmasq>=0:dns/dnsmasq \
 		dpinger>=0:net/dpinger \
 		expiretable>=0:security/expiretable \
@@ -32,6 +34,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		isc-dhcp44-client>=0:net/isc-dhcp44-client \
 		isc-dhcp44-relay>=0:net/isc-dhcp44-relay \
 		isc-dhcp44-server>=0:net/isc-dhcp44-server \
+		kea>0:net/kea \
 		libxml2>=0:textproc/libxml2 \
 		links>=0:www/links \
 		minicron>=0:sysutils/minicron \

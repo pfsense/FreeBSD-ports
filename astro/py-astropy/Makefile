@@ -1,6 +1,5 @@
 PORTNAME=	astropy
-DISTVERSION=	5.2.2
-PORTREVISION=	1
+DISTVERSION=	5.3
 PORTEPOCH=	2
 CATEGORIES=	astro
 MASTER_SITES=	PYPI
@@ -20,7 +19,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}pyerfa>=0:astro/py-pyerfa@${PY_FLAVOR}
 
-USES=		compiler:c11 python:3.8+
+USES=		compiler:c11 python
 USE_PYTHON=	autoplist cython distutils
 
 CONFLICTS_INSTALL=	p5-Data-ShowTable # bin/showtable

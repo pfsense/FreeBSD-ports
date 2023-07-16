@@ -1,6 +1,6 @@
 PORTNAME=	directfb
 PORTVERSION=	1.4.17
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://sources.buildroot.net/
 DISTNAME=	DirectFB-${PORTVERSION}
@@ -10,6 +10,9 @@ COMMENT=	Graphic development lightweight API
 WWW=		https://www.directfb.org/
 
 LICENSE=	LGPL21
+
+DEPRECATED=		Last upstream release was in 2015
+EXPIRATION_DATE=	2023-09-30
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
@@ -62,6 +65,10 @@ X11_CONFIGURE_ENABLE=	x11
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 CFLAGS+=	-Wno-error=int-conversion
+.endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+CPPFLAGS+=  -Dregister=
 .endif
 
 # assembly files use old split syntax which clang doesn't like

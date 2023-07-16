@@ -27,11 +27,17 @@ require_once("shaper.inc");
 require_once("util.inc");
 require_once("pfsense-utils.inc");
 
-global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
-$current_openvpn_version = "2.5.8";
-$current_openvpn_version_rev = "04";
+global $current_openvpn_version, $current_openvpn_version_rev;
+$current_openvpn_version = "2.6.5";
+$current_openvpn_version_rev = "001";
+
+global $previous_openvpn_version, $previous_openvpn_version_rev;
+$previous_openvpn_version = "2.5.9";
+$previous_openvpn_version_rev = "601";
+
+global $legacy_openvpn_version, $legacy_openvpn_version_rev;
 $legacy_openvpn_version = "2.4.12";
-$legacy_openvpn_version_rev = "01";
+$legacy_openvpn_version_rev = "601";
 
 /* Ciphers not supported by legacy clients */
 $legacy_incompatible_ciphers = array("CHACHA20-POLY1305");
@@ -64,26 +70,66 @@ function openvpn_client_export_prefix($srvid, $usrid = null, $crtid = null) {
 	$filename_addition = "";
 	if (isset($usrid) && is_numeric($usrid)) {
 		$filename_addition = "-" . $config['system']['user'][$usrid]['name'];
-	} elseif (isset($crtid) && is_numeric($crtid) && function_exists("cert_get_cn")) {
+	} elseif (isset($crtid) && is_numeric($crtid)) {
 		$filename_addition = "-" . str_replace(' ', '_', cert_get_cn($config['cert'][$crtid]['crt']));
 	}
 	return "{$host}-{$prot}-{$port}{$filename_addition}";
 }
 
-function openvpn_client_pem_to_pk12($outpath, $outpass, $crtpath, $keypath, $capath = false) {
+function openvpn_client_pem_to_pk12($outpath, $outpass, $p12encryption, $crtpath, $keypath, $descr = "", $capath = false) {
 	$eoutpath = escapeshellarg($outpath);
 	$eoutpass = escapeshellarg($outpass);
 	$ecrtpath = escapeshellarg($crtpath);
+
 	if ($keypath) {
 		$key = '-inkey ' . escapeshellarg($keypath);
 	} else {
 		$key = '-nokeys';
 	}
+
+	/* Encryption and Digest */
+	switch ($p12encryption) {
+		case 'legacy':
+			$algo = '-certpbe PBE-SHA1-RC2-40 -keypbe PBE-SHA1-RC2-40';
+			$hash = '';
+			break;
+		case 'low':
+			$algo = '-certpbe PBE-SHA1-3DES -keypbe PBE-SHA1-3DES';
+			$hash = '-macalg SHA1';
+			break;
+		case 'high':
+		default:
+			$algo = '-aes256 -certpbe AES-256-CBC -keypbe AES-256-CBC';
+			$hash = '-macalg sha256';
+	}
+
+	$tempdir = $g['tmp_path'] . "/openvpn-export-p12-".uniqid();
+	mkdir($tempdir, 0700, true);
+
+	/* Set the friendly name if available */
+	$edescr = "";
+	if (!empty($descr)) {
+		$edescr = escapeshellarg($descr);
+		$edescr = "-name {$edescr} -CSP {$edescr}";
+	}
+
+	/* Passphrase handling */
+	if (!empty($outpass)) {
+		/* Use passphrase text file so the passphrase is not visible in
+		 * process list. */
+		$passfile = "{$tempdir}/passphrase.txt";
+		file_put_contents($passfile, $outpass . "\n");
+		$pass = '-passout file:' . escapeshellarg($passfile);
+	} else {
+		/* Null password + disable encryption of the keys */
+		$pass = '-passout pass: -nodes';
+	}
+
 	if ($capath) {
 		$ecapath = escapeshellarg($capath);
-		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} {$key} -certfile {$ecapath} -out {$eoutpath} -passout pass:{$eoutpass}");
+		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} {$key} -certfile {$ecapath} -out {$eoutpath} {$pass} {$edescr} {$algo} {$hash}");
 	} else {
-		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} {$key} -out {$eoutpath} -passout pass:{$eoutpass}");
+		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} {$key} -out {$eoutpath} {$pass} {$edescr} {$algo} {$hash}");
 	}
 
 	unlink($crtpath);
@@ -91,6 +137,7 @@ function openvpn_client_pem_to_pk12($outpath, $outpass, $crtpath, $keypath, $cap
 	if ($capath) {
 		unlink($capath);
 	}
+	@rmdir_recursive($tempdir);
 }
 
 function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
@@ -116,9 +163,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 		if (!$server_ca) {
 			$input_errors[] = "Could not locate the CA reference for the server certificate.";
 		}
-		if (function_exists("cert_get_cn")) {
-			$servercn = cert_get_cn($server_cert['crt']);
-		}
+		$servercn = cert_get_cn($server_cert['crt']);
 	}
 
 	// lookup user info
@@ -159,7 +204,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 	return array($settings, $server_cert, $server_ca, $servercn, $user, $cert, $nokeys);
 }
 
-function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $advancedoptions = "", $usepkcs11, $pkcs11providers, $pkcs11id) {
+function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $p12encryption, $skiptls = false, $doslines = false, $advancedoptions = "", $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $input_errors, $g, $legacy_incompatible_ciphers;
 
 	$validconfig = openvpn_client_export_validate_config($srvid, $usrid, $crtid);
@@ -193,7 +238,7 @@ EOF;
 
 	// add basic settings
 	$devmode = empty($settings['dev_mode']) ? "tun" : $settings['dev_mode'];
-	if (($expformat != "inlinedroid") && ($expformat != "inlineios")) {
+	if (($expformat != "inlinedroid") && ($expformat != "inlineconnect")) {
 		$conf .= "dev {$devmode}{$nl}";
 	}
 
@@ -201,47 +246,29 @@ EOF;
 	if ($legacy &&
 	    (!empty($settings['tunnel_networkv6']) &&
 	    ($expformat != "inlinedroid") &&
-	    ($expformat != "inlineios"))) {
+	    ($expformat != "inlineconnect"))) {
 		$conf .= "tun-ipv6{$nl}";
 	}
 	$conf .= "persist-tun{$nl}";
 	$conf .= "persist-key{$nl}";
 
-//	if ((($expformat != "inlinedroid") && ($expformat != "inlineios")) && ($proto == "tcp"))
-//		$conf .= "proto tcp-client{$nl}";
-
-	$data_ciphers = "";
-	/* This only exists on pfSense 2.5.0 with OpenVPN 2.5.0 */
-	if (function_exists('openvpn_build_data_cipher_list')) {
-		$cipher = $settings['data_ciphers_fallback'];
-		$data_ciphers = openvpn_build_data_cipher_list($settings['data_ciphers'], $cipher, ($settings['ncp_enable'] != "disabled"));
-	} else {
-		/* 2.4.x or earlier */
-		$cipher = $settings['crypto'];
-		$data_ciphers = $settings['ncp-ciphers'];
-	}
-
-	$data_ciphers = explode(',', $data_ciphers);
+	$cipher = $settings['data_ciphers_fallback'];
+	$data_ciphers = explode(',', openvpn_build_data_cipher_list($settings['data_ciphers'], $cipher));
 	if ($legacy) {
 		$data_ciphers = array_diff($data_ciphers, $legacy_incompatible_ciphers);
 	}
 	$data_ciphers = implode(':', $data_ciphers);
 
-	if ($settings['ncp_enable'] == "disabled") {
-		$conf .= "ncp-disable{$nl}";
-		$conf .= "cipher {$cipher}{$nl}";
-	} else {
-		/* If the data ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
-		if (!empty($data_ciphers)) {
-			$conf .= (($legacy) ? "ncp-ciphers" : "data-ciphers") . " {$data_ciphers}{$nl}";
-		}
-		$conf .= (($legacy) ? "cipher" : "data-ciphers-fallback") . " {$cipher}{$nl}";
+	/* If the data ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
+	if (!empty($data_ciphers)) {
+		$conf .= (($legacy) ? "ncp-ciphers" : "data-ciphers") . " {$data_ciphers}{$nl}";
 	}
+	$conf .= (($legacy) ? "cipher" : "data-ciphers-fallback") . " {$cipher}{$nl}";
 
 	$conf .= "auth {$digest}{$nl}";
 	$conf .= "tls-client{$nl}";
 	$conf .= "client{$nl}";
-	if (($expformat != "inlinedroid") && ($expformat != "inlineios")) {
+	if (($expformat != "inlinedroid") && ($expformat != "inlineconnect")) {
 		$conf .= "resolv-retry infinite{$nl}";
 	}
 	$conf .= "$remotes{$nl}";
@@ -365,18 +392,12 @@ EOF;
 		}
 	}
 
-	// Prevent MITM attacks by verifying the server certificate.
-	// - Disable for now, it requires the server cert to include special options
-	//$conf .= "remote-cert-tls server{$nl}";
-
-	// Extra protection for the server cert, if it's supported
-	if (function_exists("cert_get_purpose")) {
-		if (is_array($server_cert) && ($server_cert['crt'])) {
-			$crt_details = openssl_x509_parse(base64_decode($server_cert['crt']));
-			$eku_list = explode(',', $crt_details['extensions']['extendedKeyUsage']);
-			if (in_array('TLS Web Server Authentication', $eku_list)) {
-				$conf .= "remote-cert-tls server{$nl}";
-			}
+	// Extra protection against for the server cert, if it's supported
+	if (is_array($server_cert) && ($server_cert['crt'])) {
+		$crt_details = openssl_x509_parse(base64_decode($server_cert['crt']));
+		$eku_list = explode(',', $crt_details['extensions']['extendedKeyUsage']);
+		if (in_array('TLS Web Server Authentication', $eku_list)) {
+			$conf .= "remote-cert-tls server{$nl}";
 		}
 	}
 
@@ -461,9 +482,9 @@ EOF;
 				// convert to pkcs12 format
 				$p12file = "{$tempdir}/{$prefix}.p12";
 				if ($usetoken) {
-					openvpn_client_pem_to_pk12($p12file, $outpass, $crtfile, $keyfile);
+					openvpn_client_pem_to_pk12($p12file, $outpass, $p12encryption, $crtfile, $keyfile, $prefix);
 				} else {
-					openvpn_client_pem_to_pk12($p12file, $outpass, $crtfile, $keyfile, $cafile);
+					openvpn_client_pem_to_pk12($p12file, $outpass, $p12encryption, $crtfile, $keyfile, $prefix, $cafile);
 				}
 			}
 			$command = "cd " . escapeshellarg("{$tempdir}/..")
@@ -477,7 +498,7 @@ EOF;
 		// creates: conf file content.
 		case "inline":
 		case "inlinedroid":
-		case "inlineios":
+		case "inlineconnect":
 		case "inlinevisc":
 			// Inline CA
 			$conf .= "<ca>{$nl}" . trim($server_ca) . "{$nl}</ca>{$nl}";
@@ -564,24 +585,33 @@ EOF;
 	}
 }
 
-function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x64-msi", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
-	global $g, $input_errors, $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
+function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $outpass, $p12encryption, $proxy, $advancedoptions, $openvpn_version = "x64-current", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
+	global $g, $input_errors;
+	global $current_openvpn_version, $current_openvpn_version_rev;
+	global $previous_openvpn_version, $previous_openvpn_version_rev;
+	global $legacy_openvpn_version, $legacy_openvpn_version_rev;
 
 	switch ($openvpn_version) {
 		case "Win7":
 			$legacy = true;
-			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win7.exe";
+			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I{$legacy_openvpn_version_rev}-Win7.exe";
 			break;
 		case "Win10":
 			$legacy = true;
-			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win10.exe";
+			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I{$legacy_openvpn_version_rev}-Win10.exe";
 			break;
-		case "x86-msi":
-			$client_install_exe = "OpenVPN-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-x86.msi";
+		case "x86-previous":
+			$client_install_exe = "OpenVPN-{$previous_openvpn_version}-I{$previous_openvpn_version_rev}-x86.msi";
 			break;
-		case "x64-msi":
+		case "x64-previous":
+			$client_install_exe = "OpenVPN-{$previous_openvpn_version}-I{$previous_openvpn_version_rev}-amd64.msi";
+			break;
+		case "x86-current":
+			$client_install_exe = "OpenVPN-{$current_openvpn_version}-I{$current_openvpn_version_rev}-x86.msi";
+			break;
+		case "x64-current":
 		default:
-			$client_install_exe = "OpenVPN-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-amd64.msi";
+			$client_install_exe = "OpenVPN-{$current_openvpn_version}-I{$current_openvpn_version_rev}-amd64.msi";
 			break;
 	}
 
@@ -617,7 +647,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	/* OpenVPN Win7/Win10 installer stub is 32-bit, but could need to read a 64-bit registry.
 	 * Using the 64-bit-aware openvpn-postinstall works fine even on 32-bit Windows 10.
 	 */
-	if (in_array($openvpn_version, array('Win7', 'Win10', 'x64-msi'))) {
+	if (in_array($openvpn_version, array('Win7', 'Win10', 'x64-previous', 'x64-current'))) {
 		rename("{$tempdir}/openvpn-postinstall64.exe", "{$tempdir}/openvpn-postinstall.exe");
 	}
 
@@ -630,7 +660,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 		$pwdfle .= "{$proxy['password']}\r\n";
 		file_put_contents("{$confdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $nokeys, $proxy, "", "baseconf", false, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $nokeys, $proxy, "baseconf", "", $p12encryption, false, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	if (!$conf) {
 		$input_errors[] = "Could not create a config to export.";
 		return false;
@@ -656,9 +686,9 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 		// convert to pkcs12 format
 		$p12file = "{$tempdir}/config/{$prefix}.p12";
 		if ($usetoken) {
-			openvpn_client_pem_to_pk12($p12file, $outpass, $crtfile, $keyfile);
+			openvpn_client_pem_to_pk12($p12file, $outpass, $p12encryption, $crtfile, $keyfile, "{$prefix}-{$user['name']}");
 		} else {
-			openvpn_client_pem_to_pk12($p12file, $outpass, $crtfile, $keyfile, $cafile);
+			openvpn_client_pem_to_pk12($p12file, $outpass, $p12encryption, $crtfile, $keyfile, "{$prefix}-{$user['name']}", $cafile);
 		}
 	}
 
@@ -702,7 +732,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	return $outfile;
 }
 
-function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $outpass, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id) {
+function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $outpass, $p12encryption, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $g;
 
 	$uniq = uniqid();
@@ -731,7 +761,7 @@ function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $usead
 		file_put_contents("{$tempdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
 
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, true, $proxy, "baseconf", $outpass, true, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, true, $proxy, "baseconf", $outpass, $p12encryption, true, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	if (!$conf) {
 		return false;
 	}
@@ -850,7 +880,7 @@ function openvpn_client_export_build_remote_lines($settings, $useaddr, $interfac
 		$proto .= "-client";
 	}
 
-	if (($expformat == "inlineios") && ($proto == "tcp-client")) {
+	if (($expformat == "inlineconnect") && ($proto == "tcp-client")) {
 		$proto = "tcp";
 	}
 

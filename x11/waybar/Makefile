@@ -1,7 +1,13 @@
 PORTNAME=	waybar
-DISTVERSION=	0.9.18
+DISTVERSION=	0.9.19
+PORTREVISION=	2
 CATEGORIES=	x11 wayland
 PKGNAMESUFFIX=	${FLAVOR:N${FLAVORS:[1]}:C/.+/-${FLAVOR}/}
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	1fb2b8efd5a1.patch:-p1 # https://github.com/Alexays/Waybar/pull/2284
+PATCHFILES+=	e2bfa5e019f6.patch:-p1 # https://github.com/Alexays/Waybar/pull/2286
+PATCHFILES+=	d774de6c4622.patch:-p1 # https://github.com/Alexays/Waybar/pull/2293
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Highly customizable Wayland bar for Sway and wlroots-based compositors
@@ -145,9 +151,11 @@ post-patch:
 # Temporarily use ConsoleKit2 like sysutils/gnome-settings-daemon
 	@${REINPLACE_CMD} -e 's,/login1,/ConsoleKit/Manager,' \
 		-e 's,login1\([".]\),ConsoleKit\1,g' \
+		${WRKSRC}/src/modules/backlight.cpp \
 		${WRKSRC}/src/modules/gamemode.cpp \
 		${WRKSRC}/src/modules/inhibitor.cpp \
-		${WRKSRC}/src/modules/upower/upower.cpp
+		${WRKSRC}/src/modules/upower/upower.cpp \
+		${WRKSRC}/src/util/prepare_for_sleep.cpp
 # Respect PREFIX for icons
 	@${REINPLACE_CMD} 's,/usr/share,${DATADIR:H},' \
 		${WRKSRC}/src/modules/wlr/taskbar.cpp

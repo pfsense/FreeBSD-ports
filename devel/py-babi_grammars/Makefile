@@ -1,5 +1,5 @@
 PORTNAME=	babi_grammars
-PORTVERSION=	0.0.50
+PORTVERSION=	0.0.51
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ WWW=		https://github.com/asottile/babi-grammars
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:3.7+
+USES=		python
 USE_PYTHON=	autoplist distutils flavors
 
 NO_ARCH=	yes

@@ -1,12 +1,14 @@
 PORTNAME=	spirv-tools
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2023.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	d4c0abdcad60.patch:-p1 # https://github.com/KhronosGroup/SPIRV-Tools/pull/5178
 PATCHFILES+=	0ce36ad7856e.patch:-p1 # https://github.com/KhronosGroup/SPIRV-Tools/pull/5178
+PATCHFILES+=	d33bea584707.patch:-p1 # https://github.com/KhronosGroup/SPIRV-Tools/pull/5257
+PATCHFILES+=	daee1e7d3470.patch:-p1 # https://github.com/KhronosGroup/SPIRV-Tools/pull/5274
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Tools for processing SPIR-V intermediate shader language modules
@@ -14,7 +16,7 @@ WWW=		https://github.com/KhronosGroup/SPIRV-Tools
 
 LICENSE=	APACHE20
 
-USES=		cmake compiler:c++11-lib python:3.4+,build shebangfix
+USES=		cmake compiler:c++11-lib python:build shebangfix
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	tools/lesspipe/spirv-lesspipe.sh
 

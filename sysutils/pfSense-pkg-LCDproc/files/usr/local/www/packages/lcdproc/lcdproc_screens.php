@@ -23,12 +23,8 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/lcdproc.inc");
 
-$lcdproc_config         = &$config['installedpackages']['lcdproc']['config'][0];
-$lcdproc_screens_config = &$config['installedpackages']['lcdprocscreens']['config'][0];
+$lcdproc_screens_config = config_get_path('installedpackages/lcdprocscreens/config/0', []);
 
-if (!is_array($lcdproc_screens_config)) {
-	$lcdproc_screens_config = array();
-}
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_screens_config;
 if (!isset($pconfig['scr_version']))                         $pconfig['scr_version']                         = false;
@@ -91,6 +87,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_traffic_by_address_filter']       = $pconfig['scr_traffic_by_address_filter'];
 		$lcdproc_screens_config['scr_traffic_by_address_hostipformat'] = $pconfig['scr_traffic_by_address_hostipformat'];
 
+		config_set_path('installedpackages/lcdprocscreens/config/0', $lcdproc_screens_config);
 		write_config("lcdproc: Screen settings saved");
 		sync_package_lcdproc();
 	}

@@ -1,5 +1,5 @@
 PORTNAME=	yt-dlp
-DISTVERSION=	2023.06.21
+DISTVERSION=	2023.07.06
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 DISTNAME=	${PORTNAME}
@@ -21,7 +21,7 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}brotli>0:archivers/py-brotli@${PY_FLAVOR} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		gmake python:3.7+ shebangfix
+USES=		gmake python shebangfix
 
 SHEBANG_GLOB=	devscripts/*.py
 
