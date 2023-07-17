@@ -2,3 +2,6 @@
 port: 7880
 keys:
   apikey: secret
+rtc:
+  port_range_start: 50000
+  port_range_end: 60000
