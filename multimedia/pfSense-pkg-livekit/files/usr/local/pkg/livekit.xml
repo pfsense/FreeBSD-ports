@@ -49,15 +49,39 @@
 			<type>input</type>
 		</field>
 		<field>
+			<fielddescr>Single port setup</fielddescr>
+			<fieldname>livekit_singleport</fieldname>
+			<description>when set, Livekit will attempt to use a UDP mux so all UDP traffic goes through a single port</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>UDP port</fielddescr>
+			<fieldname>livekit_singleport_port</fieldname>
+			<description>UDP port for single port setup. Default 7882</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>UDP port range start</fielddescr>
+			<fieldname>livekit_portrange_start</fieldname>
+			<description>UDP port range start. Ignored in single port setup. Default 50000.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>UDP port range end</fielddescr>
+			<fieldname>livekit_portrange_end</fieldname>
+			<description>UDP port range end. Ignored in single port setup. Default 60000.</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>API Key</fielddescr>
 			<fieldname>livekit_apikey</fieldname>
-			<description>API key to validate tokens</description>
+			<description>API key to validate tokens. Default 'apikey'.</description>
 			<type>password</type>
 		</field>
 		<field>
 			<fielddescr>API Secret</fielddescr>
 			<fieldname>livekit_secret</fieldname>
-			<description>API secret to validate tokens</description>
+			<description>API secret to validate tokens. Default 'secret'.</description>
 			<type>password</type>
 		</field>
 	</fields>

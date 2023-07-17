@@ -1,25 +1,42 @@
 <?php
 
 define("YMLFILE", "/usr/local/etc/livekit.yml");
-function write_conf($params) {
-	    if (!file_exists(YMLFILE) && !is_link(YMLFILE) && !touch(YMLFILE)) {
-	            return false;
-	    }
+function write_conf($livekit_conf) {
+	$key = $livekit_conf['livekit_apikey'];
+	$secret = $livekit_conf['livekit_secret'];
+	$port = $livekit_conf['livekit_port'];
+	$singleport = $livekit_conf['livekit_singleport'];
+	$singleport_port = $livekit_conf['livekit_singleport_port'];
+	$portrange_start = $livekit_conf['livekit_portrange_start'];
+	$portrange_end = $livekit_conf['livekit_portrange_end'];
 
-	    if (!is_writable(YMLFILE)) {
-	            return false;
-	    }
+	if (!file_exists(YMLFILE) && !is_link(YMLFILE) && !touch(YMLFILE)) {
+		return false;
+	}
 
-	    $towrite = "# LiveKit configuration generated with pfSense UI\n";
-	    $towrite .= "port: {$params['port']}\n";
-	    $towrite .= "keys:\n";
-	    $towrite .= "  {$params['key']}: {$params['secret']}\n";
+	if (!is_writable(YMLFILE)) {
+		return false;
+	}
 
-	    @file_put_contents(YMLFILE, $towrite);
-	    unset($towrite);
-	    @chmod(YMLFILE, 0755);
+	$towrite = "# LiveKit configuration generated with pfSense UI\n";
+	$towrite .= "port: {$port}\n";
+	$towrite .= "keys:\n";
+	$towrite .= "  {$key}: {$secret}\n";
 
-	    return;
+	$towrite .= "rtc:\n";
+
+	if ($singleport) {
+		$towrite .= "  udp_port: {$singleport_port}\n";
+	} else {
+		$towrite .= "  port_range_start: {$portrange_start}\n";
+		$towrite .= "  port_range_end: {$portrange_end}\n";
+	}
+
+	@file_put_contents(YMLFILE, $towrite);
+	unset($towrite);
+	@chmod(YMLFILE, 0755);
+
+	return;
 }
 
 function sync_package_livekit() {
@@ -40,13 +57,17 @@ function sync_package_livekit() {
 	if (empty($livekit_conf['livekit_secret'])) {
 		$livekit_conf['livekit_secret'] = 'secret';
 	}
+	if (empty($livekit_conf['livekit_singleport_port'])) {
+		$livekit_conf['livekit_singleport_port'] = 7882;
+	}
+	if (empty($livekit_conf['livekit_portrange_start'])) {
+		$livekit_conf['livekit_portrange_start'] = 50000;
+	}
+	if (empty($livekit_conf['livekit_portrange_end'])) {
+		$livekit_conf['livekit_portrange_end'] = 60000;
+	}
 
-	write_conf(array(
-		"key" => $livekit_conf['livekit_apikey'],
-		"secret" => $livekit_conf['livekit_secret'],
-		"port" => $livekit_conf['livekit_port'],
-		)
-	);
+	write_conf($livekit_conf);
 
 	$options = "--config " . YMLFILE;
 	$options .= " --bind 0.0.0.0";
@@ -79,7 +100,10 @@ function sync_package_livekit() {
 function validate_form_livekit($post, &$input_errors) {
 	$secret = $post["livekit_secret"];
 	$key = $post["livekit_apikey"];
-	$port = $port["livekit_port"];
+	$port = $post["livekit_port"];
+	$singleport_port = $post["livekit_singleport_port"];
+	$portrange_start = $post['livekit_portrange_start'];
+	$portrange_end = $post['livekit_portrange_end'];
 
 	if (!empty($key) && strlen($secret) < 32) {
 	        $input_errors[] = 'API secret must be at least 32 characters';
@@ -91,6 +115,18 @@ function validate_form_livekit($post, &$input_errors) {
 
 	if (!empty($port) && !is_numeric($port)) {
 	        $input_errors[] = 'Port should be a number';
+	}
+
+	if (!empty($singleport_port) && !is_numeric($singleport_port)) {
+	        $input_errors[] = 'UDP port should be a number';
+	}
+
+	if (!empty($portrange_start) && !is_numeric($portrange_start)) {
+	        $input_errors[] = 'UDP port range start should be a number';
+	}
+
+	if (!empty($portrange_end) && !is_numeric($portrange_end)) {
+	        $input_errors[] = 'UDP port range end should be a number';
 	}
 }
 
