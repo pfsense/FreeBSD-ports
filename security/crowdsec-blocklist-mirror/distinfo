@@ -1,3 +1,5 @@
-TIMESTAMP = 1683209648
-SHA256 (crowdsecurity-cs-blocklist-mirror-v0.0.2-freebsd_GH0.tar.gz) = 6d7a820407484500c79a224af623b8fa7b3868a9c294ddd2cf6ba207fb68ded5
-SIZE (crowdsecurity-cs-blocklist-mirror-v0.0.2-freebsd_GH0.tar.gz) = 2602290
+TIMESTAMP = 1686646066
+SHA256 (go/security_crowdsec-blocklist-mirror/crowdsec-blocklist-mirror-v0.0.2/v0.0.2.mod) = f7fb6c217ba8ebafc95c4d042ac77c2c7dc19f00191005c66b19557375bb4104
+SIZE (go/security_crowdsec-blocklist-mirror/crowdsec-blocklist-mirror-v0.0.2/v0.0.2.mod) = 2245
+SHA256 (go/security_crowdsec-blocklist-mirror/crowdsec-blocklist-mirror-v0.0.2/v0.0.2.zip) = f967a18c651eaf159ac9ff5f1f882fa270ae98a8e2a9737721a3f636efb92f20
+SIZE (go/security_crowdsec-blocklist-mirror/crowdsec-blocklist-mirror-v0.0.2/v0.0.2.zip) = 262845

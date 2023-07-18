@@ -1,8 +1,11 @@
 PORTNAME=	crowdsec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.1
-DISTVERSIONSUFFIX=	-freebsd
+DISTVERSION=	1.5.2
+PORTREVISION=	1
 CATEGORIES=	security
+MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONFULL}/:vendor
+DISTFILES=	vendor.tgz:vendor
+NO_EXTRACT=	vendor.tgz
 
 MAINTAINER=	marco@crowdsec.net
 COMMENT=	CrowdSec lightweight and collaborative security engine
@@ -11,16 +14,21 @@ WWW=		https://github.com/crowdsecurity/crowdsec
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${LOCALBASE}/lib/libre2.a:devel/re2
+
 USES=		gmake go:no_targets
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	crowdsecurity
 GH_PROJECT=	crowdsec
-_BUILD_TAG=	b76e95e3
+GH_TAGNAME=	4fbc3402
+
+GO_MODULE=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+
 USE_RC_SUBR=	crowdsec
 
-MAKE_ARGS=	BUILD_VERSION="${DISTVERSIONFULL}" \
-		BUILD_TAG="${_BUILD_TAG}" \
+MAKE_ARGS=	BUILD_VERSION="${DISTVERSIONPREFIX}${DISTVERSION}" \
+		BUILD_TAG="${GH_TAGNAME}" \
 		BUILD_VENDOR_FLAGS="-mod=vendor -modcacherw" \
 		DEFAULT_CONFIGDIR="${PREFIX}/etc/crowdsec" \
 		DEFAULT_DATADIR="/var/db/crowdsec/data"
@@ -38,6 +46,10 @@ FIREWALL_BOUNCER_RUN_DEPENDS=	crowdsec-firewall-bouncer>=0.0.27:security/crowdse
 PLUGIN_DIR=	${PREFIX}/lib/crowdsec/plugins
 STAGE_PLUGINS=	${STAGEDIR}${PLUGIN_DIR}
 STAGE_BIN=	${STAGEDIR}${PREFIX}/bin
+
+# extract the dependencies in the rigth location
+post-extract:
+	tar xfz ${DISTDIR}/vendor.tgz -C ${WRKSRC}
 
 post-patch:
 	@${REINPLACE_CMD} 's,/etc/crowdsec/,${ETCDIR}/,g' \

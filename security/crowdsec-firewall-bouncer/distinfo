@@ -1,3 +1,5 @@
-TIMESTAMP = 1684281311
-SHA256 (crowdsecurity-cs-firewall-bouncer-v0.0.27-freebsd_GH0.tar.gz) = 1dba0604d0ff7d9035e2e2adcff42cddf7d0b63f23dd973ce692b6e18ee65126
-SIZE (crowdsecurity-cs-firewall-bouncer-v0.0.27-freebsd_GH0.tar.gz) = 2600838
+TIMESTAMP = 1687125555
+SHA256 (go/security_crowdsec-firewall-bouncer/crowdsec-firewall-bouncer-v0.0.27/v0.0.27.mod) = 5a3393ca8e201e8422f4e08e3feff17fbcef10e2149a9f61bcc0b5e1a81fa849
+SIZE (go/security_crowdsec-firewall-bouncer/crowdsec-firewall-bouncer-v0.0.27/v0.0.27.mod) = 2492
+SHA256 (go/security_crowdsec-firewall-bouncer/crowdsec-firewall-bouncer-v0.0.27/v0.0.27.zip) = 7b9f072c0ef0c5ae4da5ba795a1757cf34b0b0768fe9066427a6d49d3f2d16e9
+SIZE (go/security_crowdsec-firewall-bouncer/crowdsec-firewall-bouncer-v0.0.27/v0.0.27.zip) = 191906

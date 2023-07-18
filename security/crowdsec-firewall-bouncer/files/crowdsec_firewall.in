@@ -31,6 +31,8 @@ required_files="$crowdsec_firewall_config"
 command="%%PREFIX%%/bin/crowdsec-firewall-bouncer"
 start_cmd="${name}_start"
 start_precmd="${name}_precmd"
+configtest_cmd="${name}_configtest"
+extra_commands="configtest"
 
 crowdsec_firewall_precmd() {
     CSCLI=%%PREFIX%%/bin/cscli
@@ -51,8 +53,14 @@ crowdsec_firewall_precmd() {
 }
 
 crowdsec_firewall_start() {
-    /usr/sbin/daemon -f -p ${pidfile} -t "${desc}" -- \
-        ${command} -c "${crowdsec_firewall_config}" ${crowdsec_firewall_flags}
+    /usr/sbin/daemon -f -p "${pidfile}" -t "${desc}" --restart --restart-delay 5 -- \
+        "${command}" -c "${crowdsec_firewall_config}" ${crowdsec_firewall_flags}
+}
+
+crowdsec_firewall_configtest()
+{
+    echo "Performing sanity check on ${name} configuration."
+        eval "${command}" -c "${crowdsec_firewall_config}" -t
 }
 
 run_rc_command "$1"

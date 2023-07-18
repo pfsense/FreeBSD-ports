@@ -72,14 +72,14 @@ crowdsec_precmd() {
 
 crowdsec_start()
 {
-    /usr/sbin/daemon -f -p ${pidfile} -t "${desc}" -- \
-        ${command} -c "${crowdsec_config}" ${crowdsec_flags}
+    /usr/sbin/daemon -f -p "${pidfile}" -t "${desc}" --restart --restart-delay 5 -- \
+        "${command}" -c "${crowdsec_config}" ${crowdsec_flags}
 }
 
 crowdsec_configtest()
 {
     echo "Performing sanity check on ${name} configuration."
-        eval ${command} -c ${crowdsec_config} -t
+        eval "${command}" -c "${crowdsec_config}" -t
 }
 
 run_rc_command "$1"

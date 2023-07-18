@@ -31,14 +31,15 @@ required_files="$crowdsec_mirror_config"
 command="%%PREFIX%%/bin/crowdsec-blocklist-mirror"
 start_cmd="${name}_start"
 start_precmd="${name}_precmd"
+configtest_cmd="${name}_configtest"
+extra_commands="configtest"
 
 crowdsec_mirror_precmd() {
     CSCLI=%%PREFIX%%/bin/cscli
     orig_line="lapi_key: \${API_KEY}"
     # IF the bouncer is not configured
     if grep -q "${orig_line}" "${crowdsec_mirror_config}"; then
-        SUFFIX=$(jot -r -c 10 a z | rs -g0)
-        BOUNCER="cs-blocklist-mirror-${SUFFIX}"
+        BOUNCER="cs-blocklist-mirror-$(date +%s)"
         # AND crowdsec is installed..
         if command -v "$CSCLI" >/dev/null; then
             # THEN, register it to the local API
@@ -66,8 +67,14 @@ crowdsec_mirror_precmd() {
 }
 
 crowdsec_mirror_start() {
-    /usr/sbin/daemon -f -p ${pidfile} -t "${desc}" -- \
-        ${command} -c "${crowdsec_mirror_config}" ${crowdsec_mirror_flags}
+    /usr/sbin/daemon -f -p "${pidfile}" -t "${desc}" --restart --restart-delay 5 -- \
+        "${command}" -c "${crowdsec_mirror_config}" ${crowdsec_mirror_flags}
+}
+
+crowdsec_mirror_configtest()
+{
+    echo "Performing sanity check on ${name} configuration."
+        eval "${command}" -c "${crowdsec_mirror_config}" -t
 }
 
 run_rc_command "$1"
