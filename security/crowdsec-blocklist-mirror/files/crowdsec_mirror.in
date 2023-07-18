@@ -27,6 +27,7 @@ load_rc_config $name
 : "${crowdsec_mirror_flags:=}"
 
 pidfile=/var/run/${name}.pid
+pidfile_daemon=/var/run/${name}.daemon.pid
 required_files="$crowdsec_mirror_config"
 command="%%PREFIX%%/bin/crowdsec-blocklist-mirror"
 start_cmd="${name}_start"
@@ -69,20 +70,20 @@ crowdsec_mirror_precmd() {
 
 crowdsec_mirror_stop()
 {
-    if [ -f "${pidfile}" ]; then
-        kill -TERM $(cat "$pidfile")
+    if [ -f "$pidfile_daemon" ]; then
+        kill -TERM "$(cat "$pidfile_daemon")"
     fi
 }
 
 crowdsec_mirror_start() {
-    /usr/sbin/daemon -f -P "${pidfile}" -t "${desc}" --restart --restart-delay 10 -- \
-        "${command}" -c "${crowdsec_mirror_config}" ${crowdsec_mirror_flags}
+    /usr/sbin/daemon -f -P "$pidfile_daemon" -p "$pidfile" -t "$desc" --restart --restart-delay 10 -- \
+        "$command" -c "$crowdsec_mirror_config" ${crowdsec_mirror_flags}
 }
 
 crowdsec_mirror_configtest()
 {
     echo "Performing sanity check on ${name} configuration."
-        eval "${command}" -c "${crowdsec_mirror_config}" -t
+        eval "$command" -c "$crowdsec_mirror_config" -t
 }
 
 run_rc_command "$1"

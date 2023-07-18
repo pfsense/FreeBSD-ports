@@ -1,7 +1,7 @@
 PORTNAME=	crowdsec
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.5.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONFULL}/:vendor
 DISTFILES=	vendor.tgz:vendor
