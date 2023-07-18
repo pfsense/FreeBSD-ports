@@ -39,7 +39,10 @@ if (!isset($pconfig['scr_carp']))                            $pconfig['scr_carp'
 if (!isset($pconfig['scr_ipsec']))                           $pconfig['scr_ipsec']                           = false;
 if (!isset($pconfig['scr_interfaces']))                      $pconfig['scr_interfaces']                      = false;
 if (!isset($pconfig['scr_mbuf']))                            $pconfig['scr_mbuf']                            = false;
+if (!isset($pconfig['scr_packages']))                        $pconfig['scr_packages']                        = false;
 if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufrequency']                    = false;
+if (!isset($pconfig['scr_cputemperature']))                  $pconfig['scr_cputemperature']                  = false;
+if (!isset($pconfig['scr_cputemperature_unit']))             $pconfig['scr_cputemperature_unit']             = 'c';
 if (!isset($pconfig['scr_traffic']))                         $pconfig['scr_traffic']                         = false;
 if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traffic_interface']               = '';
 if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
@@ -74,7 +77,10 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_ipsec']                           = $pconfig['scr_ipsec'];
 		$lcdproc_screens_config['scr_interfaces']                      = $pconfig['scr_interfaces'];
 		$lcdproc_screens_config['scr_mbuf']                            = $pconfig['scr_mbuf'];
+		$lcdproc_screens_config['scr_packages']                        = $pconfig['scr_packages'];
 		$lcdproc_screens_config['scr_cpufrequency']                    = $pconfig['scr_cpufrequency'];
+		$lcdproc_screens_config['scr_cputemperature']                  = $pconfig['scr_cputemperature'];
+		$lcdproc_screens_config['scr_cputemperature_unit']             = $pconfig['scr_cputemperature_unit'];
 		$lcdproc_screens_config['scr_traffic']                         = $pconfig['scr_traffic'];
 		$lcdproc_screens_config['scr_traffic_interface']               = $pconfig['scr_traffic_interface'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
@@ -211,12 +217,41 @@ $section->addInput(
 );
 $section->addInput(
 	new Form_Checkbox(
+		'scr_packages', // checkbox name (id)
+		'Package Info', // checkbox label
+		'Display package count/updates', // checkbox text
+		$pconfig['scr_packages'] // checkbox initial value
+	)
+);
+$section->addInput(
+	new Form_Checkbox(
 		'scr_cpufrequency', // checkbox name (id)
 		'CPU Frequency', // checkbox label
 		'Display CPU power saving rate', // checkbox text
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
+
+$group = new Form_Group('CPU Temperature');
+$group->add(
+	new Form_Checkbox(
+		'scr_cputemperature', // checkbox name (id)
+		'CPU Temperature', // checkbox label
+		'Display CPU temperature', // checkbox text
+		$pconfig['scr_cputemperature'] // checkbox initial value
+	)
+);
+$group->add(
+	new Form_Select(
+		'scr_cputemperature_unit',
+		'',
+		$pconfig['scr_cputemperature_unit'],
+		array (
+			'c'	=> gettext('Celsius'),
+			'f'	=> gettext('Fahrenheit')
+		)
+))->setHelp('Unit of temperature');
+$section->add($group);
 
 $group = new Form_Group('Traffic of interface');
 

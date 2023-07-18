@@ -31,6 +31,22 @@ define('LCDPROC_HOST', '127.0.0.1');
 define('LCDPROC_PORT', '13666');
 define('LCDPROC_SERVICE_NAME', 'lcdproc');
 
+/* Common Lists */
+
+global $mtxorb_bg_colors;
+$mtxorb_bg_colors = [
+	'Default' => '',
+	'White'   => '\0376\0320\0377\0377\0377',
+	'Gray'    => '\0376\0320\0200\0200\0200',
+	'Red'     => '\0376\0320\0377\0000\0000',
+	'Green'   => '\0376\0320\0000\0377\0000',
+	'Blue'    => '\0376\0320\0000\0000\0377',
+	'Cyan'    => '\0376\0320\0000\0377\0377',
+	'Yellow'  => '\0376\0320\0377\0377\0000',
+	'Magenta' => '\0376\0320\0377\0000\0377',
+	'Purple'  => '\0376\0320\0377\0000\0177',
+];
+
 /* Functions */
 function lcdproc_notice($msg) {
 	syslog(LOG_NOTICE, "lcdproc: {$msg}");
@@ -115,7 +131,7 @@ function sync_package_lcdproc_screens() {
 }
 
 function sync_package_lcdproc() {
-	global $g, $input_errors;
+	global $g, $input_errors, $mtxorb_bg_colors;
 
 	# Detect boot process
 	if (function_exists("platform_booting")) {
@@ -499,6 +515,17 @@ fi
 
 EOD;
 		$start = $stop ."\n";
+
+		if (!empty($lcdproc_config['mtxorb_backlight_color']) &&
+		    array_key_exists($lcdproc_config['mtxorb_backlight_color'], $mtxorb_bg_colors) &&
+		    !empty($mtxorb_bg_colors[$lcdproc_config['mtxorb_backlight_color']])) {
+			$start .= "\t# Initialize display\n";
+			$start .= "\t/usr/bin/printf \"%b\" ";
+			$start .= escapeshellarg($mtxorb_bg_colors[$lcdproc_config['mtxorb_backlight_color']]);
+			$start .= " > " . escapeshellarg($realport) . "\n";
+		}
+
+		$start .= "\t# Start LCDProc daemon and client\n";
 		$start .= "\t/usr/bin/nice -20 /usr/local/sbin/LCDd -c ". LCDPROC_CONFIG ." -u nobody\n";
 		$start .= "\t/usr/bin/nice -20 /usr/local/bin/php -f /usr/local/pkg/lcdproc_client.php &\n";
 

@@ -25,6 +25,7 @@ require_once("config.inc");
 require_once("functions.inc");
 require_once("interfaces.inc");
 require_once("pfsense-utils.inc");
+require_once("pkg-utils.inc");
 require_once("ipsec.inc");
 require_once("includes/functions.inc.php");
 require_once("/usr/local/pkg/lcdproc.inc");
@@ -82,6 +83,69 @@ function lcdproc_get_mbuf_stats() {
 	$mbufpercent = "";
 	get_mbuf($mbuf, $mbufpercent);
 	return($mbuf);
+}
+
+function lcdproc_get_package_summary() {
+	$total = 0;
+	$needsupdating = 0;
+	$broken = 0;
+
+	$package_list = get_pkg_info('all', true, true);
+	$installed_packages = array_filter($package_list, function($v) {
+		return (isset($v['installed']) || isset($v['broken']));
+	});
+	if (!empty($installed_packages) || is_array($installed_packages)) {
+		$total = count($installed_packages);
+	}
+
+	foreach ($installed_packages as $pkg) {
+		if (isset($pkg['broken'])) {
+			$broken += 1;
+		} else if (isset($pkg['installed_version']) && isset($pkg['version'])) {
+			$version_compare = pkg_version_compare(
+			    $pkg['installed_version'], $pkg['version']);
+			if ($version_compare == '<') {
+				// we're running an older version of the package
+				$needsupdating += 1;
+			}
+		}
+	}
+	if ($total > 0) {
+		$result = "T: {$total}";
+		if ($needsupdating > 0) {
+			$result .= " NU: {$needsupdating}";
+		}
+		if ($broken > 0) {
+			$result .= " B!: {$broken}";
+		}
+	} else {
+		$result = "None Installed";
+	}
+	return $result;
+}
+
+// Returns CPU temperature if available from the system
+function lcdproc_get_cpu_temperature() {
+	global $config;
+	$unit = config_get_path('installedpackages/lcdprocscreens/config/0/scr_cputemperature_unit', []);
+
+	$temp_out = "";
+	$temp_out = get_temp(); // Use function from includes/functions.inc.php
+	if ($temp_out !== "") {
+		switch ($unit) {
+			case "f":
+				$cputemperature = ($temp_out * 1.8) + 32;
+				return $cputemperature . "F";
+				break;
+			case "c":
+			default:
+				return $temp_out . "C";
+				break;
+		}
+	} else {
+		// sysctl probably returned "unknown oid"
+		return 'CPU Temp N/A';
+	}
 }
 
 function get_version() {
@@ -909,6 +973,14 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
 					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ MBuf Usage\"";
 					break;
+				case "scr_packages":
+					$lcd_cmds[] = "screen_add {$name}";
+					$lcd_cmds[] = "screen_set {$name} heartbeat off";
+					$lcd_cmds[] = "screen_set {$name} name {$name}";
+					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
+					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
+					break;
 				case "scr_cpufrequency":
 					$lcd_cmds[] = "screen_add {$name}";
 					$lcd_cmds[] = "screen_set {$name} heartbeat off";
@@ -917,6 +989,14 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
 					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ CPU Frequency\"";
+					break;
+				case "scr_cputemperature":
+					$lcd_cmds[] = "screen_add {$name}";
+					$lcd_cmds[] = "screen_set {$name} heartbeat off";
+					$lcd_cmds[] = "screen_set {$name} name {$name}";
+					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
+					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
 					break;
 				case "scr_traffic":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -1129,9 +1209,21 @@ function loop_status($lcd) {
 					$mbufstats = lcdproc_get_mbuf_stats();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$mbufstats}\"";
 					break;
+				case "scr_packages":
+					$packages = lcdproc_get_package_summary();
+					$title = ($lcdpanel_width >= 20) ? "Installed Packages" : "Packages";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$packages}\"";
+					break;
 				case "scr_cpufrequency":
 					$cpufreq = get_cpufrequency();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$cpufreq}\"";
+					break;
+				case "scr_cputemperature":
+					$cputemperature = lcdproc_get_cpu_temperature();
+					$title = ($lcdpanel_width >= 20) ? "CPU Temperature" : "CPU Temp";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$cputemperature}\"";
 					break;
 				case "scr_traffic":
 					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed

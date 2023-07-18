@@ -23,8 +23,9 @@
  */
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/lcdproc.inc");
+global $mtxorb_bg_colors;
 
-$lcdproc_config         = config_get_path('installedpackages/lcdproc/config/0', []);
+$lcdproc_config = config_get_path('installedpackages/lcdproc/config/0', []);
 
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_config;
@@ -43,15 +44,22 @@ if (!isset($pconfig['outputleds']))                  $pconfig['outputleds']     
 if (!isset($pconfig['controlmenu']))                 $pconfig['controlmenu']                 = 'no';
 if (!isset($pconfig['mtxorb_type']))                 $pconfig['mtxorb_type']                 = 'lcd'; // specific to Matrix Orbital driver
 if (!isset($pconfig['mtxorb_adjustable_backlight'])) $pconfig['mtxorb_adjustable_backlight'] = true;  // specific to Matrix Orbital driver
+if (!isset($pconfig['mtxorb_backlight_color']))      $pconfig['mtxorb_backlight_color']      = '';  // specific to Matrix Orbital driver
 
 
 if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
-	// Input validation would go here, with any invalid values found
-	// in $_POST being added to $input_errors, e.g:
-	//   $input_errors[] = "Descriptive error message for the user.";
+	/* Input validation goes here, with any invalid values found
+	 * in $_POST being added to $input_errors, e.g:
+	 *   $input_errors[] = gettext("Descriptive error message for the user.");
+	 */
+
+	if (!empty($_POST['mtxorb_backlight_color']) &&
+	    !array_key_exists($_POST['mtxorb_backlight_color'], $mtxorb_bg_colors)) {
+		$input_errors[] = gettext("Invalid Matrix Orbital Background Color.");
+	}
 
 	if (!$input_errors) {
 		$lcdproc_config['enable']                      = $pconfig['enable'];
@@ -69,6 +77,7 @@ if ($_POST) {
 		$lcdproc_config['controlmenu']                 = $pconfig['controlmenu'];
 		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
 		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
+		$lcdproc_config['mtxorb_backlight_color']      = $pconfig['mtxorb_backlight_color'];
 
 		config_set_path('installedpackages/lcdproc/config/0', $lcdproc_config);
 		write_config("lcdproc: Settings saved");
@@ -228,8 +237,10 @@ $section->addInput(
 	)
 )->setHelp('Select the HD44780 connection type');
 
-// The mtxorb_type and mtxorb_adjustable_backlight are Matrix-Orbital-specific, so are
-// hidden by javascript (below) if the MtxOrb driver is not being used.
+/* The mtxorb_type, mtxorb_adjustable_backlight, and mtxorb_backlight_color are
+ * Matrix-Orbital-specific, so are hidden by javascript (below) if the MtxOrb
+ * driver is not being used.
+ */
 $subsection = new Form_Group('Display type');
 $subsection->add(
 	new Form_Select(
@@ -252,13 +263,26 @@ $subsection->add(
 		$pconfig['mtxorb_adjustable_backlight'] // initial value
 	)
 );
+$subsection->add(
+	new Form_Select(
+		'mtxorb_backlight_color',
+		'Background Color',
+		$pconfig['mtxorb_backlight_color'], // Initial value.
+		array_combine(array_keys($mtxorb_bg_colors), array_keys($mtxorb_bg_colors))
+	)
+)->setHelp('LCD Background Color');
+
 $subsection->setHelp(
-	'Select the Matrix Orbital display type.%1$s' .
-	'Some old firmware versions of Matrix Orbital modules do not support an adjustable backlight' .
-	'but only can switch the backlight on/off. If you own such a module and experience randomly' .
-	'appearing block characters and backlight cannot be switched on or off, uncheck the adjustable backlight option.',
+	'Select the Matrix Orbital display type.%1$s%1$s' .
+	'Some firmware versions of Matrix Orbital and compatible modules do not support an adjustable backlight ' .
+	'and only can switch the backlight on/off. If the LCD experiences randomly appearing block characters ' .
+	'and the backlight cannot be switched on or off, uncheck the adjustable backlight option.%1$s%1$s' .
+	'Some Matrix Orbital compatible Adafruit controller boards have extended commands to set ' .
+	'the background color. This works independently of the adjustable backlight checkbox. ' .
+	'Leave at default if this feature is not supported.',
 	'<br/>'
 );
+
 $section->add($subsection);
 ?>
 
