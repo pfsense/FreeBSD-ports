@@ -31,6 +31,7 @@ pidfile=/var/run/${name}.pid
 required_files="$crowdsec_config"
 command="%%PREFIX%%/bin/${name}"
 start_cmd="${name}_start"
+stop_cmd="${name}_stop"
 start_precmd="${name}_precmd"
 configtest_cmd="${name}_configtest"
 extra_commands="configtest reload"
@@ -70,9 +71,16 @@ crowdsec_precmd() {
     fi
 }
 
+crowdsec_stop()
+{
+    if [ -f "${pidfile}" ]; then
+        kill -TERM $(cat "$pidfile")
+    fi
+}
+
 crowdsec_start()
 {
-    /usr/sbin/daemon -f -p "${pidfile}" -t "${desc}" --restart --restart-delay 5 -- \
+    /usr/sbin/daemon -f -P "${pidfile}" -t "${desc}" --restart --restart-delay 10 -- \
         "${command}" -c "${crowdsec_config}" ${crowdsec_flags}
 }
 
