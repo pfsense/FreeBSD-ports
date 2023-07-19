@@ -19,18 +19,50 @@
  * limitations under the License.
  */
 
-require_once("config.inc");
-require_once("util.inc");
-require_once("pkg-utils.inc");
 
-function crowdsec_install() {
+
+function crowdsec_validate_form($post, &$input_errors) {
+
+    if (!empty($post['lapi_port'])) {
+        $lapi_port = $post['lapi_port'];
+        if(!is_numeric($lapi_port)){
+            $input_errors[] = 'LAPI port must be a numeric value.';
+        }
+    } else {
+        $input_errors[] = 'LAPI port can not be empty.';
+    }
+
+    if (empty($post['lapi_url'])) {
+        $input_errors[] = 'LAPI url can not be empty.';
+    }
+
+    // Use external LAPI
+    if(!empty($post['lapi_is_remote'])){
+        if (empty($post['agent_user'])) {
+            $input_errors[] = 'Agent user is required for external LAPI usage.';
+        }
+        if (empty($post['agent_password'])) {
+            $input_errors[] = 'Agent password is required for external LAPI usage.';
+        }
+        if (empty($post['fw_bouncer_api_key'])) {
+            $input_errors[] = 'Firewall bouncer API key is required for external LAPI usage.';
+        }
+    }
 }
 
-function crowdsec_write_config() {
+
+
+function crowdsec_install()
+{
 }
 
-function crowdsec_generate_rules($type) {
-    log_warn("crowdsec_generate_rules: $type");
+function crowdsec_write_config()
+{
+
+}
+
+function crowdsec_generate_rules($type)
+{
     $rules = "";
     switch ($type) {
         case 'filter':
@@ -38,9 +70,7 @@ function crowdsec_generate_rules($type) {
             $rules .= "block in log quick on wan from crowdsec6_blacklist to any keep state label\n";
             break;
     }
-    log.warn("crowdsec_generate_rules: $rules");
 
     return $rules;
 }
 
-?>

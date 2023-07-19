@@ -2,8 +2,8 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-	<copyright>
-	<![CDATA[
+    <copyright>
+        <![CDATA[
 /*
  * crowdsec.xml
  *
@@ -24,77 +24,108 @@
  * limitations under the License.
  */
 	]]>
-	</copyright>
-	<name>crowdsec</name>
-	<title>Security/Crowdsec</title>
-	<include_file>/usr/local/pkg/crowdsec.inc</include_file>
-	<menu>
-		<name>sudo</name>
-		<section>System</section>
-		<url>/pkg_edit.php?xml=crowdsec.xml</url>
-	</menu>
-	<service>
-		<name>crowdsec</name>
-		<rcfile>crowdsec.sh</rcfile>
-		<description>Crowdsec service></description>
-	</service>
-	<fields>
-                <field>
-                        <fielddescr>Enable Crowdsec</fielddescr>
-                        <fieldname>enable</fieldname>
-                        <type>checkbox</type>
-                </field>
-		<field>
-			<fielddescr>Listen port</fielddescr>
-			<fieldname>listen_port</fieldname>
-			<type>input</type>
-			<description>Pick the port for the LAPI endpoint.</description>
-		</field>
-		<field>
-			<type>listtopic</type>
-			<name>Crowdsec Options</name>
-		</field>
-		<field>
-			<type>info</type>
-			<description>
-			<![CDATA[
-				some documentation here
-			]]>
-			</description>
-		</field>
-	</fields>
+    </copyright>
+    <name>crowdsec</name>
+    <title>Security/Crowdsec</title>
+    <include_file>/usr/local/pkg/crowdsec.inc</include_file>
+    <menu>
+        <name>Crowdsec</name>
+        <section>System</section>
+        <url>/pkg_edit.php?xml=crowdsec.xml</url>
+    </menu>
+    <service>
+        <name>crowdsec</name>
+        <rcfile>crowdsec.sh</rcfile>
+        <description>Crowdsec service></description>
+    </service>
+    <fields>
+        <field>
+            <fielddescr>Enable log processor (agent)</fielddescr>
+            <fieldname>enable_agent</fieldname>
+            <type>checkbox</type>
+            <description></description>
+        </field>
+        <field>
+            <fielddescr>Enable firewall bouncer</fielddescr>
+            <fieldname>enable_fw_bouncer</fieldname>
+            <type>checkbox</type>
+            <description></description>
+        </field>
+        <field>
+            <fielddescr>LAPI port</fielddescr>
+            <fieldname>lapi_port</fieldname>
+            <type>input</type>
+            <description>Pick the port for the LAPI endpoint.</description>
+        </field>
+        <field>
+            <fielddescr>LAPI url</fielddescr>
+            <fieldname>lapi_url</fieldname>
+            <type>input</type>
+            <description>Set the LAPI endpoint url or ip.</description>
+        </field>
+        <field>
+            <fielddescr>Use an external security engine (LAPI)</fielddescr>
+            <fieldname>lapi_is_remote</fieldname>
+            <type>checkbox</type>
+            <description></description>
+            <combinefields>begin</combinefields>
+        </field>
+        <field>
+            <fielddescr>Agent user</fielddescr>
+            <fieldname>agent_user</fieldname>
+            <type>input</type>
+            <description>Set the name of the remote agent</description>
+        </field>
+        <field>
+            <fielddescr>Agent password</fielddescr>
+            <fieldname>agent_password</fieldname>
+            <type>password</type>
+            <description>Set the password of the remote agent</description>
+        </field>
+        <field>
+            <fielddescr>Firewall bouncer API key</fielddescr>
+            <fieldname>fw_bouncer_api_key</fieldname>
+            <type>password</type>
+            <description>Set the remote firewall bouncer API key</description>
+            <combinefields>end</combinefields>
+        </field>
+    </fields>
 
-	<custom_php_install_command>
-		<![CDATA[
+    <custom_php_install_command>
+        <![CDATA[
 		crowdsec_install();
 		crowdsec_write_config();
 		]]>
-	</custom_php_install_command>
-	<custom_php_resync_config_command>
-		<![CDATA[
+    </custom_php_install_command>
+    <custom_php_resync_config_command>
+        <![CDATA[
 		crowdsec_write_config();
 		]]>
-	</custom_php_resync_config_command>
+    </custom_php_resync_config_command>
 
-        <filter_rules_needed>
-            crowdsec_generate_rules
-        </filter_rules_needed>
+    <custom_php_validation_command>
+        crowdsec_validate_form($_POST, $input_errors);
+    </custom_php_validation_command>
 
-        <!--
-        <custom_php_global_functions></custom_php_global_functions>
-        <custom_php_install_command></custom_php_install_command>
-        <custom_php_pre_deinstall_command></custom_php_pre_deinstall_command>
-        <custom_php_deinstall_command></custom_php_deinstall_command>
-        <custom_add_php_command></custom_add_php_command>
-        <custom_add_php_command_late></custom_add_php_command_late>
-        <custom_delete_php_command></custom_delete_php_command>
-        <custom_php_resync_config_command></custom_php_resync_config_command>
-        <start_command></start_command>
-        <custom_php_service_status_command></custom_php_service_status_command>
-        <custom_php_validation_command></custom_php_validation_command>
-        <custom_php_after_head_command></custom_php_after_head_command>
-        <custom_php_command_before_form></custom_php_command_before_form>
-        <custom_php_after_form_command></custom_php_after_form_command>
-        -->
+    <filter_rules_needed>
+        crowdsec_generate_rules
+    </filter_rules_needed>
+
+    <!--
+    <custom_php_global_functions></custom_php_global_functions>
+    <custom_php_install_command></custom_php_install_command>
+    <custom_php_pre_deinstall_command></custom_php_pre_deinstall_command>
+    <custom_php_deinstall_command></custom_php_deinstall_command>
+    <custom_add_php_command></custom_add_php_command>
+    <custom_add_php_command_late></custom_add_php_command_late>
+    <custom_delete_php_command></custom_delete_php_command>
+    <custom_php_resync_config_command></custom_php_resync_config_command>
+    <start_command></start_command>
+    <custom_php_service_status_command></custom_php_service_status_command>
+    <custom_php_validation_command></custom_php_validation_command>
+    <custom_php_after_head_command></custom_php_after_head_command>
+    <custom_php_command_before_form></custom_php_command_before_form>
+    <custom_php_after_form_command></custom_php_after_form_command>
+    -->
 
 </packagegui>
