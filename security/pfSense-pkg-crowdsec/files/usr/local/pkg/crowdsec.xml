@@ -35,8 +35,8 @@
     </menu>
     <service>
         <name>crowdsec</name>
-        <rcfile>crowdsec.sh</rcfile>
-        <description>Crowdsec service></description>
+        <rcfile>pfsense_crowdsec</rcfile>
+        <description>Crowdsec service</description>
     </service>
     <fields>
         <field>
