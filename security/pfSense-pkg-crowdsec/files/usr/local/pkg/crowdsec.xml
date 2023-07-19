@@ -30,7 +30,7 @@
     <include_file>/usr/local/pkg/crowdsec.inc</include_file>
     <menu>
         <name>Crowdsec</name>
-        <section>System</section>
+        <section>Services</section>
         <url>/pkg_edit.php?xml=crowdsec.xml</url>
     </menu>
     <service>
@@ -38,6 +38,17 @@
         <rcfile>pfsense_crowdsec</rcfile>
         <description>Crowdsec service</description>
     </service>
+    <tabs>
+        <tab>
+            <text>Settings</text>
+            <url>/pkg_edit.php?xml=crowdsec.xml</url>
+            <active/>
+        </tab>
+        <!--<tab>
+            <text>Overview</text>
+            <url>/somefile.php</url>
+        </tab>-->
+    </tabs>
     <fields>
         <field>
             <fielddescr>Enable log processor (agent)</fielddescr>
@@ -56,12 +67,14 @@
             <fieldname>lapi_port</fieldname>
             <type>input</type>
             <description>Pick the port for the LAPI endpoint.</description>
+            <default_value>8080</default_value>
         </field>
         <field>
-            <fielddescr>LAPI url</fielddescr>
-            <fieldname>lapi_url</fieldname>
+            <fielddescr>LAPI host</fielddescr>
+            <fieldname>lapi_host</fieldname>
             <type>input</type>
-            <description>Set the LAPI endpoint url or ip.</description>
+            <description>Set the LAPI endpoint host or ip.</description>
+            <default_value>localhost</default_value>
         </field>
         <field>
             <fielddescr>Use an external security engine (LAPI)</fielddescr>
@@ -69,6 +82,7 @@
             <type>checkbox</type>
             <description></description>
             <combinefields>begin</combinefields>
+            <enablefields>agent_user,agent_password,fw_bouncer_api_key</enablefields>
         </field>
         <field>
             <fielddescr>Agent user</fielddescr>
@@ -94,21 +108,24 @@
     <custom_php_install_command>
         <![CDATA[
 		crowdsec_install();
-		crowdsec_write_config();
 		]]>
     </custom_php_install_command>
     <custom_php_resync_config_command>
         <![CDATA[
-		crowdsec_write_config();
+		crowdsec_sync_config();
 		]]>
     </custom_php_resync_config_command>
 
     <custom_php_validation_command>
+        <![CDATA[
         crowdsec_validate_form($_POST, $input_errors);
+        ]]>
     </custom_php_validation_command>
 
     <filter_rules_needed>
+        <![CDATA[
         crowdsec_generate_rules
+        ]]>
     </filter_rules_needed>
 
     <!--

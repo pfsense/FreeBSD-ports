@@ -19,25 +19,28 @@
  * limitations under the License.
  */
 
+require_once("config.inc");
 
+define('CS_LAPI_PORT', 8080);
+define('CS_LAPI_HOST', 'localhost');
 
-function crowdsec_validate_form($post, &$input_errors) {
-
+function crowdsec_validate_form($post, &$input_errors)
+{
     if (!empty($post['lapi_port'])) {
         $lapi_port = $post['lapi_port'];
-        if(!is_numeric($lapi_port)){
+        if (!is_numeric($lapi_port)) {
             $input_errors[] = 'LAPI port must be a numeric value.';
         }
     } else {
         $input_errors[] = 'LAPI port can not be empty.';
     }
 
-    if (empty($post['lapi_url'])) {
-        $input_errors[] = 'LAPI url can not be empty.';
+    if (empty($post['lapi_host'])) {
+        $input_errors[] = 'LAPI host can not be empty.';
     }
 
     // Use external LAPI
-    if(!empty($post['lapi_is_remote'])){
+    if (!empty($post['lapi_is_remote'])) {
         if (empty($post['agent_user'])) {
             $input_errors[] = 'Agent user is required for external LAPI usage.';
         }
@@ -50,13 +53,11 @@ function crowdsec_validate_form($post, &$input_errors) {
     }
 }
 
-
-
 function crowdsec_install()
 {
 }
 
-function crowdsec_write_config()
+function crowdsec_sync_config()
 {
 
 }
