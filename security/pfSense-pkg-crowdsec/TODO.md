@@ -1,4 +1,20 @@
 
+ - debug rules creation
+ - YAML: if we can install the extension as dependency, something like https://freebsd.pkgs.org/12/freebsd-amd64/php80-pear-YAML-1.0.6.pkg.html
+ - defaults for lapi hostname and port
+ - move page in Services
+   at least landing tab with lorem ispum and links to crowdsec docs, console, discord/reddit/twitter
+      and a few how-to paragraphs
+   second tab with status/overview
+      it will likely need to call cscli to gather information
+ - dynamic active/unactive widgets with enable check (see teelgraf plugin)
+ - automate alias creation crowdsec_blacklist, crowdsec6_blacklist
+
+
+
+
+------------------------------------------
+
  - enable crowdsec
  - enable crowdsec_firewall
  - register agent (local [pfsense] or remote LAPI [linux])
