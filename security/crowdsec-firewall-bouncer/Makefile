@@ -1,7 +1,7 @@
 PORTNAME=	crowdsec-firewall-bouncer
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.27
-PORTREVISION=	5
+DISTVERSION=	0.0.28
+PORTVERSION=	0.0.28_RC1
 CATEGORIES=	security
 
 MAINTAINER=	marco@crowdsec.net
@@ -12,7 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
-_COMMIT=	1fcde2de
+_COMMIT=	c8322311
 _BUILD_DATE=	$$(date -u "+%F_%T")
 USE_RC_SUBR=	crowdsec_firewall
 
@@ -32,10 +32,6 @@ SUB_FILES=	pkg-deinstall \
 		pkg-message
 
 ETCDIR=		${PREFIX}/etc/crowdsec/bouncers
-
-post-patch:
-	${REINPLACE_CMD} 's,$${BACKEND},pf,g' \
-		${WRKSRC}/config/${PORTNAME}.yaml
 
 do-install:
 	#
