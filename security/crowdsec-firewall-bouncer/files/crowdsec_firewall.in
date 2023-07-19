@@ -69,7 +69,9 @@ crowdsec_firewall_start() {
 crowdsec_firewall_configtest()
 {
     echo "Performing sanity check on ${name} configuration."
-        eval "$command" -c "$crowdsec_firewall_config" -t
+    if "$command" -c "$crowdsec_firewall_config" -t; then
+        echo "Configuration test OK"
+    fi
 }
 
 run_rc_command "$1"

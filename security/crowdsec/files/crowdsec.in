@@ -88,7 +88,9 @@ crowdsec_start()
 crowdsec_configtest()
 {
     echo "Performing sanity check on ${name} configuration."
-        eval "$command" -c "$crowdsec_config" -t
+    if "$command" -c "$crowdsec_config" -t -error; then
+        echo "Configuration test OK"
+    fi
 }
 
 run_rc_command "$1"
