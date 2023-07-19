@@ -154,9 +154,6 @@ class acme_sh {
 	function generateDomainKey($domain, $keylength) {
 		global $a_keylength;
 		$pathadd = "";
-		if ($a_keylength[$keylength]['ecc']) {
-			$pathadd = "_ecc";
-		}
 		$certpath = "{$this->acmeconf}{$domain}{$pathadd}";
 		safe_mkdir($certpath);
 		
@@ -166,6 +163,7 @@ class acme_sh {
 				. " --accountconf " . escapeshellarg($this->accountconfig)
 				. " --create-domain-key --domain " . escapeshellarg($domain)
 				. " --keylength " . escapeshellarg($keylength)
+				. " --force"
 				. " --log-level 3"
 				. " --log " . escapeshellarg($this->acmeconf."acme_createdomainkey.log")
 				);
@@ -223,7 +221,7 @@ EOF;
 		
 		$certpath = "{$this->acmeconf}{$domainstosign[0]->domainname}";
 		safe_mkdir($certpath);
-		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key", $certificatepsk);
+		file_put_contents("{$certpath}/{$domainstosign[0]->domainname}.key.next", $certificatepsk);
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
 			$api = $domain->method; 
@@ -288,12 +286,13 @@ EOD;
 				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$acmechalengedom}.key", $keydata);
 			}
 		}
-		
+
 		$this->execacmesh(""
 			. " --{$action} {$domainstr}"
 			. " --home " . escapeshellarg($this->acmeconf)
 			. " --accountconf " . escapeshellarg($this->accountconfig)
 			. " --force"
+			. " --always-force-new-domain-key"
 			. " --reloadCmd " . escapeshellarg("{$this->acmeconf}reloadcmd.sh")
 			. $cmdparameters
 			. " --log-level 3"

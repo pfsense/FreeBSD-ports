@@ -1728,12 +1728,22 @@ function & get_certificate($name) {
 			echo "\n getCertificatePSK updating custom key";
 			$cert['prv'] = $certificate['keypaste']; // (already base64-encoded)
 		} elseif ($certificate['keylength'] != 'custom') {
-			$res_key = openssl_pkey_get_private(base64_decode($cert['prv']));
-			$key_details = openssl_pkey_get_details($res_key);
-			if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
-				$keybits = $key_details['bits'];
-			} else {
-				$keybits = $key_details['ec']['curve_name'];
+			/* Default value to ensure it gets updated if missing/invalid */
+			$keybits = -1;
+			/* Only attempt to fetch the private key if one is present. */
+			if (!empty($cert['prv'])) {
+				$res_key = @openssl_pkey_get_private(base64_decode($cert['prv']));
+			}
+			/* Only check the key details if the private key could be fetched */
+			if ($res_key) {
+				$key_details = @openssl_pkey_get_details($res_key);
+				if (is_array($key_details)) {
+					if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
+						$keybits = $key_details['bits'];
+					} else {
+						$keybits = $key_details['ec']['curve_name'];
+					}
+				}
 			}
 			if (is_numeric($certificate['keylength'])) {
 				$newkeybits = $certificate['keylength'];
