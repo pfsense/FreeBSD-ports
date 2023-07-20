@@ -20,6 +20,10 @@
  */
 
 require_once("config.inc");
+require_once("globals.inc");
+
+
+$g['disablehelpicon'] = true;
 
 define('CS_LAPI_PORT', 8080);
 define('CS_LAPI_HOST', 'localhost');
@@ -31,12 +35,6 @@ function crowdsec_validate_form($post, &$input_errors)
         if (!is_numeric($lapi_port)) {
             $input_errors[] = 'LAPI port must be a numeric value.';
         }
-    } else {
-        $input_errors[] = 'LAPI port can not be empty.';
-    }
-
-    if (empty($post['lapi_host'])) {
-        $input_errors[] = 'LAPI host can not be empty.';
     }
 
     // Use external LAPI
@@ -59,7 +57,6 @@ function crowdsec_install()
 
 function crowdsec_sync_config()
 {
-
 }
 
 function crowdsec_generate_rules($type)
@@ -67,6 +64,8 @@ function crowdsec_generate_rules($type)
     $rules = "";
     switch ($type) {
         case 'filter':
+        case 'pfearly':
+        case 'early':
             $rules .= "block in log quick on wan from crowdsec_blacklist to any keep state label\n";
             $rules .= "block in log quick on wan from crowdsec6_blacklist to any keep state label\n";
             break;

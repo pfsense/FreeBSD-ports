@@ -31,7 +31,7 @@
     <menu>
         <name>Crowdsec</name>
         <section>Services</section>
-        <url>/pkg_edit.php?xml=crowdsec.xml</url>
+        <url>/crowdsec_landing.php</url>
     </menu>
     <service>
         <name>crowdsec</name>
@@ -40,14 +40,18 @@
     </service>
     <tabs>
         <tab>
+            <text>About</text>
+            <url>/crowdsec_landing.php</url>
+        </tab>
+        <tab>
             <text>Settings</text>
             <url>/pkg_edit.php?xml=crowdsec.xml</url>
             <active/>
         </tab>
-        <!--<tab>
-            <text>Overview</text>
-            <url>/somefile.php</url>
-        </tab>-->
+        <tab>
+            <text>Status</text>
+            <url>/crowdsec_status.php</url>
+        </tab>
     </tabs>
     <fields>
         <field>
@@ -68,6 +72,7 @@
             <type>input</type>
             <description>Pick the port for the LAPI endpoint.</description>
             <default_value>8080</default_value>
+            <required>true</required>
         </field>
         <field>
             <fielddescr>LAPI host</fielddescr>
@@ -75,6 +80,7 @@
             <type>input</type>
             <description>Set the LAPI endpoint host or ip.</description>
             <default_value>localhost</default_value>
+            <required>true</required>
         </field>
         <field>
             <fielddescr>Use an external security engine (LAPI)</fielddescr>
@@ -122,11 +128,7 @@
         ]]>
     </custom_php_validation_command>
 
-    <filter_rules_needed>
-        <![CDATA[
-        crowdsec_generate_rules
-        ]]>
-    </filter_rules_needed>
+    <filter_rules_needed><![CDATA[crowdsec_generate_rules]]></filter_rules_needed>
 
     <!--
     <custom_php_global_functions></custom_php_global_functions>
