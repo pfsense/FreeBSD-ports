@@ -25,9 +25,6 @@ require_once("globals.inc");
 
 $g['disablehelpicon'] = true;
 
-define('CS_LAPI_PORT', 8080);
-define('CS_LAPI_HOST', 'localhost');
-
 function crowdsec_validate_form($post, &$input_errors)
 {
     if (!empty($post['lapi_port'])) {
