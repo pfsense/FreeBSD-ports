@@ -1,0 +1,8 @@
+--- config/crowdsec-firewall-bouncer.yaml.orig	2023-07-20 21:10:09 UTC
++++ config/crowdsec-firewall-bouncer.yaml
+@@ -1,4 +1,4 @@
+-mode: ${BACKEND}
++mode: pf
+ pid_dir: /var/run/
+ update_frequency: 10s
+ daemonize: true
