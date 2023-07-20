@@ -128,7 +128,7 @@
         ]]>
     </custom_php_validation_command>
 
-    <filter_rules_needed><![CDATA[crowdsec_generate_rules]]></filter_rules_needed>
+    <filter_rules_needed>crowdsec_generate_rules</filter_rules_needed>
 
     <!--
     <custom_php_global_functions></custom_php_global_functions>

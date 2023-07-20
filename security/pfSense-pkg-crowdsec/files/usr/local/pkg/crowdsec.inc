@@ -63,8 +63,8 @@ function crowdsec_generate_rules($type)
         case 'filter':
         case 'pfearly':
         case 'early':
-            $rules .= "block in log quick on wan from crowdsec_blacklist to any keep state label\n";
-            $rules .= "block in log quick on wan from crowdsec6_blacklist to any keep state label\n";
+            $rules .= "block drop in log quick inet from <crowdsec_blacklists> to any label \"USER_RULE: Crowdsec (ipv4)\"\n";
+            $rules .= "block drop in log quick inet from <crowdsec6_blacklists> to any label \"USER_RULE: Crowdsec (ipv6)\"\n";
             break;
     }
 
