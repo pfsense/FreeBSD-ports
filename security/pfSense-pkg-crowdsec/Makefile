@@ -27,11 +27,21 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
+	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.conf.d/
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d/
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/crowdsec.xml \
 		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/crowdsec_landing.php \
+    		${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/crowdsec_status.php \
+			${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/crowdsec.inc \
+			${STAGEDIR}${PREFIX}/www/shortcuts
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/crowdsec.priv.inc \
+    		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/crowdsec.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \

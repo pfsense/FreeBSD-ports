@@ -19,25 +19,23 @@
  * limitations under the License.
  */
 
+require_once("config.inc");
+require_once("globals.inc");
 
 
-function crowdsec_validate_form($post, &$input_errors) {
+$g['disablehelpicon'] = true;
 
+function crowdsec_validate_form($post, &$input_errors)
+{
     if (!empty($post['lapi_port'])) {
         $lapi_port = $post['lapi_port'];
-        if(!is_numeric($lapi_port)){
+        if (!is_numeric($lapi_port)) {
             $input_errors[] = 'LAPI port must be a numeric value.';
         }
-    } else {
-        $input_errors[] = 'LAPI port can not be empty.';
-    }
-
-    if (empty($post['lapi_url'])) {
-        $input_errors[] = 'LAPI url can not be empty.';
     }
 
     // Use external LAPI
-    if(!empty($post['lapi_is_remote'])){
+    if (!empty($post['lapi_is_remote'])) {
         if (empty($post['agent_user'])) {
             $input_errors[] = 'Agent user is required for external LAPI usage.';
         }
@@ -50,15 +48,12 @@ function crowdsec_validate_form($post, &$input_errors) {
     }
 }
 
-
-
 function crowdsec_install()
 {
 }
 
-function crowdsec_write_config()
+function crowdsec_sync_config()
 {
-
 }
 
 function crowdsec_generate_rules($type)
@@ -66,6 +61,8 @@ function crowdsec_generate_rules($type)
     $rules = "";
     switch ($type) {
         case 'filter':
+        case 'pfearly':
+        case 'early':
             $rules .= "block in log quick on wan from crowdsec_blacklist to any keep state label\n";
             $rules .= "block in log quick on wan from crowdsec6_blacklist to any keep state label\n";
             break;

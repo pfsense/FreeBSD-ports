@@ -1,5 +1,14 @@
+/etc/inc/priv/crowdsec.priv.inc
 pkg/crowdsec.xml
 pkg/crowdsec.inc
 etc/rc.conf.d/pfsense_crowdsec
+etc/rc.conf.d/crowdsec
+etc/rc.conf.d/crowdsec_firewall
 etc/rc.d/pfsense_crowdsec
 %%DATADIR%%/info.xml
+www/shortcuts/crowdsec.inc
+www/crowdsec_landing.php
+www/crowdsec_status.php
+@dir /etc/inc/priv
+@dir /etc/inc
+
