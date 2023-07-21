@@ -23,7 +23,9 @@
  */
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/lcdproc.inc");
-global $mtxorb_bg_colors;
+global $mtxorb_backlight_color_list, $comport_list, $size_list, $driver_list;
+global $connection_type_list, $mtxorb_type_list, $port_speed_list;
+global $refresh_frequency_list, $percent_list, $backlight_list;
 
 $lcdproc_config = config_get_path('installedpackages/lcdproc/config/0', []);
 
@@ -48,20 +50,24 @@ if (!isset($pconfig['mtxorb_backlight_color']))      $pconfig['mtxorb_backlight_
 
 
 if ($_POST) {
-	unset($input_errors);
+	$input_errors = [];
 	$pconfig = $_POST;
 
-	/* Input validation goes here, with any invalid values found
-	 * in $_POST being added to $input_errors, e.g:
-	 *   $input_errors[] = gettext("Descriptive error message for the user.");
-	 */
+	/* Input validation */
+	lcdproc_validate_list($input_errors, 'comport',                $comport_list,                'COM Port');
+	lcdproc_validate_list($input_errors, 'size',                   $size_list,                   'Display Size');
+	lcdproc_validate_list($input_errors, 'driver',                 $driver_list,                 'Driver');
+	lcdproc_validate_list($input_errors, 'connection_type',        $connection_type_list,        'Connection Type');
+	lcdproc_validate_list($input_errors, 'mtxorb_type',            $mtxorb_type_list,            'Display Type');
+	lcdproc_validate_list($input_errors, 'mtxorb_backlight_color', $mtxorb_backlight_color_list, 'Matrix Orbital Background Color');
+	lcdproc_validate_list($input_errors, 'port_speed',             $port_speed_list,             'Port Speed');
+	lcdproc_validate_list($input_errors, 'refresh_frequency',      $refresh_frequency_list,      'Refresh Frequency');
+	lcdproc_validate_list($input_errors, 'brightness',             $percent_list,                'Brightness');
+	lcdproc_validate_list($input_errors, 'contrast',               $percent_list,                'Contrast');
+	lcdproc_validate_list($input_errors, 'backlight',              $backlight_list,              'Backlight');
+	lcdproc_validate_list($input_errors, 'offbrightness',          $percent_list,                'Off Brightness');
 
-	if (!empty($_POST['mtxorb_backlight_color']) &&
-	    !array_key_exists($_POST['mtxorb_backlight_color'], $mtxorb_bg_colors)) {
-		$input_errors[] = gettext("Invalid Matrix Orbital Background Color.");
-	}
-
-	if (!$input_errors) {
+	if (empty($input_errors)) {
 		$lcdproc_config['enable']                      = $pconfig['enable'];
 		$lcdproc_config['comport']                     = $pconfig['comport'];
 		$lcdproc_config['size']                        = $pconfig['size'];
@@ -90,7 +96,7 @@ $shortcut_section = 'lcdproc';
 $pgtitle = array(gettext("Services"), gettext("LCDproc"), gettext("Server"));
 include("head.inc");
 
-if ($input_errors) {
+if (!empty($input_errors)) {
 	print_input_errors($input_errors);
 }
 
@@ -99,8 +105,6 @@ $tab_array[] = array(gettext("Server"),  true,  "/packages/lcdproc/lcdproc.php")
 $tab_array[] = array(gettext("Screens"), false, "/packages/lcdproc/lcdproc_screens.php");
 display_top_tabs($tab_array);
 
-// The constructor for Form automatically creates a submit button. If you want to suppress that
-// use Form(false), of specify a different button using Form($mybutton)
 $form = new Form();
 $section = new Form_Section('LCD connection and hardware');
 
@@ -118,45 +122,18 @@ $section->addInput(
 $section->addInput(
 	new Form_Select(
 		'comport',
-		'Com port',
+		'COM port',
 		$pconfig['comport'], // Initial value.
-		[
-			'none'    => 'none',
-			'com1'    => 'Serial COM port 1 (/dev/cua0)',
-			'com2'    => 'Serial COM port 2 (/dev/cua1)',
-			'com1a'   => 'Serial COM port 1 alternate (/dev/cuau0)',
-			'com2a'   => 'Serial COM port 2 alternate (/dev/cuau1)',
-			'ucom1'   => 'USB COM port 1 (/dev/cuaU0)',
-			'ucom2'   => 'USB COM port 2 (/dev/cuaU1)',
-			'lpt1'    => 'Parallel port 1 (/dev/lpt0)',
-			'ttyU0'   => 'USB COM port 1 tty (/dev/ttyU0)',
-			'ttyU1'   => 'USB COM port 2 tty (/dev/ttyU1)',
-			'ttyU2'   => 'USB COM port 3 tty (/dev/ttyU2)',
-			'ttyU3'   => 'USB COM port 4 tty (/dev/ttyU3)',
-			'ugen0.2' => 'USB COM port 1 alternate (/dev/ugen0.2)',
-			'ugen1.2' => 'USB COM port 2 alternate (/dev/ugen1.2)',
-			'ugen1.3' => 'USB COM port 3 alternate (/dev/ugen1.3)',
-			'ugen2.2' => 'USB COM port 4 alternate (/dev/ugen2.2)'
-		]
+		$comport_list
 	)
 )->setHelp('Set the com port LCDproc should use.');
 
 $section->addInput(
 	new Form_Select(
 		'size',
-		'Display size',
+		'Display Size',
 		$pconfig['size'], // Initial value.
-		[
-			'12x1' => '1 rows 12 colums',
-			'12x2' => '2 rows 12 colums',
-			'12x4' => '4 rows 12 colums',
-			'16x1' => '1 row 16 colums',
-			'16x2' => '2 rows 16 colums',
-			'16x4' => '4 rows 16 colums',
-			'20x1' => '1 row 20 colums',
-			'20x2' => '2 rows 20 colums',
-			'20x4' => '4 rows 20 colums'
-		]
+		$size_list
 	)
 )->setHelp('Set the display size lcdproc should use.');
 
@@ -165,44 +142,7 @@ $section->addInput(
 		'driver',
 		'Driver',
 		$pconfig['driver'], // Initial value.
-		[
-			'bayrad'       => 'bayrad',
-			'CFontz'       => 'CrystalFontz',
-			'CFontz633'    => 'CrystalFontz 633',
-			'CFontzPacket' => 'CrystalFontz Packet',
-			'curses'       => 'curses',
-			'CwLnx'        => 'CwLnx',
-			'ea65'         => 'ea65',
-			'EyeboxOne'    => 'EyeboxOne',
-			'glk'          => 'glk',
-			'hd44780'      => 'HD44780 and compatible',
-			'icp_a106'     => 'icp_a106',
-			'IOWarrior'    => 'IOWarrior',
-			'lb216'        => 'lb216',
-			'lcdm001'      => 'lcdm001',
-			'lcterm'       => 'lcterm',
-			'MD8800'       => 'MD8800',
-			'ms6931'       => 'ms6931',
-			'mtc_s16209x'  => 'mtc_s16209x',
-			'MtxOrb'       => 'Matrix Orbital and Compatible',
-			'nexcom'       => 'nexcom (x86 only)',
-			'NoritakeVFD'  => 'NoritakeVFD',
-			'picolcd'      => 'picolcd',
-			'pyramid'      => 'pyramid',
-			'rawserial'    => 'rawserial',
-			'sdeclcd'      => 'Watchguard Firebox with SDEC',
-			'sed1330'      => 'sed1330',
-			'sed1520'      => 'sed1520',
-			'serialPOS'    => 'serialPOS',
-			'serialVFD'    => 'serialVFD',
-			'shuttleVFD'   => 'shuttleVFD',
-			'sli'          => 'sli',
-			'stv5730'      => 'stv5730',
-			'SureElec'     => 'Sure Electronics',
-			't6963'        => 't6963',
-			'text'         => 'text',
-			'tyan'         => 'tyan'
-		]
+		$driver_list
 	)
 )->setHelp('Select the LCD driver LCDproc should use. Some drivers will show additional settings.');
 
@@ -211,29 +151,9 @@ $section->addInput(
 $section->addInput(
 	new Form_Select(
 		'connection_type',
-		'Connection type',
+		'Connection Type',
 		$pconfig['connection_type'], // Initial value.
-		[
-			'4bit'          => '4bit wiring to parallel port',
-			'8bit'          => '8bit wiring to parallel port (lcdtime)',
-			'winamp'        => '8bit wiring winamp style to parallel port',
-			'serialLpt'     => 'Serial LPT wiring',
-			'picanlcd'      => 'PIC-an-LCD serial device',
-			'lcdserializer' => 'LCD serializer',
-			'los-panel'     => 'LCD on serial panel device',
-			'vdr-lcd'       => 'VDR LCD serial device',
-			'vdr-wakeup'    => 'VDR-Wakeup module',
-			'pertelian'     => 'Pertelian X2040 LCD',
-			'bwctusb'       => 'BWCT USB device',
-			'lcd2usb'       => 'Till Harbaum\'s LCD2USB',
-			'usbtiny'       => 'Dick Streefland\'s USBtiny',
-			'lis2'          => 'LIS2 from VLSystem',
-			'mplay'         => 'MPlay Blast from VLSystem',
-			'ftdi'          => 'LCD connected to FTDI 2232D USB chip',
-			'usblcd'        => 'USBLCD adapter from Adams IT Services',
-			'i2c'           => 'LCD driven by PCF8574/PCA9554 connected via i2c',
-			'ezio'          => 'Portwell EZIO-100 and EZIO-300'
-		]
+		$connection_type_list
 	)
 )->setHelp('Select the HD44780 connection type');
 
@@ -245,14 +165,9 @@ $subsection = new Form_Group('Display type');
 $subsection->add(
 	new Form_Select(
 		'mtxorb_type',
-		'Display type',
+		'Display Type',
 		$pconfig['mtxorb_type'], // Initial value.
-		[
-			'lcd' => 'LCD (default)',
-			'lkd' => 'LKD',
-			'vfd' => 'VFD',
-			'vkd' => 'VKD'
-		]
+		$mtxorb_type_list
 	)
 );
 $subsection->add(
@@ -268,7 +183,7 @@ $subsection->add(
 		'mtxorb_backlight_color',
 		'Background Color',
 		$pconfig['mtxorb_backlight_color'], // Initial value.
-		array_combine(array_keys($mtxorb_bg_colors), array_keys($mtxorb_bg_colors))
+		array_combine(array_keys($mtxorb_backlight_color_list), array_keys($mtxorb_backlight_color_list))
 	)
 )->setHelp('LCD Background Color');
 
@@ -307,9 +222,8 @@ $section->add($subsection);
 		var using_MtxOrb_driver  = driverName_lowercase.indexOf("mtxorb") >= 0;
 		hideInput('mtxorb_type', !using_MtxOrb_driver); // Hides the entire section, including the mtxorb_adjustable_backlight checkbox
 
-		// Hide the Output-LEDs checkbox when not using the CFontz633 or CFontzPacket driver
-		var driverSupportsLEDs  = driverName_lowercase.indexOf("cfontz633") >= 0;
-		driverSupportsLEDs     |= driverName_lowercase.indexOf("cfontzpacket") >= 0;
+		// Hide the Output-LEDs checkbox when not using the CFontzPacket driver
+		var driverSupportsLEDs  = driverName_lowercase.indexOf("cfontzpacket") >= 0;
 		hideCheckbox('outputleds', !driverSupportsLEDs);
 	}
 //]]>
@@ -320,17 +234,9 @@ $section->add($subsection);
 $section->addInput(
 	new Form_Select(
 		'port_speed',
-		'Port speed',
+		'Port Speed',
 		$pconfig['port_speed'], // Initial value.
-		[
-			'0'      => 'Default',
-			'1200'   => '1200 bps',
-			'2400'   => '2400 bps',
-			'9600'   => '9600 bps',
-			'19200'  => '19200 bps',
-			'57600'  => '57600 bps',
-			'115200' => '115200 bps'
-		]
+		$port_speed_list
 	)
 )->setHelp(
 	'Set the port speed.%1$s' .
@@ -346,30 +252,23 @@ $section = new Form_Section('Display preferences');
 $section->addInput(
 	new Form_Select(
 		'refresh_frequency',
-		'Refresh frequency',
+		'Refresh Frequency',
 		$pconfig['refresh_frequency'], // Initial value.
-		[
-			'1'  => '1 second',
-			'2'  => '2 seconds',
-			'3'  => '3 seconds',
-			'5'  => '5 seconds',
-			'10' => '10 seconds',
-			'15' => '15 seconds'
-		]
+		$refresh_frequency_list
 	)
 )->setHelp('Set the duration for which each info screen will be displayed.');
 
-// The connection type is CFontz633/CFontzPacket-specific, so is hidden by javascript (above)
-// if a CFontz633/CFontzPacket driver is not being used.
+// The connection type is CFontzPacket-specific, so is hidden by javascript (above)
+// if a CFontzPacket driver is not being used.
 $section->addInput(
 	new Form_Checkbox(
 		'outputleds', // checkbox name (id)
-		'Enable output LEDs', // checkbox label
+		'Enable Output LEDs', // checkbox label
 		'Enable the output LEDs present on some LCD panels.', // checkbox text
 		$pconfig['outputleds'] // checkbox initial value
 	)
 )->setHelp(
-	'This feature is currently supported by the CFontz633 driver only.%1$s' .
+	'This feature is currently supported by the CFontzPacket driver only.%1$s' .
 	'Each LED can be off or show two colors: RED (alarm) or GREEN (everything ok) and shows:%1$s' .
 	'LED1: NICs status (green: ok, red: at least one nic down)%1$s' .
 	'LED2: CARP status (green: master, red: backup, off: CARP not implemented)%1$s' .
@@ -386,8 +285,8 @@ $section->addInput(
 		$pconfig['controlmenu'] // checkbox initial value
 	)
 )->setHelp(
-	'This will only be usefull on display with buttons.%1$s' .
-	'Currently you can REBOOT and HALT the system from there.',
+	'Requires a display with buttons (e.g. Crystalfontz 635/735/835).%1$s' .
+	'Currently supports several basic functions including reboot and halt.',
 	'<br />'
 );
 
@@ -396,20 +295,7 @@ $section->addInput(
 		'brightness',
 		'Brightness',
 		$pconfig['brightness'], // Initial value.
-		[
-			'-1' => 'Default',
-			'0'  => '0%',
-			'10' => '10%',
-			'20' => '20%',
-			'30' => '30%',
-			'40' => '40%',
-			'50' => '50%',
-			'60' => '60%',
-			'70' => '70%',
-			'80' => '80%',
-			'90' => '90%',
-			'100' => '100%'
-		]
+		$percent_list
 	)
 )->setHelp(
 	'Set the brightness of the LCD panel.%1$s' . '
@@ -422,20 +308,7 @@ $section->addInput(
 		'contrast',
 		'Contrast',
 		$pconfig['contrast'], // Initial value.
-		[
-			'-1' => 'Default',
-			'0'  => '0%',
-			'10' => '10%',
-			'20' => '20%',
-			'30' => '30%',
-			'40' => '40%',
-			'50' => '50%',
-			'60' => '60%',
-			'70' => '70%',
-			'80' => '80%',
-			'90' => '90%',
-			'100' => '100%'
-		]
+		$percent_list
 	)
 )->setHelp(
 	'Set the contrast of the LCD panel.%1$s' .
@@ -448,11 +321,7 @@ $section->addInput(
 		'backlight',
 		'Backlight',
 		$pconfig['backlight'], // Initial value.
-		[
-			'default' => 'Default',
-			'on'      => 'On',
-			'off'     => 'Off'
-		]
+		$backlight_list
 	)
 )->setHelp(
 	'Set the backlight setting. If set to the default value, then the backlight setting of the display can be influenced by the clients.%1$s' .
@@ -463,22 +332,9 @@ $section->addInput(
 $section->addInput(
 	new Form_Select(
 		'offbrightness',
-		'Off brightness',
+		'Off Brightness',
 		$pconfig['offbrightness'], // Initial value.
-		[
-			'-1' => 'Default',
-			'0'  => '0%',
-			'10' => '10%',
-			'20' => '20%',
-			'30' => '30%',
-			'40' => '40%',
-			'50' => '50%',
-			'60' => '60%',
-			'70' => '70%',
-			'80' => '80%',
-			'90' => '90%',
-			'100' => '100%'
-		]
+		$percent_list
 	)
 )->setHelp(
 	'Set the off-brightness of the LCD panel. This value is used when the display is normally switched off in case LCDd is inactive.%1$s' .
