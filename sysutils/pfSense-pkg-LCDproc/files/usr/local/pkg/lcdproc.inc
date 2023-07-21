@@ -33,21 +33,185 @@ define('LCDPROC_SERVICE_NAME', 'lcdproc');
 
 /* Common Lists */
 
-global $mtxorb_bg_colors;
-$mtxorb_bg_colors = [
-	'Default' => '',
-	'White'   => '\0376\0320\0377\0377\0377',
-	'Gray'    => '\0376\0320\0200\0200\0200',
-	'Red'     => '\0376\0320\0377\0000\0000',
-	'Green'   => '\0376\0320\0000\0377\0000',
-	'Blue'    => '\0376\0320\0000\0000\0377',
-	'Cyan'    => '\0376\0320\0000\0377\0377',
-	'Yellow'  => '\0376\0320\0377\0377\0000',
-	'Magenta' => '\0376\0320\0377\0000\0377',
-	'Purple'  => '\0376\0320\0377\0000\0177',
+/* Background colors for Matrix Orbital compatible displays supporting the
+ * extended command set and associated RGB hardware, such as the Adafruit
+ * LCD backpack and certain add-on displays.
+ */
+global $mtxorb_backlight_color_list;
+/* BG color command plus octal LED power values of various shades for R, G, B.
+ *   - For lowest power setting, use 1, not 0.
+ * Some displays have a weak Red LED backlight so also list alternate mixes
+ */
+$mtxorb_backlight_color_list = [
+	'Default'     => '',
+	'White'       => '\0376\0320\0377\0376\0375', /* Full R+G+B */
+	'Gray'        => '\0376\0320\0177\0177\0177', /* Med R+G+B */
+	'Gray Alt'    => '\0376\0320\0377\0040\0040', /* Full R, Low G+B */
+	'Red'         => '\0376\0320\0377\0001\0001', /* Full R */
+	'Green'       => '\0376\0320\0001\0377\0001', /* Full G */
+	'Blue'        => '\0376\0320\0001\0001\0377', /* Full B */
+	'Cyan'        => '\0376\0320\0001\0377\0377', /* Full G+B */
+	'Yellow'      => '\0376\0320\0377\0377\0001', /* Full R+G */
+	'Yellow Alt'  => '\0376\0320\0377\0050\0001', /* Full R, Low G */
+	'Magenta'     => '\0376\0320\0377\0001\0377', /* Full R+B */
+	'Magenta Alt' => '\0376\0320\0377\0001\0040', /* Full R, Low B */
+	'Purple'      => '\0376\0320\0377\0001\0177', /* Full R + Med B */
+];
+
+global $comport_list;
+$comport_list = [
+	'none'    => 'none',
+	'com1'    => 'Serial COM port 1 (/dev/cua0)',
+	'com2'    => 'Serial COM port 2 (/dev/cua1)',
+	'com1a'   => 'Serial COM port 1 alternate (/dev/cuau0)',
+	'com2a'   => 'Serial COM port 2 alternate (/dev/cuau1)',
+	'ucom1'   => 'USB COM port 1 (/dev/cuaU0)',
+	'ucom2'   => 'USB COM port 2 (/dev/cuaU1)',
+	'lpt1'    => 'Parallel port 1 (/dev/lpt0)',
+	'ttyU0'   => 'USB COM port 1 tty (/dev/ttyU0)',
+	'ttyU1'   => 'USB COM port 2 tty (/dev/ttyU1)',
+	'ttyU2'   => 'USB COM port 3 tty (/dev/ttyU2)',
+	'ttyU3'   => 'USB COM port 4 tty (/dev/ttyU3)',
+	'ugen0.2' => 'USB COM port 1 alternate (/dev/ugen0.2)',
+	'ugen1.2' => 'USB COM port 2 alternate (/dev/ugen1.2)',
+	'ugen1.3' => 'USB COM port 3 alternate (/dev/ugen1.3)',
+	'ugen2.2' => 'USB COM port 4 alternate (/dev/ugen2.2)'
+];
+
+global $size_list;
+$size_list = [
+	'12x1' => '1 rows 12 colums',
+	'12x2' => '2 rows 12 colums',
+	'12x4' => '4 rows 12 colums',
+	'16x1' => '1 row 16 colums',
+	'16x2' => '2 rows 16 colums',
+	'16x4' => '4 rows 16 colums',
+	'20x1' => '1 row 20 colums',
+	'20x2' => '2 rows 20 colums',
+	'20x4' => '4 rows 20 colums'
+];
+
+global $driver_list;
+$driver_list = [
+	'bayrad'       => 'bayrad',
+	'CFontz'       => 'CrystalFontz',
+	'CFontzPacket' => 'CrystalFontz Packet',
+	'curses'       => 'curses',
+	'CwLnx'        => 'CwLnx',
+	'ea65'         => 'ea65',
+	'EyeboxOne'    => 'EyeboxOne',
+	'glk'          => 'glk',
+	'hd44780'      => 'HD44780 and compatible',
+	'icp_a106'     => 'icp_a106',
+	'IOWarrior'    => 'IOWarrior',
+	'lb216'        => 'lb216',
+	'lcdm001'      => 'lcdm001',
+	'lcterm'       => 'lcterm',
+	'MD8800'       => 'MD8800',
+	'ms6931'       => 'ms6931',
+	'mtc_s16209x'  => 'mtc_s16209x',
+	'MtxOrb'       => 'Matrix Orbital and Compatible',
+	'NoritakeVFD'  => 'NoritakeVFD',
+	'picolcd'      => 'picolcd',
+	'pyramid'      => 'pyramid',
+	'rawserial'    => 'rawserial',
+	'sdeclcd'      => 'Watchguard Firebox with SDEC',
+	'sed1330'      => 'sed1330',
+	'sed1520'      => 'sed1520',
+	'serialPOS'    => 'serialPOS',
+	'serialVFD'    => 'serialVFD',
+	'shuttleVFD'   => 'shuttleVFD',
+	'sli'          => 'sli',
+	'stv5730'      => 'stv5730',
+	'SureElec'     => 'Sure Electronics',
+	't6963'        => 't6963',
+	'text'         => 'text',
+	'tyan'         => 'tyan'
+];
+
+global $connection_type_list;
+$connection_type_list = [
+	'4bit'          => '4bit wiring to parallel port',
+	'8bit'          => '8bit wiring to parallel port (lcdtime)',
+	'winamp'        => '8bit wiring winamp style to parallel port',
+	'serialLpt'     => 'Serial LPT wiring',
+	'picanlcd'      => 'PIC-an-LCD serial device',
+	'lcdserializer' => 'LCD serializer',
+	'los-panel'     => 'LCD on serial panel device',
+	'vdr-lcd'       => 'VDR LCD serial device',
+	'vdr-wakeup'    => 'VDR-Wakeup module',
+	'pertelian'     => 'Pertelian X2040 LCD',
+	'bwctusb'       => 'BWCT USB device',
+	'lcd2usb'       => 'Till Harbaum\'s LCD2USB',
+	'usbtiny'       => 'Dick Streefland\'s USBtiny',
+	'lis2'          => 'LIS2 from VLSystem',
+	'mplay'         => 'MPlay Blast from VLSystem',
+	'ftdi'          => 'LCD connected to FTDI 2232D USB chip',
+	'usblcd'        => 'USBLCD adapter from Adams IT Services',
+	'i2c'           => 'LCD driven by PCF8574/PCA9554 connected via i2c',
+	'ezio'          => 'Portwell EZIO-100 and EZIO-300'
+];
+
+global $mtxorb_type_list;
+$mtxorb_type_list = [
+	'lcd' => 'LCD (default)',
+	'lkd' => 'LKD',
+	'vfd' => 'VFD',
+	'vkd' => 'VKD'
+];
+
+global $port_speed_list;
+$port_speed_list = [
+	'0'      => 'Default',
+	'1200'   => '1200 bps',
+	'2400'   => '2400 bps',
+	'9600'   => '9600 bps',
+	'19200'  => '19200 bps',
+	'57600'  => '57600 bps',
+	'115200' => '115200 bps'
+];
+
+global $refresh_frequency_list;
+$refresh_frequency_list = [
+	'1'  => '1 second',
+	'2'  => '2 seconds',
+	'3'  => '3 seconds',
+	'5'  => '5 seconds',
+	'10' => '10 seconds',
+	'15' => '15 seconds'
+];
+
+global $percent_list;
+$percent_list = [
+	'-1' => 'Default',
+	'0'  => '0%',
+	'10' => '10%',
+	'20' => '20%',
+	'30' => '30%',
+	'40' => '40%',
+	'50' => '50%',
+	'60' => '60%',
+	'70' => '70%',
+	'80' => '80%',
+	'90' => '90%',
+	'100' => '100%'
+];
+
+global $backlight_list;
+$backlight_list = [
+	'default' => 'Default',
+	'on'      => 'On',
+	'off'     => 'Off'
 ];
 
 /* Functions */
+function lcdproc_validate_list(&$input_errors, $postvar, $list, $name) {
+	if (!empty($_POST[$postvar]) &&
+	    !array_key_exists($_POST[$postvar], $list)) {
+		$input_errors[] = "Invalid {$name}.";
+	}
+}
+
 function lcdproc_notice($msg) {
 	syslog(LOG_NOTICE, "lcdproc: {$msg}");
 }
@@ -131,14 +295,10 @@ function sync_package_lcdproc_screens() {
 }
 
 function sync_package_lcdproc() {
-	global $g, $input_errors, $mtxorb_bg_colors;
+	global $g, $input_errors, $mtxorb_backlight_color_list;
 
 	# Detect boot process
-	if (function_exists("platform_booting")) {
-		if (platform_booting()) {
-			return;
-		}
-	} elseif ($g['booting']) {
+	if (platform_booting()) {
 		return;
 	}
 
@@ -257,16 +417,6 @@ function sync_package_lcdproc() {
 				$config_text .= set_lcd_value("offbrightness", 1000, 50);
 				$config_text .= "NewFirmware=no\n";
 				$config_text .= "Reboot=no\n";
-				break;
-			case "CFontz633":
-				$config_text .= "[{$lcdproc_config['driver']}]\n";
-				$config_text .= "Device={$realport}\n";
-				$config_text .= "Size={$lcdproc_config['size']}\n";
-				$config_text .= set_lcd_value("contrast", 1000, 350);
-				$config_text .= set_lcd_value("brightness", 1000, 1000);
-				$config_text .= set_lcd_value("offbrightness", 1000, 50);
-				$config_text .= "NewFirmware=yes\n";
-				$config_text .= "Reboot=yes\n";
 				break;
 			case "CFontzPacket":
 				$config_text .= "[{$lcdproc_config['driver']}]\n";
@@ -504,24 +654,25 @@ function sync_package_lcdproc() {
 
 		/* Generate rc file start and stop */
 		$stop = <<<EOD
-if [ `pgrep -fo lcdproc_client.ph` ];then
-		pkill -f lcdproc_client.ph
+
+	if [ `pgrep -fo lcdproc_client.php` ];then
+			pkill -f lcdproc_client.php
+			sleep 1
+	fi
+	if  [ `pgrep -anx LCDd` ]; then
+		pkill -anx LCDd
 		sleep 1
-fi
-if  [ `pgrep -anx LCDd` ]; then
-	pkill -anx LCDd
-	sleep 1
-fi
+	fi
 
 EOD;
 		$start = $stop ."\n";
 
 		if (!empty($lcdproc_config['mtxorb_backlight_color']) &&
-		    array_key_exists($lcdproc_config['mtxorb_backlight_color'], $mtxorb_bg_colors) &&
-		    !empty($mtxorb_bg_colors[$lcdproc_config['mtxorb_backlight_color']])) {
+		    array_key_exists($lcdproc_config['mtxorb_backlight_color'], $mtxorb_backlight_color_list) &&
+		    !empty($mtxorb_backlight_color_list[$lcdproc_config['mtxorb_backlight_color']])) {
 			$start .= "\t# Initialize display\n";
 			$start .= "\t/usr/bin/printf \"%b\" ";
-			$start .= escapeshellarg($mtxorb_bg_colors[$lcdproc_config['mtxorb_backlight_color']]);
+			$start .= escapeshellarg($mtxorb_backlight_color_list[$lcdproc_config['mtxorb_backlight_color']]);
 			$start .= " > " . escapeshellarg($realport) . "\n";
 		}
 

@@ -38,6 +38,8 @@ if (!isset($pconfig['scr_states']))                          $pconfig['scr_state
 if (!isset($pconfig['scr_carp']))                            $pconfig['scr_carp']                            = false;
 if (!isset($pconfig['scr_ipsec']))                           $pconfig['scr_ipsec']                           = false;
 if (!isset($pconfig['scr_interfaces']))                      $pconfig['scr_interfaces']                      = false;
+if (!isset($pconfig['scr_gwsum']))                           $pconfig['scr_gwsum']                           = false;
+if (!isset($pconfig['scr_gwstatus']))                        $pconfig['scr_gwstatus']                        = false;
 if (!isset($pconfig['scr_mbuf']))                            $pconfig['scr_mbuf']                            = false;
 if (!isset($pconfig['scr_packages']))                        $pconfig['scr_packages']                        = false;
 if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufrequency']                    = false;
@@ -76,6 +78,8 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_carp']                            = $pconfig['scr_carp'];
 		$lcdproc_screens_config['scr_ipsec']                           = $pconfig['scr_ipsec'];
 		$lcdproc_screens_config['scr_interfaces']                      = $pconfig['scr_interfaces'];
+		$lcdproc_screens_config['scr_gwsum']                           = $pconfig['scr_gwsum'];
+		$lcdproc_screens_config['scr_gwstatus']                        = $pconfig['scr_gwstatus'];
 		$lcdproc_screens_config['scr_mbuf']                            = $pconfig['scr_mbuf'];
 		$lcdproc_screens_config['scr_packages']                        = $pconfig['scr_packages'];
 		$lcdproc_screens_config['scr_cpufrequency']                    = $pconfig['scr_cpufrequency'];
@@ -113,8 +117,6 @@ $tab_array[] = array(gettext("Server"),  false, "/packages/lcdproc/lcdproc.php")
 $tab_array[] = array(gettext("Screens"), true,  "/packages/lcdproc/lcdproc_screens.php");
 display_top_tabs($tab_array);
 
-// The constructor for Form automatically creates a submit button. If you want to suppress that
-// use Form(false), of specify a different button using Form($mybutton)
 $form = new Form();
 $section = new Form_Section('LCD info screens');
 
@@ -207,6 +209,22 @@ $section->addInput(
 		$pconfig['scr_interfaces'] // checkbox initial value
 	)
 );
+$section->addInput(
+	new Form_Checkbox(
+		'scr_gwsum', // checkbox name (id)
+		'Gateway Summary', // checkbox label
+		'Display a Gateway status (up/down) summary', // checkbox text
+		$pconfig['scr_gwsum'] // checkbox initial value
+	)
+);
+$section->addInput(
+	new Form_Checkbox(
+		'scr_gwstatus', // checkbox name (id)
+		'Gateway Status', // checkbox label
+		'Display Gateway Status', // checkbox text
+		$pconfig['scr_gwstatus'] // checkbox initial value
+	)
+)->setHelp('A 4-row 20-column display size, or higher, is required for this screen.');
 $section->addInput(
 	new Form_Checkbox(
 		'scr_mbuf', // checkbox name (id)

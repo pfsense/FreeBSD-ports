@@ -360,6 +360,14 @@ function get_lcd_messages($lcd) {
 			lcdproc_notice("LCDd output: \"{$cmd_output}\". Executed \"{$lcd_cmd}\"");
 		}
 		if (cmenu_enabled()) {
+			if (preg_match("/^menuevent select cm_ask_enter/", $cmd_output)) {
+				lcdproc_notice("Entering CARP Maintenance Mode");
+				interfaces_carp_set_maintenancemode(true);
+			}
+			if (preg_match("/^menuevent select cm_ask_leave/", $cmd_output)) {
+				lcdproc_notice("Leaving CARP Maintenance Mode");
+				interfaces_carp_set_maintenancemode(false);
+			}
 			if (preg_match("/^menuevent select r_ask_yes/", $cmd_output)) {
 				lcdproc_notice("init REBOOT!");
 				system_reboot();
@@ -396,15 +404,13 @@ function get_lcdpanel_refresh_frequency() {
 	return config_get_path('installedpackages/lcdproc/config/0/refresh_frequency', 5);
 }
 
-function outputled_enabled_CFontz633() {
+function outputled_enabled_CFontzPacket() {
 	$driver = config_get_path('installedpackages/lcdproc/config/0/driver');
 	$outputleds = config_get_path('installedpackages/lcdproc/config/0/outputleds');
 	if (is_null($outputleds)) {
 		return false;
 	} else {
-		if ($outputleds && ($driver == "CFontz633")) {
-			return true;
-		} elseif ($outputleds && ($driver == "CFontzPacket")) {
+		if ($outputleds && ($driver == "CFontzPacket")) {
 			return true;
 		} else {
 			return false;
@@ -436,6 +442,7 @@ function outputled_carp() {
 					return 1;
 					break;
 				case "BACKUP":
+				default:
 					return 0;
 					break;
 			}
@@ -851,6 +858,11 @@ function build_interface($lcd) {
 
 	/* setup pfsense control menu */
 	if (cmenu_enabled()) {
+		$lcd_cmds[] = 'menu_add_item "" carpmaint_menu menu "CARP Maintenance"';
+		$lcd_cmds[] = 'menu_add_item "carpmaint_menu" cm_ask_no action "Cancel" -next _close_';
+		$lcd_cmds[] = 'menu_add_item "carpmaint_menu" cm_ask_enter action "Enter Maint. Mode" -next _quit_';
+		$lcd_cmds[] = 'menu_add_item "carpmaint_menu" cm_ask_leave action "Leave Maint. Mode" -next _quit_';
+
 		$lcd_cmds[] = 'menu_add_item "" reboot_menu menu "Reboot"';
 		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_no action "No" -next _close_';
 		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_yes action "Yes" -next _quit_';
@@ -964,6 +976,15 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
 					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ Interfaces\"";
 					break;
+				case "scr_gwsum":
+					$lcd_cmds[] = "screen_add {$name}";
+					$lcd_cmds[] = "screen_set {$name} heartbeat off";
+					$lcd_cmds[] = "screen_set {$name} name {$name}";
+					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
+					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ GW Summary\"";
+					break;
 				case "scr_mbuf":
 					$lcd_cmds[] = "screen_add {$name}";
 					$lcd_cmds[] = "screen_set {$name} heartbeat off";
@@ -1019,6 +1040,26 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "widget_add {$name} text_wdgt{$i} string";
 					}
 					$includeSummary = false; // this screen needs all the lines
+					break;
+				case "scr_gwstatus":
+					$gateway_status = return_gateways_status(true);
+					foreach ($gateway_status as $gwname => $gw) {
+						$s_name = $name . $gwname;
+						$lcd_cmds[] = "screen_add {$s_name}";
+						$lcd_cmds[] = "screen_set {$s_name} heartbeat off";
+						$lcd_cmds[] = "screen_set {$s_name} name \"{$name}.{$gwname}\"";
+						$lcd_cmds[] = "screen_set {$s_name} duration {$refresh_frequency}";
+						$lcd_cmds[] = "widget_add {$s_name} gwname_wdgt string";
+						$lcd_cmds[] = "widget_set {$s_name} gwname_wdgt 1 1 \"{$gwname}\"";
+						$lcd_cmds[] = "widget_add {$s_name} stata_wdgt scroller";
+						$lcd_cmds[] = "widget_add {$s_name} lossl_wdgt string";
+						$lcd_cmds[] = "widget_set {$s_name} lossl_wdgt 1 3 \"Loss:\"";
+						$lcd_cmds[] = "widget_add {$s_name} lossa_wdgt scroller";
+						$lcd_cmds[] = "widget_add {$s_name} rttl_wdgt string";
+						$lcd_cmds[] = "widget_set {$s_name} rttl_wdgt 1 4 \"Delay:\"";
+						$lcd_cmds[] = "widget_add {$s_name} rtta_wdgt scroller";
+						$includeSummary = false; // this screen needs all the lines
+					}
 					break;
 				case "scr_interfaces_link":
 					$ifLinkList = build_interface_link_list();
@@ -1101,12 +1142,13 @@ function loop_status($lcd) {
 		$lcd_cmds = array();
 		$interfaceTrafficList = null;
 		$ifLinkList = null;
+		$gateway_status = null;
 
 		/* initializes the widget counter */
 		$widget_counter = 0;
 
 		/* controls the output leds */
-		if (outputled_enabled_CFontz633()) {
+		if (outputled_enabled_CFontzPacket()) {
 			$led_output_value = 0;
 			/* LED 1: Interface status */
 			if (substr_count(get_interfaces_stats(), "Down") > 0 ) {
@@ -1121,11 +1163,12 @@ function loop_status($lcd) {
 					break;
 				/* CARP on Backup */
 				case 0:
-					$led_output_value = $led_output_value + pow(2, 1);
+					$led_output_value = $led_output_value + pow(2, 5);
 					break;
 				/* CARP on Master */
 				case 1:
-					$led_output_value = $led_output_value + pow(2, 5);
+				default:
+					$led_output_value = $led_output_value + pow(2, 1);
 			}
 			/* LED 3: CPU Usage */
 			if (lcdproc_cpu_usage() > 50) {
@@ -1205,6 +1248,21 @@ function loop_status($lcd) {
 					$interfaces = get_interfaces_stats();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$interfaces}\"";
 					break;
+				case "scr_gwsum":
+					if ($gateway_status === null) {
+						$gateway_status = return_gateways_status(true);
+					}
+					$gwup = 0;
+					$gwdown = 0;
+					foreach ($gateway_status as $idx => $gw) {
+						if ($gw['status'] == 'online') {
+							$gwup += 1;
+						} else {
+							$gwdown += 1;
+						}
+					}
+					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Up: {$gwup} / Down: {$gwdown}\"";
+					break;
 				case "scr_mbuf":
 					$mbufstats = lcdproc_get_mbuf_stats();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$mbufstats}\"";
@@ -1272,6 +1330,32 @@ function loop_status($lcd) {
 						$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
 					}
 					$updateSummary = false;
+					break;
+				case "scr_gwstatus":
+					if ($gateway_status === null) {
+						$gateway_status = return_gateways_status(true);
+					}
+					foreach ($gateway_status as $gwname => $gw) {
+						$s_name = $name . $gwname;
+						$lcd_cmds[] = "widget_set {$s_name} gwname_wdgt 1 1 \"{$gwname}\"";
+
+						$statstring = ucwords($gw['status']);
+						if (!empty($gw['substatus']) &&
+						    ($gw['substatus'] != "none")) {
+							$statstring .= " ({$gw['substatus']})";
+						}
+						$lcd_cmds[] = "widget_set $s_name stata_wdgt 1 2 " .
+							$lcdpanel_width . " 2 h 4 \"" .
+							$statstring . "\"";
+
+						$lcd_cmds[] = "widget_set $s_name lossa_wdgt 7 3 " .
+							$lcdpanel_width . " 3 h 4 \"" .
+							$gw['loss'] . "\"";
+
+						$lcd_cmds[] = "widget_set $s_name rtta_wdgt 8 4 " .
+							$lcdpanel_width . " 4 h 4 \"" .
+							$gw['delay'] . "\"";
+					}
 					break;
 				case "scr_interfaces_link":
 					// We only want build_interface_link_list() to be
