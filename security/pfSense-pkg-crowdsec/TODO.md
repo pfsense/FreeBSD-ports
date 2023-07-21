@@ -1,3 +1,9 @@
+ rule Settings
+    log: bool
+    tag: words
+    direction: in, out, any
+
+--------------------------
 
  - debug rules creation
  - YAML: if we can install the extension as dependency, something like https://freebsd.pkgs.org/12/freebsd-amd64/php80-pear-YAML-1.0.6.pkg.html
