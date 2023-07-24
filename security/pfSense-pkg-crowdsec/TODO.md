@@ -26,6 +26,8 @@ at install time, we also install collections and stuff
 
 
 
+ - see if other plugins are shipping cron files
+
 
 
 
