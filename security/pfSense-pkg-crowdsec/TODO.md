@@ -1,3 +1,38 @@
+ - remove the alias and rules when the plugin is uninstalled
+ - possibly validation of tags or free-style strings in user settings
+ - crowdsec -> CrowdSec
+
+
+
+YAML
+ 1 - embed/vendor (possibly version issues with php)
+ 2 - use composer as dependency (we have no way to cleanly uninstall yaml)
+
+ 3 - use an alternative yaml package (may be easier to integrate, but less popular, less security vetting whatever)
+
+ 4 - use yaml package of another language that comes as *.pkg (python has it)   python3, devel/py-yaml as deps - problem solved
+
+
+what do we do with yaml?
+ - configure lapi listen address, port
+ - configure crowdsec_blacklists, crowdse6_blacklists
+ - ... acquisition probably not
+
+
+at install time, we also install collections and stuff
+  pfsense equivalent of https://docs.opnsense.org/development/backend/autorun.html
+  this needs to be in a shell script run at boot or when the plugin is installed
+  cscli collections install crowdsecurity/pfsense (we can install crowdsecurity/opnsense right now)
+
+
+
+
+
+
+------------------------
+
+
+
  rule Settings
     log: bool
     tag: words
