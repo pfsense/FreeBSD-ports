@@ -51,12 +51,12 @@ function crowdsec_validate_form($post, &$input_errors)
 
 function crowdsec_install()
 {
+    crowdsec_generate_rules('filter');
+    filter_configure();
 }
 
 function crowdsec_sync_config()
 {
-    global $config;
-
     #########################################
     #	UPDATE pfSense ALIAS TABLES	#
     #########################################
@@ -77,7 +77,7 @@ function crowdsec_sync_config()
         ),
 
     );
-    $config = parse_config(true);
+    parse_config(true);
     config_init_path(implode('/', ['aliases']));
     $exist_aliases = config_get_path('aliases/alias', []);
 
@@ -86,10 +86,10 @@ function crowdsec_sync_config()
     $final_aliases = $exist_aliases;
 
     // Add Crowdsec alias if not exist
-    foreach ($crowdsec_aliases as $crowdsec_alias){
-            if(!in_array($crowdsec_alias['name'], $exist_aliases_names)){
-                $final_aliases[] = $crowdsec_alias;
-            }
+    foreach ($crowdsec_aliases as $crowdsec_alias) {
+        if (!in_array($crowdsec_alias['name'], $exist_aliases_names)) {
+            $final_aliases[] = $crowdsec_alias;
+        }
     }
     // Update config.xml, if changes required
     if ($exist_aliases !== $final_aliases) {
@@ -97,64 +97,47 @@ function crowdsec_sync_config()
         write_config('pfsense_crowdsec: saving Aliases');
     }
     unset($final_aliases, $exist_aliases);
-    #########################################
-    #	UPDATE pfSense RULES TABLES	#
-    #########################################
-    $currentTime = (int)microtime(true);
-    $crowdsec_rules = array(
-        array(
-            'tracker' => $currentTime,
-            'type' => 'block',
-            'ipprotocol' => 'inet',
-            'direction' => 'any',
-            'floating' => 'yes',
-            'interface' => 'any',
-            'statetype' => 'keep state',
-            'source' => array('address' => $crowdsec_aliases[0]['name']),//crowdsec_blacklists
-            'destination' => array('any' => ''),
-            'descr' => 'Crowdsec IPv4 (DO NOT EDIT)',
-            'created' => array('time' => $currentTime, 'username' => 'Auto pfsense_crowdsec')
-        ),
-        array(
-            'tracker' => $currentTime+1,
-            'type' => 'block',
-            'ipprotocol' => 'inet6',
-            'direction' => 'any',
-            'floating' => 'yes',
-            'interface' => 'any',
-            'statetype' => 'keep state',
-            'source' => array('address' => $crowdsec_aliases[1]['name']),//crowdsec6_blacklists
-            'destination' => array('any' => ''),
-            'descr' => 'Crowdsec IPv6 (DO NOT EDIT)',
-            'created' => array('time' => $currentTime, 'username' => 'Auto pfsense_crowdsec')
-        ),
+    // Generate rules depending on settings
+    crowdsec_generate_rules('filter');
+    // Reload filter
+    filter_configure();
+}
 
-    );
-    // Reload config.xml to get any recent changes
-    $config = parse_config(true);
-    // Collect all existing rules
-    config_init_path(implode('/', array('filter', 'rule')));
-    $exist_rules = config_get_path('filter/rule', []);
-    $exist_rules_source_address = array();
-    foreach ($exist_rules as $exist_rule){
-        if(!empty($exist_rule['source']['address'])){
-            $exist_rules_source_address[] = $exist_rule['source']['address'];
-        }
+function crowdsec_generate_rules($type)
+{
+    $rules = "";
+    switch ($type) {
+        case 'filter':
+            global $config;
+            $cf = $config['installedpackages']['crowdsec']['config'][0] ?? array();
+
+            if(!empty($cf['enable_block_v4'])){
+                $rules .= "block drop";
+                $direction = !empty($cf['block_v4_direction']) && $cf['block_v4_direction'] !== 'any'? $cf['block_v4_direction'] : '';
+                $log = !empty($cf['block_v4_log']) ? "log" : '';
+                $tag = !empty($cf['block_v4_tag']) ? "tag ". $cf['block_v4_tag'] : '';
+
+                $rules .= ' ' . $direction . ' ' . $log . ' quick inet from <crowdsec_blacklists> to any label "Crowdsec IPv4"';
+                if(!empty($tag)){
+                    $rules .= ' '. $tag;
+                }
+                $rules .= "\n";
+            }
+            if(!empty($cf['enable_block_v6'])){
+                $rules .= "block drop";
+                $direction = !empty($cf['block_v6_direction']) && $cf['block_v6_direction'] !== 'any'? $cf['block_v6_direction'] : '';
+                $log = !empty($cf['block_v6_log']) ? "log" : '';
+                $tag = !empty($cf['block_v6_tag']) ? "tag ". $cf['block_v6_tag'] : '';
+
+                $rules .= ' ' . $direction . ' ' . $log  .' quick inet6 from <crowdsec6_blacklists> to any label "Crowdsec IPv6"';
+                if(!empty($tag)){
+                    $rules .= ' '. $tag;
+                }
+                $rules .= "\n";
+            }
+            break;
     }
-    $final_rules = $exist_rules;
-    // Add Crowdsec rule if not exist
-    foreach ($crowdsec_rules as $crowdsec_rule){
-        if(!in_array($crowdsec_rule['source']['address'], $exist_rules_source_address)) {
-            $final_rules[] = $crowdsec_rule;
-        }
-    }
-    // Update config.xml, if changes required
-    if ($final_rules != $exist_rules) {
-        config_set_path('filter/rule', $final_rules);
-        write_config('pfsense_crowdsec: saving Rules');
-        // Reload filter
-        filter_configure();
-    }
-    unset($final_rules, $exist_rules);
+
+    return $rules;
 }
 
