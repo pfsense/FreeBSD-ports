@@ -25,7 +25,7 @@
  */
 	]]>
     </copyright>
-    <name>crowdsec</name>
+    <name>Crowdsec</name>
     <title>Security/Crowdsec</title>
     <include_file>/usr/local/pkg/crowdsec.inc</include_file>
     <menu>
@@ -54,6 +54,10 @@
         </tab>
     </tabs>
     <fields>
+        <field>
+            <name>General Settings</name>
+            <type>listtopic</type>
+        </field>
         <field>
             <fielddescr>Enable log processor (agent)</fielddescr>
             <fieldname>enable_agent</fieldname>
@@ -109,6 +113,90 @@
             <description>Set the remote firewall bouncer API key</description>
             <combinefields>end</combinefields>
         </field>
+        <!-- Crowdsec IPv4 blocklist settings -->
+        <field>
+            <name>Crowdsec IPv4 blocklist rule settings</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Description</fielddescr>
+            <fieldname>block_v4_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[Add a pfctl rule: <i>block drop {direction} {log} quick inet from <crowdsec_blacklists> to any label "Crowdsec IPv4" tag {tag}</i>]]></description>
+        </field>
+        <field>
+            <fielddescr>Enable Crowdsec IPv4 blocklist rule</fielddescr>
+            <fieldname>enable_block_v4</fieldname>
+            <type>checkbox</type>
+            <enablefields>block_v4_direction,block_v4_log,block_v4_tag</enablefields>
+        </field>
+        <field>
+            <fielddescr>Direction</fielddescr>
+            <fieldname>block_v4_direction</fieldname>
+            <description><![CDATA[]]></description>
+            <type>select</type>
+            <options>
+                <option><name>Any</name><value>any</value></option>
+                <option><name>In</name><value>in</value></option>
+                <option><name>Out</name><value>out</value></option>
+            </options>
+            <multiple/><!-- (optional) -->
+            <size>3</size><!-- (optional) -->
+            <default_value>any</default_value>
+        </field>
+        <field>
+            <fielddescr>Log</fielddescr>
+            <fieldname>block_v4_log</fieldname>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Tag</fielddescr>
+            <fieldname>block_v4_tag</fieldname>
+            <type>input</type>
+            <description></description>
+        </field>
+        <!-- Crowdsec IPv6 blocklist settings -->
+        <field>
+            <name>Crowdsec IPv6 blocklist rule settings</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Description</fielddescr>
+            <fieldname>block_v6_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[Add a pfctl rule: <i>block drop {direction} {log} quick inet6 from <crowdsec6_blacklists> to any label "Crowdsec IPv6" tag {tag}</i>]]></description>
+        </field>
+        <field>
+            <fielddescr>Enable Crowdsec IPv6 blocklist rule</fielddescr>
+            <fieldname>enable_block_v6</fieldname>
+            <type>checkbox</type>
+            <enablefields>block_v6_direction,block_v6_log,block_v6_tag</enablefields>
+        </field>
+        <field>
+            <fielddescr>Direction</fielddescr>
+            <fieldname>block_v6_direction</fieldname>
+            <description><![CDATA[]]></description>
+            <type>select</type>
+            <options>
+                <option><name>Any</name><value>any</value></option>
+                <option><name>In</name><value>in</value></option>
+                <option><name>Out</name><value>out</value></option>
+            </options>
+            <multiple/><!-- (optional) -->
+            <size>3</size><!-- (optional) -->
+            <default_value>any</default_value>
+        </field>
+        <field>
+            <fielddescr>Log</fielddescr>
+            <fieldname>block_v6_log</fieldname>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Tag</fielddescr>
+            <fieldname>block_v6_tag</fieldname>
+            <type>input</type>
+            <description></description>
+        </field>
     </fields>
 
     <custom_php_install_command>
@@ -128,8 +216,9 @@
         ]]>
     </custom_php_validation_command>
 
+    <filter_rules_needed><![CDATA[crowdsec_generate_rules]]></filter_rules_needed>
+
     <!--
-    <filter_rules_needed></filter_rules_needed>
     <custom_php_global_functions></custom_php_global_functions>
     <custom_php_install_command></custom_php_install_command>
     <custom_php_pre_deinstall_command></custom_php_pre_deinstall_command>
