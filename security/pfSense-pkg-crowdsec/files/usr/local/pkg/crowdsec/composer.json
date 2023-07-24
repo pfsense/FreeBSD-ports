@@ -1,0 +1,29 @@
+{
+	"name": "crowdsec-composer/pfsense-plugin",
+	"description": "pfSense plugin for CrowdSec",
+	"type": "project",
+	"authors": [
+		{
+			"name": "CrowdSec",
+			"email": "info@crowdsec.net"
+		},
+		{
+			"name": "Julien Loizelet",
+			"homepage": "https://github.com/julienloizelet/",
+			"role": "Developer"
+		}
+	],
+	"config" : {
+		"platform": {
+			"php": "7.2.5"
+		}
+	},
+	"require": {
+		"symfony/yaml": "^5.4.23"
+	},
+	"autoload": {
+		"psr-4": {
+			"\\": "./"
+		}
+	}
+}

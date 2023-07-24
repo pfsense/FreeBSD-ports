@@ -23,6 +23,7 @@ require_once("config.inc");
 require_once("globals.inc");
 require_once("config.lib.inc");
 require_once("filter.inc");
+require_once("/usr/local/pkg/crowdsec/vendor/autoload.php");
 
 $g['disablehelpicon'] = true;
 

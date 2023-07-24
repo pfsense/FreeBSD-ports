@@ -47,6 +47,9 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 
+	( cd ${FILESDIR}${PREFIX}/pkg/crowdsec && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/pkg/crowdsec )
+
 	${INSTALL_DATA} -m 0744 ${FILESDIR}${PREFIX}/etc/rc.conf.d/* \
 		${STAGEDIR}${PREFIX}/etc/rc.conf.d/
 
