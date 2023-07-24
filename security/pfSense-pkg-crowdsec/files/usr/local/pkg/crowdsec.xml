@@ -122,7 +122,7 @@
             <fielddescr>Description</fielddescr>
             <fieldname>block_v4_info</fieldname>
             <type>info</type>
-            <description><![CDATA[Add a pfctl rule: <i>block drop {direction} {log} quick inet from <crowdsec_blacklists> to any label "Crowdsec IPv4" tag {tag}</i>]]></description>
+            <description><![CDATA[Add a pfctl rule: <i>block drop {direction} {log} quick inet from crowdsec_blacklists to any label "Crowdsec IPv4" tag {tag}</i>]]></description>
         </field>
         <field>
             <fielddescr>Enable Crowdsec IPv4 blocklist rule</fielddescr>
@@ -164,7 +164,7 @@
             <fielddescr>Description</fielddescr>
             <fieldname>block_v6_info</fieldname>
             <type>info</type>
-            <description><![CDATA[Add a pfctl rule: <i>block drop {direction} {log} quick inet6 from <crowdsec6_blacklists> to any label "Crowdsec IPv6" tag {tag}</i>]]></description>
+            <description><![CDATA[Add a pfctl rule: <i>block drop {direction} {log} quick inet6 from crowdsec6_blacklists to any label "Crowdsec IPv6" tag {tag}</i>]]></description>
         </field>
         <field>
             <fielddescr>Enable Crowdsec IPv6 blocklist rule</fielddescr>
