@@ -344,6 +344,7 @@
     SUBDIR += rxvt-unicode
     SUBDIR += sakura
     SUBDIR += salut
+    SUBDIR += sandbar
     SUBDIR += sbxkb
     SUBDIR += screen-message
     SUBDIR += screengrab
@@ -413,6 +414,7 @@
     SUBDIR += virtualgl
     SUBDIR += wallutils
     SUBDIR += wapanel
+    SUBDIR += watershot
     SUBDIR += way-displays
     SUBDIR += waybar
     SUBDIR += wayidle

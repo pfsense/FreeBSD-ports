@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=		aarch64 amd64 i386
 
+BUILD_DEPENDS=		${LOCALBASE}/lib/libgmp.so:math/gmp
+
 USES=			autoreconf compiler:c11 gmake \
 			ncurses perl5 python:build shebangfix \
 			tar:xz
@@ -313,7 +315,7 @@ create-hadrian-bootstrap:
 	@${ECHO_CMD} "Generating Hadrian bootstrap without bootstrap GHC isn't supported"
 	${FALSE}
 .endif
-	${MAKE} -C ${.CURDIR} patch build-depends IGNORE_MISSING_HADRIAN=yes
+	${MAKE} -C ${.CURDIR} patch build-depends USE_PACKAGE_DEPENDS_ONLY=yes IGNORE_MISSING_HADRIAN=yes
 # We always would need to create our own plan.json file and put it into PATCHDIR:
 # Predefined plans use integer-gmp, while we build bootstraps with integer-simple
 # Predefined plans aren't pretty-printed, so we can't easily patch them

@@ -163,6 +163,7 @@
     SUBDIR += bvm
     SUBDIR += byobu
     SUBDIR += calamares
+    SUBDIR += catatonit
     SUBDIR += catfish
     SUBDIR += catsit
     SUBDIR += cbsd
@@ -566,6 +567,7 @@
     SUBDIR += imgurbash2
     SUBDIR += immortal
     SUBDIR += incron
+    SUBDIR += initool
     SUBDIR += inotify-tools
     SUBDIR += installwatch
     SUBDIR += intel-epct
@@ -1299,6 +1301,7 @@
     SUBDIR += runwhen
     SUBDIR += rush
     SUBDIR += rust-coreutils
+    SUBDIR += rust-findutils
     SUBDIR += rw
     SUBDIR += s-tui
     SUBDIR += s6

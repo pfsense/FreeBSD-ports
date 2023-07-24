@@ -1,3 +1,360 @@
+  <vuln vid="ab0bab3c-2927-11ee-8608-07b8d3947721">
+    <topic>gitea -- Disallow dangerous URL schemes</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.20.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea team reports:</p>
+	<blockquote cite="https://github.com/go-gitea/gitea/pull/25960">
+	  <p>Disallow javascript, vbscript and data (data uri images still
+	    work) url schemes even if all other schemes are allowed</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://blog.gitea.com/release-of-1.20.1</url>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.20.1</url>
+    </references>
+    <dates>
+      <discovery>2023-06-18</discovery>
+      <entry>2023-07-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="887eb570-27d3-11ee-adba-c80aa9043978">
+      <topic>OpenSSH -- remote code execution via a forwarded agent socket</topic>
+    <affects>
+      <package>
+	<name>openssh-portable</name>
+	<name>openssh-portable-hpn</name>
+	<name>openssh-portable-gssapi</name>
+	<range><lt>9.3.p2,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenSSH project reports:</p>
+	<blockquote cite="https://www.openssh.com/txt/release-9.3p2">
+	    <p>Fix CVE-2023-38408 - a condition where specific libaries loaded via
+	    ssh-agent(1)'s PKCS#11 support could be abused to achieve remote
+	    code execution via a forwarded agent socket if the following
+	    conditions are met:
+
+	    * Exploitation requires the presence of specific libraries on
+      the victim system.
+	    * Remote exploitation requires that the agent was forwarded
+      to an attacker-controlled system.
+
+	    Exploitation can also be prevented by starting ssh-agent(1) with an
+	    empty PKCS#11/FIDO allowlist (ssh-agent -P '') or by configuring
+	    an allowlist that contains only specific provider libraries.
+
+	    This vulnerability was discovered and demonstrated to be exploitable
+	    by the Qualys Security Advisory team.
+	</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-38408</cvename>
+      <url>https://www.openssh.com/txt/release-9.3p2</url>
+    </references>
+    <dates>
+      <discovery>2023-07-19</discovery>
+      <entry>2023-07-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2f22927f-26ea-11ee-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>115.0.5790.98</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>115.0.5790.98</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/07/stable-channel-update-for-desktop.html">
+	 <p>This update includes 20 security fixes:</p>
+	 <ul>
+	    <li>[1454086] High CVE-2023-3727: Use after free in WebRTC. Reported by Cassidy Kim(@cassidy6564) on 2023-06-12</li>
+	    <li>[1457421] High CVE-2023-3728: Use after free in WebRTC. Reported by Zhenghang Xiao (@Kipreyyy) on 2023-06-23</li>
+	    <li>[1453465] High CVE-2023-3730: Use after free in Tab Groups. Reported by @ginggilBesel on 2023-06-09</li>
+	    <li>[1450899] High CVE-2023-3732: Out of bounds memory access in Mojo. Reported by Mark Brand of Google Project Zero on 2023-06-02</li>
+	    <li>[1450203] Medium CVE-2023-3733: Inappropriate implementation in WebApp Installs. Reported by Ahmed ElMasry on 2023-05-31</li>
+	    <li>[1450376] Medium CVE-2023-3734: Inappropriate implementation in Picture In Picture. Reported by Thomas Orlita on 2023-06-01</li>
+	    <li>[1394410] Medium CVE-2023-3735: Inappropriate implementation in Web API Permission Prompts. Reported by Ahmed ElMasry on 2022-11-29</li>
+	    <li>[1434438] Medium CVE-2023-3736: Inappropriate implementation in Custom Tabs. Reported by Philipp Beer (TU Wien) on 2023-04-19</li>
+	    <li>[1446754] Medium CVE-2023-3737: Inappropriate implementation in Notifications. Reported by Narendra Bhati of Suma Soft Pvt. Ltd. Pune (India) on 2023-05-19</li>
+	    <li>[1434330] Medium CVE-2023-3738: Inappropriate implementation in Autofill. Reported by Hafiizh on 2023-04-18</li>
+	    <li>[1405223] Low CVE-2023-3740: Insufficient validation of untrusted input in Themes. Reported by Fardeen Siddiqui on 2023-01-06</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3727</cvename>
+      <cvename>CVE-2023-3728</cvename>
+      <cvename>CVE-2023-3730</cvename>
+      <cvename>CVE-2023-3732</cvename>
+      <cvename>CVE-2023-3733</cvename>
+      <cvename>CVE-2023-3734</cvename>
+      <cvename>CVE-2023-3735</cvename>
+      <cvename>CVE-2023-3736</cvename>
+      <cvename>CVE-2023-3737</cvename>
+      <cvename>CVE-2023-3738</cvename>
+      <cvename>CVE-2023-3740</cvename>
+      <url>https://chromereleases.googleblog.com/2023/07/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2023-07-19</discovery>
+      <entry>2023-07-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f32b1fbd-264d-11ee-a468-80fa5b29d485">
+    <topic>virtualbox-ose -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>virtualbox-ose</name>
+	<range><lt>6.1.46</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>secalert_us@oracle.com reports:</p>
+	<blockquote cite="https://www.oracle.com/security-alerts/cpujul2023.html">
+	  <p>Vulnerability in the Oracle VM VirtualBox product of Oracle
+	Virtualization (component: Core).  Supported versions that are
+	affected are Prior to 6.1.46 and Prior to 7.0.10.  Easily exploitable
+	vulnerability allows high privileged attacker with logon to the
+	infrastructure where Oracle VM VirtualBox executes to compromise
+	Oracle VM VirtualBox.  Successful attacks require human interaction
+	from a person other than the attacker.  Successful attacks of this
+	vulnerability can result in unauthorized ability to cause a hang
+	or frequently repeatable crash (complete DOS) of Oracle VM VirtualBox.
+	CVSS 3.1 Base Score 4.2 (Availability impacts).  CVSS Vector:
+	(CVSS:3.1/AV:L/AC:L/PR:H/UI:R/S:U/C:N/I:N/A:H).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-22016</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-22016</url>
+    </references>
+    <dates>
+      <discovery>2023-07-18</discovery>
+      <entry>2023-07-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cf40e8b7-264d-11ee-a468-80fa5b29d485">
+    <topic>virtualbox-ose -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>virtualbox-ose</name>
+	<range><lt>6.1.46</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>secalert_us@oracle.com reports:</p>
+	<blockquote cite="https://www.oracle.com/security-alerts/cpujul2023.html">
+	  <p>Vulnerability in the Oracle VM VirtualBox product of Oracle
+	Virtualization (component: Core).  Supported versions that are
+	affected are Prior to 6.1.46 and Prior to 7.0.10.  Easily exploitable
+	vulnerability allows low privileged attacker with logon to the
+	infrastructure where Oracle VM VirtualBox executes to compromise
+	Oracle VM VirtualBox.  Successful attacks of this vulnerability can
+	result in unauthorized ability to cause a hang or frequently
+	repeatable crash (complete DOS) of Oracle VM VirtualBox.  Note:
+	This vulnerability applies to Windows VMs only.  CVSS 3.1 Base Score
+	5.5 (Availability impacts).  CVSS Vector:
+	(CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-22017</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-22017</url>
+    </references>
+    <dates>
+      <discovery>2023-07-18</discovery>
+      <entry>2023-07-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bc90e894-264b-11ee-a468-80fa5b29d485">
+    <topic>virtualbox-ose -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>virtualbox-ose</name>
+	<range><lt>6.1.46</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>secalert_us@oracle.com reports:</p>
+	<blockquote cite="https://www.oracle.com/security-alerts/cpujul2023.html">
+	  <p>Vulnerability in the Oracle VM VirtualBox product of Oracle
+	Virtualization (component: Core).  Supported versions that are
+	affected are Prior to 6.1.46 and Prior to 7.0.10.  Difficult to
+	exploit vulnerability allows unauthenticated attacker with network
+	access via RDP to compromise Oracle VM VirtualBox.  Successful
+	attacks of this vulnerability can result in takeover of Oracle VM
+	VirtualBox.  CVSS 3.1 Base Score 8.1 (Confidentiality, Integrity
+	and Availability impacts).  CVSS Vector:
+	(CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-22018</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-22018</url>
+    </references>
+    <dates>
+      <discovery>2023-07-18</discovery>
+      <entry>2023-07-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c70c3dc3-258c-11ee-b37b-901b0e9408dc">
+    <topic>element-web -- Cross site scripting in Export Chat feature</topic>
+    <affects>
+      <package>
+	<name>element-web</name>
+	<range><lt>1.11.36</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Matrix Developers reports:</p>
+	<blockquote cite="https://github.com/matrix-org/matrix-react-sdk/security/advisories/GHSA-c9vx-2g7w-rp65">
+	  <p>The Export Chat feature includes certain attacker-controlled elements in the
+	  generated document without sufficient escaping, leading to stored XSS.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-37259</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-37259</url>
+    </references>
+    <dates>
+      <discovery>2023-07-18</discovery>
+      <entry>2023-07-18</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b3f77aae-241c-11ee-9684-c11c23f7b0f9">
+    <topic>gitea -- multiple issues</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.20.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea team reports:</p>
+	<blockquote cite="https://github.com/go-gitea/gitea/pull/22759">
+	  <p>Test if container blob is accessible before mounting.</p>
+	</blockquote>
+	<blockquote cite="https://github.com/go-gitea/gitea/pull/22175">
+	  <p>Set type="password" on all auth_token fields</p>
+	  <p>Seen when migrating from other hosting platforms.</p>
+	  <p>Prevents exposing the token to screen capture/cameras/eyeballs.</p>
+	  <p>Prevents the browser from saving the value in its autocomplete
+	    dictionary, which often is not secure.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://blog.gitea.com/release-of-1.20.0</url>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.20.0</url>
+    </references>
+    <dates>
+      <discovery>2023-06-08</discovery>
+      <entry>2023-07-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="41c60e16-2405-11ee-a0d1-84a93843eb75">
+    <topic>OpenSSL -- AES-SIV implementation ignores empty associated data entries</topic>
+    <affects>
+      <package>
+	<name>openssl30</name>
+	<range><lt>3.0.9_1</lt></range>
+      </package>
+      <package>
+	<name>openssl31</name>
+	<range><lt>3.1.1_1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenSSL project reports:</p>
+	<blockquote cite="https://www.openssl.org/news/secadv/20230714.txt">
+	  <p>The AES-SIV cipher implementation contains a bug that causes
+	    it to ignore empty associated data entries which are unauthenticated as
+	    a consequence.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-2975</cvename>
+      <url>https://www.openssl.org/news/secadv/20230714.txt</url>
+    </references>
+    <dates>
+      <discovery>2023-07-14</discovery>
+      <entry>2023-07-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3446e45d-a51b-486f-9b0e-e4402d91fed6">
+    <topic>electron22 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron22</name>
+	<range><lt>22.3.17</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v22.3.17">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-3422.</li>
+	    <li>Security: backported fix for CVE-2023-3421.</li>
+	    <li>Security: backported fix for CVE-2023-3420.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3422</cvename>
+      <url>https://github.com/advisories/GHSA-gqjh-f545-vcx3</url>
+      <cvename>CVE-2023-3421</cvename>
+      <url>https://github.com/advisories/GHSA-943x-93ff-jr62</url>
+      <cvename>CVE-2023-3420</cvename>
+      <url>https://github.com/advisories/GHSA-4297-fx5c-x987</url>
+    </references>
+    <dates>
+      <discovery>2023-07-12</discovery>
+      <entry>2023-07-14</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="b67d768c-1f53-11ee-82ed-4ccc6adda413">
     <topic>librecad -- out-of-bounds read in importshp plugin</topic>
     <affects>
@@ -4630,6 +4987,10 @@
 	<name>openssl-quic</name>
 	<range><lt>3.0.8_1</lt></range>
       </package>
+      <package>
+	<name>virtualbox-ose</name>
+	<range><lt>6.1.46</lt></range>
+      </package>
     </affects>
     <description>
       <body xmlns="http://www.w3.org/1999/xhtml">
@@ -4652,7 +5013,7 @@
     <dates>
       <discovery>2023-03-23</discovery>
       <entry>2023-03-24</entry>
-      <modified>2023-03-24</modified>
+      <modified>2023-07-19</modified>
     </dates>
   </vuln>
 

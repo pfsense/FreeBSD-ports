@@ -2000,6 +2000,7 @@
     SUBDIR += tn-aspell
     SUBDIR += tn-hunspell
     SUBDIR += tnef2txt
+    SUBDIR += tokay
     SUBDIR += tokyodystopia
     SUBDIR += toml-f
     SUBDIR += tr-aspell
@@ -2037,6 +2038,7 @@
     SUBDIR += urlview
     SUBDIR += utf8proc
     SUBDIR += uz-aspell
+    SUBDIR += vacuum
     SUBDIR += vale
     SUBDIR += vbindiff
     SUBDIR += ve-hunspell

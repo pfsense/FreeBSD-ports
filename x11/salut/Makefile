@@ -1,7 +1,7 @@
 PORTNAME=	salut
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,7 +16,6 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 USES=		cargo
 USE_GITLAB=	yes
 GL_ACCOUNT=	snakedye
-GL_COMMIT=	bb53391bac0c379dffdddb3cb35b423a8738a962
 PLIST_FILES=	bin/${PORTNAME}
 
 .include <bsd.port.mk>

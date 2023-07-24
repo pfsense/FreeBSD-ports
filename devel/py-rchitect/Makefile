@@ -1,5 +1,5 @@
 PORTNAME=	rchitect
-DISTVERSION=	0.3.24
+DISTVERSION=	0.3.40
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,10 @@ USE_PYTHON=	distutils autoplist
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
-CFLAGS+=	-Wno-error=int-conversion
+CFLAGS+=	-Wno-error=int-conversion -Wno-error=incompatible-function-pointer-types
 .endif
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/rchitect/_cffi.abi3.so
 
 .include <bsd.port.post.mk>

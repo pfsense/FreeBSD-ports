@@ -223,6 +223,7 @@
     SUBDIR += chryzodus
     SUBDIR += chuffed
     SUBDIR += cimod
+    SUBDIR += clad
     SUBDIR += clasp
     SUBDIR += clblas
     SUBDIR += clblast
@@ -411,6 +412,7 @@
     SUBDIR += jtransforms
     SUBDIR += jts
     SUBDIR += kahip
+    SUBDIR += kalc
     SUBDIR += kalgebra
     SUBDIR += kalk
     SUBDIR += kalker
@@ -442,6 +444,7 @@
     SUBDIR += libccd
     SUBDIR += libcerf
     SUBDIR += libdivide
+    SUBDIR += libdivsufsort
     SUBDIR += libfixmath
     SUBDIR += libflame
     SUBDIR += libformfactor
@@ -1033,6 +1036,7 @@
     SUBDIR += py-python-picard
     SUBDIR += py-pytorchvideo
     SUBDIR += py-pyvtk
+    SUBDIR += py-qats
     SUBDIR += py-qdldl
     SUBDIR += py-quadprog
     SUBDIR += py-random2

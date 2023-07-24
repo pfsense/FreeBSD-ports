@@ -1,5 +1,6 @@
 PORTNAME=	solanum
 DISTVERSION=	4.0.0
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -18,7 +19,6 @@ USE_GSTREAMER=	bad good vorbis
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World
 GL_PROJECT=	Solanum
-GL_COMMIT=	33c01f8a2da39cba0bc1744e405de2be833876cd
 MAKE_ENV=	${CARGO_ENV}
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
