@@ -40,7 +40,7 @@
     </service>
     <tabs>
         <tab>
-            <text>About</text>
+            <text>Read me</text>
             <url>/crowdsec_landing.php</url>
         </tab>
         <tab>

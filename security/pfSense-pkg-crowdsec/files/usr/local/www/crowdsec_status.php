@@ -32,7 +32,7 @@ $shortcut_section = "crowdsec";
 include("head.inc");
 
 $tab_array = array();
-$tab_array[] = array("About", false, "/crowdsec_landing.php");
+$tab_array[] = array("Read me", false, "/crowdsec_landing.php");
 $tab_array[] = array("Settings", false, "/pkg_edit.php?xml=crowdsec.xml&amp;id=0");
 $tab_array[] = array("Status", true, "/crowdsec_status.php");
 display_top_tabs($tab_array);
