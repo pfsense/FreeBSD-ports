@@ -98,7 +98,7 @@ PLIST_DIRS=	/etc
 
 .include <bsd.port.pre.mk>
 
-.if (${ARCH} == "amd64" || ${ARCH} == "i386")
+.if ${ARCH} == "amd64"
 RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
 		smartmontools>=0:sysutils/smartmontools \
 		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \
