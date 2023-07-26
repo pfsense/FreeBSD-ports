@@ -56,7 +56,8 @@ if (!isset($pconfig['scr_traffic_by_address_if']))           $pconfig['scr_traff
 if (!isset($pconfig['scr_traffic_by_address_sort']))         $pconfig['scr_traffic_by_address_sort']         = 'in';
 if (!isset($pconfig['scr_traffic_by_address_filter']))       $pconfig['scr_traffic_by_address_filter']       = 'local';
 if (!isset($pconfig['scr_traffic_by_address_hostipformat'])) $pconfig['scr_traffic_by_address_hostipformat'] = 'descr';
-
+if (!isset($pconfig['scr_apcupsd']))                         $pconfig['scr_apcupsd']                         = false;
+if (!isset($pconfig['scr_nutups']))                          $pconfig['scr_nutups']                          = false;
 
 if ($_POST) {
 	unset($input_errors);
@@ -96,6 +97,8 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_traffic_by_address_sort']         = $pconfig['scr_traffic_by_address_sort'];
 		$lcdproc_screens_config['scr_traffic_by_address_filter']       = $pconfig['scr_traffic_by_address_filter'];
 		$lcdproc_screens_config['scr_traffic_by_address_hostipformat'] = $pconfig['scr_traffic_by_address_hostipformat'];
+		$lcdproc_screens_config['scr_apcupsd']                         = $pconfig['scr_apcupsd'];
+		$lcdproc_screens_config['scr_nutups']                          = $pconfig['scr_nutups'];
 
 		config_set_path('installedpackages/lcdprocscreens/config/0', $lcdproc_screens_config);
 		write_config("lcdproc: Screen settings saved");
@@ -380,6 +383,28 @@ $group->add(new Form_Select(
 
 $group->setHelp('A 4-row 20-column display size, or higher, is recommended for this screen.');
 $section->add($group);
+
+if (file_exists("/usr/local/pkg/apcupsd.inc")) {
+	$section->addInput(
+		new Form_Checkbox(
+			'scr_apcupsd', // checkbox name (id)
+			'APC UPS Info', // checkbox label
+			'Display current APC UPS status from APCUPSD Package', // checkbox text
+			$pconfig['scr_apcupsd'] // checkbox initial value
+		)
+	);
+}
+
+if (file_exists("/usr/local/pkg/nut/nut.inc")) {
+	$section->addInput(
+		new Form_Checkbox(
+			'scr_nutups', // checkbox name (id)
+			'NUT UPS Info', // checkbox label
+			'Display current UPS status from NUT Package', // checkbox text
+			$pconfig['scr_nutups'] // checkbox initial value
+		)
+	);
+}
 
 $form->add($section);
 print($form);
