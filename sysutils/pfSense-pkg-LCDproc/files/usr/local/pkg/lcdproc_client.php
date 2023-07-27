@@ -1128,8 +1128,8 @@ function build_interface($lcd) {
 								$lcd_cmds[] = "widget_set {$name} apctitle_summary 1 3 \"LINE CHRG TIMEL\"";
 							}
 						}
-						$includeSummary = false; // this screen needs all the lines
 					}
+					$includeSummary = false; // this screen needs all the lines
 					break;
 				case "scr_nutups":
 					if (file_exists("/usr/local/pkg/nut/nut.inc")) {
@@ -1152,8 +1152,8 @@ function build_interface($lcd) {
 								$lcd_cmds[] = "widget_set {$name} nuttitle_summary 1 3 \"LIN CHRG RUNTHMS\"";
 							}
 						}
-						$includeSummary = false; // this screen needs all the lines
 					}
+					$includeSummary = false; // this screen needs all the lines
 					break;
 				default:
 					break;
@@ -1417,6 +1417,7 @@ function loop_status($lcd) {
 							$lcdpanel_width . " 4 h 4 \"" .
 							$gw['delay'] . "\"";
 					}
+					$updateSummary = false;
 					break;
 				case "scr_interfaces_link":
 					// We only want build_interface_link_list() to be
@@ -1543,8 +1544,8 @@ function loop_status($lcd) {
 							}
 							$lcd_cmds[] = "widget_set {$name} apc_summary 1 4 \"{$ups_summary_data}\"";
 						}
-						$includeSummary = false; // this screen needs all the lines
 					}
+					$updateSummary = false;
 					break;
 				case "scr_nutups":
 					if (file_exists("/usr/local/pkg/nut/nut.inc")) {
@@ -1593,8 +1594,8 @@ function loop_status($lcd) {
 							}
 							$lcd_cmds[] = "widget_set {$name} nut_summary 1 4 \"{$ups_summary_data}\"";
 						}
-						$includeSummary = false; // this screen needs all the lines
 					}
+					$updateSummary = false;
 					break;
 				default:
 					break;
