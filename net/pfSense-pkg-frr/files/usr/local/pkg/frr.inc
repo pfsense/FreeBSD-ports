@@ -72,8 +72,6 @@ function frr_get_carp_list() {
 /* Build a list of assigned/enabled interfaces, formatted for use in a selection
  * list, including IP Aliases, CARP VIPs, and OpenVPN interfaces. */
 function frr_get_interfaces($includedefault = true, $includevips = true, $includelocalhost = false, $nameprefix = "", $valueprefix = "") {
-	global $config;
-
 	/* Only include the 'default' option when requested, some places like
 	 * OSPF interface selections can't use 'default'.
 	 */
@@ -137,7 +135,6 @@ function frr_get_list_values($arr) {
  * $pluginparams['interface'] contains the affected VIP, id@int e.g. 19@igb1
  */
 function frr_plugin_carp($pluginparams) {
-	global $config;
 	/* If frr is not configured, then stop */
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
@@ -202,7 +199,6 @@ function frr_get_interfaceinfo($interface, $ipv6 = false) {
 
 /* Build a list of potential route destinations (gateways, interfaces) */
 function frr_get_route_destinations() {
-	global $config;
 	$list = array();
 
 	$list[] = PKG_FRR_LIST_NONE_VALUE;
@@ -435,7 +431,6 @@ EOF;
 }
 
 function frr_service_action($restart_needed) {
-	global $config;
 	/* If frr is not configured, then stop */
 	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
 	if (empty($frr_conf)) {
@@ -511,7 +506,7 @@ function frr_daemons_running($daemons) {
 
 /* Setup necessary setkey entries for TCP MD5 authentication. */
 function frr_setkey($restart_needed) {
-	global $config, $frr_config_base;
+	global $frr_config_base;
 	$peers = array();
 
 	if (empty(config_get_path('installedpackages/frr/config/0/enable'))) {
@@ -701,7 +696,7 @@ function frr_generate_config() {
 }
 
 function frr_generate_config_vtysh() {
-	global $config, $frr_config_base, $frr_auto_config_warning;
+	global $frr_config_base, $frr_auto_config_warning;
 
 	unlink_if_exists("{$frr_config_base}/vtysh.conf");
 
@@ -756,7 +751,7 @@ function frr_flatten_config_interfaces() {
 }
 
 function frr_generate_config_integrated() {
-	global $config, $frr_config_base, $frr_auto_config_warning, $frr_integrated_config;
+	global $frr_config_base, $frr_auto_config_warning, $frr_integrated_config;
 
 	unlink_if_exists("{$frr_config_base}/frr.conf");
 
@@ -782,7 +777,7 @@ function frr_generate_config_integrated() {
 
 		$integratedconffile = $frr_auto_config_warning;
 		$integratedconffile .= "frr defaults traditional\n";
-		$integratedconffile .= "hostname " . $config['system']['hostname'] . "." . $config['system']['domain'] . "\n";
+		$integratedconffile .= 'hostname ' . config_get_path('system/hostname') . '.' .config_get_path('system/domain') . "\n";
 
 		/* Management Password */
 		if ($frr_conf['password']) {
@@ -848,7 +843,6 @@ function frr_generate_config_integrated() {
 
 /* Upgrade the FRR configuration to the latest format */
 function frr_config_sort_route_map() {
-	global $config;
 	update_status("Sorting route-map configuration items");
 
 	$frr_routemap_conf = config_get_path('installedpackages/frrglobalroutemaps/config', []);
@@ -883,7 +877,6 @@ function frr_package_config_cleanup($area, $add0 = false) {
 
 /* Upgrade the FRR configuration to the latest format */
 function frr_package_config_upgrade() {
-	global $config;
 	update_status("Upgrading FRR Settings ... ");
 	$need_write = false;
 	/* Populate FRR Global Settings */
@@ -1143,8 +1136,6 @@ function frr_package_config_upgrade() {
 }
 
 function frr_set_tunables() {
-	global $config;
-
 	$sysctl_conf = config_get_path('sysctl/item', []);
 	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
 
