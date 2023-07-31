@@ -33,6 +33,18 @@ define('LCDPROC_SERVICE_NAME', 'lcdproc');
 
 /* Common Lists */
 
+/* Log levels */
+global $lcdproc_log_levels;
+$lcdproc_log_levels = [
+	-1 => 'Disabled',
+	0 => 'Critical Errors',
+	1 => 'Errors',
+	2 => 'Warnings (Default)',
+	3 => 'Major Events',
+	4 => 'Minor Events',
+	5 => 'All messages plus debugging information',
+];
+
 /* Background colors for Matrix Orbital compatible displays supporting the
  * extended command set and associated RGB hardware, such as the Adafruit
  * LCD backpack and certain add-on displays.
@@ -295,7 +307,7 @@ function sync_package_lcdproc_screens() {
 }
 
 function sync_package_lcdproc() {
-	global $g, $input_errors, $mtxorb_backlight_color_list;
+	global $g, $input_errors, $lcdproc_log_levels, $mtxorb_backlight_color_list;
 
 	# Detect boot process
 	if (platform_booting()) {
@@ -365,8 +377,18 @@ function sync_package_lcdproc() {
 		$config_text .= "Driver={$lcdproc_config['driver']}\n";
 		$config_text .= "Bind=127.0.0.1\n";
 		$config_text .= "Port=13666\n";
-		$config_text .= "ReportLevel=3\n";
-		$config_text .= "ReportToSyslog=yes\n";
+
+		if (is_null($lcdproc_config['log_level']) ||
+		    !array_key_exists($lcdproc_config['log_level'], $lcdproc_log_levels)) {
+			$lcdproc_config['log_level'] = 2;
+		}
+		if ((int) $lcdproc_config['log_level'] < 0) {
+			$config_text .= "ReportToSyslog=no\n";
+		} else {
+			$config_text .= "ReportLevel={$lcdproc_config['log_level']}\n";
+			$config_text .= "ReportToSyslog=yes\n";
+		}
+
 		$config_text .= "User=nobody\n";
 		$config_text .= "Foreground=no\n";
 		$config_text .= "ServerScreen=no\n";

@@ -23,15 +23,16 @@
  */
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/lcdproc.inc");
-global $mtxorb_backlight_color_list, $comport_list, $size_list, $driver_list;
-global $connection_type_list, $mtxorb_type_list, $port_speed_list;
-global $refresh_frequency_list, $percent_list, $backlight_list;
+global $lcdproc_log_levels, $mtxorb_backlight_color_list, $comport_list;
+global $size_list, $driver_list, $connection_type_list, $mtxorb_type_list;
+global $port_speed_list, $refresh_frequency_list, $percent_list, $backlight_list;
 
 $lcdproc_config = config_get_path('installedpackages/lcdproc/config/0', []);
 
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_config;
 if (!isset($pconfig['enable']))                      $pconfig['enable']                      = '';
+if (!isset($pconfig['log_level']))                   $pconfig['log_level']                   = '2';
 if (!isset($pconfig['comport']))                     $pconfig['enabled']                     = 'ucom1';
 if (!isset($pconfig['size']))                        $pconfig['size']                        = '16x2';
 if (!isset($pconfig['driver']))                      $pconfig['driver']                      = 'pyramid';
@@ -54,6 +55,7 @@ if ($_POST) {
 	$pconfig = $_POST;
 
 	/* Input validation */
+	lcdproc_validate_list($input_errors, 'log_level',              $lcdproc_log_levels,          'Log Level');
 	lcdproc_validate_list($input_errors, 'comport',                $comport_list,                'COM Port');
 	lcdproc_validate_list($input_errors, 'size',                   $size_list,                   'Display Size');
 	lcdproc_validate_list($input_errors, 'driver',                 $driver_list,                 'Driver');
@@ -69,6 +71,7 @@ if ($_POST) {
 
 	if (empty($input_errors)) {
 		$lcdproc_config['enable']                      = $pconfig['enable'];
+		$lcdproc_config['log_level']                   = $pconfig['log_level'];
 		$lcdproc_config['comport']                     = $pconfig['comport'];
 		$lcdproc_config['size']                        = $pconfig['size'];
 		$lcdproc_config['driver']                      = $pconfig['driver'];
@@ -117,6 +120,15 @@ $section->addInput(
 		$pconfig['enable'] // checkbox initial value
 	)
 );
+
+$section->addInput(
+	new Form_Select(
+		'log_level',
+		'Log Level',
+		$pconfig['log_level'], // Initial value.
+		$lcdproc_log_levels
+	)
+)->setHelp('Choose the level of detail the LCDProc daemon will write to the system log.');
 
 // Add the com port selector
 $section->addInput(
