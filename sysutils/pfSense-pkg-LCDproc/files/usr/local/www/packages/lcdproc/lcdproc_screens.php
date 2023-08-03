@@ -45,6 +45,7 @@ if (!isset($pconfig['scr_packages']))                        $pconfig['scr_packa
 if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufrequency']                    = false;
 if (!isset($pconfig['scr_cputemperature']))                  $pconfig['scr_cputemperature']                  = false;
 if (!isset($pconfig['scr_cputemperature_unit']))             $pconfig['scr_cputemperature_unit']             = 'c';
+if (!isset($pconfig['scr_ntp']))                             $pconfig['scr_ntp']                             = false;
 if (!isset($pconfig['scr_traffic']))                         $pconfig['scr_traffic']                         = false;
 if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traffic_interface']               = '';
 if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
@@ -86,6 +87,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_cpufrequency']                    = $pconfig['scr_cpufrequency'];
 		$lcdproc_screens_config['scr_cputemperature']                  = $pconfig['scr_cputemperature'];
 		$lcdproc_screens_config['scr_cputemperature_unit']             = $pconfig['scr_cputemperature_unit'];
+		$lcdproc_screens_config['scr_ntp']                             = $pconfig['scr_ntp'];
 		$lcdproc_screens_config['scr_traffic']                         = $pconfig['scr_traffic'];
 		$lcdproc_screens_config['scr_traffic_interface']               = $pconfig['scr_traffic_interface'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
@@ -216,7 +218,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_gwsum', // checkbox name (id)
 		'Gateway Summary', // checkbox label
-		'Display a Gateway status (up/down) summary', // checkbox text
+		'Display up/down status count for enabled gateways', // checkbox text
 		$pconfig['scr_gwsum'] // checkbox initial value
 	)
 );
@@ -224,7 +226,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_gwstatus', // checkbox name (id)
 		'Gateway Status', // checkbox label
-		'Display Gateway Status', // checkbox text
+		'Display detailed status for monitored gateways', // checkbox text
 		$pconfig['scr_gwstatus'] // checkbox initial value
 	)
 )->setHelp('A 4-row 20-column display size, or higher, is required for this screen.');
@@ -252,6 +254,16 @@ $section->addInput(
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
+
+$section->addInput(
+	new Form_Checkbox(
+		'scr_ntp', // checkbox name (id)
+		'NTP Status', // checkbox label
+		'Display NTP status', // checkbox text
+		$pconfig['scr_ntp'] // checkbox initial value
+	)
+);
+
 
 $group = new Form_Group('CPU Temperature');
 $group->add(
