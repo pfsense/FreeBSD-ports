@@ -814,6 +814,16 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	}
 
 	/**********************************************************/
+	/* Set new minimum TCP Stream_Memcap value to 256 MB.     */
+	/* Increase existing value to at least 256 MB, but leave  */
+	/* large values untouched.                                */
+	/**********************************************************/
+	if ((int)$pconfig['stream_memcap'] < 268435456) {
+		$pconfig['stream_memcap'] = '268435456';
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
 	/* If we updated this interface, write it to config array */
 	/**********************************************************/
 	if ($updated_intf_cfg === true) {
