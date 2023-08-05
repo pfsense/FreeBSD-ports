@@ -1404,43 +1404,60 @@ function loop_status($lcd) {
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$cputemperature}\"";
 					break;
 				case "scr_ntp":
-					$ntp_hms = date("H:i");
+					$ntp_hms = date("H:iT");
 					$ntpq_output = lcdproc_get_ntp_status();
 					if ($ntpq_output != false) {
 						$ntpq_counter = 0;
+						$ntpq_peer = false;
 						foreach ($ntpq_output as $line) {
-							if (substr($line, 0, 1) == "*" ||
-							    substr($line, 0, 1) == "o") {
-								//Active NTP Peer
-								$line = substr($line, 1);
-								$peerinfo = preg_split("/[\s\t]+/", $line);
-								$peersrv = $peerinfo[0]; // Server IP
-								$peerref = $peerinfo[1]; // Ref ID
-								$peerstr = $peerinfo[2]; // Stratum
-								$peertyp = $peerinfo[3]; // Type
-								$peerdel = substr($peerinfo[7],0,5); // Delay
-								$peeroff = substr($peerinfo[8],0,6); // Offset
-								$peerjit = substr($peerinfo[9],0,5); // Jitter
+							$peersta = substr($line, 0, 1); // Status
+							$line = substr($line, 1);
+							$peerinfo = preg_split("/[\s\t]+/", $line);
+							$peersrv = $peerinfo[0]; // Server IP
+							$peerref = $peerinfo[1]; // Ref ID
+							$peerstr = $peerinfo[2]; // Stratum
+							$peertyp = $peerinfo[3]; // Type
+							$peerdel = substr($peerinfo[7],0,5); // Delay
+							$peeroff = substr($peerinfo[8],0,6); // Offset
+							$peerjit = substr($peerinfo[9],0,5); // Jitter
+							if ($peersta == "o") { // PPS Peer
 								// Common rows
-								$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} Strtm: {$peerstr}\"";
+								$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
 								$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
 								$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
-								if (($peertyp == "l") &&
-								    ($peerref == ".GPS.")) {
-									// For local GPS, show the Ref ID of the source, and append how many satellites are in use or in view
-									$gps_sat_count = lcdproc_get_ntp_gps_sat_count();
-									$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} " . (($gps_sat_count == false) ? "" : "{$gps_sat_count}") . "\"";
-								} elseif ($peertyp == "l") {
-									// For other local sources, show Ref ID of the source
-									$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref}\"";
-								} else {
-									// For everything else, show IP of the source
-									$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peersrv}\"";
+								if ($peertyp == "l" &&		// Local
+							   		$peerref == ".GPS.") {	// GPS
+										// For local GPS, display Ref ID and how many satellites are in use or in view
+										$gps_sat_count = lcdproc_get_ntp_gps_sat_count();
+										$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} " . (($gps_sat_count == false) ? "" : "{$gps_sat_count}") . "\"";
+										$ntpq_peer = true;
+										break; // Stop looping
+								} 
+								if ($peertyp == "l" &&	// Local
+									$peerref == ".PPS.") {		// PPS											// For local PPS, display Ref ID and stability
+										exec('/usr/local/sbin/ntptime | /usr/bin/grep "pps freq"', $line);
+										$line = implode(",", $line);
+										$ppsinfo = preg_split("/\s+/", $line);
+										$ppsstb = $ppsinfo[6]; // PPS Stability
+										$ppsjit = $ppsinfo[9]; // PPS Jitter
+										$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} {$ppsstb}ppm\"";
+										$ntpq_peer = true;
+										break; // Stop looping
 								}
-								$ntpq_counter++;
 							}
+							if ($peersta =="*") { // Active Peer
+								// Common rows
+								$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
+								$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
+								$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
+								// For everything else, display IP of the source
+								$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peersrv}\"";	
+								$ntpq_peer = true;
+								break; // Stop looping
+							}						
+							$ntpq_counter++;
 						}
-						if ($ntpq_counter == 0) {
+						if ($ntpq_peer == false) {
 							$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: No active peers\"";
 							$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"\"";
 							$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"\"";
