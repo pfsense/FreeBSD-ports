@@ -253,51 +253,6 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	$updated_intf_cfg = false;
 
 	/***********************************************************/
-	/* Add the new 'dns-events.rules' file to the rulesets.    */
-	/***********************************************************/
-	if (strpos(array_get_path($pconfig, 'rulesets', ''), "dns-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||dns-events.rules";	
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-
-	/***********************************************************/
-	/* Add the new 'dhcp-events.rules' file to the rulesets.   */
-	/***********************************************************/
-	if (strpos(array_get_path($pconfig, 'rulesets', ''), "dhcp-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||dhcp-events.rules";	
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-
-	/***********************************************************/
-	/* Add the new 'http2-events.rules' file to the rulesets.  */
-	/***********************************************************/
-	if (strpos(array_get_path($pconfig, 'rulesets', ''), "http2-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||http2-events.rules";	
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-
-	/***********************************************************/
-	/* Add the new 'mqtt-events.rules' file to the rulesets.   */
-	/***********************************************************/
-	if (strpos(array_get_path($pconfig, 'rulesets', ''), "mqtt-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||mqtt-events.rules";	
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-
-	/***********************************************************/
-	/* Add the new 'ssh-events.rules' file to the rulesets.    */
-	/***********************************************************/
-	if (strpos(array_get_path($pconfig, 'rulesets', ''), "ssh-events.rules") === FALSE) {
-		$pconfig['rulesets'] = rtrim(array_get_path($pconfig, 'rulesets', ''), "||") . "||ssh-events.rules";	
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-
-	/***********************************************************/
 	/* Add new run mode value and default it to 'autofp'.      */
 	/***********************************************************/
 	if (empty($pconfig['runmode'])) {
@@ -480,6 +435,15 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	}
 
 	/************************************************************/
+	/* Add new App-Layer parser exception policy if not set     */
+	/************************************************************/
+	if (empty($pconfig['app_layer_error_policy'])) {
+		$pconfig['app_layer_error_policy'] = "ignore";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+
+	/************************************************************/
 	/* Create new DNS App-Layer parser settings if not set      */
 	/************************************************************/
 	if (empty($pconfig['dns_global_memcap'])) {
@@ -564,6 +528,11 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	/***********************************************************/
 	/* Create new TLS App-Layer parser settings if not set    */
 	/***********************************************************/
+	if (empty($pconfig['tls_parser'])) {
+		$pconfig['tls_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
 	if (empty($pconfig['tls_detect_ports'])) {
 		$pconfig['tls_detect_ports'] = "443";
 		$updated_intf_cfg = true;
@@ -583,28 +552,8 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	/**********************************************************/
 	/* Create other App-Layer parser settings if not set      */
 	/**********************************************************/
-	if (empty($pconfig['tls_parser'])) {
-		$pconfig['tls_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['smtp_parser'])) {
-		$pconfig['smtp_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['imap_parser'])) {
-		$pconfig['imap_parser'] = "detection-only";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['ssh_parser'])) {
-		$pconfig['ssh_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['ftp_parser'])) {
-		$pconfig['ftp_parser'] = "yes";
+	if (empty($pconfig['bittorrent_parser'])) {
+		$pconfig['bittorrent_parser'] = "yes";
 		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
@@ -613,38 +562,8 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
-	if (empty($pconfig['smb_parser'])) {
-		$pconfig['smb_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['msn_parser'])) {
-		$pconfig['msn_parser'] = "detection-only";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['snmp_parser'])) {
-		$pconfig['snmp_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['rdp_parser'])) {
-		$pconfig['rdp_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['sip_parser'])) {
-		$pconfig['sip_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['http2_parser'])) {
-		$pconfig['http2_parser'] = "yes";
-		$updated_intf_cfg = true;
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['rfb_parser'])) {
-		$pconfig['rfb_parser'] = "yes";
+	if (empty($pconfig['dhcp_parser'])) {
+		$pconfig['dhcp_parser'] = "yes";
 		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
@@ -653,8 +572,93 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
+	if (empty($pconfig['ftp_parser'])) {
+		$pconfig['ftp_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['http2_parser'])) {
+		$pconfig['http2_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['ikev2_parser'])) {
+		$pconfig['ikev2_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['imap_parser'])) {
+		$pconfig['imap_parser'] = "detection-only";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
 	if (empty($pconfig['mqtt_parser'])) {
 		$pconfig['mqtt_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['msn_parser'])) {
+		$pconfig['msn_parser'] = "detection-only";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['nfs_parser'])) {
+		$pconfig['nfs_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['ntp_parser'])) {
+		$pconfig['ntp_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['pgsql_parser'])) {
+		$pconfig['pgsql_parser'] = "no";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['quic_parser'])) {
+		$pconfig['quic_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['rdp_parser'])) {
+		$pconfig['rdp_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['rfb_parser'])) {
+		$pconfig['rfb_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['sip_parser'])) {
+		$pconfig['sip_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smb_parser'])) {
+		$pconfig['smb_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['smtp_parser'])) {
+		$pconfig['smtp_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['snmp_parser'])) {
+		$pconfig['snmp_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['ssh_parser'])) {
+		$pconfig['ssh_parser'] = "yes";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['telnet_parser'])) {
+		$pconfig['telnet_parser'] = "yes";
 		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
@@ -684,8 +688,18 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	}
 
 	/**********************************************************/
-	/* Create new interface stream setting if not set         */
+	/* Create new interface flow/stream settings if not set   */
 	/**********************************************************/
+	if (!isset($pconfig['defrag_memcap_policy'])) {
+		$pconfig['defrag_memcap_policy'] = "ignore";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['flow_memcap_policy'])) {
+		$pconfig['flow_memcap_policy'] = "ignore";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
 	if (empty($pconfig['max_synack_queued'])) {
 		$pconfig['max_synack_queued'] = "5";
 		$updated_intf_cfg = true;
@@ -698,6 +712,26 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	}
 	if (!isset($pconfig['stream_drop_invalid'])) {
 		$pconfig['stream_drop_invalid'] = "no";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['stream_memcap_policy'])) {
+		$pconfig['stream_memcap_policy'] = "ignore";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['reassembly_memcap_policy'])) {
+		$pconfig['reassembly_memcap_policy'] = "ignore";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['midstream_policy'])) {
+		$pconfig['midstream_policy'] = "ignore";
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['stream_checksum_validation'])) {
+		$pconfig['stream_checksum_validation'] = "on";
 		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
@@ -816,10 +850,22 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	/**********************************************************/
 	/* Set new minimum TCP Stream_Memcap value to 256 MB.     */
 	/* Increase existing value to at least 256 MB, but leave  */
-	/* large values untouched.                                */
+	/* larger values untouched.                               */
 	/**********************************************************/
 	if ((int)$pconfig['stream_memcap'] < 268435456) {
 		$pconfig['stream_memcap'] = '268435456';
+		$updated_intf_cfg = true;
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Set new minimum Flow_Memcap value to 128 MB. Increase  */
+	/* existing value to at least 128 MB, but leave larger    */
+	/* values untouched.                                      */
+	/**********************************************************/
+	if ((int)$pconfig['stream_memcap'] < 134217728) {
+		$pconfig['stream_memcap'] = '134217728';
+		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
 
