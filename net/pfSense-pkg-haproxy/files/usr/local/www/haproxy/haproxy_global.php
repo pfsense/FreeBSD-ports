@@ -135,6 +135,7 @@ if ($_POST) {
 					unset($haproxycfg['config'][0]['enable']);
 				}
 			} else {
+				$haproxycfg['config'][0] = array();
 				$haproxycfg['config'][0]['enable'] = 'off';
 			}
 			
