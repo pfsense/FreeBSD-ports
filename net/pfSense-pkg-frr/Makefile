@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-frr
 PORTVERSION=	1.3
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
