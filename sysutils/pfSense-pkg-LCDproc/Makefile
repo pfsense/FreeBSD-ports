@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-LCDproc
 PORTVERSION=	0.11.5
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
