@@ -21,15 +21,15 @@
 
 /* Get a list of configured BFD peers */
 function frr_get_bfd_peers() {
-	$peers = array();
-	foreach (config_get_path('installedpackages/frrbfdpeers/config', []) as $peer) {
-		$peer_name = $peer['peer'];
-		if (!empty(peer['descr'])) {
-			$peer_name .= " - {$peer['descr']}";
+	$bfdpeers = [];
+	foreach (config_get_path('installedpackages/frrbfdpeers/config', []) as $bfdpeer) {
+		$bfdpeer_name = $bfdpeer['peer'];
+		if (!empty($bfdpeer['descr'])) {
+			$bfdpeer_name .= " - {$bfdpeer['descr']}";
 		}
-		$peers[] = array("name" => "{$peer['peer']}", "value" => $peer['peer']);
+		$bfdpeers[] = array("name" => "{$bfdpeer_name}", "value" => $bfdpeer['peer']);
 	}
-	return $peers;
+	return $bfdpeers;
 }
 
 /* Get a list of configured interface addresses */
