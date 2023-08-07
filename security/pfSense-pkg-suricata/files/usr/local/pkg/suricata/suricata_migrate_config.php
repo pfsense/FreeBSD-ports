@@ -863,8 +863,8 @@ foreach (config_get_path('installedpackages/suricata/rule', []) as $idx => &$pco
 	/* existing value to at least 128 MB, but leave larger    */
 	/* values untouched.                                      */
 	/**********************************************************/
-	if ((int)$pconfig['stream_memcap'] < 134217728) {
-		$pconfig['stream_memcap'] = '134217728';
+	if ((int)$pconfig['flow_memcap'] < 134217728) {
+		$pconfig['flow_memcap'] = '134217728';
 		$updated_intf_cfg = true;
 		$updated_cfg = true;
 	}
