@@ -836,12 +836,12 @@ if ($suricatacfg['enable_async_sessions'] == 'on')
 else
 	$stream_enable_async = "false";
 
-if ($suricatacfg['stream_bypass'] == 'yes' || $suricatacfg['tls_encrypt_handling'] == 'bypass')
+if ($suricatacfg['stream_bypass'] == 'on' || $suricatacfg['tls_encrypt_handling'] == 'bypass')
 	$stream_bypass_enable = "yes";
 else
 	$stream_bypass_enable = "no";
 
-if ($suricatacfg['stream_drop_invalid'] == 'yes')
+if ($suricatacfg['stream_drop_invalid'] == 'on')
 	$stream_drop_invalid_enable = "yes";
 else
 	$stream_drop_invalid_enable = "no";

@@ -60,7 +60,7 @@ if (isset($id) && !empty($a_nat)) {
 	if (empty($pconfig['flow_memcap_policy']))
 		$pconfig['flow_memcap_policy'] = "ignore";
 	if (empty($pconfig['stream_checksum_validation']))
-		$pconfig['stream_checksum_validation'] = "yes";
+		$pconfig['stream_checksum_validation'] = "on";
 
 	// See if Host-OS policy engine array is configured and use
 	// it; otherwise create a default engine configuration.
@@ -316,8 +316,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		if ($_POST['stream_checksum_validation'] == "on") { $natent['stream_checksum_validation'] = 'on'; }else{ $natent['stream_checksum_validation'] = 'off'; }
 		if ($_POST['midstream_policy']) { $natent['midstream_policy'] = $_POST['midstream_policy']; }
 		if ($_POST['enable_async_sessions'] == "on") { $natent['enable_async_sessions'] = 'on'; }else{ $natent['enable_async_sessions'] = 'off'; }
-		if ($_POST['stream_bypass'] == "yes") { $natent['stream_bypass'] = 'yes'; }else{ $natent['stream_bypass'] = 'no'; }
-		if ($_POST['stream_drop_invalid'] == "yes") { $natent['stream_drop_invalid'] = 'yes'; }else{ $natent['stream_drop_invalid'] = 'no'; }
+		if ($_POST['stream_bypass'] == "on") { $natent['stream_bypass'] = 'on'; }else{ $natent['stream_bypass'] = 'no'; }
+		if ($_POST['stream_drop_invalid'] == "on") { $natent['stream_drop_invalid'] = 'on'; }else{ $natent['stream_drop_invalid'] = 'no'; }
 		if ($_POST['reassembly_memcap'] != "") { $natent['reassembly_memcap'] = $_POST['reassembly_memcap']; }else{ $natent['reassembly_memcap'] = "134217728"; }
 		if ($_POST['reassembly_memcap_policy']) { $natent['reassembly_memcap_policy'] = $_POST['reassembly_memcap_policy']; }
 		if ($_POST['reassembly_depth'] != "") { $natent['reassembly_depth'] = $_POST['reassembly_depth']; }else{ $natent['reassembly_depth'] = "1048576"; }
@@ -842,22 +842,22 @@ $section->addInput(new Form_Checkbox(
 	'Checksum Validation',
 	'Suricata will validate the checksum of received packets. When enabled, packets with invalid checksum values will not be ' . 
 	'processed by the engine stream/app layer. Default is Checked.',
-	$pconfig['stream_checksum_validation'] == 'yes' ? true:false,
-	'yes'
+	$pconfig['stream_checksum_validation'] == 'on' ? true:false,
+	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'stream_bypass',
 	'Bypass Packets',
 	'Suricata will bypass packets when stream reassembly depth (configured below) is reached. Default is Not Checked.',
-	$pconfig['stream_bypass'] == 'yes' ? true:false,
-	'yes'
+	$pconfig['stream_bypass'] == 'on' ? true:false,
+	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'stream_drop_invalid',
 	'Drop Invalid Packets',
 	'When using Inline mode, Suricata will drop packets that are invalid with regards to streaming engine. Default is Not Checked.',
-	$pconfig['stream_drop_invalid'] == 'yes' ? true:false,
-	'yes'
+	$pconfig['stream_drop_invalid'] == 'on' ? true:false,
+	'on'
 ));
 $section->addInput(new Form_Input(
 	'reassembly_memcap',

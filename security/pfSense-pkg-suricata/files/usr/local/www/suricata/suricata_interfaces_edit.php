@@ -667,10 +667,10 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['stream_memcap_policy'] = 'ignore';
 			$natent['reassembly_memcap_policy'] = 'ignore';
 			$natent['midstream_policy'] = 'ignore';
-			$natent['stream_checksum_validation'] = "on";
+			$natent['stream_checksum_validation'] = "off";
 			$natent['enable_async_sessions'] = 'off';
-			$natent['stream_bypass'] = "no";
-			$natent['stream_drop_invalid'] = "no";
+			$natent['stream_bypass'] = "off";
+			$natent['stream_drop_invalid'] = "off";
 			$natent['delayed_detect'] = 'off';
 			$natent['intf_promisc_mode'] = 'on';
 			$natent['intf_snaplen'] = '1518';
