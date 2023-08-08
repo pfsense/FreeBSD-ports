@@ -54,6 +54,7 @@ $pconfig['eve_log_limit_size'] = config_get_path('installedpackages/suricata/con
 $pconfig['eve_log_retention'] = config_get_path('installedpackages/suricata/config/0/eve_log_retention', 168);
 $pconfig['sid_changes_log_limit_size'] = config_get_path('installedpackages/suricata/config/0/sid_changes_log_limit_size', 250);
 $pconfig['sid_changes_log_retention'] = config_get_path('installedpackages/suricata/config/0/sid_changes_log_retention', 336);
+$pconfig['pkt_capture_file_retention'] = config_get_path('installedpackages/suricata/config/0/pkt_capture_file_retention', 168);
 
 // Load up some arrays with selection values (we use these later).
 // The keys in the $retentions array are the retention period
@@ -88,6 +89,7 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['tls_certs_store_retention'] = "168";
 	$pconfig['eve_log_retention'] = "168";
 	$pconfig['sid_changes_log_retention'] = "336";
+	$pconfig['pkt_capture_file_retention'] = "168";
 
 	$pconfig['alert_log_limit_size'] = "500";
 	$pconfig['block_log_limit_size'] = "500";
@@ -145,6 +147,7 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 		config_set_path('installedpackages/suricata/config/0/eve_log_retention', $_POST['eve_log_retention']);
 		config_set_path('installedpackages/suricata/config/0/sid_changes_log_limit_size', $_POST['sid_changes_log_limit_size']);
 		config_set_path('installedpackages/suricata/config/0/sid_changes_log_retention', $_POST['sid_changes_log_retention']);
+		config_set_path('installedpackages/suricata/config/0/pkt_capture_file_retention', $_POST['pkt_capture_file_retention']);
 
 		write_config("Suricata pkg: saved updated configuration for LOGS MGMT.");
 		sync_suricata_package_config();
@@ -221,7 +224,9 @@ $section->addInput(new Form_Input(
 	'Log Limit Size in MB',
 	'text',
 	$pconfig['suricataloglimitsize']
-))->setHelp('This setting imposes a hard-limit on the combined log directory size of all Suricata interfaces.  When the size limit set is reached, rotated logs for all interfaces will be removed, and any active logs pruned to zero-length.   (default is 20% of available free disk space)');
+))->setHelp('This setting imposes a hard-limit on the combined log directory size of all Suricata interfaces. '.
+			'When the size limit set is reached, rotated logs for all interfaces will be removed, and any active '.
+			'logs pruned to zero-length.   (default is 20% of available free disk space)');
 $form->add($section);
 
 $section = new Form_Section("Log Size and Retention Limits");
@@ -339,7 +344,8 @@ $section->add($group);
 
 $section->addInput(new Form_StaticText(
 	'',
-	'Settings will be ignored for any log in the list above not enabled on the Interface Settings tab. When a log reaches the Max Size limit, it will be rotated and tagged with a timestamp. The Retention period determines how long rotated logs are kept before they are automatically deleted.'
+	'Settings will be ignored for any log in the list above not enabled on the Interface Settings tab. When a log reaches the Max Size limit, '.
+	'it will be rotated and tagged with a timestamp. The Retention period determines how long rotated logs are kept before they are automatically deleted.'
 ));
 
 $section->addInput(new Form_Input(
@@ -347,19 +353,32 @@ $section->addInput(new Form_Input(
 	'Captured Files Storage Limit',
 	'text',
 	$pconfig['file_store_limit_size']
-))->setHelp('File Store captured files storage limit in megabytes (MB). Initial default value is 60% of the Log Directory Size Limit parameter configured above. This sets the maximum storage limit (disk utilization) for captured files. When this limit is reached, older files will purged to reduce disk consumption below the configured limit. Entering zero disables this check and allows unlimited storage.');
+))->setHelp('File Store captured files storage limit in megabytes (MB). Initial default value is 60% of the Log Directory Size Limit '.
+			'parameter configured above. This sets the maximum storage limit (disk utilization) for captured files. '.
+			'When this limit is reached, older files will purged to reduce disk consumption below the configured limit. '.
+			'Entering zero disables this check and allows unlimited storage.');
 $section->addInput(new Form_Select(
 	'file_store_retention',
 	'Captured Files Retention Period',
 	$pconfig['file_store_retention'],
 	$retentions
-))->setHelp('Choose retention period for captured files in File Store. Default is 7 days. When file capture and store is enabled, Suricata captures downloaded files from HTTP sessions and stores them, along with metadata, for later analysis. This setting determines how long files remain in the File Store folder before they are automatically deleted.');
+))->setHelp('Choose retention period for captured files in File Store. Default is 7 days. When file capture and store is enabled, '.
+			'Suricata captures downloaded files from HTTP sessions and stores them, along with metadata, for later analysis. '.
+			'This setting determines how long files remain in the File Store folder before they are automatically deleted.');
 $section->addInput(new Form_Select(
 	'tls_certs_store_retention',
 	'Captured TLS Certs Retention Period',
 	$pconfig['tls_certs_store_retention'],
 	$retentions
-))->setHelp('Choose retention period for captured TLS Certs. Default is 7 days. When custom rules with tls.store are enabled, Suricata captures Certificates, along with metadata, for later analysis. This setting determines how long files remain in the Certs folder before they are automatically deleted.');
+))->setHelp('Choose retention period for captured TLS Certs. Default is 7 days. When custom rules with tls.store are enabled, Suricata captures Certificates, '.
+			'along with metadata, for later analysis. This setting determines how long files remain in the Certs folder before they are automatically deleted.');
+$section->addInput(new Form_Select(
+	'pkt_capture_file_retention',
+	'Packet Capture Files Retention Period',
+	$pconfig['pkt_capture_file_retention'],
+	$retentions
+))->setHelp('Choose retention period for PCAP files. Default is 7 days. When Packet Capture is enabled, Suricata captures packets/flows in PCAP format. '.
+			'This setting determines how long files remain in the "pcaps" sub-folder in the log directory of the interface before they are automatically deleted.');
 $form->add($section);
 
 print($form);
@@ -393,6 +412,7 @@ events.push(function(){
 		disableInput('file_store_retention', hide);
 		disableInput('file_store_limit_size', hide);
 		disableInput('tls_certs_store_retention', hide);
+		disableInput('pkt_capture_file_retention', hide);
 	}
 
 	function enable_change_dirSize() {

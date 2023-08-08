@@ -344,7 +344,7 @@ else
 if (!empty($suricatacfg['max_pcap_log_files']))
 	$pcap_log_max_files = $suricatacfg['max_pcap_log_files'];
 else
-	$pcap_log_max_files = "1000";
+	$pcap_log_max_files = "100";
 
 if ($suricatacfg['pcap_use_stream_depth'] == "on")
 	$pcap_use_stream_depth = "yes";

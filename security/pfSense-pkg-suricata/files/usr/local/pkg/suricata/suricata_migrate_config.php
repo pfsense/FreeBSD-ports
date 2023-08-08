@@ -196,14 +196,18 @@ if (config_get_path('installedpackages/suricata/config/0/tls_log_limit_size') ==
 	config_set_path('installedpackages/suricata/config/0/tls_log_limit_size', "500");
 	$updated_cfg = true;
 }
+if (config_get_path('installedpackages/suricata/config/0/tls_certs_store_retention') === null) {
+	config_set_path('installedpackages/suricata/config/0/tls_certs_store_retention', "168");
+	$updated_cfg = true;
+}
 
 if (config_get_path('installedpackages/suricata/config/0/file_store_retention') === null) {
 	config_set_path('installedpackages/suricata/config/0/file_store_retention', "168");
 	$updated_cfg = true;
 }
 
-if (config_get_path('installedpackages/suricata/config/0/tls_certs_store_retention') === null) {
-	config_set_path('installedpackages/suricata/config/0/tls_certs_store_retention', "168");
+if (config_get_path('installedpackages/suricata/config/0/pkt_capture_file_retention') === null) {
+	config_set_path('installedpackages/suricata/config/0/pkt_capture_file_retention', "168");
 	$updated_cfg = true;
 }
 

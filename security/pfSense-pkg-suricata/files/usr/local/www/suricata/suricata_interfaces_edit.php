@@ -189,7 +189,7 @@ if (empty($pconfig['stats_upd_interval']))
 if (empty($pconfig['max_pcap_log_size']))
 	$pconfig['max_pcap_log_size'] = "32";
 if (empty($pconfig['max_pcap_log_files']))
-	$pconfig['max_pcap_log_files'] = "1000";
+	$pconfig['max_pcap_log_files'] = "100";
 if (empty($pconfig['pcap_log_conditional']))
 	$pconfig['pcap_log_conditional'] = "alerts";
 if (empty($pconfig['alertsystemlog_facility']))
@@ -1066,17 +1066,19 @@ $section->addInput(new Form_Input(
 $section->addInput(new Form_Checkbox(
 	'enable_pcap_log',
 	'Enable Packet Log',
-	'Suricata will log decoded packets for the interface in pcap-format. Default is Not Checked. This can consume a significant amount of disk space when enabled.',
+	'Suricata will log decoded packets for the interface in pcap-format. Default is Not Checked. This can consume a significant amount of disk space when enabled. ' .
+	'Use the Packet Log Conditional setting below to select packets for capture.',
 	$pconfig['enable_pcap_log'] == 'on' ? true:false,
 	'on'
 ));
 
 $section->addInput(new Form_Select(
 	'pcap_log_conditional',
-	'PCAP Log Conditional',
+	'Packet Log Conditional',
 	$pconfig['pcap_log_conditional'],
 	array("alerts" => "ALERTS", "all" => "ALL", "tag"=>"TAG")
-))->setHelp('Select ALERTS to capture and log only alerted packets and flows, ALL to capture and log all packets, or TAG to capture and log only flows tagged via the "tag" keyword.');
+))->setHelp('Select ALERTS to capture and log only alerted packets and flows, ALL to capture and log all packets, or TAG to capture and log only flows tagged via the "tag" keyword. ' .
+			'Default is ALERTS which will only create PCAP files for alerts.');
 
 $section->addInput(new Form_Checkbox(
 	'pcap_use_stream_depth',
@@ -1105,7 +1107,7 @@ $section->addInput(new Form_Input(
 	'Max Packet Log Files',
 	'text',
 	$pconfig['max_pcap_log_files']
-))->setHelp('Enter maximum number of packet log files to maintain. Default is 1000. When the number of packet log files reaches the set limit, the oldest file will be overwritten.');
+))->setHelp('Enter maximum number of packet log files to maintain. Default is 100. When the number of packet log files reaches the set limit, the oldest file will be overwritten.');
 
 $section->addInput(new Form_Checkbox(
 	'enable_verbose_logging',
