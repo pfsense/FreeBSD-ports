@@ -1742,6 +1742,26 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ));
 
+$group = new Form_Group('IP Pass List');
+$group->addClass('passlist');
+$list = suricata_get_config_lists('passlist');
+$list['none'] = 'none';
+$group->add(new Form_Select(
+	'passlistname',
+	'Pass List',
+	$pconfig['passlistname'],
+	$list
+))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. Select "none" to prevent use of a Pass List.');
+$group->add(new Form_Button(
+	'btnPasslist',
+	' ' . 'View List',
+	'#',
+	'fa-file-text-o'
+))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
+$group->setHelp('The default Pass List adds Gateways, DNS servers, locally-attached networks, the WAN IP, VPNs and VIPs.  Create a Pass List with an alias to customize whitelisted IP addresses.  ' . 
+		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation.');
+$section->add($group);
+
 $form->add($section);
 
 // Add Inline IPS rule edit warning modal pop-up
@@ -1888,30 +1908,6 @@ $group->add(new Form_Button(
 
 $group->setHelp('External Net is networks that are not Home Net.  Most users should leave this setting at default.' . '<br />' .
 		'Create a Pass List and add an Alias to it, and then assign the Pass List here for custom External Net settings.');
-
-$section->add($group);
-
-$group = new Form_Group('Pass List');
-
-$group->addClass('passlist');
-$list = suricata_get_config_lists('passlist');
-$list['none'] = 'none';
-$group->add(new Form_Select(
-	'passlistname',
-	'Pass List',
-	$pconfig['passlistname'],
-	$list
-))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. Select "none" to prevent use of a Pass List.');
-
-$group->add(new Form_Button(
-	'btnPasslist',
-	' ' . 'View List',
-	'#',
-	'fa-file-text-o'
-))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
-
-$group->setHelp('The default Pass List adds Gateways, DNS servers, locally-attached networks, the WAN IP, VPNs and VIPs.  Create a Pass List with an alias to customize whitelisted IP addresses.  ' . 
-		'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation.');
 
 $section->add($group);
 
