@@ -41,7 +41,7 @@ stats:
 # Configure the type of alert (and other) logging.
 outputs:
 
-  # alert-pf blocking plugin
+  # alert-pf custom blocking plugin for pfSense only
   - alert-pf:
       enabled: {$suri_blockoffenders}
       kill-state: {$suri_killstates}
@@ -49,6 +49,7 @@ outputs:
       pass-list: {$suri_passlist}
       block-ip: {$suri_blockip}
       pf-table: {$suri_pf_table}
+      passlist-debugging: no   # Do not enable debugging on production systems!
 
   # a line based alerts log similar to Snort's fast.log
   - fast:
@@ -65,6 +66,7 @@ outputs:
       extended: {$http_log_extended}
       filetype: regular
 
+  # a PCAP format packet capture facility
   - pcap-log:
       enabled: {$pcap_log_enabled}
       filename: log.pcap
