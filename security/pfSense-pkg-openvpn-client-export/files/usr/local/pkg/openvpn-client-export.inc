@@ -91,6 +91,9 @@ function openvpn_client_pem_to_pk12($outpath, $outpass, $p12encryption, $crtpath
 	switch ($p12encryption) {
 		case 'legacy':
 			$algo = '-certpbe PBE-SHA1-RC2-40 -keypbe PBE-SHA1-RC2-40';
+			if (OPENSSL_VERSION_NUMBER >= 0x30000090) {
+				$algo = "-legacy {$algo}";
+			}
 			$hash = '';
 			break;
 		case 'low':
