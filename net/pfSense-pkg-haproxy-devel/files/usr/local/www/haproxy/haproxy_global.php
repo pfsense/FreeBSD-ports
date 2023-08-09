@@ -130,13 +130,12 @@ if ($_POST) {
 			}
 
 			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
-			init_config_arr(array('installedpackages', 'haproxy', 'config', 0));
 			if ($_POST['enable']) {
-				if (is_array($haproxycfg['config'][0])) {
-					unset($haproxycfg['config'][0]['enable']);
+				if (array_get_path($haproxycfg, 'config/0/enable')) {
+					array_del_path($haproxycfg, 'config/0/enable');
 				}
 			} else {
-				$haproxycfg['config'][0]['enable'] = 'off';
+				array_set_path($haproxycfg, 'config/0/enable', 'off');
 			}
 			
 			touch($d_haproxyconfdirty_path);
