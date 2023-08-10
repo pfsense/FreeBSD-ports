@@ -380,7 +380,7 @@ $section->addInput(new Form_Input(
 	'Snort Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29151.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible with Suricata and will break your installation!');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29200.tar.gz<br />DO NOT specify a Snort3 rules file!  Snort3 rules are incompatible with Suricata and will break your installation!');
 $section->addInput(new Form_Input(
 	'oinkcode',
 	'Snort Oinkmaster Code',

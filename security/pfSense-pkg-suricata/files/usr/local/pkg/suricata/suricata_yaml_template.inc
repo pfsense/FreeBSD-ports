@@ -41,7 +41,7 @@ stats:
 # Configure the type of alert (and other) logging.
 outputs:
 
-  # alert-pf blocking plugin
+  # alert-pf custom blocking plugin for pfSense only
   - alert-pf:
       enabled: {$suri_blockoffenders}
       kill-state: {$suri_killstates}
@@ -49,6 +49,7 @@ outputs:
       pass-list: {$suri_passlist}
       block-ip: {$suri_blockip}
       pf-table: {$suri_pf_table}
+      passlist-debugging: no   # Do not enable debugging on production systems!
 
   # a line based alerts log similar to Snort's fast.log
   - fast:
@@ -59,26 +60,37 @@ outputs:
 
   - http-log:
       enabled: {$http_log_enabled}
-      filename: http.log
+      filename: {$http_log_filename}
+      filetype: {$http_log_filetype}
       append: {$http_log_append}
       extended: {$http_log_extended}
       filetype: regular
 
+  # a PCAP format packet capture facility
   - pcap-log:
       enabled: {$pcap_log_enabled}
       filename: log.pcap
+      dir: {$pcap_log_dir}/
       limit: {$pcap_log_limit_size}mb
       max-files: {$pcap_log_max_files}
       mode: normal
+      compression: none
+      ts-format: sec
+      use-stream-depth: {$pcap_use_stream_depth}
+      honor-pass-rules: {$pcap_honor_pass_rules}
+      conditional: {$pcap_log_conditional}
 
   - tls-log:
       enabled: {$tls_log_enabled}
-      filename: tls.log
+      filename: {$tls_log_filename}
+      filetype: {$tls_log_filetype}
+      append: {$tls_log_append}
       extended: {$tls_log_extended}
+      session-resumption: {$tls_session_resumption}
 
   - tls-store:
       enabled: {$tls_store_enabled}
-      certs-log-dir: certs
+      certs-log-dir: {$tls_certs_dir}
 
   - stats:
       enabled: {$stats_log_enabled}
@@ -94,12 +106,6 @@ outputs:
       facility: {$alert_syslog_facility}
       level: {$alert_syslog_priority}
 
-  - drop:
-      enabled: no
-      filename: drop.log
-      append: yes
-      filetype: regular
-
   - file-store:
       version: 2
       enabled: {$file_store_enabled}
@@ -109,7 +115,7 @@ outputs:
   - eve-log:
       enabled: {$enable_eve_log}
       filetype: {$eve_output_type}
-      filename: eve.json
+      filename: {$eve_output_filename}
       redis: {$eve_redis_output}
       identity: "suricata"
       facility: {$eve_systemlog_facility}
@@ -170,6 +176,7 @@ spm-algo: auto
 # Defrag settings:
 defrag:
   memcap: {$frag_memcap}
+  memcap-policy: {$defrag_memcap_policy}
   hash-size: {$frag_hash_size}
   trackers: {$ip_max_trackers}
   max-frags: {$ip_max_frags}
@@ -179,6 +186,7 @@ defrag:
 # Flow settings:
 flow:
   memcap: {$flow_memcap}
+  memcap-policy: {$flow_memcap_policy}
   hash-size: {$flow_hash_size}
   prealloc: {$flow_prealloc}
   emergency-recovery: {$flow_emerg_recovery}
@@ -218,16 +226,19 @@ flow-timeouts:
 
 stream:
   memcap: {$stream_memcap}
-  checksum-validation: no
+  memcap-policy: {$stream_memcap_policy}
+  checksum-validation: {$stream_checksum_validation}
   inline: auto
   prealloc-sessions: {$stream_prealloc_sessions}
   midstream: {$stream_enable_midstream}
+  midstream-policy: {$midstream_policy}
   async-oneside: {$stream_enable_async}
   max-synack-queued: {$max_synack_queued}
   bypass: {$stream_bypass_enable}
   drop-invalid: {$stream_drop_invalid_enable}
   reassembly:
     memcap: {$reassembly_memcap}
+    memcap-policy: {$reassembly_memcap_policy}
     depth: {$reassembly_depth}
     toserver-chunk-size: {$reassembly_to_server_chunk}
     toclient-chunk-size: {$reassembly_to_client_chunk}
@@ -312,7 +323,10 @@ pcre:
 
 # Holds details on the app-layer. The protocols section details each protocol.
 app-layer:
+  error-policy: {$app_layer_error_policy}
   protocols:
+    bittorrent-dht:
+      enabled: {$bittorrent_parser}
     dcerpc:
       enabled: {$dcerpc_parser}
     dhcp:
@@ -342,7 +356,9 @@ app-layer:
     http:
       enabled: {$http_parser}
       memcap: {$http_parser_memcap}
-    ikev2:
+    http2:
+      enabled: {$http2_parser}
+    ike:
       enabled: {$ikev2_parser}
     imap:
       enabled: {$imap_parser}
@@ -362,12 +378,18 @@ app-layer:
       enabled: {$nfs_parser}
     ntp:
       enabled: {$ntp_parser}
-    tls:
-      enabled: {$tls_parser}
+    pgsql:
+      enabled: {$pgsql_parser}
+    quic:
+      enabled: {$quic_parser}
+    rdp:
+      enabled: {$rdp_parser}
+    rfb:
+      enabled: {$rfb_parser}
       detection-ports:
-        dp: {$tls_detect_port}
-      ja3-fingerprints: {$tls_ja3}
-      encrypt-handling: {$tls_encrypt_handling}
+        dp: 5900, 5901, 5902, 5903, 5904, 5905, 5906, 5907, 5908, 5909
+    sip:
+      enabled: {$sip_parser}
     smb:
       enabled: {$smb_parser}
       detection-ports:
@@ -387,20 +409,16 @@ app-layer:
         content-inspect-window: 4096
     ssh:
       enabled: {$ssh_parser}
+    telnet:
+      enabled: {$telnet_parser}
     tftp:
       enabled: {$tftp_parser}
-    rdp:
-      enabled: {$rdp_parser}
-    sip:
-      enabled: {$sip_parser}
-    snmp:
-      enabled: {$snmp_parser}
-    http2:
-      enabled: {$http2_parser}
-    rfb:
-      enabled: {$rfb_parser}
+    tls:
+      enabled: {$tls_parser}
       detection-ports:
-        dp: 5900, 5901, 5902, 5903, 5904, 5905, 5906, 5907, 5908, 5909
+        dp: {$tls_detect_port}
+      ja3-fingerprints: {$tls_ja3}
+      encrypt-handling: {$tls_encrypt_handling}
 
 ###########################################################################
 # Configure libhtp.
