@@ -397,6 +397,19 @@ function haproxy_upgrade_config() {
 		}
 		$configversion = "00.57";
 	}
+	if ($configversion < "00.58") {
+		if (is_arrayset($config,'installedpackages','haproxy','ha_backends','item')) {
+			$static_output .= "HAProxy, Do XML upgrade, update description fields\n";
+			update_output_window($static_output);
+			foreach ($config['installedpackages']['haproxy']['ha_backends']['item'] as &$item) {
+				if (isset($item['desc'])) {
+					$item['descr'] = $item['desc'];
+					unset($item['desc']);
+				}
+			}
+		}
+		$configversion = "00.58";
+	}
 
 	$writeconfigupdate = $config['installedpackages']['haproxy']['configversion'] <> $configversion;
 	if ($writeconfigupdate) {

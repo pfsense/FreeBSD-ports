@@ -367,7 +367,7 @@ function js_callback(req) {
 					<?=$frontend['name'];?>
 				  </td>
 				  <td>
-					<?=htmlspecialchars($frontend['desc']);?>
+					<?=htmlspecialchars($frontend['descr']);?>
 				  </td>
 				  <td>
 				    <?php
