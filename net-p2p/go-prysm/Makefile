@@ -1,7 +1,7 @@
 PORTNAME=	go-prysm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net-p2p
 
 MAINTAINER=	zi@FreeBSD.org
@@ -11,11 +11,13 @@ WWW=		https://github.com/prysmaticlabs/prysm
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+BROKEN=		requires unsupported go1.18
+
 ONLY_FOR_ARCHS=	aarch64 amd64
 
 BUILD_DEPENDS=	nasm>0:devel/nasm
 
-USES=		gmake go:modules,1.18
+# USES=		gmake go:modules,1.18
 
 GO_TARGET=	./cmd/beacon-chain ./cmd/validator
 

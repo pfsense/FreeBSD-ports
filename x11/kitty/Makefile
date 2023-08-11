@@ -1,7 +1,7 @@
 PORTNAME=	kitty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.29.1
-PORTREVISION=	0
+DISTVERSION=	0.29.2
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -82,7 +82,7 @@ DOCS_MAKE_ENV=	BUILD_DOCS=yes
 CFLAGS+=	-Wno-error=invalid-utf8 -Winvalid-utf8
 .endif
 
-.if ${ARCH} == powerpc64 || ${ARCH:Mriscv64*}
+.if ${ARCH:Mriscv64*}
 MAKE_ENV+=	KITTY_NO_LTO=1
 .endif
 

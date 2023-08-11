@@ -1,6 +1,6 @@
 PORTNAME=	gnash
 PORTVERSION=	0.8.10
-PORTREVISION=	59
+PORTREVISION=	60
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://git.savannah.gnu.org/cgit/gnash.git/snapshot/
 DISTNAME=	gnash-2b3bdede0305c4fc3ad21a0a4197330606c9b880
@@ -33,14 +33,17 @@ CONFLICTS=	gnash-devel
 
 USES=		cpe tar:bzip2 compiler:c++11-lang autoreconf gmake libtool \
 		pkgconfig jpeg gnome gl sdl desktop-file-utils xorg localbase:ldflags
-USE_CSTD=	gnu11
 CPE_VENDOR=	gnu
-GNU_CONFIGURE=	yes
-USE_GNOME=	atk gdkpixbuf2 gtk20 libxml2 pango
-USE_XORG=	x11 xau xdmcp xext xi xinerama ice sm xv
+USE_CSTD=	gnu11
+USE_CXXSTD=	c++11
 USE_GL=		egl
+USE_GNOME=	atk gdkpixbuf2 gtk20 libxml2 pango
 USE_SDL=	sdl
+USE_XORG=	x11 xau xdmcp xext xi xinerama ice sm xv
+
 SYSCONFIGDIR=	${PREFIX}/etc
+
+GNU_CONFIGURE=	yes
 
 # jemalloc leads to infinite recursion on FreeBSD
 CFLAGS+=	-I${LOCALBASE}/ffmpeg4/include

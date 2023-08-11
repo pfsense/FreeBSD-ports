@@ -15,7 +15,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT6_VERSION}
-PORTREVISION=	6
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt6-
 
@@ -27,6 +27,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
 		${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libdbus-1.so:devel/dbus \
+		libdrm.so:graphics/libdrm \
 		libevent.so:devel/libevent \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -36,6 +37,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libnspr4.so:devel/nspr \
 		libnss3.so:security/nss \
 		libopenh264.so:multimedia/openh264 \
+		libopenjp2.so:graphics/openjpeg \
 		libopus.so:audio/opus \
 		libpci.so:devel/libpci \
 		libpng.so:graphics/png \
@@ -76,17 +78,10 @@ MAKE_ENV+=	CC="${CC}" CXX="${CXX}"			\
 # real number of make jobs via MAKE_JOBS_NUMBER to ninja(1) to CONFIGURE_ENV.
 DO_MAKE_BUILD=	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} -j1 ${MAKE_ARGS:N${DESTDIRNAME}=*}
 
-BINARY_ALIAS=	python=${PYTHON_CMD}
-
-# Add extra-patch-no-mempcpy-nasm only when there's no mempcpy() in base.
-# Nested variable expansion avoids executing the test when not needed for
-# expanding EXTRA_PATCHES.
-# mempcpy was introduced in ee37f64cf875255338f917a9da76c643cf59786c
-EXTRA_PATCHES+=	${"${:!${GREP} mempcpy ${CROSS_SYSROOT}/usr/include/string.h \
-		|| ${TRUE}!}" == "":?${PATCHDIR}/extra-patch-no-mempcpy-nasm:}
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
-QT6_VERSION=	6.4.2
+QT6_VERSION=	6.5.2
 
 OPTIONS_DEFAULT=	ALSA
 OPTIONS_SINGLE=		AUDIO

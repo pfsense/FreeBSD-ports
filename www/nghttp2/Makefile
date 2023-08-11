@@ -1,5 +1,5 @@
 PORTNAME=	nghttp2
-PORTVERSION=	1.54.0
+PORTVERSION=	1.55.1
 CATEGORIES=	www net
 MASTER_SITES=	https://github.com/nghttp2/nghttp2/releases/download/v${PORTVERSION}/
 
@@ -34,8 +34,8 @@ APP_LIB_DEPENDS=	libcares.so:dns/c-ares \
 			libev.so:devel/libev
 APP_USE=		GNOME=libxml2
 APP_USES=		gnome
-EXAMPLES_CMAKE_BOOL=	ENABLE_EXAMPLES
 EXAMPLES_BUILD_DEPENDS=	libevent>=2.0.8:devel/libevent
+EXAMPLES_CMAKE_BOOL=	ENABLE_EXAMPLES
 EXAMPLES_LIB_DEPENDS=	libevent_openssl.so:devel/libevent
 HPACK_BUILD_DEPENDS=	jansson>=2.5:devel/jansson
 HPACK_CMAKE_BOOL=	ENABLE_HPACK_TOOLS

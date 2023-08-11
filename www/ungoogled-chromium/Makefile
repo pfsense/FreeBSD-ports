@@ -1,5 +1,6 @@
 PORTNAME=	ungoogled-chromium
-PORTVERSION=	115.0.5790.102
+PORTVERSION=	115.0.5790.170
+PORTREVISION=	1
 UGVERSION=	${DISTVERSION}-1
 CATEGORIES=	www wayland
 MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official/ \
@@ -130,7 +131,6 @@ GN_ARGS+=	build_with_tflite_lib=false \
 		enable_backup_ref_ptr_support=false \
 		enable_hangout_services_extension=false \
 		enable_mdns=false \
-		enable_mse_mpeg2ts_stream_parser=true \
 		enable_nacl=false \
 		enable_reading_list=false \
 		enable_remoting=false \

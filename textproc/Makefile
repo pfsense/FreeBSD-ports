@@ -1192,6 +1192,7 @@
     SUBDIR += p5-ack
     SUBDIR += p5-dTemplate
     SUBDIR += p5-docx2txt
+    SUBDIR += p5-excel2csv
     SUBDIR += p5-libsoldout
     SUBDIR += p5-libxml
     SUBDIR += p5-pod2pdf
@@ -1387,6 +1388,7 @@
     SUBDIR += py-jc
     SUBDIR += py-jinja2-cli
     SUBDIR += py-jq
+    SUBDIR += py-json2html
     SUBDIR += py-jsonslicer
     SUBDIR += py-jsx-lexer
     SUBDIR += py-jtextfsm
@@ -1549,6 +1551,7 @@
     SUBDIR += py-sphinx-issues
     SUBDIR += py-sphinx-markdown-tables
     SUBDIR += py-sphinx-me
+    SUBDIR += py-sphinx-sitemap
     SUBDIR += py-sphinx-tabs
     SUBDIR += py-sphinx-theme-builder
     SUBDIR += py-sphinx_press_theme

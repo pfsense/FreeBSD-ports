@@ -156,7 +156,6 @@
     SUBDIR += chromono
     SUBDIR += circuslinux
     SUBDIR += cmatrix
-    SUBDIR += cockatrice
     SUBDIR += coffeebreak
     SUBDIR += colobot
     SUBDIR += colorcode
@@ -1045,6 +1044,7 @@
     SUBDIR += widelands
     SUBDIR += wipeclean
     SUBDIR += wizznic
+    SUBDIR += wmeyes
     SUBDIR += wmpuzzle
     SUBDIR += wmqstat
     SUBDIR += wmtictactoe

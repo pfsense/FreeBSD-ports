@@ -80,7 +80,6 @@
     SUBDIR += blend2d
     SUBDIR += blender
     SUBDIR += blender-doc
-    SUBDIR += blender-lts29
     SUBDIR += bmeps
     SUBDIR += bmp2html
     SUBDIR += bonzomatic
@@ -522,6 +521,7 @@
     SUBDIR += libwmf
     SUBDIR += libwmf-nox11
     SUBDIR += libwpg03
+    SUBDIR += libxisf
     SUBDIR += libyuv
     SUBDIR += libzmf
     SUBDIR += lightzone
@@ -949,6 +949,7 @@
     SUBDIR += py-pyx
     SUBDIR += py-qpageview
     SUBDIR += py-qrencode
+    SUBDIR += py-qt6-3d
     SUBDIR += py-railroad-diagrams
     SUBDIR += py-rasterio
     SUBDIR += py-rasterstats
@@ -994,6 +995,7 @@
     SUBDIR += qt6-3d
     SUBDIR += qt6-imageformats
     SUBDIR += qt6-lottie
+    SUBDIR += qt6-quickeffectmaker
     SUBDIR += qt6-svg
     SUBDIR += qt6-wayland
     SUBDIR += qtawesome
@@ -1157,6 +1159,7 @@
     SUBDIR += vapoursynth-waifu2x-w2xc
     SUBDIR += variety
     SUBDIR += vcg
+    SUBDIR += vhs
     SUBDIR += viewnior
     SUBDIR += vigra
     SUBDIR += vips

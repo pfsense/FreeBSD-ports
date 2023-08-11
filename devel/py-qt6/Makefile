@@ -1,6 +1,5 @@
 PORTNAME=	qt6
 PORTVERSION=	${PYQT_VERSION}
-PORTREVISION=	2
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,6 +9,6 @@ WWW=		https://riverbankcomputing.com/software/pyqt
 
 USES=		metaport python pyqt:6
 USE_PYTHON=	concurrent flavors py3kplist
-USE_PYQT=	pyqt6 chart networkauth
+USE_PYQT=	pyqt6 3d chart datavis3d networkauth
 
 .include <bsd.port.mk>

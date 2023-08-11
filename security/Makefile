@@ -13,6 +13,7 @@
     SUBDIR += R-cran-digest
     SUBDIR += R-cran-gitcreds
     SUBDIR += R-cran-openssl
+    SUBDIR += R-cran-sodium
     SUBDIR += acme.sh
     SUBDIR += acmed
     SUBDIR += acmetool
@@ -53,8 +54,10 @@
     SUBDIR += belier
     SUBDIR += bfbtester
     SUBDIR += binwalk
+    SUBDIR += bitwarden-cli
     SUBDIR += boringssl
     SUBDIR += botan2
+    SUBDIR += botan3
     SUBDIR += bruteblock
     SUBDIR += bsdsfv
     SUBDIR += bsmtrace
@@ -168,6 +171,7 @@
     SUBDIR += fwlogwatch
     SUBDIR += gcr
     SUBDIR += gef
+    SUBDIR += git-credential-azure
     SUBDIR += git-credential-gopass
     SUBDIR += git-credential-oauth
     SUBDIR += git-crypt
@@ -1278,6 +1282,7 @@
     SUBDIR += stoken
     SUBDIR += strongswan
     SUBDIR += stunnel
+    SUBDIR += su-exec
     SUBDIR += subversion-gnome-keyring
     SUBDIR += sudo
     SUBDIR += sudoscript

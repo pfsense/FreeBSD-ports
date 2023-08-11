@@ -1,5 +1,6 @@
 PORTNAME=	bcmatroska2
 PORTVERSION=	5.2.1
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -14,16 +15,15 @@ USES=		cmake compiler:c++17-lang
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.linphone.org/BC
 GL_ACCOUNT=	public
-GL_TAGNAME=	4d125bf2788915325c5ab93b9a97835f96d566d3
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS=	-DCMAKE_PREFIX_PATH=${LOCALBASE} \
 		-DENABLE_STATIC=NO
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

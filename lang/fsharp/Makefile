@@ -1,9 +1,10 @@
 PORTNAME=	fsharp
 PORTVERSION=	10.2.1
+PORTREVISION=	2
 CATEGORIES=	lang
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Functional and object-oriented language for the .NET platform
 WWW=		https://fsharp.org/
 
@@ -32,12 +33,8 @@ do-test:
 
 .include <bsd.port.pre.mk>
 
-.if defined(MONO_DEFAULT)
-.if ${MONO_DEFAULT} > 6
+.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
 BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: A unique overload for method 'GetFileNameWithoutExtension' could not be determined based on type information prior to this program point
-.elif ${MONO_DEFAULT} > 5.10
-BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: The type 'HashSet' is not defined
-.endif
 .endif
 
 .include <bsd.port.post.mk>

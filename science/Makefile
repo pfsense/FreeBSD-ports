@@ -103,6 +103,7 @@
     SUBDIR += gamess-us
     SUBDIR += gbtolib
     SUBDIR += gchemutils
+    SUBDIR += gcp
     SUBDIR += gdma
     SUBDIR += geant4
     SUBDIR += gemmi
@@ -314,6 +315,7 @@
     SUBDIR += py-cirq-rigetti
     SUBDIR += py-coards
     SUBDIR += py-dftbplus
+    SUBDIR += py-dftd4
     SUBDIR += py-dimod
     SUBDIR += py-dipy
     SUBDIR += py-dlib
@@ -368,6 +370,7 @@
     SUBDIR += py-mrchem
     SUBDIR += py-netCDF4
     SUBDIR += py-netcdf-flattener
+    SUBDIR += py-nglview
     SUBDIR += py-nibabel
     SUBDIR += py-nilearn
     SUBDIR += py-obspy

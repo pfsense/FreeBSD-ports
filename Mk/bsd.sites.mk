@@ -585,9 +585,6 @@ MASTER_SITE_GNOME+= \
 .if !defined(IGNORE_MASTER_SITE_GIMP)
 MASTER_SITE_GIMP+= \
 	http://gimp.mirrors.hoobly.com/pub/%SUBDIR%/ \
-	http://gimper.net/downloads/pub/%SUBDIR%/ \
-	http://mirror.hessmo.com/gimp/pub/%SUBDIR%/ \
-	http://de-mirror.gimper.net/pub/%SUBDIR%/ \
 	http://gimp.afri.cc/pub/%SUBDIR%/ \
 	https://download.gimp.org/pub/%SUBDIR%/
 .endif
@@ -988,6 +985,11 @@ MASTER_SITE_TCLTK+= \
 	ftp://ftp.kddlabs.co.jp/lang/tcl/ftp.scriptics.com/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/ftp.tcl.tk/pub/tcl/%SUBDIR%/ \
 	ftp://ftp.funet.fi/pub/languages/tcl/tcl/%SUBDIR%/
+.endif
+
+.if !defined(IGNORE_MASTER_SITE_TEX)
+MASTER_SITE_TEX+= \
+	https://mirror.ctan.org/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_TEX_CTAN)

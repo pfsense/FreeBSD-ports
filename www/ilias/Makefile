@@ -1,6 +1,6 @@
 PORTNAME=	ilias
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.3
+DISTVERSION=	8.4
 CATEGORIES=	www education
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -89,7 +89,7 @@ EXTRA_FILES=	%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/mime \
 		%%WWWDIR%%/node_modules/.bin/parser \
 		%%WWWDIR%%/node_modules/.bin/prebuild \
 		%%WWWDIR%%/node_modules/.bin/regjsparser \
-		%%WWWDIR%%/node_modules/.bin/rimraf \
+		%%WWWDIR%%/node_modules/.bin/resolve \
 		%%WWWDIR%%/node_modules/.bin/rc \
 		%%WWWDIR%%/node_modules/.bin/rollup \
 		%%WWWDIR%%/node_modules/.bin/semver \

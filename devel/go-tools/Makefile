@@ -1,6 +1,6 @@
 PORTNAME=	tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11.0
+DISTVERSION=	0.12.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
@@ -30,6 +30,7 @@ GO_TARGET=	./cmd/auth/cookieauth \
 		./cmd/godoc \
 		./cmd/goimports \
 		./cmd/gomvpkg \
+		./cmd/gonew \
 		./cmd/gorename \
 		./cmd/gotype \
 		./cmd/goyacc \

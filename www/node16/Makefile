@@ -1,7 +1,7 @@
 PORTNAME=	node
 DISTVERSIONPREFIX=	v
 DISTVERSION=	16.20.1
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	www
 MASTER_SITES=	https://nodejs.org/dist/v${DISTVERSION}/
 PKGNAMESUFFIX=	16
@@ -12,6 +12,9 @@ WWW=		https://nodejs.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Upstream EOL reaches on 2023-09-11
+EXPIRATION_DATE=	2023-09-30
 
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
@@ -94,7 +97,7 @@ NLS_CONFIGURE_ON=	--with-intl=system-icu
 
 PREFIX_RELDEST=	${PREFIX:S,^${DESTDIR},,}
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
 .if (defined(PPC_ABI) && ${PPC_ABI} == ELFv2) || ${ARCH} == powerpc64le
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-common.gypi
@@ -108,7 +111,7 @@ EXTRA_PATCHES=	${PATCHDIR}/extra-patch-tools_v8__gypfiles_v8.gyp
 CONFIGURE_ARGS+=	--openssl-no-asm
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
 CXXFLAGS+=	-Wno-error=enum-constexpr-conversion
 .endif
 
@@ -134,4 +137,4 @@ post-install-DTRACE-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/dtrace
 	${INSTALL_DATA} ${WRKSRC}/out/Release/node.d ${STAGEDIR}${PREFIX}/lib/dtrace
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

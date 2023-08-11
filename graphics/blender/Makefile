@@ -1,6 +1,6 @@
 PORTNAME=	blender
-DISTVERSION=	3.5.1
-PORTREVISION=	3
+DISTVERSION=	3.6.1
+PORTREVISION=	2
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -128,11 +128,11 @@ OPENAL_CMAKE_BOOL=		WITH_OPENAL
 OPENAL_USES=			openal:al,alut
 OPENCOLORIO_CMAKE_BOOL=		WITH_OPENCOLORIO
 OPENCOLORIO_LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
-				libminizip-ng.so:archivers/minizip-ng \
 				libyaml-cpp.so:devel/yaml-cpp \
 				libtinyxml.so:textproc/tinyxml \
 				libexpat.so:textproc/expat2 \
 				libpystring.so:devel/pystring
+OPENCOLORIO_USES=		minizip:ng
 OPENEXR_CMAKE_BOOL=		WITH_IMAGE_OPENEXR
 OPENEXR_CFLAGS=			-I${LOCALBASE}/include/Imath
 OPENEXR_LIB_DEPENDS=		libImath.so:math/Imath \

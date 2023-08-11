@@ -1,7 +1,7 @@
 PORTNAME=	pulseaudio-module-xrdp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 DIST_SUBDIR=	xrdp
 
@@ -37,6 +37,6 @@ PULSE_WRKSRC=	${MAKE} -C ${PORTSDIR}/audio/pulseaudio -VWRKSRC
 
 pre-configure:
 	@cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ./bootstrap
-	@${CP} -r "`${PULSE_WRKSRC}`" ${WRKDIR}
+	@${CP} -R "`${PULSE_WRKSRC}`" ${WRKDIR}
 
 .include <bsd.port.mk>

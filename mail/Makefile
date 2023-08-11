@@ -226,6 +226,9 @@
     SUBDIR += metamail
     SUBDIR += mew
     SUBDIR += mew-devel
+    SUBDIR += mfmod_ldap
+    SUBDIR += mfmod_openmetrics
+    SUBDIR += mfmod_pcre
     SUBDIR += milter-bogom
     SUBDIR += milter-callback
     SUBDIR += milter-greylist
@@ -500,6 +503,7 @@
     SUBDIR += py-django-mailbox
     SUBDIR += py-django-mailman3
     SUBDIR += py-dkimpy
+    SUBDIR += py-dkimpy-milter
     SUBDIR += py-email-reply-parser
     SUBDIR += py-email-validator
     SUBDIR += py-flanker

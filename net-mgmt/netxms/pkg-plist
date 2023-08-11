@@ -4,6 +4,7 @@
 %%SERVER%%bin/nxaction
 %%SERVER%%bin/nxadm
 %%SERVER%%bin/netxmsd
+%%CLIENT%%bin/nxaevent
 %%NXCP%%bin/nxagentd
 %%CLIENT%%bin/nxalarm
 %%CLIENT%%bin/nxcsum
@@ -34,6 +35,7 @@ lib/libethernetip.so.%%SONUM%%.0.0
 lib/libnetxms.so
 lib/libnetxms.so.%%SONUM%%
 lib/libnetxms.so.%%SONUM%%.0.0
+lib/libnsm_bind9.so
 lib/libnsm_lorawan.so
 lib/libnsm_mqtt.so
 %%SSH%%lib/libnsm_ssh.so
@@ -89,7 +91,6 @@ lib/libappagent.so.%%SONUM%%.0.0
 %%MYSQL%%lib/libnxddr_mysql.so
 %%ODBC%%lib/libnxddr_odbc.so
 %%PGSQL%%lib/libnxddr_pgsql.so
-lib/libnxddr_sqlite.so
 %%NXCP%%lib/libnxlp.so
 %%AGENT%%lib/libnxlp.so.%%SONUM%%
 %%AGENT%%lib/libnxlp.so.%%SONUM%%.0.0
@@ -109,6 +110,7 @@ lib/libnxsnmp.so.%%SONUM%%.0.0
 %%MYSQL%%lib/netxms/dbdrv/mysql.ddr
 %%PGSQL%%lib/netxms/dbdrv/pgsql.ddr
 lib/netxms/dbdrv/sqlite.ddr
+lib/netxms/bind9.nsm
 %%ODBC%%lib/netxms/dbdrv/odbc.ddr
 %%NXCP%%lib/netxms/dbquery.nsm
 %%NXCP%%lib/netxms/ecs.nsm

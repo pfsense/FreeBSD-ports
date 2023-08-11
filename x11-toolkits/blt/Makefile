@@ -1,6 +1,6 @@
 PORTNAME=	blt
 PORTVERSION=	2.5.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF/wize
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -46,7 +46,7 @@ post-install:
 CFLAGS+=	-DUSE_INTERP_RESULT -DUSE_INTERP_ERRORLINE
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

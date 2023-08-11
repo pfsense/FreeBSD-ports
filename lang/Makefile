@@ -121,7 +121,6 @@
     SUBDIR += gnustep-base
     SUBDIR += go
     SUBDIR += go-devel
-    SUBDIR += go118
     SUBDIR += go119
     SUBDIR += go120
     SUBDIR += gomacro
@@ -130,8 +129,10 @@
     SUBDIR += groovy
     SUBDIR += gscheme
     SUBDIR += guile
+    SUBDIR += guile-aclocal
     SUBDIR += guile1
     SUBDIR += guile2
+    SUBDIR += guile3
     SUBDIR += halide
     SUBDIR += harec
     SUBDIR += haskell-mode.el
@@ -343,8 +344,6 @@
     SUBDIR += sketchy
     SUBDIR += slib
     SUBDIR += slib-guile
-    SUBDIR += slib-guile1
-    SUBDIR += slib-guile2
     SUBDIR += slisp
     SUBDIR += smalltalk
     SUBDIR += smlnj

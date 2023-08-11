@@ -1,5 +1,6 @@
 PORTNAME=	irrlicht
 PORTVERSION=	1.8.5
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits graphics
 MASTER_SITES=	SF/${PORTNAME}/Irrlicht%20SDK/${PORTVERSION:R}/${PORTVERSION}/
 
@@ -13,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/readme.txt
 LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		alias cpe dos2unix gl gmake jpeg zip xorg
+USE_CXXSTD=	gnu++11
 DOS2UNIX_GLOB=	Makefile *.cpp *.h *.txt
 USE_GL=		gl
 USE_XORG=	x11 xxf86vm
@@ -32,12 +34,6 @@ EXAMPLEDIRS=	01.HelloWorld 02.Quake3Map 03.CustomSceneNode 04.Movement \
 OPTIONS_DEFINE=	DEBUG EXAMPLES
 
 DEBUG_MAKE_ENV_OFF=	NDEBUG=1
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
-CPPFLAGS+=  -Dregister=
-.endif
 
 post-extract:
 .for bundled in bzip2 jpeglib libpng zlib

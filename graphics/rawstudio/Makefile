@@ -1,6 +1,6 @@
 PORTNAME=	rawstudio
 PORTVERSION=	2.0
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	graphics
 MASTER_SITES=	http://rawstudio.org/files/release/
 
@@ -8,7 +8,7 @@ MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Open-source program to read and manipulate RAW photo images
 WWW=		https://rawstudio.org/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3
 LIB_DEPENDS=	libcurl.so:ftp/curl \

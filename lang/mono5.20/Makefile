@@ -1,12 +1,12 @@
 PORTNAME=	mono
 PORTVERSION=	5.20.1.34
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	https://download.mono-project.com/sources/mono/
 PKGNAMESUFFIX=	5.20
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source implementation of .NET Development Framework
 WWW=		https://www.mono-project.com/
 
@@ -40,7 +40,7 @@ NLS_USES=	gettext
 
 X11_USES=	display:test
 
-USES=	autoreconf bison compiler:c11 cpe gmake iconv libtool \
+USES=	autoreconf bison compiler:c11 cpe elfctl gmake iconv libtool \
 	pathfix perl5 python shebangfix tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
@@ -48,6 +48,7 @@ USE_LDCONFIG=	yes
 SHEBANG_FILES=	scripts/mono-heapviz scripts/mono-package-runtime \
 		mono/mini/genmdesc.py mono/tests/test_lldb.py
 BINARY_ALIAS=	python=${PYTHON_CMD}
+ELF_FEATURES=	+wxneeded:mono/mini/mono-sgen
 
 CONFIGURE_ARGS=	--disable-dtrace --enable-btls
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -108,5 +109,9 @@ post-configure:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/mono
+# XXX Drop after devel/msbuild >= 16.0 per https://github.com/mono/msbuild/commit/48f3571f4036
+	${RLN} ${STAGEDIR}${PREFIX}/lib/mono/msbuild/Current \
+		${STAGEDIR}${PREFIX}/lib/mono/msbuild/15.0
+	${ECHO_CMD} lib/mono/msbuild/15.0 >>${TMPPLIST}
 
 .include <bsd.port.post.mk>

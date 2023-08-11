@@ -1,7 +1,7 @@
 PORTNAME=	liteide
 DISTVERSIONPREFIX=	x
 DISTVERSION=	38.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel editors
 
 MAINTAINER=	dmgk@FreeBSD.org
@@ -30,6 +30,7 @@ GH_TUPLE=	visualfc:gocode:v1.5.2:visualfc_gocode \
 		visualfc:goversion:v1.1.0:visualfc_goversion/vendor/github.com/visualfc/goversion \
 		yuin:goldmark:v1.4.13:yuin_goldmark/vendor/github.com/yuin/goldmark
 
+USE_CXXSTD=	c++14
 USE_GL=		gl
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 USE_QT=		buildtools:build core gui network printsupport widgets xml
