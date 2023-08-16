@@ -1,0 +1,26 @@
+commit 5082edf92795fe8266be49905fe4f07eb682449d
+Author: jim-p <jimp@netgate.com>
+Date:   Thu Jul 6 13:21:25 2023 -0400
+
+    Fix static ARP interface check. Fixes #14374
+
+diff --git a/src/etc/inc/interfaces.inc b/src/etc/inc/interfaces.inc
+index c45ad3e353..4d925ebd04 100644
+--- a/src/etc/inc/interfaces.inc
++++ b/src/etc/inc/interfaces.inc
+@@ -7134,12 +7134,12 @@ function interfaces_staticarp_configure($if) {
+ 		echo "interfaces_staticarp_configure($if) being called $mt\n";
+ 	}
+ 
+-	$ifcfg = config_get_path("interfaces/{$if}");
+-
+-	if (!$ifcfg['if'] || !$ifcfg['enable']) {
++	if (!config_path_enabled("interfaces/{$if}")) {
+ 		return 0;
+ 	}
+ 
++	$ifcfg = config_get_path("interfaces/{$if}");
++
+ 	/* Enable staticarp, if enabled */
+ 	$staticarp = config_get_path("dhcpd/{$if}/staticarp");
+ 	if ($staticarp) {

@@ -26,6 +26,103 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '5082edf92795fe8266be49905fe4f07eb682449d',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix Static ARP entries not being configured at boot',
+  'links' => [
+      [ 'text' => 'Redmine #14374',
+         'url' => 'https://redmine.pfsense.org/issues/14374', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '892de1ecdaa23b164f6b2a2251d7538eee2199ea',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix log rotation not active when configuration contains an empty syslog section',
+  'links' => [
+      [ 'text' => 'Redmine #14517',
+         'url' => 'https://redmine.pfsense.org/issues/14517', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '6021c3e059885ce3fff09e5b00df037db034ff14',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix per-log settings for file size and retenation count not being respected',
+  'links' => [
+      [ 'text' => 'Redmine #14545',
+         'url' => 'https://redmine.pfsense.org/issues/14545', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '77e168861ba43b3d6290df07fc04481c09174b28',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix Firewall rule bulk copy function not respecting Convert interface definitions option',
+  'links' => [
+      [ 'text' => 'Redmine #14576',
+         'url' => 'https://redmine.pfsense.org/issues/14576', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'd536506909c89b5f42e6bf1c63cf02e723b0fb72',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix Captive Portal link to view custom HTML not working',
+  'links' => [
+      [ 'text' => 'Redmine #14598',
+         'url' => 'https://redmine.pfsense.org/issues/14598', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '892d939ee0473992abece201ed3d5d2bfdfd276f',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix DHCPv6 Prefix Delegation not installing routes',
+  'links' => [
+      [ 'text' => 'Requires manual "pkg install dhcpleases6"' ],
+      [ 'text' => 'Redmine #14502',
+         'url' => 'https://redmine.pfsense.org/issues/14502', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '340aa54839a5b3a8fb74b66919511cebb307bb57',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix OpenVPN selecting wrong interface address when VIPs are present',
+  'links' => [
+      [ 'text' => 'Redmine #14646',
+         'url' => 'https://redmine.pfsense.org/issues/14646', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'eab8453fd857de3352f352332896b065110313f4',
+  'versions' => ['23.05.1'],
+  'descr' => 'Fix Unicast CARP reverting to multicast when adding IP alias using this CARP VIP as parent',
+  'links' => [
+      [ 'text' => 'Redmine #14586',
+         'url' => 'https://redmine.pfsense.org/issues/14586', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '217f42ec30a4008907ac6fbb65b7b2e0ebf51eb9',
   'versions' => ['23.05'],
   'descr' => 'Fix alias bulk import breaking configuration',
