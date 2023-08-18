@@ -21,9 +21,12 @@
 usage() {
 	me=$(basename $0)
         cat << EOD >&2
-Usage: $(basename "$0") [-hU]
+Usage: $(basename "$0") [-hU] [<destdir> <conf>]
 	-h		- this help text
 	-U		- do not update the repository settings
+
+	<destdir> overrides the destination for the pkg.conf file and repos directory
+	<conf> overrides system/pkg_repo_conf_path in the config
 EOD
 }
 
@@ -66,8 +69,15 @@ validate_repo_conf() {
 		default="${default_file%%.default}.conf"
 	fi
 
-	# Use the default if the XML points to an invalid file.
-	if [ -z "${pkg_repo_conf}" -o ! -f "${pkg_repo_conf}" ]; then
+	# Use the default config if pkg_repo_conf points to an invalid file, unless
+	# invoked with destdir and conf arguments as indicated by a non-null string
+	# in dbdir. In this case, abort with an error rather than do something
+	# unexpected for this mode of operation.
+	if [ -z "${pkg_repo_conf}" ] || [ ! -f "${pkg_repo_conf}" ]; then
+		if [ -n "${dbdir}" ]; then
+			echo "No such file ${pkg_repo_conf}"
+			exit 1
+		fi
 		pkg_repo_conf=${default}
 	fi
 
@@ -123,6 +133,12 @@ abi_setup() {
 ABI=${ABI}
 ALTABI=${ALTABI}
 EOF
+	if [ -n "${dbdir}" ] && [ -n "${reposdir}" ]; then
+			cat << EOF >> ${PKG_CONF}""
+PKG_DBDIR=${dbdir}
+REPOS_DIR=[${reposdir}]
+EOF
+	fi
 
 	AUTH_CA="/etc/ssl/netgate-ca.pem"
 	REPO_NAME=$(get_repo_name "${PKG_REPO_CONF_PATH}")
@@ -229,6 +245,19 @@ while getopts hU opt; do
 		;;
 	esac
 done
+
+shift $((${OPTIND}-1))
+if [ $# != 0 ]; then
+	if [ $# != 2 ]; then
+		usage
+		exit 1
+	fi
+	dbdir="${1}/db"
+	reposdir="${1}/repos"
+	export PKG_CONF="${1}/pkg.conf"
+	export PFSENSE_REPO_CONF="${reposdir}/${PRODUCT}.conf"
+	export PKG_REPO_CONF_PATH=$2
+fi
 
 #
 # Validate the actual repo setup.
