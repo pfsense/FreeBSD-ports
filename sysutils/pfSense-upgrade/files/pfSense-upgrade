@@ -811,7 +811,7 @@ pkg_set_origin() {
 		_pkg_target=$(echo ${_pkg_source} \
 		    | sed "s/${_source}/${_target}/g")
 		_origin_source=$(_pkg query %o ${_pkg_source})
-		_origin_target=$(_pkg rquery -U %o ${_pkg_target})
+		_origin_target=$(_pkg rquery -U %o ${_pkg_target} | uniq)
 
 		# Don't try to change it when target package is not present
 		# anymore
@@ -1093,13 +1093,13 @@ pkg_upgrade() {
 
 		# Detect the move from suricata to suricata4
 		if is_pkg_installed ${product}-pkg-suricata \
-		    && _pkg rquery -U %n ${product}-pkg-suricata4 \
+		    && _pkg rquery -U %n ${product}-pkg-suricata4 | uniq \
 		    >/dev/null 2>&1; then
 			pkg_set_origin ${product}-pkg-suricata \
 			    ${product}-pkg-suricata4
 			pkg_set_origin suricata suricata4
 		elif is_pkg_installed ${product}-pkg-suricata4 \
-		    && _pkg rquery -U %n ${product}-pkg-suricata \
+		    && _pkg rquery -U %n ${product}-pkg-suricata | uniq \
 		    >/dev/null 2>&1; then
 			pkg_set_origin ${product}-pkg-suricata4 \
 			    ${product}-pkg-suricata
@@ -1214,7 +1214,7 @@ pkg_upgrade() {
 			for _package in $(_pkg query %n $(_pkg info -E -g \
 			    ${pkg_prefix}\*)); do
 				_pkg rquery -U -r ${product} %v \
-				    ${_package} >/dev/null && continue
+				    ${_package} | uniq >/dev/null && continue
 
 				# This package was removed from remote repo
 				# Make sure it's uninstalled
@@ -1458,7 +1458,7 @@ check_upgrade() {
 				;;
 		esac
 
-		local _new_version=$(_pkg rquery -U %v ${_package})
+		local _new_version=$(_pkg rquery -U %v ${_package} | uniq)
 		[ -z "${_mute}" ] \
 		    && _echo \
 		    "${_new_version} version of ${product} is available"
@@ -1499,12 +1499,12 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	local _rver=$(_pkg rquery -U %v ${_pkg_name})
+	local _rver=$(_pkg rquery -U %v ${_pkg_name} | uniq)
 
 	# Maybe we need fresh metadata, lets try to obtain it respecting
 	# dont_update variable
 	if [ -z "${_rver}" ]; then
-		_rver=$(_pkg rquery ${dont_update} %v ${_pkg_name})
+		_rver=$(_pkg rquery ${dont_update} %v ${_pkg_name} | uniq)
 	fi
 
 	if [ -z "${_rver}" ]; then
@@ -1915,7 +1915,7 @@ fi
 
 if [ "${action}" = "install" ]; then
 	new_php_pkg=$(_pkg rquery -U %dn $(get_meta_pkg_name) \
-	    | egrep '^php[0-9]{2}$')
+	    | egrep '^php[0-9]{2}$' | uniq)
 
 	if [ "${cur_php_pkg}" != "${new_php_pkg}" ]; then
 		_echo "WARNING: Current pkg repository has a new PHP major"
