@@ -1,6 +1,7 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.23.0
+DISTVERSION=	6.26.0
+PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -69,7 +70,8 @@ PACKAGE_ENV=	SIGNAL_ENV=production
 MAKE_ENV+=	ELECTRON_OVERRIDE_DIST_PATH=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} \
 		HOME=${WRKDIR} \
 		USE_SYSTEM_APP_BUILDER=true \
-		SOURCE_DATE_EPOCH=${_BUILD_DATE}
+		SOURCE_DATE_EPOCH=${_BUILD_DATE} \
+		PATH=${WRKSRC}/node_modules/.bin:${LOCALBASE}/bin:${PATH}
 
 # Don't download electron binary distribution on electron node_modules installation
 MAKE_ENV+=	ELECTRON_SKIP_BINARY_DOWNLOAD=1
@@ -82,7 +84,7 @@ MAKE_ENV+=	ESBUILD_BINARY_PATH=${WRKDIR}/esbuild-freebsd-64/package/bin/esbuild
 
 _BUILD_DATE=	$$(date +'%s')
 
-ELECTRON_VER_MAJOR=	24
+ELECTRON_VER_MAJOR=	25
 
 # sh get_deps.sh
 NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.22.0-d57441612df46f90df68fc5d9ad45b857b9d2c44-integrity
@@ -141,10 +143,10 @@ post-extract:
 
 do-build:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
-	${ECHO_CMD} 'nodedir "${LOCALBASE}/share/electron24/node_headers"' >> ${WRKSRC}/.yarnrc
+	${ECHO_CMD} 'nodedir "${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers"' >> ${WRKSRC}/.yarnrc
 
-# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron24/electron with WRITE priv
-# copy ${LOCALBASE}/share/electron24 in WRKDIR
+# electron-builder is stupid and tries to open ${LOCALBASE}/share/electron25/electron with WRITE priv
+# copy ${LOCALBASE}/share/electron25 in WRKDIR
 # it's needed for the do-install phase, it's here because of this issue
 # https://github.com/MikaelUrankar/signal-desktop/issues/6 (I don't know why it fails though)
 	@${RM} -r ${WRKDIR}/electron${ELECTRON_VER_MAJOR}

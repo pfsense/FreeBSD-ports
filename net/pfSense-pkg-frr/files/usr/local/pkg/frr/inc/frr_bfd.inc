@@ -21,20 +21,15 @@
 
 /* Get a list of configured BFD peers */
 function frr_get_bfd_peers() {
-	global $config;
-	$peers = array();
-
-	if (is_array($config['installedpackages']['frrbfdpeers']['config'])) {
-		foreach ($config['installedpackages']['frrbfdpeers']['config'] as $peer) {
-			$peer_name = $peer['peer'];
-			if (!empty(peer['descr'])) {
-				$peer_name .= " - {$peer['descr']}";
-			}
-			$peers[] = array("name" => "{$peer['peer']}", "value" => $peer['peer']);
+	$bfdpeers = [];
+	foreach (config_get_path('installedpackages/frrbfdpeers/config', []) as $bfdpeer) {
+		$bfdpeer_name = $bfdpeer['peer'];
+		if (!empty($bfdpeer['descr'])) {
+			$bfdpeer_name .= " - {$bfdpeer['descr']}";
 		}
+		$bfdpeers[] = array("name" => "{$bfdpeer_name}", "value" => $bfdpeer['peer']);
 	}
-
-	return $peers;
+	return $bfdpeers;
 }
 
 /* Get a list of configured interface addresses */
@@ -64,18 +59,14 @@ function frr_get_bfd_source_addresses($includedefault = true) {
 
 /* Fetch a list of BFD profiles for use in selection lists */
 function frr_get_bfd_profiles() {
-	global $config;
-
-	$list = array();
+	$list = [];
 	$list[] = PKG_FRR_LIST_NONE_VALUE;
 
-	if (is_array($config['installedpackages']['frrbfdprofiles']['config'])) {
-		$frr_bfd_profiles = &$config['installedpackages']['frrbfdprofiles']['config'];
-		foreach ($frr_bfd_profiles as $profile) {
-			$name = empty($profile['descr']) ? $profile['name'] : "{$profile['name']} - {$profile['descr']}";
-			$list[] = array("name" => $name, "value" => $profile['name']);
-			unset($name);
-		}
+	$frr_bfd_profiles = config_get_path('installedpackages/frrbfdprofiles/config', []);
+	foreach ($frr_bfd_profiles as $profile) {
+		$name = empty($profile['descr']) ? $profile['name'] : "{$profile['name']} - {$profile['descr']}";
+		$list[] = array("name" => $name, "value" => $profile['name']);
+		unset($name);
 	}
 
 	return ($list);
@@ -83,12 +74,9 @@ function frr_get_bfd_profiles() {
 
 /* Generate BFD Profiles configuration lines */
 function frr_bfd_generate_profiles() {
-	global $config;
-
 	/* Populate FRR BFD profiles definitions */
-	if (is_array($config['installedpackages']['frrbfdprofiles']['config'])) {
-		$frr_bfd_profiles = &$config['installedpackages']['frrbfdprofiles']['config'];
-	} else {
+	$frr_bfd_profiles = config_get_path('installedpackages/frrbfdprofiles/config', []);
+	if (empty($frr_bfd_profiles)) {
 		/* No BFD profiles config, stop. */
 		return null;
 	}
@@ -134,12 +122,9 @@ function frr_bfd_generate_profiles() {
 
 /* Generate BFD Peers configuration lines */
 function frr_bfd_generate_peers() {
-	global $config;
-
 	/* Populate FRR BFD Peer definitions */
-	if (is_array($config['installedpackages']['frrbfdpeers']['config'])) {
-		$frr_bfd_peers = &$config['installedpackages']['frrbfdpeers']['config'];
-	} else {
+	$frr_bfd_peers = config_get_path('installedpackages/frrbfdpeers/config', []);
+	if (empty($frr_bfd_peers)) {
 		/* No BFD peer config, stop. */
 		return null;
 	}
@@ -204,25 +189,22 @@ function frr_bfd_generate_peers() {
 
 /* Generate BFD configuration lines */
 function frr_generate_config_bfd() {
-	global $config, $frr_config_base, $frr_integrated_config;
+	global $frr_config_base, $frr_integrated_config;
 
 	/* Make bfdd config */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	} else {
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
+	if (empty($frr_conf)) {
 		/* If FRR is not configured, stop. */
 		frr_package_log("FRR BFDd: No FRR global config data found.");
 		return null;
 	}
 	/* Populate FRR BFD Settings */
-	if (is_array($config['installedpackages']['frrbfd']['config'])) {
-		$frr_bfd_conf = &$config['installedpackages']['frrbfd']['config'][0];
-	}
 
-	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']) &&
-		!empty($config['installedpackages']['frrglobalraw']['config'][0]['bfdd'])) {
+	$frr_bfd_conf = config_get_path('installedpackages/frrbfd/config/0', []);
+
+	if (!empty(config_get_path('installedpackages/frrglobalraw/config/0/bfdd'))) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$frr_integrated_config['bfdd'] = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']));
+		$frr_integrated_config['bfdd'] = str_replace("\r","",base64_decode(config_get_path('installedpackages/frrglobalraw/config/0/bfdd')));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_bfd_conf)) {

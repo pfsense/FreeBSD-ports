@@ -567,9 +567,15 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # fetch-url-list
 #				- Show list of URLS to retrieve missing ${DISTFILES} and
 #				  ${PATCHFILES} for this port.
+# fetch-url-recursive-list
+#				- Show list of URLS to retrieve missing ${DISTFILES} and
+#				  ${PATCHFILES} for this port and dependencies.
 # fetch-urlall-list
 #				- Show list of URLS to retrieve ${DISTFILES} and
 #				  ${PATCHFILES} for this port.
+# fetch-urlall-recursive-list
+#				- Show list of URLS to retrieve ${DISTFILES} and
+#				  ${PATCHFILES} for this port and dependencies.
 #
 # all-depends-list
 #				- Show all directories which are dependencies
@@ -1180,7 +1186,7 @@ OSVERSION!=	${AWK} '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${SRC
 .    endif
 _EXPORTED_VARS+=	OSVERSION
 
-.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1204000 || (${OSVERSION} >= 1300000 && ${OSVERSION} < 1301000))
+.    if ${OPSYS} == FreeBSD && (${OSVERSION} < 1204000 || (${OSVERSION} >= 1300000 && ${OSVERSION} < 1302000))
 _UNSUPPORTED_SYSTEM_MESSAGE=	Ports Collection support for your ${OPSYS} version has ended, and no ports\
 								are guaranteed to build on this system. Please upgrade to a supported release.
 .      if defined(ALLOW_UNSUPPORTED_SYSTEM)
@@ -1719,7 +1725,7 @@ WRKSRC?=		${WRKDIR}/${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}
 .      if defined(WRKSRC)
 DEV_WARNING+=	"You are using USE_GITLAB and WRKSRC is set which is wrong.  Set GL_PROJECT, GL_ACCOUNT correctly, and/or set WRKSRC_SUBDIR and remove WRKSRC entirely."
 .      endif
-WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}
+WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_TAGNAME}
 .    endif
 
 # If the distname is not extracting into a specific subdirectory, have the
@@ -2957,12 +2963,6 @@ DEPENDS_ARGS+=	NOCLEANDEPENDS=yes
 .      endif
 .    endif
 
-.    if defined(USE_GITLAB) && !${USE_GITLAB:Mnodefault} && empty(GL_COMMIT_DEFAULT)
-check-makevars::
-	@${ECHO_MSG} "GL_COMMIT is a required 40 character hash for use USE_GITLAB"
-	@${FALSE}
-.    endif
-
 ################################################################
 #
 # Do preliminary work to detect if we need to run the config
@@ -3143,11 +3143,25 @@ fetch-url-list-int:
 .      endif
 .    endif
 
+.    if !target(fetch-url-recursive-list-int)
+fetch-url-recursive-list-int: fetch-url-list-int
+	@recursive_cmd="fetch-url-list-int"; \
+	    recursive_dirs="$$(${ALL-DEPENDS-FLAVORS-LIST})"; \
+		${_FLAVOR_RECURSIVE_SH}
+.    endif
+
 # Prints out all the URL for all the DISTFILES and PATCHFILES.
 
 .    if !target(fetch-urlall-list)
 fetch-urlall-list:
 	@cd ${.CURDIR} && ${SETENV} FORCE_FETCH_ALL=yes ${MAKE} fetch-url-list-int
+.    endif
+
+.    if !target(fetch-urlall-recursive-list)
+fetch-urlall-recursive-list: fetch-urlall-list
+	@recursive_cmd="fetch-urlall-list"; \
+	    recursive_dirs="$$(${ALL-DEPENDS-FLAVORS-LIST})"; \
+		${_FLAVOR_RECURSIVE_SH}
 .    endif
 
 # Prints the URL for all the DISTFILES and PATCHFILES that are not here
@@ -3156,6 +3170,12 @@ fetch-urlall-list:
 fetch-url-list: fetch-url-list-int
 .    endif
 
+.    if !target(fetch-url-recursive-list)
+fetch-url-recursive-list: fetch-url-list
+	@recursive_cmd="fetch-url-list"; \
+	    recursive_dirs="$$(${ALL-DEPENDS-FLAVORS-LIST})"; \
+		${_FLAVOR_RECURSIVE_SH}
+.    endif
 
 # Extract
 

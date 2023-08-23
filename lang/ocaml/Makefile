@@ -45,11 +45,10 @@ awk_CMD=	/usr/bin/awk
 SHEBANG_FILES=	tools/ocaml-instr-graph tools/ocaml-instr-report
 
 CONFIGURE_ARGS= --prefix="${PREFIX}"
-CONFIGURE_ENV=	CC="${CC}" \
-		LDFLAGS="${LDFLAGS}" \
+CONFIGURE_ENV=	LDFLAGS="${LDFLAGS}" \
 		ASPP="${CC} -c" \
 		PARTIALLD="${LD} -r"
-MAKE_ENV=	SYSTEM_ARCH="${ARCH}"
+MAKE_ENV=	SYSTEM_ARCH="${ARCH:C/aarch64/arm64/:C/powerpc.*/power/}"
 
 OPTIONS_DEFINE=	X11 THREADS DOCS EXAMPLES
 OPTIONS_DEFAULT=X11 THREADS
@@ -75,12 +74,20 @@ DOCS_DISTFILES=	${DISTNAME:R}-refman-html.tar.gz:docs \
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == armv6 || ${ARCH} == armv7
-CONFIGURE_ENV+=		AS="${AS} ${ASFLAGS} -meabi=5"
-.elif ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
-LLD_UNSAFE=		yes
+.if ${ARCH} == aarch64
+PLIST_SUB+=	RAWSPACETIMELIB=" "
 .else
-CONFIGURE_ENV+=		AS="${AS} ${ASFLAGS}"
+PLIST_SUB+=	RAWSPACETIMELIB="@comment "
+.endif
+
+.if ${ARCH} == armv6 || ${ARCH} == armv7
+CONFIGURE_ENV+=		AS="${AS} ${ASFLAGS} -meabi=5" \
+			CC="${CC}"
+.elif ${ARCH} == powerpc || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
+CONFIGURE_ENV+=		CC="${CC} -fuse-ld=bfd"
+.else
+CONFIGURE_ENV+=		AS="${AS} ${ASFLAGS}" \
+			CC="${CC}"
 .endif
 
 .if defined(NO_PROFILE) || ${ARCH:Mpowerpc} || ${ARCH:Mamd64}

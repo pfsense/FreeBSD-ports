@@ -652,6 +652,7 @@
     SUBDIR += postgis32
     SUBDIR += postgis33
     SUBDIR += postgresql-cstore_fdw
+    SUBDIR += postgresql-idn
     SUBDIR += postgresql-jdbc
     SUBDIR += postgresql-libpgeasy
     SUBDIR += postgresql-libpqxx
@@ -905,6 +906,7 @@
     SUBDIR += rubygem-arel6
     SUBDIR += rubygem-arel7
     SUBDIR += rubygem-arel8
+    SUBDIR += rubygem-attr_json
     SUBDIR += rubygem-awesome_nested_set
     SUBDIR += rubygem-bdb1
     SUBDIR += rubygem-bigrecord

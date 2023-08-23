@@ -1,11 +1,6 @@
 PORTNAME=	health
-DISTVERSION=	0.94.0
-PORTREVISION=	10
+DISTVERSION=	0.95.0
 CATEGORIES=	deskutils
-
-PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
-PATCHFILES+=	864d961a3c4e.patch:-p1 # https://gitlab.gnome.org/World/Health/-/issues/167
-PATCHFILES+=	04e0a01f5e20.patch:-p1 # https://gitlab.gnome.org/World/Health/-/merge_requests/190
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Track your fitness goals
@@ -25,7 +20,6 @@ USE_GNOME=	cairo gtk40 libadwaita
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World
 GL_PROJECT=	Health
-GL_COMMIT=	d664384370bb55f0e46a78da094c567a5a7e97c6
 MAKE_ENV=	${CARGO_ENV}
 CARGO_BUILD=	no
 CARGO_INSTALL=	no

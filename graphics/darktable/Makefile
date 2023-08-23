@@ -1,6 +1,6 @@
 PORTNAME=	darktable
-PORTVERSION=	4.2.1
-PORTREVISION=	7
+PORTVERSION=	4.4.2
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -43,7 +43,7 @@ LIB_DEPENDS=	libavif.so:graphics/libavif \
 		libwebp.so:graphics/webp
 
 USES=		cmake compiler:gcc-c++11-lib desktop-file-utils gl gnome jpeg \
-		llvm:14,build lua:54 perl5 pkgconfig sdl shebangfix sqlite \
+		llvm:15,build lua:54 perl5 pkgconfig sdl shebangfix sqlite \
 		tar:xz xorg
 USE_GL=		gl
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
@@ -55,7 +55,7 @@ SHEBANG_FILES=	tools/*.sh
 
 USE_GCC=	yes
 
-CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1
+CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1 -DUSE_PORTMIDI:BOOL=OFF
 
 CMAKE_BOOL+=	BUILD_CMSTEST USE_AVIF USE_CAMERA_SUPPORT USE_HEIF \
 		USE_KWALLET USE_LUA USE_MAP USE_OPENEXR USE_OPENJPEG \

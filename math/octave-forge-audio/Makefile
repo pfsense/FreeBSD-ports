@@ -1,9 +1,8 @@
 PORTNAME=	octave-forge-audio
-PORTVERSION=	2.0.5
-PORTREVISION=	3
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	2.0.7
+PORTREVISION=	1
 CATEGORIES=	math
-MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases
-DISTNAME=	${OCTAVE_PKGNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
@@ -14,7 +13,12 @@ LICENSE_FILE=	${WRKSRC}/../COPYING
 
 LIB_DEPENDS+=	librtmidi.so:audio/rtmidi
 
-USES=		compiler:c++11-lang octave pkgconfig
+USES=		compiler:c++11-lang octave pkgconfig autoreconf
+USE_GITHUB=	yes
+GH_ACCOUNT=	gnu-octave
+GH_PROJECT=	octave-audio
+
+OCTAVE_SRC=	${GH_PROJECT}-release-${DISTVERSION}
 
 GNU_CONFIGURE=	yes
 

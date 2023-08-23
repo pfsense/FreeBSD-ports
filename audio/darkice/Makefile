@@ -1,6 +1,6 @@
 PORTNAME=	darkice
 PORTVERSION=	1.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio net
 MASTER_SITES=	https://github.com/rafael2k/darkice/releases/download/v${PORTVERSION}/
 
@@ -12,6 +12,7 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		pkgconfig
+USE_CXXSTD=	c++14
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-alsa

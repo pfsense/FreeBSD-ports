@@ -333,6 +333,7 @@ function netsnmp_resync() {
 	/* Ignore /dev and its copies as they are not filesystems that need monitored */
 	$snmpd_config .= "ignoreDisk /dev\n";
 	$snmpd_config .= "ignoreDisk /var/dhcpd/dev\n";
+	$snmpd_config .= "ignoreDisk /var/unbound/dev\n";
 	/* Monitor all disks that snmpd can find */
 	$snmpd_config .= "includeAllDisks {$nhisettings['disk_usage_percent']}%\n";
 

@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.4.22
+DISTVERSION=	4.4.23
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/
@@ -28,18 +28,8 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libsnappy.so:archivers/snappy
 
 USES=		compiler:c++17-lang cpe python:build scons
+USE_CXXSTD=	c++14
 USE_RC_SUBR=	mongod
-
-CFLAGS+=	-D_HAS_AUTO_PTR_ETC=0
-
-PORTSCOUT=	limit:^4\.4\.
-
-CONFLICTS_INSTALL=	mongodb[0-9][0-9] # etc/mongodb.conf.sample
-
-OPTIONS_DEFINE=	LTO SASL SSL
-OPTIONS_DEFAULT=LTO SASL SSL
-OPTIONS_EXCLUDE_aarch64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
-OPTIONS_EXCLUDE_aarch64_14=	LTO # Does not work with llvm12 on aarch64.
 
 MAKE_ARGS=	--use-system-zlib \
 		--use-system-pcre \
@@ -52,8 +42,28 @@ MAKE_ARGS=	--use-system-zlib \
 		VERBOSE=on \
 		AR=llvm-ar
 
+CFLAGS+=	-D_HAS_AUTO_PTR_ETC=0
+
+CONFLICTS_INSTALL=	mongodb[0-9][0-9] # etc/mongodb.conf.sample
+
+PORTSCOUT=	limit:^4\.4\.
+
 USERS=		mongodb
 GROUPS=		mongodb
+
+OPTIONS_DEFINE=			LTO SASL SSL
+OPTIONS_DEFINE_aarch64=	ARMV80A
+OPTIONS_DEFAULT=		LTO SASL SSL
+OPTIONS_DEFAULT_aarch64=	ARMV80A
+OPTIONS_EXCLUDE_aarch64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
+OPTIONS_EXCLUDE_aarch64_14=	LTO # Does not work with llvm12 on aarch64.
+
+# MongoDB on non-LSE ARM cpu like Raspberry Pi can work but is unsupported upstream.
+# Can give corruption on high concurrency.
+# Please read https://jira.mongodb.org/browse/SERVER-71772.
+ARMV80A_DESC=	Enable non-LSE ARM64 CPUs like RPI4.
+
+ARMV80A_EXTRA_PATCHES=	${FILESDIR}/extrapatch-SConstruct
 
 LTO_MAKE_ARGS=	--lto=on
 
@@ -66,7 +76,7 @@ SSL_MAKE_ARGS=	--ssl
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
-EXTRA_PATCHES=	${FILESDIR}/${ARCH}
+EXTRA_PATCHES+=	${FILESDIR}/${ARCH}
 .endif
 
 ALL_TARGET=	install-core

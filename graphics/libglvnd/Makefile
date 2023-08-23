@@ -1,5 +1,6 @@
 PORTNAME=	libglvnd
 DISTVERSION=	1.6.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	x11@FreeBSD.org
@@ -15,7 +16,7 @@ USE_LDCONFIG=	yes
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	glvnd
-GL_COMMIT=	b05bbcdaeb9b700cf7877e6d66f8fc3ac952295b
+GL_TAGNAME=	b05bbcdaeb9b700cf7877e6d66f8fc3ac952295b
 
 OPTIONS_DEFINE=	X11
 OPTIONS_DEFAULT=X11
@@ -27,13 +28,7 @@ X11_MESON_ENABLED=	x11 glx
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64le
-BUILD_DEPENDS=	as:devel/binutils
-CFLAGS+=	-no-integrated-as
-.elif ${ARCH} == powerpc64
-BUILD_DEPENDS=	as:devel/binutils
-CFLAGS+=	-no-integrated-as -O0
-.elif ${ARCH} == powerpc || ${ARCH} == riscv64
+.if ${ARCH} == powerpc || ${ARCH} == riscv64
 MESON_ARGS+=	-Dasm=disabled
 .endif
 

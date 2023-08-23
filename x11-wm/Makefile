@@ -14,7 +14,6 @@
     SUBDIR += bspwm
     SUBDIR += bspwm-devel
     SUBDIR += cage
-    SUBDIR += cage-devel
     SUBDIR += cagebreak
     SUBDIR += chamfer
     SUBDIR += compiz
@@ -34,6 +33,7 @@
     SUBDIR += echinus
     SUBDIR += emerald
     SUBDIR += emwm
+    SUBDIR += emwm-utils
     SUBDIR += enlightenment
     SUBDIR += epplets
     SUBDIR += euclid-wm

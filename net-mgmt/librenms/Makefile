@@ -1,5 +1,6 @@
 PORTNAME=	librenms
-PORTVERSION=	23.5.0
+PORTVERSION=	23.7.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -11,7 +12,7 @@ WWW=		https://www.librenms.org
 
 LICENSE=	GPLv3
 
-IGNORE_WITH_PHP=	82 83
+IGNORE_WITH_PHP=	82
 
 # perhaps we also need python-memcache python-mysqldb
 RUN_DEPENDS+=	${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4@${PHP_FLAVOR} \
@@ -26,32 +27,62 @@ RUN_DEPENDS+=	${LOCALBASE}/share/pear/Net/IPv4.php:net/pear-Net_IPv4@${PHP_FLAVO
 
 USES=		cpe php python shebangfix
 USE_GITHUB=	yes
-USE_PHP=	ctype curl dom fileinfo filter gd ldap mbstring \
-		mysqli pdo pdo_mysql phar posix readline session simplexml snmp \
+USE_PHP=	ctype curl dom fileinfo filter gd hash json ldap mbstring \
+		mysqli openssl pdo pdo_mysql phar posix session simplexml snmp \
 		sockets tokenizer xml xmlwriter zip
 USE_RC_SUBR=	librenms
 
 SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/tecnickcom/tcpdf/tools/tcpdf_addfont.php \
-		poller-wrapper.py poller.php scripts/auth_test.php \
-		scripts/check_requirements.py \
-		scripts/dynamic_check_requirements.py scripts/github-remove \
-		scripts/ifAlias \
+		../librenms-vendor-${PORTVERSION}/bin/carbon \
+		../librenms-vendor-${PORTVERSION}/bin/doctrine-dbal \
+		../librenms-vendor-${PORTVERSION}/bin/patch-type-declarations \
+		../librenms-vendor-${PORTVERSION}/bin/php-parse \
+		../librenms-vendor-${PORTVERSION}/bin/psysh \
+		../librenms-vendor-${PORTVERSION}/bin/validate-json \
+		../librenms-vendor-${PORTVERSION}/bin/var-dump-server \
+		../librenms-vendor-${PORTVERSION}/bin/yaml-lint \
+		../librenms-vendor-${PORTVERSION}/doctrine/dbal/bin/doctrine-dbal \
+		../librenms-vendor-${PORTVERSION}/justinrainbow/json-schema/bin/validate-json \
+		../librenms-vendor-${PORTVERSION}/nesbot/carbon/bin/carbon \
+		../librenms-vendor-${PORTVERSION}/nikic/php-parser/bin/php-parse \
+		../librenms-vendor-${PORTVERSION}/predis/predis/bin/create-command-test \
+		../librenms-vendor-${PORTVERSION}/psy/psysh/bin/psysh \
+		../librenms-vendor-${PORTVERSION}/symfony/error-handler/Resources/bin/extract-tentative-return-types.php \
+		../librenms-vendor-${PORTVERSION}/symfony/error-handler/Resources/bin/patch-type-declarations \
+		../librenms-vendor-${PORTVERSION}/symfony/var-dumper/Resources/bin/var-dump-server \
+		../librenms-vendor-${PORTVERSION}/symfony/yaml/Resources/bin/yaml-lint \
+		addhost.php alerts.php artisan billing-calculate.php \
+		check-services.php config_to_json.php daily.php delhost.php \
+		discovery.php dist-pollers.php irc.php LibreNMS/wrapper.py lnms \
+		ping.php poll-billing.php poller-wrapper.py poller.php \
+		renamehost.php scripts/auth_test.php \
+		scripts/check_requirements.py scripts/collect-port-polling.php \
+		scripts/collect-snmp-data.php scripts/composer_wrapper.php \
+		scripts/dynamic_check_requirements.py scripts/gen_rancid.php \
+		scripts/gen_smokeping.php scripts/github-remove scripts/ifAlias \
+		scripts/json-app-tool.php scripts/manage_bills.php \
 		scripts/Migration/Standard_Conversion/convert_no_xml.sh \
 		scripts/Migration/Standard_Conversion/destwork_no_xml.sh \
 		scripts/Migration/Standard_Conversion/mkdir.sh \
 		scripts/Migration/XML_Conversion/convert.sh \
 		scripts/Migration/XML_Conversion/destwork.sh \
-		scripts/Migration/XML_Conversion/mkdir.sh \
+		scripts/Migration/XML_Conversion/mkdir.sh scripts/new-os.php \
+		scripts/pre-commit.php scripts/purge-port.php \
 		scripts/removespikes.php scripts/removespikes.pl \
-		scripts/watchmaillog/watchmaillog.pl
+		scripts/rename-mibs.php scripts/rrdstep.php \
+		scripts/save-test-data.php scripts/syslog-notify-oxidized.php \
+		scripts/test-alert.php scripts/test-template.php \
+		scripts/tune_port.php scripts/watchmaillog/watchmaillog.pl \
+		snmptrap.php syslog.php validate.php
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-SUB_FILES+=	librenms.cron pkg-message
+SUB_FILES+=	pkg-message
 SUB_LIST+=	GROUP="${WWWGRP}" \
 		PHP="${PHPBASE}/bin/php" \
 		PYTHON=${PYTHON_CMD} \
+		PYTHON_VERSION=${PYTHON_VERSION} \
 		USER="${WWWOWN}" \
 		WWWDIR="${WWWDIR}"
 
@@ -84,20 +115,19 @@ X11_RUN_DEPENDS_OFF=	mtr:net/mtr-nox11
 X11_USES=		magick:6
 X11_USES_OFF=		magick:6,nox11
 
-_ROOT_FILES=		addhost.php alerts.php artisan \
-			billing-calculate.php check-services.php composer.json \
-			composer.lock config.php.default config_to_json.php \
-			cronic daily.php delhost.php discovery-wrapper.py \
-			discovery.php dist-pollers.php irc.php \
-			librenms-service.py mkdocs.yml pbin.sh phpunit.xml \
-			ping.php poll-billing.php poller.php poller-wrapper.py \
-			renamehost.php snmp-scan.py snmptrap.php syslog.php \
-			validate.php
+_ROOT_FILES=		addhost.php alerts.php artisan billing-calculate.php \
+			check-services.php composer.json composer.lock \
+			config.php.default config_to_json.php cronic daily.php \
+			delhost.php discovery-wrapper.py discovery.php \
+			dist-pollers.php irc.php librenms-service.py mkdocs.yml \
+			pbin.sh phpunit.xml ping.php poll-billing.php \
+			poller.php poller-wrapper.py renamehost.php \
+			snmp-scan.py snmptrap.php syslog.php validate.php
 _SCRIPT_FILES=		daily.sh lnms
 # _RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-_RELEASE_TIMESTAMP=	1684510339
+_RELEASE_TIMESTAMP=	1689568961
 _ROOT_DIRS=		LibreNMS app bootstrap config database doc html \
 			includes licenses mibs misc resources routes scripts \
 			sql-schema tests
@@ -111,10 +141,9 @@ _STORAGE_DIRS=	app app/public debugbar framework framework/cache \
 # these are directories which require a generic @DIR entry in pkg-plist
 _OTHER_DIRS=	database/seeders/config html/plugins html/js/lang \
 		resources/views/overview/custom tests/Browser/console \
-		tests/Browser/screenshots \
+		tests/Browser/source tests/Browser/screenshots \
 		vendor/librenms/laravel-vue-i18n-generator/tests/output \
 		vendor/symfony/string/Resources/bin
-
 
 post-patch:
 	${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                  ${WRKSRC}/LibreNMS/Validations/Php.php
@@ -128,7 +157,7 @@ post-patch:
 	${RM} -rf ${WRKSRC}/logs
 
 do-install:
-	${MKDIR} ${STAGEDIR}/${WWWDIR} ${STAGEDIR}/${PREFIX}/etc/cron.d
+	${MKDIR} ${STAGEDIR}/${WWWDIR}
 .for dir in ${_ROOT_DIRS}
 	${MKDIR} ${STAGEDIR}/${WWWDIR}/${dir}
 	(cd ${WRKSRC}/${dir} && ${COPYTREE_SHARE} . ${STAGEDIR}/${WWWDIR}/${dir})
@@ -185,18 +214,17 @@ post-install:
 	${FIND} -s ${STAGEDIR}${WWWDIR} -type f '(' -name '*.orig' -or -name '*.bak' -or -name '.gitignore' ')' -delete
 	${FIND} -s ${STAGEDIR}${WWWDIR} -not -type d | ${SORT} | \
 		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
-	${INSTALL_DATA}	${WRKDIR}/librenms.cron ${STAGEDIR}/${PREFIX}/etc/cron.d/librenms
 
 # we do this file separately because it needs a different chmod/chown
 # it will eventually contains secrets
 	${INSTALL_DATA} ${WRKSRC}/.env.example ${STAGEDIR}/${WWWDIR}
-	${ECHO_CMD} "@dir(www,www,0775) ${DBDIR}/storage"     >> ${TMPPLIST}
-	${ECHO_CMD} "@dir(www,www,0775) ${DBDIR}"             >> ${TMPPLIST}
+	${ECHO_CMD} "@dir(www,www,0775) ${DBDIR}/storage" >> ${TMPPLIST}
+	${ECHO_CMD} "@dir(www,www,0775) ${DBDIR}" >> ${TMPPLIST}
 	${ECHO_CMD} "@dir(www,www,0775) /var/log/${PORTNAME}" >> ${TMPPLIST}
 	${ECHO_CMD} "@(root,www,0750) ${WWWDIR}/.env.example" >> ${TMPPLIST}
 
 	${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/bootstrap/cache" >> ${TMPPLIST}
-	${ECHO_CMD} "@dir(www,www,0775) /var/run/${PORTNAME}"      >> ${TMPPLIST}
+	${ECHO_CMD} "@dir(www,www,0775) /var/run/${PORTNAME}" >> ${TMPPLIST}
 .for f in ${_STORAGE_DIRS}
 	${MKDIR} ${STAGEDIR}/${DBDIR}/storage/${f}
 	${ECHO_CMD} "@dir(root,www,0775) ${DBDIR}/storage/${f}" >> ${TMPPLIST}
@@ -208,9 +236,6 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
 	${INSTALL_DATA} ${FILESDIR}/newsyslog.conf.sample ${STAGEDIR}/${PREFIX}/etc/newsyslog.conf.d/librenms.conf.sample
 	${ECHO_CMD} "@dir etc/newsyslog.conf.d" >> ${TMPPLIST}
-	${ECHO_CMD} "@dir etc/cron.d"           >> ${TMPPLIST}
-	${ECHO_CMD} "etc/cron.d/librenms"       >> ${TMPPLIST}
-
 	${ECHO_CMD} "@sample etc/newsyslog.conf.d/librenms.conf.sample" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

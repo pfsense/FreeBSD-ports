@@ -1,11 +1,11 @@
 PORTNAME=	gh-grep
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.0
+DISTVERSION=	1.2.0
 PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	lcook@FreeBSD.org
-COMMENT=	Find lines matching a pattern within GitHub repositories
+COMMENT=	Print lines matching a pattern in repositories using GitHub API
 WWW=		https://github.com/k1LoW/gh-grep
 
 LICENSE=	MIT

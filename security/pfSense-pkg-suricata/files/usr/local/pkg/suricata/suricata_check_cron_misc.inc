@@ -82,7 +82,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 			syslog(LOG_NOTICE, gettext("[Suricata] Cleaning logs for {$value['descr']} ({$if_real})..."));
 
 			// Clean-up packet capture files if any exist
-			$filelist = glob("{$suricata_log_dir}/log.pcap.*");
+			$filelist = glob("{$suricata_log_dir}/pcaps/log.pcap.*");
 
 			// Keep most recent file
 			unset($filelist[count($filelist) - 1]);
@@ -423,8 +423,25 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 			unset($files);
 		}
 
+		// Prune aged-out PCAP log files if any exist
+		if (is_dir("{$suricata_log_dir}/pcaps") &&
+		    config_get_path('installedpackages/suricata/config/0/pkt_capture_file_retention') > 0) {
+			$now = time();
+			$files = glob("{$suricata_log_dir}/pcaps/*.*");
+			$prune_count = 0;
+			foreach ($files as $f) {
+				if (($now - filemtime($f)) > (int)(config_get_path('installedpackages/suricata/config/0/pkt_capture_file_retention') * 3600)) {
+					$prune_count++;
+					unlink_if_exists($f);
+				}
+			}
+			if ($prune_count > 0)
+				syslog(LOG_NOTICE, gettext("[Suricata] PCAP files retention cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/pcaps/ whose creation date exceeded the retention limit."));
+			unset($files);
+		}
+
 		// Prune any pcap log files over configured limit
-		$files = glob("{$suricata_log_dir}/log.pcap.*");
+		$files = glob("{$suricata_log_dir}/pcaps/log.pcap.*");
 		if (count($files) > $value['max_pcap_log_files']) {
 			$over = count($files) - $value['max_pcap_log_files'];
 			$remove_files = array();
@@ -438,7 +455,7 @@ if (config_get_path('installedpackages/suricata/config/0/enable_log_mgmt') == 'o
 				unlink_if_exists($f);
 			}
 			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] Packet Capture log cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/..."));
+				syslog(LOG_NOTICE, gettext("[Suricata] Packet Capture log cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/pcaps/ to stay below the configured max files limit."));
 			unset($files, $remove_files);
 		}
 	}

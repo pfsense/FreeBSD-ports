@@ -1,10 +1,10 @@
 PORTNAME=	zynaddsubfx
 DISTVERSION=	3.0.6
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	audio
 
-MAINTAINER=	hselasky@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Realtime software synthesizer
 WWW=		http://zynaddsubfx.sourceforge.net/
 

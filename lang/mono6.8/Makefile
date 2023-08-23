@@ -1,12 +1,12 @@
 PORTNAME=	mono
 PORTVERSION=	6.8.0.123
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	https://download.mono-project.com/sources/mono/
 PKGNAMESUFFIX=	6.8
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source implementation of .NET Development Framework
 WWW=		https://www.mono-project.com/
 
@@ -26,11 +26,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
 
 CONFLICTS_INSTALL=	certmgr coin-or-disco disco mono mono[0-9]*
 
-USES=	autoreconf bison compiler:c11 cpe gmake iconv libtool localbase \
+USES=	autoreconf:2.69 bison compiler:c11 cpe gmake iconv libtool localbase \
 	pathfix perl5 python shebangfix tar:xz
 USE_PERL5=	build
 
-CONFIGURE_SCRIPT=	autogen.sh
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -80,7 +79,7 @@ MONODEV_DESC=	Build for Mono development (disables crash privacy)
 MONODEV_CONFIGURE_ON=	--enable-icall-symbol-map --enable-icall-export --with-crash_privacy=no
 
 NINJA_DESC=	Use ninja to build wherever possible
-NINJA_CONFIGURE_ON=	ninja
+NINJA_CONFIGURE_ON=	--enable-ninja
 NINJA_USES=	ninja:build
 
 NLS_DESC=	NLS Localization Support
@@ -119,5 +118,9 @@ post-patch:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/mono
+# XXX Drop after devel/msbuild >= 16.0 per https://github.com/mono/msbuild/commit/48f3571f4036
+	${RLN} ${STAGEDIR}${PREFIX}/lib/mono/msbuild/Current \
+		${STAGEDIR}${PREFIX}/lib/mono/msbuild/15.0
+	${ECHO_CMD} lib/mono/msbuild/15.0 >>${TMPPLIST}
 
 .include <bsd.port.post.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	sdl2
-DISTVERSION=	2.28.1
+DISTVERSION=	2.28.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${PORTVERSION}
@@ -68,7 +69,6 @@ VIDEO_DESC=		Video drivers
 CSD_DESC=		Client-side decorations for Wayland via libdecor
 JOYSTICK_DESC=		Joystick and haptic support
 HIDAPI_DESC=		Use HIDAPI for low level joystick drivers
-PIPEWIRE_DESC=		Pipewire sound server support
 PTHREADS_DESC=		Use POSIX threads for multi-threading
 UDEV_DESC=		Use udev for input device detection
 KMSDRM_DESC=		KMSDRM display support

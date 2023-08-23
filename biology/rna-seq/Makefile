@@ -1,6 +1,5 @@
 PORTNAME=	rna-seq
-DISTVERSION=	0.1.2
-PORTREVISION=	1
+DISTVERSION=	0.1.4
 CATEGORIES=	biology python
 MASTER_SITES=	# empty
 
@@ -18,9 +17,11 @@ RUN_DEPENDS=	sra-tools>0:biology/sra-tools \
 		gffread>0:biology/gffread \
 		kallisto>0:biology/kallisto \
 		hisat2>0:biology/hisat2 \
+		rna-STAR>0:biology/star \
 		samtools>0:biology/samtools \
 		fasda>0:biology/fasda \
-		webbrowser>0:www/webbrowser
+		webbrowser>0:www/webbrowser \
+		curl>0:ftp/curl
 
 USES=		metaport python
 

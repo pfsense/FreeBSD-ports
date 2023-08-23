@@ -1,6 +1,6 @@
 PORTNAME=	cairo-dock-plugins
 PORTVERSION=	3.4.1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	deskutils
 
 PATCH_SITES=	https://github.com/Cairo-Dock/cairo-dock-plug-ins/commit/
@@ -85,8 +85,8 @@ KEYBOARD_INDICATOR_CMAKE_BOOL=	enable-keyboard-indicator
 MAIL_BUILD_DEPENDS=	libetpan>=1.9.4:mail/libetpan
 MAIL_LIB_DEPENDS=	libetpan.so:mail/libetpan
 MAIL_CMAKE_BOOL=	enable-mail
-#MONO_BUILD_DEPENDS=	mono:lang/mono
-#MONO_RUN_DEPENDS=	mono:lang/mono
+#MONO_BUILD_DEPENDS=	mono:lang/mono${MONO_DEFAULT}
+#MONO_RUN_DEPENDS=	mono:lang/mono${MONO_DEFAULT}
 #MONO_CMAKE_BOOL=	enable-mono-interface
 CMAKE_ARGS+=		-Denable-mono-interface:BOOL=FALSE
 #PYTHON_LIB_DEPENDS=

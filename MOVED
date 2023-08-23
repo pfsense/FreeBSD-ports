@@ -1205,7 +1205,6 @@ audio/esperanza||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 audio/lastfm-desktop||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 audio/minitunes||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 audio/mixxx20||2019-03-16|Has expired: Qt4 has been EOL since december 2015
-audio/puddletag||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 audio/qmpdclient||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 audio/skype-call-recorder||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 biology/clustalx||2019-03-16|Has expired: Qt4 has been EOL since december 2015
@@ -1235,7 +1234,6 @@ deskutils/qorganizer||2019-03-16|Has expired: Qt4 has been EOL since december 20
 deskutils/qrfcview||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 deskutils/qtm||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 deskutils/tuxcards||2019-03-16|Has expired: Qt4 has been EOL since december 2015
-deskutils/vym||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 devel/apiextractor||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 devel/automoc4||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 devel/edb||2019-03-16|Has expired: Qt4 has been EOL since december 2015
@@ -2334,7 +2332,7 @@ www/rubygem-responders-rails50|www/rubygem-responders|2019-06-30|Has expired: Us
 emulators/xen-kernel47|emulators/xen-kernel|2019-07-01|Has expired: This port is about to be removed, please update to a newer Xen version
 sysutils/xen-tools47|sysutils/xen-tools|2019-07-01|Has expired: This port is about to be removed, please update to a newer Xen version
 www/seamonkey||2019-07-03|2.49.* is not maintained upstream and full of security holes
-www/tomcat8||2019-07-06|Has expired: EoL since 2018-06-30
+www/tomcat8|www/tomcat85|2019-07-06|Has expired: EoL since 2018-06-30
 devel/libevent-hiphop||2019-07-10|Has expired: Obsoleted with removal of lang/hiphop-php
 textproc/apache-solr3|textproc/apache-solr|2019-07-12|Obsolete
 misc/tcb||2019-07-13|Has expired: Abandonware that uses sys/dir.h
@@ -2681,7 +2679,6 @@ games/quake3-ra3||2019-10-16|Has expired: Unfetchable, unmaintained
 games/sdlCC||2019-10-16|Has expired: Unfetchable, unmaintained
 games/speyes||2019-10-16|Has expired: Unfetchable, unmaintained
 games/vodovod||2019-10-16|Has expired: Unfetchable, unmaintained
-games/wmeyes||2019-10-16|Has expired: Unfetchable, unmaintained
 games/wmshuffle||2019-10-16|Has expired: Unfetchable, unmaintained
 games/xabacus||2019-10-16|Has expired: Unfetchable, unmaintained
 games/xpacman||2019-10-16|Has expired: Unfetchable, unmaintained
@@ -3210,7 +3207,6 @@ devel/gperf31|devel/gperf|2020-01-04|No longer needed as devel/gperf has been up
 devel/yosys|cad/yosys|2020-01-04|Move to a proper category
 cad/ujprog|comms/ujprog|2020-01-05|Move to a proper category
 net/gnatsd|net/nats-server|2020-01-06|Renamed upstream
-astro/viking||2020-01-10|Has expired: Depends on broken and expiring graphics/mapnik
 audio/slv2||2020-01-10|Has expired: Broken for more than 5 months (last version 0.6.6 released in 2009, replaced by lilv)
 cad/brickutils||2020-01-10|Has expired: Broken for more than 3 months, unmaintained
 devel/elixir-gen_state_machine||2020-01-10|Has expired: Broken for more than 6 months
@@ -4270,7 +4266,6 @@ net/tcpdstat||2020-05-05|Has expired: Broken for more than 6 months
 net/uplog||2020-05-05|Has expired: Broken for more than 6 months
 net/vblade||2020-05-05|Has expired: Broken for more than 6 months
 net/wizd||2020-05-05|Has expired: Broken for more than 6 months
-net/wmnetload||2020-05-05|Has expired: Broken for more than 6 months
 net/wmnetmon||2020-05-05|Has expired: Broken for more than 6 months
 net/wmpiki||2020-05-05|Has expired: Broken for more than 6 months
 net/xipmsg||2020-05-05|Has expired: Broken for more than 6 months
@@ -6616,7 +6611,7 @@ www/jspwiki||2022-03-31|Has expired: Depends on expired www/tomcat7
 graphics/deegree-wcs||2022-03-31|Has expired: Depends on expired www/tomcat7
 graphics/deegree-csw||2022-03-31|Has expired: Depends on expired www/tomcat7
 graphics/deegree-wms||2022-03-31|Has expired: Depends on expired www/tomcat7
-www/tomcat7||2022-03-31|Has expired: Tomcat 7 is EOL on 2021-03-31. Please upgrade to a later version
+www/tomcat7|www/tomcat85|2022-03-31|Has expired: Tomcat 7 is EOL on 2021-03-31. Please upgrade to a later version
 devel/gitblit||2022-03-31|Has expired: Depends on expired www/tomcat7
 graphics/barbecue||2022-03-31|Has expired: Depends on expired www/tomcat7
 graphics/deegree-wfs||2022-03-31|Has expired: Depends on expired www/tomcat7
@@ -7683,7 +7678,7 @@ audio/gbemol||2023-06-30|Has expired: Unmaintained for years and depends on depr
 audio/glurp||2023-06-30|Has expired: Unmaintained for years and depends on deprecated GTK2
 finance/R-cran-ccgarch||2023-06-30|Has expired: Fails to build with R 4.3.0+ and abandoned upstream
 www/redmine42||2023-06-30|Has expired: Broken with all supported Ruby versions
-www/tomcat10||2023-06-30|Has expired: EOLd, potential security issues (https://tomcat.apache.org/tomcat-10.0-eol.html), use www/tomcat101 instead
+www/tomcat10|www/tomcat101|2023-06-30|Has expired: EOLd, potential security issues (https://tomcat.apache.org/tomcat-10.0-eol.html), use www/tomcat101 instead
 databases/mongodb40-tools||2023-06-30|Has expired: Upstream EOL reached on 2022-04-30
 databases/mongodb40||2023-06-30|Has expired: Upstream EOL reached on 2022-04-30
 dns/djbdns-tools||2023-06-30|Has expired: No longer compliant with current DNS standards and source code hasn't been centrally managed for over 20 years
@@ -7778,3 +7773,17 @@ devel/rubygem-google-protobuf322|devel/rubygem-google-protobuf|2023-07-09|Remove
 devel/rubygem-grape15|devel/rubygem-grape|2023-07-09|Remove obsoleted port. Use devel/rubygem-grape instead
 net/rubygem-net-ldap017|net/rubygem-net-ldap|2023-07-09|Remove obsoleted port. Use net/rubygem-net-ldap instead
 textproc/rubygem-nokogiri114|textproc/rubygem-nokogiri|2023-07-09|Remove obsoleted port. Use textproc/rubygem-nokogiri instead
+japanese/kterm||2023-07-12|Has expired: Last upstream release was in 2011
+graphics/gmic-qt@krita|graphics/krita-gmic-plugin|2023-07-14|Forked to a seperate project
+devel/capstone5|devel/capstone|2023-07-15|Keep the latest version without any pkgnamesufix
+games/naev-data||2023-07-15|Remove obsoleted port. Now games/naev installs data files
+graphics/pecl-imagick-im7|graphics/pecl-imagick|2023-07-19|Merged into master port
+x11-toolkits/fox14||2023-07-27|Has expired: Obsolete leaf port, use x11-toolkits/fox(16,17) instead
+x11-wm/cage-devel|x11-wm/cage|2023-07-27|Out of date: use x11-wm/cage for now
+games/cockatrice||2023-07-31|Has expired: Upstream releases haven't occured for multiple years and will require a new portbuild
+graphics/blender-lts29||2023-07-31|Has expired: Deprecated upstream
+x11-fm/wcmcommander||2023-07-31|Has expired: Abandoned upstream
+x11/cde-24|x11/cde-25|2023-08-01|Has expired: Desupported by upstream
+lang/go118||2023-08-04|Upstream support ended
+devel/hhdate|devel/date|2023-08-05|Dedup library
+x11-toolkits/wlinfo||2023-08-10|Redundant with wayland-info from graphics/wayland-utils

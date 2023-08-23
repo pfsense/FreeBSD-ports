@@ -1,11 +1,11 @@
 PORTNAME=	dbus-sharp
 PORTVERSION=	0.8.1
-PORTREVISION=	1
 DISTVERSIONPREFIX=v
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	devel gnome
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mono interface to the D-BUS messaging system
 WWW=		http://mono.github.com/dbus-sharp/
 

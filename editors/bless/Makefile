@@ -2,10 +2,10 @@ PORTNAME=	bless
 PORTVERSION=	0.6.3
 PORTEPOCH=	1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	editors
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-quality, full-featured hexadecimal editor
 WWW=		https://github.com/afrantzis/bless
 

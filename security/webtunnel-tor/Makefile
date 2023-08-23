@@ -1,5 +1,6 @@
 PORTNAME=	webtunnel
 PORTVERSION=	0.0.1
+PORTREVISION=	1
 CATEGORIES=	security net
 PKGNAMESUFFIX=	-tor
 
@@ -26,7 +27,7 @@ GO_TARGET=	./main/client ./main/server
 
 GL_SITE=	https://gitlab.torproject.org/tpo
 GL_ACCOUNT=	anti-censorship/pluggable-transports
-GL_COMMIT=	${TPO_WEBTUN}
+GL_TAGNAME=	${TPO_WEBTUN}
 GL_TUPLE=	anti-censorship:pluggable-transports/goptlib:${TPO_GOPTLIB}:tpo_ac_ptlib/vendor/gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/goptlib
 
 PLIST_FILES=	bin/${PORTNAME}-tor-client \

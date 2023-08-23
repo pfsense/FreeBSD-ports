@@ -20,13 +20,11 @@
  */
 
 function frr_generate_config_rip_interfaces() {
-	global $config, $rip_passive_interfaces, $frr_integrated_config;
-	init_config_arr(array('installedpackages', 'frrripd', 'config'));
-	$frr_ripd_conf = &$config['installedpackages']['frrripd']['config'][0];
+	global $rip_passive_interfaces, $frr_integrated_config;
+	$frr_ripd_conf = config_get_path('installedpackages/frrripd/config/0', []);
 
 	/* Setup interface entries */
-	init_config_arr(array('installedpackages', 'frrripdinterfaces', 'config'));
-	foreach ($config['installedpackages']['frrripdinterfaces']['config'] as $conf) {
+	foreach (config_get_path('installedpackages/frrripdinterfaces/config', []) as $conf) {
 		$realif = get_real_interface($conf['interface']);
 		if (empty($realif)) {
 			continue;
@@ -78,11 +76,8 @@ function frr_generate_config_rip_interfaces() {
 }
 
 function frr_generate_config_rip_neighbors() {
-	global $config;
 	$neiconf= "";
-
-	init_config_arr(array('installedpackages', 'frrripdneighbors', 'config'));
-	foreach ($config['installedpackages']['frrripdneighbors']['config'] as $conf) {
+	foreach (config_get_path('installedpackages/frrripdneighbors/config', []) as $conf) {
 		$neiconf .= " neighbor {$conf['neighbor']}\n" ;
 	}
 	return $neiconf;
@@ -114,25 +109,22 @@ function frr_generate_config_rip_redistribute($frr_ripd_conf, $variablename, $so
 }
 
 function frr_generate_config_rip() {
-	global $config, $frr_config_base, $frr_integrated_config, $rip_passive_interfaces;
+	global $frr_config_base, $frr_integrated_config, $rip_passive_interfaces;
 
 	/* Populate FRR Global Settings */
-	if (is_array($config['installedpackages']['frr']['config'])) {
-		$frr_conf = &$config['installedpackages']['frr']['config'][0];
-	} else {
+	$frr_conf = config_get_path('installedpackages/frr/config/0', []);
+	if (empty($frr_conf)) {
 		/* If FRR is not configured, stop. */
 		frr_package_log("FRR RIPd: No FRR global config data found.");
 		return null;
 	}
-	/* Populate FRR RIP Settings */
-	if (is_array($config['installedpackages']['frrripd']['config'])) {
-		$frr_ripd_conf = &$config['installedpackages']['frrripd']['config'][0];
-	}
 
-	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['ripd']) &&
-		!empty($config['installedpackages']['frrglobalraw']['config'][0]['ripd'])) {
+	/* Populate FRR RIP Settings */
+	$frr_ripd_conf = config_get_path('installedpackages/frrripd/config/0', []);
+
+	if (!empty(config_get_path('installedpackages/frrglobalraw/config/0/ripd'))) {
 		/* If the user has supplied a raw configuration, use that instead of the GUI configuration. */
-		$frr_integrated_config['ripd'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['ripd']));
+		$frr_integrated_config['ripd'] = str_replace("\r", "", base64_decode(config_get_path('installedpackages/frrglobalraw/config/0/ripd')));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_ripd_conf)) {

@@ -21,7 +21,7 @@ USES=		cmake:noninja compiler:c++11-lib gl openal qmake qt:5 sdl xorg
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	solarus-games
-GL_COMMIT=	21a378a7858460809ffef1c96a07a493d709730c
+GL_TAGNAME=	21a378a7858460809ffef1c96a07a493d709730c
 
 MAKE_ARGS+=	DESTDIR=${STAGEDIR}
 USE_QT=		buildtools:build core gui linguisttools:build widgets
@@ -42,11 +42,5 @@ LUAJIT_USES=	luajit
 LUAJIT_USES_OFF=	lua:51
 
 CMAKE_ARGS+=	-DSOLARUS_MANUAL_INSTALL_DESTINATION:STRING="man"
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH:Mpowerpc64*}
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
-.endif
 
 .include <bsd.port.mk>

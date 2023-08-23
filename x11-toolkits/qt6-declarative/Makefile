@@ -1,6 +1,5 @@
 PORTNAME=	declarative
 DISTVERSION=	${QT6_VERSION}
-PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	qt6-
 
@@ -29,6 +28,14 @@ USE_GNOME=	glib20
 USE_QT=		base shadertools languageserver
 USE_XORG=	x11 xau xcb xdmcp
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH:Marmv?} || ${ARCH} == i386
+PLIST_SUB+=	QML_JIT=""
+.else
+PLIST_SUB+=	QML_JIT="@comment "
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e "s#python3#${PYTHON_CMD}#g" ${WRKSRC}/cmake/QtDeclarativeSetup.cmake

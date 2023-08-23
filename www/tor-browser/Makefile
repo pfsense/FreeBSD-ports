@@ -1,6 +1,6 @@
 PORTNAME=	tor-browser
 DISTVERSION=	12.0.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www net security wayland
 MASTER_SITES=	TOR
 MASTER_SITE_SUBDIR=torbrowser/${DISTVERSION}
@@ -73,7 +73,7 @@ WRKSRC=		${WRKDIR}/${DISTNAME:S/src-//}
 MOZ_OPTIONS+=	--enable-rust-simd
 .endif
 .if ${ARCH} == powerpc64
-MOZ_OPTIONS+=	--disable-webrtc --without-wasm-sandboxed-libraries
+MOZ_OPTIONS+=	--without-wasm-sandboxed-libraries
 .else
 BUILD_DEPENDS+=	${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc++abi.a:devel/wasi-libcxx \
 		${LOCALBASE}/share/wasi-sysroot/lib/wasm32-wasi/libc.a:devel/wasi-libc \

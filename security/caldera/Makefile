@@ -1,5 +1,6 @@
 PORTNAME=	caldera
 DISTVERSION=	4.2.0
+PORTREVISION=	1
 CATEGORIES=	security python
 
 MAINTAINER=	acm@FreeBSD.org
@@ -16,7 +17,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}aiohttp>0:www/py-aiohttp@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}aiohttp-apispec>0:devel/py-aiohttp-apispec@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cryptography>0:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}websockets>0:devel/py-websockets@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docutils>0:textproc/py-docutils@${PY_FLAVOR} \
@@ -65,7 +65,7 @@ GH_TUPLE=	mitre:access:0e67776:access/plugins/access \
 		mitre:stockpile:960f9ad:stockpile/plugins/stockpile \
 		mitre:training:b058b67:training/plugins/training
 
-USES=		dos2unix go:run python
+USES=		dos2unix go:run python pycryptography:run
 
 NO_ARCH=	yes
 NO_BUILD=	yes

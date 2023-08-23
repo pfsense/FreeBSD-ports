@@ -1,5 +1,6 @@
 PORTNAME=	audacious-plugins
 PORTVERSION=	4.3.1
+PORTREVISION=	2
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://distfiles.audacious-media-player.org/
 
@@ -94,7 +95,6 @@ FILEWRITER_DESC=	File writer
 MPRIS_DESC=		NPRIS plugin
 NEON_DESC=		Neon plugin
 OPENMPT_DESC=		OpenMPT plugin
-PIPEWIRE_DESC=		Pipewire output plugin
 SCROBBLER_DESC=		Scrobbler decoder
 SID_DESC=		Sound chip emulator of Commodore
 SPEEDPITCH_DESC=	Speed and Pitch plugin

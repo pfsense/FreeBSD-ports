@@ -1,5 +1,5 @@
 PORTNAME=	art
-DISTVERSION=	1.20
+DISTVERSION=	1.20.1
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/agriggio/art/downloads/

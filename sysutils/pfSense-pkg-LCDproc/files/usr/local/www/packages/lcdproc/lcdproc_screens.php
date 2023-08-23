@@ -38,8 +38,14 @@ if (!isset($pconfig['scr_states']))                          $pconfig['scr_state
 if (!isset($pconfig['scr_carp']))                            $pconfig['scr_carp']                            = false;
 if (!isset($pconfig['scr_ipsec']))                           $pconfig['scr_ipsec']                           = false;
 if (!isset($pconfig['scr_interfaces']))                      $pconfig['scr_interfaces']                      = false;
+if (!isset($pconfig['scr_gwsum']))                           $pconfig['scr_gwsum']                           = false;
+if (!isset($pconfig['scr_gwstatus']))                        $pconfig['scr_gwstatus']                        = false;
 if (!isset($pconfig['scr_mbuf']))                            $pconfig['scr_mbuf']                            = false;
+if (!isset($pconfig['scr_packages']))                        $pconfig['scr_packages']                        = false;
 if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufrequency']                    = false;
+if (!isset($pconfig['scr_cputemperature']))                  $pconfig['scr_cputemperature']                  = false;
+if (!isset($pconfig['scr_cputemperature_unit']))             $pconfig['scr_cputemperature_unit']             = 'c';
+if (!isset($pconfig['scr_ntp']))                             $pconfig['scr_ntp']                             = false;
 if (!isset($pconfig['scr_traffic']))                         $pconfig['scr_traffic']                         = false;
 if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traffic_interface']               = '';
 if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
@@ -51,7 +57,8 @@ if (!isset($pconfig['scr_traffic_by_address_if']))           $pconfig['scr_traff
 if (!isset($pconfig['scr_traffic_by_address_sort']))         $pconfig['scr_traffic_by_address_sort']         = 'in';
 if (!isset($pconfig['scr_traffic_by_address_filter']))       $pconfig['scr_traffic_by_address_filter']       = 'local';
 if (!isset($pconfig['scr_traffic_by_address_hostipformat'])) $pconfig['scr_traffic_by_address_hostipformat'] = 'descr';
-
+if (!isset($pconfig['scr_apcupsd']))                         $pconfig['scr_apcupsd']                         = false;
+if (!isset($pconfig['scr_nutups']))                          $pconfig['scr_nutups']                          = false;
 
 if ($_POST) {
 	unset($input_errors);
@@ -73,8 +80,14 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_carp']                            = $pconfig['scr_carp'];
 		$lcdproc_screens_config['scr_ipsec']                           = $pconfig['scr_ipsec'];
 		$lcdproc_screens_config['scr_interfaces']                      = $pconfig['scr_interfaces'];
+		$lcdproc_screens_config['scr_gwsum']                           = $pconfig['scr_gwsum'];
+		$lcdproc_screens_config['scr_gwstatus']                        = $pconfig['scr_gwstatus'];
 		$lcdproc_screens_config['scr_mbuf']                            = $pconfig['scr_mbuf'];
+		$lcdproc_screens_config['scr_packages']                        = $pconfig['scr_packages'];
 		$lcdproc_screens_config['scr_cpufrequency']                    = $pconfig['scr_cpufrequency'];
+		$lcdproc_screens_config['scr_cputemperature']                  = $pconfig['scr_cputemperature'];
+		$lcdproc_screens_config['scr_cputemperature_unit']             = $pconfig['scr_cputemperature_unit'];
+		$lcdproc_screens_config['scr_ntp']                             = $pconfig['scr_ntp'];
 		$lcdproc_screens_config['scr_traffic']                         = $pconfig['scr_traffic'];
 		$lcdproc_screens_config['scr_traffic_interface']               = $pconfig['scr_traffic_interface'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
@@ -86,6 +99,8 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_traffic_by_address_sort']         = $pconfig['scr_traffic_by_address_sort'];
 		$lcdproc_screens_config['scr_traffic_by_address_filter']       = $pconfig['scr_traffic_by_address_filter'];
 		$lcdproc_screens_config['scr_traffic_by_address_hostipformat'] = $pconfig['scr_traffic_by_address_hostipformat'];
+		$lcdproc_screens_config['scr_apcupsd']                         = $pconfig['scr_apcupsd'];
+		$lcdproc_screens_config['scr_nutups']                          = $pconfig['scr_nutups'];
 
 		config_set_path('installedpackages/lcdprocscreens/config/0', $lcdproc_screens_config);
 		write_config("lcdproc: Screen settings saved");
@@ -107,8 +122,6 @@ $tab_array[] = array(gettext("Server"),  false, "/packages/lcdproc/lcdproc.php")
 $tab_array[] = array(gettext("Screens"), true,  "/packages/lcdproc/lcdproc_screens.php");
 display_top_tabs($tab_array);
 
-// The constructor for Form automatically creates a submit button. If you want to suppress that
-// use Form(false), of specify a different button using Form($mybutton)
 $form = new Form();
 $section = new Form_Section('LCD info screens');
 
@@ -203,10 +216,34 @@ $section->addInput(
 );
 $section->addInput(
 	new Form_Checkbox(
+		'scr_gwsum', // checkbox name (id)
+		'Gateway Summary', // checkbox label
+		'Display up/down status count for enabled gateways', // checkbox text
+		$pconfig['scr_gwsum'] // checkbox initial value
+	)
+);
+$section->addInput(
+	new Form_Checkbox(
+		'scr_gwstatus', // checkbox name (id)
+		'Gateway Status', // checkbox label
+		'Display detailed status for monitored gateways', // checkbox text
+		$pconfig['scr_gwstatus'] // checkbox initial value
+	)
+)->setHelp('A 4-row 20-column display size, or higher, is required for this screen.');
+$section->addInput(
+	new Form_Checkbox(
 		'scr_mbuf', // checkbox name (id)
 		'Mbuf', // checkbox label
 		'Display the MBuf usage', // checkbox text
 		$pconfig['scr_mbuf'] // checkbox initial value
+	)
+);
+$section->addInput(
+	new Form_Checkbox(
+		'scr_packages', // checkbox name (id)
+		'Package Info', // checkbox label
+		'Display package count/updates', // checkbox text
+		$pconfig['scr_packages'] // checkbox initial value
 	)
 );
 $section->addInput(
@@ -217,6 +254,37 @@ $section->addInput(
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
+
+$section->addInput(
+	new Form_Checkbox(
+		'scr_ntp', // checkbox name (id)
+		'NTP Status', // checkbox label
+		'Display NTP status', // checkbox text
+		$pconfig['scr_ntp'] // checkbox initial value
+	)
+);
+
+
+$group = new Form_Group('CPU Temperature');
+$group->add(
+	new Form_Checkbox(
+		'scr_cputemperature', // checkbox name (id)
+		'CPU Temperature', // checkbox label
+		'Display CPU temperature', // checkbox text
+		$pconfig['scr_cputemperature'] // checkbox initial value
+	)
+);
+$group->add(
+	new Form_Select(
+		'scr_cputemperature_unit',
+		'',
+		$pconfig['scr_cputemperature_unit'],
+		array (
+			'c'	=> gettext('Celsius'),
+			'f'	=> gettext('Fahrenheit')
+		)
+))->setHelp('Unit of temperature');
+$section->add($group);
 
 $group = new Form_Group('Traffic of interface');
 
@@ -327,6 +395,28 @@ $group->add(new Form_Select(
 
 $group->setHelp('A 4-row 20-column display size, or higher, is recommended for this screen.');
 $section->add($group);
+
+if (file_exists("/usr/local/pkg/apcupsd.inc")) {
+	$section->addInput(
+		new Form_Checkbox(
+			'scr_apcupsd', // checkbox name (id)
+			'APC UPS Info', // checkbox label
+			'Display current APC UPS status from APCUPSD Package', // checkbox text
+			$pconfig['scr_apcupsd'] // checkbox initial value
+		)
+	);
+}
+
+if (file_exists("/usr/local/pkg/nut/nut.inc")) {
+	$section->addInput(
+		new Form_Checkbox(
+			'scr_nutups', // checkbox name (id)
+			'NUT UPS Info', // checkbox label
+			'Display current UPS status from NUT Package', // checkbox text
+			$pconfig['scr_nutups'] // checkbox initial value
+		)
+	);
+}
 
 $form->add($section);
 print($form);

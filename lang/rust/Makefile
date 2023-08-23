@@ -1,6 +1,6 @@
 PORTNAME=	rust
-PORTVERSION?=	1.70.0
-PORTREVISION?=	1
+PORTVERSION?=	1.71.0
+PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
 		https://dev-static.rust-lang.org/dist/:src \
@@ -48,7 +48,7 @@ CONFLICTS_INSTALL?=	rust-nightly
 # ?= to allow users to still overwrite it in make.conf.
 TMPDIR?=	${WRKDIR}
 
-OPTIONS_DEFINE=		DOCS GDB SOURCES WASM
+OPTIONS_DEFINE=		DOCS GDB LTO SOURCES WASM
 OPTIONS_DEFAULT=	SOURCES WASM
 
 GDB_DESC=	Install ports gdb (necessary for debugging rust programs)
@@ -68,8 +68,8 @@ WASM_VARS=		_COMPONENTS+="rust-analysis-${_PACKAGE_VERS}-wasm32-unknown-unknown 
 WASM_VARS_OFF=		_RUST_BUILD_WASM=false
 
 # See WRKSRC/src/stage0.json for the date and version values
-BOOTSTRAPS_DATE?=		2023-04-20
-RUST_BOOTSTRAP_VERSION?=	1.69.0
+BOOTSTRAPS_DATE?=		2023-06-01
+RUST_BOOTSTRAP_VERSION?=	1.70.0
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 
@@ -191,7 +191,13 @@ do-configure:
 	@${ECHO_CMD} 'deny-warnings=false' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'verbose-tests=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'lld=${_RUST_BUILD_WASM}' >> ${WRKSRC}/config.toml
+.if ${PORT_OPTIONS:MLTO}
+	@${ECHO_CMD} 'lto="thin"' >> ${WRKSRC}/config.toml
+.endif
 	@${ECHO_CMD} '[llvm]' >> ${WRKSRC}/config.toml
+.if ${PORT_OPTIONS:MLTO}
+	@${ECHO_CMD} 'thin-lto=true' >> ${WRKSRC}/config.toml
+.endif
 .if defined(WITH_CCACHE_BUILD) && !defined(NO_CCACHE)
 	@${ECHO_CMD} 'ccache="${CCACHE_BIN}"' >> ${WRKSRC}/config.toml
 .else

@@ -1,7 +1,7 @@
 PORTNAME=	xray-core
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.5.5
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	security
 
 MAINTAINER=	nc@FreeBSD.org
@@ -11,7 +11,9 @@ WWW=		https://github.com/XTLS/Xray-core
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.18,modules
+BROKEN=		requires unsupported go1.18
+
+# USES=		go:1.18,modules
 
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
 GO_TARGET=	./main:xray

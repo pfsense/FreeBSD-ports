@@ -1,6 +1,5 @@
 PORTNAME=	pfSense
-DISTVERSION=	2.7.0
-PORTREVISION=	5
+DISTVERSION=	${PRODUCT_VERSION}
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -53,6 +52,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}phpseclib>=0:security/phpseclib@${PHP_FLAVOR} \
 		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
+		pfSense-composer-deps>=0:devel/pfSense-composer-deps \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pfSense-upgrade>=0:sysutils/pfSense-upgrade \
 		pftop>=0:sysutils/pftop \
@@ -98,7 +98,7 @@ PLIST_DIRS=	/etc
 
 .include <bsd.port.pre.mk>
 
-.if (${ARCH} == "amd64" || ${ARCH} == "i386")
+.if ${ARCH} == "amd64"
 RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
 		smartmontools>=0:sysutils/smartmontools \
 		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \

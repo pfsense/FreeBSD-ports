@@ -1,6 +1,6 @@
 PORTNAME=	gtk-sharp
 PORTVERSION=	2.99.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	30
@@ -24,14 +24,8 @@ SHEBANG_FILES=	parser/*.pl
 USE_PERL5=	run
 MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 
-.include <bsd.port.pre.mk>
-
-.if defined(MONO_DEFAULT) && ${MONO_DEFAULT} > 6
-BROKEN=		fails to build with Mono version ${MONO_DEFAULT}: 'Range' is an ambiguous reference between 'System.Range' and 'Gtk.Range'
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|gmcs|mcs|g' \
 		${WRKSRC}/configure
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -58,6 +58,8 @@ $pconfig = array();
 if (isset($id) && !empty($a_nat)) {
 	/* Get current values from config for page form fields */
 	$pconfig = $a_nat;
+	if (empty($pconfig['app_layer_error_policy']))
+		$pconfig['app_layer_error_policy'] = "ignore";
 
 	// See if Host-OS policy engine array is configured and use
 	// it; otherwise create a default engine configuration.
@@ -244,46 +246,51 @@ elseif ($_POST['cancel_libhtp_policy']) {
 elseif ($_POST['ResetAll']) {
 
 	/* Reset all the settings to defaults */
+	$pconfig['app_layer_error_policy'] = "ignore";
 	$pconfig['asn1_max_frames'] = "256";
+	$pconfig['bittorrent_parser'] = "yes";
+	$pconfig['dcerpc_parser'] = "yes";
+	$pconfig['dhcp_parser'] = "yes";
 	$pconfig['dns_global_memcap'] = "16777216";
 	$pconfig['dns_state_memcap'] = "524288";
 	$pconfig['dns_request_flood_limit'] = "500";
-	$pconfig['http_parser_memcap'] = "67108864";
 	$pconfig['dns_parser_udp'] = "yes";
 	$pconfig['dns_parser_udp_ports'] = "53";
 	$pconfig['dns_parser_tcp'] = "yes";
 	$pconfig['dns_parser_tcp_ports'] = "53";
 	$pconfig['enip_parser'] = "yes";
+	$pconfig['ftp_parser'] = "yes";
+	$pconfig['ftp_data_parser'] = "on";
 	$pconfig['http_parser'] = "yes";
-	$pconfig['tls_parser'] = "yes";
-	$pconfig['tls_detect_ports'] = "443";
-	$pconfig['tls_encrypt_handling'] = "default";
-	$pconfig['tls_ja3_fingerprint'] = "auto";
+	$pconfig['http_parser_memcap'] = "67108864";
+	$pconfig['http2_parser'] = "yes";
+	$pconfig['ikev2_parser'] = "yes";
+	$pconfig['imap_parser'] = "detection-only";
+	$pconfig['krb5_parser'] = "yes";
+	$pconfig['mqtt_parser'] = "yes";
+	$pconfig['msn_parser'] = "detection-only";
+	$pconfig['nfs_parser'] = "yes";
+	$pconfig['ntp_parser'] = "yes";
+	$pconfig['pgsql_parser'] = "no";
+	$pconfig['quic_parser'] = "yes";
+	$pconfig['rfb_parser'] = "yes";
+	$pconfig['rdp_parser'] = "yes";
+	$pconfig['sip_parser'] = "yes";
+	$pconfig['smb_parser'] = "yes";
 	$pconfig['smtp_parser'] = "yes";
 	$pconfig['smtp_parser_decode_mime'] = "off";
 	$pconfig['smtp_parser_decode_base64'] = "on";
 	$pconfig['smtp_parser_decode_quoted_printable'] = "on";
 	$pconfig['smtp_parser_extract_urls'] = "on";
 	$pconfig['smtp_parser_compute_body_md5'] = "off";
-	$pconfig['imap_parser'] = "detection-only";
-	$pconfig['ssh_parser'] = "yes";
-	$pconfig['ftp_parser'] = "yes";
-	$pconfig['ftp_data_parser'] = "on";
-	$pconfig['dcerpc_parser'] = "yes";
-	$pconfig['smb_parser'] = "yes";
-	$pconfig['msn_parser'] = "detection-only";
-	$pconfig['krb5_parser'] = "yes";
-	$pconfig['ikev2_parser'] = "yes";
-	$pconfig['nfs_parser'] = "yes";
-	$pconfig['tftp_parser'] = "yes";
-	$pconfig['ntp_parser'] = "yes";
-	$pconfig['dhcp_parser'] = "yes";
-	$pconfig['rdp_parser'] = "yes";
-	$pconfig['sip_parser'] = "yes";
 	$pconfig['snmp_parser'] = "yes";
-	$pconfig['http2_parser'] = "yes";
-	$pconfig['rfb_parser'] = "yes";
-	$pconfig['mqtt_parser'] = "yes";
+	$pconfig['ssh_parser'] = "yes";
+	$pconfig['tftp_parser'] = "yes";
+	$pconfig['tls_parser'] = "yes";
+	$pconfig['tls_detect_ports'] = "443";
+	$pconfig['tls_encrypt_handling'] = "default";
+	$pconfig['tls_ja3_fingerprint'] = "auto";
+	$pconfig['telnet_parser'] = "yes";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -440,6 +447,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 
 	/* if no errors write to conf */
 	if (!$input_errors) {
+		if ($_POST['app_layer_error_policy'] != "") { $natent['app_layer_error_policy'] = $_POST['app_layer_error_policy']; }
 		if ($_POST['asn1_max_frames'] != "") { $natent['asn1_max_frames'] = $_POST['asn1_max_frames']; }else{ $natent['asn1_max_frames'] = "256"; }
 		if ($_POST['dns_global_memcap'] != ""){ $natent['dns_global_memcap'] = $_POST['dns_global_memcap']; }else{ $natent['dns_global_memcap'] = "16777216"; }
 		if ($_POST['dns_state_memcap'] != ""){ $natent['dns_state_memcap'] = $_POST['dns_state_memcap']; }else{ $natent['dns_state_memcap'] = "524288"; }
@@ -481,6 +489,9 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['rfb_parser'] = $_POST['rfb_parser'];
 		$natent['enip_parser'] = $_POST['enip_parser'];
 		$natent['mqtt_parser'] = $_POST['mqtt_parser'];
+		$natent['bittorrent_parser'] = $_POST['bittorrent_parser'];
+		$natent['pgsql_parser'] = $_POST['pgsql_parser'];
+		$natent['quic_parser'] = $_POST['quic_parser'];
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
@@ -584,7 +595,23 @@ if ($importalias) {
 	print('<input name="id" type="hidden" value="' . $id . '"/>');
 	print('<input type="hidden" name="eng_id" id="eng_id" value=""/>');
 
-	$section = new Form_Section('Abstract Syntax One Settings');
+	$section= new Form_Section('App-Layer Error Policy Settings');
+	$section->addInput(new Form_Select(
+		'app_layer_error_policy',
+		'Application Layer Parser Exception Policy',
+		$pconfig['app_layer_error_policy'],
+		array( "drop-flow" => "Drop Flow", "pass-flow" => "Pass Flow", "bypass" => "Bypass", "drop-packet" => "Drop Packet",
+			   "pass-packet" => "Pass Packet", "reject" => "Reject", "ignore" => "Ignore" )
+	))->setHelp('Apply selected policy if an application layer parser reaches an error state. Default is "Ignore". ' .
+				'"Drop Flow" will disable inspection for the whole flow (packets, payload, and application layer protocol), drop ' .
+				'the packet and all future packets in the flow. "Drop Packet" drops the current packet. "Reject" is the same as "Drop Flow" ' .
+				'but rejects the current packet as well. "Bypass" will bypass the flow, and no further inspection is done. ' .
+				'"Pass Flow" will disable payload and packet detection, but stream reassembly, app-layer parsing and logging still happen. ' .
+				'"Pass Packet" will disable detection, but still does stream updates and app-layer parsing (depending on which policy triggered it). ' .
+				'"Ignore" does not apply exception policies.');
+	print($section);
+
+	$section = new Form_Section('Abstract Syntax One App-Layer Parser Settings');
 	$section->addInput(new Form_Input(
 		'asn1_max_frames',
 		'Asn1 Max Frames',
@@ -729,6 +756,12 @@ if ($importalias) {
 
 	$section = new Form_Section('Other App-Layer Parser Settings');
 	$section->addInput(new Form_Select(
+		'bittorrent_parser',
+		'BitTorrent-DHT Parser',
+		$pconfig['bittorrent_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for BitTorrent-DHT. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'dcerpc_parser',
 		'DCERPC Parser',
 		$pconfig['dcerpc_parser'],
@@ -754,10 +787,10 @@ if ($importalias) {
 	))->setHelp('Choose the parser/detection setting for HTTP2. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'ikev2_parser',
-		'IKEv2 Parser',
+		'IKE Parser',
 		$pconfig['ikev2_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for IKEv2. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	))->setHelp('Choose the parser/detection setting for IKE. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'imap_parser',
 		'IMAP Parser',
@@ -795,6 +828,18 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for NTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'pgsql_parser',
+		'PostgreSQL Parser',
+		$pconfig['pgsql_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for PostgreSQL. Default is "no". Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'quic_parser',
+		'QUICv1 Parser',
+		$pconfig['quic_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for QUICv1. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'rdp_parser',
 		'RDP Parser',
 		$pconfig['rdp_parser'],
@@ -807,23 +852,11 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for RFB. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
-		'smb_parser',
-		'SMB Parser',
-		$pconfig['smb_parser'],
-		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for SMB. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
-	$section->addInput(new Form_Select(
 		'ssh_parser',
 		'SSH Parser',
 		$pconfig['ssh_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for SSH. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
-	$section->addInput(new Form_Select(
-		'tftp_parser',
-		'TFTP Parser',
-		$pconfig['tftp_parser'],
-		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for TFTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'sip_parser',
 		'SIP Parser',
@@ -831,11 +864,29 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for SIP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'smb_parser',
+		'SMB Parser',
+		$pconfig['smb_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SMB. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'snmp_parser',
 		'SNMP Parser',
 		$pconfig['snmp_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for SNMP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'telnet_parser',
+		'Telnet Parser',
+		$pconfig['telnet_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for Telnet. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'tftp_parser',
+		'TFTP Parser',
+		$pconfig['tftp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for TFTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 
 	print($section);
 

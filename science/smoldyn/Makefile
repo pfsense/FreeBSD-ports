@@ -19,6 +19,7 @@ USES=		cmake:testing compiler:c++11-lang gl localbase:ldflags python:test tar:tg
 USE_GL=		gl glu glut
 USE_XORG=	xi xmu
 USE_LDCONFIG=	yes
+USE_CXXSTD=	c++14 # fix build broken by deprecated feature std::unary_function use, see https://github.com/ssandrews/Smoldyn/issues/135
 
 SHEBANG_GLOB=	*.py.in
 
@@ -31,7 +32,7 @@ OPTIONS_SUB=		yes
 PYTHON_CMAKE_BOOL=	OPTION_PYTHON
 PYTHON_USES=		python
 PYTHON_CMAKE_ON=	-DPython3_EXECUTABLE=${PYTHON_CMD}
-PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+PYTHON_BUILD_DEPENDS=	${PY_SETUPTOOLS}
 PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}biosimulators-utils>0:biology/py-biosimulators-utils@${PY_FLAVOR}
 PYTHON_BROKEN=		pending biology/py-biosimulators-utils completion
 

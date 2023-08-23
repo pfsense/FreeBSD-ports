@@ -10,13 +10,12 @@ WWW=		https://log4cplus.github.io/log4cplus/
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		cmake compiler:c++11-lang tar:xz
+
 OPTIONS_DEFINE=	DOCS
 
-USES=		autoreconf compiler:c++11-lang gmake libtool pathfix tar:xz
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-threads=yes
-INSTALL_TARGET=	install-strip
+CMAKE_OFF=	LOG4CPLUS_BUILD_TESTING
 
 PORTDOCS=	*
 

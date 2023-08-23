@@ -12,6 +12,7 @@ WWW=		http://s11n.net/
 LICENSE=	PD
 
 USES=		uidfix zip
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 PORTSCOUT=	limitw:1,even

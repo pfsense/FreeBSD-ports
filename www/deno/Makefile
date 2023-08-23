@@ -1,6 +1,6 @@
 PORTNAME=	deno
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.35.0
+DISTVERSION=	1.35.3
 CATEGORIES=	www
 
 MAINTAINER=	mikael@FreeBSD.org
@@ -23,7 +23,7 @@ GH_ACCOUNT=	denoland
 
 USE_GNOME=	glib20
 
-V8_VERS=	0.74.1
+V8_VERS=	0.74.3
 
 CARGO_ENV+=	CLANG_BASE_PATH=/usr \
 		GN=${PREFIX}/bin/gn \
@@ -45,6 +45,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		aho-corasick-0.7.20 \
 		alloc-no-stdlib-2.0.4 \
 		alloc-stdlib-0.2.2 \
+		android-tzdata-0.1.1 \
 		anstream-0.3.2 \
 		anstyle-1.0.0 \
 		anstyle-parse-0.2.0 \
@@ -73,6 +74,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		base64ct-1.6.0 \
 		bencher-0.1.5 \
 		better_scoped_tls-0.1.0 \
+		bincode-1.3.3 \
 		bit-set-0.5.3 \
 		bit-vec-0.6.3 \
 		bitflags-1.3.2 \
@@ -89,7 +91,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		cbc-0.1.2 \
 		cc-1.0.79 \
 		cfg-if-1.0.0 \
-		chrono-0.4.22 \
+		chrono-0.4.26 \
 		cipher-0.4.4 \
 		clap-4.3.3 \
 		clap_builder-4.3.3 \
@@ -122,7 +124,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		deno-proc-macro-rules-0.3.2 \
 		deno-proc-macro-rules-macros-0.3.2 \
 		deno_ast-0.27.0 \
-		deno_core-0.194.0 \
+		deno_core-0.197.0 \
 		deno_doc-0.63.1 \
 		deno_emit-0.24.0 \
 		deno_graph-0.49.0 \
@@ -130,9 +132,9 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		deno_lockfile-0.14.1 \
 		deno_media_type-0.1.0 \
 		deno_npm-0.9.1 \
-		deno_ops-0.72.0 \
+		deno_ops-0.75.0 \
 		deno_semver-0.2.2 \
-		deno_task_shell-0.12.0 \
+		deno_task_shell-0.13.1 \
 		der-0.6.1 \
 		der-0.7.3 \
 		der-parser-8.2.0 \
@@ -202,7 +204,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		generic-array-0.12.4 \
 		generic-array-0.14.6 \
 		getrandom-0.1.16 \
-		getrandom-0.2.8 \
+		getrandom-0.2.10 \
 		ghash-0.5.0 \
 		glibc_version-0.1.2 \
 		glob-0.3.1 \
@@ -262,17 +264,17 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		lexical-util-0.8.5 \
 		lexical-write-float-0.8.5 \
 		lexical-write-integer-0.8.5 \
-		libc-0.2.140 \
+		libc-0.2.147 \
 		libffi-3.2.0 \
 		libffi-sys-2.3.0 \
 		libloading-0.7.4 \
 		libm-0.2.6 \
-		libsqlite3-sys-0.25.2 \
+		libsqlite3-sys-0.26.0 \
 		libz-sys-1.1.8 \
 		linked-hash-map-0.5.6 \
 		linux-raw-sys-0.1.4 \
 		lock_api-0.4.9 \
-		log-0.4.17 \
+		log-0.4.19 \
 		lru-cache-0.1.2 \
 		lsp-types-0.93.2 \
 		match_cfg-0.1.0 \
@@ -327,7 +329,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		pbkdf2-0.12.1 \
 		pem-rfc7468-0.6.0 \
 		pem-rfc7468-0.7.0 \
-		percent-encoding-2.2.0 \
+		percent-encoding-2.3.0 \
 		petgraph-0.6.3 \
 		phf-0.10.1 \
 		phf_generator-0.10.0 \
@@ -342,6 +344,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		pkcs8-0.10.2 \
 		pkg-config-0.3.26 \
 		pmutil-0.5.3 \
+		pmutil-0.6.1 \
 		polyval-0.6.0 \
 		ppv-lite86-0.2.17 \
 		precomputed-hash-0.1.1 \
@@ -352,7 +355,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		proc-macro-error-attr-1.0.4 \
 		proc-macro-hack-0.5.20+deprecated \
 		proc-macro2-0.4.30 \
-		proc-macro2-1.0.60 \
+		proc-macro2-1.0.66 \
 		psm-0.1.21 \
 		pty2-0.1.0 \
 		pulldown-cmark-0.9.3 \
@@ -376,7 +379,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		ring-0.16.20 \
 		ripemd-0.1.3 \
 		rsa-0.7.2 \
-		rusqlite-0.28.0 \
+		rusqlite-0.29.0 \
 		rustc-hash-1.1.0 \
 		rustc_version-0.2.3 \
 		rustc_version-0.4.0 \
@@ -413,7 +416,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		serde_json-1.0.94 \
 		serde_repr-0.1.9 \
 		serde_urlencoded-0.7.1 \
-		serde_v8-0.105.0 \
+		serde_v8-0.108.0 \
 		sha-1-0.10.0 \
 		sha1-0.10.5 \
 		sha2-0.10.6 \
@@ -440,8 +443,8 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		string_cache_codegen-0.5.2 \
 		string_enum-0.4.0 \
 		strsim-0.10.0 \
-		strum-0.24.1 \
-		strum_macros-0.24.3 \
+		strum-0.25.0 \
+		strum_macros-0.25.1 \
 		subtle-2.4.1 \
 		swc_atoms-0.5.6 \
 		swc_bundler-0.214.25 \
@@ -471,7 +474,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		swc_visit_macros-0.5.7 \
 		syn-0.15.44 \
 		syn-1.0.109 \
-		syn-2.0.18 \
+		syn-2.0.22 \
 		synstructure-0.12.6 \
 		sysinfo-0.27.8 \
 		tar-0.4.38 \
@@ -533,8 +536,8 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		urlpattern-0.2.0 \
 		utf-8-0.7.6 \
 		utf8parse-0.2.1 \
-		uuid-1.3.0 \
-		v8-0.74.1 \
+		uuid-1.4.1 \
+		v8-0.74.3 \
 		vcpkg-0.2.15 \
 		version_check-0.9.4 \
 		vsimd-0.8.0 \

@@ -75,11 +75,11 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.27.6
+KDE_PLASMA_VERSION?=		5.27.7
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.107.0
+KDE_FRAMEWORKS_VERSION?=	5.108.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
@@ -134,7 +134,7 @@ USE_GITLAB=		yes
 GL_SITE=		https://invent.kde.org
 GL_ACCOUNT=		${_invent_category}
 GL_PROJECT=		${_invent_name}
-GL_COMMIT=		${_invent_hash}
+GL_TAGNAME=		${_invent_hash}
 .      endif
 .    endif
 

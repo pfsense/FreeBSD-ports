@@ -23,7 +23,7 @@ USES=		autoreconf gettext gmake gnome libtool localbase:ldflags pathfix pkgconfi
 		python sqlite tar:xz vala:build
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.freedesktop.org
-GL_COMMIT=	8b89364c077b46734d193c5b8a80f83b0fc917dd
+GL_TAGNAME=	8b89364c077b46734d193c5b8a80f83b0fc917dd
 USE_GNOME=	cairo gdkpixbuf2 glib20 intlhack \
 		introspection:build
 USE_LDCONFIG=	yes
@@ -47,7 +47,7 @@ DATAHUB_CONFIGURE_ENABLE=	datahub
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

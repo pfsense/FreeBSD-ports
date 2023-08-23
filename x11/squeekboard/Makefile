@@ -1,6 +1,7 @@
 PORTNAME=	squeekboard
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.22.0
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
 PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
@@ -27,7 +28,6 @@ USE_GITLAB=	yes
 USE_GNOME=	cairo gdkpixbuf2 gnomedesktop3 gtk30
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	World/Phosh
-GL_COMMIT=	1fac218c7077e5c42882330a7f6ddd6d63f2690f
 SHEBANG_FILES=	tools/entry.py
 MAKE_ENV=	${CARGO_ENV}
 CARGO_BUILD=	no

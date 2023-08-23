@@ -67,7 +67,7 @@ if ($_POST['apply']) {
 		}
 
 		$a_pools = $a_filter_new;
-		if (write_config("haproxy: Changed rules order")) {
+		if (write_config("haproxy: Updated rule order")) {
 			mark_subsystem_dirty('filter');
 		}
 

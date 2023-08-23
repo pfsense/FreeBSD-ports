@@ -1,6 +1,7 @@
 PORTNAME=	eisl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.03
+DISTVERSION=	3.30
+PORTREVISION=	1
 CATEGORIES=	lang devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -24,11 +25,12 @@ TEST_TARGET=	check # tests print some errors and warnings, see https://github.co
 
 MAKEFILE=	makefile
 
+CFLAGS+=	-D__BSD_VISIBLE # w/out this there's error: use of undeclared identifier '_SC_NPROCESSORS_CONF'
 LDFLAGS+=	-lncursesw
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64 || ${ARCH} == riscv64
+.if ${ARCH} == riscv64
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-makefile
 .endif
 

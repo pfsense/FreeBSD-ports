@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/content/browser/BUILD.gn.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/content/browser/BUILD.gn.orig	2023-07-07 17:40:32 UTC
 +++ src/3rdparty/chromium/content/browser/BUILD.gn
-@@ -2406,6 +2406,13 @@ jumbo_source_set("browser") {
-     }
+@@ -2501,6 +2501,13 @@ jumbo_source_set("browser") {
+     ]
    }
  
 +  if (is_bsd) {

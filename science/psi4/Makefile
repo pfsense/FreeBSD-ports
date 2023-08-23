@@ -1,6 +1,6 @@
 PORTNAME=	psi4
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8
+DISTVERSION=	1.8.1
 CATEGORIES=	science # quantum-chemistry
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -25,7 +25,7 @@ RUN_DEPENDS=	${PY_DEPENDS} \
 		libint2-psi4>0:science/libint2-psi4
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		blaslapack:openblas cmake compiler:c++17-lang eigen:3 fortran localbase:ldflags python
+USES=		blaslapack:openblas cmake compiler:c++17-lang eigen:3 fortran localbase:ldflags pytest python
 USE_GITHUB=	yes
 
 CMAKE_ARGS=	-DLibxc_DIR=${LOCALBASE} \
@@ -40,6 +40,7 @@ TEST_ENV=	${MAKE_ENV} \
 		PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}:${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/psi4/tests \
 		PSIDATADIR=${STAGEDIR}${DATADIR} \
 		PSIPATH=${STAGEDIR}${DATADIR}/basis
+TEST_WRKSRC=	${WRKSRC}/tests/pytests
 
 BINARY_ALIAS=	python=${PYTHON_CMD} # only for tests
 
@@ -72,29 +73,7 @@ do-install: # project fails to install itself into a stage directory due to a co
 
 	# psi4 sometimes fails to print its version: https://github.com/psi4/psi4/issues/2831
 
-do-test: # tests are generally broken, but virtually all individual tests pass separately
-	# based on https://psicode.org/psi4manual/master/build_planning.html#faq-minutetests
-	#@cd ${WRKSRC}/tests && ${SETENV} ${TEST_ENV} pytest # pytest-based tests fail, see https://github.com/psi4/psi4/issues/2802 https://github.com/psi4/psi4/issues/2830
-
-	# samples as tests, this also fails down the line: https://github.com/psi4/psi4/issues/2803
-	#@cd ${WRKSRC} && ( \
-	#	for f in $$(${FIND} samples/cc24 -name test.in | ${XARGS} dirname); do \
-	#		echo "===> runing test in $$f"; \
-	#		(cd $$f && ${SETENV} ${TEST_ENV} ${STAGEDIR}${PREFIX}/bin/psi4 test.in) \
-	#	done \
-	#)
-
-	# api tests
-	@cd ${WRKSRC}/tests/pytests && ${SETENV} ${TEST_ENV} pytest
-
-	# cli tests
-	#@cd ${WRKSRC}/tests && ( \
-	#	for f in $$(${FIND} . -name input.dat | ${XARGS} dirname); do \
-	#		echo "===> runing input.dat $$f"; \
-	#		(cd $$f && ${SETENV} ${TEST_ENV} ${STAGEDIR}${PREFIX}/bin/psi4 input.dat) \
-	#	done \
-	#)
-
-# QCEngine fails while running some psi4 tests: https://github.com/MolSSI/QCEngine/issues/404
+do-test: # 2 tests fail, see https://github.com/psi4/psi4/issues/3014
+	@cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} pytest # tests can run without this target too, but this way tests output is more concise and it looks more appealing
 
 .include <bsd.port.mk>

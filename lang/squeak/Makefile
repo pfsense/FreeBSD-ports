@@ -1,6 +1,6 @@
 PORTNAME=	squeak
 PORTVERSION=	4.10.2
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	lang
 MASTER_SITES=	http://www.squeakvm.org/unix/release/:vmsrc \
 		http://ftp.squeak.org/${IMAGE_VERSION}/:src \
@@ -67,10 +67,9 @@ IMAGES=		Squeak${IMAGE_FULL_VERSION}.image \
 
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
 CFLAGS+=	-Wno-error=int-conversion
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400091
+.if ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 .endif
 
 post-patch:

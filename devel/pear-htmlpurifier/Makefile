@@ -1,13 +1,12 @@
 PORTNAME=	htmlpurifier
-PORTVERSION=	4.9.2
-PORTREVISION=	1
+PORTVERSION=	4.15.0
 CATEGORIES=	devel pear www
 MASTER_SITES=	http://htmlpurifier.org/get/ \
 		LOCAL
 DISTNAME=	HTMLPurifier-${PORTVERSION}
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP HTML filter library
 WWW=		http://htmlpurifier.org/
 

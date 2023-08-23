@@ -57,6 +57,7 @@
     SUBDIR += fff
     SUBDIR += flameshot
     SUBDIR += foliate
+    SUBDIR += freebsd-update-notify
     SUBDIR += freemind
     SUBDIR += freeplane
     SUBDIR += ganttproject
@@ -270,6 +271,7 @@
     SUBDIR += ultralist
     SUBDIR += virt-manager
     SUBDIR += vit
+    SUBDIR += vym
     SUBDIR += walld
     SUBDIR += when
     SUBDIR += wmpinboard

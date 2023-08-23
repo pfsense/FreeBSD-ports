@@ -1,6 +1,5 @@
 PORTNAME=	FluidPlug
-PORTVERSION=	g20181209
-PORTREVISION=	5
+PORTVERSION=	g20230318
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -18,16 +17,20 @@ LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
 USES=		gmake pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	falkTX
-GH_TAGNAME=	8457f10
+GH_TAGNAME=	38d7d0d
 
 SOUNDFONT_DIR=	${PREFIX}/share/sounds/sf2
 
 OPTIONS_DEFINE_amd64=	SSE
 OPTIONS_DEFINE_i386=	SSE
-OPTIONS_DEFAULT_amd64=	SSE
-OPTIONS_DEFAULT_i386=	SSE
 
 SSE_MAKE_ARGS=	PORT_SIMD_FLAGS="-mtune=generic -msse -msse2 -mfpmath=sse"
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e ' \

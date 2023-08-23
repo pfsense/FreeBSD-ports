@@ -1,7 +1,7 @@
 PORTNAME=	spotify-tui
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.25.0
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	audio
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -10,9 +10,6 @@ WWW=		https://github.com/Rigellute/spotify-tui
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_SSL=	openssl30 openssl31
-BROKEN_SSL_REASON=	Fails to detect OpenSSL 3.0.0 and later
 
 USES=		cargo localbase:ldflags python:build ssl xorg
 USE_GITHUB=	yes
@@ -290,6 +287,13 @@ OPTIONS_DEFINE=	DOCS SPOTIFYD
 SPOTIFYD_DESC=	Lightweight Spotify client daemon
 
 SPOTIFYD_RUN_DEPENDS=	spotifyd:audio/spotifyd
+
+.include <bsd.port.options.mk>
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
+BROKEN_SSL=	base openssl30 openssl31
+BROKEN_SSL_REASON=	Fails to detect OpenSSL 3.0.0 and later
+.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/spt

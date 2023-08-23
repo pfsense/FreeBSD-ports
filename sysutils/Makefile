@@ -163,6 +163,7 @@
     SUBDIR += bvm
     SUBDIR += byobu
     SUBDIR += calamares
+    SUBDIR += catatonit
     SUBDIR += catfish
     SUBDIR += catsit
     SUBDIR += cbsd
@@ -566,6 +567,7 @@
     SUBDIR += imgurbash2
     SUBDIR += immortal
     SUBDIR += incron
+    SUBDIR += initool
     SUBDIR += inotify-tools
     SUBDIR += installwatch
     SUBDIR += intel-epct
@@ -665,6 +667,7 @@
     SUBDIR += libretto-config
     SUBDIR += libsunacl
     SUBDIR += libsysstat
+    SUBDIR += libtpms
     SUBDIR += libtree
     SUBDIR += libudisks
     SUBDIR += liburcu
@@ -1299,6 +1302,7 @@
     SUBDIR += runwhen
     SUBDIR += rush
     SUBDIR += rust-coreutils
+    SUBDIR += rust-findutils
     SUBDIR += rw
     SUBDIR += s-tui
     SUBDIR += s6
@@ -1346,6 +1350,7 @@
     SUBDIR += signon-plugin-oauth2
     SUBDIR += signon-qt5
     SUBDIR += signon-ui
+    SUBDIR += sispmctl
     SUBDIR += skopeo
     SUBDIR += slack
     SUBDIR += sleuthkit
@@ -1387,6 +1392,7 @@
     SUBDIR += swapmon
     SUBDIR += swapusage
     SUBDIR += sweeper
+    SUBDIR += swtpm
     SUBDIR += symlinks
     SUBDIR += symon
     SUBDIR += synergy

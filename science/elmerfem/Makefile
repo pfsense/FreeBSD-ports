@@ -1,7 +1,7 @@
 PORTNAME=	elmerfem
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	9.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	science
 
 MAINTAINER=	henrik@gulbra.net
@@ -19,11 +19,11 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libparpack.so:math/arpack-ng
 
 USES=		cmake compiler:c++11-lang fortran
-
+USE_CXXSTD=	c++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	ElmerCSC
-
 USE_LDCONFIG=	${PREFIX}/lib/elmersolver
+
 CMAKE_ARGS=	-DELMER_FEM_REVISION:STRING=${GH_TAGNAME}
 
 ALL_TARGET=	# empty

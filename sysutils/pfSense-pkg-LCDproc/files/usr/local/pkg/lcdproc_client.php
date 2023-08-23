@@ -25,6 +25,7 @@ require_once("config.inc");
 require_once("functions.inc");
 require_once("interfaces.inc");
 require_once("pfsense-utils.inc");
+require_once("pkg-utils.inc");
 require_once("ipsec.inc");
 require_once("includes/functions.inc.php");
 require_once("/usr/local/pkg/lcdproc.inc");
@@ -82,6 +83,113 @@ function lcdproc_get_mbuf_stats() {
 	$mbufpercent = "";
 	get_mbuf($mbuf, $mbufpercent);
 	return($mbuf);
+}
+
+function lcdproc_get_package_summary() {
+	$total = 0;
+	$needsupdating = 0;
+	$broken = 0;
+
+	$package_list = get_pkg_info('all', true, true);
+	$installed_packages = array_filter($package_list, function($v) {
+		return (isset($v['installed']) || isset($v['broken']));
+	});
+	if (!empty($installed_packages) || is_array($installed_packages)) {
+		$total = count($installed_packages);
+	}
+
+	foreach ($installed_packages as $pkg) {
+		if (isset($pkg['broken'])) {
+			$broken += 1;
+		} else if (isset($pkg['installed_version']) && isset($pkg['version'])) {
+			$version_compare = pkg_version_compare(
+			    $pkg['installed_version'], $pkg['version']);
+			if ($version_compare == '<') {
+				// we're running an older version of the package
+				$needsupdating += 1;
+			}
+		}
+	}
+	if ($total > 0) {
+		$result = "T: {$total}";
+		if ($needsupdating > 0) {
+			$result .= " NU: {$needsupdating}";
+		}
+		if ($broken > 0) {
+			$result .= " B!: {$broken}";
+		}
+	} else {
+		$result = "None Installed";
+	}
+	return $result;
+}
+
+// Returns CPU temperature if available from the system
+function lcdproc_get_cpu_temperature() {
+	global $config;
+	$unit = config_get_path('installedpackages/lcdprocscreens/config/0/scr_cputemperature_unit', []);
+
+	$temp_out = "";
+	$temp_out = get_temp(); // Use function from includes/functions.inc.php
+	if ($temp_out !== "") {
+		switch ($unit) {
+			case "f":
+				$cputemperature = ($temp_out * 1.8) + 32;
+				return $cputemperature . "F";
+				break;
+			case "c":
+			default:
+				return $temp_out . "C";
+				break;
+		}
+	} else {
+		// sysctl probably returned "unknown oid"
+		return 'CPU Temp N/A';
+	}
+}
+
+// NTP Status
+function lcdproc_get_ntp_status() { // https://github.com/pfsense/pfsense/blob/master/src/usr/local/www/widgets/widgets/ntp_status.widget.php#L36
+	global $config;
+	if (config_path_enabled('ntpd')) {
+		if (config_path_enabled('system', 'ipv6allow')) {
+			$inet_version = "";
+		} else {
+			$inet_version = " -4";
+		}
+		exec('/usr/local/sbin/ntpq -pnw ' . $inet_version . ' | /usr/bin/tail +3 | /usr/bin/awk -v RS= \'{gsub(/\n[[:space:]][[:space:]]+/," ")}1\'', $ntpq_output);
+		return $ntpq_output;
+	} else {
+		return false;
+	}
+}
+
+function lcdproc_get_ntp_gps_sat_count() {
+	global $config;
+	if (config_path_enabled('ntpd/gps', 'extstatus')) {
+		$lookfor = [];
+		$lookfor['GPGSV'] = config_get_path('ntpd/gps/nmeaset/gpgsv');
+		$lookfor['GPGGA'] = !isset($gps_sat) && config_path_enabled('ntpd/gps/nmeaset', 'gpgga');
+		$gpsport = fopen('/dev/gps0', 'r+');
+		while ($gpsport && ($lookfor['GPGSV'] || $lookfor['GPGGA'])) {
+			$buffer = fgets($gpsport);
+			if ($lookfor['GPGSV'] && substr($buffer, 0, 6) == '$GPGSV') {
+				$gpgsv = explode(',', $buffer);
+				$gps_satview = (int)$gpgsv[3];
+				return ("SatIV: " . $gps_satview);
+			} elseif ($lookfor['GPGGA'] && substr($buffer, 0, 6) == '$GPGGA') {
+				$gpgga = explode(',', $buffer);
+				$gps_sat = (int)$gpgga[7];
+				return ("SatIU: " . $gps_sat);
+			}
+		}
+		if ($gpsport) {
+			fclose($gpsport);
+		}
+	} else {
+		return false;
+	}
+
 }
 
 function get_version() {
@@ -296,6 +404,19 @@ function get_lcd_messages($lcd) {
 			lcdproc_notice("LCDd output: \"{$cmd_output}\". Executed \"{$lcd_cmd}\"");
 		}
 		if (cmenu_enabled()) {
+			if (preg_match("/^menuevent select cm_ask_enter/", $cmd_output)) {
+				lcdproc_notice("Entering CARP Maintenance Mode");
+				interfaces_carp_set_maintenancemode(true);
+			}
+			if (preg_match("/^menuevent select p_ask_yes/", $cmd_output)) {
+				lcdproc_notice("Restarting PHP and GUI!");
+				exec("/etc/rc.php-fpm_restart");
+				exec("/etc/rc.restart_webgui");
+			}
+			if (preg_match("/^menuevent select cm_ask_leave/", $cmd_output)) {
+				lcdproc_notice("Leaving CARP Maintenance Mode");
+				interfaces_carp_set_maintenancemode(false);
+			}
 			if (preg_match("/^menuevent select r_ask_yes/", $cmd_output)) {
 				lcdproc_notice("init REBOOT!");
 				system_reboot();
@@ -332,15 +453,13 @@ function get_lcdpanel_refresh_frequency() {
 	return config_get_path('installedpackages/lcdproc/config/0/refresh_frequency', 5);
 }
 
-function outputled_enabled_CFontz633() {
+function outputled_enabled_CFontzPacket() {
 	$driver = config_get_path('installedpackages/lcdproc/config/0/driver');
 	$outputleds = config_get_path('installedpackages/lcdproc/config/0/outputleds');
 	if (is_null($outputleds)) {
 		return false;
 	} else {
-		if ($outputleds && ($driver == "CFontz633")) {
-			return true;
-		} elseif ($outputleds && ($driver == "CFontzPacket")) {
+		if ($outputleds && ($driver == "CFontzPacket")) {
 			return true;
 		} else {
 			return false;
@@ -372,6 +491,7 @@ function outputled_carp() {
 					return 1;
 					break;
 				case "BACKUP":
+				default:
 					return 0;
 					break;
 			}
@@ -386,13 +506,12 @@ function outputled_gateway() {
 		-1 = No gateway defined
 		0  = At least 1 gateway down or with issues
 		1  = All gateway up */
-	global $g;
-	global $config;
-	$a_gateways = return_gateways_array();
-	$gateways_status = array();
 	$gateways_status = return_gateways_status(true);
-	foreach ($a_gateways as $gname => $gateway) {
-		if ($gateways_status[$gname]['status'] != "none") {
+	if (empty($gateways_status)) {
+		return -1;
+	}
+	foreach ($gateways_status as $gw) {
+		if ($gw['status'] != 'online') {
 			return 0;
 		}
 	}
@@ -787,6 +906,15 @@ function build_interface($lcd) {
 
 	/* setup pfsense control menu */
 	if (cmenu_enabled()) {
+		$lcd_cmds[] = 'menu_add_item "" carpmaint_menu menu "CARP Maintenance"';
+		$lcd_cmds[] = 'menu_add_item "carpmaint_menu" cm_ask_no action "Cancel" -next _close_';
+		$lcd_cmds[] = 'menu_add_item "carpmaint_menu" cm_ask_enter action "Enter Maint. Mode" -next _quit_';
+		$lcd_cmds[] = 'menu_add_item "carpmaint_menu" cm_ask_leave action "Leave Maint. Mode" -next _quit_';
+
+		$lcd_cmds[] = 'menu_add_item "" restartphp_menu menu "Restart PHP+GUI"';
+		$lcd_cmds[] = 'menu_add_item "restartphp_menu" p_ask_no action "No" -next _close_';
+		$lcd_cmds[] = 'menu_add_item "restartphp_menu" p_ask_yes action "Yes" -next _quit_';
+
 		$lcd_cmds[] = 'menu_add_item "" reboot_menu menu "Reboot"';
 		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_no action "No" -next _close_';
 		$lcd_cmds[] = 'menu_add_item "reboot_menu" r_ask_yes action "Yes" -next _quit_';
@@ -817,7 +945,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ System Time\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"System Time\"";
 					break;
 				case "scr_uptime":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -826,7 +954,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ System Uptime\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"System Uptime\"";
 					break;
 				case "scr_hostname":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -835,7 +963,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ System Name\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"System Name\"";
 					break;
 				case "scr_system":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -844,7 +972,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ System Stats\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"System Stats\"";
 					break;
 				case "scr_disk":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -853,7 +981,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ Disk Use\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"Disk Use\"";
 					break;
 				case "scr_load":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -862,7 +990,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ Load Averages\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"Load Averages\"";
 					break;
 				case "scr_states":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -871,7 +999,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ Traffic States\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"Traffic States\"";
 					break;
 				case "scr_carp":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -880,7 +1008,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ CARP State\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"CARP State\"";
 					break;
 				case "scr_ipsec":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -889,7 +1017,7 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ IPsec Tunnels\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"IPsec Tunnels\"";
 					break;
 				case "scr_interfaces":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -898,7 +1026,16 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ Interfaces\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"Interfaces\"";
+					break;
+				case "scr_gwsum":
+					$lcd_cmds[] = "screen_add {$name}";
+					$lcd_cmds[] = "screen_set {$name} heartbeat off";
+					$lcd_cmds[] = "screen_set {$name} name {$name}";
+					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
+					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"GW Summary\"";
 					break;
 				case "scr_mbuf":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -907,7 +1044,15 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ MBuf Usage\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"MBuf Usage\"";
+					break;
+				case "scr_packages":
+					$lcd_cmds[] = "screen_add {$name}";
+					$lcd_cmds[] = "screen_set {$name} heartbeat off";
+					$lcd_cmds[] = "screen_set {$name} name {$name}";
+					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
+					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
 					break;
 				case "scr_cpufrequency":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -916,7 +1061,26 @@ function build_interface($lcd) {
 					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
 					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
 					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
-					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"+ CPU Frequency\"";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"CPU Frequency\"";
+					break;
+				case "scr_cputemperature":
+					$lcd_cmds[] = "screen_add {$name}";
+					$lcd_cmds[] = "screen_set {$name} heartbeat off";
+					$lcd_cmds[] = "screen_set {$name} name {$name}";
+					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+					$lcd_cmds[] = "widget_add {$name} title_wdgt string";
+					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
+					break;
+				case "scr_ntp":
+					$lcd_cmds[] = "screen_add {$name}";
+					$lcd_cmds[] = "screen_set {$name} heartbeat off";
+					$lcd_cmds[] = "screen_set {$name} name $name";
+					$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+					$lcd_cmds[] = "widget_add {$name} time_st_wdgt scroller";
+					$lcd_cmds[] = "widget_add {$name} ref_wdgt scroller";
+					$lcd_cmds[] = "widget_add {$name} text_wdgt scroller";
+					$lcd_cmds[] = "widget_add {$name} stats_wdgt scroller";
+					$includeSummary = false; // this screen needs all the lines
 					break;
 				case "scr_traffic":
 					$lcd_cmds[] = "screen_add {$name}";
@@ -939,6 +1103,31 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "widget_add {$name} text_wdgt{$i} string";
 					}
 					$includeSummary = false; // this screen needs all the lines
+					break;
+				case "scr_gwstatus":
+					$gateway_status = return_gateways_status(true);
+					foreach ($gateway_status as $gwname => $gw) {
+						if ($gw['disabled'] ||
+						    $gw['monitor_disable']) {
+							/* Disabled, no need to print anything */
+							continue;
+						}
+						$s_name = $name . $gwname;
+						$lcd_cmds[] = "screen_add {$s_name}";
+						$lcd_cmds[] = "screen_set {$s_name} heartbeat off";
+						$lcd_cmds[] = "screen_set {$s_name} name \"{$name}.{$gwname}\"";
+						$lcd_cmds[] = "screen_set {$s_name} duration {$refresh_frequency}";
+						$lcd_cmds[] = "widget_add {$s_name} gwname_wdgt string";
+						$lcd_cmds[] = "widget_set {$s_name} gwname_wdgt 1 1 \"{$gwname}\"";
+						$lcd_cmds[] = "widget_add {$s_name} stata_wdgt scroller";
+						$lcd_cmds[] = "widget_add {$s_name} lossl_wdgt string";
+						$lcd_cmds[] = "widget_set {$s_name} lossl_wdgt 1 3 \"Loss:\"";
+						$lcd_cmds[] = "widget_add {$s_name} lossa_wdgt scroller";
+						$lcd_cmds[] = "widget_add {$s_name} rttl_wdgt string";
+						$lcd_cmds[] = "widget_set {$s_name} rttl_wdgt 1 4 \"Delay:\"";
+						$lcd_cmds[] = "widget_add {$s_name} rtta_wdgt scroller";
+						$includeSummary = false; // this screen needs all the lines
+					}
 					break;
 				case "scr_interfaces_link":
 					$ifLinkList = build_interface_link_list();
@@ -975,6 +1164,54 @@ function build_interface($lcd) {
 					for($i = 0; $i < ($lcdpanel_height - 1); $i++) {
 						$lcd_cmds[] = "widget_add {$name} descr_wdgt{$i} scroller";
 						$lcd_cmds[] = "widget_add {$name} data_wdgt{$i} string";
+					}
+					$includeSummary = false; // this screen needs all the lines
+					break;
+				case "scr_apcupsd":
+					if (file_exists("/usr/local/pkg/apcupsd.inc")) {
+						$lcd_cmds[] = "screen_add {$name}";
+						$lcd_cmds[] = "screen_set {$name} heartbeat off";
+						$lcd_cmds[] = "screen_set {$name} name {$name}";
+						$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+						$lcd_cmds[] = "widget_add {$name} apctitlel_wdgt string";
+						$lcd_cmds[] = "widget_set {$name} apctitlel_wdgt 1 1 \"APC UPS:\"";
+						$lcd_cmds[] = "widget_add {$name} apcname_wdgt scroller";
+						$lcd_cmds[] = "widget_add {$name} apcstatus_wdgt scroller";
+						$lcdpanel_height = get_lcdpanel_height();
+						$lcdpanel_width = get_lcdpanel_width();
+						if ($lcdpanel_height >= "4") {
+							$lcd_cmds[] = "widget_add {$name} apctitle_summary string";
+							$lcd_cmds[] = "widget_add {$name} apc_summary string";
+							if ($lcdpanel_width > "16") {
+								$lcd_cmds[] = "widget_set {$name} apctitle_summary 1 3 \"LINE CHRG TIMEL LOAD\"";
+							} else {
+								$lcd_cmds[] = "widget_set {$name} apctitle_summary 1 3 \"LINE CHRG TIMEL\"";
+							}
+						}
+					}
+					$includeSummary = false; // this screen needs all the lines
+					break;
+				case "scr_nutups":
+					if (file_exists("/usr/local/pkg/nut/nut.inc")) {
+						$lcd_cmds[] = "screen_add {$name}";
+						$lcd_cmds[] = "screen_set {$name} heartbeat off";
+						$lcd_cmds[] = "screen_set {$name} name {$name}";
+						$lcd_cmds[] = "screen_set {$name} duration {$refresh_frequency}";
+						$lcd_cmds[] = "widget_add {$name} nuttitlel_wdgt string";
+						$lcd_cmds[] = "widget_set {$name} nuttitlel_wdgt 1 1 \"NUT UPS:\"";
+						$lcd_cmds[] = "widget_add {$name} nutname_wdgt scroller";
+						$lcd_cmds[] = "widget_add {$name} nutstatus_wdgt scroller";
+						$lcdpanel_height = get_lcdpanel_height();
+						$lcdpanel_width = get_lcdpanel_width();
+						if ($lcdpanel_height >= "4") {
+							$lcd_cmds[] = "widget_add {$name} nuttitle_summary string";
+							$lcd_cmds[] = "widget_add {$name} nut_summary string";
+							if ($lcdpanel_width > "16") {
+								$lcd_cmds[] = "widget_set {$name} nuttitle_summary 1 3 \"LIN CHRG RUNTHMS LOD\"";
+							} else {
+								$lcd_cmds[] = "widget_set {$name} nuttitle_summary 1 3 \"LIN CHRG RUNTHMS\"";
+							}
+						}
 					}
 					$includeSummary = false; // this screen needs all the lines
 					break;
@@ -1021,12 +1258,13 @@ function loop_status($lcd) {
 		$lcd_cmds = array();
 		$interfaceTrafficList = null;
 		$ifLinkList = null;
+		$gateway_status = null;
 
 		/* initializes the widget counter */
 		$widget_counter = 0;
 
 		/* controls the output leds */
-		if (outputled_enabled_CFontz633()) {
+		if (outputled_enabled_CFontzPacket()) {
 			$led_output_value = 0;
 			/* LED 1: Interface status */
 			if (substr_count(get_interfaces_stats(), "Down") > 0 ) {
@@ -1041,11 +1279,12 @@ function loop_status($lcd) {
 					break;
 				/* CARP on Backup */
 				case 0:
-					$led_output_value = $led_output_value + pow(2, 1);
+					$led_output_value = $led_output_value + pow(2, 5);
 					break;
 				/* CARP on Master */
 				case 1:
-					$led_output_value = $led_output_value + pow(2, 5);
+				default:
+					$led_output_value = $led_output_value + pow(2, 1);
 			}
 			/* LED 3: CPU Usage */
 			if (lcdproc_cpu_usage() > 50) {
@@ -1125,13 +1364,112 @@ function loop_status($lcd) {
 					$interfaces = get_interfaces_stats();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$interfaces}\"";
 					break;
+				case "scr_gwsum":
+					if ($gateway_status === null) {
+						$gateway_status = return_gateways_status(true);
+					}
+					$gwup = 0;
+					$gwdown = 0;
+					foreach ($gateway_status as $idx => $gw) {
+						if ($gw['disabled']) {
+							/* Disabled, no need to print anything */
+							continue;
+						}
+						if ($gw['status'] == 'online') {
+							$gwup += 1;
+						} else {
+							$gwdown += 1;
+						}
+					}
+					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Up: {$gwup} / Down: {$gwdown}\"";
+					break;
 				case "scr_mbuf":
 					$mbufstats = lcdproc_get_mbuf_stats();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$mbufstats}\"";
 					break;
+				case "scr_packages":
+					$packages = lcdproc_get_package_summary();
+					$title = ($lcdpanel_width >= 20) ? "Installed Packages" : "Packages";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$packages}\"";
+					break;
 				case "scr_cpufrequency":
 					$cpufreq = get_cpufrequency();
 					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$cpufreq}\"";
+					break;
+				case "scr_cputemperature":
+					$cputemperature = lcdproc_get_cpu_temperature();
+					$title = ($lcdpanel_width >= 20) ? "CPU Temperature" : "CPU Temp";
+					$lcd_cmds[] = "widget_set {$name} title_wdgt 1 1 \"{$title}\"";
+					$lcd_cmds[] = "widget_set {$name} text_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$cputemperature}\"";
+					break;
+				case "scr_ntp":
+					$ntp_hms = date("H:iT");
+					$ntpq_output = lcdproc_get_ntp_status();
+					if ($ntpq_output != false) {
+						$ntpq_counter = 0;
+						$ntpq_peer = false;
+						foreach ($ntpq_output as $line) {
+							$peersta = substr($line, 0, 1); // Status
+							$line = substr($line, 1);
+							$peerinfo = preg_split("/[\s\t]+/", $line);
+							$peersrv = $peerinfo[0]; // Server IP
+							$peerref = $peerinfo[1]; // Ref ID
+							$peerstr = $peerinfo[2]; // Stratum
+							$peertyp = $peerinfo[3]; // Type
+							$peerdel = substr($peerinfo[7],0,5); // Delay
+							$peeroff = substr($peerinfo[8],0,6); // Offset
+							$peerjit = substr($peerinfo[9],0,5); // Jitter
+							if ($peersta == "o") { // PPS Peer
+								// Common rows
+								$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
+								$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
+								$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
+								if ($peertyp == "l" &&		// Local
+									$peerref == ".GPS.") {	// GPS
+										// For local GPS, display Ref ID and how many satellites are in use or in view
+										$gps_sat_count = lcdproc_get_ntp_gps_sat_count();
+										$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} " . (($gps_sat_count == false) ? "" : "{$gps_sat_count}") . "\"";
+										$ntpq_peer = true;
+										break; // Stop looping
+								}
+								if ($peertyp == "l" &&	// Local
+									$peerref == ".PPS.") {		// PPS											// For local PPS, display Ref ID and stability
+										exec('/usr/local/sbin/ntptime | /usr/bin/grep "pps freq"', $line);
+										$line = implode(",", $line);
+										$ppsinfo = preg_split("/\s+/", $line);
+										$ppsstb = $ppsinfo[6]; // PPS Stability
+										$ppsjit = $ppsinfo[9]; // PPS Jitter
+										$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peerref} {$ppsstb}ppm\"";
+										$ntpq_peer = true;
+										break; // Stop looping
+								}
+							}
+							if ($peersta =="*") { // Active Peer
+								// Common rows
+								$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: {$ntp_hms} St: {$peerstr}\"";
+								$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"Delay Offset Jitter\"";
+								$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"{$peerdel} {$peeroff} {$peerjit}\"";
+								// For everything else, display IP of the source
+								$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"Src: {$peersrv}\"";
+								$ntpq_peer = true;
+								break; // Stop looping
+							}
+							$ntpq_counter++;
+						}
+						if ($ntpq_peer == false) {
+							$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: No active peers\"";
+							$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"\"";
+							$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"\"";
+							$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"\"";
+						}
+					} else {
+						$lcd_cmds[] = "widget_set {$name} time_st_wdgt 1 1 {$lcdpanel_width} 2 h 4 \"NTP: Server disabled\"";
+						$lcd_cmds[] = "widget_set {$name} ref_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"\"";
+						$lcd_cmds[] = "widget_set {$name} text_wdgt 1 3 {$lcdpanel_width} 2 h 4 \"\"";
+						$lcd_cmds[] = "widget_set {$name} stats_wdgt 1 4 {$lcdpanel_width} 2 h 4 \"\"";
+					}
+					$updateSummary = false;
 					break;
 				case "scr_traffic":
 					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
@@ -1178,6 +1516,37 @@ function loop_status($lcd) {
 					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set {$name} text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+					}
+					$updateSummary = false;
+					break;
+				case "scr_gwstatus":
+					if ($gateway_status === null) {
+						$gateway_status = return_gateways_status(true);
+					}
+					foreach ($gateway_status as $gwname => $gw) {
+						if ($gw['disabled'] ||
+						    $gw['monitor_disable']) {
+							/* Disabled, no need to print anything */
+							continue;
+						}
+						$s_name = $name . $gwname;
+						$lcd_cmds[] = "widget_set {$s_name} gwname_wdgt 1 1 \"{$gwname}\"";
+						$statstring = ucwords($gw['status']);
+						if (!empty($gw['substatus']) &&
+						    ($gw['substatus'] != "none")) {
+							$statstring .= " ({$gw['substatus']})";
+						}
+						$lcd_cmds[] = "widget_set $s_name stata_wdgt 1 2 " .
+							$lcdpanel_width . " 2 h 4 \"" .
+							$statstring . "\"";
+
+						$lcd_cmds[] = "widget_set $s_name lossa_wdgt 7 3 " .
+							$lcdpanel_width . " 3 h 4 \"" .
+							$gw['loss'] . "\"";
+
+						$lcd_cmds[] = "widget_set $s_name rtta_wdgt 8 4 " .
+							$lcdpanel_width . " 4 h 4 \"" .
+							$gw['delay'] . "\"";
 					}
 					$updateSummary = false;
 					break;
@@ -1242,6 +1611,120 @@ function loop_status($lcd) {
 					for($i = $clearLinesFrom; $i < ($lcdpanel_height - 1); $i++) {
 						$lcd_cmds[] = "widget_set {$name} descr_wdgt{$i} 1 2 1 2 h 2 \"\"";
 						$lcd_cmds[] = "widget_set {$name}  data_wdgt{$i} 1 2         \"\"";
+					}
+					$updateSummary = false;
+					break;
+				case "scr_apcupsd":
+					if (file_exists("/usr/local/pkg/apcupsd.inc")) {
+						require_once("/usr/local/pkg/apcupsd.inc");
+						$results = [];
+						$nis_server = check_nis_running_apcupsd();
+						if ($nis_server) {
+							$nisip = (check_nis_ip_apcupsd() != ''? check_nis_ip_apcupsd() : "localhost");
+							$nisport = (check_nis_port_apcupsd() != '' ? check_nis_port_apcupsd() : "3551");
+							$ph = popen("/usr/local/sbin/apcaccess -h " . escapeshellarg($nisip) . ":" . escapeshellarg($nisport) . " 2>&1", "r" );
+							while ($v = fgets($ph)) {
+								$results[trim(explode(': ', $v)[0])]=trim(explode(': ', $v)[1]);
+							}
+							pclose($ph);
+							if ($results == null) {
+								$results['UPSNAME'] = "Unknown";
+								$results['STATUS'] = "Invalid Response";
+							}
+						} else {
+							$results['UPSNAME'] = "Unknown";
+							$results['STATUS'] = "Service Stopped";
+						}
+						if (empty($results['UPSNAME'])) {
+							$results['UPSNAME'] = "No Name";
+						}
+						if (empty($results['STATUS'])) {
+							$results['STATUS'] = "Unknown";
+						}
+
+						$lcdpanel_height = get_lcdpanel_height();
+						$lcdpanel_width = get_lcdpanel_width();
+
+						$lcd_cmds[] = "widget_set {$name} apcname_wdgt 10 1 {$lcdpanel_width} 2 h 4 \"{$results['UPSNAME']}\"";
+						$lcd_cmds[] = "widget_set {$name} apcstatus_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$results['STATUS']}\"";
+
+						if ($lcdpanel_height >= "4") {
+							if (!empty($results['LINEV'])) {
+								$results['LINEV'] = str_replace(" Percent", "", $results['LINEV']);
+							} else {
+								$results['LINEV'] = 'N/A';
+							}
+							if (!empty($results['BCHARGE'])) {
+								$results['BCHARGE'] = str_replace(" Percent", "", $results['BCHARGE']);
+							} else {
+								$results['BCHARGE'] = 'N/A';
+							}
+							if (!empty($results['TIMELEFT'])) {
+								$results['TIMELEFT'] = str_replace(" Minutes", "", $results['TIMELEFT']);
+							} else {
+								$results['TIMELEFT'] = 'N/A';
+							}
+							$ups_summary_data = sprintf("%3dV %3d%% %4dM", $results['LINEV'], $results['BCHARGE'], $results['TIMELEFT']);
+							if ($lcdpanel_width > "16") {
+								if (!empty($results['LOADPCT'])) {
+									$results['LOADPCT'] = str_replace(" Percent", "", $results['LOADPCT']);
+								} else {
+									$results['LOADPCT'] = 'N/A';
+								}
+								$ups_summary_data .= sprintf(" %3d%%", $results['LOADPCT']);
+							}
+							$lcd_cmds[] = "widget_set {$name} apc_summary 1 4 \"{$ups_summary_data}\"";
+						}
+					}
+					$updateSummary = false;
+					break;
+				case "scr_nutups":
+					if (file_exists("/usr/local/pkg/nut/nut.inc")) {
+						require_once("/usr/local/pkg/nut/nut.inc");
+						$results = nut_ups_status();
+						if (!empty($results)) {
+							if (empty($results['_summary'])) {
+								$results['_summary'] = "Invalid Response";
+							}
+						} else {
+							$results['_name'] = "Unknown";
+							$results['_summary'] = "Service Stopped";
+						}
+						if (empty($results['_name'])) {
+							$results['_name'] = "No Name";
+						} else {
+							[$nutupsname, $nutupshost] = explode('@', $results['_name']);
+							$results['_name'] = $nutupsname;
+						}
+						if (empty($results['_summary'])) {
+							$results['_summary'] = "Unknown";
+						}
+
+						$lcdpanel_height = get_lcdpanel_height();
+						$lcdpanel_width = get_lcdpanel_width();
+
+						$lcd_cmds[] = "widget_set {$name} nutname_wdgt 10 1 {$lcdpanel_width} 2 h 4 \"{$results['_name']}\"";
+						$lcd_cmds[] = "widget_set {$name} nutstatus_wdgt 1 2 {$lcdpanel_width} 2 h 4 \"{$results['_summary']}\"";
+
+						if ($lcdpanel_height >= "4") {
+							if (empty($results['input.voltage'])) {
+								$results['input.voltage'] = 'N/A';
+							}
+							if (empty($results['battery.charge'])) {
+								$results['battery.charge'] = 'N/A';
+							}
+							if (empty($results['_hms'])) {
+								$results['_hms'] = 'N/A';
+							}
+							$ups_summary_data = sprintf("%3d %3d%% %7s", $results['input.voltage'], $results['battery.charge'], $results['_hms']);
+							if ($lcdpanel_width > "16") {
+								if (empty($results['ups.load'])) {
+									$results['ups.load'] = 'N/A';
+								}
+								$ups_summary_data .= sprintf(" %2d%%", $results['ups.load']);
+							}
+							$lcd_cmds[] = "widget_set {$name} nut_summary 1 4 \"{$ups_summary_data}\"";
+						}
 					}
 					$updateSummary = false;
 					break;

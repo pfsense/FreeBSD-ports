@@ -981,14 +981,11 @@ depends_blacklist()
 			lang/go)
 				instead="USES=go"
 				;;
-			lang/julia)
-				instead="a dependency on lang/julia\${JULIA_DEFAULT:S/.//}"
+			lang/mono)
+				instead="USES=mono"
 				;;
 			devel/llvm)
-				instead="a dependency on devel/llvm\${LLVM_DEFAULT}"
-				;;
-			www/py-django)
-				instead="one of the www/py-djangoXYZ port"
+				instead="USES=llvm"
 				;;
 		esac
 

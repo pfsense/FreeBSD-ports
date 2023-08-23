@@ -1,7 +1,7 @@
 PORTNAME=	zrythm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-alpha.26.0.13
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -23,7 +23,6 @@ LIB_DEPENDS=	libaudec.so:audio/libaudec \
 		libcurl.so:ftp/curl \
 		libfftw3_threads.so:math/fftw3 \
 		libfftw3f_threads.so:math/fftw3-float \
-		libguile-2.2.so:lang/guile2 \
 		libjack.so:audio/jack \
 		libjson-glib-1.0.so:devel/json-glib \
 		liblilv-0.so:audio/lilv \
@@ -48,7 +47,8 @@ LIB_DEPENDS=	libaudec.so:audio/libaudec \
 RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 		kf5-breeze-icons>0:x11-themes/kf5-breeze-icons
 
-USES=		compiler:c11 desktop-file-utils gettext-tools gettext-runtime gnome libtool localbase:ldflags \
+USES=		compiler:c11 desktop-file-utils gettext-tools gettext-runtime \
+		guile:2.2,3.0,alias,conflicts gnome libtool localbase:ldflags \
 		meson pkgconfig python:build shared-mime-info shebangfix xorg
 USE_GITHUB=	yes
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 gtksourceview3 libxml2 pango
@@ -62,12 +62,6 @@ GLIB_SCHEMAS=	org.zrythm.Zrythm.gschema.xml
 LDFLAGS+=	${LOCALBASE}/lib/libfftw3_threads.so ${LOCALBASE}/lib/libfftw3f_threads.so # these libs are required but aren't returned by pkg-config for fftw3
 
 BINARY_ALIAS=	git=false python3=${PYTHON_CMD}
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc64
-MESON_ARGS=	-Db_lto=false
-.endif
 
 post-patch: # https://git.zrythm.org/zrythm/zrythm/issues/299
 	@${REINPLACE_CMD} 's|<malloc.h>|<stdlib.h>|' ${WRKSRC}/ext/midilib/src/*.c
