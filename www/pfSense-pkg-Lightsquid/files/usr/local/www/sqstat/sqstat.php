@@ -60,8 +60,8 @@ function sqstat_AJAX_response( $request ) {
 	$time = date("h:i:s d/m/Y");
 	$res .= "$('#sqstat_updtime').html('{$time}');";
 
-	$data = sqstat_resultHTML( $data );
 	if ($squidclass->errno == 0) {
+		$data = sqstat_resultHTML($data);
 		$data = sqstat_AJAX_prep($data);
 		$res .= "$('#sqstat_result').html('{$data}');";
 	} else {
