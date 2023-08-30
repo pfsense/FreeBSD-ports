@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2022 Bill Meeks
+ * Copyright (c) 2013-2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -875,7 +875,7 @@ function snort_rules_up_install_cron($should_install) {
 		$snort_rules_up_hr = strval($hour);
 		for ($i=0; $i<3; $i++) {
 			$hour += 6;
-			if ($hour > 24)
+			if ($hour > 23)
 				$hour -= 24;
 			$snort_rules_up_hr .= "," . strval($hour);
 		}
@@ -888,7 +888,7 @@ function snort_rules_up_install_cron($should_install) {
 		$hour = intval(substr($snort_rules_upd_time, 0, 2));
 		$snort_rules_up_hr = strval($hour) . ",";
 		$hour += 12;
-		if ($hour > 24)
+		if ($hour > 23)
 			$hour -= 24;
 		$snort_rules_up_hr .= strval($hour);
 		$snort_rules_up_mday = "*";
