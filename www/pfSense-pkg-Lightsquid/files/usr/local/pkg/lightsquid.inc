@@ -258,9 +258,16 @@ EOF;
 	// SSL is enabled
 	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
 		// Write out cert
-		$lscert = lookup_cert(config_get_path('system/webgui/certref', ''));
-		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
-			$lscert = system_webgui_create_certificate();
+		$lscert = lookup_cert(config_get_path('system/webgui/ssl-certref', ''));
+		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv'] ||
+		    cert_chain_has_weak_digest($lscert)) {
+			$lscert = cert_create_selfsigned();
+			if (is_array($cert) && !empty($cert)) {
+				config_set_path('system/webgui/ssl-certref', $lscert['refid']);
+				write_config(sprintf(gettext("Generated new self-signed SSL/TLS certificate for HTTPS (%s)"), $lscert['refid']));
+			} else {
+				log_error(sprintf(gettext("GUI certificate is not usable and there was an error creating a new self-signed certificate.")));
+			}
 		}
 		$cert = trim(unixnewlines(base64_decode($lscert['crt']))) . "\n";
 		$key = trim(unixnewlines(base64_decode($lscert['prv']))) . "\n";
