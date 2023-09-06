@@ -1,6 +1,5 @@
 PORTNAME=	unbound
-DISTVERSION=	1.17.1
-PORTREVISION=	3
+DISTVERSION=	1.18.0
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/unbound/
 
@@ -32,8 +31,8 @@ PORTDOCS=	CNAME-basedRedirectionDesignNotes.pdf CREDITS Changelog \
 		control_proto_spec.txt example.conf ietf67-design-02.odp \
 		ietf67-design-02.pdf requirements.txt
 
-OPTIONS_DEFINE=		DEP-RSA1024 DNSCRYPT DNSTAP DOCS DOH DYNLIB ECDSA EVAPI \
-			FILTER_AAAA GOST HIREDIS LIBEVENT MUNIN_PLUGIN NOASLR \
+OPTIONS_DEFINE=		DEP-RSA1024 DNSCRYPT DNSTAP DOCS DOH ECDSA EVAPI \
+			DYNLIB FILTER_AAAA GOST HIREDIS LIBEVENT MUNIN_PLUGIN \
 			PYTHON SUBNET TFOCL TFOSE THREADS
 OPTIONS_DEFAULT=	DNSCRYPT DOH DYNLIB ECDSA GOST LIBEVENT THREADS
 OPTIONS_SUB=		yes
@@ -50,7 +49,6 @@ GOST_DESC=		Enable GOST support (requires OpenSSL >= 1.0)
 HIREDIS_DESC=		Enable hiredis support for the cachedb module
 LIBEVENT_DESC=		Build against libevent
 MUNIN_PLUGIN_DESC=	Install Munin plugin
-NOASLR_DESC=		Disable ASLR
 SUBNET_DESC=		Enable client subnet support
 TFOCL_DESC=		Enable TCP Fast Open for client mode
 TFOSE_DESC=		Enable TCP Fast Open for server mode
@@ -80,8 +78,6 @@ LIBEVENT_CONFIGURE_WITH=	libevent
 LIBEVENT_CPPFLAGS+=		$$(pkg-config libevent --cflags-only-I)
 LIBEVENT_LDFLAGS+=		$$(pkg-config libevent --libs-only-L)
 MUNIN_PLUGIN_SUB_FILES=		pkg-message
-NOASLR_USES=			elfctl
-NOASLR_VARS=			ELF_FEATURES=+noaslr:${PORTNAME}
 PYTHON_BUILD_DEPENDS=		swig:devel/swig
 PYTHON_USES=			python
 PYTHON_CONFIGURE_ON=		--with-pythonmodule=yes \
