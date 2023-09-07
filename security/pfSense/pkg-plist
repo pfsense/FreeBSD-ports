@@ -101,77 +101,77 @@
 /etc/phpshellsessions/svc
 /etc/phpshellsessions/uninstallpkg
 /etc/phpshellsessions/upgradeconfig
-/etc/rc.backup_aliastables.sh
-/etc/rc.backup_captiveportal.sh
-/etc/rc.backup_dhcpleases.sh
-/etc/rc.backup_logs.sh
-/etc/rc.backup_rrd.sh
-/etc/rc.banner
-/etc/rc.bootup
-/etc/rc.captiveportal_configure
-/etc/rc.captiveportal_configure_mac
-/etc/rc.carpbackup
-/etc/rc.carpmaster
-/etc/rc.checkclock
+@(,,755) /etc/rc.backup_aliastables.sh
+@(,,755) /etc/rc.backup_captiveportal.sh
+@(,,755) /etc/rc.backup_dhcpleases.sh
+@(,,755) /etc/rc.backup_logs.sh
+@(,,755) /etc/rc.backup_rrd.sh
+@(,,755) /etc/rc.banner
+@(,,755) /etc/rc.bootup
+@(,,755) /etc/rc.captiveportal_configure
+@(,,755) /etc/rc.captiveportal_configure_mac
+@(,,755) /etc/rc.carpbackup
+@(,,755) /etc/rc.carpmaster
+@(,,755) /etc/rc.checkclock
 /etc/rc.conf
 /etc/rc.d/etcmfs
 /etc/rc.d/varmfs
-/etc/rc.disable_hdd_apm
-/etc/rc.dumpon
-/etc/rc.dyndns.update
-/etc/rc.ecl
-/etc/rc.embedded
-/etc/rc.expireaccounts
-/etc/rc.filter_configure
-/etc/rc.filter_configure_sync
-/etc/rc.filter_synchronize
-/etc/rc.gateway_alarm
-/etc/rc.halt
-/etc/rc.initial
-/etc/rc.initial.defaults
-/etc/rc.initial.halt
-/etc/rc.initial.password
-/etc/rc.initial.ping
-/etc/rc.initial.reboot
-/etc/rc.initial.setlanip
-/etc/rc.initial.setports
-/etc/rc.initial.toggle_sshd
-/etc/rc.interfaces_carp_configure
-/etc/rc.interfaces_lan_configure
-/etc/rc.interfaces_opt_configure
-/etc/rc.interfaces_wan_configure
-/etc/rc.ipsec
-/etc/rc.kill_states
-/etc/rc.linkup
-/etc/rc.newipsecdns
-/etc/rc.newroutedns
-/etc/rc.newwanip
-/etc/rc.newwanipv6
-/etc/rc.notify_message
-/etc/rc.ntpdate
-/etc/rc.openvpn
-/etc/rc.package_reinstall_all
-/etc/rc.packages
-/etc/rc.periodic
-/etc/rc.php-fpm_restart
-/etc/rc.php_ini_setup
-/etc/rc.prunecaptiveportal
-/etc/rc.ramdisk_functions.sh
-/etc/rc.reboot
-/etc/rc.reload_all
-/etc/rc.reload_interfaces
-/etc/rc.resolv_conf_generate
-/etc/rc.restart_webgui
-/etc/rc.restore_config_backup
-/etc/rc.restore_ramdisk_store
-/etc/rc.savecore
-/etc/rc.savevoucher
-/etc/rc.start_packages
-/etc/rc.stop_packages
-/etc/rc.update_alias_url_data
-/etc/rc.update_bogons.sh
-/etc/rc.update_pkg_metadata
-/etc/rc.update_urltables
+@(,,755) /etc/rc.disable_hdd_apm
+@(,,755) /etc/rc.dumpon
+@(,,755) /etc/rc.dyndns.update
+@(,,755) /etc/rc.ecl
+@(,,755) /etc/rc.embedded
+@(,,755) /etc/rc.expireaccounts
+@(,,755) /etc/rc.filter_configure
+@(,,755) /etc/rc.filter_configure_sync
+@(,,755) /etc/rc.filter_synchronize
+@(,,755) /etc/rc.gateway_alarm
+@(,,755) /etc/rc.halt
+@(,,755) /etc/rc.initial
+@(,,755) /etc/rc.initial.defaults
+@(,,755) /etc/rc.initial.halt
+@(,,755) /etc/rc.initial.password
+@(,,755) /etc/rc.initial.ping
+@(,,755) /etc/rc.initial.reboot
+@(,,755) /etc/rc.initial.setlanip
+@(,,755) /etc/rc.initial.setports
+@(,,755) /etc/rc.initial.toggle_sshd
+@(,,755) /etc/rc.interfaces_carp_configure
+@(,,755) /etc/rc.interfaces_lan_configure
+@(,,755) /etc/rc.interfaces_opt_configure
+@(,,755) /etc/rc.interfaces_wan_configure
+@(,,755) /etc/rc.ipsec
+@(,,755) /etc/rc.kill_states
+@(,,755) /etc/rc.linkup
+@(,,755) /etc/rc.newipsecdns
+@(,,755) /etc/rc.newroutedns
+@(,,755) /etc/rc.newwanip
+@(,,755) /etc/rc.newwanipv6
+@(,,755) /etc/rc.notify_message
+@(,,755) /etc/rc.ntpdate
+@(,,755) /etc/rc.openvpn
+@(,,755) /etc/rc.package_reinstall_all
+@(,,755) /etc/rc.packages
+@(,,755) /etc/rc.periodic
+@(,,755) /etc/rc.php-fpm_restart
+@(,,755) /etc/rc.php_ini_setup
+@(,,755) /etc/rc.prunecaptiveportal
+@(,,755) /etc/rc.ramdisk_functions.sh
+@(,,755) /etc/rc.reboot
+@(,,755) /etc/rc.reload_all
+@(,,755) /etc/rc.reload_interfaces
+@(,,755) /etc/rc.resolv_conf_generate
+@(,,755) /etc/rc.restart_webgui
+@(,,755) /etc/rc.restore_config_backup
+@(,,755) /etc/rc.restore_ramdisk_store
+@(,,755) /etc/rc.savecore
+@(,,755) /etc/rc.savevoucher
+@(,,755) /etc/rc.start_packages
+@(,,755) /etc/rc.stop_packages
+@(,,755) /etc/rc.update_alias_url_data
+@(,,755) /etc/rc.update_bogons.sh
+@(,,755) /etc/rc.update_pkg_metadata
+@(,,755) /etc/rc.update_urltables
 /etc/skel/dot.hushlogin
 /etc/skel/dot.profile
 /etc/skel/dot.shrc
@@ -179,25 +179,25 @@
 /etc/sshd
 /etc/version
 /etc/version.patch
-bin/3gstats.php
-bin/aliasmod
-bin/beep.sh
+@(,,755) bin/3gstats.php
+@(,,755) bin/aliasmod
+@(,,755) bin/beep.sh
 bin/captiveportal_gather_stats.php
 bin/dhcpd_gather_stats.php
-bin/easyrule
+@(,,755) bin/easyrule
 bin/filterparser.php
 bin/iftop_parse.awk
-bin/iftop_parser.sh
+@(,,755) bin/iftop_parser.sh
 bin/ipsec_keepalive.php
 bin/mail.php
 bin/notify_monitor.php
 bin/parser_dhcpv6_leases_tester.php
 bin/parser_ipv6_tester.php
 bin/parser_readme.md
-bin/pfSlogcat
-bin/ping_hosts.sh
-bin/runmsntp.sh
-bin/viconfig
+@(,,755) bin/pfSlogcat
+@(,,755) bin/ping_hosts.sh
+@(,,755) bin/runmsntp.sh
+@(,,755) bin/viconfig
 captiveportal/captiveportal-default-logo.png
 captiveportal/index.php
 etc/pkg/repos/FreeBSD.conf
@@ -228,42 +228,42 @@ pfSense/include/www/system_register.inc
 pkg/miniupnpd.inc
 pkg/miniupnpd.xml
 sbin/acbupload.php
-sbin/athctrl.sh
-sbin/cleargmirror.sh
-sbin/cleargpt.sh
-sbin/execacb.php
-sbin/gmirror_status_check.php
-sbin/kmemusage.sh
+@(,,755) sbin/athctrl.sh
+@(,,755) sbin/cleargmirror.sh
+@(,,755) sbin/cleargpt.sh
+@(,,755) sbin/execacb.php
+@(,,755) sbin/gmirror_status_check.php
+@(,,755) sbin/kmemusage.sh
 sbin/mpd.script
-sbin/openvpn.attributes.sh
-sbin/openvpn.connect_async.sh
-sbin/openvpn.learn-address.sh
+@(,,755) sbin/openvpn.attributes.sh
+@(,,755) sbin/openvpn.connect_async.sh
+@(,,755) sbin/openvpn.learn-address.sh
 sbin/openvpn_connect_async.php
-sbin/ovpn-dnslinkup
-sbin/ovpn-linkdown
-sbin/ovpn-linkup
-sbin/ovpn_auth_verify
-sbin/ovpn_auth_verify_async
-sbin/pfSense-dhclient-script
-sbin/pfSsh.php
-sbin/ppp-ipv6
-sbin/ppp-linkdown
-sbin/ppp-linkup
-sbin/ppp-log-uptime.sh
-sbin/ppp-uptime.sh
+@(,,755) sbin/ovpn-dnslinkup
+@(,,755) sbin/ovpn-linkdown
+@(,,755) sbin/ovpn-linkup
+@(,,755) sbin/ovpn_auth_verify
+@(,,755) sbin/ovpn_auth_verify_async
+@(,,755) sbin/pfSense-dhclient-script
+@(,,755) sbin/pfSsh.php
+@(,,755) sbin/ppp-ipv6
+@(,,755) sbin/ppp-linkdown
+@(,,755) sbin/ppp-linkup
+@(,,755) sbin/ppp-log-uptime.sh
+@(,,755) sbin/ppp-uptime.sh
 sbin/prefixes.php
-sbin/read_global_var
-sbin/read_xml_tag.sh
+@(,,755) sbin/read_global_var
+@(,,755) sbin/read_xml_tag.sh
 sbin/show_filter_reload_status.php
-sbin/strongswanrc
-sbin/ufslabels.sh
-sbin/vpn-linkdown
-sbin/vpn-linkdown-l2tp
-sbin/vpn-linkdown-poes
-sbin/vpn-linkup
-sbin/vpn-linkup-l2tp
-sbin/vpn-linkup-l2tp-route
-sbin/vpn-linkup-poes
+@(,,755) sbin/strongswanrc
+@(,,755) sbin/ufslabels.sh
+@(,,755) sbin/vpn-linkdown
+@(,,755) sbin/vpn-linkdown-l2tp
+@(,,755) sbin/vpn-linkdown-poes
+@(,,755) sbin/vpn-linkup
+@(,,755) sbin/vpn-linkup-l2tp
+@(,,755) sbin/vpn-linkup-l2tp-route
+@(,,755) sbin/vpn-linkup-poes
 share/locale/af/LC_MESSAGES/pfSense.mo
 share/locale/af/LC_MESSAGES/pfSense.po
 share/locale/ar/LC_MESSAGES/pfSense.mo
