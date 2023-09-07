@@ -1,0 +1,68 @@
+#!/bin/sh
+
+_echo() {
+	local _n=""
+	local _out="/dev/stdout"
+	while getopts no: opt; do
+		case ${opt} in
+		n)
+			_n="-n"
+			shift
+			;;
+		o)
+			if [ "${OPTARG}" = "stderr" ]; then
+				_out="/dev/${OPTARG}"
+			fi
+			shift; shift
+			;;
+		esac
+	done
+
+	if [ -z "${logfile}" ]; then
+		logfile=/dev/null
+	fi
+
+	echo ${_n} "${@}" | tee -a ${logfile} > ${_out}
+}
+
+notice() {
+	msg="$@"
+
+	/usr/local/bin/php -r \
+	    "require_once('notices.inc'); \
+	    file_notice('${product}-Upgrade', '${msg}', 'Upgrade', '', 1, true);"
+}
+
+
+# these are often called together
+notice_and_echo() {
+	notice "$@"
+	_echo "$@"
+}
+
+# remove a user-level crontab
+remove_crontab() {
+	local _cronuser="${1}"
+	local _crondir="/var/cron/tabs"
+	local _crontab="${_crondir}/${_cronuser}"
+
+	# nothing to do here, so bail out
+	[ ! -f "${_crontab}" ] && return
+
+	notice_and_echo "NOTICE: A crontab configuration for ${_cronuser} has been detected" \
+	                "and removed; manual entries are not restored with configuration"    \
+	                "backups. Use the cron package to manage cron jobs."
+
+	rm -f ${_crontab}
+
+	# touch the cron spool dir to inform cron of the change
+	touch ${_crondir}
+}
+
+if [ "${2}" != "POST-INSTALL" ]; then
+	exit 0
+fi
+
+remove_crontab "root"
+
+exit 0

@@ -1,6 +1,6 @@
 PORTNAME=	pkg
 DISTVERSION=	1.19.1
-PORTREVISION=	1
+PORTREVISION=	2
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 
@@ -9,6 +9,8 @@ COMMENT=	Package manager
 WWW=		https://github.com/freebsd/pkg
 
 LICENSE=	BSD2CLAUSE
+
+SUB_FILES=	pkg-install
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
