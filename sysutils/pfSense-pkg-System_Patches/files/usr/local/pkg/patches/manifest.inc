@@ -26,6 +26,19 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => 'e573756c98d1181583fee0f7d818c6be0ea3da0e',
+  'versions' => ['23.05.1', '2.7.0'],
+  'descr' => 'Fix CRL generation for intermediate certificate authorities',
+  'links' => [
+      [ 'text' => 'Save/Apply services using CRLs with intermediate CAs (or reboot) and export new copies of affected CRLs as needed' ],
+      [ 'text' => 'Redmine #9889',
+         'url' => 'https://redmine.pfsense.org/issues/9889', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '5082edf92795fe8266be49905fe4f07eb682449d',
   'versions' => ['23.05.1', '2.7.0'],
   'descr' => 'Fix Static ARP entries not being configured at boot',
