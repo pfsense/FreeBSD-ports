@@ -1,4 +1,3 @@
-/conf.default/config.xml
 /etc/bogons
 /etc/bogonsv6
 /etc/dh-parameters.1024
@@ -865,9 +864,6 @@ www/wizards/traffic_shaper_wizard_multi_all.inc
 www/wizards/traffic_shaper_wizard_multi_all.xml
 www/xmlrpc.php
 /usr/share/doc/radius/dictionary.pfsense
-@dir /cf/conf
-@dir /cf
-@dir /conf.default
 @dir /etc/inc/priv
 @dir /etc/inc
 @dir /etc/phpshellsessions
