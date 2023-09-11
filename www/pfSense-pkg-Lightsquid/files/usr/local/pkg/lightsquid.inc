@@ -262,7 +262,7 @@ EOF;
 		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv'] ||
 		    cert_chain_has_weak_digest($lscert)) {
 			$lscert = cert_create_selfsigned();
-			if (is_array($cert) && !empty($cert)) {
+			if (is_array($lscert) && !empty($lscert)) {
 				config_set_path('system/webgui/ssl-certref', $lscert['refid']);
 				write_config(sprintf(gettext("Generated new self-signed SSL/TLS certificate for HTTPS (%s)"), $lscert['refid']));
 			} else {
@@ -534,8 +534,8 @@ function lightsquid_create_reportdir() {
  */
 function lightsquid_validate_input($post, &$input_errors) {
 	if ($post['navto_lightsquid'] == 'Open Lightsquid') {
-		$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0');
-		if (is_array($lightsquid_config)) {
+		$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0', []);
+		if (empty($lightsquid_config)) {
 			return;
 		}
 		list($server_host, $server_port) = explode(':', $_SERVER['HTTP_HOST']);
