@@ -258,7 +258,7 @@ EOF;
 	// SSL is enabled
 	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
 		// Write out cert
-		$lscert = lookup_cert(config_get_path('system/webgui/certref', ''));
+		$lscert = lookup_cert(config_get_path('system/webgui/ssl-certref', ''));
 		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
 			$lscert = system_webgui_create_certificate();
 		}
@@ -527,8 +527,8 @@ function lightsquid_create_reportdir() {
  */
 function lightsquid_validate_input($post, &$input_errors) {
 	if ($post['navto_lightsquid'] == 'Open Lightsquid') {
-		$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0');
-		if (is_array($lightsquid_config)) {
+		$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0', []);
+		if (empty($lightsquid_config)) {
 			return;
 		}
 		list($server_host, $server_port) = explode(':', $_SERVER['HTTP_HOST']);
