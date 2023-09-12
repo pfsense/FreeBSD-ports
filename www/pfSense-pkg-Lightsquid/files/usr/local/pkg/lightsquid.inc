@@ -123,7 +123,7 @@ EOF;
 function lightsquid_write_webconfig() {
 	$lighttpd_ls_auth_path = "/var/etc/lightsquid/.passwd";
 	$lighttpd_ls_cert_path = "/var/etc/lightsquid/cert.pem";
-	$lightsquid_config = config_get_path('installedpackages/squid/config/0', []);
+	$lightsquid_config = config_get_path('installedpackages/lightsquid/config/0', []);
 
 	if (empty($lightsquid_config)) {
 		return;
@@ -441,8 +441,7 @@ function lightsquid_setup_cron($active=false) {
 			case 'lhp_12h':  $on = true; $opt[0]= "0"; $opt[1]= "*/12"; break;
 			case 'lhp_24h':  $on = true; $opt[0]= "45"; $opt[1]= "23";   break; // daily at 23:45
 		}
-		init_config_arr(array('cron', 'item'));
-		foreach (config_get_path('cron/item') as $item) {
+		foreach (config_get_path('cron/item', []) as $item) {
 			if ($item['command'] == $lightsquid_parser_today) {
 				if (($item['minute'] == $opt[0]) && ($item['hour'] == $opt[1])) {
 					$update_cron = false;
