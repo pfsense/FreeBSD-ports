@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	repoc
-DISTVERSION=	20230911
+DISTVERSION=	20230912
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	pfSense-
 
@@ -16,7 +16,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	repoc
-GL_COMMIT=	cf0a12986a2dccbab09cd6343cc05346234f4e2c
+GL_COMMIT=	ddff5f03312402b35b8e314cbdeb29aca7b152f3
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 .include <bsd.port.mk>
