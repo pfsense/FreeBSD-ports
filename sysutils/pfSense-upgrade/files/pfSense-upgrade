@@ -1022,7 +1022,7 @@ pkg_upgrade() {
 
 		# Always make sure important packages are set as vital
 		set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
-		    ${product}-rc ${product}-base ${uboot_pkg}
+		    ${product}-base ${uboot_pkg}
 
 		check_upgrade mute skip_update
 		case "$?" in
@@ -1156,13 +1156,10 @@ pkg_upgrade() {
 			fi
 			echo " done."
 
-			# Force upgrade pfSense-rc together with kernel. It's
-			# failing for some reason on armv[67] even with the
-			# proper dependency version registered
-			if upgrade_available ${product}-rc; then
-				_exec "pkg-static upgrade -U ${product}-rc" \
-				    "Upgrading ${product}-rc"
-			fi
+			# Remove vital flag from pfSense-rc so we can remove it later,
+			# now that the rc scripts are part of security/pfSense
+			unset_vital_flag "${product}-rc"
+
 			# In the past /boot/loader.conf was part of kernel pkg
 			# and now it's an orphan file.  Check if current
 			# installation has it registered on kernel pkg and make
@@ -1305,7 +1302,7 @@ pkg_upgrade() {
 
 			# Always make sure important packages are set as vital
 			set_vital_flag pkg ${kernel_pkg} ${product}-boot ${product} \
-			    ${product}-rc ${product}-base ${uboot_pkg}
+			    ${product}-base ${uboot_pkg}
 
 			# Register that system is running latest pkg_set_version
 			cp -f ${pkg_set_version} ${running_pkg_set_version}
