@@ -1158,7 +1158,9 @@ pkg_upgrade() {
 
 			# Remove vital flag from pfSense-rc so we can remove it later,
 			# now that the rc scripts are part of security/pfSense
-			unset_vital_flag "${product}-rc"
+			if "${_pkg}" info -q "${product}-rc" > /dev/null 2 &> 1; then
+				unset_vital_flag "${product}-rc"
+			fi
 
 			# In the past /boot/loader.conf was part of kernel pkg
 			# and now it's an orphan file.  Check if current
