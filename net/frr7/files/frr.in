@@ -30,136 +30,209 @@
 #
 # This RC script was adapted from the net/quagga port
 
-. /etc/rc.subr
+# shellcheck disable=SC2034
+# shellcheck disable=SC3009
+# shellcheck disable=SC3043
 
-name=frr
-rcvar=${name}_enable
+# shellcheck disable=SC1091
+. "/etc/rc.subr"
 
-start_postcmd=start_postcmd
-stop_postcmd="rm -f $pidfile"
-configtest_cmd=check_config
-extra_commands=configtest
+name="frr"
+rcvar="${name}_enable"
+
+start_postcmd="start_postcmd"
+stop_postcmd="rm -f ${pidfile}"
+configtest_cmd="check_config"
+extra_commands="configtest"
 command_args="-d"
 
-load_rc_config $name
-: ${frr_enable:="NO"}
-: ${frr_flags:=""}
-: ${frr_daemons:="zebra babeld bfdd bgpd eigrpd fabricd isisd ospfd ospf6d ripd ripngd staticd"}
-: ${frr_vtysh_boot:="NO"}
-: ${frr_wait_for:=""}
-: ${frr_wait_seconds:="90"}
+load_rc_config "${name}"
+: "${frr_enable:="NO"}"
+: "${frr_flags:=""}"
+: "${frr_daemons:="zebra babeld bfdd bgpd eigrpd fabricd isisd ospfd ospf6d ripd ripngd staticd"}"
+: "${frr_vtysh_boot:="NO"}"
+: "${frr_wait_for:=""}"
+: "${frr_wait_seconds:="90"}"
 
 check_config()
 {
-    echo "Checking $daemon.conf"
-	# pimd doesn't support -C
-	if [ "$daemon" = "pimd" ]; then
-		echo "Ignored"
-	else
-    	$command $daemon_flags -C
-    	result=$?
-    	if [ "$result" -eq "0" ]; then
-			echo "OK"
-    	else
-			echo "FAILED"
-			exit
-    	fi
-	fi
+    echo "I: Checking: ${daemon}.conf"
+    # pimd doesn't support -C
+    if [ "${daemon}" = "pimd" ]; then
+        echo "W: Ignored"
+    else
+        # shellcheck disable=SC2086
+        "${command}" $daemon_flags -C
+        result=$?
+        if [ "${result}" = "0" ]; then
+            echo "I: Ok"
+        else
+            echo "E: Failed"
+            exit 1
+        fi
+    fi
 }
 
 start_postcmd()
 {
-	local waited_for
-	waited_for=0
-	# Wait only when last daemon has started.
-	if [ "${frr_daemons}" = "${frr_daemons% ${name}}" ]; then
-		return;
-	fi
-        if [ -n "${frr_wait_for}" ]; then
-		echo Waiting for ${frr_wait_for} route...
-		while [ ${waited_for} -lt ${frr_wait_seconds} ]; do
-			/sbin/route -n get ${frr_wait_for} >/dev/null 2>&1 && break;
-			waited_for=$((waited_for+1))
-			sleep 1;
-		done
-		[ ${waited_for} -lt ${frr_wait_seconds} ] || echo Giving up...
-	fi
+    # Wait only when last daemon has started.
+    [ "${start_daemons_list}" != "${start_daemons_list% "${name}"}" ] \
+        || return
+
+    if [ -n "${frr_wait_for}" ]; then
+        echo "I: Waiting (${frr_wait_seconds} seconds) for a route to ${frr_wait_for}..."
+        local waited_for=0
+        while [ "${waited_for}" -lt "${frr_wait_seconds}" ]; do
+            ! /sbin/route -n "show" "${frr_wait_for}" >/dev/null 2>&1 || {
+                echo "I: Route is now available"
+                return
+            }
+            waited_for="$((waited_for + 1))"
+            sleep 1;
+        done
+        echo "W: Giving up..."
+    fi
 }
 
 do_cmd()
 {
-	local ret
-	ret=0
-	frr_cmd=$1
-	if checkyesno frr_vtysh_boot && ( [ ${frr_cmd} = "restart" ] || [ ${frr_cmd} = "start" ] ); then
-		echo "Checking intergrated config..."
-		daemon="vtysh"
-		daemon_flags=""
-		command=%%PREFIX%%/bin/${daemon}
-		check_config
-	fi
-	for daemon in ${frr_daemons}; do
-	    command=%%PREFIX%%/sbin/${daemon}
-	    pidfile=/var/run/frr/${daemon}.pid
-		if ! checkyesno frr_vtysh_boot; then
- 			required_files=%%ETCDIR%%/${daemon}.conf
-			if [ ${frr_cmd} = "restart" ] || [ ${frr_cmd} = "start" ]; then
- 				check_config
-			fi
-			if [ ${frr_cmd} = "start" ] && ! [ -f ${required_files} ]; then
-				continue
-			fi
-		fi
-	    if [ ${frr_cmd} = "stop" ] && [ -z "$(check_process ${command})" ]; then
-			continue
-	    fi
-	    eval flags=\$\{${daemon}_flags:-\"${frr_flags}\"\}
-	    name=${daemon}
-	    _rc_restart_done=false
-	    run_rc_command "$1" || ret=1
-	done
-	if checkyesno frr_vtysh_boot && ( [ ${frr_cmd} = "restart" ] || [ ${frr_cmd} = "start" ] ); then
-	    echo "Booting for integrated-vtysh-config..."
-	    %%PREFIX%%/bin/vtysh -b
-	fi
-	return ${ret}
+    [ $# = 2 ] \
+        || return 1
+
+    local cmd="${1}"
+    local daemon_list="${2}"
+
+    local ret=0
+    local is_vtysh_start=0
+
+    ! checkyesno "frr_vtysh_boot" || { [ "${cmd}" != "restart" ] && [ "${cmd}" != "start" ]; } \
+        || is_vtysh_start=1
+
+    [ "${is_vtysh_start}" = "0" ] || {
+        daemon="vtysh"
+        daemon_flags=""
+        command="/usr/local/bin/${daemon}"
+        check_config
+    }
+    for daemon_i in ${daemon_list}; do
+        instance=
+        daemon="${daemon_i%-*}"
+        [ "${#daemon_i}" = "${#daemon}" ] \
+            || instance="${daemon_i#*-}"
+        command="/usr/local/sbin/${daemon}"
+        pidfile="/var/run/frr/${daemon_i}.pid"
+        vtyfile="/var/run/frr/${daemon_i}.vty"
+        checkyesno "frr_vtysh_boot" || {
+            required_files="/var/etc/frr/${daemon}.conf"
+            { [ "${cmd}" != "start" ] && [ "${cmd}" != "restart" ]; } \
+                || check_config
+            [ "${cmd}" != "start" ] || [ -f "${required_files}" ] \
+                || continue
+        }
+        [ "${cmd}" != "stop" ] || [ -n "$(check_process "${command}")" ] \
+            || continue
+        eval "flags=\$\{${daemon}_flags:-\"\${frr_flags}\"\}"
+        [ -z "${instance}" ] \
+            || flags="-n ${instance} ${flags}"
+        name="${daemon}"
+        _rc_restart_done="false"
+        run_rc_command "${cmd}" \
+            || ret=1
+        [ "${cmd}" != "stop" ] \
+            || rm -f "${pidfile}" "${vtyfile}"
+    done
+    [ "${is_vtysh_start}" = "0" ] || {
+        echo "I: Executing boot startup configuration..."
+        /usr/local/bin/vtysh -b
+    }
+
+    return "${ret}"
 }
 
-frr_cmd=$1
+do_stop()
+{
+    stop_daemons_list="${frr_daemons}"
 
-case "$1" in
+    local proto=
+    for proto in "ospf" "ospf6"; do
+        echo "${frr_daemons}" | grep -q "\b${proto}d\b" \
+            || continue
+        local daemon_list=
+        daemon_list="$(find -s "/var/run/frr/" \
+            -mindepth 1 -maxdepth 1 -type f -name '*.pid' | \
+            sed -n -r "s%^.*/(${proto}d-[0-9]+)\.pid\$%\1%pg" | tr '\n' ' ')"
+        [ -n "${daemon_list}" ] \
+            || continue
+        stop_daemons_list="$(echo "${stop_daemons_list}" | \
+            sed "s/${proto}d/${daemon_list}/g")"
+    done
+
+    # shellcheck disable=SC2086
+    do_cmd "stop" "$(reverse_list ${stop_daemons_list})"
+}
+
+do_start()
+{
+    start_daemons_list="${frr_daemons}"
+
+    local proto=
+    for proto in "ospf" "ospf6"; do
+        echo "${frr_daemons}" | grep -q "\b${proto}d\b" \
+            || continue
+        local config_instances=
+        config_instances="$(sed -n -r "s/^router\ ${proto}\ ([1-9][0-9]*)\$/\1/p" \
+            "/var/etc/frr/frr.conf" 2> /dev/null | sort | uniq)"
+        [ -n "${config_instances}" ] \
+            || continue
+        local instance=
+        local daemon_list=
+        for instance in ${config_instances}; do
+            daemon_list="${daemon_list} ${proto}d-${instance}"
+        done
+        start_daemons_list="$(echo "${start_daemons_list}" | \
+            sed "s/${proto}d/${daemon_list}/g")"
+    done
+
+    ! checkyesno "frr_enable" \
+        || do_cmd "start" "${start_daemons_list}"
+}
+
+frr_cmd="${1}"
+
+case "${1}" in
     force*)
-		frr_cmd=${frr_cmd#force}
-		;;
+        frr_cmd="${frr_cmd#force}"
+        ;;
     fast*)
-		frr_cmd=${frr_cmd#fast}
-		;;
+        frr_cmd="${frr_cmd#fast}"
+        ;;
 esac
 shift
 
-if [ $# -ge 1 -a "$1" != "all" ]; then
-	frr_daemons="$*"
+if [ $# -ge 1 ] && [ "${1}" != "all" ]; then
+    for daemon in "${@}"; do
+        echo "${frr_daemons}" | grep -q "\b${daemon}\b" || {
+            echo "E: Bad daemon name or daemon not enabled: ${daemon}"
+            exit 1
+        }
+    done
+    frr_daemons="$*"
 fi
 
 case "${frr_cmd}" in
     start|quietstart)
-		if [ -n "${frr_extralibs_path}" ]; then
-	    	/sbin/ldconfig -m ${frr_extralibs_path}
-		fi
-		# Why should I need to add this check ?
-		checkyesno frr_enable && do_cmd "start"
-		;;
+        [ -z "${frr_extralibs_path}" ] \
+            || /sbin/ldconfig -m "${frr_extralibs_path}"
+        do_start
+        ;;
     stop)
-		frr_daemons=$(reverse_list ${frr_daemons})
-		do_cmd "stop"
-		;;
+        do_stop
+        ;;
     restart)
-		frr_daemons=$(reverse_list ${frr_daemons})
-		do_cmd "stop"
-		frr_daemons=$(reverse_list ${frr_daemons})
-		checkyesno frr_enable && do_cmd "start"
-		;;
+        do_stop
+        do_start
+        ;;
     *)
-		do_cmd "${frr_cmd}"
-		;;
+        do_cmd "${frr_cmd}"
+        ;;
 esac
