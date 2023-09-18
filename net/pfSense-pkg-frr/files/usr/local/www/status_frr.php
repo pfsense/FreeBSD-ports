@@ -134,12 +134,12 @@ function showCmdT($idx, $data) { ?>
 }
 
 /* Load configuration blocks and check which daemons are enabled. */
-$frr_enabled    = (config_path_enabled('installedpackages/frr/config/0', 'enable')       || !empty(config_get_path('installedpackages/frrglobalraw/config/0/zebra')));
-$bgpd_enabled   = (config_path_enabled('installedpackages/frrbgp/config/0', 'enable')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bgpd')));
-$ospfd_enabled  = (config_path_enabled('installedpackages/frrospfd/config/0', 'enable')  || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospfd')));
-$ospf6d_enabled = (config_path_enabled('installedpackages/frrospf6d/config/0', 'enable') || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospf6d')));
-$ripd_enabled   = (config_path_enabled('installedpackages/frrripd/config/0', 'enable')   || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ripd')));
-$bfdd_enabled   = (config_path_enabled('installedpackages/frrbfd/config/0', 'enable')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bfdd')));
+$frr_enabled    = ((config_get_path('installedpackages/frr/config/0/enable') == 'on')       || !empty(config_get_path('installedpackages/frrglobalraw/config/0/zebra')));
+$bgpd_enabled   = ((config_get_path('installedpackages/frrbgp/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bgpd')));
+$ospfd_enabled  = ((config_get_path('installedpackages/frrospfd/config/0/enable') == 'on')  || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospfd')));
+$ospf6d_enabled = ((config_get_path('installedpackages/frrospf6d/config/0/enable') == 'on') || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospf6d')));
+$ripd_enabled   = ((config_get_path('installedpackages/frrripd/config/0/enable') == 'on')   || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ripd')));
+$bfdd_enabled   = ((config_get_path('installedpackages/frrbfd/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bfdd')));
 
 $pgtitle = array(gettext("Services"),gettext("FRR"),gettext("Status"));
 
@@ -164,15 +164,15 @@ if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf")) && $frr_
 	defCmdT("ospf_routes", "OSPF Routes", "{$control_script} ospf route", true, 1);
 }
 
-if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "rip")) && $frr_enabled && $ripd_enabled) {
-	defCmdT("rip_general", "RIP General", "{$control_script} rip general");
-	defCmdT("rip_routes", "RIP Routes", "{$control_script} rip routes");
-}
-
 if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf6")) && $frr_enabled && $ospf6d_enabled) {
 	defCmdT("ospf6_general", "OSPF6 General", "{$control_script} ospf6 general");
 	defCmdT("ospf6_neighbors", "OSPF6 Neighbors", "{$control_script} ospf6 neighbor");
 	defCmdT("ospf6_routes", "OSPF6 Routes", "{$control_script} ospf6 route", true, 1);
+}
+
+if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "rip")) && $frr_enabled && $ripd_enabled) {
+	defCmdT("rip_general", "RIP General", "{$control_script} rip general");
+	defCmdT("rip_routes", "RIP Routes", "{$control_script} rip routes");
 }
 
 if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "bfd")) && $frr_enabled && $bfdd_enabled) {

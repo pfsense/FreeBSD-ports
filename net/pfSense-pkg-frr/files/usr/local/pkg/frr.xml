@@ -170,6 +170,9 @@
 		<item>
 			<type>plugin_carp</type>
 		</item>
+		<item>
+			<type>plugin_statusoutput</type>
+		</item>
 	</plugins>
 	<fields>
 		<field>

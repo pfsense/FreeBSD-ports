@@ -163,6 +163,84 @@ function frr_plugin_carp($pluginparams) {
 }
 
 /*
+ * Called when gathering status output.
+ * See https://redmine.pfsense.org/issues/14777 and
+ *     https://redmine.pfsense.org/issues/14588
+ */
+
+function frr_plugin_statusoutput($pluginparams) {
+	require_once('status_output.inc');
+	$entry_prefix = 'Package-FRR-';
+	$control_script = "/usr/local/bin/frrctl";
+	$frr_enabled    = ((config_get_path('installedpackages/frr/config/0/enable') == 'on')       || !empty(config_get_path('installedpackages/frrglobalraw/config/0/zebra')));
+	$bgpd_enabled   = ((config_get_path('installedpackages/frrbgp/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bgpd')));
+	$ospfd_enabled  = ((config_get_path('installedpackages/frrospfd/config/0/enable') == 'on')  || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospfd')));
+	$ospf6d_enabled = ((config_get_path('installedpackages/frrospf6d/config/0/enable') == 'on') || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ospf6d')));
+	$ripd_enabled   = ((config_get_path('installedpackages/frrripd/config/0/enable') == 'on')   || !empty(config_get_path('installedpackages/frrglobalraw/config/0/ripd')));
+	$bfdd_enabled   = ((config_get_path('installedpackages/frrbfd/config/0/enable') == 'on')    || !empty(config_get_path('installedpackages/frrglobalraw/config/0/bfdd')));
+
+	if (is_readable('/var/etc/frr/frr.conf')) {
+		status_cmd_define("{$entry_prefix}Config-FRR", "cat /var/etc/frr/frr.conf");
+	}
+	if (is_readable('/var/etc/frr/vtysh.conf')) {
+		status_cmd_define("{$entry_prefix}Config-vtysh", "cat /var/etc/frr/vtysh.conf");
+	}
+	if ($frr_enabled) {
+		status_cmd_define("{$entry_prefix}Config-running", "/usr/local/bin/vtysh -c 'show run'");
+	} else {
+		/* FRR is disabled, remaining commands would fail */
+		return;
+	}
+
+	status_cmd_define("{$entry_prefix}Zebra Routes", "{$control_script} zebra route");
+	status_cmd_define("{$entry_prefix}Zebra IPv6 Routes", "{$control_script} zebra route6");
+	status_cmd_define("{$entry_prefix}Zebra CPU", "{$control_script} zebra cpu");
+	status_cmd_define("{$entry_prefix}Zebra Interfaces", "{$control_script} zebra int");
+	status_cmd_define("{$entry_prefix}Zebra Memory", "{$control_script} zebra mem");
+
+	if ($bgpd_enabled) {
+		status_cmd_define("{$entry_prefix}BGP Routes", "{$control_script} bgp route");
+		status_cmd_define("{$entry_prefix}BGP IPv6 Routes", "{$control_script} bgp6 route");
+		status_cmd_define("{$entry_prefix}BGP Summary", "{$control_script} bgp sum");
+		status_cmd_define("{$entry_prefix}BGP Neighbors", "{$control_script} bgp neighbor");
+		status_cmd_define("{$entry_prefix}BGP Peer Groups", "{$control_script} bgp peer");
+		status_cmd_define("{$entry_prefix}BGP Next Hops", "{$control_script} bgp nexthop");
+		status_cmd_define("{$entry_prefix}BGP Memory", "{$control_script} bgp mem");
+	}
+	if ($ospfd_enabled) {
+		status_cmd_define("{$entry_prefix}OSPF General", "{$control_script} ospf general");
+		status_cmd_define("{$entry_prefix}OSPF Neighbors", "{$control_script} ospf neighbor");
+		status_cmd_define("{$entry_prefix}OSPF Routes", "{$control_script} ospf route");
+		status_cmd_define("{$entry_prefix}OSPF Database", "{$control_script} ospf database");
+		status_cmd_define("{$entry_prefix}OSPF Router Database", "{$control_script} ospf database router");
+		status_cmd_define("{$entry_prefix}OSPF Interfaces", "{$control_script} ospf interfaces");
+		status_cmd_define("{$entry_prefix}OSPF CPU Usage", "{$control_script} ospf cpu");
+		status_cmd_define("{$entry_prefix}OSPF Memory", "{$control_script} ospf mem");
+	}
+	if ($ospf6d_enabled) {
+		status_cmd_define("{$entry_prefix}OSPF6 General", "{$control_script} ospf6 general");
+		status_cmd_define("{$entry_prefix}OSPF6 Neighbors", "{$control_script} ospf6 neighbor");
+		status_cmd_define("{$entry_prefix}OSPF6 Routes", "{$control_script} ospf6 route");
+		status_cmd_define("{$entry_prefix}OSPF6 Database", "{$control_script} ospf6 database");
+		status_cmd_define("{$entry_prefix}OSPF6 Router Database", "{$control_script} ospf6 database router");
+		status_cmd_define("{$entry_prefix}OSPF6 Interfaces", "{$control_script} ospf6 interfaces");
+		status_cmd_define("{$entry_prefix}OSPF6 CPU Usage", "{$control_script} ospf6 cpu");
+		status_cmd_define("{$entry_prefix}OSPF6 Memory", "{$control_script} ospf6 mem");
+	}
+	if ($ripd_enabled) {
+		status_cmd_define("{$entry_prefix}RIP General", "{$control_script} rip general");
+		status_cmd_define("{$entry_prefix}RIP Routes", "{$control_script} rip routes");
+		status_cmd_define("{$entry_prefix}RIP General", "{$control_script} rip general");
+		status_cmd_define("{$entry_prefix}RIP Routes", "{$control_script} rip routes");
+	}
+	if ($bfdd_enabled) {
+		status_cmd_define("{$entry_prefix}BFD Peers Brief", "{$control_script} bfd peer_br");
+		status_cmd_define("{$entry_prefix}BFD Peers", "{$control_script} bfd peer");
+		status_cmd_define("{$entry_prefix}BFD Peers Counters", "{$control_script} bfd counters");
+	}
+}
+
+/*
  * Called when IPsec reloads via rc.newipsecdns or similar. Cycles the IPsec
  * interface in FRR status so routing will work again.
  */
