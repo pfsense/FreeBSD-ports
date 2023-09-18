@@ -158,17 +158,16 @@ do_stop()
 
     local proto=
     for proto in "ospf" "ospf6"; do
-        echo "${frr_daemons}" | grep -q "\b${proto}d\b" \
-            || continue
         local daemon_list=
         daemon_list="$(find -s "/var/run/frr/" \
             -mindepth 1 -maxdepth 1 -type f -name '*.pid' | \
-            sed -n -r "s%^.*/(${proto}d-[0-9]+)\.pid\$%\1%pg" | tr '\n' ' ')"
+            sed -n -r "s%^.*/(${proto}d(-[0-9]+)?)\.pid\$%\1%pg" | tr '\n' ' ')"
         [ -n "${daemon_list}" ] \
             || continue
         stop_daemons_list="$(echo "${stop_daemons_list}" | \
             sed "s/${proto}d/${daemon_list}/g")"
     done
+    stop_daemons_list="${stop_daemons_list# *}"
 
     # shellcheck disable=SC2086
     do_cmd "stop" "$(reverse_list ${stop_daemons_list})"
