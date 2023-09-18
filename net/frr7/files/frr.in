@@ -77,7 +77,7 @@ start_postcmd()
 {
     # Wait only when last daemon has started.
     [ "${start_daemons_list}" != "${start_daemons_list% "${name}"}" ] \
-        || return
+        || return 0
 
     if [ -n "${frr_wait_for}" ]; then
         echo "I: Waiting (${frr_wait_seconds} seconds) for a route to ${frr_wait_for}..."
@@ -85,13 +85,16 @@ start_postcmd()
         while [ "${waited_for}" -lt "${frr_wait_seconds}" ]; do
             ! /sbin/route -n "show" "${frr_wait_for}" >/dev/null 2>&1 || {
                 echo "I: Route is now available"
-                return
+                return 0
             }
             waited_for="$((waited_for + 1))"
             sleep 1;
         done
         echo "W: Giving up..."
+        return 1
     fi
+
+    return 0
 }
 
 do_cmd()
