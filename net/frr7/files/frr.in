@@ -177,24 +177,6 @@ do_start()
 {
     start_daemons_list="${frr_daemons}"
 
-    local proto=
-    for proto in "ospf" "ospf6"; do
-        echo "${frr_daemons}" | grep -q "\b${proto}d\b" \
-            || continue
-        local config_instances=
-        config_instances="$(sed -n -r "s/^router\ ${proto}\ ([1-9][0-9]*)\$/\1/p" \
-            "/var/etc/frr/frr.conf" 2> /dev/null | sort | uniq)"
-        [ -n "${config_instances}" ] \
-            || continue
-        local instance=
-        local daemon_list=
-        for instance in ${config_instances}; do
-            daemon_list="${daemon_list} ${proto}d-${instance}"
-        done
-        start_daemons_list="$(echo "${start_daemons_list}" | \
-            sed "s/${proto}d/${daemon_list}/g")"
-    done
-
     ! checkyesno "frr_enable" \
         || do_cmd "start" "${start_daemons_list}"
 }
