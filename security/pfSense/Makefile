@@ -111,5 +111,7 @@ RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
 do-install:
 	(cd ${WRKSRC}/src && ${COPYTREE_SHARE} "etc usr" ${STAGEDIR})
 	${ECHO} ${PORTREVISION} > ${STAGEDIR}/etc/version.patch
+	${ECHO} "${PFSENSE_COMMITHASH}" > ${STAGEDIR}/etc/version.lastcommit
+	${ECHO} "${PFSENSE_DATESTRING}" > ${STAGEDIR}/etc/version.buildtime
 
 .include <bsd.port.post.mk>
