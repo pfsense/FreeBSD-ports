@@ -1,6 +1,6 @@
 <?php
 
-// Rewrite broken pakacge calls
+// Rewrite broken package calls
 Header("Location: /");
 exit;
 
