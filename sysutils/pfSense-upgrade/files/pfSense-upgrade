@@ -1158,7 +1158,7 @@ pkg_upgrade() {
 
 			# Remove vital flag from pfSense-rc so we can remove it later,
 			# now that the rc scripts are part of security/pfSense
-			if "${_pkg}" info -q "${product}-rc" > /dev/null 2 &> 1; then
+			if is_pkg_installed "${product}-rc"; then
 				unset_vital_flag "${product}-rc"
 			fi
 
@@ -1261,6 +1261,13 @@ pkg_upgrade() {
 
 		if upgrade_available; then
 			delete_annotation=1
+
+			# Remove legacy pfSense-rc package if present
+			if is_pkg_installed "${product}-rc"; then
+				echo "Removing ${product}-rc"
+				_pkg delete -yf "${product}-rc"
+			fi
+
 			if [ -n "${is_pkg_locked}" ]; then
 				# Upgrade pkg
 				pkg_unlock pkg
