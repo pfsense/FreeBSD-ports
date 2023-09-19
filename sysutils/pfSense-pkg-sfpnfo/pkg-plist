@@ -1,0 +1,6 @@
+pkg/sfpnfo.xml
+www/packages/sfpnfo/sfpnfo.inc.php
+www/packages/sfpnfo/sfpnfo.php
+www/packages/sfpnfo/index.php
+%%DATADIR%%/info.xml
+@dir www/packages/sfpnfo

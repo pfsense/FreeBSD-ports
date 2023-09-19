@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+    <package>
+        <name>sfpnfo</name>
+        <descr><![CDATA[Information about installed SFP Modules]]></descr>
+        <version>%%PKGVERSION%%</version>
+        <configurationfile>sfpnfo.xml</configurationfile>
+    </package>
+</pfsensepkgs>
