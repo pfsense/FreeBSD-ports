@@ -131,6 +131,12 @@
 		<description>FRR static route daemon</description>
 	</service>
 	<service>
+		<name>FRR mgmtd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>mgmtd</executable>
+		<description>FRR management daemon</description>
+	</service>
+	<service>
 		<name>FRR bfdd</name>
 		<rcfile>frr.sh</rcfile>
 		<executable>bfdd</executable>

@@ -33,7 +33,7 @@ global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
 
 global $frr_daemons;
-$frr_daemons = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'ripd', 'bfdd');
+$frr_daemons = array('zebra', 'mgmtd', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'ripd', 'bfdd');
 
 global $frr_well_known_communities;
 $frr_well_known_communities = array("internet", "no-export", "no-advertise", "local-as");
@@ -357,7 +357,7 @@ function frr_generate_config_rcfile() {
 
 	/* Config area to daemon name mapping */
 	$config_key_daemons = array(
-		'frr' => array('zebra', 'staticd'),
+		'frr' => array('zebra', 'mgmtd', 'staticd'),
 		'frrbfd' => array('bfdd'),
 		'frrbgp' => array('bgpd'),
 		'frrospfd' => array('ospfd'),
@@ -908,7 +908,6 @@ function frr_generate_config_integrated() {
 
 		$integratedconffile .= "line vty\n";
 		$integratedconffile .= "!\n";
-		$integratedconffile .= "end\n";
 
 		/* Remove sample configuration files */
 		array_map('unlink', glob("{$frr_config_base}/*.sample*"));
