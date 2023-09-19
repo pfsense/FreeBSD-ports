@@ -178,6 +178,8 @@
 /etc/skel/dot.tcshrc
 /etc/sshd
 /etc/version
+/etc/version.buildtime
+/etc/version.lastcommit
 /etc/version.patch
 @(,,755) bin/3gstats.php
 @(,,755) bin/aliasmod
