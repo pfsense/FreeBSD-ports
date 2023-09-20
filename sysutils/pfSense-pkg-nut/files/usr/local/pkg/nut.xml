@@ -28,7 +28,7 @@
 	]]>
 	</copyright>
 	<name>nut</name>
-	<version>2.8.0_4</version>
+	<version>%%PKGVERSION%%</version>
 	<title>Services: UPS</title>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/nut/nut.inc</include_file>

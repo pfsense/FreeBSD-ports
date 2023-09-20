@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-nut
-PORTVERSION=	2.8.0
-PORTREVISION=	2
+PORTVERSION=	2.8.1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	Network UPS Tools
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	nut>=0:sysutils/nut
+RUN_DEPENDS=	nut>=0:sysutils/nut-devel
 
 NO_BUILD=	yes
 NO_MTREE=	yes
