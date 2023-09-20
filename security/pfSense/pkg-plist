@@ -220,6 +220,7 @@ pfSense/include/www/firewall_nat_out.inc
 pfSense/include/www/firewall_schedule.inc
 pfSense/include/www/firewall_virtual_ip.inc
 pfSense/include/www/services_dnsmasq.inc
+pfSense/include/www/status_output.inc
 pfSense/include/www/system_advanced_admin.inc
 pfSense/include/www/system_advanced_firewall.inc
 pfSense/include/www/system_advanced_misc.inc
