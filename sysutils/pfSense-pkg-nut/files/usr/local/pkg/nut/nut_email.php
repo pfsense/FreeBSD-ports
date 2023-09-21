@@ -24,8 +24,7 @@
 require_once("notices.inc");
 
 $subject = "UPS Notification from " . gethostname();
-$message = date('r');
-$message .= "\n\n";
+$message = "Date: " . date('r') . "\n\n${subject}" . "\n\n";
 $message .= implode(' ', array_slice($argv, 1));
 
 @notify_all_remote($subject . " - " . $message);
