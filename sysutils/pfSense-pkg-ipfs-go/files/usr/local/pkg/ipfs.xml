@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<name>ipfs-go</name>
+	<version>%%PKGVERSION%%</version>
+	<title>IPFS Settings</title>
+	<include_file>/usr/local/pkg/ipfs.inc</include_file>
+	<menu>
+		<name>IPFS</name>
+		<section>Services</section>
+		<configfile>ipfs.xml</configfile>
+		<url>/packages/ipfs/ipfs.php</url>
+	</menu>
+</packagegui>

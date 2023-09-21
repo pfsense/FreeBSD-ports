@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>IPFS</name>
+		<descr><![CDATA[IPFS is a global, versioned, peer-to-peer filesystem.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>ipfs.xml</configurationfile>
+	</package>
+</pfsensepkgs>
