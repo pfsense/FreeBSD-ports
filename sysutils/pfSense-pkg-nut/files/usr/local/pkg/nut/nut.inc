@@ -54,8 +54,8 @@ function nut_check_var_db() {
 	if (!is_dir($d)) {
 		mkdir($d, 0750, true);
 		safe_mkdir($d, 0750);
-		chown($d, "nut");
-		chgrp($d, "nut");
+		chown($d, "uucp");
+		chgrp($d, "uucp");
 	}
 }
 
@@ -343,6 +343,7 @@ function nut_ups_status()
 		return $status;
 	}
 
+	/* FIXME: use the -t option for upsc when it becomes available (targeted for nut 2.8.0) */
 	$pipe = popen("/usr/local/bin/upsc $ups", 'r');
 	if ($pipe) {
 		while ($line = fgets($pipe)) {
