@@ -13,7 +13,7 @@ COMMENT=	pfSense package ipfs-go
 LICENSE=	MIT APACHE20
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	ipfs-go>=0:sysutils/ipfs-go
+RUN_DEPENDS=	ipfs-go>0:sysutils/ipfs-go
 
 NO_BUILD=	yes
 NO_MTREE=	yes
