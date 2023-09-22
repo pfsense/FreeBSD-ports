@@ -2,14 +2,98 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-	<name>ipfs-go</name>
-	<version>%%PKGVERSION%%</version>
-	<title>IPFS Settings</title>
+	<copyright>
+		<![CDATA[
+		/*
+		* node_exporter.xml
+		*
+		* part of pfSense (https://www.pfsense.org)
+		* Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
+		* All rights reserved.
+		*
+		* Licensed under the Apache License, Version 2.0 (the "License");
+		* you may not use this file except in compliance with the License.
+		* You may obtain a copy of the License at
+		*
+		* http://www.apache.org/licenses/LICENSE-2.0
+		*
+		* Unless required by applicable law or agreed to in writing, software
+		* distributed under the License is distributed on an "AS IS" BASIS,
+		* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		* See the License for the specific language governing permissions and
+		* limitations under the License.
+		*/
+		]]>
+	</copyright>
+	<title>ipfs</title>
+	<name>ipfs</name>
 	<include_file>/usr/local/pkg/ipfs.inc</include_file>
 	<menu>
 		<name>IPFS</name>
+		<tooltiptext>Setup IPFS daemon settings</tooltiptext>
 		<section>Services</section>
-		<configfile>ipfs.xml</configfile>
-		<url>/packages/ipfs/ipfs.php</url>
+		<url>/pkg_edit.php?xml=ipfs.xml</url>
 	</menu>
+	<service>
+		<name>ipfs</name>
+		<rcfile>ipfs.sh</rcfile>
+		<executable>ipfs-go</executable>
+		<description>ipfs</description>
+	</service>
+	<fields>
+		<field>
+			<fielddescr>Enable daemon</fielddescr>
+			<fieldname>enable</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>listen_iface</fieldname>
+			<type>interfaces_selection</type>
+			<description>Pick an interface to serve the metrics endpoint on.</description>
+			<hideinterfaceregex>wan</hideinterfaceregex>
+		</field>
+		<field>
+			<fielddescr>Listen port</fielddescr>
+			<fieldname>listen_port</fieldname>
+			<type>input</type>
+			<description>Pick the port to serve the metrics endpoint on.</description>
+		</field>
+
+		<field>
+			<fielddescr>Collectors</fielddescr>
+			<fieldname>collectors</fieldname>
+			<description>Select enabled collectors. Those marked with (*) are the default set.</description>
+			<type>select</type>
+			<multiple />
+			<size>15</size>
+			<options>
+				<option><name>boottime (*)</name><value>boottime</value></option>
+				<option><name>buddyinfo</name><value>buddyinfo</value></option>
+				<option><name>cpu (*)</name><value>cpu</value></option>
+				<option><name>exec (*)</name><value>exec</value></option>
+				<option><name>filesystem (*)</name><value>filesystem</value></option>
+				<option><name>loadavg (*)</name><value>loadavg</value></option>
+				<option><name>meminfo (*)</name><value>meminfo</value></option>
+				<option><name>netdev (*)</name><value>netdev</value></option>
+				<option><name>ntp</name><value>ntp</value></option>
+				<option><name>runit</name><value>runit</value></option>
+				<option><name>supervisord</name><value>supervisord</value></option>
+				<option><name>textfile (*)</name><value>textfile</value></option>
+				<option><name>time (*)</name><value>time</value></option>
+				<option><name>devstat</name><value>devstat</value></option>
+			</options>
+		</field>
+
+		<field>
+			<fielddescr>Extra flags</fielddescr>
+			<fieldname>extra_flags</fieldname>
+			<type>input</type>
+			<description>Extra flags to pass</description>
+		</field>
+	</fields>
+	<custom_php_validation_command>node_exporter_validate_form($_POST, $input_errors);</custom_php_validation_command>
+	<custom_php_resync_config_command>node_exporter_sync_config();</custom_php_resync_config_command>
+	<custom_php_pre_deinstall_command>node_exporter_deinstall_command();</custom_php_pre_deinstall_command>
+	<custom_php_install_command>node_exporter_install_command();</custom_php_install_command>
 </packagegui>
