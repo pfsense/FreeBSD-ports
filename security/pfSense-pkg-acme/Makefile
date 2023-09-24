@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.9
+PORTVERSION=	0.10
 PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
@@ -30,6 +30,7 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme/deploy
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/acme
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
