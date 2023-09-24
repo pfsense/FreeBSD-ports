@@ -5,7 +5,7 @@
 	<copyright>
 		<![CDATA[
 		/*
-		* node_exporter.xml
+		* ipfs.xml
 		*
 		* part of pfSense (https://www.pfsense.org)
 		* Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
@@ -36,9 +36,9 @@
 	</menu>
 	<service>
 		<name>ipfs</name>
-		<rcfile>ipfs.sh</rcfile>
+		<rcfile>ipfs-go.sh</rcfile>
 		<executable>ipfs-go</executable>
-		<description>ipfs</description>
+		<description>IPFS daemon</description>
 	</service>
 	<fields>
 		<field>
@@ -50,50 +50,18 @@
 			<fielddescr>Interface</fielddescr>
 			<fieldname>listen_iface</fieldname>
 			<type>interfaces_selection</type>
-			<description>Pick an interface to serve the metrics endpoint on.</description>
+			<description>Pick an interface for the Gateway to listen on</description>
 			<hideinterfaceregex>wan</hideinterfaceregex>
 		</field>
 		<field>
 			<fielddescr>Listen port</fielddescr>
 			<fieldname>listen_port</fieldname>
 			<type>input</type>
-			<description>Pick the port to serve the metrics endpoint on.</description>
-		</field>
-
-		<field>
-			<fielddescr>Collectors</fielddescr>
-			<fieldname>collectors</fieldname>
-			<description>Select enabled collectors. Those marked with (*) are the default set.</description>
-			<type>select</type>
-			<multiple />
-			<size>15</size>
-			<options>
-				<option><name>boottime (*)</name><value>boottime</value></option>
-				<option><name>buddyinfo</name><value>buddyinfo</value></option>
-				<option><name>cpu (*)</name><value>cpu</value></option>
-				<option><name>exec (*)</name><value>exec</value></option>
-				<option><name>filesystem (*)</name><value>filesystem</value></option>
-				<option><name>loadavg (*)</name><value>loadavg</value></option>
-				<option><name>meminfo (*)</name><value>meminfo</value></option>
-				<option><name>netdev (*)</name><value>netdev</value></option>
-				<option><name>ntp</name><value>ntp</value></option>
-				<option><name>runit</name><value>runit</value></option>
-				<option><name>supervisord</name><value>supervisord</value></option>
-				<option><name>textfile (*)</name><value>textfile</value></option>
-				<option><name>time (*)</name><value>time</value></option>
-				<option><name>devstat</name><value>devstat</value></option>
-			</options>
-		</field>
-
-		<field>
-			<fielddescr>Extra flags</fielddescr>
-			<fieldname>extra_flags</fieldname>
-			<type>input</type>
-			<description>Extra flags to pass</description>
+			<description>Pick the port for the Gateway to listen on</description>
 		</field>
 	</fields>
-	<custom_php_validation_command>node_exporter_validate_form($_POST, $input_errors);</custom_php_validation_command>
-	<custom_php_resync_config_command>node_exporter_sync_config();</custom_php_resync_config_command>
-	<custom_php_pre_deinstall_command>node_exporter_deinstall_command();</custom_php_pre_deinstall_command>
-	<custom_php_install_command>node_exporter_install_command();</custom_php_install_command>
+	<custom_php_validation_command>ipfs_validate_form($_POST, $input_errors);</custom_php_validation_command>
+	<custom_php_resync_config_command>ipfs_sync_config();</custom_php_resync_config_command>
+	<custom_php_pre_deinstall_command>ipfs_deinstall_command();</custom_php_pre_deinstall_command>
+	<custom_php_install_command>ipfs_install_command();</custom_php_install_command>
 </packagegui>
