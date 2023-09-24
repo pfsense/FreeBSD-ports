@@ -8,7 +8,7 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
+MAINTAINER=	pfsense@c0rporation.com
 COMMENT=	pfSense package ipfs-go
 
 LICENSE=	MIT APACHE20
