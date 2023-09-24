@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.7.5
+PORTVERSION=	0.8.5
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -29,6 +29,7 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme/deploy
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/acme
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
@@ -53,6 +54,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/pkg_acme_tabs.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/deploy/*.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/deploy
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_*.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/acme/acme_accountkeys.php \

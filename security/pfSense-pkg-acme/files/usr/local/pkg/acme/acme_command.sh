@@ -77,6 +77,19 @@ if ($command == "importcert") {
 					acme_xmlrpc_restart_service($servicename, $extras);
 				}
 			}
+			if ($action['method'] == "deployhook") {
+				syslog(LOG_NOTICE, "Acme, Running deploy hook {$action['deployhookscript']}");
+				$envvariables = array();
+				foreach (preg_split("/\R/", base64_decode($action['deployhookenvironment'])) as $line) {
+					$array = explode("=", $line);
+					if (count($array) > 1) {
+						$key = $array[0];
+						if (!str_starts_with($key, "#"))
+							$envvariables[$key] = implode("=", array_slice($array, 1));
+					}
+				}
+				deploy_certificate($certificatename, $action['deployhookscript'], $envvariables);
+			}
 		}
 	}
 	return;
