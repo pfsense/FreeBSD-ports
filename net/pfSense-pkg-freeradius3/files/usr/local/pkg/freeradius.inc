@@ -89,7 +89,8 @@ function freeradius_deinstall_command() {
 	}
 
 	/* Remove package settings from config if 'Keep Settings' is disabled */
-	if (!config_path_enabled('installedpackages/freeradiussettings/config/0/', 'keep_settings')) {
+	if (config_path_enabled('installedpackages/freeradiussettings/config/0/', 'keep_settings') &&
+	    empty(config_get_path('installedpackages/freeradiussettings/config/0/keep_settings'))) {
 		$uninstall = array(
 			'installedpackages/freeradius',
 			'installedpackages/freeradiusauthorizedmacs',
