@@ -1318,6 +1318,9 @@ pkg_upgrade() {
 
 			# Cleanup possible crash report from PHP upgrade
 			rm -f /tmp/PHP_errors.log
+
+			# Clean up .pkgsave files
+			find / -name \*.pkgsave -delete
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 3
