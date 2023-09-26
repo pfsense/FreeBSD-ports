@@ -34,7 +34,6 @@ do-build:
 do-install:
 	${MKDIR} "${STAGEDIR}/conf.default" "${STAGEDIR}/cf/conf"
 	${INSTALL_DATA} ${WRKSRC}/config.xml ${STAGEDIR}/conf.default/
-	${MKDIR} ${STAGEDIR}/cf/conf
 	${TOUCH} ${STAGEDIR}/cf/conf/enableserial_force
 
 .include <bsd.port.mk>
