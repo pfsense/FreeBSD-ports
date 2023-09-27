@@ -187,14 +187,14 @@
 bin/captiveportal_gather_stats.php
 bin/dhcpd_gather_stats.php
 @(,,755) bin/easyrule
-bin/filterparser.php
+@(,,755) bin/filterparser.php
 bin/iftop_parse.awk
 @(,,755) bin/iftop_parser.sh
-bin/ipsec_keepalive.php
-bin/mail.php
-bin/notify_monitor.php
-bin/parser_dhcpv6_leases_tester.php
-bin/parser_ipv6_tester.php
+@(,,755) bin/ipsec_keepalive.php
+@(,,755) bin/mail.php
+@(,,755) bin/notify_monitor.php
+@(,,755) bin/parser_dhcpv6_leases_tester.php
+@(,,755) bin/parser_ipv6_tester.php
 bin/parser_readme.md
 @(,,755) bin/pfSlogcat
 @(,,755) bin/ping_hosts.sh
@@ -257,7 +257,7 @@ sbin/openvpn_connect_async.php
 sbin/prefixes.php
 @(,,755) sbin/read_global_var
 @(,,755) sbin/read_xml_tag.sh
-sbin/show_filter_reload_status.php
+@(,,755) sbin/show_filter_reload_status.php
 @(,,755) sbin/strongswanrc
 @(,,755) sbin/ufslabels.sh
 @(,,755) sbin/vpn-linkdown
