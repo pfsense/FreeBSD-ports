@@ -99,6 +99,7 @@ NO_CHECKSUM=yes
 
 SUB_FILES=	pkg-post-install
 SUB_LIST=	PRODUCT_NAME=${PRODUCT_NAME}
+PKGPOSTINSTALL=	${WRKDIR}/pkg-post-install
 
 .include <bsd.port.pre.mk>
 
