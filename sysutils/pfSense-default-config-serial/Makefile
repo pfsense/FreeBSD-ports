@@ -29,7 +29,7 @@ do-build:
 	${MV} "${WRKSRC}/config.xml.tmp" "${WRKSRC}/config.xml"
 
 do-install:
-	${MKDIR} ${STAGEDIR}/conf.default
+	${MKDIR} "${STAGEDIR}/conf.default" "${STAGEDIR}/cf/conf"
 	${INSTALL_DATA} ${WRKSRC}/config.xml ${STAGEDIR}/conf.default/
 	${TOUCH} ${STAGEDIR}/cf/conf/enableserial_force
 
