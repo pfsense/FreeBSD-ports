@@ -3,7 +3,7 @@ DISTVERSION=	${PRODUCT_VERSION}
 CATEGORIES=	security
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT?=	Meta package to install pfSense required ports
+COMMENT?=	Main pfSense package
 
 LICENSE=	APACHE20
 
