@@ -13,10 +13,7 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	xmlstarlet>0:textproc/xmlstarlet
 NO_MTREE=	yes
 
-PLIST_FILES=	/conf.default/config.xml \
-		/cf/conf/enableserial_force \
-		"@dir /cf" \
-		"@dir /cf/conf"
+PLIST_FILES=	/conf.default/config.xml /cf/conf/enableserial_force
 
 XML_ROOTOBJ=	pfsense
 
@@ -32,7 +29,7 @@ do-build:
 	${MV} "${WRKSRC}/config.xml.tmp" "${WRKSRC}/config.xml"
 
 do-install:
-	${MKDIR} "${STAGEDIR}/conf.default" "${STAGEDIR}/cf/conf"
+	${MKDIR} ${STAGEDIR}/conf.default
 	${INSTALL_DATA} ${WRKSRC}/config.xml ${STAGEDIR}/conf.default/
 	${TOUCH} ${STAGEDIR}/cf/conf/enableserial_force
 
