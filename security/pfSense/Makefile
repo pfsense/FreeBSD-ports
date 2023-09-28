@@ -97,6 +97,9 @@ GL_COMMIT=	${PFSENSE_COMMITHASH}
 MASTER_SITE_BACKUP=
 NO_CHECKSUM=yes
 
+SUB_FILES=	pkg-post-install
+SUB_LIST=	PRODUCT_NAME=${PRODUCT_NAME}
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64"
