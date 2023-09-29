@@ -573,9 +573,9 @@ www/services_ntpd_gps.php
 www/services_ntpd_pps.php
 www/services_pppoe.php
 www/services_pppoe_edit.php
+www/services_radvd.php
 www/services_rfc2136.php
 www/services_rfc2136_edit.php
-www/services_router_advertisements.php
 www/services_snmp.php
 www/services_unbound.php
 www/services_unbound_acls.php
