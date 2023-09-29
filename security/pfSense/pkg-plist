@@ -101,6 +101,7 @@
 /etc/phpshellsessions/svc
 /etc/phpshellsessions/uninstallpkg
 /etc/phpshellsessions/upgradeconfig
+/etc/platform
 @(,,755) /etc/rc.backup_aliastables.sh
 @(,,755) /etc/rc.backup_captiveportal.sh
 @(,,755) /etc/rc.backup_dhcpleases.sh
