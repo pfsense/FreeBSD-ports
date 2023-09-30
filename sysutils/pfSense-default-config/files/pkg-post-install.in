@@ -12,4 +12,7 @@ if [ ! -d "${PKG_ROOTDIR}/cf/conf/backup" ]; then
 	mkdir "${PKG_ROOTDIR}/cf/conf/backup"
 fi
 
+FLAVOR="%%FLAVOR%%"
+echo "${FLAVOR}" > "${PKG_ROOTDIR}/etc/default-config-flavor"
+
 exit 0

@@ -13,6 +13,11 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	xmlstarlet>0:textproc/xmlstarlet
 NO_MTREE=	yes
 
+FILESDIR=	${.CURDIR}/../pfSense-default-config/files
+SUB_FILES=	pkg-post-install
+SUB_LIST=	FLAVOR=
+PKGPOSTINSTALL=	${WRKDIR}/pkg-post-install
+
 PLIST_FILES=	/conf.default/config.xml /cf/conf/enableserial_force
 
 XML_ROOTOBJ=	pfsense

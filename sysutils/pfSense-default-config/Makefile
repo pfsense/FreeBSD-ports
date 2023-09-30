@@ -12,6 +12,10 @@ LICENSE=	APACHE20
 
 NO_MTREE=	yes
 
+SUB_FILES=	pkg-post-install
+SUB_LIST=	FLAVOR=
+PKGPOSTINSTALL=	${WRKDIR}/pkg-post-install
+
 PLIST_FILES=	/conf.default/config.xml
 
 do-build:
