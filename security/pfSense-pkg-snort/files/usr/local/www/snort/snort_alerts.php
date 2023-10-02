@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2022 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -168,23 +168,23 @@ elseif (isset($_POST['id']))
 if (empty($instanceid) || !is_numericint($instanceid))
 	$instanceid = 0;
 
-$a_instance = config_get_path('installedpackages/snortglobal/rule', []);
-$snort_uuid = $a_instance[$instanceid]['uuid'];
-$if_real = get_real_interface($a_instance[$instanceid]['interface']);
+$a_instance = config_get_path("installedpackages/snortglobal/rule/{$instanceid}", []);
+$snort_uuid = $a_instance['uuid'];
+$if_real = get_real_interface($a_instance['interface']);
 
 // Load up the arrays of force-enabled and force-disabled SIDs
-$enablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
-$disablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_off']);
+$enablesid = snort_load_sid_mods($a_instance['rule_sid_on']);
+$disablesid = snort_load_sid_mods($a_instance['rule_sid_off']);
 
 // Load up the arrays of forced-alert, forced-drop or forced-reject
 // rules as applicable to the current IPS mode.
-if ($a_instance[$instanceid]['blockoffenders7'] == 'on' && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
-	$alertsid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_force_alert']);
-	$dropsid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_force_drop']);
+if ($a_instance['blockoffenders7'] == 'on' && $a_instance['ips_mode'] == 'ips_mode_inline') {
+	$alertsid = snort_load_sid_mods($a_instance['rule_sid_force_alert']);
+	$dropsid = snort_load_sid_mods($a_instance['rule_sid_force_drop']);
 
 	// REJECT forcing is only applicable to Inline IPS Mode
-	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' ) {
-		$rejectsid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_force_reject']);
+	if ($a_instance['ips_mode'] == 'ips_mode_inline' ) {
+		$rejectsid = snort_load_sid_mods($a_instance['rule_sid_force_reject']);
 	}
 }
 
@@ -330,13 +330,13 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 	if (!$input_errors) {
 		/* Add the new entry to the Suppress List and signal Snort to reload config */
 		if (snort_add_supplist_entry($suppress)) {
-			snort_reload_config($a_instance[$instanceid]);
+			snort_reload_config($a_instance);
 			$savemsg = $success;
 			/* Give Snort a couple seconds to reload the configuration */
 			sleep(2);
 		}
 		else
-			$input_errors[] = gettext("Suppress List '{$a_instance[$instanceid]['suppresslistname']}' is defined for this interface, but it could not be found!");
+			$input_errors[] = gettext("Suppress List '{$a_instance['suppresslistname']}' is defined for this interface, but it could not be found!");
 	}
 }
 
@@ -347,12 +347,12 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 
 	// See if the target SID is in our list of modified SIDs,
 	// and toggle it if present.
-	if (isset($enablesid[$gid][$sid]))
-		unset($enablesid[$gid][$sid]);
-	if (isset($disablesid[$gid][$sid]))
-		unset($disablesid[$gid][$sid]);
-	elseif (!isset($disablesid[$gid][$sid]))
-		$disablesid[$gid][$sid] = "disablesid";
+	array_del_path($enablesid, "{$gid}/{$sid}");
+	if (array_get_path($disablesid, "{$gid}/{$sid}")) {
+		array_del_path($disablesid, "{$gid}/{$sid}");
+	} else {
+		array_set_path($disablesid, "{$gid}/{$sid}", 'disablesid');
+	}
 
 	// Write the updated enablesid and disablesid values to the config file.
 	$tmp = "";
@@ -363,9 +363,9 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_on'] = $tmp;
+		$a_instance['rule_sid_on'] = $tmp;
 	else				
-		unset($a_instance[$instanceid]['rule_sid_on']);
+		unset($a_instance['rule_sid_on']);
 
 	$tmp = "";
 	foreach (array_keys($disablesid) as $k1) {
@@ -375,23 +375,24 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	$tmp = rtrim($tmp, "||");
 
 	if (!empty($tmp))
-		$a_instance[$instanceid]['rule_sid_off'] = $tmp;
+		$a_instance['rule_sid_off'] = $tmp;
 	else				
-		unset($a_instance[$instanceid]['rule_sid_off']);
+		unset($a_instance['rule_sid_off']);
 
 	/* Update the config.xml file. */
-	write_config("Snort pkg: modified state for rule {$gid}:{$sid}");
+	config_set_path("installedpackages/snortglobal/rule/{$instanceid}", $a_instance);
+	write_config("Snort pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 	/*************************************************/
 	/* Update the snort.conf file and rebuild the    */
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	snort_generate_conf($a_instance[$instanceid]);
+	snort_generate_conf($a_instance);
 	$rebuild_rules = false;
 
 	/* Soft-restart Snort to live-load the new rules */
-	snort_reload_config($a_instance[$instanceid]);
+	snort_reload_config($a_instance);
 
 	/* Give Snort a couple seconds to reload the configuration */
 	sleep(2);
@@ -451,9 +452,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_alert'] = $tmp;
+			$a_instance['rule_sid_force_alert'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_alert']);
+			unset($a_instance['rule_sid_force_alert']);
 
 		$tmp = "";
 		foreach (array_keys($dropsid) as $k1) {
@@ -463,9 +464,9 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_drop'] = $tmp;
+			$a_instance['rule_sid_force_drop'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_drop']);
+			unset($a_instance['rule_sid_force_drop']);
 
 		$tmp = "";
 		foreach (array_keys($rejectsid) as $k1) {
@@ -475,23 +476,24 @@ if (isset($_POST['rule_action_save']) && $_POST['mode'] == "toggle_action" && is
 		$tmp = rtrim($tmp, "||");
 
 		if (!empty($tmp))
-			$a_instance[$instanceid]['rule_sid_force_reject'] = $tmp;
+			$a_instance['rule_sid_force_reject'] = $tmp;
 		else
-			unset($a_instance[$instanceid]['rule_sid_force_reject']);
+			unset($a_instance['rule_sid_force_reject']);
 
 		/* Update the config.xml file. */
-		write_config("Snort pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
+		config_set_path("installedpackages/snortglobal/rule/{$instanceid}", $a_instance);
+		write_config("Snort pkg: User-forced rule action override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance['interface']}.");
 
 		/*************************************************/
 		/* Update the snort.conf file and rebuild the    */
 		/* rules for this interface.                     */
 		/*************************************************/
 		$rebuild_rules = true;
-		snort_generate_conf($a_instance[$instanceid]);
+		snort_generate_conf($a_instance);
 		$rebuild_rules = false;
 
 		/* Signal Snort to live-load the new rules */
-		snort_reload_config($a_instance[$instanceid]);
+		snort_reload_config($a_instance);
 
 		// Sync to configured CARP slaves if any are enabled
 		snort_sync_on_changes();
@@ -540,11 +542,11 @@ if ($_POST['download']) {
 }
 
 // Load up an array with the current Suppression List GID,SID values
-$supplist = snort_load_suppress_sigs($a_instance[$instanceid], true);
+$supplist = snort_load_suppress_sigs($a_instance, true);
 
 // Load up an array with the configured Snort interfaces
 $interfaces = array();
-foreach ($a_instance as $id => $instance) {
+foreach (config_get_path('installedpackages/snortglobal/rule', []) as $id => $instance) {
 	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']) . " (" . get_real_interface($instance['interface']) . ")";
 }
 
@@ -876,7 +878,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* Protocol */
 			$alert_proto = $fields[5];
 			/* Action */
-			if (isset($fields[13]) && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders7'] == 'on') {
+			if (isset($fields[13]) && $a_instance['ips_mode'] == 'ips_mode_inline' && $a_instance['blockoffenders7'] == 'on') {
 
 				switch ($fields[13]) {
 
@@ -1016,7 +1018,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			}
 
 			/* Add icon for toggling rule action if applicable to current mode */
-			if ($a_instance[$instanceid]['blockoffenders7'] == 'on' && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+			if ($a_instance['blockoffenders7'] == 'on' && $a_instance['ips_mode'] == 'ips_mode_inline') {
 				$sid_action_link = "<i class=\"fa fa-pencil-square-o icon-pointer text-info\" onClick=\"toggleAction('{$fields[1]}', '{$fields[2]}');\"";
 				$sid_action_link .= ' title="' . gettext("Click to force a different action for this rule.") . '"></i>';
 			}
@@ -1059,7 +1061,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 </div>
 </div>
 
-<?php if ($a_instance[$instanceid]['blockoffenders7'] == 'on') : ?>
+<?php if ($a_instance['blockoffenders7'] == 'on') : ?>
 	<!-- Modal Rule SID action selector window -->
 	<div class="modal fade" role="dialog" id="sid_action_selector">
 		<div class="modal-dialog">
@@ -1082,7 +1084,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_drop" value="action_drop"> <span class = "label label-danger">DROP</span>
 					</label>
 
-			<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders7'] == 'on') : ?>
+			<?php if ($a_instance['ips_mode'] == 'ips_mode_inline' && $a_instance['blockoffenders7'] == 'on') : ?>
 					<label class="radio-inline">
 						<input type="radio" form="formalert" name="ruleActionOptions" id="action_reject" value="action_reject"> <span class = "label label-warning">REJECT</span>
 					</label>
