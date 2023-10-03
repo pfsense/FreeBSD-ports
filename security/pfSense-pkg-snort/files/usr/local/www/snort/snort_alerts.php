@@ -274,7 +274,7 @@ if ($_POST['filterlogentries_clear']) {
 if ($_POST['save']) {
 	config_set_path('installedpackages/snortglobal/alertsblocks/arefresh', $_POST['arefresh'] ? 'on' : 'off');
 	config_set_path('installedpackages/snortglobal/alertsblocks/alertnumber', $_POST['alertnumber']);
-	config_set_path('installedpackages/snortglobal/rule', $a_instance);
+	config_set_path("installedpackages/snortglobal/rule/{$instanceid}", $a_instance);
 	write_config("Snort pkg: updated ALERTS tab settings.");
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;
