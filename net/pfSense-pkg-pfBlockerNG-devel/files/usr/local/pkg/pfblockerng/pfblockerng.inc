@@ -83,6 +83,7 @@ $pfb['errlog']		= "{$pfb['logdir']}/error.log";
 $pfb['pyerrlog']	= "{$pfb['logdir']}/py_error.log";
 $pfb['extraslog']	= "{$pfb['logdir']}/extras.log";
 $pfb['dnsbl_parse_err']	= "{$pfb['logdir']}/dnsbl_parsed_error.log";
+$pfb['whitelistlog']	= "{$pfb['logdir']}/whitelist.log";
 
 $pfb['master']		= "{$pfb['dbdir']}/masterfile";
 $pfb['supptxt']		= "{$pfb['dbdir']}/pfbsuppression.txt";
@@ -1138,7 +1139,7 @@ function pfb_log_mgmt() {
 	$chroot_folder = '/var/unbound';
 
 	foreach (array(	'log', 'errlog', 'extraslog', 'ip_blocklog', 'ip_permitlog', 'ip_matchlog',
-			'dnslog', 'dnsbl_parse_err', 'dnsreplylog', 'unilog') as $logtype) {
+			'dnslog', 'dnsbl_parse_err', 'dnsreplylog', 'unilog', 'whitelistlog') as $logtype) {
 
 		// Max lines in Log file
 		$logmax = pfb_filter($pfb['config']['log_max_' . $logtype], PFB_FILTER_NUM, 'pfb_log_mgmt', 20000);
@@ -1227,6 +1228,12 @@ function pfb_logger($log, $logtype) {
 		// Print to Error log
 		case 6:
 			@file_put_contents("{$pfb['errlog']}", "{$elog}", FILE_APPEND);
+			break;
+
+		// Print to pfBlockerNG log and Whitelist log
+		case 7:
+			@file_put_contents("{$pfb['log']}", "{$log}", FILE_APPEND);
+			@file_put_contents("{$pfb['whitelistlog']}", "{$log}", FILE_APPEND);
 			break;
 		default:
 			break;
@@ -8342,8 +8349,9 @@ function sync_package_pfblockerng($cron='') {
 								$e_replace = array( '||', '.^', '^' );
 
 								// Convert wildcards to regular expressions
+								// The asterisk must not match any of the field limiters we use
 								$w_search = array( '\\*', '\\-' );
-								$w_replace = array('[^\",[:space:]]*', '-' );  // * must not match any of the field limiters we use
+								$w_replace = array( '[^",[:space:]]*', '-' );
 
 								// Variables for parsing Adblock-style lists
 								$adblock = FALSE;
@@ -8924,7 +8932,7 @@ function sync_package_pfblockerng($cron='') {
 
 		if ($postprocess) {
 			$log = "\n===[  DNSBL Postprocess  ]============================================\n";
-			pfb_logger("{$log}", 1);
+			pfb_logger("{$log}", 7);
 
 			exec("{$pfb['script']} dnsbl_assemble_whitelistfile unused unused unused {$elog}");
 
@@ -8932,7 +8940,7 @@ function sync_package_pfblockerng($cron='') {
 			foreach ($postprocess_dnsbl as $header_esc) {
 
 				$log = "\n[ ${header_esc} ]${logtab} Processing Whitelist\n";
-				pfb_logger("{$log}", 1);
+				pfb_logger("{$log}", 7);
 
 				// Bypass TOP1M whitelist, if user configured
 				$pfb_alexa = 'Disabled';

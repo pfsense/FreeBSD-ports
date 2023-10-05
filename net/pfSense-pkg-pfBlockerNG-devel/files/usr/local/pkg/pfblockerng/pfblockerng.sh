@@ -48,6 +48,7 @@ masterfile=/var/db/pfblockerng/masterfile
 mastercat=/var/db/pfblockerng/mastercat
 geoiplog=/var/log/pfblockerng/geoip.log
 errorlog=/var/log/pfblockerng/error.log
+whitelistlog=/var/log/pfblockerng/whitelist.log
 dnsbl_file=/var/unbound/pfb_dnsbl
 
 # Folder Locations
@@ -484,7 +485,8 @@ dnsbl_remove_whitelisted() {
 				fi	
 			fi
 
-			echo "  Whitelist (user-defined): ${data}"
+			echo "  Whitelist (user-defined): ${data}" | tee -a "${whitelistlog}"
+			echo "  Whitelist count (user-defined): ${countw}" | tee -a "${whitelistlog}"
 			mv -f "${pfbdomain}${alias}.bk" "${pfbdomain}${alias}.txt"
 		else
 			rm -f "${pfbdomain}${alias}.bk"
@@ -507,21 +509,26 @@ dnsbl_remove_whitelisted() {
 			if [ "${countwl}" -gt 0 ]; then
 				if [ "${dedup}" == '' ]; then
 					data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk ${pfbdomain}${alias}.txt | \
-						cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+						cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq)"
 				else
 					data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk ${pfbdomain}${alias}.txt | \
-						cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
+						cut -d ',' -f2 | sort | uniq)"
 				fi
 
 				if [ -z "${data}" ]; then
 					if [ "${dedup}" == '' ]; then
-						data="$(cut -d '"' -f2 ${pfbdomain}${alias}.txt | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+						data="$(cut -d '"' -f2 ${pfbdomain}${alias}.txt | cut -d ' ' -f1 | sort | uniq)"
 					else
-						data="$(cut -d ',' -f2 ${pfbdomain}${alias}.txt | sort | uniq | tr '\n' '|')"
+						data="$(cut -d ',' -f2 ${pfbdomain}${alias}.txt | sort | uniq)"
 					fi
 				fi
 
-				echo "  Whitelist (DNSBL): ${data}"
+				echo "  Whitelist count (DNSBL): ${countwl}" | tee -a "${whitelistlog}"
+				echo "  Whitelist domains (DNSBL): [" >> "${whitelistlog}"
+				for i in ${data}; do
+					echo "      $i" >> "${whitelistlog}"
+				done
+				echo "  ]"  >> "${whitelistlog}"
 				mv -f "${pfbdomain}${alias}.bk" "${pfbdomain}${alias}.txt"
 			else
 				rm -f "${pfbdomain}${alias}.bk"
@@ -535,8 +542,8 @@ dnsbl_remove_whitelisted() {
 
 	countf="$(grep -c ^ ${pfbdomain}${alias}.txt)"
 	countwtotal="$((countw + countwl))"
-	echo "  Whitelist (total count): ${countwtotal}"
-	echo "  Final domain count: ${countf}"
+	echo "  Whitelist count (total): ${countwtotal}" | tee -a "${whitelistlog}"
+	echo "  Final domain count: ${countf}" | tee -a "${whitelistlog}"
 }
 
 dnsbl_cleanup_whitelistfile() {
