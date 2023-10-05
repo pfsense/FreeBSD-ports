@@ -8340,12 +8340,14 @@ function sync_package_pfblockerng($cron='') {
 
 								// Variables for Adblock-style lists
 								$e_replace = array( '||', '.^', '^' );
+
+								// Convert wildcards to regular expressions
 								$w_search = array( '\\*', '\\-' );
-								$w_replace = array( '.*', '-' );
+								$w_replace = array('[^\",[:space:]]*', '-' );  // * must not match any of the field limiters we use
 
 								// Variables for parsing Adblock-style lists
 								$adblock = FALSE;
-								$whitelist_data = array();
+								$whitelist_data = '';
 
 								$run_once = $csv_parser = FALSE;
 								$csv_type = '';
@@ -8353,8 +8355,9 @@ function sync_package_pfblockerng($cron='') {
 
 								// Parse downloaded file for Domain names
 								if (($fhandle = @fopen("{$file_dwn}.orig", 'r')) !== FALSE) {
-									if (($dhandle = @fopen("{$pfbfolder}/{$header}.bk", 'w')) !== FALSE) {
-										while (($line = @fgets($fhandle)) !== FALSE) {
+									if (($dhandle = @fopen("{$pfbfolder}/{$header}.bk", 'w')) !== FALSE &&
+										($whandle = @fopen("{$pfbfolder}/{$header}.wk", 'w')) !== FALSE) {
+											while (($line = @fgets($fhandle)) !== FALSE) {
 
 											// Collect original line
 											$oline = $line;
@@ -8397,10 +8400,14 @@ function sync_package_pfblockerng($cron='') {
 												}
 
 												// Not a valid domain name entry for blacklisting (no support for wildcards) -- skipt it
-												if (!$adblock_exclusion && (
-														strpos($line, '$') !== FALSE ||
-														strpos($line, '*') !== FALSE ||
-														strpos($line, '/') !== FALSE)) {
+												if (!$adblock_exclusion && 
+													strpos($line, '*') !== FALSE) {
+													continue;
+												}
+												
+												// Not valid for either black or whitelisting
+												if (strpos($line, '$') !== FALSE ||
+													strpos($line, '/') !== FALSE) {
 													continue;
 												}
 
@@ -8413,8 +8420,23 @@ function sync_package_pfblockerng($cron='') {
 
 												if ($adblock_exclusion) {
 													// Quote for Regular Expression, except * and -
-													$whitelist_line = "[\".]" . str_replace($w_search, $w_replace, preg_quote($line)) . " 60";
-													$whitelist_data[] = $whitelist_line;
+													$line = str_replace($w_search, $w_replace, preg_quote($line));
+
+													// Safeguarding, but should never happen
+													if (empty($line)) {
+														continue;
+													}
+
+													if ($pfb['dnsbl_py_blacklist']) {
+														$whitelist_data = "[,.]{$line},,";
+													}
+													else {
+														$whitelist_data = "[\".]{$line} 60";
+													}
+
+													// Signal postprocessing for whitelists is needed
+													$postprocess = TRUE;
+													@fwrite($whandle, "{$whitelist_data}\n");
 													continue;
 												}
 
@@ -8738,21 +8760,8 @@ function sync_package_pfblockerng($cron='') {
 									if ($dhandle) {
 										@fclose($dhandle);
 									}
-
-									// Save Whitelist
-									if (!empty($whitelist_data)) {
-										sort($whitelist_data);
-										$postprocess = TRUE;
-										if (($whandle = @fopen("{$pfbfolder}/{$header}.wk", 'w')) !== FALSE) {
-											foreach ($whitelist_data as $whitelist_line) {
-												// Currently we only support domain names without wildcards
-												@fwrite($whandle, "{$whitelist_line}\n");
-											}
-										}
-
-										if ($whandle) {
-											@fclose($whandle);
-										}
+									if ($whandle) {
+										@fclose($whandle);
 									}
 								}
 								if ($fhandle) {
@@ -8917,6 +8926,8 @@ function sync_package_pfblockerng($cron='') {
 			$log = "\n===[  DNSBL Postprocess  ]============================================\n";
 			pfb_logger("{$log}", 1);
 
+			exec("{$pfb['script']} dnsbl_assemble_whitelistfile unused unused unused {$elog}");
+
 			// Process Whitelists
 			foreach ($postprocess_dnsbl as $header_esc) {
 
@@ -8940,6 +8951,8 @@ function sync_package_pfblockerng($cron='') {
 				// Call script to process DNSBL Whitelisting
 				exec("{$pfb['script']} dnsbl_remove_whitelisted {$header_esc} {$pfb_alexa} {$dup_mode} {$elog}");
 			}
+
+			exec("{$pfb['script']} dnsbl_cleanup_whitelistfile unused unused unused {$elog}");
 		}
 
 		$alias_cnt = 0;

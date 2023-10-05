@@ -80,7 +80,8 @@ matchfile=/tmp/pfbtemp7_$rvar
 tempmatchfile=/tmp/pfbtemp8_$rvar
 domainmaster=/tmp/pfbtemp9_$rvar
 asntemp=/tmp/pfbtemp10_$rvar
-tempwhitelistfile=/tmp/pfbtemp11_$rvar
+
+dnsbl_whitelist=/tmp/dnsbl_whitelist
 
 dnsbl_tld_remove=/tmp/dnsbl_tld_remove
 
@@ -402,6 +403,8 @@ dnsbl_scrub() {
 
 	# Sort and count the AdBlock exclusions
 	if [ -s "${pfbdomain}${alias}.wk" ]; then
+		sort "${pfbdomain}${alias}.wk" | uniq > "${pfbdomain}${alias}.wk2"
+		mv -f "${pfbdomain}${alias}.wk2" "${pfbdomain}${alias}.wk"
 		countw="$(grep -c ^ ${pfbdomain}${alias}.wk)"
 	else
 		countw=0
@@ -448,6 +451,13 @@ dnsbl_scrub() {
 	echo '  ----------------------------------------------------------------------'
 }
 
+dnsbl_assemble_whitelistfile() {
+	# Process all Whitelist files
+	if [ "$(ls -A ${pfbdomain}*.whitelist 2>/dev/null)" ]; then
+		find "${pfbdomain}"*.whitelist | xargs cat | sort | uniq > "${dnsbl_whitelist}"
+	fi
+}
+
 # Remove Whitelisted Domains and Sub-Domains, if configured
 dnsbl_remove_whitelisted() {
 
@@ -484,14 +494,13 @@ dnsbl_remove_whitelisted() {
 	fi
 	
 	# Process all Whitelist files
-	if [ -s "${pfbdomain}${alias}.txt" ] && [ "$(ls -A ${pfbdomain}*.whitelist 2>/dev/null)" ]; then
-		find "${pfbdomain}"*.whitelist | xargs cat | sort | uniq > "${tempwhitelistfile}"
+	if [ -s "${pfbdomain}${alias}.txt" ] && [ -s "${dnsbl_whitelist}" ]; then
 
 		# Only execute if whitelist temp file contains data.
-		query_size="$(grep -c ^ ${tempwhitelistfile})"
+		query_size="$(grep -c ^ ${dnsbl_whitelist})"
 		if [ "${query_size}" -gt 0 ]; then
 			countf="$(grep -c ^ ${pfbdomain}${alias}.txt)"
-			/usr/local/bin/ggrep -vEi -f "${tempwhitelistfile}" "${pfbdomain}${alias}.txt" > "${pfbdomain}${alias}.bk"
+			/usr/local/bin/ggrep -vEi -f "${dnsbl_whitelist}" "${pfbdomain}${alias}.txt" > "${pfbdomain}${alias}.bk"
 			countx="$(grep -c ^ ${pfbdomain}${alias}.bk)"
 			countwl="$((countf - countx))"
 
@@ -520,8 +529,6 @@ dnsbl_remove_whitelisted() {
 		else 
 			countwl=0
 		fi
-
-		rm -f "${tempwhitelistfile}"
 	else
 		countwl=0
 	fi
@@ -530,6 +537,10 @@ dnsbl_remove_whitelisted() {
 	countwtotal="$((countw + countwl))"
 	echo "  Whitelist (total count): ${countwtotal}"
 	echo "  Final domain count: ${countf}"
+}
+
+dnsbl_cleanup_whitelistfile() {
+	rm -f "${dnsbl_whitelist}"
 }
 
 # Function to process TLD
@@ -1375,8 +1386,14 @@ case "${1}" in
 	dnsbl_scrub)
 		dnsbl_scrub
 		;;
+	dnsbl_assemble_whitelistfile)
+		dnsbl_assemble_whitelistfile
+		;;
 	dnsbl_remove_whitelisted)
 		dnsbl_remove_whitelisted
+		;;
+	dnsbl_cleanup_whitelistfile)
+		dnsbl_cleanup_whitelistfile
 		;;
 	domaintld)
 		domaintld
