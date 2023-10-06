@@ -2420,7 +2420,7 @@ function pfb_unbound_python_whitelist($mode='') {
 	global $pfb;
 	pfb_global();
 
-	$dnsbl_whitelist = '';
+	$dnsbl_whitelist = array();
 	$dnsbl_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE, TRUE);
 	if (!empty($dnsbl_white)) {
 		foreach ($dnsbl_white as $key => $line) {
@@ -2439,18 +2439,60 @@ function pfb_unbound_python_whitelist($mode='') {
 				// 1 = wildcard
 				if (substr($line, 0, 1) == '.') {
 					$line = ltrim($line, '.');
-					$dnsbl_whitelist .= "{$line},1\n";
+					$dnsbl_whitelist[] = ",{$line},,1,DNSBL_WHITELIST,USER,1";
 				} else {
-					$dnsbl_whitelist .= "{$line},0\n";
+					$dnsbl_whitelist[] = ",{$line},,1,DNSBL_WHITELIST,USER,0";
 				}
 			}
 		}
 	}
 
+	if (file_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt")) {
+		if (($handle = @fopen("{$pfb['dbdir']}/pfbalexawhitelist.txt", 'r')) !== FALSE) {
+			while (($line = @fgets($handle)) !== FALSE) {
+				if (!empty($line)) {
+					// Already processed -- no need to re-test for TLDs
+					$csvline = str_getcsv($line);
+					$domain = empty($csvline[0]) ? $csvline[1] : $csvline[0];
+	
+					// 0 = literal
+					// 1 = wildcard
+					if (substr($domain, 0, 1) == '.') {
+						$domain = ltrim($domain, '.');
+						$dnsbl_whitelist[] = ",{$domain},,1,DNSBL_WHITELIST,TOP1M,1";
+					} else {
+						$dnsbl_whitelist[] = ",{$domain},,1,DNSBL_WHITELIST,TOP1M,0";
+					}
+				}
+			}
+		}
+		if ($handle) {
+			@fclose($handle);
+		}
+	}
+
+	$whitelist_files = glob("{$pfb['dnsdir']}/*.whitelist");
+	foreach($whitelist_files as $file) {
+		if (($handle = @fopen($file, 'r')) !== FALSE) {
+			while (($line = @fgets($handle)) !== FALSE) {
+				if (!empty($line)) {
+					$alias = substr(basename($file), 0, -10);
+					$csvline = str_getcsv($line);
+					$dnsbl_whitelist[] = ",{$csvline[0]},,1,DNSBL_WHITELIST,{$alias},{$csvline[1]}";
+				}
+			}
+		}
+		if ($handle) {
+			@fclose($handle);
+		}
+	}
+
+	$result = implode("\n", $dnsbl_whitelist);
+
 	if ($mode == 'alerts') {
-		@file_put_contents($pfb['unbound_py_wh'], $dnsbl_whitelist, LOCK_EX);
+		@file_put_contents($pfb['unbound_py_wh'], $result, LOCK_EX);
 	} else {
-		return $dnsbl_whitelist;
+		return $result;
 	}
 }
 

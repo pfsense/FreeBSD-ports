@@ -204,14 +204,14 @@ def init_standard(id, env):
     # Initialize dicts/lists
     dataDB = defaultdict(list)
     regexDataDB = defaultdict(list)
+    whiteDB = defaultdict(list)
+    regexWhiteDB = defaultdict(list)
     zoneDB = defaultdict(list)
     dnsblDB = defaultdict(list)
     safeSearchDB = defaultdict(list)
     feedGroupIndexDB = defaultdict(list)
 
     regexDB = defaultdict(str)
-    whiteDB = defaultdict(str)
-    regexWhiteDB = defaultdict(str)
     hstsDB = defaultdict(str)
     gpListDB = defaultdict(str)
     noAAAADB = defaultdict(str)
@@ -386,7 +386,7 @@ def init_standard(id, env):
                     with open(pfb['pfb_py_data']) as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         for row in csv_reader:
-                            if row and len(row) >= 6:
+                            if row and len(row) == 7:
                                 # Query Feed/Group/index
                                 isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
 
@@ -401,7 +401,7 @@ def init_standard(id, env):
                                 else:
                                     final_index = isInFeedGroupDB
 
-                                if len(row) == 6 or row[6] == '0':
+                                if row[6] == '0':
                                     dataDB[row[1]] = {'log': row[3], 'index': final_index}
                                 else:
                                     regexDataDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
@@ -415,29 +415,33 @@ def init_standard(id, env):
                     sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_data'], e))
                     pass
 
-            # Clear temporary Feed/Group/Index list
-            feedGroupDB.clear()
-
             if pfb['python_blacklist']:
 
-                # Collect user-defined Whitelist
+                # Collect user-defined Whitelist, TOP1M and downloaded Whitelists
                 if os.path.isfile(pfb['pfb_py_whitelist']):
                     try:
                         with open(pfb['pfb_py_whitelist']) as csv_file:
                             csv_reader = csv.reader(csv_file, delimiter=',')
                             for row in csv_reader:
-                                wildcard = False
-                                regex = False
-                                if row and len(row) == 2:
-                                    if row[1] == '1':
-                                        wildcard = True
-                                    elif row[1] == '2':
-                                        regex = True
+                                if row and len(row) == 7:
+                                    # Query Feed/Group/index
+                                    isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
 
-                                    if regex:
-                                        regexWhiteDB[row[0]] = re.compile(row[0])
+                                    # Add Feed/Group/index
+                                    if isInFeedGroupDB is None:
+                                        feedGroupDB[row[4] + row[5]] = feedGroup_index
+                                        feedGroupIndexDB[feedGroup_index] = {'feed': row[4], 'group': row[5]}
+                                        final_index = feedGroup_index
+                                        feedGroup_index += 1
+
+                                    # Use existing Feed/Group/index
                                     else:
-                                        whiteDB[row[0]] = wildcard
+                                        final_index = isInFeedGroupDB
+
+                                    if row[6] == '2':
+                                        regexWhiteDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
+                                    else:
+                                        whiteDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': row[6] == '1'}
 
                                     pfb['whiteDB'] = True
                                     pfb['regexWhiteDB'] = True
@@ -458,6 +462,9 @@ def init_standard(id, env):
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_hsts'], e))
                         pass
+            
+            # Clear temporary Feed/Group/Index list
+            feedGroupDB.clear()
 
             # Validate SQLite3 database connections
             if pfb['mod_sqlite3']:
@@ -515,6 +522,15 @@ def pfb_regex_data_match(q_name):
 
     if q_name:
         for k,v in regexDataDB.items():
+            if v['regex'].search(q_name):
+                return k
+    return False
+
+def pfb_regex_whitelist_match(q_name):
+    global regexWhiteDB
+
+    if q_name:
+        for k,v in regexWhiteDB.items():
             if v['regex'].search(q_name):
                 return k
     return False
@@ -1126,7 +1142,7 @@ def inform_super(id, qstate, superqstate, qdata):
     return True
 
 def operate(id, event, qstate, qdata):
-    global pfb, threads, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB
+    global pfb, threads, dataDB, zoneDB, regexDataDB, hstsDB, whiteDB, regexWhiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB
 
     qstate_valid = False
     try:
@@ -1547,8 +1563,22 @@ def operate(id, event, qstate, qdata):
                                if isDomainInWhitelist is not None:
                                     isInWhitelist = True
 
+                            if isInWhitelist:
+                                isDomainInWhitelistData = whiteDB[isDomainInWhitelist]
+
+                                log_type = isDomainInWhitelistData['log']
+
+                                # Collect Feed/Group
+                                feedGroup = feedGroupIndexDB.get(isDomainInWhitelistData['index'])
+                                if feedGroup is not None:
+                                    feed = feedGroup['feed']
+                                    group = feedGroup['group']
+
+                                b_type = 'DNSBL'
+                                b_eval = q_name
+
                             # Determine TLD segment matches
-                            if not isInWhitelist:
+                            else:
                                 q = w_q_name.split('.', 1)
                                 q = q[-1]
                                 for x in range(q.count('.') +1, 0, -1):
@@ -1562,6 +1592,25 @@ def operate(id, event, qstate, qdata):
                                         else:
                                             q = q.split('.', 1)
                                             q = q[-1]
+                    
+                    # Validate domain in DNSBL Domain Name Regex
+                    if isFound and not isInWhitelist:
+                        isDomainInWhitelistRegexData = pfb_regex_whitelist_match(q_name)
+                        if isDomainInWhitelistRegexData:
+                            isDomainInWhitelistData = regexWhiteDB[isDomainInRegexData]
+
+                            #print q_name + ' data: ' + str(isDomainInWhitelistData) 
+                            isInWhitelist = True
+                            log_type = isDomainInWhitelistData['log']
+
+                            # Collect Feed/Group
+                            feedGroup = feedGroupIndexDB.get(isDomainInWhitelistData['index'])
+                            if feedGroup is not None:
+                                feed = feedGroup['feed']
+                                group = feedGroup['group']
+
+                            b_type = 'DNSBL'
+                            b_eval = q_name
 
                     # Add domain to excludeDB to skip subsequent blacklist validation
                     if not isFound or isInWhitelist:
