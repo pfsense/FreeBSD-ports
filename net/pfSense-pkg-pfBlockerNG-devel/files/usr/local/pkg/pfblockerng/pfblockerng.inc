@@ -8480,13 +8480,13 @@ function sync_package_pfblockerng($cron='') {
 
 														if (strpos($line, '*') !== FALSE) {
 															// Quote for Regular Expression, except * and -
-															$line = str_replace($w_search, $w_replace_py, preg_quote($line));
+															$line = strtolower(str_replace($w_search, $w_replace_py, preg_quote($line)));
 															// 2 = regular expression flag
 															$whitelist_data = "(?:^|\\.){$line},2\n";
 														} 
 														else {
 															// Remove leading/trailing dots
-															$line = trim(trim($line), '.');
+															$line = strtolower(trim(trim($line), '.'));
 
 															// Skip empty lines
 															if (empty($line)) {
@@ -8509,7 +8509,7 @@ function sync_package_pfblockerng($cron='') {
 													}
 													else {
 														// Quote for Regular Expression, except * and -
-														$line = str_replace($w_search, $w_replace, preg_quote($line));
+														$line = strtolower(str_replace($w_search, $w_replace, preg_quote($line)));
 
 														// Safeguarding, but should never happen
 														if (empty($line)) {
@@ -8529,9 +8529,9 @@ function sync_package_pfblockerng($cron='') {
 												if($pfb['dnsbl_py_blacklist']) {
 													if (strpos($line, '*') !== FALSE) {
 														// Quote for Regular Expression, except * and -
-														$line = str_replace($w_search, $w_replace_py, preg_quote($line));
-														// 1 = regular expression flag
-														$domain_data = ",(?:^|\\.){$line},,{$logging_type},{$header},{$alias},1\n";
+														$line = strtolower(str_replace($w_search, $w_replace_py, preg_quote($line)));
+														// 2 = regular expression flag
+														$domain_data = ",(?:^|\\.){$line},,{$logging_type},{$header},{$alias},2\n";
 
 														@fwrite($dhandle, $domain_data);
 														continue;
@@ -8841,8 +8841,10 @@ function sync_package_pfblockerng($cron='') {
 											// For DNSBL python, save domain and Logging type
 											if ($pfb['dnsbl_py_blacklist']) {
 												// 0 = literal flag
+												// 1 = wildcard
+												$wildcard = $adblock ? 1 : 0;
 												$domain_data = ',' . strtolower($line)
-													. ",,{$logging_type},{$header},{$alias},0\n";
+													. ",,{$logging_type},{$header},{$alias},{$wildcard}\n";
 											}
 											else {
 												$ipv6_dnsbl = "\n";

@@ -401,10 +401,10 @@ def init_standard(id, env):
                                 else:
                                     final_index = isInFeedGroupDB
 
-                                if row[6] == '0':
-                                    dataDB[row[1]] = {'log': row[3], 'index': final_index}
-                                else:
+                                if row[6] == '2':
                                     regexDataDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
+                                else:
+                                    dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': row[6] == '1'}
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_data'], row))
 
@@ -1454,22 +1454,54 @@ def operate(id, event, qstate, qdata):
                     if pfb['python_blocking']:
 
                         # Determine if domain is in DNSBL 'data' database (log to dnsbl.log)
-                        isDomainInData = False
                         if pfb['dataDB']:
-                            isDomainInData = dataDB.get(q_name)
-                            if isDomainInData is not None:
-                                #print q_name + ' data: ' + str(isDomainInData) 
-                                isFound = True
-                                log_type = isDomainInData['log']
+                            # Create list of Domain/CNAMES to be validated against Blacklist
+                            blacklist_validate = []
+                            blacklist_validate.append(q_name)
 
-                                # Collect Feed/Group
-                                feedGroup = feedGroupIndexDB.get(isDomainInData['index'])
-                                if feedGroup is not None:
-                                    feed = feedGroup['feed']
-                                    group = feedGroup['group']
+                            if isCNAME:
+                                blacklist_validate.append(q_name_original)
 
-                                b_type = 'DNSBL'
-                                b_eval = q_name
+                            for w_q_name in blacklist_validate:
+
+                                # Determine full domain match
+                                isDomainInData = dataDB.get(w_q_name)
+                                if isDomainInData is not None:
+                                    #print q_name + ' data: ' + str(isDomainInData) 
+                                    isFound = True
+                                elif w_q_name.startswith('www.'):
+                                   isDomainInData = dataDB.get(w_q_name[4:])
+                                   if isDomainInData is not None:
+                                        isFound = True
+
+                                # Determine TLD segment matches
+                                if not isFound:
+                                    q = w_q_name.split('.', 1)
+                                    q = q[-1]
+                                    for x in range(q.count('.') +1, 0, -1):
+                                        if x >= pfb['python_tld_seg']:
+                                            isDomainInData = dataDB.get(q)
+
+                                            # Determine if domain is a wildcard blacklist entry
+                                            if isDomainInData is not None and isDomainInData['wildcard']:
+                                                isFound = True
+                                                break
+                                            else:
+                                                q = q.split('.', 1)
+                                                q = q[-1]
+
+                                # Set log data, if we got a match
+                                if isFound:
+                                    log_type = isDomainInData['log']
+
+                                    # Collect Feed/Group
+                                    feedGroup = feedGroupIndexDB.get(isDomainInData['index'])
+                                    if feedGroup is not None:
+                                        feed = feedGroup['feed']
+                                        group = feedGroup['group']
+
+                                    b_type = 'DNSBL'
+                                    b_eval = q_name
 
                         # Determine if domain is in DNSBL 'zone' database (log to dnsbl.log)
                         if not isFound and pfb['zoneDB']:
@@ -1563,22 +1595,8 @@ def operate(id, event, qstate, qdata):
                                if isDomainInWhitelist is not None:
                                     isInWhitelist = True
 
-                            if isInWhitelist:
-                                isDomainInWhitelistData = whiteDB[isDomainInWhitelist]
-
-                                log_type = isDomainInWhitelistData['log']
-
-                                # Collect Feed/Group
-                                feedGroup = feedGroupIndexDB.get(isDomainInWhitelistData['index'])
-                                if feedGroup is not None:
-                                    feed = feedGroup['feed']
-                                    group = feedGroup['group']
-
-                                b_type = 'DNSBL'
-                                b_eval = q_name
-
                             # Determine TLD segment matches
-                            else:
+                            if not isInWhitelist:
                                 q = w_q_name.split('.', 1)
                                 q = q[-1]
                                 for x in range(q.count('.') +1, 0, -1):
@@ -1586,18 +1604,31 @@ def operate(id, event, qstate, qdata):
                                         isDomainInWhitelist = whiteDB.get(q)
 
                                         # Determine if domain is a wildcard whitelist entry
-                                        if isDomainInWhitelist is not None and isDomainInWhitelist:
+                                        if isDomainInWhitelist is not None and isDomainInWhitelist['wildcard']:
                                             isInWhitelist = True
                                             break
                                         else:
                                             q = q.split('.', 1)
                                             q = q[-1]
+
+                            # Set log data, if we got a match
+                            if isInWhitelist:
+                                log_type = isDomainInWhitelist['log']
+
+                                # Collect Feed/Group
+                                feedGroup = feedGroupIndexDB.get(isDomainInWhitelist['index'])
+                                if feedGroup is not None:
+                                    feed = feedGroup['feed']
+                                    group = feedGroup['group']
+
+                                b_type = 'DNSBL'
+                                b_eval = q_name
                     
                     # Validate domain in DNSBL Domain Name Regex
-                    if isFound and not isInWhitelist:
+                    if isFound and not isInWhitelist and pfb['regexDataDB']:
                         isDomainInWhitelistRegexData = pfb_regex_whitelist_match(q_name)
                         if isDomainInWhitelistRegexData:
-                            isDomainInWhitelistData = regexWhiteDB[isDomainInRegexData]
+                            isDomainInWhitelistData = regexWhiteDB[isDomainInWhitelistRegexData]
 
                             #print q_name + ' data: ' + str(isDomainInWhitelistData) 
                             isInWhitelist = True
