@@ -74,7 +74,7 @@ except Exception as e:
 
 
 def init_standard(id, env):
-    global pfb, rcodeDB, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB, maxmindReader
+    global pfb, rcodeDB, dataDB, zoneDB, regexDataDB, regexDB, hstsDB, whiteDB, regexWhiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB, maxmindReader
 
     if not register_inplace_cb_reply(inplace_cb_reply, env, id):
         log_info('[pfBlockerNG]: Failed register_inplace_cb_reply')
@@ -150,11 +150,13 @@ def init_standard(id, env):
     pfb['dnsbl_ipv4'] = ''
     pfb['dnsbl_ipv6'] = ''
     pfb['dataDB'] = False
+    pfb['regexDataDB'] = False
     pfb['zoneDB'] = False
     pfb['hstsDB'] = False
     pfb['whiteDB'] = False
     pfb['regexDB'] = False
     pfb['whiteDB'] = False
+    pfb['regexWhiteDB'] = False
     pfb['gpListDB'] = False
     pfb['noAAAADB'] = False
     pfb['python_idn'] = False
@@ -201,6 +203,7 @@ def init_standard(id, env):
 
     # Initialize dicts/lists
     dataDB = defaultdict(list)
+    regexDataDB = defaultdict(list)
     zoneDB = defaultdict(list)
     dnsblDB = defaultdict(list)
     safeSearchDB = defaultdict(list)
@@ -208,6 +211,7 @@ def init_standard(id, env):
 
     regexDB = defaultdict(str)
     whiteDB = defaultdict(str)
+    regexWhiteDB = defaultdict(str)
     hstsDB = defaultdict(str)
     gpListDB = defaultdict(str)
     noAAAADB = defaultdict(str)
@@ -382,7 +386,7 @@ def init_standard(id, env):
                     with open(pfb['pfb_py_data']) as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         for row in csv_reader:
-                            if row and len(row) == 6:
+                            if row and len(row) >= 6:
                                 # Query Feed/Group/index
                                 isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
 
@@ -397,11 +401,15 @@ def init_standard(id, env):
                                 else:
                                     final_index = isInFeedGroupDB
 
-                                dataDB[row[1]] = {'log': row[3], 'index': final_index}
+                                if len(row) == 6 or row[6] == '0':
+                                    dataDB[row[1]] = {'log': row[3], 'index': final_index}
+                                else:
+                                    regexDataDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_data'], row))
 
                         pfb['dataDB'] = True
+                        pfb['regexDataDB'] = True
                         pfb['python_blacklist'] = True
                 except Exception as e:
                     sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_data'], e))
@@ -418,13 +426,21 @@ def init_standard(id, env):
                         with open(pfb['pfb_py_whitelist']) as csv_file:
                             csv_reader = csv.reader(csv_file, delimiter=',')
                             for row in csv_reader:
+                                wildcard = False
+                                regex = False
                                 if row and len(row) == 2:
                                     if row[1] == '1':
                                         wildcard = True
+                                    elif row[1] == '2':
+                                        regex = True
+
+                                    if regex:
+                                        regexWhiteDB[row[0]] = re.compile(row[0])
                                     else:
-                                        wildcard = False
-                                    whiteDB[row[0]] = wildcard
+                                        whiteDB[row[0]] = wildcard
+
                                     pfb['whiteDB'] = True
+                                    pfb['regexWhiteDB'] = True
                                 else:
                                     sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_whitelist'], row))
 
@@ -491,6 +507,15 @@ def pfb_regex_match(q_name):
     if q_name:
         for k,r in regexDB.items():
             if r.search(q_name):
+                return k
+    return False
+
+def pfb_regex_data_match(q_name):
+    global regexDataDB
+
+    if q_name:
+        for k,v in regexDataDB.items():
+            if v['regex'].search(q_name):
                 return k
     return False
 
@@ -1452,6 +1477,25 @@ def operate(id, event, qstate, qdata):
                                 else:
                                     q = q.split('.', 1)
                                     q = q[-1]
+                        
+                        # Block via Domain Name Regex
+                        if not isFound and pfb['regexDataDB']:
+                            isDomainInRegexData = pfb_regex_data_match(q_name)
+                            if isDomainInRegexData:
+                                isDomainInData = regexDataDB[isDomainInRegexData]
+
+                                #print q_name + ' data: ' + str(isDomainInData) 
+                                isFound = True
+                                log_type = isDomainInData['log']
+
+                                # Collect Feed/Group
+                                feedGroup = feedGroupIndexDB.get(isDomainInData['index'])
+                                if feedGroup is not None:
+                                    feed = feedGroup['feed']
+                                    group = feedGroup['group']
+
+                                b_type = 'DNSBL'
+                                b_eval = q_name
 
                     # Validate other python methods, if not blocked via DNSBL zone/data
                     if not isFound:

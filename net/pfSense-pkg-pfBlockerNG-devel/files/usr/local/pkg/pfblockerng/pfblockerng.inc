@@ -2435,6 +2435,8 @@ function pfb_unbound_python_whitelist($mode='') {
 				}
 				$tld_segments = @min((array((substr_count($line, '.') +1), $tld_segments) ?: 1));
 
+				// 0 = literal
+				// 1 = wildcard
 				if (substr($line, 0, 1) == '.') {
 					$line = ltrim($line, '.');
 					$dnsbl_whitelist .= "{$line},1\n";
@@ -8352,10 +8354,12 @@ function sync_package_pfblockerng($cron='') {
 								// The asterisk must not match any of the field limiters we use
 								$w_search = array( '\\*', '\\-' );
 								$w_replace = array( '[^",[:space:]]*', '-' );
+								$w_replace_py = array( '[^"\\x2c\\s]*', '-' );
 
 								// Variables for parsing Adblock-style lists
 								$adblock = FALSE;
 								$whitelist_data = '';
+								$adblock_raw = FALSE;
 
 								$run_once = $csv_parser = FALSE;
 								$csv_type = '';
@@ -8407,8 +8411,9 @@ function sync_package_pfblockerng($cron='') {
 													continue;
 												}
 
-												// Not a valid domain name entry for blacklisting (no support for wildcards) -- skipt it
-												if (!$adblock_exclusion && 
+												// Not a valid domain name entry for blacklisting in Unbound mode -- skip it!
+												if (!$pfb['dnsbl_py_blacklist'] && 
+													!$adblock_exclusion && 
 													strpos($line, '*') !== FALSE) {
 													continue;
 												}
@@ -8426,26 +8431,69 @@ function sync_package_pfblockerng($cron='') {
 													continue;
 												}
 
+												// Special handling for whitelist entries
 												if ($adblock_exclusion) {
-													// Quote for Regular Expression, except * and -
-													$line = str_replace($w_search, $w_replace, preg_quote($line));
-
-													// Safeguarding, but should never happen
-													if (empty($line)) {
-														continue;
-													}
 
 													if ($pfb['dnsbl_py_blacklist']) {
-														$whitelist_data = "[,.]{$line},,";
+
+														if (strpos($line, '*') !== FALSE) {
+															// Quote for Regular Expression, except * and -
+															$line = str_replace($w_search, $w_replace_py, preg_quote($line));
+															// 2 = regular expression flag
+															$whitelist_data = "(?:^|\\.){$line},2\n";
+														} 
+														else {
+															// Remove leading/trailing dots
+															$line = trim(trim($line), '.');
+
+															// Skip empty lines
+															if (empty($line)) {
+																continue;
+															}
+
+															// Domain Validation
+															if (empty(pfb_filter($line, PFB_FILTER_DOMAIN, 'DNSBL_Download'))) {
+															
+																// Log invalid Domains
+																if (!isset($dnsbl_skip[$line])) {
+																	pfb_parsed_fail($header, $line, $oline, $pfb['dnsbl_parse_err']);
+																}
+																continue;
+															}
+
+															// 1 = wildcard
+															$whitelist_data = "{$line},1\n";
+														}
 													}
 													else {
-														$whitelist_data = "[\".]{$line} 60";
+														// Quote for Regular Expression, except * and -
+														$line = str_replace($w_search, $w_replace, preg_quote($line));
+
+														// Safeguarding, but should never happen
+														if (empty($line)) {
+															continue;
+														}
+
+														$whitelist_data = "[\".]{$line} 60\n";
+														$postprocess = TRUE;
 													}
 
-													// Signal postprocessing for whitelists is needed
-													$postprocess = TRUE;
-													@fwrite($whandle, "{$whitelist_data}\n");
+													@fwrite($whandle, $whitelist_data);
 													continue;
+												}
+												
+												// Convert to regular expression for usage with Python
+												// Otherwise, let the normal processing continue
+												if($pfb['dnsbl_py_blacklist']) {
+													if (strpos($line, '*') !== FALSE) {
+														// Quote for Regular Expression, except * and -
+														$line = str_replace($w_search, $w_replace_py, preg_quote($line));
+														// 1 = regular expression flag
+														$domain_data = ",(?:^|\\.){$line},,{$logging_type},{$header},{$alias},1\n";
+
+														@fwrite($dhandle, $domain_data);
+														continue;
+													}
 												}
 
 												$lite    = TRUE;
@@ -8750,8 +8798,9 @@ function sync_package_pfblockerng($cron='') {
 
 											// For DNSBL python, save domain and Logging type
 											if ($pfb['dnsbl_py_blacklist']) {
+												// 0 = literal flag
 												$domain_data = ',' . strtolower($line)
-													. ",,{$logging_type},{$header},{$alias}\n";
+													. ",,{$logging_type},{$header},{$alias},0\n";
 											}
 											else {
 												$ipv6_dnsbl = "\n";

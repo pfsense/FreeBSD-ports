@@ -376,7 +376,7 @@ dnsbl_scrub() {
 	sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2"
 	countu="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
 
-	if [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
+	if ! [ "${dedup}" == 'python' ] && [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
 		find "${pfbdomain}"*.txt ! -name "${alias}.txt" | xargs cat > "${domainmaster}"
 
 		# Only execute awk command, if master domain file contains data.
@@ -386,8 +386,6 @@ dnsbl_scrub() {
 			# Unbound blocking mode dedup
 			if [ "${dedup}" == '' ]; then
 				awk 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
-
-			# Unbound python blocking mode dedup
 			else
 				awk -F',' 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
 			fi
@@ -412,7 +410,7 @@ dnsbl_scrub() {
 	fi
 
 	# Process TOP1M Whitelist
-	if [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
+	if ! [ "${dedup}" == 'python' ] && [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
 		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
 		/usr/local/bin/ggrep -vFi -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
 		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
@@ -462,7 +460,7 @@ dnsbl_assemble_whitelistfile() {
 # Remove Whitelisted Domains and Sub-Domains, if configured
 dnsbl_remove_whitelisted() {
 
-	if [ -s "${pfbdnsblsuppression}" ] && [ -s "${pfbdomain}${alias}.txt" ]; then
+	if ! [ "${dedup}" == 'python' ] && [ -s "${pfbdnsblsuppression}" ] && [ -s "${pfbdomain}${alias}.txt" ]; then
 		countf="$(grep -c ^ ${pfbdomain}${alias}.txt)"
 		/usr/local/bin/ggrep -vFi -f "${pfbdnsblsuppression}" "${pfbdomain}${alias}.txt" > "${pfbdomain}${alias}.bk"
 		countx="$(grep -c ^ ${pfbdomain}${alias}.bk)"
@@ -496,7 +494,7 @@ dnsbl_remove_whitelisted() {
 	fi
 	
 	# Process all Whitelist files
-	if [ -s "${pfbdomain}${alias}.txt" ] && [ -s "${dnsbl_whitelist}" ]; then
+	if ! [ "${dedup}" == 'python' ] && [ -s "${pfbdomain}${alias}.txt" ] && [ -s "${dnsbl_whitelist}" ]; then
 
 		# Only execute if whitelist temp file contains data.
 		query_size="$(grep -c ^ ${dnsbl_whitelist})"
