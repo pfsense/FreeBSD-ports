@@ -19,6 +19,8 @@
 # limitations under the License.
 
 from datetime import datetime
+from functools import wraps
+import traceback
 import logging
 import time
 import csv
@@ -72,7 +74,19 @@ except Exception as e:
     pfb['mod_sqlite3_e'] = e
     pass
 
+def exception_logger(func):
 
+    @wraps(func)
+    def _log(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except:
+            sys.stderr.write("[pfBlockerNG]: Exception caught: \n\t{}".format('\t'.join(traceback.format_exc().splitlines(True))))
+            raise
+
+    return _log
+
+@exception_logger
 def init_standard(id, env):
     global pfb, rcodeDB, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB, maxmindReader
 
@@ -212,9 +226,9 @@ def init_standard(id, env):
     gpListDB = defaultdict(str)
     noAAAADB = defaultdict(str)
     feedGroupDB = defaultdict(str)
-    excludeDB = []
-    excludeAAAADB = []
-    excludeSS = []
+    excludeDB = set()
+    excludeAAAADB = set()
+    excludeSS = set()
 
     # Read pfb_unbound.ini settings
     if os.path.isfile(pfb['pfb_unbound.ini']):
@@ -744,14 +758,19 @@ def write_sqlite(db, groupname, update):
 
     return True
 
+def format_b_type(b_type, q_type, isCNAME=False):
+    if isCNAME:
+        return '{}_CNAME_{}'.format(b_type, q_type)
+    else:
+        return '{}_{}'.format(b_type, q_type)
 
-def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
-    global pfb, rcodeDB, dnsblDB, noAAAADB, maxmindReader
 
-    if qstate and qstate is not None:
+
+def get_details_dnsbl(qstate, q_ip):
+    global pfb, dnsblDB
+
+    if qstate is not None and qstate:
         q_name = get_q_name_qstate(qstate)
-    elif qinfo and qinfo is not None:
-        q_name = get_q_name_qinfo(qinfo)
     else:
         return True
 
@@ -773,11 +792,8 @@ def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
 
         dupEntry = '+'
         lastEvent = dnsblDB.get('last-event')
-        if lastEvent is not None:
-            if str(lastEvent) == str(isDNSBL):
-                dupEntry = '-'
-            else:
-                dnsblDB['last-event'] = isDNSBL
+        if lastEvent is not None and lastEvent == isDNSBL:
+            dupEntry = '-'
         else:
             dnsblDB['last-event'] = isDNSBL
 
@@ -785,9 +801,7 @@ def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
         if isDNSBL['log'] == '2':
             return True
 
-        m_type = isDNSBL['b_type']
-
-        q_ip = get_q_ip_comm(kwargs)
+        q_ip = is_unknown(q_ip)
         if q_ip == 'Unknown':
             q_ip = '127.0.0.1'
 
@@ -799,18 +813,20 @@ def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
                 continue
             break
 
-        csv_line = ','.join('{}'.format(v) for v in ('DNSBL-python', timestamp, q_name, q_ip, isDNSBL['p_type'], isDNSBL['b_type'], isDNSBL['group'], isDNSBL['b_eval'], isDNSBL['feed'], dupEntry))
+        b_type = format_b_type(isDNSBL['b_type'], isDNSBL['q_type'], isDNSBL['isCNAME'])
+
+        csv_line = ','.join(str(v) for v in ('DNSBL-python', timestamp, q_name, q_ip, isDNSBL['p_type'], b_type, isDNSBL['group'], isDNSBL['b_eval'], isDNSBL['feed'], dupEntry))
         log_entry(csv_line, '/var/log/pfblockerng/dnsbl.log')
         log_entry(csv_line, '/var/log/pfblockerng/unified.log')
 
     return True
 
-
 def log_entry(line, log):
     for i in range(1,5):
         try:
             with open(log, 'a') as append_log:
-                append_log.write(line + '\n')
+                append_log.write(line)
+                append_log.write('\n')
         except Exception as e:
             if i == 4:
                 sys.stderr.write("[pfBlockerNG]: log_entry: {}: {}" .format(i, e))
@@ -996,7 +1012,7 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
             continue
         break
 
-    csv_line = ','.join('{}'.format(v) for v in ('DNS-reply', timestamp, m_type, o_type, q_type, ttl, q_name, q_ip, r_addr, iso_code))
+    csv_line = ','.join(str(v) for v in ('DNS-reply', timestamp, m_type, o_type, q_type, ttl, q_name, q_ip, r_addr, iso_code))
     log_entry(csv_line, '/var/log/pfblockerng/dns_reply.log')
     log_entry(csv_line, '/var/log/pfblockerng/unified.log')
 
@@ -1072,22 +1088,27 @@ def python_control_addbypass(duration, b_ip):
         pass
     return False
 
+@exception_logger
 def inplace_cb_reply(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('reply-x', qinfo, qstate, rep, kwargs)
     return True
 
+@exception_logger
 def inplace_cb_reply_cache(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('cache', qinfo, qstate, rep, kwargs)
     return True
 
+@exception_logger
 def inplace_cb_reply_local(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('local', qinfo, qstate, rep, kwargs)
     return True
 
+@exception_logger
 def inplace_cb_reply_servfail(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('servfail', qinfo, qstate, rep, kwargs)
     return True
 
+@exception_logger
 def deinit(id):
     global pfb, maxmindReader
 
@@ -1097,9 +1118,11 @@ def deinit(id):
     log_info('[pfBlockerNG]: pfb_unbound.py script exiting')
     return True
 
+@exception_logger
 def inform_super(id, qstate, superqstate, qdata):
     return True
 
+@exception_logger
 def operate(id, event, qstate, qdata):
     global pfb, threads, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB
 
@@ -1162,7 +1185,7 @@ def operate(id, event, qstate, qdata):
 
             # Add domain to excludeAAAADB to skip subsequent no AAAA validation 
             else:
-                excludeAAAADB.append(q_name_original)
+                excludeAAAADB.add(q_name_original)
 
 
         # SafeSearch Redirection validation
@@ -1235,7 +1258,7 @@ def operate(id, event, qstate, qdata):
 
             # Add domain to excludeSS to skip subsequent SafeSearch validation
             else:
-                excludeSS.append(q_name_original)
+                excludeSS.add(q_name_original)
 
         # Python_control - Receive TXT commands from pfSense local IP
         if qstate_valid and q_type == RR_TYPE_TXT and q_name_original.startswith('python_control.'):
@@ -1522,7 +1545,7 @@ def operate(id, event, qstate, qdata):
                     # Add domain to excludeDB to skip subsequent blacklist validation
                     if not isFound or isInWhitelist:
                         #print "Add to Pass: " + q_name 
-                        excludeDB.append(q_name)
+                        excludeDB.add(q_name)
 
                     # Domain to be blocked and is not whitelisted
                     if isFound and not isInWhitelist:
@@ -1555,56 +1578,65 @@ def operate(id, event, qstate, qdata):
 
                                 # print q_name + ' break'
 
-                        # Determine blocked IP type (DNSBL VIP vs Null Blocking)
-                        if not isInHsts:
-                            # A/AAAA RR_Types
-                            if q_type_str in pfb['rr_types2']:
-                                if log_type:
-                                    b_ip = pfb['dnsbl_ip'][q_type_str][log_type]
-                                else:
-                                    b_ip = pfb['dnsbl_ip'][q_type_str]['0']
-
-                            # All other RR_Types (use A RR_Type)
-                            else:
-                                if log_type:
-                                    b_ip = pfb['dnsbl_ip']['A'][log_type]
-                                else:
-                                    b_ip = pfb['dnsbl_ip']['A']['0']
-
-                            # print q_name + ' ' + str(qstate.qinfo.qtype) + ' ' + q_type_str
-
-                        else:
-                            if q_type_str in pfb['rr_types2']:
-                                b_ip = pfb['dnsbl_ip'][q_type_str]['0']
-                            else:
-                                b_ip = pfb['dnsbl_ip']['A']['0']
-
-
-                        # Add 'CNAME' suffix to Block type (CNAME Validation)
-                        if isCNAME:
-                            b_type = b_type + '_CNAME'
-                            q_name = q_name_original
-
-                        # Add q_type to b_type (Block type)
-                        b_type = b_type + '_' + q_type_str
-
                         # Skip subsequent DNSBL validation for domain, and add domain to dict for get_details_dnsbl function
-                        dnsblDB[q_name] = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                        dnsblDB[q_name] = {'qname': q_name, 'isCNAME': isCNAME, 'q_type': q_type_str, 'b_type': b_type, 'p_type': p_type, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                        
+                        # Add domain data to DNSBL cache for Reports tab
+                        write_sqlite(3, '', [format_b_type(b_type, q_type_str), q_name, group, b_eval, feed])
+                        
                         # Skip subsequent DNSBL validation for original domain (CNAME validation), and add domain to dict for get_details_dnsbl function
                         if isCNAME and dnsblDB.get(q_name_original) is None:
-                            dnsblDB[q_name_original] = {'qname': q_name_original, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                            dnsblDB[q_name_original] = {'qname': q_name_original, 'isCNAME': True, 'q_type': q_type_str, 'b_type': b_type, 'p_type': p_type, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
 
-                        # Add domain data to DNSBL cache for Reports tab
-                        write_sqlite(3, '', [b_type, q_name, group, b_eval, feed])
+                            # Add domain data to DNSBL cache for Reports tab
+                            write_sqlite(3, '', [format_b_type(b_type, q_type_str, True), q_name_original, group, b_eval, feed])
+
 
                 # Use previously blocked domain details
                 else:
-                    b_ip = isDomainInDNSBL['b_ip']
-                    b_type = isDomainInDNSBL['b_type']
+                    (p_type, log_type, feed, group, b_eval) = (
+                        isDomainInDNSBL['p_type'], 
+                        isDomainInDNSBL['log'], 
+                        isDomainInDNSBL['feed'], 
+                        isDomainInDNSBL['group'], 
+                        isDomainInDNSBL['b_eval'])
+                    if p_type.startswith('HSTS'):
+                        isInHsts = True
                     isFound = True
+
+                    if isDomainInDNSBL['q_type'] != q_type_str:
+                        # Update entry so it can be properly logged
+                        isDomainInDNSBL = isDomainInDNSBL.copy()
+                        isDomainInDNSBL['q_type'] = q_type_str
+                        dnsblDB[q_name] = isDomainInDNSBL
+
                     # print "v: " + q_name 
 
                 if isFound and not isInWhitelist:
+
+                    # Determine blocked IP type (DNSBL VIP vs Null Blocking)
+                    if not isInHsts:
+                        # A/AAAA RR_Types
+                        if q_type_str in pfb['rr_types2']:
+                            if log_type:
+                                b_ip = pfb['dnsbl_ip'][q_type_str][log_type]
+                            else:
+                                b_ip = pfb['dnsbl_ip'][q_type_str]['0']
+
+                        # All other RR_Types (use A RR_Type)
+                        else:
+                            if log_type:
+                                b_ip = pfb['dnsbl_ip']['A'][log_type]
+                            else:
+                                b_ip = pfb['dnsbl_ip']['A']['0']
+
+                        # print q_name + ' ' + str(qstate.qinfo.qtype) + ' ' + q_type_str
+
+                    else:
+                        if q_type_str in pfb['rr_types2']:
+                            b_ip = pfb['dnsbl_ip'][q_type_str]['0']
+                        else:
+                            b_ip = pfb['dnsbl_ip']['A']['0']
 
                     # Default RR_TYPE ANY -> A
                     if q_type == RR_TYPE_ANY:
@@ -1615,19 +1647,14 @@ def operate(id, event, qstate, qdata):
 
                     # Create FQDN Reply Message
                     msg = DNSMessage(qstate.qinfo.qname_str, q_type, RR_CLASS_IN, PKT_QR | PKT_RA)
-                    msg.answer.append("{}. 60 IN {} {}" .format(q_name, q_type_str, b_ip))
+                    msg.answer.append("{}. 60 IN {} {}".format(q_name_original, q_type_str, b_ip))
 
-                    msg.set_return_msg(qstate)
-                    if msg is None or not msg.set_return_msg(qstate):
+                    if not msg.set_return_msg(qstate):
                         qstate.ext_state[id] = MODULE_ERROR
                         return True
 
                     # Log entry
-                    kwargs = {'pfb_addr': q_ip}
-                    if qstate.return_msg:
-                        get_details_dnsbl('dnsbl', None, qstate, qstate.return_msg.rep, kwargs)
-                    else:
-                        get_details_dnsbl('dnsbl', None, qstate, None, kwargs)
+                    get_details_dnsbl(qstate, q_ip)
 
                     qstate.return_rcode = RCODE_NOERROR
                     qstate.return_msg.rep.security = 2
