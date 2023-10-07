@@ -216,9 +216,9 @@ def init_standard(id, env):
     gpListDB = defaultdict(str)
     noAAAADB = defaultdict(str)
     feedGroupDB = defaultdict(str)
-    excludeDB = []
-    excludeAAAADB = []
-    excludeSS = []
+    excludeDB = set()
+    excludeAAAADB = set()
+    excludeSS = set()
 
     # Read pfb_unbound.ini settings
     if os.path.isfile(pfb['pfb_unbound.ini']):
@@ -1203,7 +1203,7 @@ def operate(id, event, qstate, qdata):
 
             # Add domain to excludeAAAADB to skip subsequent no AAAA validation 
             else:
-                excludeAAAADB.append(q_name_original)
+                excludeAAAADB.add(q_name_original)
 
 
         # SafeSearch Redirection validation
@@ -1276,7 +1276,7 @@ def operate(id, event, qstate, qdata):
 
             # Add domain to excludeSS to skip subsequent SafeSearch validation
             else:
-                excludeSS.append(q_name_original)
+                excludeSS.add(q_name_original)
 
         # Python_control - Receive TXT commands from pfSense local IP
         if qstate_valid and q_type == RR_TYPE_TXT and q_name_original.startswith('python_control.'):
@@ -1646,7 +1646,9 @@ def operate(id, event, qstate, qdata):
                     # Add domain to excludeDB to skip subsequent blacklist validation
                     if not isFound or isInWhitelist:
                         #print "Add to Pass: " + q_name 
-                        excludeDB.append(q_name)
+                        excludeDB.add(q_name)
+                        if isCNAME:
+                            excludeDB.add(q_name_original)
 
                     # Domain to be blocked and is not whitelisted
                     if isFound and not isInWhitelist:
