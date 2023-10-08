@@ -29,13 +29,7 @@ import os
 global pfb
 pfb = {}
 
-if sys.version_info < (2, 8):
-    from ConfigParser import ConfigParser
-    pfb['py_v3'] = False
-else:
-    from configparser import ConfigParser
-    pfb['py_v3'] = True
-
+from configparser import ConfigParser
 from collections import defaultdict
 
 # Import additional python modules
@@ -591,10 +585,7 @@ def convert_ipv4(x):
 
     ipv4 = ''
     if x:
-        if pfb['py_v3']:
-            ipv4 = "{}.{}.{}.{}" .format(x[2], x[3], x[4], x[5])
-        else:
-            ipv4 = "{}.{}.{}.{}" .format(ord(x[2]), ord(x[3]), ord(x[4]), ord(x[5]))
+        ipv4 = "{}.{}.{}.{}" .format(x[2], x[3], x[4], x[5])
     return is_unknown(ipv4)
 
 
@@ -603,13 +594,8 @@ def convert_ipv6(x):
 
     ipv6 = ''
     if x:
-        if pfb['py_v3']:
-            ipv6 = "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}" \
-                .format(x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9],x[10],x[11],x[12],x[13],x[14],x[15],x[16],x[17])
-        else:
-            ipv6 = "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}" \
-                .format(ord(x[2]),ord(x[3]),ord(x[4]),ord(x[5]),ord(x[6]),ord(x[7]),ord(x[8]),ord(x[9]),ord(x[10]), \
-                ord(x[11]),ord(x[12]),ord(x[13]),ord(x[14]),ord(x[15]),ord(x[16]),ord(x[17]))
+        ipv6 = "{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}:{:02x}{:02x}" \
+            .format(x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9],x[10],x[11],x[12],x[13],x[14],x[15],x[16],x[17])
     return is_unknown(ipv6)
 
 
@@ -620,10 +606,7 @@ def convert_other(x):
     if x:
         for i in x[3:]:
 
-            if pfb['py_v3']:
-                val = i
-            else:
-                val = ord(i)
+            val = i
 
             if val == 0:
                 i = '|'
@@ -638,8 +621,7 @@ def convert_other(x):
             elif val <= 33 or val > 126:
                 continue
             else:
-                if pfb['py_v3']:
-                    i = chr(i)
+                i = chr(i)
 
             final += i
         final = final.strip('.|')
@@ -881,10 +863,7 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
                                 if pfb['mod_ipaddress']:
                                     r_addr = convert_ipv6(x)
                                     try:
-                                        if pfb['py_v3']:
-                                            r_addr = ipaddress.ip_address(r_addr).compressed
-                                        else:
-                                            r_addr = ipaddress.ip_address(unicode(r_addr)).compressed
+                                        r_addr = ipaddress.ip_address(r_addr).compressed
                                     except Exception as e:
                                         sys.stderr.write("[pfBlockerNG]: Failed to compress IPv6: {}, {}" .format(r_addr, e))
                                         pass
@@ -929,23 +908,15 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
 
     if pfb['python_maxmind'] and r_addr not in ('', 'Unknown', 'NXDOMAIN', 'NODATA', 'DNSSEC', 'SOA', 'NS'):
         try:
-            if pfb['py_v3']:
-                version = ipaddress.ip_address(r_addr).version
-            else:
-                version = ipaddress.ip_address(unicode(r_addr)).version
-
+            version = ipaddress.ip_address(r_addr).version
         except Exception as e:
             version = ''
             pass
 
         if version != '':
             try:
-                if pfb['py_v3']:
-                    isPrivate = ipaddress.ip_address(r_addr).is_private
-                    isLoopback = ipaddress.ip_address(r_addr).is_loopback
-                else:
-                    isPrivate = ipaddress.ip_address(unicode(r_addr)).is_private
-                    isLoopback = ipaddress.ip_address(unicode(r_addr)).is_loopback
+                isPrivate = ipaddress.ip_address(r_addr).is_private
+                isLoopback = ipaddress.ip_address(r_addr).is_loopback
 
                 if isPrivate:
                     iso_code = 'prv'
@@ -1281,10 +1252,7 @@ def operate(id, event, qstate, qdata):
 
                     elif control_command[1] == 'addbypass' or control_command[1] == 'removebypass':
                         b_ip = (control_command[2]).replace('-', '.')
-                        if pfb['py_v3']:
-                            isIPValid = ipaddress.ip_address(b_ip)
-                        else:
-                            isIPValid = ipaddress.ip_address(unicode(b_ip))
+                        isIPValid = ipaddress.ip_address(b_ip)
 
                         if isIPValid:
                             if not pfb['gpListDB']:
