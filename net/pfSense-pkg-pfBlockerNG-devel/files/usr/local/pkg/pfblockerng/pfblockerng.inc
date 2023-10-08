@@ -5307,7 +5307,7 @@ function pfb_collect_localhosts() {
 
 	// Collect static DHCP hostnames/IPs
 	foreach (config_get_path('dhcpd', []) as $dhcp) {
-		if (is_array($dhcp['staticmap'])) {
+		if (isset($dhcp['staticmap']) && is_array($dhcp['staticmap'])) {
 			foreach ($dhcp['staticmap'] as $smap) {
 				$local_hosts[$smap['ipaddr']] = strtolower("{$smap['hostname']}");
 			}
@@ -5316,7 +5316,7 @@ function pfb_collect_localhosts() {
 
 	// Collect static DHCPv6 hostnames/IPs
 	foreach (config_get_path('dhcpdv6', []) as $dhcpv6) {
-		if (is_array($dhcpv6['staticmap'])) {
+		if (isset($dhcpv6['staticmap']) && is_array($dhcpv6['staticmap'])) {
 			foreach ($dhcpv6['staticmap'] as $smap) {
 				$local_hosts[$smap['ipaddrv6']] = strtolower("{$smap['hostname']}");
 			}
