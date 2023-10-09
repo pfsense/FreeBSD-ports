@@ -8351,6 +8351,7 @@ function sync_package_pfblockerng($cron='') {
 												if (strpos($line, '[Adblock Plus ') !== FALSE ||
 												    strpos($line, '[Adblock Plus]') !== FALSE ||
 												    strpos($line, '[uBlock Origin') !== FALSE ||
+												    strpos($line, "! Title: HaGeZi's") !== FALSE ||
 												    strpos($line, '! Title: AdGuard') !== FALSE) {
 													$easylist = $validate_header = TRUE;
 													continue;
