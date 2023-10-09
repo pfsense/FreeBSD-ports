@@ -1005,7 +1005,7 @@ function suricata_Getdirsize($node) {
 	}
 
 	$blah = exec( "/usr/bin/du -kdc $node" );
-	return substr( $blah, 0, strpos($blah, 9) );
+	return substr( $blah, 0, strpos($blah, chr(9) ) );
 }
 
 function suricata_build_sid_msg_map($rules_path, $sid_file) {
