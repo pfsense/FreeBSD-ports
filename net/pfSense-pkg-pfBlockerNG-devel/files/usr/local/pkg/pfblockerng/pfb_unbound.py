@@ -758,7 +758,7 @@ def write_sqlite(db, groupname, update):
 
     return True
 
-def format_b_type(b_type, q_type, isCNAME=False):
+def format_b_type(b_type, q_type, isCNAME):
     if isCNAME:
         return '{}_CNAME_{}'.format(b_type, q_type)
     else:
@@ -766,13 +766,8 @@ def format_b_type(b_type, q_type, isCNAME=False):
 
 
 
-def get_details_dnsbl(qstate, q_ip):
+def get_details_dnsbl(q_name, q_ip, isCNAME):
     global pfb, dnsblDB
-
-    if qstate is not None and qstate:
-        q_name = get_q_name_qstate(qstate)
-    else:
-        return True
 
     # Increment totalqueries counter
     if pfb['sqlite3_resolver_con']:
@@ -813,7 +808,7 @@ def get_details_dnsbl(qstate, q_ip):
                 continue
             break
 
-        b_type = format_b_type(isDNSBL['b_type'], isDNSBL['q_type'], isDNSBL['isCNAME'])
+        b_type = format_b_type(isDNSBL['b_type'], isDNSBL['q_type'], isCNAME)
 
         csv_line = ','.join(str(v) for v in ('DNSBL-python', timestamp, q_name, q_ip, isDNSBL['p_type'], b_type, isDNSBL['group'], isDNSBL['b_eval'], isDNSBL['feed'], dupEntry))
         log_entry(csv_line, '/var/log/pfblockerng/dnsbl.log')
@@ -1579,15 +1574,17 @@ def operate(id, event, qstate, qdata):
                                 # print q_name + ' break'
 
                         # Skip subsequent DNSBL validation for domain, and add domain to dict for get_details_dnsbl function
-                        dnsblDB[q_name] = {'qname': q_name, 'isCNAME': isCNAME, 'q_type': q_type_str, 'b_type': b_type, 'p_type': p_type, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                        dnsblDB[q_name] = {'qname': q_name, 'q_type': q_type_str, 'b_type': b_type, 'p_type': p_type, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
                         
+                        # FIXME: blocking for different types will not update the DB values, rework the decision process and reporting
                         # Add domain data to DNSBL cache for Reports tab
-                        write_sqlite(3, '', [format_b_type(b_type, q_type_str), q_name, group, b_eval, feed])
+                        write_sqlite(3, '', [format_b_type(b_type, q_type_str, isCNAME), q_name, group, b_eval, feed])
                         
                         # Skip subsequent DNSBL validation for original domain (CNAME validation), and add domain to dict for get_details_dnsbl function
                         if isCNAME and dnsblDB.get(q_name_original) is None:
-                            dnsblDB[q_name_original] = {'qname': q_name_original, 'isCNAME': True, 'q_type': q_type_str, 'b_type': b_type, 'p_type': p_type, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                            dnsblDB[q_name_original] = {'qname': q_name_original, 'q_type': q_type_str, 'b_type': b_type, 'p_type': p_type, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
 
+                            # FIXME: blocking for different types will not update the DB values, rework the decision process and reporting
                             # Add domain data to DNSBL cache for Reports tab
                             write_sqlite(3, '', [format_b_type(b_type, q_type_str, True), q_name_original, group, b_eval, feed])
 
@@ -1605,10 +1602,15 @@ def operate(id, event, qstate, qdata):
                     isFound = True
 
                     if isDomainInDNSBL['q_type'] != q_type_str:
-                        # Update entry so it can be properly logged
+                        # Update domain in dict for proper logging
                         isDomainInDNSBL = isDomainInDNSBL.copy()
                         isDomainInDNSBL['q_type'] = q_type_str
                         dnsblDB[q_name] = isDomainInDNSBL
+                        if isCNAME:
+                            # Update original domain in dict for proper logging
+                            isDomainInDNSBLOriginal = isDomainInDNSBL.copy()
+                            isDomainInDNSBLOriginal['qname'] = q_name_original
+                            dnsblDB[q_name_original] = isDomainInDNSBLOriginal
 
                     # print "v: " + q_name 
 
@@ -1654,7 +1656,7 @@ def operate(id, event, qstate, qdata):
                         return True
 
                     # Log entry
-                    get_details_dnsbl(qstate, q_ip)
+                    get_details_dnsbl(q_name_original, q_ip, isCNAME)
 
                     qstate.return_rcode = RCODE_NOERROR
                     qstate.return_msg.rep.security = 2
