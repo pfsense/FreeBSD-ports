@@ -308,7 +308,12 @@ def init_standard(id, env):
                                     wildcard = True
                                 else:
                                     wildcard = False
-                                noAAAADB[data[0]] = wildcard
+
+                                # if both wildcard and non-wildcard entries are found, keep the wildcard only
+                                if wildcard:
+                                    noAAAADB[data[0]] = True
+                                elif noAAAADB.get(data[0]) is None:
+                                    noAAAADB[data[0]] = False
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: noAAAA: row:{} line:{}" .format(row, line))
 
@@ -386,7 +391,7 @@ def init_standard(id, env):
                     with open(pfb['pfb_py_data']) as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         for row in csv_reader:
-                            if row and len(row) == 7:
+                            if row and (len(row) == 6 or len(row) == 7):
                                 # Query Feed/Group/index
                                 isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
 
@@ -401,10 +406,24 @@ def init_standard(id, env):
                                 else:
                                     final_index = isInFeedGroupDB
 
-                                if row[6] == '2':
+                                if len(row) == 6:
+                                    dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': False}
+                                elif row[6] == '2':
                                     regexDataDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
                                 else:
-                                    dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': row[6] == '1'}
+                                    if row[6] == '1':
+                                        wildcard = True
+                                    else:
+                                        wildcard = False
+                                    
+                                    # if both wildcard and non-wildcard entries are found, keep the wildcard only
+                                    if wildcard:
+                                        dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': True}
+                                    else:
+                                        isInDataDB = dataDB.get(row[1])
+                                        if isInDataDB is None or not isInDataDB['wildcard']:
+                                            dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': False}
+                                    
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_data'], row))
 
@@ -423,28 +442,69 @@ def init_standard(id, env):
                         with open(pfb['pfb_py_whitelist']) as csv_file:
                             csv_reader = csv.reader(csv_file, delimiter=',')
                             for row in csv_reader:
-                                if row and len(row) == 7:
-                                    # Query Feed/Group/index
-                                    isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
+                                if row and (len(row) == 2 or len(row) == 7):
+                                    if len(row) == 2:
+                                        if row[1] == '1':
+                                            wildcard = True
+                                        else:
+                                            wildcard = False
 
-                                    # Add Feed/Group/index
-                                    if isInFeedGroupDB is None:
-                                        feedGroupDB[row[4] + row[5]] = feedGroup_index
-                                        feedGroupIndexDB[feedGroup_index] = {'feed': row[4], 'group': row[5]}
-                                        final_index = feedGroup_index
-                                        feedGroup_index += 1
+                                        # Query Feed/Group/index
+                                        isInFeedGroupDB = feedGroupDB.get('DNSBL_WHITELIST' + 'USER')
 
-                                    # Use existing Feed/Group/index
+                                        # Add Feed/Group/index
+                                        if isInFeedGroupDB is None:
+                                            feedGroupDB['DNSBL_WHITELIST' + 'USER'] = feedGroup_index
+                                            feedGroupIndexDB[feedGroup_index] = {'feed': 'DNSBL_WHITELIST', 'group': 'USER'}
+                                            final_index = feedGroup_index
+                                            feedGroup_index += 1
+
+                                        # Use existing Feed/Group/index
+                                        else:
+                                            final_index = isInFeedGroupDB
+
+                                        # if both wildcard and non-wildcard entries are found, keep the wildcard only
+                                        if wildcard:
+                                            whiteDB[row[0]] = {'log': '1', 'index': final_index, 'wildcard': True}
+                                        else:
+                                            isInWhiteDB = whiteDB.get(row[0])
+                                            if isInWhiteDB is None or not isInWhiteDB['wildcard']:
+                                                whiteDB[row[0]] = {'log': '1', 'index': final_index, 'wildcard': False}
+
                                     else:
-                                        final_index = isInFeedGroupDB
+                                        # Query Feed/Group/index
+                                        isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
 
-                                    if row[6] == '2':
-                                        regexWhiteDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
-                                    else:
-                                        whiteDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': row[6] == '1'}
+                                        # Add Feed/Group/index
+                                        if isInFeedGroupDB is None:
+                                            feedGroupDB[row[4] + row[5]] = feedGroup_index
+                                            feedGroupIndexDB[feedGroup_index] = {'feed': row[4], 'group': row[5]}
+                                            final_index = feedGroup_index
+                                            feedGroup_index += 1
 
-                                    pfb['whiteDB'] = True
-                                    pfb['regexWhiteDB'] = True
+                                        # Use existing Feed/Group/index
+                                        else:
+                                            final_index = isInFeedGroupDB
+
+                                        if row[6] == '2':
+                                            regexWhiteDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
+                                        else:
+                                            if row[6] == '1':
+                                                wildcard = True
+                                            else:
+                                                wildcard = False
+                                            
+                                            # if both wildcard and non-wildcard entries are found, keep the wildcard only
+                                            if wildcard:
+                                                whiteDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': True}
+                                            else:
+                                                isInWhiteDB = whiteDB.get(row[1])
+                                                if isInWhiteDB is None or not isInWhiteDB['wildcard']:
+                                                    whiteDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': False}
+
+                                        pfb['whiteDB'] = True
+                                        pfb['regexWhiteDB'] = True
+                                    
                                 else:
                                     sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_whitelist'], row))
 
