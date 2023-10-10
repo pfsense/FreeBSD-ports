@@ -502,12 +502,11 @@ def init_standard(id, env):
                                                 if isInWhiteDB is None or not isInWhiteDB['wildcard']:
                                                     whiteDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': False}
 
-                                        pfb['whiteDB'] = True
-                                        pfb['regexWhiteDB'] = True
-                                    
                                 else:
                                     sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_whitelist'], row))
 
+                            pfb['whiteDB'] = True
+                            pfb['regexWhiteDB'] = True
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_whitelist'], e))
                         pass
