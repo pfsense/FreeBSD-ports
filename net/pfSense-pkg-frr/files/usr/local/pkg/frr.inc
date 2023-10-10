@@ -346,6 +346,37 @@ function frr_cidr_to_wildcard_bits($cidr) {
 	return long2ip(~gen_subnet_mask_long($cidr));
 }
 
+/* Get configured instances for multi-instance protocols */
+function frr_get_configured_instances($daemon) {
+
+	if (empty(config_get_path('installedpackages/frrglobalraw/config/0/frr'))) {
+		/* If some day we have GUI support for multiple instances, return configured ones here */
+		return null;
+	}
+
+	$instances = array();
+	$multi_instance_proto = array(
+		"ospfd" => "ospf",
+		"ospf6d" => "ospf6"
+	);
+
+	if (array_key_exists($daemon, $multi_instance_proto)) {
+		$raw_config = str_replace("\r", "",
+			base64_decode(config_get_path('installedpackages/frrglobalraw/config/0/frr')));
+		if (!empty($raw_config)) {
+			$proto = $multi_instance_proto["$daemon"];
+			if (preg_match_all("/\nrouter\ $proto\n/", $raw_config, $match) === 1)
+				$instances[] = "$daemon";
+			if (preg_match_all("/\nrouter\ $proto\ ([1-9][0-9]*)\n/", $raw_config, $match)) {
+				foreach ($match[1] as $instance)
+					$instances[] = "$daemon-$instance";
+			}
+		}
+	}
+
+	return $instances;
+}
+
 /* Create the rc.d service control script for FRR */
 function frr_generate_config_rcfile() {
 	global $frr_config_base, $frr_daemons;
@@ -370,7 +401,12 @@ function frr_generate_config_rcfile() {
 	if (!empty(config_get_path('installedpackages/frr/config/0/enable'))) {
 		foreach ($config_key_daemons as $config_key => $daemon) {
 			if (!empty(config_get_path("installedpackages/{$config_key}/config/0/enable"))) {
-				$frr_daemons_enabled = array_merge($frr_daemons_enabled, $daemon);
+				$instances = frr_get_configured_instances($daemon[0]);
+				if (sizeof($daemon) != 1 || $instances == null || empty($instances)) {
+					$frr_daemons_enabled = array_merge($frr_daemons_enabled, $daemon);
+				} else {
+					$frr_daemons_enabled = array_merge($frr_daemons_enabled, $instances);
+				}
 			}
 		}
 	}
