@@ -751,6 +751,7 @@ function pfb_global() {
 	$pfb['dnsbl_python']	= $pfb['dnsblconfig']['pfb_python'];			// DNSBL Resolver python integration
 	$pfb['dnsbl_mode']	= $pfb['dnsblconfig']['dnsbl_mode'];			// DNSBL Mode (Unbound/python mode)
 
+	$pfb['dnsbl_py_debug']	= $pfb['dnsblconfig']['pfb_py_debug'];			// DNSBL Resolver python DNS Reply logging
 	$pfb['dnsbl_py_reply']	= $pfb['dnsblconfig']['pfb_py_reply'];			// DNSBL Resolver python DNS Reply logging
 	$pfb['dnsbl_py_block']	= $pfb['dnsblconfig']['pfb_py_block'];			// DNSBL Resolver python blocking mode
 	$pfb['dnsbl_hsts']	= $pfb['dnsblconfig']['pfb_hsts'];			// DNSBL Resolver python block HSTS via Null Block mode
@@ -2561,6 +2562,11 @@ function pfb_unbound_python($mode) {
 			$tld_segments = '1';
 		}
 
+		$python_debug = 'off';
+		if ($pfb['dnsbl_py_debug'] == 'on') {
+			$python_debug = 'on';
+		}
+
 		$python_ipv6 = 'off';
 		if ($pfb['dnsbl_v6'] == 'on') {
 			$python_ipv6 = 'on';
@@ -2636,6 +2642,7 @@ function pfb_unbound_python($mode) {
 [MAIN]
 dnsbl_ipv4	= {$pfb['dnsbl_vip']}
 python_enable	= {$python_enable}
+python_debug	= {$python_debug}
 python_ipv6	= {$python_ipv6}
 python_reply	= {$python_reply}
 python_blocking	= {$python_blocking}

@@ -19,6 +19,8 @@
 # limitations under the License.
 
 from datetime import datetime
+from functools import wraps
+import traceback
 import logging
 import time
 import csv
@@ -72,9 +74,29 @@ except Exception as e:
     pfb['mod_sqlite3_e'] = e
     pass
 
+def traced(func):
+
+    # This is mostly targeted at developers making changes to pfBlockerNG, so no UI is exposed
+    @wraps(func)
+    def _log(*args, **kwargs):
+        # Change this to False to enable logging
+        if True:
+            return func(*args, **kwargs)
+        
+        # Early check to prevent getting the name and locals if not needed
+        debug('Function call (func={}): args={}, kwargs={}', func.__name__, args, kwargs)
+        try: 
+            result = func(*args, **kwargs)
+            debug('Function call (func={}) result: {}', func.__name__, result)
+            return result
+        except:
+            debug('Exception caught (func={}): \n\t{}', func.__name__, '\t'.join(traceback.format_exc().splitlines(True)))
+            raise
+
+    return _log
 
 def init_standard(id, env):
-    global pfb, rcodeDB, dataDB, zoneDB, regexDataDB, regexDB, hstsDB, whiteDB, regexWhiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB, maxmindReader
+    global pfb, rcodeDB, dataDB, wildcardDataDB, zoneDB, regexDataDB, regexDB, hstsDB, whiteDB, wildcardWhiteDB, regexWhiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, maxmindReader
 
     if not register_inplace_cb_reply(inplace_cb_reply, env, id):
         log_info('[pfBlockerNG]: Failed register_inplace_cb_reply')
@@ -91,6 +113,13 @@ def init_standard(id, env):
     if not register_inplace_cb_reply_servfail(inplace_cb_reply_servfail, env, id):
         log_info('[pfBlockerNG]: Failed register_inplace_cb_reply_servfail')
         return False
+    
+    # Clear debug file
+    debug_logfile = '/var/log/pfblockerng/py_debug.log'
+    if os.path.isfile(debug_logfile):
+        os.remove(debug_logfile)
+        # Touch the file
+        open(debug_logfile, 'w').close()
 
     # Store previous error message to avoid repeating
     pfb['p_err'] = ''
@@ -103,7 +132,9 @@ def init_standard(id, env):
 
         def write(self, msg):
             if msg != pfb['p_err']:
-                self.logger.log(logging.ERROR, msg.rstrip())
+                msg = msg.rstrip()
+                self.logger.log(logging.ERROR, msg)
+                _debug('[ERROR LOG]: {}', msg)
             pfb['p_err'] = msg
 
     # Create python error logfile
@@ -149,24 +180,14 @@ def init_standard(id, env):
     # Initialize default settings
     pfb['dnsbl_ipv4'] = ''
     pfb['dnsbl_ipv6'] = ''
-    pfb['dataDB'] = False
-    pfb['regexDataDB'] = False
-    pfb['zoneDB'] = False
-    pfb['hstsDB'] = False
-    pfb['whiteDB'] = False
-    pfb['regexDB'] = False
-    pfb['whiteDB'] = False
-    pfb['regexWhiteDB'] = False
-    pfb['gpListDB'] = False
-    pfb['noAAAADB'] = False
     pfb['python_idn'] = False
     pfb['python_ipv6'] = False
     pfb['python_hsts'] = False
     pfb['python_reply'] = False
     pfb['python_cname'] = False
-    pfb['safeSearchDB'] = False
     pfb['group_policy'] = False
     pfb['python_enable'] = False
+    pfb['python_debug'] = False
     pfb['python_nolog'] = False
     pfb['python_control'] = False
     pfb['python_maxmind'] = False
@@ -202,23 +223,37 @@ def init_standard(id, env):
                         'insurance', 'meet', 'new', 'page', 'play', 'search', 'youtube')
 
     # Initialize dicts/lists
-    dataDB = defaultdict(list)
-    regexDataDB = defaultdict(list)
-    whiteDB = defaultdict(list)
-    regexWhiteDB = defaultdict(list)
-    zoneDB = defaultdict(list)
-    dnsblDB = defaultdict(list)
-    safeSearchDB = defaultdict(list)
-    feedGroupIndexDB = defaultdict(list)
+    dataDB = dict()
+    wildcardDataDB = dict()
+    regexDataDB = dict()
+    whiteDB = dict()
+    wildcardWhiteDB = dict()
+    regexWhiteDB = dict()
+    zoneDB = dict()
+    dnsblDB = dict()
+    safeSearchDB = dict()
 
-    regexDB = defaultdict(str)
-    hstsDB = defaultdict(str)
-    gpListDB = defaultdict(str)
-    noAAAADB = defaultdict(str)
-    feedGroupDB = defaultdict(str)
+    regexDB = dict()
+    hstsDB = set()
+    gpListDB = set()
+    noAAAADB = dict()
     excludeDB = set()
     excludeAAAADB = set()
     excludeSS = set()
+
+    # String deduplication for in-memory databases
+    # Less invasive than String interning, gets collected at the end of initialization
+    stringDeduplicationDB = dict()
+    def dedup(str_val):
+        if not str_val:
+            return str_val
+
+        cached = stringDeduplicationDB.get(str_val)
+        if cached:
+            return cached
+
+        stringDeduplicationDB[str_val] = str_val
+        return str_val
 
     # Read pfb_unbound.ini settings
     if os.path.isfile(pfb['pfb_unbound.ini']):
@@ -232,6 +267,8 @@ def init_standard(id, env):
         if config.has_section('MAIN'):
             if config.has_option('MAIN', 'python_enable'):
                 pfb['python_enable'] = config.getboolean('MAIN', 'python_enable')
+            if config.has_option('MAIN', 'python_debug'):
+                pfb['python_debug'] = config.getboolean('MAIN', 'python_debug')
             if config.has_option('MAIN', 'python_ipv6'):
                 pfb['python_ipv6'] = config.getboolean('MAIN', 'python_ipv6')
             if config.has_option('MAIN', 'python_reply'):
@@ -273,51 +310,61 @@ def init_standard(id, env):
 
         if pfb['python_enable']:
 
+            debug('Python mode enabled')
+
             # Enable the Blacklist functions (IDN)
             if pfb['python_idn']:
                 pfb['python_blacklist'] = True
+                debug('Python IDN enabled')
+                debug('Python Blacklist enabled. Reason: IDN')
 
             # Enable the Blacklist functions (TLD Allow)
             if pfb['python_tld'] and pfb['python_tlds'] != '':
                 pfb['python_blacklist'] = True
+                debug('Python TLD Allow enabled: {}', pfb['python_tlds'])
+                debug('Python Blacklist enabled. Reason: TLD Allow')
 
             # Collect user-defined Regex patterns
             if config.has_section('REGEX'):
                 regex_config = config.items('REGEX')
                 if regex_config:
+                    debug('REGEX configuration section found')
                     r_count = 1
                     for name, pattern in regex_config:
                         try:
-                            regexDB[name] = re.compile(pattern)
-                            pfb['regexDB'] = True
-                            pfb['python_blacklist'] = True
+                            debug('Compiling REGEX: {}', pattern)
+                            regexDB[name] = re.compile(pattern, re.IGNORECASE)
                         except Exception as e:
                             sys.stderr.write("[pfBlockerNG]: Regex [ {} ] compile error pattern [  {}  ] on line #{}: {}" .format(name, pattern, r_count, e))
                             pass
                         r_count += 1
+                    pfb['python_blacklist'] = True
+                    debug('Python Blacklist enabled. Reason: REGEX')
 
             # Collect user-defined no AAAA domains
             if config.has_section('noAAAA'):
                 noaaaa_config = config.items('noAAAA')
                 if noaaaa_config:
+                    debug('noAAAA configuration section found')
                     try:
                         for row, line in noaaaa_config:
+                            line = line.rstrip('\r\n')
+                            debug('Parsing no-AAAA domain: {}', line)
                             data = line.rstrip('\r\n').split(',')
                             if data and len(data) == 2:
-                                if data[1] == '1':
-                                    wildcard = True
-                                else:
-                                    wildcard = False
+                                domain_name = data[0]
+                                wildcard = data[1] == '1'
+
+                                debug('Parsed no-AAAA domain: {}, wildcard={}', domain_name, wildcard)
 
                                 # if both wildcard and non-wildcard entries are found, keep the wildcard only
                                 if wildcard:
-                                    noAAAADB[data[0]] = True
-                                elif noAAAADB.get(data[0]) is None:
-                                    noAAAADB[data[0]] = False
+                                    noAAAADB[domain_name] = True
+                                elif not noAAAADB.get(domain_name):
+                                    noAAAADB[domain_name] = False
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: noAAAA: row:{} line:{}" .format(row, line))
 
-                        pfb['noAAAADB'] = True
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load no AAAA domain list: {}" .format(e))
                         pass
@@ -326,11 +373,12 @@ def init_standard(id, env):
             if config.has_section('GP_Bypass_List'):
                 gp_bypass_list = config.items('GP_Bypass_List')
                 if gp_bypass_list:
+                    debug('GP_Bypass_List configuration section found')
                     try:
                         for row, line in gp_bypass_list:
-                            gpListDB[line.rstrip('\r\n')] = 0
-
-                        pfb['gpListDB'] = True
+                            value = line.rstrip('\r\n')
+                            debug('Parsed Group Policy Bypass entry: {}', value)
+                            gpListDB.add(line)
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load GP Bypass List: {}" .format(e))
                         pass 
@@ -340,13 +388,16 @@ def init_standard(id, env):
                 try:
                     with open(pfb['pfb_py_ss']) as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
+                        debug('SafeSearch Redirection file found: {}', pfb['pfb_py_ss'])
                         for row in csv_reader:
                             if row and len(row) == 3:
-                                safeSearchDB[row[0]] = {'A': row[1], 'AAAA': row[2]}
+                                domain_name = row[0]
+                                entry = {'A': row[1], 'AAAA': row[2]}
+                                debug('Parsed SafeSearch Redirection entry: {}: {}', domain_name, entry)
+                                safeSearchDB[domain_name] = entry
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_ss'], row))
 
-                        pfb['safeSearchDB'] = True
                 except Exception as e:
                     sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_zone'], e))
                     pass
@@ -359,28 +410,19 @@ def init_standard(id, env):
                 try:
                     with open(pfb['pfb_py_zone']) as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
+                        debug('Zone Blacklist file found: {}', pfb['pfb_py_zone'])
                         for row in csv_reader:
                             if row and len(row) == 6:
                                 # Query Feed/Group/index
-                                isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
-
-                                # Add Feed/Group/index
-                                if isInFeedGroupDB is None:
-                                    feedGroupDB[row[4] + row[5]] = feedGroup_index
-                                    feedGroupIndexDB[feedGroup_index] = {'feed': row[4], 'group': row[5]}
-                                    final_index = feedGroup_index
-                                    feedGroup_index += 1
-
-                                # Use existing Feed/Group/index
-                                else:
-                                    final_index = isInFeedGroupDB
-
-                                zoneDB[row[1]] = {'log': row[3], 'index': final_index}
+                                domain_name = row[1]
+                                entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])};
+                                debug('Parsed Zone Blacklist entry: {}: {}', domain_name, entry)
+                                zoneDB[domain_name] = entry
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_zone'], row))
 
-                        pfb['zoneDB'] = True
                         pfb['python_blacklist'] = True
+                        debug('Python Blacklist enabled. Reason: Zone Blacklist')
                 except Exception as e:
                     sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_zone'], e))
                     pass
@@ -390,46 +432,29 @@ def init_standard(id, env):
                 try:
                     with open(pfb['pfb_py_data']) as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
+                        debug('Blacklist data file found: {}', pfb['pfb_py_data'])
                         for row in csv_reader:
                             if row and (len(row) == 6 or len(row) == 7):
-                                # Query Feed/Group/index
-                                isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
-
-                                # Add Feed/Group/index
-                                if isInFeedGroupDB is None:
-                                    feedGroupDB[row[4] + row[5]] = feedGroup_index
-                                    feedGroupIndexDB[feedGroup_index] = {'feed': row[4], 'group': row[5]}
-                                    final_index = feedGroup_index
-                                    feedGroup_index += 1
-
-                                # Use existing Feed/Group/index
+                                if len(row) == 7 and row[6] == '2':
+                                    expression = row[1]
+                                    entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5]), 'regex': re.compile(row[1], re.IGNORECASE)}
+                                    debug('Parsed Blacklist entry (Regex): {}: {}', expression, entry)
+                                    regexDataDB[expression] = entry
+                                elif len(row) == 7 and row[6] == '1':
+                                    domain_name = row[1]
+                                    entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
+                                    debug('Parsed Blacklist entry (Wildcard): {}: {}', domain_name, entry)
+                                    wildcardDataDB[domain_name] = entry
                                 else:
-                                    final_index = isInFeedGroupDB
-
-                                if len(row) == 6:
-                                    dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': False}
-                                elif row[6] == '2':
-                                    regexDataDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
-                                else:
-                                    if row[6] == '1':
-                                        wildcard = True
-                                    else:
-                                        wildcard = False
-                                    
-                                    # if both wildcard and non-wildcard entries are found, keep the wildcard only
-                                    if wildcard:
-                                        dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': True}
-                                    else:
-                                        isInDataDB = dataDB.get(row[1])
-                                        if isInDataDB is None or not isInDataDB['wildcard']:
-                                            dataDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': False}
+                                    domain_name = row[1]
+                                    entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
+                                    debug('Parsed Blacklist entry (Domain): {}: {}', domain_name, entry)
+                                    dataDB[domain_name] = entry
                                     
                             else:
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_data'], row))
-
-                        pfb['dataDB'] = True
-                        pfb['regexDataDB'] = True
                         pfb['python_blacklist'] = True
+                        debug('Python Blacklist enabled. Reason: Blacklist data')
                 except Exception as e:
                     sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_data'], e))
                     pass
@@ -441,72 +466,43 @@ def init_standard(id, env):
                     try:
                         with open(pfb['pfb_py_whitelist']) as csv_file:
                             csv_reader = csv.reader(csv_file, delimiter=',')
+                            debug('User-defined whitelist data file found: {}', pfb['pfb_py_whitelist'])
                             for row in csv_reader:
                                 if row and (len(row) == 2 or len(row) == 7):
                                     if len(row) == 2:
+                                        
+                                        domain_name = row[0]
+                                        entry = {'log': '1', 'feed': 'DNSBL_WHITELIST', 'group': 'USER'}
+                                        
                                         if row[1] == '1':
-                                            wildcard = True
+                                            debug('Parsed Whitelist entry (Wildcard): {}: {}', domain_name, entry)
+                                            wildcardWhiteDB[domain_name] = entry
                                         else:
-                                            wildcard = False
-
-                                        # Query Feed/Group/index
-                                        isInFeedGroupDB = feedGroupDB.get('DNSBL_WHITELIST' + 'USER')
-
-                                        # Add Feed/Group/index
-                                        if isInFeedGroupDB is None:
-                                            feedGroupDB['DNSBL_WHITELIST' + 'USER'] = feedGroup_index
-                                            feedGroupIndexDB[feedGroup_index] = {'feed': 'DNSBL_WHITELIST', 'group': 'USER'}
-                                            final_index = feedGroup_index
-                                            feedGroup_index += 1
-
-                                        # Use existing Feed/Group/index
-                                        else:
-                                            final_index = isInFeedGroupDB
-
-                                        # if both wildcard and non-wildcard entries are found, keep the wildcard only
-                                        if wildcard:
-                                            whiteDB[row[0]] = {'log': '1', 'index': final_index, 'wildcard': True}
-                                        else:
-                                            isInWhiteDB = whiteDB.get(row[0])
-                                            if isInWhiteDB is None or not isInWhiteDB['wildcard']:
-                                                whiteDB[row[0]] = {'log': '1', 'index': final_index, 'wildcard': False}
+                                            debug('Parsed Whitelist entry (Domain): {}: {}', domain_name, entry)
+                                            whiteDB[domain_name] = entry
 
                                     else:
-                                        # Query Feed/Group/index
-                                        isInFeedGroupDB = feedGroupDB.get(row[4] + row[5])
-
-                                        # Add Feed/Group/index
-                                        if isInFeedGroupDB is None:
-                                            feedGroupDB[row[4] + row[5]] = feedGroup_index
-                                            feedGroupIndexDB[feedGroup_index] = {'feed': row[4], 'group': row[5]}
-                                            final_index = feedGroup_index
-                                            feedGroup_index += 1
-
-                                        # Use existing Feed/Group/index
-                                        else:
-                                            final_index = isInFeedGroupDB
 
                                         if row[6] == '2':
-                                            regexWhiteDB[row[1]] = {'log': row[3], 'index': final_index, 'regex': re.compile(row[1])}
+                                            expression = row[1]
+                                            entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5]), 'regex': re.compile(expression, re.IGNORECASE)}
+                                            debug('Parsed Whitelist entry (Regex): {}: {}', expression, entry)
+                                            regexWhiteDB[expression] = entry
                                         else:
                                             if row[6] == '1':
-                                                wildcard = True
+                                                domain_name = row[1]
+                                                entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
+                                                debug('Parsed Whitelist entry (Wildcard): {}: {}', domain_name, entry)
+                                                wildcardWhiteDB[domain_name] = entry
                                             else:
-                                                wildcard = False
-                                            
-                                            # if both wildcard and non-wildcard entries are found, keep the wildcard only
-                                            if wildcard:
-                                                whiteDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': True}
-                                            else:
-                                                isInWhiteDB = whiteDB.get(row[1])
-                                                if isInWhiteDB is None or not isInWhiteDB['wildcard']:
-                                                    whiteDB[row[1]] = {'log': row[3], 'index': final_index, 'wildcard': False}
+                                                domain_name = row[1]
+                                                entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
+                                                debug('Parsed Whitelist entry (Domain): {}: {}', domain_name, entry)
+                                                whiteDB[domain_name] = entry
 
                                 else:
                                     sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_whitelist'], row))
 
-                            pfb['whiteDB'] = True
-                            pfb['regexWhiteDB'] = True
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_whitelist'], e))
                         pass
@@ -515,19 +511,19 @@ def init_standard(id, env):
                 if pfb['python_hsts'] and os.path.isfile(pfb['pfb_py_hsts']):
                     try:
                         with open(pfb['pfb_py_hsts']) as hsts:
+                            debug('HSTS data found: {}', pfb['python_hsts'])
                             for line in hsts:
-                                hstsDB[line.rstrip('\r\n')] = 0
-                            pfb['hstsDB'] = True
+                                value = line.rstrip('\r\n')
+                                debug('Parsed HSTS entry: {}', value)
+                                hstsDB.add(value)
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_hsts'], e))
                         pass
-            
-            # Clear temporary Feed/Group/Index list
-            feedGroupDB.clear()
 
             # Validate SQLite3 database connections
             if pfb['mod_sqlite3']:
 
+                debug('Connecting to SQLite databases')
                 # Enable Resolver query statistics
                 for i in range(2):
                     try:
@@ -542,6 +538,8 @@ def init_standard(id, env):
 
                 # Enable DNSBL statistics
                 if pfb['python_blacklist']:
+
+                    debug('Enabling DNSBL statistics')
                     for i in range(2):
                         try:
                             if write_sqlite(2, '', False):
@@ -555,6 +553,8 @@ def init_standard(id, env):
 
             # Open MaxMind db reader for DNS Reply GeoIP logging
             if pfb['mod_maxminddb'] and pfb['python_reply'] and os.path.isfile(pfb['maxminddb']):
+
+                debug('Open MaxMind database for DNS Reply GeoIP logging')
                 try:
                     maxmindReader = maxminddb.open_database(pfb['maxminddb'])
                     pfb['python_maxmind'] = True
@@ -567,6 +567,7 @@ def init_standard(id, env):
     log_info('[pfBlockerNG]: init_standard script loaded')
 
 
+@traced
 def pfb_regex_match(q_name):
     global regexDB
 
@@ -576,6 +577,7 @@ def pfb_regex_match(q_name):
                 return k
     return False
 
+@traced
 def pfb_regex_data_match(q_name):
     global regexDataDB
 
@@ -585,6 +587,7 @@ def pfb_regex_data_match(q_name):
                 return k
     return False
 
+@traced
 def pfb_regex_whitelist_match(q_name):
     global regexWhiteDB
 
@@ -594,7 +597,7 @@ def pfb_regex_whitelist_match(q_name):
                 return k
     return False
 
-
+@traced
 def get_q_name_qstate(qstate):
     q_name = ''
     try:
@@ -607,7 +610,7 @@ def get_q_name_qstate(qstate):
         pass
     return is_unknown(q_name)
 
-
+@traced
 def get_q_name_qinfo(qinfo):
     q_name = ''
     try:
@@ -618,12 +621,12 @@ def get_q_name_qinfo(qinfo):
         pass
     return is_unknown(q_name)
 
-
+@traced
 def get_q_ip(qstate):
     q_ip = ''
 
     try:
-        if qstate and qstate.mesh_info.reply_list:
+        if qstate:
             reply_list = qstate.mesh_info.reply_list
             while reply_list:
                 if reply_list.query_reply:
@@ -635,22 +638,24 @@ def get_q_ip(qstate):
         pass
     return is_unknown(q_ip)
 
-
+@traced
 def get_q_ip_comm(kwargs):
     q_ip = ''
 
     try:
-        if kwargs and kwargs is not None and ('pfb_addr' in kwargs):
-            q_ip = kwargs['pfb_addr']
-        elif kwargs and kwargs is not None and kwargs['repinfo'] and kwargs['repinfo'].addr:
-            q_ip = kwargs['repinfo'].addr
+        if kwargs:
+            q_ip = kwargs.get('pfb_addr')
+            if not q_ip:
+                repinfo = kwargs.get('repinfo')
+                if repinfo:
+                     q_ip = repinfo.addr
     except Exception as e:
         for a in e:
             sys.stderr.write("[pfBlockerNG]: Failed get_q_ip_comm: {}" .format(a))
         pass
     return is_unknown(q_ip)
 
-
+@traced
 def get_q_type(qstate, qinfo):
     q_type = ''
     if qstate and qstate.qinfo.qtype_str:
@@ -659,7 +664,7 @@ def get_q_type(qstate, qinfo):
         q_type = qinfo.qtype_str
     return is_unknown(q_type)
 
-
+@traced
 def get_o_type(qstate, rep):
     o_type = ''
     if qstate:
@@ -667,25 +672,25 @@ def get_o_type(qstate, rep):
             o_type = qstate.return_msg.rep.rrsets[0].rk.type_str
         elif qstate.qinfo.qtype_str:
             o_type = qstate.qinfo.qtype_str
-        elif rep is not None and rep.rrsets[0] is not None and rep.rrsets[0].rk is not None:
+        elif rep and rep.rrsets[0] and rep.rrsets[0].rk:
              o_type = rep.rrsets[0].rk.type_str
     return is_unknown(o_type)
 
-
+@traced
 def get_rep_ttl(rep):
     ttl = ''
     if rep and rep.ttl:
         ttl = rep.ttl
     return str(is_unknown(ttl)).replace('Unknown', 'Unk')
 
-
+@traced
 def get_tld(qstate):
     tld = ''
     if qstate and qstate.qinfo and len(qstate.qinfo.qname_list) > 1:
         tld = qstate.qinfo.qname_list[-2]
     return tld
 
-
+@traced
 def convert_ipv4(x):
     global pfb
 
@@ -697,7 +702,7 @@ def convert_ipv4(x):
             ipv4 = "{}.{}.{}.{}" .format(ord(x[2]), ord(x[3]), ord(x[4]), ord(x[5]))
     return is_unknown(ipv4)
 
-
+@traced
 def convert_ipv6(x):
     global pfb
 
@@ -712,7 +717,7 @@ def convert_ipv6(x):
                 ord(x[11]),ord(x[12]),ord(x[13]),ord(x[14]),ord(x[15]),ord(x[16]),ord(x[17]))
     return is_unknown(ipv6)
 
-
+@traced
 def convert_other(x):
     global pfb
 
@@ -745,7 +750,7 @@ def convert_other(x):
         final = final.strip('.|')
     return is_unknown(final)
 
-
+@traced
 def is_unknown(x):
     try:
         if not x or x is None:
@@ -756,7 +761,7 @@ def is_unknown(x):
         pass
     return x
 
-
+@traced
 def write_sqlite(db, groupname, update):
     global pfb
 
@@ -844,7 +849,7 @@ def write_sqlite(db, groupname, update):
 
     return True
 
-
+@traced
 def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
     global pfb, rcodeDB, dnsblDB, noAAAADB, maxmindReader
 
@@ -885,8 +890,6 @@ def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
         if isDNSBL['log'] == '2':
             return True
 
-        m_type = isDNSBL['b_type']
-
         q_ip = get_q_ip_comm(kwargs)
         if q_ip == 'Unknown':
             q_ip = '127.0.0.1'
@@ -919,7 +922,35 @@ def log_entry(line, log):
             continue
         break
 
+def _debug(format_str, *args):
+    global pfb
+    if pfb.get('python_debug') and isinstance(format_str, str):
+        with open('/var/log/pfblockerng/py_debug.log', 'a') as append_log:
+            append_log.write(datetime.now().strftime("%b %-d %H:%M:%S"))
+            append_log.write('|DEBUG: ')
+            if args:
+                append_log.write(format_str.format(*args))
+            else:
+                append_log.write(format_str)
+            append_log.write('\n')
 
+def debug(format_str, *args):
+    global pfb
+
+    # validate before to avoid additional costs for non-debug calls
+    if pfb.get('python_debug') and isinstance(format_str, str):
+        for i in range(1,5):
+            try:
+                _debug(format_str, *args)
+            except Exception as e:
+                if i == 4:
+                    sys.stderr.write("[pfBlockerNG]: log_entry: {}: {}" .format(i, e))
+                time.sleep(0.25)
+                pass
+                continue
+            break
+
+@traced
 def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
     global pfb, rcodeDB, dnsblDB, noAAAADB, maxmindReader
 
@@ -1024,7 +1055,7 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
         q_name = 'NS'
 
     # Determine if domain was noAAAA blocked
-    if r_addr == 'NXDOMAIN' and q_type == 'AAAA' and noAAAADB.get(q_name) is not None:
+    if r_addr == 'NXDOMAIN' and q_type == 'AAAA' and q_name in noAAAADB:
         r_addr = 'noAAAA'
 
     if pfb['python_maxmind'] and r_addr not in ('', 'Unknown', 'NXDOMAIN', 'NODATA', 'DNSSEC', 'SOA', 'NS'):
@@ -1104,6 +1135,7 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
 
 
 # Is sleep duration valid
+@traced
 def python_control_duration(duration):
 
     try:
@@ -1118,6 +1150,7 @@ def python_control_duration(duration):
     return False
 
 # Is thread still active
+@traced
 def python_control_thread(tname):
     global threads
 
@@ -1131,6 +1164,7 @@ def python_control_thread(tname):
     return False
 
 # Python_control Start Thread
+@traced
 def python_control_start_thread(tname, fcall, arg1, arg2):
     global threads
 
@@ -1146,7 +1180,8 @@ def python_control_start_thread(tname, fcall, arg1, arg2):
 
 
 # Python_control sleep timer
-def python_control_sleep(duration, arg):
+@traced
+def python_control_sleep(duration):
     global pfb
 
     try:
@@ -1159,35 +1194,41 @@ def python_control_sleep(duration, arg):
 
 
 # Python_control Add Bypass IP for specified duration
+@traced
 def python_control_addbypass(duration, b_ip):
     global pfb, gpListDB
 
     try:
         time.sleep(duration)
-        if gpListDB.get(b_ip) is not None:
-            gpListDB.pop(b_ip)
+        if b_ip in gpListDB:
+            gpListDB.remove(b_ip)
             return True
     except Exception as e:
         sys.stderr.write("[pfBlockerNG] python_control_addbypass: {}" .format(e))
         pass
     return False
 
+@traced
 def inplace_cb_reply(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('reply-x', qinfo, qstate, rep, kwargs)
     return True
 
+@traced
 def inplace_cb_reply_cache(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('cache', qinfo, qstate, rep, kwargs)
     return True
 
+@traced
 def inplace_cb_reply_local(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('local', qinfo, qstate, rep, kwargs)
     return True
 
+@traced
 def inplace_cb_reply_servfail(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
     get_details_reply('servfail', qinfo, qstate, rep, kwargs)
     return True
 
+@traced
 def deinit(id):
     global pfb, maxmindReader
 
@@ -1197,19 +1238,23 @@ def deinit(id):
     log_info('[pfBlockerNG]: pfb_unbound.py script exiting')
     return True
 
+@traced
 def inform_super(id, qstate, superqstate, qdata):
     return True
 
+@traced
 def operate(id, event, qstate, qdata):
-    global pfb, threads, dataDB, zoneDB, regexDataDB, hstsDB, whiteDB, regexWhiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB
+    global pfb, threads, dataDB, zoneDB, wildcardDataDB, regexDataDB, hstsDB, whiteDB, wildcardWhiteDB, regexWhiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupDB
 
     qstate_valid = False
     try:
-        if qstate is not None and qstate.qinfo.qtype is not None:
+        if qstate and qstate.qinfo.qtype:
             qstate_valid = True
             q_type = qstate.qinfo.qtype
             q_name_original = get_q_name_qstate(qstate).lower()
             q_ip = get_q_ip(qstate)
+            if pfb['python_debug']:
+                debug('Operate [{}]: q_type={}, q_ip={}', q_name_original, qstate.qinfo.qtype_str, q_ip)
         else:
             sys.stderr.write("[pfBlockerNG] qstate is not None and qstate.qinfo.qtype is not None")
     except Exception as e:
@@ -1219,37 +1264,39 @@ def operate(id, event, qstate, qdata):
     if (event == MODULE_EVENT_NEW) or (event == MODULE_EVENT_PASS):
 
         # no AAAA validation
-        if qstate_valid and q_type == RR_TYPE_AAAA and pfb['noAAAADB'] and q_name_original not in excludeAAAADB:
-            isin_noAAAA = False
+        if qstate_valid and q_type == RR_TYPE_AAAA and noAAAADB and q_name_original not in excludeAAAADB:
+
+            debug('Operate [{}]: checking no-AAAA DB', q_name_original)
 
             # Determine full domain match
             isnoAAAA = noAAAADB.get(q_name_original)
-            if isnoAAAA is not None:
-                isin_noAAAA = True
 
             # Wildcard verification of domain
-            if not isin_noAAAA:
+            if not isnoAAAA:
+                debug('Operate [{}]: original domain name not found in no-AAAA DB. Trying TLDs...', q_name_original)
+
                 q = q_name_original.split('.', 1)
                 q = q[-1]
 
                 # Validate to 2nd level TLD only
                 for x in range(q.count('.'), 0, -1):
+                    debug('Operate [{}]: Checking TLD no-AAAA DB for TLD: {}', q_name_original, q)
+
                     isnoAAAA = noAAAADB.get(q)
 
                     # Determine if domain is a wildcard whitelist entry
-                    if isnoAAAA is not None and isnoAAAA:
-                        isin_noAAAA = True
+                    if isnoAAAA:
 
                         # Add sub-domain to noAAAA DB
                         noAAAADB[q_name_original] = True
-
                         break
                     else:
                         q = q.split('.', 1)
                         q = q[-1]
 
             # Create FQDN Reply Message (AAAA -> A)
-            if isin_noAAAA:
+            if isnoAAAA:
+                debug('Operate [{}]: domain found in no-AAAA DB. Creating FQDN Reply Message (AAAA -> A)', q_name_original)
                 msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA)
                 if msg is None or not msg.set_return_msg(qstate):
                     qstate.ext_state[id] = MODULE_ERROR
@@ -1262,27 +1309,28 @@ def operate(id, event, qstate, qdata):
 
             # Add domain to excludeAAAADB to skip subsequent no AAAA validation 
             else:
+                debug('Operate [{}]: domain added to AAAA exclusion DB', q_name_original)
                 excludeAAAADB.add(q_name_original)
 
 
         # SafeSearch Redirection validation
-        if qstate_valid and pfb['safeSearchDB']:
+        if qstate_valid and safeSearchDB:
 
             # Determine if domain has been previously validated
             if q_name_original not in excludeSS:
                 isSafeSearch = safeSearchDB.get(q_name_original)
 
                 # Validate 'www.' Domains
-                if isSafeSearch is None and not q_name_original.startswith('www.'):
-                    isSafeSearch = safeSearchDB.get('www.' + q_name_original)
+                if not isSafeSearch and not q_name_original.startswith('www.'):
+                    isSafeSearch = safeSearchDB.get('www.{}'.format(q_name_original))
 
                 # TODO: See CNAME message below
-                #if isSafeSearch is None and q_name_original != 'safe.duckduckgo.com' and q_name_original.endswith('duckduckgo.com'):
+                #if not isSafeSearch and q_name_original != 'safe.duckduckgo.com' and q_name_original.endswith('duckduckgo.com'):
                 #    isSafeSearch = safeSearchDB.get('duckduckgo.com') 
-                #if isSafeSearch is None and q_name_original != 'safesearch.pixabay.com' and q_name_original.endswith('pixabay.com'):
+                #if not isSafeSearch and q_name_original != 'safesearch.pixabay.com' and q_name_original.endswith('pixabay.com'):
                 #    isSafeSearch = safeSearchDB.get('pixabay.com')
 
-                if isSafeSearch is not None:
+                if isSafeSearch:
 
                     ss_found = False
                     if isSafeSearch['A'] == 'nxdomain':
@@ -1292,7 +1340,7 @@ def operate(id, event, qstate, qdata):
 
                     # TODO: Wait for Unbound code changes to allow for this functionality, using local-zone/local-data entries for CNAMES for now
                     elif isSafeSearch['A'] == 'cname':
-                        if isSafeSearch['AAAA'] is not None and isSafeSearch['AAAA'] != '':
+                        if isSafeSearch['AAAA']:
                             if q_type == RR_TYPE_A:
                                 cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA)
                                 cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
@@ -1313,11 +1361,11 @@ def operate(id, event, qstate, qdata):
                                 qstate.ext_state[id] = MODULE_RESTART_NEXT
                                 return True
                     else:
-                        if (q_type == RR_TYPE_A and isSafeSearch['A'] != '') or (q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] == ''):
+                        if (q_type == RR_TYPE_A and isSafeSearch['A']) or (q_type == RR_TYPE_AAAA and not isSafeSearch['AAAA']):
                             msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA)
                             msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'A', isSafeSearch['A']))
                             ss_found = True
-                        elif q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] != '':
+                        elif q_type == RR_TYPE_AAAA and isSafeSearch['AAAA']:
                             msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RA)
                             msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'AAAA', isSafeSearch['AAAA']))
                             ss_found = True
@@ -1352,7 +1400,7 @@ def operate(id, event, qstate, qdata):
                         pfb['python_blacklist'] = False
 
                         # If duration specified, disable DNSBL Blocking for specified time in seconds
-                        if pfb['mod_threading'] and len(control_command) == 3 and control_command[2] != '':
+                        if pfb['mod_threading'] and len(control_command) == 3 and control_command[2]:
 
                             # Validate Duration argument
                             duration = python_control_duration(control_command[2])
@@ -1362,7 +1410,7 @@ def operate(id, event, qstate, qdata):
                                 if not python_control_thread('sleep'):
 
                                     # Start Thread
-                                    if not python_control_start_thread('sleep', python_control_sleep, duration, None):
+                                    if not python_control_start_thread('sleep', python_control_sleep, duration):
                                         control_rcd = False
                                         control_msg = 'Python_control: DNSBL disabled: Thread failed'
                                     else:
@@ -1387,56 +1435,57 @@ def operate(id, event, qstate, qdata):
                             isIPValid = ipaddress.ip_address(unicode(b_ip))
 
                         if isIPValid:
-                            if not pfb['gpListDB']:
-                                pfb['gpListDB'] = True
 
                             control_rcd = True
                             if control_command[1] == 'addbypass':
                                 control_msg = "Python_control: Add bypass for IP: [ {} ]" .format(b_ip)
 
                                 # If duration specified, disable DNSBL Blocking for specified time in seconds
-                                if pfb['mod_threading'] and len(control_command) == 4 and control_command[3] != '':
+                                if pfb['mod_threading'] and len(control_command) == 4 and control_command[3]:
 
                                     # Validate Duration argument
                                     duration = python_control_duration(control_command[3])
                                     if duration:
 
                                         # Ensure thread is not active
-                                        if not python_control_thread('addbypass' + b_ip):
+                                        if not python_control_thread('addbypass {}'.format(b_ip)):
 
                                             # Start Thread
-                                            if not python_control_start_thread('addbypass' + b_ip, python_control_addbypass, duration, b_ip):
+                                            if not python_control_start_thread('addbypass {}'.format(b_ip), python_control_addbypass, duration, b_ip):
                                                 control_rcd = False
-                                                control_msg = "Python_control: Add bypass for IP: [ {} ] thread failed" .format(b_ip)
+                                                control_msg = "Python_control: Add bypass for IP: [ {} ] thread failed".format(b_ip)
                                             else:
-                                                control_msg = "{} for {} second(s)" .format(control_msg, duration)
+                                                control_msg = "{} for {} second(s)".format(control_msg, duration)
                                         else:
                                             control_rcd = False
-                                            control_msg = "Python_control: Add bypass for IP: [ {} ]: Previous call still in progress" .format(b_ip)
+                                            control_msg = "Python_control: Add bypass for IP: [ {} ]: Previous call still in progress".format(b_ip)
                                     else:
                                         control_rcd = False
-                                        control_msg = "Python_control: Add bypass for IP: [ {} ]: duration [ {} ] out of range (1-3600sec)" .format(b_ip, control_command[3])
+                                        control_msg = "Python_control: Add bypass for IP: [ {} ]: duration [ {} ] out of range (1-3600sec)".format(b_ip, control_command[3])
                                 else:
                                     # Add bypass called without duration
                                     if control_rcd:
-                                        gpListDB[b_ip] = 0
+                                        gpListDB.add(b_ip)
 
                             elif control_command[1] == 'removebypass':
-                                if gpListDB.get(b_ip) is not None:
-                                    control_msg = "Python_control: Remove bypass for IP: [ {} ]" .format(b_ip)
-                                    gpListDB.pop(b_ip)
+                                if b_ip in gpListDB:
+                                    control_msg = "Python_control: Remove bypass for IP: [ {} ]".format(b_ip)
+                                    gpListDB.remove(b_ip)
                                 else:
-                                    control_msg = "Python_control: IP not in Group Policy: [ {} ]" .format(b_ip)
+                                    control_msg = "Python_control: IP not in Group Policy: [ {} ]".format(b_ip)
 
                 if control_rcd:
                     q_reply = 'python_control'
                 else:
                     if control_msg == '':
-                        control_msg = "Python_control: Command not authorized! [ {} ]" .format(q_name_original)
+                        control_msg = "Python_control: Command not authorized! [ {} ]".format(q_name_original)
                     q_reply = 'python_control_fail'
 
+                answer = '{}. 0 IN TXT "{}"'.format(q_reply, control_msg)
+                debug('Answer: {}', answer)
+
                 txt_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_TXT, RR_CLASS_IN, PKT_QR | PKT_RA)
-                txt_msg.answer.append("{}. 0 IN TXT \"{}\"" .format(q_reply, control_msg))
+                txt_msg.answer.append(answer)
 
                 if txt_msg is None or not txt_msg.set_return_msg(qstate):
                      qstate.ext_state[id] = MODULE_ERROR
@@ -1452,14 +1501,11 @@ def operate(id, event, qstate, qdata):
 
         # Group Policy - Bypass DNSBL Validation
         bypass_dnsbl = False
-        if pfb['gpListDB']:
+        if gpListDB:
             q_ip = get_q_ip(qstate)
 
-            if q_ip != 'Unknown':
-                isgpBypass = gpListDB.get(q_ip)
-
-                if isgpBypass is not None:
-                    bypass_dnsbl = True
+            if q_ip != 'Unknown' and q_ip in gpListDB:
+                bypass_dnsbl = True
 
         # Create list of Domain/CNAMES to be evaluated
         validate = []
@@ -1502,18 +1548,20 @@ def operate(id, event, qstate, qdata):
                 feed = 'Unknown'
                 group = 'Unknown'
 
-                # print "v0: " + q_name
+                debug('v0: {}', q_name)
 
                 # Determine if domain was previously DNSBL blocked
                 isDomainInDNSBL = dnsblDB.get(q_name)
-                if isDomainInDNSBL is None:
+                if not isDomainInDNSBL:
                     tld = get_tld(qstate)
+
+                    debug('{} b, TLD: {}', q_name, tld)
 
                     # Determine if domain is in DNSBL 'data|zone' database
                     if pfb['python_blocking']:
 
                         # Determine if domain is in DNSBL 'data' database (log to dnsbl.log)
-                        if pfb['dataDB']:
+                        if dataDB:
                             # Create list of Domain/CNAMES to be validated against Blacklist
                             blacklist_validate = []
                             blacklist_validate.append(q_name)
@@ -1525,84 +1573,76 @@ def operate(id, event, qstate, qdata):
 
                                 # Determine full domain match
                                 isDomainInData = dataDB.get(w_q_name)
-                                if isDomainInData is not None:
-                                    #print q_name + ' data: ' + str(isDomainInData) 
+                                if isDomainInData:
                                     isFound = True
                                 elif w_q_name.startswith('www.'):
                                    isDomainInData = dataDB.get(w_q_name[4:])
-                                   if isDomainInData is not None:
+                                   if isDomainInData:
                                         isFound = True
 
                                 # Determine TLD segment matches
-                                if not isFound:
-                                    q = w_q_name.split('.', 1)
-                                    q = q[-1]
-                                    for x in range(q.count('.') +1, 0, -1):
-                                        if x >= pfb['python_tld_seg']:
-                                            isDomainInData = dataDB.get(q)
+                                if not isFound and wildcardDataDB:
 
-                                            # Determine if domain is a wildcard blacklist entry
-                                            if isDomainInData is not None and isDomainInData['wildcard']:
-                                                isFound = True
-                                                break
-                                            else:
-                                                q = q.split('.', 1)
-                                                q = q[-1]
+                                    isDomainInData = wildcardDataDB.get(w_q_name)
+                                    if isDomainInData:
+                                        isFound = True
+                                    elif w_q_name.startswith('www.'):
+                                        isDomainInData = wildcardDataDB.get(w_q_name[4:])
+                                        if isDomainInData:
+                                            isFound = True
+
+                                    if not isFound:
+                                        q = w_q_name.split('.', 1)
+                                        q = q[-1]
+                                        for x in range(q.count('.') +1, 0, -1):
+                                            if x >= pfb['python_tld_seg']:
+                                                isDomainInData = wildcardDataDB.get(q)
+
+                                                # Determine if domain is a wildcard blacklist entry
+                                                if isDomainInData:
+                                                    isFound = True
+                                                    break
+                                                else:
+                                                    q = q.split('.', 1)
+                                                    q = q[-1]
 
                                 # Set log data, if we got a match
                                 if isFound:
-                                    log_type = isDomainInData['log']
-
-                                    # Collect Feed/Group
-                                    feedGroup = feedGroupIndexDB.get(isDomainInData['index'])
-                                    if feedGroup is not None:
-                                        feed = feedGroup['feed']
-                                        group = feedGroup['group']
-
+                                    (log_type, feed, group) = (isDomainInData['log'], isDomainInData['feed'], isDomainInData['group'])
                                     b_type = 'DNSBL'
                                     b_eval = q_name
 
+                                    debug('{} data: {}', q_name, isDomainInData) 
+
                         # Determine if domain is in DNSBL 'zone' database (log to dnsbl.log)
-                        if not isFound and pfb['zoneDB']:
+                        if not isFound and zoneDB:
                             q = q_name
                             for x in range(q.count('.') +1, 0, -1):
                                 isDomainInZone = zoneDB.get(q)
-                                if isDomainInZone is not None:
-                                    #print q_name + ' zone: ' + str(isDomainInZone)
+                                if isDomainInZone:
                                     isFound = True
-                                    log_type = isDomainInZone['log']
-
-                                    # Collect Feed/Group
-                                    feedGroup = feedGroupIndexDB.get(isDomainInZone['index'])
-                                    if feedGroup is not None:
-                                        feed = feedGroup['feed']
-                                        group = feedGroup['group']
-
+                                    (log_type, feed, group) = (isDomainInZone['log'], isDomainInZone['feed'], isDomainInZone['group'])
                                     b_type = 'TLD'
                                     b_eval = q
+
+                                    debug('{} zone: {}', q_name, isDomainInZone)
                                     break
                                 else:
                                     q = q.split('.', 1)
                                     q = q[-1]
                         
                         # Block via Domain Name Regex
-                        if not isFound and pfb['regexDataDB']:
+                        if not isFound and regexDataDB:
                             isDomainInRegexData = pfb_regex_data_match(q_name)
                             if isDomainInRegexData:
                                 isDomainInData = regexDataDB[isDomainInRegexData]
 
-                                #print q_name + ' data: ' + str(isDomainInData) 
                                 isFound = True
-                                log_type = isDomainInData['log']
-
-                                # Collect Feed/Group
-                                feedGroup = feedGroupIndexDB.get(isDomainInData['index'])
-                                if feedGroup is not None:
-                                    feed = feedGroup['feed']
-                                    group = feedGroup['group']
-
+                                (log_type, feed, group) = (isDomainInData['log'], isDomainInData['feed'], isDomainInData['group'])
                                 b_type = 'DNSBL'
                                 b_eval = q_name
+
+                                debug('{} data: {}', q_name, isDomainInData)
 
                     # Validate other python methods, if not blocked via DNSBL zone/data
                     if not isFound:
@@ -1612,17 +1652,19 @@ def operate(id, event, qstate, qdata):
                             isFound = True
                             feed = 'TLD_Allow'
                             group = 'DNSBL_TLD_Allow'
+                            debug('{} TLD Allow', q_name)
 
                         # Block IDN or 'xn--' Domains
                         if not isFound and pfb['python_idn'] and (q_name.startswith('xn--') or '.xn--' in q_name):
                             isFound = True
                             feed = 'IDN'
                             group = 'DNSBL_IDN'
+                            debug('{} DNSBL IDN', q_name)
 
                         # Block via Regex
-                        if not isFound and pfb['regexDB']:
+                        if not isFound and regexDB:
                             isRegexMatch = pfb_regex_match(q_name)
-                            #print q_name + ' regex: ' + str(isRegexMatch)
+                            debug('{} regex: {}', q_name, isRegexMatch)
                             if isRegexMatch:
                                 isFound = True
                                 feed = isRegexMatch
@@ -1633,8 +1675,8 @@ def operate(id, event, qstate, qdata):
                             log_type = '1'
 
                     # Validate domain in DNSBL Whitelist
-                    if isFound and pfb['whiteDB']:
-                        # print q_name + ' w'
+                    if isFound and whiteDB:
+                        debug('{} w', q_name)
 
                         # Create list of Domain/CNAMES to be validated against Whitelist
                         whitelist_validate = []
@@ -1655,79 +1697,79 @@ def operate(id, event, qstate, qdata):
                                     isInWhitelist = True
 
                             # Determine TLD segment matches
-                            if not isInWhitelist:
-                                q = w_q_name.split('.', 1)
-                                q = q[-1]
-                                for x in range(q.count('.') +1, 0, -1):
-                                    if x >= pfb['python_tld_seg']:
-                                        isDomainInWhitelist = whiteDB.get(q)
+                            if not isInWhitelist and wildcardWhiteDB:
 
-                                        # Determine if domain is a wildcard whitelist entry
-                                        if isDomainInWhitelist is not None and isDomainInWhitelist['wildcard']:
-                                            isInWhitelist = True
-                                            break
-                                        else:
-                                            q = q.split('.', 1)
-                                            q = q[-1]
+                                # Determine full domain match
+                                isDomainInWhitelist = wildcardWhiteDB.get(w_q_name)
+                                if isDomainInWhitelist is not None:
+                                    isInWhitelist = True
+                                elif w_q_name.startswith('www.'):
+                                   isDomainInWhitelist = wildcardWhiteDB.get(w_q_name[4:])
+                                   if isDomainInWhitelist is not None:
+                                        isInWhitelist = True
+
+                                if not isInWhitelist:
+                                    q = w_q_name.split('.', 1)
+                                    q = q[-1]
+                                    for x in range(q.count('.') +1, 0, -1):
+                                        if x >= pfb['python_tld_seg']:
+                                            isDomainInWhitelist = wildcardWhiteDB.get(q)
+
+                                            # Determine if domain is a wildcard whitelist entry
+                                            if isDomainInWhitelist is not None:
+                                                isInWhitelist = True
+                                                break
+                                            else:
+                                                q = q.split('.', 1)
+                                                q = q[-1]
 
                             # Set log data, if we got a match
                             if isInWhitelist:
-                                log_type = isDomainInWhitelist['log']
-
-                                # Collect Feed/Group
-                                feedGroup = feedGroupIndexDB.get(isDomainInWhitelist['index'])
-                                if feedGroup is not None:
-                                    feed = feedGroup['feed']
-                                    group = feedGroup['group']
-
+                                (log_type, feed, group) = (isDomainInWhitelist['log'], isDomainInWhitelist['feed'], isDomainInWhitelist['group'])
                                 b_type = 'DNSBL'
                                 b_eval = q_name
+
+                                debug('{} wdata: {}', q_name, isDomainInWhitelist) 
                     
                     # Validate domain in DNSBL Domain Name Regex
-                    if isFound and not isInWhitelist and pfb['regexDataDB']:
-                        isDomainInWhitelistRegexData = pfb_regex_whitelist_match(q_name)
-                        if isDomainInWhitelistRegexData:
-                            isDomainInWhitelistData = regexWhiteDB[isDomainInWhitelistRegexData]
+                    if isFound and not isInWhitelist and regexDataDB:
+                        isDomainInWhitelistRegex = pfb_regex_whitelist_match(q_name)
+                        if isDomainInWhitelistRegex:
+                            isDomainInWhitelist = regexWhiteDB[isDomainInWhitelistRegex]
 
-                            #print q_name + ' data: ' + str(isDomainInWhitelistData) 
                             isInWhitelist = True
-                            log_type = isDomainInWhitelistData['log']
-
-                            # Collect Feed/Group
-                            feedGroup = feedGroupIndexDB.get(isDomainInWhitelistData['index'])
-                            if feedGroup is not None:
-                                feed = feedGroup['feed']
-                                group = feedGroup['group']
-
+                            (log_type, feed, group) = (isDomainInWhitelist['log'], isDomainInWhitelist['feed'], isDomainInWhitelist['group'])
                             b_type = 'DNSBL'
                             b_eval = q_name
 
+                            debug('{} wdata: {}', q_name, isDomainInWhitelist) 
+
                     # Add domain to excludeDB to skip subsequent blacklist validation
                     if not isFound or isInWhitelist:
-                        #print "Add to Pass: " + q_name 
+                        debug('Add to pass: {}', q_name)
                         excludeDB.add(q_name)
                         if isCNAME:
+                            debug('Add to pass: {}', q_name_original)
                             excludeDB.add(q_name_original)
 
                     # Domain to be blocked and is not whitelisted
                     if isFound and not isInWhitelist:
 
                         # Determine if domain is in HSTS database (Null blocking)
-                        if pfb['hstsDB']:
-                            #print q_name + ' hsts:'
+                        if hstsDB:
+                            debug('{} hsts:', q_name)
 
                             # Determine if TLD is in HSTS database
                             if tld in pfb['hsts_tlds']:
                                 isInHsts = True
                                 p_type = 'HSTS_TLD'
-                                #print q_name + " HSTS"
+                                debug('{} HSTS', q_name)
                             else:
                                 q = q_name
                                 for x in range(q.count('.') +1, 0, -2):
-                                    # print q_name + ' validate: ' + q
-                                    isDomainInHsts = hstsDB.get(q)
-                                    if isDomainInHsts is not None:
-                                        #print q_name + " q: " + q + " HSTS blacklist"
+                                    debug('{} validate: {}', q_name, q)
+                                    if q in hstsDB:
+                                        debug('{} q: {} HSTS blacklist', q_name, q)
                                         isInHsts = True
                                         if q_type_str in pfb['rr_types2']:
                                             p_type = 'HSTS_' + q_type_str
@@ -1738,7 +1780,7 @@ def operate(id, event, qstate, qdata):
                                         q = q.split('.', 1)
                                         q = q[-1]
 
-                                # print q_name + ' break'
+                                debug('{} break', q_name)
 
                         # Determine blocked IP type (DNSBL VIP vs Null Blocking)
                         if not isInHsts:
@@ -1756,7 +1798,7 @@ def operate(id, event, qstate, qdata):
                                 else:
                                     b_ip = pfb['dnsbl_ip']['A']['0']
 
-                            # print q_name + ' ' + str(qstate.qinfo.qtype) + ' ' + q_type_str
+                            debug('{} {} {}', q_name, qstate.qinfo.qtype, q_type_str)
 
                         else:
                             if q_type_str in pfb['rr_types2']:
@@ -1776,7 +1818,7 @@ def operate(id, event, qstate, qdata):
                         # Skip subsequent DNSBL validation for domain, and add domain to dict for get_details_dnsbl function
                         dnsblDB[q_name] = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
                         # Skip subsequent DNSBL validation for original domain (CNAME validation), and add domain to dict for get_details_dnsbl function
-                        if isCNAME and dnsblDB.get(q_name_original) is None:
+                        if isCNAME and q_name_original not in dnsblDB:
                             dnsblDB[q_name_original] = {'qname': q_name_original, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
 
                         # Add domain data to DNSBL cache for Reports tab
@@ -1787,7 +1829,7 @@ def operate(id, event, qstate, qdata):
                     b_ip = isDomainInDNSBL['b_ip']
                     b_type = isDomainInDNSBL['b_type']
                     isFound = True
-                    # print "v: " + q_name 
+                    debug('v: {}', q_name)
 
                 if isFound and not isInWhitelist:
 
@@ -1796,7 +1838,7 @@ def operate(id, event, qstate, qdata):
                         q_type = RR_TYPE_A
                         q_type_str = 'A'
 
-                    # print q_name + ' Blocked ' + b_ip + ' ' + q_type_str
+                    debug('{} Blocked {} {}', q_name, b_ip, q_type_str)
 
                     # Create FQDN Reply Message
                     msg = DNSMessage(qstate.qinfo.qname_str, q_type, RR_CLASS_IN, PKT_QR | PKT_RA)

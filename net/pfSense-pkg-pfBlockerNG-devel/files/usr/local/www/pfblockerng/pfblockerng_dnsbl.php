@@ -79,6 +79,7 @@ $pconfig['pfb_regex']		= $pfb['dconfig']['pfb_regex']				?: '';
 $pconfig['pfb_cname']		= $pfb['dconfig']['pfb_cname']				?: '';
 $pconfig['pfb_noaaaa']		= $pfb['dconfig']['pfb_noaaaa']				?: '';
 $pconfig['pfb_gp']		= $pfb['dconfig']['pfb_gp']				?: '';
+$pconfig['pfb_py_debug']= $pfb['dconfig']['pfb_py_debug']		?: '';
 $pconfig['pfb_pytld']		= $pfb['dconfig']['pfb_pytld']				?: '';
 $pconfig['pfb_pytld_sort']	= $pfb['dconfig']['pfb_pytld_sort']			?: '';
 $pconfig['pfb_pytlds_gtld']	= explode(',', $pfb['dconfig']['pfb_pytlds_gtld'])	?: $default_tlds;
@@ -586,6 +587,7 @@ if ($_POST) {
 			$pfb['dconfig']['pfb_cname']		= pfb_filter($_POST['pfb_cname'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['pfb_noaaaa']		= pfb_filter($_POST['pfb_noaaaa'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['pfb_gp']		= pfb_filter($_POST['pfb_gp'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
+			$pfb['dconfig']['pfb_py_debug']		= pfb_filter($_POST['pfb_py_debug'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
 
 			$pfb['dconfig']['pfb_pytld']		= pfb_filter($_POST['pfb_pytld'], PFB_FILTER_ON_OFF, 'dnsbl')		?: '';
 			$pfb['dconfig']['pfb_pytld_sort']	= pfb_filter($_POST['pfb_pytld_sort'], PFB_FILTER_ON_OFF, 'dnsbl')	?: '';
@@ -2591,6 +2593,14 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ))->setHelp('Enable the Python Group Policy functionality to allow certain Local LAN IPs to bypass DNSBL');
 
+$section->addInput(new Form_Checkbox(
+	'pfb_py_debug',
+	gettext('Python Debug Log') . '(py)',
+	'Enable',
+	$pconfig['pfb_py_debug'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enable logging of debug information. This can potentially increase CPU and memory usage and <strong>should only be enabled for troubleshooting</strong>');
+
 $form->add($section);
 
 $section = new Form_Section('Python Group Policy', 'Python_Group_Policy', COLLAPSIBLE|SEC_CLOSED);
@@ -3230,6 +3240,7 @@ function enable_python() {
 	hideCheckbox('pfb_noaaaa', !python);
 	hideCheckbox('pfb_cname', !python);
 	hideCheckbox('pfb_gp', !python);
+	hideCheckbox('pfb_py_debug', !python);
 	hideInput('pfb_regex_list', !python);
 	hideInput('pfb_noaaaa_list', !python);
 	hideInput('pfb_gp_bypass_list', !python);

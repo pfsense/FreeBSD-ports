@@ -90,6 +90,7 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 											'dnsbl_parsed_error.log', 
 											'dns_reply.log', 
 											'py_error.log', 
+											'py_debug.log',
 											'maxmind_ver', 
 											'wizard.log'),
 						'download'	=> TRUE,
@@ -321,6 +322,10 @@ if (isset($pconfig['logFile']) && !empty($pconfig['logFile']) && (isset($pconfig
 
 		// Python log file must be truncated to not lose python file pointer
 		if (strpos($s_logfile, 'py_error.log') !== FALSE) {
+			$fp = @fopen("{$s_logfile}", 'r+');
+			@ftruncate($fp, 0);
+			@fclose($fp);
+		} if (strpos($s_logfile, 'py_debug.log') !== FALSE) {
 			$fp = @fopen("{$s_logfile}", 'r+');
 			@ftruncate($fp, 0);
 			@fclose($fp);
