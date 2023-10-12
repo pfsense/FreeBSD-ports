@@ -1,7 +1,7 @@
 PORTNAME=	xi-core
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.0.20230412
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	editors
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://xi-editor.io
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE
+
+DEPRECATED=	Project is currently discontinued, one depend port broken (editors/xi-term set to deprecation too). Upstream recommends editors/lapce
+EXPIRATION_DATE=	2023-12-31
 
 USES=		cargo
 USE_GITHUB=	yes

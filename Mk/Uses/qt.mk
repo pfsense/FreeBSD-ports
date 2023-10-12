@@ -22,9 +22,9 @@ _QT_MK_INCLUDED=	qt.mk
 
 # Qt versions currently supported by the framework.
 _QT_SUPPORTED?=		5 6
-QT5_VERSION?=		5.15.8
-QT6_VERSION?=		6.5.2
-PYSIDE6_VERSION?=	${QT6_VERSION}
+QT5_VERSION?=		5.15.10
+QT6_VERSION?=		6.5.3
+PYSIDE6_VERSION?=	6.5.3
 
 # We accept the Qt version to be passed by either or all of the three mk files.
 .  if empty(qt_ARGS) && empty(qmake_ARGS) && empty(qt-dist_ARGS)
@@ -131,19 +131,19 @@ _USES_POST+=		qt
 _QT_MK_POST_INCLUDED=	qt.mk
 
 # The Qt components supported by qt.mk: list of shared, and version specific ones
-_USE_QT_COMMON=		3d charts datavis3d declarative doc examples imageformats location \
+_USE_QT_COMMON=		3d charts connectivity datavis3d declarative doc examples imageformats location \
 			multimedia networkauth quick3d quicktimeline remoteobjects scxml \
 			sensors serialbus serialport speech svg virtualkeyboard wayland \
-			webchannel webengine websockets
+			webchannel webengine websockets webview
 
-_USE_QT5_ONLY=		assistant buildtools concurrent connectivity core dbus \
+_USE_QT5_ONLY=		assistant buildtools concurrent core dbus \
 			declarative-test designer diag gamepad \
 			graphicaleffects gui help l10n linguist linguisttools \
 			network opengl paths phonon4 pixeltool plugininfo printsupport \
 			qdbus qdbusviewer qdoc qdoc-data qev qmake quickcontrols \
 			quickcontrols2 script scripttools sql sql-mysql sql-odbc \
 			sql-pgsql sql-sqlite2 sql-sqlite3 sql-tds testlib uiplugin \
-			uitools webglplugin webkit websockets-qml webview \
+			uitools webglplugin webkit websockets-qml \
 			widgets x11extras xml xmlpatterns
 .  if ${ARCH} == amd64 || ${ARCH} == i386
 _USE_QT5_ONLY+=		sql-ibase

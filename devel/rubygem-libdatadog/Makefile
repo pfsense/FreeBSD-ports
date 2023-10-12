@@ -1,5 +1,5 @@
 PORTNAME=	libdatadog
-PORTVERSION=	2.0.0.1.0
+PORTVERSION=	5.0.0.1.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

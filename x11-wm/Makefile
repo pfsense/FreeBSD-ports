@@ -42,6 +42,7 @@
     SUBDIR += fluxbox
     SUBDIR += fluxter
     SUBDIR += flwm
+    SUBDIR += fswm
     SUBDIR += fvwm2
     SUBDIR += fvwm3
     SUBDIR += gamescope
@@ -68,6 +69,7 @@
     SUBDIR += lxqt-panel
     SUBDIR += lxqt-session
     SUBDIR += lxsession
+    SUBDIR += magpie
     SUBDIR += marco
     SUBDIR += mcwm
     SUBDIR += metacity

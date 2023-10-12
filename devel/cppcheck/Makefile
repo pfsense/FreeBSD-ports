@@ -1,5 +1,5 @@
 PORTNAME=	cppcheck
-PORTVERSION=	2.10.3
+PORTVERSION=	2.12.1
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -11,6 +11,8 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2
+
+BROKEN_FreeBSD_14=	fails to compile: static_assert failed due to requirement
 
 USES=		compiler:c++11-lib cmake shebangfix tar:bzip2
 USE_GITHUB=	yes

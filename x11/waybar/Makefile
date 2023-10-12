@@ -1,6 +1,5 @@
 PORTNAME=	waybar
-DISTVERSION=	0.9.20
-PORTREVISION=	1
+DISTVERSION=	0.9.22
 CATEGORIES=	x11 wayland
 PKGNAMESUFFIX=	${FLAVOR:N${FLAVORS:[1]}:C/.+/-${FLAVOR}/}
 
@@ -20,10 +19,10 @@ LIB_DEPENDS=	libdate-tz.so:devel/date \
 		libxkbregistry.so:x11/libxkbcommon
 TEST_DEPENDS=	catch>0:devel/catch
 
-FLAVORS=	default hyprland hyprland_nopulse nopulse
+FLAVORS=	default nopulse
 CONFLICTS_INSTALL=	${PORTNAME}*
 
-USES=		compiler:c++17-lang gnome meson pkgconfig
+USES=		compiler:c++20-lang gnome meson pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	gtkmm30
 GH_ACCOUNT=	Alexays
@@ -32,11 +31,6 @@ MESON_ARGS=	${libnl systemd wireplumber tests:L:C/.*/-D&=disabled/}
 PLIST_FILES=	bin/${PORTNAME} \
 		etc/xdg/${PORTNAME}/config \
 		etc/xdg/${PORTNAME}/style.css
-
-.if ${FLAVOR:U:Mhyprland*}
-# https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests/40
-MESON_ARGS+=	-Dexperimental=true
-.endif
 
 # XXX Add pkg-config support to devel/date
 .if exists(${.CURDIR}/files/date.pc.in)
@@ -79,6 +73,7 @@ MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	man/man5/${PORTNAME}-backlight.5.gz \
 			man/man5/${PORTNAME}-battery.5.gz \
 			man/man5/${PORTNAME}-bluetooth.5.gz \
+			man/man5/${PORTNAME}-cava.5.gz \
 			man/man5/${PORTNAME}-clock.5.gz \
 			man/man5/${PORTNAME}-cpu.5.gz \
 			man/man5/${PORTNAME}-custom.5.gz \
@@ -154,11 +149,6 @@ post-patch:
 # Respect PREFIX for icons
 	@${REINPLACE_CMD} 's,/usr/share,${DATADIR:H},' \
 		${WRKSRC}/src/modules/wlr/taskbar.cpp
-.if ${FLAVOR:U:Mhyprland*}
-# Use hyprctl to switch workspaces
-	@${REINPLACE_CMD} 's/zext_workspace_handle_v1_activate(workspace_handle_);/const std::string command = "hyprctl dispatch workspace " + name_;\n\tsystem(command.c_str());/g' \
-		${WRKSRC}/src/modules/wlr/workspace_manager.cpp
-.endif
 
 pre-test:
 	@if [ ! -e ${WRKDIR}/.meson_build_tests ]; then \

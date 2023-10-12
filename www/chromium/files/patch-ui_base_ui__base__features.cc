@@ -1,6 +1,15 @@
---- ui/base/ui_base_features.cc.orig	2023-07-16 15:47:57 UTC
+--- ui/base/ui_base_features.cc.orig	2023-10-11 18:22:24 UTC
 +++ ui/base/ui_base_features.cc
-@@ -206,7 +206,7 @@ BASE_FEATURE(kExperimentalFlingAnimation,
+@@ -135,7 +135,7 @@ bool AreF11AndF12ShortcutsEnabled() {
+ }
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
+ 
+-#if BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ BASE_FEATURE(kRedundantImeCompositionClearing,
+              "RedundantImeCompositionClearing",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -234,7 +234,7 @@ BASE_FEATURE(kExperimentalFlingAnimation,
               "ExperimentalFlingAnimation",
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
@@ -9,7 +18,7 @@
      (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS_ASH) && \
       !BUILDFLAG(IS_CHROMEOS_LACROS))
               base::FEATURE_ENABLED_BY_DEFAULT
-@@ -313,7 +313,7 @@ bool IsForcedColorsEnabled() {
+@@ -346,7 +346,7 @@ bool IsForcedColorsEnabled() {
  // milestones.
  BASE_FEATURE(kEyeDropper,
               "EyeDropper",
@@ -18,7 +27,7 @@
               base::FEATURE_ENABLED_BY_DEFAULT
  #else
               base::FEATURE_DISABLED_BY_DEFAULT
-@@ -500,7 +500,7 @@ ChromeRefresh2023Level GetChromeRefresh2023Level() {
+@@ -565,7 +565,7 @@ ChromeRefresh2023Level GetChromeRefresh2023Level() {
    return level;
  }
  

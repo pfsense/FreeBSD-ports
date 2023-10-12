@@ -44,7 +44,7 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 
 USES=		autoreconf compiler:c11 cpe libedit libtool pkgconfig ssl tar:xz
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.18.16
+ISCVERSION=	9.18.19
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -175,6 +175,10 @@ CONFIGURE_ARGS+=	--enable-developer \
 USES+=			perl5
 USE_PERL5=		build
 BUILD_DEPENDS+=		cmocka>0:sysutils/cmocka
+.endif
+
+.if !${PORT_OPTIONS:MMANPAGES} && !${PORT_OPTIONS:MDOCS}
+CONFIGURE_ENV+=		ac_cv_path_SPHINX_BUILD=
 .endif
 
 .include <bsd.port.pre.mk>

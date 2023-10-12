@@ -67,8 +67,8 @@
  
  # random / entropy data
  
---- src/features.h.in.orig	2023-02-15 10:03:30 UTC
-+++ src/features.h.in
+--- src/util/git2_features.h.in.orig	2023-02-15 10:03:30 UTC
++++ src/util/git2_features.h.in
 @@ -24,9 +24,10 @@
  #cmakedefine GIT_REGEX_PCRE2
  #cmakedefine GIT_REGEX_BUILTIN 1

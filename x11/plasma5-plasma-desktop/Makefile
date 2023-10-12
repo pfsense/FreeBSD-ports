@@ -1,5 +1,6 @@
 PORTNAME=	plasma-desktop
 DISTVERSION=	${KDE_PLASMA_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11 kde kde-plasma
 
 MAINTAINER=	kde@FreeBSD.org
@@ -29,22 +30,22 @@ BUILD_DEPENDS=	xf86-input-evdev>0:x11-drivers/xf86-input-evdev \
 		wayland-protocols>=1.18:graphics/wayland-protocols
 
 USES=		cmake compiler:c++11-lib cpe desktop-file-utils gettext gnome \
-		kde:5 pkgconfig python:run qt:5 shebangfix tar:xz xorg
+		kde:5 pkgconfig qt:5 shebangfix tar:xz xorg \
+		python:run
 USE_GNOME=	glib20
-USE_KDE=	activities activities-stats archive attica auth baloo \
-		bookmarks codecs completion config configwidgets coreaddons \
-		crash dbusaddons emoticons filemetadata globalaccel guiaddons \
-		i18n iconthemes init itemmodels itemviews jobwidgets kcmutils \
-		kdeclarative kdelibs4support kio libksysguard newstuff \
-		notifications notifyconfig package parts people \
-		plasma-framework plasma-workspace runner service solid sonnet \
-		textwidgets unitconversion wallet widgetsaddons windowsystem \
-		xmlgui \
+USE_KDE=	activities activities-stats attica auth baloo bookmarks codecs \
+		completion config configwidgets coreaddons crash dbusaddons \
+		filemetadata globalaccel guiaddons i18n iconthemes init \
+		itemmodels itemviews jobwidgets kcmutils kdeclarative \
+		kdelibs4support kio libksysguard newstuff \
+		notifications notifyconfig package parts plasma-framework \
+		plasma-workspace runner service solid sonnet textwidgets \
+		unitconversion widgetsaddons windowsystem xmlgui \
 		doctools:build ecm:build \
 		drkonqi:run infocenter:run kde-cli-tools:run kmenuedit:run \
 		ksysguard:run polkit-kde-agent-1:run systemsettings:run
 USE_QT=		concurrent core dbus declarative gui network phonon4 \
-		printsupport sql svg wayland widgets x11extras xml \
+		printsupport sql wayland widgets x11extras xml \
 		buildtools:build qmake:build
 USE_XORG=	ice sm x11 xcb xcursor xext xfixes xft xi xrender
 
@@ -57,8 +58,8 @@ SHEBANG_FILES=	kcms/ksmserver/kconf_update/*.py \
 
 OPTIONS_SUB=	yes
 
-OPTIONS_DEFINE=		ACCOUNTS
-OPTIONS_DEFAULT=	ACCOUNTS
+OPTIONS_DEFINE=		ACCOUNTS PIPEWIRE
+OPTIONS_DEFAULT=	ACCOUNTS PIPEWIRE
 OPTIONS_GROUP=		IM
 OPTIONS_GROUP_IM=	IBUS SCIM
 IM_DESC=		Input Method Support
@@ -73,6 +74,9 @@ ACCOUNTS_LIB_DEPENDS=	libkaccounts.so:net-im/kaccounts-integration \
 			libaccounts-qt5.so:net-im/libaccounts-qt5
 ACCOUNTS_USE=		gnome=intltool
 ACCOUNTS_DESC=		Accounts management library support
+PIPEWIRE_DESC=		Use runtime dependency QML module 'org.kde.pipewire'
+PIPEWIRE_USE=		KDE=kpipewire
+PIPEWIRE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_org.kde.pipewire-QMLModule
 
 post-patch:
 # Set the correct iso-codes directory

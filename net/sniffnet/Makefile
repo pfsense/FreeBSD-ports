@@ -1,8 +1,8 @@
 PORTNAME=	sniffnet
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.1
-PORTREVISION=	1
-CATEGORIES=	net
+DISTVERSION=	1.2.2
+PORTREVISION=	2
+CATEGORIES=	net wayland
 
 MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Comfortably monitor your Internet traffic
@@ -12,6 +12,8 @@ LICENSE=	APACHE20 MIT
 LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
+
+BROKEN_FreeBSD_12=	ld: error: undefined symbol: memfd_create
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfreetype.so:print/freetype2 \

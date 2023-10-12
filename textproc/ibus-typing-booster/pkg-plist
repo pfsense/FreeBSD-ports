@@ -12,6 +12,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotations/ast.xml
 %%DATADIR%%/data/annotations/az.xml
 %%DATADIR%%/data/annotations/be.xml
+%%DATADIR%%/data/annotations/bew.xml
 %%DATADIR%%/data/annotations/bg.xml
 %%DATADIR%%/data/annotations/bgn.xml
 %%DATADIR%%/data/annotations/bn.xml
@@ -23,6 +24,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotations/chr.xml
 %%DATADIR%%/data/annotations/ckb.xml
 %%DATADIR%%/data/annotations/cs.xml
+%%DATADIR%%/data/annotations/cv.xml
 %%DATADIR%%/data/annotations/cy.xml
 %%DATADIR%%/data/annotations/da.xml
 %%DATADIR%%/data/annotations/de_CH.xml
@@ -54,8 +56,8 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotations/gd.xml
 %%DATADIR%%/data/annotations/gl.xml
 %%DATADIR%%/data/annotations/gu.xml
-%%DATADIR%%/data/annotations/ha_NE.xml
 %%DATADIR%%/data/annotations/ha.xml
+%%DATADIR%%/data/annotations/ha_NE.xml
 %%DATADIR%%/data/annotations/he.xml
 %%DATADIR%%/data/annotations/hi_Latn.xml
 %%DATADIR%%/data/annotations/hi.xml
@@ -112,6 +114,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotations/pt.xml
 %%DATADIR%%/data/annotations/qu.xml
 %%DATADIR%%/data/annotations/quc.xml
+%%DATADIR%%/data/annotations/rhg.xml
 %%DATADIR%%/data/annotations/rm.xml
 %%DATADIR%%/data/annotations/ro.xml
 %%DATADIR%%/data/annotations/root.xml
@@ -168,6 +171,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotationsDerived/ast.xml
 %%DATADIR%%/data/annotationsDerived/az.xml
 %%DATADIR%%/data/annotationsDerived/be.xml
+%%DATADIR%%/data/annotationsDerived/bew.xml
 %%DATADIR%%/data/annotationsDerived/bg.xml
 %%DATADIR%%/data/annotationsDerived/bgn.xml
 %%DATADIR%%/data/annotationsDerived/bn.xml
@@ -179,6 +183,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotationsDerived/chr.xml
 %%DATADIR%%/data/annotationsDerived/ckb.xml
 %%DATADIR%%/data/annotationsDerived/cs.xml
+%%DATADIR%%/data/annotationsDerived/cv.xml
 %%DATADIR%%/data/annotationsDerived/cy.xml
 %%DATADIR%%/data/annotationsDerived/da.xml
 %%DATADIR%%/data/annotationsDerived/de.xml
@@ -211,7 +216,6 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotationsDerived/gl.xml
 %%DATADIR%%/data/annotationsDerived/gu.xml
 %%DATADIR%%/data/annotationsDerived/ha.xml
-%%DATADIR%%/data/annotationsDerived/ha_NE.xml
 %%DATADIR%%/data/annotationsDerived/he.xml
 %%DATADIR%%/data/annotationsDerived/hi.xml
 %%DATADIR%%/data/annotationsDerived/hi_Latn.xml
@@ -234,6 +238,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotationsDerived/kn.xml
 %%DATADIR%%/data/annotationsDerived/ko.xml
 %%DATADIR%%/data/annotationsDerived/kok.xml
+%%DATADIR%%/data/annotationsDerived/ku.xml
 %%DATADIR%%/data/annotationsDerived/ky.xml
 %%DATADIR%%/data/annotationsDerived/lb.xml
 %%DATADIR%%/data/annotationsDerived/lij.xml
@@ -250,7 +255,6 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotationsDerived/ms.xml
 %%DATADIR%%/data/annotationsDerived/mt.xml
 %%DATADIR%%/data/annotationsDerived/my.xml
-%%DATADIR%%/data/annotationsDerived/nb.xml
 %%DATADIR%%/data/annotationsDerived/ne.xml
 %%DATADIR%%/data/annotationsDerived/nl.xml
 %%DATADIR%%/data/annotationsDerived/nn.xml
@@ -267,6 +271,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/data/annotationsDerived/pt_PT.xml
 %%DATADIR%%/data/annotationsDerived/qu.xml
 %%DATADIR%%/data/annotationsDerived/quc.xml
+%%DATADIR%%/data/annotationsDerived/rhg.xml
 %%DATADIR%%/data/annotationsDerived/rm.xml
 %%DATADIR%%/data/annotationsDerived/ro.xml
 %%DATADIR%%/data/annotationsDerived/root.xml
@@ -339,6 +344,8 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/engine/__pycache__/itb_nltk.cpython-%%PYTHON_SUFFIX%%.pyc
 %%DATADIR%%/engine/__pycache__/itb_pango.cpython-%%PYTHON_SUFFIX%%.opt-1.pyc
 %%DATADIR%%/engine/__pycache__/itb_pango.cpython-%%PYTHON_SUFFIX%%.pyc
+%%DATADIR%%/engine/__pycache__/itb_sound.cpython-%%PYTHON_SUFFIX%%.opt-1.pyc
+%%DATADIR%%/engine/__pycache__/itb_sound.cpython-%%PYTHON_SUFFIX%%.pyc
 %%DATADIR%%/engine/__pycache__/itb_util.cpython-%%PYTHON_SUFFIX%%.opt-1.pyc
 %%DATADIR%%/engine/__pycache__/itb_util.cpython-%%PYTHON_SUFFIX%%.pyc
 %%DATADIR%%/engine/__pycache__/itb_version.cpython-%%PYTHON_SUFFIX%%.opt-1.pyc
@@ -359,6 +366,7 @@ share/applications/ibus-setup-typing-booster.desktop
 %%DATADIR%%/engine/itb_emoji.py
 %%DATADIR%%/engine/itb_nltk.py
 %%DATADIR%%/engine/itb_pango.py
+%%DATADIR%%/engine/itb_sound.py
 %%DATADIR%%/engine/itb_util.py
 %%DATADIR%%/engine/itb_version.py
 %%DATADIR%%/engine/m17n_translit.py
@@ -403,6 +411,7 @@ share/locale/hu/LC_MESSAGES/ibus-typing-booster.mo
 share/locale/it/LC_MESSAGES/ibus-typing-booster.mo
 share/locale/ja/LC_MESSAGES/ibus-typing-booster.mo
 share/locale/ka/LC_MESSAGES/ibus-typing-booster.mo
+share/locale/lt/LC_MESSAGES/ibus-typing-booster.mo
 share/locale/nl/LC_MESSAGES/ibus-typing-booster.mo
 share/locale/or/LC_MESSAGES/ibus-typing-booster.mo
 share/locale/pl/LC_MESSAGES/ibus-typing-booster.mo

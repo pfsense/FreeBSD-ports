@@ -1,6 +1,6 @@
---- chrome/browser/ui/chrome_pages.cc.orig	2023-07-21 09:49:17 UTC
+--- chrome/browser/ui/chrome_pages.cc.orig	2023-09-17 07:59:53 UTC
 +++ chrome/browser/ui/chrome_pages.cc
-@@ -68,7 +68,7 @@
+@@ -70,7 +70,7 @@
  #endif
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -9,8 +9,8 @@
  #include "chrome/browser/web_applications/web_app_utils.h"
  #endif
  
-@@ -629,7 +629,7 @@ void ShowBrowserSigninOrSettings(Browser* browser,
- #endif
+@@ -616,7 +616,7 @@ void ShowShortcutCustomizationApp(Profile* profile) {
+ }
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_FUCHSIA)

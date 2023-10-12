@@ -1,7 +1,7 @@
 PORTNAME=	polo
+DISTVERSIONPREFIX=	v
 DISTVERSION=	18.8-beta
 PORTREVISION=	3
-DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-fm
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -16,12 +16,12 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 
 USES=		desktop-file-utils gettext-tools gmake gnome pkgconfig \
 		vala:build
-USE_GNOME=	cairo gdkpixbuf2 gtk30 libxml2 vte3
 USE_GITHUB=	yes
 GH_ACCOUNT=	teejee2008
+USE_GNOME=	cairo gdkpixbuf2 gtk30 libxml2 vte3
 
-WRKSRC_SUBDIR=	src
 MAKEFILE=	makefile
+WRKSRC_SUBDIR=	src
 
 post-patch:
 	@${RM} ${WRKSRC}/share/polo/files/gtk-theme/*.orig

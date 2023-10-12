@@ -1,6 +1,6 @@
---- v8/src/maglev/x64/maglev-assembler-x64-inl.h.orig	2023-07-16 15:47:57 UTC
+--- v8/src/maglev/x64/maglev-assembler-x64-inl.h.orig	2023-09-13 12:11:42 UTC
 +++ v8/src/maglev/x64/maglev-assembler-x64-inl.h
-@@ -207,7 +207,10 @@ void MaglevAssembler::PushReverse(T... vals) {
+@@ -229,7 +229,10 @@ void MaglevAssembler::PushReverse(T... vals) {
    detail::PushAllHelper<T...>::PushReverse(this, vals...);
  }
  

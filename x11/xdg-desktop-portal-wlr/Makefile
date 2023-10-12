@@ -4,6 +4,9 @@ DISTVERSION=	0.7.0
 PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	8453779cf394.patch:-p1 # https://github.com/emersion/xdg-desktop-portal-wlr/pull/279
+
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	xdg-desktop-portal backend for wlroots
 WWW=		https://github.com/emersion/xdg-desktop-portal-wlr
@@ -14,11 +17,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	wayland-protocols>=1.24:graphics/wayland-protocols
 LIB_DEPENDS=	libbasu.so:devel/basu \
 		libinih.so:devel/inih \
-		libepoll-shim.so:devel/libepoll-shim \
 		libdrm.so:graphics/libdrm \
 		libwayland-client.so:graphics/wayland \
 		libpipewire-0.3.so:multimedia/pipewire
-RUN_DEPENDS=	grim:x11/grim
+RUN_DEPENDS=	grim:x11/grim \
+		slurp:x11/slurp
 
 USES=		compiler:c11 gl meson pkgconfig
 USE_GITHUB=	yes
@@ -29,15 +32,18 @@ PLIST_FILES=	libexec/${PORTNAME} \
 		share/dbus-1/services/org.freedesktop.impl.portal.desktop.wlr.service \
 		share/xdg-desktop-portal/portals/wlr.portal
 
-OPTIONS_DEFINE=	MANPAGES SLURP
-OPTIONS_DEFAULT=MANPAGES SLURP
+# XXX Drop after FreeBSD 13.4 EOL around 2026-01-31
+# https://cgit.freebsd.org/src/commit/?id=af93fea71038
+.if !exists(/usr/include/sys/timerfd.h)
+LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim
+.endif
+
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	man/man5/${PORTNAME}.5.gz
-
-SLURP_DESC=		Simple output chooser
-SLURP_RUN_DEPENDS=	slurp:x11/slurp
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc,${PREFIX}&,' \

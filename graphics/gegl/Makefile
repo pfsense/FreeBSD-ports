@@ -1,6 +1,6 @@
 PORTNAME=	gegl
 PORTVERSION=	0.4.46
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GIMP
 
@@ -23,8 +23,13 @@ LIB_DEPENDS=	libbabl-0.1.so:x11/babl \
 		libnsgif.so:graphics/libnsgif \
 		libpng.so:graphics/png
 
-USES=		compiler:c++14-lang cpe gettext gnome jpeg localbase \
-		meson pkgconfig shebangfix uniquefiles tar:xz
+USES=		cpe gettext gnome jpeg localbase meson pkgconfig shebangfix \
+		uniquefiles tar:xz
+.if !exists(/usr/include/omp.h)
+USES+=		compiler:gcc-c++11-lib
+.else
+USES+=		compiler:c++14-lang
+.endif
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Ddocs=false \

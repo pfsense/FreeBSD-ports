@@ -1,7 +1,7 @@
---- chrome/browser/ui/browser_command_controller.cc.orig	2023-07-21 09:49:17 UTC
+--- chrome/browser/ui/browser_command_controller.cc.orig	2023-09-17 07:59:53 UTC
 +++ chrome/browser/ui/browser_command_controller.cc
-@@ -118,7 +118,7 @@
- #define ENABLED_VLOG_LEVEL 1
+@@ -123,7 +123,7 @@
+ #include "components/user_manager/user_manager.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX)
@@ -9,7 +9,7 @@
  #include "ui/linux/linux_ui.h"
  #endif
  
-@@ -305,7 +305,7 @@ bool BrowserCommandController::IsReservedCommandOrKey(
+@@ -304,7 +304,7 @@ bool BrowserCommandController::IsReservedCommandOrKey(
  #endif
    }
  
@@ -18,7 +18,7 @@
    // If this key was registered by the user as a content editing hotkey, then
    // it is not reserved.
    auto* linux_ui = ui::LinuxUi::instance();
-@@ -556,7 +556,7 @@ bool BrowserCommandController::ExecuteCommandWithDispo
+@@ -555,7 +555,7 @@ bool BrowserCommandController::ExecuteCommandWithDispo
  
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
@@ -27,7 +27,7 @@
      case IDC_MINIMIZE_WINDOW:
        browser_->window()->Minimize();
        break;
-@@ -568,7 +568,7 @@ bool BrowserCommandController::ExecuteCommandWithDispo
+@@ -567,7 +567,7 @@ bool BrowserCommandController::ExecuteCommandWithDispo
        break;
  #endif
  
@@ -36,7 +36,7 @@
      case IDC_USE_SYSTEM_TITLE_BAR: {
        PrefService* prefs = profile()->GetPrefs();
        prefs->SetBoolean(prefs::kUseCustomChromeFrame,
-@@ -1170,12 +1170,12 @@ void BrowserCommandController::InitCommandState() {
+@@ -1210,12 +1210,12 @@ void BrowserCommandController::InitCommandState() {
  #endif
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.

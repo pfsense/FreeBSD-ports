@@ -1,5 +1,5 @@
 PORTNAME=	libinput
-DISTVERSION=	1.23.0
+DISTVERSION=	1.24.0
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -16,12 +16,11 @@ LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libudev.so:devel/libudev-devd \
 		libmtdev.so:devel/libmtdev
 
-USES=		cpe localbase meson pkgconfig python:run shebangfix tar:bz2
+USES=		cpe localbase meson pkgconfig python:run shebangfix
 USE_LDCONFIG=	yes
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.freedesktop.org
-GL_TAGNAME=	0b005eb64b12603e65a620a77c67ec62fd03f413
 
 CPE_VENDOR=	freedesktop
 

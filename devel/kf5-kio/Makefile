@@ -1,6 +1,10 @@
 PORTNAME=	kio
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel kde kde-frameworks
+
+PATCH_SITES=	https://invent.kde.org/frameworks/kio/-/commit/
+PATCHFILES=	48322f44323a1fc09305d66d9093fe6c3780709e.diff:-p1
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KF5 resource and network access abstraction
@@ -15,7 +19,7 @@ USE_KDE=	archive auth bookmarks codecs completion config \
 		widgetsaddons windowsystem xmlgui \
 		doctools:build ecm:build
 USE_QT=		concurrent core dbus declarative gui network \
-		script widgets x11extras xml \
+		widgets x11extras xml \
 		buildtools:build qmake:build testlib:build
 USE_XORG=	x11
 

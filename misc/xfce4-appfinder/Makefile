@@ -1,5 +1,5 @@
 PORTNAME=	xfce4-appfinder
-PORTVERSION=	4.18.0
+PORTVERSION=	4.18.1
 PORTREVISION=	1
 CATEGORIES=	misc xfce
 MASTER_SITES=	XFCE
@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 
 USES=		compiler:c11 gettext-tools gmake gnome pkgconfig tar:bzip2 xfce
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool
-USE_XFCE=	garcon xfconf
+USE_XFCE=	garcon libmenu xfconf
 
 GNU_CONFIGURE=	yes
 

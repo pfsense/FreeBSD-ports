@@ -1,5 +1,5 @@
 PORTNAME=	drupal9
-PORTVERSION=	9.5.9
+PORTVERSION=	9.5.11
 CATEGORIES=	www
 MASTER_SITES=	http://ftp.drupal.org/files/projects/
 DISTNAME=	drupal-${PORTVERSION}
@@ -10,6 +10,9 @@ COMMENT=	Database driven web content management system (CMS)
 WWW=		https://www.drupal.org/
 
 LICENSE=	GPLv2+
+
+DEPRECATED=	Upstream EOL reaches on 2023-11-01
+EXPIRATION_DATE=	2023-12-31
 
 USES=		php:web shebangfix
 USE_PHP=	dom filter gd mbstring opcache pdo session \

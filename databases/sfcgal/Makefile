@@ -1,12 +1,12 @@
 PORTNAME=	sfcgal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases math graphics
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Wrapper library around CGAL for PostGIS
-WWW=		http://www.sfcgal.org/
+WWW=		https://oslandia.gitlab.io/SFCGAL/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,5 @@
 PORTNAME=	nomadnet
-DISTVERSION=	0.3.5
+DISTVERSION=	0.3.9
 CATEGORIES=	net-p2p
 MASTER_SITES=	PYPI
 
@@ -7,7 +7,7 @@ MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Off-grid, resilient mesh communication
 WWW=		https://github.com/markqvist/nomadnet
 
-LICENSE=	MIT
+LICENSE=	GPLv3
 
 RUN_DEPENDS=	lxmf>0:net-p2p/lxmf \
 		${PYTHON_PKGNAMEPREFIX}qrcode>=0:textproc/py-qrcode@${PY_FLAVOR} \

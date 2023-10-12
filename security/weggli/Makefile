@@ -1,7 +1,7 @@
 PORTNAME=	weggli
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.3
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	security
 
 MAINTAINER=	ports@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://github.com/googleprojectzero/weggli
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=	error: version script assignment of 'global' to symbol '__muloti4' failed: symbol not defined
 
 USES=		cargo
 USE_GITHUB=	yes

@@ -1,6 +1,6 @@
---- ui/color/color_id.h.orig	2023-07-21 09:49:17 UTC
+--- ui/color/color_id.h.orig	2023-09-17 07:59:53 UTC
 +++ ui/color/color_id.h
-@@ -496,7 +496,7 @@
+@@ -543,7 +543,7 @@
    E_CPONLY(kColorNativeColor6) \
    E_CPONLY(kColorNativeBaseColor) \
    E_CPONLY(kColorNativeSecondaryColor)

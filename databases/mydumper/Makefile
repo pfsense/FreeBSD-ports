@@ -1,6 +1,6 @@
 PORTNAME=	mydumper
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.5-3
+DISTVERSION=	0.15.1-3
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -23,7 +23,7 @@ PLIST_FILES=	sbin/mydumper sbin/myloader
 
 USE_GITHUB=	yes
 
-PORTSCOUT=	skipv:v${DISTVERSION}
+PORTSCOUT=	skipv:${DISTVERSION},v${DISTVERSION}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mydumper ${WRKSRC}/myloader ${STAGEDIR}${PREFIX}/sbin/

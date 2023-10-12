@@ -1,11 +1,11 @@
---- src/Makefile.mk.orig	2021-12-07 20:32:53 UTC
+--- src/Makefile.mk.orig	2023-08-13 10:22:22 UTC
 +++ src/Makefile.mk
-@@ -163,7 +163,7 @@ endif
- # Default FLAGS
+@@ -294,7 +294,7 @@ endif
  
- ifndef SUNPRO
--  CFLAGS  += -Wall -g3 -O3 -fno-strict-aliasing
-+  CFLAGS  += -Wall -fno-strict-aliasing
- endif
- CFLAGS  += $(X_FLAGS)
- LDFLAGS += $(X_FLAGS)
+ _DEBUGOPTFLAG := -g
+ ifndef TESTING
+-  OPTFLAGS = -O3 $(_DEBUGOPTFLAG) -U_FORTIFY_SOURCE -fno-stack-protector
++# OPTFLAGS = -O3 $(_DEBUGOPTFLAG) -U_FORTIFY_SOURCE -fno-stack-protector
+   ifdef DUMA
+     CFLAGS   += -I../dps8 -I. -include dps8_duma.h
+     OPTFLAGS += -DDUMA=1

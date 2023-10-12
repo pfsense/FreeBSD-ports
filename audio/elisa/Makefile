@@ -12,12 +12,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		cmake compiler:c++14-lang desktop-file-utils gettext kde:5 \
 		pkgconfig qt:5 tar:xz xorg
 USE_KDE=	auth baloo5 bookmarks codecs completion config configwidgets \
-		coreaddons crash dbusaddons filemetadata i18n iconthemes itemviews \
-		jobwidgets kcmutils kdeclarative kio kirigami2 package \
-		service solid widgetsaddons windowsystem xmlgui
+		coreaddons crash dbusaddons filemetadata i18n iconthemes \
+		itemviews jobwidgets kcmutils kdeclarative kio kirigami2 \
+		package service solid widgetsaddons windowsystem xmlgui \
+		ecm:build
 USE_QT=		concurrent core dbus declarative gui multimedia network \
 		quickcontrols2 sql svg widgets xml \
-		buildtools:build declarative-test:build qmake:build testlib:build
+		buildtools:build declarative-test:build qmake:build \
+		testlib:build
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS VLC

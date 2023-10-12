@@ -1,5 +1,5 @@
 PORTNAME=	syslog-ng
-DISTVERSION=	4.3.1
+DISTVERSION=	4.4.0
 CATEGORIES=	sysutils
 # official master site:
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
 		libivykis.so:devel/ivykis
 
 USES=		autoreconf:build compiler:c11 cpe gettext-runtime gmake gnome \
-		libtool pathfix pkgconfig python:3.5+,build shebangfix ssl
+		libtool pathfix pkgconfig python:build shebangfix ssl
 
 CPE_VENDOR=	oneidentity
 
@@ -171,6 +171,7 @@ PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so \
 		lib/syslog-ng/python/syslogng/__pycache__/persist%%PYTHON_EXT_SUFFIX%%.pyc \
 		lib/syslog-ng/python/syslogng/__pycache__/source%%PYTHON_EXT_SUFFIX%%.pyc \
 		lib/syslog-ng/python/syslogng/__pycache__/template%%PYTHON_EXT_SUFFIX%%.pyc \
+                lib/syslog-ng/python/syslogng/__pycache__/reloc%%PYTHON_EXT_SUFFIX%%.pyc \
 		lib/syslog-ng/python/syslogng/dest.py \
 		lib/syslog-ng/python/syslogng/logger.py \
 		lib/syslog-ng/python/syslogng/message.py \
@@ -178,6 +179,7 @@ PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so \
 		lib/syslog-ng/python/syslogng/persist.py \
 		lib/syslog-ng/python/syslogng/source.py \
 		lib/syslog-ng/python/syslogng/template.py \
+                lib/syslog-ng/python/syslogng/reloc.py \
 		lib/syslog-ng/python/syslogng/__init__.py \
 		lib/syslog-ng/python/syslogng/__pycache__/__init__.cpython-${PYTHON_SUFFIX}.pyc \
 		lib/syslog-ng/python/syslogng/debuggercli/__init__.py \
@@ -231,7 +233,16 @@ PYTHON_MOD_PLIST_FILES=		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-
 		lib/syslog-ng/python/syslogng/modules/example/scl/example.conf \
 		lib/syslog-ng/python/syslogng/modules/hypr/__init__.py \
 		lib/syslog-ng/python/syslogng/modules/hypr/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/modules/hypr/scl/hypr.conf
+		lib/syslog-ng/python/syslogng/modules/hypr/scl/hypr.conf \
+                lib/syslog-ng/python/syslogng/modules/s3/__init__.py \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/compressable_file_buffer%%PYTHON_EXT_SUFFIX%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_destination%%PYTHON_EXT_SUFFIX%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_object%%PYTHON_EXT_SUFFIX%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/compressable_file_buffer.py \
+                lib/syslog-ng/python/syslogng/modules/s3/s3_destination.py \
+                lib/syslog-ng/python/syslogng/modules/s3/s3_object.py \
+                lib/syslog-ng/python/syslogng/modules/s3/scl/s3.conf
 
 
 CURL_CONFIGURE_OFF=		--with-libcurl=off

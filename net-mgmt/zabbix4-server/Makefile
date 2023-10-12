@@ -1,5 +1,5 @@
 PORTNAME=	zabbix4
-PORTVERSION=	4.0.47
+PORTVERSION=	4.0.49
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${PORTVERSION:R}/
@@ -12,6 +12,9 @@ WWW=		https://www.zabbix.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Upstream EOL reaches on 2023-10-31
+EXPIRATION_DATE=	2023-12-31
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
@@ -60,7 +63,7 @@ CONFIGURE_ARGS+=	--datadir=${ETCDIR} \
 .if ${ZABBIX_BUILD} != "agent" && ${ZABBIX_BUILD} != "java"
 LIB_DEPENDS+=	libnetsnmp.so:net-mgmt/net-snmp
 
-CPPFLAGS+=	-I${LOCALBASE}/include
+USES+=	localbase
 
 SUB_FILES=	pkg-message
 

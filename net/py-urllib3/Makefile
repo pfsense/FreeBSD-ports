@@ -1,5 +1,5 @@
 PORTNAME=	urllib3
-PORTVERSION=	1.26.16
+PORTVERSION=	1.26.17
 PORTEPOCH=	1
 CATEGORIES=	net python
 MASTER_SITES=	PYPI \
@@ -22,7 +22,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flaky>=3.6.1:devel/py-flaky@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}trustme>=0.6.0:security/py-trustme@${PY_FLAVOR}
 
 USES=		cpe python
-USE_PYTHON=	autoplist concurrent distutils pytest
+USE_PYTHON=	autoplist concurrent cryptography_test distutils pytest
 
 CPE_VENDOR=	python
 
@@ -35,14 +35,13 @@ PYTEST_IGNORED_TESTS=	test_ssl_read_timeout
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	BROTLI SOCKS SSL
-OPTIONS_DEFAULT=SOCKS SSL
+OPTIONS_DEFAULT=SOCKS
 
 BROTLI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}brotli>=1.0.9:archivers/py-brotli@${PY_FLAVOR}
 SOCKS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pysocks>=1.5.6<2.0:net/py-pysocks@${PY_FLAVOR}
 SSL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>=0:security/py-certifi@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}idna>=2.0.0:dns/py-idna@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}openssl>=0.14:security/py-openssl@${PY_FLAVOR}
-SSL_USES=		pycryptography:run,test
-SSL_USES_OFF=		pycryptography:test
+SSL_USE=		PYTHON=cryptography
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
 PORTNAME=	castor
 DISTVERSION=	0.8.16
-PORTREVISION=	27
+PORTREVISION=	28
 CATEGORIES=	www
 MASTER_SITES=	https://git.sr.ht/~julienxx/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	kraileth@elderlinux.org
-COMMENT=	Browser for text-based protocols like Gemini and Gopher using GTK+
+COMMENT=	Browser for text-based protocols like Gemini and Gopher using GTK
 WWW=		https://git.sr.ht/~julienxx/castor
 
 LICENSE=	MIT

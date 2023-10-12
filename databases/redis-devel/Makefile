@@ -1,5 +1,5 @@
 PORTNAME=	redis
-DISTVERSION=	7.0.12.20230730
+DISTVERSION=	7.2.0.20230928
 CATEGORIES=	databases
 PKGNAMESUFFIX=	-devel
 
@@ -10,19 +10,19 @@ WWW=		https://redis.io/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES+=		compiler:c11 cpe gmake
+USES+=		compiler:c11 cpe gmake tcl:test
 CPE_VENDOR=	redislabs
 USE_GITHUB=	yes
-GH_TAGNAME=	6abb3c403
+GH_TAGNAME=	c2a4b7849
 
 MAKE_ENV=	OPTIMIZATION= \
 		V=yo
 
-CONFLICTS_INSTALL=	redis redis6 redis62 # etc/rc.d/redis
+CONFLICTS_INSTALL=	redis redis6 redis62 redis70 # etc/rc.d/redis
 
 PORTSCOUT=	ignore:1
 
-OPTIONS_DEFINE=		JEMALLOC TESTS TLS TRIB
+OPTIONS_DEFINE=		JEMALLOC TLS TRIB
 OPTIONS_DEFAULT=	TLS
 OPTIONS_RADIO=		EXTLUA
 OPTIONS_RADIO_EXTLUA=	LUA LUAJIT
@@ -31,7 +31,6 @@ OPTIONS_SUB=		yes
 JEMALLOC_DESC=	Use jemalloc
 LUAJIT_DESC=	Use luajit instead of builtin lua
 LUA_DESC=	Use lang/lua instead of builtin lua
-TESTS_DESC=	Install lang/tcl for redis unit tests
 TLS_DESC=	Use TLS (openssl req.)
 TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
 
@@ -43,7 +42,6 @@ LUA_BROKEN=		Fails to link
 LUA_USES=		lua:51
 LUA_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.lua
 LUA_VARS=		_ADDFLAGS=true
-TESTS_USES=		tcl:build
 TLS_USES=		ssl
 TLS_MAKE_ENV=		BUILD_TLS=yes
 TRIB_CATEGORIES=	ruby
@@ -74,8 +72,6 @@ EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.luajit-or \
 .endif
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
-
-CONFLICTS?=	redis-[1-9].* redis6-* redis62-*
 
 USE_RC_SUBR=	redis sentinel
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb redis-cli \

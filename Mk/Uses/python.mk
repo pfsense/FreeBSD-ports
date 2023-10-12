@@ -82,6 +82,14 @@
 #			  prefix-less original name, e.g.
 #			  bin/foo-2.7 --> bin/foo.
 #
+#	cryptography_build
+#			- Depend on security/cryptography at build-time.
+#
+#	cryptography	- Depend on security/cryptography at run-time.
+#
+#	cryptography_test
+#			- Depend on security/cryptography at test-time.
+#
 #	cython		- Depend on lang/cython at build-time.
 #
 #	cython_run	- Depend on lang/cython at run-time.
@@ -314,10 +322,29 @@ _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
 
 # List all valid USE_PYTHON features here
-_VALID_PYTHON_FEATURES=	allflavors autoplist concurrent cython cython_run cython_test \
-			distutils flavors noegginfo noflavors nose nose2 \
-			optsuffix pep517 py3kplist pytest pytest4 pythonprefix \
-			unittest unittest2
+_VALID_PYTHON_FEATURES=	allflavors \
+			autoplist \
+			concurrent \
+			cryptography_build \
+			cryptography \
+			cryptography_test \
+			cython \
+			cython_run \
+			cython_test \
+			distutils \
+			flavors \
+			noegginfo \
+			noflavors \
+			nose \
+			nose2 \
+			optsuffix \
+			pep517 \
+			py3kplist \
+			pytest \
+			pytest4 \
+			pythonprefix \
+			unittest \
+			unittest2
 _INVALID_PYTHON_FEATURES=
 .  for var in ${USE_PYTHON}
 .    if empty(_VALID_PYTHON_FEATURES:M${var})
@@ -388,10 +415,6 @@ _PYTHON_RUN_DEP=	yes
 _PYTHON_TEST_DEP=	yes
 .  endif
 
-.  if ${PYTHON2_DEFAULT} != ${PYTHON_DEFAULT} && ${PYTHON3_DEFAULT} != ${PYTHON_DEFAULT}
-WARNING+=	"PYTHON_DEFAULT must be a version present in PYTHON2_DEFAULT or PYTHON3_DEFAULT, if you want more Python flavors, set BUILD_ALL_PYTHON_FLAVORS in your make.conf"
-.  endif
-
 .  if ${_PYTHON_ARGS} == 2.7
 DEV_WARNING+=		"lang/python27 reached End of Life and will be removed somewhere in the future, please convert to a modern version of python"
 .  elif ${_PYTHON_ARGS} == 2
@@ -435,7 +458,7 @@ _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 # If we have an unsupported version of Python, try another.
 .  if defined(_PYTHON_VERSION_NONSUPPORTED)
 .undef _PYTHON_VERSION
-.    for ver in ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT} ${_PYTHON_VERSIONS}
+.    for ver in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${_PYTHON_VERSIONS}
 __VER=		${ver}
 .      if !defined(_PYTHON_VERSION) && \
 	!(!empty(_PYTHON_VERSION_MINIMUM) && ( \
@@ -453,7 +476,7 @@ IGNORE=		needs an unsupported version of Python
 # Automatically generates FLAVORS if empty
 .  if empty(FLAVORS) && defined(_PYTHON_FEATURE_FLAVORS)
 .  undef _VALID_PYTHON_VERSIONS
-.    for ver in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT} ${_PYTHON_VERSIONS}
+.    for ver in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${_PYTHON_VERSIONS}
 __VER=		${ver}
 .      if !(!empty(_PYTHON_VERSION_MINIMUM) && ( \
 		${__VER:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})) && \
@@ -475,7 +498,7 @@ _ALL_PYTHON_FLAVORS=	${_PYTHON_VERSIONS:S/.//:S/^/py/}
 .    if defined(BUILD_ALL_PYTHON_FLAVORS) || defined(_PYTHON_FEATURE_ALLFLAVORS)
 FLAVORS=	${_ALL_PYTHON_FLAVORS}
 .    else
-.      for _v in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT}
+.      for _v in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT}
 _f=	py${_v:S/.//}
 .        if ${_ALL_PYTHON_FLAVORS:M${_f}} && !${FLAVORS:M${_f}}
 .          if !empty(FLAVORS)
@@ -581,6 +604,26 @@ _PYTHONPKGLIST=	${WRKDIR}/.PLIST.pymodtmp
 # - it uses USE_PYTHON=distutils
 #
 
+# cryptography* support
+.  if ${PYCRYPTOGRAPHY_DEFAULT} == rust
+CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=41.0.4,1:security/py-cryptography@${PY_FLAVOR}
+.  else
+CRYPTOGRAPHY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography-legacy>=3.4.8_1,1:security/py-cryptography-legacy@${PY_FLAVOR}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CRYPTOGRAPHY_BUILD)
+BUILD_DEPENDS+=	${CRYPTOGRAPHY_DEPENDS}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CRYPTOGRAPHY)
+RUN_DEPENDS+=	${CRYPTOGRAPHY_DEPENDS}
+.  endif
+
+.  if defined(_PYTHON_FEATURE_CRYPTOGRAPHY_TEST)
+TEST_DEPENDS+=	${CRYPTOGRAPHY_DEPENDS}
+.  endif
+
+# cython* support
 .  if defined(_PYTHON_FEATURE_CYTHON)
 BUILD_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
 .  endif
@@ -771,6 +814,8 @@ CONFIGURE_ENV+=	PYTHON="${PYTHON_CMD}"
 # By default CMake picks up the highest available version of Python package.
 # Enforce the version required by the port or the default.
 CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
+CMAKE_ARGS+=	-DPython_EXECUTABLE:FILEPATH="${PYTHON_CMD}"
+CMAKE_ARGS+=	-DPython${PYTHON_MAJOR_VER}_EXECUTABLE:FILEPATH="${PYTHON_CMD}"
 
 # Python 3rd-party modules
 PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}

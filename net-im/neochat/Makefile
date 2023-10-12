@@ -1,6 +1,6 @@
 PORTNAME=	neochat
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	net-im deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSES/GPL-3.0-only.txt
 LIB_DEPENDS=	libcmark.so:textproc/cmark \
 		libqt5keychain.so:security/qtkeychain@qt5 \
 		libolm.so:security/olm
-BUILD_DEPENDS=	libquotient>=0.8:net-im/libquotient \
+BUILD_DEPENDS=	libquotient-qt5>=0.8.1:net-im/libquotient@qt5 \
 		kquickimageeditor>=0.2.0:graphics/kquickimageeditor \
 		kirigami-addons>=0.6.1:x11-toolkits/kirigami-addons \
 		${LOCALBASE}/include/qcoro5/qcoro/qcoro.h:devel/qcoro@qt5
@@ -38,14 +38,10 @@ USE_XORG=	x11
 .include <bsd.port.options.mk>
 
 .if ${ARCH:Mpowerpc*}
-CXX=		clang++${LLVM_VERSION}
 USES+=		llvm:min=16
 .elif ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
 # Work around compiler bug, see pr: 272285
 USES+=		llvm
-CC=		clang${LLVM_VERSION}
-CPP=		clang-cpp${LLVM_VERSION}
-CXX=		clang++${LLVM_VERSION}
 .endif
 
 .include <bsd.port.mk>

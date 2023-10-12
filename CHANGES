@@ -10,6 +10,44 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20230929:
+AUTHOR: sunpoet@FreeBSD.org
+
+  USE_PYTHON=cryptography{,_build,_test} has been added to the ports tree.
+  20230722 entry is obsoleted now. All existing USES=pycryptography* have
+  been converted to USE_PYTHON=cryptography{,_build,_test} in PR 273727.
+
+  Usage:
+    USE_PYTHON=cryptography_build adds security/py-cryptography to BUILD_DEPENDS
+    USE_PYTHON=cryptography adds security/py-cryptography to RUN_DEPENDS
+    USE_PYTHON=cryptography_test adds security/py-cryptography to TEST_DEPENDS
+
+20230823:
+AUTHOR: tcberner@FreeBSD.org
+
+  USES=llvm.mk now supports 'export' (default) and 'noexport' arguments.
+  When export is set, CC, CXX and CPP will be set to the path corresponding
+  to the chosen llvm-version.
+
+20230821:
+AUTHOR: jhale@FreeBSD.org
+
+  A new uses 'ebur128' has been added to transparently depend on the
+  proper variant of 'rust' or 'legacy' depending on the default version
+  set by the user.
+
+  Usage:	USES=ebur128:ARGS
+  Valid ARGS:	<none>, build, lib, run, test
+    <none>:	(default) same as lib
+    build:	add BUILD_DEPENDS
+    lib:	add LIB_DEPENDS
+    run:	add RUN_DEPENDS
+    test:	add TEST_DEPENDS
+
+  If you prefer not to use rust, add the following to your make.conf:
+
+	DEFAULT_VERSIONS+=ebur128=legacy
+
 20230728:
 AUTHOR: andrew@tao11.riddles.org.uk, fuz@FreeBSD.org
 

@@ -1,7 +1,7 @@
 PORTNAME=	angle-grinder
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.19.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	textproc
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/rcoh/angle-grinder
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cargo ssl
+USES=		cargo gmake ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	rcoh
 

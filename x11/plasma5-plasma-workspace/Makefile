@@ -35,7 +35,7 @@ USE_KDE=	activities activities-stats activitymanagerd archive attica \
 		coreaddons crash dbusaddons emoticons filemetadata globalaccel \
 		guiaddons holidays i18n iconthemes idletime init itemmodels \
 		itemviews jobwidgets js jsembed kcmutils kdeclarative kdesu \
-		kdewebkit kio kscreenlocker kwin layer-shell-qt libkscreen \
+		kio kscreenlocker kwin layer-shell-qt libkscreen \
 		libksysguard newstuff notifications notifyconfig package parts \
 		people plasma-framework plasma-integration prison pty runner \
 		service solid sonnet syntaxhighlighting texteditor textwidgets \
@@ -45,7 +45,7 @@ USE_KDE=	activities activities-stats activitymanagerd archive attica \
 		breeze-icons:run breeze:run kded:run kquickcharts:run \
 		milou:run oxygen-icons5:run
 USE_QT=		concurrent core dbus declarative graphicaleffects gui network \
-		phonon4 printsupport qdbus script sql svg wayland webkit \
+		phonon4 printsupport qdbus script sql svg wayland \
 		widgets x11extras xml \
 		buildtools:build qmake:build testlib:build \
 		paths:run quickcontrols:run
@@ -58,6 +58,10 @@ CMAKE_OFF=	BUILD_TESTING
 
 # In 5.15 a file was moved from x11/plasma5-plasma-desktop to x11/plasma5-plasma-workspace:
 CONFLICTS_INSTALL=	plasma5-plasma-desktop-5.14.*
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${PATCH_WRKSRC}/startkde/startplasma.cpp
 
 post-stage:
 	${INSTALL_SCRIPT} ${FILESDIR}/startplasma-wayland.sh ${STAGEDIR}/${LOCALBASE}/bin/

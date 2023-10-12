@@ -1,9 +1,11 @@
 PORTNAME=	valgrind
-PORTVERSION=	3.21.0.g20230218
+PORTVERSION=	3.22.0.g20230917
 DISTVERSIONPREFIX=	freebsd-
 PORTEPOCH=	1
 CATEGORIES=	devel
+MASTER_SITES=	https://snapshots.sourceware.org/valgrind/trunk/2023-09-17_09-18_1694942281/
 PKGNAMESUFFIX=	-devel
+DISTNAME=	${PORTNAME}-3.22.0.GIT
 
 MAINTAINER=	pjfloyd@wanadoo.fr
 COMMENT=	Memory debugging and profiling tool
@@ -14,13 +16,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix
-USE_GITHUB=	yes
-GH_ACCOUNT=	paulfloyd
-GH_PROJECT=	freebsd_valgrind
-GH_TAGNAME=	3b3d74d9d
+USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix python:3.9+,run tar:bz2
 USE_PERL5=	build
-SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
+SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in cachegrind/cg_merge.in cachegrind/cg_diff.in cachegrind/cg_annotate.in
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
@@ -28,6 +26,15 @@ SSP_UNSAFE=	yes
 LIB32_PATH?=	/usr/lib32/libc.so
 
 CONFLICTS=	valgrind
+
+# Valgrind needs to read debuginfo from its own preload shared libraries
+# (quote from README_PACKAGERS
+#-- Don't strip the debug info off lib/valgrind/$platform/vgpreload*.so
+#   in the installation tree.  Either Valgrind won't work at all, or it
+#   will still work if you do, but will generate less helpful error
+#   messages.)
+STRIP=		# empty
+
 PORTDOCS=	html
 
 OPTIONS_DEFINE=		DOCS MANPAGES MPI

@@ -5,6 +5,278 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20231011:
+  AFFECTS: users of www/caddy
+  AUTHOR:  adamw@FreeBSD.org
+
+  The default admin endpoint has changed from localhost:2019 to
+  /var/run/caddy/caddy.sock. Using a Unix socket is more secure,
+  allowing it to be secured by filesystem permissions rather than
+  requiring a firewall.
+
+  If you only control caddy from the rc(8) script (service caddy ...),
+  you don't need to do anything. If you access the API yourself, you
+  will want to update your scripts to use the new socket.
+
+  To use the old endpoint, add the following to /etc/rc.conf:
+
+    caddy_admin="localhost:2019"
+
+20231009:
+  AFFECTS: users of net/ntpd-rs
+  AUTHOR: mikael@freebsd.org
+
+  In 1.0.0 the configuration has been completely reworked, please check the
+  documentation for details. Configuration will not automatically migrate.
+
+20231004:
+  AFFECTS: www/gitlab-ce
+  AUTHOR:  mfechner@FreeBSD.org
+
+  Before you upgrade to version 16.4.x or higher, make sure you did the
+  upgrade to 16.3.x!
+
+  The database migration for 16.4.1 can fail due to unexpected name of a foreign key.
+  So it is recommended to have a database backup available in case the solution
+  described in the update manual does not work for you.
+
+  The upgrade manual can be found as usual here:
+  https://gitlab.fechner.net/mfechner/Gitlab-docu/-/blob/master/update/16.3-16.4-freebsd.md
+
+
+20230930:
+  AFFECTS: users of Transmission (net-p2p/transmission@*)
+  AUTHOR:  mondo.debater_0q@icloud.com
+
+  Fixes Bug 274065 by reorganizing the port as a metaport
+  (net-p2p/transmission) and components port (net-p2p/transmission-components).
+  Each component may be installed through the flavors of
+  transmission-componenents (@cli, @daemon, @docs, @gtk, @qt, @utils).
+  Alternatively, one or more component may be installed by running make config
+  on the metaport net-p2p/transmission.
+
+  AFFECTS: users of devel/php-composer2
+  AUTHOR: madpilot@FreeBSD.org
+
+  The composer2 ports has been moved over the old devel/php-composer
+  port, which was still providing the old EOLed version 1 of the
+  software.
+
+  Please use `pkg install php81-composer` (substitute 81 with the
+  PHP version you're using) to properly upgrade.
+
+20230924:
+  AFFECTS: users of XFCE desktop (x11-wm/xfce4)
+  AUTHOR: madpilot@FreeBSD.org
+
+  XFCE 4.18 is incompatible with the latest version of the adwaita
+  icon theme (version 42.0 and newer), which was used as the default one.
+  Due to this the default icon theme has been changed to
+  x11-themes/xfce-icons-elementary.
+
+  Users that have XFCE already installed and are using the adwaita
+  icon theme will notice missing icons. To fix this you can install
+  any other icon theme (like x11-themes/xfce-icons-elementary) and
+  configure XFCE to use that via the "appearance" settings application,
+  under the "icons" tab.
+
+20230919:
+  AFFECTS: users of net-p2p/transmission
+  AUTHOR:  mondo.debater_0q@icloud.com
+
+  The 4.0 port haphazardly consolidated prior slave ports into flavors of a single port.
+  The flavors have now been revised to better match releases prior to 4.0.
+  The -full flavor included in the 4.0 port has been replaced with -default, which
+  restores the compile-time options of prior release's metaport. Other flavors allow
+  for more piecemeal installs. The prior -web slave port can be installed through the
+  -default flavor or the -daemon flavor.
+
+  See Bug 273841 for more details.
+
+20230915:
+  AFFECTS: users of print/ghostscript10
+  AUTHOR: michael.osipov@siemens.com
+
+  The port flavors have been replaced with a default port option of X11.
+  The flavors approach creates conflicting dependencies with other ports which
+  cannot be solved this time with the ports framework.
+
+  See PRs 270989 and 272541 for details.
+
+20230910:
+  AFFECTS: users of dns/powerdns
+  AUTHOR: tremere@cainites.net
+
+  In Authoritative Server 4.8, the LMDB backend gains a new Lightning
+  Stream-compatible schema, which requires a data migration (this is
+  automatic, and there is no migration back to the old schema). LMDB
+  backend users should pay extra attention to the Upgrade Notes
+  (https://doc.powerdns.com/authoritative/upgrading.html).
+
+20230910:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  1. Please make sure that the PostgreSQL server for the NetBox instance is
+     running version 12 or higher.  This is because Django 4.2 requires
+     PostgreSQL 12 as a minimum.
+
+  2. Please also check the pkg-message and the changelogs for further info.
+
+20230908:
+  AFFECTS: users of databases/postgresql* and other software using PostgreSQL to run
+  AUTHOR: kbowling@FreeBSD.org
+
+  The default version of PostgreSQL has been switched from 13 to 15.
+  The upgrade procedure can use up twice the space the databases
+  currently needs. If you have a big amount of stored data take a
+  closer look at the manpage of pg_upgrade for avoidance and/or
+  speedup of the upgrade.
+
+  The upgrade instructions consider a basic usage and do not match
+  complex scenarios like replication, sharding, or similar.
+
+  Upgrade instructions:
+
+  First stop your PostgreSQL, create PostgreSQL-binaries and backup your data.
+  If you have another Version of PostgreSQL installed, for example 13, your
+  files are named according to this.
+
+  # service postgresql stop
+  # pkg create postgresql13-server postgresql13-contrib
+  # mkdir /tmp/pg-upgrade
+  # tar xf postgresql13-server-13.12.pkg -C /tmp/pg-upgrade
+  # tar xf postgresql13-contrib-13.12.pkg -C /tmp/pg-upgrade
+  # pkg delete -f databases/postgresql13-server databases/postgresql13-contrib databases/postgresql13-client
+
+  Now update PostgreSQL:
+
+    pkg user:
+    # pkg install databases/postgresql15-server databases/postgresql15-contrib
+    # pkg upgrade
+
+    Portmaster users:
+    # portmaster databases/postgresql15-server databases/postgresql15-contrib
+    # portmaster -a
+
+    Portupgrade users:
+    # portinstall databases/postgresql15-server databases/postgresql15-contrib
+    # portupgrade -a
+
+  After installing the new PostgreSQL version you need to convert
+  all your databases to new version:
+
+  # su -l postgres -c "/usr/local/bin/initdb --encoding=utf-8 --lc-collate=C -D /var/db/postgres/data15 -U postgres"
+  # su -l postgres -c "pg_upgrade -b /tmp/pg-upgrade/usr/local/bin/ -d /var/db/postgres/data13/ -B /usr/local/bin/ -D /var/db/postgres/data15/ -U postgres "
+
+  Now the migration is finished. You can start PostgreSQL again with:
+
+  # service postgresql start
+
+  ATTENTION:
+  1) The default user changed from "pgsql" to "postgres" in 11. The migration steps above now assume
+     the "postgres" database user and FreeBSD user.
+  2) See the updating entry 20190829 if you are updating from a release prior to 11.
+  3) If you use non-default initdb options, you have to adjust the initdb-command accordingly
+
+20230906:
+  AUTHOR: jrm@FreeBSD.org
+  AFFECTS: users of sysutils/devcpu-data*
+
+  The CPU microcode ports have been reorganized.  The new ports are:
+  sysutils/cpu-microcode, sysutils/cpu-microcode-amd,
+  sysutils/cpu-microcode-intel, and cpu-microcode-rc.
+
+  To install all CPU microcode packages:
+
+     pkg install cpu-microcode
+
+  To install only packages for a specific CPU vendor:
+
+     pkg install cpu-microcode-amd
+
+     or
+
+     pkg install cpu-microcode-intel
+
+  To give users time to adjust to these changes, sysutils/devcpu-data will
+  remain in the tree until the end of 2023.  The port has been converted to a
+  metaport and now provides the same functionality as sysutils/cpu-microcode.
+
+  Refer to the commit log in bc7829212d153aeff69b439d08e2e3001ef88ba3 for an
+  explanation as to why these changes were made.
+
+20230904:
+  AUTHOR: netchild@FreeBSD.org
+  AFFECTS: users of misc/openhab
+
+  The rc.d script of 4.0.2 had an error which didn't take the user to
+  run openhab into account. After installing the update and stopping
+  openhab run (for the default settings)
+    chown -R openhab:openhab /var/db/openhab/userdata /var/log/openhab
+  If you use other directories for the userdata and logs, you need to
+  adapt accordingly.
+
+20230822:
+  AUTHOR: arrowd@FreeBSD.org
+  AFFECTS: users of sysutils/polkit together with sysutils/consolekit2
+
+  ConsoleKit2 has grown some logind1 compatibility which resulted in breaking
+  changes in its API. One of its consumers, Polkit, is patched to handle it,
+  so make sure to update both ports simultaneously.
+
+20230822:
+  AUTHOR: leres@FreeBSD.org
+  AFFECTS: users of security/zeek
+
+  Zeek has been upgraded to 6.0.0 and the NETMAP option was removed;
+  it was too difficult to build it without zeek being installed in
+  %%PREFIX%%.
+
+  The consensus was that this was a rarely used feature, please
+  reach out to me if need this (I've done some work on a new
+  security/zeek-netmap port that is probably the right way forward).
+
+  When I upgraded zeek on my systems I found some cruft left over
+  from previous versions. The way I recommend upgrading from 5.0.9 to
+  6.0.0 is:
+
+      service zeek stop
+      pkg delete -fy zeek py311-zkg
+      [clean up leftover files in /usr/local/lib/zeek]
+      pkg install -y zeek
+      service zeek deploy
+
+20230817:
+  AFFECTS: users of databases/redis
+  AUTHOR: yasu@FreeBSD.org
+
+  The databases/redis port has been updated to 7.2. Users wanting to
+  stay on 7.0 can replace databases/redis with databases/redis70 with
+  one of the following commands.
+
+  If you use pkg with binary packages:
+    # pkg set -o databases/redis:databases/redis70
+    # pkg upgrade
+  If you use portmaster:
+    # portmaster -o databases/redis70 databases/redis
+  If you use portupgrade:
+    # portupgrade -o databases/redis70 databases/redis
+
+20230814:
+  AFFECTS: usrs of www/kdsoap
+  AUTHOR: kde@FreeBSD.org
+
+  The port www/kdsoap has been flavorized to support both Qt5 and Qt6.
+  For symmetry, the Qt5 package has been renamed to kdsoap-qt5.
+
+20230811:
+  AFFECTS: users of www/p5-AnyEvent-WebSocket-Client
+  AUTHOR: rodrigo@FreeBSD.org
+
+  The update to AnyEvent-WebSocket-Client 0.55 introduce a change in behavior:
+  close() default return code is now 1000 instead of 1005
+
 20230730:
   AFFECTS: users of lang/perl5*
   AUTHOR: delphij@FreeBSD.org
@@ -237,7 +509,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of sysutils/py-mqttwarn
   AUTHOR: dvl@FreeBSD.org
 
-  The redis optoin REISPUB has been renamed to REDISPUB
+  The redis option REISPUB has been renamed to REDISPUB
   You should update any make.conf setting etc which refer to this.
   e.g. change sysutils_py-mqttwarn_REISPUB to sysutils_py-mqttwarn_REDISPUB
 
@@ -391,7 +663,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: tcberner@FreeBSD.org
 
   The packages accessibility/atk and accessibility/at-spi2-atk have been
-  integegrated upstream into at-spi2-core.
+  integrated upstream into at-spi2-core.
 
   Users of these packages can manually remove them prior to updating
   accessibility/at-spi2-core using

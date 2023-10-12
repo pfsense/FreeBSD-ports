@@ -5,13 +5,7 @@ bin/xrdp-sesadmin
 bin/xrdp-sesrun
 bin/xrdp-dumpfv1
 lib/libpainter.a
-lib/libpainter.so
-lib/libpainter.so.0
-lib/libpainter.so.0.0.0
-lib/librfxencode.so
-lib/librfxencode.so.0.0.0
 lib/librfxencode.a
-lib/librfxencode.so.0
 include/ms-erref.h
 include/ms-fscc.h
 include/ms-rdpbcgr.h
@@ -43,6 +37,14 @@ lib/xrdp/libipm.a
 lib/xrdp/libipm.so
 lib/xrdp/libipm.so.0
 lib/xrdp/libipm.so.0.0.0
+lib/xrdp/libsesman.a
+lib/xrdp/libsesman.so
+lib/xrdp/libsesman.so.0
+lib/xrdp/libsesman.so.0.0.0
+lib/xrdp/libtoml.a
+lib/xrdp/libtoml.so
+lib/xrdp/libtoml.so.1
+lib/xrdp/libtoml.so.1.0.0
 lib/xrdp/libvnc.a
 lib/xrdp/libvnc.so
 lib/xrdp/libxrdp.a
@@ -55,6 +57,8 @@ lib/xrdp/libxrdpapi.so
 lib/xrdp/libxrdpapi.a
 lib/xrdp/libxrdpapi.so.0
 lib/xrdp/libxrdpapi.so.0.0.0
+libexec/xrdp/waitforx
+libexec/xrdp/xrdp-sesexec
 etc/pam.d/xrdp-sesman
 etc/rc.d/xrdp
 etc/rc.d/xrdp-sesman

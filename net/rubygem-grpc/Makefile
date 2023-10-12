@@ -1,5 +1,5 @@
 PORTNAME=	grpc
-PORTVERSION=	1.56.0
+PORTVERSION=	1.58.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -18,6 +18,12 @@ RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
 USES=		cpe gem gmake pkgconfig
 
 MAKE_JOBS_UNSAFE=	yes
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+CONFIGURE_ARGS+=	--with-cflags="-Wno-error=incompatible-function-pointer-types"
+.endif
 
 post-patch:
 	@${RM} ${WRKSRC}/Makefile ${WRKSRC}/.yardopts

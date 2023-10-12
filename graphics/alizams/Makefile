@@ -1,6 +1,6 @@
 PORTNAME=	alizams
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.3
+DISTVERSION=	1.9.5
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -29,7 +29,7 @@ CMAKE_ARGS=	-DALIZA_QT_VERSION=5
 .include <bsd.port.options.mk>
 
 .if ${ARCH} != amd64
-CXXFLAGS+=	-DDISABLE_SIMDMATH # i386 also needs disabling SIND, see https://github.com/InsightSoftwareConsortium/ITK/issues/3771#issuecomment-1328839390
+CMAKE_ARGS+=	-DALIZA_DISABLE_SIMDMATH:BOOL=YES # i386 also needs disabling SIND, see https://github.com/InsightSoftwareConsortium/ITK/issues/3771#issuecomment-1328839390
 .endif
 
 .include <../../science/InsightToolkit/Makefile.version>

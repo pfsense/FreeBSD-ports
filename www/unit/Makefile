@@ -1,6 +1,6 @@
 PORTNAME=	unit
 PORTVERSION=	${UNIT_VERSION}
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES?=	https://unit.nginx.org/download/
 
@@ -120,9 +120,7 @@ CONFIGURE_ARGS+=--control=unix:${UNIT_SOCK}
 
 .if defined(UNIT_MODNAME) && ${UNIT_MODNAME:Mperl*}
 # Fix build failure on clang >= 12
-.if ${OSVERSION} >= 1204000
 CFLAGS+=	-Wno-compound-token-split-by-macro
-.endif
 .endif
 
 .if !target(post-install)

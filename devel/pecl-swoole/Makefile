@@ -1,5 +1,5 @@
 PORTNAME=	swoole
-PORTVERSION=	5.0.3
+PORTVERSION=	5.1.0
 CATEGORIES=	devel net
 
 MAINTAINER=	vanilla@FreeBSD.org
@@ -9,8 +9,10 @@ WWW=		https://pecl.php.net/package/swoole
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+NOT_FOR_ARCHS=	i386 powerpc
+NOT_FOR_ARCHS_REASON= 	upstream drop 32 bits support
+
 USES=		compiler:c11 localbase:ldflags php:build,pecl ssl
-IGNORE_WITH_PHP=	83
 
 CONFIGURE_ARGS+=	--enable-mysqlnd
 
@@ -29,6 +31,7 @@ JSON_CONFIGURE_ON=	--enable-swoole-json
 JSON_USES=		php:build
 PGSQL_CONFIGURE_ON=	--enable-swoole-pgsql
 PGSQL_USES=		pgsql
+PGSQL_USE=		PHP=pdo:build
 BROTLI_CONFIGURE_ON=	--enable-brotli
 BROTLI_LIB_DEPENDS=	libbrotlicommon.so:archivers/brotli
 

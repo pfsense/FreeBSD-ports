@@ -97,6 +97,7 @@ include/snort/helpers/scratch_allocator.h
 include/snort/host_tracker/cache_allocator.h
 include/snort/host_tracker/cache_interface.h
 include/snort/host_tracker/host_cache.h
+include/snort/host_tracker/host_cache_segmented.h
 include/snort/host_tracker/host_tracker.h
 include/snort/log/log.h
 include/snort/log/log_text.h
@@ -206,6 +207,7 @@ include/snort/pub_sub/daq_message_event.h
 include/snort/pub_sub/data_decrypt_event.h
 include/snort/pub_sub/dcerpc_events.h
 include/snort/pub_sub/dhcp_events.h
+include/snort/pub_sub/dns_events.h
 include/snort/pub_sub/eve_process_event.h
 include/snort/pub_sub/expect_events.h
 include/snort/pub_sub/external_event_ids.h

@@ -268,7 +268,7 @@ dkimpy-milter:*:324:
 dkfilter:*:325:
 smfs:*:326:
 _reticulum:*:327:
-# free: 328
+galene:*:328:
 # free: 329
 orthanc:*:330:
 # free: 331
@@ -769,7 +769,7 @@ selenium:*:824:
 polw:*:825:
 statsd:*:826:
 _tuptime:*:827:
-# free: 828
+cirrus:*:828:
 # free: 829
 # free: 830
 # free: 831

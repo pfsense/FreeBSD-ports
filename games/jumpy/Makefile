@@ -1,7 +1,7 @@
 PORTNAME=	jumpy
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -25,6 +25,11 @@ LTO_UNSAFE=	yes # bevy_dylib fails with -C panic=abort
 PLIST_FILES=	bin/${PORTNAME}
 PLIST_FILES+=	"@comment bin/core" # not packaged in vendor binaries
 PORTDATA=	*
+
+.if ${MACHINE_ARCH} == i386
+# https://github.com/rust-lang/rust/issues/85598
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 
 post-patch:
 # Search assets under PREFIX instead of current directory

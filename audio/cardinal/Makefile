@@ -30,6 +30,7 @@ USE_GL=		gl
 SHEBANG_GLOB=	*.sh
 
 CXXFLAGS+=	-I${LOCALBASE}/include/pffft
+CXXFLAGS_powerpc64le=	-DNO_WARN_X86_INTRINSICS
 LDFLAGS+=	-lpffft
 
 MAKE_ENV=	LD_PRELOAD=/usr/lib/libpthread.so # workaround for https://github.com/DISTRHO/Cardinal/issues/128#issuecomment-1030817359
@@ -44,5 +45,11 @@ PORTDOCS=	*
 
 LTO_MAKE_ARGS=	WITH_LTO=true
 LTO_BROKEN=	Fails to build with LTO because it is gcc-centered
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+USES+=	llvm:max=15
+.endif
 
 .include <bsd.port.mk>

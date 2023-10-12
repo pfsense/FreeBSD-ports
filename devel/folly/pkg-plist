@@ -110,6 +110,7 @@ include/folly/Utility.h
 include/folly/Varint.h
 include/folly/VirtualExecutor.h
 include/folly/base64.h
+include/folly/chrono/Clock.h
 include/folly/chrono/Conv.h
 include/folly/chrono/Hardware.h
 include/folly/compression/Compression.h
@@ -144,6 +145,7 @@ include/folly/container/Foreach-inl.h
 include/folly/container/Foreach.h
 include/folly/container/HeterogeneousAccess-fwd.h
 include/folly/container/HeterogeneousAccess.h
+include/folly/container/IntrusiveHeap.h
 include/folly/container/Iterator.h
 include/folly/container/Merge.h
 include/folly/container/SparseByteSet.h
@@ -232,6 +234,7 @@ include/folly/executors/QueuedImmediateExecutor.h
 include/folly/executors/ScheduledExecutor.h
 include/folly/executors/SequencedExecutor.h
 include/folly/executors/SerialExecutor.h
+include/folly/executors/SerialExecutor-inl.h
 include/folly/executors/SerializedExecutor.h
 include/folly/executors/SoftRealTimeExecutor.h
 include/folly/executors/StrandExecutor.h
@@ -288,7 +291,6 @@ include/folly/experimental/StringKeyedUnorderedMap.h
 include/folly/experimental/StringKeyedUnorderedSet.h
 include/folly/experimental/TLRefCount.h
 include/folly/experimental/TestUtil.h
-include/folly/experimental/ThreadWheelTimekeeperHighRes.h
 include/folly/experimental/ThreadedRepeatingFunctionRunner.h
 include/folly/experimental/TimerFD.h
 include/folly/experimental/TimerFDTimeoutManager.h
@@ -399,6 +401,8 @@ include/folly/experimental/io/AsyncBase.h
 include/folly/experimental/io/AsyncIO.h
 include/folly/experimental/io/AsyncIoUringSocket.h
 include/folly/experimental/io/AsyncIoUringSocketFactory.h
+include/folly/experimental/io/Epoll.h
+include/folly/experimental/io/EpollBackend.h
 include/folly/experimental/io/FsUtil.h
 include/folly/experimental/io/HugePages.h
 include/folly/experimental/io/IoUring.h
@@ -406,6 +410,7 @@ include/folly/experimental/io/IoUringBase.h
 include/folly/experimental/io/IoUringBackend.h
 include/folly/experimental/io/IoUringEvent.h
 include/folly/experimental/io/IoUringEventBaseLocal.h
+include/folly/experimental/io/Liburing.h
 include/folly/experimental/io/SimpleAsyncIO.h
 include/folly/experimental/observer/CoreCachedObserver.h
 include/folly/experimental/observer/HazptrObserver.h
@@ -495,11 +500,14 @@ include/folly/folly-config.h
 include/folly/functional/ApplyTuple.h
 include/folly/functional/Invoke.h
 include/folly/functional/Partial.h
+include/folly/functional/protocol.h
+include/folly/functional/traits.h
 include/folly/futures/Barrier.h
 include/folly/futures/Future-inl.h
 include/folly/futures/Future-pre.h
 include/folly/futures/Future.h
 include/folly/futures/FutureSplitter.h
+include/folly/futures/HeapTimekeeper.h
 include/folly/futures/ManualTimekeeper.h
 include/folly/futures/Portability.h
 include/folly/futures/Promise-inl.h
@@ -544,6 +552,7 @@ include/folly/io/RecordIO-inl.h
 include/folly/io/RecordIO.h
 include/folly/io/ShutdownSocketSet.h
 include/folly/io/SocketOptionMap.h
+include/folly/io/SocketOptionValue.h
 include/folly/io/TypedIOBuf.h
 include/folly/io/async/AsyncPipe.h
 include/folly/io/async/AsyncSSLSocket.h
@@ -600,6 +609,8 @@ include/folly/io/async/test/AsyncSSLSocketTest.h
 include/folly/io/async/test/AsyncSocketTest.h
 include/folly/io/async/test/AsyncSocketTest2.h
 include/folly/io/async/test/BlockingSocket.h
+include/folly/io/async/test/CallbackStateEnum.h
+include/folly/io/async/test/ConnCallback.h
 include/folly/io/async/test/MockAsyncSSLSocket.h
 include/folly/io/async/test/MockAsyncServerSocket.h
 include/folly/io/async/test/MockAsyncSocket.h
@@ -608,6 +619,7 @@ include/folly/io/async/test/MockAsyncUDPSocket.h
 include/folly/io/async/test/MockTimeoutManager.h
 include/folly/io/async/test/ScopedBoundPort.h
 include/folly/io/async/test/SocketPair.h
+include/folly/io/async/test/TFOUtil.h
 include/folly/io/async/test/TestSSLServer.h
 include/folly/io/async/test/TimeUtil.h
 include/folly/io/async/test/UndelayedDestruction.h

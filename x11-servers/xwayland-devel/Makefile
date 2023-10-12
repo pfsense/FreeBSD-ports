@@ -1,7 +1,7 @@
 PORTNAME=	xwayland
 DISTVERSIONPREFIX=	xorg-server-
-DISTVERSION=	21.0.99.1-507
-DISTVERSIONSUFFIX=	-g34446a995
+DISTVERSION=	21.0.99.1-531
+DISTVERSIONSUFFIX=	-g9617de733
 CATEGORIES=	x11-servers
 PKGNAMESUFFIX=	-devel
 
@@ -9,7 +9,6 @@ PATCH_SITES+=	https://github.com/mirror/${GL_PROJECT}/commit/:github
 PATCHFILES+=	cd6c9c1246af.patch:-p1:github # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
 PATCHFILES+=	3930d00746b0.patch:-p1:github # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
 PATCHFILES+=	3b0d1a3a2296.patch:-p1:github # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
-PATCHFILES+=	459f07e344fd.patch:-p1:github # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/844
 PATCH_SITES+=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
 PATCHFILES+=	8b9bf0a22640.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/1047
 PATCHFILES+=	0c90fb305e9b.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/1051
@@ -40,7 +39,7 @@ USE_XORG=	pixman xau xdmcp xfont2 xkbfile xshmfence xtrans
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	xorg
 GL_PROJECT=	xserver
-GL_TUPLE=	xorg/proto:xorgproto:766967322209f2dcb72e6a8edea0c651f586201d:xorgproto/subprojects/xorgproto
+GL_TUPLE=	xorg/proto:xorgproto:xorgproto-2023.2:xorgproto/subprojects/xorgproto
 MESON_ARGS=	-D${PORTNAME}=true \
 		-Dxorg=false \
 		-Dxnest=false \

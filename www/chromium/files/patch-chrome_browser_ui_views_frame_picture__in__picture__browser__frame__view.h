@@ -1,6 +1,6 @@
---- chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.h.orig	2023-07-16 15:47:57 UTC
+--- chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.h.orig	2023-10-11 18:22:24 UTC
 +++ chrome/browser/ui/views/frame/picture_in_picture_browser_frame_view.h
-@@ -20,7 +20,7 @@
+@@ -24,7 +24,7 @@
  #include "ui/views/controls/image_view.h"
  #include "ui/views/widget/widget_observer.h"
  
@@ -9,7 +9,16 @@
  #include "ui/linux/window_frame_provider.h"
  #endif
  
-@@ -78,7 +78,7 @@ class PictureInPictureBrowserFrameView
+@@ -32,7 +32,7 @@
+ // window, so to prevent cutting off important dialogs we resize the
+ // picture-in-picture window to fit them. While ChromeOS also uses Aura, it does
+ // not have this issue so we do not resize on ChromeOS.
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+ #define RESIZE_DOCUMENT_PICTURE_IN_PICTURE_TO_DIALOG 1
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+ 
+@@ -97,7 +97,7 @@ class PictureInPictureBrowserFrameView
    void Layout() override;
    void AddedToWidget() override;
    void RemovedFromWidget() override;
@@ -18,7 +27,7 @@
    gfx::Insets MirroredFrameBorderInsets() const override;
    gfx::Insets GetInputInsets() const override;
    SkRRect GetRestoredClipRegion() const override;
-@@ -164,7 +164,7 @@ class PictureInPictureBrowserFrameView
+@@ -186,7 +186,7 @@ class PictureInPictureBrowserFrameView
    // Called when mouse entered or exited the pip window.
    void OnMouseEnteredOrExitedWindow(bool entered);
  
@@ -27,9 +36,9 @@
    // Sets the window frame provider so that it will be used for drawing.
    void SetWindowFrameProvider(ui::WindowFrameProvider* window_frame_provider);
  
-@@ -239,7 +239,7 @@ class PictureInPictureBrowserFrameView
-   gfx::MultiAnimation show_close_button_animation_;
-   gfx::MultiAnimation hide_close_button_animation_;
+@@ -349,7 +349,7 @@ class PictureInPictureBrowserFrameView
+   // `top_bar_color_animation_`.
+   absl::optional<SkColor> current_foreground_color_;
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

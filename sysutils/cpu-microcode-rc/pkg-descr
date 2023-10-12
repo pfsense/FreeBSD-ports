@@ -1,0 +1,3 @@
+An RC script for use with the cpuctl(4) microcode update facility to keep your
+processor's firmware up-to-date.  CPU microcode data must be installed from a
+vendor.  See sysutils/devcpu-data-amd and sysutils/devcpu-data-intel.

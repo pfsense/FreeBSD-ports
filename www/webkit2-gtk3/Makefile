@@ -11,7 +11,7 @@ PATCH_SITES=	https://github.com/WebKit/WebKit/commit/
 PATCHFILES=	06f9978e52a8408ed6c2c8296afb1e7449c2f1ee.patch:-p1 # https://bugs.webkit.org/show_bug.cgi?id=247770
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Opensource browser engine using the GTK+ 3 toolkit
+COMMENT=	Opensource browser engine using the GTK 3 toolkit
 WWW=		https://webkitgtk.org/
 
 LICENSE=	GPLv2 BSD2CLAUSE
@@ -52,8 +52,6 @@ CPE_PRODUCT=	webkitgtk
 
 BINARY_ALIAS=		python=${PYTHON_CMD}
 CXXFLAGS+=		-DFIXED_EXECUTABLE_MEMORY_POOL_SIZE_IN_MB=32
-CXXFLAGS_powerpc=	-DENABLE_YARR_JIT=0
-CXXFLAGS_powerpc64=	-DENABLE_YARR_JIT=0
 CMAKE_ARGS=		-DPORT=GTK
 CMAKE_OFF=		USE_LD_GOLD ${CMAKE_OFF_${ARCH}:U} \
 			ENABLE_GLES2 \
@@ -64,8 +62,6 @@ CMAKE_ON=		ENABLE_MINIBROWSER \
 			USE_SOUP2
 CMAKE_OFF_armv6=	ENABLE_JIT
 CMAKE_OFF_armv7=	ENABLE_JIT
-CMAKE_OFF_powerpc=	ENABLE_JIT
-CMAKE_OFF_powerpc64=	ENABLE_JIT
 INSTALL_TARGET=		install
 
 OPTIONS_DEFINE=		DEBUG GEOIP GSTREAMER WAYLAND

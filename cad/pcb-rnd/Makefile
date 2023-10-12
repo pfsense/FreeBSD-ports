@@ -36,4 +36,8 @@ post-install:
 .endfor
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pcb-rnd/plugins/*.so
 
+post-patch:
+	@${ECHO_CMD} 'USER_CFLAGS += -DSCCONFIG_ACCEPT_IMPLICIT' \
+		>> ${WRKSRC}/scconfig/Makefile
+
 .include <bsd.port.mk>

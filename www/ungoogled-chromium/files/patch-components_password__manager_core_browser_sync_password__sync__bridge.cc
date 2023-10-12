@@ -1,6 +1,6 @@
---- components/password_manager/core/browser/sync/password_sync_bridge.cc.orig	2023-05-05 12:12:41 UTC
+--- components/password_manager/core/browser/sync/password_sync_bridge.cc.orig	2023-09-17 07:59:53 UTC
 +++ components/password_manager/core/browser/sync/password_sync_bridge.cc
-@@ -186,7 +186,7 @@ bool IsCredentialPhished(const sync_pb::PasswordSpecif
+@@ -191,7 +191,7 @@ bool IsCredentialPhished(const sync_pb::PasswordSpecif
  // merge.
  bool ShouldRecoverPasswordsDuringMerge() {
    // Delete the local undecryptable copy when this is MacOS or Linux only.
@@ -9,7 +9,7 @@
    return true;
  #else
    return false;
-@@ -194,7 +194,7 @@ bool ShouldRecoverPasswordsDuringMerge() {
+@@ -199,7 +199,7 @@ bool ShouldRecoverPasswordsDuringMerge() {
  }
  
  bool ShouldCleanSyncMetadataDuringStartupWhenDecryptionFails() {

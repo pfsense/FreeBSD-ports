@@ -1,5 +1,5 @@
 PORTNAME=	pip
-PORTVERSION=	23.1.2
+PORTVERSION=	23.2.1
 CATEGORIES=	devel python
 MASTER_SITES=	https://files.pythonhosted.org/packages/c3/9e/8a7ba2c9984a060daa6c6f9fff4d576b7ace3936239d6b771541eab972ed/:test_setuptools \
 		https://files.pythonhosted.org/packages/61/86/cc8d1ff2ca31a312a25a708c891cf9facbad4eae493b3872638db6785eb5/:test_wheel
@@ -32,9 +32,9 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}freezegun>=0:devel/py-freezegun@${PY_FLAVOR
 		git:devel/git \
 		svn:devel/subversion
 
-USES=		cpe python pycryptography:test shebangfix
+USES=		cpe python shebangfix
 CPE_VENDOR=	pypa
-USE_PYTHON=	autoplist concurrent distutils pytest
+USE_PYTHON=	autoplist concurrent cryptography_test distutils pytest
 
 MAKE_ENV=	PYTHONPATH=${WRKSRC}/src/
 NO_ARCH=	yes

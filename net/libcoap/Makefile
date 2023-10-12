@@ -1,9 +1,9 @@
 PORTNAME=	libcoap
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.3.1
+DISTVERSION=	4.3.4
 CATEGORIES=	net
 
-MAINTAINER=	tcberner@FreeBSD.org
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	C implementation of the Constrained Application Protocol
 WWW=		https://github.com/obgm/libcoap
 

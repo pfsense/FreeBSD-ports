@@ -1,5 +1,6 @@
 PORTNAME=	FreeCAD
-DISTVERSION=	0.21.0
+DISTVERSION=	0.21.1
+PORTREVISION=	1
 CATEGORIES=	cad
 
 MAINTAINER=	cmt@FreeBSD.org
@@ -28,7 +29,6 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libTKernel.so:cad/opencascade \
 		libxerces-c.so:textproc/xerces-c3 \
 		libboost_thread.so:devel/boost-libs \
-		libarea.so:devel/libarea \
 		libmed.so:french/med \
 		libshiboken2.cpython-${PYTHON_SUFFIX}${PYTHON_ABIVER}.so:devel/shiboken2@${PY_FLAVOR} \
 		libhdf5.so:science/hdf5
@@ -98,9 +98,11 @@ COLLADA_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycollada>0:graphics/py-pycollada@${
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386
+PLIST_SUB=	WEBENGINE=""
 USE_QT+=	webengine
 .else
-USE_QT+=	webkit
+CMAKE_ARGS+=	-DBUILD_WEB:BOOL=OFF
+PLIST_SUB=	WEBENGINE="@comment "
 .endif
 
 post-patch:

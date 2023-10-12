@@ -1,6 +1,6 @@
 PORTNAME=	choqok
 DISTVERSION=	1.7.0
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	www kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION:R}/src
 DIST_SUBDIR=	KDE/${PORTNAME}
@@ -19,14 +19,22 @@ LIB_DEPENDS=	libqjson-qt5.so:devel/qjson \
 USES=		cmake compiler:c++11-lib gettext kde:5 pkgconfig qca qt:5 \
 		tar:xz xorg
 USE_KDE=	attica auth bookmarks codecs completion config configwidgets \
-		coreaddons doctools ecm emoticons globalaccel guiaddons i18n \
-		itemviews jobwidgets kcmutils kdewebkit kio notifications \
+		coreaddons doctools emoticons globalaccel guiaddons i18n \
+		itemviews jobwidgets kcmutils kio notifications \
 		notifyconfig parts purpose service solid sonnet textwidgets \
 		wallet widgetsaddons windowsystem xmlgui \
+		ecm:build \
 		kded:run
-USE_QT=		concurrent core dbus gui network networkauth webkit widgets xml \
+USE_QT=		concurrent core dbus gui network networkauth widgets \
+		xml \
 		buildtools:build qmake:build
 USE_XORG=	x11
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=		WEBKIT
+OPTIONS_SUB=		yes
+WEBKIT_DESC=		Use obsolete qt5-webkit to build Browser Plugin
+WEBKIT_USE=		KDE=kdewebkit QT=webkit
+WEBKIT_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5WebKit
 
 .include <bsd.port.mk>

@@ -1,4 +1,7 @@
 PORTNAME=	libsodium
+#################################################
+# Make sure to bump all consumers when updating #
+#################################################
 PORTVERSION=	1.0.18
 CATEGORIES=	security
 MASTER_SITES=	https://download.libsodium.org/libsodium/releases/

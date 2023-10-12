@@ -1,5 +1,5 @@
 PORTNAME=	openapi-core
-PORTVERSION=	0.18.0
+PORTVERSION=	0.18.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +20,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asgiref>=3.6.0<4:www/py-asgiref@${PY_FLAVOR}
 		${PYTHON_PKGNAMEPREFIX}jsonschema-spec>=0.2.3<0.3:devel/py-jsonschema-spec@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}more-itertools>=0:devel/py-more-itertools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openapi-schema-validator>=0.6.0<0.7:devel/py-openapi-schema-validator@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openapi-spec-validator>=0.6.0<0.7:devel/py-openapi-spec-validator@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openapi-spec-validator>=0.6.0<0.8.0:devel/py-openapi-spec-validator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}parse>=0:textproc/py-parse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}werkzeug>=0:www/py-werkzeug@${PY_FLAVOR}
 
@@ -43,6 +43,6 @@ DJANGO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django32>=3.0:www/py-django32@${PY_FL
 FALCON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}falcon>=3.0:www/py-falcon@${PY_FLAVOR}
 FLASK_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0:www/py-flask@${PY_FLAVOR}
 REQUESTS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR}
-STARLETTE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}starlette>=0.26.1<0.29.0:www/py-starlette@${PY_FLAVOR}
+STARLETTE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}starlette>=0.26.1<0.32.0:www/py-starlette@${PY_FLAVOR}
 
 .include <bsd.port.mk>

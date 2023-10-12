@@ -1,13 +1,12 @@
 PORTNAME=	ghostscript
-DISTVERSION=	10.01.2
-PORTREVISION=	1
+DISTVERSION=	10.02.0
 CATEGORIES=	print
 MASTER_SITES=	https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${DISTVERSION:S/.//g}/
 PKGNAMESUFFIX=	${GS_MAJOR_VERSION}
 
 MAINTAINER=	michael.osipov@siemens.com
 COMMENT=	PostScript and PDF interpreter
-WWW=		https://ghostscript.com/
+WWW=	https://ghostscript.com/
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,12 +23,6 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 RUN_DEPENDS=	poppler-data>=0.4.9:graphics/poppler-data \
 		urw-base35-fonts>=20200910:x11-fonts/urw-base35-fonts
 
-FLAVORS=	default x11
-FLAVOR?=	${FLAVORS:[1]}
-default_CONFLICTS_INSTALL=	${PORTNAME}${GS_MAJOR_VERSION}-${FLAVORS:[2]}
-x11_PKGNAMESUFFIX=		${GS_MAJOR_VERSION}-${FLAVOR}
-x11_CONFLICTS_INSTALL=		${PORTNAME}${GS_MAJOR_VERSION}
-
 USES=		cpe gmake iconv jpeg localbase pkgconfig tar:xz
 USE_LDCONFIG=	yes
 CPE_VENDOR=	artifex
@@ -40,13 +33,16 @@ CONFLICTS_INSTALL=	ghostscript[789]-base \
 			ghostscript9-agpl-x11
 
 EXTRACT_AFTER_ARGS=	--exclude cups/libs \
+			--exclude expat \
 			--exclude freetype \
 			--exclude ijs \
 			--exclude jbig2dec \
 			--exclude jpeg \
 			--exclude lcms2mt \
+			--exclude leptonica \
 			--exclude libpng \
 			--exclude openjpeg \
+			--exclude tesseract \
 			--exclude tiff \
 			--exclude zlib
 
@@ -55,20 +51,11 @@ GNU_CONFIGURE=	yes
 ALL_TARGET=	so
 INSTALL_TARGET=	soinstall
 
-.if ${FLAVOR} == default
-CONFIGURE_ARGS+=	--without-x
-.endif
-.if ${FLAVOR} == x11
-USES+=			xorg
-USE_XORG=		ice sm x11 xext xt
-CONFIGURE_ARGS+=	--with-x
-.endif
-
-DATADIR=		${PREFIX}/share/${PORTNAME}/${DISTVERSION}
+DATADIR=	${PREFIX}/share/${PORTNAME}/${DISTVERSION}
 
 GS_MAJOR_VERSION=	${DISTVERSION:R:R}
 GS_MINOR_VERSION=	${DISTVERSION:R:E}
-PLIST_SUB=		GS_MAJOR_VERSION=${GS_MAJOR_VERSION} \
+PLIST_SUB=	GS_MAJOR_VERSION=${GS_MAJOR_VERSION} \
 			GS_MINOR_VERSION=${GS_MINOR_VERSION}
 
 CONFIGURE_ARGS+=	--disable-compile-inits \
@@ -86,22 +73,27 @@ CONFIGURE_ARGS+=	--disable-compile-inits \
 			--with-libpaper \
 			--with-system-libtiff
 
-OPTIONS_DEFINE=		CUPS IJS TESSERACT
-OPTIONS_DEFAULT=	CUPS
+OPTIONS_DEFINE=	CUPS IJS TESSERACT X11
+OPTIONS_DEFAULT=	CUPS X11
 
-IJS_DESC=			Support libijs based Ghostscript devices
-TESSERACT_DESC=			Enable bundled Tesseract OCR engine
+IJS_DESC=	Support libijs based Ghostscript devices
+TESSERACT_DESC=	Enable Tesseract OCR engine
 
-CUPS_LIB_DEPENDS=		libcups.so:print/cups
-CUPS_CONFIGURE_ENABLE=		cups
+CUPS_LIB_DEPENDS=	libcups.so:print/cups
+CUPS_CONFIGURE_ENABLE=	cups
 
-IJS_LIB_DEPENDS=		libijs.so:print/libijs
-IJS_CONFIGURE_WITH=		ijs
+IJS_LIB_DEPENDS=	libijs.so:print/libijs
+IJS_CONFIGURE_WITH=	ijs
 
-TESSERACT_USES=			compiler:c++17-lang
+TESSERACT_USES=	libarchive
 TESSERACT_CONFIGURE_WITH=	tesseract
-# No TESSERACT_LIB_DEPENDS=	libtesseract.so:graphics/tesseract
-# See https://bugs.ghostscript.com/show_bug.cgi?id=706490
+TESSERACT_LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libleptonica.so:graphics/leptonica \
+		libtesseract.so:graphics/tesseract
+
+X11_CONFIGURE_WITH=	x
+X11_USES=	xorg
+X11_USE=	xorg=ice,sm,x11,xext,xt
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \

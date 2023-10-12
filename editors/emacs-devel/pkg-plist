@@ -211,6 +211,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/gnus/news-server.ast
 %%DATADIR%%/%%EMACS_VER%%/etc/grep.txt
 %%DATADIR%%/%%EMACS_VER%%/etc/images/README
+%%DATADIR%%/%%EMACS_VER%%/etc/images/alt.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/attach.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/attach.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/back-arrow.pbm
@@ -232,6 +233,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/contact.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/copy.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/copy.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/ctrl.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/custom/README
 %%DATADIR%%/%%EMACS_VER%%/etc/images/custom/down-pushed.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/custom/down-pushed.xpm
@@ -396,6 +398,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/help.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/home.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/home.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/hyper.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/README
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/allout-widgets/dark-bg/closed.png
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/allout-widgets/dark-bg/closed.xpm
@@ -466,6 +469,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/info.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/jump-to.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/jump-to.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/last-page.pbm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/last-page.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/left-arrow.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/left-arrow.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/left.svg
@@ -537,6 +542,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/mail/send.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/mail/send.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/mail/spam.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/meta.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/mh-logo.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/mh-logo.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/mpc/README
@@ -609,6 +615,7 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/search.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/separator.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/separator.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/shift.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/show.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/show.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/smilies/README
@@ -681,8 +688,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/splash.png
 %%DATADIR%%/%%EMACS_VER%%/etc/images/splash.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/splash.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/super.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/README
-
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/check-mark_16.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/check-mark_16.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/chevron_down_16.pbm
@@ -699,6 +706,12 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/cross_circle_16.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/cross_circle_fill_16.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/cross_circle_fill_16.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/dot_large_16.pbm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/dot_large_16.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/dot_medium_16.pbm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/dot_medium_16.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/dot_small_16.pbm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/dot_small_16.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/heart_16.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/heart_16.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/symbols/heart_fill_16.pbm
@@ -982,6 +995,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/avoid.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/battery.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/battery.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/bind-key.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/bind-key.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/bindings.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/bindings.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/bookmark.el.gz
@@ -1589,12 +1604,10 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-print.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-seq.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-seq.elc
-%%NO_NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.el
-%%NO_NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.el
-%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.el.gz
-%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.elc
-%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.el.gz
-%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/copyright.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/copyright.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/crm.el.gz
@@ -2290,6 +2303,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/image/wallpaper.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/imenu.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/imenu.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/indent-aux.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/indent-aux.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/indent.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/indent.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/info-look.el.gz
@@ -3619,6 +3634,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/json-ts-mode.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/ld-script.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/ld-script.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/lua-ts-mode.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/lua-ts-mode.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/m4-mode.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/m4-mode.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/make-mode.el.gz
@@ -3781,6 +3798,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/AT386.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/AT386.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/README
+%%DATADIR%%/%%EMACS_VER%%/lisp/term/android-win.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/term/android-win.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/bobcat.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/bobcat.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/term/common-win.el.gz
@@ -3964,6 +3983,8 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/tool-bar.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tooltip.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/tooltip.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/touch-screen.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/touch-screen.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/transient.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/transient.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tree-widget.el.gz
@@ -4036,8 +4057,6 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/url/url-vars.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/url/url.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/url/url.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/use-package/bind-key.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/use-package/bind-key.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/use-package/use-package-bind-key.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/use-package/use-package-bind-key.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/use-package/use-package-core.el.gz
@@ -4182,6 +4201,18 @@ share/applications/emacsclient-mail.desktop
 %%DATADIR%%/site-lisp/subdirs.el
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/site-lisp/site-start.el
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/alloc.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/android-asset.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/android-emacs.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/android.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/android.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidfns.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidfont.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidgui.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidmenu.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidselect.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidterm.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidterm.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/androidvfs.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/atimer.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/atimer.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/bidi.c
@@ -4336,6 +4367,11 @@ share/applications/emacsclient-mail.desktop
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/region-cache.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/scroll.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/search.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sfnt.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sfnt.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sfntfont-android.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sfntfont.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sfntfont.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sheap.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sheap.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/sort.c

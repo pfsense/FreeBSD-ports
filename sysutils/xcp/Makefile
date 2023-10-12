@@ -1,0 +1,137 @@
+PORTNAME=	xcp
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.12.0
+PORTREVISION=	1
+CATEGORIES=	sysutils
+
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Extended 'cp' command
+WWW=		https://github.com/tarka/xcp
+
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		cargo
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	tarka
+
+CARGO_CRATES=	aho-corasick-0.7.20 \
+		anstream-0.3.2 \
+		anstyle-1.0.1 \
+		anstyle-parse-0.2.1 \
+		anstyle-query-1.0.0 \
+		anstyle-wincon-1.0.2 \
+		anyhow-1.0.72 \
+		autocfg-1.1.0 \
+		bitflags-1.3.2 \
+		bitflags-2.4.0 \
+		bstr-1.3.0 \
+		cc-1.0.82 \
+		cfg-if-1.0.0 \
+		clap-4.3.21 \
+		clap_builder-4.3.21 \
+		clap_derive-4.3.12 \
+		clap_lex-0.5.0 \
+		colorchoice-1.0.0 \
+		console-0.15.7 \
+		crossbeam-channel-0.5.8 \
+		crossbeam-utils-0.8.16 \
+		deranged-0.3.7 \
+		encode_unicode-0.3.6 \
+		errno-0.3.2 \
+		errno-dragonfly-0.1.2 \
+		fastrand-2.0.0 \
+		fnv-1.0.7 \
+		getrandom-0.2.10 \
+		glob-0.3.1 \
+		globset-0.4.10 \
+		heck-0.4.1 \
+		hermit-abi-0.3.2 \
+		ignore-0.4.20 \
+		indicatif-0.17.6 \
+		instant-0.1.12 \
+		is-terminal-0.4.9 \
+		itoa-1.0.9 \
+		lazy_static-0.2.11 \
+		lazy_static-1.4.0 \
+		libc-0.2.147 \
+		libm-0.2.6 \
+		linux-raw-sys-0.4.5 \
+		log-0.4.19 \
+		memchr-2.5.0 \
+		num-traits-0.2.15 \
+		num_cpus-1.16.0 \
+		num_threads-0.1.6 \
+		number_prefix-0.4.0 \
+		once_cell-1.18.0 \
+		portable-atomic-1.4.2 \
+		ppv-lite86-0.2.17 \
+		proc-macro-error-1.0.4 \
+		proc-macro-error-attr-1.0.4 \
+		proc-macro2-1.0.66 \
+		quote-1.0.32 \
+		rand-0.8.5 \
+		rand_chacha-0.3.1 \
+		rand_core-0.6.4 \
+		rand_distr-0.4.3 \
+		rand_xorshift-0.3.0 \
+		redox_syscall-0.3.5 \
+		regex-1.7.1 \
+		regex-syntax-0.6.28 \
+		rustix-0.38.8 \
+		same-file-1.0.6 \
+		serde-1.0.183 \
+		simplelog-0.12.1 \
+		strsim-0.10.0 \
+		syn-1.0.109 \
+		syn-2.0.28 \
+		tempfile-3.7.1 \
+		termcolor-1.1.3 \
+		test-case-3.1.0 \
+		test-case-core-3.1.0 \
+		test-case-macros-3.1.0 \
+		thiserror-1.0.44 \
+		thiserror-impl-1.0.44 \
+		thread_local-1.1.7 \
+		time-0.3.25 \
+		time-core-0.1.1 \
+		time-macros-0.2.11 \
+		unbytify-0.2.0 \
+		unicode-ident-1.0.11 \
+		unicode-width-0.1.10 \
+		utf8parse-0.2.1 \
+		uuid-1.4.1 \
+		version_check-0.9.4 \
+		walkdir-2.3.3 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		winapi-0.3.9 \
+		winapi-i686-pc-windows-gnu-0.4.0 \
+		winapi-util-0.1.5 \
+		winapi-x86_64-pc-windows-gnu-0.4.0 \
+		windows-sys-0.45.0 \
+		windows-sys-0.48.0 \
+		windows-targets-0.42.2 \
+		windows-targets-0.48.1 \
+		windows_aarch64_gnullvm-0.42.2 \
+		windows_aarch64_gnullvm-0.48.0 \
+		windows_aarch64_msvc-0.42.2 \
+		windows_aarch64_msvc-0.48.0 \
+		windows_i686_gnu-0.42.2 \
+		windows_i686_gnu-0.48.0 \
+		windows_i686_msvc-0.42.2 \
+		windows_i686_msvc-0.48.0 \
+		windows_x86_64_gnu-0.42.2 \
+		windows_x86_64_gnu-0.48.0 \
+		windows_x86_64_gnullvm-0.42.2 \
+		windows_x86_64_gnullvm-0.48.0 \
+		windows_x86_64_msvc-0.42.2 \
+		windows_x86_64_msvc-0.48.0 \
+		xattr-1.0.1
+
+PLIST_FILES=	bin/${PORTNAME}
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+.include <bsd.port.mk>

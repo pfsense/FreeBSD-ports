@@ -9,7 +9,7 @@ I386_ROOT="${WINE_i386_ROOT:-$HOME/.i386-wine-pkg}"
 if [ ! -f "$I386_ROOT/$PREFIX/bin/wine" ]
 then
   printf "%s doesn't exist!\n\n" "$I386_ROOT/$PREFIX/bin/wine"
-  printf "Try installing 32-bit Wine with\n\t%s\n" "$PREFIX/share/wine/pkg32.sh install wine mesa-dri"
+  printf "Try installing 32-bit Wine with\n\t%s\n" "$PREFIX/share/wine/pkg32.sh install wine-devel mesa-dri"
   ABI=$(pkg config ABI | sed s/amd64/i386/)
   FREEBSD_VERSION_MAJOR=`uname -r | sed "s/\..*//"`
   cat <<- HERE
@@ -47,6 +47,7 @@ export LD_32_LIBMAP="
 libgcc_s.so.1 /usr/lib32/libgcc_s.so.1
 $LOCALBASE/lib/libvulkan_intel.so  $I386_ROOT/$LOCALBASE/lib/libvulkan_intel.so
 $LOCALBASE/lib/libvulkan_radeon.so $I386_ROOT/$LOCALBASE/lib/libvulkan_radeon.so
+$LOCALBASE/lib/alsa-lib/libasound_module_pcm_oss.so $I386_ROOT/$LOCALBASE/lib/alsa-lib/libasound_module_pcm_oss.so
 $LD_32_LIBMAP_CONF
 $LD_32_LIBMAP"
 

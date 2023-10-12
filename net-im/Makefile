@@ -1,6 +1,5 @@
     COMMENT = Instant messaging
 
-    SUBDIR += 6cord
     SUBDIR += beebeep
     SUBDIR += biboumi
     SUBDIR += cawbird
@@ -29,6 +28,7 @@
     SUBDIR += gotktrix
     SUBDIR += gotosocial
     SUBDIR += gtkcord4
+    SUBDIR += gurk-rs
     SUBDIR += icmpchat
     SUBDIR += icqlib
     SUBDIR += jabberd
@@ -43,20 +43,7 @@
     SUBDIR += kaccounts-integration
     SUBDIR += kaccounts-providers
     SUBDIR += kaidan
-    SUBDIR += kde-telepathy
     SUBDIR += kopete
-    SUBDIR += ktp-accounts-kcm
-    SUBDIR += ktp-approver
-    SUBDIR += ktp-auth-handler
-    SUBDIR += ktp-call-ui
-    SUBDIR += ktp-common-internals
-    SUBDIR += ktp-contact-list
-    SUBDIR += ktp-contact-runner
-    SUBDIR += ktp-desktop-applets
-    SUBDIR += ktp-filetransfer-handler
-    SUBDIR += ktp-kded-module
-    SUBDIR += ktp-send-file
-    SUBDIR += ktp-text-ui
     SUBDIR += libaccounts-glib
     SUBDIR += libaccounts-qt5
     SUBDIR += libmesode

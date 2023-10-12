@@ -1,6 +1,6 @@
---- chrome/browser/download/chrome_download_manager_delegate.cc.orig	2023-07-21 09:49:17 UTC
+--- chrome/browser/download/chrome_download_manager_delegate.cc.orig	2023-09-17 07:59:53 UTC
 +++ chrome/browser/download/chrome_download_manager_delegate.cc
-@@ -1547,7 +1547,7 @@ void ChromeDownloadManagerDelegate::OnDownloadTargetDe
+@@ -1565,7 +1565,7 @@ void ChromeDownloadManagerDelegate::OnDownloadTargetDe
  bool ChromeDownloadManagerDelegate::IsOpenInBrowserPreferreredForFile(
      const base::FilePath& path) {
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \
@@ -9,7 +9,7 @@
    if (path.MatchesExtension(FILE_PATH_LITERAL(".pdf"))) {
      return !download_prefs_->ShouldOpenPdfInSystemReader();
    }
-@@ -1613,7 +1613,7 @@ void ChromeDownloadManagerDelegate::CheckDownloadAllow
+@@ -1631,7 +1631,7 @@ void ChromeDownloadManagerDelegate::CheckDownloadAllow
      content::CheckDownloadAllowedCallback check_download_allowed_cb) {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || \

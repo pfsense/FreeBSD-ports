@@ -4944,7 +4944,6 @@
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/LICENSE
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/README.md
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/composer.json
-%%WWWDIR%%/vendor/dragonmantank/cron-expression/phpstan.neon
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/src/Cron/AbstractField.php
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/src/Cron/CronExpression.php
 %%WWWDIR%%/vendor/dragonmantank/cron-expression/src/Cron/DayOfMonthField.php
@@ -16477,6 +16476,7 @@
 %%WWWDIR%%/vendor/league/mime-type-detection/LICENSE
 %%WWWDIR%%/vendor/league/mime-type-detection/composer.json
 %%WWWDIR%%/vendor/league/mime-type-detection/src/EmptyExtensionToMimeTypeMap.php
+%%WWWDIR%%/vendor/league/mime-type-detection/src/ExtensionLookup.php
 %%WWWDIR%%/vendor/league/mime-type-detection/src/ExtensionMimeTypeDetector.php
 %%WWWDIR%%/vendor/league/mime-type-detection/src/ExtensionToMimeTypeMap.php
 %%WWWDIR%%/vendor/league/mime-type-detection/src/FinfoMimeTypeDetector.php
@@ -18733,6 +18733,7 @@
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/LICENSE
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/Mbstring.php
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/README.md
+%%WWWDIR%%/vendor/symfony/polyfill-mbstring/Resources/unidata/caseFolding.php
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/Resources/unidata/lowerCase.php
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/Resources/unidata/titleCaseRegexp.php
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/Resources/unidata/upperCase.php
@@ -18755,6 +18756,7 @@
 %%WWWDIR%%/vendor/symfony/polyfill-php80/PhpToken.php
 %%WWWDIR%%/vendor/symfony/polyfill-php80/README.md
 %%WWWDIR%%/vendor/symfony/polyfill-php80/Resources/stubs/Attribute.php
+%%WWWDIR%%/vendor/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php
 %%WWWDIR%%/vendor/symfony/polyfill-php80/Resources/stubs/PhpToken.php
 %%WWWDIR%%/vendor/symfony/polyfill-php80/Resources/stubs/Stringable.php
 %%WWWDIR%%/vendor/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php

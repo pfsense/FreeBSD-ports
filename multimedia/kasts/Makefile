@@ -14,13 +14,15 @@ LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain@qt5 \
 		libvlc.so:multimedia/vlc
 RUN_DEPENDS=	kirigami-addons>=0.6.1:x11-toolkits/kirigami-addons
 
-USES=		cmake desktop-file-utils gettext-runtime gnome gstreamer pkgconfig \
-		xorg kde:5 qt:5 tar:xz
+USES=		cmake desktop-file-utils gettext-runtime gnome gstreamer kde:5 \
+		pkgconfig qt:5 tar:xz xorg
 USE_GNOME=	glib20
 USE_GSTREAMER1=	yes
-USE_KDE=	config coreaddons i18n kirigami2 syndication threadweaver
-USE_QT=		core dbus declarative gui multimedia network quickcontrols2 sql svg \
-		widgets xml buildtools:build qmake:build
+USE_KDE=	config coreaddons i18n kirigami2 syndication threadweaver \
+		ecm:build
+USE_QT=		core dbus declarative gui multimedia network quickcontrols2 \
+		sql svg widgets xml \
+		buildtools:build qmake:build testlib:build
 USE_XORG=	x11
 
 .include <bsd.port.mk>

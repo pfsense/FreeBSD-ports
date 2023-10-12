@@ -1,6 +1,6 @@
---- v8/BUILD.gn.orig	2023-07-16 15:47:57 UTC
+--- v8/BUILD.gn.orig	2023-10-11 18:22:24 UTC
 +++ v8/BUILD.gn
-@@ -1356,6 +1356,14 @@ config("toolchain") {
+@@ -1417,6 +1417,14 @@ config("toolchain") {
    } else if (target_os == "chromeos") {
      defines += [ "V8_HAVE_TARGET_OS" ]
      defines += [ "V8_TARGET_OS_CHROMEOS" ]
@@ -15,7 +15,20 @@
    }
  
    # TODO(infra): Support v8_enable_prof on Windows.
-@@ -5876,7 +5884,7 @@ v8_component("v8_libbase") {
+@@ -2358,6 +2366,12 @@ template("run_mksnapshot") {
+       ]
+     }
+ 
++    if (v8_current_cpu == "x86") {
++      args -= [
++        "--abort-on-bad-builtin-profile-data",
++      ]
++    }
++
+     if (v8_enable_builtins_profiling) {
+       args += [ "--turbo-profiling" ]
+     }
+@@ -6111,7 +6125,7 @@ v8_component("v8_libbase") {
      }
    }
  
@@ -24,7 +37,7 @@
      sources += [
        "src/base/debug/stack_trace_posix.cc",
        "src/base/platform/platform-linux.cc",
-@@ -5887,6 +5895,18 @@ v8_component("v8_libbase") {
+@@ -6122,6 +6136,18 @@ v8_component("v8_libbase") {
        "dl",
        "rt",
      ]

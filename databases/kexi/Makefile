@@ -1,6 +1,6 @@
 PORTNAME=		kexi
 DISTVERSION=		3.2.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=		databases kde
 MASTER_SITES=		KDE/stable/${PORTNAME}/src
 DIST_SUBDIR=		KDE/${PORTNAME}
@@ -13,23 +13,30 @@ LIB_DEPENDS=		libKDb3.so:databases/kdb \
 			libKPropertyCore3.so:x11-toolkits/kproperty \
 			libKReport3.so:textproc/kreport
 
-USES=			cmake compiler:c++11-lang desktop-file-utils gettext gl \
-			gnome iconv kde:5 pkgconfig qt:5 tar:xz xorg
+USES=		cmake compiler:c++11-lang desktop-file-utils gettext gl gnome \
+		iconv kde:5 pkgconfig qt:5 tar:xz xorg
 USE_GL=			gl
-USE_GNOME=		glib20
-USE_KDE=		auth bookmarks codecs completion config \
-			configwidgets coreaddons crash ecm guiaddons i18n \
-			iconthemes itemviews jobwidgets kio parts service \
-			solid sonnet syntaxhighlighting texteditor textwidgets \
-			widgetsaddons windowsystem xmlgui breeze-icons:build
-USE_QT=			concurrent core dbus declarative gui network printsupport webkit widgets xml \
-			buildtools:build qmake:build testlib:build
-USE_XORG=		x11
+USE_GNOME=	glib20
+USE_KDE=	auth bookmarks codecs completion config configwidgets \
+		coreaddons crash guiaddons i18n iconthemes itemviews \
+		jobwidgets kio parts service solid sonnet syntaxhighlighting \
+		texteditor textwidgets widgetsaddons windowsystem xmlgui \
+		breeze-icons:build ecm:build
+USE_QT=		concurrent core dbus declarative gui network printsupport \
+		widgets xml \
+		buildtools:build qmake:build testlib:build
+USE_XORG=	x11
 
 CONFLICTS_INSTALL=	calligra-2*
 
 CMAKE_OFF=		BUILD_TESTING \
 			KEXI_ENABLE_QTGUI_FOR_TESTS
 CMAKE_ON=		KEXI_QTGUI_RUNTIME_AVAILABLE
+
+OPTIONS_DEFINE=		WEBKIT
+OPTIONS_SUB=		yes
+WEBKIT_DESC=		Use obsolete qt5-webkit to build Browser Plugin
+WEBKIT_USE=		QT5=webkit
+WEBKIT_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebKit
 
 .include <bsd.port.mk>

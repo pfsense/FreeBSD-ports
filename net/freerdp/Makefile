@@ -1,16 +1,15 @@
 PORTNAME=	freerdp
-DISTVERSION=	2.10.0
-PORTREVISION=	5
+DISTVERSION=	2.11.2
+PORTREVISION=	1
 CATEGORIES=	net comms
 MASTER_SITES=	https://pub.freerdp.com/releases/ \
 		https://github.com/FreeRDP/FreeRDP/releases/download/${DISTVERSION}/
 
 PATCH_SITES=	https://github.com/FreeRDP/FreeRDP/commit/
-PATCHFILES+=	498ddbf23e520fbff6c96a3c4bd4c6b2534529c4.patch:-p1 # Disable sha3 and shake hashes for libressl
-PATCHFILES+=	7f55c97d60453738323e0ecafe6d357019528227.patch:-p1 # ffmpeg6 support: AV_CODEC_CAP_TRUNCATED
-								   # https://github.com/FreeRDP/FreeRDP/issues/8686
 PATCHFILES+=	61983cd6dcb86097d91b7ef405abc1266444a368.patch:-p1 # ffmpeg6 support: AVPicture
 								   # https://github.com/FreeRDP/FreeRDP/pull/8941
+PATCHFILES+=	b27b20b2a27217be44fbc5d734299dc45572a207.patch:-p1 # Advertise Image RFX GUID when rfx-mode:image
+								   # https://github.com/FreeRDP/FreeRDP/pull/9428
 
 MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Free implementation of Remote Desktop Protocol

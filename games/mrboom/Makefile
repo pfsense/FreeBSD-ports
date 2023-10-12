@@ -1,6 +1,5 @@
 PORTNAME=	mrboom
-PORTVERSION=	5.2
-PORTREVISION=	1
+PORTVERSION=	5.3
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/Javanaise/mrboom-libretro/releases/download/${PORTVERSION}/
 DISTNAME=	MrBoom-src-${PORTVERSION}
@@ -13,6 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_FreeBSD_14_i386=	lld crashes during build
+BROKEN_FreeBSD_15_i386=	lld crashes during build
 
 LIB_DEPENDS=	libmodplug.so:audio/libmodplug
 

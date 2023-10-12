@@ -17,10 +17,10 @@ _INCLUDE_BSD_DEFAULT_VERSIONS_MK=	yes
 
 LOCALBASE?=	/usr/local
 
-.  for lang in APACHE BDB COROSYNC EMACS FIREBIRD FORTRAN FPC GCC \
+.  for lang in APACHE BDB COROSYNC EBUR128 EMACS FIREBIRD FORTRAN FPC GCC \
 	GHOSTSCRIPT GL GO GUILE IMAGEMAGICK JAVA LAZARUS LIBRSVG2 LINUX LLVM \
 	LUA LUAJIT MONO MYSQL NINJA NODEJS OPENLDAP PERL5 PGSQL PHP \
-	PYCRYPTOGRAPHY PYTHON PYTHON2 PYTHON3 RUBY RUST SAMBA SSL TCLTK VARNISH
+	PYCRYPTOGRAPHY PYTHON PYTHON2 RUBY RUST SAMBA SSL TCLTK VARNISH
 .    if defined(${lang}_DEFAULT)
 ERROR+=	"The variable ${lang}_DEFAULT is set and it should only be defined through DEFAULT_VERSIONS+=${lang:tl}=${${lang}_DEFAULT} in /etc/make.conf"
 .    endif
@@ -38,6 +38,12 @@ APACHE_DEFAULT?=	2.4
 BDB_DEFAULT?=		5
 # Possible values: 2, 3
 COROSYNC_DEFAULT?=	2
+# Possible values: rust, legacy
+.  if empty(ARCH:Naarch64:Namd64:Narmv7:Ni386:Npowerpc64:Npowerpc64le:Npowerpc:Nriscv64)
+EBUR128_DEFAULT?=	rust
+.  else
+EBUR128_DEFAULT?=	legacy
+.  endif
 # Possible_values: full canna nox devel_full devel_nox
 #EMACS_DEFAULT?=	let the flavor be the default if not explicitly set
 # Possible values: 3.0, 4.0
@@ -57,7 +63,7 @@ GCC_DEFAULT?=		12
 GHOSTSCRIPT_DEFAULT?=	agpl
 # Possible values: mesa-libs, mesa-devel
 GL_DEFAULT?=		mesa-libs
-# Possible values: 1.19, 1.20, 1.21-devel
+# Possible values: 1.19, 1.20, 1.21, 1.22-devel
 GO_DEFAULT?=		1.20
 # Possible values: 1.8, 2.2, 3.0
 GUILE_DEFAULT?=		2.2
@@ -83,7 +89,7 @@ LIBRSVG2_DEFAULT?=	legacy
 .  endif
 # Possible values: c7
 LINUX_DEFAULT?=		c7
-# Possible values: 10, 11, 12, 13, 14, 15, -devel (to be used when non-base compiler is required)
+# Possible values: 10, 11, 12, 13, 14, 15, 16, 17, -devel (to be used when non-base compiler is required)
 LLVM_DEFAULT?=		15
 # Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.4
@@ -101,9 +107,9 @@ MYSQL_DEFAULT?=		8.0
 NINJA_DEFAULT?=		ninja
 # Possible value: 16, 18, 20, current, lts (Note: current = 20 and lts = 18)
 NODEJS_DEFAULT?=	lts
-# Possible value: 24, 25, 26
+# Possible value: 25, 26
 OPENLDAP_DEFAULT?=	26
-# Possible values: 5.32, 5.34, 5.36, 5.38, devel
+# Possible values: 5.34, 5.36, 5.38, devel
 .  if !exists(${LOCALBASE}/bin/perl) || (!defined(_PORTS_ENV_CHECK) && \
     defined(PACKAGE_BUILDING))
 PERL5_DEFAULT?=		5.34
@@ -118,8 +124,8 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .  endif
-# Possible values: 11, 12, 13, 14, 15
-PGSQL_DEFAULT?=		13
+# Possible values: 11, 12, 13, 14, 15, 16
+PGSQL_DEFAULT?=		15
 # Possible values: 8.0, 8.1, 8.2, 8.3
 PHP_DEFAULT?=		8.1
 # Possible values: rust, legacy
@@ -128,12 +134,10 @@ PYCRYPTOGRAPHY_DEFAULT?=	rust
 .  else
 PYCRYPTOGRAPHY_DEFAULT?=	legacy
 .  endif
-# Possible values: 2.7, 3.8, 3.9, 3.10, 3.11
+# Possible values: 3.8, 3.9, 3.10, 3.11
 PYTHON_DEFAULT?=	3.9
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
-# Possible values: 3.8, 3.9, 3.10, 3.11
-PYTHON3_DEFAULT?=	3.9
 # Possible values: 3.0, 3.1, 3.2, 3.3
 RUBY_DEFAULT?=		3.1
 # Possible values: rust, rust-nightly

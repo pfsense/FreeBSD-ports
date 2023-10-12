@@ -1,12 +1,8 @@
 PORTNAME=	hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.28.0
+DISTVERSION=	0.30.0
+PORTREVISION=	2
 CATEGORIES=	x11-wm wayland
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	7a2027d1fd5d.patch:-p1 # https://github.com/hyprwm/Hyprland/issues/2828
-PATCHFILES+=	7d98181ade0a.patch:-p1 # https://github.com/hyprwm/Hyprland/pull/2884
-PATCHFILES+=	2e6693fbb650.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Dynamic tiling Wayland compositor that doesn't sacrifice on its looks #'
@@ -14,6 +10,8 @@ WWW=		https://hyprland.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_12=	libc++ too old
 
 BUILD_DEPENDS=	cmake:devel/cmake-core \
 		evdev-proto>0:devel/evdev-proto \
@@ -31,23 +29,20 @@ USE_GNOME=	cairo pango
 USE_XORG=	pixman
 GH_ACCOUNT=	hyprwm
 GH_PROJECT=	Hyprland
-GH_TUPLE=	hyprwm:hyprland-protocols:4d29e48:hyprland_protocols/subprojects/hyprland-protocols \
+GH_TUPLE=	hyprwm:hyprland-protocols:v0.2:hyprland_protocols/subprojects/hyprland-protocols \
 		canihavesomecoffee:udis86:1.7.2-186-g5336633:udis86/subprojects/udis86
 MESON_ARGS=	-Dsystemd=disabled
+
+# XXX Drop after FreeBSD 14.0 EOL around 2025-03-01
+.if exists(/usr/lib/libc++.so) && !exists(/usr/include/c++/v1/__format/write_escaped.h)
+CXXFLAGS+=	-fexperimental-library
+.endif
 
 OPTIONS_DEFINE=	X11
 OPTIONS_DEFAULT=X11
 
 X11_USE=		XORG=xcb
 X11_MESON_ENABLED=	xwayland
-
-post-extract:
-.if defined(PATCHFILES) && ${PATCHFILES:M7d98181ade0a*}
-# Pretend to be a regular file for vendor patch to apply as is
-	@${RMDIR} ${WRKSRC}/subprojects/wlroots
-	@${ECHO_CMD} "Subproject commit e8d545a9770a2473db32e0a0bfa757b05d2af4f3" \
-		>${WRKSRC}/subprojects/wlroots
-.endif
 
 post-patch:
 # Extract (snapshot) version from the port instead of meson.build
@@ -60,9 +55,6 @@ post-patch:
 # Respect PREFIX for wallpapers
 	@${REINPLACE_CMD} 's,/usr/share,${DATADIR:H},' \
 		${WRKSRC}/src/render/OpenGL.cpp
-# Respect LOCALBASE for xdg-desktop-portal-hyprland installation
-	@${REINPLACE_CMD} 's,/usr/share,${LOCALBASE}/share,g' \
-		${WRKSRC}/src/Compositor.cpp
 
 .ifdef GH_TUPLE
 post-configure:
@@ -77,11 +69,8 @@ post-install:
 # XXX Drop after FreeBSD 13.2 EOL around 2024-05-01 (don't forget distinfo)
 .if ${CXX} == c++ && exists(/usr/lib/libc++.so)
 .if !exists(/usr/include/c++/v1/__ranges/as_rvalue_view.h) || make(makesum) || make(fetch)
-USES+=		llvm:min=16,build
+USES+=		llvm:min=16,build,export
 PATH:=		${LLVM_PREFIX}/bin:${PATH} # XXX _CMAKE_TOOLCHAIN_SUFFIX vs. devel/llvm*
-CC=		clang${LLVM_VERSION}
-CXX=		clang++${LLVM_VERSION}
-CPP=		clang-cpp${LLVM_VERSION}
 CONFIGURE_ENV+=	CC="${CC}" CXX="${CXX}" CPP="${CPP}"
 CMAKE_BIN=	${LOCALBASE}/bin/cmake
 

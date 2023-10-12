@@ -1,5 +1,5 @@
 PORTNAME=	jetty
-PORTVERSION=	9.4.49
+PORTVERSION=	9.4.52
 CATEGORIES=	www java
 MASTER_SITES=	https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${PORTVERSION}.${JDVDATE}/
 PKGNAMESUFFIX=	9-${FLAVOR:U}
@@ -8,6 +8,9 @@ DISTNAME=	jetty-distribution-${PORTVERSION}.${JDVDATE}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-featured web server implemented entirely in Java
 WWW=		https://www.eclipse.org/jetty/
+
+DEPRECATED=	End of life as of 2022-06-01, consider migrating to www/jetty10
+EXPIRATION_DATE=2023-11-30
 
 LICENSE=	APACHE20 EPL
 LICENSE_COMB=	dual
@@ -19,9 +22,9 @@ USES=		cpe shebangfix
 FLAVORS=	openjdk8 openjdk11
 FLAVOR?=	${FLAVORS:[1]}
 
-CONFLICTS=	jetty-8.* jetty-10.*
+CONFLICTS=	jetty8.* jetty10.* jetty11.* jetty12.*
 
-JDVDATE=	v20220914
+JDVDATE=	v20230823
 USE_JAVA=	yes
 NO_ARCH=	yes
 CPE_VENDOR=	eclipse

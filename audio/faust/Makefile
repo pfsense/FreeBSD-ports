@@ -1,5 +1,5 @@
 PORTNAME=	faust
-DISTVERSION=	2.60.3
+DISTVERSION=	2.68.1
 CATEGORIES=	audio devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -41,7 +41,7 @@ EXAMPLES_CMAKE_BOOL=	FREEBSD_INSTALL_EXAMPLES
 HIGHLIGHT_DESC=		Syntax highlighting in Kate, gedit, Highlight, vim
 HTTPD_LIB_DESC=		Build httpd support library
 
-HTTPD_CMAKE_BOOL=	INCLUDE_HTTP
+HTTPD_LIB_CMAKE_BOOL=	INCLUDE_HTTP HTTPDYNAMIC
 HTTPD_LIB_LIB_DEPENDS=	libmicrohttpd.so:www/libmicrohttpd
 
 PORTEXAMPLES=		*
@@ -73,7 +73,7 @@ post-install-HIGHLIGHT-on:
 	${INSTALL_DATA} ${WRKSRC}/syntax-highlighting/faust.vim ${STAGEDIR}${PREFIX}/share/vim/vimfiles/syntax/
 	# 6) EMACS TODO
 
-do-test: install
+do-test: install # test fails: see https://github.com/grame-cncm/faust/issues/945
 	@${CP} ${FILESDIR}/example-freeverb_demo.dsp ${TEST_WRKSRC}
 	@cd ${TEST_WRKSRC} && \
 		faust2jaqt example-freeverb_demo.dsp && \

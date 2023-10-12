@@ -1,6 +1,5 @@
 PORTNAME=	suricata
-DISTVERSION=	7.0.0
-PORTREVISION=	0
+DISTVERSION=	7.0.1
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -40,8 +39,12 @@ CONFLICTS_INSTALL=	libhtp
 
 SUB_FILES=	pkg-message
 
+<<<<<<< HEAD
 OPTIONS_DEFINE=		GEOIP IPFW NETMAP NSS PORTS_PCAP PYTHON REDIS \
 			TESTS
+=======
+OPTIONS_DEFINE=		GEOIP IPFW NETMAP NSS PORTS_PCAP PYTHON REDIS TESTS
+>>>>>>> main
 OPTIONS_DEFINE_amd64=	HYPERSCAN
 OPTIONS_DEFAULT=	IPFW NETMAP PYTHON
 
@@ -76,7 +79,11 @@ LUAJIT_CONFIGURE_ON=	--enable-luajit
 LUA_USES=		lua:51
 LUA_CONFIGURE_ON=	--enable-lua
 
+<<<<<<< HEAD
 NETMAP_CONFIGURE_ENABLE=	netmap netmap-v14
+=======
+NETMAP_CONFIGURE_ENABLE=	netmap
+>>>>>>> main
 
 NSS_LIB_DEPENDS=	libnspr4.so:devel/nspr \
 			libnss3.so:security/nss

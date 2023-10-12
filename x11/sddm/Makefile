@@ -1,5 +1,6 @@
 PORTNAME=	sddm
 PORTVERSION=	0.20.0
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11
 
@@ -17,7 +18,8 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/LICENSE
 LICENSE_FILE_CC-BY-3.0=	${WRKSRC}/LICENSE.CC-BY-3.0
 
 BUILD_DEPENDS=	rst2man.py-${PYTHON_VER}:textproc/py-docutils@${PY_FLAVOR}
-RUN_DEPENDS=	dbus-run-session:devel/dbus \
+RUN_DEPENDS=	consolekit2>1.2.5:sysutils/consolekit2 \
+		dbus-launch:devel/dbus \
 		xauth:x11/xauth \
 		xmessage:x11/xmessage
 
@@ -36,6 +38,7 @@ CMAKE_ON=	BUILD_MAN_PAGES
 CMAKE_ARGS=	-DUID_MIN=1000 \
 		-DUID_MAX=65000 \
 		-DCMAKE_INSTALL_SYSCONFDIR:PATH=${LOCALBASE}/etc \
+		-DACCOUNTSSERVICE_DATA_DIR:PATH=/var/db/AccountsService \
 		-DRST2MAN_EXECUTABLE=${LOCALBASE}/bin/rst2man.py-${PYTHON_VER} \
 		-DSDDM_INITIAL_VT=7
 
@@ -49,10 +52,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's#/etc/X11#${LOCALBASE}/etc/X11#' \
 		-e 's#/usr/bin/#${LOCALBASE}/bin/#g' \
 		-e 's#/usr/share/#${LOCALBASE}/share/#' \
+		-e 's#%%LOCALBASE%%#${LOCALBASE}#g' \
 		${WRKSRC}/data/scripts/Xsession \
 		${WRKSRC}/src/common/Configuration.h
-	@${REINPLACE_CMD} -e 's|/var/lib/AccountsService|/var/db/AccountsService|' \
-		${WRKSRC}/src/greeter/UserModel.cpp
 
 post-install:
 # Install xsession.desktop to launch .xinitrc via sddm.

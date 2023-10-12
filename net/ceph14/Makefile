@@ -1,7 +1,7 @@
 PORTNAME=	ceph
 DISTVERSIONPREFIX=	v
 DISTVERSION=	14.2.22
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	net
 PKGNAMESUFFIX=	14
 
@@ -12,7 +12,11 @@ WWW=		https://ceph.com/
 LICENSE=	GPLv2 LGPL3
 LICENSE_COMB=	dual
 
+BROKEN=	fails to build with fmt 10 and newer
+#BROKEN_FreeBSD_14=	fails to build: static_assert failed due to requirement
 # even though i386 will build, it is not really advised.
+DEPRECATED=	End of life upstream since 2021-06-30
+EXPIRATION_DATE=2023-10-31
 ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	\

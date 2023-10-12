@@ -60,7 +60,7 @@ _INCLUDE_USES_GO_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-GO_VALID_VERSIONS=	1.19 1.20 1.21-devel
+GO_VALID_VERSIONS=	1.19 1.20 1.21 1.22-devel
 
 # Check arguments sanity
 .  if !empty(go_ARGS:N[1-9].[0-9][0-9]:N*-devel:Nmodules:Nno_targets:Nrun)
@@ -90,11 +90,11 @@ GO_PKGNAME=	${PORTNAME}
 GO_TARGET?=	${GO_PKGNAME}
 GO_TESTTARGET?=	./...
 
-.if !defined(PIE_UNSAFE) && defined(WITH_PIE) && ${ARCH} == amd64
+.  if !defined(PIE_UNSAFE) && defined(WITH_PIE) && ${ARCH} == amd64
 GO_BUILDFLAGS+= -buildmode=pie
-.else
+.  else
 GO_BUILDFLAGS+= -buildmode=exe
-.endif
+.  endif
 GO_BUILDFLAGS+= -v -trimpath
 .  if !defined(WITH_DEBUG) && empty(GO_BUILDFLAGS:M-ldflags*)
 GO_BUILDFLAGS+=	-ldflags=-s

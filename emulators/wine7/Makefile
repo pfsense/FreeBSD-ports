@@ -1,5 +1,6 @@
 PORTNAME=	wine
 DISTVERSION=	7.0.2
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	https://dl.winehq.org/wine/source/7.0/
 PKGNAMESUFFIX=	7
@@ -62,8 +63,8 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP OPENAL V4L WINEMAKER X11 GECKO MONO
-OPTIONS_DEFAULT=GNUTLS OPENAL OSS X11
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP OPENAL V4L WINEMAKER X11 GECKO
+OPTIONS_DEFAULT=ALSA GNUTLS OPENAL X11
 OPTIONS_RADIO=	AUDIO
 OPTIONS_RADIO_AUDIO=	ALSA OSS
 OPTIONS_SUB=	yes
@@ -71,12 +72,12 @@ OPTIONS_SUB=	yes
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
 WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
-MONO_DESC=	Bundle Mono MSI package for Wine
 
 PORTSCOUT=	limit:^7\.0
 
 ALSA_CONFIGURE_ON=	--with-alsa --without-oss
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+ALSA_RUN_DEPENDS=	alsa-plugins>0:audio/alsa-plugins
 
 CUPS_CONFIGURE_WITH=	cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
@@ -90,8 +91,6 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USES=		ldap
-
-MONO_RUN_DEPENDS=	wine-mono>0:emulators/wine-mono
 
 OPENAL_CONFIGURE_WITH=	openal
 OPENAL_USES=		openal

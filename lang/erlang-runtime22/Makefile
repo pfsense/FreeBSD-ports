@@ -1,7 +1,7 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
 DISTVERSION=	22.3.4.26
-PORTREVISION=	1
+PORTREVISION=	2
 # NB when bumping OTP versions also bump PORTREVISION in databases/couchdb3
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime22
@@ -52,7 +52,6 @@ OPTIONS_EXCLUDE_aarch64=	DTRACE
 OPTIONS_EXCLUDE_armv6=	DTRACE
 OPTIONS_EXCLUDE_armv7=	DTRACE
 OPTIONS_EXCLUDE_i386=	DTRACE HIPE NATIVE
-OPTIONS_EXCLUDE_powerpc64=	HIPE
 OPTIONS_EXCLUDE_riscv64=	DTRACE
 
 CORBA_DESC=	Enable Corba support
@@ -79,13 +78,10 @@ KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 NATIVE_IMPLIES=			HIPE
 NATIVE_CONFIGURE_ENABLE=	native-libs
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
+ODBC_USES=		localbase:ldflags
 ODBC_CONFIGURE_WITH=		odbc
-ODBC_CFLAGS=			-I/usr/local/include
-ODBC_LDFLAGS=			-L/usr/local/lib
 OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		ssl=${OPENSSLBASE}
-OPENSSL_VARS=	BROKEN_SSL="openssl30 openssl31" \
-				BROKEN_SSL_REASON="Cannot find function FIPS_mode"
 SCTP_CONFIGURE_ENABLE=		sctp
 THREADS_CONFIGURE_ENABLE=	threads
 WX_USES=			gl
@@ -111,6 +107,11 @@ MAKE_ARGS+=	ARCH=x86
 
 .if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
+.endif
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
+CFLAGS+=	-Wno-error=implicit-function-declaration
+OPTIONS_EXCLUDE=	OPENSSL
 .endif
 
 pre-configure:

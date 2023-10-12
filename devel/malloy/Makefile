@@ -1,15 +1,15 @@
 PORTNAME=	malloy
-DISTVERSION=	0.6.2
+DISTVERSION=	0.7.0
 CATEGORIES=	devel
 
-MAINTAINER=	jbo@insane.engineer
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	Embeddable HTTP(S) and WS(S) client/server components for C++
 WWW=		https://github.com/tectu/malloy
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BUILD_DEPENDS=	boost-libs>1.74.0:devel/boost-libs
+BUILD_DEPENDS=	boost-libs>1.79.0:devel/boost-libs
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
 		libspdlog.so:devel/spdlog
 
@@ -22,6 +22,8 @@ CMAKE_ON=	MALLOY_BUILD_SHARED
 CMAKE_OFF=	MALLOY_BUILD_EXAMPLES \
 		MALLOY_DEPENDENCY_FMT_DOWNLOAD \
 		MALLOY_DEPENDENCY_SPDLOG_DOWNLOAD
+
+PLIST_SUB=	SOVERSION="${DISTVERSION}"
 
 OPTIONS_DEFINE=		DOCS EXAMPLES HTML TEST TLS
 OPTIONS_DEFAULT=	CLIENT DOCS EXAMPLES HTML SERVER TLS

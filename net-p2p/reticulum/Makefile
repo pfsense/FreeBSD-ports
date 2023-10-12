@@ -1,5 +1,5 @@
 PORTNAME=	reticulum
-DISTVERSION=	0.5.5
+DISTVERSION=	0.6.2
 CATEGORIES=	net-p2p
 MASTER_SITES=	PYPI
 DISTNAME=	rns-${DISTVERSION}
@@ -13,8 +13,8 @@ LICENSE=	MIT
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}netifaces>=0:net/py-netifaces@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyserial>0:comms/py-pyserial@${PY_FLAVOR}
 
-USES=		python pycryptography:run
-USE_PYTHON=	distutils
+USES=		python
+USE_PYTHON=	cryptography distutils
 USE_RC_SUBR=	reticulum
 GROUPS=		_reticulum
 USERS=		_reticulum

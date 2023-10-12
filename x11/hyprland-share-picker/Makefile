@@ -1,14 +1,16 @@
 PORTNAME=	hyprland-share-picker
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	1.2.2
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Share picker for xdg-desktop-portal-hyprland
 WWW=		https://github.com/hyprwm/xdg-desktop-portal-hyprland
 
-LICENSE=	MIT
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC:H}/LICENSE
+
+RUN_DEPENDS=	slurp:x11/slurp
 
 FLAVORS=	qt5 qt6
 

@@ -1,5 +1,6 @@
 PORTNAME=	l-smash-works
 DISTVERSION=	20230716
+PORTREVISION=	1
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -26,6 +27,8 @@ EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude ,}
 WRKSRC_SUBDIR=	VapourSynth
 
 PLIST_FILES=	lib/vapoursynth/libvslsmashsource.so
+
+CFLAGS_powerpc64le=	-DNO_WARN_X86_INTRINSICS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|g' \

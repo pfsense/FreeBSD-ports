@@ -1,6 +1,6 @@
 PORTNAME=	qtractor
 DISTVERSIONPREFIX=	${PORTNAME}_
-DISTVERSION=	0_9_34
+DISTVERSION=	0_9_35
 CATEGORIES=	audio
 MASTER_SITES=	https://download.steinberg.net/sdk_downloads/:vst3sdk
 DISTFILES=	${VST3_SDK_ARCHIVE}:vst3sdk
@@ -47,7 +47,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	rncbc
 
 CMAKE_OFF=	CONFIG_CLAP # for audio/clap, but it doesn't install anything
-CMAKE_OFF+=	CONFIG_QT6 # breaks with Qt6: Gtk-ERROR **: 21:10:56.939: GTK+ 2.x symbols detected. Using GTK+ 2.x and GTK+ 3 in the same process is not supported
+CMAKE_OFF+=	CONFIG_QT6 # breaks with Qt6: Gtk-ERROR **: 21:10:56.939: GTK 2.x symbols detected. Using GTK 2.x and GTK 3 in the same process is not supported
 
 OPTIONS_DEFINE=		VST3
 OPTIONS_DEFAULT=	VST3

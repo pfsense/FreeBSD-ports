@@ -1,5 +1,5 @@
 PORTNAME=	way-displays
-DISTVERSION=	1.8.1
+DISTVERSION=	1.9.0
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -15,6 +15,7 @@ LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 		libyaml-cpp.so:devel/yaml-cpp \
 		libwayland-client.so:graphics/wayland \
 		libinput.so:x11/libinput
+TEST_DEPENDS=	cmocka>0:sysutils/cmocka
 
 USES=		compiler:c11 gmake pkgconfig
 USE_GITHUB=	yes
@@ -22,13 +23,16 @@ GH_ACCOUNT=	alex-courtis
 MAKEFILE=	GNUmakefile
 MAKE_ENV=	VERSION="${DISTVERSIONFULL}"
 MAKE_ARGS=	CC="${CC}" CXX="${CXX}" OFLAGS=
+TEST_TARGET=	test
 PLIST_FILES=	bin/${PORTNAME} \
 		share/man/man1/${PORTNAME}.1.gz \
 		"@sample ${ETCDIR}/cfg.yaml.sample"
 
 post-patch:
 # Respect PREFIX for system-wide config
-	@${REINPLACE_CMD} 's,/usr/local,${PREFIX},' ${WRKSRC}/src/cfg.c
+	@${REINPLACE_CMD} 's,/usr/local,${PREFIX},' \
+		${WRKSRC}/src/cfg.c \
+		${WRKSRC}/tst/tst-cfg.c
 
 post-install:
 # Let @sample handle default files under etc/

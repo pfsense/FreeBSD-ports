@@ -66,7 +66,6 @@ x11-toolkits/hs-wxcore||2018-10-23|Has expired: Doesn't build with recent GHC ve
 devel/hs-TypeCompose||2018-10-23|Has expired: Doesn't build with recent GHC version
 devel/hs-PSQueue||2018-10-23|Has expired: Doesn't build with recent GHC version
 devel/hs-blaze-builder-enumerator||2018-10-23|Has expired: Doesn't build with recent GHC version
-www/hs-gitit||2018-10-23|Has expired: Doesn't build with newest packages
 cad/kicad-library||2018-10-25|Has expired: KiCad has been upgraded to 5.0.0
 devel/linux-kernel||2018-10-29|Has expired: no longer useful
 audio/py-musicbrainz2||2018-10-29|Has expired: Musicbrainz Web Service 1.0 support ended 2018-08-01
@@ -1324,7 +1323,6 @@ games/spellathon||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/sudoku-sensei||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/tbe||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/xptools||2019-03-16|Has expired: Qt4 has been EOL since december 2015
-german/tipp10||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 graphics/aqsis||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 graphics/autoq3d||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 graphics/burplex||2019-03-16|Has expired: Qt4 has been EOL since december 2015
@@ -3882,7 +3880,6 @@ cad/py-pycam||2020-03-01|Has expired: Old, uses EOLed python27
 chinese/gimp-help-zh_CN||2020-03-01|Has expired: Broken
 databases/emma||2020-03-01|Has expired: Old, uses EOLed python27
 deskutils/anamnesis||2020-03-01|Has expired: Old, uses EOLed python27
-deskutils/cherrytree||2020-03-01|Has expired: Old, uses EOLed python27
 deskutils/gbirthday||2020-03-01|Has expired: Old, uses EOLed python27
 deskutils/gtg||2020-03-01|Has expired: Old, uses EOLed python27
 deskutils/nemo-extensions||2020-03-01|Has expired: Old, uses EOLed python27
@@ -4130,7 +4127,6 @@ editors/omegaT||2020-05-05|Has expired: Broken for more than 6 months
 finance/cbb||2020-05-05|Has expired: Broken for more than 6 months
 ftp/llnlxdir||2020-05-05|Has expired: Broken for more than 6 months
 ftp/llnlxftp||2020-05-05|Has expired: Broken for more than 6 months
-games/adom||2020-05-05|Has expired: Broken for more than 6 months
 games/bsdrain||2020-05-05|Has expired: Broken for more than 6 months
 games/bunnysay||2020-05-05|Has expired: Broken for more than 6 months
 games/castlevox||2020-05-05|Has expired: Broken for more than 6 months
@@ -4437,7 +4433,6 @@ x11/sisctrl||2020-05-05|Has expired: Broken for more than 6 months
 x11/xaniroc||2020-05-05|Has expired: Broken for more than 6 months
 x11/xmove||2020-05-05|Has expired: Broken for more than 6 months
 x11/xnodecor||2020-05-05|Has expired: Broken for more than 6 months
-x11/xvattr||2020-05-05|Has expired: Broken for more than 6 months
 x11-clocks/tktz||2020-05-05|Has expired: Broken for more than 6 months
 x11-clocks/xtimer||2020-05-05|Has expired: Broken for more than 6 months
 x11-themes/gnome-icons-dropline-neu||2020-05-05|Has expired: Broken for more than 6 months
@@ -4466,7 +4461,6 @@ sysutils/livecd||2020-05-05|Has expired: Broken for more than 6 months
 deskutils/osynctool||2020-05-06|Abandonware, website disappeared
 devel/libopensync||2020-05-06|Abandonware, website disappeared
 deskutils/libopensync-plugin-vformat-devel||2020-05-06|Abandonware, website disappeared
-sysutils/rundeck|sysutils/rundeck2|2020-05-07|Rename to avoid confusion with sysutils/rundeck3
 math/darknet|misc/darknet|2020-05-07|DarkNet is a machine learning project, not a math project
 www/rubygem-activeresource5|www/rubygem-activeresource|2020-05-08|Remove PKGNAMESUFFIX 3 years and 4 months after rubygem-activeresource removal
 finance/bitcoinnodestats||2020-05-12|Has expired: No longer maintained and not compatible with Django 2.2+
@@ -5687,7 +5681,6 @@ biology/py-fastTSNE|math/py-openTSNE|2021-03-13|project renamed/reimplemented un
 misc/py-XlsxWriter|textproc/py-xlsxwriter|2021-03-13|Remove duplicate
 emulators/open-vm-tools-nox11|emulators/open-vm-tools@nox11|2021-03-17|Moved to a flavored, generic, version
 math/s2geometry|graphics/s2|2021-03-22|Remove duplicate port
-net-p2p/sonarr-devel|net-p2p/sonarr|2021-03-23|Removed, use net-p2p/sonarr instead
 www/py-django-jsonfield||2021-03-24|Removed: This port will be deleted in the future, please switch to use www/py-jsonfield or www/py-jsonfield2
 devel/hs-c2hs||2021-03-27|Has expired: Was used as BUILD_DEPENDS, not useful on its own
 x11-toolkits/tile||2021-03-27|Has expired: The Tile widget set is part of Tk 8.5 and above, see TIP 248
@@ -6472,7 +6465,6 @@ devel/alog||2022-02-28|Removed, depends on expired lang/gcc6-aux
 devel/aunit||2022-02-28|Removed, depends on expired lang/gcc6-aux
 devel/florist-gpl||2022-02-28|Removed, depends on expired lang/gcc6-aux
 devel/libspark2012||2022-02-28|Removed, depends on expired lang/gcc6-aux
-devel/matreshka||2022-02-28|Removed, depends on expired lang/gcc6-aux
 devel/pcsc-ada||2022-02-28|Removed, depends on expired lang/gcc6-aux
 devel/pragmarcs||2022-02-28|Removed, depends on expired lang/gcc6-aux
 devel/sdl_gnat||2022-02-28|Removed, depends on expired lang/gcc6-aux
@@ -7034,7 +7026,6 @@ x11/i3status|deskutils/i3status|2022-07-01|move desktop utility to its right cat
 x11/xcbautolock|deskutils/xcbautolock|2022-07-01|move desktop utility to its right category
 x11/havoc|deskutils/havoc|2022-07-01|move desktop utility to its right category
 devel/go-glide||2022-07-01|Has expired: use go mod instead of glide
-irc/unreal||2022-07-01|Has expired: Very outdated, listed as end of life in 2016 and has known security issues
 sysutils/go-btfs||2022-07-01|Has expired: Requires go 1.15
 sysutils/pesign||2022-07-01|Has expired: Unmaintaned since 2016, very much out of date, does not build with GCC 11 (PR #263544)
 sysutils/cfengine316||2022-07-06|Has expired: Expire one year after cfengine 3.18.0 released
@@ -7771,7 +7762,6 @@ devel/rubygem-aws-sdk-core3172|devel/rubygem-aws-sdk-core|2023-07-09|Remove obso
 devel/rubygem-aws-sdk-s31122|devel/rubygem-aws-sdk-s3|2023-07-09|Remove obsoleted port. Use devel/rubygem-aws-sdk-s3 instead
 devel/rubygem-google-protobuf322|devel/rubygem-google-protobuf|2023-07-09|Remove obsoleted port. Use devel/rubygem-google-protobuf instead
 devel/rubygem-grape15|devel/rubygem-grape|2023-07-09|Remove obsoleted port. Use devel/rubygem-grape instead
-net/rubygem-net-ldap017|net/rubygem-net-ldap|2023-07-09|Remove obsoleted port. Use net/rubygem-net-ldap instead
 textproc/rubygem-nokogiri114|textproc/rubygem-nokogiri|2023-07-09|Remove obsoleted port. Use textproc/rubygem-nokogiri instead
 japanese/kterm||2023-07-12|Has expired: Last upstream release was in 2011
 graphics/gmic-qt@krita|graphics/krita-gmic-plugin|2023-07-14|Forked to a seperate project
@@ -7787,3 +7777,178 @@ x11/cde-24|x11/cde-25|2023-08-01|Has expired: Desupported by upstream
 lang/go118||2023-08-04|Upstream support ended
 devel/hhdate|devel/date|2023-08-05|Dedup library
 x11-toolkits/wlinfo||2023-08-10|Redundant with wayland-info from graphics/wayland-utils
+www/bareos18-webui|www/bareos19-webui|2023-08-16|Has expired
+sysutils/devcpu-data-amd|sysutils/cpu-microcode-amd|2023-08-16|Reorganize CPU microcode ports
+sysutils/devcpu-data-intel|sysutils/cpu-microcode-intel|2023-08-16|Reorganize CPU microcode ports
+devel/py-python-Levenshtein|devel/py-Levenshtein|2023-08-17|Rename to match upstream
+devel/py-jaraco||2023-08-21|Remove obsoleted port
+security/rubygem-openssl2|security/rubygem-openssl|2023-08-21|Remove obsoleted port. Use security/rubygem-openssl instead
+games/cataclysm-dda-tiles|games/cataclysm-dda@tiles|2023-08-22|Moved to a flavored version
+devel/lua-language-server||2023-08-22|Has expired: Versions after 3.6.9 dump core (and do not compile)
+security/py-netbox-secretstore|security/py-netbox-secrets|2023-08-22|Has expired: No longer maintained by upstream, not compatible with NetBox 3.5, please migrate to security/py-netbox-secrets
+benchmarks/dbs||2023-08-22|Has expired: Broken on all supported releases for more than an year
+databases/virtuoso||2023-08-22|Has expired: Broken on all supported FreeBSD releases for more than an year
+sysutils/muse||2023-08-22|Has expired: Broken on all supported FreeBSD releases for more than an year
+devel/py-pytest-freezegun|devel/py-pytest-freezer|2023-08-22|Has expired: Use devel/py-pytest-freezer as upstream is unmaintained
+multimedia/QtAV||2023-08-22|Has expired: Abandoned project and broken with FFmpeg 6
+mail/vmailmgr||2023-08-22|Has expired: Last upstream release was in 2005 and upstream points to different site
+irc/komanda-cli||2023-08-25|Has expired: Upstream no longer maintained
+irc/birch||2023-08-25|Has expired: Upstream no longer maintained
+net-im/6cord||2023-08-25|Has expired: Upstream no longer maintained
+devel/py-gpep517||2023-08-26|Remove obsoleted port. It is no longer needed after Python 3.7 removal
+devel/py-rapidfuzz2|devel/py-rapidfuzz|2023-08-26|Remove obsoleted port. Use devel/py-rapidfuzz instead
+devel/py-z3c.batching||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-z3c.zcmlhook||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zc.buildout||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-z3c.autoinclude||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.dottedname||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.app.basicskin||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.app.renderer||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.app.schema||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.broken||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.browserresource||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.cachedescriptors||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.contentprovider||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.copy||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.datetime||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.deferredimport||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.filerepresentation||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.generations||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.lifecycleevent||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.processlifetime||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.sequencesort||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.size||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.tales||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-five.globalrequest||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.globalrequest||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.traversing||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.publisher||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.browser||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.contenttype||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.testing||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.exceptions||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+devel/py-zope.i18n||2023-08-27|Remove leaf zope ports that have no sencse in absence of zope itself
+devel/py-zope.location||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+textproc/py-zope.structuredtext||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+textproc/py-zope.tal||2023-08-27|Remove leaf zope ports that have no sense in absence of zope itself
+databases/mysql-connector-java|databases/mysql-connector-j|2023-08-27|Following rename with upstream
+deskutils/kalendar|deskutils/merkuro|2023-08-28|Renamed upstream
+www/joomla3|www/joomla4|2023-08-30|Has expired: EOL upstream
+sysutils/llama|sysutils/walk|2023-08-31|Renamed to match upstream naming
+devel/py-typed-ast||2023-08-31|Has expired: This project is no longer maintained. Use the standard library ast module instead
+devel/py-retype||2023-08-31|Has expired: This project is no longer supported/maintained
+ports-mgmt/parfetch-overlay||2023-08-31|Has expired: Unmaintained
+cad/py-cq-editor||2023-09-01|Has expired: Depends on expiring cad/py-cadquery
+cad/py-cadquery||2023-09-01|Has expired: Depends on exppired cad/py-ocp
+www/squid-devel||2023-09-01|Has expired: Not used anymore to create rc-state releases
+databases/rubygem-red-plasma||2023-09-04|Remove deprecated port. red-plasma is deprecated since 10.0.0. red-plasma will not be released from Apache Arrow 12.0.0 or so
+devel/rubygem-cucumber-cucumber-expressions15|devel/rubygem-cucumber-cucumber-expressions|2023-09-04|Remove obsoleted port. Use devel/rubygem-cucumber-cucumber-expressions instead
+devel/rubygem-cucumber-messages18|devel/rubygem-cucumber-messages|2023-09-04|Remove obsoleted port. Use devel/rubygem-cucumber-messages instead
+textproc/rubygem-cucumber-gherkin23|textproc/rubygem-cucumber-gherkin|2023-09-04|Remove obsoleted port. Use textproc/rubygem-cucumber-gherkin instead
+textproc/rubygem-cucumber-html-formatter19|textproc/rubygem-cucumber-html-formatter|2023-09-04|Remove obsoleted port. Use textproc/rubygem-cucumber-html-formatter instead
+cad/py-ocp||2023-09-05|Has expired: Broken since 2021
+sysutils/bacula11-libs3|sysutils/bacula-libs3|2023-09-10|No reason to have version in the port name. Works with 11 and 13
+www/transmission-web|net-p2p/transmission-components@daemon|2023-09-10|Moved to the daemon flavor
+devel/rubygem-cucumber-tag-expressions4|devel/rubygem-cucumber-tag-expressions|2023-09-11|Remove obsoleted port. Use devel/rubygem-cucumber-tag-expressions instead
+security/rosenpass|net/rosenpass|2023-09-12|Remove duplicate port
+dns/tinystats||2023-09-20|Has expired: djbdns got removed, port is no longer required
+mail/cyrus-imapd23||2023-09-20|Has expired: No longer supported by upstream
+mail/cyrus-imapd24||2023-09-20|Has expired: No longer supported by upstream
+net/py-python-ceilometerclient||2023-09-22|Remove obsoleted port. This project is no longer maintained
+sysutils/rundeck3|sysutils/rundeck|2023-09-23|Rename to avoid confusion
+games/weebsay||2023-09-26|Has expired: API server is no longer functional
+devel/rubygem-mustache0|devel/rubygem-mustache|2023-09-27|Has expired: Use devel/mustache
+sysutils/rsfetch||2023-09-27|Has expired: Upstream unmaintained
+sysutils/sysrc||2023-09-27|Has expired: Migrated into src
+deskutils/budgie-trash-applet||2023-09-29|Has expired: Merged into newer x11/budgie-desktop >= 10.8
+x11-fonts/sourcecodepro-ttf|x11-fonts/source-code-pro-ttf|2023-09-30|Move x11-fonts/sourcecodepro-ttf to x11-fonts/source-code-pro-ttf
+x11-fonts/sourceserifpro-ttf|x11-fonts/source-serif-ttf|2023-09-30|Move x11-fonts/sourceserifpro-ttf to x11-fonts/source-serif-ttf
+www/pserv||2023-09-30|Has expired: Abandonware, last release in 2005. Consider migrating to www/apache24 , www/lighttpd or www/nginx
+www/polipo||2023-09-30|Has expired: No longer maintained upstream
+audio/aacgain||2023-09-30|Has expired: Obsolete way of handling volume adjustment, consider using audio/rsgain
+audio/ample||2023-09-30|Has expired: Abandonware, last release over 19 years ago
+audio/ccaudio2||2023-09-30|Has expired: Abandonware, no development since 2011
+audio/libtremor||2023-09-30|Has expired: Obsolete, we only support hardware with a fpu and other decoding libraries offer better performance
+audio/rioutil||2023-09-30|Has expired: Obsolete, supported hardware ia about 20 years old
+audio/waveplay||2023-09-30|Has expired: Abandoned upstream
+databases/mongodb42-tools||2023-09-30|Has expired: Upstream EOL reached on 2023-04-30
+databases/mongodb42|databases/mongodb44|2023-09-30|Has expired: Upstream EOL reached on 2023-04-30
+databases/redis6|databases/redis62|2023-09-30|Has expired: Has reached its EoL. Please migrate to newer version
+devel/capstone3|devel/capstone4|2023-09-30|Has expired: Use more recent upstream version from devel/capstone
+devel/directfb||2023-09-30|Has expired: Last upstream release was in 2015
+devel/electron23|devel/electron24|2023-09-30|Has expired: EOLed upstream, switch to newer version
+devel/libtar||2023-09-30|Has expired: Abandonware since 2013 and multiple CVEs over the years
+devel/pear-htmlpurifier||2023-09-30|Has expired: Unfetchable as the pear channel no longer works
+devel/pear-channel-htmlpurifier.org||2023-09-30|Has expired: PEAR Channel is no longer functional
+devel/pmdk||2023-09-30|Has expired: FreeBSD has been deprecated since 1.13.X and support has been dropped on 2.0
+graphics/povray36|graphics/povray37|2023-09-30|Has expired: No longer supported upstream; use POV-Ray 3.7 instead
+lang/onyx||2023-09-30|Has expired: Requires deprecated cook port
+lang/perl5.32|lang/perl5.34|2023-09-30|Has expired: Support ends three years after .0 release. Please upgrade to a more recent version of Perl
+mail/qtools||2023-09-30|Has expired: Upstream last activity in 2003
+math/djbfft||2023-09-30|Has expired: Abandonware, slow and untouched by upstream for over 20 years
+math/py-matplotlib2|math/py-matplotlib|2023-09-30|Has expired: Upstream support ended in 2020 and do not support python3 versions existing on the tree
+net-im/kde-telepathy||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net/easysoap||2023-09-30|Has expired: Last release was in 2006
+net-im/ktp-accounts-kcm||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-approver||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-auth-handler||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-call-ui||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-contact-runner||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-desktop-applets||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-kded-module||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-send-file||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-text-ui||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-contact-list||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-filetransfer-handler||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net-im/ktp-common-internals||2023-09-30|Has expired: Will not be part of KDE Gear 23.08 in August
+net/openldap24-client|net/openldap25-client|2023-09-30|Has expired: No longer supported by upstream.  Please use a newer version of OpenLDAP instead
+net/openldap24-server|net/openldap25-server|2023-09-30|Has expired: No longer supported by upstream.  Please use a newer version of OpenLDAP instead
+science/crf++||2023-09-30|Has expired: Last upstream activity was in 2015
+security/fwbuilder||2023-09-30|Has expired: Abandonware since Jan 2021
+sysutils/istatserver||2023-09-30|Has expired: Upstream last activity was in 2018
+sysutils/logstash-forwarder||2023-09-30|Has expired: Migrate to sysutils/beats8
+textproc/libextractor||2023-09-30|Has expired: does not compile with exiv2 0.28, and no ports tree users
+www/bareos19-webui|www/bareos20-webui|2023-09-30|Has expired: Upstream EOL reached
+sysutils/bareos19-traymonitor|sysutils/bareos20-traymonitor|2023-09-30|Has expired: Upstream EOL reached
+sysutils/bareos19-client|sysutils/bareos20-client|2023-09-30|Has expired: Upstream EOL reached
+sysutils/bareos19-server|sysutils/bareos20-server|2023-09-30|Has expired: Upstream EOL reached
+textproc/popup||2023-09-30|Has expired: Abandonware, last release in 2004 and dead upstream
+textproc/yamcha||2023-09-30|Has expired: Last upstream release was in 2005
+japanese/awffull||2023-09-30|Has expired: Abandonware, last release in 14+ years ago. Consider using www/awstats
+www/dhttpd||2023-09-30|Has expired: Abandonware, last release in 15+ years ago. Consider using www/darkhttpd, www/obhttpd or www/miniserve
+www/drupal8|www/drupal9|2023-09-30|Has expired: Upstream EOL reached on 2021-11-17
+www/fnord||2023-09-30|Has expired: Deprecated upstream, consider using www/apache24, www/lighttpd or www/nginx
+www/grafana8|www/grafana9|2023-09-30|Has expired: EOLed upstream
+www/mediawiki138|www/mediawiki139|2023-09-30|Has expired: end of life upstream
+www/awffull||2023-09-30|Has expired: Abandonware, last release in 14+ years ago. Consider using www/awstats
+textproc/raptor||2023-09-30|Has expired: No new release in 10+ years and superseded by 2.0-branch, consider using textproc/raptor2
+devel/php-composer2|devel/php-composer|2023-09-30|Port for newer version moved over old EOL version port
+net-p2p/transmission-cli|net-p2p/transmission-components@cli|2023-09-30|Moved for metaport
+net-p2p/transmission-daemon|net-p2p/transmission-components@daemon|2023-09-30|Moved for metaport
+net-p2p/transmission-gtk|net-p2p/transmission-components@gtk|2023-09-30|Moved for metaport
+net-p2p/transmission-qt|net-p2p/transmission-components@qt|2023-09-30|Moved for metaport
+net-p2p/transmission-utils|net-p2p/transmission-components@utils|2023-09-30|Moved for metaport
+databases/percona-pam-for-mysql||2023-10-01|Has expired: Upstream EOL reaches on 2023-10-01
+databases/percona57-pam-for-mysql||2023-10-01|Has expired: Upstream EOL reaches on 2023-10-01
+databases/percona57-server||2023-10-01|Has expired: Upstream EOL reaches on 2023-10-01
+databases/percona57-client||2023-10-01|Has expired: Upstream EOL reaches on 2023-10-01
+sysutils/nfs-over-tls||2023-10-01|Has expired: All supported releases of FreeBSD include this in base
+x11/antimicro|x11/antimicrox|2023-10-01|Has expired: Replaced by x11/antimicrox upstream no longer maintained
+security/krb5-appl||2023-10-01|Has expired: Desupported by upstream, uses old ciphers
+sysutils/mstflint-lite|sysutils/mstflint|2023-10-05|Parent port is now lite by default
+net/frr7|net/frr8|2023-10-05|Keeping only the 2 last major branches in port tree
+devel/rubygem-gitlab-license_finder||2023-10-06|Removed
+devel/rubygem-thor10|devel/rubygem-thor|2023-10-06|Removed
+devel/rubygem-gitlab-sidekiq-fetcher||2023-10-06|Removed
+devel/rubygem-aws-sdk-s31126|devel/rubygem-aws-sdk-s3|2023-10-06|Use devel/rubygem-aws-sdk-s3
+devel/rubygem-aws-sdk-core3175|devel/rubygem-aws-sdk-core|2023-10-06|Use devel/rubygem-aws-sdk-core
+devel/gitlab-metrics-exporter||2023-10-06|Removed
+net/rubygem-octokit5|net/rubygem-octokit|2023-10-06|Use net/rubygem-octokit
+games/minilens||2023-10-08|Has expired: Depends on expired devel/godot2 (use devel/godot instead)
+games/tanks-of-freedom||2023-10-08|Has expired: Depends on expired devel/godot2 (use devel/godot instead)
+devel/godot2|devel/godot|2023-10-08|Has expired: Requires legacy OpenSSL 1.1.1 so use devel/godot
+devel/py-jupyter-server-ydoc|devel/py-jupyter-collaboration|2023-10-11|Remove obsoleted port. Use devel/py-jupyter-collaboration instead
+devel/py-packaging21|devel/py-packaging|2023-10-11|Remove obsoleted port. Use devel/py-packaging instead
+devel/rubygem-google-protobuf323|devel/rubygem-google-protobuf|2023-10-11|Remove obsoleted port. Use devel/rubygem-google-protobuf instead
+audio/rem||2023-10-12|Has expired: Deprecated, replaced by libre
+net/openmpi3|net/openmpi|2023-10-12|Has expired: OpenMPI 3 is not maintained by the upstream project anymore and will be removed

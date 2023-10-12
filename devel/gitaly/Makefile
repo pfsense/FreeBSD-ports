@@ -1,6 +1,5 @@
 PORTNAME=	gitaly
-DISTVERSION=	16.1.3
-PORTREVISION=	1
+DISTVERSION=	16.4.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -16,14 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 # it fixes segfaults reported here: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259848
 
 # define dependencies that are required for build and run under MY_DEPENDS
-MY_DEPENDS=	git>=2.40.1:devel/git
+MY_DEPENDS=	git>=2.41.0:devel/git
 BUILD_DEPENDS=	bash>0:shells/bash \
+		${LOCALBASE}/bin/cmake:devel/cmake-core \
 		${MY_DEPENDS}
-RUN_DEPENDS=	${MY_DEPENDS} \
-		gitlab-shell>=14.17.0:devel/gitlab-shell
-LIB_DEPENDS=	libgit2.so:devel/libgit2
+RUN_DEPENDS=	${MY_DEPENDS}
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
+		libhttp_parser.so:www/http-parser
 
-USES=		cpe gmake go:modules,no_targets pkgconfig
+USES=		cpe gmake go:modules,no_targets iconv pkgconfig ssl
 
 CPE_VENDOR=	gitlab
 
@@ -61,7 +61,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${DATADIR}/bin
 	${FIND} ${WRKSRC} -name '*.orig' -delete
-	(cd ${WRKSRC}/_build/bin/ && ${COPYTREE_SHARE} .  ${STAGEDIR}${DATADIR}/bin && \
+	(cd ${WRKSRC}/_build/bin/ && ${COPYTREE_BIN} .  ${STAGEDIR}${DATADIR}/bin && \
 	cd ${WRKSRC} && ${COPYTREE_SHARE} config.toml.sample  ${STAGEDIR}${DATADIR})
 
 post-install:

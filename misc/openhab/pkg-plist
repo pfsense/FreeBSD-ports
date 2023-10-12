@@ -233,8 +233,9 @@ libexec/openhab/runtime/system/org/javassist/javassist/3.27.0-GA/javassist-3.27.
 libexec/openhab/runtime/system/org/jctools/jctools-core/2.1.2/jctools-core-2.1.2.jar
 libexec/openhab/runtime/system/org/jline/jline/3.21.0/jline-3.21.0.jar
 libexec/openhab/runtime/system/org/jmdns/jmdns/3.5.8/jmdns-3.5.8.jar
-libexec/openhab/runtime/system/org/jupnp/org.jupnp/2.7.0/org.jupnp-2.7.0.jar
+libexec/openhab/runtime/system/org/jupnp/org.jupnp/2.7.1.OH1/org.jupnp-2.7.1.OH1.jar
 libexec/openhab/runtime/system/org/jvnet/staxex/stax-ex/1.7.4/stax-ex-1.7.4.jar
+libexec/openhab/runtime/system/org/openhab/base-fixes/1.0.0/base-fixes-1.0.0.jar
 libexec/openhab/runtime/system/org/openhab/core/bundles/org.openhab.core.addon.marketplace.karaf/%%PORTVERSION%%/org.openhab.core.addon.marketplace.karaf-%%PORTVERSION%%.jar
 libexec/openhab/runtime/system/org/openhab/core/bundles/org.openhab.core.addon.marketplace/%%PORTVERSION%%/org.openhab.core.addon.marketplace-%%PORTVERSION%%.jar
 libexec/openhab/runtime/system/org/openhab/core/bundles/org.openhab.core.addon/%%PORTVERSION%%/org.openhab.core.addon-%%PORTVERSION%%.jar
@@ -321,7 +322,7 @@ libexec/openhab/runtime/system/org/openhab/distro/distro/%%PORTVERSION%%/distro-
 libexec/openhab/runtime/system/org/openhab/distro/openhab-addons/%%PORTVERSION%%/openhab-addons-%%PORTVERSION%%-features.xml
 libexec/openhab/runtime/system/org/openhab/osgiify/com.google.dagger/2.27/com.google.dagger-2.27.jar
 libexec/openhab/runtime/system/org/openhab/osgiify/com.igormaznitsa.jbbp/1.4.1/com.igormaznitsa.jbbp-1.4.1.jar
-libexec/openhab/runtime/system/org/openhab/osgiify/io.methvin.directory-watcher/0.17.1/io.methvin.directory-watcher-0.17.1.jar
+libexec/openhab/runtime/system/org/openhab/osgiify/io.methvin.directory-watcher/0.18.0/io.methvin.directory-watcher-0.18.0.jar
 libexec/openhab/runtime/system/org/openhab/osgiify/si.uom.si-units/2.1/si.uom.si-units-2.1.jar
 libexec/openhab/runtime/system/org/openhab/ui/bundles/org.openhab.ui.iconset.classic/%%PORTVERSION%%/org.openhab.ui.iconset.classic-%%PORTVERSION%%.jar
 libexec/openhab/runtime/system/org/openhab/ui/bundles/org.openhab.ui/%%PORTVERSION%%/org.openhab.ui-%%PORTVERSION%%.jar

@@ -1,0 +1,65 @@
+PORTNAME=	rundeck
+DISTVERSION=	4.16.0
+DISTVERSIONSUFFIX=	-20230825
+CATEGORIES=	sysutils java
+MASTER_SITES=	https://packagecloud.io/pagerduty/rundeck/packages/java/org.rundeck/${DISTNAME}.war/artifacts/${DISTNAME}.war/download?/
+EXTRACT_SUFX=	.war
+
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Web-console for dispatching commands and scripts to your nodes
+WWW=		https://rundeck.org
+
+LICENSE=	APACHE20
+
+USES=		cpe
+CPE_VENDOR=	pagerduty
+USE_JAVA=	8+s
+USE_RC_SUBR=	rundeck
+
+CONFLICTS_INSTALL=	rundeck2
+
+NO_ARCH=	yes
+NO_BUILD=	yes
+SUB_FILES=	${RUNDECK_LOG4J}
+SUB_LIST+=	JAVA_HOME=${JAVA_HOME} \
+		RUNDECK_CONFIG_DIR=${RUNDECK_CONFIG_DIR} \
+		RUNDECK_GROUP=${RUNDECK_GROUP} \
+		RUNDECK_HOME=${RUNDECK_HOME} \
+		RUNDECK_LOG4J=${RUNDECK_LOG4J} \
+		RUNDECK_LOG_FILE=${RUNDECK_LOG_FILE} \
+		RUNDECK_LOGDIR=${RUNDECK_LOGDIR} \
+		RUNDECK_USER=${RUNDECK_USER}
+
+RUNDECK_HOME=		${PREFIX}/rundeck
+RUNDECK_USER?=		rundeck
+RUNDECK_GROUP?=		rundeck
+RUNDECK_LOGDIR?=	/var/log/rundeck
+RUNDECK_LOG_FILE?=	${RUNDECK_LOGDIR}/rundeck.log
+RUNDECK_LOG4J=		log4j2.properties
+RUNDECK_CONFIG_DIR=	${RUNDECK_HOME}/server/config
+
+.if ${RUNDECK_USER} == rundeck
+USERS=		rundeck
+.endif
+.if ${RUNDECK_GROUP} == rundeck
+GROUPS=		rundeck
+.endif
+
+PLIST_SUB=	RUNDECK_GROUP=${RUNDECK_GROUP} \
+		RUNDECK_HOME=${RUNDECK_HOME} \
+		RUNDECK_LOGDIR=${RUNDECK_LOGDIR} \
+		RUNDECK_USER=${RUNDECK_USER}
+
+do-install:
+	${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}${RUNDECK_HOME}/server/lib
+	${MKDIR} ${STAGEDIR}${RUNDECK_LOGDIR}
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${DISTNAME}${EXTRACT_SUFX} \
+		${STAGEDIR}${DATADIR}/rundeck${EXTRACT_SUFX}
+
+post-install:
+	${MKDIR} ${STAGEDIR}${RUNDECK_CONFIG_DIR}
+	${INSTALL_DATA} \
+		${WRKDIR}/${RUNDECK_LOG4J} \
+		${STAGEDIR}${RUNDECK_CONFIG_DIR}/${RUNDECK_LOG4J}
+
+.include <bsd.port.mk>

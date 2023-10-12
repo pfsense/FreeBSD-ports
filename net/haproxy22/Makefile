@@ -1,5 +1,5 @@
 PORTNAME=	haproxy
-DISTVERSION=	2.2.30
+DISTVERSION=	2.2.31
 CATEGORIES=	net www
 PKGNAMESUFFIX=	22
 MASTER_SITES=	http://www.haproxy.org/download/2.2/src/
@@ -10,6 +10,11 @@ WWW=		https://www.haproxy.org
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+
+DEPRECATED=	Upstream EOL reaches on 2025-06-30
+EXPIRATION_DATE=	2025-06-30
+BROKEN_FreeBSD_14=	build process runsaway
+BROKEN_FreeBSD_15=	build process runsaway
 
 CONFLICTS_INSTALL=	haproxy-devel haproxy17 haproxy18 haproxy20
 

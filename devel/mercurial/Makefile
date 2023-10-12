@@ -1,5 +1,6 @@
 PORTNAME=	mercurial
-PORTVERSION=	6.5.1
+PORTVERSION=	6.5.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	https://www.mercurial-scm.org/release/
 
@@ -10,19 +11,17 @@ WWW=		https://www.mercurial-scm.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 
 USES=		cpe python shebangfix
 SHEBANG_FILES=	contrib/hgweb.fcgi hgweb.cgi
 USE_PYTHON=	autoplist pep517
 
-OPTIONS_DEFINE=		CA_BUNDLE DATA DOCS NLS FREEBSD
-OPTIONS_DEFAULT=	CA_BUNDLE DATA
+OPTIONS_DEFINE=		DATA DOCS NLS FREEBSD
+OPTIONS_DEFAULT=	DATA
 OPTIONS_SUB=		yes
 
-CA_BUNDLE_DESC=		Install CA Certificates
-CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 DATA_SUB_FILES=		pkg-message
 FREEBSD_DESC=		Patches used internally by the FreeBSD Project
 FREEBSD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-authormapsuffix
@@ -63,8 +62,8 @@ PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 .endif
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/*.1 ${STAGEDIR}${PREFIX}/man/man1/
-	${INSTALL_MAN} ${WRKSRC}/doc/*.5 ${STAGEDIR}${PREFIX}/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/doc/*.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/doc/*.5 ${STAGEDIR}${PREFIX}/share/man/man5/
 	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ -name '*.so' -exec ${STRIP_CMD} {} +
 
 post-install-DATA-on:

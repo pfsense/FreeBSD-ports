@@ -103,6 +103,7 @@
     SUBDIR += R-cran-mitools
     SUBDIR += R-cran-moments
     SUBDIR += R-cran-mvtnorm
+    SUBDIR += R-cran-ncdf4
     SUBDIR += R-cran-nloptr
     SUBDIR += R-cran-nnls
     SUBDIR += R-cran-nortest
@@ -273,7 +274,6 @@
     SUBDIR += dihydrogen
     SUBDIR += dionysus
     SUBDIR += disco
-    SUBDIR += djbfft
     SUBDIR += drgeo
     SUBDIR += dsdp
     SUBDIR += dune-alugrid
@@ -622,6 +622,7 @@
     SUBDIR += octave-forge-pkg-octave-doc
     SUBDIR += octave-forge-plot
     SUBDIR += octave-forge-ponchon-savarit
+    SUBDIR += octave-forge-prompt
     SUBDIR += octave-forge-psychrometrics
     SUBDIR += octave-forge-pythonic
     SUBDIR += octave-forge-quaternion
@@ -892,6 +893,8 @@
     SUBDIR += py-arviz
     SUBDIR += py-arybo
     SUBDIR += py-autograd
+    SUBDIR += py-awkward
+    SUBDIR += py-awkward-cpp
     SUBDIR += py-baycomp
     SUBDIR += py-bayesian-optimization
     SUBDIR += py-benford_py
@@ -942,6 +945,7 @@
     SUBDIR += py-gym-notices
     SUBDIR += py-hdbscan
     SUBDIR += py-hdmedians
+    SUBDIR += py-hepstats
     SUBDIR += py-heyoka
     SUBDIR += py-igraph
     SUBDIR += py-iminuit
@@ -969,7 +973,6 @@
     SUBDIR += py-matplotlib
     SUBDIR += py-matplotlib-inline
     SUBDIR += py-matplotlib-scalebar
-    SUBDIR += py-matplotlib2
     SUBDIR += py-minorminer
     SUBDIR += py-mip
     SUBDIR += py-mixsimulator

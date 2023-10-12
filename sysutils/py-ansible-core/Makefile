@@ -1,10 +1,10 @@
 PORTNAME=	ansible-core
-DISTVERSION=	2.15.2
+DISTVERSION=	2.15.5
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Radically simple IT automation
 WWW=		https://www.ansible.com/
 
@@ -30,10 +30,10 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=0:security/py-bcrypt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		git:devel/git
 
-USES=		ansible:env cpe python:3.9+ pycryptography:run shebangfix
+USES=		ansible:env cpe python:3.9+ shebangfix
 CPE_VENDOR=	redhat
 CPE_PRODUCT=	ansible
-USE_PYTHON=	autoplist concurrent pep517
+USE_PYTHON=	autoplist concurrent cryptography pep517
 
 SHEBANG_REGEX=	[.]/test/.*[.]py
 
@@ -44,19 +44,6 @@ TEST_ENV=	${MAKE_ENV}
 BINARY_ALIAS=	python=${PYTHON_CMD}
 NO_ARCH=	yes
 
-PLIST_FILES=	share/man/man1/ansible-config.1.gz \
-		share/man/man1/ansible-console.1.gz \
-		share/man/man1/ansible-doc.1.gz \
-		share/man/man1/ansible-galaxy.1.gz \
-		share/man/man1/ansible-inventory.1.gz \
-		share/man/man1/ansible-playbook.1.gz \
-		share/man/man1/ansible-pull.1.gz \
-		share/man/man1/ansible-vault.1.gz \
-		share/man/man1/ansible.1.gz
-PORTEXAMPLES=	ansible.cfg hosts
-
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
 post-patch:
 # Preserve the original paths in
 # test/units/cli/galaxy/test_execute_list_collection.py.
@@ -66,16 +53,6 @@ post-patch:
 			-e 's|/etc/ansible|${ETCDIR}|g' \
 			-e 's|/usr/share/ansible|${DATADIR}|g'
 	${FIND} ${WRKSRC} -type f -name "*.bak" -delete
-
-post-install:
-	@${MKDIR} ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/docs/man/man1/*.1 \
-		${STAGEDIR}${MAN1PREFIX}/share/man/man1
-
-post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/examples/ansible.cfg ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/examples/hosts ${STAGEDIR}${EXAMPLESDIR}
 
 post-stage:
 	${FIND} ${STAGEDIR}${PREFIX}/bin -type l -name ansible-\* -lname ansible \

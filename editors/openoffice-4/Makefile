@@ -205,11 +205,6 @@ WITH=	SDK
 BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
 .endif
 
-.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
-BROKEN_SSL=	base openssl30 openssl31
-BROKEN_SSL_REASON=	Undefined symbol ERR_GET_FUNC
-.endif
-
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols
 .endif

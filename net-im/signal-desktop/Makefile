@@ -1,7 +1,6 @@
 PORTNAME=	signal-desktop
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.26.0
-PORTREVISION=	1
+DISTVERSION=	6.33.0
 CATEGORIES=	net-im
 MASTER_SITES=	LOCAL/mikael/signal-desktop/:npm \
 		LOCAL/mikael/signal-desktop/:sqlite \
@@ -21,7 +20,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 ONLY_FOR_ARCHS=	aarch64 amd64
 
 EXTRACT_DEPENDS=jq:textproc/jq \
-		yarn-node16>0:www/yarn-node16
+		yarn-node18>0:www/yarn-node18
 BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl30 \
 		${LOCALBASE}/lib/libringrtc.so:multimedia/ringrtc \
 		${LOCALBASE}/lib/libsignal_node.so:net-im/libsignal-node \
@@ -29,18 +28,20 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libcrypto.a:security/openssl30 \
 		app-builder>0:devel/app-builder \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		jq:textproc/jq \
-		npm:www/npm-node16 \
+		npm:www/npm-node18 \
 		vips>0:graphics/vips \
-		yarn:www/yarn-node16
+		yarn:www/yarn-node18
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libatspi.so:accessibility/at-spi2-core \
 		libcups.so:print/cups \
 		libdbus-1.so:devel/dbus \
 		libdrm.so:graphics/libdrm \
+		libepoll-shim.so:devel/libepoll-shim \
 		libevent.so:devel/libevent \
 		libexpat.so:textproc/expat2 \
 		libFLAC.so:audio/flac \
+		libffi.so:devel/libffi \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
@@ -87,11 +88,11 @@ _BUILD_DATE=	$$(date +'%s')
 ELECTRON_VER_MAJOR=	25
 
 # sh get_deps.sh
-NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.22.0-d57441612df46f90df68fc5d9ad45b857b9d2c44-integrity
-NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.28.1-15785854f986c9a7a52b4dec2cc9145b8c5fbf00-integrity
-NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.4.3-7ffa8d03d2a12543247936bfb7b9f74cdbc6fe9b-integrity
+NPM_SIGNAL_DIR=		npm-@signalapp-libsignal-client-0.31.0-f420a009f97b80ba5da216b9cdaec543f3ef7097-integrity
+NPM_RINGRTC_DIR=	npm-@signalapp-ringrtc-2.33.0-a18baa71c43e4a4d5ea996febcdfaac4e5a62f51-integrity
+NPM_SQLITE3_DIR=	npm-@signalapp-better-sqlite3-8.5.2-910669f44e76a46d06df45fabefcd3ac2e7c4cce-integrity
 NPM_ESBUILD_VERS=	0.17.11
-SQLCIPHER=		sqlcipher-4.5.3-fts--3.0.7--0.2.1-b633825cf7e0fdd39a6cdf128f2bd76552a88d325f2b9cd07bb87a457cefb986
+SQLCIPHER=		sqlcipher-4.5.5-fts5-fix--3.0.7--0.2.1-ef53ea45ed92b928ecfd33c552d8d405263e86e63dec38e1ec63e1b0193b630b
 
 ESBUILD_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
 NODE_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
@@ -102,11 +103,19 @@ PLIST_SUB=	NODE_ARCH=${NODE_ARCH} \
 
 YARN_TIMESTAMP=	1661146515
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == aarch64
+PLIST_SUB+=	NOT_AARCH64="@comment "
+.elif ${ARCH} == amd64
+PLIST_SUB+=	NOT_AARCH64=""
+.endif
+
 fetch-yarn:
 	if [ ! -f ${DISTDIR}/signal-desktop-${DISTVERSION}-yarn-cache.tar.gz ]; then \
 		${MKDIR} /tmp/signal-desktop; \
 		${FETCH_CMD} -o - https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/package.json | \
-			${PREFIX}/bin/jq '.engines.node = "${NODE_VERSION}"' > /tmp/signal-desktop/package.json; \
+			${PREFIX}/bin/jq '.engines.node = ""' > /tmp/signal-desktop/package.json; \
 		${FETCH_CMD} -o /tmp/signal-desktop/yarn.lock https://raw.githubusercontent.com/signalapp/Signal-Desktop/v${DISTVERSION}/yarn.lock; \
 		${ECHO_CMD} 'yarn-offline-mirror "./yarn-offline-cache"' >> \
 			/tmp/signal-desktop/.yarnrc; \
@@ -133,7 +142,7 @@ post-extract:
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' > ${WRKSRC}/.yarnrc
 	${ECHO_CMD} 'nodedir "${LOCALBASE}"' >> ${WRKSRC}/.yarnrc
 	# Update node engine
-	${PREFIX}/bin/jq '.engines.node = "${NODE_VERSION}"' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
+	${PREFIX}/bin/jq '.engines.node = ""' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
 	${MV} ${WRKSRC}/package.json.tmp ${WRKSRC}/package.json
 	# remove mock-server as it doesn't build and is useless
 	${PREFIX}/bin/jq 'del(.devDependencies."@signalapp/mock-server")' ${WRKSRC}/package.json > ${WRKSRC}/package.json.tmp
@@ -176,15 +185,6 @@ do-build:
 	${MKDIR} ${WRKDIR}/esbuild-freebsd-64
 	${TAR} -xf ${WRKDIR}/yarn-offline-cache/@esbuild-freebsd-${ESBUILD_ARCH}-${NPM_ESBUILD_VERS}.tgz -C ${WRKDIR}/esbuild-freebsd-64
 
-# 	# For online build
-#	${RM} ${WRKDIR}/.npmrc
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn install --frozen-lockfile --ignore-optional
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn generate
-#	cd ${WRKSRC} && \
-#		${SETENV} ${MAKE_ENV} yarn build:esbuild:prod
-
 	# For offline build
 	${ECHO_CMD} offline=true > ${WRKDIR}/.npmrc
 	cd ${WRKSRC} && \
@@ -221,6 +221,10 @@ do-install:
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/completions
 	${RLN} ${STAGEDIR}${DATADIR}/signal-desktop ${STAGEDIR}${PREFIX}/bin
 
+# This seems to be only required for Windows:
+	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@nodert-win10-rs4
+	${RM} -r ${STAGEDIR}${DATADIR}/resources/app.asar.unpacked/node_modules/@signalapp/windows-dummy-keystroke
+
 create-caches-tarball:
 	# do some cleanup first
 	${RM} -r  ${WRKDIR}/.npm/_logs ${WRKDIR}/.npm/_update-notifier-last-checked ${WRKDIR}/.cache/yarn/v6/.tmp
@@ -233,4 +237,4 @@ create-caches-tarball:
 	cd ${WRKDIR} && \
 		${TAR} czf signal-desktop-${DISTVERSION}-npm-cache.tar.gz .npm
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

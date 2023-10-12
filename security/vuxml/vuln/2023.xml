@@ -1,3 +1,3344 @@
+  <vuln vid="199cdb4d-690d-11ee-9ed0-001fc69cd6dc">
+    <topic>x11/libXpm multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>libXpm</name>
+	<range><lt>3.5.17</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.Org project reports:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg/2023-October/061506.html">
+	  <dl>
+	    <dt>CVE-2023-43788: Out of bounds read in XpmCreateXpmImageFromBuffer</dt>
+	    <dd>An out-of-bounds read is located in ParseComment() when reading from
+	    a memory buffer instead of a file, as it continued to look for the
+	    closing comment marker past the end of the buffer.</dd>
+	    <dt>CVE-2023-43789: Out of bounds read on XPM with corrupted colormap</dt>
+	    <dd>A corrupted colormap section may cause libXpm to read out of bounds.</dd>
+	  </dl>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-43788</cvename>
+      <cvename>CVE-2023-43789</cvename>
+      <url>https://lists.x.org/archives/xorg/2023-October/061506.html</url>
+    </references>
+    <dates>
+      <discovery>2023-09-22</discovery>
+      <entry>2023-10-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bd92f1ab-690c-11ee-9ed0-001fc69cd6dc">
+    <topic>11/libX11 multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>libX11</name>
+	<range><lt>1.8.7</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.Org project reports:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg/2023-October/061506.html">
+	  <dl>
+	    <dt>CVE-2023-43785: out-of-bounds memory access in _XkbReadKeySyms()</dt>
+	    <dd>When libX11 is processing the reply from the X server to the XkbGetMap
+	    request, if it detected the number of symbols in the new map was less
+	    than the size of the buffer it had allocated, it always added room for
+	    128 more symbols, instead of the actual size needed. While the
+	    _XkbReadBufferCopyKeySyms() helper function returned an error if asked
+	    to copy more keysyms into the buffer than there was space allocated for,
+	    the caller never checked for an error and assumed the full set of keysyms
+	    was copied into the buffer and could then try to read out of bounds when
+	    accessing the buffer.  libX11 1.8.7 has been patched to both fix the size
+	    allocated and check for error returns from _XkbReadBufferCopyKeySyms().</dd>
+	    <dt>CVE-2023-43786: stack exhaustion in XPutImage</dt>
+	    <dd>When splitting a single line of pixels into chunks that fit in a single
+	    request (not using the BIG-REQUESTS extension) to send to the X server,
+	    the code did not take into account the number of bits per pixel, so would
+	    just loop forever finding it needed to send more pixels than fit in the
+	    given request size and not breaking them down into a small enough chunk to
+	    fit.  An XPM file was provided that triggered this bug when loaded via
+	    libXpm's XpmReadFileToPixmap() function, which in turn calls XPutImage()
+	    and hit this bug.</dd>
+	    <dt>CVE-2023-43787: integer overflow in XCreateImage() leading to a heap overflow</dt>
+	    <dd>When creating an image, there was no validation that the multiplication
+	    of the caller-provided width by the visual's bits_per_pixel did not
+	    overflow and thus result in the allocation of a buffer too small to hold
+	    the data that would be copied into it.  An XPM file was provided that
+	    triggered this bug when loaded via libXpm's XpmReadFileToPixmap() function,
+	    which in turn calls XCreateImage() and hit this bug.i</dd>
+	  </dl>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-43785</cvename>
+      <cvename>CVE-2023-43786</cvename>
+      <cvename>CVE-2023-43787</cvename>
+      <url>https://lists.x.org/archives/xorg/2023-October/061506.html</url>
+    </references>
+    <dates>
+      <discovery>2023-09-22</discovery>
+      <entry>2023-10-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="07ee8c14-68f1-11ee-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>118.0.5993.70</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>118.0.5993.70</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/10/stable-channel-update-for-desktop_10.html">
+	 <p>This update includes 20 security fixes:</p>
+	 <ul>
+	    <li>[1487110] Critical CVE-2023-5218: Use after free in Site Isolation. Reported by @18楼梦想改造家 on 2023-09-27</li>
+	    <li>[1062251] Medium CVE-2023-5487: Inappropriate implementation in Fullscreen. Reported by Anonymous on 2020-03-17</li>
+	    <li>[1414936] Medium CVE-2023-5484: Inappropriate implementation in Navigation. Reported by Thomas Orlita on 2023-02-11</li>
+	    <li>[1476952] Medium CVE-2023-5475: Inappropriate implementation in DevTools. Reported by Axel Chong on 2023-08-30</li>
+	    <li>[1425355] Medium CVE-2023-5483: Inappropriate implementation in Intents. Reported by Axel Chong on 2023-03-17</li>
+	    <li>[1458934] Medium CVE-2023-5481: Inappropriate implementation in Downloads. Reported by Om Apip on 2023-06-28</li>
+	    <li>[1474253] Medium CVE-2023-5476: Use after free in Blink History. Reported by Yunqin Sun on 2023-08-20</li>
+	    <li>[1483194] Medium CVE-2023-5474: Heap buffer overflow in PDF. Reported by [pwn2car] on 2023-09-15</li>
+	    <li>[1471253] Medium CVE-2023-5479: Inappropriate implementation in Extensions API. Reported by Axel Chong on 2023-08-09</li>
+	    <li>[1395164] Low CVE-2023-5485: Inappropriate implementation in Autofill. Reported by Ahmed ElMasry on 2022-12-02</li>
+	    <li>[1472404] Low CVE-2023-5478: Inappropriate implementation in Autofill. Reported by Ahmed ElMasry on 2023-08-12</li>
+	    <li>[1472558] Low CVE-2023-5477: Inappropriate implementation in Installer. Reported by Bahaa Naamneh of Crosspoint Labs on 2023-08-13</li>
+	    <li>[1357442] Low CVE-2023-5486: Inappropriate implementation in Input. Reported by Hafiizh on 2022-08-29</li>
+	    <li>[1484000] Low CVE-2023-5473: Use after free in Cast. Reported by DarkNavy on 2023-09-18</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5218</cvename>
+      <cvename>CVE-2023-5487</cvename>
+      <cvename>CVE-2023-5484</cvename>
+      <cvename>CVE-2023-5475</cvename>
+      <cvename>CVE-2023-5483</cvename>
+      <cvename>CVE-2023-5481</cvename>
+      <cvename>CVE-2023-5476</cvename>
+      <cvename>CVE-2023-5474</cvename>
+      <cvename>CVE-2023-5479</cvename>
+      <cvename>CVE-2023-5485</cvename>
+      <cvename>CVE-2023-5478</cvename>
+      <cvename>CVE-2023-5477</cvename>
+      <cvename>CVE-2023-5486</cvename>
+      <cvename>CVE-2023-5473</cvename>
+      <url>https://chromereleases.googleblog.com/2023/10/stable-channel-update-for-desktop_10.html</url>
+    </references>
+    <dates>
+      <discovery>2023-10-10</discovery>
+      <entry>2023-10-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4281b712-ad6b-4c21-8f66-619a9150691f">
+    <topic>electron25 -- Use after free in extensions vulnerability</topic>
+    <affects>
+      <package>
+	<name>electron25</name>
+	<range><lt>25.9.1</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v25.9.1">
+	  <p>This update fixes the following vulnerability:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-5187.</li>
+	  </ul>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5187</cvename>
+      <url>https://github.com/advisories/GHSA-hg3r-958g-g8vq</url>
+    </references>
+    <dates>
+      <discovery>2023-10-11</discovery>
+      <entry>2023-10-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d6c19e8c-6806-11ee-9464-b42e991fc52e">
+    <topic>curl -- SOCKS5 heap buffer overflow</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><gt>7.69.0</gt><lt>8.4.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The curl team reports:</p>
+	<blockquote cite="https://curl.se/docs/CVE-2023-38545.html">
+	<p>This flaw makes curl overflow a heap based buffer in the
+	  SOCKS5 proxy handshake. When curl is asked to pass along
+	  the hostname to the SOCKS5 proxy to allow that to resolve
+	  the address instead of it getting done by curl itself, the
+	  maximum length that hostname can be is 255 bytes. If the
+	  hostname is detected to be longer than 255 bytes, curl
+	  switches to local name resolving and instead passes on the
+	  resolved address only to the proxy. Due to a bug, the
+	  local variable that means "let the host resolve the name"
+	  could get the wrong value during a slow SOCKS5 handshake,
+	  and contrary to the intention, copy the too long hostname
+	  to the target buffer instead of copying just the resolved
+	  address there.
+	</p>
+	</blockquote>
+    </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-38545</cvename>
+      <url>https://curl.se/docs/CVE-2023-38545.html</url>
+    </references>
+    <dates>
+      <discovery>2023-09-30</discovery>
+      <entry>2023-10-11</entry>
+      <modified>2023-10-11</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="bf545001-b96d-42e4-9d2e-60fdee204a43">
+	  <topic>h2o -- HTTP/2 Rapid Reset attack vulnerability</topic>
+    <affects>
+      <package>
+    <name>h2o</name>
+    <range><le>2.2.6</le></range>
+      </package>
+      <package>
+    <name>h2o-devel</name>
+    <range><lt>2.3.0.d.20231010</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	  <p>Kazuo Okuhu reports:</p>
+    <blockquote cite="https://github.com/h2o/h2o/issues/3291">
+		<p>
+		H2O is vulnerable to the HTTP/2 Rapid Reset attack.
+		An attacker might be able to consume more than adequate amount of
+		processing power of h2o and the backend servers by mounting the
+		attack.
+    </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-44487</cvename>
+      <url>https://github.com/h2o/h2o/security/advisories/GHSA-2m7v-gc89-fjqf</url>
+    </references>
+    <dates>
+      <discovery>2023-10-10</discovery>
+      <entry>2023-10-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4f254817-6318-11ee-b2ff-080027de9982">
+    <topic>Django -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py39-django32</name>
+	<name>py310-django32</name>
+	<name>py311-django32</name>
+	<range><lt>3.2.22</lt></range>
+      </package>
+      <package>
+	<name>py39-django41</name>
+	<name>py310-django41</name>
+	<name>py311-django41</name>
+	<range><lt>4.1.12</lt></range>
+      </package>
+      <package>
+	<name>py39-django42</name>
+	<name>py310-django42</name>
+	<name>py311-django42</name>
+	<range><lt>4.2.6</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Django reports:</p>
+       <blockquote cite="https://www.djangoproject.com/weblog/2023/oct/04/security-releases/">
+	<p>CVE-2023-43665: Denial-of-service possibility in django.utils.text.Truncator.</p>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-43665</cvename>
+      <url>https://www.djangoproject.com/weblog/2023/oct/04/security-releases/</url>
+    </references>
+    <dates>
+      <discovery>2023-10-01</discovery>
+      <entry>2023-10-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="915855ad-283d-4597-b01e-e0bf611db78b">
+    <topic>libspf2 -- Integer Underflow Remote Code Execution</topic>
+    <affects>
+      <package>
+	<name>libspf2</name>
+	<range><le>1.2.11</le></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Trendmicro ZDI reports:</p>
+	<blockquote cite="https://www.zerodayinitiative.com/advisories/ZDI-23-1472/">
+	<p>Integer Underflow Remote Code Execution Vulnerability</p>
+	<p>The specific flaw exists within the parsing of SPF macros.
+	When parsing SPF macros, the process does not properly
+	validate user-supplied data, which can result in an integer
+	underflow before writing to memory. An attacker can leverage
+	this vulnerability to execute code in the context of the
+	service account.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-42118</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-42118</url>
+    </references>
+    <dates>
+      <discovery>2022-06-06</discovery>
+      <entry>2023-10-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4e45c45b-629e-11ee-8290-a8a1599412c6">
+    <topic>chromium -- type confusion in v8</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>117.0.5938.149</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>117.0.5938.149</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/10/stable-channel-update-for-desktop.html">
+	 <p>This update includes 1 security fix:</p>
+	 <ul>
+	    <li>[1485829] High CVE-2023-5346: Type Confusion in V8. Reported by Amit Kumar on 2023-09-22</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5346</cvename>
+      <url>https://chromereleases.googleblog.com/2023/10/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2023-10-03</discovery>
+      <entry>2023-10-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="162a675b-6251-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- arm64 boot CPUs may lack speculative execution protections</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.2</ge><lt>13.2_4</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>On CPU 0 the check for the SMCCC workaround is called before
+	SMCCC support has been initialized.</p>
+	<h1>Impact:</h1>
+	<p>No speculative execution workarounds are installed on CPU 0.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5370</cvename>
+      <freebsdsa>SA-23:14.smccc</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-10-03</discovery>
+      <entry>2023-10-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e261e71c-6250-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- copy_file_range insufficient capability rights check</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.2</ge><lt>13.2_4</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>The syscall checked only for the CAP_READ and CAP_WRITE
+	capabilities on the input and output file descriptors, respectively.
+	Using an offset is logically equivalent to seeking, and the syscall
+	must additionally require the CAP_SEEK capability.</p>
+	<h1>Impact:</h1>
+	<p>A sandboxed process with only read or write but no seek capability
+	on a file descriptor may be able to read data from or write data
+	to an arbitrary location within the file corresponding to that file
+	descriptor.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5369</cvename>
+      <freebsdsa>SA-23:13.capsicum</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-10-03</discovery>
+      <entry>2023-10-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fefcd340-624f-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- msdosfs data disclosure</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.2</ge><lt>13.2_4</lt></range>
+	<range><ge>12.4</ge><lt>12.4_6</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>In certain cases using the truncate or ftruncate system call
+	to extend a file size populates the additional space in the file
+	with unallocated data from the underlying disk device, rather than
+	zero bytes.</p>
+	<h1>Impact:</h1>
+	<p>A user with write access to files on a msdosfs file system may
+	be able to read unintended data (for example, from a previously
+	deleted file).</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5368</cvename>
+      <freebsdsa>SA-23:12.msdosfs</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-10-03</discovery>
+      <entry>2023-10-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e59fed96-60da-11ee-9102-000c29de725b">
+    <topic>mediawiki -- multiple vulnerabilities</topic>
+    <affects>
+	<package>
+	<name>mediawiki135</name>
+	<range><lt>1.35.13</lt></range>
+      </package>
+      <package>
+	<name>mediawiki139</name>
+	<range><lt>1.39.5</lt></range>
+      </package>
+      <package>
+	<name>mediawiki140</name>
+	<range><lt>1.40.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mediawikwi reports:</p>
+	<blockquote cite="https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/BRWOWACCHMYRIS7JRTT6XD44X3362MVL/">
+	  <p>(T264765, CVE-2023-PENDING) SECURITY: Users without correct permission
+	    are incorrectly shown MediaWiki:Missing-revision-permission.</p>
+	  <p>(T333050, CVE-2023-PENDING) SECURITY: Fix infinite loop for
+	    self-redirects with variants conversion.</p>
+	  <p>(T340217, CVE-2023-PENDING) SECURITY: Vector 2022: Numerous unescaped
+	    messages leading to potential XSS.</p>
+	  <p>(T340220, CVE-2023-PENDING) SECURITY: Vector 2022: vector-intro-page
+	    message is assumed to yield a valid title.</p>
+	  <p>(T340221, CVE-2023-PENDING) SECURITY: XSS via
+	    'youhavenewmessagesmanyusers' and 'youhavenewmessages' messages.</p>
+	  <p>(T341529, CVE-2023-PENDING) SECURITY: diff-multi-sameuser ("X
+	    intermediate revisions by the same user not shown") ignores username
+	    suppression.</p>
+	  <p>(T341565, CVE-2023-3550) SECURITY: Stored XSS when uploading crafted XML
+	    file to Special:Upload (non-standard configuration).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3550</cvename>
+      <url>https://lists.wikimedia.org/hyperkitty/list/mediawiki-announce@lists.wikimedia.org/message/BRWOWACCHMYRIS7JRTT6XD44X3362MVL/</url>
+    </references>
+    <dates>
+      <discovery>2023-09-01</discovery>
+      <entry>2023-10-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="33922b84-5f09-11ee-b63d-0897988a1c07">
+    <topic>Remote Code Execution via web-accessible composer</topic>
+    <affects>
+      <package>
+	<name>php80-composer</name>
+	<range><lt>1.10.27</lt></range>
+	<range><gt>2.0.0</gt><lt>2.6.4</lt></range>
+      </package>
+      <package>
+	<name>php81-composer</name>
+	<range><lt>1.10.27</lt></range>
+	<range><gt>2.0.0</gt><lt>2.6.4</lt></range>
+      </package>
+      <package>
+	<name>php82-composer</name>
+	<range><lt>1.10.27</lt></range>
+	<range><gt>2.0.0</gt><lt>2.6.4</lt></range>
+      </package>
+      <package>
+	<name>php83-composer</name>
+	<range><lt>1.10.27</lt></range>
+	<range><gt>2.0.0</gt><lt>2.6.4</lt></range>
+      </package>
+      <package>
+	<name>php80-composer2</name>
+	<range><lt>2.6.4</lt></range>
+      </package>
+      <package>
+	<name>php81-composer2</name>
+	<range><lt>2.6.4</lt></range>
+      </package>
+      <package>
+	<name>php82-composer2</name>
+	<range><lt>2.6.4</lt></range>
+      </package>
+      <package>
+	<name>php83-composer2</name>
+	<range><lt>2.6.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Composer project reports:</p>
+	<blockquote cite="https://github.com/composer/composer/security/advisories/GHSA-jm6m-4632-36hf">
+	  <p>Description: Users publishing a composer.phar to a
+	  public web-accessible server where the composer.phar can
+	  be executed as a php file may be impacted if PHP also has
+	  register_argc_argv enabled in php.ini.</p>
+	  <p>Workaround: Make sure register_argc_argv is disabled
+	  in php.ini, and avoid publishing composer.phar to the web
+	  as this really should not happen.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-43655</cvename>
+      <url>https://github.com/composer/composer/security/advisories/GHSA-jm6m-4632-36hf</url>
+    </references>
+    <dates>
+      <discovery>2023-09-29</discovery>
+      <entry>2023-09-29</entry>
+      <modified>2023-09-30</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="6d9c6aae-5eb1-11ee-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>117.0.5938.132</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>117.0.5938.132</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop_27.html">
+	 <p>This update includes 10 security fixes:</p>
+	 <ul>
+	    <li>[1486441] High CVE-2023-5217: Heap buffer overflow in vp8 encoding in libvpx. Reported by Clément Lecigne of Google's Threat Analysis Group on 2023-09-25</li>
+	    <li>[1478889] High CVE-2023-5186: Use after free in Passwords. Reported by [pwn2car] on 2023-09-05</li>
+	    <li>[1475798] High CVE-2023-5187: Use after free in Extensions. Reported by Thomas Orlita on 2023-08-25</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5217</cvename>
+      <cvename>CVE-2023-5186</cvename>
+      <cvename>CVE-2023-5187</cvename>
+      <url>https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop_27.html</url>
+    </references>
+    <dates>
+      <discovery>2023-09-27</discovery>
+      <entry>2023-09-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2bcd6ba4-d8e2-42e5-9033-b50b722821fb">
+    <topic>electron{22,24,25} -- Heap buffer overflow in vp8 encoding in libvpx</topic>
+    <affects>
+      <package>
+	<name>electron22</name>
+	<range><lt>22.3.25</lt></range>
+      </package>
+      <package>
+	<name>electron24</name>
+	<range><lt>24.8.5</lt></range>
+      </package>
+      <package>
+	<name>electron25</name>
+	<range><lt>25.8.4</lt></range>
+      </package>
+      <package>
+	<name>libvpx</name>
+	<range><lt>1.13.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v22.3.25">
+	  <p>This update fixes the following vulnerability:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-5217.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5217</cvename>
+      <url>https://github.com/advisories/GHSA-qqvq-6xgj-jw8g</url>
+    </references>
+    <dates>
+      <discovery>2023-09-28</discovery>
+      <entry>2023-09-29</entry>
+      <modified>2023-09-30</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="6e0ebb4a-5e75-11ee-a365-001b217b3468">
+    <topic>Gitlab -- vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>16.4.0</ge><lt>16.4.1</lt></range>
+	<range><ge>16.3.0</ge><lt>16.3.5</lt></range>
+	<range><ge>8.15</ge><lt>16.2.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body>
+	<p>Attacker can add other projects policy bot as member to their own project and use that bot to trigger pipelines in victims project</p>
+	<p>Group import allows impersonation of users in CI pipelines</p>
+	<p>Developers can bypass code owners approval by changing a MR's base branch</p>
+	<p>Leaking source code of restricted project through a fork</p>
+	<p>Third party library Consul requires enable-script-checks to be False to enable patch</p>
+	<p>Service account not deleted when namespace is deleted allowing access to internal projects</p>
+	<p>Enforce SSO settings bypassed for public projects for Members without identity</p>
+	<p>Removed project member can write to protected branches</p>
+	<p>Unauthorised association of CI jobs for Machine Learning experiments</p>
+	<p>Force pipelines to not have access to protected variables and will likely fail using tags</p>
+	<p>Maintainer can create a fork relationship between existing projects</p>
+	<p>Disclosure of masked CI variables via processing CI/CD configuration of forks</p>
+	<p>Asset Proxy Bypass using non-ASCII character in asset URI</p>
+	<p>Unauthorized member can gain Allowed to push and merge access and affect integrity of protected branches</p>
+	<p>Removed Developer can continue editing the source code of a public project</p>
+	<p>A project reporter can leak owner's Sentry instance projects</p>
+	<p>Math rendering in markdown can escape container and hijack clicks</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-5207</cvename>
+      <cvename>CVE-2023-5207</cvename>
+      <cvename>CVE-2023-4379</cvename>
+      <cvename>CVE-2023-3413</cvename>
+      <cvename>CVE-2023-3914</cvename>
+      <cvename>CVE-2023-3115</cvename>
+      <cvename>CVE-2023-5198</cvename>
+      <cvename>CVE-2023-4532</cvename>
+      <cvename>CVE-2023-3917</cvename>
+      <cvename>CVE-2023-3920</cvename>
+      <cvename>CVE-2023-0989</cvename>
+      <cvename>CVE-2023-3906</cvename>
+      <cvename>CVE-2023-4658</cvename>
+      <cvename>CVE-2023-3979</cvename>
+      <cvename>CVE-2023-2233</cvename>
+      <cvename>CVE-2023-3922</cvename>
+      <url>https://about.gitlab.com/releases/2023/09/28/security-release-gitlab-16-4-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-09-28</discovery>
+      <entry>2023-09-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="af065e47-5d62-11ee-bbae-1c61b4739ac9">
+    <topic>xrdp -- unchecked access to font glyph info</topic>
+    <affects>
+      <package>
+	<name>xrdp</name>
+	<range><lt>0.9.23.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>xrdp team reports:</p>
+	<blockquote cite="https://www.cve.org/CVERecord?id=CVE-2023-42822">
+	<p>Access to the font glyphs in xrdp_painter.c is not bounds-checked.
+	Since some of this data is controllable by the user, this can result
+	in an out-of-bounds read within the xrdp executable. The vulnerability
+	allows an out-of-bounds read within a potentially privileged process.
+	On non-Debian platforms, xrdp tends to run as root. Potentially an
+	out-of-bounds write can follow the out-of-bounds read. There is no
+	denial-of-service impact, providing xrdp is running in forking mode. This
+	issue has been addressed in release 0.9.23.1. Users are advised to upgrade.
+	There are no known workarounds for this vulnerability.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-42822</cvename>
+      <url>https://www.cve.org/CVERecord?id=CVE-2023-42822</url>
+      <url>https://github.com/neutrinolabs/xrdp/security/advisories/GHSA-2hjx-rm4f-r9hw</url>
+    </references>
+    <dates>
+      <discovery>2023-09-27</discovery>
+      <entry>2023-09-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c9ff1150-5d63-11ee-bbae-1c61b4739ac9">
+    <topic>xrdp -- Improper handling of session establishment errors allows bypassing OS-level session restrictions</topic>
+    <affects>
+      <package>
+	<name>xrdp</name>
+	<range><lt>0.9.23</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>xrdp team reports:</p>
+	<blockquote cite="https://www.cve.org/CVERecord?id=CVE-2023-40184">
+	<p>In versions prior to 0.9.23 improper handling of session establishment
+	errors allows bypassing OS-level session restrictions. The `auth_start_session`
+	function can return non-zero (1) value on, e.g., PAM error which may result
+	in session restrictions such as max concurrent sessions per user by PAM
+	(ex ./etc/security/limits.conf) to be bypassed. Users (administrators) don't
+	use restrictions by PAM are not affected. This issue has been addressed in
+	release version 0.9.23. Users are advised to upgrade. There are no known
+	workarounds for this issue.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-40184</cvename>
+      <url>https://www.cve.org/CVERecord?id=CVE-2023-40184</url>
+      <url>https://github.com/neutrinolabs/xrdp/security/advisories/GHSA-f489-557v-47jq</url>
+    </references>
+    <dates>
+      <discovery>2023-08-30</discovery>
+      <entry>2023-09-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ea9d1fd2-5d24-11ee-8507-b42e991fc52e">
+    <topic>routinator -- Possible path traversal when storing RRDP responses</topic>
+    <affects>
+      <package>
+	<name>routinator</name>
+	<range><ge>0.9.0</ge><lt>0.12.2</lt></range>
+      </package>
+    </affects>
+    <description>
+	<body xmlns="http://www.w3.org/1999/xhtml">
+	<p>sep@nlnetlabs.nl reports:</p>
+	<blockquote cite="https://nlnetlabs.nl/downloads/routinator/CVE-2023-39916.txt">
+	  <p>NLnet Labs Routinator 0.9.0 up to and including 0.12.1 contains a
+	possible path traversal vulnerability in the optional, off-by-default
+	keep-rrdp-responses feature that allows users to store the content
+	of responses received for RRDP requests.  The location of these
+	stored responses is constructed from the URL of the request.  Due
+	to insufficient sanitation of the URL, it is possible for an attacker
+	to craft a URL that results in the response being stored outside
+	of the directory specified for it.</p>
+	</blockquote>
+	</body>
+    </description>
+    <references>
+      <cvename>CVE-2023-39916</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-39916</url>
+    </references>
+    <dates>
+      <discovery>2023-09-13</discovery>
+      <entry>2023-09-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="402fccd0-5b6d-11ee-9898-00e081b7aa2d">
+    <topic>jenkins -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.424</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.414.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2023-09-20/">
+	  <h1>Description</h1>
+	  <h5>(Medium) SECURITY-3261 / CVE-2023-43494</h5>
+	  <p>Builds can be filtered by values of sensitive build variables</p>
+	  <h5>(High) SECURITY-3245 / CVE-2023-43495</h5>
+	  <p>Stored XSS vulnerability</p>
+	  <h5>(High) SECURITY-3072 / CVE-2023-43496 </h5>
+	  <p>Temporary plugin file created with insecure permissions</p>
+	  <h5>(Low) SECURITY-3073 / CVE-2023-43497 (Stapler), CVE-2023-43498 (MultipartFormDataParser) </h5>
+	  <p>Temporary uploaded file created with insecure permissions</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-43494</cvename>
+      <cvename>CVE-2023-43495</cvename>
+      <cvename>CVE-2023-43496</cvename>
+      <cvename>CVE-2023-43497</cvename>
+      <url>https://www.jenkins.io/security/advisory/2023-09-20/</url>
+    </references>
+    <dates>
+      <discovery>2023-09-20</discovery>
+      <entry>2023-09-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="732282a5-5a10-11ee-bca0-001999f8d30b">
+    <topic>Mailpit affected by vulnerability in included go markdown module</topic>
+    <affects>
+      <package>
+	<name>mailpit</name>
+	<range><lt>1.9.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mailpit author reports:</p>
+	<blockquote cite="https://github.com/axllent/mailpit/releases/tag/v1.9.1">
+	  <p>Update Go modules to address CVE-2023-42821 (go markdown module DoS).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-42821</cvename>
+    </references>
+    <dates>
+      <discovery>2023-09-23</discovery>
+      <entry>2023-09-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4fd7a2fc-5860-11ee-a1b3-dca632daf43b">
+    <topic>graphics/webp heap buffer overflow</topic>
+    <affects>
+      <package>
+	<name>webp</name>
+	<range><lt>1.3.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Google Chrome reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2023-4863">
+	  <p>Heap buffer overflow in WebP ... allowed a remote attacker to perform an out of bounds memory write ...</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4863</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-4863</url>
+    </references>
+    <dates>
+      <discovery>2023-09-12</discovery>
+      <entry>2023-09-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="58a738d4-57af-11ee-8c58-b42e991fc52e">
+    <topic>libwebp heap buffer overflow</topic>
+    <affects>
+      <package>
+	<name>tor-browser</name>
+	<range><lt>12.5.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>chrome-cve-admin@google.com reports:</p>
+	<blockquote cite="https://adamcaudill.com/2023/09/14/whose-cve-is-it-anyway/">
+	  <p>Heap buffer overflow in WebP in Google Chrome prior to 116.0.5845.187
+	allowed a remote attacker to perform an out of bounds memory write
+	via a crafted HTML page.  (Chromium security severity: Critical)
+	The Tor browser is based on Firefox and GeckoView and uses also
+	libwep so it is affected by this bug.
+	</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4863</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-4863</url>
+    </references>
+    <dates>
+      <discovery>2023-09-12</discovery>
+      <entry>2023-09-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="32a4896a-56da-11ee-9186-001b217b3468">
+    <topic>Gitlab -- vulnerability</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>16.3.0</ge><lt>16.3.4</lt></range>
+	<range><ge>13.12.0</ge><lt>16.2.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2023/09/18/security-release-gitlab-16-3-4-released/">
+	  <p>Attacker can abuse scan execution policies to run pipelines as another user</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4998</cvename>
+      <url>https://about.gitlab.com/releases/2023/09/18/security-release-gitlab-16-3-4-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-09-18</discovery>
+      <entry>2023-09-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="11982747-544c-11ee-ac3e-a04a5edf46d9">
+    <topic>routinator -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>routinator</name>
+	<range><lt>0.12.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NLnet Labs report:</p>
+	<blockquote cite="https://nlnetlabs.nl/news/2023/Sep/13/routinator-0.12.2-released/">
+	  <p>This release fixes two issues in Routinator that can be exploited
+	  remotely by rogue RPKI CAs and repositories. We therefore advise all
+	  users of Routinator to upgrade to this release at their earliest
+	  convenience.</p>
+	  <p>The first issue, CVE-2022-39915, can lead to Routinator crashing
+	  when trying to decode certain illegal RPKI objects.</p>
+	  <p>The second issue, CVE-2022-39916, only affects users that have the
+	  rrdp-keep-responses option enabled which allows storing all received
+	  RRDP responses on disk. Because the file name for these responses is
+	  derived from the URI and the path wasn't checked properly, a RRDP URI
+	could be constructed that results in the response stored outside the
+	directory, possibly overwriting existing files.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-39915</cvename>
+      <url>https://nlnetlabs.nl/downloads/routinator/CVE-2023-39915.txt</url>
+      <cvename>CVE-2022-39916</cvename>
+      <url>https://nlnetlabs.nl/downloads/routinator/CVE-2023-39916.txt</url>
+    </references>
+    <dates>
+      <discovery>2022-12-08</discovery>
+      <entry>2023-09-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="833b469b-5247-11ee-9667-080027f5fec9">
+    <topic>curl -- HTTP headers eat all memory</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><lt>8.3.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>selmelc on hackerone reports:</p>
+	<blockquote cite="https://curl.se/docs/CVE-2023-38039.html">
+	  <p>
+	    When curl retrieves an HTTP response, it stores the
+	    incoming headers so that they can be accessed later via
+	    the libcurl headers API.
+	  </p>
+	  <p>
+	    However, curl did not have a limit in how many or how
+	    large headers it would accept in a response, allowing a
+	    malicious server to stream an endless series of headers
+	    and eventually cause curl to run out of heap memory.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-38039</cvename>
+      <url>https://curl.se/docs/CVE-2023-38039.html HERE</url>
+    </references>
+    <dates>
+      <discovery>2023-09-13</discovery>
+      <entry>2023-09-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b5508c08-547a-11ee-85eb-84a93843eb75">
+    <topic>Roundcube -- XSS vulnerability</topic>
+    <affects>
+      <package>
+	<name>roundcube</name>
+	<range><lt>1.6.3,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Roundcube webmail project reports:</p>
+	<blockquote cite="https://roundcube.net/news/2023/09/15/security-update-1.6.3-released">
+	  <p>cross-site scripting (XSS) vulnerability in handling of
+	    linkrefs in plain text messages</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://roundcube.net/news/2023/09/15/security-update-1.6.3-released</url>
+    </references>
+    <dates>
+      <discovery>2023-09-15</discovery>
+      <entry>2023-09-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="773ce35b-eabb-47e0-98ca-669b2b98107a">
+    <topic>electron{24,25} -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron24</name>
+	<range><lt>24.8.3</lt></range>
+      </package>
+      <package>
+	<name>electron25</name>
+	<range><lt>25.8.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v24.8.3">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-4763.</li>
+	    <li>Security: backported fix for CVE-2023-4762.</li>
+	    <li>Security: backported fix for CVE-2023-4761.</li>
+	    <li>Security: backported fix for CVE-2023-4863.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4763</cvename>
+      <url>https://github.com/advisories/GHSA-w5hv-g8p5-vwjr</url>
+      <cvename>CVE-2023-4762</cvename>
+      <url>https://github.com/advisories/GHSA-3wjr-p76q-rg8q</url>
+      <cvename>CVE-2023-4761</cvename>
+      <url>https://github.com/advisories/GHSA-8cgp-x4c5-vg9g</url>
+      <cvename>CVE-2023-4863</cvename>
+      <url>https://github.com/advisories/GHSA-j7hp-h8jx-5ppr</url>
+    </references>
+    <dates>
+      <discovery>2023-09-13</discovery>
+      <entry>2023-09-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3693eca5-f0d3-453c-9558-2353150495bb">
+    <topic>electron22 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron22</name>
+	<range><lt>22.3.24</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v22.3.24">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-4572.</li>
+	    <li>Security: backported fix for CVE-2023-4762.</li>
+	    <li>Security: backported fix for CVE-2023-4863.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4572</cvename>
+      <url>https://github.com/advisories/GHSA-6994-5wq3-gpjv</url>
+      <cvename>CVE-2023-4762</cvename>
+      <url>https://github.com/advisories/GHSA-3wjr-p76q-rg8q</url>
+      <cvename>CVE-2023-4863</cvename>
+      <url>https://github.com/advisories/GHSA-j7hp-h8jx-5ppr</url>
+    </references>
+    <dates>
+      <discovery>2023-09-13</discovery>
+      <entry>2023-09-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="88754d55-521a-11ee-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>117.0.5938.62</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>117.0.5938.62</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop_12.html">
+	 <p>This update includes 16 security fixes:</p>
+	 <ul>
+	    <li>[1479274] Critical CVE-2023-4863: Heap buffer overflow in WebP. Reported by Apple Security Engineering and Architecture (SEAR) and The Citizen Lab at The University of Torontoʼs Munk School on 2023-09-06</li>
+	    <li>[1430867] Medium CVE-2023-4900: Inappropriate implementation in Custom Tabs. Reported by Levit Nudi from Kenya on 2023-04-06</li>
+	    <li>[1459281] Medium CVE-2023-4901: Inappropriate implementation in Prompts. Reported by Kang Ali on 2023-06-29</li>
+	    <li>[1454515] Medium CVE-2023-4902: Inappropriate implementation in Input. Reported by Axel Chong on 2023-06-14</li>
+	    <li>[1446709] Medium CVE-2023-4903: Inappropriate implementation in Custom Mobile Tabs. Reported by Ahmed ElMasry on 2023-05-18</li>
+	    <li>[1453501] Medium CVE-2023-4904: Insufficient policy enforcement in Downloads. Reported by Tudor Enache @tudorhacks on 2023-06-09</li>
+	    <li>[1441228] Medium CVE-2023-4905: Inappropriate implementation in Prompts. Reported by Hafiizh on 2023-04-29</li>
+	    <li>[1449874] Low CVE-2023-4906: Insufficient policy enforcement in Autofill. Reported by Ahmed ElMasry on 2023-05-30</li>
+	    <li>[1462104] Low CVE-2023-4907: Inappropriate implementation in Intents. Reported by Mohit Raj (shadow2639)  on 2023-07-04</li>
+	    <li>[1451543] Low CVE-2023-4908: Inappropriate implementation in Picture in Picture. Reported by Axel Chong on 2023-06-06</li>
+	    <li>[1463293] Low CVE-2023-4909: Inappropriate implementation in Interstitials. Reported by Axel Chong on 2023-07-09</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4863</cvename>
+      <cvename>CVE-2023-4900</cvename>
+      <cvename>CVE-2023-4901</cvename>
+      <cvename>CVE-2023-4902</cvename>
+      <cvename>CVE-2023-4903</cvename>
+      <cvename>CVE-2023-4904</cvename>
+      <cvename>CVE-2023-4905</cvename>
+      <cvename>CVE-2023-4906</cvename>
+      <cvename>CVE-2023-4907</cvename>
+      <cvename>CVE-2023-4908</cvename>
+      <cvename>CVE-2023-4909</cvename>
+      <url>https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop_12.html</url>
+    </references>
+    <dates>
+      <discovery>2023-09-12</discovery>
+      <entry>2023-09-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4bc66a81-89d2-4696-a04b-defd2eb77783">
+    <topic>vscode -- VS Code Remote Code Execution Vulnerability</topic>
+    <affects>
+      <package>
+	<name>vscode</name>
+	<range><lt>1.82.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>VSCode developers report:</p>
+	<blockquote cite="https://github.com/microsoft/vscode/security/advisories/GHSA-r6q2-478f-5gmr">
+	  <p>Visual Studio Code Remote Code Execution Vulnerability</p>
+	  <p>A remote code execution vulnerability exists in VS Code 1.82.0 and earlier versions that working in a maliciously crafted package.json can result in executing commands locally. This scenario would require the attacker to get the VS Code user to open the malicious project and have get the user to open and work with malformed entries in the dependencies sections of the package.json file.</p>
+	  <p>VS Code uses the locally installed npm command to fetch information on package dependencies. A package dependency can be named in such a way that the npm tool runs a script instead.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-36742</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2023-36742</url>
+      <url>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-36742</url>
+    </references>
+    <dates>
+      <discovery>2023-09-12</discovery>
+      <entry>2023-09-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8eefa87f-31f1-496d-bf8e-2b465b6e4e8a">
+    <topic>zeek -- potential DoS vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>6.0.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tim Wojtulewicz of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v6.0.1">
+	  <p> File extraction limits were not correctly enforced
+	  for files containing large amounts of missing bytes. </p>
+	  <p> Sessions are sometimes not cleaned up completely
+	  within Zeek during shutdown, potentially causing a crash
+	  when using the -B dpd flag for debug logging. </p>
+	  <p> A specially-crafted HTTP packet can cause Zeek's
+	  filename extraction code to take a long time to process
+	  the data. </p>
+	  <p> A specially-crafted series of FTP packets made up of
+	  a CWD request followed by a large amount of ERPT requests
+	  may cause Zeek to spend a long time logging the commands.
+	  </p>
+	  <p> A specially-crafted VLAN packet can cause Zeek to
+	  overflow memory and potentially crash. </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v6.0.1</url>
+    </references>
+    <dates>
+      <discovery>2023-09-12</discovery>
+      <entry>2023-09-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4061a4b2-4fb1-11ee-acc7-0151f07bc899">
+    <topic>gitea -- block user account creation from blocked email domains</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.20.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea team reports:</p>
+	<blockquote cite="https://github.com/go-gitea/gitea/pull/26812">
+	  <p>check blocklist for emails when adding them to account</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://blog.gitea.com/release-of-1.20.4</url>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.20.4</url>
+    </references>
+    <dates>
+      <discovery>2023-08-30</discovery>
+      <entry>2023-09-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a57472ba-4d84-11ee-bf05-000c29de725b">
+    <topic>Python -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>python38</name>
+	<range><lt>3.8.18</lt></range>
+      </package>
+      <package>
+	<name>python39</name>
+	<range><lt>3.9.18</lt></range>
+      </package>
+      <package>
+	<name>python310</name>
+	<range><lt>3.10.13</lt></range>
+      </package>
+      <package>
+	<name>python311</name>
+	<range><lt>3.11.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Python reports:</p>
+	<blockquote cite="https://pythoninsider.blogspot.com/2023/08/python-3115-31013-3918-and-3818-is-now.html">
+	  <p>gh-108310: Fixed an issue where instances of ssl.SSLSocket were vulnerable
+	    to a bypass of the TLS handshake and included protections (like certificate
+	    verification) and treating sent unencrypted data as if it were post-handshake
+	    TLS encrypted data.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-40217</cvename>
+      <url>https://pythoninsider.blogspot.com/2023/08/python-3115-31013-3918-and-3818-is-now.html</url>
+    </references>
+    <dates>
+      <discovery>2023-08-22</discovery>
+      <entry>2023-09-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="beb36f39-4d74-11ee-985e-bff341e78d94">
+    <topic>go -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>go120</name>
+	<range><lt>1.20.8</lt></range>
+      </package>
+      <package>
+	<name>go121</name>
+	<range><lt>1.21.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://go.dev/issue/62198">
+	  <p>cmd/go: go.mod toolchain directive allows arbitrary
+	   execution</p>
+	  <p>The go.mod toolchain directive, introduced in Go 1.21,
+	   could be leveraged to execute scripts and binaries
+	   relative to the root of the module when the "go" command
+	   was executed within the module. This applies to modules
+	   downloaded using the "go" command from the module proxy,
+	   as well as modules downloaded directly using VCS software.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/62196">
+	  <p>html/template: improper handling of HTML-like comments
+	   within script contexts</p>
+	  <p>The html/template package did not properly handle
+	   HMTL-like "&lt;!--" and "--&gt;"
+	   comment tokens, nor hashbang "#!" comment tokens, in
+	   &lt;script&gt; contexts. This may cause the template
+	   parser to improperly interpret the contents of
+	   &lt;script&gt; contexts, causing actions to be improperly
+	   escaped. This could be leveraged to perform an XSS attack.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/62197">
+	  <p>html/template: improper handling of special tags within
+	   script contexts</p>
+	  <p>The html/template package did not apply the proper rules
+	   for handling occurrences
+	   of "&lt;script", "&lt;!--", and "&lt;/script" within JS
+	   literals in &lt;script&lt; contexts. This may cause the
+	   template parser to improperly consider script contexts to
+	   be terminated early, causing actions to be improperly
+	   escaped. This could be leveraged to perform an XSS attack.</p>
+	</blockquote>
+	<blockquote cite="https://go.dev/issue/62266">
+	  <p>crypto/tls: panic when processing post-handshake message
+	   on QUIC connections</p>
+	  <p>Processing an incomplete post-handshake message for a QUIC
+	   connection caused a panic.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-39320</cvename>
+      <cvename>CVE-2023-39318</cvename>
+      <cvename>CVE-2023-39319</cvename>
+      <cvename>CVE-2023-39321</cvename>
+      <cvename>CVE-2023-39322</cvename>
+      <url>https://groups.google.com/g/golang-dev/c/2C5vbR-UNkI/m/L1hdrPhfBAAJ?pli=1</url>
+    </references>
+    <dates>
+      <discovery>2023-09-06</discovery>
+      <entry>2023-09-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="924cb116-4d35-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Wi-Fi encryption bypass</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.2</ge><lt>13.2_3</lt></range>
+	<range><ge>12.4</ge><lt>12.4_5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>The net80211 subsystem would fallback to the multicast key for unicast
+	traffic in the event the unicast key was removed.  This would result in
+	buffered unicast traffic being exposed to any stations with access to the
+	multicast key.</p>
+	<h1>Impact:</h1>
+	<p>As described in the "Framing Frames: Bypassing Wi-Fi Encryption by
+	Manipulating Transmit Queues" paper, an attacker can induce an access point
+	to buffer frames for a client, deauthenticate the client (causing the unicast
+	key to be removed from the access point), and subsequent flushing of the
+	buffered frames now encrypted with the multicast key.  This would give the
+	attacker access to the data.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-47522</cvename>
+      <freebsdsa>SA-23:11.wifi</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-09-06</discovery>
+      <entry>2023-09-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d35373ae-4d34-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- pf incorrectly handles multiple IPv6 fragment headers</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.2</ge><lt>13.2_3</lt></range>
+	<range><ge>12.4</ge><lt>12.4_5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>With a 'scrub fragment reassemble' rule, a packet containing multiple IPv6
+	fragment headers would be reassembled, and then immediately processed.  That
+	is, a packet with multiple fragment extension headers would not be recognized
+	as the correct ultimate payload. Instead a packet with multiple IPv6 fragment
+	headers would unexpectedly be interpreted as a fragmented packet, rather than
+	as whatever the real payload is.</p>
+	<h1>Impact:</h1>
+	<p>IPv6 fragments may bypass firewall rules written on the assumption all
+	fragments have been reassembled and, as a result, be forwarded or processed
+	by the host.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4809</cvename>
+      <freebsdsa>SA-23:10.pf</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-09-06</discovery>
+      <entry>2023-09-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6c72b13f-4d1d-11ee-a7f1-080027f5fec9">
+    <topic>redis -- Possible bypassing ACL configuration</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><ge>7.0.0</ge><lt>7.0.13</lt></range>
+	<range><ge>7.2.0</ge><lt>7.2.1</lt></range>
+      </package>
+      <package>
+	<name>redis-devel</name>
+	<range><lt>7.2.0.20230831</lt></range>
+      </package>
+      <package>
+	<name>redis70</name>
+	<range><ge>7.0.0</ge><lt>7.0.13</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>yangbodong22011 reports:</p>
+	<blockquote cite="https://github.com/redis/redis/security/advisories/GHSA-q4jr-5p56-4xwc">
+	  <p>
+	    Redis does not correctly identify keys accessed by SORT_RO
+	    and, as a result, may grant users executing this command
+	    access to keys that are not explicitly authorized by the
+	    ACL configuration.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-41053</cvename>
+      <url>https://github.com/redis/redis/security/advisories/GHSA-q4jr-5p56-4xwc</url>
+    </references>
+    <dates>
+      <discovery>2023-09-06</discovery>
+      <entry>2023-09-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="df0a2fd1-4c92-11ee-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>116.0.5845.179</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>116.0.5845.179</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop.html">
+	 <p>This update includes 4 security fixes:</p>
+	 <ul>
+	    <li>[1476403] High CVE-2023-4761: Out of bounds memory access in FedCM. Reported by DarkNavy on 2023-08-28</li>
+	    <li>[1473247] High CVE-2023-4762: Type Confusion in V8. Reported by Rong Jian of VRI on 2023-08-16</li>
+	    <li>[1469928] High CVE-2023-4763: Use after free in Networks. Reported by anonymous on 2023-08-03</li>
+	    <li>[1447237] High CVE-2023-4764: Incorrect security UI in BFCache. Reported by Irvan Kurniawan (sourc7) on 2023-05-20</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4761</cvename>
+      <cvename>CVE-2023-4762</cvename>
+      <cvename>CVE-2023-4763</cvename>
+      <cvename>CVE-2023-4764</cvename>
+      <url>https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2023-09-05</discovery>
+      <entry>2023-09-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8fd4f40a-4b7d-11ee-aa2a-080027de9982">
+    <topic>Django -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py38-django32</name>
+	<name>py39-django32</name>
+	<name>py310-django32</name>
+	<name>py311-django32</name>
+	<range><lt>3.2.21</lt></range>
+      </package>
+      <package>
+	<name>py38-django41</name>
+	<name>py39-django41</name>
+	<name>py310-django41</name>
+	<name>py311-django41</name>
+	<range><lt>4.1.11</lt></range>
+      </package>
+      <package>
+	<name>py38-django42</name>
+	<name>py39-django42</name>
+	<name>py310-django42</name>
+	<name>py311-django42</name>
+	<range><lt>4.2.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Django reports:</p>
+	<blockquote cite="https://www.djangoproject.com/weblog/2023/sep/04/security-releases/">
+	  <p>CVE-2023-41164: Potential denial of service vulnerability in
+	    django.utils.encoding.uri_to_iri().</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-41164</cvename>
+      <url>https://www.djangoproject.com/weblog/2023/sep/04/security-releases/</url>
+    </references>
+    <dates>
+      <discovery>2023-09-01</discovery>
+      <entry>2023-09-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="aaea7b7c-4887-11ee-b164-001b217b3468">
+    <topic>Gitlab -- Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>16.3.0</ge><lt>16.3.1</lt></range>
+	<range><ge>16.2.0</ge><lt>16.2.5</lt></range>
+	<range><ge>4.1.0</ge><lt>16.1.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2023/08/31/security-release-gitlab-16-3-1-released/">
+	  <p>Privilege escalation of "external user" to internal access through group service account</p>
+	  <p>Maintainer can leak sentry token by changing the configured URL (fix bypass)</p>
+	  <p>Google Cloud Logging private key showed in plain text in GitLab UI leaking to other group owners</p>
+	  <p>Information disclosure via project import endpoint</p>
+	  <p>Developer can leak DAST scanners "Site Profile" request headers and auth password</p>
+	  <p>Project forking outside current group</p>
+	  <p>User is capable of creating Model experiment and updating existing run's status in public project</p>
+	  <p>ReDoS in bulk import API</p>
+	  <p>Pagination for Branches and Tags can be skipped leading to DoS</p>
+	  <p>Internal Open Redirection Due to Improper handling of "../" characters</p>
+	  <p>Subgroup Member With Reporter Role Can Edit Group Labels</p>
+	  <p>Banned user can delete package registries</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3915</cvename>
+      <cvename>CVE-2023-4378</cvename>
+      <cvename>CVE-2023-3950</cvename>
+      <cvename>CVE-2023-4630</cvename>
+      <cvename>CVE-2022-4343</cvename>
+      <cvename>CVE-2023-4638</cvename>
+      <cvename>CVE-2023-4018</cvename>
+      <cvename>CVE-2023-3205</cvename>
+      <cvename>CVE-2023-4647</cvename>
+      <cvename>CVE-2023-1279</cvename>
+      <cvename>CVE-2023-0120</cvename>
+      <cvename>CVE-2023-1555</cvename>
+      <url>https://about.gitlab.com/releases/2023/08/31/security-release-gitlab-16-3-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2023-08-31</discovery>
+      <entry>2023-09-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b8a52e5a-483d-11ee-971d-3df00e0f9020">
+    <topic>Borg (Backup) -- flaw in cryptographic authentication scheme in Borg allowed an attacker to fake archives and indirectly cause backup data loss.</topic>
+    <affects>
+      <package>
+	<name>py37-borgbackup</name>
+	<name>py38-borgbackup</name>
+	<name>py39-borgbackup</name>
+	<name>py310-borgbackup</name>
+	<name>py311-borgbackup</name>
+	<name>py312-borgbackup</name>
+	<range><lt>1.2.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Thomas Waldmann reports:</p>
+	<blockquote cite="https://github.com/borgbackup/borg/blob/1.2.5-cvedocs/docs/changes.rst#pre-125-archives-spoofing-vulnerability-cve-2023-36811">
+	  <p>A flaw in the cryptographic authentication scheme in Borg allowed an attacker to fake archives and potentially indirectly cause backup data loss in the repository.</p>
+	  <p>The attack requires an attacker to be able to</p>
+	  <ul><li>insert files (with no additional headers) into backups</li>
+	    <li>gain write access to the repository</li></ul>
+	  <p>This vulnerability does not disclose plaintext to the attacker, nor does it affect the authenticity of existing archives.  Creating plausible fake archives may be feasible for empty or small archives, but is unlikely for large archives.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-36811</cvename>
+      <url>https://github.com/borgbackup/borg/blob/1.2.5-cvedocs/docs/changes.rst#pre-125-archives-spoofing-vulnerability-cve-2023-36811</url>
+    </references>
+    <dates>
+      <discovery>2023-06-13</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="970dcbe0-a947-41a4-abe9-7aaba87f41fe">
+    <topic>electron25 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron25</name>
+	<range><lt>25.8.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v25.8.0">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-4427.</li>
+	    <li>Security: backported fix for CVE-2023-4428.</li>
+	    <li>Security: backported fix for CVE-2023-4429.</li>
+	    <li>Security: backported fix for CVE-2023-4430.</li>
+	    <li>Security: backported fix for CVE-2023-4572.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4427</cvename>
+      <url>https://github.com/advisories/GHSA-qqwc-fhxf-4mf3</url>
+      <cvename>CVE-2023-4428</cvename>
+      <url>https://github.com/advisories/GHSA-m56x-9vph-h345</url>
+      <cvename>CVE-2023-4429</cvename>
+      <url>https://github.com/advisories/GHSA-r43m-48vw-xgp3</url>
+      <cvename>CVE-2023-4430</cvename>
+      <url>https://github.com/advisories/GHSA-h295-rcc5-87jh</url>
+      <cvename>CVE-2023-4572</cvename>
+      <url>https://github.com/advisories/GHSA-6994-5wq3-gpjv</url>
+    </references>
+    <dates>
+      <discovery>2023-08-30</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="29f050e9-3ef4-4c5f-8204-503b41caf181">
+    <topic>electron24 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron24</name>
+	<range><lt>24.8.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v24.8.2">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-4427.</li>
+	    <li>Security: backported fix for CVE-2023-4428.</li>
+	    <li>Security: backported fix for CVE-2023-4430.</li>
+	    <li>Security: backported fix for CVE-2023-4572.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4427</cvename>
+      <url>https://github.com/advisories/GHSA-qqwc-fhxf-4mf3</url>
+      <cvename>CVE-2023-4428</cvename>
+      <url>https://github.com/advisories/GHSA-m56x-9vph-h345</url>
+      <cvename>CVE-2023-4430</cvename>
+      <url>https://github.com/advisories/GHSA-h295-rcc5-87jh</url>
+      <cvename>CVE-2023-4572</cvename>
+      <url>https://github.com/advisories/GHSA-6994-5wq3-gpjv</url>
+    </references>
+    <dates>
+      <discovery>2023-08-30</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="579c7489-c23d-454a-b0fc-ed9d80ea46e0">
+    <topic>electron22 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron22</name>
+	<range><lt>22.3.23</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v22.3.23">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-4427.</li>
+	    <li>Security: backported fix for CVE-2023-4428.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4427</cvename>
+      <url>https://github.com/advisories/GHSA-qqwc-fhxf-4mf3</url>
+      <cvename>CVE-2023-4428</cvename>
+      <url>https://github.com/advisories/GHSA-m56x-9vph-h345</url>
+    </references>
+    <dates>
+      <discovery>2023-08-30</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1a15b928-5011-4953-8133-d49e24902fe1">
+    <topic>py-WsgiDAV -- XSS vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-WsgiDAV</name>
+    <name>py38-WsgiDAV</name>
+    <name>py39-WsgiDAV</name>
+    <name>py310-WsgiDAV</name>
+    <name>py311-WsgiDAV</name>
+    <range><lt>4.1.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-xx6g-jj35-pxjv">
+      <p>Implementations using this library with directory browsing enabled may be susceptible to Cross Site Scripting (XSS) attacks.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-41905</cvename>
+      <url>https://osv.dev/vulnerability/GHSA-xx6g-jj35-pxjv</url>
+    </references>
+    <dates>
+      <discovery>2022-11-11</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="17efbe19-4e72-426a-8016-2b4e001c1378">
+    <topic>py-wagtail -- stored XSS vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-wagtail</name>
+    <name>py38-wagtail</name>
+    <name>py39-wagtail</name>
+    <name>py310-wagtail</name>
+    <name>py311-wagtail</name>
+    <range><lt>4.1.4</lt></range>
+    <range><ge>4.2.0</ge><lt>4.2.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-5286-f2rf-35c2">
+      <p>A stored cross-site scripting (XSS) vulnerability exists on ModelAdmin views within the Wagtail admin interface.</p>
+      <p>A user with a limited-permission editor account for the Wagtail admin could potentially craft pages and documents that, when viewed by a user with higher privileges, could perform actions with that user's credentials.</p>
+      <p>The vulnerability is not exploitable by an ordinary site visitor without access to the Wagtail admin, and only affects sites with ModelAdmin enabled.</p>
+      <p>For page, the vulnerability is in the "Choose a parent page" ModelAdmin view, available when managing pages via ModelAdmin.</p>
+      <p>For documents, the vulnerability is in the ModelAdmin Inspect view when displaying document fields.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28836</cvename>
+      <url>https://osv.dev/vulnerability/GHSA-5286-f2rf-35c2</url>
+    </references>
+    <dates>
+      <discovery>2023-04-03</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2def7c4b-736f-4754-9f03-236fcb586d91">
+    <topic>py-wagtail -- DoS vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-wagtail</name>
+    <name>py38-wagtail</name>
+    <name>py39-wagtail</name>
+    <name>py310-wagtail</name>
+    <name>py311-wagtail</name>
+    <range><ge>4.2.0</ge><lt>4.2.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-33pv-vcgh-jfg9">
+      <p>A memory exhaustion bug exists in Wagtail's handling of uploaded images and documents.</p>
+      <p>For both images and documents, files are loaded into memory during upload for additional processing.</p>
+      <p>A user with access to upload images or documents through the Wagtail admin interface could upload a file so large that it results in a crash or denial of service.</p>
+      <p>The vulnerability is not exploitable by an ordinary site visitor without access to the Wagtail admin.</p>
+      <p>It can only be exploited by admin users with permission to upload images or documents.</p>
+      <p>Image uploads are restricted to 10MB by default, however this validation only happens on the frontend and on the backend after the vulnerable code.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28837</cvename>
+      <url>https://osv.dev/vulnerability/GHSA-33pv-vcgh-jfg9</url>
+    </references>
+    <dates>
+      <discovery>2023-04-03</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="181f5e49-b71d-4527-9464-d4624d69acc3">
+    <topic>py-treq -- sensitive information leak vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-treq</name>
+    <name>py38-treq</name>
+    <name>py39-treq</name>
+    <name>py310-treq</name>
+    <name>py311-treq</name>
+    <range><lt>22.1.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-fhpf-pp6p-55qc">
+      <p>Treq's request methods (`treq.get`, `treq.post`, `HTTPClient.request`, `HTTPClient.get`, etc.) accept cookies as a dictionary.</p>
+      <p>Such cookies are not bound to a single domain, and are therefore sent to *every* domain ("supercookies").</p>
+      <p>This can potentially cause sensitive information to leak upon an HTTP redirect to a different domain., e.g. should `https://example.com` redirect to `http://cloudstorageprovider.com` the latter will receive the cookie `session`.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-23607</cvename>
+      <url>https://osv.dev/vulnerability/GHSA-fhpf-pp6p-55qc</url>
+    </references>
+    <dates>
+      <discovery>2022-02-01</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4eb5dccb-923c-4f18-9cd4-b53f9e28d4d7">
+    <topic>py-Scrapy -- DoS vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-Scrapy</name>
+    <name>py38-Scrapy</name>
+    <name>py39-Scrapy</name>
+    <name>py310-Scrapy</name>
+    <name>py311-Scrapy</name>
+    <range><le>2.8.0</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>kmike and nramirezuy report:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2017-83">
+      <p>Scrapy 1.4 allows remote attackers to cause a denial of service (memory consumption) via large files because arbitrarily many files are read into memory, which is especially problematic if the files are then individually written in a separate thread to a slow storage resource, as demonstrated by interaction between dataReceived (in core/downloader/handlers/http11.py) and S3FilesStore.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2017-14158</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2017-83</url>
+      <url>https://osv.dev/vulnerability/GHSA-h7wm-ph43-c39p</url>
+    </references>
+    <dates>
+      <discovery>2017-09-05</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="67fe5e5b-549f-4a2a-9834-53f60eaa415e">
+    <topic>py-Scrapy -- exposure of sensitive information vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-Scrapy</name>
+    <name>py38-Scrapy</name>
+    <name>py39-Scrapy</name>
+    <name>py310-Scrapy</name>
+    <name>py311-Scrapy</name>
+    <range><lt>2.6.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>ranjit-git reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2022-159">
+      <p>Exposure of Sensitive Information to an Unauthorized Actor in GitHub repository scrapy/scrapy prior to 2.6.1.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-0577</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2022-159</url>
+      <url>https://osv.dev/vulnerability/GHSA-cjvr-mfj7-j4j8</url>
+    </references>
+    <dates>
+      <discovery>2022-03-02</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a5403af6-225e-48ba-b233-bd95ad26434a">
+    <topic>py-Scrapy -- cookie injection vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-Scrapy</name>
+    <name>py38-Scrapy</name>
+    <name>py39-Scrapy</name>
+    <name>py310-Scrapy</name>
+    <name>py311-Scrapy</name>
+    <range><lt>1.8.2</lt></range>
+    <range><ge>2.0.0</ge><lt>2.6.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-mfjm-vh54-3f96">
+      <p>Responses from domain names whose public domain name suffix contains 1 or more periods (e.g. responses from `example.co.uk`, given its public domain name suffix is `co.uk`) are able to set cookies that are included in requests to any other domain sharing the same domain name suffix.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://osv.dev/vulnerability/GHSA-mfjm-vh54-3f96</url>
+    </references>
+    <dates>
+      <discovery>2022-03-01</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2ad25820-c71a-4e6c-bb99-770c66fe496d">
+    <topic>py-Scrapy -- credentials leak vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-Scrapy</name>
+    <name>py38-Scrapy</name>
+    <name>py39-Scrapy</name>
+    <name>py310-Scrapy</name>
+    <name>py311-Scrapy</name>
+    <range><lt>1.8.3</lt></range>
+    <range><ge>2.0.0</ge><lt>2.6.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-9x8m-2xpf-crp3">
+      <p>When the built-in HTTP proxy downloader middleware processes a request with `proxy` metadata, and that `proxy` metadata includes proxy credentials, the built-in HTTP proxy downloader middleware sets the `Proxy-Authentication` header, but only if that header is not already set.</p>
+      <p>There are third-party proxy-rotation downloader middlewares that set different `proxy` metadata every time they process a request.</p>
+      <p>Because of request retries and redirects, the same request can be processed by downloader middlewares more than once, including both the built-in HTTP proxy downloader middleware and any third-party proxy-rotation downloader middleware.</p>
+      <p>These third-party proxy-rotation downloader middlewares could change the `proxy` metadata of a request to a new value, but fail to remove the `Proxy-Authentication` header from the previous value of the `proxy` metadata, causing the credentials of one proxy to be leaked to a different proxy.</p>
+      <p>If you rotate proxies from different proxy providers, and any of those proxies requires credentials, you are affected, unless you are handling proxy rotation as described under **Workarounds** below.</p>
+      <p>If you use a third-party downloader middleware for proxy rotation, the same applies to that downloader middleware, and installing a patched version of Scrapy may not be enough;</p>
+      <p>patching that downloader middlware may be necessary as well.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://osv.dev/vulnerability/GHSA-9x8m-2xpf-crp3</url>
+    </references>
+    <dates>
+      <discovery>2022-07-29</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e831dd5a-7d8e-4818-aa1f-17dd495584ec">
+    <topic>py-httpx -- input validation vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-httpx013</name>
+    <name>py38-httpx013</name>
+    <name>py39-httpx013</name>
+    <name>py310-httpx013</name>
+    <name>py311-httpx013</name>
+    <range><lt>0.20.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>lebr0nli reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2022-183">
+      <p>Encode OSS httpx &lt;=1.0.0.beta0 is affected by improper input validation in `httpx.URL`, `httpx.Client` and some functions using `httpx.URL.copy_with`.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-41945</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2022-183</url>
+      <url>https://osv.dev/vulnerability/GHSA-h8pj-cxx2-jfg2</url>
+    </references>
+    <dates>
+      <discovery>2022-04-28</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1e37fa3e-5988-4991-808f-eae98047e2af">
+    <topic>py-httpie -- exposure of sensitive information vulnerabilities</topic>
+    <affects>
+      <package>
+    <name>py37-httpie</name>
+    <name>py38-httpie</name>
+    <name>py39-httpie</name>
+    <name>py310-httpie</name>
+    <name>py311-httpie</name>
+    <range><lt>3.1.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>Glyph reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2022-34">
+      <p>HTTPie is a command-line HTTP client.</p>
+      <p>HTTPie has the practical concept of sessions, which help users to persistently store some of the state that belongs to the outgoing requests and incoming responses on the disk for further usage.</p>
+      <p>Before 3.1.0, HTTPie didn't distinguish between cookies and hosts they belonged.</p>
+      <p>This behavior resulted in the exposure of some cookies when there are redirects originating from the actual host to a third party website.</p>
+      <p>Users are advised to upgrade.</p>
+      <p>There are no known workarounds.</p>
+    </blockquote>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2022-167">
+      <p>Exposure of Sensitive Information to an Unauthorized Actor in GitHub repository httpie/httpie prior to 3.1.0.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-24737</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2022-34</url>
+      <url>https://osv.dev/vulnerability/GHSA-9w4w-cpc8-h2fq</url>
+      <cvename>CVE-2022-0430</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2022-167</url>
+      <url>https://osv.dev/vulnerability/GHSA-6pc9-xqrg-wfqw</url>
+    </references>
+    <dates>
+      <discovery>2022-03-07</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="06492bd5-085a-4cc0-9743-e30164bdcb1c">
+    <topic>py-flask-security -- user redirect to arbitrary URL vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-flask-security</name>
+    <name>py38-flask-security</name>
+    <name>py39-flask-security</name>
+    <name>py310-flask-security</name>
+    <name>py311-flask-security</name>
+    <range><le>3.0.0_1</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>Snyk reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-cg8c-gc2j-2wf7">
+      <p>This affects all versions of package Flask-Security.</p>
+      <p>When using the `get_post_logout_redirect` and `get_post_login_redirect` functions, it is possible to bypass URL validation and redirect a user to an arbitrary URL by providing multiple back slashes such as `\\\evil.com/path`.</p>
+      <p>This vulnerability is only exploitable if an alternative WSGI server other than Werkzeug is used, or the default behaviour of Werkzeug is modified using `'autocorrect_location_header=False`.</p>
+      <p>**Note:** Flask-Security is not maintained anymore.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-23385</cvename>
+      <url>https://osv.dev/vulnerability/GHSA-cg8c-gc2j-2wf7</url>
+    </references>
+    <dates>
+      <discovery>2022-08-02</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="252f40cb-618c-47f4-a2cf-1abf30cffbbe">
+    <topic>py-Flask-Cors -- directory traversal vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-Flask-Cors</name>
+    <name>py38-Flask-Cors</name>
+    <name>py39-Flask-Cors</name>
+    <name>py310-Flask-Cors</name>
+    <name>py311-Flask-Cors</name>
+    <range><lt>3.0.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>praetorian-colby-morgan reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2020-43">
+      <p>An issue was discovered in Flask-CORS (aka CORS Middleware for Flask) before 3.0.9.</p>
+      <p>It allows ../ directory traversal to access private resources because resource matching does not ensure that pathnames are in a canonical format.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-25032</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2020-43</url>
+      <url>https://osv.dev/vulnerability/GHSA-xc3p-ff3m-f46v</url>
+    </references>
+    <dates>
+      <discovery>2020-08-31</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="692a5fd5-bb25-4df4-8a0e-eb91581f2531">
+    <topic>py-flask-caching -- remote code execution or local privilege escalation vulnerabilities</topic>
+    <affects>
+      <package>
+    <name>py37-flask-caching</name>
+    <name>py38-flask-caching</name>
+    <name>py39-flask-caching</name>
+    <name>py310-flask-caching</name>
+    <name>py311-flask-caching</name>
+    <range><le>2.0.2</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>subnix reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2021-13">
+      <p>The Flask-Caching extension through 2.0.2 for Flask relies on Pickle for serialization, which may lead to remote code execution or local privilege escalation.</p>
+      <p>If an attacker gains access to cache storage (e.g., filesystem, Memcached, Redis, etc.), they can construct a crafted payload, poison the cache, and execute Python code.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-33026</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2021-13</url>
+      <url>https://osv.dev/vulnerability/GHSA-656c-6cxf-hvcv</url>
+    </references>
+    <dates>
+      <discovery>2021-05-13</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c2c89dea-2859-4231-8f3b-012be0d475ff">
+    <topic>py-django-photologue -- XSS vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-django-photologue</name>
+    <name>py38-django-photologue</name>
+    <name>py39-django-photologue</name>
+    <name>py310-django-photologue</name>
+    <name>py311-django-photologue</name>
+    <range><le>3.15_1</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>domiee13 reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/GHSA-287q-jfcp-9vhv">
+      <p>A vulnerability was found in django-photologue up to 3.15.1 and classified as problematic.</p>
+      <p>Affected by this issue is some unknown functionality of the file photologue/templates/photologue/photo_detail.html of the component Default Template Handler.</p>
+      <p>The manipulation of the argument object.caption leads to cross site scripting.</p>
+      <p>The attack may be launched remotely.</p>
+      <p>Upgrading to version 3.16 is able to address this issue.</p>
+      <p>The name of the patch is 960cb060ce5e2964e6d716ff787c72fc18a371e7.</p>
+      <p>It is recommended to apply a patch to fix this issue.</p>
+      <p>VDB-215906 is the identifier assigned to this vulnerability.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-4526</cvename>
+      <url>https://osv.dev/vulnerability/GHSA-287q-jfcp-9vhv</url>
+    </references>
+    <dates>
+      <discovery>2022-12-15</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cdc685b5-1724-49a1-ad57-2eaab68e9cc0">
+    <topic>py-pygments -- multiple DoS vulnerabilities</topic>
+    <affects>
+      <package>
+    <name>py37-pygments</name>
+    <name>py38-pygments</name>
+    <name>py39-pygments</name>
+    <name>py310-pygments</name>
+    <name>py311-pygments</name>
+    <range><lt>2.7.4</lt></range>
+      </package>
+      <package>
+    <name>py37-pygments-25</name>
+    <name>py38-pygments-25</name>
+    <name>py39-pygments-25</name>
+    <name>py310-pygments-25</name>
+    <name>py311-pygments-25</name>
+    <range><lt>2.7.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>Red Hat reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2021-140">
+      <p>An infinite loop in SMLLexer in Pygments versions 1.5 to 2.7.3 may lead to denial of service when performing syntax highlighting of a Standard ML (SML) source file, as demonstrated by input that only contains the "exception" keyword.</p>
+    </blockquote>
+    <p>Ben Caller reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2021-141">
+      <p>In pygments 1.1+, fixed in 2.7.4, the lexers used to parse programming languages rely heavily on regular expressions.</p>
+      <p>Some of the regular expressions have exponential or cubic worst-case complexity and are vulnerable to ReDoS.</p>
+      <p>By crafting malicious input, an attacker can cause a denial of service.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-20270</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2021-140</url>
+      <url>https://osv.dev/vulnerability/GHSA-9w8r-397f-prfh</url>
+      <cvename>CVE-2021-27291</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2021-141</url>
+      <url>https://osv.dev/vulnerability/GHSA-pq64-v7f5-gqh8</url>
+    </references>
+    <dates>
+      <discovery>2021-03-17</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c9b3324f-8e03-4ae3-89ce-8098cdc5bfa9">
+    <topic>py-markdown2 -- regular expression denial of service vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-markdown2</name>
+    <name>py38-markdown2</name>
+    <name>py39-markdown2</name>
+    <name>py310-markdown2</name>
+    <name>py311-markdown2</name>
+    <range><lt>2.4.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>Ben Caller reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2021-20">
+      <p>markdown2 &gt;=1.0.1.18, fixed in 2.4.0, is affected by a regular expression denial of service vulnerability.</p>
+      <p>If an attacker provides a malicious string, it can make markdown2 processing difficult or delayed for an extended period of time.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-26813</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2021-20</url>
+      <url>https://osv.dev/vulnerability/GHSA-jr9p-r423-9m2r</url>
+    </references>
+    <dates>
+      <discovery>2021-03-03</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cf6f3465-e996-4672-9458-ce803f29fdb7">
+    <topic>py-markdown2 -- XSS vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-markdown2</name>
+    <name>py38-markdown2</name>
+    <name>py39-markdown2</name>
+    <name>py310-markdown2</name>
+    <name>py311-markdown2</name>
+    <range><lt>2.3.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>TheGrandPew reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2020-65">
+      <p>python-markdown2 through 2.3.8 allows XSS because element names are mishandled unless a \w+ match succeeds.</p>
+      <p>For example, an attack might use elementname@ or elementname- with an onclick attribute.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-11888</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2020-65</url>
+      <url>https://osv.dev/vulnerability/GHSA-fv3h-8x5j-pvgq</url>
+    </references>
+    <dates>
+      <discovery>2020-04-20</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="83b29e3f-886f-439f-b9a8-72e014479ff9">
+    <topic>py-dparse -- REDoS vulnerability</topic>
+    <affects>
+      <package>
+    <name>py37-dparse</name>
+    <name>py38-dparse</name>
+    <name>py39-dparse</name>
+    <name>py310-dparse</name>
+    <name>py311-dparse</name>
+    <range><lt>0.5.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>yeisonvargasf reports:</p>
+    <blockquote cite="https://osv.dev/vulnerability/PYSEC-2022-301">
+      <p>dparse is a parser for Python dependency files.</p>
+      <p>dparse in versions before 0.5.2 contain a regular expression that is vulnerable to a Regular Expression Denial of Service.</p>
+      <p>All the users parsing index server URLs with dparse are impacted by this vulnerability.</p>
+      <p>Users unable to upgrade should avoid passing index server URLs in the source file to be parsed.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-39280</cvename>
+      <url>https://osv.dev/vulnerability/PYSEC-2022-301</url>
+      <url>https://osv.dev/vulnerability/GHSA-8fg9-p83m-x5pq</url>
+    </references>
+    <dates>
+      <discovery>2022-10-06</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9b0d9832-47c1-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Network authentication attack via pam_krb5</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.2</ge><lt>13.2_2</lt></range>
+	<range><ge>13.1</ge><lt>13.1_9</lt></range>
+	<range><ge>12.4</ge><lt>12.4_4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>The problem detailed in FreeBSD-SA-23:04.pam_krb5 persisted following
+	the patch for that advisory.</p>
+	<h1>Impact:</h1>
+	<p>The impact described in FreeBSD-SA-23:04.pam_krb5 persists.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3326</cvename>
+      <freebsdsa>SA-23:09.pam_krb5</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-08-01</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="291d0953-47c1-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Potential remote code execution via ssh-agent forwarding</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.2</ge><lt>13.2_2</lt></range>
+	<range><ge>13.1</ge><lt>13.1_9</lt></range>
+	<range><ge>12.4</ge><lt>12.4_4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>The server may cause ssh-agent to load shared libraries other than
+	those required for PKCS#11 support.  These shared libraries may have
+	side effects that occur on load and unload (dlopen and dlclose).</p>
+	<h1>Impact:</h1>
+	<p>An attacker with access to a server that accepts a forwarded
+	ssh-agent connection may be able to execute code on the machine running
+	ssh-agent.  Note that the attack relies on properties of operating
+	system-provided libraries.  This has been demonstrated on other
+	operating systems; it is unknown whether this attack is possible using
+	the libraries provided by a FreeBSD installation.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-38408</cvename>
+      <freebsdsa>SA-23:08.ssh</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-08-01</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ab437561-47c0-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- bhyve privileged guest escape via fwctl</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.2</ge><lt>13.2_2</lt></range>
+	<range><ge>13.1</ge><lt>13.1_9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>The fwctl driver implements a state machine which is executed when
+	the guest accesses certain x86 I/O ports.  The interface lets the guest
+	copy a string into a buffer resident in the bhyve process' memory.  A
+	bug in the state machine implementation can result in a buffer
+	overflowing when copying this string.</p>
+	<h1>Impact:</h1>
+	<p>A malicious, privileged software running in a guest VM can exploit
+	the buffer overflow to achieve code execution on the host in the bhyve
+	userspace process, which typically runs as root.  Note that bhyve runs
+	in a Capsicum sandbox, so malicious code is constrained by the
+	capabilities available to the bhyve process.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3494</cvename>
+      <freebsdsa>SA-23:07.bhyve</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-08-01</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3dabf5b8-47c0-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Remote denial of service in IPv6 fragment reassembly</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.2</ge><lt>13.2_2</lt></range>
+	<range><ge>13.1</ge><lt>13.1_9</lt></range>
+	<range><ge>12.4</ge><lt>12.4_4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>Each fragment of an IPv6 packet contains a fragment header which
+	specifies the offset of the fragment relative to the original packet,
+	and each fragment specifies its length in the IPv6 header.  When
+	reassembling the packet, the kernel calculates the complete IPv6 payload
+	length.  The payload length must fit into a 16-bit field in the IPv6
+	header.</p>
+	<p>Due to a bug in the kernel, a set of carefully crafted packets can
+	trigger an integer overflow in the calculation of the reassembled
+	packet's payload length field.</p>
+	<h1>Impact:</h1>
+	<p>Once an IPv6 packet has been reassembled, the kernel continues
+	processing its contents.  It does so assuming that the fragmentation
+	layer has validated all fields of the constructed IPv6 header.  This bug
+	violates such assumptions and can be exploited to trigger a remote
+	kernel panic, resulting in a denial of service.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3107</cvename>
+      <freebsdsa>SA-23:06.ipv6</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-08-01</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e31a8f8e-47bf-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- ssh-add does not honor per-hop destination constraints</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>12.4</ge><lt>12.4_3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>When using ssh-add(1) to add smartcard keys to ssh-agent(1) with
+	per-hop destination constraints, a logic error prevented the constraints
+	from being sent to the agent resulting in keys being added to the agent
+	without constraints.</p>
+	<h1>Impact:</h1>
+	<p>A malicious server could leverage the keys provided by a forwarded
+	agent that would normally not be allowed due to the logic error.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-28531</cvename>
+      <freebsdsa>SA-23:05.openssh</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-06-21</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="41af0277-47bf-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Network authentication attack via pam_krb5</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.2</ge><lt>13.2_1</lt></range>
+	<range><ge>13.1</ge><lt>13.1_8</lt></range>
+	<range><ge>12.4</ge><lt>12.4_3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>pam_krb5 authenticates the user by essentially running kinit(1) with
+	the password, getting a `ticket-granting ticket' (tgt) from the Kerberos
+	KDC (Key Distribution Center) over the network, as a way to verify the
+	password.</p>
+	<p>Normally, the system running the pam_krb5 module will also have a
+	keytab, a key provisioned by the KDC. The pam_krb5 module will use the
+	tgt to get a service ticket and validate it against the keytab, ensuring
+	the tgt is valid and therefore, the password is valid.</p>
+	<p>However, if a keytab is not provisioned on the system, pam_krb5 has
+	no way to validate the response from the KDC, and essentially trusts the
+	tgt provided over the network as being valid.</p>
+	<h1>Impact:</h1>
+	<p>In a non-default FreeBSD installation that leverages pam_krb5 for
+	authentication and does not have a keytab provisioned, an attacker that
+	is able to control both the password and the KDC responses can return a
+	valid tgt, allowing authentication to occur for any user on the
+	system.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-3326</cvename>
+      <freebsdsa>SA-23:04.pam_krb5</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-06-21</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c8eb4c40-47bd-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Multiple vulnerabilities in OpenSSL</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.1</ge><lt>13.1_7</lt></range>
+	<range><ge>12.4</ge><lt>12.4_2</lt></range>
+	<range><ge>12.3</ge><lt>12.3_12</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<h2>X.400 address type confusion in X.509 GeneralName (CVE-2023-0286)</h2>
+	<p>There is a type confusion vulnerability relating to X.400 address processing
+	inside an X.509 GeneralName. X.400 addresses were parsed as an ASN1_STRING but
+	the public structure definition for GENERAL_NAME incorrectly specified the type
+	of the x400Address field as ASN1_TYPE. This field is subsequently interpreted by
+	the OpenSSL function GENERAL_NAME_cmp as an ASN1_TYPE rather than an
+	ASN1_STRING.</p>
+	<h2>Timing Oracle in RSA Decryption (CVE-2022-4304)</h2>
+	<p>A timing based side channel exists in the OpenSSL RSA Decryption
+	implementation.</p>
+	<h2>Use-after-free following BIO_new_NDEF (CVE-2023-0215)</h2>
+	<p>The public API function BIO_new_NDEF is a helper function used for streaming
+	ASN.1 data via a BIO. It is primarily used internally to OpenSSL to support
+	the SMIME, CMS and PKCS7 streaming capabilities, but may also be called
+	directly by end user applications.</p>
+	<p>The function receives a BIO from the caller, prepends a new BIO_f_asn1 filter
+	BIO onto the front of it to form a BIO chain, and then returns the new head
+	of the BIO chain to the caller. Under certain conditions, for example if a
+	CMS recipient public key is invalid, the new filter BIO is freed and the
+	function returns a NULL result indicating a failure. However, in this case,
+	the BIO chain is not properly cleaned up and the BIO passed by the caller
+	still retains internal pointers to the previously freed filter BIO.</p>
+	<h2>Double free after calling PEM_read_bio_ex (CVE-2022-4450)</h2>
+	<p>The function PEM_read_bio_ex() reads a PEM file from a BIO and parses and
+	decodes the "name" (e.g. "CERTIFICATE"), any header data and the payload
+	data.  If the function succeeds then the "name_out", "header" and "data"
+	arguments are populated with pointers to buffers containing the relevant
+	decoded data. The caller is responsible for freeing those buffers. It is
+	possible to construct a PEM file that results in 0 bytes of payload data. In
+	this case PEM_read_bio_ex() will return a failure code but will populate the
+	header argument with a pointer to a buffer that has already been freed.</p>
+	<h1>Impact:</h1>
+	<h2>X.400 address type confusion in X.509 GeneralName (CVE-2023-0286)</h2>
+	<p>When CRL checking is enabled (i.e. the application sets the
+	X509_V_FLAG_CRL_CHECK flag), this vulnerability may allow an attacker to pass
+	arbitrary pointers to a memcmp call, enabling them to read memory contents or
+	enact a denial of service. In most cases, the attack requires the attacker to
+	provide both the certificate chain and CRL, neither of which need to have a
+	valid signature. If the attacker only controls one of these inputs, the other
+	input must already contain an X.400 address as a CRL distribution point, which
+	is uncommon. As such, this vulnerability is most likely to only affect
+	applications which have implemented their own functionality for retrieving CRLs
+	over a network.</p>
+	<h2>Timing Oracle in RSA Decryption (CVE-2022-4304)</h2>
+	<p>A timing based side channel exists in the OpenSSL RSA Decryption implementation
+	which could be sufficient to recover a plaintext across a network in a
+	Bleichenbacher style attack. To achieve a successful decryption an attacker
+	would have to be able to send a very large number of trial messages for
+	decryption. The vulnerability affects all RSA padding modes: PKCS#1 v1.5,
+	RSA-OEAP and RSASVE.</p>
+	<h2>Use-after-free following BIO_new_NDEF (CVE-2023-0215)</h2>
+	<p>A use-after-free will occur under certain conditions. This will most likely
+	result in a crash.</p>
+	<h2>Double free after calling PEM_read_bio_ex (CVE-2022-4450)</h2>
+	<p>A double free may occur. This will most likely lead to a crash. This could be
+	exploited by an attacker who has the ability to supply malicious PEM files
+	for parsing to achieve a denial of service attack.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-0286</cvename>
+      <cvename>CVE-2023-0215</cvename>
+      <cvename>CVE-2022-4450</cvename>
+      <cvename>CVE-2022-4304</cvename>
+      <freebsdsa>SA-23:03.openssl</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-02-16</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="09b7cd39-47bd-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- OpenSSH pre-authentication double free</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>12.4</ge><lt>12.4_2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>A flaw in the backwards-compatibility key exchange route allows a
+	pointer to be freed twice.</p>
+	<h1>Impact:</h1>
+	<p>A remote, unauthenticated attacker may be able to cause a denial of
+	service, or possibly remote code execution.</p>
+	<p>Note that FreeBSD 12.3 and FreeBSD 13.1 include older versions of
+	OpenSSH, and are not affected.  FreeBSD 13.2-BETA1 and later include the
+	fix.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-25136</cvename>
+      <freebsdsa>SA-23:02.openssh</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-02-16</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3fcab88b-47bc-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- GELI silently omits the keyfile if read from stdin</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.1</ge><lt>13.1_6</lt></range>
+	<range><ge>12.4</ge><lt>12.4_1</lt></range>
+	<range><ge>12.3</ge><lt>12.3_11</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>When GELI reads a key file from a standard input, it doesn't store it
+	anywhere.  If the user tries to initialize multiple providers at once,
+	for the second and subsequent devices the standard input stream will be
+	already empty.  In this case, GELI silently uses a NULL key as the user
+	key file.  If the user used only a key file without a user passphrase,
+	the master key was encrypted with an empty key file.  This might not be
+	noticed if the devices were also decrypted in a batch operation.</p>
+	<h1>Impact:</h1>
+	<p>Some GELI providers might be silently encrypted with a NULL key
+	file.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-0751</cvename>
+      <freebsdsa>SA-23:01.geli</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2023-02-08</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a005aea9-47bb-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Stack overflow in ping(8)</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.1</ge><lt>13.1_5</lt></range>
+	<range><ge>12.3</ge><lt>12.3_10</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>ping reads raw IP packets from the network to process responses in
+	the pr_pack() function.  As part of processing a response ping has to
+	reconstruct the IP header, the ICMP header and if present a "quoted
+	packet," which represents the packet that generated an ICMP error.
+	The quoted packet again has an IP header and an ICMP header.</p>
+	<p>The pr_pack() copies received IP and ICMP headers into stack buffers
+	for further processing.  In so doing, it fails to take into account the
+	possible presence of IP option headers following the IP header in either
+	the response or the quoted packet.  When IP options are present,
+	pr_pack() overflows the destination buffer by up to 40 bytes.</p>
+	<h1>Impact:</h1>
+	<p>The memory safety bugs described above can be triggered by a remote
+	host, causing the ping program to crash.</p>
+	<p>The ping process runs in a capability mode sandbox on all affected
+	versions of FreeBSD and is thus very constrained in how it can interact
+	with the rest of the system at the point where the bug can occur.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-23093</cvename>
+      <freebsdsa>SA-22:15.ping</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2022-11-29</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="97c1b0f7-47b9-11ee-8e38-002590c1f29c">
+    <topic>FreeBSD -- Multiple vulnerabilities in Heimdal</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.1</ge><lt>13.1_4</lt></range>
+	<range><ge>12.3</ge><lt>12.3_9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>Multiple security vulnerabilities have been discovered in the Heimdal
+	implementation of the Kerberos 5 network authentication
+	protocols and KDC.</p>
+	<ul>
+	  <li>CVE-2022-42898 PAC parse integer overflows</li>
+	  <li>CVE-2022-3437 Overflows and non-constant time leaks in DES{,3} and arcfour</li>
+	  <li>CVE-2021-44758 NULL dereference DoS in SPNEGO acceptors</li>
+	  <li>CVE-2022-44640 Heimdal KDC: invalid free in ASN.1 codec</li>
+	  <li>CVE-2019-14870 Validate client attributes in protocol-transition</li>
+	  <li>CVE-2019-14870 Apply forwardable policy in protocol-transition</li>
+	  <li>CVE-2019-14870 Always lookup impersonate client in DB</li>
+	</ul>
+	<h1>Impact:</h1>
+	<p>A malicious actor with control of the network between a client and a
+	service using Kerberos for authentication can impersonate either the
+	client or the service, enabling a man-in-the-middle (MITM) attack
+	circumventing mutual authentication.</p>
+	<p>Note that, while CVE-2022-44640 is a severe vulnerability, possibly
+	enabling remote code execution on other platforms, the version of
+	Heimdal included with the FreeBSD base system cannot be exploited in
+	this way on FreeBSD.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2019-14870</cvename>
+      <cvename>CVE-2021-44758</cvename>
+      <cvename>CVE-2022-3437</cvename>
+      <cvename>CVE-2022-42898</cvename>
+      <cvename>CVE-2022-44640</cvename>
+      <freebsdsa>SA-22:14.heimdal</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2022-11-15</discovery>
+      <entry>2023-08-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="22fffa69-46fa-11ee-8290-a8a1599412c6">
+    <topic>chromium -- use after free in MediaStream</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>116.0.5845.140</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>116.0.5845.140</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/08/stable-channel-update-for-desktop_29.html">
+	 <p>This update includes 1 security fix:</p>
+	 <ul>
+	    <li>[1472492] High CVE-2023-4572: Use after free in MediaStream. Reported by fwnfwn(@_fwnfwn) on 2023-08-12</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4472</cvename>
+      <url>https://chromereleases.googleblog.com/2023/08/stable-channel-update-for-desktop_29.html</url>
+    </references>
+    <dates>
+      <discovery>2023-08-29</discovery>
+      <entry>2023-08-30</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="36a37c92-44b1-11ee-b091-6162c1274384">
+    <topic>gitea -- information disclosure</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.20.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea team reports:</p>
+	<blockquote cite="https://github.com/go-gitea/gitea/pull/25097">
+	  <p>Fix API leaking Usermail if not logged in</p>
+	  <p>The API should only return the real Mail of a User, if the
+	    caller is logged in. The check do to this don't work. This PR
+	    fixes this. This not really a security issue, but can lead to
+	    Spam.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://blog.gitea.com/release-of-1.20.3</url>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.20.3</url>
+    </references>
+    <dates>
+      <discovery>2023-06-06</discovery>
+      <entry>2023-08-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5fa332b9-4269-11ee-8290-a8a1599412c6">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>116.0.5845.110</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>116.0.5845.110</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/08/chrome-desktop-stable-update.html">
+	 <p>This update includes 5 security fixes:</p>
+	 <ul>
+	    <li>[1469542] High CVE-2023-4430: Use after free in Vulkan. Reported by Cassidy Kim(@cassidy6564) on 2023-08-02</li>
+	    <li>[1469754] High CVE-2023-4429: Use after free in Loader. Reported by Anonymous on 2023-08-03</li>
+	    <li>[1470477] High CVE-2023-4428: Out of bounds memory access in CSS. Reported by Francisco Alonso (@revskills) on 2023-08-06</li>
+	    <li>[1470668] High CVE-2023-4427: Out of bounds memory access in V8. Reported by Sergei Glazunov of Google Project Zero on 2023-08-07</li>
+	    <li>[1469348] Medium CVE-2023-4431: Out of bounds memory access in Fonts. Reported by Microsoft Security Researcher on 2023-08-01</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4430</cvename>
+      <cvename>CVE-2023-4429</cvename>
+      <cvename>CVE-2023-4428</cvename>
+      <cvename>CVE-2023-4427</cvename>
+      <cvename>CVE-2023-4431</cvename>
+      <url>https://chromereleases.googleblog.com/2023/08/chrome-desktop-stable-update.html</url>
+    </references>
+    <dates>
+      <discovery>2023-08-22</discovery>
+      <entry>2023-08-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5999fc39-72d0-4b99-851c-ade7ff7125c3">
+    <topic>electron25 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron25</name>
+	<range><lt>25.7.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v25.7.0">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-4071.</li>
+	    <li>Security: backported fix for CVE-2023-4070.</li>
+	    <li>Security: backported fix for CVE-2023-4075.</li>
+	    <li>Security: backported fix for CVE-2023-4076.</li>
+	    <li>Security: backported fix for CVE-2023-4074.</li>
+	    <li>Security: backported fix for CVE-2023-4072.</li>
+	    <li>Security: backported fix for CVE-2023-4068.</li>
+	    <li>Security: backported fix for CVE-2023-4073.</li>
+	    <li>Security: backported fix for CVE-2023-4355.</li>
+	    <li>Security: backported fix for CVE-2023-4354.</li>
+	    <li>Security: backported fix for CVE-2023-4353.</li>
+	    <li>Security: backported fix for CVE-2023-4351.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4071</cvename>
+      <url>https://github.com/advisories/GHSA-qc3g-vp59-7vwh</url>
+      <cvename>CVE-2023-4070</cvename>
+      <url>https://github.com/advisories/GHSA-9xxv-mx64-rx27</url>
+      <cvename>CVE-2023-4075</cvename>
+      <url>https://github.com/advisories/GHSA-7332-j628-x48x</url>
+      <cvename>CVE-2023-4076</cvename>
+      <url>https://github.com/advisories/GHSA-7rfc-cwhj-x2qv</url>
+      <cvename>CVE-2023-4074</cvename>
+      <url>https://github.com/advisories/GHSA-6j3m-7hm6-qjrx</url>
+      <cvename>CVE-2023-4072</cvename>
+      <url>https://github.com/advisories/GHSA-9j4r-qr47-rcxp</url>
+      <cvename>CVE-2023-4068</cvename>
+      <url>https://github.com/advisories/GHSA-wh89-h5f7-hhcr</url>
+      <cvename>CVE-2023-4073</cvename>
+      <url>https://github.com/advisories/GHSA-g9wf-6ppg-937x</url>
+      <cvename>CVE-2023-4355</cvename>
+      <url>https://github.com/advisories/GHSA-xrw8-8992-37w4</url>
+      <cvename>CVE-2023-4354</cvename>
+      <url>https://github.com/advisories/GHSA-rq4v-7hxq-wpm5</url>
+      <cvename>CVE-2023-4353</cvename>
+      <url>https://github.com/advisories/GHSA-mjq9-8vf6-qh49</url>
+      <cvename>CVE-2023-4351</cvename>
+      <url>https://github.com/advisories/GHSA-mh2g-52mr-mr5v</url>
+    </references>
+    <dates>
+      <discovery>2023-08-23</discovery>
+      <entry>2023-08-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="99bc2966-55be-4411-825f-b04017a4c100">
+    <topic>electron{22,24} -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>electron22</name>
+	<range><lt>22.3.22</lt></range>
+      </package>
+      <package>
+	<name>electron24</name>
+	<range><lt>24.8.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Electron developers report:</p>
+	<blockquote cite="https://github.com/electron/electron/releases/tag/v22.3.22">
+	  <p>This update fixes the following vulnerabilities:</p>
+	  <ul>
+	    <li>Security: backported fix for CVE-2023-4355.</li>
+	    <li>Security: backported fix for CVE-2023-4354.</li>
+	    <li>Security: backported fix for CVE-2023-4353.</li>
+	    <li>Security: backported fix for CVE-2023-4352.</li>
+	    <li>Security: backported fix for CVE-2023-4351.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-4355</cvename>
+      <url>https://github.com/advisories/GHSA-xrw8-8992-37w4</url>
+      <cvename>CVE-2023-4354</cvename>
+      <url>https://github.com/advisories/GHSA-rq4v-7hxq-wpm5</url>
+      <cvename>CVE-2023-4353</cvename>
+      <url>https://github.com/advisories/GHSA-mjq9-8vf6-qh49</url>
+      <cvename>CVE-2023-4352</cvename>
+      <url>https://github.com/advisories/GHSA-vp8r-986v-6qj4</url>
+      <cvename>CVE-2023-4351</cvename>
+      <url>https://github.com/advisories/GHSA-mh2g-52mr-mr5v</url>
+    </references>
+    <dates>
+      <discovery>2023-08-23</discovery>
+      <entry>2023-08-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ddd3fcc9-2bdd-11ee-9af4-589cfc0f81b0">
+    <topic>phpmyfaq -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>phpmyfaq-php80</name>
+	<name>phpmyfaq-php81</name>
+	<name>phpmyfaq-php82</name>
+	<name>phpmyfaq-php83</name>
+	<range><lt>3.1.16</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>phpmyfaq developers report:</p>
+	<blockquote cite="https://www.phpmyfaq.de/security/advisory-2023-07-16">
+	  <p>Cross Site Scripting vulnerability</p>
+	  <p>CSV injection vulnerability</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://huntr.dev/bounties/e891dcbc-2092-49d3-9518-23e37187a5ea/</url>
+      <url>https://huntr.dev/bounties/36149a42-cbd5-445e-a371-e351c899b189/</url>
+    </references>
+    <dates>
+      <discovery>2023-07-16</discovery>
+      <entry>2023-08-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5666688f-803b-4cf0-9cb1-08c088f2225a">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+       <name>chromium</name>
+       <range><lt>116.0.5845.96</lt></range>
+      </package>
+      <package>
+       <name>ungoogled-chromium</name>
+       <range><lt>116.0.5845.96</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+       <p>Chrome Releases reports:</p>
+       <blockquote cite="https://chromereleases.googleblog.com/2023/08/stable-channel-update-for-desktop_15.html">
+	 <p>This update includes 26 security fixes:</p>
+	 <ul>
+	    <li>[1448548] High CVE-2023-2312: Use after free in Offline. Reported by avaue at S.S.L. on 2023-05-24</li>
+	    <li>[1458303] High CVE-2023-4349: Use after free in Device Trust Connectors. Reported by Weipeng Jiang (@Krace) of VRI on 2023-06-27</li>
+	    <li>[1454817] High CVE-2023-4350: Inappropriate implementation in Fullscreen. Reported by Khiem Tran (@duckhiem) on 2023-06-14</li>
+	    <li>[1465833] High CVE-2023-4351: Use after free in Network. Reported by Guang and Weipeng Jiang of VRI on 2023-07-18</li>
+	    <li>[1452076] High CVE-2023-4352: Type Confusion in V8. Reported by Sergei Glazunov of Google Project Zero on 2023-06-07</li>
+	    <li>[1458046] High CVE-2023-4353: Heap buffer overflow in ANGLE. Reported by Christoph Diehl / Microsoft Vulnerability Research on 2023-06-27</li>
+	    <li>[1464215] High CVE-2023-4354: Heap buffer overflow in Skia. Reported by Mark Brand of Google Project Zero on 2023-07-12</li>
+	    <li>[1468943] High CVE-2023-4355: Out of bounds memory access in V8. Reported by Sergei Glazunov of Google Project Zero on 2023-07-31</li>
+	    <li>[1449929] Medium CVE-2023-4356: Use after free in Audio. Reported by Zhenghang Xiao (@Kipreyyy) on 2023-05-30</li>
+	    <li>[1458911] Medium CVE-2023-4357: Insufficient validation of untrusted input in XML. Reported by Igor Sak-Sakovskii on 2023-06-28</li>
+	    <li>[1466415] Medium CVE-2023-4358: Use after free in DNS. Reported by Weipeng Jiang (@Krace) of VRI on 2023-07-20</li>
+	    <li>[1443722] Medium CVE-2023-4359: Inappropriate implementation in App Launcher. Reported by @retsew0x01 on 2023-05-09</li>
+	    <li>[1462723] Medium CVE-2023-4360: Inappropriate implementation in Color. Reported by Axel Chong on 2023-07-07</li>
+	    <li>[1465230] Medium CVE-2023-4361: Inappropriate implementation in Autofill. Reported by Thomas Orlita on 2023-07-17</li>
+	    <li>[1316379] Medium CVE-2023-4362: Heap buffer overflow in Mojom IDL. Reported by Zhao Hai of NanJing Cyberpeace TianYu Lab on 2022-04-14</li>
+	    <li>[1367085] Medium CVE-2023-4363: Inappropriate implementation in WebShare. Reported by Alesandro Ortiz on 2022-09-23</li>
+	    <li>[1406922] Medium CVE-2023-4364: Inappropriate implementation in Permission Prompts. Reported by Jasper Rebane on 2023-01-13</li>
+	    <li>[1431043] Medium CVE-2023-4365: Inappropriate implementation in Fullscreen. Reported by Hafiizh on 2023-04-06</li>
+	    <li>[1450784] Medium CVE-2023-4366: Use after free in Extensions. Reported by asnine on 2023-06-02</li>
+	    <li>[1467743] Medium CVE-2023-4367: Insufficient policy enforcement in Extensions API. Reported by Axel Chong on 2023-07-26</li>
+	    <li>[1467751] Medium CVE-2023-4368: Insufficient policy enforcement in Extensions API. Reported by Axel Chong on 2023-07-26</li>
+	 </ul>
+       </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-2312</cvename>
+      <cvename>CVE-2023-4349</cvename>
+      <cvename>CVE-2023-4350</cvename>
+      <cvename>CVE-2023-4351</cvename>
+      <cvename>CVE-2023-4352</cvename>
+      <cvename>CVE-2023-4353</cvename>
+      <cvename>CVE-2023-4354</cvename>
+      <cvename>CVE-2023-4355</cvename>
+      <cvename>CVE-2023-4356</cvename>
+      <cvename>CVE-2023-4357</cvename>
+      <cvename>CVE-2023-4358</cvename>
+      <cvename>CVE-2023-4359</cvename>
+      <cvename>CVE-2023-4360</cvename>
+      <cvename>CVE-2023-4361</cvename>
+      <cvename>CVE-2023-4362</cvename>
+      <cvename>CVE-2023-4363</cvename>
+      <cvename>CVE-2023-4364</cvename>
+      <cvename>CVE-2023-4365</cvename>
+      <cvename>CVE-2023-4366</cvename>
+      <cvename>CVE-2023-4367</cvename>
+      <cvename>CVE-2023-4368</cvename>
+      <url>https://chromereleases.googleblog.com/2023/08/stable-channel-update-for-desktop_15.html</url>
+    </references>
+    <dates>
+      <discovery>2023-08-15</discovery>
+      <entry>2023-08-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="759a5599-3ce8-11ee-a0d1-84a93843eb75">
+    <topic>MySQL -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mysql-connector-c++</name>
+	<range><lt>8.0.33</lt></range>
+      </package>
+      <package>
+	<name>mysql-client57</name>
+	<range><lt>5.7.43</lt></range>
+      </package>
+      <package>
+	<name>mysql-server57</name>
+	<range><lt>5.7.43</lt></range>
+      </package>
+      <package>
+	<name>mysql-client80</name>
+	<range><lt>8.0.34</lt></range>
+      </package>
+      <package>
+	<name>mysql-server80</name>
+	<range><lt>8.0.34</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Oracle reports:</p>
+	<blockquote cite="https://www.oracle.com/security-alerts/cpujul2023.html#AppendixMSQL">
+	  <p>This Critical Patch Update contains 24 new security patches for Oracle
+	    MySQL. 11 of these vulnerabilities may be remotely exploitable without
+	    authentication, i.e., may be exploited over a network without requiring
+	    user credentials.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2022-4899</cvename>
+      <cvename>CVE-2023-0361</cvename>
+      <cvename>CVE-2022-4899</cvename>
+      <cvename>CVE-2022-4899</cvename>
+      <cvename>CVE-2023-22053</cvename>
+      <cvename>CVE-2023-22008</cvename>
+      <cvename>CVE-2023-22046</cvename>
+      <cvename>CVE-2023-22054</cvename>
+      <cvename>CVE-2023-22056</cvename>
+      <cvename>CVE-2023-21950</cvename>
+      <cvename>CVE-2023-22007</cvename>
+      <cvename>CVE-2023-22057</cvename>
+      <cvename>CVE-2023-22033</cvename>
+      <cvename>CVE-2023-22058</cvename>
+      <cvename>CVE-2023-22005</cvename>
+      <cvename>CVE-2023-22048</cvename>
+      <cvename>CVE-2023-22038</cvename>
+      <url>https://www.oracle.com/security-alerts/cpujul2023.html#AppendixMSQL</url>
+    </references>
+    <dates>
+      <discovery>2023-07-18</discovery>
+      <entry>2023-08-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8e561cfe-3c59-11ee-b32e-080027f5fec9">
+    <topic>clamav -- Possible denial of service vulnerability in the AutoIt file parser</topic>
+    <affects>
+      <package>
+	<name>clamav-lts</name>
+	<range><lt>1.0.2,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The ClamAV project reports:</p>
+	<blockquote cite="https://blog.clamav.net/2023/07/2023-08-16-releases.html">
+	  <p>
+	    There is a possible denial of service vulnerability in the
+	    AutoIt file parser.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-20212</cvename>
+      <url>https://blog.clamav.net/2023/07/2023-08-16-releases.html</url>
+    </references>
+    <dates>
+      <discovery>2023-08-15</discovery>
+      <entry>2023-08-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="51a59f36-3c58-11ee-b32e-080027f5fec9">
+    <topic>clamav -- Possible denial of service vulnerability in the HFS+ file parser</topic>
+    <affects>
+      <package>
+	<name>clamav</name>
+	<range><lt>1.1.1,1</lt></range>
+      </package>
+      <package>
+	<name>clamav-lts</name>
+	<range><lt>1.0.2,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Steve Smith reports:</p>
+	<blockquote cite="https://blog.clamav.net/2023/07/2023-08-16-releases.html">
+	  <p>
+	    There is a possible denial of service vulnerability in the
+	    HFS+ file parser.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-20197</cvename>
+      <url>https://blog.clamav.net/2023/07/2023-08-16-releases.html</url>
+    </references>
+    <dates>
+      <discovery>2023-08-15</discovery>
+      <entry>2023-08-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a6986f0f-3ac0-11ee-9a88-206a8a720317">
+    <topic>krb5 -- Double-free in KDC TGS processing</topic>
+    <affects>
+      <package>
+	<name>krb5</name>
+	<range><lt>1.21.1_1</lt></range>
+      </package>
+      <package>
+	<name>krb5-121</name>
+	<range><lt>1.21.1_1</lt></range>
+      </package>
+      <package>
+	<name>krb5-devel</name>
+	<range><lt>2023.08.07</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>SO-AND-SO reports:</p>
+	<blockquote cite="https://github.com/krb5/krb5/commit/88a1701b423c13991a8064feeb26952d3641d840">
+	  <p>When issuing a ticket for a TGS renew or validate request, copy
+	     only the server field from the outer part of the header ticket
+	     to the new ticket.  Copying the whole structure causes the
+	     enc_part pointer to be aliased to the header ticket until
+	     krb5_encrypt_tkt_part() is called, resulting in a double-free
+	     if handle_authdata() fails..</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-39975</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-39975</url>
+    </references>
+    <dates>
+      <discovery>2023-08-07</discovery>
+      <entry>2023-08-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b1ac663f-3aa9-11ee-b887-b42e991fc52e">
+    <topic>typo3 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>typo3-11-php80</name>
+	<name>typo3-11-php81</name>
+	<range><lt>11.5.30</lt></range>
+      </package>
+      <package>
+	<name>typo3-12-php80</name>
+	<name>typo3-12-php81</name>
+	<range><lt>12.4.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>TYPO3 reports:</p>
+	<blockquote cite="https://typo3.org/article/typo3-1211-11520-and-10433-security-releases-published">
+	  <p>TYPO3-CORE-SA-2023-002: By-passing Cross-Site Scripting Protection in HTML Sanitizer</p>
+	  <p>TYPO3-CORE-SA-2023-003: Information Disclosure due to Out-of-scope Site Resolution</p>
+	  <p>TYPO3-CORE-SA-2023-004: Cross-Site Scripting in CKEditor4 WordCount Plugin</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2023-38500</cvename>
+      <cvename>CVE-2023-38499</cvename>
+      <cvename>CVE-2023-37905</cvename>
+      <url>https://typo3.org/article/typo3-1244-and-11530-security-releases-published</url>
+    </references>
+    <dates>
+      <discovery>2023-07-25</discovery>
+      <entry>2023-08-14</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="59a43a73-3786-11ee-94b4-6cc21735f730">
     <topic>postgresql-server -- MERGE fails to enforce UPDATE or SELECT row security policies</topic>
     <affects>
@@ -139,22 +3480,21 @@
 	<p>The Samba Team reports:</p>
 	<blockquote cite="https://www.samba.org/samba/latest_news.html#4.18.5">
 	  <dl>
-	    <dt>CVE-2023-34967: Samba Spotlight mdssvc RPC Request Type Confusion Denial-of-Service Vulnerability</dt>
+	    <dt>CVE-2023-34967: Samba Spotlight mdssvc RPC Request Type Confusion DoS Vulnerability</dt>
 	    <dd>
 	      When parsing Spotlight mdssvc RPC packets, one encoded
-	      data structure is a key-value style dictionary where the
-	      keys are character strings and the values can be any of
+	      data structure is a key-value style dictionary where
+	      keys are character strings and values can be any of
 	      the supported types in the mdssvc protocol. Due to a
 	      lack of type checking in callers of the function
 	      dalloc_value_for_key(), which returns the object
 	      associated with a key, a caller may trigger a crash in
 	      talloc_get_size() when talloc detects that the passed in
-	      pointer is not a valid talloc pointer.
-
-	      As RPC worker processes are shared among multiple client
-	      connections, a malicious client can crash the worker
-	      process affecting all other clients that are also served
-	      by this worker.
+	      pointer is not a valid talloc pointer. As RPC worker
+	      processes are shared among multiple client connections,
+	      a malicious client can crash the worker process
+	      affecting all other clients that are also served by this
+	      worker.
 	    </dd>
 	    <dt>CVE-2022-2127: Out-Of-Bounds read in winbind AUTH_CRAP</dt>
 	    <dd>
@@ -163,22 +3503,17 @@
 	      replies have variable length. Winbind did not properly
 	      bounds-check the lan manager response length, which
 	      despite the lan manager version no longer being used is
-	      still part of the protocol.
-
-	      If the system is running Samba's ntlm_auth as
-	      authentication backend for services like Squid (or a
-	      very unusual configuration with FreeRADIUS), the
-	      vulnarebility is remotely exploitable
-
+	      still part of the protocol. If the system is running
+	      Samba's ntlm_auth as authentication backend for services
+	      like Squid (or a very unusual configuration with
+	      FreeRADIUS), the vulnarebility is remotely exploitable.
 	      If not so configured, or to exploit this vulnerability
 	      locally, the user must have access to the privileged
 	      winbindd UNIX domain socket (a subdirectory with name
 	      'winbindd_privileged' under "state directory", as set in
-	      the smb.conf).
-
-	      This access is normally only given so special system
-	      services like Squid or FreeRADIUS, that use this
-	      feature.
+	      the smb.conf). This access is normally only given so
+	      special system services like Squid or FreeRADIUS, use
+	      this feature.
 	    </dd>
 	    <dt>CVE-2023-34968: Spotlight server-side Share Path Disclosure</dt>
 	    <dd>
@@ -187,18 +3522,14 @@
 	      the RPC request. Samba returns the real server-side
 	      share path at this point, as well as returning the
 	      absolute server-side path of results in search queries
-	      by clients.
-
-	      Known server side paths could be used to mount
-	      subsequent more serious security attacks or could
+	      by clients. Known server side paths could be used to
+	      mount subsequent more serious security attacks or could
 	      disclose confidential information that is part of the
-	      path.
-
-	      To mitigate the issue, Samba will replace the real
-	      server-side path with a fake path constructed from the
-	      sharename.
+	      path. To mitigate the issue, Samba will replace the
+	      real server-side path with a fake path constructed from
+	      the sharename.
 	    </dd>
-	    <dt>CVE-2023-34966: Samba Spotlight mdssvc RPC Request Infinite Loop Denial-of-Service Vulnerability</dt>
+	    <dt>CVE-2023-34966: Samba Spotlight mdssvc RPC Request Infinite Loop DoS Vulnerability</dt>
 	    <dd>
 	      When parsing Spotlight mdssvc RPC packets sent by the
 	      client, the core unmarshalling function sl_unpack_loop()
@@ -206,7 +3537,6 @@
 	      contains the count of elements in an array-like
 	      structure. By passing 0 as the count value, the attacked
 	      function will run in an endless loop consuming 100% CPU.
-
 	      This bug only affects servers where Spotlight is
 	      explicitly enabled globally or on individual shares with
 	      "spotlight = yes".
@@ -216,30 +3546,23 @@
 	      SMB2 packet signing is not enforced if an admin
 	      configured "server signing = required" or for SMB2
 	      connections to Domain Controllers where SMB2 packet
-	      signing is mandatory.
-
-	      SMB2 packet signing is a mechanism that ensures the
-	      integrity and authenticity of data exchanged between a
-	      client and a server using the SMB2 protocol.
-
-	      It provides protection against certain types of attacks,
-	      such as man-in-the-middle attacks, where an attacker
-	      intercepts network traffic and modifies the SMB2
-	      messages.
-
-	      Both client and server of an SMB2 connection can require
-	      that signing is being used. The server-side setting in
-	      Samba to configure signing to be required is "server
-	      signing = required". Note that on an Samba AD DCs this
-	      is also the default for all SMB2 connections.
-
-	      Unless the client requires signing which would result in
-	      signing being used on the SMB2 connection, sensitive
-	      data might have been modified by an attacker.
-
-	      Clients connecting to IPC$ on an AD DC will require
-	      signed connections being used, so the integrity of these
-	      connections was not affected.
+	      signing is mandatory. SMB2 packet signing is a
+	      mechanism that ensures the integrity and authenticity of
+	      data exchanged between a client and a server using the
+	      SMB2 protocol. It provides protection against certain
+	      types of attacks, such as man-in-the-middle attacks,
+	      where an attacker intercepts network traffic and
+	      modifies the SMB2 messages. Both client and server of
+	      an SMB2 connection can require that signing is being
+	      used. The server-side setting in Samba to configure
+	      signing to be required is "server signing = required".
+	      Note that on an Samba AD DCs this is also the default
+	      for all SMB2 connections. Unless the client requires
+	      signing which would result in signing being used on the
+	      SMB2 connection, sensitive data might have been modified
+	      by an attacker. Clients connecting to IPC$ on an AD DC
+	      will require signed connections being used, so the
+	      integrity of these connections was not affected.
 	    </dd>
 	  </dl>
 	</blockquote>
@@ -1146,7 +4469,7 @@
 	<name>py39-django41</name>
 	<name>py310-django41</name>
 	<name>py311-django41</name>
-	<range><lt>4.0.10</lt></range>
+	<range><lt>4.1.10</lt></range>
       </package>
       <package>
 	<name>py38-django42</name>

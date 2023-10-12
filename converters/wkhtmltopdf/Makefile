@@ -10,8 +10,9 @@ WWW=		https://github.com/wkhtmltopdf/wkhtmltopdf
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Upstream abandoned the project
+EXPIRATION_DATE=	2024-06-30
 BROKEN_armv6=		fails to build: error: Not supported ARM architecture
-BROKEN_armv7=		fails to build: error: invalid operand for instruction
 BROKEN_mips64=		fails to link: undefined reference to __sync_add_and_fetch_4
 
 RUN_DEPENDS=	webfonts>=0:x11-fonts/webfonts
@@ -81,7 +82,7 @@ post-patch:
 		${WRKSRC}/build/wkhtmltox
 .if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
 	@${FIND} ${PATCH_WRKSRC}/../qt-5db36ec -name "*.cpp" -o -name "*.h" | \
-		${XARGS} ${REINPLACE_CMD} -e 's|register ||g'
+		${XARGS} ${REINPLACE_CMD} -E 's|register ([a-zA-Z])|\1|g'
 .endif
 
 

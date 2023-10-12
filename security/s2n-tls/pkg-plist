@@ -1,6 +1,7 @@
 include/s2n.h
 include/s2n/unstable/crl.h
 include/s2n/unstable/fingerprint.h
+include/s2n/unstable/ktls.h
 include/s2n/unstable/npn.h
 include/s2n/unstable/renegotiate.h
 lib/libs2n.so
@@ -11,6 +12,7 @@ lib/s2n/cmake/s2n-config.cmake
 lib/s2n/cmake/shared/s2n-targets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/s2n/cmake/shared/s2n-targets.cmake
 %%PORTDOCS%%%%DOCSDIR%%/BINDINGS.md
+%%PORTDOCS%%%%DOCSDIR%%/BUILD.md
 %%PORTDOCS%%%%DOCSDIR%%/DEVELOPMENT-GUIDE.md
 %%PORTDOCS%%%%DOCSDIR%%/FAQ.md
 %%PORTDOCS%%%%DOCSDIR%%/READING-LIST.md

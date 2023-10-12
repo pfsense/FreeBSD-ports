@@ -75,18 +75,18 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.27.7
+KDE_PLASMA_VERSION?=		5.27.8
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.108.0
+KDE_FRAMEWORKS_VERSION?=	5.110.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	23.04.3
-KDE_APPLICATIONS_SHLIB_VER?=	5.23.3
+KDE_APPLICATIONS_VERSION?=	23.08.1
+KDE_APPLICATIONS_SHLIB_VER?=	5.24.1
 # G as in KDE Gear, and as in "don't make the variable name longer than required"
-KDE_APPLICATIONS_SHLIB_G_VER?=	23.4.3
+KDE_APPLICATIONS_SHLIB_G_VER?=	23.8.1
 KDE_APPLICATIONS_BRANCH?=	stable
 
 # Extended KDE universe applications.
@@ -763,7 +763,7 @@ kde-mime_PORT=			net/kmime
 kde-mime_LIB=			libKPim5Mime.so
 
 kde-pimcommon_PORT=		net/pimcommon
-kde-pimcommon_LIB=		libKF5PimCommon.so
+kde-pimcommon_LIB=		libKPim5PimCommon.so
 
 kde-pimtextedit_PORT=		net/kpimtextedit
 kde-pimtextedit_LIB=		libKPim5TextEdit.so
@@ -772,7 +772,7 @@ kde-tnef_PORT=			net/ktnef
 kde-tnef_LIB=			libKPim5Tnef.so
 
 kde-ktextaddons_PORT=		devel/ktextaddons
-kde-ktextaddons_LIB=		libKF5TextAutoCorrection.so
+kde-ktextaddons_LIB=		libKF5TextAutoCorrectionCore.so
 
 # PIM Applications
 kde-akonadiconsole_PORT=	deskutils/akonadiconsole

@@ -29,6 +29,11 @@ USES=		compiler:c11 cpe gettext-tools gmake gnome iconv localbase:ldflags \
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 
+# Some symbols in the linker version script map-file are only defined when
+# building the mainloop-glib shared library. Suppress errors with lld >= 17 due
+# to these undefined symbols.
+LDFLAGS+=	-Wl,--undefined-version
+
 SHEBANG_FILES=	shell-completion/bash/pactl \
 		src/utils/pa-info \
 		src/utils/qpaeq
@@ -64,7 +69,7 @@ JACK_LIB_DEPENDS=	libjack.so:audio/jack
 SOXR_MESON_ENABLED=	soxr
 SOXR_LIB_DEPENDS=	libsoxr.so:audio/libsoxr
 SPEEX_DESC=	Speex resampler and AEC support
-SPEEX_MESONP_ENABLED=	speex
+SPEEX_MESON_ENABLED=	speex
 SPEEX_LIB_DEPENDS=	libspeexdsp.so:audio/speexdsp
 WEBRTC_AEC_DESC=	WebRTC-based echo canceller
 WEBRTC_AEC_LIB_DEPENDS=	libwebrtc_audio_processing.so:audio/webrtc-audio-processing0

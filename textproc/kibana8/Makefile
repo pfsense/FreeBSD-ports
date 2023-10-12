@@ -1,6 +1,7 @@
 PORTNAME=	kibana
 DISTVERSION=	8.8.2
 DISTVERSIONSUFFIX=	-darwin-x86_64
+PORTREVISION=	1
 CATEGORIES=	textproc www
 MASTER_SITES=	https://artifacts.elastic.co/downloads/kibana/ \
 		http://artifacts.elastic.co/downloads/kibana/
@@ -13,18 +14,22 @@ WWW=		https://www.elastic.co/products/kibana
 
 LICENSE=	APACHE20
 
+DEPRECATED=	Depends on EOL NodeJS 16
+EXPIRATION_DATE=	2023-10-30
+
 BUILD_DEPENDS=	npm-node16>=9.7.2:www/npm-node16
 LIB_DEPENDS=	libre2.so:devel/re2 \
 		libuv.so:devel/libuv
 RUN_DEPENDS=	${LOCALBASE}/bin/node:www/node16
 
-USES=		compiler:c++14-lang cpe nodejs:16,build,run python:build
+USES=		compiler:c++17-lang cpe nodejs:16,build,run python:build
 CPE_VENDOR=	elastic
 
 USE_GITHUB=	nodefault
 GH_TUPLE=	nodejs:nan:v${_NODE_NAN_VER}:node_nan \
 		uhop:node-re2:${_NODE_RE2_VER}:node_re2
 
+USE_CXXSTD=	c++17
 USE_RC_SUBR=	${PORTNAME}
 
 CONFLICTS=	kibana7

@@ -78,7 +78,7 @@ share/applications/clion.desktop
 %%DATADIR%%/lib/app.jar
 %%DATADIR%%/lib/async-profiler.jar
 %%DATADIR%%/lib/bouncy-castle.jar
-%%DATADIR%%/lib/build-marker-CL-232.8660.186
+%%DATADIR%%/lib/build-marker-CL-232.9921.42
 %%DATADIR%%/lib/byte-buddy-agent.jar
 %%DATADIR%%/lib/cds/classesLogAgent.jar
 %%DATADIR%%/lib/error-prone-annotations.jar
@@ -171,7 +171,6 @@ share/applications/clion.desktop
 %%DATADIR%%/plugins/clion-packageManager-plugin/lib/clion-packageManager-plugin.jar
 %%DATADIR%%/plugins/clion-performanceTesting-plugin/lib/clion-performanceTesting-plugin.jar
 %%DATADIR%%/plugins/clion-runFile-plugin/lib/clion-runFile-plugin.jar
-%%DATADIR%%/plugins/clion-rustHelper-plugin/lib/clion-rustHelper-plugin.jar
 %%DATADIR%%/plugins/clion-test-boost-plugin/lib/clion-test-boost-plugin.jar
 %%DATADIR%%/plugins/clion-test-catch-plugin/lib/clion-test-catch-plugin.jar
 %%DATADIR%%/plugins/clion-test-doctest-plugin/lib/clion-test-doctest-plugin.jar
@@ -254,8 +253,8 @@ share/applications/clion.desktop
 %%DATADIR%%/plugins/javascript-impl/helpers/vitest-intellij/node_modules/vitest-intellij-reporter-safe.js
 %%DATADIR%%/plugins/javascript-impl/helpers/vitest-intellij/vitest-intellij-reporter.js
 %%DATADIR%%/plugins/javascript-impl/helpers/vitest-intellij/vitest-intellij-util.js
-%%DATADIR%%/plugins/javascript-impl/js/js-predefined-1d06a55b98c1-d5aed4438951.ijx
-%%DATADIR%%/plugins/javascript-impl/js/js-predefined-1d06a55b98c1-d5aed4438951.txt
+%%DATADIR%%/plugins/javascript-impl/js/js-predefined-1d06a55b98c1-8314e18161f9.ijx
+%%DATADIR%%/plugins/javascript-impl/js/js-predefined-1d06a55b98c1-8314e18161f9.txt
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/external/browser.d.ts
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/external/cancellationToken.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/external/diagnosticMessages.json
@@ -362,9 +361,11 @@ share/applications/clion.desktop
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/js-language-service.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/js-lanuage-api.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/.gitignore
+%%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/ide-get-element-type.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/ide-watcher.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/init.ts
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/logger-impl.js
+%%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/node_modules/tsc-ide-plugin/ide-get-element-type.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/node_modules/tsc-ide-plugin/index.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/node_modules/tsc-ide-plugin/package.json
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/out-path-process.js
@@ -380,6 +381,7 @@ share/applications/clion.desktop
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/ts-plugin.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/ts-session-latest.js
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/ts-session-provider.js
+%%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/tsconfig.json
 %%DATADIR%%/plugins/javascript-impl/jsLanguageServicesImpl/typescript/util.js
 %%DATADIR%%/plugins/javascript-impl/languageService/eslint/.gitignore
 %%DATADIR%%/plugins/javascript-impl/languageService/eslint/bin/eslint-api.js
@@ -1308,7 +1310,6 @@ share/applications/clion.desktop
 %%DATADIR%%/plugins/python-ce/helpers/pydev/_pydevd_bundle/pydevd_cython.c
 %%DATADIR%%/plugins/python-ce/helpers/pydev/_pydevd_bundle/pydevd_cython.pxd
 %%DATADIR%%/plugins/python-ce/helpers/pydev/_pydevd_bundle/pydevd_cython.pyx
-%%DATADIR%%/plugins/python-ce/helpers/pydev/_pydevd_bundle/pydevd_cython_312.c
 %%DATADIR%%/plugins/python-ce/helpers/pydev/_pydevd_bundle/pydevd_cython_win32_27_32.pyd
 %%DATADIR%%/plugins/python-ce/helpers/pydev/_pydevd_bundle/pydevd_cython_win32_27_64.pyd
 %%DATADIR%%/plugins/python-ce/helpers/pydev/_pydevd_bundle/pydevd_cython_win32_310_32.cp310-win32.pyd
@@ -1437,8 +1438,11 @@ share/applications/clion.desktop
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/add_code_to_python_process.py
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/attach_pydevd.py
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/attach_script.py
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_custom_pyeval_settrace.hpp
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_custom_pyeval_settrace_310.hpp
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_custom_pyeval_settrace_311.hpp
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_custom_pyeval_settrace_common.hpp
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_settrace.hpp
-%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_settrace_37.hpp
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_utils.hpp
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/py_version.hpp
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/common/python.h
@@ -1489,6 +1493,10 @@ share/applications/clion.desktop
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/attach.cpp
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/attach.h
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/compile_windows.bat
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/inject_dll.cpp
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/py_win_helpers.hpp
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/run_code_in_memory.hpp
+%%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/run_code_on_dllmain.cpp
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/stdafx.cpp
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/stdafx.h
 %%DATADIR%%/plugins/python-ce/helpers/pydev/pydevd_attach_to_process/windows/targetver.h

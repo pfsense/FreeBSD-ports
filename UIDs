@@ -273,6 +273,7 @@ dkimpy-milter:*:324:324::0:0:Dkimpy Milter:/nonexistent:/usr/sbin/nologin
 dkfilter:*:325:325::0:0:DK Filter Owner:/nonexistent:/usr/sbin/nologin
 smfs:*:326:326::0:0:SMFSAV Owner:/nonexistent:/usr/sbin/nologin
 _reticulum:*:327:327::0:0:Reticulum Daemon:/nonexistent:/usr/sbin/nologin
+galene:*:328:328::0:0:Galene Visioconference server:/nonexistent:/usr/sbin/nologin
 # free: 328
 # free: 329
 orthanc:*:330:330::0:0:Orthanc Daemon:/nonexistent:/usr/sbin/nologin
@@ -774,7 +775,7 @@ selenium:*:824:824::0:0:Selenium Daemon User:/usr/local/selenium:/bin/sh
 polw:*:825:825::0:0:Policyd-weight Cache Owner:/nonexistent:/sbin/nologin
 statsd:*:826:826::0:0:Statsd Daemon:/nonexistent:/sbin/nologin
 _tuptime:*:827:827::0:0:Tuptime:/var/lib/tuptime:/usr/sbin/nologin
-# free: 828
+cirrus:*:828:828::0:0:Cirrus CI:/usr/local/cirrus:/bin/sh
 # free: 829
 # free: 830
 # free: 831

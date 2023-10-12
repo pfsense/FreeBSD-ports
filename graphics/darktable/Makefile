@@ -1,6 +1,6 @@
 PORTNAME=	darktable
 PORTVERSION=	4.4.2
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -53,13 +53,11 @@ USE_XORG=	ice sm x11 xext xrandr
 
 SHEBANG_FILES=	tools/*.sh
 
-USE_GCC=	yes
-
 CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1 -DUSE_PORTMIDI:BOOL=OFF
 
 CMAKE_BOOL+=	BUILD_CMSTEST USE_AVIF USE_CAMERA_SUPPORT USE_HEIF \
-		USE_KWALLET USE_LUA USE_MAP USE_OPENEXR USE_OPENJPEG \
-		USE_WEBP RAWSPEED_ENABLE_LTO
+		USE_ISOBMFF USE_KWALLET USE_LUA USE_MAP USE_OPENEXR \
+		USE_OPENJPEG USE_WEBP RAWSPEED_ENABLE_LTO
 
 CFLAGS+=	-fopenmp -I${LOCALBASE}/include/Imath
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -98,7 +96,33 @@ TOOLS_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == aarch64
+.if ${OPSYS}_${OSREL:R} == FreeBSD_12
+# Darktable fails to compile with GCC 13+ on FreeBSD 12.x with the following
+# error:
+#
+#   In file included from /usr/include/c++/v1/__functional/weak_result_type.h:16,
+#                    from /usr/include/c++/v1/__functional/invoke.h:14,
+#                    from /usr/include/c++/v1/__functional_base:15,
+#                    from /usr/include/c++/v1/string:520,
+#                    from .../work/darktable-4.4.2/src/external/rawspeed/src/librawspeed/common/ChecksumFile.h:23,
+#                    from .../work/darktable-4.4.2/src/external/rawspeed/src/librawspeed/common/ChecksumFile.cpp:21:
+#   /usr/include/c++/v1/type_traits:1770:8: error: expected identifier before '__is_convertible'
+#    1770 | struct __is_convertible
+#         |        ^~~~~~~~~~~~~~~~
+#
+# This seems to be an incompatibility between GCC 13+ and libcxx provided with
+# FreeBSD 12.x. The workarounbd is to force the use of GCC 12 on this version
+# of FreeBSD.
+#
+# See:
+#   https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=273397
+#   https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=273681
+USE_GCC=	12
+.else
+USE_GCC=	yes
+.endif
+
+.if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
 CMAKE_ARGS+=	-DUSE_OPENCL:BOOL=OFF
 CXXFLAGS+=	-DGDK_DISABLE_DEPRECATED
 PLIST_SUB+=	NO_OPENCL="@comment "

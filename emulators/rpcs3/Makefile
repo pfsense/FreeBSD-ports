@@ -1,7 +1,7 @@
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.29-15468 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g58e9e54b7f
+DISTVERSION=	0.0.29-15682 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-g75d239356a
 CATEGORIES=	emulators wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -82,7 +82,7 @@ VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CMAKE_BOOL=	USE_VULKAN
 
 # XXX Unbundle audio/rtmidi
-GH_TUPLE+=		thestk:rtmidi:5.0.0:rtmidi/3rdparty/rtmidi/rtmidi
+GH_TUPLE+=		thestk:rtmidi:6.0.0:rtmidi/3rdparty/rtmidi/rtmidi
 ALSA_LIB_DEPENDS+=	libasound.so:audio/alsa-lib
 ALSA_CMAKE_BOOL+= 	RTMIDI_API_ALSA
 JACK_LIB_DEPENDS+=	libjack.so:audio/jack
@@ -93,5 +93,14 @@ post-patch:
 		 -e '/GIT_FULL_BRANCH/s/local_build/${GH_ACCOUNT}\/${GH_PROJECT}\/master/' \
 		-e '/GIT_VERSION/s/local_build/${GH_TAGNAME:C/[^-]*-//}/' \
 		${WRKSRC}/${PORTNAME}/git-version.cmake
+
+# XXX Drop after FreeBSD 13.2 EOL around 2024-05-01
+.if !exists(/usr/include/c++/v1/__ranges/as_rvalue_view.h)
+PATH:=		${LLVM_PREFIX}/bin:${PATH} # XXX _CMAKE_TOOLCHAIN_SUFFIX vs. devel/llvm*
+CC=		clang${LLVM_VERSION}
+CXX=		clang++${LLVM_VERSION}
+CPP=		clang-cpp${LLVM_VERSION}
+CONFIGURE_ENV+=	CC="${CC}" CXX="${CXX}" CPP="${CPP}"
+.endif
 
 .include <bsd.port.mk>

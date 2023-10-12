@@ -1,5 +1,5 @@
 PORTNAME=	boringssl
-PORTVERSION=	0.0.0.0.2023.08.09.01
+PORTVERSION=	0.0.0.0.2023.09.29.01
 CATEGORIES=	security
 MASTER_SITES+=	https://proxy.golang.org/:gomods
 DISTFILES+=	golang.org/x/crypto/@v/v0.10.0.zip:gomods \
@@ -22,13 +22,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		cmake:insource cpe go:no_targets localbase perl5
 
 CONFLICTS_INSTALL=	libressl libressl-devel \
-			openssl openssl3[01] openssl-quictls
+			openssl openssl3[012] openssl-quictls
 
 CPE_VENDOR=	google
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-GH_TAGNAME=	8d19c85
+GH_TAGNAME=	bd20800
 CMAKE_ARGS+=	-DBUILD_SHARED_LIBS=1
 
 USE_LDCONFIG=	yes

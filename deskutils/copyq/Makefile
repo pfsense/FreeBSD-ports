@@ -1,13 +1,9 @@
 PORTNAME=	copyq
-DISTVERSIONPREFIX=	v
-DISTVERSION=	7.0.0
-PORTREVISION=	3
+DISTVERSION=	7.1.0
 CATEGORIES=	deskutils
+MASTER_SITES=	https://github.com/hluk/CopyQ/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	-${FLAVOR}
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	79d33dd337deeb357ce92c3d1e2b5b56b6f2c97d.patch:-p1 # Fix build with Qt 6.5.x
-PATCHFILES+=	8ae296bed45a7679712aff0cb2e2d0508330ad37.patch:-p1 # Fix cmake warnings
+DISTNAME=	CopyQ-${DISTVERSION}
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Qt${FLAVOR:S/qt//} based clipboard manager
@@ -26,9 +22,6 @@ qt6_CONFLICTS_INSTALL=	copyq-qt5
 
 USES=		cmake compiler:c++17-lang gl kde:5 pkgconfig \
 		qt:${FLAVOR:S/qt//} xorg
-USE_GITHUB=	yes
-GH_ACCOUNT=	hluk
-GH_PROJECT=	CopyQ
 USE_GL=		gl
 _USE_KDE_qt5=	ecm:build notifications
 _USE_KDE_qt6=	ecm:build

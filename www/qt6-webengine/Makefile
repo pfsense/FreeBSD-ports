@@ -15,7 +15,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT6_VERSION}
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt6-
 
@@ -26,6 +26,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR} \
 		${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+		libcups.so:print/cups \
 		libdbus-1.so:devel/dbus \
 		libdrm.so:graphics/libdrm \
 		libevent.so:devel/libevent \
@@ -41,7 +42,6 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libopus.so:audio/opus \
 		libpci.so:devel/libpci \
 		libpng.so:graphics/png \
-		libre2.so:devel/re2 \
 		libsnappy.so:archivers/snappy \
 		libvpx.so:multimedia/libvpx \
 		libwebp.so:graphics/webp \
@@ -51,11 +51,15 @@ USES=	bison cmake gl gnome gperf jpeg localbase:ldflags minizip ninja:build \
 	nodejs:build,lts pkgconfig python:build qt-dist:6,webengine xorg
 USE_GL=		gl
 USE_GNOME=	glib20 libxml2 libxslt
-USE_QT=		base declarative:run positioning quick3d:build webchannel
+USE_QT=		base declarative:run positioning quick3d:build tools webchannel
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 		xrandr xrender xscrnsaver xshmfence xtst
 
 CMAKE_ON=	QT_FEATURE_webengine_system_ffmpeg QT_FEATURE_webengine_proprietary_codecs
+# See https://reviews.freebsd.org/D41571 for further details.  From time to
+# time, e.g. with new qt6-webengine releases, it should be checked whether
+# re2 can be unbundled again.
+CMAKE_OFF=	QT_FEATURE_webengine_system_re2
 
 # The build system reads the environment variable $NINJA_PATH to decide whether
 # to boostrap ninja or not (and also to invoke it afterwards). CC and CXX are
@@ -81,7 +85,7 @@ DO_MAKE_BUILD=	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} -j1 $
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
-QT6_VERSION=	6.5.2
+QT6_VERSION=	6.5.3
 
 OPTIONS_DEFAULT=	ALSA
 OPTIONS_SINGLE=		AUDIO

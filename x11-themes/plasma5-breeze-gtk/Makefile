@@ -11,10 +11,11 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR} \
 		sassc:textproc/sassc
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR}
 
-USES=		cmake compiler:c++11-lang gnome kde:5 pkgconfig python \
-		qt:5 tar:xz
+USES=		cmake compiler:c++11-lang gnome kde:5 pkgconfig python qt:5 \
+		tar:xz
 USE_GNOME=	gdkpixbuf2
-USE_KDE=	breeze ecm
+USE_KDE=	breeze \
+		ecm:build
 USE_QT=		core \
 		buildtools:build qmake:build
 CMAKE_ARGS=	-DPython3_EXECUTABLE:PATH=${PYTHON_CMD}

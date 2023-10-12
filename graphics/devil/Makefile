@@ -1,13 +1,14 @@
 PORTNAME=	devil
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.8.0
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Cross-platform image library
-WWW=		http://openil.sourceforge.net/
+WWW=		https://openil.sourceforge.net/ \
+		https://github.com/DentonW/DevIL
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE

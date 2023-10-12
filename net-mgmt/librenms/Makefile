@@ -1,6 +1,6 @@
 PORTNAME=	librenms
-PORTVERSION=	23.7.0
-PORTREVISION=	1
+PORTVERSION=	23.9.1
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -32,7 +32,8 @@ USE_PHP=	ctype curl dom fileinfo filter gd hash json ldap mbstring \
 		sockets tokenizer xml xmlwriter zip
 USE_RC_SUBR=	librenms
 
-SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/tecnickcom/tcpdf/tools/tcpdf_addfont.php \
+SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/paragonie/random_compat/build-phar.sh \
+		../${PORTNAME}-vendor-${PORTVERSION}/tecnickcom/tcpdf/tools/tcpdf_addfont.php \
 		../librenms-vendor-${PORTVERSION}/bin/carbon \
 		../librenms-vendor-${PORTVERSION}/bin/doctrine-dbal \
 		../librenms-vendor-${PORTVERSION}/bin/patch-type-declarations \
@@ -45,22 +46,25 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/tecnickcom/tcpdf/tools/tcpdf
 		../librenms-vendor-${PORTVERSION}/justinrainbow/json-schema/bin/validate-json \
 		../librenms-vendor-${PORTVERSION}/nesbot/carbon/bin/carbon \
 		../librenms-vendor-${PORTVERSION}/nikic/php-parser/bin/php-parse \
-		../librenms-vendor-${PORTVERSION}/predis/predis/bin/create-command-test \
 		../librenms-vendor-${PORTVERSION}/psy/psysh/bin/psysh \
 		../librenms-vendor-${PORTVERSION}/symfony/error-handler/Resources/bin/extract-tentative-return-types.php \
 		../librenms-vendor-${PORTVERSION}/symfony/error-handler/Resources/bin/patch-type-declarations \
 		../librenms-vendor-${PORTVERSION}/symfony/var-dumper/Resources/bin/var-dump-server \
 		../librenms-vendor-${PORTVERSION}/symfony/yaml/Resources/bin/yaml-lint \
 		addhost.php alerts.php artisan billing-calculate.php \
-		check-services.php config_to_json.php daily.php delhost.php \
-		discovery.php dist-pollers.php irc.php LibreNMS/wrapper.py lnms \
-		ping.php poll-billing.php poller-wrapper.py poller.php \
-		renamehost.php scripts/auth_test.php \
+		check-services.php config_to_json.php cronic daily.php daily.sh \
+		delhost.php discovery-wrapper.py discovery.php dist-pollers.php \
+		irc.php librenms-service.py LibreNMS/command_runner.py \
+		LibreNMS/wrapper.py lnms misc/lnms-completion.bash \
+		misc/smokeping-debian.example misc/smokeping-rhel.example \
+		pbin.sh ping.php poll-billing.php poller-wrapper.py poller.php \
+		renamehost.php scripts/auth_test.php scripts/bash_lint.sh \
 		scripts/check_requirements.py scripts/collect-port-polling.php \
 		scripts/collect-snmp-data.php scripts/composer_wrapper.php \
 		scripts/dynamic_check_requirements.py scripts/gen_rancid.php \
-		scripts/gen_smokeping.php scripts/github-remove scripts/ifAlias \
-		scripts/json-app-tool.php scripts/manage_bills.php \
+		scripts/gen_smokeping.php scripts/git-pre-commit-hook.sh \
+		scripts/github-remove scripts/ifAlias scripts/json-app-tool.php \
+		scripts/manage_bills.php \
 		scripts/Migration/Standard_Conversion/convert_no_xml.sh \
 		scripts/Migration/Standard_Conversion/destwork_no_xml.sh \
 		scripts/Migration/Standard_Conversion/mkdir.sh \
@@ -73,7 +77,7 @@ SHEBANG_FILES=	../${PORTNAME}-vendor-${PORTVERSION}/tecnickcom/tcpdf/tools/tcpdf
 		scripts/save-test-data.php scripts/syslog-notify-oxidized.php \
 		scripts/test-alert.php scripts/test-template.php \
 		scripts/tune_port.php scripts/watchmaillog/watchmaillog.pl \
-		snmptrap.php syslog.php validate.php
+		snmp-scan.py snmptrap.php syslog.php validate.php
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -127,10 +131,10 @@ _SCRIPT_FILES=		daily.sh lnms
 # _RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-_RELEASE_TIMESTAMP=	1689568961
+_RELEASE_TIMESTAMP=	1695088746
 _ROOT_DIRS=		LibreNMS app bootstrap config database doc html \
-			includes licenses mibs misc resources routes scripts \
-			sql-schema tests
+			includes lang licenses mibs misc resources routes \
+			scripts tests
 _DOCS=			AUTHORS.md CHANGELOG.md CONTRIBUTING.md LICENSE.txt \
 			README.md
 
@@ -146,13 +150,20 @@ _OTHER_DIRS=	database/seeders/config html/plugins html/js/lang \
 		vendor/symfony/string/Resources/bin
 
 post-patch:
-	${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                  ${WRKSRC}/LibreNMS/Validations/Php.php
-	${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                  ${WRKSRC}/LibreNMS/Util/Version.php
-	${REINPLACE_CMD}    's|%%PORTVERSION%%|${PORTVERSION}|g'              ${WRKSRC}/LibreNMS/Util/Version.php
-	${REINPLACE_CMD}    's|%%RELEASE_TIMESTAMP%%|${_RELEASE_TIMESTAMP}|g' ${WRKSRC}/LibreNMS/Util/Version.php
-	${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                  ${WRKSRC}/includes/html/output/capture.inc.php
-	${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                  ${WRKSRC}/config.php.default
-	${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                  ${WRKSRC}/poller-wrapper.py
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${WRKSRC}/LibreNMS/__init__.py \
+		${WRKSRC}/LibreNMS/wrapper.py \
+		${WRKSRC}/LibreNMS/Util/Version.php \
+		${WRKSRC}/LibreNMS/Validations/Php.php \
+		${WRKSRC}/LibreNMS/Validations/System.php \
+		${WRKSRC}/config.php.default \
+		${WRKSRC}/includes/html/output/capture.inc.php \
+		${WRKSRC}/poller-wrapper.py \
+		${WRKSRC}/snmp-scan.py
+	${REINPLACE_CMD} 's|%%PORTVERSION%%|${PORTVERSION}|g'              ${WRKSRC}/LibreNMS/Util/Version.php
+	${REINPLACE_CMD} 's|%%RELEASE_TIMESTAMP%%|${_RELEASE_TIMESTAMP}|g' ${WRKSRC}/LibreNMS/Util/Version.php
+	${REINPLACE_CMD} 's|%%WWWDIR%%|${WWWDIR}|g'                        ${WRKSRC}/dist/librenms-scheduler.cron
+	${REINPLACE_CMD} 's|%%USER%%|${WWWOWN}|g'                          ${WRKSRC}/dist/librenms-scheduler.cron
 	${RM} ${WRKSRC}/LibreNMS/Validations/Updates.php
 	${RM} -rf ${WRKSRC}/logs
 
@@ -181,10 +192,6 @@ do-install:
 	${MV} ${STAGEDIR}/${WWWDIR}/vendor/html-js-lang/* ${STAGEDIR}/${WWWDIR}/html/js/lang/
 	${RM} -rf ${STAGEDIR}/${WWWDIR}/vendor/html-js-lang
 
-# Make daily.sh executable
-#	${CHMOD} 0755 ${STAGEDIR}/${WWWDIR}/daily.sh
-# lnms does not fall into any other +x category
-#	${CHMOD} 0755 ${STAGEDIR}/${WWWDIR}/lnms
 # Files in scripts dir should be executable
 	${FIND} ${STAGEDIR}/${WWWDIR}/scripts -type f -exec ${CHMOD} +x {} \;
 # Ensure PHP and Python scripts are executable
@@ -237,5 +244,15 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/newsyslog.conf.sample ${STAGEDIR}/${PREFIX}/etc/newsyslog.conf.d/librenms.conf.sample
 	${ECHO_CMD} "@dir etc/newsyslog.conf.d" >> ${TMPPLIST}
 	${ECHO_CMD} "@sample etc/newsyslog.conf.d/librenms.conf.sample" >> ${TMPPLIST}
+
+	${MKDIR} ${STAGEDIR}/${WWWDIR} ${STAGEDIR}${PREFIX}/etc/cron.d/
+	${INSTALL_DATA} ${WRKSRC}/dist/librenms-scheduler.cron ${STAGEDIR}${PREFIX}/etc/cron.d/librenms
+	${ECHO_CMD} "@dir etc/cron.d" >> ${TMPPLIST}
+	${ECHO_CMD} "etc/cron.d/librenms" >> ${TMPPLIST}
+
+# avoid the "Global lnms shortcut not installed." validataion warning.
+# this can also be run as root.
+	${RLN} ${STAGEDIR}${WWWDIR}/lnms ${STAGEDIR}${PREFIX}/bin/lnms
+	${ECHO_CMD} "bin/lnms" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

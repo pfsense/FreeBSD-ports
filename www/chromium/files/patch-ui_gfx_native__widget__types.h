@@ -1,6 +1,6 @@
---- ui/gfx/native_widget_types.h.orig	2023-05-31 08:12:17 UTC
+--- ui/gfx/native_widget_types.h.orig	2023-09-13 12:11:42 UTC
 +++ ui/gfx/native_widget_types.h
-@@ -101,7 +101,7 @@ class SkBitmap;
+@@ -103,7 +103,7 @@ class SkBitmap;
  
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.

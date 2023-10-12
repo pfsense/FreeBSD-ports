@@ -1,7 +1,6 @@
 PORTNAME=	xrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.80.b20221213
-PORTREVISION=	3
+DISTVERSION=	0.9.80.b20230928
 PORTEPOCH=	1
 CATEGORIES=	net
 PKGNAMESUFFIX=	-devel
@@ -17,7 +16,7 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/nasm:devel/nasm
-RUN_DEPENDS=	${LOCALBASE}/lib/pulse-14.2/modules/module-xrdp-sink.so:audio/pulseaudio-module-xrdp \
+RUN_DEPENDS=	${LOCALBASE}/lib/pulseaudio/modules/module-xrdp-sink.so:audio/pulseaudio-module-xrdp \
 		${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp-devel \
 		xterm:x11/xterm
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2
@@ -31,9 +30,9 @@ USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
 GH_ACCOUNT=	neutrinolabs
-GH_TAGNAME=	36f3c43
-GH_TUPLE=	neutrinolabs:librfxcodec:79619b6:librfxcodec/librfxcodec \
-		neutrinolabs:libpainter:v0.1.1:libpainter/libpainter \
+GH_TAGNAME=	89ceaf0
+GH_TUPLE=	neutrinolabs:librfxcodec:25f6128:librfxcodec/librfxcodec \
+		neutrinolabs:libpainter:2255b38:libpainter/libpainter \
 		neutrinolabs:ulalaca-xrdp:f683d17:ulalaca/ulalaca
 
 CONFIGURE_ARGS=	--enable-imlib2 \
@@ -43,6 +42,7 @@ CONFIGURE_ARGS=	--enable-imlib2 \
 		--enable-pixman \
 		--enable-rfxcodec \
 		--enable-strict-locations \
+		--enable-vsock \
 		--localstatedir=/var \
 		--with-pkgconfigdir=${LOCALBASE}/libdata/pkgconfig
 LDFLAGS+=	-lssl

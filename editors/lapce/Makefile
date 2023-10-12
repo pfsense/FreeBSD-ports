@@ -1,7 +1,7 @@
 PORTNAME=	lapce
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.8	# remove openssl-src-* from CARGO-CRATES each update
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	editors
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -26,6 +26,8 @@ USE_GNOME=	atk gdkpixbuf2 gtk30 pango
 
 PLIST_FILES=	bin/lapce \
 		bin/lapce-proxy
+
+PORTSCOUT=	https://github.com/${PORTNAME}/${PORTNAME}/releases
 
 #patch druid manually since it's not yet patched upstream
 post-patch:

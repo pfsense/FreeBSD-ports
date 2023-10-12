@@ -3,6 +3,7 @@
 #  devel/kdev-python
 PORTNAME=	kdevelop
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -21,7 +22,7 @@ LIB_DEPENDS=	libKasten4Controllers.so:devel/okteta \
 RUN_DEPENDS=	gmake:devel/gmake
 
 USES=		cmake compiler:c++11-lib desktop-file-utils gettext grantlee:5 \
-		kde:5 llvm:build,run pkgconfig qt:5 shared-mime-info \
+		kde:5 llvm:build,run,noexport pkgconfig qt:5 shared-mime-info \
 		shebangfix tar:xz xorg
 USE_KDE=	archive attica auth bookmarks codecs completion config \
 		configwidgets coreaddons crash emoticons guiaddons i18n \
@@ -40,18 +41,19 @@ SHEBANG_FILES=	kdevplatform/util/kdevplatform_shell_environment.sh \
 # IDE, which **probably** is used for Qt / KDE development (also
 # other things, but let's guess a target market), pull in some
 # additional development things that are otherwise build-dep-only.
-USE_KDE+=	ecm
+USE_KDE+=	ecm:build
 USE_QT+=	testlib
 
 CMAKE_ARGS=	-DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
 		-DClang_DIR=${LLVM_PREFIX}/lib/cmake/clang
 
 # Versioning values, to reduce plist churn
-SO_VER=		511
-SO_VER_LONG=	5.11.230403
+SO_VER=		512
+SO_VER_LONG=	5.12.230801
 PLIST_SUB+=	SO_VER=${SO_VER} SO_VER_LONG=${SO_VER_LONG}
 
 OPTIONS_DEFINE=	WEBENGINE
+OPTIONS_DEFAULT=	WEBENGINE
 WEBENGINE_DESC=	Use WebEngine as help reader
 WEBENGINE_USES=	qt:5
 WEBENGINE_USE=	QT=location,webchannel,webengine

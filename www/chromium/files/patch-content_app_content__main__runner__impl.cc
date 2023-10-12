@@ -1,6 +1,6 @@
---- content/app/content_main_runner_impl.cc.orig	2023-07-16 15:47:57 UTC
+--- content/app/content_main_runner_impl.cc.orig	2023-10-11 18:22:24 UTC
 +++ content/app/content_main_runner_impl.cc
-@@ -144,13 +144,13 @@
+@@ -142,13 +142,13 @@
  #include "content/browser/posix_file_descriptor_info_impl.h"
  #include "content/public/common/content_descriptors.h"
  
@@ -16,8 +16,8 @@
  #include "base/files/file_path_watcher_inotify.h"
  #include "base/native_library.h"
  #include "base/rand_util.h"
-@@ -193,6 +193,10 @@
- #include "chromeos/startup/startup_switches.h"
+@@ -186,6 +186,10 @@
+ #include "media/base/media_switches.h"
  #endif
  
 +#if BUILDFLAG(IS_BSD)
@@ -27,7 +27,7 @@
  #if BUILDFLAG(IS_ANDROID)
  #include "base/system/sys_info.h"
  #include "content/browser/android/battery_metrics.h"
-@@ -394,7 +398,7 @@ void InitializeZygoteSandboxForBrowserProcess(
+@@ -372,7 +376,7 @@ void InitializeZygoteSandboxForBrowserProcess(
  }
  #endif  // BUILDFLAG(USE_ZYGOTE)
  
@@ -36,7 +36,7 @@
  
  #if BUILDFLAG(ENABLE_PPAPI)
  // Loads the (native) libraries but does not initialize them (i.e., does not
-@@ -432,7 +436,10 @@ void PreloadLibraryCdms() {
+@@ -410,7 +414,10 @@ void PreloadLibraryCdms() {
  
  void PreSandboxInit() {
    // Ensure the /dev/urandom is opened.
@@ -47,7 +47,7 @@
  
    // May use sysinfo(), sched_getaffinity(), and open various /sys/ and /proc/
    // files.
-@@ -443,9 +450,16 @@ void PreSandboxInit() {
+@@ -421,9 +428,16 @@ void PreSandboxInit() {
    // https://boringssl.googlesource.com/boringssl/+/HEAD/SANDBOXING.md
    CRYPTO_pre_sandbox_init();
  

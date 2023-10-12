@@ -1,7 +1,7 @@
 PORTNAME=	screego
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.0
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	www
 MASTER_SITES=	https://registry.yarnpkg.com/:yarn
 DISTFILES=	@babel/code-frame/-/code-frame-7.8.3.tgz:yarn \
@@ -1557,6 +1557,12 @@ _YARN_ENV=		HOME=${_YARN_HOME}
 _YARNRC=		${_YARN_HOME}/yarnrc
 _YARN_CMD=		${SETENV} ${_YARN_ENV} ${_YARN_BIN} ${_YARN_FLAGS}
 _YARN_CWD=		${WRKSRC}/ui
+
+.include <bsd.port.options.mk>
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
+BROKEN=	Fails to compile with OpenSSL 3 and later
+.endif
 
 pre-everything::
 	@${ECHO_MSG} ""

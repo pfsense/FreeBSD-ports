@@ -1,6 +1,5 @@
 PORTNAME=	qgis
-DISTVERSION=	3.32.1
-PORTREVISION=	1
+DISTVERSION=	3.32.3
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://qgis.org/downloads/
 

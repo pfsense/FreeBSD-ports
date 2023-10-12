@@ -1,6 +1,6 @@
 PORTNAME=	pam_ssh_agent_auth
 PORTVERSION=	0.10.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	security
 
 MAINTAINER=	matthew@FreeBSD.org

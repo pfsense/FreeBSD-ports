@@ -1,11 +1,10 @@
 PORTNAME=	celluloid
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.25
-PORTREVISION=	1
+DISTVERSION=	0.26
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Simple GTK+ frontend for mpv
+COMMENT=	Simple GTK frontend for mpv
 WWW=		https://celluloid-player.github.io/
 
 LICENSE=	GPLv3+
@@ -20,7 +19,6 @@ USE_GITHUB=	yes
 USE_GNOME=	gdkpixbuf2 gtk40 libadwaita
 GH_ACCOUNT=	${PORTNAME}-player
 SHEBANG_FILES=	src/generate-authors.py meson-post-install.py
-GLIB_SCHEMAS=	io.github.GnomeMpv.gschema.xml \
-		io.github.celluloid_player.Celluloid.gschema.xml
+GLIB_SCHEMAS=	io.github.celluloid_player.Celluloid.gschema.xml
 
 .include <bsd.port.mk>

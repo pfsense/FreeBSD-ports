@@ -1,7 +1,8 @@
 PORTNAME=	intellij-ultimate
-DISTVERSION=	2022.2.3
+DISTVERSION=	2022.2.5
+PORTREVISION=	1
 CATEGORIES=	java devel
-MASTER_SITES=	https://download-cf.jetbrains.com/idea/
+MASTER_SITES=	https://download-cdn.jetbrains.com/idea/
 DISTNAME=	ideaIU-${DISTVERSION}-no-jbr
 DIST_SUBDIR=	jetbrains
 
@@ -33,7 +34,7 @@ NO_BUILD=	yes
 SUB_FILES=	idea idea.desktop pkg-message
 
 BUILD_TYPE=	IU
-BUILD_VERSION=	222.4345.14
+BUILD_VERSION=	222.4554.10
 BUILD_MARKER=	${BUILD_TYPE}-${BUILD_VERSION}
 PLIST_SUB=	BUILD_MARKER=${BUILD_MARKER}
 WRKSRC=		${WRKDIR}/idea-${BUILD_MARKER}
