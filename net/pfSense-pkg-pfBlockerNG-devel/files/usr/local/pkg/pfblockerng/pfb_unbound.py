@@ -20,6 +20,7 @@
 
 from datetime import datetime
 from functools import wraps
+import inspect
 import traceback
 import logging
 import time
@@ -37,8 +38,6 @@ if sys.version_info < (2, 8):
 else:
     from configparser import ConfigParser
     pfb['py_v3'] = True
-
-from collections import defaultdict
 
 # Import additional python modules
 try:
@@ -96,6 +95,17 @@ def traced(func):
     return _log
 
 def init_standard(id, env):
+    try:
+        init(id, env)
+    except:
+        message = 'Exception caught\n\t{}\n'.format(timestamp, '\t'.join(traceback.format_exc().splitlines(True)))
+        log_err('[pfBlockerNG]: {}'.format(message))
+        with open('/var/log/pfblockerng/py_error.log', 'a') as error_log:
+            timestamp = datetime.now().strftime("%b %-d %H:%M:%S")
+            error_log.write('{}|ERROR| {}'.format(timestamp, message))
+        raise
+
+def init(id, env):
     global pfb, rcodeDB, dataDB, wildcardDataDB, zoneDB, regexDataDB, regexDB, hstsDB, whiteDB, wildcardWhiteDB, regexWhiteDB, excludeDB, excludeAAAADB, excludeSS, dnsblDB, noAAAADB, gpListDB, safeSearchDB, maxmindReader
 
     if not register_inplace_cb_reply(inplace_cb_reply, env, id):
@@ -319,7 +329,7 @@ def init_standard(id, env):
                 debug('Python Blacklist enabled. Reason: IDN')
 
             # Enable the Blacklist functions (TLD Allow)
-            if pfb['python_tld'] and pfb['python_tlds'] != '':
+            if pfb['python_tld'] and pfb['python_tlds']:
                 pfb['python_blacklist'] = True
                 debug('Python TLD Allow enabled: {}', pfb['python_tlds'])
                 debug('Python Blacklist enabled. Reason: TLD Allow')
@@ -352,7 +362,7 @@ def init_standard(id, env):
                             debug('Parsing no-AAAA domain: {}', line)
                             data = line.rstrip('\r\n').split(',')
                             if data and len(data) == 2:
-                                domain_name = data[0]
+                                domain_name = data[0].lower()
                                 wildcard = data[1] == '1'
 
                                 debug('Parsed no-AAAA domain: {}, wildcard={}', domain_name, wildcard)
@@ -391,7 +401,7 @@ def init_standard(id, env):
                         debug('SafeSearch Redirection file found: {}', pfb['pfb_py_ss'])
                         for row in csv_reader:
                             if row and len(row) == 3:
-                                domain_name = row[0]
+                                domain_name = row[0].lower()
                                 entry = {'A': row[1], 'AAAA': row[2]}
                                 debug('Parsed SafeSearch Redirection entry: {}: {}', domain_name, entry)
                                 safeSearchDB[domain_name] = entry
@@ -399,11 +409,8 @@ def init_standard(id, env):
                                 sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_ss'], row))
 
                 except Exception as e:
-                    sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_zone'], e))
+                    sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_ss'], e))
                     pass
-
-            # While reading 'data|zone' CSV files: Replace 'Feed/Group' pairs with an index value (Memory performance)
-            feedGroup_index = 0
 
             # Zone dicts
             if os.path.isfile(pfb['pfb_py_zone']):
@@ -412,9 +419,9 @@ def init_standard(id, env):
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         debug('Zone Blacklist file found: {}', pfb['pfb_py_zone'])
                         for row in csv_reader:
-                            if row and len(row) == 6:
+                            if row and len(row) >= 6:
                                 # Query Feed/Group/index
-                                domain_name = row[1]
+                                domain_name = row[1].lower()
                                 entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])};
                                 debug('Parsed Zone Blacklist entry: {}: {}', domain_name, entry)
                                 zoneDB[domain_name] = entry
@@ -441,12 +448,12 @@ def init_standard(id, env):
                                     debug('Parsed Blacklist entry (Regex): {}: {}', expression, entry)
                                     regexDataDB[expression] = entry
                                 elif len(row) == 7 and row[6] == '1':
-                                    domain_name = row[1]
+                                    domain_name = row[1].lower()
                                     entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
                                     debug('Parsed Blacklist entry (Wildcard): {}: {}', domain_name, entry)
                                     wildcardDataDB[domain_name] = entry
                                 else:
-                                    domain_name = row[1]
+                                    domain_name = row[1].lower()
                                     entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
                                     debug('Parsed Blacklist entry (Domain): {}: {}', domain_name, entry)
                                     dataDB[domain_name] = entry
@@ -471,7 +478,7 @@ def init_standard(id, env):
                                 if row and (len(row) == 2 or len(row) == 7):
                                     if len(row) == 2:
                                         
-                                        domain_name = row[0]
+                                        domain_name = row[0].lower()
                                         entry = {'log': '1', 'feed': 'DNSBL_WHITELIST', 'group': 'USER'}
                                         
                                         if row[1] == '1':
@@ -490,12 +497,12 @@ def init_standard(id, env):
                                             regexWhiteDB[expression] = entry
                                         else:
                                             if row[6] == '1':
-                                                domain_name = row[1]
+                                                domain_name = row[1].lower()
                                                 entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
                                                 debug('Parsed Whitelist entry (Wildcard): {}: {}', domain_name, entry)
                                                 wildcardWhiteDB[domain_name] = entry
                                             else:
-                                                domain_name = row[1]
+                                                domain_name = row[1].lower()
                                                 entry = {'log': dedup(row[3]), 'feed': dedup(row[4]), 'group': dedup(row[5])}
                                                 debug('Parsed Whitelist entry (Domain): {}: {}', domain_name, entry)
                                                 whiteDB[domain_name] = entry
@@ -513,7 +520,7 @@ def init_standard(id, env):
                         with open(pfb['pfb_py_hsts']) as hsts:
                             debug('HSTS data found: {}', pfb['python_hsts'])
                             for line in hsts:
-                                value = line.rstrip('\r\n')
+                                value = line.rstrip('\r\n').lower()
                                 debug('Parsed HSTS entry: {}', value)
                                 hstsDB.add(value)
                     except Exception as e:
@@ -563,6 +570,22 @@ def init_standard(id, env):
                     pass
     else:
         log_info('[pfBlockerNG]: Failed to load ini configuration. Ini file missing.')
+
+    debug('Initialization complete. Summary of parsed data:')
+    debug('------------------------------------------------')
+    debug('REGEX count: {}', len(regexDB))
+    debug('Zone count: {}', len(zoneDB))
+    debug('DNSBL count (Domain): {}', len(dataDB))
+    debug('DNSBL count (Wildcard): {}', len(wildcardDataDB))
+    debug('DNSBL count (Regex): {}', len(regexDataDB))
+    debug('Whitelist count (Domain): {}', len(whiteDB))
+    debug('Whitelist count (Wildcard): {}', len(wildcardWhiteDB))
+    debug('Whitelist count (Regex): {}', len(regexWhiteDB))
+    debug('No-AAAA count (Regex): {}', len(noAAAADB))
+    debug('Group Policy count (Regex): {}', len(gpListDB))
+    debug('Safe Search count (Regex): {}', len(safeSearchDB))
+    debug('HSTS count (Regex): {}', len(hstsDB))
+    debug('------------------------------------------------')
 
     log_info('[pfBlockerNG]: init_standard script loaded')
 
@@ -922,26 +945,31 @@ def log_entry(line, log):
             continue
         break
 
-def _debug(format_str, *args):
+def _debug(format_str, *args, stack_height=1):
     global pfb
     if pfb.get('python_debug') and isinstance(format_str, str):
         with open('/var/log/pfblockerng/py_debug.log', 'a') as append_log:
             append_log.write(datetime.now().strftime("%b %-d %H:%M:%S"))
-            append_log.write('|DEBUG: ')
+            append_log.write(' | ')
+            stack_element = inspect.stack()[stack_height]
+            append_log.write(stack_element[3])  # caller function
+            append_log.write(':')
+            append_log.write(str(stack_element[2]))  # call site line number
+            append_log.write(' | DEBUG: ')
             if args:
                 append_log.write(format_str.format(*args))
             else:
                 append_log.write(format_str)
             append_log.write('\n')
 
-def debug(format_str, *args):
+def debug(format_str, *args, stack_height=1):
     global pfb
 
     # validate before to avoid additional costs for non-debug calls
     if pfb.get('python_debug') and isinstance(format_str, str):
         for i in range(1,5):
             try:
-                _debug(format_str, *args)
+                _debug(format_str, *args, stack_height=stack_height+1)
             except Exception as e:
                 if i == 4:
                     sys.stderr.write("[pfBlockerNG]: log_entry: {}: {}" .format(i, e))
@@ -1251,10 +1279,10 @@ def operate(id, event, qstate, qdata):
         if qstate and qstate.qinfo.qtype:
             qstate_valid = True
             q_type = qstate.qinfo.qtype
+            q_type_str = qstate.qinfo.qtype_str
             q_name_original = get_q_name_qstate(qstate).lower()
             q_ip = get_q_ip(qstate)
-            if pfb['python_debug']:
-                debug('Operate [{}]: q_type={}, q_ip={}', q_name_original, qstate.qinfo.qtype_str, q_ip)
+            debug('[{}]: q_type={}, q_ip={}', q_name_original, q_type_str, q_ip)
         else:
             sys.stderr.write("[pfBlockerNG] qstate is not None and qstate.qinfo.qtype is not None")
     except Exception as e:
@@ -1266,21 +1294,21 @@ def operate(id, event, qstate, qdata):
         # no AAAA validation
         if qstate_valid and q_type == RR_TYPE_AAAA and noAAAADB and q_name_original not in excludeAAAADB:
 
-            debug('Operate [{}]: checking no-AAAA DB', q_name_original)
+            debug('[{}]: checking no-AAAA DB', q_name_original)
 
             # Determine full domain match
             isnoAAAA = noAAAADB.get(q_name_original)
 
             # Wildcard verification of domain
             if not isnoAAAA:
-                debug('Operate [{}]: original domain name not found in no-AAAA DB. Trying TLDs...', q_name_original)
+                debug('[{}]: original domain name not found in no-AAAA DB. Trying TLDs...', q_name_original)
 
                 q = q_name_original.split('.', 1)
                 q = q[-1]
 
                 # Validate to 2nd level TLD only
                 for x in range(q.count('.'), 0, -1):
-                    debug('Operate [{}]: Checking TLD no-AAAA DB for TLD: {}', q_name_original, q)
+                    debug('[{}]: checking TLD no-AAAA DB for TLD: {}', q_name_original, q)
 
                     isnoAAAA = noAAAADB.get(q)
 
@@ -1296,7 +1324,7 @@ def operate(id, event, qstate, qdata):
 
             # Create FQDN Reply Message (AAAA -> A)
             if isnoAAAA:
-                debug('Operate [{}]: domain found in no-AAAA DB. Creating FQDN Reply Message (AAAA -> A)', q_name_original)
+                debug('[{}]: domain found in no-AAAA DB. Creating FQDN Reply Message (AAAA -> A)', q_name_original)
                 msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA)
                 if msg is None or not msg.set_return_msg(qstate):
                     qstate.ext_state[id] = MODULE_ERROR
@@ -1309,7 +1337,7 @@ def operate(id, event, qstate, qdata):
 
             # Add domain to excludeAAAADB to skip subsequent no AAAA validation 
             else:
-                debug('Operate [{}]: domain added to AAAA exclusion DB', q_name_original)
+                debug('[{}]: domain added to AAAA exclusion DB', q_name_original)
                 excludeAAAADB.add(q_name_original)
 
 
@@ -1318,6 +1346,8 @@ def operate(id, event, qstate, qdata):
 
             # Determine if domain has been previously validated
             if q_name_original not in excludeSS:
+                debug('[{}]: checking Safe Search DB', q_name_original)
+
                 isSafeSearch = safeSearchDB.get(q_name_original)
 
                 # Validate 'www.' Domains
@@ -1332,6 +1362,8 @@ def operate(id, event, qstate, qdata):
 
                 if isSafeSearch:
 
+                    debug('[{}]: domain found in Safe Search DB: {}', q_name_original, safeSearchDB)
+
                     ss_found = False
                     if isSafeSearch['A'] == 'nxdomain':
                         qstate.return_rcode = RCODE_NXDOMAIN
@@ -1342,12 +1374,16 @@ def operate(id, event, qstate, qdata):
                     elif isSafeSearch['A'] == 'cname':
                         if isSafeSearch['AAAA']:
                             if q_type == RR_TYPE_A:
+                                answer = "{} 3600 IN CNAME {}".format(qstate.qinfo.qname_str, isSafeSearch['AAAA'])
+                                debug('[{}]: answer: {}', q_name_original, answer)
                                 cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA)
-                                cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
+                                cname_msg.answer.append(answer)
                                 ss_found = True
                             elif q_type == RR_TYPE_AAAA:
+                                answer = "{} 3600 IN CNAME {}".format(qstate.qinfo.qname_str, isSafeSearch['AAAA'])
+                                debug('[{}]: answer: {}', q_name_original, answer)
                                 cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA)
-                                cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
+                                cname_msg.answer.append(answer)
                                 ss_found = True
 
                             if ss_found:
@@ -1362,12 +1398,16 @@ def operate(id, event, qstate, qdata):
                                 return True
                     else:
                         if (q_type == RR_TYPE_A and isSafeSearch['A']) or (q_type == RR_TYPE_AAAA and not isSafeSearch['AAAA']):
+                            answer = "{} 300 IN {} {}".format(qstate.qinfo.qname_str, 'A', isSafeSearch['A'])
+                            debug('[{}]: answer: {}', q_name_original, answer)
                             msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA)
-                            msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'A', isSafeSearch['A']))
+                            msg.answer.append(answer)
                             ss_found = True
                         elif q_type == RR_TYPE_AAAA and isSafeSearch['AAAA']:
+                            answer = "{} 300 IN {} {}".format(qstate.qinfo.qname_str, 'AAAA', isSafeSearch['AAAA'])
+                            debug('[{}]: answer: {}', q_name_original, answer)
                             msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RA)
-                            msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'AAAA', isSafeSearch['AAAA']))
+                            msg.answer.append(answer)
                             ss_found = True
 
                     if ss_found:
@@ -1383,6 +1423,7 @@ def operate(id, event, qstate, qdata):
 
             # Add domain to excludeSS to skip subsequent SafeSearch validation
             else:
+                debug('[{}]: domain added to Safe Search exclusion DB', q_name_original)
                 excludeSS.add(q_name_original)
 
         # Python_control - Receive TXT commands from pfSense local IP
@@ -1390,6 +1431,8 @@ def operate(id, event, qstate, qdata):
 
             control_rcd = False
             if pfb['python_control'] and q_ip == '127.0.0.1':
+
+                debug('[{}]: Python Control', q_name_original)
 
                 control_command = q_name_original.split('.')
                 if (len(control_command) >= 2):
@@ -1482,7 +1525,7 @@ def operate(id, event, qstate, qdata):
                     q_reply = 'python_control_fail'
 
                 answer = '{}. 0 IN TXT "{}"'.format(q_reply, control_msg)
-                debug('Answer: {}', answer)
+                debug('[{}]: answer: {}', q_name_original, answer)
 
                 txt_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_TXT, RR_CLASS_IN, PKT_QR | PKT_RA)
                 txt_msg.answer.append(answer)
@@ -1502,20 +1545,24 @@ def operate(id, event, qstate, qdata):
         # Group Policy - Bypass DNSBL Validation
         bypass_dnsbl = False
         if gpListDB:
-            q_ip = get_q_ip(qstate)
+            debug('[{}]: checking Group Policy DB', q_name_original)
 
+            q_ip = get_q_ip(qstate)
             if q_ip != 'Unknown' and q_ip in gpListDB:
+                debug('[{}]: bypassing DNSBQ due to Group Policy match for IP {}', q_name_original, q_ip)
                 bypass_dnsbl = True
 
         # Create list of Domain/CNAMES to be evaluated
         validate = []
 
         # Skip 'in-addr.arpa' domains
-        if not q_name_original.endswith('.in-addr.arpa') and not bypass_dnsbl:
+        if not bypass_dnsbl and not q_name_original.endswith('.in-addr.arpa'):
             validate.append(q_name_original)
 
             # DNSBL CNAME Validation
             if pfb['python_cname'] and qstate.return_msg:
+                debug('[{}]: adding CNAMEs for validation', q_name_original)
+
                 r = qstate.return_msg.rep
                 if r.an_numrrsets > 1:
                     for i in range (0, r.an_numrrsets):
@@ -1529,6 +1576,8 @@ def operate(id, event, qstate, qdata):
                             if domain != 'Unknown':
                                 validate.append(domain)
 
+        debug('[{}]: validating domain names: {}', q_name_original, validate)
+
         isCNAME = False
         for val_counter, q_name in enumerate(validate, start=1):
 
@@ -1538,7 +1587,6 @@ def operate(id, event, qstate, qdata):
             # Determine if domain has been previously validated
             if q_name not in excludeDB:
 
-                q_type_str = qstate.qinfo.qtype_str
                 isFound = False
                 log_type = False
                 isInWhitelist = False
@@ -1548,14 +1596,13 @@ def operate(id, event, qstate, qdata):
                 feed = 'Unknown'
                 group = 'Unknown'
 
-                debug('v0: {}', q_name)
+                debug('[{}]: validating domain name: {}', q_name_original, q_name)
 
                 # Determine if domain was previously DNSBL blocked
                 isDomainInDNSBL = dnsblDB.get(q_name)
                 if not isDomainInDNSBL:
                     tld = get_tld(qstate)
-
-                    debug('{} b, TLD: {}', q_name, tld)
+                    debug('[{}]: validating domain name: {}, TLD: {}', q_name_original, q_name, tld)
 
                     # Determine if domain is in DNSBL 'data|zone' database
                     if pfb['python_blocking']:
@@ -1570,6 +1617,7 @@ def operate(id, event, qstate, qdata):
                                 blacklist_validate.append(q_name_original)
 
                             for w_q_name in blacklist_validate:
+                                debug('[{}]: checking Blacklist DB (Domain) for: {}', q_name_original, w_q_name)
 
                                 # Determine full domain match
                                 isDomainInData = dataDB.get(w_q_name)
@@ -1582,6 +1630,7 @@ def operate(id, event, qstate, qdata):
 
                                 # Determine TLD segment matches
                                 if not isFound and wildcardDataDB:
+                                    debug('[{}]: checking Blacklist DB (Wildcard) for: {}', q_name_original, w_q_name)
 
                                     isDomainInData = wildcardDataDB.get(w_q_name)
                                     if isDomainInData:
@@ -1608,24 +1657,26 @@ def operate(id, event, qstate, qdata):
 
                                 # Set log data, if we got a match
                                 if isFound:
+                                    debug('[{}]: found Blacklist entry for: {}: {}', q_name_original, q_name, isDomainInData)
+
                                     (log_type, feed, group) = (isDomainInData['log'], isDomainInData['feed'], isDomainInData['group'])
                                     b_type = 'DNSBL'
                                     b_eval = q_name
 
-                                    debug('{} data: {}', q_name, isDomainInData) 
-
                         # Determine if domain is in DNSBL 'zone' database (log to dnsbl.log)
                         if not isFound and zoneDB:
+                            debug('[{}]: checking Zone DB for: {}', q_name_original, q_name)
+
                             q = q_name
                             for x in range(q.count('.') +1, 0, -1):
                                 isDomainInZone = zoneDB.get(q)
                                 if isDomainInZone:
                                     isFound = True
+                                    debug('[{}]: found Zone entry for: {}: {}', q_name_original, q_name, isDomainInZone)
                                     (log_type, feed, group) = (isDomainInZone['log'], isDomainInZone['feed'], isDomainInZone['group'])
                                     b_type = 'TLD'
                                     b_eval = q
 
-                                    debug('{} zone: {}', q_name, isDomainInZone)
                                     break
                                 else:
                                     q = q.split('.', 1)
@@ -1633,39 +1684,44 @@ def operate(id, event, qstate, qdata):
                         
                         # Block via Domain Name Regex
                         if not isFound and regexDataDB:
+                            debug('[{}]: checking Blacklist DB (Regex) for: {}', q_name_original, q_name)
+                            
                             isDomainInRegexData = pfb_regex_data_match(q_name)
                             if isDomainInRegexData:
                                 isDomainInData = regexDataDB[isDomainInRegexData]
+                                debug('[{}]: found Blacklist (Regex) entry for: {}: {}', q_name_original, q_name, isDomainInData)
 
                                 isFound = True
                                 (log_type, feed, group) = (isDomainInData['log'], isDomainInData['feed'], isDomainInData['group'])
                                 b_type = 'DNSBL'
                                 b_eval = q_name
 
-                                debug('{} data: {}', q_name, isDomainInData)
 
                     # Validate other python methods, if not blocked via DNSBL zone/data
                     if not isFound:
 
+                        debug('[{}]: domain not blacklisted: {}', q_name_original, q_name)
+
                         # Allow only approved TLDs
-                        if pfb['python_tld'] and tld != '' and q_name not in (pfb['dnsbl_ipv4'], '::' + pfb['dnsbl_ipv4']) and tld not in pfb['python_tlds']:
+                        if tld and pfb['python_tld'] and tld not in pfb['python_tlds'] and q_name not in (pfb['dnsbl_ipv4'], '::{}'.format(pfb['dnsbl_ipv4'])):
                             isFound = True
+                            debug('[{}]: domain TLD not found in TLD Allow list: {}: {}', q_name_original, q_name, tld)
                             feed = 'TLD_Allow'
                             group = 'DNSBL_TLD_Allow'
-                            debug('{} TLD Allow', q_name)
 
                         # Block IDN or 'xn--' Domains
                         if not isFound and pfb['python_idn'] and (q_name.startswith('xn--') or '.xn--' in q_name):
                             isFound = True
+                            debug("[{}]: blocked IDN or 'xn--': {}: {}", q_name_original, q_name, tld)
                             feed = 'IDN'
                             group = 'DNSBL_IDN'
-                            debug('{} DNSBL IDN', q_name)
 
                         # Block via Regex
                         if not isFound and regexDB:
+                            debug('[{}]: checking REGEX DB for: {}', q_name_original, q_name)
                             isRegexMatch = pfb_regex_match(q_name)
-                            debug('{} regex: {}', q_name, isRegexMatch)
                             if isRegexMatch:
+                                debug('[{}]: found REGEX entry for: {}: {}', q_name_original, q_name, isRegexMatch)
                                 isFound = True
                                 feed = isRegexMatch
                                 group = 'DNSBL_Regex'
@@ -1676,7 +1732,8 @@ def operate(id, event, qstate, qdata):
 
                     # Validate domain in DNSBL Whitelist
                     if isFound and whiteDB:
-                        debug('{} w', q_name)
+                        debug('[{}]: domain blacklisted: {}', q_name_original, q_name)
+                        debug('[{}]: checking whitelist: {}', q_name_original, q_name)
 
                         # Create list of Domain/CNAMES to be validated against Whitelist
                         whitelist_validate = []
@@ -1686,6 +1743,8 @@ def operate(id, event, qstate, qdata):
                             whitelist_validate.append(q_name_original)
 
                         for w_q_name in whitelist_validate:
+
+                            debug('[{}]: checking Whitelist DB (Domain) for: {}', q_name_original, w_q_name)
 
                             # Determine full domain match
                             isDomainInWhitelist = whiteDB.get(w_q_name)
@@ -1698,6 +1757,8 @@ def operate(id, event, qstate, qdata):
 
                             # Determine TLD segment matches
                             if not isInWhitelist and wildcardWhiteDB:
+
+                                debug('[{}]: checking Whitelist DB (Wildcard) for: {}', q_name_original, w_q_name)
 
                                 # Determine full domain match
                                 isDomainInWhitelist = wildcardWhiteDB.get(w_q_name)
@@ -1725,31 +1786,31 @@ def operate(id, event, qstate, qdata):
 
                             # Set log data, if we got a match
                             if isInWhitelist:
+                                debug('[{}]: found Whitelist entry for: {}: {}', q_name_original, q_name, isDomainInWhitelist)
                                 (log_type, feed, group) = (isDomainInWhitelist['log'], isDomainInWhitelist['feed'], isDomainInWhitelist['group'])
                                 b_type = 'DNSBL'
                                 b_eval = q_name
 
-                                debug('{} wdata: {}', q_name, isDomainInWhitelist) 
-                    
                     # Validate domain in DNSBL Domain Name Regex
                     if isFound and not isInWhitelist and regexDataDB:
+                        debug('[{}]: checking Whitelist DB (Regex) for: {}', q_name_original, q_name)
+                        
                         isDomainInWhitelistRegex = pfb_regex_whitelist_match(q_name)
                         if isDomainInWhitelistRegex:
                             isDomainInWhitelist = regexWhiteDB[isDomainInWhitelistRegex]
+                            debug('[{}]: found Whitelist (Regex) entry for: {}: {}', q_name_original, q_name, isDomainInWhitelist)
 
                             isInWhitelist = True
                             (log_type, feed, group) = (isDomainInWhitelist['log'], isDomainInWhitelist['feed'], isDomainInWhitelist['group'])
                             b_type = 'DNSBL'
                             b_eval = q_name
 
-                            debug('{} wdata: {}', q_name, isDomainInWhitelist) 
-
                     # Add domain to excludeDB to skip subsequent blacklist validation
                     if not isFound or isInWhitelist:
-                        debug('Add to pass: {}', q_name)
+                        debug('[{}]: add to whitelist cache: {}', q_name_original, q_name)
                         excludeDB.add(q_name)
-                        if isCNAME:
-                            debug('Add to pass: {}', q_name_original)
+                        if isCNAME and q_name_original not in excludeDB:
+                            debug('[{}]: add to whitelist cache: {}', q_name_original, q_name)
                             excludeDB.add(q_name_original)
 
                     # Domain to be blocked and is not whitelisted
@@ -1757,19 +1818,18 @@ def operate(id, event, qstate, qdata):
 
                         # Determine if domain is in HSTS database (Null blocking)
                         if hstsDB:
-                            debug('{} hsts:', q_name)
+                            debug('[{}]: checking HSTS for: {}', q_name_original, q_name)
 
                             # Determine if TLD is in HSTS database
                             if tld in pfb['hsts_tlds']:
+                                debug('[{}]: found TLD in HSTS: {}: {}', q_name_original, q_name, tld)
                                 isInHsts = True
                                 p_type = 'HSTS_TLD'
-                                debug('{} HSTS', q_name)
                             else:
                                 q = q_name
                                 for x in range(q.count('.') +1, 0, -2):
-                                    debug('{} validate: {}', q_name, q)
                                     if q in hstsDB:
-                                        debug('{} q: {} HSTS blacklist', q_name, q)
+                                        debug('[{}]: found HSTS blacklist entry: {}: {}', q_name_original, q_name, q)
                                         isInHsts = True
                                         if q_type_str in pfb['rr_types2']:
                                             p_type = 'HSTS_' + q_type_str
@@ -1780,7 +1840,6 @@ def operate(id, event, qstate, qdata):
                                         q = q.split('.', 1)
                                         q = q[-1]
 
-                                debug('{} break', q_name)
 
                         # Determine blocked IP type (DNSBL VIP vs Null Blocking)
                         if not isInHsts:
@@ -1798,8 +1857,6 @@ def operate(id, event, qstate, qdata):
                                 else:
                                     b_ip = pfb['dnsbl_ip']['A']['0']
 
-                            debug('{} {} {}', q_name, qstate.qinfo.qtype, q_type_str)
-
                         else:
                             if q_type_str in pfb['rr_types2']:
                                 b_ip = pfb['dnsbl_ip'][q_type_str]['0']
@@ -1816,20 +1873,24 @@ def operate(id, event, qstate, qdata):
                         b_type = b_type + '_' + q_type_str
 
                         # Skip subsequent DNSBL validation for domain, and add domain to dict for get_details_dnsbl function
-                        dnsblDB[q_name] = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                        entry = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                        debug('[{}]: adding entry to DNSBL cache: {}', q_name_original, entry)
+                        dnsblDB[q_name] = entry
                         # Skip subsequent DNSBL validation for original domain (CNAME validation), and add domain to dict for get_details_dnsbl function
                         if isCNAME and q_name_original not in dnsblDB:
-                            dnsblDB[q_name_original] = {'qname': q_name_original, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                            entry = {'qname': q_name_original, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                            debug('[{}]: adding entry to DNSBL cache: {}', q_name_original, entry)
+                            dnsblDB[q_name_original] = entry
 
                         # Add domain data to DNSBL cache for Reports tab
                         write_sqlite(3, '', [b_type, q_name, group, b_eval, feed])
 
                 # Use previously blocked domain details
                 else:
+                    debug('[{}]: found domain name in DNSBL cache: {}: {}', q_name_original, q_name, isDomainInDNSBL)
                     b_ip = isDomainInDNSBL['b_ip']
                     b_type = isDomainInDNSBL['b_type']
                     isFound = True
-                    debug('v: {}', q_name)
 
                 if isFound and not isInWhitelist:
 
@@ -1838,11 +1899,13 @@ def operate(id, event, qstate, qdata):
                         q_type = RR_TYPE_A
                         q_type_str = 'A'
 
-                    debug('{} Blocked {} {}', q_name, b_ip, q_type_str)
+                    debug('[{}]: blocked: {}, b_ip={}, q_type={}', q_name_original, q_name, b_ip, q_type_str)
 
                     # Create FQDN Reply Message
+                    answer = "{}. 60 IN {} {}".format(q_name, q_type_str, b_ip)
+                    debug('[{}]: answer: {}', q_name_original, answer)
                     msg = DNSMessage(qstate.qinfo.qname_str, q_type, RR_CLASS_IN, PKT_QR | PKT_RA)
-                    msg.answer.append("{}. 60 IN {} {}" .format(q_name, q_type_str, b_ip))
+                    msg.answer.append(answer)
 
                     msg.set_return_msg(qstate)
                     if msg is None or not msg.set_return_msg(qstate):
@@ -1860,6 +1923,11 @@ def operate(id, event, qstate, qdata):
                     qstate.return_msg.rep.security = 2
                     qstate.ext_state[id] = MODULE_FINISHED
                     return True
+
+            else:
+                debug('[{}]: domain found in exclusion cache: {}', q_name_original, q_name)
+
+    debug('[{}]: passed through', q_name)
 
     if (event == MODULE_EVENT_NEW) or (event == MODULE_EVENT_PASS):
         qstate.ext_state[id] = MODULE_WAIT_MODULE  

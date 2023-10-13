@@ -2425,6 +2425,7 @@ function pfb_unbound_python_whitelist($mode='') {
 	$dnsbl_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE, TRUE);
 	if (!empty($dnsbl_white)) {
 		foreach ($dnsbl_white as $key => $line) {
+			$line = trim($line);
 			if (!empty($line)) {
 				if (substr($line, 0, 4) == 'www.') {
 					$line = substr($line, 4);
@@ -2451,6 +2452,7 @@ function pfb_unbound_python_whitelist($mode='') {
 	if (file_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt")) {
 		if (($handle = @fopen("{$pfb['dbdir']}/pfbalexawhitelist.txt", 'r')) !== FALSE) {
 			while (($line = @fgets($handle)) !== FALSE) {
+				$line = trim($line);
 				if (!empty($line)) {
 					// Already processed -- no need to re-test for TLDs
 					$csvline = str_getcsv($line);
@@ -2476,10 +2478,12 @@ function pfb_unbound_python_whitelist($mode='') {
 	foreach($whitelist_files as $file) {
 		if (($handle = @fopen($file, 'r')) !== FALSE) {
 			while (($line = @fgets($handle)) !== FALSE) {
+				$line = trim($line);
 				if (!empty($line)) {
 					$alias = substr(basename($file), 0, -10);
 					$csvline = str_getcsv($line);
-					$dnsbl_whitelist[] = ",{$csvline[0]},,1,DNSBL_WHITELIST,{$alias},{$csvline[1]}";
+					$type = $csvline[1]; // 0 = literal, 1 = wildcard, 2 = regex
+					$dnsbl_whitelist[] = ",{$csvline[0]},,1,DNSBL_WHITELIST,{$alias},{$type}";
 				}
 			}
 		}
@@ -9179,7 +9183,7 @@ function sync_package_pfblockerng($cron='') {
 		if (!empty($lists_dnsbl_all)) {
 			pfb_logger("\n------------------------------------------------------------------------\n", 1);
 
-			pfb_logger('Assembling DNSBL database...', 1);
+			pfb_logger("\nAssembling DNSBL database...", 1);
 			unlink_if_exists("{$pfb['dnsbl_file']}.raw");
 			$pfb_output = @fopen("{$pfb['dnsbl_file']}.raw", 'w');
 			foreach ($lists_dnsbl_all as $current_list) {
