@@ -12,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=   libpfctl.so:net/libpfctl
 
-USES=		cpe ssl
+USES=		cpe ssl localbase:ldflags
 CPE_VENDOR=	miniupnp_project
 
 USE_GITHUB=	yes
@@ -29,8 +29,8 @@ PLIST_FILES=	etc/miniupnpd.conf.sample sbin/miniupnpd \
 MAKE_JOBS_UNSAFE=yes
 USE_RC_SUBR=	miniupnpd
 
-CFLAGS+=	-I${OPENSSLINC} -I${LOCALBASE}/include/
-LDFLAGS+=	-L${OPENSSLLIB} -L${LOCALBASE}/lib -lpfctl
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB} -lpfctl
 
 WRKSRC_SUBDIR=	miniupnpd
 
