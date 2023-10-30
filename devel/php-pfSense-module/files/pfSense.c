@@ -2977,7 +2977,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 }
 
 PHP_FUNCTION(pfSense_get_pf_stats) {
-	struct pf_status status;
+	struct pfctl_status *status;
 	time_t runtime;
 	unsigned sec, min, hrs, day;
 	char statline[80];
@@ -2996,55 +2996,55 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 
 
 	bzero(&status, sizeof(status));
-	if (ioctl(dev, DIOCGETSTATUS, &status)) {
+	if ((status = pfctl_get_status(dev)) == NULL) {
 		add_assoc_string(return_value, "error", strerror(errno));
 	} else {
-		add_assoc_long(return_value, "rulesmatch", (unsigned long long)status.counters[PFRES_MATCH]);
-		add_assoc_long(return_value, "pullhdrfail", (unsigned long long)status.counters[PFRES_BADOFF]);
-		add_assoc_long(return_value, "fragments", (unsigned long long)status.counters[PFRES_FRAG]);
-		add_assoc_long(return_value, "shortpacket", (unsigned long long)status.counters[PFRES_SHORT]);
-		add_assoc_long(return_value, "normalizedrop", (unsigned long long)status.counters[PFRES_NORM]);
-		add_assoc_long(return_value, "nomemory", (unsigned long long)status.counters[PFRES_MEMORY]);
-		add_assoc_long(return_value, "badtimestamp", (unsigned long long)status.counters[PFRES_TS]);
-		add_assoc_long(return_value, "congestion", (unsigned long long)status.counters[PFRES_CONGEST]);
-		add_assoc_long(return_value, "ipoptions", (unsigned long long)status.counters[PFRES_IPOPTIONS]);
-		add_assoc_long(return_value, "protocksumbad", (unsigned long long)status.counters[PFRES_PROTCKSUM]);
-		add_assoc_long(return_value, "statesbad", (unsigned long long)status.counters[PFRES_BADSTATE]);
-		add_assoc_long(return_value, "stateinsertions", (unsigned long long)status.counters[PFRES_STATEINS]);
-		add_assoc_long(return_value, "maxstatesdrop", (unsigned long long)status.counters[PFRES_MAXSTATES]);
-		add_assoc_long(return_value, "srclimitdrop", (unsigned long long)status.counters[PFRES_SRCLIMIT]);
-		add_assoc_long(return_value, "synproxydrop", (unsigned long long)status.counters[PFRES_SYNPROXY]);
+		add_assoc_long(return_value, "rulesmatch", pfctl_status_counter(status, PFRES_MATCH));
+		add_assoc_long(return_value, "pullhdrfail", pfctl_status_counter(status, PFRES_BADOFF));
+		add_assoc_long(return_value, "fragments", pfctl_status_counter(status, PFRES_FRAG));
+		add_assoc_long(return_value, "shortpacket", pfctl_status_counter(status, PFRES_SHORT));
+		add_assoc_long(return_value, "normalizedrop", pfctl_status_counter(status, PFRES_NORM));
+		add_assoc_long(return_value, "nomemory", pfctl_status_counter(status, PFRES_MEMORY));
+		add_assoc_long(return_value, "badtimestamp", pfctl_status_counter(status, PFRES_TS));
+		add_assoc_long(return_value, "congestion", pfctl_status_counter(status, PFRES_CONGEST));
+		add_assoc_long(return_value, "ipoptions", pfctl_status_counter(status, PFRES_IPOPTIONS));
+		add_assoc_long(return_value, "protocksumbad", pfctl_status_counter(status, PFRES_PROTCKSUM));
+		add_assoc_long(return_value, "statesbad", pfctl_status_counter(status, PFRES_BADSTATE));
+		add_assoc_long(return_value, "stateinsertions", pfctl_status_counter(status, PFRES_STATEINS));
+		add_assoc_long(return_value, "maxstatesdrop", pfctl_status_counter(status, PFRES_MAXSTATES));
+		add_assoc_long(return_value, "srclimitdrop", pfctl_status_counter(status, PFRES_SRCLIMIT));
+		add_assoc_long(return_value, "synproxydrop", pfctl_status_counter(status, PFRES_SYNPROXY));
 
-		add_assoc_long(return_value, "maxstatesreached", (unsigned long long)status.lcounters[LCNT_STATES]);
-		add_assoc_long(return_value, "maxsrcstatesreached", (unsigned long long)status.lcounters[LCNT_SRCSTATES]);
-		add_assoc_long(return_value, "maxsrcnodesreached", (unsigned long long)status.lcounters[LCNT_SRCNODES]);
-		add_assoc_long(return_value, "maxsrcconnreached", (unsigned long long)status.lcounters[LCNT_SRCCONN]);
-		add_assoc_long(return_value, "maxsrcconnratereached", (unsigned long long)status.lcounters[LCNT_SRCCONNRATE]);
-		add_assoc_long(return_value, "overloadtable", (unsigned long long)status.lcounters[LCNT_OVERLOAD_TABLE]);
-		add_assoc_long(return_value, "overloadflush", (unsigned long long)status.lcounters[LCNT_OVERLOAD_FLUSH]);
+		add_assoc_long(return_value, "maxstatesreached", pfctl_status_lcounter(status, LCNT_STATES));
+		add_assoc_long(return_value, "maxsrcstatesreached", pfctl_status_lcounter(status, LCNT_SRCSTATES));
+		add_assoc_long(return_value, "maxsrcnodesreached", pfctl_status_lcounter(status, LCNT_SRCNODES));
+		add_assoc_long(return_value, "maxsrcconnreached", pfctl_status_lcounter(status, LCNT_SRCCONN));
+		add_assoc_long(return_value, "maxsrcconnratereached", pfctl_status_lcounter(status, LCNT_SRCCONNRATE));
+		add_assoc_long(return_value, "overloadtable", pfctl_status_lcounter(status, LCNT_OVERLOAD_TABLE));
+		add_assoc_long(return_value, "overloadflush", pfctl_status_lcounter(status, LCNT_OVERLOAD_FLUSH));
 
-		add_assoc_long(return_value, "statesearch", (unsigned long long)status.fcounters[FCNT_STATE_SEARCH]);
-		add_assoc_long(return_value, "stateinsert", (unsigned long long)status.fcounters[FCNT_STATE_INSERT]);
-		add_assoc_long(return_value, "stateremovals", (unsigned long long)status.fcounters[FCNT_STATE_REMOVALS]);
+		add_assoc_long(return_value, "statesearch", pfctl_status_fcounter(status, FCNT_STATE_SEARCH));
+		add_assoc_long(return_value, "stateinsert", pfctl_status_fcounter(status, FCNT_STATE_INSERT));
+		add_assoc_long(return_value, "stateremovals", pfctl_status_fcounter(status, FCNT_STATE_REMOVALS));
 
-		add_assoc_long(return_value, "srcnodessearch", (unsigned long long)status.scounters[SCNT_SRC_NODE_SEARCH]);
-		add_assoc_long(return_value, "srcnodesinsert", (unsigned long long)status.scounters[SCNT_SRC_NODE_INSERT]);
-		add_assoc_long(return_value, "srcnodesremovals", (unsigned long long)status.scounters[SCNT_SRC_NODE_REMOVALS]);
+		add_assoc_long(return_value, "srcnodessearch", pfctl_status_scounter(status, SCNT_SRC_NODE_SEARCH));
+		add_assoc_long(return_value, "srcnodesinsert", pfctl_status_scounter(status, SCNT_SRC_NODE_INSERT));
+		add_assoc_long(return_value, "srcnodesremovals", pfctl_status_scounter(status, SCNT_SRC_NODE_REMOVALS));
 
-		add_assoc_long(return_value, "running", status.running);
-		add_assoc_long(return_value, "states", status.states);
-		add_assoc_long(return_value, "srcnodes", status.src_nodes);
+		add_assoc_long(return_value, "running", status->running);
+		add_assoc_long(return_value, "states", status->states);
+		add_assoc_long(return_value, "srcnodes", status->src_nodes);
 
-		add_assoc_long(return_value, "hostid", ntohl(status.hostid));
+		add_assoc_long(return_value, "hostid", ntohl(status->hostid));
 		for (i = 0; i < PF_MD5_DIGEST_LENGTH; i++) {
-			buf[i + i] = hex[status.pf_chksum[i] >> 4];
-			buf[i + i + 1] = hex[status.pf_chksum[i] & 0x0f];
+			buf[i + i] = hex[status->pf_chksum[i] >> 4];
+			buf[i + i + 1] = hex[status->pf_chksum[i] & 0x0f];
 		}
 		buf[i + i] = '\0';
 		add_assoc_string(return_value, "pfchecksum", buf);
 		/* printf("Checksum: 0x%s\n\n", buf); */
 
-		switch(status.debug) {
+		switch(status->debug) {
 		case PF_DEBUG_NONE:
 			add_assoc_string(return_value, "debuglevel", "none");
 			break;
@@ -3062,8 +3062,8 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 			break;
 		}
 
-		runtime = time(NULL) - status.since;
-		if (status.since) {
+		runtime = time(NULL) - status->since;
+		if (status->since) {
 			day = runtime;
 			sec = day % 60;
 			day /= 60;
@@ -3076,6 +3076,7 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 			    day, hrs, min, sec);
 			add_assoc_string(return_value, "uptime", statline);
 		}
+		pfctl_free_status(status);
 	}
 	close(dev);
 	}
