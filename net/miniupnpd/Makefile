@@ -1,6 +1,6 @@
 PORTNAME=	miniupnpd
 DISTVERSION=	2.3.3
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net
 
@@ -9,6 +9,8 @@ COMMENT=	UPnP IGD implementation which uses pf
 WWW=		http://miniupnp.free.fr/
 
 LICENSE=	BSD3CLAUSE
+
+LIB_DEPENDS=   libpfctl.so:net/libpfctl
 
 USES=		cpe ssl
 CPE_VENDOR=	miniupnp_project
@@ -27,8 +29,8 @@ PLIST_FILES=	etc/miniupnpd.conf.sample sbin/miniupnpd \
 MAKE_JOBS_UNSAFE=yes
 USE_RC_SUBR=	miniupnpd
 
-CFLAGS+=	-I${OPENSSLINC}
-LDFLAGS+=	-L${OPENSSLLIB}
+CFLAGS+=	-I${OPENSSLINC} -I${LOCALBASE}/include/
+LDFLAGS+=	-L${OPENSSLLIB} -L${LOCALBASE}/lib -lpfctl
 
 WRKSRC_SUBDIR=	miniupnpd
 
