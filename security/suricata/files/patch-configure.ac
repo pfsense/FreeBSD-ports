@@ -1,0 +1,11 @@
+--- configure.ac.orig	2023-10-31 10:26:06 UTC
++++ configure.ac
+@@ -249,7 +249,7 @@
+             LUA_LIB_NAME="lua-5.1"
+             CFLAGS="${CFLAGS} -DOS_FREEBSD"
+             CPPFLAGS="${CPPFLAGS} -I/usr/local/include -I/usr/local/include/libnet11"
+-            LDFLAGS="${LDFLAGS} -L/usr/local/lib -L/usr/local/lib/libnet11"
++            LDFLAGS="${LDFLAGS} -L/usr/local/lib -L/usr/local/lib/libnet11 -lpfctl"
+             RUST_LDADD="-lrt -lm"
+             ;;
+         *-*-openbsd*)

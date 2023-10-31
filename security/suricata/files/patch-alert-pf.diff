@@ -76,10 +76,9 @@ diff -ruN ./suricata-7.0.0.orig/src/Makefile.in ./suricata-7.0.0/src/Makefile.in
  	-rm -f ./$(DEPDIR)/alert-syslog.Po
  	-rm -f ./$(DEPDIR)/app-layer-detect-proto.Po
  	-rm -f ./$(DEPDIR)/app-layer-dnp3-objects.Po
-diff -ruN ./suricata-7.0.0.orig/src/alert-pf.c ./suricata-7.0.0/src/alert-pf.c
---- ./suricata-7.0.0.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2023-08-09 14:13:26.000000000 -0400
-@@ -0,0 +1,1889 @@
+--- src/alert-pf.c.orig	2023-10-31 11:09:45 UTC
++++ src/alert-pf.c
+@@ -0,0 +1,1921 @@
 +/* Copyright (C) 2007-2023 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -191,6 +190,9 @@ diff -ruN ./suricata-7.0.0.orig/src/alert-pf.c ./suricata-7.0.0/src/alert-pf.c
 +#include <regex.h>
 +#include <ifaddrs.h>
 +#include <pthread.h>
++#ifdef __FreeBSD__
++#include <libpfctl.h>
++#endif
 +
 +#define PFDEVICE	"/dev/pf"
 +#define WLMAX		4096
@@ -466,6 +468,34 @@ diff -ruN ./suricata-7.0.0.orig/src/alert-pf.c ./suricata-7.0.0/src/alert-pf.c
 +     * if 'kill-state' option enabled from YAML conf file.
 +     */
 +    if (data->ctx->kill_state) {
++#ifdef __FreeBSD__
++        struct pfctl_kill kill = {
++            .af = net_addr->family,
++        };
++        memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
++        if (kill.af == AF_INET)
++            kill.src.addr.v.a.addr.v4.s_addr = net_addr->addr_data32[0];
++        else if (kill.af == AF_INET6)
++            memcpy(&kill.src.addr.v.a.addr.v6, net_addr->addr_data8, sizeof(kill.src.addr.v.a.addr.v6));
++        if (pfctl_kill_states(data->fd, &kill, NULL)) {
++            SCLogError("AlertPfBlock(): ioctl() DIOCKILLSTATES: %s\n", strerror(errno));
++            states_err = 1;
++        }
++
++        memset(&kill, 0, sizeof(kill));
++        memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
++        kill.af = net_addr->family;
++        if (kill.af == AF_INET)
++            kill.dst.addr.v.a.addr.v4.s_addr = net_addr->addr_data32[0];
++        else if (kill.af == AF_INET6)
++            memcpy(&kill.dst.addr.v.a.addr.v6, net_addr->addr_data8, sizeof(kill.dst.addr.v.a.addr.v6));
++
++        /* clear any open states where this IP is DST */
++        if (pfctl_kill_states(data->fd, &kill, NULL)) {
++            SCLogError("AlertPfBlock(): ioctl() DIOCKILLSTATES: %s\n", strerror(errno));
++            states_err = 1;
++        }
++#else
 +        struct pfioc_state_kill psk;
 +
 +        memset(&psk, 0, sizeof(psk));
@@ -495,6 +525,7 @@ diff -ruN ./suricata-7.0.0.orig/src/alert-pf.c ./suricata-7.0.0/src/alert-pf.c
 +            SCLogError("AlertPfBlock(): ioctl() DIOCKILLSTATES: %s\n", strerror(errno));
 +            states_err = 1;
 +        }
++#endif
 +
 +        if (states_err && data->ctx->passlist_dbg) {
 +            gettimeofday(&tval, NULL);
