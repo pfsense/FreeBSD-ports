@@ -1,6 +1,6 @@
 diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.am ./snort-2.9.19/src/output-plugins/Makefile.am
---- ./snort-2.9.19.orig/src/output-plugins/Makefile.am	2021-10-20 07:04:33.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2021-12-08 15:15:29.000000000 -0500
+--- ./snort-2.9.19.orig/src/output-plugins/Makefile.am 2021-10-20 07:04:33.000000000 -0400
++++ ./src/output-plugins/Makefile.am   2021-12-08 15:15:29.000000000 -0500
 @@ -13,7 +13,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
@@ -43,7 +43,7 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.in ./snort-2.9.19/src/
 diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/output-plugins/spo_pf.c
 --- ./snort-2.9.19.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/output-plugins/spo_pf.c	2021-11-11 16:44:23.000000000 -0500
-@@ -0,0 +1,811 @@
+@@ -0,0 +1,809 @@
 +/*
 +* Copyright (c) 2021  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
@@ -124,6 +124,8 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +#include <regex.h>
 +#include <ifaddrs.h>
 +#include <pthread.h>
++
++#include <libpfctl.h>
 +
 +#define PFDEVICE        "/dev/pf"
 +
@@ -573,34 +575,30 @@ diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/out
 +            ErrorMessage("s2c_pf_block() => ioctl() DIOCRADDADDRS: %s\n", strerror(errno));
 + 
 +	if (data->kill) {
-+		struct pfioc_state_kill psk;
++		struct pfctl_kill kill = {
++			.af = net_addr->family,
++		};
++		memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
++		if (kill.af == AF_INET)
++			memcpy(&kill.src.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
++		else if (kill.af == AF_INET6)
++			memcpy(&kill.src.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
++		else
++			return (-1);
++		pfctl_kill_states(data->fd, &kill, NULL);
 +
-+		memset(&psk, 0, sizeof(psk));
-+		memset(&psk.psk_src.addr.v.a.mask, 0xff, sizeof(psk.psk_src.addr.v.a.mask));
-+		psk.psk_af = net_addr->family;
-+		if (psk.psk_af == AF_INET)
-+			memcpy(&psk.psk_src.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
-+		else if (psk.psk_af == AF_INET6)
-+			memcpy(&psk.psk_src.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
++		memset(&kill, 0, sizeof(kill));
++		memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
++		kill.af = net_addr->family;
++
++		if (kill.af == AF_INET)
++			memcpy(&kill.dst.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
++		else if (kill.af == AF_INET6)
++			memcpy(&kill.dst.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
 +		else
 +			return (-1);
 +
-+		/* XXX: Should ignore? */
-+		ioctl(data->fd, DIOCKILLSTATES, &psk);
-+
-+		memset(&psk, 0, sizeof(psk));
-+		memset(&psk.psk_dst.addr.v.a.mask, 0xff, sizeof(psk.psk_dst.addr.v.a.mask));
-+		psk.psk_af = net_addr->family;
-+		if (psk.psk_af == AF_INET)
-+			memcpy(&psk.psk_dst.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
-+		else if (psk.psk_af == AF_INET6)
-+			memcpy(&psk.psk_dst.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
-+		else
-+			return (-1);
-+
-+		/* XXX: Should ignore? */
-+		ioctl(data->fd, DIOCKILLSTATES, &psk);
-+
++		pfctl_kill_states(data->fd, &kill, NULL);
 +	}
 +        return(0); 
 +}
