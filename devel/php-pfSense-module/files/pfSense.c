@@ -2686,32 +2686,251 @@ cleanup:
 
 }
 
-PHP_FUNCTION(pfSense_get_pf_states) {
-	char buf[128], *filter;
-	int count, dev, filter_if, filter_rl, found, min, sec;
-	sa_family_t af;
-	struct pfctl_states states;
-	struct pfctl_state *s;
+struct pfSense_state_arg {
+	int count;
+	int entries;
+	bool filter_if;
+	bool filter_rl;
+	zval *return_value;
+	zval *zvar;
+	char *filter;
+	HashTable *hash1, *hash2;
+};
+static int
+pfSense_append_state(struct pfctl_state *s, void *arg) {
+	char buf[128];
 	struct pfctl_state_peer *src, *dst;
 	struct pfctl_state_key *sk, *nk;
 	struct protoent *p;
+	struct pfSense_state_arg *a = (struct pfSense_state_arg *)arg;
+	int found, min, sec;
+	sa_family_t af;
 	uint8_t proto;
 	uint32_t expire, creation;
 	uint64_t bytes[2], id, packets[2];
-	zval array, *zvar;
-	HashTable *hash1, *hash2;
+	zval array;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
 	zend_string *skey, *skey2;
-	int entries = 0;
 
-	filter = NULL;
-	filter_if = filter_rl = 0;
-	zvar = NULL;
+
+	/* Limit the result to 50.000 states maximum. */
+	if (a->count > 50000)
+		return (E2BIG);
+	a->count++;
+
+	if (a->filter_if || a->filter_rl) {
+		found = 0;
+		a->hash1 = Z_ARRVAL_P(a->zvar);
+
+		ZEND_HASH_FOREACH_KEY_VAL(a->hash1, lkey, skey, val) {
+			a->hash2 = Z_ARRVAL_P(val);
+			a->entries = 0;
+			ZEND_HASH_FOREACH_KEY_VAL(a->hash2, lkey2, skey2, val2) {
+				a->entries = 1;
+
+				if (a->filter_if) {
+					if (strcasecmp(s->orig_ifname, Z_STRVAL_P(val2)) == 0) {
+						found = 1;
+					}
+				} else if (a->filter_rl) {
+					if (s->rule != -1 &&
+					    s->rule == Z_LVAL_P(val2)) {
+						found = 1;
+					}
+				}
+			} ZEND_HASH_FOREACH_END();
+
+			if (a->entries == 0) {
+				return (EINVAL);
+			}
+		} ZEND_HASH_FOREACH_END();
+
+		if (!found)
+			return (0);
+	}
+
+	af = s->key[PF_SK_WIRE].af;
+	proto = s->key[PF_SK_WIRE].proto;
+	if (s->direction == PF_OUT) {
+		src = &s->src;
+		dst = &s->dst;
+		sk = &s->key[PF_SK_STACK];
+		nk = &s->key[PF_SK_WIRE];
+		if (proto == IPPROTO_ICMP || proto == IPPROTO_ICMPV6)
+			sk->port[0] = nk->port[0];
+	} else {
+		src = &s->dst;
+		dst = &s->src;
+		sk = &s->key[PF_SK_WIRE];
+		nk = &s->key[PF_SK_STACK];
+		if (proto == IPPROTO_ICMP || proto == IPPROTO_ICMPV6)
+			sk->port[1] = nk->port[1];
+	}
+
+	found = 0;
+
+	array_init(&array);
+
+	add_assoc_string(&array, "if", s->orig_ifname);
+	if ((p = getprotobynumber(proto)) != NULL) {
+		add_assoc_string(&array, "proto", p->p_name);
+		if (a->filter != NULL && strstr(p->p_name, a->filter))
+			found = 1;
+	} else
+		add_assoc_long(&array, "proto", (long)proto);
+	add_assoc_string(&array, "direction",
+	    ((s->direction == PF_OUT) ? "out" : "in"));
+
+	memset(buf, 0, sizeof(buf));
+	pf_print_host(&nk->addr[1], nk->port[1], af, buf, sizeof(buf));
+	add_assoc_string(&array, ((s->direction == PF_OUT) ? "src" : "dst"), buf);
+	if (a->filter != NULL && !found && strstr(buf, a->filter))
+		found = 1;
+
+	if (PF_ANEQ(&nk->addr[1], &sk->addr[1], af) ||
+	    nk->port[1] != sk->port[1]) {
+		memset(buf, 0, sizeof(buf));
+		pf_print_host(&sk->addr[1], sk->port[1], af, buf,
+		    sizeof(buf));
+		add_assoc_string(&array,
+		    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf);
+		if (a->filter != NULL && !found && strstr(buf, a->filter))
+			found = 1;
+	}
+
+	memset(buf, 0, sizeof(buf));
+	pf_print_host(&nk->addr[0], nk->port[0], af, buf, sizeof(buf));
+	add_assoc_string(&array, ((s->direction == PF_OUT) ? "dst" : "src"), buf);
+	if (a->filter != NULL && !found && strstr(buf, a->filter))
+		found = 1;
+
+	if (PF_ANEQ(&nk->addr[0], &sk->addr[0], af) ||
+	    nk->port[0] != sk->port[0]) {
+		memset(buf, 0, sizeof(buf));
+		pf_print_host(&sk->addr[0], sk->port[0], af, buf,
+		    sizeof(buf));
+		add_assoc_string(&array,
+		    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf);
+		if (a->filter != NULL && !found && strstr(buf, a->filter))
+			found = 1;
+	}
+
+	if (proto == IPPROTO_TCP) {
+		if (src->state <= TCPS_TIME_WAIT &&
+		    dst->state <= TCPS_TIME_WAIT) {
+			snprintf(buf, sizeof(buf) - 1, "%s:%s",
+			    tcpstates[src->state], tcpstates[dst->state]);
+			add_assoc_string(&array, "state", buf);
+			if (a->filter != NULL && !found &&
+			    (strstr(tcpstates[src->state], a->filter) ||
+			    strstr(tcpstates[dst->state], a->filter))) {
+				found = 1;
+			}
+		} else if (src->state == PF_TCPS_PROXY_SRC ||
+		    dst->state == PF_TCPS_PROXY_SRC)
+			add_assoc_string(&array, "state", "PROXY:SRC");
+		else if (src->state == PF_TCPS_PROXY_DST ||
+		    dst->state == PF_TCPS_PROXY_DST)
+			add_assoc_string(&array, "state", "PROXY:DST");
+		else {
+			snprintf(buf, sizeof(buf) - 1,
+			    "<BAD STATE LEVELS %u:%u>",
+			    src->state, dst->state);
+			add_assoc_string(&array, "state", buf);
+		}
+	} else if (proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
+	    dst->state < PFUDPS_NSTATES) {
+		const char *states[] = PFUDPS_NAMES;
+
+		snprintf(buf, sizeof(buf) - 1, "%s:%s",
+		    states[src->state], states[dst->state]);
+		add_assoc_string(&array, "state", buf);
+
+		if (a->filter != NULL && !found &&
+		    (strstr(states[src->state], a->filter) ||
+		    strstr(states[dst->state], a->filter))) {
+			found = 1;
+		}
+	} else if (proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
+	    dst->state < PFOTHERS_NSTATES) {
+		/* XXX ICMP doesn't really have state levels */
+		const char *states[] = PFOTHERS_NAMES;
+
+		snprintf(buf, sizeof(buf) - 1, "%s:%s",
+		    states[src->state], states[dst->state]);
+		add_assoc_string(&array, "state", buf);
+
+		if (a->filter != NULL && !found &&
+		    (strstr(states[src->state], a->filter) ||
+		    strstr(states[dst->state], a->filter))) {
+			found = 1;
+		}
+	} else {
+		snprintf(buf, sizeof(buf) - 1, "%u:%u", src->state, dst->state);
+		add_assoc_string(&array, "state", buf);
+	}
+
+	if (a->filter != NULL && !found) {
+		zval_ptr_dtor(&array);
+		return (0);
+	}
+
+	creation = s->creation;
+	sec = creation % 60;
+	creation /= 60;
+	min = creation % 60;
+	creation /= 60;
+	snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", creation, min, sec);
+	add_assoc_string(&array, "age", buf);
+	expire = s->expire;
+	sec = expire % 60;
+	expire /= 60;
+	min = expire % 60;
+	expire /= 60;
+	snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", expire, min, sec);
+	add_assoc_string(&array, "expires in", buf);
+
+	bcopy(&s->packets[0], &packets[0], sizeof(uint64_t));
+	bcopy(&s->packets[1], &packets[1], sizeof(uint64_t));
+	bcopy(&s->bytes[0], &bytes[0], sizeof(uint64_t));
+	bcopy(&s->bytes[1], &bytes[1], sizeof(uint64_t));
+	add_assoc_double(&array, "packets total",
+	    (double)(packets[0] + packets[1]));
+	add_assoc_double(&array, "packets in",
+	    (double)packets[0]);
+	add_assoc_double(&array, "packets out",
+	    (double)packets[1]);
+	add_assoc_double(&array, "bytes total",
+	    (double)(bytes[0] + bytes[1]));
+	add_assoc_double(&array, "bytes in", (double)bytes[0]);
+	add_assoc_double(&array, "bytes out", (double)bytes[1]);
+	if (s->anchor != -1)
+		add_assoc_long(&array, "anchor", (long)s->anchor);
+	if (s->rule != -1)
+		add_assoc_long(&array, "rule", (long)s->rule);
+
+	bcopy(&s->id, &id, sizeof(uint64_t));
+	snprintf(buf, sizeof(buf) - 1, "%016jx", (uintmax_t)id);
+	add_assoc_string(&array, "id", buf);
+	snprintf(buf, sizeof(buf) - 1, "%08x", s->creatorid);
+	add_assoc_string(&array, "creatorid", buf);
+
+	add_next_index_zval(a->return_value, &array);
+
+	return (0);
+}
+
+PHP_FUNCTION(pfSense_get_pf_states) {
+	int ret;
+	zend_long lkey, lkey2;
+	zend_string *skey, *skey2;
+	zval *val, *val2;
+	struct pfSense_state_arg args = {};
 
 	ZEND_PARSE_PARAMETERS_START(0, 1)
 		Z_PARAM_OPTIONAL
-		Z_PARAM_ZVAL(zvar)
+		Z_PARAM_ZVAL(args.zvar)
 	ZEND_PARSE_PARAMETERS_END();
 
 /*
@@ -2724,256 +2943,47 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	        )
 	)
 */
-	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
-		hash1 = Z_ARRVAL_P(zvar);
+	if (args.zvar != NULL && Z_TYPE_P(args.zvar) == IS_ARRAY) {
+		args.hash1 = Z_ARRVAL_P(args.zvar);
 
 		// Find the next (sub) array with a numeric key
-		ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
+		ZEND_HASH_FOREACH_KEY_VAL(args.hash1, lkey, skey, val) {
 			if (skey || Z_TYPE_P(val) != IS_ARRAY) {
 				continue;
 			}
 
-			hash2 = Z_ARRVAL_P(val);
+			args.hash2 = Z_ARRVAL_P(val);
 
-			// Now search teh sub-array interfaces, rules or filters
-			ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
-				entries = 1;
+			// Now search the sub-array interfaces, rules or filters
+			ZEND_HASH_FOREACH_KEY_VAL(args.hash2, lkey2, skey2, val2) {
+				args.entries = 1;
 				if((strcasecmp(ZSTR_VAL(skey2), "interface") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
-					filter_if = 1;
+					args.filter_if = 1;
 				} else if ((strcasecmp(ZSTR_VAL(skey2), "ruleid") == 0) && (Z_TYPE_P(val2) == IS_LONG)) {
-					filter_rl = 1;
+					args.filter_rl = 1;
 				} else if ((strcasecmp(ZSTR_VAL(skey2), "filter") == 0) && (Z_TYPE_P(val2) == IS_STRING)) {
-					filter = Z_STRVAL_P(val2);
+					args.filter = Z_STRVAL_P(val2);
 				}
 
 			} ZEND_HASH_FOREACH_END();
 		} ZEND_HASH_FOREACH_END();
 
-		if (entries == 0) {
+		if (args.entries == 0) {
 			RETURN_NULL();
 		}
 
-		if (filter_if && filter_rl)
+		if (args.filter_if && args.filter_rl)
 			RETURN_NULL();
 	}
 
-	if ((dev = open("/dev/pf", O_RDONLY)) < 0)
-		RETURN_NULL();
-	memset(&states, 0, sizeof(states));
-	if (pfctl_get_states(dev, &states) != 0) {
-		close(dev);
-		RETURN_NULL();
-	}
-	close(dev);
-
-	count = 0;
 	array_init(return_value);
-	TAILQ_FOREACH(s, &states.states, entry) {
-		/* Limit the result to 50.000 states maximum. */
-		if (++count == 50000)
-			break;
+	args.return_value = return_value;
 
-		if (filter_if || filter_rl) {
-			found = 0;
-			hash1 = Z_ARRVAL_P(zvar);
-
-			ZEND_HASH_FOREACH_KEY_VAL(hash1, lkey, skey, val) {
-				hash2 = Z_ARRVAL_P(val);
-				entries = 0;
-				ZEND_HASH_FOREACH_KEY_VAL(hash2, lkey2, skey2, val2) {
-					entries = 1;
-
-					if (filter_if) {
-						if (strcasecmp(s->orig_ifname, Z_STRVAL_P(val2)) == 0) {
-							found = 1;
-						}
-					} else if (filter_rl) {
-						if (s->rule != -1 &&
-						    s->rule == Z_LVAL_P(val2)) {
-							found = 1;
-						}
-					}
-				} ZEND_HASH_FOREACH_END();
-
-				if (entries == 0) {
-					pfctl_free_states(&states);
-					RETURN_NULL();
-				}
-			} ZEND_HASH_FOREACH_END();
-
-			if (!found)
-				continue;
-		}
-
-		af = s->key[PF_SK_WIRE].af;
-		proto = s->key[PF_SK_WIRE].proto;
-		if (s->direction == PF_OUT) {
-			src = &s->src;
-			dst = &s->dst;
-			sk = &s->key[PF_SK_STACK];
-			nk = &s->key[PF_SK_WIRE];
-			if (proto == IPPROTO_ICMP || proto == IPPROTO_ICMPV6)
-				sk->port[0] = nk->port[0];
-		} else {
-			src = &s->dst;
-			dst = &s->src;
-			sk = &s->key[PF_SK_WIRE];
-			nk = &s->key[PF_SK_STACK];
-			if (proto == IPPROTO_ICMP || proto == IPPROTO_ICMPV6)
-				sk->port[1] = nk->port[1];
-		}
-
-		found = 0;
-
-		array_init(&array);
-
-		add_assoc_string(&array, "if", s->orig_ifname);
-		if ((p = getprotobynumber(proto)) != NULL) {
-			add_assoc_string(&array, "proto", p->p_name);
-			if (filter != NULL && strstr(p->p_name, filter))
-				found = 1;
-		} else
-			add_assoc_long(&array, "proto", (long)proto);
-		add_assoc_string(&array, "direction",
-		    ((s->direction == PF_OUT) ? "out" : "in"));
-
-		memset(buf, 0, sizeof(buf));
-		pf_print_host(&nk->addr[1], nk->port[1], af, buf, sizeof(buf));
-		add_assoc_string(&array, ((s->direction == PF_OUT) ? "src" : "dst"), buf);
-		if (filter != NULL && !found && strstr(buf, filter))
-			found = 1;
-
-		if (PF_ANEQ(&nk->addr[1], &sk->addr[1], af) ||
-		    nk->port[1] != sk->port[1]) {
-			memset(buf, 0, sizeof(buf));
-			pf_print_host(&sk->addr[1], sk->port[1], af, buf,
-			    sizeof(buf));
-			add_assoc_string(&array,
-			    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf);
-			if (filter != NULL && !found && strstr(buf, filter))
-				found = 1;
-		}
-
-		memset(buf, 0, sizeof(buf));
-		pf_print_host(&nk->addr[0], nk->port[0], af, buf, sizeof(buf));
-		add_assoc_string(&array, ((s->direction == PF_OUT) ? "dst" : "src"), buf);
-		if (filter != NULL && !found && strstr(buf, filter))
-			found = 1;
-
-		if (PF_ANEQ(&nk->addr[0], &sk->addr[0], af) ||
-		    nk->port[0] != sk->port[0]) {
-			memset(buf, 0, sizeof(buf));
-			pf_print_host(&sk->addr[0], sk->port[0], af, buf,
-			    sizeof(buf));
-			add_assoc_string(&array,
-			    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf);
-			if (filter != NULL && !found && strstr(buf, filter))
-				found = 1;
-		}
-
-		if (proto == IPPROTO_TCP) {
-			if (src->state <= TCPS_TIME_WAIT &&
-			    dst->state <= TCPS_TIME_WAIT) {
-				snprintf(buf, sizeof(buf) - 1, "%s:%s",
-				    tcpstates[src->state], tcpstates[dst->state]);
-				add_assoc_string(&array, "state", buf);
-				if (filter != NULL && !found &&
-				    (strstr(tcpstates[src->state], filter) ||
-				    strstr(tcpstates[dst->state], filter))) {
-					found = 1;
-				}
-			} else if (src->state == PF_TCPS_PROXY_SRC ||
-			    dst->state == PF_TCPS_PROXY_SRC)
-				add_assoc_string(&array, "state", "PROXY:SRC");
-			else if (src->state == PF_TCPS_PROXY_DST ||
-			    dst->state == PF_TCPS_PROXY_DST)
-				add_assoc_string(&array, "state", "PROXY:DST");
-			else {
-				snprintf(buf, sizeof(buf) - 1,
-				    "<BAD STATE LEVELS %u:%u>",
-				    src->state, dst->state);
-				add_assoc_string(&array, "state", buf);
-			}
-		} else if (proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
-		    dst->state < PFUDPS_NSTATES) {
-			const char *states[] = PFUDPS_NAMES;
-
-			snprintf(buf, sizeof(buf) - 1, "%s:%s",
-			    states[src->state], states[dst->state]);
-			add_assoc_string(&array, "state", buf);
-
-			if (filter != NULL && !found &&
-			    (strstr(states[src->state], filter) ||
-			    strstr(states[dst->state], filter))) {
-				found = 1;
-			}
-		} else if (proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
-		    dst->state < PFOTHERS_NSTATES) {
-			/* XXX ICMP doesn't really have state levels */
-			const char *states[] = PFOTHERS_NAMES;
-
-			snprintf(buf, sizeof(buf) - 1, "%s:%s",
-			    states[src->state], states[dst->state]);
-			add_assoc_string(&array, "state", buf);
-
-			if (filter != NULL && !found &&
-			    (strstr(states[src->state], filter) ||
-			    strstr(states[dst->state], filter))) {
-				found = 1;
-			}
-		} else {
-			snprintf(buf, sizeof(buf) - 1, "%u:%u", src->state, dst->state);
-			add_assoc_string(&array, "state", buf);
-		}
-
-		if (filter != NULL && !found) {
-			zval_dtor(&array);
-			continue;
-		}
-
-		creation = s->creation;
-		sec = creation % 60;
-		creation /= 60;
-		min = creation % 60;
-		creation /= 60;
-		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", creation, min, sec);
-		add_assoc_string(&array, "age", buf);
-		expire = s->expire;
-		sec = expire % 60;
-		expire /= 60;
-		min = expire % 60;
-		expire /= 60;
-		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", expire, min, sec);
-		add_assoc_string(&array, "expires in", buf);
-
-		bcopy(&s->packets[0], &packets[0], sizeof(uint64_t));
-		bcopy(&s->packets[1], &packets[1], sizeof(uint64_t));
-		bcopy(&s->bytes[0], &bytes[0], sizeof(uint64_t));
-		bcopy(&s->bytes[1], &bytes[1], sizeof(uint64_t));
-		add_assoc_double(&array, "packets total",
-		    (double)(packets[0] + packets[1]));
-		add_assoc_double(&array, "packets in",
-		    (double)packets[0]);
-		add_assoc_double(&array, "packets out",
-		    (double)packets[1]);
-		add_assoc_double(&array, "bytes total",
-		    (double)(bytes[0] + bytes[1]));
-		add_assoc_double(&array, "bytes in", (double)bytes[0]);
-		add_assoc_double(&array, "bytes out", (double)bytes[1]);
-		if (s->anchor != -1)
-			add_assoc_long(&array, "anchor", (long)s->anchor);
-		if (s->rule != -1)
-			add_assoc_long(&array, "rule", (long)s->rule);
-
-		bcopy(&s->id, &id, sizeof(uint64_t));
-		snprintf(buf, sizeof(buf) - 1, "%016jx", (uintmax_t)id);
-		add_assoc_string(&array, "id", buf);
-		snprintf(buf, sizeof(buf) - 1, "%08x", s->creatorid);
-		add_assoc_string(&array, "creatorid", buf);
-
-		add_next_index_zval(return_value, &array);
+	ret = pfctl_get_states_iter(pfSense_append_state, &args);
+	if (ret != 0 && ret != E2BIG) {
+		zval_ptr_dtor(args.return_value);
+		RETURN_NULL();
 	}
-	pfctl_free_states(&states);
 }
 
 PHP_FUNCTION(pfSense_get_pf_stats) {
@@ -3076,9 +3086,7 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 			    day, hrs, min, sec);
 			add_assoc_string(return_value, "uptime", statline);
 		}
-		pfctl_free_status(status);
 	}
-	close(dev);
 	}
 }
 
