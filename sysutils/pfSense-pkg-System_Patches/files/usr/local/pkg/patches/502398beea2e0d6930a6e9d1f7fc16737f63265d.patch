@@ -1,0 +1,32 @@
+commit 502398beea2e0d6930a6e9d1f7fc16737f63265d
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Sep 25 15:16:32 2023 -0400
+
+    Use intval of portal voucher data. Fixes #14325
+    
+    It was already tested to be numeric but this normalizes the result so it
+    doesn't have things like leading zeroes or trailing decimal points.
+
+diff --git a/src/usr/local/www/services_captiveportal_vouchers_edit.php b/src/usr/local/www/services_captiveportal_vouchers_edit.php
+index 54a8c816c1..31b707f11e 100644
+--- a/src/usr/local/www/services_captiveportal_vouchers_edit.php
++++ b/src/usr/local/www/services_captiveportal_vouchers_edit.php
+@@ -106,15 +106,15 @@ if ($_POST['save']) {
+ 		}
+ 
+ 		$rollent['zone'] = $_POST['zone'];
+-		$rollent['number'] = $_POST['number'];
+-		$rollent['minutes'] = $_POST['minutes'];
++		$rollent['number'] = intval($_POST['number']);
++		$rollent['minutes'] = intval($_POST['minutes']);
+ 		$rollent['descr'] = $_POST['descr'];
+ 
+ 		/* New Roll or modified voucher count: create bitmask */
+ 		$voucherlck = lock("voucher{$cpzone}");
+ 
+ 		if ($_POST['count'] != $rollent['count']) {
+-			$rollent['count'] = $_POST['count'];
++			$rollent['count'] = intval($_POST['count']);
+ 			$len = ($rollent['count']>>3) + 1;	 // count / 8 +1
+ 			$rollent['used'] = base64_encode(str_repeat("\000", $len)); // 4 bitmask
+ 			$rollent['active'] = array();

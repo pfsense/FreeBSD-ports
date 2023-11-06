@@ -1,0 +1,117 @@
+commit d69d6c8424ab4299234fb5ec6964682e2e6cbcdd
+Author: jim-p <jimp@netgate.com>
+Date:   Wed Jul 5 15:31:30 2023 -0400
+
+    Improve GIF/GRE interface handling. Fixes #14549
+
+diff --git a/src/etc/inc/interfaces.inc b/src/etc/inc/interfaces.inc
+index 183f134e15..c45ad3e353 100644
+--- a/src/etc/inc/interfaces.inc
++++ b/src/etc/inc/interfaces.inc
+@@ -1072,16 +1072,16 @@ function interface_gre_configure(&$gre, $grekey = "", $flush = true) {
+ 
+ 	/* Do not change the order here for more see gre(4) NOTES section. */
+ 	if (is_ipaddrv6($gre['remote-addr'])) {
+-		mwexec("/sbin/ifconfig {$greif} inet6 tunnel {$realifip6} " . escapeshellarg($gre['remote-addr']));
++		mwexec("/sbin/ifconfig " . escapeshellarg($greif) . " inet6 tunnel " . escapeshellarg($realifip6) . " " . escapeshellarg($gre['remote-addr']));
+ 	} else {
+-		mwexec("/sbin/ifconfig {$greif} tunnel {$realifip} " . escapeshellarg($gre['remote-addr']));
++		mwexec("/sbin/ifconfig " . escapeshellarg($greif) . " tunnel " . escapeshellarg($realifip) . " " . escapeshellarg($gre['remote-addr']));
+ 	}
+ 	if (in_array($tunnel_type, array('v4', 'v4v6'))) {
+-		mwexec("/sbin/ifconfig {$greif} " . escapeshellarg($gre['tunnel-local-addr']) . " " . escapeshellarg($gre['tunnel-remote-addr']) . " netmask " . gen_subnet_mask($gre['tunnel-remote-net']));
++		mwexec("/sbin/ifconfig " . escapeshellarg($greif) . " " . escapeshellarg($gre['tunnel-local-addr']) . " " . escapeshellarg($gre['tunnel-remote-addr']) . " netmask " . gen_subnet_mask($gre['tunnel-remote-net']));
+ 	}
+ 	if (in_array($tunnel_type, array('v6', 'v4v6'))) {
+ 		/* XXX: The prefixlen argument for tunnels of ipv6 is useless since it needs to be 128 as enforced by kernel */
+-		mwexec("/sbin/ifconfig {$greif} inet6 " . escapeshellarg($gre['tunnel-local-addr6']) . " " . escapeshellarg($gre['tunnel-remote-addr6']) . " prefixlen 128");
++		mwexec("/sbin/ifconfig " . escapeshellarg($greif) . " inet6 " . escapeshellarg($gre['tunnel-local-addr6']) . " " . escapeshellarg($gre['tunnel-remote-addr6']) . " prefixlen 128");
+ 	}
+ 
+ 	$parentif = get_real_interface($gre['if']);
+@@ -1227,16 +1227,16 @@ function interface_gif_configure(&$gif, $gifkey = "", $flush = true) {
+ 
+ 	/* Do not change the order here for more see gif(4) NOTES section. */
+ 	if (is_ipaddrv6($gif['remote-addr'])) {
+-		mwexec("/sbin/ifconfig {$gifif} inet6 tunnel {$realifip} " . escapeshellarg($gif['remote-addr']));
++		mwexec("/sbin/ifconfig " . escapeshellarg($gifif) . " inet6 tunnel " . escapeshellarg($realifip) . " " . escapeshellarg($gif['remote-addr']));
+ 	} else {
+-		mwexec("/sbin/ifconfig {$gifif} tunnel {$realifip} " . escapeshellarg($gif['remote-addr']));
++		mwexec("/sbin/ifconfig " . escapeshellarg($gifif) . " tunnel " . escapeshellarg($realifip) . " " . escapeshellarg($gif['remote-addr']));
+ 	}
+ 	if ((is_ipaddrv6($gif['tunnel-local-addr'])) || (is_ipaddrv6($gif['tunnel-remote-addr']))) {
+ 		/* XXX: The prefixlen argument for tunnels of ipv6 is useless since it needs to be 128 as enforced by kernel */
+ 		//mwexec("/sbin/ifconfig {$gifif} inet6 " . escapeshellarg($gif['tunnel-local-addr']) . " " . escapeshellarg($gif['tunnel-remote-addr']) . " prefixlen /" . escapeshellarg($gif['tunnel-remote-net']));
+-		mwexec("/sbin/ifconfig {$gifif} inet6 " . escapeshellarg($gif['tunnel-local-addr']) . " " . escapeshellarg($gif['tunnel-remote-addr']) . " prefixlen 128");
++		mwexec("/sbin/ifconfig " . escapeshellarg($gifif) . " inet6 " . escapeshellarg($gif['tunnel-local-addr']) . " " . escapeshellarg($gif['tunnel-remote-addr']) . " prefixlen 128");
+ 	} else {
+-		mwexec("/sbin/ifconfig {$gifif} " . escapeshellarg($gif['tunnel-local-addr']) . " " . escapeshellarg($gif['tunnel-remote-addr']) . " netmask " . gen_subnet_mask($gif['tunnel-remote-net']));
++		mwexec("/sbin/ifconfig " . escapeshellarg($gifif) . " " . escapeshellarg($gif['tunnel-local-addr']) . " " . escapeshellarg($gif['tunnel-remote-addr']) . " netmask " . gen_subnet_mask($gif['tunnel-remote-net']));
+ 	}
+ 	if (isset($gif['link1'])) {
+ 		pfSense_interface_flags($gifif, IFF_LINK1);
+@@ -1257,7 +1257,7 @@ function interface_gif_configure(&$gif, $gifkey = "", $flush = true) {
+ 		}
+ 		if (is_numericint($gifmtu)) {
+ 			if ($gifmtu != $currentgifmtu) {
+-				mwexec("/sbin/ifconfig {$gifif} mtu {$gifmtu}");
++				mwexec("/sbin/ifconfig " . escapeshellarg($gifif) . " mtu {$gifmtu}");
+ 			}
+ 		}
+ 	} else {
+diff --git a/src/usr/local/www/interfaces_gif_edit.php b/src/usr/local/www/interfaces_gif_edit.php
+index e3bd907163..8f1fcf71ea 100644
+--- a/src/usr/local/www/interfaces_gif_edit.php
++++ b/src/usr/local/www/interfaces_gif_edit.php
+@@ -120,10 +120,20 @@ if ($_POST['save']) {
+ 		if (isset($_POST['link2'])) {
+ 			$gif['link2'] = '';
+ 		}
+-		$gif['gifif'] = $_POST['gifif'];
+-		$gif['gifif'] = interface_gif_configure($gif);
+ 
+-		if ($gif['gifif'] == "" || !stristr($gif['gifif'], "gif")) {
++		if (empty($_POST['gifif']) ||
++		    preg_match("/^gif[0-9]+$/", $_POST['gifif'])) {
++			/* Attempt initial configuration of the GIF if the
++			 * submitted interface is empty or looks like a GIF
++			 * interface. */
++			$gif['gifif'] = $_POST['gifif'];
++			$gif['gifif'] = interface_gif_configure($gif);
++		} else {
++			$input_errors[] = gettext("Invalid GIF interface.");
++		}
++
++		if (empty($gif['gifif']) ||
++		    !preg_match("/^gif[0-9]+$/", $gif['gifif'])) {
+ 			$input_errors[] = gettext("Error occurred creating interface, please retry.");
+ 		} else {
+ 			if (isset($id) && $a_gifs[$id]) {
+diff --git a/src/usr/local/www/interfaces_gre_edit.php b/src/usr/local/www/interfaces_gre_edit.php
+index 1ad1d3d1e6..23630e7be9 100644
+--- a/src/usr/local/www/interfaces_gre_edit.php
++++ b/src/usr/local/www/interfaces_gre_edit.php
+@@ -169,10 +169,20 @@ if ($_POST['save']) {
+ 		if (isset($_POST['link1']) && $_POST['link1']) {
+ 			$gre['link1'] = '';
+ 		}
+-		$gre['greif'] = $_POST['greif'];
+ 
+-		$gre['greif'] = interface_gre_configure($gre);
+-		if ($gre['greif'] == "" || !stristr($gre['greif'], "gre")) {
++		if (empty($_POST['greif']) ||
++		    preg_match("/^gre[0-9]+$/", $_POST['greif'])) {
++			/* Attempt initial configuration of the GRE if the
++			 * submitted interface is empty or looks like a GRE
++			 * interface. */
++			$gre['greif'] = $_POST['greif'];
++			$gre['greif'] = interface_gre_configure($gre);
++		} else {
++			$input_errors[] = gettext("Invalid GRE interface.");
++		}
++
++		if (empty($gre['greif']) ||
++		    !preg_match("/^gre[0-9]+$/", $gre['greif'])) {
+ 			$input_errors[] = gettext("Error occurred creating interface, please retry.");
+ 		} else {
+ 			if (isset($id) && $a_gres[$id]) {
