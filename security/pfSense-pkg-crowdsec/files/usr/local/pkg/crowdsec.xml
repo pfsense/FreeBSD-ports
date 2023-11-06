@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+    <copyright>
+        <![CDATA[
+/*
+ * crowdsec.xml
+ *
+ * part of pfSense (https://www.pfSense.org/)
+ * Copyright (c) 2023 CrowdSec
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+    </copyright>
+    <name>crowdsec</name>
+    <title>Services: CrowdSec</title>
+    <include_file>/usr/local/pkg/crowdsec.inc</include_file>
+    <menu>
+        <name>CrowdSec</name>
+        <section>Services</section>
+        <configfile>crowdsec.xml</configfile>
+        <url>/pkg_edit.php?xml=crowdsec.xml</url>
+    </menu>
+    <menu>
+        <name>CrowdSec Metrics</name>
+        <section>Diagnostics</section>
+        <configfile>crowdsec.xml</configfile>
+        <url>/crowdsec/metrics.php</url>
+    </menu>
+    <menu>
+        <name>CrowdSec Status</name>
+        <section>Status</section>
+        <configfile>crowdsec.xml</configfile>
+        <url>/crowdsec/status.php</url>
+    </menu>
+    <service>
+        <name>crowdsec</name>
+        <rcfile>crowdsec.sh</rcfile>
+        <executable>crowdsec</executable>
+        <description>Crowdsec log processor and Local API</description>
+    </service>
+    <service>
+        <name>crowdsec_firewall</name>
+        <rcfile>crowdsec_firewall.sh</rcfile>
+        <!-- we must truncate the name to search at 19 characters due to a FreeBSD/pgrep limitation -->
+        <executable>crowdsec-firewall-b</executable>
+        <description>Crowdsec Firewall remediation</description>
+    </service>
+    <fields>
+        <field>
+            <name>Documentation</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>IMPORTANT</fielddescr>
+            <fieldname>doc_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[
+                It is recommended that you <a href="https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_pfsense">read the documentation</a> before taking any action.
+		]]></description>
+        </field>
+
+        <field>
+            <name>Remediation component (firewall bouncer)</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Enable</fielddescr>
+            <fieldname>enable_fw_bouncer</fieldname>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>firewall_info</fieldname>
+            <type>info</type>
+            <description>Feed the blocklists to the pfSense firewall. Always required, even if you use your own firewall rules.</description>
+        </field>
+
+        <field>
+            <name>Log processor (CrowdSec agent)</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Enable</fielddescr>
+            <fieldname>enable_agent</fieldname>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>agent_info</fieldname>
+            <type>info</type>
+            <description>Read logs from pfSense and its packages to detect threats. Recommended.</description>
+        </field>
+
+        <field>
+            <name>Local API</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>Enable</fielddescr>
+            <fieldname>enable_lapi</fieldname>
+            <type>checkbox</type>
+            <default_value>on</default_value>
+        </field>
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>enable_lapi_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[<p>Enable a local API on the pfSense box. Used by log processor and remediation components.</p><p>Recommended unless:</p><ul><li>you have a pre-existing main installation, maybe running on linux</li><li>you want more control over the configuration, backup/restore, need a bigger machine or a postgres database</li><li>you want more control over the running versions or want to run them on docker, k8s</li></ul><p>If disabled, use a remote LAPI on an external machine.</p>]]></description>
+        </field>
+        <field>
+            <fielddescr>LAPI host</fielddescr>
+            <fieldname>lapi_host</fieldname>
+            <type>input</type>
+            <description>Host name or IP. Change this to expose the LAPI to the LAN. For example you can have other servers running only the Log Processor (agent) which report to the LAPI in this pfSense machine. Otherwise, leave the default value (127.0.0.1).</description>
+            <default_value>127.0.0.1</default_value>
+        </field>
+        <field>
+            <fielddescr>LAPI port</fielddescr>
+            <fieldname>lapi_port</fieldname>
+            <type>input</type>
+            <description>Port number for the LAPI endpoint. Change in case of conflict with other services.</description>
+            <default_value>8080</default_value>
+        </field>
+        <field>
+            <name>Remote LAPI</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>remote_lapi_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[<p>You will need to register the log processor and the bouncer in the LAPI machine, then report here their connection credentials.</p><p>Run the following commands on the remote machine:</p><pre># cscli machines add pfsense --auto -f -</pre><p>and</p><pre># cscli bouncers add pfsense-firewall</pre>]]></description>
+        </field>
+        <field>
+            <fielddescr>Remote LAPI host</fielddescr>
+            <fieldname>remote_lapi_host</fieldname>
+            <type>input</type>
+            <description>Host name or IP.</description>
+        </field>
+        <field>
+            <fielddescr>Remote LAPI port</fielddescr>
+            <fieldname>remote_lapi_port</fieldname>
+            <type>input</type>
+            <description>Port number of the LAPI endpoint.</description>
+            <default_value>8080</default_value>
+        </field>
+        <field>
+            <fielddescr>User</fielddescr>
+            <fieldname>remote_agent_user</fieldname>
+            <type>input</type>
+            <description>Name of the pfSense machine in the remote LAPI</description>
+        </field>
+        <field>
+            <fielddescr>Password</fielddescr>
+            <fieldname>remote_agent_password</fieldname>
+            <type>password</type>
+            <description>Password of the pfSense machine in the remote LAPI</description>
+        </field>
+        <field>
+            <fielddescr>Firewall bouncer API key</fielddescr>
+            <fieldname>remote_fw_bouncer_api_key</fieldname>
+            <type>password</type>
+            <description>API key for the pfSense bouncer in the remote LAPI</description>
+        </field>
+        <field>
+            <name>Log level</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr>crowdsec</fielddescr>
+            <fieldname>agent_log_level</fieldname>
+            <description>crowdsec.log, crowdsec_api.log</description>
+            <type>select</type>
+            <options>
+                <option><name>Debug</name><value>debug</value></option>
+                <option><name>Info</name><value>info</value></option>
+                <option><name>Warning</name><value>warning</value></option>
+            </options>
+            <default_value>info</default_value>
+            <required>true</required>
+        </field>
+        <field>
+            <fielddescr>firewall bouncer</fielddescr>
+            <fieldname>firewall_bouncer_log_level</fieldname>
+            <description>crowdsec-firewall-bouncer.log</description>
+            <type>select</type>
+            <options>
+                <option><name>Debug</name><value>debug</value></option>
+                <option><name>Info</name><value>info</value></option>
+                <option><name>Warning</name><value>warning</value></option>
+            </options>
+            <default_value>info</default_value>
+            <required>true</required>
+        </field>
+        <field>
+            <name>Metrics</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>metrics_info</fieldname>
+            <type>info</type>
+            <description>Where to expose metrics that can be consumed for monitoring (prometheus, grafana etc.). Change in case of conflict.</description>
+        </field>
+        <field>
+            <fielddescr>Port (crowdsec)</fielddescr>
+            <fieldname>metrics_port</fieldname>
+            <type>input</type>
+            <required>true</required>
+            <default_value>6060</default_value>
+        </field>
+
+        <!-- Common rules settings -->
+        <field>
+            <name>CrowdSec rules settings</name>
+            <type>listtopic</type>
+        </field>
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>rules_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[Rules will be hidden in the pfSense UI. If you have special needs, you can disable the rules here and provide your own.]]></description>
+        </field>
+        <field>
+            <fielddescr>Apply to all interfaces</fielddescr>
+            <fieldname>rules_all_interfaces</fieldname>
+            <default_value>on</default_value>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Interface Selection</fielddescr>
+            <fieldname>rules_interfaces_select</fieldname>
+            <type>interfaces_selection</type>
+            <description>Select the interfaces on which to apply rules</description>
+            <size>1</size>
+            <hideinterfaceregex>(loopback)</hideinterfaceregex>
+            <multiple/>
+        </field>
+        <field>
+            <fielddescr>Direction</fielddescr>
+            <fieldname>rules_direction</fieldname>
+            <description></description>
+            <type>select</type>
+            <options>
+                <option><name>Any (inbound + outbound)</name><value>any</value></option>
+                <option><name>In (inbound)</name><value>in</value></option>
+            </options>
+            <default_value>in</default_value>
+        </field>
+        <field>
+            <fielddescr>Log</fielddescr>
+            <fieldname>rules_log</fieldname>
+            <type>checkbox</type>
+        </field>
+        <field>
+            <fielddescr>Tag</fielddescr>
+            <fieldname>rules_tag</fieldname>
+            <type>input</type>
+            <description></description>
+        </field>
+        <field>
+            <fielddescr></fielddescr>
+            <fieldname>enable_rule_info</fieldname>
+            <type>info</type>
+            <description><![CDATA[The actual rules may be slightly different according to the above options. Check /var/log/system.log]]></description>
+        </field>
+        <field>
+            <fielddescr>Enable CrowdSec IPv4 blocklist rule</fielddescr>
+            <fieldname>enable_rule_v4</fieldname>
+            <default_value>on</default_value>
+            <type>checkbox</type>
+            <description><![CDATA[block drop {direction} {log} quick on {interfaces} inet from crowdsec_blacklists to any label "CrowdSec IPv4" tag {tag}]]></description>
+        </field>
+        <!-- Crowdsec IPv6 blocklist settings -->
+
+        <field>
+            <fielddescr>Enable CrowdSec IPv6 blocklist rule</fielddescr>
+            <fieldname>enable_rule_v6</fieldname>
+            <default_value>on</default_value>
+            <type>checkbox</type>
+            <description><![CDATA[block drop {direction} {log} quick on {interfaces} inet6 from crowdsec6_blacklists to any label "CrowdSec IPv6" tag {tag}]]></description>
+        </field>
+
+    </fields>
+
+    <custom_php_install_command>
+        <![CDATA[
+        crowdsec_install();
+        ]]>
+    </custom_php_install_command>
+
+    <custom_php_resync_config_command>
+        <![CDATA[
+        crowdsec_resync_config();
+        ]]>
+    </custom_php_resync_config_command>
+
+    <custom_php_validation_command>
+        <![CDATA[
+        crowdsec_validate_form($_POST, $input_errors);
+        ]]>
+    </custom_php_validation_command>
+
+    <custom_php_pre_deinstall_command>
+        <![CDATA[
+        crowdsec_deinstall();
+        ]]>
+    </custom_php_pre_deinstall_command>
+
+    <filter_rules_needed><![CDATA[crowdsec_generate_rules]]></filter_rules_needed>
+
+    <custom_php_after_form_command>crowdsec_after_form();</custom_php_after_form_command>
+</packagegui>
