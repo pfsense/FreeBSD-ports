@@ -1,0 +1,83 @@
+/etc/inc/priv/crowdsec.priv.inc
+pkg/crowdsec.xml
+pkg/crowdsec.inc
+@dir etc/rc.conf.d
+etc/rc.d/crowdsec.sh
+etc/rc.d/crowdsec_firewall.sh
+@dir etc/crowdsec
+@dir etc/crowdsec/acquis.d
+etc/crowdsec/feature.yaml
+etc/crowdsec/acquis.d/pfsense.yaml
+%%DATADIR%%/info.xml
+www/shortcuts/crowdsec.inc
+www/crowdsec/status.php
+www/crowdsec/metrics.php
+www/crowdsec/metrics.html
+www/crowdsec/endpoint/api.php
+www/crowdsec/js/crowdsec.js
+www/crowdsec/css/jquery.bootgrid.min.css
+www/crowdsec/js/jquery.bootgrid.min.js
+www/crowdsec/js/jquery.bootgrid.fa.min.js
+www/crowdsec/js/moment.min.js
+
+@dir /etc/inc/priv
+@dir /etc/inc
+
+@dir pkg/crowdsec
+pkg/crowdsec/composer.json
+pkg/crowdsec/composer.lock
+@dir pkg/crowdsec/vendor
+@dir pkg/crowdsec/vendor/symfony
+@dir pkg/crowdsec/vendor/symfony/yaml
+pkg/crowdsec/vendor/symfony/yaml/Dumper.php
+pkg/crowdsec/vendor/symfony/yaml/README.md
+pkg/crowdsec/vendor/symfony/yaml/LICENSE
+@dir pkg/crowdsec/vendor/symfony/yaml/Command
+pkg/crowdsec/vendor/symfony/yaml/Command/LintCommand.php
+pkg/crowdsec/vendor/symfony/yaml/Parser.php
+pkg/crowdsec/vendor/symfony/yaml/composer.json
+@dir pkg/crowdsec/vendor/symfony/yaml/Tag
+pkg/crowdsec/vendor/symfony/yaml/Tag/TaggedValue.php
+pkg/crowdsec/vendor/symfony/yaml/Escaper.php
+pkg/crowdsec/vendor/symfony/yaml/Unescaper.php
+pkg/crowdsec/vendor/symfony/yaml/Yaml.php
+pkg/crowdsec/vendor/symfony/yaml/Inline.php
+pkg/crowdsec/vendor/symfony/yaml/CHANGELOG.md
+@dir pkg/crowdsec/vendor/symfony/yaml/Resources
+@dir pkg/crowdsec/vendor/symfony/yaml/Resources/bin
+pkg/crowdsec/vendor/symfony/yaml/Resources/bin/yaml-lint
+@dir pkg/crowdsec/vendor/symfony/yaml/Exception
+pkg/crowdsec/vendor/symfony/yaml/Exception/ParseException.php
+pkg/crowdsec/vendor/symfony/yaml/Exception/ExceptionInterface.php
+pkg/crowdsec/vendor/symfony/yaml/Exception/RuntimeException.php
+pkg/crowdsec/vendor/symfony/yaml/Exception/DumpException.php
+@dir pkg/crowdsec/vendor/symfony/polyfill-ctype
+pkg/crowdsec/vendor/symfony/polyfill-ctype/README.md
+pkg/crowdsec/vendor/symfony/polyfill-ctype/LICENSE
+pkg/crowdsec/vendor/symfony/polyfill-ctype/Ctype.php
+pkg/crowdsec/vendor/symfony/polyfill-ctype/composer.json
+pkg/crowdsec/vendor/symfony/polyfill-ctype/bootstrap80.php
+pkg/crowdsec/vendor/symfony/polyfill-ctype/bootstrap.php
+@dir pkg/crowdsec/vendor/symfony/deprecation-contracts
+pkg/crowdsec/vendor/symfony/deprecation-contracts/README.md
+pkg/crowdsec/vendor/symfony/deprecation-contracts/LICENSE
+pkg/crowdsec/vendor/symfony/deprecation-contracts/composer.json
+pkg/crowdsec/vendor/symfony/deprecation-contracts/function.php
+pkg/crowdsec/vendor/symfony/deprecation-contracts/.gitignore
+pkg/crowdsec/vendor/symfony/deprecation-contracts/CHANGELOG.md
+@dir pkg/crowdsec/vendor/bin
+pkg/crowdsec/vendor/bin/yaml-lint
+pkg/crowdsec/vendor/autoload.php
+@dir pkg/crowdsec/vendor/composer
+pkg/crowdsec/vendor/composer/installed.json
+pkg/crowdsec/vendor/composer/LICENSE
+pkg/crowdsec/vendor/composer/installed.php
+pkg/crowdsec/vendor/composer/platform_check.php
+pkg/crowdsec/vendor/composer/autoload_static.php
+pkg/crowdsec/vendor/composer/InstalledVersions.php
+pkg/crowdsec/vendor/composer/ClassLoader.php
+pkg/crowdsec/vendor/composer/autoload_files.php
+pkg/crowdsec/vendor/composer/autoload_real.php
+pkg/crowdsec/vendor/composer/autoload_namespaces.php
+pkg/crowdsec/vendor/composer/autoload_classmap.php
+pkg/crowdsec/vendor/composer/autoload_psr4.php

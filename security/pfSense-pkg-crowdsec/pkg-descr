@@ -1,0 +1,21 @@
+Crowdsec is an open-source, lightweight software, detecting peers with
+aggressive behaviors to prevent them from accessing your systems. Its user
+friendly design and assistance offers a low technical barrier of entry and
+nevertheless a high security gain.
+
+WWW: https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_pfsense
+
+Package Changelog
+=================
+
+0.1
+
+* first GA release
+
+0.0.4
+
+* second beta release
+
+0.0.3_2
+
+* first beta release
