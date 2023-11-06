@@ -353,6 +353,18 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '93f8b28797a2b618f96589c916128019231f027e',
+  'versions' => ['2.7.0'],
+  'descr' => 'Add Intel Speed Shift options',
+  'links' => [
+      [ 'text' => 'Redmine #14047',
+         'url' => 'https://redmine.pfsense.org/issues/14047', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'd6078e851ade476b6e9190fd77b9a70eb3c7bb92',
   'versions' => ['23.05.1', '2.7.0'],
   'descr' => 'Add option to invalidate GUI login sessions if client IP address changes',
