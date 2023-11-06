@@ -1,0 +1,386 @@
+diff --git a/src/etc/inc/pfsense-utils.inc b/src/etc/inc/pfsense-utils.inc
+index de159cef14..32605120f9 100644
+--- a/src/etc/inc/pfsense-utils.inc
++++ b/src/etc/inc/pfsense-utils.inc
+@@ -1140,7 +1140,9 @@ function load_loader_conf($loader_conf = NULL, $local = false) {
+ 		    "debug.ddb.capture.bufsize",
+ 		    "hint.uart.0.flags",
+ 		    "hint.uart.1.flags",
+-		    "net.link.ifqmaxlen"
++		    "net.link.ifqmaxlen",
++		    "hint.hwpstate_intel.0.disabled",
++		    "machdep.hwpstate_pkg_ctrl",
+ 		));
+ 	}
+ 	foreach ($input_split as $line) {
+@@ -1273,6 +1275,12 @@ function setup_loader_settings($path = "", $upgrade = false) {
+ 	/* Set maximum send queue length. */
+ 	$data[] = 'net.link.ifqmaxlen="128"';
+ 
++	/* Speed Shift / hwpstate */
++	if (config_get_path('system/hwpstate', 'enabled') == 'disabled') {
++		$data[] = 'hint.hwpstate_intel.0.disabled="1"';
++	}
++	$data[] = 'machdep.hwpstate_pkg_ctrl="' . config_get_path('system/hwpstate_control_level', get_single_sysctl('machdep.hwpstate_pkg_ctrl')) . '"';
++
+ 	safe_write_file($loader_conf_file, $data);
+ 
+ 	/* Filter loader.conf.local to avoid duplicate settings. */
+diff --git a/src/etc/inc/system.inc b/src/etc/inc/system.inc
+index 5e9901732f..596bb65c00 100644
+--- a/src/etc/inc/system.inc
++++ b/src/etc/inc/system.inc
+@@ -28,6 +28,52 @@
+ require_once('config.lib.inc');
+ require_once('syslog.inc');
+ 
++function system_hwpstate_active() {
++	return (get_single_sysctl('dev.cpufreq.0.freq_driver') == 'hwpstate_intel0');
++}
++
++function system_hwpstate_disabled() {
++	/* Is hwpstate disabled? */
++	$hwpstate_disabled_kenv = [];
++	exec('/bin/kenv -q hint.hwpstate_intel.0.disabled 2>/dev/null', $hwpstate_disabled_kenv);
++	if (empty($hwpstate_disabled_kenv) || !is_array($hwpstate_disabled_kenv)) {
++		/* Invalid result, so assume not explicitly disabled */
++		$hwpstate_disabled = false;
++	} else {
++		/* Compare value of kenv variable to 1 (disabled) */
++		$hwpstate_disabled = (array_shift($hwpstate_disabled_kenv) == '1');
++	}
++	return $hwpstate_disabled;
++}
++
++/*
++ * Attempt to determine if this system supports hwpstate power control.
++ * Three possible outcomes: No support, Disabled, Active
++ */
++function system_has_hwpstate() {
++	if (system_hwpstate_active()) {
++		/* Active, so system has hwpstate support */
++		return true;
++	} elseif (system_hwpstate_disabled()) {
++		/* Disabled via loader tunable so there is no way to know if
++		 * it is disabled or lacking support, so assume disabled. */
++		return -1;
++	} else {
++		/* Not active nor disabled, so no hardware support */
++		return false;
++	}
++}
++
++function system_hwpstate_setepp() {
++	$epp = config_get_path('system/hwpstate_epp', -1);
++	$cpu_count = get_single_sysctl('hw.ncpu');
++	if (($epp >= 0) && ($epp <= 100)) {
++		for ($cpu=0; $cpu < $cpu_count; $cpu++) {
++			set_single_sysctl("dev.hwpstate_intel.{$cpu}.epp", $epp);
++		}
++	}
++}
++
+ function activate_powerd() {
+ 	if (is_process_running("powerd")) {
+ 		exec("/usr/bin/killall powerd");
+@@ -105,6 +151,15 @@ function activate_sysctls() {
+ 		$sysctls = array();
+ 	}
+ 
++	/* Speed Shift */
++	$epp = config_get_path('system/hwpstate_epp', -1);
++	$cpu_count = get_single_sysctl('hw.ncpu');
++	if (($epp >= 0) && ($epp <= 100)) {
++		for ($cpu=0; $cpu < $cpu_count; $cpu++) {
++			$sysctls["dev.hwpstate_intel.{$cpu}.epp"] = $epp;
++		}
++	}
++
+ 	$ipsec_filtermode = config_get_path('ipsec/filtermode', 'enc');
+ 	$sysctls = array_merge($sysctls, $ipsec_filter_sysctl[$ipsec_filtermode]);
+ 
+diff --git a/src/usr/local/pfSense/include/www/system_advanced_misc.inc b/src/usr/local/pfSense/include/www/system_advanced_misc.inc
+index d52fcda9d1..e84e9f1e81 100644
+--- a/src/usr/local/pfSense/include/www/system_advanced_misc.inc
++++ b/src/usr/local/pfSense/include/www/system_advanced_misc.inc
+@@ -27,6 +27,19 @@ require_once("system.inc");
+ require_once("util.inc");
+ require_once("pfsense-utils.inc");
+ 
++global $hwpstate_status_descr;
++$hwpstate_status_descr = [
++	'-1' => gettext('Disabled'),
++	'0'  => gettext('Unsupported'),
++	'1'  => gettext('Active'),
++];
++
++global $hwpstate_control_levels;
++$hwpstate_control_levels = [
++	'0' => gettext('Core Level Control (Recommended)'),
++	'1' => gettext('Package Level Control'),
++];
++
+ global $global_gateway_state_kill_modes;
+ $global_gateway_state_kill_modes = array(
+ 	'none' => gettext("Do not kill states on gateway failure"),
+@@ -90,6 +103,16 @@ function getSystemAdvancedMisc($json = false) {
+ 	$pconfig['pti'] = get_single_sysctl('vm.pmap.pti');
+ 	$pconfig['mds']= get_single_sysctl('hw.mds_disable_state');
+ 
++	$pconfig['hwpstate'] = (config_get_path('system/hwpstate', 'enabled') == 'enabled');
++	$pconfig['hwpstate_control_level'] = config_get_path('system/hwpstate_control_level', get_single_sysctl('machdep.hwpstate_pkg_ctrl'));
++	$hwpstate_epp_default = get_single_sysctl('dev.hwpstate_intel.0.epp');
++	if (!is_numericint($hwpstate_epp_default) ||
++	    ($hwpstate_epp_default < 0) ||
++	    ($hwpstate_epp_default > 100)) {
++		$hwpstate_epp_default = 50;
++	}
++	$pconfig['hwpstate_epp'] = config_get_path('system/hwpstate_epp', $hwpstate_epp_default);
++
+ 	$pconfig['powerd_ac_mode'] = "hadp";
+ 	if (!empty($config['system']['powerd_ac_mode'])) {
+ 		$pconfig['powerd_ac_mode'] = config_get_path('system/powerd_ac_mode');
+@@ -109,7 +132,7 @@ function getSystemAdvancedMisc($json = false) {
+ }
+ 
+ function saveSystemAdvancedMisc($post, $json = false) {
+-	global $config, $global_gateway_state_kill_modes;
++	global $config, $global_gateway_state_kill_modes, $hwpstate_status_descr, $hwpstate_control_levels;
+ 
+ 	$rv = array();
+ 
+@@ -184,6 +207,20 @@ function saveSystemAdvancedMisc($post, $json = false) {
+ 		$input_errors[] = gettext("Proxy password and confirmation must match.");
+ 	}
+ 
++	if (system_has_hwpstate() !== false) {
++		if (!in_array($post['hwpstate_control_level'], array_keys($hwpstate_control_levels))) {
++			$input_errors[] = gettext("Invalid Speed Shift Control Level.");
++		}
++
++		if ((array_key_exists('hwpstate_epp', $post) &&
++		    (strlen($post['hwpstate_epp']) > 0)) &&
++		    (!is_numericint($post['hwpstate_epp']) ||
++		    ($post['hwpstate_epp'] < 0) ||
++		    ($post['hwpstate_epp'] > 100))) {
++			$input_errors[] = gettext("Invalid Speed Shift Energy/Performance Preference value.");
++		}
++	}
++
+ 	if (!in_array($post['powerd_ac_mode'], array_keys($powerd_modes))) {
+ 		$input_errors[] = gettext("Invalid AC Power mode.");
+ 	}
+@@ -266,6 +303,22 @@ function saveSystemAdvancedMisc($post, $json = false) {
+ 			config_del_path('system/powerd_enable');
+ 		}
+ 
++		if (system_has_hwpstate() !== false) {
++			$old_hwpstate = config_get_path('system/hwpstate', 'enabled');
++			$new_hwpstate = ($post['hwpstate'] == 'yes') ? 'enabled' : 'disabled';
++			config_set_path('system/hwpstate', $new_hwpstate);
++			$old_hwpstate_control_level = get_single_sysctl('machdep.hwpstate_pkg_ctrl');
++			config_set_path('system/hwpstate_control_level', $post['hwpstate_control_level']);
++			config_set_path('system/hwpstate_epp', $post['hwpstate_epp']);
++
++			/* Check if reboot is needed */
++			if (($old_hwpstate != $new_hwpstate) ||
++			    ($old_hwpstate_control_level != $post['hwpstate_control_level'])) {
++				$rv['reboot-hwpstate'] = true;
++			}
++			system_hwpstate_setepp();
++		}
++
+ 		$config['system']['powerd_ac_mode'] = $post['powerd_ac_mode'];
+ 		$config['system']['powerd_battery_mode'] = $post['powerd_battery_mode'];
+ 		$config['system']['powerd_normal_mode'] = $post['powerd_normal_mode'];
+@@ -336,7 +389,7 @@ function saveSystemAdvancedMisc($post, $json = false) {
+ 		    (($post['use_mfs_tmpvar'] == "yes") &&
+ 		    (($config['system']['use_mfs_tmp_size'] != $post['use_mfs_tmp_size']) ||
+ 		    ($config['system']['use_mfs_var_size'] != $post['use_mfs_var_size'])))) {
+-			$rv['reboot'] = true;
++			$rv['reboot-ramdisks'] = true;
+ 		}
+ 
+ 		$config['system']['use_mfs_tmp_size'] = $post['use_mfs_tmp_size'];
+@@ -397,7 +450,8 @@ function saveSystemAdvancedMisc($post, $json = false) {
+ 		system_resolvconf_generate(true);
+ 		$retval |= filter_configure();
+ 
+-		if ($old_pti_state != isset($config['system']['pti_disabled'])) {
++		if (($rv['reboot-hwpstate']) ||
++		    ($old_pti_state != isset($config['system']['pti_disabled']))) {
+ 			setup_loader_settings();
+ 		}
+ 
+diff --git a/src/usr/local/www/classes/Form/Input.class.php b/src/usr/local/www/classes/Form/Input.class.php
+index d19c776897..77c2e57fcd 100644
+--- a/src/usr/local/www/classes/Form/Input.class.php
++++ b/src/usr/local/www/classes/Form/Input.class.php
+@@ -57,6 +57,10 @@ class Form_Input extends Form_Element
+ 			case 'file':
+ 				unset($this->_attributes['class']['form-control']);
+ 			break;
++			case 'range':
++				unset($this->_attributes['class']['form-control']);
++				$this->_attributes['class']['form-range'] = true;
++			break;
+ 		}
+ 
+ 		if (isset($value))
+@@ -244,6 +248,22 @@ class Form_Input extends Form_Element
+ 
+ 	public function __toString()
+ 	{
++		$label = '';
++		if (!empty($this->_attributes['label-start'])) {
++			$label .= '<label for="' . $this->_attributes['id'] . '" class="form-label">' . $this->_attributes['label-start'] . '</label>';
++			unset($this->_attributes['label-start']);
++		}
++		if (!empty($this->_attributes['label-end'])) {
++			$label .= '<label for="' . $this->_attributes['id'] . '" class="form-label pull-right">' . $this->_attributes['label-end'] . '</label>';
++			unset($this->_attributes['label-end']);
++		}
++		$output = '';
++		if (isset($this->_attributes['show-output'])) {
++			$this->_attributes['oninput'] = 'this.nextElementSibling.value = this.value';
++			$output = '<output>' . $this->_attributes['value'] . '</output>';
++			unset($this->_attributes['show-output']);
++		}
++
+ 		$input = $this->_getInput();
+ 		$column = (string)$this->column;
+ 
+@@ -258,7 +278,9 @@ class Form_Input extends Form_Element
+ 
+ 		return <<<EOT
+ 	{$column}
++		{$label}
+ 		{$input}
++		{$output}
+ 
+ 		{$help}
+ 	</div>
+diff --git a/src/usr/local/www/system_advanced_misc.php b/src/usr/local/www/system_advanced_misc.php
+index 57fad88014..c8124559a6 100644
+--- a/src/usr/local/www/system_advanced_misc.php
++++ b/src/usr/local/www/system_advanced_misc.php
+@@ -40,6 +40,10 @@ require_once("shaper.inc");
+ require_once("vpn.inc");
+ require_once("system_advanced_misc.inc");
+ 
++global $hwpstate_status_descr, $hwpstate_control_levels;
++$hwpstate_status = system_has_hwpstate();
++$hwpstate_status_descr = $hwpstate_status_descr[$hwpstate_status];
++
+ $powerd_modes = array(
+ 	'hadp' => gettext('Hiadaptive'),
+ 	'adp' => gettext('Adaptive'),
+@@ -71,7 +75,8 @@ $thermal_hardware_modules = array(
+ 
+ global $global_gateway_state_kill_modes;
+ 
+-$rebootneeded = false;
++$rebootneeded_ramdisks = false;
++$rebootneeded_hwpstate = false;
+ 
+ if ($_POST) {
+ 	ob_flush();
+@@ -83,7 +88,8 @@ if ($_POST) {
+ 	$input_errors = $rv['input_errors'];
+ 	$retval = $rv['retval'];
+ 	$changes_applied = $rv['changes_applied'];
+-	$rebootneeded = $rv['reboot'];
++	$rebootneeded_ramdisks = $rv['reboot-ramdisks'];
++	$rebootneeded_hwpstate = $rv['reboot-hwpstate'];
+ } else {
+ 	$pconfig = getSystemAdvancedMisc();
+ }
+@@ -174,7 +180,57 @@ $group->add(new Form_Input(
+ $section->add($group);
+ 
+ $form->add($section);
+-$section = new Form_Section('Power Savings');
++
++if ($hwpstate_status !== false) {
++	$section = new Form_Section('Power Savings - Intel Speed Shift');
++	$section->addInput(new Form_Checkbox(
++		'hwpstate',
++		'Speed Shift',
++		'Enable Speed Shift',
++		$pconfig['hwpstate']
++	))->setHelp('Intel Speed Shift configures hardware-controlled performance states '.
++		'on systems with compatible hardware. This can allow the system to consume ' .
++		'less power and generate less heat when it is lightly loaded, and increase ' .
++		'power as needed. Changing this setting requires a reboot.%1$s%1$s' .
++		'Speed Shift takes precedence over Speed Step (BIOS and/or PowerD) so the best ' .
++		'practice is to only enable one or the other.' .
++		'%1$s%1$sCurrent State: %2$s', '<br/>', $hwpstate_status_descr);
++
++	$section->addInput(new Form_Select(
++		'hwpstate_control_level',
++		'Control Level',
++		$pconfig['hwpstate_control_level'],
++		$hwpstate_control_levels
++	))->setHelp('Chooses between per-core or per-package frequency control. When set ' .
++		'to core-level control, each CPU core can run at a different frequency. ' .
++		'When set to package-level control, all cores on the same physical CPU ' .
++		'package are locked to the same speed, but each package may run at a ' .
++		'different speed.%1$s%1$sCore-level control is the best practice in most ' .
++		'cases, especially for hardware with only a single physical CPU. ' .
++		'Changing this setting requires a reboot.' .
++		'%1$s%1$sCurrent Active Level: %2$s',
++		'<br/>', ((get_single_sysctl('machdep.hwpstate_pkg_ctrl') == '0') ? 'Core' : 'Package'));
++
++	$section->addInput(new Form_Input(
++		'hwpstate_epp',
++		'Power Preference',
++		'range',
++		$pconfig['hwpstate_epp'],
++		array (
++			'min' => 0,
++			'max' => 100,
++			'step' => 5,
++			'label-start' => gettext('Performance'),
++			'label-end' => gettext('Energy Efficiency'),
++			'show-output' => true,
++			)
++	))->setHelp('This influences the bias of the hardware performance state toward ' .
++		'performance (left, lower values) or energy efficiency (right, higher values).');
++
++	$form->add($section);
++}
++
++$section = new Form_Section('Power Savings - PowerD');
+ 
+ $section->addInput(new Form_Checkbox(
+ 	'powerd_enable',
+@@ -436,15 +492,26 @@ $form->add($section);
+ 
+ print $form;
+ 
+-$ramdisk_msg = gettext('The \"Use RAM Disks\" setting has been changed.\nThis requires the firewall to reboot.\n\nReboot now ?');
+-$use_mfs_tmpvar_changed = $rebootneeded;
++$reboot_confirm_prompt = "";
++$reboot_msg = [];
++if ($rebootneeded_ramdisks) {
++	$reboot_msg[] = gettext('The \"Use RAM Disks\" setting has been changed.\nThis requires the firewall to reboot.');
++}
++if ($rebootneeded_hwpstate) {
++	$reboot_msg[] = gettext('The Intel Speed Shift configuration has changed in a way which requires the firewall to reboot.');
++}
++if (!empty($reboot_msg)) {
++	$reboot_msg[] = gettext('Reboot now?');
++	$reboot_confirm_prompt = implode('\n\n', $reboot_msg);
++}
++
+ ?>
+ 
+ <script type="text/javascript">
+ //<![CDATA[
+ events.push(function() {
+ 	// Has the Use ramdisk checkbox changed state?
+-	if (<?=(int)$use_mfs_tmpvar_changed?> && confirm("<?=$ramdisk_msg?>")) {
++	if (<?= (int) !empty($reboot_confirm_prompt) ?> && confirm("<?=$reboot_confirm_prompt?>")) {
+ 		postSubmit({rebootmode : 'Reboot', Submit: 'Yes'}, 'diag_reboot.php')
+ 	}
+ 

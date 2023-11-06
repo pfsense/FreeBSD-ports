@@ -1,0 +1,30 @@
+commit 202e3c1b7d3af019f03bf2545a7f31062f8e8e08
+Author: jim-p <jimp@netgate.com>
+Date:   Mon Sep 25 14:21:37 2023 -0400
+
+    Avoid PHP err with missing P2 data. Fixes #14525
+    
+    Use access functions to ensure we always have an array when expected in
+    this block of code.
+
+diff --git a/src/usr/local/www/status_ipsec.php b/src/usr/local/www/status_ipsec.php
+index 1500637c08..e17212a1ac 100644
+--- a/src/usr/local/www/status_ipsec.php
++++ b/src/usr/local/www/status_ipsec.php
+@@ -342,12 +342,12 @@ function print_ipsec_body() {
+ 					$p2descr = $cmap[$childikeid]['p2'][$childreqid]['descr'];
+ 					$p2uid = $cmap[$childikeid]['p2'][$childreqid]['uniqid'];
+ 				} else {
+-					$childreqid = array_key_first($cmap[$childikeid]['p2']);
+-					$p2uid = $cmap[$childikeid]['p2'][$childreqid]['uniqid'];
+-					if (count($cmap[$childikeid]['p2']) > 1) {
++					$childreqid = array_key_first(array_get_path($cmap, "{$childikeid}/p2", []));
++					$p2uid = array_get_path($cmap, "{$childikeid}/p2/{$childreqid}/uniqid");
++					if (count(array_get_path($cmap, "{$childikeid}/p2", [])) > 1) {
+ 						$p2descr = gettext("Multiple");
+ 					} else {
+-						$p2descr = $cmap[$childikeid]['p2'][$childreqid]['descr'];
++						$p2descr = array_get_path($cmap, "{$childikeid}/p2/{$childreqid}/descr");
+ 					}
+ 				}
+ ?>
