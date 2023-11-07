@@ -65,4 +65,12 @@ fi
 
 remove_crontab "root"
 
+#
+# (Re)Create the CA trust store.
+# This is a workaround for systems installed before the fix for this bug
+# was committed in 72c441e9e0c0f3d4cd26f554a67aa91e06734b5b.
+# See #14876.
+#
+/usr/sbin/certctl rehash
+
 exit 0
