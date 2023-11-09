@@ -1465,7 +1465,7 @@ check_upgrade() {
 			fi
 		done
 
-		local _new_version=""
+		local _new_version="0"
 		local _version_compare=""
 		local _db_dir="/tmp/db/pfSense/pkg"
 		for _repo in /usr/local/etc/pfSense/pkg/repos/*.conf; do
@@ -1499,14 +1499,14 @@ check_upgrade() {
 				if [ ${_is_configured_repo} -ne 0 ]; then
 				   	_version_compare=$(compare_pkg_version "${_package}" "${_new_version}" "${_repopath}/pkg.conf")
 				else
-					_version_compare=$(compare_pkg_version ${_package})
+					_version_compare=$(compare_pkg_version "${_package}" "${_new_version}")
 				fi
 				if [ "${_version_compare}" == "<" ]; then
 					_new_version=$(_pkg ${_pkg_args} rquery -U %v ${_package})
 				fi
 			done
 		done
-		_version_compare=$(_pkg version -t "_installed_version" "${_new_version}")
+		_version_compare=$(_pkg version -t "${_installed_version}" "${_new_version}")
 		case "${_version_compare}" in
 			'<')
 				if [ -z "${_mute}" ]; then
