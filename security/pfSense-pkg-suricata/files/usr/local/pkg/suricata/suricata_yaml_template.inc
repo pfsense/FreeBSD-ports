@@ -116,6 +116,7 @@ outputs:
       enabled: {$enable_eve_log}
       filetype: {$eve_output_type}
       filename: {$eve_output_filename}
+      ethernet: {$eve_ethernet_output}
       redis: {$eve_redis_output}
       identity: "suricata"
       facility: {$eve_systemlog_facility}

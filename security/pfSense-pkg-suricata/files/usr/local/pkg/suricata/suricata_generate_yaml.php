@@ -413,6 +413,12 @@ if (!empty($suricatacfg['eve_systemlog_priority']))
 else
 	$eve_systemlog_priority = "info";
 
+// EVE Ethernet headers setting
+if (!empty($suricatacfg['eve_log_ethernet']))
+	$eve_ethernet_output = $suricatacfg['eve_log_ethernet'];
+else
+	$eve_ethernet_output = "no";
+
 // EVE REDIS output settings
 if (!empty($suricatacfg['eve_redis_server']))
 	$eve_redis_output = "\n        server: ". $suricatacfg['eve_redis_server'];
