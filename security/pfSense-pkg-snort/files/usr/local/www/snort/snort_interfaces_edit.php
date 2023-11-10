@@ -76,7 +76,7 @@ if ($_REQUEST['ajax']) {
 		elseif ($rule && $type == "externalnet") {
 			if (empty($wlist) || $wlist == "default") {
 				$list = snort_build_list($rule, $rule['homelistname']);
-				$contents = "";
+				$contents = "Defined in snort.conf as: !\$HOME_NET which expands to:\n\n";
 				foreach ($list as $ip)
 					$contents .= "!{$ip}\n";
 				$contents = trim($contents, "\n");
