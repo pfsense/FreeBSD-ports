@@ -202,6 +202,8 @@ if (empty($pconfig['eve_systemlog_facility']))
 	$pconfig['eve_systemlog_facility'] = "local1";
 if (empty($pconfig['eve_systemlog_priority']))
 	$pconfig['eve_systemlog_priority'] = "notice";
+if (empty($pconfig['eve_log_ethernet']))
+	$pconfig['eve_log_ethernet'] = "no";
 if (empty($pconfig['eve_log_drops']))
 	$pconfig['eve_log_drops'] = "on";
 if (empty($pconfig['eve_log_alert_drops']))
@@ -514,6 +516,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		}
 		if ($_POST['eve_systemlog_facility']) $natent['eve_systemlog_facility'] = $_POST['eve_systemlog_facility'];
 		if ($_POST['eve_systemlog_priority']) $natent['eve_systemlog_priority'] = $_POST['eve_systemlog_priority'];
+		if ($_POST['eve_log_ethernet'] == "yes") { $natent['eve_log_ethernet'] = 'yes'; }else{ $natent['eve_log_ethernet'] = 'no'; }
 		if ($_POST['eve_log_alerts'] == "on") { $natent['eve_log_alerts'] = 'on'; }else{ $natent['eve_log_alerts'] = 'off'; }
 		if ($_POST['eve_log_alerts_payload']) { $natent['eve_log_alerts_payload'] = $_POST['eve_log_alerts_payload']; }else{ $natent['eve_log_alerts_payload'] = 'off'; }
 		if ($_POST['eve_log_alerts_packet'] == "on") { $natent['eve_log_alerts_packet'] = 'on'; }else{ $natent['eve_log_alerts_packet'] = 'off'; }
@@ -907,7 +910,7 @@ $section->addInput(new Form_Select(
 	'alertsystemlog_priority',
 	'Log Priority',
 	$pconfig['alertsystemlog_priority'],
-	array( "emerg" => "EMERG", "crit" => "CRIT", "alert" => "ALERT", "err" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO" )
+	array( "emergency" => "EMERG", "critical" => "CRIT", "alert" => "ALERT", "error" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO", "debug" => "DEBUG" )
 ))->setHelp('Select system log Priority (Level) to use for reporting. Default is NOTICE.');
 
 $section->addInput(new Form_Checkbox(
@@ -1198,6 +1201,14 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['eve_log_alerts_xff'] == 'on' ? true:false,
 	'on'
 ));
+$section->addInput(new Form_Checkbox(
+	'eve_log_ethernet',
+	'EVE Ethernet MAC',
+	'Log Ethernet header in events when available.  Default is Not Checked.',
+	$pconfig['eve_log_ethernet'] == 'yes' ? true:false,
+	'yes'
+));
+
 $section->addInput(new Form_Select(
 	'eve_log_alerts_xff_mode',
 	'EVE X-Forwarded-For Operational Mode',
@@ -2152,6 +2163,7 @@ events.push(function(){
 		hideCheckbox('eve_log_alerts',hide);
 		hideCheckbox('eve_log_anomaly',hide);
 		hideCheckbox('eve_log_alerts_xff',hide);
+		hideCheckbox('eve_log_ethernet',hide);
 		hideCheckbox('eve_log_drops',hide);
 		hideClass('eve_log_info', hide);
 		hideClass('eve_log_drops_options', hide);
@@ -2358,6 +2370,7 @@ events.push(function(){
 		disableInput('eve_log_alerts_packet',disable)
 		disableInput('eve_log_alerts_payload',disable);
 		disableInput('eve_log_alerts_http',disable);
+		disableInput('eve_log_ethernet',disable);
 		disableInput('eve_log_alerts_xff',disable);
 		disableInput('eve_log_alerts_xff_mode',disable);
 		disableInput('eve_log_alerts_xff_deployment',disable);
