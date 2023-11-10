@@ -53,10 +53,7 @@ if (!empty($suricatacfg['externallistname']) && $suricatacfg['externallistname']
 	$external_net = "[" . trim($external_net) . "]";
 }
 else {
-	$external_net = "[";
-	foreach ($home_net_list as $ip)
-		$external_net .= "!{$ip}, ";
-	$external_net = trim($external_net, ', ') . "]";
+	$external_net = "[!\$HOME_NET]";
 }
 
 // Set the PASS LIST and write its contents to disk,
