@@ -1024,6 +1024,10 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$tmp = array();
 			$decoder_event = FALSE;
 
+			// Drop any invalid line read from the log excerpt
+			if (empty(trim($buf)))
+				continue;
+
 			/**************************************************************/
 			/* Parse alert log entry to find the parts we want to display */
 			/**************************************************************/
