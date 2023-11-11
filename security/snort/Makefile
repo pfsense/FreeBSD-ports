@@ -1,6 +1,6 @@
 PORTNAME=	snort
 PORTVERSION=	2.9.20
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		https://snort.org/downloads/archive/snort/
@@ -17,7 +17,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	daq>=2.2.2_3:net/daq
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
-		libpcap.so:net/libpcap
+		libpcap.so:net/libpcap \
+		libpfctl.so:net/libpfctl
 RUN_DEPENDS=	daq>=2.2.2_3:net/daq
 
 USES=			bison cpe libtool pathfix shebangfix ssl
@@ -93,6 +94,8 @@ CFLAGS+=	-fstack-protector
 CONFIGURE_ARGS+=--enable-reload \
 		--enable-mpls --enable-targetbased \
 		--enable-reload-error-restart
+CFLAGS+=	-I${LOCALBASE}/include/
+LDFLAGS+=	-L${LOCALBASE}/lib -lpfctl
 
 post-patch:
 	@${REINPLACE_CMD} "s,/etc/snort.conf,${ETCDIR}/snort.conf," \
