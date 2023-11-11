@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2022 Bill Meeks
+ * Copyright (c) 2013-2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,12 +36,10 @@ $external_net = "";
 if (!empty($snortcfg['externallistname']) && $snortcfg['externallistname'] != 'default') {
 	$external_net_list = snort_build_list($snortcfg, $snortcfg['externallistname'], false, true);
 	$external_net = implode(",", $external_net_list);
-	$external_net = "[" . trim($external_net) . "]";
+	$external_net = trim($external_net);
 }
 else {
-	foreach ($home_net_list as $ip)
-		$external_net .= "!{$ip},";
-	$external_net = trim($external_net, ', ');
+	$external_net = "!$HOME_NET";
 }
 
 /* User added custom configuration arguments */
