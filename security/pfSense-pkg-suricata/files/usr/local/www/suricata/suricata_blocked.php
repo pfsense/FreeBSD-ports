@@ -312,6 +312,10 @@ print($form);
 						$fields = array();
 						$tmp = array();
 
+						// Drop any invalid line read from the log
+						if (empty(trim($buf)))
+							continue;
+
 						/***************************************************************/
 						/* Parse block log entry to find the parts we want to display. */
 						/* We parse out all the fields even though we currently use    */

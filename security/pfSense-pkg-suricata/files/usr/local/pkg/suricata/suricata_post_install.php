@@ -111,7 +111,7 @@ if (config_get_path('installedpackages/suricata/config/0/forcekeepsettings') == 
 	update_status(gettext("Saved settings detected...") . "\n");
 
 	/****************************************************************/
-	/* Add all the new built-in events rules to each configured     */
+	/* Add any new built-in events rules to each configured         */
 	/* interface.                                                   */
 	/****************************************************************/
 	if (count(config_get_path('installedpackages/suricata/rule', [])) > 0) {
