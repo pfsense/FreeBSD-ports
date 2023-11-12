@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	</copyright>
+	<name>coredns</name>
+	<title>Serices: coredns</title>
+	<savetext>Change</savetext>
+	<include_file>/usr/local/pkg/coredns/coredns.inc</include_file>
+	<menu>
+		<name>Coredns</name>
+		<tooltiptext>Core DNS</tooltiptext>
+		<section>Services</section>
+		<url>/coredns_settings.php</url>
+	</menu>
+	<service>
+		<name>coredns</name>
+		<rcfile>coredns-daemon.sh</rcfile>
+		<executable>coredns</executable>
+		<description>Core DNS</description>
+		<starts_on_sync></starts_on_sync>
+	</service>
+	<custom_php_resync_config_command>
+		coredns_install_command();
+	</custom_php_resync_config_command>
+	<custom_php_pre_deinstall_command>
+		coredns_deinstall_command();
+	</custom_php_pre_deinstall_command>
+</packagegui>
+

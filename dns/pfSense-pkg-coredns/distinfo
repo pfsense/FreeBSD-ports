@@ -1,0 +1,5 @@
+TIMESTAMP = 1699779071
+SHA256 (go/dns_pfSense-pkg-coredns/pfSense-pkg-coredns-v1.11.1/v1.11.1.mod) = 61510b0d345aba5dcc1f05dd67780b416413308e6b34847067041122d018b140
+SIZE (go/dns_pfSense-pkg-coredns/pfSense-pkg-coredns-v1.11.1/v1.11.1.mod) = 6606
+SHA256 (go/dns_pfSense-pkg-coredns/pfSense-pkg-coredns-v1.11.1/v1.11.1.zip) = cf1c2ab608f4b38465a2ff61f761c684cd20b62346f4ae25a2f659a412c26a16
+SIZE (go/dns_pfSense-pkg-coredns/pfSense-pkg-coredns-v1.11.1/v1.11.1.zip) = 1024565
