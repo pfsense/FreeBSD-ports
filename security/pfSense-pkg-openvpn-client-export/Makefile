@@ -1,6 +1,5 @@
 PORTNAME=	pfSense-pkg-openvpn-client-export
-PORTVERSION=	1.9
-PORTREVISION=	1
+PORTVERSION=	1.9.2
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ WWW=		https://docs.netgate.com/pfsense/en/latest/packages/openvpn-client-export.
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	openvpn>=2.6.0:security/openvpn \
-		openvpn-client-export>=2.6.0:security/openvpn-client-export \
+		openvpn-client-export>=2.6.7:security/openvpn-client-export \
 		zip>0:archivers/zip \
 		7-zip>0:archivers/7-zip
 
