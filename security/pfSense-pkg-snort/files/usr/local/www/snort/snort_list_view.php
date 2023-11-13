@@ -56,7 +56,7 @@ if (isset($id) && isset($wlist)) {
 	elseif ($type == "externalnet") {
 		if ($wlist == "default") {
 			$list = snort_build_list($a_rule, $a_rule['homelistname']);
-			$contents = "";
+			$contents = "Defined in snort.conf as: !\$HOME_NET which expands to:\n\n";
 			foreach ($list as $ip)
 				$contents .= "!{$ip}\n";
 			$contents = trim($contents, "\n");

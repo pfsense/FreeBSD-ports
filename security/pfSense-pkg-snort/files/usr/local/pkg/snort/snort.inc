@@ -677,7 +677,7 @@ function snort_Getdirsize($node) {
 		return false;
 
 	$blah = exec( "/usr/bin/du -kdc $node" );
-	return substr( $blah, 0, strpos($blah, 9) );
+	return substr( $blah, 0, strpos($blah, chr(9)) );
 }
 
 function snort_cron_job_exists($crontask, $match_time=FALSE, $minute="0", $hour="*", $monthday="*", $month="*", $weekday="*", $who="root") {
