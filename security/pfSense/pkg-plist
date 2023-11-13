@@ -31,7 +31,7 @@
 /etc/inc/interfaces.inc
 /etc/inc/interfaces_fast.inc
 /etc/inc/ipsec.attributes.php
-/etc/inc/ipsec.auth-user.php
+@(,,755) /etc/inc/ipsec.auth-user.php
 /etc/inc/ipsec.inc
 /etc/inc/itemid.inc
 /etc/inc/led.inc
