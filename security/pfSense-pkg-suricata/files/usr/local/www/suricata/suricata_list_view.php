@@ -68,7 +68,7 @@ if (isset($id) && isset($wlist)) {
 	elseif ($type == "externalnet") {
 		if ($wlist == "default") {
 			$list = suricata_build_list($a_rule, $a_rule['homelistname']);
-			$contents = "";
+			$contents = "Defined in suricata.yaml as: !\$HOME_NET which expands to:\n\n";
 			foreach ($list as $ip)
 				$contents .= "!{$ip}\n";
 			$contents = trim($contents, "\n");

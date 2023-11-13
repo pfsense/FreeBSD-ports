@@ -49,6 +49,18 @@ $pconfig = array();
 if (isset($id) && !empty($a_nat)) {
 	/* Get current values from config for page form fields */
 	$pconfig = $a_nat;
+	if (empty($pconfig['stream_memcap_policy']))
+		$pconfig['stream_memcap_policy'] = "ignore";
+	if (empty($pconfig['midstream_policy']))
+		$pconfig['midstream_policy'] = "ignore";
+	if (empty($pconfig['defrag_memcap_policy']))
+		$pconfig['defrag_memcap_policy'] = "ignore";
+	if (empty($pconfig['reassembly_memcap_policy']))
+		$pconfig['reassembly_memcap_policy'] = "ignore";
+	if (empty($pconfig['flow_memcap_policy']))
+		$pconfig['flow_memcap_policy'] = "ignore";
+	if (empty($pconfig['stream_checksum_validation']))
+		$pconfig['stream_checksum_validation'] = "on";
 
 	// See if Host-OS policy engine array is configured and use
 	// it; otherwise create a default engine configuration.
@@ -207,13 +219,15 @@ elseif ($_POST['cancel_os_policy']) {
 elseif ($_POST['ResetAll']) {
 
 	/* Reset all the settings to defaults */
+	$pconfig['defrag_memcap_policy'] = "ignore";
 	$pconfig['ip_max_frags'] = "65535";
 	$pconfig['ip_frag_timeout'] = "60";
 	$pconfig['frag_memcap'] = '33554432';
 	$pconfig['ip_max_trackers'] = '65535';
 	$pconfig['frag_hash_size'] = '65536';
 
-	$pconfig['flow_memcap'] = '33554432';
+	$pconfig['flow_memcap'] = '134217728';
+	$pconfig['flow_memcap_policy'] = 'ignore';
 	$pconfig['flow_prealloc'] = '10000';
 	$pconfig['flow_hash_size'] = '65536';
 	$pconfig['flow_emerg_recovery'] = '30';
@@ -240,12 +254,15 @@ elseif ($_POST['ResetAll']) {
 	// 216 * prealloc_sessions * number of threads = memory use in bytes
 	// 128 MB is a decent all-around default, but some setups need more.
 	$pconfig['stream_prealloc_sessions'] = '32768';
-	$pconfig['stream_memcap'] = '131217728';
-	$pconfig['reassembly_memcap'] = '131217728';
+	$pconfig['stream_memcap'] = '268435456';
+	$pconfig['reassembly_memcap'] = '134217728';
 	$pconfig['reassembly_depth'] = '1048576';
 	$pconfig['reassembly_to_server_chunk'] = '2560';
 	$pconfig['reassembly_to_client_chunk'] = '2560';
 	$pconfig['enable_midstream_sessions'] = 'off';
+	$pconfig['stream_memcap_policy'] = 'ignore';
+	$pconfig['midstream_policy'] = 'ignore';
+	$pconfig['reassembly_memcap_policy'] = 'ignore';
 	$pconfig['enable_async_sessions'] = 'off';
 	$pconfig['max_synack_queued'] = '5';
 	$pconfig['stream_bypass'] = "no";
@@ -265,9 +282,11 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		if ($_POST['ip_max_frags'] != "") { $natent['ip_max_frags'] = $_POST['ip_max_frags']; }else{ $natent['ip_max_frags'] = "65535"; }
 		if ($_POST['ip_frag_timeout'] != "") { $natent['ip_frag_timeout'] = $_POST['ip_frag_timeout']; }else{ $natent['ip_frag_timeout'] = "60"; }
 		if ($_POST['frag_memcap'] != "") { $natent['frag_memcap'] = $_POST['frag_memcap']; }else{ $natent['frag_memcap'] = "33554432"; }
+		if ($_POST['defrag_memcap_policy']) { $natent['defrag_memcap_policy'] = $_POST['defrag_memcap_policy']; }
 		if ($_POST['ip_max_trackers'] != "") { $natent['ip_max_trackers'] = $_POST['ip_max_trackers']; }else{ $natent['ip_max_trackers'] = "65535"; }
 		if ($_POST['frag_hash_size'] != "") { $natent['frag_hash_size'] = $_POST['frag_hash_size']; }else{ $natent['frag_hash_size'] = "65536"; }
-		if ($_POST['flow_memcap'] != "") { $natent['flow_memcap'] = $_POST['flow_memcap']; }else{ $natent['flow_memcap'] = "33554432"; }
+		if ($_POST['flow_memcap'] != "") { $natent['flow_memcap'] = $_POST['flow_memcap']; }else{ $natent['flow_memcap'] = "134217728"; }
+		if ($_POST['flow_memcap_policy']) { $natent['flow_memcap_policy'] = $_POST['flow_memcap_policy']; }
 		if ($_POST['flow_prealloc'] != "") { $natent['flow_prealloc'] = $_POST['flow_prealloc']; }else{ $natent['flow_prealloc'] = "10000"; }
 		if ($_POST['flow_hash_size'] != "") { $natent['flow_hash_size'] = $_POST['flow_hash_size']; }else{ $natent['flow_hash_size'] = "65536"; }
 		if ($_POST['flow_emerg_recovery'] != "") { $natent['flow_emerg_recovery'] = $_POST['flow_emerg_recovery']; }else{ $natent['flow_emerg_recovery'] = "30"; }
@@ -290,13 +309,17 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		if ($_POST['flow_icmp_emerg_new_timeout'] != "") { $natent['flow_icmp_emerg_new_timeout'] = $_POST['flow_icmp_emerg_new_timeout']; }else{ $natent['flow_icmp_emerg_new_timeout'] = "10"; }
 		if ($_POST['flow_icmp_emerg_established_timeout'] != "") { $natent['flow_icmp_emerg_established_timeout'] = $_POST['flow_icmp_emerg_established_timeout']; }else{ $natent['flow_icmp_emerg_established_timeout'] = "100"; }
 
-		if ($_POST['stream_memcap'] != "") { $natent['stream_memcap'] = $_POST['stream_memcap']; }else{ $natent['stream_memcap'] = "131217728"; }
+		if ($_POST['stream_memcap'] != "") { $natent['stream_memcap'] = $_POST['stream_memcap']; }else{ $natent['stream_memcap'] = "268435456"; }
+		if ($_POST['stream_memcap_policy']) { $natent['stream_memcap_policy'] = $_POST['stream_memcap_policy']; }
 		if ($_POST['stream_prealloc_sessions'] != "") { $natent['stream_prealloc_sessions'] = $_POST['stream_prealloc_sessions']; }else{ $natent['stream_prealloc_sessions'] = "32768"; }
 		if ($_POST['enable_midstream_sessions'] == "on") { $natent['enable_midstream_sessions'] = 'on'; }else{ $natent['enable_midstream_sessions'] = 'off'; }
+		if ($_POST['stream_checksum_validation'] == "on") { $natent['stream_checksum_validation'] = 'on'; }else{ $natent['stream_checksum_validation'] = 'off'; }
+		if ($_POST['midstream_policy']) { $natent['midstream_policy'] = $_POST['midstream_policy']; }
 		if ($_POST['enable_async_sessions'] == "on") { $natent['enable_async_sessions'] = 'on'; }else{ $natent['enable_async_sessions'] = 'off'; }
-		if ($_POST['stream_bypass'] == "yes") { $natent['stream_bypass'] = 'yes'; }else{ $natent['stream_bypass'] = 'no'; }
-		if ($_POST['stream_drop_invalid'] == "yes") { $natent['stream_drop_invalid'] = 'yes'; }else{ $natent['stream_drop_invalid'] = 'no'; }
-		if ($_POST['reassembly_memcap'] != "") { $natent['reassembly_memcap'] = $_POST['reassembly_memcap']; }else{ $natent['reassembly_memcap'] = "131217728"; }
+		if ($_POST['stream_bypass'] == "on") { $natent['stream_bypass'] = 'on'; }else{ $natent['stream_bypass'] = 'no'; }
+		if ($_POST['stream_drop_invalid'] == "on") { $natent['stream_drop_invalid'] = 'on'; }else{ $natent['stream_drop_invalid'] = 'no'; }
+		if ($_POST['reassembly_memcap'] != "") { $natent['reassembly_memcap'] = $_POST['reassembly_memcap']; }else{ $natent['reassembly_memcap'] = "134217728"; }
+		if ($_POST['reassembly_memcap_policy']) { $natent['reassembly_memcap_policy'] = $_POST['reassembly_memcap_policy']; }
 		if ($_POST['reassembly_depth'] != "") { $natent['reassembly_depth'] = $_POST['reassembly_depth']; }else{ $natent['reassembly_depth'] = "1048576"; }
 		if ($_POST['reassembly_to_server_chunk'] != "") { $natent['reassembly_to_server_chunk'] = $_POST['reassembly_to_server_chunk']; }else{ $natent['reassembly_to_server_chunk'] = "2560"; }
 		if ($_POST['reassembly_to_client_chunk'] != "") { $natent['reassembly_to_client_chunk'] = $_POST['reassembly_to_client_chunk']; }else{ $natent['reassembly_to_client_chunk'] = "2560"; }
@@ -582,10 +605,20 @@ $form->addGlobal(new Form_Input(
 $section = new Form_Section('IP Defragmentation');
 $section->addInput(new Form_Input(
 	'frag_memcap',
-	'Fragmentation Memory Cap',
+	'Defrag Memory Cap',
 	'text',
 	$pconfig['frag_memcap']
 ))->setHelp('Max memory to be used for defragmentation. Default is 33,554,432 bytes (32 MB). Sets the maximum amount of memory, in bytes, to be used by the IP defragmentation engine.');
+$section->addInput(new Form_Select(
+	'defrag_memcap_policy',
+	'Defrag Memory Cap Exception Policy',
+	$pconfig['defrag_memcap_policy'],
+	array( "bypass" => "Bypass", "drop-packet" => "Drop Packet", "pass-packet" => "Pass Packet",
+		   "reject" => "Reject", "ignore" => "Ignore" )
+))->setHelp('Apply selected policy when the memcap limit for defrag is reached and no tracker could be picked up. This policy can only be applied to packets. Default is "Ignore". ' .
+			'"Drop Packet" drops the current packet. "Reject" rejects the current packet. "Bypass" will bypass the flow, and no further inspection is done. ' .
+			'"Pass Packet" will disable detection, but still does stream updates and app-layer parsing (depending on which policy triggered it). ' .
+			'"Ignore" does not apply exception policies.');
 $section->addInput(new Form_Input(
 	'ip_max_trackers',
 	'Max Trackers',
@@ -618,7 +651,17 @@ $section->addInput(new Form_Input(
 	'Flow Memory Cap',
 	'text',
 	$pconfig['flow_memcap']
-))->setHelp('Max memory, in bytes, to be used by the flow engine. Default is 33,554,432 bytes (32 MB)');
+))->setHelp('Max memory, in bytes, to be used by the flow engine. Default is 134,217,728 bytes (128 MB)');
+$section->addInput(new Form_Select(
+	'flow_memcap_policy',
+	'Flow Memory Cap Exception Policy',
+	$pconfig['flow_memcap_policy'],
+	array( "bypass" => "Bypass", "drop-packet" => "Drop Packet", "pass-packet" => "Pass Packet",
+		   "reject" => "Reject", "ignore" => "Ignore" )
+))->setHelp('Apply selected policy when the memcap limit for flows is reached and no flow could be freed up. This policy can only be applied to packets. Default is "Ignore". ' .
+			'"Drop Packet" drops the current packet. "Reject" rejects the current packet. "Bypass" will bypass the flow, and no further inspection is done. ' .
+			'"Pass Packet" will disable detection, but still does stream updates and app-layer parsing (depending on which policy triggered it). ' .
+			'"Ignore" does not apply exception policies.');
 $section->addInput(new Form_Input(
 	'flow_hash_size',
 	'Flow Hash Table Size',
@@ -746,7 +789,20 @@ $section->addInput(new Form_Input(
 	'Stream Memory Cap',
 	'text',
 	$pconfig['stream_memcap']
-))->setHelp('Max memory to be used by stream engine. Default is 131,217,728 bytes (128MB). Sets the maximum amount of memory, in bytes, to be used by the stream engine. This number will likely need to be increased beyond the default value in systems with more than 4 processor cores. If Suricata fails to start and logs a memory allocation error, increase this value in 4 MB chunks until Suricata starts successfully.');
+))->setHelp('Max memory to be used by stream engine. Default is 268,435,456 bytes (256MB). Sets the maximum amount of memory, in bytes, to be used by the stream engine. This number will likely need to be increased beyond the default value in systems with more than 4 processor cores. If Suricata fails to start and logs a memory allocation error, increase this value in 4 MB chunks until Suricata starts successfully.');
+$section->addInput(new Form_Select(
+	'stream_memcap_policy',
+	'Memcap Exception Policy',
+	$pconfig['stream_memcap_policy'],
+	array( "drop-flow" => "Drop Flow", "pass-flow" => "Pass Flow", "bypass" => "Bypass", "drop-packet" => "Drop Packet",
+		   "pass-packet" => "Pass Packet", "reject" => "Reject", "ignore" => "Ignore" )
+))->setHelp('If a stream memcap limit is reached, apply the selected memcap policy to the packet and/or flow.. Default is "Ignore". ' .
+			'"Drop Flow" will disable inspection for the whole flow (packets, payload, and application layer protocol), drop ' .
+			'the packet and all future packets in the flow. "Drop Packet" drops the current packet. "Reject" is the same as "Drop Flow" ' .
+			'but rejects the current packet as well. "Bypass" will bypass the flow, and no further inspection is done. ' .
+			'"Pass Flow" will disable payload and packet detection, but stream reassembly, app-layer parsing and logging still happen. ' .
+			'"Pass Packet" will disable detection, but still does stream updates and app-layer parsing (depending on which policy triggered it). ' .
+			'"Ignore" does not apply exception policies.');
 $section->addInput(new Form_Input(
 	'stream_prealloc_sessions',
 	'Preallocated Sessions',
@@ -756,10 +812,24 @@ $section->addInput(new Form_Input(
 $section->addInput(new Form_Checkbox(
 	'enable_midstream_sessions',
 	'Enable Mid-Stream Sessions',
-	'Suricata will pick up and track sessions mid-stream. Default is Not Checked.',
+	'Suricata will allow midstream session pickups. Default is Not Checked, which will ignore and not scan midstream sessions. When this ' .
+	'option is enabled, midstream sessions are subject to the Midstream Exception Policy selected below.',
 	$pconfig['enable_midstream_sessions'] == 'on' ? true:false,
 	'on'
 ));
+$section->addInput(new Form_Select(
+	'midstream_policy',
+	'Midstream Exception Policy',
+	$pconfig['midstream_policy'],
+	array( "drop-flow" => "Drop Flow", "pass-flow" => "Pass Flow", "bypass" => "Bypass", "drop-packet" => "Drop Packet",
+		   "pass-packet" => "Pass Packet", "reject" => "Reject", "ignore" => "Ignore" )
+))->setHelp('If a session is picked up midstream, apply the selected midstream policy to the flow. Default is "Ignore". ' .
+			'"Drop Flow" will disable inspection for the whole flow (packets, payload, and application layer protocol), drop ' .
+			'the packet and all future packets in the flow. "Drop Packet" drops the current packet. "Reject" is the same as "Drop Flow" ' .
+			'but rejects the current packet as well. "Bypass" will bypass the flow, and no further inspection is done. ' .
+			'"Pass Flow" will disable payload and packet detection, but stream reassembly, app-layer parsing and logging still happen. ' .
+			'"Pass Packet" will disable detection, but still does stream updates and app-layer parsing (depending on which policy triggered it). ' .
+			'"Ignore" does not apply exception policies.');
 $section->addInput(new Form_Checkbox(
 	'enable_async_sessions',
 	'Enable Async Streams',
@@ -768,25 +838,46 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
+	'stream_checksum_validation',
+	'Checksum Validation',
+	'Suricata will validate the checksum of received packets. When enabled, packets with invalid checksum values will not be ' . 
+	'processed by the engine stream/app layer. Default is Checked.',
+	$pconfig['stream_checksum_validation'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
 	'stream_bypass',
 	'Bypass Packets',
 	'Suricata will bypass packets when stream reassembly depth (configured below) is reached. Default is Not Checked.',
-	$pconfig['stream_bypass'] == 'yes' ? true:false,
-	'yes'
+	$pconfig['stream_bypass'] == 'on' ? true:false,
+	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'stream_drop_invalid',
 	'Drop Invalid Packets',
 	'When using Inline mode, Suricata will drop packets that are invalid with regards to streaming engine. Default is Not Checked.',
-	$pconfig['stream_drop_invalid'] == 'yes' ? true:false,
-	'yes'
+	$pconfig['stream_drop_invalid'] == 'on' ? true:false,
+	'on'
 ));
 $section->addInput(new Form_Input(
 	'reassembly_memcap',
 	'Reassembly Memory Cap',
 	'text',
 	$pconfig['reassembly_memcap']
-))->setHelp('Max memory to be used for stream reassembly. Default is 131,217,728 bytes (128MB). Sets the maximum amount of memory, in bytes, to be used for stream reassembly.');
+))->setHelp('Max memory to be used for stream reassembly. Default is 134,217,728 bytes (128MB). Sets the maximum amount of memory, in bytes, to be used for stream reassembly.');
+$section->addInput(new Form_Select(
+	'reassembly_memcap_policy',
+	'Reassembly Memcap Exception Policy',
+	$pconfig['reassembly_memcap_policy'],
+	array( "drop-flow" => "Drop Flow", "pass-flow" => "Pass Flow", "bypass" => "Bypass", "drop-packet" => "Drop Packet",
+		   "pass-packet" => "Pass Packet", "reject" => "Reject", "ignore" => "Ignore" )
+))->setHelp('If stream reassembly reaches memcap limit, apply the selected reassembly memcap policy to the flow. Default is "Ignore". ' .
+			'"Drop Flow" will disable inspection for the whole flow (packets, payload, and application layer protocol), drop ' .
+			'the packet and all future packets in the flow. "Drop Packet" drops the current packet. "Reject" is the same as "Drop Flow" ' .
+			'but rejects the current packet as well. "Bypass" will bypass the flow, and no further inspection is done. ' .
+			'"Pass Flow" will disable payload and packet detection, but stream reassembly, app-layer parsing and logging still happen. ' .
+			'"Pass Packet" will disable detection, but still does stream updates and app-layer parsing (depending on which policy triggered it). ' .
+			'"Ignore" does not apply exception policies.');
 $section->addInput(new Form_Input(
 	'reassembly_depth',
 	'Reassembly Depth',

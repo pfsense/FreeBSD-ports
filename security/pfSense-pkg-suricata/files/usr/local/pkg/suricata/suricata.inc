@@ -681,7 +681,7 @@ function suricata_rules_up_install_cron($should_install=true) {
 		$suricata_rules_up_hr = strval($hour);
 		for ($i=0; $i<3; $i++) {
 			$hour += 6;
-			if ($hour > 24) {
+			if ($hour > 23) {
 				$hour -= 24;
 			}
 			$suricata_rules_up_hr .= "," . strval($hour);
@@ -695,7 +695,7 @@ function suricata_rules_up_install_cron($should_install=true) {
 		$hour = intval(substr($suricata_rules_upd_time, 0, 2));
 		$suricata_rules_up_hr = strval($hour) . ",";
 		$hour += 12;
-		if ($hour > 24) {
+		if ($hour > 23) {
 			$hour -= 24;
 		}
 		$suricata_rules_up_hr .= strval($hour);
@@ -1005,7 +1005,7 @@ function suricata_Getdirsize($node) {
 	}
 
 	$blah = exec( "/usr/bin/du -kdc $node" );
-	return substr( $blah, 0, strpos($blah, 9) );
+	return substr( $blah, 0, strpos($blah, chr(9) ) );
 }
 
 function suricata_build_sid_msg_map($rules_path, $sid_file) {

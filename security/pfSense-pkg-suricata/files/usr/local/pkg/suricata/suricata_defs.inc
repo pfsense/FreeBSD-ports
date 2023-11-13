@@ -84,9 +84,11 @@ if (!defined('SURICATA_IPREP_PATH'))
 
 // Define an array consisting of Suricata default events rules
 if (!defined("SURICATA_DEFAULT_RULES"))
-	define("SURICATA_DEFAULT_RULES", array( "app-layer-events.rules", "decoder-events.rules", "dhcp-events.rules", "dnp3-events.rules", "dns-events.rules", "files.rules", "http-events.rules", "http2-events.rules", "ipsec-events.rules",
-						"kerberos-events.rules", "modbus-events.rules", "mqtt-events.rules", "nfs-events.rules", "ntp-events.rules", "smb-events.rules", "smtp-events.rules", "ssh-events.rules", "stream-events.rules",
-						"tls-events.rules" ));
+	define("SURICATA_DEFAULT_RULES", array( "app-layer-events.rules", "decoder-events.rules", "dhcp-events.rules", "dnp3-events.rules",
+						"dns-events.rules", "files.rules", "ftp-events.rules", "http-events.rules", "http2-events.rules", "ipsec-events.rules",
+						"kerberos-events.rules", "modbus-events.rules", "mqtt-events.rules", "nfs-events.rules", "ntp-events.rules",
+						"quic-events.rules", "rfb-events.rules", "smb-events.rules", "smtp-events.rules", "ssh-events.rules",
+						"stream-events.rules", "tls-events.rules" ));
 
 // Rule set download URLs, filenames and prefixes
 if (!defined("VRT_DNLD_URL"))
