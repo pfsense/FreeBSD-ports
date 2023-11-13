@@ -1,5 +1,5 @@
 PORTNAME=	openvpn-client-export
-PORTVERSION=	2.6.5
+PORTVERSION=	2.6.7
 CATEGORIES=	security
 MASTER_SITES=	https://files.netgate.com/packages/openvpn-client-export/
 
