@@ -39,7 +39,7 @@ if (!empty($snortcfg['externallistname']) && $snortcfg['externallistname'] != 'd
 	$external_net = trim($external_net);
 }
 else {
-	$external_net = "!$HOME_NET";
+	$external_net = "!\$HOME_NET";
 }
 
 /* User added custom configuration arguments */
