@@ -357,6 +357,12 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now)
 		if ((tts != -1) && (ttd == tts - 1))
 			ttd = (time_t)0;
 
+		/* Skip expired leases */
+		if (ttd != (time_t)0 &&
+			difftime(now, ttd) > 0) {
+			continue;
+		}
+
 		if ((dot = strchr(hostname, '.'))) {
 			if (!domain_suffix ||
 			    hostname_isequal(dot+1, domain_suffix)) {
@@ -416,19 +422,6 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now)
 				free(lease->name);
 			if (lease->fqdn != NULL)
 				free(lease->fqdn);
-			free(lease);
-		}
-	}
-
-	/* prune expired leases */
-	LIST_FOREACH_SAFE(lease, &leases, next, tmp) {
-		if (lease->expires != (time_t)0 &&
-		    difftime(now, lease->expires) > 0) {
-			if (lease->name)
-				free(lease->name);
-			if (lease->fqdn)
-				free(lease->fqdn);
-			LIST_REMOVE(lease, next);
 			free(lease);
 		}
 	}
