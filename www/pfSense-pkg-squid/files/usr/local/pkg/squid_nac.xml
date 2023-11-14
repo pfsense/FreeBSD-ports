@@ -251,7 +251,7 @@
 			<fieldname>youtube_restrict</fieldname>
 			<type>select</type>
 			<options>
-				<option><name>None</name><value>none</value></option>
+				<option><name>None</name><value></value></option>
 				<option><name>Moderate</name><value>moderate</value></option>
 				<option><name>Strict</name><value>strict</value></option>
 			</options>
