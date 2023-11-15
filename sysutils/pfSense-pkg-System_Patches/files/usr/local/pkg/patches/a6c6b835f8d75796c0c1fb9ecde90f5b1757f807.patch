@@ -1,0 +1,21 @@
+commit a6c6b835f8d75796c0c1fb9ecde90f5b1757f807
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Mon Nov 13 09:08:34 2023 -0600
+
+    Remove invalid field from input validation. Fix #14965
+
+diff --git a/src/usr/local/www/services_dhcpv6_relay.php b/src/usr/local/www/services_dhcpv6_relay.php
+index 2cba7c770d..0d2ea479cf 100644
+--- a/src/usr/local/www/services_dhcpv6_relay.php
++++ b/src/usr/local/www/services_dhcpv6_relay.php
+@@ -89,8 +89,8 @@ if ($_POST) {
+ 
+ 	/* input validation */
+ 	if ($_POST['enable']) {
+-		$reqdfields = explode(" ", "server interface");
+-		$reqdfieldsn = array(gettext("Destination Server"), gettext("Interface"));
++		$reqdfields = explode(' ', 'interface');
++		$reqdfieldsn = array(gettext('Interface'));
+ 
+ 		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+ 	}

@@ -26,6 +26,102 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => 'a6cf534d0fa0297547f1e587a12729f9d7066bae',
+  'versions' => ['23.09'],
+  'descr' => 'Fix "URL (IPs)" type Aliases not being resolved in the firewall ruleset',
+  'links' => [
+      [ 'text' => 'Redmine #14947',
+         'url' => 'https://redmine.pfsense.org/issues/14947', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '1fbbea8f10c58ef11851662588819c654e31ceae',
+  'versions' => ['23.09'],
+  'descr' => 'Fix DHCP WAN with multiple IP Alias VIPs may leave 0.0.0.0 IP address on interface at boot',
+  'links' => [
+      [ 'text' => 'Redmine #14966',
+         'url' => 'https://redmine.pfsense.org/issues/14966', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '5eb325e0def04241684b4d2c9583f8ca9d8bc05e',
+  'versions' => ['23.09'],
+  'descr' => 'Fix interfaces.php not saving PPP or Gateway configuration',
+  'links' => [
+      [ 'text' => 'Redmine #14949',
+         'url' => 'https://redmine.pfsense.org/issues/14949', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '345ede29dbfad4afdf6b1d7afd73213158b41cce',
+  'versions' => ['23.09', '2.7.1'],
+  'descr' => 'Fix PHP Error on interfaces.php when creating a PPP interface',
+  'links' => [
+      [ 'text' => 'Redmine #14949',
+         'url' => 'https://redmine.pfsense.org/issues/14949', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '6df70417029defed162b539720e8baa03984f653',
+  'versions' => ['23.09', '2.7.1'],
+  'descr' => 'Fix PHP Error in DHCPv6 Server with empty configuration section',
+  'links' => [
+      [ 'text' => 'Redmine #14978',
+         'url' => 'https://redmine.pfsense.org/issues/14978', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'a6c6b835f8d75796c0c1fb9ecde90f5b1757f807',
+  'versions' => ['23.09', '2.7.1'],
+  'descr' => 'Fix incorrect DHCPv6 Relay input validation errors',
+  'links' => [
+      [ 'text' => 'Redmine #14965',
+         'url' => 'https://redmine.pfsense.org/issues/14965', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '0fc7765c886ed60555750d12808f493d70918450',
+  'versions' => ['23.09', '2.7.1'],
+  'descr' => 'Fix Mobile IPsec group authentiation',
+  'links' => [
+      [ 'text' => 'Redmine #14963',
+         'url' => 'https://redmine.pfsense.org/issues/14963', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'dcdb461733044d274c742832097b13a312045f37',
+  'versions' => ['23.09', '2.7.1'],
+  'descr' => 'Fix IPsec log categories set to "Audit" not functioning or saving in the GUI',
+  'links' => [
+      [ 'text' => 'Redmine #14990',
+         'url' => 'https://redmine.pfsense.org/issues/14990', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'e573756c98d1181583fee0f7d818c6be0ea3da0e',
   'versions' => ['23.05.1', '2.7.0'],
   'descr' => 'Fix CRL generation for intermediate certificate authorities',
