@@ -1,0 +1,28 @@
+commit 1fbbea8f10c58ef11851662588819c654e31ceae
+Author: Reid Linnemann <rlinnemann@netgate.com>
+Date:   Mon Nov 13 17:01:40 2023 +0000
+
+    Remove use of 0.0.0.0 alias in pfSense-dhclient-script. Fixes #14966
+
+diff --git a/src/usr/local/sbin/pfSense-dhclient-script b/src/usr/local/sbin/pfSense-dhclient-script
+index c50ac17ab2..e7d6dce5ee 100755
+--- a/src/usr/local/sbin/pfSense-dhclient-script
++++ b/src/usr/local/sbin/pfSense-dhclient-script
+@@ -289,15 +289,13 @@ fi
+ $LOGGER $reason
+ case $reason in
+ MEDIUM)
+-	$IFCONFIG $interface $medium
+-	$IFCONFIG $interface inet -alias 0.0.0.0 $medium >/dev/null 2>&1
++	eval "$IFCONFIG $interface $medium"
+ 	/bin/sleep 1
+ 	;;
+ 
+ PREINIT)
+ 	delete_old_alias
+-	$IFCONFIG $interface inet 0.0.0.0 netmask 255.0.0.0 broadcast 255.255.255.255 up
+-
++	eval "$IFCONFIG $interface up"
+ 	if [ -f "/tmp/${interface}_router" ]; then
+ 		/bin/mv /tmp/${interface}_router /tmp/${interface}_router.last
+ 	fi
