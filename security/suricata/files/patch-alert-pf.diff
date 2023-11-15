@@ -484,7 +484,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        }
 +
 +        memset(&kill, 0, sizeof(kill));
-+        memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
++        memset(&kill.dst.addr.v.a.mask, 0xff, sizeof(kill.dst.addr.v.a.mask));
 +        kill.af = net_addr->family;
 +        if (kill.af == AF_INET)
 +            kill.dst.addr.v.a.addr.v4.s_addr = net_addr->addr_data32[0];
