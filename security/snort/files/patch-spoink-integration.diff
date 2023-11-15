@@ -601,7 +601,7 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +		pfctl_kill_states(data->fd, &kill, NULL);
 +
 +		memset(&kill, 0, sizeof(kill));
-+		memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
++		memset(&kill.dst.addr.v.a.mask, 0xff, sizeof(kill.dst.addr.v.a.mask));
 +		kill.af = net_addr->family;
 +
 +		if (kill.af == AF_INET)
