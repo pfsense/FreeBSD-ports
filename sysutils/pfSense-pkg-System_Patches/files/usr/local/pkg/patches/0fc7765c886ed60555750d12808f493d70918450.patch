@@ -1,0 +1,18 @@
+commit 0fc7765c886ed60555750d12808f493d70918450
+Author: Marcos Mendoza <mmendoza@netgate.com>
+Date:   Mon Nov 13 09:48:54 2023 -0600
+
+    Save the mobile IPsec group auth setting. Fix #14963
+
+diff --git a/src/usr/local/www/vpn_ipsec_mobile.php b/src/usr/local/www/vpn_ipsec_mobile.php
+index 83f1efa6c6..150de54488 100644
+--- a/src/usr/local/www/vpn_ipsec_mobile.php
++++ b/src/usr/local/www/vpn_ipsec_mobile.php
+@@ -310,6 +310,7 @@ if ($_POST['save']) {
+ 			config_del_path('ipsec/client/user_source');
+ 		}
+ 
++		config_set_path('ipsec/client/group_source', (($pconfig['group_source'] == 'yes') ? "enabled" : "disabled"));
+ 		if (($pconfig['group_source'] == 'yes') && !empty($pconfig['auth_groups'])) {
+ 			config_set_path('ipsec/client/auth_groups', implode(",", $pconfig['auth_groups']));
+ 		} else {
