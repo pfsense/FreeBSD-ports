@@ -51,7 +51,7 @@ function coredns_sync_config() {
 	$cmd = COREDNS_DAEMON;
 	$start = "	$cmd -conf ";
 	$start .= COREDNS_CONFIG_FILE;
-	$start .= " > " . $g['varlog_path'] . "/coredns.log";
+	$start .= " > " . $g['varlog_path'] . "/coredns.log" . " 2>&1";
 	$stop = "	/usr/bin/killall -q coredns";
 	write_rcfile(array(
 		"file" => "coredns-daemon.sh",

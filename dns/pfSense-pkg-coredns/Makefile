@@ -2,7 +2,7 @@ PORTNAME=	pfSense-pkg-coredns
 GIT_SRC = github.com/coredns/coredns
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.11.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 
 MAINTAINER=	yuri@FreeBSD.org

@@ -8,5 +8,9 @@
 		<descr><![CDATA[]]></descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>coredns.xml</configurationfile>
+		<logging>
+			<logtab>CoreDNS</logtab>
+			<logfilename>coredns.log</logfilename>
+		</logging>
 	</package>
 </pfsensepkgs>
