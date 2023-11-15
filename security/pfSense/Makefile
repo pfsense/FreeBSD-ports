@@ -50,6 +50,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		${PHP_PKGNAMEPREFIX}phpseclib>=0:security/phpseclib@${PHP_FLAVOR} \
 		pfSense-Status_Monitoring${PHP_PKGNAMESUFFIX}>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
 		pfSense-composer-deps>=0:devel/pfSense-composer-deps \
+		pfSense-gnid>=0:security/pfSense-gnid \
 		pfSense-repo>=0:sysutils/pfSense-repo \
 		pfSense-upgrade>=0:sysutils/pfSense-upgrade \
 		pftop>=0:sysutils/pftop \
