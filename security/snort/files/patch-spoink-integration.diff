@@ -42,8 +42,8 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/Makefile.in ./snort-2.9.20/src/
  
 diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/output-plugins/spo_pf.c
 --- ./snort-2.9.20.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2023-11-09 18:47:53.000000000 -0500
-@@ -0,0 +1,822 @@
++++ ./src/output-plugins/spo_pf.c	2023-11-16 22:15:34.000000000 -0500
+@@ -0,0 +1,836 @@
 +/*
 +* Copyright (c) 2023  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
@@ -180,7 +180,7 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +static void s2c_iflist_maint(sfaddr_t *, struct iflist_head *, u_char);
 +static int s2c_pf_init(void);
 +static int s2c_pf_block(SpoAlertPfData *, sfaddr_t *);
-+static int s2c_pf_intbl(int, char *, int);
++static int s2c_pf_intbl(int, char *);
 +static int s2c_parse_line(char *, FILE*);
 +static int s2c_parse_load_wl(FILE*, struct wlist_head*, int);
 +static int s2c_parse_search_wl(SpoAlertPfData *, sfaddr_t *);
@@ -254,8 +254,8 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +    }
 +    if (s2c_parse_search_wl(data, ip))
 +        return;
-+
-+    s2c_pf_block(data, ip);
++    else
++        s2c_pf_block(data, ip);
 +
 +    return;
 +}
@@ -481,7 +481,7 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +    else
 +     	data->pftable = strdup(toks[1]);
 +
-+    if (s2c_pf_intbl(data->fd, data->pftable, 0) == 0)
++    if (s2c_pf_intbl(data->fd, data->pftable) == 0)
 +        FatalError("pf.conf => Table %s does not exist in packet filter: %s. Terminating program!\n", data->pftable, strerror(errno));	
 +
 +    // Set default values for optional arguments.
@@ -557,40 +557,37 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +static int
 +s2c_pf_block(SpoAlertPfData *data, sfaddr_t *net_addr) 
 +{ 
-+	struct pfioc_table io; 
-+    	struct pfr_table table; 
-+      	struct pfr_addr addr; 
++    struct pfr_table table;
++    struct pfr_addr addr;
++    int nadd = 0;
++    int nerrors = 0;
 +
-+	if (data->fd < 0)
-+		data->fd = s2c_pf_init();
-+	if (data->fd == -1) {
-+		ErrorMessage("s2c_pf_init() => no pf device available! Unable to add IP to block list.\n");
-+		return -1;
-+	}
++    if (data->fd < 0)
++        data->fd = s2c_pf_init();
++    if (data->fd == -1) {
++        ErrorMessage("s2c_pf_init() => no pf device available! Unable to add IP to block list.\n");
++        return -1;
++    }
 +
-+        memset(&io,    0x00, sizeof(struct pfioc_table)); 
-+        memset(&table, 0x00, sizeof(struct pfr_table)); 
-+        memset(&addr,  0x00, sizeof(struct pfr_addr)); 
-+            
-+        strlcpy(table.pfrt_name, data->pftable, PF_TABLE_NAME_SIZE); 
-+        
-+        net_addr->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
++    memset(&table, 0x00, sizeof(struct pfr_table)); 
++    memset(&addr,  0x00, sizeof(struct pfr_addr)); 
 +
-+        addr.pfra_af  = net_addr->family; 
-+        addr.pfra_net = net_addr->family == AF_INET ? 32 : 128;; 
++    strlcpy(table.pfrt_name, data->pftable, PF_TABLE_NAME_SIZE); 
++    net_addr->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
++    addr.pfra_af  = net_addr->family; 
++    addr.pfra_net = net_addr->family == AF_INET ? 32 : 128; 
 +
-+        io.pfrio_table  = table; 
-+        io.pfrio_buffer = &addr; 
-+        io.pfrio_esize  = sizeof(addr); 
-+        io.pfrio_size   = 1; 
-+        
-+        if (ioctl(data->fd, DIOCRADDADDRS, &io))
-+            ErrorMessage("s2c_pf_block() => ioctl() DIOCRADDADDRS: %s\n", strerror(errno));
-+ 
-+	if (data->kill) {
-+		struct pfctl_kill kill = {
-+			.af = net_addr->family,
-+		};
++    // Add offender's IP address to passed pf table
++    if (pfctl_table_add_addrs(data->fd, &table, &addr, 1, &nadd, 0))
++        ErrorMessage("s2c_pf_block() => pfctl_table_add_addrs(): failed to add IP to pf table\n");
++
++    // Attempt to kill any open firewall states associated with blocked IP
++    if (data->kill) {
++        struct pfctl_kill kill = {
++            .af = net_addr->family,
++        };
++        unsigned int nkill = 0;
++
 +		memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
 +		if (kill.af == AF_INET)
 +			memcpy(&kill.src.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
@@ -598,7 +595,12 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +			memcpy(&kill.src.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
 +		else
 +			return (-1);
-+		pfctl_kill_states(data->fd, &kill, NULL);
++
++        // Kill any open firewall states where blocked IP is the SRC
++		if (pfctl_kill_states(data->fd, &kill, &nkill)) {
++            ErrorMessage("s2c_pf_block() => pfctl_kill_states(): failed to kill states where blocked IP address was SRC.\n");
++            nerrors++;
++        }
 +
 +		memset(&kill, 0, sizeof(kill));
 +		memset(&kill.dst.addr.v.a.mask, 0xff, sizeof(kill.dst.addr.v.a.mask));
@@ -608,16 +610,22 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +			memcpy(&kill.dst.addr.v.a.addr.v4.s_addr, sfaddr_get_ip4_ptr(net_addr), sizeof(in_addr_t));
 +		else if (kill.af == AF_INET6)
 +			memcpy(&kill.dst.addr.v.a.addr.v6, sfaddr_get_ip6_ptr(net_addr), sizeof(struct in6_addr));
-+		else
-+			return (-1);
 +
-+		pfctl_kill_states(data->fd, &kill, NULL);
++        // Kill any open firewall states where blocked IP is the DST
++		if (pfctl_kill_states(data->fd, &kill, &nkill)) {
++            ErrorMessage("s2c_pf_block() => pfctl_kill_states(): failed to kill states where blocked IP address was DST.\n");
++            nerrors++;
++        }
 +	}
-+        return(0); 
++
++    if (nerrors)
++        return (-1);
++    else
++        return (0); 
 +}
 +
 +static int
-+s2c_pf_intbl(int dev, char * tablename, int debug)
++s2c_pf_intbl(int dev, char * tablename)
 +{
 +	int i;
 +	struct pfioc_table io;
@@ -640,14 +648,19 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +	io.pfrio_buffer = table_aux;
 +	io.pfrio_esize = sizeof(struct pfr_table);
 +	
-+	if(ioctl(dev, DIOCRGETTABLES, &io)) 
++	if(ioctl(dev, DIOCRGETTABLES, &io)) { 
 +		FatalError("s2c_pf_intbl() => ioctl() DIOCRGETTABLES: %s. Terminating program!\n", strerror(errno));
++        free(table_aux);
++    }
 +
 +	for(i=0; i< io.pfrio_size; i++) {
-+		if (!strcmp(table_aux[i].pfrt_name, tablename))
-+			return 1;	
++		if (!strcmp(table_aux[i].pfrt_name, tablename)) {
++            free(table_aux);
++			return 1;
++        }	
 +	}
 +	
++    free(table_aux);
 +	return 0;
 +}
 +
@@ -705,7 +718,7 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +				continue;		
 +			}
 +			// Not an IP, so see if a pf table alias name
-+			if (s2c_pf_intbl(dev, cad, 0)) {
++			if (s2c_pf_intbl(dev, cad)) {
 +				ipw->spo_wltype = SPO_WLTYPE_ALIAS;
 +                strlcpy(ipw->spo_alias_tblname, cad, PF_TABLE_NAME_SIZE); 
 +				LIST_INSERT_HEAD(head, ipw, elem);
@@ -727,53 +740,54 @@ diff -ruN ./snort-2.9.20.orig/src/output-plugins/spo_pf.c ./snort-2.9.20/src/out
 +static int
 +s2c_parse_search_wl(SpoAlertPfData *data, sfaddr_t *ip)
 +{
-+        struct iflist *aux1;	
-+        struct ipwlist *aux2;	
-+        struct pfioc_table io; 
-+        struct pfr_table table; 
-+        struct pfr_addr addr; 
++    struct iflist *aux1;	
++    struct ipwlist *aux2;	
++    struct pfioc_table io; 
++    struct pfr_table table; 
++    struct pfr_addr addr; 
 +
-+        // Check and do not block firewall interface IP addresses
-+        LIST_FOREACH(aux1, &data->iflhead, elem) {
-+            if (sfip_fast_equals_raw(&aux1->ifaddr, ip))
-+                return 1;
-+        }
++    // Check and do not block firewall interface IP addresses
++    LIST_FOREACH(aux1, &data->iflhead, elem) {
++        if (sfip_fast_equals_raw(&aux1->ifaddr, ip))
++            return 1;
++    }
 +
 +	// Now check the user-supplied PASS LIST (whitelist) IP addresses and aliases
 +	LIST_FOREACH(aux2, &data->head, elem) {
-+            switch (aux2->spo_wltype) {
++        switch (aux2->spo_wltype) {
 +
-+                case SPO_WLTYPE_ADDR:
-+                    if (sfip_contains(&aux2->waddr, ip) == SFIP_CONTAINS)
-+                        return 1;
-+                    break;
++            case SPO_WLTYPE_ADDR:
++                if (sfip_contains(&aux2->waddr, ip) == SFIP_CONTAINS)
++                    return 1;
++                break;
 +
-+                case SPO_WLTYPE_ALIAS:
-+                    // See if the packet IP address is in the alias table
-+                    memset(&io,    0x00, sizeof(struct pfioc_table)); 
-+                    memset(&table, 0x00, sizeof(struct pfr_table)); 
-+                    memset(&addr,  0x00, sizeof(struct pfr_addr)); 
-+                    strlcpy(table.pfrt_name, &aux2->spo_alias_tblname, PF_TABLE_NAME_SIZE); 
-+                    ip->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(ip), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(ip), sizeof(struct in6_addr));
-+                    addr.pfra_af  = ip->family; 
-+                    addr.pfra_net = ip->family == AF_INET ? 32 : 128;
-+                    io.pfrio_table  = table; 
-+                    io.pfrio_buffer = &addr; 
-+                    io.pfrio_esize  = sizeof(addr); 
-+                    io.pfrio_size   = 1; 
-+                    if (ioctl(data->fd, DIOCRTSTADDRS, &io)) {
-+                        // The IP lookup in pf failed. See if due to deleted alias table name.
-+                        if (s2c_pf_intbl(data->fd, &aux2->spo_alias_tblname, 0) == 0) {
-+                            LIST_REMOVE(aux2, elem);
-+                            free(aux2);
-+                            ErrorMessage("s2c_pf_block() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List. The alias appears to have been deleted, so removing it from the active Pass List.\n", strerror(errno), inet_ntoax(ip), &aux2->spo_alias_tblname);
-+                        } else {
-+                            ErrorMessage("s2c_pf_block() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List.\n", strerror(errno), inet_ntoax(ip), &aux2->spo_alias_tblname);
-+                        }
-+                        break;
++            case SPO_WLTYPE_ALIAS:
++                // See if the packet IP address is in the alias table
++                memset(&io,    0x00, sizeof(struct pfioc_table)); 
++                memset(&table, 0x00, sizeof(struct pfr_table)); 
++                memset(&addr,  0x00, sizeof(struct pfr_addr)); 
++                strlcpy(table.pfrt_name, aux2->spo_alias_tblname, PF_TABLE_NAME_SIZE); 
++                ip->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, sfaddr_get_ip4_ptr(ip), sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, sfaddr_get_ip6_ptr(ip), sizeof(struct in6_addr));
++                addr.pfra_af  = ip->family; 
++                addr.pfra_net = ip->family == AF_INET ? 32 : 128;
++                io.pfrio_table  = table; 
++                io.pfrio_buffer = &addr; 
++                io.pfrio_esize  = sizeof(addr); 
++                io.pfrio_size   = 1; 
++                if (ioctl(data->fd, DIOCRTSTADDRS, &io)) {
++                    // The IP lookup in pf failed. See if due to deleted alias table name.
++                    if (s2c_pf_intbl(data->fd, aux2->spo_alias_tblname) == 0) {
++                        LIST_REMOVE(aux2, elem);
++                        free(aux2);
++                        ErrorMessage("s2c_parse_search_wl() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List. The alias appears to have been deleted, so removing it from the active Pass List.\n", strerror(errno), inet_ntoa(ip), aux2->spo_alias_tblname);
++                    } else {
++                        ErrorMessage("s2c_parse_search_wl() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List.\n", strerror(errno), inet_ntoa(ip), aux2->spo_alias_tblname);
 +                    }
-+                    if (addr.pfra_fback == PFR_FB_MATCH)
-+                        return 1;
++                    break;
++                }
++
++                if (addr.pfra_fback == PFR_FB_MATCH)
++                    return 1;
 +        }
 +    }
 +
