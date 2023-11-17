@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2022 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -270,6 +270,7 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 	touch($tmpdirname . $file, $a_list[$_POST['sidlist_id']]['modtime']);	
 
 	if (file_exists($tmpdirname . $file)) {
+		ob_start(); //important or other posts will fail
 		if (isset($_SERVER['HTTPS'])) {
 			header('Pragma: ');
 			header('Cache-Control: ');
@@ -278,9 +279,9 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_id'])) {
 			header("Cache-Control: private, must-revalidate");
 		}
 		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize($file));
+		header("Content-length: " . filesize($tmpdirname . $file));
 		header("Content-disposition: attachment; filename = " . basename($file));
-		ob_clean();
+		ob_end_clean(); //important or other post will fail
 		flush();
 		readfile($tmpdirname . $file);
 
