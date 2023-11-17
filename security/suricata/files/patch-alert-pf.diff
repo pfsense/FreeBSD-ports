@@ -78,8 +78,8 @@ diff -ruN ./suricata-7.0.2.orig/src/Makefile.in ./suricata-7.0.2/src/Makefile.in
  	-rm -f ./$(DEPDIR)/app-layer-dnp3-objects.Po
 diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 --- ./suricata-7.0.2.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2023-11-09 16:48:10.000000000 -0500
-@@ -0,0 +1,1927 @@
++++ ./src/alert-pf.c	2023-11-17 11:36:52.000000000 -0500
+@@ -0,0 +1,1882 @@
 +/* Copyright (C) 2007-2023 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -352,6 +352,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +	
 +    /* query pf for all registered table names again */
 +    if(ioctl(dev, DIOCRGETTABLES, &io)) {
++        free(table_aux);
 +        SCLogError("AlertPfTableExists(): ioctl() DIOCRGETTABLES: %s\n", strerror(errno));
 +        return -1;
 +    }
@@ -361,11 +362,14 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +     * return 1 (true) if we find it.
 +     */
 +    for(i=0; i < io.pfrio_size; i++) {
-+        if (!strcmp(table_aux[i].pfrt_name, tablename))
-+            return 1;	
++        if (!strcmp(table_aux[i].pfrt_name, tablename)) {
++            free(table_aux);
++            return 1;
++        }	
 +    }
 +
 +    /* did not find the referenced table */	
++    free(table_aux);
 +    return 0;
 +}
 +
@@ -376,10 +380,10 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 + */
 +static int AlertPfBlock(ThreadVars *tv, AlertPfThread *data, const Address *net_addr) 
 +{ 
-+    struct pfioc_table io;
 +    struct pfr_table table;
 +    struct pfr_addr addr;
 +    int states_err = 0;
++    int nadd = 0;
 +    char timebuf[64];
 +    char blockip[INET6_ADDRSTRLEN];
 +    struct timeval tval;
@@ -392,10 +396,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        return -1;
 +    }
 +
-+    memset(&io,    0x00, sizeof(struct pfioc_table)); 
 +    memset(&table, 0x00, sizeof(struct pfr_table)); 
 +    memset(&addr,  0x00, sizeof(struct pfr_addr)); 
-+
 +    strlcpy(table.pfrt_name, data->ctx->pftable, PF_TABLE_NAME_SIZE); 
 +        
 +    if (net_addr->family == AF_INET)
@@ -410,16 +412,6 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    addr.pfra_af  = net_addr->family; 
 +    addr.pfra_net = net_addr->family == AF_INET ? 32 : 128;
 +
-+    io.pfrio_table  = table; 
-+    io.pfrio_buffer = &addr; 
-+    io.pfrio_esize  = sizeof(addr); 
-+    io.pfrio_size   = 1; 
-+
-+    /* check if IP already in pf table and place
-+     * result in 'addr.pfra_fback' for use later.
-+     */
-+    ioctl(data->fd, DIOCRTSTADDRS, &io);
-+        
 +    /* Prepare some needed variables if pass list debugging enabled */
 +    if (data->ctx->passlist_dbg) {
 +        /* create a time string from packet's timestamp for debug log */
@@ -429,19 +421,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        PrintInet(net_addr->family, (const void *)net_addr->addr_data8, blockip, sizeof(blockip));
 +    }
 +
-+    /* skip addition if IP already in pf table */
-+    if (addr.pfra_fback == PFR_FB_MATCH) {
-+        if (data->ctx->passlist_dbg) {
-+            SCMutexLock(&data->ctx->dbgfile_ctx->fp_mutex);
-+            fprintf(data->ctx->dbgfile_ctx->fp, "%s  Thread: %s  Skipping insertion of IP: %s because it was previously inserted into pf table %s.\n", timebuf, tv->name, blockip, table.pfrt_name);
-+            fflush(data->ctx->dbgfile_ctx->fp);
-+            SCMutexUnlock(&data->ctx->dbgfile_ctx->fp_mutex);
-+        }
-+        return 0;
-+    }
-+
-+    /* add the passed address to the pf table */
-+    if (ioctl(data->fd, DIOCRADDADDRS, &io)) {
++    /* Add offender's IP address to passed pf table */
++    if (pfctl_table_add_addrs(data->fd, &table, &addr, 1, &nadd, 0)) {
 +        SCLogError("AlertPfBlock(): ioctl() DIOCRADDADDRS: %s\n", strerror(errno));
 +        if (data->ctx->passlist_dbg) {
 +            SCMutexLock(&data->ctx->dbgfile_ctx->fp_mutex);
@@ -455,7 +436,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    /* count an IP block if we successfully added IP address
 +     * to the pf table.
 +     */
-+    if (io.pfrio_nadd > 0) {
++    if (nadd > 0) {
 +        SC_ATOMIC_ADD(alert_pf_blocks, 1);
 +        if (data->ctx->passlist_dbg) {
 +            SCMutexLock(&data->ctx->dbgfile_ctx->fp_mutex);
@@ -469,18 +450,23 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +     * if 'kill-state' option enabled from YAML conf file.
 +     */
 +    if (data->ctx->kill_state) {
-+#ifdef __FreeBSD__
 +        struct pfctl_kill kill = {
 +            .af = net_addr->family,
 +        };
++        unsigned int nkill = 0;
++
 +        memset(&kill.src.addr.v.a.mask, 0xff, sizeof(kill.src.addr.v.a.mask));
 +        if (kill.af == AF_INET)
 +            kill.src.addr.v.a.addr.v4.s_addr = net_addr->addr_data32[0];
 +        else if (kill.af == AF_INET6)
 +            memcpy(&kill.src.addr.v.a.addr.v6, net_addr->addr_data8, sizeof(kill.src.addr.v.a.addr.v6));
-+        if (pfctl_kill_states(data->fd, &kill, NULL)) {
++        else
++            return (-1);
++
++        /* Kill any open firewall states where blocked IP is the SRC */
++        if (pfctl_kill_states(data->fd, &kill, &nkill)) {
 +            SCLogError("AlertPfBlock(): pfctl_kill_states(): %s\n", strerror(errno));
-+            states_err = 1;
++            states_err++;
 +        }
 +
 +        memset(&kill, 0, sizeof(kill));
@@ -491,42 +477,11 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        else if (kill.af == AF_INET6)
 +            memcpy(&kill.dst.addr.v.a.addr.v6, net_addr->addr_data8, sizeof(kill.dst.addr.v.a.addr.v6));
 +
-+        /* clear any open states where this IP is DST */
-+        if (pfctl_kill_states(data->fd, &kill, NULL)) {
++        /* Kill any open firewall states where blocked IP is the DST */
++        if (pfctl_kill_states(data->fd, &kill, &nkill)) {
 +            SCLogError("AlertPfBlock(): pfctl_kill_states(): %s\n", strerror(errno));
-+            states_err = 1;
++            states_err++;
 +        }
-+#else
-+        struct pfioc_state_kill psk;
-+
-+        memset(&psk, 0, sizeof(psk));
-+        memset(&psk.psk_src.addr.v.a.mask, 0xff, sizeof(psk.psk_src.addr.v.a.mask));
-+        psk.psk_af = net_addr->family;
-+        if (psk.psk_af == AF_INET)
-+            psk.psk_src.addr.v.a.addr.v4.s_addr = net_addr->addr_data32[0];
-+        else if (psk.psk_af == AF_INET6)
-+            memcpy(&psk.psk_src.addr.v.a.addr.v6, net_addr->addr_data8, sizeof(psk.psk_src.addr.v.a.addr.v6));
-+
-+        /* clear any open states where this IP is SRC */
-+        if (ioctl(data->fd, DIOCKILLSTATES, &psk)) {
-+            SCLogError("AlertPfBlock(): ioctl() DIOCKILLSTATES: %s\n", strerror(errno));
-+            states_err = 1;
-+        }
-+
-+        memset(&psk, 0, sizeof(psk));
-+        memset(&psk.psk_dst.addr.v.a.mask, 0xff, sizeof(psk.psk_dst.addr.v.a.mask));
-+        psk.psk_af = net_addr->family;
-+        if (psk.psk_af == AF_INET)
-+            psk.psk_dst.addr.v.a.addr.v4.s_addr = net_addr->addr_data32[0];
-+        else if (psk.psk_af == AF_INET6)
-+            memcpy(&psk.psk_dst.addr.v.a.addr.v6, net_addr->addr_data8, sizeof(psk.psk_dst.addr.v.a.addr.v6));
-+
-+        /* clear any open states where this IP is DST */
-+        if (ioctl(data->fd, DIOCKILLSTATES, &psk)) {
-+            SCLogError("AlertPfBlock(): ioctl() DIOCKILLSTATES: %s\n", strerror(errno));
-+            states_err = 1;
-+        }
-+#endif
 +
 +        if (states_err && data->ctx->passlist_dbg) {
 +            gettimeofday(&tval, NULL);
@@ -548,7 +503,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    }
 +
 +    /* Return the number of effective IP blocks inserted */
-+    return (io.pfrio_nadd); 
++    return (nadd); 
 +}
 +
 +/** \brief Load and parse a single line of text from Pass List file
@@ -1148,7 +1103,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    int sock = -1;
 +    int fib = RT_ALL_FIBS;
 +    size_t fib_len = sizeof(fib);
-+    ssize_t len;
++    size_t len;
 +    char msg[MAX_RTMSG_SIZE];
 +    char ifname[IFNAMSIZ];
 +    char *p;
