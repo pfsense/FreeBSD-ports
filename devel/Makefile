@@ -7668,6 +7668,7 @@
     SUBDIR += stuffbin
     SUBDIR += stxxl
     SUBDIR += stylua
+    SUBDIR += styx
     SUBDIR += subversion
     SUBDIR += subversion-book
     SUBDIR += subversion-lts
