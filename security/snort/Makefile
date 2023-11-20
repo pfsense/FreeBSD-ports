@@ -18,7 +18,7 @@ BUILD_DEPENDS=	daq>=2.2.2_3:net/daq
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap \
-		libpfctl.so:net/libpfctl
+		libpfctl.so.0:net/libpfctl
 RUN_DEPENDS=	daq>=2.2.2_3:net/daq
 
 USES=			bison cpe libtool pathfix shebangfix ssl
