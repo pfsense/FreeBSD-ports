@@ -7571,7 +7571,6 @@
     SUBDIR += sdlmm
     SUBDIR += sdlskk
     SUBDIR += sdsl-lite
-    SUBDIR += sdts++
     SUBDIR += sedsed
     SUBDIR += seer-gdb
     SUBDIR += selene
