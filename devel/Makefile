@@ -6430,6 +6430,7 @@
     SUBDIR += rubygem-aws-sdk-transcribestreamingservice
     SUBDIR += rubygem-aws-sdk-transfer
     SUBDIR += rubygem-aws-sdk-translate
+    SUBDIR += rubygem-aws-sdk-trustedadvisor
     SUBDIR += rubygem-aws-sdk-verifiedpermissions
     SUBDIR += rubygem-aws-sdk-voiceid
     SUBDIR += rubygem-aws-sdk-vpclattice
