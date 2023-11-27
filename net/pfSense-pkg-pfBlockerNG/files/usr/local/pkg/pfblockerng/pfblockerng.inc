@@ -10732,7 +10732,7 @@ function pfblockerng_php_pre_deinstall_command() {
 		if (config_path_enabled('system','earlyshellcmd')) {
 			$a_earlyshellcmd = config_get_path('system/earlyshellcmd', '');
 			if (preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd)) {
-				config_set_path('system','earlyshellcmd',
+				config_set_path('system/earlyshellcmd',
 								preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd, PREG_GREP_INVERT));
 			}
 		}
