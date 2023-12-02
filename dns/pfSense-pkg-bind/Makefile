@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-bind
-PORTVERSION=	9.17
+PORTVERSION=	9.18
 CATEGORIES=	dns
 MASTER_SITES=	# empty
 DISTFILES=	# empty

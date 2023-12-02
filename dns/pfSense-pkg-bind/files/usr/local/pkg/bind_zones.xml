@@ -477,6 +477,35 @@
 			<dontdisplayname/>
 			<usecolspan2/>
 		</field>
+		<field>
+			<name>On config change</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Validate Zone</fielddescr>
+			<fieldname>validate_zone</fieldname>
+			<description>
+				If enabled, NAMED-CHECKZONE is used to validate zone file bevor overwriting existing zone data to prevent downtime of BIND if the zone file is invalid.
+				BIND will use previous zone data until the exception is resolved. Only used for master zones.
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Keep DDNS entries</fielddescr>
+			<fieldname>ddns_merging</fieldname>
+			<description>
+				Master zone with enabled DDNS will be merged into the BIND config file if this option is enabled, otherwise existing zone data will be overwritten with the new config.
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Increment Serial</fielddescr>
+			<fieldname>increment_serial</fieldname>
+			<description>
+				If enabled and config has changed, the serial of the zone will automatically incremented by 1, based on the actual serial of the zone DB.
+			</description>
+			<type>checkbox</type>
+		</field>
 	</fields>
 	<custom_php_after_head_command>
 		bind_print_javascript_type_zone();
