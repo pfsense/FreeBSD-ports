@@ -523,6 +523,9 @@ PHP_FUNCTION(pfSense_kill_states)
 		goto cleanup1;
 	}
 
+	/* Also match on the pre-NAT address. Redmine #11556 */
+	k.nat = true;
+
 	for (resp[0] = res[0]; resp[0]; resp[0] = resp[0]->ai_next) {
 		if (resp[0]->ai_addr == NULL)
 			continue;
