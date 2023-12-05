@@ -24,7 +24,9 @@
 extern zend_module_entry pfsense_module_entry;
 # define phpext_pfsense_ptr &pfsense_module_entry
 
-# define PHP_PFSENSE_VERSION "0.1.0"
+# ifndef PHP_PFSENSE_VERSION
+#  define PHP_PFSENSE_VERSION "0.1.0"
+# endif
 
 # if defined(ZTS) && defined(COMPILE_DL_PFSENSE)
 ZEND_TSRMLS_CACHE_EXTERN()
