@@ -78,8 +78,8 @@ diff -ruN ./suricata-7.0.2.orig/src/Makefile.in ./suricata-7.0.2/src/Makefile.in
  	-rm -f ./$(DEPDIR)/app-layer-dnp3-objects.Po
 diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 --- ./suricata-7.0.2.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2023-11-17 11:36:52.000000000 -0500
-@@ -0,0 +1,1882 @@
++++ ./src/alert-pf.c	2023-12-09 22:37:39.000000000 -0500
+@@ -0,0 +1,1881 @@
 +/* Copyright (C) 2007-2023 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -352,7 +352,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +	
 +    /* query pf for all registered table names again */
 +    if(ioctl(dev, DIOCRGETTABLES, &io)) {
-+        free(table_aux);
++        SCFree(table_aux);
 +        SCLogError("AlertPfTableExists(): ioctl() DIOCRGETTABLES: %s\n", strerror(errno));
 +        return -1;
 +    }
@@ -363,13 +363,13 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +     */
 +    for(i=0; i < io.pfrio_size; i++) {
 +        if (!strcmp(table_aux[i].pfrt_name, tablename)) {
-+            free(table_aux);
++            SCFree(table_aux);
 +            return 1;
 +        }	
 +    }
 +
 +    /* did not find the referenced table */	
-+    free(table_aux);
++    SCFree(table_aux);
 +    return 0;
 +}
 +
@@ -673,8 +673,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                     */
 +                    if ( (user_addr = SCCalloc(1, sizeof(Address))) == NULL) {
 +                        SCLogError("Error allocating required user_data memory for Pass List IP entry %s. Skipping adding this entry to Pass List.", buf);
-+                        continue;
 +                        SCFree(ipv6_addr);
++                        continue;
 +                    }
 +                    user_addr->family = AF_INET6;
 +                    memcpy(user_addr->addr_data8, (uint8_t *)ipv6_addr, sizeof(struct in6_addr));
@@ -715,7 +715,6 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                } else {
 +                    node = SCRadixFindKeyIPV4Netblock((uint8_t *)ipv4_addr, ctx->tree, atoi(netmask_str), &user_data);
 +                    if (node != NULL && user_data != NULL && ctx->passlist_dbg) {
-+                        SCFree(ipv4_addr);
 +                        PrintInet(AF_INET, (const void *)node->prefix->stream, ip_buffer, sizeof(ip_buffer));
 +                        fprintf(ctx->dbgfile_ctx->fp, "%s  IPv4 netblock %s from Pass List lies within existing netblock entry %s/%d.\n",
 +                               timebuf, buf, ip_buffer, node->prefix->user_data->netmask);
@@ -853,7 +852,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        PrintInet(AF_INET, (const void *)&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, tmp, sizeof(tmp));
 +                        SCLogInfo("Adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
 +                        SCRadixAddKeyIPV4((uint8_t *)(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr), ctx->tree, user_addr);
-+                    break;
++                        break;
 +
 +                    case AF_INET6:
 +                        /* create a "user_data" entry for this Pass List item */
