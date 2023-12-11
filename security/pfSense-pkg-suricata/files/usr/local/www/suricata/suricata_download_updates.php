@@ -31,12 +31,12 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 $suricatadir = SURICATADIR;
 $suricata_rules_upd_log = SURICATA_RULES_UPD_LOGFILE;
 
-$snortdownload = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules');
-$emergingthreats = config_get_path('installedpackages/suricata/config/0/enable_etopen_rules');
-$etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules');
-$snortcommunityrules = config_get_path('installedpackages/suricata/config/0/snortcommunityrules');
-$feodotracker_rules = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules');
-$sslbl_rules = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules');
+$snortdownload = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules') == "on" ? 'on' : 'off';
+$emergingthreats = config_get_path('installedpackages/suricata/config/0/enable_etopen_rules') == "on" ? 'on' : 'off';
+$etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules') == "on" ? 'on' : 'off';
+$snortcommunityrules = config_get_path('installedpackages/suricata/config/0/snortcommunityrules') == "on" ? 'on' : 'off';
+$feodotracker_rules = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules') == "on" ? 'on' : 'off';
+$sslbl_rules = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules') == "on" ? 'on' : 'off';
 $enable_extra_rules = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
 $extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/rule', []);
 
@@ -352,7 +352,7 @@ foreach ($extra_rules as $exrule) {
 				<strong><?=gettext("Result:");?></strong> <?=$last_rule_upd_status?>
 			</p>
 			<p>
-				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on' && $enable_extra_rules != 'on'): ?>
+				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on' && $snortcommunityrules != 'on' && $feodotracker_rules != 'on' && $sslbl_rules != 'on' && $enable_extra_rules != 'on'): ?>
 					<br/><button class="btn btn-primary" disabled>
 						<i class="fa fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
