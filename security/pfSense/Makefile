@@ -67,7 +67,6 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		uclcmd>=0:devel/uclcmd \
 		unbound>=0:dns/unbound \
 		voucher>=0:sysutils/voucher \
-		wireguard-tools>=0:security/wireguard-tools \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd \
