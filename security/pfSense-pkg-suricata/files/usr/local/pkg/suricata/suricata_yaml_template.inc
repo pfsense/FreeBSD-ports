@@ -172,7 +172,7 @@ mpm-algo: {$mpm_algo}
 
 # Single pattern algorithm
 # The default of "auto" will use "hs" if available, otherwise "bm".
-spm-algo: auto
+spm-algo: {$spm_algo}
 
 # Defrag settings:
 defrag:
