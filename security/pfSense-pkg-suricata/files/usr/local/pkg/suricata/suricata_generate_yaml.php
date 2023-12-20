@@ -149,6 +149,11 @@ if (!empty($suricatacfg['mpm_algo']))
 else
 	$mpm_algo = "auto";
 
+if (!empty($suricatacfg['spm_algo']))
+	$spm_algo = $suricatacfg['spm_algo'];
+else
+	$spm_algo = "auto";
+
 if (!empty($suricatacfg['inspect_recursion_limit']) || $suricatacfg['inspect_recursion_limit'] == '0')
 	$inspection_recursion_limit = $suricatacfg['inspect_recursion_limit'];
 else

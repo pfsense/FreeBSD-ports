@@ -166,6 +166,8 @@ if (empty($pconfig['detect_eng_profile']))
 	$pconfig['detect_eng_profile'] = "medium";
 if (empty($pconfig['mpm_algo']))
 	$pconfig['mpm_algo'] = "auto";
+if (empty($pconfig['spm_algo']))
+	$pconfig['spm_algo'] = "auto";
 if (empty($pconfig['sgh_mpm_context']))
 	$pconfig['sgh_mpm_context'] = "auto";
 if (empty($pconfig['enable_stats_collection']))
@@ -495,6 +497,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['intf_snaplen'] > '0') $natent['intf_snaplen'] = $_POST['intf_snaplen']; else $natent['inspect_recursion_limit'] = "1518";
 		if ($_POST['detect_eng_profile']) $natent['detect_eng_profile'] = $_POST['detect_eng_profile']; else unset($natent['detect_eng_profile']);
 		if ($_POST['mpm_algo']) $natent['mpm_algo'] = $_POST['mpm_algo']; else unset($natent['mpm_algo']);
+		if ($_POST['spm_algo']) $natent['spm_algo'] = $_POST['spm_algo']; else unset($natent['spm_algo']);
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
 		if ($_POST['blockoffenders'] == "on") $natent['blockoffenders'] = 'on'; else $natent['blockoffenders'] = 'off';
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
@@ -677,6 +680,8 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['delayed_detect'] = 'off';
 			$natent['intf_promisc_mode'] = 'on';
 			$natent['intf_snaplen'] = '1518';
+			$natent['mpm_algo'] = "auto";
+			$natent['spm_algo'] = "auto";
 
 			$natent['app_layer_error_policy'] = "ignore";
 			$natent['asn1_max_frames'] = '256';
@@ -1833,10 +1838,17 @@ $section->addInput(new Form_Select(
 
 $section->addInput(new Form_Select(
 	'mpm_algo',
-	'Pattern Matcher Algorithm',
+	'Multi-Pattern Matcher Algorithm',
 	$pconfig['mpm_algo'],
 	array('auto' => 'Auto', 'ac' => 'AC', 'ac-bs' => 'AC-BS', 'ac-ks' => 'AC-KS', 'hs' => 'Hyperscan')
-))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. Auto is the default, and is the best choice for almost all systems.  Auto will use hyperscan if available.');
+))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. Auto is the default, and is the best choice for almost all systems. Auto will use hyperscan if available.');
+
+$section->addInput(new Form_Select(
+	'spm_algo',
+	' Single-Pattern Matcher Algorithm',
+	$pconfig['spm_algo'],
+	array('auto' => 'Auto', 'bm' => 'BM', 'hs' => 'Hyperscan')
+))->setHelp('Choose a single-pattern matcher (SPM) algorithm. Auto is the default, and is the best choice for almost all systems. Auto will use hyperscan if available.');
 
 $section->addInput(new Form_Select(
 	'sgh_mpm_context',
@@ -2275,6 +2287,7 @@ events.push(function(){
 		disableInput('detect_eng_profile', disable);
 		disableInput('inspect_recursion_limit', disable);
 		disableInput('mpm_algo', disable);
+		disableInput('spm_algo', disable);
 		disableInput('sgh_mpm_context', disable);
 		disableInput('delayed_detect', disable);
 		disableInput('intf_promisc_mode', disable);
