@@ -26,6 +26,21 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => 'terrapin-no-etm-no-chacha',
+  'versions' => ['23.09.1', '23.09', '23.05.1', '23.05', '23.01', '2.7.2', '2.7.1', '2.7.0', '2.6.0'],
+  'descr' => 'Workaround for Terrapin SSH Attack',
+  'links' => [
+      [ 'text' => 'After applying the patch, reboot or restart the SSH daemon' ],
+      [ 'text' => 'FreeBSD-SA-23:19.openssh',
+         'url' => 'https://www.freebsd.org/security/advisories/FreeBSD-SA-23:19.openssh.asc', ],
+      [ 'text' => 'Terrapin Attack',
+         'url' => 'https://terrapin-attack.com/', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'a6cf534d0fa0297547f1e587a12729f9d7066bae',
   'versions' => ['23.09'],
   'descr' => 'Fix "URL (IPs)" type Aliases not being resolved in the firewall ruleset',
