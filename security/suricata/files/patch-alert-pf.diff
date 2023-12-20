@@ -78,8 +78,8 @@ diff -ruN ./suricata-7.0.2.orig/src/Makefile.in ./suricata-7.0.2/src/Makefile.in
  	-rm -f ./$(DEPDIR)/app-layer-dnp3-objects.Po
 diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 --- ./suricata-7.0.2.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2023-12-09 22:37:39.000000000 -0500
-@@ -0,0 +1,1881 @@
++++ ./src/alert-pf.c	2023-12-19 17:00:15.000000000 -0500
+@@ -0,0 +1,2010 @@
 +/* Copyright (C) 2007-2023 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -165,7 +165,6 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +#include "alert-pf.h"
 +
-+#include "util-atomic.h"
 +#include "util-byte.h"
 +#include "util-debug.h"
 +#include "util-ip.h"
@@ -191,6 +190,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +#include <regex.h>
 +#include <ifaddrs.h>
 +#include <pthread.h>
++
 +#ifdef __FreeBSD__
 +#include <libpfctl.h>
 +#endif
@@ -200,6 +200,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +#define MODULE_NAME	"AlertPf"
 +#define DEFAULT_LOG_FILENAME "block.log"
 +#define DEFAULT_DEBUG_LOG_FILENAME "passlist_debug.log"
++#define MAX_ALERT_PF_ALERT_SIZE 2048
++#define MAX_ALERT_PF_BUFFER_SIZE (2 * MAX_ALERT_PF_ALERT_SIZE)
 +#define MAX_RTMSG_SIZE 2048
 +
 +enum spblock { BLOCK_SRC, BLOCK_DST, BLOCK_BOTH };
@@ -221,11 +223,13 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    char pftable[PF_TABLE_NAME_SIZE + 1]; 
 +    int kill_state;
 +    enum spblock block_ip;
-+    SCRadixTree *tree;
++    SCRadixTree *ip4_tree;
++    SCRadixTree *ip6_tree;
 +    struct wlist_head head;
-+    LogFileCtx* file_ctx;
++    LogFileCtx* blockfile_ctx;
 +    LogFileCtx* dbgfile_ctx;
-+    SCRWLock rwlock_tree;
++    SCRWLock rwlock_ip4_tree;
++    SCRWLock rwlock_ip6_tree;
 +    SCRWLock rwlock_wlist;
 +    int block_drops;
 +    int passlist_dbg;
@@ -235,12 +239,11 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 + * This holds per-thread structures and variables.
 + */
 +typedef struct AlertPfThread_ {
-+    AlertPfCtx* ctx;       /* Pointer to the global context data */
-+    int fd;                /* pf device handle */
++    AlertPfCtx* ctx;             /* Pointer to the global context data */
++    int fd;                      /* pf device handle                   */
++    uint64_t alert_pf_alerts;    /* thread total alerts processed      */
++    uint64_t alert_pf_blocks;    /* thread total blocks inserted       */
 +} AlertPfThread;
-+
-+SC_ATOMIC_DECLARE(uint64_t, alert_pf_blocks);  /* Atomic counter, to hold block count */
-+SC_ATOMIC_DECLARE(uint64_t, alert_pf_alerts);  /* Atomic counter, to hold alerts count */
 +
 +// Used for Interface IP change monitoring thread
 +pthread_t alert_pf_ifmon_thread;
@@ -267,17 +270,18 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        AlertPfExitPrintStats);
 +}
 +
++static inline void AlertPfLogBlock(AlertPfThread *apft, char *buffer, int alert_size)
++{
++    apft->ctx->blockfile_ctx->Write(buffer, alert_size, apft->ctx->blockfile_ctx);
++}
++
 +/**
 + * Return TRUE only for valid packets we want
 + * to process.
 + */
 +int AlertPfCondition(ThreadVars *tv, void *thread_data, const Packet *p)
 +{
-+    if (p->alerts.cnt == 0)
-+        return FALSE;
-+    if (!IPH_IS_VALID(p))
-+        return FALSE;
-+    return TRUE;
++    return (p->alerts.cnt ? TRUE : FALSE);
 +}
 +
 +/**
@@ -290,7 +294,6 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +{
 +    if (data != NULL)
 +        SCFree(data);
-+
 +    return;
 +}
 +
@@ -437,7 +440,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +     * to the pf table.
 +     */
 +    if (nadd > 0) {
-+        SC_ATOMIC_ADD(alert_pf_blocks, 1);
++        data->alert_pf_blocks++;
 +        if (data->ctx->passlist_dbg) {
 +            SCMutexLock(&data->ctx->dbgfile_ctx->fp_mutex);
 +            fprintf(data->ctx->dbgfile_ctx->fp, "%s  Thread: %s  Successfully added IP: %s to pf table %s for blocking.\n", timebuf, tv->name, blockip, table.pfrt_name);
@@ -561,9 +564,14 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    int parsed = 0;
 +    int covered = 0;
 +
-+    /* If we do not have a valid Radix Tree, then exit. */
-+    if (ctx->tree == NULL) {
-+        SCLogWarning("There is no valid Radix Tree to contain the Pass List IP data.");
++    /* If we do not have a valid IPv4 Radix Tree, then exit. */
++    if (ctx->ip4_tree == NULL) {
++        SCLogWarning("There is no valid IPv4 Radix Tree to contain the Pass List IPv4 addresses.");
++        return 0;
++    }
++    /* If we do not have a valid IPv6 Radix Tree, then exit. */
++    if (ctx->ip6_tree == NULL) {
++        SCLogWarning("There is no valid Radix Tree to contain the Pass List IPv6 addresses.");
 +        return 0;
 +    }
 +
@@ -577,8 +585,9 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    lock.l_type = F_RDLCK;
 +    fcntl(fileno(wfile), F_SETLKW, &lock);
 +
-+    /* Lock the Radix Tree and FQDN List while we are updating them */
-+    SCRWLockWRLock(&ctx->rwlock_tree);
++    /* Lock the Radix Trees and FQDN List while we are updating them */
++    SCRWLockWRLock(&ctx->rwlock_ip4_tree);
++    SCRWLockWRLock(&ctx->rwlock_ip6_tree);
 +    SCRWLockWRLock(&ctx->rwlock_wlist);
 +
 +    memset(buf, 0, WLMAX);
@@ -637,19 +646,20 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +            /* next, see if we have an IPv4 or IPv6 address string */
 +            if (strchr(ip_str, ':') != NULL) {
-+                if ((ipv6_addr = ValidateIPV6Address(ip_str)) != NULL) {
++                /* Looks like an IPv6 address string, so validate it */
++                if ( (ipv6_addr = ValidateIPV6Address(ip_str)) != NULL ) {
 +                    /* see if this address or netblock either already
-+                     * exists in the Radix Tree or is contained within
-+                     * an existing netblock in the Radix Tree.
++                     * exists in the IPv6 Radix Tree or is contained within
++                     * an existing netblock in the IPv6 Radix Tree.
 +                     */
 +                    if (netmask_str == NULL || atoi(netmask_str) == 128) {
-+                        (void)SCRadixFindKeyIPV6ExactMatch((uint8_t *)ipv6_addr, ctx->tree, &user_data);
++                        (void)SCRadixFindKeyIPV6ExactMatch((uint8_t *)ipv6_addr, ctx->ip6_tree, &user_data);
 +                        if (user_data != NULL && ctx->passlist_dbg) {
 +                            fprintf(ctx->dbgfile_ctx->fp, "%s  IPv6 address %s from Pass List exactly matches an existing entry, so not adding it again.\n",
 +                                   timebuf, buf);
 +                        }
 +                    } else {
-+                        node = SCRadixFindKeyIPV6Netblock((uint8_t *)ipv6_addr, ctx->tree, atoi(netmask_str), &user_data);
++                        node = SCRadixFindKeyIPV6Netblock((uint8_t *)ipv6_addr, ctx->ip6_tree, atoi(netmask_str), &user_data);
 +                        if (node != NULL && user_data != NULL && ctx->passlist_dbg) {
 +                            PrintInet(AF_INET6, (const void *)node->prefix->stream, ip_buffer, sizeof(ip_buffer));
 +                            fprintf(ctx->dbgfile_ctx->fp, "%s  IPv6 netblock %s from Pass List lies within existing netblock entry %s/%d.\n",
@@ -671,28 +681,28 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                     * Radix Tree, so create a "user_data" entry for this
 +                     * Pass List item.
 +                     */
-+                    if ( (user_addr = SCCalloc(1, sizeof(Address))) == NULL) {
++                    if ( (user_addr = SCCalloc(1, sizeof(Address)) ) == NULL) {
 +                        SCLogError("Error allocating required user_data memory for Pass List IP entry %s. Skipping adding this entry to Pass List.", buf);
 +                        SCFree(ipv6_addr);
 +                        continue;
 +                    }
 +                    user_addr->family = AF_INET6;
-+                    memcpy(user_addr->addr_data8, (uint8_t *)ipv6_addr, sizeof(struct in6_addr));
++                    memcpy(&user_addr->addr_data8, (uint8_t *)ipv6_addr, sizeof(struct in6_addr));
 +
 +                    /* we do not have an entry for this address in the Radix Tree, so add it */
 +                    if (netmask_str == NULL || atoi(netmask_str) == 128) {
-+                        SCRadixAddKeyIPV6((uint8_t *)ipv6_addr, ctx->tree, (void *)user_addr);
++                        SCRadixAddKeyIPV6((uint8_t *)ipv6_addr, ctx->ip6_tree, (void *)user_addr);
 +                        if (ctx->passlist_dbg) {
-+                            fprintf(ctx->dbgfile_ctx->fp, "%s  Added IPv6 address %s from Pass List to Radix Tree.\n",
++                            fprintf(ctx->dbgfile_ctx->fp, "%s  Added IPv6 address %s from Pass List to IPv6 Radix Tree.\n",
 +                                   timebuf, buf);
 +                            fflush(ctx->dbgfile_ctx->fp);
 +                        }
 +                    } else {
 +                        MaskIPNetblock((uint8_t *)ipv6_addr, netmask_value, 128);
-+                        node = SCRadixAddKeyIPV6Netblock((uint8_t *)ipv6_addr, ctx->tree, (void *)user_addr, netmask_value);
++                        node = SCRadixAddKeyIPV6Netblock((uint8_t *)ipv6_addr, ctx->ip6_tree, (void *)user_addr, netmask_value);
 +                        if (ctx->passlist_dbg) {
 +                            PrintInet(AF_INET6, (const void *)ipv6_addr, ip_buffer, sizeof(ip_buffer));
-+                            fprintf(ctx->dbgfile_ctx->fp, "%s  Added IPv6 netblock %s/%d to Radix Tree created from Pass List entry %s.\n",
++                            fprintf(ctx->dbgfile_ctx->fp, "%s  Added IPv6 netblock %s/%d to IPv6 Radix Tree created from Pass List entry %s.\n",
 +                                   timebuf, ip_buffer, netmask_value, buf);
 +                        }
 +                    }
@@ -701,19 +711,19 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                    continue;
 +                }
 +            }
-+            else if ((ipv4_addr = ValidateIPV4Address(ip_str)) != NULL) {
++            else if ( (ipv4_addr = ValidateIPV4Address(ip_str)) != NULL ) {
 +                /* see if this address or netblock either already
 +                 * exists in the Radix Tree, or is contained within
 +                 * an existing netblock in the Radix Tree.
 +                 */
 +                if (netmask_str == NULL || atoi(netmask_str) == 32) {
-+                    (void)SCRadixFindKeyIPV4ExactMatch((uint8_t *)ipv4_addr, ctx->tree, &user_data);
++                    (void)SCRadixFindKeyIPV4ExactMatch((uint8_t *)ipv4_addr, ctx->ip4_tree, &user_data);
 +                    if (user_data != NULL && ctx->passlist_dbg) {
 +                        fprintf(ctx->dbgfile_ctx->fp, "%s  IPv4 address %s from Pass List exactly matches an existing entry, so not adding it again.\n",
 +                              timebuf, buf);
 +                    }
 +                } else {
-+                    node = SCRadixFindKeyIPV4Netblock((uint8_t *)ipv4_addr, ctx->tree, atoi(netmask_str), &user_data);
++                    node = SCRadixFindKeyIPV4Netblock((uint8_t *)ipv4_addr, ctx->ip4_tree, atoi(netmask_str), &user_data);
 +                    if (node != NULL && user_data != NULL && ctx->passlist_dbg) {
 +                        PrintInet(AF_INET, (const void *)node->prefix->stream, ip_buffer, sizeof(ip_buffer));
 +                        fprintf(ctx->dbgfile_ctx->fp, "%s  IPv4 netblock %s from Pass List lies within existing netblock entry %s/%d.\n",
@@ -735,17 +745,17 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                 * Radix Tree, so create a "user_data" entry for this
 +                 * Pass List item.
 +                 */
-+                if ( (user_addr = SCCalloc(1, sizeof(Address))) == NULL) {
++                if ( (user_addr = SCCalloc(1, sizeof(Address))) == NULL ) {
 +                    SCLogError("Error allocating required user_data memory for Pass List IP entry %s. Skipping adding this entry to Pass List.", buf);
 +                    SCFree(ipv4_addr);
 +                    continue;
 +                }
 +                user_addr->family = AF_INET;
-+                memcpy(user_addr->addr_data32, (uint32_t *)ipv4_addr, sizeof(struct in_addr));
++                user_addr->addr_data32[0] = ipv4_addr->s_addr;
 +
 +                /* we do not have an entry for this address in the Radix Tree, so add it */
 +                if (netmask_str == NULL || atoi(netmask_str) == 32) {
-+                    SCRadixAddKeyIPV4((uint8_t *)ipv4_addr, ctx->tree, (void *)user_addr);
++                    SCRadixAddKeyIPV4((uint8_t *)ipv4_addr, ctx->ip4_tree, (void *)user_addr);
 +                    if (ctx->passlist_dbg) {
 +                        fprintf(ctx->dbgfile_ctx->fp, "%s  Added IPv4 address %s from Pass List.\n",
 +                               timebuf, buf);
@@ -753,10 +763,10 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                    }
 +                } else {
 +                    MaskIPNetblock((uint8_t *)ipv4_addr, netmask_value, 32);
-+                    node = SCRadixAddKeyIPV4Netblock((uint8_t *)ipv4_addr, ctx->tree, (void *)user_addr, netmask_value);
++                    node = SCRadixAddKeyIPV4Netblock((uint8_t *)ipv4_addr, ctx->ip4_tree, (void *)user_addr, netmask_value);
 +                    if (ctx->passlist_dbg) {
 +                            PrintInet(AF_INET, (const void *)ipv4_addr, ip_buffer, sizeof(ip_buffer));
-+                            fprintf(ctx->dbgfile_ctx->fp, "%s  Added IPv4 netblock %s/%d to Radix Tree created from Pass List entry %s.\n",
++                            fprintf(ctx->dbgfile_ctx->fp, "%s  Added IPv4 netblock %s/%d to IPv4 Radix Tree created from Pass List entry %s.\n",
 +                                   timebuf, ip_buffer, netmask_value, buf);
 +                    }
 +                }
@@ -791,7 +801,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +            SCLogWarning("Error occurred parsing line (%s) in Pass List, skipping this line.", buf);
 +    }
 +
-+    SCRWLockUnlock(&ctx->rwlock_tree);
++    SCRWLockUnlock(&ctx->rwlock_ip4_tree);
++    SCRWLockUnlock(&ctx->rwlock_ip6_tree);
 +    SCRWLockUnlock(&ctx->rwlock_wlist);
 +
 +    lock.l_type = F_UNLCK;
@@ -803,7 +814,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        gettimeofday(&tval, NULL);
 +        SCTime_t ts = SCTIME_FROM_TIMEVAL(&tval);
 +        CreateTimeString(ts, timebuf, sizeof(timebuf));
-+        fprintf(ctx->dbgfile_ctx->fp, "%s  Completed processing Pass List %s. Total entries parsed: %d, Unique IP addresses/netblocks/aliases added to Radix Tree: %d, IP addresses/netblocks ignored because they were covered by existing Radix Tree entries: %d.\n\n",
++        fprintf(ctx->dbgfile_ctx->fp, "%s  Completed processing Pass List %s. Total entries parsed: %d, Unique IP addresses/netblocks/aliases added to Radix Trees: %d, IP addresses/netblocks ignored because they were covered by existing Radix Tree entries: %d.\n\n",
 +              timebuf, plfile, parsed, count, covered);
 +        fflush(ctx->dbgfile_ctx->fp);
 +        SCMutexUnlock(&ctx->dbgfile_ctx->fp_mutex);
@@ -825,17 +836,23 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    Address *user_addr = NULL;
 +    char tmp[46];
 +
-+    /* If we don't have a valid Radix Tree, then exit. */
-+    if (ctx->tree == NULL) {
-+        SCLogInfo("No valid Radix Tree available. Pass List functionality is disabled!");
-+        return -1;
++    /* If we don't have a valid IPv4 Radix Tree, then exit. */
++    if (ctx->ip4_tree == NULL) {
++        SCLogInfo("No valid IPv4 Radix Tree available. Automatic Pass List functionality is disabled!");
++        return 0;
++    }
++    /* If we don't have a valid IPv6 Radix Tree, then exit. */
++    if (ctx->ip6_tree == NULL) {
++        SCLogInfo("No valid IPv6 Radix Tree available. Automatic Pass List functionality is disabled!");
++        return 0;
 +    }
 +
 +    if (getifaddrs(&ifap) == 0) {
 +        SCLogInfo("Creating automatic firewall interface IP address Pass List.");
 +
-+        /* Lock the Radix Tree while we are updating it */
-+        SCRWLockWRLock(&ctx->rwlock_tree);
++        /* Lock the Radix Trees while we are updating them */
++        SCRWLockWRLock(&ctx->rwlock_ip4_tree);
++        SCRWLockWRLock(&ctx->rwlock_ip6_tree);
 +
 +        for (ifa = ifap; ifa != NULL; ifa = ifa->ifa_next) {
 +            if (ifa->ifa_addr) {
@@ -843,28 +860,28 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                switch (ifa->ifa_addr->sa_family) {
 +                    case AF_INET:
 +                        /* create a "user_data" entry for this Pass List item */
-+                        if ( (user_addr = SCCalloc(1, sizeof(struct in_addr))) == NULL) {
-+                            FatalError("Failed allocating memory in AlertPfInitIfaceList() for Radix Tree user data entry. Exiting...");
++                        if ( (user_addr = SCCalloc(1, sizeof(Address))) == NULL) {
++                            FatalError("Failed allocating memory in AlertPfInitIfaceList() for IPv4 Radix Tree user data entry. Exiting...");
 +                        }
 +
 +                        user_addr->family = AF_INET;
-+                        memcpy(user_addr->addr_data32, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, sizeof(struct in_addr));
++                        user_addr->addr_data32[0] = ((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr;
 +                        PrintInet(AF_INET, (const void *)&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, tmp, sizeof(tmp));
 +                        SCLogInfo("Adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
-+                        SCRadixAddKeyIPV4((uint8_t *)(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr), ctx->tree, user_addr);
++                        SCRadixAddKeyIPV4((uint8_t *)(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr), ctx->ip4_tree, user_addr);
 +                        break;
 +
 +                    case AF_INET6:
 +                        /* create a "user_data" entry for this Pass List item */
-+                        if ( (user_addr = SCCalloc(1, sizeof(struct in6_addr))) == NULL) {
-+                            FatalError("Failed allocating memory in AlertPfInitIfaceList() for Radix Tree user data entry. Exiting...");
++                        if ( (user_addr = SCCalloc(1, sizeof(Address))) == NULL) {
++                            FatalError("Failed allocating memory in AlertPfInitIfaceList() for IPv6 Radix Tree user data entry. Exiting...");
 +                        }
 +
 +                        user_addr->family = AF_INET6;
-+                        memcpy(user_addr->addr_data8, &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, sizeof(struct in6_addr));
++                        memcpy(&user_addr->addr_data8, &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, sizeof(struct in6_addr));
 +                        PrintInet(AF_INET6, (const void *)&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, tmp, sizeof(tmp));
 +                        SCLogInfo("Adding firewall interface %s IPv6 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
-+                        SCRadixAddKeyIPV6((uint8_t *)(&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr), ctx->tree, user_addr);
++                        SCRadixAddKeyIPV6((uint8_t *)(&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr), ctx->ip6_tree, user_addr);
 +                        break;
 +
 +                    default:
@@ -873,8 +890,9 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +            }
 +        }
 +
-+        /* Finished updating the Radix Tree, so release our Write lock */
-+        SCRWLockUnlock(&ctx->rwlock_tree);
++        /* Finished updating the Radix Trees, so release our Write locks */
++        SCRWLockUnlock(&ctx->rwlock_ip4_tree);
++        SCRWLockUnlock(&ctx->rwlock_ip6_tree);
 +        freeifaddrs(ifap);
 +        return -1;
 +    }
@@ -933,36 +951,38 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    if (ip == NULL || ctx == NULL)
 +        return;
 +
-+    // Validate Radix Tree exists
-+    if (ctx->tree == NULL)
++    // Validate needed Radix Trees exist
++    if (ip->family == AF_INET && ctx->ip4_tree == NULL)
++        return;
++    if (ip->family == AF_INET6 && ctx->ip6_tree == NULL)
 +        return;
 +
 +    switch (action) {
 +        case RTM_NEWADDR:
 +            // Check if new address already in list
 +            if (ip->family == AF_INET) {
-+                SCRWLockRDLock(&ctx->rwlock_tree);
-+                (void)SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->tree, &user_data);
-+                SCRWLockUnlock(&ctx->rwlock_tree);
++                SCRWLockRDLock(&ctx->rwlock_ip4_tree);
++                (void)SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->ip4_tree, &user_data);
++                SCRWLockUnlock(&ctx->rwlock_ip4_tree);
 +                if (user_data == NULL) {
 +                    /* Not already in list, so add it. First create
 +                     * a 'user_data' entry for this Pass List item
 +                     */
 +                    if ( (user_addr = SCCalloc(1, sizeof(struct in_addr))) == NULL) {
-+                        FatalError("Failed allocating memory in AlertPf_IflistMaint() for Radix Tree user data entry. Exiting...");
++                        FatalError("Failed allocating memory in AlertPf_IflistMaint() for IPv4 Radix Tree user data entry. Exiting...");
 +                    }
 +                    COPY_ADDRESS(ip, user_addr);
-+                    SCRWLockWRLock(&ctx->rwlock_tree);
-+                    SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, user_addr);
-+                    SCRWLockUnlock(&ctx->rwlock_tree);
++                    SCRWLockWRLock(&ctx->rwlock_ip4_tree);
++                    SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->ip4_tree, user_addr);
++                    SCRWLockUnlock(&ctx->rwlock_ip4_tree);
 +                    PrintInet(AF_INET, (const void *)&ip->addr_data32, tmp, sizeof(tmp));
 +                    SCLogInfo("Added address %s to automatic firewall interface IP Pass List.", tmp);
 +                }
 +            }
 +            else if (ip->family == AF_INET6) {
-+                SCRWLockRDLock(&ctx->rwlock_tree);
-+                (void)SCRadixFindKeyIPV6ExactMatch((uint8_t *)&ip->addr_data8, ctx->tree, &user_data);
-+                SCRWLockUnlock(&ctx->rwlock_tree);
++                SCRWLockRDLock(&ctx->rwlock_ip6_tree);
++                (void)SCRadixFindKeyIPV6ExactMatch((uint8_t *)&ip->addr_data8, ctx->ip6_tree, &user_data);
++                SCRWLockUnlock(&ctx->rwlock_ip6_tree);
 +                if (user_data == NULL) {
 +                    /* Not already in list, so add it. First create
 +                     * a 'user_data' entry for this Pass List item
@@ -971,9 +991,9 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        FatalError("Failed allocating memory in AlertPf_IflistMaint() for Radix Tree user data entry. Exiting...");
 +                    }
 +                    COPY_ADDRESS(ip, user_addr);
-+                    SCRWLockWRLock(&ctx->rwlock_tree);
-+                    SCRadixAddKeyIPV6((uint8_t *)&ip->addr_data8, ctx->tree, user_addr);
-+                    SCRWLockUnlock(&ctx->rwlock_tree);
++                    SCRWLockWRLock(&ctx->rwlock_ip6_tree);
++                    SCRadixAddKeyIPV6((uint8_t *)&ip->addr_data8, ctx->ip6_tree, user_addr);
++                    SCRWLockUnlock(&ctx->rwlock_ip6_tree);
 +                    PrintInet(AF_INET6, (const void *)&ip->addr_data8, tmp, sizeof(tmp));
 +                    SCLogInfo("Added address %s to automatic firewall interface IP Pass List.", tmp);
 +                }
@@ -983,25 +1003,27 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        case RTM_DELADDR:
 +            // Delete the passed IP address only if it is in our IP List
 +            if (ip->family == AF_INET) {
-+                SCRWLockRDLock(&ctx->rwlock_tree);
-+                (void)SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->tree, &user_data);
-+                SCRWLockUnlock(&ctx->rwlock_tree);
++                SCRWLockRDLock(&ctx->rwlock_ip4_tree);
++                (void)SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->ip4_tree, &user_data);
++                SCRWLockUnlock(&ctx->rwlock_ip4_tree);
 +                if (user_data != NULL) {
 +                    // In list, so delete it
-+                    SCRWLockWRLock(&ctx->rwlock_tree);
-+                    SCRadixRemoveKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree);
-+                    SCRWLockUnlock(&ctx->rwlock_tree);
++                    SCRWLockWRLock(&ctx->rwlock_ip4_tree);
++                    SCRadixRemoveKeyIPV4((uint8_t *)&ip->addr_data32, ctx->ip4_tree);
++                    SCRWLockUnlock(&ctx->rwlock_ip4_tree);
 +                    PrintInet(AF_INET, (const void *)&ip->addr_data32, tmp, sizeof(tmp));
 +                    SCLogInfo("Deleted address %s from automatic firewall interface IP Pass List.", tmp);
 +                }
 +            }
 +            else if (ip->family == AF_INET6) {
-+                (void)SCRadixFindKeyIPV6ExactMatch((uint8_t *)&ip->addr_data8, ctx->tree, &user_data);
++                SCRWLockRDLock(&ctx->rwlock_ip6_tree);
++                (void)SCRadixFindKeyIPV6ExactMatch((uint8_t *)&ip->addr_data8, ctx->ip6_tree, &user_data);
++                SCRWLockUnlock(&ctx->rwlock_ip6_tree);
 +                if (user_data != NULL) {
 +                    // In list, so delete it
-+                    SCRWLockWRLock(&ctx->rwlock_tree);
-+                    SCRadixRemoveKeyIPV6((uint8_t *)&ip->addr_data8, ctx->tree);
-+                    SCRWLockUnlock(&ctx->rwlock_tree);
++                    SCRWLockWRLock(&ctx->rwlock_ip6_tree);
++                    SCRadixRemoveKeyIPV6((uint8_t *)&ip->addr_data8, ctx->ip6_tree);
++                    SCRWLockUnlock(&ctx->rwlock_ip6_tree);
 +                    PrintInet(AF_INET6, (const void *)&ip->addr_data8, tmp, sizeof(tmp));
 +                    SCLogInfo("Deleted address %s from automatic firewall interface IP Pass List.", tmp);
 +                }
@@ -1033,7 +1055,6 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +    if (unlikely(apft == NULL))
 +        return TM_ECODE_FAILED;
-+    memset(apft, 0, sizeof(AlertPfThread));
 +
 +    /* Use the Ouput Context */
 +    apft->ctx = ((OutputCtx *)initdata)->data;
@@ -1070,7 +1091,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    return TM_ECODE_OK;
 +}
 +
-+/** \brief Print the pf alert module blocking stats.
++/** \brief Print the per-thread pf alert module stats.
 + *  \param *tv pointer to ThreadVars structure
 + *  \param *data pointer to AlertPfThread structure
 + */
@@ -1081,17 +1102,10 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        return;
 +    }
 +
-+    uint64_t blocks = SC_ATOMIC_GET(alert_pf_blocks);
-+    uint64_t alerts = SC_ATOMIC_GET(alert_pf_alerts);
-+    if (blocks == 1)
-+        SCLogInfo("Inserted %" PRIu64 " IP address block", blocks);
-+    else
-+        SCLogInfo("Inserted %" PRIu64 " IP address blocks", blocks);
-+
-+    if (alerts == 1)
-+        SCLogInfo("Processed %" PRIu64 " alert", alerts);
-+    else
-+        SCLogInfo("Processed %" PRIu64 " alerts", alerts);
++    SCLogInfo("(%s) processed %" PRIu64 " alert%s", tv->printable_name ? tv->printable_name : tv->name, 
++            apft->alert_pf_alerts, apft->alert_pf_alerts == 1 ? "." : "s.");
++    SCLogInfo("(%s) inserted %" PRIu64 " IP address block%s", tv->printable_name ? tv->printable_name : tv->name,
++            apft->alert_pf_blocks, apft->alert_pf_blocks == 1 ? "." : "s.");
 +}
 +
 +/** \brief Thread for monitoring firewall interface IP address changes.
@@ -1113,18 +1127,18 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +    AlertPfCtx *ctx = args;
 +
++    SCSetThreadName("Suricata-IM#01");
++    SCLogInfo("Firewall Interface IP Address Change Monitor Thread IM#01 has successfully started.");
++
 +    sock = socket(PF_ROUTE, SOCK_RAW, AF_UNSPEC);
 +    if (sock == -1) {
-+        SCLogWarning("Failed to create routing messages socket(PF_ROUTE): %s.  Dynamic IP changes on firewall interfaces will not be monitored!", strerror(errno));
++        SCLogWarning("Monitor Thread IM#01 failed to create routing messages socket(PF_ROUTE): %s.  Dynamic IP changes on firewall interfaces will not be monitored!", strerror(errno));
 +        return (NULL);
 +    }
 +
-+    pthread_setname_np(pthread_self(), "IM#01");
-+    SCLogInfo("Firewall Interface IP Address Change monitoring thread IM#01 has successfully started.");
-+
 +    if (sysctlbyname("net.my_fibnum", &fib, &fib_len, NULL, 0) < 0)
 +    {  
-+        SCLogWarning("Failed to obtain active route table FIB so using all FIBs by default.");
++        SCLogWarning("Monitor Thread IM#01 failed to obtain active route table FIB so using all FIBs by default.");
 +        fib = RT_ALL_FIBS;
 +    }
 +    setsockopt(sock, SOL_SOCKET, SO_SETFIB, (void *)&fib, sizeof(fib));
@@ -1178,12 +1192,12 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +                    // Make sure we have a valid non-zero IP address in that sockaddr structure
 +                    if (!AlertPfParseIfamAddress(sa, &addr)) {
-+                        SCLogDebug("Firewall interface IP change notification thread received an invalid IP address via kernel routing message socket.");
++                        SCLogDebug("Monitor Thread IM#01 received an invalid IP address via kernel routing message socket.");
 +                        continue;
 +                    }
 +
 +                    // OK, now either delete it from or add it to the interface IP list
-+                    SCLogInfo("Received notification of IP address change on firewall interface %s.", if_indextoname(ifam->ifam_index, ifname));
++                    SCLogInfo("Monitor Thread IM#01 received notification of IP address change on interface %s.", if_indextoname(ifam->ifam_index, ifname));
 +                    AlertPf_IflistMaint(&addr, ctx, rtm->rtm_type);
 +                }
 +                continue;
@@ -1193,7 +1207,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        }
 +    }
 +
-+    SCLogInfo("Firewall Interface IP Address Change monitoring thread IM#01 shutting down.");
++    SCLogInfo("Monitor Thread IM#01 - Firewall Interface IP Address Change monitoring thread shutting down.");
 +    return (NULL);
 +}
 +
@@ -1205,8 +1219,6 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +{
 +    AlertPfCtx *ctx;
 +    OutputInitResult result = { NULL, false };
-+    LogFileCtx *logfile_ctx;
-+    LogFileCtx *dbgfile_ctx;
 +    const char *pass_list_name;
 +    const char *kill_state;
 +    const char *block_ip;
@@ -1214,6 +1226,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    const char *pf_table;
 +    const char *passlist_dbg;
 +    OutputCtx *output_ctx;
++    LogFileCtx *dbgfile_ctx;
 +
 +    pass_list_name = ConfNodeLookupChildValue(conf, "pass-list");
 +    if (pass_list_name == NULL) {
@@ -1230,19 +1243,23 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        FatalError("alert-pf -> No PF table name specified, module init failed.");
 +    }
 +
++    /* Create our global AlertPf data context */
 +    ctx = SCCalloc(1, sizeof(AlertPfCtx));
 +    if (unlikely(ctx == NULL)) {
 +        FatalError("alert-pf -> Unable to allocate memory for AlertPfCtx, module init failed.");
 +    }
 +
-+    /* Create a Radix Tree to hold PASS LIST IP addresses */
-+    ctx->tree = SCRadixCreateRadixTree(AlertPfFreeUserData, NULL);
-+    if (unlikely(ctx->tree == NULL))
++    /* Create the IPv4 and IPv6 Radix Trees to hold PASS LIST IP addresses */
++    ctx->ip4_tree = SCRadixCreateRadixTree(AlertPfFreeUserData, NULL);
++    ctx->ip6_tree = SCRadixCreateRadixTree(AlertPfFreeUserData, NULL);
++    if (unlikely(ctx->ip4_tree == NULL || ctx->ip6_tree == NULL))
 +        SCLogWarning("Failed to create Radix Tree for IP address lookups.  Pass List functionality is auto-disabled!");
 +
-+    /* Initialize a RWLock for the Radix Tree to control concurrent updates and reads */
-+	if (ctx->tree)
-+        SCRWLockInit(&ctx->rwlock_tree, NULL);
++    /* Initialize a RWLock for the Radix Trees to control concurrent updates and reads */
++	if (ctx->ip4_tree)
++        SCRWLockInit(&ctx->rwlock_ip4_tree, NULL);
++	if (ctx->ip6_tree)
++        SCRWLockInit(&ctx->rwlock_ip6_tree, NULL);
 +
 +    /* Initialize our FQDN Alias pass list */
 +	SLIST_INIT(&ctx->head);
@@ -1250,12 +1267,12 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    /* Initialize a RWLock for the FQDN Pass List to control concurrent updates and reads */
 +    SCRWLockInit(&ctx->rwlock_wlist, NULL);
 +
-+    /* Grab all firewall interface IP addresses and save in Radix Tree */
++    /* Grab all firewall interface IP addresses and save in Radix Trees */
 +    if (!AlertPfInitIfaceList(ctx))
 +        SCLogWarning("Failed to create the list of firewall interface addresses for auto-whitelisting.");
 +
 +    /* Create a LogFileCtx for the block.log output */
-+    logfile_ctx = LogFileNewCtx();
++    LogFileCtx *logfile_ctx = LogFileNewCtx();
 +    if (logfile_ctx == NULL) {
 +        SCLogDebug("AlertPfInitCtx(): Could not create new LogFileCtx for %s", DEFAULT_LOG_FILENAME);
 +        SCFree(ctx);
@@ -1263,11 +1280,11 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    }
 +    if (SCConfLogOpenGeneric(conf, logfile_ctx, DEFAULT_LOG_FILENAME, 1) < 0) {
 +        LogFileFreeCtx(logfile_ctx);
-+        SCLogDebug("AlertPfInitCtx(): Could not open log file %s specified by LogFileCtx, DEFAULT_LOG_FILENAME");
++        SCLogDebug("AlertPfInitCtx(): Could not open log file %s specified by LogFileCtx", DEFAULT_LOG_FILENAME);
 +        SCFree(ctx);
 +        return result;
 +    }
-+    ctx->file_ctx = logfile_ctx;
++    ctx->blockfile_ctx = logfile_ctx;
 +
 +    if (passlist_dbg && ConfValIsTrue(passlist_dbg)) {
 +
@@ -1329,22 +1346,23 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +    if (AlertPfTableExists(ctx->pftable) != 1) {
 +        LogFileFreeCtx(logfile_ctx);
-+        LogFileFreeCtx(dbgfile_ctx);
++        if (ctx->passlist_dbg)
++            LogFileFreeCtx(dbgfile_ctx);
 +        SCFree(ctx);
 +        FatalError("alert-pf -> Could not validate pf table name exists: %s, module init failed.", pf_table);
 +    }
 +
++    /* Create and initialize our Output Context (Logger Output) */
 +    output_ctx = SCCalloc(1, sizeof(OutputCtx));
 +    if (unlikely(output_ctx == NULL)) {
 +        LogFileFreeCtx(logfile_ctx);
-+        LogFileFreeCtx(dbgfile_ctx);
++        if (ctx->passlist_dbg)
++            LogFileFreeCtx(dbgfile_ctx);
 +        SCFree(ctx);
 +        FatalError("alert-pf -> Unable to allocate memory for Logging OutputCtx, module init failed.");
 +    }
 +    output_ctx->data = ctx;
 +    output_ctx->DeInit = AlertPfDeInitCtx;
-+    SC_ATOMIC_INIT(alert_pf_blocks);
-+    SC_ATOMIC_INIT(alert_pf_alerts);
 +
 +    const char *block;
 +    switch (ctx->block_ip) {
@@ -1365,15 +1383,17 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +    const char *drops = ctx->block_drops ? "yes" : "no";
 +    const char *plist_dbg = ctx->passlist_dbg ? "yes" : "no";
 +
-+    /* start iface monitoring thread only if we have a valid Radix Tree */
-+    if (ctx->tree) {
-+        if (pthread_create(&alert_pf_ifmon_thread, NULL, AlertPfMonitorIfaceChanges, ctx))
-+            SCLogError("Failed to create Interface IP Address change monitoring thread for 'alert-pf' output plugin.");
-+        else
-+            SCLogInfo("Created Firewall Interface IP Change monitor thread for auto-whitelisting of firewall interface IP addresses.");
-+    }
-+
 +    SCLogInfo("pfSense Suricata Custom Blocking Module initialized: pf-table=%s  block-ip=%s  kill-state=%s  block-drops-only=%s  passlist-debugging=%s", ctx->pftable, block, state, drops, plist_dbg);
++
++    /* start iface monitoring thread only if we have valid Radix Trees */
++    if (ctx->ip4_tree && ctx->ip6_tree) {
++        if (pthread_create(&alert_pf_ifmon_thread, NULL, AlertPfMonitorIfaceChanges, ctx))
++            SCLogError("Failed to create Firewall Interface IP Address change monitoring thread for 'alert-pf' output plugin.");
++        else
++            SCLogInfo("Created Interface IP Address change monitoring thread for auto-whitelisting of firewall interface IP addresses.");
++    } else {
++        SCLogWarning("One or more required Radix Trees missing for Interface IP Address change monitoring thread. Firewall interface IPs may be blocked!");
++    }
 +
 +    result.ctx = output_ctx;
 +    result.ok = true;
@@ -1401,18 +1421,25 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +static void AlertPfDeInitCtx(OutputCtx *output_ctx)
 +{
 +    AlertPfCtx *ctx = (AlertPfCtx *)output_ctx->data;
-+    LogFileFreeCtx(ctx->file_ctx);
-+    LogFileFreeCtx(ctx->dbgfile_ctx);
-+    SCRadixReleaseRadixTree(ctx->tree);
-+    SCRWLockDestroy(&ctx->rwlock_tree);
++    LogFileFreeCtx(ctx->blockfile_ctx);
++    if (ctx->passlist_dbg)
++        LogFileFreeCtx(ctx->dbgfile_ctx);
++    if (ctx->ip4_tree) {
++        SCRWLockDestroy(&ctx->rwlock_ip4_tree);
++        SCRadixReleaseRadixTree(ctx->ip4_tree);
++    }
++    if (ctx->ip6_tree) {
++        SCRWLockDestroy(&ctx->rwlock_ip6_tree);
++        SCRadixReleaseRadixTree(ctx->ip6_tree);
++    }
 +    AlertPfFreeWlist(&ctx->head);
 +    SCRWLockDestroy(&ctx->rwlock_wlist);
 +    SCFree(ctx);
 +    SCFree(output_ctx);
 +}
 +
-+/** \brief This searches any FQDN or URL Table Aliases loaded from
-+ * the Pass List for a match to the passed IP address.
++/** \brief This searches FQDN or URL Table Aliases loaded from
++ *         the Pass List for a match to the passed IP address.
 + *  \param *apft pointer to AlertPf thread data
 + *  \param *ip uint8_t pointer to IP address to match
 + *  \paran family is IP address type (AF_INET or AF_INET6)
@@ -1466,22 +1493,39 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +{
 +    AlertPfThread *apft = (AlertPfThread *)data;
 +    int i;
++    bool blocked = false;
 +    char proto[16] = "";
++    const char *protoptr;
 +    char timebuf[64], ip_buffer[INET_ADDRSTRLEN + 4];
 +    char srcip[INET_ADDRSTRLEN], dstip[INET_ADDRSTRLEN];
++    char alert_buffer[MAX_ALERT_PF_BUFFER_SIZE];
 +
 +    if (p->alerts.cnt == 0)
 +        return TM_ECODE_OK;
 +
 +    /* create a time string from the packet's timestamp for the block log */
 +    CreateTimeString(p->ts, timebuf, sizeof(timebuf));
-+    PrintInet(AF_INET, (const void *)GET_IPV4_SRC_ADDR_PTR(p), srcip, sizeof(srcip));
-+    PrintInet(AF_INET, (const void *)GET_IPV4_DST_ADDR_PTR(p), dstip, sizeof(dstip));
 +
-+    if (SCProtoNameValid(IPV4_GET_IPPROTO(p)) == TRUE) {
-+        strlcpy(proto, known_proto[IPV4_GET_IPPROTO(p)], sizeof(proto));
++    /* Process only valid IPv4 packets, skip decoder events */
++    if (PKT_IS_IPV4(p)) {
++        PrintInet(AF_INET, (const void *)GET_IPV4_SRC_ADDR_PTR(p), srcip, sizeof(srcip));
++        PrintInet(AF_INET, (const void *)GET_IPV4_DST_ADDR_PTR(p), dstip, sizeof(dstip));
 +    } else {
-+        snprintf(proto, sizeof(proto), "PROTO:%03" PRIu32, IPV4_GET_IPPROTO(p));
++        return TM_ECODE_OK;
++    }
++
++    if (SCProtoNameValid(IP_GET_IPPROTO(p)) == TRUE) {
++        protoptr = known_proto[IP_GET_IPPROTO(p)];
++    } else {
++        snprintf(proto, sizeof(proto), "PROTO:%03" PRIu32, IP_GET_IPPROTO(p));
++        protoptr = proto;
++    }
++
++    uint16_t src_port_or_icmp = p->sp;
++    uint16_t dst_port_or_icmp = p->dp;
++    if (IP_GET_IPPROTO(p) == IPPROTO_ICMP) {
++        src_port_or_icmp = p->icmp_s.type;
++        dst_port_or_icmp = p->icmp_s.code;
 +    }
 +
 +    /* A packet can generate multiple alerts, so walk the list */
@@ -1495,24 +1539,25 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        if (pa->s->flags & SIG_FLAG_NOALERT) {
 +            continue;
 +        }
-+        SC_ATOMIC_ADD(alert_pf_alerts, 1);
++        apft->alert_pf_alerts++;
 +
 +        /* If blocking only DROP rules and alert is not from a DROP rule, ignore it */
-+        if (apft->ctx->block_drops && !(PacketCheckAction(p, ACTION_DROP))) {
++        if (apft->ctx->block_drops && !(pa->action & ACTION_DROP)) {
 +            continue;
 +        }
 +
 +        void *user_data = NULL;
 +        SCRadixNode *node = NULL;
++        int size = 0;
 +
-+        /* Read Lock the Radix Tree and FQDN Pass List while we are searching them */
-+        SCRWLockRDLock(&apft->ctx->rwlock_tree);
++        /* Read Lock the IPv4 Radix Tree and FQDN Pass List while we are searching them */
++        SCRWLockRDLock(&apft->ctx->rwlock_ip4_tree);
 +        SCRWLockRDLock(&apft->ctx->rwlock_wlist);
 +
 +        switch (apft->ctx->block_ip) {
 +            case BLOCK_BOTH:
 +                /* Block only if IP is not in Pass List */
-+                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_SRC_ADDR_PTR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_SRC_ADDR_PTR(p), apft->ctx->ip4_tree, &user_data);
 +                if (user_data != NULL) {
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
@@ -1535,16 +1580,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft, &p->src) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, srcip, p->sp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, srcip, src_port_or_icmp);
++
++                        /* Blocked the SRC IP, we will log it at the end of processing */
++                        blocked = true;
 +                    }
 +                } else {
++                    /* If we get here, the SRC IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then fall through and
++                     * check the DST IP.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  SRC IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1555,8 +1605,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                }
 +
 +    Check_IPv4_DST:
-+                user_data = NULL;
-+                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_DST_ADDR_PTR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_DST_ADDR_PTR(p), apft->ctx->ip4_tree, &user_data);
 +                if (user_data != NULL) {
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
@@ -1566,6 +1615,9 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        fflush(apft->ctx->dbgfile_ctx->fp);
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
++                    /* If we get here, DST IP is covered by a Pass List entry, so
++                     * exit further alert processing.
++                     */
 +                    break;
 +                }
 +
@@ -1579,16 +1631,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft, &p->dst) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, dstip, p->dp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, dstip, dst_port_or_icmp);
++
++                        /* Blocked the DST IP, we will log it at the end of processing */
++                        blocked = true;
 +                    }
 +                } else {
++                    /* If we get here, the DST IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then exit the alert
++                     * processing loop.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  DST IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1601,7 +1658,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +            case BLOCK_SRC:
 +                /* Block SRC only if IP is not in Pass List */
-+                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_SRC_ADDR_PTR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_SRC_ADDR_PTR(p), apft->ctx->ip4_tree, &user_data);
 +                if (user_data != NULL) {
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
@@ -1611,6 +1668,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        fflush(apft->ctx->dbgfile_ctx->fp);
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
++
++                    /* SRC IP is covered by a Pass List entry, so skip further processing */
 +                    break;
 +                }
 +
@@ -1624,16 +1683,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft,&p->src) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, srcip, p->sp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, srcip, src_port_or_icmp);
++
++                        /* Blocked the SRC IP, we will log it at the end of processing */
++                        blocked = true;
 +                    }
 +                } else {
++                    /* If we get here, the SRC IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then exit the alert
++                     * processing loop.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  SRC IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1646,7 +1710,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +            case BLOCK_DST:
 +                /* Block DST only if IP is not in Pass List */
-+                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_DST_ADDR_PTR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV4BestMatch((uint8_t *)GET_IPV4_DST_ADDR_PTR(p), apft->ctx->ip4_tree, &user_data);
 +                if (user_data != NULL) {
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
@@ -1656,6 +1720,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        fflush(apft->ctx->dbgfile_ctx->fp);
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
++
++                    /* DST IP is covered by a Pass List entry, so skip further processing */
 +                    break;
 +                }
 +
@@ -1669,16 +1735,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft, &p->dst) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, dstip, p->dp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, dstip, dst_port_or_icmp);
++
++                        /* Blocked the DST IP, we will log it at the end of processing */
++                        blocked = true;
 +                    }
 +                } else {
++                    /* If we get here, the DST IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then exit the alert
++                     * processing loop.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  DST IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1694,11 +1765,18 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                break;
 +        }
 +
-+        /* Release our Read Locks on the Radix Tree and FQDN Pass List */
-+        SCRWLockUnlock(&apft->ctx->rwlock_tree);
++        /* Release our Read Locks on the IPv4 Radix Tree and FQDN Pass List */
++        SCRWLockUnlock(&apft->ctx->rwlock_ip4_tree);
 +        SCRWLockUnlock(&apft->ctx->rwlock_wlist);
 +
-+        /* Once we block any alert for this packet, we're done */
++        /* If we blocked any IPs, log them now */
++        if (blocked)
++            AlertPfLogBlock(apft, alert_buffer, size);
++
++        /* Once we block any IP for this packet or determine
++         * one or both IP addresses are covered by a Pass List
++         * entry, we're done.
++         */
 +        return TM_ECODE_OK;
 +    }
 +
@@ -1712,22 +1790,39 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +{
 +    AlertPfThread *apft = (AlertPfThread *)data;
 +    int i;
++    bool blocked = false;
 +    char proto[16] = "";
++    const char *protoptr;
 +    char timebuf[64], ip_buffer[INET6_ADDRSTRLEN + 4];
 +    char srcip[INET6_ADDRSTRLEN], dstip[INET6_ADDRSTRLEN];
++    char alert_buffer[MAX_ALERT_PF_BUFFER_SIZE];
 +
 +    if (p->alerts.cnt == 0)
 +        return TM_ECODE_OK;
 +
 +    /* create a time string from the packet's timestamp for the block log */
 +    CreateTimeString(p->ts, timebuf, sizeof(timebuf));
-+    PrintInet(AF_INET6, (const void *)GET_IPV6_SRC_ADDR(p), srcip, sizeof(srcip));
-+    PrintInet(AF_INET6, (const void *)GET_IPV6_DST_ADDR(p), dstip, sizeof(dstip));
 +
-+    if (SCProtoNameValid(IPV6_GET_L4PROTO(p)) == TRUE) {
-+        strlcpy(proto, known_proto[IPV6_GET_L4PROTO(p)], sizeof(proto));
++    /* Process only valid IPv6 packets, skip decoder events */
++    if (PKT_IS_IPV6(p)) {
++        PrintInet(AF_INET6, (const void *)GET_IPV6_SRC_ADDR(p), srcip, sizeof(srcip));
++        PrintInet(AF_INET6, (const void *)GET_IPV6_DST_ADDR(p), dstip, sizeof(dstip));
 +    } else {
-+        snprintf(proto, sizeof(proto), "PROTO:%03" PRIu32, IPV6_GET_L4PROTO(p));
++        return TM_ECODE_OK;
++    }
++
++    if (SCProtoNameValid(IP_GET_IPPROTO(p)) == TRUE) {
++        protoptr = known_proto[IP_GET_IPPROTO(p)];
++    } else {
++        snprintf(proto, sizeof(proto), "PROTO:%03" PRIu32, IP_GET_IPPROTO(p));
++        protoptr = proto;
++    }
++
++    uint16_t src_port_or_icmp = p->sp;
++    uint16_t dst_port_or_icmp = p->dp;
++    if (IP_GET_IPPROTO(p) == IPPROTO_ICMPV6) {
++        src_port_or_icmp = p->icmp_s.type;
++        dst_port_or_icmp = p->icmp_s.code;
 +    }
 +
 +    /* A packet can generate multiple alerts, so walk the list */
@@ -1741,25 +1836,26 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +        if (pa->s->flags & SIG_FLAG_NOALERT) {
 +            continue;
 +        }
-+        SC_ATOMIC_ADD(alert_pf_alerts, 1);
++        apft->alert_pf_alerts++;
 +
 +        /* If blocking only DROP rules and alert is not from a DROP rule, ignore it */
-+        if (apft->ctx->block_drops && !(PacketCheckAction(p, ACTION_DROP))) {
++        if (apft->ctx->block_drops && !(pa->action & ACTION_DROP)) {
 +            continue;
 +        }
 +
 +        void *user_data = NULL;
 +        SCRadixNode *node = NULL;
++        int size = 0;
 +
-+        /* Read Lock the Radix Tree while we are searching it */
-+        SCRWLockRDLock(&apft->ctx->rwlock_tree);
++        /* Read Lock the IPv6 Radix Tree and FQDN Pass List while we are searching them */
++        SCRWLockRDLock(&apft->ctx->rwlock_ip6_tree);
++        SCRWLockRDLock(&apft->ctx->rwlock_wlist);
 +
 +        switch (apft->ctx->block_ip) {
 +    	    case BLOCK_BOTH:
 +                /* Block only if IP is not in Pass List */
-+                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_SRC_ADDR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_SRC_ADDR(p), apft->ctx->ip6_tree, &user_data);
 +                if (user_data != NULL) {
-+                    user_data = NULL;
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        PrintInet(AF_INET6, (const void *)node->prefix->stream, ip_buffer, sizeof(ip_buffer));
@@ -1781,16 +1877,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft, &p->src) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, srcip, p->sp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, srcip, src_port_or_icmp);
++
++                        /* Blocked the SRC IP, will log it at the end of processing */
++                        blocked = true;;
 +                    }
 +                } else {
++                    /* If we get here, the SRC IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then fall through and
++                     * check the DST IP.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  SRC IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1801,7 +1902,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                }
 +
 +    Check_IPv6_DST:
-+                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_DST_ADDR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_DST_ADDR(p), apft->ctx->ip6_tree, &user_data);
 +                if (user_data != NULL) {
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
@@ -1811,6 +1912,9 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        fflush(apft->ctx->dbgfile_ctx->fp);
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
++                    /* If we get here, the SRC and/or DST IPs are covered by Pass List entries,
++                     * so exit further alert processing as neither IP will be blocked.
++                     */
 +                    break;
 +                }
 +
@@ -1824,16 +1928,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft, &p->dst) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, dstip, p->dp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, dstip, dst_port_or_icmp);
++
++                        /* Blocked the DST IP, will log it at the end of processing */
++                        blocked = true;;
 +                    }
 +                } else {
++                    /* If we get here, the DST IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then fall through and
++                     * check the DST IP.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  DST IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1846,7 +1955,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +	    case BLOCK_SRC:
 +                /* Block SRC only if IP is not in Pass List */
-+                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_SRC_ADDR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_SRC_ADDR(p), apft->ctx->ip6_tree, &user_data);
 +                if (user_data != NULL) {
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
@@ -1856,6 +1965,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        fflush(apft->ctx->dbgfile_ctx->fp);
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
++
++                    /* SRC IP is covered by a Pass List entry, so skip further processing */
 +                    break;
 +                }
 +
@@ -1869,16 +1980,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft, &p->src) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Src] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, srcip, p->sp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, srcip, src_port_or_icmp);
++
++                        /* Blocked the SRC IP, will log it at the end of processing */
++                        blocked = true;;
 +                    }
 +                } else {
++                    /* If we get here, the SRC IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then fall through and
++                     * check the DST IP.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  SRC IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1891,7 +2007,7 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +
 +	    case BLOCK_DST:
 +                /* Block DST only if IP is not in Pass List */
-+                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_DST_ADDR(p), apft->ctx->tree, &user_data);
++                node = SCRadixFindKeyIPV6BestMatch((uint8_t *)GET_IPV6_DST_ADDR(p), apft->ctx->ip6_tree, &user_data);
 +                if (user_data != NULL) {
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
@@ -1901,6 +2017,8 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        fflush(apft->ctx->dbgfile_ctx->fp);
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
++
++                    /* DST IP is covered by a Pass List entry, so skip further processing */
 +                    break;
 +                }
 +
@@ -1914,16 +2032,21 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                        SCMutexUnlock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                    }
 +                    if (AlertPfBlock(tv, apft, &p->dst) > 0) {
-+                        SCMutexLock(&apft->ctx->file_ctx->fp_mutex);
-+                        fprintf(apft->ctx->file_ctx->fp, "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
++                        PrintBufferData(alert_buffer, &size, MAX_ALERT_PF_ALERT_SIZE,
++                              "%s  [Block Dst] [**] [%" PRIu32 ":%" PRIu32 ":%"
 +                              PRIu32 "] %s [**] [Classification: %s] [Priority: %"PRIu32"]"
 +                              " {%s} %s:%" PRIu32 "\n", timebuf, pa->s->gid,
 +                              pa->s->id, pa->s->rev, pa->s->msg, pa->s->class_msg, pa->s->prio,
-+                              proto, dstip, p->dp);
-+                        fflush(apft->ctx->file_ctx->fp);
-+                        SCMutexUnlock(&apft->ctx->file_ctx->fp_mutex);
++                              protoptr, dstip, dst_port_or_icmp);
++
++                        /* Blocked the DST IP, will log it at the end of processing */
++                        blocked = true;;
 +                    }
 +                } else {
++                    /* If we get here, the DST IP is covered by an FQDN Pass List entry,
++                     * so log it if doing Pass List debugging and then fall through and
++                     * check the DST IP.
++                     */
 +                    if (apft->ctx->passlist_dbg) {
 +                        SCMutexLock(&apft->ctx->dbgfile_ctx->fp_mutex);
 +                        fprintf(apft->ctx->dbgfile_ctx->fp, "%s  Thread: %s  DST IP: %s matched a URL Table Alias IP or FQDN IP Pass List entry - not blocking.\n",
@@ -1935,11 +2058,17 @@ diff -ruN ./suricata-7.0.2.orig/src/alert-pf.c ./suricata-7.0.2/src/alert-pf.c
 +                break;
 +
 +            default:
++                SCLogWarning("Provided value for 'block-ip' parameter in suricata.yaml conf is invalid. Blocking is disabled!");
 +                break;
 +        }
 +
-+        /* Release our Read Lock on the Radix Tree */
-+        SCRWLockUnlock(&apft->ctx->rwlock_tree);
++        /* Release our Read Lock on the IPv6 Radix Tree and FQDN Pass List*/
++        SCRWLockUnlock(&apft->ctx->rwlock_ip6_tree);
++        SCRWLockUnlock(&apft->ctx->rwlock_wlist);
++
++        /* If we blocked any IPs, log them now */
++        if (blocked)
++            AlertPfLogBlock(apft, alert_buffer, size);
 +
 +        /* Once we block any alert for this packet, we're done */
 +        return TM_ECODE_OK;
