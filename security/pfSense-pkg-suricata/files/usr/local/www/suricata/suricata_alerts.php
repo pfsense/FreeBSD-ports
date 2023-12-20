@@ -1086,7 +1086,12 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 
 			// Create a DateTime object from the event timestamp that
 			// we can use to easily manipulate output formats.
-			$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
+			try {
+				$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields['time']);
+			} catch (Exception $e) {
+				syslog(LOG_WARNING, "[suricata] WARNING: found invalid timestamp entry in current alerts.log, the line will be ignored and skipped.");
+				continue;
+			}
 
 			// Check the 'CATEGORY' field for the text "(null)" and
 			// substitute "Not Assigned".
