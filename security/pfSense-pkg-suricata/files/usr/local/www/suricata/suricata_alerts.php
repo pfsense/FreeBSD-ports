@@ -726,7 +726,7 @@ $group->add(new Form_Button(
 	null,
 	'fa-trash'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')
-  ->setHelp('All log files will be cleared');
+  ->setHelp('Clear the currently active Alerts log file');
 
 $section->add($group);
 
