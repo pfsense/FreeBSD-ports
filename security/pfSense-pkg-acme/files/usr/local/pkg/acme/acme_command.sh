@@ -41,7 +41,7 @@ if ($command == "importcert") {
 	$certificate = &$config['installedpackages']['acme']['certificates']['item'][$id];
 	$certificate['lastrenewal'] = time();
 
-	$changedesc = "Services: Acme: ";
+	$changedesc = "Services: ACME: ";
 	$changedesc .= "Storing signed certificate: " . $certificatename;
 	write_config($changedesc);
 
@@ -53,22 +53,22 @@ if ($command == "importcert") {
 				continue;
 			}
 			if ($action['method'] == "shellcommand") {
-				syslog(LOG_NOTICE, "Acme, Running {$action['command']}");
+				syslog(LOG_NOTICE, "ACME, Running {$action['command']}");
 				mwexec_bg($action['command']);
 			}
 			if ($action['method'] == "php_command") {
-				syslog(LOG_NOTICE, "Acme, Running php {$action['command']}");
+				syslog(LOG_NOTICE, "ACME, Running php {$action['command']}");
 				eval($action['command']);
 			}
 			if ($action['method'] == "servicerestart") {
-				syslog(LOG_NOTICE, "Acme, Restarting service {$action['command']}");
+				syslog(LOG_NOTICE, "ACME, Restarting service {$action['command']}");
 				list($servicename, $extras) = acme_fixup_service_args($action['command']);
 				if (!empty($servicename)) {
 					service_control_restart($servicename, $extras);
 				}
 			}
 			if ($action['method'] == "xmlrpcservicerestart") {
-				syslog(LOG_NOTICE, "Acme, Restarting remote service via XMLRPC {$action['command']}");
+				syslog(LOG_NOTICE, "ACME, Restarting remote service via XMLRPC {$action['command']}");
 				list($servicename, $extras) = acme_fixup_service_args($action['command']);
 				if (!empty($servicename)) {
 					/* Wait a few seconds before triggering the restart in case the
@@ -103,6 +103,7 @@ if ($perform == "issue" && !empty($certname)) {
 	issue_certificate($certname, $force);
 	return;
 }
+
 if ($perform == "renew" && !empty($certname)) {
 	issue_certificate($certname, $force, true);
 	return;

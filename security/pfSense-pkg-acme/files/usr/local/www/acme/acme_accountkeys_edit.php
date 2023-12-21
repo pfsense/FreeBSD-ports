@@ -66,8 +66,8 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","descr", "email",
-	"acmeserver","renewafter"
+	"name", "descr", "email",
+	"acmeserver", "renewafter"
 );
 
 function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname, $counter) {
@@ -89,7 +89,7 @@ if (isset($_GET['dup'])) {
 	unset($id);
 	$pconfig['name'] .= "-copy";
 }
-$changedesc = "Services: Acme: Certificate options: ";
+$changedesc = "Services: ACME: Certificate options: ";
 $changecount = 0;
 
 if ($_POST) {
@@ -173,7 +173,7 @@ if ($_POST) {
 }
 
 //$closehead = false;
-$pgtitle = array("Services", "Acme", "Certificate options: Edit");
+$pgtitle = array("Services", "ACME", "Certificate options: Edit");
 include("head.inc");
 display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 
@@ -204,15 +204,14 @@ $section->addInput(new \Form_Select(
 	$pconfig['acmeserver'],
 	form_keyvalue_array($a_acmeserver)
 ))->setHelp('The ACME server which will be used to issue certificates using this key.%1$s' .
-	'Use testing servers until certificate validation works, then switch to production.%1$s' .
-	'Let\'s Encrypt ACMEv1 servers no longer allow new registrations, and in June 2021 they will be completely disabled.%1$s%1$s', '<br/>');
+	'Use testing servers until certificate validation works, then switch to production.%1$s%1$s', '<br/>');
 
 $section->addInput(new \Form_Input(
 	'email',
 	'E-Mail Address',
 	'text',
 	$pconfig['email']
-))->setHelp('The e-mail address to register for this key. This is used by Let\'s Encrypt to send automated certificate expiration notices.');
+))->setHelp('The e-mail address to register for this key. This is used to send automated certificate expiration notices.');
 
 $section->addInput(new \Form_Textarea(
 	'accountkey',

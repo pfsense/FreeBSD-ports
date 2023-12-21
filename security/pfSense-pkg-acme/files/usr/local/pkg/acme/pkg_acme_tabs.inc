@@ -22,5 +22,4 @@ function display_top_tabs_active($top_tabs, $activetab) {
 	}
 	display_top_tabs($tab_array);
 }
-
 ?>

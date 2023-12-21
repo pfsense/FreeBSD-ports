@@ -55,10 +55,10 @@ class HtmlList
 	public function outputjavascript() {
 		$table_def = array();
 		$table_def['keyfield'] = $this->keyfield;
-		phparray_to_javascriptarray($table_def, "tabledefinition_".$this->tablename,Array('/*','/*/*'));
-		phparray_to_javascriptarray($this->fields, "fields_".$this->tablename,Array('/*','/*/name','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
+		phparray_to_javascriptarray($table_def, "tabledefinition_".$this->tablename, Array('/*', '/*/*'));
+		phparray_to_javascriptarray($this->fields, "fields_".$this->tablename, Array('/*', '/*/name', '/*/type', '/*/text', '/*/size', '/*/items', '/*/items/*', '/*/items/*/*', '/*/items/*/*/name'));
 		if (isset($this->fields_details) && is_array($this->fields_details) && count($this->fields_details) != 0) {
-			phparray_to_javascriptarray($this->fields_details,"fields_details_".$this->tablename,Array('/*','/*/name','/*/columnheader','/*/description','/*/type','/*/text','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name','/*/items/*/*/name'));
+			phparray_to_javascriptarray($this->fields_details, "fields_details_".$this->tablename, Array('/*', '/*/name', '/*/columnheader', '/*/description', '/*/type', '/*/text', '/*/size', '/*/items', '/*/items/*', '/*/items/*/*', '/*/items/*/*/name', '/*/items/*/*/name'));
 		}
 	}
 
@@ -154,7 +154,7 @@ class HtmlList
 					break;
 				case 'textarea':
 					$result .= "<div style=\"overlow:scroll;max-height:120px;max-width:{$item['colwidth']};overflow-y: scroll;\">";
-					$result .= str_replace(" ","&nbsp;", str_replace("\n","<br/>", htmlspecialchars(base64_decode($itemvalue))));
+					$result .= str_replace(" ", "&nbsp;", str_replace("\n", "<br/>", htmlspecialchars(base64_decode($itemvalue))));
 					$result .= '</div>';
 					break;
 				case 'fixedtext':
@@ -795,5 +795,4 @@ function hideElement(element, hide) {
 
 <?php
 }
-
 ?>
