@@ -152,7 +152,7 @@ function crowdsec_install()
     }
     unset($final_aliases, $exist_aliases);
     // Update rules
-    crowdsec_generate_rules('filter');
+    crowdsec_generate_rules('pfearly');
     filter_configure();
     // Modify bouncer yaml config
     $fw_conf = get_yaml_content(CROWDSEC_FIREWALL_CONF);
@@ -521,7 +521,7 @@ function crowdsec_generate_rules($type)
 {
     $rules = "";
     switch ($type) {
-        case 'filter':
+        case 'pfearly':
             global $config;
             $cf = $config['installedpackages']['crowdsec']['config'][0] ?? array();
             $direction = !empty($cf['rules_direction']) && $cf['rules_direction'] !== 'any' ?

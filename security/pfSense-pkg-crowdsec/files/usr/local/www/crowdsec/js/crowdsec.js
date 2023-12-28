@@ -218,7 +218,8 @@ const CrowdSec = (function () {
                     name: row.name,
                     status: row.status,
                     local_version: row.local_version || ' ',
-                    local_path: row.local_path ? row.local_path.replace(crowdsec_path,'') : ' '
+                    local_path: row.local_path ? row.local_path.replace(crowdsec_path,'') : ' ',
+                    description: row.description || ' '
                 });
             });
             $(id + ' table').bootgrid('clear').bootgrid('append', rows);
