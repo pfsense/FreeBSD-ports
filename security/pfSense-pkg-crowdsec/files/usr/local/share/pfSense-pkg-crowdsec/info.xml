@@ -3,7 +3,7 @@
 	<package>
 		<name>crowdsec</name>
 		<pkginfolink>https://doc.crowdsec.net/docs/next/getting_started/install_crowdsec_pfsense</pkginfolink>
-                <descr>Lightweight and collaborative security engine</descr>
+		<descr>Lightweight and collaborative security engine</descr>
 		<website>https://www.crowdsec.net/</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>crowdsec.xml</configurationfile>

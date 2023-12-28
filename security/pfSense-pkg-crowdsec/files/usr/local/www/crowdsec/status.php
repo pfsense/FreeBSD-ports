@@ -142,7 +142,8 @@ $content = <<<EOT
               <th data-column-id="name" data-order="asc">Name</th>
               <th data-column-id="status">Status</th>
               <th data-column-id="local_version">Version</th>
-              <th data-column-id="local_path">Local Path</th>
+              <th data-visible="false" data-column-id="local_path">Path</th>
+              <th data-column-id="description">Description</th>
             </tr>
         </thead>
         <tbody>
@@ -160,7 +161,7 @@ $content = <<<EOT
               <th data-column-id="name" data-order="asc">Name</th>
               <th data-column-id="status">Status</th>
               <th data-column-id="local_version">Version</th>
-              <th data-column-id="local_path">Path</th>
+              <th data-visible="false" data-column-id="local_path">Path</th>
               <th data-column-id="description">Description</th>
             </tr>
         </thead>
@@ -179,7 +180,7 @@ $content = <<<EOT
               <th data-column-id="name" data-order="asc">Name</th>
               <th data-column-id="status">Status</th>
               <th data-column-id="local_version">Version</th>
-              <th data-column-id="local_path">Local Path</th>
+              <th data-visible="false" data-column-id="local_path">Path</th>
               <th data-column-id="description">Description</th>
             </tr>
         </thead>
@@ -198,7 +199,7 @@ $content = <<<EOT
                   <th data-column-id="name" data-order="asc">Name</th>
                   <th data-column-id="status">Status</th>
                   <th data-column-id="local_version">Version</th>
-                  <th data-column-id="local_path">Local Path</th>
+                  <th data-visible="false" data-column-id="local_path">Path</th>
                   <th data-column-id="description">Description</th>
                 </tr>
             </thead>
