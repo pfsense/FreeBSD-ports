@@ -8,6 +8,12 @@ WWW: https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_pfsens
 Package Changelog
 =================
 
+0.1.1
+
+* register block rules earlier
+* status table: hide item path by default
+* status table: add collections description
+
 0.1
 
 * first GA release
