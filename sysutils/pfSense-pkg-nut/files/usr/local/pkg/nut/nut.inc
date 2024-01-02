@@ -82,14 +82,19 @@ function nut_write_rcfile($driver) {
 		$start .= "\n	/usr/bin/killall -q -9 $driver";
 	}
 
-	/* Service status keys off upsmon, so start it first. */
-	$start .= "\n	/usr/local/sbin/upsmon";
 	if (isset($driver)) {
 		$start .= "\n	/usr/local/sbin/upsdrvctl start &";
-		/* Since we are starting the driver in backgroud, give it a moment to start. */
-		$start .= "\n	sleep 1";
 		$start .= "\n	/usr/local/sbin/upsd -u root";
+
+		/*
+		 * Since we are starting the driver in backgroud, give
+		 * the driver and upsd a moment to start.
+		 */
+		$start .= "\n	sleep 1";
 	}
+
+	/* NB: Service status keys off of upsmon. */
+	$start .= "\n	/usr/local/sbin/upsmon";
 	$start .= "\n	return 0";
 
 	$stop = "echo stopping NUT";
