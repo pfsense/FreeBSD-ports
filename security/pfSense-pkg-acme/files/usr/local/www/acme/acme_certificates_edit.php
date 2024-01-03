@@ -112,19 +112,20 @@ $fields_actions[0]['colwidth']="5%";
 $fields_actions[0]['type']="select";
 $fields_actions[0]['size']="70px";
 $fields_actions[0]['items']=&$a_enabledisable;
-$fields_actions[1]['name']="command";
-$fields_actions[1]['columnheader']="Command";
-$fields_actions[1]['colwidth']="20%";
-$fields_actions[1]['type']="textbox";
-$fields_actions[1]['size']="30";
-$fields_actions[2]['name']="method";
-$fields_actions[2]['columnheader']="Method";
-$fields_actions[2]['colwidth']="15%";
-$fields_actions[2]['type']="select";
-$fields_actions[2]['size']="100px";
-$fields_actions[2]['items']=&$acme_newcertificateactions;
+$fields_actions[1]['name']="method";
+$fields_actions[1]['columnheader']="Method";
+$fields_actions[1]['colwidth']="15%";
+$fields_actions[1]['type']="select";
+$fields_actions[1]['size']="100px";
+$fields_actions[1]['items']=&$acme_newcertificateactions;
+$fields_actions[2]['name']="command";
+$fields_actions[2]['columnheader']="Command";
+$fields_actions[2]['colwidth']="20%";
+$fields_actions[2]['type']="textbox";
+$fields_actions[2]['size']="30";
 
 $fields_actions_details=array();
+
 foreach($acme_newcertificateactions as $key => $action) {
 	if (is_array($action['fields'])) {
 		foreach($action['fields'] as $field) {
@@ -138,7 +139,7 @@ foreach($acme_newcertificateactions as $key => $action) {
 }
 $actionslist = new HtmlList("table_actions", $fields_actions);
 $actionslist->keyfield = "name";
-//$actionslist->fields_details = $fields_actions_details;
+$actionslist->fields_details = $fields_actions_details;
 $actionslist->editmode = $isnewitem;
 
 // </editor-fold>
@@ -496,6 +497,24 @@ print $form;
 			}
 		}
 	}	
+
+	function table_actions_listitem_change(tableId, fieldId, rowNr, field) {
+		if (fieldId === 'toggle_details') {
+			fieldId = 'method';
+			field = document.getElementById(tableId + fieldId + rowNr);
+		}
+		if (fieldId === 'method') {
+			document.getElementById(tableId + 'command' + rowNr).style.display = field.value === 'deployhook' ? 'none' : '';
+			document.getElementById(tableId + 'command' + rowNr).disabled = field.value === 'deployhook' ? true : false;
+			for (var actionkey in showhide_actionfields) {
+				var fields = showhide_actionfields[actionkey]['fields'];
+				for (var fieldkey in fields) {
+					document.getElementById(tableId + actionkey + fieldkey + rowNr).disabled = actionkey === field.value ? false : true;
+					document.getElementById('tr_edititemdetails_' + rowNr + '_' + actionkey + fields[fieldkey]['name']).style.display = actionkey === field.value ? '' : 'none';
+				}
+			}
+		}
+	}
 </script>
 <script type="text/javascript">
 //<![CDATA[
@@ -514,6 +533,7 @@ events.push(function() {
 	});
 	*/
 	$('[id^=table_domainsmethod]').change();
+	$('[id^=table_actionsmethod]').change();
 	updatevisibility();
 
 	// Update visibility of Custom Private Key field,
@@ -535,4 +555,5 @@ events.push(function() {
 
 <?php
 acme_htmllist_js("table_domains");
+acme_htmllist_js("table_actions");
 include("foot.inc");

@@ -1497,11 +1497,32 @@ $acme_domain_validation_method['http-post'] = array('name' => "http-post",
 */
 
 //TODO add more 'actions'
+$deployhooks = array_map(function($path){
+	return pathinfo($path)['filename'];
+}, glob('../../pkg/acme/deploy/*.sh'));
 $acme_newcertificateactions = array(
 	'shellcommand' => array('name' => "Shell Command"),
 	'php_command' => array('name' => "PHP Command Script"),
 	'servicerestart' => array('name' => "Restart Local Service"),
 	'xmlrpcservicerestart' => array('name' => "Restart Remote Service (XMLRPC)"),
+	'deployhook' => array('name' => "acme.sh deploy hook",
+		'fields' => array(
+			'script' => array(
+				'name' => 'script',
+				'columnheader' => 'Script',
+				'type' => 'select',
+				'items' => array_combine($deployhooks, array_map(function($hook) {
+					return array('name' => $hook);
+				}, $deployhooks))
+			),
+			'environment' => array(
+				'name' => 'environment',
+				'columnheader' => 'Environment <a href="https://github.com/acmesh-official/acme.sh/wiki/deployhooks"><i class="fa fa-book"></i></a>',
+				'description' => 'Each line may contain one variable assignment of the form <tt>KEY=VALUE</tt>.<br>Lines starting with <tt>#</tt> will be ignored.',
+				'type' => 'textarea',
+			),
+		),
+	),
 );
 
 // </editor-fold>
@@ -1961,5 +1982,11 @@ function & get_certificate($name) {
 				}
 			}
 		}
+	}
+
+	function deploy_certificate($domain, $hook, $envvariables) {
+		$account = get_accountkey($certificate['acmeaccount']);
+		$acmesh = new acme_sh($domain, $$a_acmeserver[$account['acmeserver']]['url'], $account['email']);
+		return $acmesh->deployCertificate($domain, $hook, $envvariables);
 	}
 }
