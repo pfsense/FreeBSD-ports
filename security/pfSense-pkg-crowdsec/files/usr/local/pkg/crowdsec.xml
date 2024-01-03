@@ -134,8 +134,8 @@
             <fielddescr>LAPI port</fielddescr>
             <fieldname>lapi_port</fieldname>
             <type>input</type>
-            <description>Port number for the LAPI endpoint. Change in case of conflict with other services.</description>
-            <default_value>8080</default_value>
+            <description>Port number for the LAPI endpoint. We recommend not using 8080 to avoid conflicts with other pfSense packages.</description>
+            <default_value>8088</default_value>
         </field>
         <field>
             <name>Remote LAPI</name>
