@@ -8,6 +8,10 @@ WWW: https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_pfsens
 Package Changelog
 =================
 
+0.1.2
+
+ * set LAPI default port to 8088 instead of 8080
+
 0.1.1
 
 * register block rules earlier
