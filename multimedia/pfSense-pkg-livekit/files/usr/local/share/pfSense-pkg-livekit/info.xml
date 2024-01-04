@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>livekit</name>
+		<descr><![CDATA[End-to-end stack for WebRTC. SFU media server and SDKs.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>livekit.xml</configurationfile>
+	</package>
+</pfsensepkgs>
