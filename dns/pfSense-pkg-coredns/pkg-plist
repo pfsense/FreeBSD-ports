@@ -53,3 +53,8 @@ man/man7/coredns-transfer.7.gz
 man/man7/coredns-tsig.7.gz
 man/man7/coredns-view.7.gz
 man/man7/coredns-whoami.7.gz
+pkg/coredns.xml
+pkg/coredns/coredns.inc
+%%DATADIR%%/info.xml
+www/coredns_settings.php
+etc/coredns/Corefile
