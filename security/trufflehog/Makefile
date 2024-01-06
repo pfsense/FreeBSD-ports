@@ -1,13 +1,13 @@
 PORTNAME=	trufflehog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.60.3
+DISTVERSION=	3.63.7
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Find and verify credentials
 WWW=		https://trufflesecurity.com/
 
-LICENSE=	APACHE20
+LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:1.21,modules

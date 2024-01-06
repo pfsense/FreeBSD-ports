@@ -1,5 +1,5 @@
 PORTNAME=	gitlab-shell
-PORTVERSION=	14.29.0
+PORTVERSION=	14.32.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -14,7 +14,6 @@ LICENSE=	MIT
 #BUILD_DEPENDS=	heimdal>=0:security/heimdal
 
 USES=		gmake go:modules,no_targets pkgconfig
-CGO_ENABLED=	0
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org

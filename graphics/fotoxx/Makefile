@@ -1,5 +1,6 @@
 PORTNAME=	fotoxx
-PORTVERSION=	23.74
+PORTVERSION=	23.82
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://kornelix.net/downloads/downloads/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -31,8 +32,6 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e \
-		's,pidof,pgrep -d\\\\ ,' ${WRKSRC}/fotoxx.cc
 	@${REINPLACE_CMD} -e \
 		'/#include/s,wait\.h,sys/&,' ${WRKSRC}/fotoxx.h
 

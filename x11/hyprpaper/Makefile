@@ -1,6 +1,7 @@
 PORTNAME=	hyprpaper
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.6.0
+PORTREVISION=	1
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -10,12 +11,11 @@ WWW=		https://github.com/hyprwm/hyprpaper
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NOT_FOR_ARCHS=	mips mips64 powerpc powerpc64 powerpcspe sparc64
-NOT_FOR_ARCHS_REASON=	only little-endian is supported
-
 BUILD_DEPENDS=	gmake:devel/gmake \
 		wayland-protocols>0:graphics/wayland-protocols
-LIB_DEPENDS=	libwayland-client.so:graphics/wayland
+LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
+		libwayland-client.so:graphics/wayland \
+		libwebp.so:graphics/webp
 
 USES=		compiler:c++11-lib cmake gnome jpeg localbase:ldflags pkgconfig
 USE_GNOME=	cairo

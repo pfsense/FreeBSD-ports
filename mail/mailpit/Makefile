@@ -1,6 +1,6 @@
 PORTNAME=	mailpit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.1
+DISTVERSION=	1.12.1
 CATEGORIES=	mail devel
 MASTER_SITES=	https://www.madpilot.net/mailpit/:npmcache \
 		LOCAL/madpilot/mailpit:npmcache
@@ -39,30 +39,30 @@ GH_TUPLE=	\
 		go-check:check:41f04d3bba15:go_check_check/vendor/gopkg.in/check.v1 \
 		go-yaml:yaml:v3.0.1:go_yaml_yaml/vendor/gopkg.in/yaml.v3 \
 		gogs:chardet:b7413eaefb8f:gogs_chardet/vendor/github.com/gogs/chardet \
-		golang:crypto:v0.15.0:golang_crypto/vendor/golang.org/x/crypto \
+		golang:crypto:v0.17.0:golang_crypto/vendor/golang.org/x/crypto \
 		golang:image:v0.14.0:golang_image/vendor/golang.org/x/image \
 		golang:mod:v0.14.0:golang_mod/vendor/golang.org/x/mod \
-		golang:net:v0.18.0:golang_net/vendor/golang.org/x/net \
-		golang:sys:v0.14.0:golang_sys/vendor/golang.org/x/sys \
+		golang:net:v0.19.0:golang_net/vendor/golang.org/x/net \
+		golang:sys:v0.15.0:golang_sys/vendor/golang.org/x/sys \
 		golang:text:v0.14.0:golang_text/vendor/golang.org/x/text \
-		golang:time:v0.4.0:golang_time/vendor/golang.org/x/time \
-		golang:tools:v0.15.0:golang_tools/vendor/golang.org/x/tools \
-		gomarkdown:markdown:a660076da3fd:gomarkdown_markdown/vendor/github.com/gomarkdown/markdown \
-		google:uuid:v1.4.0:google_uuid/vendor/github.com/google/uuid \
+		golang:time:v0.5.0:golang_time/vendor/golang.org/x/time \
+		golang:tools:v0.16.1:golang_tools/vendor/golang.org/x/tools \
+		gomarkdown:markdown:1d6d20845b47:gomarkdown_markdown/vendor/github.com/gomarkdown/markdown \
+		google:uuid:v1.5.0:google_uuid/vendor/github.com/google/uuid \
 		gorilla:css:v1.0.1:gorilla_css/vendor/github.com/gorilla/css \
 		gorilla:mux:v1.8.1:gorilla_mux/vendor/github.com/gorilla/mux \
 		gorilla:websocket:v1.5.1:gorilla_websocket/vendor/github.com/gorilla/websocket \
 		inconshreveable:mousetrap:v1.1.0:inconshreveable_mousetrap/vendor/github.com/inconshreveable/mousetrap \
 		jaytaylor:html2text:74c2419ad056:jaytaylor_html2text/vendor/github.com/jaytaylor/html2text \
-		jhillyerd:enmime:v1.0.1:jhillyerd_enmime/vendor/github.com/jhillyerd/enmime \
+		jhillyerd:enmime:v1.1.0:jhillyerd_enmime/vendor/github.com/jhillyerd/enmime \
 		kballard:go-shellquote:95032a82bc51:kballard_go_shellquote/vendor/github.com/kballard/go-shellquote \
-		klauspost:compress:v1.17.3:klauspost_compress/vendor/github.com/klauspost/compress \
+		klauspost:compress:v1.17.4:klauspost_compress/vendor/github.com/klauspost/compress \
 		kr:pretty:v0.3.0:kr_pretty/vendor/github.com/kr/pretty \
 		leporo:sqlf:v1.4.0:leporo_sqlf/vendor/github.com/leporo/sqlf \
 		lukechampine:uint128:v1.3.0:lukechampine_uint128/vendor/lukechampine.com/uint128 \
 		mattn:go-isatty:v0.0.20:mattn_go_isatty/vendor/github.com/mattn/go-isatty \
 		mattn:go-runewidth:v0.0.15:mattn_go_runewidth/vendor/github.com/mattn/go-runewidth \
-		mhale:smtpd:v0.8.0:mhale_smtpd/vendor/github.com/mhale/smtpd \
+		mhale:smtpd:v0.8.1:mhale_smtpd/vendor/github.com/mhale/smtpd \
 		olekukonko:tablewriter:v0.0.5:olekukonko_tablewriter/vendor/github.com/olekukonko/tablewriter \
 		pkg:errors:v0.9.1:pkg_errors/vendor/github.com/pkg/errors \
 		reiver:go-oi:v1.0.0:reiver_go_oi/vendor/github.com/reiver/go-oi \
@@ -73,7 +73,7 @@ GH_TUPLE=	\
 		spf13:cobra:v1.8.0:spf13_cobra/vendor/github.com/spf13/cobra \
 		spf13:pflag:v1.0.5:spf13_pflag/vendor/github.com/spf13/pflag \
 		ssor:bom:6386211fdfcf:ssor_bom/vendor/github.com/ssor/bom \
-		tg123:go-htpasswd:v1.2.1:tg123_go_htpasswd/vendor/github.com/tg123/go-htpasswd \
+		tg123:go-htpasswd:v1.2.2:tg123_go_htpasswd/vendor/github.com/tg123/go-htpasswd \
 		valyala:bytebufferpool:v1.0.0:valyala_bytebufferpool/vendor/github.com/valyala/bytebufferpool \
 		vanng822:css:v1.0.1:vanng822_css \
 		vanng822:go-premailer:v1.20.2:vanng822_go_premailer/vendor/github.com/vanng822/go-premailer
@@ -82,11 +82,11 @@ USE_GITLAB=	nodefault
 GL_TUPLE=	\
 		cznic:cc:473a39888db348dde70ba9a01d27d3be2da0a93d:cznic_cc/vendor/modernc.org/cc/v3 \
 		cznic:ccgo:62fe9994b77907e147c1317c03f1ab9fe63297da:cznic_ccgo/vendor/modernc.org/ccgo/v3 \
-		cznic:libc:c626e232ef6a5fb03b5be7338a2c8e1df2b34c41:cznic_libc/vendor/modernc.org/libc \
+		cznic:libc:43727e855c3c03e202cc2e4ef348f103e0b06114:cznic_libc/vendor/modernc.org/libc \
 		cznic:mathutil:aabd79189264b253ce2360e80193242239022080:cznic_mathutil/vendor/modernc.org/mathutil \
 		cznic:memory:dda74182ee99cca437f9abb436d906192e090c70:cznic_memory/vendor/modernc.org/memory \
 		cznic:opt:6b647abadf922391a4527f3a4fa1817eff08b7cd:cznic_opt/vendor/modernc.org/opt \
-		cznic:sqlite:a8c3eea199bc8fdc39391d5d261eaa3577566050:cznic_sqlite/vendor/modernc.org/sqlite \
+		cznic:sqlite:3706cfd2cf323472272357b4f9b9e8c963aaca35:cznic_sqlite/vendor/modernc.org/sqlite \
 		cznic:strutil:f4c290107e9e43b1bb4a8bc7dcd154eb9b565cd8:cznic_strutil/vendor/modernc.org/strutil \
 		cznic:token:24e30cd78ee0f2d5d4516917d9cc1101e3ccc1ab:cznic_token/vendor/modernc.org/token
 

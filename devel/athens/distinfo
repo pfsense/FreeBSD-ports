@@ -1,5 +1,5 @@
-TIMESTAMP = 1682615205
-SHA256 (go/devel_athens/athens-v0.12.1/v0.12.1.mod) = 89dc481c937d767bc0fd6401d287c65bd371f7a926743a1d03b0c23ef855b616
-SIZE (go/devel_athens/athens-v0.12.1/v0.12.1.mod) = 5620
-SHA256 (go/devel_athens/athens-v0.12.1/v0.12.1.zip) = c2d9a45819fd420eef61d756f96f37e1553f59e2b1e7092b847aa40dcbff58ad
-SIZE (go/devel_athens/athens-v0.12.1/v0.12.1.zip) = 12561901
+TIMESTAMP = 1704485212
+SHA256 (go/devel_athens/athens-v0.13.1/v0.13.1.mod) = ec7cb572554d959d3c08309abe4ee5fdbd3af38aed116f3936c5ffe355b23beb
+SIZE (go/devel_athens/athens-v0.13.1/v0.13.1.mod) = 7166
+SHA256 (go/devel_athens/athens-v0.13.1/v0.13.1.zip) = 8799989c39c349db91496fa0537119aa0de8188a5bbe9bf6f0c9ba071b718b39
+SIZE (go/devel_athens/athens-v0.13.1/v0.13.1.zip) = 12842009

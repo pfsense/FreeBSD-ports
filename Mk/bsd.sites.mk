@@ -919,7 +919,9 @@ MASTER_SITE_SOURCEFORGE+= ${p}://${m}.dl.sourceforge.net/project/%SUBDIR%/
 .if !defined(IGNORE_MASTER_SITE_SOURCEWARE)
 MASTER_SITE_SOURCEWARE+= \
 	https://mirrors.kernel.org/sourceware/%SUBDIR%/ \
-	ftp://ftp.funet.fi/pub/mirrors/sourceware.org/pub/%SUBDIR%/
+	https://ftp-stud.hs-esslingen.de/pub/Mirrors/sourceware.org/%SUBDIR%/ \
+	https://ftp.funet.fi/pub/mirrors/sourceware.org/pub/%SUBDIR%/ \
+	https://mirrorservice.org/sites/sourceware.org/pub/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_SUDO)
@@ -1083,8 +1085,7 @@ MASTER_SITES_ABBREVS=	CPAN:PERL_CPAN \
 			LODEV:LIBREOFFICE_DEV \
 			NL:NETLIB \
 			RG:RUBYGEMS \
-			SF:SOURCEFORGE \
-			CHEESESHOP:PYPI
+			SF:SOURCEFORGE
 MASTER_SITES_SUBDIRS=	APACHE_COMMONS_BINARIES:${PORTNAME:S,commons-,,} \
 			APACHE_COMMONS_SOURCE:${PORTNAME:S,commons-,,} \
 			APACHE_JAKARTA:${PORTNAME:S,-,/,}/source \

@@ -1,6 +1,6 @@
 PORTNAME?=	nginx
 PORTVERSION=	1.25.3
-PORTREVISION=	1
+PORTREVISION=	11
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa
@@ -151,6 +151,8 @@ HTTP_IMAGE_FILTER_VARS=		DSO_BASEMODS+=http_image_filter_module
 HTTP_MP4_CONFIGURE_ON=		--with-http_mp4_module
 HTTP_PERL_CATEGORIES=		perl5
 HTTP_PERL_USES=			perl5
+# Fix build failure on clang >= 12
+HTTP_PERL_CFLAGS=		-Wno-compound-token-split-by-macro
 HTTP_PERL_VARS=			DSO_BASEMODS+=http_perl_module
 HTTP_RANDOM_INDEX_CONFIGURE_ON=	--with-http_random_index_module
 HTTP_REALIP_CONFIGURE_ON=	--with-http_realip_module
@@ -237,13 +239,11 @@ CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
 .endif
 
-# Fix build failure on clang >= 12
-.if ${PORT_OPTIONS:MHTTP_PERL} && ${OSVERSION} >= 1301000
-CFLAGS+=	-Wno-compound-token-split-by-macro
+.if ${PORT_OPTIONS:MPASSENGER}
+CONFIGURE_ENV+=	EXTRA_PRE_CXXFLAGS="-std=c++14"
 .endif
 
-.if empty(PORT_OPTIONS:MLUA) && empty(PORT_OPTIONS:MMODSECURITY3) && \
-    empty(PORT_OPTIONS:MPASSENGER)
+.if empty(PORT_OPTIONS:MMODSECURITY3) && empty(PORT_OPTIONS:MPASSENGER)
 CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib"
 .else
 CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib -lpcre"

@@ -1,10 +1,11 @@
 PORTNAME=	deforaos-panel
 PORTVERSION=	0.4.5
+PORTREVISION=	1
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://ftp.defora.org/pub/DeforaOS/Apps/Desktop/src/Panel/
 DISTNAME=	Panel-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop panel
 WWW=		https://www.defora.org/
 

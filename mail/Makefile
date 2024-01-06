@@ -38,7 +38,6 @@
     SUBDIR += bsmtp
     SUBDIR += bulk_mailer
     SUBDIR += c-sig
-    SUBDIR += cclient
     SUBDIR += claws-mail
     SUBDIR += claws-mail-acpi_notifier
     SUBDIR += claws-mail-address_keeper
@@ -127,6 +126,7 @@
     SUBDIR += exim-sa-exim
     SUBDIR += exim-sqlite
     SUBDIR += exipick
+    SUBDIR += exmh-devel
     SUBDIR += exmh2
     SUBDIR += ez-pine-gpg
     SUBDIR += ezmlm
@@ -157,7 +157,6 @@
     SUBDIR += heirloom-mailx
     SUBDIR += ifile
     SUBDIR += im
-    SUBDIR += imap-uw
     SUBDIR += imapdedup
     SUBDIR += imapfilter
     SUBDIR += imapsync
@@ -182,7 +181,6 @@
     SUBDIR += libpst
     SUBDIR += libsieve
     SUBDIR += libspamtest
-    SUBDIR += libspf
     SUBDIR += libspf2
     SUBDIR += libsrs2
     SUBDIR += libsrs_alt
@@ -207,7 +205,6 @@
     SUBDIR += mailpit
     SUBDIR += mailscanner
     SUBDIR += mailslurper
-    SUBDIR += mailsync
     SUBDIR += mailutils
     SUBDIR += mailx
     SUBDIR += mairix
@@ -458,7 +455,6 @@
     SUBDIR += perdition
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
-    SUBDIR += php80-imap
     SUBDIR += php81-imap
     SUBDIR += php82-imap
     SUBDIR += php83-imap
@@ -486,7 +482,6 @@
     SUBDIR += postfixadmin-lite
     SUBDIR += postfixadmin33
     SUBDIR += postfixadmin33-lite
-    SUBDIR += postforward
     SUBDIR += postgrey
     SUBDIR += postsrsd
     SUBDIR += prepflog
@@ -546,7 +541,6 @@
     SUBDIR += qmail-qfilter
     SUBDIR += qmail-rblchk
     SUBDIR += qmail-remove
-    SUBDIR += qmail-spamcontrol
     SUBDIR += qmail-tls
     SUBDIR += qmailadmin
     SUBDIR += qmailanalog
@@ -554,7 +548,6 @@
     SUBDIR += qmhandle
     SUBDIR += qpopper
     SUBDIR += qsf
-    SUBDIR += qsheff
     SUBDIR += queue-fix
     SUBDIR += queue-repair
     SUBDIR += rainloop
@@ -572,12 +565,14 @@
     SUBDIR += roundcube-carddav
     SUBDIR += roundcube-classic
     SUBDIR += roundcube-contextmenu
+    SUBDIR += roundcube-gravatar
     SUBDIR += roundcube-html5_notifier
     SUBDIR += roundcube-identity_smtp
     SUBDIR += roundcube-larry
     SUBDIR += roundcube-login_info
     SUBDIR += roundcube-sauserprefs
     SUBDIR += roundcube-thunderbird_labels
+    SUBDIR += roundcube-tls_icon
     SUBDIR += roundcube-twofactor_gauthenticator
     SUBDIR += roundcube-veximaccountadmin
     SUBDIR += roundcube-yubikey_auth
@@ -719,7 +714,6 @@
     SUBDIR += tlb
     SUBDIR += tmpmail
     SUBDIR += tpop3d
-    SUBDIR += trojita
     SUBDIR += tumgreyspf
     SUBDIR += up-imapproxy
     SUBDIR += usendmail

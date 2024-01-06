@@ -20,6 +20,9 @@
 %%WWWDIR%%/template/authorize.tmpl
 %%WWWDIR%%/template/domain-blocklist.tmpl
 %%WWWDIR%%/template/finalize.tmpl
+%%WWWDIR%%/template/tag.tmpl
+%%WWWDIR%%/template/status_attachments.tmpl
+%%WWWDIR%%/template/status_poll.tmpl
 %%WWWDIR%%/assets/LICENSE
 %%WWWDIR%%/assets/default_avatars/GoToSocial_icon5.png
 %%WWWDIR%%/assets/default_avatars/GoToSocial_icon2.png
@@ -59,6 +62,8 @@
 %%WWWDIR%%/assets/dist/settings-style.css
 %%WWWDIR%%/assets/dist/base.css
 %%WWWDIR%%/assets/dist/frontend.js
+%%WWWDIR%%/assets/dist/tag.css
+%%WWWDIR%%/assets/feditext.svg
 %%WWWDIR%%/assets/swagger.yaml
 bin/gotosocial
 share/doc/gotosocial/LICENSE

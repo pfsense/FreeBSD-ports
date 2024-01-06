@@ -10,6 +10,7 @@
     SUBDIR += arc
     SUBDIR += arj
     SUBDIR += ark
+    SUBDIR += ark-devel
     SUBDIR += atool
     SUBDIR += bicom
     SUBDIR += brotli
@@ -43,8 +44,8 @@
     SUBDIR += hlextract
     SUBDIR += innoextract
     SUBDIR += javatar
-    SUBDIR += jzlib
     SUBDIR += kf5-karchive
+    SUBDIR += kf6-karchive
     SUBDIR += kzip
     SUBDIR += laszip
     SUBDIR += lazperf
@@ -158,10 +159,6 @@
     SUBDIR += php-lz4
     SUBDIR += php-snappy
     SUBDIR += php-zstd
-    SUBDIR += php80-bz2
-    SUBDIR += php80-phar
-    SUBDIR += php80-zip
-    SUBDIR += php80-zlib
     SUBDIR += php81-bz2
     SUBDIR += php81-phar
     SUBDIR += php81-zip

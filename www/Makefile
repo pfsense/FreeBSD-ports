@@ -149,7 +149,6 @@
     SUBDIR += drupal10
     SUBDIR += drupal7
     SUBDIR += drupal7-wysiwyg
-    SUBDIR += drupal9
     SUBDIR += drush
     SUBDIR += dtse
     SUBDIR += dufs
@@ -221,6 +220,7 @@
     SUBDIR += gopherus
     SUBDIR += gotty
     SUBDIR += gpx2map
+    SUBDIR += grafana
     SUBDIR += grafana9
     SUBDIR += grails
     SUBDIR += gregarius
@@ -275,8 +275,6 @@
     SUBDIR += jericho-html
     SUBDIR += jesred
     SUBDIR += jetty10
-    SUBDIR += jetty8
-    SUBDIR += jetty9
     SUBDIR += jira-cli
     SUBDIR += jitsi-meet
     SUBDIR += jmeter
@@ -288,7 +286,6 @@
     SUBDIR += kannel-sqlbox
     SUBDIR += kcgi
     SUBDIR += kdsoap
-    SUBDIR += kf5-kdewebkit
     SUBDIR += kf5-khtml
     SUBDIR += kf5-kjs
     SUBDIR += kf5-kjsembed
@@ -324,7 +321,6 @@
     SUBDIR += links
     SUBDIR += links1
     SUBDIR += linux-c7-qtwebkit
-    SUBDIR += linux-opera
     SUBDIR += linux-widevine-cdm
     SUBDIR += litmus
     SUBDIR += ljdeps
@@ -335,6 +331,7 @@
     SUBDIR += lua-resty-core
     SUBDIR += lua-resty-http
     SUBDIR += lua-resty-lrucache
+    SUBDIR += lua-resty-session
     SUBDIR += luakit
     SUBDIR += luakit-devel
     SUBDIR += lux
@@ -342,7 +339,6 @@
     SUBDIR += lynx
     SUBDIR += lynx-current
     SUBDIR += lzr
-    SUBDIR += madsonic
     SUBDIR += man2web
     SUBDIR += manpageblog
     SUBDIR += mathjax
@@ -354,6 +350,7 @@
     SUBDIR += mediawiki135
     SUBDIR += mediawiki139
     SUBDIR += mediawiki140
+    SUBDIR += mediawiki141
     SUBDIR += mergelog
     SUBDIR += mhonarc
     SUBDIR += micro_httpd
@@ -410,7 +407,6 @@
     SUBDIR += mod_mono
     SUBDIR += mod_mpm_itk
     SUBDIR += mod_perl2
-    SUBDIR += mod_php80
     SUBDIR += mod_php81
     SUBDIR += mod_php82
     SUBDIR += mod_php83
@@ -439,7 +435,6 @@
     SUBDIR += moodle42
     SUBDIR += moodle43
     SUBDIR += morty
-    SUBDIR += mozplugger
     SUBDIR += multisort
     SUBDIR += multiwatch
     SUBDIR += mybb
@@ -1028,6 +1023,7 @@
     SUBDIR += p5-MediaWiki-API
     SUBDIR += p5-Mobile-UserAgent
     SUBDIR += p5-ModPerl-VersionUtil
+    SUBDIR += p5-Mojo-DOM58
     SUBDIR += p5-Mojo-IOLoop-Delay
     SUBDIR += p5-Mojo-IOLoop-ForkCall
     SUBDIR += p5-Mojo-Server-FastCGI
@@ -1404,9 +1400,7 @@
     SUBDIR += persepolis
     SUBDIR += pglogd
     SUBDIR += phalcon
-    SUBDIR += php80-opcache
-    SUBDIR += php80-session
-    SUBDIR += php80-tidy
+    SUBDIR += php-google-api-php-client
     SUBDIR += php81-opcache
     SUBDIR += php81-session
     SUBDIR += php81-tidy
@@ -1428,6 +1422,7 @@
     SUBDIR += phpvirtualbox-legacy
     SUBDIR += piwigo
     SUBDIR += plasma5-plasma-browser-integration
+    SUBDIR += plasma6-plasma-browser-integration
     SUBDIR += pmwiki
     SUBDIR += pnews
     SUBDIR += podcastamatic
@@ -1492,23 +1487,6 @@
     SUBDIR += py-cssutils
     SUBDIR += py-daphne
     SUBDIR += py-dj-database-url
-    SUBDIR += py-dj41-django-auth-ldap
-    SUBDIR += py-dj41-django-cors-headers
-    SUBDIR += py-dj41-django-debug-toolbar
-    SUBDIR += py-dj41-django-filter
-    SUBDIR += py-dj41-django-graphiql-debug-toolbar
-    SUBDIR += py-dj41-django-js-asset
-    SUBDIR += py-dj41-django-mptt
-    SUBDIR += py-dj41-django-prometheus
-    SUBDIR += py-dj41-django-redis
-    SUBDIR += py-dj41-django-rich
-    SUBDIR += py-dj41-django-tables2
-    SUBDIR += py-dj41-django-taggit
-    SUBDIR += py-dj41-django-timezone-field
-    SUBDIR += py-dj41-djangorestframework
-    SUBDIR += py-dj41-drf-spectacular
-    SUBDIR += py-dj41-drf-spectacular-sidecar
-    SUBDIR += py-dj41-drf-yasg
     SUBDIR += py-dj42-django-auth-ldap
     SUBDIR += py-dj42-django-cors-headers
     SUBDIR += py-dj42-django-debug-toolbar
@@ -1628,8 +1606,8 @@
     SUBDIR += py-django-webpack-loader
     SUBDIR += py-django-widget-tweaks
     SUBDIR += py-django32
-    SUBDIR += py-django41
     SUBDIR += py-django42
+    SUBDIR += py-django50
     SUBDIR += py-django_compressor
     SUBDIR += py-djangocms-admin-style
     SUBDIR += py-djangoql
@@ -1637,6 +1615,7 @@
     SUBDIR += py-djangorestframework-csv
     SUBDIR += py-djangorestframework-filters
     SUBDIR += py-djangorestframework-xml
+    SUBDIR += py-djangosaml2
     SUBDIR += py-draftjs-exporter
     SUBDIR += py-drf-spectacular
     SUBDIR += py-drf-spectacular-sidecar
@@ -1649,6 +1628,7 @@
     SUBDIR += py-fastapi
     SUBDIR += py-fastapi-users
     SUBDIR += py-feedgenerator
+    SUBDIR += py-flasgger
     SUBDIR += py-flask
     SUBDIR += py-flask-admin
     SUBDIR += py-flask-api
@@ -1663,6 +1643,7 @@
     SUBDIR += py-flask-cors
     SUBDIR += py-flask-flatpages
     SUBDIR += py-flask-json
+    SUBDIR += py-flask-jwt
     SUBDIR += py-flask-jwt-extended
     SUBDIR += py-flask-limiter
     SUBDIR += py-flask-login
@@ -1737,7 +1718,6 @@
     SUBDIR += py-httpx-gssapi
     SUBDIR += py-httpx-oauth
     SUBDIR += py-httpx-socks
-    SUBDIR += py-httpx013
     SUBDIR += py-hypercorn
     SUBDIR += py-hyperframe
     SUBDIR += py-hyperlink
@@ -1789,6 +1769,7 @@
     SUBDIR += py-python-multipart
     SUBDIR += py-pyweblib
     SUBDIR += py-pywikibot
+    SUBDIR += py-pywry
     SUBDIR += py-qt5-webengine
     SUBDIR += py-qt6-webengine
     SUBDIR += py-quilt3
@@ -1882,13 +1863,13 @@
     SUBDIR += py-xandikos
     SUBDIR += py-xyzservices
     SUBDIR += py-yarl
+    SUBDIR += py-yt-dlp
     SUBDIR += pydio-cells
     SUBDIR += qdecoder
     SUBDIR += qhttpengine
     SUBDIR += qt5-webchannel
     SUBDIR += qt5-webengine
     SUBDIR += qt5-webglplugin
-    SUBDIR += qt5-webkit
     SUBDIR += qt5-websockets
     SUBDIR += qt5-websockets-qml
     SUBDIR += qt5-webview
@@ -1944,7 +1925,6 @@
     SUBDIR += rubygem-amazon-ecs
     SUBDIR += rubygem-anemone
     SUBDIR += rubygem-asana
-    SUBDIR += rubygem-asana1
     SUBDIR += rubygem-async-http
     SUBDIR += rubygem-async-pool
     SUBDIR += rubygem-async-rest
@@ -2212,6 +2192,7 @@
     SUBDIR += rubygem-rdf-normalize
     SUBDIR += rubygem-redcloth
     SUBDIR += rubygem-redis-rack
+    SUBDIR += rubygem-redis-rack2
     SUBDIR += rubygem-redis-rails
     SUBDIR += rubygem-redis-rails-rails5
     SUBDIR += rubygem-redis-rails-rails50
@@ -2233,7 +2214,6 @@
     SUBDIR += rubygem-robots
     SUBDIR += rubygem-roda
     SUBDIR += rubygem-rqrcode
-    SUBDIR += rubygem-rqrcode-rails3
     SUBDIR += rubygem-rqrcode2
     SUBDIR += rubygem-rqrcode_core
     SUBDIR += rubygem-rss
@@ -2348,6 +2328,7 @@
     SUBDIR += suphp
     SUBDIR += surf
     SUBDIR += swiggle
+    SUBDIR += sws
     SUBDIR += tcexam
     SUBDIR += tclhttpd
     SUBDIR += tclwebtest
@@ -2361,7 +2342,6 @@
     SUBDIR += thttpd
     SUBDIR += thumbnail_index
     SUBDIR += thundercache
-    SUBDIR += thundersnarf
     SUBDIR += tidy
     SUBDIR += tidy-devel
     SUBDIR += tidy-html5
@@ -2379,7 +2359,7 @@
     SUBDIR += tomcat9
     SUBDIR += tomee
     SUBDIR += tor-browser
-    SUBDIR += trac-devel
+    SUBDIR += trac
     SUBDIR += trafficserver
     SUBDIR += transproxy
     SUBDIR += trunk
@@ -2449,8 +2429,6 @@
     SUBDIR += varnish-libvmod-querystring
     SUBDIR += varnish-libvmod-redis
     SUBDIR += varnish-modules
-    SUBDIR += varnish-nagios
-    SUBDIR += varnish6
     SUBDIR += varnish7
     SUBDIR += varnish_exporter
     SUBDIR += vaultwarden-web_vault
@@ -2503,7 +2481,6 @@
     SUBDIR += wuzz
     SUBDIR += wwwoffle
     SUBDIR += xapian-omega
-    SUBDIR += xapian-omega12
     SUBDIR += xcaddy
     SUBDIR += xfce4-smartbookmark-plugin
     SUBDIR += xh
@@ -2511,7 +2488,6 @@
     SUBDIR += xoops
     SUBDIR += xsp
     SUBDIR += yabb
-    SUBDIR += yanopaste
     SUBDIR += yarn
     SUBDIR += yarn-node16
     SUBDIR += yarn-node18

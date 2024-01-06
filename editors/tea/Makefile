@@ -1,10 +1,10 @@
 PORTNAME=	tea
-PORTVERSION=	62.0.2
+PORTVERSION=	62.2.1
 CATEGORIES=	editors
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Simple and powerful Qt-based text editor
-WWW=		http://semiletov.org/tea/
+WWW=		https://tea.ourproject.org/
 
 LICENSE=	GPLv3
 

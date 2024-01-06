@@ -1,5 +1,6 @@
 PORTNAME=	octave-forge-ltfat
 PORTVERSION=	2.6.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/ltfat/ltfat/releases/download/v2.6.0/
@@ -11,8 +12,6 @@ WWW=		https://packages.octave.org/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTAVE_SRC}/COPYING
-
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: modules/libltfat/src/dgt_multi.c:47:31: 'cexpl' undeclared (first use in this function); did you mean 'cexpf'?
 
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libportaudio.so:audio/portaudio \

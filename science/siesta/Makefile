@@ -1,19 +1,17 @@
 PORTNAME=	siesta
 DISTVERSION=	4.1.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science # chemistry
 MASTER_SITES=	https://gitlab.com/siesta-project/${PORTNAME}/-/releases/v${DISTVERSION}/downloads/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Program to perform efficient electronic structure calculations
-WWW=		https://icmab.es/siesta
+WWW=		https://siesta-project.org/siesta/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/../COPYING
 
 BROKEN_aarch64=	Lack of IEEE754 support in gcc causes "Cannot find an intrinsic module named 'ieee_arithmetic'", see bug#255890
-BROKEN_FreeBSD_12_powerpc=	Lack of IEEE754 support in gcc causes "Cannot find an intrinsic module named 'ieee_arithmetic'", see bug#255890
-BROKEN_FreeBSD_12_powerpc64=	Lack of IEEE754 support in gcc causes "Cannot find an intrinsic module named 'ieee_arithmetic'", see bug#255890
 
 LIB_DEPENDS=	libblas.so:math/blas \
 		liblapack.so:math/lapack

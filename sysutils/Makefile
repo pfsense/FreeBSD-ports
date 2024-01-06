@@ -22,7 +22,6 @@
     SUBDIR += acpica-tools
     SUBDIR += acts
     SUBDIR += adtool
-    SUBDIR += afbinit
     SUBDIR += afflib
     SUBDIR += afio
     SUBDIR += agedu
@@ -78,6 +77,7 @@
     SUBDIR += autojump
     SUBDIR += automount
     SUBDIR += automounter
+    SUBDIR += autorestic
     SUBDIR += avfs
     SUBDIR += azure-agent
     SUBDIR += b2sum
@@ -191,9 +191,11 @@
     SUBDIR += cfengine-masterfiles320
     SUBDIR += cfengine-masterfiles321
     SUBDIR += cfengine-masterfiles322
+    SUBDIR += cfengine-masterfiles323
     SUBDIR += cfengine320
     SUBDIR += cfengine321
     SUBDIR += cfengine322
+    SUBDIR += cfengine323
     SUBDIR += chaoskube
     SUBDIR += checkrestart
     SUBDIR += chezmoi
@@ -284,7 +286,6 @@
     SUBDIR += deltup
     SUBDIR += desktop-installer
     SUBDIR += detox
-    SUBDIR += devcpu-data
     SUBDIR += devctl-jail-kmod
     SUBDIR += devd-mount
     SUBDIR += devedeng
@@ -367,7 +368,6 @@
     SUBDIR += epazote
     SUBDIR += equinix-metal-cli
     SUBDIR += erdtree
-    SUBDIR += etc_os-release
     SUBDIR += etcmerge
     SUBDIR += ethname
     SUBDIR += evhz
@@ -394,7 +394,6 @@
     SUBDIR += fd
     SUBDIR += fdupes
     SUBDIR += fetchlog
-    SUBDIR += ffs2recov
     SUBDIR += file
     SUBDIR += filedupe
     SUBDIR += filelight
@@ -531,7 +530,6 @@
     SUBDIR += gstat-rs
     SUBDIR += gstopd
     SUBDIR += gstreamer1-plugins-cdio
-    SUBDIR += gtk-imonc
     SUBDIR += hammer2
     SUBDIR += handlr
     SUBDIR += hardlink
@@ -569,7 +567,6 @@
     SUBDIR += i2c-tools
     SUBDIR += i7z
     SUBDIR += iat
-    SUBDIR += iichid
     SUBDIR += imgurbash2
     SUBDIR += immortal
     SUBDIR += incron
@@ -635,7 +632,9 @@
     SUBDIR += keyd
     SUBDIR += kf5-baloo
     SUBDIR += kf5-kwallet
-    SUBDIR += kfloppy
+    SUBDIR += kf6-baloo
+    SUBDIR += kf6-kuserfeedback
+    SUBDIR += kf6-kwallet
     SUBDIR += khelpcenter
     SUBDIR += kiconvtool
     SUBDIR += kio-fuse
@@ -711,7 +710,6 @@
     SUBDIR += lsyncd
     SUBDIR += ltfs
     SUBDIR += ltrace
-    SUBDIR += lttng-tools
     SUBDIR += lttng-ust
     SUBDIR += lua-puremagic
     SUBDIR += luckybackup
@@ -757,6 +755,7 @@
     SUBDIR += minipot
     SUBDIR += minipro
     SUBDIR += minirsyslogd
+    SUBDIR += mise
     SUBDIR += mixer
     SUBDIR += mkdesktop
     SUBDIR += mkfwimage
@@ -998,8 +997,6 @@
     SUBDIR += pfstat
     SUBDIR += pftables
     SUBDIR += pftop
-    SUBDIR += php80-fileinfo
-    SUBDIR += php80-posix
     SUBDIR += php81-fileinfo
     SUBDIR += php81-posix
     SUBDIR += php82-fileinfo
@@ -1025,6 +1022,17 @@
     SUBDIR += plasma5-polkit-kde-agent-1
     SUBDIR += plasma5-powerdevil
     SUBDIR += plasma5-systemsettings
+    SUBDIR += plasma6-drkonqi
+    SUBDIR += plasma6-kde-cli-tools
+    SUBDIR += plasma6-kinfocenter
+    SUBDIR += plasma6-kmenuedit
+    SUBDIR += plasma6-ksystemstats
+    SUBDIR += plasma6-libksysguard
+    SUBDIR += plasma6-plasma-disks
+    SUBDIR += plasma6-plasma-systemmonitor
+    SUBDIR += plasma6-polkit-kde-agent-1
+    SUBDIR += plasma6-powerdevil
+    SUBDIR += plasma6-systemsettings
     SUBDIR += plconfig
     SUBDIR += plocate
     SUBDIR += pmt
@@ -1034,6 +1042,7 @@
     SUBDIR += polkit
     SUBDIR += polkit-gnome
     SUBDIR += polkit-qt
+    SUBDIR += polkit-qt-1-devel
     SUBDIR += pot
     SUBDIR += potnet
     SUBDIR += poweralertd
@@ -1182,6 +1191,7 @@
     SUBDIR += rename
     SUBDIR += renameutils
     SUBDIR += reoback
+    SUBDIR += reproduce
     SUBDIR += reptyr
     SUBDIR += respond
     SUBDIR += rest-server
@@ -1205,7 +1215,6 @@
     SUBDIR += rsyslog8
     SUBDIR += rtsx-kmod
     SUBDIR += rtty
-    SUBDIR += rtx
     SUBDIR += rubygem-backup
     SUBDIR += rubygem-bolt
     SUBDIR += rubygem-bosh-gen
@@ -1216,16 +1225,12 @@
     SUBDIR += rubygem-capistrano-harrow
     SUBDIR += rubygem-chef
     SUBDIR += rubygem-chef-bin
-    SUBDIR += rubygem-chef-bin17
     SUBDIR += rubygem-chef-cleanroom
     SUBDIR += rubygem-chef-config
-    SUBDIR += rubygem-chef-config17
     SUBDIR += rubygem-chef-telemetry
     SUBDIR += rubygem-chef-utils
-    SUBDIR += rubygem-chef-utils17
     SUBDIR += rubygem-chef-vault
     SUBDIR += rubygem-chef-zero
-    SUBDIR += rubygem-chef17
     SUBDIR += rubygem-choria-mcorpc-support
     SUBDIR += rubygem-facter
     SUBDIR += rubygem-fluent-mixin-plaintextformatter
@@ -1261,7 +1266,6 @@
     SUBDIR += rubygem-mothra
     SUBDIR += rubygem-murder
     SUBDIR += rubygem-ohai
-    SUBDIR += rubygem-ohai17
     SUBDIR += rubygem-parallel
     SUBDIR += rubygem-puppet_forge
     SUBDIR += rubygem-puppetfile-resolver
@@ -1352,8 +1356,8 @@
     SUBDIR += siegfried
     SUBDIR += signon-kwallet-extension
     SUBDIR += signon-plugin-oauth2
-    SUBDIR += signon-qt5
     SUBDIR += signon-ui
+    SUBDIR += signond
     SUBDIR += sispmctl
     SUBDIR += skopeo
     SUBDIR += slack
@@ -1489,6 +1493,7 @@
     SUBDIR += u-boot-nanopi-neo
     SUBDIR += u-boot-nanopi-neo-air
     SUBDIR += u-boot-nanopi-neo2
+    SUBDIR += u-boot-nanopi-r2s
     SUBDIR += u-boot-nanopi-r4s
     SUBDIR += u-boot-olimex-a20-som-evb
     SUBDIR += u-boot-olinuxino-lime

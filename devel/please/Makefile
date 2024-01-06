@@ -1,7 +1,7 @@
 PORTNAME=	please
 DISTVERSIONPREFIX=	v
 DISTVERSION=	15.17.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	devel
 PKGNAMESUFFIX=	.build
 
@@ -11,6 +11,9 @@ WWW=		https://please.build/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+NOT_FOR_ARCHS=	armv7
+NOT_FOR_ARCHS_REASON=	Build crashes
 
 BUILD_DEPENDS=	bash:shells/bash \
 		ca_root_nss>0:security/ca_root_nss \

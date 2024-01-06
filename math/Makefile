@@ -322,6 +322,7 @@
     SUBDIR += fastops
     SUBDIR += fcl
     SUBDIR += fcl05
+    SUBDIR += fend
     SUBDIR += fenics-basix
     SUBDIR += fflas-ffpack
     SUBDIR += fftw
@@ -352,7 +353,6 @@
     SUBDIR += gemmlowp
     SUBDIR += geogebra
     SUBDIR += geogram
-    SUBDIR += geonext
     SUBDIR += gexpr
     SUBDIR += gf2x
     SUBDIR += gfan
@@ -640,7 +640,7 @@
     SUBDIR += octave-forge-splines
     SUBDIR += octave-forge-sqlite
     SUBDIR += octave-forge-statistics
-    SUBDIR += octave-forge-statistics-bootstrap
+    SUBDIR += octave-forge-statistics-resampling
     SUBDIR += octave-forge-stk
     SUBDIR += octave-forge-strings
     SUBDIR += octave-forge-struct
@@ -661,6 +661,7 @@
     SUBDIR += onednn252
     SUBDIR += openblas
     SUBDIR += openfst
+    SUBDIR += openfst-vosk
     SUBDIR += openlibm
     SUBDIR += openmesh
     SUBDIR += openscop
@@ -707,7 +708,6 @@
     SUBDIR += p5-Math-BigInt-GMP
     SUBDIR += p5-Math-BigInt-Lite
     SUBDIR += p5-Math-BigInt-Pari
-    SUBDIR += p5-Math-BigRat
     SUBDIR += p5-Math-CDF
     SUBDIR += p5-Math-Calc-Units
     SUBDIR += p5-Math-Cephes
@@ -843,8 +843,6 @@
     SUBDIR += petanque
     SUBDIR += petiga
     SUBDIR += pffft
-    SUBDIR += php80-bcmath
-    SUBDIR += php80-gmp
     SUBDIR += php81-bcmath
     SUBDIR += php81-gmp
     SUBDIR += php82-bcmath
@@ -876,6 +874,7 @@
     SUBDIR += py-Diofant
     SUBDIR += py-GridDataFormats
     SUBDIR += py-MutatorMath
+    SUBDIR += py-POT
     SUBDIR += py-PuLP
     SUBDIR += py-Py-BOBYQA
     SUBDIR += py-PyMetis
@@ -949,6 +948,7 @@
     SUBDIR += py-hdmedians
     SUBDIR += py-hepstats
     SUBDIR += py-heyoka
+    SUBDIR += py-hmmlearn
     SUBDIR += py-igraph
     SUBDIR += py-iminuit
     SUBDIR += py-intspan
@@ -1006,7 +1006,6 @@
     SUBDIR += py-pdal
     SUBDIR += py-permutation
     SUBDIR += py-petsc4py
-    SUBDIR += py-piranha
     SUBDIR += py-plastex
     SUBDIR += py-point-annotator
     SUBDIR += py-pplpy
@@ -1069,6 +1068,7 @@
     SUBDIR += py-spot
     SUBDIR += py-spreg
     SUBDIR += py-spvcm
+    SUBDIR += py-squarify
     SUBDIR += py-ssm
     SUBDIR += py-statsmodels
     SUBDIR += py-svgmath
@@ -1175,6 +1175,7 @@
     SUBDIR += suitesparse-cxsparse
     SUBDIR += suitesparse-graphblas
     SUBDIR += suitesparse-klu
+    SUBDIR += suitesparse-lagraph
     SUBDIR += suitesparse-ldl
     SUBDIR += suitesparse-mongoose
     SUBDIR += suitesparse-rbio
@@ -1199,6 +1200,7 @@
     SUBDIR += the-algorithms-c++
     SUBDIR += timbl
     SUBDIR += tiny-bignum-c
+    SUBDIR += tinyexpr
     SUBDIR += tinymt
     SUBDIR += tlapack
     SUBDIR += tmv
@@ -1226,7 +1228,6 @@
     SUBDIR += vtk9
     SUBDIR += wavelib
     SUBDIR += wcalc
-    SUBDIR += wfmath
     SUBDIR += wxmaxima
     SUBDIR += xblas
     SUBDIR += xfce4-calculator-plugin

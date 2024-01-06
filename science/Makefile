@@ -147,7 +147,6 @@
     SUBDIR += libctl
     SUBDIR += libecpint
     SUBDIR += libefp
-    SUBDIR += libgeodecomp
     SUBDIR += libgetar
     SUBDIR += libghemical
     SUBDIR += libgridxc
@@ -443,6 +442,7 @@
     SUBDIR += py-thewalrus
     SUBDIR += py-tobler
     SUBDIR += py-trainstation
+    SUBDIR += py-trx-python
     SUBDIR += py-tweedledum
     SUBDIR += py-vedo
     SUBDIR += py-veusz

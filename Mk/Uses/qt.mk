@@ -22,9 +22,9 @@ _QT_MK_INCLUDED=	qt.mk
 
 # Qt versions currently supported by the framework.
 _QT_SUPPORTED?=		5 6
-QT5_VERSION?=		5.15.11
-QT6_VERSION?=		6.6.0
-PYSIDE6_VERSION?=	6.6.0
+QT5_VERSION?=		5.15.12
+QT6_VERSION?=		6.6.1
+PYSIDE6_VERSION?=	6.6.1
 
 # We accept the Qt version to be passed by either or all of the three mk files.
 .  if empty(qt_ARGS) && empty(qmake_ARGS) && empty(qt-dist_ARGS)
@@ -150,17 +150,17 @@ _USE_QT_COMMON=		3d charts connectivity datavis3d declarative doc examples image
 _USE_QT5_ONLY=		assistant buildtools concurrent core dbus \
 			declarative-test designer diag gamepad \
 			graphicaleffects gui help l10n linguist linguisttools \
-			network opengl paths phonon4 pixeltool plugininfo printsupport \
+			network opengl paths pixeltool plugininfo printsupport \
 			qdbus qdbusviewer qdoc qdoc-data qev qmake quickcontrols \
 			quickcontrols2 script scripttools sql sql-mysql sql-odbc \
 			sql-pgsql sql-sqlite2 sql-sqlite3 sql-tds testlib uiplugin \
-			uitools webglplugin webkit websockets-qml \
+			uitools webglplugin websockets-qml \
 			widgets x11extras xml xmlpatterns
 .  if ${ARCH} == amd64 || ${ARCH} == i386
 _USE_QT5_ONLY+=		sql-ibase
 .  endif
 
-_USE_QT6_ONLY=		5compat base coap graphs httpserver languageserver lottie positioning \
+_USE_QT6_ONLY=		5compat base coap graphs httpserver languageserver lottie pdf positioning \
 			quick3dphysics quickeffectmaker shadertools tools translations \
 			sqldriver-sqlite sqldriver-mysql sqldriver-psql sqldriver-odbc
 
@@ -274,11 +274,11 @@ qt-opengl_LIB=		libQt${_QT_LIBVER}OpenGL.so
 qt-paths_PORT=		sysutils/${_QT_RELNAME}-qtpaths
 qt-paths_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/qtpaths
 
+qt-pdf_PORT=		print/${_QT_RELNAME}-pdf
+qt-pdf_LIB=		libQt${_QT_LIBVER}Pdf.so
+
 qt-pixeltool_PORT=	graphics/${_QT_RELNAME}-pixeltool
 qt-pixeltool_PATH=	${LOCALBASE}/${QT_BINDIR_REL}/pixeltool
-
-qt-phonon4_PORT=	multimedia/phonon
-qt-phonon4_LIB=		libphonon4${_QT_RELNAME}.so
 
 qt-positioning_PORT=	devel/${_QT_RELNAME}-positioning
 qt-positioning_LIB=	libQt${_QT_LIBVER}Positioning.so
@@ -408,9 +408,6 @@ qt-websockets_LIB=	libQt${_QT_LIBVER}WebSockets.so
 
 qt-websockets-qml_PORT=	www/${_QT_RELNAME}-websockets-qml
 qt-websockets-qml_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtWebSockets/qmldir
-
-qt-webkit_PORT=		www/${_QT_RELNAME}-webkit
-qt-webkit_LIB=		libQt${_QT_LIBVER}WebKit.so
 
 qt-webview_PORT=	www/${_QT_RELNAME}-webview
 qt-webview_LIB=		libQt${_QT_LIBVER}WebView.so

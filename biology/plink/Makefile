@@ -1,7 +1,7 @@
 PORTNAME=		plink
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.90b6.17
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=		biology
 
 MAINTAINER=	mzaki@e-mail.ne.jp
@@ -11,7 +11,7 @@ WWW=		https://www.cog-genomics.org/plink/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NOT_FOR_ARCHS=		aarch64 mips64 powerpc64 powerpc64le sparc64
+NOT_FOR_ARCHS=		aarch64 mips64 powerpc64 powerpc64le
 NOT_FOR_ARCHS_REASON=	64bit code requires SSE2 instructions
 
 USES=		gmake fortran

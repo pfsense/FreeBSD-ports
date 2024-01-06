@@ -17,7 +17,6 @@
     SUBDIR += KnightCap
     SUBDIR += LibreMines
     SUBDIR += NBlood
-    SUBDIR += OpenDiablo2
     SUBDIR += OpenLara
     SUBDIR += OpenTomb
     SUBDIR += SRB2
@@ -25,7 +24,6 @@
     SUBDIR += SpaceCadetPinball-devel
     SUBDIR += abbayedesmorts
     SUBDIR += abe
-    SUBDIR += abstreet
     SUBDIR += abuse_sdl
     SUBDIR += ace-of-penguins
     SUBDIR += adom
@@ -341,7 +339,6 @@
     SUBDIR += gnome-nibbles
     SUBDIR += gnome-robots
     SUBDIR += gnome-sudoku
-    SUBDIR += gnome-taquin
     SUBDIR += gnome-tetravex
     SUBDIR += gnubg
     SUBDIR += gnubik
@@ -393,7 +390,6 @@
     SUBDIR += hs-scroll
     SUBDIR += hypatia_engine
     SUBDIR += hyperrogue
-    SUBDIR += iagno
     SUBDIR += icbm3d
     SUBDIR += icebreaker
     SUBDIR += iceicepenguin
@@ -707,6 +703,7 @@
     SUBDIR += openbor3711
     SUBDIR += openbor3979
     SUBDIR += openbor4432
+    SUBDIR += openbor7144
     SUBDIR += openbubbles
     SUBDIR += openbve
     SUBDIR += opencity
@@ -797,7 +794,7 @@
     SUBDIR += py-cbeams
     SUBDIR += py-discord.py
     SUBDIR += py-fife
-    SUBDIR += py-mnemosyne
+    SUBDIR += py-mnemosyne-proj
     SUBDIR += py-pychess
     SUBDIR += py-pysol-cards
     SUBDIR += py-sgflib
@@ -833,7 +830,6 @@
     SUBDIR += quake2-xatrix
     SUBDIR += quake2lnx
     SUBDIR += quake2max
-    SUBDIR += quake3
     SUBDIR += quake3-data
     SUBDIR += quake3-excessive
     SUBDIR += quake3-osp
@@ -935,8 +931,6 @@
     SUBDIR += spellcast
     SUBDIR += spicetrade
     SUBDIR += spider
-    SUBDIR += spring
-    SUBDIR += springlobby
     SUBDIR += starfighter
     SUBDIR += starlanes
     SUBDIR += steelstorm

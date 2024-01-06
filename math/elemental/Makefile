@@ -1,6 +1,7 @@
 PORTNAME=	elemental
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.5.2
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,7 +10,6 @@ WWW=		https://github.com/LLNL/Elemental
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: include/El/blas_like/level1/Copy.hpp:522:27: ambiguous template specialization 'Copy<>' for 'void El::Copy(const El::Matrix<int>&, El::Matrix<int>&)'
 BROKEN_i386=	clang crashes: https://bugs.llvm.org/show_bug.cgi?id=46026
 
 LIB_DEPENDS=	libgmp.so:math/gmp \

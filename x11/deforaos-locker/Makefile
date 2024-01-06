@@ -1,11 +1,12 @@
 PORTNAME=	locker
 PORTVERSION=	0.4.2
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	https://ftp.defora.org/pub/DeforaOS/Apps/Desktop/src/Locker/
 PKGNAMEPREFIX=	deforaos-
 DISTNAME=	Locker-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop screensaver
 WWW=		https://www.defora.org/
 

@@ -1,11 +1,12 @@
 PORTNAME=	libdesktop
 PORTVERSION=	0.4.1
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	https://ftp.defora.org/pub/DeforaOS/Apps/Desktop/src/libDesktop/
 PKGNAMEPREFIX=	deforaos-
 DISTNAME=	libDesktop-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop library
 WWW=		https://www.defora.org/
 

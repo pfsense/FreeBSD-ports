@@ -1,5 +1,5 @@
 PORTNAME=	telegram-desktop
-DISTVERSION=	4.11.7
+DISTVERSION=	4.14.3
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/v${DISTVERSION}/
 DISTNAME=	tdesktop-${DISTVERSION}-full
@@ -64,7 +64,7 @@ USE_QT=		buildtools:build core dbus declarative gui imageformats network qmake:b
 USE_KDE=	coreaddons kimageformats
 .else
 USES+=		qt:6
-USE_QT=		5compat base imageformats lottie shadertools svg tools:build wayland
+USE_QT=		5compat base declarative imageformats lottie shadertools svg tools:build wayland
 .endif
 
 USE_GL=		gl
@@ -73,6 +73,7 @@ USE_XORG=	x11 xcb xcomposite xdamage xext xfixes xrandr xrender xtst
 
 CMAKE_ARGS=	-DTDESKTOP_API_ID=${TELEGRAM_API_ID} -DTDESKTOP_API_HASH=${TELEGRAM_API_HASH}
 CMAKE_ON=	DESKTOP_APP_USE_PACKAGED DESKTOP_APP_DISABLE_CRASH_REPORTS \
+		DESKTOP_APP_DISABLE_SCUDO \
 		DESKTOP_APP_DISABLE_WAYLAND_INTEGRATION
 
 # Since cmake 3.25.0, BSDs are no longer recognised as Linux (in this port).

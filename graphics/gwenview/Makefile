@@ -1,5 +1,6 @@
 PORTNAME=	gwenview
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -22,10 +23,10 @@ USE_KDE=	activities auth baloo bookmarks codecs completion config \
 		configwidgets coreaddons emoticons filemetadata guiaddons i18n \
 		iconthemes init itemmodels itemviews jobwidgets \
 		kdelibs4support kimageformats kio libkdcraw libkipi \
-		notifications parts service solid sonnet textwidgets \
+		notifications parts phonon service solid sonnet textwidgets \
 		widgetsaddons windowsystem xmlgui \
 		ecm:build
-USE_QT=		concurrent core dbus gui network opengl phonon4 printsupport \
+USE_QT=		concurrent core dbus gui network opengl printsupport \
 		svg widgets x11extras xml \
 		buildtools:build qmake:build
 USE_XORG=	x11

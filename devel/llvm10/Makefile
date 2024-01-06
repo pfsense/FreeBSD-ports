@@ -273,7 +273,7 @@ PYCLANG_PATTERN=	(clang\/(__init__|cindex|enumerations).py)$$
 .include "${.CURDIR}/Makefile.COMMANDS"
 .include "${.CURDIR}/Makefile.MAN1SRCS"
 
-_FREEBSD_BACKENDS=	AArch64 ARM Mips PowerPC RISCV Sparc X86
+_FREEBSD_BACKENDS=	AArch64 ARM Mips PowerPC RISCV X86
 FREEBSD_BACKENDS=	${_FREEBSD_BACKENDS}
 .if ${ARCH} == amd64
 _NATIVE_BACKENDS=	X86
@@ -296,7 +296,7 @@ FREEBSD_BACKENDS+=	AMDGPU
 NATIVE_BACKENDS+=	AMDGPU
 .endif
 STANDARD_BACKENDS=	${_FREEBSD_BACKENDS} AMDGPU BPF Hexagon Lanai MSP430 \
-			NVPTX SystemZ WebAssembly XCore
+			NVPTX Sparc SystemZ WebAssembly XCore
 _BE_LIBS_COMMON=	CodeGen Desc Info
 _BE_LIBS_AArch64=	AsmParser Disassembler Utils
 _BE_LIBS_AMDGPU=	AsmParser Disassembler Utils

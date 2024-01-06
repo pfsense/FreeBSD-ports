@@ -1,6 +1,6 @@
 PORTNAME=	ilias
 DISTVERSIONPREFIX=	v
-DISTVERSION=	8.6
+DISTVERSION=	8.7
 CATEGORIES=	www education
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
@@ -11,10 +11,10 @@ WWW=		https://www.ilias.de
 LICENSE=	GPLv2
 
 # Will switch to version 9 snapshots before the removal
-DEPRECATED=	Requires php80 which is set to expire on 2023-11-26
-EXPIRATION_DATE=	2023-12-31
+#DEPRECATED=	Requires php80 which is set to expire on 2023-11-26
+#EXPIRATION_DATE=	2023-12-31
 
-IGNORE_WITH_PHP=	81 82 83
+IGNORE_WITH_PHP=	82 83
 
 LIB_DEPENDS=	libpng.so:graphics/png
 RUN_DEPENDS=	${LOCALBASE}/share/pear/Auth/Auth.php:security/pear-Auth@${PHP_FLAVOR} \
@@ -78,23 +78,15 @@ EXTRA_FILES=	%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/mime \
 		%%WWWDIR%%/node_modules/.bin/lessc \
 		%%WWWDIR%%/node_modules/.bin/loose-envify \
 		%%WWWDIR%%/node_modules/.bin/mime \
-		%%WWWDIR%%/node_modules/.bin/mkdirp \
 		%%WWWDIR%%/node_modules/.bin/mocha \
 		%%WWWDIR%%/node_modules/.bin/nanoid \
 		%%WWWDIR%%/node_modules/.bin/needle \
-		%%WWWDIR%%/node_modules/.bin/node-gyp \
-		%%WWWDIR%%/node_modules/.bin/node-ninja \
-		%%WWWDIR%%/node_modules/.bin/nopt \
 		%%WWWDIR%%/node_modules/.bin/pbf \
 		%%WWWDIR%%/node_modules/.bin/parser \
-		%%WWWDIR%%/node_modules/.bin/prebuild \
 		%%WWWDIR%%/node_modules/.bin/regjsparser \
-		%%WWWDIR%%/node_modules/.bin/resolve \
-		%%WWWDIR%%/node_modules/.bin/rc \
 		%%WWWDIR%%/node_modules/.bin/rollup \
 		%%WWWDIR%%/node_modules/.bin/semver \
 		%%WWWDIR%%/node_modules/.bin/terser \
-		%%WWWDIR%%/node_modules/.bin/which \
 		%%WWWDIR%%/node_modules/@babel/core/node_modules/.bin/semver \
 		%%WWWDIR%%/node_modules/@babel/helper-compilation-targets/node_modules/.bin/semver \
 		%%WWWDIR%%/node_modules/@babel/helper-define-polyfill-provider/node_modules/.bin/semver \

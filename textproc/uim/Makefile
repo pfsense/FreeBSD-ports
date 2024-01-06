@@ -1,6 +1,6 @@
 PORTNAME=	uim
 PORTVERSION=	1.9.0.b.${SNAPDATE}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES?=	textproc
 .if !defined(UIM_SLAVE) && defined(WITHOUT_X11)
 PKGNAMESUFFIX=	-nox11
@@ -76,7 +76,7 @@ PLIST_SUB+=	X11=""
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64" || ${ARCH} == "sparc64"
+.if ${ARCH} == "amd64"
 CONFIGURE_ARGS+=	--enable-storage=fatty
 .endif
 

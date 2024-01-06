@@ -1,10 +1,11 @@
 PORTNAME=	deforaos-integration
 PORTVERSION=	0.1.2
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	https://ftp.defora.org/pub/DeforaOS/Apps/Desktop/src/Integration/
 DISTNAME=	Integration-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop integration
 WWW=		https://www.defora.org/
 

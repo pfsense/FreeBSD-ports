@@ -1,6 +1,5 @@
 PORTNAME=	gpu-firmware-amd-kmod
-PORTVERSION=	20230210
-PORTREVISION=	1
+PORTVERSION=	20230625
 CATEGORIES=	graphics
 
 MAINTAINER=	x11@FreeBSD.org
@@ -58,19 +57,12 @@ FLAVORS=	aldebaran \
 		vangogh \
 		yellow_carp
 
-cyan_skillfish2_IGNORE_FreeBSD_12=	"Not supported on < 13.1"
-dimgrey_cavefish_IGNORE_FreeBSD_12=	"Not supported on < 13.1"
-green_sardine_IGNORE_FreeBSD_12=	"Not supported on < 13.1"
-sienna_cichlid_IGNORE_FreeBSD_12=	"Not supported on < 13.1"
-navy_flounder_IGNORE_FreeBSD_12=	"Not supported on < 13.1"
-vangogh_IGNORE_FreeBSD_12=		"Not supported on < 13.1"
-
 USES=		kmod uidfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	drm-kmod-firmware
-GH_TAGNAME=	20230210_3
+GH_TAGNAME=	20230625_4
 
 MAKE_ENV=	KMODS="amdgpukmsfw"
 MAKE_ENV+=	AMDGPUKMODS="${FLAVOR}"

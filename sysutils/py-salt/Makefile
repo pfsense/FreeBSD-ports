@@ -1,5 +1,5 @@
 PORTNAME=	salt
-PORTVERSION=	3006.4
+PORTVERSION=	3006.5
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,7 +25,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}looseversion>0:devel/py-looseversion@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR}
 
-USES=		cpe python:3.8-3.10
+USES=		cpe python
 
 CPE_VENDOR=	saltstack
 CPE_PRODUCT=	salt

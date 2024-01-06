@@ -24,7 +24,6 @@
     SUBDIR += bino
     SUBDIR += bitstream
     SUBDIR += blind
-    SUBDIR += bsdbktr_tvtune
     SUBDIR += butt
     SUBDIR += camserv
     SUBDIR += celluloid
@@ -69,12 +68,10 @@
     SUBDIR += flvstreamer
     SUBDIR += flvtool++
     SUBDIR += fswebcam
-    SUBDIR += fxtv
     SUBDIR += gaupol
     SUBDIR += gavl
     SUBDIR += gdialog
     SUBDIR += get_iplayer
-    SUBDIR += gmerlin
     SUBDIR += gmmlib
     SUBDIR += gmp-api
     SUBDIR += gmtk
@@ -241,6 +238,7 @@
     SUBDIR += mpv
     SUBDIR += mpv-mpris
     SUBDIR += mpvpaper
+    SUBDIR += mpvqt
     SUBDIR += msdl
     SUBDIR += msopenh264
     SUBDIR += mswebrtc
@@ -256,7 +254,6 @@
     SUBDIR += nymphcastlib
     SUBDIR += nymphrpc
     SUBDIR += obs-recursion-effect
-    SUBDIR += obs-scrab
     SUBDIR += obs-streamfx
     SUBDIR += obs-studio
     SUBDIR += obs-text-pthread
@@ -266,7 +263,6 @@
     SUBDIR += ogmrip
     SUBDIR += ogmtools
     SUBDIR += olive
-    SUBDIR += omxplayer
     SUBDIR += onevpl
     SUBDIR += openh264
     SUBDIR += openshot
@@ -283,7 +279,6 @@
     SUBDIR += peek
     SUBDIR += phonon
     SUBDIR += phonon-designerplugin
-    SUBDIR += phonon-gstreamer
     SUBDIR += phonon-vlc
     SUBDIR += photofilmstrip
     SUBDIR += pipe-viewer
@@ -296,7 +291,6 @@
     SUBDIR += plexmediaserver-plexpass
     SUBDIR += podcastdl
     SUBDIR += poe
-    SUBDIR += ppm2fli
     SUBDIR += projectx
     SUBDIR += ptx-kmod
     SUBDIR += pwcbsd
@@ -318,6 +312,7 @@
     SUBDIR += py-pretty_midi
     SUBDIR += py-pymediainfo
     SUBDIR += py-pysubs2
+    SUBDIR += py-python-mpv
     SUBDIR += py-soco
     SUBDIR += py-srt
     SUBDIR += py-subliminal
@@ -354,7 +349,6 @@
     SUBDIR += smplayer
     SUBDIR += smplayer-skins
     SUBDIR += smplayer-themes
-    SUBDIR += smtube
     SUBDIR += snapcast
     SUBDIR += spook
     SUBDIR += streamlink

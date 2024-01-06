@@ -99,6 +99,7 @@
     SUBDIR += gnome-utils
     SUBDIR += gnome-weather
     SUBDIR += gnote
+    SUBDIR += gnotime
     SUBDIR += gnustep-wrapper
     SUBDIR += go-for-it
     SUBDIR += goesimage
@@ -140,6 +141,7 @@
     SUBDIR += kdepim-runtime
     SUBDIR += keditbookmarks
     SUBDIR += keep-presence
+    SUBDIR += kf6-kstatusnotifieritem
     SUBDIR += kfind
     SUBDIR += kmail
     SUBDIR += kmail-account-wizard
@@ -212,6 +214,9 @@
     SUBDIR += plasma5-milou
     SUBDIR += plasma5-sddm-kcm
     SUBDIR += plasma5-xdg-desktop-portal-kde
+    SUBDIR += plasma6-milou
+    SUBDIR += plasma6-sddm-kcm
+    SUBDIR += plasma6-xdg-desktop-portal-kde
     SUBDIR += plopfolio
     SUBDIR += preferences
     SUBDIR += presage

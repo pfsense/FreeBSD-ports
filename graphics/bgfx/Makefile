@@ -1,6 +1,6 @@
 PORTNAME=	bgfx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.121.8558-454
+DISTVERSION=	1.124.8664-461
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,14 +17,16 @@ USE_XORG=	ice x11 xext sm
 USE_GITHUB=	yes
 GH_ACCOUNT=	bkaradzic
 GH_PROJECT=	bgfx.cmake
-GH_TUPLE=	bkaradzic:bgfx:8b6a6bd:bgfx/bgfx \
-		bkaradzic:bimg:ec02df8:bimg/bimg \
-		bkaradzic:bx:198cd12:bx/bx
+GH_TUPLE=	bkaradzic:bgfx:03a2c26:bgfx/bgfx \
+		bkaradzic:bimg:678b750:bimg/bimg \
+		bkaradzic:bx:03fd6f4:bx/bx
 
 CMAKE_OFF=	BGFX_BUILD_EXAMPLES BGFX_INSTALL_EXAMPLES \
 		BGFX_CUSTOM_TARGETS
 CMAKE_ARGS=	-DBGFX_LIBRARY_TYPE=SHARED
 CMAKE_TESTING_ON=	BGFX_BUILD_TESTS # 1 test fails, see https://github.com/bkaradzic/bgfx/issues/3123
+
+CXXFLAGS+=	-Dftello64=ftello -Dfseeko64=fseeko
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/share/licences

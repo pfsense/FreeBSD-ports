@@ -1,13 +1,15 @@
 PORTNAME=	ladybird
-PORTVERSION=	g20231120
+PORTVERSION=	g20231216
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/unicode-org/cldr-json/releases/download/${CLDRVERSION}/:cldr \
 		https://www.unicode.org/Public/${UCDVERSION}/ucd/:ucd \
 		https://www.unicode.org/Public/emoji/${UCDVERSION:R}/:emoji \
+		https://www.unicode.org/Public/idna/${UCDVERSION}/:idna \
 		https://curl.se/ca/:cacert
 DISTFILES=	cldr-${CLDRVERSION}-json-modern.zip:cldr \
 		UCD.zip:ucd \
 		emoji-test.txt:emoji \
+		IdnaMappingTable.txt:idna \
 		cacert-${CACERTVERSION}.pem:cacert
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 EXTRACT_ONLY=	${_DISTFILES:M*${GH_ACCOUNT}*}
@@ -22,7 +24,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 # see Userland/Libraries/LibWeb/Loader/ResourceLoader.h
 ONLY_FOR_ARCHS=	aarch64 amd64 i386 riscv64
 ONLY_FOR_ARCHS_REASON=	other architectures not recognised by build system
-BROKEN_FreeBSD_12=	C++ template fuckery
+BROKEN_i386=	Userland/Libraries/LibJIT/GDBElf.cpp:29:24: bit cast source size does not equal destination size
 
 BUILD_DEPENDS=	${LOCALBASE}/share/public_suffix_list/public_suffix_list.dat:dns/public_suffix_list
 LIB_DEPENDS=	libpulse.so:audio/pulseaudio
@@ -32,7 +34,7 @@ USES=		cmake:testing compiler:c++20-lang gl localbase:ldflags python:build qt:6
 USE_GITHUB=	yes
 GH_ACCOUNT=	SerenityOS
 GH_PROJECT=	serenity
-GH_TAGNAME=	cc9de38ea4ccf06024913b78b6283d8e4bc26536
+GH_TAGNAME=	36f0499cc84ccfcb2d1867b683ec732d247a6827
 USE_GL=		egl
 USE_LDCONFIG=	yes
 USE_QT=		base tools:build wayland multimedia
@@ -69,6 +71,7 @@ post-configure:
 	${TAR} -x -C ${CONFIGURE_WRKSRC}/caches/CLDR -f ${_DISTDIR}/cldr-${CLDRVERSION}-json-modern.zip
 	${TAR} -x -C ${CONFIGURE_WRKSRC}/caches/UCD -f ${_DISTDIR}/UCD.zip
 	${CP} ${_DISTDIR}/emoji-test.txt ${CONFIGURE_WRKSRC}/caches/UCD
+	${CP} ${_DISTDIR}/IdnaMappingTable.txt ${CONFIGURE_WRKSRC}/caches/UCD
 	${CP} ${_DISTDIR}/cacert-${CACERTVERSION}.pem ${CONFIGURE_WRKSRC}/Lagom/cacert.pem
 
 post-install:

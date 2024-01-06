@@ -22,10 +22,10 @@ LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 FLAVORS=	native aarch64 aarch64_none_elf amd64 arm_gnueabi arm_none_eabi \
 		avr i386 mingw32 mips mips64 powerpc powerpc64 powerpc64le riscv64 \
-		riscv64_none_elf s390x sparc64 riscv32_unknown_elf
+		riscv64_none_elf s390x riscv32_unknown_elf
 FLAVOR?=	native
 
-USES=		bison:alias compiler:env cpe gmake localbase libtool makeinfo perl5 pkgconfig tar:lz
+USES=		bison:alias compiler:env cpe gmake localbase libtool perl5 pkgconfig tar:lz
 USE_PERL5=	build
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
@@ -50,7 +50,8 @@ LDFLAGS+=	-Wl,--undefined-version
 
 CONFLICTS=	libbfd
 
-OPTIONS_DEFINE=	NLS RELRO
+OPTIONS_DEFINE=	INFO NLS RELRO
+OPTIONS_DEFAULT=	INFO
 OPTIONS_SUB=	yes
 
 RELRO_DESC=	Enable relocation memory corruption mitigation (-z relro) by default
@@ -58,6 +59,8 @@ RELRO_CONFIGURE_ON=	--enable-relro
 RELRO_CONFIGURE_OFF=	--enable-relro=no
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
+INFO_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-no-info
+INFO_USES=	makeinfo
 
 aarch64_COMMENT=	GNU binutils for ${FLAVOR} development
 
@@ -116,7 +119,7 @@ CONFIGURE_ARGS+=	--with-system-zlib \
 			--enable-threads=yes
 # XXX Needed to support gcc10 and earlier:
 CONFIGURE_ARGS+=	--with-isa-spec=2.2
-INFO=		as \
+INFO_INFO=	as \
 		binutils \
 		ctf-spec \
 		gprof \
@@ -128,7 +131,7 @@ INFO=		as \
 .include <bsd.port.pre.mk>
 
 # Actual earliest version may differ slightly
-.if (${ARCH} != sparc64 && ${ARCH} != mips && ${ARCH} != mips64 && ${ARCH} != powerpcspe && ${ARCH} != powerpc && ${ARCH} != powerpc64 && ${ARCH} != riscv64 && !defined(PKGNAMEPREFIX)) || ((${ARCH} == powerpc || ${ARCH} == powerpc64) && ${CHOSEN_COMPILER_TYPE} != gcc && !defined(PKGNAMEPREFIX))
+.if (${ARCH} != mips && ${ARCH} != mips64 && ${ARCH} != powerpcspe && ${ARCH} != powerpc && ${ARCH} != powerpc64 && ${ARCH} != riscv64 && !defined(PKGNAMEPREFIX)) || ((${ARCH} == powerpc || ${ARCH} == powerpc64) && ${CHOSEN_COMPILER_TYPE} != gcc && !defined(PKGNAMEPREFIX))
 CONFIGURE_ARGS+=	--enable-gold --enable-plugins
 CXXFLAGS+=	-Wno-c++11-narrowing
 PLIST_SUB+=	GOLD=""

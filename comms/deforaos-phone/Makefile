@@ -1,11 +1,12 @@
 PORTNAME=	phone
 PORTVERSION=	0.6.2
+PORTREVISION=	1
 CATEGORIES=	comms
 MASTER_SITES=	https://ftp.defora.org/pub/DeforaOS/Apps/Desktop/src/Phone/
 PKGNAMEPREFIX=	deforaos-
 DISTNAME=	Phone-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS telephony application
 WWW=		https://www.defora.org/
 

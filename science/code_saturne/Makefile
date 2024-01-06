@@ -1,6 +1,6 @@
 PORTNAME=	code_saturne
-PORTVERSION=	8.0.2
-PORTREVISION=	1
+PORTVERSION=	8.1.0
+PORTREVISION=	2
 CATEGORIES=	science parallel
 MASTER_SITES=	https://www.code-saturne.org/releases/
 
@@ -24,7 +24,6 @@ LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo	\
 		libmedC.so:french/med
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}	\
 		${MPI4PY}	\
-		pbs-config:sysutils/torque	\
 		xmgrace:math/grace	\
 		bash:shells/bash	\
 		xterm:x11/xterm
@@ -83,6 +82,8 @@ TERM?=		vt100	# Default value needed for tput in jail or tinderbox
 # /libsaturne.so:
 # undefined reference to `__atomic_compare_exchange'
 CONFIGURE_ARGS+=	--disable-openmp
+.else
+CONFIGURE_ARGS+=	--enable-openmp
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
@@ -96,12 +97,16 @@ BUILD_DEPENDS+=	fig2dev:print/fig2dev		\
 BINARY_ALIAS+=	sphinx-build=sphinx-build-${PYTHON_VER}
 ALL_TARGET=	all pdf
 DOCS=		AUTHORS ChangeLog README
+PORTDOCS=	*
 .endif
 
 pre-configure:
 	${REINPLACE_CMD} -e 's|/usr/bin/env python|${PYTHON_CMD}|'	\
 		${WRKSRC}/Makefile.am
 	${REINPLACE_CMD} -e 's|make -s|${GMAKE} -s|' ${WRKSRC}/m4/cs_petsc.m4
+.for cs in config/cs_auto_flags.sh libple/config/ple_auto_flags.sh
+	${REINPLACE_CMD} -e 's|fopenmp=libomp|fopenmp|' ${WRKSRC}/${cs}
+.endfor
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/code_saturne/cs_solver

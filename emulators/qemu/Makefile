@@ -1,5 +1,6 @@
 PORTNAME=	qemu
-PORTVERSION=	8.1.3
+PORTVERSION=	8.2.0
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 DIST_SUBDIR=	qemu/${PORTVERSION}
@@ -231,10 +232,6 @@ MAKE_ARGS+=	ARCH=${ARCH:C/powerpc64.*/ppc64/}
 PLIST_SUB+=	BSDUSER="@comment "
 .else
 PLIST_SUB+=	BSDUSER=""
-.endif
-
-.if ${ARCH} == "sparc64"
-CONFIGURE_ARGS+=	--sparc_cpu=v9
 .endif
 
 PLIST_SUB+=	LINUXBOOT_DMA=""

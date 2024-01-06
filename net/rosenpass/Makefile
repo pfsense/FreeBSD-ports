@@ -1,7 +1,7 @@
 PORTNAME=	rosenpass
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.0
-PORTREVISION=	1
+DISTVERSION=	0.2.1
+PORTREVISION=	2
 CATEGORIES=	net net-vpn security
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -15,10 +15,11 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
 LIB_DEPENDS=	libsodium.so:security/libsodium
 RUN_DEPENDS=	bash:shells/bash \
-		wireguard>0:net/wireguard
+		wireguard-tools>0:net/wireguard-tools
 
 USES=		cargo llvm:build pkgconfig shebangfix
 USE_GITHUB=	yes
+CARGO_INSTALL_PATH=	rosenpass
 
 PLIST_FILES=	bin/rosenpass \
 		bin/rp \

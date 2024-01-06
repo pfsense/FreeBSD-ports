@@ -1,5 +1,6 @@
 PORTNAME=	marble
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	astro education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -9,17 +10,18 @@ WWW=		https://marble.kde.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libquazip1-qt5.so:archivers/quazip@qt5
+LIB_DEPENDS=	libquazip1-qt5.so:archivers/quazip@qt5 \
+		libprotobuf.so:devel/protobuf
 
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext \
 		kde:5 qt:5 shared-mime-info tar:xz xorg
 USE_KDE=	attica auth codecs completion config configwidgets coreaddons \
-		crash doctools i18n jobwidgets kio newstuff package parts \
+		crash doctools i18n jobwidgets kio newstuff package parts phonon \
 		plasma-framework plasma-workspace-wallpapers runner service solid \
 		sonnet textwidgets wallet widgetsaddons windowsystem xmlgui \
 		ecm:build
 USE_QT=		concurrent core dbus declarative designer gui location network opengl \
-		phonon4 printsupport script serialport sql svg webchannel widgets xml \
+		printsupport script serialport sql svg webchannel widgets xml \
 		buildtools:build qmake:build testlib:build
 USE_XORG=	x11
 

@@ -9,7 +9,8 @@ MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Embeds a TCL8 interpreter in the Apache server
 WWW=		https://tcl.apache.org/websh/
 
-BROKEN_FreeBSD_14= Fails at post-build test stage
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC:H:H}/LICENSE
 
 USES=		apache autoreconf gmake tcl:tea
 USE_LDCONFIG=	yes
@@ -28,9 +29,9 @@ SUB_LIST+=	LIBSUF=${LIBSUF} WS_VER=${PORTVERSION}
 SUB_LIST+=	APACHEETCDIR=${APACHEETCDIR} APACHEMODDIR=${APACHEMODDIR}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src/unix
+
 PLIST_SUB+=	LIBSUF=${LIBSUF}
 PLIST_SUB+=	NOMINORVERSION=${TCL_VER:C/8.[345]//:C/^..*/"@comment "/}
-
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
@@ -55,7 +56,7 @@ post-configure:
 	${REINPLACE_CMD} -e 's,tclstub,tcl,'	\
 		-e 's,-DPACKAGE_[^=]*=."[^"]*",,g' ${WRKSRC}/Makefile
 
-post-build test:
+test:
 	${SETENV} HOME=${WRKDIR} ${MAKE_CMD} -C ${WRKSRC} test | ${AWK} '\
 		/Failed/ && $$NF {failed=1}	\
 		END {exit failed}	\

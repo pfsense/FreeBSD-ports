@@ -1,14 +1,16 @@
 PORTNAME=	leftwm
-DISTVERSION=	0.4.2
-PORTREVISION=	2
+DISTVERSION=	0.5.1
 CATEGORIES=	x11-wm
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Tiling window manager for Adventurers
 WWW=		https://leftwm.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	a value of type `Vec<i32>` cannot be built from an iterator over elements of type `i64`
 
 USES=		cargo desktop-file-utils xorg
 USE_GITHUB=	yes
@@ -34,7 +36,7 @@ post-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for l in CHANGELOG CONTRIBUTING.md README.md
+.for l in CHANGELOG.md CONTRIBUTING.md README.md
 	${INSTALL_MAN} ${WRKSRC}/${l} ${STAGEDIR}${DOCSDIR}
 .endfor
 

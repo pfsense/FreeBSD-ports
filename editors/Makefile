@@ -77,6 +77,7 @@
     SUBDIR += kak-lsp
     SUBDIR += kakoune
     SUBDIR += kate
+    SUBDIR += kate-devel
     SUBDIR += kibi
     SUBDIR += kile
     SUBDIR += komodo-edit
@@ -86,6 +87,7 @@
     SUBDIR += lazarus-devel
     SUBDIR += lazarus-qt5
     SUBDIR += lazarus-qt5-devel
+    SUBDIR += lazarus-qt6
     SUBDIR += lazarus-qt6-devel
     SUBDIR += le
     SUBDIR += leafpad
@@ -231,7 +233,6 @@
     SUBDIR += p5-Vimana
     SUBDIR += paredit-mode.el
     SUBDIR += parinfer-rust
-    SUBDIR += pdfedit
     SUBDIR += pico-alpine
     SUBDIR += picpas
     SUBDIR += pluma
@@ -292,8 +293,6 @@
     SUBDIR += wxhexeditor
     SUBDIR += xcoral
     SUBDIR += xed
-    SUBDIR += xi-core
-    SUBDIR += xi-term
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
     SUBDIR += yudit

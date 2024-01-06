@@ -13,7 +13,7 @@ LICENSE=			GPLv3+
 LICENSE_FILE=			${WRKSRC}/COPYING
 
 DEPRECATED=	Reached its EoL on March 21, 2022
-EXPIRATION_DATE=	2023-12-31
+EXPIRATION_DATE=	2024-03-31
 
 IGNORE_NONTHREAD_PYTHON=	needs port lang/python${PYTHON_SUFFIX} to be build with THREADS support
 CONFLICTS_INSTALL?=		samba4* # bin/cifsdd bin/dbwrap_tool bin/dumpmscat bin/findsmb bin/gentest
@@ -708,9 +708,6 @@ post-install: post-install-rm-junk post-install-fix-manpages
 					-type f -print0 | ${XARGS} -0 -n 1 -t ${STRIP_CMD}
 				-${FIND} ${STAGEDIR}${PREFIX}/lib -name '*.so*' \
 					-type f -print0 | ${XARGS} -0 -n 1 -t ${STRIP_CMD}
-.endif
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000 # Work around bug 255626. Remove after 12.4 is EOL.
-				${RM} ${STAGEDIR}${LOCALBASE}/bin/ecp.* ${STAGEDIR}${LOCALBASE}/sbin/ecp.*
 .endif
 
 post-install-FRUIT-off:

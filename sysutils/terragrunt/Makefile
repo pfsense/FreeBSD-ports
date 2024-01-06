@@ -1,6 +1,6 @@
 PORTNAME=	terragrunt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.52.3
+DISTVERSION=	0.54.12
 CATEGORIES=	sysutils
 
 MAINTAINER=	nulldutra@proton.me

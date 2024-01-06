@@ -78,8 +78,8 @@
     SUBDIR += pal
     SUBDIR += phd2
     SUBDIR += phoon
+    SUBDIR += pngphoon
     SUBDIR += pp3
-    SUBDIR += ptiger
     SUBDIR += py-astlib
     SUBDIR += py-astral
     SUBDIR += py-astroML
@@ -126,8 +126,6 @@
     SUBDIR += sunclock
     SUBDIR += sunwait
     SUBDIR += swe
-    SUBDIR += tclgeomap
-    SUBDIR += tkgeomap
     SUBDIR += viking
     SUBDIR += wcslib
     SUBDIR += weather
@@ -138,7 +136,6 @@
     SUBDIR += wmspaceweather
     SUBDIR += wmsun
     SUBDIR += xearth
-    SUBDIR += xeartk
     SUBDIR += xephem
     SUBDIR += xmoontool
     SUBDIR += xphoon

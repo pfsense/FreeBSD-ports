@@ -1,5 +1,5 @@
 PORTNAME=	nss
-PORTVERSION=	3.94
+PORTVERSION=	3.95
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
@@ -65,7 +65,7 @@ MAKE_ENV+=	NSS_DISABLE_ARM32_NEON=1
 .endif
 
 .if ${ARCH} == powerpc64 || ${ARCH} == powerpc
-EXTRA_PATCHES=	${FILESDIR}/${ARCH}${PPC_ABI:tl}-lib_freebl_scripts_gen.sh
+EXTRA_PATCHES=	${FILESDIR}/${ARCH}-lib_freebl_scripts_gen.sh
 USES+=		compiler:c++11-lang # -mcrypto -mvsx
 .if ! ${PORT_OPTIONS:MVSX}
 MAKE_ENV+=	NSS_DISABLE_CRYPTO_VSX=1

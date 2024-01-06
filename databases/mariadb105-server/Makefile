@@ -1,5 +1,5 @@
 PORTNAME?=	mariadb
-PORTVERSION=	10.5.21
+PORTVERSION=	10.5.23
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	\
@@ -23,6 +23,8 @@ WWW=		https://mariadb.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+#EXPIRATION_DATE=	2025-06-01
 
 LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2
 
@@ -208,6 +210,10 @@ CMAKE_ARGS+=		-DPLUGIN_${PLUGIN}=NO
 
 .if ${SSL_DEFAULT} != base && ${PORT_OPTIONS:MGSSAPI_BASE}
 GSSAPI_BASE_IGNORE=	GSSAPI_BASE is not compatible with OpenSSL from ports. Use other GSSAPI options or OpenSSL from base system
+.endif
+
+.if ${SSL_DEFAULT:Mlibressl*}
+CFLAGS+=        -Wno-incompatible-function-pointer-types
 .endif
 
 .if ${ARCH} != amd64 && ${ARCH} != aarch64

@@ -12,7 +12,7 @@
 MESAVERSION=	${MESABASEVERSION}${MESASUBVERSION:C/^(.)/.\1/}
 MESADISTVERSION=${MESABASEVERSION}${MESASUBVERSION:C/^(.)/-\1/}
 
-MESABASEVERSION=	23.1.8
+MESABASEVERSION=	23.3.2
 # if there is a subversion, don't include the '-' between 7.11-rc2.
 MESASUBVERSION=
 
@@ -24,7 +24,6 @@ MASTER_SITES=	https://mesa.freedesktop.org/archive/ \
 DISTFILES=	mesa-${MESADISTVERSION}${EXTRACT_SUFX}
 
 PATCH_SITES=	https://gitlab.freedesktop.org/mesa/mesa/-/commit/
-PATCHFILES+=	9ba416cdc67073cdda9a73fe9d37304b82bdd526.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/issues/8671
 PATCHFILES+=	4a253aae7ca437201d2a31d2a11a1a5434fe41f1.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26284
 
 MAINTAINER=	x11@FreeBSD.org
@@ -82,6 +81,14 @@ BINARY_ALIAS+=	python3=${PYTHON_VERSION}
 
 CONFIGURE_ENV+=	LLVM_CONFIG=${LLVM_CONFIG}
 
+# Deal with unclean env if the user have elfutils installed
+# and build the port directly without poudriere
+.if exists(${LOCALBASE}/include/libelf.h)
+LIB_DEPENDS+=	libelf.so:devel/elfutils
+MESON_ARGS+=	-Dlibelf=enabled
+.else
+MESON_ARGS+=	-Dlibelf=disabled
+.endif
 
 # Some symbols in mesa's linker version scripts are not always defined,
 # depending on configuration options. Suppress errors with lld >= 17 due to
@@ -90,5 +97,4 @@ LDFLAGS+=	-Wl,--undefined-version
 
 LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/llvm${LLVM_VERSION}/lib
 MESON_ARGS+=	-Dllvm=enabled \
-		-Dlibunwind=disabled \
-		-Dlibelf=disabled
+		-Dlibunwind=disabled

@@ -1,6 +1,6 @@
 PORTNAME?=	mariadb
 PORTVERSION=	10.11.6
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
 		https://mirror.one.com/${SITESDIR}/ \
@@ -22,6 +22,8 @@ WWW=		https://mariadb.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+#EXPIRATION_DATE=	2028-02-01
 
 LIB_DEPENDS+=	libfmt.so:devel/libfmt \
 		liblz4.so:archivers/liblz4 \

@@ -258,6 +258,7 @@
     SUBDIR += keyprint
     SUBDIR += keysmith
     SUBDIR += kf5-kdesu
+    SUBDIR += kf6-kdesu
     SUBDIR += kgpg
     SUBDIR += kickpass
     SUBDIR += klee
@@ -346,6 +347,10 @@
     SUBDIR += logcheck
     SUBDIR += lua-argon2
     SUBDIR += lua-bcrypt
+    SUBDIR += lua-resty-hmac
+    SUBDIR += lua-resty-jwt
+    SUBDIR += lua-resty-openidc
+    SUBDIR += lua-resty-openssl
     SUBDIR += luasec
     SUBDIR += lxqt-openssh-askpass
     SUBDIR += lxqt-sudo
@@ -492,6 +497,7 @@
     SUBDIR += p5-Bytes-Random-Secure
     SUBDIR += p5-Bytes-Random-Secure-Tiny
     SUBDIR += p5-CACertOrg-CA
+    SUBDIR += p5-CPAN-Audit
     SUBDIR += p5-CSP
     SUBDIR += p5-Cisco-Hash
     SUBDIR += p5-Crypt-Anubis
@@ -796,8 +802,6 @@
     SUBDIR += pgpdump
     SUBDIR += pgpgpg
     SUBDIR += pgpin
-    SUBDIR += php80-filter
-    SUBDIR += php80-sodium
     SUBDIR += php81-filter
     SUBDIR += php81-sodium
     SUBDIR += php82-filter
@@ -827,6 +831,9 @@
     SUBDIR += plasma5-kscreenlocker
     SUBDIR += plasma5-ksshaskpass
     SUBDIR += plasma5-kwallet-pam
+    SUBDIR += plasma6-kscreenlocker
+    SUBDIR += plasma6-ksshaskpass
+    SUBDIR += plasma6-kwallet-pam
     SUBDIR += please
     SUBDIR += poly1305aes
     SUBDIR += portacl-rc
@@ -1001,6 +1008,7 @@
     SUBDIR += py-pyspnego
     SUBDIR += py-python-axolotl
     SUBDIR += py-python-axolotl-curve25519
+    SUBDIR += py-python-cas
     SUBDIR += py-python-gnupg
     SUBDIR += py-python-gvm
     SUBDIR += py-python-jose
@@ -1077,6 +1085,7 @@
     SUBDIR += rndpassw
     SUBDIR += rnp
     SUBDIR += rotate
+    SUBDIR += rpm-sequoia
     SUBDIR += rubygem-acme-client
     SUBDIR += rubygem-aes_key_wrap
     SUBDIR += rubygem-airbrussh
@@ -1091,9 +1100,7 @@
     SUBDIR += rubygem-declarative_policy
     SUBDIR += rubygem-devise-two-factor
     SUBDIR += rubygem-devise-two-factor-rails5
-    SUBDIR += rubygem-devise-two-factor-rails61
     SUBDIR += rubygem-devise-two-factor-rails70
-    SUBDIR += rubygem-devise-two-factor40-rails70
     SUBDIR += rubygem-devise-two-factor41-rails70
     SUBDIR += rubygem-devise_pam_authenticatable2
     SUBDIR += rubygem-devise_pam_authenticatable2-rails61
@@ -1316,7 +1323,6 @@
     SUBDIR += tls-check
     SUBDIR += tlsc
     SUBDIR += tor
-    SUBDIR += tor-devel
     SUBDIR += totp-cli
     SUBDIR += tpm-quote-tools
     SUBDIR += tpm-tools

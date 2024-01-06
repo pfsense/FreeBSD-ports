@@ -3,7 +3,6 @@
     SUBDIR += beebeep
     SUBDIR += biboumi
     SUBDIR += cawbird
-    SUBDIR += centerim
     SUBDIR += chatterino2
     SUBDIR += climm
     SUBDIR += coccinella
@@ -22,7 +21,6 @@
     SUBDIR += fractal
     SUBDIR += freetalk
     SUBDIR += gajim
-    SUBDIR += gitterdone
     SUBDIR += gloox
     SUBDIR += gomuks
     SUBDIR += gotktrix
@@ -33,7 +31,6 @@
     SUBDIR += icqlib
     SUBDIR += jabberd
     SUBDIR += jarl
-    SUBDIR += jggtrans
     SUBDIR += jicofo
     SUBDIR += jitsi-meet-full
     SUBDIR += jitsi-prosody-plugins
@@ -45,7 +42,7 @@
     SUBDIR += kaidan
     SUBDIR += kopete
     SUBDIR += libaccounts-glib
-    SUBDIR += libaccounts-qt5
+    SUBDIR += libaccounts-qt
     SUBDIR += libmesode
     SUBDIR += libnice
     SUBDIR += libnice-gst1
@@ -134,7 +131,6 @@
     SUBDIR += ruqola
     SUBDIR += sayaka
     SUBDIR += scli
-    SUBDIR += scudcloud
     SUBDIR += sendxmpp
     SUBDIR += signal-cli
     SUBDIR += signal-desktop
@@ -145,7 +141,7 @@
     SUBDIR += sshout
     SUBDIR += talkatu
     SUBDIR += tdlib
-    SUBDIR += teamwords
+    SUBDIR += tdlib-purple
     SUBDIR += telegram-cli
     SUBDIR += telegram-desktop
     SUBDIR += telegram-purple

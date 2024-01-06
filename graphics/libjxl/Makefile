@@ -1,8 +1,10 @@
 PORTNAME=	libjxl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.2
-PORTREVISION=	3
+DISTVERSION=	0.9.0
 CATEGORIES=	graphics
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	a0cb9b7c4249.patch:-p1 # https://github.com/libjxl/libjxl/pull/3085
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	JPEG XL reference encoder/decoder
@@ -19,9 +21,9 @@ USES=		cmake:testing compiler:c++11-lib cpe localbase:ldflags pkgconfig shared-m
 CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-GH_TUPLE=	jbeich:skcms:b25b07b:skcms/third_party/skcms \
-		libjxl:testdata:d6168ff:testdata/testdata \
-		webmproject:sjpeg:868ab55:sjpeg/third_party/sjpeg \
+GH_TUPLE=	jbeich:skcms:42030a7:skcms/third_party/skcms \
+		libjxl:testdata:6c94363:testdata/testdata \
+		webmproject:sjpeg:e5ab130:sjpeg/third_party/sjpeg \
 		${NULL}
 CMAKE_ON=	JPEGXL_ENABLE_PLUGINS
 CMAKE_OFF=	${BENCHMARK FUZZERS TCMALLOC:L:S/^/JPEGXL_ENABLE_/}
@@ -40,6 +42,7 @@ GIF_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_GIF
 
 JPEG_USES=		jpeg
 JPEG_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_JPEG
+JPEG_CMAKE_BOOL_OFF+=	JPEGXL_ENABLE_JPEGLI_LIBJPEG # XXX WITH_JPEG8, libmap.conf(5)
 
 LTO_CMAKE_BOOL=		CMAKE_INTERPROCEDURAL_OPTIMIZATION
 LTO_CMAKE_ON=		-DCMAKE_POLICY_DEFAULT_CMP0069:STRING=NEW

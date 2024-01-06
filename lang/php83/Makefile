@@ -1,5 +1,6 @@
 PORTNAME=	php83
-DISTVERSION=	8.3.0
+DISTVERSION=	8.3.1
+PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
 DISTNAME=	php-${DISTVERSION}
@@ -29,8 +30,7 @@ CONFIGURE_ARGS+=	\
 		--with-layout=GNU \
 		--with-libxml \
 		--with-openssl \
-		--with-password-argon2=${LOCALBASE} \
-		--with-external-pcre=${LOCALBASE}
+		--with-password-argon2=${LOCALBASE}
 
 USES+=		autoreconf:build ssl
 USE_GNOME=	libxml2
@@ -40,8 +40,8 @@ LDFLAGS+=	-L${OPENSSLLIB} -lcrypto -lssl
 LDFLAGS_i386=	-Wl,-z,notext
 
 OPTIONS_DEFINE+=CGI CLI DEBUG DTRACE EMBED FPM IPV6 LINKTHR \
-				MYSQLND NOASLR PHPDBG ZTS
-OPTIONS_DEFAULT=	CGI CLI DTRACE EMBED FPM LINKTHR MYSQLND
+				MYSQLND NOASLR PCRE PHPDBG ZTS
+OPTIONS_DEFAULT=	CGI CLI DTRACE EMBED FPM LINKTHR MYSQLND PCRE
 OPTIONS_EXCLUDE_DragonFly=	DTRACE
 # ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
 OPTIONS_EXCLUDE_aarch64=	DTRACE
@@ -51,10 +51,7 @@ OPTIONS_EXCLUDE_armv7=	DTRACE
 # Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
 OPTIONS_EXCLUDE_mips=	DTRACE FPM
 OPTIONS_EXCLUDE_mips64=	DTRACE FPM
-OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
-OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
 OPTIONS_EXCLUDE_riscv64=	DTRACE
-OPTIONS_EXCLUDE_sparc64=	DTRACE
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=			yes
 
@@ -64,6 +61,7 @@ EMBED_DESC=	Build embedded library
 FPM_DESC=	Build FPM version
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 MYSQLND_DESC=	Build with MySQL Native Driver
+PCRE_DESC=	Use system pcre instead of bundled one
 PHPDBG_DESC=	Interactive PHP debugger
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
@@ -84,6 +82,10 @@ IPV6_CONFIGURE_OFF=	--disable-ipv6
 LINKTHR_LIBS=		-lpthread
 NOASLR_USES=	elfctl
 MYSQLND_CONFIGURE_ON=	--enable-mysqlnd
+PCRE_BUILD_DEPENDS=	re2c>0:devel/re2c
+PCRE_CONFIGURE_ON=	--with-external-pcre=${LOCALBASE}
+PCRE_PLIST_SUB=	BUNDLED_PCRE="@comment "
+PCRE_PLIST_SUB_OFF=	BUNDLED_PCRE=""
 PHPDBG_CONFIGURE_ON=	--enable-phpdbg
 PHPDBG_VARS=		PHP_SAPI+=phpdbg
 ZTS_CONFIGURE_ON=	--enable-zts
@@ -98,6 +100,7 @@ PKGMESSAGE=		${PKGDIR}/pkg-message.mod
 MODULENAME=		libphp
 SHORTMODNAME=		php
 WARNING=		"!!! If you have a threaded Apache, you must build ${PHP_PORT} with ZTS support to enable thread-safety in extensions !!!"
+WARNING+=	"!!! Consider switching to php-fpm and mod_proxy_fcgi as per Apache httpd recommendations !!!"
 .endif
 
 .include <bsd.port.options.mk>
@@ -193,7 +196,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	83
-IGNORE_WITH_PHP=	80 81 82
+IGNORE_WITH_PHP=	81 82
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}

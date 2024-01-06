@@ -1,7 +1,7 @@
 PORTNAME=	mozc
 PORTVERSION=	2.23.2815.102.01
 DISTVERSIONPREFIX=	v
-PORTREVISION?=	14
+PORTREVISION?=	15
 CATEGORIES=	japanese
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -14,19 +14,20 @@ LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
 		libzinnia.so:japanese/zinnia
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-BROKEN_FreeBSD_12_powerpc64=	fails to install: gyp: Call to 'which clang' returned exit status 1 while in client/client.gyp
 BROKEN_FreeBSD_13_powerpc64=	fails to build: ERROR: ninja -v -C out_linux/Release mozc_server: Error code 1
 BROKEN_powerpc=		fails to compile: segfault
-BROKEN_sparc64=		fails to compile: segfault
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd
 GH_TUPLE=	hiroyuki-komatsu:japanese-usage-dictionary:e5b3425:udic
 
-USES=		compiler:c++11-lang gmake ninja:build pkgconfig \
+USES=		compiler:c++17-lang gmake ninja:build pkgconfig \
 		python:build shebangfix tar:bzip2
 SHEBANG_FILES=	src/build_mozc.py
 BUILD_WRKSRC=	${WRKSRC}/src
+
+LDFLAGS+=	-labsl_spinlock_wait
+USE_CXXSTD=	c++17
 
 BUILD_MOZC_LIST?=	mozc_server
 

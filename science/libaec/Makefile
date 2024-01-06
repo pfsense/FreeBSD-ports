@@ -12,11 +12,9 @@ WWW=		https://gitlab.dkrz.de/k202009/libaec \
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake
+USES=		cmake:testing
 
 CMAKE_OFF=	AEC_FUZZING
 USE_LDCONFIG=	yes
-
-CONFLICTS_INSTALL=	hdf-szip
 
 .include <bsd.port.mk>

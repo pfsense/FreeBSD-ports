@@ -1,6 +1,6 @@
 PORTNAME=	exult
 DISTVERSION?=	1.8
-PORTREVISION?=	4
+PORTREVISION?=	5
 PORTEPOCH=	1
 CATEGORIES=	games
 
@@ -78,5 +78,13 @@ post-install-DOCS-on:
 .for i in FAQ NEWS README
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
+
+.include <bsd.port.options.mk>
+
+# Silence cast warnings from GTK callbacks in clang >=16
+# https://github.com/exult/exult/issues/416
+.if !defined(PKGNAMESUFFIX) && ( ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )))
+CFLAGS+=	-Wno-cast-function-type-strict
+.endif
 
 .include <bsd.port.mk>

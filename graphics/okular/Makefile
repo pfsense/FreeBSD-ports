@@ -1,5 +1,6 @@
 PORTNAME=	okular
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	graphics kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -26,11 +27,11 @@ USES=		cmake compiler:c++11-lib desktop-file-utils \
 USE_KDE=	activities archive auth bookmarks codecs completion config \
 		configwidgets coreaddons crash dbusaddons emoticons i18n \
 		iconthemes init itemmodels itemviews jobwidgets js \
-		kdelibs4support khtml kio libkexiv2 parts pty \
+		kdelibs4support khtml kio libkexiv2 parts phonon pty \
 		service solid sonnet textwidgets threadweaver wallet \
 		widgetsaddons windowsystem xmlgui \
 		ecm:build
-USE_QT=		concurrent core dbus declarative gui network phonon4 printsupport speech \
+USE_QT=		concurrent core dbus declarative gui network printsupport speech \
 		svg widgets xml \
 		buildtools:build qmake:build testlib:build
 USE_XORG=	x11

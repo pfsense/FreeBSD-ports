@@ -1,7 +1,7 @@
 PORTNAME=	vector
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.0
-PORTREVISION=	28
+PORTREVISION=	29
 CATEGORIES=	sysutils
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://vector.dev
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_12_powerpc64=	fails to link: /usr/local/bin/ld: cannot find -lc++
+BROKEN_FreeBSD_13=	error: could not compile `num-bigint` (lib) due to 4 previous errors
 
 BUILD_DEPENDS=	protoc:devel/protobuf
 LIB_DEPENDS=	libonig.so:devel/oniguruma \

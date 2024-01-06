@@ -1,6 +1,6 @@
 PORTNAME=	aster
 DISTVERSION=	${ASTER_DISTVERSION}
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	french cad
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -79,10 +79,6 @@ INTERACTIVE_SCRIPTS=	check_compilers.py setup.py
 
 .include "${.CURDIR}/../../french/aster/bsd.aster.mk"
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300068
-BROKEN=	a larger value of ARG_MAX is needed for Code_Aster, please upgrade your system
-.endif
 
 .if ${ARCH} == "i386"
 FLAGARCH=	-DP_LINUX -DLINUX

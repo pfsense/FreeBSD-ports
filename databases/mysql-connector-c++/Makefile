@@ -1,5 +1,6 @@
 PORTNAME=	mysql-connector-c++
 PORTVERSION=	8.0.33
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/Connector-C++
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -17,6 +18,7 @@ LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libzstd.so:archivers/zstd
 
 USES=		cmake:noninja compiler:c++17-lang cpe gmake mysql ssl
+IGNORE_WITH_MYSQL=	105m 106m 1011m
 CPE_VENDOR=	oracle
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
