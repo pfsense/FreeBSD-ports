@@ -78,5 +78,4 @@ post-patch:
 	@${REINPLACE_CMD} '/datadir/s/doc/examples/' \
 		${WRKSRC}/docs/meson.build
 
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots016/override.mk"
 .include <bsd.port.mk>

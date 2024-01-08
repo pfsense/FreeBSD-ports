@@ -45,8 +45,7 @@ GO_TARGET=	./cmd/auth/cookieauth \
 		./cmd/ssadump \
 		./cmd/stress \
 		./cmd/stringer \
-		./cmd/toolstash \
-		./internal/cmd/deadcode
+		./cmd/toolstash
 
 CONFLICTS_INSTALL=	easygit rubygem-bundler
 

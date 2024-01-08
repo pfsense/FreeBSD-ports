@@ -2193,6 +2193,8 @@
 %%QT_EXAMPLEDIR%%/linguist/arrowpad/arrowpad.cpp
 %%QT_EXAMPLEDIR%%/linguist/arrowpad/arrowpad.h
 %%QT_EXAMPLEDIR%%/linguist/arrowpad/arrowpad.pro
+%%QT_EXAMPLEDIR%%/linguist/arrowpad/arrowpad_fr.ts
+%%QT_EXAMPLEDIR%%/linguist/arrowpad/arrowpad_nl.ts
 %%QT_EXAMPLEDIR%%/linguist/arrowpad/main.cpp
 %%QT_EXAMPLEDIR%%/linguist/arrowpad/mainwindow.cpp
 %%QT_EXAMPLEDIR%%/linguist/arrowpad/mainwindow.h
@@ -2217,6 +2219,7 @@
 %%QT_EXAMPLEDIR%%/linguist/doc/src/trollprint.qdoc
 %%QT_EXAMPLEDIR%%/linguist/hellotr/CMakeLists.txt
 %%QT_EXAMPLEDIR%%/linguist/hellotr/hellotr.pro
+%%QT_EXAMPLEDIR%%/linguist/hellotr/hellotr_la.ts
 %%QT_EXAMPLEDIR%%/linguist/hellotr/main.cpp
 %%QT_EXAMPLEDIR%%/linguist/i18n/CMakeLists.txt
 %%QT_EXAMPLEDIR%%/linguist/i18n/i18n.pro

@@ -44,7 +44,6 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libcurl.so:ftp/curl \
 		libhidapi.so:comms/hidapi \
 		libxkbcommon.so:x11/libxkbcommon
-BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 
 USES=		cmake compiler:c++17-lang desktop-file-utils elfctl gl iconv \
 		pkgconfig qmake qt:6 sdl xorg

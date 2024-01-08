@@ -10,7 +10,7 @@ WWW=		https://wiki.gnome.org/Projects/libshumate
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+LIB_DEPENDS=	libsoup-3.0.so:devel/libsoup3 \
 		libgraphene-1.0.so:graphics/graphene
 
 USES=		gettext gnome meson pkgconfig sqlite tar:xz vala:build

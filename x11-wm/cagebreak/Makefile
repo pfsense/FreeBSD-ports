@@ -48,5 +48,4 @@ post-patch:
 	@${REINPLACE_CMD} -e '/install.*licenses/d' \
 		${WRKSRC}/meson.build
 
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots016/override.mk"
 .include <bsd.port.mk>

@@ -42,5 +42,4 @@ MANPAGES_BUILD_DEPENDS=	rst2man:textproc/py-docutils
 MANPAGES_MESON_TRUE=	man
 MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
 
-.include "${.CURDIR:H:H}/x11-toolkits/wlroots016/override.mk"
 .include <bsd.port.mk>

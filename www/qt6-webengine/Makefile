@@ -60,7 +60,6 @@ LIB_DEPENDS+=	libavcodec.so:multimedia/ffmpeg \
 		libpng.so:graphics/png \
 		libre2.so:devel/re2 \
 		libsnappy.so:archivers/snappy \
-		libtiff.so:graphics/tiff \
 		libvpx.so:multimedia/libvpx \
 		libwebp.so:graphics/webp
 

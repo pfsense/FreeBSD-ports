@@ -54,9 +54,5 @@ pre-configure:
 	${REINPLACE_CMD} -e 's|share/doc/pastix/examples|share/examples/pastix|' \
 		${WRKSRC}/${ex}/CMakeLists.txt
 .endfor
-.for ex in ${EX2FIX2}
-	${REINPLACE_CMD} -e 's|share/doc/pastix/examples|share/examples/pastix|' \
-		${WRKSRC}/${ex}/CMakeLists.txt
-.endfor
 
 .include <bsd.port.mk>

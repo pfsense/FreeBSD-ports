@@ -18,7 +18,6 @@ PHP_VER=	83
 CONFLICTS_INSTALL?=	php[0-9][0-9]${PKGNAMESUFFIX}
 
 .if !defined(PKGNAMESUFFIX)
-BUILD_DEPENDS=	re2c>0:devel/re2c
 LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libpcre2-8.so:devel/pcre2
 

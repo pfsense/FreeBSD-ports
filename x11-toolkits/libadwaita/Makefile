@@ -3,10 +3,6 @@ PORTVERSION=	1.4.2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 
-PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
-PATCHFILES=	c579fbe0c10d2b761cfe1fe4e825aaa19fe81c77.patch:-p1 \
-		3e3967d5f69180644519936991cad10136e84ca9.patch:-p1
-
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Building blocks for modern GNOME applications
 WWW=		https://www.gtk.org/

@@ -26,7 +26,7 @@ USE_QT=		3d base charts connectivity datavis3d declarative doc graphs \
 
 CMAKE_ARGS=	-DPYTHON_EXECUTABLE=${PYTHON_CMD}
 
-WRKSRC=		${WRKDIR}/pyside-setup-everywhere-src-${PYSIDE6_VERSION:R}/sources/pyside6
+WRKSRC=		${WRKDIR}/pyside-setup-everywhere-src-${PYSIDE6_VERSION}/sources/pyside6
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 .include <bsd.port.pre.mk>

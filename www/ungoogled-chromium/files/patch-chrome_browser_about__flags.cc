@@ -45,7 +45,7 @@
  const FeatureEntry::FeatureParam kShortcutBoostSearchAndUrl1414[] = {
      {"ShortcutBoostSearchScore", "1414"},
      {"ShortcutBoostUrlScore", "1414"}};
-@@ -5321,13 +5321,13 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -5304,13 +5304,13 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(features::kWebShare)},
  #endif  // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  
@@ -61,7 +61,7 @@
      {"skip-undecryptable-passwords",
       flag_descriptions::kSkipUndecryptablePasswordsName,
       flag_descriptions::kSkipUndecryptablePasswordsDescription,
-@@ -5638,7 +5638,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -5621,7 +5621,7 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(feed::kFeedSportsCard)},
  #endif  // BUILDFLAG(IS_ANDROID)
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
@@ -88,7 +88,7 @@
      {"enable-async-dns", flag_descriptions::kAsyncDnsName,
       flag_descriptions::kAsyncDnsDescription, kOsWin | kOsLinux,
       FEATURE_VALUE_TYPE(features::kAsyncDns)},
-@@ -8152,7 +8152,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -8131,7 +8131,7 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(supervised_user::kEnableProtoApiForClassifyUrl)},
  #endif  // BUILDFLAG(ENABLE_SUPERVISED_USERS)
  

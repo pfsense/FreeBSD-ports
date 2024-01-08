@@ -12,6 +12,7 @@ PATCHFILES=	b8dc0eeb2fb6c49ae0ac9cbc86bd20c0bf3bdee7.patch:-p1 # https://github.
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	GUI toolkit (wxWidgets) with ${FLAVOR:S/k/&+/:tu} bindings
+WWW=		https://www.wxwidgets.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/gpl.txt

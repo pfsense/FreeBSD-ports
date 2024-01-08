@@ -28,10 +28,6 @@ GO_TARGET+=	./cmd/$f:${PREFIX}/dendrite/bin/$f
 
 GO_MODULE=	github.com/matrix-org/dendrite
 
-post-extract:
-	@${MKDIR} ${WRKSRC}/vendor/github.com/golang
-	@${RLN} ${WRKSRC_fsnotify_fsnotify} ${WRKSRC}/vendor/github.com/golang/mock
-
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/dendrite-sample.yaml ${STAGEDIR}${ETCDIR}/${PORTNAME}.yaml.sample

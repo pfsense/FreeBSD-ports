@@ -38,7 +38,6 @@ man/man8/poudriere.8.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/Caddyfile.sample
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/httpd.conf.sample
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/nginx.conf.sample
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/Caddyfile.sample
 %%DATADIR%%/MANIFESTS
 %%DATADIR%%/api.sh
 %%DATADIR%%/awk/dependency_loop.awk

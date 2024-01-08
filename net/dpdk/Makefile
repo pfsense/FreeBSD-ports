@@ -11,9 +11,6 @@ WWW=		https://dpdk.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license/README
 
-DEPRECATED=	End of life since December 2022 upstream, consider migrating to net/dpdk-22.11
-EXPIRATION_DATE=2023-12-31
-
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	only tested on 64-bit x86 hardware
 

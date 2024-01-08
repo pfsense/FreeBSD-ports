@@ -23,11 +23,7 @@ GH_TAGNAME=	e439318
 USE_RC_SUBR=	miniupnpd
 
 HAS_CONFIGURE=	yes
-CPE_VENDOR=	miniupnp_project
-PLIST_FILES=	etc/miniupnpd.conf.sample sbin/miniupnpd \
-		man/man8/miniupnpd.8.gz
-MAKE_JOBS_UNSAFE=yes
-USE_RC_SUBR=	miniupnpd
+MAKE_JOBS_UNSAFE=	yes
 
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB} -lpfctl
@@ -48,7 +44,6 @@ LEASEFILE_DESC=			Enable lease file
 UPNP_IGDV2_DESC=		Build an IGDv2 instead of an IGDv1
 UPNP_STRICT_DESC=		More strict UPnP specification compliance
 
-PF_FILTER_RULES_CONFIGURE_ON=	--firewall=pf
 CHECK_PORTINUSE_CONFIGURE_ON=	--portinuse
 IPV6_CONFIGURE_ON=		--ipv6
 LEASEFILE_CONFIGURE_ON=		--leasefile
@@ -56,7 +51,7 @@ UPNP_IGDV2_CONFIGURE_ON=	--igd2
 UPNP_STRICT_CONFIGURE_ON=	--strict
 
 post-patch:
-	${REINPLACE_CMD} -e 's|\(-lssl -lcrypto\)|$$(LDFLAGS) \1|g' \
-		${WRKSRC}/Makefile.bsd
+	@${REINPLACE_CMD} -e 's|\(-lssl -lcrypto\)|$$(LDFLAGS) \1|g' \
+	${WRKSRC}/Makefile.bsd
 
 .include <bsd.port.mk>
