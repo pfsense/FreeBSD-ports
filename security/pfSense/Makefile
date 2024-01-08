@@ -111,7 +111,7 @@ RUN_DEPENDS+=	dmidecode>=0:sysutils/dmidecode \
 		wrapalixresetbutton>=0:sysutils/wrapalixresetbutton \
 		beep>=0:audio/beep \
 		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
-		devcpu-data>=0:sysutils/devcpu-data
+		cpu-microcode>=0:sysutils/cpu-microcode
 .endif
 
 do-install:
