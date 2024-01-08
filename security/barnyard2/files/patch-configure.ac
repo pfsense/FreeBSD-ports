@@ -1,5 +1,5 @@
---- configure.in.orig	2013-05-27 04:04:34 UTC
-+++ configure.in
+--- configure.ac.orig	2024-01-05 12:58:33 -0600
++++ configure.ac
 @@ -428,6 +428,16 @@ AC_DEFUN([FAIL_MESSAGE],[
     exit 1
  ])
