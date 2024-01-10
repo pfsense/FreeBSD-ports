@@ -458,20 +458,29 @@ $acme_domain_validation_method['dns_cloudns'] = array('name' => "DNS-ClouDNS",
 	));
 $acme_domain_validation_method['dns_cf'] = array('name' => "DNS-Cloudflare",
 	'fields' => array(
-		'CF_Key' => array('name' => "cf_key", 'columnheader' => "Key", 'type' => "textbox",
-			'description' => "Cloudflare API Key"
+		'CF_Token_Header' => array('name' => "cf_token_header", 'type' => "fixedtext",
+			'text' => "<b>Token Authentication</b> (<a href=\"https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_cf\">details</a>)<br/>Newer authentication method that uses a scoped API token. Use of this authentication method is preferred. There is no need to fill in the Global API key section if this section is used.<br/><br/>Recommended configuration: Provide a token with Zone.DNS:Edit permission and provide the Zone ID. Leave all other fields blank."
+		),
+		'CF_Token' => array('name' => "cf_token", 'columnheader' => "Token", 'type' => "textbox",
+			'description' => "Create a token on the <a href=\"https://dash.cloudflare.com/profile/api-tokens\">API Tokens page</a>. Required permissions are described below."
+		),
+		'CF_Account_ID' => array('name' => "cf_account_id", 'columnheader' => "Account ID", 'type' => "textbox",
+			'description' => "Only required if cert covers multiple zones. Token needs Zone.Zone:Read and Zone.DNS:Edit permission if this ID is provided. Find this value by navigating to <a href=\"https://dash.cloudflare.com/\">Cloudflare Dashboard</a> &rarr; select a zone &rarr; Overview."
+		),
+		'CF_Zone_ID' => array('name' => "cf_zone_id", 'columnheader' => "Zone ID", 'type' => "textbox",
+			'description' => "Use instead of Account ID if cert only covers a single zone. Token only needs Zone.DNS:Edit permission if this ID is provided. Find this value by navigating to <a href=\"https://dash.cloudflare.com/\">Cloudflare Dashboard</a> &rarr; select a zone &rarr; Overview."
+		),
+		'CF_API_Header' => array('name' => "cf_api_header", 'type' => "fixedtext",
+			'text' => "<b>Global API Key Authentication</b><br/>Older authentication method that uses a global API key. Use of the token-based authentication above is preferred. There is no need to fill in the above section if this section is used."
+		),
+		'CF_Key' => array('name' => "cf_key", 'columnheader' => "Global API Key", 'type' => "textbox",
+			'description' => "Get the global API key on the <a href=\"https://dash.cloudflare.com/profile/api-tokens\">API Tokens page</a>."
 		),
 		'CF_Email' => array('name' => "cf_email", 'columnheader' => "Email", 'type' => "textbox",
 			'description' => "Cloudflare API Email Address"
 		),
-		'CF_Token' => array('name' => "cf_token", 'columnheader' => "Token", 'type' => "textbox",
-			'description' => "Cloudflare API Token"
-		),
-		'CF_Account_ID' => array('name' => "cf_account_id", 'columnheader' => "Account ID", 'type' => "textbox",
-			'description' => "Cloudflare API Account ID"
-		),
-		'CF_Zone_ID' => array('name' => "cf_zone_id", 'columnheader' => "Zone ID", 'type' => "textbox",
-			'description' => "Cloudflare API Zone ID"
+		'CF_DNS_Alias_Header' => array('name' => "cf_dns_alias_header", 'type' => "fixedtext",
+			'text' => "<b>DNS Alias</b>"
 		),
 	));
 $acme_domain_validation_method['dns_conoha'] = array('name' => "DNS-Conoha",
