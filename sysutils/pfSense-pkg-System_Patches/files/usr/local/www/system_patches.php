@@ -27,6 +27,7 @@
 ##|-PRIV
 
 require("guiconfig.inc");
+require_once("system.inc");
 require_once("functions.inc");
 require_once("itemid.inc");
 require_once("patches.inc");
@@ -38,6 +39,7 @@ $a_patches = &$config['installedpackages']['patches']['item'];
 $savemsgtype = 'success';
 
 list($thisversion, $thisversiontype) = explode('-', $g['product_version'], 2);
+$platform = system_identify_specific_platform();
 
 /* if a custom message has been passed along, lets process it */
 if ($_POST['savemsg']) {
@@ -66,7 +68,9 @@ if (in_array($_POST['all'], ['apply', 'revert']) &&
 
 	foreach ($patchlist as $thispatch) {
 		if (($_POST['type'] == 'recommended') &&
-		    !in_array($thisversion, $thispatch['versions'])) {
+		    (!in_array($thisversion, $thispatch['versions'])) ||
+		    (array_key_exists('models', $thispatch) &&
+		     !in_array($platform['name'], $thispatch['models']))) {
 			/* This patch is not relevant to the running version, skip it */
 			continue;
 		}
@@ -434,7 +438,9 @@ $num_rpatches=0;
 $rec_can_apply=0;
 $rec_can_revert=0;
 foreach ($recommended_patches as $rpatch):
-	if (!in_array($thisversion, $rpatch['versions'])) {
+	if ((!in_array($thisversion, $rpatch['versions'])) ||
+	    (array_key_exists('models', $rpatch) &&
+	     !in_array($platform['name'], $rpatch['models']))) {
 		/* This patch is not relevant to the running version, skip it */
 		continue;
 	} else {
