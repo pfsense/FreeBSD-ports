@@ -26,6 +26,18 @@ global $recommended_patches;
  */
 $recommended_patches = [
 [
+  'uniqid' => '4200-iflib-rxqs',
+  'models' => ['4200'],
+  'versions' => ['23.09.1', '23.09'],
+  'descr' => 'Force the use of a single RX queue for increased performance on Netgate 4200 systems.',
+  'links' => [
+      [ 'text' => 'After applying the patch, reboot the device.' ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => 'terrapin-no-etm-no-chacha',
   'versions' => ['23.09.1', '23.09', '23.05.1', '23.05', '23.01', '2.7.2', '2.7.1', '2.7.0', '2.6.0'],
   'descr' => 'Workaround for Terrapin SSH Attack',
