@@ -170,19 +170,19 @@ print($form);
 							<?=htmlspecialchars($instance['description'])?>
 						</td>
 						<td>
-							<a class="fa fa-pencil fa-lg" href="udpbroadcastrelay_edit.php?idx=<?=$i?>" title="<?=gettext('Edit Instance');?>"></a>
+							<a class="fa-solid fa-pencil fa-lg" href="udpbroadcastrelay_edit.php?idx=<?=$i?>" title="<?=gettext('Edit Instance');?>"></a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 					<tr style="background-color: inherit;">
 						<td colspan="6" class="text-right">
 							<a href="udpbroadcastrelay_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add New Instance');?>">
-								<i class="fa fa-plus icon-embed-btn"></i>
+								<i class="fa-solid fa-plus icon-embed-btn"></i>
 								<?=gettext('Add');?>
 							</a>
 							<?php if (count($instances) > 0): ?>
 								<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Instance');?>">
-									<i class="fa fa-trash icon-embed-btn"></i>
+									<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 									<?=gettext('Delete');?>
 								</button>
 							<?php endif; ?>

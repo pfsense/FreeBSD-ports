@@ -354,11 +354,11 @@ foreach ($extra_rules as $exrule) {
 			<p>
 				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on' && $snortcommunityrules != 'on' && $feodotracker_rules != 'on' && $sslbl_rules != 'on' && $enable_extra_rules != 'on'): ?>
 					<br/><button class="btn btn-primary" disabled>
-						<i class="fa fa-check icon-embed-btn"></i>
+						<i class="fa-solid fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
 					</button>&nbsp;&nbsp;&nbsp;&nbsp;
 					<button class="btn btn-warning" disabled>
-						<i class="fa fa-download icon-embed-btn"></i>
+						<i class="fa-solid fa-download icon-embed-btn"></i>
 						<?=gettext("Force"); ?>
 					</button>
 					<br/>
@@ -369,11 +369,11 @@ foreach ($extra_rules as $exrule) {
 					<br/>
 					<button name="update" id="update" class="btn btn-primary"
 						title="<?=gettext("Check for and apply new update to enabled rule sets"); ?>">
-						<i id="updbtn" class="fa fa-check icon-embed-btn"></i>
+						<i id="updbtn" class="fa-solid fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
 					</button>&nbsp;&nbsp;&nbsp;&nbsp;
 					<button name="force" id="force" class="btn btn-warning" title="<?=gettext("Force an update of all enabled rule sets")?>">
-						<i id="forcebtn" class="fa fa-download icon-embed-btn"></i>
+						<i id="forcebtn" class="fa-solid fa-download icon-embed-btn"></i>
 						<?=gettext("Force"); ?>
 					</button>
 					<br/><br/>
@@ -390,24 +390,24 @@ foreach ($extra_rules as $exrule) {
 				<?php if ($suricata_rules_upd_log_chk == 'yes'): ?>
 				<?php if (!empty($contents)): ?>
 					<button type="submit" value="<?=gettext("Hide"); ?>" name="hide" id="hide" class="btn btn-info" title="<?=gettext("Hide rules update log"); ?>">
-						<i class="fa fa-close icon-embed-btn"></i>
+						<i class="fa-solid fa-xmark icon-embed-btn"></i>
 						<?=gettext("Hide"); ?>
 					</button>
 				<?php else: ?>
 					<button type="submit" value="<?=gettext("View"); ?>" name="view" id="view" class="btn btn-info" title="<?=gettext("View rules update log"); ?>">
-						<i class="fa fa-file-text-o icon-embed-btn"></i>
+						<i class="fa-regular fa-file-lines icon-embed-btn"></i>
 						<?=gettext("View"); ?>
 					</button>
 				<?php endif; ?>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<button type="submit" value="<?=gettext("Clear"); ?>" name="clear" id="clear" class="btn btn-danger" title="<?=gettext("Clear rules update log"); ?>">
-						<i class="fa fa-trash icon-embed-btn"></i>
+						<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 						<?=gettext("Clear"); ?>
 					</button>
 					<br/>
 				<?php else: ?>
 					<button class="btn btn-info" disabled>
-						<i class="fa fa-file-text-o icon-embed-btn"></i>
+						<i class="fa-regular fa-file-lines icon-embed-btn"></i>
 						<?=gettext("View Log"); ?>
 					</button><br/><?=gettext("Log is empty."); ?><br/>
 				<?php endif; ?>
@@ -435,7 +435,7 @@ $modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
 $modal->addInput(new Form_StaticText (
 	null,
 	'Updating rule sets may take a while ... please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' .
-	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
+	'<i class="content fa fa-spinner fa-pulse fa-solid fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
 print $form;
@@ -491,10 +491,10 @@ function doRuleUpdates(mode) {
 	$('#updrulesdlg').modal('show');
 
 	if (mode == "update") {
-		$('#updbtn').toggleClass('fa-check fa-spinner');
+		$('#updbtn').toggleClass('fa-check fa-solid fa-spinner');
 	}
 	if (mode == "force") {
-		$('#forcebtn').toggleClass('fa-download fa-spinner');
+		$('#forcebtn').toggleClass('fa-download fa-solid fa-spinner');
 	}
 
 	ajaxRequest1 = $.ajax({

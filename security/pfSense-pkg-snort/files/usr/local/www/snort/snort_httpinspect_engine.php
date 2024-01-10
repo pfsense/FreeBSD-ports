@@ -338,7 +338,7 @@ if ($pconfig['name'] <> "default") {
 		'btnSuppressList',
 		' ' . 'Aliases',
 		'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
-		'fa-search-plus'
+		'fa-solid fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
@@ -369,7 +369,7 @@ $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
 	'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=port&varname=ports&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
-	'fa-search-plus'
+	'fa-solid fa-search-plus'
 );
 $btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 $btnaliases->setAttribute('title', gettext("Select an existing port alias"));
@@ -577,7 +577,7 @@ $btnsave = new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 );
 $btncancel = new Form_Button(
 	'cancel',

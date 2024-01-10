@@ -39,9 +39,9 @@ $nocsrf = true;
 pfb_global();
 
 // Image source definition
-$pfb['down']	= '<i class="fa fa-level-down" title="No Rules are Defined using this Alias"></i>';
-$pfb['up']	= '<i class="fa fa-level-up text-success" title="Rules are Defined using this Alias (# of fw rules defined)"></i>';
-$pfb['err']	= '<i class="fa fa-minus-circle text-danger" title="pf Errors found."></i>';
+$pfb['down']	= '<i class="fa-solid fa-turn-down" title="No Rules are Defined using this Alias"></i>';
+$pfb['up']	= '<i class="fa-solid fa-turn-up text-success" title="Rules are Defined using this Alias (# of fw rules defined)"></i>';
+$pfb['err']	= '<i class="fa-solid fa-minus-circle text-danger" title="pf Errors found."></i>';
 
 // Widget customizations
 $wglobal_array = array ('popup' => 'off', 'sortcolumn' => 'none', 'sortmix' => 'off', 'sortdir' => 'asc', 'dnsblquery' => 5,
@@ -494,7 +494,7 @@ function pfBlockerNG_get_failed() {
 			}
 
 			if ($counter == 1) {
-				$response .= "{$tab6}<li>{$final}&emsp;\n{$tab7}<i class=\"fa fa-trash-o icon-pointer\" id=\"pfblockerngackicon\"
+				$response .= "{$tab6}<li>{$final}&emsp;\n{$tab7}<i class=\"fa-regular fa-trash-can icon-pointer\" id=\"pfblockerngackicon\"
 						title=\"" . gettext("Clear Failed Downloads") . "\" ></i></li>\n";
 			} else {
 				$response .= "{$tab6}<li>{$final}</li>\n";
@@ -579,19 +579,19 @@ function pfBlockerNG_get_header($mode='') {
 
 	// Status indicator if pfBlockerNG is enabled/disabled
 	if ($pfb['enable'] == 'on') {
-		$pfb_status	= 'fa fa-check-circle text-success';
+		$pfb_status	= 'fa-solid fa-check-circle text-success';
 		$pfb_msg	= 'pfBlockerNG is Active.';
 
 		// Check Masterfile Database Sanity
 		if (isset($pfb['config']['enable_dup']) && $pfb['config']['enable_dup'] == 'on') {
 			$db_sanity = exec("{$pfb['grep']} 'Sanity check' {$pfb['logdir']}/pfblockerng.log | tail -1 | {$pfb['grep']} -o 'PASSED'");
 			if ($db_sanity != 'PASSED') {
-				$pfb_status	= 'fa fa-exclamation-circle text-warning';
+				$pfb_status	= 'fa-solid fa-exclamation-circle text-warning';
 				$pfb_msg	= 'pfBlockerNG deDuplication is out of sync. Perform a Force Reload to correct.';
 			}
 		}
 	} else {
-		$pfb_status = 'fa fa-times-circle text-danger';
+		$pfb_status = 'fa-solid fa-times-circle text-danger';
 		$pfb_msg = 'pfBlockerNG is Disabled.';
 	}
 
@@ -616,20 +616,20 @@ function pfBlockerNG_get_header($mode='') {
 		// Check DNSBL Database Sanity
 		$db_sanity = exec("{$pfb['grep']} 'DNSBL update' {$pfb['logdir']}/pfblockerng.log | tail -1 | {$pfb['grep']} -o 'OUT OF SYNC'");
 		if ($db_sanity == 'OUT OF SYNC') {
-			$dnsbl_status	= 'fa fa-exclamation-circle text-warning';
+			$dnsbl_status	= 'fa-solid fa-exclamation-circle text-warning';
 			$dnsbl_msg	= "DNSBL {$py_mode} is out of sync. Perform a Force Reload to correct.";
 		} else {
-			$dnsbl_status	= 'fa fa-check-circle text-success';
+			$dnsbl_status	= 'fa-solid fa-check-circle text-success';
 			$dnsbl_msg	= "DNSBL {$py_mode} is Active on vip: {$pfb['dnsbl_vip']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
 		}
 
 		// Check for any Python Integration errors
 		if ($pfb['dnsbl_mode'] == 'dnsbl_python' && (int)@filesize($pfb['pyerrlog']) > 0) {
-			$dnsbl_status	= 'fa fa-exclamation-circle text-warning';
+			$dnsbl_status	= 'fa-solid fa-exclamation-circle text-warning';
 			$dnsbl_msg	= "DNSBL {$py_mode} errors Found! Review py_error.log";
 		}
 	} else {
-		$dnsbl_status		= 'fa fa-times-circle text-danger';
+		$dnsbl_status		= 'fa-solid fa-times-circle text-danger';
 
 		// Check for any Python Integration errors
 		if ($pfb['dnsbl_mode'] == 'dnsbl_python' && (int)@filesize($pfb['pyerrlog']) > 0) {
@@ -823,8 +823,11 @@ function pfBlockerNG_get_header($mode='') {
 		$tdl = "style=\"text-align: left;\"";
 
 		// FA Icons
-		$faicon = array(array( 'times text-danger', 'check text-success', 'filter', 'list-ol'),
-				array( 'times text-danger', 'history', 'percent', 'list-ol'));
+		$faicon = [
+			['fa-solid fa-times text-danger', 'fa-solid fa-check text-success', 'fa-solid fa-filter', 'fa-solid fa-list-ol'],
+			['fa-solid fa-times text-danger', 'fa-solid fa-history', 'fa-solid fa-percent', 'fa-solid fa-list-ol']
+		];
+
 
 		// Title descriptions
 		$titles = array ( array (	'Deny'		=> "Number of BLOCK & REJECT packet(s) blocked: {$stats[0]['Deny']}"
@@ -866,13 +869,13 @@ function pfBlockerNG_get_header($mode='') {
 
 				if ($data == 'Suppression' || $data == 'Whitelist') {
 					$d_type = ($data == 'Suppression') ? 'ip' : 'dnsbl';
-					print("{$tab5}<td {$tdl} title=\"{$titles[$key][$data]}\"><i class=\"fa fa-{$faicon[$key][$col]}\"></i>&nbsp;&nbsp;"
+					print("{$tab5}<td {$tdl} title=\"{$titles[$key][$data]}\"><i class=\"{$faicon[$key][$col]}\"></i>&nbsp;&nbsp;"
 						. "<a target=\"_blank\" href=\"/pfblockerng/pfblockerng_{$d_type}.php#{$data}\" title=\"Link to {$data}\">"
 						. "<small><span class=\"pfb_{$data}\">{$value}</span></small></a></td>\n");
 				}
 				else {
 					print("{$tab5}<td {$tdl} class=\"pfb_title_{$data}\" title=\"{$titles[$key][$data]}\">"
-						. "<i class=\"fa fa-{$faicon[$key][$col]}\"></i>&nbsp;&nbsp;"
+						. "<i class=\"{$faicon[$key][$col]}\"></i>&nbsp;&nbsp;"
 						. "<small><span class=\"pfb_{$data}\">{$value}</span></small></td>\n");
 				}
 				$col++;
@@ -881,7 +884,7 @@ function pfBlockerNG_get_header($mode='') {
 			// Print 'Click to Open Logs tab' icon
 			if ($key == 0) {
 				print("{$tab5}<td>\n{$tab6}<a target='_blank' href='pfblockerng/pfblockerng_log.php' "
-					. "title='" . gettext("Click to open Logs tab") . "'>\n{$tab7}<i class='fa fa-list-alt'></i>\n{$tab5}</a></td>\n"
+					. "title='" . gettext("Click to open Logs tab") . "'>\n{$tab7}<i class='fa-regular fa-rectangle-list'></i>\n{$tab5}</a></td>\n"
 					. "{$tab4}</tr>");
 			}
 			elseif ($key == 1) {
@@ -1014,7 +1017,7 @@ function pfBlockerNG_get_table($mode='', $pfb_table) {
 					<th id="pfB_col1" ><?=gettext("Alias");?></th>
 					<th id="pfB_col2" title="The count can be a mixture of Single IPs or CIDR values"><?=gettext("Count");?></th>
 					<th id="pfB_col3" title="Total Packet counts by IP Alias / DNSBL Group"><?=gettext("Packets");?>
-						<i class='fa fa-trash-o icon-pointer' id='pfblockerngclearicon' title="Clear Packets"></i>
+						<i class='fa-regular fa-trash-can icon-pointer' id='pfblockerngclearicon' title="Clear Packets"></i>
 					</th>
 					<th id="pfB_col4" title="Last Update (Date/Time) of the Alias"><?=gettext("Updated");?></th>
 					<th><?=$pfb['down']?>&nbsp;<?=$pfb['up']?></th>
@@ -1114,7 +1117,7 @@ function pfBlockerNG_get_table($mode='', $pfb_table) {
 	<div class="form-group">
 		<div class="col-sm-offset-4 col-sm-8">
 			<button type="submit" name="pfb_submit" id="pfb_submit" class="btn btn-primary">
-				<i class="fa fa-save icon-embed-btn"></i><?=gettext('Save Settings')?>
+				<i class="fa-solid fa-save icon-embed-btn"></i><?=gettext('Save Settings')?>
 			</button>
 		</div>
 	</div>

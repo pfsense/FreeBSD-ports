@@ -362,8 +362,8 @@ $allcount = 0;
 				<td><?=htmlspecialchars($cmd['descr']); ?></td>
 				<td><?=htmlspecialchars($cmd['detail']); ?></td>
 				<td style="cursor: pointer;">
-					<a class="fa fa-pencil" href="status_mail_report_add_cmd.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Command"); ?>"></a>
-					<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>"></a>
+					<a class="fa-solid fa-pencil" href="status_mail_report_add_cmd.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Command"); ?>"></a>
+					<a class="fa-solid fa-trash-can no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>"></a>
 					<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>">Delete Command</button>
 				</td>
 			</tr>
@@ -373,7 +373,7 @@ $allcount = 0;
 		</div>
 		<nav class="action-buttons">
 			<a href="status_mail_report_add_cmd.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
-				<i class="fa fa-plus icon-embed-btn"></i>
+				<i class="fa-solid fa-plus icon-embed-btn"></i>
 				<?=gettext("Add New Command")?>
 			</a>
 		</nav>
@@ -397,8 +397,8 @@ $allcount = 0;
 				<td><?=$log['lines']; ?></td>
 				<td><?=$log['detail']; ?></td>
 				<td style="cursor: pointer;">
-					<a class="fa fa-pencil" href="status_mail_report_add_log.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Log"); ?>"></a>
-					<a class="fa fa-trash no-confirm" id="Xldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>"></a>
+					<a class="fa-solid fa-pencil" href="status_mail_report_add_log.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Log"); ?>"></a>
+					<a class="fa-solid fa-trash-can no-confirm" id="Xldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>"></a>
 					<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>">Delete Log</button>
 				</td>
 			</tr>
@@ -408,7 +408,7 @@ $allcount = 0;
 		</div>
 		<nav class="action-buttons">
 			<a href="status_mail_report_add_log.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
-				<i class="fa fa-plus icon-embed-btn"></i>
+				<i class="fa-solid fa-plus icon-embed-btn"></i>
 				<?=gettext("Add New Log")?>
 			</a>
 		</nav>
@@ -417,7 +417,7 @@ $allcount = 0;
 		<br />
 	<?php if ($allcount > 0): ?>
 		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Items")?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete Selected Items")?>
 		</button>
 	<?php endif; ?>

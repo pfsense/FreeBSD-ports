@@ -103,7 +103,7 @@
 		}
 		$iperf_options .= " -s";
 		mwexec_bg("/usr/local/bin/iperf3" . $iperf_options);
-		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to iperf server") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to iperf server") . '</button>';
+		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to iperf server") . '" onclick="history.back()"><i class="fa-solid fa-undo icon-embed-btn"></i> ' . gettext("Back to iperf server") . '</button>';
 	]]>
 	</custom_add_php_command>
 </packagegui>

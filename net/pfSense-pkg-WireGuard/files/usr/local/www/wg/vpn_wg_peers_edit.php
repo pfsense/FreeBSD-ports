@@ -222,7 +222,7 @@ $group->add(new Form_Button(
 	'genpsk',
 	'Generate',
 	null,
-	'fa-key'
+	'fa-solid fa-key'
 ))->addClass('btn-primary btn-sm')
   ->setHelp('New Pre-shared Key');
 
@@ -278,7 +278,7 @@ foreach ($pconfig['allowedips']['row'] as $counter => $item) {
 		"deleterow{$counter}",
 		'Delete',
 		null,
-		'fa-trash'
+		'fa-solid fa-trash-can'
 	))->addClass('btn-warning btn-sm');
 
 	$section->add($group);
@@ -288,7 +288,7 @@ $section->addInput(new Form_Button(
 	'addrow',
 	'Add Allowed IP',
 	null,
-	'fa-plus'
+	'fa-solid fa-plus'
 ))->addClass('btn-success btn-sm addbtn');
 
 $form->add($section);
@@ -306,7 +306,7 @@ print($form);
 
 <nav class="action-buttons">
 	<button type="submit" id="saveform" name="saveform" class="btn btn-primary btn-sm" value="save" title="<?=gettext('Save Peer')?>">
-		<i class="fa fa-save icon-embed-btn"></i>
+		<i class="fa-solid fa-save icon-embed-btn"></i>
 		<?=gettext("Save Peer")?>
 	</button>
 </nav>

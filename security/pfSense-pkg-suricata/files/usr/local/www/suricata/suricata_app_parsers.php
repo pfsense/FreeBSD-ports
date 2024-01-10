@@ -936,11 +936,11 @@ if ($importalias) {
 									<th><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<button type="submit" name="import_alias" class="btn btn-sm btn-primary" title="<?=gettext("Import server configuration from existing Aliases")?>" value="Import">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext("Import"); ?>
 										</button>
 										<button type="submit" name="add_libhtp_policy" class="btn btn-sm btn-success" title="<?=gettext("Add a new server configuration")?>" value="Add">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext("Add"); ?>
 										</button>
 									</th>
@@ -953,17 +953,17 @@ if ($importalias) {
 									<td class="text-center"><?=gettext($v['bind_to'])?></td>
 									<td class="text-right">
 										<button type="submit" name="edit_libhtp_policy" value="Edit" class="btn btn-sm btn-primary" onclick="$('#eng_id').val('<?=$f?>')" title="<?=gettext("Edit this server configuration")?>">
-											<i class="fa fa-pencil icon-embed-btn"></i>
+											<i class="fa-solid fa-pencil icon-embed-btn"></i>
 											<?=gettext("Edit"); ?>
 										</button>
 									<?php if ($v['bind_to'] != "all") : ?>
 										<button type="submit" name="del_libhtp_policy" value="Delete" class="btn btn-sm btn-danger" onclick="$('#eng_id').val('<?=$f?>');" title="<?=gettext("Delete this server configuration")?>">
-											<i class="fa fa-trash icon-embed-btn"></i>
+											<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 											<?=gettext("Delete"); ?>
 										</button>
 									<?php else : ?>
 										<button type="submit" name="del_libhtp_policy" value="Delete" class="btn btn-sm btn-danger" title="<?=gettext("Delete this server configuration")?>" disabled>
-											<i class="fa fa-trash icon-embed-btn"></i>
+											<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 											<?=gettext("Delete"); ?>
 										</button>
 									<?php endif ?>
@@ -980,7 +980,7 @@ if ($importalias) {
 
 	<div class="col-sm-10 col-sm-offset-2">
 		<button type="submit" id="save" name="save" value="Save" class="btn btn-primary" title="<?=gettext('Save App Parsers settings');?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext('Save');?>
 		</button>
 	</div>

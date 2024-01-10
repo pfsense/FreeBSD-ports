@@ -818,7 +818,7 @@ $group->add(new Form_Button(
 	'btnHomeNet',
 	'View List',
 	'#',
-	'fa-file-text-o'
+	'fa-regular fa-file-lines'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-toggle', 'modal')->setAttribute('data-target', '#homenet');
 $group->setHelp('Default Home Net adds only local networks, WAN IPs, Gateways, VPNs and VIPs.' . '<br />' .
 		'Create an Alias to hold a list of friendly IPs that the firewall cannot see or to customize the default Home Net.');
@@ -835,7 +835,7 @@ $group->add(new Form_Button(
 	'btnExternalNet',
 	'View List',
 	'#',
-	'fa-file-text-o'
+	'fa-regular fa-file-lines'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#externalnet')->setAttribute('data-toggle', 'modal');
 $group->setHelp('External Net is networks that are not Home Net.  Most users should leave this setting at default.' . '<br />' .
 		'Create a Pass List and add an Alias to it, and then assign the Pass List here for custom External Net settings.');
@@ -853,7 +853,7 @@ $group->add(new Form_Button(
 	'btnWhitelist',
 	'View List',
 	'#',
-	'fa-file-text-o'
+	'fa-regular fa-file-lines'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#whitelist')->setAttribute('data-toggle', 'modal');
 $group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . '<br />' .
 		'This option will only be used when block offenders is on and IPS Mode is set to Legacy Mode.');
@@ -901,7 +901,7 @@ $group->add(new Form_Button(
 	'btnSuppressList',
 	'View List',
 	'#',
-	'fa-file-text-o'
+	'fa-regular fa-file-lines'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#suppresslist')->setAttribute('data-toggle', 'modal');
 $section->add($group);
 

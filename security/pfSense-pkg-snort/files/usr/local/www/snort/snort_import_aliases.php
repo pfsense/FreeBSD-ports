@@ -247,7 +247,7 @@ include("head.inc");
 				?>
 				<?php if ($disable): ?>
 				<tr title="<?=$tooltip;?>">
-					<td><i class="fa fa-times text-danger"></i>
+					<td><i class="fa-solid fa-times text-danger"></i>
 				<?php else: ?>
 				<tr>
 					<td><input type="checkbox" name="toimport[]" value="<?=htmlspecialchars($alias['name']);?>" title="<?=$tooltip;?>"/></td>

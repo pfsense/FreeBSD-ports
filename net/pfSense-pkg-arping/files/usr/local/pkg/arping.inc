@@ -22,7 +22,7 @@
 function arping_package_php_command() {
 	require_once("util.inc");
 	
-	$button = '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to ARPing") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to ARPing") . '</button>';
+	$button = '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to ARPing") . '" onclick="history.back()"><i class="fa-solid fa-undo icon-embed-btn"></i> ' . gettext("Back to ARPing") . '</button>';
 	$int_count = (is_numeric($_POST['count']) ? (abs(intval($_POST['count']))) : 3);
 	$arping_options = " -v -c {$int_count}";
 	if (!empty($_POST['interface'])) {

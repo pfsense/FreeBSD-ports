@@ -143,7 +143,7 @@ $form->addGlobal(new Form_Button(
 	'submit',
 	"Refresh",
 	null,
-	'fa-refresh'
+	'fa-solid fa-arrows-rotate'
 ))->addClass('btn-primary');
 
 $form->add($section);

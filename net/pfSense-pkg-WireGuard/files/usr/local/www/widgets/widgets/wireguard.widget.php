@@ -124,7 +124,7 @@ if (isset($_POST['save'])) {
 
 		<nav class="action-buttons">
 			<button type="submit" class="btn btn-primary">
-				<i class="fa fa-save icon-embed-btn"></i>
+				<i class="fa-solid fa-save icon-embed-btn"></i>
 				<?=gettext('Save')?>
 			</button>
 		</nav>

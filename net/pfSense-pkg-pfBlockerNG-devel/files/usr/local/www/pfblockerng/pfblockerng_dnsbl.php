@@ -3364,7 +3364,7 @@ events.push(function(){
 	$('label[class="col-sm-2 control-label"]').each(function() {
 		var found = $(this).text();
 		if (found.indexOf('(py)') >= 0) {
-			$(this).html(found.replace('(py)', '&emsp;<i class="fa fa-bolt" title="DNSBL Python"></i>'));
+			$(this).html(found.replace('(py)', '&emsp;<i class="fa-solid fa-bolt" title="DNSBL Python"></i>'));
 		}
 	});
 });

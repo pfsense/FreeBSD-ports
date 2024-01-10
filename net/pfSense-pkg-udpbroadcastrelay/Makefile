@@ -1,6 +1,5 @@
 PORTNAME=	pfSense-pkg-udpbroadcastrelay
-PORTVERSION=	1.0
-PORTREVISION=	0
+PORTVERSION=	1.0.1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

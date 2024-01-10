@@ -699,7 +699,7 @@ function make_grid_general_items($id = '') {
 		# Apply
 		$res .= '<tr $bg_color><td><big>The Save button at the bottom of this page must be clicked to save configuration changes.</big></td></tr>';
 		$res .= '<tr><td><big>To activate squidGuard configuration changes, <b><span style="color: #800000;">the Apply button must be clicked.</span></b></big></td></tr>';
-		$res .= '<tr><td><button class="btn btn-success btn-sm" name="submit" type="submit" value="Apply"><i class="fa fa-check icon-embed-btn"></i>Apply</button><br/><br/></td></tr>';
+		$res .= '<tr><td><button class="btn btn-success btn-sm" name="submit" type="submit" value="Apply"><i class="fa-solid fa-check icon-embed-btn"></i>Apply</button><br/><br/></td></tr>';
 
 		# service state
 		$sgstate = '<span style="color: #800000;">STOPPED</span>';
@@ -722,8 +722,8 @@ function make_grid_general_items($id = '') {
 function make_grid_blacklist() {
 	$res = '';
 	# button 'Upload URL' and button 'Restore last blacklist'
-	$res = '<hr><button class="btn btn-primary btn-sm" name="submit" value="' . BLACKLIST_BTN_URL  . '" type="submit"><i class="fa fa-upload icon-embed-btn"></i>' . BLACKLIST_BTN_URL  . '</button>';
-	$res .= '&nbsp;<button class="btn btn-info btn-sm" name="submit" value="' . BLACKLIST_BTN_DEFAULT  . '" type="submit"><i class="fa fa-undo icon-embed-btn"></i>' . BLACKLIST_BTN_DEFAULT  . '</button>';
+	$res = '<hr><button class="btn btn-primary btn-sm" name="submit" value="' . BLACKLIST_BTN_URL  . '" type="submit"><i class="fa-solid fa-upload icon-embed-btn"></i>' . BLACKLIST_BTN_URL  . '</button>';
+	$res .= '&nbsp;<button class="btn btn-info btn-sm" name="submit" value="' . BLACKLIST_BTN_DEFAULT  . '" type="submit"><i class="fa-solid fa-undo icon-embed-btn"></i>' . BLACKLIST_BTN_DEFAULT  . '</button>';
 	return $res;
 }
 
@@ -845,10 +845,10 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
 		<h2 class="panel-title">
 			<span onClick="document.getElementById('destrules').style.display = 'block';" style="cursor: pointer;">
 				Target Rules List
-				<i class="fa fa-plus-circle"></i>
+				<i class="fa-solid fa-plus-circle"></i>
 			</span>
 			<span style="cursor: pointer;">
-				<i class="fa fa-minus-circle" onClick="document.getElementById('destrules').style.display = 'none';"></i>
+				<i class="fa-solid fa-minus-circle" onClick="document.getElementById('destrules').style.display = 'none';"></i>
 			</span>
 		</h2>
 	</div>

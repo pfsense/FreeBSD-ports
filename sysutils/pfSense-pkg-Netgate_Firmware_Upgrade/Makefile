@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Firmware_Upgrade
-PORTVERSION=	0.47
+PORTVERSION=	0.47.1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 

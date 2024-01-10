@@ -124,20 +124,20 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 			$can_revert = patch_test_revert($thispatch);
 			if ($can_apply) {
 				$savemsg .= gettext("Patch can apply cleanly");
-				$resulticon = ' <i class="fa fa-check"></i>';
+				$resulticon = ' <i class="fa-solid fa-check"></i>';
 			} else {
 				$savemsg .= gettext("Patch does not apply cleanly");
-				$resulticon = ' <i class="fa fa-times"></i>';
+				$resulticon = ' <i class="fa-solid fa-times"></i>';
 			}
 			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;type={$_POST['type']}&amp;act=debug&amp;fulldebug=apply\" usepost>" . gettext("detail") . "</a>)";
 			$savemsg .= $resulticon;
 			$savemsg .= "<br/>";
 			if ($can_revert) {
 				$savemsg .= gettext("Patch can revert cleanly");
-				$resulticon = ' <i class="fa fa-check"></i>';
+				$resulticon = ' <i class="fa-solid fa-check"></i>';
 			} else {
 				$savemsg .= gettext("Patch does not revert cleanly");
-				$resulticon = ' <i class="fa fa-times"></i>';
+				$resulticon = ' <i class="fa-solid fa-times"></i>';
 			}
 			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;type={$_POST['type']}&amp;act=debug&amp;fulldebug=revert\" usepost>" . gettext("detail") . "</a>)";
 			$savemsg .= $resulticon;
@@ -329,7 +329,7 @@ foreach ($a_patches as $thispatch):
 	<tr id="fr<?=$i?>" id="frd<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
 		<td>
 			<input type="checkbox" id="frc<?=$i?>" name="patch[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" />
-			<a class="fa fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
+			<a class="fa-solid fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
@@ -338,46 +338,46 @@ foreach ($a_patches as $thispatch):
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-download"></i> <?=gettext("Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-download"></i> <?=gettext("Fetch"); ?></a>
 		<?php elseif (!empty($thispatch['location'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-refresh"></i> <?=gettext("Re-Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-arrows-rotate"></i> <?=gettext("Re-Fetch"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_apply):
 			$cus_can_apply += 1; ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_revert):
 			$cus_can_revert += 1; ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (!empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=view" class="btn btn-sm btn-primary" usepost><i class="fa fa-list-alt"></i> <?=gettext("View"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=view" class="btn btn-sm btn-primary" usepost><i class="fa-regular fa-rectangle-list"></i> <?=gettext("View"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (!empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=debug" class="btn btn-sm btn-primary" usepost><i class="fa fa-bug"></i> <?=gettext("Debug"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=debug" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-bug"></i> <?=gettext("Debug"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
-			<i class="fa fa-<?= isset($thispatch['autoapply']) ? "check" : "times" ?>" title="<?= isset($thispatch['autoapply']) ? "Yes" : "No" ?>"></i>
+			<i class="<?= isset($thispatch['autoapply']) ? "fa-solid fa-check" : "fa-solid fa-times" ?>" title="<?= isset($thispatch['autoapply']) ? "Yes" : "No" ?>"></i>
 		</td>
 
 		<td style="cursor: pointer;">
 			<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$i?>" name="move_<?=$i?>" value="move_<?=$i?>"><?=gettext("Move checked entries to here")?></button>
-			<a class="fa fa-pencil" href="system_patches_edit.php?id=<?=$i?>" title="<?=gettext("Edit Patch"); ?>"></a>
-			<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Patch'); ?>"></a>
+			<a class="fa-solid fa-pencil" href="system_patches_edit.php?id=<?=$i?>" title="<?=gettext("Edit Patch"); ?>"></a>
+			<a class="fa-solid fa-trash-can no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Patch'); ?>"></a>
 			<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete Patch'); ?>">delete</button>
 		</td>
 	</tr>
@@ -392,23 +392,23 @@ endforeach;
 	<nav class="action-buttons">
 <?php if ($cus_can_apply > 0): ?>
 		<a href="system_patches.php?all=apply&type=custom" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Apply all custom patches")?>" usepost>
-			<i class="fa fa-plus-circle icon-embed-btn"></i>
+			<i class="fa-solid fa-plus-circle icon-embed-btn"></i>
 			<?=gettext("Apply All Custom")?>
 		</a>
 <?php endif; ?>
 <?php if ($cus_can_revert > 0): ?>
 		<a href="system_patches.php?all=revert&type=custom" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Revert all custom patches")?>" usepost>
-			<i class="fa fa-minus-circle icon-embed-btn"></i>
+			<i class="fa-solid fa-minus-circle icon-embed-btn"></i>
 			<?=gettext("Revert All Custom")?>
 		</a>
 <?php endif; ?>
 		<a href="system_patches_edit.php" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add New Patch")?>
 		</a>
 <?php if ($i !== 0): ?>
 		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected patches")?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete Patches")?>
 		</button>
 <?php endif; ?>
@@ -472,23 +472,23 @@ foreach ($recommended_patches as $rpatch):
 		<td>
 		<?php if ($can_apply):
 			$rec_can_apply += 1; ?>
-			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td>
 		<?php if ($can_revert):
 			$rec_can_revert += 1; ?>
-			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
 		<?php endif; ?>
 		</td>
 
 		<td>
-			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=view" class="btn btn-sm btn-primary" usepost><i class="fa fa-list-alt"></i> <?=gettext("View"); ?></a>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=view" class="btn btn-sm btn-primary" usepost><i class="fa-regular fa-rectangle-list"></i> <?=gettext("View"); ?></a>
 		</td>
 
 		<td>
-			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=debug" class="btn btn-sm btn-primary" usepost><i class="fa fa-bug"></i> <?=gettext("Debug"); ?></a>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=debug" class="btn btn-sm btn-primary" usepost><i class="fa-solid fa-bug"></i> <?=gettext("Debug"); ?></a>
 		</td>
 	</tr>
 <?php
@@ -508,13 +508,13 @@ endforeach;
 	<nav class="action-buttons">
 <?php if ($rec_can_apply > 0): ?>
 		<a href="system_patches.php?all=apply&type=recommended" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Apply all recommended patches")?>" usepost>
-			<i class="fa fa-plus-circle icon-embed-btn"></i>
+			<i class="fa-solid fa-plus-circle icon-embed-btn"></i>
 			<?=gettext("Apply All Recommended")?>
 		</a>
 <?php endif; ?>
 <?php if ($rec_can_revert > 0): ?>
 		<a href="system_patches.php?all=revert&type=recommended" class="btn btn-primary btn-sm do-confirm" title="<?=gettext("Revert all recommended patches")?>" usepost>
-			<i class="fa fa-minus-circle icon-embed-btn"></i>
+			<i class="fa-solid fa-minus-circle icon-embed-btn"></i>
 			<?=gettext("Revert All Recommended")?>
 		</a>
 <?php endif; ?>

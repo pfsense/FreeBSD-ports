@@ -129,7 +129,7 @@
 			<description>
 				<![CDATA[
 				<p><b>Clicking "Update Running" will fill RUNNING fields with current configuration.</p>
-				<p><button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update Running'><i class="fa fa-refresh icon-embed-btn"></i>Update Running</button></p>
+				<p><button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update Running'><i class="fa-solid fa-arrows-rotate icon-embed-btn"></i>Update Running</button></p>
 				]]>
 			</description>
 			<type>info</type>

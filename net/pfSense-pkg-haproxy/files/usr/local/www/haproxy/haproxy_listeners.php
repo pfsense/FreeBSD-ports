@@ -307,13 +307,13 @@ function js_callback(req) {
 						<td>
 						<?if($frontend['secondary'] != 'yes'):?>
 							<input type="checkbox" id="frc<?=$frontendname;?>" onClick="fr_toggle('<?=$frontendname;?>')" name="rule[]" value="<?=$frontendname;?>"/>
-							<a class="fa fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
+							<a class="fa-solid fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 						<?endif?>
 						</td>
 				  <td>
 				  <?if($frontend['secondary'] == 'yes'):?>
 					<input type="checkbox" id="frc<?=$frontendname;?>" onClick="fr_toggle('<?=$frontendname;?>')" name="rule[]" value="<?=$frontendname;?>"/>
-					<a class="fa fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
+					<a class="fa-solid fa-anchor" id="Xmove_<?=$frontendname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				  <?endif?>
 				  </td>
 				  <td>
@@ -448,15 +448,15 @@ function js_callback(req) {
 	</div>
 	<nav class="action-buttons">
 		<a href="haproxy_listeners_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add frontend to the end of the list')?>">
-			<i class="fa fa-level-down icon-embed-btn"></i>
+			<i class="fa-solid fa-turn-down icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<button name="del_x" type="submit" class="btn btn-danger btn-sm no-confirm" value="<?=gettext("Delete selected frontends"); ?>" title="<?=gettext('Delete selected frontends')?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
 		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary no-confirm" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>

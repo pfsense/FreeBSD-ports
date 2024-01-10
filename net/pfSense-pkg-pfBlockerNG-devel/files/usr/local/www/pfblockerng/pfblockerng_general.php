@@ -299,17 +299,17 @@ $section->addInput(new Form_StaticText(
 
 	<ul class="list-inline" style="margin-top: 4px; margin-bottom: -2px; border-style: outset; border-bottom-color: #8B181B; border-right-color: #8B181B; border-width: 2px;">
 		<li class="list-inline-item"><a target="_blank" href="http://pfblockerng.com">
-			<span style="color: #8B181B;" class="fa fa-globe"></span> HomePage</a></li>
+			<span style="color: #8B181B;" class="fa-solid fa-globe"></span> HomePage</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://twitter.com/intent/follow?screen_name=BBcan177">
-			<span style="color: #8B181B;" class="fa fa-twitter"></span> Follow on Twitter</a></li>
+			<span style="color: #8B181B;" class="fa-brands fa-twitter"></span> Follow on Twitter</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://www.reddit.com/r/pfBlockerNG/new/">
-			<span style="color: #8B181B;" class="fa fa-reddit"></span> Reddit</a></li>
+			<span style="color: #8B181B;" class="fa-brands fa-reddit"></span> Reddit</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://infosec.exchange/@BBcan177#">
-			<span style="color: #8B181B;" class="fa fa-globe"></span> Mastodon</a></li>
+			<span style="color: #8B181B;" class="fa-solid fa-globe"></span> Mastodon</a></li>
 		<li class="list-inline-item"><a target="_blank" href="https://github.com/BBcan177">
-			<span style="color: #8B181B;" class="fa fa-github"></span> GitHub</a></li>
+			<span style="color: #8B181B;" class="fa-brands fa-github"></span> GitHub</a></li>
 		<li class="list-inline-item"><a target="_blank" href="mailto:bbcan177@gmail.com?Subject=pfBlockerNG%20Support">
-			<span style="color: #8B181B;" class="fa fa-envelope-o"></span> Contact Us</a></li>
+			<span style="color: #8B181B;" class="fa-regular fa-envelope"></span> Contact Us</a></li>
 	</ul>
 	<span class="pull-right"><small>Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.</small></span>
 </div>

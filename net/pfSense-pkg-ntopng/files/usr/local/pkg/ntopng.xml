@@ -188,7 +188,7 @@
 				<![CDATA[
 				Additionally, <b>GeoLite2 DB</b> can provide location information about IP addresses.<br />
 				To utilize the free MaxMind GeoLite2 GeoIP functionality, you must <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">register for a free MaxMind user account</a>.<br /></br />
-				<button class="btn btn-success btn-sm" name='Submit' id='update_geoip' type='submit' value='Update GeoLite2 DB'><i class="fa fa-refresh icon-embed-btn"></i>Update GeoLite2 DB</button>
+				<button class="btn btn-success btn-sm" name='Submit' id='update_geoip' type='submit' value='Update GeoLite2 DB'><i class="fa-solid fa-arrows-rotate icon-embed-btn"></i>Update GeoLite2 DB</button>
 				]]>
 			</description>
 			<type>input</type>
@@ -199,7 +199,7 @@
 				<![CDATA[
 				Useful if you are running out of free disk space, or simply want to reset graphs and data.<br/>
 				<strong><span class="text-danger">WARNING:</span> This will delete all ntopng customization, graphs, traffic data and dump flows!<br/><br/>
-				<button class="btn btn-warning btn-sm" name='Delete' id='remove_ntopng_data' type='submit' value='Delete Data'><i class="fa fa-trash icon-embed-btn"></i>Delete Data</button>
+				<button class="btn btn-warning btn-sm" name='Delete' id='remove_ntopng_data' type='submit' value='Delete Data'><i class="fa-solid fa-trash-can icon-embed-btn"></i>Delete Data</button>
 				]]>
 			</description>
 			<type>info</type>

@@ -95,7 +95,7 @@ function wg_truncate_pretty($text, $max_length) {
 	return "{$s_truncated}{$s_pretty_dots}";
 }
 
-function wg_interface_status_icon($status = 'up', $enabled_class = "fa fa-arrow-up text-success", $disabled_class = "fa fa-arrow-down text-danger") {
+function wg_interface_status_icon($status = 'up', $enabled_class = "fa-solid fa-arrow-up text-success", $disabled_class = "fa-solid fa-arrow-down text-danger") {
 	global $wgg;
 
 	$s = fn($x) => $x;
@@ -112,7 +112,7 @@ function wg_interface_status_icon($status = 'up', $enabled_class = "fa fa-arrow-
  * 
  * $latest_handshake should be format compatible with DateTime
  */
-function wg_handshake_status_icon($latest_handshake = '@0', $tunnel_status = 'up', $fa_icon = "fa-handshake") {
+function wg_handshake_status_icon($latest_handshake = '@0', $tunnel_status = 'up', $fa_icon = "fa-solid fa-handshake") {
 	global $wgg;
 
 	$s = fn($x) => $x;
@@ -139,7 +139,7 @@ function wg_handshake_status_icon($latest_handshake = '@0', $tunnel_status = 'up
 		}
 	}
 
-	$ret_html = "<i class=\"fa {$s(htmlspecialchars($fa_icon))} {$s(htmlspecialchars($ret_class))}\" style=\"vertical-align: middle;\" title=\"{$s(htmlspecialchars($ret_title))}\"></i>";
+	$ret_html = "<i class=\"fa-solid {$s(htmlspecialchars($fa_icon))} {$s(htmlspecialchars($ret_class))}\" style=\"vertical-align: middle;\" title=\"{$s(htmlspecialchars($ret_title))}\"></i>";
 
 	return $ret_html;
 }
@@ -257,7 +257,7 @@ function wg_peer_status_class($peer = null) {
 }
 
 // Generates a toggle icon link based on the status of the target
-function wg_generate_toggle_icon_link($enabled = true, $type = null, $href = '#', $post = true, $icon_enabled = 'fa-ban', $icon_disabled = 'fa-check-square-o') {
+function wg_generate_toggle_icon_link($enabled = true, $type = null, $href = '#', $post = true, $icon_enabled = 'fa-ban', $icon_disabled = 'fa-regular fa-square-check') {
 	$s = fn($x) => $x;
 	
 	$icon = $enabled ? $icon_enabled : $icon_disabled;
@@ -268,7 +268,7 @@ function wg_generate_toggle_icon_link($enabled = true, $type = null, $href = '#'
 
 	$usepost = $post ? ' usepost' : null;
 
-	return "<a class=\"fa {$s(htmlspecialchars($icon))}\" title=\"{$s(htmlspecialchars($title))}\" href=\"{$s(htmlspecialchars($href))}\"{$s(htmlspecialchars($usepost))}></a>";
+	return "<a class=\"fa-solid {$s(htmlspecialchars($icon))}\" title=\"{$s(htmlspecialchars($title))}\" href=\"{$s(htmlspecialchars($href))}\"{$s(htmlspecialchars($usepost))}></a>";
 }
 
 function wg_compose_address_popover_link($addresses, $title, $href) {
@@ -342,7 +342,7 @@ function wg_generate_tunnel_address_popover_link($tunnel_name) {
 			$wg_pfsense_if = wg_get_pfsense_interface_info($tunnel['name']);
 
 			$ret_html = 	<<<"RET"
-					<i class="fa fa-sitemap" style="vertical-align: middle;"></i>
+					<i class="fa-solid fa-sitemap" style="vertical-align: middle;"></i>
 					<a style="padding-left: 3px" href="../../interfaces.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}">{$s(htmlspecialchars($wg_pfsense_if['descr']))} ({$s(htmlspecialchars($wg_pfsense_if['name']))})</a>
 					
 					RET;

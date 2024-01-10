@@ -174,7 +174,7 @@ foreach ($a_pwservices as $thisservice):
 	<tr valign="top" id="fr<?=$nservices?>">
 		<td>
 			<input type="checkbox" id="frc<?=$nservices?>" name="pwservices[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$nservices?>')" />
-			<a class="fa fa-anchor" id="Xmove_<?=$nservices?>" title="<?=gettext("Move checked entries to here")?>"></a>
+			<a class="fa-solid fa-anchor" id="Xmove_<?=$nservices?>" title="<?=gettext("Move checked entries to here")?>"></a>
 		</td>
 		<td><input type="checkbox" id="notify<?=$nservices?>" name="notifies[]" value="<?=$i?>" style="margin: 0; padding: 0; width: 15px; height: 15px;" <?PHP if (isset($thisservice['notify'])) echo 'checked="checked"'?>/></td>
 		<td onclick="fr_toggle(<?=$nservices?>)" id="frd<?=$nservices?>" ondblclick="document.location='services_servicewatchdog_add.php?id=<?=$nservices?>';">
@@ -185,7 +185,7 @@ foreach ($a_pwservices as $thisservice):
 		</td>
 		<td style="cursor: pointer;">
 			<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$i?>" name="move_<?=$i?>" value="move_<?=$i?>"><?=gettext("Move checked entries to here")?></button>
-			<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete'); ?>"></a>
+			<a class="fa-solid fa-trash-can no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete'); ?>"></a>
 			<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete'); ?>">Delete</button>
 		</td>
 	</tr>
@@ -212,16 +212,16 @@ endforeach;
 	<nav class="action-buttons">
 		<br />
 		<a href="services_servicewatchdog_add.php" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext("Add New Service")?>
 		</a>
 		<button type="submit" id="Update" name="Update" class="btn btn-sm btn-primary" value="Update Notification Settings" title="<?=gettext('Update Notification Settings')?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save Notification Settings")?>
 		</button>
 <?php if ($i !== 0): ?>
 		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Services")?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete")?>
 		</button>
 <?php endif; ?>

@@ -106,7 +106,7 @@ if ( $_POST['strapcaccess'] ) {
 	<div class="col-sm-10 col-sm-offset-2">
 		<button name="submit" type="submit" class="btn btn-warning btn-sm" 
 			value="EXECAPCACCESS" title="<?=gettext("Retrieve status information from apcupsd")?>">
-			<i class="fa fa-bolt"></i>
+			<i class="fa-solid fa-bolt"></i>
 			<?=gettext("Execute")?>
 		</button>
 	</div>

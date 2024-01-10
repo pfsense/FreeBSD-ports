@@ -530,9 +530,9 @@ if (isset($savemsg)) {
 					<td>
 					<?php if ($gtype != 'geoip'): ?>
 						<a href="/pfblockerng/pfblockerng_category_edit.php?type=<?=$gtype?>&rowid=<?=$r_id?>">
-							<i class="fa fa-pencil" alt="edit"></i>
+							<i class="fa-solid fa-pencil" alt="edit"></i>
 						</a>
-						<i class="fa fa-trash icon-pointer no-confirm"
+						<i class="fa-solid fa-trash-can icon-pointer no-confirm"
 							title="<?=gettext('Delete selected entry') . ' [ ' . $row['aliasname'] .' ] ?' ?>"
 							onclick="$('#rowid').val('<?=$r_id?>');$('#act').val('del');pfb_rownamedelete();">
 						</i>
@@ -544,19 +544,19 @@ if (isset($savemsg)) {
 
 							<a href="/pfblockerng/pfblockerng_category_edit.php?type=<?=$gtype?>&rowid=<?=$r_id?>#Customlist"
 								title="Quick link to Custom List">
-								<i class="fa fa-anchor" alt="edit"></i>
+								<i class="fa-solid fa-anchor" alt="edit"></i>
 								</a>
 							<?php endif; ?>
 
 						<?php
 							if ($gtype == 'dnsbl' && isset($row['order']) && $row['order'] == 'primary'):
 						?>
-							<i class="fa fa-check-square-o" style="cursor: default" title="DNSBL Primary Group order defined"></i>
+							<i class="fa-regular fa-square-check" style="cursor: default" title="DNSBL Primary Group order defined"></i>
 							<?php endif; ?>
 
 					<?php elseif ($maxmind_verify && file_exists("/usr/local/www/pfblockerng/pfblockerng_{$row['filename']}.php")): ?>
 						<a href="/pfblockerng/pfblockerng_<?=$row['filename'];?>.php">
-							<i class="fa fa-pencil" alt="edit"></i>
+							<i class="fa-solid fa-pencil" alt="edit"></i>
 						</a>
 					<?php endif; ?>
 
@@ -580,12 +580,12 @@ if (isset($savemsg)) {
 	<nav class="action-buttons">
 		<?php if ($gtype != 'geoip'): ?>
 		<a href="/pfblockerng/pfblockerng_category_edit.php?type=<?=$gtype?>&rowid=<?=$r_id +1?>" class="btn btn-sm btn-success">
-			<i class="fa fa-plus icon-embed-btn"></i>
+			<i class="fa-solid fa-plus icon-embed-btn"></i>
 			<?=gettext('Add')?>
 		</a>
 		<?php endif; ?>
 		<button class="btn btn-sm btn-primary" type="button" id="btnsave" title="Save the page 'Order' format">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext('Save')?>
 		</button>&emsp;
 	</nav>

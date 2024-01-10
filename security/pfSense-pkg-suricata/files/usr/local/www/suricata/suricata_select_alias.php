@@ -172,7 +172,7 @@ if (!in_array($alias['type'], $a_types))
  if ($disable):
  ?>
 				<tr title="<?=$tooltip;?>">
-					<td><i class="fa fa-times text-danger"></i></td>
+					<td><i class="fa-solid fa-times text-danger"></i></td>
 <?php else: ?>
 				<tr>
 					<td align="center"><input type="radio" name="alias" value="<?=htmlspecialchars($alias['name']);?>" title="<?=$tooltip;?>"/></td>

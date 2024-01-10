@@ -238,7 +238,7 @@
 				- or the drive is 90% full and swap.state is larger than 1GB.
 				</div><br/>
 				If you wish to clear cache <strong>immediately,</strong> click this button <strong>once</strong>:
-				<button class="btn btn-warning" name="clear_cache" id="clear_cache" type="submit" value="Clear Disk Cache NOW"><i class="fa fa-trash icon-embed-btn"></i>Clear Disk Cache NOW</button>
+				<button class="btn btn-warning" name="clear_cache" id="clear_cache" type="submit" value="Clear Disk Cache NOW"><i class="fa-solid fa-trash-can icon-embed-btn"></i>Clear Disk Cache NOW</button>
 				]]>
 			</description>
 			<type>info</type>

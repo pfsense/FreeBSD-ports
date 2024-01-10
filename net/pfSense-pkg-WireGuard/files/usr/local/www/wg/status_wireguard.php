@@ -233,8 +233,8 @@ endif;
 //<![CDATA[
 events.push(function() {
 	$('.tree').treegrid({
-		expanderExpandedClass: 'fa fa fa-chevron-down',
-		expanderCollapsedClass: 'fa fa fa-chevron-right',
+		expanderExpandedClass: 'fa-solid fa fa-chevron-down',
+		expanderCollapsedClass: 'fa-solid fa fa-chevron-right',
 		initialState: (<?=json_encode($peers_hidden)?> ? 'collapsed' : 'expanded')
 	});
 });

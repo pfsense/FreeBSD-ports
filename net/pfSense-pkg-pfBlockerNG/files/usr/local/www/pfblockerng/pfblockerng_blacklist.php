@@ -392,8 +392,8 @@ foreach ($blacklist_types as $type => $setting) {
 
 	$section->addInput(new Form_StaticText(
 		gettext('Links'),
-		"<a href=\"{$setting['WEBSITE']}\" target=\"_blank\"><i class=\"fa fa-globe\"></i>&nbsp;{$setting['TITLE']} Summary</a>&emsp;"
-		. "<a href=\"{$setting['LICENSE']}\" target=\"_blank\"><i class=\"fa fa-globe\"></i>&nbsp;{$setting['TITLE']} {$lic_txt}</a>"
+		"<a href=\"{$setting['WEBSITE']}\" target=\"_blank\"><i class=\"fa-solid fa-globe\"></i>&nbsp;{$setting['TITLE']} Summary</a>&emsp;"
+		. "<a href=\"{$setting['LICENSE']}\" target=\"_blank\"><i class=\"fa-solid fa-globe\"></i>&nbsp;{$setting['TITLE']} {$lic_txt}</a>"
 	));
 
 	// Add username/password fields if required
@@ -486,7 +486,7 @@ foreach ($blacklist_types as $type => $setting) {
 		'enableall[' . $type . ']',
 		gettext('Enable All'),
 		NULL,
-		'fa-toggle-on'
+		'fa-solid fa-toggle-on'
 	);
 	$btnenableall->removeClass('btn-primary')->addClass('btn-primary btn-xs');
 
@@ -494,7 +494,7 @@ foreach ($blacklist_types as $type => $setting) {
 		'disableall[' . $type . ']',
 		gettext('Disable All'),
 		NULL,
-		'fa-toggle-off'
+		'fa-solid fa-toggle-off'
 	);
 	$btndisableall->removeClass('btn-primary')->addClass('btn-primary btn-xs');
 

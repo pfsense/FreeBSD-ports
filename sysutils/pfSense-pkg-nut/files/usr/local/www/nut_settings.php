@@ -461,7 +461,7 @@ $button = new Form_Button(
 	'advancedbutton',
 	'Display Advanced',
 	null,
-	'fa-cog'
+	'fa-solid fa-cog'
 );
 $button->setAttribute('type', 'button')->addClass('btn-info btn-sm');
 $section->addInput(new Form_StaticText(
@@ -675,7 +675,7 @@ events.push(function() {
 		} else {
 			text = "<?=gettext('Display Advanced');?>";
 		}
-		$('#advancedbutton').html('<i class="fa fa-cog"></i> ' + text);
+		$('#advancedbutton').html('<i class="fa-solid fa-cog"></i> ' + text);
 	}
 
 	// Show/Hide settings when the type changes

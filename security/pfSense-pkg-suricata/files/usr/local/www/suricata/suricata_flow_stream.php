@@ -540,11 +540,11 @@ display_top_tabs($tab_array, true);
 									<th><?=gettext("Bind-To Address Alias")?></th>
 									<th>
 										<button type="submit" name="import_alias[]" class="btn btn-sm btn-primary" title="<?=gettext("Import policy configuration from existing Aliases")?>" value="Import">
-											<i class="fa fa-upload icon-embed-btn"></i>
+											<i class="fa-solid fa-upload icon-embed-btn"></i>
 											<?=gettext("Import"); ?>
 										</button>
 										<button type="submit" name="add_os_policy[]" class="btn btn-sm btn-success" title="<?=gettext("Add a new policy configuration")?>" value="Add">
-											<i class="fa fa-plus icon-embed-btn"></i>
+											<i class="fa-solid fa-plus icon-embed-btn"></i>
 											<?=gettext("Add"); ?>
 										</button>
 									</th>
@@ -557,17 +557,17 @@ display_top_tabs($tab_array, true);
 										<td><?=gettext($v['bind_to'])?></td>
 										<td>
 											<button type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>">
-												<i class="fa fa-pencil icon-embed-btn"></i>
+												<i class="fa-solid fa-pencil icon-embed-btn"></i>
 												<?=gettext("Edit"); ?>
 											</button>
 								<?php if ($v['bind_to'] != "all") : ?>
 											<button type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" onclick="document.getElementById('eng_id').value='<?=$f?>';" title="<?=gettext("Delete this policy configuration")?>">
-												<i class="fa fa-trash icon-embed-btn"></i>
+												<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 												<?=gettext("Delete"); ?>
 											</button>
 								<?php else : ?>
 											<button type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" title="<?=gettext("Default policy configuration cannot be deleted")?>" disabled>
-												<i class="fa fa-trash icon-embed-btn"></i>
+												<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 												<?=gettext("Delete"); ?>
 											</button>
 								<?php endif ?>

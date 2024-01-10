@@ -264,7 +264,7 @@ exec('/bin/ps -wax', $result_cron);
 if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
 	$status = '<span style="color: red;">&emsp;&emsp;'
 		. 'Active pfBlockerNG CRON JOB'
-		. '</span>&emsp;<i class="fa fa-spinner fa-pulse fa-lg"></i>';
+		. '</span>&emsp;<i class="fa-solid fa-spinner fa-pulse fa-lg"></i>';
 }
 $status .= '<br />&emsp;<small><span style="color: red;">Refresh to update current status and time remaining.</span></small>';
 
@@ -363,7 +363,7 @@ $btn_run = new Form_Button(
 	'run',
 	'Run',
 	NULL,
-	'fa-play-circle'
+	'fa-solid fa-play-circle'
 );
 $btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1);
 
@@ -386,7 +386,7 @@ $btn_logview = new Form_Button(
 	'log_view',
 	$pconfig['log_view'],
 	NULL,
-	'fa-play-circle-o'
+	'fa-regular fa-circle-play'
 );
 $btn_logview->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1)
 	    ->setAttribute('title', $btn_logview_title);

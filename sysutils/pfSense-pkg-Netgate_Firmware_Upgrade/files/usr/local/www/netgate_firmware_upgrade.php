@@ -143,7 +143,7 @@ if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
 				'upgrade',
 				'Upgrade and Reboot',
 				null,
-				'fa-check'
+				'fa-solid fa-check'
 			))->setAttribute("title", "Upgrade Firmware and reboot the system")->addClass('btn-danger');
 		}
 

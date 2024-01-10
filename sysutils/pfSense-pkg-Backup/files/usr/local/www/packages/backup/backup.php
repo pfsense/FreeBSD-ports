@@ -162,7 +162,7 @@ display_top_tabs($tab_array);
 						<input name="ulfile" type="file" class="btn btn-info" id="ulfile" />
 						<br />
 						<button name="submit" type="submit" class="btn btn-primary" id="upload" value="Upload">
-							<i class="fa fa-upload icon-embed-btn"></i>
+							<i class="fa-solid fa-upload icon-embed-btn"></i>
 							Upload
 						</button>
 					</td>
@@ -185,16 +185,16 @@ display_top_tabs($tab_array);
 				<tr>
 					<td>
 						<button type='button' class="btn btn-primary" value='Backup' onclick="document.location.href='backup.php?a=download&amp;t=backup';">
-							<i class="fa fa-download icon-embed-btn"></i>
+							<i class="fa-solid fa-download icon-embed-btn"></i>
 							Backup
 						</button>
 						<?php	if (file_exists($backup_path)) { ?>
 								<button type="button" class="btn btn-warning" value="Restore" onclick="document.location.href='backup.php?a=other&amp;t=restore';">
-									<i class="fa fa-undo icon-embed-btn"></i>
+									<i class="fa-solid fa-undo icon-embed-btn"></i>
 									Restore
 								</button>
 								<button type="button" class="btn btn-danger" value="Delete" target="_new" onclick="document.location.href='backup.php?a=other&amp;t=delete';">
-									<i class="fa fa-trash icon-embed-btn"></i>
+									<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 									Delete
 								</button>
 						<?php 	} ?>
@@ -229,8 +229,8 @@ if (count($a_backup) > 0):
 						<td><? echo ($ent['enabled'] == "true") ? "Enabled" : "Disabled";?>&nbsp;</td>
 						<td><?=htmlspecialchars($ent['description'])?>&nbsp;</td>
 						<td>
-							<a href="backup_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
-							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
+							<a href="backup_edit.php?id=<?=$i?>"><i class="fa-solid fa-pencil" alt="edit"></i></a>
+							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa-solid fa-trash-can" alt="delete"></i></a>
 						</td>
 					</tr>
 <?php	$i++;
@@ -239,7 +239,7 @@ endif; ?>
 					<tr>
 						<td colspan="5"></td>
 						<td>
-							<a class="btn btn-small btn-success" href="backup_edit.php"><i class="fa fa-plus" alt="add"></i> Add</a>
+							<a class="btn btn-small btn-success" href="backup_edit.php"><i class="fa-solid fa-plus" alt="add"></i> Add</a>
 						</td>
 					</tr>
 				</tbody>

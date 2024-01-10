@@ -285,7 +285,7 @@ foreach ($rowdata as $r_id => $row) {
 		'deleterow' . $rowcounter,
 		'Delete',
 		null,
-		'fa-trash'
+		'fa-solid fa-trash-can'
 	))->removeClass('btn-primary')->addClass('btn-warning btn-xs');
 
 	$rowcounter++;
@@ -296,7 +296,7 @@ $btnadd = new Form_Button(
 	'addrow',
 	'Add',
 	NULL,
-	'fa-plus'
+	'fa-solid fa-plus'
 );
 $btnadd->removeClass('btn-primary')
 	->addClass('btn-success btn-xs')

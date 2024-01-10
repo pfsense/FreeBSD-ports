@@ -688,7 +688,7 @@ print($form);
 			<?=gettext('Search')?>
 			<span class="widget-heading-icon pull-right">
 				<a data-toggle="collapse" href="#search-panel_panel-body">
-					<i class="fa fa-plus-circle"></i>
+					<i class="fa-solid fa-plus-circle"></i>
 				</a>
 			</span>
 		</h2>
@@ -700,8 +700,8 @@ print($form);
 			</label>
 			<div class="col-sm-5"><input class="form-control" name="searchstr" id="searchstr" type="text"/></div>
 			<div class="col-sm-3">
-				<a id="btnsearch" title="<?=gettext("Search")?>" class="btn btn-primary btn-sm"><i class="fa fa-search icon-embed-btn"></i><?=gettext("Search")?></a>
-				<a id="btnclear" title="<?=gettext("Clear")?>" class="btn btn-info btn-sm"><i class="fa fa-undo icon-embed-btn"></i><?=gettext("Clear")?></a>
+				<a id="btnsearch" title="<?=gettext("Search")?>" class="btn btn-primary btn-sm"><i class="fa-solid fa-search icon-embed-btn"></i><?=gettext("Search")?></a>
+				<a id="btnclear" title="<?=gettext("Clear")?>" class="btn btn-info btn-sm"><i class="fa-solid fa-undo icon-embed-btn"></i><?=gettext("Clear")?></a>
 			</div>
 			<div class="col-sm-10 col-sm-offset-2">
 				<span class="help-block"><?=gettext('Enter a search string or *nix regular expression to search.')?></span>
@@ -1010,36 +1010,36 @@ function server_changed() {
 		cell2.className = "listr";
 		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Android<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineconnect\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineconnect\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
 		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Archive<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "<br\/>- Previous Windows Installers (<?=$previous_openvpn_version . '-Ix' . $previous_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 10/2016/2019<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 7/8/8.1/2012r2<\/a>";
 		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Viscosity Bundle<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Inline Config<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Viscosity Inline Config<\/a>";
 	}
 	for (j = 0; j < certs.length; j++) {
 		var row = table.insertRow(table.rows.length);
@@ -1057,49 +1057,49 @@ function server_changed() {
 		cell2.className = "listr";
 		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Android<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineconnect\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineconnect\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
 		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Archive<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<br\/>- Previous Windows Installer (<?=$previous_openvpn_version . '-Ix' . $previous_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 10/2016/2019<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 7/8/8.1/2012r2<\/a>";
 		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Viscosity Bundle<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Inline Config<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Viscosity Inline Config<\/a>";
 		if (servers[index][2] == "server_tls") {
 			cell2.innerHTML += "<br\/>- Yealink SIP Handsets:<br\/>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t28\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T28<\/a>";
+			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t28\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> T28<\/a>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T38G (1)<\/a>";
+			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> T38G (1)<\/a>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g2\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> T38G (2) / V83<\/a>";
+			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_yealink_t38g2\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> T38G (2) / V83<\/a>";
 			cell2.innerHTML += "<br\/>- Snom SIP Handsets:<br\/>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
-			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_snom\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> SNOM<\/a>";
+			cell2.innerHTML += "<a href='javascript:download_begin(\"conf_snom\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> SNOM<\/a>";
 		}
 	}
 	if (servers[index][2] == 'server_user') {
@@ -1114,36 +1114,36 @@ function server_changed() {
 		cell2.className = "listr";
 		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Android<\a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineconnect\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineconnect\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
 		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Archive<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-current\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-current\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "<br\/>- Previous Windows Installer (<?=$previous_openvpn_version . '-Ix' . $previous_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-previous\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 64-bit<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-previous\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 32-bit<\/a>";
 		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 10/2016/2019<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> 7/8/8.1/2012r2<\/a>";
 		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Viscosity Bundle<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Inline Config<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa-solid fa-download\"></i> Viscosity Inline Config<\/a>";
 	}
 }
 

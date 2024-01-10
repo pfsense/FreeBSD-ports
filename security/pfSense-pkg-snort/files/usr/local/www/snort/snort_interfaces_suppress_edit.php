@@ -177,7 +177,7 @@ $btnsave = new Form_Button(
 	'save',
 	'Save',
 	null,
-	'fa-save'
+	'fa-solid fa-save'
 );
 $btncancel = new Form_Button(
 	'cancel',

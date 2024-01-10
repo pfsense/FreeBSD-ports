@@ -135,7 +135,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 					<tr id="fr<?=$i;?>" <?=$display?> onClick="fr_toggle(<?=$i;?>)" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
 						<td >
 							<input type="checkbox" id="frc<?=$i;?>" onClick="fr_toggle(<?=$i;?>)" name="rule[]" value="<?=$i;?>"/>
-							<a class="fa fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
+							<a class="fa-solid fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
 						</td>
 			<!--tr class="<?=$textgray?>"-->
 			  <td>
@@ -189,15 +189,15 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 	</div>
 	<nav class="action-buttons">
 		<a href="haproxy_pool_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
-			<i class="fa fa-level-down icon-embed-btn"></i>
+			<i class="fa-solid fa-turn-down icon-embed-btn"></i>
 			<?=gettext("Add");?>
 		</a>
 		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
-			<i class="fa fa-trash icon-embed-btn"></i>
+			<i class="fa-solid fa-trash-can icon-embed-btn"></i>
 			<?=gettext("Delete"); ?>
 		</button>
 		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
-			<i class="fa fa-save icon-embed-btn"></i>
+			<i class="fa-solid fa-save icon-embed-btn"></i>
 			<?=gettext("Save")?>
 		</button>
 	</nav>

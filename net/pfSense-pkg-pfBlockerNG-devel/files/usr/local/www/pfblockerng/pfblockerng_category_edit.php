@@ -1034,7 +1034,7 @@ foreach ($rowdata[$rowid] as $tags) {
 		if ($rowdata[$rowid]['sort'] == 'no-sort') {
 
 			$move_anchor = "<input type=\"checkbox\" name=\"Lmove[{$r_id}]\" value=\"{$r_id}\" id=\"{$r_id}\" />
-						<button type=\"submit\" class=\"fa fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\" id=\"{$r_id}\"
+						<button type=\"submit\" class=\"fa-solid fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\" id=\"{$r_id}\"
 						title=\"Move checked entries before this anchor\"></button>";
 
 			$group->add(new Form_StaticText(
@@ -1112,7 +1112,7 @@ foreach ($rowdata[$rowid] as $tags) {
 			'deleterow' . $rowcounter,
 			'Delete',
 			NULL,
-			'fa-trash'
+			'fa-solid fa-trash-can'
 		))->removeClass('btn-primary')
 		  ->addClass('btn-warning btn-xs')->setWidth(1);
 
@@ -1219,7 +1219,7 @@ $btnadd = new Form_Button(
 	'addrow',
 	'Add',
 	null,
-	'fa-plus'
+	'fa-solid fa-plus'
 );
 $btnadd->removeClass('btn-primary')
 	->addClass('btn-xs btn-success')
@@ -1229,7 +1229,7 @@ $btnstate = new Form_Button(
 	'chgstate',
 	'Enable All',
 	NULL,
-	'fa-toggle-on'
+	'fa-solid fa-toggle-on'
 );
 $btnstate->removeClass('btn-primary')
 	 ->addClass('btn-primary btn-xs')
